@@ -1,12 +1,10 @@
-
-import React from 'react';
-import { Screen } from '../types';
+import { Screen } from '@/types';
 
 interface ProfileProps {
     onNavigate: (s: Screen) => void;
 }
 
-const Profile: React.FC<ProfileProps> = ({ onNavigate }) => {
+export default function Profile({ onNavigate }: ProfileProps) {
     return (
         <div className="flex-1 overflow-y-auto no-scrollbar bg-background-light dark:bg-background-dark">
             <header className="p-6 flex justify-between items-center bg-white/50 dark:bg-zinc-900/50 backdrop-blur-md">
@@ -26,16 +24,16 @@ const Profile: React.FC<ProfileProps> = ({ onNavigate }) => {
                 <p className="text-zinc-500 text-sm mt-1">St. John's College • Grade 12</p>
 
                 <div className="flex w-full mt-8 bg-zinc-200 dark:bg-zinc-800 p-1 rounded-xl">
-                    <button className="flex-1 py-2 bg-white dark:bg-zinc-700 rounded-lg text-xs font-bold shadow-sm">My Stats</button>
-                    <button className="flex-1 py-2 text-xs font-bold text-zinc-500">Provincial Avg</button>
+                    <button type="button" className="flex-1 py-2 bg-white dark:bg-zinc-700 rounded-lg text-xs font-bold shadow-sm">My Stats</button>
+                    <button type="button" className="flex-1 py-2 text-xs font-bold text-zinc-500">Provincial Avg</button>
                 </div>
             </section>
 
             {/* Admin Tools */}
             <section className="px-6 mb-8">
                 <h3 className="text-[10px] font-black uppercase text-zinc-400 tracking-widest mb-4">Admin Tools</h3>
-                <button 
-                    onClick={() => onNavigate(Screen.CMS)}
+                <button type="button"
+                    onClick={() => onNavigate('CMS')}
                     className="w-full p-4 bg-accent-purple/10 border border-accent-purple/20 rounded-2xl flex items-center justify-between group active:scale-95 transition-all"
                 >
                     <div className="flex items-center gap-3">
@@ -82,6 +80,4 @@ const Profile: React.FC<ProfileProps> = ({ onNavigate }) => {
             </section>
         </div>
     );
-};
-
-export default Profile;
+}

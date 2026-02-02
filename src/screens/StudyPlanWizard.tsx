@@ -1,13 +1,12 @@
-
-import React, { useState } from 'react';
-import { Screen } from '../types';
-import { generateStudyPlan } from '../services/geminiService';
+import { useState } from 'react';
+import { Screen } from '@/types';
+import { generateStudyPlan } from '@/services/geminiService';
 
 interface StudyPlanWizardProps {
     onNavigate: (s: Screen) => void;
 }
 
-const StudyPlanWizard: React.FC<StudyPlanWizardProps> = ({ onNavigate }) => {
+export default function StudyPlanWizard({ onNavigate }: StudyPlanWizardProps) {
     const [selectedSubjects, setSelectedSubjects] = useState<string[]>(['Mathematics']);
     const [hours, setHours] = useState(12);
     const [isGenerating, setIsGenerating] = useState(false);
@@ -24,7 +23,7 @@ const StudyPlanWizard: React.FC<StudyPlanWizardProps> = ({ onNavigate }) => {
         await generateStudyPlan(selectedSubjects, hours);
         setTimeout(() => {
             setIsGenerating(false);
-            onNavigate(Screen.PATH);
+            onNavigate('PATH');
         }, 3000);
     };
 
@@ -45,7 +44,7 @@ const StudyPlanWizard: React.FC<StudyPlanWizardProps> = ({ onNavigate }) => {
         <div className="flex-1 flex flex-col bg-background-light dark:bg-background-dark">
             <header className="px-6 pt-10 pb-6 border-b border-zinc-100 dark:border-zinc-800 bg-white dark:bg-zinc-900">
                 <div className="flex justify-between items-center mb-6">
-                    <button onClick={() => onNavigate(Screen.DASHBOARD)} className="material-symbols-rounded text-zinc-500">arrow_back</button>
+                    <button type="button" onClick={() => onNavigate('DASHBOARD')} className="material-symbols-rounded text-zinc-500">arrow_back</button>
                     <h2 className="font-bold text-zinc-900 dark:text-white uppercase tracking-widest text-[10px]">Study Plan Wizard</h2>
                     <div className="w-8"></div>
                 </div>
@@ -60,7 +59,7 @@ const StudyPlanWizard: React.FC<StudyPlanWizardProps> = ({ onNavigate }) => {
                 <h3 className="text-lg font-bold mb-4">What subjects are you tackling?</h3>
                 <div className="grid grid-cols-2 gap-4 mb-10">
                     {['Mathematics', 'Physical Sci', 'Life Sciences', 'English HL', 'Afrikaans FAL', 'Accounting'].map(sub => (
-                        <button 
+                        <button type="button"
                             key={sub}
                             onClick={() => toggleSubject(sub)}
                             className={`p-4 rounded-2xl border-2 transition-all flex flex-col items-center gap-3 active:scale-95 text-center ${selectedSubjects.includes(sub) ? 'border-accent-blue bg-blue-50 dark:bg-blue-900/20' : 'border-zinc-100 dark:border-zinc-800 bg-white dark:bg-zinc-900'}`}
@@ -93,7 +92,7 @@ const StudyPlanWizard: React.FC<StudyPlanWizardProps> = ({ onNavigate }) => {
             </main>
 
             <footer className="p-6 pt-12 bg-gradient-to-t from-white dark:from-zinc-950 to-transparent">
-                <button 
+                <button type="button"
                     onClick={handleGenerate}
                     className="w-full py-5 bg-accent-blue hover:bg-blue-600 text-white font-black rounded-2xl shadow-xl shadow-blue-500/20 flex items-center justify-center gap-3 transition-transform active:scale-95"
                 >
@@ -102,6 +101,4 @@ const StudyPlanWizard: React.FC<StudyPlanWizardProps> = ({ onNavigate }) => {
             </footer>
         </div>
     );
-};
-
-export default StudyPlanWizard;
+}

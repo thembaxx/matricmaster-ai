@@ -1,0 +1,15 @@
+@import 'tailwindcss';
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .math-serif {
+    font-family: 'Times New Roman', serif;
+    font-style: italic;
+  }
+}

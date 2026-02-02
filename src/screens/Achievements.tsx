@@ -1,18 +1,16 @@
-
-import React from 'react';
-import { Screen } from '../types';
-import { ACHIEVEMENTS } from '../constants';
+import { Screen } from '@/types';
+import { ACHIEVEMENTS } from '@/constants';
 
 interface AchievementsProps {
     onNavigate: (s: Screen) => void;
 }
 
-const Achievements: React.FC<AchievementsProps> = ({ onNavigate }) => {
+export default function Achievements({ onNavigate }: AchievementsProps) {
     return (
         <div className="flex-1 overflow-y-auto no-scrollbar bg-background-light dark:bg-background-dark pb-24">
             <header className="px-6 pt-12 pb-4 sticky top-0 bg-white/90 dark:bg-zinc-900/90 backdrop-blur-md z-20 border-b border-zinc-100 dark:border-zinc-800">
                 <div className="flex items-center gap-4 mb-6">
-                    <button onClick={() => onNavigate(Screen.DASHBOARD)} className="material-symbols-rounded text-zinc-500">arrow_back</button>
+                    <button type="button" onClick={() => onNavigate('DASHBOARD')} className="material-symbols-rounded text-zinc-500">arrow_back</button>
                     <h1 className="text-xl font-black text-zinc-900 dark:text-white">Achievements</h1>
                 </div>
                 
@@ -35,9 +33,9 @@ const Achievements: React.FC<AchievementsProps> = ({ onNavigate }) => {
 
             <main className="px-6 pt-8">
                 <div className="flex gap-2 overflow-x-auto no-scrollbar mb-8">
-                    <button className="px-4 py-2 bg-accent-blue text-white text-xs font-bold rounded-full">All Badges</button>
-                    <button className="px-4 py-2 bg-zinc-100 dark:bg-zinc-800 text-zinc-500 text-xs font-bold rounded-full">Science</button>
-                    <button className="px-4 py-2 bg-zinc-100 dark:bg-zinc-800 text-zinc-500 text-xs font-bold rounded-full">Math</button>
+                    <button type="button" className="px-4 py-2 bg-accent-blue text-white text-xs font-bold rounded-full">All Badges</button>
+                    <button type="button" className="px-4 py-2 bg-zinc-100 dark:bg-zinc-800 text-zinc-500 text-xs font-bold rounded-full">Science</button>
+                    <button type="button" className="px-4 py-2 bg-zinc-100 dark:bg-zinc-800 text-zinc-500 text-xs font-bold rounded-full">Math</button>
                 </div>
 
                 <div className="grid grid-cols-3 gap-x-4 gap-y-8">
@@ -62,6 +60,4 @@ const Achievements: React.FC<AchievementsProps> = ({ onNavigate }) => {
             </main>
         </div>
     );
-};
-
-export default Achievements;
+}

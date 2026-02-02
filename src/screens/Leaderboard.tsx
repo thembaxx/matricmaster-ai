@@ -1,13 +1,11 @@
-
-import React from 'react';
-import { Screen } from '../types';
-import { RANKINGS } from '../constants';
+import { Screen } from '@/types';
+import { RANKINGS } from '@/constants';
 
 interface LeaderboardProps {
     onNavigate: (s: Screen) => void;
 }
 
-const Leaderboard: React.FC<LeaderboardProps> = ({ onNavigate }) => {
+export default function Leaderboard({ onNavigate }: LeaderboardProps) {
     const topThree = RANKINGS.filter(r => r.rank <= 3);
     const others = RANKINGS.filter(r => r.rank > 3 && !r.isUser);
     const user = RANKINGS.find(r => r.isUser);
@@ -16,14 +14,14 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ onNavigate }) => {
         <div className="flex-1 overflow-y-auto no-scrollbar bg-background-light dark:bg-background-dark pb-32">
             <header className="px-6 pt-12 pb-4 bg-white dark:bg-zinc-900 border-b border-zinc-100 dark:border-zinc-800 sticky top-0 z-20">
                 <div className="flex justify-between items-center mb-6">
-                    <button onClick={() => onNavigate(Screen.DASHBOARD)} className="material-symbols-rounded text-zinc-500">arrow_back</button>
+                    <button type="button" onClick={() => onNavigate('DASHBOARD')} className="material-symbols-rounded text-zinc-500">arrow_back</button>
                     <h1 className="text-xl font-black text-zinc-900 dark:text-white">Leaderboard</h1>
                     <div className="w-8"></div>
                 </div>
                 <div className="flex bg-zinc-100 dark:bg-zinc-800 p-1 rounded-2xl">
-                    <button className="flex-1 py-2 bg-white dark:bg-zinc-700 rounded-lg text-xs font-bold shadow-sm">School</button>
-                    <button className="flex-1 py-2 text-xs font-bold text-zinc-500">Provincial</button>
-                    <button className="flex-1 py-2 text-xs font-bold text-zinc-500">National</button>
+                    <button type="button" className="flex-1 py-2 bg-white dark:bg-zinc-700 rounded-lg text-xs font-bold shadow-sm">School</button>
+                    <button type="button" className="flex-1 py-2 text-xs font-bold text-zinc-500">Provincial</button>
+                    <button type="button" className="flex-1 py-2 text-xs font-bold text-zinc-500">National</button>
                 </div>
             </header>
 
@@ -99,6 +97,4 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ onNavigate }) => {
             </div>
         </div>
     );
-};
-
-export default Leaderboard;
+}

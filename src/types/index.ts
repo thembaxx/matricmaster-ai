@@ -1,16 +1,14 @@
-
-export enum Screen {
-    DASHBOARD = 'DASHBOARD',
-    PATH = 'PATH',
-    CHANNELS = 'CHANNELS',
-    BOOKMARKS = 'BOOKMARKS',
-    QUIZ = 'QUIZ',
-    PROFILE = 'PROFILE',
-    STUDY_PLAN = 'STUDY_PLAN',
-    ACHIEVEMENTS = 'ACHIEVEMENTS',
-    LEADERBOARD = 'LEADERBOARD',
-    CMS = 'CMS'
-}
+export type Screen = 
+	| 'DASHBOARD' 
+	| 'PATH' 
+	| 'CHANNELS' 
+	| 'BOOKMARKS' 
+	| 'QUIZ' 
+	| 'PROFILE' 
+	| 'STUDY_PLAN' 
+	| 'ACHIEVEMENTS' 
+	| 'LEADERBOARD' 
+	| 'CMS';
 
 export interface Subject {
     id: string;

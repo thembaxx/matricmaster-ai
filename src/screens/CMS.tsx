@@ -1,13 +1,12 @@
-
-import React, { useState, useRef } from 'react';
-import { Screen, ContentItem } from '../types';
-import { SUBJECTS } from '../constants';
+import { useState, useRef } from 'react';
+import { Screen, ContentItem } from '@/types';
+import { SUBJECTS } from '@/constants';
 
 interface CMSProps {
     onNavigate: (s: Screen) => void;
 }
 
-const CMS: React.FC<CMSProps> = ({ onNavigate }) => {
+export default function CMS({ onNavigate }: CMSProps) {
     const [items, setItems] = useState<ContentItem[]>([
         { id: '1', title: 'Calculus: Chain Rule', topic: 'Derivatives', category: 'Mathematics', content: '# Chain Rule\nThis is a standard lesson on the chain rule.', difficulty: 'Medium', status: 'Published', updatedAt: '2023-10-15' },
         { id: '2', title: 'Physics: Newton\'s Laws', topic: 'Mechanics', category: 'Physical Sciences', content: '# Newton\'s Laws\nFocus on the 2nd law: F=ma', difficulty: 'Easy', status: 'Draft', updatedAt: '2023-10-14' }
@@ -61,9 +60,9 @@ const CMS: React.FC<CMSProps> = ({ onNavigate }) => {
             {/* Header */}
             <header className="px-6 pt-10 pb-4 bg-white dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-800">
                 <div className="flex justify-between items-center mb-4">
-                    <button onClick={() => onNavigate(Screen.PROFILE)} className="material-symbols-rounded text-zinc-500">arrow_back</button>
+                    <button type="button" onClick={() => onNavigate('PROFILE')} className="material-symbols-rounded text-zinc-500">arrow_back</button>
                     <h1 className="font-bold text-zinc-900 dark:text-white">Content Manager</h1>
-                    <button 
+                    <button type="button"
                         onClick={() => setEditingItem({ title: '', topic: '', category: 'Mathematics', difficulty: 'Medium', content: '' })}
                         className="w-10 h-10 bg-accent-purple text-white rounded-full flex items-center justify-center shadow-lg shadow-purple-500/20 active:scale-90 transition-all"
                     >
@@ -84,7 +83,7 @@ const CMS: React.FC<CMSProps> = ({ onNavigate }) => {
                     </div>
                     <div className="flex gap-2 overflow-x-auto no-scrollbar py-1">
                         {['All', ...SUBJECTS.map(s => s.name)].map(cat => (
-                            <button 
+                            <button type="button"
                                 key={cat}
                                 onClick={() => setSelectedCategory(cat)}
                                 className={`px-4 py-1.5 rounded-full text-[10px] font-bold whitespace-nowrap transition-all ${selectedCategory === cat ? 'bg-accent-purple text-white' : 'bg-white dark:bg-zinc-800 text-zinc-500 border border-zinc-200 dark:border-zinc-700'}`}
@@ -128,10 +127,10 @@ const CMS: React.FC<CMSProps> = ({ onNavigate }) => {
                                 </div>
                             </div>
                             <div className="flex flex-col gap-2">
-                                <button onClick={() => setEditingItem(item)} className="p-2 text-zinc-400 hover:text-accent-purple transition-colors">
+                                <button type="button" onClick={() => setEditingItem(item)} className="p-2 text-zinc-400 hover:text-accent-purple transition-colors">
                                     <span className="material-symbols-rounded text-xl">edit</span>
                                 </button>
-                                <button onClick={() => setItems(items.filter(i => i.id !== item.id))} className="p-2 text-zinc-400 hover:text-red-500 transition-colors">
+                                <button type="button" onClick={() => setItems(items.filter(i => i.id !== item.id))} className="p-2 text-zinc-400 hover:text-red-500 transition-colors">
                                     <span className="material-symbols-rounded text-xl">delete</span>
                                 </button>
                             </div>
@@ -146,7 +145,7 @@ const CMS: React.FC<CMSProps> = ({ onNavigate }) => {
                     <div className="bg-white dark:bg-zinc-900 w-full h-[90%] rounded-t-[3rem] flex flex-col overflow-hidden animate-in slide-in-from-bottom duration-300">
                         <header className="px-6 py-6 border-b border-zinc-100 dark:border-zinc-800 flex justify-between items-center">
                             <h2 className="text-lg font-bold text-zinc-900 dark:text-white">{editingItem.id ? 'Edit Lesson' : 'New Lesson'}</h2>
-                            <button onClick={() => setEditingItem(null)} className="material-symbols-rounded text-zinc-400">close</button>
+                            <button type="button" onClick={() => setEditingItem(null)} className="material-symbols-rounded text-zinc-400">close</button>
                         </header>
                         
                         <div className="flex-1 overflow-y-auto no-scrollbar p-6 space-y-6">
@@ -236,7 +235,7 @@ const CMS: React.FC<CMSProps> = ({ onNavigate }) => {
                         </div>
 
                         <footer className="p-6 bg-zinc-50 dark:bg-zinc-800/50 border-t border-zinc-100 dark:border-zinc-800">
-                            <button 
+                            <button type="button"
                                 onClick={handleSave}
                                 className="w-full py-4 bg-accent-purple text-white font-black rounded-2xl shadow-xl shadow-purple-500/20 active:scale-95 transition-all"
                             >
@@ -248,6 +247,4 @@ const CMS: React.FC<CMSProps> = ({ onNavigate }) => {
             )}
         </div>
     );
-};
-
-export default CMS;
+}

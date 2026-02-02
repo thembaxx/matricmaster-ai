@@ -1,12 +1,11 @@
-
-import React, { useState } from 'react';
-import { Screen } from '../types';
+import { useState } from 'react';
+import { Screen } from '@/types';
 
 interface QuizProps {
     onNavigate: (s: Screen) => void;
 }
 
-const Quiz: React.FC<QuizProps> = ({ onNavigate }) => {
+export default function Quiz({ onNavigate }: QuizProps) {
     const [selectedOption, setSelectedOption] = useState<string | null>(null);
     const [isFinished, setIsFinished] = useState(false);
 
@@ -34,8 +33,8 @@ const Quiz: React.FC<QuizProps> = ({ onNavigate }) => {
                     </div>
                 </div>
 
-                <button 
-                    onClick={() => onNavigate(Screen.DASHBOARD)}
+                <button type="button"
+                    onClick={() => onNavigate('DASHBOARD')}
                     className="w-full mt-12 py-5 bg-accent-yellow text-zinc-900 font-bold rounded-2xl flex items-center justify-center gap-2"
                 >
                     Keep Going <span className="material-symbols-rounded">arrow_forward</span>
@@ -48,7 +47,7 @@ const Quiz: React.FC<QuizProps> = ({ onNavigate }) => {
         <div className="flex-1 flex flex-col bg-background-light dark:bg-background-dark">
             {/* Header */}
             <header className="px-6 pt-10 pb-4 flex justify-between items-center bg-white dark:bg-zinc-900 border-b border-zinc-100 dark:border-zinc-800">
-                <button onClick={() => onNavigate(Screen.DASHBOARD)} className="material-symbols-rounded text-zinc-400">close</button>
+                <button type="button" onClick={() => onNavigate('DASHBOARD')} className="material-symbols-rounded text-zinc-400">close</button>
                 <div className="flex-1 px-8">
                     <div className="h-1.5 w-full bg-zinc-100 dark:bg-zinc-800 rounded-full overflow-hidden">
                         <div className="h-full bg-accent-green w-1/3 transition-all duration-500"></div>
@@ -77,7 +76,7 @@ const Quiz: React.FC<QuizProps> = ({ onNavigate }) => {
                 {/* Options Grid */}
                 <div className="grid grid-cols-2 gap-4">
                     {['(x+2)(x+3)', '(x-2)(x-3)', '(x-1)(x-6)', '(x+1)(x-6)'].map((opt, idx) => (
-                        <button 
+                        <button type="button"
                             key={idx}
                             onClick={() => setSelectedOption(opt)}
                             className={`p-6 rounded-2xl border-2 transition-all flex flex-col items-center gap-3 active:scale-95 ${selectedOption === opt ? 'border-accent-blue bg-blue-50 dark:bg-blue-900/20' : 'border-zinc-100 dark:border-zinc-800 bg-white dark:bg-zinc-900'}`}
@@ -104,7 +103,7 @@ const Quiz: React.FC<QuizProps> = ({ onNavigate }) => {
 
             {/* Sticky Footer Action */}
             <footer className="p-6 bg-white dark:bg-zinc-900 border-t border-zinc-100 dark:border-zinc-800">
-                <button 
+                <button type="button"
                     disabled={!selectedOption}
                     onClick={() => setIsFinished(true)}
                     className={`w-full py-5 rounded-2xl font-bold text-lg transition-all ${selectedOption ? 'bg-primary dark:bg-white text-white dark:text-black shadow-lg shadow-zinc-400/20' : 'bg-zinc-100 text-zinc-300 cursor-not-allowed'}`}
@@ -114,6 +113,4 @@ const Quiz: React.FC<QuizProps> = ({ onNavigate }) => {
             </footer>
         </div>
     );
-};
-
-export default Quiz;
+}

@@ -1,5 +1,4 @@
-
-import { Subject, Achievement, Ranking } from './types';
+import { Subject, Achievement, Ranking } from '@/types';
 
 export const SUBJECTS: Subject[] = [
     { id: 'math', name: 'Mathematics', icon: 'calculate', color: 'bg-blue-500', progress: 75, description: 'Calculus, Algebra, Geometry' },
