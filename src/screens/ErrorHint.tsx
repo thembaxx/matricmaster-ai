@@ -2,12 +2,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import type { Screen } from '@/types';
-import {
-	AlertTriangle,
-	Eye,
-	Lightbulb,
-	X,
-} from 'lucide-react';
+import { AlertTriangle, Eye, Lightbulb, X } from 'lucide-react';
 
 interface ErrorHintProps {
 	onNavigate: (s: Screen) => void;
@@ -37,14 +32,13 @@ export default function ErrorHint({ onNavigate }: ErrorHintProps) {
 							<span className="text-xs font-bold text-zinc-400 uppercase tracking-widest">
 								ORIGINAL QUESTION
 							</span>
-							<div className="w-12 h-12 bg-zinc-800 rounded-xl" /> {/* Placeholder for question thumbnail */}
+							<div className="w-12 h-12 bg-zinc-800 rounded-xl" />{' '}
+							{/* Placeholder for question thumbnail */}
 						</div>
 						<h2 className="text-lg font-bold text-zinc-900 dark:text-white mb-1">
 							Q4: Circuit Analysis
 						</h2>
-						<p className="text-sm text-zinc-500">
-							Calculate the total resistance...
-						</p>
+						<p className="text-sm text-zinc-500">Calculate the total resistance...</p>
 					</div>
 
 					<h1 className="text-3xl font-bold text-zinc-900 dark:text-white mb-6">
@@ -60,7 +54,7 @@ export default function ErrorHint({ onNavigate }: ErrorHintProps) {
 								<div className="absolute top-1/2 right-0 -translate-y-1/2 -mr-3 w-6 h-2 bg-red-500 rounded-full" />
 								<div className="absolute top-0 left-1/2 -translate-x-1/2 -mt-3 w-2 h-6 bg-red-500 rounded-full" />
 								<div className="absolute bottom-0 left-1/2 -translate-x-1/2 -mb-3 w-2 h-6 bg-red-500 rounded-full" />
-								
+
 								{/* Resistors */}
 								<div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-12 h-4 bg-orange-300 rounded-full" />
 								<div className="absolute bottom-1/4 left-1/2 -translate-x-1/2 w-12 h-4 bg-orange-300 rounded-full" />
@@ -70,7 +64,9 @@ export default function ErrorHint({ onNavigate }: ErrorHintProps) {
 						{/* Focus Badge */}
 						<div className="absolute bottom-4 right-4 bg-white dark:bg-zinc-800 shadow-md border border-zinc-100 dark:border-zinc-700 rounded-full px-3 py-1.5 flex items-center gap-2">
 							<Eye className="w-4 h-4 text-amber-500" />
-							<span className="text-xs font-bold text-zinc-900 dark:text-white">Focus: Series Path</span>
+							<span className="text-xs font-bold text-zinc-900 dark:text-white">
+								Focus: Series Path
+							</span>
 						</div>
 					</Card>
 
@@ -84,7 +80,8 @@ export default function ErrorHint({ onNavigate }: ErrorHintProps) {
 							Think about how the resistance changes if we add another resistor in series.
 						</h3>
 						<p className="text-zinc-500 text-sm leading-relaxed mb-6">
-							When components are lined up one after another, the current must flow through <strong className="text-zinc-900 dark:text-white">all of them</strong>.
+							When components are lined up one after another, the current must flow through{' '}
+							<strong className="text-zinc-900 dark:text-white">all of them</strong>.
 						</p>
 
 						{/* Formula Box */}

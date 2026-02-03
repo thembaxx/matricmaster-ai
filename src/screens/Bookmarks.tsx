@@ -2,14 +2,7 @@ import { Card } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import type { Screen } from '@/types';
-import {
-	Activity,
-	Bookmark,
-	Calculator,
-	Microscope,
-	TrendingUp,
-	Zap,
-} from 'lucide-react';
+import { Activity, Bookmark, Calculator, Microscope, TrendingUp, Zap } from 'lucide-react';
 import { useState } from 'react';
 
 interface BookmarksProps {
@@ -135,7 +128,9 @@ export default function Bookmarks({ onNavigate }: BookmarksProps) {
 								</div>
 
 								<div>
-									<p className={`text-[10px] font-bold mb-1 uppercase tracking-wide ${bookmark.color}`}>
+									<p
+										className={`text-[10px] font-bold mb-1 uppercase tracking-wide ${bookmark.color}`}
+									>
 										{bookmark.subject}
 									</p>
 									<h3 className="text-sm font-bold text-zinc-900 dark:text-white leading-tight mb-1">

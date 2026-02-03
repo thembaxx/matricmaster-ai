@@ -37,75 +37,81 @@ export default function MathematicsQuiz({ onNavigate }: MathematicsQuizProps) {
 	};
 
 	return (
-		<div className="flex flex-col min-h-screen bg-background">
+		<div className="flex flex-col min-h-screen bg-zinc-50 dark:bg-zinc-950 font-lexend">
 			{/* Header */}
-			<header className="px-6 pt-12 pb-4 bg-white dark:bg-zinc-900 sticky top-0 z-20 border-b border-zinc-100 dark:border-zinc-800">
-				<div className="flex items-center gap-4 mb-4">
-					<Button variant="ghost" size="icon" onClick={() => onNavigate('DASHBOARD')}>
-						<ArrowLeft className="w-5 h-5" />
-					</Button>
-					<div className="flex-1">
-						<div className="flex justify-between items-center mb-2">
-							<span className="text-sm font-medium text-zinc-600 dark:text-zinc-400">
-								Question 1 of 5
-							</span>
-							<Badge variant="outline" className="text-xs">
-								Integration
-							</Badge>
+			<header className="px-6 pt-12 pb-4 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl sticky top-0 z-20 border-b border-zinc-100 dark:border-zinc-800">
+				<div className="max-w-2xl mx-auto w-full">
+					<div className="flex items-center gap-4 mb-4">
+						<Button
+							variant="ghost"
+							size="icon"
+							onClick={() => onNavigate('DASHBOARD')}
+							className="rounded-full"
+						>
+							<ArrowLeft className="w-5 h-5" />
+						</Button>
+						<div className="flex-1">
+							<div className="flex justify-between items-center mb-2">
+								<span className="text-sm font-bold text-zinc-600 dark:text-zinc-400">
+									Question 1 of 5
+								</span>
+								<Badge
+									variant="secondary"
+									className="text-[10px] font-black uppercase tracking-tighter rounded-full"
+								>
+									Integration
+								</Badge>
+							</div>
+							<Progress value={20} className="h-2 rounded-full" />
 						</div>
-						<Progress value={20} className="h-2" />
 					</div>
 				</div>
 			</header>
 
 			<ScrollArea className="flex-1">
-				<main className="px-6 py-6 space-y-6 pb-48">
+				<main className="px-6 py-8 space-y-8 pb-48 max-w-2xl mx-auto w-full">
 					{/* Question */}
-					<div>
-						<h2 className="text-lg font-bold text-zinc-900 dark:text-white mb-4">
-							Find the integral:
-						</h2>
-						<Card className="p-8 bg-zinc-50 dark:bg-zinc-800/50 border-2 border-dashed">
-							<div className="text-center">
-								<span className="text-3xl font-mono text-zinc-900 dark:text-white">
+					<div className="space-y-4">
+						<h2 className="text-3xl font-black text-zinc-900 dark:text-white">Find the integral</h2>
+						<Card className="p-12 bg-white dark:bg-zinc-900 border-none rounded-[2.5rem] shadow-sm relative overflow-hidden group">
+							<div className="absolute inset-0 bg-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity" />
+							<div className="text-center relative z-10">
+								<span className="text-4xl font-mono font-bold text-zinc-900 dark:text-white">
 									∫(3x² + 2x) dx
 								</span>
 							</div>
 						</Card>
 					</div>
 
-					{/* Instructions */}
-					<p className="text-sm text-zinc-600 dark:text-zinc-400">
-						Drag and drop the steps in the correct order to solve the integral:
-					</p>
-
 					{/* Selected Steps Area */}
-					<div>
-						<h3 className="text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-3">
-							Your Answer (in order):
+					<div className="space-y-4">
+						<h3 className="text-[10px] font-black uppercase text-zinc-400 tracking-widest px-1">
+							Your Solution Path
 						</h3>
-						<div className="min-h-[120px] p-4 bg-blue-50 dark:bg-blue-900/20 rounded-xl border-2 border-dashed border-blue-200 dark:border-blue-800">
+						<div className="min-h-[160px] p-6 bg-blue-50/50 dark:bg-blue-900/10 rounded-[2rem] border-2 border-dashed border-blue-200 dark:border-blue-900/50">
 							{selectedSteps.length === 0 ? (
-								<p className="text-center text-sm text-zinc-400 py-8">
-									Tap steps below to add them in order
-								</p>
+								<div className="flex flex-col items-center justify-center py-8 text-zinc-400 space-y-2">
+									<p className="text-sm font-medium">Tap steps below to solve</p>
+								</div>
 							) : (
-								<div className="space-y-2">
+								<div className="space-y-3">
 									{selectedSteps.map((stepId, index) => {
 										const step = steps.find((s) => s.id === stepId);
 										return (
 											<div
 												key={stepId}
-												className="flex items-center gap-3 p-3 bg-white dark:bg-zinc-800 rounded-lg shadow-sm"
+												className="flex items-center gap-4 p-4 bg-white dark:bg-zinc-900 rounded-2xl shadow-sm border border-blue-100 dark:border-blue-900/30 animate-in fade-in slide-in-from-left-2"
 											>
-												<span className="w-6 h-6 rounded-full bg-blue-500 text-white text-xs flex items-center justify-center font-bold">
+												<span className="w-7 h-7 rounded-full bg-blue-500 text-white text-xs flex items-center justify-center font-black">
 													{index + 1}
 												</span>
-												<span className="font-mono flex-1">{step?.text}</span>
+												<span className="font-mono font-bold text-zinc-900 dark:text-white flex-1">
+													{step?.text}
+												</span>
 												<Button
 													variant="ghost"
 													size="icon"
-													className="h-8 w-8"
+													className="h-8 w-8 rounded-full hover:bg-red-50 hover:text-red-500"
 													onClick={() => handleStepClick(stepId)}
 												>
 													<X className="w-4 h-4" />
@@ -119,11 +125,11 @@ export default function MathematicsQuiz({ onNavigate }: MathematicsQuizProps) {
 					</div>
 
 					{/* Available Steps Pool */}
-					<div>
-						<h3 className="text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-3">
-							Available Steps:
+					<div className="space-y-4">
+						<h3 className="text-[10px] font-black uppercase text-zinc-400 tracking-widest px-1">
+							Step Fragments
 						</h3>
-						<div className="grid grid-cols-1 gap-2">
+						<div className="grid grid-cols-1 gap-3">
 							{availableSteps
 								.filter((s) => !selectedSteps.includes(s.id))
 								.map((step) => (
@@ -131,11 +137,15 @@ export default function MathematicsQuiz({ onNavigate }: MathematicsQuizProps) {
 										type="button"
 										key={step.id}
 										onClick={() => handleStepClick(step.id)}
-										className="p-3 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg text-left hover:border-blue-500 dark:hover:border-blue-400 transition-colors"
+										className="p-5 bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800 rounded-2xl text-left hover:border-blue-500 dark:hover:border-blue-500 transition-all hover:shadow-md active:scale-[0.98] group"
 									>
-										<div className="flex items-center gap-3">
-											<GripVertical className="w-4 h-4 text-zinc-400" />
-											<span className="font-mono text-sm">{step.text}</span>
+										<div className="flex items-center gap-4">
+											<div className="w-8 h-8 rounded-lg bg-zinc-50 dark:bg-zinc-800 flex items-center justify-center group-hover:bg-blue-50 dark:group-hover:bg-blue-900/30 transition-colors">
+												<GripVertical className="w-4 h-4 text-zinc-400 group-hover:text-blue-500" />
+											</div>
+											<span className="font-mono font-bold text-zinc-700 dark:text-zinc-300">
+												{step.text}
+											</span>
 										</div>
 									</button>
 								))}
@@ -143,48 +153,59 @@ export default function MathematicsQuiz({ onNavigate }: MathematicsQuizProps) {
 					</div>
 
 					{/* Hint */}
-					<Card className="p-4 bg-yellow-50 dark:bg-yellow-900/20 border-yellow-200 dark:border-yellow-800">
-						<div className="flex items-start gap-3">
-							<Lightbulb className="w-5 h-5 text-yellow-600 shrink-0 mt-0.5" />
-							<p className="text-sm text-yellow-800 dark:text-yellow-200">
+					<div className="p-6 bg-amber-50 dark:bg-amber-900/10 border border-amber-100 dark:border-amber-900/30 rounded-[2rem] flex items-start gap-4">
+						<div className="w-10 h-10 rounded-full bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center shrink-0">
+							<Lightbulb className="w-5 h-5 text-amber-600" />
+						</div>
+						<div>
+							<h4 className="font-black text-amber-900 dark:text-amber-100 text-xs uppercase tracking-widest mb-1">
+								Teacher's Hint
+							</h4>
+							<p className="text-sm text-amber-800/80 dark:text-amber-200/80 font-medium">
 								Remember the power rule: ∫xⁿ dx = xⁿ⁺¹/(n+1) + C
 							</p>
 						</div>
-					</Card>
+					</div>
 				</main>
 			</ScrollArea>
 
 			{/* Math Keyboard & Actions */}
-			<footer className="fixed bottom-0 left-0 right-0 bg-white dark:bg-zinc-900 border-t border-zinc-200 dark:border-zinc-800">
-				{/* Math Symbols */}
-				<div className="px-4 py-2 overflow-x-auto">
-					<div className="flex gap-2">
-						{mathSymbols.map((symbol) => (
-							<button
-								type="button"
-								key={symbol}
-								onClick={() => insertSymbol(symbol)}
-								className="px-3 py-2 bg-zinc-100 dark:bg-zinc-800 rounded-lg text-sm font-mono hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors whitespace-nowrap"
-							>
-								{symbol}
-							</button>
-						))}
+			<footer className="fixed bottom-0 left-0 right-0 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl border-t border-zinc-100 dark:border-zinc-800 z-30">
+				<div className="max-w-2xl mx-auto w-full">
+					{/* Math Symbols */}
+					<div className="px-6 py-3 overflow-x-auto no-scrollbar">
+						<div className="flex gap-2">
+							{mathSymbols.map((symbol) => (
+								<button
+									type="button"
+									key={symbol}
+									onClick={() => insertSymbol(symbol)}
+									className="px-4 py-2.5 bg-zinc-100 dark:bg-zinc-800 rounded-xl text-sm font-mono font-bold hover:bg-blue-500 hover:text-white dark:hover:bg-blue-600 transition-all whitespace-nowrap active:scale-90"
+								>
+									{symbol}
+								</button>
+							))}
+						</div>
 					</div>
-				</div>
 
-				{/* Action Buttons */}
-				<div className="p-4 flex gap-3">
-					<Button variant="outline" className="flex-1">
-						<Lightbulb className="w-4 h-4 mr-2" />
-						Hint
-					</Button>
-					<Button
-						className="flex-1 bg-blue-600 hover:bg-blue-700"
-						disabled={selectedSteps.length === 0}
-					>
-						<CheckCircle2 className="w-4 h-4 mr-2" />
-						Check Answer
-					</Button>
+					{/* Action Buttons */}
+					<div className="p-6 pt-2 flex gap-4">
+						<Button
+							variant="outline"
+							className="h-16 px-8 rounded-[2rem] font-bold border-zinc-200 dark:border-zinc-700"
+						>
+							<Lightbulb className="w-5 h-5 mr-2 text-amber-500" />
+							Hint
+						</Button>
+						<Button
+							className="flex-1 h-16 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 rounded-[2rem] font-bold text-lg shadow-xl shadow-zinc-900/10 disabled:opacity-50 transition-all active:scale-95"
+							disabled={selectedSteps.length === 0}
+							onClick={() => onNavigate('LESSON_COMPLETE')}
+						>
+							<CheckCircle2 className="w-5 h-5 mr-2" />
+							Check Answer
+						</Button>
+					</div>
 				</div>
 			</footer>
 		</div>

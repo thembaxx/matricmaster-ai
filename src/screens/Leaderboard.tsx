@@ -75,27 +75,40 @@ const otherStudents = [
 
 export default function Leaderboard({ onNavigate }: LeaderboardProps) {
 	return (
-		<div className="flex flex-col min-h-screen bg-background">
+		<div className="flex flex-col min-h-screen bg-zinc-50 dark:bg-zinc-950 font-lexend">
 			{/* Header */}
-			<header className="px-6 pt-12 pb-4 bg-white dark:bg-zinc-900 sticky top-0 z-20 border-b border-zinc-100 dark:border-zinc-800">
-				<div className="flex items-center gap-4 mb-4">
-					<Button variant="ghost" size="icon" onClick={() => onNavigate('DASHBOARD')}>
-						<ArrowLeft className="w-5 h-5" />
-					</Button>
-					<h1 className="text-2xl font-bold text-zinc-900 dark:text-white">Leaderboard</h1>
-				</div>
+			<header className="px-6 pt-12 pb-6 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl sticky top-0 z-20 border-b border-zinc-100 dark:border-zinc-800">
+				<div className="max-w-2xl mx-auto w-full">
+					<div className="flex items-center gap-4 mb-6">
+						<Button
+							variant="ghost"
+							size="icon"
+							onClick={() => onNavigate('DASHBOARD')}
+							className="rounded-full"
+						>
+							<ArrowLeft className="w-5 h-5" />
+						</Button>
+						<h1 className="text-2xl font-bold text-zinc-900 dark:text-white">Leaderboard</h1>
+					</div>
 
-				<Tabs defaultValue="school" className="w-full">
-					<TabsList className="grid grid-cols-3 w-full">
-						<TabsTrigger value="school">School</TabsTrigger>
-						<TabsTrigger value="provincial">Provincial</TabsTrigger>
-						<TabsTrigger value="national">National</TabsTrigger>
-					</TabsList>
-				</Tabs>
+					<Tabs defaultValue="school" className="w-full">
+						<TabsList className="grid grid-cols-3 w-full bg-zinc-100 dark:bg-zinc-800 p-1 rounded-2xl h-12">
+							<TabsTrigger value="school" className="rounded-xl font-bold">
+								School
+							</TabsTrigger>
+							<TabsTrigger value="provincial" className="rounded-xl font-bold">
+								Provincial
+							</TabsTrigger>
+							<TabsTrigger value="national" className="rounded-xl font-bold">
+								National
+							</TabsTrigger>
+						</TabsList>
+					</Tabs>
+				</div>
 			</header>
 
 			<ScrollArea className="flex-1">
-				<main className="pb-32">
+				<main className="pb-40">
 					{/* Top 3 Podium */}
 					<div className="px-6 py-8">
 						<div className="flex items-end justify-center gap-4">
@@ -163,8 +176,8 @@ export default function Leaderboard({ onNavigate }: LeaderboardProps) {
 					</div>
 
 					{/* Other Students List */}
-					<div className="px-6">
-						<Card className="overflow-hidden">
+					<div className="px-6 max-w-2xl mx-auto w-full">
+						<div className="bg-white dark:bg-zinc-900 rounded-[2.5rem] shadow-sm overflow-hidden mb-12 border border-zinc-100 dark:border-zinc-800">
 							{otherStudents.map((student, idx) => (
 								<div key={student.rank}>
 									<div className="flex items-center gap-4 p-4 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors">
@@ -179,40 +192,42 @@ export default function Leaderboard({ onNavigate }: LeaderboardProps) {
 											</h4>
 											<p className="text-xs text-zinc-500">{student.school}</p>
 										</div>
-										<div className="flex items-center gap-1">
-											<Zap className="w-4 h-4 text-yellow-500" />
-											<span className="font-bold text-sm">{student.points.toLocaleString()}</span>
+										<div className="flex items-center gap-1 bg-zinc-50 dark:bg-zinc-800 p-1.5 px-3 rounded-full">
+											<Zap className="w-3.5 h-3.5 text-yellow-500 fill-yellow-500" />
+											<span className="font-black text-sm">{student.points.toLocaleString()}</span>
 										</div>
 									</div>
 									{idx < otherStudents.length - 1 && (
-										<div className="h-px bg-zinc-100 dark:bg-zinc-800 mx-4" />
+										<div className="h-px bg-zinc-50 dark:bg-zinc-800 mx-4" />
 									)}
 								</div>
 							))}
-						</Card>
+						</div>
 					</div>
 				</main>
 			</ScrollArea>
 
 			{/* Your Rank Card */}
-			<div className="fixed bottom-6 left-6 right-6">
-				<Card className="p-4 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 shadow-xl">
+			<div className="fixed bottom-8 left-0 right-0 px-6 max-w-2xl mx-auto">
+				<Card className="p-5 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 shadow-2xl rounded-[2rem] border-none">
 					<div className="flex items-center gap-4">
-						<span className="text-xl font-bold text-yellow-400">42</span>
-						<Avatar className="w-12 h-12 border-2 border-yellow-400">
+						<span className="text-2xl font-black text-yellow-400 w-8">42</span>
+						<Avatar className="w-14 h-14 border-2 border-yellow-400 p-0.5">
 							<AvatarImage src="https://api.dicebear.com/7.x/avataaars/svg?seed=Thabo" />
 							<AvatarFallback>TM</AvatarFallback>
 						</Avatar>
 						<div className="flex-1">
-							<p className="font-semibold">Your Rank</p>
-							<p className="text-xs text-zinc-400 dark:text-zinc-500">Top 15% • 5 Day Streak</p>
+							<p className="font-bold text-lg leading-tight">Your Rank</p>
+							<p className="text-xs text-zinc-400 dark:text-zinc-500 font-medium">
+								Top 15% • 5 Day Streak
+							</p>
 						</div>
-						<div className="text-right">
-							<div className="flex items-center gap-1">
-								<Zap className="w-4 h-4 text-yellow-400" />
-								<span className="font-bold text-lg">1,250</span>
+						<div className="text-right bg-white/10 dark:bg-zinc-100 p-2 rounded-2xl px-3">
+							<div className="flex items-center gap-1 justify-end">
+								<Zap className="w-4 h-4 text-yellow-400 fill-yellow-400" />
+								<span className="font-black text-xl">1,250</span>
 							</div>
-							<p className="text-xs text-zinc-400 dark:text-zinc-500">KP</p>
+							<p className="text-[10px] text-zinc-400 dark:text-zinc-500 font-bold uppercase">KP</p>
 						</div>
 					</div>
 				</Card>

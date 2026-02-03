@@ -79,7 +79,7 @@ export default function CMS({ onNavigate }: CMSProps) {
 	};
 
 	return (
-		<div className="flex-1 flex flex-col bg-zinc-50 dark:bg-zinc-950 overflow-hidden">
+		<div className="flex-1 flex flex-col bg-zinc-50 dark:bg-zinc-950 overflow-hidden font-lexend">
 			{/* Header */}
 			<header className="px-6 pt-10 pb-4 bg-white dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-800">
 				<div className="flex justify-between items-center mb-4">
@@ -102,7 +102,7 @@ export default function CMS({ onNavigate }: CMSProps) {
 								content: '',
 							})
 						}
-						className="w-10 h-10 bg-accent-purple text-white rounded-full flex items-center justify-center shadow-lg shadow-purple-500/20 active:scale-90 transition-all"
+						className="w-10 h-10 bg-brand-purple text-white rounded-full flex items-center justify-center shadow-lg shadow-purple-500/20 active:scale-90 transition-all"
 					>
 						<span className="material-symbols-rounded">add</span>
 					</button>
@@ -125,7 +125,7 @@ export default function CMS({ onNavigate }: CMSProps) {
 								type="button"
 								key={cat}
 								onClick={() => setSelectedCategory(cat)}
-								className={`px-4 py-1.5 rounded-full text-[10px] font-bold whitespace-nowrap transition-all ${selectedCategory === cat ? 'bg-accent-purple text-white' : 'bg-white dark:bg-zinc-800 text-zinc-500 border border-zinc-200 dark:border-zinc-700'}`}
+								className={`px-4 py-1.5 rounded-full text-[10px] font-bold whitespace-nowrap transition-all ${selectedCategory === cat ? 'bg-brand-purple text-white shadow-lg shadow-purple-500/20' : 'bg-white dark:bg-zinc-800 text-zinc-500 border border-zinc-200 dark:border-zinc-700'}`}
 							>
 								{cat}
 							</button>
@@ -177,7 +177,7 @@ export default function CMS({ onNavigate }: CMSProps) {
 										{item.category}
 									</span>
 									<span>•</span>
-									<span className="font-medium text-accent-purple">{item.topic}</span>
+									<span className="font-medium text-brand-purple">{item.topic}</span>
 									<span>•</span>
 									<span>{item.difficulty}</span>
 								</div>
@@ -186,7 +186,7 @@ export default function CMS({ onNavigate }: CMSProps) {
 								<button
 									type="button"
 									onClick={() => setEditingItem(item)}
-									className="p-2 text-zinc-400 hover:text-accent-purple transition-colors"
+									className="p-2 text-zinc-400 hover:text-brand-purple transition-colors"
 								>
 									<span className="material-symbols-rounded text-xl">edit</span>
 								</button>
@@ -224,24 +224,32 @@ export default function CMS({ onNavigate }: CMSProps) {
 							{/* Title & Topic Row */}
 							<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 								<div>
-									<label className="text-[10px] font-black uppercase text-zinc-400 tracking-widest block mb-2">
+									<label
+										htmlFor="cms-title"
+										className="text-[10px] font-black uppercase text-zinc-400 tracking-widest block mb-2"
+									>
 										Title
 									</label>
 									<input
+										id="cms-title"
 										value={editingItem.title}
 										onChange={(e) => setEditingItem({ ...editingItem, title: e.target.value })}
-										className="w-full bg-zinc-50 dark:bg-zinc-800 border-none rounded-2xl p-4 text-sm focus:ring-2 ring-accent-purple"
+										className="w-full bg-zinc-50 dark:bg-zinc-800 border-none rounded-2xl p-4 text-sm focus:ring-2 ring-brand-purple"
 										placeholder="e.g. Euclidean Geometry Intro"
 									/>
 								</div>
 								<div>
-									<label className="text-[10px] font-black uppercase text-zinc-400 tracking-widest block mb-2">
+									<label
+										htmlFor="cms-topic"
+										className="text-[10px] font-black uppercase text-zinc-400 tracking-widest block mb-2"
+									>
 										Topic
 									</label>
 									<input
+										id="cms-topic"
 										value={editingItem.topic}
 										onChange={(e) => setEditingItem({ ...editingItem, topic: e.target.value })}
-										className="w-full bg-zinc-50 dark:bg-zinc-800 border-none rounded-2xl p-4 text-sm focus:ring-2 ring-accent-purple"
+										className="w-full bg-zinc-50 dark:bg-zinc-800 border-none rounded-2xl p-4 text-sm focus:ring-2 ring-brand-purple"
 										placeholder="e.g. Geometry"
 									/>
 								</div>
@@ -249,9 +257,20 @@ export default function CMS({ onNavigate }: CMSProps) {
 
 							{/* Image Upload */}
 							<div>
-								<label className="text-[10px] font-black uppercase text-zinc-400 tracking-widest block mb-2">
+								<label
+									htmlFor="cms-image"
+									className="text-[10px] font-black uppercase text-zinc-400 tracking-widest block mb-2"
+								>
 									Featured Image
 								</label>
+								<input
+									id="cms-image"
+									type="file"
+									ref={fileInputRef}
+									className="hidden"
+									accept="image/*"
+									onChange={handleImageUpload}
+								/>
 								<div
 									onClick={() => fileInputRef.current?.click()}
 									className="w-full h-32 bg-zinc-50 dark:bg-zinc-800 rounded-3xl border-2 border-dashed border-zinc-200 dark:border-zinc-700 flex flex-col items-center justify-center cursor-pointer overflow-hidden relative group"
@@ -276,25 +295,22 @@ export default function CMS({ onNavigate }: CMSProps) {
 										</>
 									)}
 								</div>
-								<input
-									type="file"
-									ref={fileInputRef}
-									className="hidden"
-									accept="image/*"
-									onChange={handleImageUpload}
-								/>
 							</div>
 
 							{/* Category & Difficulty */}
 							<div className="grid grid-cols-2 gap-4">
 								<div>
-									<label className="text-[10px] font-black uppercase text-zinc-400 tracking-widest block mb-2">
+									<label
+										htmlFor="cms-category"
+										className="text-[10px] font-black uppercase text-zinc-400 tracking-widest block mb-2"
+									>
 										Category
 									</label>
 									<select
+										id="cms-category"
 										value={editingItem.category}
 										onChange={(e) => setEditingItem({ ...editingItem, category: e.target.value })}
-										className="w-full bg-zinc-50 dark:bg-zinc-800 border-none rounded-2xl p-4 text-xs focus:ring-2 ring-accent-purple appearance-none"
+										className="w-full bg-zinc-50 dark:bg-zinc-800 border-none rounded-2xl p-4 text-xs focus:ring-2 ring-brand-purple appearance-none"
 									>
 										{SUBJECTS.map((s) => (
 											<option key={s.id} value={s.name}>
@@ -304,15 +320,22 @@ export default function CMS({ onNavigate }: CMSProps) {
 									</select>
 								</div>
 								<div>
-									<label className="text-[10px] font-black uppercase text-zinc-400 tracking-widest block mb-2">
+									<label
+										htmlFor="cms-difficulty"
+										className="text-[10px] font-black uppercase text-zinc-400 tracking-widest block mb-2"
+									>
 										Difficulty
 									</label>
 									<select
+										id="cms-difficulty"
 										value={editingItem.difficulty}
 										onChange={(e) =>
-											setEditingItem({ ...editingItem, difficulty: e.target.value as any })
+											setEditingItem({
+												...editingItem,
+												difficulty: e.target.value as ContentItem['difficulty'],
+											})
 										}
-										className="w-full bg-zinc-50 dark:bg-zinc-800 border-none rounded-2xl p-4 text-xs focus:ring-2 ring-accent-purple appearance-none"
+										className="w-full bg-zinc-50 dark:bg-zinc-800 border-none rounded-2xl p-4 text-xs focus:ring-2 ring-brand-purple appearance-none"
 									>
 										<option value="Easy">Easy</option>
 										<option value="Medium">Medium</option>
@@ -323,14 +346,18 @@ export default function CMS({ onNavigate }: CMSProps) {
 
 							{/* Content Editor */}
 							<div>
-								<label className="text-[10px] font-black uppercase text-zinc-400 tracking-widest block mb-2">
+								<label
+									htmlFor="cms-content"
+									className="text-[10px] font-black uppercase text-zinc-400 tracking-widest block mb-2"
+								>
 									Lesson Content (Markdown)
 								</label>
 								<textarea
+									id="cms-content"
 									rows={8}
 									value={editingItem.content}
 									onChange={(e) => setEditingItem({ ...editingItem, content: e.target.value })}
-									className="w-full bg-zinc-50 dark:bg-zinc-800 border-none rounded-3xl p-4 text-sm focus:ring-2 ring-accent-purple font-mono"
+									className="w-full bg-zinc-50 dark:bg-zinc-800 border-none rounded-3xl p-4 text-sm focus:ring-2 ring-brand-purple font-mono"
 									placeholder="# My Lesson\nWrite your curriculum content here..."
 								/>
 							</div>
@@ -340,7 +367,7 @@ export default function CMS({ onNavigate }: CMSProps) {
 							<button
 								type="button"
 								onClick={handleSave}
-								className="w-full py-4 bg-accent-purple text-white font-black rounded-2xl shadow-xl shadow-purple-500/20 active:scale-95 transition-all"
+								className="w-full py-4 bg-brand-purple text-white font-black rounded-2xl shadow-xl shadow-purple-500/20 active:scale-95 transition-all"
 							>
 								Save Lesson
 							</button>

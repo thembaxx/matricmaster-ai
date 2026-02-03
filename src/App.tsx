@@ -5,6 +5,7 @@ import Channels from '@/screens/Channels';
 import Dashboard from '@/screens/Dashboard';
 import ErrorHint from '@/screens/ErrorHint';
 import Landing from '@/screens/Landing';
+import LanguageSelect from '@/screens/LanguageSelect';
 import Leaderboard from '@/screens/Leaderboard';
 import LessonComplete from '@/screens/LessonComplete';
 import MathematicsQuiz from '@/screens/MathematicsQuiz';
@@ -12,9 +13,9 @@ import PastPaperViewer from '@/screens/PastPaperViewer';
 import PhysicalSciences from '@/screens/PhysicalSciences';
 import Profile from '@/screens/Profile';
 import Quiz from '@/screens/Quiz';
+import Search from '@/screens/Search';
 import StudyPath from '@/screens/StudyPath';
 import StudyPlanWizard from '@/screens/StudyPlanWizard';
-import Search from '@/screens/Search';
 import type { Screen } from '@/types';
 import { Bookmark, Home, Search as SearchIcon, User } from 'lucide-react';
 import { useState } from 'react';
@@ -26,6 +27,8 @@ export default function App() {
 		switch (currentScreen) {
 			case 'LANDING':
 				return <Landing onNavigate={setCurrentScreen} />;
+			case 'LANGUAGE_SELECT':
+				return <LanguageSelect onNavigate={setCurrentScreen} />;
 			case 'DASHBOARD':
 				return <Dashboard onNavigate={setCurrentScreen} />;
 			case 'PATH':
