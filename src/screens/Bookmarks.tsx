@@ -1,8 +1,9 @@
+import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import type { Screen } from '@/types';
-import { Activity, Bookmark, Calculator, Microscope, TrendingUp, Zap } from 'lucide-react';
+import { Activity, Bookmark, Calculator, Microscope, Plus, TrendingUp, Zap } from 'lucide-react';
 import { useState } from 'react';
 
 interface BookmarksProps {
@@ -96,51 +97,75 @@ export default function Bookmarks({ onNavigate }: BookmarksProps) {
 
 			<ScrollArea className="flex-1">
 				<main className="px-6 py-6 pb-32">
-					<div className="grid grid-cols-2 gap-4">
-						{filteredBookmarks.map((bookmark) => (
-							<Card
-								key={bookmark.id}
-								className="p-4 hover:shadow-lg transition-all cursor-pointer rounded-3xl border-zinc-100 dark:border-zinc-800 bg-white dark:bg-zinc-900/50 shadow-sm flex flex-col h-56"
-								onClick={() => onNavigate('QUIZ')}
-							>
-								<div className="flex justify-between items-start mb-4">
-									<div
-										className={`w-10 h-10 rounded-xl ${bookmark.bg} flex items-center justify-center`}
-									>
-										<bookmark.icon className={`w-5 h-5 ${bookmark.color}`} />
-									</div>
-									<Bookmark className={`w-5 h-5 ${bookmark.color} fill-current`} />
-								</div>
-
-								{/* Content Preview */}
-								<div className="flex-1 bg-zinc-50 dark:bg-zinc-800/50 border border-dashed border-zinc-200 dark:border-zinc-700 rounded-xl mb-4 flex items-center justify-center p-2">
-									{bookmark.type === 'equation' && (
-										<span className="font-serif italic text-lg text-zinc-800 dark:text-zinc-200">
-											{bookmark.content}
-										</span>
-									)}
-									{bookmark.type !== 'equation' && (
-										<div className="text-zinc-300 dark:text-zinc-600">
-											{/* Placeholder Graphic */}
-											<Activity className="w-8 h-8" />
+					{filteredBookmarks.length > 0 ? (
+						<div className="grid grid-cols-2 gap-4">
+							{filteredBookmarks.map((bookmark) => (
+								<Card
+									key={bookmark.id}
+									className="p-5 hover:shadow-lg transition-all cursor-pointer rounded-[2.5rem] border-zinc-100 dark:border-zinc-800 bg-white dark:bg-zinc-900/50 shadow-sm flex flex-col h-64"
+									onClick={() => onNavigate('QUIZ')}
+								>
+									<div className="flex justify-between items-start mb-4">
+										<div
+											className={`w-10 h-10 rounded-xl ${bookmark.bg} flex items-center justify-center`}
+										>
+											<bookmark.icon className={`w-5 h-5 ${bookmark.color}`} />
 										</div>
-									)}
-								</div>
+										<Bookmark className={`w-5 h-5 ${bookmark.color} fill-current`} />
+									</div>
 
-								<div>
-									<p
-										className={`text-[10px] font-bold mb-1 uppercase tracking-wide ${bookmark.color}`}
-									>
-										{bookmark.subject}
-									</p>
-									<h3 className="text-sm font-bold text-zinc-900 dark:text-white leading-tight mb-1">
-										{bookmark.title}
-									</h3>
-									<p className="text-[10px] text-zinc-400">{bookmark.info}</p>
-								</div>
-							</Card>
-						))}
-					</div>
+									{/* Content Preview */}
+									<div className="flex-1 bg-zinc-50 dark:bg-zinc-800/50 border border-dashed border-zinc-200 dark:border-zinc-700 rounded-xl mb-4 flex items-center justify-center p-2">
+										{bookmark.type === 'equation' && (
+											<span className="font-serif italic text-lg text-zinc-800 dark:text-zinc-200">
+												{bookmark.content}
+											</span>
+										)}
+										{bookmark.type !== 'equation' && (
+											<div className="text-zinc-300 dark:text-zinc-600">
+												{/* Placeholder Graphic */}
+												<Activity className="w-8 h-8" />
+											</div>
+										)}
+									</div>
+
+									<div>
+										<p
+											className={`text-[10px] font-bold mb-1 uppercase tracking-wide ${bookmark.color}`}
+										>
+											{bookmark.subject}
+										</p>
+										<h3 className="text-sm font-bold text-zinc-900 dark:text-white leading-tight mb-1">
+											{bookmark.title}
+										</h3>
+										<p className="text-[10px] text-zinc-400">{bookmark.info}</p>
+									</div>
+								</Card>
+							))}
+						</div>
+					) : (
+						<div className="flex flex-col items-center justify-center py-24 text-center space-y-6">
+							<div className="w-32 h-32 bg-zinc-50 dark:bg-zinc-900 rounded-[2.5rem] flex items-center justify-center relative overflow-hidden group">
+								<div className="absolute inset-0 bg-brand-blue/5 animate-pulse" />
+								<Bookmark className="w-16 h-16 text-zinc-200 dark:text-zinc-800 relative z-10 group-hover:scale-110 transition-transform" />
+							</div>
+							<div className="space-y-2">
+								<h3 className="text-xl font-black text-zinc-900 dark:text-white">
+									Nothing saved yet
+								</h3>
+								<p className="text-sm text-zinc-500 max-w-[240px] mx-auto font-medium">
+									Save difficult questions or important concepts to review them later.
+								</p>
+							</div>
+							<Button
+								onClick={() => onNavigate('QUIZ')}
+								className="bg-brand-blue text-white rounded-full px-8 h-12 font-bold shadow-lg shadow-brand-blue/20 active:scale-95 transition-all"
+							>
+								<Plus className="w-4 h-4 mr-2" />
+								Browse Questions
+							</Button>
+						</div>
+					)}
 				</main>
 			</ScrollArea>
 		</div>

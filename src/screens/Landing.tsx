@@ -2,6 +2,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { useTheme } from '@/hooks/use-theme';
 import type { Screen } from '@/types';
 import {
 	Atom,
@@ -9,7 +10,9 @@ import {
 	ChevronRight,
 	LayoutDashboard,
 	Microscope,
+	Moon,
 	Sparkles,
+	Sun,
 } from 'lucide-react';
 
 interface LandingProps {
@@ -56,6 +59,8 @@ const subjects = [
 ];
 
 export default function Landing({ onNavigate }: LandingProps) {
+	const { theme, setTheme } = useTheme();
+
 	return (
 		<div className="flex flex-col min-h-screen bg-zinc-50 dark:bg-zinc-950 font-lexend overflow-hidden">
 			{/* Decorative Orbs */}
@@ -72,13 +77,22 @@ export default function Landing({ onNavigate }: LandingProps) {
 						MatricMaster
 					</span>
 				</div>
-				<button
-					type="button"
-					onClick={() => onNavigate('LANGUAGE_SELECT')}
-					className="text-[10px] font-black text-zinc-400 hover:text-brand-blue uppercase tracking-widest transition-colors"
-				>
-					Language: EN
-				</button>
+				<div className="flex items-center gap-4">
+					<button
+						type="button"
+						onClick={() => onNavigate('LANGUAGE_SELECT')}
+						className="text-[10px] font-black text-zinc-400 hover:text-brand-blue uppercase tracking-widest transition-colors"
+					>
+						Language: EN
+					</button>
+					<button
+						type="button"
+						onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+						className="w-10 h-10 rounded-xl bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-all active:scale-90"
+					>
+						{theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+					</button>
+				</div>
 			</header>
 
 			<ScrollArea className="flex-1 relative z-10">

@@ -3,8 +3,20 @@ import { Card } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useTheme } from '@/hooks/use-theme';
 import type { Screen } from '@/types';
-import { ArrowLeft, Atom, BookOpen, Check, Crown, Lock, Microscope, Moon, Zap } from 'lucide-react';
+import {
+	ArrowLeft,
+	Atom,
+	BookOpen,
+	Check,
+	Crown,
+	Lock,
+	Microscope,
+	Moon,
+	Sun,
+	Zap,
+} from 'lucide-react';
 import { useState } from 'react';
 
 interface AchievementsProps {
@@ -79,6 +91,7 @@ const badges = [
 ];
 
 export default function Achievements({ onNavigate }: AchievementsProps) {
+	const { theme, setTheme } = useTheme();
 	const [activeTab, setActiveTab] = useState('all');
 
 	const filteredBadges =
@@ -101,7 +114,17 @@ export default function Achievements({ onNavigate }: AchievementsProps) {
 						>
 							<ArrowLeft className="w-5 h-5" />
 						</Button>
-						<h1 className="text-2xl font-black text-zinc-900 dark:text-white">Achievements</h1>
+						<h1 className="text-2xl font-black text-zinc-900 dark:text-white flex-1">
+							Achievements
+						</h1>
+						<Button
+							variant="ghost"
+							size="icon"
+							onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+							className="rounded-xl bg-zinc-100 dark:bg-zinc-800"
+						>
+							{theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+						</Button>
 					</div>
 
 					{/* Mastery Level Card */}

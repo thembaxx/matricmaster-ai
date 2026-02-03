@@ -3,8 +3,9 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useTheme } from '@/hooks/use-theme';
 import type { Screen } from '@/types';
-import { ArrowLeft, Download, Eye, Moon, Settings, Split } from 'lucide-react';
+import { ArrowLeft, Download, Eye, Moon, Settings, Split, Sun } from 'lucide-react';
 import { useState } from 'react';
 
 interface PhysicalSciencesProps {
@@ -12,6 +13,7 @@ interface PhysicalSciencesProps {
 }
 
 export default function PhysicalSciences({ onNavigate }: PhysicalSciencesProps) {
+	const { theme, setTheme } = useTheme();
 	const [viewMode, setViewMode] = useState<'question' | 'split'>('split');
 	const [showAnnotations, setShowAnnotations] = useState(true);
 
@@ -30,8 +32,12 @@ export default function PhysicalSciences({ onNavigate }: PhysicalSciencesProps) 
 						<Button variant="ghost" size="icon">
 							<Settings className="w-5 h-5" />
 						</Button>
-						<Button variant="ghost" size="icon">
-							<Moon className="w-5 h-5" />
+						<Button
+							variant="ghost"
+							size="icon"
+							onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+						>
+							{theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
 						</Button>
 						<Button variant="ghost" size="icon">
 							<Download className="w-5 h-5" />

@@ -147,7 +147,7 @@ export default function CMS({ onNavigate }: CMSProps) {
 					filteredItems.map((item) => (
 						<div
 							key={item.id}
-							className="bg-white dark:bg-zinc-900 p-4 rounded-3xl border border-zinc-200 dark:border-zinc-800 shadow-sm flex items-center gap-4 group"
+							className="bg-white dark:bg-zinc-900 p-6 rounded-[2.5rem] border border-zinc-200 dark:border-zinc-800 shadow-sm flex items-center gap-4 group hover:shadow-md transition-shadow"
 						>
 							{item.image ? (
 								<img

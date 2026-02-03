@@ -1,4 +1,5 @@
 import App from '@/App';
+import { ThemeProvider } from '@/components/theme-provider';
 import '@/styles/index.css';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
@@ -11,6 +12,8 @@ if (!rootElement) {
 const root = createRoot(rootElement);
 root.render(
 	<StrictMode>
-		<App />
+		<ThemeProvider defaultTheme="light" storageKey="matric-master-theme">
+			<App />
+		</ThemeProvider>
 	</StrictMode>
 );

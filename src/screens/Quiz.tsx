@@ -126,7 +126,7 @@ export default function Quiz({ onNavigate }: QuizProps) {
 									key={option.id}
 									disabled={isChecked}
 									onClick={() => setSelectedOption(option.id)}
-									className={`p-6 rounded-[2rem] border-2 transition-all h-40 flex flex-col items-center justify-center gap-4 relative group ${stateClasses}`}
+									className={`p-6 rounded-[2.5rem] border-2 transition-all h-44 flex flex-col items-center justify-center gap-4 relative group ${stateClasses}`}
 								>
 									<div
 										className={`w-10 h-10 rounded-2xl flex items-center justify-center text-sm font-black transition-colors ${
