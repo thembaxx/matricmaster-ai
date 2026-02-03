@@ -100,7 +100,7 @@ export default function MathematicsQuiz({ onNavigate }: MathematicsQuizProps) {
 										return (
 											<div
 												key={stepId}
-												className="flex items-center gap-4 p-4 bg-white dark:bg-zinc-900 rounded-2xl shadow-sm border border-blue-100 dark:border-blue-900/30 animate-in fade-in slide-in-from-left-2"
+												className="flex items-center gap-4 p-5 bg-white dark:bg-zinc-900 rounded-[1.5rem] shadow-sm border border-blue-100 dark:border-blue-900/30 animate-in fade-in slide-in-from-left-2"
 											>
 												<span className="w-7 h-7 rounded-full bg-blue-500 text-white text-xs flex items-center justify-center font-black">
 													{index + 1}
@@ -137,7 +137,7 @@ export default function MathematicsQuiz({ onNavigate }: MathematicsQuizProps) {
 										type="button"
 										key={step.id}
 										onClick={() => handleStepClick(step.id)}
-										className="p-5 bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800 rounded-2xl text-left hover:border-blue-500 dark:hover:border-blue-500 transition-all hover:shadow-md active:scale-[0.98] group"
+										className="p-6 bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800 rounded-[2rem] text-left hover:border-blue-500 dark:hover:border-blue-500 transition-all hover:shadow-md active:scale-[0.98] group"
 									>
 										<div className="flex items-center gap-4">
 											<div className="w-8 h-8 rounded-lg bg-zinc-50 dark:bg-zinc-800 flex items-center justify-center group-hover:bg-blue-50 dark:group-hover:bg-blue-900/30 transition-colors">

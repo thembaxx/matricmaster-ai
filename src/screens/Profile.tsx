@@ -1,15 +1,19 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { Switch } from '@/components/ui/switch';
+import { useTheme } from '@/hooks/use-theme';
 import type { Screen } from '@/types';
 import {
 	Activity,
 	Calculator,
 	Languages,
 	Microscope,
+	Moon,
 	Settings,
 	Share2,
 	Star,
+	Sun,
 	Verified,
 } from 'lucide-react';
 import { useState } from 'react';
@@ -37,6 +41,7 @@ const achievements = [
 ];
 
 export default function Profile({ onNavigate: _ }: ProfileProps) {
+	const { theme, setTheme } = useTheme();
 	const [viewMode, setViewMode] = useState<'my_stats' | 'provincial'>('my_stats');
 
 	return (
@@ -193,6 +198,32 @@ export default function Profile({ onNavigate: _ }: ProfileProps) {
 									<span className="text-xs font-bold">{item.title}</span>
 								</div>
 							))}
+						</div>
+					</div>
+
+					{/* Settings Section */}
+					<div className="mb-10">
+						<h3 className="text-zinc-400 text-xs font-bold uppercase tracking-widest mb-4">
+							Preferences
+						</h3>
+						<div className="bg-zinc-50 dark:bg-zinc-900/50 rounded-[2rem] border border-zinc-100 dark:border-zinc-800 p-6 flex items-center justify-between">
+							<div className="flex items-center gap-4">
+								<div className="w-12 h-12 rounded-2xl bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center">
+									{theme === 'dark' ? (
+										<Moon className="w-6 h-6 text-purple-400" />
+									) : (
+										<Sun className="w-6 h-6 text-amber-500" />
+									)}
+								</div>
+								<div>
+									<h4 className="font-bold text-zinc-900 dark:text-white">Dark Mode</h4>
+									<p className="text-xs text-zinc-500">Easier on the eyes</p>
+								</div>
+							</div>
+							<Switch
+								checked={theme === 'dark'}
+								onCheckedChange={(checked) => setTheme(checked ? 'dark' : 'light')}
+							/>
 						</div>
 					</div>
 
