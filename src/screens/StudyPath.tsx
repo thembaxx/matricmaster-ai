@@ -1,110 +1,154 @@
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { Progress } from '@/components/ui/progress';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import type { Screen } from '@/types';
+import { ArrowLeft, CheckCircle2, ChevronRight, Lock, Play, Star } from 'lucide-react';
 
 interface StudyPathProps {
 	onNavigate: (s: Screen) => void;
 }
 
-const StudyPath: React.FC<StudyPathProps> = ({ onNavigate }) => {
+const pathNodes = [
+	{
+		id: 1,
+		title: 'Physics Circuits',
+		status: 'locked',
+		icon: Lock,
+		description: "Ohm's Law & Kirchhoff",
+	},
+	{
+		id: 2,
+		title: 'Calculus P1',
+		status: 'current',
+		icon: Play,
+		description: 'In Progress • 35%',
+		progress: 35,
+	},
+	{
+		id: 3,
+		title: 'Intro to Functions',
+		status: 'completed',
+		icon: CheckCircle2,
+		description: 'Completed',
+		stars: 3,
+	},
+	{
+		id: 4,
+		title: 'Algebra Basics',
+		status: 'completed',
+		icon: CheckCircle2,
+		description: 'Completed',
+		stars: 2,
+	},
+];
+
+export default function StudyPath({ onNavigate }: StudyPathProps) {
+	const overallProgress = 12;
+
 	return (
-		<div className="flex-1 overflow-y-auto no-scrollbar bg-background-light dark:bg-background-dark relative">
+		<div className="flex flex-col min-h-screen bg-background">
 			{/* Header */}
-			<div className="sticky top-0 z-20 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md p-4 flex justify-between items-center border-b border-zinc-100 dark:border-zinc-800">
-				<button
-					type="button"
-					onClick={() => onNavigate('DASHBOARD')}
-					className="material-symbols-rounded text-zinc-500"
-				>
-					arrow_back
-				</button>
-				<h2 className="font-bold text-zinc-900 dark:text-white">My Physics Path</h2>
-				<div className="flex items-center gap-1 text-accent-yellow">
-					<span className="material-symbols-rounded text-sm">bolt</span>
-					<span className="text-xs font-bold">12%</span>
+			<header className="px-6 pt-12 pb-4 bg-white dark:bg-zinc-900 sticky top-0 z-20 border-b border-zinc-100 dark:border-zinc-800">
+				<div className="flex items-center justify-between">
+					<div className="flex items-center gap-4">
+						<Button variant="ghost" size="icon" onClick={() => onNavigate('DASHBOARD')}>
+							<ArrowLeft className="w-5 h-5" />
+						</Button>
+						<h1 className="text-xl font-bold text-zinc-900 dark:text-white">My Physics Path</h1>
+					</div>
+					<Badge variant="secondary" className="flex items-center gap-1">
+						<span className="w-2 h-2 rounded-full bg-yellow-500" />
+						{overallProgress}%
+					</Badge>
 				</div>
-			</div>
+			</header>
 
-			{/* Quest Map */}
-			<div className="relative flex flex-col items-center py-20 min-h-[1200px]">
-				{/* Winding Line SVG */}
-				<svg className="absolute top-0 w-full h-full pointer-events-none opacity-20" viewBox="0 0 400 1200">
-					<path
-						d="M 200 0 C 200 200, 100 300, 100 500 C 100 700, 300 800, 300 1000"
-						stroke="#a1a1aa"
-						strokeWidth="6"
-						fill="none"
-						strokeDasharray="12 12"
-					/>
-				</svg>
+			<ScrollArea className="flex-1">
+				<main className="px-6 py-6 pb-32">
+					{/* Path Visualization */}
+					<div className="relative">
+						{/* Connecting Line */}
+						<div className="absolute left-8 top-8 bottom-8 w-1 bg-gradient-to-b from-zinc-200 via-blue-200 to-zinc-200 dark:from-zinc-800 dark:via-blue-900/50 dark:to-zinc-800" />
 
-				{/* Nodes */}
-				<div className="flex flex-col items-center gap-32 relative z-10 w-full">
-					{/* Node 1: Locked Future */}
-					<div className="flex flex-col items-center opacity-40">
-						<div className="w-16 h-16 rounded-full bg-zinc-200 dark:bg-zinc-800 border-4 border-white flex items-center justify-center shadow-md">
-							<span className="material-symbols-rounded text-zinc-500">lock</span>
+						{/* Nodes */}
+						<div className="space-y-8">
+							{pathNodes.map((node) => (
+								<div key={node.id} className="relative flex items-center gap-4">
+									{/* Node Circle */}
+									<div
+										className={`relative z-10 w-16 h-16 rounded-full flex items-center justify-center ${
+											node.status === 'locked'
+												? 'bg-zinc-200 dark:bg-zinc-800'
+												: node.status === 'current'
+													? 'bg-gradient-to-br from-blue-500 to-blue-600 shadow-lg shadow-blue-500/30'
+													: 'bg-green-500'
+										}`}
+									>
+										<node.icon
+											className={`w-7 h-7 ${
+												node.status === 'locked' ? 'text-zinc-400' : 'text-white'
+											}`}
+										/>
+
+										{/* Status Badge */}
+										{node.status === 'current' && (
+											<div className="absolute -top-2 -right-2 px-2 py-0.5 bg-yellow-400 text-zinc-900 text-[10px] font-bold rounded-full">
+												NEXT
+											</div>
+										)}
+									</div>
+
+									{/* Node Info Card */}
+									<Card
+										className={`flex-1 p-4 ${
+											node.status === 'current' ? 'border-2 border-blue-500 shadow-md' : ''
+										}`}
+									>
+										<div className="flex justify-between items-start">
+											<div>
+												<h3 className="font-semibold text-zinc-900 dark:text-white">
+													{node.title}
+												</h3>
+												<p className="text-sm text-zinc-500">{node.description}</p>
+
+												{/* Progress Bar for Current */}
+												{node.status === 'current' && node.progress && (
+													<div className="mt-2">
+														<Progress value={node.progress} className="h-1.5 w-32" />
+													</div>
+												)}
+											</div>
+
+											{/* Stars for Completed */}
+											{node.status === 'completed' && node.stars && (
+												<div className="flex gap-0.5">
+													{Array.from({ length: node.stars }).map((_, i) => (
+														<Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+													))}
+												</div>
+											)}
+										</div>
+									</Card>
+								</div>
+							))}
 						</div>
-						<span className="text-xs font-bold mt-2 text-zinc-500">Electromagnetism</span>
 					</div>
+				</main>
+			</ScrollArea>
 
-					{/* Node 2: Next (Current) */}
-					<div className="flex flex-col items-center relative -translate-x-12">
-						<button
-							type="button"
-							onClick={() => onNavigate('QUIZ')}
-							className="w-24 h-24 rounded-full bg-gradient-to-br from-accent-blue to-blue-700 flex items-center justify-center shadow-xl border-4 border-white dark:border-zinc-900 animate-float relative"
-						>
-							<span className="material-symbols-rounded text-white text-4xl">deployed_code</span>
-							<div className="absolute -top-2 -right-2 bg-accent-yellow text-[10px] font-black px-2 py-0.5 rounded-full border border-white">
-								NEXT
-							</div>
-						</button>
-						<div className="mt-4 bg-white dark:bg-zinc-800 px-4 py-2 rounded-xl shadow-lg border border-blue-50 text-center w-36">
-							<p className="text-xs font-bold text-zinc-900 dark:text-white">Calculus P1</p>
-							<div className="w-full bg-zinc-100 h-1 rounded-full mt-2 overflow-hidden">
-								<div className="bg-accent-blue h-full w-1/3" />
-							</div>
-						</div>
-					</div>
-
-					{/* Node 3: Completed */}
-					<div className="flex flex-col items-center">
-						<div className="w-16 h-16 rounded-full bg-accent-green flex items-center justify-center border-4 border-white shadow-lg">
-							<span className="material-symbols-rounded text-white">check</span>
-						</div>
-						<span className="text-xs font-bold mt-2 text-zinc-500">Intro to Functions</span>
-					</div>
-
-					{/* Node 4: Completed Start */}
-					<div className="flex flex-col items-center translate-x-16">
-						<div className="w-16 h-16 rounded-full bg-accent-green flex items-center justify-center border-4 border-white shadow-lg">
-							<span className="material-symbols-rounded text-white">check</span>
-						</div>
-						<span className="text-xs font-bold mt-2 text-zinc-500">Algebra Basics</span>
-					</div>
-				</div>
-			</div>
-
-			{/* Fixed Footer Action */}
-			<div className="sticky bottom-24 w-full px-6 z-30">
-				<button
-					type="button"
+			{/* Resume Button */}
+			<div className="fixed bottom-6 left-6 right-6">
+				<Button
+					className="w-full h-14 bg-blue-600 hover:bg-blue-700 text-lg"
 					onClick={() => onNavigate('QUIZ')}
-					className="w-full bg-accent-blue py-4 rounded-2xl text-white font-bold shadow-lg shadow-blue-500/20 flex items-center justify-between px-6"
 				>
-					<div className="flex items-center gap-3">
-						<div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
-							<span className="material-symbols-rounded text-sm">play_arrow</span>
-						</div>
-						<div className="text-left">
-							<p className="text-sm font-bold">Resume: Calculus P1</p>
-							<p className="text-[10px] opacity-80">Estimated time: 15 mins</p>
-						</div>
-					</div>
-					<span className="material-symbols-rounded">chevron_right</span>
-				</button>
+					<Play className="w-5 h-5 mr-2" />
+					Resume: Calculus P1
+					<ChevronRight className="w-5 h-5 ml-auto" />
+				</Button>
 			</div>
 		</div>
 	);
-};
-
-export default StudyPath;
+}

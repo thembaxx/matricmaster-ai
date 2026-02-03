@@ -1,67 +1,133 @@
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import type { Screen } from '@/types';
+import { ArrowLeft, Atom, Bookmark, Calculator, Microscope } from 'lucide-react';
+import { useState } from 'react';
 
 interface BookmarksProps {
 	onNavigate: (s: Screen) => void;
 }
 
+const bookmarks = [
+	{
+		id: 1,
+		subject: 'Mathematics',
+		code: 'MATH P1',
+		title: 'Solve for x: Quadratic equations',
+		preview: 'x² - 5x + 6 = 0',
+		date: '2 hours ago',
+		icon: Calculator,
+		color: 'bg-blue-500',
+	},
+	{
+		id: 2,
+		subject: 'Physics',
+		code: 'PHYSICS P1',
+		title: "Newton's Second Law application",
+		preview: 'F = ma, calculate acceleration...',
+		date: 'Yesterday',
+		icon: Atom,
+		color: 'bg-purple-500',
+	},
+	{
+		id: 3,
+		subject: 'Life Sciences',
+		code: 'LIFE SCI P1',
+		title: 'Cell structure and function',
+		preview: 'Mitochondria, nucleus, cell membrane...',
+		date: '3 days ago',
+		icon: Microscope,
+		color: 'bg-green-500',
+	},
+	{
+		id: 4,
+		subject: 'Mathematics',
+		code: 'MATH P2',
+		title: 'Calculus: Finding derivatives',
+		preview: 'f(x) = 3x³ + 2x² - 5x + 1',
+		date: '1 week ago',
+		icon: Calculator,
+		color: 'bg-blue-500',
+	},
+];
+
 export default function Bookmarks({ onNavigate }: BookmarksProps) {
+	const [activeTab, setActiveTab] = useState('all');
+
+	const filteredBookmarks =
+		activeTab === 'all'
+			? bookmarks
+			: bookmarks.filter((b) => b.subject.toLowerCase().includes(activeTab.toLowerCase()));
+
 	return (
-		<div className="flex-1 overflow-y-auto no-scrollbar bg-background-light dark:bg-background-dark pb-24">
-			<header className="px-6 pt-12 pb-4 sticky top-0 bg-white/90 dark:bg-zinc-900/90 backdrop-blur-md z-20 border-b border-zinc-100 dark:border-zinc-800">
-				<div className="flex items-center gap-4 mb-6">
-					<button
-						type="button"
-						onClick={() => onNavigate('DASHBOARD')}
-						className="material-symbols-rounded text-zinc-500"
-					>
-						arrow_back
-					</button>
-					<h1 className="text-3xl font-black tracking-tight text-zinc-900 dark:text-white">Bookmarks</h1>
+		<div className="flex flex-col min-h-screen bg-background">
+			{/* Header */}
+			<header className="px-6 pt-12 pb-4 bg-white dark:bg-zinc-900 sticky top-0 z-20 border-b border-zinc-100 dark:border-zinc-800">
+				<div className="flex items-center gap-4 mb-4">
+					<Button variant="ghost" size="icon" onClick={() => onNavigate('DASHBOARD')}>
+						<ArrowLeft className="w-5 h-5" />
+					</Button>
+					<h1 className="text-2xl font-bold text-zinc-900 dark:text-white">Bookmarks</h1>
 				</div>
 
-				<div className="flex bg-zinc-100 dark:bg-zinc-800 p-1 rounded-2xl">
-					<button type="button" className="flex-1 py-3 bg-white dark:bg-zinc-700 rounded-xl text-sm font-bold shadow-sm">
-						Full Papers
-					</button>
-					<button type="button" className="flex-1 py-3 text-sm font-bold text-zinc-500">
-						Questions
-					</button>
-				</div>
+				<Tabs defaultValue="all" className="w-full">
+					<TabsList className="grid grid-cols-4 w-full">
+						<TabsTrigger value="all" onClick={() => setActiveTab('all')}>
+							All
+						</TabsTrigger>
+						<TabsTrigger value="math" onClick={() => setActiveTab('math')}>
+							Math
+						</TabsTrigger>
+						<TabsTrigger value="physics" onClick={() => setActiveTab('physics')}>
+							Physics
+						</TabsTrigger>
+						<TabsTrigger value="life" onClick={() => setActiveTab('life')}>
+							Life Sci
+						</TabsTrigger>
+					</TabsList>
+				</Tabs>
 			</header>
 
-			<main className="px-6 pt-6 space-y-6">
-				<h3 className="text-[10px] font-black uppercase text-zinc-400 tracking-widest">Recently Saved</h3>
+			<ScrollArea className="flex-1">
+				<main className="px-6 py-6 pb-24">
+					<div className="grid grid-cols-2 gap-4">
+						{filteredBookmarks.map((bookmark) => (
+							<Card
+								key={bookmark.id}
+								className="p-4 hover:shadow-md transition-shadow cursor-pointer"
+							>
+								<div className="flex justify-between items-start mb-3">
+									<div
+										className={`w-10 h-10 rounded-xl ${bookmark.color} flex items-center justify-center`}
+									>
+										<bookmark.icon className="w-5 h-5 text-white" />
+									</div>
+									<Button variant="ghost" size="icon" className="h-8 w-8">
+										<Bookmark className="w-4 h-4 fill-current" />
+									</Button>
+								</div>
 
-				{[
-					{ sub: 'Mathematics', title: 'Gauteng Prelim 2023 - Paper 1', time: '2 hours ago', icon: 'calculate', color: 'text-blue-500' },
-					{ sub: 'Life Sciences', title: 'Question 3.1: Genetics', time: 'Oct 14', icon: 'biotech', color: 'text-green-500' },
-					{ sub: 'Physical Sciences', title: 'Nov 2021 P2: Chemistry', time: 'Sep 10', icon: 'science', color: 'text-purple-500' },
-				].map((item) => (
-					<div key={item.title} className="bg-white dark:bg-zinc-900 p-5 rounded-3xl border border-zinc-100 dark:border-zinc-800 shadow-sm">
-						<div className="flex justify-between items-start mb-4">
-							<div className="flex gap-4">
-								<div className={`w-12 h-12 bg-zinc-50 dark:bg-zinc-800 rounded-2xl flex items-center justify-center ${item.color}`}>
-									<span className="material-symbols-rounded text-2xl">{item.icon}</span>
+								<div className="mb-3">
+									<Badge variant="secondary" className="text-[10px] mb-2">
+										{bookmark.code}
+									</Badge>
+									<p className="text-xs text-zinc-500 font-mono bg-zinc-100 dark:bg-zinc-800 p-2 rounded">
+										{bookmark.preview}
+									</p>
 								</div>
-								<div>
-									<p className={`text-[10px] font-black uppercase tracking-widest ${item.color}`}>{item.sub}</p>
-									<h4 className="font-bold text-zinc-900 dark:text-white leading-tight mt-0.5">{item.title}</h4>
-									<p className="text-[10px] text-zinc-400 font-medium">Saved {item.time}</p>
-								</div>
-							</div>
-							<button type="button" className="material-symbols-rounded text-zinc-300">
-								more_vert
-							</button>
-						</div>
-						<button
-							type="button"
-							className="w-full py-3 bg-zinc-900 dark:bg-zinc-100 text-white dark:text-black font-bold text-xs rounded-xl transition-transform active:scale-95"
-						>
-							Quick Review
-						</button>
+
+								<h3 className="text-sm font-semibold text-zinc-900 dark:text-white line-clamp-2">
+									{bookmark.title}
+								</h3>
+								<p className="text-[10px] text-zinc-500 mt-2">{bookmark.date}</p>
+							</Card>
+						))}
 					</div>
-				))}
-			</main>
+				</main>
+			</ScrollArea>
 		</div>
 	);
 }

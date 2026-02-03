@@ -1,107 +1,146 @@
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import type { Screen } from '@/types';
+import {
+	ArrowLeft,
+	Calculator,
+	CheckCircle2,
+	Image as ImageIcon,
+	MoreHorizontal,
+	Send,
+	Users,
+} from 'lucide-react';
 
 interface ChannelsProps {
 	onNavigate: (s: Screen) => void;
 }
 
+const messages = [
+	{
+		id: 1,
+		user: 'Sarah M.',
+		avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah',
+		message: "Can someone help me with question 3.2? I'm stuck on the integration part.",
+		time: '2:30 PM',
+		isTutor: false,
+	},
+	{
+		id: 2,
+		user: 'Mr. Johnson',
+		avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Johnson',
+		message: 'Remember to use substitution method. Let u = x² + 1, then du = 2x dx.',
+		time: '2:32 PM',
+		isTutor: true,
+	},
+	{
+		id: 3,
+		user: 'Thabo M.',
+		avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Thabo',
+		message: 'Thanks! That makes sense now. I was overcomplicating it.',
+		time: '2:35 PM',
+		isTutor: false,
+		isMe: true,
+	},
+	{
+		id: 4,
+		user: 'Lisa K.',
+		avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Lisa',
+		message: "Here's a diagram that might help visualize the problem:",
+		time: '2:36 PM',
+		isTutor: false,
+		hasImage: true,
+	},
+];
+
 export default function Channels({ onNavigate }: ChannelsProps) {
 	return (
-		<div className="flex-1 overflow-y-auto no-scrollbar bg-background-light dark:bg-background-dark pb-24">
-			<header className="px-6 pt-12 pb-4 sticky top-0 bg-white/90 dark:bg-zinc-900/90 backdrop-blur-md z-20">
-				<div className="flex items-center gap-4 mb-4">
-					<button
-						type="button"
-						onClick={() => onNavigate('DASHBOARD')}
-						className="material-symbols-rounded text-zinc-500"
-					>
-						arrow_back
-					</button>
-					<div>
-						<h1 className="text-3xl font-black tracking-tight text-zinc-900 dark:text-white">Channels</h1>
-						<p className="text-sm text-zinc-500 font-medium">Connect with Grade 12 peers</p>
+		<div className="flex flex-col min-h-screen bg-background">
+			{/* Header */}
+			<header className="px-6 pt-12 pb-4 bg-white dark:bg-zinc-900 sticky top-0 z-20 border-b border-zinc-100 dark:border-zinc-800">
+				<div className="flex items-center gap-4">
+					<Button variant="ghost" size="icon" onClick={() => onNavigate('DASHBOARD')}>
+						<ArrowLeft className="w-5 h-5" />
+					</Button>
+					<div className="flex-1">
+						<h1 className="text-lg font-bold text-zinc-900 dark:text-white">
+							Mathematics P1 Study Group
+						</h1>
+						<div className="flex items-center gap-2 text-sm text-zinc-500">
+							<Users className="w-4 h-4" />
+							<span>1,247 members</span>
+						</div>
 					</div>
-				</div>
-
-				<div className="mt-6 flex gap-2">
-					<div className="flex-1 bg-zinc-100 dark:bg-zinc-800 h-12 rounded-2xl flex items-center px-4">
-						<span className="material-symbols-rounded text-zinc-400">search</span>
-						<input className="bg-transparent border-none focus:ring-0 text-sm w-full" placeholder="Find subjects..." />
-					</div>
-					<button
-						type="button"
-						className="w-12 h-12 rounded-2xl bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center text-zinc-500"
-					>
-						<span className="material-symbols-rounded">tune</span>
-					</button>
+					<Button variant="ghost" size="icon">
+						<MoreHorizontal className="w-5 h-5" />
+					</Button>
 				</div>
 			</header>
 
-			<main className="px-6 mt-4">
-				<h3 className="text-lg font-bold mb-4 text-zinc-900 dark:text-white">My Channels</h3>
-				<div className="flex gap-4 overflow-x-auto no-scrollbar mb-8">
-					{[
-						{ name: "Matric '24", active: true },
-						{ name: 'Maths Lit', active: false },
-						{ name: 'Geography', active: false },
-					].map((ch) => (
-						<div key={ch.name} className="flex flex-col items-center gap-2 group cursor-pointer">
-							<div className={`w-16 h-16 rounded-full border-2 p-1 transition-all ${ch.active ? 'border-accent-blue' : 'border-transparent'}`}>
-								<div className="w-full h-full rounded-full bg-zinc-200 dark:bg-zinc-800 flex items-center justify-center overflow-hidden">
-									<span className="material-symbols-rounded text-zinc-400">groups</span>
+			{/* Messages */}
+			<ScrollArea className="flex-1">
+				<main className="px-6 py-6 space-y-6">
+					{messages.map((msg) => (
+						<div key={msg.id} className={`flex gap-3 ${msg.isMe ? 'flex-row-reverse' : ''}`}>
+							<img src={msg.avatar} alt={msg.user} className="w-10 h-10 rounded-full bg-zinc-100" />
+							<div className={`flex-1 ${msg.isMe ? 'items-end' : 'items-start'} flex flex-col`}>
+								<div className="flex items-center gap-2 mb-1">
+									<span
+										className={`text-sm font-semibold ${msg.isMe ? 'text-blue-600' : 'text-zinc-900 dark:text-white'}`}
+									>
+										{msg.user}
+									</span>
+									{msg.isTutor && (
+										<Badge variant="secondary" className="text-[10px] bg-blue-100 text-blue-700">
+											<CheckCircle2 className="w-3 h-3 mr-1" />
+											Tutor
+										</Badge>
+									)}
+									<span className="text-xs text-zinc-400">{msg.time}</span>
+								</div>
+								<div
+									className={`max-w-[80%] p-3 rounded-2xl ${
+										msg.isMe
+											? 'bg-blue-500 text-white rounded-br-none'
+											: 'bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-white rounded-bl-none'
+									}`}
+								>
+									<p className="text-sm">{msg.message}</p>
+									{msg.hasImage && (
+										<div className="mt-2 p-4 bg-white dark:bg-zinc-700 rounded-lg">
+											<div className="w-full h-32 bg-zinc-200 dark:bg-zinc-600 rounded flex items-center justify-center">
+												<ImageIcon className="w-8 h-8 text-zinc-400" />
+											</div>
+										</div>
+									)}
 								</div>
 							</div>
-							<span className="text-[10px] font-bold text-center w-full truncate">{ch.name}</span>
 						</div>
 					))}
-					<div className="flex flex-col items-center gap-2">
-						<div className="w-16 h-16 rounded-full border-2 border-dashed border-zinc-200 dark:border-zinc-800 flex items-center justify-center">
-							<span className="material-symbols-rounded text-zinc-300">add</span>
-						</div>
-						<span className="text-[10px] font-bold text-zinc-400">Join New</span>
-					</div>
-				</div>
+				</main>
+			</ScrollArea>
 
-				<h3 className="text-lg font-bold mb-4 text-zinc-900 dark:text-white">Explore Channels</h3>
-				<div className="space-y-4">
-					<div className="bg-white dark:bg-zinc-900 p-5 rounded-3xl shadow-sm border border-zinc-100 dark:border-zinc-800 group hover:border-accent-blue/30 transition-all cursor-pointer">
-						<div className="flex justify-between items-start mb-4">
-							<div className="flex gap-3">
-								<div className="w-12 h-12 bg-blue-50 dark:bg-blue-900/30 rounded-2xl flex items-center justify-center text-accent-blue">
-									<span className="material-symbols-rounded">science</span>
-								</div>
-								<div>
-									<h4 className="font-bold text-zinc-900 dark:text-white">Physical Sciences P1</h4>
-									<p className="text-[10px] text-zinc-500 font-medium">1.2k members • Active Now</p>
-								</div>
-							</div>
-							<button type="button" className="px-4 py-1.5 bg-accent-blue text-white text-xs font-bold rounded-full">
-								Join
-							</button>
-						</div>
-						<div className="bg-zinc-50 dark:bg-zinc-800/50 p-4 rounded-xl text-xs text-zinc-600 dark:text-zinc-400">
-							<span className="font-bold text-zinc-900 dark:text-zinc-200">Thabo M:</span> Can someone explain Newton's 2nd
-							Law active forces? I'm struggling with...
-						</div>
+			{/* Input Area */}
+			<footer className="bg-white dark:bg-zinc-900 border-t border-zinc-200 dark:border-zinc-800 p-4">
+				<div className="flex items-center gap-3">
+					<Button variant="ghost" size="icon" className="shrink-0">
+						<ImageIcon className="w-5 h-5 text-zinc-500" />
+					</Button>
+					<Button variant="ghost" size="icon" className="shrink-0">
+						<Calculator className="w-5 h-5 text-zinc-500" />
+					</Button>
+					<div className="flex-1 relative">
+						<input
+							type="text"
+							placeholder="Type a message..."
+							className="w-full px-4 py-3 bg-zinc-100 dark:bg-zinc-800 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+						/>
 					</div>
-
-					<div className="bg-white dark:bg-zinc-900 p-5 rounded-3xl shadow-sm border border-zinc-100 dark:border-zinc-800 group hover:border-accent-blue/30 transition-all cursor-pointer opacity-80">
-						<div className="flex justify-between items-start">
-							<div className="flex gap-3">
-								<div className="w-12 h-12 bg-orange-50 dark:bg-orange-900/30 rounded-2xl flex items-center justify-center text-orange-500">
-									<span className="material-symbols-rounded">calculate</span>
-								</div>
-								<div>
-									<h4 className="font-bold text-zinc-900 dark:text-white">Accounting Tips</h4>
-									<p className="text-[10px] text-zinc-500 font-medium">850 members</p>
-								</div>
-							</div>
-							<button type="button" className="px-4 py-1.5 bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-white text-xs font-bold rounded-full">
-								View
-							</button>
-						</div>
-					</div>
+					<Button size="icon" className="shrink-0 rounded-full bg-blue-500 hover:bg-blue-600">
+						<Send className="w-4 h-4" />
+					</Button>
 				</div>
-			</main>
+			</footer>
 		</div>
 	);
 }

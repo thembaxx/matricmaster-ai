@@ -1,15 +1,224 @@
-@import 'tailwindcss';
+@import "tailwindcss";
+
+@plugin 'tailwindcss-animate';
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
 
 @layer utilities {
-  .no-scrollbar::-webkit-scrollbar {
-    display: none;
-  }
-  .no-scrollbar {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
-  .math-serif {
-    font-family: 'Times New Roman', serif;
-    font-style: italic;
-  }
+	.no-scrollbar::-webkit-scrollbar {
+		display: none;
+	}
+	.no-scrollbar {
+		-ms-overflow-style: none;
+		scrollbar-width: none;
+	}
+	.math-serif {
+		font-family: "Times New Roman", serif;
+		font-style: italic;
+	}
+	.text-balance {
+		text-wrap: balance;
+	}
+}
+
+@theme inline {
+	--radius-sm: calc(var(--radius) - 4px);
+	--radius-md: calc(var(--radius) - 2px);
+	--radius-lg: var(--radius);
+	--radius-xl: calc(var(--radius) + 4px);
+	--radius-2xl: calc(var(--radius) + 8px);
+	--radius-3xl: calc(var(--radius) + 12px);
+	--radius-4xl: calc(var(--radius) + 16px);
+	--color-background: var(--background);
+	--color-foreground: var(--foreground);
+	--color-card: var(--card);
+	--color-card-foreground: var(--card-foreground);
+	--color-popover: var(--popover);
+	--color-popover-foreground: var(--popover-foreground);
+	--color-primary: var(--primary);
+	--color-primary-foreground: var(--primary-foreground);
+	--color-secondary: var(--secondary);
+	--color-secondary-foreground: var(--secondary-foreground);
+	--color-muted: var(--muted);
+	--color-muted-foreground: var(--muted-foreground);
+	--color-accent: var(--accent);
+	--color-accent-foreground: var(--accent-foreground);
+	--color-destructive: var(--destructive);
+	--color-border: var(--border);
+	--color-input: var(--input);
+	--color-ring: var(--ring);
+	--color-chart-1: var(--chart-1);
+	--color-chart-2: var(--chart-2);
+	--color-chart-3: var(--chart-3);
+	--color-chart-4: var(--chart-4);
+	--color-chart-5: var(--chart-5);
+	--color-sidebar: var(--sidebar);
+	--color-sidebar-foreground: var(--sidebar-foreground);
+	--color-sidebar-primary: var(--sidebar-primary);
+	--color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+	--color-sidebar-accent: var(--sidebar-accent);
+	--color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+	--color-sidebar-border: var(--sidebar-border);
+	--color-sidebar-ring: var(--sidebar-ring);
+
+	/* Brand Colors */
+	--color-brand-blue: #2563eb;
+	--color-brand-blue-light: #3b82f6;
+	--color-brand-amber: #f59e0b;
+	--color-brand-amber-light: #fcd34d;
+	--color-brand-purple: #8b5cf6;
+	--color-brand-purple-light: #a78bfa;
+	--color-brand-green: #10b981;
+	--color-brand-green-light: #34d399;
+	--color-brand-red: #ef4444;
+	--color-brand-orange: #f97316;
+
+	/* Subject Colors */
+	--color-math: #3b82f6;
+	--color-physics: #8b5cf6;
+	--color-life-sci: #10b981;
+	--color-accounting: #f59e0b;
+	--color-english: #ec4899;
+	--color-geography: #06b6d4;
+	--color-history: #f97316;
+}
+
+:root {
+	--radius: 0.75rem;
+	--background: oklch(0.98 0 0);
+	--foreground: oklch(0.15 0 0);
+	--card: oklch(1 0 0);
+	--card-foreground: oklch(0.15 0 0);
+	--popover: oklch(1 0 0);
+	--popover-foreground: oklch(0.15 0 0);
+	--primary: oklch(0.55 0.22 260);
+	--primary-foreground: oklch(0.99 0 0);
+	--secondary: oklch(0.96 0 0);
+	--secondary-foreground: oklch(0.25 0 0);
+	--muted: oklch(0.96 0 0);
+	--muted-foreground: oklch(0.5 0 0);
+	--accent: oklch(0.96 0 0);
+	--accent-foreground: oklch(0.25 0 0);
+	--destructive: oklch(0.55 0.22 25);
+	--border: oklch(0.9 0 0);
+	--input: oklch(0.9 0 0);
+	--ring: oklch(0.55 0.22 260);
+	--chart-1: oklch(0.55 0.22 260);
+	--chart-2: oklch(0.7 0.15 160);
+	--chart-3: oklch(0.65 0.22 280);
+	--chart-4: oklch(0.75 0.18 80);
+	--chart-5: oklch(0.6 0.2 40);
+	--sidebar: oklch(0.98 0 0);
+	--sidebar-foreground: oklch(0.15 0 0);
+	--sidebar-primary: oklch(0.55 0.22 260);
+	--sidebar-primary-foreground: oklch(0.99 0 0);
+	--sidebar-accent: oklch(0.96 0 0);
+	--sidebar-accent-foreground: oklch(0.25 0 0);
+	--sidebar-border: oklch(0.9 0 0);
+	--sidebar-ring: oklch(0.55 0.22 260);
+}
+
+.dark {
+	--background: oklch(0.15 0 0);
+	--foreground: oklch(0.98 0 0);
+	--card: oklch(0.2 0 0);
+	--card-foreground: oklch(0.98 0 0);
+	--popover: oklch(0.2 0 0);
+	--popover-foreground: oklch(0.98 0 0);
+	--primary: oklch(0.6 0.2 260);
+	--primary-foreground: oklch(0.15 0 0);
+	--secondary: oklch(0.25 0 0);
+	--secondary-foreground: oklch(0.98 0 0);
+	--muted: oklch(0.25 0 0);
+	--muted-foreground: oklch(0.6 0 0);
+	--accent: oklch(0.25 0 0);
+	--accent-foreground: oklch(0.98 0 0);
+	--destructive: oklch(0.6 0.2 25);
+	--border: oklch(0.25 0 0);
+	--input: oklch(0.25 0 0);
+	--ring: oklch(0.6 0.2 260);
+	--chart-1: oklch(0.6 0.2 260);
+	--chart-2: oklch(0.7 0.15 160);
+	--chart-3: oklch(0.65 0.22 280);
+	--chart-4: oklch(0.75 0.18 80);
+	--chart-5: oklch(0.6 0.2 40);
+	--sidebar: oklch(0.15 0 0);
+	--sidebar-foreground: oklch(0.98 0 0);
+	--sidebar-primary: oklch(0.6 0.2 260);
+	--sidebar-primary-foreground: oklch(0.15 0 0);
+	--sidebar-accent: oklch(0.25 0 0);
+	--sidebar-accent-foreground: oklch(0.98 0 0);
+	--sidebar-border: oklch(0.25 0 0);
+	--sidebar-ring: oklch(0.6 0.2 260);
+}
+
+@layer base {
+	* {
+		@apply border-border outline-ring/50;
+	}
+	body {
+		@apply bg-background text-foreground antialiased;
+		font-feature-settings: "rlig" 1, "calt" 1;
+	}
+	html {
+		scroll-behavior: smooth;
+	}
+}
+
+/* Custom Animations */
+@keyframes float {
+	0%,
+	100% {
+		transform: translateY(0px);
+	}
+	50% {
+		transform: translateY(-10px);
+	}
+}
+
+@keyframes pulse-soft {
+	0%,
+	100% {
+		opacity: 1;
+	}
+	50% {
+		opacity: 0.7;
+	}
+}
+
+@keyframes slide-up {
+	from {
+		transform: translateY(10px);
+		opacity: 0;
+	}
+	to {
+		transform: translateY(0);
+		opacity: 1;
+	}
+}
+
+@keyframes fade-in {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+.animate-float {
+	animation: float 6s ease-in-out infinite;
+}
+
+.animate-pulse-soft {
+	animation: pulse-soft 2s ease-in-out infinite;
+}
+
+.animate-slide-up {
+	animation: slide-up 0.3s ease-out;
+}
+
+.animate-fade-in {
+	animation: fade-in 0.3s ease-out;
 }

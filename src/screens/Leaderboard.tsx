@@ -1,100 +1,222 @@
-import { Screen } from '@/types';
-import { RANKINGS } from '@/constants';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import type { Screen } from '@/types';
+import { ArrowLeft, Crown, Zap } from 'lucide-react';
 
 interface LeaderboardProps {
-    onNavigate: (s: Screen) => void;
+	onNavigate: (s: Screen) => void;
 }
 
+const topThree = [
+	{
+		rank: 2,
+		name: 'Sipho N.',
+		points: 2350,
+		school: 'Parktown High',
+		avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Sipho',
+	},
+	{
+		rank: 1,
+		name: 'Thabo M.',
+		points: 2840,
+		school: "St. John's College",
+		avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Thabo',
+		isUser: true,
+	},
+	{
+		rank: 3,
+		name: 'Lerato K.',
+		points: 2100,
+		school: 'Roedean School',
+		avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Lerato',
+	},
+];
+
+const otherStudents = [
+	{
+		rank: 4,
+		name: 'Jessica V.',
+		points: 1950,
+		school: 'Parktown Girls',
+		avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Jessica',
+	},
+	{
+		rank: 5,
+		name: 'David M.',
+		points: 1820,
+		school: 'Jeppe High',
+		avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=David',
+	},
+	{
+		rank: 6,
+		name: 'Emma L.',
+		points: 1780,
+		school: 'St. Marys',
+		avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Emma',
+	},
+	{
+		rank: 7,
+		name: 'James K.',
+		points: 1650,
+		school: 'KES',
+		avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=James',
+	},
+	{
+		rank: 8,
+		name: 'Sarah P.',
+		points: 1590,
+		school: 'Roedean',
+		avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah',
+	},
+];
+
 export default function Leaderboard({ onNavigate }: LeaderboardProps) {
-    const topThree = RANKINGS.filter(r => r.rank <= 3);
-    const others = RANKINGS.filter(r => r.rank > 3 && !r.isUser);
-    const user = RANKINGS.find(r => r.isUser);
+	return (
+		<div className="flex flex-col min-h-screen bg-background">
+			{/* Header */}
+			<header className="px-6 pt-12 pb-4 bg-white dark:bg-zinc-900 sticky top-0 z-20 border-b border-zinc-100 dark:border-zinc-800">
+				<div className="flex items-center gap-4 mb-4">
+					<Button variant="ghost" size="icon" onClick={() => onNavigate('DASHBOARD')}>
+						<ArrowLeft className="w-5 h-5" />
+					</Button>
+					<h1 className="text-2xl font-bold text-zinc-900 dark:text-white">Leaderboard</h1>
+				</div>
 
-    return (
-        <div className="flex-1 overflow-y-auto no-scrollbar bg-background-light dark:bg-background-dark pb-32">
-            <header className="px-6 pt-12 pb-4 bg-white dark:bg-zinc-900 border-b border-zinc-100 dark:border-zinc-800 sticky top-0 z-20">
-                <div className="flex justify-between items-center mb-6">
-                    <button type="button" onClick={() => onNavigate('DASHBOARD')} className="material-symbols-rounded text-zinc-500">arrow_back</button>
-                    <h1 className="text-xl font-black text-zinc-900 dark:text-white">Leaderboard</h1>
-                    <div className="w-8"></div>
-                </div>
-                <div className="flex bg-zinc-100 dark:bg-zinc-800 p-1 rounded-2xl">
-                    <button type="button" className="flex-1 py-2 bg-white dark:bg-zinc-700 rounded-lg text-xs font-bold shadow-sm">School</button>
-                    <button type="button" className="flex-1 py-2 text-xs font-bold text-zinc-500">Provincial</button>
-                    <button type="button" className="flex-1 py-2 text-xs font-bold text-zinc-500">National</button>
-                </div>
-            </header>
+				<Tabs defaultValue="school" className="w-full">
+					<TabsList className="grid grid-cols-3 w-full">
+						<TabsTrigger value="school">School</TabsTrigger>
+						<TabsTrigger value="provincial">Provincial</TabsTrigger>
+						<TabsTrigger value="national">National</TabsTrigger>
+					</TabsList>
+				</Tabs>
+			</header>
 
-            <main className="px-6">
-                {/* Podium */}
-                <div className="flex items-end justify-center gap-4 py-12">
-                    {/* Rank 2 */}
-                    <div className="flex flex-col items-center">
-                        <div className="w-16 h-16 rounded-full border-2 border-zinc-300 p-1 relative mb-2">
-                            <img src={topThree[1].avatar} className="w-full h-full rounded-full object-cover" alt="Rank 2" />
-                            <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-zinc-300 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">2</div>
-                        </div>
-                        <span className="text-xs font-bold">{topThree[1].name}</span>
-                        <span className="text-[10px] text-accent-yellow">{topThree[1].points} KP</span>
-                        <div className="h-16 w-12 bg-gradient-to-t from-zinc-200 to-transparent dark:from-zinc-800 mt-2 rounded-t-lg"></div>
-                    </div>
-                    {/* Rank 1 */}
-                    <div className="flex flex-col items-center">
-                        <div className="relative mb-2">
-                            <div className="absolute -top-6 left-1/2 -translate-x-1/2 text-accent-yellow animate-bounce"><span className="material-symbols-rounded">crown</span></div>
-                            <div className="w-24 h-24 rounded-full border-4 border-accent-yellow p-1 shadow-lg shadow-yellow-500/20">
-                                <img src={topThree[0].avatar} className="w-full h-full rounded-full object-cover" alt="Rank 1" />
-                            </div>
-                            <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-accent-yellow text-zinc-900 text-xs font-black px-3 py-1 rounded-full">1</div>
-                        </div>
-                        <span className="text-sm font-black">{topThree[0].name}</span>
-                        <span className="text-xs font-bold text-accent-yellow">{topThree[0].points} KP</span>
-                        <div className="h-24 w-16 bg-gradient-to-t from-accent-yellow/20 to-transparent mt-2 rounded-t-xl"></div>
-                    </div>
-                    {/* Rank 3 */}
-                    <div className="flex flex-col items-center">
-                        <div className="w-16 h-16 rounded-full border-2 border-orange-400 p-1 relative mb-2">
-                            <img src={topThree[2].avatar} className="w-full h-full rounded-full object-cover" alt="Rank 3" />
-                            <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-orange-400 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">3</div>
-                        </div>
-                        <span className="text-xs font-bold">{topThree[2].name}</span>
-                        <span className="text-[10px] text-accent-yellow">{topThree[2].points} KP</span>
-                        <div className="h-12 w-12 bg-gradient-to-t from-orange-200 to-transparent dark:from-orange-900/20 mt-2 rounded-t-lg"></div>
-                    </div>
-                </div>
+			<ScrollArea className="flex-1">
+				<main className="pb-32">
+					{/* Top 3 Podium */}
+					<div className="px-6 py-8">
+						<div className="flex items-end justify-center gap-4">
+							{/* Rank 2 */}
+							<div className="flex flex-col items-center">
+								<div className="relative mb-2">
+									<Avatar className="w-16 h-16 border-2 border-zinc-300">
+										<AvatarImage src={topThree[0].avatar} />
+										<AvatarFallback>{topThree[0].name[0]}</AvatarFallback>
+									</Avatar>
+									<div className="absolute -bottom-1 -right-1 w-6 h-6 bg-zinc-400 rounded-full flex items-center justify-center text-white text-xs font-bold">
+										2
+									</div>
+								</div>
+								<span className="text-sm font-semibold text-zinc-900 dark:text-white">
+									{topThree[0].name}
+								</span>
+								<span className="text-xs text-zinc-500">
+									{topThree[0].points.toLocaleString()} KP
+								</span>
+								<div className="w-16 h-20 bg-gradient-to-t from-zinc-300 to-zinc-100 dark:from-zinc-700 dark:to-zinc-800 mt-2 rounded-t-lg" />
+							</div>
 
-                {/* Rank List */}
-                <div className="bg-white dark:bg-zinc-900 rounded-3xl p-2 space-y-1 shadow-sm mb-24">
-                    {others.map(r => (
-                        <div key={r.name} className="flex items-center gap-4 p-4 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors rounded-2xl">
-                            <span className="w-6 text-sm font-black text-zinc-300">{r.rank}</span>
-                            <div className="w-10 h-10 rounded-full bg-zinc-100 overflow-hidden"><img src={r.avatar} alt={r.name} /></div>
-                            <div className="flex-1">
-                                <h4 className="font-bold text-sm text-zinc-900 dark:text-white">{r.name}</h4>
-                                <p className="text-[10px] text-zinc-500">{r.school}</p>
-                            </div>
-                            <span className="font-bold text-sm text-accent-yellow">{r.points} KP</span>
-                        </div>
-                    ))}
-                </div>
-            </main>
+							{/* Rank 1 */}
+							<div className="flex flex-col items-center -mt-4">
+								<div className="relative mb-2">
+									<Crown className="absolute -top-8 left-1/2 -translate-x-1/2 w-8 h-8 text-yellow-500" />
+									<Avatar className="w-24 h-24 border-4 border-yellow-400">
+										<AvatarImage src={topThree[1].avatar} />
+										<AvatarFallback>{topThree[1].name[0]}</AvatarFallback>
+									</Avatar>
+									<div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center text-zinc-900 text-sm font-bold">
+										1
+									</div>
+								</div>
+								<span className="text-lg font-bold text-zinc-900 dark:text-white">
+									{topThree[1].name}
+								</span>
+								<span className="text-sm text-yellow-600 font-semibold">
+									{topThree[1].points.toLocaleString()} KP
+								</span>
+								<div className="w-20 h-28 bg-gradient-to-t from-yellow-200 to-yellow-50 dark:from-yellow-900/40 dark:to-yellow-900/20 mt-2 rounded-t-xl" />
+							</div>
 
-            {/* Sticky User Bar */}
-            <div className="absolute bottom-24 left-6 right-6">
-                <div className="bg-zinc-900 dark:bg-white p-4 rounded-3xl shadow-xl flex items-center gap-4 border border-zinc-800 dark:border-zinc-200">
-                    <span className="text-accent-yellow font-black">42</span>
-                    <div className="w-10 h-10 rounded-full border-2 border-accent-yellow overflow-hidden">
-                        <img src={user?.avatar} alt="You" />
-                    </div>
-                    <div className="flex-1">
-                        <p className="text-white dark:text-zinc-900 font-bold text-sm">Your Rank</p>
-                        <p className="text-[10px] text-zinc-400 dark:text-zinc-500 font-bold">Top 15% • 5 Day Streak</p>
-                    </div>
-                    <div className="text-right">
-                        <p className="text-accent-yellow font-black text-base">{user?.points} KP</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    );
+							{/* Rank 3 */}
+							<div className="flex flex-col items-center">
+								<div className="relative mb-2">
+									<Avatar className="w-16 h-16 border-2 border-orange-400">
+										<AvatarImage src={topThree[2].avatar} />
+										<AvatarFallback>{topThree[2].name[0]}</AvatarFallback>
+									</Avatar>
+									<div className="absolute -bottom-1 -right-1 w-6 h-6 bg-orange-400 rounded-full flex items-center justify-center text-white text-xs font-bold">
+										3
+									</div>
+								</div>
+								<span className="text-sm font-semibold text-zinc-900 dark:text-white">
+									{topThree[2].name}
+								</span>
+								<span className="text-xs text-zinc-500">
+									{topThree[2].points.toLocaleString()} KP
+								</span>
+								<div className="w-16 h-16 bg-gradient-to-t from-orange-200 to-orange-100 dark:from-orange-900/40 dark:to-orange-900/20 mt-2 rounded-t-lg" />
+							</div>
+						</div>
+					</div>
+
+					{/* Other Students List */}
+					<div className="px-6">
+						<Card className="overflow-hidden">
+							{otherStudents.map((student, idx) => (
+								<div key={student.rank}>
+									<div className="flex items-center gap-4 p-4 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors">
+										<span className="w-8 text-center font-bold text-zinc-400">{student.rank}</span>
+										<Avatar className="w-10 h-10">
+											<AvatarImage src={student.avatar} />
+											<AvatarFallback>{student.name[0]}</AvatarFallback>
+										</Avatar>
+										<div className="flex-1">
+											<h4 className="font-semibold text-sm text-zinc-900 dark:text-white">
+												{student.name}
+											</h4>
+											<p className="text-xs text-zinc-500">{student.school}</p>
+										</div>
+										<div className="flex items-center gap-1">
+											<Zap className="w-4 h-4 text-yellow-500" />
+											<span className="font-bold text-sm">{student.points.toLocaleString()}</span>
+										</div>
+									</div>
+									{idx < otherStudents.length - 1 && (
+										<div className="h-px bg-zinc-100 dark:bg-zinc-800 mx-4" />
+									)}
+								</div>
+							))}
+						</Card>
+					</div>
+				</main>
+			</ScrollArea>
+
+			{/* Your Rank Card */}
+			<div className="fixed bottom-6 left-6 right-6">
+				<Card className="p-4 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 shadow-xl">
+					<div className="flex items-center gap-4">
+						<span className="text-xl font-bold text-yellow-400">42</span>
+						<Avatar className="w-12 h-12 border-2 border-yellow-400">
+							<AvatarImage src="https://api.dicebear.com/7.x/avataaars/svg?seed=Thabo" />
+							<AvatarFallback>TM</AvatarFallback>
+						</Avatar>
+						<div className="flex-1">
+							<p className="font-semibold">Your Rank</p>
+							<p className="text-xs text-zinc-400 dark:text-zinc-500">Top 15% • 5 Day Streak</p>
+						</div>
+						<div className="text-right">
+							<div className="flex items-center gap-1">
+								<Zap className="w-4 h-4 text-yellow-400" />
+								<span className="font-bold text-lg">1,250</span>
+							</div>
+							<p className="text-xs text-zinc-400 dark:text-zinc-500">KP</p>
+						</div>
+					</div>
+				</Card>
+			</div>
+		</div>
+	);
 }
