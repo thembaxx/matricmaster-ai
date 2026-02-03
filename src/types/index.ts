@@ -15,7 +15,8 @@ export type Screen =
 	| 'ERROR_HINT'
 	| 'LANDING'
 	| 'MATH_QUIZ'
-	| 'PHYSICS';
+	| 'PHYSICS'
+	| 'SEARCH';
 
 export interface Subject {
 	id: string;

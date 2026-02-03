@@ -14,8 +14,9 @@ import Profile from '@/screens/Profile';
 import Quiz from '@/screens/Quiz';
 import StudyPath from '@/screens/StudyPath';
 import StudyPlanWizard from '@/screens/StudyPlanWizard';
+import Search from '@/screens/Search';
 import type { Screen } from '@/types';
-import { BookOpen, Home, Map, User } from 'lucide-react';
+import { Bookmark, Home, Search as SearchIcon, User } from 'lucide-react';
 import { useState } from 'react';
 
 export default function App() {
@@ -55,12 +56,13 @@ export default function App() {
 				return <ErrorHint onNavigate={setCurrentScreen} />;
 			case 'CMS':
 				return <CMS onNavigate={setCurrentScreen} />;
+			case 'SEARCH':
+				return <Search onNavigate={setCurrentScreen} />;
 			default:
 				return <Landing onNavigate={setCurrentScreen} />;
 		}
 	};
 
-	// Screens that should hide the bottom navigation
 	const hideNavigation = [
 		'QUIZ',
 		'MATH_QUIZ',
@@ -68,7 +70,6 @@ export default function App() {
 		'PAST_PAPER',
 		'STUDY_PLAN',
 		'CMS',
-		'LANDING',
 		'LESSON_COMPLETE',
 		'ERROR_HINT',
 	];
@@ -83,27 +84,27 @@ export default function App() {
 					<nav className="absolute bottom-0 w-full bg-card/95 backdrop-blur-xl border-t border-border flex justify-between items-center px-6 py-3 pb-6 z-50">
 						<button
 							type="button"
-							onClick={() => setCurrentScreen('DASHBOARD')}
-							className={`flex flex-col items-center gap-1 transition-all duration-200 ${currentScreen === 'DASHBOARD' ? 'text-primary scale-105' : 'text-muted-foreground hover:text-foreground'}`}
+							onClick={() => setCurrentScreen('LANDING')}
+							className={`flex flex-col items-center gap-1 transition-all duration-200 ${currentScreen === 'LANDING' ? 'text-primary scale-105' : 'text-muted-foreground hover:text-foreground'}`}
 						>
-							<Home className="w-6 h-6" strokeWidth={currentScreen === 'DASHBOARD' ? 2.5 : 2} />
+							<Home className="w-6 h-6" strokeWidth={currentScreen === 'LANDING' ? 2.5 : 2} />
 							<span className="text-[11px] font-semibold">Home</span>
 						</button>
 						<button
 							type="button"
-							onClick={() => setCurrentScreen('PATH')}
-							className={`flex flex-col items-center gap-1 transition-all duration-200 ${currentScreen === 'PATH' ? 'text-primary scale-105' : 'text-muted-foreground hover:text-foreground'}`}
+							onClick={() => setCurrentScreen('SEARCH')}
+							className={`flex flex-col items-center gap-1 transition-all duration-200 ${currentScreen === 'SEARCH' ? 'text-primary scale-105' : 'text-muted-foreground hover:text-foreground'}`}
 						>
-							<Map className="w-6 h-6" strokeWidth={currentScreen === 'PATH' ? 2.5 : 2} />
-							<span className="text-[11px] font-semibold">Path</span>
+							<SearchIcon className="w-6 h-6" strokeWidth={currentScreen === 'SEARCH' ? 2.5 : 2} />
+							<span className="text-[11px] font-semibold">Search</span>
 						</button>
 						<button
 							type="button"
-							onClick={() => setCurrentScreen('CHANNELS')}
-							className={`flex flex-col items-center gap-1 transition-all duration-200 ${currentScreen === 'CHANNELS' ? 'text-primary scale-105' : 'text-muted-foreground hover:text-foreground'}`}
+							onClick={() => setCurrentScreen('BOOKMARKS')}
+							className={`flex flex-col items-center gap-1 transition-all duration-200 ${currentScreen === 'BOOKMARKS' ? 'text-primary scale-105' : 'text-muted-foreground hover:text-foreground'}`}
 						>
-							<BookOpen className="w-6 h-6" strokeWidth={currentScreen === 'CHANNELS' ? 2.5 : 2} />
-							<span className="text-[11px] font-semibold">Courses</span>
+							<Bookmark className="w-6 h-6" strokeWidth={currentScreen === 'BOOKMARKS' ? 2.5 : 2} />
+							<span className="text-[11px] font-semibold">Saved</span>
 						</button>
 						<button
 							type="button"

@@ -1,174 +1,148 @@
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import type { Screen } from '@/types';
 import {
 	Atom,
-	BarChart3,
-	BookOpen,
 	Calculator,
-	Calendar,
 	ChevronRight,
-	Globe,
-	GraduationCap,
-	Home,
+	LayoutDashboard,
 	Microscope,
-	Star,
-	Trophy,
-	User,
-	Users,
 } from 'lucide-react';
-import { useState } from 'react';
 
 interface LandingProps {
 	onNavigate: (s: Screen) => void;
 }
 
 const subjects = [
-	{ name: 'Mathematics', papers: '250+', icon: Calculator, color: 'bg-blue-500' },
-	{ name: 'Physical Sciences', papers: '180+', icon: Atom, color: 'bg-purple-500' },
-	{ name: 'Life Sciences', papers: '210+', icon: Microscope, color: 'bg-green-500' },
-	{ name: 'English FAL', papers: '300+', icon: BookOpen, color: 'bg-pink-500' },
-];
-
-const features = [
-	{ icon: Globe, title: '11 Languages', desc: 'Study in your home language' },
-	{ icon: Calendar, title: '2010-2023', desc: '10+ years of past papers' },
-	{ icon: Users, title: '50K+ Students', desc: 'Join the community' },
-	{ icon: Star, title: 'AI-Powered', desc: 'Personalized learning paths' },
+	{
+		id: 'math',
+		name: 'Mathematics',
+		topics: 'Calculus, Algebra, Geometry',
+		icon: Calculator,
+		color: 'text-blue-500',
+		bg: 'bg-blue-100',
+		border: 'border-blue-500',
+	},
+	{
+		id: 'physics',
+		name: 'Physical Sciences',
+		topics: 'Mechanics, Chemistry, Waves',
+		icon: Atom,
+		color: 'text-purple-500',
+		bg: 'bg-purple-100',
+		border: 'border-purple-500',
+	},
+	{
+		id: 'accounting',
+		name: 'Accounting',
+		topics: 'Financial statements, Ledgers',
+		icon: LayoutDashboard, // Placeholder
+		color: 'text-yellow-500',
+		bg: 'bg-yellow-100',
+		border: 'border-yellow-500',
+	},
+	{
+		id: 'life',
+		name: 'Life Sciences',
+		topics: 'Genetics, Evolution, DNA',
+		icon: Microscope,
+		color: 'text-green-500',
+		bg: 'bg-green-100',
+		border: 'border-green-500',
+	},
 ];
 
 export default function Landing({ onNavigate }: LandingProps) {
-	const [activeTab, setActiveTab] = useState('home');
-
 	return (
 		<div className="flex flex-col min-h-screen bg-background">
+			{/* Header */}
+			<header className="px-6 py-4 flex justify-between items-center bg-background/50 backdrop-blur-sm sticky top-0 z-10">
+				<div className="flex items-center gap-2">
+					<LayoutDashboard className="w-6 h-6 text-zinc-900 dark:text-white" />
+					<span className="font-bold text-lg text-zinc-900 dark:text-white">MatricMaster</span>
+				</div>
+				<button type="button" className="text-xs font-bold text-zinc-500 hover:text-zinc-900 dark:hover:text-white uppercase tracking-wide">
+					Log In
+				</button>
+			</header>
+
 			<ScrollArea className="flex-1">
-				<main className="pb-24">
+				<main className="pb-32 px-6">
 					{/* Hero Section */}
-					<section className="px-6 pt-12 pb-8 bg-gradient-to-b from-blue-50 to-white dark:from-blue-950/30 dark:to-background">
-						<div className="text-center mb-8">
-							<h1 className="text-4xl font-bold text-zinc-900 dark:text-white mb-4">
-								Master your Matrics through practice
-							</h1>
-							<p className="text-lg text-zinc-600 dark:text-zinc-400 mb-6">
-								Access past papers, AI-powered tutoring, and personalized study plans
-							</p>
-							<Button
-								size="lg"
-								className="bg-blue-600 hover:bg-blue-700 text-lg px-8"
-								onClick={() => onNavigate('STUDY_PLAN')}
-							>
-								Get Started
-								<ChevronRight className="w-5 h-5 ml-2" />
-							</Button>
+					<section className="pt-8 pb-12 flex flex-col items-center text-center">
+						<h1 className="text-3xl font-extrabold text-zinc-900 dark:text-white mb-4 leading-tight">
+							Master your Matrics through practice.
+						</h1>
+						<p className="text-sm text-zinc-500 max-w-xs mb-8">
+							Interactive past papers and step-by-step guides for South African Grade 12 students.
+						</p>
+
+						{/* 3D Icon Placeholder */}
+						<div className="relative w-64 h-64 mb-8 flex items-center justify-center">
+							<div className="absolute inset-0 bg-gradient-to-tr from-zinc-200/50 to-zinc-100/50 rounded-full blur-3xl" />
+							{/* Placeholder for the 3D book/shield icon */}
+							<div className="relative w-40 h-40 bg-gradient-to-br from-zinc-100 to-white rounded-3xl shadow-2xl flex items-center justify-center transform rotate-12 border border-white/50">
+								<div className="absolute inset-0 bg-white/40 rounded-3xl backdrop-blur-sm" />
+								<LayoutDashboard className="w-20 h-20 text-zinc-900/10" />
+								{/* In a real implementation, we'd use the 3D image here */}
+							</div>
 						</div>
 
-						{/* App Preview */}
-						<div className="relative mx-auto w-full max-w-sm">
-							<div className="aspect-[4/3] bg-gradient-to-br from-blue-500 to-purple-600 rounded-3xl shadow-2xl flex items-center justify-center">
-								<div className="text-white text-center">
-									<Trophy className="w-16 h-16 mx-auto mb-4" />
-									<p className="text-xl font-bold">MatricMaster AI</p>
-								</div>
-							</div>
-							{/* Floating Elements */}
-							<div className="absolute -top-4 -right-4 w-16 h-16 bg-yellow-400 rounded-2xl rotate-12 flex items-center justify-center shadow-lg">
-								<Star className="w-8 h-8 text-yellow-800" />
-							</div>
-							<div className="absolute -bottom-4 -left-4 w-16 h-16 bg-green-400 rounded-2xl -rotate-12 flex items-center justify-center shadow-lg">
-								<Trophy className="w-8 h-8 text-green-800" />
-							</div>
-						</div>
+						<Button
+							size="lg"
+							className="w-full max-w-xs bg-zinc-900 hover:bg-zinc-800 text-white rounded-full h-14 text-base font-semibold shadow-lg hover:shadow-xl transition-all"
+							onClick={() => onNavigate('STUDY_PLAN')}
+						>
+							Get Started
+						</Button>
+						<p className="text-[10px] text-zinc-400 mt-4 uppercase tracking-wider">
+							Over 10,000 past papers included
+						</p>
 					</section>
 
-					{/* Quick Access Subjects */}
-					<section className="px-6 py-8">
-						<h2 className="text-xl font-bold text-zinc-900 dark:text-white mb-4">Quick Access</h2>
-						<div className="grid grid-cols-2 gap-4">
-							{subjects.map((subject) => (
-								<Card
-									key={subject.name}
-									className="p-4 hover:shadow-lg transition-shadow cursor-pointer"
-									onClick={() => onNavigate('QUIZ')}
-								>
-									<div
-										className={`w-12 h-12 rounded-xl ${subject.color} flex items-center justify-center mb-3`}
-									>
-										<subject.icon className="w-6 h-6 text-white" />
+					{/* Start your journey */}
+					<section>
+						<h2 className="text-lg font-bold text-zinc-900 dark:text-white mb-6">Start your journey</h2>
+						
+						<div className="relative pl-4">
+							{/* Timeline Line */}
+							<div className="absolute left-[19px] top-4 bottom-12 w-0.5 bg-zinc-200 dark:bg-zinc-800" />
+
+							<div className="space-y-6">
+								{subjects.map((subject) => (
+									<div key={subject.id} className="relative pl-12">
+										{/* Timeline Dot */}
+										<div className={`absolute left-0 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center bg-background rounded-full z-10`}>
+											<div className={`w-4 h-4 rounded-full border-[3px] bg-background ${subject.border}`} />
+										</div>
+
+										<Card
+											className="p-4 rounded-2xl border-zinc-100 dark:border-zinc-800 shadow-sm hover:shadow-md transition-all cursor-pointer bg-white dark:bg-zinc-900/50"
+											onClick={() => onNavigate('QUIZ')}
+										>
+											<div className="flex items-center gap-4">
+												<div className={`w-12 h-12 rounded-2xl ${subject.bg} flex items-center justify-center shrink-0`}>
+													<subject.icon className={`w-6 h-6 ${subject.color}`} />
+												</div>
+												<div className="flex-1 min-w-0">
+													<h3 className="font-bold text-zinc-900 dark:text-white text-base">
+														{subject.name}
+													</h3>
+													<p className="text-xs text-zinc-500 truncate mt-0.5">
+														{subject.topics}
+													</p>
+												</div>
+												<ChevronRight className="w-5 h-5 text-zinc-300" />
+											</div>
+										</Card>
 									</div>
-									<h3 className="font-semibold text-zinc-900 dark:text-white">{subject.name}</h3>
-									<p className="text-sm text-zinc-500">{subject.papers} Papers</p>
-								</Card>
-							))}
+								))}
+							</div>
 						</div>
-					</section>
-
-					{/* Why Choose Us */}
-					<section className="px-6 py-8 bg-zinc-50 dark:bg-zinc-900/50">
-						<h2 className="text-xl font-bold text-zinc-900 dark:text-white mb-4">Why Choose Us</h2>
-						<div className="grid grid-cols-2 gap-4">
-							{features.map((feature) => (
-								<Card key={feature.title} className="p-4">
-									<feature.icon className="w-8 h-8 text-blue-500 mb-3" />
-									<h3 className="font-semibold text-zinc-900 dark:text-white text-sm">
-										{feature.title}
-									</h3>
-									<p className="text-xs text-zinc-500">{feature.desc}</p>
-								</Card>
-							))}
-						</div>
-					</section>
-
-					{/* Community Question of the Day */}
-					<section className="px-6 py-8">
-						<h2 className="text-xl font-bold text-zinc-900 dark:text-white mb-4">
-							Community Question of the Day
-						</h2>
-						<Card className="p-6 bg-gradient-to-br from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 border-0">
-							<Badge className="mb-3">Mathematics</Badge>
-							<p className="font-medium text-zinc-900 dark:text-white mb-2">
-								Find the derivative of f(x) = 3x³ + 2x² - 5x + 7
-							</p>
-							<p className="text-sm text-zinc-600 dark:text-zinc-400 mb-4">
-								234 students attempted today
-							</p>
-							<Button variant="outline" onClick={() => onNavigate('QUIZ')}>
-								Try It Now
-							</Button>
-						</Card>
 					</section>
 				</main>
 			</ScrollArea>
-
-			{/* Bottom Navigation */}
-			<nav className="fixed bottom-0 left-0 right-0 bg-white dark:bg-zinc-900 border-t border-zinc-200 dark:border-zinc-800 px-6 py-3">
-				<div className="flex justify-around items-center">
-					{[
-						{ id: 'home', icon: Home, label: 'Home' },
-						{ id: 'courses', icon: GraduationCap, label: 'Courses' },
-						{ id: 'rank', icon: BarChart3, label: 'Rank' },
-						{ id: 'profile', icon: User, label: 'Profile' },
-					].map((item) => (
-						<button
-							type="button"
-							key={item.id}
-							onClick={() => {
-								setActiveTab(item.id);
-								if (item.id === 'profile') onNavigate('PROFILE');
-								if (item.id === 'rank') onNavigate('LEADERBOARD');
-							}}
-							className={`flex flex-col items-center gap-1 ${
-								activeTab === item.id ? 'text-blue-600' : 'text-zinc-400'
-							}`}
-						>
-							<item.icon className="w-5 h-5" />
-							<span className="text-[10px] font-medium">{item.label}</span>
-						</button>
-					))}
-				</div>
-			</nav>
 		</div>
 	);
 }

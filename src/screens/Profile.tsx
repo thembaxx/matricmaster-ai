@@ -1,174 +1,169 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Switch } from '@/components/ui/switch';
 import type { Screen } from '@/types';
-import { Award, BarChart3, Settings, Share2, Star, TrendingUp, Verified } from 'lucide-react';
+import {
+	Activity,
+	Calculator,
+	Languages,
+	Microscope,
+	Settings,
+	Share2,
+	Star,
+	Verified,
+} from 'lucide-react';
 import { useState } from 'react';
 
 interface ProfileProps {
 	onNavigate: (s: Screen) => void;
 }
 
-const skillAchievements = ['Calculus Master', 'Physics Logic', 'Essay Wizard', 'Top 5%'];
+const achievements = [
+	{ title: 'Calculus Master', icon: Calculator, color: 'text-blue-400 bg-blue-400/10 border-blue-400/20' },
+	{ title: 'Physics Logic', icon: Microscope, color: 'text-purple-400 bg-purple-400/10 border-purple-400/20' },
+	{ title: 'Essay Wizard', icon: Languages, color: 'text-green-400 bg-green-400/10 border-green-400/20' },
+];
 
-export default function Profile({ onNavigate }: ProfileProps) {
-	const [showProvincialAvg, setShowProvincialAvg] = useState(false);
+export default function Profile({ onNavigate: _ }: ProfileProps) {
+	const [viewMode, setViewMode] = useState<'my_stats' | 'provincial'>('my_stats');
 
 	return (
-		<div className="flex flex-col min-h-screen bg-background">
+		<div className="flex flex-col min-h-screen bg-[#0f172a] text-white">
 			{/* Header */}
-			<header className="px-6 pt-12 pb-4 bg-white dark:bg-zinc-900 sticky top-0 z-20 border-b border-zinc-100 dark:border-zinc-800">
+			<header className="px-6 pt-12 pb-4 sticky top-0 z-20">
 				<div className="flex justify-between items-center">
-					<h1 className="text-xl font-bold text-zinc-900 dark:text-white">Profile</h1>
-					<div className="flex gap-2">
-						<Button variant="ghost" size="icon">
-							<Settings className="w-5 h-5" />
-						</Button>
-						<Button variant="ghost" size="icon">
-							<Share2 className="w-5 h-5" />
-						</Button>
-					</div>
+					<Button variant="ghost" size="icon" className="text-zinc-400 hover:text-white">
+						<Settings className="w-6 h-6" />
+					</Button>
+					<h1 className="text-lg font-bold">Profile</h1>
+					<Button variant="ghost" size="icon" className="text-zinc-400 hover:text-white">
+						<Share2 className="w-6 h-6" />
+					</Button>
 				</div>
 			</header>
 
 			<ScrollArea className="flex-1">
-				<main className="px-6 py-6 space-y-6 pb-24">
-					{/* Profile Info */}
-					<div className="text-center">
-						<div className="relative inline-block">
-							<Avatar className="w-24 h-24 border-4 border-white dark:border-zinc-800 shadow-lg">
+				<main className="px-6 pb-28 pt-4">
+					{/* Profile Header */}
+					<div className="flex flex-col items-center mb-8">
+						<div className="relative mb-4">
+							<Avatar className="w-24 h-24 border-4 border-[#1e293b] shadow-xl">
 								<AvatarImage src="https://api.dicebear.com/7.x/avataaars/svg?seed=Thabo" />
-								<AvatarFallback className="text-2xl">TM</AvatarFallback>
+								<AvatarFallback>TM</AvatarFallback>
 							</Avatar>
-							<div className="absolute bottom-0 right-0 w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center border-2 border-white dark:border-zinc-800">
+							<div className="absolute bottom-0 right-0 w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center border-4 border-[#0f172a]">
 								<Verified className="w-4 h-4 text-white" />
 							</div>
 						</div>
-						<h2 className="text-2xl font-bold text-zinc-900 dark:text-white mt-4">Thabo Mbeki</h2>
-						<p className="text-sm text-zinc-500">St. John's College • Grade 12</p>
+						<h2 className="text-2xl font-bold mb-1">Thabo Mbeki</h2>
+						<p className="text-zinc-400 text-sm">St. John&apos;s College • Grade 12</p>
 					</div>
 
-					{/* Stats Toggle */}
-					<div className="flex items-center justify-center gap-4">
-						<span
-							className={`text-sm font-medium ${!showProvincialAvg ? 'text-zinc-900 dark:text-white' : 'text-zinc-500'}`}
+					{/* View Toggle */}
+					<div className="flex bg-[#1e293b] p-1 rounded-xl mb-10 max-w-sm mx-auto">
+						<button
+							type="button"
+							onClick={() => setViewMode('my_stats')}
+							className={`flex-1 py-2 text-sm font-semibold rounded-lg transition-all ${
+								viewMode === 'my_stats'
+									? 'bg-blue-600 text-white shadow-lg'
+									: 'text-zinc-400 hover:text-zinc-200'
+							}`}
 						>
 							My Stats
-						</span>
-						<Switch checked={showProvincialAvg} onCheckedChange={setShowProvincialAvg} />
-						<span
-							className={`text-sm font-medium ${showProvincialAvg ? 'text-zinc-900 dark:text-white' : 'text-zinc-500'}`}
+						</button>
+						<button
+							type="button"
+							onClick={() => setViewMode('provincial')}
+							className={`flex-1 py-2 text-sm font-semibold rounded-lg transition-all ${
+								viewMode === 'provincial'
+									? 'bg-blue-600 text-white shadow-lg'
+									: 'text-zinc-400 hover:text-zinc-200'
+							}`}
 						>
-							Provincial Avg
-						</span>
+							vs. Provincial Avg
+						</button>
 					</div>
 
-					{/* Radar Chart Placeholder */}
-					<Card className="p-6">
-						<h3 className="text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-4">
-							Subject Performance
-						</h3>
-						<div className="relative h-64 flex items-center justify-center">
-							{/* Simple Radar Chart Visualization */}
-							<div className="relative w-48 h-48">
-								{/* Background pentagons */}
-								{[20, 40, 60, 80, 100].map((size) => (
-									<div
-										key={size}
-										className="absolute top-1/2 left-1/2 border border-zinc-200 dark:border-zinc-700"
-										style={{
-											width: `${size}%`,
-											height: `${size}%`,
-											transform: 'translate(-50%, -50%)',
-											clipPath: 'polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%)',
-										}}
-									/>
-								))}
-								{/* Data polygon */}
-								<div
-									className="absolute top-1/2 left-1/2 bg-blue-500/20 border-2 border-blue-500"
-									style={{
-										width: '80%',
-										height: '80%',
-										transform: 'translate(-50%, -50%)',
-										clipPath: 'polygon(50% 5%, 95% 38%, 79% 95%, 21% 95%, 5% 38%)',
-									}}
-								/>
-								{/* Labels */}
-								<div className="absolute -top-6 left-1/2 -translate-x-1/2 text-xs font-medium">
-									Math 95%
-								</div>
-								<div className="absolute top-[20%] -right-12 text-xs font-medium">Phy Sci 88%</div>
-								<div className="absolute bottom-[10%] -right-10 text-xs font-medium">Eng 82%</div>
-								<div className="absolute bottom-[10%] -left-8 text-xs font-medium">Acc 78%</div>
-								<div className="absolute top-[20%] -left-10 text-xs font-medium">Bio 75%</div>
+					{/* Radar Chart Visual */}
+					<div className="relative aspect-square max-w-sm mx-auto mb-10">
+						{/* Grid Lines */}
+						<div className="absolute inset-0 flex items-center justify-center">
+							{/* Outer Hexagon */}
+							<div className="w-[80%] h-[80%] border border-zinc-700/50 absolute" style={{ clipPath: 'polygon(50% 0%, 95% 25%, 95% 75%, 50% 100%, 5% 75%, 5% 25%)' }} />
+							<div className="w-[60%] h-[60%] border border-zinc-700/50 absolute" style={{ clipPath: 'polygon(50% 0%, 95% 25%, 95% 75%, 50% 100%, 5% 75%, 5% 25%)' }} />
+							<div className="w-[40%] h-[40%] border border-zinc-700/50 absolute" style={{ clipPath: 'polygon(50% 0%, 95% 25%, 95% 75%, 50% 100%, 5% 75%, 5% 25%)' }} />
+							<div className="w-[20%] h-[20%] border border-zinc-700/50 absolute" style={{ clipPath: 'polygon(50% 0%, 95% 25%, 95% 75%, 50% 100%, 5% 75%, 5% 25%)' }} />
+							
+							{/* Axis Lines */}
+							<div className="absolute w-[80%] h-[1px] bg-zinc-700/30 rotate-0" />
+							<div className="absolute w-[80%] h-[1px] bg-zinc-700/30 rotate-60" />
+							<div className="absolute w-[80%] h-[1px] bg-zinc-700/30 rotate-120" />
+							
+							{/* Data Polygon */}
+							<div className="w-[80%] h-[80%] bg-blue-500/20 border-2 border-blue-500 absolute shadow-[0_0_30px_rgba(59,130,246,0.2)]" style={{ clipPath: 'polygon(50% 5%, 90% 30%, 80% 80%, 50% 90%, 20% 80%, 10% 30%)' }}>
+								{/* Data Points */}
+								<div className="absolute top-[5%] left-[50%] -translate-x-1/2 -translate-y-1/2 w-4 h-[18px] bg-blue-600/50 rounded flex items-center justify-center text-[8px] font-bold">95%</div>
 							</div>
 						</div>
-					</Card>
 
-					{/* Skill Achievements */}
-					<div>
-						<h3 className="text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-3">
-							Skill Achievements
-						</h3>
-						<div className="flex flex-wrap gap-2">
-							{skillAchievements.map((skill) => (
-								<Badge key={skill} variant="secondary" className="px-3 py-1 text-xs">
-									<Award className="w-3 h-3 mr-1" />
-									{skill}
-								</Badge>
+						{/* Labels */}
+						<div className="absolute top-[5%] left-1/2 -translate-x-1/2 text-xs font-bold text-blue-400">MATH</div>
+						<div className="absolute top-[28%] right-[5%] text-xs font-bold text-zinc-500">PHY SCI</div>
+						<div className="absolute bottom-[28%] right-[5%] text-xs font-bold text-zinc-500">ENG FAL</div>
+						<div className="absolute bottom-[5%] left-1/2 -translate-x-1/2 text-xs font-bold text-zinc-500">LIFE OR.</div>
+						<div className="absolute bottom-[28%] left-[5%] text-xs font-bold text-zinc-500">GEOG</div>
+						<div className="absolute top-[28%] left-[5%] text-xs font-bold text-zinc-500">HIST</div>
+						
+						{/* Legend */}
+						<div className="absolute -bottom-6 w-full flex justify-center gap-6 text-xs text-zinc-400">
+							<div className="flex items-center gap-2">
+								<span className="w-2 h-2 rounded-full bg-blue-500" /> You
+							</div>
+							<div className="flex items-center gap-2">
+								<span className="w-2 h-2 rounded-full border border-zinc-500" /> Average
+							</div>
+						</div>
+					</div>
+
+					{/* Achievements */}
+					<div className="mb-6">
+						<h3 className="text-zinc-400 text-xs font-bold uppercase tracking-widest mb-4">Skill Achievements</h3>
+						<div className="flex gap-3 overflow-x-auto no-scrollbar pb-2">
+							{achievements.map((item) => (
+								<div key={item.title} className={`flex items-center gap-2 px-4 py-2 rounded-full border ${item.color} whitespace-nowrap`}>
+									<item.icon className="w-4 h-4" />
+									<span className="text-xs font-bold">{item.title}</span>
+								</div>
 							))}
 						</div>
 					</div>
 
 					{/* Stats Cards */}
 					<div className="grid grid-cols-2 gap-4">
-						<Card className="p-4">
-							<div className="flex items-center gap-3">
-								<div className="w-10 h-10 rounded-xl bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
-									<TrendingUp className="w-5 h-5 text-blue-600" />
+						<div className="p-5 rounded-3xl bg-[#1e293b] border border-blue-500/20 relative overflow-hidden">
+							<div className="relative z-10">
+								<div className="w-10 h-10 rounded-xl bg-blue-500/20 flex items-center justify-center mb-3">
+									<Activity className="w-5 h-5 text-blue-400" />
 								</div>
-								<div>
-									<p className="text-xl font-bold text-zinc-900 dark:text-white">78%</p>
-									<p className="text-xs text-zinc-500">Average</p>
-								</div>
+								<div className="text-3xl font-bold text-white mb-1">78%</div>
+								<div className="text-xs text-blue-300 font-medium">Overall Average</div>
 							</div>
-						</Card>
-						<Card className="p-4">
-							<div className="flex items-center gap-3">
-								<div className="w-10 h-10 rounded-xl bg-yellow-100 dark:bg-yellow-900/30 flex items-center justify-center">
-									<Star className="w-5 h-5 text-yellow-600" />
+							<div className="absolute bottom-0 right-0 w-24 h-24 bg-blue-500/10 rounded-full blur-2xl -mr-6 -mb-6" />
+						</div>
+
+						<div className="p-5 rounded-3xl bg-[#1e293b] border border-zinc-800 relative overflow-hidden">
+							<div className="relative z-10">
+								<div className="w-10 h-10 rounded-xl bg-purple-500/20 flex items-center justify-center mb-3">
+									<Star className="w-5 h-5 text-purple-400" />
 								</div>
-								<div>
-									<p className="text-xl font-bold text-zinc-900 dark:text-white">Math</p>
-									<p className="text-xs text-zinc-500">Top Subject</p>
-								</div>
+								<div className="text-3xl font-bold text-white mb-1">Math</div>
+								<div className="text-xs text-zinc-400 font-medium">Top Subject</div>
 							</div>
-						</Card>
+							<div className="absolute bottom-0 right-0 w-24 h-24 bg-purple-500/10 rounded-full blur-2xl -mr-6 -mb-6" />
+						</div>
 					</div>
 
-					{/* Admin Tools */}
-					<Card className="p-4 bg-purple-50 dark:bg-purple-900/20 border-purple-200 dark:border-purple-800">
-						<button
-							type="button"
-							onClick={() => onNavigate('CMS')}
-							className="w-full flex items-center justify-between"
-						>
-							<div className="flex items-center gap-3">
-								<div className="w-10 h-10 rounded-xl bg-purple-500 flex items-center justify-center">
-									<BarChart3 className="w-5 h-5 text-white" />
-								</div>
-								<div className="text-left">
-									<h4 className="font-semibold text-zinc-900 dark:text-white">Content CMS</h4>
-									<p className="text-xs text-zinc-500">Manage lessons & materials</p>
-								</div>
-							</div>
-							<span className="text-zinc-400">›</span>
-						</button>
-					</Card>
 				</main>
 			</ScrollArea>
 		</div>

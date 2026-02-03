@@ -1,3 +1,4 @@
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -5,239 +6,205 @@ import { Progress } from '@/components/ui/progress';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import type { Screen } from '@/types';
 import {
-	BarChart3,
+	ArrowRight,
 	Bell,
-	BookOpen,
-	ChevronRight,
 	Flame,
-	GraduationCap,
-	Home,
-	Target,
-	Trophy,
-	User,
-	Zap,
+	Play,
 } from 'lucide-react';
-import { useState } from 'react';
 
 interface DashboardProps {
 	onNavigate: (s: Screen) => void;
 }
 
-const weekDays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-const today = 2; // Wednesday
+const weekDays = [
+	{ day: 'MON', date: 9, status: 'complete' },
+	{ day: 'TUE', date: 10, status: 'complete' },
+	{ day: 'WED', date: 11, status: 'complete' },
+	{ day: 'THU', date: 12, status: 'active' }, // Today
+	{ day: 'FRI', date: 13, status: 'upcoming' },
+	{ day: 'SAT', date: 14, status: 'upcoming' },
+	{ day: 'SUN', date: 15, status: 'upcoming' },
+];
 
 export default function Dashboard({ onNavigate }: DashboardProps) {
-	const [activeTab, setActiveTab] = useState('home');
-
 	return (
 		<div className="flex flex-col min-h-screen bg-background">
 			{/* Header */}
-			<header className="px-6 pt-12 pb-4 bg-white dark:bg-zinc-900 sticky top-0 z-20 border-b border-zinc-100 dark:border-zinc-800">
-				<div className="flex justify-between items-center">
-					<div>
-						<h1 className="text-2xl font-bold text-zinc-900 dark:text-white">
-							Welcome back, Thabo!
-						</h1>
-						<p className="text-sm text-zinc-500">Ready to crush your goals today?</p>
+			<header className="px-6 pt-12 pb-4 bg-white dark:bg-zinc-900 sticky top-0 z-20">
+				<div className="flex justify-between items-center mb-6">
+					<div className="flex items-center gap-3">
+						<Avatar className="w-12 h-12 border-2 border-green-500">
+							<AvatarImage src="https://api.dicebear.com/7.x/avataaars/svg?seed=Thabo" />
+							<AvatarFallback>TM</AvatarFallback>
+						</Avatar>
+						<div>
+							<p className="text-xs text-zinc-500 font-medium">Welcome back,</p>
+							<h1 className="text-xl font-bold text-zinc-900 dark:text-white">Thabo</h1>
+						</div>
 					</div>
-					<div className="relative">
-						<Button variant="ghost" size="icon" className="rounded-full">
-							<Bell className="w-5 h-5 text-zinc-600" />
-						</Button>
-						<span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full" />
-					</div>
+					<Button
+						variant="ghost"
+						size="icon"
+						className="rounded-full bg-white dark:bg-zinc-800 shadow-sm border border-zinc-100 dark:border-zinc-700 relative"
+					>
+						<Bell className="w-5 h-5 text-zinc-600 dark:text-zinc-400" />
+						<span className="absolute top-2 right-2.5 w-2 h-2 bg-red-500 rounded-full border-2 border-white dark:border-zinc-800" />
+					</Button>
 				</div>
 			</header>
 
 			<ScrollArea className="flex-1">
-				<main className="px-6 py-6 space-y-6 pb-24">
-					{/* Streak Counter */}
-					<Card className="p-4 bg-gradient-to-r from-orange-50 to-amber-50 dark:from-orange-900/20 dark:to-amber-900/20 border-orange-200 dark:border-orange-800">
-						<div className="flex items-center gap-4">
-							<div className="w-12 h-12 rounded-full bg-orange-500 flex items-center justify-center">
-								<Flame className="w-6 h-6 text-white" />
+				<main className="px-6 pb-28 space-y-6">
+					{/* Streak Card */}
+					<Card className="p-4 flex items-center justify-between border-zinc-100 dark:border-zinc-800 shadow-sm">
+						<div>
+							<div className="flex items-baseline gap-1">
+								<span className="text-4xl font-bold text-zinc-900 dark:text-white">12</span>
+								<span className="text-zinc-400 font-medium">days</span>
 							</div>
-							<div>
-								<div className="flex items-center gap-2">
-									<span className="text-2xl font-bold text-zinc-900 dark:text-white">12</span>
-									<span className="text-sm text-zinc-600 dark:text-zinc-400">day streak!</span>
-								</div>
-								<p className="text-xs text-orange-600 font-medium">You're on fire! Keep it up</p>
+							<div className="flex items-center gap-1 text-orange-500 text-sm font-medium">
+								You're on fire! <Flame className="w-4 h-4 fill-current" /> Keep it up!
 							</div>
+						</div>
+						<div className="w-16 h-16 bg-orange-50 dark:bg-orange-900/20 rounded-full flex items-center justify-center">
+							<Flame className="w-8 h-8 text-orange-500 fill-orange-500/20" />
 						</div>
 					</Card>
 
 					{/* Weekly Calendar */}
-					<div>
-						<div className="flex justify-between items-center mb-3">
-							<h2 className="text-sm font-semibold text-zinc-700 dark:text-zinc-300">This Week</h2>
-							<Button variant="ghost" size="sm" className="text-xs text-zinc-500">
-								View All
-							</Button>
+					<div className="space-y-4">
+						<div className="flex justify-between items-center">
+							<h2 className="font-bold text-zinc-900 dark:text-white">This Week</h2>
+							<button type="button" className="text-xs text-orange-500 font-medium">
+								View Calendar
+							</button>
 						</div>
-						<div className="flex justify-between gap-2">
-							{weekDays.map((day, idx) => (
+						<div className="flex justify-between gap-2 overflow-x-auto no-scrollbar py-1">
+							{weekDays.map((d) => (
 								<div
-									key={day}
-									className={`flex-1 py-3 rounded-2xl flex flex-col items-center gap-1 ${
-										idx === today
-											? 'bg-zinc-900 dark:bg-white text-white dark:text-zinc-900'
-											: 'bg-white dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400'
+									key={d.day}
+									className={`flex flex-col items-center gap-2 min-w-[3rem] p-2 rounded-2xl border transition-all ${
+										d.status === 'active'
+											? 'bg-orange-500 border-orange-500 text-white shadow-lg shadow-orange-500/30'
+											: d.status === 'complete'
+												? 'bg-orange-100 dark:bg-orange-900/20 border-transparent text-orange-700 dark:text-orange-300'
+												: 'bg-white dark:bg-zinc-800 border-transparent text-zinc-400'
 									}`}
 								>
-									<span className="text-[10px] font-medium uppercase">{day}</span>
-									<span className="text-lg font-bold">{12 + idx}</span>
-									{idx <= today && (
-										<div
-											className={`w-1.5 h-1.5 rounded-full ${idx === today ? 'bg-green-400' : 'bg-green-500'}`}
-										/>
-									)}
+									<span className="text-[10px] font-bold tracking-wider">{d.day}</span>
+									<span
+										className={`text-sm font-bold w-6 h-6 flex items-center justify-center rounded-full ${
+											d.status === 'active' ? 'bg-white/20' : ''
+										}`}
+									>
+										{d.date}
+									</span>
 								</div>
 							))}
 						</div>
 					</div>
 
-					{/* Daily Goal Card */}
-					<Card className="p-6 bg-gradient-to-br from-zinc-900 to-zinc-800 dark:from-zinc-100 dark:to-white text-white dark:text-zinc-900">
-						<div className="flex justify-between items-start mb-4">
-							<div>
-								<Badge
-									variant="secondary"
-									className="bg-white/20 text-white dark:bg-zinc-900/20 dark:text-zinc-900 mb-2"
-								>
-									Daily Goal
-								</Badge>
-								<h3 className="text-xl font-bold">Master Algebra</h3>
-								<p className="text-sm text-zinc-300 dark:text-zinc-600">
-									2/3 solved • 66% complete
-								</p>
+					{/* Daily Goal */}
+					<div className="space-y-4">
+						<Badge className="bg-orange-100 text-orange-600 hover:bg-orange-100 border-none rounded-md px-2 py-1 text-[10px] tracking-wider font-bold uppercase">
+							Daily Goal
+						</Badge>
+						<Card className="p-6 border-none shadow-xl bg-white dark:bg-zinc-900 relative overflow-hidden">
+							<div className="absolute top-0 right-0 w-32 h-32 bg-orange-500/5 rounded-full -mr-10 -mt-10 blur-2xl" />
+							
+							<div className="flex justify-between items-start mb-6">
+								<div>
+									<h3 className="text-2xl font-bold text-zinc-900 dark:text-white mb-2">
+										Master Algebra
+									</h3>
+									<p className="text-zinc-500 text-sm">Complete 3 quiz questions</p>
+								</div>
+								<div className="w-16 h-16 bg-gradient-to-br from-yellow-100 to-orange-50 rounded-2xl flex items-center justify-center border border-orange-100">
+									<div className="text-3xl">🏆</div> {/* Emoji placeholder for trophy image */}
+								</div>
 							</div>
-							<div className="w-14 h-14 rounded-2xl bg-white/10 flex items-center justify-center">
-								<Target className="w-7 h-7" />
+
+							<div className="flex items-end justify-between mb-2">
+								<span className="font-bold text-zinc-900 dark:text-white">2/3 Solved</span>
+								<span className="font-bold text-orange-500">66%</span>
 							</div>
-						</div>
-						<Progress value={66} className="h-2 bg-white/20 mb-4" />
-						<Button
-							className="w-full bg-white text-zinc-900 hover:bg-zinc-100 dark:bg-zinc-900 dark:text-white dark:hover:bg-zinc-800"
-							onClick={() => onNavigate('QUIZ')}
-						>
-							Continue Quest
-							<ChevronRight className="w-4 h-4 ml-2" />
-						</Button>
-					</Card>
+							<Progress value={66} className="h-3 bg-zinc-100 dark:bg-zinc-800 mb-6" />
+
+							<Button
+								className="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold h-12 rounded-xl text-md shadow-lg shadow-orange-500/20"
+								onClick={() => onNavigate('QUIZ')}
+							>
+								Continue Quest
+								<ArrowRight className="w-5 h-5 ml-2" />
+							</Button>
+						</Card>
+					</div>
 
 					{/* Recommended Challenges */}
 					<div>
-						<h2 className="text-lg font-bold text-zinc-900 dark:text-white mb-4">
+						<h2 className="font-bold text-zinc-900 dark:text-white mb-4">
 							Recommended Challenges
 						</h2>
 						<div className="space-y-3">
 							{[
 								{
 									title: 'Differentiation Rules',
-									subject: 'Mathematics',
+									time: '10m',
 									difficulty: 'Medium',
-									color: 'bg-blue-500',
+									color: 'bg-blue-100 text-blue-600',
+									icon: 'Σ',
 								},
 								{
 									title: "Newton's Second Law",
-									subject: 'Physics',
+									time: '20m',
 									difficulty: 'Hard',
-									color: 'bg-purple-500',
+									color: 'bg-purple-100 text-purple-600',
+									icon: '⚡', // Using placeholder icon
 								},
 								{
 									title: 'Poetry Analysis',
-									subject: 'English',
+									time: '5m',
 									difficulty: 'Easy',
-									color: 'bg-pink-500',
+									color: 'bg-green-100 text-green-600',
+									icon: '📖',
 								},
-							].map((challenge, idx) => (
-								<Card key={idx} className="p-4 hover:shadow-md transition-shadow cursor-pointer">
-									<div className="flex items-center gap-4">
-										<div
-											className={`w-12 h-12 rounded-xl ${challenge.color} flex items-center justify-center`}
-										>
-											<BookOpen className="w-6 h-6 text-white" />
+							].map((challenge) => (
+								<Card
+									key={challenge.title}
+									className="p-4 py-5 flex items-center gap-4 border-none shadow-sm hover:shadow-md transition-shadow cursor-pointer bg-white dark:bg-zinc-900 rounded-2xl"
+									onClick={() => onNavigate('QUIZ')}
+								>
+									<div className={`w-12 h-12 rounded-2xl ${challenge.color} flex items-center justify-center text-xl font-bold`}>
+										{challenge.icon}
+									</div>
+									<div className="flex-1">
+										<h4 className="font-bold text-zinc-900 dark:text-white mb-1">
+											{challenge.title}
+										</h4>
+										<div className="flex items-center gap-2 text-xs text-zinc-400 font-medium">
+											<div className="flex items-center gap-1">
+												<span className="w-3 h-3 rounded-full bg-zinc-200 dark:bg-zinc-700 flex items-center justify-center text-[8px]">clock</span>
+												{challenge.time}
+											</div>
+											<span>•</span>
+											<span className={`${
+												challenge.difficulty === 'Hard' ? 'text-red-500 bg-red-50' :
+												challenge.difficulty === 'Medium' ? 'text-orange-500 bg-orange-50' :
+												'text-green-500 bg-green-50'
+											} px-2 py-0.5 rounded text-[10px]`}>
+												{challenge.difficulty}
+											</span>
 										</div>
-										<div className="flex-1">
-											<h4 className="font-semibold text-zinc-900 dark:text-white">
-												{challenge.title}
-											</h4>
-											<p className="text-xs text-zinc-500">{challenge.subject}</p>
-										</div>
-										<Badge
-											variant={
-												challenge.difficulty === 'Hard'
-													? 'destructive'
-													: challenge.difficulty === 'Medium'
-														? 'default'
-														: 'secondary'
-											}
-											className="text-xs"
-										>
-											{challenge.difficulty}
-										</Badge>
+									</div>
+									<div className="w-8 h-8 rounded-full bg-zinc-50 dark:bg-zinc-800 flex items-center justify-center">
+										<Play className="w-3 h-3 text-zinc-400 fill-zinc-400" />
 									</div>
 								</Card>
 							))}
 						</div>
 					</div>
-
-					{/* Quick Stats */}
-					<div className="grid grid-cols-2 gap-4">
-						<Card className="p-4">
-							<div className="flex items-center gap-3">
-								<div className="w-10 h-10 rounded-full bg-yellow-100 dark:bg-yellow-900/30 flex items-center justify-center">
-									<Trophy className="w-5 h-5 text-yellow-600" />
-								</div>
-								<div>
-									<p className="text-lg font-bold text-zinc-900 dark:text-white">1,250</p>
-									<p className="text-xs text-zinc-500">Total XP</p>
-								</div>
-							</div>
-						</Card>
-						<Card className="p-4">
-							<div className="flex items-center gap-3">
-								<div className="w-10 h-10 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
-									<Zap className="w-5 h-5 text-green-600" />
-								</div>
-								<div>
-									<p className="text-lg font-bold text-zinc-900 dark:text-white">85%</p>
-									<p className="text-xs text-zinc-500">Accuracy</p>
-								</div>
-							</div>
-						</Card>
-					</div>
 				</main>
 			</ScrollArea>
-
-			{/* Bottom Navigation */}
-			<nav className="fixed bottom-0 left-0 right-0 bg-white dark:bg-zinc-900 border-t border-zinc-200 dark:border-zinc-800 px-6 py-3">
-				<div className="flex justify-around items-center">
-					{[
-						{ id: 'home', icon: Home, label: 'Home' },
-						{ id: 'courses', icon: GraduationCap, label: 'Courses' },
-						{ id: 'rank', icon: BarChart3, label: 'Rank' },
-						{ id: 'profile', icon: User, label: 'Profile' },
-					].map((item) => (
-						<button
-							type="button"
-							key={item.id}
-							onClick={() => {
-								setActiveTab(item.id);
-								if (item.id === 'profile') onNavigate('PROFILE');
-								if (item.id === 'rank') onNavigate('LEADERBOARD');
-							}}
-							className={`flex flex-col items-center gap-1 ${
-								activeTab === item.id ? 'text-zinc-900 dark:text-white' : 'text-zinc-400'
-							}`}
-						>
-							<item.icon className="w-5 h-5" />
-							<span className="text-[10px] font-medium">{item.label}</span>
-						</button>
-					))}
-				</div>
-			</nav>
 		</div>
 	);
 }

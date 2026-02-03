@@ -1,8 +1,13 @@
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import type { Screen } from '@/types';
-import { AlertTriangle, ArrowLeft, BookOpen, Lightbulb, RotateCcw } from 'lucide-react';
+import {
+	AlertTriangle,
+	Eye,
+	Lightbulb,
+	X,
+} from 'lucide-react';
 
 interface ErrorHintProps {
 	onNavigate: (s: Screen) => void;
@@ -11,151 +16,107 @@ interface ErrorHintProps {
 export default function ErrorHint({ onNavigate }: ErrorHintProps) {
 	return (
 		<div className="flex flex-col min-h-screen bg-background">
-			{/* Header */}
-			<header className="px-6 pt-12 pb-4 bg-white dark:bg-zinc-900 sticky top-0 z-20 border-b border-zinc-100 dark:border-zinc-800">
-				<div className="flex items-center gap-4">
-					<Button variant="ghost" size="icon" onClick={() => onNavigate('QUIZ')}>
-						<ArrowLeft className="w-5 h-5" />
-					</Button>
-					<h1 className="text-xl font-bold text-zinc-900 dark:text-white">Hint</h1>
-				</div>
-			</header>
-
-			<main className="flex-1 p-6">
-				{/* Warning Banner */}
-				<Card className="p-4 mb-6 bg-amber-50 dark:bg-amber-900/20 border-amber-200 dark:border-amber-800">
+			{/* Alert Banner - Sticky */}
+			<div className="px-6 pt-12 pb-2 sticky top-0 z-20 bg-background/80 backdrop-blur-sm">
+				<div className="bg-amber-100 dark:bg-amber-900/30 text-amber-900 dark:text-amber-100 px-4 py-3 rounded-2xl flex items-center justify-between shadow-sm border border-amber-200 dark:border-amber-800">
 					<div className="flex items-center gap-3">
-						<div className="w-10 h-10 rounded-full bg-amber-500 flex items-center justify-center shrink-0">
-							<AlertTriangle className="w-5 h-5 text-white" />
-						</div>
-						<div>
-							<h2 className="font-bold text-amber-900 dark:text-amber-100">Not quite right yet</h2>
-							<p className="text-sm text-amber-700 dark:text-amber-300">
-								Don't worry! Let's work through this together.
-							</p>
-						</div>
+						<AlertTriangle className="w-5 h-5 fill-amber-500 text-amber-500" />
+						<span className="font-bold text-sm">Not quite right yet</span>
 					</div>
-				</Card>
+					<button type="button" onClick={() => onNavigate('QUIZ')}>
+						<X className="w-5 h-5 opacity-50 hover:opacity-100 transition-opacity" />
+					</button>
+				</div>
+			</div>
 
-				{/* Original Question Reference */}
-				<Card className="p-4 mb-6">
-					<p className="text-sm text-zinc-500 mb-2">Original Question</p>
-					<p className="font-medium text-zinc-900 dark:text-white">
-						Calculate the equivalent resistance in the circuit shown below.
-					</p>
-				</Card>
+			<ScrollArea className="flex-1">
+				<main className="px-6 py-4 pb-32">
+					{/* Original Question */}
+					<div className="mb-8">
+						<div className="flex justify-between items-start mb-1">
+							<span className="text-xs font-bold text-zinc-400 uppercase tracking-widest">
+								ORIGINAL QUESTION
+							</span>
+							<div className="w-12 h-12 bg-zinc-800 rounded-xl" /> {/* Placeholder for question thumbnail */}
+						</div>
+						<h2 className="text-lg font-bold text-zinc-900 dark:text-white mb-1">
+							Q4: Circuit Analysis
+						</h2>
+						<p className="text-sm text-zinc-500">
+							Calculate the total resistance...
+						</p>
+					</div>
 
-				{/* Break It Down Section */}
-				<div className="mb-6">
-					<h3 className="text-lg font-bold text-zinc-900 dark:text-white mb-4">
+					<h1 className="text-3xl font-bold text-zinc-900 dark:text-white mb-6">
 						Let's break it down
-					</h3>
+					</h1>
 
-					{/* Circuit Diagram */}
-					<Card className="p-6 mb-4 bg-zinc-50 dark:bg-zinc-800/50">
-						<div className="relative">
-							{/* Simple Circuit Visualization */}
-							<div className="w-full h-48 border-2 border-zinc-300 dark:border-zinc-600 rounded-lg relative bg-white dark:bg-zinc-900">
-								{/* Battery */}
-								<div className="absolute left-4 top-1/2 -translate-y-1/2 flex flex-col items-center">
-									<div className="w-8 h-12 border-2 border-zinc-400 rounded flex items-center justify-center">
-										<span className="text-xs font-bold">12V</span>
-									</div>
-								</div>
-
+					{/* Diagram Card */}
+					<Card className="p-8 mb-8 bg-white dark:bg-zinc-900 rounded-3xl shadow-sm border-zinc-100 dark:border-zinc-800 relative overflow-hidden">
+						{/* Circuit Board Illustration Placeholder */}
+						<div className="relative w-full aspect-square max-w-[200px] mx-auto border-2 border-green-700 rounded-lg p-6 flex items-center justify-center">
+							<div className="w-full h-full border-2 border-dashed border-green-500 rounded relative">
+								<div className="absolute top-1/2 left-0 -translate-y-1/2 -ml-3 w-6 h-2 bg-red-500 rounded-full" />
+								<div className="absolute top-1/2 right-0 -translate-y-1/2 -mr-3 w-6 h-2 bg-red-500 rounded-full" />
+								<div className="absolute top-0 left-1/2 -translate-x-1/2 -mt-3 w-2 h-6 bg-red-500 rounded-full" />
+								<div className="absolute bottom-0 left-1/2 -translate-x-1/2 -mb-3 w-2 h-6 bg-red-500 rounded-full" />
+								
 								{/* Resistors */}
-								<div className="absolute top-4 left-1/2 -translate-x-1/2">
-									<div className="px-4 py-2 border-2 border-zinc-400 rounded bg-yellow-50 dark:bg-yellow-900/20">
-										<span className="text-xs font-bold">R₁ = 4Ω</span>
-									</div>
-								</div>
-
-								<div className="absolute top-1/2 right-4 -translate-y-1/2">
-									<div className="px-4 py-2 border-2 border-zinc-400 rounded bg-yellow-50 dark:bg-yellow-900/20">
-										<span className="text-xs font-bold">R₂ = 6Ω</span>
-									</div>
-								</div>
-
-								<div className="absolute bottom-4 left-1/2 -translate-x-1/2">
-									<div className="px-4 py-2 border-2 border-zinc-400 rounded bg-yellow-50 dark:bg-yellow-900/20">
-										<span className="text-xs font-bold">R₃ = 3Ω</span>
-									</div>
-								</div>
-
-								{/* Focus Indicator */}
-								<div className="absolute top-2 left-1/2 -translate-x-1/2 -mt-2">
-									<div className="w-4 h-4 rounded-full bg-red-500 animate-pulse" />
-								</div>
+								<div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-12 h-4 bg-orange-300 rounded-full" />
+								<div className="absolute bottom-1/4 left-1/2 -translate-x-1/2 w-12 h-4 bg-orange-300 rounded-full" />
 							</div>
-							<p className="text-center text-xs text-zinc-500 mt-2">
-								Figure 1: Series-Parallel Circuit
-							</p>
+						</div>
+
+						{/* Focus Badge */}
+						<div className="absolute bottom-4 right-4 bg-white dark:bg-zinc-800 shadow-md border border-zinc-100 dark:border-zinc-700 rounded-full px-3 py-1.5 flex items-center gap-2">
+							<Eye className="w-4 h-4 text-amber-500" />
+							<span className="text-xs font-bold text-zinc-900 dark:text-white">Focus: Series Path</span>
 						</div>
 					</Card>
-				</div>
 
-				{/* Hint Card */}
-				<Card className="p-4 mb-6 bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800">
-					<div className="flex items-start gap-3">
-						<div className="w-10 h-10 rounded-lg bg-blue-500 flex items-center justify-center shrink-0">
-							<Lightbulb className="w-5 h-5 text-white" />
+					{/* Hint Section */}
+					<div className="mb-8">
+						<div className="flex items-center gap-2 mb-3">
+							<Lightbulb className="w-5 h-5 text-amber-500 fill-current" />
+							<span className="font-bold text-amber-500 text-sm tracking-widest">HINT</span>
 						</div>
-						<div>
-							<h4 className="font-bold text-blue-900 dark:text-blue-100 mb-1">Key Formula</h4>
-							<p className="text-sm text-blue-700 dark:text-blue-300 mb-2">
-								For resistors in series: R<sub>eq</sub> = R₁ + R₂ + R₃
+						<h3 className="text-xl font-bold text-zinc-900 dark:text-white mb-4 leading-tight">
+							Think about how the resistance changes if we add another resistor in series.
+						</h3>
+						<p className="text-zinc-500 text-sm leading-relaxed mb-6">
+							When components are lined up one after another, the current must flow through <strong className="text-zinc-900 dark:text-white">all of them</strong>.
+						</p>
+
+						{/* Formula Box */}
+						<div className="bg-amber-50 dark:bg-amber-900/10 p-4 rounded-xl border border-amber-100 dark:border-amber-800">
+							<p className="text-xs font-bold text-amber-800 dark:text-amber-200 mb-2 uppercase opacity-70">
+								Recall the formula:
 							</p>
-							<p className="text-sm text-blue-700 dark:text-blue-300">
-								For resistors in parallel: 1/R<sub>eq</sub> = 1/R₁ + 1/R₂ + 1/R₃
+							<p className="font-mono text-lg font-bold text-amber-900 dark:text-amber-100">
+								R_total = R1 + R2 + ...
 							</p>
-							<div className="mt-3 p-2 bg-white dark:bg-zinc-800 rounded text-xs font-mono">
-								R_eq = R₁ + (R₂ × R₃)/(R₂ + R₃)
-							</div>
 						</div>
 					</div>
-				</Card>
 
-				{/* Tips */}
-				<div className="space-y-3 mb-8">
-					<h4 className="font-semibold text-zinc-900 dark:text-white">Step-by-step approach:</h4>
-					<div className="flex items-start gap-3">
-						<Badge variant="outline" className="shrink-0">
-							1
-						</Badge>
-						<p className="text-sm text-zinc-600 dark:text-zinc-400">
-							Identify which resistors are in series and which are in parallel
-						</p>
+					{/* Action Buttons */}
+					<div className="space-y-4 text-center">
+						<Button
+							size="lg"
+							className="w-full bg-amber-500 hover:bg-amber-600 text-white rounded-full h-14 text-base font-bold shadow-lg shadow-amber-500/20"
+							onClick={() => onNavigate('QUIZ')}
+						>
+							Try Again
+						</Button>
+						<button
+							type="button"
+							className="text-zinc-400 hover:text-zinc-900 font-bold text-sm"
+							onClick={() => onNavigate('QUIZ')} // Or show solution
+						>
+							See Solution
+						</button>
 					</div>
-					<div className="flex items-start gap-3">
-						<Badge variant="outline" className="shrink-0">
-							2
-						</Badge>
-						<p className="text-sm text-zinc-600 dark:text-zinc-400">
-							Calculate the equivalent resistance for parallel resistors first
-						</p>
-					</div>
-					<div className="flex items-start gap-3">
-						<Badge variant="outline" className="shrink-0">
-							3
-						</Badge>
-						<p className="text-sm text-zinc-600 dark:text-zinc-400">
-							Add series resistances to get total equivalent resistance
-						</p>
-					</div>
-				</div>
-
-				{/* Action Buttons */}
-				<div className="space-y-3">
-					<Button className="w-full h-12" onClick={() => onNavigate('QUIZ')}>
-						<RotateCcw className="w-4 h-4 mr-2" />
-						Try Again
-					</Button>
-					<Button variant="outline" className="w-full h-12" onClick={() => onNavigate('DASHBOARD')}>
-						<BookOpen className="w-4 h-4 mr-2" />
-						See Solution
-					</Button>
-				</div>
-			</main>
+				</main>
+			</ScrollArea>
 		</div>
 	);
 }
