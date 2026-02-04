@@ -12,7 +12,7 @@ import { CURRENT_GOAL, RECOMMENDED_CHALLENGES, WEEKLY_JOURNEY } from '@/constant
 export default function Dashboard() {
 	const router = useRouter();
 	return (
-		<div className="flex flex-col h-full bg-zinc-50 dark:bg-zinc-950 font-lexend">
+		<div className="flex flex-col h-full bg-zinc-50 dark:bg-zinc-950 font-inter">
 			{/* Header - iOS-style sticky with backdrop blur */}
 			<header
 				className="px-6 pb-4 bg-white/90 dark:bg-zinc-900/90 backdrop-blur-xl sticky top-0 z-20 border-b border-zinc-100/50 dark:border-zinc-800/50 shrink-0 transition-all duration-200"

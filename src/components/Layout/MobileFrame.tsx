@@ -39,7 +39,7 @@ export default function MobileFrame({ children }: { children: React.ReactNode })
 				{/* Bottom Navigation - iOS-style with safe area and animations */}
 				{!shouldHideNav && (
 					<nav
-						className="absolute bottom-0 left-0 right-0 bg-white/90 dark:bg-zinc-900/90 backdrop-blur-xl border-t border-zinc-100 dark:border-zinc-800/50 flex justify-around items-center pb-safe pt-2 z-50"
+						className="fixed bottom-0 left-0 right-0 bg-white/90 dark:bg-zinc-900/90 backdrop-blur-xl border-t border-zinc-100/50 dark:border-zinc-800/50 flex justify-around items-center pb-safe pt-2 z-50"
 						style={{
 							paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 8px)',
 						}}

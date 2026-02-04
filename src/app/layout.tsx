@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import MobileFrame from '@/components/Layout/MobileFrame';
 import { ThemeProvider } from '@/components/theme-provider';
 import '@/styles/index.css';
-import { dmSans, jakarta, lexend } from './fonts';
+import { dmSans, inter, jakarta, lexend } from './fonts';
 
 export const metadata: Metadata = {
 	title: 'MatricMaster AI',
@@ -14,7 +14,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 		<html
 			lang="en"
 			suppressHydrationWarning
-			className={`${lexend.variable} ${jakarta.variable} ${dmSans.variable}`}
+			className={`${inter.variable} ${jakarta.variable} ${dmSans.variable} ${lexend.variable}`}
 		>
 			<head>
 				<link
@@ -22,7 +22,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 					rel="stylesheet"
 				/>
 			</head>
-			<body className="bg-gray-100 dark:bg-zinc-950 min-h-screen font-lexend">
+			<body className="bg-gray-100 dark:bg-zinc-950 min-h-screen font-inter">
 				<ThemeProvider defaultTheme="light" storageKey="matric-master-theme">
 					<MobileFrame>{children}</MobileFrame>
 				</ThemeProvider>

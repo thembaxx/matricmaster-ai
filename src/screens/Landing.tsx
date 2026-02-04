@@ -29,7 +29,7 @@ export default function Landing() {
 	const { theme, setTheme } = useTheme();
 
 	return (
-		<div className="flex flex-col h-full bg-zinc-50 dark:bg-zinc-950 font-lexend overflow-hidden">
+		<div className="flex flex-col h-full bg-zinc-50 dark:bg-zinc-950 font-inter overflow-hidden">
 			{/* Decorative Orbs */}
 			<div className="absolute top-[-10%] right-[-10%] w-[500px] h-[500px] bg-brand-blue/10 rounded-full blur-[120px] pointer-events-none" />
 			<div className="absolute bottom-[-10%] left-[-10%] w-[400px] h-[400px] bg-brand-purple/10 rounded-full blur-[100px] pointer-events-none" />
