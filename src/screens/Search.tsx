@@ -6,8 +6,6 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Clock, Search as SearchIcon, Sparkles, TrendingUp } from 'lucide-react';
 import { useState } from 'react';
 
-
-
 export default function Search() {
 	const [query, setQuery] = useState('');
 

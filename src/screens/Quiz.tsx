@@ -2,16 +2,22 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 // import type { Screen } from '@/types'; // Removed unused import
-import { ArrowLeft, HelpCircle, Lightbulb, MoreHorizontal, Sparkles } from 'lucide-react';
+import {
+	ArrowLeft,
+	HelpCircle,
+	Lightbulb,
+	MoreHorizontal,
+	Sparkles,
+} from 'lucide-react';
 import { useState } from 'react';
 
 import { useRouter } from 'next/navigation';
 
 const options = [
-	{ id: 'A', expression: '(x+2)(x+3)', isCorrect: false },
-	{ id: 'B', expression: '(x-2)(x-3)', isCorrect: true },
-	{ id: 'C', expression: '(x-1)(x-6)', isCorrect: false },
-	{ id: 'D', expression: '(x+1)(x-6)', isCorrect: false },
+	{ id: 'A', expression: '(1, 0)', isCorrect: false },
+	{ id: 'B', expression: '(-1, 4)', isCorrect: true },
+	{ id: 'C', expression: '(0, 2)', isCorrect: false },
+	{ id: 'D', expression: '(1, 4)', isCorrect: false },
 ];
 
 export default function Quiz() {
@@ -19,6 +25,7 @@ export default function Quiz() {
 	const [selectedOption, setSelectedOption] = useState<string | null>(null);
 	const [isChecked, setIsChecked] = useState(false);
 	const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
+	const [showExplanation, setShowExplanation] = useState(false);
 
 	const handleCheck = () => {
 		if (isChecked) {
@@ -28,6 +35,7 @@ export default function Quiz() {
 				setIsChecked(false);
 				setIsCorrect(null);
 				setSelectedOption(null);
+				setShowExplanation(false);
 			}
 			return;
 		}
@@ -36,6 +44,7 @@ export default function Quiz() {
 		const correct = option?.isCorrect || false;
 		setIsCorrect(correct);
 		setIsChecked(true);
+		if (correct) setShowExplanation(true);
 	};
 
 	return (
@@ -56,7 +65,9 @@ export default function Quiz() {
 							<h1 className="text-[10px] font-black text-zinc-400 uppercase tracking-[0.2em]">
 								Mathematics P1
 							</h1>
-							<p className="text-sm font-black text-zinc-900 dark:text-white">Nov 2023 • NSC</p>
+							<p className="text-sm font-black text-zinc-900 dark:text-white">
+								Nov 2023 • NSC
+							</p>
 						</div>
 						<Button variant="ghost" size="icon" className="rounded-full">
 							<MoreHorizontal className="w-6 h-6" />
@@ -82,22 +93,80 @@ export default function Quiz() {
 				<main className="px-6 py-8 pb-48 max-w-2xl mx-auto w-full space-y-8">
 					<div className="space-y-3">
 						<h2 className="text-4xl font-black text-zinc-900 dark:text-white leading-tight">
-							Solve for <span className="text-brand-blue italic font-serif">x</span>
+							Local <span className="text-brand-blue italic font-serif">Extrema</span>
 						</h2>
 						<p className="text-zinc-500 font-medium leading-relaxed">
-							Identify the correct factors for the quadratic equation below to find the roots.
+							Find the coordinates of the local maximum for the function graphed
+							below.
 						</p>
 					</div>
 
-					{/* Equation Card */}
-					<Card className="p-12 flex flex-col items-center justify-center bg-white dark:bg-zinc-900 border-none rounded-[2.5rem] shadow-sm relative overflow-hidden group">
+					{/* Equation & Graph Card */}
+					<Card className="p-8 flex flex-col items-center justify-center bg-white dark:bg-zinc-900 border-none rounded-[2.5rem] shadow-sm relative overflow-hidden group">
 						<div className="absolute inset-0 bg-brand-blue/5 opacity-0 group-hover:opacity-100 transition-opacity" />
-						<div className="text-4xl font-serif italic font-bold text-zinc-900 dark:text-white mb-10 relative z-10">
-							x² - 5x + 6 = 0
+
+						{/* Math Function */}
+						<div className="text-2xl font-serif italic font-bold text-zinc-900 dark:text-white mb-6 relative z-10">
+							f(x) = x³ - 3x + 2
 						</div>
+
+						{/* SVG Graph Visualization */}
+						<div className="w-full h-48 relative mb-6 z-10 bg-zinc-50 dark:bg-zinc-800/50 rounded-2xl border border-zinc-100 dark:border-zinc-800 flex items-center justify-center overflow-hidden">
+							<svg viewBox="0 0 200 120" className="w-full h-full p-4">
+								<title>Graph of f(x) = x³ - 3x + 2</title>
+								{/* Grid lines */}
+								<line
+									x1="0"
+									y1="60"
+									x2="200"
+									y2="60"
+									stroke="currentColor"
+									strokeWidth="0.5"
+									className="text-zinc-200 dark:text-zinc-700"
+								/>
+								<line
+									x1="100"
+									y1="0"
+									x2="100"
+									y2="120"
+									stroke="currentColor"
+									strokeWidth="0.5"
+									className="text-zinc-200 dark:text-zinc-700"
+								/>
+
+								{/* Function Curve f(x) = x^3 - 3x + 2 */}
+								{/* Scaled and shifted for visualization */}
+								<path
+									d="M 20 100 Q 60 20 100 60 T 180 20"
+									fill="none"
+									stroke="#2563eb"
+									strokeWidth="3"
+									strokeLinecap="round"
+									className="animate-draw"
+								/>
+
+								{/* Local Max Point */}
+								<circle
+									cx="75"
+									cy="40"
+									r="5"
+									fill="#10b981"
+									className="animate-pulse"
+								/>
+								<text
+									x="65"
+									y="30"
+									fontSize="8"
+									className="fill-zinc-400 font-black tracking-widest uppercase"
+								>
+									Max
+								</text>
+							</svg>
+						</div>
+
 						<div className="bg-brand-amber/10 text-brand-amber px-6 py-2.5 rounded-full flex items-center gap-2.5 text-xs font-black uppercase tracking-widest shadow-sm border border-brand-amber/20 relative z-10">
 							<Lightbulb className="w-4 h-4 fill-brand-amber" />
-							Factorise the trinomial
+							Use f'(x) = 0 to find stationary points
 						</div>
 					</Card>
 
@@ -138,7 +207,9 @@ export default function Quiz() {
 									>
 										{option.id}
 									</div>
-									<span className="font-serif italic font-bold text-xl">{option.expression}</span>
+									<span className="font-serif italic font-bold text-xl">
+										{option.expression}
+									</span>
 
 									{isChecked && isSelected && option.isCorrect && (
 										<div className="absolute -top-2 -right-2 w-8 h-8 bg-white text-brand-green rounded-full flex items-center justify-center shadow-lg animate-in zoom-in">
@@ -150,21 +221,61 @@ export default function Quiz() {
 						})}
 					</div>
 
+					{/* Explanation Card (Aha! Moment) */}
+					{showExplanation && (
+						<Card className="p-8 bg-brand-green/5 dark:bg-brand-green/10 border-2 border-brand-green/20 rounded-[2.5rem] space-y-6 animate-in slide-in-from-bottom-4 duration-500">
+							<div className="flex items-center gap-4">
+								<div className="w-12 h-12 bg-brand-green text-white rounded-2xl flex items-center justify-center shadow-lg shadow-brand-green/20">
+									<Sparkles className="w-6 h-6" />
+								</div>
+								<div>
+									<h4 className="font-black text-brand-green text-lg">
+										Aha! Moment
+									</h4>
+									<p className="text-xs font-black text-zinc-400 uppercase tracking-widest">
+										The "Why" behind the math
+									</p>
+								</div>
+							</div>
+
+							<div className="space-y-4 text-zinc-600 dark:text-zinc-400 font-medium leading-relaxed">
+								<p>
+									To find the local maximum, we first find where the slope
+									(derivative) is zero:
+								</p>
+								<div className="bg-white dark:bg-zinc-900 p-4 rounded-2xl font-serif italic text-center text-lg border border-zinc-100 dark:border-zinc-800">
+									f'(x) = 3x² - 3 = 0 <br />
+									3(x² - 1) = 0 <br />
+									x = 1 or x = -1
+								</div>
+								<p>
+									By checking the second derivative{' '}
+									<span className="italic">f''(x) = 6x</span>, we see that{' '}
+									<span className="italic">f''(-1) = -6</span> (negative), which
+									confirms a local maximum at <span className="italic">x = -1</span>
+									.
+								</p>
+							</div>
+						</Card>
+					)}
+
 					{/* Hint Card */}
-					<div className="p-6 bg-brand-blue/5 dark:bg-brand-blue/10 rounded-[2rem] border border-brand-blue/10 flex gap-5 items-start transition-all hover:bg-brand-blue/10">
-						<div className="w-12 h-12 bg-white dark:bg-zinc-900 rounded-2xl flex items-center justify-center shrink-0 shadow-sm border border-brand-blue/10">
-							<Sparkles className="w-6 h-6 text-brand-blue" />
+					{!showExplanation && (
+						<div className="p-6 bg-brand-blue/5 dark:bg-brand-blue/10 rounded-[2rem] border border-brand-blue/10 flex gap-5 items-start transition-all hover:bg-brand-blue/10">
+							<div className="w-12 h-12 bg-white dark:bg-zinc-900 rounded-2xl flex items-center justify-center shrink-0 shadow-sm border border-brand-blue/10">
+								<Sparkles className="w-6 h-6 text-brand-blue" />
+							</div>
+							<div className="space-y-1">
+								<h4 className="font-black text-brand-blue text-xs uppercase tracking-widest">
+									Smart Hint
+								</h4>
+								<p className="text-sm text-zinc-600 dark:text-zinc-400 font-medium leading-relaxed">
+									A local maximum occurs where the function stops increasing and
+									starts decreasing. This always happens at a stationary point.
+								</p>
+							</div>
 						</div>
-						<div className="space-y-1">
-							<h4 className="font-black text-brand-blue text-xs uppercase tracking-widest">
-								Smart Hint
-							</h4>
-							<p className="text-sm text-zinc-600 dark:text-zinc-400 font-medium leading-relaxed">
-								Quadratic factors often appear in pairs that sum to the middle term (-5) and
-								multiply to the last term (6).
-							</p>
-						</div>
-					</div>
+					)}
 				</main>
 			</ScrollArea>
 
@@ -203,7 +314,11 @@ export default function Quiz() {
 						}`}
 						disabled={!selectedOption}
 					>
-						{isChecked ? (isCorrect ? 'Continue' : 'Try Again') : 'Check Answer'}
+						{isChecked
+							? isCorrect
+								? 'Continue'
+								: 'Try Again'
+							: 'Check Answer'}
 					</Button>
 				</div>
 			</footer>
