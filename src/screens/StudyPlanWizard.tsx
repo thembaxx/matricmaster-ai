@@ -43,12 +43,24 @@ export default function StudyPlanWizard() {
 		);
 	};
 
-	const handleGenerate = () => {
+	const handleGenerate = async () => {
 		setIsGenerating(true);
-		setTimeout(() => {
-			setIsGenerating(false);
+		try {
+			// Import dynamically to avoid SSR issues
+			const { generateStudyPlan } = await import('@/services/geminiService');
+			const subjectNames = subjects
+				.filter((s) => selectedSubjects.includes(s.id))
+				.map((s) => s.name);
+			await generateStudyPlan(subjectNames, weeklyHours[0]);
+			// Navigate to study path after generation
 			router.push('/study-path');
-		}, 2000);
+		} catch (error) {
+			console.error('Failed to generate study plan:', error);
+			// Still navigate even if generation fails
+			router.push('/study-path');
+		} finally {
+			setIsGenerating(false);
+		}
 	};
 
 	if (isGenerating) {
