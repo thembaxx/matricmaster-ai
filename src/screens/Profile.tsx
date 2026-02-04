@@ -64,7 +64,7 @@ export default function Profile() {
 			</header>
 
 			<ScrollArea className="flex-1">
-				<main className="px-6 pb-12 pt-4 max-w-2xl mx-auto w-full">
+				<main className="px-6 pb-32 pt-4 max-w-2xl mx-auto w-full">
 					{/* Profile Header */}
 					<div className="flex flex-col items-center mb-8">
 						<div className="relative mb-6">

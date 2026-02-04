@@ -27,7 +27,7 @@ export default function Search() {
 			</div>
 
 			<ScrollArea className="flex-1">
-				<main className="px-6 py-8 max-w-2xl mx-auto w-full space-y-10 pb-12">
+				<main className="px-6 py-8 max-w-2xl mx-auto w-full space-y-10 pb-32">
 					{!query ? (
 						<>
 							{/* Trending Section */}

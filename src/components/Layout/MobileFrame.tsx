@@ -16,6 +16,10 @@ export default function MobileFrame({ children }: { children: React.ReactNode })
 		'/cms',
 		'/lesson-complete',
 		'/error-hint',
+		'/channels',
+		'/study-path',
+		'/leaderboard',
+		'/language',
 	];
 
 	// Extract the first segment of the path to check generic routes if needed

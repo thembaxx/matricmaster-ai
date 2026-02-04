@@ -158,7 +158,7 @@ export default function Achievements() {
 			</header>
 
 			<ScrollArea className="flex-1">
-				<main className="px-6 py-8 pb-12 max-w-2xl mx-auto w-full">
+				<main className="px-6 py-8 pb-32 max-w-2xl mx-auto w-full">
 					{/* Filter Tabs */}
 					<div className="bg-zinc-100 dark:bg-zinc-900 p-1.5 rounded-2xl mb-8">
 						<Tabs defaultValue="all" className="w-full">

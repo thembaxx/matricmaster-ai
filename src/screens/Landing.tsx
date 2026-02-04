@@ -95,7 +95,7 @@ export default function Landing() {
 			</header>
 
 			<ScrollArea className="flex-1 relative z-10">
-				<main className="pb-12 px-6 max-w-2xl mx-auto w-full">
+				<main className="pb-32 px-6 max-w-2xl mx-auto w-full">
 					{/* Hero Section */}
 					<section className="pt-12 pb-16 flex flex-col items-center text-center space-y-8">
 						<div className="space-y-4">
