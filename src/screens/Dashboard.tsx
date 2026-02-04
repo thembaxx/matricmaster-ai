@@ -7,16 +7,8 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 // import type { Screen } from '@/types'; // Removed unused import
 import { ArrowRight, Bell, Flame, Play } from 'lucide-react';
 
+import { CURRENT_GOAL, RECOMMENDED_CHALLENGES, WEEKLY_JOURNEY } from '@/constants/mock-data';
 import { useRouter } from 'next/navigation';
-
-const weekDays = [
-	{ day: 'TUE', date: 10, status: 'complete' },
-	{ day: 'WED', date: 11, status: 'complete' },
-	{ day: 'THU', date: 12, status: 'active' }, // Today
-	{ day: 'FRI', date: 13, status: 'upcoming' },
-	{ day: 'SAT', date: 14, status: 'upcoming' },
-	{ day: 'SUN', date: 15, status: 'upcoming' },
-];
 
 export default function Dashboard() {
 	const router = useRouter();
@@ -63,13 +55,13 @@ export default function Dashboard() {
 									<Badge className="bg-brand-orange text-white border-none rounded-full px-4 py-1 font-black text-[10px] tracking-widest uppercase">
 										Daily Goal
 									</Badge>
-									<h3 className="text-4xl font-black leading-tight">Calculus: Optimization</h3>
+									<h3 className="text-4xl font-black leading-tight">{CURRENT_GOAL.title}</h3>
 									<p className="text-zinc-400 dark:text-zinc-500 font-bold">
-										Next: Stationary Points & Maxima
+										{CURRENT_GOAL.subtitle}
 									</p>
 								</div>
 								<div className="w-20 h-20 bg-white/10 dark:bg-zinc-100 rounded-[2rem] flex items-center justify-center text-4xl shadow-inner animate-float">
-									🚀
+									{CURRENT_GOAL.icon}
 								</div>
 							</div>
 
@@ -78,10 +70,12 @@ export default function Dashboard() {
 									<span className="font-black text-xl uppercase tracking-tighter">
 										Current Step
 									</span>
-									<span className="font-black text-brand-blue text-2xl italic">Quiz 3/5</span>
+									<span className="font-black text-brand-blue text-2xl italic">
+										{CURRENT_GOAL.step}
+									</span>
 								</div>
 								<Progress
-									value={60}
+									value={CURRENT_GOAL.progress}
 									className="h-5 bg-white/10 dark:bg-zinc-100 rounded-full mb-8 shadow-inner"
 								/>
 
@@ -129,7 +123,7 @@ export default function Dashboard() {
 						</div>
 						<div className="flex justify-between items-center bg-white dark:bg-zinc-900 p-6 rounded-[2.5rem] shadow-sm relative overflow-hidden">
 							<div className="absolute left-10 right-10 top-1/2 h-1 bg-zinc-100 dark:bg-zinc-800 -translate-y-1/2" />
-							{weekDays.map((d) => (
+							{WEEKLY_JOURNEY.map((d) => (
 								<div
 									key={d.day}
 									className={`relative z-10 flex flex-col items-center gap-3 transition-all cursor-pointer hover:scale-110 ${
@@ -163,32 +157,7 @@ export default function Dashboard() {
 							Recommended for You
 						</h2>
 						<div className="grid grid-cols-1 gap-4">
-							{[
-								{
-									title: 'Rate of Reaction',
-									topic: 'Chemistry',
-									time: '12m',
-									difficulty: 'Medium',
-									color: 'bg-brand-amber/10 text-brand-amber',
-									icon: '🧪',
-								},
-								{
-									title: 'Organic Molecules',
-									topic: 'Chemistry',
-									time: '15m',
-									difficulty: 'Easy',
-									color: 'bg-brand-amber/10 text-brand-amber',
-									icon: '⬢',
-								},
-								{
-									title: 'Doppler Effect',
-									topic: 'Physics',
-									time: '20m',
-									difficulty: 'Hard',
-									color: 'bg-brand-purple/10 text-brand-purple',
-									icon: '🔊',
-								},
-							].map((challenge) => (
+							{RECOMMENDED_CHALLENGES.map((challenge) => (
 								<Card
 									key={challenge.title}
 									className="p-5 flex items-center gap-5 border-none shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer bg-white dark:bg-zinc-900 rounded-[2rem] group"
