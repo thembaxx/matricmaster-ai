@@ -1,12 +1,10 @@
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { useRouter } from 'next/navigation';
 import { AlertTriangle, Eye, Lightbulb, X } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 // import type { Screen } from '@/types'; // Removed unused import
-
-
 
 export default function ErrorHint() {
 	const router = useRouter();

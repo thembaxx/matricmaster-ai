@@ -2,7 +2,6 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { useRouter } from 'next/navigation';
 import {
 	ArrowLeft,
 	Bookmark,
@@ -14,6 +13,7 @@ import {
 	ZoomIn,
 	ZoomOut,
 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 // import type { Screen } from '@/types'; // Removed unused import

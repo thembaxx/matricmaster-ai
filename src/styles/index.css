@@ -63,15 +63,16 @@
 
 	/* Brand Colors */
 	--color-brand-blue: #2563eb;
-	--color-brand-blue-light: #3b82f6;
+	--color-brand-blue-light: #60a5fa;
 	--color-brand-amber: #f59e0b;
-	--color-brand-amber-light: #fcd34d;
-	--color-brand-purple: #8b5cf6;
+	--color-brand-amber-light: #fbbf24;
+	--color-brand-purple: #7c3aed;
 	--color-brand-purple-light: #a78bfa;
-	--color-brand-green: #10b981;
+	--color-brand-green: #059669;
 	--color-brand-green-light: #34d399;
-	--color-brand-red: #ef4444;
-	--color-brand-orange: #f97316;
+	--color-brand-red: #dc2626;
+	--color-brand-orange: #ea580c;
+	--color-brand-gray: #4b5563;
 
 	/* Subject Colors */
 	--color-math: #3b82f6;
@@ -84,7 +85,7 @@
 }
 
 :root {
-	--radius: 0.75rem;
+	--radius: 1.25rem;
 	--background: oklch(0.98 0 0);
 	--foreground: oklch(0.15 0 0);
 	--card: oklch(1 0 0);

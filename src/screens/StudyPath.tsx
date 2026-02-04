@@ -11,22 +11,22 @@ import { useRouter } from 'next/navigation';
 const pathNodes = [
 	{
 		id: 1,
-		title: 'Physics Circuits',
+		title: 'Electrodynamics',
 		status: 'locked',
 		icon: Lock,
-		description: "Ohm's Law & Kirchhoff",
+		description: 'Generators & Motors',
 	},
 	{
 		id: 2,
-		title: 'Calculus P1',
+		title: 'Calculus: Optimization',
 		status: 'current',
 		icon: Play,
-		description: 'In Progress • 35%',
-		progress: 35,
+		description: 'In Progress • 60%',
+		progress: 60,
 	},
 	{
 		id: 3,
-		title: 'Intro to Functions',
+		title: 'Work, Energy & Power',
 		status: 'completed',
 		icon: CheckCircle2,
 		description: 'Completed',
@@ -34,11 +34,11 @@ const pathNodes = [
 	},
 	{
 		id: 4,
-		title: 'Algebra Basics',
+		title: 'Vertical Projectile Motion',
 		status: 'completed',
 		icon: CheckCircle2,
 		description: 'Completed',
-		stars: 2,
+		stars: 3,
 	},
 ];
 
@@ -60,10 +60,12 @@ export default function StudyPath() {
 						>
 							<ArrowLeft className="w-5 h-5" />
 						</Button>
-						<h1 className="text-xl font-bold text-zinc-900 dark:text-white">My Physics Path</h1>
+						<h1 className="text-xl font-bold text-zinc-900 dark:text-white">
+							Matric Learning Path
+						</h1>
 					</div>
 					<Badge variant="secondary" className="flex items-center gap-1 rounded-full px-3 py-1">
-						<span className="w-2 h-2 rounded-full bg-yellow-500" />
+						<span className="w-2 h-2 rounded-full bg-brand-blue" />
 						{overallProgress}%
 					</Badge>
 				</div>
@@ -155,11 +157,11 @@ export default function StudyPath() {
 			{/* Resume Button */}
 			<div className="absolute bottom-8 left-0 right-0 px-6 max-w-2xl mx-auto z-10 pointer-events-none">
 				<Button
-					className="w-full h-16 bg-blue-600 hover:bg-blue-700 text-white rounded-[2rem] text-lg font-bold shadow-xl shadow-blue-500/20 pointer-events-auto"
+					className="w-full h-16 bg-brand-blue hover:bg-brand-blue-light text-white rounded-[2rem] text-lg font-bold shadow-xl shadow-brand-blue/20 pointer-events-auto"
 					onClick={() => router.push('/quiz')}
 				>
 					<Play className="w-5 h-5 mr-3 fill-white" />
-					Resume: Calculus P1
+					Resume: Calculus Optimization
 					<ChevronRight className="w-5 h-5 ml-auto" />
 				</Button>
 			</div>

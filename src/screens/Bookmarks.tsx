@@ -102,7 +102,7 @@ export default function Bookmarks() {
 								<Card
 									key={bookmark.id}
 									className="p-5 hover:shadow-lg transition-all cursor-pointer rounded-[2.5rem] border-zinc-100 dark:border-zinc-800 bg-white dark:bg-zinc-900/50 shadow-sm flex flex-col h-64"
-								onClick={() => router.push('/quiz')}
+									onClick={() => router.push('/quiz')}
 								>
 									<div className="flex justify-between items-start mb-4">
 										<div

@@ -26,9 +26,7 @@ const languages = [
 	{ code: 'ST', name: 'Sesotho', color: 'bg-cyan-500' },
 ];
 
-export default function LanguageSelect({
-	currentLanguage = 'EN',
-}: LanguageSelectProps) {
+export default function LanguageSelect({ currentLanguage = 'EN' }: LanguageSelectProps) {
 	const router = useRouter();
 	const [selectedLanguage, setSelectedLanguage] = useState(currentLanguage);
 

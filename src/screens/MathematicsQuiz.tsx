@@ -3,8 +3,8 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { useRouter } from 'next/navigation';
 import { ArrowLeft, CheckCircle2, GripVertical, Lightbulb, X } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 // import type { Screen } from '@/types'; // Removed unused import

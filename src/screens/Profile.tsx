@@ -18,8 +18,6 @@ import {
 } from 'lucide-react';
 import { useState } from 'react';
 
-
-
 const achievements = [
 	{
 		title: 'Calculus Master',
