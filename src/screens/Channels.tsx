@@ -55,9 +55,9 @@ const messages = [
 
 export default function Channels({ onNavigate }: ChannelsProps) {
 	return (
-		<div className="flex flex-col min-h-screen bg-background">
+		<div className="flex flex-col h-full bg-background relative">
 			{/* Header */}
-			<header className="px-6 pt-12 pb-4 bg-white dark:bg-zinc-900 sticky top-0 z-20 border-b border-zinc-100 dark:border-zinc-800">
+			<header className="px-6 pt-12 pb-4 bg-white dark:bg-zinc-900 sticky top-0 z-20 border-b border-zinc-100 dark:border-zinc-800 shrink-0">
 				<div className="flex items-center gap-4">
 					<Button variant="ghost" size="icon" onClick={() => onNavigate('DASHBOARD')}>
 						<ArrowLeft className="w-5 h-5" />
@@ -121,7 +121,7 @@ export default function Channels({ onNavigate }: ChannelsProps) {
 			</ScrollArea>
 
 			{/* Input Area */}
-			<footer className="bg-white dark:bg-zinc-900 border-t border-zinc-200 dark:border-zinc-800 p-4">
+			<footer className="shrink-0 bg-white dark:bg-zinc-900 border-t border-zinc-200 dark:border-zinc-800 p-4">
 				<div className="flex items-center gap-3">
 					<Button variant="ghost" size="icon" className="shrink-0">
 						<ImageIcon className="w-5 h-5 text-zinc-500" />

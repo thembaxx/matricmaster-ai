@@ -101,9 +101,9 @@ export default function Achievements({ onNavigate }: AchievementsProps) {
 	const progress = (unlockedCount / badges.length) * 100;
 
 	return (
-		<div className="flex flex-col min-h-screen bg-zinc-50 dark:bg-zinc-950 font-lexend">
+		<div className="flex flex-col h-full bg-zinc-50 dark:bg-zinc-950 font-lexend">
 			{/* Header */}
-			<header className="px-6 pt-12 pb-6 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl sticky top-0 z-20 border-b border-zinc-100 dark:border-zinc-800">
+			<header className="px-6 pt-12 pb-6 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl sticky top-0 z-20 border-b border-zinc-100 dark:border-zinc-800 shrink-0">
 				<div className="max-w-2xl mx-auto w-full space-y-6">
 					<div className="flex items-center gap-4">
 						<Button
@@ -159,7 +159,7 @@ export default function Achievements({ onNavigate }: AchievementsProps) {
 			</header>
 
 			<ScrollArea className="flex-1">
-				<main className="px-6 py-8 pb-32 max-w-2xl mx-auto w-full">
+				<main className="px-6 py-8 pb-12 max-w-2xl mx-auto w-full">
 					{/* Filter Tabs */}
 					<div className="bg-zinc-100 dark:bg-zinc-900 p-1.5 rounded-2xl mb-8">
 						<Tabs defaultValue="all" className="w-full">

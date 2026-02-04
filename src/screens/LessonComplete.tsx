@@ -17,7 +17,7 @@ export default function LessonComplete({ onNavigate }: LessonCompleteProps) {
 	const xpProgress = (xpCurrent / xpNext) * 100;
 
 	return (
-		<div className="flex flex-col min-h-screen bg-zinc-50 dark:bg-zinc-950 font-lexend overflow-hidden">
+		<div className="flex flex-col h-full bg-zinc-50 dark:bg-zinc-950 font-lexend overflow-hidden">
 			{/* Confetti Animation Background */}
 			{showConfetti && (
 				<div className="fixed inset-0 pointer-events-none overflow-hidden z-0">

@@ -80,11 +80,13 @@ export default function App() {
 	return (
 		<div className="flex justify-center items-center min-h-screen bg-background p-0 sm:p-4">
 			<div className="w-full max-w-[420px] h-full min-h-screen sm:min-h-[850px] sm:h-[900px] bg-background sm:rounded-[2rem] shadow-2xl relative overflow-hidden flex flex-col transition-colors duration-300 border-x border-border">
-				{renderScreen()}
+				<div className="flex-1 overflow-hidden flex flex-col">
+					{renderScreen()}
+				</div>
 
 				{/* Bottom Navigation - Hidden on specific screens */}
 				{!hideNavigation.includes(currentScreen) && (
-					<nav className="absolute bottom-0 w-full bg-card/95 backdrop-blur-xl border-t border-border flex justify-between items-center px-6 py-3 pb-6 z-50">
+					<nav className="bg-card/95 backdrop-blur-xl border-t border-border flex justify-between items-center px-6 py-3 pb-4 sm:pb-6 z-50 shrink-0">
 						<button
 							type="button"
 							onClick={() => setCurrentScreen('LANDING')}

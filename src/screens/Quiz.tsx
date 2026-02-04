@@ -40,9 +40,9 @@ export default function Quiz({ onNavigate }: QuizProps) {
 	};
 
 	return (
-		<div className="flex flex-col min-h-screen bg-zinc-50 dark:bg-zinc-950 font-lexend">
+		<div className="flex flex-col h-full bg-zinc-50 dark:bg-zinc-950 font-lexend relative">
 			{/* Header */}
-			<header className="bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl sticky top-0 z-30 border-b border-zinc-100 dark:border-zinc-800">
+			<header className="bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl sticky top-0 z-30 border-b border-zinc-100 dark:border-zinc-800 shrink-0">
 				<div className="max-w-2xl mx-auto w-full">
 					<div className="px-6 pt-12 pb-2 flex items-center justify-between">
 						<Button
@@ -80,7 +80,7 @@ export default function Quiz({ onNavigate }: QuizProps) {
 			</header>
 
 			<ScrollArea className="flex-1">
-				<main className="px-6 py-8 pb-40 max-w-2xl mx-auto w-full space-y-8">
+				<main className="px-6 py-8 pb-48 max-w-2xl mx-auto w-full space-y-8">
 					<div className="space-y-3">
 						<h2 className="text-4xl font-black text-zinc-900 dark:text-white leading-tight">
 							Solve for <span className="text-brand-blue italic font-serif">x</span>
@@ -170,7 +170,7 @@ export default function Quiz({ onNavigate }: QuizProps) {
 			</ScrollArea>
 
 			{/* Floating Footer */}
-			<footer className="fixed bottom-0 left-0 right-0 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl p-8 z-30 border-t border-zinc-100 dark:border-zinc-800">
+			<footer className="absolute bottom-0 left-0 right-0 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl p-8 z-30 border-t border-zinc-100 dark:border-zinc-800">
 				<div className="max-w-2xl mx-auto w-full space-y-6">
 					<div className="flex justify-between items-center px-2">
 						<button

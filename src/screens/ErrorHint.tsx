@@ -10,9 +10,9 @@ interface ErrorHintProps {
 
 export default function ErrorHint({ onNavigate }: ErrorHintProps) {
 	return (
-		<div className="flex flex-col min-h-screen bg-background">
+		<div className="flex flex-col h-full bg-background">
 			{/* Alert Banner - Sticky */}
-			<div className="px-6 pt-12 pb-2 sticky top-0 z-20 bg-background/80 backdrop-blur-sm">
+			<div className="px-6 pt-12 pb-2 sticky top-0 z-20 bg-background/80 backdrop-blur-sm shrink-0">
 				<div className="bg-amber-100 dark:bg-amber-900/30 text-amber-900 dark:text-amber-100 px-4 py-3 rounded-2xl flex items-center justify-between shadow-sm border border-amber-200 dark:border-amber-800">
 					<div className="flex items-center gap-3">
 						<AlertTriangle className="w-5 h-5 fill-amber-500 text-amber-500" />
@@ -25,7 +25,7 @@ export default function ErrorHint({ onNavigate }: ErrorHintProps) {
 			</div>
 
 			<ScrollArea className="flex-1">
-				<main className="px-6 py-4 pb-32">
+				<main className="px-6 py-4 pb-12">
 					{/* Original Question */}
 					<div className="mb-8">
 						<div className="flex justify-between items-start mb-1">

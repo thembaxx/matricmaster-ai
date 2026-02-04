@@ -66,9 +66,9 @@ export default function Bookmarks({ onNavigate }: BookmarksProps) {
 			: bookmarks.filter((b) => b.subject.toLowerCase().includes(activeTab.toLowerCase()));
 
 	return (
-		<div className="flex flex-col min-h-screen bg-background">
+		<div className="flex flex-col h-full bg-background">
 			{/* Header */}
-			<header className="px-6 pt-12 pb-2 bg-white dark:bg-zinc-900 sticky top-0 z-20">
+			<header className="px-6 pt-12 pb-2 bg-white dark:bg-zinc-900 sticky top-0 z-20 shrink-0">
 				<h1 className="text-3xl font-bold text-zinc-900 dark:text-white mb-1">Bookmarks</h1>
 				<p className="text-sm text-zinc-500 dark:text-zinc-400 mb-6">
 					Your saved revision questions
@@ -96,7 +96,7 @@ export default function Bookmarks({ onNavigate }: BookmarksProps) {
 			</header>
 
 			<ScrollArea className="flex-1">
-				<main className="px-6 py-6 pb-32">
+				<main className="px-6 py-6 pb-12">
 					{filteredBookmarks.length > 0 ? (
 						<div className="grid grid-cols-2 gap-4">
 							{filteredBookmarks.map((bookmark) => (

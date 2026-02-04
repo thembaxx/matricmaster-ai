@@ -62,7 +62,7 @@ export default function Landing({ onNavigate }: LandingProps) {
 	const { theme, setTheme } = useTheme();
 
 	return (
-		<div className="flex flex-col min-h-screen bg-zinc-50 dark:bg-zinc-950 font-lexend overflow-hidden">
+		<div className="flex flex-col h-full bg-zinc-50 dark:bg-zinc-950 font-lexend overflow-hidden">
 			{/* Decorative Orbs */}
 			<div className="absolute top-[-10%] right-[-10%] w-[500px] h-[500px] bg-brand-blue/10 rounded-full blur-[120px] pointer-events-none" />
 			<div className="absolute bottom-[-10%] left-[-10%] w-[400px] h-[400px] bg-brand-purple/10 rounded-full blur-[100px] pointer-events-none" />
@@ -96,7 +96,7 @@ export default function Landing({ onNavigate }: LandingProps) {
 			</header>
 
 			<ScrollArea className="flex-1 relative z-10">
-				<main className="pb-32 px-6 max-w-2xl mx-auto w-full">
+				<main className="pb-12 px-6 max-w-2xl mx-auto w-full">
 					{/* Hero Section */}
 					<section className="pt-12 pb-16 flex flex-col items-center text-center space-y-8">
 						<div className="space-y-4">
