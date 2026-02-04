@@ -3,7 +3,6 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useTheme } from '@/hooks/use-theme';
-// import type { Screen } from '@/types'; // Removed unused import
 import {
 	Atom,
 	Calculator,
@@ -15,46 +14,15 @@ import {
 	Sun,
 } from 'lucide-react';
 
+import { SUBJECTS } from '@/constants/mock-data';
 import { useRouter } from 'next/navigation';
 
-const subjects = [
-	{
-		id: 'math',
-		name: 'Mathematics',
-		topics: 'Calculus, Euclidean Geometry, Trig',
-		icon: Calculator,
-		color: 'text-brand-blue',
-		bg: 'bg-brand-blue/10',
-		border: 'border-brand-blue',
-	},
-	{
-		id: 'physics',
-		name: 'Physical Sciences',
-		topics: 'Newtonian Laws, Electrodynamics, Organic',
-		icon: Atom,
-		color: 'text-brand-purple',
-		bg: 'bg-brand-purple/10',
-		border: 'border-brand-purple',
-	},
-	{
-		id: 'accounting',
-		name: 'Accounting',
-		topics: 'Financial statements, Ledgers',
-		icon: LayoutDashboard,
-		color: 'text-brand-amber',
-		bg: 'bg-brand-amber/10',
-		border: 'border-brand-amber',
-	},
-	{
-		id: 'life',
-		name: 'Life Sciences',
-		topics: 'Genetics, Evolution, DNA',
-		icon: Microscope,
-		color: 'text-brand-green',
-		bg: 'bg-brand-green/10',
-		border: 'border-brand-green',
-	},
-];
+const ICON_MAP: Record<string, React.ElementType> = {
+	Calculator: Calculator,
+	Atom: Atom,
+	Beaker: LayoutDashboard,
+	Microscope: Microscope,
+};
 
 export default function Landing() {
 	const router = useRouter();
@@ -194,36 +162,39 @@ export default function Landing() {
 						</div>
 
 						<div className="grid grid-cols-1 gap-4">
-							{subjects.map((subject) => (
-								<Card
-									key={subject.id}
-									className="p-6 rounded-[2.5rem] border-none shadow-sm hover:shadow-2xl hover:-translate-y-1 hover:scale-[1.02] transition-all cursor-pointer bg-white dark:bg-zinc-900 group relative overflow-hidden"
-									onClick={() => router.push('/quiz')}
-								>
-									<div
-										className={`absolute top-0 right-0 w-32 h-32 ${subject.bg} rounded-full -mr-16 -mt-16 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity`}
-									/>
-
-									<div className="flex items-center gap-6 relative z-10">
+							{SUBJECTS.map((subject) => {
+								const Icon = ICON_MAP[subject.icon] || Calculator;
+								return (
+									<Card
+										key={subject.id}
+										className="p-6 rounded-[2.5rem] border-none shadow-sm hover:shadow-2xl hover:-translate-y-1 hover:scale-[1.02] transition-all cursor-pointer bg-white dark:bg-zinc-900 group relative overflow-hidden"
+										onClick={() => router.push(subject.path)}
+									>
 										<div
-											className={`w-16 h-16 rounded-[1.5rem] ${subject.bg} flex items-center justify-center shrink-0 shadow-inner group-hover:scale-110 transition-transform`}
-										>
-											<subject.icon className={`w-8 h-8 ${subject.color}`} />
+											className={`absolute top-0 right-0 w-32 h-32 ${subject.bg} rounded-full -mr-16 -mt-16 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity`}
+										/>
+
+										<div className="flex items-center gap-6 relative z-10">
+											<div
+												className={`w-16 h-16 rounded-[1.5rem] ${subject.bg} flex items-center justify-center shrink-0 shadow-inner group-hover:scale-110 transition-transform`}
+											>
+												<Icon className={`w-8 h-8 ${subject.color}`} />
+											</div>
+											<div className="flex-1 min-w-0">
+												<h3 className="font-black text-zinc-900 dark:text-white text-xl group-hover:text-brand-blue transition-colors">
+													{subject.name}
+												</h3>
+												<p className="text-sm font-bold text-zinc-400 truncate mt-1">
+													{subject.topics}
+												</p>
+											</div>
+											<div className="w-12 h-12 rounded-full bg-zinc-50 dark:bg-zinc-800 flex items-center justify-center group-hover:bg-brand-blue group-hover:text-white transition-all shadow-sm">
+												<ChevronRight className="w-6 h-6" />
+											</div>
 										</div>
-										<div className="flex-1 min-w-0">
-											<h3 className="font-black text-zinc-900 dark:text-white text-xl group-hover:text-brand-blue transition-colors">
-												{subject.name}
-											</h3>
-											<p className="text-sm font-bold text-zinc-400 truncate mt-1">
-												{subject.topics}
-											</p>
-										</div>
-										<div className="w-12 h-12 rounded-full bg-zinc-50 dark:bg-zinc-800 flex items-center justify-center group-hover:bg-brand-blue group-hover:text-white transition-all shadow-sm">
-											<ChevronRight className="w-6 h-6" />
-										</div>
-									</div>
-								</Card>
-							))}
+									</Card>
+								);
+							})}
 						</div>
 					</section>
 

@@ -2,13 +2,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 // import type { Screen } from '@/types'; // Removed unused import
-import {
-	ArrowLeft,
-	HelpCircle,
-	Lightbulb,
-	MoreHorizontal,
-	Sparkles,
-} from 'lucide-react';
+import { ArrowLeft, HelpCircle, Lightbulb, MoreHorizontal, Sparkles } from 'lucide-react';
 import { useState } from 'react';
 
 import { useRouter } from 'next/navigation';
@@ -65,9 +59,7 @@ export default function Quiz() {
 							<h1 className="text-[10px] font-black text-zinc-400 uppercase tracking-[0.2em]">
 								Mathematics P1
 							</h1>
-							<p className="text-sm font-black text-zinc-900 dark:text-white">
-								Nov 2023 • NSC
-							</p>
+							<p className="text-sm font-black text-zinc-900 dark:text-white">Nov 2023 • NSC</p>
 						</div>
 						<Button variant="ghost" size="icon" className="rounded-full">
 							<MoreHorizontal className="w-6 h-6" />
@@ -96,8 +88,7 @@ export default function Quiz() {
 							Local <span className="text-brand-blue italic font-serif">Extrema</span>
 						</h2>
 						<p className="text-zinc-500 font-medium leading-relaxed">
-							Find the coordinates of the local maximum for the function graphed
-							below.
+							Find the coordinates of the local maximum for the function graphed below.
 						</p>
 					</div>
 
@@ -146,13 +137,7 @@ export default function Quiz() {
 								/>
 
 								{/* Local Max Point */}
-								<circle
-									cx="75"
-									cy="40"
-									r="5"
-									fill="#10b981"
-									className="animate-pulse"
-								/>
+								<circle cx="75" cy="40" r="5" fill="#10b981" className="animate-pulse" />
 								<text
 									x="65"
 									y="30"
@@ -207,9 +192,7 @@ export default function Quiz() {
 									>
 										{option.id}
 									</div>
-									<span className="font-serif italic font-bold text-xl">
-										{option.expression}
-									</span>
+									<span className="font-serif italic font-bold text-xl">{option.expression}</span>
 
 									{isChecked && isSelected && option.isCorrect && (
 										<div className="absolute -top-2 -right-2 w-8 h-8 bg-white text-brand-green rounded-full flex items-center justify-center shadow-lg animate-in zoom-in">
@@ -229,9 +212,7 @@ export default function Quiz() {
 									<Sparkles className="w-6 h-6" />
 								</div>
 								<div>
-									<h4 className="font-black text-brand-green text-lg">
-										Aha! Moment
-									</h4>
+									<h4 className="font-black text-brand-green text-lg">Aha! Moment</h4>
 									<p className="text-xs font-black text-zinc-400 uppercase tracking-widest">
 										The "Why" behind the math
 									</p>
@@ -240,20 +221,16 @@ export default function Quiz() {
 
 							<div className="space-y-4 text-zinc-600 dark:text-zinc-400 font-medium leading-relaxed">
 								<p>
-									To find the local maximum, we first find where the slope
-									(derivative) is zero:
+									To find the local maximum, we first find where the slope (derivative) is zero:
 								</p>
 								<div className="bg-white dark:bg-zinc-900 p-4 rounded-2xl font-serif italic text-center text-lg border border-zinc-100 dark:border-zinc-800">
 									f'(x) = 3x² - 3 = 0 <br />
-									3(x² - 1) = 0 <br />
-									x = 1 or x = -1
+									3(x² - 1) = 0 <br />x = 1 or x = -1
 								</div>
 								<p>
-									By checking the second derivative{' '}
-									<span className="italic">f''(x) = 6x</span>, we see that{' '}
-									<span className="italic">f''(-1) = -6</span> (negative), which
-									confirms a local maximum at <span className="italic">x = -1</span>
-									.
+									By checking the second derivative <span className="italic">f''(x) = 6x</span>, we
+									see that <span className="italic">f''(-1) = -6</span> (negative), which confirms a
+									local maximum at <span className="italic">x = -1</span>.
 								</p>
 							</div>
 						</Card>
@@ -270,8 +247,8 @@ export default function Quiz() {
 									Smart Hint
 								</h4>
 								<p className="text-sm text-zinc-600 dark:text-zinc-400 font-medium leading-relaxed">
-									A local maximum occurs where the function stops increasing and
-									starts decreasing. This always happens at a stationary point.
+									A local maximum occurs where the function stops increasing and starts decreasing.
+									This always happens at a stationary point.
 								</p>
 							</div>
 						</div>
@@ -314,11 +291,7 @@ export default function Quiz() {
 						}`}
 						disabled={!selectedOption}
 					>
-						{isChecked
-							? isCorrect
-								? 'Continue'
-								: 'Try Again'
-							: 'Check Answer'}
+						{isChecked ? (isCorrect ? 'Continue' : 'Try Again') : 'Check Answer'}
 					</Button>
 				</div>
 			</footer>
