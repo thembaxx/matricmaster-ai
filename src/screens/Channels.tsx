@@ -7,6 +7,7 @@ import {
 	Send,
 	Users,
 } from 'lucide-react';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -81,7 +82,9 @@ export default function Channels() {
 				<main className="px-6 py-6 space-y-6">
 					{messages.map((msg) => (
 						<div key={msg.id} className={`flex gap-3 ${msg.isMe ? 'flex-row-reverse' : ''}`}>
-							<img src={msg.avatar} alt={msg.user} className="w-10 h-10 rounded-full bg-zinc-100" />
+							<div className="w-10 h-10 rounded-full bg-zinc-100 overflow-hidden relative">
+								<Image src={msg.avatar} alt={msg.user} fill className="object-cover" />
+							</div>
 							<div className={`flex-1 ${msg.isMe ? 'items-end' : 'items-start'} flex flex-col`}>
 								<div className="flex items-center gap-2 mb-1">
 									<span

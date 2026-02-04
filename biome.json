@@ -41,5 +41,11 @@
 			"trailingCommas": "es5",
 			"semicolons": "always"
 		}
+	},
+	"css": {
+		"parser": {
+			"cssModules": true,
+			"tailwindDirectives": true
+		}
 	}
 }

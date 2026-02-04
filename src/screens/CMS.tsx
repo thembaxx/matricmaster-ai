@@ -1,6 +1,7 @@
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
-import { SUBJECTS } from '@/constants';
+import { SUBJECTS } from '@/constants/mock-data';
 import type { ContentItem } from '@/types';
 
 export default function CMS() {
@@ -148,11 +149,15 @@ export default function CMS() {
 							className="bg-white dark:bg-zinc-900 p-6 rounded-[2.5rem] border border-zinc-200 dark:border-zinc-800 shadow-sm flex items-center gap-4 group hover:shadow-md transition-shadow"
 						>
 							{item.image ? (
-								<img
-									src={item.image}
-									className="w-16 h-16 rounded-2xl object-cover bg-zinc-100"
-									alt={item.title}
-								/>
+								<div className="w-16 h-16 rounded-2xl overflow-hidden bg-zinc-100">
+									<Image
+										src={item.image}
+										alt={item.title}
+										width={64}
+										height={64}
+										className="object-cover"
+									/>
+								</div>
 							) : (
 								<div className="w-16 h-16 rounded-2xl bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center text-zinc-400">
 									<span className="material-symbols-rounded">image</span>
@@ -269,17 +274,21 @@ export default function CMS() {
 									accept="image/*"
 									onChange={handleImageUpload}
 								/>
-								<div
+								<button
+									type="button"
 									onClick={() => fileInputRef.current?.click()}
 									className="w-full h-32 bg-zinc-50 dark:bg-zinc-800 rounded-3xl border-2 border-dashed border-zinc-200 dark:border-zinc-700 flex flex-col items-center justify-center cursor-pointer overflow-hidden relative group"
 								>
 									{editingItem.image ? (
 										<>
-											<img
-												src={editingItem.image}
-												className="w-full h-full object-cover"
-												alt="Preview"
-											/>
+											<div className="w-full h-full relative">
+												<Image
+													src={editingItem.image}
+													alt="Preview"
+													fill
+													className="object-cover"
+												/>
+											</div>
 											<div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
 												<span className="text-white text-xs font-bold">Change Image</span>
 											</div>
@@ -292,7 +301,7 @@ export default function CMS() {
 											<span className="text-xs text-zinc-400">Click to upload image</span>
 										</>
 									)}
-								</div>
+								</button>
 							</div>
 
 							{/* Category & Difficulty */}
