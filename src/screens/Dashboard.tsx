@@ -52,7 +52,7 @@ export default function Dashboard() {
 			</header>
 
 			<ScrollArea className="flex-1">
-				<main className="px-6 pb-12 pt-6 space-y-8 max-w-2xl mx-auto w-full">
+				<main className="px-6 pb-32 pt-6 space-y-8 max-w-2xl mx-auto w-full">
 					{/* Daily Goal - Prominent Focus */}
 					<div className="space-y-4">
 						<Card className="p-8 border-none shadow-2xl bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 rounded-[3rem] relative overflow-hidden group">

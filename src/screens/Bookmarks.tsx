@@ -95,7 +95,7 @@ export default function Bookmarks() {
 			</header>
 
 			<ScrollArea className="flex-1">
-				<main className="px-6 py-6 pb-12">
+				<main className="px-6 py-6 pb-32">
 					{filteredBookmarks.length > 0 ? (
 						<div className="grid grid-cols-2 gap-4">
 							{filteredBookmarks.map((bookmark) => (

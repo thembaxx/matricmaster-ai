@@ -72,7 +72,7 @@ export default function StudyPath() {
 			</header>
 
 			<ScrollArea className="flex-1">
-				<main className="px-6 py-6 pb-12 max-w-2xl mx-auto w-full">
+				<main className="px-6 py-6 pb-32 max-w-2xl mx-auto w-full">
 					{/* Path Visualization */}
 					<div className="relative">
 						{/* Connecting Line */}
