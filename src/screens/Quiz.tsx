@@ -1,13 +1,11 @@
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import type { Screen } from '@/types';
+// import type { Screen } from '@/types'; // Removed unused import
 import { ArrowLeft, HelpCircle, Lightbulb, MoreHorizontal, Sparkles } from 'lucide-react';
 import { useState } from 'react';
 
-interface QuizProps {
-	onNavigate: (s: Screen) => void;
-}
+import { useRouter } from 'next/navigation';
 
 const options = [
 	{ id: 'A', expression: '(x+2)(x+3)', isCorrect: false },
@@ -16,7 +14,8 @@ const options = [
 	{ id: 'D', expression: '(x+1)(x-6)', isCorrect: false },
 ];
 
-export default function Quiz({ onNavigate }: QuizProps) {
+export default function Quiz() {
+	const router = useRouter();
 	const [selectedOption, setSelectedOption] = useState<string | null>(null);
 	const [isChecked, setIsChecked] = useState(false);
 	const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
@@ -24,7 +23,7 @@ export default function Quiz({ onNavigate }: QuizProps) {
 	const handleCheck = () => {
 		if (isChecked) {
 			if (isCorrect) {
-				onNavigate('LESSON_COMPLETE');
+				router.push('/lesson-complete');
 			} else {
 				setIsChecked(false);
 				setIsCorrect(null);
@@ -48,7 +47,7 @@ export default function Quiz({ onNavigate }: QuizProps) {
 						<Button
 							variant="ghost"
 							size="icon"
-							onClick={() => onNavigate('DASHBOARD')}
+							onClick={() => router.push('/dashboard')}
 							className="rounded-full"
 						>
 							<ArrowLeft className="w-6 h-6" />

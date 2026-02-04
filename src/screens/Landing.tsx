@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useTheme } from '@/hooks/use-theme';
-import type { Screen } from '@/types';
+// import type { Screen } from '@/types'; // Removed unused import
 import {
 	Atom,
 	Calculator,
@@ -15,9 +15,7 @@ import {
 	Sun,
 } from 'lucide-react';
 
-interface LandingProps {
-	onNavigate: (s: Screen) => void;
-}
+import { useRouter } from 'next/navigation';
 
 const subjects = [
 	{
@@ -58,7 +56,8 @@ const subjects = [
 	},
 ];
 
-export default function Landing({ onNavigate }: LandingProps) {
+export default function Landing() {
+	const router = useRouter();
 	const { theme, setTheme } = useTheme();
 
 	return (
@@ -80,7 +79,7 @@ export default function Landing({ onNavigate }: LandingProps) {
 				<div className="flex items-center gap-4">
 					<button
 						type="button"
-						onClick={() => onNavigate('LANGUAGE_SELECT')}
+						onClick={() => router.push('/language')}
 						className="text-[10px] font-black text-zinc-400 hover:text-brand-blue uppercase tracking-widest transition-colors"
 					>
 						Language: EN
@@ -141,7 +140,7 @@ export default function Landing({ onNavigate }: LandingProps) {
 						<Button
 							size="lg"
 							className="w-full max-w-sm bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 rounded-[2rem] h-20 text-xl font-black shadow-2xl hover:scale-[1.02] active:scale-95 transition-all shadow-brand-blue/10"
-							onClick={() => onNavigate('DASHBOARD')}
+							onClick={() => router.push('/dashboard')}
 						>
 							Start Learning Now
 							<ChevronRight className="w-6 h-6 ml-2" />
@@ -163,7 +162,7 @@ export default function Landing({ onNavigate }: LandingProps) {
 								<Card
 									key={subject.id}
 									className="p-6 rounded-[2.5rem] border-none shadow-sm hover:shadow-2xl hover:-translate-y-1 transition-all cursor-pointer bg-white dark:bg-zinc-900 group relative overflow-hidden"
-									onClick={() => onNavigate('QUIZ')}
+									onClick={() => router.push('/quiz')}
 								>
 									<div
 										className={`absolute top-0 right-0 w-32 h-32 ${subject.bg} rounded-full -mr-16 -mt-16 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity`}

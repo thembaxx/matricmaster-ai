@@ -3,12 +3,10 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import type { Screen } from '@/types';
+import { useRouter } from 'next/navigation';
 import { ArrowLeft, Crown, Zap } from 'lucide-react';
 
-interface LeaderboardProps {
-	onNavigate: (s: Screen) => void;
-}
+// import type { Screen } from '@/types'; // Removed unused import
 
 const topThree = [
 	{
@@ -73,7 +71,8 @@ const otherStudents = [
 	},
 ];
 
-export default function Leaderboard({ onNavigate }: LeaderboardProps) {
+export default function Leaderboard() {
+	const router = useRouter();
 	return (
 		<div className="flex flex-col h-full bg-zinc-50 dark:bg-zinc-950 font-lexend">
 			{/* Header */}
@@ -83,7 +82,7 @@ export default function Leaderboard({ onNavigate }: LeaderboardProps) {
 						<Button
 							variant="ghost"
 							size="icon"
-							onClick={() => onNavigate('DASHBOARD')}
+							onClick={() => router.push('/dashboard')}
 							className="rounded-full"
 						>
 							<ArrowLeft className="w-5 h-5" />

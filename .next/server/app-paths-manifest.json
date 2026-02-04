@@ -1,0 +1,22 @@
+{
+  "/_global-error/page": "app/_global-error/page.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/achievements/page": "app/achievements/page.js",
+  "/bookmarks/page": "app/bookmarks/page.js",
+  "/channels/page": "app/channels/page.js",
+  "/cms/page": "app/cms/page.js",
+  "/dashboard/page": "app/dashboard/page.js",
+  "/error-hint/page": "app/error-hint/page.js",
+  "/language/page": "app/language/page.js",
+  "/leaderboard/page": "app/leaderboard/page.js",
+  "/lesson-complete/page": "app/lesson-complete/page.js",
+  "/math-quiz/page": "app/math-quiz/page.js",
+  "/page": "app/page.js",
+  "/past-paper/page": "app/past-paper/page.js",
+  "/physics/page": "app/physics/page.js",
+  "/profile/page": "app/profile/page.js",
+  "/quiz/page": "app/quiz/page.js",
+  "/search/page": "app/search/page.js",
+  "/study-path/page": "app/study-path/page.js",
+  "/study-plan/page": "app/study-plan/page.js"
+}

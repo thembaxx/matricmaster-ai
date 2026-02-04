@@ -1,0 +1,15 @@
+{
+  "headers": {
+    "x-nextjs-stale-time": "300",
+    "x-nextjs-prerender": "1",
+    "x-next-cache-tags": "_N_T_/layout,_N_T_/math-quiz/layout,_N_T_/math-quiz/page,_N_T_/math-quiz"
+  },
+  "segmentPaths": [
+    "/_tree",
+    "/_full",
+    "/math-quiz/__PAGE__",
+    "/math-quiz",
+    "/_index",
+    "/_head"
+  ]
+}

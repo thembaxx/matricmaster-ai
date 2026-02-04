@@ -1,7 +1,7 @@
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import type { Screen } from '@/types';
+import { useRouter } from 'next/navigation';
 import {
 	ArrowLeft,
 	Calculator,
@@ -12,9 +12,7 @@ import {
 	Users,
 } from 'lucide-react';
 
-interface ChannelsProps {
-	onNavigate: (s: Screen) => void;
-}
+// import type { Screen } from '@/types'; // Removed unused import
 
 const messages = [
 	{
@@ -53,13 +51,14 @@ const messages = [
 	},
 ];
 
-export default function Channels({ onNavigate }: ChannelsProps) {
+export default function Channels() {
+	const router = useRouter();
 	return (
 		<div className="flex flex-col h-full bg-background relative">
 			{/* Header */}
 			<header className="px-6 pt-12 pb-4 bg-white dark:bg-zinc-900 sticky top-0 z-20 border-b border-zinc-100 dark:border-zinc-800 shrink-0">
 				<div className="flex items-center gap-4">
-					<Button variant="ghost" size="icon" onClick={() => onNavigate('DASHBOARD')}>
+					<Button variant="ghost" size="icon" onClick={() => router.push('/dashboard')}>
 						<ArrowLeft className="w-5 h-5" />
 					</Button>
 					<div className="flex-1">

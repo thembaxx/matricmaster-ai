@@ -2,13 +2,11 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import type { Screen } from '@/types';
+// import type { Screen } from '@/types'; // Removed unused import
 import { Activity, Bookmark, Calculator, Microscope, Plus, TrendingUp, Zap } from 'lucide-react';
 import { useState } from 'react';
 
-interface BookmarksProps {
-	onNavigate: (s: Screen) => void;
-}
+import { useRouter } from 'next/navigation';
 
 const bookmarks = [
 	{
@@ -57,7 +55,8 @@ const bookmarks = [
 	},
 ];
 
-export default function Bookmarks({ onNavigate }: BookmarksProps) {
+export default function Bookmarks() {
+	const router = useRouter();
 	const [activeTab, setActiveTab] = useState('all');
 
 	const filteredBookmarks =
@@ -103,7 +102,7 @@ export default function Bookmarks({ onNavigate }: BookmarksProps) {
 								<Card
 									key={bookmark.id}
 									className="p-5 hover:shadow-lg transition-all cursor-pointer rounded-[2.5rem] border-zinc-100 dark:border-zinc-800 bg-white dark:bg-zinc-900/50 shadow-sm flex flex-col h-64"
-									onClick={() => onNavigate('QUIZ')}
+								onClick={() => router.push('/quiz')}
 								>
 									<div className="flex justify-between items-start mb-4">
 										<div
@@ -158,7 +157,7 @@ export default function Bookmarks({ onNavigate }: BookmarksProps) {
 								</p>
 							</div>
 							<Button
-								onClick={() => onNavigate('QUIZ')}
+								onClick={() => router.push('/quiz')}
 								className="bg-brand-blue text-white rounded-full px-8 h-12 font-bold shadow-lg shadow-brand-blue/20 active:scale-95 transition-all"
 							>
 								<Plus className="w-4 h-4 mr-2" />

@@ -3,13 +3,11 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import type { Screen } from '@/types';
+import { useRouter } from 'next/navigation';
 import { ArrowLeft, CheckCircle2, GripVertical, Lightbulb, X } from 'lucide-react';
 import { useState } from 'react';
 
-interface MathematicsQuizProps {
-	onNavigate: (s: Screen) => void;
-}
+// import type { Screen } from '@/types'; // Removed unused import
 
 const mathSymbols = ['√', 'x²', '∫', 'd/dx', 'lim', 'Σ', '∞', 'π', 'e', 'ln', 'sin', 'cos', 'tan'];
 
@@ -20,7 +18,8 @@ const steps = [
 	{ id: 4, text: 'x³ + x² + C', correct: true },
 ];
 
-export default function MathematicsQuiz({ onNavigate }: MathematicsQuizProps) {
+export default function MathematicsQuiz() {
+	const router = useRouter();
 	const [selectedSteps, setSelectedSteps] = useState<number[]>([]);
 	const availableSteps = steps;
 
@@ -45,7 +44,7 @@ export default function MathematicsQuiz({ onNavigate }: MathematicsQuizProps) {
 						<Button
 							variant="ghost"
 							size="icon"
-							onClick={() => onNavigate('DASHBOARD')}
+							onClick={() => router.push('/dashboard')}
 							className="rounded-full"
 						>
 							<ArrowLeft className="w-5 h-5" />
@@ -200,7 +199,7 @@ export default function MathematicsQuiz({ onNavigate }: MathematicsQuizProps) {
 						<Button
 							className="flex-1 h-16 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 rounded-[2rem] font-bold text-lg shadow-xl shadow-zinc-900/10 disabled:opacity-50 transition-all active:scale-95"
 							disabled={selectedSteps.length === 0}
-							onClick={() => onNavigate('LESSON_COMPLETE')}
+							onClick={() => router.push('/lesson-complete')}
 						>
 							<CheckCircle2 className="w-5 h-5 mr-2" />
 							Check Answer

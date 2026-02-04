@@ -2,15 +2,14 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
-import type { Screen } from '@/types';
+// import type { Screen } from '@/types'; // Removed unused import
 import { ChevronRight, Clock, RotateCcw, Star, Target, Trophy, Zap } from 'lucide-react';
 import { useState } from 'react';
 
-interface LessonCompleteProps {
-	onNavigate: (s: Screen) => void;
-}
+import { useRouter } from 'next/navigation';
 
-export default function LessonComplete({ onNavigate }: LessonCompleteProps) {
+export default function LessonComplete() {
+	const router = useRouter();
 	const [showConfetti] = useState(true);
 	const xpCurrent = 1250;
 	const xpNext = 2000;
@@ -114,7 +113,7 @@ export default function LessonComplete({ onNavigate }: LessonCompleteProps) {
 				<div className="w-full max-w-sm space-y-4">
 					<Button
 						className="w-full h-16 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 rounded-[2rem] text-lg font-bold shadow-xl shadow-zinc-900/10 active:scale-[0.98] transition-all"
-						onClick={() => onNavigate('DASHBOARD')}
+						onClick={() => router.push('/dashboard')}
 					>
 						Continue Learning
 						<ChevronRight className="w-5 h-5 ml-2" />
@@ -122,7 +121,7 @@ export default function LessonComplete({ onNavigate }: LessonCompleteProps) {
 					<Button
 						variant="ghost"
 						className="w-full h-12 rounded-full font-bold text-zinc-500 hover:text-zinc-900 dark:hover:text-white"
-						onClick={() => onNavigate('QUIZ')}
+						onClick={() => router.push('/quiz')}
 					>
 						<RotateCcw className="w-4 h-4 mr-2" />
 						Review My Mistakes

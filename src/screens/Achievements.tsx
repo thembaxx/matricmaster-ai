@@ -4,7 +4,7 @@ import { Progress } from '@/components/ui/progress';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useTheme } from '@/hooks/use-theme';
-import type { Screen } from '@/types';
+import { useRouter } from 'next/navigation';
 import {
 	ArrowLeft,
 	Atom,
@@ -19,9 +19,7 @@ import {
 } from 'lucide-react';
 import { useState } from 'react';
 
-interface AchievementsProps {
-	onNavigate: (s: Screen) => void;
-}
+// import type { Screen } from '@/types'; // Removed unused import
 
 const badges = [
 	{
@@ -90,7 +88,8 @@ const badges = [
 	},
 ];
 
-export default function Achievements({ onNavigate }: AchievementsProps) {
+export default function Achievements() {
+	const router = useRouter();
 	const { theme, setTheme } = useTheme();
 	const [activeTab, setActiveTab] = useState('all');
 
@@ -109,7 +108,7 @@ export default function Achievements({ onNavigate }: AchievementsProps) {
 						<Button
 							variant="ghost"
 							size="icon"
-							onClick={() => onNavigate('PROFILE')}
+							onClick={() => router.push('/profile')}
 							className="rounded-full"
 						>
 							<ArrowLeft className="w-5 h-5" />

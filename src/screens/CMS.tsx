@@ -1,12 +1,12 @@
 import { SUBJECTS } from '@/constants';
-import type { ContentItem, Screen } from '@/types';
+import { useRouter } from 'next/navigation';
+import type { ContentItem } from '@/types';
 import { useRef, useState } from 'react';
 
-interface CMSProps {
-	onNavigate: (s: Screen) => void;
-}
 
-export default function CMS({ onNavigate }: CMSProps) {
+
+export default function CMS() {
+	const router = useRouter();
 	const [items, setItems] = useState<ContentItem[]>([
 		{
 			id: '1',
@@ -85,7 +85,7 @@ export default function CMS({ onNavigate }: CMSProps) {
 				<div className="flex justify-between items-center mb-4">
 					<button
 						type="button"
-						onClick={() => onNavigate('PROFILE')}
+						onClick={() => router.push('/profile')}
 						className="material-symbols-rounded text-zinc-500"
 					>
 						arrow_back

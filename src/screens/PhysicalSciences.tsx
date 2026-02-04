@@ -4,15 +4,14 @@ import { Card } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useTheme } from '@/hooks/use-theme';
-import type { Screen } from '@/types';
+import { useRouter } from 'next/navigation';
 import { ArrowLeft, Download, Eye, Moon, Settings, Split, Sun } from 'lucide-react';
 import { useState } from 'react';
 
-interface PhysicalSciencesProps {
-	onNavigate: (s: Screen) => void;
-}
+// import type { Screen } from '@/types'; // Removed unused import
 
-export default function PhysicalSciences({ onNavigate }: PhysicalSciencesProps) {
+export default function PhysicalSciences() {
+	const router = useRouter();
 	const { theme, setTheme } = useTheme();
 	const [viewMode, setViewMode] = useState<'question' | 'split'>('split');
 	const [showAnnotations, setShowAnnotations] = useState(true);
@@ -23,7 +22,7 @@ export default function PhysicalSciences({ onNavigate }: PhysicalSciencesProps) 
 			<header className="px-6 pt-12 pb-4 bg-white dark:bg-zinc-900 sticky top-0 z-20 border-b border-zinc-100 dark:border-zinc-800 shrink-0">
 				<div className="flex items-center justify-between mb-4">
 					<div className="flex items-center gap-4">
-						<Button variant="ghost" size="icon" onClick={() => onNavigate('DASHBOARD')}>
+						<Button variant="ghost" size="icon" onClick={() => router.push('/dashboard')}>
 							<ArrowLeft className="w-5 h-5" />
 						</Button>
 						<h1 className="text-lg font-bold text-zinc-900 dark:text-white">Physics P1</h1>

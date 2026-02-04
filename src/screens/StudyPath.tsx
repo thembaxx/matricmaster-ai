@@ -3,12 +3,10 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import type { Screen } from '@/types';
+// import type { Screen } from '@/types'; // Removed unused import
 import { ArrowLeft, CheckCircle2, ChevronRight, Lock, Play, Star } from 'lucide-react';
 
-interface StudyPathProps {
-	onNavigate: (s: Screen) => void;
-}
+import { useRouter } from 'next/navigation';
 
 const pathNodes = [
 	{
@@ -44,7 +42,8 @@ const pathNodes = [
 	},
 ];
 
-export default function StudyPath({ onNavigate }: StudyPathProps) {
+export default function StudyPath() {
+	const router = useRouter();
 	const overallProgress = 12;
 
 	return (
@@ -56,7 +55,7 @@ export default function StudyPath({ onNavigate }: StudyPathProps) {
 						<Button
 							variant="ghost"
 							size="icon"
-							onClick={() => onNavigate('DASHBOARD')}
+							onClick={() => router.push('/dashboard')}
 							className="rounded-full"
 						>
 							<ArrowLeft className="w-5 h-5" />
@@ -157,7 +156,7 @@ export default function StudyPath({ onNavigate }: StudyPathProps) {
 			<div className="absolute bottom-8 left-0 right-0 px-6 max-w-2xl mx-auto z-10 pointer-events-none">
 				<Button
 					className="w-full h-16 bg-blue-600 hover:bg-blue-700 text-white rounded-[2rem] text-lg font-bold shadow-xl shadow-blue-500/20 pointer-events-auto"
-					onClick={() => onNavigate('QUIZ')}
+					onClick={() => router.push('/quiz')}
 				>
 					<Play className="w-5 h-5 mr-3 fill-white" />
 					Resume: Calculus P1

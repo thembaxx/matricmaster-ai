@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Switch } from '@/components/ui/switch';
 import { useTheme } from '@/hooks/use-theme';
-import type { Screen } from '@/types';
+// import type { Screen } from '@/types'; // Removed unused import
 import {
 	Activity,
 	Calculator,
@@ -18,9 +18,7 @@ import {
 } from 'lucide-react';
 import { useState } from 'react';
 
-interface ProfileProps {
-	onNavigate: (s: Screen) => void;
-}
+
 
 const achievements = [
 	{
@@ -40,7 +38,7 @@ const achievements = [
 	},
 ];
 
-export default function Profile({ onNavigate: _ }: ProfileProps) {
+export default function Profile() {
 	const { theme, setTheme } = useTheme();
 	const [viewMode, setViewMode] = useState<'my_stats' | 'provincial'>('my_stats');
 

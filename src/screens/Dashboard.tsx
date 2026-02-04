@@ -4,15 +4,12 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import type { Screen } from '@/types';
+// import type { Screen } from '@/types'; // Removed unused import
 import { ArrowRight, Bell, Flame, Play } from 'lucide-react';
 
-interface DashboardProps {
-	onNavigate: (s: Screen) => void;
-}
+import { useRouter } from 'next/navigation';
 
 const weekDays = [
-	{ day: 'MON', date: 9, status: 'complete' },
 	{ day: 'TUE', date: 10, status: 'complete' },
 	{ day: 'WED', date: 11, status: 'complete' },
 	{ day: 'THU', date: 12, status: 'active' }, // Today
@@ -21,7 +18,8 @@ const weekDays = [
 	{ day: 'SUN', date: 15, status: 'upcoming' },
 ];
 
-export default function Dashboard({ onNavigate }: DashboardProps) {
+export default function Dashboard() {
+	const router = useRouter();
 	return (
 		<div className="flex flex-col h-full bg-zinc-50 dark:bg-zinc-950 font-lexend">
 			{/* Header */}
@@ -143,7 +141,7 @@ export default function Dashboard({ onNavigate }: DashboardProps) {
 
 								<Button
 									className="w-full bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 font-black h-16 rounded-[2rem] text-lg shadow-xl active:scale-[0.98] transition-all"
-									onClick={() => onNavigate('QUIZ')}
+									onClick={() => router.push('/quiz')}
 								>
 									Continue Quest
 									<ArrowRight className="w-5 h-5 ml-3" />
@@ -187,7 +185,7 @@ export default function Dashboard({ onNavigate }: DashboardProps) {
 								<Card
 									key={challenge.title}
 									className="p-5 flex items-center gap-5 border-none shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer bg-white dark:bg-zinc-900 rounded-[2rem] group"
-									onClick={() => onNavigate('QUIZ')}
+									onClick={() => router.push('/quiz')}
 								>
 									<div
 										className={`w-16 h-16 rounded-2xl ${challenge.color} flex items-center justify-center text-xl font-black italic`}

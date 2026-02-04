@@ -2,12 +2,13 @@ import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import type { Screen } from '@/types';
+// import type { Screen } from '@/types'; // Removed unused import
 import { Globe, X } from 'lucide-react';
 import { useState } from 'react';
 
+import { useRouter } from 'next/navigation';
+
 interface LanguageSelectProps {
-	onNavigate: (s: Screen) => void;
 	currentLanguage?: string;
 }
 
@@ -26,9 +27,9 @@ const languages = [
 ];
 
 export default function LanguageSelect({
-	onNavigate,
 	currentLanguage = 'EN',
 }: LanguageSelectProps) {
+	const router = useRouter();
 	const [selectedLanguage, setSelectedLanguage] = useState(currentLanguage);
 
 	return (
@@ -51,7 +52,7 @@ export default function LanguageSelect({
 						<Button
 							variant="ghost"
 							size="icon"
-							onClick={() => onNavigate('LANDING')}
+							onClick={() => router.push('/')}
 							className="rounded-full h-12 w-12"
 						>
 							<X className="w-6 h-6" />
@@ -114,7 +115,7 @@ export default function LanguageSelect({
 				<div className="p-8 border-t border-zinc-100 dark:border-zinc-800 bg-white dark:bg-zinc-900">
 					<Button
 						className="w-full h-16 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 rounded-[2rem] font-black text-xl shadow-2xl active:scale-[0.98] transition-all"
-						onClick={() => onNavigate('LANDING')}
+						onClick={() => router.push('/')}
 					>
 						Confirm Selection
 					</Button>

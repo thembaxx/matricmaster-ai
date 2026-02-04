@@ -1,14 +1,15 @@
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import type { Screen } from '@/types';
+import { useRouter } from 'next/navigation';
 import { AlertTriangle, Eye, Lightbulb, X } from 'lucide-react';
 
-interface ErrorHintProps {
-	onNavigate: (s: Screen) => void;
-}
+// import type { Screen } from '@/types'; // Removed unused import
 
-export default function ErrorHint({ onNavigate }: ErrorHintProps) {
+
+
+export default function ErrorHint() {
+	const router = useRouter();
 	return (
 		<div className="flex flex-col h-full bg-background">
 			{/* Alert Banner - Sticky */}
@@ -18,7 +19,7 @@ export default function ErrorHint({ onNavigate }: ErrorHintProps) {
 						<AlertTriangle className="w-5 h-5 fill-amber-500 text-amber-500" />
 						<span className="font-bold text-sm">Not quite right yet</span>
 					</div>
-					<button type="button" onClick={() => onNavigate('QUIZ')}>
+					<button type="button" onClick={() => router.push('/quiz')}>
 						<X className="w-5 h-5 opacity-50 hover:opacity-100 transition-opacity" />
 					</button>
 				</div>
@@ -100,14 +101,14 @@ export default function ErrorHint({ onNavigate }: ErrorHintProps) {
 						<Button
 							size="lg"
 							className="w-full bg-amber-500 hover:bg-amber-600 text-white rounded-full h-14 text-base font-bold shadow-lg shadow-amber-500/20"
-							onClick={() => onNavigate('QUIZ')}
+							onClick={() => router.push('/quiz')}
 						>
 							Try Again
 						</Button>
 						<button
 							type="button"
 							className="text-zinc-400 hover:text-zinc-900 font-bold text-sm"
-							onClick={() => onNavigate('QUIZ')} // Or show solution
+							onClick={() => router.push('/quiz')} // Or show solution
 						>
 							See Solution
 						</button>

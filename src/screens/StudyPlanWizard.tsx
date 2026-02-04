@@ -5,7 +5,7 @@ import { Label } from '@/components/ui/label';
 import { Progress } from '@/components/ui/progress';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Slider } from '@/components/ui/slider';
-import type { Screen } from '@/types';
+import { useRouter } from 'next/navigation';
 import {
 	ArrowLeft,
 	Atom,
@@ -19,9 +19,7 @@ import {
 } from 'lucide-react';
 import { useState } from 'react';
 
-interface StudyPlanWizardProps {
-	onNavigate: (s: Screen) => void;
-}
+// import type { Screen } from '@/types'; // Removed unused import
 
 const subjects = [
 	{ id: 'math', name: 'Mathematics', icon: Calculator, color: 'bg-brand-blue' },
@@ -32,7 +30,8 @@ const subjects = [
 	{ id: 'accounting', name: 'Accounting', icon: PieChart, color: 'bg-brand-amber' },
 ];
 
-export default function StudyPlanWizard({ onNavigate }: StudyPlanWizardProps) {
+export default function StudyPlanWizard() {
+	const router = useRouter();
 	const [selectedSubjects, setSelectedSubjects] = useState<string[]>(['math']);
 	const [weeklyHours, setWeeklyHours] = useState([12]);
 	const [currentStep] = useState(1);
@@ -48,7 +47,7 @@ export default function StudyPlanWizard({ onNavigate }: StudyPlanWizardProps) {
 		setIsGenerating(true);
 		setTimeout(() => {
 			setIsGenerating(false);
-			onNavigate('PATH');
+			router.push('/study-path');
 		}, 2000);
 	};
 
@@ -76,7 +75,7 @@ export default function StudyPlanWizard({ onNavigate }: StudyPlanWizardProps) {
 					<Button
 						variant="ghost"
 						size="icon"
-						onClick={() => onNavigate('LANDING')}
+						onClick={() => router.push('/')}
 						className="rounded-full"
 					>
 						<ArrowLeft className="w-6 h-6" />
