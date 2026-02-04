@@ -3,8 +3,8 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { useRouter } from 'next/navigation';
 import { ArrowLeft, Crown, Zap } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 // import type { Screen } from '@/types'; // Removed unused import
 

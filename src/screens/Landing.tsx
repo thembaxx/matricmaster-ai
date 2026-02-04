@@ -21,7 +21,7 @@ const subjects = [
 	{
 		id: 'math',
 		name: 'Mathematics',
-		topics: 'Calculus, Algebra, Geometry',
+		topics: 'Calculus, Euclidean Geometry, Trig',
 		icon: Calculator,
 		color: 'text-brand-blue',
 		bg: 'bg-brand-blue/10',
@@ -30,7 +30,7 @@ const subjects = [
 	{
 		id: 'physics',
 		name: 'Physical Sciences',
-		topics: 'Mechanics, Chemistry, Waves',
+		topics: 'Newtonian Laws, Electrodynamics, Organic',
 		icon: Atom,
 		color: 'text-brand-purple',
 		bg: 'bg-brand-purple/10',
@@ -95,7 +95,7 @@ export default function Landing() {
 			</header>
 
 			<ScrollArea className="flex-1 relative z-10">
-				<main className="pb-12 px-6 max-w-2xl mx-auto w-full">
+				<main className="pb-32 px-6 max-w-2xl mx-auto w-full">
 					{/* Hero Section */}
 					<section className="pt-12 pb-16 flex flex-col items-center text-center space-y-8">
 						<div className="space-y-4">
@@ -115,17 +115,53 @@ export default function Landing() {
 							</p>
 						</div>
 
-						{/* Hero Image Container */}
+						{/* Hero Image Container - SVG Mathematical Illustration */}
 						<div className="relative w-full aspect-square max-w-[320px] flex items-center justify-center animate-float">
 							<div className="absolute inset-0 bg-gradient-to-tr from-brand-blue/20 to-brand-purple/20 rounded-full blur-[80px]" />
 
-							<div className="relative w-64 h-64 bg-white dark:bg-zinc-900 rounded-[3rem] shadow-2xl flex items-center justify-center transform rotate-6 border-4 border-white dark:border-zinc-800 transition-transform hover:rotate-0 duration-500">
+							<div className="relative w-72 h-72 bg-white dark:bg-zinc-900 rounded-[3.5rem] shadow-2xl flex items-center justify-center transform rotate-3 border-4 border-white dark:border-zinc-800 transition-transform hover:rotate-0 duration-500 overflow-hidden">
 								<div className="absolute inset-0 bg-brand-blue/5 rounded-[2.5rem]" />
-								<div className="relative z-10 flex flex-col items-center gap-4">
-									<Calculator className="w-24 h-24 text-brand-blue opacity-20" />
-									<div className="h-2 w-32 bg-zinc-100 dark:bg-zinc-800 rounded-full" />
-									<div className="h-2 w-24 bg-zinc-100 dark:bg-zinc-800 rounded-full opacity-50" />
-								</div>
+
+								{/* Custom SVG Illustration */}
+								<svg viewBox="0 0 100 100" className="w-48 h-48 relative z-10">
+									<title>Mathematical Geometry Illustration</title>
+									<defs>
+										<linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+											<stop offset="0%" style={{ stopColor: '#2563eb', stopOpacity: 1 }} />
+											<stop offset="100%" style={{ stopColor: '#7c3aed', stopOpacity: 1 }} />
+										</linearGradient>
+									</defs>
+									{/* Circle Geometry */}
+									<circle
+										cx="50"
+										cy="50"
+										r="30"
+										stroke="url(#grad1)"
+										strokeWidth="0.5"
+										fill="none"
+										strokeDasharray="2 2"
+										className="animate-spin-slow"
+									/>
+									{/* Triangle */}
+									<path
+										d="M 50 20 L 80 70 L 20 70 Z"
+										fill="none"
+										stroke="url(#grad1)"
+										strokeWidth="2"
+										strokeLinejoin="round"
+									/>
+									{/* Sine Wave */}
+									<path
+										d="M 10 50 Q 25 30 40 50 T 70 50 T 100 50"
+										fill="none"
+										stroke="#10b981"
+										strokeWidth="2"
+									/>
+									{/* Floating Points */}
+									<circle cx="50" cy="20" r="3" fill="#f59e0b" />
+									<circle cx="80" cy="70" r="3" fill="#f59e0b" />
+									<circle cx="20" cy="70" r="3" fill="#f59e0b" />
+								</svg>
 							</div>
 
 							{/* Floating Elements */}
@@ -161,7 +197,7 @@ export default function Landing() {
 							{subjects.map((subject) => (
 								<Card
 									key={subject.id}
-									className="p-6 rounded-[2.5rem] border-none shadow-sm hover:shadow-2xl hover:-translate-y-1 transition-all cursor-pointer bg-white dark:bg-zinc-900 group relative overflow-hidden"
+									className="p-6 rounded-[2.5rem] border-none shadow-sm hover:shadow-2xl hover:-translate-y-1 hover:scale-[1.02] transition-all cursor-pointer bg-white dark:bg-zinc-900 group relative overflow-hidden"
 									onClick={() => router.push('/quiz')}
 								>
 									<div

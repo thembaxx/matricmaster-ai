@@ -1,10 +1,18 @@
-import App from '@/App';
+import Home from '@/app/page';
 import { render } from '@testing-library/react';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 
-describe('App', () => {
+// Mock next/navigation
+vi.mock('next/navigation', () => ({
+	useRouter: () => ({
+		push: vi.fn(),
+	}),
+	usePathname: () => '/',
+}));
+
+describe('Home Page', () => {
 	it('renders without crashing', () => {
-		const { container } = render(<App />);
+		const { container } = render(<Home />);
 		expect(container).toBeInTheDocument();
 	});
 });

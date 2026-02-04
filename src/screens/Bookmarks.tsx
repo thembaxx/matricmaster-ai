@@ -95,14 +95,14 @@ export default function Bookmarks() {
 			</header>
 
 			<ScrollArea className="flex-1">
-				<main className="px-6 py-6 pb-12">
+				<main className="px-6 py-6 pb-32">
 					{filteredBookmarks.length > 0 ? (
 						<div className="grid grid-cols-2 gap-4">
 							{filteredBookmarks.map((bookmark) => (
 								<Card
 									key={bookmark.id}
 									className="p-5 hover:shadow-lg transition-all cursor-pointer rounded-[2.5rem] border-zinc-100 dark:border-zinc-800 bg-white dark:bg-zinc-900/50 shadow-sm flex flex-col h-64"
-								onClick={() => router.push('/quiz')}
+									onClick={() => router.push('/quiz')}
 								>
 									<div className="flex justify-between items-start mb-4">
 										<div

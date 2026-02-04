@@ -1,7 +1,6 @@
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { useRouter } from 'next/navigation';
 import {
 	ArrowLeft,
 	Calculator,
@@ -11,6 +10,7 @@ import {
 	Send,
 	Users,
 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 // import type { Screen } from '@/types'; // Removed unused import
 

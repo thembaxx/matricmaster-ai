@@ -1,6 +1,6 @@
-import type { Metadata } from 'next';
-import { ThemeProvider } from '@/components/theme-provider';
 import MobileFrame from '@/components/Layout/MobileFrame';
+import { ThemeProvider } from '@/components/theme-provider';
+import type { Metadata } from 'next';
 import '@/styles/index.css';
 
 export const metadata: Metadata = {

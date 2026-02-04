@@ -52,7 +52,50 @@ export default function Dashboard() {
 			</header>
 
 			<ScrollArea className="flex-1">
-				<main className="px-6 pb-12 pt-6 space-y-8 max-w-2xl mx-auto w-full">
+				<main className="px-6 pb-32 pt-6 space-y-8 max-w-2xl mx-auto w-full">
+					{/* Daily Goal - Prominent Focus */}
+					<div className="space-y-4">
+						<Card className="p-8 border-none shadow-2xl bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 rounded-[3rem] relative overflow-hidden group">
+							<div className="absolute top-0 right-0 w-64 h-64 bg-brand-blue/20 rounded-full -mr-32 -mt-32 blur-3xl group-hover:scale-110 transition-transform" />
+
+							<div className="flex justify-between items-start mb-8 relative z-10">
+								<div className="space-y-2">
+									<Badge className="bg-brand-orange text-white border-none rounded-full px-4 py-1 font-black text-[10px] tracking-widest uppercase">
+										Daily Goal
+									</Badge>
+									<h3 className="text-4xl font-black leading-tight">Calculus: Optimization</h3>
+									<p className="text-zinc-400 dark:text-zinc-500 font-bold">
+										Next: Stationary Points & Maxima
+									</p>
+								</div>
+								<div className="w-20 h-20 bg-white/10 dark:bg-zinc-100 rounded-[2rem] flex items-center justify-center text-4xl shadow-inner animate-float">
+									🚀
+								</div>
+							</div>
+
+							<div className="space-y-4 relative z-10">
+								<div className="flex items-end justify-between px-1">
+									<span className="font-black text-xl uppercase tracking-tighter">
+										Current Step
+									</span>
+									<span className="font-black text-brand-blue text-2xl italic">Quiz 3/5</span>
+								</div>
+								<Progress
+									value={60}
+									className="h-5 bg-white/10 dark:bg-zinc-100 rounded-full mb-8 shadow-inner"
+								/>
+
+								<Button
+									className="w-full bg-brand-blue hover:bg-brand-blue-light text-white font-black h-20 rounded-[2.5rem] text-xl shadow-xl shadow-brand-blue/20 active:scale-[0.98] transition-all"
+									onClick={() => router.push('/quiz')}
+								>
+									Continue Learning
+									<ArrowRight className="w-6 h-6 ml-3" />
+								</Button>
+							</div>
+						</Card>
+					</div>
+
 					{/* Streak Card */}
 					<Card className="p-6 flex items-center justify-between border-none bg-white dark:bg-zinc-900 shadow-sm rounded-[2.5rem] group hover:shadow-md transition-shadow">
 						<div className="space-y-1">
@@ -71,83 +114,47 @@ export default function Dashboard() {
 						</div>
 					</Card>
 
-					{/* Weekly Calendar */}
+					{/* Activity Path - Redesigned as a journey */}
 					<div className="space-y-5">
 						<div className="flex justify-between items-center px-1">
 							<h2 className="text-sm font-black text-zinc-400 uppercase tracking-widest">
-								Activity Path
+								Your Weekly Journey
 							</h2>
 							<button
 								type="button"
 								className="text-xs text-brand-blue font-black uppercase tracking-widest hover:underline"
 							>
-								Calendar
+								View All
 							</button>
 						</div>
-						<div className="flex justify-between gap-3 overflow-x-auto no-scrollbar py-2">
+						<div className="flex justify-between items-center bg-white dark:bg-zinc-900 p-6 rounded-[2.5rem] shadow-sm relative overflow-hidden">
+							<div className="absolute left-10 right-10 top-1/2 h-1 bg-zinc-100 dark:bg-zinc-800 -translate-y-1/2" />
 							{weekDays.map((d) => (
 								<div
 									key={d.day}
-									className={`flex flex-col items-center gap-3 min-w-[3.5rem] p-3 rounded-[1.5rem] border-2 transition-all cursor-pointer hover:scale-105 ${
+									className={`relative z-10 flex flex-col items-center gap-3 transition-all cursor-pointer hover:scale-110 ${
 										d.status === 'active'
-											? 'bg-brand-blue border-brand-blue text-white shadow-xl shadow-brand-blue/30'
+											? 'text-brand-blue'
 											: d.status === 'complete'
-												? 'bg-white dark:bg-zinc-900 border-brand-blue/20 text-brand-blue dark:text-blue-400'
-												: 'bg-white dark:bg-zinc-900 border-zinc-100 dark:border-zinc-800 text-zinc-400'
+												? 'text-brand-green'
+												: 'text-zinc-300'
 									}`}
 								>
-									<span className="text-[10px] font-black tracking-widest">{d.day}</span>
-									<span
-										className={`text-lg font-black w-8 h-8 flex items-center justify-center rounded-xl ${
-											d.status === 'active' ? 'bg-white/20' : 'bg-zinc-50 dark:bg-zinc-800/50'
+									<span className="text-[10px] font-black tracking-widest uppercase">{d.day}</span>
+									<div
+										className={`w-12 h-12 flex items-center justify-center rounded-full border-4 transition-all ${
+											d.status === 'active'
+												? 'bg-brand-blue border-blue-100 dark:border-blue-900 text-white shadow-lg shadow-brand-blue/30 scale-125'
+												: d.status === 'complete'
+													? 'bg-brand-green border-green-100 dark:border-green-900 text-white shadow-md'
+													: 'bg-zinc-50 dark:bg-zinc-800 border-zinc-100 dark:border-zinc-800 text-zinc-400'
 										}`}
 									>
-										{d.date}
-									</span>
+										<span className="text-sm font-black">{d.date}</span>
+									</div>
 								</div>
 							))}
 						</div>
-					</div>
-
-					{/* Daily Goal */}
-					<div className="space-y-4">
-						<Card className="p-8 border-none shadow-2xl bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 rounded-[3rem] relative overflow-hidden group">
-							<div className="absolute top-0 right-0 w-48 h-48 bg-white/10 dark:bg-zinc-900/5 rounded-full -mr-16 -mt-16 blur-3xl group-hover:scale-110 transition-transform" />
-
-							<div className="flex justify-between items-start mb-8 relative z-10">
-								<div className="space-y-2">
-									<Badge className="bg-brand-orange text-white border-none rounded-full px-4 py-1 font-black text-[10px] tracking-widest uppercase">
-										Daily Goal
-									</Badge>
-									<h3 className="text-3xl font-black leading-tight">Master Algebra</h3>
-									<p className="text-zinc-400 dark:text-zinc-500 font-bold">
-										3 Quiz Questions Remaining
-									</p>
-								</div>
-								<div className="w-20 h-20 bg-white/10 dark:bg-zinc-100 rounded-[2rem] flex items-center justify-center text-4xl shadow-inner">
-									🏆
-								</div>
-							</div>
-
-							<div className="space-y-3 relative z-10">
-								<div className="flex items-end justify-between px-1">
-									<span className="font-black text-xl uppercase tracking-tighter">2/3 Solved</span>
-									<span className="font-black text-brand-orange text-2xl italic">66%</span>
-								</div>
-								<Progress
-									value={66}
-									className="h-4 bg-white/10 dark:bg-zinc-100 rounded-full mb-8"
-								/>
-
-								<Button
-									className="w-full bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 font-black h-16 rounded-[2rem] text-lg shadow-xl active:scale-[0.98] transition-all"
-									onClick={() => router.push('/quiz')}
-								>
-									Continue Quest
-									<ArrowRight className="w-5 h-5 ml-3" />
-								</Button>
-							</div>
-						</Card>
 					</div>
 
 					{/* Recommended Challenges */}
@@ -158,28 +165,28 @@ export default function Dashboard() {
 						<div className="grid grid-cols-1 gap-4">
 							{[
 								{
-									title: 'Differentiation Rules',
-									topic: 'Calculus',
-									time: '10m',
+									title: 'Rate of Reaction',
+									topic: 'Chemistry',
+									time: '12m',
 									difficulty: 'Medium',
-									color: 'bg-brand-blue/10 text-brand-blue',
-									icon: '∫',
+									color: 'bg-brand-amber/10 text-brand-amber',
+									icon: '🧪',
 								},
 								{
-									title: "Newton's Second Law",
+									title: 'Organic Molecules',
+									topic: 'Chemistry',
+									time: '15m',
+									difficulty: 'Easy',
+									color: 'bg-brand-amber/10 text-brand-amber',
+									icon: '⬢',
+								},
+								{
+									title: 'Doppler Effect',
 									topic: 'Physics',
 									time: '20m',
 									difficulty: 'Hard',
 									color: 'bg-brand-purple/10 text-brand-purple',
-									icon: 'F=ma',
-								},
-								{
-									title: 'Poetry Analysis',
-									topic: 'English',
-									time: '15m',
-									difficulty: 'Easy',
-									color: 'bg-brand-green/10 text-brand-green',
-									icon: '✍️',
+									icon: '🔊',
 								},
 							].map((challenge) => (
 								<Card
