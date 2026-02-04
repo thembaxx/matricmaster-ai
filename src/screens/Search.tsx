@@ -14,8 +14,8 @@ export default function Search({ onNavigate: _ }: SearchProps) {
 	const [query, setQuery] = useState('');
 
 	return (
-		<div className="flex flex-col min-h-screen bg-zinc-50 dark:bg-zinc-950 font-lexend">
-			<div className="px-6 pt-12 pb-6 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl sticky top-0 z-20 border-b border-zinc-100 dark:border-zinc-800">
+		<div className="flex flex-col h-full bg-zinc-50 dark:bg-zinc-950 font-lexend">
+			<div className="px-6 pt-12 pb-6 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl sticky top-0 z-20 border-b border-zinc-100 dark:border-zinc-800 shrink-0">
 				<div className="max-w-2xl mx-auto w-full">
 					<h1 className="text-3xl font-black text-zinc-900 dark:text-white mb-6">Search</h1>
 					<div className="relative">
@@ -31,7 +31,7 @@ export default function Search({ onNavigate: _ }: SearchProps) {
 			</div>
 
 			<ScrollArea className="flex-1">
-				<main className="px-6 py-8 max-w-2xl mx-auto w-full space-y-10 pb-32">
+				<main className="px-6 py-8 max-w-2xl mx-auto w-full space-y-10 pb-12">
 					{!query ? (
 						<>
 							{/* Trending Section */}

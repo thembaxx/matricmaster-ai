@@ -75,9 +75,9 @@ const otherStudents = [
 
 export default function Leaderboard({ onNavigate }: LeaderboardProps) {
 	return (
-		<div className="flex flex-col min-h-screen bg-zinc-50 dark:bg-zinc-950 font-lexend">
+		<div className="flex flex-col h-full bg-zinc-50 dark:bg-zinc-950 font-lexend">
 			{/* Header */}
-			<header className="px-6 pt-12 pb-6 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl sticky top-0 z-20 border-b border-zinc-100 dark:border-zinc-800">
+			<header className="px-6 pt-12 pb-6 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl sticky top-0 z-20 border-b border-zinc-100 dark:border-zinc-800 shrink-0">
 				<div className="max-w-2xl mx-auto w-full">
 					<div className="flex items-center gap-4 mb-6">
 						<Button
@@ -108,7 +108,7 @@ export default function Leaderboard({ onNavigate }: LeaderboardProps) {
 			</header>
 
 			<ScrollArea className="flex-1">
-				<main className="pb-40">
+				<main className="pb-32">
 					{/* Top 3 Podium */}
 					<div className="px-6 py-8">
 						<div className="flex items-end justify-center gap-4">
@@ -208,8 +208,8 @@ export default function Leaderboard({ onNavigate }: LeaderboardProps) {
 			</ScrollArea>
 
 			{/* Your Rank Card */}
-			<div className="fixed bottom-8 left-0 right-0 px-6 max-w-2xl mx-auto">
-				<Card className="p-5 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 shadow-2xl rounded-[2rem] border-none">
+			<div className="absolute bottom-8 left-0 right-0 px-6 max-w-2xl mx-auto z-10 pointer-events-none">
+				<Card className="p-5 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 shadow-2xl rounded-[2rem] border-none pointer-events-auto">
 					<div className="flex items-center gap-4">
 						<span className="text-2xl font-black text-yellow-400 w-8">42</span>
 						<Avatar className="w-14 h-14 border-2 border-yellow-400 p-0.5">

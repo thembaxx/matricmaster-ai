@@ -23,9 +23,9 @@ const weekDays = [
 
 export default function Dashboard({ onNavigate }: DashboardProps) {
 	return (
-		<div className="flex flex-col min-h-screen bg-zinc-50 dark:bg-zinc-950 font-lexend">
+		<div className="flex flex-col h-full bg-zinc-50 dark:bg-zinc-950 font-lexend">
 			{/* Header */}
-			<header className="px-6 pt-12 pb-4 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl sticky top-0 z-20 border-b border-zinc-100 dark:border-zinc-800">
+			<header className="px-6 pt-12 pb-4 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl sticky top-0 z-20 border-b border-zinc-100 dark:border-zinc-800 shrink-0">
 				<div className="flex justify-between items-center mb-4 max-w-2xl mx-auto w-full">
 					<div className="flex items-center gap-4">
 						<Avatar className="w-14 h-14 border-2 border-brand-green p-0.5">
@@ -54,7 +54,7 @@ export default function Dashboard({ onNavigate }: DashboardProps) {
 			</header>
 
 			<ScrollArea className="flex-1">
-				<main className="px-6 pb-28 pt-6 space-y-8 max-w-2xl mx-auto w-full">
+				<main className="px-6 pb-12 pt-6 space-y-8 max-w-2xl mx-auto w-full">
 					{/* Streak Card */}
 					<Card className="p-6 flex items-center justify-between border-none bg-white dark:bg-zinc-900 shadow-sm rounded-[2.5rem] group hover:shadow-md transition-shadow">
 						<div className="space-y-1">

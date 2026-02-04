@@ -37,9 +37,9 @@ export default function MathematicsQuiz({ onNavigate }: MathematicsQuizProps) {
 	};
 
 	return (
-		<div className="flex flex-col min-h-screen bg-zinc-50 dark:bg-zinc-950 font-lexend">
+		<div className="flex flex-col h-full bg-zinc-50 dark:bg-zinc-950 font-lexend relative">
 			{/* Header */}
-			<header className="px-6 pt-12 pb-4 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl sticky top-0 z-20 border-b border-zinc-100 dark:border-zinc-800">
+			<header className="px-6 pt-12 pb-4 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl sticky top-0 z-20 border-b border-zinc-100 dark:border-zinc-800 shrink-0">
 				<div className="max-w-2xl mx-auto w-full">
 					<div className="flex items-center gap-4 mb-4">
 						<Button
@@ -69,7 +69,7 @@ export default function MathematicsQuiz({ onNavigate }: MathematicsQuizProps) {
 			</header>
 
 			<ScrollArea className="flex-1">
-				<main className="px-6 py-8 space-y-8 pb-48 max-w-2xl mx-auto w-full">
+				<main className="px-6 py-8 space-y-8 pb-64 max-w-2xl mx-auto w-full">
 					{/* Question */}
 					<div className="space-y-4">
 						<h2 className="text-3xl font-black text-zinc-900 dark:text-white">Find the integral</h2>
@@ -170,7 +170,7 @@ export default function MathematicsQuiz({ onNavigate }: MathematicsQuizProps) {
 			</ScrollArea>
 
 			{/* Math Keyboard & Actions */}
-			<footer className="fixed bottom-0 left-0 right-0 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl border-t border-zinc-100 dark:border-zinc-800 z-30">
+			<footer className="absolute bottom-0 left-0 right-0 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl border-t border-zinc-100 dark:border-zinc-800 z-30">
 				<div className="max-w-2xl mx-auto w-full">
 					{/* Math Symbols */}
 					<div className="px-6 py-3 overflow-x-auto no-scrollbar">

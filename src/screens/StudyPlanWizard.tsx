@@ -54,7 +54,7 @@ export default function StudyPlanWizard({ onNavigate }: StudyPlanWizardProps) {
 
 	if (isGenerating) {
 		return (
-			<div className="flex flex-col items-center justify-center min-h-screen bg-zinc-50 dark:bg-zinc-950 p-6 font-lexend">
+			<div className="flex flex-col items-center justify-center h-full bg-zinc-50 dark:bg-zinc-950 p-6 font-lexend">
 				<div className="w-32 h-32 rounded-[2.5rem] bg-brand-blue/10 flex items-center justify-center mb-8 animate-float">
 					<Sparkles className="w-16 h-16 text-brand-blue" />
 				</div>
@@ -69,9 +69,9 @@ export default function StudyPlanWizard({ onNavigate }: StudyPlanWizardProps) {
 	}
 
 	return (
-		<div className="flex flex-col min-h-screen bg-zinc-50 dark:bg-zinc-950 font-lexend">
+		<div className="flex flex-col h-full bg-zinc-50 dark:bg-zinc-950 font-lexend relative">
 			{/* Header */}
-			<header className="px-6 pt-12 pb-6 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl sticky top-0 z-20 border-b border-zinc-100 dark:border-zinc-800">
+			<header className="px-6 pt-12 pb-6 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl sticky top-0 z-20 border-b border-zinc-100 dark:border-zinc-800 shrink-0">
 				<div className="flex items-center gap-4 max-w-2xl mx-auto w-full">
 					<Button
 						variant="ghost"
@@ -93,7 +93,7 @@ export default function StudyPlanWizard({ onNavigate }: StudyPlanWizardProps) {
 			</header>
 
 			<ScrollArea className="flex-1">
-				<main className="px-6 py-8 space-y-10 pb-40 max-w-2xl mx-auto w-full">
+				<main className="px-6 py-8 space-y-10 pb-48 max-w-2xl mx-auto w-full">
 					{/* Question */}
 					<div className="space-y-3">
 						<h2 className="text-3xl font-black text-zinc-900 dark:text-white leading-tight">
@@ -195,7 +195,7 @@ export default function StudyPlanWizard({ onNavigate }: StudyPlanWizardProps) {
 			</ScrollArea>
 
 			{/* Footer */}
-			<footer className="fixed bottom-0 left-0 right-0 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl border-t border-zinc-100 dark:border-zinc-800 p-8 z-30">
+			<footer className="absolute bottom-0 left-0 right-0 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl border-t border-zinc-100 dark:border-zinc-800 p-8 z-30">
 				<Button
 					className="w-full h-16 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 rounded-[2rem] text-xl font-black shadow-2xl active:scale-[0.98] transition-all disabled:opacity-50"
 					onClick={handleGenerate}

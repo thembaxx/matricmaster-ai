@@ -79,9 +79,9 @@ export default function CMS({ onNavigate }: CMSProps) {
 	};
 
 	return (
-		<div className="flex-1 flex flex-col bg-zinc-50 dark:bg-zinc-950 overflow-hidden font-lexend">
+		<div className="flex-1 flex flex-col bg-zinc-50 dark:bg-zinc-950 overflow-hidden font-lexend relative">
 			{/* Header */}
-			<header className="px-6 pt-10 pb-4 bg-white dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-800">
+			<header className="px-6 pt-10 pb-4 bg-white dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-800 shrink-0">
 				<div className="flex justify-between items-center mb-4">
 					<button
 						type="button"

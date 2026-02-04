@@ -18,9 +18,9 @@ export default function PhysicalSciences({ onNavigate }: PhysicalSciencesProps) 
 	const [showAnnotations, setShowAnnotations] = useState(true);
 
 	return (
-		<div className="flex flex-col min-h-screen bg-background">
+		<div className="flex flex-col h-full bg-background">
 			{/* Header */}
-			<header className="px-6 pt-12 pb-4 bg-white dark:bg-zinc-900 sticky top-0 z-20 border-b border-zinc-100 dark:border-zinc-800">
+			<header className="px-6 pt-12 pb-4 bg-white dark:bg-zinc-900 sticky top-0 z-20 border-b border-zinc-100 dark:border-zinc-800 shrink-0">
 				<div className="flex items-center justify-between mb-4">
 					<div className="flex items-center gap-4">
 						<Button variant="ghost" size="icon" onClick={() => onNavigate('DASHBOARD')}>
@@ -65,7 +65,7 @@ export default function PhysicalSciences({ onNavigate }: PhysicalSciencesProps) 
 			</header>
 
 			<ScrollArea className="flex-1">
-				<main className="px-6 py-6 pb-24">
+				<main className="px-6 py-6 pb-12">
 					<div
 						className={`grid gap-6 ${viewMode === 'split' ? 'grid-cols-1 lg:grid-cols-2' : 'grid-cols-1'}`}
 					>

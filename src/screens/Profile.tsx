@@ -45,9 +45,9 @@ export default function Profile({ onNavigate: _ }: ProfileProps) {
 	const [viewMode, setViewMode] = useState<'my_stats' | 'provincial'>('my_stats');
 
 	return (
-		<div className="flex flex-col min-h-screen bg-white dark:bg-zinc-950 font-lexend">
+		<div className="flex flex-col h-full bg-white dark:bg-zinc-950 font-lexend">
 			{/* Header */}
-			<header className="px-6 pt-12 pb-4 sticky top-0 z-20 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-xl">
+			<header className="px-6 pt-12 pb-4 sticky top-0 z-20 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-xl shrink-0">
 				<div className="flex justify-between items-center max-w-2xl mx-auto w-full">
 					<Button
 						variant="ghost"
@@ -68,7 +68,7 @@ export default function Profile({ onNavigate: _ }: ProfileProps) {
 			</header>
 
 			<ScrollArea className="flex-1">
-				<main className="px-6 pb-28 pt-4 max-w-2xl mx-auto w-full">
+				<main className="px-6 pb-12 pt-4 max-w-2xl mx-auto w-full">
 					{/* Profile Header */}
 					<div className="flex flex-col items-center mb-8">
 						<div className="relative mb-6">
