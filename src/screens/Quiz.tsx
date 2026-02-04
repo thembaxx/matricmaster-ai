@@ -1,11 +1,10 @@
+// import type { Screen } from '@/types'; // Removed unused import
+import { ArrowLeft, HelpCircle, Lightbulb, MoreHorizontal, Sparkles } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
-// import type { Screen } from '@/types'; // Removed unused import
-import { ArrowLeft, HelpCircle, Lightbulb, MoreHorizontal, Sparkles } from 'lucide-react';
-import { useState } from 'react';
-
-import { useRouter } from 'next/navigation';
 
 const options = [
 	{ id: 'A', expression: '(1, 0)', isCorrect: false },

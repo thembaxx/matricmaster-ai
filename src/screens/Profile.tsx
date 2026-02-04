@@ -1,8 +1,3 @@
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Switch } from '@/components/ui/switch';
-import { useTheme } from '@/hooks/use-theme';
 // import type { Screen } from '@/types'; // Removed unused import
 import {
 	Activity,
@@ -17,6 +12,11 @@ import {
 	Verified,
 } from 'lucide-react';
 import { useState } from 'react';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Switch } from '@/components/ui/switch';
+import { useTheme } from '@/hooks/use-theme';
 
 const achievements = [
 	{

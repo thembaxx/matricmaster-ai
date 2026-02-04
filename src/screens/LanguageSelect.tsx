@@ -1,12 +1,11 @@
+// import type { Screen } from '@/types'; // Removed unused import
+import { Globe, X } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { ScrollArea } from '@/components/ui/scroll-area';
-// import type { Screen } from '@/types'; // Removed unused import
-import { Globe, X } from 'lucide-react';
-import { useState } from 'react';
-
-import { useRouter } from 'next/navigation';
 
 interface LanguageSelectProps {
 	currentLanguage?: string;

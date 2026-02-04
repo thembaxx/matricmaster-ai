@@ -1,10 +1,10 @@
+// import type { Screen } from '@/types'; // Removed unused import
+import { Clock, Search as SearchIcon, Sparkles, TrendingUp } from 'lucide-react';
+import { useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
-// import type { Screen } from '@/types'; // Removed unused import
-import { Clock, Search as SearchIcon, Sparkles, TrendingUp } from 'lucide-react';
-import { useState } from 'react';
 
 export default function Search() {
 	const [query, setQuery] = useState('');

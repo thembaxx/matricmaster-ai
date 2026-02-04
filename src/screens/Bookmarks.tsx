@@ -1,12 +1,11 @@
+// import type { Screen } from '@/types'; // Removed unused import
+import { Activity, Bookmark, Calculator, Microscope, Plus, TrendingUp, Zap } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
-// import type { Screen } from '@/types'; // Removed unused import
-import { Activity, Bookmark, Calculator, Microscope, Plus, TrendingUp, Zap } from 'lucide-react';
-import { useState } from 'react';
-
-import { useRouter } from 'next/navigation';
 
 const bookmarks = [
 	{

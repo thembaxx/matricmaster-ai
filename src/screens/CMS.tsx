@@ -1,7 +1,7 @@
-import { SUBJECTS } from '@/constants';
-import type { ContentItem } from '@/types';
 import { useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
+import { SUBJECTS } from '@/constants';
+import type { ContentItem } from '@/types';
 
 export default function CMS() {
 	const router = useRouter();

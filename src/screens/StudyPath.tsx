@@ -1,12 +1,11 @@
+// import type { Screen } from '@/types'; // Removed unused import
+import { ArrowLeft, CheckCircle2, ChevronRight, Lock, Play, Star } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { ScrollArea } from '@/components/ui/scroll-area';
-// import type { Screen } from '@/types'; // Removed unused import
-import { ArrowLeft, CheckCircle2, ChevronRight, Lock, Play, Star } from 'lucide-react';
-
-import { useRouter } from 'next/navigation';
 
 const pathNodes = [
 	{

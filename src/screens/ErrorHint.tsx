@@ -1,8 +1,8 @@
+import { AlertTriangle, Eye, Lightbulb, X } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { AlertTriangle, Eye, Lightbulb, X } from 'lucide-react';
-import { useRouter } from 'next/navigation';
 
 // import type { Screen } from '@/types'; // Removed unused import
 

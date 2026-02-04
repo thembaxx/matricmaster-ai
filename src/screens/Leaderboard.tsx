@@ -1,10 +1,10 @@
+import { ArrowLeft, Crown, Zap } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { ArrowLeft, Crown, Zap } from 'lucide-react';
-import { useRouter } from 'next/navigation';
 
 // import type { Screen } from '@/types'; // Removed unused import
 

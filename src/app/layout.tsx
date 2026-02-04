@@ -1,6 +1,6 @@
+import type { Metadata } from 'next';
 import MobileFrame from '@/components/Layout/MobileFrame';
 import { ThemeProvider } from '@/components/theme-provider';
-import type { Metadata } from 'next';
 import '@/styles/index.css';
 import { dmSans, jakarta, lexend } from './fonts';
 
@@ -9,11 +9,7 @@ export const metadata: Metadata = {
 	description: 'Master your Matrics through practice.',
 };
 
-export default function RootLayout({
-	children,
-}: {
-	children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
 	return (
 		<html
 			lang="en"

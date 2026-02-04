@@ -1,12 +1,11 @@
+// import type { Screen } from '@/types'; // Removed unused import
+import { ChevronRight, Clock, RotateCcw, Star, Target, Trophy, Zap } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
-// import type { Screen } from '@/types'; // Removed unused import
-import { ChevronRight, Clock, RotateCcw, Star, Target, Trophy, Zap } from 'lucide-react';
-import { useState } from 'react';
-
-import { useRouter } from 'next/navigation';
 
 export default function LessonComplete() {
 	const router = useRouter();
