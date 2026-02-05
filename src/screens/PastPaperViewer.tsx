@@ -60,7 +60,13 @@ export default function PastPaperViewer() {
 	};
 
 	const handleConvertToInteractive = () => {
-		router.push('/quiz');
+		if (paper.id === 'phys-p1-2025-may') {
+			router.push('/physics-quiz');
+		} else if (paper.subject === 'Mathematics') {
+			router.push('/math-quiz');
+		} else {
+			router.push('/quiz');
+		}
 	};
 
 	return (
