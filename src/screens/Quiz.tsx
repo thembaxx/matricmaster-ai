@@ -1,7 +1,8 @@
 // import type { Screen } from '@/types'; // Removed unused import
-import { ArrowLeft, HelpCircle, Lightbulb, MoreHorizontal, Sparkles } from 'lucide-react';
+import { ArrowLeft, HelpCircle, Lightbulb, Loader2, MoreHorizontal, Sparkles } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { getExplanation } from '@/services/geminiService';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -19,6 +20,23 @@ export default function Quiz() {
 	const [isChecked, setIsChecked] = useState(false);
 	const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
 	const [showExplanation, setShowExplanation] = useState(false);
+	const [aiExplanation, setAiExplanation] = useState<string | null>(null);
+	const [isExplaining, setIsExplaining] = useState(false);
+
+	const handleExplain = async () => {
+		setIsExplaining(true);
+		setAiExplanation(null);
+		try {
+			const questionContext = 'Local Extrema - Find the coordinates of the local maximum for f(x) = x³ - 3x + 2';
+			const explanation = await getExplanation('Mathematics', questionContext);
+			setAiExplanation(explanation);
+		} catch (error) {
+			console.error('Failed to get AI explanation:', error);
+			setAiExplanation("Sorry, I couldn't generate an explanation right now. Please check your internet connection and try again.");
+		} finally {
+			setIsExplaining(false);
+		}
+	};
 
 	const handleCheck = () => {
 		if (isChecked) {
@@ -252,6 +270,40 @@ export default function Quiz() {
 							</div>
 						</div>
 					)}
+
+					{/* AI Explanation Toggle */}
+					<div className="p-1 bg-gradient-to-r from-brand-blue to-brand-green rounded-[2rem]">
+						<div className="bg-white dark:bg-zinc-950 rounded-[1.9rem] p-6 space-y-4">
+							<div className="flex items-center justify-between">
+								<div className="flex items-center gap-4">
+									<div className="w-10 h-10 rounded-xl bg-brand-blue/10 flex items-center justify-center">
+										<Sparkles className="w-5 h-5 text-brand-blue" />
+									</div>
+									<div>
+										<h4 className="font-bold text-zinc-900 dark:text-white text-sm">Need a deeper explanation?</h4>
+										<p className="text-[10px] font-bold text-zinc-500 uppercase tracking-tight">Ask MatricMaster AI</p>
+									</div>
+								</div>
+								<Button
+									size="sm"
+									variant="ghost"
+									className="font-black text-brand-blue hover:bg-brand-blue/5"
+									onClick={handleExplain}
+									disabled={isExplaining}
+								>
+									{isExplaining ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Explain'}
+								</Button>
+							</div>
+
+							{aiExplanation && (
+								<div className="pt-4 border-t border-zinc-100 dark:border-zinc-800 animate-in fade-in slide-in-from-top-2">
+									<p className="text-sm text-zinc-600 dark:text-zinc-400 font-medium leading-relaxed whitespace-pre-wrap">
+										{aiExplanation}
+									</p>
+								</div>
+							)}
+						</div>
+					</div>
 				</main>
 			</ScrollArea>
 

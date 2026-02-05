@@ -1,6 +1,7 @@
-import { ArrowLeft, CheckCircle2, GripVertical, Lightbulb, X } from 'lucide-react';
+import { ArrowLeft, CheckCircle2, GripVertical, Lightbulb, Loader2, Sparkles, X } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { getExplanation } from '@/services/geminiService';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -21,7 +22,24 @@ const steps = [
 export default function MathematicsQuiz() {
 	const router = useRouter();
 	const [selectedSteps, setSelectedSteps] = useState<number[]>([]);
+	const [aiExplanation, setAiExplanation] = useState<string | null>(null);
+	const [isExplaining, setIsExplaining] = useState(false);
 	const availableSteps = steps;
+
+	const handleExplain = async () => {
+		setIsExplaining(true);
+		setAiExplanation(null);
+		try {
+			const questionContext = 'Find the integral: ∫(3x² + 2x) dx';
+			const explanation = await getExplanation('Mathematics', questionContext);
+			setAiExplanation(explanation);
+		} catch (error) {
+			console.error('Failed to get AI explanation:', error);
+			setAiExplanation("Sorry, I couldn't generate an explanation right now. Please check your internet connection and try again.");
+		} finally {
+			setIsExplaining(false);
+		}
+	};
 
 	const handleStepClick = (stepId: number) => {
 		if (selectedSteps.includes(stepId)) {
@@ -163,6 +181,40 @@ export default function MathematicsQuiz() {
 							<p className="text-sm text-amber-800/80 dark:text-amber-200/80 font-medium">
 								Remember the power rule: ∫xⁿ dx = xⁿ⁺¹/(n+1) + C
 							</p>
+						</div>
+					</div>
+
+					{/* AI Explanation Toggle */}
+					<div className="p-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-[2rem]">
+						<div className="bg-white dark:bg-zinc-950 rounded-[1.9rem] p-6 space-y-4">
+							<div className="flex items-center justify-between">
+								<div className="flex items-center gap-4">
+									<div className="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/30 flex items-center justify-center">
+										<Sparkles className="w-5 h-5 text-blue-600" />
+									</div>
+									<div>
+										<h4 className="font-bold text-zinc-900 dark:text-white text-sm">Need a deeper explanation?</h4>
+										<p className="text-[10px] font-bold text-zinc-500 uppercase tracking-tight">Ask MatricMaster AI</p>
+									</div>
+								</div>
+								<Button
+									size="sm"
+									variant="ghost"
+									className="font-black text-blue-600 hover:text-blue-700 hover:bg-blue-50 dark:hover:bg-blue-900/20"
+									onClick={handleExplain}
+									disabled={isExplaining}
+								>
+									{isExplaining ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Explain'}
+								</Button>
+							</div>
+
+							{aiExplanation && (
+								<div className="pt-4 border-t border-zinc-100 dark:border-zinc-800 animate-in fade-in slide-in-from-top-2">
+									<p className="text-sm text-zinc-600 dark:text-zinc-400 font-medium leading-relaxed whitespace-pre-wrap">
+										{aiExplanation}
+									</p>
+								</div>
+							)}
 						</div>
 					</div>
 				</main>

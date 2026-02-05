@@ -1,6 +1,6 @@
 'use client';
 
-import { Bookmark, Home, Search as SearchIcon, User } from 'lucide-react';
+import { Bookmark, FileText, Home, Search as SearchIcon, User } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
@@ -27,6 +27,7 @@ export default function MobileFrame({ children }: { children: React.ReactNode })
 	const navItems = [
 		{ href: '/', label: 'Home', icon: Home },
 		{ href: '/search', label: 'Search', icon: SearchIcon },
+		{ href: '/past-papers', label: 'Papers', icon: FileText },
 		{ href: '/bookmarks', label: 'Saved', icon: Bookmark },
 		{ href: '/profile', label: 'Profile', icon: User },
 	];

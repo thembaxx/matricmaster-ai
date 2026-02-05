@@ -1,8 +1,9 @@
 'use client';
 
-import { ArrowLeft, CheckCircle2, Lightbulb, SkipForward, Sparkles, TrendingUp } from 'lucide-react';
+import { ArrowLeft, CheckCircle2, Lightbulb, Loader2, SkipForward, Sparkles, TrendingUp } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { getExplanation } from '@/services/geminiService';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -151,8 +152,24 @@ export default function PhysicsQuiz() {
 	const [showResult, setShowResult] = useState(false);
 	const [isCorrect, setIsCorrect] = useState(false);
 	const [score, setScore] = useState(0);
+	const [aiExplanation, setAiExplanation] = useState<string | null>(null);
+	const [isExplaining, setIsExplaining] = useState(false);
 
 	const currentQuestion = questions[currentQuestionIndex];
+
+	const handleExplain = async () => {
+		setIsExplaining(true);
+		setAiExplanation(null);
+		try {
+			const explanation = await getExplanation('Physical Sciences', currentQuestion.question);
+			setAiExplanation(explanation);
+		} catch (error) {
+			console.error('Failed to get AI explanation:', error);
+			setAiExplanation("Sorry, I couldn't generate an explanation right now. Please check your internet connection and try again.");
+		} finally {
+			setIsExplaining(false);
+		}
+	};
 	const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
 
 	const handleCheckAnswer = () => {
@@ -169,6 +186,7 @@ export default function PhysicsQuiz() {
 			setCurrentQuestionIndex(currentQuestionIndex + 1);
 			setSelectedAnswer(null);
 			setShowResult(false);
+			setAiExplanation(null);
 		} else {
 			router.push('/lesson-complete');
 		}
@@ -324,17 +342,35 @@ export default function PhysicsQuiz() {
 
 					{/* AI Explanation Toggle */}
 					<div className="p-1 bg-gradient-to-r from-brand-blue to-brand-purple rounded-[2rem]">
-						<div className="bg-white dark:bg-zinc-950 rounded-[1.9rem] p-6 flex items-center justify-between">
-							<div className="flex items-center gap-4">
-								<div className="w-10 h-10 rounded-xl bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center">
-									<Sparkles className="w-5 h-5 text-brand-purple" />
+						<div className="bg-white dark:bg-zinc-950 rounded-[1.9rem] p-6 space-y-4">
+							<div className="flex items-center justify-between">
+								<div className="flex items-center gap-4">
+									<div className="w-10 h-10 rounded-xl bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center">
+										<Sparkles className="w-5 h-5 text-brand-purple" />
+									</div>
+									<div>
+										<h4 className="font-bold text-zinc-900 dark:text-white text-sm">Need a deeper explanation?</h4>
+										<p className="text-[10px] font-bold text-zinc-500 uppercase tracking-tight">Ask MatricMaster AI</p>
+									</div>
 								</div>
-								<div>
-									<h4 className="font-bold text-zinc-900 dark:text-white text-sm">Need a deeper explanation?</h4>
-									<p className="text-[10px] font-bold text-zinc-500 uppercase tracking-tight">Ask MatricMaster AI</p>
-								</div>
+								<Button
+									size="sm"
+									variant="ghost"
+									className="font-black text-brand-purple hover:bg-brand-purple/5"
+									onClick={handleExplain}
+									disabled={isExplaining}
+								>
+									{isExplaining ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Explain'}
+								</Button>
 							</div>
-							<Button size="sm" variant="ghost" className="font-black text-brand-purple">Explain</Button>
+
+							{aiExplanation && (
+								<div className="pt-4 border-t border-zinc-100 dark:border-zinc-800 animate-in fade-in slide-in-from-top-2">
+									<p className="text-sm text-zinc-600 dark:text-zinc-400 font-medium leading-relaxed whitespace-pre-wrap">
+										{aiExplanation}
+									</p>
+								</div>
+							)}
 						</div>
 					</div>
 				</main>
