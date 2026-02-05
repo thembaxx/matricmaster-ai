@@ -29,7 +29,7 @@ export default function Quiz() {
 		try {
 			const questionContext = 'Local Extrema - Find the coordinates of the local maximum for f(x) = x³ - 3x + 2';
 			const explanation = await getExplanation('Mathematics', questionContext);
-			setAiExplanation(explanation);
+			setAiExplanation(explanation ?? "I'm sorry, I couldn't generate an explanation for this question.");
 		} catch (error) {
 			console.error('Failed to get AI explanation:', error);
 			setAiExplanation("Sorry, I couldn't generate an explanation right now. Please check your internet connection and try again.");

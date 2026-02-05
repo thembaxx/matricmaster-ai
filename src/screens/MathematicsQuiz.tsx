@@ -32,7 +32,7 @@ export default function MathematicsQuiz() {
 		try {
 			const questionContext = 'Find the integral: ∫(3x² + 2x) dx';
 			const explanation = await getExplanation('Mathematics', questionContext);
-			setAiExplanation(explanation);
+			setAiExplanation(explanation ?? "I'm sorry, I couldn't generate an explanation for this question.");
 		} catch (error) {
 			console.error('Failed to get AI explanation:', error);
 			setAiExplanation("Sorry, I couldn't generate an explanation right now. Please check your internet connection and try again.");

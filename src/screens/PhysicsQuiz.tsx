@@ -162,7 +162,7 @@ export default function PhysicsQuiz() {
 		setAiExplanation(null);
 		try {
 			const explanation = await getExplanation('Physical Sciences', currentQuestion.question);
-			setAiExplanation(explanation);
+			setAiExplanation(explanation ?? "I'm sorry, I couldn't generate an explanation for this question.");
 		} catch (error) {
 			console.error('Failed to get AI explanation:', error);
 			setAiExplanation("Sorry, I couldn't generate an explanation right now. Please check your internet connection and try again.");
