@@ -188,10 +188,17 @@ export default function Landing() {
 										/>
 
 										<div className="flex items-center gap-6 relative z-10">
-											<div
-												className={`w-16 h-16 rounded-[1.5rem] ${subject.bg} flex items-center justify-center shrink-0 shadow-inner group-hover:scale-110 transition-transform duration-300`}
-											>
-												<Icon className={`w-8 h-8 ${subject.color}`} />
+											<div className="relative">
+												<div
+													className={`w-16 h-16 rounded-[1.5rem] ${subject.bg} flex items-center justify-center shrink-0 shadow-inner group-hover:scale-110 transition-transform duration-300 relative overflow-hidden`}
+												>
+													<img
+														src={subject.image}
+														alt={subject.name}
+														className="absolute inset-0 w-full h-full object-cover opacity-20 group-hover:opacity-40 transition-opacity"
+													/>
+													<Icon className={`w-8 h-8 ${subject.color} relative z-10`} />
+												</div>
 											</div>
 											<div className="flex-1 min-w-0">
 												<h3 className="font-black text-zinc-900 dark:text-white text-xl group-hover:text-brand-blue transition-colors duration-200">
@@ -212,8 +219,13 @@ export default function Landing() {
 					</section>
 
 					{/* Stats Section */}
-					<section className="mt-16 py-12 px-8 bg-zinc-900 dark:bg-white rounded-[3rem] text-center space-y-6">
-						<div className="grid grid-cols-2 gap-8">
+					<section className="mt-16 py-12 px-8 bg-zinc-900 dark:bg-white rounded-[3rem] text-center space-y-6 relative overflow-hidden">
+						<img
+							src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&q=80&w=800"
+							alt="Students studying"
+							className="absolute inset-0 w-full h-full object-cover opacity-20"
+						/>
+						<div className="grid grid-cols-2 gap-8 relative z-10">
 							<div className="space-y-1">
 								<h4 className="text-4xl font-black text-white dark:text-zinc-900">10k+</h4>
 								<p className="text-[10px] font-black text-zinc-400 uppercase tracking-wider">

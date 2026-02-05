@@ -1,13 +1,24 @@
 // import type { Screen } from '@/types'; // Removed unused import
-import { Clock, Search as SearchIcon, Sparkles, TrendingUp } from 'lucide-react';
+import { Clock, FileText, Search as SearchIcon, Sparkles, TrendingUp } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { PAST_PAPERS } from '@/constants/mock-data';
 
 export default function Search() {
+	const router = useRouter();
 	const [query, setQuery] = useState('');
+
+	const filteredResults = query
+		? PAST_PAPERS.filter(
+				(p) =>
+					p.subject.toLowerCase().includes(query.toLowerCase()) ||
+					p.paper.toLowerCase().includes(query.toLowerCase()),
+			)
+		: [];
 
 	return (
 		<div className="flex flex-col h-full bg-zinc-50 dark:bg-zinc-950 font-lexend">
@@ -51,6 +62,7 @@ export default function Search() {
 											key={topic}
 											variant="secondary"
 											className="px-4 py-2 rounded-xl bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800 text-xs font-bold hover:border-brand-blue transition-colors cursor-pointer"
+											onClick={() => setQuery(topic)}
 										>
 											{topic}
 										</Badge>
@@ -109,16 +121,48 @@ export default function Search() {
 							</div>
 						</>
 					) : (
-						<div className="py-20 flex flex-col items-center justify-center text-center space-y-4 opacity-40">
-							<div className="w-20 h-20 bg-zinc-100 dark:bg-zinc-800 rounded-[2.5rem] flex items-center justify-center">
-								<SearchIcon className="w-10 h-10 text-zinc-300 dark:text-zinc-600" />
-							</div>
-							<div className="space-y-1">
-								<h3 className="font-black text-zinc-400 uppercase tracking-widest text-xs">
-									Searching for "{query}"
-								</h3>
-								<p className="text-zinc-400 font-bold">No exact matches found in this mockup</p>
-							</div>
+						<div className="space-y-6">
+							<h2 className="text-[10px] font-black text-zinc-400 uppercase tracking-widest px-1">
+								Results for "{query}"
+							</h2>
+							{filteredResults.length > 0 ? (
+								<div className="space-y-3">
+									{filteredResults.map((paper) => (
+										<Card
+											key={paper.id}
+											className="p-4 border-none shadow-sm bg-white dark:bg-zinc-900 rounded-2xl flex items-center justify-between group cursor-pointer hover:shadow-md transition-all active:scale-[0.98]"
+											onClick={() => router.push(`/past-paper?id=${paper.id}`)}
+										>
+											<div className="flex items-center gap-4">
+												<div className="w-10 h-10 rounded-xl bg-brand-blue/10 flex items-center justify-center">
+													<FileText className="w-5 h-5 text-brand-blue" />
+												</div>
+												<div>
+													<h4 className="font-black text-zinc-900 dark:text-white text-sm">
+														{paper.subject} {paper.paper}
+													</h4>
+													<p className="text-[10px] font-bold text-zinc-500 uppercase">
+														{paper.month} {paper.year}
+													</p>
+												</div>
+											</div>
+											<Sparkles className="w-4 h-4 text-brand-blue opacity-0 group-hover:opacity-100 transition-opacity" />
+										</Card>
+									))}
+								</div>
+							) : (
+								<div className="py-20 flex flex-col items-center justify-center text-center space-y-4 opacity-40">
+									<div className="w-20 h-20 bg-zinc-100 dark:bg-zinc-800 rounded-[2.5rem] flex items-center justify-center">
+										<SearchIcon className="w-10 h-10 text-zinc-300 dark:text-zinc-600" />
+									</div>
+									<div className="space-y-1">
+										<h3 className="font-black text-zinc-400 uppercase tracking-widest text-xs">
+											No matches found
+										</h3>
+										<p className="text-zinc-400 font-bold">Try searching for something else</p>
+									</div>
+								</div>
+							)}
 						</div>
 					)}
 				</main>
