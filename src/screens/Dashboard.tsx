@@ -22,7 +22,10 @@ export default function Dashboard() {
 			>
 				<div className="flex justify-between items-center max-w-2xl mx-auto w-full">
 					<div className="flex items-center gap-4">
-						<Avatar className="w-14 h-14 border-2 border-brand-green p-0.5 shadow-md transition-transform hover:scale-105 active:scale-95">
+						<Avatar
+							className="w-14 h-14 border-2 border-brand-green p-0.5 shadow-md transition-transform hover:scale-105 active:scale-95 cursor-pointer"
+							onClick={() => router.push('/profile')}
+						>
 							<AvatarImage
 								src="https://api.dicebear.com/7.x/avataaars/svg?seed=Thabo"
 								className="rounded-full"
@@ -40,6 +43,7 @@ export default function Dashboard() {
 						variant="ghost"
 						size="icon"
 						className="rounded-full bg-zinc-100 dark:bg-zinc-800 relative w-12 h-12 transition-all active:scale-90"
+						onClick={() => router.push('/achievements')}
 					>
 						<Bell className="w-5 h-5 text-zinc-600 dark:text-zinc-400" />
 						<span className="absolute top-3 right-3.5 w-2.5 h-2.5 bg-brand-red rounded-full border-2 border-white dark:border-zinc-800 animate-pulse" />
@@ -126,6 +130,7 @@ export default function Dashboard() {
 							</h2>
 							<button
 								type="button"
+								onClick={() => router.push('/study-path')}
 								className="text-xs text-brand-blue font-black uppercase tracking-wider hover:underline transition-opacity active:opacity-70"
 							>
 								View All
@@ -159,6 +164,37 @@ export default function Dashboard() {
 								</div>
 							))}
 						</div>
+					</div>
+
+					{/* Past Papers Section - New */}
+					<div className="space-y-5">
+						<div className="flex justify-between items-center px-1">
+							<h2 className="text-sm font-black text-zinc-400 uppercase tracking-wider">
+								Practice Past Papers
+							</h2>
+							<button
+								type="button"
+								onClick={() => router.push('/past-papers')}
+								className="text-xs text-brand-blue font-black uppercase tracking-wider hover:underline transition-opacity active:opacity-70"
+							>
+								Browse All
+							</button>
+						</div>
+						<Card
+							className="p-6 border-none shadow-sm bg-brand-blue text-white rounded-[2.5rem] group cursor-pointer hover:shadow-xl hover:-translate-y-1 transition-all active:scale-[0.98] overflow-hidden relative"
+							onClick={() => router.push('/past-papers')}
+						>
+							<div className="absolute right-0 top-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16 blur-2xl group-hover:scale-150 transition-transform duration-500" />
+							<div className="relative z-10 flex items-center justify-between">
+								<div className="space-y-1">
+									<h4 className="font-black text-xl">2024 November NSC</h4>
+									<p className="text-white/80 font-bold text-xs uppercase tracking-wider">Latest Exam Papers Available</p>
+								</div>
+								<div className="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center">
+									<ArrowRight className="w-6 h-6" />
+								</div>
+							</div>
+						</Card>
 					</div>
 
 					{/* Recommended Challenges */}
