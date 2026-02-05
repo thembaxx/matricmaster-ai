@@ -1,4 +1,4 @@
-import { ArrowLeft, Download, Eye, Moon, Settings, Split, Sun } from 'lucide-react';
+import { ArrowLeft, Download, Eye, Moon, Settings, Sparkles, Split, Sun } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Badge } from '@/components/ui/badge';
@@ -42,6 +42,17 @@ export default function PhysicalSciences() {
 							<Download className="w-5 h-5" />
 						</Button>
 					</div>
+				</div>
+
+				{/* Quick Action */}
+				<div className="mb-4">
+					<Button
+						className="w-full bg-brand-purple text-white rounded-2xl font-bold h-12 gap-2 shadow-lg shadow-brand-purple/20"
+						onClick={() => router.push('/physics-quiz')}
+					>
+						<Sparkles className="w-4 h-4" />
+						Practice Interactive Paper (May/June 2025)
+					</Button>
 				</div>
 
 				{/* View Toggle */}
