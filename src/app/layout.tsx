@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 import MobileFrame from '@/components/Layout/MobileFrame';
 import { ThemeProvider } from '@/components/theme-provider';
@@ -58,11 +58,12 @@ export const metadata: Metadata = {
 			'max-snippet': -1,
 		},
 	},
-	viewport: {
-		width: 'device-width',
-		initialScale: 1,
-		maximumScale: 5,
-	},
+};
+
+export const viewport: Viewport = {
+	width: 'device-width',
+	initialScale: 1,
+	maximumScale: 5,
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

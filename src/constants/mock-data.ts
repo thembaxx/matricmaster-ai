@@ -21,7 +21,7 @@ export const SUBJECTS = [
 		id: 'chemistry',
 		name: 'Chemistry',
 		topics: 'Rate of Reaction, Organic Molecules',
-		icon: 'Beaker',
+		icon: 'FlaskConical',
 		color: 'text-brand-amber',
 		bg: 'bg-brand-amber/10',
 		path: '/quiz',

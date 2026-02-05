@@ -2,7 +2,7 @@ import {
 	Atom,
 	Calculator,
 	ChevronRight,
-	LayoutDashboard,
+	FlaskConical,
 	Microscope,
 	Moon,
 	Sparkles,
@@ -20,7 +20,7 @@ import { useTheme } from '@/hooks/use-theme';
 const ICON_MAP: Record<string, React.ElementType> = {
 	Calculator: Calculator,
 	Atom: Atom,
-	Beaker: LayoutDashboard,
+	FlaskConical: FlaskConical,
 	Microscope: Microscope,
 };
 
