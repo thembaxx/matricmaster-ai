@@ -44,6 +44,17 @@ export default function PhysicalSciences() {
 					</div>
 				</div>
 
+				{/* Quick Action */}
+				<div className="mb-4">
+					<Button
+						className="w-full bg-brand-purple text-white rounded-2xl font-bold h-12 gap-2 shadow-lg shadow-brand-purple/20"
+						onClick={() => router.push('/physics-quiz')}
+					>
+						<Sparkles className="w-4 h-4" />
+						Practice Interactive Paper (May/June 2025)
+					</Button>
+				</div>
+
 				{/* View Toggle */}
 				<Tabs
 					value={viewMode}

@@ -43,6 +43,16 @@ export const SUBJECTS = [
 
 export const PAST_PAPERS = [
 	{
+		id: 'phys-p1-2025-may',
+		year: 2025,
+		subject: 'Physical Sciences',
+		paper: 'P1',
+		month: 'May/June',
+		marks: 150,
+		time: '3 Hours',
+		downloadUrl: 'https://drive.google.com/uc?export=download&id=1cP0lx69tfb7iZOtWP_8wG-BUiv1nS85i',
+	},
+	{
 		id: 'math-p1-2025-may',
 		year: 2025,
 		subject: 'Mathematics',
