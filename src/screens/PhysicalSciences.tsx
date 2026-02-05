@@ -1,4 +1,4 @@
-import { ArrowLeft, Download, Eye, Moon, Settings, Split, Sun } from 'lucide-react';
+import { ArrowLeft, Download, Eye, Moon, Settings, Sparkles, Split, Sun } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Badge } from '@/components/ui/badge';
