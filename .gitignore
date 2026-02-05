@@ -17,3 +17,5 @@ dist-ssr/
 coverage/
 .next/
 tsconfig.tsbuildinfo
+.vercel
+.env*.local
