@@ -140,61 +140,59 @@ export default function MobileFrame({ children }: { children: React.ReactNode })
 					</div>
 				)}
 
-				<div className="flex-1 relative overflow-hidden flex flex-col pb-24">{children}</div>
+				<div className="flex-1 relative overflow-hidden flex flex-col">{children}</div>
 
-				{/* Bottom Navigation - iOS Liquid Glass Style */}
+				{/* Bottom Navigation - Fixed Bottom Bar */}
 				{!shouldHideNav && (
-					<div className="absolute bottom-6 left-0 right-0 px-6 z-50 pointer-events-none">
-						<nav
-							className="mx-auto max-w-sm bg-white/70 dark:bg-zinc-900/70 backdrop-blur-2xl border border-white/40 dark:border-zinc-800/40 shadow-[0_8px_32px_0_rgba(31,38,135,0.15)] dark:shadow-[0_8px_32px_0_rgba(0,0,0,0.3)] flex justify-around items-center py-2 px-2 rounded-[2rem] pointer-events-auto transition-all duration-500"
-							style={{
-								marginBottom: 'env(safe-area-inset-bottom, 0px)',
-							}}
-						>
-							{navItems.map((item) => {
-								const isActive = pathname === item.href;
-								return (
-									<Link
-										key={item.href}
-										href={item.href}
-										className="relative flex flex-col items-center justify-center min-w-[56px] min-h-[56px] transition-all duration-300"
-									>
-										{/* Active background pill */}
-										{isActive && (
-											<div
-												className="absolute inset-0 bg-brand-blue/10 dark:bg-brand-blue/20 rounded-2xl animate-fade-in"
-												style={{
-													animation: 'pillPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
-												}}
-											/>
-										)}
+					<nav
+						className="absolute bottom-0 left-0 right-0 z-50 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-2xl border-t border-zinc-200 dark:border-zinc-800 flex justify-around items-center py-2 px-2 transition-all duration-500"
+						style={{
+							paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 8px)',
+						}}
+					>
+						{navItems.map((item) => {
+							const isActive = pathname === item.href;
+							return (
+								<Link
+									key={item.href}
+									href={item.href}
+									className="relative flex flex-col items-center justify-center min-w-[56px] min-h-[56px] transition-all duration-300"
+								>
+									{/* Active background pill */}
+									{isActive && (
+										<div
+											className="absolute inset-0 bg-brand-blue/10 dark:bg-brand-blue/20 rounded-2xl animate-fade-in"
+											style={{
+												animation: 'pillPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+											}}
+										/>
+									)}
 
-										{/* Icon container with iOS-style tap animation */}
-										<div className="relative flex items-center justify-center">
-											<item.icon
-												className={`relative z-10 transition-all duration-300 ${
-													isActive
-														? 'text-brand-blue scale-110'
-														: 'text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200'
-												}`}
-												strokeWidth={isActive ? 2.5 : 2}
-												size={24}
-											/>
-										</div>
-
-										{/* Label with subtle animation */}
-										<span
-											className={`text-[9px] font-black uppercase tracking-widest transition-all duration-300 mt-1 ${
-												isActive ? 'text-brand-blue opacity-100' : 'text-zinc-400 opacity-0'
+									{/* Icon container with iOS-style tap animation */}
+									<div className="relative flex items-center justify-center">
+										<item.icon
+											className={`relative z-10 transition-all duration-300 ${
+												isActive
+													? 'text-brand-blue scale-110'
+													: 'text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200'
 											}`}
-										>
-											{item.label}
-										</span>
-									</Link>
-								);
-							})}
-						</nav>
-					</div>
+											strokeWidth={isActive ? 2.5 : 2}
+											size={24}
+										/>
+									</div>
+
+									{/* Label with subtle animation */}
+									<span
+										className={`text-[9px] font-black uppercase tracking-widest transition-all duration-300 mt-1 ${
+											isActive ? 'text-brand-blue opacity-100' : 'text-zinc-400 opacity-0'
+										}`}
+									>
+										{item.label}
+									</span>
+								</Link>
+							);
+						})}
+					</nav>
 				)}
 
 				{/* iOS-style custom scrollbar */}
@@ -240,12 +238,6 @@ export default function MobileFrame({ children }: { children: React.ReactNode })
 						-ms-overflow-style: none;
 					}
 
-					/* Safe area support for iOS notch */
-					@supports (padding: max(0px)) {
-						nav {
-							padding-bottom: max(8px, env(safe-area-inset-bottom));
-						}
-					}
 				`}</style>
 			</div>
 		</div>

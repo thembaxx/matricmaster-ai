@@ -76,7 +76,12 @@ export default function Profile() {
 			</header>
 
 			<ScrollArea className="flex-1">
-				<main className="px-6 pb-32 pt-4 max-w-2xl mx-auto w-full flex flex-col items-center">
+				<main
+					className="px-6 pb-32 pt-4 max-w-2xl mx-auto w-full flex flex-col items-center"
+					style={{
+						paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 128px)',
+					}}
+				>
 					{/* Avatar Section */}
 					<div className="relative mb-6">
 						<div className="w-32 h-32 rounded-full overflow-hidden border-4 border-zinc-800 shadow-2xl relative bg-zinc-800">
