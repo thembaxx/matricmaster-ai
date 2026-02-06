@@ -39,7 +39,7 @@ export default function Dashboard() {
 					paddingTop: 'calc(env(safe-area-inset-top, 0px) + 16px)',
 				}}
 			>
-				<div className="flex justify-between items-center max-w-2xl mx-auto w-full">
+				<div className="flex justify-between items-center max-w-2xl mx-auto w-full pl-14">
 					<div className="flex items-center gap-4">
 						<Avatar
 							className="w-14 h-14 border-2 border-brand-green p-0.5 shadow-md transition-transform hover:scale-105 active:scale-95 cursor-pointer"
