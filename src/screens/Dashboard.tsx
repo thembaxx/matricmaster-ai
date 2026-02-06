@@ -73,9 +73,9 @@ export default function Dashboard() {
 			{/* Content area with proper bottom spacing */}
 			<ScrollArea className="flex-1">
 				<main
-					className="px-6 pb-32 pt-6 space-y-8 max-w-2xl mx-auto w-full"
+					className="px-6 pb-40 pt-6 space-y-8 max-w-2xl mx-auto w-full"
 					style={{
-						paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 128px)',
+						paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 160px)',
 					}}
 				>
 					{/* Daily Goal - Prominent Focus */}

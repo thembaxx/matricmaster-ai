@@ -45,9 +45,9 @@ export default function Landing() {
 			{/* Content area with proper bottom spacing for navigation */}
 			<ScrollArea className="flex-1 relative z-10">
 				<main
-					className="pb-32 px-6 max-w-2xl mx-auto w-full"
+					className="pb-40 px-6 max-w-2xl mx-auto w-full"
 					style={{
-						paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 128px)',
+						paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 160px)',
 					}}
 				>
 					{/* Hero Section */}

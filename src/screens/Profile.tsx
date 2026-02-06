@@ -77,9 +77,9 @@ export default function Profile() {
 
 			<ScrollArea className="flex-1">
 				<main
-					className="px-6 pb-32 pt-4 max-w-2xl mx-auto w-full flex flex-col items-center"
+					className="px-6 pb-40 pt-4 max-w-2xl mx-auto w-full flex flex-col items-center"
 					style={{
-						paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 128px)',
+						paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 160px)',
 					}}
 				>
 					{/* Avatar Section */}

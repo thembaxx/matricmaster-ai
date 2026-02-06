@@ -79,9 +79,9 @@ export default function PastPapers() {
 
 			<ScrollArea className="flex-1">
 				<main
-					className="px-6 py-8 space-y-4 pb-32 max-w-2xl mx-auto w-full"
+					className="px-6 py-8 space-y-4 pb-40 max-w-2xl mx-auto w-full"
 					style={{
-						paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 128px)',
+						paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 160px)',
 					}}
 				>
 					<div className="flex items-center justify-between mb-2">

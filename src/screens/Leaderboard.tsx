@@ -107,7 +107,7 @@ export default function Leaderboard() {
 			</header>
 
 			<ScrollArea className="flex-1">
-				<main className="pb-32">
+				<main className="pb-40">
 					{/* Top 3 Podium */}
 					<div className="px-6 py-8">
 						<div className="flex items-end justify-center gap-4">
