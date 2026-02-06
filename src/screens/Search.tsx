@@ -1,16 +1,34 @@
 // import type { Screen } from '@/types'; // Removed unused import
-import { Clock, FileText, Search as SearchIcon, Sparkles, TrendingUp } from 'lucide-react';
+import { Clock, FileText, Loader2, Search as SearchIcon, Sparkles, TrendingUp } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { PAST_PAPERS } from '@/constants/mock-data';
+import { smartSearch } from '@/services/geminiService';
 
 export default function Search() {
 	const router = useRouter();
 	const [query, setQuery] = useState('');
+	const [aiResults, setAiResults] = useState<{ suggestions: string[]; tip: string } | null>(null);
+	const [isAiLoading, setIsAiLoading] = useState(false);
+
+	useEffect(() => {
+		const timer = setTimeout(async () => {
+			if (query.length > 3) {
+				setIsAiLoading(true);
+				const results = await smartSearch(query);
+				setAiResults(results);
+				setIsAiLoading(false);
+			} else {
+				setAiResults(null);
+			}
+		}, 800);
+
+		return () => clearTimeout(timer);
+	}, [query]);
 
 	const filteredResults = query
 		? PAST_PAPERS.filter(
@@ -121,48 +139,89 @@ export default function Search() {
 							</div>
 						</>
 					) : (
-						<div className="space-y-6">
-							<h2 className="text-[10px] font-black text-zinc-400 uppercase tracking-widest px-1">
-								Results for "{query}"
-							</h2>
-							{filteredResults.length > 0 ? (
-								<div className="space-y-3">
-									{filteredResults.map((paper) => (
-										<Card
-											key={paper.id}
-											className="p-4 border-none shadow-sm bg-white dark:bg-zinc-900 rounded-2xl flex items-center justify-between group cursor-pointer hover:shadow-md transition-all active:scale-[0.98]"
-											onClick={() => router.push(`/past-paper?id=${paper.id}`)}
-										>
-											<div className="flex items-center gap-4">
-												<div className="w-10 h-10 rounded-xl bg-brand-blue/10 flex items-center justify-center">
-													<FileText className="w-5 h-5 text-brand-blue" />
-												</div>
-												<div>
-													<h4 className="font-black text-zinc-900 dark:text-white text-sm">
-														{paper.subject} {paper.paper}
-													</h4>
-													<p className="text-[10px] font-bold text-zinc-500 uppercase">
-														{paper.month} {paper.year}
+						<div className="space-y-10">
+							{/* AI Suggestions */}
+							{(isAiLoading || aiResults) && (
+								<div className="space-y-4 animate-in fade-in slide-in-from-top-4 duration-500">
+									<div className="flex items-center gap-2 px-1">
+										<Sparkles className="w-4 h-4 text-brand-blue" />
+										<h2 className="text-[10px] font-black text-zinc-400 uppercase tracking-widest">
+											MatricMaster AI Suggestions
+										</h2>
+									</div>
+									<Card className="p-6 bg-gradient-to-br from-brand-blue/5 to-brand-purple/5 border-none rounded-[2.5rem] relative overflow-hidden">
+										{isAiLoading ? (
+											<div className="flex items-center justify-center py-4">
+												<Loader2 className="w-6 h-6 text-brand-blue animate-spin" />
+											</div>
+										) : (
+											<div className="space-y-4">
+												{aiResults?.tip && (
+													<p className="text-sm font-medium text-zinc-600 dark:text-zinc-400 italic">
+														"{aiResults.tip}"
 													</p>
+												)}
+												<div className="flex flex-wrap gap-2">
+													{aiResults?.suggestions.map((suggestion) => (
+														<Badge
+															key={suggestion}
+															variant="secondary"
+															className="px-3 py-1.5 rounded-lg bg-white/50 dark:bg-zinc-900/50 border border-brand-blue/10 text-[11px] font-bold hover:bg-brand-blue/10 transition-colors cursor-pointer"
+															onClick={() => setQuery(suggestion)}
+														>
+															{suggestion}
+														</Badge>
+													))}
 												</div>
 											</div>
-											<Sparkles className="w-4 h-4 text-brand-blue opacity-0 group-hover:opacity-100 transition-opacity" />
-										</Card>
-									))}
-								</div>
-							) : (
-								<div className="py-20 flex flex-col items-center justify-center text-center space-y-4 opacity-40">
-									<div className="w-20 h-20 bg-zinc-100 dark:bg-zinc-800 rounded-[2.5rem] flex items-center justify-center">
-										<SearchIcon className="w-10 h-10 text-zinc-300 dark:text-zinc-600" />
-									</div>
-									<div className="space-y-1">
-										<h3 className="font-black text-zinc-400 uppercase tracking-widest text-xs">
-											No matches found
-										</h3>
-										<p className="text-zinc-400 font-bold">Try searching for something else</p>
-									</div>
+										)}
+									</Card>
 								</div>
 							)}
+
+							<div className="space-y-6">
+								<h2 className="text-[10px] font-black text-zinc-400 uppercase tracking-widest px-1">
+									Database Results for "{query}"
+								</h2>
+								{filteredResults.length > 0 ? (
+									<div className="space-y-3">
+										{filteredResults.map((paper) => (
+											<Card
+												key={paper.id}
+												className="p-4 border-none shadow-sm bg-white dark:bg-zinc-900 rounded-2xl flex items-center justify-between group cursor-pointer hover:shadow-md transition-all active:scale-[0.98]"
+												onClick={() => router.push(`/past-paper?id=${paper.id}`)}
+											>
+												<div className="flex items-center gap-4">
+													<div className="w-10 h-10 rounded-xl bg-brand-blue/10 flex items-center justify-center">
+														<FileText className="w-5 h-5 text-brand-blue" />
+													</div>
+													<div>
+														<h4 className="font-black text-zinc-900 dark:text-white text-sm">
+															{paper.subject} {paper.paper}
+														</h4>
+														<p className="text-[10px] font-bold text-zinc-500 uppercase">
+															{paper.month} {paper.year}
+														</p>
+													</div>
+												</div>
+												<Sparkles className="w-4 h-4 text-brand-blue opacity-0 group-hover:opacity-100 transition-opacity" />
+											</Card>
+										))}
+									</div>
+								) : (
+									<div className="py-20 flex flex-col items-center justify-center text-center space-y-4 opacity-40">
+										<div className="w-20 h-20 bg-zinc-100 dark:bg-zinc-800 rounded-[2.5rem] flex items-center justify-center">
+											<SearchIcon className="w-10 h-10 text-zinc-300 dark:text-zinc-600" />
+										</div>
+										<div className="space-y-1">
+											<h3 className="font-black text-zinc-400 uppercase tracking-widest text-xs">
+												No matches found
+											</h3>
+											<p className="text-zinc-400 font-bold">Try searching for something else</p>
+										</div>
+									</div>
+								)}
+							</div>
 						</div>
 					)}
 				</main>
