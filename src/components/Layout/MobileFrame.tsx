@@ -12,6 +12,7 @@ import {
 	Sun,
 	User,
 } from 'lucide-react';
+import { AnimatePresence, motion } from 'framer-motion';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
@@ -36,7 +37,7 @@ export default function MobileFrame({ children }: { children: React.ReactNode })
 	const shouldHideNav = hideNavigation.some((path) => pathname.startsWith(path));
 
 	const navItems = [
-		{ href: '/', label: 'Home', icon: Home },
+		{ href: '/dashboard', label: 'Home', icon: Home },
 		{ href: '/search', label: 'Search', icon: SearchIcon },
 		{ href: '/past-papers', label: 'Papers', icon: FileText },
 		{ href: '/bookmarks', label: 'Saved', icon: Bookmark },
@@ -142,87 +143,69 @@ export default function MobileFrame({ children }: { children: React.ReactNode })
 
 				<div className="flex-1 relative overflow-hidden flex flex-col">{children}</div>
 
-				{/* Bottom Navigation - Fixed Bottom Bar */}
-				{!shouldHideNav && (
-					<nav
-						className="absolute bottom-0 left-0 right-0 z-50 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-2xl border-t border-zinc-200 dark:border-zinc-800 flex justify-around items-center py-2 px-2 transition-all duration-500"
-						style={{
-							paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 8px)',
-						}}
-					>
-						{navItems.map((item) => {
-							const isActive = pathname === item.href;
-							return (
-								<Link
-									key={item.href}
-									href={item.href}
-									className="relative flex flex-col items-center justify-center min-w-[56px] min-h-[56px] transition-all duration-300"
-								>
-									{/* Active background pill */}
+				{/* Bottom Navigation - iOS Liquid Glass Floating Pill */}
+				<nav
+					className="fixed bottom-6 left-1/2 -translate-x-1/2 w-[92%] max-w-[400px] z-[100] bg-white/70 dark:bg-zinc-900/70 backdrop-blur-2xl border border-white/20 dark:border-zinc-800/50 rounded-full shadow-2xl flex justify-around items-center p-2 transition-all duration-500 ease-ios"
+					style={{
+						marginBottom: 'env(safe-area-inset-bottom, 0px)',
+					}}
+				>
+					{navItems.map((item) => {
+						const isActive =
+							pathname === item.href || (item.href === '/dashboard' && pathname === '/');
+						return (
+							<Link
+								key={item.href}
+								href={item.href}
+								className="relative flex flex-col items-center justify-center min-w-[64px] py-2 transition-all duration-300 group"
+							>
+								<AnimatePresence>
 									{isActive && (
-										<div
-											className="absolute inset-0 bg-brand-blue/10 dark:bg-brand-blue/20 rounded-2xl animate-fade-in"
-											style={{
-												animation: 'pillPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+										<motion.div
+											layoutId="active-pill"
+											className="absolute inset-0 bg-zinc-200/50 dark:bg-zinc-700/50 rounded-full z-0"
+											transition={{
+												type: 'spring',
+												stiffness: 400,
+												damping: 30,
 											}}
 										/>
 									)}
+								</AnimatePresence>
 
-									{/* Icon container with iOS-style tap animation */}
-									<div className="relative flex items-center justify-center">
-										<item.icon
-											className={`relative z-10 transition-all duration-300 ${
-												isActive
-													? 'text-brand-blue scale-110'
-													: 'text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200'
-											}`}
-											strokeWidth={isActive ? 2.5 : 2}
-											size={24}
-										/>
-									</div>
-
-									{/* Label with subtle animation */}
-									<span
-										className={`text-[9px] font-black uppercase tracking-widest transition-all duration-300 mt-1 ${
-											isActive ? 'text-brand-blue opacity-100' : 'text-zinc-400 opacity-0'
+								{/* Icon container */}
+								<div className="relative z-10 flex items-center justify-center">
+									<item.icon
+										className={`relative transition-all duration-300 ${
+											isActive
+												? 'text-zinc-900 dark:text-white scale-110'
+												: 'text-zinc-400 group-hover:text-zinc-600 dark:group-hover:text-zinc-200'
 										}`}
-									>
-										{item.label}
-									</span>
-								</Link>
-							);
-						})}
-					</nav>
-				)}
+										strokeWidth={isActive ? 2.5 : 2}
+										size={22}
+									/>
+								</div>
 
-				{/* iOS-style custom scrollbar */}
+								{/* Label */}
+								<span
+									className={`relative z-10 text-[10px] font-black uppercase tracking-widest transition-all duration-300 mt-1 ${
+										isActive
+											? 'text-zinc-900 dark:text-white opacity-100'
+											: 'text-zinc-400 opacity-0 group-hover:opacity-100'
+									}`}
+								>
+									{item.label}
+								</span>
+							</Link>
+						);
+					})}
+				</nav>
+
+				{/* Custom scrollbar styling */}
 				<style>{`
-					/* iOS Spring Animations */
-					@keyframes pillPop {
-						0% {
-							transform: scale(0.85);
-							opacity: 0;
-						}
-						100% {
-							transform: scale(1);
-							opacity: 1;
-						}
-					}
-
-					@keyframes slideIn {
-						0% {
-							transform: translateY(20px);
-							opacity: 0;
-						}
-						100% {
-							transform: translateY(0);
-							opacity: 1;
-						}
-					}
-
 					/* iOS-style active press effect */
-					nav a:active svg {
-						transform: scale(0.9);
+					nav a:active {
+						transform: scale(0.95);
 						transition: transform 0.1s cubic-bezier(0.4, 0, 0.2, 1);
 					}
 
@@ -238,6 +221,9 @@ export default function MobileFrame({ children }: { children: React.ReactNode })
 						-ms-overflow-style: none;
 					}
 
+					.ease-ios {
+						transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+					}
 				`}</style>
 			</div>
 		</div>
