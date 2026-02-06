@@ -12,6 +12,7 @@ import {
 } from 'recharts';
 
 import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
 import {
 	type ChartConfig,
 	ChartContainer,
@@ -58,19 +59,19 @@ export default function Profile() {
 	const [viewMode, setViewMode] = useState<'my_stats' | 'provincial'>('my_stats');
 
 	return (
-		<div className="flex flex-col h-full bg-[#0a0f18] text-white font-lexend overflow-hidden">
+		<div className="flex flex-col h-full bg-zinc-50 dark:bg-zinc-950 overflow-hidden">
 			{/* Header */}
 			<header
-				className="px-6 pb-4 bg-[#0a0f18]/80 backdrop-blur-xl sticky top-0 z-20 shrink-0"
+				className="px-6 py-4 ios-glass sticky top-0 z-20 shrink-0"
 				style={{
-					paddingTop: 'calc(env(safe-area-inset-top, 0px) + 16px)',
+					paddingTop: 'calc(env(safe-area-inset-top, 0px) + 12px)',
 				}}
 			>
 				<div className="flex justify-between items-center max-w-2xl mx-auto w-full pl-14">
-					<div className="w-6" /> {/* Spacer for balance */}
-					<h1 className="text-xl font-bold tracking-tight">Profile</h1>
-					<Button variant="ghost" size="icon" className="rounded-full hover:bg-white/10">
-						<Share2 className="w-6 h-6 text-zinc-400" />
+					<div className="w-6" />
+					<span className="text-sm font-bold text-zinc-500">Profile</span>
+					<Button variant="ghost" size="icon" className="rounded-full ios-active-scale">
+						<Share2 className="w-5 h-5 text-zinc-500" />
 					</Button>
 				</div>
 			</header>
@@ -82,6 +83,12 @@ export default function Profile() {
 						paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 160px)',
 					}}
 				>
+					{/* iOS Large Title */}
+					<div className="w-full space-y-1 pt-2 mb-8 text-left">
+						<h1 className="text-[34px] font-black leading-tight text-zinc-900 dark:text-white tracking-tight">
+							My Profile
+						</h1>
+					</div>
 					{/* Avatar Section */}
 					<div className="relative mb-6">
 						<div className="w-32 h-32 rounded-full overflow-hidden border-4 border-zinc-800 shadow-2xl relative bg-zinc-800">
@@ -97,19 +104,21 @@ export default function Profile() {
 					</div>
 
 					<div className="text-center mb-8">
-						<h2 className="text-3xl font-black mb-1">Thabo Mbeki</h2>
-						<p className="text-zinc-400 font-medium">St. John&apos;s College • Grade 12</p>
+						<h2 className="text-3xl font-black mb-1 text-zinc-900 dark:text-white">Thabo Mbeki</h2>
+						<p className="text-zinc-500 dark:text-zinc-400 font-bold">
+							St. John&apos;s College • Grade 12
+						</p>
 					</div>
 
-					{/* Tabs */}
-					<div className="w-full max-w-sm bg-zinc-900/50 p-1.5 rounded-2xl flex mb-12 border border-zinc-800">
+					{/* Tabs - iOS Segmented Control Style */}
+					<div className="w-full max-w-sm bg-zinc-200/50 dark:bg-zinc-800/50 p-1 rounded-2xl flex mb-12 backdrop-blur-sm">
 						<button
 							type="button"
 							onClick={() => setViewMode('my_stats')}
-							className={`flex-1 py-2.5 rounded-xl font-bold transition-all ${
+							className={`flex-1 py-2 rounded-xl font-bold transition-all duration-200 ${
 								viewMode === 'my_stats'
-									? 'bg-brand-blue text-white shadow-lg shadow-brand-blue/20'
-									: 'text-zinc-500 hover:text-zinc-300'
+									? 'bg-white dark:bg-zinc-700 text-zinc-900 dark:text-white shadow-sm'
+									: 'text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300'
 							}`}
 						>
 							My Stats
@@ -117,13 +126,13 @@ export default function Profile() {
 						<button
 							type="button"
 							onClick={() => setViewMode('provincial')}
-							className={`flex-1 py-2.5 rounded-xl font-bold transition-all ${
+							className={`flex-1 py-2 rounded-xl font-bold transition-all duration-200 ${
 								viewMode === 'provincial'
-									? 'bg-zinc-800 text-white'
-									: 'text-zinc-500 hover:text-zinc-300'
+									? 'bg-white dark:bg-zinc-700 text-zinc-900 dark:text-white shadow-sm'
+									: 'text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300'
 							}`}
 						>
-							vs. Provincial Avg
+							Provincial
 						</button>
 					</div>
 
@@ -202,33 +211,33 @@ export default function Profile() {
 
 					{/* Stats Cards */}
 					<div className="grid grid-cols-2 gap-4 w-full">
-						<div className="bg-zinc-900/50 p-6 rounded-[2rem] border border-zinc-800 relative overflow-hidden group">
+						<Card className="p-6 bg-white dark:bg-zinc-900 relative overflow-hidden group">
 							<div className="relative z-10 flex flex-col gap-4">
 								<div className="w-10 h-10 rounded-xl bg-brand-blue/10 flex items-center justify-center">
 									<GraduationCap className="w-6 h-6 text-brand-blue" />
 								</div>
 								<div>
-									<div className="text-4xl font-black mb-1">78%</div>
-									<div className="text-[10px] font-black text-zinc-500 uppercase tracking-wider">
-										Overall Average
+									<div className="text-4xl font-black mb-1 text-zinc-900 dark:text-white">78%</div>
+									<div className="text-[11px] font-black text-zinc-400 uppercase tracking-widest">
+										Overall Avg
 									</div>
 								</div>
 							</div>
-						</div>
+						</Card>
 
-						<div className="bg-zinc-900/50 p-6 rounded-[2rem] border border-zinc-800 relative overflow-hidden group">
+						<Card className="p-6 bg-white dark:bg-zinc-900 relative overflow-hidden group">
 							<div className="relative z-10 flex flex-col gap-4">
 								<div className="w-10 h-10 rounded-xl bg-brand-purple/10 flex items-center justify-center">
 									<Star className="w-6 h-6 text-brand-purple" />
 								</div>
 								<div>
-									<div className="text-4xl font-black mb-1">Math</div>
-									<div className="text-[10px] font-black text-zinc-500 uppercase tracking-wider">
+									<div className="text-4xl font-black mb-1 text-zinc-900 dark:text-white">Math</div>
+									<div className="text-[11px] font-black text-zinc-400 uppercase tracking-widest">
 										Top Subject
 									</div>
 								</div>
 							</div>
-						</div>
+						</Card>
 					</div>
 				</main>
 			</ScrollArea>

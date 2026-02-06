@@ -79,7 +79,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 					rel="stylesheet"
 				/>
 			</head>
-			<body className="bg-gray-100 dark:bg-zinc-950 min-h-screen font-inter">
+			<body className="bg-gray-100 dark:bg-zinc-950 min-h-screen">
 				<ErrorBoundary>
 					<ThemeProvider defaultTheme="light" storageKey="matric-master-theme">
 						<MobileFrame>{children}</MobileFrame>

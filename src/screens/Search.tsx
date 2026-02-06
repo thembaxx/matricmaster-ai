@@ -39,17 +39,19 @@ export default function Search() {
 		: [];
 
 	return (
-		<div className="flex flex-col h-full bg-zinc-50 dark:bg-zinc-950 font-lexend">
-			<div className="px-6 pt-12 pb-6 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl sticky top-0 z-20 border-b border-zinc-100 dark:border-zinc-800 shrink-0">
-				<div className="max-w-2xl mx-auto w-full">
-					<h1 className="text-3xl font-black text-zinc-900 dark:text-white mb-6">Search</h1>
+		<div className="flex flex-col h-full bg-zinc-50 dark:bg-zinc-950">
+			<div className="px-6 py-4 ios-glass sticky top-0 z-20 shrink-0">
+				<div className="max-w-2xl mx-auto w-full flex flex-col gap-4">
+					<div className="flex items-center gap-4 pl-14">
+						<h1 className="text-xl font-bold text-zinc-500">Search</h1>
+					</div>
 					<div className="relative">
-						<SearchIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-6 h-6 text-zinc-400" />
+						<SearchIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-400" />
 						<Input
 							value={query}
 							onChange={(e) => setQuery(e.target.value)}
 							placeholder="Topics, questions, past papers..."
-							className="pl-12 bg-zinc-100 dark:bg-zinc-800 border-none h-14 rounded-2xl text-base font-medium focus-visible:ring-2 focus-visible:ring-brand-blue"
+							className="pl-11 bg-zinc-200/50 dark:bg-zinc-800/50 border-none h-12 rounded-xl text-[17px] font-medium focus-visible:ring-2 focus-visible:ring-brand-blue backdrop-blur-sm"
 						/>
 					</div>
 				</div>
@@ -57,6 +59,15 @@ export default function Search() {
 
 			<ScrollArea className="flex-1">
 				<main className="px-6 py-8 max-w-2xl mx-auto w-full space-y-10 pb-40">
+					{/* iOS Large Title */}
+					<div className="space-y-1 pt-2">
+						<h1 className="text-[34px] font-black leading-tight text-zinc-900 dark:text-white tracking-tight">
+							Discover
+						</h1>
+						<p className="text-[17px] font-medium text-zinc-500 dark:text-zinc-400">
+							Explore topics and past papers.
+						</p>
+					</div>
 					{!query ? (
 						<>
 							{/* Trending Section */}

@@ -31,18 +31,18 @@ export default function Dashboard() {
 	};
 
 	return (
-		<div className="flex flex-col h-full bg-zinc-50 dark:bg-zinc-950 font-inter">
+		<div className="flex flex-col h-full bg-zinc-50 dark:bg-zinc-950">
 			{/* Header - iOS-style sticky with backdrop blur */}
 			<header
-				className="px-6 pb-4 bg-white/90 dark:bg-zinc-900/90 backdrop-blur-xl sticky top-0 z-20 border-b border-zinc-100/50 dark:border-zinc-800/50 shrink-0 transition-all duration-200"
+				className="px-6 py-4 ios-glass sticky top-0 z-20 shrink-0 transition-all duration-200"
 				style={{
-					paddingTop: 'calc(env(safe-area-inset-top, 0px) + 16px)',
+					paddingTop: 'calc(env(safe-area-inset-top, 0px) + 12px)',
 				}}
 			>
 				<div className="flex justify-between items-center max-w-2xl mx-auto w-full pl-14">
-					<div className="flex items-center gap-4">
+					<div className="flex items-center gap-3">
 						<Avatar
-							className="w-14 h-14 border-2 border-brand-green p-0.5 shadow-md transition-transform hover:scale-105 active:scale-95 cursor-pointer"
+							className="w-10 h-10 border-2 border-brand-blue/20 p-0.5 shadow-sm transition-transform ios-active-scale cursor-pointer"
 							onClick={() => router.push('/profile')}
 						>
 							<AvatarImage
@@ -51,21 +51,16 @@ export default function Dashboard() {
 							/>
 							<AvatarFallback>TM</AvatarFallback>
 						</Avatar>
-						<div>
-							<p className="text-[10px] text-zinc-500 font-black uppercase tracking-wider">
-								Hi Thabo!
-							</p>
-							<h1 className="text-2xl font-black text-zinc-900 dark:text-white">Dashboard</h1>
-						</div>
+						<span className="text-sm font-bold text-zinc-500 dark:text-zinc-400">Hi, Thabo!</span>
 					</div>
 					<Button
 						variant="ghost"
 						size="icon"
-						className="rounded-full bg-zinc-100 dark:bg-zinc-800 relative w-12 h-12 transition-all active:scale-90"
+						className="rounded-full bg-zinc-100/50 dark:bg-zinc-800/50 relative w-10 h-10 transition-all active:scale-90"
 						onClick={() => router.push('/achievements')}
 					>
 						<Bell className="w-5 h-5 text-zinc-600 dark:text-zinc-400" />
-						<span className="absolute top-3 right-3.5 w-2.5 h-2.5 bg-brand-red rounded-full border-2 border-white dark:border-zinc-800 animate-pulse" />
+						<span className="absolute top-2.5 right-2.5 w-2 h-2 bg-brand-red rounded-full border-2 border-white dark:border-zinc-800 animate-pulse" />
 					</Button>
 				</div>
 			</header>
@@ -73,100 +68,119 @@ export default function Dashboard() {
 			{/* Content area with proper bottom spacing */}
 			<ScrollArea className="flex-1">
 				<main
-					className="px-6 pb-40 pt-6 space-y-8 max-w-2xl mx-auto w-full"
+					className="px-6 pb-40 pt-4 space-y-8 max-w-2xl mx-auto w-full"
 					style={{
 						paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 160px)',
 					}}
 				>
-					{/* Daily Goal - Prominent Focus */}
+					{/* iOS Large Title */}
+					<div className="space-y-1 pt-2">
+						<h1 className="text-[34px] font-black leading-tight text-zinc-900 dark:text-white tracking-tight">
+							Dashboard
+						</h1>
+						<p className="text-[17px] font-medium text-zinc-500 dark:text-zinc-400">
+							Keep up the great work!
+						</p>
+					</div>
+					{/* Daily Goal - Prominent Focus (Brilliant Style) */}
 					<div className="space-y-4">
-						<Card className="p-8 border-none shadow-2xl bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 rounded-[3rem] relative overflow-hidden group">
+						<Card className="p-8 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 rounded-[2.5rem] relative overflow-hidden group shadow-2xl shadow-brand-blue/20">
 							<div className="absolute top-0 right-0 w-64 h-64 bg-brand-blue/20 rounded-full -mr-32 -mt-32 blur-3xl group-hover:scale-110 transition-transform duration-500" />
 
 							<div className="flex justify-between items-start mb-8 relative z-10">
-								<div className="space-y-2">
-									<Badge className="bg-brand-orange text-white border-none rounded-full px-4 py-1 font-black text-[10px] tracking-wider uppercase">
-										Daily Goal
+								<div className="space-y-3">
+									<Badge className="bg-brand-orange text-white border-none rounded-full px-4 py-1.5 font-black text-[11px] tracking-widest uppercase">
+										Daily Quest
 									</Badge>
-									<h3 className="text-4xl font-black leading-tight">{CURRENT_GOAL.title}</h3>
-									<p className="text-zinc-400 dark:text-zinc-500 font-bold">
+									<h3 className="text-4xl font-black leading-tight tracking-tighter">
+										{CURRENT_GOAL.title}
+									</h3>
+									<p className="text-[17px] text-zinc-400 dark:text-zinc-500 font-bold leading-snug">
 										{CURRENT_GOAL.subtitle}
 									</p>
 								</div>
-								<div className="w-20 h-20 bg-white/10 dark:bg-zinc-100 rounded-[2rem] flex items-center justify-center text-4xl shadow-inner animate-float">
+								<div className="w-20 h-20 bg-white/10 dark:bg-zinc-100 rounded-[2rem] flex items-center justify-center text-5xl shadow-inner animate-float">
 									{CURRENT_GOAL.icon}
 								</div>
 							</div>
 
-							<div className="space-y-4 relative z-10">
-								<div className="flex items-end justify-between px-1">
-									<span className="font-black text-xl uppercase tracking-tighter">
-										Current Step
-									</span>
-									<span className="font-black text-brand-blue text-2xl italic">
-										{CURRENT_GOAL.step}
-									</span>
+							<div className="space-y-6 relative z-10">
+								<div className="space-y-2">
+									<div className="flex items-end justify-between px-1">
+										<span className="font-black text-sm uppercase tracking-widest text-zinc-400">
+											Your Progress
+										</span>
+										<span className="font-black text-brand-blue text-2xl italic">
+											{CURRENT_GOAL.step}
+										</span>
+									</div>
+									<Progress
+										value={CURRENT_GOAL.progress}
+										className="h-4 bg-white/10 dark:bg-zinc-100 rounded-full shadow-inner"
+									/>
 								</div>
-								<Progress
-									value={CURRENT_GOAL.progress}
-									className="h-5 bg-white/10 dark:bg-zinc-100 rounded-full mb-8 shadow-inner"
-								/>
 
 								<Button
-									className="w-full bg-brand-blue hover:bg-brand-blue-light text-white font-black h-20 rounded-[2.5rem] text-xl shadow-xl shadow-brand-blue/20 active:scale-[0.98] transition-all"
+									variant="ios"
+									size="lg"
+									className="w-full h-18 text-xl"
 									onClick={() => router.push('/quiz')}
 								>
-									Continue Learning
-									<ArrowRight className="w-6 h-6 ml-3" />
+									Continue Quest
+									<ArrowRight className="w-6 h-6 ml-2" />
 								</Button>
 							</div>
 						</Card>
 					</div>
 
-					{/* AI Study Plan Card */}
-					<Card className="p-8 border-none shadow-sm bg-gradient-to-br from-brand-purple/10 to-brand-blue/10 rounded-[3rem] space-y-6 relative overflow-hidden group">
-						<div className="absolute -right-8 -top-8 w-32 h-32 bg-brand-purple/10 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-700" />
+					{/* AI Study Plan Card (Opal Style) */}
+					<Card className="p-8 border-none bg-gradient-to-br from-brand-purple/10 via-white to-brand-blue/10 dark:from-brand-purple/20 dark:via-zinc-900 dark:to-brand-blue/20 rounded-[2.5rem] space-y-6 relative overflow-hidden group border border-brand-purple/20">
+						<div className="absolute -right-8 -top-8 w-32 h-32 bg-brand-purple/20 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-700" />
 
 						<div className="flex items-center gap-4 relative z-10">
-							<div className="w-12 h-12 rounded-2xl bg-white dark:bg-zinc-900 flex items-center justify-center shadow-sm">
-								<Sparkles className="w-6 h-6 text-brand-purple" />
+							<div className="w-14 h-14 rounded-2xl bg-white dark:bg-zinc-900 flex items-center justify-center shadow-xl shadow-brand-purple/10">
+								<Sparkles className="w-8 h-8 text-brand-purple animate-pulse" />
 							</div>
 							<div>
-								<h3 className="text-xl font-black text-zinc-900 dark:text-white">AI Study Plan</h3>
-								<p className="text-xs font-bold text-zinc-500 uppercase tracking-widest">
-									Personalized for your week
+								<h3 className="text-2xl font-black text-zinc-900 dark:text-white tracking-tight">
+									AI Study Plan
+								</h3>
+								<p className="text-xs font-bold text-brand-purple uppercase tracking-[0.2em]">
+									Personalized Path
 								</p>
 							</div>
 						</div>
 
 						{aiPlan ? (
-							<div className="bg-white/50 dark:bg-zinc-900/50 rounded-2xl p-6 relative z-10 animate-in fade-in slide-in-from-top-4">
-								<p className="text-sm font-medium text-zinc-700 dark:text-zinc-300 leading-relaxed whitespace-pre-wrap">
+							<div className="bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md rounded-[2rem] p-6 relative z-10 animate-in fade-in slide-in-from-top-4 border border-white/40 dark:border-zinc-800/40">
+								<p className="text-[15px] font-medium text-zinc-700 dark:text-zinc-300 leading-relaxed whitespace-pre-wrap">
 									{aiPlan}
 								</p>
 								<Button
 									variant="ghost"
 									size="sm"
-									className="mt-4 text-xs font-black text-brand-purple hover:bg-brand-purple/10 rounded-full h-8"
+									className="mt-4 text-xs font-black text-brand-purple hover:bg-brand-purple/5 rounded-full"
 									onClick={() => setAiPlan(null)}
 								>
-									Generate New
+									Refresh Plan
 								</Button>
 							</div>
 						) : (
-							<div className="space-y-4 relative z-10">
-								<p className="text-sm font-medium text-zinc-500 max-w-xs leading-relaxed">
+							<div className="space-y-6 relative z-10">
+								<p className="text-[17px] font-medium text-zinc-500 dark:text-zinc-400 leading-relaxed">
 									Let MatricMaster AI analyze your progress and create a focused daily quest path
 									just for you.
 								</p>
 								<Button
-									className="w-full h-14 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 rounded-2xl font-black text-sm shadow-lg active:scale-95 transition-all"
+									variant="default"
+									size="lg"
+									className="w-full bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 shadow-2xl shadow-black/10"
 									onClick={handleGeneratePlan}
 									disabled={isGeneratingPlan}
 								>
 									{isGeneratingPlan ? (
 										<>
-											<Loader2 className="w-4 h-4 mr-2 animate-spin" />
+											<Loader2 className="w-5 h-5 mr-3 animate-spin" />
 											Calculating Quests...
 										</>
 									) : (
