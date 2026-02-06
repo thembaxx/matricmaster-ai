@@ -1,5 +1,6 @@
 'use client';
 
+import { AnimatePresence, motion } from 'framer-motion';
 import {
 	Bookmark,
 	FileText,
@@ -12,7 +13,6 @@ import {
 	Sun,
 	User,
 } from 'lucide-react';
-import { AnimatePresence, motion } from 'framer-motion';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
@@ -63,9 +63,9 @@ export default function MobileFrame({ children }: { children: React.ReactNode })
 								<Button
 									variant="ghost"
 									size="icon"
-									className="w-10 h-10 rounded-xl bg-white/40 dark:bg-zinc-800/40 backdrop-blur-xl border border-white/40 dark:border-zinc-800/40 shadow-xl pointer-events-auto active:scale-90 transition-all hover:bg-white/60 dark:hover:bg-zinc-800/60"
+									className="w-12 h-12 rounded-full ios-glass shadow-xl pointer-events-auto ios-active-scale"
 								>
-									<Menu className="w-5 h-5 text-zinc-900 dark:text-white" />
+									<Menu className="w-6 h-6 text-zinc-900 dark:text-white" />
 								</Button>
 							</SheetTrigger>
 							<SheetContent
@@ -145,7 +145,7 @@ export default function MobileFrame({ children }: { children: React.ReactNode })
 
 				{/* Bottom Navigation - iOS Liquid Glass Floating Pill */}
 				<nav
-					className="fixed bottom-6 left-1/2 -translate-x-1/2 w-[92%] max-w-[400px] z-[100] bg-white/70 dark:bg-zinc-900/70 backdrop-blur-2xl border border-white/20 dark:border-zinc-800/50 rounded-full shadow-2xl flex justify-around items-center p-2 transition-all duration-500 ease-ios"
+					className="fixed bottom-8 left-1/2 -translate-x-1/2 w-[90%] max-w-[380px] z-[100] ios-glass rounded-[2.5rem] shadow-2xl shadow-black/5 flex justify-around items-center p-2 px-4 transition-all duration-500 ease-ios"
 					style={{
 						marginBottom: 'env(safe-area-inset-bottom, 0px)',
 					}}
@@ -178,11 +178,11 @@ export default function MobileFrame({ children }: { children: React.ReactNode })
 									<item.icon
 										className={`relative transition-all duration-300 ${
 											isActive
-												? 'text-zinc-900 dark:text-white scale-110'
+												? 'text-brand-blue dark:text-brand-blue-light scale-110'
 												: 'text-zinc-400 group-hover:text-zinc-600 dark:group-hover:text-zinc-200'
 										}`}
 										strokeWidth={isActive ? 2.5 : 2}
-										size={22}
+										size={24}
 									/>
 								</div>
 
@@ -190,8 +190,8 @@ export default function MobileFrame({ children }: { children: React.ReactNode })
 								<span
 									className={`relative z-10 text-[10px] font-black uppercase tracking-widest transition-all duration-300 mt-1 ${
 										isActive
-											? 'text-zinc-900 dark:text-white opacity-100'
-											: 'text-zinc-400 opacity-0 group-hover:opacity-100'
+											? 'text-brand-blue dark:text-brand-blue-light opacity-100'
+											: 'text-zinc-400 opacity-0'
 									}`}
 								>
 									{item.label}

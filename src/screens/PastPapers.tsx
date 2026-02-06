@@ -1,4 +1,4 @@
-import { ArrowLeft, Download, Eye, FileText, Filter, Search as SearchIcon } from 'lucide-react';
+import { Download, Eye, FileText, Filter, Search as SearchIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Badge } from '@/components/ui/badge';
@@ -24,53 +24,44 @@ export default function PastPapers() {
 	});
 
 	return (
-		<div className="flex flex-col h-full bg-zinc-50 dark:bg-zinc-950 font-lexend relative">
+		<div className="flex flex-col h-full bg-zinc-50 dark:bg-zinc-950 relative overflow-hidden">
 			{/* Header */}
-			<header className="px-6 pt-12 pb-6 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl sticky top-0 z-20 border-b border-zinc-100 dark:border-zinc-800 shrink-0 overflow-hidden">
-				<img
-					src="https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&q=80&w=800"
-					alt="Library"
-					className="absolute inset-0 w-full h-full object-cover opacity-5 pointer-events-none"
-				/>
-				<div className="max-w-2xl mx-auto w-full relative z-10">
-					<div className="flex items-center gap-4 mb-6">
-						<Button
-							variant="ghost"
-							size="icon"
-							onClick={() => router.push('/dashboard')}
-							className="rounded-full"
-						>
-							<ArrowLeft className="w-5 h-5" />
-						</Button>
-						<h1 className="text-2xl font-black text-zinc-900 dark:text-white">Past Papers</h1>
+			<header
+				className="px-6 py-4 ios-glass sticky top-0 z-20 shrink-0"
+				style={{
+					paddingTop: 'calc(env(safe-area-inset-top, 0px) + 12px)',
+				}}
+			>
+				<div className="max-w-2xl mx-auto w-full relative z-10 flex flex-col gap-4">
+					<div className="flex items-center gap-4 pl-14">
+						<h1 className="text-xl font-bold text-zinc-500">Past Papers</h1>
 					</div>
 
 					<div className="space-y-4">
 						<div className="relative">
-							<SearchIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-400" />
+							<SearchIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400" />
 							<Input
 								value={searchQuery}
 								onChange={(e) => setSearchQuery(e.target.value)}
 								placeholder="Search subjects or papers..."
-								className="pl-12 bg-zinc-100 dark:bg-zinc-800 border-none h-12 rounded-xl text-sm font-medium focus-visible:ring-2 focus-visible:ring-brand-blue"
+								className="pl-10 bg-zinc-200/50 dark:bg-zinc-800/50 border-none h-10 rounded-xl text-[15px] font-medium focus-visible:ring-2 focus-visible:ring-brand-blue backdrop-blur-sm"
 							/>
 						</div>
 
-						<div className="flex gap-2 overflow-x-auto no-scrollbar pb-1">
+						<div className="flex gap-2 overflow-x-auto no-scrollbar">
 							{years.map((year) => (
-								<Button
+								<button
 									key={year}
-									variant={selectedYear === year ? 'default' : 'outline'}
-									size="sm"
+									type="button"
 									onClick={() => setSelectedYear(year as any)}
-									className={`rounded-full px-4 ${
+									className={`rounded-lg px-4 py-1.5 text-sm font-bold transition-all ${
 										selectedYear === year
-											? 'bg-brand-blue text-white hover:bg-brand-blue/90'
-											: 'border-zinc-200 dark:border-zinc-800'
+											? 'bg-brand-blue text-white shadow-lg shadow-brand-blue/20'
+											: 'bg-zinc-200/50 dark:bg-zinc-800/50 text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300'
 									}`}
 								>
 									{year}
-								</Button>
+								</button>
 							))}
 						</div>
 					</div>
@@ -84,8 +75,18 @@ export default function PastPapers() {
 						paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 160px)',
 					}}
 				>
+					{/* iOS Large Title */}
+					<div className="space-y-1 pt-2 mb-6 text-left">
+						<h1 className="text-[34px] font-black leading-tight text-zinc-900 dark:text-white tracking-tight">
+							Archive
+						</h1>
+						<p className="text-[17px] font-medium text-zinc-500 dark:text-zinc-400">
+							Search and download past exam papers.
+						</p>
+					</div>
+
 					<div className="flex items-center justify-between mb-2">
-						<h2 className="text-[10px] font-black text-zinc-400 uppercase tracking-widest px-1">
+						<h2 className="text-[11px] font-black text-zinc-400 uppercase tracking-widest px-1">
 							{filteredPapers.length} Papers Found
 						</h2>
 						<Button variant="ghost" size="sm" className="text-xs font-bold text-brand-blue">
