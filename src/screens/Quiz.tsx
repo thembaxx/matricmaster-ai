@@ -2,10 +2,10 @@
 import { ArrowLeft, HelpCircle, Lightbulb, Loader2, MoreHorizontal, Sparkles } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { getExplanation } from '@/services/geminiService';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { getExplanation } from '@/services/geminiService';
 
 const options = [
 	{ id: 'A', expression: '(1, 0)', isCorrect: false },
@@ -27,12 +27,17 @@ export default function Quiz() {
 		setIsExplaining(true);
 		setAiExplanation(null);
 		try {
-			const questionContext = 'Local Extrema - Find the coordinates of the local maximum for f(x) = x³ - 3x + 2';
+			const questionContext =
+				'Local Extrema - Find the coordinates of the local maximum for f(x) = x³ - 3x + 2';
 			const explanation = await getExplanation('Mathematics', questionContext);
-			setAiExplanation(explanation ?? "I'm sorry, I couldn't generate an explanation for this question.");
+			setAiExplanation(
+				explanation ?? "I'm sorry, I couldn't generate an explanation for this question."
+			);
 		} catch (error) {
 			console.error('Failed to get AI explanation:', error);
-			setAiExplanation("Sorry, I couldn't generate an explanation right now. Please check your internet connection and try again.");
+			setAiExplanation(
+				"Sorry, I couldn't generate an explanation right now. Please check your internet connection and try again."
+			);
 		} finally {
 			setIsExplaining(false);
 		}
@@ -280,8 +285,12 @@ export default function Quiz() {
 										<Sparkles className="w-5 h-5 text-brand-blue" />
 									</div>
 									<div>
-										<h4 className="font-bold text-zinc-900 dark:text-white text-sm">Need a deeper explanation?</h4>
-										<p className="text-[10px] font-bold text-zinc-500 uppercase tracking-tight">Ask MatricMaster AI</p>
+										<h4 className="font-bold text-zinc-900 dark:text-white text-sm">
+											Need a deeper explanation?
+										</h4>
+										<p className="text-[10px] font-bold text-zinc-500 uppercase tracking-tight">
+											Ask MatricMaster AI
+										</p>
 									</div>
 								</div>
 								<Button

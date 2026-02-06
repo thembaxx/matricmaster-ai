@@ -9,160 +9,105 @@ import {
 	Sparkles,
 	TrendingUp,
 } from 'lucide-react';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
-import { Progress } from '@/components/ui/progress';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { QUIZ_DATA } from '@/constants/quiz-data';
 import { getExplanation } from '@/services/geminiService';
 
-const questions = [
-	{
-		id: 1.1,
-		question:
-			'Three forces act on an object so that the resultant force is zero. Which ONE of the following vector diagrams is the CORRECT representation of the three forces?',
-		options: [
-			{ id: 'A', text: 'Forces forming a closed triangle (tip-to-tail)' },
-			{ id: 'B', text: 'Forces pointing in the same direction' },
-			{ id: 'C', text: 'Two forces in one direction, one in the opposite' },
-			{ id: 'D', text: 'Forces that do not meet at the ends' },
-		],
-		correctAnswer: 'A',
-		hint: 'For the resultant force to be zero, the vector sum must be zero. This is represented by vectors forming a closed triangle in a tip-to-tail arrangement.',
-		topic: "Newton's Laws",
-	},
-	{
-		id: 1.2,
-		question:
-			'Two large objects P and R, each of mass m, are placed r metres apart. They exert a gravitational force F on each other. If the mass of R is increased to 2m and the distance is increased to 2r, what is the new force?',
-		options: [
-			{ id: 'A', text: '1/2 F' },
-			{ id: 'B', text: 'F' },
-			{ id: 'C', text: '2 F' },
-			{ id: 'D', text: '4 F' },
-		],
-		correctAnswer: 'A',
-		hint: "Newton's Law of Universal Gravitation: F = G*m1*m2/r². Doubling one mass (2m) and doubling distance ((2r)² = 4r²) results in 2/4 = 1/2 of the original force.",
-		topic: 'Universal Gravitation',
-	},
-	{
-		id: 1.3,
-		question:
-			'A ball is projected vertically upwards from the top of a building. Which point on a velocity-time graph corresponds to the greatest height above the ground?',
-		options: [
-			{ id: 'A', text: 'Point P (Initial velocity)' },
-			{ id: 'B', text: 'Point Q (Where velocity is 0)' },
-			{ id: 'C', text: 'Point R (On the way down)' },
-			{ id: 'D', text: 'Point S (Impact)' },
-		],
-		correctAnswer: 'B',
-		hint: "At the peak of its flight (greatest height), an object's instantaneous vertical velocity is exactly zero.",
-		topic: 'Vertical Projectile Motion',
-	},
-	{
-		id: 1.4,
-		question:
-			'Two hard objects collide INELASTICALLY in an isolated system. Which ONE of the following statements is CORRECT?',
-		options: [
-			{ id: 'A', text: 'Both total momentum and total kinetic energy are conserved.' },
-			{ id: 'B', text: 'Neither total momentum nor total kinetic energy is conserved.' },
-			{ id: 'C', text: 'Total momentum is not conserved, but total kinetic energy is conserved.' },
-			{ id: 'D', text: 'Total momentum is conserved, but total kinetic energy is not conserved.' },
-		],
-		correctAnswer: 'D',
-		hint: 'Momentum is always conserved in an isolated system. Inelastic collisions are defined by the loss of kinetic energy to other forms (heat, sound, etc.).',
-		topic: 'Momentum & Impulse',
-	},
-	{
-		id: 1.5,
-		question:
-			'Engine P has a greater maximum power output than engine Q. Which ONE statement is CORRECT when both operate at maximum power?',
-		options: [
-			{ id: 'A', text: 'Q does more work than P in the same amount of time.' },
-			{ id: 'B', text: 'P and Q do the same amount of work in the same amount of time.' },
-			{ id: 'C', text: 'P and Q do the same amount of work, but Q does it faster.' },
-			{ id: 'D', text: 'P and Q do the same amount of work, but P does it faster.' },
-		],
-		correctAnswer: 'D',
-		hint: 'Power = Work / Time. Higher power means performing the same amount of work in a shorter duration of time.',
-		topic: 'Work, Energy & Power',
-	},
-	{
-		id: 1.6,
-		question:
-			'The spectral lines for star B are more red-shifted than those for star A. How do the frequencies and speeds compare?',
-		options: [
-			{ id: 'A', text: 'B has higher frequency and greater speed' },
-			{ id: 'B', text: 'B has higher frequency and smaller speed' },
-			{ id: 'C', text: 'B has lower frequency and greater speed' },
-			{ id: 'D', text: 'B has lower frequency and smaller speed' },
-		],
-		correctAnswer: 'C',
-		hint: 'Red-shift indicates moving away (lower observed frequency). A larger red-shift means it is moving away at a greater speed.',
-		topic: 'Doppler Effect',
-	},
-	{
-		id: 1.7,
-		question:
-			'Point P is to the right of sphere S. ER and ES are electric fields at P due to spheres R and S. If both point to the right, what are the charges?',
-		options: [
-			{ id: 'A', text: 'R is Positive, S is Negative' },
-			{ id: 'B', text: 'R is Negative, S is Positive' },
-			{ id: 'C', text: 'R is Negative, S is Negative' },
-			{ id: 'D', text: 'R is Positive, S is Positive' },
-		],
-		correctAnswer: 'D',
-		hint: 'Electric field lines point away from positive charges. If the field at P (to the right) is pointing right, the source charges must be positive.',
-		topic: 'Electrostatics',
-	},
-	{
-		id: 1.8,
-		question:
-			'In a circuit with internal resistance, Graph K has a negative slope (V vs I) and Graph L has a positive slope. Which voltmeters do they represent?',
-		options: [
-			{ id: 'A', text: 'K: V1 (Terminal), L: V1' },
-			{ id: 'B', text: 'K: V1 (Terminal), L: V2 (External)' },
-			{ id: 'C', text: 'K: V2 (External), L: V1 (Terminal)' },
-			{ id: 'D', text: 'K: V2, L: V2' },
-		],
-		correctAnswer: 'B',
-		hint: 'Terminal voltage decreases as current increases (V = ε - Ir), while voltage across a resistor increases with current (V = IR).',
-		topic: 'Electric Circuits',
-	},
-	{
-		id: 1.9,
-		question: 'What is the function of the split-ring commutator in an electric motor?',
-		options: [
-			{ id: 'A', text: 'It rotates the coil directly.' },
-			{ id: 'B', text: 'It delivers current from the coil to the circuit.' },
-			{ id: 'C', text: 'It ensures the coil rotates continuously in one direction.' },
-			{ id: 'D', text: 'It ensures the external current changes direction.' },
-		],
-		correctAnswer: 'C',
-		hint: 'The commutator reverses the current in the coil every half-turn, allowing the magnetic force to continue pushing the coil in the same direction.',
-		topic: 'Electrodynamics',
-	},
-	{
-		id: 1.1,
-		question: 'Which ONE of the following statements correctly describes the photoelectric effect?',
-		options: [
-			{ id: 'A', text: 'An electron absorbs a photon and emits light.' },
-			{ id: 'B', text: 'An electron emits a photon when colliding with another electron.' },
-			{ id: 'C', text: 'An electron absorbs a photon and is ejected from a metal surface.' },
-			{ id: 'D', text: 'A photon is emitted when an electron moves to a higher energy level.' },
-		],
-		correctAnswer: 'C',
-		hint: 'The photoelectric effect is the process where light (photons) incident on a metal surface causes the emission of electrons.',
-		topic: 'Photoelectric Effect',
-	},
-];
+const getSubjectColor = (subject: string) => {
+	switch (subject) {
+		case 'Physical Sciences':
+			return {
+				bg: 'bg-physics',
+				text: 'text-physics',
+				border: 'border-physics',
+				bgSoft: 'bg-physics/5',
+				borderSoft: 'hover:border-physics/30',
+				shadow: 'shadow-physics/20',
+				from: 'from-physics',
+				to: 'to-purple-400',
+			};
+		case 'Mathematics':
+			return {
+				bg: 'bg-math',
+				text: 'text-math',
+				border: 'border-math',
+				bgSoft: 'bg-math/5',
+				borderSoft: 'hover:border-math/30',
+				shadow: 'shadow-math/20',
+				from: 'from-math',
+				to: 'to-blue-400',
+			};
+		case 'Life Sciences':
+			return {
+				bg: 'bg-life-sci',
+				text: 'text-life-sci',
+				border: 'border-life-sci',
+				bgSoft: 'bg-life-sci/5',
+				borderSoft: 'hover:border-life-sci/30',
+				shadow: 'shadow-life-sci/20',
+				from: 'from-life-sci',
+				to: 'to-emerald-400',
+			};
+		case 'Accounting':
+			return {
+				bg: 'bg-accounting',
+				text: 'text-accounting',
+				border: 'border-accounting',
+				bgSoft: 'bg-accounting/5',
+				borderSoft: 'hover:border-accounting/30',
+				shadow: 'shadow-accounting/20',
+				from: 'from-accounting',
+				to: 'to-yellow-400',
+			};
+		case 'English HL':
+			return {
+				bg: 'bg-english',
+				text: 'text-english',
+				border: 'border-english',
+				bgSoft: 'bg-english/5',
+				borderSoft: 'hover:border-english/30',
+				shadow: 'shadow-english/20',
+				from: 'from-english',
+				to: 'to-pink-400',
+			};
+		case 'Geography':
+			return {
+				bg: 'bg-geography',
+				text: 'text-geography',
+				border: 'border-geography',
+				bgSoft: 'bg-geography/5',
+				borderSoft: 'hover:border-geography/30',
+				shadow: 'shadow-geography/20',
+				from: 'from-geography',
+				to: 'to-cyan-400',
+			};
+		default:
+			return {
+				bg: 'bg-zinc-900',
+				text: 'text-zinc-600',
+				border: 'border-zinc-200',
+				bgSoft: 'bg-zinc-50',
+				borderSoft: 'hover:border-zinc-300',
+				shadow: 'shadow-zinc-900/10',
+				from: 'from-zinc-400',
+				to: 'to-zinc-500',
+			};
+	}
+};
 
-export default function PhysicsQuiz() {
+export default function InteractiveQuiz() {
 	const router = useRouter();
+	const searchParams = useSearchParams();
+	const paperId = searchParams.get('id');
+
+	const [quiz, setQuiz] = useState(QUIZ_DATA['phys-p1-2025-may']);
 	const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
 	const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
 	const [showResult, setShowResult] = useState(false);
@@ -171,13 +116,20 @@ export default function PhysicsQuiz() {
 	const [aiExplanation, setAiExplanation] = useState<string | null>(null);
 	const [isExplaining, setIsExplaining] = useState(false);
 
-	const currentQuestion = questions[currentQuestionIndex];
+	useEffect(() => {
+		if (paperId && QUIZ_DATA[paperId]) {
+			setQuiz(QUIZ_DATA[paperId]);
+		}
+	}, [paperId]);
+
+	const currentQuestion = quiz.questions[currentQuestionIndex];
+	const colors = getSubjectColor(quiz.subject);
 
 	const handleExplain = async () => {
 		setIsExplaining(true);
 		setAiExplanation(null);
 		try {
-			const explanation = await getExplanation('Physical Sciences', currentQuestion.question);
+			const explanation = await getExplanation(quiz.subject, currentQuestion.question);
 			setAiExplanation(
 				explanation ?? "I'm sorry, I couldn't generate an explanation for this question."
 			);
@@ -190,7 +142,8 @@ export default function PhysicsQuiz() {
 			setIsExplaining(false);
 		}
 	};
-	const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
+
+	const progress = ((currentQuestionIndex + 1) / quiz.questions.length) * 100;
 
 	const handleCheckAnswer = () => {
 		if (!selectedAnswer) return;
@@ -202,7 +155,7 @@ export default function PhysicsQuiz() {
 	};
 
 	const handleNextQuestion = () => {
-		if (currentQuestionIndex < questions.length - 1) {
+		if (currentQuestionIndex < quiz.questions.length - 1) {
 			setCurrentQuestionIndex(currentQuestionIndex + 1);
 			setSelectedAnswer(null);
 			setShowResult(false);
@@ -211,6 +164,8 @@ export default function PhysicsQuiz() {
 			router.push('/lesson-complete');
 		}
 	};
+
+	if (!currentQuestion) return null;
 
 	return (
 		<div className="flex flex-col h-full bg-zinc-50 dark:bg-zinc-950 font-lexend relative">
@@ -230,7 +185,7 @@ export default function PhysicsQuiz() {
 							<div className="flex justify-between items-center mb-2">
 								<div className="flex items-center gap-2">
 									<span className="text-sm font-bold text-zinc-600 dark:text-zinc-400">
-										Question {currentQuestionIndex + 1} of {questions.length}
+										Question {currentQuestionIndex + 1} of {quiz.questions.length}
 									</span>
 									{score > 0 && (
 										<Badge
@@ -243,12 +198,17 @@ export default function PhysicsQuiz() {
 								</div>
 								<Badge
 									variant="secondary"
-									className="text-[10px] font-black uppercase tracking-tighter rounded-full bg-brand-purple/10 text-brand-purple"
+									className={`text-[10px] font-black uppercase tracking-tighter rounded-full ${colors.bgSoft} ${colors.text}`}
 								>
 									{currentQuestion.topic}
 								</Badge>
 							</div>
-							<Progress value={progress} className="h-2 rounded-full" />
+							<div className="relative h-2 w-full overflow-hidden rounded-full bg-zinc-100 dark:bg-zinc-800">
+								<div
+									className={`h-full transition-all duration-500 ${colors.bg}`}
+									style={{ width: `${progress}%` }}
+								/>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -259,17 +219,19 @@ export default function PhysicsQuiz() {
 					{/* Question */}
 					<div className="space-y-6">
 						<div className="flex items-center gap-3">
-							<TrendingUp className="w-5 h-5 text-brand-purple" />
+							<TrendingUp className={`w-5 h-5 ${colors.text}`} />
 							<h3 className="text-[10px] font-black uppercase text-zinc-400 tracking-[0.2em]">
-								NSC Physics P1 2025
+								{quiz.title}
 							</h3>
 						</div>
-						<h2 className="text-2xl font-black text-zinc-900 dark:text-white leading-tight">
+						<h2 className="text-3xl font-black text-zinc-900 dark:text-white leading-tight">
 							{currentQuestion.question}
 						</h2>
 
 						<Card className="p-8 bg-white dark:bg-zinc-900 border-none rounded-[2.5rem] shadow-sm relative overflow-hidden group">
-							<div className="absolute inset-0 bg-brand-purple/5 opacity-0 group-hover:opacity-100 transition-opacity" />
+							<div
+								className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity ${colors.bgSoft}`}
+							/>
 
 							<RadioGroup
 								value={selectedAnswer || ''}
@@ -284,8 +246,8 @@ export default function PhysicsQuiz() {
 											htmlFor={option.id}
 											className={`flex-1 p-5 rounded-2xl border-2 cursor-pointer transition-all flex items-center gap-4 ${
 												selectedAnswer === option.id
-													? 'border-brand-purple bg-brand-purple/5 shadow-md scale-[1.02]'
-													: 'border-zinc-100 dark:border-zinc-800 hover:border-brand-purple/30'
+													? `${colors.border} ${colors.bgSoft} shadow-md scale-[1.02]`
+													: `border-zinc-100 dark:border-zinc-800 ${colors.borderSoft}`
 											} ${
 												showResult && option.id === currentQuestion.correctAnswer
 													? 'border-green-500 bg-green-500/10'
@@ -299,7 +261,7 @@ export default function PhysicsQuiz() {
 											<span
 												className={`w-8 h-8 rounded-full flex items-center justify-center font-black text-xs ${
 													selectedAnswer === option.id
-														? 'bg-brand-purple text-white'
+														? `${colors.bg} text-white`
 														: 'bg-zinc-100 dark:bg-zinc-800 text-zinc-500'
 												}`}
 											>
@@ -356,7 +318,7 @@ export default function PhysicsQuiz() {
 										}`}
 									>
 										{isCorrect
-											? 'Excellent understanding of the physics principles involved.'
+											? 'Excellent understanding of the principles involved.'
 											: `The correct answer is ${currentQuestion.correctAnswer}. Let's review the teacher's hint.`}
 									</p>
 								</div>
@@ -380,12 +342,12 @@ export default function PhysicsQuiz() {
 					</div>
 
 					{/* AI Explanation Toggle */}
-					<div className="p-1 bg-gradient-to-r from-brand-blue to-brand-purple rounded-[2rem]">
+					<div className={`p-1 rounded-[2rem] bg-gradient-to-r ${colors.from} ${colors.to}`}>
 						<div className="bg-white dark:bg-zinc-950 rounded-[1.9rem] p-6 space-y-4">
 							<div className="flex items-center justify-between">
 								<div className="flex items-center gap-4">
 									<div className="w-10 h-10 rounded-xl bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center">
-										<Sparkles className="w-5 h-5 text-brand-purple" />
+										<Sparkles className={`w-5 h-5 ${colors.text}`} />
 									</div>
 									<div>
 										<h4 className="font-bold text-zinc-900 dark:text-white text-sm">
@@ -399,7 +361,7 @@ export default function PhysicsQuiz() {
 								<Button
 									size="sm"
 									variant="ghost"
-									className="font-black text-brand-purple hover:bg-brand-purple/5"
+									className={`font-black hover:bg-zinc-100 dark:hover:bg-zinc-800 ${colors.text}`}
 									onClick={handleExplain}
 									disabled={isExplaining}
 								>
@@ -432,10 +394,10 @@ export default function PhysicsQuiz() {
 						</Button>
 					) : (
 						<Button
-							className="flex-1 h-16 bg-brand-purple text-white rounded-[2rem] font-bold text-lg shadow-xl shadow-brand-purple/20 transition-all active:scale-95"
+							className={`flex-1 h-16 text-white rounded-[2rem] font-bold text-lg shadow-xl transition-all active:scale-95 ${colors.bg} ${colors.shadow}`}
 							onClick={handleNextQuestion}
 						>
-							{currentQuestionIndex < questions.length - 1 ? 'Next Question' : 'Finish Quiz'}
+							{currentQuestionIndex < quiz.questions.length - 1 ? 'Next Question' : 'Finish Quiz'}
 						</Button>
 					)}
 				</div>

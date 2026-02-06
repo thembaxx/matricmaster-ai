@@ -16,7 +16,7 @@ export default function Search() {
 		? PAST_PAPERS.filter(
 				(p) =>
 					p.subject.toLowerCase().includes(query.toLowerCase()) ||
-					p.paper.toLowerCase().includes(query.toLowerCase()),
+					p.paper.toLowerCase().includes(query.toLowerCase())
 			)
 		: [];
 

@@ -60,13 +60,7 @@ export default function PastPaperViewer() {
 	};
 
 	const handleConvertToInteractive = () => {
-		if (paper.id === 'phys-p1-2025-may') {
-			router.push('/physics-quiz');
-		} else if (paper.subject === 'Mathematics') {
-			router.push('/math-quiz');
-		} else {
-			router.push('/quiz');
-		}
+		router.push(`/interactive-quiz?id=${paper.id}`);
 	};
 
 	return (
@@ -145,17 +139,27 @@ export default function PastPaperViewer() {
 					</div>
 
 					{/* Conversion Banner */}
-					<Card className="p-6 mb-8 bg-brand-blue/5 border-brand-blue/20 rounded-[2rem] flex items-center justify-between group cursor-pointer hover:bg-brand-blue/10 transition-colors" onClick={handleConvertToInteractive}>
+					<Card
+						className="p-6 mb-8 bg-brand-blue/5 border-brand-blue/20 rounded-[2rem] flex items-center justify-between group cursor-pointer hover:bg-brand-blue/10 transition-colors"
+						onClick={handleConvertToInteractive}
+					>
 						<div className="flex items-center gap-4">
 							<div className="w-12 h-12 rounded-2xl bg-brand-blue text-white flex items-center justify-center shadow-lg shadow-brand-blue/20">
 								<Sparkles className="w-6 h-6" />
 							</div>
 							<div>
 								<h4 className="font-black text-zinc-900 dark:text-white">Convert to Interactive</h4>
-								<p className="text-xs font-bold text-zinc-500 text-brand-blue/70">Solve this paper step-by-step with AI</p>
+								<p className="text-xs font-bold text-zinc-500 text-brand-blue/70">
+									Solve this paper step-by-step with AI
+								</p>
 							</div>
 						</div>
-						<Button size="sm" className="bg-brand-blue text-white rounded-xl font-black text-[10px] uppercase tracking-wider">Start Quiz</Button>
+						<Button
+							size="sm"
+							className="bg-brand-blue text-white rounded-xl font-black text-[10px] uppercase tracking-wider"
+						>
+							Start Quiz
+						</Button>
 					</Card>
 
 					{/* Instructions */}
@@ -196,7 +200,12 @@ export default function PastPaperViewer() {
 						</h3>
 						<div className="flex flex-wrap gap-2">
 							{questions.map((q) => (
-								<Button key={q.id} variant="outline" size="sm" className="w-10 h-10 p-0 rounded-xl font-bold border-zinc-200 dark:border-zinc-800 transition-colors hover:border-brand-blue hover:text-brand-blue">
+								<Button
+									key={q.id}
+									variant="outline"
+									size="sm"
+									className="w-10 h-10 p-0 rounded-xl font-bold border-zinc-200 dark:border-zinc-800 transition-colors hover:border-brand-blue hover:text-brand-blue"
+								>
 									{q.number}
 								</Button>
 							))}
@@ -214,7 +223,9 @@ export default function PastPaperViewer() {
 						</div>
 						<div className="flex items-center gap-2 mb-4 relative z-10">
 							<Badge className="bg-brand-blue text-white rounded-lg">QUESTION 1</Badge>
-							<span className="text-xs font-bold text-zinc-400 uppercase tracking-wider">(25 marks)</span>
+							<span className="text-xs font-bold text-zinc-400 uppercase tracking-wider">
+								(25 marks)
+							</span>
 						</div>
 						<div className="space-y-4 text-zinc-800 dark:text-zinc-200 font-medium">
 							<p>1.1 Solve for x:</p>
@@ -222,7 +233,9 @@ export default function PastPaperViewer() {
 								<p>1.1.1 x² - 5x + 6 = 0</p>
 								<p>1.1.2 2x² + 3x - 2 = 0 (correct to TWO decimal places)</p>
 							</div>
-							<p className="pt-4 border-t border-zinc-100 dark:border-zinc-800">1.2 Solve for x and y simultaneously:</p>
+							<p className="pt-4 border-t border-zinc-100 dark:border-zinc-800">
+								1.2 Solve for x and y simultaneously:
+							</p>
 							<div className="space-y-2 ml-4 font-mono">
 								<p>y = 2x + 1</p>
 								<p>x² + y² = 10</p>
@@ -249,7 +262,9 @@ export default function PastPaperViewer() {
 								activeTab === item.id ? 'text-brand-blue scale-110' : 'text-zinc-400'
 							}`}
 						>
-							<item.icon className={`w-5 h-5 ${activeTab === item.id ? 'fill-brand-blue/10' : ''}`} />
+							<item.icon
+								className={`w-5 h-5 ${activeTab === item.id ? 'fill-brand-blue/10' : ''}`}
+							/>
 							<span className="text-[10px] font-black uppercase tracking-wider">{item.label}</span>
 						</button>
 					))}

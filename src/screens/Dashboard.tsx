@@ -188,7 +188,9 @@ export default function Dashboard() {
 							<div className="relative z-10 flex items-center justify-between">
 								<div className="space-y-1">
 									<h4 className="font-black text-xl">2024 November NSC</h4>
-									<p className="text-white/80 font-bold text-xs uppercase tracking-wider">Latest Exam Papers Available</p>
+									<p className="text-white/80 font-bold text-xs uppercase tracking-wider">
+										Latest Exam Papers Available
+									</p>
 								</div>
 								<div className="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center">
 									<ArrowRight className="w-6 h-6" />

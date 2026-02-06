@@ -1,11 +1,4 @@
-import {
-	ArrowLeft,
-	Download,
-	Eye,
-	FileText,
-	Filter,
-	Search as SearchIcon,
-} from 'lucide-react';
+import { ArrowLeft, Download, Eye, FileText, Filter, Search as SearchIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Badge } from '@/components/ui/badge';
@@ -117,7 +110,10 @@ export default function PastPapers() {
 												</p>
 											</div>
 										</div>
-										<Badge variant="secondary" className="rounded-full px-3 py-1 text-[10px] font-black uppercase tracking-tighter">
+										<Badge
+											variant="secondary"
+											className="rounded-full px-3 py-1 text-[10px] font-black uppercase tracking-tighter"
+										>
 											NSC Grade 12
 										</Badge>
 									</div>
