@@ -15,11 +15,92 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
-import { Progress } from '@/components/ui/progress';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { QUIZ_DATA } from '@/constants/quiz-data';
 import { getExplanation } from '@/services/geminiService';
+
+const getSubjectColor = (subject: string) => {
+	switch (subject) {
+		case 'Physical Sciences':
+			return {
+				bg: 'bg-physics',
+				text: 'text-physics',
+				border: 'border-physics',
+				bgSoft: 'bg-physics/5',
+				borderSoft: 'hover:border-physics/30',
+				shadow: 'shadow-physics/20',
+				from: 'from-physics',
+				to: 'to-purple-400',
+			};
+		case 'Mathematics':
+			return {
+				bg: 'bg-math',
+				text: 'text-math',
+				border: 'border-math',
+				bgSoft: 'bg-math/5',
+				borderSoft: 'hover:border-math/30',
+				shadow: 'shadow-math/20',
+				from: 'from-math',
+				to: 'to-blue-400',
+			};
+		case 'Life Sciences':
+			return {
+				bg: 'bg-life-sci',
+				text: 'text-life-sci',
+				border: 'border-life-sci',
+				bgSoft: 'bg-life-sci/5',
+				borderSoft: 'hover:border-life-sci/30',
+				shadow: 'shadow-life-sci/20',
+				from: 'from-life-sci',
+				to: 'to-emerald-400',
+			};
+		case 'Accounting':
+			return {
+				bg: 'bg-accounting',
+				text: 'text-accounting',
+				border: 'border-accounting',
+				bgSoft: 'bg-accounting/5',
+				borderSoft: 'hover:border-accounting/30',
+				shadow: 'shadow-accounting/20',
+				from: 'from-accounting',
+				to: 'to-yellow-400',
+			};
+		case 'English HL':
+			return {
+				bg: 'bg-english',
+				text: 'text-english',
+				border: 'border-english',
+				bgSoft: 'bg-english/5',
+				borderSoft: 'hover:border-english/30',
+				shadow: 'shadow-english/20',
+				from: 'from-english',
+				to: 'to-pink-400',
+			};
+		case 'Geography':
+			return {
+				bg: 'bg-geography',
+				text: 'text-geography',
+				border: 'border-geography',
+				bgSoft: 'bg-geography/5',
+				borderSoft: 'hover:border-geography/30',
+				shadow: 'shadow-geography/20',
+				from: 'from-geography',
+				to: 'to-cyan-400',
+			};
+		default:
+			return {
+				bg: 'bg-zinc-900',
+				text: 'text-zinc-600',
+				border: 'border-zinc-200',
+				bgSoft: 'bg-zinc-50',
+				borderSoft: 'hover:border-zinc-300',
+				shadow: 'shadow-zinc-900/10',
+				from: 'from-zinc-400',
+				to: 'to-zinc-500',
+			};
+	}
+};
 
 export default function InteractiveQuiz() {
 	const router = useRouter();
@@ -42,6 +123,7 @@ export default function InteractiveQuiz() {
 	}, [paperId]);
 
 	const currentQuestion = quiz.questions[currentQuestionIndex];
+	const colors = getSubjectColor(quiz.subject);
 
 	const handleExplain = async () => {
 		setIsExplaining(true);
@@ -116,22 +198,17 @@ export default function InteractiveQuiz() {
 								</div>
 								<Badge
 									variant="secondary"
-									className={`text-[10px] font-black uppercase tracking-tighter rounded-full ${
-										quiz.subject === 'Physical Sciences'
-											? 'bg-brand-purple/10 text-brand-purple'
-											: quiz.subject === 'Mathematics'
-												? 'bg-brand-blue/10 text-brand-blue'
-												: quiz.subject === 'Life Sciences'
-													? 'bg-brand-green/10 text-brand-green'
-													: quiz.subject === 'Accounting'
-														? 'bg-brand-amber/10 text-brand-amber'
-														: 'bg-zinc-100 text-zinc-500'
-									}`}
+									className={`text-[10px] font-black uppercase tracking-tighter rounded-full ${colors.bgSoft} ${colors.text}`}
 								>
 									{currentQuestion.topic}
 								</Badge>
 							</div>
-							<Progress value={progress} className="h-2 rounded-full" />
+							<div className="relative h-2 w-full overflow-hidden rounded-full bg-zinc-100 dark:bg-zinc-800">
+								<div
+									className={`h-full transition-all duration-500 ${colors.bg}`}
+									style={{ width: `${progress}%` }}
+								/>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -142,17 +219,19 @@ export default function InteractiveQuiz() {
 					{/* Question */}
 					<div className="space-y-6">
 						<div className="flex items-center gap-3">
-							<TrendingUp className="w-5 h-5 text-brand-purple" />
+							<TrendingUp className={`w-5 h-5 ${colors.text}`} />
 							<h3 className="text-[10px] font-black uppercase text-zinc-400 tracking-[0.2em]">
 								{quiz.title}
 							</h3>
 						</div>
-						<h2 className="text-2xl font-black text-zinc-900 dark:text-white leading-tight">
+						<h2 className="text-3xl font-black text-zinc-900 dark:text-white leading-tight">
 							{currentQuestion.question}
 						</h2>
 
 						<Card className="p-8 bg-white dark:bg-zinc-900 border-none rounded-[2.5rem] shadow-sm relative overflow-hidden group">
-							<div className="absolute inset-0 bg-brand-purple/5 opacity-0 group-hover:opacity-100 transition-opacity" />
+							<div
+								className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity ${colors.bgSoft}`}
+							/>
 
 							<RadioGroup
 								value={selectedAnswer || ''}
@@ -167,8 +246,8 @@ export default function InteractiveQuiz() {
 											htmlFor={option.id}
 											className={`flex-1 p-5 rounded-2xl border-2 cursor-pointer transition-all flex items-center gap-4 ${
 												selectedAnswer === option.id
-													? 'border-brand-purple bg-brand-purple/5 shadow-md scale-[1.02]'
-													: 'border-zinc-100 dark:border-zinc-800 hover:border-brand-purple/30'
+													? `${colors.border} ${colors.bgSoft} shadow-md scale-[1.02]`
+													: `border-zinc-100 dark:border-zinc-800 ${colors.borderSoft}`
 											} ${
 												showResult && option.id === currentQuestion.correctAnswer
 													? 'border-green-500 bg-green-500/10'
@@ -182,7 +261,7 @@ export default function InteractiveQuiz() {
 											<span
 												className={`w-8 h-8 rounded-full flex items-center justify-center font-black text-xs ${
 													selectedAnswer === option.id
-														? 'bg-brand-purple text-white'
+														? `${colors.bg} text-white`
 														: 'bg-zinc-100 dark:bg-zinc-800 text-zinc-500'
 												}`}
 											>
@@ -263,12 +342,12 @@ export default function InteractiveQuiz() {
 					</div>
 
 					{/* AI Explanation Toggle */}
-					<div className="p-1 bg-gradient-to-r from-brand-blue to-brand-purple rounded-[2rem]">
+					<div className={`p-1 rounded-[2rem] bg-gradient-to-r ${colors.from} ${colors.to}`}>
 						<div className="bg-white dark:bg-zinc-950 rounded-[1.9rem] p-6 space-y-4">
 							<div className="flex items-center justify-between">
 								<div className="flex items-center gap-4">
 									<div className="w-10 h-10 rounded-xl bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center">
-										<Sparkles className="w-5 h-5 text-brand-purple" />
+										<Sparkles className={`w-5 h-5 ${colors.text}`} />
 									</div>
 									<div>
 										<h4 className="font-bold text-zinc-900 dark:text-white text-sm">
@@ -282,7 +361,7 @@ export default function InteractiveQuiz() {
 								<Button
 									size="sm"
 									variant="ghost"
-									className="font-black text-brand-purple hover:bg-brand-purple/5"
+									className={`font-black hover:bg-zinc-100 dark:hover:bg-zinc-800 ${colors.text}`}
 									onClick={handleExplain}
 									disabled={isExplaining}
 								>
@@ -315,7 +394,7 @@ export default function InteractiveQuiz() {
 						</Button>
 					) : (
 						<Button
-							className="flex-1 h-16 bg-brand-purple text-white rounded-[2rem] font-bold text-lg shadow-xl shadow-brand-purple/20 transition-all active:scale-95"
+							className={`flex-1 h-16 text-white rounded-[2rem] font-bold text-lg shadow-xl transition-all active:scale-95 ${colors.bg} ${colors.shadow}`}
 							onClick={handleNextQuestion}
 						>
 							{currentQuestionIndex < quiz.questions.length - 1 ? 'Next Question' : 'Finish Quiz'}
