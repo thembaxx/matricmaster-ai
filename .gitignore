@@ -15,6 +15,7 @@ dist-ssr/
 *.sln
 *.sw?
 coverage/
+test-results/
 .next/
 tsconfig.tsbuildinfo
 .vercel
