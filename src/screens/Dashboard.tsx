@@ -1,6 +1,7 @@
 // import type { Screen } from '@/types'; // Removed unused import
-import { ArrowRight, Bell, Flame, Play } from 'lucide-react';
+import { ArrowRight, Bell, Flame, Loader2, Play, Sparkles } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -8,9 +9,27 @@ import { Card } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { CURRENT_GOAL, RECOMMENDED_CHALLENGES, WEEKLY_JOURNEY } from '@/constants/mock-data';
+import { generateStudyPlan } from '@/services/geminiService';
 
 export default function Dashboard() {
 	const router = useRouter();
+	const [isGeneratingPlan, setIsGeneratingPlan] = useState(false);
+	const [aiPlan, setAiPlan] = useState<string | null>(null);
+
+	const handleGeneratePlan = async () => {
+		setIsGeneratingPlan(true);
+		setAiPlan(null);
+		try {
+			const plan = await generateStudyPlan(['Mathematics', 'Physical Sciences', 'English'], 10);
+			setAiPlan(plan);
+		} catch (error) {
+			console.error('Failed to generate study plan:', error);
+			setAiPlan("Sorry, I couldn't generate a plan right now. Try again later!");
+		} finally {
+			setIsGeneratingPlan(false);
+		}
+	};
+
 	return (
 		<div className="flex flex-col h-full bg-zinc-50 dark:bg-zinc-950 font-inter">
 			{/* Header - iOS-style sticky with backdrop blur */}
@@ -103,6 +122,60 @@ export default function Dashboard() {
 							</div>
 						</Card>
 					</div>
+
+					{/* AI Study Plan Card */}
+					<Card className="p-8 border-none shadow-sm bg-gradient-to-br from-brand-purple/10 to-brand-blue/10 rounded-[3rem] space-y-6 relative overflow-hidden group">
+						<div className="absolute -right-8 -top-8 w-32 h-32 bg-brand-purple/10 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-700" />
+
+						<div className="flex items-center gap-4 relative z-10">
+							<div className="w-12 h-12 rounded-2xl bg-white dark:bg-zinc-900 flex items-center justify-center shadow-sm">
+								<Sparkles className="w-6 h-6 text-brand-purple" />
+							</div>
+							<div>
+								<h3 className="text-xl font-black text-zinc-900 dark:text-white">AI Study Plan</h3>
+								<p className="text-xs font-bold text-zinc-500 uppercase tracking-widest">
+									Personalized for your week
+								</p>
+							</div>
+						</div>
+
+						{aiPlan ? (
+							<div className="bg-white/50 dark:bg-zinc-900/50 rounded-2xl p-6 relative z-10 animate-in fade-in slide-in-from-top-4">
+								<p className="text-sm font-medium text-zinc-700 dark:text-zinc-300 leading-relaxed whitespace-pre-wrap">
+									{aiPlan}
+								</p>
+								<Button
+									variant="ghost"
+									size="sm"
+									className="mt-4 text-xs font-black text-brand-purple hover:bg-brand-purple/10 rounded-full h-8"
+									onClick={() => setAiPlan(null)}
+								>
+									Generate New
+								</Button>
+							</div>
+						) : (
+							<div className="space-y-4 relative z-10">
+								<p className="text-sm font-medium text-zinc-500 max-w-xs leading-relaxed">
+									Let MatricMaster AI analyze your progress and create a focused daily quest path
+									just for you.
+								</p>
+								<Button
+									className="w-full h-14 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 rounded-2xl font-black text-sm shadow-lg active:scale-95 transition-all"
+									onClick={handleGeneratePlan}
+									disabled={isGeneratingPlan}
+								>
+									{isGeneratingPlan ? (
+										<>
+											<Loader2 className="w-4 h-4 mr-2 animate-spin" />
+											Calculating Quests...
+										</>
+									) : (
+										'Generate My Plan'
+									)}
+								</Button>
+							</div>
+						)}
+					</Card>
 
 					{/* Streak Card */}
 					<Card className="p-6 flex items-center justify-between border-none bg-white dark:bg-zinc-900 shadow-sm rounded-[2.5rem] group hover:shadow-md transition-all duration-300 hover:-translate-y-0.5">
