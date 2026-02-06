@@ -78,7 +78,12 @@ export default function PastPapers() {
 			</header>
 
 			<ScrollArea className="flex-1">
-				<main className="px-6 py-8 space-y-4 pb-32 max-w-2xl mx-auto w-full">
+				<main
+					className="px-6 py-8 space-y-4 pb-32 max-w-2xl mx-auto w-full"
+					style={{
+						paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 128px)',
+					}}
+				>
 					<div className="flex items-center justify-between mb-2">
 						<h2 className="text-[10px] font-black text-zinc-400 uppercase tracking-widest px-1">
 							{filteredPapers.length} Papers Found
