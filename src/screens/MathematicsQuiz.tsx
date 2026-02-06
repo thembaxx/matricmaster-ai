@@ -1,12 +1,20 @@
-import { ArrowLeft, CheckCircle2, GripVertical, Lightbulb, Loader2, Sparkles, X } from 'lucide-react';
+import {
+	ArrowLeft,
+	CheckCircle2,
+	GripVertical,
+	Lightbulb,
+	Loader2,
+	Sparkles,
+	X,
+} from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { getExplanation } from '@/services/geminiService';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { getExplanation } from '@/services/geminiService';
 
 // import type { Screen } from '@/types'; // Removed unused import
 
@@ -32,10 +40,14 @@ export default function MathematicsQuiz() {
 		try {
 			const questionContext = 'Find the integral: ∫(3x² + 2x) dx';
 			const explanation = await getExplanation('Mathematics', questionContext);
-			setAiExplanation(explanation ?? "I'm sorry, I couldn't generate an explanation for this question.");
+			setAiExplanation(
+				explanation ?? "I'm sorry, I couldn't generate an explanation for this question."
+			);
 		} catch (error) {
 			console.error('Failed to get AI explanation:', error);
-			setAiExplanation("Sorry, I couldn't generate an explanation right now. Please check your internet connection and try again.");
+			setAiExplanation(
+				"Sorry, I couldn't generate an explanation right now. Please check your internet connection and try again."
+			);
 		} finally {
 			setIsExplaining(false);
 		}
@@ -193,8 +205,12 @@ export default function MathematicsQuiz() {
 										<Sparkles className="w-5 h-5 text-blue-600" />
 									</div>
 									<div>
-										<h4 className="font-bold text-zinc-900 dark:text-white text-sm">Need a deeper explanation?</h4>
-										<p className="text-[10px] font-bold text-zinc-500 uppercase tracking-tight">Ask MatricMaster AI</p>
+										<h4 className="font-bold text-zinc-900 dark:text-white text-sm">
+											Need a deeper explanation?
+										</h4>
+										<p className="text-[10px] font-bold text-zinc-500 uppercase tracking-tight">
+											Ask MatricMaster AI
+										</p>
 									</div>
 								</div>
 								<Button
