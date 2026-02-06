@@ -1,13 +1,4 @@
-import {
-	Atom,
-	Calculator,
-	ChevronRight,
-	FlaskConical,
-	Microscope,
-	Moon,
-	Sparkles,
-	Sun,
-} from 'lucide-react';
+import { Atom, Calculator, ChevronRight, FlaskConical, Microscope, Sparkles } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -15,7 +6,6 @@ import { Card } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
 import { SUBJECTS } from '@/constants/mock-data';
-import { useTheme } from '@/hooks/use-theme';
 
 const ICON_MAP: Record<string, React.ElementType> = {
 	Calculator: Calculator,
@@ -26,7 +16,6 @@ const ICON_MAP: Record<string, React.ElementType> = {
 
 export default function Landing() {
 	const router = useRouter();
-	const { theme, setTheme } = useTheme();
 
 	return (
 		<div className="flex flex-col h-full bg-zinc-50 dark:bg-zinc-950 font-inter overflow-hidden">
@@ -41,7 +30,7 @@ export default function Landing() {
 					paddingTop: 'calc(env(safe-area-inset-top, 0px) + 16px)',
 				}}
 			>
-				<div className="flex justify-between items-center">
+				<div className="flex justify-between items-center pl-14">
 					<div className="flex items-center gap-3">
 						<div className="w-10 h-10 bg-zinc-900 dark:bg-white rounded-2xl flex items-center justify-center shadow-lg transition-transform hover:scale-105 active:scale-95">
 							<Sparkles className="w-6 h-6 text-white dark:text-zinc-900" />
@@ -49,22 +38,6 @@ export default function Landing() {
 						<span className="font-black text-xl tracking-tighter text-zinc-900 dark:text-white uppercase">
 							MatricMaster
 						</span>
-					</div>
-					<div className="flex items-center gap-3">
-						<button
-							type="button"
-							onClick={() => router.push('/language')}
-							className="text-[10px] font-black text-zinc-400 hover:text-brand-blue uppercase tracking-wider transition-colors active:scale-95"
-						>
-							Language: EN
-						</button>
-						<button
-							type="button"
-							onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-							className="w-10 h-10 rounded-xl bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-all active:scale-90"
-						>
-							{theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-						</button>
 					</div>
 				</div>
 			</header>

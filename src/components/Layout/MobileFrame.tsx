@@ -6,13 +6,14 @@ import {
 	Home,
 	LogOut,
 	Menu,
+	Moon,
 	Search as SearchIcon,
 	Settings,
+	Sun,
 	User,
 } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { authClient } from '@/lib/auth-client';
 import { Button } from '@/components/ui/button';
 import {
 	Sheet,
@@ -22,12 +23,15 @@ import {
 	SheetTitle,
 	SheetTrigger,
 } from '@/components/ui/sheet';
+import { useTheme } from '@/hooks/use-theme';
+import { authClient } from '@/lib/auth-client';
 
 export default function MobileFrame({ children }: { children: React.ReactNode }) {
 	const pathname = usePathname();
 	const router = useRouter();
+	const { theme, setTheme } = useTheme();
 
-	const hideNavigation = ['/sign-in', '/sign-up'];
+	const hideNavigation = ['/sign-in', '/sign-up', '/interactive-quiz'];
 
 	const shouldHideNav = hideNavigation.some((path) => pathname.startsWith(path));
 
@@ -50,17 +54,17 @@ export default function MobileFrame({ children }: { children: React.ReactNode })
 	return (
 		<div className="flex justify-center items-center min-h-screen bg-background p-0 sm:p-4">
 			<div className="w-full max-w-[420px] h-full min-h-screen sm:min-h-[850px] sm:h-[900px] bg-background sm:rounded-[2rem] shadow-2xl relative overflow-hidden flex flex-col transition-colors duration-300 border-x border-border">
-				{/* Global Floating Action Menu */}
+				{/* Global Top Navigation Bar */}
 				{!shouldHideNav && (
-					<div className="absolute bottom-28 right-6 z-[60]">
+					<div className="absolute top-4 left-4 z-[60] pointer-events-none">
 						<Sheet>
 							<SheetTrigger asChild>
 								<Button
-									variant="default"
+									variant="ghost"
 									size="icon"
-									className="w-14 h-14 rounded-full bg-brand-blue text-white shadow-2xl hover:bg-brand-blue/90 border-4 border-white dark:border-zinc-900 transition-all active:scale-95 flex items-center justify-center"
+									className="w-10 h-10 rounded-xl bg-white/40 dark:bg-zinc-800/40 backdrop-blur-xl border border-white/40 dark:border-zinc-800/40 shadow-xl pointer-events-auto active:scale-90 transition-all hover:bg-white/60 dark:hover:bg-zinc-800/60"
 								>
-									<Menu className="w-7 h-7" />
+									<Menu className="w-5 h-5 text-zinc-900 dark:text-white" />
 								</Button>
 							</SheetTrigger>
 							<SheetContent
@@ -99,7 +103,25 @@ export default function MobileFrame({ children }: { children: React.ReactNode })
 										</div>
 									</div>
 
-									<div className="mt-auto p-8 border-t border-zinc-200 dark:border-zinc-800">
+									<div className="mt-auto p-8 border-t border-zinc-200 dark:border-zinc-800 space-y-4">
+										<div className="flex items-center justify-between p-4 bg-zinc-100 dark:bg-zinc-900 rounded-2xl">
+											<span className="text-sm font-bold text-zinc-600 dark:text-zinc-400 uppercase tracking-wider">
+												Theme
+											</span>
+											<Button
+												variant="ghost"
+												size="sm"
+												className="rounded-xl bg-white dark:bg-zinc-800 shadow-sm"
+												onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+											>
+												{theme === 'dark' ? (
+													<Sun className="w-4 h-4 text-yellow-500" />
+												) : (
+													<Moon className="w-4 h-4 text-zinc-600" />
+												)}
+											</Button>
+										</div>
+
 										<Button
 											variant="ghost"
 											className="w-full justify-start gap-4 text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/10 rounded-2xl p-4 h-auto font-bold transition-all"
@@ -118,87 +140,74 @@ export default function MobileFrame({ children }: { children: React.ReactNode })
 					</div>
 				)}
 
-				<div className="flex-1 relative overflow-hidden flex flex-col">{children}</div>
+				<div className="flex-1 relative overflow-hidden flex flex-col pb-24">{children}</div>
 
-				{/* Bottom Navigation - iOS-style with safe area and animations */}
+				{/* Bottom Navigation - iOS Liquid Glass Style */}
 				{!shouldHideNav && (
-					<nav
-						className="absolute bottom-0 left-0 right-0 bg-white/90 dark:bg-zinc-900/90 backdrop-blur-xl border-t border-zinc-100/50 dark:border-zinc-800/50 flex justify-around items-center pb-safe pt-2 z-50"
-						style={{
-							paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 8px)',
-						}}
-					>
-						{navItems.map((item) => {
-							const isActive = pathname === item.href;
-							return (
-								<Link
-									key={item.href}
-									href={item.href}
-									className="relative flex flex-col items-center justify-center min-w-[64px] min-h-[60px] transition-all duration-300"
-								>
-									{/* Active pill indicator */}
-									{isActive && (
-										<div
-											className="absolute -top-1 w-10 h-1 bg-brand-blue rounded-full shadow-[0_2px_8px_rgba(37,99,235,0.3)] animate-slide-in"
-											style={{
-												animation: 'pillSlide 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
-											}}
-										/>
-									)}
-
-									{/* Icon container with iOS-style tap animation */}
-									<div className="relative flex items-center justify-center">
-										{/* Ripple effect on active */}
+					<div className="absolute bottom-6 left-0 right-0 px-6 z-50 pointer-events-none">
+						<nav
+							className="mx-auto max-w-sm bg-white/70 dark:bg-zinc-900/70 backdrop-blur-2xl border border-white/40 dark:border-zinc-800/40 shadow-[0_8px_32px_0_rgba(31,38,135,0.15)] dark:shadow-[0_8px_32px_0_rgba(0,0,0,0.3)] flex justify-around items-center py-2 px-2 rounded-[2rem] pointer-events-auto transition-all duration-500"
+							style={{
+								marginBottom: 'env(safe-area-inset-bottom, 0px)',
+							}}
+						>
+							{navItems.map((item) => {
+								const isActive = pathname === item.href;
+								return (
+									<Link
+										key={item.href}
+										href={item.href}
+										className="relative flex flex-col items-center justify-center min-w-[56px] min-h-[56px] transition-all duration-300"
+									>
+										{/* Active background pill */}
 										{isActive && (
-											<div className="absolute inset-0 bg-brand-blue/20 rounded-full animate-ping" />
+											<div
+												className="absolute inset-0 bg-brand-blue/10 dark:bg-brand-blue/20 rounded-2xl animate-fade-in"
+												style={{
+													animation: 'pillPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+												}}
+											/>
 										)}
 
-										<item.icon
-											className={`relative z-10 transition-all duration-300 ${
-												isActive
-													? 'text-brand-blue scale-110'
-													: 'text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200'
-											}`}
-											strokeWidth={isActive ? 2.5 : 2}
-											size={28}
-										/>
-									</div>
+										{/* Icon container with iOS-style tap animation */}
+										<div className="relative flex items-center justify-center">
+											<item.icon
+												className={`relative z-10 transition-all duration-300 ${
+													isActive
+														? 'text-brand-blue scale-110'
+														: 'text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200'
+												}`}
+												strokeWidth={isActive ? 2.5 : 2}
+												size={24}
+											/>
+										</div>
 
-									{/* Label with subtle animation */}
-									<span
-										className={`text-[10px] font-black uppercase tracking-wider transition-all duration-300 ${
-											isActive ? 'text-brand-blue opacity-100' : 'text-zinc-400 opacity-0'
-										}`}
-									>
-										{item.label}
-									</span>
-								</Link>
-							);
-						})}
-					</nav>
+										{/* Label with subtle animation */}
+										<span
+											className={`text-[9px] font-black uppercase tracking-widest transition-all duration-300 mt-1 ${
+												isActive ? 'text-brand-blue opacity-100' : 'text-zinc-400 opacity-0'
+											}`}
+										>
+											{item.label}
+										</span>
+									</Link>
+								);
+							})}
+						</nav>
+					</div>
 				)}
 
 				{/* iOS-style custom scrollbar */}
 				<style>{`
 					/* iOS Spring Animations */
-					@keyframes pillSlide {
+					@keyframes pillPop {
 						0% {
-							transform: translateY(100%);
+							transform: scale(0.85);
 							opacity: 0;
-						}
-						60% {
-							transform: translateY(-20%);
 						}
 						100% {
-							transform: translateY(0);
+							transform: scale(1);
 							opacity: 1;
-						}
-					}
-
-					@keyframes ping {
-						75%, 100% {
-							transform: scale(2);
-							opacity: 0;
 						}
 					}
 

@@ -1,14 +1,6 @@
 'use client';
 
-import {
-	Calculator,
-	GraduationCap,
-	Microscope,
-	Settings,
-	Share2,
-	Star,
-	Verified,
-} from 'lucide-react';
+import { Calculator, GraduationCap, Microscope, Share2, Star, Verified } from 'lucide-react';
 import { useState } from 'react';
 import {
 	PolarAngleAxis,
@@ -74,10 +66,8 @@ export default function Profile() {
 					paddingTop: 'calc(env(safe-area-inset-top, 0px) + 16px)',
 				}}
 			>
-				<div className="flex justify-between items-center max-w-2xl mx-auto w-full">
-					<Button variant="ghost" size="icon" className="rounded-full hover:bg-white/10">
-						<Settings className="w-6 h-6 text-zinc-400" />
-					</Button>
+				<div className="flex justify-between items-center max-w-2xl mx-auto w-full pl-14">
+					<div className="w-6" /> {/* Spacer for balance */}
 					<h1 className="text-xl font-bold tracking-tight">Profile</h1>
 					<Button variant="ghost" size="icon" className="rounded-full hover:bg-white/10">
 						<Share2 className="w-6 h-6 text-zinc-400" />
