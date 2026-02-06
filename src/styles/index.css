@@ -82,6 +82,8 @@
 	--color-english: #ec4899;
 	--color-geography: #06b6d4;
 	--color-history: #f97316;
+
+	--font-lexend: var(--font-lexend);
 }
 
 :root {

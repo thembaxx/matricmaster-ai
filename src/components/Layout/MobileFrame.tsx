@@ -21,6 +21,8 @@ export default function MobileFrame({ children }: { children: React.ReactNode })
 		'/leaderboard',
 		'/language',
 		'/interactive-quiz',
+		'/sign-in',
+		'/sign-up',
 	];
 
 	const shouldHideNav = hideNavigation.some((path) => pathname.startsWith(path));
