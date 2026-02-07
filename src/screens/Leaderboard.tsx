@@ -269,7 +269,7 @@ export default function Leaderboard() {
 	return (
 		<div className="flex flex-col h-full bg-[#fcfdfd] dark:bg-[#0a0f18] font-inter pb-28">
 			{/* Header */}
-			<header className="px-6 pt-12 pb-6 shrink-0 bg-white dark:bg-[#0a0f18] z-30">
+			<header className="px-6 pt-12 pb-6 shrink-0 bg-white dark:bg-[#0a0f18]">
 				<Tabs defaultValue="school" className="w-full">
 					<TabsList className="w-full h-14 p-1.5 bg-zinc-100/50 dark:bg-zinc-900/50 rounded-2xl border border-zinc-100 dark:border-zinc-800">
 						<TabsTrigger
