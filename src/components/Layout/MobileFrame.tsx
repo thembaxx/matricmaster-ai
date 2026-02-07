@@ -41,8 +41,10 @@ export default function MobileFrame({ children }: { children: React.ReactNode })
 
 	// const hideNavigation = ['/sign-in', '/sign-up', '/interactive-quiz'];
 	const hideNavigation: string[] = [];
+	const hideBottomNavigation = ['/sign-in', '/sign-up'];
 
 	const shouldHideNav = hideNavigation.some((path) => pathname.startsWith(path));
+	const shouldHideBottomNav = hideBottomNavigation.some((path) => pathname.startsWith(path));
 
 	const navItems = [
 		{ href: '/dashboard', label: 'Home', icon: Home },
@@ -173,7 +175,7 @@ export default function MobileFrame({ children }: { children: React.ReactNode })
 				<div className="flex-1 relative overflow-hidden flex flex-col">{children}</div>
 
 				{/* Bottom Navigation - iOS Liquid Glass Floating Pill */}
-				<nav
+				{!shouldHideBottomNav && <nav
 					className="fixed bottom-8 left-1/2 -translate-x-1/2 w-[90%] max-w-95 z-100 ios-glass rounded-[2.5rem] shadow-2xl shadow-black/5 flex justify-around items-center p-2 px-4 transition-all duration-500 ease-ios"
 					style={{
 						marginBottom: 'env(safe-area-inset-bottom, 0px)',
@@ -226,7 +228,7 @@ export default function MobileFrame({ children }: { children: React.ReactNode })
 							</Link>
 						);
 					})}
-				</nav>
+				</nav>}
 
 				{/* Custom scrollbar styling */}
 				<style>{`

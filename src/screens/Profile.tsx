@@ -1,24 +1,11 @@
 'use client';
 
-import { Calculator, GraduationCap, Microscope, Share2, Star, Verified } from 'lucide-react';
+import { Calculator, GraduationCap, Settings, Share2, Star, User } from 'lucide-react';
 import { useState } from 'react';
-import {
-	PolarAngleAxis,
-	PolarGrid,
-	PolarRadiusAxis,
-	Radar,
-	RadarChart,
-	ResponsiveContainer,
-} from 'recharts';
+import { PolarAngleAxis, PolarGrid, Radar, RadarChart } from 'recharts';
 
 import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
-import {
-	type ChartConfig,
-	ChartContainer,
-	ChartTooltip,
-	ChartTooltipContent,
-} from '@/components/ui/chart';
+import { type ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
 const chartData = [
@@ -34,11 +21,11 @@ const chartData = [
 const chartConfig = {
 	you: {
 		label: 'You',
-		color: 'hsl(var(--brand-blue))',
+		color: '#22d3ee',
 	},
 	average: {
 		label: 'Average',
-		color: 'hsl(var(--zinc-500))',
+		color: '#64748b',
 	},
 } satisfies ChartConfig;
 
@@ -46,12 +33,12 @@ const achievements = [
 	{
 		title: 'Calculus Master',
 		icon: Calculator,
-		color: 'text-brand-blue border-brand-blue/30 bg-brand-blue/10',
+		variant: 'blue' as const,
 	},
 	{
 		title: 'Physics Logic',
-		icon: Microscope,
-		color: 'text-brand-purple border-brand-purple/30 bg-brand-purple/10',
+		icon: User,
+		variant: 'purple' as const,
 	},
 ];
 
@@ -59,19 +46,24 @@ export default function Profile() {
 	const [viewMode, setViewMode] = useState<'my_stats' | 'provincial'>('my_stats');
 
 	return (
-		<div className="flex flex-col h-full bg-zinc-50 dark:bg-zinc-950 overflow-hidden">
+		<div className="flex flex-col h-full overflow-hidden" style={{ backgroundColor: '#0a0f18' }}>
 			{/* Header */}
 			<header
-				className="px-6 py-4 ios-glass sticky top-0 z-20 shrink-0"
+				className="px-6 py-4 sticky top-0 z-20 shrink-0"
 				style={{
 					paddingTop: 'calc(env(safe-area-inset-top, 0px) + 12px)',
+					backgroundColor: '#0a0f18',
 				}}
 			>
-				<div className="flex justify-between items-center max-w-2xl mx-auto w-full pl-14">
-					<div className="w-6" />
-					<span className="text-sm font-bold text-zinc-500">Profile</span>
-					<Button variant="ghost" size="icon" className="rounded-full ios-active-scale">
-						<Share2 className="w-5 h-5 text-zinc-500" />
+				<div className="flex justify-between items-center max-w-2xl mx-auto w-full">
+					<Button variant="ghost" size="icon" className="rounded-full">
+						<Settings className="w-5 h-5" style={{ color: '#64748b' }} />
+					</Button>
+					<span className="text-base font-semibold" style={{ color: '#ffffff' }}>
+						Profile
+					</span>
+					<Button variant="ghost" size="icon" className="rounded-full">
+						<Share2 className="w-5 h-5" style={{ color: '#64748b' }} />
 					</Button>
 				</div>
 			</header>
@@ -83,127 +75,184 @@ export default function Profile() {
 						paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 160px)',
 					}}
 				>
-					{/* iOS Large Title */}
-					<div className="w-full space-y-1 pt-2 mb-8 text-left">
-						<h1 className="text-[34px] font-black leading-tight text-zinc-900 dark:text-white tracking-tight">
-							My Profile
-						</h1>
-					</div>
 					{/* Avatar Section */}
-					<div className="relative mb-6">
-						<div className="w-32 h-32 rounded-full overflow-hidden border-4 border-zinc-800 shadow-2xl relative bg-zinc-800">
+					<div className="relative mb-4">
+						<div
+							className="w-28 h-28 rounded-full overflow-hidden shadow-2xl relative"
+							style={{ border: '4px solid #1e293b' }}
+						>
 							<img
-								src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix"
+								src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=face"
 								alt="Thabo Mbeki"
 								className="w-full h-full object-cover"
 							/>
 						</div>
-						<div className="absolute bottom-1 right-1 bg-brand-blue rounded-full p-1.5 border-4 border-[#0a0f18]">
-							<Verified className="w-4 h-4 text-white fill-white/20" />
+						<div
+							className="absolute bottom-0 right-0 rounded-full p-1"
+							style={{ backgroundColor: '#22d3ee', border: '3px solid #0a0f18' }}
+						>
+							<svg className="w-3.5 h-3.5 text-white" fill="currentColor" viewBox="0 0 20 20">
+								<path
+									fillRule="evenodd"
+									d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+									clipRule="evenodd"
+								/>
+							</svg>
 						</div>
 					</div>
 
-					<div className="text-center mb-8">
-						<h2 className="text-3xl font-black mb-1 text-zinc-900 dark:text-white">Thabo Mbeki</h2>
-						<p className="text-zinc-500 dark:text-zinc-400 font-bold">
-							St. John&apos;s College • Grade 12
+					<div className="text-center mb-6">
+						<h2 className="text-2xl font-bold mb-1" style={{ color: '#ffffff' }}>
+							Thabo Mbeki
+						</h2>
+						<p className="text-sm" style={{ color: '#94a3b8' }}>
+							St. John's College • Grade 12
 						</p>
 					</div>
 
-					{/* Tabs - iOS Segmented Control Style */}
-					<div className="w-full max-w-sm bg-zinc-200/50 dark:bg-zinc-800/50 p-1 rounded-2xl flex mb-12 backdrop-blur-sm">
+					{/* Tabs - Segmented Control */}
+					<div
+						className="w-full max-w-xs p-1 rounded-full flex mb-8"
+						style={{ backgroundColor: '#1e293b' }}
+					>
 						<button
 							type="button"
 							onClick={() => setViewMode('my_stats')}
-							className={`flex-1 py-2 rounded-xl font-bold transition-all duration-200 ${
-								viewMode === 'my_stats'
-									? 'bg-white dark:bg-zinc-700 text-zinc-900 dark:text-white shadow-sm'
-									: 'text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300'
-							}`}
+							className="flex-1 py-2.5 rounded-full text-sm font-semibold transition-all duration-200"
+							style={{
+								backgroundColor: viewMode === 'my_stats' ? '#2563eb' : 'transparent',
+								color: viewMode === 'my_stats' ? '#ffffff' : '#94a3b8',
+							}}
 						>
 							My Stats
 						</button>
 						<button
 							type="button"
 							onClick={() => setViewMode('provincial')}
-							className={`flex-1 py-2 rounded-xl font-bold transition-all duration-200 ${
-								viewMode === 'provincial'
-									? 'bg-white dark:bg-zinc-700 text-zinc-900 dark:text-white shadow-sm'
-									: 'text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300'
-							}`}
+							className="flex-1 py-2.5 rounded-full text-sm font-semibold transition-all duration-200"
+							style={{
+								backgroundColor: viewMode === 'provincial' ? '#2563eb' : 'transparent',
+								color: viewMode === 'provincial' ? '#ffffff' : '#94a3b8',
+							}}
 						>
-							Provincial
+							vs. Provincial Avg
 						</button>
 					</div>
 
 					{/* Radar Chart */}
-					<div className="w-full max-w-md aspect-square relative mb-12">
-						<ChartContainer config={chartConfig} className="w-full h-full min-h-[300px]">
-							<ResponsiveContainer width="100%" height="100%">
-								<RadarChart cx="50%" cy="50%" outerRadius="80%" data={chartData}>
-									<ChartTooltip cursor={false} content={<ChartTooltipContent />} />
-									<PolarGrid stroke="#1f2937" />
-									<PolarAngleAxis
-										dataKey="subject"
-										tick={{ fill: '#94a3b8', fontSize: 10, fontWeight: 700 }}
-									/>
-									<PolarRadiusAxis angle={30} domain={[0, 100]} tick={false} axisLine={false} />
-									<Radar
-										name="You"
-										dataKey="you"
-										stroke="var(--color-you)"
-										fill="var(--color-you)"
-										fillOpacity={0.6}
-										isAnimationActive={false}
-										dot={{
-											r: 4,
-											fill: 'var(--color-you)',
-											fillOpacity: 1,
-										}}
-									/>
+					<div className="w-full max-w-sm aspect-square relative mb-6">
+						<ChartContainer config={chartConfig} className="w-full h-full">
+							<RadarChart cx="50%" cy="50%" outerRadius="70%" data={chartData}>
+								<defs>
+									<linearGradient id="radarGradient" x1="0" y1="0" x2="0" y2="1">
+										<stop offset="0%" stopColor="#22d3ee" stopOpacity={0.8} />
+										<stop offset="100%" stopColor="#0ea5e9" stopOpacity={0.3} />
+									</linearGradient>
+									<filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+										<feGaussianBlur stdDeviation="3" result="coloredBlur" />
+										<feMerge>
+											<feMergeNode in="coloredBlur" />
+											<feMergeNode in="SourceGraphic" />
+										</feMerge>
+									</filter>
+								</defs>
+								<ChartTooltip cursor={false} content={<ChartTooltipContent />} />
+								<PolarGrid stroke="#1e3a5f" strokeOpacity={0.6} />
+								<PolarAngleAxis
+									dataKey="subject"
+									tick={{ fill: '#94a3b8', fontSize: 11, fontWeight: 600 }}
+									tickLine={false}
+								/>
+								<Radar
+									name="You"
+									dataKey="you"
+									stroke="#22d3ee"
+									strokeWidth={2}
+									fill="url(#radarGradient)"
+									fillOpacity={0.6}
+									filter="url(#glow)"
+									dot={{
+										r: 5,
+										fill: '#22d3ee',
+										fillOpacity: 1,
+										stroke: '#0a0f18',
+										strokeWidth: 2,
+									}}
+								/>
+								{viewMode === 'provincial' && (
 									<Radar
 										name="Average"
 										dataKey="average"
-										stroke="var(--color-average)"
+										stroke="#64748b"
+										strokeWidth={1.5}
 										fill="transparent"
 										strokeDasharray="4 4"
-										isAnimationActive={false}
 									/>
-								</RadarChart>
-							</ResponsiveContainer>
+								)}
+							</RadarChart>
 						</ChartContainer>
 
 						{/* Highlight 95% on Math */}
-						<div className="absolute top-[12%] left-1/2 -translate-x-1/2 bg-brand-blue text-[10px] font-black px-2 py-1 rounded-md shadow-lg z-10">
+						<div
+							className="absolute top-[15%] left-1/2 -translate-x-1/2 text-xs font-bold px-2.5 py-1 rounded-lg shadow-lg z-10"
+							style={{
+								backgroundColor: '#22d3ee',
+								color: '#0a0f18',
+							}}
+						>
 							95%
 						</div>
+					</div>
 
-						{/* Legend */}
-						<div className="flex justify-center gap-6 mt-4">
-							<div className="flex items-center gap-2 text-xs font-bold text-zinc-400">
-								<span className="w-2 h-2 rounded-full bg-brand-blue" />
-								You
-							</div>
-							<div className="flex items-center gap-2 text-xs font-bold text-zinc-400">
-								<span className="w-2 h-2 rounded-full border border-zinc-600" />
-								Average
-							</div>
+					{/* Legend */}
+					<div className="flex justify-center gap-6 mb-8">
+						<div className="flex items-center gap-2 text-sm" style={{ color: '#94a3b8' }}>
+							<span
+								className="w-2.5 h-2.5 rounded-full"
+								style={{ backgroundColor: '#22d3ee' }}
+							/>
+							You
+						</div>
+						<div className="flex items-center gap-2 text-sm" style={{ color: '#94a3b8' }}>
+							<span
+								className="w-2.5 h-2.5 rounded-full"
+								style={{ border: '1.5px solid #64748b', backgroundColor: 'transparent' }}
+							/>
+							Average
 						</div>
 					</div>
 
 					{/* Achievements */}
-					<div className="w-full mb-10">
-						<h3 className="text-zinc-500 text-xs font-black uppercase tracking-widest mb-4">
+					<div className="w-full mb-8">
+						<h3
+							className="text-xs font-bold uppercase tracking-wider mb-4"
+							style={{ color: '#64748b' }}
+						>
 							Skill Achievements
 						</h3>
 						<div className="flex gap-3 overflow-x-auto pb-2 no-scrollbar">
 							{achievements.map((item) => (
 								<div
 									key={item.title}
-									className={`flex items-center gap-3 px-6 py-3.5 rounded-3xl border-2 ${item.color} shrink-0`}
+									className="flex items-center gap-2.5 px-5 py-3 rounded-full shrink-0"
+									style={{
+										backgroundColor:
+											item.variant === 'blue'
+												? 'rgba(34, 211, 238, 0.15)'
+												: 'rgba(168, 85, 247, 0.15)',
+										border: `1.5px solid ${item.variant === 'blue' ? 'rgba(34, 211, 238, 0.3)' : 'rgba(168, 85, 247, 0.3)'}`,
+									}}
 								>
-									<item.icon className="w-5 h-5" />
-									<span className="font-black text-sm">{item.title}</span>
+									<item.icon
+										className="w-4 h-4"
+										style={{ color: item.variant === 'blue' ? '#22d3ee' : '#a855f7' }}
+									/>
+									<span
+										className="font-semibold text-sm"
+										style={{ color: item.variant === 'blue' ? '#22d3ee' : '#a855f7' }}
+									>
+										{item.title}
+									</span>
 								</div>
 							))}
 						</div>
@@ -211,33 +260,55 @@ export default function Profile() {
 
 					{/* Stats Cards */}
 					<div className="grid grid-cols-2 gap-4 w-full">
-						<Card className="p-6 bg-white dark:bg-zinc-900 relative overflow-hidden group">
-							<div className="relative z-10 flex flex-col gap-4">
-								<div className="w-10 h-10 rounded-xl bg-brand-blue/10 flex items-center justify-center">
-									<GraduationCap className="w-6 h-6 text-brand-blue" />
+						<div
+							className="p-5 rounded-2xl"
+							style={{ backgroundColor: '#111827' }}
+						>
+							<div className="flex flex-col gap-3">
+								<div
+									className="w-10 h-10 rounded-xl flex items-center justify-center"
+									style={{ backgroundColor: 'rgba(34, 211, 238, 0.15)' }}
+								>
+									<GraduationCap className="w-5 h-5" style={{ color: '#22d3ee' }} />
 								</div>
 								<div>
-									<div className="text-4xl font-black mb-1 text-zinc-900 dark:text-white">78%</div>
-									<div className="text-[11px] font-black text-zinc-400 uppercase tracking-widest">
-										Overall Avg
+									<div className="text-3xl font-bold" style={{ color: '#ffffff' }}>
+										78%
+									</div>
+									<div
+										className="text-xs font-medium mt-1"
+										style={{ color: '#64748b' }}
+									>
+										Overall Average
 									</div>
 								</div>
 							</div>
-						</Card>
+						</div>
 
-						<Card className="p-6 bg-white dark:bg-zinc-900 relative overflow-hidden group">
-							<div className="relative z-10 flex flex-col gap-4">
-								<div className="w-10 h-10 rounded-xl bg-brand-purple/10 flex items-center justify-center">
-									<Star className="w-6 h-6 text-brand-purple" />
+						<div
+							className="p-5 rounded-2xl"
+							style={{ backgroundColor: '#111827' }}
+						>
+							<div className="flex flex-col gap-3">
+								<div
+									className="w-10 h-10 rounded-xl flex items-center justify-center"
+									style={{ backgroundColor: 'rgba(168, 85, 247, 0.15)' }}
+								>
+									<Star className="w-5 h-5" style={{ color: '#a855f7' }} />
 								</div>
 								<div>
-									<div className="text-4xl font-black mb-1 text-zinc-900 dark:text-white">Math</div>
-									<div className="text-[11px] font-black text-zinc-400 uppercase tracking-widest">
+									<div className="text-3xl font-bold" style={{ color: '#ffffff' }}>
+										Math
+									</div>
+									<div
+										className="text-xs font-medium mt-1"
+										style={{ color: '#64748b' }}
+									>
 										Top Subject
 									</div>
 								</div>
 							</div>
-						</Card>
+						</div>
 					</div>
 				</main>
 			</ScrollArea>
