@@ -1,148 +1,254 @@
+'use client';
+
 import {
-	ArrowLeft,
-	Calculator,
-	CheckCircle2,
-	Image as ImageIcon,
-	MoreHorizontal,
-	Send,
+	BarChart3,
+	BookOpen,
+	ChevronRight,
+	FlaskConical,
+	Languages as LanguagesIcon,
+	Leaf,
+	Play,
+	Search,
+	Terminal,
 	Users,
 } from 'lucide-react';
-import Image from 'next/image';
-import { useRouter } from 'next/navigation';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
+import { useState } from 'react';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
-// import type { Screen } from '@/types'; // Removed unused import
-
-const messages = [
-	{
-		id: 1,
-		user: 'Sarah M.',
-		avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah',
-		message: "Can someone help me with question 3.2? I'm stuck on the integration part.",
-		time: '2:30 PM',
-		isTutor: false,
-	},
-	{
-		id: 2,
-		user: 'Mr. Johnson',
-		avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Johnson',
-		message: 'Remember to use substitution method. Let u = x² + 1, then du = 2x dx.',
-		time: '2:32 PM',
-		isTutor: true,
-	},
-	{
-		id: 3,
-		user: 'Thabo M.',
-		avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Thabo',
-		message: 'Thanks! That makes sense now. I was overcomplicating it.',
-		time: '2:35 PM',
-		isTutor: false,
-		isMe: true,
-	},
-	{
-		id: 4,
-		user: 'Lisa K.',
-		avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Lisa',
-		message: "Here's a diagram that might help visualize the problem:",
-		time: '2:36 PM',
-		isTutor: false,
-		hasImage: true,
-	},
-];
+const categories = ['All Paths', 'STEM Skills', 'Languages', 'Commerce', 'Humanities'];
 
 export default function Channels() {
-	const router = useRouter();
+
+	const [activeCategory, setActiveCategory] = useState('All Paths');
+
 	return (
-		<div className="flex flex-col h-full bg-background relative">
+		<div className="flex flex-col h-full bg-[#f8f9fb] dark:bg-[#0a0f18] font-inter">
 			{/* Header */}
-			<header className="px-6 pt-12 pb-4 bg-white dark:bg-zinc-900 sticky top-0 z-20 border-b border-zinc-100 dark:border-zinc-800 shrink-0">
-				<div className="flex items-center gap-4">
-					<Button variant="ghost" size="icon" onClick={() => router.push('/dashboard')}>
-						<ArrowLeft className="w-5 h-5" />
-					</Button>
-					<div className="flex-1">
-						<h1 className="text-lg font-bold text-zinc-900 dark:text-white">
-							Mathematics P1 Study Group
+			<header className="px-6 pt-12 pb-6 shrink-0 bg-[#f8f9fb] dark:bg-[#0a0f18]">
+				<div className="flex items-center justify-between">
+					<div>
+						<h1 className="text-[34px] font-black tracking-tight text-zinc-900 dark:text-white">
+							Channels
 						</h1>
-						<div className="flex items-center gap-2 text-sm text-zinc-500">
-							<Users className="w-4 h-4" />
-							<span>1,247 members</span>
-						</div>
+						<p className="text-zinc-500 dark:text-zinc-400 font-medium">South Africa • Grade 12</p>
 					</div>
-					<Button variant="ghost" size="icon">
-						<MoreHorizontal className="w-5 h-5" />
-					</Button>
+					<Avatar className="w-10 h-10 border-2 border-white dark:border-zinc-800 shadow-sm">
+						<AvatarImage src="https://api.dicebear.com/7.x/avataaars/svg?seed=JD" />
+						<AvatarFallback className="bg-blue-100 text-blue-600 font-bold">JD</AvatarFallback>
+					</Avatar>
+				</div>
+
+				{/* Search Bar */}
+				<div className="mt-6 relative">
+					<Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-400" />
+					<input
+						type="text"
+						placeholder="Find subjects, papers, or topics..."
+						className="w-full pl-12 pr-6 py-4 bg-white dark:bg-zinc-900 rounded-2xl text-sm border-none shadow-sm focus:ring-2 focus:ring-blue-500/20 dark:text-white dark:placeholder-zinc-500"
+					/>
+				</div>
+
+				{/* Categories Scroller */}
+				<div className="mt-6 flex gap-3 overflow-x-auto no-scrollbar pb-2">
+					{categories.map((cat) => (
+						<button
+							key={cat}
+							type="button"
+							onClick={() => setActiveCategory(cat)}
+							className={`px-6 py-2.5 rounded-full text-sm font-bold whitespace-nowrap transition-all ${activeCategory === cat
+								? 'bg-[#1e293b] text-white dark:bg-white dark:text-zinc-950 shadow-md'
+								: 'bg-white text-zinc-600 dark:bg-zinc-900 dark:text-zinc-400 border border-zinc-100 dark:border-zinc-800 shadow-sm'
+								}`}
+						>
+							{cat}
+						</button>
+					))}
 				</div>
 			</header>
 
-			{/* Messages */}
 			<ScrollArea className="flex-1">
-				<main className="px-6 py-6 space-y-6">
-					{messages.map((msg) => (
-						<div key={msg.id} className={`flex gap-3 ${msg.isMe ? 'flex-row-reverse' : ''}`}>
-							<div className="w-10 h-10 rounded-full bg-zinc-100 overflow-hidden relative">
-								<Image src={msg.avatar} alt={msg.user} fill className="object-cover" />
-							</div>
-							<div className={`flex-1 ${msg.isMe ? 'items-end' : 'items-start'} flex flex-col`}>
-								<div className="flex items-center gap-2 mb-1">
-									<span
-										className={`text-sm font-semibold ${msg.isMe ? 'text-blue-600' : 'text-zinc-900 dark:text-white'}`}
-									>
-										{msg.user}
-									</span>
-									{msg.isTutor && (
-										<Badge variant="secondary" className="text-[10px] bg-blue-100 text-blue-700">
-											<CheckCircle2 className="w-3 h-3 mr-1" />
-											Tutor
-										</Badge>
-									)}
-									<span className="text-xs text-zinc-400">{msg.time}</span>
+				<main className="px-6 pb-32 space-y-8">
+					{/* Continue Learning */}
+					<section className="space-y-4">
+						<h3 className="text-[10px] font-black text-zinc-400 dark:text-zinc-500 uppercase tracking-widest">
+							Continue Learning
+						</h3>
+						<div className="bg-white dark:bg-zinc-900 p-5 rounded-3xl shadow-sm border border-zinc-50 dark:border-zinc-800/50 relative overflow-hidden group cursor-pointer hover:shadow-md transition-all">
+							<div className="flex items-center gap-5">
+								<div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#f9b122] to-[#f59e0b] flex items-center justify-center shadow-lg shadow-orange-500/20 transform group-hover:scale-105 transition-transform">
+									<div className="text-white text-3xl font-black italic">Σ</div>
 								</div>
+								<div className="flex-1">
+									<h4 className="text-lg font-bold text-zinc-900 dark:text-white">
+										Mathematics P1
+									</h4>
+									<p className="text-sm text-zinc-500 dark:text-zinc-400 font-medium leading-tight">
+										Functions & Graphs • 65% Complete
+									</p>
+								</div>
+								<div className="w-10 h-10 rounded-full bg-zinc-50 dark:bg-zinc-800 flex items-center justify-center">
+									<Play className="w-4 h-4 text-zinc-400 fill-zinc-400" />
+								</div>
+							</div>
+							{/* Progress Bar Line */}
+							<div className="absolute bottom-0 left-0 right-0 h-1 bg-zinc-100 dark:bg-zinc-800">
+								<div className="h-full bg-blue-500 w-[65%]" />
+							</div>
+						</div>
+					</section>
+
+					{/* STEM Skills */}
+					<section className="space-y-4">
+						<h3 className="text-xl font-bold text-zinc-900 dark:text-white">STEM Skills</h3>
+						<div className="space-y-3">
+							{[
+								{
+									title: 'Physical Sciences',
+									info: '12.1k',
+									tag: 'NEW',
+									icon: <FlaskConical className="w-6 h-6 text-blue-500" />,
+									bg: 'bg-blue-50 dark:bg-blue-900/20',
+								},
+								{
+									title: 'Life Sciences',
+									info: '9.8k',
+									icon: <Leaf className="w-6 h-6 text-emerald-500" />,
+									bg: 'bg-emerald-50 dark:bg-emerald-900/20',
+								},
+								{
+									title: 'Info Tech (IT)',
+									info: '4.3k',
+									icon: <Terminal className="w-6 h-6 text-violet-500" />,
+									bg: 'bg-violet-50 dark:bg-violet-900/20',
+								},
+							].map((item) => (
 								<div
-									className={`max-w-[80%] p-3 rounded-2xl ${
-										msg.isMe
-											? 'bg-blue-500 text-white rounded-br-none'
-											: 'bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-white rounded-bl-none'
-									}`}
+									key={item.title}
+									className="bg-white dark:bg-zinc-900 p-4 rounded-3xl flex items-center justify-between shadow-sm border border-zinc-50 dark:border-zinc-800/50 hover:shadow-md transition-all cursor-pointer group"
 								>
-									<p className="text-sm">{msg.message}</p>
-									{msg.hasImage && (
-										<div className="mt-2 p-4 bg-white dark:bg-zinc-700 rounded-lg">
-											<div className="w-full h-32 bg-zinc-200 dark:bg-zinc-600 rounded flex items-center justify-center">
-												<ImageIcon className="w-8 h-8 text-zinc-400" />
+									<div className="flex items-center gap-4">
+										<div
+											className={`w-12 h-12 rounded-2xl flex items-center justify-center ${item.bg}`}
+										>
+											{item.icon}
+										</div>
+										<div>
+											<h4 className="font-bold text-zinc-900 dark:text-white">{item.title}</h4>
+											<div className="flex items-center gap-2">
+												<div className="flex items-center gap-1 text-[11px] font-bold text-zinc-400">
+													<Users className="w-3 h-3" />
+													{item.info}
+												</div>
+												{item.tag && (
+													<>
+														<span className="w-1 h-1 rounded-full bg-zinc-300 dark:bg-zinc-700" />
+														<span className="text-[10px] font-black text-emerald-500 uppercase">
+															{item.tag}
+														</span>
+													</>
+												)}
 											</div>
 										</div>
-									)}
+									</div>
+									<ChevronRight className="w-5 h-5 text-zinc-300 group-hover:text-zinc-600 transition-colors" />
+								</div>
+							))}
+						</div>
+					</section>
+
+					{/* Language Arts */}
+					<section className="space-y-4">
+						<div className="flex items-center justify-between px-1">
+							<h3 className="text-xl font-bold text-zinc-900 dark:text-white">Language Arts</h3>
+							<button className="text-[11px] font-black text-blue-500 uppercase tracking-widest hover:underline">
+								View All
+							</button>
+						</div>
+						<div className="grid grid-cols-2 gap-4">
+							{[
+								{
+									title: 'English Home Language',
+									students: '18k Students',
+									icon: <BookOpen className="w-6 h-6 text-rose-500" />,
+									bg: 'bg-rose-50 dark:bg-rose-900/20',
+								},
+								{
+									title: 'Afrikaans FAL',
+									students: '10.5k Students',
+									icon: <LanguagesIcon className="w-6 h-6 text-orange-500" />,
+									bg: 'bg-orange-50 dark:bg-orange-900/20',
+								},
+							].map((item) => (
+								<div
+									key={item.title}
+									className="bg-white dark:bg-zinc-900 p-5 rounded-3xl flex flex-col gap-4 shadow-sm border border-zinc-50 dark:border-zinc-800/50 hover:shadow-md transition-all cursor-pointer"
+								>
+									<div
+										className={`w-12 h-12 rounded-2xl flex items-center justify-center ${item.bg}`}
+									>
+										{item.icon}
+									</div>
+									<div>
+										<h4 className="font-bold text-zinc-900 dark:text-white leading-tight">
+											{item.title}
+										</h4>
+										<div className="mt-3 inline-block px-3 py-1 bg-zinc-50 dark:bg-zinc-800 rounded-lg">
+											<span className="text-[11px] font-bold text-zinc-400">{item.students}</span>
+										</div>
+									</div>
+								</div>
+							))}
+						</div>
+					</section>
+
+					{/* Commerce */}
+					<section className="space-y-4">
+						<h3 className="text-xl font-bold text-zinc-900 dark:text-white">Commerce</h3>
+						<div className="bg-white dark:bg-zinc-900 p-4 rounded-3xl flex items-center justify-between shadow-sm border border-zinc-50 dark:border-zinc-800/50 hover:shadow-md transition-all cursor-pointer group">
+							<div className="flex items-center gap-4">
+								<div className="w-12 h-12 rounded-2xl flex items-center justify-center bg-teal-50 dark:bg-teal-900/20">
+									<BarChart3 className="w-6 h-6 text-teal-500" />
+								</div>
+								<div>
+									<h4 className="font-bold text-zinc-900 dark:text-white">Accounting</h4>
+									<div className="flex items-center gap-1 text-[11px] font-bold text-zinc-400">
+										<Users className="w-3 h-3" />
+										8.2k
+									</div>
+								</div>
+							</div>
+							<div className="flex items-center -space-x-2">
+								{[1, 2, 3].map((i) => (
+									<div
+										key={i}
+										className="w-7 h-7 rounded-full border-2 border-white dark:border-zinc-900 bg-zinc-200 overflow-hidden relative"
+									>
+										<Avatar className="w-full h-full">
+											<AvatarImage
+												src={`https://api.dicebear.com/7.x/avataaars/svg?seed=user${i}`}
+											/>
+										</Avatar>
+									</div>
+								))}
+								<div className="w-7 h-7 rounded-full border-2 border-white dark:border-zinc-900 bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center text-[8px] font-black text-zinc-400">
+									+4
 								</div>
 							</div>
 						</div>
-					))}
+					</section>
 				</main>
 			</ScrollArea>
 
-			{/* Input Area */}
-			<footer className="shrink-0 bg-white dark:bg-zinc-900 border-t border-zinc-200 dark:border-zinc-800 p-4">
-				<div className="flex items-center gap-3">
-					<Button variant="ghost" size="icon" className="shrink-0">
-						<ImageIcon className="w-5 h-5 text-zinc-500" />
-					</Button>
-					<Button variant="ghost" size="icon" className="shrink-0">
-						<Calculator className="w-5 h-5 text-zinc-500" />
-					</Button>
-					<div className="flex-1 relative">
-						<input
-							type="text"
-							placeholder="Type a message..."
-							className="w-full px-4 py-3 bg-zinc-100 dark:bg-zinc-800 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-						/>
-					</div>
-					<Button size="icon" className="shrink-0 rounded-full bg-blue-500 hover:bg-blue-600">
-						<Send className="w-4 h-4" />
-					</Button>
-				</div>
-			</footer>
+			{/* Floating Play Button */}
+			<button
+				type="button"
+				className="absolute bottom-24 right-6 w-16 h-16 bg-[#1e293b] dark:bg-white text-white dark:text-zinc-900 rounded-full shadow-2xl flex items-center justify-center transform hover:scale-110 active:scale-95 transition-all z-30"
+			>
+				<Play className="w-8 h-8 fill-current translate-x-0.5" />
+			</button>
+
+
 		</div>
 	);
 }

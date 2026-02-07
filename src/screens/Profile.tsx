@@ -1,10 +1,9 @@
 'use client';
 
-import { Calculator, GraduationCap, Settings, Share2, Star, User } from 'lucide-react';
+import { Calculator, GraduationCap, Star, User } from 'lucide-react';
 import { useState } from 'react';
 import { PolarAngleAxis, PolarGrid, Radar, RadarChart } from 'recharts';
 
-import { Button } from '@/components/ui/button';
 import {
 	type ChartConfig,
 	ChartContainer,
