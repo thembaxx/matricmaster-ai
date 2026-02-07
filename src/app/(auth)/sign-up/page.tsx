@@ -1,7 +1,7 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ChevronLeft, Eye, EyeOff, Loader2 } from 'lucide-react';
+import { Eye, EyeOff, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -51,79 +51,20 @@ export default function SignUpPage() {
 	};
 
 	return (
-		<div className="min-h-screen flex flex-col bg-zinc-50 dark:bg-[#0a0f18]">
-			{/* Header with Back Button */}
-			<header className="p-6">
-				<button
-					type="button"
-					onClick={() => router.back()}
-					className="text-blue-500 dark:text-blue-400 hover:text-blue-600 dark:hover:text-blue-300 transition-colors"
-				>
-					<ChevronLeft className="w-7 h-7" />
-				</button>
-			</header>
-
+		<div className="min-h-screen flex flex-col bg-zinc-50 dark:bg-[#0a0f18] pt-8">
 			{/* Main Content */}
 			<main className="flex-1 px-6 pb-8">
 				<div className="max-w-sm mx-auto space-y-6">
 					{/* Illustration */}
-					<div className="flex justify-center mb-2">
+					<div className="relative z-10 flex flex-col items-center">
 						<div
-							className="w-48 h-36 rounded-2xl flex items-center justify-center overflow-hidden"
+							className="w-40 h-40 bg-contain bg-no-repeat bg-center  rounded-2xl overflow-hidden"
+							data-alt="Playful 3D illustration of a graduation cap and a pencil"
 							style={{
-								background: 'linear-gradient(135deg, #64b5c6 0%, #4a9aa8 50%, #3d8b99 100%)',
+								backgroundImage:
+									'url("https://lh3.googleusercontent.com/aida-public/AB6AXuBfb0kuL_fhXq3o8csXamj2nRCfjURKGnnMK3mMZgTmXYUVQ1jX7VkEnxZA3w6VWyeiOMUAlfWECd-Jw7Y0_tPc-flA4EOK1K45kIh2B8oz0yq5FlFtCotoPGjmfqsPvCcXAIjpTxP7lGyG_pUIqMjIS_VaTY0yr1pGhAtmP1ayFoJWLr_5sb6zAQbXeegS_01yhJhs9Cw_B15TW4YehQsGn72R8niG0D3Kpd_bESOTYKVYfE6y_2z5m75Y1sP08TR5gw7z7HzFKs_-")',
 							}}
-						>
-							{/* Graduation Cap Illustration */}
-							<div className="relative">
-								{/* Base/Stand */}
-								<div
-									className="absolute bottom-0 left-1/2 -translate-x-1/2 w-24 h-3 rounded-full"
-									style={{ backgroundColor: '#d4a574' }}
-								/>
-
-								{/* Graduation Cap */}
-								<div className="relative mb-2">
-									{/* Cap base */}
-									<div
-										className="w-16 h-4 rounded-sm mx-auto"
-										style={{ backgroundColor: '#1f2937' }}
-									/>
-									{/* Cap top */}
-									<div
-										className="w-20 h-2 -mt-1 mx-auto"
-										style={{
-											backgroundColor: '#374151',
-											clipPath: 'polygon(10% 0%, 90% 0%, 100% 100%, 0% 100%)',
-										}}
-									/>
-									{/* Tassel */}
-									<div
-										className="absolute -right-2 top-0 w-1 h-8 rounded-full"
-										style={{ backgroundColor: '#fbbf24' }}
-									/>
-									<div
-										className="absolute -right-3 top-7 w-3 h-3 rounded-full"
-										style={{ backgroundColor: '#fbbf24' }}
-									/>
-								</div>
-
-								{/* Pencils */}
-								<div
-									className="absolute -right-8 bottom-2 w-2 h-14 rounded-t-sm"
-									style={{ backgroundColor: '#fbbf24' }}
-								/>
-								<div
-									className="absolute -right-8 bottom-2 w-2 h-2"
-									style={{ backgroundColor: '#f8b4b4' }}
-								/>
-
-								<div
-									className="absolute -left-6 bottom-2 w-2 h-12 rounded-t-sm rotate-[-8deg]"
-									style={{ backgroundColor: '#e5e7eb' }}
-								/>
-							</div>
-						</div>
+						></div>
 					</div>
 
 					{/* Header Text */}
@@ -151,10 +92,9 @@ export default function SignUpPage() {
 							</label>
 							<Input
 								{...register('name')}
-								id="name"
 								type="text"
 								placeholder="e.g., Thabo Mokoena"
-								className="h-14 rounded-xl border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800/50 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 text-zinc-900 dark:text-white placeholder:text-zinc-400 dark:placeholder:text-zinc-500"
+								className="shadow-none flex w-full rounded-xl text-[#111318] dark:text-white border border-[#dbdfe6] dark:border-gray-700 bg-white dark:bg-gray-800/50 focus:border-primary focus:ring-2 focus:ring-primary/20 h-14 px-4 text-base font-normal placeholder:text-[#9ca3af]"
 							/>
 							{errors.name && (
 								<p className="text-xs text-red-500 font-medium">{errors.name.message}</p>
@@ -171,10 +111,9 @@ export default function SignUpPage() {
 							</label>
 							<Input
 								{...register('email')}
-								id="email"
 								type="email"
 								placeholder="name@example.com"
-								className="h-14 rounded-xl border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800/50 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 text-zinc-900 dark:text-white placeholder:text-zinc-400 dark:placeholder:text-zinc-500"
+								className="shadow-none flex w-full rounded-xl text-[#111318] dark:text-white border border-[#dbdfe6] dark:border-gray-700 bg-white dark:bg-gray-800/50 focus:border-primary focus:ring-2 focus:ring-primary/20 h-14 px-4 text-base font-normal placeholder:text-[#9ca3af]"
 							/>
 							{errors.email && (
 								<p className="text-xs text-red-500 font-medium">{errors.email.message}</p>
@@ -192,10 +131,9 @@ export default function SignUpPage() {
 							<div className="relative">
 								<Input
 									{...register('password')}
-									id="password"
 									type={showPassword ? 'text' : 'password'}
 									placeholder="Create a strong password"
-									className="h-14 rounded-xl border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800/50 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 text-zinc-900 dark:text-white placeholder:text-zinc-400 dark:placeholder:text-zinc-500 pr-12"
+									className="shadow-none flex w-full rounded-xl text-[#111318] dark:text-white border border-[#dbdfe6] dark:border-gray-700 bg-white dark:bg-gray-800/50 focus:border-primary focus:ring-2 focus:ring-primary/20 h-14 px-4 text-base font-normal placeholder:text-[#9ca3af] pr-12"
 								/>
 								<button
 									type="button"

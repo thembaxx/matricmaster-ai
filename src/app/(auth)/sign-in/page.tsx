@@ -156,10 +156,9 @@ export default function SignInPage() {
 								</label>
 								<Input
 									{...register('email')}
-									id="email"
 									type="email"
 									placeholder="name@school.edu.za"
-									className="h-14 rounded-xl border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800/50 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 text-zinc-900 dark:text-white placeholder:text-zinc-400 dark:placeholder:text-zinc-500"
+									className="shadow-none flex w-full rounded-xl text-[#111318] dark:text-white border border-[#dbdfe6] dark:border-gray-700 bg-white dark:bg-gray-800/50 focus:border-primary focus:ring-2 focus:ring-primary/20 h-14 px-4 text-base font-normal placeholder:text-[#9ca3af]"
 								/>
 								{errors.email && (
 									<p className="text-xs text-red-500 font-medium">{errors.email.message}</p>
@@ -177,10 +176,9 @@ export default function SignInPage() {
 								<div className="relative">
 									<Input
 										{...register('password')}
-										id="password"
 										type={showPassword ? 'text' : 'password'}
 										placeholder="Enter your password"
-										className="h-14 rounded-xl border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800/50 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 text-zinc-900 dark:text-white placeholder:text-zinc-400 dark:placeholder:text-zinc-500 pr-12"
+										className="shadow-none flex w-full rounded-xl text-[#111318] dark:text-white border border-[#dbdfe6] dark:border-gray-700 bg-white dark:bg-gray-800/50 focus:border-primary focus:ring-2 focus:ring-primary/20 h-14 px-4 text-base font-normal placeholder:text-[#9ca3af] pr-12"
 									/>
 									<button
 										type="button"
