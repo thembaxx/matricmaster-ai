@@ -2,16 +2,23 @@
 
 import { AnimatePresence, motion } from 'framer-motion';
 import {
+	Award,
 	Bookmark,
+	Calendar,
 	FileText,
+	Globe,
 	Home,
+	Layout,
 	LogOut,
+	Map as MapIcon,
 	Menu,
 	Moon,
 	Search as SearchIcon,
 	Settings,
 	Sun,
+	Trophy,
 	User,
+	Users,
 } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
@@ -46,10 +53,18 @@ export default function MobileFrame({ children }: { children: React.ReactNode })
 
 	const sideMenuItems = [
 		{ href: '/dashboard', label: 'Dashboard', icon: Home },
+		{ href: '/search', label: 'Search', icon: SearchIcon },
 		{ href: '/past-papers', label: 'Past Papers', icon: FileText },
+		{ href: '/study-path', label: 'Study Path', icon: MapIcon },
+		{ href: '/study-plan', label: 'Study Plan', icon: Calendar },
+		{ href: '/leaderboard', label: 'Leaderboard', icon: Trophy },
+		{ href: '/achievements', label: 'Achievements', icon: Award },
+		{ href: '/channels', label: 'Study Channels', icon: Users },
 		{ href: '/bookmarks', label: 'My Saved Items', icon: Bookmark },
 		{ href: '/profile', label: 'My Profile', icon: User },
+		{ href: '/language', label: 'Language', icon: Globe },
 		{ href: '/settings', label: 'Settings', icon: Settings },
+		{ href: '/cms', label: 'Content Management', icon: Layout },
 	];
 
 	return (
@@ -73,7 +88,7 @@ export default function MobileFrame({ children }: { children: React.ReactNode })
 								className="w-[300px] sm:w-[350px] bg-zinc-50 dark:bg-zinc-950 border-r border-zinc-200 dark:border-zinc-800 p-0"
 							>
 								<div className="flex flex-col h-full">
-									<div className="p-8 pb-4">
+									<div className="p-8 pb-4 flex-1 overflow-y-auto">
 										<SheetHeader className="text-left mb-8">
 											<SheetTitle className="text-3xl font-black text-zinc-900 dark:text-white uppercase tracking-tighter">
 												MatricMaster
