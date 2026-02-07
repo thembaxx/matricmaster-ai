@@ -3,8 +3,6 @@
 import { Lock, Trophy } from 'lucide-react';
 import { useState } from 'react';
 
-import { ScrollArea } from '@/components/ui/scroll-area';
-
 const badges = [
 	{
 		id: '1',
@@ -106,10 +104,10 @@ export default function Achievements() {
 
 	return (
 		<div className="min-h-screen flex flex-col bg-zinc-50 dark:bg-[#0a0f18]">
-			<ScrollArea className="flex-1">
+			<div className="flex-1">
 				<main className="px-4 pb-32">
 					{/* Mastery Level Card */}
-					<div className="px-4">
+					<div>
 						<div
 							className="rounded-3xl p-6 mb-6 relative overflow-hidden"
 							style={{
@@ -244,7 +242,7 @@ export default function Achievements() {
 						))}
 					</div>
 				</main>
-			</ScrollArea>
+			</div>
 		</div>
 	);
 }
