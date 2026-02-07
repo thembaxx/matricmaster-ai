@@ -223,10 +223,10 @@ export default function MobileFrame({ children }: { children: React.ReactNode })
 
 									{/* Label */}
 									<span
-										className={`relative z-10 text-[10px] font-black uppercase tracking-widest transition-all duration-300 mt-1 ${
+										className={`relative z-10 text-[10px] font-semibold uppercase tracking-wide transition-all duration-300 mt-1 ${
 											isActive
-												? 'text-brand-blue dark:text-brand-blue-light opacity-100'
-												: 'text-zinc-400 opacity-0'
+												? 'text-brand-blue dark:text-brand-blue-light font-black'
+												: 'text-zinc-400'
 										}`}
 									>
 										{item.label}
