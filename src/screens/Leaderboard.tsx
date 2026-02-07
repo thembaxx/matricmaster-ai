@@ -186,7 +186,7 @@ export default function Leaderboard() {
 				</div>
 
 				{/* Rank 1 */}
-				<div className="flex flex-col items-center -mt-8">
+				<div className="flex flex-col items-center">
 					<div className="relative mb-4 group cursor-pointer">
 						<div className="absolute -top-6 left-1/2 -translate-x-1/2 text-orange-500 animate-bounce">
 							<Award className="w-8 h-8 fill-orange-500" />
@@ -267,7 +267,7 @@ export default function Leaderboard() {
 	);
 
 	return (
-		<div className="flex flex-col h-full bg-[#fcfdfd] dark:bg-[#0a0f18] font-inter">
+		<div className="flex flex-col h-full bg-[#fcfdfd] dark:bg-[#0a0f18] font-inter pb-28">
 			{/* Header */}
 			<header className="px-6 pt-12 pb-6 shrink-0 bg-white dark:bg-[#0a0f18] z-30">
 				<Tabs defaultValue="school" className="w-full">
@@ -292,22 +292,22 @@ export default function Leaderboard() {
 						</TabsTrigger>
 					</TabsList>
 
-					<ScrollArea className="h-[calc(100vh-280px)] mt-4 no-scrollbar">
+					<ScrollArea className="mt-8 no-scrollbar">
 						<TabsContent value="school" className="mt-0">
 							<Podium data={leaderboardData.school.topThree} />
-							<div className="bg-white dark:bg-zinc-950/50 rounded-t-[3rem] border-t border-zinc-50 dark:border-zinc-800 shadow-2xl shadow-zinc-200/50 pt-2 pb-24">
+							<div className="bg-white dark:bg-zinc-950/50 rounded-t-[3rem] border-t border-zinc-50 dark:border-zinc-800 shadow-2xl shadow-zinc-200/50 pt-2">
 								<RankingList data={leaderboardData.school.others} />
 							</div>
 						</TabsContent>
 						<TabsContent value="provincial" className="mt-0">
 							<Podium data={leaderboardData.provincial.topThree} />
-							<div className="bg-white dark:bg-zinc-950/50 rounded-t-[3rem] border-t border-zinc-50 dark:border-zinc-800 shadow-2xl shadow-zinc-200/50 pt-2 pb-24">
+							<div className="bg-white dark:bg-zinc-950/50 rounded-t-[3rem] border-t border-zinc-50 dark:border-zinc-800 shadow-2xl shadow-zinc-200/50 pt-2">
 								<RankingList data={leaderboardData.provincial.others} />
 							</div>
 						</TabsContent>
 						<TabsContent value="national" className="mt-0">
 							<Podium data={leaderboardData.national.topThree} />
-							<div className="bg-white dark:bg-zinc-950/50 rounded-t-[3rem] border-t border-zinc-50 dark:border-zinc-800 shadow-2xl shadow-zinc-200/50 pt-2 pb-24">
+							<div className="bg-white dark:bg-zinc-950/50 rounded-t-[3rem] border-t border-zinc-50 dark:border-zinc-800 shadow-2xl shadow-zinc-200/50 pt-2">
 								<RankingList data={leaderboardData.national.others} />
 							</div>
 						</TabsContent>
