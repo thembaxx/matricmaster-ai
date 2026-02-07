@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/a11y/noSvgWithoutTitle: no need */
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';

@@ -5,7 +5,12 @@ import { useState } from 'react';
 import { PolarAngleAxis, PolarGrid, Radar, RadarChart } from 'recharts';
 
 import { Button } from '@/components/ui/button';
-import { type ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
+import {
+	type ChartConfig,
+	ChartContainer,
+	ChartTooltip,
+	ChartTooltipContent,
+} from '@/components/ui/chart';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
 const chartData = [
@@ -207,10 +212,7 @@ export default function Profile() {
 					{/* Legend */}
 					<div className="flex justify-center gap-6 mb-8">
 						<div className="flex items-center gap-2 text-sm" style={{ color: '#94a3b8' }}>
-							<span
-								className="w-2.5 h-2.5 rounded-full"
-								style={{ backgroundColor: '#22d3ee' }}
-							/>
+							<span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: '#22d3ee' }} />
 							You
 						</div>
 						<div className="flex items-center gap-2 text-sm" style={{ color: '#94a3b8' }}>
@@ -260,10 +262,7 @@ export default function Profile() {
 
 					{/* Stats Cards */}
 					<div className="grid grid-cols-2 gap-4 w-full">
-						<div
-							className="p-5 rounded-2xl"
-							style={{ backgroundColor: '#111827' }}
-						>
+						<div className="p-5 rounded-2xl" style={{ backgroundColor: '#111827' }}>
 							<div className="flex flex-col gap-3">
 								<div
 									className="w-10 h-10 rounded-xl flex items-center justify-center"
@@ -275,20 +274,14 @@ export default function Profile() {
 									<div className="text-3xl font-bold" style={{ color: '#ffffff' }}>
 										78%
 									</div>
-									<div
-										className="text-xs font-medium mt-1"
-										style={{ color: '#64748b' }}
-									>
+									<div className="text-xs font-medium mt-1" style={{ color: '#64748b' }}>
 										Overall Average
 									</div>
 								</div>
 							</div>
 						</div>
 
-						<div
-							className="p-5 rounded-2xl"
-							style={{ backgroundColor: '#111827' }}
-						>
+						<div className="p-5 rounded-2xl" style={{ backgroundColor: '#111827' }}>
 							<div className="flex flex-col gap-3">
 								<div
 									className="w-10 h-10 rounded-xl flex items-center justify-center"
@@ -300,10 +293,7 @@ export default function Profile() {
 									<div className="text-3xl font-bold" style={{ color: '#ffffff' }}>
 										Math
 									</div>
-									<div
-										className="text-xs font-medium mt-1"
-										style={{ color: '#64748b' }}
-									>
+									<div className="text-xs font-medium mt-1" style={{ color: '#64748b' }}>
 										Top Subject
 									</div>
 								</div>
