@@ -9,7 +9,8 @@ const badges = [
 	{
 		id: '1',
 		name: 'Night Owl',
-		imageUrl: 'https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=200&h=200&fit=crop',
+		imageUrl:
+			'https://lh3.googleusercontent.com/aida-public/AB6AXuCC3YRwfyp3iVHby8gs5s1DiI5JAOiXvMtuLO0T4hpnuKQi7-zkS4Y9xeb8UZgloR0b-U6F2pR1rZDaKBYlIc2zFDgh2icEq-ajUVFwyLNEDQHqfrbJbEh1qSXsKZUqQ8CuEtnGPOFGXHEV9VDvv-aZcgPozunRCWN3CQF9o6oBQGGWmZhGAkTuS8H2-ztXWyxBzvXgP4MKLoVO0kvnNeLFexUoPIS9XY37V_rDpqqcYjCj4XqDZcbDkM8WGFhkIBJwXgXlvNCjgx_V',
 		iconBg: '#1a1a2e',
 		unlocked: true,
 		category: 'all',
@@ -17,6 +18,8 @@ const badges = [
 	{
 		id: '2',
 		name: 'Physics Master',
+		imageUrl:
+			'https://lh3.googleusercontent.com/aida-public/AB6AXuA3q-6Xcwb32D_PSCg6sYXUJgqdnmoryNhHsTPAQYSwTH9FuY_YWVJt2Knn0Eu8htF7tSTeSbgZUrwgbQ-GiOE1xdHlGY1uf7KDkSQDy2_Lob0k27g_7FFHKFhx4R8qRziyTL3vhG3olSYiokhHFlsM8QXJsEfdctIXp7ifsXWXyTeRUpElR5HHhmfsczU4QYK85TyCpWTgOwrNspSXqbNDUur_nI-FHlnqnLXq-Hhc7bzKsaCb_2_E6Fiehw0XDG_94ggPb8pYMgQA',
 		icon: '⚛️',
 		iconBg: '#f0f4f8',
 		unlocked: true,
@@ -25,6 +28,8 @@ const badges = [
 	{
 		id: '3',
 		name: 'Fast Finisher',
+		imageUrl:
+			'https://lh3.googleusercontent.com/aida-public/AB6AXuCMYx7TNhIQ0QfcUBYvGTqGUKtWM509_fx4nqoXblmmrUPWRSS-S9zkfPumNz0hMeFhtrPQp3x3qxCNllbyBgDkAAjaVkqPmV9UGFThsSnYHmVsTqh5TbU2yMW5_H_nXIoJktUp7TSDshO0U9h-npv-sKAm9C3Vy1chnuRBOb3sNClSeCftwCvrD6M0eTPGB3DPTC4HEM-HBNMg2TOHafuAePDAKd6_BvKEqj7vtrxDvhDIT2qHtFcOqDUi-VovJlPqZWTTjcKqAQqx',
 		icon: '⚡',
 		iconBg: '#e6f7f0',
 		unlocked: true,
@@ -33,6 +38,8 @@ const badges = [
 	{
 		id: '4',
 		name: 'Book Worm',
+		imageUrl:
+			'https://lh3.googleusercontent.com/aida-public/AB6AXuC_ZcYK1YzwT_vtc2FPnPte9aVi7bdSxiy8wObcdHYAo36y5jFImfUzbOQNtBjLBE9v4GITUgjv5TA2LVIzDL7OZDhJIiwrI6SWd6BUvbSIkGgCrCW56I_SR_O4Z89RdqC3k57CjElZLQNB8mifznmJflp4SoVUU7hsmgU52UC7NsNvJbg2A2emexiDFSizgKtt0l6YoiOdvE9WPkzhdFoW4Onl7raAcBrDqo8ayBjBC0m781n7FKMjoQk8JRZ23NmnlRdU2dWRq028',
 		icon: '📖',
 		iconBg: '#fce4ec',
 		unlocked: true,
@@ -42,7 +49,7 @@ const badges = [
 		id: '5',
 		name: 'Calculus King',
 		icon: '👑',
-		iconBg: '#f0f4f8',
+		iconBg: 'transparent',
 		unlocked: false,
 		category: 'math',
 	},
@@ -50,7 +57,7 @@ const badges = [
 		id: '6',
 		name: 'Bio Whiz',
 		icon: '🔬',
-		iconBg: '#f0f4f8',
+		iconBg: 'transparent',
 		unlocked: false,
 		category: 'science',
 	},
@@ -58,7 +65,7 @@ const badges = [
 		id: '7',
 		name: 'History Buff',
 		icon: '📜',
-		iconBg: '#f0f4f8',
+		iconBg: 'transparent',
 		unlocked: false,
 		category: 'history',
 	},
@@ -66,7 +73,7 @@ const badges = [
 		id: '8',
 		name: 'Chem Wiz',
 		icon: '🧪',
-		iconBg: '#f0f4f8',
+		iconBg: 'transparent',
 		unlocked: false,
 		category: 'science',
 	},
@@ -74,7 +81,7 @@ const badges = [
 		id: '9',
 		name: 'Code Ninja',
 		icon: '💻',
-		iconBg: '#f0f4f8',
+		iconBg: 'transparent',
 		unlocked: false,
 		category: 'all',
 	},
@@ -193,7 +200,7 @@ export default function Achievements() {
 										badge.unlocked ? '' : 'opacity-50'
 									}`}
 									style={{
-										backgroundColor: badge.unlocked ? badge.iconBg : 'rgb(243, 244, 246)',
+										backgroundColor: badge.unlocked ? badge.iconBg : '',
 										border: badge.unlocked ? 'none' : '2px dashed rgb(209, 213, 219)',
 									}}
 								>
@@ -208,7 +215,7 @@ export default function Achievements() {
 											<span className="text-3xl">{badge.icon}</span>
 										)
 									) : (
-										<Lock className="w-6 h-6 text-zinc-400 dark:text-zinc-500" />
+										<Lock className="w-6 h-6 text-gray-400 dark:text-gray-500" />
 									)}
 								</div>
 
