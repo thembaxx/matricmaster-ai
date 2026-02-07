@@ -1,13 +1,6 @@
 'use client';
 
-import { 
-	X, 
-	CheckCircle2, 
-	Clock, 
-	Zap, 
-	ChevronRight, 
-	History 
-} from 'lucide-react';
+import { CheckCircle2, ChevronRight, Clock, History, X, Zap } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
@@ -40,9 +33,9 @@ export default function LessonComplete() {
 					{/* Trophy Section */}
 					<div className="relative mb-8 w-48 h-48 flex items-center justify-center">
 						<div className="absolute inset-0 bg-[#fde68a] dark:bg-yellow-900/20 rounded-3xl opacity-20" />
-						<img 
-							src="https://images.unsplash.com/photo-1579546671584-62dcfaf35ad0?w=400&h=400&fit=crop" 
-							alt="Trophy" 
+						<img
+							src="https://images.unsplash.com/photo-1579546671584-62dcfaf35ad0?w=400&h=400&fit=crop"
+							alt="Trophy"
 							className="w-40 h-40 object-contain rounded-2xl shadow-xl shadow-yellow-500/10"
 						/>
 						{/* Stylized Trophy Alternative since unsplash might vary */}
@@ -70,8 +63,12 @@ export default function LessonComplete() {
 							<div className="w-10 h-10 rounded-full bg-yellow-50 dark:bg-yellow-900/20 flex items-center justify-center mb-3">
 								<CheckCircle2 className="w-6 h-6 text-[#efb036]" />
 							</div>
-							<span className="text-xl font-bold text-zinc-900 dark:text-white tracking-tight">90%</span>
-							<span className="text-[10px] uppercase font-bold text-zinc-400 dark:text-zinc-500 tracking-wider">Accuracy</span>
+							<span className="text-xl font-bold text-zinc-900 dark:text-white tracking-tight">
+								90%
+							</span>
+							<span className="text-[10px] uppercase font-bold text-zinc-400 dark:text-zinc-500 tracking-wider">
+								Accuracy
+							</span>
 						</div>
 
 						{/* Time */}
@@ -79,8 +76,12 @@ export default function LessonComplete() {
 							<div className="w-10 h-10 rounded-full bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center mb-3">
 								<Clock className="w-6 h-6 text-blue-500" />
 							</div>
-							<span className="text-xl font-bold text-zinc-900 dark:text-white tracking-tight">12m</span>
-							<span className="text-[10px] uppercase font-bold text-zinc-400 dark:text-zinc-500 tracking-wider">Time</span>
+							<span className="text-xl font-bold text-zinc-900 dark:text-white tracking-tight">
+								12m
+							</span>
+							<span className="text-[10px] uppercase font-bold text-zinc-400 dark:text-zinc-500 tracking-wider">
+								Time
+							</span>
 						</div>
 
 						{/* XP */}
@@ -89,7 +90,9 @@ export default function LessonComplete() {
 								<Zap className="w-6 h-6 text-orange-500" />
 							</div>
 							<span className="text-xl font-bold text-orange-500 tracking-tight">+150</span>
-							<span className="text-[10px] uppercase font-bold text-zinc-400 dark:text-zinc-500 tracking-wider">XP Gained</span>
+							<span className="text-[10px] uppercase font-bold text-zinc-400 dark:text-zinc-500 tracking-wider">
+								XP Gained
+							</span>
 						</div>
 					</div>
 
@@ -100,9 +103,9 @@ export default function LessonComplete() {
 						</h3>
 						<div className="bg-white dark:bg-[#111827] p-5 rounded-2xl flex items-center gap-4 shadow-sm border border-zinc-100 dark:border-zinc-800">
 							<div className="w-16 h-16 bg-[#0a0f18] rounded-xl overflow-hidden shrink-0">
-								<img 
-									src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=100&h=100&fit=crop" 
-									alt="Badge" 
+								<img
+									src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=100&h=100&fit=crop"
+									alt="Badge"
 									className="w-full h-full object-cover opacity-80"
 								/>
 							</div>
@@ -110,9 +113,7 @@ export default function LessonComplete() {
 								<p className="text-[10px] font-extrabold text-[#efb036] uppercase tracking-widest mb-0.5">
 									New Badge
 								</p>
-								<h4 className="text-xl font-bold text-zinc-900 dark:text-white">
-									Physics Pioneer
-								</h4>
+								<h4 className="text-xl font-bold text-zinc-900 dark:text-white">Physics Pioneer</h4>
 								<p className="text-sm text-zinc-500 dark:text-zinc-400 font-medium">
 									Master of motion and forces
 								</p>
@@ -129,13 +130,15 @@ export default function LessonComplete() {
 							</span>
 						</div>
 						<div className="h-2.5 w-full bg-zinc-100 dark:bg-zinc-800 rounded-full overflow-hidden">
-							<div 
+							<div
 								className="h-full bg-[#efb036] rounded-full transition-all duration-500"
 								style={{ width: `${xpProgress}%` }}
 							/>
 						</div>
 						<div className="flex justify-end">
-							<span className="text-xs font-bold text-zinc-400 dark:text-zinc-500">Next: Level 13</span>
+							<span className="text-xs font-bold text-zinc-400 dark:text-zinc-500">
+								Next: Level 13
+							</span>
 						</div>
 					</div>
 

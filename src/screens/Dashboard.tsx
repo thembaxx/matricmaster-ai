@@ -1,20 +1,7 @@
 /** biome-ignore-all lint/a11y/noStaticElementInteractions: required */
 'use client';
 
-import { 
-	ArrowRight, 
-	Bell, 
-	Flame, 
-	Play, 
-	Check, 
-	BookOpen,
-	Sigma,
-	FlaskConical,
-	LayoutGrid,
-	GraduationCap,
-	BarChart2,
-	User
-} from 'lucide-react';
+import { ArrowRight, Bell, BookOpen, Check, Flame, FlaskConical, Play, Sigma } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -74,7 +61,10 @@ export default function Dashboard() {
 					<div className="space-y-4">
 						<div className="flex justify-between items-center">
 							<h3 className="text-lg font-bold text-zinc-900 dark:text-white">This Week</h3>
-							<button type="button" className="text-sm font-bold text-[#efb036] hover:opacity-80 transition-opacity">
+							<button
+								type="button"
+								className="text-sm font-bold text-[#efb036] hover:opacity-80 transition-opacity"
+							>
 								View Calendar
 							</button>
 						</div>
@@ -89,16 +79,20 @@ export default function Dashboard() {
 								{ day: 'SUN', date: 16, status: 'idle' },
 							].map((item) => (
 								<div key={item.day} className="flex flex-col items-center gap-2">
-									<span className={`text-[10px] font-bold ${item.status === 'active' ? 'text-[#efb036]' : 'text-zinc-400 dark:text-zinc-500'}`}>
+									<span
+										className={`text-[10px] font-bold ${item.status === 'active' ? 'text-[#efb036]' : 'text-zinc-400 dark:text-zinc-500'}`}
+									>
 										{item.day}
 									</span>
-									<div className={`w-10 h-10 rounded-full flex items-center justify-center transition-all ${
-										item.status === 'complete' 
-											? 'bg-[#efb036] text-white' 
-											: item.status === 'active'
-												? 'bg-white dark:bg-zinc-800 border-2 border-[#efb036] text-[#efb036] shadow-lg shadow-orange-500/20'
-												: 'bg-zinc-50 dark:bg-zinc-800 text-zinc-400 dark:text-zinc-500'
-									}`}>
+									<div
+										className={`w-10 h-10 rounded-full flex items-center justify-center transition-all ${
+											item.status === 'complete'
+												? 'bg-[#efb036] text-white'
+												: item.status === 'active'
+													? 'bg-white dark:bg-zinc-800 border-2 border-[#efb036] text-[#efb036] shadow-lg shadow-orange-500/20'
+													: 'bg-zinc-50 dark:bg-zinc-800 text-zinc-400 dark:text-zinc-500'
+										}`}
+									>
 										{item.status === 'complete' ? (
 											<Check className="w-5 h-5 stroke-[3px]" />
 										) : (
@@ -113,19 +107,25 @@ export default function Dashboard() {
 					{/* Daily Goal Card */}
 					<Card className="p-8 bg-white dark:bg-zinc-900 border-none shadow-sm rounded-[2.5rem] space-y-6 relative overflow-hidden group">
 						<div className="absolute -right-4 -top-4 w-48 h-48 bg-orange-50/50 dark:bg-orange-900/5 rounded-full blur-3xl pointer-events-none" />
-						
+
 						<div className="flex justify-between items-start relative z-10">
 							<div className="space-y-3">
 								<div className="inline-flex items-center px-3 py-1 bg-orange-100/80 dark:bg-orange-900/20 rounded-lg">
-									<span className="text-[10px] font-bold text-[#efb036] uppercase tracking-wider">Daily Goal</span>
+									<span className="text-[10px] font-bold text-[#efb036] uppercase tracking-wider">
+										Daily Goal
+									</span>
 								</div>
-								<h3 className="text-2xl font-bold text-zinc-900 dark:text-white tracking-tight">Master Algebra</h3>
-								<p className="text-zinc-500 dark:text-zinc-400 font-medium">Complete 3 quiz questions</p>
+								<h3 className="text-2xl font-bold text-zinc-900 dark:text-white tracking-tight">
+									Master Algebra
+								</h3>
+								<p className="text-zinc-500 dark:text-zinc-400 font-medium">
+									Complete 3 quiz questions
+								</p>
 							</div>
 							<div className="w-20 h-20 bg-[#f8f9fa] dark:bg-zinc-800 rounded-2xl flex items-center justify-center shadow-inner overflow-hidden border border-zinc-100 dark:border-zinc-700">
-								<img 
-									src="https://images.unsplash.com/photo-1579546671584-62dcfaf35ad0?w=100&h=100&fit=crop" 
-									alt="Trophy" 
+								<img
+									src="https://images.unsplash.com/photo-1579546671584-62dcfaf35ad0?w=100&h=100&fit=crop"
+									alt="Trophy"
 									className="w-14 h-14 object-contain opacity-90"
 								/>
 							</div>
@@ -137,8 +137,8 @@ export default function Dashboard() {
 								<span className="text-sm font-bold text-[#efb036]">66%</span>
 							</div>
 							<div className="h-2.5 w-full bg-zinc-100 dark:bg-zinc-800 rounded-full overflow-hidden">
-								<div 
-									className="h-full bg-[#efb036] rounded-full transition-all duration-500" 
+								<div
+									className="h-full bg-[#efb036] rounded-full transition-all duration-500"
 									style={{ width: '66%' }}
 								/>
 							</div>
@@ -155,38 +155,42 @@ export default function Dashboard() {
 
 					{/* Recommended Challenges */}
 					<div className="space-y-5">
-						<h3 className="text-lg font-bold text-zinc-900 dark:text-white">Recommended Challenges</h3>
+						<h3 className="text-lg font-bold text-zinc-900 dark:text-white">
+							Recommended Challenges
+						</h3>
 						<div className="space-y-4">
 							{[
-								{ 
-									title: 'Differentiation Rules', 
-									time: '10m', 
-									difficulty: 'Medium', 
+								{
+									title: 'Differentiation Rules',
+									time: '10m',
+									difficulty: 'Medium',
 									icon: <Sigma className="w-6 h-6 text-blue-500" />,
-									iconBg: 'bg-blue-50 dark:bg-blue-900/20'
+									iconBg: 'bg-blue-50 dark:bg-blue-900/20',
 								},
-								{ 
-									title: 'Newton’s Second Law', 
-									time: '20m', 
-									difficulty: 'Hard', 
+								{
+									title: 'Newton’s Second Law',
+									time: '20m',
+									difficulty: 'Hard',
 									icon: <FlaskConical className="w-6 h-6 text-purple-500" />,
-									iconBg: 'bg-purple-50 dark:bg-purple-900/20'
+									iconBg: 'bg-purple-50 dark:bg-purple-900/20',
 								},
-								{ 
-									title: 'Poetry Analysis', 
-									time: '5m', 
-									difficulty: 'Easy', 
+								{
+									title: 'Poetry Analysis',
+									time: '5m',
+									difficulty: 'Easy',
 									icon: <BookOpen className="w-6 h-6 text-emerald-500" />,
-									iconBg: 'bg-emerald-50 dark:bg-emerald-900/20'
+									iconBg: 'bg-emerald-50 dark:bg-emerald-900/20',
 								},
 							].map((challenge) => (
-								<div 
+								<div
 									key={challenge.title}
 									className="bg-white dark:bg-zinc-900 p-4 pl-5 rounded-3xl flex items-center justify-between shadow-sm group hover:shadow-md transition-all cursor-pointer border border-zinc-50 dark:border-zinc-800/50"
 									onClick={() => router.push('/quiz')}
 								>
 									<div className="flex items-center gap-4">
-										<div className={`w-12 h-12 rounded-2xl flex items-center justify-center ${challenge.iconBg}`}>
+										<div
+											className={`w-12 h-12 rounded-2xl flex items-center justify-center ${challenge.iconBg}`}
+										>
 											{challenge.icon}
 										</div>
 										<div className="space-y-0.5">
@@ -197,19 +201,23 @@ export default function Dashboard() {
 													{challenge.time}
 												</div>
 												<span className="w-1 h-1 rounded-full bg-zinc-300 dark:bg-zinc-700" />
-												<div className={`px-2 py-0.5 rounded-lg font-bold ${
-													challenge.difficulty === 'Hard' ? 'bg-rose-50 text-rose-500 dark:bg-rose-900/20' :
-													challenge.difficulty === 'Medium' ? 'bg-orange-50 text-orange-500 dark:bg-orange-900/20' :
-													'bg-emerald-50 text-emerald-500 dark:bg-emerald-900/20'
-												}`}>
+												<div
+													className={`px-2 py-0.5 rounded-lg font-bold ${
+														challenge.difficulty === 'Hard'
+															? 'bg-rose-50 text-rose-500 dark:bg-rose-900/20'
+															: challenge.difficulty === 'Medium'
+																? 'bg-orange-50 text-orange-500 dark:bg-orange-900/20'
+																: 'bg-emerald-50 text-emerald-500 dark:bg-emerald-900/20'
+													}`}
+												>
 													{challenge.difficulty}
 												</div>
 											</div>
 										</div>
 									</div>
-									<Button 
-										variant="ghost" 
-										size="icon" 
+									<Button
+										variant="ghost"
+										size="icon"
 										className="w-10 h-10 rounded-full bg-zinc-50 dark:bg-zinc-800 text-zinc-300 group-hover:bg-[#efb036] group-hover:text-white transition-all scale-90 group-hover:scale-100"
 									>
 										<Play className="w-4 h-4 fill-current ml-0.5" />
@@ -220,29 +228,6 @@ export default function Dashboard() {
 					</div>
 				</main>
 			</ScrollArea>
-
-			{/* Custom Bottom Nav (matching image scale/icons) */}
-			<div className="bg-white dark:bg-[#0a0f18] border-t border-zinc-100 dark:border-zinc-800 px-8 py-4 flex justify-between items-center shrink-0">
-				<div className="flex flex-col items-center gap-1 text-[#efb036]">
-					<LayoutGrid className="w-6 h-6" />
-					<span className="text-[10px] font-bold">Home</span>
-				</div>
-				<div className="flex flex-col items-center gap-1 text-zinc-400 dark:text-zinc-500">
-					<GraduationCap className="w-6 h-6" />
-					<span className="text-[10px] font-bold">Courses</span>
-				</div>
-				<div className="flex flex-col items-center gap-1 text-zinc-400 dark:text-zinc-500">
-					<BarChart2 className="w-6 h-6" />
-					<span className="text-[10px] font-bold">Rank</span>
-				</div>
-				<div 
-					className="flex flex-col items-center gap-1 text-zinc-400 dark:text-zinc-500 cursor-pointer"
-					onClick={() => router.push('/profile')}
-				>
-					<User className="w-6 h-6" />
-					<span className="text-[10px] font-bold">Profile</span>
-				</div>
-			</div>
 		</div>
 	);
 }
@@ -250,7 +235,15 @@ export default function Dashboard() {
 // Sub-component for icons used in the map/list
 function Clock({ className }: { className?: string }) {
 	return (
-		<svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+		<svg
+			className={className}
+			viewBox="0 0 24 24"
+			fill="none"
+			stroke="currentColor"
+			strokeWidth="2"
+			strokeLinecap="round"
+			strokeLinejoin="round"
+		>
 			<circle cx="12" cy="12" r="10" />
 			<polyline points="12 6 12 12 16 14" />
 		</svg>
