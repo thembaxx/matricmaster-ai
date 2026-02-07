@@ -1,0 +1,4 @@
+# Ignore CSS files with Tailwind directives
+src/styles/**/*.css
+src/styles/*.css
+*.css
