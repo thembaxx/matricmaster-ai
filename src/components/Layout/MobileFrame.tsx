@@ -2,16 +2,23 @@
 
 import { AnimatePresence, motion } from 'framer-motion';
 import {
+	Award,
 	Bookmark,
+	Calendar,
 	FileText,
+	Globe,
 	Home,
+	Layout,
 	LogOut,
+	Map as MapIcon,
 	Menu,
 	Moon,
 	Search as SearchIcon,
 	Settings,
 	Sun,
+	Trophy,
 	User,
+	Users,
 } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
@@ -32,7 +39,8 @@ export default function MobileFrame({ children }: { children: React.ReactNode })
 	const router = useRouter();
 	const { theme, setTheme } = useTheme();
 
-	const hideNavigation = ['/sign-in', '/sign-up', '/interactive-quiz'];
+	// const hideNavigation = ['/sign-in', '/sign-up', '/interactive-quiz'];
+	const hideNavigation: string[] = [];
 
 	const shouldHideNav = hideNavigation.some((path) => pathname.startsWith(path));
 
@@ -46,10 +54,18 @@ export default function MobileFrame({ children }: { children: React.ReactNode })
 
 	const sideMenuItems = [
 		{ href: '/dashboard', label: 'Dashboard', icon: Home },
+		{ href: '/search', label: 'Search', icon: SearchIcon },
 		{ href: '/past-papers', label: 'Past Papers', icon: FileText },
+		{ href: '/study-path', label: 'Study Path', icon: MapIcon },
+		{ href: '/study-plan', label: 'Study Plan', icon: Calendar },
+		{ href: '/leaderboard', label: 'Leaderboard', icon: Trophy },
+		{ href: '/achievements', label: 'Achievements', icon: Award },
+		{ href: '/channels', label: 'Study Channels', icon: Users },
 		{ href: '/bookmarks', label: 'My Saved Items', icon: Bookmark },
 		{ href: '/profile', label: 'My Profile', icon: User },
+		{ href: '/language', label: 'Language', icon: Globe },
 		{ href: '/settings', label: 'Settings', icon: Settings },
+		{ href: '/cms', label: 'Content Management', icon: Layout },
 	];
 
 	return (
@@ -75,17 +91,25 @@ export default function MobileFrame({ children }: { children: React.ReactNode })
 								className="w-75 sm:w-87.5 bg-zinc-50 dark:bg-zinc-950 border-r border-zinc-200 dark:border-zinc-800 p-0"
 							>
 								<div className="flex flex-col h-full">
-									<div className="p-8 pb-4">
+									<div className="p-8 pb-4 flex-1 overflow-y-auto">
 										<SheetHeader className="text-left mb-8">
-											<SheetTitle className="text-3xl font-black text-zinc-900 dark:text-white uppercase tracking-tighter">
+											<SheetTitle className="text-xl font-black text-zinc-900 dark:text-white uppercase tracking-tighter">
 												MatricMaster
 											</SheetTitle>
-											<SheetDescription className="text-zinc-500 font-bold text-xs uppercase tracking-widest">
+											<SheetDescription className="text-zinc-500 font-bold text-xs uppercase tracking-wide">
 												Level up your learning
 											</SheetDescription>
+											<div className='grid grid-cols-2 gap-2 mt-4'>
+												<Button size="sm" onClick={() => router.push("/sign-in")}>
+													Sign in
+												</Button>
+												<Button size="sm" variant="outline" onClick={() => router.push("/sign-up")}>
+													Sign up
+												</Button>
+											</div>
 										</SheetHeader>
 
-										<div className="space-y-2">
+										<div className="space-y-2 ">
 											{sideMenuItems.map((item) => {
 												const isActive = pathname === item.href;
 												return (
@@ -93,8 +117,8 @@ export default function MobileFrame({ children }: { children: React.ReactNode })
 														key={item.href}
 														href={item.href}
 														className={`flex items-center gap-4 p-4 rounded-2xl transition-all duration-200 ${isActive
-																? 'bg-brand-blue text-white shadow-lg shadow-brand-blue/20'
-																: 'text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-900'
+															? 'bg-brand-blue text-white shadow-lg shadow-brand-blue/20'
+															: 'text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-900'
 															}`}
 													>
 														<item.icon className="w-5 h-5" />
@@ -182,8 +206,8 @@ export default function MobileFrame({ children }: { children: React.ReactNode })
 								<div className="relative z-10 flex items-center justify-center">
 									<item.icon
 										className={`relative transition-all duration-300 ${isActive
-												? 'text-brand-blue dark:text-brand-blue-light scale-110'
-												: 'text-zinc-400 group-hover:text-zinc-600 dark:group-hover:text-zinc-200'
+											? 'text-brand-blue dark:text-brand-blue-light scale-110'
+											: 'text-zinc-400 group-hover:text-zinc-600 dark:group-hover:text-zinc-200'
 											}`}
 										strokeWidth={isActive ? 2.5 : 2}
 										size={24}
@@ -193,8 +217,8 @@ export default function MobileFrame({ children }: { children: React.ReactNode })
 								{/* Label */}
 								<span
 									className={`relative z-10 text-[10px] font-black uppercase tracking-widest transition-all duration-300 mt-1 ${isActive
-											? 'text-brand-blue dark:text-brand-blue-light opacity-100'
-											: 'text-zinc-400 opacity-0'
+										? 'text-brand-blue dark:text-brand-blue-light opacity-100'
+										: 'text-zinc-400 opacity-0'
 										}`}
 								>
 									{item.label}
