@@ -214,7 +214,7 @@ export default function SignUpPage() {
 						<Button
 							type="submit"
 							disabled={isLoading}
-							className="w-full h-14 rounded-xl bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 text-white font-semibold text-lg shadow-lg shadow-blue-500/25 transition-all active:scale-[0.98]"
+							className="w-full h-14 rounded-xl bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 text-white font-semibold text-sm shadow-lg shadow-blue-500/25 transition-all active:scale-[0.98]"
 						>
 							{isLoading ? <Loader2 className="w-6 h-6 animate-spin" /> : 'Create Account'}
 						</Button>
