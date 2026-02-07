@@ -182,7 +182,7 @@ export default function Leaderboard() {
 							{r2?.points.toLocaleString()} KP
 						</p>
 					</div>
-					<div className="w-20 h-24 bg-gradient-to-t from-zinc-100/80 to-transparent dark:from-zinc-900/40 mt-4 rounded-t-3xl border-x border-t border-zinc-100/50 dark:border-zinc-800/50" />
+					<div className="w-16 h-20 bg-gradient-to-t from-zinc-300 to-zinc-100 dark:from-zinc-700 dark:to-zinc-800 mt-2 rounded-t-lg" />
 				</div>
 
 				{/* Rank 1 */}
@@ -192,7 +192,7 @@ export default function Leaderboard() {
 							<Award className="w-8 h-8 fill-orange-500" />
 						</div>
 						<div className="absolute inset-[-4px] bg-gradient-to-b from-orange-400 to-yellow-300 rounded-full opacity-30 blur-sm" />
-						<Avatar className="w-28 h-28 border-[4px] border-[#efb036] relative z-10 transition-transform group-hover:scale-105">
+						<Avatar className="w-20 h-28 bg-gradient-to-t from-yellow-200 to-yellow-50 dark:from-yellow-900/40 dark:to-yellow-900/20 mt-2 rounded-t-xl relative z-10 transition-transform group-hover:scale-105">
 							<AvatarImage src={r1?.avatar} className="object-cover" />
 							<AvatarFallback>{r1?.name[0]}</AvatarFallback>
 						</Avatar>
@@ -230,7 +230,7 @@ export default function Leaderboard() {
 							{r3?.points.toLocaleString()} KP
 						</p>
 					</div>
-					<div className="w-20 h-20 bg-gradient-to-t from-orange-50/50 to-transparent dark:from-orange-900/10 mt-4 rounded-t-3xl border-x border-t border-orange-100/50 dark:border-zinc-800/50" />
+					<div className="w-16 h-16 bg-gradient-to-t from-orange-200 to-orange-100 dark:from-orange-900/40 dark:to-orange-900/20 mt-2 rounded-t-lg" />
 				</div>
 			</div>
 		);
