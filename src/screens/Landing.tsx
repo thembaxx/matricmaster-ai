@@ -23,8 +23,6 @@ export default function Landing() {
 			<div className="absolute top-[-10%] right-[-10%] w-125 h-125 bg-brand-blue/10 rounded-full blur-[120px] pointer-events-none" />
 			<div className="absolute bottom-[-10%] left-[-10%] w-100 h-100 bg-brand-purple/10 rounded-full blur-[100px] pointer-events-none" />
 
-
-
 			{/* Content area with proper bottom spacing for navigation */}
 			<ScrollArea className="flex-1 relative z-10">
 				<main
@@ -152,12 +150,8 @@ export default function Landing() {
 												</div>
 											</div>
 											<div className="flex-1 min-w-0">
-												<h3 className="font-bold text-gray-900 dark:text-white">
-													{subject.name}
-												</h3>
-												<p className="text-sm text-gray-500 dark:text-gray-400">
-													{subject.topics}
-												</p>
+												<h3 className="font-bold text-gray-900 dark:text-white">{subject.name}</h3>
+												<p className="text-sm text-gray-500 dark:text-gray-400">{subject.topics}</p>
 											</div>
 											<div className="text-gray-300 dark:text-gray-600">
 												<ChevronRight className="w-4 h-4" />
@@ -194,12 +188,25 @@ export default function Landing() {
 
 					<div className="relative w-full aspect-square max-w-[320px] mb-8 flex items-center justify-center animate-float mt-16">
 						<div className="absolute inset-0 bg-linear-to-tr from-blue-100 to-purple-100 dark:from-blue-900/20 dark:to-purple-900/20 rounded-full blur-3xl opacity-60"></div>
-						<img alt="Abstract geometric 3D shape representing structured learning" className="relative z-10 w-64 h-64 object-cover rounded-3xl shadow-xl rotate-3 hover:rotate-6 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCYGPHGX8U1snu6lisR2qVfg1OzkcyqEUejzvKbDfs15eDax6rOMG7DFc18e4ENbwIoyH-H0mCYDhTxyw29Whpg1WyzVItfMizpr2GCrF6wgXywpuEXJMpqCmpUih9GvtIOE-x7ww4qJoFlUZkze7AHkDTdH_QbGRQ0i2XhLolp5GTg-o25_N-JQM1Zz_jQKpyvhtr4W4hY5MAaDpr1Ro69n8hSdO_Fycg44ddjFGM0xg8Ua0SMZDUOcprM8YgVJorDvm6FkRKhs3rL" style={{ boxShadow: "20px 20px 60px -10px rgba(0,0,0,0.15)" }} />
-						<div className="absolute -left-2 top-10 bg-white dark:bg-surface-dark p-3 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-800 animate-float" style={{ animationDelay: "1s" }}>
-							<span className="text-xs font-bold text-gray-400 dark:text-gray-500 block mb-1">MATH</span>
+						<img
+							alt="Abstract geometric 3D shape representing structured learning"
+							className="relative z-10 w-64 h-64 object-cover rounded-3xl shadow-xl rotate-3 hover:rotate-6 transition-transform duration-500"
+							src="https://lh3.googleusercontent.com/aida-public/AB6AXuCYGPHGX8U1snu6lisR2qVfg1OzkcyqEUejzvKbDfs15eDax6rOMG7DFc18e4ENbwIoyH-H0mCYDhTxyw29Whpg1WyzVItfMizpr2GCrF6wgXywpuEXJMpqCmpUih9GvtIOE-x7ww4qJoFlUZkze7AHkDTdH_QbGRQ0i2XhLolp5GTg-o25_N-JQM1Zz_jQKpyvhtr4W4hY5MAaDpr1Ro69n8hSdO_Fycg44ddjFGM0xg8Ua0SMZDUOcprM8YgVJorDvm6FkRKhs3rL"
+							style={{ boxShadow: '20px 20px 60px -10px rgba(0,0,0,0.15)' }}
+						/>
+						<div
+							className="absolute -left-2 top-10 bg-white dark:bg-surface-dark p-3 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-800 animate-float"
+							style={{ animationDelay: '1s' }}
+						>
+							<span className="text-xs font-bold text-gray-400 dark:text-gray-500 block mb-1">
+								MATH
+							</span>
 							<span className="text-lg font-bold">x = 42</span>
 						</div>
-						<div className="absolute -right-2 bottom-12 bg-white dark:bg-surface-dark p-3 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-800 animate-float" style={{ animationDelay: "2s" }}>
+						<div
+							className="absolute -right-2 bottom-12 bg-white dark:bg-surface-dark p-3 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-800 animate-float"
+							style={{ animationDelay: '2s' }}
+						>
 							<div className="flex items-center gap-2">
 								<span className="w-3 h-3 rounded-full bg-green-500"></span>
 								<span className="text-sm font-bold">Correct</span>
