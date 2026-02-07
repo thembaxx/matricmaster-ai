@@ -33,7 +33,7 @@ export default function LanguageSelect({ currentLanguage = 'EN' }: LanguageSelec
 		<div className="flex flex-col min-h-screen bg-zinc-50 dark:bg-zinc-950 font-lexend">
 			<div className="flex-1 flex flex-col max-w-2xl mx-auto w-full">
 				{/* Header */}
-				<div className="px-6 pt-12 pb-6 border-b border-zinc-100 dark:border-zinc-800 bg-white dark:bg-zinc-900 sticky top-0 z-20">
+				<div className="px-6 pt-12 pb-6 border-b border-zinc-100 dark:border-zinc-800 bg-white dark:bg-zinc-900">
 					<div className="flex justify-between items-center">
 						<div className="flex items-center gap-4">
 							<div className="w-12 h-12 rounded-2xl bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center">

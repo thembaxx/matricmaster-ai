@@ -66,7 +66,7 @@ export default function Bookmarks() {
 	return (
 		<div className="flex flex-col h-full bg-background">
 			{/* Header */}
-			<header className="px-6 pt-12 pb-2 bg-white dark:bg-zinc-900 sticky top-0 z-20 shrink-0">
+			<header className="px-6 pt-12 pb-2 bg-white dark:bg-zinc-900 shrink-0">
 				<h1 className="text-3xl font-bold text-zinc-900 dark:text-white mb-1">Bookmarks</h1>
 				<p className="text-sm text-zinc-500 dark:text-zinc-400 mb-6">
 					Your saved revision questions
