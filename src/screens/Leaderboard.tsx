@@ -1,9 +1,7 @@
 'use client';
 
-import { ArrowLeft, Flame, Award } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+import { Flame, Award } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
@@ -16,20 +14,23 @@ const leaderboardData = {
 				rank: 2,
 				name: 'Sipho N.',
 				points: 2350,
-				avatar: 'https://images.unsplash.com/photo-1599566150163-29194dcaad36?auto=format&fit=crop&q=80&w=200',
+				avatar:
+					'https://images.unsplash.com/photo-1599566150163-29194dcaad36?auto=format&fit=crop&q=80&w=200',
 			},
 			{
 				rank: 1,
 				name: 'Thabo M.',
 				points: 2840,
-				avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=200',
+				avatar:
+					'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=200',
 				isUser: true,
 			},
 			{
 				rank: 3,
 				name: 'Lerato K.',
 				points: 2100,
-				avatar: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&q=80&w=200',
+				avatar:
+					'https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&q=80&w=200',
 			},
 		],
 		others: [
@@ -38,28 +39,32 @@ const leaderboardData = {
 				name: 'Jessica V.',
 				school: 'Parktown Girls',
 				points: 1950,
-				avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&q=80&w=200',
+				avatar:
+					'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&q=80&w=200',
 			},
 			{
 				rank: 5,
 				name: 'Michael B.',
 				school: "St John's College",
 				points: 1820,
-				avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=200',
+				avatar:
+					'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=200',
 			},
 			{
 				rank: 6,
 				name: 'Nandi Z.',
 				school: 'Roedean School',
 				points: 1780,
-				avatar: 'https://images.unsplash.com/photo-1531123897727-8f129e1688ce?auto=format&fit=crop&q=80&w=200',
+				avatar:
+					'https://images.unsplash.com/photo-1531123897727-8f129e1688ce?auto=format&fit=crop&q=80&w=200',
 			},
 			{
 				rank: 7,
 				name: 'Kevin P.',
 				school: 'Hilton College',
 				points: 1650,
-				avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=200',
+				avatar:
+					'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=200',
 			},
 		],
 	},
@@ -69,19 +74,22 @@ const leaderboardData = {
 				rank: 2,
 				name: 'Ayanda M.',
 				points: 4200,
-				avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200',
+				avatar:
+					'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200',
 			},
 			{
 				rank: 1,
 				name: 'Pieter S.',
 				points: 4850,
-				avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=200',
+				avatar:
+					'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=200',
 			},
 			{
 				rank: 3,
 				name: 'Zanele T.',
 				points: 4100,
-				avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=200',
+				avatar:
+					'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=200',
 			},
 		],
 		others: [
@@ -90,14 +98,16 @@ const leaderboardData = {
 				name: 'Daniel R.',
 				school: 'Grey College',
 				points: 3950,
-				avatar: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&q=80&w=200',
+				avatar:
+					'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&q=80&w=200',
 			},
 			{
 				rank: 5,
 				name: 'Sarah W.',
 				school: 'Herschel Girls',
 				points: 3820,
-				avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=200',
+				avatar:
+					'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=200',
 			},
 		],
 	},
@@ -107,19 +117,22 @@ const leaderboardData = {
 				rank: 2,
 				name: 'Lunga D.',
 				points: 8350,
-				avatar: 'https://images.unsplash.com/photo-1504257404792-c2196bc5794e?auto=format&fit=crop&q=80&w=200',
+				avatar:
+					'https://images.unsplash.com/photo-1504257404792-c2196bc5794e?auto=format&fit=crop&q=80&w=200',
 			},
 			{
 				rank: 1,
 				name: 'Grace A.',
 				points: 9200,
-				avatar: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&q=80&w=200',
+				avatar:
+					'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&q=80&w=200',
 			},
 			{
 				rank: 3,
 				name: 'Johan B.',
 				points: 8100,
-				avatar: 'https://images.unsplash.com/photo-1492562080023-ab3dbdf9bbbd?auto=format&fit=crop&q=80&w=200',
+				avatar:
+					'https://images.unsplash.com/photo-1492562080023-ab3dbdf9bbbd?auto=format&fit=crop&q=80&w=200',
 			},
 		],
 		others: [
@@ -128,7 +141,8 @@ const leaderboardData = {
 				name: 'Amara O.',
 				school: 'Crawford College',
 				points: 7950,
-				avatar: 'https://images.unsplash.com/photo-1523824921871-d6f1a3215111?auto=format&fit=crop&q=80&w=200',
+				avatar:
+					'https://images.unsplash.com/photo-1523824921871-d6f1a3215111?auto=format&fit=crop&q=80&w=200',
 			},
 			{
 				rank: 42,
@@ -143,8 +157,6 @@ const leaderboardData = {
 };
 
 export default function Leaderboard() {
-	const router = useRouter();
-
 	const Podium = ({ data }: { data: typeof leaderboardData.school.topThree }) => {
 		const r2 = data.find((p) => p.rank === 2);
 		const r1 = data.find((p) => p.rank === 1);
@@ -231,9 +243,7 @@ export default function Leaderboard() {
 					key={student.name}
 					className="flex items-center gap-4 px-6 py-4 hover:bg-zinc-50 dark:hover:bg-zinc-900/50 transition-colors group cursor-pointer"
 				>
-					<span className="w-6 text-zinc-400 font-bold text-sm text-center">
-						{student.rank}
-					</span>
+					<span className="w-6 text-zinc-400 font-bold text-sm text-center">{student.rank}</span>
 					<Avatar className="w-12 h-12 rounded-2xl border border-zinc-100 dark:border-zinc-800 shadow-sm">
 						<AvatarImage src={student.avatar} className="object-cover" />
 					</Avatar>
@@ -260,21 +270,6 @@ export default function Leaderboard() {
 		<div className="flex flex-col h-full bg-[#fcfdfd] dark:bg-[#0a0f18] font-inter">
 			{/* Header */}
 			<header className="px-6 pt-12 pb-6 shrink-0 bg-white dark:bg-[#0a0f18] z-30">
-				<div className="flex items-center justify-between mb-8">
-					<Button
-						variant="ghost"
-						size="icon"
-						onClick={() => router.push('/dashboard')}
-						className="rounded-full w-10 h-10 hover:bg-zinc-100 dark:hover:bg-zinc-900"
-					>
-						<ArrowLeft className="w-6 h-6 text-zinc-900 dark:text-white" />
-					</Button>
-					<h1 className="absolute left-1/2 -translate-x-1/2 text-lg font-black text-zinc-900 dark:text-white tracking-tight">
-						Leaderboard
-					</h1>
-					<div className="w-10" /> {/* Spacer */}
-				</div>
-
 				<Tabs defaultValue="school" className="w-full">
 					<TabsList className="w-full h-14 p-1.5 bg-zinc-100/50 dark:bg-zinc-900/50 rounded-2xl border border-zinc-100 dark:border-zinc-800">
 						<TabsTrigger
@@ -321,7 +316,7 @@ export default function Leaderboard() {
 			</header>
 
 			{/* Your Rank Footer */}
-			<div className="fixed bottom-0 left-0 right-0 p-6 z-40 bg-gradient-to-t from-white via-white dark:from-[#0a0f18] dark:via-[#0a0f18] to-transparent shrink-0">
+			<div className="p-6 z-40 bg-gradient-to-t from-white via-white dark:from-[#0a0f18] dark:via-[#0a0f18] to-transparent shrink-0">
 				<div className="max-w-2xl mx-auto">
 					<Card className="p-4 bg-zinc-900 dark:bg-zinc-950 border-zinc-800 dark:border-zinc-800 shadow-2xl rounded-3xl relative overflow-hidden group">
 						<div className="absolute top-0 left-0 w-1 h-full bg-[#efb036]" />
