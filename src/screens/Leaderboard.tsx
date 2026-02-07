@@ -1,9 +1,7 @@
 'use client';
 
-import { ArrowLeft, Flame, Award } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+import { Flame, Award } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
@@ -159,8 +157,6 @@ const leaderboardData = {
 };
 
 export default function Leaderboard() {
-	const router = useRouter();
-
 	const Podium = ({ data }: { data: typeof leaderboardData.school.topThree }) => {
 		const r2 = data.find((p) => p.rank === 2);
 		const r1 = data.find((p) => p.rank === 1);
