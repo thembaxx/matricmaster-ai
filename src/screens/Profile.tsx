@@ -65,24 +65,22 @@ export default function Profile() {
 								className="w-28 h-28 rounded-full overflow-hidden shadow-2xl relative"
 								style={{ border: '4px solid #1e293b' }}
 							>
-																			{/* biome-ignore lint/performance/noImgElement: User avatar from external source */}
-																			<img									src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=face"
+								{/* biome-ignore lint/performance/noImgElement: User avatar from external source */}
+								<img
+									src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=face"
 									alt="Thabo Mbeki"
 									className="w-full h-full object-cover"
 								/>
 							</div>
-							              <div
-							                className="absolute bottom-0 right-0 rounded-full p-1"
-							                style={{ backgroundColor: '#22d3ee', border: '3px solid #0a0f18' }}
-							              >
-							                <svg
-							                  className="w-3.5 h-3.5 text-white"
-							                  fill="currentColor"
-							                  viewBox="0 0 20 20"
-							                >
-							                  <title>Verified Badge</title>
-							                  <path
-							                    fillRule="evenodd"										d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+							<div
+								className="absolute bottom-0 right-0 rounded-full p-1"
+								style={{ backgroundColor: '#22d3ee', border: '3px solid #0a0f18' }}
+							>
+								<svg className="w-3.5 h-3.5 text-white" fill="currentColor" viewBox="0 0 20 20">
+									<title>Verified Badge</title>
+									<path
+										fillRule="evenodd"
+										d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
 										clipRule="evenodd"
 									/>
 								</svg>
@@ -90,18 +88,12 @@ export default function Profile() {
 						</div>
 
 						<div className="text-center mb-6">
-							<h2 className="text-2xl font-bold mb-1 text-foreground">
-								Thabo Mbeki
-							</h2>
-							<p className="text-sm text-muted-foreground">
-								St. John's College • Grade 12
-							</p>
+							<h2 className="text-2xl font-bold mb-1 text-foreground">Thabo Mbeki</h2>
+							<p className="text-sm text-muted-foreground">St. John's College • Grade 12</p>
 						</div>
 
 						{/* Tabs - Segmented Control */}
-						<div
-							className="w-full max-w-xs p-1 rounded-full flex mb-8 bg-muted"
-						>
+						<div className="w-full max-w-xs p-1 rounded-full flex mb-8 bg-muted">
 							<button
 								type="button"
 								onClick={() => setViewMode('my_stats')}
@@ -211,9 +203,7 @@ export default function Profile() {
 
 						{/* Achievements */}
 						<div className="w-full mb-8">
-							<h3
-								className="text-xs font-bold uppercase tracking-wider mb-4 text-muted-foreground"
-							>
+							<h3 className="text-xs font-bold uppercase tracking-wider mb-4 text-muted-foreground">
 								Skill Achievements
 							</h3>
 							<div className="flex gap-3 overflow-x-auto pb-2 no-scrollbar">
@@ -255,9 +245,7 @@ export default function Profile() {
 										<GraduationCap className="w-5 h-5" style={{ color: '#22d3ee' }} />
 									</div>
 									<div>
-										<div className="text-3xl font-bold text-foreground">
-											78%
-										</div>
+										<div className="text-3xl font-bold text-foreground">78%</div>
 										<div className="text-xs font-medium mt-1 text-muted-foreground">
 											Overall Average
 										</div>
@@ -274,9 +262,7 @@ export default function Profile() {
 										<Star className="w-5 h-5" style={{ color: '#a855f7' }} />
 									</div>
 									<div>
-										<div className="text-3xl font-bold text-foreground">
-											Math
-										</div>
+										<div className="text-3xl font-bold text-foreground">Math</div>
 										<div className="text-xs font-medium mt-1 text-muted-foreground">
 											Top Subject
 										</div>

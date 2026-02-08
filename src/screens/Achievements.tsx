@@ -202,14 +202,16 @@ export default function Achievements() {
 										border: badge.unlocked ? 'none' : '2px dashed rgb(209, 213, 219)',
 									}}
 								>
-																				{badge.unlocked ? (
-																					badge.imageUrl ? (
-																																			// biome-ignore lint/performance/noImgElement: Achievement badge illustration
-																																			<img																							src={badge.imageUrl}
-																							alt={badge.name}
-																							className="w-full h-full rounded-full object-cover"
-																						/>
-																					) : (											<span className="text-3xl">{badge.icon}</span>
+									{badge.unlocked ? (
+										badge.imageUrl ? (
+											// biome-ignore lint/performance/noImgElement: Achievement badge illustration
+											<img
+												src={badge.imageUrl}
+												alt={badge.name}
+												className="w-full h-full rounded-full object-cover"
+											/>
+										) : (
+											<span className="text-3xl">{badge.icon}</span>
 										)
 									) : (
 										<Lock className="w-6 h-6 text-gray-400 dark:text-gray-500" />

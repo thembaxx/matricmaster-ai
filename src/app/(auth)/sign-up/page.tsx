@@ -3,7 +3,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Eye, EyeOff, Loader2 } from 'lucide-react';
 import Link from 'next/link';
-
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
@@ -21,6 +21,7 @@ const signUpSchema = z.object({
 type SignUpValues = z.infer<typeof signUpSchema>;
 
 export default function SignUpPage() {
+	const router = useRouter();
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState<string | null>(null);
 	const [showPassword, setShowPassword] = useState(false);
@@ -40,12 +41,13 @@ export default function SignUpPage() {
 			email: data.email,
 			password: data.password,
 			name: data.name,
-			callbackURL: '/dashboard',
 		});
 
 		if (authError) {
 			setError(authError.message || 'Failed to create account');
 			setIsLoading(false);
+		} else {
+			router.push('/dashboard');
 		}
 	};
 

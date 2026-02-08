@@ -134,7 +134,7 @@ export default function Landing() {
 								return (
 									<Card
 										key={subject.id}
-										className="bg-white dark:bg-surface-dark p-4 rounded-3xl border border-gray-200 dark:border-gray-700 shadow-soft group-hover:shadow-md transition-shadow flex items-center gap-4"
+										className="bg-card p-4 rounded-3xl border border-gray-200 dark:border-gray-700 shadow-soft group-hover:shadow-md transition-shadow flex items-center gap-4"
 										onClick={() => router.push(subject.path)}
 									>
 										<div

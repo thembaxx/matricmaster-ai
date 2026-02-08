@@ -51,11 +51,13 @@ export default function PastPapers() {
 						<div className="flex gap-2 overflow-x-auto no-scrollbar">
 							{years.map((year) => (
 								<button
-																				key={year}
-																				type="button"
-																															// biome-ignore lint/suspicious/noExplicitAny: Year type casting
-																															onClick={() => setSelectedYear(year as any)}																				className={`rounded-lg px-4 py-1.5 text-sm font-bold transition-all ${
-																					selectedYear === year											? 'bg-brand-blue text-white shadow-lg shadow-brand-blue/20'
+									key={year}
+									type="button"
+									// biome-ignore lint/suspicious/noExplicitAny: Year type casting
+									onClick={() => setSelectedYear(year as any)}
+									className={`rounded-lg px-4 py-1.5 text-sm font-bold transition-all ${
+										selectedYear === year
+											? 'bg-brand-blue text-white shadow-lg shadow-brand-blue/20'
 											: 'bg-zinc-200/50 dark:bg-zinc-800/50 text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300'
 									}`}
 								>

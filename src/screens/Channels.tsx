@@ -159,15 +159,16 @@ export default function Channels() {
 
 					{/* Language Arts */}
 					<section className="space-y-4">
-											<div className="flex items-center justify-between px-1">
-												<h3 className="text-xl font-bold text-zinc-900 dark:text-white">Language Arts</h3>
-												<button
-													type="button"
-													className="text-[11px] font-black text-blue-500 uppercase tracking-widest hover:underline"
-												>
-													View All
-												</button>
-											</div>						<div className="grid grid-cols-2 gap-4">
+						<div className="flex items-center justify-between px-1">
+							<h3 className="text-xl font-bold text-zinc-900 dark:text-white">Language Arts</h3>
+							<button
+								type="button"
+								className="text-[11px] font-black text-blue-500 uppercase tracking-widest hover:underline"
+							>
+								View All
+							</button>
+						</div>{' '}
+						<div className="grid grid-cols-2 gap-4">
 							{[
 								{
 									title: 'English Home Language',
