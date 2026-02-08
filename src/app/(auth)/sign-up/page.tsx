@@ -50,7 +50,7 @@ export default function SignUpPage() {
 	};
 
 	return (
-		<div className="min-h-screen flex flex-col bg-zinc-50 dark:bg-[#0a0f18] pt-8">
+		<div className="min-h-screen flex flex-col bg-slate-50 dark:bg-zinc-950 pt-8">
 			{/* Main Content */}
 			<main className="flex-1 px-6 pb-8">
 				<div className="max-w-sm mx-auto space-y-6">

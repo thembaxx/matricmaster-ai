@@ -291,9 +291,9 @@ export default function CMS() {
 	const marksId = useId();
 
 	return (
-		<div className="flex-1 flex flex-col bg-zinc-50 dark:bg-zinc-950 overflow-hidden">
+		<div className="flex-1 flex flex-col bg-background overflow-hidden">
 			{/* Header */}
-			<header className="px-6 pt-10 pb-4 bg-white dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-800 shrink-0">
+			<header className="px-6 pt-4 pb-4 bg-background border-b border-border shrink-0">
 				<div className="flex justify-between items-center mb-4">
 					<Button
 						variant="ghost"
@@ -630,7 +630,7 @@ export default function CMS() {
 									{editingQuestion.options.map((option, index) => (
 										<div
 											key={option.optionLetter}
-											className="p-4 border rounded-lg space-y-3 bg-zinc-50/50 dark:bg-zinc-900/50"
+											className="p-4 border rounded-lg space-y-3 bg-muted/50"
 										>
 											<div className="flex items-center gap-3">
 												<Badge

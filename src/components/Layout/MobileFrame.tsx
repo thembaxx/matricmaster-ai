@@ -38,6 +38,7 @@ export default function MobileFrame({ children }: { children: React.ReactNode })
 	const pathname = usePathname();
 	const router = useRouter();
 	const { theme, setTheme } = useTheme();
+	const { data: session } = authClient.useSession();
 
 	// const hideNavigation = ['/sign-in', '/sign-up', '/interactive-quiz'];
 	const hideNavigation: string[] = [];
@@ -104,14 +105,16 @@ export default function MobileFrame({ children }: { children: React.ReactNode })
 											<SheetDescription className="text-zinc-500 font-bold text-xs uppercase tracking-wide">
 												Level up your learning
 											</SheetDescription>
-											<div className="grid grid-cols-2 gap-2 mt-4">
-												<Button size="sm" onClick={() => router.push('/sign-in')}>
-													Sign in
-												</Button>
-												<Button size="sm" variant="outline" onClick={() => router.push('/sign-up')}>
-													Sign up
-												</Button>
-											</div>
+											{!session && (
+												<div className="grid grid-cols-2 gap-2 mt-4">
+													<Button size="sm" onClick={() => router.push('/sign-in')}>
+														Sign in
+													</Button>
+													<Button size="sm" variant="outline" onClick={() => router.push('/sign-up')}>
+														Sign up
+													</Button>
+												</div>
+											)}
 										</SheetHeader>
 
 										<div className="space-y-2 ">
@@ -154,17 +157,19 @@ export default function MobileFrame({ children }: { children: React.ReactNode })
 											</Button>
 										</div>
 
-										<Button
-											variant="ghost"
-											className="w-full justify-start gap-4 text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/10 rounded-2xl p-4 h-auto font-bold transition-all"
-											onClick={async () => {
-												await authClient.signOut();
-												router.push('/sign-in');
-											}}
-										>
-											<LogOut className="w-5 h-5" />
-											Logout
-										</Button>
+										{session && (
+											<Button
+												variant="ghost"
+												className="w-full justify-start gap-4 text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/10 rounded-2xl p-4 h-auto font-bold transition-all"
+												onClick={async () => {
+													await authClient.signOut();
+													router.push('/sign-in');
+												}}
+											>
+												<LogOut className="w-5 h-5" />
+												Logout
+											</Button>
+										)}
 									</div>
 								</div>
 							</SheetContent>

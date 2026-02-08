@@ -68,20 +68,15 @@ export default function SignInPage() {
 	};
 
 	return (
-		<div
-			className="min-h-screen flex flex-col"
-			style={{
-				background: 'linear-gradient(180deg, #e8f4fc 0%, #d4e8f7 50%, #c8e0f4 100%)',
-			}}
-		>
+		<div className="min-h-screen flex flex-col bg-slate-50 dark:bg-zinc-950">
 			{/* Hero Section with Illustration */}
 			<div className="relative w-full h-64 overflow-hidden">
 				{/* Dark mode overlay */}
-				<div className="absolute inset-0 bg-[#0a0f18] dark:block hidden opacity-90" />
+				<div className="absolute inset-0 bg-background dark:block hidden opacity-90" />
 				<div
 					className="absolute inset-0 dark:block hidden"
 					style={{
-						background: 'linear-gradient(180deg, #1a2744 0%, #0f1a2e 50%, #0a0f18 100%)',
+						background: 'linear-gradient(180deg, rgba(24, 24, 27, 0.8) 0%, rgba(9, 9, 11, 0.9) 50%, rgba(0, 0, 0, 1) 100%)',
 					}}
 				/>
 
@@ -130,7 +125,7 @@ export default function SignInPage() {
 
 			{/* Main Content */}
 			<div className="p-4 w-full flex">
-				<div className="flex-1 px-6 py-8 -mt-4 bg-white dark:bg-[#0a0f18] rounded-3xl relative z-10">
+				<div className="flex-1 px-6 py-8 -mt-4 bg-card rounded-3xl relative z-10">
 					<div className="max-w-sm mx-auto space-y-6">
 						{/* Header */}
 						<div className="text-center space-y-2">
@@ -220,7 +215,7 @@ export default function SignInPage() {
 								<div className="w-full border-t border-zinc-200 dark:border-zinc-700" />
 							</div>
 							<div className="relative flex justify-center text-sm">
-								<span className="bg-white dark:bg-[#0a0f18] px-4 text-zinc-500 dark:text-zinc-400">
+								<span className="bg-card px-4 text-zinc-500 dark:text-zinc-400">
 									or continue with
 								</span>
 							</div>
