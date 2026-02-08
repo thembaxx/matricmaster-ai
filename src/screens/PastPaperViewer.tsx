@@ -213,16 +213,15 @@ export default function PastPaperViewer() {
 					</div>
 
 					{/* Sample Question */}
-					<Card className="p-6 rounded-[2rem] border-none shadow-sm bg-white dark:bg-zinc-900 relative overflow-hidden">
-						<div className="absolute inset-0 opacity-[0.03] pointer-events-none grayscale">
-							<img
-								src="https://images.unsplash.com/photo-1588072432836-e10032774350?auto=format&fit=crop&q=80&w=800"
-								alt="Paper texture"
-								className="w-full h-full object-cover"
-							/>
-						</div>
-						<div className="flex items-center gap-2 mb-4 relative z-10">
-							<Badge className="bg-brand-blue text-white rounded-lg">QUESTION 1</Badge>
+													<Card className="p-6 rounded-[2rem] border-none shadow-sm bg-white dark:bg-zinc-900 relative overflow-hidden">
+														<div className="absolute inset-0 opacity-[0.03] pointer-events-none grayscale">
+																									{/* biome-ignore lint/performance/noImgElement: Background texture illustration */}
+																									<img																src="https://images.unsplash.com/photo-1588072432836-e10032774350?auto=format&fit=crop&q=80&w=800"
+																alt="Paper texture"
+																className="w-full h-full object-cover"
+															/>
+														</div>
+														<div className="flex items-center gap-2 mb-4 relative z-10">							<Badge className="bg-brand-blue text-white rounded-lg">QUESTION 1</Badge>
 							<span className="text-xs font-bold text-zinc-400 uppercase tracking-wider">
 								(25 marks)
 							</span>

@@ -68,20 +68,24 @@ export default function Profile() {
 								className="w-28 h-28 rounded-full overflow-hidden shadow-2xl relative"
 								style={{ border: '4px solid #1e293b' }}
 							>
-								<img
-									src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=face"
+																			{/* biome-ignore lint/performance/noImgElement: User avatar from external source */}
+																			<img									src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=face"
 									alt="Thabo Mbeki"
 									className="w-full h-full object-cover"
 								/>
 							</div>
-							<div
-								className="absolute bottom-0 right-0 rounded-full p-1"
-								style={{ backgroundColor: '#22d3ee', border: '3px solid #0a0f18' }}
-							>
-								<svg className="w-3.5 h-3.5 text-white" fill="currentColor" viewBox="0 0 20 20">
-									<path
-										fillRule="evenodd"
-										d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+							              <div
+							                className="absolute bottom-0 right-0 rounded-full p-1"
+							                style={{ backgroundColor: '#22d3ee', border: '3px solid #0a0f18' }}
+							              >
+							                <svg
+							                  className="w-3.5 h-3.5 text-white"
+							                  fill="currentColor"
+							                  viewBox="0 0 20 20"
+							                >
+							                  <title>Verified Badge</title>
+							                  <path
+							                    fillRule="evenodd"										d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
 										clipRule="evenodd"
 									/>
 								</svg>

@@ -187,7 +187,8 @@ export default function Landing() {
 					</section> */}
 
 					<div className="relative w-full aspect-square max-w-[320px] mb-8 flex items-center justify-center animate-float mt-16">
-						<div className="absolute inset-0 bg-linear-to-tr from-blue-100 to-purple-100 dark:from-blue-900/20 dark:to-purple-900/20 rounded-full blur-3xl opacity-60"></div>
+						<div className="absolute inset-0 bg-linear-to-tr from-blue-100 to-purple-100 dark:from-blue-900/20 dark:to-purple-900/20 rounded-full blur-3xl opacity-60" />
+						{/* biome-ignore lint/performance/noImgElement: External illustration URL */}
 						<img
 							alt="Abstract geometric 3D shape representing structured learning"
 							className="relative z-10 w-64 h-64 object-cover rounded-3xl shadow-xl rotate-3 hover:rotate-6 transition-transform duration-500"
@@ -213,7 +214,10 @@ export default function Landing() {
 							</div>
 						</div>
 					</div>
-					<button className="w-full py-4 px-8 bg-primary hover:bg-black text-white font-bold rounded-full text-lg shadow-lg dark:shadow-none dark:border dark:border-gray-700 transition-all active:scale-95 mb-6">
+					<button
+						type="button"
+						className="w-full py-4 px-8 bg-primary hover:bg-black text-white font-bold rounded-full text-lg shadow-lg dark:shadow-none dark:border dark:border-gray-700 transition-all active:scale-95 mb-6"
+					>
 						Get Started
 					</button>
 					<p className="text-xs text-gray-400 font-medium uppercase tracking-wide mb-8 text-center">

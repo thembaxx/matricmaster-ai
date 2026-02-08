@@ -78,6 +78,7 @@ const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }) => {
 
 	return (
 		<style
+			// biome-ignore lint/security/noDangerouslySetInnerHtml: Dynamic styles for chart themes
 			dangerouslySetInnerHTML={{
 				__html: Object.entries(THEMES)
 					.map(
@@ -104,15 +105,22 @@ const ChartTooltipContent = React.forwardRef<
 	HTMLDivElement,
 	React.ComponentProps<'div'> & {
 		active?: boolean;
+		// biome-ignore lint/suspicious/noExplicitAny: Recharts payload type
 		payload?: any[];
+		// biome-ignore lint/suspicious/noExplicitAny: Recharts label type
 		label?: any;
+		// biome-ignore lint/suspicious/noExplicitAny: Recharts formatter type
 		labelFormatter?: (label: any, payload: any[]) => React.ReactNode;
 		labelClassName?: string;
 		formatter?: (
+			// biome-ignore lint/suspicious/noExplicitAny: Recharts value type
 			value: any,
+			// biome-ignore lint/suspicious/noExplicitAny: Recharts name type
 			name: any,
+			// biome-ignore lint/suspicious/noExplicitAny: Recharts item type
 			item: any,
 			index: number,
+			// biome-ignore lint/suspicious/noExplicitAny: Recharts payload type
 			payload: any[]
 		) => React.ReactNode;
 		hideLabel?: boolean;
@@ -251,6 +259,7 @@ const ChartLegend = RechartsPrimitive.Legend;
 const ChartLegendContent = React.forwardRef<
 	HTMLDivElement,
 	React.ComponentProps<'div'> & {
+		// biome-ignore lint/suspicious/noExplicitAny: Recharts payload type
 		payload?: any[];
 		verticalAlign?: 'top' | 'bottom' | 'middle';
 		hideIcon?: boolean;

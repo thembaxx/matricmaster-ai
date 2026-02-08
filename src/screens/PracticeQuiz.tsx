@@ -13,6 +13,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 // Mock click sound generator
 const playClickSound = () => {
 	try {
+		// biome-ignore lint/suspicious/noExplicitAny: Legacy Webkit Audio Support
 		const audioCtx = new (window.AudioContext || (window as any).webkitAudioContext)();
 		const oscillator = audioCtx.createOscillator();
 		const gainNode = audioCtx.createGain();
@@ -27,7 +28,7 @@ const playClickSound = () => {
 
 		oscillator.start();
 		oscillator.stop(audioCtx.currentTime + 0.1);
-	} catch (e) {
+	} catch (_e) {
 		console.log('Audio not supported or blocked');
 	}
 };
@@ -143,6 +144,7 @@ export default function PracticeQuiz() {
 							/>
 
 							<svg width="240" height="160" viewBox="0 0 240 160" className="relative z-10">
+								<title>Mathematical Function Graph</title>
 								{/* Axes */}
 								<line
 									x1="20"
@@ -196,6 +198,7 @@ export default function PracticeQuiz() {
 						<div className="flex-1 min-h-[60px] flex items-center px-2">
 							<div className="text-2xl font-serif text-zinc-900 dark:text-white flex items-center flex-wrap gap-0.5 relative">
 								{input.split('').map((char, i) => (
+									// biome-ignore lint/suspicious/noArrayIndexKey: Character order is stable
 									<span key={i} className="relative">
 										{i === cursorPos && (
 											<motion.div
