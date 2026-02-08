@@ -1,7 +1,6 @@
 'use client';
 
-import { ArrowLeft, Database, Edit2, Plus, Search, Trash2, X } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+import { Database, Edit2, Plus, Search, Trash2, X } from 'lucide-react';
 import { useCallback, useEffect, useId, useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -70,7 +69,6 @@ const EMPTY_QUESTION: QuestionFormData = {
 };
 
 export default function CMS() {
-	const router = useRouter();
 	const [subjects, setSubjects] = useState<Subject[]>([]);
 	const [questions, setQuestions] = useState<Question[]>([]);
 	const [loading, setLoading] = useState(true);
@@ -291,20 +289,11 @@ export default function CMS() {
 	const marksId = useId();
 
 	return (
-		<div className="flex-1 flex flex-col bg-zinc-50 dark:bg-zinc-950 overflow-hidden">
+		<div className="flex-1 flex flex-col bg-background overflow-hidden pb-28">
 			{/* Header */}
-			<header className="px-6 pt-10 pb-4 bg-white dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-800 shrink-0">
+			<header className="px-6 pt-4 pb-4 bg-background border-b border-border shrink-0">
 				<div className="flex justify-between items-center mb-4">
-					<Button
-						variant="ghost"
-						size="icon"
-						onClick={() => router.push('/profile')}
-						className="text-zinc-500"
-					>
-						<ArrowLeft className="h-5 w-5" />
-					</Button>
 					<div className="flex items-center gap-2">
-						<h1 className="font-bold text-zinc-900 dark:text-white text-lg">Content Manager</h1>
 						<Button
 							onClick={handleSeedDatabase}
 							disabled={seeding}
@@ -319,7 +308,7 @@ export default function CMS() {
 					<Button
 						onClick={handleCreateQuestion}
 						size="icon"
-						className="rounded-full bg-brand-purple hover:bg-brand-purple/90 shadow-lg shadow-purple-500/20"
+						className="rounded-full h-10 w-10 bg-brand-purple hover:bg-brand-purple/90 shadow-lg shadow-purple-500/20"
 					>
 						<Plus className="h-5 w-5" />
 					</Button>
@@ -342,12 +331,12 @@ export default function CMS() {
 								value={searchQuery}
 								onChange={(e) => setSearchQuery(e.target.value)}
 								placeholder="Search questions or topics..."
-								className="pl-10"
+								className="pl-10 text-base h-12"
 							/>
 						</div>
-						<div className="flex gap-2">
+						<div className="grid grid-cols-2 gap-2">
 							<Select value={selectedSubject} onValueChange={setSelectedSubject}>
-								<SelectTrigger className="w-35">
+								<SelectTrigger>
 									<SelectValue placeholder="Subject" />
 								</SelectTrigger>
 								<SelectContent>
@@ -361,7 +350,7 @@ export default function CMS() {
 							</Select>
 
 							<Select value={selectedDifficulty} onValueChange={setSelectedDifficulty}>
-								<SelectTrigger className="w-35">
+								<SelectTrigger>
 									<SelectValue placeholder="Difficulty" />
 								</SelectTrigger>
 								<SelectContent>
@@ -630,7 +619,7 @@ export default function CMS() {
 									{editingQuestion.options.map((option, index) => (
 										<div
 											key={option.optionLetter}
-											className="p-4 border rounded-lg space-y-3 bg-zinc-50/50 dark:bg-zinc-900/50"
+											className="p-4 border rounded-lg space-y-3 bg-muted/50"
 										>
 											<div className="flex items-center gap-3">
 												<Badge

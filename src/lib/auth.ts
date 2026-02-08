@@ -7,61 +7,11 @@ import * as schema from './db/schema';
 export const auth = betterAuth({
 	database: drizzleAdapter(db, {
 		provider: 'pg',
-		schema: {
-			user: {
-				model: schema.user,
-				fields: {
-					emailVerified: 'emailVerified',
-					isAnonymous: 'isAnonymous',
-					createdAt: 'createdAt',
-					updatedAt: 'updatedAt',
-				},
-			},
-			session: {
-				model: schema.session,
-				fields: {
-					createdAt: 'createdAt',
-					updatedAt: 'updatedAt',
-					expiresAt: 'expiresAt',
-					ipAddress: 'ipAddress',
-					userAgent: 'userAgent',
-					userId: 'userId',
-				},
-			},
-			account: {
-				model: schema.account,
-				fields: {
-					accountId: 'accountId',
-					providerId: 'providerId',
-					userId: 'userId',
-					accessToken: 'accessToken',
-					refreshToken: 'refreshToken',
-					idToken: 'idToken',
-					accessTokenExpiresAt: 'accessTokenExpiresAt',
-					refreshTokenExpiresAt: 'refreshTokenExpiresAt',
-					createdAt: 'createdAt',
-					updatedAt: 'updatedAt',
-				},
-			},
-			verification: {
-				model: schema.verification,
-				fields: {
-					expiresAt: 'expiresAt',
-					createdAt: 'createdAt',
-					updatedAt: 'updatedAt',
-				},
-			},
-			anonymousUsers: {
-				model: schema.anonymous_users,
-				fields: {
-					userId: 'userId',
-					createdAt: 'createdAt',
-				},
-			},
-		},
+		schema,
 	}),
 	emailAndPassword: {
 		enabled: true,
+		requireEmailVerification: false,
 	},
 	socialProviders: {
 		google: {

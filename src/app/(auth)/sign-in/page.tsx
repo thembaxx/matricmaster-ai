@@ -40,16 +40,17 @@ export default function SignInPage() {
 		const { error: authError } = await authClient.signIn.email({
 			email: data.email,
 			password: data.password,
-			callbackURL: '/dashboard',
 		});
 
 		if (authError) {
 			setError(authError.message || 'Invalid email or password');
 			setIsLoading(false);
+		} else {
+			router.push('/dashboard');
 		}
 	};
 
-	const handleSocialSignIn = async (provider: 'google' | 'facebook') => {
+	const handleSocialSignIn = async (provider: 'google') => {
 		await authClient.signIn.social({
 			provider,
 			callbackURL: '/dashboard',
@@ -68,20 +69,16 @@ export default function SignInPage() {
 	};
 
 	return (
-		<div
-			className="min-h-screen flex flex-col"
-			style={{
-				background: 'linear-gradient(180deg, #e8f4fc 0%, #d4e8f7 50%, #c8e0f4 100%)',
-			}}
-		>
+		<div className="min-h-screen flex flex-col bg-slate-50 dark:bg-zinc-950">
 			{/* Hero Section with Illustration */}
 			<div className="relative w-full h-64 overflow-hidden">
 				{/* Dark mode overlay */}
-				<div className="absolute inset-0 bg-[#0a0f18] dark:block hidden opacity-90" />
+				<div className="absolute inset-0 bg-background dark:block hidden opacity-90" />
 				<div
 					className="absolute inset-0 dark:block hidden"
 					style={{
-						background: 'linear-gradient(180deg, #1a2744 0%, #0f1a2e 50%, #0a0f18 100%)',
+						background:
+							'linear-gradient(180deg, rgba(24, 24, 27, 0.8) 0%, rgba(9, 9, 11, 0.9) 50%, rgba(0, 0, 0, 1) 100%)',
 					}}
 				/>
 
@@ -130,7 +127,7 @@ export default function SignInPage() {
 
 			{/* Main Content */}
 			<div className="p-4 w-full flex">
-				<div className="flex-1 px-6 py-8 -mt-4 bg-white dark:bg-[#0a0f18] rounded-3xl relative z-10">
+				<div className="flex-1 px-6 py-8 -mt-4 bg-card rounded-3xl relative z-10">
 					<div className="max-w-sm mx-auto space-y-6">
 						{/* Header */}
 						<div className="text-center space-y-2">
@@ -220,19 +217,19 @@ export default function SignInPage() {
 								<div className="w-full border-t border-zinc-200 dark:border-zinc-700" />
 							</div>
 							<div className="relative flex justify-center text-sm">
-								<span className="bg-white dark:bg-[#0a0f18] px-4 text-zinc-500 dark:text-zinc-400">
+								<span className="bg-card px-4 text-zinc-500 dark:text-zinc-400">
 									or continue with
 								</span>
 							</div>
 						</div>
 
 						{/* Social Sign In */}
-						<div className="grid grid-cols-2 gap-4">
+						<div className="w-full">
 							<Button
 								type="button"
 								variant="outline"
 								onClick={() => handleSocialSignIn('google')}
-								className="h-14 rounded-xl border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800/50 font-medium gap-2.5 hover:bg-zinc-50 dark:hover:bg-zinc-700/50 transition-all active:scale-[0.98] text-zinc-700 dark:text-zinc-300"
+								className="w-full h-14 rounded-xl border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800/50 font-medium gap-2.5 hover:bg-zinc-50 dark:hover:bg-zinc-700/50 transition-all active:scale-[0.98] text-zinc-700 dark:text-zinc-300"
 							>
 								<svg className="w-5 h-5" viewBox="0 0 24 24">
 									<path
@@ -253,17 +250,6 @@ export default function SignInPage() {
 									/>
 								</svg>
 								Google
-							</Button>
-							<Button
-								type="button"
-								variant="outline"
-								onClick={() => handleSocialSignIn('facebook')}
-								className="h-14 rounded-xl border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800/50 font-medium gap-2.5 hover:bg-zinc-50 dark:hover:bg-zinc-700/50 transition-all active:scale-[0.98] text-zinc-700 dark:text-zinc-300"
-							>
-								<svg className="w-5 h-5" viewBox="0 0 24 24" fill="#1877F2">
-									<path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
-								</svg>
-								Facebook
 							</Button>
 						</div>
 

@@ -118,16 +118,14 @@ export default function Dashboard() {
 								<h3 className="text-2xl font-bold text-foreground tracking-tight">
 									Master Algebra
 								</h3>
-								<p className="text-muted-foreground font-medium">
-									Complete 3 quiz questions
-								</p>
+								<p className="text-muted-foreground font-medium">Complete 3 quiz questions</p>
 							</div>
-							<div className="w-20 h-20 bg-muted rounded-2xl flex items-center justify-center shadow-inner overflow-hidden border border-border">
+							<div className="w-16 h-16 bg-muted rounded-2xl flex items-center justify-center shadow-inner overflow-hidden border border-border">
 								{/* biome-ignore lint/performance/noImgElement: External illustration */}
 								<img
-									src="https://images.unsplash.com/photo-1579546671584-62dcfaf35ad0?w=100&h=100&fit=crop"
+									src="https://lh3.googleusercontent.com/aida-public/AB6AXuCkgC-G9LotChGNb0tc1lvvbXTdP5nRhfO009Piz54gDyYvN78GmMRL6DaabHHLXhiro-IWTptOaIub3qhd7A3irDUw1g7BViGHlhuLzbPTj_RGHvWwz9hJSatmaSEnnpDa2Yzvr0N-QdV5vErb1kHuRM65rNJLTxUX--m-1Mr15fjGpbT44zcRehNz376VnKbGs-Gqlf1jxCgA9yj1eMT3oDeNEpkvjOLuyqmWiS3SLJ7vrFPcr6PMz-rrKso376uZpeHOCh7UEqPU"
 									alt="Trophy"
-									className="w-14 h-14 object-contain opacity-90"
+									className="w-full h-full object-cover opacity-90"
 								/>
 							</div>
 						</div>
@@ -156,9 +154,7 @@ export default function Dashboard() {
 
 					{/* Recommended Challenges */}
 					<div className="space-y-5">
-						<h3 className="text-lg font-bold text-foreground">
-							Recommended Challenges
-						</h3>
+						<h3 className="text-lg font-bold text-foreground">Recommended Challenges</h3>
 						<div className="space-y-4">
 							{[
 								{

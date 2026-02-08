@@ -29,6 +29,7 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import {
 	Sheet,
@@ -45,6 +46,9 @@ export default function MobileFrame({ children }: { children: React.ReactNode })
 	const pathname = usePathname();
 	const router = useRouter();
 	const { theme, setTheme } = useTheme();
+	const { data: session } = authClient.useSession();
+
+	const [sheetOpen, setSheetOpen] = useState(false);
 
 	// const hideNavigation = ['/sign-in', '/sign-up', '/interactive-quiz'];
 	const hideNavigation: string[] = [];
@@ -95,7 +99,7 @@ export default function MobileFrame({ children }: { children: React.ReactNode })
 							paddingTop: 'calc(env(safe-area-inset-top, 0px) + 16px)',
 						}}
 					>
-						<Sheet>
+						<Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
 							<SheetTrigger asChild>
 								<Button
 									variant="ghost"
@@ -112,20 +116,36 @@ export default function MobileFrame({ children }: { children: React.ReactNode })
 								<div className="flex flex-col h-full">
 									<div className="p-8 pb-4 flex-1 overflow-y-auto">
 										<SheetHeader className="text-left mb-8">
-											<SheetTitle className="text-xl font-black text-zinc-900 dark:text-white uppercase tracking-tighter">
+											<SheetTitle className="text-lg font-black text-zinc-900 dark:text-white uppercase tracking-tighter">
 												MatricMaster
 											</SheetTitle>
 											<SheetDescription className="text-zinc-500 font-bold text-xs uppercase tracking-wide">
 												Level up your learning
 											</SheetDescription>
-											<div className="grid grid-cols-2 gap-2 mt-4">
-												<Button size="sm" onClick={() => router.push('/sign-in')}>
-													Sign in
-												</Button>
-												<Button size="sm" variant="outline" onClick={() => router.push('/sign-up')}>
-													Sign up
-												</Button>
-											</div>
+											{!session && (
+												<div className="grid grid-cols-2 gap-2 mt-4">
+													<Button
+														size="sm"
+														className="dark:text-white/90"
+														onClick={() => {
+															setSheetOpen(false);
+															router.push('/sign-in');
+														}}
+													>
+														Sign in
+													</Button>
+													<Button
+														size="sm"
+														variant="outline"
+														onClick={() => {
+															setSheetOpen(false);
+															router.push('/sign-up');
+														}}
+													>
+														Sign up
+													</Button>
+												</div>
+											)}
 										</SheetHeader>
 
 										<div className="space-y-2 ">
@@ -135,14 +155,15 @@ export default function MobileFrame({ children }: { children: React.ReactNode })
 													<Link
 														key={item.href}
 														href={item.href}
-														className={`flex items-center gap-4 p-4 rounded-2xl transition-all duration-200 ${
+														className={`flex items-center gap-4 p-2 rounded-2xl transition-all duration-200 ${
 															isActive
 																? 'bg-brand-blue text-white shadow-lg shadow-brand-blue/20'
 																: 'text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-900'
 														}`}
+														onClick={() => setSheetOpen(false)}
 													>
 														<item.icon className="w-5 h-5" />
-														<span className="font-bold">{item.label}</span>
+														<span className="font-bold text-sm">{item.label}</span>
 													</Link>
 												);
 											})}
@@ -168,17 +189,19 @@ export default function MobileFrame({ children }: { children: React.ReactNode })
 											</Button>
 										</div>
 
-										<Button
-											variant="ghost"
-											className="w-full justify-start gap-4 text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/10 rounded-2xl p-4 h-auto font-bold transition-all"
-											onClick={async () => {
-												await authClient.signOut();
-												router.push('/sign-in');
-											}}
-										>
-											<LogOut className="w-5 h-5" />
-											Logout
-										</Button>
+										{session && (
+											<Button
+												variant="ghost"
+												className="w-full justify-start gap-4 text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/10 rounded-2xl p-4 h-auto font-bold transition-all"
+												onClick={async () => {
+													await authClient.signOut();
+													router.push('/sign-in');
+												}}
+											>
+												<LogOut className="w-5 h-5" />
+												Logout
+											</Button>
+										)}
 									</div>
 								</div>
 							</SheetContent>
@@ -189,7 +212,7 @@ export default function MobileFrame({ children }: { children: React.ReactNode })
 					</header>
 				)}
 
-				<div className="flex-1 relative overflow-hidden flex flex-col pt-28">{children}</div>
+				<div className="flex-1 relative overflow-hidden flex flex-col pt-20">{children}</div>
 
 				{/* Bottom Navigation - iOS Liquid Glass Floating Pill */}
 				{!shouldHideBottomNav && (
