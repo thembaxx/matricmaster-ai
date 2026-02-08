@@ -19,7 +19,6 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 const categories = ['All Paths', 'STEM Skills', 'Languages', 'Commerce', 'Humanities'];
 
 export default function Channels() {
-
 	const [activeCategory, setActiveCategory] = useState('All Paths');
 
 	return (
@@ -56,10 +55,11 @@ export default function Channels() {
 							key={cat}
 							type="button"
 							onClick={() => setActiveCategory(cat)}
-							className={`px-6 py-2.5 rounded-full text-sm font-bold whitespace-nowrap transition-all ${activeCategory === cat
-								? 'bg-[#1e293b] text-white dark:bg-white dark:text-zinc-950 shadow-md'
-								: 'bg-white text-zinc-600 dark:bg-zinc-900 dark:text-zinc-400 border border-zinc-100 dark:border-zinc-800 shadow-sm'
-								}`}
+							className={`px-6 py-2.5 rounded-full text-sm font-bold whitespace-nowrap transition-all ${
+								activeCategory === cat
+									? 'bg-[#1e293b] text-white dark:bg-white dark:text-zinc-950 shadow-md'
+									: 'bg-white text-zinc-600 dark:bg-zinc-900 dark:text-zinc-400 border border-zinc-100 dark:border-zinc-800 shadow-sm'
+							}`}
 						>
 							{cat}
 						</button>
@@ -247,8 +247,6 @@ export default function Channels() {
 			>
 				<Play className="w-8 h-8 fill-current translate-x-0.5" />
 			</button>
-
-
 		</div>
 	);
 }
