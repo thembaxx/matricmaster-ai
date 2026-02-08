@@ -33,6 +33,7 @@ export default function LessonComplete() {
 					{/* Trophy Section */}
 					<div className="relative mb-8 w-48 h-48 flex items-center justify-center">
 						<div className="absolute inset-0 bg-[#fde68a] dark:bg-yellow-900/20 rounded-3xl opacity-20" />
+						{/* biome-ignore lint/performance/noImgElement: Achievement illustration */}
 						<img
 							src="https://images.unsplash.com/photo-1579546671584-62dcfaf35ad0?w=400&h=400&fit=crop"
 							alt="Trophy"
@@ -103,6 +104,7 @@ export default function LessonComplete() {
 						</h3>
 						<div className="bg-white dark:bg-[#111827] p-5 rounded-2xl flex items-center gap-4 shadow-sm border border-zinc-100 dark:border-zinc-800">
 							<div className="w-16 h-16 bg-[#0a0f18] rounded-xl overflow-hidden shrink-0">
+								{/* biome-ignore lint/performance/noImgElement: Achievement illustration */}
 								<img
 									src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=100&h=100&fit=crop"
 									alt="Badge"

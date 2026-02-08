@@ -12,42 +12,42 @@ export default function Dashboard() {
 	const router = useRouter();
 
 	return (
-		<div className="flex flex-col h-full bg-[#f8f9fa] dark:bg-[#0a0f18] font-inter">
+		<div className="flex flex-col h-full bg-background font-inter">
 			{/* Header */}
 			<header className="px-6 pt-6 pb-2 flex items-center justify-between shrink-0">
 				<div className="flex items-center gap-3">
 					<div className="relative">
-						<Avatar className="w-12 h-12 border-2 border-white dark:border-zinc-800 shadow-sm relative">
+						<Avatar className="w-12 h-12 border-2 border-background shadow-sm relative">
 							<AvatarImage src="https://api.dicebear.com/7.x/avataaars/svg?seed=Thabo&gender=female" />
 							<AvatarFallback>TH</AvatarFallback>
 						</Avatar>
-						<div className="absolute bottom-0 right-0 w-3.5 h-3.5 bg-emerald-500 border-2 border-white dark:border-[#0a0f18] rounded-full" />
+						<div className="absolute bottom-0 right-0 w-3.5 h-3.5 bg-emerald-500 border-2 border-background rounded-full" />
 					</div>
 					<div>
-						<p className="text-zinc-500 dark:text-zinc-400 text-xs font-medium">Welcome back,</p>
-						<h2 className="text-xl font-bold text-zinc-900 dark:text-white leading-none">Thabo</h2>
+						<p className="text-muted-foreground text-xs font-medium">Welcome back,</p>
+						<h2 className="text-xl font-bold text-foreground leading-none">Thabo</h2>
 					</div>
 				</div>
 				<Button
 					variant="ghost"
 					size="icon"
-					className="w-12 h-12 rounded-full bg-white dark:bg-zinc-900 shadow-sm relative"
+					className="w-12 h-12 rounded-full bg-card shadow-sm relative"
 				>
-					<Bell className="w-6 h-6 text-zinc-700 dark:text-zinc-300" />
-					<span className="absolute top-3 right-3 w-2.5 h-2.5 bg-rose-500 border-2 border-white dark:border-[#0a0f18] rounded-full" />
+					<Bell className="w-6 h-6 text-foreground" />
+					<span className="absolute top-3 right-3 w-2.5 h-2.5 bg-rose-500 border-2 border-background rounded-full" />
 				</Button>
 			</header>
 
 			<ScrollArea className="flex-1">
 				<main className="px-6 py-6 space-y-8 pb-32">
 					{/* Streak Card */}
-					<Card className="p-6 bg-white dark:bg-zinc-900 border-none shadow-sm rounded-3xl flex items-center justify-between relative overflow-hidden">
+					<Card className="p-6 bg-card border-none shadow-sm rounded-3xl flex items-center justify-between relative overflow-hidden">
 						<div className="space-y-1 relative z-10">
 							<div className="flex items-baseline gap-2">
-								<span className="text-4xl font-extrabold text-zinc-900 dark:text-white">12</span>
-								<span className="text-zinc-400 dark:text-zinc-500 font-bold text-xl">days</span>
+								<span className="text-4xl font-extrabold text-card-foreground">12</span>
+								<span className="text-muted-foreground font-bold text-xl">days</span>
 							</div>
-							<p className="text-zinc-500 dark:text-zinc-400 text-sm font-medium">
+							<p className="text-muted-foreground text-sm font-medium">
 								You're on fire! 🔥 Keep it up!
 							</p>
 						</div>
@@ -60,7 +60,7 @@ export default function Dashboard() {
 					{/* This Week Section */}
 					<div className="space-y-4">
 						<div className="flex justify-between items-center">
-							<h3 className="text-lg font-bold text-zinc-900 dark:text-white">This Week</h3>
+							<h3 className="text-lg font-bold text-foreground">This Week</h3>
 							<button
 								type="button"
 								className="text-sm font-bold text-[#efb036] hover:opacity-80 transition-opacity"
@@ -68,7 +68,7 @@ export default function Dashboard() {
 								View Calendar
 							</button>
 						</div>
-						<div className="flex justify-between items-center bg-white dark:bg-zinc-900 p-4 rounded-3xl shadow-sm">
+						<div className="flex justify-between items-center bg-card p-4 rounded-3xl shadow-sm">
 							{[
 								{ day: 'MON', date: 10, status: 'complete' },
 								{ day: 'TUE', date: 11, status: 'complete' },
@@ -80,7 +80,7 @@ export default function Dashboard() {
 							].map((item) => (
 								<div key={item.day} className="flex flex-col items-center gap-2">
 									<span
-										className={`text-[10px] font-bold ${item.status === 'active' ? 'text-[#efb036]' : 'text-zinc-400 dark:text-zinc-500'}`}
+										className={`text-[10px] font-bold ${item.status === 'active' ? 'text-[#efb036]' : 'text-muted-foreground'}`}
 									>
 										{item.day}
 									</span>
@@ -89,8 +89,8 @@ export default function Dashboard() {
 											item.status === 'complete'
 												? 'bg-[#efb036] text-white'
 												: item.status === 'active'
-													? 'bg-white dark:bg-zinc-800 border-2 border-[#efb036] text-[#efb036] shadow-lg shadow-orange-500/20'
-													: 'bg-zinc-50 dark:bg-zinc-800 text-zinc-400 dark:text-zinc-500'
+													? 'bg-card border-2 border-[#efb036] text-[#efb036] shadow-lg shadow-orange-500/20'
+													: 'bg-muted text-muted-foreground'
 										}`}
 									>
 										{item.status === 'complete' ? (
@@ -105,7 +105,7 @@ export default function Dashboard() {
 					</div>
 
 					{/* Daily Goal Card */}
-					<Card className="p-8 bg-white dark:bg-zinc-900 border-none shadow-sm rounded-[2.5rem] space-y-6 relative overflow-hidden group">
+					<Card className="p-8 bg-card border-none shadow-sm rounded-[2.5rem] space-y-6 relative overflow-hidden group">
 						<div className="absolute -right-4 -top-4 w-48 h-48 bg-orange-50/50 dark:bg-orange-900/5 rounded-full blur-3xl pointer-events-none" />
 
 						<div className="flex justify-between items-start relative z-10">
@@ -115,14 +115,15 @@ export default function Dashboard() {
 										Daily Goal
 									</span>
 								</div>
-								<h3 className="text-2xl font-bold text-zinc-900 dark:text-white tracking-tight">
+								<h3 className="text-2xl font-bold text-foreground tracking-tight">
 									Master Algebra
 								</h3>
-								<p className="text-zinc-500 dark:text-zinc-400 font-medium">
+								<p className="text-muted-foreground font-medium">
 									Complete 3 quiz questions
 								</p>
 							</div>
-							<div className="w-20 h-20 bg-[#f8f9fa] dark:bg-zinc-800 rounded-2xl flex items-center justify-center shadow-inner overflow-hidden border border-zinc-100 dark:border-zinc-700">
+							<div className="w-20 h-20 bg-muted rounded-2xl flex items-center justify-center shadow-inner overflow-hidden border border-border">
+								{/* biome-ignore lint/performance/noImgElement: External illustration */}
 								<img
 									src="https://images.unsplash.com/photo-1579546671584-62dcfaf35ad0?w=100&h=100&fit=crop"
 									alt="Trophy"
@@ -133,10 +134,10 @@ export default function Dashboard() {
 
 						<div className="space-y-3 relative z-10">
 							<div className="flex justify-between items-end">
-								<span className="text-sm font-bold text-zinc-900 dark:text-white">2/3 Solved</span>
+								<span className="text-sm font-bold text-foreground">2/3 Solved</span>
 								<span className="text-sm font-bold text-[#efb036]">66%</span>
 							</div>
-							<div className="h-2.5 w-full bg-zinc-100 dark:bg-zinc-800 rounded-full overflow-hidden">
+							<div className="h-2.5 w-full bg-muted rounded-full overflow-hidden">
 								<div
 									className="h-full bg-[#efb036] rounded-full transition-all duration-500"
 									style={{ width: '66%' }}
@@ -155,7 +156,7 @@ export default function Dashboard() {
 
 					{/* Recommended Challenges */}
 					<div className="space-y-5">
-						<h3 className="text-lg font-bold text-zinc-900 dark:text-white">
+						<h3 className="text-lg font-bold text-foreground">
 							Recommended Challenges
 						</h3>
 						<div className="space-y-4">
@@ -184,7 +185,7 @@ export default function Dashboard() {
 							].map((challenge) => (
 								<div
 									key={challenge.title}
-									className="bg-white dark:bg-zinc-900 p-4 pl-5 rounded-3xl flex items-center justify-between shadow-sm group hover:shadow-md transition-all cursor-pointer border border-zinc-50 dark:border-zinc-800/50"
+									className="bg-card p-4 pl-5 rounded-3xl flex items-center justify-between shadow-sm group hover:shadow-md transition-all cursor-pointer border border-border"
 									onClick={() => router.push('/quiz')}
 								>
 									<div className="flex items-center gap-4">
@@ -194,13 +195,13 @@ export default function Dashboard() {
 											{challenge.icon}
 										</div>
 										<div className="space-y-0.5">
-											<h4 className="font-bold text-zinc-900 dark:text-white">{challenge.title}</h4>
-											<div className="flex items-center gap-2 text-xs font-medium text-zinc-400 dark:text-zinc-500">
+											<h4 className="font-bold text-foreground">{challenge.title}</h4>
+											<div className="flex items-center gap-2 text-xs font-medium text-muted-foreground">
 												<div className="flex items-center gap-1">
 													<Clock className="w-3 h-3" />
 													{challenge.time}
 												</div>
-												<span className="w-1 h-1 rounded-full bg-zinc-300 dark:bg-zinc-700" />
+												<span className="w-1 h-1 rounded-full bg-border" />
 												<div
 													className={`px-2 py-0.5 rounded-lg font-bold ${
 														challenge.difficulty === 'Hard'
@@ -218,7 +219,7 @@ export default function Dashboard() {
 									<Button
 										variant="ghost"
 										size="icon"
-										className="w-10 h-10 rounded-full bg-zinc-50 dark:bg-zinc-800 text-zinc-300 group-hover:bg-[#efb036] group-hover:text-white transition-all scale-90 group-hover:scale-100"
+										className="w-10 h-10 rounded-full bg-muted text-muted-foreground group-hover:bg-[#efb036] group-hover:text-white transition-all scale-90 group-hover:scale-100"
 									>
 										<Play className="w-4 h-4 fill-current ml-0.5" />
 									</Button>
@@ -244,6 +245,7 @@ function Clock({ className }: { className?: string }) {
 			strokeLinecap="round"
 			strokeLinejoin="round"
 		>
+			<title>Clock Icon</title>
 			<circle cx="12" cy="12" r="10" />
 			<polyline points="12 6 12 12 16 14" />
 		</svg>
