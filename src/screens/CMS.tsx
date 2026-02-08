@@ -27,13 +27,13 @@ import {
 } from '@/components/ui/select';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
-	createQuestion,
-	getQuestions,
-	getQuestionWithOptions,
-	getSubjects,
-	softDeleteQuestion,
-	updateQuestion,
-} from '@/lib/db/queries';
+	createQuestionAction,
+	getQuestionsAction,
+	getQuestionWithOptionsAction,
+	getSubjectsAction,
+	softDeleteQuestionAction,
+	updateQuestionAction,
+} from '@/lib/db/actions';
 import type { Question, Subject } from '@/lib/db/schema';
 
 interface QuestionFormData {
@@ -83,7 +83,10 @@ export default function CMS() {
 	const loadData = useCallback(async () => {
 		try {
 			setLoading(true);
-			const [subjectsData, questionsData] = await Promise.all([getSubjects(), getQuestions()]);
+			const [subjectsData, questionsData] = await Promise.all([
+				getSubjectsAction(),
+				getQuestionsAction({}),
+			]);
 			setSubjects(subjectsData);
 			setQuestions(questionsData);
 		} catch (error) {
@@ -113,7 +116,7 @@ export default function CMS() {
 	};
 
 	const handleEditQuestion = async (question: Question) => {
-		const questionWithOptions = await getQuestionWithOptions(question.id);
+		const questionWithOptions = await getQuestionWithOptionsAction(question.id);
 		if (questionWithOptions) {
 			setEditingQuestion({
 				id: questionWithOptions.id,
@@ -138,7 +141,7 @@ export default function CMS() {
 	const handleDeleteQuestion = async (id: string) => {
 		if (confirm('Are you sure you want to delete this question?')) {
 			try {
-				await softDeleteQuestion(id);
+				await softDeleteQuestionAction(id);
 				await loadData();
 			} catch (error) {
 				console.error('Failed to delete question:', error);
@@ -190,12 +193,12 @@ export default function CMS() {
 
 			if (editingQuestion.id) {
 				// Update existing question
-				await updateQuestion(editingQuestion.id, questionData);
+				await updateQuestionAction(editingQuestion.id, questionData);
 				// Note: For updating options, you'd need to add updateOptions function
 				// For now, we'll just reload the data
 			} else {
 				// Create new question
-				await createQuestion(questionData, optionsData);
+				await createQuestionAction(questionData, optionsData);
 			}
 
 			setIsModalOpen(false);
