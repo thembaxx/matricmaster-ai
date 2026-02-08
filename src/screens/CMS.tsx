@@ -1,6 +1,6 @@
 'use client';
 
-import { ArrowLeft, Edit2, Plus, Search, Trash2, X } from 'lucide-react';
+import { ArrowLeft, Database, Edit2, Plus, Search, Trash2, X } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useId, useState } from 'react';
 import { Badge } from '@/components/ui/badge';
@@ -31,6 +31,7 @@ import {
 	getQuestionsAction,
 	getQuestionWithOptionsAction,
 	getSubjectsAction,
+	seedDatabaseAction,
 	softDeleteQuestionAction,
 	updateQuestionAction,
 } from '@/lib/db/actions';
@@ -79,6 +80,7 @@ export default function CMS() {
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [editingQuestion, setEditingQuestion] = useState<QuestionFormData | null>(null);
 	const [activeTab, setActiveTab] = useState('questions');
+	const [seeding, setSeeding] = useState(false);
 
 	const loadData = useCallback(async () => {
 		try {
@@ -100,6 +102,26 @@ export default function CMS() {
 	useEffect(() => {
 		loadData();
 	}, [loadData]);
+
+	const handleSeedDatabase = async () => {
+		if (!confirm('This will seed the database with sample data. Continue?')) return;
+
+		try {
+			setSeeding(true);
+			const result = await seedDatabaseAction();
+			if (result.success) {
+				alert(result.message);
+				await loadData();
+			} else {
+				alert(`Seeding failed: ${result.message}`);
+			}
+		} catch (error) {
+			console.error('Seeding error:', error);
+			alert('An error occurred while seeding.');
+		} finally {
+			setSeeding(false);
+		}
+	};
 
 	const filteredQuestions = questions.filter((q) => {
 		const matchesSearch =
@@ -281,7 +303,19 @@ export default function CMS() {
 					>
 						<ArrowLeft className="h-5 w-5" />
 					</Button>
-					<h1 className="font-bold text-zinc-900 dark:text-white text-lg">Content Manager</h1>
+					<div className="flex items-center gap-2">
+						<h1 className="font-bold text-zinc-900 dark:text-white text-lg">Content Manager</h1>
+						<Button
+							onClick={handleSeedDatabase}
+							disabled={seeding}
+							variant="outline"
+							size="sm"
+							className="text-xs"
+						>
+							<Database className="h-3.5 w-3.5 mr-1" />
+							{seeding ? 'Seeding...' : 'Seed DB'}
+						</Button>
+					</div>
 					<Button
 						onClick={handleCreateQuestion}
 						size="icon"

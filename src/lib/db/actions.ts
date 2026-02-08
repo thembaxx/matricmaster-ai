@@ -277,3 +277,14 @@ export async function cloneQuestionAction(
 		original.options.map(({ id, questionId, createdAt, ...opt }) => opt)
 	);
 }
+
+export async function seedDatabaseAction(): Promise<{ success: boolean; message: string }> {
+	try {
+		const { seedDatabase } = await import('./seed/index');
+		await seedDatabase();
+		return { success: true, message: 'Database seeded successfully!' };
+	} catch (error) {
+		console.error('Seed action error:', error);
+		return { success: false, message: error instanceof Error ? error.message : 'Seeding failed' };
+	}
+}
