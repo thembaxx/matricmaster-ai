@@ -1,14 +1,7 @@
 // import type { Screen } from '@/types'; // Removed unused import
-import {
-	Clock,
-	FileText,
-	Loader2,
-	Search as SearchIcon,
-	Sparkles,
-	Trash2,
-	X,
-} from 'lucide-react';
-import {Icon} from "@iconify/react";
+
+import { Icon } from '@iconify/react';
+import { Clock, FileText, Loader2, Search as SearchIcon, Sparkles, Trash2, X } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Badge } from '@/components/ui/badge';
@@ -117,7 +110,7 @@ export default function Search() {
 						/>
 						{query && (
 							<button
-							title="Clear search"
+								title="Clear search"
 								type="button"
 								onClick={() => setQuery('')}
 								className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 transition-colors"
@@ -210,7 +203,7 @@ export default function Search() {
 														{search.query}
 													</span>
 													<button
-													title="Delete search item"
+														title="Delete search item"
 														type="button"
 														onClick={(e) => handleDeleteSearch(search.id, e)}
 														className="opacity-0 group-hover:opacity-100 transition-opacity text-zinc-400 hover:text-red-500 dark:hover:text-red-400"

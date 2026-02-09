@@ -1,5 +1,6 @@
 'use client';
 
+import { Icon } from '@iconify/react';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
 	Atom,
@@ -28,7 +29,6 @@ import {
 	Users,
 } from 'lucide-react';
 import Link from 'next/link';
-import { Icon } from '@iconify/react';
 import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
@@ -61,10 +61,10 @@ export default function MobileFrame({ children }: { children: React.ReactNode })
 	const shouldHideBottomNav = hideBottomNavigation.some((path) => pathname.startsWith(path));
 
 	const navItems = [
-		{ href: '/dashboard', label: 'Home', icon: "fluent:clover-24-filled" },
-		{ href: '/search', label: 'Search', icon: "fluent:search-sparkle-24-filled" },
-		{ href: '/past-papers', label: 'Papers', icon: "fluent:hat-graduation-sparkle-24-filled" },
-		{ href: '/bookmarks', label: 'Saved', icon: "fluent:bookmark-24-filled" },
+		{ href: '/dashboard', label: 'Home', icon: 'fluent:clover-24-filled' },
+		{ href: '/search', label: 'Search', icon: 'fluent:search-sparkle-24-filled' },
+		{ href: '/past-papers', label: 'Papers', icon: 'fluent:hat-graduation-sparkle-24-filled' },
+		{ href: '/bookmarks', label: 'Saved', icon: 'fluent:bookmark-24-filled' },
 	];
 
 	const sideMenuItems = [
@@ -262,14 +262,12 @@ export default function MobileFrame({ children }: { children: React.ReactNode })
 									{/* Icon container */}
 									<div className="relative z-10 flex items-center justify-center">
 										<Icon
-										icon={item.icon}
+											icon={item.icon}
 											className={`relative transition-all duration-300 h-6 w-6 ${
 												isActive
 													? 'text-brand-blue dark:text-brand-blue-light scale-110'
 													: 'text-zinc-400 group-hover:text-zinc-600 dark:group-hover:text-zinc-200'
 											}`}
-											
-											
 										/>
 									</div>
 

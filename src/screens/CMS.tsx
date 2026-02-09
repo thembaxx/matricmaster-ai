@@ -1,7 +1,9 @@
 'use client';
 
-import { Database, Edit2, Plus, Search, Trash2, X } from 'lucide-react';
+import { UploadButton } from '@uploadthing/react';
+import { Database, Edit2, ImagePlus, Plus, Search, Trash2, X } from 'lucide-react';
 import { useCallback, useEffect, useId, useState } from 'react';
+import type { OurFileRouter } from '@/app/api/uploadthing/core';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -41,6 +43,7 @@ import type { Question, Subject } from '@/lib/db/schema';
 interface QuestionFormData {
 	id?: string;
 	questionText: string;
+	imageUrl?: string | null;
 	subjectId: number;
 	gradeLevel: number;
 	topic: string;
@@ -59,6 +62,7 @@ interface OptionFormData {
 
 const EMPTY_QUESTION: QuestionFormData = {
 	questionText: '',
+	imageUrl: null,
 	subjectId: 0,
 	gradeLevel: 12,
 	topic: '',
@@ -143,6 +147,7 @@ export default function CMS() {
 			setEditingQuestion({
 				id: questionWithOptions.id,
 				questionText: questionWithOptions.questionText,
+				imageUrl: questionWithOptions.imageUrl || null,
 				subjectId: questionWithOptions.subjectId,
 				gradeLevel: questionWithOptions.gradeLevel,
 				topic: questionWithOptions.topic,
@@ -200,6 +205,7 @@ export default function CMS() {
 			const questionData = {
 				subjectId: editingQuestion.subjectId,
 				questionText: editingQuestion.questionText,
+				imageUrl: editingQuestion.imageUrl || null,
 				gradeLevel: editingQuestion.gradeLevel,
 				topic: editingQuestion.topic,
 				difficulty: editingQuestion.difficulty,
@@ -496,6 +502,77 @@ export default function CMS() {
 									placeholder="Enter your question here..."
 									className="w-full min-h-25 p-3 rounded-md border border-input bg-background text-sm resize-y focus:outline-none focus:ring-2 focus:ring-ring"
 								/>
+							</div>
+
+							{/* Image Upload */}
+							<div className="space-y-2">
+								<Label>Question Image (Optional)</Label>
+								{editingQuestion.imageUrl ? (
+									<div className="space-y-2">
+										<div className="relative rounded-lg overflow-hidden border border-input">
+											<img
+												src={editingQuestion.imageUrl}
+												alt="Question"
+												className="w-full h-auto max-h-64 object-contain bg-muted"
+											/>
+											<Button
+												type="button"
+												variant="destructive"
+												size="sm"
+												className="absolute top-2 right-2"
+												onClick={() =>
+													setEditingQuestion({
+														...editingQuestion,
+														imageUrl: null,
+													})
+												}
+											>
+												<X className="h-4 w-4 mr-1" />
+												Remove
+											</Button>
+										</div>
+									</div>
+								) : (
+									<UploadButton<OurFileRouter, 'questionImage'>
+										endpoint="questionImage"
+										onClientUploadComplete={(res) => {
+											if (res?.[0]?.url) {
+												setEditingQuestion({
+													...editingQuestion,
+													imageUrl: res[0].url,
+												});
+											}
+										}}
+										onUploadError={(error: Error) => {
+											alert(`Upload failed: ${error.message}`);
+										}}
+										appearance={{
+											button:
+												'ut-ready:bg-brand-purple ut-uploading:cursor-not-allowed rounded-lg bg-brand-purple/80 bg-none after:bg-brand-purple text-sm font-medium',
+											container:
+												'w-full flex-row rounded-lg border-2 border-dashed border-input p-4',
+											allowedContent:
+												'flex h-8 flex-col items-center justify-center text-xs text-muted-foreground',
+										}}
+										content={{
+											button({ ready }) {
+												if (ready)
+													return (
+														<div className="flex items-center gap-2">
+															<ImagePlus className="h-4 w-4" />
+															Upload Image
+														</div>
+													);
+												return 'Getting ready...';
+											},
+											allowedContent({ ready, isUploading }) {
+												if (!ready) return 'Checking...';
+												if (isUploading) return 'Uploading...';
+												return `Image (max 4MB)`;
+											},
+										}}
+									/>
+								)}
 							</div>
 
 							{/* Subject & Grade */}
