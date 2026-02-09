@@ -1,14 +1,34 @@
+/** biome-ignore-all lint/performance/noImgElement: neededs */
 'use client';
 
 import { UploadButton } from '@uploadthing/react';
-import { Database, Edit2, ImagePlus, Plus, Search, Trash2, X } from 'lucide-react';
+import {
+	Database,
+	Edit2,
+	ImagePlus,
+	Maximize2,
+	Plus,
+	Search,
+	Trash2,
+	X,
+	ZoomIn,
+	ZoomOut,
+} from 'lucide-react';
 import Image from 'next/image';
 import { useCallback, useEffect, useId, useState } from 'react';
+import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch';
 import type { OurFileRouter } from '@/app/api/uploadthing/core';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
+import {
+	Dialog,
+	DialogContent,
+	DialogDescription,
+	DialogHeader,
+	DialogTitle,
+} from '@/components/ui/dialog';
 import {
 	Drawer,
 	DrawerClose,
@@ -87,6 +107,7 @@ export default function CMS() {
 	const [activeTab, setActiveTab] = useState('questions');
 	const [seeding, setSeeding] = useState(false);
 	const [drawerTab, setDrawerTab] = useState<'basic' | 'question' | 'options'>('basic');
+	const [isFullscreen, setIsFullscreen] = useState(false);
 
 	const loadData = useCallback(async () => {
 		try {
@@ -563,35 +584,114 @@ export default function CMS() {
 															alt="Question"
 															width={800}
 															height={400}
-															className="w-full h-auto max-h-64 object-contain bg-muted"
+															className="w-full h-auto max-h-64 object-contain bg-muted cursor-pointer"
 															unoptimized
+															onClick={() => setIsFullscreen(true)}
 														/>
-														<Button
-															type="button"
-															variant="destructive"
-															size="sm"
-															className="absolute top-2 right-2"
-															onClick={() =>
-																setEditingQuestion({
-																	...editingQuestion,
-																	imageUrl: null,
-																})
-															}
-														>
-															<X className="h-4 w-4 mr-1" />
-															Remove
-														</Button>
+														<div className="absolute top-2 right-2 flex gap-1">
+															<Button
+																type="button"
+																variant="secondary"
+																size="sm"
+																className="bg-white/80 hover:bg-white text-zinc-800"
+																onClick={() => setIsFullscreen(true)}
+															>
+																<Maximize2 className="h-4 w-4" />
+															</Button>
+															<Button
+																type="button"
+																variant="destructive"
+																size="sm"
+																className="bg-white/80 hover:bg-white text-zinc-800"
+																onClick={() =>
+																	setEditingQuestion({
+																		...editingQuestion,
+																		imageUrl: null,
+																	})
+																}
+															>
+																<X className="h-4 w-4" />
+															</Button>
+														</div>
 													</div>
+
+													{/* Fullscreen Modal */}
+													<Dialog open={isFullscreen} onOpenChange={setIsFullscreen}>
+														<DialogContent className="max-w-7xl w-full max-h-[90vh] p-0 border-0 bg-black/90">
+															<DialogHeader className="p-4 border-b border-zinc-700">
+																<DialogTitle className="text-white">Question Image</DialogTitle>
+																<DialogDescription className="text-zinc-400">
+																	Zoom and pan to view details
+																</DialogDescription>
+															</DialogHeader>
+
+															<div className="p-4 flex-1 flex items-center justify-center">
+																<TransformWrapper
+																	initialScale={1}
+																	minScale={0.5}
+																	maxScale={3}
+																	limitToBounds={false}
+																	centerOnInit={true}
+																	doubleClick={{ mode: 'reset' }}
+																>
+																	{({ zoomIn, zoomOut, resetTransform }) => (
+																		<div className="w-full h-full flex flex-col">
+																			<div className="flex justify-center gap-2 mb-4">
+																				<Button
+																					type="button"
+																					size="sm"
+																					variant="secondary"
+																					className="bg-zinc-800 hover:bg-zinc-700 text-white"
+																					onClick={() => zoomIn()}
+																				>
+																					<ZoomIn className="h-4 w-4" />
+																				</Button>
+																				<Button
+																					type="button"
+																					size="sm"
+																					variant="secondary"
+																					className="bg-zinc-800 hover:bg-zinc-700 text-white"
+																					onClick={() => zoomOut()}
+																				>
+																					<ZoomOut className="h-4 w-4" />
+																				</Button>
+																				<Button
+																					type="button"
+																					size="sm"
+																					variant="secondary"
+																					className="bg-zinc-800 hover:bg-zinc-700 text-white"
+																					onClick={() => resetTransform()}
+																				>
+																					Reset
+																				</Button>
+																			</div>
+
+																			<div className="flex-1 flex items-center justify-center">
+																				<TransformComponent wrapperClass="w-full h-full flex items-center justify-center">
+																					<img
+																						src={editingQuestion.imageUrl || ''}
+																						alt="Question"
+																						className="max-w-none"
+																						draggable={false}
+																					/>
+																				</TransformComponent>
+																			</div>
+																		</div>
+																	)}
+																</TransformWrapper>
+															</div>
+														</DialogContent>
+													</Dialog>
 												</div>
 											) : (
 												<div className="mt-2 h-full flex relative">
 													<UploadButton<OurFileRouter, 'questionImage'>
 														endpoint="questionImage"
 														onClientUploadComplete={(res) => {
-															if (res?.[0]?.url) {
+															if (res?.[0]?.ufsUrl) {
 																setEditingQuestion({
 																	...editingQuestion,
-																	imageUrl: res[0].url,
+																	imageUrl: res[0].ufsUrl,
 																});
 															}
 														}}
