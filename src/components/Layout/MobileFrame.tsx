@@ -41,12 +41,14 @@ import {
 } from '@/components/ui/sheet';
 import { useTheme } from '@/hooks/use-theme';
 import { authClient } from '@/lib/auth-client';
+import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 
 export default function MobileFrame({ children }: { children: React.ReactNode }) {
 	const pathname = usePathname();
 	const router = useRouter();
 	const { theme, setTheme } = useTheme();
 	const { data: session } = authClient.useSession();
+	const user = session?.user;
 
 	const [sheetOpen, setSheetOpen] = useState(false);
 
@@ -62,7 +64,6 @@ export default function MobileFrame({ children }: { children: React.ReactNode })
 		{ href: '/search', label: 'Search', icon: SearchIcon },
 		{ href: '/past-papers', label: 'Papers', icon: FileText },
 		{ href: '/bookmarks', label: 'Saved', icon: Bookmark },
-		{ href: '/profile', label: 'Profile', icon: User },
 	];
 
 	const sideMenuItems = [
@@ -104,9 +105,9 @@ export default function MobileFrame({ children }: { children: React.ReactNode })
 								<Button
 									variant="ghost"
 									size="icon"
-									className="w-12 h-12 rounded-3xl ios-glass pointer-events-auto ios-active-scale"
+									className="w-12 h-12 p-0 rounded-md! ios-glass pointer-events-auto ios-active-scale"
 								>
-									<Menu className="w-6 h-6 text-zinc-900 dark:text-white" />
+									<Menu className="w-5! h-5! text-zinc-900 dark:text-white" />
 								</Button>
 							</SheetTrigger>
 							<SheetContent
@@ -206,9 +207,21 @@ export default function MobileFrame({ children }: { children: React.ReactNode })
 								</div>
 							</SheetContent>
 						</Sheet>
-						<span className="font-black text-xl tracking-tighter text-zinc-900 dark:text-white uppercase">
-							MatricMaster
-						</span>
+						<Link href="/" className="grow">
+							<p className="font-bold text-sm tracking-wider text-zinc-900 dark:text-white uppercase">
+								MatricMaster
+							</p>
+						</Link>
+						{user && (
+							<div className="flex items-center space-x-2">
+								<Avatar className="h-10 w-10">
+									<AvatarImage src={user.image || undefined} alt={user.name} />
+									<AvatarFallback className="bg-[linear-gradient(318.67deg,rgb(106,255,94)_0%,rgb(13,255,247)_94.35%)] text-neutral-800">
+										{user.name?.charAt(0)}
+									</AvatarFallback>
+								</Avatar>
+							</div>
+						)}
 					</header>
 				)}
 

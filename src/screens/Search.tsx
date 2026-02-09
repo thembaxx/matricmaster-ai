@@ -42,7 +42,7 @@ export default function Search() {
 		<div className="flex flex-col h-full bg-zinc-50 dark:bg-zinc-950">
 			<div className="px-6 py-4 ios-glass sticky top-0 z-20 shrink-0">
 				<div className="max-w-2xl mx-auto w-full flex flex-col gap-4">
-					<div className="flex items-center gap-4 pl-14">
+					<div className="flex items-center gap-4 pl-1 text-left">
 						<h1 className="text-xl font-bold text-zinc-500">Search</h1>
 					</div>
 					<div className="relative">
@@ -131,7 +131,7 @@ export default function Search() {
 								<h2 className="text-[10px] font-black text-zinc-400 uppercase tracking-widest px-1">
 									Suggested for You
 								</h2>
-								<Card className="p-6 bg-gradient-to-br from-brand-blue/5 to-brand-purple/5 border-none rounded-[2.5rem] relative overflow-hidden group cursor-pointer">
+								<Card className="p-6 bg-linear-to-br from-brand-blue/5 to-brand-purple/5 border-none rounded-[2.5rem] relative overflow-hidden group cursor-pointer">
 									<div className="absolute top-0 right-0 w-32 h-32 bg-brand-blue/10 rounded-full -mr-16 -mt-16 blur-3xl" />
 									<div className="relative z-10 flex items-center gap-6">
 										<div className="w-16 h-16 rounded-2xl bg-white dark:bg-zinc-800 flex items-center justify-center shadow-sm">
@@ -160,7 +160,7 @@ export default function Search() {
 											MatricMaster AI Suggestions
 										</h2>
 									</div>
-									<Card className="p-6 bg-gradient-to-br from-brand-blue/5 to-brand-purple/5 border-none rounded-[2.5rem] relative overflow-hidden">
+									<Card className="p-6 bg-linear-to-br from-brand-blue/5 to-brand-purple/5 border-none rounded-[2.5rem] relative overflow-hidden">
 										{isAiLoading ? (
 											<div className="flex items-center justify-center py-4">
 												<Loader2 className="w-6 h-6 text-brand-blue animate-spin" />
