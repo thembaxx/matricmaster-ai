@@ -454,38 +454,37 @@ export default function CMS() {
 						</div>
 
 						{/* Subject Pills */}
-						<ScrollArea className="w-full whitespace-nowrap pb-2">
-							<div className="flex gap-2 px-1">
-								<button
-									type="button"
-									onClick={() => setSelectedSubject('all')}
-									className={`px-4 py-2 rounded-full text-xs font-bold transition-all shrink-0 ${
-										selectedSubject === 'all'
-											? 'bg-brand-purple text-white shadow-md scale-105'
-											: 'bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700'
-									}`}
-								>
-									All Subjects
-								</button>
-								{subjects.map((subject) => {
-									const isSelected = selectedSubject === subject.id.toString();
-									return (
-										<button
-											type="button"
-											key={subject.id}
-											onClick={() => setSelectedSubject(subject.id.toString())}
-											className={`px-4 py-2 rounded-full text-xs font-bold transition-all shrink-0 ${
-												isSelected
-													? 'bg-brand-purple text-white shadow-md scale-105'
-													: 'bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700'
-											}`}
-										>
-											{subject.name}
-										</button>
-									);
-								})}
-							</div>
-						</ScrollArea>
+
+						<div className="flex gap-2 px-1 w-full overflow-x-auto">
+							<button
+								type="button"
+								onClick={() => setSelectedSubject('all')}
+								className={`px-4 py-2 rounded-full text-xs font-bold transition-all shrink-0 ${
+									selectedSubject === 'all'
+										? 'bg-brand-purple text-white shadow-md scale-105'
+										: 'bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700'
+								}`}
+							>
+								All Subjects
+							</button>
+							{subjects.map((subject) => {
+								const isSelected = selectedSubject === subject.id.toString();
+								return (
+									<button
+										type="button"
+										key={subject.id}
+										onClick={() => setSelectedSubject(subject.id.toString())}
+										className={`px-4 py-2 rounded-full text-xs font-bold transition-all shrink-0 ${
+											isSelected
+												? 'bg-brand-purple text-white shadow-md scale-105'
+												: 'bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700'
+										}`}
+									>
+										{subject.name}
+									</button>
+								);
+							})}
+						</div>
 
 						{/* Difficulty Filter */}
 						<Select value={selectedDifficulty} onValueChange={setSelectedDifficulty}>

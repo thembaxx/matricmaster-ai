@@ -333,7 +333,7 @@ export default function EnhancedTestQuizScreen() {
 	}
 
 	return (
-		<div className="flex flex-col h-full p-6">
+		<div className="flex flex-col h-full p-6 grow">
 			<AnimatePresence mode="wait">
 				{screen === 'selection' && (
 					<motion.div
@@ -346,7 +346,7 @@ export default function EnhancedTestQuizScreen() {
 					>
 						<motion.div
 							variants={itemVariants}
-							className="flex items-center justify-between mb-8 fixed top-6 w-full left-0 px-6"
+							className="flex items-center justify-between mb-8 fixed top-6 w-full left-0 px-6 gap-4"
 						>
 							<Button
 								variant="ghost"
@@ -356,13 +356,12 @@ export default function EnhancedTestQuizScreen() {
 							>
 								<ArrowLeft className="w-6 h-6" />
 							</Button>
-							<h1 className="text-2xl font-bold text-center text-zinc-900 dark:text-white">
+							<h1 className="text-lg font-bold text-left grow text-zinc-900 dark:text-white">
 								Select Subjects
 							</h1>
-							<div className="w-10" />
 						</motion.div>
 
-						<motion.div variants={itemVariants} className="">
+						<motion.div variants={itemVariants} className="grow flex items-center justify-center">
 							<Card className="bg-white/80 dark:bg-zinc-800/80 backdrop-blur-sm p-6 h-full">
 								<div className="space-y-6">
 									<div>
