@@ -157,6 +157,33 @@ export const optionsRelations = relations(options, ({ one }) => ({
 }));
 
 // ============================================================================
+// SEARCH HISTORY TABLE
+// ============================================================================
+
+export const searchHistory = pgTable(
+	'search_history',
+	{
+		id: uuid('id').defaultRandom().primaryKey(),
+		userId: text('user_id')
+			.notNull()
+			.references(() => user.id, { onDelete: 'cascade' }),
+		query: text('query').notNull(),
+		createdAt: timestamp('created_at').defaultNow().notNull(),
+	},
+	(table) => ({
+		userIdIdx: index('search_history_user_id_idx').on(table.userId),
+		createdAtIdx: index('search_history_created_at_idx').on(table.createdAt),
+	})
+);
+
+export const searchHistoryRelations = relations(searchHistory, ({ one }) => ({
+	user: one(user, {
+		fields: [searchHistory.userId],
+		references: [user.id],
+	}),
+}));
+
+// ============================================================================
 // TYPE EXPORTS
 // ============================================================================
 
@@ -168,3 +195,6 @@ export type NewQuestion = typeof questions.$inferInsert;
 
 export type Option = typeof options.$inferSelect;
 export type NewOption = typeof options.$inferInsert;
+
+export type SearchHistory = typeof searchHistory.$inferSelect;
+export type NewSearchHistory = typeof searchHistory.$inferInsert;

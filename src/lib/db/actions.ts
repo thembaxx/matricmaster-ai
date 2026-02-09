@@ -2,8 +2,16 @@
 
 import { and, asc, desc, eq, sql } from 'drizzle-orm';
 import { db } from './index';
-import type { NewOption, NewQuestion, NewSubject, Option, Question, Subject } from './schema';
-import { options, questions, subjects } from './schema';
+import type {
+	NewOption,
+	NewQuestion,
+	NewSubject,
+	Option,
+	Question,
+	SearchHistory,
+	Subject,
+} from './schema';
+import { options, questions, searchHistory, subjects } from './schema';
 
 export async function createSubjectAction(data: NewSubject): Promise<Subject> {
 	const [subject] = await db.insert(subjects).values(data).returning();
@@ -287,4 +295,69 @@ export async function seedDatabaseAction(): Promise<{ success: boolean; message:
 		console.error('Seed action error:', error);
 		return { success: false, message: error instanceof Error ? error.message : 'Seeding failed' };
 	}
+}
+
+// ============================================================================
+// SEARCH HISTORY ACTIONS
+// ============================================================================
+
+export async function addSearchHistoryAction(
+	userId: string,
+	query: string
+): Promise<SearchHistory> {
+	// Check if the exact same query already exists for this user
+	const existing = await db
+		.select()
+		.from(searchHistory)
+		.where(and(eq(searchHistory.userId, userId), eq(searchHistory.query, query)))
+		.limit(1);
+
+	// If exists, delete it first (so we can re-add it as most recent)
+	if (existing.length > 0) {
+		await db
+			.delete(searchHistory)
+			.where(and(eq(searchHistory.userId, userId), eq(searchHistory.query, query)));
+	}
+
+	// Add the new search history entry
+	const [newSearch] = await db.insert(searchHistory).values({ userId, query }).returning();
+
+	// Keep only the 5 most recent searches
+	const allSearches = await db
+		.select()
+		.from(searchHistory)
+		.where(eq(searchHistory.userId, userId))
+		.orderBy(desc(searchHistory.createdAt));
+
+	// If more than 5, delete the oldest ones
+	if (allSearches.length > 5) {
+		const toDelete = allSearches.slice(5);
+		await Promise.all(
+			toDelete.map((search) => db.delete(searchHistory).where(eq(searchHistory.id, search.id)))
+		);
+	}
+
+	return newSearch;
+}
+
+export async function getSearchHistoryAction(userId: string): Promise<SearchHistory[]> {
+	return db
+		.select()
+		.from(searchHistory)
+		.where(eq(searchHistory.userId, userId))
+		.orderBy(desc(searchHistory.createdAt))
+		.limit(5);
+}
+
+export async function deleteSearchHistoryItemAction(id: string, userId: string): Promise<boolean> {
+	const result = await db
+		.delete(searchHistory)
+		.where(and(eq(searchHistory.id, id), eq(searchHistory.userId, userId)))
+		.returning();
+	return result.length > 0;
+}
+
+export async function clearSearchHistoryAction(userId: string): Promise<boolean> {
+	const result = await db.delete(searchHistory).where(eq(searchHistory.userId, userId)).returning();
+	return result.length > 0;
 }
