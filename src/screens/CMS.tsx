@@ -1,7 +1,6 @@
 /** biome-ignore-all lint/performance/noImgElement: neededs */
 'use client';
 
-import { UploadButton } from '@uploadthing/react';
 import {
 	Database,
 	Edit2,
@@ -15,9 +14,8 @@ import {
 	ZoomOut,
 } from 'lucide-react';
 import Image from 'next/image';
-import { useCallback, useEffect, useId, useState } from 'react';
+import { useCallback, useEffect, useId, useRef, useState } from 'react';
 import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch';
-import type { OurFileRouter } from '@/app/api/uploadthing/core';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -60,6 +58,7 @@ import {
 	updateQuestionAction,
 } from '@/lib/db/actions';
 import type { Question, Subject } from '@/lib/db/schema';
+import { uploadFiles } from '@/lib/uploadthing';
 
 interface QuestionFormData {
 	id?: string;
@@ -104,10 +103,14 @@ export default function CMS() {
 	const [selectedDifficulty, setSelectedDifficulty] = useState<string>('all');
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [editingQuestion, setEditingQuestion] = useState<QuestionFormData | null>(null);
+	const [originalImageUrl, setOriginalImageUrl] = useState<string | null>(null);
 	const [activeTab, setActiveTab] = useState('questions');
 	const [seeding, setSeeding] = useState(false);
 	const [drawerTab, setDrawerTab] = useState<'basic' | 'question' | 'options'>('basic');
 	const [isFullscreen, setIsFullscreen] = useState(false);
+	const [localImageFile, setLocalImageFile] = useState<File | null>(null);
+	const [localImagePreview, setLocalImagePreview] = useState<string | null>(null);
+	const fileInputRef = useRef<HTMLInputElement>(null);
 
 	const loadData = useCallback(async () => {
 		try {
@@ -161,6 +164,8 @@ export default function CMS() {
 
 	const handleCreateQuestion = () => {
 		setEditingQuestion({ ...EMPTY_QUESTION });
+		setLocalImageFile(null);
+		setLocalImagePreview(null);
 		setDrawerTab('basic');
 		setIsModalOpen(true);
 	};
@@ -185,6 +190,9 @@ export default function CMS() {
 					explanation: opt.explanation || '',
 				})),
 			});
+			setOriginalImageUrl(questionWithOptions.imageUrl || null);
+			setLocalImageFile(null);
+			setLocalImagePreview(null);
 			setDrawerTab('basic');
 			setIsModalOpen(true);
 		}
@@ -232,10 +240,26 @@ export default function CMS() {
 		}
 
 		try {
+			let imageUrlToSave = editingQuestion.imageUrl;
+
+			if (localImageFile) {
+				const uploadResult = await uploadFiles('questionImage', {
+					files: [localImageFile],
+				});
+				if (uploadResult?.[0]?.ufsUrl) {
+					imageUrlToSave = uploadResult[0].ufsUrl;
+				} else {
+					alert('Failed to upload image. Please try again.');
+					return;
+				}
+			} else if (editingQuestion.id && originalImageUrl && !editingQuestion.imageUrl) {
+				imageUrlToSave = null;
+			}
+
 			const questionData = {
 				subjectId: editingQuestion.subjectId,
 				questionText: editingQuestion.questionText,
-				imageUrl: editingQuestion.imageUrl || null,
+				imageUrl: imageUrlToSave,
 				gradeLevel: editingQuestion.gradeLevel,
 				topic: editingQuestion.topic,
 				difficulty: editingQuestion.difficulty,
@@ -259,6 +283,12 @@ export default function CMS() {
 				await createQuestionAction(questionData, optionsData);
 			}
 
+			if (localImagePreview) {
+				URL.revokeObjectURL(localImagePreview);
+			}
+			setLocalImageFile(null);
+			setLocalImagePreview(null);
+			setOriginalImageUrl(null);
 			setIsModalOpen(false);
 			setEditingQuestion(null);
 			setDrawerTab('basic');
@@ -267,6 +297,43 @@ export default function CMS() {
 			console.error('Failed to save question:', error);
 			alert('Failed to save question. Please try again.');
 		}
+	};
+
+	const handleImageSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+		const file = event.target.files?.[0];
+		if (file) {
+			if (file.size > 4 * 1024 * 1024) {
+				alert('Image must be less than 4MB');
+				return;
+			}
+			setLocalImageFile(file);
+			const previewUrl = URL.createObjectURL(file);
+			setLocalImagePreview(previewUrl);
+			if (editingQuestion) {
+				setEditingQuestion({
+					...editingQuestion,
+					imageUrl: previewUrl,
+				});
+			}
+		}
+	};
+
+	const handleRemoveImage = () => {
+		if (localImagePreview) {
+			URL.revokeObjectURL(localImagePreview);
+		}
+		setLocalImageFile(null);
+		setLocalImagePreview(null);
+		if (editingQuestion) {
+			setEditingQuestion({
+				...editingQuestion,
+				imageUrl: null,
+			});
+		}
+	};
+
+	const triggerFileInput = () => {
+		fileInputRef.current?.click();
 	};
 
 	// Check if all required fields are filled
@@ -603,12 +670,7 @@ export default function CMS() {
 																variant="destructive"
 																size="sm"
 																className="bg-white/80 hover:bg-white text-zinc-800"
-																onClick={() =>
-																	setEditingQuestion({
-																		...editingQuestion,
-																		imageUrl: null,
-																	})
-																}
+																onClick={handleRemoveImage}
 															>
 																<X className="h-4 w-4" />
 															</Button>
@@ -685,45 +747,24 @@ export default function CMS() {
 												</div>
 											) : (
 												<div className="mt-2 h-full flex relative">
-													<UploadButton<OurFileRouter, 'questionImage'>
-														endpoint="questionImage"
-														onClientUploadComplete={(res) => {
-															if (res?.[0]?.ufsUrl) {
-																setEditingQuestion({
-																	...editingQuestion,
-																	imageUrl: res[0].ufsUrl,
-																});
-															}
-														}}
-														onUploadError={(error: Error) => {
-															alert(`Upload failed: ${error.message}`);
-														}}
-														appearance={{
-															button:
-																'ut-ready:bg-brand-purple ut-uploading:cursor-not-allowed rounded-lg bg-brand-purple/80 bg-none after:bg-brand-purple text-sm font-medium',
-															container:
-																'w-full flex-row rounded-lg border-2 border-dashed border-input p-4',
-															allowedContent:
-																'flex h-8 flex-col items-center justify-center text-xs text-muted-foreground',
-														}}
-														content={{
-															button({ ready }) {
-																if (ready)
-																	return (
-																		<div className="flex items-center gap-2">
-																			<ImagePlus className="h-4 w-4" />
-																			Upload Image
-																		</div>
-																	);
-																return 'Getting ready...';
-															},
-															allowedContent({ ready, isUploading }) {
-																if (!ready) return 'Checking...';
-																if (isUploading) return 'Uploading...';
-																return `Image (max 4MB)`;
-															},
-														}}
+													<input
+														type="file"
+														id="file-input"
+														ref={fileInputRef}
+														onChange={handleImageSelect}
+														accept="image/*"
+														className="hidden"
 													/>
+													<label
+														htmlFor="file-input"
+														onClick={triggerFileInput}
+														className="w-full rounded-lg border-2 border-dashed border-input p-4 flex flex-col items-center justify-center gap-2 hover:border-brand-purple hover:bg-muted/50 transition-colors cursor-pointer"
+													>
+														<ImagePlus className="h-8 w-8 text-muted-foreground" />
+														<span className="text-sm text-muted-foreground">
+															Click to upload image (max 4MB)
+														</span>
+													</label>
 												</div>
 											)}
 										</div>

@@ -43,6 +43,7 @@ import {
 import { useTheme } from '@/hooks/use-theme';
 import { authClient } from '@/lib/auth-client';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
+import { ProfileMenu } from './profile-menu';
 
 export default function MobileFrame({ children }: { children: React.ReactNode }) {
 	const pathname = usePathname();
@@ -54,8 +55,8 @@ export default function MobileFrame({ children }: { children: React.ReactNode })
 	const [sheetOpen, setSheetOpen] = useState(false);
 
 	// const hideNavigation = ['/sign-in', '/sign-up', '/interactive-quiz'];
-	const hideNavigation: string[] = [];
-	const hideBottomNavigation = ['/sign-in', '/sign-up'];
+	const hideNavigation: string[] = ['/test'];
+	const hideBottomNavigation = ['/sign-in', '/sign-up', '/test'];
 
 	const shouldHideNav = hideNavigation.some((path) => pathname.startsWith(path));
 	const shouldHideBottomNav = hideBottomNavigation.some((path) => pathname.startsWith(path));
@@ -72,12 +73,7 @@ export default function MobileFrame({ children }: { children: React.ReactNode })
 		{ href: '/search', label: 'Search', icon: SearchIcon },
 		{ href: '/lessons', label: 'Lessons', icon: BookOpen },
 		{ href: '/past-papers', label: 'Past Papers', icon: FileText },
-		{ href: '/physics', label: 'Physical Sciences', icon: Atom },
-		{ href: '/math-quiz', label: 'Mathematics Quiz', icon: Calculator },
-		{ href: '/physics-quiz', label: 'Physics Quiz', icon: FlaskConical },
-		{ href: '/practice-quiz', label: 'Practice Quiz', icon: Lightbulb },
-		{ href: '/interactive-quiz', label: 'Interactive Quiz', icon: Sparkles },
-		{ href: '/quiz', label: 'General Quiz', icon: HelpCircle },
+		{ href: '/test', label: 'Physics Test', icon: Sparkles },
 		{ href: '/study-path', label: 'Study Path', icon: MapIcon },
 		{ href: '/study-plan', label: 'Study Plan', icon: Calendar },
 		{ href: '/leaderboard', label: 'Leaderboard', icon: Trophy },
@@ -214,14 +210,21 @@ export default function MobileFrame({ children }: { children: React.ReactNode })
 							</p>
 						</Link>
 						{user && (
-							<div className="flex items-center space-x-2">
-								<Avatar className="h-10 w-10">
-									<AvatarImage src={user.image || undefined} alt={user.name} />
-									<AvatarFallback className="bg-[linear-gradient(318.67deg,rgb(106,255,94)_0%,rgb(13,255,247)_94.35%)] text-neutral-800">
-										{user.name?.charAt(0)}
-									</AvatarFallback>
-								</Avatar>
-							</div>
+							<ProfileMenu user={user}>
+								<motion.button
+									type="button"
+									className="z-120 pointer-events-auto"
+									aria-label="Open profile menu"
+									whileTap={{ scale: 0.9 }}
+								>
+									<Avatar className="h-10 w-10">
+										<AvatarImage src={user.image || undefined} alt={user.name} />
+										<AvatarFallback className="bg-[linear-gradient(318.67deg,rgb(106,255,94)_0%,rgb(13,255,247)_94.35%)] text-neutral-800">
+											{user.name?.charAt(0)}
+										</AvatarFallback>
+									</Avatar>
+								</motion.button>
+							</ProfileMenu>
 						)}
 					</header>
 				)}
