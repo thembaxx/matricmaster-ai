@@ -3,19 +3,14 @@
 import { Icon } from '@iconify/react';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
-	Atom,
 	Award,
 	Bookmark,
 	BookOpen,
-	Calculator,
 	Calendar,
 	FileText,
-	FlaskConical,
 	Globe,
-	HelpCircle,
 	Home,
 	Layout,
-	Lightbulb,
 	LogOut,
 	Map as MapIcon,
 	Menu,
