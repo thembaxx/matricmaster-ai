@@ -5,6 +5,7 @@ import { useCallback, useEffect, useId, useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import { Checkbox } from '@/components/ui/checkbox';
 import {
 	Drawer,
 	DrawerClose,
@@ -25,6 +26,7 @@ import {
 	SelectValue,
 } from '@/components/ui/select';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Textarea } from '@/components/ui/textarea';
 import {
 	createQuestionAction,
 	getQuestionsAction,
@@ -391,16 +393,16 @@ export default function CMS() {
 													<div className="flex items-center gap-2 mb-2">
 														<Badge
 															variant="secondary"
-															className={getDifficultyColor(question.difficulty)}
+															className={`capitalize ${getDifficultyColor(question.difficulty)}`}
 														>
 															{question.difficulty}
 														</Badge>
 														<Badge variant="outline">Grade {question.gradeLevel}</Badge>
 														<span className="text-xs text-zinc-400">
-															{question.marks} mark{question.marks > 1 ? 's' : ''}
+															{question.marks} point{question.marks > 1 ? 's' : ''}
 														</span>
 													</div>
-													<p className="text-sm font-medium text-zinc-900 dark:text-white mb-2 line-clamp-2">
+													<p className="text-[13.2px] pl-1.5 font-normal text-zinc-900 dark:text-white/85 text-pretty mb-2 line-clamp-2">
 														{question.questionText}
 													</p>
 													<div className="flex items-center gap-2 text-xs text-zinc-500">
@@ -465,7 +467,7 @@ export default function CMS() {
 
 			{/* Question Drawer */}
 			<Drawer open={isModalOpen} onOpenChange={setIsModalOpen}>
-				<DrawerContent className="max-h-[90vh] flex flex-col">
+				<DrawerContent className="max-h-[90vh] flex flex-col z-120 rounded-t-3xl pb-3">
 					<DrawerHeader className="text-left">
 						<DrawerTitle>
 							{editingQuestion?.id ? 'Edit Question' : 'Create New Question'}
@@ -478,211 +480,211 @@ export default function CMS() {
 					</DrawerHeader>
 
 					{editingQuestion && (
-						<ScrollArea className="flex-1 px-4">
-							<div className="space-y-6 py-4">
-								{/* Question Text */}
+						<div className="space-y-6 p-4 grow  overflow-y-auto">
+							{/* Question Text */}
+							<div className="space-y-2">
+								<Label htmlFor={questionId}>Question Text</Label>
+								<textarea
+									id={questionId}
+									value={editingQuestion.questionText}
+									onChange={(e) =>
+										setEditingQuestion({
+											...editingQuestion,
+											questionText: e.target.value,
+										})
+									}
+									placeholder="Enter your question here..."
+									className="w-full min-h-25 p-3 rounded-md border border-input bg-background text-sm resize-y focus:outline-none focus:ring-2 focus:ring-ring"
+								/>
+							</div>
+
+							{/* Subject & Grade */}
+							<div className="grid grid-cols-2 gap-4">
 								<div className="space-y-2">
-									<Label htmlFor={questionId}>Question Text</Label>
-									<textarea
-										id={questionId}
-										value={editingQuestion.questionText}
-										onChange={(e) =>
+									<Label>Subject</Label>
+									<Select
+										value={editingQuestion.subjectId.toString()}
+										onValueChange={(value) =>
 											setEditingQuestion({
 												...editingQuestion,
-												questionText: e.target.value,
+												subjectId: parseInt(value, 10),
 											})
 										}
-										placeholder="Enter your question here..."
-										className="w-full min-h-25 p-3 rounded-md border border-input bg-background text-sm resize-y focus:outline-none focus:ring-2 focus:ring-ring"
-									/>
+									>
+										<SelectTrigger>
+											<SelectValue placeholder="Select subject" />
+										</SelectTrigger>
+										<SelectContent>
+											{subjects.map((subject) => (
+												<SelectItem key={subject.id} value={subject.id.toString()}>
+													{subject.name}
+												</SelectItem>
+											))}
+										</SelectContent>
+									</Select>
 								</div>
 
-								{/* Subject & Grade */}
-								<div className="grid grid-cols-2 gap-4">
-									<div className="space-y-2">
-										<Label>Subject</Label>
-										<Select
-											value={editingQuestion.subjectId.toString()}
-											onValueChange={(value) =>
-												setEditingQuestion({
-													...editingQuestion,
-													subjectId: parseInt(value, 10),
-												})
-											}
-										>
-											<SelectTrigger>
-												<SelectValue placeholder="Select subject" />
-											</SelectTrigger>
-											<SelectContent>
-												{subjects.map((subject) => (
-													<SelectItem key={subject.id} value={subject.id.toString()}>
-														{subject.name}
-													</SelectItem>
-												))}
-											</SelectContent>
-										</Select>
-									</div>
-
-									<div className="space-y-2">
-										<Label>Grade Level</Label>
-										<Select
-											value={editingQuestion.gradeLevel.toString()}
-											onValueChange={(value) =>
-												setEditingQuestion({
-													...editingQuestion,
-													gradeLevel: parseInt(value, 10),
-												})
-											}
-										>
-											<SelectTrigger>
-												<SelectValue placeholder="Select grade" />
-											</SelectTrigger>
-											<SelectContent>
-												<SelectItem value="10">Grade 10</SelectItem>
-												<SelectItem value="11">Grade 11</SelectItem>
-												<SelectItem value="12">Grade 12</SelectItem>
-											</SelectContent>
-										</Select>
-									</div>
-								</div>
-
-								{/* Topic & Difficulty */}
-								<div className="grid grid-cols-2 gap-4">
-									<div className="space-y-2">
-										<Label htmlFor={topicId}>Topic</Label>
-										<Input
-											id={topicId}
-											value={editingQuestion.topic}
-											onChange={(e) =>
-												setEditingQuestion({
-													...editingQuestion,
-													topic: e.target.value,
-												})
-											}
-											placeholder="e.g., Apartheid Resistance"
-										/>
-									</div>
-
-									<div className="space-y-2">
-										<Label>Difficulty</Label>
-										<Select
-											value={editingQuestion.difficulty}
-											onValueChange={(value: 'easy' | 'medium' | 'hard') =>
-												setEditingQuestion({
-													...editingQuestion,
-													difficulty: value,
-												})
-											}
-										>
-											<SelectTrigger>
-												<SelectValue placeholder="Select difficulty" />
-											</SelectTrigger>
-											<SelectContent>
-												<SelectItem value="easy">Easy</SelectItem>
-												<SelectItem value="medium">Medium</SelectItem>
-												<SelectItem value="hard">Hard</SelectItem>
-											</SelectContent>
-										</Select>
-									</div>
-								</div>
-
-								{/* Marks */}
 								<div className="space-y-2">
-									<Label htmlFor={marksId}>Marks</Label>
-									<Input
-										id={marksId}
-										type="number"
-										min={1}
-										max={10}
-										value={editingQuestion.marks}
-										onChange={(e) =>
+									<Label>Grade Level</Label>
+									<Select
+										value={editingQuestion.gradeLevel.toString()}
+										onValueChange={(value) =>
 											setEditingQuestion({
 												...editingQuestion,
-												marks: parseInt(e.target.value, 10) || 1,
+												gradeLevel: parseInt(value, 10),
 											})
 										}
-									/>
-								</div>
-
-								{/* Options */}
-								<div className="space-y-4">
-									<div className="flex items-center justify-between">
-										<Label>Answer Options</Label>
-										{editingQuestion.options.length < 6 && (
-											<Button type="button" variant="outline" size="sm" onClick={addOption}>
-												<Plus className="h-4 w-4 mr-1" />
-												Add Option
-											</Button>
-										)}
-									</div>
-
-									{editingQuestion.options.map((option, index) => (
-										<div
-											key={option.optionLetter}
-											className="p-4 border rounded-lg space-y-3 bg-muted/50"
-										>
-											<div className="flex items-center gap-3">
-												<Badge
-													variant={option.isCorrect ? 'default' : 'secondary'}
-													className="w-8 h-8 flex items-center justify-center text-sm font-bold"
-												>
-													{option.optionLetter}
-												</Badge>
-												<Input
-													value={option.optionText}
-													onChange={(e) => updateOption(index, 'optionText', e.target.value)}
-													placeholder={`Option ${option.optionLetter}`}
-													className="flex-1"
-												/>
-												{editingQuestion.options.length > 2 && (
-													<Button
-														type="button"
-														variant="ghost"
-														size="icon"
-														className="text-red-500 hover:text-red-600"
-														onClick={() => removeOption(index)}
-													>
-														<X className="h-4 w-4" />
-													</Button>
-												)}
-											</div>
-
-											<div className="flex items-center gap-4">
-												<label className="flex items-center gap-2 cursor-pointer">
-													<input
-														type="checkbox"
-														checked={option.isCorrect}
-														onChange={(e) => updateOption(index, 'isCorrect', e.target.checked)}
-														className="w-4 h-4 rounded border-gray-300 text-brand-purple focus:ring-brand-purple"
-													/>
-													<span className="text-sm text-zinc-600 dark:text-zinc-400">
-														Correct Answer
-													</span>
-												</label>
-											</div>
-
-											<Input
-												value={option.explanation}
-												onChange={(e) => updateOption(index, 'explanation', e.target.value)}
-												placeholder="Explanation (optional)"
-												className="text-sm"
-											/>
-										</div>
-									))}
+									>
+										<SelectTrigger>
+											<SelectValue placeholder="Select grade" />
+										</SelectTrigger>
+										<SelectContent>
+											<SelectItem value="10">Grade 10</SelectItem>
+											<SelectItem value="11">Grade 11</SelectItem>
+											<SelectItem value="12">Grade 12</SelectItem>
+										</SelectContent>
+									</Select>
 								</div>
 							</div>
-						</ScrollArea>
+
+							{/* Topic & Difficulty */}
+							<div className="grid grid-cols-2 gap-4">
+								<div className="space-y-2">
+									<Label htmlFor={topicId}>Topic</Label>
+									<Input
+										id={topicId}
+										value={editingQuestion.topic}
+										onChange={(e) =>
+											setEditingQuestion({
+												...editingQuestion,
+												topic: e.target.value,
+											})
+										}
+										placeholder="e.g., Apartheid Resistance"
+									/>
+								</div>
+
+								<div className="space-y-2">
+									<Label>Difficulty</Label>
+									<Select
+										value={editingQuestion.difficulty}
+										onValueChange={(value: 'easy' | 'medium' | 'hard') =>
+											setEditingQuestion({
+												...editingQuestion,
+												difficulty: value,
+											})
+										}
+									>
+										<SelectTrigger>
+											<SelectValue placeholder="Select difficulty" />
+										</SelectTrigger>
+										<SelectContent>
+											<SelectItem value="easy">Easy</SelectItem>
+											<SelectItem value="medium">Medium</SelectItem>
+											<SelectItem value="hard">Hard</SelectItem>
+										</SelectContent>
+									</Select>
+								</div>
+							</div>
+
+							{/* Marks */}
+							<div className="space-y-2">
+								<Label htmlFor={marksId}>Points</Label>
+								<Input
+									id={marksId}
+									type="number"
+									min={1}
+									max={10}
+									value={editingQuestion.marks}
+									onChange={(e) =>
+										setEditingQuestion({
+											...editingQuestion,
+											marks: parseInt(e.target.value, 10) || 1,
+										})
+									}
+								/>
+							</div>
+
+							{/* Options */}
+							<div className="space-y-4">
+								<div className="flex items-center justify-between">
+									<Label>Answer Options</Label>
+									{editingQuestion.options.length < 6 && (
+										<Button type="button" variant="outline" size="sm" onClick={addOption}>
+											<Plus className="h-4 w-4 mr-1" />
+											Add Option
+										</Button>
+									)}
+								</div>
+
+								{editingQuestion.options.map((option, index) => (
+									<div
+										key={option.optionLetter}
+										className="p-4 border rounded-lg space-y-3 bg-muted/50"
+									>
+										<div className="flex items-start gap-3">
+											<Badge
+												variant={option.isCorrect ? 'default' : 'secondary'}
+												className="w-8 h-8 flex items-center justify-center text-sm font-bold"
+											>
+												{option.optionLetter}
+											</Badge>
+											<Textarea
+												value={option.optionText}
+												onChange={(e) => updateOption(index, 'optionText', e.target.value)}
+												placeholder={`Option ${option.optionLetter}`}
+												className="flex-1 min-h-0 text-[15px]"
+											/>
+											{editingQuestion.options.length > 2 && (
+												<Button
+													type="button"
+													variant="ghost"
+													size="icon"
+													className="text-red-500 hover:text-red-600"
+													onClick={() => removeOption(index)}
+												>
+													<X className="h-4 w-4" />
+												</Button>
+											)}
+										</div>
+
+										<div className="flex items-center gap-4 px-1">
+											<Label className="flex items-center gap-2 cursor-pointer">
+												<Checkbox
+													value={option.optionText}
+													checked={option.isCorrect}
+													onCheckedChange={(e) =>
+														updateOption(index, 'isCorrect', e === option.optionText)
+													}
+													className="w-4 h-4 rounded border-gray-300 text-brand-purple focus:ring-brand-purple"
+												/>
+												<span className="text-sm text-zinc-600 dark:text-zinc-400">
+													Correct Answer
+												</span>
+											</Label>
+										</div>
+
+										<Textarea
+											value={option.explanation}
+											onChange={(e) => updateOption(index, 'explanation', e.target.value)}
+											placeholder="Explanation (optional)"
+											className="text-sm"
+										/>
+									</div>
+								))}
+							</div>
+						</div>
 					)}
 
 					<DrawerFooter className="pt-4 border-t flex-row gap-3">
 						<DrawerClose asChild>
-							<Button variant="outline" className="flex-1">
+							<Button variant="outline" className="flex-1 text-sm">
 								Cancel
 							</Button>
 						</DrawerClose>
 						<Button
 							onClick={handleSaveQuestion}
-							className="flex-1 bg-brand-purple hover:bg-brand-purple/90"
+							className="flex-1 bg-brand-purple hover:bg-brand-purple/90 text-sm dark:text-white/90"
 						>
 							{editingQuestion?.id ? 'Update Question' : 'Create Question'}
 						</Button>
