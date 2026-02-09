@@ -338,14 +338,14 @@ export default function CMS() {
 					<Button
 						onClick={handleCreateQuestion}
 						size="icon"
-						className="rounded-full h-10 w-10 bg-brand-purple hover:bg-brand-purple/90 shadow-lg shadow-purple-500/20"
+						className="rounded-lg h-8 w-8 bg-brand-purple hover:bg-brand-purple/90 shadow-lg shadow-purple-500/20"
 					>
 						<Plus className="h-5 w-5" />
 					</Button>
 				</div>
 
 				{/* Tabs */}
-				<Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+				<Tabs value={activeTab} onValueChange={setActiveTab} className="w-full hidden">
 					<TabsList className="grid w-full grid-cols-2 mb-4">
 						<TabsTrigger value="questions">Questions</TabsTrigger>
 						<TabsTrigger value="subjects">Subjects</TabsTrigger>
@@ -364,33 +364,53 @@ export default function CMS() {
 								className="pl-10 text-base h-12"
 							/>
 						</div>
-						<div className="grid grid-cols-2 gap-2">
-							<Select value={selectedSubject} onValueChange={setSelectedSubject}>
-								<SelectTrigger>
-									<SelectValue placeholder="Subject" />
-								</SelectTrigger>
-								<SelectContent>
-									<SelectItem value="all">All Subjects</SelectItem>
-									{subjects.map((subject) => (
-										<SelectItem key={subject.id} value={subject.id.toString()}>
-											{subject.name}
-										</SelectItem>
-									))}
-								</SelectContent>
-							</Select>
 
-							<Select value={selectedDifficulty} onValueChange={setSelectedDifficulty}>
-								<SelectTrigger>
-									<SelectValue placeholder="Difficulty" />
-								</SelectTrigger>
-								<SelectContent>
-									<SelectItem value="all">All Levels</SelectItem>
-									<SelectItem value="easy">Easy</SelectItem>
-									<SelectItem value="medium">Medium</SelectItem>
-									<SelectItem value="hard">Hard</SelectItem>
-								</SelectContent>
-							</Select>
-						</div>
+						{/* Subject Pills */}
+						<ScrollArea className="w-full whitespace-nowrap pb-2">
+							<div className="flex gap-2 px-1">
+								<button
+									type="button"
+									onClick={() => setSelectedSubject('all')}
+									className={`px-4 py-2 rounded-full text-xs font-bold transition-all shrink-0 ${
+										selectedSubject === 'all'
+											? 'bg-brand-purple text-white shadow-md scale-105'
+											: 'bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700'
+									}`}
+								>
+									All Subjects
+								</button>
+								{subjects.map((subject) => {
+									const isSelected = selectedSubject === subject.id.toString();
+									return (
+										<button
+											type="button"
+											key={subject.id}
+											onClick={() => setSelectedSubject(subject.id.toString())}
+											className={`px-4 py-2 rounded-full text-xs font-bold transition-all shrink-0 ${
+												isSelected
+													? 'bg-brand-purple text-white shadow-md scale-105'
+													: 'bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700'
+											}`}
+										>
+											{subject.name}
+										</button>
+									);
+								})}
+							</div>
+						</ScrollArea>
+
+						{/* Difficulty Filter */}
+						<Select value={selectedDifficulty} onValueChange={setSelectedDifficulty}>
+							<SelectTrigger>
+								<SelectValue placeholder="Difficulty" />
+							</SelectTrigger>
+							<SelectContent>
+								<SelectItem value="all">All Levels</SelectItem>
+								<SelectItem value="easy">Easy</SelectItem>
+								<SelectItem value="medium">Medium</SelectItem>
+								<SelectItem value="hard">Hard</SelectItem>
+							</SelectContent>
+						</Select>
 					</div>
 				)}
 			</header>

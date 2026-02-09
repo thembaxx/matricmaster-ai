@@ -107,7 +107,12 @@ export default function InteractiveQuiz() {
 	const searchParams = useSearchParams();
 	const paperId = searchParams.get('id');
 
+	// Extract unique subjects from QUIZ_DATA
+	const allSubjects = Object.values(QUIZ_DATA).map((q) => q.subject);
+	const uniqueSubjects = Array.from(new Set(allSubjects));
+
 	const [quiz, setQuiz] = useState(QUIZ_DATA['phys-p1-2025-may']);
+	const [selectedSubject, setSelectedSubject] = useState<string>(quiz.subject);
 	const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
 	const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
 	const [showResult, setShowResult] = useState(false);
@@ -119,8 +124,29 @@ export default function InteractiveQuiz() {
 	useEffect(() => {
 		if (paperId && QUIZ_DATA[paperId]) {
 			setQuiz(QUIZ_DATA[paperId]);
+			setSelectedSubject(QUIZ_DATA[paperId].subject);
 		}
 	}, [paperId]);
+
+	// Filter quiz data by selected subject
+	// const filteredQuizzes = Object.entries(QUIZ_DATA)
+	// 	.filter(([_, quizData]) => quizData.subject === selectedSubject)
+	// 	.map(([key, quizData]) => ({ id: key, ...quizData }));
+
+	const handleSubjectChange = (subject: string) => {
+		setSelectedSubject(subject);
+		// Find first quiz of selected subject
+		const firstQuizOfSubject = Object.entries(QUIZ_DATA).find(
+			([_, quizData]) => quizData.subject === subject
+		);
+		if (firstQuizOfSubject) {
+			setQuiz(firstQuizOfSubject[1]);
+			setCurrentQuestionIndex(0);
+			setSelectedAnswer(null);
+			setShowResult(false);
+			setAiExplanation(null);
+		}
+	};
 
 	const currentQuestion = quiz.questions[currentQuestionIndex];
 	const colors = getSubjectColor(quiz.subject);
@@ -211,6 +237,30 @@ export default function InteractiveQuiz() {
 							</div>
 						</div>
 					</div>
+
+					{/* Subject Filter Pills */}
+					<ScrollArea className="w-full whitespace-nowrap pb-2">
+						<div className="flex gap-2 px-1">
+							{uniqueSubjects.map((subject) => {
+								const subjectColors = getSubjectColor(subject);
+								const isSelected = subject === selectedSubject;
+								return (
+									<button
+										type="button"
+										key={subject}
+										onClick={() => handleSubjectChange(subject)}
+										className={`px-4 py-2 rounded-full text-xs font-bold transition-all shrink-0 ${
+											isSelected
+												? `${subjectColors.bg} text-white shadow-md scale-105`
+												: `bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700`
+										}`}
+									>
+										{subject}
+									</button>
+								);
+							})}
+						</div>
+					</ScrollArea>
 				</div>
 			</header>
 
@@ -342,7 +392,7 @@ export default function InteractiveQuiz() {
 					</div>
 
 					{/* AI Explanation Toggle */}
-					<div className={`p-1 rounded-[2rem] bg-gradient-to-r ${colors.from} ${colors.to}`}>
+					<div className={`p-1 rounded-[2rem] bg-linear-to-r ${colors.from} ${colors.to}`}>
 						<div className="bg-white dark:bg-zinc-950 rounded-[1.9rem] p-6 space-y-4">
 							<div className="flex items-center justify-between">
 								<div className="flex items-center gap-4">
