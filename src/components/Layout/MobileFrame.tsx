@@ -28,6 +28,7 @@ import {
 	Users,
 } from 'lucide-react';
 import Link from 'next/link';
+import { Icon } from '@iconify/react';
 import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
@@ -60,10 +61,10 @@ export default function MobileFrame({ children }: { children: React.ReactNode })
 	const shouldHideBottomNav = hideBottomNavigation.some((path) => pathname.startsWith(path));
 
 	const navItems = [
-		{ href: '/dashboard', label: 'Home', icon: Home },
-		{ href: '/search', label: 'Search', icon: SearchIcon },
-		{ href: '/past-papers', label: 'Papers', icon: FileText },
-		{ href: '/bookmarks', label: 'Saved', icon: Bookmark },
+		{ href: '/dashboard', label: 'Home', icon: "fluent:clover-24-filled" },
+		{ href: '/search', label: 'Search', icon: "fluent:search-sparkle-24-filled" },
+		{ href: '/past-papers', label: 'Papers', icon: "fluent:hat-graduation-sparkle-24-filled" },
+		{ href: '/bookmarks', label: 'Saved', icon: "fluent:bookmark-24-filled" },
 	];
 
 	const sideMenuItems = [
@@ -230,7 +231,7 @@ export default function MobileFrame({ children }: { children: React.ReactNode })
 				{/* Bottom Navigation - iOS Liquid Glass Floating Pill */}
 				{!shouldHideBottomNav && (
 					<nav
-						className="fixed bottom-8 left-1/2 -translate-x-1/2 w-[90%] max-w-95 z-100 ios-glass rounded-[2.5rem] shadow-2xl shadow-black/5 flex justify-around items-center p-2 px-4 transition-all duration-500 ease-ios"
+						className="fixed bottom-8 left-1/2 -translate-x-1/2 w-[90%] max-w-95 z-100 ios-glass rounded-[2.5rem] shadow-2xl shadow-black/5 grid grid-cols-4 p-2 px-3 transition-all duration-500 ease-ios"
 						style={{
 							marginBottom: 'env(safe-area-inset-bottom, 0px)',
 						}}
@@ -260,20 +261,21 @@ export default function MobileFrame({ children }: { children: React.ReactNode })
 
 									{/* Icon container */}
 									<div className="relative z-10 flex items-center justify-center">
-										<item.icon
-											className={`relative transition-all duration-300 ${
+										<Icon
+										icon={item.icon}
+											className={`relative transition-all duration-300 h-6 w-6 ${
 												isActive
 													? 'text-brand-blue dark:text-brand-blue-light scale-110'
 													: 'text-zinc-400 group-hover:text-zinc-600 dark:group-hover:text-zinc-200'
 											}`}
-											strokeWidth={isActive ? 2.5 : 2}
-											size={24}
+											
+											
 										/>
 									</div>
 
 									{/* Label */}
 									<span
-										className={`relative z-10 text-[10px] font-semibold uppercase tracking-wide transition-all duration-300 mt-1 ${
+										className={`relative z-10 text-[9px] font-semibold uppercase tracking-wide transition-all duration-300 mt-1 ${
 											isActive
 												? 'text-brand-blue dark:text-brand-blue-light font-black'
 												: 'text-zinc-400'

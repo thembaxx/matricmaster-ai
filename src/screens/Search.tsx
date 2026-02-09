@@ -1,20 +1,55 @@
 // import type { Screen } from '@/types'; // Removed unused import
-import { Clock, FileText, Loader2, Search as SearchIcon, Sparkles, TrendingUp } from 'lucide-react';
+import {
+	Clock,
+	FileText,
+	Loader2,
+	Search as SearchIcon,
+	Sparkles,
+	Trash2,
+	X,
+} from 'lucide-react';
+import {Icon} from "@iconify/react";
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { PAST_PAPERS } from '@/constants/mock-data';
+import { useSession } from '@/lib/auth-client';
+import {
+	addSearchHistoryAction,
+	clearSearchHistoryAction,
+	deleteSearchHistoryItemAction,
+	getSearchHistoryAction,
+} from '@/lib/db/actions';
+import type { SearchHistory } from '@/lib/db/schema';
 import { smartSearch } from '@/services/geminiService';
 
 export default function Search() {
 	const router = useRouter();
+	const { data: session } = useSession();
 	const [query, setQuery] = useState('');
 	const [aiResults, setAiResults] = useState<{ suggestions: string[]; tip: string } | null>(null);
 	const [isAiLoading, setIsAiLoading] = useState(false);
+	const [recentSearches, setRecentSearches] = useState<SearchHistory[]>([]);
+	const [isLoadingHistory, setIsLoadingHistory] = useState(true);
 
+	// Load recent searches on mount
+	useEffect(() => {
+		const loadSearchHistory = async () => {
+			if (session?.user?.id) {
+				setIsLoadingHistory(true);
+				const history = await getSearchHistoryAction(session.user.id);
+				setRecentSearches(history);
+				setIsLoadingHistory(false);
+			}
+		};
+		loadSearchHistory();
+	}, [session?.user?.id]);
+
+	// Trigger AI search when query changes
 	useEffect(() => {
 		const timer = setTimeout(async () => {
 			if (query.length > 3) {
@@ -22,13 +57,21 @@ export default function Search() {
 				const results = await smartSearch(query);
 				setAiResults(results);
 				setIsAiLoading(false);
+
+				// Save to search history if user is logged in
+				if (session?.user?.id) {
+					await addSearchHistoryAction(session.user.id, query);
+					// Reload search history
+					const history = await getSearchHistoryAction(session.user.id);
+					setRecentSearches(history);
+				}
 			} else {
 				setAiResults(null);
 			}
 		}, 800);
 
 		return () => clearTimeout(timer);
-	}, [query]);
+	}, [query, session?.user?.id]);
 
 	const filteredResults = query
 		? PAST_PAPERS.filter(
@@ -38,9 +81,28 @@ export default function Search() {
 			)
 		: [];
 
+	const handleDeleteSearch = async (id: string, e: React.MouseEvent) => {
+		e.stopPropagation();
+		if (session?.user?.id) {
+			await deleteSearchHistoryItemAction(id, session.user.id);
+			setRecentSearches((prev) => prev.filter((s) => s.id !== id));
+		}
+	};
+
+	const handleClearAllSearches = async () => {
+		if (session?.user?.id) {
+			await clearSearchHistoryAction(session.user.id);
+			setRecentSearches([]);
+		}
+	};
+
+	const handleSearchClick = (searchQuery: string) => {
+		setQuery(searchQuery);
+	};
+
 	return (
 		<div className="flex flex-col h-full bg-zinc-50 dark:bg-zinc-950">
-			<div className="px-6 py-4 ios-glass sticky top-0 z-20 shrink-0">
+			<div className="px-6 py-4 ios-glass shrink-0">
 				<div className="max-w-2xl mx-auto w-full flex flex-col gap-4">
 					<div className="flex items-center gap-4 pl-1 text-left">
 						<h1 className="text-xl font-bold text-zinc-500">Search</h1>
@@ -53,6 +115,16 @@ export default function Search() {
 							placeholder="Topics, questions, past papers..."
 							className="pl-11 bg-zinc-200/50 dark:bg-zinc-800/50 border-none h-12 rounded-xl text-[17px] font-medium focus-visible:ring-2 focus-visible:ring-brand-blue backdrop-blur-sm"
 						/>
+						{query && (
+							<button
+							title="Clear search"
+								type="button"
+								onClick={() => setQuery('')}
+								className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 transition-colors"
+							>
+								<X className="w-5 h-5" />
+							</button>
+						)}
 					</div>
 				</div>
 			</div>
@@ -73,7 +145,7 @@ export default function Search() {
 							{/* Trending Section */}
 							<div className="space-y-6">
 								<div className="flex items-center gap-2 px-1">
-									<TrendingUp className="w-4 h-4 text-brand-blue" />
+									<Icon icon="fluent-emoji-flat:fire" className="w-5 h-5" />
 									<h2 className="text-[10px] font-black text-zinc-400 uppercase tracking-widest">
 										Trending Topics
 									</h2>
@@ -100,31 +172,61 @@ export default function Search() {
 							</div>
 
 							{/* Recent Searches */}
-							<div className="space-y-4">
-								<div className="flex items-center gap-2 px-1">
-									<Clock className="w-4 h-4 text-zinc-400" />
-									<h2 className="text-[10px] font-black text-zinc-400 uppercase tracking-widest">
-										Recent Searches
-									</h2>
-								</div>
-								<div className="space-y-2">
-									{[
-										'Euclidean Geometry Grade 12',
-										'Internal Resistance Experiments',
-										'DNA Replication Steps',
-									].map((search) => (
-										<div
-											key={search}
-											className="flex items-center justify-between p-4 bg-white dark:bg-zinc-900 rounded-2xl border border-zinc-50 dark:border-zinc-800/50 hover:border-zinc-200 transition-colors cursor-pointer group"
-										>
-											<span className="text-sm font-medium text-zinc-600 dark:text-zinc-400 group-hover:text-zinc-900 dark:group-hover:text-white">
-												{search}
-											</span>
-											<SearchIcon className="w-4 h-4 text-zinc-300" />
+							{session?.user && (
+								<div className="space-y-4">
+									<div className="flex items-center justify-between px-1">
+										<div className="flex items-center gap-2">
+											<Clock className="w-4 h-4 text-zinc-400" />
+											<h2 className="text-[10px] font-black text-zinc-400 uppercase tracking-widest">
+												Recent Searches
+											</h2>
 										</div>
-									))}
+										{recentSearches.length > 0 && (
+											<Button
+												variant="ghost"
+												size="sm"
+												onClick={handleClearAllSearches}
+												className="h-7 px-2 text-[10px] text-zinc-400 hover:text-red-500 dark:hover:text-red-400"
+											>
+												<Trash2 className="w-3 h-3 mr-1" />
+												Clear All
+											</Button>
+										)}
+									</div>
+									<div className="space-y-2">
+										{isLoadingHistory ? (
+											<div className="flex items-center justify-center py-8">
+												<Loader2 className="w-5 h-5 text-brand-blue animate-spin" />
+											</div>
+										) : recentSearches.length > 0 ? (
+											recentSearches.map((search) => (
+												<button
+													key={search.id}
+													type="button"
+													onClick={() => handleSearchClick(search.query)}
+													className="flex w-full items-center justify-between p-4 bg-white dark:bg-zinc-900 rounded-2xl border border-zinc-50 dark:border-zinc-800/50 hover:border-zinc-200 dark:hover:border-zinc-700 transition-colors cursor-pointer group"
+												>
+													<span className="text-sm font-medium text-zinc-600 dark:text-zinc-400 group-hover:text-zinc-900 dark:group-hover:text-white">
+														{search.query}
+													</span>
+													<button
+													title="Delete search item"
+														type="button"
+														onClick={(e) => handleDeleteSearch(search.id, e)}
+														className="opacity-0 group-hover:opacity-100 transition-opacity text-zinc-400 hover:text-red-500 dark:hover:text-red-400"
+													>
+														<X className="w-4 h-4" />
+													</button>
+												</button>
+											))
+										) : (
+											<p className="text-center text-sm text-zinc-400 py-4">
+												No recent searches yet
+											</p>
+										)}
+									</div>
 								</div>
-							</div>
+							)}
 
 							{/* Suggested for You */}
 							<div className="space-y-4">
