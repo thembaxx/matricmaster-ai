@@ -111,6 +111,7 @@ export const questions = pgTable('questions', {
 		.notNull()
 		.references(() => subjects.id, { onDelete: 'cascade' }),
 	questionText: text('question_text').notNull(),
+	imageUrl: text('image_url'),
 	gradeLevel: integer('grade_level').notNull(),
 	topic: varchar('topic', { length: 100 }).notNull(),
 	difficulty: varchar('difficulty', { length: 20 }).notNull().default('medium'),
