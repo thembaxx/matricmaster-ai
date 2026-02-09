@@ -16,6 +16,7 @@ import {
 	Moon,
 	Search as SearchIcon,
 	Settings,
+	Sparkles,
 	Sun,
 	Trophy,
 	User,
@@ -48,8 +49,8 @@ export default function MobileFrame({ children }: { children: React.ReactNode })
 	const [sheetOpen, setSheetOpen] = useState(false);
 
 	// const hideNavigation = ['/sign-in', '/sign-up', '/interactive-quiz'];
-	const hideNavigation: string[] = [];
-	const hideBottomNavigation = ['/sign-in', '/sign-up'];
+	const hideNavigation: string[] = ['/test'];
+	const hideBottomNavigation = ['/sign-in', '/sign-up', '/test'];
 
 	const shouldHideNav = hideNavigation.some((path) => pathname.startsWith(path));
 	const shouldHideBottomNav = hideBottomNavigation.some((path) => pathname.startsWith(path));
@@ -65,6 +66,7 @@ export default function MobileFrame({ children }: { children: React.ReactNode })
 		{ href: '/dashboard', label: 'Dashboard', icon: Home },
 		{ href: '/search', label: 'Search', icon: SearchIcon },
 		{ href: '/past-papers', label: 'Past Papers', icon: FileText },
+		{ href: '/test', label: 'Physics Test', icon: Sparkles },
 		{ href: '/study-path', label: 'Study Path', icon: MapIcon },
 		{ href: '/study-plan', label: 'Study Plan', icon: Calendar },
 		{ href: '/leaderboard', label: 'Leaderboard', icon: Trophy },

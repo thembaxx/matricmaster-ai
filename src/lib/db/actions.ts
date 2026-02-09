@@ -182,6 +182,29 @@ export async function softDeleteQuestionAction(id: string): Promise<boolean> {
 	return true;
 }
 
+export async function getRandomQuestionsFromMultipleSubjectsAction(
+	subjectIds: number[],
+	totalCount: number
+): Promise<Question[]> {
+	// For simplicity, we'll get questions from each subject proportionally
+	const questionsPerSubject = Math.ceil(totalCount / subjectIds.length);
+	const allQuestions: Question[] = [];
+
+	for (const subjectId of subjectIds) {
+		const subjectQuestions = await db
+			.select()
+			.from(questions)
+			.where(and(eq(questions.subjectId, subjectId), eq(questions.isActive, true)))
+			.orderBy(sql`random()`)
+			.limit(questionsPerSubject);
+
+		allQuestions.push(...subjectQuestions);
+	}
+
+	// Shuffle and limit to totalCount
+	return allQuestions.sort(() => Math.random() - 0.5).slice(0, totalCount);
+}
+
 export async function hardDeleteQuestionAction(id: string): Promise<boolean> {
 	const result = await db.delete(questions).where(eq(questions.id, id)).returning();
 	return result.length > 0;

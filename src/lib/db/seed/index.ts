@@ -1,8 +1,16 @@
-import { auth } from '@/lib/auth'; // Import auth to create user
+import { resolve } from 'node:path';
+import { config } from 'dotenv';
+
+// Load environment variables explicitly to avoid authentication issues
+const envPath = resolve(process.cwd(), '.env.local');
+config({ path: envPath });
+
+import { auth } from '@/lib/auth';
 import { closeConnection, db } from '../index';
 import { options, questions, subjects } from '../schema';
 import { englishQuestions } from './english-questions';
 import { historyQuestions } from './history-questions';
+import { physicsQuestions } from './physics-questions';
 
 export async function seedDatabase() {
 	console.log('Starting database seeding...');
@@ -14,31 +22,71 @@ export async function seedDatabase() {
 	}
 
 	try {
-		// 1. Seed User
-		// Note: The previous code was checking subjects, but let's do user first or alongside.
+		// Check if subjects already exist
+		const existingSubjects = await db.select().from(subjects);
+		console.log(
+			'Existing subjects found:',
+			existingSubjects.map((s) => s.name)
+		);
 
-		// Actually, we should check subjects first to avoid re-seeding them if they exist.
+		let historySubject = existingSubjects.find((s) => s.name === 'History');
+		let englishSubject = existingSubjects.find((s) => s.name === 'English FAL');
+		let physicsSubject = existingSubjects.find((s) => s.name === 'Physical Sciences');
 
-		// Insert subjects
-		const [historySubject, englishSubject] = await db
-			.insert(subjects)
-			.values([
-				{
-					name: 'History',
-					description: 'CAPS History Grades 10-12',
-					curriculumCode: 'CAPS-HIST',
-					isActive: true,
-				},
-				{
-					name: 'English FAL',
-					description: 'CAPS English First Additional Language Grades 10-12',
-					curriculumCode: 'CAPS-EFAL',
-					isActive: true,
-				},
-			])
-			.returning();
+		// Insert missing subjects
+		const subjectsToInsert = [];
 
-		console.log('✓ Subjects seeded:', historySubject.name, '&', englishSubject.name);
+		if (!historySubject) {
+			subjectsToInsert.push({
+				name: 'History',
+				description: 'CAPS History Grades 10-12',
+				curriculumCode: 'CAPS-HIST',
+				isActive: true,
+			});
+		}
+
+		if (!englishSubject) {
+			subjectsToInsert.push({
+				name: 'English FAL',
+				description: 'CAPS English First Additional Language Grades 10-12',
+				curriculumCode: 'CAPS-EFAL',
+				isActive: true,
+			});
+		}
+
+		if (!physicsSubject) {
+			subjectsToInsert.push({
+				name: 'Physical Sciences',
+				description: 'CAPS Physical Sciences Grades 9-12 covering Physics topics',
+				curriculumCode: 'CAPS-PHYS',
+				isActive: true,
+			});
+		}
+
+		if (subjectsToInsert.length > 0) {
+			const insertedSubjects = await db.insert(subjects).values(subjectsToInsert).returning();
+
+			// Update references
+			insertedSubjects.forEach((subject) => {
+				if (subject.name === 'History') historySubject = subject;
+				if (subject.name === 'English FAL') englishSubject = subject;
+				if (subject.name === 'Physical Sciences') physicsSubject = subject;
+			});
+		}
+
+		// Ensure we have all subjects
+		if (!historySubject || !englishSubject || !physicsSubject) {
+			throw new Error('Failed to get all required subjects');
+		}
+
+		console.log(
+			'✓ Subjects seeded:',
+			historySubject.name,
+			'&',
+			englishSubject.name,
+			'&',
+			physicsSubject.name
+		);
 
 		// Seed History questions within transaction
 		await db.transaction(async (tx) => {
@@ -46,7 +94,7 @@ export async function seedDatabase() {
 				const [question] = await tx
 					.insert(questions)
 					.values({
-						subjectId: historySubject.id,
+						subjectId: historySubject!.id,
 						questionText: q.questionText,
 						gradeLevel: q.gradeLevel,
 						topic: q.topic,
@@ -76,7 +124,7 @@ export async function seedDatabase() {
 				const [question] = await tx
 					.insert(questions)
 					.values({
-						subjectId: englishSubject.id,
+						subjectId: englishSubject!.id,
 						questionText: q.questionText,
 						gradeLevel: q.gradeLevel,
 						topic: q.topic,
@@ -100,18 +148,38 @@ export async function seedDatabase() {
 		});
 		console.log(`✓ ${englishQuestions.length} English questions seeded`);
 
-		// 2. Seed Test User
-		// We use the auth API to ensure password hashing and account creation
-		// Note: auth.api.signUpEmail might not be directly available or work in this script context
-		// depending on how better-auth is structured (it often requires a request context).
-		// However, better-auth v1+ usually exposes server-side APIs.
-		// If api.signUpEmail expects a request, we might need to mock it or insert directly.
-		// Let's try to insert directly if we can hash the password, BUT we don't have the hashing algo easily.
-		// Better-auth usually uses bcrypt or argon2.
+		// Seed Physics questions within transaction
+		await db.transaction(async (tx) => {
+			for (const q of physicsQuestions) {
+				const [question] = await tx
+					.insert(questions)
+					.values({
+						subjectId: physicsSubject!.id,
+						questionText: q.questionText,
+						imageUrl: q.imageUrl || null,
+						gradeLevel: q.gradeLevel,
+						topic: q.topic,
+						difficulty: q.difficulty,
+						marks: q.marks,
+						isActive: true,
+					})
+					.returning();
 
-		// Let's try to use the auth.api if available.
-		// Checking the import above: import { auth } from '@/lib/auth';
+				for (const opt of q.options) {
+					await tx.insert(options).values({
+						questionId: question.id,
+						optionText: opt.text,
+						isCorrect: opt.isCorrect,
+						optionLetter: opt.letter,
+						explanation: opt.explanation || null,
+						isActive: true,
+					});
+				}
+			}
+		});
+		console.log(`✓ ${physicsQuestions.length} Physics questions seeded`);
 
+		// Seed Test User
 		const testEmail = 'student@matricmaster.ai';
 
 		console.log('Seeding test user...');
@@ -123,15 +191,10 @@ export async function seedDatabase() {
 					password: 'password123',
 					name: 'Test Student',
 				},
-				// We might need to mock headers if better-auth checks them strictly,
-				// but usually for internal calls it's fine.
 			});
 			console.log('✓ Test user seeded: student@matricmaster.ai / password123');
 		} catch (e) {
 			console.error('Failed to seed user via Auth API:', e);
-			// Fallback or rethrow?
-			// If this fails, it might be due to context.
-			// We will just log it.
 		}
 
 		console.log('\n✅ Database seeding completed successfully!');
