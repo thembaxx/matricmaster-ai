@@ -342,9 +342,12 @@ export default function EnhancedTestQuizScreen() {
 						initial="hidden"
 						animate="visible"
 						exit="hidden"
-						className="flex flex-col h-full justify-between"
+						className="flex flex-col h-full justify-center"
 					>
-						<motion.div variants={itemVariants} className="flex items-center justify-between mb-8">
+						<motion.div
+							variants={itemVariants}
+							className="flex items-center justify-between mb-8 fixed top-6 w-full left-0 px-6"
+						>
 							<Button
 								variant="ghost"
 								size="icon"
@@ -359,7 +362,7 @@ export default function EnhancedTestQuizScreen() {
 							<div className="w-10" />
 						</motion.div>
 
-						<motion.div variants={itemVariants} className="flex-1">
+						<motion.div variants={itemVariants} className="">
 							<Card className="bg-white/80 dark:bg-zinc-800/80 backdrop-blur-sm p-6 h-full">
 								<div className="space-y-6">
 									<div>
@@ -415,7 +418,7 @@ export default function EnhancedTestQuizScreen() {
 							</Card>
 						</motion.div>
 
-						<motion.div variants={itemVariants} className="mt-6">
+						<motion.div variants={itemVariants} className="mt-6 fixed left-0 bottom-6 w-full px-6">
 							<Button
 								onClick={startQuiz}
 								disabled={quizState.selectedSubjects.length === 0 || loading}
