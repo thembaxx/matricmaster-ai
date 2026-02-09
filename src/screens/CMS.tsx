@@ -2,6 +2,7 @@
 
 import { UploadButton } from '@uploadthing/react';
 import { Database, Edit2, ImagePlus, Plus, Search, Trash2, X } from 'lucide-react';
+import Image from 'next/image';
 import { useCallback, useEffect, useId, useState } from 'react';
 import type { OurFileRouter } from '@/app/api/uploadthing/core';
 import { Badge } from '@/components/ui/badge';
@@ -510,10 +511,13 @@ export default function CMS() {
 								{editingQuestion.imageUrl ? (
 									<div className="space-y-2">
 										<div className="relative rounded-lg overflow-hidden border border-input">
-											<img
+											<Image
 												src={editingQuestion.imageUrl}
 												alt="Question"
+												width={800}
+												height={400}
 												className="w-full h-auto max-h-64 object-contain bg-muted"
+												unoptimized
 											/>
 											<Button
 												type="button"
