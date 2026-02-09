@@ -3,13 +3,19 @@
 import { Icon } from '@iconify/react';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
+	Atom,
 	Award,
 	Bookmark,
+	BookOpen,
+	Calculator,
 	Calendar,
 	FileText,
+	FlaskConical,
 	Globe,
+	HelpCircle,
 	Home,
 	Layout,
+	Lightbulb,
 	LogOut,
 	Map as MapIcon,
 	Menu,
@@ -65,6 +71,7 @@ export default function MobileFrame({ children }: { children: React.ReactNode })
 	const sideMenuItems = [
 		{ href: '/dashboard', label: 'Dashboard', icon: Home },
 		{ href: '/search', label: 'Search', icon: SearchIcon },
+		{ href: '/lessons', label: 'Lessons', icon: BookOpen },
 		{ href: '/past-papers', label: 'Past Papers', icon: FileText },
 		{ href: '/test', label: 'Physics Test', icon: Sparkles },
 		{ href: '/study-path', label: 'Study Path', icon: MapIcon },
