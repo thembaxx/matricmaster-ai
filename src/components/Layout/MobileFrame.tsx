@@ -36,6 +36,7 @@ import {
 import { useTheme } from '@/hooks/use-theme';
 import { authClient } from '@/lib/auth-client';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
+import { ProfileMenu } from './profile-menu';
 
 export default function MobileFrame({ children }: { children: React.ReactNode }) {
 	const pathname = usePathname();
@@ -200,14 +201,21 @@ export default function MobileFrame({ children }: { children: React.ReactNode })
 							</p>
 						</Link>
 						{user && (
-							<div className="flex items-center space-x-2">
-								<Avatar className="h-10 w-10">
-									<AvatarImage src={user.image || undefined} alt={user.name} />
-									<AvatarFallback className="bg-[linear-gradient(318.67deg,rgb(106,255,94)_0%,rgb(13,255,247)_94.35%)] text-neutral-800">
-										{user.name?.charAt(0)}
-									</AvatarFallback>
-								</Avatar>
-							</div>
+							<ProfileMenu user={user}>
+								<motion.button
+									type="button"
+									className="z-120 pointer-events-auto"
+									aria-label="Open profile menu"
+									whileTap={{ scale: 0.9 }}
+								>
+									<Avatar className="h-10 w-10">
+										<AvatarImage src={user.image || undefined} alt={user.name} />
+										<AvatarFallback className="bg-[linear-gradient(318.67deg,rgb(106,255,94)_0%,rgb(13,255,247)_94.35%)] text-neutral-800">
+											{user.name?.charAt(0)}
+										</AvatarFallback>
+									</Avatar>
+								</motion.button>
+							</ProfileMenu>
 						)}
 					</header>
 				)}
