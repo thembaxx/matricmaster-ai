@@ -122,7 +122,7 @@ export default function Profile() {
 
 						{/* Radar Chart */}
 						<div className="w-full max-w-sm aspect-square relative mb-6">
-							<ChartContainer config={chartConfig} className="w-full h-full">
+							<ChartContainer config={chartConfig} className="min-w-0 min-h-0 w-full h-full">
 								<RadarChart cx="50%" cy="50%" outerRadius="70%" data={chartData}>
 									<defs>
 										<linearGradient id="radarGradient" x1="0" y1="0" x2="0" y2="1">
