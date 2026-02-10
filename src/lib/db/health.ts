@@ -34,7 +34,7 @@ export async function waitForDatabase(timeoutMs = 30000): Promise<boolean> {
 export function getDatabaseStatus() {
 	return {
 		isConnected: dbManager.isConnectedToDatabase(),
-		hasClient: !!dbManager['getClient'](),
-		hasDb: !!dbManager['getDb'](),
+		hasClient: !!dbManager.getClient(),
+		hasDb: !!dbManager.getDb(),
 	};
 }

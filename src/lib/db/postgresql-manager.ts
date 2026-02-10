@@ -1,7 +1,11 @@
 import 'dotenv/config';
+import { config } from 'dotenv';
 import { drizzle } from 'drizzle-orm/postgres-js';
 import postgres from 'postgres';
 import * as schema from './schema';
+
+// Load .env.local explicitly
+config({ path: '.env.local' });
 
 interface DatabaseConfig {
 	connectionString: string;
@@ -17,22 +21,22 @@ class PostgreSQLManager {
 	private isConnected = false;
 	private config: DatabaseConfig;
 
-	private constructor(config: DatabaseConfig) {
-		this.config = config;
-	}
-
-	public static getInstance(config?: DatabaseConfig): PostgreSQLManager {
-		if (!PostgreSQLManager.instance) {
-			const defaultConfig: DatabaseConfig = {
-				connectionString: process.env.DATABASE_URL || '',
-				maxConnections: 5,
-				connectionTimeout: 10,
-				idleTimeout: 30,
-			};
-			PostgreSQLManager.instance = new PostgreSQLManager(config || defaultConfig);
+		private constructor(config: DatabaseConfig) {
+			this.config = config;
 		}
-		return PostgreSQLManager.instance;
-	}
+
+		public static getInstance(config?: DatabaseConfig): PostgreSQLManager {
+			if (!PostgreSQLManager.instance) {
+				const defaultConfig: DatabaseConfig = {
+					connectionString: process.env.DATABASE_URL || '',
+					maxConnections: 10,
+					connectionTimeout: 30,
+					idleTimeout: 60,
+				};
+				PostgreSQLManager.instance = new PostgreSQLManager(config || defaultConfig);
+			}
+			return PostgreSQLManager.instance;
+		}
 
 	public async connect(): Promise<boolean> {
 		if (this.isConnected && this.client) {
@@ -71,7 +75,7 @@ class PostgreSQLManager {
 				return true;
 			}
 		} catch (error) {
-			console.error('❌ PostgreSQL connection failed:', (error as Error).message);
+			console.error('❌ PostgreSQL connection failed:', error);
 			this.isConnected = false;
 			this.cleanup();
 			return false;
@@ -116,19 +120,19 @@ class PostgreSQLManager {
 		return this.isConnected;
 	}
 
-	public async waitForConnection(maxRetries = 3, delay = 2000): Promise<boolean> {
-		for (let i = 0; i < maxRetries; i++) {
-			const connected = await this.connect();
-			if (connected) {
-				return true;
+		public async waitForConnection(maxRetries = 5, delay = 5000): Promise<boolean> {
+			for (let i = 0; i < maxRetries; i++) {
+				const connected = await this.connect();
+				if (connected) {
+					return true;
+				}
+				if (i < maxRetries - 1) {
+					console.log(`⏳ Retry attempt ${i + 1}/${maxRetries} in ${delay}ms...`);
+					await new Promise((resolve) => setTimeout(resolve, delay));
+				}
 			}
-			if (i < maxRetries - 1) {
-				console.log(`⏳ Retry attempt ${i + 1}/${maxRetries} in ${delay}ms...`);
-				await new Promise((resolve) => setTimeout(resolve, delay));
-			}
+			return false;
 		}
-		return false;
-	}
 }
 
 // Create singleton instance

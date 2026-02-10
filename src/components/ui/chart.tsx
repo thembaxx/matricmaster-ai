@@ -52,6 +52,8 @@ const ChartContainer = React.forwardRef<
 						'--chart-3': 'var(--color-brand-purple)',
 						'--chart-4': 'var(--color-brand-green)',
 						'--chart-5': 'var(--color-brand-red)',
+						minWidth: '0',
+						minHeight: '0',
 					} as React.CSSProperties
 				}
 				ref={ref}
@@ -62,7 +64,9 @@ const ChartContainer = React.forwardRef<
 				{...props}
 			>
 				<ChartStyle id={chartId} config={config} />
-				<RechartsPrimitive.ResponsiveContainer>{children}</RechartsPrimitive.ResponsiveContainer>
+				<RechartsPrimitive.ResponsiveContainer width="100%" height="100%">
+					{children}
+				</RechartsPrimitive.ResponsiveContainer>
 			</div>
 		</ChartContext.Provider>
 	);

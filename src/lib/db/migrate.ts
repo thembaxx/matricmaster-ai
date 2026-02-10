@@ -19,12 +19,13 @@ async function runMigrations() {
 		console.log('✅ Migrations complete!');
 	} catch (error) {
 		console.error('❌ Migration failed:', error);
-		if ((error as any).code === 'ETIMEDOUT') {
+		const dbError = error as { code?: string };
+		if (dbError.code === 'ETIMEDOUT') {
 			console.log('💡 Database connection timed out. Please check:');
 			console.log('   - Network connectivity to your database');
 			console.log('   - Database server status');
 			console.log('   - Firewall settings');
-		} else if ((error as any).code === '28P01') {
+		} else if (dbError.code === '28P01') {
 			console.log('💡 Authentication failed. Please check your database credentials');
 		}
 		process.exit(1);

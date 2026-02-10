@@ -8,7 +8,8 @@ async function testDatabaseAndAuth() {
 	try {
 		// Test database connection
 		console.log('1. Testing database connection...');
-		const dbConnected = await dbManager.waitForConnection(3, 2000);
+		console.log('   Database URL:', process.env.DATABASE_URL ? '✓ Configured' : '✗ Missing');
+		const dbConnected = await dbManager.waitForConnection(5, 5000);
 
 		if (dbConnected) {
 			console.log('✅ Database connection successful');
@@ -35,7 +36,7 @@ async function testDatabaseAndAuth() {
 				authConfig.socialProviders?.google ? 'Configured' : 'Not configured'
 			);
 			console.log('   Database Adapter:', authConfig.database ? 'Connected' : 'Fallback mode');
-		} catch (error) {
+		} catch (_error) {
 			console.log('ℹ️  Authentication configuration test skipped (expected in some cases)');
 		}
 

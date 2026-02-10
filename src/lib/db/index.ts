@@ -1,7 +1,11 @@
 import 'dotenv/config';
+import { config } from 'dotenv';
 import type { drizzle } from 'drizzle-orm/postgres-js';
 import type postgres from 'postgres';
 import { pgManager } from './postgresql-manager';
+
+// Load .env.local explicitly
+config({ path: '.env.local' });
 
 // Enhanced database connection with better error handling
 class DatabaseManager {
@@ -20,11 +24,11 @@ class DatabaseManager {
 		return DatabaseManager.instance;
 	}
 
-	public async initialize(): Promise<void> {
+		public async initialize(): Promise<void> {
 		console.log('🚀 Initializing PostgreSQL database connection...');
 
-		// Try PostgreSQL
-		const postgresConnected = await pgManager.waitForConnection(2, 3000);
+		// Try PostgreSQL with more retries for cloud databases
+		const postgresConnected = await pgManager.waitForConnection(5, 5000);
 
 		if (postgresConnected) {
 			this._client = pgManager.getClient();

@@ -28,7 +28,7 @@ export async function seedDatabase() {
 
 	try {
 		// Check if subjects already exist
-		const existingSubjects = await useDb.select().from(subjects);
+		const existingSubjects = await useDb.select?.().from(subjects);
 		console.log(
 			'Existing subjects found:',
 			existingSubjects.map((s) => s.name)
@@ -210,14 +210,18 @@ export async function seedDatabase() {
 }
 
 // Run if called directly (ES Module compatible check)
-seedDatabase()
-	.then(async () => {
-		console.log('Done!');
-		await closeConnection();
-		process.exit(0);
-	})
-	.catch(async (error) => {
-		console.error('Seed error:', error);
-		await closeConnection();
-		process.exit(1);
-	});
+try {
+	seedDatabase()
+		.then(async () => {
+			console.log('Done!');
+			await closeConnection();
+			process.exit(0);
+		})
+		.catch(async (error) => {
+			console.error('Seed error:', error);
+			await closeConnection();
+			process.exit(1);
+		});
+} catch (error) {
+	console.error('Seed error:', error);
+}
