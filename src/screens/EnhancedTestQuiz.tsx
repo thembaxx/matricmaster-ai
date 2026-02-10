@@ -350,7 +350,7 @@ export default function EnhancedTestQuizScreen() {
 							className="flex items-center justify-between mb-8 fixed top-6 w-full left-0 px-6 gap-4"
 						>
 							<Button variant="ghost" size="icon" onClick={() => router.back()} className="p-0">
-								<Icon icon="fluent-emoji-flat:timer-clock" className="w-6! h-6!" />
+								<Icon icon="fluent:chevron-left-24-filled" className="w-5! h-5!" />
 							</Button>
 							<h1 className="text-lg font-bold text-left grow text-zinc-900 dark:text-white">
 								Select Subjects
@@ -361,8 +361,8 @@ export default function EnhancedTestQuizScreen() {
 							<Card className="bg-white/80 dark:bg-zinc-800/80 backdrop-blur-sm p-6 h-full">
 								<div className="space-y-6">
 									<div>
-										<div className="flex items-center gap-2 mb-4">
-											<Icon icon="fluent-emoji-flat:yellow-circle" className="w-6 h-6" />
+										<div className="flex items-center gap-3 mb-4">
+											<Icon icon="fluent:checkmark-circle-hint-24-filled" className="w-5 h-5" />
 											<h2 className="text-lg font-medium text-zinc-900 dark:text-white/95">
 												Choose your subjects:
 											</h2>
