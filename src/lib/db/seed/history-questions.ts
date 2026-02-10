@@ -3,6 +3,7 @@ export const historyQuestions = [
 	{
 		questionText:
 			'The Sharpeville Massacre of 21 March 1960 was a turning point because it led to:',
+		hint: 'Think about what happened to resistance organizations after this tragic event',
 		gradeLevel: 12,
 		topic: 'Apartheid Resistance 1960-1994',
 		difficulty: 'medium',
@@ -26,6 +27,7 @@ export const historyQuestions = [
 	// Q2: 3 options (Grade 11 - Cold War)
 	{
 		questionText: "Which event BEST represents the 'thaw' in Cold War tensions during the 1970s?",
+		hint: 'Look for diplomatic agreements between superpowers in the 1970s',
 		gradeLevel: 11,
 		topic: 'Cold War Interventions',
 		difficulty: 'hard',
@@ -55,6 +57,7 @@ export const historyQuestions = [
 	// Q3: 4 options (Grade 10 - Mfecane)
 	{
 		questionText: 'The Mfecane period (early 1800s) primarily refers to:',
+		hint: "Consider Shaka Zulu's role in causing widespread displacement",
 		gradeLevel: 10,
 		topic: 'Southern African Kingdoms',
 		difficulty: 'medium',
@@ -90,6 +93,7 @@ export const historyQuestions = [
 	// Q4: 2 options (Grade 12 - Negotiations)
 	{
 		questionText: 'The Convention for a Democratic South Africa (CODESA) began in:',
+		hint: 'Remember that this happened in the early 1990s, not 1989',
 		gradeLevel: 12,
 		topic: 'Negotiations & Democracy',
 		difficulty: 'easy',
@@ -113,6 +117,7 @@ export const historyQuestions = [
 	// Q5: 3 options (Grade 11 - Apartheid Laws)
 	{
 		questionText: 'Which apartheid law classified South Africans into racial groups?',
+		hint: 'Look for the law that dealt with population classification',
 		gradeLevel: 11,
 		topic: 'Apartheid Legislation',
 		difficulty: 'medium',
@@ -143,6 +148,7 @@ export const historyQuestions = [
 	// Q6: 4 options (Grade 10 - World War I)
 	{
 		questionText: "South Africa's involvement in World War I included:",
+		hint: 'Think about South Africa fighting against German colonies in Africa',
 		gradeLevel: 10,
 		topic: 'World War I',
 		difficulty: 'medium',
@@ -180,6 +186,7 @@ export const historyQuestions = [
 	// Q7: 2 options (Grade 12 - TRC)
 	{
 		questionText: 'The Truth and Reconciliation Commission (TRC) was chaired by:',
+		hint: 'Think of a religious leader who became famous for this commission',
 		gradeLevel: 12,
 		topic: 'Post-Apartheid South Africa',
 		difficulty: 'easy',
@@ -203,6 +210,7 @@ export const historyQuestions = [
 	// Q8: 3 options (Grade 11 - Black Consciousness)
 	{
 		questionText: "Steve Biko's Black Consciousness Movement emphasized:",
+		hint: 'Focus on what needed to change mentally before political change',
 		gradeLevel: 11,
 		topic: 'Resistance in the 1970s',
 		difficulty: 'hard',
@@ -233,6 +241,7 @@ export const historyQuestions = [
 	// Q9: 4 options (Grade 10 - Mineral Revolution)
 	{
 		questionText: 'The discovery of gold on the Witwatersrand in 1886 led to:',
+		hint: "Consider both the city that grew rapidly and Britain's increased interest",
 		gradeLevel: 10,
 		topic: 'Mineral Revolution',
 		difficulty: 'medium',
@@ -268,6 +277,7 @@ export const historyQuestions = [
 	// Q10: 2 options (Grade 12 - Freedom Charter)
 	{
 		questionText: 'The Freedom Charter was adopted at the Congress of the People in Kliptown in:',
+		hint: 'This happened in the mid-1950s, before Sharpeville',
 		gradeLevel: 12,
 		topic: 'Resistance Documents',
 		difficulty: 'easy',

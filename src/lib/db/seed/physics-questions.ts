@@ -4,6 +4,7 @@ export const physicsQuestions = [
 		questionText:
 			"The velocity-time graph of an object is a horizontal line above the time axis. What is the object's acceleration?",
 		imageUrl: 'https://example.com/physics-diagram-1.png',
+		hint: 'Remember that acceleration is the slope of a velocity-time graph',
 		gradeLevel: 9,
 		topic: 'Kinematics',
 		difficulty: 'medium',
@@ -42,6 +43,7 @@ export const physicsQuestions = [
 		questionText:
 			'A book rests on a table. Which free-body diagram correctly represents the forces acting on the book?',
 		imageUrl: 'https://example.com/physics-diagram-2.png',
+		hint: 'Think about weight acting downward and normal force upward',
 		gradeLevel: 10,
 		topic: 'Forces',
 		difficulty: 'medium',

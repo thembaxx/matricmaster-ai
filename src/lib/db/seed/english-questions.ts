@@ -3,6 +3,7 @@ export const englishQuestions = [
 	{
 		questionText:
 			"In Tatamkhulu Afrika's poem 'Nothing's Changed', the 'whites only inn' symbolizes:",
+		hint: 'Think about what persisted even after apartheid laws ended',
 		gradeLevel: 12,
 		topic: 'Poetry Analysis',
 		difficulty: 'medium',
@@ -27,6 +28,7 @@ export const englishQuestions = [
 	// Q2: 3 options (Grade 11 - Language Structures)
 	{
 		questionText: 'Which sentence demonstrates CORRECT subject-verb agreement?',
+		hint: 'Check if plural subjects match with plural verbs',
 		gradeLevel: 11,
 		topic: 'Language Structures',
 		difficulty: 'medium',
