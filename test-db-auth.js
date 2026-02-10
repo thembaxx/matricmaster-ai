@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import { auth } from './src/lib/auth';
-import { dbManager, pgManager } from './src/lib/db';
+import { dbManager } from './src/lib/db';
 
 async function testDatabaseAndAuth() {
 	console.log('🧪 Testing Database and Authentication Setup\n');

@@ -35,7 +35,7 @@ async function testDatabaseAndAuth() {
 				authConfig.socialProviders?.google ? 'Configured' : 'Not configured'
 			);
 			console.log('   Database Adapter:', authConfig.database ? 'Connected' : 'Fallback mode');
-		} catch (error) {
+		} catch (_error) {
 			console.log('ℹ️  Authentication configuration test skipped (expected in some cases)');
 		}
 

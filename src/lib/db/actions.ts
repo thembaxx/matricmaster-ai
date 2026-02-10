@@ -91,7 +91,7 @@ export async function getSubjectsAction(): Promise<Subject[]> {
 export async function getSubjectByIdAction(id: number): Promise<Subject | null> {
 	const db = await getConnectedDb();
 	if (!db) {
-		return mockSubjects.find(subject => subject.id === id) || null;
+		return mockSubjects.find((subject) => subject.id === id) || null;
 	}
 	const [subject] = await db
 		.select()
@@ -212,10 +212,10 @@ export async function getQuestionWithOptionsAction(
 	const db = await getConnectedDb();
 	if (!db) {
 		// Check mock data for the question
-		const mockQuestion = mockQuestions.find(q => q.id === id);
+		const mockQuestion = mockQuestions.find((q) => q.id === id);
 		if (!mockQuestion) return null;
-		
-		const mockOpts = mockOptions.filter(option => option.questionId === id);
+
+		const mockOpts = mockOptions.filter((option) => option.questionId === id);
 		return {
 			...mockQuestion,
 			options: mockOpts,
@@ -325,14 +325,14 @@ export async function getRandomQuestionsAction(
 	const db = await getConnectedDb();
 	if (!db) {
 		// Filter mock questions by subject and difficulty
-		let filteredQuestions = mockQuestions.filter(q => q.subjectId === subjectId);
+		let filteredQuestions = mockQuestions.filter((q) => q.subjectId === subjectId);
 		if (difficulty) {
-			filteredQuestions = filteredQuestions.filter(q => q.difficulty === difficulty);
+			filteredQuestions = filteredQuestions.filter((q) => q.difficulty === difficulty);
 		}
 		// Return limited number of questions
 		return filteredQuestions.slice(0, count);
 	}
-	
+
 	const conditions = [eq(questions.subjectId, subjectId), eq(questions.isActive, true)];
 
 	if (difficulty) {
@@ -386,7 +386,7 @@ export async function getRandomQuestionsFromMultipleSubjectsAction(
 	const db = await getConnectedDb();
 	if (!db) {
 		// Return mock questions from the specified subjects
-		const mockQuestionsFiltered = mockQuestions.filter(q => subjectIds.includes(q.subjectId));
+		const mockQuestionsFiltered = mockQuestions.filter((q) => subjectIds.includes(q.subjectId));
 		return mockQuestionsFiltered.sort(() => Math.random() - 0.5).slice(0, totalCount);
 	}
 	// For simplicity, we'll get questions from each subject proportionally
@@ -439,7 +439,7 @@ export async function createOptionsAction(
 export async function getOptionsByQuestionIdAction(questionId: string): Promise<Option[]> {
 	const db = await getConnectedDb();
 	if (!db) {
-		return mockOptions.filter(option => option.questionId === questionId);
+		return mockOptions.filter((option) => option.questionId === questionId);
 	}
 	return db
 		.select()
@@ -489,15 +489,15 @@ export async function getSubjectWithQuestionsAction(
 	const db = await getConnectedDb();
 	if (!db) {
 		// Return mock data
-		const mockSubject = mockSubjects.find(s => s.id === subjectId);
+		const mockSubject = mockSubjects.find((s) => s.id === subjectId);
 		if (!mockSubject) throw new Error('Subject not found');
-		
-		const mockQuestionsForSubject = mockQuestions.filter(q => q.subjectId === subjectId);
-		const questionsWithOptions = mockQuestionsForSubject.map(q => ({
+
+		const mockQuestionsForSubject = mockQuestions.filter((q) => q.subjectId === subjectId);
+		const questionsWithOptions = mockQuestionsForSubject.map((q) => ({
 			...q,
-			options: mockOptions.filter(opt => opt.questionId === q.id)
+			options: mockOptions.filter((opt) => opt.questionId === q.id),
 		}));
-		
+
 		return {
 			...mockSubject,
 			questions: questionsWithOptions,
