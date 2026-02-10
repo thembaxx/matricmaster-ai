@@ -1,8 +1,9 @@
 /** biome-ignore-all lint/performance/noImgElement: NN */
 'use client';
 
+import { Icon } from '@iconify/react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { ArrowLeft, CheckCircle2, Clock, Dices, TrendingUp, XCircle } from 'lucide-react';
+import { ArrowLeft, CheckCircle2, Clock, TrendingUp, XCircle } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { Badge } from '@/components/ui/badge';
@@ -333,7 +334,7 @@ export default function EnhancedTestQuizScreen() {
 	}
 
 	return (
-		<div className="flex flex-col h-full p-6 grow">
+		<div className="flex flex-col h-full bg-zinc-50 dark:bg-zinc-950 font-lexend relative p-6">
 			<AnimatePresence mode="wait">
 				{screen === 'selection' && (
 					<motion.div
@@ -348,13 +349,8 @@ export default function EnhancedTestQuizScreen() {
 							variants={itemVariants}
 							className="flex items-center justify-between mb-8 fixed top-6 w-full left-0 px-6 gap-4"
 						>
-							<Button
-								variant="ghost"
-								size="icon"
-								onClick={() => router.back()}
-								className="rounded-full bg-white/80 dark:bg-zinc-800/80 backdrop-blur-sm"
-							>
-								<ArrowLeft className="w-6 h-6" />
+							<Button variant="ghost" size="icon" onClick={() => router.back()} className="p-0">
+								<Icon icon="fluent-emoji-flat:timer-clock" className="w-6! h-6!" />
 							</Button>
 							<h1 className="text-lg font-bold text-left grow text-zinc-900 dark:text-white">
 								Select Subjects
@@ -365,9 +361,12 @@ export default function EnhancedTestQuizScreen() {
 							<Card className="bg-white/80 dark:bg-zinc-800/80 backdrop-blur-sm p-6 h-full">
 								<div className="space-y-6">
 									<div>
-										<h2 className="text-lg font-semibold mb-4 text-zinc-900 dark:text-white">
-											Choose your subjects:
-										</h2>
+										<div className="flex items-center gap-2 mb-4">
+											<Icon icon="fluent-emoji-flat:yellow-circle" className="w-6 h-6" />
+											<h2 className="text-lg font-medium text-zinc-900 dark:text-white/95">
+												Choose your subjects:
+											</h2>
+										</div>
 										<p className="text-sm text-zinc-600 dark:text-zinc-300 mb-4">
 											{quizState.isMixedMode
 												? `Mixed mode: ${quizState.selectedSubjects.length} subjects selected (${quizState.selectedSubjects.length * 20} questions)`
@@ -388,9 +387,9 @@ export default function EnhancedTestQuizScreen() {
 												>
 													<Badge
 														variant={isSelected ? 'default' : 'outline'}
-														className={`cursor-pointer px-4 py-2 rounded-full text-sm ${
+														className={`cursor-pointer px-4 py-2 rounded-full text-sm font-medium ${
 															isSelected
-																? 'bg-linear-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-indigo-700 text-white'
+																? 'font-semibold bg-linear-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-indigo-700 text-white'
 																: 'bg-white dark:bg-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-600'
 														}`}
 														onClick={() => toggleSubject(subject.id)}
@@ -409,7 +408,7 @@ export default function EnhancedTestQuizScreen() {
 											onClick={selectRandomSubjects}
 											className="w-full bg-white/50 dark:bg-zinc-700/50 hover:bg-white/80 dark:hover:bg-zinc-600/80"
 										>
-											<Dices className="w-4 h-4 mr-2" />
+											<Icon icon="fa6-solid:dice" className="w-4 h-4 mr-2" />
 											Random Selection
 										</Button>
 									</motion.div>
@@ -421,8 +420,9 @@ export default function EnhancedTestQuizScreen() {
 							<Button
 								onClick={startQuiz}
 								disabled={quizState.selectedSubjects.length === 0 || loading}
-								className="w-full bg-brand-blue shadow shadow-brand-blue text-white h-14 font-semibold"
+								className="w-full bg-brand-blue shadow shadow-brand-blue gap-3 text-white h-14 font-semibold"
 							>
+								<Icon icon="fluent:play-circle-sparkle-24-filled" className="w-6! h-6!" />
 								Start Quiz
 							</Button>
 						</motion.div>
