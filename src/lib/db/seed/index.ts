@@ -6,11 +6,16 @@ const envPath = resolve(process.cwd(), '.env.local');
 config({ path: envPath });
 
 import { auth } from '@/lib/auth';
-import { closeConnection, db } from '../index';
+import { closeConnection, db, dbManager } from '../index';
+import { sqliteDb, sqliteManager } from '../sqlite';
 import { options, questions, subjects } from '../schema';
 import { englishQuestions } from './english-questions';
 import { historyQuestions } from './history-questions';
 import { physicsQuestions } from './physics-questions';
+
+// Use appropriate database based on availability
+const useDb = dbManager.isConnectedToDatabase() ? db : sqliteDb;
+const useManager = dbManager.isConnectedToDatabase() ? dbManager : sqliteManager;
 
 export async function seedDatabase() {
 	console.log('Starting database seeding...');
@@ -18,12 +23,14 @@ export async function seedDatabase() {
 	if (process.env.DATABASE_URL) {
 		console.log(`DATABASE_URL starts with: ${process.env.DATABASE_URL.substring(0, 10)}...`);
 	} else {
-		console.error('DATABASE_URL is missing!');
+		console.log('DATABASE_URL not set, falling back to SQLite');
 	}
+	
+	console.log('Using database:', dbManager.isConnectedToDatabase() ? 'PostgreSQL' : 'SQLite');
 
 	try {
 		// Check if subjects already exist
-		const existingSubjects = await db.select().from(subjects);
+		const existingSubjects = await useDb.select().from(subjects);
 		console.log(
 			'Existing subjects found:',
 			existingSubjects.map((s) => s.name)
@@ -64,7 +71,7 @@ export async function seedDatabase() {
 		}
 
 		if (subjectsToInsert.length > 0) {
-			const insertedSubjects = await db.insert(subjects).values(subjectsToInsert).returning();
+			const insertedSubjects = await useDb.insert(subjects).values(subjectsToInsert).returning();
 
 			// Update references
 			insertedSubjects.forEach((subject) => {
@@ -89,7 +96,7 @@ export async function seedDatabase() {
 		);
 
 		// Seed History questions within transaction
-		await db.transaction(async (tx) => {
+		await useDb.transaction(async (tx) => {
 			for (const q of historyQuestions) {
 				const [question] = await tx
 					.insert(questions)
@@ -119,7 +126,7 @@ export async function seedDatabase() {
 		console.log(`✓ ${historyQuestions.length} History questions seeded`);
 
 		// Seed English questions within transaction
-		await db.transaction(async (tx) => {
+		await useDb.transaction(async (tx) => {
 			for (const q of englishQuestions) {
 				const [question] = await tx
 					.insert(questions)
@@ -149,7 +156,7 @@ export async function seedDatabase() {
 		console.log(`✓ ${englishQuestions.length} English questions seeded`);
 
 		// Seed Physics questions within transaction
-		await db.transaction(async (tx) => {
+		await useDb.transaction(async (tx) => {
 			for (const q of physicsQuestions) {
 				const [question] = await tx
 					.insert(questions)
