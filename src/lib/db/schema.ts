@@ -13,13 +13,13 @@ import {
 
 // Import better-auth schema for consistency
 import {
-	users,
-	sessions,
 	accounts,
-	verifications,
-	usersRelations,
-	sessionsRelations,
 	accountsRelations,
+	sessions,
+	sessionsRelations,
+	users,
+	usersRelations,
+	verifications,
 } from './better-auth-schema';
 
 // Export better-auth tables with consistent naming

@@ -6,16 +6,14 @@ const envPath = resolve(process.cwd(), '.env.local');
 config({ path: envPath });
 
 import { auth } from '@/lib/auth';
-import { closeConnection, db, dbManager } from '../index';
-import { sqliteDb, sqliteManager } from '../sqlite';
+import { closeConnection, db } from '../index';
 import { options, questions, subjects } from '../schema';
 import { englishQuestions } from './english-questions';
 import { historyQuestions } from './history-questions';
 import { physicsQuestions } from './physics-questions';
 
-// Use appropriate database based on availability
-const useDb = dbManager.isConnectedToDatabase() ? db : sqliteDb;
-const useManager = dbManager.isConnectedToDatabase() ? dbManager : sqliteManager;
+// Use PostgreSQL database only
+const useDb = db;
 
 export async function seedDatabase() {
 	console.log('Starting database seeding...');
@@ -23,10 +21,10 @@ export async function seedDatabase() {
 	if (process.env.DATABASE_URL) {
 		console.log(`DATABASE_URL starts with: ${process.env.DATABASE_URL.substring(0, 10)}...`);
 	} else {
-		console.log('DATABASE_URL not set, falling back to SQLite');
+		console.log('DATABASE_URL not set');
 	}
-	
-	console.log('Using database:', dbManager.isConnectedToDatabase() ? 'PostgreSQL' : 'SQLite');
+
+	console.log('Using database: PostgreSQL');
 
 	try {
 		// Check if subjects already exist
