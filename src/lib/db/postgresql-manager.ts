@@ -71,7 +71,7 @@ class PostgreSQLManager {
 				return true;
 			}
 		} catch (error) {
-			console.error('❌ PostgreSQL connection failed:', (error as Error).message);
+			console.error('❌ PostgreSQL connection failed:', error);
 			this.isConnected = false;
 			this.cleanup();
 			return false;

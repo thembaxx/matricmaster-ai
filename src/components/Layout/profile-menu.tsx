@@ -23,7 +23,7 @@ export function ProfileMenu({
 	children: React.ReactNode;
 	user: typeof authClient.$Infer.Session.user;
 }) {
-	const [isOpen, setIsOpen] = useState(true);
+	const [isOpen, setIsOpen] = useState(false);
 
 	return (
 		<DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
