@@ -1,11 +1,5 @@
 import { relations } from 'drizzle-orm';
-import {
-	boolean,
-	index,
-	text,
-	timestamp,
-	pgTable,
-} from 'drizzle-orm/pg-core';
+import { boolean, index, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
 
 // Better-auth core tables - these should match your existing schema
 export const users = pgTable(
@@ -69,17 +63,14 @@ export const accounts = pgTable(
 	})
 );
 
-export const verifications = pgTable(
-	'verifications',
-	{
-		id: text('id').primaryKey(),
-		identifier: text('identifier').notNull(),
-		value: text('value').notNull(),
-		expiresAt: timestamp('expiresAt').notNull(),
-		createdAt: timestamp('createdAt').defaultNow(),
-		updatedAt: timestamp('updatedAt').defaultNow(),
-	}
-);
+export const verifications = pgTable('verifications', {
+	id: text('id').primaryKey(),
+	identifier: text('identifier').notNull(),
+	value: text('value').notNull(),
+	expiresAt: timestamp('expiresAt').notNull(),
+	createdAt: timestamp('createdAt').defaultNow(),
+	updatedAt: timestamp('updatedAt').defaultNow(),
+});
 
 // Better-auth relations
 export const usersRelations = relations(users, ({ many }) => ({

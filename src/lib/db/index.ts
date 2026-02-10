@@ -1,11 +1,9 @@
 import 'dotenv/config';
-import { drizzle } from 'drizzle-orm/postgres-js';
-import postgres from 'postgres';
-import * as schema from './schema';
-import { sqliteManager } from './sqlite';
+import type { drizzle } from 'drizzle-orm/postgres-js';
+import type postgres from 'postgres';
 import { pgManager } from './postgresql-manager';
 
-// Enhanced database connection with better error handling and proper fallback
+// Enhanced database connection with better error handling
 class DatabaseManager {
 	private static instance: DatabaseManager;
 	private _client: ReturnType<typeof postgres> | null = null;
@@ -23,11 +21,11 @@ class DatabaseManager {
 	}
 
 	public async initialize(): Promise<void> {
-		console.log('🚀 Initializing database connections...');
-		
-		// Try PostgreSQL first
+		console.log('🚀 Initializing PostgreSQL database connection...');
+
+		// Try PostgreSQL
 		const postgresConnected = await pgManager.waitForConnection(2, 3000);
-		
+
 		if (postgresConnected) {
 			this._client = pgManager.getClient();
 			this._db = pgManager.getDb();
@@ -35,21 +33,9 @@ class DatabaseManager {
 			this.isPostgreSQLAvailableVar = true;
 			console.log('✅ Using PostgreSQL database');
 		} else {
-			console.log('⚠️ PostgreSQL unavailable, checking SQLite fallback...');
-			// Try SQLite as fallback
-			try {
-				const sqliteDbInstance = sqliteManager.getDb();
-				if (sqliteManager.isConnectedToDatabase()) {
-					this._db = sqliteDbInstance;
-					this.isConnected = true;
-					this.isPostgreSQLAvailableVar = false;
-					console.log('✅ Using SQLite as database fallback');
-				}
-			} catch (error) {
-				console.error('❌ Both PostgreSQL and SQLite failed:', error);
-				this.isConnected = false;
-				this.isPostgreSQLAvailableVar = false;
-			}
+			console.error('❌ PostgreSQL connection failed');
+			this.isConnected = false;
+			this.isPostgreSQLAvailableVar = false;
 		}
 	}
 
@@ -61,19 +47,15 @@ class DatabaseManager {
 	}
 
 	public getDb() {
-		if (!this._db) {
-			if (this.isPostgreSQLAvailableVar) {
-				this._db = pgManager.getDb();
-			} else {
-				this._db = sqliteManager.getDb();
-			}
+		if (!this._db && this.isPostgreSQLAvailableVar) {
+			this._db = pgManager.getDb();
 		}
 		return this._db!;
 	}
 
-	public async waitForConnection(maxRetries = 3, delay = 1000): Promise<boolean> {
+	public async waitForConnection(_maxRetries = 3, _delay = 1000): Promise<boolean> {
 		if (this.isConnected) return true;
-		
+
 		await this.initialize();
 		return this.isConnected;
 	}
@@ -89,10 +71,8 @@ class DatabaseManager {
 	public getPreferredDatabase() {
 		if (this.isPostgreSQLAvailableVar) {
 			return 'postgresql';
-		} else if (sqliteManager.isConnectedToDatabase()) {
-			return 'sqlite';
 		}
-		return 'memory';
+		return 'none';
 	}
 
 	public async close(): Promise<void> {

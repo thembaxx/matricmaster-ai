@@ -46,7 +46,7 @@ class PostgreSQLManager {
 
 		try {
 			console.log('🔄 Attempting to connect to PostgreSQL...');
-			
+
 			this.client = postgres(this.config.connectionString, {
 				prepare: false,
 				max: this.config.maxConnections,
@@ -56,13 +56,13 @@ class PostgreSQLManager {
 			});
 
 			this.db = drizzle(this.client, { schema });
-			
+
 			// Test connection with timeout
 			const testResult = await Promise.race([
 				this.client`SELECT 1 as test`,
-				new Promise((_, reject) => 
+				new Promise((_, reject) =>
 					setTimeout(() => reject(new Error('Connection timeout')), 15000)
-				)
+				),
 			]);
 
 			if (testResult) {
@@ -70,7 +70,6 @@ class PostgreSQLManager {
 				console.log('✅ PostgreSQL connected successfully');
 				return true;
 			}
-			
 		} catch (error) {
 			console.error('❌ PostgreSQL connection failed:', (error as Error).message);
 			this.isConnected = false;
@@ -125,7 +124,7 @@ class PostgreSQLManager {
 			}
 			if (i < maxRetries - 1) {
 				console.log(`⏳ Retry attempt ${i + 1}/${maxRetries} in ${delay}ms...`);
-				await new Promise(resolve => setTimeout(resolve, delay));
+				await new Promise((resolve) => setTimeout(resolve, delay));
 			}
 		}
 		return false;

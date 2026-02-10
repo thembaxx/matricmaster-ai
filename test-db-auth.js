@@ -1,6 +1,6 @@
 import 'dotenv/config';
-import { dbManager, pgManager } from './src/lib/db';
 import { auth } from './src/lib/auth';
+import { dbManager, pgManager } from './src/lib/db';
 
 async function testDatabaseAndAuth() {
 	console.log('🧪 Testing Database and Authentication Setup\n');
@@ -9,7 +9,7 @@ async function testDatabaseAndAuth() {
 		// Test database connection
 		console.log('1. Testing database connection...');
 		const dbConnected = await dbManager.waitForConnection(3, 2000);
-		
+
 		if (dbConnected) {
 			console.log('✅ Database connection successful');
 			console.log('   Type:', dbManager.getPreferredDatabase());
@@ -25,8 +25,14 @@ async function testDatabaseAndAuth() {
 		try {
 			const authConfig = auth.getConfig();
 			console.log('✅ Authentication configured successfully');
-			console.log('   Email/Password:', authConfig.emailAndPassword?.enabled ? 'Enabled' : 'Disabled');
-			console.log('   Google OAuth:', authConfig.socialProviders?.google ? 'Configured' : 'Not configured');
+			console.log(
+				'   Email/Password:',
+				authConfig.emailAndPassword?.enabled ? 'Enabled' : 'Disabled'
+			);
+			console.log(
+				'   Google OAuth:',
+				authConfig.socialProviders?.google ? 'Configured' : 'Not configured'
+			);
 			console.log('   Database Adapter:', authConfig.database ? 'Connected' : 'Fallback mode');
 		} catch (error) {
 			console.log('❌ Authentication configuration failed:', error.message);
@@ -45,11 +51,10 @@ async function testDatabaseAndAuth() {
 		}
 
 		console.log('\n🎉 All tests completed successfully!');
-		
 	} catch (error) {
 		console.error('❌ Test failed with error:', error);
 	}
-	
+
 	// Cleanup
 	await dbManager.close();
 }

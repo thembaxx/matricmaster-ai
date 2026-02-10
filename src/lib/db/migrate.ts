@@ -7,7 +7,7 @@ async function runMigrations() {
 	try {
 		// Wait for database connection with retries
 		const isConnected = await dbManager.waitForConnection(5, 3000);
-		
+
 		if (!isConnected) {
 			console.error('❌ Could not establish database connection after retries');
 			console.log('💡 Please check your DATABASE_URL environment variable');
