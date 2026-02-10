@@ -3,22 +3,33 @@
 
 import { Icon } from '@iconify/react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { ArrowLeft, CheckCircle2, Clock, TrendingUp, XCircle } from 'lucide-react';
+import {
+	ArrowLeft,
+	CheckCircle2,
+	Clock,
+	Loader2,
+	MoreHorizontal,
+	Sparkles,
+	TrendingUp,
+	XCircle,
+} from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
-import { Progress } from '@/components/ui/progress';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Spinner } from '@/components/ui/spinner';
 import {
+	getOptionsByQuestionIdAction,
 	getRandomQuestionsAction,
 	getRandomQuestionsFromMultipleSubjectsAction,
 	getSubjectsAction,
 } from '@/lib/db/actions';
+import { cn } from '@/lib/utils';
+import { getExplanation } from '@/services/geminiService';
 
 // Types
 interface Subject {
@@ -51,6 +62,7 @@ interface Question {
 	topic: string;
 	difficulty: string;
 	marks: number;
+	hint: string | null; // Hint to help users answer the question
 	isActive: boolean;
 	createdAt: Date | null;
 	updatedAt: Date | null;
@@ -113,6 +125,8 @@ export default function EnhancedTestQuizScreen() {
 		isMixedMode: false,
 	});
 	const [screen, setScreen] = useState<'selection' | 'quiz' | 'results'>('selection');
+	const [aiExplanation, setAiExplanation] = useState<string | null>(null);
+	const [isExplaining, setIsExplaining] = useState(false);
 
 	const loadSubjects = useCallback(async () => {
 		try {
@@ -128,6 +142,24 @@ export default function EnhancedTestQuizScreen() {
 	useEffect(() => {
 		loadSubjects();
 	}, [loadSubjects]);
+
+	const handleExplain = async (subject: string, questionContext: string) => {
+		setIsExplaining(true);
+		setAiExplanation(null);
+		try {
+			const explanation = await getExplanation(subject, questionContext);
+			setAiExplanation(
+				explanation ?? "I'm sorry, I couldn't generate an explanation for this question."
+			);
+		} catch (error) {
+			console.error('Failed to get AI explanation:', error);
+			setAiExplanation(
+				"Sorry, I couldn't generate an explanation right now. Please check your internet connection and try again."
+			);
+		} finally {
+			setIsExplaining(false);
+		}
+	};
 
 	const toggleSubject = (subjectId: number) => {
 		setQuizState((prev) => {
@@ -178,52 +210,10 @@ export default function EnhancedTestQuizScreen() {
 			// Fetch options for each question
 			const questionsWithOptions = await Promise.all(
 				questions.map(async (question) => {
-					// This is a simplified approach - in reality you'd have a proper join query
-					// For now, we'll simulate the options being included
+					const options = await getOptionsByQuestionIdAction(question.id);
 					return {
 						...question,
-						options: [
-							{
-								id: 'opt1',
-								questionId: question.id,
-								optionText: 'Option A',
-								isCorrect: true,
-								optionLetter: 'A',
-								explanation: 'This is a placeholder explanation',
-								isActive: true,
-								createdAt: null,
-							},
-							{
-								id: 'opt2',
-								questionId: question.id,
-								optionText: 'Option B',
-								isCorrect: false,
-								optionLetter: 'B',
-								explanation: 'This is a placeholder explanation',
-								isActive: true,
-								createdAt: null,
-							},
-							{
-								id: 'opt3',
-								questionId: question.id,
-								optionText: 'Option C',
-								isCorrect: false,
-								optionLetter: 'C',
-								explanation: 'This is a placeholder explanation',
-								isActive: true,
-								createdAt: null,
-							},
-							{
-								id: 'opt4',
-								questionId: question.id,
-								optionText: 'Option D',
-								isCorrect: false,
-								optionLetter: 'D',
-								explanation: 'This is a placeholder explanation',
-								isActive: true,
-								createdAt: null,
-							},
-						] as Option[],
+						options: options || [],
 					};
 				})
 			);
@@ -334,7 +324,7 @@ export default function EnhancedTestQuizScreen() {
 	}
 
 	return (
-		<div className="flex flex-col h-full bg-zinc-50 dark:bg-zinc-950 font-lexend relative p-6">
+		<div className="flex flex-col h-full bg-zinc-50 dark:bg-zinc-950 font-lexend relative -mt-20">
 			<AnimatePresence mode="wait">
 				{screen === 'selection' && (
 					<motion.div
@@ -357,7 +347,10 @@ export default function EnhancedTestQuizScreen() {
 							</h1>
 						</motion.div>
 
-						<motion.div variants={itemVariants} className="grow flex items-center justify-center">
+						<motion.div
+							variants={itemVariants}
+							className="grow flex items-center justify-center pt-24"
+						>
 							<Card className="bg-white/80 dark:bg-zinc-800/80 backdrop-blur-sm p-6 h-full">
 								<div className="space-y-6">
 									<div>
@@ -436,9 +429,49 @@ export default function EnhancedTestQuizScreen() {
 						initial="hidden"
 						animate="visible"
 						exit="hidden"
-						className="flex flex-col h-full"
+						className="flex flex-col h-full font-lexend relative"
 					>
-						<motion.div variants={itemVariants} className="flex items-center justify-between mb-6">
+						{/* Header */}
+						<header className="bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl border-b border-zinc-100 dark:border-zinc-800 shrink-0">
+							<div className="max-w-2xl mx-auto w-full">
+								<div className="px-6 pt-12 pb-2 flex items-center justify-between">
+									<Button
+										variant="ghost"
+										size="icon"
+										onClick={() => router.push('/dashboard')}
+										className="rounded-full"
+									>
+										<ArrowLeft className="w-6 h-6" />
+									</Button>
+									<div className="text-center">
+										<h1 className="text-[10px] font-black text-zinc-400 uppercase tracking-[0.2em]">
+											Mathematics P1
+										</h1>
+										<p className="text-sm font-black text-zinc-900 dark:text-white">
+											Nov 2023 • NSC
+										</p>
+									</div>
+									<Button variant="ghost" size="icon" className="rounded-full">
+										<MoreHorizontal className="w-6 h-6" />
+									</Button>
+								</div>
+								{/* Progress */}
+								<div className="px-6 pb-6">
+									<div className="relative h-2 w-full bg-zinc-100 dark:bg-zinc-800 rounded-full overflow-hidden mb-3">
+										<div className="absolute top-0 left-0 h-full w-1/3 bg-brand-green rounded-full shadow-[0_0_12px_rgba(16,185,129,0.4)]" />
+									</div>
+									<div className="flex justify-between items-center text-[10px] font-black tracking-widest text-zinc-400 uppercase">
+										<span className="flex items-center gap-1.5">
+											<span className="w-1.5 h-1.5 rounded-full bg-brand-green" />
+											Algebra
+										</span>
+										<span>Question 3/12</span>
+									</div>
+								</div>
+							</div>
+						</header>
+
+						{/* <motion.div variants={itemVariants} className="flex items-center justify-between mb-6">
 							<Button
 								variant="ghost"
 								size="icon"
@@ -464,18 +497,38 @@ export default function EnhancedTestQuizScreen() {
 							>
 								{quizState.currentQuestionIndex + 1}/{quizState.questions.length}
 							</Badge>
-						</motion.div>
+						</motion.div> */}
 
 						{quizState.questions.length > 0 && (
 							<motion.div
 								key={quizState.currentQuestionIndex}
 								variants={itemVariants}
-								className="flex-1 flex flex-col"
+								className="flex-1 flex flex-col space-y-6 p-6"
 							>
-								<Card className="flex-1 flex flex-col bg-white/80 dark:bg-zinc-800/80 backdrop-blur-sm mb-6">
+								<div className="py-6 px-3">
+									<h2 className="text-3xl font-black text-zinc-900 dark:text-white leading-tight">
+										{
+											subjects.find(
+												(s) =>
+													s.id === quizState.questions[quizState.currentQuestionIndex].subjectId
+											)?.name
+										}
+									</h2>
+									<p className="text-xl italic font-serif dark:text-neutral-400">
+										{quizState.questions[quizState.currentQuestionIndex].topic}
+									</p>
+									<Badge
+										variant="outline"
+										className="bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300"
+									>
+										{quizState.questions[quizState.currentQuestionIndex].marks} marks
+									</Badge>
+								</div>
+
+								<Card className="flex-1 flex flex-col mb-6">
 									<ScrollArea className="flex-1 p-6">
 										<div className="mb-6">
-											<div className="flex items-center gap-2 mb-3">
+											{/* <div className="flex items-center gap-2 mb-3">
 												<Badge
 													variant="outline"
 													className="bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300"
@@ -500,11 +553,24 @@ export default function EnhancedTestQuizScreen() {
 												>
 													{quizState.questions[quizState.currentQuestionIndex].marks} marks
 												</Badge>
-											</div>
+											</div> */}
 
 											<h2 className="text-lg font-semibold mb-4 text-zinc-900 dark:text-white">
 												{quizState.questions[quizState.currentQuestionIndex].questionText}
 											</h2>
+
+											{quizState.questions[quizState.currentQuestionIndex].hint && (
+												<div className="mb-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
+													<div className="flex items-start gap-2">
+														<span className="text-blue-600 dark:text-blue-400 font-medium">
+															💡 Hint:
+														</span>
+														<span className="text-blue-800 dark:text-blue-200 text-sm">
+															{quizState.questions[quizState.currentQuestionIndex].hint}
+														</span>
+													</div>
+												</div>
+											)}
 
 											{quizState.questions[quizState.currentQuestionIndex].imageUrl && (
 												<div className="mb-4 rounded-lg overflow-hidden bg-zinc-100 dark:bg-zinc-700">
@@ -516,69 +582,155 @@ export default function EnhancedTestQuizScreen() {
 												</div>
 											)}
 										</div>
-
-										<RadioGroup
-											value={
-												quizState.selectedAnswers[
-													quizState.questions[quizState.currentQuestionIndex].id
-												] || ''
-											}
-											onValueChange={(value) =>
-												handleAnswerSelect(
-													quizState.questions[quizState.currentQuestionIndex].id,
-													value
-												)
-											}
-											className="space-y-4"
-										>
-											{quizState.questions[quizState.currentQuestionIndex].options?.map(
-												(option) => (
-													<div key={option.id} className="flex items-start space-x-3">
-														<RadioGroupItem
-															value={option.optionLetter}
-															id={option.id}
-															className="mt-1 border-2 border-zinc-300 dark:border-zinc-600 data-[state=checked]:border-blue-500 data-[state=checked]:bg-blue-500"
-														/>
-														<Label
-															htmlFor={option.id}
-															className="flex-1 text-base font-medium leading-relaxed cursor-pointer text-zinc-800 dark:text-zinc-200 hover:text-zinc-900 dark:hover:text-white"
-														>
-															{option.optionLetter}. {option.optionText}
-														</Label>
-													</div>
-												)
-											)}
-										</RadioGroup>
 									</ScrollArea>
-
-									<div className="p-6 border-t border-zinc-200 dark:border-zinc-700">
-										<div className="flex items-center justify-between gap-4">
-											<Button
-												variant="outline"
-												onClick={handlePrevious}
-												disabled={quizState.currentQuestionIndex === 0}
-												className="flex-1"
-											>
-												Previous
-											</Button>
-
-											{quizState.selectedAnswers[
-												quizState.questions[quizState.currentQuestionIndex].id
-											] && (
-												<Button
-													onClick={handleNext}
-													className="flex-1 bg-linear-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700"
-												>
-													{quizState.currentQuestionIndex === quizState.questions.length - 1
-														? 'Finish Quiz'
-														: 'Next'}
-												</Button>
-											)}
-										</div>
-									</div>
 								</Card>
 
-								<div className="bg-white/80 dark:bg-zinc-800/80 backdrop-blur-sm rounded-full p-4">
+								{/* Options Grid */}
+								<div>
+									<RadioGroup
+										value={
+											quizState.selectedAnswers[
+												quizState.questions[quizState.currentQuestionIndex].id
+											] || ''
+										}
+										onValueChange={(value) =>
+											handleAnswerSelect(
+												quizState.questions[quizState.currentQuestionIndex].id,
+												value
+											)
+										}
+										className="space-y-4 flex flex-col"
+									>
+										{quizState.questions[quizState.currentQuestionIndex].options?.map((option) => {
+											const selectedId =
+												quizState.selectedAnswers[
+													quizState.questions[quizState.currentQuestionIndex].id
+												] || '';
+
+											console.log(quizState);
+
+											const isSelected = selectedId === option.id;
+											const stateClasses =
+												'bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white border-zinc-100 dark:border-zinc-800 hover:border-brand-blue/30 hover:shadow-md p-4 rounded-xl flex items-center gap-3';
+
+											return (
+												<motion.div
+													key={option.id}
+													className={cn(
+														stateClasses,
+														isSelected ? 'border-2 dark:border-zinc-400' : ''
+													)}
+													whileTap={{ scale: 0.95 }}
+												>
+													<RadioGroupItem
+														value={option.optionLetter}
+														id={option.id}
+														className="relative"
+														//className="mt-1 border-2 border-zinc-300 dark:border-zinc-600 data-[state=checked]:border-blue-500 data-[state=checked]:bg-blue-500"
+													/>
+													<Label
+														htmlFor={option.id}
+														className="flex-1 text-lg  flex items-center gap-3 leading-relaxed cursor-pointer text-zinc-800 dark:text-zinc-200 hover:text-zinc-900 dark:hover:text-white"
+													>
+														<div
+															className={`w-10 h-10 rounded-2xl flex items-center justify-center text-base font-bold transition-colors ${'bg-zinc-50 dark:bg-zinc-800 text-zinc-200 group-hover:bg-brand-blue/5 group-hover:text-brand-blue'}`}
+														>
+															{option.optionLetter}
+														</div>
+
+														<span className="font-serif italic font-bold">{option.optionText}</span>
+													</Label>
+
+													{/* Hint Card */}
+													<div className="p-6 bg-brand-blue/5 dark:bg-brand-blue/10 rounded-[2rem] border border-brand-blue/10 flex gap-5 items-start transition-all hover:bg-brand-blue/10">
+														<div className="w-12 h-12 bg-white dark:bg-zinc-900 rounded-2xl flex items-center justify-center shrink-0 shadow-sm border border-brand-blue/10">
+															<Sparkles className="w-6 h-6 text-brand-blue" />
+														</div>
+														<div className="space-y-1">
+															<h4 className="font-black text-brand-blue text-xs uppercase tracking-widest">
+																Smart Hint
+															</h4>
+															<p className="text-sm text-zinc-600 dark:text-zinc-400 font-medium leading-relaxed">
+																A local maximum occurs where the function stops increasing and
+																starts decreasing. This always happens at a stationary point.
+															</p>
+														</div>
+													</div>
+
+													{/* AI Explanation Toggle */}
+													<div className="p-1 bg-linear-to-r from-brand-blue to-brand-green rounded-[2rem]">
+														<div className="bg-white dark:bg-zinc-950 rounded-[1.9rem] p-6 space-y-4">
+															<div className="flex items-center justify-between">
+																<div className="flex items-center gap-4">
+																	<div className="w-10 h-10 rounded-xl bg-brand-blue/10 flex items-center justify-center">
+																		<Sparkles className="w-5 h-5 text-brand-blue" />
+																	</div>
+																	<div>
+																		<h4 className="font-bold text-zinc-900 dark:text-white text-sm">
+																			Need a deeper explanation?
+																		</h4>
+																		<p className="text-[10px] font-bold text-zinc-500 uppercase tracking-tight">
+																			Ask MatricMaster AI
+																		</p>
+																	</div>
+																</div>
+																<Button
+																	size="sm"
+																	variant="ghost"
+																	className="font-black text-brand-blue hover:bg-brand-blue/5"
+																	onClick={() => handleExplain(option.id, option.optionText)}
+																	disabled={isExplaining}
+																>
+																	{isExplaining ? (
+																		<Loader2 className="w-4 h-4 animate-spin" />
+																	) : (
+																		'Explain'
+																	)}
+																</Button>
+															</div>
+
+															{aiExplanation && (
+																<div className="pt-4 border-t border-zinc-100 dark:border-zinc-800 animate-in fade-in slide-in-from-top-2">
+																	<p className="text-sm text-zinc-600 dark:text-zinc-400 font-medium leading-relaxed whitespace-pre-wrap">
+																		{aiExplanation}
+																	</p>
+																</div>
+															)}
+														</div>
+													</div>
+												</motion.div>
+											);
+										})}
+									</RadioGroup>
+								</div>
+
+								<div className="p-6 border-t border-zinc-200 dark:border-zinc-700">
+									<div className="flex items-center justify-between gap-4">
+										<Button
+											variant="outline"
+											onClick={handlePrevious}
+											disabled={quizState.currentQuestionIndex === 0}
+											className="flex-1"
+										>
+											Previous
+										</Button>
+
+										{quizState.selectedAnswers[
+											quizState.questions[quizState.currentQuestionIndex].id
+										] && (
+											<Button
+												onClick={handleNext}
+												className="flex-1 bg-linear-to-r text-white from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700"
+											>
+												{quizState.currentQuestionIndex === quizState.questions.length - 1
+													? 'Finish Quiz'
+													: 'Next'}
+											</Button>
+										)}
+									</div>
+								</div>
+
+								{/* <div className="bg-white/80 dark:bg-zinc-800/80 backdrop-blur-sm rounded-full p-4">
 									<Progress
 										value={
 											((quizState.currentQuestionIndex + 1) / quizState.questions.length) * 100
@@ -594,7 +746,7 @@ export default function EnhancedTestQuizScreen() {
 											%
 										</span>
 									</div>
-								</div>
+								</div> */}
 							</motion.div>
 						)}
 					</motion.div>

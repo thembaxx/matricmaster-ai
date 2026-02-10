@@ -116,6 +116,7 @@ export const questions = pgTable('questions', {
 	topic: varchar('topic', { length: 100 }).notNull(),
 	difficulty: varchar('difficulty', { length: 20 }).notNull().default('medium'),
 	marks: integer('marks').notNull().default(2),
+	hint: text('hint'), // Short hint to help users answer the question
 	isActive: boolean('is_active').notNull().default(true),
 	createdAt: timestamp('created_at').defaultNow(),
 	updatedAt: timestamp('updated_at').defaultNow(),
@@ -192,7 +193,9 @@ export type Subject = typeof subjects.$inferSelect;
 export type NewSubject = typeof subjects.$inferInsert;
 
 export type Question = typeof questions.$inferSelect;
-export type NewQuestion = typeof questions.$inferInsert;
+export type NewQuestion = typeof questions.$inferInsert & {
+	hint?: string | null;
+};
 
 export type Option = typeof options.$inferSelect;
 export type NewOption = typeof options.$inferInsert;
