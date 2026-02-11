@@ -1,5 +1,6 @@
 import { Atom, Calculator, ChevronRight, FlaskConical, Microscope, Sparkles } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { useId } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -16,6 +17,7 @@ const ICON_MAP: Record<string, React.ElementType> = {
 
 export default function Landing() {
 	const router = useRouter();
+	const gradientId = useId();
 
 	return (
 		<div className="flex flex-col h-full bg-zinc-50 dark:bg-zinc-950 font-inter overflow-hidden">
@@ -61,7 +63,7 @@ export default function Landing() {
 								<svg viewBox="0 0 100 100" className="w-48 h-48 relative z-10">
 									<title>Mathematical Geometry Illustration</title>
 									<defs>
-										<linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+										<linearGradient id={gradientId} x1="0%" y1="0%" x2="100%" y2="100%">
 											<stop offset="0%" style={{ stopColor: '#2563eb', stopOpacity: 1 }} />
 											<stop offset="100%" style={{ stopColor: '#7c3aed', stopOpacity: 1 }} />
 										</linearGradient>
@@ -71,7 +73,7 @@ export default function Landing() {
 										cx="50"
 										cy="50"
 										r="30"
-										stroke="url(#grad1)"
+										stroke={`url(#${gradientId})`}
 										strokeWidth="0.5"
 										fill="none"
 										strokeDasharray="2 2"
@@ -81,7 +83,7 @@ export default function Landing() {
 									<path
 										d="M 50 20 L 80 70 L 20 70 Z"
 										fill="none"
-										stroke="url(#grad1)"
+										stroke={`url(#${gradientId})`}
 										strokeWidth="2"
 										strokeLinejoin="round"
 									/>

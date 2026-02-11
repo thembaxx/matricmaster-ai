@@ -6,7 +6,7 @@ const publicRoutes = ['/', '/sign-in', '/sign-up', '/forgot-password', '/api/aut
 
 // Check if a route is public
 function isPublicRoute(pathname: string): boolean {
-	return publicRoutes.some((route) => pathname === route || pathname.startsWith(route + '/'));
+	return publicRoutes.some((route) => pathname === route || pathname.startsWith(`${route}/`));
 }
 
 // Check if user has a valid session via Better Auth cookie

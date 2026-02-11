@@ -545,7 +545,7 @@ export async function cloneQuestionAction(
 	const original = await getQuestionWithOptionsAction(questionId);
 	if (!original) throw new Error('Question not found');
 
-	const { id, createdAt, updatedAt, ...questionData } = original;
+	const { id: _id, createdAt: _createdAt, updatedAt: _updatedAt, ...questionData } = original;
 
 	return createQuestionAction(
 		{ ...questionData, ...modifications },

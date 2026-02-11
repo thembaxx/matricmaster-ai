@@ -405,6 +405,7 @@ export default function CMS() {
 	const questionId = useId();
 	const topicId = useId();
 	const marksId = useId();
+	const fileInputId = useId();
 
 	return (
 		<div className="flex-1 flex flex-col bg-background overflow-hidden pb-28">
@@ -748,14 +749,14 @@ export default function CMS() {
 												<div className="mt-2 h-full flex relative">
 													<input
 														type="file"
-														id="file-input"
+														id={fileInputId}
 														ref={fileInputRef}
 														onChange={handleImageSelect}
 														accept="image/*"
 														className="hidden"
 													/>
 													<label
-														htmlFor="file-input"
+														htmlFor={fileInputId}
 														onClick={triggerFileInput}
 														className="w-full rounded-lg border-2 border-dashed border-input p-4 flex flex-col items-center justify-center gap-2 hover:border-brand-purple hover:bg-muted/50 transition-colors cursor-pointer"
 													>
