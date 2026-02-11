@@ -4,7 +4,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Eye, EyeOff, Loader2 } from 'lucide-react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
@@ -22,6 +22,8 @@ type SignInValues = z.infer<typeof signInSchema>;
 
 export default function SignInPage() {
 	const router = useRouter();
+	const searchParams = useSearchParams();
+	const callbackUrl = searchParams.get('callbackUrl') || '/dashboard';
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState<string | null>(null);
 	const [showPassword, setShowPassword] = useState(false);
@@ -33,6 +35,25 @@ export default function SignInPage() {
 	} = useForm<SignInValues>({
 		resolver: zodResolver(signInSchema),
 	});
+
+	// Initialize database connection after successful authentication
+	const initializeDatabase = async () => {
+		try {
+			console.log('🔄 Initializing database after login...');
+			const response = await fetch('/api/db/init', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+			});
+			const result = await response.json();
+			if (result.success) {
+				console.log('✅ Database initialized after login');
+			} else {
+				console.warn('⚠️ Database initialization failed:', result.message);
+			}
+		} catch (err) {
+			console.error('❌ Error initializing database:', err);
+		}
+	};
 
 	const onSubmit = async (data: SignInValues) => {
 		setIsLoading(true);
@@ -46,14 +67,16 @@ export default function SignInPage() {
 			setError(authError.message || 'Invalid email or password');
 			setIsLoading(false);
 		} else {
-			router.push('/dashboard');
+			// Initialize database after successful login
+			await initializeDatabase();
+			router.push(callbackUrl);
 		}
 	};
 
 	const handleSocialSignIn = async (provider: 'google' | 'twitter') => {
 		await authClient.signIn.social({
 			provider,
-			callbackURL: '/dashboard',
+			callbackURL: callbackUrl,
 		});
 	};
 
@@ -64,7 +87,9 @@ export default function SignInPage() {
 			setError(authError.message || 'Failed to sign in as guest');
 			setIsLoading(false);
 		} else {
-			router.push('/dashboard');
+			// Initialize database after successful anonymous login
+			await initializeDatabase();
+			router.push(callbackUrl);
 		}
 	};
 

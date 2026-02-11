@@ -34,6 +34,25 @@ export default function SignUpPage() {
 		resolver: zodResolver(signUpSchema),
 	});
 
+	// Initialize database connection after successful authentication
+	const initializeDatabase = async () => {
+		try {
+			console.log('🔄 Initializing database after signup...');
+			const response = await fetch('/api/db/init', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+			});
+			const result = await response.json();
+			if (result.success) {
+				console.log('✅ Database initialized after signup');
+			} else {
+				console.warn('⚠️ Database initialization failed:', result.message);
+			}
+		} catch (err) {
+			console.error('❌ Error initializing database:', err);
+		}
+	};
+
 	const onSubmit = async (data: SignUpValues) => {
 		setIsLoading(true);
 		setError(null);
@@ -47,6 +66,8 @@ export default function SignUpPage() {
 			setError(authError.message || 'Failed to create account');
 			setIsLoading(false);
 		} else {
+			// Initialize database after successful signup
+			await initializeDatabase();
 			router.push('/dashboard');
 		}
 	};

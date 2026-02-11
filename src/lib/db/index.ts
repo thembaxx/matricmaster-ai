@@ -24,7 +24,7 @@ class DatabaseManager {
 		return DatabaseManager.instance;
 	}
 
-		public async initialize(): Promise<void> {
+	public async initialize(): Promise<void> {
 		console.log('🚀 Initializing PostgreSQL database connection...');
 
 		// Try PostgreSQL with more retries for cloud databases
@@ -92,8 +92,8 @@ class DatabaseManager {
 // Create singleton instance
 const dbManager = DatabaseManager.getInstance();
 
-// Initialize on startup
-dbManager.initialize().catch(console.error);
+// NOTE: Database is NOT initialized on startup
+// Call dbManager.initialize() after user authentication
 
 // Export for backward compatibility
 export const client = dbManager.getClient();
