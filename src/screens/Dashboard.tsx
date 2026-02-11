@@ -3,6 +3,7 @@
 
 import { ArrowRight, Bell, BookOpen, Check, Flame, FlaskConical, Play, Sigma } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -10,6 +11,29 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 
 export default function Dashboard() {
 	const router = useRouter();
+
+	// Initialize database connection when dashboard loads (for social login callbacks)
+	useEffect(() => {
+		const initializeDatabase = async () => {
+			try {
+				console.log('🔄 Dashboard: Initializing database...');
+				const response = await fetch('/api/db/init', {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+				});
+				const result = await response.json();
+				if (result.success) {
+					console.log('✅ Dashboard: Database initialized');
+				} else {
+					console.warn('⚠️ Dashboard: Database initialization failed:', result.message);
+				}
+			} catch (err) {
+				console.error('❌ Dashboard: Error initializing database:', err);
+			}
+		};
+
+		initializeDatabase();
+	}, []);
 
 	return (
 		<div className="flex flex-col h-full bg-background font-inter">

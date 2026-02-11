@@ -21,22 +21,22 @@ class PostgreSQLManager {
 	private isConnected = false;
 	private config: DatabaseConfig;
 
-		private constructor(config: DatabaseConfig) {
-			this.config = config;
-		}
+	private constructor(config: DatabaseConfig) {
+		this.config = config;
+	}
 
-		public static getInstance(config?: DatabaseConfig): PostgreSQLManager {
-			if (!PostgreSQLManager.instance) {
-				const defaultConfig: DatabaseConfig = {
-					connectionString: process.env.DATABASE_URL || '',
-					maxConnections: 10,
-					connectionTimeout: 30,
-					idleTimeout: 60,
-				};
-				PostgreSQLManager.instance = new PostgreSQLManager(config || defaultConfig);
-			}
-			return PostgreSQLManager.instance;
+	public static getInstance(config?: DatabaseConfig): PostgreSQLManager {
+		if (!PostgreSQLManager.instance) {
+			const defaultConfig: DatabaseConfig = {
+				connectionString: process.env.DATABASE_URL || '',
+				maxConnections: 10,
+				connectionTimeout: 30,
+				idleTimeout: 60,
+			};
+			PostgreSQLManager.instance = new PostgreSQLManager(config || defaultConfig);
 		}
+		return PostgreSQLManager.instance;
+	}
 
 	public async connect(): Promise<boolean> {
 		if (this.isConnected && this.client) {
@@ -51,12 +51,16 @@ class PostgreSQLManager {
 		try {
 			console.log('🔄 Attempting to connect to PostgreSQL...');
 
+			// Check if connection string is for Neon (contains neon.tech) to enable SSL
+			const isNeon = this.config.connectionString.includes('neon.tech');
+
 			this.client = postgres(this.config.connectionString, {
 				prepare: false,
 				max: this.config.maxConnections,
 				idle_timeout: this.config.idleTimeout,
 				connect_timeout: this.config.connectionTimeout,
 				onnotice: () => {},
+				ssl: isNeon ? 'require' : false,
 			});
 
 			this.db = drizzle(this.client, { schema });
@@ -120,19 +124,19 @@ class PostgreSQLManager {
 		return this.isConnected;
 	}
 
-		public async waitForConnection(maxRetries = 5, delay = 5000): Promise<boolean> {
-			for (let i = 0; i < maxRetries; i++) {
-				const connected = await this.connect();
-				if (connected) {
-					return true;
-				}
-				if (i < maxRetries - 1) {
-					console.log(`⏳ Retry attempt ${i + 1}/${maxRetries} in ${delay}ms...`);
-					await new Promise((resolve) => setTimeout(resolve, delay));
-				}
+	public async waitForConnection(maxRetries = 5, delay = 5000): Promise<boolean> {
+		for (let i = 0; i < maxRetries; i++) {
+			const connected = await this.connect();
+			if (connected) {
+				return true;
 			}
-			return false;
+			if (i < maxRetries - 1) {
+				console.log(`⏳ Retry attempt ${i + 1}/${maxRetries} in ${delay}ms...`);
+				await new Promise((resolve) => setTimeout(resolve, delay));
+			}
 		}
+		return false;
+	}
 }
 
 // Create singleton instance
