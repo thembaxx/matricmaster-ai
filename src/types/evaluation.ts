@@ -202,7 +202,7 @@ export function evaluateSummary(
 	studentAnswer: string,
 	requiredPoints: SummaryPoint[],
 	maxWordLimit: number,
-	requiredPointsCount: number = 7
+	requiredPointsCount = 7
 ): SummaryEvaluationResult {
 	// Analyze which points were included
 	const matchedPoints = analyzeSummaryPoints(studentAnswer, requiredPoints);

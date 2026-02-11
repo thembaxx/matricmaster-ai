@@ -780,7 +780,7 @@ export default function CMS() {
 														onValueChange={(value) =>
 															setEditingQuestion({
 																...editingQuestion,
-																subjectId: parseInt(value, 10),
+																subjectId: Number.parseInt(value, 10),
 															})
 														}
 													>
@@ -806,7 +806,7 @@ export default function CMS() {
 														onValueChange={(value) =>
 															setEditingQuestion({
 																...editingQuestion,
-																gradeLevel: parseInt(value, 10),
+																gradeLevel: Number.parseInt(value, 10),
 															})
 														}
 													>
@@ -905,7 +905,7 @@ export default function CMS() {
 												onChange={(e) =>
 													setEditingQuestion({
 														...editingQuestion,
-														marks: parseInt(e.target.value, 10) || 1,
+														marks: Number.parseInt(e.target.value, 10) || 1,
 													})
 												}
 											/>

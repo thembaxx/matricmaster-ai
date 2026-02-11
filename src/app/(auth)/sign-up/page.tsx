@@ -93,7 +93,7 @@ export default function SignUpPage() {
 								backgroundImage:
 									'url("https://lh3.googleusercontent.com/aida-public/AB6AXuBfb0kuL_fhXq3o8csXamj2nRCfjURKGnnMK3mMZgTmXYUVQ1jX7VkEnxZA3w6VWyeiOMUAlfWECd-Jw7Y0_tPc-flA4EOK1K45kIh2B8oz0yq5FlFtCotoPGjmfqsPvCcXAIjpTxP7lGyG_pUIqMjIS_VaTY0yr1pGhAtmP1ayFoJWLr_5sb6zAQbXeegS_01yhJhs9Cw_B15TW4YehQsGn72R8niG0D3Kpd_bESOTYKVYfE6y_2z5m75Y1sP08TR5gw7z7HzFKs_-")',
 							}}
-						></div>
+						/>
 					</div>
 
 					{/* Header Text */}

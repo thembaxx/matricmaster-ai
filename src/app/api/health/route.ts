@@ -11,16 +11,15 @@ export async function GET() {
 				database: 'connected',
 				timestamp: new Date().toISOString(),
 			});
-		} else {
-			return NextResponse.json(
-				{
-					status: 'degraded',
-					database: 'disconnected',
-					timestamp: new Date().toISOString(),
-				},
-				{ status: 503 }
-			);
 		}
+		return NextResponse.json(
+			{
+				status: 'degraded',
+				database: 'disconnected',
+				timestamp: new Date().toISOString(),
+			},
+			{ status: 503 }
+		);
 	} catch (error) {
 		return NextResponse.json(
 			{

@@ -20,17 +20,16 @@ export async function POST(_request: NextRequest) {
 				message: 'Database connected successfully',
 				connected: true,
 			});
-		} else {
-			console.log('❌ API: Database initialization failed');
-			return NextResponse.json(
-				{
-					success: false,
-					message: 'Failed to connect to database',
-					connected: false,
-				},
-				{ status: 503 }
-			);
 		}
+		console.log('❌ API: Database initialization failed');
+		return NextResponse.json(
+			{
+				success: false,
+				message: 'Failed to connect to database',
+				connected: false,
+			},
+			{ status: 503 }
+		);
 	} catch (error) {
 		console.error('❌ API: Error initializing database:', error);
 		return NextResponse.json(
