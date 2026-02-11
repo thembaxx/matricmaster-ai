@@ -609,7 +609,7 @@ export default function CMS() {
 					if (!open) setDrawerTab('basic');
 				}}
 			>
-				<DrawerContent className="max-h-[90vh] flex flex-col z-120 rounded-t-3xl pb-3">
+				<DrawerContent className="max-h-[90vh] flex flex-col z-50 rounded-t-3xl pb-3">
 					<DrawerHeader className="text-left border-b pb-4">
 						<DrawerTitle>
 							{editingQuestion?.id ? 'Edit Question' : 'Create New Question'}

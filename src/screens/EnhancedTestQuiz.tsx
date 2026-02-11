@@ -333,7 +333,7 @@ export default function EnhancedTestQuizScreen() {
 						initial="hidden"
 						animate="visible"
 						exit="hidden"
-						className="flex flex-col h-full justify-center"
+						className="flex flex-col h-full justify-center px-6"
 					>
 						<motion.div
 							variants={itemVariants}

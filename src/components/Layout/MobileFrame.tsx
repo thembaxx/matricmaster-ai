@@ -208,7 +208,7 @@ export default function MobileFrame({ children }: { children: React.ReactNode })
 							<ProfileMenu user={user}>
 								<motion.button
 									type="button"
-									className="z-120 pointer-events-auto"
+									className="z-50 pointer-events-auto"
 									aria-label="Open profile menu"
 									whileTap={{ scale: 0.9 }}
 								>
