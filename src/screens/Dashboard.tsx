@@ -1,55 +1,147 @@
-/** biome-ignore-all lint/a11y/noStaticElementInteractions: required */
 'use client';
 
-import { ArrowRight, Bell, BookOpen, Check, Flame, FlaskConical, Play, Sigma } from 'lucide-react';
+import {
+	ArrowRight,
+	Bell,
+	BookOpen,
+	Check,
+	Flame,
+	FlaskConical,
+	Loader2,
+	Play,
+	Sigma,
+} from 'lucide-react';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState, useTransition } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { useSession } from '@/lib/auth-client';
+
+interface DayProgress {
+	day: string;
+	date: number;
+	status: 'complete' | 'active' | 'idle';
+}
+
+interface Challenge {
+	title: string;
+	time: string;
+	difficulty: 'Easy' | 'Medium' | 'Hard';
+	icon: React.ReactNode;
+	iconBg: string;
+}
+
+const defaultChallenges: Challenge[] = [
+	{
+		title: 'Differentiation Rules',
+		time: '10m',
+		difficulty: 'Medium',
+		icon: <Sigma className="w-6 h-6 text-blue-500" />,
+		iconBg: 'bg-blue-50 dark:bg-blue-900/20',
+	},
+	{
+		title: "Newton's Second Law",
+		time: '20m',
+		difficulty: 'Hard',
+		icon: <FlaskConical className="w-6 h-6 text-purple-500" />,
+		iconBg: 'bg-purple-50 dark:bg-purple-900/20',
+	},
+	{
+		title: 'Poetry Analysis',
+		time: '5m',
+		difficulty: 'Easy',
+		icon: <BookOpen className="w-6 h-6 text-emerald-500" />,
+		iconBg: 'bg-emerald-50 dark:bg-emerald-900/20',
+	},
+];
 
 export default function Dashboard() {
 	const router = useRouter();
+	const { data: session, isPending: isSessionLoading } = useSession();
+	const [isPending, startTransition] = useTransition();
+	const [isDbInitialized, setIsDbInitialized] = useState(false);
+	const [streak, setStreak] = useState(0);
+	const [dailyProgress, setDailyProgress] = useState(0);
+	const [weekProgress, setWeekProgress] = useState<DayProgress[]>([]);
 
-	// Initialize database connection when dashboard loads (for social login callbacks)
 	useEffect(() => {
 		const initializeDatabase = async () => {
+			if (isDbInitialized) return;
+
 			try {
-				console.log('🔄 Dashboard: Initializing database...');
 				const response = await fetch('/api/db/init', {
 					method: 'POST',
 					headers: { 'Content-Type': 'application/json' },
 				});
 				const result = await response.json();
 				if (result.success) {
-					console.log('✅ Dashboard: Database initialized');
-				} else {
-					console.warn('⚠️ Dashboard: Database initialization failed:', result.message);
+					setIsDbInitialized(true);
 				}
 			} catch (err) {
-				console.error('❌ Dashboard: Error initializing database:', err);
+				console.error('Error initializing database:', err);
 			}
 		};
 
 		initializeDatabase();
+	}, [isDbInitialized]);
+
+	useEffect(() => {
+		const now = new Date();
+		const today = now.getDay();
+		const dayOfWeek = today === 0 ? 6 : today - 1;
+
+		const days: DayProgress[] = [];
+		for (let i = 0; i < 7; i++) {
+			const date = new Date(now);
+			date.setDate(now.getDate() - dayOfWeek + i);
+
+			const dayNames = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
+			days.push({
+				day: dayNames[i],
+				date: date.getDate(),
+				status: i < dayOfWeek ? 'complete' : i === dayOfWeek ? 'active' : 'idle',
+			});
+		}
+		setWeekProgress(days);
+
+		setStreak(12);
+		setDailyProgress(66);
 	}, []);
+
+	const handleNavigateToQuiz = () => {
+		startTransition(() => {
+			router.push('/quiz');
+		});
+	};
+
+	const isLoading = isSessionLoading || isPending;
 
 	return (
 		<div className="flex flex-col h-full bg-background font-inter">
-			{/* Header */}
 			<header className="px-6 pt-6 pb-2 flex items-center justify-between shrink-0">
 				<div className="flex items-center gap-3">
 					<div className="relative">
 						<Avatar className="w-12 h-12 border-2 border-background shadow-sm relative">
-							<AvatarImage src="https://api.dicebear.com/7.x/avataaars/svg?seed=Thabo&gender=female" />
-							<AvatarFallback>TH</AvatarFallback>
+							<AvatarImage
+								src={
+									session?.user?.image ?? 'https://api.dicebear.com/7.x/avataaars/svg?seed=default'
+								}
+								alt={session?.user?.name ?? 'User'}
+							/>
+							<AvatarFallback>
+								{session?.user?.name?.charAt(0)?.toUpperCase() ?? 'U'}
+							</AvatarFallback>
 						</Avatar>
 						<div className="absolute bottom-0 right-0 w-3.5 h-3.5 bg-emerald-500 border-2 border-background rounded-full" />
 					</div>
 					<div>
 						<p className="text-muted-foreground text-xs font-medium">Welcome back,</p>
-						<h2 className="text-xl font-bold text-foreground leading-none">Thabo</h2>
+						<h2 className="text-xl font-bold text-foreground leading-none">
+							{session?.user?.name ?? 'Student'}
+						</h2>
 					</div>
 				</div>
 				<Button
@@ -64,15 +156,14 @@ export default function Dashboard() {
 
 			<ScrollArea className="flex-1">
 				<main className="px-6 py-6 space-y-8 pb-32">
-					{/* Streak Card */}
 					<Card className="p-6 bg-card border-none shadow-sm rounded-3xl flex items-center justify-between relative overflow-hidden">
 						<div className="space-y-1 relative z-10">
 							<div className="flex items-baseline gap-2">
-								<span className="text-4xl font-extrabold text-card-foreground">12</span>
+								<span className="text-4xl font-extrabold text-card-foreground">{streak}</span>
 								<span className="text-muted-foreground font-bold text-xl">days</span>
 							</div>
 							<p className="text-muted-foreground text-sm font-medium">
-								You're on fire! 🔥 Keep it up!
+								{streak > 7 ? "You're on fire! Keep it up!" : 'Keep building your streak!'}
 							</p>
 						</div>
 						<div className="w-16 h-16 bg-orange-50 dark:bg-orange-900/20 rounded-2xl flex items-center justify-center relative z-10">
@@ -81,7 +172,6 @@ export default function Dashboard() {
 						</div>
 					</Card>
 
-					{/* This Week Section */}
 					<div className="space-y-4">
 						<div className="flex justify-between items-center">
 							<h3 className="text-lg font-bold text-foreground">This Week</h3>
@@ -93,15 +183,7 @@ export default function Dashboard() {
 							</button>
 						</div>
 						<div className="flex justify-between items-center bg-card p-4 rounded-3xl shadow-sm">
-							{[
-								{ day: 'MON', date: 10, status: 'complete' },
-								{ day: 'TUE', date: 11, status: 'complete' },
-								{ day: 'WED', date: 12, status: 'active' },
-								{ day: 'THU', date: 13, status: 'idle' },
-								{ day: 'FRI', date: 14, status: 'idle' },
-								{ day: 'SAT', date: 15, status: 'idle' },
-								{ day: 'SUN', date: 16, status: 'idle' },
-							].map((item) => (
+							{weekProgress.map((item) => (
 								<div key={item.day} className="flex flex-col items-center gap-2">
 									<span
 										className={`text-[10px] font-bold ${item.status === 'active' ? 'text-[#efb036]' : 'text-muted-foreground'}`}
@@ -128,7 +210,6 @@ export default function Dashboard() {
 						</div>
 					</div>
 
-					{/* Daily Goal Card */}
 					<Card className="p-8 bg-card border-none shadow-sm rounded-[2.5rem] space-y-6 relative overflow-hidden group">
 						<div className="absolute -right-4 -top-4 w-48 h-48 bg-orange-50/50 dark:bg-orange-900/5 rounded-full blur-3xl pointer-events-none" />
 
@@ -145,10 +226,11 @@ export default function Dashboard() {
 								<p className="text-muted-foreground font-medium">Complete 3 quiz questions</p>
 							</div>
 							<div className="w-16 h-16 bg-muted rounded-2xl flex items-center justify-center shadow-inner overflow-hidden border border-border">
-								{/* biome-ignore lint/performance/noImgElement: External illustration */}
-								<img
+								<Image
 									src="https://lh3.googleusercontent.com/aida-public/AB6AXuCkgC-G9LotChGNb0tc1lvvbXTdP5nRhfO009Piz54gDyYvN78GmMRL6DaabHHLXhiro-IWTptOaIub3qhd7A3irDUw1g7BViGHlhuLzbPTj_RGHvWwz9hJSatmaSEnnpDa2Yzvr0N-QdV5vErb1kHuRM65rNJLTxUX--m-1Mr15fjGpbT44zcRehNz376VnKbGs-Gqlf1jxCgA9yj1eMT3oDeNEpkvjOLuyqmWiS3SLJ7vrFPcr6PMz-rrKso376uZpeHOCh7UEqPU"
 									alt="Trophy"
+									width={64}
+									height={64}
 									className="w-full h-full object-cover opacity-90"
 								/>
 							</div>
@@ -157,55 +239,40 @@ export default function Dashboard() {
 						<div className="space-y-3 relative z-10">
 							<div className="flex justify-between items-end">
 								<span className="text-sm font-bold text-foreground">2/3 Solved</span>
-								<span className="text-sm font-bold text-[#efb036]">66%</span>
+								<span className="text-sm font-bold text-[#efb036]">{dailyProgress}%</span>
 							</div>
 							<div className="h-2.5 w-full bg-muted rounded-full overflow-hidden">
 								<div
 									className="h-full bg-[#efb036] rounded-full transition-all duration-500"
-									style={{ width: '66%' }}
+									style={{ width: `${dailyProgress}%` }}
 								/>
 							</div>
 						</div>
 
 						<Button
 							className="w-full h-14 bg-[#efb036] hover:bg-[#d99d2b] text-white rounded-2xl text-lg font-bold shadow-lg shadow-orange-500/20 active:scale-[0.98] transition-all flex items-center justify-center gap-2 relative z-10"
-							onClick={() => router.push('/quiz')}
+							onClick={handleNavigateToQuiz}
+							disabled={isLoading}
 						>
-							Continue Quest
-							<ArrowRight className="w-5 h-5" />
+							{isLoading ? (
+								<Loader2 className="w-5 h-5 animate-spin" />
+							) : (
+								<>
+									Continue Quest
+									<ArrowRight className="w-5 h-5" />
+								</>
+							)}
 						</Button>
 					</Card>
 
-					{/* Recommended Challenges */}
 					<div className="space-y-5">
 						<h3 className="text-lg font-bold text-foreground">Recommended Challenges</h3>
 						<div className="space-y-4">
-							{[
-								{
-									title: 'Differentiation Rules',
-									time: '10m',
-									difficulty: 'Medium',
-									icon: <Sigma className="w-6 h-6 text-blue-500" />,
-									iconBg: 'bg-blue-50 dark:bg-blue-900/20',
-								},
-								{
-									title: 'Newton’s Second Law',
-									time: '20m',
-									difficulty: 'Hard',
-									icon: <FlaskConical className="w-6 h-6 text-purple-500" />,
-									iconBg: 'bg-purple-50 dark:bg-purple-900/20',
-								},
-								{
-									title: 'Poetry Analysis',
-									time: '5m',
-									difficulty: 'Easy',
-									icon: <BookOpen className="w-6 h-6 text-emerald-500" />,
-									iconBg: 'bg-emerald-50 dark:bg-emerald-900/20',
-								},
-							].map((challenge) => (
-								<div
+							{defaultChallenges.map((challenge) => (
+								<button
 									key={challenge.title}
-									className="bg-card p-4 pl-5 rounded-3xl flex items-center justify-between shadow-sm group hover:shadow-md transition-all cursor-pointer border border-border"
+									type="button"
+									className="w-full text-left bg-card p-4 pl-5 rounded-3xl flex items-center justify-between shadow-sm group hover:shadow-md transition-all cursor-pointer border border-border"
 									onClick={() => router.push('/quiz')}
 								>
 									<div className="flex items-center gap-4">
@@ -243,7 +310,7 @@ export default function Dashboard() {
 									>
 										<Play className="w-4 h-4 fill-current ml-0.5" />
 									</Button>
-								</div>
+								</button>
 							))}
 						</div>
 					</div>
@@ -253,7 +320,6 @@ export default function Dashboard() {
 	);
 }
 
-// Sub-component for icons used in the map/list
 function Clock({ className }: { className?: string }) {
 	return (
 		<svg

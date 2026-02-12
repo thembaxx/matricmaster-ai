@@ -1,3 +1,5 @@
+'use client';
+
 import { ArrowLeft, Download, Eye, Moon, Settings, Sparkles, Split, Sun } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';

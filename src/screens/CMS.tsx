@@ -1,4 +1,3 @@
-/** biome-ignore-all lint/performance/noImgElement: neededs */
 'use client';
 
 import {
@@ -16,6 +15,7 @@ import {
 import Image from 'next/image';
 import { useCallback, useEffect, useId, useRef, useState } from 'react';
 import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch';
+import { SafeImage } from '@/components/SafeImage';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -730,11 +730,10 @@ export default function CMS() {
 
 																			<div className="flex-1 flex items-center justify-center">
 																				<TransformComponent wrapperClass="w-full h-full flex items-center justify-center">
-																					<img
-																						src={editingQuestion.imageUrl || ''}
+																					<SafeImage
+																						src={editingQuestion.imageUrl}
 																						alt="Question"
 																						className="max-w-none"
-																						draggable={false}
 																					/>
 																				</TransformComponent>
 																			</div>

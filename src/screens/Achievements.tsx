@@ -2,6 +2,7 @@
 
 import { Lock, Trophy } from 'lucide-react';
 import { useState } from 'react';
+import { SafeImage } from '@/components/SafeImage';
 
 const badges = [
 	{
@@ -204,8 +205,7 @@ export default function Achievements() {
 								>
 									{badge.unlocked ? (
 										badge.imageUrl ? (
-											// biome-ignore lint/performance/noImgElement: Achievement badge illustration
-											<img
+											<SafeImage
 												src={badge.imageUrl}
 												alt={badge.name}
 												className="w-full h-full rounded-full object-cover"

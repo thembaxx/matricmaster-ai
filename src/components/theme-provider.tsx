@@ -25,32 +25,37 @@ const ThemeProviderContext = createContext<ThemeProviderState>(initialState);
 export function ThemeProvider({
 	children,
 	defaultTheme = 'system',
-	storageKey = 'vite-ui-theme',
+	storageKey = 'matric-master-theme',
 	...props
 }: ThemeProviderProps) {
-	const [theme, setTheme] = useState<Theme>(() => {
-		if (typeof window !== 'undefined') {
-			return (localStorage.getItem(storageKey) as Theme) || defaultTheme;
-		}
-		return defaultTheme;
-	});
+	// Initialize with 'system' to avoid hydration mismatch
+	// The actual theme will be set after mounting
+	const [theme, setTheme] = useState<Theme>('system');
+	const [mounted, setMounted] = useState(false);
 
 	useEffect(() => {
-		const root = window.document.documentElement;
+		setMounted(true);
+		const stored = localStorage.getItem(storageKey) as Theme;
+		if (stored) {
+			setTheme(stored);
+		}
+	}, [storageKey]);
 
+	useEffect(() => {
+		if (!mounted) return;
+
+		const root = window.document.documentElement;
 		root.classList.remove('light', 'dark');
 
 		if (theme === 'system') {
 			const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches
 				? 'dark'
 				: 'light';
-
 			root.classList.add(systemTheme);
-			return;
+		} else {
+			root.classList.add(theme);
 		}
-
-		root.classList.add(theme);
-	}, [theme]);
+	}, [theme, mounted]);
 
 	const value = {
 		theme,
@@ -60,6 +65,8 @@ export function ThemeProvider({
 		},
 	};
 
+	// Prevent hydration mismatch by rendering children without theme class initially
+	// The layout.tsx already has suppressHydrationWarning on the html element
 	return (
 		<ThemeProviderContext.Provider {...props} value={value}>
 			{children}

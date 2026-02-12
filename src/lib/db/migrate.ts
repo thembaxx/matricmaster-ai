@@ -1,11 +1,10 @@
 import { migrate } from 'drizzle-orm/postgres-js/migrator';
-import { closeConnection, db, dbManager } from './index';
+import { closeConnection, dbManager } from './index';
 
 async function runMigrations() {
 	console.log('Running migrations...');
 
 	try {
-		// Wait for database connection with retries
 		const isConnected = await dbManager.waitForConnection(5, 3000);
 
 		if (!isConnected) {
@@ -15,6 +14,7 @@ async function runMigrations() {
 			process.exit(1);
 		}
 
+		const db = dbManager.getDb();
 		await migrate(db, { migrationsFolder: './drizzle' });
 		console.log('✅ Migrations complete!');
 	} catch (error) {

@@ -1,4 +1,3 @@
-/** biome-ignore-all lint/performance/noImgElement: NN */
 'use client';
 
 import { Icon } from '@iconify/react';
@@ -15,6 +14,7 @@ import {
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
+import { SafeImage } from '@/components/SafeImage';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -574,8 +574,8 @@ export default function EnhancedTestQuizScreen() {
 
 											{quizState.questions[quizState.currentQuestionIndex].imageUrl && (
 												<div className="mb-4 rounded-lg overflow-hidden bg-zinc-100 dark:bg-zinc-700">
-													<img
-														src={quizState.questions[quizState.currentQuestionIndex].imageUrl || ''}
+													<SafeImage
+														src={quizState.questions[quizState.currentQuestionIndex].imageUrl}
 														alt="Question diagram"
 														className="w-full h-48 object-contain"
 													/>

@@ -1,6 +1,7 @@
 'use client';
 
 import { CheckCircle2, ChevronRight, Clock, History, X, Zap } from 'lucide-react';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
@@ -33,11 +34,12 @@ export default function LessonComplete() {
 					{/* Trophy Section */}
 					<div className="relative mb-8 w-48 h-48 flex items-center justify-center">
 						<div className="absolute inset-0 bg-[#fde68a] dark:bg-yellow-900/20 rounded-3xl opacity-20" />
-						{/* biome-ignore lint/performance/noImgElement: Achievement illustration */}
-						<img
+						<Image
 							src="https://images.unsplash.com/photo-1579546671584-62dcfaf35ad0?w=400&h=400&fit=crop"
 							alt="Trophy"
-							className="w-40 h-40 object-contain rounded-2xl shadow-xl shadow-yellow-500/10"
+							width={160}
+							height={160}
+							className="object-contain rounded-2xl shadow-xl shadow-yellow-500/10"
 						/>
 						{/* Stylized Trophy Alternative since unsplash might vary */}
 						{/* <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
@@ -104,10 +106,11 @@ export default function LessonComplete() {
 						</h3>
 						<div className="bg-white dark:bg-[#111827] p-5 rounded-2xl flex items-center gap-4 shadow-sm border border-zinc-100 dark:border-zinc-800">
 							<div className="w-16 h-16 bg-[#0a0f18] rounded-xl overflow-hidden shrink-0">
-								{/* biome-ignore lint/performance/noImgElement: Achievement illustration */}
-								<img
+								<Image
 									src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=100&h=100&fit=crop"
 									alt="Badge"
+									width={64}
+									height={64}
 									className="w-full h-full object-cover opacity-80"
 								/>
 							</div>

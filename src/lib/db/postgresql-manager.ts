@@ -1,10 +1,11 @@
 import 'dotenv/config';
 import { config } from 'dotenv';
-import { drizzle } from 'drizzle-orm/postgres-js';
+import { drizzle, type PostgresJsDatabase } from 'drizzle-orm/postgres-js';
 import postgres from 'postgres';
 import * as schema from './schema';
 
-// Load .env.local explicitly
+type DbType = PostgresJsDatabase<typeof schema>;
+
 config({ path: '.env.local' });
 
 interface DatabaseConfig {
@@ -17,7 +18,7 @@ interface DatabaseConfig {
 class PostgreSQLManager {
 	private static instance: PostgreSQLManager;
 	private client: ReturnType<typeof postgres> | null = null;
-	private db: ReturnType<typeof drizzle> | null = null;
+	private db: DbType | null = null;
 	private isConnected = false;
 	private config: DatabaseConfig;
 
@@ -106,7 +107,7 @@ class PostgreSQLManager {
 		this.isConnected = false;
 	}
 
-	public getDb() {
+	public getDb(): DbType {
 		if (!this.db) {
 			throw new Error('Database not connected. Call connect() first.');
 		}
@@ -157,3 +158,4 @@ process.on('SIGINT', async () => {
 
 export { pgManager };
 export type { DatabaseConfig };
+export type { DbType };

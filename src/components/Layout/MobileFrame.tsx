@@ -224,11 +224,14 @@ export default function MobileFrame({ children }: { children: React.ReactNode })
 					</header>
 				)}
 
-				<div className="flex-1 relative overflow-hidden flex flex-col pt-20">{children}</div>
+				<div id="main-content" className="flex-1 relative overflow-hidden flex flex-col pt-20">
+					{children}
+				</div>
 
 				{/* Bottom Navigation - iOS Liquid Glass Floating Pill */}
 				{!shouldHideBottomNav && (
 					<nav
+						aria-label="Main navigation"
 						className="fixed bottom-8 left-1/2 -translate-x-1/2 w-[90%] max-w-95 z-100 ios-glass rounded-[2.5rem] shadow-2xl shadow-black/5 grid grid-cols-4 p-2 px-3 transition-all duration-500 ease-ios"
 						style={{
 							marginBottom: 'env(safe-area-inset-bottom, 0px)',

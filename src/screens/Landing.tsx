@@ -1,3 +1,5 @@
+'use client';
+
 import { Atom, Calculator, ChevronRight, FlaskConical, Microscope, Sparkles } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useId } from 'react';

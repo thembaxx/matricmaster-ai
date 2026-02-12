@@ -5,6 +5,8 @@ import { ThemeProvider } from '@/components/theme-provider';
 import '@/styles/index.css';
 import { dmSans, inter, jakarta, lexend } from './fonts';
 
+const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://matricmaster.ai';
+
 export const metadata: Metadata = {
 	title: {
 		default: 'MatricMaster AI',
@@ -32,7 +34,7 @@ export const metadata: Metadata = {
 		address: false,
 		telephone: false,
 	},
-	metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://matricmaster.ai'),
+	metadataBase: new URL(baseUrl),
 	openGraph: {
 		type: 'website',
 		locale: 'en_ZA',
@@ -41,11 +43,21 @@ export const metadata: Metadata = {
 		description:
 			'Interactive past papers and step-by-step guides for South African Grade 12 students.',
 		siteName: 'MatricMaster AI',
+		images: [
+			{
+				url: '/api/og?title=MatricMaster+AI&description=Master+your+Matric+exams',
+				width: 1200,
+				height: 630,
+				alt: 'MatricMaster AI - Master Your Matric Exams',
+			},
+		],
 	},
 	twitter: {
 		card: 'summary_large_image',
 		title: 'MatricMaster AI',
 		description: 'Master your Matric exams through interactive practice.',
+		images: ['/api/og?title=MatricMaster+AI&description=Master+your+Matric+exams'],
+		creator: '@matricmaster',
 	},
 	robots: {
 		index: true,
@@ -57,6 +69,9 @@ export const metadata: Metadata = {
 			'max-image-preview': 'large',
 			'max-snippet': -1,
 		},
+	},
+	alternates: {
+		canonical: '/',
 	},
 };
 
@@ -73,13 +88,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 			suppressHydrationWarning
 			className={`${inter.variable} ${jakarta.variable} ${dmSans.variable} ${lexend.variable}`}
 		>
-			<head>
-				<link
-					href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
-					rel="stylesheet"
-				/>
-			</head>
+			<head />
 			<body className="bg-gray-100 dark:bg-zinc-950 min-h-screen">
+				<a
+					href="#main-content"
+					className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary focus:text-white focus:rounded-lg focus:outline-none"
+				>
+					Skip to main content
+				</a>
 				<ErrorBoundary>
 					<ThemeProvider defaultTheme="light" storageKey="matric-master-theme">
 						<MobileFrame>{children}</MobileFrame>

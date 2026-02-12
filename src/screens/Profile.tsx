@@ -3,6 +3,7 @@
 import { Calculator, GraduationCap, Star, User } from 'lucide-react';
 import { useId, useState } from 'react';
 import { PolarAngleAxis, PolarGrid, Radar, RadarChart } from 'recharts';
+import { SafeImage } from '@/components/SafeImage';
 
 import {
 	type ChartConfig,
@@ -67,11 +68,13 @@ export default function Profile() {
 								className="w-28 h-28 rounded-full overflow-hidden shadow-2xl relative"
 								style={{ border: '4px solid #1e293b' }}
 							>
-								{/* biome-ignore lint/performance/noImgElement: User avatar from external source */}
-								<img
+								<SafeImage
 									src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=face"
 									alt="Thabo Mbeki"
+									width={112}
+									height={112}
 									className="w-full h-full object-cover"
+									priority
 								/>
 							</div>
 							<div
