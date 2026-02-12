@@ -23,7 +23,30 @@ type SignInValues = z.infer<typeof signInSchema>;
 export function SignInForm() {
 	const router = useRouter();
 	const searchParams = useSearchParams();
-	const callbackUrl = searchParams.get('callbackUrl') || '/dashboard';
+	const rawCallbackUrl = searchParams.get('callbackUrl') || '/dashboard';
+
+	// Validate callbackUrl to prevent open redirects
+	let safeCallbackUrl = '/dashboard';
+	try {
+		// Only allow same-origin or relative paths
+		if (rawCallbackUrl.startsWith('/') && !rawCallbackUrl.startsWith('//')) {
+			// Ensure it doesn't start with // (protocol-relative URL)
+			safeCallbackUrl = rawCallbackUrl;
+		} else if (
+			rawCallbackUrl.startsWith('http://localhost') ||
+			rawCallbackUrl.startsWith('https://')
+		) {
+			// Allow localhost for development
+			const url = new URL(rawCallbackUrl);
+			if (url.origin === window.location.origin) {
+				safeCallbackUrl = url.pathname;
+			}
+		}
+	} catch {
+		// Invalid URL, fall back to default
+		safeCallbackUrl = '/dashboard';
+	}
+
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState<string | null>(null);
 	const [showPassword, setShowPassword] = useState(false);
@@ -43,11 +66,28 @@ export function SignInForm() {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 			});
-			const result = await response.json();
-			if (result.success) {
+
+			let result: { success?: boolean; message?: string };
+			const contentType = response.headers.get('content-type');
+			if (contentType?.includes('application/json')) {
+				try {
+					result = await response.json();
+				} catch {
+					// Failed to parse JSON, get text instead
+					const text = await response.text();
+					result = { success: false, message: text };
+				}
+			} else {
+				const text = await response.text();
+				result = { success: false, message: text };
+			}
+
+			if (response.ok && result.success) {
 				console.log('✅ Database initialized after login');
 			} else {
-				console.warn('⚠️ Database initialization failed:', result.message);
+				console.warn(
+					`⚠️ Database initialization failed: Status ${response.status}, Message: ${result.message ?? 'Unknown error'}`
+				);
 			}
 		} catch (err) {
 			console.error('❌ Error initializing database:', err);
@@ -57,36 +97,47 @@ export function SignInForm() {
 	const onSubmit = async (data: SignInValues) => {
 		setIsLoading(true);
 		setError(null);
-		const { error: authError } = await authClient.signIn.email({
-			email: data.email,
-			password: data.password,
-		});
+		try {
+			const { error: authError } = await authClient.signIn.email({
+				email: data.email,
+				password: data.password,
+			});
 
-		if (authError) {
-			setError(authError.message || 'Invalid email or password');
+			if (authError) {
+				setError(authError.message || 'Invalid email or password');
+			} else {
+				await initializeDatabase();
+				router.push(safeCallbackUrl);
+			}
+		} catch (err) {
+			setError(err instanceof Error ? err.message : 'An unexpected error occurred');
+		} finally {
 			setIsLoading(false);
-		} else {
-			await initializeDatabase();
-			router.push(callbackUrl);
 		}
 	};
 
 	const handleSocialSignIn = async (provider: 'google' | 'twitter') => {
 		await authClient.signIn.social({
 			provider,
-			callbackURL: callbackUrl,
+			callbackURL: safeCallbackUrl,
 		});
 	};
 
 	const handleAnonymousSignIn = async () => {
 		setIsLoading(true);
-		const { error: authError } = await authClient.signIn.anonymous();
-		if (authError) {
-			setError(authError.message || 'Failed to sign in as guest');
+		setError(null);
+		try {
+			const { error: authError } = await authClient.signIn.anonymous();
+			if (authError) {
+				setError(authError.message || 'Failed to sign in as guest');
+			} else {
+				await initializeDatabase();
+				router.push(safeCallbackUrl);
+			}
+		} catch (err) {
+			setError(err instanceof Error ? err.message : 'Failed to sign in as guest');
+		} finally {
 			setIsLoading(false);
-		} else {
-			await initializeDatabase();
-			router.push(callbackUrl);
 		}
 	};
 
@@ -283,7 +334,13 @@ export function SignInForm() {
 						<button
 							type="button"
 							onClick={handleAnonymousSignIn}
-							className="w-full text-center text-zinc-500 dark:text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-300 font-medium transition-colors underline underline-offset-2"
+							disabled={isLoading}
+							aria-disabled={isLoading}
+							className={`w-full text-center font-medium transition-colors underline underline-offset-2 ${
+								isLoading
+									? 'text-zinc-300 dark:text-zinc-600 cursor-not-allowed'
+									: 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-300'
+							}`}
 						>
 							Continue as Guest
 						</button>

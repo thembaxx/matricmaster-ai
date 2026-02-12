@@ -20,6 +20,31 @@ function createAuth() {
 		console.warn('⚠️ Database not connected - Better Auth will not persist sessions');
 	}
 
+	// Validate Twitter OAuth credentials
+	const twitterClientId = process.env.TWITTER_CLIENT_ID;
+	const twitterClientSecret = process.env.TWITTER_CLIENT_SECRET;
+
+	if (!twitterClientId || !twitterClientSecret) {
+		console.warn(
+			'⚠️ Twitter OAuth credentials are not configured. Sign in with Twitter will not be available.'
+		);
+	}
+
+	const socialProviders: Record<string, { clientId: string; clientSecret: string }> = {
+		google: {
+			clientId: process.env.GOOGLE_CLIENT_ID ?? '',
+			clientSecret: process.env.GOOGLE_SECRET_KEY ?? '',
+		},
+	};
+
+	// Only add Twitter provider if credentials are available
+	if (twitterClientId && twitterClientSecret) {
+		socialProviders.twitter = {
+			clientId: twitterClientId,
+			clientSecret: twitterClientSecret,
+		};
+	}
+
 	return betterAuth({
 		baseURL:
 			process.env.BETTER_AUTH_URL || process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000',
@@ -34,16 +59,7 @@ function createAuth() {
 			enabled: true,
 			requireEmailVerification: false,
 		},
-		socialProviders: {
-			google: {
-				clientId: process.env.GOOGLE_CLIENT_ID ?? '',
-				clientSecret: process.env.GOOGLE_SECRET_KEY ?? '',
-			},
-			twitter: {
-				clientId: process.env.TWITTER_CLIENT_ID ?? '',
-				clientSecret: process.env.TWITTER_CLIENT_SECRET ?? '',
-			},
-		},
+		socialProviders,
 		plugins: [anonymous()],
 		session: {
 			expiresIn: 60 * 60 * 24 * 7,

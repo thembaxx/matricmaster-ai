@@ -21,6 +21,13 @@ const createSubjectSchema = z.object({
 	isActive: z.boolean().optional(),
 });
 
+const updateSubjectSchema = z.object({
+	name: z.string().min(1).max(50).optional(),
+	description: z.string().max(500).optional(),
+	curriculumCode: z.string().min(1).max(20).optional(),
+	isActive: z.boolean().optional(),
+});
+
 const createQuestionSchema = z.object({
 	subjectId: z.number().int().positive(),
 	questionText: z.string().min(1).max(2000),
@@ -213,10 +220,19 @@ export async function updateSubjectAction(
 	id: number,
 	data: Partial<NewSubject>
 ): Promise<Subject | null> {
+	// Validate input data
+	const validatedData = updateSubjectSchema.parse(data);
+
+	// If no valid fields to update, return null
+	if (Object.keys(validatedData).length === 0) {
+		console.warn('⚠️ updateSubjectAction: No valid fields to update');
+		return null;
+	}
+
 	const db = await getDb();
 	const [subject] = await db
 		.update(subjects)
-		.set({ ...data, updatedAt: new Date() })
+		.set({ ...validatedData, updatedAt: new Date() })
 		.where(eq(subjects.id, id))
 		.returning();
 	return subject ?? null;
