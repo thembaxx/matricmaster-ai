@@ -1,10 +1,10 @@
 import { relations } from 'drizzle-orm';
 import {
+	bigint,
 	boolean,
 	index,
 	integer,
 	pgTable,
-	serial,
 	text,
 	timestamp,
 	uuid,
@@ -40,7 +40,7 @@ export const anonymous_users = pgTable('anonymous_users', {
 // ============================================================================
 
 export const subjects = pgTable('subjects', {
-	id: serial('id').primaryKey(),
+	id: bigint('id', { mode: 'number' }).generatedAlwaysAsIdentity().primaryKey(),
 	name: varchar('name', { length: 50 }).notNull().unique(),
 	description: text('description'),
 	curriculumCode: varchar('curriculum_code', { length: 20 }).notNull(),
