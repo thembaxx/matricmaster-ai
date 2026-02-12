@@ -1,9 +1,9 @@
 import { betterAuth } from 'better-auth';
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
+import { nextCookies } from 'better-auth/next-js';
 import { anonymous } from 'better-auth/plugins';
 import { dbManager } from './db';
 import * as schema from './db/schema';
-import { nextCookies } from 'better-auth/next-js';
 
 let authInstance: ReturnType<typeof betterAuth> | null = null;
 
@@ -71,7 +71,7 @@ function createAuth() {
 			window: 60, // 1 minute
 			max: 10, // 10 requests per window
 		},
-		plugins: [anonymous(),nextCookies()],
+		plugins: [anonymous(), nextCookies()],
 	});
 }
 
