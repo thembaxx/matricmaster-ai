@@ -1,9 +1,9 @@
-/** biome-ignore-all lint/performance/noImgElement: NA */
 'use client';
 
 import { ArrowLeft, CheckCircle2, TrendingUp, XCircle } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { SafeImage } from '@/components/SafeImage';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -387,7 +387,7 @@ export default function TestQuizScreen() {
 
 						{currentQuestion.imageUrl && (
 							<div className="mb-4 rounded-lg overflow-hidden bg-zinc-100 dark:bg-zinc-700">
-								<img
+								<SafeImage
 									src={currentQuestion.imageUrl}
 									alt="Physics diagram"
 									className="w-full h-48 object-contain"

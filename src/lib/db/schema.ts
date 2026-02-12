@@ -49,22 +49,33 @@ export const subjects = pgTable('subjects', {
 	updatedAt: timestamp('updated_at').defaultNow(),
 });
 
-export const questions = pgTable('questions', {
-	id: uuid('id').defaultRandom().primaryKey(),
-	subjectId: integer('subject_id')
-		.notNull()
-		.references(() => subjects.id, { onDelete: 'cascade' }),
-	questionText: text('question_text').notNull(),
-	imageUrl: text('image_url'),
-	gradeLevel: integer('grade_level').notNull(),
-	topic: varchar('topic', { length: 100 }).notNull(),
-	difficulty: varchar('difficulty', { length: 20 }).notNull().default('medium'),
-	marks: integer('marks').notNull().default(2),
-	hint: text('hint'), // Short hint to help users answer the question
-	isActive: boolean('is_active').notNull().default(true),
-	createdAt: timestamp('created_at').defaultNow(),
-	updatedAt: timestamp('updated_at').defaultNow(),
-});
+export const questions = pgTable(
+	'questions',
+	{
+		id: uuid('id').defaultRandom().primaryKey(),
+		subjectId: integer('subject_id')
+			.notNull()
+			.references(() => subjects.id, { onDelete: 'cascade' }),
+		questionText: text('question_text').notNull(),
+		imageUrl: text('image_url'),
+		gradeLevel: integer('grade_level').notNull(),
+		topic: varchar('topic', { length: 100 }).notNull(),
+		difficulty: varchar('difficulty', { length: 20 }).notNull().default('medium'),
+		marks: integer('marks').notNull().default(2),
+		hint: text('hint'),
+		isActive: boolean('is_active').notNull().default(true),
+		createdAt: timestamp('created_at').defaultNow(),
+		updatedAt: timestamp('updated_at').defaultNow(),
+	},
+	(table) => ({
+		subjectIdIdx: index('questions_subject_id_idx').on(table.subjectId),
+		gradeLevelIdx: index('questions_grade_level_idx').on(table.gradeLevel),
+		topicIdx: index('questions_topic_idx').on(table.topic),
+		difficultyIdx: index('questions_difficulty_idx').on(table.difficulty),
+		isActiveIdx: index('questions_is_active_idx').on(table.isActive),
+		subjectActiveIdx: index('questions_subject_active_idx').on(table.subjectId, table.isActive),
+	})
+);
 
 export const options = pgTable('options', {
 	id: uuid('id').defaultRandom().primaryKey(),

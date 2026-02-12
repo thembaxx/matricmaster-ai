@@ -1,3 +1,5 @@
+'use client';
+
 // import type { Screen } from '@/types'; // Removed unused import
 import { ArrowLeft, HelpCircle, Lightbulb, Loader2, MoreHorizontal, Sparkles } from 'lucide-react';
 import { useRouter } from 'next/navigation';

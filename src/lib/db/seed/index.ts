@@ -6,14 +6,18 @@ const envPath = resolve(process.cwd(), '.env.local');
 config({ path: envPath });
 
 import { auth } from '@/lib/auth';
-import { closeConnection, db } from '../index';
+import { closeConnection, dbManager } from '../index';
 import { options, questions, subjects } from '../schema';
 import { englishQuestions } from './english-questions';
 import { historyQuestions } from './history-questions';
 import { physicsQuestions } from './physics-questions';
 
-// Use PostgreSQL database only
-const useDb = db;
+function getDb() {
+	if (!dbManager.isConnectedToDatabase()) {
+		throw new Error('Database not connected');
+	}
+	return dbManager.getDb();
+}
 
 export async function seedDatabase() {
 	console.log('Starting database seeding...');
@@ -26,9 +30,10 @@ export async function seedDatabase() {
 
 	console.log('Using database: PostgreSQL');
 
+	const useDb = getDb();
+
 	try {
-		// Check if subjects already exist
-		const existingSubjects = await useDb.select?.().from(subjects);
+		const existingSubjects = await useDb.select().from(subjects);
 		console.log(
 			'Existing subjects found:',
 			existingSubjects.map((s) => s.name)

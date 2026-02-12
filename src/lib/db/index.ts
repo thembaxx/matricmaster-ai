@@ -1,17 +1,14 @@
 import 'dotenv/config';
 import { config } from 'dotenv';
-import type { drizzle } from 'drizzle-orm/postgres-js';
-import type postgres from 'postgres';
-import { pgManager } from './postgresql-manager';
+import { type DbType, pgManager } from './postgresql-manager';
 
-// Load .env.local explicitly
 config({ path: '.env.local' });
 
-// Enhanced database connection with better error handling
+export type { DbType } from './postgresql-manager';
+
 class DatabaseManager {
 	private static instance: DatabaseManager;
-	private _client: ReturnType<typeof postgres> | null = null;
-	private _db: ReturnType<typeof drizzle> | null = null;
+	private _db: DbType | null = null;
 	private isConnected = false;
 	private isPostgreSQLAvailableVar = false;
 
@@ -25,41 +22,42 @@ class DatabaseManager {
 	}
 
 	public async initialize(): Promise<void> {
-		console.log('🚀 Initializing PostgreSQL database connection...');
+		console.log('Initializing PostgreSQL database connection...');
 
-		// Try PostgreSQL with more retries for cloud databases
 		const postgresConnected = await pgManager.waitForConnection(5, 5000);
 
 		if (postgresConnected) {
-			this._client = pgManager.getClient();
 			this._db = pgManager.getDb();
 			this.isConnected = true;
 			this.isPostgreSQLAvailableVar = true;
-			console.log('✅ Using PostgreSQL database');
+			console.log('Using PostgreSQL database');
 		} else {
-			console.error('❌ PostgreSQL connection failed');
+			console.error('PostgreSQL connection failed');
 			this.isConnected = false;
 			this.isPostgreSQLAvailableVar = false;
 		}
 	}
 
 	public getClient() {
-		if (!this._client && this.isPostgreSQLAvailableVar) {
-			this._client = pgManager.getClient();
+		if (this.isPostgreSQLAvailableVar) {
+			return pgManager.getClient();
 		}
-		return this._client;
+		return null;
 	}
 
-	public getDb() {
-		if (!this._db && this.isPostgreSQLAvailableVar) {
-			this._db = pgManager.getDb();
+	public getDb(): DbType {
+		if (this.isPostgreSQLAvailableVar && this._db) {
+			return this._db;
 		}
-		return this._db!;
+		if (this.isPostgreSQLAvailableVar) {
+			this._db = pgManager.getDb();
+			return this._db;
+		}
+		throw new Error('Database not connected');
 	}
 
 	public async waitForConnection(_maxRetries = 3, _delay = 1000): Promise<boolean> {
 		if (this.isConnected) return true;
-
 		await this.initialize();
 		return this.isConnected;
 	}
@@ -84,30 +82,20 @@ class DatabaseManager {
 			await pgManager.disconnect();
 		}
 		this.isConnected = false;
-		this._client = null;
 		this._db = null;
 	}
 }
 
-// Create singleton instance
 const dbManager = DatabaseManager.getInstance();
 
-// NOTE: Database is NOT initialized on startup
-// Call dbManager.initialize() after user authentication
+export const db = dbManager.isConnectedToDatabase() ? dbManager.getDb() : null;
 
-// Export for backward compatibility
-export const client = dbManager.getClient();
-export const db = dbManager.getDb();
-
-// Graceful shutdown
 process.on('beforeExit', async () => {
 	await dbManager.close();
 });
 
-// Helper function to close connection (useful for scripts)
 export async function closeConnection() {
 	await dbManager.close();
 }
 
-// Export the manager for advanced usage
 export { dbManager, pgManager };

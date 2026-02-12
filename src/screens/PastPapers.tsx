@@ -1,3 +1,5 @@
+'use client';
+
 import { Download, Eye, FileText, Filter, Search as SearchIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';

@@ -1,22 +1,29 @@
 import { and, asc, desc, eq, sql } from 'drizzle-orm';
-import { db } from './index';
+import { dbManager } from './index';
 import type { NewOption, NewQuestion, NewSubject, Option, Question, Subject } from './schema';
 import { options, questions, subjects } from './schema';
 
-// ============================================================================
-// SUBJECT OPERATIONS
-// ============================================================================
+async function getDb() {
+	const connected = await dbManager.waitForConnection(3, 2000);
+	if (!connected) {
+		throw new Error('Database not available');
+	}
+	return dbManager.getDb();
+}
 
 export async function createSubject(data: NewSubject): Promise<Subject> {
+	const db = await getDb();
 	const [subject] = await db.insert(subjects).values(data).returning();
 	return subject;
 }
 
 export async function getSubjects(): Promise<Subject[]> {
+	const db = await getDb();
 	return db.select().from(subjects).where(eq(subjects.isActive, true)).orderBy(asc(subjects.name));
 }
 
 export async function getSubjectById(id: number): Promise<Subject | null> {
+	const db = await getDb();
 	const [subject] = await db
 		.select()
 		.from(subjects)
@@ -29,6 +36,7 @@ export async function updateSubject(
 	id: number,
 	data: Partial<NewSubject>
 ): Promise<Subject | null> {
+	const db = await getDb();
 	const [subject] = await db
 		.update(subjects)
 		.set({ ...data, updatedAt: new Date() })
@@ -38,6 +46,7 @@ export async function updateSubject(
 }
 
 export async function softDeleteSubject(id: number): Promise<boolean> {
+	const db = await getDb();
 	const result = await db
 		.update(subjects)
 		.set({ isActive: false, updatedAt: new Date() })
@@ -47,13 +56,10 @@ export async function softDeleteSubject(id: number): Promise<boolean> {
 }
 
 export async function hardDeleteSubject(id: number): Promise<boolean> {
+	const db = await getDb();
 	const result = await db.delete(subjects).where(eq(subjects.id, id)).returning();
 	return result.length > 0;
 }
-
-// ============================================================================
-// QUESTION OPERATIONS
-// ============================================================================
 
 export interface QuestionFilters {
 	subjectId?: number;
@@ -67,11 +73,10 @@ export async function createQuestion(
 	questionData: NewQuestion,
 	optionsData: Omit<NewOption, 'questionId'>[]
 ): Promise<Question & { options: Option[] }> {
+	const db = await getDb();
 	return await db.transaction(async (tx) => {
-		// Insert question
 		const [question] = await tx.insert(questions).values(questionData).returning();
 
-		// Insert options
 		const opts = await Promise.all(
 			optionsData.map((opt) =>
 				tx
@@ -89,6 +94,7 @@ export async function createQuestion(
 }
 
 export async function getQuestions(filters: QuestionFilters = {}): Promise<Question[]> {
+	const db = await getDb();
 	const conditions = [];
 
 	if (filters.subjectId !== undefined) {
@@ -107,7 +113,6 @@ export async function getQuestions(filters: QuestionFilters = {}): Promise<Quest
 		conditions.push(eq(questions.topic, filters.topic));
 	}
 
-	// Default to active questions only
 	conditions.push(eq(questions.isActive, filters.isActive ?? true));
 
 	return db
@@ -120,6 +125,7 @@ export async function getQuestions(filters: QuestionFilters = {}): Promise<Quest
 export async function getQuestionWithOptions(
 	id: string
 ): Promise<(Question & { options: Option[] }) | null> {
+	const db = await getDb();
 	const [question] = await db
 		.select()
 		.from(questions)
@@ -145,6 +151,7 @@ export async function getRandomQuestions(
 	count: number,
 	difficulty?: 'easy' | 'medium' | 'hard'
 ): Promise<Question[]> {
+	const db = await getDb();
 	const conditions = [eq(questions.subjectId, subjectId), eq(questions.isActive, true)];
 
 	if (difficulty) {
@@ -163,6 +170,7 @@ export async function updateQuestion(
 	id: string,
 	data: Partial<NewQuestion>
 ): Promise<Question | null> {
+	const db = await getDb();
 	const [question] = await db
 		.update(questions)
 		.set({ ...data, updatedAt: new Date() })
@@ -172,33 +180,29 @@ export async function updateQuestion(
 }
 
 export async function softDeleteQuestion(id: string): Promise<boolean> {
+	const db = await getDb();
 	await db.transaction(async (tx) => {
-		// Soft delete question
 		await tx
 			.update(questions)
 			.set({ isActive: false, updatedAt: new Date() })
 			.where(eq(questions.id, id));
 
-		// Soft delete associated options
 		await tx.update(options).set({ isActive: false }).where(eq(options.questionId, id));
 	});
 	return true;
 }
 
 export async function hardDeleteQuestion(id: string): Promise<boolean> {
-	// Cascade delete will handle options
+	const db = await getDb();
 	const result = await db.delete(questions).where(eq(questions.id, id)).returning();
 	return result.length > 0;
 }
-
-// ============================================================================
-// OPTION OPERATIONS
-// ============================================================================
 
 export async function createOptions(
 	questionId: string,
 	optionsData: Omit<NewOption, 'questionId'>[]
 ): Promise<Option[]> {
+	const db = await getDb();
 	const opts = await Promise.all(
 		optionsData.map((opt) =>
 			db
@@ -211,6 +215,7 @@ export async function createOptions(
 }
 
 export async function getOptionsByQuestionId(questionId: string): Promise<Option[]> {
+	const db = await getDb();
 	return db
 		.select()
 		.from(options)
@@ -219,11 +224,13 @@ export async function getOptionsByQuestionId(questionId: string): Promise<Option
 }
 
 export async function updateOption(id: string, data: Partial<NewOption>): Promise<Option | null> {
+	const db = await getDb();
 	const [option] = await db.update(options).set(data).where(eq(options.id, id)).returning();
 	return option || null;
 }
 
 export async function softDeleteOption(id: string): Promise<boolean> {
+	const db = await getDb();
 	const result = await db
 		.update(options)
 		.set({ isActive: false })
@@ -233,18 +240,16 @@ export async function softDeleteOption(id: string): Promise<boolean> {
 }
 
 export async function hardDeleteOption(id: string): Promise<boolean> {
+	const db = await getDb();
 	const result = await db.delete(options).where(eq(options.id, id)).returning();
 	return result.length > 0;
 }
-
-// ============================================================================
-// COMPOSITE OPERATIONS
-// ============================================================================
 
 export async function getSubjectWithQuestions(
 	subjectId: number,
 	includeInactive = false
 ): Promise<Subject & { questions: (Question & { options: Option[] })[] }> {
+	const db = await getDb();
 	const [subject] = await db
 		.select()
 		.from(subjects)
@@ -267,12 +272,30 @@ export async function getSubjectWithQuestions(
 			)
 		);
 
-	const questionsWithOptions = await Promise.all(
-		questionList.map(async (q) => {
-			const opts = await getOptionsByQuestionId(q.id);
-			return { ...q, options: opts };
-		})
-	);
+	if (questionList.length === 0) {
+		return {
+			...subject,
+			questions: [],
+		};
+	}
+
+	const questionIds = questionList.map((q) => q.id);
+	const allOptions = await db
+		.select()
+		.from(options)
+		.where(and(eq(options.isActive, true), eq(options.questionId, questionIds[0])));
+
+	const optionsByQuestionId = new Map<string, Option[]>();
+	for (const opt of allOptions) {
+		const existing = optionsByQuestionId.get(opt.questionId) || [];
+		existing.push(opt);
+		optionsByQuestionId.set(opt.questionId, existing);
+	}
+
+	const questionsWithOptions = questionList.map((q) => ({
+		...q,
+		options: optionsByQuestionId.get(q.id) || [],
+	}));
 
 	return {
 		...subject,
@@ -287,7 +310,7 @@ export async function cloneQuestion(
 	const original = await getQuestionWithOptions(questionId);
 	if (!original) throw new Error('Question not found');
 
-	const { id, createdAt, updatedAt, ...questionData } = original;
+	const { id: _id, createdAt: _createdAt, updatedAt: _updatedAt, ...questionData } = original;
 
 	return createQuestion(
 		{ ...questionData, ...modifications },

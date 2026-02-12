@@ -6,8 +6,26 @@ import { Card } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
+// Types
+interface LeaderboardEntry {
+	rank: number;
+	name: string;
+	points: number;
+	avatar: string;
+	isUser?: boolean;
+}
+
+interface LeaderboardOthersEntry extends LeaderboardEntry {
+	school: string;
+}
+
+interface LeaderboardData {
+	topThree: LeaderboardEntry[];
+	others: LeaderboardOthersEntry[];
+}
+
 // Mock data for different categories
-const leaderboardData = {
+const leaderboardData: Record<string, LeaderboardData> = {
 	school: {
 		topThree: [
 			{
@@ -156,87 +174,89 @@ const leaderboardData = {
 	},
 };
 
-export default function Leaderboard() {
-	const Podium = ({ data }: { data: typeof leaderboardData.school.topThree }) => {
-		const r2 = data.find((p) => p.rank === 2);
-		const r1 = data.find((p) => p.rank === 1);
-		const r3 = data.find((p) => p.rank === 3);
+// Podium Component
+function Podium({ data }: { data: LeaderboardEntry[] }) {
+	const r2 = data.find((p) => p.rank === 2);
+	const r1 = data.find((p) => p.rank === 1);
+	const r3 = data.find((p) => p.rank === 3);
 
-		return (
-			<div className="flex items-end justify-center gap-2 sm:gap-6 pt-12 pb-8">
-				{/* Rank 2 */}
-				<div className="flex flex-col items-center">
-					<div className="relative mb-3 group cursor-pointer">
-						<div className="absolute inset-0 bg-zinc-200 dark:bg-zinc-800 rounded-full blur-md opacity-0 group-hover:opacity-40 transition-opacity" />
-						<Avatar className="w-20 h-20 border-2 border-zinc-200 dark:border-zinc-800 relative z-10 transition-transform group-hover:scale-105">
-							<AvatarImage src={r2?.avatar} className="object-cover" />
-							<AvatarFallback>{r2?.name[0]}</AvatarFallback>
-						</Avatar>
-						<div className="absolute -bottom-2 translate-x-[24px] right-1/2 w-7 h-7 bg-zinc-400 rounded-full flex items-center justify-center text-white text-[10px] font-black border-2 border-white dark:border-zinc-950 z-20">
-							2
-						</div>
+	return (
+		<div className="flex items-end justify-center gap-2 sm:gap-6 pt-12 pb-8">
+			{/* Rank 2 */}
+			<div className="flex flex-col items-center">
+				<div className="relative mb-3 group cursor-pointer">
+					<div className="absolute inset-0 bg-zinc-200 dark:bg-zinc-800 rounded-full blur-md opacity-0 group-hover:opacity-40 transition-opacity" />
+					<Avatar className="w-20 h-20 border-2 border-zinc-200 dark:border-zinc-800 relative z-10 transition-transform group-hover:scale-105">
+						<AvatarImage src={r2?.avatar} className="object-cover" />
+						<AvatarFallback>{r2?.name[0]}</AvatarFallback>
+					</Avatar>
+					<div className="absolute -bottom-2 translate-x-[24px] right-1/2 w-7 h-7 bg-zinc-400 rounded-full flex items-center justify-center text-white text-[10px] font-black border-2 border-white dark:border-zinc-950 z-20">
+						2
 					</div>
-					<div className="text-center space-y-0.5">
-						<p className="text-sm font-black text-zinc-900 dark:text-white">{r2?.name}</p>
-						<p className="text-[10px] font-black text-[#efb036] uppercase">
-							{r2?.points.toLocaleString()} KP
-						</p>
-					</div>
-					<div className="w-16 h-20 bg-gradient-to-t from-zinc-300 to-zinc-100 dark:from-zinc-700 dark:to-zinc-800 mt-2 rounded-t-lg" />
 				</div>
-
-				{/* Rank 1 */}
-				<div className="flex flex-col items-center">
-					<div className="relative mb-4 group cursor-pointer">
-						<div className="absolute -top-6 left-1/2 -translate-x-1/2 text-orange-500 animate-bounce">
-							<Award className="w-8 h-8 fill-orange-500" />
-						</div>
-						<div className="absolute inset-[-4px] bg-gradient-to-b from-orange-400 to-yellow-300 rounded-full opacity-30 blur-sm" />
-						<Avatar className="w-20 h-28 bg-gradient-to-t from-yellow-200 to-yellow-50 dark:from-yellow-900/40 dark:to-yellow-900/20 mt-2 rounded-t-xl relative z-10 transition-transform group-hover:scale-105">
-							<AvatarImage src={r1?.avatar} className="object-cover" />
-							<AvatarFallback>{r1?.name[0]}</AvatarFallback>
-						</Avatar>
-						<div className="absolute -bottom-3 translate-x-[32px] right-1/2 w-10 h-10 bg-[#efb036] rounded-full flex items-center justify-center text-zinc-950 text-base font-black border-[3px] border-white dark:border-zinc-950 z-20 shadow-xl">
-							1
-						</div>
-					</div>
-					<div className="text-center space-y-1">
-						<p className="text-lg font-black text-zinc-900 dark:text-white tracking-tight">
-							{r1?.name}
-						</p>
-						<p className="text-xs font-black text-[#efb036] uppercase flex items-center justify-center gap-1">
-							<Flame className="w-3 h-3 fill-current" />
-							{r1?.points.toLocaleString()} KP
-						</p>
-					</div>
-					<div className="w-24 h-32 bg-gradient-to-t from-orange-50/50 to-transparent dark:from-[#efb036]/5 mt-4 rounded-t-[2.5rem] border-x border-t border-orange-100/50 dark:border-orange-900/20" />
+				<div className="text-center space-y-0.5">
+					<p className="text-sm font-black text-zinc-900 dark:text-white">{r2?.name}</p>
+					<p className="text-[10px] font-black text-[#efb036] uppercase">
+						{r2?.points.toLocaleString()} KP
+					</p>
 				</div>
-
-				{/* Rank 3 */}
-				<div className="flex flex-col items-center">
-					<div className="relative mb-3 group cursor-pointer">
-						<div className="absolute inset-0 bg-orange-100 dark:bg-orange-900/20 rounded-full blur-md opacity-0 group-hover:opacity-40 transition-opacity" />
-						<Avatar className="w-20 h-20 border-2 border-orange-200 dark:border-orange-800 relative z-10 transition-transform group-hover:scale-105">
-							<AvatarImage src={r3?.avatar} className="object-cover" />
-							<AvatarFallback>{r3?.name[0]}</AvatarFallback>
-						</Avatar>
-						<div className="absolute -bottom-2 translate-x-[24px] right-1/2 w-7 h-7 bg-orange-400 rounded-full flex items-center justify-center text-white text-[10px] font-black border-2 border-white dark:border-zinc-950 z-20">
-							3
-						</div>
-					</div>
-					<div className="text-center space-y-0.5">
-						<p className="text-sm font-black text-zinc-900 dark:text-white">{r3?.name}</p>
-						<p className="text-[10px] font-black text-[#efb036] uppercase">
-							{r3?.points.toLocaleString()} KP
-						</p>
-					</div>
-					<div className="w-16 h-16 bg-gradient-to-t from-orange-200 to-orange-100 dark:from-orange-900/40 dark:to-orange-900/20 mt-2 rounded-t-lg" />
-				</div>
+				<div className="w-16 h-20 bg-gradient-to-t from-zinc-300 to-zinc-100 dark:from-zinc-700 dark:to-zinc-800 mt-2 rounded-t-lg" />
 			</div>
-		);
-	};
 
-	const RankingList = ({ data }: { data: typeof leaderboardData.school.others }) => (
+			{/* Rank 1 */}
+			<div className="flex flex-col items-center">
+				<div className="relative mb-4 group cursor-pointer">
+					<div className="absolute -top-6 left-1/2 -translate-x-1/2 text-orange-500 animate-bounce">
+						<Award className="w-8 h-8 fill-orange-500" />
+					</div>
+					<div className="absolute inset-[-4px] bg-gradient-to-b from-orange-400 to-yellow-300 rounded-full opacity-30 blur-sm" />
+					<Avatar className="w-20 h-28 bg-gradient-to-t from-yellow-200 to-yellow-50 dark:from-yellow-900/40 dark:to-yellow-900/20 mt-2 rounded-t-xl relative z-10 transition-transform group-hover:scale-105">
+						<AvatarImage src={r1?.avatar} className="object-cover" />
+						<AvatarFallback>{r1?.name[0]}</AvatarFallback>
+					</Avatar>
+					<div className="absolute -bottom-3 translate-x-[32px] right-1/2 w-10 h-10 bg-[#efb036] rounded-full flex items-center justify-center text-zinc-950 text-base font-black border-[3px] border-white dark:border-zinc-950 z-20 shadow-xl">
+						1
+					</div>
+				</div>
+				<div className="text-center space-y-1">
+					<p className="text-lg font-black text-zinc-900 dark:text-white tracking-tight">
+						{r1?.name}
+					</p>
+					<p className="text-xs font-black text-[#efb036] uppercase flex items-center justify-center gap-1">
+						<Flame className="w-3 h-3 fill-current" />
+						{r1?.points.toLocaleString()} KP
+					</p>
+				</div>
+				<div className="w-24 h-32 bg-gradient-to-t from-orange-50/50 to-transparent dark:from-[#efb036]/5 mt-4 rounded-t-[2.5rem] border-x border-t border-orange-100/50 dark:border-orange-900/20" />
+			</div>
+
+			{/* Rank 3 */}
+			<div className="flex flex-col items-center">
+				<div className="relative mb-3 group cursor-pointer">
+					<div className="absolute inset-0 bg-orange-100 dark:bg-orange-900/20 rounded-full blur-md opacity-0 group-hover:opacity-40 transition-opacity" />
+					<Avatar className="w-20 h-20 border-2 border-orange-200 dark:border-orange-800 relative z-10 transition-transform group-hover:scale-105">
+						<AvatarImage src={r3?.avatar} className="object-cover" />
+						<AvatarFallback>{r3?.name[0]}</AvatarFallback>
+					</Avatar>
+					<div className="absolute -bottom-2 translate-x-[24px] right-1/2 w-7 h-7 bg-orange-400 rounded-full flex items-center justify-center text-white text-[10px] font-black border-2 border-white dark:border-zinc-950 z-20">
+						3
+					</div>
+				</div>
+				<div className="text-center space-y-0.5">
+					<p className="text-sm font-black text-zinc-900 dark:text-white">{r3?.name}</p>
+					<p className="text-[10px] font-black text-[#efb036] uppercase">
+						{r3?.points.toLocaleString()} KP
+					</p>
+				</div>
+				<div className="w-16 h-16 bg-gradient-to-t from-orange-200 to-orange-100 dark:from-orange-900/40 dark:to-orange-900/20 mt-2 rounded-t-lg" />
+			</div>
+		</div>
+	);
+}
+
+// RankingList Component
+function RankingList({ data }: { data: LeaderboardOthersEntry[] }) {
+	return (
 		<div className="space-y-1">
 			{data.map((student) => (
 				<div
@@ -265,7 +285,10 @@ export default function Leaderboard() {
 			))}
 		</div>
 	);
+}
 
+// Main Leaderboard Component
+export default function Leaderboard() {
 	return (
 		<div className="flex flex-col h-full bg-[#fcfdfd] dark:bg-[#0a0f18] font-inter pb-28">
 			{/* Header */}

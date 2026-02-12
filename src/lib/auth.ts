@@ -4,66 +4,83 @@ import { anonymous } from 'better-auth/plugins';
 import { dbManager } from './db';
 import * as schema from './db/schema';
 
-// Better Auth requires a database for storing user sessions and auth data
-// We use a placeholder that will be replaced after DB connection
 let authInstance: ReturnType<typeof betterAuth> | null = null;
 
 function createAuth() {
 	const isConnected = dbManager.isConnectedToDatabase();
+	let db = null;
 
-	console.log(
-		'🔐 Configuring Better Auth with database:',
-		isConnected ? 'PostgreSQL' : 'None (fallback mode)'
-	);
+	if (isConnected) {
+		try {
+			db = dbManager.getDb();
+		} catch {
+			console.warn('⚠️ Failed to get database connection - Better Auth will not persist sessions');
+		}
+	} else {
+		console.warn('⚠️ Database not connected - Better Auth will not persist sessions');
+	}
 
 	return betterAuth({
-		// Database adapter for PostgreSQL only
-		database: isConnected
-			? drizzleAdapter(dbManager.getDb(), {
+		baseURL:
+			process.env.BETTER_AUTH_URL || process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000',
+		secret: process.env.BETTER_AUTH_SECRET,
+		database: db
+			? drizzleAdapter(db, {
 					provider: 'pg',
 					schema,
 				})
 			: undefined,
-
-		// Core auth configuration
 		emailAndPassword: {
 			enabled: true,
 			requireEmailVerification: false,
 		},
 		socialProviders: {
 			google: {
-				clientId: process.env.GOOGLE_CLIENT_ID!,
-				clientSecret: process.env.GOOGLE_SECRET_KEY!,
+				clientId: process.env.GOOGLE_CLIENT_ID ?? '',
+				clientSecret: process.env.GOOGLE_SECRET_KEY ?? '',
 			},
 			twitter: {
-				clientId: process.env.TWITTER_CLIENT_ID!,
-				clientSecret: process.env.TWITTER_CLIENT_SECRET!,
+				clientId: process.env.TWITTER_CLIENT_ID ?? '',
+				clientSecret: process.env.TWITTER_CLIENT_SECRET ?? '',
 			},
 		},
 		plugins: [anonymous()],
-
-		// Session configuration
 		session: {
-			expiresIn: 60 * 60 * 24 * 7, // 7 days
-			updateAge: 60 * 60 * 24, // 1 day
+			expiresIn: 60 * 60 * 24 * 7,
+			updateAge: 60 * 60 * 24,
 		},
+		trustedOrigins: [process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000'],
 	});
 }
 
-// Create initial auth instance (may be in fallback mode)
-authInstance = createAuth();
+export async function initAuth(): Promise<ReturnType<typeof betterAuth>> {
+	await dbManager.waitForConnection(5, 3000);
 
-// Export the auth instance
-export const auth = authInstance;
-
-// Function to reconfigure auth after database connection
-export async function reconfigureAuthAfterDbConnection(): Promise<boolean> {
-	if (dbManager.isConnectedToDatabase()) {
-		console.log('🔄 Reconfiguring Better Auth with database connection...');
+	if (!authInstance) {
 		authInstance = createAuth();
-		console.log('✅ Better Auth reconfigured with PostgreSQL');
-		return true;
 	}
-	console.log('⚠️ Database not connected, Better Auth remains in fallback mode');
-	return false;
+
+	return authInstance;
 }
+
+export function getAuth(): ReturnType<typeof betterAuth> {
+	if (!authInstance) {
+		authInstance = createAuth();
+	}
+	return authInstance;
+}
+
+try {
+	if (dbManager.isConnectedToDatabase()) {
+		authInstance = createAuth();
+	}
+} catch {
+	console.warn('⚠️ Could not initialize auth at startup - will initialize on first request');
+}
+
+export const auth = new Proxy({} as ReturnType<typeof betterAuth>, {
+	get(_target, prop) {
+		const currentAuth = getAuth();
+		return Reflect.get(currentAuth, prop, currentAuth);
+	},
+});

@@ -16,6 +16,9 @@ dist-ssr/
 *.sw?
 coverage/
 test-results/
+playwright-report/
+blob-report/
+playwright/.cache/
 .next/
 tsconfig.tsbuildinfo
 .vercel

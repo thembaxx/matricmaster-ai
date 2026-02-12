@@ -204,7 +204,7 @@ export default function PracticeQuiz() {
 											<motion.div
 												initial={{ opacity: 0 }}
 												animate={{ opacity: [1, 0] }}
-												transition={{ repeat: Infinity, duration: 1 }}
+												transition={{ repeat: Number.POSITIVE_INFINITY, duration: 1 }}
 												className="absolute -left-[2px] top-0 bottom-0 w-[2px] bg-orange-500"
 											/>
 										)}
@@ -215,7 +215,7 @@ export default function PracticeQuiz() {
 									<motion.div
 										initial={{ opacity: 0 }}
 										animate={{ opacity: [1, 0] }}
-										transition={{ repeat: Infinity, duration: 1 }}
+										transition={{ repeat: Number.POSITIVE_INFINITY, duration: 1 }}
 										className="w-[2px] h-8 bg-orange-500"
 									/>
 								)}

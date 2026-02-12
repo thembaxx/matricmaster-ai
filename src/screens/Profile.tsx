@@ -1,8 +1,9 @@
 'use client';
 
 import { Calculator, GraduationCap, Star, User } from 'lucide-react';
-import { useState } from 'react';
+import { useId, useState } from 'react';
 import { PolarAngleAxis, PolarGrid, Radar, RadarChart } from 'recharts';
+import { SafeImage } from '@/components/SafeImage';
 
 import {
 	type ChartConfig,
@@ -48,6 +49,8 @@ const achievements = [
 
 export default function Profile() {
 	const [viewMode, setViewMode] = useState<'my_stats' | 'provincial'>('my_stats');
+	const radarGradientId = useId();
+	const glowFilterId = useId();
 
 	return (
 		<div className="p-4 bg-background">
@@ -65,11 +68,13 @@ export default function Profile() {
 								className="w-28 h-28 rounded-full overflow-hidden shadow-2xl relative"
 								style={{ border: '4px solid #1e293b' }}
 							>
-								{/* biome-ignore lint/performance/noImgElement: User avatar from external source */}
-								<img
+								<SafeImage
 									src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=face"
 									alt="Thabo Mbeki"
+									width={112}
+									height={112}
 									className="w-full h-full object-cover"
+									priority
 								/>
 							</div>
 							<div
@@ -125,11 +130,11 @@ export default function Profile() {
 							<ChartContainer config={chartConfig} className="min-w-0 min-h-0 w-full h-full">
 								<RadarChart cx="50%" cy="50%" outerRadius="70%" data={chartData}>
 									<defs>
-										<linearGradient id="radarGradient" x1="0" y1="0" x2="0" y2="1">
+										<linearGradient id={radarGradientId} x1="0" y1="0" x2="0" y2="1">
 											<stop offset="0%" stopColor="#22d3ee" stopOpacity={0.8} />
 											<stop offset="100%" stopColor="#0ea5e9" stopOpacity={0.3} />
 										</linearGradient>
-										<filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+										<filter id={glowFilterId} x="-50%" y="-50%" width="200%" height="200%">
 											<feGaussianBlur stdDeviation="3" result="coloredBlur" />
 											<feMerge>
 												<feMergeNode in="coloredBlur" />
@@ -150,9 +155,9 @@ export default function Profile() {
 										dataKey="you"
 										stroke="#22d3ee"
 										strokeWidth={2}
-										fill="url(#radarGradient)"
+										fill={`url(#${radarGradientId})`}
 										fillOpacity={0.6}
-										filter="url(#glow)"
+										filter={`url(#${glowFilterId})`}
 										dot={{
 											r: 5,
 											fill: '#22d3ee',

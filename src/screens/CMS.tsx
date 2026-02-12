@@ -1,4 +1,3 @@
-/** biome-ignore-all lint/performance/noImgElement: neededs */
 'use client';
 
 import {
@@ -16,6 +15,7 @@ import {
 import Image from 'next/image';
 import { useCallback, useEffect, useId, useRef, useState } from 'react';
 import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch';
+import { SafeImage } from '@/components/SafeImage';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -405,6 +405,7 @@ export default function CMS() {
 	const questionId = useId();
 	const topicId = useId();
 	const marksId = useId();
+	const fileInputId = useId();
 
 	return (
 		<div className="flex-1 flex flex-col bg-background overflow-hidden pb-28">
@@ -608,7 +609,7 @@ export default function CMS() {
 					if (!open) setDrawerTab('basic');
 				}}
 			>
-				<DrawerContent className="max-h-[90vh] flex flex-col z-120 rounded-t-3xl pb-3">
+				<DrawerContent className="max-h-[90vh] flex flex-col z-50 rounded-t-3xl pb-3">
 					<DrawerHeader className="text-left border-b pb-4">
 						<DrawerTitle>
 							{editingQuestion?.id ? 'Edit Question' : 'Create New Question'}
@@ -729,11 +730,10 @@ export default function CMS() {
 
 																			<div className="flex-1 flex items-center justify-center">
 																				<TransformComponent wrapperClass="w-full h-full flex items-center justify-center">
-																					<img
-																						src={editingQuestion.imageUrl || ''}
+																					<SafeImage
+																						src={editingQuestion.imageUrl}
 																						alt="Question"
 																						className="max-w-none"
-																						draggable={false}
 																					/>
 																				</TransformComponent>
 																			</div>
@@ -748,14 +748,14 @@ export default function CMS() {
 												<div className="mt-2 h-full flex relative">
 													<input
 														type="file"
-														id="file-input"
+														id={fileInputId}
 														ref={fileInputRef}
 														onChange={handleImageSelect}
 														accept="image/*"
 														className="hidden"
 													/>
 													<label
-														htmlFor="file-input"
+														htmlFor={fileInputId}
 														onClick={triggerFileInput}
 														className="w-full rounded-lg border-2 border-dashed border-input p-4 flex flex-col items-center justify-center gap-2 hover:border-brand-purple hover:bg-muted/50 transition-colors cursor-pointer"
 													>
@@ -780,7 +780,7 @@ export default function CMS() {
 														onValueChange={(value) =>
 															setEditingQuestion({
 																...editingQuestion,
-																subjectId: parseInt(value, 10),
+																subjectId: Number.parseInt(value, 10),
 															})
 														}
 													>
@@ -806,7 +806,7 @@ export default function CMS() {
 														onValueChange={(value) =>
 															setEditingQuestion({
 																...editingQuestion,
-																gradeLevel: parseInt(value, 10),
+																gradeLevel: Number.parseInt(value, 10),
 															})
 														}
 													>
@@ -905,7 +905,7 @@ export default function CMS() {
 												onChange={(e) =>
 													setEditingQuestion({
 														...editingQuestion,
-														marks: parseInt(e.target.value, 10) || 1,
+														marks: Number.parseInt(e.target.value, 10) || 1,
 													})
 												}
 											/>

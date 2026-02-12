@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+import { apiError, apiSuccess } from '@/lib/api-utils';
 import { dbManager } from '@/lib/db';
 
 export async function GET() {
@@ -6,30 +6,24 @@ export async function GET() {
 		const isConnected = await dbManager.waitForConnection(3, 1000);
 
 		if (isConnected) {
-			return NextResponse.json({
+			return apiSuccess({
 				status: 'healthy',
 				database: 'connected',
 				timestamp: new Date().toISOString(),
 			});
-		} else {
-			return NextResponse.json(
-				{
-					status: 'degraded',
-					database: 'disconnected',
-					timestamp: new Date().toISOString(),
-				},
-				{ status: 503 }
-			);
 		}
+
+		return apiError('Database connection failed', 503, {
+			status: 'degraded',
+			database: 'disconnected',
+			timestamp: new Date().toISOString(),
+		});
 	} catch (error) {
-		return NextResponse.json(
-			{
-				status: 'unhealthy',
-				database: 'error',
-				error: (error as Error).message,
-				timestamp: new Date().toISOString(),
-			},
-			{ status: 500 }
-		);
+		return apiError('Health check failed', 500, {
+			status: 'unhealthy',
+			database: 'error',
+			error: error instanceof Error ? error.message : 'Unknown error',
+			timestamp: new Date().toISOString(),
+		});
 	}
 }

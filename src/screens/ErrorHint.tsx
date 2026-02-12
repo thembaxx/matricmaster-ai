@@ -1,3 +1,5 @@
+'use client';
+
 import { AlertTriangle, Eye, Lightbulb, X } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';

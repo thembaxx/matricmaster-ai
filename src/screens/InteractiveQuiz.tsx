@@ -252,7 +252,7 @@ export default function InteractiveQuiz() {
 										className={`px-4 py-2 rounded-full text-xs font-bold transition-all shrink-0 ${
 											isSelected
 												? `${subjectColors.bg} text-white shadow-md scale-105`
-												: `bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700`
+												: 'bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700'
 										}`}
 									>
 										{subject}

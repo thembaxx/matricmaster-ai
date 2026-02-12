@@ -1,3 +1,5 @@
+'use client';
+
 // import type { Screen } from '@/types'; // Removed unused import
 
 import { Icon } from '@iconify/react';

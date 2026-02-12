@@ -1,3 +1,5 @@
+'use client';
+
 // import type { Screen } from '@/types'; // Removed unused import
 import { Activity, Bookmark, Calculator, Microscope, Plus, TrendingUp, Zap } from 'lucide-react';
 import { useRouter } from 'next/navigation';
