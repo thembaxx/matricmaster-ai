@@ -32,6 +32,8 @@ TWITTER_CLIENT_ID="your_actual_twitter_api_key_here"
 TWITTER_CLIENT_SECRET="your_actual_twitter_api_secret_here"
 ```
 
+> **Security Note:** Never commit `.env.local` to version control. Ensure `.env.local` is listed in `.gitignore` so sensitive credentials are not checked in. Use separate credentials for development and production environments.
+
 ### Step 5: Test the Integration
 1. Restart your development server
 2. Navigate to your login page
@@ -41,14 +43,32 @@ TWITTER_CLIENT_SECRET="your_actual_twitter_api_secret_here"
 ## 🛠️ Technical Implementation
 
 ### Backend Configuration
-The Twitter provider is already configured in `src/lib/auth.ts`:
+The Twitter provider is already configured in `src/lib/auth.ts` with explicit validation:
 
 ```typescript
-socialProviders: {
-  twitter: {
-    clientId: process.env.TWITTER_CLIENT_ID!,
-    clientSecret: process.env.TWITTER_CLIENT_SECRET!,
-  },
+// Validate Twitter OAuth credentials
+const twitterClientId = process.env.TWITTER_CLIENT_ID;
+const twitterClientSecret = process.env.TWITTER_CLIENT_SECRET;
+
+if (!twitterClientId || !twitterClientSecret) {
+	console.warn(
+		'⚠️ Twitter OAuth credentials are not configured. Sign in with Twitter will not be available.'
+	);
+}
+
+const socialProviders: Record<string, { clientId: string; clientSecret: string }> = {
+	google: {
+		clientId: process.env.GOOGLE_CLIENT_ID ?? '',
+		clientSecret: process.env.GOOGLE_SECRET_KEY ?? '',
+	},
+};
+
+// Only add Twitter provider if credentials are available
+if (twitterClientId && twitterClientSecret) {
+	socialProviders.twitter = {
+		clientId: twitterClientId,
+		clientSecret: twitterClientSecret,
+	};
 }
 ```
 
