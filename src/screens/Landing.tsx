@@ -138,7 +138,7 @@ export default function Landing() {
 								return (
 									<Card
 										key={subject.id}
-										className="bg-card p-4 rounded-3xl border border-gray-200 dark:border-gray-700 shadow-soft group-hover:shadow-md transition-shadow flex items-center gap-4"
+										className="bg-card p-4 rounded-3xl border border-gray-200 dark:border-gray-700 shadow-soft group-hover:shadow-md transition-shadow flex items-center gap-4 cursor-pointer"
 										onClick={() => router.push(subject.path)}
 									>
 										<div
@@ -150,14 +150,17 @@ export default function Landing() {
 												<div
 													className={`w-16 h-16 rounded-[1.5rem] ${subject.bg} flex items-center justify-center shrink-0 shadow-inner group-hover:scale-110 transition-transform duration-300 relative overflow-hidden`}
 												>
-													<Icon className={`w-8 h-8 ${subject.color} relative z-10`} />
+													<Icon
+														className={`w-8 h-8 ${subject.color} relative z-10`}
+														aria-hidden="true"
+													/>
 												</div>
 											</div>
 											<div className="flex-1 min-w-0">
 												<h3 className="font-bold text-gray-900 dark:text-white">{subject.name}</h3>
 												<p className="text-sm text-gray-500 dark:text-gray-400">{subject.topics}</p>
 											</div>
-											<div className="text-gray-300 dark:text-gray-600">
+											<div className="text-gray-300 dark:text-gray-600" aria-hidden="true">
 												<ChevronRight className="w-4 h-4" />
 											</div>
 										</div>
@@ -167,38 +170,50 @@ export default function Landing() {
 						</div>
 					</section>
 
-					{/* Stats Section */}
-					{/* <section className="mt-16 py-12 px-8 bg-zinc-900 dark:bg-white rounded-[3rem] text-center space-y-6 relative overflow-hidden">
-						<img
-							src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&q=80&w=800"
-							alt="Students studying"
-							className="absolute inset-0 w-full h-full object-cover opacity-20"
-						/>
-						<div className="grid grid-cols-2 gap-8 relative z-10">
-							<div className="space-y-1">
-								<h4 className="text-4xl font-black text-white dark:text-zinc-900">10k+</h4>
-								<p className="text-[10px] font-black text-zinc-400 uppercase tracking-wider">
-									Papers
-								</p>
-							</div>
-							<div className="space-y-1">
-								<h4 className="text-4xl font-black text-white dark:text-zinc-900">98%</h4>
-								<p className="text-[10px] font-black text-zinc-400 uppercase tracking-wider">
-									Pass Rate
-								</p>
-							</div>
-						</div>
-					</section> */}
-
+					{/* Decorative Illustration */}
 					<div className="relative w-full aspect-square max-w-[320px] mb-8 flex items-center justify-center animate-float mt-16">
 						<div className="absolute inset-0 bg-linear-to-tr from-blue-100 to-purple-100 dark:from-blue-900/20 dark:to-purple-900/20 rounded-full blur-3xl opacity-60" />
-						{/* biome-ignore lint/performance/noImgElement: External illustration URL */}
-						<img
-							alt="Abstract geometric 3D shape representing structured learning"
-							className="relative z-10 w-64 h-64 object-cover rounded-3xl shadow-xl rotate-3 hover:rotate-6 transition-transform duration-500"
-							src="https://lh3.googleusercontent.com/aida-public/AB6AXuCYGPHGX8U1snu6lisR2qVfg1OzkcyqEUejzvKbDfs15eDax6rOMG7DFc18e4ENbwIoyH-H0mCYDhTxyw29Whpg1WyzVItfMizpr2GCrF6wgXywpuEXJMpqCmpUih9GvtIOE-x7ww4qJoFlUZkze7AHkDTdH_QbGRQ0i2XhLolp5GTg-o25_N-JQM1Zz_jQKpyvhtr4W4hY5MAaDpr1Ro69n8hSdO_Fycg44ddjFGM0xg8Ua0SMZDUOcprM8YgVJorDvm6FkRKhs3rL"
+						<div
+							className="relative z-10 w-64 h-64 rounded-3xl shadow-xl rotate-3 hover:rotate-6 transition-transform duration-500 overflow-hidden bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-950 dark:to-purple-950 flex items-center justify-center"
 							style={{ boxShadow: '20px 20px 60px -10px rgba(0,0,0,0.15)' }}
-						/>
+							role="img"
+							aria-label="Interactive learning illustration"
+						>
+							<svg viewBox="0 0 100 100" className="w-32 h-32" aria-hidden="true">
+								<defs>
+									<linearGradient id="heroGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+										<stop offset="0%" style={{ stopColor: '#2563eb', stopOpacity: 1 }} />
+										<stop offset="100%" style={{ stopColor: '#7c3aed', stopOpacity: 1 }} />
+									</linearGradient>
+								</defs>
+								<circle
+									cx="50"
+									cy="50"
+									r="30"
+									stroke="url(#heroGrad)"
+									strokeWidth="0.5"
+									fill="none"
+									strokeDasharray="2 2"
+									className="animate-spin-slow"
+								/>
+								<path
+									d="M 50 20 L 80 70 L 20 70 Z"
+									fill="none"
+									stroke="url(#heroGrad)"
+									strokeWidth="2"
+									strokeLinejoin="round"
+								/>
+								<path
+									d="M 10 50 Q 25 30 40 50 T 70 50 T 100 50"
+									fill="none"
+									stroke="#10b981"
+									strokeWidth="2"
+								/>
+								<circle cx="50" cy="20" r="3" fill="#f59e0b" />
+								<circle cx="80" cy="70" r="3" fill="#f59e0b" />
+								<circle cx="20" cy="70" r="3" fill="#f59e0b" />
+							</svg>
+						</div>
 						<div
 							className="absolute -left-2 top-10 bg-white dark:bg-surface-dark p-3 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-800 animate-float"
 							style={{ animationDelay: '1s' }}
@@ -213,17 +228,18 @@ export default function Landing() {
 							style={{ animationDelay: '2s' }}
 						>
 							<div className="flex items-center gap-2">
-								<span className="w-3 h-3 rounded-full bg-green-500" />
+								<span className="w-3 h-3 rounded-full bg-green-500" aria-hidden="true" />
 								<span className="text-sm font-bold">Correct</span>
 							</div>
 						</div>
 					</div>
-					<button
+					<Button
 						type="button"
 						className="w-full py-4 px-8 bg-primary hover:bg-black text-white font-bold rounded-full text-lg shadow-lg dark:shadow-none dark:border dark:border-gray-700 transition-all active:scale-95 mb-6"
+						onClick={() => router.push('/dashboard')}
 					>
 						Get Started
-					</button>
+					</Button>
 					<p className="text-xs text-gray-400 font-medium uppercase tracking-wide mb-8 text-center">
 						Over 10,000 past papers included
 					</p>

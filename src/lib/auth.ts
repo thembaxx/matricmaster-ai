@@ -3,6 +3,7 @@ import { drizzleAdapter } from 'better-auth/adapters/drizzle';
 import { anonymous } from 'better-auth/plugins';
 import { dbManager } from './db';
 import * as schema from './db/schema';
+import { nextCookies } from 'better-auth/next-js';
 
 let authInstance: ReturnType<typeof betterAuth> | null = null;
 
@@ -60,12 +61,17 @@ function createAuth() {
 			requireEmailVerification: false,
 		},
 		socialProviders,
-		plugins: [anonymous()],
 		session: {
 			expiresIn: 60 * 60 * 24 * 7,
 			updateAge: 60 * 60 * 24,
 		},
 		trustedOrigins: [process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000'],
+		rateLimit: {
+			enabled: true,
+			window: 60, // 1 minute
+			max: 10, // 10 requests per window
+		},
+		plugins: [anonymous(),nextCookies()],
 	});
 }
 
