@@ -71,9 +71,10 @@ export default function SignUpForm() {
 	};
 
 	const handleSocialSignUp = async (provider: 'google' | 'twitter') => {
+		const callbackURL = new URL('/dashboard', window.location.origin).toString();
 		await authClient.signIn.social({
 			provider,
-			callbackURL: '/dashboard',
+			callbackURL,
 		});
 	};
 

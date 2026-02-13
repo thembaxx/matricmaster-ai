@@ -123,33 +123,14 @@ export function SignInForm() {
 	};
 
 	const handleSocialSignIn = async (provider: 'google' | 'twitter') => {
+		const callbackURL = new URL(safeCallbackUrl, window.location.origin).toString();
 		await authClient.signIn.social({
 			provider,
-			callbackURL: safeCallbackUrl,
+			callbackURL,
 		});
 	};
 
-	const handleAnonymousSignIn = async () => {
-		setIsLoading(true);
-		setError(null);
-		try {
-			const { error: authError } = await authClient.signIn.anonymous();
-			if (authError) {
-				setError(authError.message || 'Failed to sign in as guest');
-				setIsLoading(false);
-			} else {
-				await initializeDatabase();
-				setSuccessEmail('Guest User');
-				// Delay navigation to show the success toast
-				setTimeout(() => {
-					router.push(safeCallbackUrl);
-				}, 2000);
-			}
-		} catch (err) {
-			setError(err instanceof Error ? err.message : 'Failed to sign in as guest');
-			setIsLoading(false);
-		}
-	};
+
 
 	return (
 		<div className="min-h-screen flex flex-col bg-slate-50 dark:bg-zinc-950 relative overflow-hidden">
@@ -361,18 +342,7 @@ export function SignInForm() {
 							</Link>
 						</p>
 
-						<button
-							type="button"
-							onClick={handleAnonymousSignIn}
-							disabled={isLoading}
-							className={`w-full text-center font-medium transition-colors underline underline-offset-2 ${
-								isLoading
-									? 'text-zinc-300 dark:text-zinc-600 cursor-not-allowed'
-									: 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-300'
-							}`}
-						>
-							Continue as Guest
-						</button>
+
 					</div>
 				</div>
 			</div>

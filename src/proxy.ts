@@ -15,10 +15,7 @@ function hasSession(request: NextRequest): boolean {
 	const sessionCookie = request.cookies.get('better-auth.session');
 	const sessionToken = request.cookies.get('better-auth.session_token');
 
-	// Also check for anonymous session
-	const anonymousCookie = request.cookies.get('better-auth.anonymous');
-
-	return !!(sessionCookie?.value || sessionToken?.value || anonymousCookie?.value);
+	return !!(sessionCookie?.value || sessionToken?.value);
 }
 
 export default function proxy(request: NextRequest) {

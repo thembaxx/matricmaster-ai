@@ -1,7 +1,7 @@
 import { betterAuth } from 'better-auth';
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
 import { nextCookies } from 'better-auth/next-js';
-import { anonymous } from 'better-auth/plugins/anonymous';
+
 import { dbManager } from './db';
 import * as schema from './db/schema';
 
@@ -61,9 +61,9 @@ function createAuth() {
 		secret: process.env.BETTER_AUTH_SECRET,
 		database: db
 			? drizzleAdapter(db, {
-					provider: 'pg',
-					schema,
-				})
+				provider: 'pg',
+				schema,
+			})
 			: undefined,
 		emailAndPassword: {
 			enabled: true,
@@ -103,9 +103,20 @@ function createAuth() {
 						console.log(`✅ New user created: ${user.id} (${user.email})`);
 					},
 				},
+				update: {
+					before: async (user) => {
+						// Check if user is blocked during any update (including sign-in)
+						if (user.isBlocked) {
+							throw new Error(
+								'Your account has been blocked. Please contact support for assistance.'
+							);
+						}
+						return { data: user };
+					},
+				},
 			},
 		},
-		plugins: [anonymous(), nextCookies()],
+		plugins: [nextCookies()],
 	});
 }
 

@@ -1,7 +1,9 @@
 'use server';
 
-import { and, asc, desc, eq, inArray, sql } from 'drizzle-orm';
+import { and, asc, desc, eq, inArray, isNotNull, isNull, sql } from 'drizzle-orm';
 import { z } from 'zod';
+import type { User } from './better-auth-schema';
+import { users } from './better-auth-schema';
 import { type DbType, dbManager } from './index';
 import type {
 	NewOption,
@@ -512,4 +514,128 @@ export async function seedDatabaseAction(): Promise<{ success: boolean; message:
 		console.error('Seed action error:', error);
 		return { success: false, message: error instanceof Error ? error.message : 'Seeding failed' };
 	}
+}
+
+// ============================================================================
+// USER MANAGEMENT ACTIONS
+// ============================================================================
+
+const updateUserSchema = z.object({
+	name: z.string().min(1).max(100).optional(),
+	email: z.string().email().max(100).optional(),
+	role: z.enum(['admin', 'moderator', 'user']).optional(),
+});
+
+export interface UserFilters {
+	search?: string;
+	filter?: 'all' | 'active' | 'blocked' | 'deleted';
+}
+
+export async function getUsersAction(filters: UserFilters = {}): Promise<User[]> {
+	try {
+		const db = await getDb();
+
+		// Build conditions based on filter type
+		const conditions = [];
+
+		if (filters.filter === 'active') {
+			conditions.push(isNull(users.deletedAt));
+			conditions.push(eq(users.isBlocked, false));
+		} else if (filters.filter === 'blocked') {
+			conditions.push(eq(users.isBlocked, true));
+		} else if (filters.filter === 'deleted') {
+			conditions.push(isNotNull(users.deletedAt));
+		}
+
+		let usersList: User[];
+		if (conditions.length > 0) {
+			usersList = await db
+				.select()
+				.from(users)
+				.where(and(...conditions))
+				.orderBy(desc(users.createdAt));
+		} else {
+			usersList = await db.select().from(users).orderBy(desc(users.createdAt));
+		}
+
+		// Client-side search for name/email
+		if (filters.search?.trim()) {
+			const searchLower = filters.search.toLowerCase();
+			return usersList.filter(
+				(u) =>
+					u.name.toLowerCase().includes(searchLower) || u.email.toLowerCase().includes(searchLower)
+			);
+		}
+
+		return usersList;
+	} catch {
+		return [];
+	}
+}
+
+export async function updateUserAction(
+	id: string,
+	data: { name?: string; email?: string; role?: 'admin' | 'moderator' | 'user' }
+): Promise<User | null> {
+	const validatedData = updateUserSchema.parse(data);
+
+	if (Object.keys(validatedData).length === 0) {
+		console.warn('⚠️ updateUserAction: No valid fields to update');
+		return null;
+	}
+
+	const db = await getDb();
+	const [user] = await db
+		.update(users)
+		.set({ ...validatedData, updatedAt: new Date() })
+		.where(eq(users.id, id))
+		.returning();
+	return user ?? null;
+}
+
+export async function toggleUserBlockAction(
+	id: string
+): Promise<{ success: boolean; isBlocked: boolean; user?: User }> {
+	const db = await getDb();
+
+	// Get current user state
+	const [currentUser] = await db.select().from(users).where(eq(users.id, id)).limit(1);
+
+	if (!currentUser) {
+		return { success: false, isBlocked: false };
+	}
+
+	const newBlockedState = !currentUser.isBlocked;
+
+	const [updatedUser] = await db
+		.update(users)
+		.set({ isBlocked: newBlockedState, updatedAt: new Date() })
+		.where(eq(users.id, id))
+		.returning();
+
+	return {
+		success: !!updatedUser,
+		isBlocked: newBlockedState,
+		user: updatedUser,
+	};
+}
+
+export async function deleteUserAction(id: string): Promise<{ success: boolean; user?: User }> {
+	const db = await getDb();
+	const [user] = await db
+		.update(users)
+		.set({ deletedAt: new Date(), updatedAt: new Date() })
+		.where(eq(users.id, id))
+		.returning();
+	return { success: !!user, user: user ?? undefined };
+}
+
+export async function restoreUserAction(id: string): Promise<{ success: boolean; user?: User }> {
+	const db = await getDb();
+	const [user] = await db
+		.update(users)
+		.set({ deletedAt: null, updatedAt: new Date() })
+		.where(eq(users.id, id))
+		.returning();
+	return { success: !!user, user: user ?? undefined };
 }
