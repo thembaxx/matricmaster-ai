@@ -29,7 +29,7 @@ class PostgreSQLManager {
 	public static getInstance(config?: DatabaseConfig): PostgreSQLManager {
 		if (!PostgreSQLManager.instance) {
 			const defaultConfig: DatabaseConfig = {
-				connectionString: process.env.DATABASE_URL || '',
+				connectionString: process.env.POSTGRES_URL || process.env.DATABASE_URL || '',
 				maxConnections: 10,
 				connectionTimeout: 30,
 				idleTimeout: 60,
