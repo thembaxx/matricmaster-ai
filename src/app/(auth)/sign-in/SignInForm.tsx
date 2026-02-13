@@ -2,7 +2,8 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Eye, EyeOff, Loader2 } from 'lucide-react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { Check, Eye, EyeOff, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
@@ -50,6 +51,7 @@ export function SignInForm() {
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState<string | null>(null);
 	const [showPassword, setShowPassword] = useState(false);
+	const [successEmail, setSuccessEmail] = useState<string | null>(null);
 
 	const {
 		register,
@@ -105,13 +107,17 @@ export function SignInForm() {
 
 			if (authError) {
 				setError(authError.message || 'Invalid email or password');
+				setIsLoading(false);
 			} else {
 				await initializeDatabase();
-				router.push(safeCallbackUrl);
+				setSuccessEmail(data.email);
+				// Delay navigation to show the success toast
+				setTimeout(() => {
+					router.push(safeCallbackUrl);
+				}, 2000);
 			}
 		} catch (err) {
 			setError(err instanceof Error ? err.message : 'An unexpected error occurred');
-		} finally {
 			setIsLoading(false);
 		}
 	};
@@ -130,20 +136,44 @@ export function SignInForm() {
 			const { error: authError } = await authClient.signIn.anonymous();
 			if (authError) {
 				setError(authError.message || 'Failed to sign in as guest');
+				setIsLoading(false);
 			} else {
 				await initializeDatabase();
-				router.push(safeCallbackUrl);
+				setSuccessEmail('Guest User');
+				// Delay navigation to show the success toast
+				setTimeout(() => {
+					router.push(safeCallbackUrl);
+				}, 2000);
 			}
 		} catch (err) {
 			setError(err instanceof Error ? err.message : 'Failed to sign in as guest');
-		} finally {
 			setIsLoading(false);
 		}
 	};
 
 	return (
-		<div className="min-h-screen flex flex-col bg-slate-50 dark:bg-zinc-950">
-			<div className="relative w-full h-64 overflow-hidden">
+		<div className="min-h-screen flex flex-col bg-slate-50 dark:bg-zinc-950 relative overflow-hidden">
+			{/* Success Toast */}
+			<AnimatePresence>
+				{successEmail && (
+					<motion.div
+						initial={{ y: -100, opacity: 0 }}
+						animate={{ y: 0, opacity: 1 }}
+						exit={{ y: -100, opacity: 0 }}
+						transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+						className="fixed top-6 left-0 right-0 z-50 flex justify-center pointer-events-none"
+					>
+						<div className="bg-blue-500 text-white px-6 py-3 rounded-full shadow-lg shadow-blue-500/30 flex items-center gap-3 pointer-events-auto">
+							<div className="bg-white/20 p-1 rounded-full">
+								<Check className="w-4 h-4 text-white" />
+							</div>
+							<span className="font-medium text-sm">Signed in as {successEmail}</span>
+						</div>
+					</motion.div>
+				)}
+			</AnimatePresence>
+
+			<div className="relative w-full h-64 overflow-hidden shrink-0">
 				<div className="absolute inset-0 bg-background dark:block hidden opacity-90" />
 				<div
 					className="absolute inset-0 dark:block hidden"
@@ -187,9 +217,9 @@ export function SignInForm() {
 				</div>
 			</div>
 
-			<div className="p-4 w-full flex">
-				<div className="flex-1 px-6 py-8 -mt-4 bg-card rounded-3xl relative z-10">
-					<div className="max-w-sm mx-auto space-y-6">
+			<div className="p-4 w-full flex grow items-start justify-center">
+				<div className="w-full max-w-sm px-6 py-8 -mt-4 bg-card rounded-3xl relative z-10 shadow-xl dark:shadow-zinc-950/50">
+					<div className="space-y-6">
 						<div className="text-center space-y-2">
 							<h1 className="text-3xl font-bold text-zinc-900 dark:text-white">Welcome Back</h1>
 							<p className="text-zinc-500 dark:text-zinc-400">Empowering your Grade 12 journey.</p>
@@ -258,7 +288,7 @@ export function SignInForm() {
 
 							<Button
 								type="submit"
-								disabled={isLoading}
+								disabled={isLoading || !!successEmail}
 								className="w-full h-14 rounded-xl bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 text-white font-semibold text-sm shadow-lg shadow-blue-500/25 transition-all active:scale-[0.98]"
 							>
 								{isLoading ? <Loader2 className="w-6 h-6 animate-spin" /> : 'Sign In'}
