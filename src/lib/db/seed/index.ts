@@ -6,7 +6,7 @@ const envPath = resolve(process.cwd(), '.env.local');
 config({ path: envPath });
 
 import { auth } from '@/lib/auth';
-import { closeConnection, dbManager } from '../index';
+import { dbManager } from '../index';
 import { options, questions, subjects } from '../schema';
 import { englishQuestions } from './english-questions';
 import { historyQuestions } from './history-questions';
@@ -20,14 +20,15 @@ function getDb() {
 }
 
 export async function seedDatabase() {
-	console.log('Starting database seeding...');
-	console.log('DATABASE_URL defined:', !!process.env.DATABASE_URL);
-	if (process.env.DATABASE_URL) {
-		console.log(`DATABASE_URL starts with: ${process.env.DATABASE_URL.substring(0, 10)}...`);
-	} else {
-		console.log('DATABASE_URL not set');
+	console.log('🔄 Starting database seeding...');
+
+	// Ensure database is initialized
+	if (!dbManager.isConnectedToDatabase()) {
+		console.log('🔄 Initializing database connection...');
+		await dbManager.initialize();
 	}
 
+	console.log('DATABASE_URL defined:', !!process.env.DATABASE_URL);
 	console.log('Using database: PostgreSQL');
 
 	const useDb = getDb();
@@ -74,6 +75,7 @@ export async function seedDatabase() {
 		}
 
 		if (subjectsToInsert.length > 0) {
+			console.log(`Inserting ${subjectsToInsert.length} missing subjects...`);
 			const insertedSubjects = await useDb.insert(subjects).values(subjectsToInsert).returning();
 
 			// Update references
@@ -86,11 +88,11 @@ export async function seedDatabase() {
 
 		// Ensure we have all subjects
 		if (!historySubject || !englishSubject || !physicsSubject) {
-			throw new Error('Failed to get all required subjects');
+			throw new Error('Failed to get or create all required subjects');
 		}
 
 		console.log(
-			'✓ Subjects seeded:',
+			'✓ Subjects verified:',
 			historySubject.name,
 			'&',
 			englishSubject.name,
@@ -98,9 +100,23 @@ export async function seedDatabase() {
 			physicsSubject.name
 		);
 
-		// Seed History questions within transaction
-		await useDb.transaction(async (tx) => {
-			for (const q of historyQuestions) {
+		// Helper to check if question exists
+		const questionExists = async (text: string, subjectId: number) => {
+			const existing = await useDb
+				.select()
+				.from(questions)
+				.where(and(eq(questions.questionText, text), eq(questions.subjectId, subjectId)))
+				.limit(1);
+			return existing.length > 0;
+		};
+
+		// Seed History questions
+		console.log('Seeding History questions...');
+		let historyCount = 0;
+		for (const q of historyQuestions) {
+			if (await questionExists(q.questionText, historySubject.id)) continue;
+
+			await useDb.transaction(async (tx) => {
 				const [question] = await tx
 					.insert(questions)
 					.values({
@@ -124,13 +140,18 @@ export async function seedDatabase() {
 						isActive: true,
 					});
 				}
-			}
-		});
-		console.log(`✓ ${historyQuestions.length} History questions seeded`);
+			});
+			historyCount++;
+		}
+		console.log(`✓ ${historyCount} new History questions seeded`);
 
-		// Seed English questions within transaction
-		await useDb.transaction(async (tx) => {
-			for (const q of englishQuestions) {
+		// Seed English questions
+		console.log('Seeding English questions...');
+		let englishCount = 0;
+		for (const q of englishQuestions) {
+			if (await questionExists(q.questionText, englishSubject.id)) continue;
+
+			await useDb.transaction(async (tx) => {
 				const [question] = await tx
 					.insert(questions)
 					.values({
@@ -154,13 +175,18 @@ export async function seedDatabase() {
 						isActive: true,
 					});
 				}
-			}
-		});
-		console.log(`✓ ${englishQuestions.length} English questions seeded`);
+			});
+			englishCount++;
+		}
+		console.log(`✓ ${englishCount} new English questions seeded`);
 
-		// Seed Physics questions within transaction
-		await useDb.transaction(async (tx) => {
-			for (const q of physicsQuestions) {
+		// Seed Physics questions
+		console.log('Seeding Physics questions...');
+		let physicsCount = 0;
+		for (const q of physicsQuestions) {
+			if (await questionExists(q.questionText, physicsSubject.id)) continue;
+
+			await useDb.transaction(async (tx) => {
 				const [question] = await tx
 					.insert(questions)
 					.values({
@@ -185,48 +211,44 @@ export async function seedDatabase() {
 						isActive: true,
 					});
 				}
-			}
-		});
-		console.log(`✓ ${physicsQuestions.length} Physics questions seeded`);
+			});
+			physicsCount++;
+		}
+		console.log(`✓ ${physicsCount} new Physics questions seeded`);
 
 		// Seed Test User
 		const testEmail = 'student@matricmaster.ai';
+		console.log('Checking for test user...');
 
-		console.log('Seeding test user...');
-		try {
-			// Using auth.api.signUpEmail which is the server-side action
-			await auth.api.signUpEmail({
-				body: {
-					email: testEmail,
-					password: 'password123',
-					name: 'Test Student',
-				},
-			});
-			console.log('✓ Test user seeded: student@matricmaster.ai / password123');
-		} catch (e) {
-			console.error('Failed to seed user via Auth API:', e);
+		const existingUser = await useDb.select().from(users).where(eq(users.email, testEmail)).limit(1);
+
+		if (existingUser.length === 0) {
+			console.log('Seeding test user...');
+			try {
+				await auth.api.signUpEmail({
+					body: {
+						email: testEmail,
+						password: 'password123',
+						name: 'Test Student',
+					},
+				});
+				console.log('✓ Test user seeded: student@matricmaster.ai / password123');
+			} catch (e) {
+				console.error('⚠️ Failed to seed user via Auth API:', e instanceof Error ? e.message : e);
+			}
+		} else {
+			console.log('✓ Test user already exists.');
 		}
 
 		console.log('\n✅ Database seeding completed successfully!');
 	} catch (error) {
-		console.error('Seeding failed:', error);
+		console.error('❌ Seeding failed:', error);
 		throw error;
 	}
 }
 
-// Run if called directly (ES Module compatible check)
-try {
-	seedDatabase()
-		.then(async () => {
-			console.log('Done!');
-			await closeConnection();
-			process.exit(0);
-		})
-		.catch(async (error) => {
-			console.error('Seed error:', error);
-			await closeConnection();
-			process.exit(1);
-		});
-} catch (error) {
-	console.error('Seed error:', error);
-}
+// Ensure the and/eq utilities are available
+import { and, eq } from 'drizzle-orm';
+import { users } from '../better-auth-schema';
+
+// End of file
