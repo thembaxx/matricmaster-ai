@@ -229,7 +229,7 @@ export default function MobileFrame({ children }: { children: React.ReactNode })
 				</div>
 
 				{/* Bottom Navigation - iOS Liquid Glass Floating Pill */}
-				{!shouldHideBottomNav && (
+				{!shouldHideBottomNav && user && (
 					<nav
 						aria-label="Main navigation"
 						className="fixed bottom-8 left-1/2 -translate-x-1/2 w-[90%] max-w-95 z-100 ios-glass rounded-[2.5rem] shadow-2xl shadow-black/5 grid grid-cols-4 p-2 px-3 transition-all duration-500 ease-ios"
