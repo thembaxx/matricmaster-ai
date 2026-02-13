@@ -10,11 +10,16 @@ export const users = pgTable(
 		email: text('email').notNull().unique(),
 		emailVerified: boolean('emailVerified').notNull().default(false),
 		image: text('image'),
+		role: text('role').notNull().default('user'), // 'admin', 'moderator', 'user'
+		isBlocked: boolean('is_blocked').notNull().default(false),
+		deletedAt: timestamp('deleted_at'),
 		createdAt: timestamp('createdAt').notNull().defaultNow(),
 		updatedAt: timestamp('updatedAt').notNull().defaultNow(),
 	},
 	(table) => ({
 		emailIdx: index('users_email_idx').on(table.email),
+		roleIdx: index('users_role_idx').on(table.role),
+		blockedIdx: index('users_blocked_idx').on(table.isBlocked),
 	})
 );
 

@@ -16,6 +16,7 @@ import Image from 'next/image';
 import { useCallback, useEffect, useId, useRef, useState } from 'react';
 import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch';
 import { SafeImage } from '@/components/SafeImage';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -50,13 +51,19 @@ import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
 import {
 	createQuestionAction,
+	deleteUserAction,
 	getQuestionsAction,
 	getQuestionWithOptionsAction,
 	getSubjectsAction,
+	getUsersAction,
+	restoreUserAction,
 	seedDatabaseAction,
 	softDeleteQuestionAction,
+	toggleUserBlockAction,
 	updateQuestionAction,
+	updateUserAction,
 } from '@/lib/db/actions';
+import type { User } from '@/lib/db/better-auth-schema';
 import type { Question, Subject } from '@/lib/db/schema';
 import { uploadFiles } from '@/lib/uploadthing';
 
@@ -97,6 +104,7 @@ const EMPTY_QUESTION: QuestionFormData = {
 export default function CMS() {
 	const [subjects, setSubjects] = useState<Subject[]>([]);
 	const [questions, setQuestions] = useState<Question[]>([]);
+	const [users, setUsers] = useState<User[]>([]);
 	const [loading, setLoading] = useState(true);
 	const [searchQuery, setSearchQuery] = useState('');
 	const [selectedSubject, setSelectedSubject] = useState<string>('all');
@@ -112,15 +120,29 @@ export default function CMS() {
 	const [localImagePreview, setLocalImagePreview] = useState<string | null>(null);
 	const fileInputRef = useRef<HTMLInputElement>(null);
 
+	// User management state
+	const [userSearchQuery, setUserSearchQuery] = useState('');
+	const [userFilter, setUserFilter] = useState<'all' | 'active' | 'blocked' | 'deleted'>('all');
+	const [selectedUser, setSelectedUser] = useState<User | null>(null);
+	const [isUserDrawerOpen, setIsUserDrawerOpen] = useState(false);
+	const [userDrawerTab, setUserDrawerTab] = useState<'details' | 'actions'>('details');
+	const [editingUser, setEditingUser] = useState<{
+		name: string;
+		email: string;
+		role: 'admin' | 'moderator' | 'user';
+	} | null>(null);
+
 	const loadData = useCallback(async () => {
 		try {
 			setLoading(true);
-			const [subjectsData, questionsData] = await Promise.all([
+			const [subjectsData, questionsData, usersData] = await Promise.all([
 				getSubjectsAction(),
 				getQuestionsAction({}),
+				getUsersAction({}),
 			]);
 			setSubjects(subjectsData);
 			setQuestions(questionsData);
+			setUsers(usersData);
 		} catch (error) {
 			console.error('Failed to load data:', error);
 		} finally {
@@ -152,6 +174,88 @@ export default function CMS() {
 			setSeeding(false);
 		}
 	};
+
+	// User management handlers
+	const handleOpenUserDrawer = (user: User) => {
+		setSelectedUser(user);
+		setEditingUser({
+			name: user.name,
+			email: user.email,
+			role: (user.role as 'admin' | 'moderator' | 'user') || 'user',
+		});
+		setUserDrawerTab('details');
+		setIsUserDrawerOpen(true);
+	};
+
+	const handleUpdateUser = async () => {
+		if (!selectedUser || !editingUser) return;
+
+		try {
+			await updateUserAction(selectedUser.id, editingUser);
+			await loadData();
+			alert('User updated successfully');
+		} catch (error) {
+			console.error('Failed to update user:', error);
+			alert('Failed to update user');
+		}
+	};
+
+	const handleToggleBlock = async () => {
+		if (!selectedUser) return;
+
+		const action = selectedUser.isBlocked ? 'unblock' : 'block';
+		if (!confirm(`Are you sure you want to ${action} this user?`)) return;
+
+		try {
+			const result = await toggleUserBlockAction(selectedUser.id);
+			if (result.success) {
+				await loadData();
+				// Update selected user in state
+				if (result.user) {
+					setSelectedUser(result.user);
+				}
+				alert(`User ${action}ed successfully`);
+			}
+		} catch (error) {
+			console.error('Failed to toggle block:', error);
+			alert('Failed to update user status');
+		}
+	};
+
+	const handleDeleteUser = async () => {
+		if (!selectedUser) return;
+
+		if (!confirm('Are you sure you want to delete this user? This action can be undone later.'))
+			return;
+
+		try {
+			await deleteUserAction(selectedUser.id);
+			await loadData();
+			setIsUserDrawerOpen(false);
+			alert('User deleted successfully');
+		} catch (error) {
+			console.error('Failed to delete user:', error);
+			alert('Failed to delete user');
+		}
+	};
+
+	const handleRestoreUser = async (userId: string) => {
+		try {
+			await restoreUserAction(userId);
+			await loadData();
+			alert('User restored successfully');
+		} catch (error) {
+			console.error('Failed to restore user:', error);
+			alert('Failed to restore user');
+		}
+	};
+
+	const filteredUsers = users.filter((u) => {
+		const matchesSearch =
+			u.name.toLowerCase().includes(userSearchQuery.toLowerCase()) ||
+			u.email.toLowerCase().includes(userSearchQuery.toLowerCase());
+		return matchesSearch;
+	});
 
 	const filteredQuestions = questions.filter((q) => {
 		const matchesSearch =
@@ -401,6 +505,31 @@ export default function CMS() {
 		}
 	};
 
+	// User display helpers
+	const getRoleColor = (role: string) => {
+		switch (role) {
+			case 'admin':
+				return 'bg-brand-purple text-white';
+			case 'moderator':
+				return 'bg-blue-100 text-blue-700 dark:bg-blue-900/20 dark:text-blue-400';
+			default:
+				return 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400';
+		}
+	};
+
+	const getStatusColor = (isBlocked: boolean, deletedAt: Date | null) => {
+		if (deletedAt) return 'bg-red-100 text-red-700 dark:bg-red-900/20 dark:text-red-400';
+		if (isBlocked)
+			return 'bg-orange-100 text-orange-700 dark:bg-orange-900/20 dark:text-orange-400';
+		return 'bg-green-100 text-green-700 dark:bg-green-900/20 dark:text-green-400';
+	};
+
+	const getStatusText = (isBlocked: boolean, deletedAt: Date | null) => {
+		if (deletedAt) return 'Deleted';
+		if (isBlocked) return 'Blocked';
+		return 'Active';
+	};
+
 	// Generate unique IDs for form fields
 	const questionId = useId();
 	const topicId = useId();
@@ -434,10 +563,11 @@ export default function CMS() {
 				</div>
 
 				{/* Tabs */}
-				<Tabs value={activeTab} onValueChange={setActiveTab} className="w-full hidden">
-					<TabsList className="grid w-full grid-cols-2 mb-4">
+				<Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+					<TabsList className="grid w-full grid-cols-3 mb-4">
 						<TabsTrigger value="questions">Questions</TabsTrigger>
 						<TabsTrigger value="subjects">Subjects</TabsTrigger>
+						<TabsTrigger value="users">Users</TabsTrigger>
 					</TabsList>
 				</Tabs>
 
@@ -497,6 +627,32 @@ export default function CMS() {
 								<SelectItem value="easy">Easy</SelectItem>
 								<SelectItem value="medium">Medium</SelectItem>
 								<SelectItem value="hard">Hard</SelectItem>
+							</SelectContent>
+						</Select>
+					</div>
+				)}
+
+				{/* User Filters */}
+				{activeTab === 'users' && (
+					<div className="space-y-3">
+						<div className="relative">
+							<Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-400" />
+							<Input
+								value={userSearchQuery}
+								onChange={(e) => setUserSearchQuery(e.target.value)}
+								placeholder="Search users by name or email..."
+								className="pl-10 text-base h-12"
+							/>
+						</div>
+						<Select value={userFilter} onValueChange={(v) => setUserFilter(v as typeof userFilter)}>
+							<SelectTrigger>
+								<SelectValue placeholder="Filter users" />
+							</SelectTrigger>
+							<SelectContent>
+								<SelectItem value="all">All Users</SelectItem>
+								<SelectItem value="active">Active</SelectItem>
+								<SelectItem value="blocked">Blocked</SelectItem>
+								<SelectItem value="deleted">Deleted</SelectItem>
 							</SelectContent>
 						</Select>
 					</div>
@@ -572,7 +728,7 @@ export default function CMS() {
 									</Card>
 								))
 							)
-						) : (
+						) : activeTab === 'subjects' ? (
 							// Subjects Tab
 							<div className="space-y-4">
 								{subjects.map((subject) => (
@@ -595,6 +751,73 @@ export default function CMS() {
 										</CardContent>
 									</Card>
 								))}
+							</div>
+						) : (
+							// Users Tab
+							<div className="space-y-4">
+								{filteredUsers.length === 0 ? (
+									<div className="flex flex-col items-center justify-center py-20 text-center opacity-40">
+										<div className="text-6xl mb-4">👥</div>
+										<p className="text-sm font-bold">No users found</p>
+										<p className="text-xs text-zinc-500 mt-2">
+											Try adjusting your search or filter
+										</p>
+									</div>
+								) : (
+									filteredUsers.map((user) => (
+										<Card
+											key={user.id}
+											className="group cursor-pointer hover:shadow-md transition-shadow"
+											onClick={() => handleOpenUserDrawer(user)}
+										>
+											<CardContent className="p-4">
+												<div className="flex items-start gap-4">
+													<Avatar className="h-12 w-12">
+														<AvatarImage src={user.image || undefined} alt={user.name} />
+														<AvatarFallback className="bg-brand-purple text-white">
+															{user.name.charAt(0).toUpperCase()}
+														</AvatarFallback>
+													</Avatar>
+													<div className="flex-1 min-w-0">
+														<div className="flex items-center gap-2 mb-1">
+															<h3 className="font-medium text-zinc-900 dark:text-white truncate">
+																{user.name}
+															</h3>
+															<Badge className={`text-xs ${getRoleColor(user.role || 'user')}`}>
+																{user.role || 'user'}
+															</Badge>
+														</div>
+														<p className="text-sm text-zinc-500 truncate">{user.email}</p>
+														<div className="flex items-center gap-2 mt-2">
+															<Badge
+																variant="secondary"
+																className={getStatusColor(user.isBlocked, user.deletedAt)}
+															>
+																{getStatusText(user.isBlocked, user.deletedAt)}
+															</Badge>
+															<span className="text-xs text-zinc-400">
+																Joined {new Date(user.createdAt).toLocaleDateString()}
+															</span>
+														</div>
+													</div>
+													{user.deletedAt && (
+														<Button
+															variant="outline"
+															size="sm"
+															onClick={(e) => {
+																e.stopPropagation();
+																handleRestoreUser(user.id);
+															}}
+															className="text-xs"
+														>
+															Restore
+														</Button>
+													)}
+												</div>
+											</CardContent>
+										</Card>
+									))
+								)}
 							</div>
 						)}
 					</div>
@@ -1002,6 +1225,191 @@ export default function CMS() {
 						>
 							{editingQuestion?.id ? 'Update Question' : 'Create Question'}
 						</Button>
+					</DrawerFooter>
+				</DrawerContent>
+			</Drawer>
+
+			{/* User Drawer */}
+			<Drawer
+				open={isUserDrawerOpen}
+				onOpenChange={(open) => {
+					setIsUserDrawerOpen(open);
+					if (!open) setUserDrawerTab('details');
+				}}
+			>
+				<DrawerContent className="max-h-[90vh] flex flex-col z-50 rounded-t-3xl pb-3">
+					<DrawerHeader className="text-left border-b pb-4">
+						<DrawerTitle>User Details</DrawerTitle>
+						<DrawerDescription>Manage user account and permissions</DrawerDescription>
+
+						<Tabs
+							value={userDrawerTab}
+							onValueChange={(v) => setUserDrawerTab(v as typeof userDrawerTab)}
+							className="w-full mt-4"
+						>
+							<TabsList className="grid w-full grid-cols-2">
+								<TabsTrigger value="details">Details</TabsTrigger>
+								<TabsTrigger value="actions">Actions</TabsTrigger>
+							</TabsList>
+						</Tabs>
+					</DrawerHeader>
+
+					{selectedUser && editingUser && (
+						<ScrollArea className="flex-1 px-4">
+							<div className="space-y-6 py-4">
+								{/* Tab 1: Details */}
+								{userDrawerTab === 'details' && (
+									<div className="space-y-6">
+										{/* User Avatar & Basic Info */}
+										<div className="flex items-center gap-4">
+											<Avatar className="h-16 w-16">
+												<AvatarImage
+													src={selectedUser.image || undefined}
+													alt={selectedUser.name}
+												/>
+												<AvatarFallback className="bg-brand-purple text-white text-lg">
+													{selectedUser.name.charAt(0).toUpperCase()}
+												</AvatarFallback>
+											</Avatar>
+											<div>
+												<h3 className="font-semibold text-lg">{selectedUser.name}</h3>
+												<p className="text-sm text-zinc-500">{selectedUser.email}</p>
+												<div className="flex items-center gap-2 mt-1">
+													<Badge className={getRoleColor(selectedUser.role || 'user')}>
+														{selectedUser.role || 'user'}
+													</Badge>
+													<Badge
+														variant="secondary"
+														className={getStatusColor(
+															selectedUser.isBlocked,
+															selectedUser.deletedAt
+														)}
+													>
+														{getStatusText(selectedUser.isBlocked, selectedUser.deletedAt)}
+													</Badge>
+												</div>
+											</div>
+										</div>
+
+										{/* Edit Form */}
+										<div className="space-y-4">
+											<div className="space-y-2">
+												<Label>Name</Label>
+												<Input
+													value={editingUser.name}
+													onChange={(e) => setEditingUser({ ...editingUser, name: e.target.value })}
+													placeholder="User name"
+												/>
+											</div>
+
+											<div className="space-y-2">
+												<Label>Email</Label>
+												<Input
+													value={editingUser.email}
+													onChange={(e) =>
+														setEditingUser({ ...editingUser, email: e.target.value })
+													}
+													placeholder="User email"
+													type="email"
+												/>
+											</div>
+
+											<div className="space-y-2">
+												<Label>Role</Label>
+												<Select
+													value={editingUser.role}
+													onValueChange={(v: 'admin' | 'moderator' | 'user') =>
+														setEditingUser({ ...editingUser, role: v })
+													}
+												>
+													<SelectTrigger>
+														<SelectValue placeholder="Select role" />
+													</SelectTrigger>
+													<SelectContent>
+														<SelectItem value="admin">Admin</SelectItem>
+														<SelectItem value="moderator">Moderator</SelectItem>
+														<SelectItem value="user">User</SelectItem>
+													</SelectContent>
+												</Select>
+											</div>
+
+											<div className="pt-2">
+												<Button
+													onClick={handleUpdateUser}
+													className="w-full bg-brand-purple hover:bg-brand-purple/90"
+												>
+													Save Changes
+												</Button>
+											</div>
+										</div>
+
+										{/* Join Date */}
+										<div className="pt-4 border-t">
+											<p className="text-sm text-zinc-500">
+												Joined: {new Date(selectedUser.createdAt).toLocaleDateString()} at{' '}
+												{new Date(selectedUser.createdAt).toLocaleTimeString()}
+											</p>
+											{selectedUser.deletedAt && (
+												<p className="text-sm text-red-500 mt-1">
+													Deleted: {new Date(selectedUser.deletedAt).toLocaleDateString()}
+												</p>
+											)}
+										</div>
+									</div>
+								)}
+
+								{/* Tab 2: Actions */}
+								{userDrawerTab === 'actions' && (
+									<div className="space-y-4">
+										<div className="p-4 border rounded-lg space-y-3">
+											<h4 className="font-medium">Account Status</h4>
+											<p className="text-sm text-zinc-500">
+												{selectedUser.isBlocked
+													? 'This user is currently blocked and cannot log in.'
+													: 'This user can log in and access the application.'}
+											</p>
+											<Button
+												onClick={handleToggleBlock}
+												variant={selectedUser.isBlocked ? 'default' : 'destructive'}
+												className="w-full"
+											>
+												{selectedUser.isBlocked ? 'Unblock User' : 'Block User'}
+											</Button>
+										</div>
+
+										<div className="p-4 border rounded-lg space-y-3">
+											<h4 className="font-medium text-red-600">Danger Zone</h4>
+											<p className="text-sm text-zinc-500">
+												{selectedUser.deletedAt
+													? 'This user has been soft deleted. They can be restored.'
+													: 'Deleting a user will soft delete their account. This can be undone.'}
+											</p>
+											{selectedUser.deletedAt ? (
+												<Button
+													onClick={() => handleRestoreUser(selectedUser.id)}
+													variant="outline"
+													className="w-full"
+												>
+													Restore User
+												</Button>
+											) : (
+												<Button onClick={handleDeleteUser} variant="destructive" className="w-full">
+													Delete User
+												</Button>
+											)}
+										</div>
+									</div>
+								)}
+							</div>
+						</ScrollArea>
+					)}
+
+					<DrawerFooter className="pt-4 border-t">
+						<DrawerClose asChild>
+							<Button variant="outline" className="w-full">
+								Close
+							</Button>
+						</DrawerClose>
 					</DrawerFooter>
 				</DrawerContent>
 			</Drawer>

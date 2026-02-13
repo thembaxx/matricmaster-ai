@@ -26,14 +26,6 @@ import {
 export { users as user, sessions as session, accounts as account, verifications as verification };
 export { usersRelations, sessionsRelations, accountsRelations };
 
-// Anonymous users table for better-auth anonymous plugin
-export const anonymous_users = pgTable('anonymous_users', {
-	id: text('id').primaryKey(),
-	userId: text('user_id')
-		.notNull()
-		.references(() => users.id, { onDelete: 'cascade' }),
-	createdAt: timestamp('created_at').defaultNow(),
-});
 
 // ============================================================================
 // QUIZ SYSTEM TABLES
