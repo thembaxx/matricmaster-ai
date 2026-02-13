@@ -3,7 +3,7 @@ import { ErrorBoundary } from '@/components/ErrorBoundary';
 import MobileFrame from '@/components/Layout/MobileFrame';
 import { ThemeProvider } from '@/components/theme-provider';
 import '@/styles/index.css';
-import { dmSans, inter, jakarta, lexend } from './fonts';
+import { dmSans, inter, jakarta, lexend, outfit } from './fonts';
 
 const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://matricmaster.ai';
 
@@ -86,7 +86,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 		<html
 			lang="en"
 			suppressHydrationWarning
-			className={`${inter.variable} ${jakarta.variable} ${dmSans.variable} ${lexend.variable}`}
+			className={`${inter.variable} ${jakarta.variable} ${dmSans.variable} ${lexend.variable} ${outfit.variable}`}
 		>
 			<head />
 			<body className="bg-gray-100 dark:bg-zinc-950 min-h-screen">

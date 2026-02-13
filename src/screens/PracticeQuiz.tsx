@@ -126,9 +126,9 @@ export default function PracticeQuiz() {
 					<div className="space-y-4">
 						<p className="text-xl font-medium text-zinc-700 dark:text-zinc-300 leading-relaxed">
 							Calculate the exact area under the curve for the function{' '}
-							<span className="font-serif italic font-bold">sin(x)</span> from{' '}
-							<span className="font-serif italic font-bold">0</span> to{' '}
-							<span className="font-serif italic font-bold">π</span>.
+							<span className="math-serif font-bold">sin(x)</span> from{' '}
+							<span className="math-serif font-bold">0</span> to{' '}
+							<span className="math-serif font-bold">π</span>.
 						</p>
 
 						{/* Graph Visualization */}

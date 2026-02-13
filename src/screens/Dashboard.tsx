@@ -10,8 +10,8 @@ import {
 	Loader2,
 	Play,
 	Sigma,
+	Sparkles,
 } from 'lucide-react';
-import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState, useTransition } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -57,6 +57,31 @@ const defaultChallenges: Challenge[] = [
 		iconBg: 'bg-emerald-50 dark:bg-emerald-900/20',
 	},
 ];
+
+import { motion, type Variants } from 'framer-motion';
+
+const containerVariants: Variants = {
+	hidden: { opacity: 0 },
+	visible: {
+		opacity: 1,
+		transition: {
+			staggerChildren: 0.1,
+		},
+	},
+};
+
+const itemVariants: Variants = {
+	hidden: { opacity: 0, y: 20 },
+	visible: {
+		opacity: 1,
+		y: 0,
+		transition: {
+			type: 'spring',
+			stiffness: 260,
+			damping: 20,
+		},
+	},
+};
 
 export default function Dashboard() {
 	const router = useRouter();
@@ -120,11 +145,15 @@ export default function Dashboard() {
 	const isLoading = isSessionLoading || isPending;
 
 	return (
-		<div className="flex flex-col h-full bg-background font-inter">
-			<header className="px-6 pt-6 pb-2 flex items-center justify-between shrink-0">
+		<div className="flex flex-col h-full bg-background font-inter pb-24">
+			<motion.header
+				initial={{ opacity: 0, y: -20 }}
+				animate={{ opacity: 1, y: 0 }}
+				className="px-6 pt-6 pb-2 flex items-center justify-between shrink-0"
+			>
 				<div className="flex items-center gap-3">
 					<div className="relative">
-						<Avatar className="w-12 h-12 border-2 border-background shadow-sm relative">
+						<Avatar className="w-12 h-12 border-2 border-background shadow-xl relative">
 							<AvatarImage
 								src={
 									session?.user?.image ?? 'https://api.dicebear.com/7.x/avataaars/svg?seed=default'
@@ -138,141 +167,165 @@ export default function Dashboard() {
 						<div className="absolute bottom-0 right-0 w-3.5 h-3.5 bg-emerald-500 border-2 border-background rounded-full" />
 					</div>
 					<div>
-						<p className="text-muted-foreground text-xs font-medium">Welcome back,</p>
-						<h2 className="text-xl font-bold text-foreground leading-none">
-							{session?.user?.name ?? 'Student'}
+						<p className="text-muted-foreground text-[10px] font-black uppercase tracking-widest opacity-60">Welcome back,</p>
+						<h2 className="text-xl font-black text-foreground leading-none tracking-tight">
+							{session?.user?.name?.split(' ')[0] ?? 'Student'}
 						</h2>
 					</div>
 				</div>
 				<Button
 					variant="ghost"
 					size="icon"
-					className="w-12 h-12 rounded-full bg-card shadow-sm relative"
+					className="w-12 h-12 rounded-2xl bg-card premium-shadow relative"
 				>
 					<Bell className="w-6 h-6 text-foreground" />
 					<span className="absolute top-3 right-3 w-2.5 h-2.5 bg-rose-500 border-2 border-background rounded-full" />
 				</Button>
-			</header>
+			</motion.header>
 
 			<ScrollArea className="flex-1">
-				<main className="px-6 py-6 space-y-8 pb-32">
-					<Card className="p-6 bg-card border-none shadow-sm rounded-3xl flex items-center justify-between relative overflow-hidden">
-						<div className="space-y-1 relative z-10">
-							<div className="flex items-baseline gap-2">
-								<span className="text-4xl font-extrabold text-card-foreground">{streak}</span>
-								<span className="text-muted-foreground font-bold text-xl">days</span>
-							</div>
-							<p className="text-muted-foreground text-sm font-medium">
-								{streak > 7 ? "You're on fire! Keep it up!" : 'Keep building your streak!'}
-							</p>
-						</div>
-						<div className="w-16 h-16 bg-orange-50 dark:bg-orange-900/20 rounded-2xl flex items-center justify-center relative z-10">
-							<div className="absolute inset-0 blur-xl bg-orange-200/50 dark:bg-orange-900/30 rounded-full" />
-							<Flame className="w-8 h-8 text-[#efb036] fill-[#efb036] relative z-10" />
-						</div>
-					</Card>
+				<motion.main
+					variants={containerVariants}
+					initial="hidden"
+					animate="visible"
+					className="px-6 py-6 space-y-6"
+				>
+					{/* Bento Grid Section */}
+					<div className="grid grid-cols-2 gap-4">
+						{/* Streak Card - Col 1 */}
+						<motion.div variants={itemVariants} className="col-span-1">
+							<Card className="h-full p-5 bg-card border-none premium-shadow rounded-3xl flex flex-col justify-between relative overflow-hidden group">
+								<div className="absolute -right-4 -bottom-4 w-24 h-24 bg-orange-100 dark:bg-orange-900/10 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-500" />
+								<div className="space-y-1 relative z-10">
+									<p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest opacity-70">Streak</p>
+									<div className="flex items-baseline gap-1">
+										<span className="text-3xl font-black text-foreground">{streak}</span>
+										<span className="text-muted-foreground font-bold text-xs">DAYS</span>
+									</div>
+								</div>
+								<div className="mt-4 relative z-10 self-start">
+									<div className="w-10 h-10 bg-orange-50 dark:bg-orange-900/20 rounded-xl flex items-center justify-center">
+										<Flame className="w-5 h-5 text-[#efb036] fill-[#efb036]" />
+									</div>
+								</div>
+							</Card>
+						</motion.div>
 
-					<div className="space-y-4">
-						<div className="flex justify-between items-center">
-							<h3 className="text-lg font-bold text-foreground">This Week</h3>
-							<button
-								type="button"
-								className="text-sm font-bold text-[#efb036] hover:opacity-80 transition-opacity"
-							>
-								View Calendar
-							</button>
+						{/* Quick Action - Col 1 */}
+						<motion.div variants={itemVariants} className="col-span-1">
+							<Card className="h-full p-5 bg-brand-blue text-white border-none premium-shadow rounded-3xl flex flex-col justify-between relative overflow-hidden group">
+								<div className="absolute inset-0 mesh-gradient-blue opacity-50" />
+								<div className="relative z-10">
+									<p className="text-[10px] font-black text-white/70 uppercase tracking-widest">Next Up</p>
+									<h4 className="font-black text-sm leading-tight mt-1">Calculus Quiz</h4>
+								</div>
+								<Button
+									variant="ghost"
+									size="sm"
+									className="mt-4 w-fit bg-white/20 hover:bg-white/30 text-white border-none rounded-xl font-bold transition-all relative z-10"
+									onClick={() => router.push('/past-papers')}
+								>
+									Explore
+								</Button>
+							</Card>
+						</motion.div>
+
+						{/* Main Daily Quest Card - Col 1 & 2 */}
+						<motion.div variants={itemVariants} className="col-span-2">
+							<Card className="p-6 bg-card border-none premium-shadow rounded-[2.5rem] space-y-6 relative overflow-hidden group">
+								<div className="absolute -right-8 -top-8 w-64 h-64 bg-brand-blue/5 rounded-full blur-3xl pointer-events-none group-hover:bg-brand-blue/10 transition-colors duration-500" />
+
+								<div className="flex justify-between items-start relative z-10">
+									<div className="space-y-2">
+										<div className="inline-flex items-center px-2 py-1 bg-brand-blue/10 rounded-lg">
+											<span className="text-[10px] font-black text-brand-blue dark:text-brand-blue-light uppercase tracking-tighter">
+												Daily Quest
+											</span>
+										</div>
+										<h3 className="text-2xl font-black text-foreground tracking-tight">
+											Algebra Master
+										</h3>
+										<p className="text-sm text-muted-foreground font-medium">Progress to next achievement</p>
+									</div>
+									<div className="w-14 h-14 bg-muted/50 rounded-2xl flex items-center justify-center border border-border/50">
+										<Sparkles className="w-6 h-6 text-[#efb036]" />
+									</div>
+								</div>
+
+								<div className="space-y-3 relative z-10">
+									<div className="flex justify-between items-end">
+										<span className="text-xs font-black text-foreground opacity-60">2/3 COMPLETED</span>
+										<span className="text-xs font-black text-brand-blue">{dailyProgress}%</span>
+									</div>
+									<div className="h-2 w-full bg-muted rounded-full overflow-hidden">
+										<motion.div
+											initial={{ width: 0 }}
+											animate={{ width: `${dailyProgress}%` }}
+											transition={{ duration: 1, ease: "circOut" }}
+											className="h-full bg-brand-blue rounded-full"
+										/>
+									</div>
+								</div>
+
+								<Button
+									className="w-full h-14 bg-brand-blue hover:bg-brand-blue/90 text-white rounded-2xl text-base font-black shadow-xl shadow-brand-blue/20 active:scale-[0.98] transition-all flex items-center justify-center gap-2 relative z-10"
+									onClick={handleNavigateToQuiz}
+									disabled={isLoading}
+								>
+									{isLoading ? (
+										<Loader2 className="w-5 h-5 animate-spin" />
+									) : (
+										<>
+											Continue Learning
+											<ArrowRight className="w-5 h-5" />
+										</>
+									)}
+								</Button>
+							</Card>
+						</motion.div>
+					</div>
+
+					{/* Weekly Chart Card */}
+					<motion.div variants={itemVariants}>
+						<div className="flex justify-between items-center mb-4">
+							<h3 className="text-lg font-black text-foreground tracking-tight">Weekly Activity</h3>
 						</div>
-						<div className="flex justify-between items-center bg-card p-4 rounded-3xl shadow-sm">
+						<div className="grid grid-cols-7 gap-2 bg-card p-5 rounded-[2.5rem] premium-shadow">
 							{weekProgress.map((item) => (
-								<div key={item.day} className="flex flex-col items-center gap-2">
+								<div key={item.day} className="flex flex-col items-center gap-3">
 									<span
-										className={`text-[10px] font-bold ${item.status === 'active' ? 'text-[#efb036]' : 'text-muted-foreground'}`}
+										className={`text-[9px] font-black tracking-tighter ${item.status === 'active' ? 'text-brand-blue' : 'text-muted-foreground opacity-40'}`}
 									>
 										{item.day}
 									</span>
 									<div
-										className={`w-10 h-10 rounded-full flex items-center justify-center transition-all ${
-											item.status === 'complete'
-												? 'bg-[#efb036] text-white'
-												: item.status === 'active'
-													? 'bg-card border-2 border-[#efb036] text-[#efb036] shadow-lg shadow-orange-500/20'
-													: 'bg-muted text-muted-foreground'
-										}`}
+										className={`w-full aspect-square rounded-2xl flex items-center justify-center transition-all duration-300 ${item.status === 'complete'
+											? 'bg-brand-blue/10 text-brand-blue'
+											: item.status === 'active'
+												? 'bg-brand-blue text-white shadow-lg shadow-brand-blue/30'
+												: 'bg-muted/30 text-muted-foreground'
+											}`}
 									>
 										{item.status === 'complete' ? (
-											<Check className="w-5 h-5 stroke-[3px]" />
+											<Check className="w-4 h-4 stroke-[4px]" />
 										) : (
-											<span className="text-sm font-bold">{item.date}</span>
+											<span className="text-xs font-black">{item.date}</span>
 										)}
 									</div>
 								</div>
 							))}
 						</div>
-					</div>
+					</motion.div>
 
-					<Card className="p-8 bg-card border-none shadow-sm rounded-[2.5rem] space-y-6 relative overflow-hidden group">
-						<div className="absolute -right-4 -top-4 w-48 h-48 bg-orange-50/50 dark:bg-orange-900/5 rounded-full blur-3xl pointer-events-none" />
-
-						<div className="flex justify-between items-start relative z-10">
-							<div className="space-y-3">
-								<div className="inline-flex items-center px-3 py-1 bg-orange-100/80 dark:bg-orange-900/20 rounded-lg">
-									<span className="text-[10px] font-bold text-[#efb036] uppercase tracking-wider">
-										Daily Goal
-									</span>
-								</div>
-								<h3 className="text-2xl font-bold text-foreground tracking-tight">
-									Master Algebra
-								</h3>
-								<p className="text-muted-foreground font-medium">Complete 3 quiz questions</p>
-							</div>
-							<div className="w-16 h-16 bg-muted rounded-2xl flex items-center justify-center shadow-inner overflow-hidden border border-border">
-								<Image
-									src="https://lh3.googleusercontent.com/aida-public/AB6AXuCkgC-G9LotChGNb0tc1lvvbXTdP5nRhfO009Piz54gDyYvN78GmMRL6DaabHHLXhiro-IWTptOaIub3qhd7A3irDUw1g7BViGHlhuLzbPTj_RGHvWwz9hJSatmaSEnnpDa2Yzvr0N-QdV5vErb1kHuRM65rNJLTxUX--m-1Mr15fjGpbT44zcRehNz376VnKbGs-Gqlf1jxCgA9yj1eMT3oDeNEpkvjOLuyqmWiS3SLJ7vrFPcr6PMz-rrKso376uZpeHOCh7UEqPU"
-									alt="Trophy"
-									width={64}
-									height={64}
-									className="w-full h-full object-cover opacity-90"
-								/>
-							</div>
-						</div>
-
-						<div className="space-y-3 relative z-10">
-							<div className="flex justify-between items-end">
-								<span className="text-sm font-bold text-foreground">2/3 Solved</span>
-								<span className="text-sm font-bold text-[#efb036]">{dailyProgress}%</span>
-							</div>
-							<div className="h-2.5 w-full bg-muted rounded-full overflow-hidden">
-								<div
-									className="h-full bg-[#efb036] rounded-full transition-all duration-500"
-									style={{ width: `${dailyProgress}%` }}
-								/>
-							</div>
-						</div>
-
-						<Button
-							className="w-full h-14 bg-[#efb036] hover:bg-[#d99d2b] text-white rounded-2xl text-lg font-bold shadow-lg shadow-orange-500/20 active:scale-[0.98] transition-all flex items-center justify-center gap-2 relative z-10"
-							onClick={handleNavigateToQuiz}
-							disabled={isLoading}
-						>
-							{isLoading ? (
-								<Loader2 className="w-5 h-5 animate-spin" />
-							) : (
-								<>
-									Continue Quest
-									<ArrowRight className="w-5 h-5" />
-								</>
-							)}
-						</Button>
-					</Card>
-
-					<div className="space-y-5">
-						<h3 className="text-lg font-bold text-foreground">Recommended Challenges</h3>
-						<div className="space-y-4">
+					{/* Recommended Section */}
+					<motion.div variants={itemVariants} className="space-y-4">
+						<h3 className="text-lg font-black text-foreground tracking-tight">Deep Work Challenges</h3>
+						<div className="space-y-3">
 							{defaultChallenges.map((challenge) => (
 								<button
 									key={challenge.title}
 									type="button"
-									className="w-full text-left bg-card p-4 pl-5 rounded-3xl flex items-center justify-between shadow-sm group hover:shadow-md transition-all cursor-pointer border border-border"
+									className="w-full text-left bg-card p-4 rounded-[2rem] flex items-center justify-between premium-shadow group hover:translate-x-1 transition-all cursor-pointer border border-transparent hover:border-brand-blue/10"
 									onClick={() => router.push('/quiz')}
 								>
 									<div className="flex items-center gap-4">
@@ -282,39 +335,34 @@ export default function Dashboard() {
 											{challenge.icon}
 										</div>
 										<div className="space-y-0.5">
-											<h4 className="font-bold text-foreground">{challenge.title}</h4>
-											<div className="flex items-center gap-2 text-xs font-medium text-muted-foreground">
+											<h4 className="font-black text-sm text-foreground">{challenge.title}</h4>
+											<div className="flex items-center gap-2 text-[10px] font-black text-muted-foreground uppercase tracking-widest opacity-50">
 												<div className="flex items-center gap-1">
 													<Clock className="w-3 h-3" />
 													{challenge.time}
 												</div>
 												<span className="w-1 h-1 rounded-full bg-border" />
 												<div
-													className={`px-2 py-0.5 rounded-lg font-bold ${
-														challenge.difficulty === 'Hard'
-															? 'bg-rose-50 text-rose-500 dark:bg-rose-900/20'
-															: challenge.difficulty === 'Medium'
-																? 'bg-orange-50 text-orange-500 dark:bg-orange-900/20'
-																: 'bg-emerald-50 text-emerald-500 dark:bg-emerald-900/20'
-													}`}
+													className={`${challenge.difficulty === 'Hard'
+														? 'text-rose-500'
+														: challenge.difficulty === 'Medium'
+															? 'text-orange-500'
+															: 'text-emerald-500'
+														}`}
 												>
 													{challenge.difficulty}
 												</div>
 											</div>
 										</div>
 									</div>
-									<Button
-										variant="ghost"
-										size="icon"
-										className="w-10 h-10 rounded-full bg-muted text-muted-foreground group-hover:bg-[#efb036] group-hover:text-white transition-all scale-90 group-hover:scale-100"
-									>
-										<Play className="w-4 h-4 fill-current ml-0.5" />
-									</Button>
+									<div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center group-hover:bg-brand-blue group-hover:text-white transition-colors">
+										<Play className="w-3 h-3 fill-current ml-0.5" />
+									</div>
 								</button>
 							))}
 						</div>
-					</div>
-				</main>
+					</motion.div>
+				</motion.main>
 			</ScrollArea>
 		</div>
 	);

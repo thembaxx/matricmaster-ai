@@ -13,8 +13,10 @@
 		scrollbar-width: none;
 	}
 	.math-serif {
-		font-family: "Times New Roman", serif;
+		font-family: "Latin Modern Math", "STIX Two Math", "STIX Two Text", "Times New Roman", serif;
 		font-style: italic;
+		font-variant-numeric: lining-nums tabular-nums;
+		letter-spacing: 0.02em;
 	}
 	.text-balance {
 		text-wrap: balance;
@@ -91,8 +93,25 @@
 
 	--font-lexend: var(--font-lexend);
 	--font-inter: var(--font-inter);
+	--font-jakarta: var(--font-jakarta);
+	--font-outfit: var(--font-outfit);
 	--font-system: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif,
 		"Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
+@layer utilities {
+	.premium-glass {
+		@apply bg-white/60 dark:bg-zinc-900/60 backdrop-blur-3xl border border-white/30 dark:border-zinc-800/50 shadow-2xl shadow-black/5;
+	}
+	.premium-shadow {
+		box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1), 
+		            0 0 0 1px rgb(0 0 0 / 0.05);
+	}
+	.mesh-gradient-blue {
+		background: radial-gradient(at 0% 0%, hsla(217,100%,70%,1) 0, transparent 50%),
+		            radial-gradient(at 50% 0%, hsla(225,100%,60%,1) 0, transparent 50%),
+		            radial-gradient(at 100% 0%, hsla(230,100%,50%,1) 0, transparent 50%);
+	}
 }
 
 :root {
@@ -185,7 +204,7 @@
 	h4,
 	h5,
 	h6 {
-		font-family: var(--font-lexend);
+		font-family: var(--font-outfit), var(--font-lexend);
 		letter-spacing: -0.03em;
 	}
 	html {
