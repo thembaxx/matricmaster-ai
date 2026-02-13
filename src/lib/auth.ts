@@ -1,11 +1,14 @@
 import { betterAuth } from 'better-auth';
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
 import { nextCookies } from 'better-auth/next-js';
-import { anonymous } from 'better-auth/plugins';
+import { anonymous } from 'better-auth/plugins/anonymous';
 import { dbManager } from './db';
 import * as schema from './db/schema';
 
 let authInstance: ReturnType<typeof betterAuth> | null = null;
+
+// Check if we're in a build phase where database is not expected to be available
+const isBuildTime = process.env.NEXT_PHASE === 'phase-production-build';
 
 function createAuth() {
 	const isConnected = dbManager.isConnectedToDatabase();
@@ -15,10 +18,14 @@ function createAuth() {
 		try {
 			db = dbManager.getDb();
 		} catch {
-			console.warn('⚠️ Failed to get database connection - Better Auth will not persist sessions');
+			if (!isBuildTime) {
+				console.warn('⚠️ Failed to get database connection - Better Auth will not persist sessions');
+			}
 		}
 	} else {
-		console.warn('⚠️ Database not connected - Better Auth will not persist sessions');
+		if (!isBuildTime) {
+			console.warn('⚠️ Database not connected - Better Auth will not persist sessions');
+		}
 	}
 
 	// Validate Twitter OAuth credentials
@@ -26,9 +33,11 @@ function createAuth() {
 	const twitterClientSecret = process.env.TWITTER_CLIENT_SECRET;
 
 	if (!twitterClientId || !twitterClientSecret) {
-		console.warn(
-			'⚠️ Twitter OAuth credentials are not configured. Sign in with Twitter will not be available.'
-		);
+		if (!isBuildTime) {
+			console.warn(
+				'⚠️ Twitter OAuth credentials are not configured. Sign in with Twitter will not be available.'
+			);
+		}
 	}
 
 	const socialProviders: Record<string, { clientId: string; clientSecret: string }> = {
@@ -64,12 +73,37 @@ function createAuth() {
 		session: {
 			expiresIn: 60 * 60 * 24 * 7,
 			updateAge: 60 * 60 * 24,
+			cookieCache: {
+				enabled: true,
+				maxAge: 5 * 60,
+			},
 		},
-		trustedOrigins: [process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000'],
+		trustedOrigins: [
+			process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000',
+			process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : '',
+		].filter(Boolean),
 		rateLimit: {
 			enabled: true,
-			window: 60, // 1 minute
-			max: 10, // 10 requests per window
+			window: 60,
+			max: 10,
+		},
+		advanced: {
+			useSecureCookies: process.env.NODE_ENV === 'production',
+			crossSubDomainCookies: {
+				enabled: process.env.NODE_ENV === 'production',
+			},
+			ipAddress: {
+				ipAddressHeaders: ['x-forwarded-for', 'x-real-ip'],
+			},
+		},
+		databaseHooks: {
+			user: {
+				create: {
+					after: async (user) => {
+						console.log(`✅ New user created: ${user.id} (${user.email})`);
+					},
+				},
+			},
 		},
 		plugins: [anonymous(), nextCookies()],
 	});
@@ -106,3 +140,7 @@ export const auth = new Proxy({} as ReturnType<typeof betterAuth>, {
 		return Reflect.get(currentAuth, prop, currentAuth);
 	},
 });
+
+export type Auth = ReturnType<typeof betterAuth>;
+export type AuthSession = Auth['$Infer']['Session'];
+export type AuthUser = Auth['$Infer']['Session']['user'];

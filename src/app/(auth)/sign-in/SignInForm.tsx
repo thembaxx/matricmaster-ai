@@ -335,7 +335,6 @@ export function SignInForm() {
 							type="button"
 							onClick={handleAnonymousSignIn}
 							disabled={isLoading}
-							aria-disabled={isLoading}
 							className={`w-full text-center font-medium transition-colors underline underline-offset-2 ${
 								isLoading
 									? 'text-zinc-300 dark:text-zinc-600 cursor-not-allowed'

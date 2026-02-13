@@ -41,6 +41,12 @@ const ChartContainer = React.forwardRef<
 >(({ id, className, config, children, ...props }, ref) => {
 	const uniqueId = React.useId();
 	const chartId = `chart-${id || uniqueId.replace(/:/g, '')}`;
+	const [isClient, setIsClient] = React.useState(false);
+
+	// Only render chart content on client to avoid SSR issues with Recharts
+	React.useEffect(() => {
+		setIsClient(true);
+	}, []);
 
 	return (
 		<ChartContext.Provider value={{ config }}>
@@ -53,7 +59,7 @@ const ChartContainer = React.forwardRef<
 						'--chart-4': 'var(--color-brand-green)',
 						'--chart-5': 'var(--color-brand-red)',
 						minWidth: '0',
-						minHeight: '0',
+						minHeight: '200px',
 					} as React.CSSProperties
 				}
 				ref={ref}
@@ -64,9 +70,15 @@ const ChartContainer = React.forwardRef<
 				{...props}
 			>
 				<ChartStyle id={chartId} config={config} />
-				<RechartsPrimitive.ResponsiveContainer width="100%" height="100%">
-					{children}
-				</RechartsPrimitive.ResponsiveContainer>
+				{isClient ? (
+					<RechartsPrimitive.ResponsiveContainer width="100%" height="100%">
+						{children}
+					</RechartsPrimitive.ResponsiveContainer>
+				) : (
+					<div className="w-full h-full flex items-center justify-center">
+						<div className="text-muted-foreground text-sm">Loading chart...</div>
+					</div>
+				)}
 			</div>
 		</ChartContext.Provider>
 	);
@@ -190,7 +202,7 @@ const ChartTooltipContent = React.forwardRef<
 			<div
 				ref={ref}
 				className={cn(
-					'grid min-w-[8rem] items-start gap-1.5 rounded-lg border border-border/50 bg-background px-2.5 py-1.5 text-xs shadow-xl',
+					'grid min-w-32 items-start gap-1.5 rounded-lg border border-border/50 bg-background px-2.5 py-1.5 text-xs shadow-xl',
 					className
 				)}
 			>

@@ -8,9 +8,9 @@ test.describe('Home Page', () => {
 		// Wait for the page to load
 		await expect(page).toHaveTitle(/MatricMaster|matricmaster/i);
 
-		// Check that main content is visible
-		// The page should contain some text or elements
-		const mainContent = page.locator('main, body, div');
+		// Check that main content is visible using a specific selector
+		// Using first() to avoid strict mode violation with multiple matches
+		const mainContent = page.locator('#main-content, body').first();
 		await expect(mainContent).toBeVisible();
 	});
 
@@ -18,7 +18,6 @@ test.describe('Home Page', () => {
 		await page.goto('/');
 
 		// Check for common navigation elements or buttons
-		// This depends on your actual page structure
 		const links = page.locator('a, button');
 		await expect(links.first()).toBeVisible();
 	});
