@@ -28,24 +28,17 @@ export function SignInForm() {
 
 	// Validate callbackUrl to prevent open redirects
 	let safeCallbackUrl = '/dashboard';
-	try {
-		// Only allow same-origin or relative paths
-		if (rawCallbackUrl.startsWith('/') && !rawCallbackUrl.startsWith('//')) {
-			// Ensure it doesn't start with // (protocol-relative URL)
-			safeCallbackUrl = rawCallbackUrl;
-		} else if (
-			rawCallbackUrl.startsWith('http://localhost') ||
-			rawCallbackUrl.startsWith('https://')
-		) {
-			// Allow localhost for development
+	if (rawCallbackUrl.startsWith('/') && !rawCallbackUrl.startsWith('//')) {
+		safeCallbackUrl = rawCallbackUrl;
+	} else {
+		try {
 			const url = new URL(rawCallbackUrl);
-			if (url.origin === window.location.origin) {
-				safeCallbackUrl = url.pathname;
+			if (url.origin === (typeof window !== 'undefined' ? window.location.origin : '')) {
+				safeCallbackUrl = url.pathname + url.search;
 			}
+		} catch {
+			safeCallbackUrl = '/dashboard';
 		}
-	} catch {
-		// Invalid URL, fall back to default
-		safeCallbackUrl = '/dashboard';
 	}
 
 	const [isLoading, setIsLoading] = useState(false);
@@ -109,11 +102,15 @@ export function SignInForm() {
 				setError(authError.message || 'Invalid email or password');
 				setIsLoading(false);
 			} else {
-				await initializeDatabase();
+				// We don't await this to avoid blocking navigation if better-auth redirects
+				initializeDatabase().catch(console.error);
+
 				setSuccessEmail(data.email);
-				// Delay navigation to show the success toast
+				// If better-auth doesn't redirect automatically (e.g. if it's purely client-side handle)
+				// we still have our fallback navigation
 				setTimeout(() => {
 					router.push(safeCallbackUrl);
+					router.refresh();
 				}, 2000);
 			}
 		} catch (err) {

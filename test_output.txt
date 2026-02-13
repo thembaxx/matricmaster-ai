@@ -1,0 +1,47 @@
+
+Running 1 test using 1 worker
+
+Starting Sign Up with email: testuser-1771009969000@matricmaster.test
+Successfully navigated to dashboard after sign up
+Step 2: Sign Out
+Opening profile menu...
+Clicking Log out...
+Waiting for navigation to sign-in...
+UI Sign out failed or timed out. Forcing sign out via cookies cleaning.
+Step 3: Sign In
+Submitting sign-in form...
+Checking for success toast...
+  Γ£ÿ  1 [chromium] ΓÇ║ e2e\auth-flow.spec.ts:4:2 ΓÇ║ Authentication Flow ΓÇ║ User can sign up, sign out, and sign in (20.4s)
+
+
+  1) [chromium] ΓÇ║ e2e\auth-flow.spec.ts:4:2 ΓÇ║ Authentication Flow ΓÇ║ User can sign up, sign out, and sign in 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: getByText(/Signed in as/)
+    Expected: visible
+    Timeout: 10000ms
+    Error: element(s) not found
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 10000ms[22m
+    [2m  - waiting for getByText(/Signed in as/)[22m
+
+
+      64 | 		// Check for success toast
+      65 | 		console.log('Checking for success toast...');
+    > 66 | 		await expect(page.getByText(/Signed in as/)).toBeVisible({ timeout: 10000 });
+         | 		                                             ^
+      67 | 		console.log('Success toast verified');
+      68 |
+      69 | 		// Wait for navigation to dashboard
+        at C:\Users\Themba\Documents\org1128\matricmaster\e2e\auth-flow.spec.ts:66:48
+
+    attachment #1: screenshot (image/png) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\auth-flow-Authentication-F-00371-ign-up-sign-out-and-sign-in-chromium\test-failed-1.png
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    Error Context: test-results\auth-flow-Authentication-F-00371-ign-up-sign-out-and-sign-in-chromium\error-context.md
+
+  1 failed
+    [chromium] ΓÇ║ e2e\auth-flow.spec.ts:4:2 ΓÇ║ Authentication Flow ΓÇ║ User can sign up, sign out, and sign in 
