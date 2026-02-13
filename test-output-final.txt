@@ -1,0 +1,16 @@
+
+Running 1 test using 1 worker
+
+Starting Sign Up with email: testuser-1770990170541@matricmaster.test
+Successfully navigated to dashboard after sign up
+Step 2: Sign Out
+Opening profile menu...
+Clicking Log out...
+Waiting for navigation to sign-in...
+UI Sign out failed or timed out. Forcing sign out via cookies cleaning.
+Step 3: Sign In
+Submitting sign-in form...
+Successfully navigated to dashboard after sign in
+  Γ£ô  1 [chromium] ΓÇ║ e2e\auth-flow.spec.ts:4:5 ΓÇ║ Authentication Flow ΓÇ║ User can sign up, sign out, and sign in (9.8s)
+
+  1 passed (12.8s)

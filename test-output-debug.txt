@@ -1,0 +1,37 @@
+
+Running 1 test using 1 worker
+
+Starting Sign Up with email: testuser-1770990101385@matricmaster.test
+Successfully navigated to dashboard after sign up
+Step 2: Sign Out
+Opening profile menu...
+Clicking Log out...
+Waiting for navigation to sign-in...
+Timed out waiting for sign-in URL. Current URL: http://localhost:3000/dashboard
+  Γ£ÿ  1 [chromium] ΓÇ║ e2e\auth-flow.spec.ts:4:5 ΓÇ║ Authentication Flow ΓÇ║ User can sign up, sign out, and sign in (18.4s)
+
+
+  1) [chromium] ΓÇ║ e2e\auth-flow.spec.ts:4:5 ΓÇ║ Authentication Flow ΓÇ║ User can sign up, sign out, and sign in 
+
+    TimeoutError: page.waitForURL: Timeout 15000ms exceeded.
+    =========================== logs ===========================
+    waiting for navigation until "load"
+    ============================================================
+
+      40 |         console.log('Waiting for navigation to sign-in...');
+      41 |         try {
+    > 42 |             await page.waitForURL(/\/sign-in/, { timeout: 15000 });
+         |                        ^
+      43 |             console.log('Successfully signed out and navigated to sign-in page');
+      44 |         } catch (e) {
+      45 |             console.log('Timed out waiting for sign-in URL. Current URL:', page.url());
+        at C:\Users\Themba\Documents\org1128\matricmaster\e2e\auth-flow.spec.ts:42:24
+
+    attachment #1: screenshot (image/png) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\auth-flow-Authentication-F-00371-ign-up-sign-out-and-sign-in-chromium\test-failed-1.png
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    Error Context: test-results\auth-flow-Authentication-F-00371-ign-up-sign-out-and-sign-in-chromium\error-context.md
+
+  1 failed
+    [chromium] ΓÇ║ e2e\auth-flow.spec.ts:4:5 ΓÇ║ Authentication Flow ΓÇ║ User can sign up, sign out, and sign in 

@@ -1,7 +1,7 @@
 import { config } from 'dotenv';
 import { defineConfig } from 'drizzle-kit';
 
-config({ path: ".env.local", debug: true, override: true });
+config({ path: '.env.local', debug: true, override: true });
 
 export default defineConfig({
 	// strict: true,
