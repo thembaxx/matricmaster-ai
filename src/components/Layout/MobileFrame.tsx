@@ -37,9 +37,9 @@ import {
 } from '@/components/ui/sheet';
 import { useTheme } from '@/hooks/use-theme';
 import { authClient } from '@/lib/auth-client';
+import PageTransition from '../Transition/PageTransition';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import { ProfileMenu } from './profile-menu';
-import PageTransition from '../Transition/PageTransition';
 
 export default function MobileFrame({ children }: { children: React.ReactNode }) {
 	const pathname = usePathname();
@@ -93,117 +93,129 @@ export default function MobileFrame({ children }: { children: React.ReactNode })
 							paddingTop: 'calc(env(safe-area-inset-top, 0px) + 16px)',
 						}}
 					>
-						<Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
-							<SheetTrigger asChild>
-								<Button
-									variant="ghost"
-									size="icon"
-									className="w-12 h-12 p-0 rounded-md! ios-glass pointer-events-auto ios-active-scale"
+						{user && (
+							<Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
+								<SheetTrigger asChild>
+									<Button
+										variant="ghost"
+										size="icon"
+										className="w-12 h-12 p-0 rounded-md! ios-glass pointer-events-auto ios-active-scale"
+									>
+										<Menu className="w-5! h-5! text-zinc-900 dark:text-white" />
+									</Button>
+								</SheetTrigger>
+								<SheetContent
+									side="left"
+									className="w-75 sm:w-87.5 bg-zinc-50 dark:bg-zinc-950 border-r border-zinc-200 dark:border-zinc-800 p-0"
 								>
-									<Menu className="w-5! h-5! text-zinc-900 dark:text-white" />
-								</Button>
-							</SheetTrigger>
-							<SheetContent
-								side="left"
-								className="w-75 sm:w-87.5 bg-zinc-50 dark:bg-zinc-950 border-r border-zinc-200 dark:border-zinc-800 p-0"
-							>
-								<div className="flex flex-col h-full">
-									<div className="p-8 pb-4 flex-1 overflow-y-auto">
-										<SheetHeader className="text-left mb-8">
-											<SheetTitle className="text-lg font-black text-zinc-900 dark:text-white uppercase tracking-tighter">
-												MatricMaster
-											</SheetTitle>
-											<SheetDescription className="text-zinc-500 font-bold text-xs uppercase tracking-wide">
-												Level up your learning
-											</SheetDescription>
-											{!session && (
-												<div className="grid grid-cols-2 gap-2 mt-4">
-													<Button
-														size="sm"
-														className="dark:text-white/90"
-														onClick={() => {
-															setSheetOpen(false);
-															router.push('/sign-in');
-														}}
-													>
-														Sign in
-													</Button>
-													<Button
-														size="sm"
-														variant="outline"
-														onClick={() => {
-															setSheetOpen(false);
-															router.push('/sign-up');
-														}}
-													>
-														Sign up
-													</Button>
-												</div>
-											)}
-										</SheetHeader>
-
-										<div className="space-y-2 ">
-											{sideMenuItems.map((item) => {
-												const isActive = pathname === item.href;
-												return (
-													<Link
-														key={item.href}
-														href={item.href}
-														className={`flex items-center gap-4 p-2 rounded-2xl transition-all duration-200 ${isActive
-																? 'bg-brand-blue text-white shadow-lg shadow-brand-blue/20'
-																: 'text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-900'
-															}`}
-														onClick={() => setSheetOpen(false)}
-													>
-														<item.icon className="w-5 h-5" />
-														<span className="font-bold text-sm">{item.label}</span>
-													</Link>
-												);
-											})}
-										</div>
-									</div>
-
-									<div className="mt-auto p-8 border-t border-zinc-200 dark:border-zinc-800 space-y-4">
-										<div className="flex items-center justify-between p-4 bg-zinc-100 dark:bg-zinc-900 rounded-2xl">
-											<span className="text-sm font-bold text-zinc-600 dark:text-zinc-400 uppercase tracking-wider">
-												Theme
-											</span>
-											<Button
-												variant="ghost"
-												size="sm"
-												className="rounded-xl bg-white dark:bg-zinc-800 shadow-sm"
-												onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-											>
-												{theme === 'dark' ? (
-													<Sun className="w-4 h-4 text-yellow-500" />
-												) : (
-													<Moon className="w-4 h-4 text-zinc-600" />
+									<div className="flex flex-col h-full">
+										<div className="p-8 pb-4 flex-1 overflow-y-auto">
+											<SheetHeader className="text-left mb-8">
+												<SheetTitle className="text-lg font-black text-zinc-900 dark:text-white uppercase tracking-tighter">
+													MatricMaster
+												</SheetTitle>
+												<SheetDescription className="text-zinc-500 font-bold text-xs uppercase tracking-wide">
+													Level up your learning
+												</SheetDescription>
+												{!session && (
+													<div className="grid grid-cols-2 gap-2 mt-4">
+														<Button
+															size="sm"
+															className="dark:text-white/90"
+															onClick={() => {
+																setSheetOpen(false);
+																router.push('/sign-in');
+															}}
+														>
+															Sign in
+														</Button>
+														<Button
+															size="sm"
+															variant="outline"
+															onClick={() => {
+																setSheetOpen(false);
+																router.push('/sign-up');
+															}}
+														>
+															Sign up
+														</Button>
+													</div>
 												)}
-											</Button>
+											</SheetHeader>
+
+											<div className="space-y-2 ">
+												{sideMenuItems.map((item) => {
+													const isActive = pathname === item.href;
+													return (
+														<Link
+															key={item.href}
+															href={item.href}
+															className={`flex items-center gap-4 p-2 rounded-2xl transition-all duration-200 ${
+																isActive
+																	? 'bg-brand-blue text-white shadow-lg shadow-brand-blue/20'
+																	: 'text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-900'
+															}`}
+															onClick={() => setSheetOpen(false)}
+														>
+															<item.icon className="w-5 h-5" />
+															<span className="font-bold text-sm">{item.label}</span>
+														</Link>
+													);
+												})}
+											</div>
 										</div>
 
-										{session && (
-											<Button
-												variant="ghost"
-												className="w-full justify-start gap-4 text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/10 rounded-2xl p-4 h-auto font-bold transition-all"
-												onClick={async () => {
-													await authClient.signOut();
-													router.push('/sign-in');
-												}}
-											>
-												<LogOut className="w-5 h-5" />
-												Logout
-											</Button>
-										)}
+										<div className="mt-auto p-8 border-t border-zinc-200 dark:border-zinc-800 space-y-4">
+											<div className="flex items-center justify-between p-4 bg-zinc-100 dark:bg-zinc-900 rounded-2xl">
+												<span className="text-sm font-bold text-zinc-600 dark:text-zinc-400 uppercase tracking-wider">
+													Theme
+												</span>
+												<Button
+													variant="ghost"
+													size="sm"
+													className="rounded-xl bg-white dark:bg-zinc-800 shadow-sm"
+													onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+												>
+													{theme === 'dark' ? (
+														<Sun className="w-4 h-4 text-yellow-500" />
+													) : (
+														<Moon className="w-4 h-4 text-zinc-600" />
+													)}
+												</Button>
+											</div>
+
+											{session && (
+												<Button
+													variant="ghost"
+													className="w-full justify-start gap-4 text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/10 rounded-2xl p-4 h-auto font-bold transition-all"
+													onClick={async () => {
+														await authClient.signOut();
+														router.push('/sign-in');
+													}}
+												>
+													<LogOut className="w-5 h-5" />
+													Logout
+												</Button>
+											)}
+										</div>
 									</div>
-								</div>
-							</SheetContent>
-						</Sheet>
+								</SheetContent>
+							</Sheet>
+						)}
 						<Link href="/" className="grow">
 							<p className="font-bold text-sm tracking-wider text-zinc-900 dark:text-white uppercase">
 								MatricMaster
 							</p>
 						</Link>
+						{!user && (
+							<Button
+								size="default"
+								className="pointer-events-auto bg-brand-blue hover:bg-brand-blue/90 text-white font-bold shadow-lg shadow-blue-500/25 px-6 text-sm h-10"
+								onClick={() => router.push('/sign-in')}
+							>
+								Sign in
+							</Button>
+						)}
 						{user && (
 							<ProfileMenu user={user}>
 								<motion.button
@@ -264,19 +276,21 @@ export default function MobileFrame({ children }: { children: React.ReactNode })
 									<div className="relative z-10 flex items-center justify-center">
 										<Icon
 											icon={item.icon}
-											className={`relative transition-all duration-300 h-6 w-6 ${isActive
+											className={`relative transition-all duration-300 h-6 w-6 ${
+												isActive
 													? 'text-brand-blue dark:text-brand-blue-light scale-110'
 													: 'text-zinc-400 group-hover:text-zinc-600 dark:group-hover:text-zinc-200'
-												}`}
+											}`}
 										/>
 									</div>
 
 									{/* Label */}
 									<span
-										className={`relative z-10 text-[9px] font-semibold uppercase tracking-wide transition-all duration-300 mt-1 ${isActive
+										className={`relative z-10 text-[9px] font-semibold uppercase tracking-wide transition-all duration-300 mt-1 ${
+											isActive
 												? 'text-brand-blue dark:text-brand-blue-light font-black'
 												: 'text-zinc-400'
-											}`}
+										}`}
 									>
 										{item.label}
 									</span>
