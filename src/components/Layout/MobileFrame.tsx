@@ -39,6 +39,7 @@ import { useTheme } from '@/hooks/use-theme';
 import { authClient } from '@/lib/auth-client';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import { ProfileMenu } from './profile-menu';
+import PageTransition from '../Transition/PageTransition';
 
 export default function MobileFrame({ children }: { children: React.ReactNode }) {
 	const pathname = usePathname();
@@ -148,11 +149,10 @@ export default function MobileFrame({ children }: { children: React.ReactNode })
 													<Link
 														key={item.href}
 														href={item.href}
-														className={`flex items-center gap-4 p-2 rounded-2xl transition-all duration-200 ${
-															isActive
+														className={`flex items-center gap-4 p-2 rounded-2xl transition-all duration-200 ${isActive
 																? 'bg-brand-blue text-white shadow-lg shadow-brand-blue/20'
 																: 'text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-900'
-														}`}
+															}`}
 														onClick={() => setSheetOpen(false)}
 													>
 														<item.icon className="w-5 h-5" />
@@ -225,7 +225,7 @@ export default function MobileFrame({ children }: { children: React.ReactNode })
 				)}
 
 				<div id="main-content" className="flex-1 relative overflow-hidden flex flex-col pt-20">
-					{children}
+					<PageTransition>{children}</PageTransition>
 				</div>
 
 				{/* Bottom Navigation - iOS Liquid Glass Floating Pill */}
@@ -264,21 +264,19 @@ export default function MobileFrame({ children }: { children: React.ReactNode })
 									<div className="relative z-10 flex items-center justify-center">
 										<Icon
 											icon={item.icon}
-											className={`relative transition-all duration-300 h-6 w-6 ${
-												isActive
+											className={`relative transition-all duration-300 h-6 w-6 ${isActive
 													? 'text-brand-blue dark:text-brand-blue-light scale-110'
 													: 'text-zinc-400 group-hover:text-zinc-600 dark:group-hover:text-zinc-200'
-											}`}
+												}`}
 										/>
 									</div>
 
 									{/* Label */}
 									<span
-										className={`relative z-10 text-[9px] font-semibold uppercase tracking-wide transition-all duration-300 mt-1 ${
-											isActive
+										className={`relative z-10 text-[9px] font-semibold uppercase tracking-wide transition-all duration-300 mt-1 ${isActive
 												? 'text-brand-blue dark:text-brand-blue-light font-black'
 												: 'text-zinc-400'
-										}`}
+											}`}
 									>
 										{item.label}
 									</span>
