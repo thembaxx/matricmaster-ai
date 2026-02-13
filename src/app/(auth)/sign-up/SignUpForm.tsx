@@ -65,8 +65,10 @@ export default function SignUpForm() {
 			setError(authError.message || 'Failed to create account');
 			setIsLoading(false);
 		} else {
-			await initializeDatabase();
+			// Non-blocking initialization
+			initializeDatabase().catch(console.error);
 			router.push('/dashboard');
+			router.refresh();
 		}
 	};
 
