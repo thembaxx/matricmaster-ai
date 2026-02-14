@@ -63,9 +63,9 @@ function createAuth() {
 		secret: process.env.BETTER_AUTH_SECRET,
 		database: db
 			? drizzleAdapter(db, {
-				provider: 'pg',
-				schema,
-			})
+					provider: 'pg',
+					schema,
+				})
 			: undefined,
 		emailAndPassword: {
 			enabled: true,

@@ -167,7 +167,9 @@ export default function Dashboard() {
 						<div className="absolute bottom-0 right-0 w-3.5 h-3.5 bg-emerald-500 border-2 border-background rounded-full" />
 					</div>
 					<div>
-						<p className="text-muted-foreground text-[10px] font-black uppercase tracking-widest opacity-60">Welcome back,</p>
+						<p className="text-muted-foreground text-[10px] font-black uppercase tracking-widest opacity-60">
+							Welcome back,
+						</p>
 						<h2 className="text-xl font-black text-foreground leading-none tracking-tight">
 							{session?.user?.name?.split(' ')[0] ?? 'Student'}
 						</h2>
@@ -197,7 +199,9 @@ export default function Dashboard() {
 							<Card className="h-full p-5 bg-card border-none premium-shadow rounded-3xl flex flex-col justify-between relative overflow-hidden group">
 								<div className="absolute -right-4 -bottom-4 w-24 h-24 bg-orange-100 dark:bg-orange-900/10 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-500" />
 								<div className="space-y-1 relative z-10">
-									<p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest opacity-70">Streak</p>
+									<p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest opacity-70">
+										Streak
+									</p>
 									<div className="flex items-baseline gap-1">
 										<span className="text-3xl font-black text-foreground">{streak}</span>
 										<span className="text-muted-foreground font-bold text-xs">DAYS</span>
@@ -216,7 +220,9 @@ export default function Dashboard() {
 							<Card className="h-full p-5 bg-brand-blue text-white border-none premium-shadow rounded-3xl flex flex-col justify-between relative overflow-hidden group">
 								<div className="absolute inset-0 mesh-gradient-blue opacity-50" />
 								<div className="relative z-10">
-									<p className="text-[10px] font-black text-white/70 uppercase tracking-widest">Next Up</p>
+									<p className="text-[10px] font-black text-white/70 uppercase tracking-widest">
+										Next Up
+									</p>
 									<h4 className="font-black text-sm leading-tight mt-1">Calculus Quiz</h4>
 								</div>
 								<Button
@@ -245,7 +251,9 @@ export default function Dashboard() {
 										<h3 className="text-2xl font-black text-foreground tracking-tight">
 											Algebra Master
 										</h3>
-										<p className="text-sm text-muted-foreground font-medium">Progress to next achievement</p>
+										<p className="text-sm text-muted-foreground font-medium">
+											Progress to next achievement
+										</p>
 									</div>
 									<div className="w-14 h-14 bg-muted/50 rounded-2xl flex items-center justify-center border border-border/50">
 										<Sparkles className="w-6 h-6 text-[#efb036]" />
@@ -254,14 +262,16 @@ export default function Dashboard() {
 
 								<div className="space-y-3 relative z-10">
 									<div className="flex justify-between items-end">
-										<span className="text-xs font-black text-foreground opacity-60">2/3 COMPLETED</span>
+										<span className="text-xs font-black text-foreground opacity-60">
+											2/3 COMPLETED
+										</span>
 										<span className="text-xs font-black text-brand-blue">{dailyProgress}%</span>
 									</div>
 									<div className="h-2 w-full bg-muted rounded-full overflow-hidden">
 										<motion.div
 											initial={{ width: 0 }}
 											animate={{ width: `${dailyProgress}%` }}
-											transition={{ duration: 1, ease: "circOut" }}
+											transition={{ duration: 1, ease: 'circOut' }}
 											className="h-full bg-brand-blue rounded-full"
 										/>
 									</div>
@@ -299,12 +309,13 @@ export default function Dashboard() {
 										{item.day}
 									</span>
 									<div
-										className={`w-full aspect-square rounded-2xl flex items-center justify-center transition-all duration-300 ${item.status === 'complete'
-											? 'bg-brand-blue/10 text-brand-blue'
-											: item.status === 'active'
-												? 'bg-brand-blue text-white shadow-lg shadow-brand-blue/30'
-												: 'bg-muted/30 text-muted-foreground'
-											}`}
+										className={`w-full aspect-square rounded-2xl flex items-center justify-center transition-all duration-300 ${
+											item.status === 'complete'
+												? 'bg-brand-blue/10 text-brand-blue'
+												: item.status === 'active'
+													? 'bg-brand-blue text-white shadow-lg shadow-brand-blue/30'
+													: 'bg-muted/30 text-muted-foreground'
+										}`}
 									>
 										{item.status === 'complete' ? (
 											<Check className="w-4 h-4 stroke-[4px]" />
@@ -319,7 +330,9 @@ export default function Dashboard() {
 
 					{/* Recommended Section */}
 					<motion.div variants={itemVariants} className="space-y-4">
-						<h3 className="text-lg font-black text-foreground tracking-tight">Deep Work Challenges</h3>
+						<h3 className="text-lg font-black text-foreground tracking-tight">
+							Deep Work Challenges
+						</h3>
 						<div className="space-y-3">
 							{defaultChallenges.map((challenge) => (
 								<button
@@ -343,12 +356,13 @@ export default function Dashboard() {
 												</div>
 												<span className="w-1 h-1 rounded-full bg-border" />
 												<div
-													className={`${challenge.difficulty === 'Hard'
-														? 'text-rose-500'
-														: challenge.difficulty === 'Medium'
-															? 'text-orange-500'
-															: 'text-emerald-500'
-														}`}
+													className={`${
+														challenge.difficulty === 'Hard'
+															? 'text-rose-500'
+															: challenge.difficulty === 'Medium'
+																? 'text-orange-500'
+																: 'text-emerald-500'
+													}`}
 												>
 													{challenge.difficulty}
 												</div>
