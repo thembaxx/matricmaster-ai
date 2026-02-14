@@ -26,7 +26,6 @@ import {
 export { users as user, sessions as session, accounts as account, verifications as verification };
 export { usersRelations, sessionsRelations, accountsRelations };
 
-
 // ============================================================================
 // QUIZ SYSTEM TABLES
 // ============================================================================

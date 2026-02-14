@@ -220,7 +220,11 @@ export async function seedDatabase() {
 		const testEmail = 'student@matricmaster.ai';
 		console.log('Checking for test user...');
 
-		const existingUser = await useDb.select().from(users).where(eq(users.email, testEmail)).limit(1);
+		const existingUser = await useDb
+			.select()
+			.from(users)
+			.where(eq(users.email, testEmail))
+			.limit(1);
 
 		if (existingUser.length === 0) {
 			console.log('Seeding test user...');

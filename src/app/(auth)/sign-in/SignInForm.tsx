@@ -127,8 +127,6 @@ export function SignInForm() {
 		});
 	};
 
-
-
 	return (
 		<div className="min-h-screen flex flex-col bg-slate-50 dark:bg-zinc-950 relative overflow-hidden">
 			{/* Success Toast */}
@@ -338,8 +336,6 @@ export function SignInForm() {
 								Sign Up
 							</Link>
 						</p>
-
-
 					</div>
 				</div>
 			</div>
