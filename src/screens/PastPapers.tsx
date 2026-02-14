@@ -1,6 +1,6 @@
 'use client';
 
-import { Download, Eye, FileText, Filter, Search as SearchIcon } from 'lucide-react';
+import { BookOpen, Download, Eye, FileText, Filter, Search as SearchIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Badge } from '@/components/ui/badge';
@@ -29,7 +29,7 @@ export default function PastPapers() {
 		<div className="flex flex-col h-full bg-zinc-50 dark:bg-zinc-950 relative overflow-hidden">
 			{/* Header */}
 			<header
-				className="px-6 py-4 ios-glass sticky top-0 z-20 shrink-0"
+				className="px-6 py-4 ios-glass sticky top-0 z-10 shrink-0"
 				style={{
 					paddingTop: 'calc(env(safe-area-inset-top, 0px) + 12px)',
 				}}
@@ -111,48 +111,57 @@ export default function PastPapers() {
 												<FileText className="w-6 h-6 text-brand-blue" />
 											</div>
 											<div>
-												<h3 className="font-black text-zinc-900 dark:text-white">
+												<h3 className="font-bold text-zinc-900 dark:text-zinc-200 tracking-wide truncate">
 													{paper.subject} {paper.paper}
 												</h3>
-												<p className="text-xs font-bold text-zinc-500">
+												<p className="text-xs font-semibold text-zinc-400 tracking-wide">
 													{paper.month} {paper.year}
 												</p>
 											</div>
 										</div>
+									</div>
+
+									<div className="flex items-center gap-4 mb-6 text-xs font-bold text-zinc-400">
 										<Badge
 											variant="secondary"
-											className="rounded-full px-3 py-1 text-[10px] font-black uppercase tracking-tighter"
+											className="rounded-full px-3 py-1 text-[10px] font-bold dark:text-zinc-300 uppercase tracking-tighter"
 										>
 											NSC Grade 12
 										</Badge>
-									</div>
-
-									<div className="flex items-center gap-4 mb-6 text-xs font-bold text-zinc-500">
 										<div className="flex items-center gap-1.5">
-											<span className="w-1.5 h-1.5 rounded-full bg-zinc-300" />
+											<span className="w-1.5 h-1.5 rounded-full bg-zinc-600" />
 											{paper.marks} Marks
 										</div>
 										<div className="flex items-center gap-1.5">
-											<span className="w-1.5 h-1.5 rounded-full bg-zinc-300" />
+											<span className="w-1.5 h-1.5 rounded-full bg-zinc-600" />
 											{paper.time}
 										</div>
 									</div>
 
-									<div className="grid grid-cols-2 gap-3">
+									<div className="flex items-center gap-2">
 										<Button
-											variant="outline"
-											className="rounded-xl border-zinc-200 dark:border-zinc-800 font-bold text-xs h-10"
+											variant="secondary"
+											className="grow rounded-xl border border-zinc-200 dark:border-zinc-600 dark:bg-neutral-800 font-bold text-xs h-10"
 											onClick={() => router.push(`/past-paper?id=${paper.id}`)}
 										>
-											<Eye className="w-4 h-4 mr-2" />
+											<Eye className="w-4 h-4" />
+											Smart view
+										</Button>
+										<Button
+											variant="outline"
+											className="grow rounded-xl border-zinc-200 dark:border-zinc-800 font-bold text-xs h-10"
+											onClick={() => router.push(`/past-paper?id=${paper.id}&mode=read`)}
+										>
+											<BookOpen className="w-4 h-4" />
 											View
 										</Button>
 										<Button
-											className="rounded-xl bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 font-bold text-xs h-10"
+											size="icon"
+											variant="outline"
+											className="dark:text-white text-zinc-900 font-bold text-xs h-10 w-10 bg-transparent"
 											onClick={() => window.open(paper.downloadUrl, '_blank')}
 										>
-											<Download className="w-4 h-4 mr-2" />
-											Download
+											<Download className="w-4 h-4" />
 										</Button>
 									</div>
 								</Card>

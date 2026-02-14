@@ -39,7 +39,7 @@ test.describe('Authentication Flow', () => {
 			await page.waitForURL(/\/sign-in/, { timeout: 5000 });
 			console.log('Successfully signed out via UI');
 		} catch (e) {
-			console.log('UI Sign out failed or timed out. Forcing sign out via cookies cleaning.');
+			console.log('UI Sign out failed or timed out. Forcing sign out via cookies cleaning.', e);
 			await page.context().clearCookies();
 			await page.goto('/sign-in');
 		}

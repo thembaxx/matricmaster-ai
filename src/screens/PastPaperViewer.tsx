@@ -3,52 +3,88 @@
 import {
 	ArrowLeft,
 	Bookmark,
-	Calculator,
+	ChevronLeft,
+	ChevronRight,
 	Download,
 	FileText,
-	RotateCw,
+	Loader2,
 	Sparkles,
-	User,
 	ZoomIn,
 	ZoomOut,
 } from 'lucide-react';
+import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { PAST_PAPERS } from '@/constants/mock-data';
+import { useQuestionExtractor } from '@/hooks/useQuestionExtractor';
+import { getExplanation } from '@/services/geminiService';
 
-const questions = [
-	{ id: 1, number: '1', topic: 'Algebra' },
-	{ id: 2, number: '2', topic: 'Calculus' },
-	{ id: 3, number: '3', topic: 'Functions' },
-	{ id: 4, number: '4', topic: 'Trig' },
-	{ id: 5, number: '5', topic: 'Geometry' },
-	{ id: 6, number: '6', topic: 'Stats' },
-	{ id: 7, number: '7', topic: 'Probability' },
-	{ id: 8, number: '8', topic: 'Finance' },
-];
+// Lazy load PdfViewer to avoid SSR issues
+const PdfViewer = dynamic(() => import('@/components/PdfViewer'), {
+	ssr: false,
+	loading: () => (
+		<div className="flex items-center justify-center h-full">
+			<Loader2 className="w-8 h-8 animate-spin text-brand-blue" />
+		</div>
+	),
+});
 
 export default function PastPaperViewer() {
 	const router = useRouter();
 	const searchParams = useSearchParams();
 	const paperId = searchParams.get('id');
+	const mode = searchParams.get('mode');
 
 	const [zoom, setZoom] = useState(100);
-	const [activeTab, setActiveTab] = useState('paper');
+	const [activeTab, setActiveTab] = useState('questions');
 	const [rotation, setRotation] = useState(0);
 	const [isSaved, setIsSaved] = useState(false);
 	const [paper, setPaper] = useState(PAST_PAPERS[0]);
+	const [showAiExplanation, setShowAiExplanation] = useState(false);
+	const [aiExplanation, setAiExplanation] = useState<string | null>(null);
+	const [isExplaining, setIsExplaining] = useState(false);
+	const [showPdfFallback, setShowPdfFallback] = useState(mode === 'read');
 
+	const {
+		extractedPaper,
+		currentQuestion,
+		currentQuestionIndex,
+		isLoading,
+		error,
+		hasMoreQuestions,
+		hasPreviousQuestions,
+		totalQuestions,
+		extractQuestions,
+		nextQuestion,
+		previousQuestion,
+		goToQuestion,
+	} = useQuestionExtractor();
+
+	// Find paper data
 	useEffect(() => {
 		if (paperId) {
 			const found = PAST_PAPERS.find((p) => p.id === paperId);
-			if (found) setPaper(found);
+			if (found) {
+				setPaper(found);
+				// Only extract questions if not in "read" mode (PDF viewer only)
+				if (mode !== 'read') {
+					extractQuestions(
+						found.id,
+						found.downloadUrl,
+						found.subject,
+						found.paper,
+						found.year,
+						found.month
+					);
+				}
+			}
 		}
-	}, [paperId]);
+	}, [paperId, extractQuestions, mode]);
 
 	const handleDownload = () => {
 		window.open(paper.downloadUrl, '_blank');
@@ -66,6 +102,121 @@ export default function PastPaperViewer() {
 		router.push(`/interactive-quiz?id=${paper.id}`);
 	};
 
+	const handleExplainQuestion = useCallback(async () => {
+		if (!currentQuestion) return;
+		setIsExplaining(true);
+		setShowAiExplanation(true);
+		try {
+			const explanation = await getExplanation(paper.subject, currentQuestion.questionText);
+			setAiExplanation(
+				explanation ?? "I'm sorry, I couldn't generate an explanation for this question."
+			);
+		} catch (err) {
+			console.error('Failed to get AI explanation:', err);
+			setAiExplanation('Sorry, I could not generate an explanation right now.');
+		} finally {
+			setIsExplaining(false);
+		}
+	}, [currentQuestion, paper.subject]);
+
+	const progress = totalQuestions > 0 ? ((currentQuestionIndex + 1) / totalQuestions) * 100 : 0;
+
+	// Render loading state
+	if (isLoading && !extractedPaper) {
+		return (
+			<div className="flex flex-col h-full bg-background relative grow">
+				<header className="px-6 pt-12 pb-4 bg-white dark:bg-zinc-900 sticky top-0 z-20 border-b border-zinc-100 dark:border-zinc-800 shrink-0">
+					<div className="flex items-center justify-between mb-4">
+						<div className="flex items-center gap-4">
+							<Button variant="ghost" size="icon" onClick={() => router.back()}>
+								<ArrowLeft className="w-5 h-5" />
+							</Button>
+							<h1 className="text-lg font-bold text-zinc-900 dark:text-white">
+								{paper.subject} {paper.paper}
+							</h1>
+						</div>
+					</div>
+				</header>
+				<div className="flex-1 flex flex-col items-center justify-center p-6">
+					<div className="text-center space-y-4">
+						<Loader2 className="w-12 h-12 animate-spin text-brand-blue mx-auto" />
+						<div className="space-y-2">
+							<h3 className="font-bold text-zinc-900 dark:text-white">Extracting Questions...</h3>
+							<p className="text-sm text-zinc-500">Using AI to parse the exam paper</p>
+						</div>
+						<div className="w-64 h-2 bg-zinc-100 dark:bg-zinc-800 rounded-full overflow-hidden">
+							<div
+								className="h-full bg-brand-blue animate-pulse rounded-full"
+								style={{ width: '60%' }}
+							/>
+						</div>
+					</div>
+				</div>
+			</div>
+		);
+	}
+
+	// Render PDF fallback viewer
+	if (showPdfFallback) {
+		return (
+			<div className="h-full grow flex flex-col relative z-150">
+				<PdfViewer url={paper.downloadUrl} onClose={() => setShowPdfFallback(false)} />
+			</div>
+		);
+	}
+
+	// Render error state
+	if (error && !extractedPaper) {
+		return (
+			<div className="flex flex-col h-full bg-background relative">
+				<header className="px-6 pt-12 pb-4 bg-white dark:bg-zinc-900 sticky top-0 z-20 border-b border-zinc-100 dark:border-zinc-800 shrink-0">
+					<div className="flex items-center justify-between mb-4">
+						<div className="flex items-center gap-4">
+							<Button variant="ghost" size="icon" onClick={() => router.back()}>
+								<ArrowLeft className="w-5 h-5" />
+							</Button>
+							<h1 className="text-lg font-bold text-zinc-900 dark:text-white">
+								{paper.subject} {paper.paper}
+							</h1>
+						</div>
+					</div>
+				</header>
+				<div className="flex-1 flex flex-col items-center justify-center p-6">
+					<div className="text-center space-y-4 max-w-sm">
+						<div className="w-16 h-16 bg-red-100 dark:bg-red-900/20 rounded-full flex items-center justify-center mx-auto">
+							<Sparkles className="w-8 h-8 text-red-500" />
+						</div>
+						<div className="space-y-2">
+							<h3 className="font-bold text-zinc-900 dark:text-white">Extraction Failed</h3>
+							<p className="text-sm text-zinc-500">{error}</p>
+						</div>
+						<div className="flex flex-col gap-2">
+							<Button
+								className="bg-brand-blue text-white"
+								onClick={() =>
+									extractQuestions(
+										paper.id,
+										paper.downloadUrl,
+										paper.subject,
+										paper.paper,
+										paper.year,
+										paper.month
+									)
+								}
+							>
+								Try Again
+							</Button>
+							<Button variant="outline" onClick={() => setShowPdfFallback(true)} className="gap-2">
+								<FileText className="w-4 h-4" />
+								View Original PDF
+							</Button>
+						</div>
+					</div>
+				</div>
+			</div>
+		);
+	}
+
 	return (
 		<div className="flex flex-col h-full bg-background relative">
 			{/* Header */}
@@ -75,17 +226,23 @@ export default function PastPaperViewer() {
 						<Button variant="ghost" size="icon" onClick={() => router.back()}>
 							<ArrowLeft className="w-5 h-5" />
 						</Button>
-						<h1 className="text-lg font-bold text-zinc-900 dark:text-white">
-							{paper.subject} {paper.paper}
-						</h1>
+						<div>
+							<h1 className="text-lg font-bold text-zinc-900 dark:text-white">
+								{paper.subject} {paper.paper}
+							</h1>
+							<p className="text-xs text-zinc-500">
+								{paper.month} {paper.year} • {paper.marks} marks
+							</p>
+						</div>
 					</div>
-					<div className="flex gap-2">
+					<div className="flex gap-1">
 						<Button
 							variant="ghost"
 							size="icon"
+							className="h-8 w-8"
 							onClick={() => setZoom((z) => Math.max(50, z - 10))}
 						>
-							<ZoomOut className="w-5 h-5" />
+							<ZoomOut className="w-4 h-4" />
 						</Button>
 						<span className="text-sm font-medium w-12 text-center flex items-center justify-center">
 							{zoom}%
@@ -93,57 +250,170 @@ export default function PastPaperViewer() {
 						<Button
 							variant="ghost"
 							size="icon"
+							className="h-8 w-8"
 							onClick={() => setZoom((z) => Math.min(200, z + 10))}
 						>
-							<ZoomIn className="w-5 h-5" />
+							<ZoomIn className="w-4 h-4" />
 						</Button>
-						<Button variant="ghost" size="icon" onClick={handleRotate}>
-							<RotateCw className="w-5 h-5" />
+						<Button variant="ghost" size="icon" className="h-8 w-8" onClick={handleRotate}>
+							<Download className="w-4 h-4" />
 						</Button>
-						<Button variant="ghost" size="icon" onClick={handleDownload}>
-							<Download className="w-5 h-5" />
+						<Button variant="ghost" size="icon" className="h-8 w-8" onClick={handleDownload}>
+							<Bookmark className="w-4 h-4" />
+						</Button>
+						<Button variant="ghost" size="icon" className="h-8 w-8" onClick={handleSave}>
+							<Bookmark className={`w-4 h-4 ${isSaved ? 'fill-current text-brand-blue' : ''}`} />
 						</Button>
 					</div>
 				</div>
 
-				{/* Metadata */}
-				<div className="flex items-center gap-4 text-sm text-zinc-500">
-					<Badge variant="outline">Marks: {paper.marks}</Badge>
-					<Badge variant="outline">Time: {paper.time}</Badge>
-					<Button
-						variant="ghost"
-						size="sm"
-						className={`ml-auto font-bold gap-2 ${isSaved ? 'text-brand-blue' : ''}`}
-						onClick={handleSave}
-					>
-						<Bookmark className={`w-4 h-4 ${isSaved ? 'fill-current' : ''}`} />
-						{isSaved ? 'Saved' : 'Save'}
-					</Button>
-				</div>
+				{/* Progress Bar */}
+				{totalQuestions > 0 && (
+					<div className="space-y-2">
+						<div className="flex items-center justify-between text-xs text-zinc-500">
+							<span>
+								Question {currentQuestionIndex + 1} of {totalQuestions}
+							</span>
+							<span>{Math.round(progress)}%</span>
+						</div>
+						<div className="relative h-2 w-full overflow-hidden rounded-full bg-zinc-100 dark:bg-zinc-800">
+							<div
+								className="h-full bg-brand-blue transition-all duration-500"
+								style={{ width: `${progress}%` }}
+							/>
+						</div>
+					</div>
+				)}
 			</header>
 
 			<ScrollArea className="flex-1">
 				<main
-					className="px-6 py-6 pb-24 transition-transform duration-300"
+					className="px-6 py-6 pb-32 transition-transform duration-300"
 					style={{
 						transform: `scale(${zoom / 100}) rotate(${rotation}deg)`,
 						transformOrigin: 'top center',
 					}}
 				>
-					{/* Paper Title */}
-					<div className="text-center mb-8">
-						<h2 className="text-2xl font-bold text-zinc-900 dark:text-white">NSC Grade 12</h2>
-						<p className="text-lg text-zinc-600 dark:text-zinc-400">
-							{paper.subject} {paper.paper}
-						</p>
-						<p className="text-sm text-zinc-500">
-							{paper.month} {paper.year}
-						</p>
-					</div>
+					{/* Instructions */}
+					{extractedPaper?.instructions && (
+						<Card className="p-6 mb-6 bg-zinc-50 dark:bg-zinc-800/50 rounded-[2rem]">
+							<h3 className="font-bold text-zinc-900 dark:text-white mb-3 text-sm">
+								INSTRUCTIONS AND INFORMATION
+							</h3>
+							<p className="text-xs text-zinc-600 dark:text-zinc-400 whitespace-pre-wrap">
+								{extractedPaper.instructions}
+							</p>
+						</Card>
+					)}
+
+					{/* Question Navigation - Jump to Question */}
+					{totalQuestions > 0 && (
+						<div className="mb-6">
+							<h3 className="font-black text-[10px] text-zinc-400 uppercase tracking-widest mb-3 px-1">
+								Jump to Question
+							</h3>
+							<div className="flex flex-wrap gap-2">
+								{extractedPaper?.questions.map((q, idx) => (
+									<button
+										type="button"
+										key={q.id}
+										onClick={() => goToQuestion(idx)}
+										className={`w-10 h-10 p-0 rounded-xl font-bold border-2 transition-all ${
+											currentQuestionIndex === idx
+												? 'border-brand-blue bg-brand-blue text-white'
+												: 'border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-400 hover:border-brand-blue'
+										}`}
+									>
+										{q.questionNumber}
+									</button>
+								))}
+							</div>
+						</div>
+					)}
+
+					{/* Current Question Display */}
+					{currentQuestion && (
+						<Card className="p-6 rounded-[2rem] border-none shadow-sm bg-white dark:bg-zinc-900 relative overflow-hidden">
+							<div className="absolute inset-0 opacity-[0.03] pointer-events-none grayscale">
+								<Image
+									src="https://images.unsplash.com/photo-1588072432836-e10032774350?auto=format&fit=crop&q=80&w=800"
+									alt="Paper texture"
+									fill
+									className="object-cover"
+								/>
+							</div>
+
+							{/* Question Header */}
+							<div className="flex items-center gap-3 mb-6 relative z-10">
+								<Badge className="bg-brand-blue text-white rounded-lg px-3 py-1.5">
+									QUESTION {currentQuestion.questionNumber}
+								</Badge>
+								{currentQuestion.topic && (
+									<Badge variant="outline" className="rounded-full text-[10px]">
+										{currentQuestion.topic}
+									</Badge>
+								)}
+								<span className="text-xs font-bold text-zinc-400 uppercase tracking-wider ml-auto">
+									({currentQuestion.marks} marks)
+								</span>
+							</div>
+
+							{/* Main Question Text */}
+							<div className="space-y-4 text-zinc-800 dark:text-zinc-200 font-medium relative z-10">
+								<p className="text-lg leading-relaxed">{currentQuestion.questionText}</p>
+
+								{/* Sub-questions */}
+								{currentQuestion.subQuestions && currentQuestion.subQuestions.length > 0 && (
+									<div className="space-y-4 ml-4 mt-6 pt-4 border-t border-zinc-100 dark:border-zinc-800">
+										{currentQuestion.subQuestions.map((sq) => (
+											<div key={sq.id} className="space-y-2">
+												<p className="font-bold">
+													{sq.id}. {sq.text}
+													{sq.marks && (
+														<span className="text-xs text-zinc-400 ml-2">({sq.marks} marks)</span>
+													)}
+												</p>
+											</div>
+										))}
+									</div>
+								)}
+							</div>
+
+							{/* AI Explain Button */}
+							<div className="mt-8 pt-6 border-t border-zinc-100 dark:border-zinc-800 relative z-10">
+								<Button
+									variant="outline"
+									className="w-full border-brand-blue/20 hover:bg-brand-blue/5"
+									onClick={handleExplainQuestion}
+									disabled={isExplaining}
+								>
+									{isExplaining ? (
+										<Loader2 className="w-4 h-4 mr-2 animate-spin" />
+									) : (
+										<Sparkles className="w-4 h-4 mr-2 text-brand-blue" />
+									)}
+									{isExplaining ? 'Getting Explanation...' : 'Explain This Question'}
+								</Button>
+
+								{/* AI Explanation Display */}
+								{showAiExplanation && aiExplanation && (
+									<div className="mt-4 p-4 bg-brand-blue/5 border border-brand-blue/20 rounded-xl">
+										<div className="flex items-center gap-2 mb-2">
+											<Sparkles className="w-4 h-4 text-brand-blue" />
+											<span className="text-sm font-bold text-brand-blue">AI Explanation</span>
+										</div>
+										<p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed whitespace-pre-wrap">
+											{aiExplanation}
+										</p>
+									</div>
+								)}
+							</div>
+						</Card>
+					)}
 
 					{/* Conversion Banner */}
 					<Card
-						className="p-6 mb-8 bg-brand-blue/5 border-brand-blue/20 rounded-[2rem] flex items-center justify-between group cursor-pointer hover:bg-brand-blue/10 transition-colors"
+						className="p-6 mt-6 bg-brand-blue/5 border-brand-blue/20 rounded-[2rem] flex items-center justify-between group cursor-pointer hover:bg-brand-blue/10 transition-colors"
 						onClick={handleConvertToInteractive}
 					>
 						<div className="flex items-center gap-4">
@@ -152,8 +422,8 @@ export default function PastPaperViewer() {
 							</div>
 							<div>
 								<h4 className="font-black text-zinc-900 dark:text-white">Convert to Interactive</h4>
-								<p className="text-xs font-bold text-zinc-500 text-brand-blue/70">
-									Solve this paper step-by-step with AI
+								<p className="text-xs font-bold text-zinc-500">
+									Practice this paper with AI-powered feedback
 								</p>
 							</div>
 						</div>
@@ -164,100 +434,82 @@ export default function PastPaperViewer() {
 							Start Quiz
 						</Button>
 					</Card>
-
-					{/* Instructions */}
-					<Card className="p-6 mb-6 bg-zinc-50 dark:bg-zinc-800/50">
-						<h3 className="font-bold text-zinc-900 dark:text-white mb-3 text-sm">
-							INSTRUCTIONS AND INFORMATION
-						</h3>
-						<ul className="space-y-2 text-xs text-zinc-600 dark:text-zinc-400">
-							<li className="flex items-start gap-2">
-								<span className="text-zinc-400 mt-0.5">•</span>
-								<span>This question paper consists of 10 questions.</span>
-							</li>
-							<li className="flex items-start gap-2">
-								<span className="text-zinc-400 mt-0.5">•</span>
-								<span>Answer ALL the questions.</span>
-							</li>
-							<li className="flex items-start gap-2">
-								<span className="text-zinc-400 mt-0.5">•</span>
-								<span>
-									Number the answers correctly according to the numbering system used in this
-									question paper.
-								</span>
-							</li>
-							<li className="flex items-start gap-2">
-								<span className="text-zinc-400 mt-0.5">•</span>
-								<span>
-									Clearly show ALL calculations, diagrams, graphs, etc. that you have used in
-									determining your answers.
-								</span>
-							</li>
-						</ul>
-					</Card>
-
-					{/* Question Navigation */}
-					<div className="mb-6">
-						<h3 className="font-black text-[10px] text-zinc-400 uppercase tracking-widest mb-3 px-1">
-							Jump to Question
-						</h3>
-						<div className="flex flex-wrap gap-2">
-							{questions.map((q) => (
-								<Button
-									key={q.id}
-									variant="outline"
-									size="sm"
-									className="w-10 h-10 p-0 rounded-xl font-bold border-zinc-200 dark:border-zinc-800 transition-colors hover:border-brand-blue hover:text-brand-blue"
-								>
-									{q.number}
-								</Button>
-							))}
-						</div>
-					</div>
-
-					{/* Sample Question */}
-					<Card className="p-6 rounded-[2rem] border-none shadow-sm bg-white dark:bg-zinc-900 relative overflow-hidden">
-						<div className="absolute inset-0 opacity-[0.03] pointer-events-none grayscale">
-							<Image
-								src="https://images.unsplash.com/photo-1588072432836-e10032774350?auto=format&fit=crop&q=80&w=800"
-								alt="Paper texture"
-								fill
-								className="object-cover"
-							/>
-						</div>
-						<div className="flex items-center gap-2 mb-4 relative z-10">
-							{' '}
-							<Badge className="bg-brand-blue text-white rounded-lg">QUESTION 1</Badge>
-							<span className="text-xs font-bold text-zinc-400 uppercase tracking-wider">
-								(25 marks)
-							</span>
-						</div>
-						<div className="space-y-4 text-zinc-800 dark:text-zinc-200 font-medium">
-							<p>1.1 Solve for x:</p>
-							<div className="space-y-2 ml-4">
-								<p>1.1.1 x² - 5x + 6 = 0</p>
-								<p>1.1.2 2x² + 3x - 2 = 0 (correct to TWO decimal places)</p>
-							</div>
-							<p className="pt-4 border-t border-zinc-100 dark:border-zinc-800">
-								1.2 Solve for x and y simultaneously:
-							</p>
-							<div className="space-y-2 ml-4 font-mono">
-								<p>y = 2x + 1</p>
-								<p>x² + y² = 10</p>
-							</div>
-						</div>
-					</Card>
 				</main>
 			</ScrollArea>
 
-			{/* Bottom Toolbar */}
+			{/* Pagination Footer */}
+			{extractedPaper && totalQuestions > 0 && (
+				<footer className="absolute bottom-0 left-0 right-0 bg-white/90 dark:bg-zinc-900/90 backdrop-blur-xl border-t border-zinc-100 dark:border-zinc-800 px-6 py-4 pb-8 z-30">
+					<div className="max-w-2xl mx-auto flex items-center justify-between gap-4">
+						<Button
+							variant="outline"
+							size="sm"
+							disabled={!hasPreviousQuestions}
+							onClick={previousQuestion}
+							className="gap-2"
+						>
+							<ChevronLeft className="w-4 h-4" />
+							Previous
+						</Button>
+
+						<div className="flex items-center gap-2">
+							{/* Show first few and last few pages with ellipsis */}
+							{Array.from({ length: totalQuestions }, (_, i) => i)
+								.filter((i) => {
+									// Show first 3, last 3, and around current
+									if (i < 3 || i >= totalQuestions - 3) return true;
+									if (Math.abs(i - currentQuestionIndex) <= 1) return true;
+									return false;
+								})
+								.map((i, _, arr) => {
+									const showEllipsis =
+										i > 0 && !arr.includes(i - 1) && !(Math.abs(i - currentQuestionIndex) <= 1);
+									return (
+										<>
+											{showEllipsis && (
+												<span key={`ellipsis-${i}`} className="text-zinc-400">
+													...
+												</span>
+											)}
+											<button
+												type="button"
+												key={i}
+												onClick={() => goToQuestion(i)}
+												className={`w-8 h-8 rounded-lg font-bold text-xs transition-all ${
+													currentQuestionIndex === i
+														? 'bg-brand-blue text-white'
+														: 'bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-brand-blue/10'
+												}`}
+											>
+												{i + 1}
+											</button>
+										</>
+									);
+								})}
+						</div>
+
+						<Button
+							variant="outline"
+							size="sm"
+							disabled={!hasMoreQuestions}
+							onClick={nextQuestion}
+							className="gap-2"
+						>
+							Next
+							<ChevronRight className="w-4 h-4" />
+						</Button>
+					</div>
+				</footer>
+			)}
+
+			{/* Bottom Toolbar (for tabs) */}
 			<nav className="absolute bottom-0 left-0 right-0 bg-white/90 dark:bg-zinc-900/90 backdrop-blur-xl border-t border-zinc-100 dark:border-zinc-800 px-6 py-3 pb-8">
 				<div className="flex justify-around items-center">
 					{[
-						{ id: 'paper', icon: FileText, label: 'Paper' },
-						{ id: 'formulae', icon: Calculator, label: 'Formulae' },
-						{ id: 'saved', icon: Bookmark, label: 'Saved' },
-						{ id: 'profile', icon: User, label: 'Profile' },
+						{ id: 'questions', label: 'Questions' },
+						{ id: 'formulae', label: 'Formulae' },
+						{ id: 'saved', label: 'Saved' },
+						{ id: 'profile', label: 'Profile' },
 					].map((item) => (
 						<button
 							type="button"
@@ -267,10 +519,13 @@ export default function PastPaperViewer() {
 								activeTab === item.id ? 'text-brand-blue scale-110' : 'text-zinc-400'
 							}`}
 						>
-							<item.icon
-								className={`w-5 h-5 ${activeTab === item.id ? 'fill-brand-blue/10' : ''}`}
-							/>
-							<span className="text-[10px] font-black uppercase tracking-wider">{item.label}</span>
+							<span
+								className={`text-[10px] font-black uppercase tracking-wider ${
+									activeTab === item.id ? 'text-brand-blue' : ''
+								}`}
+							>
+								{item.label}
+							</span>
 						</button>
 					))}
 				</div>

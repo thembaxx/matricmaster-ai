@@ -7,5 +7,9 @@ export const metadata: Metadata = {
 };
 
 export default function PastPapersPage() {
-	return <PastPapersScreen />;
+	return (
+		<div className="bg-red-600">
+			<PastPapersScreen />
+		</div>
+	);
 }

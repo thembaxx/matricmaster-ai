@@ -1,3 +1,4 @@
+import { getSessionCookie } from 'better-auth/cookies';
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 
@@ -11,11 +12,13 @@ function isPublicRoute(pathname: string): boolean {
 
 // Check if user has a valid session via Better Auth cookie
 function hasSession(request: NextRequest): boolean {
+	const sessionCookie = getSessionCookie(request);
 	// Check for Better Auth session cookie
-	const sessionCookie = request.cookies.get('better-auth.session_data');
-	const sessionToken = request.cookies.get('better-auth.session_token');
+	// const sessionCookie = request.cookies.get('better-auth.session_data');
+	// const sessionToken = request.cookies.get('better-auth.session_token');
 
-	return !!(sessionCookie?.value || sessionToken?.value);
+	// return !!(sessionCookie?.value || sessionToken?.value);
+	return !!sessionCookie;
 }
 
 export default function proxy(request: NextRequest) {
