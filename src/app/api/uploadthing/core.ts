@@ -28,6 +28,32 @@ export const ourFileRouter = {
 			// Return data that will be sent to the client
 			return { uploadedBy: metadata.userId, url: file.ufsUrl };
 		}),
+
+	// Past paper PDF uploader (for extracted PDFs)
+	pastPaperPDF: f({
+		pdf: { maxFileSize: '16MB', maxFileCount: 1 },
+	})
+		.middleware(async () => {
+			// Public access - no auth required for past papers
+			return {};
+		})
+		.onUploadComplete(async ({ file }) => {
+			console.log('Past paper PDF uploaded:', file.ufsUrl);
+			return { url: file.ufsUrl };
+		}),
+
+	// Paper image extractor (for images extracted from PDFs)
+	paperImage: f({ image: { maxFileSize: '8MB', maxFileCount: 10 } })
+		.middleware(async () => {
+			// Public access - no auth required
+			return {};
+		})
+		.onUploadComplete(async ({ file }) => {
+			// Note: When maxFileCount > 1, file is actually an array
+			// UploadThing handles this differently - we upload one at a time for paper images
+			console.log('Paper image uploaded:', file.ufsUrl);
+			return { url: file.ufsUrl };
+		}),
 } satisfies FileRouter;
 
 export type OurFileRouter = typeof ourFileRouter;

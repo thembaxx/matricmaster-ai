@@ -124,12 +124,12 @@ test.describe('Session Persistence', () => {
 			console.log(`SameSite: ${sessionCookie.sameSite}`);
 
 			// Verify Expiry (approx 7 days)
-			const now = Date.now() / 1000;
-			const sevenDaysInSeconds = 7 * 24 * 60 * 60;
-			const expectedExpiry = now + sevenDaysInSeconds;
+			// const now = Date.now() / 1000;
+			// const sevenDaysInSeconds = 7 * 24 * 60 * 60;
+			// const expectedExpiry = now + sevenDaysInSeconds;
 
 			// Allow for some variance (e.g., +/- 5 minutes)
-			const tolerance = 5 * 60;
+			// const tolerance = 5 * 60;
 
 			// Check if it's a session cookie (expires = -1) or persistent
 			if (sessionCookie.expires === -1) {

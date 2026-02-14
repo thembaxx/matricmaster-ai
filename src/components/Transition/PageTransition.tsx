@@ -16,7 +16,7 @@ export default function PageTransition({ children }: { children: React.ReactNode
 				duration: 0.3,
 				ease: [0.4, 0, 0.2, 1], // iOS-like ease
 			}}
-			className="h-full w-full"
+			className="h-full w-full grow flex flex-col"
 		>
 			{children}
 		</motion.div>
