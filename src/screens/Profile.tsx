@@ -1,10 +1,9 @@
 'use client';
 
 import { Calculator, GraduationCap, Star, User } from 'lucide-react';
-import { useId, useState } from 'react';
+import { useId, useState, useEffect } from 'react';
 import { PolarAngleAxis, PolarGrid, Radar, RadarChart } from 'recharts';
 import { SafeImage } from '@/components/SafeImage';
-
 import {
 	type ChartConfig,
 	ChartContainer,
@@ -12,15 +11,24 @@ import {
 	ChartTooltipContent,
 } from '@/components/ui/chart';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { useSession } from '@/lib/auth-client';
+import { getUserProgressSummary, getUserStreak } from '@/lib/db/progress-actions';
+import { getUserAchievements } from '@/lib/db/achievement-actions';
 
-const chartData = [
-	{ subject: 'MATH', you: 95, average: 70 },
-	{ subject: 'PHY SCI', you: 85, average: 75 },
-	{ subject: 'ENG FAL', you: 75, average: 65 },
-	{ subject: 'LIFE OR.', you: 65, average: 60 },
-	{ subject: 'GEOG', you: 70, average: 65 },
-	{ subject: 'ACC', you: 85, average: 75 },
-	{ subject: 'HIST', you: 80, average: 70 },
+interface ChartDataItem {
+	subject: string;
+	you: number;
+	average: number;
+}
+
+const defaultChartData: ChartDataItem[] = [
+	{ subject: 'MATH', you: 0, average: 70 },
+	{ subject: 'PHY SCI', you: 0, average: 75 },
+	{ subject: 'ENG FAL', you: 0, average: 65 },
+	{ subject: 'LIFE OR.', you: 0, average: 60 },
+	{ subject: 'GEOG', you: 0, average: 65 },
+	{ subject: 'ACC', you: 0, average: 75 },
+	{ subject: 'HIST', you: 0, average: 70 },
 ];
 
 const chartConfig = {
@@ -34,23 +42,80 @@ const chartConfig = {
 	},
 } satisfies ChartConfig;
 
-const achievements = [
-	{
-		title: 'Calculus Master',
-		icon: Calculator,
-		variant: 'blue' as const,
-	},
-	{
-		title: 'Physics Logic',
-		icon: User,
-		variant: 'purple' as const,
-	},
-];
-
 export default function Profile() {
 	const [viewMode, setViewMode] = useState<'my_stats' | 'provincial'>('my_stats');
 	const radarGradientId = useId();
 	const glowFilterId = useId();
+	const { data: session } = useSession();
+	
+	const [userStats, setUserStats] = useState<{
+		totalQuestions: number;
+		accuracy: number;
+		streak: number;
+		achievementsUnlocked: number;
+	} | null>(null);
+	const [isLoading, setIsLoading] = useState(true);
+
+	useEffect(() => {
+		async function fetchData() {
+			try {
+				const [progress, streak, achievements] = await Promise.all([
+					getUserProgressSummary(),
+					getUserStreak(),
+					getUserAchievements(),
+				]);
+
+				setUserStats({
+					totalQuestions: progress?.totalQuestionsAttempted || 0,
+					accuracy: progress?.accuracy || 0,
+					streak: streak?.currentStreak || 0,
+					achievementsUnlocked: achievements?.unlocked?.length || 0,
+				});
+			} catch (error) {
+				console.error('Error fetching profile data:', error);
+			} finally {
+				setIsLoading(false);
+			}
+		}
+		fetchData();
+	}, []);
+
+	// Calculate chart data based on user performance
+	const chartData: ChartDataItem[] = defaultChartData.map((item) => ({
+		...item,
+		you: item.subject === 'MATH' ? userStats?.accuracy || 0 : Math.max(0, (userStats?.accuracy || 0) - 10),
+	}));
+
+
+	const achievements = [
+		{
+			title: 'Calculus Master',
+			icon: Calculator,
+			variant: 'blue' as const,
+		},
+		{
+			title: 'Physics Logic',
+			icon: User,
+			variant: 'purple' as const,
+		},
+	];
+
+	if (isLoading) {
+		return (
+			<div className="p-4 bg-background">
+				<div className="flex flex-col h-full overflow-hidden rounded-4xl bg-card">
+					<ScrollArea className="flex-1">
+						<main className="px-6 pb-40 pt-4 max-w-2xl mx-auto w-full flex flex-col items-center">
+							<div className="w-28 h-28 bg-zinc-200 dark:bg-zinc-800 rounded-full animate-pulse mb-4" />
+							<div className="h-6 w-32 bg-zinc-200 dark:bg-zinc-800 rounded animate-pulse mb-2" />
+							<div className="h-4 w-40 bg-zinc-200 dark:bg-zinc-800 rounded animate-pulse mb-8" />
+							<div className="w-full max-w-sm aspect-square bg-zinc-200 dark:bg-zinc-800 rounded-full animate-pulse" />
+						</main>
+					</ScrollArea>
+				</div>
+			</div>
+		);
+	}
 
 	return (
 		<div className="p-4 bg-background">
@@ -69,8 +134,8 @@ export default function Profile() {
 								style={{ border: '4px solid #1e293b' }}
 							>
 								<SafeImage
-									src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=face"
-									alt="Thabo Mbeki"
+									src={session?.user?.image || "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=face"}
+									alt={session?.user?.name || "User"}
 									width={112}
 									height={112}
 									className="w-full h-full object-cover"
@@ -93,8 +158,10 @@ export default function Profile() {
 						</div>
 
 						<div className="text-center mb-6">
-							<h2 className="text-2xl font-bold mb-1 text-foreground">Thabo Mbeki</h2>
-							<p className="text-sm text-muted-foreground">St. John's College • Grade 12</p>
+							<h2 className="text-2xl font-bold mb-1 text-foreground">
+								{session?.user?.name || 'Student'}
+							</h2>
+							<p className="text-sm text-muted-foreground">Grade 12</p>
 						</div>
 
 						{/* Tabs - Segmented Control */}
@@ -179,16 +246,18 @@ export default function Profile() {
 								</RadarChart>
 							</ChartContainer>
 
-							{/* Highlight 95% on Math */}
-							<div
-								className="absolute top-[15%] left-1/2 -translate-x-1/2 text-xs font-bold px-2.5 py-1 rounded-lg shadow-lg z-10"
-								style={{
-									backgroundColor: '#22d3ee',
-									color: '#0a0f18',
-								}}
-							>
-								95%
-							</div>
+							{/* Highlight accuracy */}
+							{userStats && userStats.accuracy > 0 && (
+								<div
+									className="absolute top-[15%] left-1/2 -translate-x-1/2 text-xs font-bold px-2.5 py-1 rounded-lg shadow-lg z-10"
+									style={{
+										backgroundColor: '#22d3ee',
+										color: '#0a0f18',
+									}}
+								>
+									{userStats.accuracy}%
+								</div>
+							)}
 						</div>
 
 						{/* Legend */}
@@ -197,19 +266,21 @@ export default function Profile() {
 								<span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: '#22d3ee' }} />
 								You
 							</div>
-							<div className="flex items-center gap-2 text-sm text-muted-foreground">
-								<span
-									className="w-2.5 h-2.5 rounded-full"
-									style={{ border: '1.5px solid #64748b', backgroundColor: 'transparent' }}
-								/>
-								Average
-							</div>
+							{viewMode === 'provincial' && (
+								<div className="flex items-center gap-2 text-sm text-muted-foreground">
+									<span
+										className="w-2.5 h-2.5 rounded-full"
+										style={{ border: '1.5px solid #64748b', backgroundColor: 'transparent' }}
+									/>
+									Average
+								</div>
+							)}
 						</div>
 
 						{/* Achievements */}
 						<div className="w-full mb-8">
 							<h3 className="text-xs font-bold uppercase tracking-wider mb-4 text-muted-foreground">
-								Skill Achievements
+								Achievements ({userStats?.achievementsUnlocked || 0})
 							</h3>
 							<div className="flex gap-3 overflow-x-auto pb-2 no-scrollbar">
 								{achievements.map((item) => (
@@ -250,9 +321,11 @@ export default function Profile() {
 										<GraduationCap className="w-5 h-5" style={{ color: '#22d3ee' }} />
 									</div>
 									<div>
-										<div className="text-3xl font-bold text-foreground">78%</div>
+										<div className="text-3xl font-bold text-foreground">
+											{userStats?.totalQuestions || 0}
+										</div>
 										<div className="text-xs font-medium mt-1 text-muted-foreground">
-											Overall Average
+											Questions Answered
 										</div>
 									</div>
 								</div>
@@ -267,9 +340,11 @@ export default function Profile() {
 										<Star className="w-5 h-5" style={{ color: '#a855f7' }} />
 									</div>
 									<div>
-										<div className="text-3xl font-bold text-foreground">Math</div>
+										<div className="text-3xl font-bold text-foreground">
+											{userStats?.streak || 0}
+										</div>
 										<div className="text-xs font-medium mt-1 text-muted-foreground">
-											Top Subject
+											Day Streak
 										</div>
 									</div>
 								</div>
