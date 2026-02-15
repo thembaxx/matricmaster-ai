@@ -143,10 +143,10 @@ export default function PastPaperViewer() {
 		);
 	}
 
-	// Render PDF fallback viewer
+	// Render PDF fallback viewer - full screen mode
 	if (showPdfFallback) {
 		return (
-			<div className="h-full grow flex flex-col relative z-150">
+			<div className="fixed inset-0 z-[150] bg-background">
 				<PdfViewer url={paper.downloadUrl} onClose={() => setShowPdfFallback(false)} />
 			</div>
 		);
