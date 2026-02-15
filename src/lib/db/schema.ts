@@ -178,7 +178,10 @@ export const userAchievements = pgTable(
 	},
 	(table) => ({
 		userIdIdx: index('user_achievements_user_id_idx').on(table.userId),
-		uniqueAchievement: { name: 'user_achievement_unique', columns: [table.userId, table.achievementId] },
+		uniqueAchievement: {
+			name: 'user_achievement_unique',
+			columns: [table.userId, table.achievementId],
+		},
 	})
 );
 
@@ -279,7 +282,10 @@ export const leaderboardEntries = pgTable(
 	(table) => ({
 		userIdIdx: index('leaderboard_user_id_idx').on(table.userId),
 		periodIdx: index('leaderboard_period_idx').on(table.periodType, table.periodStart),
-		uniqueEntry: { name: 'leaderboard_unique_entry', columns: [table.userId, table.periodType, table.periodStart] },
+		uniqueEntry: {
+			name: 'leaderboard_unique_entry',
+			columns: [table.userId, table.periodType, table.periodStart],
+		},
 	})
 );
 

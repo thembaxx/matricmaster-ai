@@ -1,11 +1,16 @@
 'use server';
 
+import { and, count, desc, eq, gte } from 'drizzle-orm';
+import { revalidatePath } from 'next/cache';
 import { auth } from '@/lib/auth';
 import { type DbType, dbManager } from '@/lib/db';
 import { leaderboardEntries, user, userProgress } from '@/lib/db/schema';
-import { eq, and, gte, desc, count } from 'drizzle-orm';
-import { revalidatePath } from 'next/cache';
-import { getCurrentPeriodStart, calculateQuizPoints, calculateAccuracy } from '@/lib/leaderboard-utils';
+import type { LeaderboardEntry } from '@/lib/db/schema';
+import {
+	calculateAccuracy,
+	calculateQuizPoints,
+	getCurrentPeriodStart,
+} from '@/lib/leaderboard-utils';
 
 async function getDb(): Promise<DbType> {
 	const connected = await dbManager.waitForConnection(3, 2000);
@@ -35,11 +40,11 @@ export interface UserRankData {
 
 export async function getLeaderboard(
 	periodType: 'weekly' | 'monthly' | 'all_time',
-	limit: number = 50
+	limit = 50
 ): Promise<LeaderboardEntryData[]> {
 	try {
 		const db = await getDb();
-		let entries;
+		let entries: LeaderboardEntry[] = [];
 
 		if (periodType !== 'all_time') {
 			const periodStart = getCurrentPeriodStart(periodType);
@@ -65,11 +70,7 @@ export async function getLeaderboard(
 
 		const entriesWithUsers: LeaderboardEntryData[] = await Promise.all(
 			entries.map(async (entry, index) => {
-				const userRecord = await db
-					.select()
-					.from(user)
-					.where(eq(user.id, entry.userId))
-					.limit(1);
+				const userRecord = await db.select().from(user).where(eq(user.id, entry.userId)).limit(1);
 
 				return {
 					rank: entry.rank || index + 1,
@@ -101,9 +102,9 @@ export async function getUserRank(
 	try {
 		const db = await getDb();
 		const periodStart = getCurrentPeriodStart(periodType);
-		
-		let userEntry;
-		
+
+		let userEntry: LeaderboardEntry[] = [];
+
 		if (periodType !== 'all_time') {
 			userEntry = await db
 				.select()
@@ -148,9 +149,8 @@ export async function getUserRank(
 
 		const userRank = userEntry[0].rank || 0;
 		const totalCount = totalUsers[0]?.count || 0;
-		const percentile = totalCount > 0 
-			? Math.round(((totalCount - userRank) / totalCount) * 100)
-			: 0;
+		const percentile =
+			totalCount > 0 ? Math.round(((totalCount - userRank) / totalCount) * 100) : 0;
 
 		return {
 			rank: userRank,
@@ -183,7 +183,7 @@ export async function updateUserScore(params: {
 	try {
 		const db = await getDb();
 		const userId = session.user.id;
-		
+
 		const progressRecords = await db
 			.select()
 			.from(userProgress)
@@ -191,7 +191,7 @@ export async function updateUserScore(params: {
 			.limit(1);
 
 		const streakDays = progressRecords[0]?.streakDays || 0;
-		
+
 		const pointsEarned = calculateQuizPoints({
 			correctAnswers: params.correctAnswers,
 			totalQuestions: params.totalQuestions,
@@ -205,12 +205,12 @@ export async function updateUserScore(params: {
 		const accuracy = calculateAccuracy(params.correctAnswers, params.totalQuestions);
 
 		const periodTypes: Array<'weekly' | 'monthly' | 'all_time'> = ['weekly', 'monthly', 'all_time'];
-		
+
 		for (const periodType of periodTypes) {
 			const periodStart = getCurrentPeriodStart(periodType);
-			
-			let existing;
-			
+
+			let existing: LeaderboardEntry[] = [];
+
 			if (periodType !== 'all_time') {
 				existing = await db
 					.select()
@@ -239,10 +239,14 @@ export async function updateUserScore(params: {
 			if (existing && existing.length > 0) {
 				const current = existing[0];
 				const newQuestions = (current.questionsCompleted || 0) + params.totalQuestions;
-				const newAccuracy = newQuestions > 0 
-					? Math.round(((current.accuracyPercentage || 0) * (current.questionsCompleted || 0) + accuracy) / newQuestions)
-					: accuracy;
-				
+				const newAccuracy =
+					newQuestions > 0
+						? Math.round(
+								((current.accuracyPercentage || 0) * (current.questionsCompleted || 0) + accuracy) /
+									newQuestions
+							)
+						: accuracy;
+
 				await db
 					.update(leaderboardEntries)
 					.set({
@@ -253,16 +257,14 @@ export async function updateUserScore(params: {
 					})
 					.where(eq(leaderboardEntries.id, current.id));
 			} else {
-				await db
-					.insert(leaderboardEntries)
-					.values({
-						userId,
-						periodType,
-						periodStart,
-						totalPoints: pointsEarned,
-						questionsCompleted: params.totalQuestions,
-						accuracyPercentage: accuracy,
-					});
+				await db.insert(leaderboardEntries).values({
+					userId,
+					periodType,
+					periodStart,
+					totalPoints: pointsEarned,
+					questionsCompleted: params.totalQuestions,
+					accuracyPercentage: accuracy,
+				});
 			}
 		}
 
@@ -275,10 +277,7 @@ export async function updateUserScore(params: {
 			.select()
 			.from(leaderboardEntries)
 			.where(
-				and(
-					eq(leaderboardEntries.userId, userId),
-					eq(leaderboardEntries.periodType, 'all_time')
-				)
+				and(eq(leaderboardEntries.userId, userId), eq(leaderboardEntries.periodType, 'all_time'))
 			)
 			.limit(1);
 
@@ -298,8 +297,8 @@ async function recalculateRanks(db: DbType): Promise<void> {
 	for (const periodType of periodTypes) {
 		const periodStart = getCurrentPeriodStart(periodType);
 
-		let entries;
-		
+		let entries: LeaderboardEntry[] = [];
+
 		if (periodType !== 'all_time') {
 			entries = await db
 				.select()
@@ -330,7 +329,7 @@ async function recalculateRanks(db: DbType): Promise<void> {
 
 export async function getSubjectLeaderboard(
 	subjectId: number,
-	limit: number = 20
+	limit = 20
 ): Promise<LeaderboardEntryData[]> {
 	try {
 		const db = await getDb();
@@ -343,11 +342,7 @@ export async function getSubjectLeaderboard(
 
 		const entries: LeaderboardEntryData[] = await Promise.all(
 			progressRecords.map(async (record, index) => {
-				const userRecord = await db
-					.select()
-					.from(user)
-					.where(eq(user.id, record.userId))
-					.limit(1);
+				const userRecord = await db.select().from(user).where(eq(user.id, record.userId)).limit(1);
 
 				return {
 					rank: index + 1,
@@ -356,9 +351,10 @@ export async function getSubjectLeaderboard(
 					userImage: userRecord[0]?.image || null,
 					totalPoints: record.totalCorrect * 10,
 					questionsCompleted: record.totalQuestionsAttempted,
-					accuracyPercentage: record.totalQuestionsAttempted > 0
-						? Math.round((record.totalCorrect / record.totalQuestionsAttempted) * 100)
-						: 0,
+					accuracyPercentage:
+						record.totalQuestionsAttempted > 0
+							? Math.round((record.totalCorrect / record.totalQuestionsAttempted) * 100)
+							: 0,
 				};
 			})
 		);

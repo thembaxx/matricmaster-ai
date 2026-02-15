@@ -1,10 +1,10 @@
 'use server';
 
+import { and, desc, eq } from 'drizzle-orm';
+import { revalidatePath } from 'next/cache';
 import { auth } from '@/lib/auth';
 import { type DbType, dbManager } from '@/lib/db';
-import { userProgress, studySessions } from '@/lib/db/schema';
-import { eq, and, desc } from 'drizzle-orm';
-import { revalidatePath } from 'next/cache';
+import { studySessions, userProgress } from '@/lib/db/schema';
 
 async function getDb(): Promise<DbType> {
 	const connected = await dbManager.waitForConnection(3, 2000);
@@ -98,9 +98,8 @@ export async function getUserProgressSummary(): Promise<UserProgressSummary | nu
 			completedAt: s.completedAt,
 		}));
 
-		const accuracy = totals.questions > 0 
-			? Math.round((totals.correct / totals.questions) * 100) 
-			: 0;
+		const accuracy =
+			totals.questions > 0 ? Math.round((totals.correct / totals.questions) * 100) : 0;
 
 		return {
 			totalQuestionsAttempted: totals.questions,
@@ -132,12 +131,7 @@ export async function getSubjectProgress(subjectId: number): Promise<{
 		const records = await db
 			.select()
 			.from(userProgress)
-			.where(
-				and(
-					eq(userProgress.userId, session.user.id),
-					eq(userProgress.subjectId, subjectId)
-				)
-			);
+			.where(and(eq(userProgress.userId, session.user.id), eq(userProgress.subjectId, subjectId)));
 
 		if (records.length === 0) {
 			return {
@@ -181,20 +175,18 @@ export async function recordStudySession(data: ProgressUpdateData): Promise<{
 	try {
 		const db = await getDb();
 		const now = new Date();
-		
-		await db
-			.insert(studySessions)
-			.values({
-				userId: session.user.id,
-				subjectId: data.subjectId,
-				sessionType: data.sessionType || 'practice',
-				durationMinutes: data.durationMinutes,
-				questionsAttempted: data.questionsAttempted,
-				correctAnswers: data.correctAnswers,
-				marksEarned: data.marksEarned,
-				startedAt: new Date(now.getTime() - (data.durationMinutes || 0) * 60 * 1000),
-				completedAt: now,
-			});
+
+		await db.insert(studySessions).values({
+			userId: session.user.id,
+			subjectId: data.subjectId,
+			sessionType: data.sessionType || 'practice',
+			durationMinutes: data.durationMinutes,
+			questionsAttempted: data.questionsAttempted,
+			correctAnswers: data.correctAnswers,
+			marksEarned: data.marksEarned,
+			startedAt: new Date(now.getTime() - (data.durationMinutes || 0) * 60 * 1000),
+			completedAt: now,
+		});
 
 		if (data.subjectId) {
 			const existingProgress = await db
@@ -213,7 +205,8 @@ export async function recordStudySession(data: ProgressUpdateData): Promise<{
 				await db
 					.update(userProgress)
 					.set({
-						totalQuestionsAttempted: existingProgress[0].totalQuestionsAttempted + data.questionsAttempted,
+						totalQuestionsAttempted:
+							existingProgress[0].totalQuestionsAttempted + data.questionsAttempted,
 						totalCorrect: existingProgress[0].totalCorrect + data.correctAnswers,
 						totalMarksEarned: existingProgress[0].totalMarksEarned + data.marksEarned,
 						lastActivityAt: now,
@@ -272,9 +265,15 @@ export async function updateUserStreak(): Promise<{
 
 		for (const record of progressRecords) {
 			const lastActivity = record.lastActivityAt ? new Date(record.lastActivityAt) : new Date();
-			const lastActivityDate = new Date(lastActivity.getFullYear(), lastActivity.getMonth(), lastActivity.getDate());
-			
-			const daysDiff = Math.floor((today.getTime() - lastActivityDate.getTime()) / (1000 * 60 * 60 * 24));
+			const lastActivityDate = new Date(
+				lastActivity.getFullYear(),
+				lastActivity.getMonth(),
+				lastActivity.getDate()
+			);
+
+			const daysDiff = Math.floor(
+				(today.getTime() - lastActivityDate.getTime()) / (1000 * 60 * 60 * 24)
+			);
 
 			if (daysDiff === 1) {
 				const newStreak = record.streakDays + 1;
@@ -282,7 +281,7 @@ export async function updateUserStreak(): Promise<{
 					.update(userProgress)
 					.set({ streakDays: newStreak, lastActivityAt: now, updatedAt: now })
 					.where(eq(userProgress.id, record.id));
-				
+
 				streakIncreased = true;
 				maxStreak = Math.max(maxStreak, newStreak);
 			} else if (daysDiff === 0) {
@@ -292,7 +291,7 @@ export async function updateUserStreak(): Promise<{
 					.update(userProgress)
 					.set({ streakDays: 1, lastActivityAt: now, updatedAt: now })
 					.where(eq(userProgress.id, record.id));
-				
+
 				maxStreak = Math.max(maxStreak, 1);
 			}
 		}
@@ -333,8 +332,14 @@ export async function getUserStreak(): Promise<{
 
 		const now = new Date();
 		const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-		const lastActivityDate = new Date(mostRecent.getFullYear(), mostRecent.getMonth(), mostRecent.getDate());
-		const daysDiff = Math.floor((today.getTime() - lastActivityDate.getTime()) / (1000 * 60 * 60 * 24));
+		const lastActivityDate = new Date(
+			mostRecent.getFullYear(),
+			mostRecent.getMonth(),
+			mostRecent.getDate()
+		);
+		const daysDiff = Math.floor(
+			(today.getTime() - lastActivityDate.getTime()) / (1000 * 60 * 60 * 24)
+		);
 
 		const currentStreak = daysDiff <= 1 ? bestStreak : 0;
 

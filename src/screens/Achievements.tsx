@@ -1,9 +1,9 @@
 'use client';
 
 import { Lock, Trophy } from 'lucide-react';
-import { useState, useEffect } from 'react';
-import { getUserAchievements } from '@/lib/db/achievement-actions';
+import { useEffect, useState } from 'react';
 import { ACHIEVEMENTS } from '@/constants/achievements';
+import { getUserAchievements } from '@/lib/db/achievement-actions';
 
 interface Badge {
 	id: string;
@@ -25,11 +25,11 @@ export default function Achievements() {
 			try {
 				const result = await getUserAchievements();
 				const unlockedIds = new Set(result.unlocked.map((a) => a.achievementId));
-				
+
 				const mappedBadges: Badge[] = ACHIEVEMENTS.map((achievement) => {
 					const unlocked = unlockedIds.has(achievement.id);
 					const unlockedRecord = result.unlocked.find((a) => a.achievementId === achievement.id);
-					
+
 					return {
 						id: achievement.id,
 						name: unlocked ? unlockedRecord?.title || achievement.name : achievement.name,
@@ -40,7 +40,7 @@ export default function Achievements() {
 						description: achievement.description,
 					};
 				});
-				
+
 				setBadges(mappedBadges);
 			} catch (error) {
 				console.error('Error fetching achievements:', error);
@@ -59,13 +59,14 @@ export default function Achievements() {
 				setIsLoading(false);
 			}
 		}
-		
+
 		fetchAchievements();
 	}, []);
 
-	const filteredBadges = activeTab === 'all' 
-		? badges 
-		: badges.filter((b) => b.category === activeTab || b.category === 'all');
+	const filteredBadges =
+		activeTab === 'all'
+			? badges
+			: badges.filter((b) => b.category === activeTab || b.category === 'all');
 
 	const unlockedCount = badges.filter((b) => b.unlocked).length;
 	const totalBadges = ACHIEVEMENTS.length;
@@ -115,7 +116,10 @@ export default function Achievements() {
 							</div>
 							<div className="space-y-4">
 								<div>
-									<p className="text-xs font-semibold uppercase tracking-wider mb-1" style={{ color: 'rgba(255, 255, 255, 0.7)' }}>
+									<p
+										className="text-xs font-semibold uppercase tracking-wider mb-1"
+										style={{ color: 'rgba(255, 255, 255, 0.7)' }}
+									>
 										Mastery Level
 									</p>
 									<h2 className="text-4xl font-bold text-white">Level {masteryLevel}</h2>
@@ -123,15 +127,26 @@ export default function Achievements() {
 								<div className="flex items-center justify-between">
 									<p className="text-white text-lg">
 										<span className="font-bold">{unlockedCount}</span>
-										<span style={{ color: 'rgba(255, 255, 255, 0.7)' }}> / {totalBadges} Badges</span>
+										<span style={{ color: 'rgba(255, 255, 255, 0.7)' }}>
+											{' '}
+											/ {totalBadges} Badges
+										</span>
 									</p>
 									<span className="text-white font-bold text-lg">{Math.round(progress)}%</span>
 								</div>
-								<div className="w-full h-2 rounded-full overflow-hidden" style={{ backgroundColor: 'rgba(255, 255, 255, 0.3)' }}>
-									<div className="h-full rounded-full transition-all duration-500" style={{ width: `${progress}%`, backgroundColor: '#ffffff' }} />
+								<div
+									className="w-full h-2 rounded-full overflow-hidden"
+									style={{ backgroundColor: 'rgba(255, 255, 255, 0.3)' }}
+								>
+									<div
+										className="h-full rounded-full transition-all duration-500"
+										style={{ width: `${progress}%`, backgroundColor: '#ffffff' }}
+									/>
 								</div>
 								<p className="text-sm" style={{ color: 'rgba(255, 255, 255, 0.8)' }}>
-									{badgesToNext > 0 ? `Keep it up! ${badgesToNext} more to unlock next level.` : 'Amazing! Level up!'}
+									{badgesToNext > 0
+										? `Keep it up! ${badgesToNext} more to unlock next level.`
+										: 'Amazing! Level up!'}
 								</p>
 							</div>
 						</div>
@@ -144,7 +159,9 @@ export default function Achievements() {
 								type="button"
 								onClick={() => setActiveTab(category.id)}
 								className={`px-5 py-2.5 rounded-full text-sm font-medium whitespace-nowrap transition-all ${
-									activeTab === category.id ? 'bg-blue-500 text-white' : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400'
+									activeTab === category.id
+										? 'bg-blue-500 text-white'
+										: 'bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400'
 								}`}
 							>
 								{category.label}
@@ -154,12 +171,17 @@ export default function Achievements() {
 
 					{filteredBadges.length === 0 ? (
 						<div className="text-center py-12">
-							<p className="text-zinc-500 dark:text-zinc-400">No achievements in this category yet.</p>
+							<p className="text-zinc-500 dark:text-zinc-400">
+								No achievements in this category yet.
+							</p>
 						</div>
 					) : (
 						<div className="grid grid-cols-3 gap-4">
 							{filteredBadges.map((badge) => (
-								<div key={badge.id} className="flex flex-col items-center gap-3 p-4 rounded-2xl bg-white dark:bg-zinc-900">
+								<div
+									key={badge.id}
+									className="flex flex-col items-center gap-3 p-4 rounded-2xl bg-white dark:bg-zinc-900"
+								>
 									<div
 										className={`w-20 h-20 rounded-full flex items-center justify-center relative ${badge.unlocked ? '' : 'opacity-50'}`}
 										style={{
@@ -168,16 +190,24 @@ export default function Achievements() {
 										}}
 									>
 										{badge.unlocked ? (
-											badge.icon ? <span className="text-3xl">{badge.icon}</span> : <Trophy className="w-8 h-8 text-blue-500" />
+											badge.icon ? (
+												<span className="text-3xl">{badge.icon}</span>
+											) : (
+												<Trophy className="w-8 h-8 text-blue-500" />
+											)
 										) : (
 											<Lock className="w-6 h-6 text-gray-400 dark:text-gray-500" />
 										)}
 									</div>
 									<div className="text-center">
-										<p className={`text-sm font-medium ${badge.unlocked ? 'text-zinc-900 dark:text-white' : 'text-zinc-400 dark:text-zinc-500'}`}>
+										<p
+											className={`text-sm font-medium ${badge.unlocked ? 'text-zinc-900 dark:text-white' : 'text-zinc-400 dark:text-zinc-500'}`}
+										>
 											{badge.name}
 										</p>
-										<p className={`text-xs font-medium uppercase tracking-wide ${badge.unlocked ? 'text-blue-500 dark:text-blue-400' : 'text-zinc-400 dark:text-zinc-500'}`}>
+										<p
+											className={`text-xs font-medium uppercase tracking-wide ${badge.unlocked ? 'text-blue-500 dark:text-blue-400' : 'text-zinc-400 dark:text-zinc-500'}`}
+										>
 											{badge.unlocked ? 'UNLOCKED' : 'LOCKED'}
 										</p>
 									</div>

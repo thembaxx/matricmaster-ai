@@ -157,12 +157,12 @@ async function uploadPdfToUploadThing(pdfUrl: string): Promise<string | null> {
 	try {
 		// Upload PDF to UploadThing for backup/hosting
 		const result = await uploadPdfFromUrl(pdfUrl);
-		
+
 		if (result.success && result.url) {
 			console.log('[PDF Extractor] PDF uploaded to UploadThing:', result.url);
 			return result.url;
 		}
-		
+
 		// If upload fails, return original URL as fallback
 		console.warn('[PDF Extractor] PDF upload failed, using original URL:', result.error);
 		return pdfUrl;

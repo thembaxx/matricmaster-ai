@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 import MobileFrame from '@/components/Layout/MobileFrame';
+import { Toaster } from '@/components/Toaster';
 import { ThemeProvider } from '@/components/theme-provider';
 import '@/styles/index.css';
 import { dmSans, inter, jakarta, lexend, outfit } from './fonts';
@@ -99,6 +100,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 				<ErrorBoundary>
 					<ThemeProvider defaultTheme="light" storageKey="matric-master-theme">
 						<MobileFrame>{children}</MobileFrame>
+						<Toaster />
 					</ThemeProvider>
 				</ErrorBoundary>
 			</body>

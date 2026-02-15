@@ -29,19 +29,19 @@ export function calculateQuizPoints(params: {
 	points += POINTS.QUIZ_COMPLETE;
 	points += params.correctAnswers * POINTS.CORRECT_ANSWER;
 	points += params.correctAnswers * POINTS.DIFFICULTY_BONUS[params.difficulty];
-	
+
 	if (params.correctAnswers === params.totalQuestions && params.totalQuestions > 0) {
 		points += POINTS.PERFECT_SCORE_BONUS;
 	}
-	
+
 	if (params.durationMinutes < params.expectedDuration && params.durationMinutes > 0) {
 		points += POINTS.SPEED_BONUS;
 	}
-	
+
 	if (params.hasStreak && params.streakDays > 0) {
 		points += params.streakDays * POINTS.STREAK_BONUS_PER_DAY;
 	}
-	
+
 	return points;
 }
 
@@ -55,7 +55,7 @@ export function getLeaderboardPeriodDates(periodType: 'weekly' | 'monthly' | 'al
 	periodEnd: Date;
 } {
 	const now = new Date();
-	
+
 	switch (periodType) {
 		case 'weekly': {
 			const day = now.getDay();
@@ -72,7 +72,6 @@ export function getLeaderboardPeriodDates(periodType: 'weekly' | 'monthly' | 'al
 			const periodEnd = new Date(now.getFullYear(), now.getMonth() + 1, 1);
 			return { periodStart, periodEnd };
 		}
-		case 'all_time':
 		default:
 			return {
 				periodStart: new Date(0),

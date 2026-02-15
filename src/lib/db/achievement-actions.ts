@@ -1,11 +1,11 @@
 'use server';
 
-import { auth } from '@/lib/auth';
-import { type DbType, dbManager } from '@/lib/db';
-import { userAchievements, userProgress, studySessions, bookmarks } from '@/lib/db/schema';
-import { eq, and, count } from 'drizzle-orm';
+import { and, count, eq } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
 import { ACHIEVEMENTS, getAchievementById } from '@/constants/achievements';
+import { auth } from '@/lib/auth';
+import { type DbType, dbManager } from '@/lib/db';
+import { bookmarks, studySessions, userAchievements, userProgress } from '@/lib/db/schema';
 
 async function getDb(): Promise<DbType> {
 	const connected = await dbManager.waitForConnection(3, 2000);
@@ -73,22 +73,22 @@ export async function checkAndUnlockAchievements(): Promise<AchievementCheckResu
 	try {
 		const db = await getDb();
 		const userId = session.user.id;
-		
+
 		const existingRecords = await db
 			.select({ achievementId: userAchievements.achievementId })
 			.from(userAchievements)
 			.where(eq(userAchievements.userId, userId));
-		
+
 		const existingIds = new Set(existingRecords.map((r) => r.achievementId));
 		const progressStats = await getUserStats(userId);
-		
+
 		const newlyUnlocked: string[] = [];
-		
+
 		for (const achievement of ACHIEVEMENTS) {
 			if (existingIds.has(achievement.id)) continue;
-			
+
 			const shouldUnlock = checkAchievementRequirement(achievement, progressStats);
-			
+
 			if (shouldUnlock) {
 				await db.insert(userAchievements).values({
 					userId,
@@ -97,16 +97,16 @@ export async function checkAndUnlockAchievements(): Promise<AchievementCheckResu
 					description: achievement.description,
 					icon: achievement.icon,
 				});
-				
+
 				newlyUnlocked.push(achievement.id);
 			}
 		}
-		
+
 		if (newlyUnlocked.length > 0) {
 			revalidatePath('/achievements');
 			revalidatePath('/profile');
 		}
-		
+
 		return {
 			unlocked: newlyUnlocked,
 			existing: Array.from(existingIds),
@@ -209,55 +209,46 @@ interface UserStats {
 
 async function getUserStats(userId: string): Promise<UserStats> {
 	const db = await getDb();
-	
+
 	const sessionCount = await db
 		.select({ count: count() })
 		.from(studySessions)
 		.where(eq(studySessions.userId, userId));
-	
+
 	const progressRecords = await db
 		.select()
 		.from(userProgress)
 		.where(eq(userProgress.userId, userId));
-	
+
 	const totalQuestionsAnswered = progressRecords.reduce(
 		(acc, r) => acc + r.totalQuestionsAttempted,
 		0
 	);
-	
-	const correctAnswers = progressRecords.reduce(
-		(acc, r) => acc + r.totalCorrect,
-		0
-	);
-	
-	const currentStreak = progressRecords.reduce(
-		(acc, r) => Math.max(acc, r.streakDays),
-		0
-	);
-	
+
+	const correctAnswers = progressRecords.reduce((acc, r) => acc + r.totalCorrect, 0);
+
+	const currentStreak = progressRecords.reduce((acc, r) => Math.max(acc, r.streakDays), 0);
+
 	const bookmarkCountResult = await db
 		.select({ count: count() })
 		.from(bookmarks)
 		.where(eq(bookmarks.userId, userId));
-	
+
 	const sessions = await db
 		.select({ durationMinutes: studySessions.durationMinutes })
 		.from(studySessions)
 		.where(eq(studySessions.userId, userId));
-	
-	const totalStudyMinutes = sessions.reduce(
-		(acc, s) => acc + (s.durationMinutes || 0),
-		0
-	);
-	
+
+	const totalStudyMinutes = sessions.reduce((acc, s) => acc + (s.durationMinutes || 0), 0);
+
 	const subjectCorrectAnswers: Record<number, number> = {};
 	for (const record of progressRecords) {
 		if (record.subjectId) {
-			subjectCorrectAnswers[record.subjectId] = 
+			subjectCorrectAnswers[record.subjectId] =
 				(subjectCorrectAnswers[record.subjectId] || 0) + record.totalCorrect;
 		}
 	}
-	
+
 	return {
 		quizzesCompleted: sessionCount[0]?.count || 0,
 		totalQuestionsAnswered,
@@ -271,11 +262,11 @@ async function getUserStats(userId: string): Promise<UserStats> {
 }
 
 function checkAchievementRequirement(
-	achievement: typeof ACHIEVEMENTS[number],
+	achievement: (typeof ACHIEVEMENTS)[number],
 	stats: UserStats
 ): boolean {
 	const { requirement } = achievement;
-	
+
 	switch (requirement.type) {
 		case 'quizzes_completed':
 			return stats.quizzesCompleted >= requirement.value;

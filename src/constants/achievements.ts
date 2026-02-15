@@ -15,8 +15,15 @@ export interface AchievementDefinition {
 }
 
 export interface AchievementRequirement {
-	type: 'quizzes_completed' | 'streak_days' | 'questions_answered' | 'perfect_score' | 
-	      'subject_mastery' | 'bookmarks' | 'sessions_count' | 'time_spent';
+	type:
+		| 'quizzes_completed'
+		| 'streak_days'
+		| 'questions_answered'
+		| 'perfect_score'
+		| 'subject_mastery'
+		| 'bookmarks'
+		| 'sessions_count'
+		| 'time_spent';
 	value: number;
 	subjectId?: number; // For subject-specific achievements
 }
@@ -233,7 +240,9 @@ export function getAchievementById(id: string): AchievementDefinition | undefine
 }
 
 // Helper function to get achievements by category
-export function getAchievementsByCategory(category: AchievementDefinition['category']): AchievementDefinition[] {
+export function getAchievementsByCategory(
+	category: AchievementDefinition['category']
+): AchievementDefinition[] {
 	if (category === 'all') return ACHIEVEMENTS;
 	return ACHIEVEMENTS.filter((a) => a.category === category || a.category === 'all');
 }
