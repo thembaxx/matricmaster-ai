@@ -4,6 +4,13 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* Apple HIG: System Font Stack */
+:root {
+	--font-sf-pro: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display",
+		"Helvetica Neue", "Segoe UI", system-ui, sans-serif;
+	--font-sf-mono: "SF Mono", Menlo, Monaco, "Cascadia Code", ui-monospace, monospace;
+}
+
 @layer utilities {
 	.no-scrollbar::-webkit-scrollbar {
 		display: none;
@@ -22,7 +29,7 @@
 		text-wrap: balance;
 	}
 	.ios-glass {
-		@apply bg-white/70 dark:bg-zinc-900/70 backdrop-blur-2xl border border-white/20 dark:border-zinc-800/50;
+		@apply bg-surface-base/70 dark:bg-surface-elevated/80 backdrop-blur-2xl border border-border/50 dark:border-border-strong/30;
 	}
 	.ios-active-scale {
 		@apply active:scale-[0.96] transition-transform duration-200;
@@ -53,6 +60,7 @@
 	--color-accent-foreground: var(--accent-foreground);
 	--color-destructive: var(--destructive);
 	--color-border: var(--border);
+	--color-border-strong: var(--border-strong);
 	--color-input: var(--input);
 	--color-ring: var(--ring);
 	--color-chart-1: var(--chart-1);
@@ -68,6 +76,17 @@
 	--color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
 	--color-sidebar-border: var(--sidebar-border);
 	--color-sidebar-ring: var(--sidebar-ring);
+
+	/* Apple HIG: Surface Colors */
+	--color-surface-base: var(--surface-base);
+	--color-surface-elevated: var(--surface-elevated);
+	--color-surface-overlay: var(--surface-overlay);
+
+	/* Apple HIG: Semantic Label Colors */
+	--color-label-primary: var(--label-primary);
+	--color-label-secondary: var(--label-secondary);
+	--color-label-tertiary: var(--label-tertiary);
+	--color-label-quaternary: var(--label-quaternary);
 
 	/* Brand Colors */
 	--color-brand-blue: #2563eb;
@@ -95,13 +114,15 @@
 	--font-inter: var(--font-inter);
 	--font-jakarta: var(--font-jakarta);
 	--font-outfit: var(--font-outfit);
+	--font-sf-pro: var(--font-sf-pro);
+	--font-sf-mono: var(--font-sf-mono);
 	--font-system: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif,
 		"Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
 
 @layer utilities {
 	.premium-glass {
-		@apply bg-white/60 dark:bg-zinc-900/60 backdrop-blur-3xl border border-white/30 dark:border-zinc-800/50 shadow-2xl shadow-black/5;
+		@apply bg-surface-base/60 dark:bg-surface-elevated/60 backdrop-blur-3xl border border-border/30 dark:border-border-strong/30 shadow-2xl shadow-black/5;
 	}
 	.premium-shadow {
 		box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1), 
@@ -132,6 +153,7 @@
 	--accent-foreground: oklch(0.25 0 0);
 	--destructive: oklch(0.55 0.22 25);
 	--border: oklch(0.9 0 0);
+	--border-strong: oklch(0.85 0 0);
 	--input: oklch(0.9 0 0);
 	--ring: oklch(0.55 0.22 260);
 	--chart-1: oklch(0.55 0.22 260);
@@ -147,6 +169,39 @@
 	--sidebar-accent-foreground: oklch(0.25 0 0);
 	--sidebar-border: oklch(0.9 0 0);
 	--sidebar-ring: oklch(0.55 0.22 260);
+
+	/* Apple HIG: Elevation Surfaces */
+	--surface-base: oklch(0.98 0 0);
+	--surface-elevated: oklch(1 0 0);
+	--surface-overlay: oklch(1 0 0);
+
+	/* Apple HIG: Semantic Label Colors */
+	--label-primary: oklch(0.15 0 0);
+	--label-secondary: oklch(0.45 0 0);
+	--label-tertiary: oklch(0.65 0 0);
+	--label-quaternary: oklch(0.8 0 0);
+
+	/* Apple HIG: Dynamic Type Scale */
+	--font-size-1: 0.6875rem;
+	--font-size-2: 0.75rem;
+	--font-size-3: 0.8125rem;
+	--font-size-4: 0.875rem;
+	--font-size-5: 1rem;
+	--font-size-6: 1.125rem;
+	--font-size-7: 1.375rem;
+	--font-size-8: 1.625rem;
+	--font-size-9: 2rem;
+	--font-size-10: 2.5rem;
+
+	--line-height-1: 1.1;
+	--line-height-2: 1.2;
+	--line-height-3: 1.3;
+	--line-height-4: 1.4;
+	--line-height-5: 1.5;
+
+	--tracking-tight: -0.02em;
+	--tracking-normal: 0;
+	--tracking-wide: 0.02em;
 }
 
 .dark {
@@ -165,7 +220,8 @@
 	--accent: oklch(0.25 0 0);
 	--accent-foreground: oklch(0.98 0 0);
 	--destructive: oklch(0.6 0.2 25);
-	--border: oklch(0.25 0 0);
+	--border: oklch(0.28 0 0);
+	--border-strong: oklch(0.38 0 0);
 	--input: oklch(0.25 0 0);
 	--ring: oklch(0.6 0.2 260);
 	--chart-1: oklch(0.6 0.2 260);
@@ -179,8 +235,19 @@
 	--sidebar-primary-foreground: oklch(0.15 0 0);
 	--sidebar-accent: oklch(0.25 0 0);
 	--sidebar-accent-foreground: oklch(0.98 0 0);
-	--sidebar-border: oklch(0.25 0 0);
+	--sidebar-border: oklch(0.28 0 0);
 	--sidebar-ring: oklch(0.6 0.2 260);
+
+	/* Apple HIG: Elevation Surfaces (darker base, lighter elevated) */
+	--surface-base: oklch(0.15 0 0);
+	--surface-elevated: oklch(0.22 0 0);
+	--surface-overlay: oklch(0.28 0 0);
+
+	/* Apple HIG: Semantic Label Colors */
+	--label-primary: oklch(0.98 0 0);
+	--label-secondary: oklch(0.78 0 0);
+	--label-tertiary: oklch(0.55 0 0);
+	--label-quaternary: oklch(0.4 0 0);
 }
 
 @layer base {
@@ -195,7 +262,7 @@
 			"rlig" 1,
 			"calt" 1;
 		font-size: 17px;
-		line-height: 1.5;
+		line-height: 1.47059;
 		letter-spacing: -0.022em;
 	}
 	h1,
@@ -206,6 +273,31 @@
 	h6 {
 		font-family: var(--font-outfit), var(--font-lexend);
 		letter-spacing: -0.03em;
+		line-height: 1.2;
+	}
+	h1 {
+		font-size: var(--font-size-10);
+		line-height: var(--line-height-1);
+	}
+	h2 {
+		font-size: var(--font-size-9);
+		line-height: var(--line-height-1);
+	}
+	h3 {
+		font-size: var(--font-size-8);
+		line-height: var(--line-height-2);
+	}
+	h4 {
+		font-size: var(--font-size-7);
+		line-height: var(--line-height-2);
+	}
+	h5 {
+		font-size: var(--font-size-6);
+		line-height: var(--line-height-3);
+	}
+	h6 {
+		font-size: var(--font-size-5);
+		line-height: var(--line-height-3);
 	}
 	html {
 		scroll-behavior: smooth;
