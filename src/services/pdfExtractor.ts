@@ -2,6 +2,7 @@
 
 import { GoogleGenAI } from '@google/genai';
 import { z } from 'zod';
+import { uploadPdfFromUrl } from '@/lib/pdf-upload';
 
 // Types for extracted questions
 export interface ExtractedQuestion {
@@ -154,13 +155,21 @@ async function savePaperToDb(
 
 async function uploadPdfToUploadThing(pdfUrl: string): Promise<string | null> {
 	try {
-		// For now, we'll return the original URL if upload fails
-		// In production, you'd use the uploadFiles function from uploadthing
-		console.log('[PDF Extractor] Would upload PDF to UploadThing:', pdfUrl);
-		return pdfUrl; // TODO: Implement actual UploadThing upload
+		// Upload PDF to UploadThing for backup/hosting
+		const result = await uploadPdfFromUrl(pdfUrl);
+		
+		if (result.success && result.url) {
+			console.log('[PDF Extractor] PDF uploaded to UploadThing:', result.url);
+			return result.url;
+		}
+		
+		// If upload fails, return original URL as fallback
+		console.warn('[PDF Extractor] PDF upload failed, using original URL:', result.error);
+		return pdfUrl;
 	} catch (error) {
 		console.error('[PDF Extractor] UploadThing error:', error);
-		return null;
+		// Return original URL as fallback
+		return pdfUrl;
 	}
 }
 
