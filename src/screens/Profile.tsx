@@ -1,7 +1,7 @@
 'use client';
 
 import { Calculator, GraduationCap, Star, User } from 'lucide-react';
-import { useId, useState, useEffect } from 'react';
+import { useEffect, useId, useState } from 'react';
 import { PolarAngleAxis, PolarGrid, Radar, RadarChart } from 'recharts';
 import { SafeImage } from '@/components/SafeImage';
 import {
@@ -12,8 +12,8 @@ import {
 } from '@/components/ui/chart';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useSession } from '@/lib/auth-client';
-import { getUserProgressSummary, getUserStreak } from '@/lib/db/progress-actions';
 import { getUserAchievements } from '@/lib/db/achievement-actions';
+import { getUserProgressSummary, getUserStreak } from '@/lib/db/progress-actions';
 
 interface ChartDataItem {
 	subject: string;
@@ -47,7 +47,7 @@ export default function Profile() {
 	const radarGradientId = useId();
 	const glowFilterId = useId();
 	const { data: session } = useSession();
-	
+
 	const [userStats, setUserStats] = useState<{
 		totalQuestions: number;
 		accuracy: number;
@@ -83,9 +83,11 @@ export default function Profile() {
 	// Calculate chart data based on user performance
 	const chartData: ChartDataItem[] = defaultChartData.map((item) => ({
 		...item,
-		you: item.subject === 'MATH' ? userStats?.accuracy || 0 : Math.max(0, (userStats?.accuracy || 0) - 10),
+		you:
+			item.subject === 'MATH'
+				? userStats?.accuracy || 0
+				: Math.max(0, (userStats?.accuracy || 0) - 10),
 	}));
-
 
 	const achievements = [
 		{
@@ -134,8 +136,11 @@ export default function Profile() {
 								style={{ border: '4px solid #1e293b' }}
 							>
 								<SafeImage
-									src={session?.user?.image || "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=face"}
-									alt={session?.user?.name || "User"}
+									src={
+										session?.user?.image ||
+										'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=face'
+									}
+									alt={session?.user?.name || 'User'}
 									width={112}
 									height={112}
 									className="w-full h-full object-cover"
@@ -343,9 +348,7 @@ export default function Profile() {
 										<div className="text-3xl font-bold text-foreground">
 											{userStats?.streak || 0}
 										</div>
-										<div className="text-xs font-medium mt-1 text-muted-foreground">
-											Day Streak
-										</div>
+										<div className="text-xs font-medium mt-1 text-muted-foreground">Day Streak</div>
 									</div>
 								</div>
 							</div>

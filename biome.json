@@ -23,6 +23,9 @@
 			"complexity": {
 				"noForEach": "off"
 			},
+			"suspicious": {
+				"noArrayIndexKey": "off"
+			},
 			"correctness": {
 				"useExhaustiveDependencies": "warn"
 			},

@@ -1,5 +1,6 @@
 'use client';
 
+import { motion, type Variants } from 'framer-motion';
 import {
 	ArrowRight,
 	Bell,
@@ -21,8 +22,6 @@ import { Card } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useSession } from '@/lib/auth-client';
 import { getUserProgressSummary, getUserStreak } from '@/lib/db/progress-actions';
-
-import { motion, type Variants } from 'framer-motion';
 
 interface DayProgress {
 	day: string;
@@ -310,10 +309,9 @@ export default function Dashboard() {
 											Algebra Master
 										</h3>
 										<p className="text-sm text-muted-foreground font-medium">
-											{isLoadingProgress 
-												? 'Loading progress...' 
-												: `${progressData?.totalQuestions || 0} questions answered`
-											}
+											{isLoadingProgress
+												? 'Loading progress...'
+												: `${progressData?.totalQuestions || 0} questions answered`}
 										</p>
 									</div>
 									<div className="w-14 h-14 bg-muted/50 rounded-2xl flex items-center justify-center border border-border/50">
@@ -324,7 +322,8 @@ export default function Dashboard() {
 								<div className="space-y-3 relative z-10">
 									<div className="flex justify-between items-end">
 										<span className="text-xs font-black text-foreground opacity-60">
-											{isLoadingProgress ? '...' : `${progressData?.totalQuestions || 0} / 100`} QUESTIONS
+											{isLoadingProgress ? '...' : `${progressData?.totalQuestions || 0} / 100`}{' '}
+											QUESTIONS
 										</span>
 										<span className="text-xs font-black text-brand-blue">{dailyProgress}%</span>
 									</div>

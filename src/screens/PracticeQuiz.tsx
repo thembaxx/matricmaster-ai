@@ -198,7 +198,6 @@ export default function PracticeQuiz() {
 						<div className="flex-1 min-h-[60px] flex items-center px-2">
 							<div className="text-2xl font-serif text-zinc-900 dark:text-white flex items-center flex-wrap gap-0.5 relative">
 								{input.split('').map((char, i) => (
-									// biome-ignore lint/suspicious/noArrayIndexKey: Character order is stable
 									<span key={i} className="relative">
 										{i === cursorPos && (
 											<motion.div

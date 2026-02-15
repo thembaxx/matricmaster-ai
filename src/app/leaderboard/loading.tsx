@@ -10,7 +10,7 @@ export default function LeaderboardLoading() {
 						<div className="flex-1 bg-zinc-200 dark:bg-zinc-800 rounded-xl animate-pulse" />
 					</div>
 				</div>
-				
+
 				{/* Podium Skeleton */}
 				<div className="flex items-end justify-center gap-6 pt-12 pb-8">
 					<div className="flex flex-col items-center">
@@ -33,11 +33,11 @@ export default function LeaderboardLoading() {
 					</div>
 				</div>
 			</header>
-			
+
 			{/* List Skeleton */}
 			<div className="bg-white dark:bg-zinc-950 rounded-t-[3rem] pt-2 px-6">
 				{Array.from({ length: 5 }).map((_, i) => (
-					<div key={i} className="flex items-center gap-4 py-4">
+					<div key={`leaderboard-item-${i}`} className="flex items-center gap-4 py-4">
 						<div className="w-6 h-6 bg-zinc-200 dark:bg-zinc-800 rounded animate-pulse" />
 						<div className="w-12 h-12 bg-zinc-200 dark:bg-zinc-800 rounded-2xl animate-pulse" />
 						<div className="flex-1 space-y-2">
@@ -48,7 +48,7 @@ export default function LeaderboardLoading() {
 					</div>
 				))}
 			</div>
-			
+
 			{/* Footer Skeleton */}
 			<div className="p-6">
 				<div className="h-24 bg-zinc-900 dark:bg-zinc-950 rounded-3xl animate-pulse" />

@@ -30,7 +30,7 @@ export async function uploadPdfFromUrl(pdfUrl: string): Promise<UploadResult> {
 
 		// Get the blob
 		const blob = await response.blob();
-		
+
 		// Check file size (max 16MB for pastPaperPDF endpoint)
 		const maxSize = 16 * 1024 * 1024; // 16MB
 		if (blob.size > maxSize) {
@@ -49,7 +49,7 @@ export async function uploadPdfFromUrl(pdfUrl: string): Promise<UploadResult> {
 			files: [file],
 		});
 
-		if (result && result[0]?.ufsUrl) {
+		if (result?.[0]?.ufsUrl) {
 			return {
 				success: true,
 				url: result[0].ufsUrl,
@@ -96,7 +96,7 @@ export async function uploadPdfFile(file: File): Promise<UploadResult> {
 			files: [file],
 		});
 
-		if (result && result[0]?.ufsUrl) {
+		if (result?.[0]?.ufsUrl) {
 			return {
 				success: true,
 				url: result[0].ufsUrl,
