@@ -4,14 +4,35 @@
  */
 
 import { dbManager } from '@/lib/db';
-import { subjects, questions, options, userProgress, studySessions, leaderboardEntries } from '@/lib/db/schema';
+import { subjects, questions, options } from '@/lib/db/schema';
+
+async function waitForDb(maxAttempts = 10, delay = 1000): Promise<boolean> {
+	for (let i = 0; i < maxAttempts; i++) {
+		const connected = await dbManager.waitForConnection(1, delay);
+		if (connected) {
+			return true;
+		}
+		console.log(`Waiting for database... (${i + 1}/${maxAttempts})`);
+	}
+	return false;
+}
 
 async function seed() {
 	console.log('🌱 Starting seed...');
 	
+	// Wait for database connection
+	console.log('⏳ Waiting for database connection...');
+	const connected = await waitForDb();
+	if (!connected) {
+		console.error('❌ Could not connect to database');
+		process.exit(1);
+	}
+	
+	console.log('✅ Database connected!');
+	
 	const db = dbManager.getDb();
 	
-	// 1. Seed Subjects
+	 // 1. Seed Subjects
 	console.log('📚 Adding subjects...');
 	
 	const subjectIds = await db.insert(subjects).values([
@@ -61,37 +82,34 @@ async function seed() {
 	
 	console.log(`✅ Added ${mathQuestions.length} math questions`);
 	
-	// 3. Seed Options for questions
+	// 3. Seed Options
 	const allOptions = [];
 	
-	// Options for Q1: derivative of x³ - 3x² + 2x (answer: 3x² - 6x + 2)
 	allOptions.push(
-		{ questionId: mathQuestions[0].id, optionText: '3x² - 6x + 2', isCorrect: true, optionLetter: 'A', explanation: 'Using power rule: d/dx(x³)=3x², d/dx(-3x²)=-6x, d/dx(2x)=2' },
-		{ questionId: mathQuestions[0].id, optionText: 'x³ - 3x² + 2x', isCorrect: false, optionLetter: 'B', explanation: 'This is the original function, not the derivative' },
-		{ questionId: mathQuestions[0].id, optionText: '3x - 6', isCorrect: false, optionLetter: 'C', explanation: 'Incorrect application of power rule' },
-		{ questionId: mathQuestions[0].id, optionText: 'x² - 2x', isCorrect: false, optionLetter: 'D', explanation: 'This would be the derivative if coefficients were different' },
+		{ questionId: mathQuestions[0].id, optionText: '3x² - 6x + 2', isCorrect: true, optionLetter: 'A', explanation: 'Using power rule' },
+		{ questionId: mathQuestions[0].id, optionText: 'x³ - 3x² + 2x', isCorrect: false, optionLetter: 'B', explanation: 'This is the original function' },
+		{ questionId: mathQuestions[0].id, optionText: '3x - 6', isCorrect: false, optionLetter: 'C', explanation: 'Incorrect application' },
+		{ questionId: mathQuestions[0].id, optionText: 'x² - 2x', isCorrect: false, optionLetter: 'D', explanation: 'Wrong coefficients' },
 	);
 	
-	// Options for Q2: 2x² - 5x - 3 = 0 (answers: x = 3 or x = -0.5)
 	allOptions.push(
 		{ questionId: mathQuestions[1].id, optionText: 'x = 3 or x = -0.5', isCorrect: true, optionLetter: 'A', explanation: 'Factor: (2x+1)(x-3)=0' },
 		{ questionId: mathQuestions[1].id, optionText: 'x = 2 or x = 1.5', isCorrect: false, optionLetter: 'B', explanation: 'Incorrect factorization' },
-		{ questionId: mathQuestions[1].id, optionText: 'x = 1 or x = -3', isCorrect: false, optionLetter: 'C', explanation: 'Does not satisfy the equation' },
-		{ questionId: mathQuestions[1].id, optionText: 'x = 0.5 or x = -3', isCorrect: false, optionLetter: 'D', explanation: 'Close but check the signs' },
+		{ questionId: mathQuestions[1].id, optionText: 'x = 1 or x = -3', isCorrect: false, optionLetter: 'C', explanation: 'Does not satisfy' },
+		{ questionId: mathQuestions[1].id, optionText: 'x = 0.5 or x = -3', isCorrect: false, optionLetter: 'D', explanation: 'Close but wrong' },
 	);
 	
-	// Options for Q3: integral (answer: x³ + x² - x + C)
 	allOptions.push(
-		{ questionId: mathQuestions[2].id, optionText: 'x³ + x² - x + C', isCorrect: true, optionLetter: 'A', explanation: '∫3x²dx = x³, ∫2xdx = x², ∫-1dx = -x' },
-		{ questionId: mathQuestions[2].id, optionText: '6x + 2 + C', isCorrect: false, optionLetter: 'B', explanation: 'This would be the derivative, not the integral' },
-		{ questionId: mathQuestions[2].id, optionText: 'x³ + x² + C', isCorrect: false, optionLetter: 'C', explanation: 'Missing the -x term' },
-		{ questionId: mathQuestions[2].id, optionText: '(3x² + 2x - 1)x + C', isCorrect: false, optionLetter: 'D', explanation: 'Incorrect integration method' },
+		{ questionId: mathQuestions[2].id, optionText: 'x³ + x² - x + C', isCorrect: true, optionLetter: 'A', explanation: 'Correct integration' },
+		{ questionId: mathQuestions[2].id, optionText: '6x + 2 + C', isCorrect: false, optionLetter: 'B', explanation: 'This is the derivative' },
+		{ questionId: mathQuestions[2].id, optionText: 'x³ + x² + C', isCorrect: false, optionLetter: 'C', explanation: 'Missing term' },
+		{ questionId: mathQuestions[2].id, optionText: '(3x² + 2x - 1)x + C', isCorrect: false, optionLetter: 'D', explanation: 'Wrong method' },
 	);
 	
 	await db.insert(options).values(allOptions);
 	console.log(`✅ Added ${allOptions.length} options`);
 	
-	// 4. Seed Physics Questions
+	// Physics
 	const physicsQuestions = await db.insert(questions).values([
 		{
 			subjectId: subjectIds[1].id,
