@@ -19,7 +19,6 @@ import { useCallback, useEffect, useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import { PAST_PAPERS } from '@/constants/mock-data';
 import { useQuestionExtractor } from '@/hooks/useQuestionExtractor';
 import { getExplanation } from '@/services/geminiService';
@@ -124,19 +123,7 @@ export default function PastPaperViewer() {
 	// Render loading state
 	if (isLoading && !extractedPaper) {
 		return (
-			<div className="flex flex-col h-full bg-background relative grow">
-				<header className="px-6 pt-12 pb-4 bg-white dark:bg-zinc-900 sticky top-0 z-20 border-b border-zinc-100 dark:border-zinc-800 shrink-0">
-					<div className="flex items-center justify-between mb-4">
-						<div className="flex items-center gap-4">
-							<Button variant="ghost" size="icon" onClick={() => router.back()}>
-								<ArrowLeft className="w-5 h-5" />
-							</Button>
-							<h1 className="text-lg font-bold text-zinc-900 dark:text-white">
-								{paper.subject} {paper.paper}
-							</h1>
-						</div>
-					</div>
-				</header>
+			<div className="flex flex-col h-full bg-background relative grow overflow-hidden">
 				<div className="flex-1 flex flex-col items-center justify-center p-6">
 					<div className="text-center space-y-4">
 						<Loader2 className="w-12 h-12 animate-spin text-brand-blue mx-auto" />
@@ -286,7 +273,7 @@ export default function PastPaperViewer() {
 				)}
 			</header>
 
-			<ScrollArea className="flex-1">
+			<div className="grow overflow-hidden">
 				<main
 					className="px-6 py-6 pb-32 transition-transform duration-300"
 					style={{
@@ -344,18 +331,20 @@ export default function PastPaperViewer() {
 							</div>
 
 							{/* Question Header */}
-							<div className="flex items-center gap-3 mb-6 relative z-10">
-								<Badge className="bg-brand-blue text-white rounded-lg px-3 py-1.5">
+							<div className="flex flex-col gap-3 items-start mb-6 relative z-10">
+								<Badge className="bg-brand-blue text-white rounded-lg px-3 py-1.5 text-[10px]">
 									QUESTION {currentQuestion.questionNumber}
 								</Badge>
-								{currentQuestion.topic && (
-									<Badge variant="outline" className="rounded-full text-[10px]">
-										{currentQuestion.topic}
-									</Badge>
-								)}
-								<span className="text-xs font-bold text-zinc-400 uppercase tracking-wider ml-auto">
-									({currentQuestion.marks} marks)
-								</span>
+								<div className="flex items-center gap-3">
+									{currentQuestion.topic && (
+										<Badge variant="outline" className="rounded-full text-xs dark:bg-zinc-900">
+											{currentQuestion.topic}
+										</Badge>
+									)}
+									<span className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider">
+										({currentQuestion.marks} marks)
+									</span>
+								</div>
 							</div>
 
 							{/* Main Question Text */}
@@ -364,10 +353,10 @@ export default function PastPaperViewer() {
 
 								{/* Sub-questions */}
 								{currentQuestion.subQuestions && currentQuestion.subQuestions.length > 0 && (
-									<div className="space-y-4 ml-4 mt-6 pt-4 border-t border-zinc-100 dark:border-zinc-800">
+									<div className="space-y-4 ml-2 mt-6 pt-4 border-t border-zinc-100 dark:border-zinc-800">
 										{currentQuestion.subQuestions.map((sq) => (
 											<div key={sq.id} className="space-y-2">
-												<p className="font-bold">
+												<p className="font-semibold text-sm dark:text-zinc-300 text-pretty">
 													{sq.id}. {sq.text}
 													{sq.marks && (
 														<span className="text-xs text-zinc-400 ml-2">({sq.marks} marks)</span>
@@ -383,7 +372,7 @@ export default function PastPaperViewer() {
 							<div className="mt-8 pt-6 border-t border-zinc-100 dark:border-zinc-800 relative z-10">
 								<Button
 									variant="outline"
-									className="w-full border-brand-blue/20 hover:bg-brand-blue/5"
+									className="w-full border-brand-blue/20 hover:bg-brand-blue/5 text-sm"
 									onClick={handleExplainQuestion}
 									disabled={isExplaining}
 								>
@@ -413,29 +402,29 @@ export default function PastPaperViewer() {
 
 					{/* Conversion Banner */}
 					<Card
-						className="p-6 mt-6 bg-brand-blue/5 border-brand-blue/20 rounded-[2rem] flex items-center justify-between group cursor-pointer hover:bg-brand-blue/10 transition-colors"
+						className="p-6 mt-6 bg-brand-blue/5 border-brand-blue/20 rounded-[2rem] flex flex-col gap-3 group cursor-pointer hover:bg-brand-blue/10 transition-colors"
 						onClick={handleConvertToInteractive}
 					>
-						<div className="flex items-center gap-4">
-							<div className="w-12 h-12 rounded-2xl bg-brand-blue text-white flex items-center justify-center shadow-lg shadow-brand-blue/20">
-								<Sparkles className="w-6 h-6" />
-							</div>
+						<div className="flex flex-col gap-4">
 							<div>
-								<h4 className="font-black text-zinc-900 dark:text-white">Convert to Interactive</h4>
-								<p className="text-xs font-bold text-zinc-500">
+								<h4 className="font-bold text-zinc-900 dark:text-zinc-300">
+									Convert to Interactive
+								</h4>
+								<p className="text-xs font-semibold text-zinc-500">
 									Practice this paper with AI-powered feedback
 								</p>
 							</div>
 						</div>
 						<Button
 							size="sm"
-							className="bg-brand-blue text-white rounded-xl font-black text-[10px] uppercase tracking-wider"
+							className="bg-brand-blue text-white rounded-xl font-black text-[11px] uppercase tracking-wider"
 						>
+							<Sparkles className="w-6 h-6" />
 							Start Quiz
 						</Button>
 					</Card>
 				</main>
-			</ScrollArea>
+			</div>
 
 			{/* Pagination Footer */}
 			{extractedPaper && totalQuestions > 0 && (

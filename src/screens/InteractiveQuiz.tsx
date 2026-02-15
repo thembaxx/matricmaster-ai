@@ -16,7 +16,6 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import { QUIZ_DATA } from '@/constants/quiz-data';
 import { getExplanation } from '@/services/geminiService';
 
@@ -194,7 +193,7 @@ export default function InteractiveQuiz() {
 	if (!currentQuestion) return null;
 
 	return (
-		<div className="flex flex-col h-full bg-zinc-50 dark:bg-zinc-950 font-lexend relative">
+		<div className="flex flex-col h-full bg-zinc-50 dark:bg-zinc-950 font-lexend relative overflow-hidden">
 			{/* Header */}
 			<header className="px-6 pt-12 pb-4 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl sticky top-0 z-20 border-b border-zinc-100 dark:border-zinc-800 shrink-0">
 				<div className="max-w-2xl mx-auto w-full">
@@ -239,7 +238,7 @@ export default function InteractiveQuiz() {
 					</div>
 
 					{/* Subject Filter Pills */}
-					<ScrollArea className="w-full whitespace-nowrap pb-2">
+					<div className="w-full overflow-x-auto whitespace-nowrap pb-2">
 						<div className="flex gap-2 px-1">
 							{uniqueSubjects.map((subject) => {
 								const subjectColors = getSubjectColor(subject);
@@ -260,11 +259,11 @@ export default function InteractiveQuiz() {
 								);
 							})}
 						</div>
-					</ScrollArea>
+					</div>
 				</div>
 			</header>
 
-			<ScrollArea className="flex-1">
+			<div className="grow overflow-hidden">
 				<main className="px-6 py-8 space-y-8 pb-64 max-w-2xl mx-auto w-full">
 					{/* Question */}
 					<div className="space-y-6">
@@ -274,7 +273,7 @@ export default function InteractiveQuiz() {
 								{quiz.title}
 							</h3>
 						</div>
-						<h2 className="text-3xl font-black text-zinc-900 dark:text-white leading-tight">
+						<h2 className="text-3xl font-bold text-zinc-900 dark:text-zinc-100 leading-tight">
 							{currentQuestion.question}
 						</h2>
 
@@ -394,13 +393,13 @@ export default function InteractiveQuiz() {
 					{/* AI Explanation Toggle */}
 					<div className={`p-1 rounded-[2rem] bg-linear-to-r ${colors.from} ${colors.to}`}>
 						<div className="bg-white dark:bg-zinc-950 rounded-[1.9rem] p-6 space-y-4">
-							<div className="flex items-center justify-between">
+							<div className="flex flex-col gap-2">
 								<div className="flex items-center gap-4">
-									<div className="w-10 h-10 rounded-xl bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center">
+									<div className="w-10 h-10 shrink-0 rounded-xl bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center">
 										<Sparkles className={`w-5 h-5 ${colors.text}`} />
 									</div>
 									<div>
-										<h4 className="font-bold text-zinc-900 dark:text-white text-sm">
+										<h4 className="font-semibold text-zinc-900 dark:text-white text-sm">
 											Need a deeper explanation?
 										</h4>
 										<p className="text-[10px] font-bold text-zinc-500 uppercase tracking-tight">
@@ -411,7 +410,7 @@ export default function InteractiveQuiz() {
 								<Button
 									size="sm"
 									variant="ghost"
-									className={`font-black hover:bg-zinc-100 dark:hover:bg-zinc-800 ${colors.text}`}
+									className={`font-black hover:bg-zinc-100 text-sm dark:hover:bg-zinc-800 ${colors.text}`}
 									onClick={handleExplain}
 									disabled={isExplaining}
 								>
@@ -429,10 +428,10 @@ export default function InteractiveQuiz() {
 						</div>
 					</div>
 				</main>
-			</ScrollArea>
+			</div>
 
 			{/* Actions Footer */}
-			<footer className="absolute bottom-0 left-0 right-0 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl border-t border-zinc-100 dark:border-zinc-800 z-30">
+			<footer className="absolute bottom-26 left-0 right-0 backdrop-blur-xl z-30">
 				<div className="max-w-2xl mx-auto w-full p-6 flex gap-4">
 					{!showResult ? (
 						<Button
