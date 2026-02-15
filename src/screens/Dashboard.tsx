@@ -11,6 +11,7 @@ import {
 	Play,
 	Sigma,
 	Sparkles,
+	Trophy,
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState, useTransition } from 'react';
@@ -19,6 +20,9 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useSession } from '@/lib/auth-client';
+import { getUserProgressSummary, getUserStreak } from '@/lib/db/progress-actions';
+
+import { motion, type Variants } from 'framer-motion';
 
 interface DayProgress {
 	day: string;
@@ -58,8 +62,6 @@ const defaultChallenges: Challenge[] = [
 	},
 ];
 
-import { motion, type Variants } from 'framer-motion';
-
 const containerVariants: Variants = {
 	hidden: { opacity: 0 },
 	visible: {
@@ -83,6 +85,24 @@ const itemVariants: Variants = {
 	},
 };
 
+function Clock({ className }: { className?: string }) {
+	return (
+		<svg
+			className={className}
+			viewBox="0 0 24 24"
+			fill="none"
+			stroke="currentColor"
+			strokeWidth="2"
+			strokeLinecap="round"
+			strokeLinejoin="round"
+		>
+			<title>Clock Icon</title>
+			<circle cx="12" cy="12" r="10" />
+			<polyline points="12 6 12 12 16 14" />
+		</svg>
+	);
+}
+
 export default function Dashboard() {
 	const router = useRouter();
 	const { data: session, isPending: isSessionLoading } = useSession();
@@ -91,6 +111,42 @@ export default function Dashboard() {
 	const [streak, setStreak] = useState(0);
 	const [dailyProgress, setDailyProgress] = useState(0);
 	const [weekProgress, setWeekProgress] = useState<DayProgress[]>([]);
+	const [progressData, setProgressData] = useState<{
+		totalQuestions: number;
+		accuracy: number;
+		totalPoints: number;
+	} | null>(null);
+	const [isLoadingProgress, setIsLoadingProgress] = useState(true);
+
+	// Fetch progress data from database
+	useEffect(() => {
+		async function fetchProgress() {
+			try {
+				const [progress, streakData] = await Promise.all([
+					getUserProgressSummary(),
+					getUserStreak(),
+				]);
+
+				if (progress) {
+					setProgressData({
+						totalQuestions: progress.totalQuestionsAttempted,
+						accuracy: progress.accuracy,
+						totalPoints: progress.totalMarksEarned * 10, // Convert to points
+					});
+				}
+
+				if (streakData) {
+					setStreak(streakData.currentStreak);
+				}
+			} catch (error) {
+				console.error('Error fetching progress:', error);
+			} finally {
+				setIsLoadingProgress(false);
+			}
+		}
+
+		fetchProgress();
+	}, []);
 
 	useEffect(() => {
 		const initializeDatabase = async () => {
@@ -132,7 +188,7 @@ export default function Dashboard() {
 		}
 		setWeekProgress(days);
 
-		setStreak(12);
+		// Default values if no progress yet
 		setDailyProgress(66);
 	}, []);
 
@@ -215,24 +271,26 @@ export default function Dashboard() {
 							</Card>
 						</motion.div>
 
-						{/* Quick Action - Col 1 */}
+						{/* Quick Stats - Col 1 */}
 						<motion.div variants={itemVariants} className="col-span-1">
-							<Card className="h-full p-5 bg-brand-blue text-white border-none premium-shadow rounded-3xl flex flex-col justify-between relative overflow-hidden group">
-								<div className="absolute inset-0 mesh-gradient-blue opacity-50" />
-								<div className="relative z-10">
-									<p className="text-[10px] font-black text-white/70 uppercase tracking-widest">
-										Next Up
+							<Card className="h-full p-5 bg-card border-none premium-shadow rounded-3xl flex flex-col justify-between relative overflow-hidden group">
+								<div className="absolute -right-4 -bottom-4 w-24 h-24 bg-blue-100 dark:bg-blue-900/10 rounded-full blur-2xl" />
+								<div className="space-y-1 relative z-10">
+									<p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest opacity-70">
+										Accuracy
 									</p>
-									<h4 className="font-black text-sm leading-tight mt-1">Calculus Quiz</h4>
+									<div className="flex items-baseline gap-1">
+										<span className="text-3xl font-black text-foreground">
+											{isLoadingProgress ? '-' : progressData?.accuracy || 0}
+										</span>
+										<span className="text-muted-foreground font-bold text-xs">%</span>
+									</div>
 								</div>
-								<Button
-									variant="ghost"
-									size="sm"
-									className="mt-4 w-fit bg-white/20 hover:bg-white/30 text-white border-none rounded-xl font-bold transition-all relative z-10"
-									onClick={() => router.push('/past-papers')}
-								>
-									Explore
-								</Button>
+								<div className="mt-4 relative z-10 self-start">
+									<div className="w-10 h-10 bg-blue-50 dark:bg-blue-900/20 rounded-xl flex items-center justify-center">
+										<Trophy className="w-5 h-5 text-blue-500" />
+									</div>
+								</div>
 							</Card>
 						</motion.div>
 
@@ -252,7 +310,10 @@ export default function Dashboard() {
 											Algebra Master
 										</h3>
 										<p className="text-sm text-muted-foreground font-medium">
-											Progress to next achievement
+											{isLoadingProgress 
+												? 'Loading progress...' 
+												: `${progressData?.totalQuestions || 0} questions answered`
+											}
 										</p>
 									</div>
 									<div className="w-14 h-14 bg-muted/50 rounded-2xl flex items-center justify-center border border-border/50">
@@ -263,7 +324,7 @@ export default function Dashboard() {
 								<div className="space-y-3 relative z-10">
 									<div className="flex justify-between items-end">
 										<span className="text-xs font-black text-foreground opacity-60">
-											2/3 COMPLETED
+											{isLoadingProgress ? '...' : `${progressData?.totalQuestions || 0} / 100`} QUESTIONS
 										</span>
 										<span className="text-xs font-black text-brand-blue">{dailyProgress}%</span>
 									</div>
@@ -379,23 +440,5 @@ export default function Dashboard() {
 				</motion.main>
 			</ScrollArea>
 		</div>
-	);
-}
-
-function Clock({ className }: { className?: string }) {
-	return (
-		<svg
-			className={className}
-			viewBox="0 0 24 24"
-			fill="none"
-			stroke="currentColor"
-			strokeWidth="2"
-			strokeLinecap="round"
-			strokeLinejoin="round"
-		>
-			<title>Clock Icon</title>
-			<circle cx="12" cy="12" r="10" />
-			<polyline points="12 6 12 12 16 14" />
-		</svg>
 	);
 }
