@@ -146,7 +146,7 @@ export default function PastPaperViewer() {
 	// Render PDF fallback viewer - full screen mode
 	if (showPdfFallback) {
 		return (
-			<div className="fixed inset-0 z-[150] bg-background">
+			<div className="fixed inset-0 z-[150] bg-background overflow-hidden">
 				<PdfViewer url={paper.downloadUrl} onClose={() => setShowPdfFallback(false)} />
 			</div>
 		);
