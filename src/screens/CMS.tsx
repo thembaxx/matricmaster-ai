@@ -913,7 +913,7 @@ export default function CMS() {
 										<CardContent className="p-4">
 											<div className="flex items-center justify-between">
 												<div>
-													<h3 className="font-medium text-zinc-900 dark:text-white">
+													<h3 className="font-medium text-base text-zinc-900 dark:text-white">
 														{subject.name}
 													</h3>
 													<p className="text-sm text-zinc-500">{subject.description}</p>
@@ -1017,7 +1017,7 @@ export default function CMS() {
 													</Avatar>
 													<div className="flex-1 min-w-0">
 														<div className="flex items-center gap-2 mb-1">
-															<h3 className="font-medium text-zinc-900 dark:text-white truncate">
+															<h3 className="font-medium text-base text-zinc-900 dark:text-white truncate">
 																{user.name}
 															</h3>
 															<Badge className={`text-xs ${getRoleColor(user.role || 'user')}`}>
