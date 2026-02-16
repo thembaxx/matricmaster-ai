@@ -111,7 +111,7 @@ export default function PastPapers() {
 												<FileText className="w-6 h-6 text-brand-blue" />
 											</div>
 											<div>
-												<h3 className="font-bold text-zinc-900 dark:text-zinc-200 tracking-wide truncate">
+												<h3 className="font-bold text-zinc-900 dark:text-zinc-100 text-[15px] tracking-wide truncate">
 													{paper.subject} {paper.paper}
 												</h3>
 												<p className="text-xs font-semibold text-zinc-400 tracking-wide">
