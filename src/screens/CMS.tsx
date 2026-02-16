@@ -324,9 +324,7 @@ export default function CMS() {
 	};
 
 	// Get unique subjects from past papers for filter pills
-	const pastPaperSubjects = Array.from(
-		new Set(pastPapers.map((p) => p.subject))
-	).sort();
+	const pastPaperSubjects = Array.from(new Set(pastPapers.map((p) => p.subject))).sort();
 
 	const filteredPastPapers = pastPapers.filter((p) => {
 		// Filter by subject
@@ -1774,20 +1772,20 @@ export default function CMS() {
 					}
 				}}
 			>
-			<DrawerContent className="max-h-[90vh] flex flex-col z-50 rounded-t-3xl pb-3 overflow-hidden">
-				<DrawerHeader className="text-left border-b pb-4 shrink-0">
-					<DrawerTitle>
-						{editingPastPaper?.id ? 'Edit Past Paper' : 'Add New Past Paper'}
-					</DrawerTitle>
-					<DrawerDescription>
-						{editingPastPaper?.id
-							? 'Edit the past paper details below.'
-							: 'Fill in the details to add a new past paper.'}
-					</DrawerDescription>
-				</DrawerHeader>
+				<DrawerContent className="max-h-[90vh] flex flex-col z-50 rounded-t-3xl pb-3 overflow-hidden">
+					<DrawerHeader className="text-left border-b pb-4 shrink-0">
+						<DrawerTitle>
+							{editingPastPaper?.id ? 'Edit Past Paper' : 'Add New Past Paper'}
+						</DrawerTitle>
+						<DrawerDescription>
+							{editingPastPaper?.id
+								? 'Edit the past paper details below.'
+								: 'Fill in the details to add a new past paper.'}
+						</DrawerDescription>
+					</DrawerHeader>
 
-				{editingPastPaper && (
-					<ScrollArea className="flex-1 px-4 h-full">
+					{editingPastPaper && (
+						<ScrollArea className="flex-1 px-4 h-full">
 							<div className="space-y-6 py-4">
 								{/* PDF Upload */}
 								<div className="space-y-2">
@@ -1796,7 +1794,9 @@ export default function CMS() {
 										<div className="space-y-2 mt-2">
 											<div className="flex items-center gap-3 p-3 rounded-lg border bg-muted/50">
 												<div className="h-12 w-12 bg-red-100 dark:bg-red-900/20 rounded-lg flex items-center justify-center">
-													<span className="text-red-600 dark:text-red-400 font-bold text-xs">PDF</span>
+													<span className="text-red-600 dark:text-red-400 font-bold text-xs">
+														PDF
+													</span>
 												</div>
 												<div className="flex-1 min-w-0">
 													<p className="text-sm font-medium truncate">
