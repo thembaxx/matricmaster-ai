@@ -1774,20 +1774,20 @@ export default function CMS() {
 					}
 				}}
 			>
-				<DrawerContent className="max-h-[90vh] flex flex-col z-50 rounded-t-3xl pb-3">
-					<DrawerHeader className="text-left border-b pb-4">
-						<DrawerTitle>
-							{editingPastPaper?.id ? 'Edit Past Paper' : 'Add New Past Paper'}
-						</DrawerTitle>
-						<DrawerDescription>
-							{editingPastPaper?.id
-								? 'Edit the past paper details below.'
-								: 'Fill in the details to add a new past paper.'}
-						</DrawerDescription>
-					</DrawerHeader>
+			<DrawerContent className="max-h-[90vh] flex flex-col z-50 rounded-t-3xl pb-3 overflow-hidden">
+				<DrawerHeader className="text-left border-b pb-4 shrink-0">
+					<DrawerTitle>
+						{editingPastPaper?.id ? 'Edit Past Paper' : 'Add New Past Paper'}
+					</DrawerTitle>
+					<DrawerDescription>
+						{editingPastPaper?.id
+							? 'Edit the past paper details below.'
+							: 'Fill in the details to add a new past paper.'}
+					</DrawerDescription>
+				</DrawerHeader>
 
-					{editingPastPaper && (
-						<ScrollArea className="flex-1 px-4">
+				{editingPastPaper && (
+					<ScrollArea className="flex-1 px-4 h-full">
 							<div className="space-y-6 py-4">
 								{/* PDF Upload */}
 								<div className="space-y-2">
