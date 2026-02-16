@@ -146,11 +146,11 @@ export default function PdfViewer({ url, onClose }: PdfViewerProps) {
 	return (
 		<div
 			ref={containerRef}
-			className={`flex flex-col h-full grow ${isDarkMode ? 'bg-zinc-950' : 'bg-zinc-100'}`}
+			className={`flex flex-col h-[100dvh] w-screen overflow-hidden ${isDarkMode ? 'bg-zinc-950' : 'bg-zinc-100'}`}
 		>
 			{/* Top Toolbar */}
 			<div
-				className={`sticky top-0 z-50 flex items-center justify-between px-4 py-2 border-b ${
+				className={`shrink-0 flex items-center justify-between px-4 py-2 border-b ${
 					isDarkMode ? 'bg-zinc-900 border-zinc-800' : 'bg-white border-zinc-200'
 				}`}
 			>
