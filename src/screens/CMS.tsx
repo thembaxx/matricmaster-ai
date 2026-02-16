@@ -50,8 +50,11 @@ import {
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
 import {
+	createPastPaperAction,
 	createQuestionAction,
+	deletePastPaperAction,
 	deleteUserAction,
+	getPastPapersAction,
 	getQuestionsAction,
 	getQuestionWithOptionsAction,
 	getSubjectsAction,
@@ -60,11 +63,13 @@ import {
 	seedDatabaseAction,
 	softDeleteQuestionAction,
 	toggleUserBlockAction,
+	updatePastPaperAction,
 	updateQuestionAction,
 	updateUserAction,
 } from '@/lib/db/actions';
 import type { User } from '@/lib/db/better-auth-schema';
-import type { Question, Subject } from '@/lib/db/schema';
+import type { PastPaper, Question, Subject } from '@/lib/db/schema';
+import { generatePaperId } from '@/lib/paper-utils';
 import { uploadFiles } from '@/lib/uploadthing';
 
 interface QuestionFormData {
@@ -86,6 +91,47 @@ interface OptionFormData {
 	isCorrect: boolean;
 	explanation: string;
 }
+
+interface PastPaperFormData {
+	id?: string;
+	subject: string;
+	paper: string;
+	year: number;
+	month: string;
+	totalMarks: number;
+	instructions?: string;
+	originalPdfUrl?: string;
+	isExtracted?: boolean;
+	extractQuestions?: boolean;
+}
+
+const SUBJECTS = [
+	'Mathematics',
+	'Physical Sciences',
+	'Life Sciences',
+	'English',
+	'Geography',
+	'History',
+	'Accounting',
+	'Economics',
+];
+
+const PAPER_TYPES = ['P1', 'P2', 'P3'];
+const MONTHS = [
+	'January',
+	'February',
+	'March',
+	'April',
+	'May',
+	'June',
+	'July',
+	'August',
+	'September',
+	'October',
+	'November',
+	'December',
+];
+const YEARS = Array.from({ length: 15 }, (_, i) => new Date().getFullYear() - i);
 
 const EMPTY_QUESTION: QuestionFormData = {
 	questionText: '',
@@ -131,6 +177,130 @@ export default function CMS() {
 		email: string;
 		role: 'admin' | 'moderator' | 'user';
 	} | null>(null);
+
+	// Past Papers management state
+	const [pastPapers, setPastPapers] = useState<PastPaper[]>([]);
+	const [pastPapersLoading, setPastPapersLoading] = useState(false);
+	const [isPastPaperDrawerOpen, setIsPastPaperDrawerOpen] = useState(false);
+	const [editingPastPaper, setEditingPastPaper] = useState<PastPaperFormData | null>(null);
+	const [paperFilter] = useState<string>('all');
+
+	// Load past papers
+	const loadPastPapers = useCallback(async () => {
+		try {
+			setPastPapersLoading(true);
+			const papers = await getPastPapersAction({});
+			setPastPapers(papers);
+		} catch (error) {
+			console.error('Failed to load past papers:', error);
+		} finally {
+			setPastPapersLoading(false);
+		}
+	}, []);
+
+	// Load past papers when tab changes to past-papers
+	useEffect(() => {
+		if (activeTab === 'past-papers') {
+			loadPastPapers();
+		}
+	}, [activeTab, loadPastPapers]);
+
+	// Past paper handlers
+	const handleCreatePastPaper = () => {
+		setEditingPastPaper({
+			subject: 'Mathematics',
+			paper: 'P1',
+			year: new Date().getFullYear(),
+			month: 'November',
+			totalMarks: 150,
+			extractQuestions: false,
+		});
+		setIsPastPaperDrawerOpen(true);
+	};
+
+	const handleEditPastPaper = (paper: PastPaper) => {
+		setEditingPastPaper({
+			id: paper.id,
+			subject: paper.subject,
+			paper: paper.paper,
+			year: paper.year,
+			month: paper.month,
+			totalMarks: paper.totalMarks || 150,
+			instructions: paper.instructions || '',
+			originalPdfUrl: paper.originalPdfUrl,
+			isExtracted: paper.isExtracted,
+		});
+		setIsPastPaperDrawerOpen(true);
+	};
+
+	const handleDeletePastPaper = async (id: string) => {
+		if (confirm('Are you sure you want to delete this past paper?')) {
+			try {
+				await deletePastPaperAction(id);
+				await loadPastPapers();
+			} catch (error) {
+				console.error('Failed to delete past paper:', error);
+			}
+		}
+	};
+
+	const handleSavePastPaper = async () => {
+		if (!editingPastPaper) return;
+
+		if (!editingPastPaper.subject || !editingPastPaper.paper || !editingPastPaper.month) {
+			alert('Please fill in all required fields');
+			return;
+		}
+
+		try {
+			const paperId = editingPastPaper.id
+				? editingPastPaper.id
+				: generatePaperId(
+						editingPastPaper.subject,
+						editingPastPaper.paper,
+						editingPastPaper.year,
+						editingPastPaper.month
+					);
+
+			if (editingPastPaper.id) {
+				// Update existing
+				await updatePastPaperAction(editingPastPaper.id, {
+					subject: editingPastPaper.subject,
+					paper: editingPastPaper.paper,
+					year: editingPastPaper.year,
+					month: editingPastPaper.month,
+					totalMarks: editingPastPaper.totalMarks,
+					instructions: editingPastPaper.instructions,
+				});
+			} else {
+				// Create new
+				await createPastPaperAction({
+					paperId,
+					subject: editingPastPaper.subject,
+					paper: editingPastPaper.paper,
+					year: editingPastPaper.year,
+					month: editingPastPaper.month,
+					totalMarks: editingPastPaper.totalMarks,
+					originalPdfUrl: editingPastPaper.originalPdfUrl || 'https://example.com/sample.pdf',
+					instructions: editingPastPaper.instructions,
+				});
+			}
+
+			setIsPastPaperDrawerOpen(false);
+			setEditingPastPaper(null);
+			await loadPastPapers();
+		} catch (error) {
+			console.error('Failed to save past paper:', error);
+			alert('Failed to save past paper. Please try again.');
+		}
+	};
+
+	const filteredPastPapers = pastPapers.filter((p) => {
+		if (paperFilter === 'all') return true;
+		if (paperFilter === 'extracted') return p.isExtracted;
+		if (paperFilter === 'not-extracted') return !p.isExtracted;
+		return true;
+	});
 
 	const loadData = useCallback(async () => {
 		try {
@@ -554,7 +724,13 @@ export default function CMS() {
 						</Button>
 					</div>
 					<Button
-						onClick={handleCreateQuestion}
+						onClick={() => {
+							if (activeTab === 'past-papers') {
+								handleCreatePastPaper();
+							} else {
+								handleCreateQuestion();
+							}
+						}}
 						size="icon"
 						className="rounded-lg h-8 w-8 bg-brand-purple hover:bg-brand-purple/90 shadow-lg shadow-purple-500/20"
 					>
@@ -564,8 +740,9 @@ export default function CMS() {
 
 				{/* Tabs */}
 				<Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-					<TabsList className="grid w-full grid-cols-3 mb-4">
+					<TabsList className="grid w-full grid-cols-4 mb-4">
 						<TabsTrigger value="questions">Questions</TabsTrigger>
+						<TabsTrigger value="past-papers">Past Papers</TabsTrigger>
 						<TabsTrigger value="subjects">Subjects</TabsTrigger>
 						<TabsTrigger value="users">Users</TabsTrigger>
 					</TabsList>
@@ -751,6 +928,66 @@ export default function CMS() {
 										</CardContent>
 									</Card>
 								))}
+							</div>
+						) : activeTab === 'past-papers' ? (
+							// Past Papers Tab
+							<div className="space-y-4">
+								{pastPapersLoading ? (
+									<div className="flex items-center justify-center py-20">
+										<div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-purple" />
+									</div>
+								) : filteredPastPapers.length === 0 ? (
+									<div className="flex flex-col items-center justify-center py-20 text-center opacity-40">
+										<div className="text-6xl mb-4">📄</div>
+										<p className="text-sm font-bold">No past papers found</p>
+										<p className="text-xs text-zinc-500 mt-2">
+											Click the + button to add a past paper
+										</p>
+									</div>
+								) : (
+									filteredPastPapers.map((paper) => (
+										<Card key={paper.id} className="group">
+											<CardContent className="p-4">
+												<div className="flex items-start gap-4">
+													<div className="flex-1 min-w-0">
+														<div className="flex items-center gap-2 mb-2">
+															<Badge variant="secondary">{paper.subject}</Badge>
+															<Badge variant="outline">{paper.paper}</Badge>
+															<Badge variant="outline">{paper.year}</Badge>
+															<Badge variant="outline">{paper.month}</Badge>
+															{paper.isExtracted && (
+																<Badge className="bg-green-100 text-green-700 dark:bg-green-900/20 dark:text-green-400">
+																	Extracted
+																</Badge>
+															)}
+														</div>
+														<div className="flex items-center gap-2 text-xs text-zinc-400">
+															<span>{paper.totalMarks || 150} marks</span>
+														</div>
+													</div>
+													<div className="flex flex-col gap-1">
+														<Button
+															variant="ghost"
+															size="icon"
+															className="h-8 w-8 text-zinc-400 hover:text-brand-purple"
+															onClick={() => handleEditPastPaper(paper)}
+														>
+															<Edit2 className="h-4 w-4" />
+														</Button>
+														<Button
+															variant="ghost"
+															size="icon"
+															className="h-8 w-8 text-zinc-400 hover:text-red-500"
+															onClick={() => handleDeletePastPaper(paper.id)}
+														>
+															<Trash2 className="h-4 w-4" />
+														</Button>
+													</div>
+												</div>
+											</CardContent>
+										</Card>
+									))
+								)}
 							</div>
 						) : (
 							// Users Tab
@@ -1410,6 +1647,179 @@ export default function CMS() {
 								Close
 							</Button>
 						</DrawerClose>
+					</DrawerFooter>
+				</DrawerContent>
+			</Drawer>
+
+			{/* Past Papers Drawer */}
+			<Drawer
+				open={isPastPaperDrawerOpen}
+				onOpenChange={(open) => {
+					setIsPastPaperDrawerOpen(open);
+					if (!open) setEditingPastPaper(null);
+				}}
+			>
+				<DrawerContent className="max-h-[90vh] flex flex-col z-50 rounded-t-3xl pb-3">
+					<DrawerHeader className="text-left border-b pb-4">
+						<DrawerTitle>
+							{editingPastPaper?.id ? 'Edit Past Paper' : 'Add New Past Paper'}
+						</DrawerTitle>
+						<DrawerDescription>
+							{editingPastPaper?.id
+								? 'Edit the past paper details below.'
+								: 'Fill in the details to add a new past paper.'}
+						</DrawerDescription>
+					</DrawerHeader>
+
+					{editingPastPaper && (
+						<ScrollArea className="flex-1 px-4">
+							<div className="space-y-6 py-4">
+								{/* Subject */}
+								<div className="space-y-2">
+									<Label>
+										Subject <span className="text-red-500">*</span>
+									</Label>
+									<Select
+										value={editingPastPaper.subject}
+										onValueChange={(value) =>
+											setEditingPastPaper({ ...editingPastPaper, subject: value })
+										}
+									>
+										<SelectTrigger>
+											<SelectValue placeholder="Select subject" />
+										</SelectTrigger>
+										<SelectContent>
+											{SUBJECTS.map((subj) => (
+												<SelectItem key={subj} value={subj}>
+													{subj}
+												</SelectItem>
+											))}
+										</SelectContent>
+									</Select>
+								</div>
+
+								{/* Paper Type & Year */}
+								<div className="grid grid-cols-2 gap-4">
+									<div className="space-y-2">
+										<Label>
+											Paper <span className="text-red-500">*</span>
+										</Label>
+										<Select
+											value={editingPastPaper.paper}
+											onValueChange={(value) =>
+												setEditingPastPaper({ ...editingPastPaper, paper: value })
+											}
+										>
+											<SelectTrigger>
+												<SelectValue placeholder="Select paper" />
+											</SelectTrigger>
+											<SelectContent>
+												{PAPER_TYPES.map((p) => (
+													<SelectItem key={p} value={p}>
+														{p}
+													</SelectItem>
+												))}
+											</SelectContent>
+										</Select>
+									</div>
+
+									<div className="space-y-2">
+										<Label>
+											Year <span className="text-red-500">*</span>
+										</Label>
+										<Select
+											value={editingPastPaper.year.toString()}
+											onValueChange={(value) =>
+												setEditingPastPaper({
+													...editingPastPaper,
+													year: Number.parseInt(value, 10),
+												})
+											}
+										>
+											<SelectTrigger>
+												<SelectValue placeholder="Select year" />
+											</SelectTrigger>
+											<SelectContent>
+												{YEARS.map((year) => (
+													<SelectItem key={year} value={year.toString()}>
+														{year}
+													</SelectItem>
+												))}
+											</SelectContent>
+										</Select>
+									</div>
+								</div>
+
+								{/* Month */}
+								<div className="space-y-2">
+									<Label>
+										Month <span className="text-red-500">*</span>
+									</Label>
+									<Select
+										value={editingPastPaper.month}
+										onValueChange={(value) =>
+											setEditingPastPaper({ ...editingPastPaper, month: value })
+										}
+									>
+										<SelectTrigger>
+											<SelectValue placeholder="Select month" />
+										</SelectTrigger>
+										<SelectContent>
+											{MONTHS.map((month) => (
+												<SelectItem key={month} value={month}>
+													{month}
+												</SelectItem>
+											))}
+										</SelectContent>
+									</Select>
+								</div>
+
+								{/* Total Marks */}
+								<div className="space-y-2">
+									<Label>Total Marks</Label>
+									<Input
+										type="number"
+										min={1}
+										max={500}
+										value={editingPastPaper.totalMarks}
+										onChange={(e) =>
+											setEditingPastPaper({
+												...editingPastPaper,
+												totalMarks: Number.parseInt(e.target.value, 10) || 150,
+											})
+										}
+										placeholder="e.g., 150"
+									/>
+								</div>
+
+								{/* Instructions */}
+								<div className="space-y-2">
+									<Label>Instructions</Label>
+									<Textarea
+										value={editingPastPaper.instructions || ''}
+										onChange={(e) =>
+											setEditingPastPaper({ ...editingPastPaper, instructions: e.target.value })
+										}
+										placeholder="Exam instructions..."
+										rows={2}
+									/>
+								</div>
+							</div>
+						</ScrollArea>
+					)}
+
+					<DrawerFooter className="pt-4 border-t flex-row gap-3">
+						<DrawerClose asChild>
+							<Button variant="outline" className="flex-1 text-sm">
+								Cancel
+							</Button>
+						</DrawerClose>
+						<Button
+							onClick={handleSavePastPaper}
+							className="flex-1 bg-brand-purple hover:bg-brand-purple/90 text-sm dark:text-white/90"
+						>
+							{editingPastPaper?.id ? 'Update Paper' : 'Add Paper'}
+						</Button>
 					</DrawerFooter>
 				</DrawerContent>
 			</Drawer>

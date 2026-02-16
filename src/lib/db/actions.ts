@@ -7,14 +7,16 @@ import { users } from './better-auth-schema';
 import { type DbType, dbManager } from './index';
 import type {
 	NewOption,
+	NewPastPaper,
 	NewQuestion,
 	NewSubject,
 	Option,
+	PastPaper,
 	Question,
 	SearchHistory,
 	Subject,
 } from './schema';
-import { options, questions, searchHistory, subjects } from './schema';
+import { options, pastPapers, questions, searchHistory, subjects } from './schema';
 
 const createSubjectSchema = z.object({
 	name: z.string().min(1).max(50),
@@ -638,4 +640,134 @@ export async function restoreUserAction(id: string): Promise<{ success: boolean;
 		.where(eq(users.id, id))
 		.returning();
 	return { success: !!user, user: user ?? undefined };
+}
+
+// ============================================================================
+// PAST PAPERS MANAGEMENT ACTIONS
+// ============================================================================
+
+const createPastPaperSchema = z.object({
+	paperId: z.string().min(1).max(100),
+	originalPdfUrl: z.string().url().max(500),
+	subject: z.string().min(1).max(100),
+	paper: z.string().min(1).max(20),
+	year: z.number().int().min(2000).max(2030),
+	month: z.string().min(1).max(20),
+	totalMarks: z.number().int().min(1).max(1000).optional(),
+	instructions: z.string().max(2000).optional(),
+	summary: z.string().max(1000).optional(),
+});
+
+const updatePastPaperSchema = z.object({
+	originalPdfUrl: z.string().url().max(500).optional(),
+	storedPdfUrl: z.string().url().max(500).optional(),
+	subject: z.string().min(1).max(100).optional(),
+	paper: z.string().min(1).max(20).optional(),
+	year: z.number().int().min(2000).max(2030).optional(),
+	month: z.string().min(1).max(20).optional(),
+	isExtracted: z.boolean().optional(),
+	extractedQuestions: z.string().max(10000).optional(),
+	instructions: z.string().max(2000).optional(),
+	summary: z.string().max(1000).optional(),
+	totalMarks: z.number().int().min(1).max(1000).optional(),
+});
+
+export interface PastPaperFilters {
+	subject?: string;
+	year?: number;
+	isExtracted?: boolean;
+}
+
+export async function createPastPaperAction(
+	data: z.infer<typeof createPastPaperSchema>
+): Promise<PastPaper> {
+	const validated = createPastPaperSchema.parse(data);
+	const db = await getDb();
+	const [pastPaper] = await db
+		.insert(pastPapers)
+		.values(validated as NewPastPaper)
+		.returning();
+	return pastPaper;
+}
+
+export async function getPastPapersAction(filters: PastPaperFilters = {}): Promise<PastPaper[]> {
+	try {
+		const db = await getDb();
+		const conditions = [];
+
+		if (filters.subject !== undefined) {
+			conditions.push(eq(pastPapers.subject, filters.subject));
+		}
+		if (filters.year !== undefined) {
+			conditions.push(eq(pastPapers.year, filters.year));
+		}
+		if (filters.isExtracted !== undefined) {
+			conditions.push(eq(pastPapers.isExtracted, filters.isExtracted));
+		}
+
+		if (conditions.length > 0) {
+			return db
+				.select()
+				.from(pastPapers)
+				.where(and(...conditions))
+				.orderBy(desc(pastPapers.year), asc(pastPapers.month), asc(pastPapers.paper));
+		}
+
+		return db
+			.select()
+			.from(pastPapers)
+			.orderBy(desc(pastPapers.year), asc(pastPapers.month), asc(pastPapers.paper));
+	} catch {
+		return [];
+	}
+}
+
+export async function getPastPaperByIdAction(id: string): Promise<PastPaper | null> {
+	try {
+		const db = await getDb();
+		const [pastPaper] = await db.select().from(pastPapers).where(eq(pastPapers.id, id)).limit(1);
+		return pastPaper ?? null;
+	} catch {
+		return null;
+	}
+}
+
+export async function getPastPaperByPaperIdAction(paperId: string): Promise<PastPaper | null> {
+	try {
+		const db = await getDb();
+		const [pastPaper] = await db
+			.select()
+			.from(pastPapers)
+			.where(eq(pastPapers.paperId, paperId))
+			.limit(1);
+		return pastPaper ?? null;
+	} catch {
+		return null;
+	}
+}
+
+export async function updatePastPaperAction(
+	id: string,
+	data: z.infer<typeof updatePastPaperSchema>
+): Promise<PastPaper | null> {
+	const validatedData = updatePastPaperSchema.parse(data);
+
+	if (Object.keys(validatedData).length === 0) {
+		console.warn('⚠️ updatePastPaperAction: No valid fields to update');
+		return null;
+	}
+
+	const db = await getDb();
+	const [pastPaper] = await db
+		.update(pastPapers)
+		.set({ ...validatedData, updatedAt: new Date() })
+		.where(eq(pastPapers.id, id))
+		.returning();
+	return pastPaper ?? null;
+}
+
+export async function deletePastPaperAction(id: string): Promise<boolean> {
+	const db = await getDb();
+	const result = await db.delete(pastPapers).where(eq(pastPapers.id, id)).returning();
+	return result.length > 0;
 }

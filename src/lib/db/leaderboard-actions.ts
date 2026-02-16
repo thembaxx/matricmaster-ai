@@ -4,8 +4,8 @@ import { and, count, desc, eq, gte } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
 import { auth } from '@/lib/auth';
 import { type DbType, dbManager } from '@/lib/db';
-import { leaderboardEntries, user, userProgress } from '@/lib/db/schema';
 import type { LeaderboardEntry } from '@/lib/db/schema';
+import { leaderboardEntries, user, userProgress } from '@/lib/db/schema';
 import {
 	calculateAccuracy,
 	calculateQuizPoints,
