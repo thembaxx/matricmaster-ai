@@ -8,6 +8,7 @@ import {
 	Plus,
 	Search,
 	Trash2,
+	Upload,
 	X,
 	ZoomIn,
 	ZoomOut,
@@ -166,6 +167,13 @@ export default function CMS() {
 	const [localImagePreview, setLocalImagePreview] = useState<string | null>(null);
 	const fileInputRef = useRef<HTMLInputElement>(null);
 
+	// PDF upload state for past papers
+	const [localPdfFile, setLocalPdfFile] = useState<File | null>(null);
+	const [localPdfPreview, setLocalPdfPreview] = useState<string | null>(null);
+	const [pdfUploading, setPdfUploading] = useState(false);
+	const pdfInputRef = useRef<HTMLInputElement>(null);
+	const pdfInputId = useId();
+
 	// User management state
 	const [userSearchQuery, setUserSearchQuery] = useState('');
 	const [userFilter, setUserFilter] = useState<'all' | 'active' | 'blocked' | 'deleted'>('all');
@@ -184,6 +192,7 @@ export default function CMS() {
 	const [isPastPaperDrawerOpen, setIsPastPaperDrawerOpen] = useState(false);
 	const [editingPastPaper, setEditingPastPaper] = useState<PastPaperFormData | null>(null);
 	const [paperFilter] = useState<string>('all');
+	const [selectedPastPaperSubject, setSelectedPastPaperSubject] = useState<string>('all');
 
 	// Load past papers
 	const loadPastPapers = useCallback(async () => {
@@ -253,6 +262,7 @@ export default function CMS() {
 		}
 
 		try {
+			setPdfUploading(true);
 			const paperId = editingPastPaper.id
 				? editingPastPaper.id
 				: generatePaperId(
@@ -261,6 +271,21 @@ export default function CMS() {
 						editingPastPaper.year,
 						editingPastPaper.month
 					);
+
+			// Upload PDF if a new one is selected
+			let pdfUrl = editingPastPaper.originalPdfUrl;
+			if (localPdfFile) {
+				const uploadResult = await uploadFiles('pastPaperPDF', {
+					files: [localPdfFile],
+				});
+				if (uploadResult?.[0]?.ufsUrl) {
+					pdfUrl = uploadResult[0].ufsUrl;
+				} else {
+					setPdfUploading(false);
+					alert('Failed to upload PDF. Please try again.');
+					return;
+				}
+			}
 
 			if (editingPastPaper.id) {
 				// Update existing
@@ -271,6 +296,7 @@ export default function CMS() {
 					month: editingPastPaper.month,
 					totalMarks: editingPastPaper.totalMarks,
 					instructions: editingPastPaper.instructions,
+					originalPdfUrl: pdfUrl,
 				});
 			} else {
 				// Create new
@@ -281,21 +307,32 @@ export default function CMS() {
 					year: editingPastPaper.year,
 					month: editingPastPaper.month,
 					totalMarks: editingPastPaper.totalMarks,
-					originalPdfUrl: editingPastPaper.originalPdfUrl || 'https://example.com/sample.pdf',
+					originalPdfUrl: pdfUrl || 'https://example.com/sample.pdf',
 					instructions: editingPastPaper.instructions,
 				});
 			}
 
+			clearPdfState();
 			setIsPastPaperDrawerOpen(false);
 			setEditingPastPaper(null);
 			await loadPastPapers();
 		} catch (error) {
 			console.error('Failed to save past paper:', error);
+			setPdfUploading(false);
 			alert('Failed to save past paper. Please try again.');
 		}
 	};
 
+	// Get unique subjects from past papers for filter pills
+	const pastPaperSubjects = Array.from(
+		new Set(pastPapers.map((p) => p.subject))
+	).sort();
+
 	const filteredPastPapers = pastPapers.filter((p) => {
+		// Filter by subject
+		if (selectedPastPaperSubject !== 'all' && p.subject !== selectedPastPaperSubject) {
+			return false;
+		}
 		if (paperFilter === 'all') return true;
 		if (paperFilter === 'extracted') return p.isExtracted;
 		if (paperFilter === 'not-extracted') return !p.isExtracted;
@@ -610,6 +647,47 @@ export default function CMS() {
 		fileInputRef.current?.click();
 	};
 
+	// PDF handlers for past papers
+	const handlePdfSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+		const file = event.target.files?.[0];
+		if (file) {
+			if (file.size > 16 * 1024 * 1024) {
+				alert('PDF must be less than 16MB');
+				return;
+			}
+			if (file.type !== 'application/pdf') {
+				alert('Only PDF files are allowed');
+				return;
+			}
+			setLocalPdfFile(file);
+			// Create a URL for preview
+			const previewUrl = URL.createObjectURL(file);
+			setLocalPdfPreview(previewUrl);
+		}
+	};
+
+	const handleRemovePdf = () => {
+		if (localPdfPreview) {
+			URL.revokeObjectURL(localPdfPreview);
+		}
+		setLocalPdfFile(null);
+		setLocalPdfPreview(null);
+	};
+
+	const triggerPdfInput = () => {
+		pdfInputRef.current?.click();
+	};
+
+	// Clear PDF state when drawer closes
+	const clearPdfState = () => {
+		if (localPdfPreview) {
+			URL.revokeObjectURL(localPdfPreview);
+		}
+		setLocalPdfFile(null);
+		setLocalPdfPreview(null);
+		setPdfUploading(false);
+	};
+
 	// Check if all required fields are filled
 	const isFormValid = () => {
 		if (!editingQuestion) return false;
@@ -832,6 +910,40 @@ export default function CMS() {
 								<SelectItem value="deleted">Deleted</SelectItem>
 							</SelectContent>
 						</Select>
+					</div>
+				)}
+
+				{/* Past Papers Filters */}
+				{activeTab === 'past-papers' && pastPaperSubjects.length > 0 && (
+					<div className="flex gap-2 px-1 w-full overflow-x-auto">
+						<button
+							type="button"
+							onClick={() => setSelectedPastPaperSubject('all')}
+							className={`px-4 py-2 rounded-full text-xs font-bold transition-all shrink-0 ${
+								selectedPastPaperSubject === 'all'
+									? 'bg-brand-purple text-white shadow-md scale-105'
+									: 'bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700'
+							}`}
+						>
+							All
+						</button>
+						{pastPaperSubjects.map((subject) => {
+							const isSelected = selectedPastPaperSubject === subject;
+							return (
+								<button
+									type="button"
+									key={subject}
+									onClick={() => setSelectedPastPaperSubject(subject)}
+									className={`px-4 py-2 rounded-full text-xs font-bold transition-all shrink-0 ${
+										isSelected
+											? 'bg-brand-purple text-white shadow-md scale-105'
+											: 'bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700'
+									}`}
+								>
+									{subject}
+								</button>
+							);
+						})}
 					</div>
 				)}
 			</header>
@@ -1656,7 +1768,10 @@ export default function CMS() {
 				open={isPastPaperDrawerOpen}
 				onOpenChange={(open) => {
 					setIsPastPaperDrawerOpen(open);
-					if (!open) setEditingPastPaper(null);
+					if (!open) {
+						setEditingPastPaper(null);
+						clearPdfState();
+					}
 				}}
 			>
 				<DrawerContent className="max-h-[90vh] flex flex-col z-50 rounded-t-3xl pb-3">
@@ -1674,6 +1789,60 @@ export default function CMS() {
 					{editingPastPaper && (
 						<ScrollArea className="flex-1 px-4">
 							<div className="space-y-6 py-4">
+								{/* PDF Upload */}
+								<div className="space-y-2">
+									<Label>Past Paper PDF (Optional)</Label>
+									{localPdfPreview || editingPastPaper.originalPdfUrl ? (
+										<div className="space-y-2 mt-2">
+											<div className="flex items-center gap-3 p-3 rounded-lg border bg-muted/50">
+												<div className="h-12 w-12 bg-red-100 dark:bg-red-900/20 rounded-lg flex items-center justify-center">
+													<span className="text-red-600 dark:text-red-400 font-bold text-xs">PDF</span>
+												</div>
+												<div className="flex-1 min-w-0">
+													<p className="text-sm font-medium truncate">
+														{localPdfFile?.name || 'Uploaded PDF'}
+													</p>
+													<p className="text-xs text-zinc-500">
+														{localPdfFile
+															? `${(localPdfFile.size / 1024 / 1024).toFixed(2)} MB`
+															: 'Ready'}
+													</p>
+												</div>
+												<Button
+													type="button"
+													variant="ghost"
+													size="icon"
+													className="text-zinc-400 hover:text-red-500"
+													onClick={handleRemovePdf}
+												>
+													<X className="h-4 w-4" />
+												</Button>
+											</div>
+										</div>
+									) : (
+										<div className="mt-2">
+											<input
+												type="file"
+												id={pdfInputId}
+												ref={pdfInputRef}
+												onChange={handlePdfSelect}
+												accept="application/pdf"
+												className="hidden"
+											/>
+											<label
+												htmlFor={pdfInputId}
+												onClick={triggerPdfInput}
+												className="w-full rounded-lg border-2 border-dashed border-input p-6 flex flex-col items-center justify-center gap-2 hover:border-brand-purple hover:bg-muted/50 transition-colors cursor-pointer"
+											>
+												<Upload className="h-8 w-8 text-muted-foreground" />
+												<span className="text-sm text-muted-foreground">
+													Click to upload PDF (max 16MB)
+												</span>
+											</label>
+										</div>
+									)}
+								</div>
+
 								{/* Subject */}
 								<div className="space-y-2">
 									<Label>
@@ -1816,9 +1985,10 @@ export default function CMS() {
 						</DrawerClose>
 						<Button
 							onClick={handleSavePastPaper}
-							className="flex-1 bg-brand-purple hover:bg-brand-purple/90 text-sm dark:text-white/90"
+							disabled={pdfUploading}
+							className="flex-1 bg-brand-purple hover:bg-brand-purple/90 text-sm dark:text-white/90 disabled:opacity-50"
 						>
-							{editingPastPaper?.id ? 'Update Paper' : 'Add Paper'}
+							{pdfUploading ? 'Uploading...' : editingPastPaper?.id ? 'Update Paper' : 'Add Paper'}
 						</Button>
 					</DrawerFooter>
 				</DrawerContent>
