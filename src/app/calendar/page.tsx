@@ -7,7 +7,6 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
   Calendar as CalendarIcon, Plus, ChevronLeft, ChevronRight,
   Clock, Trash2, Edit
@@ -40,7 +39,8 @@ const MONTHS = [
 
 export default function CalendarPage() {
   const { data: session } = useSession();
-  const user = session?.user;
+  // Session available for future use with user-specific data
+  void session;
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [events, setEvents] = useState<CalendarEvent[]>([

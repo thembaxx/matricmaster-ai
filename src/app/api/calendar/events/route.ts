@@ -10,9 +10,10 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const { searchParams } = new URL(request.url);
-    const start = searchParams.get("start");
-    const end = searchParams.get("end");
+    // In production, would parse query params: start, end
+    // const { searchParams } = new URL(request.url);
+    // const start = searchParams.get("start");
+    // const end = searchParams.get("end");
 
     // In production, fetch events from database
     const events: unknown[] = [];

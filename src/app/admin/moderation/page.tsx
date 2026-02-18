@@ -38,6 +38,16 @@ interface ModerationPattern {
 
 export default function ModerationDashboard() {
   const { data: session } = useSession();
+  
+  // Session check - in production, add proper admin authorization
+  if (!session) {
+    return (
+      <div className="container mx-auto py-8 text-center">
+        <p className="text-muted-foreground">Please sign in to access moderation.</p>
+      </div>
+    );
+  }
+
   const [activeTab, setActiveTab] = useState("flags");
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");

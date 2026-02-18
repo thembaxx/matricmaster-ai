@@ -38,12 +38,13 @@ const SUBJECTS = [
 
 export default function StudyBuddiesPage() {
   const { data: session } = useSession();
-  const user = session?.user;
+  // Session available for future use with user-specific data
+  void session;
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedSubjects, setSelectedSubjects] = useState<string[]>([]);
   const [activeTab, setActiveTab] = useState("discover");
   const [buddyRequests, setBuddyRequests] = useState<BuddyRequest[]>([]);
-  const [myBuddies, setMyBuddies] = useState<StudyBuddy[]>([]);
+  const [myBuddies] = useState<StudyBuddy[]>([]);
   const [profile, setProfile] = useState({
     bio: "",
     studyGoals: "",

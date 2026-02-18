@@ -120,11 +120,9 @@ function createAuth() {
 
 	const sendPasswordResetEmail = async ({
 		email,
-		user,
 		url,
 	}: {
 		email: string;
-		user: { id: string; name?: string; email?: string };
 		url: string;
 	}) => {
 		if (!resend) {
