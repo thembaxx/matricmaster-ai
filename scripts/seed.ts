@@ -229,6 +229,79 @@ async function seed() {
 
 	console.log(`✅ Added ${physicsQuestions.length} physics questions`);
 
+	// Add options for physics questions
+	const physicsOptions = [];
+
+	// Physics Question 1 options
+	physicsOptions.push(
+		{
+			questionId: physicsQuestions[0].id,
+			optionText: '10 m/s',
+			isCorrect: true,
+			optionLetter: 'A',
+			explanation: 'v = u + at = 0 + 2*5 = 10 m/s',
+		},
+		{
+			questionId: physicsQuestions[0].id,
+			optionText: '7 m/s',
+			isCorrect: false,
+			optionLetter: 'B',
+			explanation: 'Incorrect calculation',
+		},
+		{
+			questionId: physicsQuestions[0].id,
+			optionText: '12 m/s',
+			isCorrect: false,
+			optionLetter: 'C',
+			explanation: 'Incorrect calculation',
+		},
+		{
+			questionId: physicsQuestions[0].id,
+			optionText: '5 m/s',
+			isCorrect: false,
+			optionLetter: 'D',
+			explanation: 'Incorrect formula used',
+		}
+	);
+
+	// Physics Question 2 options
+	physicsOptions.push(
+		{
+			questionId: physicsQuestions[1].id,
+			optionText: '9 J',
+			isCorrect: true,
+			optionLetter: 'A',
+			explanation: 'KE = ½mv² = ½ * 2 * 3² = 9 J',
+		},
+		{
+			questionId: physicsQuestions[1].id,
+			optionText: '6 J',
+			isCorrect: false,
+			optionLetter: 'B',
+			explanation: 'Incorrect calculation',
+		},
+		{
+			questionId: physicsQuestions[1].id,
+			optionText: '18 J',
+			isCorrect: false,
+			optionLetter: 'C',
+			explanation: 'Forgot to halve',
+		},
+		{
+			questionId: physicsQuestions[1].id,
+			optionText: '12 J',
+			isCorrect: false,
+			optionLetter: 'D',
+			explanation: 'Incorrect formula',
+		}
+	);
+
+	// Insert all physics options
+	if (physicsOptions.length > 0) {
+		await db.insert(options).values(physicsOptions);
+		console.log(`✅ Added ${physicsOptions.length} physics options`);
+	}
+
 	console.log('\n🎉 Seed completed successfully!');
 	console.log('\nTo use this data:');
 	console.log('1. Run the app: bun run dev');
@@ -236,4 +309,13 @@ async function seed() {
 	console.log('3. The questions will be available for quizzes');
 }
 
-seed().catch(console.error);
+// Run seed and exit with error code on failure
+seed()
+	.then(() => {
+		console.log('Seed process completed');
+		process.exit(0);
+	})
+	.catch((error) => {
+		console.error('❌ Seed failed:', error);
+		process.exit(1);
+	});

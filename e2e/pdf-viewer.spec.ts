@@ -38,11 +38,12 @@ test.describe('PDF Viewer Component', () => {
 
 	test.describe('Past Paper Viewer Page Structure', () => {
 		test('past paper viewer page exists and is accessible', async ({ page }) => {
-			await page.goto('/past-paper');
+			// Navigate to a specific viewer path with an ID
+			await page.goto('/past-paper/sample-123');
 			await page.waitForLoadState('domcontentloaded');
 
-			// Just verify the URL changed
-			await expect(page).toHaveURL(/past-paper/);
+			// Verify the URL matches the viewer pattern (requires ID segment)
+			await expect(page).toHaveURL(/^\/past-paper\/[\w-]+$/);
 		});
 	});
 });

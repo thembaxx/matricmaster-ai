@@ -112,7 +112,7 @@ function createAuth() {
 					</html>
 				`,
 			});
-			console.log(`✅ Verification email sent to ${email}`);
+			console.log(`✅ Verification email sent for user: ${user.id}`);
 		} catch (error) {
 			console.error('❌ Failed to send verification email:', error);
 		}
@@ -165,7 +165,7 @@ function createAuth() {
 					</html>
 				`,
 			});
-			console.log(`✅ Password reset email sent to ${email}`);
+			console.log('✅ Password reset email sent');
 		} catch (error) {
 			console.error('❌ Failed to send password reset email:', error);
 		}
@@ -185,7 +185,7 @@ function createAuth() {
 			: undefined,
 		emailAndPassword: {
 			enabled: true,
-			requireEmailVerification: false,
+			requireEmailVerification: process.env.NODE_ENV === 'production',
 			sendVerificationEmail,
 			sendPasswordResetEmail,
 		},
