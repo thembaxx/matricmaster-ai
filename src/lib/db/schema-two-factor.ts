@@ -1,13 +1,14 @@
-import { jsonb, pgTable, text, timestamp, uuid, varchar } from 'drizzle-orm/pg-core';
+import { integer, jsonb, pgTable, text, timestamp, uuid, varchar } from 'drizzle-orm/pg-core';
 
 // Two Factor table (stores TOTP secrets)
+// NOTE: In production, secret should be encrypted at application layer before storage
 export const twoFactor = pgTable('two_factor', {
 	id: uuid('id').defaultRandom().primaryKey(),
 	userId: text('user_id').notNull(),
-	secret: text('secret').notNull(),
-	algorithm: varchar('algorithm', { length: 10 }).notNull().default('totp'),
-	digits: varchar('digits', { length: 1 }).notNull().default('6'),
-	period: varchar('period', { length: 2 }).notNull().default('30'),
+	secret: text('secret').notNull(), // Store encrypted secret in production
+	algorithm: varchar('algorithm', { length: 10 }).notNull().default('SHA1'), // TOTP uses HMAC-SHA1 by default
+	digits: integer('digits').notNull().default(6), // TOTP typically uses 6 digits
+	period: integer('period').notNull().default(30), // TOTP period in seconds
 	createdAt: timestamp('created_at').defaultNow(),
 	updatedAt: timestamp('updated_at').defaultNow(),
 });

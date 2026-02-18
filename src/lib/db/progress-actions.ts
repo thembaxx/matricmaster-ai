@@ -94,7 +94,8 @@ export async function getUserProgressSummary(): Promise<UserProgressSummary | nu
 			questionsAttempted: s.questionsAttempted,
 			correctAnswers: s.correctAnswers,
 			marksEarned: s.marksEarned,
-			startedAt: s.startedAt || new Date(),
+			// Use completedAt as fallback if startedAt is null, not new Date()
+			startedAt: s.startedAt ?? s.completedAt ?? new Date(),
 			completedAt: s.completedAt,
 		}));
 
@@ -264,7 +265,19 @@ export async function updateUserStreak(): Promise<{
 		let maxStreak = 0;
 
 		for (const record of progressRecords) {
-			const lastActivity = record.lastActivityAt ? new Date(record.lastActivityAt) : new Date();
+			// If no lastActivityAt, treat as no prior activity - reset streak to 1
+			if (!record.lastActivityAt) {
+				await db
+					.update(userProgress)
+					.set({ streakDays: 1, lastActivityAt: now, updatedAt: now })
+					.where(eq(userProgress.id, record.id));
+
+				streakIncreased = true;
+				maxStreak = Math.max(maxStreak, 1);
+				continue;
+			}
+
+			const lastActivity = new Date(record.lastActivityAt);
 			const lastActivityDate = new Date(
 				lastActivity.getFullYear(),
 				lastActivity.getMonth(),
@@ -276,6 +289,7 @@ export async function updateUserStreak(): Promise<{
 			);
 
 			if (daysDiff === 1) {
+				// Consecutive day - increment streak
 				const newStreak = record.streakDays + 1;
 				await db
 					.update(userProgress)
@@ -285,8 +299,10 @@ export async function updateUserStreak(): Promise<{
 				streakIncreased = true;
 				maxStreak = Math.max(maxStreak, newStreak);
 			} else if (daysDiff === 0) {
+				// Same day - no change to streak
 				maxStreak = Math.max(maxStreak, record.streakDays);
 			} else {
+				// Gap > 1 day - reset streak to 1
 				await db
 					.update(userProgress)
 					.set({ streakDays: 1, lastActivityAt: now, updatedAt: now })

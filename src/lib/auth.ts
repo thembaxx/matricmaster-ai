@@ -266,11 +266,48 @@ export async function initAuth(): Promise<ReturnType<typeof betterAuth>> {
 	return authInstance;
 }
 
-export function getAuth(): ReturnType<typeof betterAuth> {
-	if (!authInstance) {
-		authInstance = createAuth();
+let authPromise: Promise<ReturnType<typeof betterAuth>> | null = null;
+
+export async function getAuth(): Promise<ReturnType<typeof betterAuth>> {
+	// If already resolved, return immediately
+	if (authInstance) {
+		return authInstance;
 	}
-	return authInstance;
+
+	// If a promise is already in progress, await it
+	if (authPromise) {
+		return authPromise;
+	}
+
+	// Start the async initialization
+	authPromise = (async () => {
+		// Wait for database connection before creating auth instance
+		// This ensures the database adapter is properly passed to better-auth
+		if (!dbManager.isConnectedToDatabase()) {
+			await dbManager.waitForConnection(5, 3000);
+		}
+
+		if (!authInstance) {
+			authInstance = createAuth();
+		}
+		return authInstance;
+	})();
+
+	return authPromise;
+}
+
+// For backward compatibility - creates auth synchronously if already initialized
+// Otherwise returns undefined (callers should use getAuth())
+export function getAuthSync(): ReturnType<typeof betterAuth> | undefined {
+	if (authInstance) {
+		return authInstance;
+	}
+	// Try to create synchronously if DB is already connected
+	if (dbManager.isConnectedToDatabase()) {
+		authInstance = createAuth();
+		return authInstance;
+	}
+	return undefined;
 }
 
 try {
@@ -283,8 +320,31 @@ try {
 
 export const auth = new Proxy({} as ReturnType<typeof betterAuth>, {
 	get(_target, prop) {
-		const currentAuth = getAuth();
-		return Reflect.get(currentAuth, prop, currentAuth);
+		// Try sync first for backward compatibility
+		const syncAuth = getAuthSync();
+		if (syncAuth) {
+			return Reflect.get(syncAuth, prop, syncAuth);
+		}
+		// If not sync available, return a lazy handler that will auto-initialize
+		// This ensures backward compatibility with existing code
+		return new Proxy(
+			{},
+			{
+				get(_innerTarget) {
+					// When someone accesses auth.api.method, we need to auto-initialize
+					// This is a workaround for backward compatibility
+					// The proper way is to use await getAuth() in your code
+					console.warn('⚠️ Auth accessed without await getAuth(). Auto-initializing...');
+					// Trigger async initialization but don't wait - this is fire-and-forget
+					// The next call should have auth ready (or fail gracefully)
+					getAuth().catch((err) => console.error('❌ Failed to auto-initialize auth:', err));
+					// Return a placeholder that will throw a more helpful error
+					throw new Error(
+						`Auth is being initialized. Please use 'await getAuth()' instead of 'auth' directly.`
+					);
+				},
+			}
+		);
 	},
 });
 

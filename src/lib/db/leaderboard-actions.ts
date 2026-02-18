@@ -1,6 +1,6 @@
 'use server';
 
-import { and, count, desc, eq, gte } from 'drizzle-orm';
+import { and, count, desc, eq, gte, inArray } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
 import { auth } from '@/lib/auth';
 import { type DbType, dbManager } from '@/lib/db';
@@ -68,21 +68,26 @@ export async function getLeaderboard(
 				.limit(limit);
 		}
 
-		const entriesWithUsers: LeaderboardEntryData[] = await Promise.all(
-			entries.map(async (entry, index) => {
-				const userRecord = await db.select().from(user).where(eq(user.id, entry.userId)).limit(1);
+		// Batch fetch all users in one query to avoid N+1 problem
+		const userIds = [...new Set(entries.map((e) => e.userId))];
+		const usersBatch =
+			userIds.length > 0 ? await db.select().from(user).where(inArray(user.id, userIds)) : [];
 
-				return {
-					rank: entry.rank || index + 1,
-					userId: entry.userId,
-					userName: userRecord[0]?.name || 'Unknown User',
-					userImage: userRecord[0]?.image || null,
-					totalPoints: entry.totalPoints,
-					questionsCompleted: entry.questionsCompleted,
-					accuracyPercentage: entry.accuracyPercentage || 0,
-				};
-			})
-		);
+		// Build lookup map
+		const userMap = new Map(usersBatch.map((u) => [u.id, u]));
+
+		const entriesWithUsers: LeaderboardEntryData[] = entries.map((entry, index) => {
+			const userRecord = userMap.get(entry.userId);
+			return {
+				rank: entry.rank || index + 1,
+				userId: entry.userId,
+				userName: userRecord?.name || 'Unknown User',
+				userImage: userRecord?.image || null,
+				totalPoints: entry.totalPoints,
+				questionsCompleted: entry.questionsCompleted,
+				accuracyPercentage: entry.accuracyPercentage || 0,
+			};
+		});
 
 		return entriesWithUsers;
 	} catch (error) {
@@ -340,24 +345,27 @@ export async function getSubjectLeaderboard(
 			.orderBy(desc(userProgress.totalCorrect))
 			.limit(limit);
 
-		const entries: LeaderboardEntryData[] = await Promise.all(
-			progressRecords.map(async (record, index) => {
-				const userRecord = await db.select().from(user).where(eq(user.id, record.userId)).limit(1);
+		// Batch fetch users to avoid N+1 queries
+		const userIds = [...new Set(progressRecords.map((r) => r.userId))];
+		const usersBatch =
+			userIds.length > 0 ? await db.select().from(user).where(inArray(user.id, userIds)) : [];
+		const userMap = new Map(usersBatch.map((u) => [u.id, u]));
 
-				return {
-					rank: index + 1,
-					userId: record.userId,
-					userName: userRecord[0]?.name || 'Unknown',
-					userImage: userRecord[0]?.image || null,
-					totalPoints: record.totalCorrect * 10,
-					questionsCompleted: record.totalQuestionsAttempted,
-					accuracyPercentage:
-						record.totalQuestionsAttempted > 0
-							? Math.round((record.totalCorrect / record.totalQuestionsAttempted) * 100)
-							: 0,
-				};
-			})
-		);
+		const entries: LeaderboardEntryData[] = progressRecords.map((record, index) => {
+			const userRecord = userMap.get(record.userId);
+			return {
+				rank: index + 1,
+				userId: record.userId,
+				userName: userRecord?.name || 'Unknown',
+				userImage: userRecord?.image || null,
+				totalPoints: record.totalCorrect * 10,
+				questionsCompleted: record.totalQuestionsAttempted,
+				accuracyPercentage:
+					record.totalQuestionsAttempted > 0
+						? Math.round((record.totalCorrect / record.totalQuestionsAttempted) * 100)
+						: 0,
+			};
+		});
 
 		return entries;
 	} catch (error) {

@@ -6,22 +6,16 @@ const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
 const RATE_LIMIT = 100; // requests per minute
 const RATE_LIMIT_WINDOW = 60 * 1000; // 1 minute
 
-// Periodic cleanup of expired rate limit entries
-setInterval(() => {
-	const now = Date.now();
-	for (const [key, record] of rateLimitMap.entries()) {
-		if (now > record.resetTime) {
-			rateLimitMap.delete(key);
-		}
-	}
-}, RATE_LIMIT_WINDOW);
-
 function checkRateLimit(apiKey: string): boolean {
 	const now = Date.now();
 	const record = rateLimitMap.get(apiKey);
 
-	// Clean up expired entries
+	// Clean up expired entries when accessing
 	if (!record || now > record.resetTime) {
+		// Delete expired entry before creating new one
+		if (record && now > record.resetTime) {
+			rateLimitMap.delete(apiKey);
+		}
 		rateLimitMap.set(apiKey, { count: 1, resetTime: now + RATE_LIMIT_WINDOW });
 		return true;
 	}
@@ -35,25 +29,42 @@ function checkRateLimit(apiKey: string): boolean {
 }
 
 function getClientApiKey(request: NextRequest): string | null {
-	// Check header for API key (preferred)
+	// Check header for API key (preferred method)
 	const apiKey = request.headers.get('x-api-key');
 	if (apiKey) return apiKey;
 
-	// Check query parameter (deprecated)
+	// Query parameter is deprecated - warn but don't use
 	const queryKey = request.nextUrl.searchParams.get('api_key');
 	if (queryKey) {
 		console.warn('⚠️ API key passed via query parameter - use X-API-Key header instead');
-		return queryKey;
+		return null; // Don't accept query param anymore
 	}
 
 	return null;
 }
 
-// Validate API key against trusted keys (in production, use database or env)
+// Validate API key against trusted keys from environment
 function isValidApiKey(apiKey: string): boolean {
-	// For now, accept any non-empty key
-	// In production, validate against stored API keys
-	return apiKey.length > 0;
+	if (!apiKey || apiKey.length === 0) {
+		return false;
+	}
+
+	// In production, validate against configured trusted API keys
+	// Format: comma-separated list in environment variable
+	const trustedKeys = process.env.TRUSTED_API_KEYS;
+	if (trustedKeys) {
+		const validKeys = trustedKeys.split(',').map((k) => k.trim());
+		return validKeys.includes(apiKey);
+	}
+
+	// In development, accept a single key from env or reject all
+	const devApiKey = process.env.MOBILE_API_KEY;
+	if (devApiKey) {
+		return apiKey === devApiKey;
+	}
+
+	// No keys configured - reject all in production, accept in dev
+	return process.env.NODE_ENV !== 'production';
 }
 
 export async function GET(request: NextRequest) {

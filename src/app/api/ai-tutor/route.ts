@@ -1,7 +1,8 @@
 import { GoogleGenAI } from '@google/genai';
 import { type NextRequest, NextResponse } from 'next/server';
 
-const GEMINI_API_KEY = process.env.NEXT_PUBLIC_GEMINI_API_KEY || process.env.GEMINI_API_KEY;
+// Only use server-side GEMINI_API_KEY - never expose to client
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
 interface ChatMessage {
 	role: 'user' | 'assistant';

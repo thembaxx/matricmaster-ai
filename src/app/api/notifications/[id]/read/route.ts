@@ -3,7 +3,7 @@ import { getAuth } from '@/lib/auth';
 
 export async function POST(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
 	try {
-		const auth = getAuth();
+		const auth = await getAuth();
 		const session = await auth.api.getSession({ headers: request.headers });
 
 		if (!session) {

@@ -11,7 +11,7 @@ import {
 	User,
 	XCircle,
 } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -28,6 +28,14 @@ export default function SettingsPage() {
 	const [displayName, setDisplayName] = useState(session?.user?.name || '');
 	const [email, setEmail] = useState(session?.user?.email || '');
 
+	// Sync state when session changes
+	useEffect(() => {
+		if (session?.user) {
+			setDisplayName(session.user.name || '');
+			setEmail(session.user.email || '');
+		}
+	}, [session]);
+
 	// Security settings state
 	const [is2FAEnabled, setIs2FAEnabled] = useState(false);
 	const [isLoading2FA, setIsLoading2FA] = useState(false);
@@ -40,6 +48,30 @@ export default function SettingsPage() {
 	const [pushNotifications, setPushNotifications] = useState(true);
 	const [studyReminders, setStudyReminders] = useState(true);
 	const [achievementAlerts, setAchievementAlerts] = useState(true);
+
+	// Privacy settings
+	// const [profileVisibility, setProfileVisibility] = useState(true);
+	// const [showOnLeaderboard, setShowOnLeaderboard] = useState(true);
+	// const [analyticsTracking, setAnalyticsTracking] = useState(true);
+
+	// Save handlers
+	// const handleSaveChanges = async () => {
+	// 	// TODO: Implement actual save to backend
+	// 	console.log('Saving profile changes:', { displayName });
+	// 	alert('Profile updated successfully!');
+	// };
+
+	// const handlePasswordChange = async () => {
+	// 	// TODO: Implement actual password change
+	// 	alert('Password change functionality coming soon!');
+	// };
+
+	// const handleDeleteAccount = () => {
+	// 	if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+	// 		// TODO: Implement actual account deletion
+	// 		alert('Account deletion functionality coming soon!');
+	// 	}
+	// };
 
 	const handleEnable2FA = async () => {
 		if (!password) {
@@ -58,6 +90,7 @@ export default function SettingsPage() {
 				alert(result.error.message);
 			}
 		} catch (error) {
+			console.log(error);
 			alert('Failed to enable 2FA');
 		} finally {
 			setIsLoading2FA(false);
@@ -81,6 +114,7 @@ export default function SettingsPage() {
 				alert(result.error.message);
 			}
 		} catch (error) {
+			console.log(error);
 			alert('Failed to disable 2FA');
 		} finally {
 			setIsLoading2FA(false);
@@ -103,6 +137,7 @@ export default function SettingsPage() {
 				alert(result.error.message);
 			}
 		} catch (error) {
+			console.log(error);
 			alert('Failed to regenerate backup codes');
 		} finally {
 			setIsLoading2FA(false);
