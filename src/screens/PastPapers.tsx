@@ -3,6 +3,7 @@
 import { BookOpen, Download, Eye, FileText, Filter, Search as SearchIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { BackgroundMesh } from '@/components/ui/background-mesh';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -27,9 +28,10 @@ export default function PastPapers() {
 
 	return (
 		<div className="flex flex-col h-full bg-zinc-50 dark:bg-zinc-950 relative overflow-hidden">
+			<BackgroundMesh variant="subtle" />
 			{/* Header */}
 			<header
-				className="px-6 py-4 ios-glass sticky top-0 z-10 shrink-0"
+				className="px-6 py-4 sticky top-0 z-20 shrink-0 bg-white/70 dark:bg-zinc-900/70 backdrop-blur-xl border-b border-white/20 dark:border-white/10"
 				style={{
 					paddingTop: 'calc(env(safe-area-inset-top, 0px) + 12px)',
 				}}
@@ -71,7 +73,7 @@ export default function PastPapers() {
 				</div>
 			</header>
 
-			<ScrollArea className="flex-1">
+			<ScrollArea className="flex-1 relative z-10">
 				<main
 					className="px-6 py-8 space-y-4 pb-40 max-w-2xl mx-auto w-full"
 					style={{
@@ -103,7 +105,7 @@ export default function PastPapers() {
 							{filteredPapers.map((paper) => (
 								<Card
 									key={paper.id}
-									className="p-5 border-none shadow-sm bg-white dark:bg-zinc-900 rounded-[2rem] group hover:shadow-md transition-all active:scale-[0.98]"
+									className="p-5 premium-glass border-none rounded-[2rem] group hover:scale-[1.01] transition-all active:scale-[0.99] premium-glass-hover"
 								>
 									<div className="flex items-start justify-between mb-4">
 										<div className="flex items-center gap-3">

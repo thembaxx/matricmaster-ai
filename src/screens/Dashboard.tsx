@@ -17,6 +17,7 @@ import {
 import { useRouter } from 'next/navigation';
 import { useEffect, useState, useTransition } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { BackgroundMesh } from '@/components/ui/background-mesh';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -200,11 +201,12 @@ export default function Dashboard() {
 	const isLoading = isSessionLoading || isPending;
 
 	return (
-		<div className="flex flex-col h-full bg-background font-inter pb-24">
+		<div className="flex flex-col h-full bg-background font-inter pb-24 relative overflow-hidden">
+			<BackgroundMesh variant="subtle" />
 			<motion.header
 				initial={{ opacity: 0, y: -20 }}
 				animate={{ opacity: 1, y: 0 }}
-				className="px-6 pt-6 pb-2 flex items-center justify-between shrink-0"
+				className="px-6 pt-6 pb-2 flex items-center justify-between shrink-0 relative z-10"
 			>
 				<div className="flex items-center gap-3">
 					<div className="relative">
@@ -233,14 +235,14 @@ export default function Dashboard() {
 				<Button
 					variant="ghost"
 					size="icon"
-					className="w-12 h-12 rounded-2xl bg-card premium-shadow relative"
+					className="w-12 h-12 rounded-2xl bg-white/50 dark:bg-zinc-900/50 backdrop-blur-md border border-white/20 dark:border-white/10 shadow-sm relative hover:bg-white/80 dark:hover:bg-zinc-900/80 transition-all"
 				>
 					<Bell className="w-6 h-6 text-foreground" />
 					<span className="absolute top-3 right-3 w-2.5 h-2.5 bg-rose-500 border-2 border-background rounded-full" />
 				</Button>
 			</motion.header>
 
-			<ScrollArea className="flex-1">
+			<ScrollArea className="flex-1 relative z-10">
 				<motion.main
 					variants={containerVariants}
 					initial="hidden"
@@ -251,7 +253,7 @@ export default function Dashboard() {
 					<div className="grid grid-cols-2 gap-4">
 						{/* Streak Card - Col 1 */}
 						<motion.div variants={itemVariants} className="col-span-1">
-							<Card className="h-full p-5 bg-card border-none premium-shadow rounded-3xl flex flex-col justify-between relative overflow-hidden group">
+							<Card className="h-full p-5 premium-glass border-none rounded-3xl flex flex-col justify-between relative overflow-hidden group">
 								<div className="absolute -right-4 -bottom-4 w-24 h-24 bg-orange-100 dark:bg-orange-900/10 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-500" />
 								<div className="space-y-1 relative z-10">
 									<p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest opacity-70">
@@ -272,7 +274,7 @@ export default function Dashboard() {
 
 						{/* Quick Stats - Col 1 */}
 						<motion.div variants={itemVariants} className="col-span-1">
-							<Card className="h-full p-5 bg-card border-none premium-shadow rounded-3xl flex flex-col justify-between relative overflow-hidden group">
+							<Card className="h-full p-5 premium-glass border-none rounded-3xl flex flex-col justify-between relative overflow-hidden group">
 								<div className="absolute -right-4 -bottom-4 w-24 h-24 bg-blue-100 dark:bg-blue-900/10 rounded-full blur-2xl" />
 								<div className="space-y-1 relative z-10">
 									<p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest opacity-70">
@@ -295,7 +297,9 @@ export default function Dashboard() {
 
 						{/* Main Daily Quest Card - Col 1 & 2 */}
 						<motion.div variants={itemVariants} className="col-span-2">
-							<Card className="p-6 bg-card border-none premium-shadow rounded-[2.5rem] space-y-6 relative overflow-hidden group">
+							<Card className="p-6 premium-glass border-none rounded-[2.5rem] space-y-6 relative overflow-hidden group">
+								{/* Subtle Shine Effect */}
+								<div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-linear-to-r from-transparent via-white/5 to-transparent pointer-events-none" />
 								<div className="absolute -right-8 -top-8 w-64 h-64 bg-brand-blue/5 rounded-full blur-3xl pointer-events-none group-hover:bg-brand-blue/10 transition-colors duration-500" />
 
 								<div className="flex justify-between items-start relative z-10">
@@ -314,7 +318,7 @@ export default function Dashboard() {
 												: `${progressData?.totalQuestions || 0} questions answered`}
 										</p>
 									</div>
-									<div className="w-14 h-14 bg-muted/50 rounded-2xl flex items-center justify-center border border-border/50">
+									<div className="w-14 h-14 bg-white/50 dark:bg-muted/50 rounded-2xl flex items-center justify-center border border-white/40 dark:border-white/5 shadow-sm">
 										<Sparkles className="w-6 h-6 text-[#efb036]" />
 									</div>
 								</div>
@@ -327,7 +331,7 @@ export default function Dashboard() {
 										</span>
 										<span className="text-xs font-black text-brand-blue">{dailyProgress}%</span>
 									</div>
-									<div className="h-2 w-full bg-muted rounded-full overflow-hidden">
+									<div className="h-2 w-full bg-muted/50 rounded-full overflow-hidden">
 										<motion.div
 											initial={{ width: 0 }}
 											animate={{ width: `${dailyProgress}%` }}
@@ -360,7 +364,7 @@ export default function Dashboard() {
 						<div className="flex justify-between items-center mb-4">
 							<h3 className="text-lg font-black text-foreground tracking-tight">Weekly Activity</h3>
 						</div>
-						<div className="grid grid-cols-7 gap-2 bg-card p-5 rounded-[2.5rem] premium-shadow">
+						<div className="grid grid-cols-7 gap-2 premium-glass p-5 rounded-[2.5rem]">
 							{weekProgress.map((item) => (
 								<div key={item.day} className="flex flex-col items-center gap-3">
 									<span
@@ -398,7 +402,7 @@ export default function Dashboard() {
 								<button
 									key={challenge.title}
 									type="button"
-									className="w-full text-left bg-card p-4 rounded-[2rem] flex items-center justify-between premium-shadow group hover:translate-x-1 transition-all cursor-pointer border border-transparent hover:border-brand-blue/10"
+									className="w-full text-left premium-glass p-4 rounded-[2rem] flex items-center justify-between group hover:translate-x-1 transition-all cursor-pointer border-transparent hover:border-brand-blue/10 premium-glass-hover"
 									onClick={() => router.push('/quiz')}
 								>
 									<div className="flex items-center gap-4">

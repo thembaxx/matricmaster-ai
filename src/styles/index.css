@@ -122,16 +122,21 @@
 
 @layer utilities {
 	.premium-glass {
-		@apply bg-surface-base/60 dark:bg-surface-elevated/60 backdrop-blur-3xl border border-border/30 dark:border-border-strong/30 shadow-2xl shadow-black/5;
+		@apply bg-white/80 dark:bg-zinc-900/60 backdrop-blur-xl border border-white/20 dark:border-white/10 shadow-xl;
 	}
+    .premium-glass-hover {
+        @apply hover:bg-white/90 dark:hover:bg-zinc-900/70 transition-colors duration-300;
+    }
+    .ios-glass {
+        @apply bg-white/70 dark:bg-zinc-900/70 backdrop-blur-xl border border-white/20 dark:border-white/10;
+    }
 	.premium-shadow {
-		box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1), 
-		            0 0 0 1px rgb(0 0 0 / 0.05);
+		box-shadow: 0 8px 32px -4px rgba(0, 0, 0, 0.1), 0 4px 16px -2px rgba(0, 0, 0, 0.05);
 	}
 	.mesh-gradient-blue {
-		background: radial-gradient(at 0% 0%, hsla(217,100%,70%,1) 0, transparent 50%),
-		            radial-gradient(at 50% 0%, hsla(225,100%,60%,1) 0, transparent 50%),
-		            radial-gradient(at 100% 0%, hsla(230,100%,50%,1) 0, transparent 50%);
+		background: radial-gradient(at 0% 0%, hsla(217,100%,70%,0.2) 0, transparent 50%),
+		            radial-gradient(at 50% 0%, hsla(225,100%,60%,0.2) 0, transparent 50%),
+		            radial-gradient(at 100% 0%, hsla(230,100%,50%,0.2) 0, transparent 50%);
 	}
 }
 
