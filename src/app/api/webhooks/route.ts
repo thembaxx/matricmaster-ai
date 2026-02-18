@@ -1,10 +1,13 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 
 // Webhook configuration storage (in production, store in database)
-const webhookConfigs: Map<string, { url: string; events: string[]; secret: string; isActive: boolean }> = new Map();
+const webhookConfigs: Map<
+	string,
+	{ url: string; events: string[]; secret: string; isActive: boolean }
+> = new Map();
 
 // Event types for webhooks
-export type WebhookEvent = 
+export type WebhookEvent =
 	| 'user.registered'
 	| 'user.login'
 	| 'user.logout'
@@ -22,13 +25,17 @@ interface WebhookPayload {
 }
 
 // Send webhook to configured URL
-async function sendWebhook(configUrl: string, payload: WebhookPayload, secret: string): Promise<boolean> {
+async function sendWebhook(
+	configUrl: string,
+	payload: WebhookPayload,
+	secret: string
+): Promise<boolean> {
 	try {
 		const response = await fetch(configUrl, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
-				'X-Webhook-Signature': require('crypto')
+				'X-Webhook-Signature': require('node:crypto')
 					.createHmac('sha256', secret)
 					.update(JSON.stringify(payload))
 					.digest('hex'),
@@ -45,7 +52,10 @@ async function sendWebhook(configUrl: string, payload: WebhookPayload, secret: s
 }
 
 // Trigger webhook for an event
-export async function triggerWebhook(event: WebhookEvent, data: Record<string, unknown>): Promise<void> {
+export async function triggerWebhook(
+	event: WebhookEvent,
+	data: Record<string, unknown>
+): Promise<void> {
 	const payload: WebhookPayload = {
 		event,
 		timestamp: new Date().toISOString(),
@@ -95,10 +105,7 @@ export async function POST(request: NextRequest) {
 		try {
 			new URL(url);
 		} catch {
-			return NextResponse.json(
-				{ error: 'Invalid URL format' },
-				{ status: 400 }
-			);
+			return NextResponse.json({ error: 'Invalid URL format' }, { status: 400 });
 		}
 
 		// Validate events
@@ -114,7 +121,9 @@ export async function POST(request: NextRequest) {
 			'subscription.expired',
 		];
 
-		const invalidEvents = events.filter((e: string) => !validEvents.includes(e as WebhookEvent) && e !== '*');
+		const invalidEvents = events.filter(
+			(e: string) => !validEvents.includes(e as WebhookEvent) && e !== '*'
+		);
 		if (invalidEvents.length > 0) {
 			return NextResponse.json(
 				{ error: `Invalid events: ${invalidEvents.join(', ')}` },
@@ -135,10 +144,7 @@ export async function POST(request: NextRequest) {
 		});
 	} catch (error) {
 		console.error('Webhook configuration error:', error);
-		return NextResponse.json(
-			{ error: 'Invalid request body' },
-			{ status: 400 }
-		);
+		return NextResponse.json({ error: 'Invalid request body' }, { status: 400 });
 	}
 }
 
@@ -147,17 +153,11 @@ export async function DELETE(request: NextRequest) {
 	const webhookId = request.nextUrl.searchParams.get('webhookId');
 
 	if (!webhookId) {
-		return NextResponse.json(
-			{ error: 'webhookId is required' },
-			{ status: 400 }
-		);
+		return NextResponse.json({ error: 'webhookId is required' }, { status: 400 });
 	}
 
 	if (!webhookConfigs.has(webhookId)) {
-		return NextResponse.json(
-			{ error: 'Webhook not found' },
-			{ status: 404 }
-		);
+		return NextResponse.json({ error: 'Webhook not found' }, { status: 404 });
 	}
 
 	webhookConfigs.delete(webhookId);

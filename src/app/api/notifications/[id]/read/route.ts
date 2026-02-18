@@ -1,27 +1,21 @@
-import { NextRequest, NextResponse } from "next/server";
-import { getAuth } from "@/lib/auth";
+import { type NextRequest, NextResponse } from 'next/server';
+import { getAuth } from '@/lib/auth';
 
-export async function POST(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
-  try {
-    const auth = getAuth();
-    const session = await auth.api.getSession({ headers: request.headers });
-    
-    if (!session) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
+export async function POST(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+	try {
+		const auth = getAuth();
+		const session = await auth.api.getSession({ headers: request.headers });
 
-    const { id } = await params;
+		if (!session) {
+			return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+		}
 
-    // In production, update notification in database
-    return NextResponse.json({ success: true, notificationId: id });
-  } catch (error) {
-    console.error("Error marking notification as read:", error);
-    return NextResponse.json(
-      { error: "Failed to mark as read" },
-      { status: 500 }
-    );
-  }
+		const { id } = await params;
+
+		// In production, update notification in database
+		return NextResponse.json({ success: true, notificationId: id });
+	} catch (error) {
+		console.error('Error marking notification as read:', error);
+		return NextResponse.json({ error: 'Failed to mark as read' }, { status: 500 });
+	}
 }

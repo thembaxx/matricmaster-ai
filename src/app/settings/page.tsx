@@ -1,30 +1,40 @@
 'use client';
 
+import {
+	Bell,
+	CheckCircle2,
+	KeyRound,
+	Loader2,
+	Lock,
+	Shield,
+	Smartphone,
+	User,
+	XCircle,
+} from 'lucide-react';
 import { useState } from 'react';
-import { authClient } from '@/lib/auth-client';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Switch } from '@/components/ui/switch';
+import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Separator } from '@/components/ui/separator';
-import { Loader2, Shield, Bell, Lock, User, Smartphone, KeyRound, CheckCircle2, XCircle } from 'lucide-react';
+import { Switch } from '@/components/ui/switch';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { authClient } from '@/lib/auth-client';
 
 export default function SettingsPage() {
 	const { data: session } = authClient.useSession();
-	
+
 	// Account settings state
 	const [displayName, setDisplayName] = useState(session?.user?.name || '');
 	const [email, setEmail] = useState(session?.user?.email || '');
-	
+
 	// Security settings state
 	const [is2FAEnabled, setIs2FAEnabled] = useState(false);
 	const [isLoading2FA, setIsLoading2FA] = useState(false);
 	const [showBackupCodes, setShowBackupCodes] = useState(false);
 	const [backupCodes, setBackupCodes] = useState<string[]>([]);
 	const [password, setPassword] = useState('');
-	
+
 	// Notification settings
 	const [emailNotifications, setEmailNotifications] = useState(true);
 	const [pushNotifications, setPushNotifications] = useState(true);
@@ -36,7 +46,7 @@ export default function SettingsPage() {
 			alert('Please enter your password');
 			return;
 		}
-		
+
 		setIsLoading2FA(true);
 		try {
 			const result = await authClient.twoFactor.enable({ password });
@@ -59,7 +69,7 @@ export default function SettingsPage() {
 			alert('Please enter your password');
 			return;
 		}
-		
+
 		setIsLoading2FA(true);
 		try {
 			const result = await authClient.twoFactor.disable({ password });
@@ -82,7 +92,7 @@ export default function SettingsPage() {
 			alert('Please enter your password');
 			return;
 		}
-		
+
 		setIsLoading2FA(true);
 		try {
 			const result = await authClient.twoFactor.generateBackupCodes({ password });
@@ -212,9 +222,7 @@ export default function SettingsPage() {
 									<Smartphone className="h-5 w-5" />
 									Two-Factor Authentication
 								</CardTitle>
-								<CardDescription>
-									Add an extra layer of security to your account
-								</CardDescription>
+								<CardDescription>Add an extra layer of security to your account</CardDescription>
 							</CardHeader>
 							<CardContent className="space-y-4">
 								<div className="flex items-center justify-between">
@@ -284,11 +292,15 @@ export default function SettingsPage() {
 												⚠️ Save Your Backup Codes
 											</h4>
 											<p className="text-sm text-amber-700 mb-4">
-												Store these codes somewhere safe. You can use them to access your account if you lose your authenticator device.
+												Store these codes somewhere safe. You can use them to access your account if
+												you lose your authenticator device.
 											</p>
 											<div className="grid grid-cols-2 gap-2">
 												{backupCodes.map((code, index) => (
-													<code key={index} className="bg-white px-2 py-1 rounded text-sm font-mono">
+													<code
+														key={index}
+														className="bg-white px-2 py-1 rounded text-sm font-mono"
+													>
 														{code}
 													</code>
 												))}
@@ -353,10 +365,7 @@ export default function SettingsPage() {
 										<p className="font-medium">Email Notifications</p>
 										<p className="text-sm text-muted-foreground">Receive updates via email</p>
 									</div>
-									<Switch
-										checked={emailNotifications}
-										onCheckedChange={setEmailNotifications}
-									/>
+									<Switch checked={emailNotifications} onCheckedChange={setEmailNotifications} />
 								</div>
 								<Separator />
 								<div className="flex items-center justify-between">
@@ -364,10 +373,7 @@ export default function SettingsPage() {
 										<p className="font-medium">Push Notifications</p>
 										<p className="text-sm text-muted-foreground">Receive browser notifications</p>
 									</div>
-									<Switch
-										checked={pushNotifications}
-										onCheckedChange={setPushNotifications}
-									/>
+									<Switch checked={pushNotifications} onCheckedChange={setPushNotifications} />
 								</div>
 								<Separator />
 								<div className="flex items-center justify-between">
@@ -375,21 +381,17 @@ export default function SettingsPage() {
 										<p className="font-medium">Study Reminders</p>
 										<p className="text-sm text-muted-foreground">Daily reminders to study</p>
 									</div>
-									<Switch
-										checked={studyReminders}
-										onCheckedChange={setStudyReminders}
-									/>
+									<Switch checked={studyReminders} onCheckedChange={setStudyReminders} />
 								</div>
 								<Separator />
 								<div className="flex items-center justify-between">
 									<div>
 										<p className="font-medium">Achievement Alerts</p>
-										<p className="text-sm text-muted-foreground">Get notified when you earn achievements</p>
+										<p className="text-sm text-muted-foreground">
+											Get notified when you earn achievements
+										</p>
 									</div>
-									<Switch
-										checked={achievementAlerts}
-										onCheckedChange={setAchievementAlerts}
-									/>
+									<Switch checked={achievementAlerts} onCheckedChange={setAchievementAlerts} />
 								</div>
 							</CardContent>
 						</Card>
@@ -406,7 +408,9 @@ export default function SettingsPage() {
 								<div className="flex items-center justify-between">
 									<div>
 										<p className="font-medium">Profile Visibility</p>
-										<p className="text-sm text-muted-foreground">Allow others to see your profile</p>
+										<p className="text-sm text-muted-foreground">
+											Allow others to see your profile
+										</p>
 									</div>
 									<Switch defaultChecked />
 								</div>
@@ -414,7 +418,9 @@ export default function SettingsPage() {
 								<div className="flex items-center justify-between">
 									<div>
 										<p className="font-medium">Show on Leaderboard</p>
-										<p className="text-sm text-muted-foreground">Appear on the public leaderboard</p>
+										<p className="text-sm text-muted-foreground">
+											Appear on the public leaderboard
+										</p>
 									</div>
 									<Switch defaultChecked />
 								</div>
@@ -422,7 +428,9 @@ export default function SettingsPage() {
 								<div className="flex items-center justify-between">
 									<div>
 										<p className="font-medium">Analytics Tracking</p>
-										<p className="text-sm text-muted-foreground">Help us improve by sharing usage data</p>
+										<p className="text-sm text-muted-foreground">
+											Help us improve by sharing usage data
+										</p>
 									</div>
 									<Switch defaultChecked />
 								</div>
@@ -438,7 +446,9 @@ export default function SettingsPage() {
 								<div className="flex items-center justify-between">
 									<div>
 										<p className="font-medium">Delete Account</p>
-										<p className="text-sm text-muted-foreground">Permanently delete your account and all data</p>
+										<p className="text-sm text-muted-foreground">
+											Permanently delete your account and all data
+										</p>
 									</div>
 									<Button variant="destructive" size="sm">
 										Delete Account
