@@ -234,6 +234,17 @@ async function getUserStats(userId: string): Promise<UserStats> {
 		.from(bookmarks)
 		.where(eq(bookmarks.userId, userId));
 
+	// Find perfect scores: sessions where all questions were answered correctly
+	const perfectScoreResult = await db
+		.select({ count: count() })
+		.from(studySessions)
+		.where(
+			and(
+				eq(studySessions.userId, userId),
+				eq(studySessions.correctAnswers, studySessions.questionsAttempted)
+			)
+		);
+
 	const sessions = await db
 		.select({ durationMinutes: studySessions.durationMinutes })
 		.from(studySessions)
@@ -253,7 +264,7 @@ async function getUserStats(userId: string): Promise<UserStats> {
 		quizzesCompleted: sessionCount[0]?.count || 0,
 		totalQuestionsAnswered,
 		correctAnswers,
-		perfectScores: 0,
+		perfectScores: perfectScoreResult[0]?.count || 0,
 		currentStreak,
 		bookmarkCount: bookmarkCountResult[0]?.count || 0,
 		totalStudyMinutes,

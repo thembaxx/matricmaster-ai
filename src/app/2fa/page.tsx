@@ -1,6 +1,7 @@
 'use client';
 
 import { KeyRound, Loader2, Shield, Smartphone } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -8,14 +9,13 @@ import { Input } from '@/components/ui/input';
 import { authClient } from '@/lib/auth-client';
 
 export default function TwoFactorPage() {
+	const router = useRouter();
 	const [code, setCode] = useState('');
 	const [backupCode, setBackupCode] = useState('');
 	const [useBackup, setUseBackup] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState('');
 	const [successMessage, setSuccessMessage] = useState('');
-
-	const router = require('next/navigation').useRouter();
 
 	const handleVerify = async (e: React.FormEvent) => {
 		e.preventDefault();
@@ -170,6 +170,7 @@ export default function TwoFactorPage() {
 									setCode('');
 									setBackupCode('');
 									setError('');
+									setSuccessMessage('');
 								}}
 								className="text-sm"
 							>

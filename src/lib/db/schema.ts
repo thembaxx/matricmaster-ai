@@ -5,8 +5,10 @@ import {
 	index,
 	integer,
 	pgTable,
+	primaryKey,
 	text,
 	timestamp,
+	uniqueIndex,
 	uuid,
 	varchar,
 } from 'drizzle-orm/pg-core';
@@ -178,10 +180,7 @@ export const userAchievements = pgTable(
 	},
 	(table) => ({
 		userIdIdx: index('user_achievements_user_id_idx').on(table.userId),
-		uniqueAchievement: {
-			name: 'user_achievement_unique',
-			columns: [table.userId, table.achievementId],
-		},
+		uniqueAchievement: uniqueIndex('user_achievement_unique').on(table.userId, table.achievementId),
 	})
 );
 
@@ -282,10 +281,11 @@ export const leaderboardEntries = pgTable(
 	(table) => ({
 		userIdIdx: index('leaderboard_user_id_idx').on(table.userId),
 		periodIdx: index('leaderboard_period_idx').on(table.periodType, table.periodStart),
-		uniqueEntry: {
-			name: 'leaderboard_unique_entry',
-			columns: [table.userId, table.periodType, table.periodStart],
-		},
+		uniqueEntry: uniqueIndex('leaderboard_unique_entry').on(
+			table.userId,
+			table.periodType,
+			table.periodStart
+		),
 	})
 );
 
@@ -302,7 +302,7 @@ export const channels = pgTable(
 		subjectId: integer('subject_id').references(() => subjects.id, { onDelete: 'set null' }),
 		createdBy: text('created_by')
 			.notNull()
-			.references(() => users.id),
+			.references(() => users.id, { onDelete: 'set null' }),
 		isPublic: boolean('is_public').notNull().default(true),
 		memberCount: integer('member_count').notNull().default(1),
 		createdAt: timestamp('created_at').defaultNow(),
@@ -330,7 +330,7 @@ export const channelMembers = pgTable(
 		joinedAt: timestamp('joined_at').defaultNow(),
 	},
 	(table) => ({
-		pk: { columns: [table.channelId, table.userId] },
+		pk: primaryKey({ columns: [table.channelId, table.userId] }),
 		userIdIdx: index('channel_members_user_id_idx').on(table.userId),
 	})
 );
