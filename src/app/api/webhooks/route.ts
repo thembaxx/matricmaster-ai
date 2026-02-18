@@ -1,3 +1,4 @@
+import crypto from 'crypto';
 import { type NextRequest, NextResponse } from 'next/server';
 
 // Webhook configuration storage (in production, store in database)
@@ -24,26 +25,83 @@ interface WebhookPayload {
 	data: Record<string, unknown>;
 }
 
-// Send webhook to configured URL
+// SSRF protection: validate URL before making request
+function isValidWebhookUrl(urlString: string): { valid: boolean; error?: string } {
+	try {
+		const url = new URL(urlString);
+
+		// Only allow HTTP and HTTPS
+		if (url.protocol !== 'http:' && url.protocol !== 'https:') {
+			return { valid: false, error: 'Only HTTP and HTTPS protocols are allowed' };
+		}
+
+		const hostname = url.hostname.toLowerCase();
+
+		// Block localhost variants
+		const localhostPatterns = ['localhost', '127.0.0.1', '::1', '0.0.0.0', '::'];
+		if (localhostPatterns.includes(hostname)) {
+			return { valid: false, error: 'Localhost addresses are not allowed' };
+		}
+
+		// Block private IP ranges (RFC 1918)
+		const privateRanges = [
+			/^10\./,
+			/^172\.(1[6-9]|2\d|3[01])\./,
+			/^192\.168\./,
+			/^127\./,
+			/^169\.254\./, // Link-local
+		];
+		if (privateRanges.some((pattern) => pattern.test(hostname))) {
+			return { valid: false, error: 'Private IP addresses are not allowed' };
+		}
+
+		// Block cloud metadata endpoints
+		if (hostname === '169.254.169.254') {
+			return { valid: false, error: 'Cloud metadata endpoints are not allowed' };
+		}
+
+		return { valid: true };
+	} catch {
+		return { valid: false, error: 'Invalid URL format' };
+	}
+}
+
+// Validate webhook secret strength
+function isValidSecret(secret: string): boolean {
+	// Require minimum length
+	if (secret.length < 16) return false;
+	// Check for complexity (letters and digits)
+	const hasLetter = /[a-zA-Z]/.test(secret);
+	const hasDigit = /\d/.test(secret);
+	return hasLetter && hasDigit;
+}
+
+// Send webhook to configured URL with timeout
 async function sendWebhook(
 	configUrl: string,
 	payload: WebhookPayload,
-	secret: string
+	secret: string,
+	timeoutMs = 5000
 ): Promise<boolean> {
 	try {
+		const controller = new AbortController();
+		const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+
 		const response = await fetch(configUrl, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
-				'X-Webhook-Signature': require('node:crypto')
+				'X-Webhook-Signature': crypto
 					.createHmac('sha256', secret)
 					.update(JSON.stringify(payload))
 					.digest('hex'),
 				'X-Webhook-Event': payload.event,
 			},
 			body: JSON.stringify(payload),
+			signal: controller.signal,
 		});
 
+		clearTimeout(timeoutId);
 		return response.ok;
 	} catch (error) {
 		console.error('Webhook delivery failed:', error);
@@ -78,12 +136,18 @@ export async function triggerWebhook(
 // GET - List webhook configurations
 export async function GET() {
 	// In production, add admin authentication check
+	// For now, return empty array to avoid exposing config
 	const webhooks = Array.from(webhookConfigs.entries()).map(([id, config]) => ({
 		id,
 		url: config.url,
 		events: config.events,
 		isActive: config.isActive,
 	}));
+
+	// Don't expose sensitive config in production without auth
+	if (process.env.NODE_ENV === 'production') {
+		return NextResponse.json({ webhooks: [] });
+	}
 
 	return NextResponse.json({ webhooks });
 }
@@ -101,11 +165,18 @@ export async function POST(request: NextRequest) {
 			);
 		}
 
-		// Validate URL
-		try {
-			new URL(url);
-		} catch {
-			return NextResponse.json({ error: 'Invalid URL format' }, { status: 400 });
+		// Validate URL with SSRF protection
+		const urlValidation = isValidWebhookUrl(url);
+		if (!urlValidation.valid) {
+			return NextResponse.json({ error: urlValidation.error }, { status: 400 });
+		}
+
+		// Validate secret strength
+		if (!isValidSecret(secret)) {
+			return NextResponse.json(
+				{ error: 'Secret must be at least 16 characters with letters and digits' },
+				{ status: 400 }
+			);
 		}
 
 		// Validate events

@@ -6,10 +6,21 @@ const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
 const RATE_LIMIT = 100; // requests per minute
 const RATE_LIMIT_WINDOW = 60 * 1000; // 1 minute
 
+// Periodic cleanup of expired rate limit entries
+setInterval(() => {
+	const now = Date.now();
+	for (const [key, record] of rateLimitMap.entries()) {
+		if (now > record.resetTime) {
+			rateLimitMap.delete(key);
+		}
+	}
+}, RATE_LIMIT_WINDOW);
+
 function checkRateLimit(apiKey: string): boolean {
 	const now = Date.now();
 	const record = rateLimitMap.get(apiKey);
 
+	// Clean up expired entries
 	if (!record || now > record.resetTime) {
 		rateLimitMap.set(apiKey, { count: 1, resetTime: now + RATE_LIMIT_WINDOW });
 		return true;
@@ -24,12 +35,25 @@ function checkRateLimit(apiKey: string): boolean {
 }
 
 function getClientApiKey(request: NextRequest): string | null {
-	// Check header for API key
+	// Check header for API key (preferred)
 	const apiKey = request.headers.get('x-api-key');
 	if (apiKey) return apiKey;
 
-	// Check query parameter
-	return request.nextUrl.searchParams.get('api_key');
+	// Check query parameter (deprecated)
+	const queryKey = request.nextUrl.searchParams.get('api_key');
+	if (queryKey) {
+		console.warn('⚠️ API key passed via query parameter - use X-API-Key header instead');
+		return queryKey;
+	}
+
+	return null;
+}
+
+// Validate API key against trusted keys (in production, use database or env)
+function isValidApiKey(apiKey: string): boolean {
+	// For now, accept any non-empty key
+	// In production, validate against stored API keys
+	return apiKey.length > 0;
 }
 
 export async function GET(request: NextRequest) {
@@ -40,6 +64,11 @@ export async function GET(request: NextRequest) {
 			{ error: 'API key required. Provide it in X-API-Key header or api_key query parameter.' },
 			{ status: 401 }
 		);
+	}
+
+	// Validate API key
+	if (!isValidApiKey(apiKey)) {
+		return NextResponse.json({ error: 'Invalid API key' }, { status: 401 });
 	}
 
 	// Rate limiting
@@ -83,6 +112,11 @@ export async function POST(request: NextRequest) {
 
 	if (!apiKey) {
 		return NextResponse.json({ error: 'API key required' }, { status: 401 });
+	}
+
+	// Validate API key
+	if (!isValidApiKey(apiKey)) {
+		return NextResponse.json({ error: 'Invalid API key' }, { status: 401 });
 	}
 
 	if (!checkRateLimit(apiKey)) {

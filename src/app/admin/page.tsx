@@ -81,7 +81,7 @@ export default function AdminDashboardPage() {
 	const [searchQuery, setSearchQuery] = useState('');
 
 	// In production, check for admin role
-	const isAdmin = session?.user?.email?.includes('admin') || true;
+	const isAdmin = session?.user?.email?.includes('admin');
 
 	if (!session) {
 		return (
@@ -230,7 +230,9 @@ export default function AdminDashboardPage() {
 														<p className="text-sm font-medium">{activity.user}</p>
 														<p className="text-xs text-muted-foreground">{activity.action}</p>
 													</div>
-													{activity.score && <Badge variant="outline">{activity.score}%</Badge>}
+													{activity.score != null && (
+														<Badge variant="outline">{activity.score}%</Badge>
+													)}
 													<span className="text-xs text-muted-foreground">{activity.time}</span>
 												</div>
 											))}

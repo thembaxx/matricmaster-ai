@@ -13,6 +13,9 @@ export default function TwoFactorPage() {
 	const [useBackup, setUseBackup] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState('');
+	const [successMessage, setSuccessMessage] = useState('');
+
+	const router = require('next/navigation').useRouter();
 
 	const handleVerify = async (e: React.FormEvent) => {
 		e.preventDefault();
@@ -27,6 +30,9 @@ export default function TwoFactorPage() {
 				});
 				if (result.error) {
 					setError(result.error.message || 'Verification failed');
+				} else {
+					// Navigate to dashboard on successful verification
+					router.push('/dashboard');
 				}
 			} else {
 				const result = await authClient.twoFactor.verifyTotp({
@@ -35,6 +41,9 @@ export default function TwoFactorPage() {
 				});
 				if (result.error) {
 					setError(result.error.message || 'Verification failed');
+				} else {
+					// Navigate to dashboard on successful verification
+					router.push('/dashboard');
 				}
 			}
 		} catch (_err) {
@@ -47,11 +56,14 @@ export default function TwoFactorPage() {
 	const handleSendOtp = async () => {
 		setIsLoading(true);
 		setError('');
+		setSuccessMessage('');
 
 		try {
 			const result = await authClient.twoFactor.sendOtp();
 			if (result.error) {
 				setError(result.error.message || 'Failed to send OTP');
+			} else {
+				setSuccessMessage('OTP sent successfully! Check your email.');
 			}
 		} catch (_err) {
 			setError('Failed to send OTP');
@@ -126,6 +138,12 @@ export default function TwoFactorPage() {
 						{error && (
 							<div className="rounded-md bg-destructive/10 p-3 text-sm text-destructive">
 								{error}
+							</div>
+						)}
+
+						{successMessage && (
+							<div className="rounded-md bg-green-500/10 p-3 text-sm text-green-600">
+								{successMessage}
 							</div>
 						)}
 

@@ -11,7 +11,6 @@ import {
 	MessageSquare,
 	Search,
 	Shield,
-	Users,
 	X,
 } from 'lucide-react';
 import { useState } from 'react';
@@ -48,6 +47,9 @@ interface ModerationPattern {
 
 export default function ModerationDashboard() {
 	const { data: session } = useSession();
+	const [activeTab, setActiveTab] = useState('flags');
+	const [searchQuery, setSearchQuery] = useState('');
+	const [statusFilter, setStatusFilter] = useState<string>('all');
 
 	// Session check - in production, add proper admin authorization
 	if (!session) {
@@ -58,9 +60,31 @@ export default function ModerationDashboard() {
 		);
 	}
 
-	const [activeTab, setActiveTab] = useState('flags');
-	const [searchQuery, setSearchQuery] = useState('');
-	const [statusFilter, setStatusFilter] = useState<string>('all');
+	// Admin role check
+	const isAdmin = session.user?.email?.includes('admin');
+	if (!isAdmin) {
+		return (
+			<div className="container mx-auto py-8 text-center">
+				<p className="text-muted-foreground">You don't have permission to access this page.</p>
+			</div>
+		);
+	}
+
+	// Stable mock data for stats (deterministic values)
+	const flagReasons = [
+		{ name: 'Spam', count: 12 },
+		{ name: 'Inappropriate', count: 8 },
+		{ name: 'Harassment', count: 5 },
+		{ name: 'Incorrect', count: 3 },
+		{ name: 'Other', count: 2 },
+	];
+
+	const contentTypes = [
+		{ type: 'Comments', count: 18 },
+		{ type: 'Quiz Answers', count: 6 },
+		{ type: 'Study Notes', count: 3 },
+		{ type: 'Profiles', count: 2 },
+	];
 
 	// Mock data
 	const [flags] = useState<ContentFlag[]>([
@@ -403,18 +427,18 @@ export default function ModerationDashboard() {
 								<div>
 									<h3 className="font-medium mb-4">Flag Reasons</h3>
 									<div className="space-y-2">
-										{['Spam', 'Inappropriate', 'Harassment', 'Incorrect', 'Other'].map((reason) => (
-											<div key={reason} className="flex items-center justify-between">
-												<span className="text-sm">{reason}</span>
+										{flagReasons.map((reason) => (
+											<div key={reason.name} className="flex items-center justify-between">
+												<span className="text-sm">{reason.name}</span>
 												<div className="flex items-center gap-2">
 													<div className="w-32 h-2 bg-muted rounded-full overflow-hidden">
 														<div
 															className="h-full bg-primary"
-															style={{ width: `${Math.random() * 60 + 10}%` }}
+															style={{ width: `${Math.min(reason.count * 5 + 10, 100)}%` }}
 														/>
 													</div>
-													<span className="text-xs text-muted-foreground">
-														{Math.floor(Math.random() * 50)}
+													<span className="text-xs text-muted-foreground w-8 text-right">
+														{reason.count}
 													</span>
 												</div>
 											</div>
@@ -424,26 +448,21 @@ export default function ModerationDashboard() {
 								<div>
 									<h3 className="font-medium mb-4">Content Types Flagged</h3>
 									<div className="space-y-2">
-										{[
-											{ type: 'Comments', icon: MessageSquare },
-											{ type: 'Quiz Answers', icon: FileText },
-											{ type: 'Study Notes', icon: FileText },
-											{ type: 'Profiles', icon: Users },
-										].map((item) => (
+										{contentTypes.map((item) => (
 											<div key={item.type} className="flex items-center justify-between">
 												<span className="text-sm flex items-center gap-2">
-													<item.icon className="h-4 w-4" />
+													<MessageSquare className="h-4 w-4" />
 													{item.type}
 												</span>
 												<div className="flex items-center gap-2">
 													<div className="w-32 h-2 bg-muted rounded-full overflow-hidden">
 														<div
 															className="h-full bg-primary"
-															style={{ width: `${Math.random() * 60 + 10}%` }}
+															style={{ width: `${Math.min(item.count * 5 + 10, 100)}%` }}
 														/>
 													</div>
-													<span className="text-xs text-muted-foreground">
-														{Math.floor(Math.random() * 30)}
+													<span className="text-xs text-muted-foreground w-8 text-right">
+														{item.count}
 													</span>
 												</div>
 											</div>
