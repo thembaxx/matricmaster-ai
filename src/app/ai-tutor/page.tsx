@@ -34,7 +34,7 @@ export default function AITutorPage() {
 
 	useEffect(() => {
 		messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-	}, [messages]);
+	}, []);
 
 	const handleSend = async () => {
 		if (!input.trim() || isLoading) return;

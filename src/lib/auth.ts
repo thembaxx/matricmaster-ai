@@ -118,13 +118,7 @@ function createAuth() {
 		}
 	};
 
-	const sendPasswordResetEmail = async ({
-		email,
-		url,
-	}: {
-		email: string;
-		url: string;
-	}) => {
+	const sendPasswordResetEmail = async ({ email, url }: { email: string; url: string }) => {
 		if (!resend) {
 			console.warn('⚠️ Resend not configured - password reset email not sent');
 			return;

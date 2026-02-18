@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 import { dbManager } from '@/lib/db';
 
 // Rate limiting map (in production, use Redis)
@@ -60,7 +60,7 @@ export async function GET(request: NextRequest) {
 		return NextResponse.json({
 			success: true,
 			data: {
-				subjects: allSubjects.map(s => ({
+				subjects: allSubjects.map((s) => ({
 					id: s.id,
 					name: s.name,
 					description: s.description,
@@ -74,10 +74,7 @@ export async function GET(request: NextRequest) {
 		});
 	} catch (error) {
 		console.error('Mobile API Error:', error);
-		return NextResponse.json(
-			{ error: 'Internal server error' },
-			{ status: 500 }
-		);
+		return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
 	}
 }
 
@@ -85,17 +82,11 @@ export async function POST(request: NextRequest) {
 	const apiKey = getClientApiKey(request);
 
 	if (!apiKey) {
-		return NextResponse.json(
-			{ error: 'API key required' },
-			{ status: 401 }
-		);
+		return NextResponse.json({ error: 'API key required' }, { status: 401 });
 	}
 
 	if (!checkRateLimit(apiKey)) {
-		return NextResponse.json(
-			{ error: 'Rate limit exceeded' },
-			{ status: 429 }
-		);
+		return NextResponse.json({ error: 'Rate limit exceeded' }, { status: 429 });
 	}
 
 	try {
@@ -119,16 +110,10 @@ export async function POST(request: NextRequest) {
 				});
 
 			default:
-				return NextResponse.json(
-					{ error: 'Unknown action' },
-					{ status: 400 }
-				);
+				return NextResponse.json({ error: 'Unknown action' }, { status: 400 });
 		}
 	} catch (error) {
 		console.error('Mobile API Error:', error);
-		return NextResponse.json(
-			{ error: 'Invalid request body' },
-			{ status: 400 }
-		);
+		return NextResponse.json({ error: 'Invalid request body' }, { status: 400 });
 	}
 }

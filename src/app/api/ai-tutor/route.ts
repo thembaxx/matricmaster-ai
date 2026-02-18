@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from 'next/server';
 import { GoogleGenAI } from '@google/genai';
+import { type NextRequest, NextResponse } from 'next/server';
 
 const GEMINI_API_KEY = process.env.NEXT_PUBLIC_GEMINI_API_KEY || process.env.GEMINI_API_KEY;
 
@@ -60,10 +60,7 @@ export async function POST(request: NextRequest) {
 		const { message, subject, history } = body;
 
 		if (!message || message.trim().length === 0) {
-			return NextResponse.json(
-				{ error: 'Message is required' },
-				{ status: 400 }
-			);
+			return NextResponse.json({ error: 'Message is required' }, { status: 400 });
 		}
 
 		const genAI = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
@@ -89,9 +86,7 @@ export async function POST(request: NextRequest) {
 		}
 
 		// Add current message with subject context
-		const contextualMessage = subject
-			? `[Subject: ${subject}] ${message}`
-			: message;
+		const contextualMessage = subject ? `[Subject: ${subject}] ${message}` : message;
 
 		conversationParts.push({
 			role: 'user',
@@ -106,10 +101,7 @@ export async function POST(request: NextRequest) {
 		const response = result.text;
 
 		if (!response) {
-			return NextResponse.json(
-				{ error: 'Failed to generate response' },
-				{ status: 500 }
-			);
+			return NextResponse.json({ error: 'Failed to generate response' }, { status: 500 });
 		}
 
 		return NextResponse.json({ response });

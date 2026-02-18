@@ -1,4 +1,4 @@
-import { pgTable, uuid, text, varchar, timestamp, jsonb } from 'drizzle-orm/pg-core';
+import { jsonb, pgTable, text, timestamp, uuid, varchar } from 'drizzle-orm/pg-core';
 
 // Two Factor table (stores TOTP secrets)
 export const twoFactor = pgTable('two_factor', {

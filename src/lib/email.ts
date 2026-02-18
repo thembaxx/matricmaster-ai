@@ -6,37 +6,37 @@ const FROM_EMAIL = process.env.FROM_EMAIL || 'MatricMaster AI <noreply@matricmas
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
 
 interface SendVerificationEmailParams {
-  email: string;
-  verificationUrl: string;
-  userName?: string;
+	email: string;
+	verificationUrl: string;
+	userName?: string;
 }
 
 interface SendWelcomeEmailParams {
-  email: string;
-  userName: string;
+	email: string;
+	userName: string;
 }
 
 interface SendPasswordResetParams {
-  email: string;
-  resetUrl: string;
+	email: string;
+	resetUrl: string;
 }
 
 export async function sendVerificationEmail({
-  email,
-  verificationUrl,
-  userName,
+	email,
+	verificationUrl,
+	userName,
 }: SendVerificationEmailParams) {
-  if (!resend) {
-    console.warn('⚠️ Resend not configured - email not sent');
-    return { success: false, error: 'Email service not configured' };
-  }
+	if (!resend) {
+		console.warn('⚠️ Resend not configured - email not sent');
+		return { success: false, error: 'Email service not configured' };
+	}
 
-  try {
-    const data = await resend.emails.send({
-      from: FROM_EMAIL,
-      to: email,
-      subject: 'Verify your MatricMaster AI account',
-      html: `
+	try {
+		const data = await resend.emails.send({
+			from: FROM_EMAIL,
+			to: email,
+			subject: 'Verify your MatricMaster AI account',
+			html: `
         <!DOCTYPE html>
         <html>
         <head>
@@ -71,28 +71,28 @@ export async function sendVerificationEmail({
         </body>
         </html>
       `,
-    });
+		});
 
-    console.log(`✅ Verification email sent to ${email}`);
-    return { success: true, data };
-  } catch (error) {
-    console.error('❌ Failed to send verification email:', error);
-    return { success: false, error };
-  }
+		console.log(`✅ Verification email sent to ${email}`);
+		return { success: true, data };
+	} catch (error) {
+		console.error('❌ Failed to send verification email:', error);
+		return { success: false, error };
+	}
 }
 
 export async function sendWelcomeEmail({ email, userName }: SendWelcomeEmailParams) {
-  if (!resend) {
-    console.warn('⚠️ Resend not configured - email not sent');
-    return { success: false, error: 'Email service not configured' };
-  }
+	if (!resend) {
+		console.warn('⚠️ Resend not configured - email not sent');
+		return { success: false, error: 'Email service not configured' };
+	}
 
-  try {
-    const data = await resend.emails.send({
-      from: FROM_EMAIL,
-      to: email,
-      subject: 'Welcome to MatricMaster AI! 🎉',
-      html: `
+	try {
+		const data = await resend.emails.send({
+			from: FROM_EMAIL,
+			to: email,
+			subject: 'Welcome to MatricMaster AI! 🎉',
+			html: `
         <!DOCTYPE html>
         <html>
         <head>
@@ -131,28 +131,28 @@ export async function sendWelcomeEmail({ email, userName }: SendWelcomeEmailPara
         </body>
         </html>
       `,
-    });
+		});
 
-    console.log(`✅ Welcome email sent to ${email}`);
-    return { success: true, data };
-  } catch (error) {
-    console.error('❌ Failed to send welcome email:', error);
-    return { success: false, error };
-  }
+		console.log(`✅ Welcome email sent to ${email}`);
+		return { success: true, data };
+	} catch (error) {
+		console.error('❌ Failed to send welcome email:', error);
+		return { success: false, error };
+	}
 }
 
 export async function sendPasswordResetEmail({ email, resetUrl }: SendPasswordResetParams) {
-  if (!resend) {
-    console.warn('⚠️ Resend not configured - email not sent');
-    return { success: false, error: 'Email service not configured' };
-  }
+	if (!resend) {
+		console.warn('⚠️ Resend not configured - email not sent');
+		return { success: false, error: 'Email service not configured' };
+	}
 
-  try {
-    const data = await resend.emails.send({
-      from: FROM_EMAIL,
-      to: email,
-      subject: 'Reset your MatricMaster AI password',
-      html: `
+	try {
+		const data = await resend.emails.send({
+			from: FROM_EMAIL,
+			to: email,
+			subject: 'Reset your MatricMaster AI password',
+			html: `
         <!DOCTYPE html>
         <html>
         <head>
@@ -187,16 +187,16 @@ export async function sendPasswordResetEmail({ email, resetUrl }: SendPasswordRe
         </body>
         </html>
       `,
-    });
+		});
 
-    console.log(`✅ Password reset email sent to ${email}`);
-    return { success: true, data };
-  } catch (error) {
-    console.error('❌ Failed to send password reset email:', error);
-    return { success: false, error };
-  }
+		console.log(`✅ Password reset email sent to ${email}`);
+		return { success: true, data };
+	} catch (error) {
+		console.error('❌ Failed to send password reset email:', error);
+		return { success: false, error };
+	}
 }
 
 export function isEmailConfigured(): boolean {
-  return !!resend;
+	return !!resend;
 }
