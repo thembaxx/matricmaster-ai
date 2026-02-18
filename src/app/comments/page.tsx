@@ -146,7 +146,7 @@ export default function CommentsPage({ resourceType, resourceId }: CommentsSecti
 									placeholder="Share your thoughts or ask a question..."
 									value={newComment}
 									onChange={(e) => setNewComment(e.target.value)}
-									className="min-h-[100px]"
+									className="min-h-25"
 								/>
 								<div className="flex justify-end">
 									<Button onClick={handleSubmitComment} disabled={!newComment.trim() || isLoading}>
@@ -244,6 +244,8 @@ function CommentItem({
 					<div className="flex items-center gap-4">
 						<div className="flex items-center gap-1">
 							<button
+								type="button"
+								aria-label="Thumbs up"
 								onClick={() => onVote(comment.id, 'up')}
 								className="p-1 hover:bg-accent rounded"
 							>
@@ -251,6 +253,8 @@ function CommentItem({
 							</button>
 							<span className="text-xs">{comment.upvotes}</span>
 							<button
+								type="button"
+								aria-label="Thumbs down"
 								onClick={() => onVote(comment.id, 'down')}
 								className="p-1 hover:bg-accent rounded"
 							>
@@ -260,6 +264,7 @@ function CommentItem({
 						</div>
 
 						<button
+							type="button"
 							onClick={() => onReply(comment.id)}
 							className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground"
 						>
@@ -268,6 +273,7 @@ function CommentItem({
 						</button>
 
 						<button
+							type="button"
 							onClick={() => setShowFlagDialog(!showFlagDialog)}
 							className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground"
 						>
@@ -284,6 +290,7 @@ function CommentItem({
 								{['Spam', 'Inappropriate', 'Incorrect', 'Other'].map((reason) => (
 									<button
 										key={reason}
+										type="button"
 										onClick={() => {
 											onFlag(comment.id, reason);
 											setShowFlagDialog(false);
@@ -304,7 +311,7 @@ function CommentItem({
 								placeholder="Write a reply..."
 								value={replyContent}
 								onChange={(e) => setReplyContent(e.target.value)}
-								className="min-h-[60px] text-sm"
+								className="min-h-15 text-sm"
 							/>
 							<div className="flex gap-2 mt-2">
 								<Button size="sm" onClick={() => handleReply(comment.id)}>

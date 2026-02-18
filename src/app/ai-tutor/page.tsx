@@ -115,7 +115,7 @@ export default function AITutorPage() {
 			<header className="border-b bg-card/50 backdrop-blur-sm sticky top-0 z-10">
 				<div className="max-w-4xl mx-auto px-4 py-4">
 					<div className="flex items-center gap-3">
-						<div className="h-10 w-10 rounded-full bg-gradient-to-br from-primary to-primary/60 flex items-center justify-center">
+						<div className="h-10 w-10 rounded-full bg-linear-to-br from-primary to-primary/60 flex items-center justify-center">
 							<Sparkles className="h-5 w-5 text-primary-foreground" />
 						</div>
 						<div>

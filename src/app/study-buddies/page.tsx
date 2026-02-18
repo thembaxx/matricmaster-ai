@@ -151,7 +151,7 @@ export default function StudyBuddiesPage() {
 					<Card>
 						<CardContent className="pt-6">
 							<div className="flex gap-4 flex-wrap">
-								<div className="flex-1 min-w-[200px]">
+								<div className="flex-1 min-w-50">
 									<div className="relative">
 										<Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
 										<Input
@@ -335,18 +335,24 @@ export default function StudyBuddiesPage() {
 						</CardHeader>
 						<CardContent className="space-y-6">
 							<div>
-								<label className="text-sm font-medium mb-2 block">Bio</label>
+								<label htmlFor="profile_input" className="text-sm font-medium mb-2 block">
+									Bio
+								</label>
 								<Textarea
+									id="profile_input"
 									placeholder="Tell others about yourself and your study goals..."
 									value={profile.bio}
 									onChange={(e) => setProfile({ ...profile, bio: e.target.value })}
-									className="min-h-[100px]"
+									className="min-h-25"
 								/>
 							</div>
 
 							<div>
-								<label className="text-sm font-medium mb-2 block">Study Goals</label>
+								<label htmlFor="goal_input" className="text-sm font-medium mb-2 block">
+									Study Goals
+								</label>
 								<Textarea
+									id="goal_input"
 									placeholder="What do you want to achieve?"
 									value={profile.studyGoals}
 									onChange={(e) => setProfile({ ...profile, studyGoals: e.target.value })}
@@ -354,9 +360,7 @@ export default function StudyBuddiesPage() {
 							</div>
 
 							<div>
-								<label className="text-sm font-medium mb-2 block">
-									Subjects You Need Help With
-								</label>
+								<p className="text-sm font-medium mb-2 block">Subjects You Need Help With</p>
 								<div className="flex gap-2 flex-wrap">
 									{SUBJECTS.map((subject) => (
 										<Badge
@@ -379,7 +383,7 @@ export default function StudyBuddiesPage() {
 							</div>
 
 							<div>
-								<label className="text-sm font-medium mb-2 block">Looking For</label>
+								<p className="text-sm font-medium mb-2 block">Looking For</p>
 								<div className="flex gap-2 flex-wrap">
 									{['Study partner', 'Tutor', 'Accountability buddy', 'Group study'].map((item) => (
 										<Badge key={item} variant="outline" className="cursor-pointer">

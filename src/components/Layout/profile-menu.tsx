@@ -45,7 +45,7 @@ export function ProfileMenu({
 								</div>
 							</div>
 							<div className="space-y-0 text-left">
-								<h2 className="font-bold truncate">{user.name}</h2>
+								<h2 className="font-bold truncate text-base">{user.name}</h2>
 								<p className="text-muted-foreground text-[0.85rem]">{user.email}</p>
 								<div className="flex gap-4 items-center pt-4">
 									<Badge className="text-white/90">Badge</Badge>

@@ -146,7 +146,7 @@ export default function PdfViewer({ url, onClose }: PdfViewerProps) {
 	return (
 		<div
 			ref={containerRef}
-			className={`flex flex-col h-[100dvh] w-screen overflow-hidden ${isDarkMode ? 'bg-zinc-950' : 'bg-zinc-100'}`}
+			className={`flex flex-col h-dvh w-screen overflow-hidden ${isDarkMode ? 'bg-zinc-950' : 'bg-zinc-100'}`}
 		>
 			{/* Top Toolbar */}
 			<div

@@ -36,7 +36,7 @@ export function ScrollEdge({
 			{!prefersReducedMotion && (
 				<motion.div
 					className={cn(
-						'pointer-events-none absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-background/90 to-transparent',
+						'pointer-events-none absolute bottom-0 left-0 right-0 h-20 bg-linear-to-t from-background/90 to-transparent',
 						showShadow && 'shadow-[0_-10px_40px_rgba(0,0,0,0.1)]'
 					)}
 					style={{ opacity: opacityValue }}

@@ -42,7 +42,7 @@ function Podium({ data }: { data: LeaderboardEntry[] }) {
 						<AvatarImage src={r2?.userImage || undefined} className="object-cover" />
 						<AvatarFallback>{r2?.userName?.[0] || '?'}</AvatarFallback>
 					</Avatar>
-					<div className="absolute -bottom-2 translate-x-[24px] right-1/2 w-7 h-7 bg-zinc-400 rounded-full flex items-center justify-center text-white text-[10px] font-black border-2 border-white dark:border-zinc-950 z-20">
+					<div className="absolute -bottom-2 translate-x-6 right-1/2 w-7 h-7 bg-zinc-400 rounded-full flex items-center justify-center text-white text-[10px] font-black border-2 border-white dark:border-zinc-950 z-20">
 						2
 					</div>
 				</div>
@@ -54,7 +54,7 @@ function Podium({ data }: { data: LeaderboardEntry[] }) {
 						{r2 ? formatPoints(r2.totalPoints) : '0'} KP
 					</p>
 				</div>
-				<div className="w-16 h-20 bg-gradient-to-t from-zinc-300 to-zinc-100 dark:from-zinc-700 dark:to-zinc-800 mt-2 rounded-t-lg" />
+				<div className="w-16 h-20 bg-linear-to-t from-zinc-300 to-zinc-100 dark:from-zinc-700 dark:to-zinc-800 mt-2 rounded-t-lg" />
 			</div>
 
 			<div className="flex flex-col items-center">
@@ -62,12 +62,12 @@ function Podium({ data }: { data: LeaderboardEntry[] }) {
 					<div className="absolute -top-6 left-1/2 -translate-x-1/2 text-orange-500 animate-bounce">
 						<Award className="w-8 h-8 fill-orange-500" />
 					</div>
-					<div className="absolute inset-[-4px] bg-gradient-to-b from-orange-400 to-yellow-300 rounded-full opacity-30 blur-sm" />
-					<Avatar className="w-20 h-28 bg-gradient-to-t from-yellow-200 to-yellow-50 dark:from-yellow-900/40 dark:to-yellow-900/20 mt-2 rounded-t-xl relative z-10 transition-transform group-hover:scale-105">
+					<div className="absolute -inset-1 bg-linear-to-b from-orange-400 to-yellow-300 rounded-full opacity-30 blur-sm" />
+					<Avatar className="w-20 h-28 bg-linear-to-t from-yellow-200 to-yellow-50 dark:from-yellow-900/40 dark:to-yellow-900/20 mt-2 rounded-t-xl relative z-10 transition-transform group-hover:scale-105">
 						<AvatarImage src={r1?.userImage || undefined} className="object-cover" />
 						<AvatarFallback>{r1?.userName?.[0] || '?'}</AvatarFallback>
 					</Avatar>
-					<div className="absolute -bottom-3 translate-x-[32px] right-1/2 w-10 h-10 bg-[#efb036] rounded-full flex items-center justify-center text-zinc-950 text-base font-black border-[3px] border-white dark:border-zinc-950 z-20 shadow-xl">
+					<div className="absolute -bottom-3 translate-x-8 right-1/2 w-10 h-10 bg-[#efb036] rounded-full flex items-center justify-center text-zinc-950 text-base font-black border-[3px] border-white dark:border-zinc-950 z-20 shadow-xl">
 						1
 					</div>
 				</div>
@@ -80,7 +80,7 @@ function Podium({ data }: { data: LeaderboardEntry[] }) {
 						{r1 ? formatPoints(r1.totalPoints) : '0'} KP
 					</p>
 				</div>
-				<div className="w-24 h-32 bg-gradient-to-t from-orange-50/50 to-transparent dark:from-[#efb036]/5 mt-4 rounded-t-[2.5rem] border-x border-t border-orange-100/50 dark:border-orange-900/20" />
+				<div className="w-24 h-32 bg-linear-to-t from-orange-50/50 to-transparent dark:from-[#efb036]/5 mt-4 rounded-t-[2.5rem] border-x border-t border-orange-100/50 dark:border-orange-900/20" />
 			</div>
 
 			<div className="flex flex-col items-center">
@@ -90,7 +90,7 @@ function Podium({ data }: { data: LeaderboardEntry[] }) {
 						<AvatarImage src={r3?.userImage || undefined} className="object-cover" />
 						<AvatarFallback>{r3?.userName?.[0] || '?'}</AvatarFallback>
 					</Avatar>
-					<div className="absolute -bottom-2 translate-x-[24px] right-1/2 w-7 h-7 bg-orange-400 rounded-full flex items-center justify-center text-white text-[10px] font-black border-2 border-white dark:border-zinc-950 z-20">
+					<div className="absolute -bottom-2 translate-x-6 right-1/2 w-7 h-7 bg-orange-400 rounded-full flex items-center justify-center text-white text-[10px] font-black border-2 border-white dark:border-zinc-950 z-20">
 						3
 					</div>
 				</div>
@@ -102,7 +102,7 @@ function Podium({ data }: { data: LeaderboardEntry[] }) {
 						{r3 ? formatPoints(r3.totalPoints) : '0'} KP
 					</p>
 				</div>
-				<div className="w-16 h-16 bg-gradient-to-t from-orange-200 to-orange-100 dark:from-orange-900/40 dark:to-orange-900/20 mt-2 rounded-t-lg" />
+				<div className="w-16 h-16 bg-linear-to-t from-orange-200 to-orange-100 dark:from-orange-900/40 dark:to-orange-900/20 mt-2 rounded-t-lg" />
 			</div>
 		</div>
 	);
@@ -227,7 +227,7 @@ export default function Leaderboard() {
 					</ScrollArea>
 				</Tabs>
 			</header>
-			<div className="p-6 z-40 bg-gradient-to-t from-white via-white dark:from-[#0a0f18] dark:via-[#0a0f18] to-transparent shrink-0">
+			<div className="p-6 z-40 bg-linear-to-t from-white via-white dark:from-[#0a0f18] dark:via-[#0a0f18] to-transparent shrink-0">
 				<div className="max-w-2xl mx-auto">
 					<Card className="p-4 bg-zinc-900 dark:bg-zinc-950 border-zinc-800 shadow-2xl rounded-3xl relative overflow-hidden group">
 						<div className="absolute top-0 left-0 w-1 h-full bg-[#efb036]" />
