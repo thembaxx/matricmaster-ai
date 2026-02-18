@@ -36,6 +36,12 @@ export const metadata: Metadata = {
 		telephone: false,
 	},
 	metadataBase: new URL(baseUrl),
+	manifest: '/manifest.json',
+	appleWebApp: {
+		capable: true,
+		statusBarStyle: 'default',
+		title: 'MatricMaster',
+	},
 	openGraph: {
 		type: 'website',
 		locale: 'en_ZA',

@@ -9,6 +9,8 @@ const envSchema = z.object({
 	TWITTER_CLIENT_ID: z.string().optional(),
 	TWITTER_CLIENT_SECRET: z.string().optional(),
 	GEMINI_API_KEY: z.string().optional(),
+	RESEND_API_KEY: z.string().optional(),
+	FROM_EMAIL: z.string().email().optional(),
 	NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
 });
 

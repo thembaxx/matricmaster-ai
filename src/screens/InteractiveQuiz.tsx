@@ -435,7 +435,7 @@ export default function InteractiveQuiz() {
 				<div className="max-w-2xl mx-auto w-full p-6 flex gap-4">
 					{!showResult ? (
 						<Button
-							className="flex-1 h-16 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 rounded-[2rem] font-bold text-lg shadow-xl shadow-zinc-900/10 disabled:opacity-50 transition-all active:scale-95"
+							className="flex-1 h-16 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 rounded-[2rem] font-bold text-sm shadow-xl shadow-zinc-900/10 disabled:opacity-50 transition-all active:scale-95"
 							disabled={!selectedAnswer}
 							onClick={handleCheckAnswer}
 						>
