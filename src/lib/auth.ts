@@ -330,18 +330,14 @@ export const auth = new Proxy({} as ReturnType<typeof betterAuth>, {
 		return new Proxy(
 			{},
 			{
-				get(_innerTarget, innerProp) {
+				get(_innerTarget) {
 					// When someone accesses auth.api.method, we need to auto-initialize
 					// This is a workaround for backward compatibility
 					// The proper way is to use await getAuth() in your code
-					console.warn(
-						'⚠️ Auth accessed without await getAuth(). Auto-initializing...'
-					);
+					console.warn('⚠️ Auth accessed without await getAuth(). Auto-initializing...');
 					// Trigger async initialization but don't wait - this is fire-and-forget
 					// The next call should have auth ready (or fail gracefully)
-					getAuth().catch((err) =>
-						console.error('❌ Failed to auto-initialize auth:', err)
-					);
+					getAuth().catch((err) => console.error('❌ Failed to auto-initialize auth:', err));
 					// Return a placeholder that will throw a more helpful error
 					throw new Error(
 						`Auth is being initialized. Please use 'await getAuth()' instead of 'auth' directly.`
