@@ -51,41 +51,6 @@ export default function ModerationDashboard() {
 	const [searchQuery, setSearchQuery] = useState('');
 	const [statusFilter, setStatusFilter] = useState<string>('all');
 
-	// Session check - in production, add proper admin authorization
-	if (!session) {
-		return (
-			<div className="container mx-auto py-8 text-center">
-				<p className="text-muted-foreground">Please sign in to access moderation.</p>
-			</div>
-		);
-	}
-
-	// Admin role check
-	const isAdmin = session.user?.email?.includes('admin');
-	if (!isAdmin) {
-		return (
-			<div className="container mx-auto py-8 text-center">
-				<p className="text-muted-foreground">You don't have permission to access this page.</p>
-			</div>
-		);
-	}
-
-	// Stable mock data for stats (deterministic values)
-	const flagReasons = [
-		{ name: 'Spam', count: 12 },
-		{ name: 'Inappropriate', count: 8 },
-		{ name: 'Harassment', count: 5 },
-		{ name: 'Incorrect', count: 3 },
-		{ name: 'Other', count: 2 },
-	];
-
-	const contentTypes = [
-		{ type: 'Comments', count: 18 },
-		{ type: 'Quiz Answers', count: 6 },
-		{ type: 'Study Notes', count: 3 },
-		{ type: 'Profiles', count: 2 },
-	];
-
 	// Mock data
 	const [flags] = useState<ContentFlag[]>([
 		{
@@ -132,6 +97,41 @@ export default function ModerationDashboard() {
 			isActive: true,
 		},
 	]);
+
+	// Session check - in production, add proper admin authorization
+	if (!session) {
+		return (
+			<div className="container mx-auto py-8 text-center">
+				<p className="text-muted-foreground">Please sign in to access moderation.</p>
+			</div>
+		);
+	}
+
+	// Admin role check
+	const isAdmin = session.user?.email?.includes('admin');
+	if (!isAdmin) {
+		return (
+			<div className="container mx-auto py-8 text-center">
+				<p className="text-muted-foreground">You don't have permission to access this page.</p>
+			</div>
+		);
+	}
+
+	// Stable mock data for stats (deterministic values)
+	const flagReasons = [
+		{ name: 'Spam', count: 12 },
+		{ name: 'Inappropriate', count: 8 },
+		{ name: 'Harassment', count: 5 },
+		{ name: 'Incorrect', count: 3 },
+		{ name: 'Other', count: 2 },
+	];
+
+	const contentTypes = [
+		{ type: 'Comments', count: 18 },
+		{ type: 'Quiz Answers', count: 6 },
+		{ type: 'Study Notes', count: 3 },
+		{ type: 'Profiles', count: 2 },
+	];
 
 	const getSeverityColor = (severity: string) => {
 		switch (severity) {
@@ -280,6 +280,7 @@ export default function ModerationDashboard() {
 									/>
 								</div>
 								<select
+									title="Status filter"
 									className="px-3 py-2 border rounded-md"
 									value={statusFilter}
 									onChange={(e) => setStatusFilter(e.target.value)}

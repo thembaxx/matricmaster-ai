@@ -217,7 +217,7 @@ export default function AdminDashboardPage() {
 									</CardTitle>
 								</CardHeader>
 								<CardContent>
-									<ScrollArea className="h-[300px]">
+									<ScrollArea className="h-75">
 										<div className="space-y-4">
 											{mockRecentActivity.map((activity) => (
 												<div key={activity.id} className="flex items-center gap-3">
@@ -251,7 +251,7 @@ export default function AdminDashboardPage() {
 									<CardDescription>Items requiring moderation</CardDescription>
 								</CardHeader>
 								<CardContent>
-									<ScrollArea className="h-[300px]">
+									<ScrollArea className="h-75">
 										<div className="space-y-3">
 											{mockFlaggedContent.map((item) => (
 												<div key={item.id} className="p-3 border rounded-lg">
