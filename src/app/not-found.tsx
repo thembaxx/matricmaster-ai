@@ -1,33 +1,55 @@
+'use client';
+
+import { motion } from 'framer-motion';
 import { Home, Search } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 
 export default function NotFound() {
 	return (
-		<div className="flex flex-col items-center justify-center min-h-screen p-6 bg-zinc-50 dark:bg-zinc-950">
-			<div className="max-w-md w-full text-center space-y-6">
-				<div className="space-y-2">
-					<h1 className="text-6xl font-black text-zinc-900 dark:text-white">404</h1>
-					<h2 className="text-2xl font-bold text-zinc-900 dark:text-white">Page Not Found</h2>
-					<p className="text-zinc-500 dark:text-zinc-400">
-						The page you&apos;re looking for doesn&apos;t exist or has been moved.
-					</p>
+		<div className="flex flex-col items-center justify-center min-h-screen p-6 bg-background">
+			<div className="max-w-md w-full text-center space-y-12">
+				<div className="space-y-4">
+					<motion.h1
+						initial={{ scale: 0.5, opacity: 0 }}
+						animate={{ scale: 1, opacity: 1 }}
+						transition={{ type: 'spring', stiffness: 200, damping: 10 }}
+						className="text-8xl font-black text-primary"
+					>
+						404
+					</motion.h1>
+					<motion.div
+						initial={{ y: 20, opacity: 0 }}
+						animate={{ y: 0, opacity: 1 }}
+						transition={{ delay: 0.2 }}
+						className="space-y-2"
+					>
+						<h2 className="text-2xl font-black text-foreground">Lost in the equations?</h2>
+						<p className="text-muted-foreground font-medium">
+							The page you&apos;re looking for doesn&apos;t exist or has been moved.
+						</p>
+					</motion.div>
 				</div>
 
-				<div className="flex gap-3 justify-center">
+				<motion.div
+					initial={{ y: 20, opacity: 0 }}
+					animate={{ y: 0, opacity: 1 }}
+					transition={{ delay: 0.4 }}
+					className="flex gap-4 justify-center"
+				>
 					<Link href="/">
-						<Button className="gap-2">
-							<Home className="w-4 h-4" />
+						<Button size="lg" className="gap-2 rounded-2xl shadow-xl shadow-primary/20">
+							<Home className="w-5 h-5" />
 							Go Home
 						</Button>
 					</Link>
 					<Link href="/search">
-						<Button variant="outline" className="gap-2">
-							<Search className="w-4 h-4" />
+						<Button size="lg" variant="outline" className="gap-2 rounded-2xl">
+							<Search className="w-5 h-5" />
 							Search
 						</Button>
 					</Link>
-				</div>
+				</motion.div>
 			</div>
 		</div>
 	);

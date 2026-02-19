@@ -1,12 +1,15 @@
 'use client';
 
+import { AnimatePresence, motion } from 'framer-motion';
 // import type { Screen } from '@/types'; // Removed unused import
 import { ArrowLeft, HelpCircle, Lightbulb, Loader2, MoreHorizontal, Sparkles } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { SmoothWords } from '@/components/Transition/SmoothText';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { STAGGER_CONTAINER, STAGGER_ITEM } from '@/lib/animation-presets';
 import { getExplanation } from '@/services/geminiService';
 
 const options = [
@@ -71,14 +74,16 @@ export default function Quiz() {
 			<header className="bg-card/80 backdrop-blur-xl border-b border-border shrink-0">
 				<div className="max-w-2xl mx-auto w-full">
 					<div className="px-6 pt-12 pb-2 flex items-center justify-between">
-						<Button
-							variant="ghost"
-							size="icon"
-							onClick={() => router.push('/dashboard')}
-							className="rounded-full"
-						>
-							<ArrowLeft className="w-6 h-6" />
-						</Button>
+						<motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+							<Button
+								variant="ghost"
+								size="icon"
+								onClick={() => router.push('/dashboard')}
+								className="rounded-full"
+							>
+								<ArrowLeft className="w-6 h-6" />
+							</Button>
+						</motion.div>
 						<div className="text-center">
 							<h1 className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em]">
 								Mathematics P1
@@ -92,11 +97,20 @@ export default function Quiz() {
 					{/* Progress */}
 					<div className="px-6 pb-6">
 						<div className="relative h-2 w-full bg-muted rounded-full overflow-hidden mb-3">
-							<div className="absolute top-0 left-0 h-full w-1/3 bg-brand-green rounded-full shadow-[0_0_12px_rgba(16,185,129,0.4)]" />
+							<motion.div
+								initial={{ width: '20%' }}
+								animate={{ width: '33.3%' }}
+								transition={{ duration: 1, type: 'spring' }}
+								className="absolute top-0 left-0 h-full bg-brand-green rounded-full shadow-[0_0_12px_rgba(16,185,129,0.4)]"
+							/>
 						</div>
 						<div className="flex justify-between items-center text-[10px] font-black tracking-widest text-muted-foreground uppercase">
 							<span className="flex items-center gap-1.5">
-								<span className="w-1.5 h-1.5 rounded-full bg-brand-green" />
+								<motion.span
+									animate={{ scale: [1, 1.5, 1] }}
+									transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
+									className="w-1.5 h-1.5 rounded-full bg-brand-green"
+								/>
 								Algebra
 							</span>
 							<span>Question 3/12</span>
@@ -108,79 +122,106 @@ export default function Quiz() {
 			<ScrollArea className="flex-1">
 				<main className="px-6 py-8 pb-48 max-w-2xl mx-auto w-full space-y-8">
 					<div className="space-y-3">
-						<h2 className="text-4xl font-black text-foreground leading-tight">
-							Local <span className="text-primary italic font-serif">Extrema</span>
-						</h2>
-						<p className="text-muted-foreground font-medium leading-relaxed">
+						<SmoothWords
+							as="h2"
+							text="Local Extrema"
+							className="text-4xl font-black text-foreground leading-tight"
+						/>
+						<motion.p
+							initial={{ opacity: 0, x: -10 }}
+							animate={{ opacity: 1, x: 0 }}
+							transition={{ delay: 0.3 }}
+							className="text-muted-foreground font-medium leading-relaxed"
+						>
 							Find the coordinates of the local maximum for the function graphed below.
-						</p>
+						</motion.p>
 					</div>
-
 					{/* Equation & Graph Card */}
-					<Card className="p-8 flex flex-col items-center justify-center bg-card border-none rounded-[2.5rem] shadow-sm relative overflow-hidden group">
-						<div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity" />
+					<motion.div
+						initial={{ opacity: 0, y: 20 }}
+						animate={{ opacity: 1, y: 0 }}
+						transition={{ delay: 0.4 }}
+					>
+						<Card className="p-8 flex flex-col items-center justify-center bg-card border-none rounded-[2.5rem] shadow-sm relative overflow-hidden group">
+							<div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity" />
 
-						{/* Math Function */}
-						<div className="text-2xl font-serif italic font-bold text-foreground mb-6 relative z-10">
-							f(x) = x³ - 3x + 2
-						</div>
+							{/* Math Function */}
+							<motion.div
+								whileHover={{ scale: 1.1 }}
+								className="text-2xl font-serif italic font-bold text-foreground mb-6 relative z-10"
+							>
+								f(x) = x³ - 3x + 2
+							</motion.div>
 
-						{/* SVG Graph Visualization */}
-						<div className="w-full h-48 relative mb-6 z-10 bg-muted/50 rounded-2xl border border-border flex items-center justify-center overflow-hidden">
-							<svg viewBox="0 0 200 120" className="w-full h-full p-4">
-								<title>Graph of f(x) = x³ - 3x + 2</title>
-								{/* Grid lines */}
-								<line
-									x1="0"
-									y1="60"
-									x2="200"
-									y2="60"
-									stroke="currentColor"
-									strokeWidth="0.5"
-									className="text-border"
-								/>
-								<line
-									x1="100"
-									y1="0"
-									x2="100"
-									y2="120"
-									stroke="currentColor"
-									strokeWidth="0.5"
-									className="text-border"
-								/>
+							{/* SVG Graph Visualization */}
+							<div className="w-full h-48 relative mb-6 z-10 bg-muted/50 rounded-2xl border border-border flex items-center justify-center overflow-hidden">
+								<svg viewBox="0 0 200 120" className="w-full h-full p-4">
+									<title>Graph of f(x) = x³ - 3x + 2</title>
+									<line
+										x1="0"
+										y1="60"
+										x2="200"
+										y2="60"
+										stroke="currentColor"
+										strokeWidth="0.5"
+										className="text-border"
+									/>
+									<line
+										x1="100"
+										y1="0"
+										x2="100"
+										y2="120"
+										stroke="currentColor"
+										strokeWidth="0.5"
+										className="text-border"
+									/>
 
-								{/* Function Curve f(x) = x^3 - 3x + 2 */}
-								{/* Scaled and shifted for visualization */}
-								<path
-									d="M 20 100 Q 60 20 100 60 T 180 20"
-									fill="none"
-									stroke="var(--primary)"
-									strokeWidth="3"
-									strokeLinecap="round"
-									className="animate-draw"
-								/>
+									<motion.path
+										d="M 20 100 Q 60 20 100 60 T 180 20"
+										fill="none"
+										stroke="var(--primary)"
+										strokeWidth="3"
+										strokeLinecap="round"
+										initial={{ pathLength: 0 }}
+										animate={{ pathLength: 1 }}
+										transition={{ duration: 2, ease: 'easeInOut' }}
+									/>
 
-								{/* Local Max Point */}
-								<circle cx="75" cy="40" r="5" fill="#10b981" className="animate-pulse" />
-								<text
-									x="65"
-									y="30"
-									fontSize="8"
-									className="fill-muted-foreground font-black tracking-widest uppercase"
-								>
-									Max
-								</text>
-							</svg>
-						</div>
+									<motion.circle
+										cx="75"
+										cy="40"
+										r="5"
+										fill="#10b981"
+										animate={{ scale: [1, 1.2, 1] }}
+										transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
+									/>
+									<text
+										x="65"
+										y="30"
+										fontSize="8"
+										className="fill-muted-foreground font-black tracking-widest uppercase"
+									>
+										Max
+									</text>
+								</svg>
+							</div>
 
-						<div className="bg-brand-amber/10 text-brand-amber px-6 py-2.5 rounded-full flex items-center gap-2.5 text-xs font-black uppercase tracking-widest shadow-sm border border-brand-amber/20 relative z-10">
-							<Lightbulb className="w-4 h-4 fill-brand-amber" />
-							Use f'(x) = 0 to find stationary points
-						</div>
-					</Card>
-
+							<motion.div
+								whileHover={{ scale: 1.05 }}
+								className="bg-brand-amber/10 text-brand-amber px-6 py-2.5 rounded-full flex items-center gap-2.5 text-xs font-black uppercase tracking-widest shadow-sm border border-brand-amber/20 relative z-10"
+							>
+								<Lightbulb className="w-4 h-4 fill-brand-amber" />
+								Use f'(x) = 0 to find stationary points
+							</motion.div>
+						</Card>
+					</motion.div>
 					{/* Options Grid */}
-					<div className="grid grid-cols-2 gap-4">
+					<motion.div
+						variants={STAGGER_CONTAINER}
+						initial="hidden"
+						animate="visible"
+						className="grid grid-cols-2 gap-4"
+					>
 						{options.map((option) => {
 							const isSelected = selectedOption === option.id;
 							let stateClasses =
@@ -192,13 +233,15 @@ export default function Quiz() {
 										? 'bg-brand-green text-white border-transparent shadow-xl shadow-brand-green/20'
 										: 'bg-brand-red text-white border-transparent shadow-xl shadow-brand-red/20';
 								} else {
-									stateClasses =
-										'bg-foreground text-background border-transparent shadow-xl scale-[1.02]';
+									stateClasses = 'bg-foreground text-background border-transparent shadow-xl';
 								}
 							}
 
 							return (
-								<button
+								<motion.button
+									variants={STAGGER_ITEM}
+									whileHover={!isChecked ? { scale: 1.02, y: -4 } : {}}
+									whileTap={!isChecked ? { scale: 0.98 } : {}}
 									type="button"
 									key={option.id}
 									disabled={isChecked}
@@ -218,74 +261,106 @@ export default function Quiz() {
 									</div>
 									<span className="font-serif italic font-bold text-xl">{option.expression}</span>
 
-									{isChecked && isSelected && option.isCorrect && (
-										<div className="absolute -top-2 -right-2 w-8 h-8 bg-white text-brand-green rounded-full flex items-center justify-center shadow-lg animate-in zoom-in">
-											<Sparkles className="w-4 h-4 fill-brand-green" />
-										</div>
-									)}
-								</button>
+									<AnimatePresence>
+										{isChecked && isSelected && option.isCorrect && (
+											<motion.div
+												initial={{ scale: 0, rotate: -45 }}
+												animate={{ scale: 1, rotate: 0 }}
+												className="absolute -top-2 -right-2 w-8 h-8 bg-white text-brand-green rounded-full flex items-center justify-center shadow-lg"
+											>
+												<Sparkles className="w-4 h-4 fill-brand-green" />
+											</motion.div>
+										)}
+									</AnimatePresence>
+								</motion.button>
 							);
 						})}
-					</div>
-
+					</motion.div>
 					{/* Explanation Card (Aha! Moment) */}
-					{showExplanation && (
-						<Card className="p-8 bg-brand-green/5 border-2 border-brand-green/20 rounded-[2.5rem] space-y-6 animate-in slide-in-from-bottom-4 duration-500">
-							<div className="flex items-center gap-4">
-								<div className="w-12 h-12 bg-brand-green text-white rounded-2xl flex items-center justify-center shadow-lg shadow-brand-green/20">
-									<Sparkles className="w-6 h-6" />
+					<AnimatePresence>
+						{showExplanation && (
+							<motion.div
+								initial={{ opacity: 0, height: 0, y: 20 }}
+								animate={{ opacity: 1, height: 'auto', y: 0 }}
+								exit={{ opacity: 0, height: 0 }}
+							>
+								<Card className="p-8 bg-brand-green/5 border-2 border-brand-green/20 rounded-[2.5rem] space-y-6">
+									<div className="flex items-center gap-4">
+										<motion.div
+											animate={{ rotate: [0, 15, 0] }}
+											transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
+											className="w-12 h-12 bg-brand-green text-white rounded-2xl flex items-center justify-center shadow-lg shadow-brand-green/20"
+										>
+											<Sparkles className="w-6 h-6" />
+										</motion.div>
+										<div>
+											<h4 className="font-black text-brand-green text-lg">Aha! Moment</h4>
+											<p className="text-xs font-black text-muted-foreground uppercase tracking-widest">
+												The "Why" behind the math
+											</p>
+										</div>
+									</div>
+
+									<div className="space-y-4 text-muted-foreground font-medium leading-relaxed">
+										<p>
+											To find the local maximum, we first find where the slope (derivative) is zero:
+										</p>
+										<div className="bg-card p-4 rounded-2xl font-serif italic text-center text-lg border border-border">
+											f'(x) = 3x² - 3 = 0 <br />
+											3(x² - 1) = 0 <br />x = 1 or x = -1
+										</div>
+										<p>
+											By checking the second derivative <span className="italic">f''(x) = 6x</span>,
+											we see that <span className="italic">f''(-1) = -6</span> (negative), which
+											confirms a local maximum at <span className="italic">x = -1</span>.
+										</p>
+									</div>
+								</Card>
+							</motion.div>
+						)}
+					</AnimatePresence>
+					// ... rest of component ...
+					{/* Hint Card */}
+					<AnimatePresence mode="wait">
+						{!showExplanation && (
+							<motion.div
+								initial={{ opacity: 0, scale: 0.95 }}
+								animate={{ opacity: 1, scale: 1 }}
+								exit={{ opacity: 0, scale: 0.95 }}
+								className="p-6 bg-primary/5 rounded-[2rem] border border-primary/10 flex gap-5 items-start transition-all hover:bg-primary/10"
+							>
+								<div className="w-12 h-12 bg-card rounded-2xl flex items-center justify-center shrink-0 shadow-sm border border-primary/10">
+									<Sparkles className="w-6 h-6 text-primary" />
 								</div>
-								<div>
-									<h4 className="font-black text-brand-green text-lg">Aha! Moment</h4>
-									<p className="text-xs font-black text-muted-foreground uppercase tracking-widest">
-										The "Why" behind the math
+								<div className="space-y-1">
+									<h4 className="font-black text-primary text-xs uppercase tracking-widest">
+										Smart Hint
+									</h4>
+									<p className="text-sm text-muted-foreground font-medium leading-relaxed">
+										A local maximum occurs where the function stops increasing and starts
+										decreasing. This always happens at a stationary point.
 									</p>
 								</div>
-							</div>
-
-							<div className="space-y-4 text-muted-foreground font-medium leading-relaxed">
-								<p>
-									To find the local maximum, we first find where the slope (derivative) is zero:
-								</p>
-								<div className="bg-card p-4 rounded-2xl font-serif italic text-center text-lg border border-border">
-									f'(x) = 3x² - 3 = 0 <br />
-									3(x² - 1) = 0 <br />x = 1 or x = -1
-								</div>
-								<p>
-									By checking the second derivative <span className="italic">f''(x) = 6x</span>, we
-									see that <span className="italic">f''(-1) = -6</span> (negative), which confirms a
-									local maximum at <span className="italic">x = -1</span>.
-								</p>
-							</div>
-						</Card>
-					)}
-
-					{/* Hint Card */}
-					{!showExplanation && (
-						<div className="p-6 bg-primary/5 rounded-[2rem] border border-primary/10 flex gap-5 items-start transition-all hover:bg-primary/10">
-							<div className="w-12 h-12 bg-card rounded-2xl flex items-center justify-center shrink-0 shadow-sm border border-primary/10">
-								<Sparkles className="w-6 h-6 text-primary" />
-							</div>
-							<div className="space-y-1">
-								<h4 className="font-black text-primary text-xs uppercase tracking-widest">
-									Smart Hint
-								</h4>
-								<p className="text-sm text-muted-foreground font-medium leading-relaxed">
-									A local maximum occurs where the function stops increasing and starts decreasing.
-									This always happens at a stationary point.
-								</p>
-							</div>
-						</div>
-					)}
-
+							</motion.div>
+						)}
+					</AnimatePresence>
 					{/* AI Explanation Toggle */}
-					<div className="p-1 bg-linear-to-r from-primary to-brand-green rounded-[2rem]">
+					<motion.div
+						initial={{ opacity: 0 }}
+						whileInView={{ opacity: 1 }}
+						viewport={{ once: true }}
+						className="p-1 bg-linear-to-r from-primary to-brand-green rounded-[2rem]"
+					>
 						<div className="bg-card rounded-[1.9rem] p-6 space-y-4">
 							<div className="flex items-center justify-between">
 								<div className="flex items-center gap-4">
-									<div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+									<motion.div
+										animate={{ scale: [1, 1.1, 1] }}
+										transition={{ duration: 3, repeat: Number.POSITIVE_INFINITY }}
+										className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center"
+									>
 										<Sparkles className="w-5 h-5 text-primary" />
-									</div>
+									</motion.div>
 									<div>
 										<h4 className="font-bold text-foreground text-sm">
 											Need a deeper explanation?
@@ -306,20 +381,31 @@ export default function Quiz() {
 								</Button>
 							</div>
 
-							{aiExplanation && (
-								<div className="pt-4 border-t border-border animate-in fade-in slide-in-from-top-2">
-									<p className="text-sm text-muted-foreground font-medium leading-relaxed whitespace-pre-wrap">
-										{aiExplanation}
-									</p>
-								</div>
-							)}
+							<AnimatePresence>
+								{aiExplanation && (
+									<motion.div
+										initial={{ opacity: 0, height: 0 }}
+										animate={{ opacity: 1, height: 'auto' }}
+										className="pt-4 border-t border-border"
+									>
+										<p className="text-sm text-muted-foreground font-medium leading-relaxed whitespace-pre-wrap">
+											{aiExplanation}
+										</p>
+									</motion.div>
+								)}
+							</AnimatePresence>
 						</div>
-					</div>
+					</motion.div>
 				</main>
 			</ScrollArea>
 
 			{/* Floating Footer */}
-			<footer className="absolute bottom-0 left-0 right-0 bg-card/80 backdrop-blur-xl p-8 z-30 border-t border-border">
+			<motion.footer
+				initial={{ y: 100 }}
+				animate={{ y: 0 }}
+				transition={{ type: 'spring', stiffness: 200, damping: 30 }}
+				className="absolute bottom-0 left-0 right-0 bg-card/80 backdrop-blur-xl p-8 z-30 border-t border-border"
+			>
 				<div className="max-w-2xl mx-auto w-full space-y-6">
 					<div className="flex justify-between items-center px-2">
 						<button
@@ -339,24 +425,29 @@ export default function Quiz() {
 							Show Solution
 						</button>
 					</div>
-					<Button
-						size="lg"
-						onClick={handleCheck}
-						className={`w-full h-16 rounded-[2rem] text-lg font-black shadow-2xl transition-all active:scale-95 ${
-							!selectedOption
-								? 'bg-muted text-muted-foreground cursor-not-allowed'
-								: isChecked
-									? isCorrect
-										? 'bg-brand-green hover:bg-brand-green/80 text-white shadow-brand-green/20'
-										: 'bg-brand-red hover:bg-red-600 text-white shadow-brand-red/20'
-									: 'bg-primary text-primary-foreground hover:opacity-90 shadow-primary/20'
-						}`}
-						disabled={!selectedOption}
+					<motion.div
+						whileHover={selectedOption ? { scale: 1.02 } : {}}
+						whileTap={selectedOption ? { scale: 0.98 } : {}}
 					>
-						{isChecked ? (isCorrect ? 'Continue' : 'Try Again') : 'Check Answer'}
-					</Button>
+						<Button
+							size="lg"
+							onClick={handleCheck}
+							className={`w-full h-16 rounded-[2rem] text-lg font-black shadow-2xl transition-all ${
+								!selectedOption
+									? 'bg-muted text-muted-foreground cursor-not-allowed'
+									: isChecked
+										? isCorrect
+											? 'bg-brand-green hover:bg-brand-green/80 text-white shadow-brand-green/20'
+											: 'bg-brand-red hover:bg-red-600 text-white shadow-brand-red/20'
+										: 'bg-primary text-primary-foreground hover:opacity-90 shadow-primary/20'
+							}`}
+							disabled={!selectedOption}
+						>
+							{isChecked ? (isCorrect ? 'Continue' : 'Try Again') : 'Check Answer'}
+						</Button>
+					</motion.div>
 				</div>
-			</footer>
+			</motion.footer>
 		</div>
 	);
 }

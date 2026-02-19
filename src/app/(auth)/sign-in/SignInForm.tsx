@@ -1,4 +1,3 @@
-/** biome-ignore-all lint/a11y/noSvgWithoutTitle: no need */
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -11,8 +10,11 @@ import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
 import { SocialAuthButton } from '@/components/auth/SocialAuthButton';
+import { SmoothWords } from '@/components/Transition/SmoothText';
+import { BackgroundMesh } from '@/components/ui/background-mesh';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { STAGGER_CONTAINER, STAGGER_ITEM } from '@/lib/animation-presets';
 import { authClient } from '@/lib/auth-client';
 import { cn } from '@/lib/utils';
 
@@ -130,12 +132,8 @@ export function SignInForm() {
 	};
 
 	return (
-		<div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-zinc-950 relative overflow-hidden">
-			{/* Animated Background Mesh */}
-			<div className="absolute inset-0 pointer-events-none overflow-hidden">
-				<div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-blue-500/20 dark:bg-blue-900/20 rounded-full blur-[128px] animate-pulse-slow" />
-				<div className="absolute bottom-[-20%] right-[-10%] w-[50%] h-[50%] bg-purple-500/20 dark:bg-purple-900/20 rounded-full blur-[128px] animate-pulse-slow delay-1000" />
-			</div>
+		<div className="min-h-screen flex items-center justify-center bg-background relative overflow-hidden">
+			<BackgroundMesh />
 
 			{/* Success Toast */}
 			<AnimatePresence>
@@ -159,39 +157,59 @@ export function SignInForm() {
 
 			<div className="w-full max-w-md p-4 relative z-10">
 				<motion.div
-					initial={{ opacity: 0, scale: 0.95 }}
-					animate={{ opacity: 1, scale: 1 }}
-					transition={{ duration: 0.5, ease: 'easeOut' }}
-					className="w-full bg-white/80 dark:bg-zinc-900/60 backdrop-blur-xl border border-white/20 dark:border-white/10 rounded-3xl shadow-2xl overflow-hidden p-8"
+					initial={{ opacity: 0, scale: 0.9, y: 20 }}
+					animate={{ opacity: 1, scale: 1, y: 0 }}
+					transition={{ type: 'spring', stiffness: 200, damping: 25 }}
+					className="w-full premium-glass border-none rounded-[2.5rem] shadow-2xl overflow-hidden p-8"
 				>
-					<div className="text-center space-y-2 mb-8">
-						<div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-2xl flex items-center justify-center mx-auto mb-4 text-blue-600 dark:text-blue-400">
+					<motion.div
+						variants={STAGGER_CONTAINER}
+						initial="hidden"
+						animate="visible"
+						className="text-center space-y-2 mb-8"
+					>
+						<motion.div
+							variants={STAGGER_ITEM}
+							whileHover={{ rotate: 15, scale: 1.1 }}
+							className="w-12 h-12 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-4 text-primary"
+						>
 							<Sparkles className="w-6 h-6" />
-						</div>
-						<h1 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-white">
-							Welcome Back
-						</h1>
-						<p className="text-zinc-500 dark:text-zinc-400 text-balance">
+						</motion.div>
+						<SmoothWords
+							as="h1"
+							text="Welcome Back"
+							className="text-3xl font-black tracking-tight text-foreground"
+						/>
+						<motion.p
+							variants={STAGGER_ITEM}
+							className="text-muted-foreground text-balance font-medium"
+						>
 							Sign in to continue your Grade 12 journey.
-						</p>
-					</div>
+						</motion.p>
+					</motion.div>
 
 					{error && (
 						<motion.div
-							initial={{ opacity: 0, y: -10 }}
-							animate={{ opacity: 1, y: 0 }}
-							className="p-4 mb-6 bg-red-50 dark:bg-red-900/20 border border-red-100 dark:border-red-900/30 text-red-600 dark:text-red-400 text-sm font-medium rounded-xl flex items-center gap-2"
+							initial={{ opacity: 0, x: -10 }}
+							animate={{ opacity: 1, x: 0 }}
+							className="p-4 mb-6 bg-destructive/10 border border-destructive/20 text-destructive text-sm font-medium rounded-2xl flex items-center gap-2"
 						>
-							<div className="w-1.5 h-1.5 rounded-full bg-red-500 shrink-0" />
+							<div className="w-1.5 h-1.5 rounded-full bg-destructive shrink-0" />
 							{error}
 						</motion.div>
 					)}
 
-					<form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-						<div className="space-y-2">
+					<motion.form
+						variants={STAGGER_CONTAINER}
+						initial="hidden"
+						animate="visible"
+						onSubmit={handleSubmit(onSubmit)}
+						className="space-y-5"
+					>
+						<motion.div variants={STAGGER_ITEM} className="space-y-2">
 							<label
 								htmlFor="email"
-								className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 ml-1"
+								className="block text-sm font-bold text-muted-foreground ml-1 uppercase tracking-wider text-[10px]"
 							>
 								Email Address
 							</label>
@@ -199,26 +217,26 @@ export function SignInForm() {
 								{...register('email')}
 								type="email"
 								placeholder="name@school.edu.za"
-								className="h-12 rounded-xl border-zinc-200 dark:border-zinc-800 bg-white/50 dark:bg-zinc-900/50 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all font-medium"
+								className="bg-background/50"
 							/>
 							{errors.email && (
-								<p className="text-xs text-red-500 font-medium ml-1">{errors.email.message}</p>
+								<p className="text-xs text-destructive font-medium ml-1">{errors.email.message}</p>
 							)}
-						</div>
+						</motion.div>
 
-						<div className="space-y-2">
+						<motion.div variants={STAGGER_ITEM} className="space-y-2">
 							<div className="flex items-center justify-between">
 								<label
 									htmlFor="password"
-									className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 ml-1"
+									className="block text-sm font-bold text-muted-foreground ml-1 uppercase tracking-wider text-[10px]"
 								>
 									Password
 								</label>
 								<Link
 									href="/forgot-password"
-									className="text-xs font-medium text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300 transition-colors"
+									className="text-[10px] font-bold text-primary hover:text-primary/80 uppercase tracking-wider"
 								>
-									Forgot password?
+									Forgot?
 								</Link>
 							</div>
 							<div className="relative">
@@ -226,72 +244,100 @@ export function SignInForm() {
 									{...register('password')}
 									type={showPassword ? 'text' : 'password'}
 									placeholder="Enter your password"
-									className="h-12 rounded-xl border-zinc-200 dark:border-zinc-800 bg-white/50 dark:bg-zinc-900/50 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all font-medium pr-12"
+									className="bg-background/50 pr-12"
 								/>
 								<button
 									type="button"
 									onClick={() => setShowPassword(!showPassword)}
-									className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 transition-colors"
+									className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
 								>
 									{showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
 								</button>
 							</div>
 							{errors.password && (
-								<p className="text-xs text-red-500 font-medium ml-1">{errors.password.message}</p>
+								<p className="text-xs text-destructive font-medium ml-1">
+									{errors.password.message}
+								</p>
 							)}
-						</div>
+						</motion.div>
 
-						<Button
-							type="submit"
-							disabled={isLoading || !!successEmail}
-							className={cn(
-								'w-full h-12 rounded-xl font-bold shadow-lg shadow-blue-500/20 transition-all active:scale-[0.98]',
-								successEmail
-									? 'bg-emerald-500 hover:bg-emerald-600 dark:bg-emerald-600'
-									: 'bg-blue-600 hover:bg-blue-700 dark:bg-blue-600 text-white'
-							)}
-						>
-							{isLoading ? (
-								<Loader2 className="w-5 h-5 animate-spin" />
-							) : successEmail ? (
-								'Success!'
-							) : (
-								'Sign In'
-							)}
-						</Button>
-					</form>
+						<motion.div variants={STAGGER_ITEM}>
+							<Button
+								type="submit"
+								disabled={isLoading || !!successEmail}
+								className={cn(
+									'w-full h-14 rounded-2xl font-black text-base shadow-xl transition-all active:scale-[0.98]',
+									successEmail
+										? 'bg-emerald-500 text-white'
+										: 'bg-primary text-primary-foreground shadow-primary/20'
+								)}
+							>
+								{isLoading ? (
+									<Loader2 className="w-5 h-5 animate-spin" />
+								) : successEmail ? (
+									'Success!'
+								) : (
+									'Sign In'
+								)}
+							</Button>
+						</motion.div>
+					</motion.form>
 
-					<div className="relative my-8">
+					<motion.div
+						initial={{ opacity: 0 }}
+						animate={{ opacity: 1 }}
+						transition={{ delay: 1 }}
+						className="relative my-8"
+					>
 						<div className="absolute inset-0 flex items-center">
-							<div className="w-full border-t border-zinc-200 dark:border-zinc-800" />
+							<div className="w-full border-t border-border" />
 						</div>
-						<div className="relative flex justify-center text-xs uppercase tracking-widest">
-							<span className="px-4 text-zinc-400 font-bold backdrop-blur-xl bg-white/80 dark:bg-zinc-900/80 rounded-full">
-								Or continue with
+						<div className="relative flex justify-center text-[10px] uppercase tracking-[0.2em]">
+							<span className="px-4 text-muted-foreground font-black bg-card/80 backdrop-blur-xl rounded-full">
+								Or
 							</span>
 						</div>
-					</div>
+					</motion.div>
 
-					<div className="flex flex-col gap-3">
-						<SocialAuthButton provider="google" onClick={() => handleSocialSignIn('google')} />
-						<SocialAuthButton provider="twitter" onClick={() => handleSocialSignIn('twitter')} />
-					</div>
+					<motion.div
+						variants={STAGGER_CONTAINER}
+						initial="hidden"
+						animate="visible"
+						className="flex flex-col gap-3"
+					>
+						<motion.div variants={STAGGER_ITEM}>
+							<SocialAuthButton provider="google" onClick={() => handleSocialSignIn('google')} />
+						</motion.div>
+						<motion.div variants={STAGGER_ITEM}>
+							<SocialAuthButton provider="twitter" onClick={() => handleSocialSignIn('twitter')} />
+						</motion.div>
+					</motion.div>
 
-					<p className="text-center text-zinc-500 dark:text-zinc-400 mt-8 text-sm">
+					<motion.p
+						initial={{ opacity: 0 }}
+						animate={{ opacity: 1 }}
+						transition={{ delay: 1.2 }}
+						className="text-center text-muted-foreground mt-8 text-sm font-medium"
+					>
 						Don't have an account?{' '}
 						<Link
 							href="/sign-up"
-							className="font-bold text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 transition-colors"
+							className="font-black text-primary hover:underline underline-offset-4"
 						>
 							Sign Up
 						</Link>
-					</p>
+					</motion.p>
 				</motion.div>
 
 				{/* Footer simple copyright or branding */}
-				<p className="text-center text-zinc-400 dark:text-zinc-600 text-xs mt-8">
-					&copy; {new Date().getFullYear()} MatricMaster AI. All rights reserved.
-				</p>
+				<motion.p
+					initial={{ opacity: 0 }}
+					animate={{ opacity: 1 }}
+					transition={{ delay: 1.5 }}
+					className="text-center text-muted-foreground/40 text-[10px] font-bold uppercase tracking-widest mt-8"
+				>
+					&copy; {new Date().getFullYear()} MatricMaster AI
+				</motion.p>
 			</div>
 		</div>
 	);
