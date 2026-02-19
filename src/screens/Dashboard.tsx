@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState, useTransition } from 'react';
+import { DashboardSkeleton } from '@/components/DashboardSkeleton';
 import { SmoothWords } from '@/components/Transition/SmoothText';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { BackgroundMesh } from '@/components/ui/background-mesh';
@@ -161,6 +162,10 @@ export default function Dashboard() {
 	};
 
 	const isLoading = isSessionLoading || isPending;
+
+	if (isLoadingProgress) {
+		return <DashboardSkeleton />;
+	}
 
 	return (
 		<div className="flex flex-col h-full bg-background font-inter pb-24 relative overflow-hidden">
