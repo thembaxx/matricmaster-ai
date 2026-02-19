@@ -84,8 +84,8 @@ export default function MobileFrame({ children }: { children: React.ReactNode })
 	];
 
 	return (
-		<div className="flex justify-center items-center min-h-screen bg-background p-0 overflow-hidden">
-			<div className="w-full h-full min-h-screen sm:min-h-212.5 sm:h-225 bg-background sm:rounded-[2rem] relative flex flex-col transition-colors duration-300">
+		<div className="flex justify-center items-start min-h-screen bg-zinc-50 dark:bg-zinc-950 p-0 sm:p-4 md:p-6 lg:p-8 overflow-x-hidden">
+			<div className="w-full max-w-2xl min-h-screen sm:min-h-0 sm:h-auto bg-background sm:rounded-[2.5rem] sm:shadow-2xl sm:border sm:border-border/50 relative flex flex-col transition-all duration-300 overflow-hidden">
 				{/* Global Top Navigation Bar */}
 				{!shouldHideNav && (
 					<header
