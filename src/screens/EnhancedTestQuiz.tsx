@@ -350,7 +350,7 @@ export default function EnhancedTestQuizScreen() {
 							>
 								<ArrowLeft className="w-6 h-6" />
 							</Button>
-							<h1 className="text-lg font-black uppercase tracking-widest text-left grow text-zinc-900 dark:text-white opacity-80">
+							<h1 className="text-lg font-medium text-left grow text-zinc-900 dark:text-white opacity-80">
 								Select Subjects
 							</h1>
 						</motion.div>
@@ -366,11 +366,11 @@ export default function EnhancedTestQuizScreen() {
 											<div className="w-10 h-10 rounded-2xl bg-brand-blue/10 flex items-center justify-center">
 												<CheckCircle2 className="w-5 h-5 text-brand-blue" />
 											</div>
-											<h2 className="text-xl font-black text-zinc-900 dark:text-white tracking-tight">
+											<h2 className="text-xl font-bold text-zinc-900 dark:text-white tracking-tight">
 												Choose your subjects
 											</h2>
 										</div>
-										<p className="text-base font-medium text-zinc-500 dark:text-zinc-400 mb-4 leading-relaxed">
+										<p className="text-sm font-medium text-zinc-500 dark:text-zinc-400 mb-4 leading-relaxed">
 											{quizState.isMixedMode
 												? `Mixed mode: ${quizState.selectedSubjects.length} subjects selected`
 												: `Single subject: ${quizState.selectedSubjects.length > 0 ? subjects.find((s) => s.id === quizState.selectedSubjects[0])?.name || 'Unknown' : 'None'} selected`}
@@ -390,7 +390,7 @@ export default function EnhancedTestQuizScreen() {
 												>
 													<Badge
 														variant={isSelected ? 'default' : 'outline'}
-														className={`cursor-pointer px-5 py-2.5 rounded-2xl text-sm font-bold transition-all border-2 ${
+														className={`cursor-pointer px-3.5 py-1.5 rounded-2xl text-[13px] font-semibold transition-all border-2 ${
 															isSelected
 																? 'border-brand-blue bg-brand-blue text-white shadow-lg shadow-brand-blue/30'
 																: 'border-zinc-200 dark:border-zinc-700 bg-transparent text-zinc-600 dark:text-zinc-400 hover:border-zinc-300 dark:hover:border-zinc-600'
@@ -406,10 +406,10 @@ export default function EnhancedTestQuizScreen() {
 
 									<motion.div variants={itemVariants} className="pt-2">
 										<Button
-											variant="outline"
-											size="lg"
+											variant="secondary"
+											size="sm"
 											onClick={selectRandomSubjects}
-											className="w-full rounded-2xl border-2 border-dashed border-zinc-300 dark:border-zinc-700 hover:border-brand-blue/50 hover:bg-brand-blue/5 dark:hover:bg-brand-blue/10 transition-all text-zinc-500 font-bold h-12"
+											className="w-full rounded-2xl border border-zinc-300 dark:border-zinc-700 hover:border-brand-blue/50 hover:bg-brand-blue/5 dark:hover:bg-brand-blue/10 transition-all text-zinc-500 dark:text-zinc-200 font-semibold h-12"
 										>
 											<Sparkles className="w-4 h-4 mr-2" />
 											I'm feeling lucky
@@ -423,7 +423,7 @@ export default function EnhancedTestQuizScreen() {
 							<Button
 								onClick={startQuiz}
 								disabled={quizState.selectedSubjects.length === 0 || loading}
-								className="w-full bg-brand-blue hover:bg-brand-blue/90 shadow-xl shadow-brand-blue/20 gap-3 text-white h-16 rounded-[2rem] font-black text-lg tracking-wide uppercase transition-all active:scale-95"
+								className="w-full bg-brand-blue hover:bg-brand-blue/90 shadow-xl shadow-brand-blue/20 gap-3 text-white h-16 rounded-[2rem] font-semibold text-base transition-all active:scale-95"
 							>
 								{loading ? (
 									<Loader2 className="w-6 h-6 animate-spin" />
