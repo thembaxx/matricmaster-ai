@@ -1,8 +1,10 @@
 'use client';
 
+import { AnimatePresence, motion } from 'framer-motion';
 import { BookOpen, Download, Eye, FileText, Filter, Search as SearchIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { SmoothWords } from '@/components/Transition/SmoothText';
 import { BackgroundMesh } from '@/components/ui/background-mesh';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -10,6 +12,7 @@ import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { PAST_PAPERS } from '@/constants/mock-data';
+import { STAGGER_CONTAINER, STAGGER_ITEM } from '@/lib/animation-presets';
 
 export default function PastPapers() {
 	const router = useRouter();
@@ -37,12 +40,21 @@ export default function PastPapers() {
 				}}
 			>
 				<div className="max-w-2xl mx-auto w-full relative z-10 flex flex-col gap-4">
-					<div className="flex items-center gap-4 pl-14">
+					<motion.div
+						initial={{ x: -20, opacity: 0 }}
+						animate={{ x: 0, opacity: 1 }}
+						className="flex items-center gap-4 pl-14"
+					>
 						<h1 className="text-xl font-bold text-muted-foreground">Past Papers</h1>
-					</div>
+					</motion.div>
 
 					<div className="space-y-4">
-						<div className="relative">
+						<motion.div
+							initial={{ scale: 0.95, opacity: 0 }}
+							animate={{ scale: 1, opacity: 1 }}
+							transition={{ delay: 0.1 }}
+							className="relative"
+						>
 							<SearchIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
 							<Input
 								value={searchQuery}
@@ -50,12 +62,15 @@ export default function PastPapers() {
 								placeholder="Search subjects or papers..."
 								className="pl-10 bg-muted border-none h-10 rounded-xl text-[15px] font-medium backdrop-blur-sm"
 							/>
-						</div>
+						</motion.div>
 
 						<nav className="flex gap-2 overflow-x-auto no-scrollbar" aria-label="Year filter">
-							{years.map((year) => (
-								<button
+							{years.map((year, idx) => (
+								<motion.button
 									key={year}
+									initial={{ opacity: 0, y: 10 }}
+									animate={{ opacity: 1, y: 0 }}
+									transition={{ delay: 0.2 + idx * 0.05 }}
 									type="button"
 									// biome-ignore lint/suspicious/noExplicitAny: Year type casting
 									onClick={() => setSelectedYear(year as any)}
@@ -67,7 +82,7 @@ export default function PastPapers() {
 									}`}
 								>
 									{year}
-								</button>
+								</motion.button>
 							))}
 						</nav>
 					</div>
@@ -83,15 +98,27 @@ export default function PastPapers() {
 				>
 					{/* iOS Large Title */}
 					<div className="space-y-1 pt-2 mb-6 text-left">
-						<h1 className="text-[34px] font-black leading-tight text-foreground tracking-tight">
-							Archive
-						</h1>
-						<p className="text-[17px] font-medium text-muted-foreground">
+						<SmoothWords
+							as="h1"
+							text="Archive"
+							className="text-[34px] font-black leading-tight text-foreground tracking-tight"
+						/>
+						<motion.p
+							initial={{ opacity: 0, y: 10 }}
+							animate={{ opacity: 1, y: 0 }}
+							transition={{ delay: 0.2 }}
+							className="text-[17px] font-medium text-muted-foreground"
+						>
 							Search and download past exam papers.
-						</p>
+						</motion.p>
 					</div>
 
-					<div className="flex items-center justify-between mb-2">
+					<motion.div
+						initial={{ opacity: 0 }}
+						animate={{ opacity: 1 }}
+						transition={{ delay: 0.3 }}
+						className="flex items-center justify-between mb-2"
+					>
 						<h2 className="text-[11px] font-black text-muted-foreground uppercase tracking-widest px-1">
 							{filteredPapers.length} Papers Found
 						</h2>
@@ -99,91 +126,112 @@ export default function PastPapers() {
 							<Filter className="w-3 h-3 mr-1" />
 							Refine
 						</Button>
-					</div>
+					</motion.div>
 
-					{filteredPapers.length > 0 ? (
-						<div className="grid grid-cols-1 gap-4">
-							{filteredPapers.map((paper) => (
-								<Card
-									key={paper.id}
-									className="p-5 premium-glass border-none rounded-[2rem] group hover:scale-[1.01] transition-all active:scale-[0.99] premium-glass-hover"
-								>
-									<div className="flex items-start justify-between mb-4">
-										<div className="flex items-center gap-3">
-											<div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center">
-												<FileText className="w-6 h-6 text-primary" />
+					<AnimatePresence mode="popLayout">
+						{filteredPapers.length > 0 ? (
+							<motion.div
+								variants={STAGGER_CONTAINER}
+								initial="hidden"
+								animate="visible"
+								className="grid grid-cols-1 gap-4"
+							>
+								{filteredPapers.map((paper) => (
+									<motion.div
+										key={paper.id}
+										variants={STAGGER_ITEM}
+										layout
+										whileHover={{ scale: 1.01, y: -4 }}
+										whileTap={{ scale: 0.99 }}
+									>
+										<Card className="p-5 premium-glass border-none rounded-[2rem] group transition-all premium-glass-hover">
+											<div className="flex items-start justify-between mb-4">
+												<div className="flex items-center gap-3">
+													<motion.div
+														whileHover={{ rotate: 10 }}
+														className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center"
+													>
+														<FileText className="w-6 h-6 text-primary" />
+													</motion.div>
+													<div>
+														<h3 className="font-bold text-foreground text-[15px] tracking-wide truncate">
+															{paper.subject} {paper.paper}
+														</h3>
+														<p className="text-xs font-semibold text-muted-foreground tracking-wide">
+															{paper.month} {paper.year}
+														</p>
+													</div>
+												</div>
 											</div>
-											<div>
-												<h3 className="font-bold text-foreground text-[15px] tracking-wide truncate">
-													{paper.subject} {paper.paper}
-												</h3>
-												<p className="text-xs font-semibold text-muted-foreground tracking-wide">
-													{paper.month} {paper.year}
-												</p>
+
+											<div className="flex items-center gap-4 mb-6 text-xs font-bold text-muted-foreground">
+												<Badge
+													variant="secondary"
+													className="px-3 py-1 text-[10px] uppercase tracking-tighter"
+												>
+													NSC Grade 12
+												</Badge>
+												<div className="flex items-center gap-1.5">
+													<span className="w-1.5 h-1.5 rounded-full bg-muted-foreground/30" />
+													{paper.marks} Marks
+												</div>
+												<div className="flex items-center gap-1.5">
+													<span className="w-1.5 h-1.5 rounded-full bg-muted-foreground/30" />
+													{paper.time}
+												</div>
 											</div>
-										</div>
-									</div>
 
-									<div className="flex items-center gap-4 mb-6 text-xs font-bold text-muted-foreground">
-										<Badge
-											variant="secondary"
-											className="px-3 py-1 text-[10px] uppercase tracking-tighter"
-										>
-											NSC Grade 12
-										</Badge>
-										<div className="flex items-center gap-1.5">
-											<span className="w-1.5 h-1.5 rounded-full bg-muted-foreground/30" />
-											{paper.marks} Marks
-										</div>
-										<div className="flex items-center gap-1.5">
-											<span className="w-1.5 h-1.5 rounded-full bg-muted-foreground/30" />
-											{paper.time}
-										</div>
-									</div>
-
-									<div className="flex items-center gap-2">
-										<Button
-											variant="secondary"
-											className="grow rounded-xl font-bold text-xs h-10"
-											onClick={() => router.push(`/past-paper?id=${paper.id}`)}
-										>
-											<Eye className="w-4 h-4" />
-											Smart view
-										</Button>
-										<Button
-											variant="outline"
-											className="grow rounded-xl font-bold text-xs h-10"
-											onClick={() => router.push(`/past-paper?id=${paper.id}&mode=read`)}
-										>
-											<BookOpen className="w-4 h-4" />
-											View
-										</Button>
-										<Button
-											size="icon"
-											variant="outline"
-											className="font-bold text-xs h-10 w-10"
-											onClick={() => window.open(paper.downloadUrl, '_blank')}
-											aria-label="Download paper"
-										>
-											<Download className="w-4 h-4" />
-										</Button>
-									</div>
-								</Card>
-							))}
-						</div>
-					) : (
-						<div className="py-20 flex flex-col items-center justify-center text-center space-y-4 opacity-40">
-							<div className="w-20 h-20 bg-muted rounded-[2.5rem] flex items-center justify-center">
-								<FileText className="w-10 h-10 text-muted-foreground" />
-							</div>
-							<div className="space-y-1">
-								<h3 className="font-black text-muted-foreground uppercase tracking-widest text-xs">
-									No papers found
-								</h3>
-								<p className="text-muted-foreground font-bold">Try adjusting your filters</p>
-							</div>
-						</div>
-					)}
+											<div className="flex items-center gap-2">
+												<Button
+													variant="secondary"
+													className="grow rounded-xl font-bold text-xs h-10"
+													onClick={() => router.push(`/past-paper?id=${paper.id}`)}
+												>
+													<Eye className="w-4 h-4" />
+													Smart view
+												</Button>
+												<Button
+													variant="outline"
+													className="grow rounded-xl font-bold text-xs h-10"
+													onClick={() => router.push(`/past-paper?id=${paper.id}&mode=read`)}
+												>
+													<BookOpen className="w-4 h-4" />
+													View
+												</Button>
+												<motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+													<Button
+														size="icon"
+														variant="outline"
+														className="font-bold text-xs h-10 w-10"
+														onClick={() => window.open(paper.downloadUrl, '_blank')}
+														aria-label="Download paper"
+													>
+														<Download className="w-4 h-4" />
+													</Button>
+												</motion.div>
+											</div>
+										</Card>
+									</motion.div>
+								))}
+							</motion.div>
+						) : (
+							<motion.div
+								initial={{ opacity: 0, scale: 0.9 }}
+								animate={{ opacity: 1, scale: 1 }}
+								className="py-20 flex flex-col items-center justify-center text-center space-y-4 opacity-40"
+							>
+								<div className="w-20 h-20 bg-muted rounded-[2.5rem] flex items-center justify-center">
+									<FileText className="w-10 h-10 text-muted-foreground" />
+								</div>
+								<div className="space-y-1">
+									<h3 className="font-black text-muted-foreground uppercase tracking-widest text-xs">
+										No papers found
+									</h3>
+									<p className="text-muted-foreground font-bold">Try adjusting your filters</p>
+								</div>
+							</motion.div>
+						)}
+					</AnimatePresence>
 				</main>
 			</ScrollArea>
 		</div>

@@ -10,9 +10,15 @@ export default function PageTransition({ children }: { children: React.ReactNode
 	const transition = getPageTransition(prefersReducedMotion);
 
 	const variants: Variants = {
-		initial: prefersReducedMotion ? { opacity: 1 } : { opacity: 0, y: 8 },
-		animate: prefersReducedMotion ? { opacity: 1 } : { opacity: 1, y: 0 },
-		exit: prefersReducedMotion ? { opacity: 1 } : { opacity: 0, y: -8 },
+		initial: prefersReducedMotion
+			? { opacity: 1 }
+			: { opacity: 0, scale: 0.98, filter: 'blur(10px)', y: 10 },
+		animate: prefersReducedMotion
+			? { opacity: 1 }
+			: { opacity: 1, scale: 1, filter: 'blur(0px)', y: 0 },
+		exit: prefersReducedMotion
+			? { opacity: 1 }
+			: { opacity: 0, scale: 0.99, filter: 'blur(5px)', y: -10 },
 	};
 
 	return (
@@ -22,7 +28,13 @@ export default function PageTransition({ children }: { children: React.ReactNode
 			animate="animate"
 			exit="exit"
 			variants={variants}
-			transition={transition}
+			transition={{
+				type: 'spring',
+				stiffness: 260,
+				damping: 25,
+				mass: 1,
+				...transition,
+			}}
 			className="h-full w-full grow flex flex-col"
 		>
 			{children}

@@ -1,14 +1,16 @@
 'use client';
 
+import { motion } from 'framer-motion';
 import { Atom, Calculator, ChevronRight, FlaskConical, Microscope, Sparkles } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useId } from 'react';
+import { SmoothText, SmoothWords } from '@/components/Transition/SmoothText';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
-
 import { SUBJECTS } from '@/constants/mock-data';
+import { STAGGER_CONTAINER, STAGGER_ITEM } from '@/lib/animation-presets';
 
 const ICON_MAP: Record<string, React.ElementType> = {
 	Calculator: Calculator,
@@ -38,27 +40,41 @@ export default function Landing() {
 					{/* Hero Section */}
 					<section className="pt-12 pb-16 flex flex-col items-center text-center space-y-8">
 						<div className="space-y-4">
-							<Badge className="bg-brand-green/10 text-brand-green border-none rounded-full px-4 py-1.5 font-black text-[10px] tracking-wider uppercase mb-4 animate-fade-in">
-								Trusted by 50,000+ Students
-							</Badge>
-							<h1 className="text-5xl font-black text-foreground leading-[1.1] tracking-tight">
-								Master your <br />
-								<span className="text-primary italic font-serif">Matrics</span> through <br />
-								<span className="relative">
-									practice.
-									<div className="absolute -bottom-2 left-0 w-full h-3 bg-primary/20 rounded-full -rotate-1" />
-								</span>
-							</h1>
-							<p className="text-base font-medium text-muted-foreground max-w-xs mx-auto leading-relaxed pt-4">
-								Interactive past papers and step-by-step guides for South African Grade 12 students.
-							</p>
+							<motion.div
+								initial={{ opacity: 0, scale: 0.9 }}
+								animate={{ opacity: 1, scale: 1 }}
+								transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+							>
+								<Badge className="bg-brand-green/10 text-brand-green border-none rounded-full px-4 py-1.5 font-black text-[10px] tracking-wider uppercase mb-4">
+									Trusted by 50,000+ Students
+								</Badge>
+							</motion.div>
+							<SmoothWords
+								as="h1"
+								text="Master your Matrics through practice."
+								className="text-5xl font-black text-foreground leading-[1.1] tracking-tight"
+								stagger={0.08}
+							/>
+							<SmoothText
+								text="Interactive past papers and step-by-step guides for South African Grade 12 students."
+								className="text-base font-medium text-muted-foreground max-w-xs mx-auto leading-relaxed pt-4"
+								delay={0.5}
+							/>
 						</div>
 
 						{/* Hero Image Container - SVG Mathematical Illustration */}
-						<div className="relative w-full aspect-square max-w-[320px] flex items-center justify-center animate-float">
+						<motion.div
+							initial={{ opacity: 0, y: 20, rotate: -5 }}
+							animate={{ opacity: 1, y: 0, rotate: 0 }}
+							transition={{ type: 'spring', stiffness: 100, damping: 15, delay: 0.3 }}
+							className="relative w-full aspect-square max-w-[320px] flex items-center justify-center"
+						>
 							<div className="absolute inset-0 bg-linear-to-tr from-primary/20 to-brand-purple/20 rounded-full blur-[80px]" />
 
-							<div className="relative w-72 h-72 bg-card rounded-[3.5rem] shadow-2xl flex items-center justify-center transform rotate-3 border-4 border-card transition-transform hover:rotate-0 duration-500 overflow-hidden">
+							<motion.div
+								whileHover={{ rotate: 0, scale: 1.05 }}
+								className="relative w-72 h-72 bg-card rounded-[3.5rem] shadow-2xl flex items-center justify-center transform rotate-3 border-4 border-card transition-transform duration-500 overflow-hidden"
+							>
 								<div className="absolute inset-0 bg-primary/5 rounded-[2.5rem]" />
 
 								{/* Custom SVG Illustration */}
@@ -101,25 +117,40 @@ export default function Landing() {
 									<circle cx="80" cy="70" r="3" fill="#f59e0b" />
 									<circle cx="20" cy="70" r="3" fill="#f59e0b" />
 								</svg>
-							</div>
+							</motion.div>
 
 							{/* Floating Elements */}
-							<div className="absolute top-0 right-0 w-16 h-16 bg-brand-amber rounded-2xl shadow-xl flex items-center justify-center -rotate-12 animate-bounce">
+							<motion.div
+								animate={{ y: [0, -10, 0] }}
+								transition={{ duration: 4, repeat: Number.POSITIVE_INFINITY, ease: 'easeInOut' }}
+								className="absolute top-0 right-0 w-16 h-16 bg-brand-amber rounded-2xl shadow-xl flex items-center justify-center -rotate-12"
+							>
 								<Sparkles className="w-8 h-8 text-white fill-white" />
-							</div>
-							<div className="absolute bottom-10 left-0 w-20 h-20 bg-brand-green rounded-[1.5rem] shadow-xl flex items-center justify-center rotate-12 transition-transform hover:rotate-0">
+							</motion.div>
+							<motion.div
+								animate={{ y: [0, 10, 0], rotate: [12, 15, 12] }}
+								transition={{ duration: 5, repeat: Number.POSITIVE_INFINITY, ease: 'easeInOut' }}
+								className="absolute bottom-10 left-0 w-20 h-20 bg-brand-green rounded-[1.5rem] shadow-xl flex items-center justify-center"
+							>
 								<Atom className="w-10 h-10 text-white" />
-							</div>
-						</div>
+							</motion.div>
+						</motion.div>
 
-						<Button
-							size="lg"
-							className="w-full max-w-sm rounded-[2rem] h-20 text-xl font-black shadow-2xl hover:scale-[1.02] active:scale-95 transition-all shadow-primary/10"
-							onClick={() => router.push('/dashboard')}
+						<motion.div
+							initial={{ opacity: 0, y: 20 }}
+							animate={{ opacity: 1, y: 0 }}
+							transition={{ delay: 0.8 }}
+							className="w-full max-w-sm"
 						>
-							Start Learning Now
-							<ChevronRight className="w-6 h-6 ml-2" />
-						</Button>
+							<Button
+								size="lg"
+								className="w-full rounded-[2rem] h-20 text-xl font-black shadow-2xl hover:scale-[1.02] active:scale-95 transition-all shadow-primary/10"
+								onClick={() => router.push('/dashboard')}
+							>
+								Start Learning Now
+								<ChevronRight className="w-6 h-6 ml-2" />
+							</Button>
+						</motion.div>
 					</section>
 
 					{/* Start your journey */}
@@ -132,42 +163,51 @@ export default function Landing() {
 							<div className="h-px flex-1 bg-border" />
 						</div>
 
-						<div className="grid grid-cols-1 gap-4">
+						<motion.div
+							variants={STAGGER_CONTAINER}
+							initial="hidden"
+							whileInView="visible"
+							viewport={{ once: true }}
+							className="grid grid-cols-1 gap-4"
+						>
 							{SUBJECTS.map((subject) => {
 								const Icon = ICON_MAP[subject.icon] || Calculator;
 								return (
-									<Card
-										key={subject.id}
-										className="bg-card p-4 rounded-3xl border border-border shadow-soft group-hover:shadow-md transition-shadow flex items-center gap-4 cursor-pointer"
-										onClick={() => router.push(subject.path)}
-									>
-										<div
-											className={`absolute top-0 right-0 w-32 h-32 ${subject.bg} rounded-full -mr-16 -mt-16 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500`}
-										/>
+									<motion.div key={subject.id} variants={STAGGER_ITEM}>
+										<Card
+											className="bg-card p-4 rounded-3xl border border-border shadow-soft group hover:shadow-md transition-shadow flex items-center gap-4 cursor-pointer overflow-hidden relative"
+											onClick={() => router.push(subject.path)}
+										>
+											<motion.div
+												whileHover={{ scale: 1.5, opacity: 0.2 }}
+												className={`absolute top-0 right-0 w-32 h-32 ${subject.bg} rounded-full -mr-16 -mt-16 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500`}
+											/>
 
-										<div className="flex items-center gap-6 relative z-10">
-											<div className="relative">
-												<div
-													className={`w-16 h-16 rounded-[1.5rem] ${subject.bg} flex items-center justify-center shrink-0 shadow-inner group-hover:scale-110 transition-transform duration-300 relative overflow-hidden`}
-												>
-													<Icon
-														className={`w-8 h-8 ${subject.color} relative z-10`}
-														aria-hidden="true"
-													/>
+											<div className="flex items-center gap-6 relative z-10 w-full">
+												<div className="relative">
+													<motion.div
+														whileHover={{ scale: 1.1, rotate: 5 }}
+														className={`w-16 h-16 rounded-[1.5rem] ${subject.bg} flex items-center justify-center shrink-0 shadow-inner group-hover:scale-110 transition-transform duration-300 relative overflow-hidden`}
+													>
+														<Icon
+															className={`w-8 h-8 ${subject.color} relative z-10`}
+															aria-hidden="true"
+														/>
+													</motion.div>
+												</div>
+												<div className="flex-1 min-w-0">
+													<h3 className="font-bold text-foreground">{subject.name}</h3>
+													<p className="text-sm text-muted-foreground">{subject.topics}</p>
+												</div>
+												<div className="text-muted-foreground/30" aria-hidden="true">
+													<ChevronRight className="w-4 h-4" />
 												</div>
 											</div>
-											<div className="flex-1 min-w-0">
-												<h3 className="font-bold text-foreground">{subject.name}</h3>
-												<p className="text-sm text-muted-foreground">{subject.topics}</p>
-											</div>
-											<div className="text-muted-foreground/30" aria-hidden="true">
-												<ChevronRight className="w-4 h-4" />
-											</div>
-										</div>
-									</Card>
+										</Card>
+									</motion.div>
 								);
 							})}
-						</div>
+						</motion.div>
 					</section>
 
 					{/* Decorative Illustration */}
