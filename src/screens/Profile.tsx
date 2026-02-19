@@ -133,7 +133,7 @@ export default function Profile() {
 					>
 						{/* Avatar Section */}
 						<div className="relative mb-8 w-full">
-							<div className="absolute inset-0 bg-gradient-to-b from-blue-500/10 to-transparent rounded-3xl blur-3xl -z-10" />
+							<div className="absolute inset-0 bg-linear-to-b from-blue-500/10 to-transparent rounded-3xl blur-3xl -z-10" />
 							<div className="premium-glass p-6 rounded-3xl flex flex-col items-center text-center">
 								<div className="relative mb-4">
 									<div className="w-24 h-24 rounded-full overflow-hidden shadow-2xl relative ring-4 ring-background">
