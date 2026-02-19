@@ -1,5 +1,6 @@
 'use client';
 
+import { Icon } from '@iconify/react';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
 	ArrowLeft,
@@ -429,8 +430,11 @@ export default function EnhancedTestQuizScreen() {
 									<Loader2 className="w-6 h-6 animate-spin" />
 								) : (
 									<>
+										<Icon
+											icon="fluent:play-circle-sparkle-24-filled"
+											className="h-6! w-6! shrink-0"
+										/>
 										Start Quiz
-										<TrendingUp className="w-6 h-6" />
 									</>
 								)}
 							</Button>
