@@ -71,57 +71,59 @@ export default function Lessons() {
 	const [activeCategory, setActiveCategory] = useState('all');
 
 	return (
-		<div className="flex flex-col h-full bg-[#fcfdfd] dark:bg-[#0a0f18] font-inter">
+		<div className="flex flex-col h-full bg-background font-inter">
 			{/* Header */}
 			<header className="px-6 pt-12 pb-6 shrink-0">
 				<div className="flex items-start justify-between">
 					<div className="space-y-1">
-						<h1 className="text-2xl font-black text-zinc-900 dark:text-white tracking-tight">
-							Grade 12 Prep
-						</h1>
-						<p className="text-zinc-500 dark:text-zinc-400 font-medium flex items-center gap-1.5 text-sm">
+						<h1 className="text-2xl font-black text-foreground tracking-tight">Grade 12 Prep</h1>
+						<p className="text-muted-foreground font-medium flex items-center gap-1.5 text-sm">
 							Keep up the streak! <Flame className="w-4 h-4 text-orange-500 fill-orange-500" />{' '}
-							<span className="font-bold text-zinc-700 dark:text-zinc-300">5 days</span>
+							<span className="font-bold text-foreground">5 days</span>
 						</p>
 					</div>
 					<Button
 						variant="outline"
 						size="sm"
-						className="rounded-full bg-white dark:bg-zinc-900 border-zinc-100 dark:border-zinc-800 shadow-sm gap-2 h-10 px-4"
+						className="rounded-full bg-card border-border shadow-sm gap-2 h-10 px-4"
 					>
-						<Globe className="w-4 h-4 text-zinc-500" />
-						<span className="font-bold text-zinc-700 dark:text-zinc-300">English</span>
-						<ChevronDown className="w-4 h-4 text-zinc-400" />
+						<Globe className="w-4 h-4 text-muted-foreground" />
+						<span className="font-bold text-foreground">English</span>
+						<ChevronDown className="w-4 h-4 text-muted-foreground/50" />
 					</Button>
 				</div>
 
 				{/* Category selector */}
-				<div className="flex gap-3 mt-8 overflow-x-auto no-scrollbar">
+				<nav
+					className="flex gap-3 mt-8 overflow-x-auto no-scrollbar"
+					aria-label="Lesson categories"
+				>
 					{categories.map((cat) => (
 						<button
 							key={cat.id}
 							type="button"
 							onClick={() => setActiveCategory(cat.id)}
+							aria-pressed={activeCategory === cat.id}
 							className={`flex items-center gap-2 px-5 py-3 rounded-full text-sm font-bold whitespace-nowrap transition-all border shadow-sm ${
 								activeCategory === cat.id
-									? 'bg-zinc-900 text-white border-zinc-900 dark:bg-white dark:text-zinc-950 dark:border-white shadow-zinc-900/10'
-									: 'bg-white text-zinc-500 border-zinc-100 dark:bg-zinc-900 dark:text-zinc-400 dark:border-zinc-800'
+									? 'bg-foreground text-background border-foreground shadow-lg'
+									: 'bg-card text-muted-foreground border-border hover:text-foreground'
 							}`}
 						>
 							<cat.icon
-								className={`w-4 h-4 ${activeCategory === cat.id ? 'text-blue-400' : 'text-zinc-400'}`}
+								className={`w-4 h-4 ${activeCategory === cat.id ? 'text-primary' : 'text-muted-foreground'}`}
 							/>
 							{cat.name}
 						</button>
 					))}
-				</div>
+				</nav>
 			</header>
 
 			{/* Path Content */}
 			<ScrollArea className="flex-1">
 				<main className="px-6 py-4 relative">
 					{/* Vertical Line */}
-					<div className="absolute left-[38px] top-0 bottom-0 w-[2px] border-l-2 border-dashed border-zinc-100 dark:border-zinc-800 z-0" />
+					<div className="absolute left-[38px] top-0 bottom-0 w-[2px] border-l-2 border-dashed border-border/50 z-0" />
 
 					<div className="space-y-6">
 						{lessons.map((lesson) => (
@@ -134,13 +136,13 @@ export default function Lessons() {
 										</div>
 									)}
 									{lesson.status === 'active' && (
-										<div className="w-8 h-8 rounded-full bg-white dark:bg-zinc-900 border-2 border-blue-500 flex items-center justify-center shadow-lg shadow-blue-500/20 translate-y-1 ring-4 ring-blue-50 dark:ring-blue-900/20">
-											<div className="w-2.5 h-2.5 rounded-full bg-blue-500" />
+										<div className="w-8 h-8 rounded-full bg-card border-2 border-primary flex items-center justify-center shadow-lg shadow-primary/20 translate-y-1 ring-4 ring-primary/10">
+											<div className="w-2.5 h-2.5 rounded-full bg-primary" />
 										</div>
 									)}
 									{lesson.status === 'locked' && (
-										<div className="w-8 h-8 rounded-full bg-zinc-50 dark:bg-zinc-800 border border-zinc-100 dark:border-zinc-700 flex items-center justify-center translate-y-1">
-											<Lock className="w-4 h-4 text-zinc-300 dark:text-zinc-500" />
+										<div className="w-8 h-8 rounded-full bg-muted border border-border flex items-center justify-center translate-y-1">
+											<Lock className="w-4 h-4 text-muted-foreground/50" />
 										</div>
 									)}
 								</div>
@@ -150,13 +152,13 @@ export default function Lessons() {
 									<Card
 										className={`p-6 rounded-[2rem] border-2 shadow-sm relative overflow-hidden group hover:shadow-md transition-all ${
 											lesson.status === 'active'
-												? 'border-blue-500 bg-white dark:bg-zinc-900'
-												: 'border-transparent bg-white dark:bg-zinc-900'
+												? 'border-primary bg-card'
+												: 'border-transparent bg-card'
 										}`}
 									>
 										{lesson.isContinue && (
 											<div className="absolute top-0 right-0">
-												<div className="bg-blue-500 text-white text-[10px] font-black px-4 py-1.5 rounded-bl-2xl uppercase tracking-widest shadow-sm">
+												<div className="bg-primary text-primary-foreground text-[10px] font-black px-4 py-1.5 rounded-bl-2xl uppercase tracking-widest shadow-sm">
 													Continue
 												</div>
 											</div>
@@ -166,45 +168,45 @@ export default function Lessons() {
 												<p
 													className={`text-[10px] font-black uppercase tracking-widest ${
 														lesson.status === 'active'
-															? 'text-blue-500'
+															? 'text-primary'
 															: lesson.status === 'completed'
 																? 'text-orange-500'
 																: lesson.subject.includes('LANGUAGE')
 																	? 'text-rose-500'
 																	: lesson.subject.includes('LIFE')
 																		? 'text-emerald-500'
-																		: 'text-zinc-400'
+																		: 'text-muted-foreground'
 													}`}
 												>
 													{lesson.subject}
 												</p>
-												<h4 className="text-xl font-bold text-zinc-900 dark:text-white leading-tight">
+												<h4 className="text-xl font-bold text-foreground leading-tight">
 													{lesson.title}
 												</h4>
 
 												{lesson.progress !== undefined ? (
 													<div className="flex items-center gap-3 pt-2">
-														<div className="flex-1 h-1.5 bg-zinc-100 dark:bg-zinc-800 rounded-full overflow-hidden">
+														<div className="flex-1 h-1.5 bg-muted rounded-full overflow-hidden">
 															<div
 																className={`h-full rounded-full transition-all ${
-																	lesson.status === 'active' ? 'bg-blue-500' : 'bg-orange-500'
+																	lesson.status === 'active' ? 'bg-primary' : 'bg-orange-500'
 																}`}
 																style={{ width: `${lesson.progress}%` }}
 															/>
 														</div>
-														<span className="text-xs font-bold text-zinc-400">
+														<span className="text-xs font-bold text-muted-foreground">
 															{lesson.progress}%
 														</span>
 													</div>
 												) : (
-													<div className="flex items-center gap-1.5 pt-2 text-zinc-400 font-medium text-xs">
+													<div className="flex items-center gap-1.5 pt-2 text-muted-foreground font-medium text-xs">
 														<Clock className="w-3.5 h-3.5" />
 														{lesson.time}
 													</div>
 												)}
 											</div>
 											<div
-												className={`w-16 h-16 rounded-[1.25rem] flex items-center justify-center text-3xl shadow-inner ${lesson.color} border border-zinc-100/50 dark:border-zinc-800/50 shrink-0 transform group-hover:scale-110 transition-transform`}
+												className={`w-16 h-16 rounded-[1.25rem] flex items-center justify-center text-3xl shadow-inner ${lesson.color} border border-border shrink-0 transform group-hover:scale-110 transition-transform`}
 											>
 												{lesson.status === 'active' ? (
 													<div className="relative">
@@ -224,23 +226,23 @@ export default function Lessons() {
 						{/* Premium Upsell Card */}
 						<div className="flex gap-6 relative z-10 pt-4">
 							<div className="w-8 shrink-0" /> {/* Spacer for alignment */}
-							<Card className="flex-1 bg-[#1a2130] dark:bg-[#111827] text-white p-8 rounded-[2.5rem] text-center space-y-6 relative overflow-hidden shadow-2xl">
-								<div className="absolute -top-12 -right-12 w-32 h-32 bg-yellow-500/10 rounded-full blur-3xl" />
-								<div className="absolute -bottom-12 -left-12 w-32 h-32 bg-blue-500/10 rounded-full blur-3xl" />
+							<Card className="flex-1 bg-foreground text-background p-8 rounded-[2.5rem] text-center space-y-6 relative overflow-hidden shadow-2xl border-none">
+								<div className="absolute -top-12 -right-12 w-32 h-32 bg-primary/20 rounded-full blur-3xl" />
+								<div className="absolute -bottom-12 -left-12 w-32 h-32 bg-primary/10 rounded-full blur-3xl" />
 
-								<div className="w-14 h-14 bg-white/10 rounded-2xl flex items-center justify-center mx-auto shadow-inner relative group cursor-pointer hover:scale-105 transition-transform">
+								<div className="w-14 h-14 bg-background/10 rounded-2xl flex items-center justify-center mx-auto shadow-inner relative group cursor-pointer hover:scale-105 transition-transform">
 									<Award className="w-8 h-8 text-yellow-400" />
-									<div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-[#1a2130]" />
+									<div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-foreground" />
 								</div>
 
 								<div className="space-y-2">
 									<h3 className="text-2xl font-black tracking-tight">Unlock Past Papers</h3>
-									<p className="text-zinc-400 font-medium text-sm px-4">
+									<p className="text-muted-foreground font-medium text-sm px-4">
 										Get access to 2018-2023 exams with memos.
 									</p>
 								</div>
 
-								<Button className="w-full bg-white text-[#1a2130] hover:bg-zinc-100 h-14 rounded-2xl font-black text-lg shadow-xl shadow-black/10 transition-all active:scale-[0.98]">
+								<Button className="w-full bg-background text-foreground hover:bg-muted h-14 rounded-2xl font-black text-lg shadow-xl shadow-black/10 transition-all active:scale-[0.98]">
 									Go Premium
 								</Button>
 							</Card>

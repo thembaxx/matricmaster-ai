@@ -35,11 +35,11 @@ const defaultChartData: ChartDataItem[] = [
 const chartConfig = {
 	you: {
 		label: 'You',
-		color: '#22d3ee',
+		color: 'var(--primary)',
 	},
 	average: {
 		label: 'Average',
-		color: '#64748b',
+		color: 'var(--muted-foreground)',
 	},
 } satisfies ChartConfig;
 
@@ -94,25 +94,25 @@ export default function Profile() {
 		{
 			title: 'Calculus Master',
 			icon: Calculator,
-			variant: 'blue' as const,
+			variant: 'primary' as const,
 		},
 		{
 			title: 'Physics Logic',
 			icon: User,
-			variant: 'purple' as const,
+			variant: 'secondary' as const,
 		},
 	];
 
 	if (isLoading) {
 		return (
 			<div className="p-4 bg-background">
-				<div className="flex flex-col h-full overflow-hidden rounded-4xl bg-card">
+				<div className="flex flex-col h-full overflow-hidden rounded-[2.5rem] bg-card">
 					<ScrollArea className="flex-1">
 						<main className="px-6 pb-40 pt-4 max-w-2xl mx-auto w-full flex flex-col items-center">
-							<div className="w-28 h-28 bg-zinc-200 dark:bg-zinc-800 rounded-full animate-pulse mb-4" />
-							<div className="h-6 w-32 bg-zinc-200 dark:bg-zinc-800 rounded animate-pulse mb-2" />
-							<div className="h-4 w-40 bg-zinc-200 dark:bg-zinc-800 rounded animate-pulse mb-8" />
-							<div className="w-full max-w-sm aspect-square bg-zinc-200 dark:bg-zinc-800 rounded-full animate-pulse" />
+							<div className="w-28 h-28 bg-muted rounded-full animate-pulse mb-4" />
+							<div className="h-6 w-32 bg-muted rounded animate-pulse mb-2" />
+							<div className="h-4 w-40 bg-muted rounded animate-pulse mb-8" />
+							<div className="w-full max-w-sm aspect-square bg-muted rounded-full animate-pulse" />
 						</main>
 					</ScrollArea>
 				</div>
@@ -123,7 +123,7 @@ export default function Profile() {
 	return (
 		<div className="p-4 bg-background relative h-full">
 			<BackgroundMesh variant="subtle" />
-			<div className="flex flex-col h-full overflow-hidden rounded-4xl bg-card/50 backdrop-blur-sm border border-border/50 relative z-10">
+			<div className="flex flex-col h-full overflow-hidden rounded-[2.5rem] bg-card/50 backdrop-blur-sm border border-border/50 relative z-10">
 				<ScrollArea className="flex-1">
 					<main
 						className="px-6 pb-40 pt-8 max-w-2xl mx-auto w-full flex flex-col items-center"
@@ -133,8 +133,8 @@ export default function Profile() {
 					>
 						{/* Avatar Section */}
 						<div className="relative mb-8 w-full">
-							<div className="absolute inset-0 bg-linear-to-b from-blue-500/10 to-transparent rounded-3xl blur-3xl -z-10" />
-							<div className="premium-glass p-6 rounded-3xl flex flex-col items-center text-center">
+							<div className="absolute inset-0 bg-linear-to-b from-primary/10 to-transparent rounded-3xl blur-3xl -z-10" />
+							<div className="premium-glass p-6 rounded-3xl flex flex-col items-center text-center border-none shadow-none">
 								<div className="relative mb-4">
 									<div className="w-24 h-24 rounded-full overflow-hidden shadow-2xl relative ring-4 ring-background">
 										<SafeImage
@@ -149,7 +149,7 @@ export default function Profile() {
 											priority
 										/>
 									</div>
-									<div className="absolute bottom-0 right-0 rounded-full p-1.5 bg-blue-500 ring-4 ring-background text-white shadow-lg">
+									<div className="absolute bottom-0 right-0 rounded-full p-1.5 bg-primary ring-4 ring-background text-primary-foreground shadow-lg">
 										<svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
 											<title>Verified Badge</title>
 											<path
@@ -171,10 +171,14 @@ export default function Profile() {
 						</div>
 
 						{/* Tabs - Segmented Control */}
-						<div className="w-full max-w-xs p-1.5 rounded-2xl flex mb-8 bg-muted/50 backdrop-blur-sm border border-white/5">
+						<nav
+							className="w-full max-w-xs p-1.5 rounded-2xl flex mb-8 bg-muted/50 backdrop-blur-sm border border-border/20"
+							aria-label="Statistics view"
+						>
 							<button
 								type="button"
 								onClick={() => setViewMode('my_stats')}
+								aria-pressed={viewMode === 'my_stats'}
 								className={`flex-1 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wide transition-all duration-300 ${
 									viewMode === 'my_stats'
 										? 'bg-background text-foreground shadow-sm scale-100'
@@ -186,6 +190,7 @@ export default function Profile() {
 							<button
 								type="button"
 								onClick={() => setViewMode('provincial')}
+								aria-pressed={viewMode === 'provincial'}
 								className={`flex-1 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wide transition-all duration-300 ${
 									viewMode === 'provincial'
 										? 'bg-background text-foreground shadow-sm scale-100'
@@ -194,7 +199,7 @@ export default function Profile() {
 							>
 								vs. Average
 							</button>
-						</div>
+						</nav>
 
 						{/* Radar Chart */}
 						<div className="w-full max-w-sm aspect-square relative mb-6">
@@ -202,8 +207,8 @@ export default function Profile() {
 								<RadarChart cx="50%" cy="50%" outerRadius="70%" data={chartData}>
 									<defs>
 										<linearGradient id={radarGradientId} x1="0" y1="0" x2="0" y2="1">
-											<stop offset="0%" stopColor="#22d3ee" stopOpacity={0.8} />
-											<stop offset="100%" stopColor="#0ea5e9" stopOpacity={0.3} />
+											<stop offset="0%" stopColor="var(--primary)" stopOpacity={0.8} />
+											<stop offset="100%" stopColor="var(--primary)" stopOpacity={0.3} />
 										</linearGradient>
 										<filter id={glowFilterId} x="-50%" y="-50%" width="200%" height="200%">
 											<feGaussianBlur stdDeviation="3" result="coloredBlur" />
@@ -214,26 +219,26 @@ export default function Profile() {
 										</filter>
 									</defs>
 									<ChartTooltip cursor={false} content={<ChartTooltipContent />} />
-									<PolarGrid stroke="#1e3a5f" strokeOpacity={0.2} />
+									<PolarGrid stroke="var(--border)" strokeOpacity={0.5} />
 									<PolarAngleAxis
 										dataKey="subject"
-										tick={{ fill: 'currentColor', fontSize: 10, fontWeight: 700 }}
-										className="text-muted-foreground uppercase tracking-widest"
+										tick={{ fill: 'var(--muted-foreground)', fontSize: 10, fontWeight: 700 }}
+										className="uppercase tracking-widest"
 										tickLine={false}
 									/>
 									<Radar
 										name="You"
 										dataKey="you"
-										stroke="#22d3ee"
+										stroke="var(--primary)"
 										strokeWidth={3}
 										fill={`url(#${radarGradientId})`}
 										fillOpacity={0.5}
 										filter={`url(#${glowFilterId})`}
 										dot={{
 											r: 4,
-											fill: '#22d3ee',
+											fill: 'var(--primary)',
 											fillOpacity: 1,
-											stroke: 'hsl(var(--background))',
+											stroke: 'var(--background)',
 											strokeWidth: 2,
 										}}
 									/>
@@ -241,7 +246,7 @@ export default function Profile() {
 										<Radar
 											name="Average"
 											dataKey="average"
-											stroke="#64748b"
+											stroke="var(--muted-foreground)"
 											strokeWidth={2}
 											fill="transparent"
 											strokeDasharray="4 4"
@@ -253,13 +258,7 @@ export default function Profile() {
 
 							{/* Highlight accuracy */}
 							{userStats && userStats.accuracy > 0 && (
-								<div
-									className="absolute top-[15%] left-1/2 -translate-x-1/2 text-xs font-black px-3 py-1.5 rounded-xl shadow-xl z-10 uppercase tracking-wider backdrop-blur-md border border-white/10"
-									style={{
-										backgroundColor: 'rgba(34, 211, 238, 0.9)',
-										color: '#0f172a',
-									}}
-								>
+								<div className="absolute top-[15%] left-1/2 -translate-x-1/2 text-xs font-black px-3 py-1.5 rounded-xl shadow-xl z-10 uppercase tracking-wider backdrop-blur-md border border-primary/20 bg-primary text-primary-foreground">
 									{userStats.accuracy}% AVG
 								</div>
 							)}
@@ -268,12 +267,12 @@ export default function Profile() {
 						{/* Legend */}
 						<div className="flex justify-center gap-6 mb-8">
 							<div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-muted-foreground">
-								<span className="w-2 h-2 rounded-full ring-2 ring-cyan-400/50 bg-cyan-400" />
+								<span className="w-2 h-2 rounded-full ring-2 ring-primary/50 bg-primary" />
 								You
 							</div>
 							{viewMode === 'provincial' && (
 								<div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-muted-foreground opacity-60">
-									<span className="w-2 h-2 rounded-full border-2 border-slate-500" />
+									<span className="w-2 h-2 rounded-full border-2 border-muted-foreground" />
 									Provincial
 								</div>
 							)}
@@ -288,14 +287,13 @@ export default function Profile() {
 								{achievements.map((item) => (
 									<div
 										key={item.title}
-										className="flex items-center gap-3 px-4 py-3 rounded-2xl shrink-0 premium-glass"
+										className="flex items-center gap-3 px-4 py-3 rounded-2xl shrink-0 premium-glass border-none"
 									>
 										<div
-											className={`p-2 rounded-xl ${item.variant === 'blue' ? 'bg-cyan-500/10' : 'bg-purple-500/10'}`}
+											className={`p-2 rounded-xl ${item.variant === 'primary' ? 'bg-primary/10' : 'bg-secondary/10'}`}
 										>
 											<item.icon
-												className="w-4 h-4"
-												style={{ color: item.variant === 'blue' ? '#22d3ee' : '#a855f7' }}
+												className={`w-4 h-4 ${item.variant === 'primary' ? 'text-primary' : 'text-secondary-foreground'}`}
 											/>
 										</div>
 										<span className="font-bold text-xs">{item.title}</span>
@@ -306,10 +304,10 @@ export default function Profile() {
 
 						{/* Stats Cards */}
 						<div className="grid grid-cols-2 gap-4 w-full">
-							<div className="p-5 rounded-3xl premium-glass">
+							<div className="p-5 rounded-3xl premium-glass border-none">
 								<div className="flex flex-col gap-4">
-									<div className="w-10 h-10 rounded-2xl flex items-center justify-center bg-cyan-500/10">
-										<GraduationCap className="w-5 h-5 text-cyan-400" />
+									<div className="w-10 h-10 rounded-2xl flex items-center justify-center bg-primary/10">
+										<GraduationCap className="w-5 h-5 text-primary" />
 									</div>
 									<div>
 										<div className="text-2xl font-black text-foreground tracking-tight">
@@ -322,10 +320,10 @@ export default function Profile() {
 								</div>
 							</div>
 
-							<div className="p-5 rounded-3xl premium-glass">
+							<div className="p-5 rounded-3xl premium-glass border-none">
 								<div className="flex flex-col gap-4">
-									<div className="w-10 h-10 rounded-2xl flex items-center justify-center bg-purple-500/10">
-										<Star className="w-5 h-5 text-purple-400" />
+									<div className="w-10 h-10 rounded-2xl flex items-center justify-center bg-primary/10">
+										<Star className="w-5 h-5 text-primary" />
 									</div>
 									<div>
 										<div className="text-2xl font-black text-foreground tracking-tight">
