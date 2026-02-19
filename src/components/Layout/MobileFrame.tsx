@@ -60,6 +60,7 @@ export default function MobileFrame({ children }: { children: React.ReactNode })
 	const navItems = [
 		{ href: '/dashboard', label: 'Home', icon: 'fluent:clover-24-filled' },
 		{ href: '/search', label: 'Search', icon: 'fluent:search-sparkle-24-filled' },
+		{ href: '/test', label: 'Quiz', icon: 'fluent:play-circle-sparkle-24-filled' },
 		{ href: '/past-papers', label: 'Papers', icon: 'fluent:hat-graduation-sparkle-24-filled' },
 		{ href: '/bookmarks', label: 'Saved', icon: 'fluent:bookmark-24-filled' },
 	];
@@ -244,7 +245,7 @@ export default function MobileFrame({ children }: { children: React.ReactNode })
 				{!shouldHideBottomNav && user && (
 					<nav
 						aria-label="Main navigation"
-						className="fixed bottom-8 left-1/2 -translate-x-1/2 w-[90%] max-w-95 z-100 ios-glass rounded-[2.5rem] shadow-2xl shadow-black/5 grid grid-cols-4 p-2 px-3 transition-all duration-500 ease-ios"
+						className="fixed bottom-8 left-1/2 -translate-x-1/2 w-[90%] max-w-95 z-100 ios-glass rounded-[2.5rem] shadow-2xl shadow-black/5 grid grid-cols-5 p-2 px-3 transition-all duration-500 ease-ios"
 						style={{
 							marginBottom: 'env(safe-area-inset-bottom, 0px)',
 						}}
