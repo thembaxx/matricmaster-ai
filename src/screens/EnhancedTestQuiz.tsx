@@ -13,6 +13,7 @@ import {
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { SafeImage } from '@/components/SafeImage';
+import { BackgroundMesh } from '@/components/ui/background-mesh';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -28,7 +29,6 @@ import {
 } from '@/lib/db/actions';
 import { cn } from '@/lib/utils';
 import { getExplanation } from '@/services/geminiService';
-import { BackgroundMesh } from '@/components/ui/background-mesh';
 
 // Types
 interface Subject {
@@ -127,6 +127,27 @@ export default function EnhancedTestQuizScreen() {
 	const [aiExplanation, setAiExplanation] = useState<string | null>(null);
 	const [isExplaining, setIsExplaining] = useState(false);
 
+	// const [aiExplanation, setAiExplanation] = useState<string | null>(null);
+	// const [isExplaining, setIsExplaining] = useState(false);
+
+	const handleExplain = async (subject: string, questionContext: string) => {
+		setIsExplaining(true);
+		setAiExplanation(null);
+		try {
+			const explanation = await getExplanation(subject, questionContext);
+			setAiExplanation(
+				explanation ?? "I'm sorry, I couldn't generate an explanation for this question."
+			);
+		} catch (error) {
+			console.error('Failed to get AI explanation:', error);
+			setAiExplanation(
+				"Sorry, I couldn't generate an explanation right now. Please check your internet connection and try again."
+			);
+		} finally {
+			setIsExplaining(false);
+		}
+	};
+
 	const loadSubjects = useCallback(async () => {
 		try {
 			const subjectsData = await getSubjectsAction();
@@ -141,27 +162,6 @@ export default function EnhancedTestQuizScreen() {
 	useEffect(() => {
 		loadSubjects();
 	}, [loadSubjects]);
-
-	// const [aiExplanation, setAiExplanation] = useState<string | null>(null);
-	// const [isExplaining, setIsExplaining] = useState(false);
-
-	// const handleExplain = async (subject: string, questionContext: string) => {
-	// 	setIsExplaining(true);
-	// 	setAiExplanation(null);
-	// 	try {
-	// 		const explanation = await getExplanation(subject, questionContext);
-	// 		setAiExplanation(
-	// 			explanation ?? "I'm sorry, I couldn't generate an explanation for this question."
-	// 		);
-	// 	} catch (error) {
-	// 		console.error('Failed to get AI explanation:', error);
-	// 		setAiExplanation(
-	// 			"Sorry, I couldn't generate an explanation right now. Please check your internet connection and try again."
-	// 		);
-	// 	} finally {
-	// 		setIsExplaining(false);
-	// 	}
-	// };
 
 	const toggleSubject = (subjectId: number) => {
 		setQuizState((prev) => {
@@ -342,7 +342,12 @@ export default function EnhancedTestQuizScreen() {
 							variants={itemVariants}
 							className="flex items-center justify-between mb-8 fixed top-6 w-full left-0 px-6 gap-4 z-20"
 						>
-							<Button variant="ghost" size="icon" onClick={() => router.back()} className="rounded-full hover:bg-black/5 dark:hover:bg-white/10">
+							<Button
+								variant="ghost"
+								size="icon"
+								onClick={() => router.back()}
+								className="rounded-full hover:bg-black/5 dark:hover:bg-white/10"
+							>
 								<ArrowLeft className="w-6 h-6" />
 							</Button>
 							<h1 className="text-lg font-black uppercase tracking-widest text-left grow text-zinc-900 dark:text-white opacity-80">
@@ -385,10 +390,11 @@ export default function EnhancedTestQuizScreen() {
 												>
 													<Badge
 														variant={isSelected ? 'default' : 'outline'}
-														className={`cursor-pointer px-5 py-2.5 rounded-2xl text-sm font-bold transition-all border-2 ${isSelected
-															? 'border-brand-blue bg-brand-blue text-white shadow-lg shadow-brand-blue/30'
-															: 'border-zinc-200 dark:border-zinc-700 bg-transparent text-zinc-600 dark:text-zinc-400 hover:border-zinc-300 dark:hover:border-zinc-600'
-															}`}
+														className={`cursor-pointer px-5 py-2.5 rounded-2xl text-sm font-bold transition-all border-2 ${
+															isSelected
+																? 'border-brand-blue bg-brand-blue text-white shadow-lg shadow-brand-blue/30'
+																: 'border-zinc-200 dark:border-zinc-700 bg-transparent text-zinc-600 dark:text-zinc-400 hover:border-zinc-300 dark:hover:border-zinc-600'
+														}`}
 														onClick={() => toggleSubject(subject.id)}
 													>
 														{subject.name}
@@ -419,7 +425,9 @@ export default function EnhancedTestQuizScreen() {
 								disabled={quizState.selectedSubjects.length === 0 || loading}
 								className="w-full bg-brand-blue hover:bg-brand-blue/90 shadow-xl shadow-brand-blue/20 gap-3 text-white h-16 rounded-[2rem] font-black text-lg tracking-wide uppercase transition-all active:scale-95"
 							>
-								{loading ? <Loader2 className="w-6 h-6 animate-spin" /> : (
+								{loading ? (
+									<Loader2 className="w-6 h-6 animate-spin" />
+								) : (
 									<>
 										Start Quiz
 										<TrendingUp className="w-6 h-6" />
@@ -440,39 +448,50 @@ export default function EnhancedTestQuizScreen() {
 						className="flex flex-col h-full font-lexend relative"
 					>
 						{/* Header */}
-						<header className="bg-white/50 dark:bg-zinc-900/50 backdrop-blur-xl border-b border-white/10 dark:border-white/5 shrink-0 sticky top-0 z-30">
-							<div className="max-w-2xl mx-auto w-full">
-								<div className="px-6 pt-12 pb-2 flex items-center justify-between" style={{ paddingTop: 'calc(env(safe-area-inset-top, 24px) + 24px)' }}>
-									<Button
-										variant="ghost"
-										size="icon"
-										onClick={() => router.push('/dashboard')}
-										className="rounded-full hover:bg-black/5 dark:hover:bg-white/10"
+						<div className="p-4 rounded-2xl relative z-60">
+							<header className="bg-white/50 dark:bg-zinc-900/50 rounded-2xl backdrop-blur-xl border-b border-white/10 dark:border-white/5 shrink-0 sticky top-0 z-30">
+								<div className="max-w-2xl mx-auto w-full">
+									<div
+										className="px-6 pt-12 pb-2 flex items-center justify-between"
+										style={{ paddingTop: 'calc(env(safe-area-inset-top, 24px) + 24px)' }}
 									>
-										<ArrowLeft className="w-6 h-6" />
-									</Button>
-									<div className="text-center">
-										<h1 className="text-[10px] font-black text-zinc-400 uppercase tracking-widest">
-											{subjects.find((s) => s.id === quizState.questions[quizState.currentQuestionIndex]?.subjectId)?.name || 'Subject'}
-										</h1>
-										<p className="text-sm font-black text-zinc-900 dark:text-white">
-											Question {quizState.currentQuestionIndex + 1} of {quizState.questions.length}
-										</p>
+										<Button
+											variant="ghost"
+											size="icon"
+											onClick={() => router.push('/dashboard')}
+											className="rounded-full hover:bg-black/5 dark:hover:bg-white/10"
+										>
+											<ArrowLeft className="w-6 h-6" />
+										</Button>
+										<div className="text-center">
+											<h1 className="text-[10px] font-black text-zinc-400 uppercase tracking-widest">
+												{subjects.find(
+													(s) =>
+														s.id === quizState.questions[quizState.currentQuestionIndex]?.subjectId
+												)?.name || 'Subject'}
+											</h1>
+											<p className="text-sm font-black text-zinc-900 dark:text-white">
+												Question {quizState.currentQuestionIndex + 1} of{' '}
+												{quizState.questions.length}
+											</p>
+										</div>
+										<div className="w-10" />
 									</div>
-									<div className="w-10" />
-								</div>
-								{/* Progress */}
-								<div className="px-6 pb-6">
-									<div className="relative h-2 w-full bg-black/5 dark:bg-white/5 rounded-full overflow-hidden mb-3">
-										<motion.div
-											className="absolute top-0 left-0 h-full bg-brand-blue rounded-full shadow-[0_0_12px_rgba(59,130,246,0.4)]"
-											initial={{ width: 0 }}
-											animate={{ width: `${((quizState.currentQuestionIndex + 1) / quizState.questions.length) * 100}%` }}
-										/>
+									{/* Progress */}
+									<div className="px-6 pb-6">
+										<div className="relative h-2 w-full bg-black/5 dark:bg-white/5 rounded-full overflow-hidden mb-3">
+											<motion.div
+												className="absolute top-0 left-0 h-full bg-brand-blue rounded-full shadow-[0_0_12px_rgba(59,130,246,0.4)]"
+												initial={{ width: 0 }}
+												animate={{
+													width: `${((quizState.currentQuestionIndex + 1) / quizState.questions.length) * 100}%`,
+												}}
+											/>
+										</div>
 									</div>
 								</div>
-							</div>
-						</header>
+							</header>
+						</div>
 
 						{quizState.questions.length > 0 && (
 							<ScrollArea className="flex-1">
@@ -526,7 +545,7 @@ export default function EnhancedTestQuizScreen() {
 										<RadioGroup
 											value={
 												quizState.selectedAnswers[
-												quizState.questions[quizState.currentQuestionIndex].id
+													quizState.questions[quizState.currentQuestionIndex].id
 												] || ''
 											}
 											onValueChange={(value) =>
@@ -537,74 +556,115 @@ export default function EnhancedTestQuizScreen() {
 											}
 											className="space-y-3 flex flex-col"
 										>
-											{quizState.questions[quizState.currentQuestionIndex].options?.map((option) => {
-												const selectedId =
-													quizState.selectedAnswers[
-													quizState.questions[quizState.currentQuestionIndex].id
-													] || '';
+											{quizState.questions[quizState.currentQuestionIndex].options?.map(
+												(option) => {
+													const selectedId =
+														quizState.selectedAnswers[
+															quizState.questions[quizState.currentQuestionIndex].id
+														] || '';
 
-												const isSelected = selectedId === option.optionLetter; // Value matches optionLetter
+													const isSelected = selectedId === option.optionLetter; // Value matches optionLetter
 
-												return (
-													<motion.div
-														key={option.id}
-														whileTap={{ scale: 0.98 }}
-													>
-														<RadioGroupItem
-															value={option.optionLetter}
-															id={option.id}
-															className="peer sr-only"
-														/>
-														<Label
-															htmlFor={option.id}
-															className={cn(
-																"premium-glass border-none p-4 rounded-2xl flex items-center gap-4 cursor-pointer transition-all duration-300 group",
-																isSelected
-																	? "ring-2 ring-brand-blue bg-white dark:bg-zinc-800"
-																	: "hover:bg-white/60 dark:hover:bg-zinc-800/60"
-															)}
-														>
-															<div
+													return (
+														<motion.div key={option.id} whileTap={{ scale: 0.98 }}>
+															<RadioGroupItem
+																value={option.optionLetter}
+																id={option.id}
+																className="peer sr-only"
+															/>
+															<Label
+																htmlFor={option.id}
 																className={cn(
-																	"w-10 h-10 rounded-xl flex items-center justify-center text-sm font-black transition-colors shrink-0",
+																	'premium-glass border-none p-4 rounded-2xl flex items-center gap-4 cursor-pointer transition-all duration-300 group',
 																	isSelected
-																		? "bg-brand-blue text-white shadow-lg shadow-brand-blue/30"
-																		: "bg-black/5 dark:bg-white/5 text-zinc-500 dark:text-zinc-400 group-hover:bg-brand-blue/10 group-hover:text-brand-blue"
+																		? 'ring-2 ring-brand-blue bg-white dark:bg-zinc-800'
+																		: 'hover:bg-white/60 dark:hover:bg-zinc-800/60'
 																)}
 															>
-																{option.optionLetter}
-															</div>
-															<span className="text-base font-medium text-zinc-700 dark:text-zinc-200 leading-snug">
-																{option.optionText}
-															</span>
-															{isSelected && (
-																<div className="ml-auto text-brand-blue">
-																	<CheckCircle2 className="w-5 h-5 fill-current" />
+																<div
+																	className={cn(
+																		'w-10 h-10 rounded-xl flex items-center justify-center text-sm font-black transition-colors shrink-0',
+																		isSelected
+																			? 'bg-brand-blue text-white shadow-lg shadow-brand-blue/30'
+																			: 'bg-black/5 dark:bg-white/5 text-zinc-500 dark:text-zinc-400 group-hover:bg-brand-blue/10 group-hover:text-brand-blue'
+																	)}
+																>
+																	{option.optionLetter}
+																</div>
+																<span className="text-base font-medium text-zinc-700 dark:text-zinc-200 leading-snug">
+																	{option.optionText}
+																</span>
+																{isSelected && (
+																	<div className="ml-auto text-brand-blue">
+																		<CheckCircle2 className="w-5 h-5 fill-current" />
+																	</div>
+																)}
+															</Label>
+
+															{/* AI Explanation for selected option (optional feature, kept simple for now) */}
+															{isSelected && false && (
+																<div className="mt-2 text-xs text-zinc-500 px-4">
+																	Show detailed explanation here...
 																</div>
 															)}
-														</Label>
-
-														{/* AI Explanation for selected option (optional feature, kept simple for now) */}
-														{isSelected && false && (
-															<div className="mt-2 text-xs text-zinc-500 px-4">
-																Show detailed explanation here...
-															</div>
-														)}
-													</motion.div>
-												);
-											})}
+														</motion.div>
+													);
+												}
+											)}
 										</RadioGroup>
 									</div>
 
+									<div className="p-1 bg-linear-to-r from-brand-blue to-brand-green rounded-[2rem] mt-8">
+										<div className="bg-white dark:bg-zinc-950 rounded-[1.9rem] p-4 space-y-4">
+											<div className="flex flex-col items-start">
+												<div className="flex items-center gap-4">
+													<div className="w-10 h-10 rounded-xl bg-brand-blue/10 flex items-center shrink-0 justify-center">
+														<Sparkles className="w-5 h-5 text-brand-blue" />
+													</div>
+													<div>
+														<h4 className="font-semibold text-zinc-900 dark:text-white text-sm">
+															Need a deeper explanation?
+														</h4>
+														<p className="text-[10px] font-bold text-zinc-500 uppercase tracking-tight">
+															Ask MatricMaster AI
+														</p>
+													</div>
+												</div>
+												<Button
+													size="sm"
+													variant="link"
+													className="font-bold text-brand-blue hover:bg-brand-blue/5 px-13.5"
+													onClick={() =>
+														handleExplain(
+															quizState.questions[quizState.currentQuestionIndex].id,
+															quizState.questions[quizState.currentQuestionIndex].questionText
+														)
+													}
+													disabled={isExplaining}
+												>
+													{isExplaining ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Explain'}
+												</Button>
+											</div>
+
+											{aiExplanation && (
+												<div className="pt-4 border-t border-zinc-100 dark:border-zinc-800 animate-in fade-in slide-in-from-top-2">
+													<p className="text-sm text-zinc-600 dark:text-zinc-400 font-medium leading-relaxed whitespace-pre-wrap">
+														{aiExplanation}
+													</p>
+												</div>
+											)}
+										</div>
+									</div>
+
 									{/* Controls */}
-									<div className="fixed bottom-0 left-0 w-full p-6 bg-gradient-to-t from-background via-background to-transparent z-20">
+									<div className="fixed bottom-0 left-0 w-full p-6 bg-linear-to-t from-background via-background to-transparent z-20">
 										<div className="max-w-2xl mx-auto flex gap-4">
 											<Button
 												variant="outline"
-												size="lg"
+												size="sm"
 												onClick={handlePrevious}
 												disabled={quizState.currentQuestionIndex === 0}
-												className="flex-1 h-14 rounded-2xl font-bold bg-white/50 dark:bg-zinc-900/50 backdrop-blur-md"
+												className="flex-1 h-12 rounded-2xl text-base font-semibold bg-white/50 dark:bg-zinc-900/50 backdrop-blur-md"
 											>
 												Previous
 											</Button>
@@ -612,16 +672,16 @@ export default function EnhancedTestQuizScreen() {
 											{quizState.selectedAnswers[
 												quizState.questions[quizState.currentQuestionIndex].id
 											] && (
-													<Button
-														size="lg"
-														onClick={handleNext}
-														className="flex-1 h-14 rounded-2xl font-black uppercase tracking-wider bg-brand-blue hover:bg-brand-blue/90 text-white shadow-xl shadow-brand-blue/20"
-													>
-														{quizState.currentQuestionIndex === quizState.questions.length - 1
-															? 'Finish'
-															: 'Next'}
-													</Button>
-												)}
+												<Button
+													size="sm"
+													onClick={handleNext}
+													className="flex-1 h-12 text-base rounded-2xl font-semibold bg-brand-blue hover:bg-brand-blue/90 text-white shadow-xl shadow-brand-blue/20"
+												>
+													{quizState.currentQuestionIndex === quizState.questions.length - 1
+														? 'Finish'
+														: 'Next'}
+												</Button>
+											)}
 										</div>
 									</div>
 								</motion.div>
@@ -640,46 +700,62 @@ export default function EnhancedTestQuizScreen() {
 						className="flex flex-col h-full overflow-hidden"
 					>
 						<ScrollArea className="flex-1">
-							<motion.div variants={itemVariants} className="flex-1 flex flex-col items-center p-6 py-12 max-w-md mx-auto w-full">
+							<motion.div
+								variants={itemVariants}
+								className="flex-1 flex flex-col items-center p-6 py-12 max-w-md mx-auto w-full"
+							>
 								<div className="text-center mb-8">
 									<div className="w-24 h-24 bg-brand-green/10 rounded-full flex items-center justify-center mx-auto mb-6 shrink-0 shadow-[0_0_32px_rgba(16,185,129,0.2)]">
 										<TrendingUp className="w-12 h-12 text-brand-green" />
 									</div>
-									<h2 className="text-3xl font-black mb-2 text-zinc-900 dark:text-white tracking-tight">Quiz Complete!</h2>
+									<h2 className="text-3xl font-black mb-2 text-zinc-900 dark:text-white tracking-tight">
+										Quiz Complete!
+									</h2>
 									<div className="flex flex-col gap-2 items-center">
 										<p className="text-zinc-500 dark:text-zinc-400 font-medium flex items-center justify-center gap-2 bg-black/5 dark:bg-white/5 py-1 px-4 rounded-full w-fit mx-auto mt-4">
 											<Clock className="w-4 h-4" />
 											Time taken: {getTimeTaken()}
 										</p>
-										<Badge variant="outline" className="text-lg px-4 py-1 border-brand-blue/30 text-brand-blue bg-brand-blue/5">
+										<Badge
+											variant="outline"
+											className="text-lg px-4 py-1 border-brand-blue/30 text-brand-blue bg-brand-blue/5"
+										>
 											Grade: {getGrade(calculateScore())}
 										</Badge>
 									</div>
 								</div>
 
 								<Card className="premium-glass border-none p-8 w-full mb-8 relative overflow-hidden text-center">
-									<div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500" />
+									<div className="absolute top-0 left-0 w-full h-2 bg-linear-to-r from-blue-500 via-purple-500 to-pink-500" />
 									<div className="space-y-2 mb-8">
-										<p className="text-[10px] font-black uppercase tracking-widest text-zinc-400">Your Performance</p>
-										<div className="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-br from-zinc-900 to-zinc-600 dark:from-white dark:to-zinc-400">
+										<p className="text-[10px] font-black uppercase tracking-widest text-zinc-400">
+											Your Performance
+										</p>
+										<div className="text-6xl font-black text-transparent bg-clip-text bg-linear-to-br from-zinc-900 to-zinc-600 dark:from-white dark:to-zinc-400">
 											{Math.round((calculateScore() / quizState.questions.length) * 100)}%
 										</div>
 									</div>
 
 									<div className="grid grid-cols-2 gap-4">
 										<div className="p-4 rounded-2xl bg-brand-green/10 border border-brand-green/20">
-											<div className="text-2xl font-black text-brand-green mb-1">{calculateScore()}</div>
+											<div className="text-2xl font-black text-brand-green mb-1">
+												{calculateScore()}
+											</div>
 											<div className="text-xs font-bold text-brand-green/70 uppercase">Correct</div>
 										</div>
 										<div className="p-4 rounded-2xl bg-red-500/10 border border-red-500/20">
-											<div className="text-2xl font-black text-red-500 mb-1">{quizState.questions.length - calculateScore()}</div>
+											<div className="text-2xl font-black text-red-500 mb-1">
+												{quizState.questions.length - calculateScore()}
+											</div>
 											<div className="text-xs font-bold text-red-500/70 uppercase">Incorrect</div>
 										</div>
 									</div>
 								</Card>
 
 								<div className="w-full space-y-3 mb-8">
-									<h3 className="text-sm font-black text-zinc-500 uppercase tracking-widest px-1">Review Answers</h3>
+									<h3 className="text-sm font-black text-zinc-500 uppercase tracking-widest px-1">
+										Review Answers
+									</h3>
 									{quizState.questions.map((question, index) => {
 										const selectedOption = quizState.selectedAnswers[question.id];
 										const correctOption = question.options?.find((opt) => opt.isCorrect);
@@ -689,13 +765,15 @@ export default function EnhancedTestQuizScreen() {
 											<div
 												key={question.id}
 												className={cn(
-													"p-4 rounded-2xl flex items-center justify-between border",
+													'p-4 rounded-2xl flex items-center justify-between border',
 													isCorrect
-														? "bg-green-500/5 border-green-500/10"
-														: "bg-red-500/5 border-red-500/10"
+														? 'bg-green-500/5 border-green-500/10'
+														: 'bg-red-500/5 border-red-500/10'
 												)}
 											>
-												<span className="font-bold text-sm text-zinc-700 dark:text-zinc-300">Question {index + 1}</span>
+												<span className="font-bold text-sm text-zinc-700 dark:text-zinc-300">
+													Question {index + 1}
+												</span>
 												{isCorrect ? (
 													<CheckCircle2 className="w-5 h-5 text-green-500" />
 												) : (
