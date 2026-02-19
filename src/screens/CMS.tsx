@@ -984,12 +984,12 @@ export default function CMS() {
 													<p className="text-[13.2px] pl-1.5 font-normal text-zinc-900 dark:text-white/85 text-pretty mb-2 line-clamp-2">
 														{question.questionText}
 													</p>
-													<div className="flex items-center gap-2 text-xs text-zinc-500">
-														<Badge variant="secondary" className="text-xs">
+													<div className="flex items-center justify-start gap-2 text-xs text-zinc-500">
+														<Badge variant="secondary" className="text-[10px]">
 															{getSubjectName(question.subjectId)}
 														</Badge>
 														<span>•</span>
-														<span>{question.topic}</span>
+														<span className="grow truncate">{question.topic}</span>
 													</div>
 												</div>
 												<div className="flex flex-col gap-1">

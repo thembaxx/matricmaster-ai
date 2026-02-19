@@ -112,17 +112,17 @@ export default function MobileFrame({ children }: { children: React.ReactNode })
 									<div className="flex flex-col h-full">
 										<div className="p-8 pb-4 flex-1 overflow-y-auto">
 											<SheetHeader className="text-left mb-8">
-												<SheetTitle className="text-lg font-black text-zinc-900 dark:text-white uppercase tracking-tighter">
+												<SheetTitle className="text-lg font-black text-foreground uppercase tracking-tighter">
 													MatricMaster
 												</SheetTitle>
-												<SheetDescription className="text-zinc-500 font-bold text-xs uppercase tracking-wide">
+												<SheetDescription className="text-muted-foreground font-bold text-xs uppercase tracking-wide">
 													Level up your learning
 												</SheetDescription>
 												{!session && (
 													<div className="grid grid-cols-2 gap-2 mt-4">
 														<Button
 															size="sm"
-															className="dark:text-white/90"
+															className="text-primary-foreground"
 															onClick={() => {
 																setSheetOpen(false);
 																router.push('/sign-in');
@@ -144,7 +144,7 @@ export default function MobileFrame({ children }: { children: React.ReactNode })
 												)}
 											</SheetHeader>
 
-											<div className="space-y-2 ">
+											<nav className="space-y-2" aria-label="Sidebar navigation">
 												{sideMenuItems.map((item) => {
 													const isActive = pathname === item.href;
 													return (
@@ -153,8 +153,8 @@ export default function MobileFrame({ children }: { children: React.ReactNode })
 															href={item.href}
 															className={`flex items-center gap-4 p-2 rounded-2xl transition-all duration-200 ${
 																isActive
-																	? 'bg-brand-blue text-white shadow-lg shadow-brand-blue/20'
-																	: 'text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-900'
+																	? 'bg-primary text-primary-foreground shadow-lg shadow-primary/20'
+																	: 'text-muted-foreground hover:bg-muted hover:text-foreground'
 															}`}
 															onClick={() => setSheetOpen(false)}
 														>
@@ -163,24 +163,25 @@ export default function MobileFrame({ children }: { children: React.ReactNode })
 														</Link>
 													);
 												})}
-											</div>
+											</nav>
 										</div>
 
-										<div className="mt-auto p-8 border-t border-zinc-200 dark:border-zinc-800 space-y-4">
-											<div className="flex items-center justify-between p-4 bg-zinc-100 dark:bg-zinc-900 rounded-2xl">
-												<span className="text-sm font-bold text-zinc-600 dark:text-zinc-400 uppercase tracking-wider">
+										<div className="mt-auto p-8 border-t border-border space-y-4">
+											<div className="flex items-center justify-between p-4 bg-muted rounded-2xl">
+												<span className="text-sm font-bold text-muted-foreground uppercase tracking-wider">
 													Theme
 												</span>
 												<Button
 													variant="ghost"
 													size="sm"
-													className="rounded-xl bg-white dark:bg-zinc-800 shadow-sm"
+													className="rounded-xl bg-card shadow-sm"
 													onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+													aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
 												>
 													{theme === 'dark' ? (
 														<Sun className="w-4 h-4 text-yellow-500" />
 													) : (
-														<Moon className="w-4 h-4 text-zinc-600" />
+														<Moon className="w-4 h-4 text-muted-foreground" />
 													)}
 												</Button>
 											</div>
@@ -188,7 +189,7 @@ export default function MobileFrame({ children }: { children: React.ReactNode })
 											{session && (
 												<Button
 													variant="ghost"
-													className="w-full justify-start gap-4 text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/10 rounded-2xl p-4 h-auto font-bold transition-all"
+													className="w-full justify-start gap-4 text-destructive hover:text-destructive hover:bg-destructive/10 rounded-2xl p-4 h-auto font-bold transition-all"
 													onClick={async () => {
 														await authClient.signOut();
 														router.push('/sign-in');
@@ -204,14 +205,14 @@ export default function MobileFrame({ children }: { children: React.ReactNode })
 							</Sheet>
 						)}
 						<Link href="/" className="grow">
-							<p className="font-bold text-sm tracking-wider text-zinc-900 dark:text-white uppercase">
+							<p className="font-bold text-sm tracking-wider text-foreground uppercase">
 								MatricMaster
 							</p>
 						</Link>
 						{!user && (
 							<Button
 								size="default"
-								className="pointer-events-auto bg-brand-blue hover:bg-brand-blue/90 text-white font-bold shadow-lg shadow-blue-500/25 px-6 text-sm h-10"
+								className="pointer-events-auto bg-primary hover:bg-primary/90 text-primary-foreground font-bold shadow-lg shadow-primary/25 px-6 text-sm h-10"
 								onClick={() => router.push('/sign-in')}
 							>
 								Sign in
@@ -221,13 +222,13 @@ export default function MobileFrame({ children }: { children: React.ReactNode })
 							<ProfileMenu user={user}>
 								<motion.button
 									type="button"
-									className="z-50 pointer-events-auto"
+									className="z-50 pointer-events-auto rounded-full focus-visible:outline-none focus-visible:ring-[var(--focus-ring-width)] focus-visible:ring-ring focus-visible:ring-offset-[var(--focus-ring-offset)]"
 									aria-label="Open profile menu"
 									whileTap={{ scale: 0.9 }}
 								>
 									<Avatar className="h-10 w-10">
 										<AvatarImage src={user.image || undefined} alt={user.name} />
-										<AvatarFallback className="bg-[linear-gradient(318.67deg,rgb(106,255,94)_0%,rgb(13,255,247)_94.35%)] text-neutral-800">
+										<AvatarFallback className="bg-primary text-primary-foreground">
 											{user.name?.charAt(0)}
 										</AvatarFallback>
 									</Avatar>
@@ -244,7 +245,7 @@ export default function MobileFrame({ children }: { children: React.ReactNode })
 				{/* Bottom Navigation - iOS Liquid Glass Floating Pill */}
 				{!shouldHideBottomNav && user && (
 					<nav
-						aria-label="Main navigation"
+						aria-label="Bottom navigation"
 						className="fixed bottom-8 left-1/2 -translate-x-1/2 w-[90%] max-w-95 z-100 ios-glass rounded-[2.5rem] shadow-2xl shadow-black/5 grid grid-cols-5 p-2 px-3 transition-all duration-500 ease-ios"
 						style={{
 							marginBottom: 'env(safe-area-inset-bottom, 0px)',
@@ -257,13 +258,14 @@ export default function MobileFrame({ children }: { children: React.ReactNode })
 								<Link
 									key={item.href}
 									href={item.href}
-									className="relative flex flex-col items-center justify-center min-w-16 py-2 transition-all duration-300 group"
+									className="relative flex flex-col items-center justify-center min-w-16 py-2 transition-all duration-300 group rounded-2xl focus-visible:outline-none focus-visible:ring-[var(--focus-ring-width)] focus-visible:ring-ring focus-visible:ring-offset-[-4px]"
+									aria-current={isActive ? 'page' : undefined}
 								>
 									<AnimatePresence>
 										{isActive && (
 											<motion.div
 												layoutId="active-pill"
-												className="absolute inset-0 bg-zinc-200/50 dark:bg-zinc-700/50 rounded-full z-0"
+												className="absolute inset-0 bg-primary/10 rounded-full z-0"
 												transition={{
 													type: 'spring',
 													stiffness: 400,
@@ -279,8 +281,8 @@ export default function MobileFrame({ children }: { children: React.ReactNode })
 											icon={item.icon}
 											className={`relative transition-all duration-300 h-6 w-6 ${
 												isActive
-													? 'text-brand-blue dark:text-brand-blue-light scale-110'
-													: 'text-zinc-400 group-hover:text-zinc-600 dark:group-hover:text-zinc-200'
+													? 'text-primary scale-110'
+													: 'text-muted-foreground group-hover:text-foreground'
 											}`}
 										/>
 									</div>
@@ -288,9 +290,7 @@ export default function MobileFrame({ children }: { children: React.ReactNode })
 									{/* Label */}
 									<span
 										className={`relative z-10 text-[9px] font-semibold uppercase tracking-wide transition-all duration-300 mt-1 ${
-											isActive
-												? 'text-brand-blue dark:text-brand-blue-light font-black'
-												: 'text-zinc-400'
+											isActive ? 'text-primary font-black' : 'text-muted-foreground'
 										}`}
 									>
 										{item.label}

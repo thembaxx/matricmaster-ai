@@ -22,9 +22,9 @@ export default function Landing() {
 	const gradientId = useId();
 
 	return (
-		<div className="flex flex-col h-full bg-zinc-50 dark:bg-zinc-950 font-inter overflow-hidden">
+		<div className="flex flex-col h-full bg-background font-inter overflow-hidden">
 			{/* Decorative Orbs */}
-			<div className="absolute top-[-10%] right-[-10%] w-125 h-125 bg-brand-blue/10 rounded-full blur-[120px] pointer-events-none" />
+			<div className="absolute top-[-10%] right-[-10%] w-125 h-125 bg-primary/10 rounded-full blur-[120px] pointer-events-none" />
 			<div className="absolute bottom-[-10%] left-[-10%] w-100 h-100 bg-brand-purple/10 rounded-full blur-[100px] pointer-events-none" />
 
 			{/* Content area with proper bottom spacing for navigation */}
@@ -41,32 +41,32 @@ export default function Landing() {
 							<Badge className="bg-brand-green/10 text-brand-green border-none rounded-full px-4 py-1.5 font-black text-[10px] tracking-wider uppercase mb-4 animate-fade-in">
 								Trusted by 50,000+ Students
 							</Badge>
-							<h1 className="text-5xl font-black text-zinc-900 dark:text-white leading-[1.1] tracking-tight">
+							<h1 className="text-5xl font-black text-foreground leading-[1.1] tracking-tight">
 								Master your <br />
-								<span className="text-brand-blue italic font-serif">Matrics</span> through <br />
+								<span className="text-primary italic font-serif">Matrics</span> through <br />
 								<span className="relative">
 									practice.
-									<div className="absolute -bottom-2 left-0 w-full h-3 bg-brand-blue/20 rounded-full -rotate-1" />
+									<div className="absolute -bottom-2 left-0 w-full h-3 bg-primary/20 rounded-full -rotate-1" />
 								</span>
 							</h1>
-							<p className="text-base font-medium text-zinc-500 max-w-xs mx-auto leading-relaxed pt-4">
+							<p className="text-base font-medium text-muted-foreground max-w-xs mx-auto leading-relaxed pt-4">
 								Interactive past papers and step-by-step guides for South African Grade 12 students.
 							</p>
 						</div>
 
 						{/* Hero Image Container - SVG Mathematical Illustration */}
 						<div className="relative w-full aspect-square max-w-[320px] flex items-center justify-center animate-float">
-							<div className="absolute inset-0 bg-linear-to-tr from-brand-blue/20 to-brand-purple/20 rounded-full blur-[80px]" />
+							<div className="absolute inset-0 bg-linear-to-tr from-primary/20 to-brand-purple/20 rounded-full blur-[80px]" />
 
-							<div className="relative w-72 h-72 bg-white dark:bg-zinc-900 rounded-[3.5rem] shadow-2xl flex items-center justify-center transform rotate-3 border-4 border-white dark:border-zinc-800 transition-transform hover:rotate-0 duration-500 overflow-hidden">
-								<div className="absolute inset-0 bg-brand-blue/5 rounded-[2.5rem]" />
+							<div className="relative w-72 h-72 bg-card rounded-[3.5rem] shadow-2xl flex items-center justify-center transform rotate-3 border-4 border-card transition-transform hover:rotate-0 duration-500 overflow-hidden">
+								<div className="absolute inset-0 bg-primary/5 rounded-[2.5rem]" />
 
 								{/* Custom SVG Illustration */}
 								<svg viewBox="0 0 100 100" className="w-48 h-48 relative z-10">
 									<title>Mathematical Geometry Illustration</title>
 									<defs>
 										<linearGradient id={gradientId} x1="0%" y1="0%" x2="100%" y2="100%">
-											<stop offset="0%" style={{ stopColor: '#2563eb', stopOpacity: 1 }} />
+											<stop offset="0%" style={{ stopColor: 'var(--primary)', stopOpacity: 1 }} />
 											<stop offset="100%" style={{ stopColor: '#7c3aed', stopOpacity: 1 }} />
 										</linearGradient>
 									</defs>
@@ -114,7 +114,7 @@ export default function Landing() {
 
 						<Button
 							size="lg"
-							className="w-full max-w-sm bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 rounded-[2rem] h-20 text-xl font-black shadow-2xl hover:scale-[1.02] active:scale-95 transition-all shadow-brand-blue/10"
+							className="w-full max-w-sm rounded-[2rem] h-20 text-xl font-black shadow-2xl hover:scale-[1.02] active:scale-95 transition-all shadow-primary/10"
 							onClick={() => router.push('/dashboard')}
 						>
 							Start Learning Now
@@ -125,11 +125,11 @@ export default function Landing() {
 					{/* Start your journey */}
 					<section className="space-y-8">
 						<div className="flex items-center gap-4 px-1">
-							<div className="h-px flex-1 bg-zinc-200 dark:bg-zinc-800" />
-							<h2 className="text-xs font-black text-zinc-400 uppercase tracking-[0.2em] whitespace-nowrap">
+							<div className="h-px flex-1 bg-border" />
+							<h2 className="text-xs font-black text-muted-foreground uppercase tracking-[0.2em] whitespace-nowrap">
 								Explore Subjects
 							</h2>
-							<div className="h-px flex-1 bg-zinc-200 dark:bg-zinc-800" />
+							<div className="h-px flex-1 bg-border" />
 						</div>
 
 						<div className="grid grid-cols-1 gap-4">
@@ -138,7 +138,7 @@ export default function Landing() {
 								return (
 									<Card
 										key={subject.id}
-										className="bg-card p-4 rounded-3xl border border-gray-200 dark:border-gray-700 shadow-soft group-hover:shadow-md transition-shadow flex items-center gap-4 cursor-pointer"
+										className="bg-card p-4 rounded-3xl border border-border shadow-soft group-hover:shadow-md transition-shadow flex items-center gap-4 cursor-pointer"
 										onClick={() => router.push(subject.path)}
 									>
 										<div
@@ -157,10 +157,10 @@ export default function Landing() {
 												</div>
 											</div>
 											<div className="flex-1 min-w-0">
-												<h3 className="font-bold text-gray-900 dark:text-white">{subject.name}</h3>
-												<p className="text-sm text-gray-500 dark:text-gray-400">{subject.topics}</p>
+												<h3 className="font-bold text-foreground">{subject.name}</h3>
+												<p className="text-sm text-muted-foreground">{subject.topics}</p>
 											</div>
-											<div className="text-gray-300 dark:text-gray-600" aria-hidden="true">
+											<div className="text-muted-foreground/30" aria-hidden="true">
 												<ChevronRight className="w-4 h-4" />
 											</div>
 										</div>
@@ -172,9 +172,9 @@ export default function Landing() {
 
 					{/* Decorative Illustration */}
 					<div className="relative w-full aspect-square max-w-[320px] mb-8 flex items-center justify-center animate-float mt-16">
-						<div className="absolute inset-0 bg-linear-to-tr from-blue-100 to-purple-100 dark:from-blue-900/20 dark:to-purple-900/20 rounded-full blur-3xl opacity-60" />
+						<div className="absolute inset-0 bg-linear-to-tr from-primary/10 to-brand-purple/10 rounded-full blur-3xl opacity-60" />
 						<div
-							className="relative z-10 w-64 h-64 rounded-3xl shadow-xl rotate-3 hover:rotate-6 transition-transform duration-500 overflow-hidden bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-950 dark:to-purple-950 flex items-center justify-center"
+							className="relative z-10 w-64 h-64 rounded-3xl shadow-xl rotate-3 hover:rotate-6 transition-transform duration-500 overflow-hidden bg-card flex items-center justify-center border border-border"
 							style={{ boxShadow: '20px 20px 60px -10px rgba(0,0,0,0.15)' }}
 							role="img"
 							aria-label="Interactive learning illustration"
@@ -182,7 +182,7 @@ export default function Landing() {
 							<svg viewBox="0 0 100 100" className="w-32 h-32" aria-hidden="true">
 								<defs>
 									<linearGradient id="heroGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-										<stop offset="0%" style={{ stopColor: '#2563eb', stopOpacity: 1 }} />
+										<stop offset="0%" style={{ stopColor: 'var(--primary)', stopOpacity: 1 }} />
 										<stop offset="100%" style={{ stopColor: '#7c3aed', stopOpacity: 1 }} />
 									</linearGradient>
 								</defs>
@@ -215,16 +215,14 @@ export default function Landing() {
 							</svg>
 						</div>
 						<div
-							className="absolute -left-2 top-10 bg-white dark:bg-surface-dark p-3 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-800 animate-float"
+							className="absolute -left-2 top-10 bg-card p-3 rounded-2xl shadow-lg border border-border animate-float"
 							style={{ animationDelay: '1s' }}
 						>
-							<span className="text-xs font-bold text-gray-400 dark:text-gray-500 block mb-1">
-								MATH
-							</span>
+							<span className="text-xs font-bold text-muted-foreground block mb-1">MATH</span>
 							<span className="text-lg font-bold">x = 42</span>
 						</div>
 						<div
-							className="absolute -right-2 bottom-12 bg-white dark:bg-surface-dark p-3 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-800 animate-float"
+							className="absolute -right-2 bottom-12 bg-card p-3 rounded-2xl shadow-lg border border-border animate-float"
 							style={{ animationDelay: '2s' }}
 						>
 							<div className="flex items-center gap-2">
@@ -235,12 +233,13 @@ export default function Landing() {
 					</div>
 					<Button
 						type="button"
-						className="w-full py-4 px-8 bg-primary hover:bg-black text-white font-bold rounded-full text-lg shadow-lg dark:shadow-none dark:border dark:border-gray-700 transition-all active:scale-95 mb-6"
+						size="lg"
+						className="w-full rounded-full text-lg shadow-lg transition-all active:scale-95 mb-6"
 						onClick={() => router.push('/dashboard')}
 					>
 						Get Started
 					</Button>
-					<p className="text-xs text-gray-400 font-medium uppercase tracking-wide mb-8 text-center">
+					<p className="text-xs text-muted-foreground font-medium uppercase tracking-wide mb-8 text-center">
 						Over 10,000 past papers included
 					</p>
 				</main>

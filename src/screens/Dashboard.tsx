@@ -235,7 +235,7 @@ export default function Dashboard() {
 				<Button
 					variant="ghost"
 					size="icon"
-					className="w-12 h-12 rounded-2xl bg-white/50 dark:bg-zinc-900/50 backdrop-blur-md border border-white/20 dark:border-white/10 shadow-sm relative hover:bg-white/80 dark:hover:bg-zinc-900/80 transition-all"
+					className="w-12 h-12 rounded-2xl bg-card/50 backdrop-blur-md border border-border/20 shadow-sm relative hover:bg-card/80 transition-all"
 				>
 					<Bell className="w-6 h-6 text-foreground" />
 					<span className="absolute top-3 right-3 w-2.5 h-2.5 bg-rose-500 border-2 border-background rounded-full" />
@@ -254,7 +254,7 @@ export default function Dashboard() {
 						{/* Streak Card - Col 1 */}
 						<motion.div variants={itemVariants} className="col-span-1">
 							<Card className="h-full p-5 premium-glass border-none rounded-3xl flex flex-col justify-between relative overflow-hidden group">
-								<div className="absolute -right-4 -bottom-4 w-24 h-24 bg-orange-100 dark:bg-orange-900/10 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-500" />
+								<div className="absolute -right-4 -bottom-4 w-24 h-24 bg-orange-100 dark:bg-orange-500/10 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-500" />
 								<div className="space-y-1 relative z-10">
 									<p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest opacity-70">
 										Streak
@@ -265,7 +265,7 @@ export default function Dashboard() {
 									</div>
 								</div>
 								<div className="mt-4 relative z-10 self-start">
-									<div className="w-10 h-10 bg-orange-50 dark:bg-orange-900/20 rounded-xl flex items-center justify-center">
+									<div className="w-10 h-10 bg-orange-50 dark:bg-orange-500/10 rounded-xl flex items-center justify-center">
 										<Flame className="w-5 h-5 text-[#efb036] fill-[#efb036]" />
 									</div>
 								</div>
@@ -275,7 +275,7 @@ export default function Dashboard() {
 						{/* Quick Stats - Col 1 */}
 						<motion.div variants={itemVariants} className="col-span-1">
 							<Card className="h-full p-5 premium-glass border-none rounded-3xl flex flex-col justify-between relative overflow-hidden group">
-								<div className="absolute -right-4 -bottom-4 w-24 h-24 bg-blue-100 dark:bg-blue-900/10 rounded-full blur-2xl" />
+								<div className="absolute -right-4 -bottom-4 w-24 h-24 bg-primary/10 rounded-full blur-2xl" />
 								<div className="space-y-1 relative z-10">
 									<p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest opacity-70">
 										Accuracy
@@ -288,8 +288,8 @@ export default function Dashboard() {
 									</div>
 								</div>
 								<div className="mt-4 relative z-10 self-start">
-									<div className="w-10 h-10 bg-blue-50 dark:bg-blue-900/20 rounded-xl flex items-center justify-center">
-										<Trophy className="w-5 h-5 text-blue-500" />
+									<div className="w-10 h-10 bg-primary/5 rounded-xl flex items-center justify-center">
+										<Trophy className="w-5 h-5 text-primary" />
 									</div>
 								</div>
 							</Card>
@@ -300,12 +300,12 @@ export default function Dashboard() {
 							<Card className="p-6 premium-glass border-none rounded-[2.5rem] space-y-6 relative overflow-hidden group">
 								{/* Subtle Shine Effect */}
 								<div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-linear-to-r from-transparent via-white/5 to-transparent pointer-events-none" />
-								<div className="absolute -right-8 -top-8 w-64 h-64 bg-brand-blue/5 rounded-full blur-3xl pointer-events-none group-hover:bg-brand-blue/10 transition-colors duration-500" />
+								<div className="absolute -right-8 -top-8 w-64 h-64 bg-primary/5 rounded-full blur-3xl pointer-events-none group-hover:bg-primary/10 transition-colors duration-500" />
 
 								<div className="flex justify-between items-start relative z-10">
 									<div className="space-y-2">
-										<div className="inline-flex items-center px-2 py-1 bg-brand-blue/10 rounded-lg">
-											<span className="text-[10px] font-black text-brand-blue dark:text-brand-blue-light uppercase tracking-tighter">
+										<div className="inline-flex items-center px-2 py-1 bg-primary/10 rounded-lg">
+											<span className="text-[10px] font-black text-primary uppercase tracking-tighter">
 												Daily Quest
 											</span>
 										</div>
@@ -318,7 +318,7 @@ export default function Dashboard() {
 												: `${progressData?.totalQuestions || 0} questions answered`}
 										</p>
 									</div>
-									<div className="w-14 h-14 bg-white/50 dark:bg-muted/50 rounded-2xl flex items-center justify-center border border-white/40 dark:border-white/5 shadow-sm">
+									<div className="w-14 h-14 bg-card/50 rounded-2xl flex items-center justify-center border border-border/20 shadow-sm">
 										<Sparkles className="w-6 h-6 text-[#efb036]" />
 									</div>
 								</div>
@@ -329,20 +329,20 @@ export default function Dashboard() {
 											{isLoadingProgress ? '...' : `${progressData?.totalQuestions || 0} / 100`}{' '}
 											QUESTIONS
 										</span>
-										<span className="text-xs font-black text-brand-blue">{dailyProgress}%</span>
+										<span className="text-xs font-black text-primary">{dailyProgress}%</span>
 									</div>
-									<div className="h-2 w-full bg-muted/50 rounded-full overflow-hidden">
+									<div className="h-2 w-full bg-muted rounded-full overflow-hidden">
 										<motion.div
 											initial={{ width: 0 }}
 											animate={{ width: `${dailyProgress}%` }}
 											transition={{ duration: 1, ease: 'circOut' }}
-											className="h-full bg-brand-blue rounded-full"
+											className="h-full bg-primary rounded-full"
 										/>
 									</div>
 								</div>
 
 								<Button
-									className="w-full h-14 bg-brand-blue hover:bg-brand-blue/90 text-white rounded-2xl text-base font-black shadow-xl shadow-brand-blue/20 active:scale-[0.98] transition-all flex items-center justify-center gap-2 relative z-10"
+									className="w-full h-14 bg-primary hover:bg-primary/90 text-primary-foreground rounded-2xl text-base font-black shadow-xl shadow-primary/20 active:scale-[0.98] transition-all flex items-center justify-center gap-2 relative z-10"
 									onClick={handleNavigateToQuiz}
 									disabled={isLoading}
 								>
@@ -368,17 +368,17 @@ export default function Dashboard() {
 							{weekProgress.map((item) => (
 								<div key={item.day} className="flex flex-col items-center gap-3">
 									<span
-										className={`text-[9px] font-black tracking-tighter ${item.status === 'active' ? 'text-brand-blue' : 'text-muted-foreground opacity-40'}`}
+										className={`text-[9px] font-black tracking-tighter ${item.status === 'active' ? 'text-primary' : 'text-muted-foreground opacity-40'}`}
 									>
 										{item.day}
 									</span>
 									<div
 										className={`w-full aspect-square rounded-2xl flex items-center justify-center transition-all duration-300 ${
 											item.status === 'complete'
-												? 'bg-brand-blue/10 text-brand-blue'
+												? 'bg-primary/10 text-primary'
 												: item.status === 'active'
-													? 'bg-brand-blue text-white shadow-lg shadow-brand-blue/30'
-													: 'bg-muted/30 text-muted-foreground'
+													? 'bg-primary text-primary-foreground shadow-lg shadow-primary/30'
+													: 'bg-muted text-muted-foreground'
 										}`}
 									>
 										{item.status === 'complete' ? (
@@ -402,7 +402,7 @@ export default function Dashboard() {
 								<button
 									key={challenge.title}
 									type="button"
-									className="w-full text-left premium-glass p-4 rounded-[2rem] flex items-center justify-between group hover:translate-x-1 transition-all cursor-pointer border-transparent hover:border-brand-blue/10 premium-glass-hover"
+									className="w-full text-left premium-glass p-4 rounded-[2rem] flex items-center justify-between group hover:translate-x-1 transition-all cursor-pointer border-transparent hover:border-primary/10 premium-glass-hover"
 									onClick={() => router.push('/quiz')}
 								>
 									<div className="flex items-center gap-4">
@@ -433,7 +433,7 @@ export default function Dashboard() {
 											</div>
 										</div>
 									</div>
-									<div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center group-hover:bg-brand-blue group-hover:text-white transition-colors">
+									<div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
 										<Play className="w-3 h-3 fill-current ml-0.5" />
 									</div>
 								</button>
