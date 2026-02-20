@@ -1,34 +1,13 @@
 'use client';
 
-import {
-	Database,
-	Edit2,
-	ImagePlus,
-	Maximize2,
-	Plus,
-	Search,
-	Trash2,
-	Upload,
-	X,
-	ZoomIn,
-	ZoomOut,
-} from 'lucide-react';
+import { Database, Edit2, ImagePlus, Plus, Search, Trash2, X } from 'lucide-react';
 import Image from 'next/image';
 import { useCallback, useEffect, useId, useRef, useState } from 'react';
-import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch';
-import { SafeImage } from '@/components/SafeImage';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
-import {
-	Dialog,
-	DialogContent,
-	DialogDescription,
-	DialogHeader,
-	DialogTitle,
-} from '@/components/ui/dialog';
 import {
 	Drawer,
 	DrawerClose,
@@ -51,26 +30,17 @@ import {
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
 import {
-	createPastPaperAction,
 	createQuestionAction,
-	deletePastPaperAction,
-	deleteUserAction,
-	getPastPapersAction,
 	getQuestionsAction,
 	getQuestionWithOptionsAction,
 	getSubjectsAction,
 	getUsersAction,
-	restoreUserAction,
 	seedDatabaseAction,
 	softDeleteQuestionAction,
-	toggleUserBlockAction,
-	updatePastPaperAction,
 	updateQuestionAction,
-	updateUserAction,
 } from '@/lib/db/actions';
 import type { User } from '@/lib/db/better-auth-schema';
-import type { PastPaper, Question, Subject } from '@/lib/db/schema';
-import { generatePaperId } from '@/lib/paper-utils';
+import type { Question, Subject } from '@/lib/db/schema';
 import { uploadFiles } from '@/lib/uploadthing';
 
 interface QuestionFormData {
@@ -92,47 +62,6 @@ interface OptionFormData {
 	isCorrect: boolean;
 	explanation: string;
 }
-
-interface PastPaperFormData {
-	id?: string;
-	subject: string;
-	paper: string;
-	year: number;
-	month: string;
-	totalMarks: number;
-	instructions?: string;
-	originalPdfUrl?: string;
-	isExtracted?: boolean;
-	extractQuestions?: boolean;
-}
-
-const SUBJECTS = [
-	'Mathematics',
-	'Physical Sciences',
-	'Life Sciences',
-	'English',
-	'Geography',
-	'History',
-	'Accounting',
-	'Economics',
-];
-
-const PAPER_TYPES = ['P1', 'P2', 'P3'];
-const MONTHS = [
-	'January',
-	'February',
-	'March',
-	'April',
-	'May',
-	'June',
-	'July',
-	'August',
-	'September',
-	'October',
-	'November',
-	'December',
-];
-const YEARS = Array.from({ length: 15 }, (_, i) => new Date().getFullYear() - i);
 
 const EMPTY_QUESTION: QuestionFormData = {
 	questionText: '',
@@ -162,180 +91,13 @@ export default function CMS() {
 	const [activeTab, setActiveTab] = useState('questions');
 	const [seeding, setSeeding] = useState(false);
 	const [drawerTab, setDrawerTab] = useState<'basic' | 'question' | 'options'>('basic');
-	const [isFullscreen, setIsFullscreen] = useState(false);
 	const [localImageFile, setLocalImageFile] = useState<File | null>(null);
 	const [localImagePreview, setLocalImagePreview] = useState<string | null>(null);
 	const fileInputRef = useRef<HTMLInputElement>(null);
 
-	// PDF upload state for past papers
-	const [localPdfFile, setLocalPdfFile] = useState<File | null>(null);
-	const [localPdfPreview, setLocalPdfPreview] = useState<string | null>(null);
-	const [pdfUploading, setPdfUploading] = useState(false);
-	const pdfInputRef = useRef<HTMLInputElement>(null);
-	const pdfInputId = useId();
-
 	// User management state
 	const [userSearchQuery, setUserSearchQuery] = useState('');
 	const [userFilter, setUserFilter] = useState<'all' | 'active' | 'blocked' | 'deleted'>('all');
-	const [selectedUser, setSelectedUser] = useState<User | null>(null);
-	const [isUserDrawerOpen, setIsUserDrawerOpen] = useState(false);
-	const [userDrawerTab, setUserDrawerTab] = useState<'details' | 'actions'>('details');
-	const [editingUser, setEditingUser] = useState<{
-		name: string;
-		email: string;
-		role: 'admin' | 'moderator' | 'user';
-	} | null>(null);
-
-	// Past Papers management state
-	const [pastPapers, setPastPapers] = useState<PastPaper[]>([]);
-	const [pastPapersLoading, setPastPapersLoading] = useState(false);
-	const [isPastPaperDrawerOpen, setIsPastPaperDrawerOpen] = useState(false);
-	const [editingPastPaper, setEditingPastPaper] = useState<PastPaperFormData | null>(null);
-	const [paperFilter] = useState<string>('all');
-	const [selectedPastPaperSubject, setSelectedPastPaperSubject] = useState<string>('all');
-
-	// Load past papers
-	const loadPastPapers = useCallback(async () => {
-		try {
-			setPastPapersLoading(true);
-			const papers = await getPastPapersAction({});
-			setPastPapers(papers);
-		} catch (error) {
-			console.error('Failed to load past papers:', error);
-		} finally {
-			setPastPapersLoading(false);
-		}
-	}, []);
-
-	// Load past papers when tab changes to past-papers
-	useEffect(() => {
-		if (activeTab === 'past-papers') {
-			loadPastPapers();
-		}
-	}, [activeTab, loadPastPapers]);
-
-	// Past paper handlers
-	const handleCreatePastPaper = () => {
-		setEditingPastPaper({
-			subject: 'Mathematics',
-			paper: 'P1',
-			year: new Date().getFullYear(),
-			month: 'November',
-			totalMarks: 150,
-			extractQuestions: false,
-		});
-		setIsPastPaperDrawerOpen(true);
-	};
-
-	const handleEditPastPaper = (paper: PastPaper) => {
-		setEditingPastPaper({
-			id: paper.id,
-			subject: paper.subject,
-			paper: paper.paper,
-			year: paper.year,
-			month: paper.month,
-			totalMarks: paper.totalMarks || 150,
-			instructions: paper.instructions || '',
-			originalPdfUrl: paper.originalPdfUrl,
-			isExtracted: paper.isExtracted,
-		});
-		setIsPastPaperDrawerOpen(true);
-	};
-
-	const handleDeletePastPaper = async (id: string) => {
-		if (confirm('Are you sure you want to delete this past paper?')) {
-			try {
-				await deletePastPaperAction(id);
-				await loadPastPapers();
-			} catch (error) {
-				console.error('Failed to delete past paper:', error);
-			}
-		}
-	};
-
-	const handleSavePastPaper = async () => {
-		if (!editingPastPaper) return;
-
-		if (!editingPastPaper.subject || !editingPastPaper.paper || !editingPastPaper.month) {
-			alert('Please fill in all required fields');
-			return;
-		}
-
-		try {
-			setPdfUploading(true);
-			const paperId = editingPastPaper.id
-				? editingPastPaper.id
-				: generatePaperId(
-						editingPastPaper.subject,
-						editingPastPaper.paper,
-						editingPastPaper.year,
-						editingPastPaper.month
-					);
-
-			// Upload PDF if a new one is selected
-			let pdfUrl = editingPastPaper.originalPdfUrl;
-			if (localPdfFile) {
-				const uploadResult = await uploadFiles('pastPaperPDF', {
-					files: [localPdfFile],
-				});
-				if (uploadResult?.[0]?.ufsUrl) {
-					pdfUrl = uploadResult[0].ufsUrl;
-				} else {
-					setPdfUploading(false);
-					alert('Failed to upload PDF. Please try again.');
-					return;
-				}
-			}
-
-			if (editingPastPaper.id) {
-				// Update existing
-				await updatePastPaperAction(editingPastPaper.id, {
-					subject: editingPastPaper.subject,
-					paper: editingPastPaper.paper,
-					year: editingPastPaper.year,
-					month: editingPastPaper.month,
-					totalMarks: editingPastPaper.totalMarks,
-					instructions: editingPastPaper.instructions,
-					originalPdfUrl: pdfUrl,
-				});
-			} else {
-				// Create new
-				await createPastPaperAction({
-					paperId,
-					subject: editingPastPaper.subject,
-					paper: editingPastPaper.paper,
-					year: editingPastPaper.year,
-					month: editingPastPaper.month,
-					totalMarks: editingPastPaper.totalMarks,
-					originalPdfUrl: pdfUrl || 'https://example.com/sample.pdf',
-					instructions: editingPastPaper.instructions,
-				});
-			}
-
-			clearPdfState();
-			setIsPastPaperDrawerOpen(false);
-			setEditingPastPaper(null);
-			await loadPastPapers();
-		} catch (error) {
-			console.error('Failed to save past paper:', error);
-			setPdfUploading(false);
-			alert('Failed to save past paper. Please try again.');
-		}
-	};
-
-	// Get unique subjects from past papers for filter pills
-	const pastPaperSubjects = Array.from(new Set(pastPapers.map((p) => p.subject))).sort();
-
-	const filteredPastPapers = pastPapers.filter((p) => {
-		// Filter by subject
-		if (selectedPastPaperSubject !== 'all' && p.subject !== selectedPastPaperSubject) {
-			return false;
-		}
-		if (paperFilter === 'all') return true;
-		if (paperFilter === 'extracted') return p.isExtracted;
-		if (paperFilter === 'not-extracted') return !p.isExtracted;
-		return true;
-	});
 
 	const loadData = useCallback(async () => {
 		try {
@@ -380,85 +142,15 @@ export default function CMS() {
 		}
 	};
 
-	// User management handlers
-	const handleOpenUserDrawer = (user: User) => {
-		setSelectedUser(user);
-		setEditingUser({
-			name: user.name,
-			email: user.email,
-			role: (user.role as 'admin' | 'moderator' | 'user') || 'user',
-		});
-		setUserDrawerTab('details');
-		setIsUserDrawerOpen(true);
-	};
-
-	const handleUpdateUser = async () => {
-		if (!selectedUser || !editingUser) return;
-
-		try {
-			await updateUserAction(selectedUser.id, editingUser);
-			await loadData();
-			alert('User updated successfully');
-		} catch (error) {
-			console.error('Failed to update user:', error);
-			alert('Failed to update user');
-		}
-	};
-
-	const handleToggleBlock = async () => {
-		if (!selectedUser) return;
-
-		const action = selectedUser.isBlocked ? 'unblock' : 'block';
-		if (!confirm(`Are you sure you want to ${action} this user?`)) return;
-
-		try {
-			const result = await toggleUserBlockAction(selectedUser.id);
-			if (result.success) {
-				await loadData();
-				// Update selected user in state
-				if (result.user) {
-					setSelectedUser(result.user);
-				}
-				alert(`User ${action}ed successfully`);
-			}
-		} catch (error) {
-			console.error('Failed to toggle block:', error);
-			alert('Failed to update user status');
-		}
-	};
-
-	const handleDeleteUser = async () => {
-		if (!selectedUser) return;
-
-		if (!confirm('Are you sure you want to delete this user? This action can be undone later.'))
-			return;
-
-		try {
-			await deleteUserAction(selectedUser.id);
-			await loadData();
-			setIsUserDrawerOpen(false);
-			alert('User deleted successfully');
-		} catch (error) {
-			console.error('Failed to delete user:', error);
-			alert('Failed to delete user');
-		}
-	};
-
-	const handleRestoreUser = async (userId: string) => {
-		try {
-			await restoreUserAction(userId);
-			await loadData();
-			alert('User restored successfully');
-		} catch (error) {
-			console.error('Failed to restore user:', error);
-			alert('Failed to restore user');
-		}
-	};
-
 	const filteredUsers = users.filter((u) => {
 		const matchesSearch =
 			u.name.toLowerCase().includes(userSearchQuery.toLowerCase()) ||
 			u.email.toLowerCase().includes(userSearchQuery.toLowerCase());
+
+		if (userFilter === 'active') return matchesSearch && !u.isBlocked && !u.deletedAt;
+		if (userFilter === 'blocked') return matchesSearch && u.isBlocked;
+		if (userFilter === 'deleted') return matchesSearch && !!u.deletedAt;
+
 		return matchesSearch;
 	});
 
@@ -585,8 +277,6 @@ export default function CMS() {
 			if (editingQuestion.id) {
 				// Update existing question
 				await updateQuestionAction(editingQuestion.id, questionData);
-				// Note: For updating options, you'd need to add updateOptions function
-				// For now, we'll just reload the data
 			} else {
 				// Create new question
 				await createQuestionAction(questionData, optionsData);
@@ -645,47 +335,6 @@ export default function CMS() {
 		fileInputRef.current?.click();
 	};
 
-	// PDF handlers for past papers
-	const handlePdfSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
-		const file = event.target.files?.[0];
-		if (file) {
-			if (file.size > 16 * 1024 * 1024) {
-				alert('PDF must be less than 16MB');
-				return;
-			}
-			if (file.type !== 'application/pdf') {
-				alert('Only PDF files are allowed');
-				return;
-			}
-			setLocalPdfFile(file);
-			// Create a URL for preview
-			const previewUrl = URL.createObjectURL(file);
-			setLocalPdfPreview(previewUrl);
-		}
-	};
-
-	const handleRemovePdf = () => {
-		if (localPdfPreview) {
-			URL.revokeObjectURL(localPdfPreview);
-		}
-		setLocalPdfFile(null);
-		setLocalPdfPreview(null);
-	};
-
-	const triggerPdfInput = () => {
-		pdfInputRef.current?.click();
-	};
-
-	// Clear PDF state when drawer closes
-	const clearPdfState = () => {
-		if (localPdfPreview) {
-			URL.revokeObjectURL(localPdfPreview);
-		}
-		setLocalPdfFile(null);
-		setLocalPdfPreview(null);
-		setPdfUploading(false);
-	};
-
 	// Check if all required fields are filled
 	const isFormValid = () => {
 		if (!editingQuestion) return false;
@@ -741,11 +390,11 @@ export default function CMS() {
 	const getDifficultyColor = (difficulty: string) => {
 		switch (difficulty) {
 			case 'easy':
-				return 'bg-green-100 text-green-700 dark:bg-green-900/20 dark:text-green-400';
+				return 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-400';
 			case 'medium':
-				return 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/20 dark:text-yellow-400';
+				return 'bg-brand-amber/10 text-brand-amber dark:bg-brand-amber/20';
 			case 'hard':
-				return 'bg-red-100 text-red-700 dark:bg-red-900/20 dark:text-red-400';
+				return 'bg-rose-100 text-rose-700 dark:bg-rose-900/20 dark:text-rose-400';
 			default:
 				return 'bg-gray-100 text-gray-700';
 		}
@@ -755,19 +404,18 @@ export default function CMS() {
 	const getRoleColor = (role: string) => {
 		switch (role) {
 			case 'admin':
-				return 'bg-brand-purple text-white';
+				return 'bg-primary text-primary-foreground font-black';
 			case 'moderator':
-				return 'bg-blue-100 text-blue-700 dark:bg-blue-900/20 dark:text-blue-400';
+				return 'bg-blue-500 text-white font-black';
 			default:
-				return 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400';
+				return 'bg-muted text-muted-foreground font-bold';
 		}
 	};
 
 	const getStatusColor = (isBlocked: boolean, deletedAt: Date | null) => {
-		if (deletedAt) return 'bg-red-100 text-red-700 dark:bg-red-900/20 dark:text-red-400';
-		if (isBlocked)
-			return 'bg-orange-100 text-orange-700 dark:bg-orange-900/20 dark:text-orange-400';
-		return 'bg-green-100 text-green-700 dark:bg-green-900/20 dark:text-green-400';
+		if (deletedAt) return 'bg-rose-500/10 text-rose-500 border-rose-500/20';
+		if (isBlocked) return 'bg-brand-amber/10 text-brand-amber border-brand-amber/20';
+		return 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20';
 	};
 
 	const getStatusText = (isBlocked: boolean, deletedAt: Date | null) => {
@@ -776,398 +424,298 @@ export default function CMS() {
 		return 'Active';
 	};
 
-	// Generate unique IDs for form fields
-	const questionId = useId();
-	const topicId = useId();
-	const marksId = useId();
 	const fileInputId = useId();
 
 	return (
-		<div className="flex-1 flex flex-col bg-background overflow-hidden pb-28">
+		<div className="flex-1 flex flex-col bg-background overflow-hidden pb-12">
 			{/* Header */}
-			<header className="px-6 pt-4 pb-4 bg-background border-b border-border shrink-0">
-				<div className="flex justify-between items-center mb-4">
-					<div className="flex items-center gap-2">
+			<header className="px-8 pt-8 pb-6 bg-background shrink-0 space-y-8">
+				<div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+					<div className="space-y-1">
+						<h1 className="text-3xl font-black text-foreground tracking-tighter uppercase">
+							Content Management
+						</h1>
+						<p className="text-muted-foreground font-bold text-sm">
+							Manage questions, papers, and users
+						</p>
+					</div>
+
+					<div className="flex items-center gap-3">
 						<Button
 							onClick={handleSeedDatabase}
 							disabled={seeding}
 							variant="outline"
-							size="sm"
-							className="text-xs"
+							className="rounded-2xl border-2 font-black text-xs uppercase tracking-widest px-6"
 						>
-							<Database className="h-3.5 w-3.5 mr-1" />
+							<Database className="h-4 w-4 mr-2" />
 							{seeding ? 'Seeding...' : 'Seed DB'}
 						</Button>
-					</div>
-					<Button
-						onClick={() => {
-							if (activeTab === 'past-papers') {
-								handleCreatePastPaper();
-							} else {
+						<Button
+							onClick={() => {
 								handleCreateQuestion();
-							}
-						}}
-						size="icon"
-						className="rounded-lg h-8 w-8 bg-brand-purple hover:bg-brand-purple/90 shadow-lg shadow-purple-500/20"
-					>
-						<Plus className="h-5 w-5" />
-					</Button>
+							}}
+							className="rounded-2xl h-12 px-6 bg-primary hover:bg-primary/90 shadow-2xl shadow-primary/20 font-black text-sm uppercase tracking-widest"
+						>
+							<Plus className="h-5 w-5 mr-2" />
+							Create New
+						</Button>
+					</div>
 				</div>
 
-				{/* Tabs */}
 				<Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-					<TabsList className="grid w-full grid-cols-4 mb-4">
-						<TabsTrigger value="questions">Questions</TabsTrigger>
-						<TabsTrigger value="past-papers">Past Papers</TabsTrigger>
-						<TabsTrigger value="subjects">Subjects</TabsTrigger>
-						<TabsTrigger value="users">Users</TabsTrigger>
+					<TabsList className="grid w-full grid-cols-2 md:grid-cols-4 h-14 bg-muted/50 p-1 rounded-2xl">
+						<TabsTrigger
+							value="questions"
+							className="rounded-xl font-black text-xs uppercase tracking-widest"
+						>
+							Questions
+						</TabsTrigger>
+						<TabsTrigger
+							value="past-papers"
+							className="rounded-xl font-black text-xs uppercase tracking-widest"
+						>
+							Past Papers
+						</TabsTrigger>
+						<TabsTrigger
+							value="subjects"
+							className="rounded-xl font-black text-xs uppercase tracking-widest"
+						>
+							Subjects
+						</TabsTrigger>
+						<TabsTrigger
+							value="users"
+							className="rounded-xl font-black text-xs uppercase tracking-widest"
+						>
+							Users
+						</TabsTrigger>
 					</TabsList>
 				</Tabs>
 
-				{/* Filters */}
-				{activeTab === 'questions' && (
-					<div className="space-y-3">
-						<div className="relative">
-							<Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-400" />
-							<Input
-								value={searchQuery}
-								onChange={(e) => setSearchQuery(e.target.value)}
-								placeholder="Search questions or topics..."
-								className="pl-10 text-base h-12"
-							/>
-						</div>
+				{/* Search & Filters */}
+				<div className="grid grid-cols-1 md:grid-cols-12 gap-4">
+					<div className="md:col-span-6 relative">
+						<Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+						<Input
+							value={activeTab === 'users' ? userSearchQuery : searchQuery}
+							onChange={(e) =>
+								activeTab === 'users'
+									? setUserSearchQuery(e.target.value)
+									: setSearchQuery(e.target.value)
+							}
+							placeholder={activeTab === 'users' ? 'Search users...' : 'Search content...'}
+							className="pl-12 text-base h-14 bg-muted/30 border-2 rounded-2xl focus:ring-primary/20"
+						/>
+					</div>
 
-						{/* Subject Pills */}
+					{activeTab === 'questions' && (
+						<>
+							<div className="md:col-span-3">
+								<Select value={selectedSubject} onValueChange={setSelectedSubject}>
+									<SelectTrigger className="h-14 rounded-2xl border-2 bg-muted/30">
+										<SelectValue placeholder="All Subjects" />
+									</SelectTrigger>
+									<SelectContent className="rounded-2xl">
+										<SelectItem value="all">All Subjects</SelectItem>
+										{subjects.map((s) => (
+											<SelectItem key={s.id} value={s.id.toString()}>
+												{s.name}
+											</SelectItem>
+										))}
+									</SelectContent>
+								</Select>
+							</div>
+							<div className="md:col-span-3">
+								<Select value={selectedDifficulty} onValueChange={setSelectedDifficulty}>
+									<SelectTrigger className="h-14 rounded-2xl border-2 bg-muted/30">
+										<SelectValue placeholder="Difficulty" />
+									</SelectTrigger>
+									<SelectContent className="rounded-2xl">
+										<SelectItem value="all">All Levels</SelectItem>
+										<SelectItem value="easy">Easy</SelectItem>
+										<SelectItem value="medium">Medium</SelectItem>
+										<SelectItem value="hard">Hard</SelectItem>
+									</SelectContent>
+								</Select>
+							</div>
+						</>
+					)}
 
-						<div className="flex gap-2 px-1 w-full overflow-x-auto">
-							<button
-								type="button"
-								onClick={() => setSelectedSubject('all')}
-								className={`px-4 py-2 rounded-full text-xs font-bold transition-all shrink-0 ${
-									selectedSubject === 'all'
-										? 'bg-brand-purple text-white shadow-md scale-105'
-										: 'bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700'
-								}`}
+					{activeTab === 'users' && (
+						<div className="md:col-span-6">
+							<Select
+								value={userFilter}
+								onValueChange={(v) => setUserFilter(v as typeof userFilter)}
 							>
-								All Subjects
-							</button>
-							{subjects.map((subject) => {
-								const isSelected = selectedSubject === subject.id.toString();
-								return (
-									<button
-										type="button"
-										key={subject.id}
-										onClick={() => setSelectedSubject(subject.id.toString())}
-										className={`px-4 py-2 rounded-full text-xs font-bold transition-all shrink-0 ${
-											isSelected
-												? 'bg-brand-purple text-white shadow-md scale-105'
-												: 'bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700'
-										}`}
-									>
-										{subject.name}
-									</button>
-								);
-							})}
+								<SelectTrigger className="h-14 rounded-2xl border-2 bg-muted/30">
+									<SelectValue placeholder="Filter users" />
+								</SelectTrigger>
+								<SelectContent className="rounded-2xl">
+									<SelectItem value="all">All Users</SelectItem>
+									<SelectItem value="active">Active Only</SelectItem>
+									<SelectItem value="blocked">Blocked Only</SelectItem>
+									<SelectItem value="deleted">Deleted Only</SelectItem>
+								</SelectContent>
+							</Select>
 						</div>
-
-						{/* Difficulty Filter */}
-						<Select value={selectedDifficulty} onValueChange={setSelectedDifficulty}>
-							<SelectTrigger>
-								<SelectValue placeholder="Difficulty" />
-							</SelectTrigger>
-							<SelectContent>
-								<SelectItem value="all">All Levels</SelectItem>
-								<SelectItem value="easy">Easy</SelectItem>
-								<SelectItem value="medium">Medium</SelectItem>
-								<SelectItem value="hard">Hard</SelectItem>
-							</SelectContent>
-						</Select>
-					</div>
-				)}
-
-				{/* User Filters */}
-				{activeTab === 'users' && (
-					<div className="space-y-3">
-						<div className="relative">
-							<Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-400" />
-							<Input
-								value={userSearchQuery}
-								onChange={(e) => setUserSearchQuery(e.target.value)}
-								placeholder="Search users by name or email..."
-								className="pl-10 text-base h-12"
-							/>
-						</div>
-						<Select value={userFilter} onValueChange={(v) => setUserFilter(v as typeof userFilter)}>
-							<SelectTrigger>
-								<SelectValue placeholder="Filter users" />
-							</SelectTrigger>
-							<SelectContent>
-								<SelectItem value="all">All Users</SelectItem>
-								<SelectItem value="active">Active</SelectItem>
-								<SelectItem value="blocked">Blocked</SelectItem>
-								<SelectItem value="deleted">Deleted</SelectItem>
-							</SelectContent>
-						</Select>
-					</div>
-				)}
-
-				{/* Past Papers Filters */}
-				{activeTab === 'past-papers' && pastPaperSubjects.length > 0 && (
-					<div className="flex gap-2 px-1 w-full overflow-x-auto">
-						<button
-							type="button"
-							onClick={() => setSelectedPastPaperSubject('all')}
-							className={`px-4 py-2 rounded-full text-xs font-bold transition-all shrink-0 ${
-								selectedPastPaperSubject === 'all'
-									? 'bg-brand-purple text-white shadow-md scale-105'
-									: 'bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700'
-							}`}
-						>
-							All
-						</button>
-						{pastPaperSubjects.map((subject) => {
-							const isSelected = selectedPastPaperSubject === subject;
-							return (
-								<button
-									type="button"
-									key={subject}
-									onClick={() => setSelectedPastPaperSubject(subject)}
-									className={`px-4 py-2 rounded-full text-xs font-bold transition-all shrink-0 ${
-										isSelected
-											? 'bg-brand-purple text-white shadow-md scale-105'
-											: 'bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700'
-									}`}
-								>
-									{subject}
-								</button>
-							);
-						})}
-					</div>
-				)}
+					)}
+				</div>
 			</header>
 
-			{/* Content */}
-			<main className="flex-1 overflow-hidden">
-				<ScrollArea className="h-full">
-					<div className="p-6 space-y-4">
-						{loading ? (
-							<div className="flex items-center justify-center py-20">
-								<div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-purple" />
-							</div>
-						) : activeTab === 'questions' ? (
-							filteredQuestions.length === 0 ? (
-								<div className="flex flex-col items-center justify-center py-20 text-center opacity-40">
-									<div className="text-6xl mb-4">❓</div>
-									<p className="text-sm font-bold">No questions found</p>
-									<p className="text-xs text-zinc-500 mt-2">
-										Create your first question to get started
-									</p>
-								</div>
-							) : (
-								filteredQuestions.map((question) => (
-									<Card key={question.id} className="group">
-										<CardContent className="p-4">
-											<div className="flex items-start gap-4">
-												<div className="flex-1 min-w-0">
-													<div className="flex items-center gap-2 mb-2">
+			{/* Main Content Grid */}
+			<main className="flex-1 overflow-hidden px-8">
+				<ScrollArea className="h-full no-scrollbar">
+					{loading ? (
+						<div className="flex items-center justify-center py-40">
+							<div className="animate-spin rounded-full h-12 w-12 border-4 border-primary border-t-transparent" />
+						</div>
+					) : (
+						<div className="pb-12">
+							{activeTab === 'questions' && (
+								<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+									{filteredQuestions.map((q) => (
+										<Card
+											key={q.id}
+											className="rounded-[2rem] border-2 border-border/50 hover:border-primary/20 hover:shadow-2xl hover:shadow-primary/5 transition-all duration-300 group"
+										>
+											<CardContent className="p-6 space-y-6">
+												<div className="flex items-start justify-between">
+													<div className="flex flex-wrap gap-2">
 														<Badge
-															variant="secondary"
-															className={`capitalize ${getDifficultyColor(question.difficulty)}`}
+															className={`rounded-lg uppercase tracking-widest text-[9px] font-black ${getDifficultyColor(q.difficulty)}`}
 														>
-															{question.difficulty}
+															{q.difficulty}
 														</Badge>
-														<Badge variant="outline">Grade {question.gradeLevel}</Badge>
-														<span className="text-xs text-zinc-400">
-															{question.marks} point{question.marks > 1 ? 's' : ''}
-														</span>
-													</div>
-													<p className="text-[13.2px] pl-1.5 font-normal text-zinc-900 dark:text-white/85 text-pretty mb-2 line-clamp-2">
-														{question.questionText}
-													</p>
-													<div className="flex items-center justify-start gap-2 text-xs text-zinc-500">
-														<Badge variant="secondary" className="text-[10px]">
-															{getSubjectName(question.subjectId)}
+														<Badge
+															variant="outline"
+															className="rounded-lg uppercase tracking-widest text-[9px] font-black"
+														>
+															Grade {q.gradeLevel}
 														</Badge>
-														<span>•</span>
-														<span className="grow truncate">{question.topic}</span>
 													</div>
-												</div>
-												<div className="flex flex-col gap-1">
-													<Button
-														variant="ghost"
-														size="icon"
-														className="h-8 w-8 text-zinc-400 hover:text-brand-purple"
-														onClick={() => handleEditQuestion(question)}
-													>
-														<Edit2 className="h-4 w-4" />
-													</Button>
-													<Button
-														variant="ghost"
-														size="icon"
-														className="h-8 w-8 text-zinc-400 hover:text-red-500"
-														onClick={() => handleDeleteQuestion(question.id)}
-													>
-														<Trash2 className="h-4 w-4" />
-													</Button>
-												</div>
-											</div>
-										</CardContent>
-									</Card>
-								))
-							)
-						) : activeTab === 'subjects' ? (
-							// Subjects Tab
-							<div className="space-y-4">
-								{subjects.map((subject) => (
-									<Card key={subject.id}>
-										<CardContent className="p-4">
-											<div className="flex items-center justify-between">
-												<div>
-													<h3 className="font-medium text-base text-zinc-900 dark:text-white">
-														{subject.name}
-													</h3>
-													<p className="text-sm text-zinc-500">{subject.description}</p>
-													<p className="text-xs text-zinc-400 mt-1">
-														Code: {subject.curriculumCode}
-													</p>
-												</div>
-												<Badge variant={subject.isActive ? 'default' : 'secondary'}>
-													{subject.isActive ? 'Active' : 'Inactive'}
-												</Badge>
-											</div>
-										</CardContent>
-									</Card>
-								))}
-							</div>
-						) : activeTab === 'past-papers' ? (
-							// Past Papers Tab
-							<div className="space-y-4">
-								{pastPapersLoading ? (
-									<div className="flex items-center justify-center py-20">
-										<div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-purple" />
-									</div>
-								) : filteredPastPapers.length === 0 ? (
-									<div className="flex flex-col items-center justify-center py-20 text-center opacity-40">
-										<div className="text-6xl mb-4">📄</div>
-										<p className="text-sm font-bold">No past papers found</p>
-										<p className="text-xs text-zinc-500 mt-2">
-											Click the + button to add a past paper
-										</p>
-									</div>
-								) : (
-									filteredPastPapers.map((paper) => (
-										<Card key={paper.id} className="group">
-											<CardContent className="p-4">
-												<div className="flex items-start gap-4">
-													<div className="flex-1 min-w-0">
-														<div className="flex items-center gap-2 mb-2">
-															<Badge variant="secondary">{paper.subject}</Badge>
-															<Badge variant="outline">{paper.paper}</Badge>
-															<Badge variant="outline">{paper.year}</Badge>
-															<Badge variant="outline">{paper.month}</Badge>
-															{paper.isExtracted && (
-																<Badge className="bg-green-100 text-green-700 dark:bg-green-900/20 dark:text-green-400">
-																	Extracted
-																</Badge>
-															)}
-														</div>
-														<div className="flex items-center gap-2 text-xs text-zinc-400">
-															<span>{paper.totalMarks || 150} marks</span>
-														</div>
-													</div>
-													<div className="flex flex-col gap-1">
+													<div className="flex items-center gap-1">
 														<Button
 															variant="ghost"
 															size="icon"
-															className="h-8 w-8 text-zinc-400 hover:text-brand-purple"
-															onClick={() => handleEditPastPaper(paper)}
+															className="h-10 w-10 rounded-xl hover:bg-primary/10 hover:text-primary transition-colors"
+															onClick={() => handleEditQuestion(q)}
 														>
-															<Edit2 className="h-4 w-4" />
+															<Edit2 className="h-5 w-5" />
 														</Button>
 														<Button
 															variant="ghost"
 															size="icon"
-															className="h-8 w-8 text-zinc-400 hover:text-red-500"
-															onClick={() => handleDeletePastPaper(paper.id)}
+															className="h-10 w-10 rounded-xl hover:bg-rose-500/10 hover:text-rose-500 transition-colors"
+															onClick={() => handleDeleteQuestion(q.id)}
 														>
-															<Trash2 className="h-4 w-4" />
+															<Trash2 className="h-5 w-5" />
 														</Button>
+													</div>
+												</div>
+
+												<p className="text-sm font-bold text-foreground line-clamp-3 leading-relaxed">
+													{q.questionText}
+												</p>
+
+												<div className="pt-4 border-t border-border/50 flex items-center justify-between">
+													<div className="space-y-1">
+														<p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">
+															{getSubjectName(q.subjectId)}
+														</p>
+														<p className="text-xs font-bold text-foreground truncate max-w-37.5">
+															{q.topic}
+														</p>
+													</div>
+													<div className="text-right">
+														<p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">
+															Points
+														</p>
+														<p className="text-lg font-black text-primary">{q.marks}</p>
 													</div>
 												</div>
 											</CardContent>
 										</Card>
-									))
-								)}
-							</div>
-						) : (
-							// Users Tab
-							<div className="space-y-4">
-								{filteredUsers.length === 0 ? (
-									<div className="flex flex-col items-center justify-center py-20 text-center opacity-40">
-										<div className="text-6xl mb-4">👥</div>
-										<p className="text-sm font-bold">No users found</p>
-										<p className="text-xs text-zinc-500 mt-2">
-											Try adjusting your search or filter
-										</p>
-									</div>
-								) : (
-									filteredUsers.map((user) => (
+									))}
+								</div>
+							)}
+
+							{activeTab === 'users' && (
+								<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+									{filteredUsers.map((u) => (
 										<Card
-											key={user.id}
-											className="group cursor-pointer hover:shadow-md transition-shadow"
-											onClick={() => handleOpenUserDrawer(user)}
+											key={u.id}
+											className="rounded-[2rem] border-2 border-border/50 hover:border-primary/20 cursor-pointer transition-all duration-300 group"
 										>
-											<CardContent className="p-4">
-												<div className="flex items-start gap-4">
-													<Avatar className="h-12 w-12">
-														<AvatarImage src={user.image || undefined} alt={user.name} />
-														<AvatarFallback className="bg-brand-purple text-white">
-															{user.name.charAt(0).toUpperCase()}
+											<CardContent className="p-6">
+												<div className="flex items-center gap-4">
+													<Avatar className="h-16 w-16 border-2 border-background shadow-xl">
+														<AvatarImage src={u.image || undefined} alt={u.name} />
+														<AvatarFallback className="bg-primary text-primary-foreground font-black text-xl">
+															{u.name.charAt(0)}
 														</AvatarFallback>
 													</Avatar>
 													<div className="flex-1 min-w-0">
-														<div className="flex items-center gap-2 mb-1">
-															<h3 className="font-medium text-base text-zinc-900 dark:text-white truncate">
-																{user.name}
-															</h3>
-															<Badge className={`text-xs ${getRoleColor(user.role || 'user')}`}>
-																{user.role || 'user'}
-															</Badge>
-														</div>
-														<p className="text-sm text-zinc-500 truncate">{user.email}</p>
-														<div className="flex items-center gap-2 mt-2">
-															<Badge
-																variant="secondary"
-																className={getStatusColor(user.isBlocked, user.deletedAt)}
-															>
-																{getStatusText(user.isBlocked, user.deletedAt)}
-															</Badge>
-															<span className="text-xs text-zinc-400">
-																Joined {new Date(user.createdAt).toLocaleDateString()}
-															</span>
-														</div>
+														<h3 className="font-black text-lg text-foreground truncate tracking-tighter">
+															{u.name}
+														</h3>
+														<p className="text-xs font-bold text-muted-foreground truncate">
+															{u.email}
+														</p>
 													</div>
-													{user.deletedAt && (
-														<Button
-															variant="outline"
-															size="sm"
-															onClick={(e) => {
-																e.stopPropagation();
-																handleRestoreUser(user.id);
-															}}
-															className="text-xs"
-														>
-															Restore
-														</Button>
-													)}
+												</div>
+
+												<div className="mt-6 pt-6 border-t border-border/50 flex items-center justify-between">
+													<Badge
+														className={`rounded-lg uppercase tracking-widest text-[9px] font-black ${getRoleColor(u.role || 'user')}`}
+													>
+														{u.role || 'user'}
+													</Badge>
+													<Badge
+														variant="outline"
+														className={`rounded-lg uppercase tracking-widest text-[9px] font-black border-2 ${getStatusColor(u.isBlocked, u.deletedAt)}`}
+													>
+														{getStatusText(u.isBlocked, u.deletedAt)}
+													</Badge>
 												</div>
 											</CardContent>
 										</Card>
-									))
-								)}
-							</div>
-						)}
-					</div>
+									))}
+								</div>
+							)}
+
+							{activeTab === 'subjects' && (
+								<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+									{subjects.map((s) => (
+										<Card
+											key={s.id}
+											className="rounded-[2.5rem] border-2 border-border/50 p-8 space-y-4"
+										>
+											<div className="flex items-center justify-between">
+												<h3 className="text-2xl font-black text-foreground tracking-tighter uppercase">
+													{s.name}
+												</h3>
+												<Badge
+													className={`rounded-lg uppercase tracking-widest text-[9px] font-black ${s.isActive ? 'bg-emerald-500 text-white' : 'bg-muted text-muted-foreground'}`}
+												>
+													{s.isActive ? 'Active' : 'Inactive'}
+												</Badge>
+											</div>
+											<p className="text-sm font-bold text-muted-foreground line-clamp-2">
+												{s.description}
+											</p>
+											<div className="pt-4 border-t border-border/50">
+												<p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">
+													Curriculum Code
+												</p>
+												<p className="text-sm font-black text-foreground uppercase">
+													{s.curriculumCode}
+												</p>
+											</div>
+										</Card>
+									))}
+								</div>
+							)}
+						</div>
+					)}
 				</ScrollArea>
 			</main>
 
@@ -1179,143 +727,76 @@ export default function CMS() {
 					if (!open) setDrawerTab('basic');
 				}}
 			>
-				<DrawerContent className="max-h-[90vh] flex flex-col z-50 rounded-t-3xl pb-3">
-					<DrawerHeader className="text-left border-b pb-4">
-						<DrawerTitle>
-							{editingQuestion?.id ? 'Edit Question' : 'Create New Question'}
+				<DrawerContent className="max-h-[90vh] flex flex-col z-50 rounded-t-[3rem] pb-8 lg:max-w-4xl lg:mx-auto">
+					<DrawerHeader className="text-left border-b pb-8 px-8">
+						<DrawerTitle className="text-3xl font-black tracking-tighter uppercase">
+							{editingQuestion?.id ? 'Edit Question' : 'New Question'}
 						</DrawerTitle>
-						<DrawerDescription>
-							{editingQuestion?.id
-								? 'Edit the question details below.'
-								: 'Fill in the details to create a new question.'}
+						<DrawerDescription className="font-bold">
+							Manage educational content for students
 						</DrawerDescription>
 
-						{/* Tabs */}
 						<Tabs
 							value={drawerTab}
 							onValueChange={(v) => setDrawerTab(v as typeof drawerTab)}
-							className="w-full mt-4"
+							className="w-full mt-8"
 						>
-							<TabsList className="grid w-full grid-cols-3">
-								<TabsTrigger value="basic">Basic Info</TabsTrigger>
-								<TabsTrigger value="question">Question</TabsTrigger>
-								<TabsTrigger value="options">Options</TabsTrigger>
+							<TabsList className="grid w-full grid-cols-3 h-12 bg-muted/50 p-1 rounded-xl">
+								<TabsTrigger
+									value="basic"
+									className="rounded-lg font-black text-[10px] uppercase tracking-widest"
+								>
+									Basic
+								</TabsTrigger>
+								<TabsTrigger
+									value="question"
+									className="rounded-lg font-black text-[10px] uppercase tracking-widest"
+								>
+									Content
+								</TabsTrigger>
+								<TabsTrigger
+									value="options"
+									className="rounded-lg font-black text-[10px] uppercase tracking-widest"
+								>
+									Options
+								</TabsTrigger>
 							</TabsList>
 						</Tabs>
 					</DrawerHeader>
 
 					{editingQuestion && (
-						<ScrollArea className="flex-1 px-4">
-							<div className="space-y-6 py-4">
-								{/* Tab 1: Basic Info */}
+						<ScrollArea className="flex-1 px-8 py-8 no-scrollbar">
+							<div className="space-y-8">
 								{drawerTab === 'basic' && (
-									<div className="space-y-6">
-										{/* Image Upload */}
-										<div className="space-y-2 aspect-video w-full">
-											<Label>Question Image (Optional)</Label>
+									<div className="space-y-8">
+										<div className="space-y-3">
+											<Label className="font-black text-xs uppercase tracking-widest text-muted-foreground">
+												Illustration
+											</Label>
 											{editingQuestion.imageUrl ? (
-												<div className="space-y-2 mt-2">
-													<div className="relative aspect-video w-full rounded-lg overflow-hidden border border-input">
-														<Image
-															src={editingQuestion.imageUrl}
-															alt="Question"
-															width={800}
-															height={400}
-															className="w-full h-auto max-h-64 object-contain bg-muted cursor-pointer"
-															unoptimized
-															onClick={() => setIsFullscreen(true)}
-														/>
-														<div className="absolute top-2 right-2 flex gap-1">
-															<Button
-																type="button"
-																variant="secondary"
-																size="sm"
-																className="bg-white/80 hover:bg-white text-zinc-800"
-																onClick={() => setIsFullscreen(true)}
-															>
-																<Maximize2 className="h-4 w-4" />
-															</Button>
-															<Button
-																type="button"
-																variant="destructive"
-																size="sm"
-																className="bg-white/80 hover:bg-white text-zinc-800"
-																onClick={handleRemoveImage}
-															>
-																<X className="h-4 w-4" />
-															</Button>
-														</div>
+												<div className="relative aspect-video w-full rounded-3xl overflow-hidden border-2 border-border shadow-xl group">
+													<Image
+														src={editingQuestion.imageUrl}
+														alt="Question"
+														width={800}
+														height={400}
+														className="w-full h-full object-contain bg-muted"
+														unoptimized
+													/>
+													<div className="absolute top-4 right-4 flex gap-2">
+														<Button
+															type="button"
+															variant="destructive"
+															size="icon"
+															className="rounded-xl h-10 w-10"
+															onClick={handleRemoveImage}
+														>
+															<X className="h-5 w-5" />
+														</Button>
 													</div>
-
-													{/* Fullscreen Modal */}
-													<Dialog open={isFullscreen} onOpenChange={setIsFullscreen}>
-														<DialogContent className="max-w-7xl w-full max-h-[90vh] p-0 border-0 bg-black/90">
-															<DialogHeader className="p-4 border-b border-zinc-700">
-																<DialogTitle className="text-white">Question Image</DialogTitle>
-																<DialogDescription className="text-zinc-400">
-																	Zoom and pan to view details
-																</DialogDescription>
-															</DialogHeader>
-
-															<div className="p-4 flex-1 flex items-center justify-center">
-																<TransformWrapper
-																	initialScale={1}
-																	minScale={0.5}
-																	maxScale={3}
-																	limitToBounds={false}
-																	centerOnInit={true}
-																	doubleClick={{ mode: 'reset' }}
-																>
-																	{({ zoomIn, zoomOut, resetTransform }) => (
-																		<div className="w-full h-full flex flex-col">
-																			<div className="flex justify-center gap-2 mb-4">
-																				<Button
-																					type="button"
-																					size="sm"
-																					variant="secondary"
-																					className="bg-zinc-800 hover:bg-zinc-700 text-white"
-																					onClick={() => zoomIn()}
-																				>
-																					<ZoomIn className="h-4 w-4" />
-																				</Button>
-																				<Button
-																					type="button"
-																					size="sm"
-																					variant="secondary"
-																					className="bg-zinc-800 hover:bg-zinc-700 text-white"
-																					onClick={() => zoomOut()}
-																				>
-																					<ZoomOut className="h-4 w-4" />
-																				</Button>
-																				<Button
-																					type="button"
-																					size="sm"
-																					variant="secondary"
-																					className="bg-zinc-800 hover:bg-zinc-700 text-white"
-																					onClick={() => resetTransform()}
-																				>
-																					Reset
-																				</Button>
-																			</div>
-
-																			<div className="flex-1 flex items-center justify-center">
-																				<TransformComponent wrapperClass="w-full h-full flex items-center justify-center">
-																					<SafeImage
-																						src={editingQuestion.imageUrl}
-																						alt="Question"
-																						className="max-w-none"
-																					/>
-																				</TransformComponent>
-																			</div>
-																		</div>
-																	)}
-																</TransformWrapper>
-															</div>
-														</DialogContent>
-													</Dialog>
 												</div>
 											) : (
-												<div className="mt-2 h-full flex relative">
+												<div className="relative">
 													<input
 														type="file"
 														id={fileInputId}
@@ -1327,668 +808,224 @@ export default function CMS() {
 													<label
 														htmlFor={fileInputId}
 														onClick={triggerFileInput}
-														className="w-full rounded-lg border-2 border-dashed border-input p-4 flex flex-col items-center justify-center gap-2 hover:border-brand-purple hover:bg-muted/50 transition-colors cursor-pointer"
+														className="w-full h-48 rounded-3xl border-2 border-dashed border-border flex flex-col items-center justify-center gap-4 hover:border-primary hover:bg-primary/5 transition-all cursor-pointer"
 													>
-														<ImagePlus className="h-8 w-8 text-muted-foreground" />
-														<span className="text-sm text-muted-foreground">
-															Click to upload image (max 4MB)
+														<div className="h-16 w-16 rounded-2xl bg-muted flex items-center justify-center">
+															<ImagePlus className="h-8 w-8 text-muted-foreground" />
+														</div>
+														<span className="text-xs font-black uppercase tracking-widest text-muted-foreground">
+															Upload Image (Max 4MB)
 														</span>
 													</label>
 												</div>
 											)}
 										</div>
 
-										{/* Subject & Grade */}
-										<div className="grid grid-cols-2 gap-4">
-											<div className="space-y-2">
-												<Label>
-													Subject <span className="text-red-500">*</span>
+										<div className="grid grid-cols-2 gap-8">
+											<div className="space-y-3">
+												<Label className="font-black text-xs uppercase tracking-widest text-muted-foreground">
+													Subject
 												</Label>
-												<div className="mt-2">
-													<Select
-														value={editingQuestion.subjectId.toString()}
-														onValueChange={(value) =>
-															setEditingQuestion({
-																...editingQuestion,
-																subjectId: Number.parseInt(value, 10),
-															})
-														}
-													>
-														<SelectTrigger>
-															<SelectValue placeholder="Select subject" className="mt-2" />
-														</SelectTrigger>
-														<SelectContent>
-															{subjects.map((subject) => (
-																<SelectItem key={subject.id} value={subject.id.toString()}>
-																	{subject.name}
-																</SelectItem>
-															))}
-														</SelectContent>
-													</Select>
-												</div>
-											</div>
-
-											<div className="space-y-2">
-												<Label>Grade Level</Label>
-												<div className="mt-2">
-													<Select
-														value={editingQuestion.gradeLevel.toString()}
-														onValueChange={(value) =>
-															setEditingQuestion({
-																...editingQuestion,
-																gradeLevel: Number.parseInt(value, 10),
-															})
-														}
-													>
-														<SelectTrigger>
-															<SelectValue placeholder="Select grade" className="mt-2" />
-														</SelectTrigger>
-														<SelectContent>
-															<SelectItem value="10">Grade 10</SelectItem>
-															<SelectItem value="11">Grade 11</SelectItem>
-															<SelectItem value="12">Grade 12</SelectItem>
-														</SelectContent>
-													</Select>
-												</div>
-											</div>
-										</div>
-
-										{/* Topic & Difficulty */}
-										<div className="grid grid-cols-2 gap-4">
-											<div className="space-y-2">
-												<Label htmlFor={topicId}>
-													Topic <span className="text-red-500">*</span>
-												</Label>
-												<Input
-													id={topicId}
-													value={editingQuestion.topic}
-													onChange={(e) =>
+												<Select
+													value={editingQuestion.subjectId.toString()}
+													onValueChange={(v) =>
 														setEditingQuestion({
 															...editingQuestion,
-															topic: e.target.value,
+															subjectId: Number.parseInt(v, 10),
 														})
 													}
-													placeholder="e.g., Calculus"
-													className="mt-2"
+												>
+													<SelectTrigger className="h-14 rounded-2xl border-2">
+														<SelectValue placeholder="Select" />
+													</SelectTrigger>
+													<SelectContent className="rounded-2xl">
+														{subjects.map((s) => (
+															<SelectItem key={s.id} value={s.id.toString()}>
+																{s.name}
+															</SelectItem>
+														))}
+													</SelectContent>
+												</Select>
+											</div>
+											<div className="space-y-3">
+												<Label className="font-black text-xs uppercase tracking-widest text-muted-foreground">
+													Grade
+												</Label>
+												<Select
+													value={editingQuestion.gradeLevel.toString()}
+													onValueChange={(v) =>
+														setEditingQuestion({
+															...editingQuestion,
+															gradeLevel: Number.parseInt(v, 10),
+														})
+													}
+												>
+													<SelectTrigger className="h-14 rounded-2xl border-2">
+														<SelectValue placeholder="Select" />
+													</SelectTrigger>
+													<SelectContent className="rounded-2xl">
+														<SelectItem value="10">Grade 10</SelectItem>
+														<SelectItem value="11">Grade 11</SelectItem>
+														<SelectItem value="12">Grade 12</SelectItem>
+													</SelectContent>
+												</Select>
+											</div>
+										</div>
+
+										<div className="grid grid-cols-2 gap-8">
+											<div className="space-y-3">
+												<Label className="font-black text-xs uppercase tracking-widest text-muted-foreground">
+													Topic
+												</Label>
+												<Input
+													value={editingQuestion.topic}
+													onChange={(e) =>
+														setEditingQuestion({ ...editingQuestion, topic: e.target.value })
+													}
+													className="h-14 rounded-2xl border-2 font-bold"
 												/>
 											</div>
-
-											<div className="space-y-2">
-												<Label>Difficulty</Label>
-												<div className="mt-2">
-													<Select
-														value={editingQuestion.difficulty}
-														onValueChange={(value: 'easy' | 'medium' | 'hard') =>
-															setEditingQuestion({
-																...editingQuestion,
-																difficulty: value,
-															})
-														}
-													>
-														<SelectTrigger>
-															<SelectValue placeholder="Select difficulty" className="mt-2" />
-														</SelectTrigger>
-														<SelectContent>
-															<SelectItem value="easy">Easy</SelectItem>
-															<SelectItem value="medium">Medium</SelectItem>
-															<SelectItem value="hard">Hard</SelectItem>
-														</SelectContent>
-													</Select>
-												</div>
+											<div className="space-y-3">
+												<Label className="font-black text-xs uppercase tracking-widest text-muted-foreground">
+													Difficulty
+												</Label>
+												<Select
+													value={editingQuestion.difficulty}
+													// biome-ignore lint/suspicious/noExplicitAny: Select onValueChange gives any for some reason
+													onValueChange={(v: any) =>
+														setEditingQuestion({ ...editingQuestion, difficulty: v })
+													}
+												>
+													<SelectTrigger className="h-14 rounded-2xl border-2">
+														<SelectValue placeholder="Select" />
+													</SelectTrigger>
+													<SelectContent className="rounded-2xl">
+														<SelectItem value="easy">Easy</SelectItem>
+														<SelectItem value="medium">Medium</SelectItem>
+														<SelectItem value="hard">Hard</SelectItem>
+													</SelectContent>
+												</Select>
 											</div>
 										</div>
 									</div>
 								)}
 
-								{/* Tab 2: Question */}
 								{drawerTab === 'question' && (
-									<div className="space-y-6">
-										{/* Question Text */}
-										<div className="space-y-2">
-											<Label htmlFor={questionId}>
-												Question Text <span className="text-red-500">*</span>
+									<div className="space-y-8">
+										<div className="space-y-3">
+											<Label className="font-black text-xs uppercase tracking-widest text-muted-foreground">
+												Question Content
 											</Label>
-											<textarea
-												id={questionId}
+											<Textarea
 												value={editingQuestion.questionText}
 												onChange={(e) =>
-													setEditingQuestion({
-														...editingQuestion,
-														questionText: e.target.value,
-													})
+													setEditingQuestion({ ...editingQuestion, questionText: e.target.value })
 												}
-												placeholder="Enter your question here..."
-												className="w-full min-h-0 mt-2 p-3 rounded-md border border-input bg-background text-sm resize-y focus:outline-none focus:ring-2 focus:ring-ring"
+												className="min-h-50 rounded-3xl border-2 p-6 font-bold text-lg leading-relaxed"
+												placeholder="Type the question..."
 											/>
 										</div>
-
-										{/* Marks */}
-										<div className="space-y-2">
-											<Label htmlFor={marksId}>Points</Label>
+										<div className="space-y-3 max-w-50">
+											<Label className="font-black text-xs uppercase tracking-widest text-muted-foreground">
+												Points
+											</Label>
 											<Input
-												id={marksId}
 												type="number"
-												min={1}
-												max={10}
 												value={editingQuestion.marks}
-												className="mt-2"
 												onChange={(e) =>
 													setEditingQuestion({
 														...editingQuestion,
-														marks: Number.parseInt(e.target.value, 10) || 1,
+														marks: Number.parseInt(e.target.value, 10),
 													})
 												}
+												className="h-14 rounded-2xl border-2 font-black text-xl text-center"
 											/>
 										</div>
 									</div>
 								)}
 
-								{/* Tab 3: Options */}
 								{drawerTab === 'options' && (
-									<div className="space-y-4">
-										<div className="flex items-center justify-between">
-											<Label>
-												Answer Options <span className="text-red-500">*</span>
+									<div className="space-y-6">
+										<div className="flex items-center justify-between mb-4">
+											<Label className="font-black text-xs uppercase tracking-widest text-muted-foreground">
+												Answer Possibilities
 											</Label>
-											{editingQuestion.options.length < 6 && (
-												<Button type="button" variant="outline" size="sm" onClick={addOption}>
-													<Plus className="h-4 w-4 mr-1" />
-													Add Option
-												</Button>
-											)}
+											<Button
+												type="button"
+												variant="outline"
+												size="sm"
+												onClick={addOption}
+												className="rounded-xl h-10 px-4 font-black text-[10px] uppercase tracking-widest border-2"
+											>
+												<Plus className="h-4 w-4 mr-2" /> Add
+											</Button>
 										</div>
 
-										{editingQuestion.options.map((option, index) => (
-											<div
-												key={option.optionLetter}
-												className="p-4 border rounded-lg space-y-3 bg-muted/50"
-											>
-												<div className="flex items-start gap-3">
-													<Badge
-														variant={option.isCorrect ? 'default' : 'secondary'}
-														className="w-8 h-8 flex items-center justify-center text-sm font-bold"
-													>
-														{option.optionLetter}
-													</Badge>
+										<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+											{editingQuestion.options.map((opt, idx) => (
+												<div
+													key={opt.optionLetter}
+													className="p-6 rounded-3xl border-2 bg-muted/20 space-y-4 relative"
+												>
+													<div className="flex items-center justify-between">
+														<Badge className="w-10 h-10 rounded-xl flex items-center justify-center font-black text-lg bg-primary shadow-lg shadow-primary/20">
+															{opt.optionLetter}
+														</Badge>
+														<div className="flex items-center gap-2">
+															<Checkbox
+																checked={opt.isCorrect}
+																onCheckedChange={(v) => updateOption(idx, 'isCorrect', !!v)}
+																className="h-6 w-6 rounded-lg border-2"
+															/>
+															<span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">
+																Correct
+															</span>
+															<Button
+																variant="ghost"
+																size="icon"
+																className="h-8 w-8 text-rose-500"
+																onClick={() => removeOption(idx)}
+															>
+																<X className="h-4 w-4" />
+															</Button>
+														</div>
+													</div>
 													<Textarea
-														value={option.optionText}
-														onChange={(e) => updateOption(index, 'optionText', e.target.value)}
-														placeholder={`Option ${option.optionLetter}`}
-														className="flex-1 min-h-0 text-[15px]"
+														value={opt.optionText}
+														onChange={(e) => updateOption(idx, 'optionText', e.target.value)}
+														className="min-h-20 rounded-xl border-2 font-bold"
+														placeholder="Answer text..."
 													/>
-													{editingQuestion.options.length > 2 && (
-														<Button
-															type="button"
-															variant="ghost"
-															size="icon"
-															className="text-red-500 hover:text-red-600"
-															onClick={() => removeOption(index)}
-														>
-															<X className="h-4 w-4" />
-														</Button>
-													)}
+													<Textarea
+														value={opt.explanation}
+														onChange={(e) => updateOption(idx, 'explanation', e.target.value)}
+														className="min-h-15 rounded-xl border-2 text-xs font-bold bg-background"
+														placeholder="Explanation..."
+													/>
 												</div>
-
-												<div className="flex items-center gap-4 px-1">
-													<Label className="flex items-center gap-2 cursor-pointer">
-														<Checkbox
-															value={option.optionText}
-															checked={option.isCorrect}
-															onCheckedChange={(e) =>
-																updateOption(index, 'isCorrect', e === option.optionText)
-															}
-															className="w-4 h-4 rounded border-gray-300 text-brand-purple focus:ring-brand-purple"
-														/>
-														<span className="text-sm text-zinc-600 dark:text-zinc-400">
-															Correct Answer
-														</span>
-													</Label>
-												</div>
-
-												<Textarea
-													value={option.explanation}
-													onChange={(e) => updateOption(index, 'explanation', e.target.value)}
-													placeholder="Explanation (optional)"
-													className="text-sm mt-2"
-												/>
-											</div>
-										))}
+											))}
+										</div>
 									</div>
 								)}
 							</div>
 						</ScrollArea>
 					)}
 
-					<DrawerFooter className="pt-4 border-t flex-row gap-3">
+					<DrawerFooter className="pt-8 border-t flex-row gap-4 px-8">
 						<DrawerClose asChild>
-							<Button variant="outline" className="flex-1 text-sm">
-								Cancel
+							<Button
+								variant="outline"
+								className="flex-1 h-14 rounded-2xl border-2 font-black uppercase tracking-widest text-xs"
+							>
+								Discard
 							</Button>
 						</DrawerClose>
 						<Button
 							onClick={handleSaveQuestion}
 							disabled={!isFormValid()}
-							className="flex-1 bg-brand-purple hover:bg-brand-purple/90 text-sm dark:text-white/90 disabled:opacity-50 disabled:cursor-not-allowed"
+							className="flex-1 h-14 bg-primary hover:bg-primary/90 rounded-2xl font-black uppercase tracking-widest text-xs shadow-2xl shadow-primary/20"
 						>
-							{editingQuestion?.id ? 'Update Question' : 'Create Question'}
-						</Button>
-					</DrawerFooter>
-				</DrawerContent>
-			</Drawer>
-
-			{/* User Drawer */}
-			<Drawer
-				open={isUserDrawerOpen}
-				onOpenChange={(open) => {
-					setIsUserDrawerOpen(open);
-					if (!open) setUserDrawerTab('details');
-				}}
-			>
-				<DrawerContent className="max-h-[90vh] flex flex-col z-50 rounded-t-3xl pb-3">
-					<DrawerHeader className="text-left border-b pb-4">
-						<DrawerTitle>User Details</DrawerTitle>
-						<DrawerDescription>Manage user account and permissions</DrawerDescription>
-
-						<Tabs
-							value={userDrawerTab}
-							onValueChange={(v) => setUserDrawerTab(v as typeof userDrawerTab)}
-							className="w-full mt-4"
-						>
-							<TabsList className="grid w-full grid-cols-2">
-								<TabsTrigger value="details">Details</TabsTrigger>
-								<TabsTrigger value="actions">Actions</TabsTrigger>
-							</TabsList>
-						</Tabs>
-					</DrawerHeader>
-
-					{selectedUser && editingUser && (
-						<ScrollArea className="flex-1 px-4">
-							<div className="space-y-6 py-4">
-								{/* Tab 1: Details */}
-								{userDrawerTab === 'details' && (
-									<div className="space-y-6">
-										{/* User Avatar & Basic Info */}
-										<div className="flex items-center gap-4">
-											<Avatar className="h-16 w-16">
-												<AvatarImage
-													src={selectedUser.image || undefined}
-													alt={selectedUser.name}
-												/>
-												<AvatarFallback className="bg-brand-purple text-white text-lg">
-													{selectedUser.name.charAt(0).toUpperCase()}
-												</AvatarFallback>
-											</Avatar>
-											<div>
-												<h3 className="font-semibold text-lg">{selectedUser.name}</h3>
-												<p className="text-sm text-zinc-500">{selectedUser.email}</p>
-												<div className="flex items-center gap-2 mt-1">
-													<Badge className={getRoleColor(selectedUser.role || 'user')}>
-														{selectedUser.role || 'user'}
-													</Badge>
-													<Badge
-														variant="secondary"
-														className={getStatusColor(
-															selectedUser.isBlocked,
-															selectedUser.deletedAt
-														)}
-													>
-														{getStatusText(selectedUser.isBlocked, selectedUser.deletedAt)}
-													</Badge>
-												</div>
-											</div>
-										</div>
-
-										{/* Edit Form */}
-										<div className="space-y-4">
-											<div className="space-y-2">
-												<Label>Name</Label>
-												<Input
-													value={editingUser.name}
-													onChange={(e) => setEditingUser({ ...editingUser, name: e.target.value })}
-													placeholder="User name"
-												/>
-											</div>
-
-											<div className="space-y-2">
-												<Label>Email</Label>
-												<Input
-													value={editingUser.email}
-													onChange={(e) =>
-														setEditingUser({ ...editingUser, email: e.target.value })
-													}
-													placeholder="User email"
-													type="email"
-												/>
-											</div>
-
-											<div className="space-y-2">
-												<Label>Role</Label>
-												<Select
-													value={editingUser.role}
-													onValueChange={(v: 'admin' | 'moderator' | 'user') =>
-														setEditingUser({ ...editingUser, role: v })
-													}
-												>
-													<SelectTrigger>
-														<SelectValue placeholder="Select role" />
-													</SelectTrigger>
-													<SelectContent>
-														<SelectItem value="admin">Admin</SelectItem>
-														<SelectItem value="moderator">Moderator</SelectItem>
-														<SelectItem value="user">User</SelectItem>
-													</SelectContent>
-												</Select>
-											</div>
-
-											<div className="pt-2">
-												<Button
-													onClick={handleUpdateUser}
-													className="w-full bg-brand-purple hover:bg-brand-purple/90"
-												>
-													Save Changes
-												</Button>
-											</div>
-										</div>
-
-										{/* Join Date */}
-										<div className="pt-4 border-t">
-											<p className="text-sm text-zinc-500">
-												Joined: {new Date(selectedUser.createdAt).toLocaleDateString()} at{' '}
-												{new Date(selectedUser.createdAt).toLocaleTimeString()}
-											</p>
-											{selectedUser.deletedAt && (
-												<p className="text-sm text-red-500 mt-1">
-													Deleted: {new Date(selectedUser.deletedAt).toLocaleDateString()}
-												</p>
-											)}
-										</div>
-									</div>
-								)}
-
-								{/* Tab 2: Actions */}
-								{userDrawerTab === 'actions' && (
-									<div className="space-y-4">
-										<div className="p-4 border rounded-lg space-y-3">
-											<h4 className="font-medium">Account Status</h4>
-											<p className="text-sm text-zinc-500">
-												{selectedUser.isBlocked
-													? 'This user is currently blocked and cannot log in.'
-													: 'This user can log in and access the application.'}
-											</p>
-											<Button
-												onClick={handleToggleBlock}
-												variant={selectedUser.isBlocked ? 'default' : 'destructive'}
-												className="w-full"
-											>
-												{selectedUser.isBlocked ? 'Unblock User' : 'Block User'}
-											</Button>
-										</div>
-
-										<div className="p-4 border rounded-lg space-y-3">
-											<h4 className="font-medium text-red-600">Danger Zone</h4>
-											<p className="text-sm text-zinc-500">
-												{selectedUser.deletedAt
-													? 'This user has been soft deleted. They can be restored.'
-													: 'Deleting a user will soft delete their account. This can be undone.'}
-											</p>
-											{selectedUser.deletedAt ? (
-												<Button
-													onClick={() => handleRestoreUser(selectedUser.id)}
-													variant="outline"
-													className="w-full"
-												>
-													Restore User
-												</Button>
-											) : (
-												<Button onClick={handleDeleteUser} variant="destructive" className="w-full">
-													Delete User
-												</Button>
-											)}
-										</div>
-									</div>
-								)}
-							</div>
-						</ScrollArea>
-					)}
-
-					<DrawerFooter className="pt-4 border-t">
-						<DrawerClose asChild>
-							<Button variant="outline" className="w-full">
-								Close
-							</Button>
-						</DrawerClose>
-					</DrawerFooter>
-				</DrawerContent>
-			</Drawer>
-
-			{/* Past Papers Drawer */}
-			<Drawer
-				open={isPastPaperDrawerOpen}
-				onOpenChange={(open) => {
-					setIsPastPaperDrawerOpen(open);
-					if (!open) {
-						setEditingPastPaper(null);
-						clearPdfState();
-					}
-				}}
-			>
-				<DrawerContent className="max-h-[90vh] flex flex-col z-50 rounded-t-3xl pb-3 overflow-hidden">
-					<DrawerHeader className="text-left border-b pb-4 shrink-0">
-						<DrawerTitle>
-							{editingPastPaper?.id ? 'Edit Past Paper' : 'Add New Past Paper'}
-						</DrawerTitle>
-						<DrawerDescription>
-							{editingPastPaper?.id
-								? 'Edit the past paper details below.'
-								: 'Fill in the details to add a new past paper.'}
-						</DrawerDescription>
-					</DrawerHeader>
-
-					{editingPastPaper && (
-						<ScrollArea className="flex-1 px-4 h-full">
-							<div className="space-y-6 py-4">
-								{/* PDF Upload */}
-								<div className="space-y-2">
-									<Label>Past Paper PDF (Optional)</Label>
-									{localPdfPreview || editingPastPaper.originalPdfUrl ? (
-										<div className="space-y-2 mt-2">
-											<div className="flex items-center gap-3 p-3 rounded-lg border bg-muted/50">
-												<div className="h-12 w-12 bg-red-100 dark:bg-red-900/20 rounded-lg flex items-center justify-center">
-													<span className="text-red-600 dark:text-red-400 font-bold text-xs">
-														PDF
-													</span>
-												</div>
-												<div className="flex-1 min-w-0">
-													<p className="text-sm font-medium truncate">
-														{localPdfFile?.name || 'Uploaded PDF'}
-													</p>
-													<p className="text-xs text-zinc-500">
-														{localPdfFile
-															? `${(localPdfFile.size / 1024 / 1024).toFixed(2)} MB`
-															: 'Ready'}
-													</p>
-												</div>
-												<Button
-													type="button"
-													variant="ghost"
-													size="icon"
-													className="text-zinc-400 hover:text-red-500"
-													onClick={handleRemovePdf}
-												>
-													<X className="h-4 w-4" />
-												</Button>
-											</div>
-										</div>
-									) : (
-										<div className="mt-2">
-											<input
-												type="file"
-												id={pdfInputId}
-												ref={pdfInputRef}
-												onChange={handlePdfSelect}
-												accept="application/pdf"
-												className="hidden"
-											/>
-											<label
-												htmlFor={pdfInputId}
-												onClick={triggerPdfInput}
-												className="w-full rounded-lg border-2 border-dashed border-input p-6 flex flex-col items-center justify-center gap-2 hover:border-brand-purple hover:bg-muted/50 transition-colors cursor-pointer"
-											>
-												<Upload className="h-8 w-8 text-muted-foreground" />
-												<span className="text-sm text-muted-foreground">
-													Click to upload PDF (max 16MB)
-												</span>
-											</label>
-										</div>
-									)}
-								</div>
-
-								{/* Subject */}
-								<div className="space-y-2">
-									<Label>
-										Subject <span className="text-red-500">*</span>
-									</Label>
-									<Select
-										value={editingPastPaper.subject}
-										onValueChange={(value) =>
-											setEditingPastPaper({ ...editingPastPaper, subject: value })
-										}
-									>
-										<SelectTrigger>
-											<SelectValue placeholder="Select subject" />
-										</SelectTrigger>
-										<SelectContent>
-											{SUBJECTS.map((subj) => (
-												<SelectItem key={subj} value={subj}>
-													{subj}
-												</SelectItem>
-											))}
-										</SelectContent>
-									</Select>
-								</div>
-
-								{/* Paper Type & Year */}
-								<div className="grid grid-cols-2 gap-4">
-									<div className="space-y-2">
-										<Label>
-											Paper <span className="text-red-500">*</span>
-										</Label>
-										<Select
-											value={editingPastPaper.paper}
-											onValueChange={(value) =>
-												setEditingPastPaper({ ...editingPastPaper, paper: value })
-											}
-										>
-											<SelectTrigger>
-												<SelectValue placeholder="Select paper" />
-											</SelectTrigger>
-											<SelectContent>
-												{PAPER_TYPES.map((p) => (
-													<SelectItem key={p} value={p}>
-														{p}
-													</SelectItem>
-												))}
-											</SelectContent>
-										</Select>
-									</div>
-
-									<div className="space-y-2">
-										<Label>
-											Year <span className="text-red-500">*</span>
-										</Label>
-										<Select
-											value={editingPastPaper.year.toString()}
-											onValueChange={(value) =>
-												setEditingPastPaper({
-													...editingPastPaper,
-													year: Number.parseInt(value, 10),
-												})
-											}
-										>
-											<SelectTrigger>
-												<SelectValue placeholder="Select year" />
-											</SelectTrigger>
-											<SelectContent>
-												{YEARS.map((year) => (
-													<SelectItem key={year} value={year.toString()}>
-														{year}
-													</SelectItem>
-												))}
-											</SelectContent>
-										</Select>
-									</div>
-								</div>
-
-								{/* Month */}
-								<div className="space-y-2">
-									<Label>
-										Month <span className="text-red-500">*</span>
-									</Label>
-									<Select
-										value={editingPastPaper.month}
-										onValueChange={(value) =>
-											setEditingPastPaper({ ...editingPastPaper, month: value })
-										}
-									>
-										<SelectTrigger>
-											<SelectValue placeholder="Select month" />
-										</SelectTrigger>
-										<SelectContent>
-											{MONTHS.map((month) => (
-												<SelectItem key={month} value={month}>
-													{month}
-												</SelectItem>
-											))}
-										</SelectContent>
-									</Select>
-								</div>
-
-								{/* Total Marks */}
-								<div className="space-y-2">
-									<Label>Total Marks</Label>
-									<Input
-										type="number"
-										min={1}
-										max={500}
-										value={editingPastPaper.totalMarks}
-										onChange={(e) =>
-											setEditingPastPaper({
-												...editingPastPaper,
-												totalMarks: Number.parseInt(e.target.value, 10) || 150,
-											})
-										}
-										placeholder="e.g., 150"
-									/>
-								</div>
-
-								{/* Instructions */}
-								<div className="space-y-2">
-									<Label>Instructions</Label>
-									<Textarea
-										value={editingPastPaper.instructions || ''}
-										onChange={(e) =>
-											setEditingPastPaper({ ...editingPastPaper, instructions: e.target.value })
-										}
-										placeholder="Exam instructions..."
-										rows={2}
-									/>
-								</div>
-							</div>
-						</ScrollArea>
-					)}
-
-					<DrawerFooter className="pt-4 border-t flex-row gap-3">
-						<DrawerClose asChild>
-							<Button variant="outline" className="flex-1 text-sm">
-								Cancel
-							</Button>
-						</DrawerClose>
-						<Button
-							onClick={handleSavePastPaper}
-							disabled={pdfUploading}
-							className="flex-1 bg-brand-purple hover:bg-brand-purple/90 text-sm dark:text-white/90 disabled:opacity-50"
-						>
-							{pdfUploading ? 'Uploading...' : editingPastPaper?.id ? 'Update Paper' : 'Add Paper'}
+							{editingQuestion?.id ? 'Update Content' : 'Save Content'}
 						</Button>
 					</DrawerFooter>
 				</DrawerContent>

@@ -124,7 +124,10 @@ export function useChatMessages({ channelId, initialMessages = [] }: UseChatMess
 				return await response.json();
 			} catch (error) {
 				console.error('[Chat] Error sending message:', error);
-				return { success: false, error: String(error) };
+				return {
+					success: false,
+					error: { message: String(error), code: 'FETCH_ERROR' },
+				};
 			}
 		},
 		[channelId]
@@ -141,7 +144,10 @@ export function useChatMessages({ channelId, initialMessages = [] }: UseChatMess
 				return await response.json();
 			} catch (error) {
 				console.error('[Chat] Error editing message:', error);
-				return { success: false, error: String(error) };
+				return {
+					success: false,
+					error: { message: String(error), code: 'FETCH_ERROR' },
+				};
 			}
 		},
 		[channelId]
@@ -158,7 +164,10 @@ export function useChatMessages({ channelId, initialMessages = [] }: UseChatMess
 				return await response.json();
 			} catch (error) {
 				console.error('[Chat] Error deleting message:', error);
-				return { success: false, error: String(error) };
+				return {
+					success: false,
+					error: { message: String(error), code: 'FETCH_ERROR' },
+				};
 			}
 		},
 		[channelId]

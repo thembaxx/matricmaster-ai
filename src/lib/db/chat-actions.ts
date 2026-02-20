@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/suspicious/noExplicitAny: reasons */
 'use server';
 
 import { desc, eq } from 'drizzle-orm';
@@ -8,13 +9,17 @@ import { chatMessages, outbox, userPresence } from './schema-chat';
 
 const getDb = () => dbManager.getDb();
 
+export type ChatActionResult<T = void> =
+	| { success: true; message: T }
+	| { success: false; error: { message: string; code: string } };
+
 export async function sendMessage(
 	channelId: string,
 	userId: string,
 	content: string,
 	messageType: 'text' | 'image' | 'file' = 'text',
 	replyToId?: string
-) {
+): Promise<ChatActionResult<any>> {
 	const db = getDb();
 	const id = crypto.randomUUID();
 
@@ -50,7 +55,10 @@ export async function sendMessage(
 		return { success: true, message };
 	} catch (error) {
 		console.error('[Chat] Error sending message:', error);
-		return { success: false, error: String(error) };
+		return {
+			success: false,
+			error: { message: String(error), code: 'SERVER_ERROR' },
+		};
 	}
 }
 
@@ -87,7 +95,11 @@ export async function getChannelMessages(
 	}
 }
 
-export async function editMessage(messageId: string, userId: string, content: string) {
+export async function editMessage(
+	messageId: string,
+	userId: string,
+	content: string
+): Promise<ChatActionResult<any>> {
 	const db = getDb();
 
 	try {
@@ -98,7 +110,10 @@ export async function editMessage(messageId: string, userId: string, content: st
 			.limit(1);
 
 		if (!existing || existing.userId !== userId) {
-			return { success: false, error: 'Not authorized to edit this message' };
+			return {
+				success: false,
+				error: { message: 'Not authorized to edit this message', code: 'FORBIDDEN' },
+			};
 		}
 
 		const [updated] = await db
@@ -124,11 +139,17 @@ export async function editMessage(messageId: string, userId: string, content: st
 		return { success: true, message: updated };
 	} catch (error) {
 		console.error('[Chat] Error editing message:', error);
-		return { success: false, error: String(error) };
+		return {
+			success: false,
+			error: { message: String(error), code: 'SERVER_ERROR' },
+		};
 	}
 }
 
-export async function deleteMessage(messageId: string, userId: string) {
+export async function deleteMessage(
+	messageId: string,
+	userId: string
+): Promise<ChatActionResult<any>> {
 	const db = getDb();
 
 	try {
@@ -139,7 +160,10 @@ export async function deleteMessage(messageId: string, userId: string) {
 			.limit(1);
 
 		if (!existing || existing.userId !== userId) {
-			return { success: false, error: 'Not authorized to delete this message' };
+			return {
+				success: false,
+				error: { message: 'Not authorized to delete this message', code: 'FORBIDDEN' },
+			};
 		}
 
 		await db
@@ -161,10 +185,13 @@ export async function deleteMessage(messageId: string, userId: string) {
 		const channelName = AblyChannels.channelChat(existing.channelId);
 		await publishToChannel(channelName, 'message-deleted', { id: messageId });
 
-		return { success: true };
+		return { success: true, message: undefined };
 	} catch (error) {
 		console.error('[Chat] Error deleting message:', error);
-		return { success: false, error: String(error) };
+		return {
+			success: false,
+			error: { message: String(error), code: 'SERVER_ERROR' },
+		};
 	}
 }
 
@@ -172,7 +199,7 @@ export async function updateUserPresence(
 	channelId: string,
 	userId: string,
 	status: 'online' | 'away' | 'offline'
-) {
+): Promise<ChatActionResult<any>> {
 	const db = getDb();
 
 	try {
@@ -204,10 +231,13 @@ export async function updateUserPresence(
 		const channelName = AblyChannels.channelPresence(channelId);
 		await publishToChannel(channelName, 'presence-update', presence);
 
-		return { success: true, presence };
+		return { success: true, message: presence };
 	} catch (error) {
 		console.error('[Chat] Error updating presence:', error);
-		return { success: false, error: String(error) };
+		return {
+			success: false,
+			error: { message: String(error), code: 'SERVER_ERROR' },
+		};
 	}
 }
 

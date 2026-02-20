@@ -30,13 +30,16 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
 				BAD_REQUEST: 400,
 				SERVER_ERROR: 500,
 			};
-			const status = statusMap[result.code] || 500;
-			return NextResponse.json({ error: result.error }, { status });
+			const status = statusMap[result.error.code] || 500;
+			return NextResponse.json(result, { status });
 		}
 
 		return NextResponse.json(result);
 	} catch (error) {
 		console.error('[API] Error sending message:', error);
-		return NextResponse.json({ error: 'Failed to send message' }, { status: 500 });
+		return NextResponse.json(
+			{ success: false, error: { message: 'Failed to send message', code: 'SERVER_ERROR' } },
+			{ status: 500 }
+		);
 	}
 }

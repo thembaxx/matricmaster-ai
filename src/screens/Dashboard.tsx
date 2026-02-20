@@ -168,22 +168,23 @@ export default function Dashboard() {
 	}
 
 	return (
-		<div className="flex flex-col h-full bg-background font-inter pb-24 relative overflow-hidden">
+		<div className="flex flex-col h-full bg-background font-inter pb-24 lg:pb-12 relative overflow-hidden">
 			<BackgroundMesh variant="subtle" />
+
 			<motion.header
 				initial={{ opacity: 0, y: -20 }}
 				animate={{ opacity: 1, y: 0 }}
 				transition={{ type: 'spring', stiffness: 260, damping: 25 }}
-				className="px-6 pt-6 pb-2 flex items-center justify-between shrink-0 relative z-10"
+				className="px-6 pt-6 pb-2 flex items-center justify-between shrink-0 relative z-10 lg:px-0 lg:pt-0 lg:mb-8"
 			>
-				<div className="flex items-center gap-3">
+				<div className="flex items-center gap-4">
 					<motion.div
 						initial={{ scale: 0.5, opacity: 0 }}
 						animate={{ scale: 1, opacity: 1 }}
 						transition={{ type: 'spring', stiffness: 400, damping: 20 }}
 						className="relative"
 					>
-						<Avatar className="w-12 h-12 border-2 border-background shadow-xl relative">
+						<Avatar className="w-14 h-14 border-2 border-background shadow-xl relative lg:w-16 lg:h-16">
 							<AvatarImage
 								src={
 									session?.user?.image ?? 'https://api.dicebear.com/7.x/avataaars/svg?seed=default'
@@ -194,279 +195,310 @@ export default function Dashboard() {
 								{session?.user?.name?.charAt(0)?.toUpperCase() ?? 'U'}
 							</AvatarFallback>
 						</Avatar>
-						<div className="absolute bottom-0 right-0 w-3.5 h-3.5 bg-emerald-500 border-2 border-background rounded-full" />
+						<div className="absolute bottom-0.5 right-0.5 w-4 h-4 bg-emerald-500 border-2 border-background rounded-full lg:w-5 lg:h-5 lg:border-3" />
 					</motion.div>
 					<div>
-						<p className="text-muted-foreground text-[10px] font-black uppercase tracking-widest opacity-60">
+						<p className="text-muted-foreground text-[10px] font-black uppercase tracking-[0.2em] opacity-60 lg:text-xs">
 							Welcome back,
 						</p>
 						<SmoothWords
 							as="h2"
 							text={session?.user?.name?.split(' ')[0] ?? 'Student'}
-							className="text-xl font-black text-foreground leading-none tracking-tight"
+							className="text-2xl font-black text-foreground leading-none tracking-tighter lg:text-4xl"
 						/>
 					</div>
 				</div>
-				<motion.div whileHover={{ scale: 1.1, rotate: 5 }} whileTap={{ scale: 0.9 }}>
-					<Button
-						variant="ghost"
-						size="icon"
-						className="w-12 h-12 rounded-2xl bg-card/50 backdrop-blur-md border border-border/20 shadow-sm relative hover:bg-card/80 transition-all"
-					>
-						<Bell className="w-6 h-6 text-foreground" />
-						<span className="absolute top-3 right-3 w-2.5 h-2.5 bg-rose-500 border-2 border-background rounded-full" />
-					</Button>
-				</motion.div>
+
+				<div className="flex items-center gap-3 lg:hidden">
+					<motion.div whileHover={{ scale: 1.1, rotate: 5 }} whileTap={{ scale: 0.9 }}>
+						<Button
+							variant="ghost"
+							size="icon"
+							className="w-12 h-12 rounded-2xl bg-card/50 backdrop-blur-md border border-border/20 shadow-sm relative"
+						>
+							<Bell className="w-6 h-6 text-foreground" />
+							<span className="absolute top-3 right-3 w-2.5 h-2.5 bg-rose-500 border-2 border-background rounded-full" />
+						</Button>
+					</motion.div>
+				</div>
 			</motion.header>
 
-			<ScrollArea className="flex-1 relative z-10">
+			<ScrollArea className="flex-1 relative z-10 no-scrollbar">
 				<motion.main
 					variants={STAGGER_CONTAINER}
 					initial="hidden"
 					animate="visible"
-					className="px-6 py-6 space-y-6"
+					className="px-6 py-6 space-y-8 lg:px-0"
 				>
-					{/* Bento Grid Section */}
-					<div className="grid grid-cols-2 gap-4">
-						{/* Streak Card - Col 1 */}
-						<motion.div variants={STAGGER_ITEM} className="col-span-1">
-							<Card className="h-full p-5 premium-glass border-none rounded-3xl flex flex-col justify-between relative overflow-hidden group">
-								<motion.div
-									animate={{
-										scale: [1, 1.2, 1],
-										rotate: [0, 5, 0],
-									}}
-									transition={{ duration: 10, repeat: Number.POSITIVE_INFINITY, ease: 'easeInOut' }}
-									className="absolute -right-4 -bottom-4 w-24 h-24 bg-orange-100 dark:bg-orange-500/10 rounded-full blur-2xl group-hover:bg-orange-200/40 transition-colors"
-								/>
-								<div className="space-y-1 relative z-10">
-									<p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest opacity-70">
-										Streak
-									</p>
-									<div className="flex items-baseline gap-1">
-										<motion.span
-											initial={{ scale: 0.5 }}
-											animate={{ scale: 1 }}
-											className="text-3xl font-black text-foreground"
-										>
-											{streak}
-										</motion.span>
-										<span className="text-muted-foreground font-bold text-xs">DAYS</span>
-									</div>
-								</div>
-								<div className="mt-4 relative z-10 self-start">
-									<motion.div
-										whileHover={{ scale: 1.2, rotate: 15 }}
-										className="w-10 h-10 bg-orange-50 dark:bg-orange-500/10 rounded-xl flex items-center justify-center"
-									>
-										<Flame className="w-5 h-5 text-[#efb036] fill-[#efb036]" />
-									</motion.div>
-								</div>
-							</Card>
-						</motion.div>
-
-						{/* Quick Stats - Col 1 */}
-						<motion.div variants={STAGGER_ITEM} className="col-span-1">
-							<Card className="h-full p-5 premium-glass border-none rounded-3xl flex flex-col justify-between relative overflow-hidden group">
-								<motion.div
-									animate={{
-										scale: [1.2, 1, 1.2],
-										rotate: [0, -5, 0],
-									}}
-									transition={{ duration: 12, repeat: Number.POSITIVE_INFINITY, ease: 'easeInOut' }}
-									className="absolute -right-4 -bottom-4 w-24 h-24 bg-primary/10 rounded-full blur-2xl"
-								/>
-								<div className="space-y-1 relative z-10">
-									<p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest opacity-70">
-										Accuracy
-									</p>
-									<div className="flex items-baseline gap-1">
-										<motion.span
-											initial={{ scale: 0.5 }}
-											animate={{ scale: 1 }}
-											className="text-3xl font-black text-foreground"
-										>
-											{isLoadingProgress ? '-' : progressData?.accuracy || 0}
-										</motion.span>
-										<span className="text-muted-foreground font-bold text-xs">%</span>
-									</div>
-								</div>
-								<div className="mt-4 relative z-10 self-start">
-									<motion.div
-										whileHover={{ scale: 1.2, rotate: -15 }}
-										className="w-10 h-10 bg-primary/5 rounded-xl flex items-center justify-center"
-									>
-										<Trophy className="w-5 h-5 text-primary" />
-									</motion.div>
-								</div>
-							</Card>
-						</motion.div>
-
-						{/* Main Daily Quest Card - Col 1 & 2 */}
-						<motion.div variants={STAGGER_ITEM} className="col-span-2">
-							<Card className="p-6 premium-glass border-none rounded-[2.5rem] space-y-6 relative overflow-hidden group">
-								{/* Subtle Shine Effect */}
+					{/* Main Dashboard Grid */}
+					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+						{/* Daily Quest Card - Spans 2 columns on large screens */}
+						<motion.div variants={STAGGER_ITEM} className="md:col-span-2">
+							<Card className="p-8 premium-glass border-none rounded-[2.5rem] h-full space-y-8 relative overflow-hidden group">
 								<div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-linear-to-r from-transparent via-white/5 to-transparent pointer-events-none" />
 								<div className="absolute -right-8 -top-8 w-64 h-64 bg-primary/5 rounded-full blur-3xl pointer-events-none group-hover:bg-primary/10 transition-colors duration-500" />
 
 								<div className="flex justify-between items-start relative z-10">
-									<div className="space-y-2">
+									<div className="space-y-3">
 										<motion.div
 											initial={{ x: -10, opacity: 0 }}
 											animate={{ x: 0, opacity: 1 }}
-											className="inline-flex items-center px-2 py-1 bg-primary/10 rounded-lg"
+											className="inline-flex items-center px-3 py-1 bg-primary/10 rounded-full"
 										>
-											<span className="text-[10px] font-black text-primary uppercase tracking-tighter">
+											<span className="text-[10px] font-black text-primary uppercase tracking-wider lg:text-xs">
 												Daily Quest
 											</span>
 										</motion.div>
-										<h3 className="text-2xl font-black text-foreground tracking-tight">
+										<h3 className="text-3xl font-black text-foreground tracking-tighter lg:text-5xl">
 											Algebra Master
 										</h3>
-										<p className="text-sm text-muted-foreground font-medium">
+										<p className="text-sm text-muted-foreground font-bold lg:text-base">
 											{isLoadingProgress
 												? 'Loading progress...'
 												: `${progressData?.totalQuestions || 0} questions answered`}
 										</p>
 									</div>
 									<motion.div
-										whileHover={{ rotate: 180 }}
+										whileHover={{ rotate: 180, scale: 1.1 }}
 										transition={{ type: 'spring', stiffness: 200 }}
-										className="w-14 h-14 bg-card/50 rounded-2xl flex items-center justify-center border border-border/20 shadow-sm"
+										className="w-16 h-16 bg-card/50 rounded-2xl flex items-center justify-center border border-border/20 shadow-xl"
 									>
-										<Sparkles className="w-6 h-6 text-[#efb036]" />
+										<Sparkles className="w-8 h-8 text-brand-amber" />
 									</motion.div>
 								</div>
 
-								<div className="space-y-3 relative z-10">
+								<div className="space-y-4 relative z-10">
 									<div className="flex justify-between items-end">
-										<span className="text-xs font-black text-foreground opacity-60">
+										<span className="text-xs font-black text-foreground opacity-60 uppercase tracking-widest">
 											{isLoadingProgress ? '...' : `${progressData?.totalQuestions || 0} / 100`}{' '}
 											QUESTIONS
 										</span>
-										<span className="text-xs font-black text-primary">{dailyProgress}%</span>
+										<span className="text-sm font-black text-primary">{dailyProgress}%</span>
 									</div>
-									<div className="h-2 w-full bg-muted rounded-full overflow-hidden">
+									<div className="h-3 w-full bg-muted rounded-full overflow-hidden shadow-inner">
 										<motion.div
 											initial={{ width: 0 }}
 											animate={{ width: `${dailyProgress}%` }}
 											transition={{ duration: 1.5, ease: [0.34, 1.56, 0.64, 1] }}
-											className="h-full bg-primary rounded-full"
+											className="h-full bg-primary rounded-full shadow-lg"
 										/>
 									</div>
 								</div>
 
-								<motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+								<motion.div whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.99 }}>
 									<Button
-										className="w-full h-14 bg-primary hover:bg-primary/90 text-primary-foreground rounded-2xl text-base font-black shadow-xl shadow-primary/20 transition-all flex items-center justify-center gap-2 relative z-10"
+										className="w-full h-16 bg-primary hover:bg-primary/90 text-primary-foreground rounded-2xl text-lg font-black shadow-2xl shadow-primary/20 transition-all flex items-center justify-center gap-3 relative z-10"
 										onClick={handleNavigateToQuiz}
 										disabled={isLoading}
 									>
 										{isLoading ? (
-											<Loader2 className="w-5 h-5 animate-spin" />
+											<Loader2 className="w-6 h-6 animate-spin" />
 										) : (
 											<>
 												Continue Learning
-												<ArrowRight className="w-5 h-5" />
+												<ArrowRight className="w-6 h-6" />
 											</>
 										)}
 									</Button>
 								</motion.div>
 							</Card>
 						</motion.div>
-					</div>
 
-					{/* Weekly Chart Card */}
-					<motion.div variants={STAGGER_ITEM}>
-						<div className="flex justify-between items-center mb-4">
-							<h3 className="text-lg font-black text-foreground tracking-tight">Weekly Activity</h3>
-						</div>
-						<div className="grid grid-cols-7 gap-2 premium-glass p-5 rounded-[2.5rem]">
-							{weekProgress.map((item) => (
-								<motion.div
-									key={item.day}
-									variants={STAGGER_ITEM}
-									className="flex flex-col items-center gap-3"
-								>
-									<span
-										className={`text-[9px] font-black tracking-tighter ${item.status === 'active' ? 'text-primary' : 'text-muted-foreground opacity-40'}`}
-									>
-										{item.day}
-									</span>
+						{/* Stats Column */}
+						<div className="flex flex-col gap-6">
+							{/* Streak Card */}
+							<motion.div variants={STAGGER_ITEM} className="flex-1">
+								<Card className="h-full p-6 premium-glass border-none rounded-[2.5rem] flex flex-col justify-between relative overflow-hidden group">
 									<motion.div
-										whileHover={{ scale: 1.1, y: -2 }}
-										whileTap={{ scale: 0.9 }}
-										className={`w-full aspect-square rounded-2xl flex items-center justify-center transition-all duration-300 ${
-											item.status === 'complete'
-												? 'bg-primary/10 text-primary'
-												: item.status === 'active'
-													? 'bg-primary text-primary-foreground shadow-lg shadow-primary/30'
-													: 'bg-muted text-muted-foreground'
-										}`}
-									>
-										{item.status === 'complete' ? (
-											<Check className="w-4 h-4 stroke-[4px]" />
-										) : (
-											<span className="text-xs font-black">{item.date}</span>
-										)}
-									</motion.div>
-								</motion.div>
-							))}
-						</div>
-					</motion.div>
-
-					{/* Recommended Section */}
-					<motion.div variants={STAGGER_ITEM} className="space-y-4">
-						<h3 className="text-lg font-black text-foreground tracking-tight">
-							Deep Work Challenges
-						</h3>
-						<div className="space-y-3">
-							{defaultChallenges.map((challenge) => (
-								<motion.button
-									key={challenge.title}
-									variants={STAGGER_ITEM}
-									whileHover={{ x: 8, scale: 1.01 }}
-									whileTap={{ scale: 0.99 }}
-									type="button"
-									className="w-full text-left premium-glass p-4 rounded-[2rem] flex items-center justify-between group transition-all cursor-pointer border-transparent hover:border-primary/10 premium-glass-hover"
-									onClick={() => router.push('/quiz')}
-								>
-									<div className="flex items-center gap-4">
+										animate={{
+											scale: [1, 1.2, 1],
+											rotate: [0, 5, 0],
+										}}
+										transition={{
+											duration: 10,
+											repeat: Number.POSITIVE_INFINITY,
+											ease: 'easeInOut',
+										}}
+										className="absolute -right-4 -bottom-4 w-32 h-32 bg-brand-amber/10 rounded-full blur-2xl pointer-events-none"
+									/>
+									<div className="space-y-1 relative z-10">
+										<p className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] opacity-70">
+											Current Streak
+										</p>
+										<div className="flex items-baseline gap-2">
+											<motion.span
+												initial={{ scale: 0.5 }}
+												animate={{ scale: 1 }}
+												className="text-4xl font-black text-foreground"
+											>
+												{streak}
+											</motion.span>
+											<span className="text-muted-foreground font-black text-xs">DAYS</span>
+										</div>
+									</div>
+									<div className="mt-6 relative z-10 self-start">
 										<motion.div
-											whileHover={{ rotate: 5, scale: 1.1 }}
-											className={`w-12 h-12 rounded-2xl flex items-center justify-center ${challenge.iconBg}`}
+											whileHover={{ scale: 1.2, rotate: 15 }}
+											className="w-12 h-12 bg-brand-amber/10 rounded-2xl flex items-center justify-center border border-brand-amber/20"
 										>
-											{challenge.icon}
+											<Flame className="w-6 h-6 text-brand-amber fill-brand-amber" />
 										</motion.div>
-										<div className="space-y-0.5">
-											<h4 className="font-black text-sm text-foreground">{challenge.title}</h4>
-											<div className="flex items-center gap-2 text-[10px] font-black text-muted-foreground uppercase tracking-widest opacity-50">
-												<div className="flex items-center gap-1">
-													<Clock className="w-3 h-3" />
-													{challenge.time}
-												</div>
-												<span className="w-1 h-1 rounded-full bg-border" />
-												<div
-													className={`${
-														challenge.difficulty === 'Hard'
-															? 'text-rose-500'
-															: challenge.difficulty === 'Medium'
-																? 'text-orange-500'
-																: 'text-emerald-500'
-													}`}
-												>
-													{challenge.difficulty}
+									</div>
+								</Card>
+							</motion.div>
+
+							{/* Accuracy Card */}
+							<motion.div variants={STAGGER_ITEM} className="flex-1">
+								<Card className="h-full p-6 premium-glass border-none rounded-[2.5rem] flex flex-col justify-between relative overflow-hidden group">
+									<motion.div
+										animate={{
+											scale: [1.2, 1, 1.2],
+											rotate: [0, -5, 0],
+										}}
+										transition={{
+											duration: 12,
+											repeat: Number.POSITIVE_INFINITY,
+											ease: 'easeInOut',
+										}}
+										className="absolute -right-4 -bottom-4 w-32 h-32 bg-primary/10 rounded-full blur-2xl pointer-events-none"
+									/>
+									<div className="space-y-1 relative z-10">
+										<p className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] opacity-70">
+											Accuracy Rate
+										</p>
+										<div className="flex items-baseline gap-2">
+											<motion.span
+												initial={{ scale: 0.5 }}
+												animate={{ scale: 1 }}
+												className="text-4xl font-black text-foreground"
+											>
+												{isLoadingProgress ? '-' : progressData?.accuracy || 0}
+											</motion.span>
+											<span className="text-muted-foreground font-black text-xs">%</span>
+										</div>
+									</div>
+									<div className="mt-6 relative z-10 self-start">
+										<motion.div
+											whileHover={{ scale: 1.2, rotate: -15 }}
+											className="w-12 h-12 bg-primary/10 rounded-2xl flex items-center justify-center border border-primary/20"
+										>
+											<Trophy className="w-6 h-6 text-primary" />
+										</motion.div>
+									</div>
+								</Card>
+							</motion.div>
+						</div>
+
+						{/* Weekly Chart Card - Spans 2 columns on desktop */}
+						<motion.div variants={STAGGER_ITEM} className="lg:col-span-2">
+							<Card className="p-8 premium-glass border-none rounded-[2.5rem] h-full flex flex-col justify-between">
+								<div className="flex justify-between items-center mb-8">
+									<h3 className="text-xl font-black text-foreground tracking-tight uppercase">
+										Weekly Activity
+									</h3>
+									<div className="flex items-center gap-2">
+										<span className="w-3 h-3 rounded-full bg-primary" />
+										<span className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">
+											Today
+										</span>
+									</div>
+								</div>
+								<div className="grid grid-cols-7 gap-3 sm:gap-4 flex-1 items-end pt-4">
+									{weekProgress.map((item) => (
+										<motion.div
+											key={item.day}
+											variants={STAGGER_ITEM}
+											className="flex flex-col items-center gap-4 group"
+										>
+											<span
+												className={`text-[10px] font-black tracking-widest ${item.status === 'active' ? 'text-primary' : 'text-muted-foreground opacity-40'}`}
+											>
+												{item.day}
+											</span>
+											<motion.div
+												whileHover={{ scale: 1.05, y: -5 }}
+												whileTap={{ scale: 0.95 }}
+												className={`w-full aspect-square max-w-[60px] rounded-[1.5rem] flex items-center justify-center transition-all duration-300 cursor-pointer ${
+													item.status === 'complete'
+														? 'bg-primary/10 text-primary border border-primary/10'
+														: item.status === 'active'
+															? 'bg-primary text-primary-foreground shadow-2xl shadow-primary/40'
+															: 'bg-muted/50 text-muted-foreground/30'
+												}`}
+											>
+												{item.status === 'complete' ? (
+													<Check className="w-6 h-6 stroke-[4px]" />
+												) : (
+													<span className="text-sm font-black">{item.date}</span>
+												)}
+											</motion.div>
+										</motion.div>
+									))}
+								</div>
+							</Card>
+						</motion.div>
+
+						{/* Challenges Section */}
+						<motion.div variants={STAGGER_ITEM} className="space-y-6">
+							<div className="flex justify-between items-center">
+								<h3 className="text-xl font-black text-foreground tracking-tighter uppercase">
+									Deep Work
+								</h3>
+								<Button
+									variant="ghost"
+									size="sm"
+									className="font-black text-[10px] uppercase tracking-widest text-primary"
+								>
+									View All
+								</Button>
+							</div>
+							<div className="space-y-4">
+								{defaultChallenges.map((challenge) => (
+									<motion.button
+										key={challenge.title}
+										variants={STAGGER_ITEM}
+										whileHover={{ x: 10 }}
+										whileTap={{ scale: 0.98 }}
+										type="button"
+										className="w-full text-left premium-glass p-5 rounded-[2rem] flex items-center justify-between group transition-all cursor-pointer border-transparent hover:border-primary/20 premium-glass-hover shadow-sm"
+										onClick={() => router.push('/quiz')}
+									>
+										<div className="flex items-center gap-4">
+											<motion.div
+												className={`w-12 h-12 rounded-2xl flex items-center justify-center shadow-inner ${challenge.iconBg}`}
+											>
+												{challenge.icon}
+											</motion.div>
+											<div className="space-y-1">
+												<h4 className="font-black text-sm text-foreground">{challenge.title}</h4>
+												<div className="flex items-center gap-2 text-[10px] font-black text-muted-foreground uppercase tracking-widest opacity-60">
+													<div className="flex items-center gap-1">
+														<Clock className="w-3 h-3" />
+														{challenge.time}
+													</div>
+													<span className="w-1 h-1 rounded-full bg-border" />
+													<div
+														className={`${
+															challenge.difficulty === 'Hard'
+																? 'text-rose-500'
+																: challenge.difficulty === 'Medium'
+																	? 'text-brand-amber'
+																	: 'text-brand-green'
+														}`}
+													>
+														{challenge.difficulty}
+													</div>
 												</div>
 											</div>
 										</div>
-									</div>
-									<div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
-										<Play className="w-3 h-3 fill-current ml-0.5" />
-									</div>
-								</motion.button>
-							))}
-						</div>
-					</motion.div>
+										<div className="w-10 h-10 rounded-2xl bg-muted/50 flex items-center justify-center group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300">
+											<Play className="w-4 h-4 fill-current ml-0.5" />
+										</div>
+									</motion.button>
+								))}
+							</div>
+						</motion.div>
+					</div>
 				</motion.main>
 			</ScrollArea>
 		</div>

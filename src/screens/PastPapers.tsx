@@ -4,7 +4,6 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { BookOpen, Download, Eye, FileText, Filter, Search as SearchIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { SmoothWords } from '@/components/Transition/SmoothText';
 import { BackgroundMesh } from '@/components/ui/background-mesh';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -30,103 +29,70 @@ export default function PastPapers() {
 	});
 
 	return (
-		<div className="flex flex-col h-full bg-background relative overflow-hidden">
+		<div className="flex flex-col h-full bg-background relative overflow-hidden lg:px-8">
 			<BackgroundMesh variant="subtle" />
-			{/* Header */}
-			<header
-				className="px-6 py-4 sticky top-0 z-20 shrink-0 bg-card/70 backdrop-blur-xl border-b border-border"
-				style={{
-					paddingTop: 'calc(env(safe-area-inset-top, 0px) + 12px)',
-				}}
-			>
-				<div className="max-w-2xl mx-auto w-full relative z-10 flex flex-col gap-4">
-					<motion.div
-						initial={{ x: -20, opacity: 0 }}
-						animate={{ x: 0, opacity: 1 }}
-						className="flex items-center gap-4 pl-14"
-					>
-						<h1 className="text-xl font-bold text-muted-foreground">Past Papers</h1>
-					</motion.div>
 
-					<div className="space-y-4">
-						<motion.div
-							initial={{ scale: 0.95, opacity: 0 }}
-							animate={{ scale: 1, opacity: 1 }}
-							transition={{ delay: 0.1 }}
-							className="relative"
-						>
-							<SearchIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+			{/* Header */}
+			<header className="px-6 py-8 bg-background shrink-0 lg:px-0">
+				<div className="max-w-6xl mx-auto w-full space-y-8">
+					<div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+						<div className="space-y-1">
+							<h1 className="text-3xl font-black text-foreground tracking-tighter uppercase">
+								Past Paper Vault
+							</h1>
+							<p className="text-muted-foreground font-bold text-sm">
+								Access thousands of Grade 12 exam papers
+							</p>
+						</div>
+						<div className="flex items-center gap-2">
+							<Button
+								variant="outline"
+								className="rounded-2xl border-2 font-black text-[10px] uppercase tracking-widest px-6 h-12"
+							>
+								<Filter className="w-4 h-4 mr-2" />
+								Advanced Filter
+							</Button>
+						</div>
+					</div>
+
+					<div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
+						<div className="lg:col-span-8 relative">
+							<SearchIcon className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
 							<Input
 								value={searchQuery}
 								onChange={(e) => setSearchQuery(e.target.value)}
 								placeholder="Search subjects or papers..."
-								className="pl-10 bg-muted border-none h-10 rounded-xl text-[15px] font-medium backdrop-blur-sm"
+								className="pl-14 bg-muted/30 border-2 h-14 rounded-2xl text-base font-bold"
 							/>
-						</motion.div>
-
-						<nav className="flex gap-2 overflow-x-auto no-scrollbar" aria-label="Year filter">
-							{years.map((year, idx) => (
-								<motion.button
+						</div>
+						<div className="lg:col-span-4 flex gap-2 overflow-x-auto no-scrollbar py-1">
+							{years.map((year) => (
+								<button
 									key={year}
-									initial={{ opacity: 0, y: 10 }}
-									animate={{ opacity: 1, y: 0 }}
-									transition={{ delay: 0.2 + idx * 0.05 }}
 									type="button"
 									// biome-ignore lint/suspicious/noExplicitAny: Year type casting
 									onClick={() => setSelectedYear(year as any)}
-									aria-pressed={selectedYear === year ? 'true' : 'false'}
-									className={`rounded-lg px-4 py-1.5 text-sm font-bold transition-all ${
+									className={`rounded-2xl px-6 py-3 text-[10px] font-black uppercase tracking-widest transition-all h-14 ${
 										selectedYear === year
-											? 'bg-primary text-primary-foreground shadow-lg shadow-primary/20'
-											: 'bg-muted text-muted-foreground hover:text-foreground'
+											? 'bg-primary text-primary-foreground shadow-2xl shadow-primary/20'
+											: 'bg-muted/50 text-muted-foreground border-2 border-transparent hover:border-border'
 									}`}
 								>
 									{year}
-								</motion.button>
+								</button>
 							))}
-						</nav>
+						</div>
 					</div>
 				</div>
 			</header>
 
-			<ScrollArea className="flex-1 relative z-10">
-				<main
-					className="px-6 py-8 space-y-4 pb-40 max-w-2xl mx-auto w-full"
-					style={{
-						paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 160px)',
-					}}
-				>
-					{/* iOS Large Title */}
-					<div className="space-y-1 pt-2 mb-6 text-left">
-						<SmoothWords
-							as="h1"
-							text="Archive"
-							className="text-[34px] font-black leading-tight text-foreground tracking-tight"
-						/>
-						<motion.p
-							initial={{ opacity: 0, y: 10 }}
-							animate={{ opacity: 1, y: 0 }}
-							transition={{ delay: 0.2 }}
-							className="text-[17px] font-medium text-muted-foreground"
-						>
-							Search and download past exam papers.
-						</motion.p>
-					</div>
-
-					<motion.div
-						initial={{ opacity: 0 }}
-						animate={{ opacity: 1 }}
-						transition={{ delay: 0.3 }}
-						className="flex items-center justify-between mb-2"
-					>
-						<h2 className="text-[11px] font-black text-muted-foreground uppercase tracking-widest px-1">
-							{filteredPapers.length} Papers Found
+			<ScrollArea className="flex-1 no-scrollbar">
+				<main className="px-6 py-8 max-w-6xl mx-auto w-full space-y-12 pb-32 lg:px-0">
+					<div className="flex items-center justify-between border-b-2 border-border/50 pb-4">
+						<h2 className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.4em]">
+							Archive Results ({filteredPapers.length})
 						</h2>
-						<Button variant="ghost" size="sm" className="text-xs font-bold text-primary">
-							<Filter className="w-3 h-3 mr-1" />
-							Refine
-						</Button>
-					</motion.div>
+					</div>
 
 					<AnimatePresence mode="popLayout">
 						{filteredPapers.length > 0 ? (
@@ -134,81 +100,74 @@ export default function PastPapers() {
 								variants={STAGGER_CONTAINER}
 								initial="hidden"
 								animate="visible"
-								className="grid grid-cols-1 gap-4"
+								className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
 							>
 								{filteredPapers.map((paper) => (
-									<motion.div
-										key={paper.id}
-										variants={STAGGER_ITEM}
-										layout
-										whileHover={{ scale: 1.01, y: -4 }}
-										whileTap={{ scale: 0.99 }}
-									>
-										<Card className="p-5 premium-glass border-none rounded-[2rem] group transition-all premium-glass-hover">
-											<div className="flex items-start justify-between mb-4">
-												<div className="flex items-center gap-3">
-													<motion.div
-														whileHover={{ rotate: 10 }}
-														className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center"
-													>
-														<FileText className="w-6 h-6 text-primary" />
-													</motion.div>
-													<div>
-														<h3 className="font-bold text-foreground text-[15px] tracking-wide truncate">
-															{paper.subject} {paper.paper}
-														</h3>
-														<p className="text-xs font-semibold text-muted-foreground tracking-wide">
-															{paper.month} {paper.year}
-														</p>
+									<motion.div key={paper.id} variants={STAGGER_ITEM} layout whileHover={{ y: -8 }}>
+										<Card className="p-8 rounded-[3rem] border-2 border-border/50 hover:border-primary/20 hover:shadow-2xl transition-all duration-500 group relative overflow-hidden bg-card/50 backdrop-blur-sm">
+											<div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+
+											<div className="space-y-6 relative z-10">
+												<div className="flex items-start justify-between">
+													<div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
+														<FileText className="w-8 h-8 text-primary" />
+													</div>
+													<div className="text-right">
+														<span className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] block mb-1">
+															Total Marks
+														</span>
+														<span className="text-2xl font-black text-primary tracking-tighter">
+															{paper.marks}m
+														</span>
 													</div>
 												</div>
-											</div>
 
-											<div className="flex items-center gap-4 mb-6 text-xs font-bold text-muted-foreground">
-												<Badge
-													variant="secondary"
-													className="px-3 py-1 text-[10px] uppercase tracking-tighter"
-												>
-													NSC Grade 12
-												</Badge>
-												<div className="flex items-center gap-1.5">
-													<span className="w-1.5 h-1.5 rounded-full bg-muted-foreground/30" />
-													{paper.marks} Marks
+												<div className="space-y-2">
+													<h3 className="text-2xl font-black text-foreground tracking-tighter uppercase leading-tight group-hover:text-primary transition-colors">
+														{paper.subject} {paper.paper}
+													</h3>
+													<div className="flex flex-wrap gap-2">
+														<Badge
+															variant="outline"
+															className="rounded-lg font-black text-[9px] uppercase tracking-widest border-2"
+														>
+															{paper.month} {paper.year}
+														</Badge>
+														<Badge
+															variant="outline"
+															className="rounded-lg font-black text-[9px] uppercase tracking-widest border-2"
+														>
+															NSC Grade 12
+														</Badge>
+													</div>
 												</div>
-												<div className="flex items-center gap-1.5">
-													<span className="w-1.5 h-1.5 rounded-full bg-muted-foreground/30" />
-													{paper.time}
-												</div>
-											</div>
 
-											<div className="flex items-center gap-2">
-												<Button
-													variant="secondary"
-													className="grow rounded-xl font-bold text-xs h-10"
-													onClick={() => router.push(`/past-paper?id=${paper.id}`)}
-												>
-													<Eye className="w-4 h-4" />
-													Smart view
-												</Button>
-												<Button
-													variant="outline"
-													className="grow rounded-xl font-bold text-xs h-10"
-													onClick={() => router.push(`/past-paper?id=${paper.id}&mode=read`)}
-												>
-													<BookOpen className="w-4 h-4" />
-													View
-												</Button>
-												<motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+												<div className="grid grid-cols-2 gap-3 pt-4">
 													<Button
-														size="icon"
-														variant="outline"
-														className="font-bold text-xs h-10 w-10"
-														onClick={() => window.open(paper.downloadUrl, '_blank')}
-														aria-label="Download paper"
+														variant="secondary"
+														className="rounded-2xl font-black text-[10px] uppercase tracking-widest h-12 shadow-sm"
+														onClick={() => router.push(`/past-paper?id=${paper.id}`)}
 													>
-														<Download className="w-4 h-4" />
+														<Eye className="w-4 h-4 mr-2" />
+														Analyze
 													</Button>
-												</motion.div>
+													<Button
+														variant="outline"
+														className="rounded-2xl font-black text-[10px] uppercase tracking-widest h-12 border-2"
+														onClick={() => router.push(`/past-paper?id=${paper.id}&mode=read`)}
+													>
+														<BookOpen className="w-4 h-4 mr-2" />
+														Read
+													</Button>
+												</div>
+
+												<Button
+													className="w-full rounded-2xl h-14 bg-muted hover:bg-primary hover:text-primary-foreground text-muted-foreground font-black text-xs uppercase tracking-[0.2em] transition-all duration-300 group/btn"
+													onClick={() => window.open(paper.downloadUrl, '_blank')}
+												>
+													<Download className="w-4 h-4 mr-2 group-hover/btn:animate-bounce" />
+													Download PDF
+												</Button>
 											</div>
 										</Card>
 									</motion.div>
@@ -218,16 +177,18 @@ export default function PastPapers() {
 							<motion.div
 								initial={{ opacity: 0, scale: 0.9 }}
 								animate={{ opacity: 1, scale: 1 }}
-								className="py-20 flex flex-col items-center justify-center text-center space-y-4 opacity-40"
+								className="py-32 flex flex-col items-center justify-center text-center space-y-6 opacity-40"
 							>
-								<div className="w-20 h-20 bg-muted rounded-[2.5rem] flex items-center justify-center">
-									<FileText className="w-10 h-10 text-muted-foreground" />
+								<div className="w-32 h-32 bg-muted rounded-[3.5rem] flex items-center justify-center">
+									<FileText className="w-16 h-16 text-muted-foreground" />
 								</div>
-								<div className="space-y-1">
-									<h3 className="font-black text-muted-foreground uppercase tracking-widest text-xs">
-										No papers found
+								<div className="space-y-2">
+									<h3 className="font-black text-muted-foreground uppercase tracking-[0.4em] text-xs">
+										Empty Archive
 									</h3>
-									<p className="text-muted-foreground font-bold">Try adjusting your filters</p>
+									<p className="text-muted-foreground font-bold">
+										Refine your filters to see more results
+									</p>
 								</div>
 							</motion.div>
 						)}
