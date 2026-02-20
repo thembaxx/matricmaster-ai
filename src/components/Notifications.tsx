@@ -47,15 +47,6 @@ export default function NotificationsDropdown() {
 	const [isLoading, setIsLoading] = useState(true);
 	const [open, setOpen] = useState(false);
 
-	useEffect(() => {
-		// Fetch notifications on mount
-		fetchNotifications();
-
-		// Poll for new notifications every 30 seconds
-		const interval = setInterval(fetchNotifications, 30000);
-		return () => clearInterval(interval);
-	}, [user]);
-
 	const fetchNotifications = async () => {
 		if (!user) return;
 
@@ -71,6 +62,15 @@ export default function NotificationsDropdown() {
 			setIsLoading(false);
 		}
 	};
+
+	useEffect(() => {
+		// Fetch notifications on mount
+		fetchNotifications();
+
+		// Poll for new notifications every 30 seconds
+		const interval = setInterval(fetchNotifications, 30000);
+		return () => clearInterval(interval);
+	}, [user, fetchNotifications]);
 
 	const markAsRead = async (notificationId: string) => {
 		try {

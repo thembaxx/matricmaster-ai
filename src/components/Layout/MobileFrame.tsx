@@ -4,6 +4,7 @@ import { Icon } from '@iconify/react';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
 	Award,
+	Bell,
 	Bookmark,
 	BookOpen,
 	Calendar,
@@ -17,6 +18,7 @@ import {
 	Moon,
 	Search as SearchIcon,
 	Settings,
+	Shield,
 	Sparkles,
 	Sun,
 	Trophy,
@@ -76,10 +78,13 @@ export default function MobileFrame({ children }: { children: React.ReactNode })
 		{ href: '/leaderboard', label: 'Leaderboard', icon: Trophy },
 		{ href: '/achievements', label: 'Achievements', icon: Award },
 		{ href: '/channels', label: 'Study Channels', icon: Users },
+		{ href: '/study-buddies', label: 'Study Buddies', icon: Users },
+		{ href: '/notifications', label: 'Notifications', icon: Bell },
 		{ href: '/bookmarks', label: 'My Saved Items', icon: Bookmark },
 		{ href: '/profile', label: 'My Profile', icon: User },
 		{ href: '/language', label: 'Language', icon: Globe },
 		{ href: '/settings', label: 'Settings', icon: Settings },
+		{ href: '/admin', label: 'Admin Panel', icon: Shield },
 		{ href: '/cms', label: 'Content Management', icon: Layout },
 	];
 
@@ -192,7 +197,8 @@ export default function MobileFrame({ children }: { children: React.ReactNode })
 													className="w-full justify-start gap-4 text-destructive hover:text-destructive hover:bg-destructive/10 rounded-2xl p-4 h-auto font-bold transition-all"
 													onClick={async () => {
 														await authClient.signOut();
-														router.push('/sign-in');
+														// Force navigation to sign-in page
+														window.location.href = '/sign-in';
 													}}
 												>
 													<LogOut className="w-5 h-5" />

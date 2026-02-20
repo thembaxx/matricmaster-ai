@@ -17,16 +17,24 @@ import {
 import {
 	accounts,
 	accountsRelations,
+	users as authUsers,
 	sessions,
 	sessionsRelations,
-	users,
 	usersRelations,
 	verifications,
 } from './better-auth-schema';
 
-// Export better-auth tables with consistent naming
-export { users as user, sessions as session, accounts as account, verifications as verification };
+// Re-export better-auth tables with consistent naming
+export {
+	authUsers as user,
+	sessions as session,
+	accounts as account,
+	verifications as verification,
+};
 export { usersRelations, sessionsRelations, accountsRelations };
+
+// Also export users directly for schema references
+export const users = authUsers;
 
 // ============================================================================
 // QUIZ SYSTEM TABLES
@@ -417,6 +425,188 @@ export const contentFlags = pgTable(
 );
 
 // ============================================================================
+// COMMENTS TABLES (from migration 0005)
+// ============================================================================
+
+// Define comments table first to avoid circular reference
+export const comments = pgTable(
+	'comments',
+	{
+		id: uuid('id').defaultRandom().primaryKey(),
+		userId: text('user_id')
+			.notNull()
+			.references(() => users.id, { onDelete: 'cascade' }),
+		content: text('content').notNull(),
+		resourceType: varchar('resource_type', { length: 50 }).notNull(),
+		resourceId: text('resource_id').notNull(),
+		parentId: uuid('parent_id'),
+		isEdited: boolean('is_edited').notNull().default(false),
+		isFlagged: boolean('is_flagged').notNull().default(false),
+		flagReason: text('flag_reason'),
+		upvotes: integer('upvotes').notNull().default(0),
+		downvotes: integer('downvotes').notNull().default(0),
+		createdAt: timestamp('created_at').defaultNow(),
+		updatedAt: timestamp('updated_at').defaultNow(),
+	},
+	(table) => ({
+		resourceIdx: index('comments_resource_idx').on(table.resourceType, table.resourceId),
+		userIdIdx: index('comments_user_id_idx').on(table.userId),
+		parentIdIdx: index('comments_parent_id_idx').on(table.parentId),
+	})
+);
+
+export const commentVotes = pgTable(
+	'comment_votes',
+	{
+		id: uuid('id').defaultRandom().primaryKey(),
+		userId: text('user_id')
+			.notNull()
+			.references(() => users.id, { onDelete: 'cascade' }),
+		commentId: uuid('comment_id')
+			.notNull()
+			.references(() => comments.id, { onDelete: 'cascade' }),
+		voteType: varchar('vote_type', { length: 10 }).notNull(),
+		createdAt: timestamp('created_at').defaultNow(),
+	},
+	(table) => ({
+		commentIdIdx: index('comment_votes_comment_id_idx').on(table.commentId),
+		uniqueVote: uniqueIndex('comment_votes_unique').on(table.userId, table.commentId),
+	})
+);
+
+// ============================================================================
+// NOTIFICATIONS TABLE (from migration 0005)
+// ============================================================================
+
+export const notifications = pgTable(
+	'notifications',
+	{
+		id: uuid('id').defaultRandom().primaryKey(),
+		userId: text('user_id')
+			.notNull()
+			.references(() => users.id, { onDelete: 'cascade' }),
+		type: varchar('type', { length: 30 }).notNull(),
+		title: varchar('title', { length: 200 }).notNull(),
+		message: text('message').notNull(),
+		data: text('data'),
+		isRead: boolean('is_read').notNull().default(false),
+		readAt: timestamp('read_at'),
+		createdAt: timestamp('created_at').defaultNow(),
+	},
+	(table) => ({
+		userIdIdx: index('notifications_user_id_idx').on(table.userId),
+		isReadIdx: index('notifications_is_read_idx').on(table.isRead),
+		createdAtIdx: index('notifications_created_at_idx').on(table.createdAt),
+	})
+);
+
+// ============================================================================
+// CALENDAR EVENTS TABLE (from migration 0005)
+// ============================================================================
+
+export const calendarEvents = pgTable(
+	'calendar_events',
+	{
+		id: uuid('id').defaultRandom().primaryKey(),
+		userId: text('user_id')
+			.notNull()
+			.references(() => users.id, { onDelete: 'cascade' }),
+		title: varchar('title', { length: 200 }).notNull(),
+		description: text('description'),
+		eventType: varchar('event_type', { length: 30 }).notNull(),
+		subjectId: bigint('subject_id', { mode: 'number' }).references(() => subjects.id, {
+			onDelete: 'set null',
+		}),
+		startTime: timestamp('start_time').notNull(),
+		endTime: timestamp('end_time').notNull(),
+		isAllDay: boolean('is_all_day').notNull().default(false),
+		location: text('location'),
+		reminderMinutes: text('reminder_minutes'),
+		recurrenceRule: text('recurrence_rule'),
+		examId: uuid('exam_id'),
+		lessonId: bigint('lesson_id', { mode: 'number' }),
+		studyPlanId: uuid('study_plan_id'),
+		isCompleted: boolean('is_completed').notNull().default(false),
+		createdAt: timestamp('created_at').defaultNow(),
+		updatedAt: timestamp('updated_at').defaultNow(),
+	},
+	(table) => ({
+		userIdIdx: index('calendar_events_user_id_idx').on(table.userId),
+		startTimeIdx: index('calendar_events_start_time_idx').on(table.startTime),
+	})
+);
+
+// ============================================================================
+// STUDY BUDDY TABLES (from migration 0005)
+// ============================================================================
+
+export const studyBuddyProfiles = pgTable(
+	'study_buddy_profiles',
+	{
+		id: uuid('id').defaultRandom().primaryKey(),
+		userId: text('user_id')
+			.notNull()
+			.references(() => users.id, { onDelete: 'cascade' })
+			.unique(),
+		bio: text('bio'),
+		studyGoals: text('study_goals'),
+		preferredSubjects: text('preferred_subjects'),
+		studySchedule: text('study_schedule'),
+		lookingFor: text('looking_for'),
+		isVisible: boolean('is_visible').notNull().default(true),
+		matchPreferences: text('match_preferences'),
+		createdAt: timestamp('created_at').defaultNow(),
+		updatedAt: timestamp('updated_at').defaultNow(),
+	},
+	(table) => ({
+		userIdIdx: index('study_buddy_profiles_user_id_idx').on(table.userId),
+	})
+);
+
+export const studyBuddyRequests = pgTable(
+	'study_buddy_requests',
+	{
+		id: uuid('id').defaultRandom().primaryKey(),
+		requesterId: text('requester_id')
+			.notNull()
+			.references(() => users.id, { onDelete: 'cascade' }),
+		recipientId: text('recipient_id')
+			.notNull()
+			.references(() => users.id, { onDelete: 'cascade' }),
+		status: varchar('status', { length: 20 }).notNull().default('pending'),
+		message: text('message'),
+		createdAt: timestamp('created_at').defaultNow(),
+		respondedAt: timestamp('responded_at'),
+	},
+	(table) => ({
+		requesterIdx: index('study_buddy_requests_requester_idx').on(table.requesterId),
+		recipientIdx: index('study_buddy_requests_recipient_idx').on(table.recipientId),
+		uniqueRequest: uniqueIndex('study_buddy_requests_unique').on(
+			table.requesterId,
+			table.recipientId
+		),
+	})
+);
+
+export const studyBuddies = pgTable(
+	'study_buddies',
+	{
+		id: uuid('id').defaultRandom().primaryKey(),
+		userId1: text('user_id_1')
+			.notNull()
+			.references(() => users.id, { onDelete: 'cascade' }),
+		userId2: text('user_id_2')
+			.notNull()
+			.references(() => users.id, { onDelete: 'cascade' }),
+		createdAt: timestamp('created_at').defaultNow(),
+	},
+	(table) => ({
+		userIdx: index('study_buddies_user_idx').on(table.userId1, table.userId2),
+		uniqueBuddy: uniqueIndex('study_buddies_unique').on(table.userId1, table.userId2),
+	})
+);
+
+// ============================================================================
 // RELATIONS
 // ============================================================================
 
@@ -537,13 +727,72 @@ export const buddyRequestsRelations = relations(buddyRequests, ({ one }) => ({
 	}),
 }));
 
-export const contentFlagsRelations = relations(contentFlags, ({ one }) => ({
-	reporter: one(users, {
-		fields: [contentFlags.reporterId],
+export const commentsRelations = relations(comments, ({ one, many }) => ({
+	user: one(users, {
+		fields: [comments.userId],
 		references: [users.id],
 	}),
-	reviewer: one(users, {
-		fields: [contentFlags.reviewedBy],
+	parent: one(comments, {
+		fields: [comments.parentId],
+		references: [comments.id],
+	}),
+	votes: many(commentVotes),
+}));
+
+export const commentVotesRelations = relations(commentVotes, ({ one }) => ({
+	user: one(users, {
+		fields: [commentVotes.userId],
+		references: [users.id],
+	}),
+	comment: one(comments, {
+		fields: [commentVotes.commentId],
+		references: [comments.id],
+	}),
+}));
+
+export const notificationsRelations = relations(notifications, ({ one }) => ({
+	user: one(users, {
+		fields: [notifications.userId],
+		references: [users.id],
+	}),
+}));
+
+export const calendarEventsRelations = relations(calendarEvents, ({ one }) => ({
+	user: one(users, {
+		fields: [calendarEvents.userId],
+		references: [users.id],
+	}),
+	subject: one(subjects, {
+		fields: [calendarEvents.subjectId],
+		references: [subjects.id],
+	}),
+}));
+
+export const studyBuddyProfilesRelations = relations(studyBuddyProfiles, ({ one }) => ({
+	user: one(users, {
+		fields: [studyBuddyProfiles.userId],
+		references: [users.id],
+	}),
+}));
+
+export const studyBuddyRequestsRelations = relations(studyBuddyRequests, ({ one }) => ({
+	requester: one(users, {
+		fields: [studyBuddyRequests.requesterId],
+		references: [users.id],
+	}),
+	recipient: one(users, {
+		fields: [studyBuddyRequests.recipientId],
+		references: [users.id],
+	}),
+}));
+
+export const studyBuddiesRelations = relations(studyBuddies, ({ one }) => ({
+	user1: one(users, {
+		fields: [studyBuddies.userId1],
+		references: [users.id],
+	}),
+	user2: one(users, {
+		fields: [studyBuddies.userId2],
 		references: [users.id],
 	}),
 }));

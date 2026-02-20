@@ -69,6 +69,8 @@ export function ProfileMenu({
 				<DropdownMenuItem
 					onClick={async () => {
 						await authClient.signOut();
+						// Force navigation to sign-in page
+						window.location.href = '/sign-in';
 					}}
 				>
 					Log out

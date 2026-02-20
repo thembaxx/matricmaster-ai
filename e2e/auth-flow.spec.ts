@@ -61,9 +61,9 @@ test.describe('Authentication Flow', () => {
 		// Click submit
 		await page.click('button[type="submit"]');
 
-		// Check for success toast
+		// Check for success toast - the actual message says "Welcome back, {email}!"
 		console.log('Checking for success toast...');
-		await expect(page.getByText(/Signed in as/)).toBeVisible({ timeout: 10000 });
+		await expect(page.getByText(/Welcome back/)).toBeVisible({ timeout: 10000 });
 		console.log('Success toast verified');
 
 		// Wait for navigation to dashboard

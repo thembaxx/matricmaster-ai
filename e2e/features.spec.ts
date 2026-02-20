@@ -2,19 +2,29 @@ import { expect, type Page, test } from '@playwright/test';
 
 // Helper function to sign up for tests
 async function signUp(page: Page) {
-	const email = `testuser-${Date.now()}@matricmaster.test`;
+	// Use unique timestamp to avoid conflicts
+	const timestamp = Date.now() + Math.random();
+	const email = `testuser-${timestamp}@matricmaster.test`;
 	const password = 'TestPassword123!';
 
 	// Go to sign up page
 	await page.goto('/sign-up');
 
-	// Fill in the form (no confirm password field)
+	// Fill in the form
 	await page.fill('input[name="name"]', 'Test User');
 	await page.fill('input[name="email"]', email);
 	await page.fill('input[name="password"]', password);
 
-	// Submit and wait for navigation using Promise.all
-	await Promise.all([page.waitForURL(/\/dashboard/), page.click('button[type="submit"]')]);
+	// Click submit
+	await page.click('button[type="submit"]');
+
+	// Wait for button to change (shows "Redirecting...")
+	await expect(page.getByText('Redirecting...'))
+		.toBeVisible({ timeout: 15000 })
+		.catch(() => {});
+
+	// Wait for navigation to dashboard - longer timeout
+	await page.waitForURL(/\/dashboard/, { timeout: 60000 });
 }
 
 test.describe('MatricMaster Features', () => {

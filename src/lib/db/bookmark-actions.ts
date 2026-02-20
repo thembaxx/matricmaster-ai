@@ -143,7 +143,7 @@ export async function isBookmarkedAction(userId: string, referenceId: string): P
 			.limit(1);
 
 		return !!bookmark;
-	} catch (error) {
+	} catch (_error) {
 		return false;
 	}
 }
