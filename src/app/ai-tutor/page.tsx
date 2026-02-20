@@ -1,13 +1,15 @@
 'use client';
 
-import { Loader2, Send, Sparkles } from 'lucide-react';
+import { Loader2, Save, Send, Sparkles } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
+import { toast } from 'sonner';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { authClient } from '@/lib/auth-client';
+import { saveConversationAction } from '@/lib/db/ai-tutor-actions';
 
 interface Message {
 	id: string;
@@ -84,6 +86,28 @@ export default function AITutorPage() {
 		}
 	};
 
+	const handleSave = async () => {
+		if (messages.length <= 1) {
+			toast.info('Start a conversation first');
+			return;
+		}
+		const firstUserMessage = messages.find((m) => m.role === 'user');
+		const title = firstUserMessage
+			? firstUserMessage.content.slice(0, 50) + '...'
+			: 'Untitled Conversation';
+		const result = await saveConversationAction(
+			session!.user.id,
+			title,
+			messages,
+			selectedSubject ?? undefined
+		);
+		if (result.success) {
+			toast.success('Conversation saved');
+		} else {
+			toast.error(result.error || 'Failed to save');
+		}
+	};
+
 	const subjects = [
 		{ id: 'mathematics', name: 'Mathematics', color: 'bg-brand-blue' },
 		{ id: 'physics', name: 'Physics', color: 'bg-brand-purple' },
@@ -114,14 +138,20 @@ export default function AITutorPage() {
 			{/* Header */}
 			<header className="border-b bg-card/50 backdrop-blur-sm sticky top-0 z-10">
 				<div className="max-w-4xl mx-auto px-4 py-4">
-					<div className="flex items-center gap-3">
-						<div className="h-10 w-10 rounded-full bg-linear-to-br from-primary to-primary/60 flex items-center justify-center">
-							<Sparkles className="h-5 w-5 text-primary-foreground" />
+					<div className="flex items-center justify-between">
+						<div className="flex items-center gap-3">
+							<div className="h-10 w-10 rounded-full bg-linear-to-br from-primary to-primary/60 flex items-center justify-center">
+								<Sparkles className="h-5 w-5 text-primary-foreground" />
+							</div>
+							<div>
+								<h1 className="text-xl font-bold">AI Study Tutor</h1>
+								<p className="text-sm text-muted-foreground">Your personal learning assistant</p>
+							</div>
 						</div>
-						<div>
-							<h1 className="text-xl font-bold">AI Study Tutor</h1>
-							<p className="text-sm text-muted-foreground">Your personal learning assistant</p>
-						</div>
+						<Button variant="outline" size="sm" onClick={handleSave}>
+							<Save className="h-4 w-4 mr-2" />
+							Save
+						</Button>
 					</div>
 				</div>
 			</header>

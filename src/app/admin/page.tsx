@@ -5,20 +5,46 @@ import {
 	AlertTriangle,
 	BarChart3,
 	BookOpen,
+	Loader2,
+	MoreHorizontal,
 	Search,
 	Settings,
 	Shield,
+	Trash2,
 	TrendingUp,
+	Undo2,
 	Users,
 } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState, useTransition } from 'react';
+import { toast } from 'sonner';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { authClient } from '@/lib/auth-client';
+import {
+	deleteUserAction,
+	getUsersAction,
+	restoreUserAction,
+	toggleUserBlockAction,
+	type User,
+} from '@/lib/db/actions';
 
 // Mock data for admin dashboard
 const mockStats = {
@@ -78,10 +104,76 @@ const mockTopSubjects = [
 
 export default function AdminDashboardPage() {
 	const { data: session } = authClient.useSession();
-	const [searchQuery, setSearchQuery] = useState('');
+	const [activeTab, setActiveTab] = useState('overview');
 
-	// In production, check for admin role
+	// User management state
+	const [users, setUsers] = useState<User[]>([]);
+	const [isLoadingUsers, setIsLoadingUsers] = useState(false);
+	const [searchQuery, setSearchQuery] = useState('');
+	const [userFilter, setUserFilter] = useState<'all' | 'active' | 'blocked' | 'deleted'>('all');
+	const [, startTransition] = useTransition();
+
 	const isAdmin = session?.user?.email?.includes('admin');
+
+	// Load users when tab changes to users
+	useEffect(() => {
+		if (activeTab === 'users') {
+			loadUsers();
+		}
+	}, [activeTab, userFilter]);
+
+	async function loadUsers() {
+		setIsLoadingUsers(true);
+		try {
+			const usersList = await getUsersAction({ search: searchQuery, filter: userFilter });
+			setUsers(usersList);
+		} catch (error) {
+			console.error('Failed to load users:', error);
+			toast.error('Failed to load users');
+		} finally {
+			setIsLoadingUsers(false);
+		}
+	}
+
+	const handleSearch = () => {
+		loadUsers();
+	};
+
+	const handleToggleBlock = (userId: string) => {
+		startTransition(async () => {
+			const result = await toggleUserBlockAction(userId);
+			if (result.success) {
+				toast.success(result.isBlocked ? 'User blocked' : 'User unblocked');
+				loadUsers();
+			} else {
+				toast.error('Failed to update user status');
+			}
+		});
+	};
+
+	const handleDeleteUser = (userId: string) => {
+		startTransition(async () => {
+			const result = await deleteUserAction(userId);
+			if (result.success) {
+				toast.success('User deleted');
+				loadUsers();
+			} else {
+				toast.error('Failed to delete user');
+			}
+		});
+	};
+
+	const handleRestoreUser = (userId: string) => {
+		startTransition(async () => {
+			const result = await restoreUserAction(userId);
+			if (result.success) {
+				toast.success('User restored');
+				loadUsers();
+			} else {
+				toast.error('Failed to restore user');
+			}
+		});
+	};
 
 	if (!session) {
 		return (
@@ -122,7 +214,6 @@ export default function AdminDashboardPage() {
 	return (
 		<div className="min-h-screen bg-background p-4 md:p-8">
 			<div className="max-w-7xl mx-auto">
-				{/* Header */}
 				<div className="flex items-center justify-between mb-8">
 					<div>
 						<h1 className="text-3xl font-bold flex items-center gap-2">
@@ -131,12 +222,10 @@ export default function AdminDashboardPage() {
 						</h1>
 						<p className="text-muted-foreground">Platform management and analytics</p>
 					</div>
-					<div className="flex items-center gap-2">
-						<Button variant="outline" size="sm">
-							<Settings className="h-4 w-4 mr-2" />
-							Settings
-						</Button>
-					</div>
+					<Button variant="outline" size="sm">
+						<Settings className="h-4 w-4 mr-2" />
+						Settings
+					</Button>
 				</div>
 
 				{/* Stats Grid */}
@@ -197,8 +286,12 @@ export default function AdminDashboardPage() {
 					</Card>
 				</div>
 
-				{/* Tabs */}
-				<Tabs defaultValue="overview" className="space-y-4">
+				<Tabs
+					defaultValue="overview"
+					value={activeTab}
+					onValueChange={setActiveTab}
+					className="space-y-4"
+				>
 					<TabsList>
 						<TabsTrigger value="overview">Overview</TabsTrigger>
 						<TabsTrigger value="users">Users</TabsTrigger>
@@ -208,7 +301,6 @@ export default function AdminDashboardPage() {
 
 					<TabsContent value="overview" className="space-y-4">
 						<div className="grid md:grid-cols-2 gap-4">
-							{/* Recent Activity */}
 							<Card>
 								<CardHeader>
 									<CardTitle className="flex items-center gap-2">
@@ -217,7 +309,7 @@ export default function AdminDashboardPage() {
 									</CardTitle>
 								</CardHeader>
 								<CardContent>
-									<ScrollArea className="h-75">
+									<ScrollArea className="h-[300px]">
 										<div className="space-y-4">
 											{mockRecentActivity.map((activity) => (
 												<div key={activity.id} className="flex items-center gap-3">
@@ -241,7 +333,6 @@ export default function AdminDashboardPage() {
 								</CardContent>
 							</Card>
 
-							{/* Flagged Content */}
 							<Card>
 								<CardHeader>
 									<CardTitle className="flex items-center gap-2">
@@ -251,7 +342,7 @@ export default function AdminDashboardPage() {
 									<CardDescription>Items requiring moderation</CardDescription>
 								</CardHeader>
 								<CardContent>
-									<ScrollArea className="h-75">
+									<ScrollArea className="h-[300px]">
 										<div className="space-y-3">
 											{mockFlaggedContent.map((item) => (
 												<div key={item.id} className="p-3 border rounded-lg">
@@ -280,23 +371,122 @@ export default function AdminDashboardPage() {
 								<CardTitle>User Management</CardTitle>
 								<CardDescription>Search and manage users</CardDescription>
 							</CardHeader>
-							<CardContent>
-								<div className="flex gap-2 mb-4">
+							<CardContent className="space-y-4">
+								<div className="flex gap-2 flex-col sm:flex-row">
 									<div className="relative flex-1">
 										<Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-										<input
-											type="text"
-											placeholder="Search users..."
+										<Input
+											placeholder="Search users by name or email..."
 											value={searchQuery}
 											onChange={(e) => setSearchQuery(e.target.value)}
-											className="w-full pl-10 pr-4 py-2 border rounded-lg"
+											onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+											className="pl-10"
 										/>
 									</div>
-									<Button>Search</Button>
+									<Select
+										value={userFilter}
+										onValueChange={(value) => setUserFilter(value as typeof userFilter)}
+									>
+										<SelectTrigger className="w-[180px]">
+											<SelectValue placeholder="Filter users" />
+										</SelectTrigger>
+										<SelectContent>
+											<SelectItem value="all">All Users</SelectItem>
+											<SelectItem value="active">Active</SelectItem>
+											<SelectItem value="blocked">Blocked</SelectItem>
+											<SelectItem value="deleted">Deleted</SelectItem>
+										</SelectContent>
+									</Select>
+									<Button onClick={handleSearch} disabled={isLoadingUsers}>
+										{isLoadingUsers ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Search'}
+									</Button>
 								</div>
-								<p className="text-sm text-muted-foreground">
-									User management features coming soon...
-								</p>
+
+								{isLoadingUsers ? (
+									<div className="flex items-center justify-center py-8">
+										<Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+									</div>
+								) : users.length === 0 ? (
+									<p className="text-center text-muted-foreground py-8">No users found</p>
+								) : (
+									<div className="border rounded-lg overflow-hidden">
+										<table className="w-full">
+											<thead className="bg-muted/50">
+												<tr>
+													<th className="text-left p-3 text-sm font-medium">User</th>
+													<th className="text-left p-3 text-sm font-medium">Email</th>
+													<th className="text-left p-3 text-sm font-medium">Status</th>
+													<th className="text-left p-3 text-sm font-medium">Created</th>
+													<th className="text-right p-3 text-sm font-medium">Actions</th>
+												</tr>
+											</thead>
+											<tbody>
+												{users.map((user) => (
+													<tr key={user.id} className="border-t hover:bg-muted/30">
+														<td className="p-3">
+															<div className="flex items-center gap-2">
+																<Avatar className="h-8 w-8">
+																	<AvatarFallback className="text-xs">
+																		{user.name?.charAt(0)?.toUpperCase() || 'U'}
+																	</AvatarFallback>
+																</Avatar>
+																<span className="font-medium">{user.name || 'Unknown'}</span>
+															</div>
+														</td>
+														<td className="p-3 text-sm text-muted-foreground">{user.email}</td>
+														<td className="p-3">
+															{user.deletedAt ? (
+																<Badge variant="destructive">Deleted</Badge>
+															) : user.isBlocked ? (
+																<Badge variant="secondary">Blocked</Badge>
+															) : (
+																<Badge variant="outline">Active</Badge>
+															)}
+														</td>
+														<td className="p-3 text-sm text-muted-foreground">
+															{user.createdAt ? new Date(user.createdAt).toLocaleDateString() : '-'}
+														</td>
+														<td className="p-3 text-right">
+															<DropdownMenu>
+																<DropdownMenuTrigger asChild>
+																	<Button variant="ghost" size="sm">
+																		<MoreHorizontal className="h-4 w-4" />
+																	</Button>
+																</DropdownMenuTrigger>
+																<DropdownMenuContent align="end">
+																	{user.deletedAt ? (
+																		<DropdownMenuItem onClick={() => handleRestoreUser(user.id)}>
+																			<Undo2 className="mr-2 h-4 w-4" />
+																			Restore
+																		</DropdownMenuItem>
+																	) : (
+																		<>
+																			<DropdownMenuItem onClick={() => handleToggleBlock(user.id)}>
+																				{user.isBlocked ? 'Unblock' : 'Block'}
+																			</DropdownMenuItem>
+																			<DropdownMenuItem
+																				onClick={() => handleDeleteUser(user.id)}
+																				className="text-destructive"
+																			>
+																				<Trash2 className="mr-2 h-4 w-4" />
+																				Delete
+																			</DropdownMenuItem>
+																		</>
+																	)}
+																</DropdownMenuContent>
+															</DropdownMenu>
+														</td>
+													</tr>
+												))}
+											</tbody>
+										</table>
+									</div>
+								)}
+								{users.length > 0 && (
+									<p className="text-sm text-muted-foreground mt-2">
+										Showing {users.length} user{users.length !== 1 ? 's' : ''}
+									</p>
+								)}
 							</CardContent>
 						</Card>
 					</TabsContent>

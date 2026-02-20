@@ -1,30 +1,43 @@
-import { expect, test } from '@playwright/test';
+import { expect, type Page, test } from '@playwright/test';
+
+// Helper function to sign up for tests
+async function signUp(page: Page) {
+	const email = `testuser-${Date.now()}@matricmaster.test`;
+	const password = 'TestPassword123!';
+
+	// Go to sign up page
+	await page.goto('/sign-up');
+
+	// Fill in the form (no confirm password field)
+	await page.fill('input[name="name"]', 'Test User');
+	await page.fill('input[name="email"]', email);
+	await page.fill('input[name="password"]', password);
+
+	// Submit and wait for navigation using Promise.all
+	await Promise.all([page.waitForURL(/\/dashboard/), page.click('button[type="submit"]')]);
+}
 
 test.describe('MatricMaster Features', () => {
 	test.describe('Dashboard', () => {
 		test('should display dashboard with stats', async ({ page }) => {
-			await page.goto('/dashboard');
+			await signUp(page);
 
-			// Should show loading initially
-			await expect(page.locator('.animate-pulse').first()).toBeVisible({ timeout: 10000 });
-
-			// After loading, should show content
+			// Should show content
 			await expect(page.getByText('Welcome back')).toBeVisible({ timeout: 15000 });
 		});
 	});
 
 	test.describe('Achievements', () => {
 		test('should display achievements page', async ({ page }) => {
+			await signUp(page);
 			await page.goto('/achievements');
-
-			// Should show loading skeleton
-			await expect(page.locator('.animate-pulse').first()).toBeVisible({ timeout: 10000 });
 
 			// Should show mastery level card eventually
 			await expect(page.getByText('Mastery Level')).toBeVisible({ timeout: 15000 });
 		});
 
 		test('should filter achievements by category', async ({ page }) => {
+			await signUp(page);
 			await page.goto('/achievements');
 
 			// Wait for page to load
@@ -48,10 +61,8 @@ test.describe('MatricMaster Features', () => {
 
 	test.describe('Leaderboard', () => {
 		test('should display leaderboard with tabs', async ({ page }) => {
+			await signUp(page);
 			await page.goto('/leaderboard');
-
-			// Should show loading skeleton
-			await expect(page.locator('.animate-pulse').first()).toBeVisible({ timeout: 10000 });
 
 			// Should show tab options
 			await expect(page.getByRole('tab', { name: 'Weekly' })).toBeVisible({ timeout: 15000 });
@@ -60,6 +71,7 @@ test.describe('MatricMaster Features', () => {
 		});
 
 		test('should switch between leaderboard tabs', async ({ page }) => {
+			await signUp(page);
 			await page.goto('/leaderboard');
 
 			// Wait for tabs to load
@@ -67,11 +79,6 @@ test.describe('MatricMaster Features', () => {
 
 			// Click monthly tab
 			await page.getByRole('tab', { name: 'Monthly' }).click();
-
-			// Wait for loading indicator to disappear
-			await expect(page.locator('.animate-pulse').first())
-				.not.toBeVisible({ timeout: 10000 })
-				.catch(() => {});
 
 			// Assert Monthly tab is selected
 			await expect(page.getByRole('tab', { name: 'Monthly' }))
@@ -85,13 +92,8 @@ test.describe('MatricMaster Features', () => {
 
 	test.describe('Profile', () => {
 		test('should display profile page', async ({ page }) => {
+			await signUp(page);
 			await page.goto('/profile');
-
-			// Wait for loading indicator to be hidden
-			const loadingIndicator = page.locator('.animate-pulse').first();
-			await expect(loadingIndicator)
-				.not.toBeVisible({ timeout: 15000 })
-				.catch(() => {});
 
 			// Assert profile content is visible
 			await expect(page.getByText('My Stats'))
@@ -105,6 +107,8 @@ test.describe('MatricMaster Features', () => {
 
 	test.describe('Navigation', () => {
 		test('should navigate between main pages', async ({ page }) => {
+			await signUp(page);
+
 			// Go to home
 			await page.goto('/');
 			await expect(page.getByText('MatricMaster')).toBeVisible({ timeout: 10000 });

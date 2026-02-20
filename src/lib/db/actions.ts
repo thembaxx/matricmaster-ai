@@ -2,9 +2,11 @@
 
 import { and, asc, desc, eq, inArray, isNotNull, isNull, sql } from 'drizzle-orm';
 import { z } from 'zod';
-import type { User } from './better-auth-schema';
-import { users } from './better-auth-schema';
+import { type User, users } from './better-auth-schema';
 import { type DbType, dbManager } from './index';
+
+export type { User };
+
 import type {
 	NewOption,
 	NewPastPaper,
@@ -16,7 +18,17 @@ import type {
 	SearchHistory,
 	Subject,
 } from './schema';
-import { options, pastPapers, questions, searchHistory, subjects } from './schema';
+import {
+	type BuddyRequest,
+	buddyRequests,
+	type ContentFlag,
+	contentFlags,
+	options,
+	pastPapers,
+	questions,
+	searchHistory,
+	subjects,
+} from './schema';
 
 const createSubjectSchema = z.object({
 	name: z.string().min(1).max(50),
@@ -770,4 +782,227 @@ export async function deletePastPaperAction(id: string): Promise<boolean> {
 	const db = await getDb();
 	const result = await db.delete(pastPapers).where(eq(pastPapers.id, id)).returning();
 	return result.length > 0;
+}
+
+/**
+ * Save extracted questions to a past paper
+ */
+export async function saveExtractedQuestionsAction(
+	paperId: string,
+	extractedQuestions: string
+): Promise<PastPaper | null> {
+	const db = await getDb();
+
+	// Try to find by paperId first, then by id
+	let [paper] = await db.select().from(pastPapers).where(eq(pastPapers.paperId, paperId)).limit(1);
+
+	if (!paper) {
+		[paper] = await db.select().from(pastPapers).where(eq(pastPapers.id, paperId)).limit(1);
+	}
+
+	if (!paper) {
+		console.warn('⚠️ saveExtractedQuestionsAction: Past paper not found:', paperId);
+		return null;
+	}
+
+	const [updatedPaper] = await db
+		.update(pastPapers)
+		.set({
+			extractedQuestions,
+			isExtracted: true,
+			updatedAt: new Date(),
+		})
+		.where(eq(pastPapers.id, paper.id))
+		.returning();
+
+	return updatedPaper ?? null;
+}
+
+/**
+ * Get extracted questions for a past paper
+ */
+export async function getExtractedQuestionsAction(paperId: string): Promise<string | null> {
+	const db = await getDb();
+
+	let [paper] = await db.select().from(pastPapers).where(eq(pastPapers.paperId, paperId)).limit(1);
+
+	if (!paper) {
+		[paper] = await db.select().from(pastPapers).where(eq(pastPapers.id, paperId)).limit(1);
+	}
+
+	if (!paper) {
+		return null;
+	}
+
+	return paper.extractedQuestions || null;
+}
+
+// ============================================================================
+// CONTENT FLAGS / MODERATION ACTIONS
+// ============================================================================
+
+/**
+ * Create a new content flag
+ */
+export async function createContentFlagAction(
+	reporterId: string,
+	contentType: string,
+	contentId: string,
+	flagReason: string,
+	contentPreview?: string,
+	flagDetails?: string
+): Promise<ContentFlag> {
+	const db = await getDb();
+	const [flag] = await db
+		.insert(contentFlags)
+		.values({
+			reporterId,
+			contentType,
+			contentId,
+			flagReason,
+			contentPreview,
+			flagDetails,
+			status: 'pending',
+		})
+		.returning();
+	return flag;
+}
+
+/**
+ * Get all content flags (for admin)
+ */
+export async function getContentFlagsAction(
+	status?: 'pending' | 'reviewed' | 'actioned' | 'dismissed'
+): Promise<ContentFlag[]> {
+	const db = await getDb();
+	if (status) {
+		return db
+			.select()
+			.from(contentFlags)
+			.where(eq(contentFlags.status, status))
+			.orderBy(desc(contentFlags.createdAt));
+	}
+	return db.select().from(contentFlags).orderBy(desc(contentFlags.createdAt));
+}
+
+/**
+ * Dismiss a flagged content
+ */
+export async function dismissFlagAction(
+	flagId: string,
+	reviewerId: string
+): Promise<{ success: boolean }> {
+	const db = await getDb();
+	const result = await db
+		.update(contentFlags)
+		.set({
+			status: 'dismissed',
+			reviewedBy: reviewerId,
+			reviewedAt: new Date(),
+		})
+		.where(eq(contentFlags.id, flagId))
+		.returning();
+	return { success: result.length > 0 };
+}
+
+/**
+ * Take action on flagged content (remove/approve)
+ */
+export async function actionFlagAction(
+	flagId: string,
+	reviewerId: string
+): Promise<{ success: boolean }> {
+	const db = await getDb();
+	const result = await db
+		.update(contentFlags)
+		.set({
+			status: 'actioned',
+			reviewedBy: reviewerId,
+			reviewedAt: new Date(),
+		})
+		.where(eq(contentFlags.id, flagId))
+		.returning();
+	return { success: result.length > 0 };
+}
+
+// ============================================================================
+// STUDY BUDDIES ACTIONS
+// ============================================================================
+
+/**
+ * Send a buddy request
+ */
+export async function sendBuddyRequestAction(
+	fromUserId: string,
+	toUserId: string,
+	message?: string
+): Promise<{ success: boolean; error?: string; requestId?: string }> {
+	try {
+		const db = await getDb();
+		const [request] = await db
+			.insert(buddyRequests)
+			.values({
+				fromUserId,
+				toUserId,
+				message,
+				status: 'pending',
+			})
+			.returning();
+
+		console.log(`[Buddy Request] ${fromUserId} -> ${toUserId}: ${message || 'No message'}`);
+		return { success: true, requestId: request.id };
+	} catch (error) {
+		console.error('[Buddy Request] Error:', error);
+		return { success: false, error: 'Failed to send buddy request' };
+	}
+}
+
+/**
+ * Get buddy requests for a user
+ */
+export async function getBuddyRequestsAction(userId: string): Promise<BuddyRequest[]> {
+	const db = await getDb();
+	return db
+		.select()
+		.from(buddyRequests)
+		.where(eq(buddyRequests.toUserId, userId))
+		.orderBy(desc(buddyRequests.createdAt));
+}
+
+/**
+ * Accept a buddy request
+ */
+export async function acceptBuddyRequestAction(
+	requestId: string,
+	userId: string
+): Promise<{ success: boolean }> {
+	const db = await getDb();
+	const result = await db
+		.update(buddyRequests)
+		.set({
+			status: 'accepted',
+			respondedAt: new Date(),
+		})
+		.where(and(eq(buddyRequests.id, requestId), eq(buddyRequests.toUserId, userId)))
+		.returning();
+	return { success: result.length > 0 };
+}
+
+/**
+ * Reject a buddy request
+ */
+export async function rejectBuddyRequestAction(
+	requestId: string,
+	userId: string
+): Promise<{ success: boolean }> {
+	const db = await getDb();
+	const result = await db
+		.update(buddyRequests)
+		.set({
+			status: 'rejected',
+			respondedAt: new Date(),
+		})
+		.where(and(eq(buddyRequests.id, requestId), eq(buddyRequests.toUserId, userId)))
+		.returning();
+	return { success: result.length > 0 };
 }

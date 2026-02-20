@@ -336,6 +336,87 @@ export const channelMembers = pgTable(
 );
 
 // ============================================================================
+// AI CONVERSATIONS TABLE (Saved AI Tutor conversations)
+// ============================================================================
+
+export const aiConversations = pgTable(
+	'ai_conversations',
+	{
+		id: uuid('id').defaultRandom().primaryKey(),
+		userId: text('user_id')
+			.notNull()
+			.references(() => users.id, { onDelete: 'cascade' }),
+		title: varchar('title', { length: 200 }).notNull(),
+		subject: varchar('subject', { length: 50 }),
+		messages: text('messages').notNull(),
+		messageCount: integer('message_count').notNull().default(0),
+		createdAt: timestamp('created_at').defaultNow(),
+		updatedAt: timestamp('updated_at').defaultNow(),
+	},
+	(table) => ({
+		userIdIdx: index('ai_conversations_user_id_idx').on(table.userId),
+		createdAtIdx: index('ai_conversations_created_at_idx').on(table.createdAt),
+	})
+);
+
+// ============================================================================
+// BUDDY REQUESTS TABLE (Study buddy requests)
+// ============================================================================
+
+export const buddyRequests = pgTable(
+	'buddy_requests',
+	{
+		id: uuid('id').defaultRandom().primaryKey(),
+		fromUserId: text('from_user_id')
+			.notNull()
+			.references(() => users.id, { onDelete: 'cascade' }),
+		toUserId: text('to_user_id')
+			.notNull()
+			.references(() => users.id, { onDelete: 'cascade' }),
+		message: text('message'),
+		status: varchar('status', { length: 20 }).notNull().default('pending'),
+		createdAt: timestamp('created_at').defaultNow(),
+		respondedAt: timestamp('responded_at'),
+	},
+	(table) => ({
+		fromUserIdIdx: index('buddy_requests_from_user_id_idx').on(table.fromUserId),
+		toUserIdIdx: index('buddy_requests_to_user_id_idx').on(table.toUserId),
+		statusIdx: index('buddy_requests_status_idx').on(table.status),
+		uniqueRequest: uniqueIndex('buddy_requests_unique').on(table.fromUserId, table.toUserId),
+	})
+);
+
+// ============================================================================
+// CONTENT FLAGS TABLE (Moderation system)
+// ============================================================================
+
+export const contentFlags = pgTable(
+	'content_flags',
+	{
+		id: uuid('id').defaultRandom().primaryKey(),
+		reporterId: text('reporter_id')
+			.notNull()
+			.references(() => users.id, { onDelete: 'cascade' }),
+		contentType: varchar('content_type', { length: 20 }).notNull(),
+		contentId: text('content_id').notNull(),
+		contentPreview: text('content_preview'),
+		flagReason: varchar('flag_reason', { length: 50 }).notNull(),
+		flagDetails: text('flag_details'),
+		status: varchar('status', { length: 20 }).notNull().default('pending'),
+		reviewedBy: text('reviewed_by').references(() => users.id, { onDelete: 'set null' }),
+		reviewedAt: timestamp('reviewed_at'),
+		createdAt: timestamp('created_at').defaultNow(),
+	},
+	(table) => ({
+		reporterIdIdx: index('content_flags_reporter_id_idx').on(table.reporterId),
+		contentTypeIdx: index('content_flags_content_type_idx').on(table.contentType),
+		contentIdIdx: index('content_flags_content_id_idx').on(table.contentId),
+		statusIdx: index('content_flags_status_idx').on(table.status),
+		createdAtIdx: index('content_flags_created_at_idx').on(table.createdAt),
+	})
+);
+
+// ============================================================================
 // RELATIONS
 // ============================================================================
 
@@ -438,6 +519,35 @@ export const channelMembersRelations = relations(channelMembers, ({ one }) => ({
 	}),
 }));
 
+export const aiConversationsRelations = relations(aiConversations, ({ one }) => ({
+	user: one(users, {
+		fields: [aiConversations.userId],
+		references: [users.id],
+	}),
+}));
+
+export const buddyRequestsRelations = relations(buddyRequests, ({ one }) => ({
+	fromUser: one(users, {
+		fields: [buddyRequests.fromUserId],
+		references: [users.id],
+	}),
+	toUser: one(users, {
+		fields: [buddyRequests.toUserId],
+		references: [users.id],
+	}),
+}));
+
+export const contentFlagsRelations = relations(contentFlags, ({ one }) => ({
+	reporter: one(users, {
+		fields: [contentFlags.reporterId],
+		references: [users.id],
+	}),
+	reviewer: one(users, {
+		fields: [contentFlags.reviewedBy],
+		references: [users.id],
+	}),
+}));
+
 // ============================================================================
 // TYPE EXPORTS
 // ============================================================================
@@ -482,3 +592,12 @@ export type NewChannel = typeof channels.$inferInsert;
 
 export type ChannelMember = typeof channelMembers.$inferSelect;
 export type NewChannelMember = typeof channelMembers.$inferInsert;
+
+export type AiConversation = typeof aiConversations.$inferSelect;
+export type NewAiConversation = typeof aiConversations.$inferInsert;
+
+export type BuddyRequest = typeof buddyRequests.$inferSelect;
+export type NewBuddyRequest = typeof buddyRequests.$inferInsert;
+
+export type ContentFlag = typeof contentFlags.$inferSelect;
+export type NewContentFlag = typeof contentFlags.$inferInsert;

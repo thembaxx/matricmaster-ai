@@ -1,0 +1,116 @@
+import { type NextRequest, NextResponse } from 'next/server';
+import { getAuth } from '@/lib/auth';
+import {
+	actionFlagAction,
+	createContentFlagAction,
+	dismissFlagAction,
+	getContentFlagsAction,
+} from '@/lib/db/actions';
+
+export const dynamic = 'force-dynamic';
+export const fetchCache = 'force-no-store';
+export const revalidate = 0;
+export const runtime = 'nodejs';
+
+// GET /api/moderation/flags - Get content flags (admin only)
+export async function GET(request: NextRequest) {
+	try {
+		const auth = await getAuth();
+		const session = await auth.api.getSession({ headers: request.headers });
+		if (!session?.user?.id) {
+			return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+		}
+
+		// Check if admin
+		const isAdmin = session.user.email?.includes('admin');
+		if (!isAdmin) {
+			return NextResponse.json({ error: 'Forbidden - Admin only' }, { status: 403 });
+		}
+
+		const searchParams = request.nextUrl.searchParams;
+		const status = searchParams.get('status') as 'pending' | 'reviewed' | 'actioned' | 'dismissed' | null;
+
+		const flags = await getContentFlagsAction(status ?? undefined);
+		return NextResponse.json({ success: true, data: flags });
+	} catch (error) {
+		console.error('[API] Error fetching flags:', error);
+		return NextResponse.json({ error: 'Failed to fetch flags' }, { status: 500 });
+	}
+}
+
+// POST /api/moderation/flags - Create a new flag
+export async function POST(request: NextRequest) {
+	try {
+		const auth = await getAuth();
+		const session = await auth.api.getSession({ headers: request.headers });
+		if (!session?.user?.id) {
+			return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+		}
+
+		const body = await request.json();
+		const { contentType, contentId, flagReason, contentPreview, flagDetails } = body;
+
+		if (!contentType || !contentId || !flagReason) {
+			return NextResponse.json(
+				{ error: 'Missing required fields: contentType, contentId, flagReason' },
+				{ status: 400 }
+			);
+		}
+
+		const flag = await createContentFlagAction(
+			session.user.id,
+			contentType,
+			contentId,
+			flagReason,
+			contentPreview,
+			flagDetails
+		);
+
+		return NextResponse.json({ success: true, data: flag });
+	} catch (error) {
+		console.error('[API] Error creating flag:', error);
+		return NextResponse.json({ error: 'Failed to create flag' }, { status: 500 });
+	}
+}
+
+// PUT /api/moderation/flags - Dismiss or action a flag (admin only)
+export async function PUT(request: NextRequest) {
+	try {
+		const auth = await getAuth();
+		const session = await auth.api.getSession({ headers: request.headers });
+		if (!session?.user?.id) {
+			return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+		}
+
+		// Check if admin
+		const isAdmin = session.user.email?.includes('admin');
+		if (!isAdmin) {
+			return NextResponse.json({ error: 'Forbidden - Admin only' }, { status: 403 });
+		}
+
+		const searchParams = request.nextUrl.searchParams;
+		const flagId = searchParams.get('id');
+		const action = searchParams.get('action'); // 'dismiss' or 'action'
+
+		if (!flagId || !action) {
+			return NextResponse.json(
+				{ error: 'Missing required parameters: id, action' },
+				{ status: 400 }
+			);
+		}
+
+		let result;
+		if (action === 'dismiss') {
+			result = await dismissFlagAction(flagId, session.user.id);
+		} else if (action === 'action') {
+			result = await actionFlagAction(flagId, session.user.id);
+		} else {
+			return NextResponse.json({ error: 'Invalid action. Use "dismiss" or "action"' }, { status: 400 });
+		}
+
+		return NextResponse.json(result);
+	} catch (error) {
+		console.error('[API] Error updating flag:', error);
+		return NextResponse.json({ error: 'Failed to update flag' }, { status: 500 });
+	}
+}
