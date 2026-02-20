@@ -114,9 +114,7 @@
   --color-geography: #06b6d4;
   --color-history: #f97316;
 
-  --font-lexend: var(--font-lexend);
   --font-inter: var(--font-inter);
-  --font-jakarta: var(--font-jakarta);
   --font-outfit: var(--font-outfit);
   --font-sf-pro: var(--font-sf-pro);
   --font-sf-mono: var(--font-sf-mono);
@@ -271,7 +269,7 @@
   h4,
   h5,
   h6 {
-    font-family: var(--font-outfit), var(--font-lexend);
+    font-family: var(--font-outfit), var(--font-inter);
     letter-spacing: -0.03em;
     line-height: 1.2;
     font-weight: 900;

@@ -2,3 +2,8 @@
 src/styles/**/*.css
 src/styles/*.css
 *.css
+
+# Ignore auto-generated files
+/next-env.d.ts
+
+

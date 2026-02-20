@@ -1,23 +1,13 @@
-import { Loader2 } from 'lucide-react';
-import type { Metadata } from 'next';
-import { Suspense } from 'react';
-import InteractiveQuiz from '@/screens/InteractiveQuiz';
+'use client';
 
-export const metadata: Metadata = {
-	title: 'Interactive Quiz | MatricMaster AI',
-	description: 'Engage with AI-powered interactive quizzes for better learning.',
-};
+import dynamic from 'next/dynamic';
+import { QuizSkeleton } from '@/components/QuizSkeleton';
+
+const InteractiveQuiz = dynamic(() => import('@/screens/InteractiveQuiz'), {
+	ssr: false,
+	loading: () => <QuizSkeleton />,
+});
 
 export default function InteractiveQuizPage() {
-	return (
-		<Suspense
-			fallback={
-				<div className="flex h-full items-center justify-center bg-zinc-50 dark:bg-zinc-950">
-					<Loader2 className="h-8 w-8 animate-spin text-brand-purple" />
-				</div>
-			}
-		>
-			<InteractiveQuiz />
-		</Suspense>
-	);
+	return <InteractiveQuiz />;
 }

@@ -23,9 +23,16 @@ const nextConfig = {
 				hostname: 'ufs.sh',
 			},
 		],
+		formats: ['image/avif', 'image/webp'],
 	},
 	experimental: {
-		optimizePackageImports: ['lucide-react', '@radix-ui/react-icons'],
+		optimizePackageImports: [
+			'lucide-react',
+			'@radix-ui/react-icons',
+			'@iconify/react',
+			'recharts',
+			'framer-motion',
+		],
 	},
 	turbopack: {
 		resolveAlias: {

@@ -3,9 +3,10 @@ import { ErrorBoundary } from '@/components/ErrorBoundary';
 import AppLayout from '@/components/Layout/AppLayout';
 import { Toaster } from '@/components/Toaster';
 import { ThemeProvider } from '@/components/theme-provider';
+import WebVitals from '@/components/WebVitals';
 import { AblyClientProvider } from '@/lib/ably/provider';
 import '@/styles/index.css';
-import { dmSans, inter, jakarta, lexend, outfit } from './fonts';
+import { inter, outfit } from './fonts';
 
 const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://matricmaster.ai';
 
@@ -91,13 +92,16 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
 	return (
-		<html
-			lang="en"
-			suppressHydrationWarning
-			className={`${inter.variable} ${jakarta.variable} ${dmSans.variable} ${lexend.variable} ${outfit.variable}`}
-		>
-			<head />
+		<html lang="en" suppressHydrationWarning className={`${inter.variable} ${outfit.variable}`}>
+			<head>
+				<link rel="preconnect" href="https://fonts.googleapis.com" />
+				<link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+				<link rel="preconnect" href="https://api.dicebear.com" />
+				<link rel="dns-prefetch" href="https://images.unsplash.com" />
+				<link rel="dns-prefetch" href="https://lh3.googleusercontent.com" />
+			</head>
 			<body className="bg-background min-h-screen">
+				<WebVitals />
 				<a
 					href="#main-content"
 					className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary focus:text-primary-foreground focus:rounded-lg focus:outline-none"
