@@ -1,11 +1,14 @@
 'use client';
 
-import { Dumbbell, Loader2, Save, Send, Sparkles } from 'lucide-react';
+import { BookOpen, Dumbbell, Loader2, Save, Send, Sparkles } from 'lucide-react';
 import Link from 'next/link';
 import { useRef, useState } from 'react';
 import { toast } from 'sonner';
+import { BookmarkButton } from '@/components/AI/BookmarkButton';
 import { ConversationSidebar } from '@/components/AI/ConversationSidebar';
+import { FlashcardModal } from '@/components/AI/FlashcardModal';
 import { MarkdownRenderer } from '@/components/AI/MarkdownRenderer';
+import { PracticeModal } from '@/components/AI/PracticeModal';
 import { QuickPrompts } from '@/components/AI/QuickPrompts';
 import { SuggestedFollowUps } from '@/components/AI/SuggestedFollowUps';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
@@ -25,6 +28,22 @@ interface Message {
 	suggestions?: string[];
 }
 
+interface PracticeProblem {
+	id: string;
+	question: string;
+	type: 'multiple-choice' | 'short-answer' | 'step-by-step';
+	options?: string[];
+	answer: string;
+	explanation: string;
+}
+
+interface Flashcard {
+	id: string;
+	front: string;
+	back: string;
+	tags: string[];
+}
+
 export default function AITutorPage() {
 	const { data: session } = authClient.useSession();
 	const [messages, setMessages] = useState<Message[]>([
@@ -41,6 +60,11 @@ export default function AITutorPage() {
 	const [selectedSubject, setSelectedSubject] = useState<string | null>(null);
 	const [currentConversationId, setCurrentConversationId] = useState<string | null>(null);
 	const [isGeneratingPractice, setIsGeneratingPractice] = useState(false);
+	const [isGeneratingFlashcards, setIsGeneratingFlashcards] = useState(false);
+	const [practiceProblems, setPracticeProblems] = useState<PracticeProblem[]>([]);
+	const [flashcards, setFlashcards] = useState<Flashcard[]>([]);
+	const [showPracticeModal, setShowPracticeModal] = useState(false);
+	const [showFlashcardModal, setShowFlashcardModal] = useState(false);
 	const messagesEndRef = useRef<HTMLDivElement>(null);
 
 	const scrollToBottom = () => {
@@ -162,15 +186,48 @@ export default function AITutorPage() {
 
 			const data = await response.json();
 			if (data.problems) {
-				toast.success(
-					`Generated ${data.problems.length} practice problems! Check console for details.`
-				);
-				console.log('Generated practice problems:', data.problems);
+				setPracticeProblems(data.problems);
+				setShowPracticeModal(true);
+				toast.success(`Generated ${data.problems.length} practice problems!`);
 			}
 		} catch {
 			toast.error('Failed to generate practice problems');
 		} finally {
 			setIsGeneratingPractice(false);
+		}
+	};
+
+	const handleGenerateFlashcards = async () => {
+		if (messages.length <= 1) {
+			toast.info('Have a conversation first to generate flashcards');
+			return;
+		}
+
+		setIsGeneratingFlashcards(true);
+		try {
+			const recentMessages = messages.slice(-6);
+			const context = recentMessages.map((m) => `${m.role}: ${m.content}`).join('\n\n');
+
+			const response = await fetch('/api/ai-tutor/flashcards', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({
+					context,
+					subject: selectedSubject,
+					count: 5,
+				}),
+			});
+
+			const data = await response.json();
+			if (data.flashcards) {
+				setFlashcards(data.flashcards);
+				setShowFlashcardModal(true);
+				toast.success(`Generated ${data.flashcards.length} flashcards!`);
+			}
+		} catch {
+			toast.error('Failed to generate flashcards');
+		} finally {
+			setIsGeneratingFlashcards(false);
 		}
 	};
 
@@ -204,6 +261,8 @@ export default function AITutorPage() {
 		]);
 		setCurrentConversationId(null);
 		setSelectedSubject(null);
+		setPracticeProblems([]);
+		setFlashcards([]);
 	};
 
 	const subjects = [
@@ -256,6 +315,19 @@ export default function AITutorPage() {
 								</div>
 							</div>
 							<div className="flex items-center gap-2">
+								<Button
+									variant="outline"
+									size="sm"
+									onClick={handleGenerateFlashcards}
+									disabled={isGeneratingFlashcards || messages.length <= 1}
+								>
+									{isGeneratingFlashcards ? (
+										<Loader2 className="h-4 w-4 mr-2 animate-spin" />
+									) : (
+										<BookOpen className="h-4 w-4 mr-2" />
+									)}
+									Flashcards
+								</Button>
 								<Button
 									variant="outline"
 									size="sm"
@@ -319,10 +391,18 @@ export default function AITutorPage() {
 									</AvatarFallback>
 								</Avatar>
 								<div
-									className={`flex-1 max-w-[85%] rounded-2xl px-4 py-3 ${
+									className={`flex-1 max-w-[85%] rounded-2xl px-4 py-3 relative group ${
 										message.role === 'user' ? 'bg-primary text-primary-foreground' : 'bg-muted'
 									}`}
 								>
+									<div className="absolute top-2 right-2">
+										<BookmarkButton
+											messageId={message.id}
+											content={message.content}
+											role={message.role}
+											subject={selectedSubject}
+										/>
+									</div>
 									{message.role === 'assistant' ? (
 										<MarkdownRenderer content={message.content} />
 									) : (
@@ -396,6 +476,20 @@ export default function AITutorPage() {
 					</div>
 				</div>
 			</div>
+
+			<PracticeModal
+				open={showPracticeModal}
+				onOpenChange={setShowPracticeModal}
+				problems={practiceProblems}
+				subject={selectedSubject || undefined}
+			/>
+
+			<FlashcardModal
+				open={showFlashcardModal}
+				onOpenChange={setShowFlashcardModal}
+				flashcards={flashcards}
+				subject={selectedSubject || undefined}
+			/>
 		</div>
 	);
 }
