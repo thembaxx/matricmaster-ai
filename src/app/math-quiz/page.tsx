@@ -1,10 +1,12 @@
-import type { Metadata } from 'next';
-import MathematicsQuizScreen from '@/screens/MathematicsQuiz';
+'use client';
 
-export const metadata: Metadata = {
-	title: 'Mathematics Quiz | MatricMaster AI',
-	description: 'Practice Mathematics questions to ace your exams.',
-};
+import dynamic from 'next/dynamic';
+import { QuizSkeleton } from '@/components/QuizSkeleton';
+
+const MathematicsQuizScreen = dynamic(() => import('@/screens/MathematicsQuiz'), {
+	ssr: false,
+	loading: () => <QuizSkeleton />,
+});
 
 export default function MathematicsQuizPage() {
 	return <MathematicsQuizScreen />;

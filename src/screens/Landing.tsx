@@ -93,7 +93,10 @@ export default function Landing() {
 												src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${i}`}
 												alt="user"
 												fill
+												sizes="40px"
 												className="object-cover"
+												priority={i < 2}
+												loading={i < 2 ? 'eager' : 'lazy'}
 											/>
 										</div>
 									))}
