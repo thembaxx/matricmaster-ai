@@ -1,12 +1,9 @@
-import 'dotenv/config';
-import { config } from 'dotenv';
+// Don't load dotenv here - it should be loaded at the app entry point
 import { drizzle, type PostgresJsDatabase } from 'drizzle-orm/postgres-js';
 import postgres from 'postgres';
 import * as schema from './schema';
 
 type DbType = PostgresJsDatabase<typeof schema>;
-
-config({ path: '.env.local' });
 
 interface DatabaseConfig {
 	connectionString: string;

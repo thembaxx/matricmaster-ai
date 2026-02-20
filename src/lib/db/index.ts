@@ -1,16 +1,20 @@
-import 'dotenv/config';
-import { config } from 'dotenv';
+// Database exports - loaded synchronously but lazily initialized
 import { type DbType, pgManager } from './postgresql-manager';
-
-config({ path: '.env.local' });
 
 export type { DbType } from './postgresql-manager';
 
+// Create singleton instance
+const pgManagerInstance = pgManager;
+
+// Export the managers
+export { pgManagerInstance as pgManager };
+
+// Database manager class for connection management
 class DatabaseManager {
 	private static instance: DatabaseManager;
 	private _db: DbType | null = null;
 	private isConnected = false;
-	private isPostgreSQLAvailableVar = false;
+	private initialized = false;
 
 	private constructor() {}
 
@@ -22,44 +26,47 @@ class DatabaseManager {
 	}
 
 	public async initialize(): Promise<void> {
-		console.log('Initializing PostgreSQL database connection...');
+		await this.ensureConnected();
+	}
 
-		const postgresConnected = await pgManager.waitForConnection(5, 5000);
+	public async ensureConnected(): Promise<boolean> {
+		if (this.initialized) return this.isConnected;
 
-		if (postgresConnected) {
-			this._db = pgManager.getDb();
-			this.isConnected = true;
-			this.isPostgreSQLAvailableVar = true;
-			console.log('Using PostgreSQL database');
-		} else {
-			console.error('PostgreSQL connection failed');
+		try {
+			const connected = await pgManagerInstance.waitForConnection(3, 2000);
+			this.isConnected = connected;
+			this.initialized = true;
+			return connected;
+		} catch {
+			this.initialized = true;
 			this.isConnected = false;
-			this.isPostgreSQLAvailableVar = false;
+			return false;
+		}
+	}
+
+	public getDb(): DbType {
+		if (this.isConnected && this._db) {
+			return this._db;
+		}
+		// Try to get from pgManager directly
+		try {
+			this._db = pgManagerInstance.getDb();
+			return this._db;
+		} catch {
+			throw new Error('Database not connected. Call ensureConnected() first.');
 		}
 	}
 
 	public getClient() {
-		if (this.isPostgreSQLAvailableVar) {
-			return pgManager.getClient();
+		try {
+			return pgManagerInstance.getClient();
+		} catch {
+			return null;
 		}
-		return null;
 	}
 
-	public getDb(): DbType {
-		if (this.isPostgreSQLAvailableVar && this._db) {
-			return this._db;
-		}
-		if (this.isPostgreSQLAvailableVar) {
-			this._db = pgManager.getDb();
-			return this._db;
-		}
-		throw new Error('Database not connected');
-	}
-
-	public async waitForConnection(_maxRetries = 3, _delay = 1000): Promise<boolean> {
-		if (this.isConnected) return true;
-		await this.initialize();
-		return this.isConnected;
+	public async waitForConnection(_maxRetries = 3, _delay = 2000): Promise<boolean> {
+		return this.ensureConnected();
 	}
 
 	public isConnectedToDatabase(): boolean {
@@ -67,35 +74,27 @@ class DatabaseManager {
 	}
 
 	public isPostgreSQLAvailable(): boolean {
-		return this.isPostgreSQLAvailableVar;
+		return this.isConnected;
 	}
 
-	public getPreferredDatabase() {
-		if (this.isPostgreSQLAvailableVar) {
-			return 'postgresql';
-		}
-		return 'none';
+	public getPreferredDatabase(): string {
+		return this.isConnected ? 'postgresql' : 'none';
 	}
 
 	public async close(): Promise<void> {
-		if (this.isPostgreSQLAvailableVar) {
-			await pgManager.disconnect();
-		}
-		this.isConnected = false;
+		await pgManagerInstance.disconnect();
 		this._db = null;
+		this.isConnected = false;
+		this.initialized = false;
 	}
 }
 
-const dbManager = DatabaseManager.getInstance();
+export const dbManager = DatabaseManager.getInstance();
 
-export const db = dbManager.isConnectedToDatabase() ? dbManager.getDb() : null;
-
-process.on('beforeExit', async () => {
-	await dbManager.close();
-});
-
+// Export closeConnection for migrations
 export async function closeConnection() {
 	await dbManager.close();
 }
 
-export { dbManager, pgManager };
+// Re-export getDb as a standalone function for backward compatibility
+export const getDb = () => dbManager.getDb();

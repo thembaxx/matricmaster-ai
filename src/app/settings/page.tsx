@@ -8,21 +8,38 @@ import {
 	Lock,
 	Shield,
 	Smartphone,
+	Trash2,
 	User,
 	XCircle,
 } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useTransition } from 'react';
+import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+	Dialog,
+	DialogContent,
+	DialogDescription,
+	DialogFooter,
+	DialogHeader,
+	DialogTitle,
+	DialogTrigger,
+} from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { Switch } from '@/components/ui/switch';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { authClient } from '@/lib/auth-client';
+import {
+	changePasswordAction,
+	deleteAccountAction,
+	updateProfileAction,
+} from '@/lib/db/settings-actions';
 
 export default function SettingsPage() {
-	const { data: session } = authClient.useSession();
+	const { data: session, refetch } = authClient.useSession();
+	const [isPending, startTransition] = useTransition();
 
 	// Account settings state
 	const [displayName, setDisplayName] = useState(session?.user?.name || '');
@@ -43,39 +60,108 @@ export default function SettingsPage() {
 	const [backupCodes, setBackupCodes] = useState<string[]>([]);
 	const [password, setPassword] = useState('');
 
+	// Password change state
+	const [currentPassword, setCurrentPassword] = useState('');
+	const [newPassword, setNewPassword] = useState('');
+	const [confirmPassword, setConfirmPassword] = useState('');
+
+	// Account deletion state
+	const [deletePassword, setDeletePassword] = useState('');
+	const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+
 	// Notification settings
 	const [emailNotifications, setEmailNotifications] = useState(true);
 	const [pushNotifications, setPushNotifications] = useState(true);
 	const [studyReminders, setStudyReminders] = useState(true);
 	const [achievementAlerts, setAchievementAlerts] = useState(true);
 
-	// Privacy settings
-	// const [profileVisibility, setProfileVisibility] = useState(true);
-	// const [showOnLeaderboard, setShowOnLeaderboard] = useState(true);
-	// const [analyticsTracking, setAnalyticsTracking] = useState(true);
+	// Profile save handler
+	const handleSaveProfile = async () => {
+		if (!session?.user?.id) return;
 
-	// Save handlers
-	// const handleSaveChanges = async () => {
-	// 	// TODO: Implement actual save to backend
-	// 	console.log('Saving profile changes:', { displayName });
-	// 	alert('Profile updated successfully!');
-	// };
+		startTransition(async () => {
+			const result = await updateProfileAction(session.user.id, { name: displayName });
 
-	// const handlePasswordChange = async () => {
-	// 	// TODO: Implement actual password change
-	// 	alert('Password change functionality coming soon!');
-	// };
+			if (result.success) {
+				toast.success('Profile updated successfully!', {
+					description: 'Your display name has been saved.',
+				});
+				refetch();
+			} else {
+				toast.error('Failed to update profile', {
+					description: result.error || 'Please try again.',
+				});
+			}
+		});
+	};
 
-	// const handleDeleteAccount = () => {
-	// 	if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
-	// 		// TODO: Implement actual account deletion
-	// 		alert('Account deletion functionality coming soon!');
-	// 	}
-	// };
+	// Password change handler
+	const handlePasswordChange = async () => {
+		if (!session?.user?.id) return;
+
+		if (!currentPassword || !newPassword || !confirmPassword) {
+			toast.error('Please fill in all password fields');
+			return;
+		}
+
+		if (newPassword !== confirmPassword) {
+			toast.error('Passwords do not match');
+			return;
+		}
+
+		if (newPassword.length < 8) {
+			toast.error('Password must be at least 8 characters');
+			return;
+		}
+
+		startTransition(async () => {
+			const result = await changePasswordAction(session.user.id, {
+				currentPassword,
+				newPassword,
+			});
+
+			if (result.success) {
+				toast.success('Password changed successfully!');
+				setCurrentPassword('');
+				setNewPassword('');
+				setConfirmPassword('');
+			} else {
+				toast.error('Failed to change password', {
+					description: result.error || 'Please try again.',
+				});
+			}
+		});
+	};
+
+	// Account deletion handler
+	const handleDeleteAccount = async () => {
+		if (!session?.user?.id) return;
+
+		if (!deletePassword) {
+			toast.error('Please enter your password to delete your account');
+			return;
+		}
+
+		startTransition(async () => {
+			const result = await deleteAccountAction(session.user.id, deletePassword);
+
+			if (result.success) {
+				toast.success('Account deleted', {
+					description: 'Your account has been permanently deleted.',
+				});
+				// Redirect to home after deletion
+				window.location.href = '/';
+			} else {
+				toast.error('Failed to delete account', {
+					description: result.error || 'Please try again.',
+				});
+			}
+		});
+	};
 
 	const handleEnable2FA = async () => {
 		if (!password) {
-			alert('Please enter your password');
+			toast.error('Please enter your password');
 			return;
 		}
 
@@ -86,12 +172,15 @@ export default function SettingsPage() {
 				setBackupCodes(result.data.backupCodes);
 				setShowBackupCodes(true);
 				setIs2FAEnabled(true);
+				toast.success('2FA enabled successfully!', {
+					description: 'Save your backup codes in a safe place.',
+				});
 			} else if (result.error) {
-				alert(result.error.message);
+				toast.error(result.error.message);
 			}
 		} catch (error) {
-			console.log(error);
-			alert('Failed to enable 2FA');
+			console.error(error);
+			toast.error('Failed to enable 2FA');
 		} finally {
 			setIsLoading2FA(false);
 		}
@@ -99,7 +188,7 @@ export default function SettingsPage() {
 
 	const handleDisable2FA = async () => {
 		if (!password) {
-			alert('Please enter your password');
+			toast.error('Please enter your password');
 			return;
 		}
 
@@ -110,12 +199,13 @@ export default function SettingsPage() {
 				setIs2FAEnabled(false);
 				setShowBackupCodes(false);
 				setBackupCodes([]);
+				toast.success('2FA disabled');
 			} else if (result.error) {
-				alert(result.error.message);
+				toast.error(result.error.message);
 			}
 		} catch (error) {
-			console.log(error);
-			alert('Failed to disable 2FA');
+			console.error(error);
+			toast.error('Failed to disable 2FA');
 		} finally {
 			setIsLoading2FA(false);
 		}
@@ -123,7 +213,7 @@ export default function SettingsPage() {
 
 	const handleRegenerateBackupCodes = async () => {
 		if (!password) {
-			alert('Please enter your password');
+			toast.error('Please enter your password');
 			return;
 		}
 
@@ -133,12 +223,15 @@ export default function SettingsPage() {
 			if (result.data) {
 				setBackupCodes(result.data.backupCodes);
 				setShowBackupCodes(true);
+				toast.success('Backup codes regenerated', {
+					description: 'Save your new backup codes.',
+				});
 			} else if (result.error) {
-				alert(result.error.message);
+				toast.error(result.error.message);
 			}
 		} catch (error) {
-			console.log(error);
-			alert('Failed to regenerate backup codes');
+			console.error(error);
+			toast.error('Failed to regenerate backup codes');
 		} finally {
 			setIsLoading2FA(false);
 		}
@@ -211,7 +304,6 @@ export default function SettingsPage() {
 										id="email"
 										type="email"
 										value={email}
-										onChange={(e) => setEmail(e.target.value)}
 										placeholder="your@email.com"
 										disabled
 									/>
@@ -219,7 +311,16 @@ export default function SettingsPage() {
 										Email cannot be changed. Contact support if you need to update it.
 									</p>
 								</div>
-								<Button>Save Changes</Button>
+								<Button onClick={handleSaveProfile} disabled={isPending}>
+									{isPending ? (
+										<>
+											<Loader2 className="mr-2 h-4 w-4 animate-spin" />
+											Saving...
+										</>
+									) : (
+										'Save Changes'
+									)}
+								</Button>
 							</CardContent>
 						</Card>
 
@@ -357,17 +458,44 @@ export default function SettingsPage() {
 							<CardContent className="space-y-4">
 								<div className="grid gap-2">
 									<Label htmlFor="currentPassword">Current Password</Label>
-									<Input id="currentPassword" type="password" placeholder="••••••••" />
+									<Input
+										id="currentPassword"
+										type="password"
+										value={currentPassword}
+										onChange={(e) => setCurrentPassword(e.target.value)}
+										placeholder="••••••••"
+									/>
 								</div>
 								<div className="grid gap-2">
 									<Label htmlFor="newPassword">New Password</Label>
-									<Input id="newPassword" type="password" placeholder="••••••••" />
+									<Input
+										id="newPassword"
+										type="password"
+										value={newPassword}
+										onChange={(e) => setNewPassword(e.target.value)}
+										placeholder="••••••••"
+									/>
 								</div>
 								<div className="grid gap-2">
 									<Label htmlFor="confirmPassword">Confirm New Password</Label>
-									<Input id="confirmPassword" type="password" placeholder="••••••••" />
+									<Input
+										id="confirmPassword"
+										type="password"
+										value={confirmPassword}
+										onChange={(e) => setConfirmPassword(e.target.value)}
+										placeholder="••••••••"
+									/>
 								</div>
-								<Button>Update Password</Button>
+								<Button onClick={handlePasswordChange} disabled={isPending}>
+									{isPending ? (
+										<>
+											<Loader2 className="mr-2 h-4 w-4 animate-spin" />
+											Updating...
+										</>
+									) : (
+										'Update Password'
+									)}
+								</Button>
 							</CardContent>
 						</Card>
 
@@ -485,9 +613,54 @@ export default function SettingsPage() {
 											Permanently delete your account and all data
 										</p>
 									</div>
-									<Button variant="destructive" size="sm">
-										Delete Account
-									</Button>
+									<Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+										<DialogTrigger asChild>
+											<Button variant="destructive" size="sm">
+												<Trash2 className="mr-2 h-4 w-4" />
+												Delete Account
+											</Button>
+										</DialogTrigger>
+										<DialogContent>
+											<DialogHeader>
+												<DialogTitle>Delete Account</DialogTitle>
+												<DialogDescription>
+													Are you sure you want to delete your account? This action cannot be
+													undone. All your data, progress, and achievements will be permanently
+													deleted.
+												</DialogDescription>
+											</DialogHeader>
+											<div className="py-4">
+												<Label htmlFor="deletePassword">Enter your password to confirm</Label>
+												<Input
+													id="deletePassword"
+													type="password"
+													value={deletePassword}
+													onChange={(e) => setDeletePassword(e.target.value)}
+													placeholder="Your password"
+													className="mt-2"
+												/>
+											</div>
+											<DialogFooter>
+												<Button variant="outline" onClick={() => setIsDeleteDialogOpen(false)}>
+													Cancel
+												</Button>
+												<Button
+													variant="destructive"
+													onClick={handleDeleteAccount}
+													disabled={isPending}
+												>
+													{isPending ? (
+														<>
+															<Loader2 className="mr-2 h-4 w-4 animate-spin" />
+															Deleting...
+														</>
+													) : (
+														'Delete My Account'
+													)}
+												</Button>
+											</DialogFooter>
+										</DialogContent>
+									</Dialog>
 								</div>
 							</CardContent>
 						</Card>
