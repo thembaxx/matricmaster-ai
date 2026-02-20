@@ -198,6 +198,33 @@ function createAuth() {
 				maxAge: 5 * 60,
 			},
 		},
+		user: {
+			additionalFields: {
+				role: {
+					type: 'string',
+					required: false,
+					defaultValue: 'user',
+					input: false,
+				},
+				isBlocked: {
+					type: 'boolean',
+					required: false,
+					defaultValue: false,
+					input: false,
+				},
+				deletedAt: {
+					type: 'date',
+					required: false,
+					input: false,
+				},
+				twoFactorEnabled: {
+					type: 'boolean',
+					required: false,
+					defaultValue: false,
+					input: false,
+				},
+			},
+		},
 		trustedOrigins: [
 			process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000',
 			process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : '',
@@ -351,3 +378,10 @@ export const auth = new Proxy({} as ReturnType<typeof betterAuth>, {
 export type Auth = ReturnType<typeof betterAuth>;
 export type AuthSession = Auth['$Infer']['Session'];
 export type AuthUser = Auth['$Infer']['Session']['user'];
+
+export type SessionUser = AuthUser & {
+	role: string;
+	isBlocked: boolean;
+	deletedAt: Date | null;
+	twoFactorEnabled: boolean | null;
+};
