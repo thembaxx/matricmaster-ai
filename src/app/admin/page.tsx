@@ -120,7 +120,7 @@ export default function AdminDashboardPage() {
 		if (activeTab === 'users') {
 			loadUsers();
 		}
-	}, [activeTab, userFilter]);
+	}, [activeTab, loadUsers]);
 
 	async function loadUsers() {
 		setIsLoadingUsers(true);

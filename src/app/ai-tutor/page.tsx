@@ -93,7 +93,7 @@ export default function AITutorPage() {
 		}
 		const firstUserMessage = messages.find((m) => m.role === 'user');
 		const title = firstUserMessage
-			? firstUserMessage.content.slice(0, 50) + '...'
+			? `${firstUserMessage.content.slice(0, 50)}...`
 			: 'Untitled Conversation';
 		const result = await saveConversationAction(
 			session!.user.id,

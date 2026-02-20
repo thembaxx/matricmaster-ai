@@ -10,7 +10,7 @@ import {
 	Users,
 	XCircle,
 } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -19,6 +19,13 @@ import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
 import { useSession } from '@/lib/auth-client';
+import {
+	getDiscoverableBuddies,
+	getPendingRequests,
+	getStudyBuddyProfile,
+	getUserBuddies,
+	getUserInfo,
+} from '@/lib/db/buddy-actions';
 
 interface StudyBuddy {
 	id: string;
@@ -28,6 +35,7 @@ interface StudyBuddy {
 	subjects: string[];
 	studyGoals: string;
 	isOnline?: boolean;
+	userId?: string;
 }
 
 interface BuddyRequest {
@@ -51,42 +59,157 @@ const SUBJECTS = [
 
 export default function StudyBuddiesPage() {
 	const { data: session } = useSession();
-	// Session available for future use with user-specific data
-	void session;
 	const [searchQuery, setSearchQuery] = useState('');
 	const [selectedSubjects, setSelectedSubjects] = useState<string[]>([]);
 	const [activeTab, setActiveTab] = useState('discover');
 	const [buddyRequests, setBuddyRequests] = useState<BuddyRequest[]>([]);
-	const [myBuddies] = useState<StudyBuddy[]>([]);
+	const [myBuddies, setMyBuddies] = useState<StudyBuddy[]>([]);
+	const [discoverableBuddies, setDiscoverableBuddies] = useState<StudyBuddy[]>([]);
 	const [profile, setProfile] = useState({
 		bio: '',
 		studyGoals: '',
 		selectedSubjects: [] as string[],
 	});
-	// Mock data for discovery
-	const [discoverableBuddies] = useState<StudyBuddy[]>([
-		{
-			id: '1',
-			name: 'Amahle N.',
-			bio: 'Grade 12 student focusing on STEM subjects. Love physics!',
-			subjects: ['Mathematics', 'Physical Sciences'],
-			studyGoals: 'Want to improve my physics marks',
-		},
-		{
-			id: '2',
-			name: 'Lerato M.',
-			bio: 'Going for Accounting and Economics. Need math help.',
-			subjects: ['Mathematics', 'Accounting', 'Economics'],
-			studyGoals: 'Aim for distinction in finals',
-		},
-		{
-			id: '3',
-			name: 'Siyabonga K.',
-			bio: 'History enthusiast. Good at essay writing.',
-			subjects: ['History', 'English'],
-			studyGoals: 'Study partner for history',
-		},
-	]);
+	const [_isLoading, setIsLoading] = useState(true);
+
+	// Load data on mount
+	useEffect(() => {
+		if (session?.user?.id) {
+			loadData();
+		}
+	}, [session?.user?.id, loadData]);
+
+	async function loadData() {
+		if (!session?.user?.id) return;
+		setIsLoading(true);
+
+		try {
+			// Load profile
+			const profileData = await getStudyBuddyProfile(session.user.id);
+			if (profileData) {
+				// Parse preferredSubjects from JSON string if needed
+				let subjects: string[] = [];
+				if (profileData.preferredSubjects) {
+					try {
+						subjects =
+							typeof profileData.preferredSubjects === 'string'
+								? JSON.parse(profileData.preferredSubjects)
+								: profileData.preferredSubjects;
+					} catch {
+						subjects = [];
+					}
+				}
+				setProfile({
+					bio: profileData.bio || '',
+					studyGoals: profileData.studyGoals || '',
+					selectedSubjects: subjects,
+				});
+			}
+
+			// Load discoverable buddies
+			const discoverable = await getDiscoverableBuddies(session.user.id, 20);
+
+			// Get user names for each buddy
+			const buddiesWithNames = await Promise.all(
+				discoverable.map(async (buddy) => {
+					try {
+						const user = await getUserInfo(buddy.userId);
+						return {
+							id: buddy.userId,
+							userId: buddy.userId,
+							name: user?.name || 'Unknown User',
+							avatar: user?.image || undefined,
+							bio: buddy.bio || '',
+							subjects: buddy.preferredSubjects || [],
+							studyGoals: buddy.studyGoals || '',
+						} as StudyBuddy;
+					} catch {
+						return {
+							id: buddy.userId,
+							userId: buddy.userId,
+							name: 'Unknown User',
+							bio: buddy.bio || '',
+							subjects: buddy.preferredSubjects || [],
+							studyGoals: buddy.studyGoals || '',
+						} as StudyBuddy;
+					}
+				})
+			);
+			setDiscoverableBuddies(buddiesWithNames);
+
+			// Load user's buddies
+			const buddies = await getUserBuddies(session.user.id);
+			const buddiesList = await Promise.all(
+				buddies.map(async (buddy) => {
+					try {
+						const user = await getUserInfo(buddy.userId);
+						return {
+							id: buddy.userId,
+							userId: buddy.userId,
+							name: user?.name || 'Unknown User',
+							avatar: user?.image || undefined,
+							bio: buddy.bio || '',
+							subjects: buddy.preferredSubjects || [],
+							studyGoals: buddy.studyGoals || '',
+						} as StudyBuddy;
+					} catch {
+						return {
+							id: buddy.userId,
+							userId: buddy.userId,
+							name: 'Unknown User',
+							bio: buddy.bio || '',
+							subjects: buddy.preferredSubjects || [],
+							studyGoals: buddy.studyGoals || '',
+						} as StudyBuddy;
+					}
+				})
+			);
+			setMyBuddies(buddiesList);
+
+			// Load pending requests
+			const requests = await getPendingRequests(session.user.id);
+			const requestsWithUsers = await Promise.all(
+				requests.map(async (req) => {
+					try {
+						const user = await getUserInfo(req.requesterId);
+						return {
+							id: req.id,
+							fromUser: {
+								id: req.requesterId,
+								userId: req.requesterId,
+								name: user?.name || 'Unknown User',
+								avatar: user?.image || undefined,
+								bio: '',
+								subjects: [],
+								studyGoals: '',
+							},
+							message: req.message || undefined,
+							createdAt: req.createdAt?.toISOString() ?? new Date().toISOString(),
+						} as BuddyRequest;
+					} catch {
+						return {
+							id: req.id,
+							fromUser: {
+								id: req.requesterId,
+								userId: req.requesterId,
+								name: 'Unknown User',
+								bio: '',
+								subjects: [],
+								studyGoals: '',
+							},
+							message: req.message || undefined,
+							createdAt: req.createdAt?.toISOString() ?? new Date().toISOString(),
+						} as BuddyRequest;
+					}
+				})
+			);
+			setBuddyRequests(requestsWithUsers);
+		} catch (error) {
+			console.error('Error loading study buddies data:', error);
+		} finally {
+			setIsLoading(false);
+		}
+	}
 
 	const handleSubjectToggle = (subject: string) => {
 		setSelectedSubjects((prev) =>

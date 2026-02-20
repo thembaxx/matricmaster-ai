@@ -27,6 +27,18 @@ const nextConfig = {
 	experimental: {
 		optimizePackageImports: ['lucide-react', '@radix-ui/react-icons'],
 	},
+	turbopack: {
+		resolveAlias: {
+			fs: { browser: 'empty-object' },
+			net: { browser: 'empty-object' },
+			tls: { browser: 'empty-object' },
+			perf_hooks: { browser: 'empty-object' },
+			crypto: { browser: 'empty-object' },
+			stream: { browser: 'empty-object' },
+			os: { browser: 'empty-object' },
+			zlib: { browser: 'empty-object' },
+		},
+	},
 };
 
 export default nextConfig;

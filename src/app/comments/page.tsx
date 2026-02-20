@@ -1,6 +1,7 @@
 'use client';
 
 import { Flag, MessageSquare, Reply, ThumbsDown, ThumbsUp } from 'lucide-react';
+import { useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -22,12 +23,10 @@ interface Comment {
 	isFlagged?: boolean;
 }
 
-interface CommentsSectionProps {
-	resourceType: string;
-	resourceId: string;
-}
-
-export default function CommentsPage({ resourceType, resourceId }: CommentsSectionProps) {
+export default function CommentsPage() {
+	const searchParams = useSearchParams();
+	const resourceType = searchParams.get('resourceType') || 'post';
+	const resourceId = searchParams.get('resourceId') || '';
 	const { data: session } = useSession();
 	const user = session?.user;
 	const [comments, setComments] = useState<Comment[]>([]);
