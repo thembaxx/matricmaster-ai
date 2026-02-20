@@ -12,7 +12,7 @@ import {
 	Users,
 	X,
 } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
@@ -47,7 +47,7 @@ export default function NotificationsDropdown() {
 	const [isLoading, setIsLoading] = useState(true);
 	const [open, setOpen] = useState(false);
 
-	const fetchNotifications = async () => {
+	const fetchNotifications = useCallback(async () => {
 		if (!user) return;
 
 		try {
@@ -61,7 +61,7 @@ export default function NotificationsDropdown() {
 		} finally {
 			setIsLoading(false);
 		}
-	};
+	}, [user]);
 
 	useEffect(() => {
 		// Fetch notifications on mount
@@ -70,7 +70,7 @@ export default function NotificationsDropdown() {
 		// Poll for new notifications every 30 seconds
 		const interval = setInterval(fetchNotifications, 30000);
 		return () => clearInterval(interval);
-	}, [user, fetchNotifications]);
+	}, [fetchNotifications]);
 
 	const markAsRead = async (notificationId: string) => {
 		try {

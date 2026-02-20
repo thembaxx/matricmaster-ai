@@ -2,7 +2,7 @@
 
 import { Bell, Check, CheckCheck, Trash2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -30,13 +30,7 @@ export default function NotificationsPage() {
 	const [isLoading, setIsLoading] = useState(true);
 	const [activeTab, setActiveTab] = useState('all');
 
-	useEffect(() => {
-		if (session?.user?.id) {
-			loadNotifications();
-		}
-	}, [session?.user?.id, loadNotifications]);
-
-	async function loadNotifications() {
+	const loadNotifications = useCallback(async () => {
 		setIsLoading(true);
 		try {
 			const response = await fetch('/api/notifications?limit=50');
@@ -51,7 +45,13 @@ export default function NotificationsPage() {
 		} finally {
 			setIsLoading(false);
 		}
-	}
+	}, []);
+
+	useEffect(() => {
+		if (session?.user?.id) {
+			loadNotifications();
+		}
+	}, [session?.user?.id, loadNotifications]);
 
 	async function markAsRead(notificationId: string) {
 		try {

@@ -1,6 +1,7 @@
 'use client';
 
 import { motion, type Variants } from 'framer-motion';
+import type { ElementType } from 'react';
 import { useReducedMotion } from '@/hooks/use-reduced-motion';
 
 interface SmoothTextProps {
@@ -57,7 +58,7 @@ export function SmoothText({
 		},
 	};
 
-	const MotionComponent = motion.create(Component as any);
+	const MotionComponent = motion.create(Component as ElementType);
 
 	return (
 		<MotionComponent
@@ -132,7 +133,7 @@ export function SmoothWords({
 		},
 	};
 
-	const MotionComponent = motion.create(Component as any);
+	const MotionComponent = motion.create(Component as ElementType);
 
 	return (
 		<MotionComponent

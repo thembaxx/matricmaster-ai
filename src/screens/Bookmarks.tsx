@@ -158,6 +158,7 @@ export default function Bookmarks() {
 										}
 									>
 										<button
+											type="button"
 											onClick={(e) => handleDelete(e, bookmark.id)}
 											className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity p-1 hover:bg-destructive hover:text-destructive-foreground rounded-full"
 											title="Remove bookmark"
