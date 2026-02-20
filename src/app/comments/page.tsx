@@ -2,7 +2,7 @@
 
 import { Flag, MessageSquare, Reply, ThumbsDown, ThumbsUp } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -23,7 +23,7 @@ interface Comment {
 	isFlagged?: boolean;
 }
 
-export default function CommentsPage() {
+function CommentsContent() {
 	const searchParams = useSearchParams();
 	const resourceType = searchParams.get('resourceType') || 'post';
 	const resourceId = searchParams.get('resourceId') || '';
@@ -346,5 +346,15 @@ function CommentItem({
 				</div>
 			</div>
 		</div>
+	);
+}
+
+export default function CommentsPage() {
+	return (
+		<Suspense
+			fallback={<div className="flex h-96 items-center justify-center">Loading comments...</div>}
+		>
+			<CommentsContent />
+		</Suspense>
 	);
 }

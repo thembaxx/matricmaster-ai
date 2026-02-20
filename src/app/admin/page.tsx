@@ -15,6 +15,7 @@ import {
 	Undo2,
 	Users,
 } from 'lucide-react';
+import Link from 'next/link';
 import { useCallback, useEffect, useState, useTransition } from 'react';
 import { toast } from 'sonner';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
@@ -185,7 +186,7 @@ export default function AdminDashboardPage() {
 					<CardContent>
 						<p className="text-muted-foreground">Please sign in to access the admin dashboard.</p>
 						<Button asChild className="mt-4">
-							<a href="/sign-in">Sign In</a>
+							<Link href="/sign-in">Sign In</Link>
 						</Button>
 					</CardContent>
 				</Card>
@@ -309,7 +310,7 @@ export default function AdminDashboardPage() {
 									</CardTitle>
 								</CardHeader>
 								<CardContent>
-									<ScrollArea className="h-[300px]">
+									<ScrollArea className="h-75">
 										<div className="space-y-4">
 											{mockRecentActivity.map((activity) => (
 												<div key={activity.id} className="flex items-center gap-3">
@@ -342,7 +343,7 @@ export default function AdminDashboardPage() {
 									<CardDescription>Items requiring moderation</CardDescription>
 								</CardHeader>
 								<CardContent>
-									<ScrollArea className="h-[300px]">
+									<ScrollArea className="h-75">
 										<div className="space-y-3">
 											{mockFlaggedContent.map((item) => (
 												<div key={item.id} className="p-3 border rounded-lg">
@@ -387,7 +388,7 @@ export default function AdminDashboardPage() {
 										value={userFilter}
 										onValueChange={(value) => setUserFilter(value as typeof userFilter)}
 									>
-										<SelectTrigger className="w-[180px]">
+										<SelectTrigger className="w-45">
 											<SelectValue placeholder="Filter users" />
 										</SelectTrigger>
 										<SelectContent>

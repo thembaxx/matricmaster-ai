@@ -13,11 +13,13 @@ import {
 	X,
 } from 'lucide-react';
 import { useCallback, useEffect, useState } from 'react';
+import { toast } from 'sonner';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useUserNotifications } from '@/hooks/use-user-notifications';
 import { useSession } from '@/lib/auth-client';
 
 interface Notification {
@@ -47,6 +49,8 @@ export default function NotificationsDropdown() {
 	const [isLoading, setIsLoading] = useState(true);
 	const [open, setOpen] = useState(false);
 
+	const { channel } = useUserNotifications(user?.id);
+
 	const fetchNotifications = useCallback(async () => {
 		if (!user) return;
 
@@ -64,13 +68,43 @@ export default function NotificationsDropdown() {
 	}, [user]);
 
 	useEffect(() => {
-		// Fetch notifications on mount
 		fetchNotifications();
-
-		// Poll for new notifications every 30 seconds
 		const interval = setInterval(fetchNotifications, 30000);
 		return () => clearInterval(interval);
 	}, [fetchNotifications]);
+
+	useEffect(() => {
+		if (!channel) return;
+
+		const handleNewNotification = (message: { data?: Notification }) => {
+			const notification = message.data;
+			if (!notification) return;
+
+			console.log('[Notifications] Received realtime notification:', notification);
+
+			setNotifications((prev) => {
+				const exists = prev.some((n) => n.id === notification.id);
+				if (exists) return prev;
+				return [notification, ...prev];
+			});
+
+			toast(notification.title, {
+				description: notification.message,
+				icon: NOTIFICATION_ICONS[notification.type] || <Bell className="h-4 w-4" />,
+				duration: 5000,
+			});
+		};
+
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		// biome-ignore lint/suspicious/noExplicitAny: Unknown type
+		channel.subscribe('notification', handleNewNotification as any);
+
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		return () => {
+			// biome-ignore lint/suspicious/noExplicitAny:Unknown type
+			channel.unsubscribe('notification', handleNewNotification as any);
+		};
+	}, [channel]);
 
 	const markAsRead = async (notificationId: string) => {
 		try {
@@ -211,7 +245,7 @@ function NotificationList({
 	}
 
 	return (
-		<ScrollArea className="h-[300px]">
+		<ScrollArea className="h-75">
 			<div className="divide-y">
 				{notifications.map((notification) => (
 					<div

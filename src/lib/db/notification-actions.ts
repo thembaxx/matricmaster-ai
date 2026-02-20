@@ -6,6 +6,25 @@ import { notifications } from './schema';
 
 const getDb = () => dbManager.getDb();
 
+async function publishNotificationToAbly(
+	userId: string,
+	notification: {
+		id: string;
+		type: string;
+		title: string;
+		message: string;
+		data?: Record<string, unknown>;
+	}
+) {
+	try {
+		const { publishNotification } = await import('@/lib/ably/client');
+		await publishNotification(userId, notification);
+		console.log('[Notifications] Published to Ably:', notification.id);
+	} catch (error) {
+		console.error('[Notifications] Failed to publish to Ably:', error);
+	}
+}
+
 /**
  * Create a notification
  */
@@ -30,6 +49,15 @@ export async function createNotification(
 				data: data.data ? JSON.stringify(data.data) : undefined,
 			})
 			.returning();
+
+		publishNotificationToAbly(userId, {
+			id: notification.id,
+			type: data.type,
+			title: data.title,
+			message: data.message,
+			data: data.data,
+		});
+
 		return { success: true, notification };
 	} catch (error) {
 		console.error('[Notifications] Error creating notification:', error);

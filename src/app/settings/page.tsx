@@ -12,6 +12,7 @@ import {
 	User,
 	XCircle,
 } from 'lucide-react';
+import Link from 'next/link';
 import { useEffect, useState, useTransition } from 'react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
@@ -247,7 +248,7 @@ export default function SettingsPage() {
 					</CardHeader>
 					<CardContent>
 						<Button asChild className="w-full">
-							<a href="/sign-in">Sign In</a>
+							<Link href="/sign-in">Sign In</Link>
 						</Button>
 					</CardContent>
 				</Card>

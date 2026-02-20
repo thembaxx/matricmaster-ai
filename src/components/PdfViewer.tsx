@@ -413,7 +413,6 @@ export default function PdfViewer({ url, onClose, title }: PdfViewerProps) {
 					<div className="premium-glass p-2 rounded-2xl flex items-center gap-2 shadow-2xl border border-white/20 dark:border-zinc-800/50">
 						<Search className="w-4 h-4 text-zinc-400 ml-2" />
 						<Input
-							autoFocus
 							type="text"
 							placeholder="Find in document..."
 							value={searchQuery}
