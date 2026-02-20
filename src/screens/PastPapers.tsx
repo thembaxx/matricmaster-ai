@@ -74,7 +74,7 @@ export default function PastPapers() {
 									type="button"
 									// biome-ignore lint/suspicious/noExplicitAny: Year type casting
 									onClick={() => setSelectedYear(year as any)}
-									aria-pressed={selectedYear === year}
+									aria-pressed={selectedYear === year ? 'true' : 'false'}
 									className={`rounded-lg px-4 py-1.5 text-sm font-bold transition-all ${
 										selectedYear === year
 											? 'bg-primary text-primary-foreground shadow-lg shadow-primary/20'

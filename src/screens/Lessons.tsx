@@ -103,7 +103,7 @@ export default function Lessons() {
 							key={cat.id}
 							type="button"
 							onClick={() => setActiveCategory(cat.id)}
-							aria-pressed={activeCategory === cat.id}
+							aria-pressed={activeCategory === cat.id ? 'true' : 'false'}
 							className={`flex items-center gap-2 px-5 py-3 rounded-full text-sm font-bold whitespace-nowrap transition-all border shadow-sm ${
 								activeCategory === cat.id
 									? 'bg-foreground text-background border-foreground shadow-lg'

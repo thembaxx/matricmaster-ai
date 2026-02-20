@@ -178,7 +178,7 @@ export default function Profile() {
 							<button
 								type="button"
 								onClick={() => setViewMode('my_stats')}
-								aria-pressed={viewMode === 'my_stats'}
+								aria-pressed={viewMode === 'my_stats' ? 'true' : 'false'}
 								className={`flex-1 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wide transition-all duration-300 ${
 									viewMode === 'my_stats'
 										? 'bg-background text-foreground shadow-sm scale-100'
@@ -190,7 +190,7 @@ export default function Profile() {
 							<button
 								type="button"
 								onClick={() => setViewMode('provincial')}
-								aria-pressed={viewMode === 'provincial'}
+								aria-pressed={viewMode === 'provincial' ? 'true' : 'false'}
 								className={`flex-1 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wide transition-all duration-300 ${
 									viewMode === 'provincial'
 										? 'bg-background text-foreground shadow-sm scale-100'

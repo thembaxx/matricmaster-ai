@@ -96,7 +96,7 @@ export default function Bookmarks() {
 							</div>
 							<div className="space-y-2">
 								<h3 className="text-xl font-bold">Sign in to view bookmarks</h3>
-								<p className="text-sm text-muted-foreground max-w-[240px] mx-auto">
+								<p className="text-sm text-muted-foreground max-w-60 mx-auto">
 									Save difficult questions or important concepts to review them later.
 								</p>
 							</div>
@@ -215,7 +215,7 @@ export default function Bookmarks() {
 							</div>
 							<div className="space-y-2">
 								<h3 className="text-xl font-bold">Nothing saved yet</h3>
-								<p className="text-sm text-muted-foreground max-w-[240px] mx-auto">
+								<p className="text-sm text-muted-foreground max-w-60 mx-auto">
 									Save difficult questions or important concepts to review them later.
 								</p>
 							</div>

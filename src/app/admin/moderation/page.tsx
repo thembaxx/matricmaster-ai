@@ -53,7 +53,7 @@ export default function ModerationDashboard() {
 	const [statusFilter, setStatusFilter] = useState<string>('all');
 
 	// Mock data
-	const [flags] = useState<ContentFlag[]>([
+	const [flags, setFlags] = useState<ContentFlag[]>([
 		{
 			id: '1',
 			reporterId: 'user1',

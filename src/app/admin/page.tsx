@@ -38,6 +38,7 @@ import {
 	SelectValue,
 } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import type { SessionUser } from '@/lib/auth';
 import { authClient } from '@/lib/auth-client';
 import {
 	deleteUserAction,
@@ -114,7 +115,7 @@ export default function AdminDashboardPage() {
 	const [userFilter, setUserFilter] = useState<'all' | 'active' | 'blocked' | 'deleted'>('all');
 	const [, startTransition] = useTransition();
 
-	const isAdmin = (session?.user as { role?: string })?.role === 'admin';
+	const isAdmin = (session?.user as SessionUser | undefined)?.role === 'admin';
 
 	const loadUsers = useCallback(async () => {
 		setIsLoadingUsers(true);

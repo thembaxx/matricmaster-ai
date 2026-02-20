@@ -1,5 +1,5 @@
 import { type NextRequest, NextResponse } from 'next/server';
-import { getAuth } from '@/lib/auth';
+import { getAuth, type SessionUser } from '@/lib/auth';
 import {
 	actionFlagAction,
 	createContentFlagAction,
@@ -30,7 +30,7 @@ export async function GET(request: NextRequest) {
 		}
 
 		// Check if admin using role instead of email
-		const isAdmin = (session.user as { role?: string }).role === 'admin';
+		const isAdmin = (session.user as SessionUser).role === 'admin';
 		if (!isAdmin) {
 			return NextResponse.json({ error: 'Forbidden - Admin only' }, { status: 403 });
 		}
@@ -99,7 +99,7 @@ export async function PUT(request: NextRequest) {
 		}
 
 		// Check if admin using role instead of email
-		const isAdmin = (session.user as { role?: string }).role === 'admin';
+		const isAdmin = (session.user as SessionUser).role === 'admin';
 		if (!isAdmin) {
 			return NextResponse.json({ error: 'Forbidden - Admin only' }, { status: 403 });
 		}
