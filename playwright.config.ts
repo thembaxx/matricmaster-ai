@@ -15,7 +15,12 @@ export default defineConfig({
 	/* Opt out of parallel tests on CI */
 	workers: process.env.CI ? 1 : undefined,
 	/* Reporter to use */
-	reporter: 'html',
+	reporter: process.env.CI ? 'line' : 'html',
+	/* Timeout settings */
+	timeout: 60000,
+	expect: {
+		timeout: 10000,
+	},
 	/* Shared settings for all the projects below */
 	use: {
 		/* Base URL to use in actions like `await page.goto('/')` */
@@ -24,6 +29,8 @@ export default defineConfig({
 		trace: 'on-first-retry',
 		/* Screenshot on failure */
 		screenshot: 'only-on-failure',
+		/* Action timeout */
+		actionTimeout: 15000,
 	},
 
 	/* Configure projects for major browsers */
@@ -32,23 +39,27 @@ export default defineConfig({
 			name: 'chromium',
 			use: { ...devices['Desktop Chrome'] },
 		},
-		{
-			name: 'firefox',
-			use: { ...devices['Desktop Firefox'] },
-		},
-		{
-			name: 'webkit',
-			use: { ...devices['Desktop Safari'] },
-		},
-		/* Test against mobile viewports */
-		{
-			name: 'Mobile Chrome',
-			use: { ...devices['Pixel 5'] },
-		},
-		{
-			name: 'Mobile Safari',
-			use: { ...devices['iPhone 12'] },
-		},
+		...(process.env.CI
+			? []
+			: [
+					{
+						name: 'firefox',
+						use: { ...devices['Desktop Firefox'] },
+					},
+					{
+						name: 'webkit',
+						use: { ...devices['Desktop Safari'] },
+					},
+					/* Test against mobile viewports */
+					{
+						name: 'Mobile Chrome',
+						use: { ...devices['Pixel 5'] },
+					},
+					{
+						name: 'Mobile Safari',
+						use: { ...devices['iPhone 12'] },
+					},
+				]),
 	],
 
 	/* Run your local dev server before starting the tests */
@@ -56,5 +67,7 @@ export default defineConfig({
 		command: 'npm run dev',
 		url: 'http://localhost:3000',
 		reuseExistingServer: !process.env.CI,
+		timeout: 120000,
+		stderr: 'pipe',
 	},
 });

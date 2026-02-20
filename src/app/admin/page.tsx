@@ -15,7 +15,7 @@ import {
 	Undo2,
 	Users,
 } from 'lucide-react';
-import { useEffect, useState, useTransition } from 'react';
+import { useCallback, useEffect, useState, useTransition } from 'react';
 import { toast } from 'sonner';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
@@ -115,14 +115,7 @@ export default function AdminDashboardPage() {
 
 	const isAdmin = session?.user?.email?.includes('admin');
 
-	// Load users when tab changes to users
-	useEffect(() => {
-		if (activeTab === 'users') {
-			loadUsers();
-		}
-	}, [activeTab, loadUsers]);
-
-	async function loadUsers() {
+	const loadUsers = useCallback(async () => {
 		setIsLoadingUsers(true);
 		try {
 			const usersList = await getUsersAction({ search: searchQuery, filter: userFilter });
@@ -133,7 +126,14 @@ export default function AdminDashboardPage() {
 		} finally {
 			setIsLoadingUsers(false);
 		}
-	}
+	}, [searchQuery, userFilter]);
+
+	// Load users when tab changes to users
+	useEffect(() => {
+		if (activeTab === 'users') {
+			loadUsers();
+		}
+	}, [activeTab, loadUsers]);
 
 	const handleSearch = () => {
 		loadUsers();

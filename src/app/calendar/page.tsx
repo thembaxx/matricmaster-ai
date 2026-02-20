@@ -28,7 +28,9 @@ interface CalendarEvent {
 	isCompleted?: boolean;
 }
 
-const EVENT_TYPES = [
+type EventType = 'exam' | 'study' | 'lesson' | 'reminder' | 'personal';
+
+const EVENT_TYPES: { value: EventType; label: string; color: string }[] = [
 	{ value: 'exam', label: 'Exam', color: 'bg-red-100 text-red-800' },
 	{ value: 'study', label: 'Study Session', color: 'bg-blue-100 text-blue-800' },
 	{ value: 'lesson', label: 'Lesson', color: 'bg-green-100 text-green-800' },
@@ -78,12 +80,20 @@ export default function CalendarPage() {
 		},
 	]);
 	const [showEventForm, setShowEventForm] = useState(false);
-	const [newEvent, setNewEvent] = useState({
+	const [newEvent, setNewEvent] = useState<{
+		title: string;
+		description: string;
+		startTime: string;
+		endTime: string;
+		eventType: EventType;
+		subject: string;
+		reminder: string;
+	}>({
 		title: '',
 		description: '',
 		startTime: '',
 		endTime: '',
-		eventType: 'study' as const,
+		eventType: 'study',
 		subject: '',
 		reminder: '30',
 	});
@@ -165,10 +175,11 @@ export default function CalendarPage() {
 			const dayEvents = getEventsForDay(day);
 
 			days.push(
-				<div
+				<button
+					type="button"
 					key={day}
 					onClick={() => setSelectedDate(date)}
-					className={`h-24 border p-1 cursor-pointer hover:bg-accent transition-colors ${
+					className={`h-24 border p-1 cursor-pointer hover:bg-accent transition-colors text-left ${
 						isToday ? 'bg-blue-50' : ''
 					} ${isSelected ? 'ring-2 ring-primary' : ''}`}
 				>
@@ -196,7 +207,7 @@ export default function CalendarPage() {
 							<div className="text-xs text-muted-foreground">+{dayEvents.length - 2} more</div>
 						)}
 					</div>
-				</div>
+				</button>
 			);
 		}
 
@@ -352,7 +363,13 @@ export default function CalendarPage() {
 						</CardHeader>
 						<CardContent className="space-y-3">
 							<Button variant="outline" className="w-full justify-start">
-								<svg viewBox="0 0 24 24" className="h-4 w-4 mr-2" fill="currentColor">
+								<svg
+									viewBox="0 0 24 24"
+									className="h-4 w-4 mr-2"
+									fill="currentColor"
+									aria-label="Google Calendar"
+								>
+									<title>Google Calendar</title>
 									<path
 										d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
 										fill="#4285F4"
@@ -373,7 +390,13 @@ export default function CalendarPage() {
 								Connect Google Calendar
 							</Button>
 							<Button variant="outline" className="w-full justify-start">
-								<svg viewBox="0 0 24 24" className="h-4 w-4 mr-2" fill="currentColor">
+								<svg
+									viewBox="0 0 24 24"
+									className="h-4 w-4 mr-2"
+									fill="currentColor"
+									aria-label="iCal Calendar"
+								>
+									<title>iCal Calendar</title>
 									<path
 										d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"
 										fill="#FA3F00"
@@ -395,16 +418,22 @@ export default function CalendarPage() {
 						</CardHeader>
 						<CardContent className="space-y-4">
 							<div>
-								<label className="text-sm font-medium mb-1 block">Title</label>
+								<label htmlFor="event-title" className="text-sm font-medium mb-1 block">
+									Title
+								</label>
 								<Input
+									id="event-title"
 									placeholder="Event title"
 									value={newEvent.title}
 									onChange={(e) => setNewEvent({ ...newEvent, title: e.target.value })}
 								/>
 							</div>
 							<div>
-								<label className="text-sm font-medium mb-1 block">Description</label>
+								<label htmlFor="event-description" className="text-sm font-medium mb-1 block">
+									Description
+								</label>
 								<Textarea
+									id="event-description"
 									placeholder="Optional description"
 									value={newEvent.description}
 									onChange={(e) => setNewEvent({ ...newEvent, description: e.target.value })}
@@ -412,16 +441,22 @@ export default function CalendarPage() {
 							</div>
 							<div className="grid grid-cols-2 gap-4">
 								<div>
-									<label className="text-sm font-medium mb-1 block">Start Time</label>
+									<label htmlFor="event-start" className="text-sm font-medium mb-1 block">
+										Start Time
+									</label>
 									<Input
+										id="event-start"
 										type="datetime-local"
 										value={newEvent.startTime}
 										onChange={(e) => setNewEvent({ ...newEvent, startTime: e.target.value })}
 									/>
 								</div>
 								<div>
-									<label className="text-sm font-medium mb-1 block">End Time</label>
+									<label htmlFor="event-end" className="text-sm font-medium mb-1 block">
+										End Time
+									</label>
 									<Input
+										id="event-end"
 										type="datetime-local"
 										value={newEvent.endTime}
 										onChange={(e) => setNewEvent({ ...newEvent, endTime: e.target.value })}
@@ -429,14 +464,14 @@ export default function CalendarPage() {
 								</div>
 							</div>
 							<div>
-								<label className="text-sm font-medium mb-1 block">Event Type</label>
+								<span className="text-sm font-medium mb-1 block">Event Type</span>
 								<div className="flex gap-2 flex-wrap">
 									{EVENT_TYPES.map((type) => (
 										<Badge
 											key={type.value}
 											variant={newEvent.eventType === type.value ? 'default' : 'outline'}
 											className="cursor-pointer"
-											onClick={() => setNewEvent({ ...newEvent, eventType: type.value as any })}
+											onClick={() => setNewEvent({ ...newEvent, eventType: type.value })}
 										>
 											{type.label}
 										</Badge>
@@ -444,8 +479,11 @@ export default function CalendarPage() {
 								</div>
 							</div>
 							<div>
-								<label className="text-sm font-medium mb-1 block">Subject (Optional)</label>
+								<label htmlFor="event-subject" className="text-sm font-medium mb-1 block">
+									Subject (Optional)
+								</label>
 								<Input
+									id="event-subject"
 									placeholder="e.g., Mathematics"
 									value={newEvent.subject}
 									onChange={(e) => setNewEvent({ ...newEvent, subject: e.target.value })}

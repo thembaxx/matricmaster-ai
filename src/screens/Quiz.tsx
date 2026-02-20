@@ -319,7 +319,7 @@ export default function Quiz() {
 							</motion.div>
 						)}
 					</AnimatePresence>
-					// ... rest of component ...
+					{/* ... rest of component ... */}
 					{/* Hint Card */}
 					<AnimatePresence mode="wait">
 						{!showExplanation && (

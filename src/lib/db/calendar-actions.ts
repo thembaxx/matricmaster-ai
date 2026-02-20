@@ -134,9 +134,9 @@ export async function getCalendarEvent(eventId: string, userId: string) {
 			.from(calendarEvents)
 			.where(and(eq(calendarEvents.id, eventId), eq(calendarEvents.userId, userId)))
 			.limit(1);
-		
+
 		if (!event) return null;
-		
+
 		return {
 			...event,
 			reminderMinutes: parseJsonField<number[]>(event.reminderMinutes, []),

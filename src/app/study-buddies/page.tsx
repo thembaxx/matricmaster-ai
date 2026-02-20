@@ -10,7 +10,7 @@ import {
 	Users,
 	XCircle,
 } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -72,14 +72,7 @@ export default function StudyBuddiesPage() {
 	});
 	const [_isLoading, setIsLoading] = useState(true);
 
-	// Load data on mount
-	useEffect(() => {
-		if (session?.user?.id) {
-			loadData();
-		}
-	}, [session?.user?.id, loadData]);
-
-	async function loadData() {
+	const loadData = useCallback(async () => {
 		if (!session?.user?.id) return;
 		setIsLoading(true);
 
@@ -209,7 +202,14 @@ export default function StudyBuddiesPage() {
 		} finally {
 			setIsLoading(false);
 		}
-	}
+	}, [session?.user?.id]);
+
+	// Load data on mount
+	useEffect(() => {
+		if (session?.user?.id) {
+			loadData();
+		}
+	}, [session?.user?.id, loadData]);
 
 	const handleSubjectToggle = (subject: string) => {
 		setSelectedSubjects((prev) =>

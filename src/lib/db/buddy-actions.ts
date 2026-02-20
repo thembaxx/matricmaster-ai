@@ -259,8 +259,12 @@ export async function getUserBuddies(userId: string) {
 
 		// Combine and get unique buddy IDs
 		const buddyIds = new Set<string>();
-		asUser1.forEach((b) => buddyIds.add(b.userId2));
-		asUser2.forEach((b) => buddyIds.add(b.userId1));
+		for (const b of asUser1) {
+			buddyIds.add(b.userId2);
+		}
+		for (const b of asUser2) {
+			buddyIds.add(b.userId1);
+		}
 
 		// Get buddy profiles
 		const buddies = await db.select().from(studyBuddyProfiles);
