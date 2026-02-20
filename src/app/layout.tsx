@@ -1,3 +1,4 @@
+import { Analytics } from '@vercel/analytics/next';
 import type { Metadata, Viewport } from 'next';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 import AppLayout from '@/components/Layout/AppLayout';
@@ -112,6 +113,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 						<Toaster />
 					</ThemeProvider>
 				</ErrorBoundary>
+				<Analytics />
 			</body>
 		</html>
 	);
