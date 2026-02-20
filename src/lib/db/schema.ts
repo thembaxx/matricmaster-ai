@@ -4,6 +4,7 @@ import {
 	boolean,
 	index,
 	integer,
+	numeric,
 	pgTable,
 	primaryKey,
 	text,
@@ -241,6 +242,124 @@ export const studyPlans = pgTable(
 	(table) => ({
 		userIdIdx: index('study_plans_user_id_idx').on(table.userId),
 		isActiveIdx: index('study_plans_is_active_idx').on(table.isActive),
+	})
+);
+
+// ============================================================================
+// FLASHCARD DECKS TABLE
+// ============================================================================
+
+export const flashcardDecks = pgTable(
+	'flashcard_decks',
+	{
+		id: uuid('id').defaultRandom().primaryKey(),
+		userId: text('user_id')
+			.notNull()
+			.references(() => users.id, { onDelete: 'cascade' }),
+		name: varchar('name', { length: 200 }).notNull(),
+		description: text('description'),
+		subjectId: bigint('subject_id', { mode: 'number' }).references(() => subjects.id, {
+			onDelete: 'set null',
+		}),
+		cardCount: integer('card_count').notNull().default(0),
+		isPublic: boolean('is_public').notNull().default(false),
+		createdAt: timestamp('created_at').defaultNow(),
+		updatedAt: timestamp('updated_at').defaultNow(),
+	},
+	(table) => ({
+		userIdIdx: index('flashcard_decks_user_id_idx').on(table.userId),
+		subjectIdIdx: index('flashcard_decks_subject_id_idx').on(table.subjectId),
+	})
+);
+
+// ============================================================================
+// FLASHCARDS TABLE (with Spaced Repetition fields)
+// ============================================================================
+
+export const flashcards = pgTable(
+	'flashcards',
+	{
+		id: uuid('id').defaultRandom().primaryKey(),
+		deckId: uuid('deck_id')
+			.notNull()
+			.references(() => flashcardDecks.id, { onDelete: 'cascade' }),
+		front: text('front').notNull(),
+		back: text('back').notNull(),
+		imageUrl: text('image_url'),
+		difficulty: varchar('difficulty', { length: 20 }).notNull().default('medium'),
+		timesReviewed: integer('times_reviewed').notNull().default(0),
+		timesCorrect: integer('times_correct').notNull().default(0),
+		easeFactor: numeric('ease_factor', { precision: 3, scale: 2 }).notNull().default('2.5'),
+		intervalDays: integer('interval_days').notNull().default(1),
+		repetitions: integer('repetitions').notNull().default(0),
+		nextReview: timestamp('next_review'),
+		lastReview: timestamp('last_review'),
+		createdAt: timestamp('created_at').defaultNow(),
+		updatedAt: timestamp('updated_at').defaultNow(),
+	},
+	(table) => ({
+		deckIdIdx: index('flashcards_deck_id_idx').on(table.deckId),
+		nextReviewIdx: index('flashcards_next_review_idx').on(table.nextReview),
+	})
+);
+
+// ============================================================================
+// FLASHCARD REVIEWS TABLE (for tracking review history)
+// ============================================================================
+
+export const flashcardReviews = pgTable(
+	'flashcard_reviews',
+	{
+		id: uuid('id').defaultRandom().primaryKey(),
+		userId: text('user_id')
+			.notNull()
+			.references(() => users.id, { onDelete: 'cascade' }),
+		flashcardId: uuid('flashcard_id')
+			.notNull()
+			.references(() => flashcards.id, { onDelete: 'cascade' }),
+		rating: integer('rating').notNull(),
+		intervalBefore: integer('interval_before'),
+		intervalAfter: integer('interval_after').notNull(),
+		easeFactorBefore: numeric('ease_factor_before', { precision: 3, scale: 2 }),
+		easeFactorAfter: numeric('ease_factor_after', { precision: 3, scale: 2 }).notNull(),
+		reviewedAt: timestamp('reviewed_at').defaultNow().notNull(),
+	},
+	(table) => ({
+		userIdIdx: index('flashcard_reviews_user_id_idx').on(table.userId),
+		flashcardIdIdx: index('flashcard_reviews_flashcard_id_idx').on(table.flashcardId),
+		reviewedAtIdx: index('flashcard_reviews_reviewed_at_idx').on(table.reviewedAt),
+	})
+);
+
+// ============================================================================
+// TOPIC MASTERY TABLE (for adaptive learning)
+// ============================================================================
+
+export const topicMastery = pgTable(
+	'topic_mastery',
+	{
+		id: uuid('id').defaultRandom().primaryKey(),
+		userId: text('user_id')
+			.notNull()
+			.references(() => users.id, { onDelete: 'cascade' }),
+		subjectId: bigint('subject_id', { mode: 'number' })
+			.notNull()
+			.references(() => subjects.id, { onDelete: 'cascade' }),
+		topic: varchar('topic', { length: 100 }).notNull(),
+		masteryLevel: numeric('mastery_level', { precision: 5, scale: 2 }).notNull().default('0'),
+		questionsAttempted: integer('questions_attempted').notNull().default(0),
+		questionsCorrect: integer('questions_correct').notNull().default(0),
+		averageTime: integer('average_time_seconds'),
+		lastPracticed: timestamp('last_practiced'),
+		nextReview: timestamp('next_review'),
+		consecutiveCorrect: integer('consecutive_correct').notNull().default(0),
+		createdAt: timestamp('created_at').defaultNow(),
+		updatedAt: timestamp('updated_at').defaultNow(),
+	},
+	(table) => ({
+		userIdIdx: index('topic_mastery_user_id_idx').on(table.userId),
+		subjectIdIdx: index('topic_mastery_subject_id_idx').on(table.subjectId),
+		nextReviewIdx: index('topic_mastery_next_review_idx').on(table.nextReview),
 	})
 );
 
@@ -672,6 +791,47 @@ export const studyPlansRelations = relations(studyPlans, ({ one }) => ({
 	}),
 }));
 
+export const flashcardDecksRelations = relations(flashcardDecks, ({ one, many }) => ({
+	user: one(users, {
+		fields: [flashcardDecks.userId],
+		references: [users.id],
+	}),
+	subject: one(subjects, {
+		fields: [flashcardDecks.subjectId],
+		references: [subjects.id],
+	}),
+	flashcards: many(flashcards),
+}));
+
+export const flashcardsRelations = relations(flashcards, ({ one }) => ({
+	deck: one(flashcardDecks, {
+		fields: [flashcards.deckId],
+		references: [flashcardDecks.id],
+	}),
+}));
+
+export const flashcardReviewsRelations = relations(flashcardReviews, ({ one }) => ({
+	user: one(users, {
+		fields: [flashcardReviews.userId],
+		references: [users.id],
+	}),
+	flashcard: one(flashcards, {
+		fields: [flashcardReviews.flashcardId],
+		references: [flashcards.id],
+	}),
+}));
+
+export const topicMasteryRelations = relations(topicMastery, ({ one }) => ({
+	user: one(users, {
+		fields: [topicMastery.userId],
+		references: [users.id],
+	}),
+	subject: one(subjects, {
+		fields: [topicMastery.subjectId],
+		references: [subjects.id],
+	}),
+}));
+
 export const bookmarksRelations = relations(bookmarks, ({ one }) => ({
 	user: one(users, {
 		fields: [bookmarks.userId],
@@ -829,6 +989,18 @@ export type NewStudySession = typeof studySessions.$inferInsert;
 
 export type StudyPlan = typeof studyPlans.$inferSelect;
 export type NewStudyPlan = typeof studyPlans.$inferInsert;
+
+export type FlashcardDeck = typeof flashcardDecks.$inferSelect;
+export type NewFlashcardDeck = typeof flashcardDecks.$inferInsert;
+
+export type Flashcard = typeof flashcards.$inferSelect;
+export type NewFlashcard = typeof flashcards.$inferInsert;
+
+export type FlashcardReview = typeof flashcardReviews.$inferSelect;
+export type NewFlashcardReview = typeof flashcardReviews.$inferInsert;
+
+export type TopicMastery = typeof topicMastery.$inferSelect;
+export type NewTopicMastery = typeof topicMastery.$inferInsert;
 
 export type Bookmark = typeof bookmarks.$inferSelect;
 export type NewBookmark = typeof bookmarks.$inferInsert;
