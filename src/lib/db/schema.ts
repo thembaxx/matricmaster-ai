@@ -850,3 +850,19 @@ export type NewBuddyRequest = typeof buddyRequests.$inferInsert;
 
 export type ContentFlag = typeof contentFlags.$inferSelect;
 export type NewContentFlag = typeof contentFlags.$inferInsert;
+
+// Chat schema exports
+export {
+	chatMessages,
+	chatMessagesRelations,
+	outbox,
+	userPresence,
+	userPresenceRelations,
+} from './schema-chat';
+
+export type ChatMessage = import('./schema-chat').ChatMessage;
+export type NewChatMessage = import('./schema-chat').NewChatMessage;
+export type Outbox = import('./schema-chat').Outbox;
+export type NewOutbox = import('./schema-chat').NewOutbox;
+export type UserPresence = import('./schema-chat').UserPresence;
+export type NewUserPresence = import('./schema-chat').NewUserPresence;

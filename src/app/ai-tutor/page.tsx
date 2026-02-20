@@ -1,6 +1,7 @@
 'use client';
 
 import { Loader2, Save, Send, Sparkles } from 'lucide-react';
+import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import { toast } from 'sonner';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
@@ -87,6 +88,12 @@ export default function AITutorPage() {
 	};
 
 	const handleSave = async () => {
+		// Defensive check for session and user ID
+		if (!session?.user?.id) {
+			toast.error('You must be logged in to save conversations');
+			return;
+		}
+
 		if (messages.length <= 1) {
 			toast.info('Start a conversation first');
 			return;
@@ -96,7 +103,7 @@ export default function AITutorPage() {
 			? `${firstUserMessage.content.slice(0, 50)}...`
 			: 'Untitled Conversation';
 		const result = await saveConversationAction(
-			session!.user.id,
+			session.user.id,
 			title,
 			messages,
 			selectedSubject ?? undefined
@@ -125,7 +132,7 @@ export default function AITutorPage() {
 					<CardContent className="space-y-4">
 						<p className="text-muted-foreground">Please sign in to access the AI Tutor.</p>
 						<Button asChild className="w-full">
-							<a href="/sign-in">Sign In</a>
+							<Link href="/sign-in">Sign In</Link>
 						</Button>
 					</CardContent>
 				</Card>

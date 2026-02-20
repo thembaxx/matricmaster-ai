@@ -176,12 +176,12 @@ export default function InteractiveQuiz() {
 		const correct = selectedAnswer === currentQuestion.correctAnswer;
 		setIsCorrect(correct);
 		setShowResult(true);
-		if (correct) setScore(score + 1);
+		if (correct) setScore((prev) => prev + 1);
 	};
 
 	const handleNextQuestion = () => {
 		if (currentQuestionIndex < quiz.questions.length - 1) {
-			setCurrentQuestionIndex(currentQuestionIndex + 1);
+			setCurrentQuestionIndex((prev) => prev + 1);
 			setSelectedAnswer(null);
 			setShowResult(false);
 			setAiExplanation(null);

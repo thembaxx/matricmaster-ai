@@ -2,9 +2,9 @@ import { expect, type Page, test } from '@playwright/test';
 
 // Helper function to sign up for tests
 async function signUp(page: Page) {
-	// Use unique timestamp to avoid conflicts
-	const timestamp = Date.now() + Math.random();
-	const email = `testuser-${timestamp}@matricmaster.test`;
+	// Use crypto.randomUUID for stronger uniqueness
+	const uniqueId = crypto.randomUUID();
+	const email = `testuser-${uniqueId}@matricmaster.test`;
 	const password = 'TestPassword123!';
 
 	// Go to sign up page
@@ -18,10 +18,26 @@ async function signUp(page: Page) {
 	// Click submit
 	await page.click('button[type="submit"]');
 
-	// Wait for button to change (shows "Redirecting...")
-	await expect(page.getByText('Redirecting...'))
-		.toBeVisible({ timeout: 15000 })
-		.catch(() => {});
+	// Wait for button to change (shows "Redirecting...") with error handling
+	try {
+		await expect(page.getByText('Redirecting...')).toBeVisible({ timeout: 15000 });
+	} catch (error) {
+		// Check if there's a validation error visible
+		console.log('Redirecting text not visible, checking for validation errors...', error);
+		const validationError = await page
+			.locator('[class*="error"]')
+			.first()
+			.isVisible()
+			.catch(() => false);
+		if (validationError) {
+			throw new Error(
+				'Sign-up validation error: ' +
+					(await page.locator('[class*="error"]').first().textContent())
+			);
+		}
+		// If no validation error, the "Redirecting..." text might not show but URL should change
+		console.warn('Redirecting text not visible, but proceeding to wait for dashboard navigation');
+	}
 
 	// Wait for navigation to dashboard - longer timeout
 	await page.waitForURL(/\/dashboard/, { timeout: 60000 });

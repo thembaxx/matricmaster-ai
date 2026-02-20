@@ -40,7 +40,7 @@ const getColorForSubject = (subject: string) => {
 
 export default function Bookmarks() {
 	const router = useRouter();
-	const { data: session } = useSession();
+	const { data: session, isPending } = useSession();
 	const [activeTab, setActiveTab] = useState('all');
 	const [bookmarks, setBookmarks] = useState<BookmarkType[]>([]);
 	const [isLoading, setIsLoading] = useState(true);
@@ -57,8 +57,10 @@ export default function Bookmarks() {
 				setIsLoading(false);
 			}
 		};
-		loadBookmarks();
-	}, [session?.user?.id]);
+		if (!isPending) {
+			loadBookmarks();
+		}
+	}, [session?.user?.id, isPending]);
 
 	const handleDelete = async (e: React.MouseEvent, bookmarkId: string) => {
 		e.stopPropagation();

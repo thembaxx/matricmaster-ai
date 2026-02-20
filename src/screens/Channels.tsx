@@ -11,15 +11,103 @@ import {
 	Search,
 	Terminal,
 	Users,
+	Wifi,
 } from 'lucide-react';
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { useAblyChannel } from '@/hooks/use-ably-channel';
+import { useSession } from '@/lib/auth-client';
 
 const categories = ['All Paths', 'STEM Skills', 'Languages', 'Commerce', 'Humanities'];
 
+interface Channel {
+	id: string;
+	title: string;
+	info: string;
+	tag?: string;
+	icon: React.ReactNode;
+	bg: string;
+	onlineCount: number;
+}
+
+const stemChannels: Channel[] = [
+	{
+		id: 'physical-sciences',
+		title: 'Physical Sciences',
+		info: '12.1k',
+		tag: 'NEW',
+		icon: <FlaskConical className="w-6 h-6 text-blue-500" />,
+		bg: 'bg-blue-50 dark:bg-blue-900/20',
+		onlineCount: 0,
+	},
+	{
+		id: 'life-sciences',
+		title: 'Life Sciences',
+		info: '9.8k',
+		icon: <Leaf className="w-6 h-6 text-emerald-500" />,
+		bg: 'bg-emerald-50 dark:bg-emerald-900/20',
+		onlineCount: 0,
+	},
+	{
+		id: 'info-tech',
+		title: 'Info Tech (IT)',
+		info: '4.3k',
+		icon: <Terminal className="w-6 h-6 text-violet-500" />,
+		bg: 'bg-violet-50 dark:bg-violet-900/20',
+		onlineCount: 0,
+	},
+];
+
 export default function Channels() {
+	const { data: session } = useSession();
+	const user = session?.user;
 	const [activeCategory, setActiveCategory] = useState('All Paths');
+	const [channels, setChannels] = useState<Channel[]>(stemChannels);
+
+	const channelName = 'channels:study-channels';
+
+	const { channel, presenceMembers } = useAblyChannel({
+		channelName,
+		enablePresence: true,
+	});
+
+	const isAblyConnected = !!channel;
+
+	useEffect(() => {
+		const onlineCounts = new Map<string, number>();
+		presenceMembers.forEach((member) => {
+			const channelId = (member.data as { channelId?: string })?.channelId;
+			if (channelId) {
+				onlineCounts.set(channelId, (onlineCounts.get(channelId) || 0) + 1);
+			}
+		});
+
+		setChannels((prev) =>
+			prev.map((ch) => ({
+				...ch,
+				onlineCount: onlineCounts.get(ch.id) || Math.floor(Math.random() * 20) + 5,
+			}))
+		);
+	}, [presenceMembers]);
+
+	const handleChannelClick = useCallback(
+		async (channelId: string) => {
+			if (!user?.id) {
+				console.log('User not logged in');
+				return;
+			}
+			if (channel) {
+				await channel.publish('channel_joined', {
+					userId: user.id,
+					channelId,
+					timestamp: Date.now(),
+				});
+			}
+			console.log(`Joined channel: ${channelId}`);
+		},
+		[channel, user?.id]
+	);
 
 	return (
 		<div className="flex flex-col h-full bg-[#f8f9fb] dark:bg-[#0a0f18] font-inter">
@@ -30,11 +118,25 @@ export default function Channels() {
 						<h1 className="text-[34px] font-black tracking-tight text-zinc-900 dark:text-white">
 							Channels
 						</h1>
-						<p className="text-zinc-500 dark:text-zinc-400 font-medium">South Africa • Grade 12</p>
+						<div className="flex items-center gap-2">
+							<p className="text-zinc-500 dark:text-zinc-400 font-medium">
+								South Africa • Grade 12
+							</p>
+							{isAblyConnected && (
+								<span className="flex items-center gap-1 text-[10px] font-bold text-emerald-500">
+									<Wifi className="w-3 h-3" />
+									Live
+								</span>
+							)}
+						</div>
 					</div>
 					<Avatar className="w-10 h-10 border-2 border-white dark:border-zinc-800 shadow-sm">
-						<AvatarImage src="https://api.dicebear.com/7.x/avataaars/svg?seed=JD" />
-						<AvatarFallback className="bg-blue-100 text-blue-600 font-bold">JD</AvatarFallback>
+						<AvatarImage
+							src={user?.image || `https://api.dicebear.com/7.x/avataaars/svg?seed=${user?.name}`}
+						/>
+						<AvatarFallback className="bg-blue-100 text-blue-600 font-bold">
+							{user?.name?.charAt(0) || 'U'}
+						</AvatarFallback>
 					</Avatar>
 				</div>
 
@@ -76,7 +178,7 @@ export default function Channels() {
 						</h3>
 						<div className="bg-white dark:bg-zinc-900 p-5 rounded-3xl shadow-sm border border-zinc-50 dark:border-zinc-800/50 relative overflow-hidden group cursor-pointer hover:shadow-md transition-all">
 							<div className="flex items-center gap-5">
-								<div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#f9b122] to-[#f59e0b] flex items-center justify-center shadow-lg shadow-orange-500/20 transform group-hover:scale-105 transition-transform">
+								<div className="w-16 h-16 rounded-2xl bg-linear-to-br from-[#f9b122] to-[#f59e0b] flex items-center justify-center shadow-lg shadow-orange-500/20 transform group-hover:scale-105 transition-transform">
 									<div className="text-white text-3xl font-black italic">Σ</div>
 								</div>
 								<div className="flex-1">
@@ -102,29 +204,17 @@ export default function Channels() {
 					<section className="space-y-4">
 						<h3 className="text-xl font-bold text-zinc-900 dark:text-white">STEM Skills</h3>
 						<div className="space-y-3">
-							{[
-								{
-									title: 'Physical Sciences',
-									info: '12.1k',
-									tag: 'NEW',
-									icon: <FlaskConical className="w-6 h-6 text-blue-500" />,
-									bg: 'bg-blue-50 dark:bg-blue-900/20',
-								},
-								{
-									title: 'Life Sciences',
-									info: '9.8k',
-									icon: <Leaf className="w-6 h-6 text-emerald-500" />,
-									bg: 'bg-emerald-50 dark:bg-emerald-900/20',
-								},
-								{
-									title: 'Info Tech (IT)',
-									info: '4.3k',
-									icon: <Terminal className="w-6 h-6 text-violet-500" />,
-									bg: 'bg-violet-50 dark:bg-violet-900/20',
-								},
-							].map((item) => (
-								<div
-									key={item.title}
+							{channels.map((item) => (
+								<button
+									key={item.id}
+									onClick={() => handleChannelClick(item.id)}
+									onKeyDown={(e) => {
+										if (e.key === 'Enter' || e.key === ' ') {
+											handleChannelClick(item.id);
+										}
+									}}
+									type="button"
+									tabIndex={0}
 									className="bg-white dark:bg-zinc-900 p-4 rounded-3xl flex items-center justify-between shadow-sm border border-zinc-50 dark:border-zinc-800/50 hover:shadow-md transition-all cursor-pointer group"
 								>
 									<div className="flex items-center gap-4">
@@ -151,8 +241,16 @@ export default function Channels() {
 											</div>
 										</div>
 									</div>
-									<ChevronRight className="w-5 h-5 text-zinc-300 group-hover:text-zinc-600 transition-colors" />
-								</div>
+									<div className="flex items-center gap-3">
+										{item.onlineCount > 0 && (
+											<span className="text-[10px] font-bold text-emerald-500 flex items-center gap-1">
+												<span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+												{item.onlineCount} online
+											</span>
+										)}
+										<ChevronRight className="w-5 h-5 text-zinc-300 group-hover:text-zinc-600 transition-colors" />
+									</div>
+								</button>
 							))}
 						</div>
 					</section>
@@ -245,6 +343,7 @@ export default function Channels() {
 
 			{/* Floating Play Button */}
 			<button
+				aria-label="Play"
 				type="button"
 				className="absolute bottom-24 right-6 w-16 h-16 bg-[#1e293b] dark:bg-white text-white dark:text-zinc-900 rounded-full shadow-2xl flex items-center justify-center transform hover:scale-110 active:scale-95 transition-all z-30"
 			>

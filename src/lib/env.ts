@@ -30,6 +30,8 @@ const getEnvSchema = () => {
 		TWITTER_CLIENT_SECRET: z.string().optional(),
 		GEMINI_API_KEY: z.string().optional(),
 		RESEND_API_KEY: z.string().optional(),
+		ABLY_API_KEY: z.string().optional(),
+		NEXT_PUBLIC_ABLY_KEY: z.string().optional(),
 		FROM_EMAIL: z.email().optional(),
 		NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
 	};
@@ -71,6 +73,8 @@ export function validateEnv(): Env {
 			TWITTER_CLIENT_SECRET: z.string().optional(),
 			GEMINI_API_KEY: z.string().optional(),
 			RESEND_API_KEY: z.string().optional(),
+			ABLY_API_KEY: z.string().optional(),
+			NEXT_PUBLIC_ABLY_KEY: z.string().optional(),
 			FROM_EMAIL: z.string().email().optional(),
 			NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
 		});

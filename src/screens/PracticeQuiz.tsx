@@ -67,7 +67,7 @@ export default function PracticeQuiz() {
 		playClickSound();
 		const newInput = input.slice(0, cursorPos) + val + input.slice(cursorPos);
 		setInput(newInput);
-		setCursorPos(cursorPos + val.length);
+		setCursorPos((prev) => prev + val.length);
 	};
 
 	const handleDelete = () => {
@@ -75,14 +75,14 @@ export default function PracticeQuiz() {
 		if (cursorPos > 0) {
 			const newInput = input.slice(0, cursorPos - 1) + input.slice(cursorPos);
 			setInput(newInput);
-			setCursorPos(cursorPos - 1);
+			setCursorPos((prev) => prev - 1);
 		}
 	};
 
 	const moveCursor = (dir: 'left' | 'right') => {
 		playClickSound();
-		if (dir === 'left' && cursorPos > 0) setCursorPos(cursorPos - 1);
-		if (dir === 'right' && cursorPos < input.length) setCursorPos(cursorPos + 1);
+		if (dir === 'left' && cursorPos > 0) setCursorPos((prev) => prev - 1);
+		if (dir === 'right' && cursorPos < input.length) setCursorPos((prev) => prev + 1);
 	};
 
 	return (

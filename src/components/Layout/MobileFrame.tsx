@@ -228,7 +228,7 @@ export default function MobileFrame({ children }: { children: React.ReactNode })
 							<ProfileMenu user={user}>
 								<motion.button
 									type="button"
-									className="z-50 pointer-events-auto rounded-full focus-visible:outline-none focus-visible:ring-[var(--focus-ring-width)] focus-visible:ring-ring focus-visible:ring-offset-[var(--focus-ring-offset)]"
+									className="z-50 pointer-events-auto rounded-full focus-visible:outline-none focus-visible:ring-ring focus-visible:ring-offset-(--focus-ring-offset)"
 									aria-label="Open profile menu"
 									whileTap={{ scale: 0.9 }}
 								>
@@ -264,7 +264,7 @@ export default function MobileFrame({ children }: { children: React.ReactNode })
 								<Link
 									key={item.href}
 									href={item.href}
-									className="relative flex flex-col items-center justify-center min-w-16 py-2 transition-all duration-300 group rounded-2xl focus-visible:outline-none focus-visible:ring-[var(--focus-ring-width)] focus-visible:ring-ring focus-visible:ring-offset-[-4px]"
+									className="relative flex flex-col items-center justify-center min-w-16 py-2 transition-all duration-300 group rounded-2xl focus-visible:outline-none focus-visible:ring-ring focus-visible:ring-offset-[-4px]"
 									aria-current={isActive ? 'page' : undefined}
 								>
 									<AnimatePresence>

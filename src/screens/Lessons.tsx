@@ -123,7 +123,7 @@ export default function Lessons() {
 			<ScrollArea className="flex-1">
 				<main className="px-6 py-4 relative">
 					{/* Vertical Line */}
-					<div className="absolute left-[38px] top-0 bottom-0 w-[2px] border-l-2 border-dashed border-border/50 z-0" />
+					<div className="absolute left-9.5 top-0 bottom-0 w-0.5 border-l-2 border-dashed border-border/50 z-0" />
 
 					<div className="space-y-6">
 						{lessons.map((lesson) => (
@@ -206,7 +206,7 @@ export default function Lessons() {
 												)}
 											</div>
 											<div
-												className={`w-16 h-16 rounded-[1.25rem] flex items-center justify-center text-3xl shadow-inner ${lesson.color} border border-border shrink-0 transform group-hover:scale-110 transition-transform`}
+												className={`w-16 h-16 rounded-4xl flex items-center justify-center text-3xl shadow-inner ${lesson.color} border border-border shrink-0 transform group-hover:scale-110 transition-transform`}
 											>
 												{lesson.status === 'active' ? (
 													<div className="relative">

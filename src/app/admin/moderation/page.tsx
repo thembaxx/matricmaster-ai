@@ -164,12 +164,13 @@ export default function ModerationDashboard() {
 		}
 	};
 
-	const handleAction = async (flagId: string, action: 'approve' | 'dismiss') => {
-		// In production, call server actions
-		// For now, just update local state
+	const handleAction = (flagId: string, action: 'remove' | 'dismiss') => {
+		// Update local state by filtering out the handled flag
+		setFlags((prevFlags) => prevFlags.filter((flag) => flag.id !== flagId));
+
 		if (action === 'dismiss') {
 			toast.success(`Flag ${flagId} dismissed`);
-		} else {
+		} else if (action === 'remove') {
 			toast.success(`Content ${flagId} removed`);
 		}
 	};
@@ -344,7 +345,7 @@ export default function ModerationDashboard() {
 												<Button
 													size="sm"
 													variant="destructive"
-													onClick={() => handleAction(flag.id, 'approve')}
+													onClick={() => handleAction(flag.id, 'remove')}
 												>
 													<X className="h-4 w-4 mr-1" />
 													Remove

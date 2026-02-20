@@ -3,6 +3,7 @@ import { ErrorBoundary } from '@/components/ErrorBoundary';
 import MobileFrame from '@/components/Layout/MobileFrame';
 import { Toaster } from '@/components/Toaster';
 import { ThemeProvider } from '@/components/theme-provider';
+import { AblyClientProvider } from '@/lib/ably/provider';
 import '@/styles/index.css';
 import { dmSans, inter, jakarta, lexend, outfit } from './fonts';
 
@@ -105,7 +106,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 				</a>
 				<ErrorBoundary>
 					<ThemeProvider defaultTheme="light" storageKey="matric-master-theme">
-						<MobileFrame>{children}</MobileFrame>
+						<AblyClientProvider>
+							<MobileFrame>{children}</MobileFrame>
+						</AblyClientProvider>
 						<Toaster />
 					</ThemeProvider>
 				</ErrorBoundary>

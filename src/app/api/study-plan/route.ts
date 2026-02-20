@@ -52,10 +52,22 @@ export async function POST(request: NextRequest) {
 			return NextResponse.json({ error: 'Missing required field: title' }, { status: 400 });
 		}
 
+		// Validate and parse targetExamDate if provided
+		let parsedTargetExamDate: Date | undefined;
+		if (targetExamDate) {
+			parsedTargetExamDate = new Date(targetExamDate);
+			if (Number.isNaN(parsedTargetExamDate.getTime())) {
+				return NextResponse.json(
+					{ error: 'Invalid date format for targetExamDate' },
+					{ status: 400 }
+				);
+			}
+		}
+
 		const result = await createStudyPlanAction(
 			session.user.id,
 			title,
-			targetExamDate ? new Date(targetExamDate) : undefined,
+			parsedTargetExamDate,
 			focusAreas,
 			weeklyGoals
 		);
@@ -93,9 +105,27 @@ export async function PUT(request: NextRequest) {
 		const body = await request.json();
 		const { title, targetExamDate, focusAreas, weeklyGoals, isActive } = body;
 
+		// Validate and parse targetExamDate if provided
+		let parsedTargetExamDate: Date | undefined;
+		if (targetExamDate !== undefined && targetExamDate !== null) {
+			// If it's explicitly null, keep it as null so it can be cleared
+			if (targetExamDate === null) {
+				// biome-ignore lint/suspicious/noExplicitAny: unkown type from null check
+				parsedTargetExamDate = null as any;
+			} else {
+				parsedTargetExamDate = new Date(targetExamDate);
+				if (Number.isNaN(parsedTargetExamDate.getTime())) {
+					return NextResponse.json(
+						{ error: 'Invalid date format for targetExamDate' },
+						{ status: 400 }
+					);
+				}
+			}
+		}
+
 		const result = await updateStudyPlanAction(planId, session.user.id, {
 			title,
-			targetExamDate: targetExamDate ? new Date(targetExamDate) : undefined,
+			targetExamDate: parsedTargetExamDate,
 			focusAreas,
 			weeklyGoals,
 			isActive,

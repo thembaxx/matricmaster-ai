@@ -2,7 +2,7 @@
 
 import { Flag, MessageSquare, Reply, ThumbsDown, ThumbsUp } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -23,17 +23,33 @@ interface Comment {
 	isFlagged?: boolean;
 }
 
-export default function CommentsPage() {
+function CommentsContent() {
 	const searchParams = useSearchParams();
 	const resourceType = searchParams.get('resourceType') || 'post';
-	const resourceId = searchParams.get('resourceId') || '';
+	const resourceId = searchParams.get('resourceId') || undefined;
 	const { data: session } = useSession();
-	const user = session?.user;
+
 	const [comments, setComments] = useState<Comment[]>([]);
 	const [newComment, setNewComment] = useState('');
 	const [isLoading, setIsLoading] = useState(false);
 	const [replyingTo, setReplyingTo] = useState<string | null>(null);
 	const [replyContent, setReplyContent] = useState('');
+
+	// Guard against invalid resourceId
+	if (!resourceId) {
+		return (
+			<div className="min-h-screen bg-background p-4 md:p-8">
+				<Card className="w-full max-w-2xl">
+					<CardContent className="pt-6">
+						<p className="text-muted-foreground">
+							No resource selected. Please provide a valid resourceId.
+						</p>
+					</CardContent>
+				</Card>
+			</div>
+		);
+	}
+	const user = session?.user;
 
 	const handleSubmitComment = async () => {
 		if (!newComment.trim() || !user) return;
@@ -346,5 +362,15 @@ function CommentItem({
 				</div>
 			</div>
 		</div>
+	);
+}
+
+export default function CommentsPage() {
+	return (
+		<Suspense
+			fallback={<div className="flex h-96 items-center justify-center">Loading comments...</div>}
+		>
+			<CommentsContent />
+		</Suspense>
 	);
 }

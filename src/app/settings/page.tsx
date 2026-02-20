@@ -12,6 +12,7 @@ import {
 	User,
 	XCircle,
 } from 'lucide-react';
+import Link from 'next/link';
 import { useEffect, useState, useTransition } from 'react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
@@ -39,7 +40,9 @@ import {
 
 export default function SettingsPage() {
 	const { data: session, refetch } = authClient.useSession();
-	const [isPending, startTransition] = useTransition();
+	const [isPendingProfile, startProfileTransition] = useTransition();
+	const [isPendingPassword, startPasswordTransition] = useTransition();
+	const [isDeletingAccount, startDeleteTransition] = useTransition();
 
 	// Account settings state
 	const [displayName, setDisplayName] = useState(session?.user?.name || '');
@@ -79,7 +82,7 @@ export default function SettingsPage() {
 	const handleSaveProfile = async () => {
 		if (!session?.user?.id) return;
 
-		startTransition(async () => {
+		startProfileTransition(async () => {
 			const result = await updateProfileAction(session.user.id, { name: displayName });
 
 			if (result.success) {
@@ -114,7 +117,7 @@ export default function SettingsPage() {
 			return;
 		}
 
-		startTransition(async () => {
+		startPasswordTransition(async () => {
 			const result = await changePasswordAction(session.user.id, {
 				currentPassword,
 				newPassword,
@@ -142,7 +145,7 @@ export default function SettingsPage() {
 			return;
 		}
 
-		startTransition(async () => {
+		startDeleteTransition(async () => {
 			const result = await deleteAccountAction(session.user.id, deletePassword);
 
 			if (result.success) {
@@ -247,7 +250,7 @@ export default function SettingsPage() {
 					</CardHeader>
 					<CardContent>
 						<Button asChild className="w-full">
-							<a href="/sign-in">Sign In</a>
+							<Link href="/sign-in">Sign In</Link>
 						</Button>
 					</CardContent>
 				</Card>
@@ -311,8 +314,8 @@ export default function SettingsPage() {
 										Email cannot be changed. Contact support if you need to update it.
 									</p>
 								</div>
-								<Button onClick={handleSaveProfile} disabled={isPending}>
-									{isPending ? (
+								<Button onClick={handleSaveProfile} disabled={isPendingProfile}>
+									{isPendingProfile ? (
 										<>
 											<Loader2 className="mr-2 h-4 w-4 animate-spin" />
 											Saving...
@@ -486,8 +489,8 @@ export default function SettingsPage() {
 										placeholder="••••••••"
 									/>
 								</div>
-								<Button onClick={handlePasswordChange} disabled={isPending}>
-									{isPending ? (
+								<Button onClick={handlePasswordChange} disabled={isPendingPassword}>
+									{isPendingPassword ? (
 										<>
 											<Loader2 className="mr-2 h-4 w-4 animate-spin" />
 											Updating...
@@ -647,9 +650,9 @@ export default function SettingsPage() {
 												<Button
 													variant="destructive"
 													onClick={handleDeleteAccount}
-													disabled={isPending}
+													disabled={isDeletingAccount}
 												>
-													{isPending ? (
+													{isDeletingAccount ? (
 														<>
 															<Loader2 className="mr-2 h-4 w-4 animate-spin" />
 															Deleting...
