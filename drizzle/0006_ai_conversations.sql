@@ -19,6 +19,21 @@ CREATE TABLE IF NOT EXISTS "ai_conversations" (
 CREATE INDEX IF NOT EXISTS "ai_conversations_user_id_idx" ON "ai_conversations"("user_id");
 CREATE INDEX IF NOT EXISTS "ai_conversations_created_at_idx" ON "ai_conversations"("created_at");
 
+-- Trigger function for auto-updating timestamp
+CREATE OR REPLACE FUNCTION set_updated_at()
+RETURNS TRIGGER AS $$
+BEGIN
+    NEW.updated_at = NOW();
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Trigger on ai_conversations for updated_at
+CREATE TRIGGER ai_conversations_updated_at_trigger
+BEFORE UPDATE ON "ai_conversations"
+FOR EACH ROW
+EXECUTE FUNCTION set_updated_at();
+
 -- ============================================================================
 -- BUDDY REQUESTS TABLE
 -- ============================================================================

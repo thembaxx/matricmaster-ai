@@ -93,9 +93,13 @@ export default function Channels() {
 
 	const handleChannelClick = useCallback(
 		async (channelId: string) => {
+			if (!user?.id) {
+				console.log('User not logged in');
+				return;
+			}
 			if (channel) {
 				await channel.publish('channel_joined', {
-					userId: user?.id,
+					userId: user.id,
 					channelId,
 					timestamp: Date.now(),
 				});

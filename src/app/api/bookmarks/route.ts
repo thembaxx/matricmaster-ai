@@ -10,6 +10,14 @@ import {
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
+const ALLOWED_BOOKMARK_TYPES = ['question', 'past_paper', 'study_note', 'quiz'] as const;
+type BookmarkType = (typeof ALLOWED_BOOKMARK_TYPES)[number];
+
+function isValidBookmarkType(value: unknown): value is BookmarkType {
+	// biome-ignore lint/suspicious/noExplicitAny: unkown type from array check
+	return typeof value === 'string' && ALLOWED_BOOKMARK_TYPES.includes(value as any);
+}
+
 // GET /api/bookmarks - Get user's bookmarks
 export async function GET(request: NextRequest) {
 	try {
@@ -20,12 +28,12 @@ export async function GET(request: NextRequest) {
 		}
 
 		const searchParams = request.nextUrl.searchParams;
-		const type = searchParams.get('type') as
-			| 'question'
-			| 'past_paper'
-			| 'study_note'
-			| 'quiz'
-			| null;
+		const type = searchParams.get('type');
+
+		// Validate bookmark type if provided
+		if (type !== null && !isValidBookmarkType(type)) {
+			return NextResponse.json({ error: 'Invalid bookmark type' }, { status: 400 });
+		}
 
 		const bookmarks = await getBookmarksAction(session.user.id, type ?? undefined);
 
@@ -51,6 +59,14 @@ export async function POST(request: NextRequest) {
 		if (!bookmarkType || !referenceId) {
 			return NextResponse.json(
 				{ error: 'Missing required fields: bookmarkType, referenceId' },
+				{ status: 400 }
+			);
+		}
+
+		// Validate bookmarkType against allowed values
+		if (!isValidBookmarkType(bookmarkType)) {
+			return NextResponse.json(
+				{ error: `Invalid bookmarkType. Must be one of: ${ALLOWED_BOOKMARK_TYPES.join(', ')}` },
 				{ status: 400 }
 			);
 		}

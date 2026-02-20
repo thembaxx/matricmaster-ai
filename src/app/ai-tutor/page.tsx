@@ -88,6 +88,12 @@ export default function AITutorPage() {
 	};
 
 	const handleSave = async () => {
+		// Defensive check for session and user ID
+		if (!session?.user?.id) {
+			toast.error('You must be logged in to save conversations');
+			return;
+		}
+
 		if (messages.length <= 1) {
 			toast.info('Start a conversation first');
 			return;
@@ -97,7 +103,7 @@ export default function AITutorPage() {
 			? `${firstUserMessage.content.slice(0, 50)}...`
 			: 'Untitled Conversation';
 		const result = await saveConversationAction(
-			session!.user.id,
+			session.user.id,
 			title,
 			messages,
 			selectedSubject ?? undefined

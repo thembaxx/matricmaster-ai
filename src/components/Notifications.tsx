@@ -245,7 +245,7 @@ function NotificationList({
 	}
 
 	return (
-		<ScrollArea className="h-75">
+		<ScrollArea className="h-80">
 			<div className="divide-y">
 				{notifications.map((notification) => (
 					<div

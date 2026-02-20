@@ -114,7 +114,7 @@ export default function AdminDashboardPage() {
 	const [userFilter, setUserFilter] = useState<'all' | 'active' | 'blocked' | 'deleted'>('all');
 	const [, startTransition] = useTransition();
 
-	const isAdmin = session?.user?.email?.includes('admin');
+	const isAdmin = (session?.user as { role?: string })?.role === 'admin';
 
 	const loadUsers = useCallback(async () => {
 		setIsLoadingUsers(true);
@@ -343,7 +343,7 @@ export default function AdminDashboardPage() {
 									<CardDescription>Items requiring moderation</CardDescription>
 								</CardHeader>
 								<CardContent>
-									<ScrollArea className="h-75">
+									<ScrollArea className="h-80">
 										<div className="space-y-3">
 											{mockFlaggedContent.map((item) => (
 												<div key={item.id} className="p-3 border rounded-lg">

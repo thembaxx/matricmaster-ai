@@ -6,14 +6,22 @@ afterEach(() => {
 	cleanup();
 });
 
+// Define persistent mock functions for useRouter
+const mockPush = vi.fn();
+const mockReplace = vi.fn();
+const mockBack = vi.fn();
+const mockForward = vi.fn();
+const mockRefresh = vi.fn();
+const mockPrefetch = vi.fn();
+
 vi.mock('next/navigation', () => ({
 	useRouter: () => ({
-		push: vi.fn(),
-		replace: vi.fn(),
-		back: vi.fn(),
-		forward: vi.fn(),
-		refresh: vi.fn(),
-		prefetch: vi.fn(),
+		push: mockPush,
+		replace: mockReplace,
+		back: mockBack,
+		forward: mockForward,
+		refresh: mockRefresh,
+		prefetch: mockPrefetch,
 	}),
 	usePathname: vi.fn(() => '/'),
 }));
@@ -24,3 +32,6 @@ vi.mock('@/lib/auth-client', () => ({
 		isLoading: false,
 	}),
 }));
+
+// Export mocks for use in tests
+export { mockPush, mockReplace, mockBack, mockForward, mockRefresh, mockPrefetch };

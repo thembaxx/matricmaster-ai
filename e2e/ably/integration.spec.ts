@@ -1,43 +1,33 @@
-import { expect, test } from '@playwright/test';
+import { expect, type Page, test } from '@playwright/test';
+
+// Helper function to sign up for tests
+async function signUp(page: Page) {
+	const uniqueId = crypto.randomUUID();
+	const email = `testuser-${uniqueId}@matricmaster.test`;
+	const password = 'TestPassword123!';
+	const name = 'Test User';
+
+	await page.goto('/sign-up');
+	await page.fill('input[name="name"]', name);
+	await page.fill('input[name="email"]', email);
+	await page.fill('input[name="password"]', password);
+	await Promise.all([page.waitForURL(/\/dashboard/), page.click('button[type="submit"]')]);
+}
 
 test.describe('Ably Integration', () => {
 	test.describe('Channels Page', () => {
 		test('should show realtime connection status when logged in', async ({ page }) => {
-			const timestamp = Date.now();
-			const email = `testuser-${timestamp}@matricmaster.test`;
-			const password = 'TestPassword123!';
-			const name = 'Test User';
-
-			await page.goto('/sign-up');
-			await page.fill('input[name="name"]', name);
-			await page.fill('input[name="email"]', email);
-			await page.fill('input[name="password"]', password);
-			await Promise.all([page.waitForURL(/\/dashboard/), page.click('button[type="submit"]')]);
-
+			await signUp(page);
 			await page.goto('/channels');
 
 			await expect(page.getByText('South Africa • Grade 12')).toBeVisible();
 
 			const liveIndicator = page.getByText('Live');
-			if (await liveIndicator.isVisible().catch(() => false)) {
-				console.log('Ably connected and showing Live indicator');
-			} else {
-				console.log('Ably may not be connected (no API key configured)');
-			}
+			await expect(liveIndicator).toBeVisible();
 		});
 
-		test('should display channel list with online indicators', async ({ page }) => {
-			const timestamp = Date.now();
-			const email = `testuser-${timestamp}@matricmaster.test`;
-			const password = 'TestPassword123!';
-			const name = 'Test User';
-
-			await page.goto('/sign-up');
-			await page.fill('input[name="name"]', name);
-			await page.fill('input[name="email"]', email);
-			await page.fill('input[name="password"]', password);
-			await Promise.all([page.waitForURL(/\/dashboard/), page.click('button[type="submit"]')]);
-
+		test('should display channel categories', async ({ page }) => {
+			await signUp(page);
 			await page.goto('/channels');
 
 			await expect(page.getByText('STEM Skills')).toBeVisible();
@@ -47,17 +37,7 @@ test.describe('Ably Integration', () => {
 		});
 
 		test('should navigate between categories', async ({ page }) => {
-			const timestamp = Date.now();
-			const email = `testuser-${timestamp}@matricmaster.test`;
-			const password = 'TestPassword123!';
-			const name = 'Test User';
-
-			await page.goto('/sign-up');
-			await page.fill('input[name="name"]', name);
-			await page.fill('input[name="email"]', email);
-			await page.fill('input[name="password"]', password);
-			await Promise.all([page.waitForURL(/\/dashboard/), page.click('button[type="submit"]')]);
-
+			await signUp(page);
 			await page.goto('/channels');
 
 			await page.click('button:has-text("STEM Skills")');
@@ -69,18 +49,8 @@ test.describe('Ably Integration', () => {
 	});
 
 	test.describe('Notifications', () => {
-		test('should display notification bell with count', async ({ page }) => {
-			const timestamp = Date.now();
-			const email = `testuser-${timestamp}@matricmaster.test`;
-			const password = 'TestPassword123!';
-			const name = 'Test User';
-
-			await page.goto('/sign-up');
-			await page.fill('input[name="name"]', name);
-			await page.fill('input[name="email"]', email);
-			await page.fill('input[name="password"]', password);
-			await Promise.all([page.waitForURL(/\/dashboard/), page.click('button[type="submit"]')]);
-
+		test('should display notification bell and open notifications panel', async ({ page }) => {
+			await signUp(page);
 			await page.goto('/dashboard');
 
 			const notificationBell = page
@@ -95,17 +65,7 @@ test.describe('Ably Integration', () => {
 	});
 
 	test('should toggle between all and unread tabs', async ({ page }) => {
-		const timestamp = Date.now();
-		const email = `testuser-${timestamp}@matricmaster.test`;
-		const password = 'TestPassword123!';
-		const name = 'Test User';
-
-		await page.goto('/sign-up');
-		await page.fill('input[name="name"]', name);
-		await page.fill('input[name="email"]', email);
-		await page.fill('input[name="password"]', password);
-		await Promise.all([page.waitForURL(/\/dashboard/), page.click('button[type="submit"]')]);
-
+		await signUp(page);
 		await page.goto('/dashboard');
 
 		const notificationBell = page

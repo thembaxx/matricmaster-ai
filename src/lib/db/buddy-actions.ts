@@ -1,6 +1,6 @@
 'use server';
 
-import { eq } from 'drizzle-orm';
+import { eq, inArray } from 'drizzle-orm';
 import { dbManager } from './index';
 import { studyBuddies, studyBuddyProfiles, studyBuddyRequests, users } from './schema';
 
@@ -351,15 +351,7 @@ export async function getBatchUserInfo(userIds: string[]): Promise<Map<string, U
 		const userRecords = await db
 			.select({ id: users.id, name: users.name, image: users.image })
 			.from(users)
-			.where(eq(users.id, userIds[0]));
-
-		for (const userId of userIds.slice(1)) {
-			const moreUsers = await db
-				.select({ id: users.id, name: users.name, image: users.image })
-				.from(users)
-				.where(eq(users.id, userId));
-			userRecords.push(...moreUsers);
-		}
+			.where(inArray(users.id, userIds));
 
 		for (const user of userRecords) {
 			result.set(user.id, {

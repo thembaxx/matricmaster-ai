@@ -45,11 +45,7 @@ test.describe('Chat Functionality', () => {
 			await expect(page.getByText('Channels')).toBeVisible();
 
 			const liveIndicator = page.getByText('Live');
-			if (await liveIndicator.isVisible().catch(() => false)) {
-				console.log('Ably connected - showing live indicator');
-			} else {
-				console.log('Ably may not be connected (no API key or connection issue)');
-			}
+			await expect(liveIndicator).toBeVisible();
 		});
 
 		test('should show channel cards with online indicators', async ({ page }) => {

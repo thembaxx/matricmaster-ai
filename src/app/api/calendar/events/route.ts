@@ -62,11 +62,27 @@ export async function POST(request: NextRequest) {
 			);
 		}
 
+		// Validate and parse dates
+		const startDate = new Date(startTime);
+		const endDate = new Date(endTime);
+
+		if (Number.isNaN(startDate.getTime()) || Number.isNaN(endDate.getTime())) {
+			return NextResponse.json(
+				{ error: 'Invalid date format for startTime or endTime' },
+				{ status: 400 }
+			);
+		}
+
+		// Validate that endTime is after startTime (unless it's an all-day event)
+		if (!isAllDay && endDate.getTime() <= startDate.getTime()) {
+			return NextResponse.json({ error: 'endTime must be after startTime' }, { status: 400 });
+		}
+
 		const result = await createCalendarEvent(session.user.id, {
 			title,
 			description,
-			startTime: new Date(startTime),
-			endTime: new Date(endTime),
+			startTime: startDate,
+			endTime: endDate,
 			eventType: eventType || 'study',
 			isAllDay: isAllDay || false,
 			location,
@@ -104,6 +120,15 @@ export async function PATCH(request: NextRequest) {
 		}
 
 		const body = await request.json();
+
+		// Normalize dates if they're present
+		if (body.startTime && typeof body.startTime === 'string') {
+			body.startTime = new Date(body.startTime);
+		}
+		if (body.endTime && typeof body.endTime === 'string') {
+			body.endTime = new Date(body.endTime);
+		}
+
 		const result = await updateCalendarEvent(eventId, session.user.id, body);
 
 		if (!result.success) {

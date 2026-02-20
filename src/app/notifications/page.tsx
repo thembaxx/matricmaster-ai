@@ -23,7 +23,7 @@ interface Notification {
 }
 
 export default function NotificationsPage() {
-	const { data: session } = useSession();
+	const { data: session, isPending } = useSession();
 	const router = useRouter();
 	const [notifications, setNotifications] = useState<Notification[]>([]);
 	const [unreadCount, setUnreadCount] = useState(0);
@@ -34,6 +34,10 @@ export default function NotificationsPage() {
 		setIsLoading(true);
 		try {
 			const response = await fetch('/api/notifications?limit=50');
+			if (!response.ok) {
+				const error = await response.text().catch(() => 'Unknown error');
+				throw new Error(`Failed to load notifications: ${response.status} - ${error}`);
+			}
 			const data = await response.json();
 
 			if (data.success) {
@@ -42,6 +46,7 @@ export default function NotificationsPage() {
 			}
 		} catch (error) {
 			console.error('Error loading notifications:', error);
+			toast.error('Failed to load notifications');
 		} finally {
 			setIsLoading(false);
 		}
@@ -55,36 +60,78 @@ export default function NotificationsPage() {
 
 	async function markAsRead(notificationId: string) {
 		try {
-			await fetch(`/api/notifications?id=${notificationId}&action=read`, {
+			const response = await fetch(`/api/notifications?id=${notificationId}&action=read`, {
 				method: 'PATCH',
 			});
-			setNotifications((prev) =>
-				prev.map((n) => (n.id === notificationId ? { ...n, isRead: true } : n))
-			);
-			setUnreadCount((prev) => Math.max(0, prev - 1));
+
+			if (!response.ok) {
+				throw new Error('Failed to mark as read');
+			}
+
+			// Update state only if the API confirms success
+			setNotifications((prev) => {
+				const updated = prev.map((n) => {
+					if (n.id === notificationId) {
+						return { ...n, isRead: true };
+					}
+					return n;
+				});
+				return updated;
+			});
+
+			// Only decrement if this notification was previously unread
+			setNotifications((prev) => {
+				const notification = prev.find((n) => n.id === notificationId);
+				if (notification && !notification.isRead) {
+					setUnreadCount((c) => Math.max(0, c - 1));
+				}
+				return prev;
+			});
 		} catch (error) {
 			console.error('Error marking as read:', error);
+			toast.error('Failed to mark notification as read');
 		}
 	}
 
 	async function markAllAsRead() {
 		try {
-			await fetch('/api/notifications', { method: 'PATCH' });
+			const response = await fetch('/api/notifications', { method: 'PATCH' });
+
+			if (!response.ok) {
+				throw new Error('Failed to mark all as read');
+			}
+
 			setNotifications((prev) => prev.map((n) => ({ ...n, isRead: true })));
 			setUnreadCount(0);
 			toast.success('All notifications marked as read');
 		} catch (error) {
 			console.error('Error marking all as read:', error);
+			toast.error('Failed to mark all notifications as read');
 		}
 	}
 
 	async function deleteNotification(notificationId: string) {
 		try {
-			await fetch(`/api/notifications?id=${notificationId}`, { method: 'DELETE' });
+			const response = await fetch(`/api/notifications?id=${notificationId}`, { method: 'DELETE' });
+
+			if (!response.ok) {
+				throw new Error('Failed to delete notification');
+			}
+
+			// Find the notification to check if it was unread
+			const notification = notifications.find((n) => n.id === notificationId);
+
 			setNotifications((prev) => prev.filter((n) => n.id !== notificationId));
+
+			// Only decrement unread count if the deleted notification was unread
+			if (notification && !notification.isRead) {
+				setUnreadCount((c) => Math.max(0, c - 1));
+			}
+
 			toast.success('Notification deleted');
 		} catch (error) {
 			console.error('Error deleting notification:', error);
+			toast.error('Failed to delete notification');
 		}
 	}
 
@@ -119,6 +166,19 @@ export default function NotificationsPage() {
 		if (days < 7) return `${days}d ago`;
 		return new Date(date).toLocaleDateString();
 	};
+
+	if (isPending) {
+		return (
+			<div className="container mx-auto py-8 max-w-4xl">
+				<Card>
+					<CardContent className="py-12 text-center">
+						<Bell className="h-12 w-12 mx-auto mb-4 text-muted-foreground animate-pulse" />
+						<p className="text-muted-foreground">Loading notifications...</p>
+					</CardContent>
+				</Card>
+			</div>
+		);
+	}
 
 	if (!session) {
 		return (

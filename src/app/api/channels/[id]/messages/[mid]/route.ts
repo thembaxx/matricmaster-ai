@@ -1,4 +1,5 @@
 import { type NextRequest, NextResponse } from 'next/server';
+import { getAuth } from '@/lib/auth';
 import { deleteMessage, editMessage } from '@/lib/db/chat-actions';
 
 export async function PATCH(
@@ -6,15 +7,23 @@ export async function PATCH(
 	{ params }: { params: Promise<{ id: string; mid: string }> }
 ) {
 	try {
-		const { mid: messageId } = await params;
-		const body = await request.json();
-		const { userId, content } = body;
-
-		if (!userId || !content) {
-			return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+		// Authenticate the requester
+		const auth = await getAuth();
+		const session = await auth.api.getSession({ headers: request.headers });
+		if (!session?.user?.id) {
+			return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 		}
 
-		const result = await editMessage(messageId, userId, content);
+		const { mid: messageId } = await params;
+		const body = await request.json();
+		const { content } = body;
+
+		if (!content) {
+			return NextResponse.json({ error: 'Missing required field: content' }, { status: 400 });
+		}
+
+		// Use authenticated user's ID, not from request body
+		const result = await editMessage(messageId, session.user.id, content);
 
 		if (!result.success) {
 			return NextResponse.json({ error: result.error }, { status: 500 });
@@ -32,15 +41,17 @@ export async function DELETE(
 	{ params }: { params: Promise<{ id: string; mid: string }> }
 ) {
 	try {
-		const { mid: messageId } = await params;
-		const body = await request.json();
-		const { userId } = body;
-
-		if (!userId) {
-			return NextResponse.json({ error: 'Missing userId' }, { status: 400 });
+		// Authenticate the requester
+		const auth = await getAuth();
+		const session = await auth.api.getSession({ headers: request.headers });
+		if (!session?.user?.id) {
+			return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 		}
 
-		const result = await deleteMessage(messageId, userId);
+		const { mid: messageId } = await params;
+
+		// Use authenticated user's ID from session, not from request body
+		const result = await deleteMessage(messageId, session.user.id);
 
 		if (!result.success) {
 			return NextResponse.json({ error: result.error }, { status: 500 });
