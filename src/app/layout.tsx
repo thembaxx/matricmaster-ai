@@ -1,4 +1,5 @@
 import { Analytics } from '@vercel/analytics/next';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import type { Metadata, Viewport } from 'next';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 import AppLayout from '@/components/Layout/AppLayout';
@@ -118,6 +119,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 					</ThemeProvider>
 				</ErrorBoundary>
 				<Analytics />
+				<SpeedInsights />
 			</body>
 		</html>
 	);
