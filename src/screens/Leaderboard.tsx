@@ -1,11 +1,11 @@
 'use client';
 
-import { Award, Flame } from 'lucide-react';
+import { Award, Flame, Trophy as TrophyIcon } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { getLeaderboard, getUserRank } from '@/lib/db/leaderboard-actions';
 import { getUserStreak } from '@/lib/db/progress-actions';
 import { formatPoints } from '@/lib/leaderboard-utils';
@@ -34,71 +34,84 @@ function Podium({ data }: { data: LeaderboardEntry[] }) {
 	const r3 = data.find((p) => p.rank === 3);
 
 	return (
-		<div className="flex items-end justify-center gap-2 sm:gap-6 pt-12 pb-8">
+		<div className="flex items-end justify-center gap-4 md:gap-12 pt-16 pb-12 lg:pt-24 lg:pb-20">
+			{/* 2nd Place */}
 			<div className="flex flex-col items-center">
-				<div className="relative mb-3 group cursor-pointer">
-					<div className="absolute inset-0 bg-muted rounded-full blur-md opacity-0 group-hover:opacity-40 transition-opacity" />
-					<Avatar className="w-20 h-20 border-2 border-border relative z-10 transition-transform group-hover:scale-105">
+				<div className="relative mb-4 group cursor-pointer">
+					<div className="absolute inset-0 bg-zinc-200 dark:bg-zinc-800 rounded-full blur-2xl opacity-0 group-hover:opacity-40 transition-opacity" />
+					<Avatar className="w-20 h-20 md:w-28 md:h-28 border-4 border-zinc-200 dark:border-zinc-800 relative z-10 transition-transform group-hover:scale-110 shadow-xl">
 						<AvatarImage src={r2?.userImage || undefined} className="object-cover" />
-						<AvatarFallback>{r2?.userName?.[0] || '?'}</AvatarFallback>
+						<AvatarFallback className="font-black text-xl">
+							{r2?.userName?.[0] || '?'}
+						</AvatarFallback>
 					</Avatar>
-					<div className="absolute -bottom-2 translate-x-6 right-1/2 w-7 h-7 bg-muted-foreground rounded-full flex items-center justify-center text-background text-[10px] font-black border-2 border-background z-20">
+					<div className="absolute -bottom-3 left-1/2 -translate-x-1/2 w-10 h-10 bg-zinc-400 rounded-full flex items-center justify-center text-white text-base font-black border-4 border-background z-20 shadow-lg">
 						2
 					</div>
 				</div>
-				<div className="text-center space-y-0.5">
-					<p className="text-sm font-black text-foreground">{r2?.userName || 'TBD'}</p>
-					<p className="text-[10px] font-black text-[#efb036] uppercase">
+				<div className="text-center space-y-1">
+					<p className="text-sm md:text-base font-black text-foreground tracking-tight">
+						{r2?.userName || 'TBD'}
+					</p>
+					<p className="text-[11px] md:text-xs font-black text-zinc-400 uppercase tracking-widest">
 						{r2 ? formatPoints(r2.totalPoints) : '0'} KP
 					</p>
 				</div>
-				<div className="w-16 h-20 bg-linear-to-t from-muted to-muted/30 mt-2 rounded-t-lg" />
+				<div className="w-20 h-24 md:w-28 md:h-32 bg-linear-to-t from-zinc-100 dark:from-zinc-900 to-transparent mt-6 rounded-t-3xl border-x border-t border-zinc-200 dark:border-zinc-800 opacity-50" />
 			</div>
 
+			{/* 1st Place */}
 			<div className="flex flex-col items-center">
-				<div className="relative mb-4 group cursor-pointer">
-					<div className="absolute -top-6 left-1/2 -translate-x-1/2 text-orange-500 animate-bounce">
-						<Award className="w-8 h-8 fill-orange-500" />
+				<div className="relative mb-6 group cursor-pointer">
+					<div className="absolute -top-10 left-1/2 -translate-x-1/2 text-brand-amber animate-bounce">
+						<TrophyIcon className="w-10 h-10 fill-brand-amber/20" />
 					</div>
-					<div className="absolute -inset-1 bg-linear-to-b from-orange-400 to-yellow-300 rounded-full opacity-30 blur-sm" />
-					<Avatar className="w-20 h-28 bg-linear-to-t from-yellow-200/20 to-yellow-50/10 mt-2 rounded-t-xl relative z-10 transition-transform group-hover:scale-105">
+					<div className="absolute -inset-4 bg-brand-amber/20 rounded-full opacity-40 blur-3xl group-hover:opacity-60 transition-opacity" />
+					<Avatar className="w-28 h-28 md:w-40 md:h-40 border-4 border-brand-amber relative z-10 transition-transform group-hover:scale-110 shadow-2xl">
 						<AvatarImage src={r1?.userImage || undefined} className="object-cover" />
-						<AvatarFallback>{r1?.userName?.[0] || '?'}</AvatarFallback>
+						<AvatarFallback className="font-black text-3xl">
+							{r1?.userName?.[0] || '?'}
+						</AvatarFallback>
 					</Avatar>
-					<div className="absolute -bottom-3 translate-x-8 right-1/2 w-10 h-10 bg-[#efb036] rounded-full flex items-center justify-center text-zinc-950 text-base font-black border-[3px] border-background z-20 shadow-xl">
+					<div className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-14 h-14 bg-brand-amber rounded-full flex items-center justify-center text-white text-2xl font-black border-4 border-background z-20 shadow-2xl">
 						1
 					</div>
 				</div>
 				<div className="text-center space-y-1">
-					<p className="text-lg font-black text-foreground tracking-tight">
+					<p className="text-xl md:text-3xl font-black text-foreground tracking-tighter">
 						{r1?.userName || 'TBD'}
 					</p>
-					<p className="text-xs font-black text-[#efb036] uppercase flex items-center justify-center gap-1">
-						<Flame className="w-3 h-3 fill-current" />
+					<p className="text-sm md:text-base font-black text-brand-amber uppercase tracking-widest flex items-center justify-center gap-2">
+						<Flame className="w-4 h-4 fill-current" />
 						{r1 ? formatPoints(r1.totalPoints) : '0'} KP
 					</p>
 				</div>
-				<div className="w-24 h-32 bg-linear-to-t from-orange-50/10 to-transparent mt-4 rounded-t-[2.5rem] border-x border-t border-orange-100/20" />
+				<div className="w-32 h-40 md:w-44 md:h-56 bg-linear-to-t from-brand-amber/10 to-transparent mt-8 rounded-t-[3rem] border-x border-t border-brand-amber/20" />
 			</div>
 
+			{/* 3rd Place */}
 			<div className="flex flex-col items-center">
-				<div className="relative mb-3 group cursor-pointer">
-					<div className="absolute inset-0 bg-orange-100/20 rounded-full blur-md opacity-0 group-hover:opacity-40 transition-opacity" />
-					<Avatar className="w-20 h-20 border-2 border-orange-200/30 relative z-10 transition-transform group-hover:scale-105">
+				<div className="relative mb-4 group cursor-pointer">
+					<div className="absolute inset-0 bg-orange-200 dark:bg-orange-800 rounded-full blur-2xl opacity-0 group-hover:opacity-40 transition-opacity" />
+					<Avatar className="w-20 h-20 md:w-28 md:h-28 border-4 border-orange-200 dark:border-orange-800 relative z-10 transition-transform group-hover:scale-110 shadow-xl">
 						<AvatarImage src={r3?.userImage || undefined} className="object-cover" />
-						<AvatarFallback>{r3?.userName?.[0] || '?'}</AvatarFallback>
+						<AvatarFallback className="font-black text-xl">
+							{r3?.userName?.[0] || '?'}
+						</AvatarFallback>
 					</Avatar>
-					<div className="absolute -bottom-2 translate-x-6 right-1/2 w-7 h-7 bg-orange-400 rounded-full flex items-center justify-center text-white text-[10px] font-black border-2 border-background z-20">
+					<div className="absolute -bottom-3 left-1/2 -translate-x-1/2 w-10 h-10 bg-orange-400 rounded-full flex items-center justify-center text-white text-base font-black border-4 border-background z-20 shadow-lg">
 						3
 					</div>
 				</div>
-				<div className="text-center space-y-0.5">
-					<p className="text-sm font-black text-foreground">{r3?.userName || 'TBD'}</p>
-					<p className="text-[10px] font-black text-[#efb036] uppercase">
+				<div className="text-center space-y-1">
+					<p className="text-sm md:text-base font-black text-foreground tracking-tight">
+						{r3?.userName || 'TBD'}
+					</p>
+					<p className="text-[11px] md:text-xs font-black text-orange-400 uppercase tracking-widest">
 						{r3 ? formatPoints(r3.totalPoints) : '0'} KP
 					</p>
 				</div>
-				<div className="w-16 h-16 bg-linear-to-t from-orange-200/20 to-orange-100/10 mt-2 rounded-t-lg" />
+				<div className="w-20 h-16 md:w-28 md:h-24 bg-linear-to-t from-orange-100 dark:from-orange-900 to-transparent mt-6 rounded-t-3xl border-x border-t border-orange-200 dark:border-orange-800 opacity-50" />
 			</div>
 		</div>
 	);
@@ -106,29 +119,38 @@ function Podium({ data }: { data: LeaderboardEntry[] }) {
 
 function RankingList({ data }: { data: LeaderboardEntry[] }) {
 	return (
-		<div className="space-y-1">
+		<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-1">
 			{data.map((student) => (
 				<div
 					key={student.userId}
-					className="flex items-center gap-4 px-6 py-4 hover:bg-muted/50 transition-colors group cursor-pointer"
+					className="flex items-center gap-6 px-8 py-5 hover:bg-muted/50 transition-all group cursor-pointer rounded-3xl"
 				>
-					<span className="w-6 text-muted-foreground font-bold text-sm text-center">
+					<span className="w-8 text-muted-foreground font-black text-base text-center group-hover:text-primary transition-colors">
 						{student.rank}
 					</span>
-					<Avatar className="w-12 h-12 rounded-2xl border border-border shadow-sm">
+					<Avatar className="w-14 h-14 rounded-2xl border-2 border-border shadow-sm group-hover:scale-105 transition-transform">
 						<AvatarImage src={student.userImage || undefined} className="object-cover" />
+						<AvatarFallback className="font-black">{student.userName?.[0]}</AvatarFallback>
 					</Avatar>
 					<div className="flex-1 min-w-0">
-						<h4 className="font-extrabold text-sm text-foreground truncate">{student.userName}</h4>
-						<p className="text-[11px] font-bold text-muted-foreground uppercase tracking-tight flex items-center gap-1">
-							<Award className="w-3 h-3" />
+						<h4 className="font-black text-base text-foreground truncate tracking-tight">
+							{student.userName}
+						</h4>
+						<p className="text-[11px] font-black text-muted-foreground uppercase tracking-widest flex items-center gap-2">
+							<Award className="w-3.5 h-3.5" />
 							{student.questionsCompleted} questions
 						</p>
 					</div>
 					<div className="text-right">
-						<p className="text-sm font-black text-[#efb036]">
-							{formatPoints(student.totalPoints)} KP
+						<p className="text-lg font-black text-brand-amber tracking-tighter">
+							{formatPoints(student.totalPoints)} <span className="text-[10px]">KP</span>
 						</p>
+						<div className="flex items-center justify-end gap-1 mt-0.5">
+							<div className="w-1 h-1 rounded-full bg-emerald-500" />
+							<p className="text-[9px] font-black text-emerald-500 uppercase tracking-widest">
+								{student.accuracyPercentage}% accuracy
+							</p>
+						</div>
 					</div>
 				</div>
 			))}
@@ -168,98 +190,111 @@ export default function Leaderboard() {
 
 	if (isLoading) {
 		return (
-			<div className="flex flex-col h-full bg-background font-inter pb-28">
-				<div className="flex-1 flex items-center justify-center">
-					<div className="animate-pulse flex flex-col items-center gap-4">
-						<div className="w-20 h-20 bg-muted rounded-full" />
-						<div className="h-4 w-32 bg-muted rounded" />
-					</div>
-				</div>
+			<div className="flex flex-col h-full bg-background font-inter items-center justify-center py-40">
+				<div className="animate-spin rounded-full h-14 w-14 border-4 border-primary border-t-transparent shadow-2xl" />
 			</div>
 		);
 	}
 
 	return (
-		<div className="flex flex-col h-full bg-background font-inter pb-28">
-			<header className="px-6 pt-12 pb-6 shrink-0 bg-background">
-				<Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-					<TabsList className="w-full h-14 p-1.5 bg-muted/50 rounded-2xl border border-border">
+		<div className="flex flex-col h-full bg-background font-inter pb-12 overflow-hidden lg:px-8">
+			<header className="pt-8 pb-8 flex flex-col items-center gap-12 shrink-0">
+				<div className="text-center space-y-2">
+					<h1 className="text-4xl lg:text-6xl font-black text-foreground tracking-tighter uppercase">
+						Global Rankings
+					</h1>
+					<p className="text-muted-foreground font-bold lg:text-lg">
+						See how you compare with students nationwide
+					</p>
+				</div>
+
+				<Tabs value={activeTab} onValueChange={setActiveTab} className="w-full max-w-4xl">
+					<TabsList className="w-full h-16 p-2 bg-muted/50 rounded-3xl border-2 border-border shadow-inner">
 						<TabsTrigger
 							value="weekly"
-							className="flex-1 rounded-xl font-bold data-[state=active]:bg-card data-[state=active]:shadow-sm text-muted-foreground data-[state=active]:text-foreground"
+							className="flex-1 rounded-2xl font-black text-xs uppercase tracking-[0.2em] data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-2xl transition-all"
 						>
 							Weekly
 						</TabsTrigger>
 						<TabsTrigger
 							value="monthly"
-							className="flex-1 rounded-xl font-bold data-[state=active]:bg-card data-[state=active]:shadow-sm text-muted-foreground data-[state=active]:text-foreground"
+							className="flex-1 rounded-2xl font-black text-xs uppercase tracking-[0.2em] data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-2xl transition-all"
 						>
 							Monthly
 						</TabsTrigger>
 						<TabsTrigger
 							value="all_time"
-							className="flex-1 rounded-xl font-bold data-[state=active]:bg-card data-[state=active]:shadow-sm text-muted-foreground data-[state=active]:text-foreground"
+							className="flex-1 rounded-2xl font-black text-xs uppercase tracking-[0.2em] data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-2xl transition-all"
 						>
 							All Time
 						</TabsTrigger>
 					</TabsList>
-					<ScrollArea className="mt-8 no-scrollbar">
-						<TabsContent value={activeTab} className="mt-0">
-							{leaderboardData.length === 0 ? (
-								<div className="text-center py-12">
-									<p className="text-muted-foreground">
-										No rankings yet. Complete quizzes to get on the leaderboard!
-									</p>
-								</div>
-							) : (
-								<>
-									<Podium data={topThree} />
-									<div className="bg-card/50 rounded-t-[3rem] border-t border-border shadow-2xl shadow-black/5 pt-2">
-										<RankingList data={others} />
-									</div>
-								</>
-							)}
-						</TabsContent>
-					</ScrollArea>
 				</Tabs>
 			</header>
-			<div className="p-6 z-40 bg-linear-to-t from-background via-background to-transparent shrink-0">
-				<div className="max-w-2xl mx-auto">
-					<Card className="p-4 bg-foreground text-background border-none shadow-2xl rounded-3xl relative overflow-hidden group">
-						<div className="absolute top-0 left-0 w-1 h-full bg-[#efb036]" />
-						<div className="flex items-center gap-4 relative z-10">
-							<span className="text-xl font-black text-[#efb036] w-8">{userRank?.rank || '-'}</span>
+
+			<ScrollArea className="flex-1 no-scrollbar">
+				<div className="max-w-6xl mx-auto w-full pb-32">
+					{leaderboardData.length === 0 ? (
+						<div className="text-center py-32 space-y-4 opacity-50">
+							<Award className="w-16 h-16 mx-auto text-muted-foreground" />
+							<p className="text-xl font-bold">The arena is empty... for now.</p>
+						</div>
+					) : (
+						<div className="space-y-12">
+							<Podium data={topThree} />
+
+							<div className="grid grid-cols-1 lg:grid-cols-1 gap-8">
+								<div className="bg-card/30 rounded-[3rem] border-2 border-border shadow-sm p-2">
+									<RankingList data={others} />
+								</div>
+							</div>
+						</div>
+					)}
+				</div>
+			</ScrollArea>
+
+			{/* Floating User Rank Card - Only visible if user has a rank */}
+			{userRank && (
+				<div className="fixed bottom-12 left-1/2 -translate-x-1/2 w-[92%] max-w-4xl z-50 lg:bottom-12">
+					<Card className="p-6 bg-foreground text-background border-none shadow-[0_32px_64px_-12px_rgba(0,0,0,0.5)] rounded-[2.5rem] relative overflow-hidden group">
+						<div className="absolute top-0 left-0 w-2 h-full bg-brand-amber animate-pulse" />
+						<div className="flex items-center gap-6 relative z-10">
+							<span className="text-3xl font-black text-brand-amber w-12 text-center tracking-tighter">
+								{userRank.rank}
+							</span>
 							<div className="relative">
-								<Avatar className="w-12 h-12 border-2 border-[#efb036] p-0.5 rounded-xl">
+								<Avatar className="w-16 h-16 border-4 border-brand-amber/30 p-1 rounded-2xl bg-muted/20">
 									<AvatarImage
 										src="https://api.dicebear.com/7.x/avataaars/svg?seed=user"
 										className="object-cover"
 									/>
-									<AvatarFallback>ME</AvatarFallback>
+									<AvatarFallback className="font-black text-zinc-900">ME</AvatarFallback>
 								</Avatar>
-								<div className="absolute -bottom-1.5 -right-1.5 bg-[#efb036] text-zinc-950 text-[8px] font-black px-1.5 py-0.5 rounded-full border border-background">
-									YOU
+								<div className="absolute -bottom-2 -right-2 bg-brand-amber text-zinc-950 text-[9px] font-black px-3 py-1 rounded-full border-4 border-foreground uppercase tracking-tighter">
+									You
 								</div>
 							</div>
 							<div className="flex-1 min-w-0">
-								<h4 className="font-extrabold text-sm text-background truncate">Your Rank</h4>
-								<p className="text-[10px] font-bold text-background/60 uppercase tracking-wider flex items-center gap-1.5">
-									<Flame className="w-3 h-3 text-orange-500 fill-orange-500" />
-									Streak: {userStreak?.currentStreak || 0} days
+								<h4 className="font-black text-lg text-background truncate tracking-tight">
+									Your Global Rank
+								</h4>
+								<p className="text-[11px] font-black text-background/60 uppercase tracking-widest flex items-center gap-2">
+									<Flame className="w-4 h-4 text-brand-amber fill-brand-amber" />
+									{userStreak?.currentStreak || 0} Day Streak
 								</p>
 							</div>
 							<div className="text-right">
-								<p className="text-lg font-black text-[#efb036] flex items-center justify-end gap-1">
-									{formatPoints(userRank?.totalPoints || 0)} <span className="text-[10px]">KP</span>
+								<p className="text-2xl font-black text-brand-amber tracking-tighter flex items-center justify-end gap-1">
+									{formatPoints(userRank.totalPoints)} <span className="text-xs uppercase">KP</span>
 								</p>
-								<p className="text-[9px] font-bold text-background/60 uppercase">
-									{userRank?.percentile ? `Top ${100 - userRank.percentile}%` : 'No rank yet'}
+								<p className="text-[10px] font-black text-background/60 uppercase tracking-widest">
+									Top {100 - userRank.percentile}% of Students
 								</p>
 							</div>
 						</div>
 					</Card>
 				</div>
-			</div>
+			)}
 		</div>
 	);
 }

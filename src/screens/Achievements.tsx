@@ -1,8 +1,12 @@
 'use client';
 
-import { Lock, Trophy } from 'lucide-react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { Award, Flame, Lock, Star, Trophy, Zap } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { Card } from '@/components/ui/card';
+import { Progress } from '@/components/ui/progress';
 import { ACHIEVEMENTS } from '@/constants/achievements';
+import { STAGGER_CONTAINER, STAGGER_ITEM } from '@/lib/animation-presets';
 import { getUserAchievements } from '@/lib/db/achievement-actions';
 
 interface Badge {
@@ -72,151 +76,186 @@ export default function Achievements() {
 	const totalBadges = ACHIEVEMENTS.length;
 	const progress = totalBadges > 0 ? (unlockedCount / totalBadges) * 100 : 0;
 	const masteryLevel = Math.floor(unlockedCount / 10) + 1;
-	const nextMilestone = Math.ceil(unlockedCount / 10) * 10;
+	const nextMilestone = Math.ceil((unlockedCount + 1) / 10) * 10;
 	const badgesToNext = nextMilestone - unlockedCount;
 
 	const categories = [
-		{ id: 'all', label: 'All Badges' },
-		{ id: 'science', label: 'Science' },
-		{ id: 'math', label: 'Math' },
-		{ id: 'streak', label: 'Streaks' },
+		{ id: 'all', label: 'All Badges', icon: Star },
+		{ id: 'science', label: 'Science', icon: Zap },
+		{ id: 'math', label: 'Math', icon: Award },
+		{ id: 'streak', label: 'Streaks', icon: Flame },
 	];
 
 	if (isLoading) {
 		return (
-			<div className="min-h-screen flex flex-col bg-zinc-50 dark:bg-[#0a0f18]">
-				<div className="flex-1 flex items-center justify-center">
-					<div className="animate-pulse flex flex-col items-center gap-4">
-						<div className="w-16 h-16 bg-zinc-200 dark:bg-zinc-800 rounded-full" />
-						<div className="h-4 w-32 bg-zinc-200 dark:bg-zinc-800 rounded" />
-					</div>
-				</div>
+			<div className="flex-1 flex items-center justify-center py-40">
+				<div className="animate-spin rounded-full h-12 w-12 border-4 border-primary border-t-transparent" />
 			</div>
 		);
 	}
 
 	return (
-		<div className="min-h-screen flex flex-col bg-zinc-50 dark:bg-[#0a0f18]">
-			<div className="flex-1">
-				<main className="px-4 pb-32">
-					<div>
-						<div
-							className="rounded-3xl p-6 mb-6 relative overflow-hidden"
-							style={{
-								background: 'linear-gradient(135deg, #3b82f6 0%, #2563eb 50%, #1d4ed8 100%)',
-							}}
-						>
-							<div className="absolute top-4 right-4">
-								<div
-									className="w-14 h-14 rounded-full flex items-center justify-center"
-									style={{ backgroundColor: 'rgba(255, 255, 255, 0.2)' }}
-								>
-									<Trophy className="w-7 h-7 text-white" />
+		<div className="flex flex-col h-full bg-background font-inter pb-24 lg:px-8">
+			<main className="max-w-6xl mx-auto w-full pt-8 space-y-12">
+				{/* Hero Statistics Card */}
+				<motion.div
+					initial={{ opacity: 0, y: 20 }}
+					animate={{ opacity: 1, y: 0 }}
+					transition={{ duration: 0.6 }}
+				>
+					<Card className="rounded-[3rem] p-12 relative overflow-hidden bg-primary text-primary-foreground border-none shadow-2xl shadow-primary/20">
+						<div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-[100px] -mr-32 -mt-32 pointer-events-none" />
+						<div className="absolute bottom-0 left-0 w-64 h-64 bg-black/10 rounded-full blur-[80px] -ml-24 -mb-24 pointer-events-none" />
+
+						<div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center relative z-10">
+							<div className="space-y-6">
+								<div className="space-y-1">
+									<p className="text-xs font-black uppercase tracking-[0.4em] opacity-60">
+										Matric Master
+									</p>
+									<h2 className="text-5xl lg:text-7xl font-black tracking-tighter uppercase">
+										Level {masteryLevel}
+									</h2>
+								</div>
+
+								<div className="space-y-4">
+									<div className="flex items-center justify-between text-sm font-black uppercase tracking-widest">
+										<span>Mastery Progress</span>
+										<span>{Math.round(progress)}%</span>
+									</div>
+									<Progress value={progress} className="h-4 bg-white/20" />
+									<p className="text-sm font-bold opacity-80">
+										{badgesToNext > 0
+											? `Unlock ${badgesToNext} more badges to reach Level ${masteryLevel + 1}!`
+											: 'You are at peak mastery! Keep going!'}
+									</p>
 								</div>
 							</div>
-							<div className="space-y-4">
-								<div>
-									<p
-										className="text-xs font-semibold uppercase tracking-wider mb-1"
-										style={{ color: 'rgba(255, 255, 255, 0.7)' }}
-									>
-										Mastery Level
-									</p>
-									<h2 className="text-4xl font-bold text-white">Level {masteryLevel}</h2>
-								</div>
-								<div className="flex items-center justify-between">
-									<p className="text-white text-lg">
-										<span className="font-bold">{unlockedCount}</span>
-										<span style={{ color: 'rgba(255, 255, 255, 0.7)' }}>
-											{' '}
-											/ {totalBadges} Badges
-										</span>
-									</p>
-									<span className="text-white font-bold text-lg">{Math.round(progress)}%</span>
-								</div>
-								<div
-									className="w-full h-2 rounded-full overflow-hidden"
-									style={{ backgroundColor: 'rgba(255, 255, 255, 0.3)' }}
-								>
-									<div
-										className="h-full rounded-full transition-all duration-500"
-										style={{ width: `${progress}%`, backgroundColor: '#ffffff' }}
+
+							<div className="flex justify-center md:justify-end">
+								<div className="relative">
+									<motion.div
+										animate={{ rotate: 360 }}
+										transition={{ duration: 20, repeat: Number.POSITIVE_INFINITY, ease: 'linear' }}
+										className="absolute inset-0 bg-white/10 rounded-full blur-2xl"
 									/>
+									<div className="w-48 h-48 lg:w-64 lg:h-64 rounded-[3.5rem] bg-white/10 backdrop-blur-3xl flex items-center justify-center border-4 border-white/20 shadow-2xl relative z-10">
+										<Trophy className="w-24 h-24 lg:w-32 lg:h-32 text-white drop-shadow-2xl" />
+									</div>
+									<div className="absolute -bottom-6 -right-6 w-20 h-20 bg-brand-amber rounded-3xl flex items-center justify-center shadow-xl border-4 border-white z-20">
+										<span className="text-2xl font-black text-white">{unlockedCount}</span>
+									</div>
 								</div>
-								<p className="text-sm" style={{ color: 'rgba(255, 255, 255, 0.8)' }}>
-									{badgesToNext > 0
-										? `Keep it up! ${badgesToNext} more to unlock next level.`
-										: 'Amazing! Level up!'}
-								</p>
 							</div>
 						</div>
-					</div>
+					</Card>
+				</motion.div>
 
-					<div className="flex gap-2 mb-6 overflow-x-auto no-scrollbar pb-2">
-						{categories.map((category) => (
+				{/* Category Navigation */}
+				<div className="flex gap-4 p-2 bg-muted/50 rounded-[2.5rem] border-2 border-border/50 max-w-fit mx-auto lg:mx-0 overflow-x-auto no-scrollbar">
+					{categories.map((category) => {
+						const Icon = category.icon;
+						const isActive = activeTab === category.id;
+						return (
 							<button
 								key={category.id}
 								type="button"
 								onClick={() => setActiveTab(category.id)}
-								className={`px-5 py-2.5 rounded-full text-sm font-medium whitespace-nowrap transition-all ${
-									activeTab === category.id
-										? 'bg-blue-500 text-white'
-										: 'bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400'
+								className={`flex items-center gap-3 px-8 py-4 rounded-3xl text-sm font-black uppercase tracking-widest transition-all duration-300 ${
+									isActive
+										? 'bg-primary text-primary-foreground shadow-2xl shadow-primary/20 scale-105'
+										: 'text-muted-foreground hover:bg-muted hover:text-foreground'
 								}`}
 							>
+								<Icon className={`w-5 h-5 ${isActive ? 'scale-110' : ''}`} />
 								{category.label}
 							</button>
-						))}
-					</div>
+						);
+					})}
+				</div>
 
+				{/* Badges Grid */}
+				<AnimatePresence mode="wait">
 					{filteredBadges.length === 0 ? (
-						<div className="text-center py-12">
-							<p className="text-zinc-500 dark:text-zinc-400">
-								No achievements in this category yet.
-							</p>
-						</div>
+						<motion.div
+							initial={{ opacity: 0 }}
+							animate={{ opacity: 1 }}
+							exit={{ opacity: 0 }}
+							className="text-center py-32 space-y-4 opacity-50"
+						>
+							<Lock className="w-16 h-16 mx-auto text-muted-foreground" />
+							<p className="text-xl font-bold uppercase tracking-widest">No achievements yet.</p>
+						</motion.div>
 					) : (
-						<div className="grid grid-cols-3 gap-4">
+						<motion.div
+							variants={STAGGER_CONTAINER}
+							initial="hidden"
+							animate="visible"
+							className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 lg:gap-8"
+						>
 							{filteredBadges.map((badge) => (
-								<div
-									key={badge.id}
-									className="flex flex-col items-center gap-3 p-4 rounded-2xl bg-white dark:bg-zinc-900"
-								>
-									<div
-										className={`w-20 h-20 rounded-full flex items-center justify-center relative ${badge.unlocked ? '' : 'opacity-50'}`}
-										style={{
-											backgroundColor: badge.unlocked ? badge.iconBg : '',
-											border: badge.unlocked ? 'none' : '2px dashed rgb(209, 213, 219)',
-										}}
+								<motion.div key={badge.id} variants={STAGGER_ITEM}>
+									<Card
+										className={`group relative h-full flex flex-col items-center gap-6 p-8 rounded-[2.5rem] border-2 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl ${
+											badge.unlocked
+												? 'bg-card border-border hover:border-primary/20 hover:shadow-primary/5'
+												: 'bg-muted/30 border-dashed border-muted-foreground/20 opacity-60'
+										}`}
 									>
-										{badge.unlocked ? (
-											badge.icon ? (
-												<span className="text-3xl">{badge.icon}</span>
+										<div
+											className={`w-24 h-24 lg:w-32 lg:h-32 rounded-[2rem] flex items-center justify-center relative transition-all duration-500 group-hover:scale-110 group-hover:rotate-6 ${
+												badge.unlocked ? 'shadow-xl' : 'grayscale'
+											}`}
+											style={{
+												backgroundColor: badge.unlocked ? badge.iconBg : 'var(--muted)',
+											}}
+										>
+											{badge.unlocked ? (
+												badge.icon ? (
+													<span className="text-5xl lg:text-6xl drop-shadow-xl">{badge.icon}</span>
+												) : (
+													<Trophy className="w-12 h-12 text-primary" />
+												)
 											) : (
-												<Trophy className="w-8 h-8 text-blue-500" />
-											)
-										) : (
-											<Lock className="w-6 h-6 text-gray-400 dark:text-gray-500" />
-										)}
-									</div>
-									<div className="text-center">
-										<p
-											className={`text-sm font-medium ${badge.unlocked ? 'text-zinc-900 dark:text-white' : 'text-zinc-400 dark:text-zinc-500'}`}
-										>
-											{badge.name}
-										</p>
-										<p
-											className={`text-xs font-medium uppercase tracking-wide ${badge.unlocked ? 'text-blue-500 dark:text-blue-400' : 'text-zinc-400 dark:text-zinc-500'}`}
-										>
-											{badge.unlocked ? 'UNLOCKED' : 'LOCKED'}
-										</p>
-									</div>
-								</div>
+												<Lock className="w-10 h-10 text-muted-foreground/30" />
+											)}
+										</div>
+
+										<div className="text-center space-y-2">
+											<h3
+												className={`text-lg font-black tracking-tighter leading-none ${
+													badge.unlocked ? 'text-foreground' : 'text-muted-foreground'
+												}`}
+											>
+												{badge.name}
+											</h3>
+											<p
+												className={`text-[9px] font-black uppercase tracking-[0.2em] px-3 py-1 rounded-full border-2 inline-block ${
+													badge.unlocked
+														? 'text-primary border-primary/20 bg-primary/5'
+														: 'text-muted-foreground/50 border-muted-foreground/10'
+												}`}
+											>
+												{badge.unlocked ? 'Mastered' : 'Locked'}
+											</p>
+										</div>
+
+										{/* Tooltip-like Description on Hover */}
+										<div className="absolute inset-0 bg-primary rounded-[2.5rem] p-6 flex flex-col items-center justify-center text-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-20">
+											<p className="text-primary-foreground font-black text-sm uppercase tracking-widest mb-2">
+												{badge.name}
+											</p>
+											<p className="text-primary-foreground/80 text-xs font-bold leading-relaxed">
+												{badge.description || 'Complete challenges to unlock this achievement!'}
+											</p>
+										</div>
+									</Card>
+								</motion.div>
 							))}
-						</div>
+						</motion.div>
 					)}
-				</main>
-			</div>
+				</AnimatePresence>
+			</main>
 		</div>
 	);
 }

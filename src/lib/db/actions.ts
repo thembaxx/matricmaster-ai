@@ -2,12 +2,13 @@
 
 import { and, asc, desc, eq, inArray, isNotNull, isNull, sql } from 'drizzle-orm';
 import { z } from 'zod';
-import { type User, users } from './better-auth-schema';
+import type { User } from './better-auth-schema';
+import { users } from './better-auth-schema';
+
 import { type DbType, dbManager } from './index';
-
-export type { User };
-
 import type {
+	BuddyRequest,
+	ContentFlag,
 	NewOption,
 	NewPastPaper,
 	NewQuestion,
@@ -19,9 +20,7 @@ import type {
 	Subject,
 } from './schema';
 import {
-	type BuddyRequest,
 	buddyRequests,
-	type ContentFlag,
 	contentFlags,
 	options,
 	pastPapers,

@@ -26,13 +26,23 @@ export async function PATCH(
 		const result = await editMessage(messageId, session.user.id, content);
 
 		if (!result.success) {
-			return NextResponse.json({ error: result.error }, { status: 500 });
+			const statusMap: Record<string, number> = {
+				NOT_FOUND: 404,
+				FORBIDDEN: 403,
+				BAD_REQUEST: 400,
+				SERVER_ERROR: 500,
+			};
+			const status = statusMap[result.error.code] || 500;
+			return NextResponse.json(result, { status });
 		}
 
 		return NextResponse.json(result);
 	} catch (error) {
 		console.error('[API] Error editing message:', error);
-		return NextResponse.json({ error: 'Failed to edit message' }, { status: 500 });
+		return NextResponse.json(
+			{ success: false, error: { message: 'Failed to edit message', code: 'SERVER_ERROR' } },
+			{ status: 500 }
+		);
 	}
 }
 
@@ -54,12 +64,22 @@ export async function DELETE(
 		const result = await deleteMessage(messageId, session.user.id);
 
 		if (!result.success) {
-			return NextResponse.json({ error: result.error }, { status: 500 });
+			const statusMap: Record<string, number> = {
+				NOT_FOUND: 404,
+				FORBIDDEN: 403,
+				BAD_REQUEST: 400,
+				SERVER_ERROR: 500,
+			};
+			const status = statusMap[result.error.code] || 500;
+			return NextResponse.json(result, { status });
 		}
 
 		return NextResponse.json(result);
 	} catch (error) {
 		console.error('[API] Error deleting message:', error);
-		return NextResponse.json({ error: 'Failed to delete message' }, { status: 500 });
+		return NextResponse.json(
+			{ success: false, error: { message: 'Failed to delete message', code: 'SERVER_ERROR' } },
+			{ status: 500 }
+		);
 	}
 }

@@ -45,8 +45,8 @@ import {
 	getUsersAction,
 	restoreUserAction,
 	toggleUserBlockAction,
-	type User,
 } from '@/lib/db/actions';
+import type { User } from '@/lib/db/better-auth-schema';
 
 // Mock data for admin dashboard
 const mockStats = {
