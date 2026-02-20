@@ -1,10 +1,12 @@
-import type { Metadata } from 'next';
-import DashboardScreen from '@/screens/Dashboard';
+'use client';
 
-export const metadata: Metadata = {
-	title: 'Dashboard | MatricMaster AI',
-	description: 'Track your learning progress and continue your journey.',
-};
+import dynamic from 'next/dynamic';
+import { DashboardSkeleton } from '@/components/DashboardSkeleton';
+
+const DashboardScreen = dynamic(() => import('@/screens/Dashboard'), {
+	ssr: false,
+	loading: () => <DashboardSkeleton />,
+});
 
 export default function DashboardPage() {
 	return <DashboardScreen />;
