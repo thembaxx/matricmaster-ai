@@ -50,6 +50,13 @@
 			"when": 1770949000000,
 			"tag": "0006_ai_conversations",
 			"breakpoints": true
+		},
+		{
+			"idx": 7,
+			"version": "7",
+			"when": 1771100000000,
+			"tag": "0007_spaced_repetition",
+			"breakpoints": true
 		}
 	]
 }
