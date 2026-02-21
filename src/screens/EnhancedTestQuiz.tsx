@@ -28,6 +28,7 @@ import {
 	getRandomQuestionsFromMultipleSubjectsAction,
 	getSubjectsAction,
 } from '@/lib/db/actions';
+import { saveQuizResult } from '@/lib/quiz-result-store';
 import { cn } from '@/lib/utils';
 import { getExplanation } from '@/services/geminiService';
 
@@ -799,10 +800,29 @@ export default function EnhancedTestQuizScreen() {
 									</Button>
 									<Button
 										size="lg"
-										onClick={() => router.push('/dashboard')}
-										className="flex-1 h-14 rounded-2xl font-black uppercase tracking-wider bg-zinc-900 dark:bg-white text-white dark:text-zinc-900"
+										onClick={() => {
+											const durationSeconds =
+												quizState.startTime && quizState.endTime
+													? Math.floor((quizState.endTime - quizState.startTime) / 1000)
+													: 0;
+											const score = calculateScore();
+											const subjectId = quizState.selectedSubjects[0];
+											saveQuizResult({
+												correctAnswers: score,
+												totalQuestions: quizState.questions.length,
+												durationSeconds,
+												accuracy: Math.round((score / quizState.questions.length) * 100),
+												subjectName: subjects.find((s) => s.id === subjectId)?.name || 'Mixed',
+												subjectId: quizState.isMixedMode ? undefined : subjectId,
+												difficulty: 'medium',
+												completedAt: new Date(),
+											});
+											router.push('/lesson-complete');
+										}}
+										className="flex-1 h-14 rounded-2xl font-black uppercase tracking-wider bg-brand-amber text-zinc-900 hover:bg-brand-amber/90"
 									>
-										Dashboard
+										<Sparkles className="w-4 h-4 mr-2" />
+										Claim XP
 									</Button>
 								</div>
 							</motion.div>

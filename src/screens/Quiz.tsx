@@ -1,15 +1,16 @@
 'use client';
 
 import { AnimatePresence, motion } from 'framer-motion';
-// import type { Screen } from '@/types'; // Removed unused import
-import { ArrowLeft, HelpCircle, Lightbulb, Loader2, MoreHorizontal, Sparkles } from 'lucide-react';
+import { ArrowLeft, Clock, HelpCircle, Lightbulb, Loader2, Sparkles } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { SmoothWords } from '@/components/Transition/SmoothText';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { STAGGER_CONTAINER, STAGGER_ITEM } from '@/lib/animation-presets';
+import { saveQuizResult } from '@/lib/quiz-result-store';
 import { getExplanation } from '@/services/geminiService';
 
 const options = [
@@ -27,6 +28,21 @@ export default function Quiz() {
 	const [showExplanation, setShowExplanation] = useState(false);
 	const [aiExplanation, setAiExplanation] = useState<string | null>(null);
 	const [isExplaining, setIsExplaining] = useState(false);
+	const [elapsedSeconds, setElapsedSeconds] = useState(0);
+	const startTimeRef = useRef<number>(Date.now());
+
+	useEffect(() => {
+		const interval = setInterval(() => {
+			setElapsedSeconds(Math.floor((Date.now() - startTimeRef.current) / 1000));
+		}, 1000);
+		return () => clearInterval(interval);
+	}, []);
+
+	const formatTime = (seconds: number) => {
+		const mins = Math.floor(seconds / 60);
+		const secs = seconds % 60;
+		return `${mins}:${secs.toString().padStart(2, '0')}`;
+	};
 
 	const handleExplain = async () => {
 		setIsExplaining(true);
@@ -51,6 +67,18 @@ export default function Quiz() {
 	const handleCheck = () => {
 		if (isChecked) {
 			if (isCorrect) {
+				const durationSeconds = Math.floor((Date.now() - startTimeRef.current) / 1000);
+				saveQuizResult({
+					correctAnswers: 1,
+					totalQuestions: 1,
+					durationSeconds,
+					accuracy: 100,
+					subjectName: 'Mathematics',
+					subjectId: 2,
+					difficulty: 'medium',
+					topic: 'Algebra',
+					completedAt: new Date(),
+				});
 				router.push('/lesson-complete');
 			} else {
 				setIsChecked(false);
@@ -90,9 +118,13 @@ export default function Quiz() {
 							</h1>
 							<p className="text-sm font-black text-foreground">Nov 2023 • NSC</p>
 						</div>
-						<Button variant="ghost" size="icon" className="rounded-full">
-							<MoreHorizontal className="w-6 h-6" />
-						</Button>
+						<Badge
+							variant="outline"
+							className="text-[10px] font-bold text-zinc-500 border-zinc-200 bg-zinc-50 dark:bg-zinc-800 dark:border-zinc-700"
+						>
+							<Clock className="w-3 h-3 mr-1" />
+							{formatTime(elapsedSeconds)}
+						</Badge>
 					</div>
 					{/* Progress */}
 					<div className="px-6 pb-6">

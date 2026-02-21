@@ -1,8 +1,8 @@
 'use client';
 
-import { ArrowLeft, CheckCircle2, TrendingUp, XCircle } from 'lucide-react';
+import { ArrowLeft, CheckCircle2, Clock, Sparkles, TrendingUp, XCircle } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { SafeImage } from '@/components/SafeImage';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -11,6 +11,7 @@ import { Label } from '@/components/ui/label';
 import { Progress } from '@/components/ui/progress';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { saveQuizResult } from '@/lib/quiz-result-store';
 
 // Physics questions data based on our seeded database
 const physicsQuestions = [
@@ -210,6 +211,21 @@ export default function TestQuizScreen() {
 	const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
 	const [selectedAnswers, setSelectedAnswers] = useState<Record<number, string>>({});
 	const [showResults, setShowResults] = useState(false);
+	const [elapsedSeconds, setElapsedSeconds] = useState(0);
+	const startTimeRef = useRef<number>(Date.now());
+
+	useEffect(() => {
+		const interval = setInterval(() => {
+			setElapsedSeconds(Math.floor((Date.now() - startTimeRef.current) / 1000));
+		}, 1000);
+		return () => clearInterval(interval);
+	}, []);
+
+	const formatTime = (seconds: number) => {
+		const mins = Math.floor(seconds / 60);
+		const secs = seconds % 60;
+		return `${mins}:${secs.toString().padStart(2, '0')}`;
+	};
 
 	const currentQuestion = physicsQuestions[currentQuestionIndex];
 	const progress = (currentQuestionIndex / physicsQuestions.length) * 100;
@@ -322,11 +338,31 @@ export default function TestQuizScreen() {
 								setShowResults(false);
 								setCurrentQuestionIndex(0);
 								setSelectedAnswers({});
+								startTimeRef.current = Date.now();
+								setElapsedSeconds(0);
 							}}
 						>
 							Retry Test
 						</Button>
-						<Button onClick={() => router.push('/dashboard')}>Back to Dashboard</Button>
+						<Button
+							onClick={() => {
+								saveQuizResult({
+									correctAnswers: score,
+									totalQuestions: physicsQuestions.length,
+									durationSeconds: elapsedSeconds,
+									accuracy: Math.round((score / physicsQuestions.length) * 100),
+									subjectName: 'Physical Sciences',
+									subjectId: 1,
+									difficulty: 'medium',
+									completedAt: new Date(),
+								});
+								router.push('/lesson-complete');
+							}}
+							className="bg-brand-amber text-zinc-900 hover:bg-brand-amber/90"
+						>
+							<Sparkles className="w-4 h-4 mr-2" />
+							Claim XP
+						</Button>
 					</div>
 				</Card>
 			</div>
@@ -353,7 +389,8 @@ export default function TestQuizScreen() {
 				</div>
 
 				<Badge variant="secondary" className="bg-white/80 dark:bg-zinc-800/80 backdrop-blur-sm">
-					Grade {currentQuestion.gradeLevel}
+					<Clock className="w-3 h-3 mr-1" />
+					{formatTime(elapsedSeconds)}
 				</Badge>
 			</div>
 
