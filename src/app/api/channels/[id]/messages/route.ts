@@ -1,6 +1,6 @@
 import { type NextRequest, NextResponse } from 'next/server';
 import { getAuth } from '@/lib/auth';
-import { getChannelMessages } from '@/lib/db/chat-actions';
+import { getChannelMessages, hasAccessToChannel } from '@/lib/db/chat-actions';
 
 const MIN_LIMIT = 1;
 const MAX_LIMIT = 100;
@@ -28,11 +28,11 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
 
 		const beforeId = searchParams.get('beforeId') || undefined;
 
-		// TODO: Add authorization check to verify user has access to this channel
-		// const hasAccess = await hasAccessToChannel(session.user.id, channelId);
-		// if (!hasAccess) {
-		//   return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
-		// }
+		// Authorization check - verify user is a member of this channel
+		const hasAccess = await hasAccessToChannel(session.user.id, channelId);
+		if (!hasAccess) {
+			return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+		}
 
 		const messages = await getChannelMessages(channelId, { limit, beforeId });
 

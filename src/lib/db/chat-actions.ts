@@ -1,10 +1,11 @@
 /** biome-ignore-all lint/suspicious/noExplicitAny: reasons */
 'use server';
 
-import { desc, eq } from 'drizzle-orm';
+import { and, desc, eq } from 'drizzle-orm';
 import { AblyChannels } from '../ably/channel-names';
 import { publishToChannel } from '../ably/client';
 import { dbManager } from './index';
+import { channelMembers } from './schema';
 import { chatMessages, outbox, userPresence } from './schema-chat';
 
 const getDb = () => dbManager.getDb();
@@ -12,6 +13,22 @@ const getDb = () => dbManager.getDb();
 export type ChatActionResult<T = void> =
 	| { success: true; message: T }
 	| { success: false; error: { message: string; code: string } };
+
+export async function hasAccessToChannel(userId: string, channelId: string): Promise<boolean> {
+	try {
+		const db = getDb();
+		const [membership] = await db
+			.select()
+			.from(channelMembers)
+			.where(and(eq(channelMembers.channelId, channelId), eq(channelMembers.userId, userId)))
+			.limit(1);
+
+		return !!membership;
+	} catch (error) {
+		console.error('[Chat] Error checking channel access:', error);
+		return false;
+	}
+}
 
 export async function sendMessage(
 	channelId: string,
