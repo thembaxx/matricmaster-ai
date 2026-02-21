@@ -3,7 +3,6 @@
 import { Lightbulb, MessageSquarePlus } from 'lucide-react';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 
 interface QuickPromptsProps {
@@ -75,30 +74,32 @@ export function QuickPrompts({ onSelectPrompt, selectedSubject }: QuickPromptsPr
 	}
 
 	return (
-		<Card className="p-3 bg-muted/50 border-border/50">
-			<div className="flex items-center gap-2 mb-2">
+		<div className="space-y-3">
+			<div className="flex items-center gap-2 px-1">
 				<Lightbulb className="h-4 w-4 text-brand-amber" />
-				<span className="text-xs font-semibold text-muted-foreground">Quick Prompts</span>
+				<span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">
+					Quick Prompts
+				</span>
 			</div>
-			<ScrollArea className="w-full whitespace-nowrap">
-				<div className="flex gap-2 pb-2">
+			<ScrollArea className="w-full">
+				<div className="flex gap-2 pb-3">
 					{displayPrompts.map((prompt) => (
 						<Button
 							key={prompt}
 							variant="outline"
 							size="sm"
-							className="h-auto py-2 px-3 text-xs whitespace-normal text-left shrink-0"
+							className="h-auto py-2.5 px-4 text-xs whitespace-nowrap rounded-2xl border-border/50 bg-surface-elevated/30 hover:bg-surface-elevated hover:border-primary/30 transition-all duration-200 ios-active-scale"
 							onClick={() => onSelectPrompt(prompt)}
 						>
-							<MessageSquarePlus className="h-3 w-3 mr-1.5 shrink-0" />
-							{prompt}
+							<MessageSquarePlus className="h-3.5 w-3.5 mr-2 text-primary/70 shrink-0" />
+							<span className="font-medium">{prompt}</span>
 						</Button>
 					))}
 					{!showAll && (subjectPrompts.length > 3 || GENERAL_PROMPTS.length > 2) && (
 						<Button
 							variant="ghost"
 							size="sm"
-							className="h-auto py-2 px-3 text-xs shrink-0 text-primary"
+							className="h-auto py-2.5 px-4 text-xs shrink-0 text-primary font-bold hover:bg-primary/5 rounded-2xl"
 							onClick={() => setShowAll(true)}
 						>
 							Show more...
@@ -107,7 +108,7 @@ export function QuickPrompts({ onSelectPrompt, selectedSubject }: QuickPromptsPr
 				</div>
 				<ScrollBar orientation="horizontal" />
 			</ScrollArea>
-		</Card>
+		</div>
 	);
 }
 
