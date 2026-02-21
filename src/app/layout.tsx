@@ -2,7 +2,7 @@ import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import type { Metadata, Viewport } from 'next';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
-import { GamificationProvider } from '@/components/Gamification';
+import { GamificationProvider } from '@/components/Gamification/GamificationContext';
 import ClientProviders from '@/components/Layout/ClientProvidersDynamic';
 import { Toaster } from '@/components/Toaster';
 import { ThemeProvider } from '@/components/theme-provider';
@@ -92,6 +92,29 @@ export const viewport: Viewport = {
 	maximumScale: 5,
 };
 
+const jsonLd = {
+	'@context': 'https://schema.org',
+	'@graph': [
+		{
+			'@type': 'Organization',
+			name: 'MatricMaster AI',
+			url: baseUrl,
+			description:
+				'Master your Matric exams through interactive practice. Access past papers, step-by-step guides, and AI-powered explanations for South African Grade 12 students.',
+			logo: `${baseUrl}/icon-192.png`,
+		},
+		{
+			'@type': 'WebApplication',
+			name: 'MatricMaster AI',
+			url: baseUrl,
+			description:
+				'Interactive past papers and step-by-step guides for South African Grade 12 students. AI-powered explanations and practice for NSC exams.',
+			applicationCategory: 'EducationalApplication',
+			operatingSystem: 'Any',
+		},
+	],
+};
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
 	return (
 		<html lang="en" suppressHydrationWarning className={`${inter.variable} ${outfit.variable}`}>
@@ -101,6 +124,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 				<link rel="preconnect" href="https://api.dicebear.com" />
 				<link rel="dns-prefetch" href="https://images.unsplash.com" />
 				<link rel="dns-prefetch" href="https://lh3.googleusercontent.com" />
+				<script
+					type="application/ld+json"
+					// biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD from app schema only, no user input
+					dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+				/>
 			</head>
 			<body className="bg-background min-h-screen">
 				<WebVitals />

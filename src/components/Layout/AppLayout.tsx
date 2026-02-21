@@ -30,7 +30,7 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { ClientOnly } from '@/components/ClientOnly';
-import { DailyLoginBonus } from '@/components/Gamification';
+import { DailyLoginBonus } from '@/components/Gamification/DailyLoginBonus';
 import { useNotificationContextSafe } from '@/components/Notifications/NotificationListener';
 import { Button } from '@/components/ui/button';
 import {

@@ -137,6 +137,8 @@ export default function LessonComplete() {
 								alt="Trophy"
 								width={160}
 								height={160}
+								priority
+								sizes="160px"
 								className="object-contain rounded-2xl shadow-xl shadow-yellow-500/10"
 							/>
 						</motion.div>

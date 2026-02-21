@@ -19,7 +19,7 @@ export function AblyClientProvider({ children }: AblyClientProviderProps) {
 		if (typeof window === 'undefined') return null;
 
 		const clientId = user?.id || `anonymous-${Date.now()}`;
-		const authUrl = '/api/ably/auth';
+		const authUrl = process.env.NEXT_PUBLIC_ABLY_AUTH_URL || '/api/ably/auth';
 
 		return new Ably.Realtime({
 			authUrl,
