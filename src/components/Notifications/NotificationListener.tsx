@@ -19,6 +19,11 @@ export function useNotificationContext() {
 	return context;
 }
 
+export function useNotificationContextSafe(): NotificationContextValue {
+	const context = useContext(NotificationContext);
+	return context || { unreadCount: 0, incrementUnread: () => {}, resetUnread: () => {} };
+}
+
 interface NotificationListenerProps {
 	children: ReactNode;
 }

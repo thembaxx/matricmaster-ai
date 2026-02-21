@@ -1,1 +1,5 @@
-export { default as NotificationListener, useNotificationContext } from './NotificationListener';
+export {
+	default as NotificationListener,
+	useNotificationContext,
+	useNotificationContextSafe,
+} from './NotificationListener';
