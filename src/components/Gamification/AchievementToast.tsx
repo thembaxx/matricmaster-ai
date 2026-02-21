@@ -3,7 +3,7 @@
 import { m } from 'framer-motion';
 import { Sparkles, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import type { UnlockedAchievement } from './GamificationContext';
+import type { UnlockedAchievement } from '@/stores/useGamificationStore';
 
 interface AchievementToastProps {
 	achievement: UnlockedAchievement;

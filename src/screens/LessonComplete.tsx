@@ -22,7 +22,7 @@ import { Progress } from '@/components/ui/progress';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useQuizCompletion } from '@/hooks/use-quiz-completion';
 import { getUserAchievements } from '@/lib/db/achievement-actions';
-import { clearQuizResult, getQuizResult } from '@/lib/quiz-result-store';
+import { useQuizResultStore } from '@/stores/useQuizResultStore';
 import type { QuizResult } from '@/types/quiz';
 
 const XP_PER_LEVEL = 500;
@@ -54,14 +54,14 @@ export default function LessonComplete() {
 
 	useEffect(() => {
 		async function loadResult() {
-			const quizResult = getQuizResult();
+			const quizResult = useQuizResultStore.getState().get();
 			if (!quizResult) {
 				router.push('/dashboard');
 				return;
 			}
 
 			setResult(quizResult);
-			clearQuizResult();
+			useQuizResultStore.getState().clear();
 
 			const completionResult = await completeQuiz({
 				correctAnswers: quizResult.correctAnswers,

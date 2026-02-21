@@ -10,8 +10,8 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { STAGGER_CONTAINER, STAGGER_ITEM } from '@/lib/animation-presets';
-import { saveQuizResult } from '@/lib/quiz-result-store';
 import { getExplanation } from '@/services/geminiService';
+import { useQuizResultStore } from '@/stores/useQuizResultStore';
 
 const options = [
 	{ id: 'A', expression: '(1, 0)', isCorrect: false },
@@ -68,7 +68,7 @@ export default function Quiz() {
 		if (isChecked) {
 			if (isCorrect) {
 				const durationSeconds = Math.floor((Date.now() - startTimeRef.current) / 1000);
-				saveQuizResult({
+				useQuizResultStore.getState().save({
 					correctAnswers: 1,
 					totalQuestions: 1,
 					durationSeconds,

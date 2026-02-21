@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import { DeferredAnalytics } from '@/components/DeferredAnalytics';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
-import { GamificationProvider } from '@/components/Gamification/GamificationContext';
 import ClientProviders from '@/components/Layout/ClientProvidersDynamic';
 import { Toaster } from '@/components/Toaster';
 import { ThemeProvider } from '@/components/theme-provider';
@@ -137,10 +136,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 				</a>
 				<ErrorBoundary>
 					<ThemeProvider defaultTheme="light" storageKey="matric-master-theme">
-						<GamificationProvider>
-							<ClientProviders>{children}</ClientProviders>
-							<Toaster />
-						</GamificationProvider>
+						<ClientProviders>{children}</ClientProviders>
+						<Toaster />
 					</ThemeProvider>
 				</ErrorBoundary>
 				<DeferredAnalytics />
