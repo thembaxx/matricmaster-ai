@@ -1,6 +1,6 @@
 'use client';
 
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, m } from 'framer-motion';
 import { Award, Flame, Lock, Star, Trophy, Zap } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Card } from '@/components/ui/card';
@@ -98,7 +98,7 @@ export default function Achievements() {
 		<div className="flex flex-col h-full bg-background font-inter pb-24 lg:px-8">
 			<main className="max-w-6xl mx-auto w-full pt-8 space-y-12">
 				{/* Hero Statistics Card */}
-				<motion.div
+				<m.div
 					initial={{ opacity: 0, y: 20 }}
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ duration: 0.6 }}
@@ -134,7 +134,7 @@ export default function Achievements() {
 
 							<div className="flex justify-center md:justify-end">
 								<div className="relative">
-									<motion.div
+									<m.div
 										animate={{ rotate: 360 }}
 										transition={{ duration: 20, repeat: Number.POSITIVE_INFINITY, ease: 'linear' }}
 										className="absolute inset-0 bg-white/10 rounded-full blur-2xl"
@@ -149,7 +149,7 @@ export default function Achievements() {
 							</div>
 						</div>
 					</Card>
-				</motion.div>
+				</m.div>
 
 				{/* Category Navigation */}
 				<div className="flex gap-4 p-2 bg-muted/50 rounded-[2.5rem] border-2 border-border/50 max-w-fit mx-auto lg:mx-0 overflow-x-auto no-scrollbar">
@@ -177,7 +177,7 @@ export default function Achievements() {
 				{/* Badges Grid */}
 				<AnimatePresence mode="wait">
 					{filteredBadges.length === 0 ? (
-						<motion.div
+						<m.div
 							initial={{ opacity: 0 }}
 							animate={{ opacity: 1 }}
 							exit={{ opacity: 0 }}
@@ -185,16 +185,16 @@ export default function Achievements() {
 						>
 							<Lock className="w-16 h-16 mx-auto text-muted-foreground" />
 							<p className="text-xl font-bold uppercase tracking-widest">No achievements yet.</p>
-						</motion.div>
+						</m.div>
 					) : (
-						<motion.div
+						<m.div
 							variants={STAGGER_CONTAINER}
 							initial="hidden"
 							animate="visible"
 							className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 lg:gap-8"
 						>
 							{filteredBadges.map((badge) => (
-								<motion.div key={badge.id} variants={STAGGER_ITEM}>
+								<m.div key={badge.id} variants={STAGGER_ITEM}>
 									<Card
 										className={`group relative h-full flex flex-col items-center gap-6 p-8 rounded-[2.5rem] border-2 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl ${
 											badge.unlocked
@@ -250,9 +250,9 @@ export default function Achievements() {
 											</p>
 										</div>
 									</Card>
-								</motion.div>
+								</m.div>
 							))}
-						</motion.div>
+						</m.div>
 					)}
 				</AnimatePresence>
 			</main>

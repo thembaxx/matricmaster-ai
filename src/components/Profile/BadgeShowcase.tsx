@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { Award, Crown, Plus, Star } from 'lucide-react';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
@@ -88,7 +88,7 @@ export function BadgeShowcase({
 				<div className="flex items-center gap-4">
 					{featuredAchievements.map((achievement, index) =>
 						achievement ? (
-							<motion.div
+							<m.div
 								key={achievement.id}
 								initial={{ scale: 0.8, opacity: 0 }}
 								animate={{ scale: 1, opacity: 1 }}
@@ -120,7 +120,7 @@ export function BadgeShowcase({
 										<Crown className="w-3 h-3 text-white" />
 									</div>
 								)}
-							</motion.div>
+							</m.div>
 						) : null
 					)}
 
@@ -211,16 +211,16 @@ export function BadgeShowcaseCompact({
 		>
 			{featuredAchievements.slice(0, 3).map((achievement, index) =>
 				achievement ? (
-					<motion.div
+					<m.div
 						key={achievement.id}
-						initial={{ scale: 0 }}
+						initial={{ scale: 0.95, opacity: 0 }}
 						animate={{ scale: 1 }}
 						transition={{ delay: index * 0.05 }}
 						className="-ml-1 first:ml-0 w-8 h-8 rounded-full flex items-center justify-center border-2 border-background shadow-sm"
 						style={{ backgroundColor: achievement.iconBg }}
 					>
 						<span className="text-sm">{achievement.icon}</span>
-					</motion.div>
+					</m.div>
 				) : null
 			)}
 		</button>

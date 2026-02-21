@@ -1,7 +1,7 @@
 'use client';
 
 import { Icon } from '@iconify/react';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, m } from 'framer-motion';
 import {
 	ChevronRight,
 	Clock,
@@ -135,7 +135,7 @@ export default function Search() {
 							Find topics, questions, and past papers
 						</p>
 					</div>
-					<motion.div
+					<m.div
 						initial={{ scale: 0.95, opacity: 0 }}
 						animate={{ scale: 1, opacity: 1 }}
 						className="relative"
@@ -149,10 +149,10 @@ export default function Search() {
 						/>
 						<AnimatePresence>
 							{query && (
-								<motion.button
-									initial={{ scale: 0, opacity: 0 }}
+								<m.button
+									initial={{ scale: 0.95, opacity: 0 }}
 									animate={{ scale: 1, opacity: 1 }}
-									exit={{ scale: 0, opacity: 0 }}
+									exit={{ scale: 0.95, opacity: 0 }}
 									title="Clear search"
 									aria-label="Clear search"
 									type="button"
@@ -160,24 +160,24 @@ export default function Search() {
 									className="absolute right-5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
 								>
 									<X className="w-6 h-6" />
-								</motion.button>
+								</m.button>
 							)}
 						</AnimatePresence>
-					</motion.div>
+					</m.div>
 				</div>
 			</div>
 
 			<ScrollArea className="flex-1 no-scrollbar">
 				<main className="px-6 py-8 max-w-4xl mx-auto w-full space-y-12 pb-32 lg:px-0">
 					{!query ? (
-						<motion.div
+						<m.div
 							variants={STAGGER_CONTAINER}
 							initial="hidden"
 							animate="visible"
 							className="space-y-12"
 						>
 							{/* Trending Section */}
-							<motion.div variants={STAGGER_ITEM} className="space-y-6">
+							<m.div variants={STAGGER_ITEM} className="space-y-6">
 								<div className="flex items-center gap-2">
 									<Icon icon="fluent-emoji-flat:fire" className="w-5 h-5" />
 									<h2 className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.3em]">
@@ -193,7 +193,7 @@ export default function Search() {
 										'Financial Maths',
 										'Trigonometry',
 									].map((topic) => (
-										<motion.div key={topic} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+										<m.div key={topic} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
 											<Badge
 												variant="secondary"
 												className="px-6 py-3 rounded-2xl bg-card text-sm font-black uppercase tracking-widest hover:bg-primary hover:text-primary-foreground transition-all cursor-pointer border-2 border-border shadow-sm"
@@ -201,14 +201,14 @@ export default function Search() {
 											>
 												{topic}
 											</Badge>
-										</motion.div>
+										</m.div>
 									))}
 								</div>
-							</motion.div>
+							</m.div>
 
 							{/* Recent Searches */}
 							{session?.user && (
-								<motion.div variants={STAGGER_ITEM} className="space-y-6">
+								<m.div variants={STAGGER_ITEM} className="space-y-6">
 									<div className="flex items-center justify-between">
 										<div className="flex items-center gap-2">
 											<Clock className="w-4 h-4 text-muted-foreground" />
@@ -236,7 +236,7 @@ export default function Search() {
 												</div>
 											) : recentSearches.length > 0 ? (
 												recentSearches.map((search) => (
-													<motion.button
+													<m.button
 														key={search.id}
 														variants={STAGGER_ITEM}
 														layout
@@ -259,7 +259,7 @@ export default function Search() {
 														>
 															<X className="w-5 h-5" />
 														</button>
-													</motion.button>
+													</m.button>
 												))
 											) : (
 												<div className="col-span-full py-12 text-center opacity-40">
@@ -270,16 +270,16 @@ export default function Search() {
 											)}
 										</AnimatePresence>
 									</div>
-								</motion.div>
+								</m.div>
 							)}
 
 							{/* Suggested Section */}
-							<motion.div variants={STAGGER_ITEM} className="space-y-6">
+							<m.div variants={STAGGER_ITEM} className="space-y-6">
 								<h2 className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.3em]">
 									Suggested for You
 								</h2>
 								<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-									<motion.div whileHover={{ scale: 1.02, y: -4 }} whileTap={{ scale: 0.98 }}>
+									<m.div whileHover={{ scale: 1.02, y: -4 }} whileTap={{ scale: 0.98 }}>
 										<Card className="p-8 bg-linear-to-br from-primary/10 to-brand-purple/10 border-none rounded-[2.5rem] relative overflow-hidden group cursor-pointer h-full">
 											<div className="absolute top-0 right-0 w-40 h-40 bg-primary/10 rounded-full -mr-20 -mt-20 blur-3xl group-hover:scale-125 transition-transform duration-700" />
 											<div className="relative z-10 flex items-center gap-8">
@@ -296,8 +296,8 @@ export default function Search() {
 												</div>
 											</div>
 										</Card>
-									</motion.div>
-									<motion.div whileHover={{ scale: 1.02, y: -4 }} whileTap={{ scale: 0.98 }}>
+									</m.div>
+									<m.div whileHover={{ scale: 1.02, y: -4 }} whileTap={{ scale: 0.98 }}>
 										<Card className="p-8 bg-linear-to-br from-emerald-500/10 to-primary/10 border-none rounded-[2.5rem] relative overflow-hidden group cursor-pointer h-full">
 											<div className="absolute top-0 right-0 w-40 h-40 bg-emerald-500/10 rounded-full -mr-20 -mt-20 blur-3xl group-hover:scale-125 transition-transform duration-700" />
 											<div className="relative z-10 flex items-center gap-8">
@@ -317,16 +317,16 @@ export default function Search() {
 												</div>
 											</div>
 										</Card>
-									</motion.div>
+									</m.div>
 								</div>
-							</motion.div>
-						</motion.div>
+							</m.div>
+						</m.div>
 					) : (
 						<div className="space-y-12">
 							{/* AI Insights */}
 							<AnimatePresence mode="wait">
 								{(isAiLoading || aiResults) && (
-									<motion.div
+									<m.div
 										initial={{ opacity: 0, y: 20 }}
 										animate={{ opacity: 1, y: 0 }}
 										exit={{ opacity: 0, y: -20 }}
@@ -353,7 +353,7 @@ export default function Search() {
 													)}
 													<div className="flex flex-wrap gap-3">
 														{aiResults?.suggestions.map((suggestion) => (
-															<motion.div
+															<m.div
 																key={suggestion}
 																whileHover={{ scale: 1.05 }}
 																whileTap={{ scale: 0.95 }}
@@ -365,18 +365,18 @@ export default function Search() {
 																>
 																	{suggestion}
 																</Badge>
-															</motion.div>
+															</m.div>
 														))}
 													</div>
 												</div>
 											)}
 										</Card>
-									</motion.div>
+									</m.div>
 								)}
 							</AnimatePresence>
 
 							{/* Search Results */}
-							<motion.div
+							<m.div
 								variants={STAGGER_CONTAINER}
 								initial="hidden"
 								animate="visible"
@@ -389,7 +389,7 @@ export default function Search() {
 									{filteredResults.length > 0 ? (
 										<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 											{filteredResults.map((paper) => (
-												<motion.div
+												<m.div
 													key={paper.id}
 													variants={STAGGER_ITEM}
 													layout
@@ -419,11 +419,11 @@ export default function Search() {
 															<ChevronRight className="w-5 h-5" />
 														</div>
 													</Card>
-												</motion.div>
+												</m.div>
 											))}
 										</div>
 									) : (
-										<motion.div
+										<m.div
 											key="no-results"
 											initial={{ opacity: 0 }}
 											animate={{ opacity: 1 }}
@@ -440,10 +440,10 @@ export default function Search() {
 													Try a different search term
 												</p>
 											</div>
-										</motion.div>
+										</m.div>
 									)}
 								</AnimatePresence>
-							</motion.div>
+							</m.div>
 						</div>
 					)}
 				</main>

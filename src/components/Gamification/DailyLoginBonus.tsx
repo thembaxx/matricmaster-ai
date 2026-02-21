@@ -1,6 +1,6 @@
 'use client';
 
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, m } from 'framer-motion';
 import { Calendar, Gift, Sparkles, Star, X, Zap } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
@@ -65,14 +65,14 @@ export function DailyLoginBonus({ onClaimed }: DailyLoginBonusProps) {
 	return (
 		<AnimatePresence>
 			{showModal && (
-				<motion.div
+				<m.div
 					initial={{ opacity: 0 }}
 					animate={{ opacity: 1 }}
 					exit={{ opacity: 0 }}
 					className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
 					onClick={handleClose}
 				>
-					<motion.div
+					<m.div
 						initial={{ scale: 0.9, opacity: 0 }}
 						animate={{ scale: 1, opacity: 1 }}
 						exit={{ scale: 0.9, opacity: 0 }}
@@ -94,14 +94,14 @@ export function DailyLoginBonus({ onClaimed }: DailyLoginBonusProps) {
 							{!claimResult ? (
 								<>
 									<div className="text-center mb-6">
-										<motion.div
+										<m.div
 											initial={{ scale: 0.8 }}
 											animate={{ scale: 1 }}
 											transition={{ type: 'spring', damping: 10 }}
 											className="w-24 h-24 mx-auto mb-4 rounded-full bg-gradient-to-br from-brand-amber to-orange-500 flex items-center justify-center shadow-lg shadow-brand-amber/30"
 										>
 											<Calendar className="w-12 h-12 text-white" />
-										</motion.div>
+										</m.div>
 										<p className="text-sm text-muted-foreground mb-1">Day {currentDay} of 30</p>
 										<h3 className="text-2xl font-black text-foreground">
 											{status.consecutiveDays === 0
@@ -148,7 +148,7 @@ export function DailyLoginBonus({ onClaimed }: DailyLoginBonusProps) {
 										className="w-full h-14 bg-brand-amber hover:bg-brand-amber/90 text-zinc-900 rounded-2xl text-lg font-bold shadow-lg shadow-brand-amber/20"
 									>
 										{isClaiming ? (
-											<motion.div
+											<m.div
 												animate={{ rotate: 360 }}
 												transition={{
 													repeat: Number.POSITIVE_INFINITY,
@@ -157,7 +157,7 @@ export function DailyLoginBonus({ onClaimed }: DailyLoginBonusProps) {
 												}}
 											>
 												<Sparkles className="w-6 h-6" />
-											</motion.div>
+											</m.div>
 										) : (
 											<>
 												<Gift className="w-5 h-5 mr-2" />
@@ -167,19 +167,19 @@ export function DailyLoginBonus({ onClaimed }: DailyLoginBonusProps) {
 									</Button>
 								</>
 							) : (
-								<motion.div
+								<m.div
 									initial={{ scale: 0.8, opacity: 0 }}
 									animate={{ scale: 1, opacity: 1 }}
 									className="text-center py-6"
 								>
-									<motion.div
-										initial={{ scale: 0 }}
+									<m.div
+										initial={{ scale: 0.95, opacity: 0 }}
 										animate={{ scale: 1 }}
 										transition={{ type: 'spring', damping: 10, delay: 0.1 }}
 										className="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-br from-green-400 to-emerald-500 flex items-center justify-center shadow-lg"
 									>
 										<Sparkles className="w-10 h-10 text-white" />
-									</motion.div>
+									</m.div>
 									<h3 className="text-2xl font-black text-foreground mb-2">Reward Claimed!</h3>
 									<p className="text-3xl font-black text-brand-amber mb-2">
 										+{claimResult.xpEarned} XP
@@ -200,7 +200,7 @@ export function DailyLoginBonus({ onClaimed }: DailyLoginBonusProps) {
 									>
 										Continue
 									</Button>
-								</motion.div>
+								</m.div>
 							)}
 
 							{!claimResult && (
@@ -232,8 +232,8 @@ export function DailyLoginBonus({ onClaimed }: DailyLoginBonusProps) {
 								</div>
 							)}
 						</Card>
-					</motion.div>
-				</motion.div>
+					</m.div>
+				</m.div>
 			)}
 		</AnimatePresence>
 	);
@@ -253,7 +253,7 @@ export function DailyLoginBonusTrigger({ onClick }: { onClick: () => void }) {
 	}
 
 	return (
-		<motion.div
+		<m.div
 			initial={{ scale: 0.9, opacity: 0 }}
 			animate={{ scale: 1, opacity: 1 }}
 			whileHover={{ scale: 1.05 }}
@@ -267,6 +267,6 @@ export function DailyLoginBonusTrigger({ onClick }: { onClick: () => void }) {
 				Daily Bonus
 				<span className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full animate-pulse" />
 			</Button>
-		</motion.div>
+		</m.div>
 	);
 }

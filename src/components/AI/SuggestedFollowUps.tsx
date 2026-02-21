@@ -40,5 +40,3 @@ export function SuggestedFollowUps({ suggestions, onSelectSuggestion }: Suggeste
 		</div>
 	);
 }
-
-export default SuggestedFollowUps;

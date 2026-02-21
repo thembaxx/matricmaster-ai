@@ -1,6 +1,6 @@
 'use client';
 
-import { motion, type Variants } from 'framer-motion';
+import { m, type Variants } from 'framer-motion';
 import type { ElementType } from 'react';
 import { useReducedMotion } from '@/hooks/use-reduced-motion';
 
@@ -58,7 +58,7 @@ export function SmoothText({
 		},
 	};
 
-	const MotionComponent = motion.create(Component as ElementType);
+	const MotionComponent = m.create(Component as ElementType);
 
 	return (
 		<MotionComponent
@@ -69,13 +69,13 @@ export function SmoothText({
 			className={className}
 		>
 			{text.split('').map((char, index) => (
-				<motion.span
+				<m.span
 					key={`${char}-${index}`}
 					variants={letterVariants}
 					className="inline-block whitespace-pre"
 				>
 					{char}
-				</motion.span>
+				</m.span>
 			))}
 		</MotionComponent>
 	);
@@ -133,7 +133,7 @@ export function SmoothWords({
 		},
 	};
 
-	const MotionComponent = motion.create(Component as ElementType);
+	const MotionComponent = m.create(Component as ElementType);
 
 	return (
 		<MotionComponent
@@ -144,13 +144,13 @@ export function SmoothWords({
 			className={className}
 		>
 			{text.split(' ').map((word, index) => (
-				<motion.span
+				<m.span
 					key={`${word}-${index}`}
 					variants={wordVariants}
 					className="inline-block whitespace-pre mr-[0.25em]"
 				>
 					{word}
-				</motion.span>
+				</m.span>
 			))}
 		</MotionComponent>
 	);

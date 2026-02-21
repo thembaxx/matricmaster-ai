@@ -237,5 +237,3 @@ export function ConversationSidebar({
 		</>
 	);
 }
-
-export default ConversationSidebar;

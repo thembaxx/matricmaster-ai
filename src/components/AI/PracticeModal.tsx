@@ -328,5 +328,3 @@ export function PracticeModal({ open, onOpenChange, problems, subject }: Practic
 		</Dialog>
 	);
 }
-
-export default PracticeModal;

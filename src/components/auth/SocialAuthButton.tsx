@@ -1,5 +1,5 @@
 import { Icon } from '@iconify/react';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
@@ -32,7 +32,7 @@ export function SocialAuthButton({
 	const { icon, label, style } = config[provider];
 
 	return (
-		<motion.div whileTap={{ scale: 0.98 }}>
+		<m.div whileTap={{ scale: 0.98 }}>
 			<Button
 				type="button"
 				variant="outline"
@@ -54,6 +54,6 @@ export function SocialAuthButton({
 				)}
 				<span className="relative font-semibold text-base">Continue with {label}</span>
 			</Button>
-		</motion.div>
+		</m.div>
 	);
 }

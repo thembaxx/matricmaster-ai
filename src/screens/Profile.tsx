@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { Award, Flame, GraduationCap, Target } from 'lucide-react';
 import { useEffect, useId, useState } from 'react';
 import { PolarAngleAxis, PolarGrid, Radar, RadarChart } from 'recharts';
@@ -117,7 +117,7 @@ export default function Profile() {
 
 			<main className="max-w-6xl mx-auto w-full pt-8 space-y-12 relative z-10">
 				{/* Profile Header Card */}
-				<motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+				<m.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
 					<Card className="rounded-[3rem] p-12 relative overflow-hidden bg-zinc-900 text-white border-none shadow-2xl">
 						<div className="absolute top-0 right-0 w-96 h-96 bg-primary/20 rounded-full blur-[100px] -mr-32 -mt-32" />
 
@@ -163,7 +163,7 @@ export default function Profile() {
 							</div>
 						</div>
 					</Card>
-				</motion.div>
+				</m.div>
 
 				<div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
 					{/* Left Column: Stats & Performance */}
@@ -325,7 +325,7 @@ export default function Profile() {
 
 				{/* Achievement Badges Section */}
 				{userStats && (
-					<motion.div
+					<m.div
 						initial={{ opacity: 0, y: 20 }}
 						animate={{ opacity: 1, y: 0 }}
 						transition={{ delay: 0.3 }}
@@ -340,7 +340,7 @@ export default function Profile() {
 						<Card className="p-8 rounded-[2.5rem] border-2 border-border/50 bg-card/50 backdrop-blur-sm">
 							<AchievementBadges unlockedIds={userStats.unlockedAchievementIds} />
 						</Card>
-					</motion.div>
+					</m.div>
 				)}
 			</main>
 		</div>

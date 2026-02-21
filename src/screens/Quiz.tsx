@@ -1,6 +1,6 @@
 'use client';
 
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, m } from 'framer-motion';
 import { ArrowLeft, Clock, HelpCircle, Lightbulb, Loader2, Sparkles } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
@@ -102,7 +102,7 @@ export default function Quiz() {
 			<header className="bg-card/80 backdrop-blur-xl border-b border-border shrink-0">
 				<div className="max-w-2xl mx-auto w-full">
 					<div className="px-6 pt-12 pb-2 flex items-center justify-between">
-						<motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+						<m.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
 							<Button
 								variant="ghost"
 								size="icon"
@@ -111,7 +111,7 @@ export default function Quiz() {
 							>
 								<ArrowLeft className="w-6 h-6" />
 							</Button>
-						</motion.div>
+						</m.div>
 						<div className="text-center">
 							<h1 className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em]">
 								Mathematics P1
@@ -129,7 +129,7 @@ export default function Quiz() {
 					{/* Progress */}
 					<div className="px-6 pb-6">
 						<div className="relative h-2 w-full bg-muted rounded-full overflow-hidden mb-3">
-							<motion.div
+							<m.div
 								initial={{ width: '20%' }}
 								animate={{ width: '33.3%' }}
 								transition={{ duration: 1, type: 'spring' }}
@@ -138,7 +138,7 @@ export default function Quiz() {
 						</div>
 						<div className="flex justify-between items-center text-[10px] font-black tracking-widest text-muted-foreground uppercase">
 							<span className="flex items-center gap-1.5">
-								<motion.span
+								<m.span
 									animate={{ scale: [1, 1.5, 1] }}
 									transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
 									className="w-1.5 h-1.5 rounded-full bg-brand-green"
@@ -159,17 +159,17 @@ export default function Quiz() {
 							text="Local Extrema"
 							className="text-4xl font-black text-foreground leading-tight"
 						/>
-						<motion.p
+						<m.p
 							initial={{ opacity: 0, x: -10 }}
 							animate={{ opacity: 1, x: 0 }}
 							transition={{ delay: 0.3 }}
 							className="text-muted-foreground font-medium leading-relaxed"
 						>
 							Find the coordinates of the local maximum for the function graphed below.
-						</motion.p>
+						</m.p>
 					</div>
 					{/* Equation & Graph Card */}
-					<motion.div
+					<m.div
 						initial={{ opacity: 0, y: 20 }}
 						animate={{ opacity: 1, y: 0 }}
 						transition={{ delay: 0.4 }}
@@ -178,12 +178,12 @@ export default function Quiz() {
 							<div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity" />
 
 							{/* Math Function */}
-							<motion.div
+							<m.div
 								whileHover={{ scale: 1.1 }}
 								className="text-2xl font-serif italic font-bold text-foreground mb-6 relative z-10"
 							>
 								f(x) = x³ - 3x + 2
-							</motion.div>
+							</m.div>
 
 							{/* SVG Graph Visualization */}
 							<div className="w-full h-48 relative mb-6 z-10 bg-muted/50 rounded-2xl border border-border flex items-center justify-center overflow-hidden">
@@ -208,7 +208,7 @@ export default function Quiz() {
 										className="text-border"
 									/>
 
-									<motion.path
+									<m.path
 										d="M 20 100 Q 60 20 100 60 T 180 20"
 										fill="none"
 										stroke="var(--primary)"
@@ -219,7 +219,7 @@ export default function Quiz() {
 										transition={{ duration: 2, ease: 'easeInOut' }}
 									/>
 
-									<motion.circle
+									<m.circle
 										cx="75"
 										cy="40"
 										r="5"
@@ -238,17 +238,17 @@ export default function Quiz() {
 								</svg>
 							</div>
 
-							<motion.div
+							<m.div
 								whileHover={{ scale: 1.05 }}
 								className="bg-brand-amber/10 text-brand-amber px-6 py-2.5 rounded-full flex items-center gap-2.5 text-xs font-black uppercase tracking-widest shadow-sm border border-brand-amber/20 relative z-10"
 							>
 								<Lightbulb className="w-4 h-4 fill-brand-amber" />
 								Use f'(x) = 0 to find stationary points
-							</motion.div>
+							</m.div>
 						</Card>
-					</motion.div>
+					</m.div>
 					{/* Options Grid */}
-					<motion.div
+					<m.div
 						variants={STAGGER_CONTAINER}
 						initial="hidden"
 						animate="visible"
@@ -270,7 +270,7 @@ export default function Quiz() {
 							}
 
 							return (
-								<motion.button
+								<m.button
 									variants={STAGGER_ITEM}
 									whileHover={!isChecked ? { scale: 1.02, y: -4 } : {}}
 									whileTap={!isChecked ? { scale: 0.98 } : {}}
@@ -295,36 +295,36 @@ export default function Quiz() {
 
 									<AnimatePresence>
 										{isChecked && isSelected && option.isCorrect && (
-											<motion.div
-												initial={{ scale: 0, rotate: -45 }}
+											<m.div
+												initial={{ scale: 0.95, opacity: 0, rotate: -45 }}
 												animate={{ scale: 1, rotate: 0 }}
 												className="absolute -top-2 -right-2 w-8 h-8 bg-white text-brand-green rounded-full flex items-center justify-center shadow-lg"
 											>
 												<Sparkles className="w-4 h-4 fill-brand-green" />
-											</motion.div>
+											</m.div>
 										)}
 									</AnimatePresence>
-								</motion.button>
+								</m.button>
 							);
 						})}
-					</motion.div>
+					</m.div>
 					{/* Explanation Card (Aha! Moment) */}
 					<AnimatePresence>
 						{showExplanation && (
-							<motion.div
+							<m.div
 								initial={{ opacity: 0, height: 0, y: 20 }}
 								animate={{ opacity: 1, height: 'auto', y: 0 }}
 								exit={{ opacity: 0, height: 0 }}
 							>
 								<Card className="p-8 bg-brand-green/5 border-2 border-brand-green/20 rounded-[2.5rem] space-y-6">
 									<div className="flex items-center gap-4">
-										<motion.div
+										<m.div
 											animate={{ rotate: [0, 15, 0] }}
 											transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
 											className="w-12 h-12 bg-brand-green text-white rounded-2xl flex items-center justify-center shadow-lg shadow-brand-green/20"
 										>
 											<Sparkles className="w-6 h-6" />
-										</motion.div>
+										</m.div>
 										<div>
 											<h4 className="font-black text-brand-green text-lg">Aha! Moment</h4>
 											<p className="text-xs font-black text-muted-foreground uppercase tracking-widest">
@@ -348,14 +348,14 @@ export default function Quiz() {
 										</p>
 									</div>
 								</Card>
-							</motion.div>
+							</m.div>
 						)}
 					</AnimatePresence>
 					{/* ... rest of component ... */}
 					{/* Hint Card */}
 					<AnimatePresence mode="wait">
 						{!showExplanation && (
-							<motion.div
+							<m.div
 								initial={{ opacity: 0, scale: 0.95 }}
 								animate={{ opacity: 1, scale: 1 }}
 								exit={{ opacity: 0, scale: 0.95 }}
@@ -373,11 +373,11 @@ export default function Quiz() {
 										decreasing. This always happens at a stationary point.
 									</p>
 								</div>
-							</motion.div>
+							</m.div>
 						)}
 					</AnimatePresence>
 					{/* AI Explanation Toggle */}
-					<motion.div
+					<m.div
 						initial={{ opacity: 0 }}
 						whileInView={{ opacity: 1 }}
 						viewport={{ once: true }}
@@ -386,13 +386,13 @@ export default function Quiz() {
 						<div className="bg-card rounded-[1.9rem] p-6 space-y-4">
 							<div className="flex items-center justify-between">
 								<div className="flex items-center gap-4">
-									<motion.div
+									<m.div
 										animate={{ scale: [1, 1.1, 1] }}
 										transition={{ duration: 3, repeat: Number.POSITIVE_INFINITY }}
 										className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center"
 									>
 										<Sparkles className="w-5 h-5 text-primary" />
-									</motion.div>
+									</m.div>
 									<div>
 										<h4 className="font-bold text-foreground text-sm">
 											Need a deeper explanation?
@@ -415,7 +415,7 @@ export default function Quiz() {
 
 							<AnimatePresence>
 								{aiExplanation && (
-									<motion.div
+									<m.div
 										initial={{ opacity: 0, height: 0 }}
 										animate={{ opacity: 1, height: 'auto' }}
 										className="pt-4 border-t border-border"
@@ -423,16 +423,16 @@ export default function Quiz() {
 										<p className="text-sm text-muted-foreground font-medium leading-relaxed whitespace-pre-wrap">
 											{aiExplanation}
 										</p>
-									</motion.div>
+									</m.div>
 								)}
 							</AnimatePresence>
 						</div>
-					</motion.div>
+					</m.div>
 				</main>
 			</ScrollArea>
 
 			{/* Floating Footer */}
-			<motion.footer
+			<m.footer
 				initial={{ y: 100 }}
 				animate={{ y: 0 }}
 				transition={{ type: 'spring', stiffness: 200, damping: 30 }}
@@ -457,7 +457,7 @@ export default function Quiz() {
 							Show Solution
 						</button>
 					</div>
-					<motion.div
+					<m.div
 						whileHover={selectedOption ? { scale: 1.02 } : {}}
 						whileTap={selectedOption ? { scale: 0.98 } : {}}
 					>
@@ -477,9 +477,9 @@ export default function Quiz() {
 						>
 							{isChecked ? (isCorrect ? 'Continue' : 'Try Again') : 'Check Answer'}
 						</Button>
-					</motion.div>
+					</m.div>
 				</div>
-			</motion.footer>
+			</m.footer>
 		</div>
 	);
 }

@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { Clock, Sparkles, Zap } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Card } from '@/components/ui/card';
@@ -128,7 +128,7 @@ export function WeeklyChallenge() {
 			className={`p-6 premium-glass border-none rounded-[2.5rem] h-full relative overflow-hidden ${isComplete ? 'bg-brand-amber/5' : ''}`}
 		>
 			{isComplete && (
-				<motion.div
+				<m.div
 					animate={{ rotate: [0, 360] }}
 					transition={{ duration: 20, repeat: Number.POSITIVE_INFINITY, ease: 'linear' }}
 					className="absolute -right-8 -top-8 w-32 h-32 bg-brand-amber/10 rounded-full blur-2xl"
@@ -148,13 +148,13 @@ export function WeeklyChallenge() {
 						<p className="text-sm text-muted-foreground">{challenge.description}</p>
 					</div>
 					{isComplete ? (
-						<motion.div
-							initial={{ scale: 0 }}
+						<m.div
+							initial={{ scale: 0.95, opacity: 0 }}
 							animate={{ scale: 1 }}
 							className="w-12 h-12 bg-brand-amber rounded-xl flex items-center justify-center"
 						>
 							<span className="text-2xl">🏆</span>
-						</motion.div>
+						</m.div>
 					) : (
 						<div className="text-right">
 							<div className="flex items-center gap-1 text-muted-foreground">

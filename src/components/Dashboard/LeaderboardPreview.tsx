@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { ChevronRight, Medal } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -112,7 +112,7 @@ export function LeaderboardPreview() {
 			) : (
 				<div className="space-y-3">
 					{entries.map((entry, index) => (
-						<motion.div
+						<m.div
 							key={entry.userId + entry.rank}
 							initial={{ opacity: 0, y: 10 }}
 							animate={{ opacity: 1, y: 0 }}
@@ -151,12 +151,12 @@ export function LeaderboardPreview() {
 									{entry.rank === 1 ? '🥇' : entry.rank === 2 ? '🥈' : '🥉'}
 								</span>
 							)}
-						</motion.div>
+						</m.div>
 					))}
 				</div>
 			)}
 
-			<motion.button
+			<m.button
 				whileHover={{ scale: 1.02 }}
 				whileTap={{ scale: 0.98 }}
 				type="button"
@@ -164,7 +164,7 @@ export function LeaderboardPreview() {
 			>
 				View Full Leaderboard
 				<ChevronRight className="w-4 h-4" />
-			</motion.button>
+			</m.button>
 		</Card>
 	);
 }

@@ -122,9 +122,9 @@ export function TopicMasteryCard({ className }: TopicMasteryCardProps) {
 									<TrendingDown className="h-4 w-4 text-red-500" />
 									<span className="text-red-600">Needs Focus</span>
 								</div>
-								{stats.weakTopics.slice(0, 3).map((topic, i) => (
+								{stats.weakTopics.slice(0, 3).map((topic) => (
 									<TopicItem
-										key={i}
+										key={topic.topic}
 										topic={topic}
 										variant="weak"
 										getMasteryColor={getMasteryColor}
@@ -139,9 +139,9 @@ export function TopicMasteryCard({ className }: TopicMasteryCardProps) {
 									<TrendingUp className="h-4 w-4 text-yellow-500" />
 									<span className="text-yellow-600">Improving</span>
 								</div>
-								{stats.improvingTopics.slice(0, 2).map((topic, i) => (
+								{stats.improvingTopics.slice(0, 2).map((topic) => (
 									<TopicItem
-										key={i}
+										key={topic.topic}
 										topic={topic}
 										variant="improving"
 										getMasteryColor={getMasteryColor}
@@ -156,9 +156,9 @@ export function TopicMasteryCard({ className }: TopicMasteryCardProps) {
 									<Target className="h-4 w-4 text-green-500" />
 									<span className="text-green-600">Mastered</span>
 								</div>
-								{stats.strongTopics.slice(0, 2).map((topic, i) => (
+								{stats.strongTopics.slice(0, 2).map((topic) => (
 									<TopicItem
-										key={i}
+										key={topic.topic}
 										topic={topic}
 										variant="strong"
 										getMasteryColor={getMasteryColor}

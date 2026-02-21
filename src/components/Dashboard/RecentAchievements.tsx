@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { Award, ChevronRight, Trophy } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Badge } from '@/components/ui/badge';
@@ -122,7 +122,7 @@ export function RecentAchievements() {
 
 			<div className="space-y-3">
 				{achievements.map((achievement, index) => (
-					<motion.div
+					<m.div
 						key={achievement.id}
 						initial={{ opacity: 0, x: -20 }}
 						animate={{ opacity: 1, x: 0 }}
@@ -151,7 +151,7 @@ export function RecentAchievements() {
 							</p>
 						</div>
 						<ChevronRight className="w-4 h-4 text-muted-foreground/50 group-hover:text-muted-foreground transition-colors" />
-					</motion.div>
+					</m.div>
 				))}
 			</div>
 		</Card>

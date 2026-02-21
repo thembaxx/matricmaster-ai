@@ -62,5 +62,3 @@ export function PdfViewerSkeleton() {
 		</div>
 	);
 }
-
-export default QuizSkeleton;

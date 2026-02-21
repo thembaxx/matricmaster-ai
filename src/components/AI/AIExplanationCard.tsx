@@ -1,6 +1,6 @@
 'use client';
 
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, m } from 'framer-motion';
 import { ChevronDown, ChevronUp, Loader2, Sparkles } from 'lucide-react';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
@@ -79,7 +79,7 @@ export function AIExplanationCard({
 
 				<AnimatePresence>
 					{explanation && isExpanded && (
-						<motion.div
+						<m.div
 							initial={{ opacity: 0, height: 0 }}
 							animate={{ opacity: 1, height: 'auto' }}
 							exit={{ opacity: 0, height: 0 }}
@@ -102,12 +102,12 @@ export function AIExplanationCard({
 									</Button>
 								</div>
 							</div>
-						</motion.div>
+						</m.div>
 					)}
 				</AnimatePresence>
 
 				{isLoading && !explanation && (
-					<motion.div
+					<m.div
 						initial={{ opacity: 0 }}
 						animate={{ opacity: 1 }}
 						className="py-8 flex flex-col items-center justify-center space-y-3"
@@ -120,11 +120,9 @@ export function AIExplanationCard({
 						<p className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground animate-pulse">
 							Analyzing question
 						</p>
-					</motion.div>
+					</m.div>
 				)}
 			</div>
 		</Card>
 	);
 }
-
-export default AIExplanationCard;

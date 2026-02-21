@@ -96,4 +96,3 @@ export function clearAllBookmarks() {
 }
 
 export type { BookmarkedMessage };
-export default BookmarkButton;

@@ -1,6 +1,6 @@
 'use client';
 
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, m } from 'framer-motion';
 import { Loader2, Send, Sparkles } from 'lucide-react';
 import type React from 'react';
 import { useRef, useState } from 'react';
@@ -55,7 +55,7 @@ export function AIPrompt({
 				</div>
 				<AnimatePresence>
 					{(input.trim() || isLoading) && (
-						<motion.div
+						<m.div
 							initial={{ opacity: 0, scale: 0.8, x: 10 }}
 							animate={{ opacity: 1, scale: 1, x: 0 }}
 							exit={{ opacity: 0, scale: 0.8, x: 10 }}
@@ -75,12 +75,10 @@ export function AIPrompt({
 									<Send className="h-6 w-6" />
 								)}
 							</Button>
-						</motion.div>
+						</m.div>
 					)}
 				</AnimatePresence>
 			</form>
 		</div>
 	);
 }
-
-export default AIPrompt;

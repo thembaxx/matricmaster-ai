@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { Home, Search } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
@@ -10,15 +10,15 @@ export default function NotFound() {
 		<div className="flex flex-col items-center justify-center min-h-screen p-6 bg-background">
 			<div className="max-w-md w-full text-center space-y-12">
 				<div className="space-y-4">
-					<motion.h1
+					<m.h1
 						initial={{ scale: 0.5, opacity: 0 }}
 						animate={{ scale: 1, opacity: 1 }}
 						transition={{ type: 'spring', stiffness: 200, damping: 10 }}
 						className="text-8xl font-black text-primary"
 					>
 						404
-					</motion.h1>
-					<motion.div
+					</m.h1>
+					<m.div
 						initial={{ y: 20, opacity: 0 }}
 						animate={{ y: 0, opacity: 1 }}
 						transition={{ delay: 0.2 }}
@@ -28,10 +28,10 @@ export default function NotFound() {
 						<p className="text-muted-foreground font-medium">
 							The page you&apos;re looking for doesn&apos;t exist or has been moved.
 						</p>
-					</motion.div>
+					</m.div>
 				</div>
 
-				<motion.div
+				<m.div
 					initial={{ y: 20, opacity: 0 }}
 					animate={{ y: 0, opacity: 1 }}
 					transition={{ delay: 0.4 }}
@@ -49,7 +49,7 @@ export default function NotFound() {
 							Search
 						</Button>
 					</Link>
-				</motion.div>
+				</m.div>
 			</div>
 		</div>
 	);

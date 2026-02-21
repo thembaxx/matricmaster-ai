@@ -1,6 +1,6 @@
 'use client';
 
-import { motion, type Variants } from 'framer-motion';
+import { m, type Variants } from 'framer-motion';
 import { usePathname } from 'next/navigation';
 import { getPageTransition, useReducedMotion } from '@/hooks/use-reduced-motion';
 
@@ -22,7 +22,7 @@ export default function PageTransition({ children }: { children: React.ReactNode
 	};
 
 	return (
-		<motion.div
+		<m.div
 			key={pathname}
 			initial="initial"
 			animate="animate"
@@ -38,6 +38,6 @@ export default function PageTransition({ children }: { children: React.ReactNode
 			className="h-full w-full grow flex flex-col"
 		>
 			{children}
-		</motion.div>
+		</m.div>
 	);
 }

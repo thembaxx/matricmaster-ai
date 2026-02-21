@@ -1,12 +1,10 @@
-import { Analytics } from '@vercel/analytics/react';
-import { SpeedInsights } from '@vercel/speed-insights/react';
 import type { Metadata, Viewport } from 'next';
+import { DeferredAnalytics } from '@/components/DeferredAnalytics';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { GamificationProvider } from '@/components/Gamification/GamificationContext';
 import ClientProviders from '@/components/Layout/ClientProvidersDynamic';
 import { Toaster } from '@/components/Toaster';
 import { ThemeProvider } from '@/components/theme-provider';
-import WebVitals from '@/components/WebVitals';
 import '@/styles/index.css';
 import { inter, outfit } from './fonts';
 
@@ -131,7 +129,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 				/>
 			</head>
 			<body className="bg-background min-h-screen">
-				<WebVitals />
 				<a
 					href="#main-content"
 					className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary focus:text-primary-foreground focus:rounded-lg focus:outline-none"
@@ -146,8 +143,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 						</GamificationProvider>
 					</ThemeProvider>
 				</ErrorBoundary>
-				<Analytics />
-				<SpeedInsights />
+				<DeferredAnalytics />
 			</body>
 		</html>
 	);

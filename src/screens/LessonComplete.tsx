@@ -1,6 +1,6 @@
 'use client';
 
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, m } from 'framer-motion';
 import {
 	BarChart3,
 	CheckCircle2,
@@ -121,14 +121,14 @@ export default function LessonComplete() {
 			<ScrollArea className="flex-1">
 				<main className="px-6 py-4 flex flex-col items-center pb-32">
 					<div className="relative mb-8 w-48 h-48 flex items-center justify-center">
-						<motion.div
-							initial={{ scale: 0 }}
+						<m.div
+							initial={{ scale: 0.95, opacity: 0 }}
 							animate={{ scale: 1 }}
 							transition={{ type: 'spring', damping: 10, stiffness: 200 }}
 							className="absolute inset-0 bg-[#fde68a] dark:bg-yellow-900/20 rounded-3xl opacity-20"
 						/>
-						<motion.div
-							initial={{ scale: 0, rotate: -180 }}
+						<m.div
+							initial={{ scale: 0.95, opacity: 0, rotate: -180 }}
 							animate={{ scale: 1, rotate: 0 }}
 							transition={{ type: 'spring', damping: 12, stiffness: 200, delay: 0.2 }}
 						>
@@ -141,10 +141,10 @@ export default function LessonComplete() {
 								sizes="160px"
 								className="object-contain rounded-2xl shadow-xl shadow-yellow-500/10"
 							/>
-						</motion.div>
+						</m.div>
 					</div>
 
-					<motion.div
+					<m.div
 						initial={{ opacity: 0, y: 20 }}
 						animate={{ opacity: 1, y: 0 }}
 						transition={{ delay: 0.3 }}
@@ -160,9 +160,9 @@ export default function LessonComplete() {
 									? 'Great effort! Keep practicing!'
 									: "Good try! You're making progress!"}
 						</p>
-					</motion.div>
+					</m.div>
 
-					<motion.div
+					<m.div
 						initial={{ opacity: 0, y: 20 }}
 						animate={{ opacity: 1, y: 0 }}
 						transition={{ delay: 0.4 }}
@@ -203,11 +203,11 @@ export default function LessonComplete() {
 								XP Gained
 							</span>
 						</div>
-					</motion.div>
+					</m.div>
 
 					<AnimatePresence>
 						{newAchievement && (
-							<motion.div
+							<m.div
 								initial={{ opacity: 0, scale: 0.8 }}
 								animate={{ opacity: 1, scale: 1 }}
 								exit={{ opacity: 0, scale: 0.8 }}
@@ -234,11 +234,11 @@ export default function LessonComplete() {
 										</p>
 									</div>
 								</div>
-							</motion.div>
+							</m.div>
 						)}
 					</AnimatePresence>
 
-					<motion.div
+					<m.div
 						initial={{ opacity: 0, y: 20 }}
 						animate={{ opacity: 1, y: 0 }}
 						transition={{ delay: 0.6 }}
@@ -258,9 +258,9 @@ export default function LessonComplete() {
 								Next: Level {level + 1}
 							</span>
 						</div>
-					</motion.div>
+					</m.div>
 
-					<motion.div
+					<m.div
 						initial={{ opacity: 0, y: 20 }}
 						animate={{ opacity: 1, y: 0 }}
 						transition={{ delay: 0.7 }}
@@ -289,7 +289,7 @@ export default function LessonComplete() {
 							<History className="w-5 h-5" />
 							Try Another Quiz
 						</Button>
-					</motion.div>
+					</m.div>
 				</main>
 			</ScrollArea>
 
