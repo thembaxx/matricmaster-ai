@@ -17,15 +17,13 @@ import {
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState, useTransition } from 'react';
-import {
-	DailyGoals,
-	LeaderboardPreview,
-	RecentAchievements,
-	TopicMasteryCard,
-	WeeklyChallenge,
-} from '@/components/Dashboard';
+import { DailyGoals } from '@/components/Dashboard/DailyGoals';
+import { LeaderboardPreview } from '@/components/Dashboard/LeaderboardPreview';
+import { RecentAchievements } from '@/components/Dashboard/RecentAchievements';
+import { TopicMasteryCard } from '@/components/Dashboard/TopicMasteryCard';
+import { WeeklyChallenge } from '@/components/Dashboard/WeeklyChallenge';
 import { DashboardSkeleton } from '@/components/DashboardSkeleton';
-import { XpHeader } from '@/components/Gamification';
+import { XpHeader } from '@/components/Gamification/XpHeader';
 import { useNotificationContextSafe } from '@/components/Notifications/NotificationListener';
 import { SmoothWords } from '@/components/Transition/SmoothText';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -35,6 +33,7 @@ import { Card } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { STAGGER_CONTAINER, STAGGER_ITEM } from '@/lib/animation-presets';
 import { useSession } from '@/lib/auth-client';
+import type { UserProgressSummary } from '@/lib/db/progress-actions';
 import { getUserProgressSummary, getUserStreak } from '@/lib/db/progress-actions';
 
 interface DayProgress {
@@ -75,24 +74,46 @@ const defaultChallenges: Challenge[] = [
 	},
 ];
 
-export default function Dashboard() {
+export interface DashboardInitialStreak {
+	currentStreak: number;
+	bestStreak: number;
+	lastActivityDate: string | null;
+}
+
+interface DashboardProps {
+	initialProgress?: UserProgressSummary | null;
+	initialStreak?: DashboardInitialStreak | null;
+}
+
+export default function Dashboard({ initialProgress, initialStreak }: DashboardProps = {}) {
 	const router = useRouter();
 	const { data: session, isPending: isSessionLoading } = useSession();
 	const { unreadCount } = useNotificationContextSafe();
 	const [isPending, startTransition] = useTransition();
 	const [isDbInitialized, setIsDbInitialized] = useState(false);
-	const [streak, setStreak] = useState(0);
+	const [streak, setStreak] = useState(initialStreak?.currentStreak ?? 0);
 	const [dailyProgress, setDailyProgress] = useState(0);
 	const [weekProgress, setWeekProgress] = useState<DayProgress[]>([]);
 	const [progressData, setProgressData] = useState<{
 		totalQuestions: number;
 		accuracy: number;
 		totalPoints: number;
-	} | null>(null);
-	const [isLoadingProgress, setIsLoadingProgress] = useState(true);
+	} | null>(() =>
+		initialProgress
+			? {
+					totalQuestions: initialProgress.totalQuestionsAttempted,
+					accuracy: initialProgress.accuracy,
+					totalPoints: initialProgress.totalMarksEarned * 10,
+				}
+			: null
+	);
+	const [isLoadingProgress, setIsLoadingProgress] = useState(!initialProgress && !initialStreak);
 
-	// Fetch progress data from database
+	// Fetch progress data from database when not provided by server
 	useEffect(() => {
+		if (initialProgress !== undefined || initialStreak !== undefined) {
+			return;
+		}
 		async function fetchProgress() {
 			try {
 				const [progress, streakData] = await Promise.all([
@@ -104,7 +125,7 @@ export default function Dashboard() {
 					setProgressData({
 						totalQuestions: progress.totalQuestionsAttempted,
 						accuracy: progress.accuracy,
-						totalPoints: progress.totalMarksEarned * 10, // Convert to points
+						totalPoints: progress.totalMarksEarned * 10,
 					});
 				}
 
@@ -119,7 +140,7 @@ export default function Dashboard() {
 		}
 
 		fetchProgress();
-	}, []);
+	}, [initialProgress, initialStreak]);
 
 	useEffect(() => {
 		const initializeDatabase = async () => {

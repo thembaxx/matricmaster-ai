@@ -3,6 +3,27 @@
 import { useReportWebVitals } from 'next/web-vitals';
 import { useEffect } from 'react';
 
+function sendToAnalytics(payload: {
+	name: string;
+	value: number;
+	id: string;
+	page: string;
+	timestamp: number;
+}) {
+	const send = () => {
+		fetch('/api/analytics/web-vitals', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify(payload),
+		}).catch(() => {});
+	};
+	if (typeof requestIdleCallback !== 'undefined') {
+		requestIdleCallback(() => send(), { timeout: 2500 });
+	} else {
+		setTimeout(send, 0);
+	}
+}
+
 export function WebVitals() {
 	useReportWebVitals((metric) => {
 		if (process.env.NODE_ENV === 'development') {
@@ -10,17 +31,13 @@ export function WebVitals() {
 		}
 
 		if (process.env.NODE_ENV === 'production') {
-			fetch('/api/analytics/web-vitals', {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({
-					name: metric.name,
-					value: metric.value,
-					id: metric.id,
-					page: window.location.pathname,
-					timestamp: Date.now(),
-				}),
-			}).catch(() => {});
+			sendToAnalytics({
+				name: metric.name,
+				value: metric.value,
+				id: metric.id,
+				page: window.location.pathname,
+				timestamp: Date.now(),
+			});
 		}
 	});
 

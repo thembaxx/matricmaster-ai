@@ -330,6 +330,7 @@ export default function PastPaperViewer() {
 									src="https://images.unsplash.com/photo-1588072432836-e10032774350?auto=format&fit=crop&q=80&w=800"
 									alt="Paper texture"
 									fill
+									sizes="(max-width: 768px) 100vw, 800px"
 									className="object-cover"
 								/>
 							</div>
