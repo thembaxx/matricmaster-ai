@@ -3,6 +3,7 @@
 import {
 	ArrowLeft,
 	CheckCircle2,
+	Clock,
 	Lightbulb,
 	Loader2,
 	SkipForward,
@@ -10,13 +11,14 @@ import {
 	TrendingUp,
 } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { QUIZ_DATA } from '@/constants/quiz-data';
+import { saveQuizResult } from '@/lib/quiz-result-store';
 import { getExplanation } from '@/services/geminiService';
 
 const getSubjectColor = (subject: string) => {
@@ -119,6 +121,21 @@ export default function InteractiveQuiz() {
 	const [score, setScore] = useState(0);
 	const [aiExplanation, setAiExplanation] = useState<string | null>(null);
 	const [isExplaining, setIsExplaining] = useState(false);
+	const [elapsedSeconds, setElapsedSeconds] = useState(0);
+	const startTimeRef = useRef<number>(Date.now());
+
+	useEffect(() => {
+		const interval = setInterval(() => {
+			setElapsedSeconds(Math.floor((Date.now() - startTimeRef.current) / 1000));
+		}, 1000);
+		return () => clearInterval(interval);
+	}, []);
+
+	const formatTime = (seconds: number) => {
+		const mins = Math.floor(seconds / 60);
+		const secs = seconds % 60;
+		return `${mins}:${secs.toString().padStart(2, '0')}`;
+	};
 
 	useEffect(() => {
 		if (paperId && QUIZ_DATA[paperId]) {
@@ -186,6 +203,16 @@ export default function InteractiveQuiz() {
 			setShowResult(false);
 			setAiExplanation(null);
 		} else {
+			const durationSeconds = Math.floor((Date.now() - startTimeRef.current) / 1000);
+			saveQuizResult({
+				correctAnswers: score,
+				totalQuestions: quiz.questions.length,
+				durationSeconds,
+				accuracy: Math.round((score / quiz.questions.length) * 100),
+				subjectName: quiz.subject,
+				difficulty: 'medium',
+				completedAt: new Date(),
+			});
 			router.push('/lesson-complete');
 		}
 	};
@@ -220,6 +247,13 @@ export default function InteractiveQuiz() {
 											Score: {score}
 										</Badge>
 									)}
+									<Badge
+										variant="outline"
+										className="text-[10px] font-bold text-zinc-500 border-zinc-200 bg-zinc-50 dark:bg-zinc-800 dark:border-zinc-700"
+									>
+										<Clock className="w-3 h-3 mr-1" />
+										{formatTime(elapsedSeconds)}
+									</Badge>
 								</div>
 								<Badge
 									variant="secondary"
