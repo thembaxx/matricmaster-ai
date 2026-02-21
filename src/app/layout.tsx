@@ -4,6 +4,7 @@ import type { Metadata, Viewport } from 'next';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { GamificationProvider } from '@/components/Gamification';
 import AppLayout from '@/components/Layout/AppLayout';
+import NotificationListener from '@/components/Notifications/NotificationListener';
 import { Toaster } from '@/components/Toaster';
 import { ThemeProvider } from '@/components/theme-provider';
 import WebVitals from '@/components/WebVitals';
@@ -115,7 +116,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 					<ThemeProvider defaultTheme="light" storageKey="matric-master-theme">
 						<GamificationProvider>
 							<AblyClientProvider>
-								<AppLayout>{children}</AppLayout>
+								<NotificationListener>
+									<AppLayout>{children}</AppLayout>
+								</NotificationListener>
 							</AblyClientProvider>
 							<Toaster />
 						</GamificationProvider>

@@ -6,6 +6,7 @@ import { ACHIEVEMENTS, getAchievementById } from '@/constants/achievements';
 import { auth } from '@/lib/auth';
 import { type DbType, dbManager } from '@/lib/db';
 import { bookmarks, studySessions, userAchievements, userProgress } from '@/lib/db/schema';
+import { createNotification } from './notification-actions';
 
 async function getDb(): Promise<DbType> {
 	const connected = await dbManager.waitForConnection(3, 2000);
@@ -99,6 +100,20 @@ export async function checkAndUnlockAchievements(): Promise<AchievementCheckResu
 				});
 
 				newlyUnlocked.push(achievement.id);
+
+				// Create notification for the unlocked achievement
+				createNotification(userId, {
+					type: 'achievement_unlocked',
+					title: achievement.name,
+					message: achievement.description,
+					data: {
+						icon: achievement.icon,
+						points: achievement.points,
+						achievementId: achievement.id,
+					},
+				}).catch((err) => {
+					console.error('[Achievements] Failed to create notification:', err);
+				});
 			}
 		}
 

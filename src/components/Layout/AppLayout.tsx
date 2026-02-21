@@ -29,6 +29,7 @@ import {
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { useNotificationContextSafe } from '@/components/Notifications/NotificationListener';
 import { Button } from '@/components/ui/button';
 import {
 	Sheet,
@@ -50,6 +51,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 	const { theme, setTheme } = useTheme();
 	const { data: session } = authClient.useSession();
 	const user = session?.user;
+	const { unreadCount } = useNotificationContextSafe();
 
 	const [sheetOpen, setSheetOpen] = useState(false);
 
@@ -280,7 +282,15 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 									onClick={() => router.push('/notifications')}
 								>
 									<Bell className="w-5 h-5 text-foreground" />
-									<span className="absolute top-2.5 right-2.5 w-2 h-2 bg-rose-500 border-2 border-background rounded-full" />
+									{unreadCount > 0 && (
+										<motion.span
+											initial={{ scale: 0 }}
+											animate={{ scale: 1 }}
+											className="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 bg-rose-500 text-white text-[10px] font-black rounded-full flex items-center justify-center shadow-sm"
+										>
+											{unreadCount > 99 ? '99+' : unreadCount}
+										</motion.span>
+									)}
 								</Button>
 
 								{!user && (

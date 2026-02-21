@@ -26,6 +26,7 @@ import {
 } from '@/components/Dashboard';
 import { DashboardSkeleton } from '@/components/DashboardSkeleton';
 import { XpHeader } from '@/components/Gamification';
+import { useNotificationContextSafe } from '@/components/Notifications/NotificationListener';
 import { SmoothWords } from '@/components/Transition/SmoothText';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { BackgroundMesh } from '@/components/ui/background-mesh';
@@ -77,6 +78,7 @@ const defaultChallenges: Challenge[] = [
 export default function Dashboard() {
 	const router = useRouter();
 	const { data: session, isPending: isSessionLoading } = useSession();
+	const { unreadCount } = useNotificationContextSafe();
 	const [isPending, startTransition] = useTransition();
 	const [isDbInitialized, setIsDbInitialized] = useState(false);
 	const [streak, setStreak] = useState(0);
@@ -223,9 +225,18 @@ export default function Dashboard() {
 							variant="ghost"
 							size="icon"
 							className="w-12 h-12 rounded-2xl bg-card/50 backdrop-blur-md border border-border/20 shadow-sm relative"
+							onClick={() => router.push('/notifications')}
 						>
 							<Bell className="w-6 h-6 text-foreground" />
-							<span className="absolute top-3 right-3 w-2.5 h-2.5 bg-rose-500 border-2 border-background rounded-full" />
+							{unreadCount > 0 && (
+								<motion.span
+									initial={{ scale: 0 }}
+									animate={{ scale: 1 }}
+									className="absolute -top-1 -right-1 min-w-[20px] h-[20px] px-1.5 bg-rose-500 text-white text-[10px] font-black rounded-full flex items-center justify-center shadow-sm"
+								>
+									{unreadCount > 99 ? '99+' : unreadCount}
+								</motion.span>
+							)}
 						</Button>
 					</motion.div>
 				</div>
