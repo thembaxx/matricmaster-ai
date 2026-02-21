@@ -1,6 +1,6 @@
 import { type NextRequest, NextResponse } from 'next/server';
 import { getAuth } from '@/lib/auth';
-import { sendMessage } from '@/lib/db/chat-actions';
+import { hasAccessToChannel, sendMessage } from '@/lib/db/chat-actions';
 
 export async function POST(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
 	try {
@@ -17,6 +17,12 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
 
 		if (!content) {
 			return NextResponse.json({ error: 'Missing required field: content' }, { status: 400 });
+		}
+
+		// Authorization check - verify user is a member of this channel
+		const hasAccess = await hasAccessToChannel(session.user.id, channelId);
+		if (!hasAccess) {
+			return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
 		}
 
 		// Use authenticated user's ID, not the one from request body
