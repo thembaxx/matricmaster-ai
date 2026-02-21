@@ -1,8 +1,9 @@
 'use client';
 
 import { useChannel } from 'ably/react';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { toast } from 'sonner';
+import useSWR from 'swr';
 import { useSession } from '@/lib/auth-client';
 
 export interface RealtimeNotification {
@@ -20,12 +21,31 @@ interface UseRealtimeNotificationsReturn {
 	resetUnread: () => void;
 }
 
+const fetcher = async (url: string) => {
+	const response = await fetch(url);
+	if (!response.ok) throw new Error('Failed to fetch');
+	return response.json();
+};
+
 export function useRealtimeNotifications(): UseRealtimeNotificationsReturn {
 	const { data: session } = useSession();
-	const [unreadCount, setUnreadCount] = useState(0);
+	const [realtimeIncrement, setRealtimeIncrement] = useState(0);
+
+	const { data: notificationData } = useSWR(
+		session?.user?.id ? '/api/notifications?unreadOnly=true&limit=0' : null,
+		fetcher,
+		{
+			revalidateOnFocus: false,
+			revalidateOnReconnect: false,
+			dedupingInterval: 60000,
+		}
+	);
+
+	const baseUnreadCount = notificationData?.unreadCount ?? 0;
+	const unreadCount = baseUnreadCount + realtimeIncrement;
 
 	const handleNotification = useCallback((notification: RealtimeNotification) => {
-		setUnreadCount((prev) => prev + 1);
+		setRealtimeIncrement((prev) => prev + 1);
 
 		const icon = notification.data?.icon || '🏆';
 		const title = `${icon} ${notification.title}`;
@@ -73,30 +93,12 @@ export function useRealtimeNotifications(): UseRealtimeNotificationsReturn {
 	});
 
 	const incrementUnread = useCallback(() => {
-		setUnreadCount((prev) => prev + 1);
+		setRealtimeIncrement((prev) => prev + 1);
 	}, []);
 
 	const resetUnread = useCallback(() => {
-		setUnreadCount(0);
+		setRealtimeIncrement(0);
 	}, []);
-
-	useEffect(() => {
-		async function fetchInitialCount() {
-			if (!session?.user?.id) return;
-
-			try {
-				const response = await fetch('/api/notifications?unreadOnly=true&limit=0');
-				if (response.ok) {
-					const data = await response.json();
-					setUnreadCount(data.unreadCount || 0);
-				}
-			} catch (error) {
-				console.error('[RealtimeNotifications] Error fetching initial count:', error);
-			}
-		}
-
-		fetchInitialCount();
-	}, [session?.user?.id]);
 
 	return {
 		unreadCount,

@@ -1,6 +1,8 @@
 'use client';
 
 import dynamic from 'next/dynamic';
+
+import { Suspense } from 'react';
 import { PdfViewerSkeleton } from '@/components/QuizSkeleton';
 
 const PastPaperViewerScreen = dynamic(() => import('@/screens/PastPaperViewer'), {
@@ -9,5 +11,9 @@ const PastPaperViewerScreen = dynamic(() => import('@/screens/PastPaperViewer'),
 });
 
 export default function PastPaperViewerPage() {
-	return <PastPaperViewerScreen />;
+	return (
+		<Suspense fallback={<PdfViewerSkeleton />}>
+			<PastPaperViewerScreen />
+		</Suspense>
+	);
 }
