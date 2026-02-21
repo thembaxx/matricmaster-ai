@@ -19,8 +19,8 @@ import { Label } from '@/components/ui/label';
 import { Progress } from '@/components/ui/progress';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { saveQuizResult } from '@/lib/quiz-result-store';
 import { getExplanation } from '@/services/geminiService';
+import { useQuizResultStore } from '@/stores/useQuizResultStore';
 
 const questions = [
 	{
@@ -226,7 +226,7 @@ export default function PhysicsQuiz() {
 			setAiExplanation(null);
 		} else {
 			const durationSeconds = Math.floor((Date.now() - startTimeRef.current) / 1000);
-			saveQuizResult({
+			useQuizResultStore.getState().save({
 				correctAnswers: score,
 				totalQuestions: questions.length,
 				durationSeconds,

@@ -1,9 +1,9 @@
 'use client';
 
 import { useCallback, useState } from 'react';
-import { useGamification } from '@/components/Gamification/GamificationContext';
 import { updateUserScore } from '@/lib/db/leaderboard-actions';
 import { recordStudySession } from '@/lib/db/progress-actions';
+import { useGamification } from '@/stores/useGamificationStore';
 
 export interface QuizCompletionData {
 	correctAnswers: number;

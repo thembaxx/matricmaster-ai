@@ -29,9 +29,9 @@ import {
 	getRandomQuestionsFromMultipleSubjectsAction,
 	getSubjectsAction,
 } from '@/lib/db/actions';
-import { saveQuizResult } from '@/lib/quiz-result-store';
 import { cn } from '@/lib/utils';
 import { getExplanation } from '@/services/geminiService';
+import { useQuizResultStore } from '@/stores/useQuizResultStore';
 
 // Types
 interface Subject {
@@ -788,7 +788,7 @@ export default function EnhancedTestQuizScreen() {
 													: 0;
 											const score = calculateScore();
 											const subjectId = quizState.selectedSubjects[0];
-											saveQuizResult({
+											useQuizResultStore.getState().save({
 												correctAnswers: score,
 												totalQuestions: quizState.questions.length,
 												durationSeconds,

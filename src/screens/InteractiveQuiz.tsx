@@ -10,8 +10,8 @@ import { Card } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { QUIZ_DATA } from '@/constants/quiz-data';
-import { saveQuizResult } from '@/lib/quiz-result-store';
 import { getExplanation } from '@/services/geminiService';
+import { useQuizResultStore } from '@/stores/useQuizResultStore';
 
 const getSubjectColor = (subject: string) => {
 	switch (subject) {
@@ -196,7 +196,7 @@ export default function InteractiveQuiz() {
 			setAiExplanation(null);
 		} else {
 			const durationSeconds = Math.floor((Date.now() - startTimeRef.current) / 1000);
-			saveQuizResult({
+			useQuizResultStore.getState().save({
 				correctAnswers: score,
 				totalQuestions: quiz.questions.length,
 				durationSeconds,
