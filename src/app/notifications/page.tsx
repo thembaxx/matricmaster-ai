@@ -11,6 +11,8 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useSession } from '@/lib/auth-client';
 
+export const dynamic = 'force-dynamic';
+
 interface Notification {
 	id: string;
 	type: string;

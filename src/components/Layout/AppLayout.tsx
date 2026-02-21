@@ -29,6 +29,8 @@ import {
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { ClientOnly } from '@/components/ClientOnly';
+import { DailyLoginBonus } from '@/components/Gamification';
 import { useNotificationContextSafe } from '@/components/Notifications/NotificationListener';
 import { Button } from '@/components/ui/button';
 import {
@@ -95,6 +97,8 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 
 	return (
 		<div className="flex min-h-screen bg-zinc-50 dark:bg-zinc-950 overflow-x-hidden">
+			<ClientOnly>{user && <DailyLoginBonus />}</ClientOnly>
+
 			{/* Desktop Sidebar */}
 			{user && !shouldHideNav && (
 				<aside className="hidden lg:flex flex-col w-72 h-screen sticky top-0 bg-white dark:bg-zinc-900 border-r border-zinc-200 dark:border-zinc-800 transition-all duration-300">

@@ -3,6 +3,8 @@
  * Defines how points are calculated for the leaderboard
  */
 
+import { getStreakMultiplier } from '@/constants/rewards';
+
 export const POINTS = {
 	QUIZ_COMPLETE: 10,
 	CORRECT_ANSWER: 1,
@@ -15,6 +17,14 @@ export const POINTS = {
 		hard: 3,
 	},
 } as const;
+
+export interface QuizPointsResult {
+	basePoints: number;
+	streakMultiplier: number;
+	streakBonus: number;
+	totalPoints: number;
+	multiplierLabel: string;
+}
 
 export function calculateQuizPoints(params: {
 	correctAnswers: number;
@@ -42,7 +52,49 @@ export function calculateQuizPoints(params: {
 		points += params.streakDays * POINTS.STREAK_BONUS_PER_DAY;
 	}
 
-	return points;
+	const streakMultiplierInfo = getStreakMultiplier(params.streakDays);
+	const totalPoints = Math.round(points * streakMultiplierInfo.multiplier);
+
+	return totalPoints;
+}
+
+export function calculateQuizPointsWithBreakdown(params: {
+	correctAnswers: number;
+	totalQuestions: number;
+	durationMinutes: number;
+	expectedDuration: number;
+	difficulty: 'easy' | 'medium' | 'hard';
+	hasStreak: boolean;
+	streakDays: number;
+}): QuizPointsResult {
+	let basePoints = 0;
+	basePoints += POINTS.QUIZ_COMPLETE;
+	basePoints += params.correctAnswers * POINTS.CORRECT_ANSWER;
+	basePoints += params.correctAnswers * POINTS.DIFFICULTY_BONUS[params.difficulty];
+
+	if (params.correctAnswers === params.totalQuestions && params.totalQuestions > 0) {
+		basePoints += POINTS.PERFECT_SCORE_BONUS;
+	}
+
+	if (params.durationMinutes < params.expectedDuration && params.durationMinutes > 0) {
+		basePoints += POINTS.SPEED_BONUS;
+	}
+
+	if (params.hasStreak && params.streakDays > 0) {
+		basePoints += params.streakDays * POINTS.STREAK_BONUS_PER_DAY;
+	}
+
+	const streakMultiplierInfo = getStreakMultiplier(params.streakDays);
+	const totalPoints = Math.round(basePoints * streakMultiplierInfo.multiplier);
+	const streakBonus = totalPoints - basePoints;
+
+	return {
+		basePoints,
+		streakMultiplier: streakMultiplierInfo.multiplier,
+		streakBonus,
+		totalPoints,
+		multiplierLabel: streakMultiplierInfo.label,
+	};
 }
 
 export function calculateAccuracy(correct: number, total: number): number {

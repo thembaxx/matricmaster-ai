@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { getUserAchievements } from '@/lib/db/achievement-actions';
 import { getUserStreak } from '@/lib/db/progress-actions';
+import { formatXp, getLevelInfo } from '@/lib/level-utils';
 
 interface XpHeaderProps {
 	variant?: 'full' | 'compact';
@@ -14,21 +15,15 @@ interface XpHeaderProps {
 
 interface XpData {
 	level: number;
+	title: string;
+	color: string;
 	currentXp: number;
+	xpInCurrentLevel: number;
 	xpToNextLevel: number;
 	progress: number;
 	totalAchievements: number;
 	unlockedAchievements: number;
 	streak: number;
-}
-
-const XP_PER_LEVEL = 500;
-
-function calculateLevel(totalXp: number): { level: number; currentXp: number; xpToNext: number } {
-	const level = Math.floor(totalXp / XP_PER_LEVEL) + 1;
-	const currentXp = totalXp % XP_PER_LEVEL;
-	const xpToNext = XP_PER_LEVEL;
-	return { level, currentXp, xpToNext };
 }
 
 export function XpHeader({ variant = 'full', className = '' }: XpHeaderProps) {
@@ -51,13 +46,16 @@ export function XpHeader({ variant = 'full', className = '' }: XpHeaderProps) {
 					return sum + (def?.points || 0);
 				}, 0);
 
-				const { level, currentXp, xpToNext } = calculateLevel(totalXp);
+				const levelInfo = getLevelInfo(totalXp);
 
 				setData({
-					level,
-					currentXp,
-					xpToNextLevel: xpToNext,
-					progress: (currentXp / xpToNext) * 100,
+					level: levelInfo.level,
+					title: levelInfo.title,
+					color: levelInfo.color,
+					currentXp: totalXp,
+					xpInCurrentLevel: levelInfo.xpInCurrentLevel,
+					xpToNextLevel: levelInfo.xpForNextLevel,
+					progress: levelInfo.progressPercent,
 					totalAchievements: total,
 					unlockedAchievements: unlocked,
 					streak: streakData.currentStreak,
@@ -98,9 +96,14 @@ export function XpHeader({ variant = 'full', className = '' }: XpHeaderProps) {
 	if (variant === 'compact') {
 		return (
 			<div className={`flex items-center gap-3 ${className}`}>
-				<div className="flex items-center gap-1.5 px-3 py-1.5 bg-brand-amber/10 rounded-full">
-					<Trophy className="w-4 h-4 text-brand-amber" />
-					<span className="text-sm font-black text-brand-amber">Lv.{data.level}</span>
+				<div
+					className="flex items-center gap-1.5 px-3 py-1.5 rounded-full"
+					style={{ backgroundColor: `${data.color}15` }}
+				>
+					<Trophy className="w-4 h-4" style={{ color: data.color }} />
+					<span className="text-sm font-black" style={{ color: data.color }}>
+						Lv.{data.level}
+					</span>
 				</div>
 				{data.streak > 0 && (
 					<div className="flex items-center gap-1.5 px-3 py-1.5 bg-orange-100 dark:bg-orange-900/20 rounded-full">
@@ -117,23 +120,41 @@ export function XpHeader({ variant = 'full', className = '' }: XpHeaderProps) {
 			<div className="flex items-center justify-between">
 				<div className="flex items-center gap-4">
 					<div className="relative">
-						<div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-brand-amber to-orange-400 flex items-center justify-center shadow-lg shadow-brand-amber/20">
+						<div
+							className="w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg"
+							style={{
+								background: `linear-gradient(135deg, ${data.color}, ${data.color}cc)`,
+								boxShadow: `0 8px 24px ${data.color}30`,
+							}}
+						>
 							<Trophy className="w-7 h-7 text-white" />
 						</div>
-						<div className="absolute -bottom-1 -right-1 w-6 h-6 bg-background rounded-full flex items-center justify-center border-2 border-brand-amber shadow-sm">
-							<span className="text-[10px] font-black text-brand-amber">{data.level}</span>
+						<div
+							className="absolute -bottom-1 -right-1 w-6 h-6 bg-background rounded-full flex items-center justify-center border-2 shadow-sm"
+							style={{ borderColor: data.color }}
+						>
+							<span className="text-[10px] font-black" style={{ color: data.color }}>
+								{data.level}
+							</span>
 						</div>
 					</div>
 					<div>
 						<div className="flex items-center gap-2">
 							<span className="text-lg font-black text-foreground">Level {data.level}</span>
-							<Badge className="text-[9px] font-black uppercase tracking-wider bg-brand-amber/10 text-brand-amber border-brand-amber/20">
+							<Badge
+								className="text-[9px] font-black uppercase tracking-wider"
+								style={{
+									backgroundColor: `${data.color}15`,
+									color: data.color,
+									borderColor: `${data.color}30`,
+								}}
+							>
 								<Sparkles className="w-3 h-3 mr-1" />
-								{data.unlockedAchievements}/{data.totalAchievements} badges
+								{data.title}
 							</Badge>
 						</div>
 						<p className="text-xs text-muted-foreground mt-0.5">
-							{data.currentXp} / {data.xpToNextLevel} XP to next level
+							{formatXp(data.xpInCurrentLevel)} / {formatXp(data.xpToNextLevel)} XP to next level
 						</p>
 					</div>
 				</div>
@@ -150,9 +171,17 @@ export function XpHeader({ variant = 'full', className = '' }: XpHeaderProps) {
 			</div>
 
 			<div className="relative">
-				<Progress value={data.progress} className="h-3 bg-muted" />
+				<Progress
+					value={data.progress}
+					className="h-3 bg-muted"
+					style={
+						{
+							'--progress-background': data.color,
+						} as React.CSSProperties
+					}
+				/>
 				<div className="absolute top-1/2 -translate-y-1/2 right-0 flex items-center gap-1 px-2 py-0.5 bg-background rounded-full border border-border shadow-sm">
-					<Zap className="w-3 h-3 text-brand-amber" />
+					<Zap className="w-3 h-3" style={{ color: data.color }} />
 					<span className="text-[10px] font-black text-muted-foreground">
 						{Math.round(data.progress)}%
 					</span>
