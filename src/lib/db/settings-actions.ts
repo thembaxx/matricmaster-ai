@@ -297,3 +297,118 @@ export async function revokeSessionAction(
 	// For now, return success as a placeholder
 	return { success: true };
 }
+
+// ============================================================================
+// NOTIFICATION SETTINGS
+// ============================================================================
+
+export interface NotificationSettings {
+	emailNotifications: boolean;
+	pushNotifications: boolean;
+	studyReminders: boolean;
+	achievementAlerts: boolean;
+}
+
+const defaultNotificationSettings: NotificationSettings = {
+	emailNotifications: true,
+	pushNotifications: true,
+	studyReminders: true,
+	achievementAlerts: true,
+};
+
+/**
+ * Get notification settings (placeholder - would need dedicated table)
+ */
+export async function getNotificationSettingsAction(
+	_userId: string
+): Promise<ActionResult<NotificationSettings>> {
+	// For now, return defaults. In production, query from user_settings table
+	return {
+		success: true,
+		data: defaultNotificationSettings,
+	};
+}
+
+/**
+ * Update notification settings (placeholder - would need dedicated table)
+ */
+export async function updateNotificationSettingsAction(
+	_userId: string,
+	data: Partial<NotificationSettings>
+): Promise<ActionResult<NotificationSettings>> {
+	// Validate input
+	const validKeys = [
+		'emailNotifications',
+		'pushNotifications',
+		'studyReminders',
+		'achievementAlerts',
+	];
+	const filteredData: NotificationSettings = {} as NotificationSettings;
+
+	for (const key of validKeys) {
+		if (key in data) {
+			(filteredData as Record<string, unknown>)[key] = (data as Record<string, unknown>)[key];
+		}
+	}
+
+	// In production, save to user_settings table
+	// For now, return success with merged settings
+	return {
+		success: true,
+		data: { ...defaultNotificationSettings, ...filteredData },
+	};
+}
+
+// ============================================================================
+// PRIVACY SETTINGS (Extended)
+// ============================================================================
+
+export interface PrivacySettings {
+	profileVisibility: boolean;
+	showOnLeaderboard: boolean;
+	analyticsTracking: boolean;
+}
+
+const defaultPrivacySettings: PrivacySettings = {
+	profileVisibility: true,
+	showOnLeaderboard: true,
+	analyticsTracking: true,
+};
+
+/**
+ * Get privacy settings (placeholder - would need dedicated table)
+ */
+export async function getPrivacySettingsAction(
+	_userId: string
+): Promise<ActionResult<PrivacySettings>> {
+	// For now, return defaults. In production, query from user_settings table
+	return {
+		success: true,
+		data: defaultPrivacySettings,
+	};
+}
+
+/**
+ * Update privacy settings (placeholder - would need dedicated table)
+ */
+export async function updatePrivacySettingsActionExtended(
+	_userId: string,
+	data: Partial<PrivacySettings>
+): Promise<ActionResult<PrivacySettings>> {
+	// Validate input
+	const validKeys = ['profileVisibility', 'showOnLeaderboard', 'analyticsTracking'];
+	const filteredData: PrivacySettings = {} as PrivacySettings;
+
+	for (const key of validKeys) {
+		if (key in data) {
+			(filteredData as Record<string, unknown>)[key] = (data as Record<string, unknown>)[key];
+		}
+	}
+
+	// In production, save to user_settings table
+	// For now, return success with merged settings
+	return {
+		success: true,
+		data: { ...defaultPrivacySettings, ...filteredData },
+	};
+}

@@ -1005,3 +1005,81 @@ export async function rejectBuddyRequestAction(
 		.returning();
 	return { success: result.length > 0 };
 }
+
+// ============================================================================
+// ADMIN STATS ACTIONS
+// ============================================================================
+
+export interface AdminStats {
+	totalUsers: number;
+	activeUsers: number;
+	questionsCount: number;
+	subjectsCount: number;
+}
+
+export async function getAdminStatsAction(): Promise<AdminStats> {
+	try {
+		const db = await getDb();
+
+		const [totalUsersResult] = await db.select({ count: sql`count(*)` }).from(users);
+		const [subjectsResult] = await db.select({ count: sql`count(*)` }).from(subjects);
+		const [questionsResult] = await db.select({ count: sql`count(*)` }).from(questions);
+
+		const sevenDaysAgo = new Date();
+		sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+
+		const [activeUsersResult] = await db
+			.select({ count: sql`count(*)` })
+			.from(users)
+			.where(sql`${users.createdAt} > ${sevenDaysAgo}`);
+
+		return {
+			totalUsers: Number(totalUsersResult?.count || 0),
+			activeUsers: Number(activeUsersResult?.count || 0),
+			questionsCount: Number(questionsResult?.count || 0),
+			subjectsCount: Number(subjectsResult?.count || 0),
+		};
+	} catch (error) {
+		console.error('Error getting admin stats:', error);
+		return {
+			totalUsers: 0,
+			activeUsers: 0,
+			questionsCount: 0,
+			subjectsCount: 0,
+		};
+	}
+}
+
+export interface SubjectPerformance {
+	subjectId: number;
+	subjectName: string;
+	questionCount: number;
+}
+
+export async function getSubjectPerformanceAction(): Promise<SubjectPerformance[]> {
+	try {
+		const db = await getDb();
+
+		const results = await db
+			.select({
+				subjectId: subjects.id,
+				subjectName: subjects.name,
+				questionCount: sql<number>`count(${questions.id})`,
+			})
+			.from(subjects)
+			.leftJoin(questions, eq(questions.subjectId, subjects.id))
+			.where(eq(subjects.isActive, true))
+			.groupBy(subjects.id, subjects.name)
+			.orderBy(desc(sql`count(${questions.id})`))
+			.limit(10);
+
+		return results.map((r) => ({
+			subjectId: r.subjectId,
+			subjectName: r.subjectName,
+			questionCount: Number(r.questionCount),
+		}));
+	} catch (error) {
+		console.error('Error getting subject performance:', error);
+		return [];
+	}
+}

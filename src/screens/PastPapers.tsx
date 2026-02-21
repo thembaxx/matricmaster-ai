@@ -1,26 +1,51 @@
 'use client';
 
 import { AnimatePresence, motion } from 'framer-motion';
-import { BookOpen, Download, Eye, FileText, Filter, Search as SearchIcon } from 'lucide-react';
+import {
+	BookOpen,
+	Download,
+	Eye,
+	FileText,
+	Filter,
+	Loader2,
+	Search as SearchIcon,
+} from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { BackgroundMesh } from '@/components/ui/background-mesh';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { PAST_PAPERS } from '@/constants/mock-data';
 import { STAGGER_CONTAINER, STAGGER_ITEM } from '@/lib/animation-presets';
+import { getPastPapersAction } from '@/lib/db/actions';
+import type { PastPaper } from '@/lib/db/schema';
 
 export default function PastPapers() {
 	const router = useRouter();
 	const [searchQuery, setSearchQuery] = useState('');
 	const [selectedYear, setSelectedYear] = useState<number | 'All'>('All');
+	const [papers, setPapers] = useState<PastPaper[]>([]);
+	const [isLoading, setIsLoading] = useState(true);
 
 	const years = ['All', 2024, 2023, 2022, 2021, 2020];
 
-	const filteredPapers = PAST_PAPERS.filter((paper) => {
+	useEffect(() => {
+		const fetchPapers = async () => {
+			try {
+				const data = await getPastPapersAction();
+				setPapers(data);
+			} catch (error) {
+				console.error('Failed to load past papers:', error);
+			} finally {
+				setIsLoading(false);
+			}
+		};
+		fetchPapers();
+	}, []);
+
+	const filteredPapers = papers.filter((paper) => {
 		const matchesSearch =
 			paper.subject.toLowerCase().includes(searchQuery.toLowerCase()) ||
 			paper.paper.toLowerCase().includes(searchQuery.toLowerCase());
@@ -95,7 +120,11 @@ export default function PastPapers() {
 					</div>
 
 					<AnimatePresence mode="popLayout">
-						{filteredPapers.length > 0 ? (
+						{isLoading ? (
+							<div className="flex items-center justify-center py-20">
+								<Loader2 className="w-8 h-8 animate-spin text-primary" />
+							</div>
+						) : filteredPapers.length > 0 ? (
 							<motion.div
 								variants={STAGGER_CONTAINER}
 								initial="hidden"
@@ -117,7 +146,7 @@ export default function PastPapers() {
 															Total Marks
 														</span>
 														<span className="text-2xl font-black text-primary tracking-tighter">
-															{paper.marks}m
+															{paper.totalMarks}m
 														</span>
 													</div>
 												</div>
@@ -163,7 +192,7 @@ export default function PastPapers() {
 
 												<Button
 													className="w-full rounded-2xl h-14 bg-muted hover:bg-primary hover:text-primary-foreground text-muted-foreground font-black text-xs uppercase tracking-[0.2em] transition-all duration-300 group/btn"
-													onClick={() => window.open(paper.downloadUrl, '_blank')}
+													onClick={() => window.open(paper.originalPdfUrl, '_blank')}
 												>
 													<Download className="w-4 h-4 mr-2 group-hover/btn:animate-bounce" />
 													Download PDF

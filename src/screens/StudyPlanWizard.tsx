@@ -20,6 +20,8 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Slider } from '@/components/ui/slider';
+import { useSession } from '@/lib/auth-client';
+import { createStudyPlanAction } from '@/lib/db/study-plan-actions';
 
 const subjects = [
 	{ id: 'math', name: 'Mathematics', icon: Calculator, color: 'text-blue-500' },
@@ -32,6 +34,7 @@ const subjects = [
 
 export default function StudyPlanWizard() {
 	const router = useRouter();
+	const { data: session } = useSession();
 	const [selectedSubjects, setSelectedSubjects] = useState<string[]>(['math', 'physics']);
 	const [weeklyHours, setWeeklyHours] = useState([12]);
 	const [isGenerating, setIsGenerating] = useState(false);
@@ -49,7 +52,21 @@ export default function StudyPlanWizard() {
 			const subjectNames = subjects
 				.filter((s) => selectedSubjects.includes(s.id))
 				.map((s) => s.name);
-			await generateStudyPlan(subjectNames, weeklyHours[0]);
+
+			const planText = await generateStudyPlan(subjectNames, weeklyHours[0]);
+
+			// Save plan to database if user is logged in
+			if (session?.user?.id) {
+				const title = `${subjectNames.join(', ')} Study Plan`;
+				await createStudyPlanAction(
+					session.user.id,
+					title,
+					undefined, // targetExamDate
+					subjectNames.join(', '), // focusAreas
+					`${weeklyHours[0]} hours per week - ${planText}` // weeklyGoals
+				);
+			}
+
 			router.push('/study-path');
 		} catch (error) {
 			console.error('Failed to generate study plan:', error);
