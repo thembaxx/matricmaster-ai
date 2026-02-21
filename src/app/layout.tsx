@@ -2,6 +2,7 @@ import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import type { Metadata, Viewport } from 'next';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
+import { GamificationProvider } from '@/components/Gamification';
 import AppLayout from '@/components/Layout/AppLayout';
 import { Toaster } from '@/components/Toaster';
 import { ThemeProvider } from '@/components/theme-provider';
@@ -112,10 +113,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 				</a>
 				<ErrorBoundary>
 					<ThemeProvider defaultTheme="light" storageKey="matric-master-theme">
-						<AblyClientProvider>
-							<AppLayout>{children}</AppLayout>
-						</AblyClientProvider>
-						<Toaster />
+						<GamificationProvider>
+							<AblyClientProvider>
+								<AppLayout>{children}</AppLayout>
+							</AblyClientProvider>
+							<Toaster />
+						</GamificationProvider>
 					</ThemeProvider>
 				</ErrorBoundary>
 				<Analytics />

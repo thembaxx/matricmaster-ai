@@ -19,6 +19,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState, useTransition } from 'react';
 import { TopicMasteryCard } from '@/components/Dashboard/TopicMasteryCard';
 import { DashboardSkeleton } from '@/components/DashboardSkeleton';
+import { XpHeader } from '@/components/Gamification';
 import { SmoothWords } from '@/components/Transition/SmoothText';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { BackgroundMesh } from '@/components/ui/background-mesh';
@@ -223,6 +224,11 @@ export default function Dashboard() {
 					</motion.div>
 				</div>
 			</motion.header>
+
+			{/* XP Header Section */}
+			<div className="px-6 pb-4 lg:px-0">
+				<XpHeader variant="full" />
+			</div>
 
 			<ScrollArea className="flex-1 relative z-10 no-scrollbar">
 				<motion.main
