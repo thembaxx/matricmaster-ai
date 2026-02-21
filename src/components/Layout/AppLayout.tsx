@@ -7,6 +7,7 @@ import {
 	Bell,
 	Bookmark,
 	BookOpen,
+	Brain,
 	Calendar,
 	FileText,
 	Globe,
@@ -61,7 +62,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 	const navItems = [
 		{ href: '/dashboard', label: 'Home', icon: 'fluent:clover-24-filled' },
 		{ href: '/search', label: 'Search', icon: 'fluent:search-sparkle-24-filled' },
-		{ href: '/test', label: 'Quiz', icon: 'fluent:play-circle-sparkle-24-filled' },
+		{ href: '/review', label: 'Review', icon: 'fluent:brain-sparkle-24-filled' },
 		{ href: '/past-papers', label: 'Papers', icon: 'fluent:hat-graduation-sparkle-24-filled' },
 		{ href: '/bookmarks', label: 'Saved', icon: 'fluent:bookmark-24-filled' },
 	];
@@ -71,7 +72,10 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 		{ href: '/search', label: 'Search', icon: SearchIcon },
 		{ href: '/lessons', label: 'Lessons', icon: BookOpen },
 		{ href: '/past-papers', label: 'Past Papers', icon: FileText },
+		{ href: '/review', label: 'Review Dashboard', icon: Brain },
+		{ href: '/flashcards', label: 'Flashcards', icon: BookOpen },
 		{ href: '/test', label: 'Physics Test', icon: Sparkles },
+		{ href: '/ai-tutor', label: 'AI Tutor', icon: Sparkles },
 		{ href: '/study-path', label: 'Study Path', icon: MapIcon },
 		{ href: '/study-plan', label: 'Study Plan', icon: Calendar },
 		{ href: '/leaderboard', label: 'Leaderboard', icon: Trophy },

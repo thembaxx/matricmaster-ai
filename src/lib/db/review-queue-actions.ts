@@ -470,3 +470,153 @@ export async function getDeckFlashcards(deckId: string): Promise<Flashcard[]> {
 		return [];
 	}
 }
+
+export async function updateFlashcardDeck(
+	deckId: string,
+	userId: string,
+	data: { name?: string; description?: string; subjectId?: number | null; isPublic?: boolean }
+): Promise<{ success: boolean; deck?: NewFlashcardDeck; error?: string }> {
+	const connected = await dbManager.waitForConnection(3, 2000);
+	if (!connected) {
+		return { success: false, error: 'Database not available' };
+	}
+
+	const db = getDb();
+
+	try {
+		const [existing] = await db
+			.select()
+			.from(flashcardDecks)
+			.where(and(eq(flashcardDecks.id, deckId), eq(flashcardDecks.userId, userId)))
+			.limit(1);
+
+		if (!existing) {
+			return { success: false, error: 'Deck not found or unauthorized' };
+		}
+
+		const [updated] = await db
+			.update(flashcardDecks)
+			.set({
+				...data,
+				updatedAt: new Date(),
+			})
+			.where(eq(flashcardDecks.id, deckId))
+			.returning();
+
+		return { success: true, deck: updated };
+	} catch (error) {
+		console.error('[Review Queue] Error updating deck:', error);
+		return {
+			success: false,
+			error: error instanceof Error ? error.message : 'Failed to update deck',
+		};
+	}
+}
+
+export async function deleteFlashcardDeck(
+	deckId: string,
+	userId: string
+): Promise<{ success: boolean; error?: string }> {
+	const connected = await dbManager.waitForConnection(3, 2000);
+	if (!connected) {
+		return { success: false, error: 'Database not available' };
+	}
+
+	const db = getDb();
+
+	try {
+		const [existing] = await db
+			.select()
+			.from(flashcardDecks)
+			.where(and(eq(flashcardDecks.id, deckId), eq(flashcardDecks.userId, userId)))
+			.limit(1);
+
+		if (!existing) {
+			return { success: false, error: 'Deck not found or unauthorized' };
+		}
+
+		await db.delete(flashcardDecks).where(eq(flashcardDecks.id, deckId));
+
+		return { success: true };
+	} catch (error) {
+		console.error('[Review Queue] Error deleting deck:', error);
+		return {
+			success: false,
+			error: error instanceof Error ? error.message : 'Failed to delete deck',
+		};
+	}
+}
+
+export async function updateFlashcard(
+	flashcardId: string,
+	deckId: string,
+	data: { front?: string; back?: string; difficulty?: string }
+): Promise<{ success: boolean; flashcard?: Flashcard; error?: string }> {
+	const connected = await dbManager.waitForConnection(3, 2000);
+	if (!connected) {
+		return { success: false, error: 'Database not available' };
+	}
+
+	const db = getDb();
+
+	try {
+		const [existing] = await db
+			.select()
+			.from(flashcards)
+			.where(and(eq(flashcards.id, flashcardId), eq(flashcards.deckId, deckId)))
+			.limit(1);
+
+		if (!existing) {
+			return { success: false, error: 'Flashcard not found' };
+		}
+
+		const [updated] = await db
+			.update(flashcards)
+			.set({
+				...data,
+				updatedAt: new Date(),
+			})
+			.where(eq(flashcards.id, flashcardId))
+			.returning();
+
+		return { success: true, flashcard: updated };
+	} catch (error) {
+		console.error('[Review Queue] Error updating flashcard:', error);
+		return {
+			success: false,
+			error: error instanceof Error ? error.message : 'Failed to update flashcard',
+		};
+	}
+}
+
+export async function deleteFlashcard(
+	flashcardId: string,
+	deckId: string
+): Promise<{ success: boolean; error?: string }> {
+	const connected = await dbManager.waitForConnection(3, 2000);
+	if (!connected) {
+		return { success: false, error: 'Database not available' };
+	}
+
+	const db = getDb();
+
+	try {
+		await db.delete(flashcards).where(eq(flashcards.id, flashcardId));
+
+		await db
+			.update(flashcardDecks)
+			.set({
+				cardCount: sql`${flashcardDecks.cardCount} - 1`,
+				updatedAt: new Date(),
+			})
+			.where(eq(flashcardDecks.id, deckId));
+
+		return { success: true };
+	} catch (error) {
+		console.error('[Review Queue] Error deleting flashcard:', error);
+		return {
+			success: false,
+			error: error instanceof Error ? error.message : 'Failed to delete flashcard',
+		};
+	}
+}

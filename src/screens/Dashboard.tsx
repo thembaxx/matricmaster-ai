@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState, useTransition } from 'react';
+import { TopicMasteryCard } from '@/components/Dashboard/TopicMasteryCard';
 import { DashboardSkeleton } from '@/components/DashboardSkeleton';
 import { SmoothWords } from '@/components/Transition/SmoothText';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -497,6 +498,11 @@ export default function Dashboard() {
 									</motion.button>
 								))}
 							</div>
+						</motion.div>
+
+						{/* Topic Mastery Card - Spans all columns */}
+						<motion.div variants={STAGGER_ITEM} className="md:col-span-2 lg:col-span-3">
+							<TopicMasteryCard />
 						</motion.div>
 					</div>
 				</motion.main>

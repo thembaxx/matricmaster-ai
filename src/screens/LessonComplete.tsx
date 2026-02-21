@@ -1,9 +1,10 @@
 'use client';
 
-import { CheckCircle2, ChevronRight, Clock, History, X, Zap } from 'lucide-react';
+import { BarChart3, CheckCircle2, ChevronRight, Clock, History, X, Zap } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { QuizAnalyticsModal } from '@/components/Quiz/QuizAnalyticsModal';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
@@ -11,6 +12,7 @@ export default function LessonComplete() {
 	const router = useRouter();
 	const [xpCurrent] = useState(1250);
 	const [xpNext] = useState(2000);
+	const [showAnalytics, setShowAnalytics] = useState(false);
 	const xpProgress = (xpCurrent / xpNext) * 100;
 
 	return (
@@ -159,6 +161,14 @@ export default function LessonComplete() {
 						<Button
 							variant="ghost"
 							className="w-full h-12 rounded-full font-bold text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white flex items-center justify-center gap-2"
+							onClick={() => setShowAnalytics(true)}
+						>
+							<BarChart3 className="w-5 h-5" />
+							View Analytics
+						</Button>
+						<Button
+							variant="ghost"
+							className="w-full h-12 rounded-full font-bold text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white flex items-center justify-center gap-2"
 							onClick={() => router.push('/quiz')}
 						>
 							<History className="w-5 h-5" />
@@ -167,6 +177,8 @@ export default function LessonComplete() {
 					</div>
 				</main>
 			</ScrollArea>
+
+			<QuizAnalyticsModal open={showAnalytics} onOpenChange={setShowAnalytics} />
 		</div>
 	);
 }
