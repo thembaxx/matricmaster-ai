@@ -3,12 +3,10 @@ import { SpeedInsights } from '@vercel/speed-insights/next';
 import type { Metadata, Viewport } from 'next';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { GamificationProvider } from '@/components/Gamification';
-import AppLayout from '@/components/Layout/AppLayout';
-import NotificationListener from '@/components/Notifications/NotificationListener';
+import ClientProviders from '@/components/Layout/ClientProvidersDynamic';
 import { Toaster } from '@/components/Toaster';
 import { ThemeProvider } from '@/components/theme-provider';
 import WebVitals from '@/components/WebVitals';
-import { AblyClientProvider } from '@/lib/ably/provider';
 import '@/styles/index.css';
 import { inter, outfit } from './fonts';
 
@@ -115,11 +113,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 				<ErrorBoundary>
 					<ThemeProvider defaultTheme="light" storageKey="matric-master-theme">
 						<GamificationProvider>
-							<AblyClientProvider>
-								<NotificationListener>
-									<AppLayout>{children}</AppLayout>
-								</NotificationListener>
-							</AblyClientProvider>
+							<ClientProviders>{children}</ClientProviders>
 							<Toaster />
 						</GamificationProvider>
 					</ThemeProvider>
