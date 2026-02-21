@@ -1,12 +1,26 @@
 'use client';
 
-import { ArrowLeft, Check, ChevronRight, Lock, Play, Star, Zap } from 'lucide-react';
+import {
+	ArrowLeft,
+	Check,
+	ChevronRight,
+	Loader2,
+	Lock,
+	Play,
+	Sparkles,
+	Star,
+	Zap,
+} from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { useSession } from '@/lib/auth-client';
+import type { StudyPlan } from '@/lib/db/schema';
+import { getActiveStudyPlanAction } from '@/lib/db/study-plan-actions';
 
-const pathNodes = [
+const defaultPathNodes = [
 	{
 		id: 1,
 		title: 'Physics Circuits',
@@ -37,7 +51,108 @@ const pathNodes = [
 
 export default function StudyPath() {
 	const router = useRouter();
+	const { data: session } = useSession();
+	const [activePlan, setActivePlan] = useState<StudyPlan | null>(null);
+	const [isLoading, setIsLoading] = useState(true);
+	const [pathNodes, setPathNodes] = useState(defaultPathNodes);
 	const overallProgress = 12;
+
+	useEffect(() => {
+		const loadActivePlan = async () => {
+			if (session?.user?.id) {
+				try {
+					const plan = await getActiveStudyPlanAction(session.user.id);
+					if (plan) {
+						setActivePlan(plan);
+						// Could parse plan.focusAreas or plan.weeklyGoals to create dynamic nodes here
+						// For now, we use the default nodes but could enhance this later
+					}
+				} catch (error) {
+					console.error('Failed to load active plan:', error);
+				}
+			}
+			setIsLoading(false);
+		};
+		loadActivePlan();
+	}, [session?.user?.id]);
+
+	if (isLoading) {
+		return (
+			<div className="min-h-screen flex flex-col items-center justify-center bg-zinc-50 dark:bg-[#0a0f18]">
+				<Loader2 className="w-8 h-8 animate-spin text-primary" />
+				<p className="mt-4 text-muted-foreground">Loading your study path...</p>
+			</div>
+		);
+	}
+
+	// Show empty state if no active plan
+	if (!activePlan && session?.user) {
+		return (
+			<div className="min-h-screen flex flex-col bg-zinc-50 dark:bg-[#0a0f18]">
+				<header className="px-4 py-4 flex items-center justify-between shrink-0">
+					<Button
+						variant="ghost"
+						size="icon"
+						onClick={() => router.back()}
+						className="rounded-full text-zinc-900 dark:text-white"
+					>
+						<ArrowLeft className="w-6 h-6" />
+					</Button>
+					<h1 className="text-lg font-bold text-zinc-900 dark:text-white">My Study Path</h1>
+					<div className="w-10" />
+				</header>
+				<main className="flex-1 flex flex-col items-center justify-center px-4 text-center space-y-6">
+					<div className="w-24 h-24 rounded-full bg-primary/10 flex items-center justify-center">
+						<Sparkles className="w-12 h-12 text-primary" />
+					</div>
+					<div className="space-y-2">
+						<h2 className="text-2xl font-bold text-zinc-900 dark:text-white">No Study Plan Yet</h2>
+						<p className="text-muted-foreground max-w-xs">
+							Create your personalized study plan with AI and track your progress
+						</p>
+					</div>
+					<Button
+						onClick={() => router.push('/study-plan')}
+						className="bg-primary hover:bg-primary/90 text-white font-semibold px-8"
+					>
+						Create Study Plan
+					</Button>
+				</main>
+			</div>
+		);
+	}
+
+	// Show sign-in prompt if not logged in
+	if (!session) {
+		return (
+			<div className="min-h-screen flex flex-col bg-zinc-50 dark:bg-[#0a0f18]">
+				<header className="px-4 py-4 flex items-center justify-between shrink-0">
+					<Button
+						variant="ghost"
+						size="icon"
+						onClick={() => router.back()}
+						className="rounded-full text-zinc-900 dark:text-white"
+					>
+						<ArrowLeft className="w-6 h-6" />
+					</Button>
+					<h1 className="text-lg font-bold text-zinc-900 dark:text-white">My Study Path</h1>
+					<div className="w-10" />
+				</header>
+				<main className="flex-1 flex flex-col items-center justify-center px-4 text-center space-y-6">
+					<div className="space-y-2">
+						<h2 className="text-2xl font-bold text-zinc-900 dark:text-white">Sign In Required</h2>
+						<p className="text-muted-foreground max-w-xs">Please sign in to view your study path</p>
+					</div>
+					<Button
+						onClick={() => router.push('/sign-in')}
+						className="bg-primary hover:bg-primary/90 text-white font-semibold px-8"
+					>
+						Sign In
+					</Button>
+				</main>
+			</div>
+		);
+	}
 
 	return (
 		<div className="min-h-screen flex flex-col bg-zinc-50 dark:bg-[#0a0f18]">

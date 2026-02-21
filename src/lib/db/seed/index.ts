@@ -10,6 +10,7 @@ import { dbManager } from '../index';
 import { options, questions, subjects } from '../schema';
 import { englishQuestions } from './english-questions';
 import { historyQuestions } from './history-questions';
+import { mathematicsQuestions } from './mathematics-questions';
 import { physicsQuestions } from './physics-questions';
 
 function getDb() {
@@ -42,6 +43,7 @@ export async function seedDatabase() {
 
 		let historySubject = existingSubjects.find((s) => s.name === 'History');
 		let englishSubject = existingSubjects.find((s) => s.name === 'English FAL');
+		let mathematicsSubject = existingSubjects.find((s) => s.name === 'Mathematics');
 		let physicsSubject = existingSubjects.find((s) => s.name === 'Physical Sciences');
 
 		// Insert missing subjects
@@ -65,6 +67,15 @@ export async function seedDatabase() {
 			});
 		}
 
+		if (!mathematicsSubject) {
+			subjectsToInsert.push({
+				name: 'Mathematics',
+				description: 'CAPS Mathematics Grades 10-12 covering Algebra, Calculus, Trigonometry',
+				curriculumCode: 'CAPS-MATH',
+				isActive: true,
+			});
+		}
+
 		if (!physicsSubject) {
 			subjectsToInsert.push({
 				name: 'Physical Sciences',
@@ -82,21 +93,24 @@ export async function seedDatabase() {
 			insertedSubjects.forEach((subject) => {
 				if (subject.name === 'History') historySubject = subject;
 				if (subject.name === 'English FAL') englishSubject = subject;
+				if (subject.name === 'Mathematics') mathematicsSubject = subject;
 				if (subject.name === 'Physical Sciences') physicsSubject = subject;
 			});
 		}
 
 		// Ensure we have all subjects
-		if (!historySubject || !englishSubject || !physicsSubject) {
+		if (!historySubject || !englishSubject || !mathematicsSubject || !physicsSubject) {
 			throw new Error('Failed to get or create all required subjects');
 		}
 
 		console.log(
 			'✓ Subjects verified:',
 			historySubject.name,
-			'&',
+			',',
 			englishSubject.name,
-			'&',
+			',',
+			mathematicsSubject.name,
+			',',
 			physicsSubject.name
 		);
 
@@ -179,6 +193,42 @@ export async function seedDatabase() {
 			englishCount++;
 		}
 		console.log(`✓ ${englishCount} new English questions seeded`);
+
+		// Seed Mathematics questions
+		console.log('Seeding Mathematics questions...');
+		let mathCount = 0;
+		for (const q of mathematicsQuestions) {
+			if (await questionExists(q.questionText, mathematicsSubject!.id)) continue;
+
+			await useDb.transaction(async (tx) => {
+				const [question] = await tx
+					.insert(questions)
+					.values({
+						subjectId: mathematicsSubject!.id,
+						questionText: q.questionText,
+						imageUrl: (q as { imageUrl?: string }).imageUrl || null,
+						gradeLevel: q.gradeLevel,
+						topic: q.topic,
+						difficulty: q.difficulty,
+						marks: q.marks,
+						isActive: true,
+					})
+					.returning();
+
+				for (const opt of q.options) {
+					await tx.insert(options).values({
+						questionId: question.id,
+						optionText: opt.text,
+						isCorrect: opt.isCorrect,
+						optionLetter: opt.letter,
+						explanation: opt.explanation || null,
+						isActive: true,
+					});
+				}
+			});
+			mathCount++;
+		}
+		console.log(`✓ ${mathCount} new Mathematics questions seeded`);
 
 		// Seed Physics questions
 		console.log('Seeding Physics questions...');

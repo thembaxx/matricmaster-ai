@@ -19,16 +19,16 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { PAST_PAPERS } from '@/constants/mock-data';
 import { STAGGER_CONTAINER, STAGGER_ITEM } from '@/lib/animation-presets';
 import { useSession } from '@/lib/auth-client';
 import {
 	addSearchHistoryAction,
 	clearSearchHistoryAction,
 	deleteSearchHistoryItemAction,
+	getPastPapersAction,
 	getSearchHistoryAction,
 } from '@/lib/db/actions';
-import type { SearchHistory } from '@/lib/db/schema';
+import type { PastPaper, SearchHistory } from '@/lib/db/schema';
 import { smartSearch } from '@/services/geminiService';
 
 export default function Search() {
@@ -39,6 +39,8 @@ export default function Search() {
 	const [isAiLoading, setIsAiLoading] = useState(false);
 	const [recentSearches, setRecentSearches] = useState<SearchHistory[]>([]);
 	const [isLoadingHistory, setIsLoadingHistory] = useState(true);
+	const [papers, setPapers] = useState<PastPaper[]>([]);
+	const [isLoadingPapers, setIsLoadingPapers] = useState(true);
 
 	// Load recent searches on mount
 	useEffect(() => {
@@ -52,6 +54,23 @@ export default function Search() {
 		};
 		loadSearchHistory();
 	}, [session?.user?.id]);
+
+	// Load past papers
+	useEffect(() => {
+		const loadPapers = async () => {
+			try {
+				const data = await getPastPapersAction();
+				setPapers(data);
+			} catch (error) {
+				console.error('Failed to load papers:', error);
+			} finally {
+				setIsLoadingPapers(false);
+			}
+		};
+		loadPapers();
+	}, []);
+
+	// Filter papers based on search query
 
 	// Trigger AI search when query changes
 	useEffect(() => {
@@ -78,8 +97,8 @@ export default function Search() {
 	}, [query, session?.user?.id]);
 
 	const filteredResults = query
-		? PAST_PAPERS.filter(
-				(p) =>
+		? papers.filter(
+				(p: PastPaper) =>
 					p.subject.toLowerCase().includes(query.toLowerCase()) ||
 					p.paper.toLowerCase().includes(query.toLowerCase())
 			)

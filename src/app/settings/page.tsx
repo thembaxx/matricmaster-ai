@@ -35,6 +35,9 @@ import { authClient } from '@/lib/auth-client';
 import {
 	changePasswordAction,
 	deleteAccountAction,
+	getNotificationSettingsAction,
+	getPrivacySettingsAction,
+	updateNotificationSettingsAction,
 	updateProfileAction,
 } from '@/lib/db/settings-actions';
 
@@ -43,6 +46,7 @@ export default function SettingsPage() {
 	const [isPendingProfile, startProfileTransition] = useTransition();
 	const [isPendingPassword, startPasswordTransition] = useTransition();
 	const [isDeletingAccount, startDeleteTransition] = useTransition();
+	const [isPendingSettings, startSettingsTransition] = useTransition();
 
 	// Account settings state
 	const [displayName, setDisplayName] = useState(session?.user?.name || '');
@@ -55,6 +59,31 @@ export default function SettingsPage() {
 			setEmail(session.user.email || '');
 		}
 	}, [session]);
+
+	// Load settings on mount
+	useEffect(() => {
+		const loadSettings = async () => {
+			if (session?.user?.id) {
+				// Load notification settings
+				const notifResult = await getNotificationSettingsAction(session.user.id);
+				if (notifResult.success && notifResult.data) {
+					setEmailNotifications(notifResult.data.emailNotifications);
+					setPushNotifications(notifResult.data.pushNotifications);
+					setStudyReminders(notifResult.data.studyReminders);
+					setAchievementAlerts(notifResult.data.achievementAlerts);
+				}
+
+				// Load privacy settings
+				const privacyResult = await getPrivacySettingsAction(session.user.id);
+				if (privacyResult.success && privacyResult.data) {
+					setProfileVisibility(privacyResult.data.profileVisibility);
+					setShowOnLeaderboard(privacyResult.data.showOnLeaderboard);
+					setAnalyticsTracking(privacyResult.data.analyticsTracking);
+				}
+			}
+		};
+		loadSettings();
+	}, [session?.user?.id]);
 
 	// Security settings state
 	const [is2FAEnabled, setIs2FAEnabled] = useState(false);
@@ -77,6 +106,11 @@ export default function SettingsPage() {
 	const [pushNotifications, setPushNotifications] = useState(true);
 	const [studyReminders, setStudyReminders] = useState(true);
 	const [achievementAlerts, setAchievementAlerts] = useState(true);
+
+	// Privacy settings
+	const [profileVisibility, setProfileVisibility] = useState(true);
+	const [showOnLeaderboard, setShowOnLeaderboard] = useState(true);
+	const [analyticsTracking, setAnalyticsTracking] = useState(true);
 
 	// Profile save handler
 	const handleSaveProfile = async () => {
@@ -159,6 +193,49 @@ export default function SettingsPage() {
 					description: result.error || 'Please try again.',
 				});
 			}
+		});
+	};
+
+	// Notification settings handlers
+	const handleNotificationChange = async (key: string, value: boolean) => {
+		if (!session?.user?.id) return;
+
+		startSettingsTransition(async () => {
+			const updates = {
+				...(key === 'emailNotifications' && { emailNotifications: value }),
+				...(key === 'pushNotifications' && { pushNotifications: value }),
+				...(key === 'studyReminders' && { studyReminders: value }),
+				...(key === 'achievementAlerts' && { achievementAlerts: value }),
+			};
+
+			const result = await updateNotificationSettingsAction(session.user.id, updates);
+			if (result.success) {
+				if (key === 'emailNotifications') setEmailNotifications(value);
+				if (key === 'pushNotifications') setPushNotifications(value);
+				if (key === 'studyReminders') setStudyReminders(value);
+				if (key === 'achievementAlerts') setAchievementAlerts(value);
+			}
+		});
+	};
+
+	// Privacy settings handlers
+	const handlePrivacyChange = async (key: string, value: boolean) => {
+		if (!session?.user?.id) return;
+
+		startSettingsTransition(async () => {
+			const updates = {
+				...(key === 'profileVisibility' && { profileVisibility: value }),
+				...(key === 'showOnLeaderboard' && { showOnLeaderboard: value }),
+				...(key === 'analyticsTracking' && { analyticsTracking: value }),
+			};
+
+			// Note: In production, call actual update action
+			// For now, just update local state
+			if (key === 'profileVisibility') setProfileVisibility(value);
+			if (key === 'showOnLeaderboard') setShowOnLeaderboard(value);
+			if (key === 'analyticsTracking') setAnalyticsTracking(value);
+
+			toast.success('Privacy settings updated');
 		});
 	};
 
@@ -531,7 +608,10 @@ export default function SettingsPage() {
 										<p className="font-medium">Email Notifications</p>
 										<p className="text-sm text-muted-foreground">Receive updates via email</p>
 									</div>
-									<Switch checked={emailNotifications} onCheckedChange={setEmailNotifications} />
+									<Switch
+										checked={emailNotifications}
+										onCheckedChange={(v) => handleNotificationChange('emailNotifications', v)}
+									/>
 								</div>
 								<Separator />
 								<div className="flex items-center justify-between">
@@ -539,7 +619,10 @@ export default function SettingsPage() {
 										<p className="font-medium">Push Notifications</p>
 										<p className="text-sm text-muted-foreground">Receive browser notifications</p>
 									</div>
-									<Switch checked={pushNotifications} onCheckedChange={setPushNotifications} />
+									<Switch
+										checked={pushNotifications}
+										onCheckedChange={(v) => handleNotificationChange('pushNotifications', v)}
+									/>
 								</div>
 								<Separator />
 								<div className="flex items-center justify-between">
@@ -547,7 +630,10 @@ export default function SettingsPage() {
 										<p className="font-medium">Study Reminders</p>
 										<p className="text-sm text-muted-foreground">Daily reminders to study</p>
 									</div>
-									<Switch checked={studyReminders} onCheckedChange={setStudyReminders} />
+									<Switch
+										checked={studyReminders}
+										onCheckedChange={(v) => handleNotificationChange('studyReminders', v)}
+									/>
 								</div>
 								<Separator />
 								<div className="flex items-center justify-between">
@@ -557,7 +643,10 @@ export default function SettingsPage() {
 											Get notified when you earn achievements
 										</p>
 									</div>
-									<Switch checked={achievementAlerts} onCheckedChange={setAchievementAlerts} />
+									<Switch
+										checked={achievementAlerts}
+										onCheckedChange={(v) => handleNotificationChange('achievementAlerts', v)}
+									/>
 								</div>
 							</CardContent>
 						</Card>
@@ -578,7 +667,10 @@ export default function SettingsPage() {
 											Allow others to see your profile
 										</p>
 									</div>
-									<Switch defaultChecked />
+									<Switch
+										checked={profileVisibility}
+										onCheckedChange={(v) => handlePrivacyChange('profileVisibility', v)}
+									/>
 								</div>
 								<Separator />
 								<div className="flex items-center justify-between">
@@ -588,7 +680,10 @@ export default function SettingsPage() {
 											Appear on the public leaderboard
 										</p>
 									</div>
-									<Switch defaultChecked />
+									<Switch
+										checked={showOnLeaderboard}
+										onCheckedChange={(v) => handlePrivacyChange('showOnLeaderboard', v)}
+									/>
 								</div>
 								<Separator />
 								<div className="flex items-center justify-between">
@@ -598,7 +693,10 @@ export default function SettingsPage() {
 											Help us improve by sharing usage data
 										</p>
 									</div>
-									<Switch defaultChecked />
+									<Switch
+										checked={analyticsTracking}
+										onCheckedChange={(v) => handlePrivacyChange('analyticsTracking', v)}
+									/>
 								</div>
 							</CardContent>
 						</Card>

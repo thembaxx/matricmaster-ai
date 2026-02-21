@@ -42,6 +42,9 @@ import type { SessionUser } from '@/lib/auth';
 import { authClient } from '@/lib/auth-client';
 import {
 	deleteUserAction,
+	getAdminStatsAction,
+	getContentFlagsAction,
+	getSubjectPerformanceAction,
 	getUsersAction,
 	restoreUserAction,
 	toggleUserBlockAction,
