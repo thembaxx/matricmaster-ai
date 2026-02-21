@@ -43,7 +43,6 @@ import { authClient } from '@/lib/auth-client';
 import {
 	deleteUserAction,
 	getAdminStatsAction,
-	getContentFlagsAction,
 	getSubjectPerformanceAction,
 	getUsersAction,
 	restoreUserAction,
@@ -51,14 +50,7 @@ import {
 } from '@/lib/db/actions';
 import type { User } from '@/lib/db/better-auth-schema';
 
-// Mock data for admin dashboard
-const mockStats = {
-	totalUsers: 1247,
-	activeUsers: 342,
-	questionsAttempted: 45623,
-	averageScore: 68,
-};
-
+// Recent activity mock (for now - would need activity log table)
 const mockRecentActivity = [
 	{ id: 1, user: 'John D.', action: 'Completed Math Quiz', score: 85, time: '5 min ago' },
 	{
@@ -73,6 +65,7 @@ const mockRecentActivity = [
 	{ id: 5, user: 'David K.', action: 'Started Study Plan', time: '32 min ago' },
 ];
 
+// Mock flagged content (for now - would need getContentFlagsAction)
 const mockFlaggedContent = [
 	{
 		id: 1,
@@ -100,16 +93,23 @@ const mockFlaggedContent = [
 	},
 ];
 
-const mockTopSubjects = [
-	{ name: 'Mathematics', attempts: 12453, avgScore: 65 },
-	{ name: 'Physics', attempts: 8234, avgScore: 62 },
-	{ name: 'Chemistry', attempts: 6123, avgScore: 70 },
-	{ name: 'Life Sciences', attempts: 4892, avgScore: 68 },
-];
-
 export default function AdminDashboardPage() {
 	const { data: session } = authClient.useSession();
 	const [activeTab, setActiveTab] = useState('overview');
+
+	// Stats state
+	const [stats, setStats] = useState({
+		totalUsers: 0,
+		activeUsers: 0,
+		questionsAttempted: 0,
+		averageScore: 0,
+		questionsCount: 0,
+		subjectsCount: 0,
+	});
+	const [subjectPerformance, setSubjectPerformance] = useState<
+		{ subjectId: number; subjectName: string; questionsAttempted: number; averageScore: number }[]
+	>([]);
+	const [isLoadingStats, setIsLoadingStats] = useState(true);
 
 	// User management state
 	const [users, setUsers] = useState<User[]>([]);
@@ -119,6 +119,25 @@ export default function AdminDashboardPage() {
 	const [, startTransition] = useTransition();
 
 	const isAdmin = (session?.user as SessionUser | undefined)?.role === 'admin';
+
+	// Load stats on mount
+	useEffect(() => {
+		const loadStats = async () => {
+			try {
+				const [statsData, performanceData] = await Promise.all([
+					getAdminStatsAction(),
+					getSubjectPerformanceAction(),
+				]);
+				setStats(statsData);
+				setSubjectPerformance(performanceData);
+			} catch (error) {
+				console.error('Failed to load admin stats:', error);
+			} finally {
+				setIsLoadingStats(false);
+			}
+		};
+		loadStats();
+	}, []);
 
 	const loadUsers = useCallback(async () => {
 		setIsLoadingUsers(true);
@@ -237,56 +256,80 @@ export default function AdminDashboardPage() {
 				<div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
 					<Card>
 						<CardContent className="pt-6">
-							<div className="flex items-center gap-4">
-								<div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
-									<Users className="h-6 w-6 text-primary" />
+							{isLoadingStats ? (
+								<div className="flex items-center justify-center h-20">
+									<Loader2 className="h-6 w-6 animate-spin text-primary" />
 								</div>
-								<div>
-									<p className="text-2xl font-bold">{mockStats.totalUsers.toLocaleString()}</p>
-									<p className="text-sm text-muted-foreground">Total Users</p>
+							) : (
+								<div className="flex items-center gap-4">
+									<div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
+										<Users className="h-6 w-6 text-primary" />
+									</div>
+									<div>
+										<p className="text-2xl font-bold">{stats.totalUsers.toLocaleString()}</p>
+										<p className="text-sm text-muted-foreground">Total Users</p>
+									</div>
 								</div>
-							</div>
+							)}
 						</CardContent>
 					</Card>
 					<Card>
 						<CardContent className="pt-6">
-							<div className="flex items-center gap-4">
-								<div className="h-12 w-12 rounded-full bg-green-500/10 flex items-center justify-center">
-									<Activity className="h-6 w-6 text-green-500" />
+							{isLoadingStats ? (
+								<div className="flex items-center justify-center h-20">
+									<Loader2 className="h-6 w-6 animate-spin text-green-500" />
 								</div>
-								<div>
-									<p className="text-2xl font-bold">{mockStats.activeUsers}</p>
-									<p className="text-sm text-muted-foreground">Active Today</p>
+							) : (
+								<div className="flex items-center gap-4">
+									<div className="h-12 w-12 rounded-full bg-green-500/10 flex items-center justify-center">
+										<Activity className="h-6 w-6 text-green-500" />
+									</div>
+									<div>
+										<p className="text-2xl font-bold">{stats.activeUsers.toLocaleString()}</p>
+										<p className="text-sm text-muted-foreground">Active (7 days)</p>
+									</div>
 								</div>
-							</div>
+							)}
 						</CardContent>
 					</Card>
 					<Card>
 						<CardContent className="pt-6">
-							<div className="flex items-center gap-4">
-								<div className="h-12 w-12 rounded-full bg-blue-500/10 flex items-center justify-center">
-									<BookOpen className="h-6 w-6 text-blue-500" />
+							{isLoadingStats ? (
+								<div className="flex items-center justify-center h-20">
+									<Loader2 className="h-6 w-6 animate-spin text-blue-500" />
 								</div>
-								<div>
-									<p className="text-2xl font-bold">
-										{mockStats.questionsAttempted.toLocaleString()}
-									</p>
-									<p className="text-sm text-muted-foreground">Questions Attempted</p>
+							) : (
+								<div className="flex items-center gap-4">
+									<div className="h-12 w-12 rounded-full bg-blue-500/10 flex items-center justify-center">
+										<BookOpen className="h-6 w-6 text-blue-500" />
+									</div>
+									<div>
+										<p className="text-2xl font-bold">
+											{stats.questionsAttempted.toLocaleString()}
+										</p>
+										<p className="text-sm text-muted-foreground">Questions Attempted</p>
+									</div>
 								</div>
-							</div>
+							)}
 						</CardContent>
 					</Card>
 					<Card>
 						<CardContent className="pt-6">
-							<div className="flex items-center gap-4">
-								<div className="h-12 w-12 rounded-full bg-amber-500/10 flex items-center justify-center">
-									<TrendingUp className="h-6 w-6 text-amber-500" />
+							{isLoadingStats ? (
+								<div className="flex items-center justify-center h-20">
+									<Loader2 className="h-6 w-6 animate-spin text-amber-500" />
 								</div>
-								<div>
-									<p className="text-2xl font-bold">{mockStats.averageScore}%</p>
-									<p className="text-sm text-muted-foreground">Average Score</p>
+							) : (
+								<div className="flex items-center gap-4">
+									<div className="h-12 w-12 rounded-full bg-amber-500/10 flex items-center justify-center">
+										<TrendingUp className="h-6 w-6 text-amber-500" />
+									</div>
+									<div>
+										<p className="text-2xl font-bold">{stats.averageScore}%</p>
+										<p className="text-sm text-muted-foreground">Average Score</p>
+									</div>
 								</div>
-							</div>
+							)}
 						</CardContent>
 					</Card>
 				</div>
@@ -519,26 +562,37 @@ export default function AdminDashboardPage() {
 									<BarChart3 className="h-5 w-5" />
 									Subject Performance
 								</CardTitle>
-								<CardDescription>Average scores by subject</CardDescription>
+								<CardDescription>Questions attempted and average scores by subject</CardDescription>
 							</CardHeader>
 							<CardContent>
-								<div className="space-y-4">
-									{mockTopSubjects.map((subject) => (
-										<div key={subject.name} className="flex items-center gap-4">
-											<div className="w-32 font-medium">{subject.name}</div>
-											<div className="flex-1 h-2 bg-muted rounded-full overflow-hidden">
-												<div
-													className="h-full bg-primary rounded-full"
-													style={{ width: `${subject.avgScore}%` }}
-												/>
+								{isLoadingStats ? (
+									<div className="flex items-center justify-center py-12">
+										<Loader2 className="h-8 w-8 animate-spin text-primary" />
+									</div>
+								) : subjectPerformance.length > 0 ? (
+									<div className="space-y-4">
+										{subjectPerformance.map((subject) => (
+											<div key={subject.subjectId} className="flex items-center gap-4">
+												<div className="w-32 font-medium">{subject.subjectName}</div>
+												<div className="flex-1 h-2 bg-muted rounded-full overflow-hidden">
+													<div
+														className="h-full bg-primary rounded-full"
+														style={{ width: `${subject.averageScore}%` }}
+													/>
+												</div>
+												<div className="w-20 text-right text-sm">
+													{subject.questionsAttempted.toLocaleString()} attempts
+												</div>
+												<div className="w-12 text-right font-medium">{subject.averageScore}%</div>
 											</div>
-											<div className="w-16 text-right text-sm">
-												{subject.attempts.toLocaleString()} attempts
-											</div>
-											<div className="w-12 text-right font-medium">{subject.avgScore}%</div>
-										</div>
-									))}
-								</div>
+										))}
+									</div>
+								) : (
+									<div className="text-center py-8 text-muted-foreground">
+										<p>No performance data available yet.</p>
+										<p className="text-sm">Students need to complete quizzes for data to appear.</p>
+									</div>
+								)}
 							</CardContent>
 						</Card>
 					</TabsContent>

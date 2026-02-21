@@ -40,7 +40,7 @@ export default function Search() {
 	const [recentSearches, setRecentSearches] = useState<SearchHistory[]>([]);
 	const [isLoadingHistory, setIsLoadingHistory] = useState(true);
 	const [papers, setPapers] = useState<PastPaper[]>([]);
-	const [isLoadingPapers, setIsLoadingPapers] = useState(true);
+	const [_isLoadingPapers, setIsLoadingPapers] = useState(true);
 
 	// Load recent searches on mount
 	useEffect(() => {

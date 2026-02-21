@@ -4,7 +4,6 @@ import { and, asc, desc, eq, inArray, isNotNull, isNull, sql } from 'drizzle-orm
 import { z } from 'zod';
 import type { User } from './better-auth-schema';
 import { users } from './better-auth-schema';
-
 import { type DbType, dbManager } from './index';
 import type {
 	BuddyRequest,
@@ -26,7 +25,9 @@ import {
 	pastPapers,
 	questions,
 	searchHistory,
+	studySessions,
 	subjects,
+	userProgress,
 } from './schema';
 
 const createSubjectSchema = z.object({
@@ -1013,6 +1014,8 @@ export async function rejectBuddyRequestAction(
 export interface AdminStats {
 	totalUsers: number;
 	activeUsers: number;
+	questionsAttempted: number;
+	averageScore: number;
 	questionsCount: number;
 	subjectsCount: number;
 }
@@ -1025,17 +1028,33 @@ export async function getAdminStatsAction(): Promise<AdminStats> {
 		const [subjectsResult] = await db.select({ count: sql`count(*)` }).from(subjects);
 		const [questionsResult] = await db.select({ count: sql`count(*)` }).from(questions);
 
+		// Active users in last 7 days (based on user_progress lastActivityAt)
 		const sevenDaysAgo = new Date();
 		sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
 
 		const [activeUsersResult] = await db
-			.select({ count: sql`count(*)` })
-			.from(users)
-			.where(sql`${users.createdAt} > ${sevenDaysAgo}`);
+			.select({ count: sql`count(DISTINCT ${userProgress.userId})` })
+			.from(userProgress)
+			.where(sql`${userProgress.lastActivityAt} > ${sevenDaysAgo}`);
+
+		// Get total questions attempted and correct answers from studySessions
+		const [sessionStats] = await db
+			.select({
+				totalAttempted: sql<number>`coalesce(sum(${studySessions.questionsAttempted}), 0)`,
+				totalCorrect: sql<number>`coalesce(sum(${studySessions.correctAnswers}), 0)`,
+			})
+			.from(studySessions);
+
+		const questionsAttempted = Number(sessionStats?.totalAttempted || 0);
+		const totalCorrect = Number(sessionStats?.totalCorrect || 0);
+		const averageScore =
+			questionsAttempted > 0 ? Math.round((totalCorrect / questionsAttempted) * 100) : 0;
 
 		return {
 			totalUsers: Number(totalUsersResult?.count || 0),
 			activeUsers: Number(activeUsersResult?.count || 0),
+			questionsAttempted: questionsAttempted,
+			averageScore: averageScore,
 			questionsCount: Number(questionsResult?.count || 0),
 			subjectsCount: Number(subjectsResult?.count || 0),
 		};
@@ -1044,6 +1063,8 @@ export async function getAdminStatsAction(): Promise<AdminStats> {
 		return {
 			totalUsers: 0,
 			activeUsers: 0,
+			questionsAttempted: 0,
+			averageScore: 0,
 			questionsCount: 0,
 			subjectsCount: 0,
 		};
@@ -1053,31 +1074,38 @@ export async function getAdminStatsAction(): Promise<AdminStats> {
 export interface SubjectPerformance {
 	subjectId: number;
 	subjectName: string;
-	questionCount: number;
+	questionsAttempted: number;
+	averageScore: number;
 }
 
 export async function getSubjectPerformanceAction(): Promise<SubjectPerformance[]> {
 	try {
 		const db = await getDb();
 
+		// Get subject performance from userProgress aggregated data
 		const results = await db
 			.select({
-				subjectId: subjects.id,
+				subjectId: userProgress.subjectId,
 				subjectName: subjects.name,
-				questionCount: sql<number>`count(${questions.id})`,
+				totalAttempted: sql<number>`coalesce(sum(${userProgress.totalQuestionsAttempted}), 0)`,
+				totalCorrect: sql<number>`coalesce(sum(${userProgress.totalCorrect}), 0)`,
 			})
-			.from(subjects)
-			.leftJoin(questions, eq(questions.subjectId, subjects.id))
-			.where(eq(subjects.isActive, true))
-			.groupBy(subjects.id, subjects.name)
-			.orderBy(desc(sql`count(${questions.id})`))
+			.from(userProgress)
+			.innerJoin(subjects, eq(userProgress.subjectId, subjects.id))
+			.groupBy(userProgress.subjectId, subjects.name)
+			.orderBy(desc(sql`sum(${userProgress.totalQuestionsAttempted})`))
 			.limit(10);
 
-		return results.map((r) => ({
-			subjectId: r.subjectId,
-			subjectName: r.subjectName,
-			questionCount: Number(r.questionCount),
-		}));
+		return results.map((r) => {
+			const attempted = Number(r.totalAttempted || 0);
+			const correct = Number(r.totalCorrect || 0);
+			return {
+				subjectId: r.subjectId || 0,
+				subjectName: r.subjectName || 'Unknown',
+				questionsAttempted: attempted,
+				averageScore: attempted > 0 ? Math.round((correct / attempted) * 100) : 0,
+			};
+		});
 	} catch (error) {
 		console.error('Error getting subject performance:', error);
 		return [];
