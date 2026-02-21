@@ -4,6 +4,8 @@ import { motion } from 'framer-motion';
 import { Award, Flame, GraduationCap, Target } from 'lucide-react';
 import { useEffect, useId, useState } from 'react';
 import { PolarAngleAxis, PolarGrid, Radar, RadarChart } from 'recharts';
+import { LevelProgress } from '@/components/Gamification';
+import { AchievementBadges, AchievementProgress, BadgeShowcase } from '@/components/Profile';
 import { SafeImage } from '@/components/SafeImage';
 import { BackgroundMesh } from '@/components/ui/background-mesh';
 import { Badge } from '@/components/ui/badge';
@@ -55,6 +57,8 @@ export default function Profile() {
 		accuracy: number;
 		streak: number;
 		achievementsUnlocked: number;
+		totalXp: number;
+		unlockedAchievementIds: string[];
 	} | null>(null);
 	const [isLoading, setIsLoading] = useState(true);
 
@@ -67,11 +71,18 @@ export default function Profile() {
 					getUserAchievements(),
 				]);
 
+				const totalXp = achievements.unlocked.reduce((sum, a) => {
+					const def = achievements.available.find((d) => d.id === a.achievementId);
+					return sum + (def?.points || 0);
+				}, 0);
+
 				setUserStats({
 					totalQuestions: progress?.totalQuestionsAttempted || 0,
 					accuracy: progress?.accuracy || 0,
 					streak: streak?.currentStreak || 0,
 					achievementsUnlocked: achievements?.unlocked?.length || 0,
+					totalXp,
+					unlockedAchievementIds: achievements.unlocked.map((a) => a.achievementId),
 				});
 			} catch (error) {
 				console.error('Error fetching profile data:', error);
@@ -225,6 +236,13 @@ export default function Profile() {
 							Academic Standing
 						</h3>
 
+						{/* Level Progress Section */}
+						{userStats && (
+							<Card className="p-8 rounded-[2.5rem] border-2 border-border/50 bg-card/50 backdrop-blur-sm">
+								<LevelProgress totalXp={userStats.totalXp} variant="full" showTitle />
+							</Card>
+						)}
+
 						<div className="grid grid-cols-1 gap-6">
 							{/* Questions Card */}
 							<Card className="p-8 rounded-[2.5rem] border-2 border-border/50 bg-card/50 backdrop-blur-sm relative overflow-hidden group">
@@ -294,8 +312,35 @@ export default function Profile() {
 								</div>
 							</Card>
 						</div>
+
+						{/* Badge Showcase Section */}
+						{userStats && userStats.unlockedAchievementIds.length > 0 && (
+							<div className="mt-8">
+								<BadgeShowcase unlockedIds={userStats.unlockedAchievementIds} maxFeatured={3} />
+							</div>
+						)}
 					</div>
 				</div>
+
+				{/* Achievement Badges Section */}
+				{userStats && (
+					<motion.div
+						initial={{ opacity: 0, y: 20 }}
+						animate={{ opacity: 1, y: 0 }}
+						transition={{ delay: 0.3 }}
+						className="mt-12"
+					>
+						<div className="flex items-center justify-between mb-6">
+							<h3 className="text-xl font-black text-foreground tracking-tighter uppercase">
+								Achievement Collection
+							</h3>
+							<AchievementProgress unlockedIds={userStats.unlockedAchievementIds} />
+						</div>
+						<Card className="p-8 rounded-[2.5rem] border-2 border-border/50 bg-card/50 backdrop-blur-sm">
+							<AchievementBadges unlockedIds={userStats.unlockedAchievementIds} />
+						</Card>
+					</motion.div>
+				)}
 			</main>
 		</div>
 	);

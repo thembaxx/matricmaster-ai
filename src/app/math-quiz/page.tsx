@@ -1,12 +1,14 @@
 'use client';
 
-import dynamic from 'next/dynamic';
+import dynamicImport from 'next/dynamic';
 import { QuizSkeleton } from '@/components/QuizSkeleton';
 
-const MathematicsQuizScreen = dynamic(() => import('@/screens/MathematicsQuiz'), {
+const MathematicsQuizScreen = dynamicImport(() => import('@/screens/MathematicsQuiz'), {
 	ssr: false,
 	loading: () => <QuizSkeleton />,
 });
+
+export const dynamic = 'force-dynamic';
 
 export default function MathematicsQuizPage() {
 	return <MathematicsQuizScreen />;
