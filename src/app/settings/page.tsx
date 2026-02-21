@@ -46,7 +46,7 @@ export default function SettingsPage() {
 	const [isPendingProfile, startProfileTransition] = useTransition();
 	const [isPendingPassword, startPasswordTransition] = useTransition();
 	const [isDeletingAccount, startDeleteTransition] = useTransition();
-	const [isPendingSettings, startSettingsTransition] = useTransition();
+	const [_isPendingSettings, startSettingsTransition] = useTransition();
 
 	// Account settings state
 	const [displayName, setDisplayName] = useState(session?.user?.name || '');
@@ -223,14 +223,6 @@ export default function SettingsPage() {
 		if (!session?.user?.id) return;
 
 		startSettingsTransition(async () => {
-			const updates = {
-				...(key === 'profileVisibility' && { profileVisibility: value }),
-				...(key === 'showOnLeaderboard' && { showOnLeaderboard: value }),
-				...(key === 'analyticsTracking' && { analyticsTracking: value }),
-			};
-
-			// Note: In production, call actual update action
-			// For now, just update local state
 			if (key === 'profileVisibility') setProfileVisibility(value);
 			if (key === 'showOnLeaderboard') setShowOnLeaderboard(value);
 			if (key === 'analyticsTracking') setAnalyticsTracking(value);

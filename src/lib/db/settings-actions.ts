@@ -347,7 +347,9 @@ export async function updateNotificationSettingsAction(
 
 	for (const key of validKeys) {
 		if (key in data) {
-			(filteredData as Record<string, unknown>)[key] = (data as Record<string, unknown>)[key];
+			(filteredData as unknown as Record<string, unknown>)[key] = (
+				data as unknown as Record<string, unknown>
+			)[key];
 		}
 	}
 
@@ -401,7 +403,9 @@ export async function updatePrivacySettingsActionExtended(
 
 	for (const key of validKeys) {
 		if (key in data) {
-			(filteredData as Record<string, unknown>)[key] = (data as Record<string, unknown>)[key];
+			(filteredData as unknown as Record<string, unknown>)[key] = (
+				data as unknown as Record<string, unknown>
+			)[key];
 		}
 	}
 

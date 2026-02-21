@@ -57,6 +57,8 @@ export default function StudyPath() {
 	const [pathNodes, setPathNodes] = useState(defaultPathNodes);
 	const overallProgress = 12;
 
+	console.log(setPathNodes);
+
 	useEffect(() => {
 		const loadActivePlan = async () => {
 			if (session?.user?.id) {
