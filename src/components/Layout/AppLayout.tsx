@@ -1,7 +1,7 @@
 'use client';
 
 import { Icon } from '@iconify/react';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, m } from 'framer-motion';
 import {
 	Award,
 	Bell,
@@ -290,13 +290,13 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 								>
 									<Bell className="w-5 h-5 text-foreground" />
 									{unreadCount > 0 && (
-										<motion.span
-											initial={{ scale: 0 }}
+										<m.span
+											initial={{ scale: 0.95, opacity: 0 }}
 											animate={{ scale: 1 }}
 											className="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 bg-rose-500 text-white text-[10px] font-black rounded-full flex items-center justify-center shadow-sm"
 										>
 											{unreadCount > 99 ? '99+' : unreadCount}
-										</motion.span>
+										</m.span>
 									)}
 								</Button>
 
@@ -321,7 +321,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 								{user && (
 									<div className="lg:hidden">
 										<ProfileMenu user={user}>
-											<motion.button
+											<m.button
 												type="button"
 												className="rounded-full focus:outline-none"
 												whileTap={{ scale: 0.9 }}
@@ -333,7 +333,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 														{user.name?.charAt(0)}
 													</AvatarFallback>
 												</Avatar>
-											</motion.button>
+											</m.button>
 										</ProfileMenu>
 									</div>
 								)}
@@ -366,7 +366,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 								>
 									<AnimatePresence>
 										{isActive && (
-											<motion.div
+											<m.div
 												layoutId="active-pill"
 												className="absolute inset-0 bg-primary rounded-2xl z-0"
 												transition={{

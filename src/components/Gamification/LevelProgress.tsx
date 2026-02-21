@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { Sparkles, Zap } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
@@ -92,7 +92,7 @@ export function LevelProgress({
 			<div className="flex items-center justify-between">
 				<div className="flex items-center gap-4">
 					<div className="relative">
-						<motion.div
+						<m.div
 							initial={animate ? { scale: 0.8 } : undefined}
 							animate={{ scale: 1 }}
 							transition={{ type: 'spring', stiffness: 300, damping: 20 }}
@@ -106,7 +106,7 @@ export function LevelProgress({
 							>
 								<span className="text-3xl">{badgeIcon}</span>
 							</div>
-						</motion.div>
+						</m.div>
 						<div
 							className="absolute -bottom-2 -right-2 min-w-[28px] h-7 bg-background rounded-full flex items-center justify-center border-2 shadow-sm px-2"
 							style={{ borderColor: info.color }}
@@ -155,7 +155,7 @@ export function LevelProgress({
 			</div>
 
 			<div className="relative">
-				<motion.div
+				<m.div
 					initial={animate ? { opacity: 0 } : undefined}
 					animate={{ opacity: 1 }}
 					transition={{ delay: 0.2 }}
@@ -169,7 +169,7 @@ export function LevelProgress({
 							} as React.CSSProperties
 						}
 					/>
-				</motion.div>
+				</m.div>
 				<div
 					className="absolute top-1/2 -translate-y-1/2 right-0 flex items-center gap-1 px-2 py-0.5 bg-background rounded-full border shadow-sm"
 					style={{ borderColor: `${info.color}30` }}

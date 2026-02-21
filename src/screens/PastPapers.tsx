@@ -1,6 +1,6 @@
 'use client';
 
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, m } from 'framer-motion';
 import {
 	BookOpen,
 	Download,
@@ -125,14 +125,14 @@ export default function PastPapers() {
 								<Loader2 className="w-8 h-8 animate-spin text-primary" />
 							</div>
 						) : filteredPapers.length > 0 ? (
-							<motion.div
+							<m.div
 								variants={STAGGER_CONTAINER}
 								initial="hidden"
 								animate="visible"
 								className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
 							>
 								{filteredPapers.map((paper) => (
-									<motion.div key={paper.id} variants={STAGGER_ITEM} layout whileHover={{ y: -8 }}>
+									<m.div key={paper.id} variants={STAGGER_ITEM} layout whileHover={{ y: -8 }}>
 										<Card className="p-8 rounded-[3rem] border-2 border-border/50 hover:border-primary/20 hover:shadow-2xl transition-all duration-500 group relative overflow-hidden bg-card/50 backdrop-blur-sm">
 											<div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
 
@@ -199,11 +199,11 @@ export default function PastPapers() {
 												</Button>
 											</div>
 										</Card>
-									</motion.div>
+									</m.div>
 								))}
-							</motion.div>
+							</m.div>
 						) : (
-							<motion.div
+							<m.div
 								initial={{ opacity: 0, scale: 0.9 }}
 								animate={{ opacity: 1, scale: 1 }}
 								className="py-32 flex flex-col items-center justify-center text-center space-y-6 opacity-40"
@@ -219,7 +219,7 @@ export default function PastPapers() {
 										Refine your filters to see more results
 									</p>
 								</div>
-							</motion.div>
+							</m.div>
 						)}
 					</AnimatePresence>
 				</main>

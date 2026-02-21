@@ -117,9 +117,9 @@ export function QuizAnalyticsModal({ open, onOpenChange }: QuizAnalyticsModalPro
 								</h4>
 								{stats.strongTopics.length > 0 ? (
 									<div className="space-y-2">
-										{stats.strongTopics.slice(0, 5).map((topic, i) => (
+										{stats.strongTopics.slice(0, 5).map((topic) => (
 											<div
-												key={i}
+												key={topic.topic}
 												className="flex items-center justify-between rounded-lg border p-3"
 											>
 												<span className="font-medium">{topic.topic}</span>
@@ -144,11 +144,11 @@ export function QuizAnalyticsModal({ open, onOpenChange }: QuizAnalyticsModalPro
 								</h4>
 								{stats.weakTopics.length > 0 ? (
 									<div className="space-y-2">
-										{stats.weakTopics.slice(0, 5).map((topic, i) => {
+										{stats.weakTopics.slice(0, 5).map((topic) => {
 											const status = getTopicStatus(topic);
 											return (
 												<div
-													key={i}
+													key={topic.topic}
 													className="flex items-center justify-between rounded-lg border border-orange-500/20 bg-orange-500/5 p-3"
 												>
 													<div>
@@ -179,9 +179,9 @@ export function QuizAnalyticsModal({ open, onOpenChange }: QuizAnalyticsModalPro
 								</h4>
 								{stats.improvingTopics.length > 0 ? (
 									<div className="space-y-2">
-										{stats.improvingTopics.slice(0, 3).map((topic, i) => (
+										{stats.improvingTopics.slice(0, 3).map((topic) => (
 											<div
-												key={i}
+												key={topic.topic}
 												className="flex items-center justify-between rounded-lg border p-3"
 											>
 												<span className="font-medium">{topic.topic}</span>
@@ -203,8 +203,8 @@ export function QuizAnalyticsModal({ open, onOpenChange }: QuizAnalyticsModalPro
 										These topics haven't been practiced much yet:
 									</p>
 									<div className="flex flex-wrap gap-2">
-										{stats.needsReview.slice(0, 5).map((topic, i) => (
-											<Badge key={i} variant="outline">
+										{stats.needsReview.slice(0, 5).map((topic) => (
+											<Badge key={topic.topic} variant="outline">
 												{topic.topic}
 											</Badge>
 										))}

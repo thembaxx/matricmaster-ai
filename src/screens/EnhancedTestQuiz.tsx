@@ -1,7 +1,7 @@
 'use client';
 
 import { Icon } from '@iconify/react';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, m } from 'framer-motion';
 import {
 	ArrowLeft,
 	CheckCircle2,
@@ -333,7 +333,7 @@ export default function EnhancedTestQuizScreen() {
 			<BackgroundMesh variant="subtle" />
 			<AnimatePresence mode="wait">
 				{screen === 'selection' && (
-					<motion.div
+					<m.div
 						key="selection"
 						variants={containerVariants}
 						initial="hidden"
@@ -341,7 +341,7 @@ export default function EnhancedTestQuizScreen() {
 						exit="hidden"
 						className="flex flex-col h-full justify-center px-6"
 					>
-						<motion.div
+						<m.div
 							variants={itemVariants}
 							className="flex items-center justify-between mb-8 fixed top-6 w-full left-0 px-6 gap-4 z-20"
 						>
@@ -356,9 +356,9 @@ export default function EnhancedTestQuizScreen() {
 							<h1 className="text-lg font-medium text-left grow text-zinc-900 dark:text-white opacity-80">
 								Select Subjects
 							</h1>
-						</motion.div>
+						</m.div>
 
-						<motion.div
+						<m.div
 							variants={itemVariants}
 							className="grow flex items-center justify-center pt-24 pb-24"
 						>
@@ -384,7 +384,7 @@ export default function EnhancedTestQuizScreen() {
 										{subjects.map((subject) => {
 											const isSelected = quizState.selectedSubjects.includes(subject.id);
 											return (
-												<motion.div
+												<m.div
 													key={subject.id}
 													variants={badgeVariants}
 													animate={isSelected ? 'selected' : 'unselected'}
@@ -402,12 +402,12 @@ export default function EnhancedTestQuizScreen() {
 													>
 														{subject.name}
 													</Badge>
-												</motion.div>
+												</m.div>
 											);
 										})}
 									</div>
 
-									<motion.div variants={itemVariants} className="pt-2">
+									<m.div variants={itemVariants} className="pt-2">
 										<Button
 											variant="secondary"
 											size="sm"
@@ -417,12 +417,12 @@ export default function EnhancedTestQuizScreen() {
 											<Sparkles className="w-4 h-4 mr-2" />
 											I'm feeling lucky
 										</Button>
-									</motion.div>
+									</m.div>
 								</div>
 							</Card>
-						</motion.div>
+						</m.div>
 
-						<motion.div variants={itemVariants} className="fixed left-0 bottom-8 w-full px-6 z-20">
+						<m.div variants={itemVariants} className="fixed left-0 bottom-8 w-full px-6 z-20">
 							<Button
 								onClick={startQuiz}
 								disabled={quizState.selectedSubjects.length === 0 || loading}
@@ -440,12 +440,12 @@ export default function EnhancedTestQuizScreen() {
 									</>
 								)}
 							</Button>
-						</motion.div>
-					</motion.div>
+						</m.div>
+					</m.div>
 				)}
 
 				{screen === 'quiz' && (
-					<motion.div
+					<m.div
 						key="quiz"
 						variants={containerVariants}
 						initial="hidden"
@@ -486,7 +486,7 @@ export default function EnhancedTestQuizScreen() {
 									{/* Progress */}
 									<div className="px-6 pb-6">
 										<div className="relative h-2 w-full bg-black/5 dark:bg-white/5 rounded-full overflow-hidden mb-3">
-											<motion.div
+											<m.div
 												className="absolute top-0 left-0 h-full bg-brand-blue rounded-full shadow-[0_0_12px_rgba(59,130,246,0.4)]"
 												initial={{ width: 0 }}
 												animate={{
@@ -501,7 +501,7 @@ export default function EnhancedTestQuizScreen() {
 
 						{quizState.questions.length > 0 && (
 							<ScrollArea className="flex-1">
-								<motion.div
+								<m.div
 									key={quizState.currentQuestionIndex}
 									variants={itemVariants}
 									className="flex-1 flex flex-col space-y-6 p-6 pb-32 max-w-2xl mx-auto w-full"
@@ -572,7 +572,7 @@ export default function EnhancedTestQuizScreen() {
 													const isSelected = selectedId === option.optionLetter; // Value matches optionLetter
 
 													return (
-														<motion.div key={option.id} whileTap={{ scale: 0.98 }}>
+														<m.div key={option.id} whileTap={{ scale: 0.98 }}>
 															<RadioGroupItem
 																value={option.optionLetter}
 																id={option.id}
@@ -613,7 +613,7 @@ export default function EnhancedTestQuizScreen() {
 																	Show detailed explanation here...
 																</div>
 															)}
-														</motion.div>
+														</m.div>
 													);
 												}
 											)}
@@ -670,14 +670,14 @@ export default function EnhancedTestQuizScreen() {
 											)}
 										</div>
 									</div>
-								</motion.div>
+								</m.div>
 							</ScrollArea>
 						)}
-					</motion.div>
+					</m.div>
 				)}
 
 				{screen === 'results' && (
-					<motion.div
+					<m.div
 						key="results"
 						variants={containerVariants}
 						initial="hidden"
@@ -686,7 +686,7 @@ export default function EnhancedTestQuizScreen() {
 						className="flex flex-col h-full overflow-hidden"
 					>
 						<ScrollArea className="flex-1">
-							<motion.div
+							<m.div
 								variants={itemVariants}
 								className="flex-1 flex flex-col items-center p-6 py-12 max-w-md mx-auto w-full"
 							>
@@ -806,9 +806,9 @@ export default function EnhancedTestQuizScreen() {
 										Claim XP
 									</Button>
 								</div>
-							</motion.div>
+							</m.div>
 						</ScrollArea>
-					</motion.div>
+					</m.div>
 				)}
 			</AnimatePresence>
 		</div>

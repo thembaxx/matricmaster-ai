@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { Check, Lock, Star } from 'lucide-react';
 import { ACHIEVEMENTS } from '@/constants/achievements';
 
@@ -17,7 +17,7 @@ export function AchievementBadges({ unlockedIds, className = '' }: AchievementBa
 			{ACHIEVEMENTS.map((achievement, index) => {
 				const isUnlocked = unlockedSet.has(achievement.id);
 				return (
-					<motion.div
+					<m.div
 						key={achievement.id}
 						initial={{ opacity: 0, scale: 0.8 }}
 						animate={{ opacity: 1, scale: 1 }}
@@ -76,7 +76,7 @@ export function AchievementBadges({ unlockedIds, className = '' }: AchievementBa
 							<p className="text-muted-foreground text-[10px]">{achievement.description}</p>
 							<p className="text-brand-amber font-bold mt-1">+{achievement.points} XP</p>
 						</div>
-					</motion.div>
+					</m.div>
 				);
 			})}
 		</div>
@@ -100,9 +100,9 @@ export function AchievementBadgesCompact({ unlockedIds }: { unlockedIds: string[
 	return (
 		<div className="flex items-center">
 			{unlockedAchievements.map((achievement, index) => (
-				<motion.div
+				<m.div
 					key={achievement.id}
-					initial={{ scale: 0 }}
+					initial={{ scale: 0.95, opacity: 0 }}
 					animate={{ scale: 1 }}
 					transition={{ delay: index * 0.05 }}
 					className="-ml-2 first:ml-0 relative"
@@ -113,7 +113,7 @@ export function AchievementBadgesCompact({ unlockedIds }: { unlockedIds: string[
 					>
 						<span className="text-lg">{achievement.icon}</span>
 					</div>
-				</motion.div>
+				</m.div>
 			))}
 			{remainingCount > 0 && (
 				<div className="-ml-2 w-10 h-10 rounded-full flex items-center justify-center bg-muted border-2 border-background shadow-md">
@@ -139,7 +139,7 @@ export function AchievementProgress({ unlockedIds }: { unlockedIds: string[] }) 
 				</span>
 			</div>
 			<div className="h-2 bg-muted rounded-full overflow-hidden">
-				<motion.div
+				<m.div
 					initial={{ width: 0 }}
 					animate={{ width: `${percentage}%` }}
 					transition={{ duration: 0.5, ease: 'easeOut' }}

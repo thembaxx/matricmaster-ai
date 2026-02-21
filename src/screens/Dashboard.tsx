@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import {
 	ArrowRight,
 	Bell,
@@ -34,7 +34,6 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { STAGGER_CONTAINER, STAGGER_ITEM } from '@/lib/animation-presets';
 import { useSession } from '@/lib/auth-client';
 import type { UserProgressSummary } from '@/lib/db/progress-actions';
-import { getUserProgressSummary, getUserStreak } from '@/lib/db/progress-actions';
 
 interface DayProgress {
 	day: string;
@@ -91,10 +90,10 @@ export default function Dashboard({ initialProgress, initialStreak }: DashboardP
 	const { unreadCount } = useNotificationContextSafe();
 	const [isPending, startTransition] = useTransition();
 	const [isDbInitialized, setIsDbInitialized] = useState(false);
-	const [streak, setStreak] = useState(initialStreak?.currentStreak ?? 0);
+	const [streak] = useState(initialStreak?.currentStreak ?? 0);
 	const [dailyProgress, setDailyProgress] = useState(0);
 	const [weekProgress, setWeekProgress] = useState<DayProgress[]>([]);
-	const [progressData, setProgressData] = useState<{
+	const [progressData] = useState<{
 		totalQuestions: number;
 		accuracy: number;
 		totalPoints: number;
@@ -107,40 +106,7 @@ export default function Dashboard({ initialProgress, initialStreak }: DashboardP
 				}
 			: null
 	);
-	const [isLoadingProgress, setIsLoadingProgress] = useState(!initialProgress && !initialStreak);
-
-	// Fetch progress data from database when not provided by server
-	useEffect(() => {
-		if (initialProgress !== undefined || initialStreak !== undefined) {
-			return;
-		}
-		async function fetchProgress() {
-			try {
-				const [progress, streakData] = await Promise.all([
-					getUserProgressSummary(),
-					getUserStreak(),
-				]);
-
-				if (progress) {
-					setProgressData({
-						totalQuestions: progress.totalQuestionsAttempted,
-						accuracy: progress.accuracy,
-						totalPoints: progress.totalMarksEarned * 10,
-					});
-				}
-
-				if (streakData) {
-					setStreak(streakData.currentStreak);
-				}
-			} catch (error) {
-				console.error('Error fetching progress:', error);
-			} finally {
-				setIsLoadingProgress(false);
-			}
-		}
-
-		fetchProgress();
-	}, [initialProgress, initialStreak]);
+	const [isLoadingProgress] = useState(false);
 
 	useEffect(() => {
 		const initializeDatabase = async () => {
@@ -202,14 +168,14 @@ export default function Dashboard({ initialProgress, initialStreak }: DashboardP
 		<div className="flex flex-col h-full bg-background font-inter pb-24 lg:pb-12 relative overflow-hidden">
 			<BackgroundMesh variant="subtle" />
 
-			<motion.header
+			<m.header
 				initial={{ opacity: 0, y: -20 }}
 				animate={{ opacity: 1, y: 0 }}
 				transition={{ type: 'spring', stiffness: 260, damping: 25 }}
 				className="px-6 pt-6 pb-2 flex items-center justify-between shrink-0 relative z-10 lg:px-0 lg:pt-0 lg:mb-8"
 			>
 				<div className="flex items-center gap-4">
-					<motion.div
+					<m.div
 						initial={{ scale: 0.5, opacity: 0 }}
 						animate={{ scale: 1, opacity: 1 }}
 						transition={{ type: 'spring', stiffness: 400, damping: 20 }}
@@ -227,7 +193,7 @@ export default function Dashboard({ initialProgress, initialStreak }: DashboardP
 							</AvatarFallback>
 						</Avatar>
 						<div className="absolute bottom-0.5 right-0.5 w-4 h-4 bg-emerald-500 border-2 border-background rounded-full lg:w-5 lg:h-5 lg:border-3" />
-					</motion.div>
+					</m.div>
 					<div>
 						<p className="text-muted-foreground text-[10px] font-black uppercase tracking-[0.2em] opacity-60 lg:text-xs">
 							Welcome back,
@@ -241,7 +207,7 @@ export default function Dashboard({ initialProgress, initialStreak }: DashboardP
 				</div>
 
 				<div className="flex items-center gap-3 lg:hidden">
-					<motion.div whileHover={{ scale: 1.1, rotate: 5 }} whileTap={{ scale: 0.9 }}>
+					<m.div whileHover={{ scale: 1.1, rotate: 5 }} whileTap={{ scale: 0.9 }}>
 						<Button
 							variant="ghost"
 							size="icon"
@@ -250,18 +216,18 @@ export default function Dashboard({ initialProgress, initialStreak }: DashboardP
 						>
 							<Bell className="w-6 h-6 text-foreground" />
 							{unreadCount > 0 && (
-								<motion.span
-									initial={{ scale: 0 }}
+								<m.span
+									initial={{ scale: 0.95, opacity: 0 }}
 									animate={{ scale: 1 }}
 									className="absolute -top-1 -right-1 min-w-[20px] h-[20px] px-1.5 bg-rose-500 text-white text-[10px] font-black rounded-full flex items-center justify-center shadow-sm"
 								>
 									{unreadCount > 99 ? '99+' : unreadCount}
-								</motion.span>
+								</m.span>
 							)}
 						</Button>
-					</motion.div>
+					</m.div>
 				</div>
-			</motion.header>
+			</m.header>
 
 			{/* XP Header Section */}
 			<div className="px-6 pb-4 lg:px-0">
@@ -269,7 +235,7 @@ export default function Dashboard({ initialProgress, initialStreak }: DashboardP
 			</div>
 
 			<ScrollArea className="flex-1 relative z-10 no-scrollbar">
-				<motion.main
+				<m.main
 					variants={STAGGER_CONTAINER}
 					initial="hidden"
 					animate="visible"
@@ -278,22 +244,22 @@ export default function Dashboard({ initialProgress, initialStreak }: DashboardP
 					{/* Main Dashboard Grid */}
 					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 						{/* Weekly Challenge + Daily Goals Row */}
-						<motion.div variants={STAGGER_ITEM}>
+						<m.div variants={STAGGER_ITEM}>
 							<WeeklyChallenge />
-						</motion.div>
-						<motion.div variants={STAGGER_ITEM}>
+						</m.div>
+						<m.div variants={STAGGER_ITEM}>
 							<DailyGoals />
-						</motion.div>
+						</m.div>
 
 						{/* Daily Quest Card - Spans 2 columns on large screens */}
-						<motion.div variants={STAGGER_ITEM} className="md:col-span-2">
+						<m.div variants={STAGGER_ITEM} className="md:col-span-2">
 							<Card className="p-8 premium-glass border-none rounded-[2.5rem] h-full space-y-8 relative overflow-hidden group">
 								<div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-linear-to-r from-transparent via-white/5 to-transparent pointer-events-none" />
 								<div className="absolute -right-8 -top-8 w-64 h-64 bg-primary/5 rounded-full blur-3xl pointer-events-none group-hover:bg-primary/10 transition-colors duration-500" />
 
 								<div className="flex justify-between items-start relative z-10">
 									<div className="space-y-3">
-										<motion.div
+										<m.div
 											initial={{ x: -10, opacity: 0 }}
 											animate={{ x: 0, opacity: 1 }}
 											className="inline-flex items-center px-3 py-1 bg-primary/10 rounded-full"
@@ -301,7 +267,7 @@ export default function Dashboard({ initialProgress, initialStreak }: DashboardP
 											<span className="text-[10px] font-black text-primary uppercase tracking-wider lg:text-xs">
 												Daily Quest
 											</span>
-										</motion.div>
+										</m.div>
 										<h3 className="text-3xl font-black text-foreground tracking-tighter lg:text-5xl">
 											Algebra Master
 										</h3>
@@ -311,13 +277,13 @@ export default function Dashboard({ initialProgress, initialStreak }: DashboardP
 												: `${progressData?.totalQuestions || 0} questions answered`}
 										</p>
 									</div>
-									<motion.div
+									<m.div
 										whileHover={{ rotate: 180, scale: 1.1 }}
 										transition={{ type: 'spring', stiffness: 200 }}
 										className="w-16 h-16 bg-card/50 rounded-2xl flex items-center justify-center border border-border/20 shadow-xl"
 									>
 										<Sparkles className="w-8 h-8 text-brand-amber" />
-									</motion.div>
+									</m.div>
 								</div>
 
 								<div className="space-y-4 relative z-10">
@@ -329,7 +295,7 @@ export default function Dashboard({ initialProgress, initialStreak }: DashboardP
 										<span className="text-sm font-black text-primary">{dailyProgress}%</span>
 									</div>
 									<div className="h-3 w-full bg-muted rounded-full overflow-hidden shadow-inner">
-										<motion.div
+										<m.div
 											initial={{ width: 0 }}
 											animate={{ width: `${dailyProgress}%` }}
 											transition={{ duration: 1.5, ease: [0.34, 1.56, 0.64, 1] }}
@@ -338,7 +304,7 @@ export default function Dashboard({ initialProgress, initialStreak }: DashboardP
 									</div>
 								</div>
 
-								<motion.div whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.99 }}>
+								<m.div whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.99 }}>
 									<Button
 										className="w-full h-16 bg-primary hover:bg-primary/90 text-primary-foreground rounded-2xl text-lg font-black shadow-2xl shadow-primary/20 transition-all flex items-center justify-center gap-3 relative z-10"
 										onClick={handleNavigateToQuiz}
@@ -353,16 +319,16 @@ export default function Dashboard({ initialProgress, initialStreak }: DashboardP
 											</>
 										)}
 									</Button>
-								</motion.div>
+								</m.div>
 							</Card>
-						</motion.div>
+						</m.div>
 
 						{/* Stats Column */}
 						<div className="flex flex-col gap-6">
 							{/* Streak Card */}
-							<motion.div variants={STAGGER_ITEM} className="flex-1">
+							<m.div variants={STAGGER_ITEM} className="flex-1">
 								<Card className="h-full p-6 premium-glass border-none rounded-[2.5rem] flex flex-col justify-between relative overflow-hidden group">
-									<motion.div
+									<m.div
 										animate={{
 											scale: [1, 1.2, 1],
 											rotate: [0, 5, 0],
@@ -379,31 +345,31 @@ export default function Dashboard({ initialProgress, initialStreak }: DashboardP
 											Current Streak
 										</p>
 										<div className="flex items-baseline gap-2">
-											<motion.span
+											<m.span
 												initial={{ scale: 0.5 }}
 												animate={{ scale: 1 }}
 												className="text-4xl font-black text-foreground"
 											>
 												{streak}
-											</motion.span>
+											</m.span>
 											<span className="text-muted-foreground font-black text-xs">DAYS</span>
 										</div>
 									</div>
 									<div className="mt-6 relative z-10 self-start">
-										<motion.div
+										<m.div
 											whileHover={{ scale: 1.2, rotate: 15 }}
 											className="w-12 h-12 bg-brand-amber/10 rounded-2xl flex items-center justify-center border border-brand-amber/20"
 										>
 											<Flame className="w-6 h-6 text-brand-amber fill-brand-amber" />
-										</motion.div>
+										</m.div>
 									</div>
 								</Card>
-							</motion.div>
+							</m.div>
 
 							{/* Accuracy Card */}
-							<motion.div variants={STAGGER_ITEM} className="flex-1">
+							<m.div variants={STAGGER_ITEM} className="flex-1">
 								<Card className="h-full p-6 premium-glass border-none rounded-[2.5rem] flex flex-col justify-between relative overflow-hidden group">
-									<motion.div
+									<m.div
 										animate={{
 											scale: [1.2, 1, 1.2],
 											rotate: [0, -5, 0],
@@ -420,30 +386,30 @@ export default function Dashboard({ initialProgress, initialStreak }: DashboardP
 											Accuracy Rate
 										</p>
 										<div className="flex items-baseline gap-2">
-											<motion.span
+											<m.span
 												initial={{ scale: 0.5 }}
 												animate={{ scale: 1 }}
 												className="text-4xl font-black text-foreground"
 											>
 												{isLoadingProgress ? '-' : progressData?.accuracy || 0}
-											</motion.span>
+											</m.span>
 											<span className="text-muted-foreground font-black text-xs">%</span>
 										</div>
 									</div>
 									<div className="mt-6 relative z-10 self-start">
-										<motion.div
+										<m.div
 											whileHover={{ scale: 1.2, rotate: -15 }}
 											className="w-12 h-12 bg-primary/10 rounded-2xl flex items-center justify-center border border-primary/20"
 										>
 											<Trophy className="w-6 h-6 text-primary" />
-										</motion.div>
+										</m.div>
 									</div>
 								</Card>
-							</motion.div>
+							</m.div>
 						</div>
 
 						{/* Weekly Chart Card - Spans 2 columns on desktop */}
-						<motion.div variants={STAGGER_ITEM} className="lg:col-span-2">
+						<m.div variants={STAGGER_ITEM} className="lg:col-span-2">
 							<Card className="p-8 premium-glass border-none rounded-[2.5rem] h-full flex flex-col justify-between">
 								<div className="flex justify-between items-center mb-8">
 									<h3 className="text-xl font-black text-foreground tracking-tight uppercase">
@@ -458,7 +424,7 @@ export default function Dashboard({ initialProgress, initialStreak }: DashboardP
 								</div>
 								<div className="grid grid-cols-7 gap-3 sm:gap-4 flex-1 items-end pt-4">
 									{weekProgress.map((item) => (
-										<motion.div
+										<m.div
 											key={item.day}
 											variants={STAGGER_ITEM}
 											className="flex flex-col items-center gap-4 group"
@@ -468,7 +434,7 @@ export default function Dashboard({ initialProgress, initialStreak }: DashboardP
 											>
 												{item.day}
 											</span>
-											<motion.div
+											<m.div
 												whileHover={{ scale: 1.05, y: -5 }}
 												whileTap={{ scale: 0.95 }}
 												className={`w-full aspect-square max-w-[60px] rounded-[1.5rem] flex items-center justify-center transition-all duration-300 cursor-pointer ${
@@ -484,23 +450,23 @@ export default function Dashboard({ initialProgress, initialStreak }: DashboardP
 												) : (
 													<span className="text-sm font-black">{item.date}</span>
 												)}
-											</motion.div>
-										</motion.div>
+											</m.div>
+										</m.div>
 									))}
 								</div>
 							</Card>
-						</motion.div>
+						</m.div>
 
 						{/* Recent Achievements + Leaderboard Preview */}
-						<motion.div variants={STAGGER_ITEM}>
+						<m.div variants={STAGGER_ITEM}>
 							<RecentAchievements />
-						</motion.div>
-						<motion.div variants={STAGGER_ITEM}>
+						</m.div>
+						<m.div variants={STAGGER_ITEM}>
 							<LeaderboardPreview />
-						</motion.div>
+						</m.div>
 
 						{/* Challenges Section */}
-						<motion.div variants={STAGGER_ITEM} className="space-y-6">
+						<m.div variants={STAGGER_ITEM} className="space-y-6">
 							<div className="flex justify-between items-center">
 								<h3 className="text-xl font-black text-foreground tracking-tighter uppercase">
 									Deep Work
@@ -515,7 +481,7 @@ export default function Dashboard({ initialProgress, initialStreak }: DashboardP
 							</div>
 							<div className="space-y-4">
 								{defaultChallenges.map((challenge) => (
-									<motion.button
+									<m.button
 										key={challenge.title}
 										variants={STAGGER_ITEM}
 										whileHover={{ x: 10 }}
@@ -525,11 +491,11 @@ export default function Dashboard({ initialProgress, initialStreak }: DashboardP
 										onClick={() => router.push('/quiz')}
 									>
 										<div className="flex items-center gap-4">
-											<motion.div
+											<m.div
 												className={`w-12 h-12 rounded-2xl flex items-center justify-center shadow-inner ${challenge.iconBg}`}
 											>
 												{challenge.icon}
-											</motion.div>
+											</m.div>
 											<div className="space-y-1">
 												<h4 className="font-black text-sm text-foreground">{challenge.title}</h4>
 												<div className="flex items-center gap-2 text-[10px] font-black text-muted-foreground uppercase tracking-widest opacity-60">
@@ -555,17 +521,17 @@ export default function Dashboard({ initialProgress, initialStreak }: DashboardP
 										<div className="w-10 h-10 rounded-2xl bg-muted/50 flex items-center justify-center group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300">
 											<Play className="w-4 h-4 fill-current ml-0.5" />
 										</div>
-									</motion.button>
+									</m.button>
 								))}
 							</div>
-						</motion.div>
+						</m.div>
 
 						{/* Topic Mastery Card - Spans all columns */}
-						<motion.div variants={STAGGER_ITEM} className="md:col-span-2 lg:col-span-3">
+						<m.div variants={STAGGER_ITEM} className="md:col-span-2 lg:col-span-3">
 							<TopicMasteryCard />
-						</motion.div>
+						</m.div>
 					</div>
-				</motion.main>
+				</m.main>
 			</ScrollArea>
 		</div>
 	);

@@ -1,6 +1,6 @@
 'use client';
 
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, m } from 'framer-motion';
 import { ArrowLeft, ChevronLeft, ChevronRight, Delete, Keyboard } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -200,7 +200,7 @@ export default function PracticeQuiz() {
 								{input.split('').map((char, i) => (
 									<span key={i} className="relative">
 										{i === cursorPos && (
-											<motion.div
+											<m.div
 												initial={{ opacity: 0 }}
 												animate={{ opacity: [1, 0] }}
 												transition={{ repeat: Number.POSITIVE_INFINITY, duration: 1 }}
@@ -211,7 +211,7 @@ export default function PracticeQuiz() {
 									</span>
 								))}
 								{cursorPos === input.length && (
-									<motion.div
+									<m.div
 										initial={{ opacity: 0 }}
 										animate={{ opacity: [1, 0] }}
 										transition={{ repeat: Number.POSITIVE_INFINITY, duration: 1 }}
@@ -364,13 +364,13 @@ function CalcKey({
 	className?: string;
 }) {
 	return (
-		<motion.button
+		<m.button
 			whileTap={{ scale: 0.9, backgroundColor: 'rgba(239, 176, 54, 0.1)' }}
 			transition={{ type: 'spring', stiffness: 500, damping: 30 }}
 			onClick={onClick}
 			className={`h-16 flex items-center justify-center bg-white dark:bg-zinc-900 rounded-2xl shadow-sm text-lg font-bold text-zinc-900 dark:text-white border border-transparent hover:border-orange-200 transition-colors ${className}`}
 		>
 			{label}
-		</motion.button>
+		</m.button>
 	);
 }

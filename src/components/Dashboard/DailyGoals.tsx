@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { CheckCircle, Circle, Target } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Card } from '@/components/ui/card';
@@ -90,32 +90,32 @@ export function DailyGoals() {
 				<Target className="w-5 h-5 text-primary" />
 				<h3 className="text-lg font-black text-foreground tracking-tight">Daily Goals</h3>
 				{allComplete && (
-					<motion.span initial={{ scale: 0 }} animate={{ scale: 1 }} className="text-lg">
+					<m.span initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1 }} className="text-lg">
 						🎉
-					</motion.span>
+					</m.span>
 				)}
 			</div>
 
 			{allComplete ? (
-				<motion.div
+				<m.div
 					initial={{ opacity: 0, y: 10 }}
 					animate={{ opacity: 1, y: 0 }}
 					className="text-center py-6"
 				>
-					<motion.div
+					<m.div
 						animate={{ scale: [1, 1.1, 1] }}
 						transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
 						className="w-16 h-16 mx-auto mb-4 bg-brand-amber/20 rounded-2xl flex items-center justify-center"
 					>
 						<span className="text-3xl">🏆</span>
-					</motion.div>
+					</m.div>
 					<p className="text-sm font-bold text-foreground">All goals complete!</p>
 					<p className="text-xs text-muted-foreground mt-1">Great work today!</p>
-				</motion.div>
+				</m.div>
 			) : (
 				<div className="space-y-4">
 					{goals.map((goal, index) => (
-						<motion.div
+						<m.div
 							key={goal.id}
 							initial={{ opacity: 0, x: -20 }}
 							animate={{ opacity: 1, x: 0 }}
@@ -143,7 +143,7 @@ export function DailyGoals() {
 								value={Math.min((goal.current / goal.target) * 100, 100)}
 								className={`h-2 ${goal.isComplete ? '[&>div]:bg-brand-green' : ''}`}
 							/>
-						</motion.div>
+						</m.div>
 					))}
 				</div>
 			)}

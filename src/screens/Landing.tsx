@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { Atom, Calculator, ChevronRight, FlaskConical, Microscope, Sparkles } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -36,7 +36,7 @@ export default function Landing() {
 					<section className="pt-12 pb-24 lg:pt-24 lg:pb-32 flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
 						<div className="flex-1 flex flex-col items-center lg:items-start text-center lg:text-left space-y-8">
 							<div className="space-y-6">
-								<motion.div
+								<m.div
 									initial={{ opacity: 0, scale: 0.9 }}
 									animate={{ opacity: 1, scale: 1 }}
 									transition={{ type: 'spring', stiffness: 300, damping: 20 }}
@@ -44,7 +44,7 @@ export default function Landing() {
 									<Badge className="bg-brand-green/10 text-brand-green border-none rounded-full px-6 py-2 font-black text-xs tracking-widest uppercase mb-4 shadow-sm">
 										Trusted by 50,000+ Students
 									</Badge>
-								</motion.div>
+								</m.div>
 								<SmoothWords
 									as="h1"
 									text="Master your Matrics through practice."
@@ -58,7 +58,7 @@ export default function Landing() {
 								/>
 							</div>
 
-							<motion.div
+							<m.div
 								initial={{ opacity: 0, y: 20 }}
 								animate={{ opacity: 1, y: 0 }}
 								transition={{ delay: 0.8 }}
@@ -80,7 +80,7 @@ export default function Landing() {
 								>
 									Past Papers
 								</Button>
-							</motion.div>
+							</m.div>
 
 							<div className="flex items-center gap-4 pt-4 opacity-60">
 								<div className="flex -space-x-3">
@@ -108,7 +108,7 @@ export default function Landing() {
 						</div>
 
 						{/* Hero Illustration - Desktop Sizing */}
-						<motion.div
+						<m.div
 							initial={{ opacity: 0, x: 50, rotate: 5 }}
 							animate={{ opacity: 1, x: 0, rotate: 0 }}
 							transition={{ type: 'spring', stiffness: 100, damping: 20, delay: 0.3 }}
@@ -116,7 +116,7 @@ export default function Landing() {
 						>
 							<div className="absolute inset-0 bg-linear-to-tr from-primary/20 to-brand-purple/20 rounded-full blur-[100px] animate-pulse-slow" />
 
-							<motion.div
+							<m.div
 								whileHover={{ scale: 1.02 }}
 								className="relative w-full aspect-square max-w-[450px] bg-card rounded-[4rem] shadow-2xl flex items-center justify-center transform border-4 border-card transition-transform duration-700 overflow-hidden"
 								style={{ boxShadow: '0 40px 100px -20px rgba(0,0,0,0.15)' }}
@@ -159,24 +159,24 @@ export default function Landing() {
 									<circle cx="85" cy="75" r="4" fill="#f59e0b" />
 									<circle cx="15" cy="75" r="4" fill="#f59e0b" />
 								</svg>
-							</motion.div>
+							</m.div>
 
 							{/* Floating Badges */}
-							<motion.div
+							<m.div
 								animate={{ y: [0, -15, 0] }}
 								transition={{ duration: 4, repeat: Number.POSITIVE_INFINITY, ease: 'easeInOut' }}
 								className="absolute -top-4 right-0 w-24 h-24 bg-brand-amber rounded-3xl shadow-2xl flex items-center justify-center -rotate-12 z-20"
 							>
 								<Sparkles className="w-12 h-12 text-white fill-white" />
-							</motion.div>
-							<motion.div
+							</m.div>
+							<m.div
 								animate={{ y: [0, 20, 0], rotate: [12, 18, 12] }}
 								transition={{ duration: 6, repeat: Number.POSITIVE_INFINITY, ease: 'easeInOut' }}
 								className="absolute -bottom-6 left-0 w-28 h-28 bg-brand-green rounded-[2.5rem] shadow-2xl flex items-center justify-center z-20"
 							>
 								<Atom className="w-14 h-14 text-white" />
-							</motion.div>
-						</motion.div>
+							</m.div>
+						</m.div>
 					</section>
 
 					{/* Subjects Section - Responsive Grid */}
@@ -189,7 +189,7 @@ export default function Landing() {
 							<div className="h-px flex-1 bg-border/60" />
 						</div>
 
-						<motion.div
+						<m.div
 							variants={STAGGER_CONTAINER}
 							initial="hidden"
 							whileInView="visible"
@@ -199,18 +199,18 @@ export default function Landing() {
 							{SUBJECTS.map((subject) => {
 								const Icon = ICON_MAP[subject.icon] || Calculator;
 								return (
-									<motion.div key={subject.id} variants={STAGGER_ITEM}>
+									<m.div key={subject.id} variants={STAGGER_ITEM}>
 										<Card
 											className="bg-card p-8 rounded-[2.5rem] border border-border shadow-sm group hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 cursor-pointer overflow-hidden relative h-full flex flex-col justify-between"
 											onClick={() => router.push(subject.path)}
 										>
-											<motion.div
+											<m.div
 												className={`absolute top-0 right-0 w-48 h-48 ${subject.bg} rounded-full -mr-24 -mt-24 blur-3xl opacity-0 group-hover:opacity-40 transition-opacity duration-700`}
 											/>
 
 											<div className="space-y-8 relative z-10">
 												<div className="flex items-start justify-between">
-													<motion.div
+													<m.div
 														whileHover={{ scale: 1.1, rotate: 5 }}
 														className={`w-20 h-20 rounded-[2rem] ${subject.bg} flex items-center justify-center shrink-0 shadow-inner group-hover:scale-110 transition-transform duration-500 relative overflow-hidden`}
 													>
@@ -218,7 +218,7 @@ export default function Landing() {
 															className={`w-10 h-10 ${subject.color} relative z-10`}
 															aria-hidden="true"
 														/>
-													</motion.div>
+													</m.div>
 													<div className="w-12 h-12 rounded-full bg-muted flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 -translate-x-4 group-hover:translate-x-0">
 														<ChevronRight className="w-5 h-5 text-foreground" />
 													</div>
@@ -241,10 +241,10 @@ export default function Landing() {
 												</div>
 											</div>
 										</Card>
-									</motion.div>
+									</m.div>
 								);
 							})}
-						</motion.div>
+						</m.div>
 					</section>
 
 					{/* Final CTA Section */}

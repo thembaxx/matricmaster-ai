@@ -111,5 +111,3 @@ export function QuickPrompts({ onSelectPrompt, selectedSubject }: QuickPromptsPr
 		</div>
 	);
 }
-
-export default QuickPrompts;

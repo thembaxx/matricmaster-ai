@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { Sparkles, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import type { UnlockedAchievement } from './GamificationContext';
@@ -50,7 +50,7 @@ function Confetti() {
 	return (
 		<div className="absolute inset-0 overflow-hidden pointer-events-none">
 			{pieces.map((piece) => (
-				<motion.div
+				<m.div
 					key={piece.id}
 					initial={{
 						x: `${piece.x}vw`,
@@ -92,7 +92,7 @@ export function AchievementToast({ achievement, onDismiss }: AchievementToastPro
 	return (
 		<>
 			{showConfetti && <Confetti />}
-			<motion.div
+			<m.div
 				initial={{ opacity: 0, y: -100, scale: 0.8 }}
 				animate={{ opacity: 1, y: 0, scale: 1 }}
 				exit={{ opacity: 0, y: -50, scale: 0.9 }}
@@ -109,14 +109,14 @@ export function AchievementToast({ achievement, onDismiss }: AchievementToastPro
 					</button>
 
 					<div className="flex items-start gap-4">
-						<motion.div
-							initial={{ scale: 0, rotate: -180 }}
+						<m.div
+							initial={{ scale: 0.95, opacity: 0, rotate: -180 }}
 							animate={{ scale: 1, rotate: 0 }}
 							transition={{ delay: 0.2, type: 'spring', damping: 12 }}
 							className="w-16 h-16 rounded-2xl bg-gradient-to-br from-brand-amber/20 to-orange-400/20 flex items-center justify-center text-4xl shadow-lg shrink-0"
 						>
 							{achievement.icon}
-						</motion.div>
+						</m.div>
 
 						<div className="flex-1 min-w-0">
 							<div className="flex items-center gap-2 mb-1">
@@ -135,7 +135,7 @@ export function AchievementToast({ achievement, onDismiss }: AchievementToastPro
 					</div>
 
 					{achievement.points > 0 && (
-						<motion.div
+						<m.div
 							initial={{ opacity: 0, x: 20 }}
 							animate={{ opacity: 1, x: 0 }}
 							transition={{ delay: 0.4 }}
@@ -146,11 +146,11 @@ export function AchievementToast({ achievement, onDismiss }: AchievementToastPro
 								<span className="text-xs font-bold text-muted-foreground">Points earned</span>
 							</div>
 							<span className="text-xl font-black text-brand-amber">+{achievement.points} XP</span>
-						</motion.div>
+						</m.div>
 					)}
 				</div>
 
-				<motion.div
+				<m.div
 					className="absolute inset-0 rounded-3xl"
 					initial={{ opacity: 0.5 }}
 					animate={{ opacity: [0.3, 0.6, 0.3] }}
@@ -159,7 +159,7 @@ export function AchievementToast({ achievement, onDismiss }: AchievementToastPro
 						background: 'linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent)',
 					}}
 				/>
-			</motion.div>
+			</m.div>
 		</>
 	);
 }

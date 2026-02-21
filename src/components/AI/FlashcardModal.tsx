@@ -303,5 +303,3 @@ export function FlashcardModal({
 		</Dialog>
 	);
 }
-
-export default FlashcardModal;

@@ -19,6 +19,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { authClient } from '@/lib/auth-client';
 import { saveConversationAction } from '@/lib/db/ai-tutor-actions';
 import type { AiConversation } from '@/lib/db/schema';
+import { cn } from '@/lib/utils';
 
 interface Message {
 	id: string;

@@ -1,5 +1,6 @@
 'use client';
 
+import { domAnimation, LazyMotion } from 'framer-motion';
 import type { ReactNode } from 'react';
 import NotificationListener from '@/components/Notifications/NotificationListener';
 import { AblyClientProvider } from '@/lib/ably/provider';
@@ -11,10 +12,12 @@ interface ClientProvidersProps {
 
 export function ClientProviders({ children }: ClientProvidersProps) {
 	return (
-		<AblyClientProvider>
-			<NotificationListener>
-				<AppLayout>{children}</AppLayout>
-			</NotificationListener>
-		</AblyClientProvider>
+		<LazyMotion features={domAnimation} strict>
+			<AblyClientProvider>
+				<NotificationListener>
+					<AppLayout>{children}</AppLayout>
+				</NotificationListener>
+			</AblyClientProvider>
+		</LazyMotion>
 	);
 }
