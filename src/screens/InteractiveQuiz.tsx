@@ -230,6 +230,7 @@ export default function InteractiveQuiz() {
 							size="icon"
 							onClick={() => router.back()}
 							className="rounded-full"
+							aria-label="Go back"
 						>
 							<ArrowLeft className="w-5 h-5" />
 						</Button>

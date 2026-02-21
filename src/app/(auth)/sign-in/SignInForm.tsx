@@ -215,6 +215,7 @@ export function SignInForm() {
 							</label>
 							<Input
 								{...register('email')}
+								id="email"
 								type="email"
 								placeholder="name@school.edu.za"
 								className="bg-background/50"
@@ -242,6 +243,7 @@ export function SignInForm() {
 							<div className="relative">
 								<Input
 									{...register('password')}
+									id="password"
 									type={showPassword ? 'text' : 'password'}
 									placeholder="Enter your password"
 									className="bg-background/50 pr-12"
