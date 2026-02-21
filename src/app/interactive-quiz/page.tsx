@@ -1,6 +1,8 @@
 'use client';
 
 import dynamic from 'next/dynamic';
+
+import { Suspense } from 'react';
 import { QuizSkeleton } from '@/components/QuizSkeleton';
 
 const InteractiveQuiz = dynamic(() => import('@/screens/InteractiveQuiz'), {
@@ -9,5 +11,9 @@ const InteractiveQuiz = dynamic(() => import('@/screens/InteractiveQuiz'), {
 });
 
 export default function InteractiveQuizPage() {
-	return <InteractiveQuiz />;
+	return (
+		<Suspense fallback={<QuizSkeleton />}>
+			<InteractiveQuiz />
+		</Suspense>
+	);
 }

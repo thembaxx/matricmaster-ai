@@ -2,6 +2,7 @@
 
 import { m } from 'framer-motion';
 import { useEffect, useState, useTransition } from 'react';
+import useSWRMutation from 'swr/mutation';
 import { ChallengesList } from '@/components/Dashboard/ChallengesList';
 import { DailyGoals } from '@/components/Dashboard/DailyGoals';
 import { DailyQuestCard } from '@/components/Dashboard/DailyQuestCard';
@@ -38,11 +39,18 @@ interface DashboardProps {
 	initialStreak?: DashboardInitialStreak | null;
 }
 
+async function initDatabase() {
+	const response = await fetch('/api/db/init', {
+		method: 'POST',
+		headers: { 'Content-Type': 'application/json' },
+	});
+	return response.json();
+}
+
 export default function Dashboard({ initialProgress, initialStreak }: DashboardProps = {}) {
 	const { data: session, isPending: isSessionLoading } = useSession();
 	const { unreadCount } = useNotificationContextSafe();
 	const [isPending, startTransition] = useTransition();
-	const [isDbInitialized, setIsDbInitialized] = useState(false);
 	const [streak] = useState(initialStreak?.currentStreak ?? 0);
 	const [dailyProgress, setDailyProgress] = useState(0);
 	const [weekProgress, setWeekProgress] = useState<DayProgress[]>([]);
@@ -60,26 +68,14 @@ export default function Dashboard({ initialProgress, initialStreak }: DashboardP
 			: null
 	);
 
+	const { trigger: triggerDbInit } = useSWRMutation('/api/db/init', () => initDatabase(), {
+		revalidate: false,
+		populateCache: false,
+	});
+
 	useEffect(() => {
-		const initializeDatabase = async () => {
-			if (isDbInitialized) return;
-
-			try {
-				const response = await fetch('/api/db/init', {
-					method: 'POST',
-					headers: { 'Content-Type': 'application/json' },
-				});
-				const result = await response.json();
-				if (result.success) {
-					setIsDbInitialized(true);
-				}
-			} catch (err) {
-				console.error('Error initializing database:', err);
-			}
-		};
-
-		initializeDatabase();
-	}, [isDbInitialized]);
+		triggerDbInit().catch((err) => console.error('Error initializing database:', err));
+	}, [triggerDbInit]);
 
 	useEffect(() => {
 		const now = new Date();
