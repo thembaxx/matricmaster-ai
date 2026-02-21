@@ -17,7 +17,13 @@ import {
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState, useTransition } from 'react';
-import { TopicMasteryCard } from '@/components/Dashboard/TopicMasteryCard';
+import {
+	DailyGoals,
+	LeaderboardPreview,
+	RecentAchievements,
+	TopicMasteryCard,
+	WeeklyChallenge,
+} from '@/components/Dashboard';
 import { DashboardSkeleton } from '@/components/DashboardSkeleton';
 import { XpHeader } from '@/components/Gamification';
 import { SmoothWords } from '@/components/Transition/SmoothText';
@@ -239,6 +245,14 @@ export default function Dashboard() {
 				>
 					{/* Main Dashboard Grid */}
 					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+						{/* Weekly Challenge + Daily Goals Row */}
+						<motion.div variants={STAGGER_ITEM}>
+							<WeeklyChallenge />
+						</motion.div>
+						<motion.div variants={STAGGER_ITEM}>
+							<DailyGoals />
+						</motion.div>
+
 						{/* Daily Quest Card - Spans 2 columns on large screens */}
 						<motion.div variants={STAGGER_ITEM} className="md:col-span-2">
 							<Card className="p-8 premium-glass border-none rounded-[2.5rem] h-full space-y-8 relative overflow-hidden group">
@@ -443,6 +457,14 @@ export default function Dashboard() {
 									))}
 								</div>
 							</Card>
+						</motion.div>
+
+						{/* Recent Achievements + Leaderboard Preview */}
+						<motion.div variants={STAGGER_ITEM}>
+							<RecentAchievements />
+						</motion.div>
+						<motion.div variants={STAGGER_ITEM}>
+							<LeaderboardPreview />
 						</motion.div>
 
 						{/* Challenges Section */}
