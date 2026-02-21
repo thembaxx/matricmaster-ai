@@ -145,6 +145,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 								size="sm"
 								className="rounded-xl bg-card shadow-sm h-8 w-8 p-0"
 								onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+								aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
 							>
 								{theme === 'dark' ? (
 									<Sun className="w-4 h-4 text-yellow-500" />
@@ -210,6 +211,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 												variant="ghost"
 												size="icon"
 												className="w-10 h-10 rounded-xl ios-glass active:scale-95 transition-all"
+												aria-label="Open navigation menu"
 											>
 												<Menu className="w-5 h-5 text-foreground" />
 											</Button>
@@ -284,6 +286,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 									size="icon"
 									className="w-10 h-10 rounded-xl bg-card/50 backdrop-blur-md border border-border/20 shadow-sm relative hover:bg-card/80 transition-all hidden sm:flex"
 									onClick={() => router.push('/notifications')}
+									aria-label={`Notifications${unreadCount > 0 ? `, ${unreadCount} unread` : ''}`}
 								>
 									<Bell className="w-5 h-5 text-foreground" />
 									{unreadCount > 0 && (
@@ -322,6 +325,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 												type="button"
 												className="rounded-full focus:outline-none"
 												whileTap={{ scale: 0.9 }}
+												aria-label="User profile menu"
 											>
 												<Avatar className="h-10 w-10 border-2 border-background shadow-md">
 													<AvatarImage src={user.image || undefined} alt={user.name} />

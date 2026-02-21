@@ -177,6 +177,7 @@ export default function SignUpForm() {
 							</label>
 							<Input
 								{...register('name')}
+								id="name"
 								type="text"
 								placeholder="e.g., Thabo Mokoena"
 								className="bg-background/50"
@@ -195,6 +196,7 @@ export default function SignUpForm() {
 							</label>
 							<Input
 								{...register('email')}
+								id="email"
 								type="email"
 								placeholder="name@example.com"
 								className="bg-background/50"
@@ -214,6 +216,7 @@ export default function SignUpForm() {
 							<div className="relative">
 								<Input
 									{...register('password')}
+									id="password"
 									type={showPassword ? 'text' : 'password'}
 									placeholder="Create a strong password"
 									className="bg-background/50 pr-12"

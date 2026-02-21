@@ -154,6 +154,7 @@ export default function Search() {
 									animate={{ scale: 1, opacity: 1 }}
 									exit={{ scale: 0, opacity: 0 }}
 									title="Clear search"
+									aria-label="Clear search"
 									type="button"
 									onClick={() => setQuery('')}
 									className="absolute right-5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
