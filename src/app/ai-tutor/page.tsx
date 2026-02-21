@@ -1,9 +1,10 @@
 'use client';
 
-import { BookOpen, Dumbbell, Loader2, Save, Send, Sparkles } from 'lucide-react';
+import { BookOpen, Dumbbell, Loader2, Save, Sparkles } from 'lucide-react';
 import Link from 'next/link';
-import { useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { toast } from 'sonner';
+import { AIPrompt } from '@/components/AI/AIPrompt';
 import { BookmarkButton } from '@/components/AI/BookmarkButton';
 import { ConversationSidebar } from '@/components/AI/ConversationSidebar';
 import { FlashcardModal } from '@/components/AI/FlashcardModal';
@@ -14,7 +15,6 @@ import { SuggestedFollowUps } from '@/components/AI/SuggestedFollowUps';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { authClient } from '@/lib/auth-client';
 import { saveConversationAction } from '@/lib/db/ai-tutor-actions';
@@ -67,9 +67,9 @@ export default function AITutorPage() {
 	const [showFlashcardModal, setShowFlashcardModal] = useState(false);
 	const messagesEndRef = useRef<HTMLDivElement>(null);
 
-	const scrollToBottom = () => {
+	const scrollToBottom = useCallback(() => {
 		messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-	};
+	}, []);
 
 	const handleSend = async (messageText?: string) => {
 		const textToSend = messageText || input;
@@ -266,11 +266,17 @@ export default function AITutorPage() {
 	};
 
 	const subjects = [
-		{ id: 'mathematics', name: 'Mathematics', color: 'bg-brand-blue' },
-		{ id: 'physics', name: 'Physics', color: 'bg-brand-purple' },
-		{ id: 'chemistry', name: 'Chemistry', color: 'bg-brand-amber' },
-		{ id: 'life sciences', name: 'Life Sciences', color: 'bg-brand-green' },
+		{ id: 'mathematics', name: 'Mathematics', color: 'bg-math', icon: 'Σ' },
+		{ id: 'physics', name: 'Physics', color: 'bg-physics', icon: '⚛' },
+		{ id: 'chemistry', name: 'Chemistry', color: 'bg-brand-amber', icon: '🧪' },
+		{ id: 'life sciences', name: 'Life Sciences', color: 'bg-life-sci', icon: '🧬' },
 	];
+
+	useEffect(() => {
+		if (messages.length > 0) {
+			scrollToBottom();
+		}
+	}, [messages, scrollToBottom]);
 
 	if (!session) {
 		return (
@@ -301,58 +307,62 @@ export default function AITutorPage() {
 				/>
 			)}
 
-			<div className="flex-1 flex flex-col min-w-0">
-				<header className="border-b bg-card/50 backdrop-blur-sm sticky top-0 z-10">
-					<div className="max-w-4xl mx-auto px-4 py-4">
-						<div className="flex items-center justify-between">
-							<div className="flex items-center gap-3">
-								<div className="h-10 w-10 rounded-full bg-linear-to-br from-primary to-primary/60 flex items-center justify-center">
-									<Sparkles className="h-5 w-5 text-primary-foreground" />
-								</div>
-								<div>
-									<h1 className="text-xl font-bold">AI Study Tutor</h1>
-									<p className="text-sm text-muted-foreground">Your personal learning assistant</p>
+			<div className="flex-1 flex flex-col min-w-0 bg-zinc-50 dark:bg-zinc-950">
+				<header className="border-b bg-card/50 backdrop-blur-xl sticky top-0 z-10 px-6 py-4">
+					<div className="max-w-4xl mx-auto flex items-center justify-between">
+						<div className="flex items-center gap-4">
+							<div className="h-12 w-12 rounded-2xl bg-primary/10 flex items-center justify-center shadow-inner">
+								<Sparkles className="h-6 w-6 text-primary animate-pulse-soft" />
+							</div>
+							<div>
+								<h1 className="text-xl font-black font-lexend tracking-tight">AI Study Tutor</h1>
+								<div className="flex items-center gap-2">
+									<span className="flex h-2 w-2 rounded-full bg-green-500 animate-pulse" />
+									<p className="text-xs font-bold text-muted-foreground uppercase tracking-widest">
+										Online
+									</p>
 								</div>
 							</div>
-							<div className="flex items-center gap-2">
-								<Button
-									variant="outline"
-									size="sm"
-									onClick={handleGenerateFlashcards}
-									disabled={isGeneratingFlashcards || messages.length <= 1}
-								>
-									{isGeneratingFlashcards ? (
-										<Loader2 className="h-4 w-4 mr-2 animate-spin" />
-									) : (
-										<BookOpen className="h-4 w-4 mr-2" />
-									)}
-									Flashcards
-								</Button>
-								<Button
-									variant="outline"
-									size="sm"
-									onClick={handleGeneratePractice}
-									disabled={isGeneratingPractice || messages.length <= 1}
-								>
-									{isGeneratingPractice ? (
-										<Loader2 className="h-4 w-4 mr-2 animate-spin" />
-									) : (
-										<Dumbbell className="h-4 w-4 mr-2" />
-									)}
-									Practice
-								</Button>
-								<Button variant="outline" size="sm" onClick={handleSave}>
-									<Save className="h-4 w-4 mr-2" />
-									Save
-								</Button>
-							</div>
+						</div>
+						<div className="flex items-center gap-2">
+							<Button
+								variant="outline"
+								size="sm"
+								className="rounded-xl border-border/50 bg-surface-elevated/50"
+								onClick={handleGenerateFlashcards}
+								disabled={isGeneratingFlashcards || messages.length <= 1}
+							>
+								{isGeneratingFlashcards ? (
+									<Loader2 className="h-4 w-4 animate-spin" />
+								) : (
+									<BookOpen className="h-4 w-4 mr-2" />
+								)}
+								Flashcards
+							</Button>
+							<Button
+								variant="outline"
+								size="sm"
+								className="rounded-xl border-border/50 bg-surface-elevated/50"
+								onClick={handleGeneratePractice}
+								disabled={isGeneratingPractice || messages.length <= 1}
+							>
+								{isGeneratingPractice ? (
+									<Loader2 className="h-4 w-4 animate-spin" />
+								) : (
+									<Dumbbell className="h-4 w-4 mr-2" />
+								)}
+								Practice
+							</Button>
+							<Button variant="ios" size="sm" className="rounded-xl" onClick={handleSave}>
+								<Save className="h-4 w-4 mr-2" />
+								Save
+							</Button>
 						</div>
 					</div>
 				</header>
 
-				<div className="border-b bg-card/30">
-					<div className="max-w-4xl mx-auto px-4 py-3">
-						<p className="text-sm font-medium mb-2">Select a subject (optional):</p>
+				<div className="border-b bg-surface-base/50 backdrop-blur-md px-6 py-3">
+					<div className="max-w-4xl mx-auto">
 						<div className="flex flex-wrap gap-2">
 							{subjects.map((subject) => (
 								<Button
@@ -362,61 +372,107 @@ export default function AITutorPage() {
 									onClick={() =>
 										setSelectedSubject(selectedSubject === subject.id ? null : subject.id)
 									}
-									className="gap-2"
+									className={cn(
+										'gap-2 rounded-2xl border-border/50 transition-all duration-300',
+										selectedSubject === subject.id
+											? 'shadow-lg scale-105'
+											: 'bg-surface-elevated/30 hover:bg-surface-elevated'
+									)}
 								>
-									<span className={`h-2 w-2 rounded-full ${subject.color}`} />
-									{subject.name}
+									<span className="text-sm">{subject.icon}</span>
+									<span className="font-bold">{subject.name}</span>
 								</Button>
 							))}
 						</div>
 					</div>
 				</div>
 
-				<ScrollArea className="flex-1">
-					<div className="max-w-4xl mx-auto px-4 py-6 space-y-6">
+				<ScrollArea className="flex-1 px-6">
+					<div className="max-w-4xl mx-auto py-8 space-y-8">
 						{messages.map((message) => (
 							<div
 								key={message.id}
-								className={`flex gap-3 ${message.role === 'user' ? 'flex-row-reverse' : ''}`}
+								className={cn(
+									'flex gap-4 group transition-all duration-300 animate-in fade-in slide-in-from-bottom-2',
+									message.role === 'user' ? 'flex-row-reverse' : 'flex-row'
+								)}
 							>
-								<Avatar className="h-8 w-8 shrink-0">
+								<Avatar
+									className={cn(
+										'h-10 w-10 shrink-0 rounded-2xl border-2',
+										message.role === 'user'
+											? 'border-primary/20 shadow-primary/10'
+											: 'border-border/50 shadow-sm'
+									)}
+								>
 									<AvatarFallback
-										className={
+										className={cn(
+											'font-black',
 											message.role === 'user'
 												? 'bg-primary text-primary-foreground'
-												: 'bg-secondary'
-										}
+												: 'bg-surface-elevated text-primary'
+										)}
 									>
-										{message.role === 'user' ? 'U' : 'AI'}
+										{message.role === 'user' ? 'U' : 'MM'}
 									</AvatarFallback>
 								</Avatar>
 								<div
-									className={`flex-1 max-w-[85%] rounded-2xl px-4 py-3 relative group ${
-										message.role === 'user' ? 'bg-primary text-primary-foreground' : 'bg-muted'
-									}`}
-								>
-									<div className="absolute top-2 right-2">
-										<BookmarkButton
-											messageId={message.id}
-											content={message.content}
-											role={message.role}
-											subject={selectedSubject}
-										/>
-									</div>
-									{message.role === 'assistant' ? (
-										<MarkdownRenderer content={message.content} />
-									) : (
-										<p className="whitespace-pre-wrap">{message.content}</p>
+									className={cn(
+										'flex-1 max-w-[85%] relative',
+										message.role === 'user' ? 'items-end' : 'items-start'
 									)}
-									<p
-										className={`text-xs mt-2 ${
+								>
+									<div
+										className={cn(
+											'rounded-[2rem] px-6 py-4 shadow-sm relative group/bubble transition-all duration-300',
 											message.role === 'user'
-												? 'text-primary-foreground/60'
-												: 'text-muted-foreground'
-										}`}
+												? 'bg-primary text-primary-foreground rounded-tr-sm'
+												: 'bg-card border border-border/50 rounded-tl-sm hover:shadow-md'
+										)}
 									>
-										{message.timestamp.toLocaleTimeString()}
-									</p>
+										<div
+											className={cn(
+												'absolute top-4',
+												message.role === 'user' ? '-left-10' : '-right-10'
+											)}
+										>
+											<BookmarkButton
+												messageId={message.id}
+												content={message.content}
+												role={message.role}
+												subject={selectedSubject}
+											/>
+										</div>
+										<div className="prose prose-sm dark:prose-invert max-w-none">
+											{message.role === 'assistant' ? (
+												<MarkdownRenderer content={message.content} />
+											) : (
+												<p className="whitespace-pre-wrap font-medium leading-relaxed">
+													{message.content}
+												</p>
+											)}
+										</div>
+										<div
+											className={cn(
+												'flex items-center gap-2 mt-3',
+												message.role === 'user' ? 'justify-end' : 'justify-start'
+											)}
+										>
+											<p
+												className={cn(
+													'text-[10px] font-bold uppercase tracking-widest',
+													message.role === 'user'
+														? 'text-primary-foreground/60'
+														: 'text-muted-foreground/60'
+												)}
+											>
+												{message.timestamp.toLocaleTimeString([], {
+													hour: '2-digit',
+													minute: '2-digit',
+												})}
+											</p>
+										</div>
+									</div>
 									{message.role === 'assistant' && message.suggestions && (
 										<SuggestedFollowUps
 											suggestions={message.suggestions}
@@ -427,51 +483,37 @@ export default function AITutorPage() {
 							</div>
 						))}
 						{isLoading && (
-							<div className="flex gap-3">
-								<Avatar className="h-8 w-8">
-									<AvatarFallback className="bg-secondary">AI</AvatarFallback>
-								</Avatar>
-								<div className="bg-muted rounded-2xl px-4 py-3 flex items-center gap-2">
-									<Loader2 className="h-4 w-4 animate-spin" />
-									<span className="text-sm text-muted-foreground">Thinking...</span>
+							<div className="flex gap-4 animate-in fade-in slide-in-from-bottom-2">
+								<Avatar className="h-10 w-10 shrink-0 rounded-2xl border-2 border-border/50 bg-surface-elevated animate-pulse" />
+								<div className="bg-card border border-border/50 rounded-[2rem] rounded-tl-sm px-6 py-4 flex items-center gap-3 shadow-sm">
+									<div className="flex gap-1">
+										<span className="w-1.5 h-1.5 bg-primary/40 rounded-full animate-bounce [animation-delay:-0.3s]" />
+										<span className="w-1.5 h-1.5 bg-primary/60 rounded-full animate-bounce [animation-delay:-0.15s]" />
+										<span className="w-1.5 h-1.5 bg-primary/80 rounded-full animate-bounce" />
+									</div>
+									<span className="text-xs font-black uppercase tracking-widest text-muted-foreground">
+										Thinking
+									</span>
 								</div>
 							</div>
 						)}
-						<div ref={messagesEndRef} />
+						<div ref={messagesEndRef} className="h-20" />
 					</div>
 				</ScrollArea>
 
-				<div className="border-t bg-card/50 backdrop-blur-sm">
-					<div className="max-w-4xl mx-auto px-4 py-3 space-y-3">
+				<div className="border-t bg-surface-base/80 backdrop-blur-xl p-6">
+					<div className="max-w-4xl mx-auto space-y-4">
 						<QuickPrompts
 							onSelectPrompt={(prompt) => handleSend(prompt)}
 							selectedSubject={selectedSubject}
 						/>
-						<form
-							onSubmit={(e) => {
-								e.preventDefault();
-								handleSend();
-							}}
-							className="flex gap-2"
-						>
-							<Input
-								value={input}
-								onChange={(e) => setInput(e.target.value)}
-								placeholder="Ask me anything about your studies..."
-								className="flex-1"
-								disabled={isLoading}
-							/>
-							<Button type="submit" disabled={isLoading || !input.trim()}>
-								{isLoading ? (
-									<Loader2 className="h-4 w-4 animate-spin" />
-								) : (
-									<Send className="h-4 w-4" />
-								)}
-							</Button>
-						</form>
-						<p className="text-xs text-muted-foreground text-center">
-							AI responses are generated by Google Gemini and may contain errors. Verify important
-							information independently.
+						<AIPrompt
+							onSend={(msg) => handleSend(msg)}
+							isLoading={isLoading}
+							placeholder="Ask me anything about your studies..."
+						/>
+						<p className="text-[10px] font-bold text-muted-foreground/60 text-center uppercase tracking-[0.2em]">
+							Powered by Google Gemini • Verify important info
 						</p>
 					</div>
 				</div>

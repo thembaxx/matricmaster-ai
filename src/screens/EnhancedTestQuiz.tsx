@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
+import { AIExplanationCard } from '@/components/AI/AIExplanationCard';
 import { SafeImage } from '@/components/SafeImage';
 import { BackgroundMesh } from '@/components/ui/background-mesh';
 import { Badge } from '@/components/ui/badge';
@@ -619,46 +620,26 @@ export default function EnhancedTestQuizScreen() {
 										</RadioGroup>
 									</div>
 
-									<div className="p-1 bg-linear-to-r from-brand-blue to-brand-green rounded-[2rem] mt-8">
-										<div className="bg-white dark:bg-zinc-950 rounded-[1.9rem] p-4 space-y-4">
-											<div className="flex flex-col items-start">
-												<div className="flex items-center gap-4">
-													<div className="w-10 h-10 rounded-xl bg-brand-blue/10 flex items-center shrink-0 justify-center">
-														<Sparkles className="w-5 h-5 text-brand-blue" />
-													</div>
-													<div>
-														<h4 className="font-semibold text-zinc-900 dark:text-white text-sm">
-															Need a deeper explanation?
-														</h4>
-														<p className="text-[10px] font-bold text-zinc-500 uppercase tracking-tight">
-															Ask MatricMaster AI
-														</p>
-													</div>
-												</div>
-												<Button
-													size="sm"
-													variant="link"
-													className="font-bold text-brand-blue hover:bg-brand-blue/5 px-13.5"
-													onClick={() =>
-														handleExplain(
-															quizState.questions[quizState.currentQuestionIndex].id,
-															quizState.questions[quizState.currentQuestionIndex].questionText
-														)
-													}
-													disabled={isExplaining}
-												>
-													{isExplaining ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Explain'}
-												</Button>
-											</div>
-
-											{aiExplanation && (
-												<div className="pt-4 border-t border-zinc-100 dark:border-zinc-800 animate-in fade-in slide-in-from-top-2">
-													<p className="text-sm text-zinc-600 dark:text-zinc-400 font-medium leading-relaxed whitespace-pre-wrap">
-														{aiExplanation}
-													</p>
-												</div>
-											)}
-										</div>
+									<div className="mt-8">
+										<AIExplanationCard
+											explanation={aiExplanation}
+											isLoading={isExplaining}
+											onExplain={() =>
+												handleExplain(
+													subjects.find(
+														(s) =>
+															s.id === quizState.questions[quizState.currentQuestionIndex].subjectId
+													)?.name || 'General',
+													quizState.questions[quizState.currentQuestionIndex].questionText
+												)
+											}
+											subject={
+												subjects.find(
+													(s) =>
+														s.id === quizState.questions[quizState.currentQuestionIndex].subjectId
+												)?.name
+											}
+										/>
 									</div>
 
 									{/* Controls */}
