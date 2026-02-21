@@ -1,3 +1,5 @@
+import { Analytics } from '@vercel/analytics/next';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import type { Metadata, Viewport } from 'next';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { GamificationProvider } from '@/components/Gamification/GamificationContext';
@@ -144,6 +146,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 						</GamificationProvider>
 					</ThemeProvider>
 				</ErrorBoundary>
+				<Analytics />
+				<SpeedInsights />
 			</body>
 		</html>
 	);
