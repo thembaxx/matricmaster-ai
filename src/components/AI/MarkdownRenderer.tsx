@@ -27,21 +27,38 @@ function CodeBlock({ children, className }: { children: React.ReactNode; classNa
 	};
 
 	return (
-		<div className="relative group my-4">
-			<div className="flex items-center justify-between bg-zinc-800 dark:bg-zinc-900 rounded-t-lg px-4 py-2">
-				<span className="text-xs text-zinc-400 font-mono">{language || 'code'}</span>
+		<div className="relative group my-6 overflow-hidden rounded-2xl border border-border/50 shadow-sm transition-all hover:shadow-md">
+			<div className="flex items-center justify-between bg-zinc-100 dark:bg-zinc-800 px-4 py-2.5">
+				<div className="flex items-center gap-2">
+					<div className="flex gap-1">
+						<div className="w-2 h-2 rounded-full bg-red-400/50" />
+						<div className="w-2 h-2 rounded-full bg-amber-400/50" />
+						<div className="w-2 h-2 rounded-full bg-green-400/50" />
+					</div>
+					<span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/70 font-mono ml-2">
+						{language || 'code'}
+					</span>
+				</div>
 				<Button
 					variant="ghost"
 					size="sm"
-					className="h-6 px-2 text-zinc-400 hover:text-zinc-100"
+					className="h-7 px-3 text-muted-foreground hover:text-primary hover:bg-primary/5 rounded-xl transition-all duration-200"
 					onClick={handleCopy}
 				>
-					{copied ? <Check className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
-					<span className="ml-1 text-xs">{copied ? 'Copied!' : 'Copy'}</span>
+					{copied ? (
+						<Check className="h-3.5 w-3.5 text-green-500" />
+					) : (
+						<Copy className="h-3.5 w-3.5" />
+					)}
+					<span className="ml-2 text-[10px] font-black uppercase tracking-widest">
+						{copied ? 'Copied!' : 'Copy'}
+					</span>
 				</Button>
 			</div>
-			<pre className="bg-zinc-900 dark:bg-zinc-950 rounded-b-lg p-4 overflow-x-auto">
-				<code className={cn('text-sm', className)}>{children}</code>
+			<pre className="bg-zinc-950 p-5 overflow-x-auto">
+				<code className={cn('text-[13px] leading-relaxed font-mono text-zinc-300', className)}>
+					{children}
+				</code>
 			</pre>
 		</div>
 	);
@@ -49,7 +66,7 @@ function CodeBlock({ children, className }: { children: React.ReactNode; classNa
 
 function InlineCode({ children }: { children: React.ReactNode }) {
 	return (
-		<code className="bg-muted px-1.5 py-0.5 rounded text-sm font-mono text-primary">
+		<code className="bg-primary/5 text-primary px-1.5 py-0.5 rounded-lg text-xs font-black font-mono border border-primary/10">
 			{children}
 		</code>
 	);
@@ -92,12 +109,18 @@ export function MarkdownRenderer({ content, className }: MarkdownRendererProps) 
 					h3: ({ children }) => (
 						<h3 className="text-base font-semibold mt-4 mb-2 text-foreground">{children}</h3>
 					),
-					p: ({ children }) => <p className="mb-3 leading-relaxed">{children}</p>,
-					ul: ({ children }) => <ul className="list-disc pl-6 mb-3 space-y-1">{children}</ul>,
-					ol: ({ children }) => <ol className="list-decimal pl-6 mb-3 space-y-1">{children}</ol>,
-					li: ({ children }) => <li className="text-sm">{children}</li>,
+					p: ({ children }) => (
+						<p className="mb-4 leading-relaxed text-sm md:text-base font-medium opacity-90">
+							{children}
+						</p>
+					),
+					ul: ({ children }) => <ul className="list-disc pl-6 mb-4 space-y-2">{children}</ul>,
+					ol: ({ children }) => <ol className="list-decimal pl-6 mb-4 space-y-2">{children}</ol>,
+					li: ({ children }) => (
+						<li className="text-sm md:text-[15px] font-medium opacity-90">{children}</li>
+					),
 					blockquote: ({ children }) => (
-						<blockquote className="border-l-4 border-primary/50 pl-4 italic text-muted-foreground my-3">
+						<blockquote className="border-l-4 border-primary/30 pl-6 italic text-muted-foreground/80 my-6 py-1 bg-primary/5 rounded-r-2xl">
 							{children}
 						</blockquote>
 					),

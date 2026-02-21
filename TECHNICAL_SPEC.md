@@ -1390,31 +1390,31 @@ export { dbManager };
 
 ```bash
 # Development
-npm run dev          # Start development server
-npm run build        # Build for production
-npm run start        # Start production server
+bun run dev          # Start development server
+bun run build        # Build for production
+bun run start        # Start production server
 
 # Database
-npm run db:generate  # Generate Drizzle migrations
-npm run db:push      # Push schema to database
-npm run db:migrate   # Run migrations
-npm run db:studio    # Open Drizzle Studio
-npm run db:seed      # Seed database
-npm run db:reset     # Reset database
+bun run db:generate  # Generate Drizzle migrations
+bun run db:push      # Push schema to database
+bun run db:migrate   # Run migrations
+bun run db:studio    # Open Drizzle Studio
+bun run db:seed      # Seed database
+bun run db:reset     # Reset database
 
 # Code Quality
-npm run lint         # Check code with Biome
-npm run lint:fix     # Fix linting issues
-npm run format       # Format code
-npm run typecheck    # TypeScript type checking
+bun run lint         # Check code with Biome
+bun run lint:fix     # Fix linting issues
+bun run format       # Format code
+bun run typecheck    # TypeScript type checking
 
 # Testing
-npm run test         # Run Playwright tests
-npm run test:ui      # Run tests with UI
-npm run test:debug   # Debug tests
-npm run test:headed  # Run in headed browser
-npm run test:report  # View test report
-npm run test:install # Install Playwright browsers
+bun run test         # Run Playwright tests
+bun run test:ui      # Run tests with UI
+bun run test:debug   # Debug tests
+bun run test:headed  # Run in headed browser
+bun run test:report  # View test report
+bun run test:install # Install Playwright browsers
 ```
 
 ---

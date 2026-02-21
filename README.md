@@ -33,7 +33,7 @@
 ### Prerequisites
 
 - Node.js 20 or later
-- npm, yarn, or bun
+- **Bun** (Mandatory package manager)
 - Google Gemini API key ([Get one here](https://aistudio.google.com/apikey))
 
 ### Installation
@@ -46,8 +46,6 @@
 
 2. **Install dependencies**
    ```bash
-   npm install
-   # or
    bun install
    ```
 
@@ -65,8 +63,6 @@
 
 4. **Run the development server**
    ```bash
-   npm run dev
-   # or
    bun dev
    ```
 
@@ -76,14 +72,14 @@
 
 ## Available Scripts
 
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run start` - Start production server
-- `npm run lint` - Run linter
-- `npm run lint:fix` - Fix linting issues
-- `npm run format` - Format code
-- `npm run typecheck` - Run TypeScript type checking
-- `npm run test` - Run tests
+- `bun dev` - Start development server
+- `bun run build` - Build for production
+- `bun run start` - Start production server
+- `bun run lint` - Run linter
+- `bun run lint:fix` - Fix linting issues
+- `bun run format` - Format code
+- `bun run typecheck` - Run TypeScript type checking
+- `bun run test` - Run tests
 
 ## Project Structure
 
@@ -109,8 +105,8 @@ matricmaster-ai/
 ### Build for Production
 
 ```bash
-npm run build
-npm run start
+bun run build
+bun run start
 ```
 
 ### Environment Variables for Production

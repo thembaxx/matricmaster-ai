@@ -1,17 +1,9 @@
 'use client';
 
-import {
-	ArrowLeft,
-	CheckCircle2,
-	Clock,
-	Lightbulb,
-	Loader2,
-	SkipForward,
-	Sparkles,
-	TrendingUp,
-} from 'lucide-react';
+import { ArrowLeft, CheckCircle2, Clock, Lightbulb, SkipForward, TrendingUp } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
+import { AIExplanationCard } from '@/components/AI/AIExplanationCard';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -425,43 +417,13 @@ export default function InteractiveQuiz() {
 						</div>
 					</div>
 
-					{/* AI Explanation Toggle */}
-					<div className={`p-1 rounded-[2rem] bg-linear-to-r ${colors.from} ${colors.to}`}>
-						<div className="bg-white dark:bg-zinc-950 rounded-[1.9rem] p-6 space-y-4">
-							<div className="flex flex-col gap-2">
-								<div className="flex items-center gap-4">
-									<div className="w-10 h-10 shrink-0 rounded-xl bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center">
-										<Sparkles className={`w-5 h-5 ${colors.text}`} />
-									</div>
-									<div>
-										<h4 className="font-semibold text-zinc-900 dark:text-white text-sm">
-											Need a deeper explanation?
-										</h4>
-										<p className="text-[10px] font-bold text-zinc-500 uppercase tracking-tight">
-											Ask MatricMaster AI
-										</p>
-									</div>
-								</div>
-								<Button
-									size="sm"
-									variant="ghost"
-									className={`font-black hover:bg-zinc-100 text-sm dark:hover:bg-zinc-800 ${colors.text}`}
-									onClick={handleExplain}
-									disabled={isExplaining}
-								>
-									{isExplaining ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Explain'}
-								</Button>
-							</div>
-
-							{aiExplanation && (
-								<div className="pt-4 border-t border-zinc-100 dark:border-zinc-800 animate-in fade-in slide-in-from-top-2">
-									<p className="text-sm text-zinc-600 dark:text-zinc-400 font-medium leading-relaxed whitespace-pre-wrap">
-										{aiExplanation}
-									</p>
-								</div>
-							)}
-						</div>
-					</div>
+					{/* AI Explanation */}
+					<AIExplanationCard
+						explanation={aiExplanation}
+						isLoading={isExplaining}
+						onExplain={handleExplain}
+						subject={quiz.subject}
+					/>
 				</main>
 			</div>
 

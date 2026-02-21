@@ -19,7 +19,7 @@ Your Vite + React project has been modernized to follow industry standards. Here
 
 ### 2. **Dependencies Migrated from CDN to Local**
 - **Before**: Used importmap to load React, ReactDOM, and @google/genai from CDN (esm.sh)
-- **After**: All dependencies installed locally via npm
+- **After**: All dependencies installed locally via bun
   - React 19.0.0
   - React DOM 19.0.0
   - @google/genai 1.39.0
@@ -35,17 +35,17 @@ Your Vite + React project has been modernized to follow industry standards. Here
 - Added Biome for linting and formatting (faster than ESLint + Prettier)
 - Configuration in `biome.json`
 - Available scripts:
-  - `npm run lint` - Check code
-  - `npm run lint:fix` - Fix issues
-  - `npm run format` - Format code
+  - `bun run lint` - Check code
+  - `bun run lint:fix` - Fix issues
+  - `bun run format` - Format code
 
 ### 5. **Testing Setup (Vitest + React Testing Library)**
 - Added Vitest for unit testing
 - React Testing Library for component testing
 - Coverage support with @vitest/coverage-v8
 - Available scripts:
-  - `npm run test` - Run tests
-  - `npm run test:coverage` - Run with coverage
+  - `bun run test` - Run tests
+  - `bun run test:coverage` - Run with coverage
 
 ### 6. **Vite Configuration Updated**
 - Proper path alias `@/` pointing to `src/`
@@ -78,21 +78,21 @@ Your Vite + React project has been modernized to follow industry standards. Here
 
 ```bash
 # Development
-npm run dev          # Start dev server
+bun run dev          # Start dev server
 
 # Build
-npm run build        # Build for production
-npm run preview      # Preview production build
+bun run build        # Build for production
+bun run preview      # Preview production build
 
 # Testing
-npm run test         # Run tests
-npm run test:coverage # Run tests with coverage
+bun run test         # Run tests
+bun run test:coverage # Run tests with coverage
 
 # Code Quality
-npm run lint         # Check code with Biome
-npm run lint:fix     # Fix issues
-npm run format       # Format code
-npm run typecheck    # Check TypeScript types
+bun run lint         # Check code with Biome
+bun run lint:fix     # Fix issues
+bun run format       # Format code
+bun run typecheck    # Check TypeScript types
 ```
 
 ## Project Structure
@@ -137,25 +137,25 @@ matricmaster-ai/
 
 2. **Run the development server**:
    ```bash
-   npm run dev
+   bun run dev
    ```
 
 3. **Run tests**:
    ```bash
-   npm run test
+   bun run test
    ```
 
 4. **Build for production**:
    ```bash
-   npm run build
+   bun run build
    ```
 
 ## Verification
 
 All checks pass:
-- ✅ TypeScript compilation: `npm run typecheck`
-- ✅ Build: `npm run build`
-- ✅ Tests: `npm run test`
+- ✅ TypeScript compilation: `bun run typecheck`
+- ✅ Build: `bun run build`
+- ✅ Tests: `bun run test`
 - ✅ Project structure follows industry standards
 
 Your project is now fully modernized and ready for production development!
