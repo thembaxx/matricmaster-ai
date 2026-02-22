@@ -35,10 +35,10 @@ export function QuizHeader({
 	const progress = (currentQuestion / totalQuestions) * 100;
 
 	return (
-		<header className="px-6 pt-12 pb-4 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl sticky top-0 z-20 border-b border-zinc-100 dark:border-zinc-800 shrink-0">
+		<header className="px-6 pt-12 pb-4 bg-card/80 backdrop-blur-xl sticky top-0 z-20 border-b border-border shrink-0">
 			<div className="max-w-2xl mx-auto w-full">
 				<div className="flex justify-between items-center mb-2">
-					<span className="text-sm font-bold text-zinc-600 dark:text-zinc-400">
+					<span className="text-sm font-bold text-muted-foreground">
 						Question {currentQuestion} of {totalQuestions}
 					</span>
 					<div className="flex items-center gap-2">
@@ -61,7 +61,7 @@ export function QuizHeader({
 				</div>
 
 				{showProgress && (
-					<div className="relative h-2 w-full overflow-hidden rounded-full bg-zinc-100 dark:bg-zinc-800 mb-3">
+					<div className="relative h-2 w-full overflow-hidden rounded-full bg-muted mb-3">
 						<div
 							className="h-full transition-all duration-500 bg-primary"
 							style={{ width: `${progress}%` }}

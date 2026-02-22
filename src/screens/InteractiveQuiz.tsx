@@ -135,7 +135,7 @@ export default function InteractiveQuiz() {
 						</Button>
 						<div className="flex-1">
 							<div className="flex justify-between items-center mb-2">
-								<span className="text-sm font-bold text-zinc-600 dark:text-zinc-400">
+								<span className="text-sm font-bold text-muted-foreground">
 									Question {currentQuestionIndex + 1} of {quiz.questions.length}
 								</span>
 								<div className="flex items-center gap-2">
@@ -149,7 +149,7 @@ export default function InteractiveQuiz() {
 									</span>
 								</div>
 							</div>
-							<div className="relative h-2 w-full overflow-hidden rounded-full bg-zinc-100 dark:bg-zinc-800">
+							<div className="relative h-2 w-full overflow-hidden rounded-full bg-muted">
 								<div
 									className={`h-full transition-all duration-500 ${colors.bg}`}
 									style={{ width: `${progress}%` }}
@@ -175,11 +175,11 @@ export default function InteractiveQuiz() {
 					<div className="space-y-6">
 						<div className="flex items-center gap-3">
 							<TrendingUp className={`w-5 h-5 ${colors.text}`} />
-							<h3 className="text-[10px] font-black uppercase text-zinc-400 tracking-[0.2em]">
+							<h3 className="text-[10px] font-black uppercase text-muted-foreground tracking-[0.2em]">
 								{quiz.title}
 							</h3>
 						</div>
-						<h2 className="text-3xl font-bold text-zinc-900 dark:text-zinc-100 leading-tight">
+						<h2 className="text-3xl font-bold text-foreground leading-tight">
 							{currentQuestion.question}
 						</h2>
 

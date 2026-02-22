@@ -40,14 +40,12 @@ export function QuizOptionsGrid({
 							className={`w-full p-5 rounded-2xl border-2 cursor-pointer transition-all flex items-center gap-4 ${
 								isSelected
 									? 'border-primary bg-primary/5 shadow-md scale-[1.02]'
-									: 'border-zinc-100 dark:border-zinc-800 hover:border-primary/30'
+									: 'border-border hover:border-primary/30'
 							}`}
 						>
 							<span
 								className={`w-8 h-8 rounded-full flex items-center justify-center font-black text-xs ${
-									isSelected
-										? 'bg-primary text-primary-foreground'
-										: 'bg-zinc-100 dark:bg-zinc-800 text-zinc-500'
+									isSelected ? 'bg-primary text-primary-foreground' : 'bg-muted text-zinc-500'
 								}`}
 							>
 								{option.id}

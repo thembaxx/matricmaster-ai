@@ -38,7 +38,7 @@ export function SocialAuthButton({
 				variant="outline"
 				disabled={isLoading}
 				className={cn(
-					'w-full h-12 rounded-xl font-medium gap-3 transition-all relative overflow-hidden group bg-white dark:bg-zinc-900/50',
+					'w-full h-12 rounded-xl font-medium gap-3 transition-all relative overflow-hidden group bg-card/50',
 					style,
 					className
 				)}

@@ -154,7 +154,7 @@ function QuestionBody() {
 				<span className="math-serif font-bold">π</span>.
 			</p>
 
-			<Card className="p-8 bg-white dark:bg-zinc-900 border-none shadow-sm rounded-[2.5rem] relative overflow-hidden flex items-center justify-center min-h-[240px]">
+			<Card className="p-8 bg-card border-none shadow-sm rounded-[2.5rem] relative overflow-hidden flex items-center justify-center min-h-[240px]">
 				<div className="absolute inset-0 bg-[#f8fafc]/50 dark:bg-zinc-800/20" />
 				<div
 					className="absolute inset-0 opacity-[0.03] dark:opacity-[0.05]"
@@ -225,7 +225,7 @@ type MathInputFieldProps = {
 
 function MathInputField({ input, cursorPos, onDelete }: MathInputFieldProps) {
 	return (
-		<Card className="p-6 bg-white dark:bg-zinc-900 border-none shadow-xl rounded-3xl flex items-center gap-4 relative mt-12">
+		<Card className="p-6 bg-card border-none shadow-xl rounded-3xl flex items-center gap-4 relative mt-12">
 			<div className="flex-1 min-h-[60px] flex items-center px-2">
 				<div className="text-2xl font-serif text-zinc-900 dark:text-white flex items-center flex-wrap gap-0.5 relative">
 					{input.split('').map((char, i) => (
@@ -272,7 +272,7 @@ function CalculatorLauncher({ router, onKeyClick, onDelete, moveCursor }: Calcul
 		<div className="fixed bottom-0 left-0 right-0 p-6 flex justify-center z-40">
 			<Sheet>
 				<SheetTrigger asChild>
-					<Button className="bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white shadow-2xl rounded-2xl h-14 px-8 border-none hover:bg-zinc-50 transition-all gap-3 group">
+					<Button className="bg-card text-zinc-900 dark:text-white shadow-2xl rounded-2xl h-14 px-8 border-none hover:bg-zinc-50 transition-all gap-3 group">
 						<Keyboard className="w-5 h-5 text-blue-500 group-hover:scale-110 transition-transform" />
 						<span className="font-bold">Show Calculator</span>
 					</Button>
@@ -401,7 +401,7 @@ function CalcKey({
 			whileTap={{ scale: 0.9, backgroundColor: 'rgba(239, 176, 54, 0.1)' }}
 			transition={{ type: 'spring', stiffness: 500, damping: 30 }}
 			onClick={onClick}
-			className={`h-16 flex items-center justify-center bg-white dark:bg-zinc-900 rounded-2xl shadow-sm text-lg font-bold text-zinc-900 dark:text-white border border-transparent hover:border-orange-200 transition-colors ${className}`}
+			className={`h-16 flex items-center justify-center bg-card rounded-2xl shadow-sm text-lg font-bold text-zinc-900 dark:text-white border border-transparent hover:border-orange-200 transition-colors ${className}`}
 		>
 			{label}
 		</m.button>

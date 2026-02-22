@@ -123,7 +123,7 @@ export function SimpleQuizFooter({
 	showCheckButton,
 	selectedAnswer,
 	hasMoreQuestions,
-	primaryColor = 'bg-zinc-900 dark:bg-white text-white dark:text-zinc-900',
+	primaryColor = 'bg-foreground dark:bg-background text-background dark:text-foreground',
 	shadowColor = 'shadow-zinc-900/10',
 	onCheck,
 	onNext,

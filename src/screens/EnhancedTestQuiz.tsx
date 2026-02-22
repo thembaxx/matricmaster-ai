@@ -396,7 +396,7 @@ export default function EnhancedTestQuizScreen() {
 														className={`cursor-pointer px-3.5 py-1.5 rounded-2xl text-[13px] font-semibold transition-all border-2 ${
 															isSelected
 																? 'border-brand-blue bg-brand-blue text-white shadow-lg shadow-brand-blue/30'
-																: 'border-zinc-200 dark:border-zinc-700 bg-transparent text-zinc-600 dark:text-zinc-400 hover:border-zinc-300 dark:hover:border-zinc-600'
+																: 'border-zinc-200 dark:border-zinc-700 bg-transparent text-muted-foreground hover:border-zinc-300 dark:hover:border-zinc-600'
 														}`}
 														onClick={() => toggleSubject(subject.id)}
 													>
@@ -525,7 +525,7 @@ export default function EnhancedTestQuizScreen() {
 
 									{/* Image */}
 									{quizState.questions[quizState.currentQuestionIndex].imageUrl && (
-										<div className="rounded-3xl overflow-hidden bg-white dark:bg-zinc-900 shadow-inner border border-zinc-100 dark:border-zinc-800">
+										<div className="rounded-3xl overflow-hidden bg-card shadow-inner border border-border">
 											<SafeImage
 												src={quizState.questions[quizState.currentQuestionIndex].imageUrl}
 												alt="Question diagram"

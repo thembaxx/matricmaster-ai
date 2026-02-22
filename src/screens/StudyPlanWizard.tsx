@@ -102,11 +102,11 @@ export default function StudyPlanWizard() {
 					onClick={() => router.push('/')}
 					className="rounded-full"
 				>
-					<ArrowLeft className="w-6 h-6 text-zinc-600 dark:text-zinc-400" />
+					<ArrowLeft className="w-6 h-6 text-muted-foreground" />
 				</Button>
 				<h1 className="text-xs font-bold text-zinc-400 uppercase tracking-[0.2em]">Study Plan</h1>
 				<Button variant="ghost" size="icon" className="rounded-full">
-					<Settings2 className="w-6 h-6 text-zinc-600 dark:text-zinc-400" />
+					<Settings2 className="w-6 h-6 text-muted-foreground" />
 				</Button>
 			</header>
 
@@ -120,7 +120,7 @@ export default function StudyPlanWizard() {
 							</h2>
 							<span className="text-sm font-semibold text-blue-500">Step 1 of 3</span>
 						</div>
-						<div className="w-full h-2 bg-zinc-100 dark:bg-zinc-800 rounded-full overflow-hidden">
+						<div className="w-full h-2 bg-muted rounded-full overflow-hidden">
 							<div
 								className="h-full w-1/3 rounded-full"
 								style={{
@@ -160,13 +160,13 @@ export default function StudyPlanWizard() {
 											<Check className="w-4 h-4 text-white" strokeWidth={3} />
 										</div>
 									)}
-									<div className="w-16 h-16 rounded-full bg-white dark:bg-zinc-900 flex items-center justify-center shadow-sm">
+									<div className="w-16 h-16 rounded-full bg-card flex items-center justify-center shadow-sm">
 										<subject.icon
 											className={`w-8 h-8 ${isSelected ? 'text-blue-500' : 'text-zinc-400'}`}
 										/>
 									</div>
 									<span
-										className={`font-bold ${isSelected ? 'text-blue-500' : 'text-zinc-600 dark:text-zinc-400'}`}
+										className={`font-bold ${isSelected ? 'text-blue-500' : 'text-muted-foreground'}`}
 									>
 										{subject.name}
 									</span>
@@ -217,17 +217,17 @@ export default function StudyPlanWizard() {
 							<div className="absolute top-8 bottom-8 w-1 bg-zinc-200 dark:bg-zinc-800" />
 
 							{/* Node 1: Completed */}
-							<div className="relative z-10 w-16 h-16 rounded-full bg-white dark:bg-zinc-900 border-2 border-emerald-500 flex items-center justify-center">
+							<div className="relative z-10 w-16 h-16 rounded-full bg-card border-2 border-emerald-500 flex items-center justify-center">
 								<Check className="w-8 h-8 text-emerald-500" strokeWidth={3} />
 							</div>
 
 							{/* Node 2: Current */}
 							<div className="flex flex-col items-center gap-2 relative">
-								<div className="relative z-10 w-16 h-16 rounded-full border-[3px] border-blue-500 bg-white dark:bg-zinc-900 flex items-center justify-center">
+								<div className="relative z-10 w-16 h-16 rounded-full border-[3px] border-blue-500 bg-card flex items-center justify-center">
 									<Play className="w-6 h-6 text-blue-500 fill-blue-500" />
 									<div className="absolute -top-1 -right-0.5 w-4 h-4 bg-red-500 rounded-full border-2 border-white dark:border-zinc-900" />
 								</div>
-								<div className="bg-white dark:bg-zinc-900 px-3 py-1 rounded-full shadow-sm">
+								<div className="bg-card px-3 py-1 rounded-full shadow-sm">
 									<span className="text-xs font-bold text-zinc-900 dark:text-white whitespace-nowrap">
 										Start Here
 									</span>
@@ -235,7 +235,7 @@ export default function StudyPlanWizard() {
 							</div>
 
 							{/* Node 3: Locked */}
-							<div className="relative z-10 w-16 h-16 rounded-full bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center">
+							<div className="relative z-10 w-16 h-16 rounded-full bg-muted flex items-center justify-center">
 								<Lock className="w-6 h-6 text-zinc-300 dark:text-zinc-600" />
 							</div>
 						</div>
