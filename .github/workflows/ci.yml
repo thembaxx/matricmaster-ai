@@ -10,6 +10,10 @@ jobs:
   lint-and-test:
     runs-on: ubuntu-latest
 
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/matricmaster
+      POSTGRES_URL: postgresql://postgres:postgres@localhost:5432/matricmaster
+
     services:
       postgres:
         image: postgres:16-alpine
@@ -36,6 +40,16 @@ jobs:
 
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2.1.2
+        with:
+          bun-version: latest
+
+      - name: Cache Bun dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.bun/install/cache
+          key: ${{ runner.os }}-bun-${{ hashFiles('bun.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-bun-
 
       - name: Install dependencies
         run: bun install
@@ -43,14 +57,17 @@ jobs:
       - name: Generate database client
         run: bun run db:generate
 
+      - name: Push database schema
+        run: bun run db:push
+
       - name: Run linter
         run: bun run lint
+
+      - name: Run type check
+        run: bun run typecheck
 
       - name: Run unit tests
         run: bun run test:unit
 
       - name: Build project
         run: bun run build
-        env:
-          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/matricmaster
-          POSTGRES_URL: postgresql://postgres:postgres@localhost:5432/matricmaster
