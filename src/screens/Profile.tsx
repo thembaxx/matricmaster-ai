@@ -194,7 +194,7 @@ export default function Profile() {
 							</div>
 
 							<Card className="rounded-2xl sm:rounded-[2.5rem] border-2 border-border/50 p-6 sm:p-8 bg-card/50 backdrop-blur-sm">
-								<ChartContainer config={chartConfig} className="h-[300px] sm:h-[400px] w-full">
+								<ChartContainer config={chartConfig} className="h-75 sm:h-100 w-full">
 									<RadarChart cx="50%" cy="50%" outerRadius="80%" data={chartData}>
 										<defs>
 											<linearGradient id={radarGradientId} x1="0" y1="0" x2="0" y2="1">
