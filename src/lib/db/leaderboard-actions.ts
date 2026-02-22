@@ -2,7 +2,8 @@
 
 import { and, count, desc, eq, gte, inArray } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
-import { auth } from '@/lib/auth';
+import { headers } from 'next/headers';
+import { getAuth } from '@/lib/auth';
 import { type DbType, dbManager } from '@/lib/db';
 import type { LeaderboardEntry } from '@/lib/db/schema';
 import { leaderboardEntries, user, userProgress } from '@/lib/db/schema';
@@ -99,7 +100,10 @@ export async function getLeaderboard(
 export async function getUserRank(
 	periodType: 'weekly' | 'monthly' | 'all_time'
 ): Promise<UserRankData | null> {
-	const session = await auth.api.getSession();
+	const auth = await getAuth();
+	const session = await auth.api.getSession({
+		headers: await headers(),
+	});
 	if (!session?.user) {
 		return null;
 	}
@@ -180,7 +184,10 @@ export async function updateUserScore(params: {
 	pointsEarned: number;
 	newTotal: number;
 }> {
-	const session = await auth.api.getSession();
+	const auth = await getAuth();
+	const session = await auth.api.getSession({
+		headers: await headers(),
+	});
 	if (!session?.user) {
 		return { pointsEarned: 0, newTotal: 0 };
 	}

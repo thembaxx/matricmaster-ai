@@ -1,12 +1,13 @@
 'use server';
 
 import { eq } from 'drizzle-orm';
+import { headers } from 'next/headers';
 import {
 	getStreakMultiplier,
 	MAX_STREAK_FREEZES,
 	STREAK_FREEZE_COST_XP,
 } from '@/constants/rewards';
-import { auth } from '@/lib/auth';
+import { getAuth } from '@/lib/auth';
 import { type DbType, dbManager } from '@/lib/db';
 import { userProgress } from '@/lib/db/schema';
 import { getNextMultiplierThreshold } from '@/lib/streak-utils';
@@ -30,7 +31,10 @@ export interface StreakInfo {
 }
 
 export async function getStreakInfo(): Promise<StreakInfo | null> {
-	const session = await auth.api.getSession();
+	const auth = await getAuth();
+	const session = await auth.api.getSession({
+		headers: await headers(),
+	});
 	if (!session?.user) {
 		return null;
 	}
@@ -80,7 +84,10 @@ export async function getStreakInfo(): Promise<StreakInfo | null> {
 }
 
 export async function useStreakFreeze(): Promise<{ success: boolean; message: string }> {
-	const session = await auth.api.getSession();
+	const auth = await getAuth();
+	const session = await auth.api.getSession({
+		headers: await headers(),
+	});
 	if (!session?.user) {
 		return { success: false, message: 'Not authenticated' };
 	}
@@ -151,7 +158,10 @@ export async function addStreakFreeze(userId: string, count = 1): Promise<boolea
 }
 
 export async function purchaseStreakFreeze(): Promise<{ success: boolean; message: string }> {
-	const session = await auth.api.getSession();
+	const auth = await getAuth();
+	const session = await auth.api.getSession({
+		headers: await headers(),
+	});
 	if (!session?.user) {
 		return { success: false, message: 'Not authenticated' };
 	}

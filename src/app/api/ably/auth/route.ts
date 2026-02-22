@@ -3,6 +3,14 @@ import { type NextRequest, NextResponse } from 'next/server';
 import { getAuth } from '@/lib/auth';
 import { getEnv } from '@/lib/env';
 
+// Handle GET requests - return method not allowed
+export async function GET() {
+	return NextResponse.json(
+		{ error: 'Method not allowed. Use POST for Ably authentication.' },
+		{ status: 405 }
+	);
+}
+
 export async function POST(request: NextRequest) {
 	try {
 		// Authenticate the caller
@@ -14,10 +22,34 @@ export async function POST(request: NextRequest) {
 
 		const apiKey = getEnv('ABLY_API_KEY');
 		if (!apiKey) {
+			console.error('[Ably Auth] ABLY_API_KEY is not configured');
 			return NextResponse.json({ error: 'Ably not configured' }, { status: 500 });
 		}
 
-		const body = await request.json();
+		// Parse body - handle both JSON and form-encoded data
+		const contentType = request.headers.get('content-type') || '';
+		let body: { clientId?: string; userId?: string };
+
+		if (contentType.includes('application/json')) {
+			body = await request.json();
+		} else if (contentType.includes('application/x-www-form-urlencoded')) {
+			const formData = await request.formData();
+			body = {
+				clientId: formData.get('clientId') as string,
+				userId: formData.get('userId') as string,
+			};
+		} else {
+			// Try to parse as JSON anyway for backwards compatibility
+			try {
+				body = await request.json();
+			} catch {
+				return NextResponse.json(
+					{ error: 'Invalid content type. Expected JSON or form-encoded data.' },
+					{ status: 400 }
+				);
+			}
+		}
+
 		const { clientId, userId } = body;
 
 		if (!clientId) {
@@ -48,6 +80,11 @@ export async function POST(request: NextRequest) {
 		return NextResponse.json(tokenRequestData);
 	} catch (error) {
 		console.error('[Ably Auth] Error creating token:', error);
-		return NextResponse.json({ error: 'Failed to create token' }, { status: 500 });
+		// Provide more detailed error message for debugging
+		const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+		return NextResponse.json(
+			{ error: 'Failed to create token', details: errorMessage },
+			{ status: 500 }
+		);
 	}
 }

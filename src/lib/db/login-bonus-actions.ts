@@ -1,6 +1,7 @@
 'use server';
 
 import { eq } from 'drizzle-orm';
+import { headers } from 'next/headers';
 import { getDailyLoginReward } from '@/constants/rewards';
 import { getAuth } from '@/lib/auth';
 import { type DbType, dbManager } from '@/lib/db';
@@ -60,7 +61,9 @@ function getMillisecondsUntilMidnight(): number {
 
 export async function getLoginBonusStatus(): Promise<LoginBonusStatus> {
 	const auth = await getAuth();
-	const session = await auth.api.getSession();
+	const session = await auth.api.getSession({
+		headers: await headers(),
+	});
 	if (!session?.user) {
 		return {
 			canClaim: false,
@@ -138,7 +141,9 @@ export async function getLoginBonusStatus(): Promise<LoginBonusStatus> {
 
 export async function claimLoginBonus(): Promise<ClaimLoginBonusResult> {
 	const auth = await getAuth();
-	const session = await auth.api.getSession();
+	const session = await auth.api.getSession({
+		headers: await headers(),
+	});
 	if (!session?.user) {
 		return {
 			success: false,
