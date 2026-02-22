@@ -28,7 +28,7 @@ function CodeBlock({ children, className }: { children: React.ReactNode; classNa
 
 	return (
 		<div className="relative group my-6 overflow-hidden rounded-2xl border border-border/50 shadow-sm transition-all hover:shadow-md">
-			<div className="flex items-center justify-between bg-zinc-100 dark:bg-zinc-800 px-4 py-2.5">
+			<div className="flex items-center justify-between bg-muted px-4 py-2.5">
 				<div className="flex items-center gap-2">
 					<div className="flex gap-1">
 						<div className="w-2 h-2 rounded-full bg-red-400/50" />

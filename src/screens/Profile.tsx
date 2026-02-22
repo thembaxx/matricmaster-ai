@@ -118,7 +118,7 @@ export default function Profile() {
 			<main className="max-w-6xl mx-auto w-full pt-8 space-y-12 relative z-10">
 				{/* Profile Header Card */}
 				<m.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-					<Card className="rounded-[3rem] p-12 relative overflow-hidden bg-zinc-900 text-white border-none shadow-2xl">
+					<Card className="rounded-[3rem] p-12 relative overflow-hidden bg-foreground text-background border-none shadow-2xl">
 						<div className="absolute top-0 right-0 w-96 h-96 bg-primary/20 rounded-full blur-[100px] -mr-32 -mt-32" />
 
 						<div className="flex flex-col md:flex-row items-center gap-12 relative z-10">

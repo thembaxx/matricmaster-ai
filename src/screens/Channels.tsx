@@ -146,7 +146,7 @@ export default function Channels() {
 					<input
 						type="text"
 						placeholder="Find subjects, papers, or topics..."
-						className="w-full pl-12 pr-6 py-4 bg-white dark:bg-zinc-900 rounded-2xl text-sm border-none shadow-sm focus:ring-2 focus:ring-blue-500/20 dark:text-white dark:placeholder-zinc-500"
+						className="w-full pl-12 pr-6 py-4 bg-card rounded-2xl text-sm border-none shadow-sm focus:ring-2 focus:ring-blue-500/20 dark:text-white dark:placeholder-zinc-500"
 					/>
 				</div>
 
@@ -160,7 +160,7 @@ export default function Channels() {
 							className={`px-6 py-2.5 rounded-full text-sm font-bold whitespace-nowrap transition-all ${
 								activeCategory === cat
 									? 'bg-[#1e293b] text-white dark:bg-white dark:text-zinc-950 shadow-md'
-									: 'bg-white text-zinc-600 dark:bg-zinc-900 dark:text-zinc-400 border border-zinc-100 dark:border-zinc-800 shadow-sm'
+									: 'bg-white text-zinc-600 dark:bg-zinc-900 dark:text-zinc-400 border border-border shadow-sm'
 							}`}
 						>
 							{cat}
@@ -176,7 +176,7 @@ export default function Channels() {
 						<h3 className="text-[10px] font-black text-zinc-400 dark:text-zinc-500 uppercase tracking-widest">
 							Continue Learning
 						</h3>
-						<div className="bg-white dark:bg-zinc-900 p-5 rounded-3xl shadow-sm border border-zinc-50 dark:border-zinc-800/50 relative overflow-hidden group cursor-pointer hover:shadow-md transition-all">
+						<div className="bg-card p-5 rounded-3xl shadow-sm border border-zinc-50 dark:border-zinc-800/50 relative overflow-hidden group cursor-pointer hover:shadow-md transition-all">
 							<div className="flex items-center gap-5">
 								<div className="w-16 h-16 rounded-2xl bg-linear-to-br from-[#f9b122] to-[#f59e0b] flex items-center justify-center shadow-lg shadow-orange-500/20 transform group-hover:scale-105 transition-transform">
 									<div className="text-white text-3xl font-black italic">Σ</div>
@@ -194,7 +194,7 @@ export default function Channels() {
 								</div>
 							</div>
 							{/* Progress Bar Line */}
-							<div className="absolute bottom-0 left-0 right-0 h-1 bg-zinc-100 dark:bg-zinc-800">
+							<div className="absolute bottom-0 left-0 right-0 h-1 bg-muted">
 								<div className="h-full bg-blue-500 w-[65%]" />
 							</div>
 						</div>
@@ -215,7 +215,7 @@ export default function Channels() {
 									}}
 									type="button"
 									tabIndex={0}
-									className="bg-white dark:bg-zinc-900 p-4 rounded-3xl flex items-center justify-between shadow-sm border border-zinc-50 dark:border-zinc-800/50 hover:shadow-md transition-all cursor-pointer group"
+									className="bg-card p-4 rounded-3xl flex items-center justify-between shadow-sm border border-zinc-50 dark:border-zinc-800/50 hover:shadow-md transition-all cursor-pointer group"
 								>
 									<div className="flex items-center gap-4">
 										<div
@@ -283,7 +283,7 @@ export default function Channels() {
 							].map((item) => (
 								<div
 									key={item.title}
-									className="bg-white dark:bg-zinc-900 p-5 rounded-3xl flex flex-col gap-4 shadow-sm border border-zinc-50 dark:border-zinc-800/50 hover:shadow-md transition-all cursor-pointer"
+									className="bg-card p-5 rounded-3xl flex flex-col gap-4 shadow-sm border border-zinc-50 dark:border-zinc-800/50 hover:shadow-md transition-all cursor-pointer"
 								>
 									<div
 										className={`w-12 h-12 rounded-2xl flex items-center justify-center ${item.bg}`}
@@ -306,7 +306,7 @@ export default function Channels() {
 					{/* Commerce */}
 					<section className="space-y-4">
 						<h3 className="text-xl font-bold text-zinc-900 dark:text-white">Commerce</h3>
-						<div className="bg-white dark:bg-zinc-900 p-4 rounded-3xl flex items-center justify-between shadow-sm border border-zinc-50 dark:border-zinc-800/50 hover:shadow-md transition-all cursor-pointer group">
+						<div className="bg-card p-4 rounded-3xl flex items-center justify-between shadow-sm border border-zinc-50 dark:border-zinc-800/50 hover:shadow-md transition-all cursor-pointer group">
 							<div className="flex items-center gap-4">
 								<div className="w-12 h-12 rounded-2xl flex items-center justify-center bg-teal-50 dark:bg-teal-900/20">
 									<BarChart3 className="w-6 h-6 text-teal-500" />
@@ -332,7 +332,7 @@ export default function Channels() {
 										</Avatar>
 									</div>
 								))}
-								<div className="w-7 h-7 rounded-full border-2 border-white dark:border-zinc-900 bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center text-[8px] font-black text-zinc-400">
+								<div className="w-7 h-7 rounded-full border-2 border-white dark:border-zinc-900 bg-muted flex items-center justify-center text-[8px] font-black text-zinc-400">
 									+4
 								</div>
 							</div>
@@ -345,7 +345,7 @@ export default function Channels() {
 			<button
 				aria-label="Play"
 				type="button"
-				className="absolute bottom-24 right-6 w-16 h-16 bg-[#1e293b] dark:bg-white text-white dark:text-zinc-900 rounded-full shadow-2xl flex items-center justify-center transform hover:scale-110 active:scale-95 transition-all z-30"
+				className="absolute bottom-24 right-6 w-16 h-16 bg-[#1e293b] dark:bg-white text-background dark:text-foreground rounded-full shadow-2xl flex items-center justify-center transform hover:scale-110 active:scale-95 transition-all z-30"
 			>
 				<Play className="w-8 h-8 fill-current translate-x-0.5" />
 			</button>

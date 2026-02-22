@@ -131,7 +131,7 @@ export default function PastPaperViewer() {
 							<h3 className="font-bold text-zinc-900 dark:text-white">Extracting Questions...</h3>
 							<p className="text-sm text-zinc-500">Using AI to parse the exam paper</p>
 						</div>
-						<div className="w-64 h-2 bg-zinc-100 dark:bg-zinc-800 rounded-full overflow-hidden">
+						<div className="w-64 h-2 bg-muted rounded-full overflow-hidden">
 							<div
 								className="h-full bg-brand-blue animate-pulse rounded-full"
 								style={{ width: '60%' }}
@@ -160,7 +160,7 @@ export default function PastPaperViewer() {
 	if (error && !extractedPaper) {
 		return (
 			<div className="flex flex-col h-full bg-background relative">
-				<header className="px-6 pt-12 pb-4 bg-white dark:bg-zinc-900 sticky top-0 z-20 border-b border-zinc-100 dark:border-zinc-800 shrink-0">
+				<header className="px-6 pt-12 pb-4 bg-card sticky top-0 z-20 border-b border-border shrink-0">
 					<div className="flex items-center justify-between mb-4">
 						<div className="flex items-center gap-4">
 							<Button variant="ghost" size="icon" onClick={() => router.back()}>
@@ -211,7 +211,7 @@ export default function PastPaperViewer() {
 	return (
 		<div className="flex flex-col h-full bg-background relative">
 			{/* Header */}
-			<header className="px-6 pt-12 pb-4 bg-white dark:bg-zinc-900 sticky top-0 z-20 border-b border-zinc-100 dark:border-zinc-800 shrink-0">
+			<header className="px-6 pt-12 pb-4 bg-card sticky top-0 z-20 border-b border-border shrink-0">
 				<div className="flex items-center justify-between mb-4">
 					<div className="flex items-center gap-4">
 						<Button variant="ghost" size="icon" onClick={() => router.back()}>
@@ -267,7 +267,7 @@ export default function PastPaperViewer() {
 							</span>
 							<span>{Math.round(progress)}%</span>
 						</div>
-						<div className="relative h-2 w-full overflow-hidden rounded-full bg-zinc-100 dark:bg-zinc-800">
+						<div className="relative h-2 w-full overflow-hidden rounded-full bg-muted">
 							<div
 								className="h-full bg-brand-blue transition-all duration-500"
 								style={{ width: `${progress}%` }}
@@ -291,7 +291,7 @@ export default function PastPaperViewer() {
 							<h3 className="font-bold text-zinc-900 dark:text-white mb-3 text-sm">
 								INSTRUCTIONS AND INFORMATION
 							</h3>
-							<p className="text-xs text-zinc-600 dark:text-zinc-400 whitespace-pre-wrap">
+							<p className="text-xs text-muted-foreground whitespace-pre-wrap">
 								{extractedPaper.instructions}
 							</p>
 						</Card>
@@ -312,7 +312,7 @@ export default function PastPaperViewer() {
 										className={`w-10 h-10 p-0 rounded-xl font-bold border-2 transition-all ${
 											currentQuestionIndex === idx
 												? 'border-brand-blue bg-brand-blue text-white'
-												: 'border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-400 hover:border-brand-blue'
+												: 'border-zinc-200 dark:border-zinc-700 text-muted-foreground hover:border-brand-blue'
 										}`}
 									>
 										{q.questionNumber}
@@ -324,7 +324,7 @@ export default function PastPaperViewer() {
 
 					{/* Current Question Display */}
 					{currentQuestion && (
-						<Card className="p-6 rounded-[2rem] border-none shadow-sm bg-white dark:bg-zinc-900 relative overflow-hidden">
+						<Card className="p-6 rounded-[2rem] border-none shadow-sm bg-card relative overflow-hidden">
 							<div className="absolute inset-0 opacity-[0.03] pointer-events-none grayscale">
 								<Image
 									src="https://images.unsplash.com/photo-1588072432836-e10032774350?auto=format&fit=crop&q=80&w=800"
@@ -358,7 +358,7 @@ export default function PastPaperViewer() {
 
 								{/* Sub-questions */}
 								{currentQuestion.subQuestions && currentQuestion.subQuestions.length > 0 && (
-									<div className="space-y-4 ml-2 mt-6 pt-4 border-t border-zinc-100 dark:border-zinc-800">
+									<div className="space-y-4 ml-2 mt-6 pt-4 border-t border-border">
 										{currentQuestion.subQuestions.map((sq) => (
 											<div key={sq.id} className="space-y-2">
 												<p className="font-semibold text-sm dark:text-zinc-300 text-pretty">
@@ -374,7 +374,7 @@ export default function PastPaperViewer() {
 							</div>
 
 							{/* AI Explain Button */}
-							<div className="mt-8 pt-6 border-t border-zinc-100 dark:border-zinc-800 relative z-10">
+							<div className="mt-8 pt-6 border-t border-border relative z-10">
 								<Button
 									variant="outline"
 									className="w-full border-brand-blue/20 hover:bg-brand-blue/5 text-sm"
@@ -396,7 +396,7 @@ export default function PastPaperViewer() {
 											<Sparkles className="w-4 h-4 text-brand-blue" />
 											<span className="text-sm font-bold text-brand-blue">AI Explanation</span>
 										</div>
-										<p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed whitespace-pre-wrap">
+										<p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-wrap">
 											{aiExplanation}
 										</p>
 									</div>
@@ -433,7 +433,7 @@ export default function PastPaperViewer() {
 
 			{/* Pagination Footer */}
 			{extractedPaper && totalQuestions > 0 && (
-				<footer className="absolute bottom-0 left-0 right-0 bg-white/90 dark:bg-zinc-900/90 backdrop-blur-xl border-t border-zinc-100 dark:border-zinc-800 px-6 py-4 pb-8 z-30">
+				<footer className="absolute bottom-0 left-0 right-0 bg-white/90 dark:bg-zinc-900/90 backdrop-blur-xl border-t border-border px-6 py-4 pb-8 z-30">
 					<div className="max-w-2xl mx-auto flex items-center justify-between gap-4">
 						<Button
 							variant="outline"
@@ -472,7 +472,7 @@ export default function PastPaperViewer() {
 												className={`w-8 h-8 rounded-lg font-bold text-xs transition-all ${
 													currentQuestionIndex === i
 														? 'bg-brand-blue text-white'
-														: 'bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-brand-blue/10'
+														: 'bg-muted text-muted-foreground hover:bg-brand-blue/10'
 												}`}
 											>
 												{i + 1}
@@ -497,7 +497,7 @@ export default function PastPaperViewer() {
 			)}
 
 			{/* Bottom Toolbar (for tabs) */}
-			<nav className="absolute bottom-0 left-0 right-0 bg-white/90 dark:bg-zinc-900/90 backdrop-blur-xl border-t border-zinc-100 dark:border-zinc-800 px-6 py-3 pb-8">
+			<nav className="absolute bottom-0 left-0 right-0 bg-white/90 dark:bg-zinc-900/90 backdrop-blur-xl border-t border-border px-6 py-3 pb-8">
 				<div className="flex justify-around items-center">
 					{[
 						{ id: 'questions', label: 'Questions' },

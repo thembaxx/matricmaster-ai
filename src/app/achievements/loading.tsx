@@ -18,7 +18,7 @@ export default function AchievementsLoading() {
 						{Array.from({ length: 9 }).map((_, i) => (
 							<div
 								key={`skeleton-${i}`}
-								className="flex flex-col items-center gap-3 p-4 rounded-2xl bg-white dark:bg-zinc-900"
+								className="flex flex-col items-center gap-3 p-4 rounded-2xl bg-card"
 							>
 								<div className="w-20 h-20 bg-zinc-200 dark:bg-zinc-800 rounded-full animate-pulse" />
 								<div className="h-4 w-16 bg-zinc-200 dark:bg-zinc-800 rounded animate-pulse" />

@@ -30,7 +30,7 @@ export function SubjectFilterPills({
 							className={`px-4 py-2 rounded-full text-xs font-bold transition-all shrink-0 ${
 								isSelected
 									? `${colors.bg} text-white shadow-md scale-105`
-									: 'bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700'
+									: 'bg-muted text-muted-foreground hover:bg-accent hover:text-accent-foreground'
 							}`}
 						>
 							{subject}
@@ -100,12 +100,12 @@ export function getSubjectColor(subject: string) {
 			};
 		default:
 			return {
-				bg: 'bg-zinc-900',
-				text: 'text-zinc-600',
-				border: 'border-zinc-200',
-				bgSoft: 'bg-zinc-50',
-				borderSoft: 'hover:border-zinc-300',
-				shadow: 'shadow-zinc-900/10',
+				bg: 'bg-primary',
+				text: 'text-primary',
+				border: 'border-border',
+				bgSoft: 'bg-primary/5',
+				borderSoft: 'hover:border-primary/30',
+				shadow: 'shadow-primary/10',
 			};
 	}
 }
