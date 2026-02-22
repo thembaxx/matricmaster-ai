@@ -4,8 +4,12 @@ import { ChatClient, LogLevel } from '@ably/chat';
 import { ChatClientProvider } from '@ably/chat/react';
 import * as Ably from 'ably';
 import { AblyProvider, ChannelProvider } from 'ably/react';
-import { type ReactNode, useMemo } from 'react';
+import { createContext, type ReactNode, useContext, useMemo } from 'react';
 import { useSession } from '@/lib/auth-client';
+
+const AblyStatusContext = createContext<{ isReady: boolean }>({ isReady: false });
+
+export const useAblyStatus = () => useContext(AblyStatusContext);
 
 interface AblyClientProviderProps {
 	children: ReactNode;
@@ -40,12 +44,18 @@ export function AblyClientProvider({ children }: AblyClientProviderProps) {
 	}, [client]);
 
 	if (!client || !chatClient) {
-		return <>{children}</>;
+		return (
+			<AblyStatusContext.Provider value={{ isReady: false }}>{children}</AblyStatusContext.Provider>
+		);
 	}
 
 	return (
 		<AblyProvider client={client}>
-			<ChatClientProvider client={chatClient}>{children}</ChatClientProvider>
+			<ChatClientProvider client={chatClient}>
+				<AblyStatusContext.Provider value={{ isReady: true }}>
+					{children}
+				</AblyStatusContext.Provider>
+			</ChatClientProvider>
 		</AblyProvider>
 	);
 }

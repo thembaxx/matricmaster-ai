@@ -17,6 +17,7 @@ const buttonVariants = cva(
 				ghost: 'hover:bg-accent hover:text-accent-foreground',
 				link: 'text-primary underline-offset-4 hover:underline',
 				ios: 'bg-brand-blue text-white shadow-lg shadow-brand-blue/20 hover:bg-brand-blue/90',
+				glass: 'ios-glass text-foreground hover:bg-surface-elevated/90 shadow-sm border-border/50',
 			},
 			size: {
 				default: 'h-12 px-6 py-3',

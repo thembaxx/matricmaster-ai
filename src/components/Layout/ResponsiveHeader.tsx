@@ -3,9 +3,11 @@
 import { m } from 'framer-motion';
 import { Bell } from 'lucide-react';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import type { authClient } from '@/lib/auth-client';
+import { cn } from '@/lib/utils';
 import { ProfileMenu } from './profile-menu';
 
 type AuthUser = typeof authClient.$Infer.Session.user;
@@ -27,8 +29,25 @@ export function ResponsiveHeader({
 	onSignUp,
 	mobileMenuTrigger,
 }: ResponsiveHeaderProps) {
+	const [scrolled, setScrolled] = useState(false);
+
+	useEffect(() => {
+		const handleScroll = () => {
+			setScrolled(window.scrollY > 10);
+		};
+		window.addEventListener('scroll', handleScroll, { passive: true });
+		return () => window.removeEventListener('scroll', handleScroll);
+	}, []);
+
 	return (
-		<header className="flex items-center px-6 py-4 fixed top-0 z-30 transition-all duration-200 w-full left-0 lg:relative lg:px-0 lg:py-6">
+		<header
+			className={cn(
+				'flex items-center px-6 py-4 fixed top-0 z-30 transition-all duration-300 w-full left-0 lg:relative lg:px-0 lg:py-8',
+				scrolled
+					? 'ios-glass py-3 shadow-lg lg:shadow-none lg:bg-transparent lg:border-none'
+					: 'bg-transparent'
+			)}
+		>
 			{user && <div className="lg:hidden mr-4">{mobileMenuTrigger}</div>}
 
 			<Link href="/" className="lg:hidden">

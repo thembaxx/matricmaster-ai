@@ -99,15 +99,23 @@ export default function Search() {
 	};
 
 	return (
-		<div className="flex flex-col h-full bg-background lg:px-8">
-			<div className="px-6 py-6 bg-background shrink-0 lg:px-0">
-				<div className="max-w-4xl mx-auto w-full">
+		<div className="flex flex-col h-full bg-background lg:px-12">
+			<div className="px-6 py-12 bg-background shrink-0 lg:px-0">
+				<div className="max-w-5xl mx-auto w-full">
+					<div className="mb-12 space-y-2">
+						<h1 className="text-4xl lg:text-7xl font-black text-foreground tracking-tighter uppercase">
+							Smart Search
+						</h1>
+						<p className="text-muted-foreground font-bold lg:text-lg">
+							Find papers, topics, and AI-powered insights instantly
+						</p>
+					</div>
 					<SearchHeader query={query} onQueryChange={setQuery} />
 				</div>
 			</div>
 
 			<ScrollArea className="flex-1 no-scrollbar">
-				<main className="px-6 py-8 max-w-4xl mx-auto w-full space-y-12 pb-32 lg:px-0">
+				<main className="px-6 py-8 max-w-5xl mx-auto w-full space-y-12 pb-32 lg:px-0">
 					{!query ? (
 						<m.div
 							variants={STAGGER_CONTAINER}

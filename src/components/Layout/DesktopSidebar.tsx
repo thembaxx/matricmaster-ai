@@ -64,7 +64,7 @@ type DesktopSidebarProps = {
 
 export function DesktopSidebar({ user, pathname, theme, onToggleTheme }: DesktopSidebarProps) {
 	return (
-		<aside className="hidden lg:flex flex-col w-72 h-screen sticky top-0 bg-white dark:bg-zinc-900 border-r border-zinc-200 dark:border-zinc-800 transition-all duration-300">
+		<aside className="hidden lg:flex flex-col w-72 h-screen sticky top-0 bg-card border-r border-border transition-all duration-300">
 			<div className="p-8 pb-4">
 				<Link href="/dashboard" className="block mb-8">
 					<h1 className="text-xl font-black text-foreground uppercase tracking-tighter">
@@ -98,7 +98,7 @@ export function DesktopSidebar({ user, pathname, theme, onToggleTheme }: Desktop
 				</nav>
 			</div>
 
-			<div className="mt-auto p-8 border-t border-border space-y-6">
+			<div className="mt-auto p-8 border-t border-border/50 space-y-6">
 				<ThemeToggle theme={theme} onToggle={onToggleTheme} />
 				<UserProfileButton user={user} />
 				<LogoutButton />
