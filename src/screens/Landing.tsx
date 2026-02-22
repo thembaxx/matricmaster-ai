@@ -25,7 +25,7 @@ export default function Landing() {
 	const gradientId = useId();
 
 	return (
-		<div className="flex flex-col h-full bg-background overflow-hidden relative">
+		<div className="flex flex-col h-full w-full bg-background overflow-hidden relative">
 			{/* Decorative Orbs */}
 			<div className="absolute top-[-10%] right-[-10%] w-125 h-125 bg-primary/5 rounded-full blur-[120px] pointer-events-none" />
 			<div className="absolute bottom-[-10%] left-[-10%] w-100 h-100 bg-brand-purple/5 rounded-full blur-[100px] pointer-events-none" />
@@ -66,7 +66,7 @@ export default function Landing() {
 							>
 								<Button
 									size="lg"
-									className="flex-1 lg:flex-none lg:w-72 rounded-2xl h-18 lg:h-20 text-xl font-black shadow-2xl hover:scale-[1.02] active:scale-95 transition-all shadow-primary/20 bg-primary"
+									className="lg:flex-none lg:w-72 rounded-2xl shrink-0 h-18! lg:h-20 text-xl font-black shadow-2xl hover:scale-[1.02] active:scale-95 transition-all shadow-primary/20 bg-primary"
 									onClick={() => router.push('/dashboard')}
 								>
 									Start Learning
@@ -75,7 +75,7 @@ export default function Landing() {
 								<Button
 									variant="outline"
 									size="lg"
-									className="flex-1 lg:flex-none lg:w-64 rounded-2xl h-18 lg:h-20 text-lg font-black border-2 hover:bg-muted active:scale-95 transition-all"
+									className="lg:flex-none lg:w-64 rounded-2xl h-18 lg:h-20 text-lg font-black border-2 hover:bg-muted active:scale-95 transition-all"
 									onClick={() => router.push('/past-papers')}
 								>
 									Past Papers
@@ -95,8 +95,8 @@ export default function Landing() {
 												fill
 												sizes="40px"
 												className="object-cover"
+												unoptimized
 												priority={i < 2}
-												loading={i < 2 ? 'eager' : 'lazy'}
 											/>
 										</div>
 									))}
