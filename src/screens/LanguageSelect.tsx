@@ -35,11 +35,11 @@ export default function LanguageSelect({ currentLanguage = 'EN' }: LanguageSelec
 		<div className="flex flex-col min-h-screen bg-zinc-50 dark:bg-zinc-950 font-lexend">
 			<div className="flex-1 flex flex-col max-w-2xl mx-auto w-full">
 				{/* Header */}
-				<div className="px-6 pt-12 pb-6 border-b border-zinc-100 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+				<div className="px-6 pt-12 pb-6 border-b border-border bg-card">
 					<div className="flex justify-between items-center">
 						<div className="flex items-center gap-4">
-							<div className="w-12 h-12 rounded-2xl bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center">
-								<Globe className="w-6 h-6 text-zinc-600 dark:text-zinc-400" />
+							<div className="w-12 h-12 rounded-2xl bg-muted flex items-center justify-center">
+								<Globe className="w-6 h-6 text-muted-foreground" />
 							</div>
 							<div>
 								<h2 className="text-2xl font-black text-zinc-900 dark:text-white tracking-tighter">
@@ -71,7 +71,7 @@ export default function LanguageSelect({ currentLanguage = 'EN' }: LanguageSelec
 								<RadioGroupItem value={lang.code} id={lang.code} className="peer sr-only" />
 								<Label
 									htmlFor={lang.code}
-									className="flex items-center gap-5 p-5 rounded-[2rem] border-2 border-transparent bg-white dark:bg-zinc-900 cursor-pointer transition-all peer-data-[state=checked]:border-brand-blue peer-data-[state=checked]:shadow-xl shadow-sm hover:border-zinc-200 dark:hover:border-zinc-700"
+									className="flex items-center gap-5 p-5 rounded-[2rem] border-2 border-transparent bg-card cursor-pointer transition-all peer-data-[state=checked]:border-brand-blue peer-data-[state=checked]:shadow-xl shadow-sm hover:border-zinc-200 dark:hover:border-zinc-700"
 								>
 									<div
 										className={`w-14 h-14 rounded-2xl ${lang.color} flex items-center justify-center text-white font-black text-lg shadow-inner shadow-black/10`}
@@ -111,9 +111,9 @@ export default function LanguageSelect({ currentLanguage = 'EN' }: LanguageSelec
 				</ScrollArea>
 
 				{/* Footer */}
-				<div className="p-8 border-t border-zinc-100 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+				<div className="p-8 border-t border-border bg-card">
 					<Button
-						className="w-full h-16 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 rounded-[2rem] font-black text-xl shadow-2xl active:scale-[0.98] transition-all"
+						className="w-full h-16 bg-foreground dark:bg-background text-background dark:text-foreground rounded-[2rem] font-black text-xl shadow-2xl active:scale-[0.98] transition-all"
 						onClick={() => router.push('/')}
 					>
 						Confirm Selection

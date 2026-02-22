@@ -282,7 +282,7 @@ function LockedNode({ node }: { node: PathNode }) {
 					<Lock className="w-4 h-4 text-zinc-400" />
 				</div>
 			</div>
-			<div className="bg-white dark:bg-zinc-900 px-3 py-1.5 rounded-full shadow-sm">
+			<div className="bg-card px-3 py-1.5 rounded-full shadow-sm">
 				<span className="text-sm font-medium text-zinc-700 dark:text-zinc-300">{node.title}</span>
 			</div>
 		</div>
@@ -334,12 +334,12 @@ function CurrentNode({ node }: { node: PathNode }) {
 				</div>
 			</div>
 
-			<div className="bg-white dark:bg-zinc-900 rounded-2xl shadow-lg p-4 min-w-[140px]">
+			<div className="bg-card rounded-2xl shadow-lg p-4 min-w-[140px]">
 				<h3 className="font-bold text-zinc-900 dark:text-white text-center">{node.title}</h3>
 				<p className="text-blue-500 text-xs font-semibold uppercase tracking-wide text-center mt-1">
 					IN PROGRESS
 				</p>
-				<div className="mt-3 w-full h-1.5 bg-zinc-100 dark:bg-zinc-800 rounded-full overflow-hidden">
+				<div className="mt-3 w-full h-1.5 bg-muted rounded-full overflow-hidden">
 					<div
 						className="h-full rounded-full transition-all duration-500 bg-blue-500"
 						style={{ width: `${node.progress}%` }}

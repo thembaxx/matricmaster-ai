@@ -61,9 +61,9 @@ export default function MathematicsQuiz() {
 	};
 
 	return (
-		<div className="flex flex-col h-full bg-zinc-50 dark:bg-zinc-950 font-lexend relative">
+		<div className="flex flex-col h-full bg-background font-lexend relative">
 			{/* Header */}
-			<header className="px-6 pt-12 pb-4 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl sticky top-0 z-20 border-b border-zinc-100 dark:border-zinc-800 shrink-0">
+			<header className="px-6 pt-12 pb-4 bg-background/80 backdrop-blur-xl sticky top-0 z-20 border-b border-border shrink-0">
 				<div className="max-w-2xl mx-auto w-full">
 					<div className="flex items-center gap-4 mb-4">
 						<Button
@@ -76,9 +76,7 @@ export default function MathematicsQuiz() {
 						</Button>
 						<div className="flex-1">
 							<div className="flex justify-between items-center mb-2">
-								<span className="text-sm font-bold text-zinc-600 dark:text-zinc-400">
-									Question 1 of 5
-								</span>
+								<span className="text-sm font-bold text-muted-foreground">Question 1 of 5</span>
 								<Badge
 									variant="secondary"
 									className="text-[10px] font-black uppercase tracking-tighter rounded-full"
@@ -96,25 +94,23 @@ export default function MathematicsQuiz() {
 				<main className="px-6 py-8 space-y-8 pb-64 max-w-2xl mx-auto w-full">
 					{/* Question */}
 					<div className="space-y-4">
-						<h2 className="text-3xl font-black text-zinc-900 dark:text-white">Find the integral</h2>
-						<Card className="p-12 bg-white dark:bg-zinc-900 border-none rounded-[2.5rem] shadow-sm relative overflow-hidden group">
+						<h2 className="text-3xl font-black text-foreground">Find the integral</h2>
+						<Card className="p-12 bg-card border-none rounded-[2.5rem] shadow-sm relative overflow-hidden group">
 							<div className="absolute inset-0 bg-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity" />
 							<div className="text-center relative z-10">
-								<span className="text-4xl font-mono font-bold text-zinc-900 dark:text-white">
-									∫(3x² + 2x) dx
-								</span>
+								<span className="text-4xl font-mono font-bold text-foreground">∫(3x² + 2x) dx</span>
 							</div>
 						</Card>
 					</div>
 
 					{/* Selected Steps Area */}
 					<div className="space-y-4">
-						<h3 className="text-[10px] font-black uppercase text-zinc-400 tracking-widest px-1">
+						<h3 className="text-[10px] font-black uppercase text-muted-foreground tracking-widest px-1">
 							Your Solution Path
 						</h3>
 						<div className="min-h-[160px] p-6 bg-blue-50/50 dark:bg-blue-900/10 rounded-[2rem] border-2 border-dashed border-blue-200 dark:border-blue-900/50">
 							{selectedSteps.length === 0 ? (
-								<div className="flex flex-col items-center justify-center py-8 text-zinc-400 space-y-2">
+								<div className="flex flex-col items-center justify-center py-8 text-muted-foreground space-y-2">
 									<p className="text-sm font-medium">Tap steps below to solve</p>
 								</div>
 							) : (
@@ -124,12 +120,12 @@ export default function MathematicsQuiz() {
 										return (
 											<div
 												key={stepId}
-												className="flex items-center gap-4 p-5 bg-white dark:bg-zinc-900 rounded-[1.5rem] shadow-sm border border-blue-100 dark:border-blue-900/30 animate-in fade-in slide-in-from-left-2"
+												className="flex items-center gap-4 p-5 bg-card rounded-[1.5rem] shadow-sm border border-blue-100 dark:border-blue-900/30 animate-in fade-in slide-in-from-left-2"
 											>
 												<span className="w-7 h-7 rounded-full bg-blue-500 text-white text-xs flex items-center justify-center font-black">
 													{index + 1}
 												</span>
-												<span className="font-mono font-bold text-zinc-900 dark:text-white flex-1">
+												<span className="font-mono font-bold text-foreground flex-1">
 													{step?.text}
 												</span>
 												<Button
@@ -150,7 +146,7 @@ export default function MathematicsQuiz() {
 
 					{/* Available Steps Pool */}
 					<div className="space-y-4">
-						<h3 className="text-[10px] font-black uppercase text-zinc-400 tracking-widest px-1">
+						<h3 className="text-[10px] font-black uppercase text-muted-foreground tracking-widest px-1">
 							Step Fragments
 						</h3>
 						<div className="grid grid-cols-1 gap-3">
@@ -161,11 +157,11 @@ export default function MathematicsQuiz() {
 										type="button"
 										key={step.id}
 										onClick={() => handleStepClick(step.id)}
-										className="p-6 bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800 rounded-[2rem] text-left hover:border-blue-500 dark:hover:border-blue-500 transition-all hover:shadow-md active:scale-[0.98] group"
+										className="p-6 bg-card border border-border rounded-[2rem] text-left hover:border-blue-500 dark:hover:border-blue-500 transition-all hover:shadow-md active:scale-[0.98] group"
 									>
 										<div className="flex items-center gap-4">
 											<div className="w-8 h-8 rounded-lg bg-zinc-50 dark:bg-zinc-800 flex items-center justify-center group-hover:bg-blue-50 dark:group-hover:bg-blue-900/30 transition-colors">
-												<GripVertical className="w-4 h-4 text-zinc-400 group-hover:text-blue-500" />
+												<GripVertical className="w-4 h-4 text-muted-foreground group-hover:text-blue-500" />
 											</div>
 											<span className="font-mono font-bold text-zinc-700 dark:text-zinc-300">
 												{step.text}
@@ -202,7 +198,7 @@ export default function MathematicsQuiz() {
 			</ScrollArea>
 
 			{/* Math Keyboard & Actions */}
-			<footer className="absolute bottom-0 left-0 right-0 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl border-t border-zinc-100 dark:border-zinc-800 z-30">
+			<footer className="absolute bottom-0 left-0 right-0 bg-background/80 backdrop-blur-xl border-t border-border z-30">
 				<div className="max-w-2xl mx-auto w-full">
 					{/* Math Symbols */}
 					<div className="px-6 py-3 overflow-x-auto no-scrollbar">
@@ -212,7 +208,7 @@ export default function MathematicsQuiz() {
 									type="button"
 									key={symbol}
 									onClick={() => insertSymbol(symbol)}
-									className="px-4 py-2.5 bg-zinc-100 dark:bg-zinc-800 rounded-xl text-sm font-mono font-bold hover:bg-blue-500 hover:text-white dark:hover:bg-blue-600 transition-all whitespace-nowrap active:scale-90"
+									className="px-4 py-2.5 bg-muted rounded-xl text-sm font-mono font-bold hover:bg-blue-500 hover:text-white dark:hover:bg-blue-600 transition-all whitespace-nowrap active:scale-90"
 								>
 									{symbol}
 								</button>
@@ -230,7 +226,7 @@ export default function MathematicsQuiz() {
 							Hint
 						</Button>
 						<Button
-							className="flex-1 h-16 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 rounded-[2rem] font-bold text-lg shadow-xl shadow-zinc-900/10 disabled:opacity-50 transition-all active:scale-95"
+							className="flex-1 h-16 bg-foreground dark:bg-background text-background dark:text-foreground rounded-[2rem] font-bold text-lg shadow-xl shadow-zinc-900/10 disabled:opacity-50 transition-all active:scale-95"
 							disabled={selectedSteps.length === 0}
 							onClick={() => router.push('/lesson-complete')}
 						>

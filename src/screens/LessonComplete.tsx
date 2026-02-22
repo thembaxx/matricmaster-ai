@@ -168,7 +168,7 @@ export default function LessonComplete() {
 						transition={{ delay: 0.4 }}
 						className="grid grid-cols-3 gap-3 w-full max-w-md mb-8"
 					>
-						<div className="bg-white dark:bg-[#111827] p-4 rounded-2xl flex flex-col items-center shadow-sm border border-zinc-100 dark:border-zinc-800">
+						<div className="bg-white dark:bg-[#111827] p-4 rounded-2xl flex flex-col items-center shadow-sm border border-border">
 							<div className="w-10 h-10 rounded-full bg-yellow-50 dark:bg-yellow-900/20 flex items-center justify-center mb-3">
 								<CheckCircle2 className="w-6 h-6 text-[#efb036]" />
 							</div>
@@ -180,7 +180,7 @@ export default function LessonComplete() {
 							</span>
 						</div>
 
-						<div className="bg-white dark:bg-[#111827] p-4 rounded-2xl flex flex-col items-center shadow-sm border border-zinc-100 dark:border-zinc-800">
+						<div className="bg-white dark:bg-[#111827] p-4 rounded-2xl flex flex-col items-center shadow-sm border border-border">
 							<div className="w-10 h-10 rounded-full bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center mb-3">
 								<Clock className="w-6 h-6 text-blue-500" />
 							</div>
@@ -192,7 +192,7 @@ export default function LessonComplete() {
 							</span>
 						</div>
 
-						<div className="bg-white dark:bg-[#111827] p-4 rounded-2xl flex flex-col items-center shadow-sm border border-zinc-100 dark:border-zinc-800">
+						<div className="bg-white dark:bg-[#111827] p-4 rounded-2xl flex flex-col items-center shadow-sm border border-border">
 							<div className="w-10 h-10 rounded-full bg-orange-50 dark:bg-orange-900/20 flex items-center justify-center mb-3">
 								<Zap className="w-6 h-6 text-orange-500" />
 							</div>

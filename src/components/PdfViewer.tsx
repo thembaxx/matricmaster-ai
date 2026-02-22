@@ -229,7 +229,7 @@ export default function PdfViewer({ url, onClose, title }: PdfViewerProps) {
 						</div>
 					)}
 
-					<div className="flex items-center bg-zinc-100 dark:bg-zinc-800 rounded-full p-1 border border-zinc-200 dark:border-zinc-700 shadow-inner">
+					<div className="flex items-center bg-muted rounded-full p-1 border border-zinc-200 dark:border-zinc-700 shadow-inner">
 						<Button
 							variant="ghost"
 							size="icon"
@@ -267,7 +267,7 @@ export default function PdfViewer({ url, onClose, title }: PdfViewerProps) {
 				</div>
 
 				{/* Middle: Zoom Controls */}
-				<div className="hidden md:flex items-center gap-2 bg-zinc-100 dark:bg-zinc-800 rounded-full p-1 border border-zinc-200 dark:border-zinc-700 shadow-inner">
+				<div className="hidden md:flex items-center gap-2 bg-muted rounded-full p-1 border border-zinc-200 dark:border-zinc-700 shadow-inner">
 					<Button
 						variant="ghost"
 						size="icon"
@@ -316,7 +316,7 @@ export default function PdfViewer({ url, onClose, title }: PdfViewerProps) {
 				</div>
 				{/* Right: Actions */}
 				<div className="flex items-center gap-2">
-					<div className="flex items-center gap-1 bg-zinc-100 dark:bg-zinc-800 rounded-full p-1 border border-zinc-200 dark:border-zinc-700 shadow-inner">
+					<div className="flex items-center gap-1 bg-muted rounded-full p-1 border border-zinc-200 dark:border-zinc-700 shadow-inner">
 						<Button
 							variant="ghost"
 							size="icon"
@@ -364,7 +364,7 @@ export default function PdfViewer({ url, onClose, title }: PdfViewerProps) {
 						</Button>
 					</div>
 
-					<div className="hidden sm:flex items-center gap-1 bg-zinc-100 dark:bg-zinc-800 rounded-full p-1 border border-zinc-200 dark:border-zinc-700 shadow-inner">
+					<div className="hidden sm:flex items-center gap-1 bg-muted rounded-full p-1 border border-zinc-200 dark:border-zinc-700 shadow-inner">
 						<Button
 							variant="ghost"
 							size="icon"
@@ -622,11 +622,11 @@ export default function PdfViewer({ url, onClose, title }: PdfViewerProps) {
 									highlights.map((highlight) => (
 										<div
 											key={highlight.id}
-											className="group relative p-5 rounded-[2rem] border border-zinc-200 dark:border-zinc-800 transition-all hover:shadow-xl hover:border-brand-blue/30 bg-white dark:bg-zinc-900/50"
+											className="group relative p-5 rounded-[2rem] border border-zinc-200 dark:border-zinc-800 transition-all hover:shadow-xl hover:border-brand-blue/30 bg-card/50"
 											style={{ borderLeftWidth: '8px', borderLeftColor: highlight.color }}
 										>
 											<div className="flex items-start justify-between gap-4 mb-4">
-												<span className="px-3 py-1 rounded-full bg-zinc-100 dark:bg-zinc-800 text-[10px] font-black uppercase tracking-[0.15em] text-zinc-500 border border-zinc-200 dark:border-zinc-700">
+												<span className="px-3 py-1 rounded-full bg-muted text-[10px] font-black uppercase tracking-[0.15em] text-zinc-500 border border-zinc-200 dark:border-zinc-700">
 													Page {highlight.pageNumber}
 												</span>
 												<Button
@@ -640,17 +640,17 @@ export default function PdfViewer({ url, onClose, title }: PdfViewerProps) {
 												</Button>
 											</div>
 
-											<p className="text-sm font-medium leading-relaxed mb-4 text-zinc-700 dark:text-zinc-300 italic pl-2 border-l-2 border-zinc-100 dark:border-zinc-800">
+											<p className="text-sm font-medium leading-relaxed mb-4 text-zinc-700 dark:text-zinc-300 italic pl-2 border-l-2 border-border">
 												"{highlight.text}"
 											</p>
 
 											<div className="space-y-4">
 												{highlight.note ? (
-													<div className="p-4 rounded-2xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800 text-sm shadow-inner relative overflow-hidden">
+													<div className="p-4 rounded-2xl bg-zinc-50 dark:bg-zinc-900 border border-border text-sm shadow-inner relative overflow-hidden">
 														<div className="absolute top-0 right-0 p-1">
 															<Highlighter className="w-3 h-3 text-zinc-300 opacity-50" />
 														</div>
-														<p className="text-zinc-600 dark:text-zinc-400 leading-relaxed">
+														<p className="text-muted-foreground leading-relaxed">
 															{highlight.note}
 														</p>
 													</div>
@@ -674,7 +674,7 @@ export default function PdfViewer({ url, onClose, title }: PdfViewerProps) {
 								) : (
 									<div className="py-24 flex flex-col items-center justify-center text-center px-4">
 										<div className="relative mb-6">
-											<div className="w-20 h-20 bg-zinc-100 dark:bg-zinc-800 rounded-[2.5rem] flex items-center justify-center transform rotate-6 animate-pulse">
+											<div className="w-20 h-20 bg-muted rounded-[2.5rem] flex items-center justify-center transform rotate-6 animate-pulse">
 												<Highlighter className="w-10 h-10 text-zinc-300" />
 											</div>
 											<div className="absolute -bottom-2 -right-2 w-10 h-10 bg-brand-blue rounded-full flex items-center justify-center shadow-lg border-4 border-white dark:border-zinc-950">

@@ -47,7 +47,7 @@ export default function ErrorHint() {
 					</h1>
 
 					{/* Diagram Card */}
-					<Card className="p-8 mb-8 bg-white dark:bg-zinc-900 rounded-3xl shadow-sm border-zinc-100 dark:border-zinc-800 relative overflow-hidden">
+					<Card className="p-8 mb-8 bg-card rounded-3xl shadow-sm border-border relative overflow-hidden">
 						{/* Circuit Board Illustration Placeholder */}
 						<div className="relative w-full aspect-square max-w-[200px] mx-auto border-2 border-green-700 rounded-lg p-6 flex items-center justify-center">
 							<div className="w-full h-full border-2 border-dashed border-green-500 rounded relative">

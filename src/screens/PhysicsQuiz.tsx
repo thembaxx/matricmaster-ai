@@ -238,8 +238,8 @@ export default function PhysicsQuiz() {
 	};
 
 	return (
-		<div className="flex flex-col h-full bg-zinc-50 dark:bg-zinc-950 font-lexend relative">
-			<header className="px-6 pt-12 pb-4 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl sticky top-0 z-20 border-b border-zinc-100 dark:border-zinc-800 shrink-0">
+		<div className="flex flex-col h-full bg-background font-lexend relative">
+			<header className="px-6 pt-12 pb-4 bg-background/80 backdrop-blur-xl sticky top-0 z-20 border-b border-border shrink-0">
 				<div className="max-w-2xl mx-auto w-full flex items-center gap-4 mb-4">
 					<Button
 						variant="ghost"
@@ -251,7 +251,7 @@ export default function PhysicsQuiz() {
 					</Button>
 					<div className="flex-1">
 						<div className="flex justify-between items-center mb-2">
-							<span className="text-sm font-bold text-zinc-600 dark:text-zinc-400">
+							<span className="text-sm font-bold text-muted-foreground">
 								Question {currentQuestionIndex + 1} of {questions.length}
 							</span>
 							<div className="flex items-center gap-2">
@@ -263,7 +263,7 @@ export default function PhysicsQuiz() {
 								<span className="text-xs text-muted-foreground">{formatTime(elapsedSeconds)}</span>
 							</div>
 						</div>
-						<div className="relative h-2 w-full overflow-hidden rounded-full bg-zinc-100 dark:bg-zinc-800">
+						<div className="relative h-2 w-full overflow-hidden rounded-full bg-muted">
 							<div
 								className="h-full bg-brand-purple transition-all"
 								style={{ width: `${progress}%` }}
@@ -281,11 +281,11 @@ export default function PhysicsQuiz() {
 					<div className="space-y-6">
 						<div className="flex items-center gap-3">
 							<TrendingUp className="w-5 h-5 text-brand-purple" />
-							<h3 className="text-[10px] font-black uppercase text-zinc-400 tracking-[0.2em]">
+							<h3 className="text-[10px] font-black uppercase text-muted-foreground tracking-[0.2em]">
 								NSC Physics P1 2025
 							</h3>
 						</div>
-						<h2 className="text-2xl font-black text-zinc-900 dark:text-white leading-tight">
+						<h2 className="text-2xl font-black text-foreground leading-tight">
 							{currentQuestion.question}
 						</h2>
 

@@ -33,7 +33,7 @@
     text-wrap: balance;
   }
   .ios-glass {
-    @apply bg-surface-base/70 dark:bg-surface-elevated/80 backdrop-blur-2xl border border-border/50 dark:border-border-strong/30;
+    @apply bg-surface-base/70 dark:bg-surface-base/40 backdrop-blur-2xl border border-border/50 dark:border-white/10;
   }
   .ios-active-scale {
     @apply active:scale-[0.96] transition-transform duration-200;
@@ -92,27 +92,27 @@
   --color-label-tertiary: var(--label-tertiary);
   --color-label-quaternary: var(--label-quaternary);
 
-  /* Brand Colors */
-  --color-brand-blue: #2563eb;
-  --color-brand-blue-light: #60a5fa;
-  --color-brand-amber: #f59e0b;
-  --color-brand-amber-light: #fbbf24;
-  --color-brand-purple: #7c3aed;
-  --color-brand-purple-light: #a78bfa;
-  --color-brand-green: #059669;
-  --color-brand-green-light: #34d399;
-  --color-brand-red: #dc2626;
-  --color-brand-orange: #ea580c;
-  --color-brand-gray: #4b5563;
+  /* Brand Colors - Google Inspired */
+  --color-brand-blue: oklch(0.6 0.17 250);
+  --color-brand-blue-light: oklch(0.75 0.12 250);
+  --color-brand-amber: oklch(0.8 0.18 80);
+  --color-brand-amber-light: oklch(0.88 0.12 80);
+  --color-brand-purple: oklch(0.55 0.2 300);
+  --color-brand-purple-light: oklch(0.7 0.15 300);
+  --color-brand-green: oklch(0.65 0.18 150);
+  --color-brand-green-light: oklch(0.8 0.12 150);
+  --color-brand-red: oklch(0.6 0.2 25);
+  --color-brand-orange: oklch(0.7 0.18 45);
+  --color-brand-gray: oklch(0.5 0 0);
 
-  /* Subject Colors */
-  --color-math: #3b82f6;
-  --color-physics: #8b5cf6;
-  --color-life-sci: #10b981;
-  --color-accounting: #f59e0b;
-  --color-english: #ec4899;
-  --color-geography: #06b6d4;
-  --color-history: #f97316;
+  /* Subject Colors - Expressive Palette */
+  --color-math: oklch(0.6 0.17 250);
+  --color-physics: oklch(0.55 0.2 300);
+  --color-life-sci: oklch(0.65 0.18 150);
+  --color-accounting: oklch(0.8 0.18 80);
+  --color-english: oklch(0.65 0.22 350);
+  --color-geography: oklch(0.65 0.15 210);
+  --color-history: oklch(0.7 0.18 45);
 
   --font-inter: var(--font-inter);
   --font-lexend: var(--font-lexend);
@@ -126,7 +126,7 @@
 
 @layer utilities {
   .premium-glass {
-    @apply bg-card/80 backdrop-blur-xl border border-border/20 shadow-xl;
+    @apply bg-card/80 backdrop-blur-xl border border-border/20 shadow-xl dark:bg-surface-overlay/30 dark:border-white/15;
   }
   .premium-glass-hover {
     @apply hover:bg-card/90 transition-colors duration-300;
@@ -146,49 +146,49 @@
 
 :root {
   --radius: 1.25rem;
-  --background: oklch(0.99 0.005 260);
-  --foreground: oklch(0.15 0.02 260);
+  --background: oklch(0.99 0 0);
+  --foreground: oklch(0.15 0 0);
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.15 0.02 260);
+  --card-foreground: oklch(0.15 0 0);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.15 0.02 260);
-  --primary: oklch(0.58 0.23 260);
-  --primary-foreground: oklch(0.99 0.01 260);
-  --secondary: oklch(0.96 0.01 260);
-  --secondary-foreground: oklch(0.25 0.04 260);
-  --muted: oklch(0.95 0.01 260);
-  --muted-foreground: oklch(0.45 0.02 260);
-  --accent: oklch(0.92 0.02 260);
+  --popover-foreground: oklch(0.15 0 0);
+  --primary: oklch(0.6 0.17 250);
+  --primary-foreground: oklch(0.99 0 0);
+  --secondary: oklch(0.96 0 0);
+  --secondary-foreground: oklch(0.25 0 0);
+  --muted: oklch(0.95 0 0);
+  --muted-foreground: oklch(0.45 0 0);
+  --accent: oklch(0.92 0.01 250);
   --accent-foreground: oklch(0.2 0.04 260);
-  --destructive: oklch(0.55 0.22 25);
-  --border: oklch(0.92 0.01 260);
-  --border-strong: oklch(0.85 0.02 260);
-  --input: oklch(0.92 0.01 260);
-  --ring: oklch(0.58 0.23 260);
-  --chart-1: oklch(0.6 0.22 260);
-  --chart-2: oklch(0.72 0.16 160);
-  --chart-3: oklch(0.68 0.22 280);
-  --chart-4: oklch(0.78 0.18 80);
-  --chart-5: oklch(0.65 0.2 40);
-  --sidebar: oklch(0.99 0.005 260);
-  --sidebar-foreground: oklch(0.15 0.02 260);
-  --sidebar-primary: oklch(0.58 0.23 260);
-  --sidebar-primary-foreground: oklch(0.99 0.01 260);
-  --sidebar-accent: oklch(0.96 0.01 260);
-  --sidebar-accent-foreground: oklch(0.25 0.04 260);
-  --sidebar-border: oklch(0.92 0.01 260);
-  --sidebar-ring: oklch(0.58 0.23 260);
+  --destructive: oklch(0.6 0.2 25);
+  --border: oklch(0.92 0 0);
+  --border-strong: oklch(0.85 0 0);
+  --input: oklch(0.92 0 0);
+  --ring: oklch(0.6 0.17 250);
+  --chart-1: oklch(0.6 0.17 250);
+  --chart-2: oklch(0.65 0.18 150);
+  --chart-3: oklch(0.55 0.2 300);
+  --chart-4: oklch(0.8 0.18 80);
+  --chart-5: oklch(0.7 0.18 45);
+  --sidebar: oklch(0.99 0 0);
+  --sidebar-foreground: oklch(0.15 0 0);
+  --sidebar-primary: oklch(0.6 0.17 250);
+  --sidebar-primary-foreground: oklch(0.99 0 0);
+  --sidebar-accent: oklch(0.96 0 0);
+  --sidebar-accent-foreground: oklch(0.25 0 0);
+  --sidebar-border: oklch(0.92 0 0);
+  --sidebar-ring: oklch(0.6 0.17 250);
 
   /* Apple HIG: Elevation Surfaces */
-  --surface-base: oklch(0.99 0.005 260);
+  --surface-base: oklch(0.99 0 0);
   --surface-elevated: oklch(1 0 0);
   --surface-overlay: oklch(1 0 0);
 
   /* Apple HIG: Semantic Label Colors */
-  --label-primary: oklch(0.15 0.02 260);
-  --label-secondary: oklch(0.45 0.02 260);
-  --label-tertiary: oklch(0.65 0.02 260);
-  --label-quaternary: oklch(0.8 0.02 260);
+  --label-primary: oklch(0.15 0 0);
+  --label-secondary: oklch(0.45 0 0);
+  --label-tertiary: oklch(0.65 0 0);
+  --label-quaternary: oklch(0.8 0 0);
 
   /* Accessibility Focus */
   --focus-ring-width: 3px;
@@ -201,41 +201,42 @@
 }
 
 .dark {
-  --background: oklch(0.08 0.01 260);
-  --foreground: oklch(0.98 0.01 260);
-  --card: oklch(0.12 0.02 260);
-  --card-foreground: oklch(0.98 0.01 260);
-  --popover: oklch(0.12 0.02 260);
-  --popover-foreground: oklch(0.98 0.01 260);
-  --primary: oklch(0.65 0.18 260);
-  --primary-foreground: oklch(0.08 0.01 260);
-  --secondary: oklch(0.16 0.02 260);
-  --secondary-foreground: oklch(0.98 0.01 260);
-  --muted: oklch(0.16 0.02 260);
-  --muted-foreground: oklch(0.65 0.02 260);
-  --accent: oklch(0.2 0.03 260);
-  --accent-foreground: oklch(0.98 0.01 260);
-  --destructive: oklch(0.55 0.22 25);
-  --border: oklch(0.16 0.02 260);
-  --border-strong: oklch(0.22 0.03 260);
-  --input: oklch(0.16 0.02 260);
-  --ring: oklch(0.65 0.18 260);
+  --background: oklch(0.08 0.01 255);
+  --foreground: oklch(0.99 0.005 255);
+  --card: oklch(0.11 0.01 255);
+  --card-foreground: oklch(0.99 0.005 255);
+  --popover: oklch(0.11 0.01 255);
+  --popover-foreground: oklch(0.99 0.005 255);
+  --primary: oklch(0.65 0.22 265);
+  --primary-foreground: oklch(0.99 0.005 255);
+  --secondary: oklch(0.14 0.01 255);
+  --secondary-foreground: oklch(0.99 0.005 255);
+  --muted: oklch(0.14 0.01 255);
+  --muted-foreground: oklch(0.65 0.01 255);
+  --accent: oklch(0.16 0.02 265);
+  --accent-foreground: oklch(0.99 0.005 255);
+  --destructive: oklch(0.45 0.18 25);
+  --destructive-foreground: oklch(0.99 0.005 255);
+  --border: oklch(0.16 0.01 255);
+  --border-strong: oklch(0.2 0.01 255);
+  --input: oklch(0.14 0.01 255);
+  --ring: oklch(0.65 0.22 265);
 
   /* Semantic Colors Dark */
-  --success: oklch(0.75 0.15 150);
-  --warning: oklch(0.8 0.15 80);
-  --info: oklch(0.7 0.12 250);
+  --success: oklch(0.7 0.18 150);
+  --warning: oklch(0.8 0.16 80);
+  --info: oklch(0.65 0.22 265);
 
-  /* Apple HIG: Elevation Surfaces (darker base, lighter elevated) */
-  --surface-base: oklch(0.1 0.01 260);
-  --surface-elevated: oklch(0.16 0.02 260);
-  --surface-overlay: oklch(0.22 0.03 260);
+  /* Apple HIG: Elevation Surfaces */
+  --surface-base: oklch(0.09 0.01 255);
+  --surface-elevated: oklch(0.13 0.01 255);
+  --surface-overlay: oklch(0.17 0.01 255);
 
   /* Apple HIG: Semantic Label Colors */
-  --label-primary: oklch(0.98 0.01 260);
-  --label-secondary: oklch(0.75 0.01 260);
-  --label-tertiary: oklch(0.55 0.01 260);
-  --label-quaternary: oklch(0.4 0.01 260);
+  --label-primary: oklch(0.99 0.005 255);
+  --label-secondary: oklch(0.7 0.01 255);
+  --label-tertiary: oklch(0.5 0.01 255);
+  --label-quaternary: oklch(0.35 0.01 255);
 }
 
 @layer base {
@@ -393,10 +394,10 @@
 .dark .animate-shimmer {
   background: linear-gradient(
     90deg,
-    rgba(0, 0, 0, 0) 0,
-    rgba(255, 255, 255, 0.02) 20%,
-    rgba(255, 255, 255, 0.05) 60%,
-    rgba(0, 0, 0, 0)
+    rgba(255, 255, 255, 0) 0,
+    rgba(255, 255, 255, 0.03) 20%,
+    rgba(255, 255, 255, 0.08) 60%,
+    rgba(255, 255, 255, 0)
   );
   background-size: 200% 100%;
 }

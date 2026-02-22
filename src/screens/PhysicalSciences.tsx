@@ -21,7 +21,7 @@ export default function PhysicalSciences() {
 	return (
 		<div className="flex flex-col h-full bg-background">
 			{/* Header */}
-			<header className="px-6 pt-12 pb-4 bg-white dark:bg-zinc-900 sticky top-0 z-20 border-b border-zinc-100 dark:border-zinc-800 shrink-0">
+			<header className="px-6 pt-12 pb-4 bg-card sticky top-0 z-20 border-b border-border shrink-0">
 				<div className="flex items-center justify-between mb-4">
 					<div className="flex items-center gap-4">
 						<Button variant="ghost" size="icon" onClick={() => router.push('/dashboard')}>
