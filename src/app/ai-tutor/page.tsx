@@ -298,7 +298,7 @@ export default function AITutorPage() {
 	}
 
 	return (
-		<div className="min-h-screen bg-background flex">
+		<div className="min-h-screen bg-background flex pb-32">
 			{session.user && (
 				<ConversationSidebar
 					userId={session.user.id}
