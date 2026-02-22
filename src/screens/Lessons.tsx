@@ -71,10 +71,10 @@ export default function Lessons() {
 	const [activeCategory, setActiveCategory] = useState('all');
 
 	return (
-		<div className="flex flex-col h-full bg-background">
+		<div className="flex flex-col h-full min-w-0 bg-background overflow-x-hidden">
 			{/* Header */}
-			<header className="px-6 pt-12 pb-6 shrink-0">
-				<div className="flex items-start justify-between">
+			<header className="px-4 sm:px-6 pt-8 sm:pt-12 pb-4 sm:pb-6 shrink-0">
+				<div className="flex items-start justify-between gap-4">
 					<div className="space-y-1">
 						<h1 className="text-2xl font-black text-foreground tracking-tight">Grade 12 Prep</h1>
 						<p className="text-muted-foreground font-medium flex items-center gap-1.5 text-sm">
@@ -85,17 +85,17 @@ export default function Lessons() {
 					<Button
 						variant="outline"
 						size="sm"
-						className="rounded-full bg-card border-border shadow-sm gap-2 h-10 px-4"
+						className="rounded-full bg-card border-border shadow-sm gap-1 sm:gap-2 h-9 sm:h-10 px-3 sm:px-4"
 					>
 						<Globe className="w-4 h-4 text-muted-foreground" />
-						<span className="font-bold text-foreground">English</span>
+						<span className="font-bold text-foreground hidden sm:inline">English</span>
 						<ChevronDown className="w-4 h-4 text-muted-foreground/50" />
 					</Button>
 				</div>
 
 				{/* Category selector */}
 				<nav
-					className="flex gap-3 mt-8 overflow-x-auto no-scrollbar"
+					className="flex gap-2 sm:gap-3 mt-6 sm:mt-8 overflow-x-auto no-scrollbar"
 					aria-label="Lesson categories"
 				>
 					{categories.map((cat) => (
@@ -104,7 +104,7 @@ export default function Lessons() {
 							type="button"
 							onClick={() => setActiveCategory(cat.id)}
 							aria-pressed={activeCategory === cat.id ? 'true' : 'false'}
-							className={`flex items-center gap-2 px-5 py-3 rounded-full text-sm font-bold whitespace-nowrap transition-all border shadow-sm ${
+							className={`flex items-center gap-1.5 sm:gap-2 px-4 sm:px-5 py-2.5 sm:py-3 rounded-full text-xs sm:text-sm font-bold whitespace-nowrap transition-all border shadow-sm ${
 								activeCategory === cat.id
 									? 'bg-foreground text-background border-foreground shadow-lg'
 									: 'bg-card text-muted-foreground border-border hover:text-foreground'
@@ -121,7 +121,7 @@ export default function Lessons() {
 
 			{/* Path Content */}
 			<ScrollArea className="flex-1">
-				<main className="px-6 py-4 relative">
+				<main className="px-4 sm:px-6 py-4 relative">
 					{/* Vertical Line */}
 					<div className="absolute left-9.5 top-0 bottom-0 w-0.5 border-l-2 border-dashed border-border/50 z-0" />
 

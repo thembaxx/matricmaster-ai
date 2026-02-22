@@ -111,7 +111,7 @@ export default function Dashboard({ initialProgress, initialStreak }: DashboardP
 	}
 
 	return (
-		<div className="flex flex-col h-full bg-background pb-24 lg:pb-12 relative overflow-hidden">
+		<div className="flex flex-col h-full min-w-0 bg-background pb-24 lg:pb-12 relative overflow-x-hidden">
 			<BackgroundMesh variant="subtle" />
 
 			<DashboardHeader
@@ -120,7 +120,7 @@ export default function Dashboard({ initialProgress, initialStreak }: DashboardP
 				unreadCount={unreadCount}
 			/>
 
-			<div className="px-6 pb-4 lg:px-0">
+			<div className="px-4 sm:px-6 pb-4 lg:px-0">
 				<XpHeader variant="full" />
 			</div>
 
@@ -129,9 +129,9 @@ export default function Dashboard({ initialProgress, initialStreak }: DashboardP
 					variants={STAGGER_CONTAINER}
 					initial="hidden"
 					animate="visible"
-					className="px-6 py-6 space-y-8 lg:px-0"
+					className="px-4 sm:px-6 py-6 space-y-6 sm:space-y-8 lg:px-0"
 				>
-					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+					<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
 						<m.div variants={STAGGER_ITEM}>
 							<WeeklyChallenge />
 						</m.div>

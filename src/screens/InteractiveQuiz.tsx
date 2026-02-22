@@ -121,15 +121,15 @@ export default function InteractiveQuiz() {
 	if (!currentQuestion) return null;
 
 	return (
-		<div className="flex flex-col h-full bg-background relative overflow-hidden">
-			<header className="px-6 pt-12 pb-4 ios-glass sticky top-0 z-20 shrink-0">
+		<div className="flex flex-col h-full min-w-0 bg-background relative overflow-x-hidden">
+			<header className="px-4 sm:px-6 pt-8 sm:pt-12 pb-4 ios-glass sticky top-0 z-20 shrink-0">
 				<div className="max-w-2xl mx-auto w-full">
-					<div className="flex items-center gap-4 mb-4">
+					<div className="flex items-center gap-3 sm:gap-4 mb-4">
 						<Button
 							variant="ghost"
 							size="icon"
 							onClick={() => router.back()}
-							className="rounded-full"
+							className="rounded-full h-10 w-10 sm:h-11 sm:w-11"
 						>
 							<ArrowLeft className="w-5 h-5" />
 						</Button>
@@ -171,7 +171,7 @@ export default function InteractiveQuiz() {
 			</header>
 
 			<div className="grow overflow-hidden">
-				<main className="px-6 py-8 space-y-8 pb-64 max-w-2xl mx-auto w-full">
+				<main className="px-4 sm:px-6 py-6 sm:py-8 space-y-6 sm:space-y-8 pb-64 max-w-2xl mx-auto w-full">
 					<div className="space-y-6">
 						<div className="flex items-center gap-3">
 							<TrendingUp className={`w-5 h-5 ${colors.text}`} />
