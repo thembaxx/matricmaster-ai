@@ -27,6 +27,7 @@ export function SearchHeader({ query, onQueryChange }: SearchHeaderProps) {
 					onChange={(e) => onQueryChange(e.target.value)}
 					placeholder="What are you looking for?"
 					className="pl-14 bg-muted/30 h-16 rounded-[1.5rem] border-2 text-lg font-bold focus:ring-primary/20"
+					aria-label="Search topics, questions, and past papers"
 				/>
 				<AnimatePresence>
 					{query && (

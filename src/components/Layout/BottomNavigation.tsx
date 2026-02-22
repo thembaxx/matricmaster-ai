@@ -34,6 +34,7 @@ export function BottomNavigation({ pathname }: BottomNavigationProps) {
 					<Link
 						key={item.href}
 						href={item.href}
+						aria-current={isActive ? 'page' : undefined}
 						className="relative flex flex-col items-center justify-center py-2 transition-all duration-300 group rounded-2xl"
 					>
 						<AnimatePresence>

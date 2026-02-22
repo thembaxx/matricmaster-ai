@@ -65,6 +65,7 @@ function MobileMenuContent({ pathname, onClose }: MobileMenuContentProps) {
 							<Link
 								key={item.href}
 								href={item.href}
+								aria-current={isActive ? 'page' : undefined}
 								className={`flex items-center gap-4 p-3 rounded-2xl transition-all duration-200 ${
 									isActive
 										? 'bg-primary text-primary-foreground shadow-lg shadow-primary/20'
