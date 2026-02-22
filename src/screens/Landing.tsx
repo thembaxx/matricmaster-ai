@@ -1,26 +1,15 @@
 'use client';
 
 import { m } from 'framer-motion';
-import {
-	Atom,
-	Calculator,
-	ChevronRight,
-	FlaskConical,
-	Instagram,
-	Linkedin,
-	Mail,
-	Microscope,
-	Sparkles,
-	Twitter,
-} from 'lucide-react';
+import { Atom, Calculator, ChevronRight, FlaskConical, Microscope, Sparkles } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { useId, useState } from 'react';
+import { useId } from 'react';
+import { Footer } from '@/components/Layout/footer';
 import { SmoothText, SmoothWords } from '@/components/Transition/SmoothText';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { SUBJECTS } from '@/constants/mock-data';
 import { STAGGER_CONTAINER, STAGGER_ITEM } from '@/lib/animation-presets';
@@ -32,88 +21,88 @@ const ICON_MAP: Record<string, React.ElementType> = {
 	Microscope: Microscope,
 };
 
-function EmailSubscriptionForm() {
-	const [email, setEmail] = useState('');
-	const [isSubmitting, setIsSubmitting] = useState(false);
-	const [isSubscribed, setIsSubscribed] = useState(false);
+// function EmailSubscriptionForm() {
+// 	const [email, setEmail] = useState('');
+// 	const [isSubmitting, setIsSubmitting] = useState(false);
+// 	const [isSubscribed, setIsSubscribed] = useState(false);
 
-	const handleSubmit = async (e: React.FormEvent) => {
-		e.preventDefault();
-		if (!email) return;
+// 	const handleSubmit = async (e: React.FormEvent) => {
+// 		e.preventDefault();
+// 		if (!email) return;
 
-		setIsSubmitting(true);
-		await new Promise((resolve) => setTimeout(resolve, 1000));
-		setIsSubscribed(true);
-		setIsSubmitting(false);
-	};
+// 		setIsSubmitting(true);
+// 		await new Promise((resolve) => setTimeout(resolve, 1000));
+// 		setIsSubscribed(true);
+// 		setIsSubmitting(false);
+// 	};
 
-	if (isSubscribed) {
-		return (
-			<m.div
-				initial={{ opacity: 0, scale: 0.95 }}
-				animate={{ opacity: 1, scale: 1 }}
-				className="bg-brand-green/10 rounded-[2.5rem] p-8 text-center"
-			>
-				<div className="w-16 h-16 bg-brand-green rounded-full flex items-center justify-center mx-auto mb-4">
-					<Sparkles className="w-8 h-8 text-white" />
-				</div>
-				<h3 className="text-xl font-black text-foreground mb-2">You're subscribed!</h3>
-				<p className="text-muted-foreground">
-					Thanks for subscribing. We'll send you exam tips and updates.
-				</p>
-			</m.div>
-		);
-	}
+// 	if (isSubscribed) {
+// 		return (
+// 			<m.div
+// 				initial={{ opacity: 0, scale: 0.95 }}
+// 				animate={{ opacity: 1, scale: 1 }}
+// 				className="bg-brand-green/10 rounded-[2.5rem] p-8 text-center"
+// 			>
+// 				<div className="w-16 h-16 bg-brand-green rounded-full flex items-center justify-center mx-auto mb-4">
+// 					<Sparkles className="w-8 h-8 text-white" />
+// 				</div>
+// 				<h3 className="text-xl font-black text-foreground mb-2">You're subscribed!</h3>
+// 				<p className="text-muted-foreground">
+// 					Thanks for subscribing. We'll send you exam tips and updates.
+// 				</p>
+// 			</m.div>
+// 		);
+// 	}
 
-	return (
-		<m.div
-			initial={{ opacity: 0, y: 20 }}
-			whileInView={{ opacity: 1, y: 0 }}
-			viewport={{ once: true }}
-			className="space-y-6"
-		>
-			<div className="space-y-2">
-				<p className="text-xs font-black uppercase tracking-[0.3em] text-muted-foreground">
-					Stay Updated
-				</p>
-				<h3 className="text-xl sm:text-2xl font-black text-foreground">Get exam tips & updates</h3>
-			</div>
-			<form onSubmit={handleSubmit} className="space-y-4">
-				<div className="flex flex-col sm:flex-row gap-3">
-					<Input
-						type="email"
-						placeholder="Enter your email"
-						value={email}
-						onChange={(e) => setEmail(e.target.value)}
-						className="h-12 sm:h-14 px-4 sm:px-6 rounded-xl sm:rounded-2xl text-base border-border bg-background flex-1"
-						required
-					/>
-					<Button
-						type="submit"
-						size="lg"
-						disabled={isSubmitting}
-						className="h-12 sm:h-14 px-6 sm:px-8 rounded-xl sm:rounded-2xl font-black shrink-0"
-					>
-						{isSubmitting ? (
-							<span className="flex items-center gap-2">
-								<span className="animate-spin">⏳</span>
-								Subscribing...
-							</span>
-						) : (
-							<span className="flex items-center gap-2">
-								<Mail className="w-5 h-5" />
-								Subscribe
-							</span>
-						)}
-					</Button>
-				</div>
-				<p className="text-xs text-muted-foreground">
-					No spam, just exam tips and updates. Unsubscribe anytime.
-				</p>
-			</form>
-		</m.div>
-	);
-}
+// 	return (
+// 		<m.div
+// 			initial={{ opacity: 0, y: 20 }}
+// 			whileInView={{ opacity: 1, y: 0 }}
+// 			viewport={{ once: true }}
+// 			className="space-y-6"
+// 		>
+// 			<div className="space-y-2">
+// 				<p className="text-xs font-black uppercase tracking-[0.3em] text-muted-foreground">
+// 					Stay Updated
+// 				</p>
+// 				<h3 className="text-xl sm:text-2xl font-black text-foreground">Get exam tips & updates</h3>
+// 			</div>
+// 			<form onSubmit={handleSubmit} className="space-y-4">
+// 				<div className="flex flex-col sm:flex-row gap-3">
+// 					<Input
+// 						type="email"
+// 						placeholder="Enter your email"
+// 						value={email}
+// 						onChange={(e) => setEmail(e.target.value)}
+// 						className="h-12 sm:h-14 px-4 sm:px-6 rounded-xl sm:rounded-2xl text-base border-border bg-background flex-1"
+// 						required
+// 					/>
+// 					<Button
+// 						type="submit"
+// 						size="lg"
+// 						disabled={isSubmitting}
+// 						className="h-12 sm:h-14 px-6 sm:px-8 rounded-xl sm:rounded-2xl font-black shrink-0"
+// 					>
+// 						{isSubmitting ? (
+// 							<span className="flex items-center gap-2">
+// 								<span className="animate-spin">⏳</span>
+// 								Subscribing...
+// 							</span>
+// 						) : (
+// 							<span className="flex items-center gap-2">
+// 								<Mail className="w-5 h-5" />
+// 								Subscribe
+// 							</span>
+// 						)}
+// 					</Button>
+// 				</div>
+// 				<p className="text-xs text-muted-foreground">
+// 					No spam, just exam tips and updates. Unsubscribe anytime.
+// 				</p>
+// 			</form>
+// 		</m.div>
+// 	);
+// }
 
 export default function Landing() {
 	const router = useRouter();
@@ -123,10 +112,10 @@ export default function Landing() {
 		<div className="flex flex-col h-full min-w-0 w-full bg-background overflow-x-hidden relative">
 			{/* Decorative Orbs */}
 			<div className="absolute top-[-10%] right-[-10%] w-125 h-125 bg-primary/5 rounded-full blur-[120px] pointer-events-none" />
-			<div className="absolute bottom-[-10%] left-[-10%] w-100 h-100 bg-brand-purple/5 rounded-full blur-[100px] pointer-events-none" />
+			{/* <div className="absolute bottom-[-10%] left-[-10%] w-100 h-100 bg-brand-purple/5 rounded-full blur-[100px] pointer-events-none" /> */}
 
 			<ScrollArea className="flex-1 no-scrollbar relative z-10">
-				<main className="pb-32 sm:pb-40 px-4 sm:px-6 max-w-7xl mx-auto w-full lg:px-0 lg:pb-24">
+				<main className="pb-4 px-6 sm:px-6 max-w-7xl mx-auto w-full lg:px-0 lg:pb-24">
 					{/* Hero Section - Responsive Layout */}
 					<section className="pt-10 pb-16 sm:pt-12 sm:pb-20 lg:pt-24 lg:pb-32 flex flex-col lg:flex-row items-center gap-12 lg:gap-16 xl:gap-24">
 						<div className="flex-1 flex flex-col items-center lg:items-start text-center lg:text-left space-y-6 sm:space-y-8">
@@ -207,13 +196,13 @@ export default function Landing() {
 							initial={{ opacity: 0, x: 50, rotate: 5 }}
 							animate={{ opacity: 1, x: 0, rotate: 0 }}
 							transition={{ type: 'spring', stiffness: 100, damping: 20, delay: 0.3 }}
-							className="relative flex-1 w-full max-w-[320px] sm:max-w-[400px] md:max-w-[450px] lg:max-w-none flex items-center justify-center"
+							className="relative flex-1 w-full max-w-[320px] sm:max-w-100 md:max-w-112.5 lg:max-w-none flex items-center justify-center"
 						>
 							<div className="absolute inset-0 bg-linear-to-tr from-primary/20 to-brand-purple/20 rounded-full blur-[100px] animate-pulse-slow" />
 
 							<m.div
 								whileHover={{ scale: 1.02 }}
-								className="relative w-full aspect-square max-w-[300px] sm:max-w-[350px] md:max-w-[450px] bg-card rounded-2xl sm:rounded-[3rem] md:rounded-[4rem] shadow-2xl flex items-center justify-center transform border-4 border-card transition-transform duration-700 overflow-hidden"
+								className="relative w-full aspect-square max-w-75 sm:max-w-87.5 md:max-w-112.5 bg-card rounded-2xl sm:rounded-[3rem] md:rounded-[4rem] shadow-2xl flex items-center justify-center transform border-4 border-card transition-transform duration-700 overflow-hidden"
 								style={{ boxShadow: '0 40px 100px -20px rgba(0,0,0,0.15)' }}
 							>
 								<div className="absolute inset-0 bg-primary/5" />
@@ -377,55 +366,7 @@ export default function Landing() {
 					</section>
 
 					{/* Footer Section */}
-					<footer className="mt-16 sm:mt-24 pt-12 sm:pt-16 border-t border-border/60">
-						<div className="grid grid-cols-1 md:grid-cols-2 gap-10 sm:gap-16 lg:gap-16 xl:gap-24">
-							<div className="space-y-6 sm:space-y-8">
-								<div className="flex items-center gap-3">
-									<div className="w-10 h-10 sm:w-12 sm:h-12 bg-primary rounded-xl sm:rounded-2xl flex items-center justify-center">
-										<Calculator className="w-5 h-5 sm:w-6 sm:h-6 text-primary-foreground" />
-									</div>
-									<span className="text-xl sm:text-2xl font-black text-foreground tracking-tighter">
-										MatricMaster
-									</span>
-								</div>
-								<p className="text-base text-muted-foreground font-medium max-w-sm">
-									Master your Matrics through practice. Interactive past papers and step-by-step
-									guides for South African Grade 12 students.
-								</p>
-								<div className="flex items-center gap-3 sm:gap-4">
-									{[
-										{ icon: Twitter, href: 'https://twitter.com/matricmaster' },
-										{ icon: Instagram, href: 'https://instagram.com/matricmaster' },
-										{ icon: Linkedin, href: 'https://linkedin.com/company/matricmaster' },
-									].map((social, i) => (
-										<a
-											key={i}
-											href={social.href}
-											target="_blank"
-											rel="noopener noreferrer"
-											className="w-11 h-11 rounded-full bg-muted flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors duration-300"
-										>
-											<social.icon className="w-5 h-5" />
-										</a>
-									))}
-								</div>
-							</div>
-
-							<EmailSubscriptionForm />
-						</div>
-
-						<div className="mt-12 sm:mt-16 pt-8 border-t border-border/40 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
-							<p>© {new Date().getFullYear()} MatricMaster AI. All rights reserved.</p>
-							<div className="flex items-center gap-4 sm:gap-6">
-								<a href="/privacy" className="hover:text-foreground transition-colors">
-									Privacy Policy
-								</a>
-								<a href="/terms" className="hover:text-foreground transition-colors">
-									Terms of Service
-								</a>
-							</div>
-						</div>
-					</footer>
+					<Footer />
 				</main>
 			</ScrollArea>
 		</div>
