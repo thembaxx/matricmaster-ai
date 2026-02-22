@@ -26,7 +26,30 @@ export async function POST(request: NextRequest) {
 			return NextResponse.json({ error: 'Ably not configured' }, { status: 500 });
 		}
 
-		const body = await request.json();
+		// Parse body - handle both JSON and form-encoded data
+		const contentType = request.headers.get('content-type') || '';
+		let body: { clientId?: string; userId?: string };
+
+		if (contentType.includes('application/json')) {
+			body = await request.json();
+		} else if (contentType.includes('application/x-www-form-urlencoded')) {
+			const formData = await request.formData();
+			body = {
+				clientId: formData.get('clientId') as string,
+				userId: formData.get('userId') as string,
+			};
+		} else {
+			// Try to parse as JSON anyway for backwards compatibility
+			try {
+				body = await request.json();
+			} catch {
+				return NextResponse.json(
+					{ error: 'Invalid content type. Expected JSON or form-encoded data.' },
+					{ status: 400 }
+				);
+			}
+		}
+
 		const { clientId, userId } = body;
 
 		if (!clientId) {
