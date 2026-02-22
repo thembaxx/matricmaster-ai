@@ -26,7 +26,7 @@ export function BottomNavigation({ pathname }: BottomNavigationProps) {
 	return (
 		<nav
 			aria-label="Bottom navigation"
-			className="lg:hidden fixed bottom-6 left-1/2 -translate-x-1/2 w-[92%] max-w-lg z-40 ios-glass rounded-3xl shadow-2xl border-white/20 dark:border-white/10 grid grid-cols-5 p-2 transition-all duration-500"
+			className="lg:hidden fixed bottom-8 left-1/2 -translate-x-1/2 w-[92%] max-w-md z-40 ios-glass rounded-[2.5rem] shadow-2xl border-white/20 dark:border-white/10 grid grid-cols-5 p-2 transition-all duration-500"
 		>
 			{navItems.map((item) => {
 				const isActive = pathname === item.href || (item.href === '/dashboard' && pathname === '/');

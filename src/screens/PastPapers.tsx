@@ -58,14 +58,14 @@ export default function PastPapers() {
 			<BackgroundMesh variant="subtle" />
 
 			{/* Header */}
-			<header className="px-6 py-8 bg-background shrink-0 lg:px-0">
-				<div className="max-w-6xl mx-auto w-full space-y-8">
+			<header className="px-6 py-12 bg-background shrink-0 lg:px-0">
+				<div className="max-w-7xl mx-auto w-full space-y-12">
 					<div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-						<div className="space-y-1">
-							<h1 className="text-3xl font-black text-foreground tracking-tighter uppercase">
+						<div className="space-y-2">
+							<h1 className="text-4xl lg:text-7xl font-black text-foreground tracking-tighter uppercase">
 								Past Paper Vault
 							</h1>
-							<p className="text-muted-foreground font-bold text-sm">
+							<p className="text-muted-foreground font-bold lg:text-lg">
 								Access thousands of Grade 12 exam papers
 							</p>
 						</div>
@@ -80,27 +80,27 @@ export default function PastPapers() {
 						</div>
 					</div>
 
-					<div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
+					<div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
 						<div className="lg:col-span-8 relative">
-							<SearchIcon className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+							<SearchIcon className="absolute left-6 top-1/2 -translate-y-1/2 w-6 h-6 text-muted-foreground" />
 							<Input
 								value={searchQuery}
 								onChange={(e) => setSearchQuery(e.target.value)}
 								placeholder="Search subjects or papers..."
-								className="pl-14 bg-muted/30 border-2 h-14 rounded-2xl text-base font-bold"
+								className="pl-16 bg-muted/30 backdrop-blur-md border-2 h-16 rounded-2xl text-lg font-bold shadow-inner"
 							/>
 						</div>
-						<div className="lg:col-span-4 flex gap-2 overflow-x-auto no-scrollbar py-1">
+						<div className="lg:col-span-4 flex gap-3 overflow-x-auto no-scrollbar py-1">
 							{years.map((year) => (
 								<button
 									key={year}
 									type="button"
 									// biome-ignore lint/suspicious/noExplicitAny: Year type casting
 									onClick={() => setSelectedYear(year as any)}
-									className={`rounded-2xl px-6 py-3 text-[10px] font-black uppercase tracking-widest transition-all h-14 ${
+									className={`rounded-2xl px-8 py-3 text-[11px] font-black uppercase tracking-widest transition-all h-16 whitespace-nowrap ${
 										selectedYear === year
-											? 'bg-primary text-primary-foreground shadow-2xl shadow-primary/20'
-											: 'bg-muted/50 text-muted-foreground border-2 border-transparent hover:border-border'
+											? 'bg-primary text-primary-foreground shadow-2xl shadow-primary/30'
+											: 'bg-muted/50 text-muted-foreground border-2 border-transparent hover:border-border backdrop-blur-sm'
 									}`}
 								>
 									{year}
@@ -112,7 +112,7 @@ export default function PastPapers() {
 			</header>
 
 			<ScrollArea className="flex-1 no-scrollbar">
-				<main className="px-6 py-8 max-w-6xl mx-auto w-full space-y-12 pb-32 lg:px-0">
+				<main className="px-6 py-8 max-w-7xl mx-auto w-full space-y-12 pb-32 lg:px-0">
 					<div className="flex items-center justify-between border-b-2 border-border/50 pb-4">
 						<h2 className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.4em]">
 							Archive Results ({filteredPapers.length})

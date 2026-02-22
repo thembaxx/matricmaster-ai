@@ -111,7 +111,7 @@ export default function Dashboard({ initialProgress, initialStreak }: DashboardP
 	}
 
 	return (
-		<div className="flex flex-col h-full bg-background font-inter pb-24 lg:pb-12 relative overflow-hidden">
+		<div className="flex flex-col h-full bg-background pb-24 lg:pb-12 relative overflow-hidden">
 			<BackgroundMesh variant="subtle" />
 
 			<DashboardHeader

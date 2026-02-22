@@ -97,15 +97,15 @@ export default function LessonComplete() {
 
 	if (!result) {
 		return (
-			<div className="flex flex-col h-full bg-[#fcfdfa] dark:bg-[#0a0f18] font-inter items-center justify-center">
-				<Loader2 className="w-12 h-12 animate-spin text-brand-amber" />
+			<div className="flex flex-col h-full bg-background items-center justify-center">
+				<Loader2 className="w-12 h-12 animate-spin text-primary" />
 			</div>
 		);
 	}
 
 	return (
-		<div className="flex flex-col h-full bg-[#fcfdfa] dark:bg-[#0a0f18] font-inter">
-			<header className="px-6 py-6 flex items-center justify-between shrink-0">
+		<div className="flex flex-col h-full bg-background">
+			<header className="px-6 py-12 flex items-center justify-between shrink-0 max-w-2xl mx-auto w-full">
 				<Button
 					variant="ghost"
 					size="icon"
@@ -119,8 +119,8 @@ export default function LessonComplete() {
 			</header>
 
 			<ScrollArea className="flex-1">
-				<main className="px-6 py-4 flex flex-col items-center pb-32">
-					<div className="relative mb-8 w-48 h-48 flex items-center justify-center">
+				<main className="px-6 py-4 flex flex-col items-center pb-32 max-w-2xl mx-auto w-full">
+					<div className="relative mb-12 w-56 h-56 flex items-center justify-center">
 						<m.div
 							initial={{ scale: 0.95, opacity: 0 }}
 							animate={{ scale: 1 }}
@@ -148,9 +148,9 @@ export default function LessonComplete() {
 						initial={{ opacity: 0, y: 20 }}
 						animate={{ opacity: 1, y: 0 }}
 						transition={{ delay: 0.3 }}
-						className="text-center space-y-2 mb-8"
+						className="text-center space-y-3 mb-12"
 					>
-						<h2 className="text-4xl font-extrabold text-zinc-900 dark:text-white tracking-tight">
+						<h2 className="text-5xl lg:text-7xl font-black text-foreground tracking-tighter uppercase leading-none">
 							Lesson Complete!
 						</h2>
 						<p className="text-zinc-500 dark:text-zinc-400 font-medium text-lg">

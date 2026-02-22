@@ -25,7 +25,7 @@ export default function Landing() {
 	const gradientId = useId();
 
 	return (
-		<div className="flex flex-col h-full bg-background font-inter overflow-hidden relative">
+		<div className="flex flex-col h-full bg-background overflow-hidden relative">
 			{/* Decorative Orbs */}
 			<div className="absolute top-[-10%] right-[-10%] w-125 h-125 bg-primary/5 rounded-full blur-[120px] pointer-events-none" />
 			<div className="absolute bottom-[-10%] left-[-10%] w-100 h-100 bg-brand-purple/5 rounded-full blur-[100px] pointer-events-none" />
@@ -48,7 +48,7 @@ export default function Landing() {
 								<SmoothWords
 									as="h1"
 									text="Master your Matrics through practice."
-									className="text-5xl md:text-6xl lg:text-7xl font-black text-foreground leading-[1.05] tracking-tighter"
+									className="text-5xl md:text-6xl lg:text-8xl font-black text-foreground leading-[1.05] tracking-tighter"
 									stagger={0.08}
 								/>
 								<SmoothText

@@ -190,17 +190,17 @@ export default function Leaderboard() {
 
 	if (isLoading) {
 		return (
-			<div className="flex flex-col h-full bg-background font-inter items-center justify-center py-40">
+			<div className="flex flex-col h-full bg-background items-center justify-center py-40">
 				<div className="animate-spin rounded-full h-14 w-14 border-4 border-primary border-t-transparent shadow-2xl" />
 			</div>
 		);
 	}
 
 	return (
-		<div className="flex flex-col h-full bg-background font-inter pb-12 overflow-hidden lg:px-8">
-			<header className="pt-8 pb-8 flex flex-col items-center gap-12 shrink-0">
+		<div className="flex flex-col h-full bg-background pb-12 overflow-hidden lg:px-8">
+			<header className="pt-12 pb-8 flex flex-col items-center gap-12 shrink-0">
 				<div className="text-center space-y-2">
-					<h1 className="text-4xl lg:text-6xl font-black text-foreground tracking-tighter uppercase">
+					<h1 className="text-4xl lg:text-7xl font-black text-foreground tracking-tighter uppercase">
 						Global Rankings
 					</h1>
 					<p className="text-muted-foreground font-bold lg:text-lg">
@@ -208,23 +208,23 @@ export default function Leaderboard() {
 					</p>
 				</div>
 
-				<Tabs value={activeTab} onValueChange={setActiveTab} className="w-full max-w-4xl">
-					<TabsList className="w-full h-16 p-2 bg-muted/50 rounded-3xl border-2 border-border shadow-inner">
+				<Tabs value={activeTab} onValueChange={setActiveTab} className="w-full max-w-4xl px-4">
+					<TabsList className="w-full h-16 p-2 bg-muted/30 backdrop-blur-md rounded-2xl border-2 border-border/50 shadow-inner">
 						<TabsTrigger
 							value="weekly"
-							className="flex-1 rounded-2xl font-black text-xs uppercase tracking-[0.2em] data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-2xl transition-all"
+							className="flex-1 rounded-xl font-black text-xs uppercase tracking-[0.2em] data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-xl transition-all"
 						>
 							Weekly
 						</TabsTrigger>
 						<TabsTrigger
 							value="monthly"
-							className="flex-1 rounded-2xl font-black text-xs uppercase tracking-[0.2em] data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-2xl transition-all"
+							className="flex-1 rounded-xl font-black text-xs uppercase tracking-[0.2em] data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-xl transition-all"
 						>
 							Monthly
 						</TabsTrigger>
 						<TabsTrigger
 							value="all_time"
-							className="flex-1 rounded-2xl font-black text-xs uppercase tracking-[0.2em] data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-2xl transition-all"
+							className="flex-1 rounded-xl font-black text-xs uppercase tracking-[0.2em] data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-xl transition-all"
 						>
 							All Time
 						</TabsTrigger>
@@ -243,8 +243,8 @@ export default function Leaderboard() {
 						<div className="space-y-12">
 							<Podium data={topThree} />
 
-							<div className="grid grid-cols-1 lg:grid-cols-1 gap-8">
-								<div className="bg-card/30 rounded-[3rem] border-2 border-border shadow-sm p-2">
+							<div className="grid grid-cols-1 gap-8">
+								<div className="bg-card/20 backdrop-blur-sm rounded-[2.5rem] border-2 border-border/50 shadow-sm p-2 overflow-hidden mx-4 lg:mx-0">
 									<RankingList data={others} />
 								</div>
 							</div>

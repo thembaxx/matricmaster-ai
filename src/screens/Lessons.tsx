@@ -71,7 +71,7 @@ export default function Lessons() {
 	const [activeCategory, setActiveCategory] = useState('all');
 
 	return (
-		<div className="flex flex-col h-full bg-background font-inter">
+		<div className="flex flex-col h-full bg-background">
 			{/* Header */}
 			<header className="px-6 pt-12 pb-6 shrink-0">
 				<div className="flex items-start justify-between">

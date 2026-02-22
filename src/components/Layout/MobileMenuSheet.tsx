@@ -33,10 +33,7 @@ export function MobileMenuSheet({ open, onOpenChange, pathname }: MobileMenuShee
 					<Menu className="w-5 h-5 text-foreground" />
 				</Button>
 			</SheetTrigger>
-			<SheetContent
-				side="left"
-				className="w-[300px] bg-zinc-50 dark:bg-zinc-950 border-r border-zinc-200 dark:border-zinc-800 p-0"
-			>
+			<SheetContent side="left" className="w-[300px] bg-background border-r border-border p-0">
 				<MobileMenuContent pathname={pathname} onClose={() => onOpenChange(false)} />
 			</SheetContent>
 		</Sheet>

@@ -5,7 +5,7 @@ import ClientProviders from '@/components/Layout/ClientProvidersDynamic';
 import { Toaster } from '@/components/Toaster';
 import { ThemeProvider } from '@/components/theme-provider';
 import '@/styles/index.css';
-import { inter, outfit } from './fonts';
+import { inter, lexend, outfit } from './fonts';
 
 const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://matricmaster.ai';
 
@@ -114,7 +114,11 @@ const jsonLd = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
 	return (
-		<html lang="en" suppressHydrationWarning className={`${inter.variable} ${outfit.variable}`}>
+		<html
+			lang="en"
+			suppressHydrationWarning
+			className={`${inter.variable} ${lexend.variable} ${outfit.variable}`}
+		>
 			<head>
 				<link rel="preconnect" href="https://fonts.googleapis.com" />
 				<link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
