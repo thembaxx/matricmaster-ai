@@ -50,7 +50,7 @@ export function SearchHistoryList({
 						</div>
 					) : searches.length > 0 ? (
 						searches.map((search) => (
-							<m.button
+							<m.div
 								key={search.id}
 								variants={STAGGER_ITEM}
 								layout
@@ -58,22 +58,28 @@ export function SearchHistoryList({
 								animate={{ opacity: 1, scale: 1 }}
 								exit={{ opacity: 0, scale: 0.9 }}
 								whileHover={{ x: 4 }}
-								type="button"
-								onClick={() => onSearchClick(search.query)}
-								className="flex items-center justify-between p-5 bg-card rounded-[1.5rem] border-2 border-border/50 hover:border-primary/20 hover:shadow-xl hover:shadow-primary/5 transition-all group"
+								className="flex items-center justify-between bg-card rounded-[1.5rem] border-2 border-border/50 hover:border-primary/20 hover:shadow-xl hover:shadow-primary/5 transition-all group overflow-hidden"
 							>
-								<span className="text-sm font-black text-foreground group-hover:text-primary transition-colors">
-									{search.query}
-								</span>
+								<button
+									type="button"
+									onClick={() => onSearchClick(search.query)}
+									className="flex-1 flex items-center p-5 text-left focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-inset outline-none"
+									aria-label={`Search for ${search.query}`}
+								>
+									<span className="text-sm font-black text-foreground group-hover:text-primary transition-colors">
+										{search.query}
+									</span>
+								</button>
 								<button
 									title="Delete search item"
+									aria-label={`Delete search for ${search.query}`}
 									type="button"
 									onClick={(e) => onDelete(search.id, e)}
-									className="opacity-0 group-hover:opacity-100 transition-opacity text-muted-foreground hover:text-rose-500 p-2"
+									className="opacity-0 group-hover:opacity-100 focus-visible:opacity-100 transition-opacity text-muted-foreground hover:text-rose-500 p-5 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-inset"
 								>
 									<X className="w-5 h-5" />
 								</button>
-							</m.button>
+							</m.div>
 						))
 					) : (
 						<div className="col-span-full py-12 text-center opacity-40">
