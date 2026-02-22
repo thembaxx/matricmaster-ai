@@ -215,18 +215,18 @@ export default function PastPapers() {
 	});
 
 	return (
-		<div className="flex flex-col h-full bg-background relative overflow-hidden lg:px-8">
+		<div className="flex flex-col h-full min-w-0 bg-background relative overflow-x-hidden lg:px-8">
 			<BackgroundMesh variant="subtle" />
 
 			{/* Header */}
-			<header className="px-6 py-12 bg-background shrink-0 lg:px-0">
-				<div className="max-w-7xl mx-auto w-full space-y-12">
-					<div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+			<header className="px-4 sm:px-6 py-8 sm:py-12 bg-background shrink-0 lg:px-0">
+				<div className="max-w-7xl mx-auto w-full space-y-8 sm:space-y-12">
+					<div className="flex flex-col md:flex-row md:items-center justify-between gap-4 sm:gap-6">
 						<div className="space-y-2">
-							<h1 className="text-4xl lg:text-7xl font-black text-foreground tracking-tighter uppercase">
+							<h1 className="text-3xl sm:text-4xl lg:text-7xl font-black text-foreground tracking-tighter uppercase">
 								Past Paper Vault
 							</h1>
-							<p className="text-muted-foreground font-bold lg:text-lg">
+							<p className="text-muted-foreground font-bold text-sm sm:lg:text-lg">
 								Access thousands of Grade 12 exam papers
 							</p>
 						</div>
@@ -235,22 +235,22 @@ export default function PastPapers() {
 								<Button
 									variant="ghost"
 									onClick={clearAllFilters}
-									className="rounded-2xl font-black text-[10px] uppercase tracking-widest px-4 h-12 text-muted-foreground hover:text-foreground"
+									className="rounded-2xl font-black text-[10px] uppercase tracking-widest px-3 sm:px-4 h-10 sm:h-12 text-muted-foreground hover:text-foreground"
 								>
-									<X className="w-4 h-4 mr-2" />
-									Clear
+									<X className="w-4 h-4 mr-1 sm:mr-2" />
+									<span className="hidden sm:inline">Clear</span>
 								</Button>
 							)}
 							<Button
 								variant="outline"
 								onClick={() => setIsAdvancedFilterOpen(true)}
 								className={cn(
-									'rounded-2xl border-2 font-black text-[10px] uppercase tracking-widest px-6 h-12',
+									'rounded-2xl border-2 font-black text-[10px] uppercase tracking-widest px-4 sm:px-6 h-10 sm:h-12',
 									activeFilterCount > 0 && 'border-primary bg-primary/10 text-primary'
 								)}
 							>
 								<Filter className="w-4 h-4 mr-2" />
-								Advanced Filter
+								<span className="hidden sm:inline">Advanced Filter</span>
 								{activeFilterCount > 0 && (
 									<Badge className="ml-2 rounded-full px-2 py-0.5 text-[9px] bg-primary text-primary-foreground">
 										{activeFilterCount}
@@ -260,24 +260,24 @@ export default function PastPapers() {
 						</div>
 					</div>
 
-					<div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+					<div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6">
 						<div className="lg:col-span-8 relative">
-							<SearchIcon className="absolute left-6 top-1/2 -translate-y-1/2 w-6 h-6 text-muted-foreground" />
+							<SearchIcon className="absolute left-4 sm:left-6 top-1/2 -translate-y-1/2 w-5 sm:w-6 h-5 sm:h-6 text-muted-foreground" />
 							<Input
 								value={searchQuery}
 								onChange={(e) => setSearchQuery(e.target.value)}
 								placeholder="Search subjects or papers..."
-								className="pl-16 bg-muted/30 backdrop-blur-md border-2 h-16 rounded-2xl text-lg font-bold shadow-inner"
+								className="pl-12 sm:pl-16 bg-muted/30 backdrop-blur-md border-2 h-12 sm:h-16 rounded-xl sm:rounded-2xl text-base sm:text-lg font-bold shadow-inner"
 							/>
 						</div>
-						<div className="lg:col-span-4 flex gap-3 overflow-x-auto no-scrollbar py-1">
+						<div className="lg:col-span-4 flex gap-2 sm:gap-3 overflow-x-auto no-scrollbar py-1">
 							{years.map((year) => (
 								<button
 									key={year}
 									type="button"
 									// biome-ignore lint/suspicious/noExplicitAny: Year type casting
 									onClick={() => setSelectedYear(year as any)}
-									className={`rounded-2xl px-8 py-3 text-[11px] font-black uppercase tracking-widest transition-all h-16 whitespace-nowrap ${
+									className={`rounded-xl sm:rounded-2xl px-4 sm:px-8 py-2 sm:py-3 text-[11px] font-black uppercase tracking-widest transition-all h-10 sm:h-16 whitespace-nowrap ${
 										selectedYear === year
 											? 'bg-primary text-primary-foreground shadow-2xl shadow-primary/30'
 											: 'bg-muted/50 text-muted-foreground border-2 border-transparent hover:border-border backdrop-blur-sm'
@@ -292,7 +292,7 @@ export default function PastPapers() {
 			</header>
 
 			<ScrollArea className="flex-1 no-scrollbar">
-				<main className="px-6 py-8 max-w-7xl mx-auto w-full space-y-12 pb-32 lg:px-0">
+				<main className="px-4 sm:px-6 py-6 sm:py-8 max-w-7xl mx-auto w-full space-y-8 sm:space-y-12 pb-32 lg:px-0">
 					<div className="flex items-center justify-between border-b-2 border-border/50 pb-4">
 						<h2 className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.4em]">
 							Archive Results ({filteredPapers.length})
@@ -309,7 +309,7 @@ export default function PastPapers() {
 								variants={STAGGER_CONTAINER}
 								initial="hidden"
 								animate="visible"
-								className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+								className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8"
 							>
 								{filteredPapers.map((paper) => (
 									<m.div key={paper.id} variants={STAGGER_ITEM} layout whileHover={{ y: -8 }}>

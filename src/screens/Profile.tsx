@@ -112,19 +112,19 @@ export default function Profile() {
 	}
 
 	return (
-		<div className="flex flex-col h-full bg-background pb-32 px-6 lg:px-8">
+		<div className="flex flex-col h-full min-w-0 bg-background pb-32 px-4 sm:px-6 lg:px-8 overflow-x-hidden">
 			<BackgroundMesh variant="subtle" />
 
-			<main className="max-w-6xl mx-auto w-full pt-8 space-y-12 relative z-10">
+			<main className="max-w-6xl mx-auto w-full pt-6 sm:pt-8 space-y-8 sm:space-y-12 relative z-10">
 				{/* Profile Header Card */}
 				<m.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-					<Card className="rounded-[3rem] p-12 relative overflow-hidden bg-foreground text-background border-none shadow-2xl">
+					<Card className="rounded-2xl sm:rounded-[3rem] p-6 sm:p-12 relative overflow-hidden bg-foreground text-background border-none shadow-2xl">
 						<div className="absolute top-0 right-0 w-96 h-96 bg-primary/20 rounded-full blur-[100px] -mr-32 -mt-32" />
 
-						<div className="flex flex-col md:flex-row items-center gap-12 relative z-10">
+						<div className="flex flex-col md:flex-row items-center gap-8 sm:gap-12 relative z-10">
 							<div className="relative group">
 								<div className="absolute -inset-4 bg-primary/20 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity" />
-								<div className="w-32 h-32 md:w-48 md:h-48 rounded-full overflow-hidden border-4 border-white/10 shadow-2xl relative ring-8 ring-white/5 group-hover:scale-105 transition-transform duration-500">
+								<div className="w-24 h-24 sm:w-32 sm:h-32 md:w-48 md:h-48 rounded-full overflow-hidden border-4 border-white/10 shadow-2xl relative ring-4 sm:ring-8 ring-white/5 group-hover:scale-105 transition-transform duration-500">
 									<SafeImage
 										src={
 											session?.user?.image ||
@@ -165,11 +165,11 @@ export default function Profile() {
 					</Card>
 				</m.div>
 
-				<div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+				<div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
 					{/* Left Column: Stats & Performance */}
-					<div className="lg:col-span-7 space-y-12">
+					<div className="lg:col-span-7 space-y-8 lg:space-y-12">
 						<div className="space-y-6">
-							<div className="flex items-center justify-between">
+							<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
 								<h3 className="text-xl font-black text-foreground tracking-tighter uppercase">
 									Performance Matrix
 								</h3>
@@ -178,7 +178,7 @@ export default function Profile() {
 										type="button"
 										onClick={() => setViewMode('my_stats')}
 										aria-pressed={viewMode === 'my_stats'}
-										className={`px-4 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all ${viewMode === 'my_stats' ? 'bg-background shadow-sm' : 'text-muted-foreground'}`}
+										className={`px-3 sm:px-4 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all ${viewMode === 'my_stats' ? 'bg-background shadow-sm' : 'text-muted-foreground'}`}
 									>
 										Individual
 									</button>
@@ -186,15 +186,15 @@ export default function Profile() {
 										type="button"
 										onClick={() => setViewMode('provincial')}
 										aria-pressed={viewMode === 'provincial'}
-										className={`px-4 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all ${viewMode === 'provincial' ? 'bg-background shadow-sm' : 'text-muted-foreground'}`}
+										className={`px-3 sm:px-4 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all ${viewMode === 'provincial' ? 'bg-background shadow-sm' : 'text-muted-foreground'}`}
 									>
 										Benchmarked
 									</button>
 								</div>
 							</div>
 
-							<Card className="rounded-[2.5rem] border-2 border-border/50 p-8 bg-card/50 backdrop-blur-sm">
-								<ChartContainer config={chartConfig} className="h-[400px] w-full">
+							<Card className="rounded-2xl sm:rounded-[2.5rem] border-2 border-border/50 p-6 sm:p-8 bg-card/50 backdrop-blur-sm">
+								<ChartContainer config={chartConfig} className="h-[300px] sm:h-[400px] w-full">
 									<RadarChart cx="50%" cy="50%" outerRadius="80%" data={chartData}>
 										<defs>
 											<linearGradient id={radarGradientId} x1="0" y1="0" x2="0" y2="1">

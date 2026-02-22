@@ -95,25 +95,25 @@ export default function Achievements() {
 	}
 
 	return (
-		<div className="flex flex-col h-full bg-background p-4 pb-32 lg:px-8">
-			<main className="max-w-6xl mx-auto w-full pt-12 space-y-12">
+		<div className="flex flex-col h-full min-w-0 bg-background p-4 sm:pb-32 lg:px-8 overflow-x-hidden">
+			<main className="max-w-6xl mx-auto w-full pt-8 sm:pt-12 space-y-8 sm:space-y-12">
 				{/* Hero Statistics Card */}
 				<m.div
 					initial={{ opacity: 0, y: 20 }}
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ duration: 0.6 }}
 				>
-					<Card className="rounded-[3rem] p-12 relative overflow-hidden bg-primary text-primary-foreground border-none shadow-2xl shadow-primary/20">
+					<Card className="rounded-2xl sm:rounded-[3rem] p-6 sm:p-12 relative overflow-hidden bg-primary text-primary-foreground border-none shadow-2xl shadow-primary/20">
 						<div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-[100px] -mr-32 -mt-32 pointer-events-none" />
 						<div className="absolute bottom-0 left-0 w-64 h-64 bg-black/10 rounded-full blur-[80px] -ml-24 -mb-24 pointer-events-none" />
 
-						<div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center relative z-10">
+						<div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center relative z-10">
 							<div className="space-y-6">
 								<div className="space-y-1">
 									<p className="text-xs font-black uppercase tracking-[0.4em] opacity-80">
 										Matric Master
 									</p>
-									<h2 className="text-5xl lg:text-8xl font-black tracking-tighter uppercase leading-none">
+									<h2 className="text-4xl sm:text-5xl lg:text-8xl font-black tracking-tighter uppercase leading-none">
 										Level {masteryLevel}
 									</h2>
 								</div>
@@ -139,11 +139,13 @@ export default function Achievements() {
 										transition={{ duration: 20, repeat: Number.POSITIVE_INFINITY, ease: 'linear' }}
 										className="absolute inset-0 bg-white/10 rounded-full blur-2xl"
 									/>
-									<div className="w-48 h-48 lg:w-64 lg:h-64 rounded-[3.5rem] bg-white/10 backdrop-blur-3xl flex items-center justify-center border-4 border-white/20 shadow-2xl relative z-10">
-										<Trophy className="w-24 h-24 lg:w-32 lg:h-32 text-white drop-shadow-2xl" />
+									<div className="w-32 h-32 sm:w-48 sm:h-48 lg:w-64 lg:h-64 rounded-2xl sm:rounded-[3.5rem] bg-white/10 backdrop-blur-3xl flex items-center justify-center border-4 border-white/20 shadow-2xl relative z-10">
+										<Trophy className="w-16 h-16 sm:w-24 sm:h-24 lg:w-32 lg:h-32 text-white drop-shadow-2xl" />
 									</div>
-									<div className="absolute -bottom-6 -right-6 w-20 h-20 bg-brand-amber rounded-3xl flex items-center justify-center shadow-xl border-4 border-white z-20">
-										<span className="text-2xl font-black text-white">{unlockedCount}</span>
+									<div className="absolute -bottom-4 sm:-bottom-6 -right-4 sm:-right-6 w-14 h-14 sm:w-20 sm:h-20 bg-brand-amber rounded-2xl sm:rounded-3xl flex items-center justify-center shadow-xl border-4 border-white z-20">
+										<span className="text-lg sm:text-2xl font-black text-white">
+											{unlockedCount}
+										</span>
 									</div>
 								</div>
 							</div>
@@ -152,7 +154,7 @@ export default function Achievements() {
 				</m.div>
 
 				{/* Category Navigation */}
-				<div className="flex gap-4 p-2 bg-muted/50 rounded-[2.5rem] border-2 border-border/50 max-w-fit mx-auto lg:mx-0 overflow-x-auto no-scrollbar">
+				<div className="flex gap-2 sm:gap-4 p-1.5 sm:p-2 bg-muted/50 rounded-2xl sm:rounded-[2.5rem] border-2 border-border/50 max-w-fit mx-auto lg:mx-0 overflow-x-auto no-scrollbar">
 					{categories.map((category) => {
 						const Icon = category.icon;
 						const isActive = activeTab === category.id;
@@ -161,14 +163,14 @@ export default function Achievements() {
 								key={category.id}
 								type="button"
 								onClick={() => setActiveTab(category.id)}
-								className={`flex items-center gap-3 px-8 py-4 rounded-3xl text-sm font-black uppercase tracking-widest transition-all duration-300 ${
+								className={`flex items-center gap-2 sm:gap-3 px-4 sm:px-8 py-2.5 sm:py-4 rounded-xl sm:rounded-3xl text-xs sm:text-sm font-black uppercase tracking-widest transition-all duration-300 whitespace-nowrap ${
 									isActive
 										? 'bg-primary text-primary-foreground shadow-2xl shadow-primary/20 scale-105'
 										: 'text-muted-foreground hover:bg-muted hover:text-foreground'
 								}`}
 							>
-								<Icon className={`w-5 h-5 ${isActive ? 'scale-110' : ''}`} />
-								{category.label}
+								<Icon className={`w-4 h-4 sm:w-5 sm:h-5 ${isActive ? 'scale-110' : ''}`} />
+								<span className="hidden xs:inline">{category.label}</span>
 							</button>
 						);
 					})}
