@@ -177,6 +177,7 @@ export default function Profile() {
 									<button
 										type="button"
 										onClick={() => setViewMode('my_stats')}
+										aria-pressed={viewMode === 'my_stats'}
 										className={`px-4 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all ${viewMode === 'my_stats' ? 'bg-background shadow-sm' : 'text-muted-foreground'}`}
 									>
 										Individual
@@ -184,6 +185,7 @@ export default function Profile() {
 									<button
 										type="button"
 										onClick={() => setViewMode('provincial')}
+										aria-pressed={viewMode === 'provincial'}
 										className={`px-4 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all ${viewMode === 'provincial' ? 'bg-background shadow-sm' : 'text-muted-foreground'}`}
 									>
 										Benchmarked
