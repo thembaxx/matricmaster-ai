@@ -1,14 +1,26 @@
 'use client';
 
 import { m } from 'framer-motion';
-import { Atom, Calculator, ChevronRight, FlaskConical, Microscope, Sparkles } from 'lucide-react';
+import {
+	Atom,
+	Calculator,
+	ChevronRight,
+	FlaskConical,
+	Instagram,
+	Linkedin,
+	Mail,
+	Microscope,
+	Sparkles,
+	Twitter,
+} from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { useId } from 'react';
+import { useId, useState } from 'react';
 import { SmoothText, SmoothWords } from '@/components/Transition/SmoothText';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { SUBJECTS } from '@/constants/mock-data';
 import { STAGGER_CONTAINER, STAGGER_ITEM } from '@/lib/animation-presets';
@@ -19,6 +31,89 @@ const ICON_MAP: Record<string, React.ElementType> = {
 	FlaskConical: FlaskConical,
 	Microscope: Microscope,
 };
+
+function EmailSubscriptionForm() {
+	const [email, setEmail] = useState('');
+	const [isSubmitting, setIsSubmitting] = useState(false);
+	const [isSubscribed, setIsSubscribed] = useState(false);
+
+	const handleSubmit = async (e: React.FormEvent) => {
+		e.preventDefault();
+		if (!email) return;
+
+		setIsSubmitting(true);
+		await new Promise((resolve) => setTimeout(resolve, 1000));
+		setIsSubscribed(true);
+		setIsSubmitting(false);
+	};
+
+	if (isSubscribed) {
+		return (
+			<m.div
+				initial={{ opacity: 0, scale: 0.95 }}
+				animate={{ opacity: 1, scale: 1 }}
+				className="bg-brand-green/10 rounded-[2.5rem] p-8 text-center"
+			>
+				<div className="w-16 h-16 bg-brand-green rounded-full flex items-center justify-center mx-auto mb-4">
+					<Sparkles className="w-8 h-8 text-white" />
+				</div>
+				<h3 className="text-xl font-black text-foreground mb-2">You're subscribed!</h3>
+				<p className="text-muted-foreground">
+					Thanks for subscribing. We'll send you exam tips and updates.
+				</p>
+			</m.div>
+		);
+	}
+
+	return (
+		<m.div
+			initial={{ opacity: 0, y: 20 }}
+			whileInView={{ opacity: 1, y: 0 }}
+			viewport={{ once: true }}
+			className="space-y-6"
+		>
+			<div className="space-y-2">
+				<p className="text-xs font-black uppercase tracking-[0.3em] text-muted-foreground">
+					Stay Updated
+				</p>
+				<h3 className="text-2xl font-black text-foreground">Get exam tips & updates</h3>
+			</div>
+			<form onSubmit={handleSubmit} className="space-y-4">
+				<div className="flex flex-col sm:flex-row gap-3">
+					<Input
+						type="email"
+						placeholder="Enter your email"
+						value={email}
+						onChange={(e) => setEmail(e.target.value)}
+						className="h-14 px-6 rounded-2xl text-base border-border bg-background flex-1"
+						required
+					/>
+					<Button
+						type="submit"
+						size="lg"
+						disabled={isSubmitting}
+						className="h-14 px-8 rounded-2xl font-black shrink-0"
+					>
+						{isSubmitting ? (
+							<span className="flex items-center gap-2">
+								<span className="animate-spin">⏳</span>
+								Subscribing...
+							</span>
+						) : (
+							<span className="flex items-center gap-2">
+								<Mail className="w-5 h-5" />
+								Subscribe
+							</span>
+						)}
+					</Button>
+				</div>
+				<p className="text-xs text-muted-foreground">
+					No spam, just exam tips and updates. Unsubscribe anytime.
+				</p>
+			</form>
+		</m.div>
+	);
+}
 
 export default function Landing() {
 	const router = useRouter();
@@ -277,6 +372,57 @@ export default function Landing() {
 							</div>
 						</Card>
 					</section>
+
+					{/* Footer Section */}
+					<footer className="mt-24 pt-16 border-t border-border/60">
+						<div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
+							<div className="space-y-8">
+								<div className="flex items-center gap-3">
+									<div className="w-12 h-12 bg-primary rounded-2xl flex items-center justify-center">
+										<Calculator className="w-6 h-6 text-primary-foreground" />
+									</div>
+									<span className="text-2xl font-black text-foreground tracking-tighter">
+										MatricMaster
+									</span>
+								</div>
+								<p className="text-base text-muted-foreground font-medium max-w-sm">
+									Master your Matrics through practice. Interactive past papers and step-by-step
+									guides for South African Grade 12 students.
+								</p>
+								<div className="flex items-center gap-4">
+									{[
+										{ icon: Twitter, href: 'https://twitter.com/matricmaster' },
+										{ icon: Instagram, href: 'https://instagram.com/matricmaster' },
+										{ icon: Linkedin, href: 'https://linkedin.com/company/matricmaster' },
+									].map((social, i) => (
+										<a
+											key={i}
+											href={social.href}
+											target="_blank"
+											rel="noopener noreferrer"
+											className="w-10 h-10 rounded-full bg-muted flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors duration-300"
+										>
+											<social.icon className="w-5 h-5" />
+										</a>
+									))}
+								</div>
+							</div>
+
+							<EmailSubscriptionForm />
+						</div>
+
+						<div className="mt-16 pt-8 border-t border-border/40 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
+							<p>© {new Date().getFullYear()} MatricMaster AI. All rights reserved.</p>
+							<div className="flex items-center gap-6">
+								<a href="/privacy" className="hover:text-foreground transition-colors">
+									Privacy Policy
+								</a>
+								<a href="/terms" className="hover:text-foreground transition-colors">
+									Terms of Service
+								</a>
+							</div>
+						</div>
+					</footer>
 				</main>
 			</ScrollArea>
 		</div>
