@@ -197,7 +197,7 @@ export default function Leaderboard() {
 	}
 
 	return (
-		<div className="flex flex-col h-full bg-background pb-12 overflow-hidden lg:px-8">
+		<div className="flex flex-col h-full bg-background pb-24 overflow-hidden lg:px-8">
 			<header className="pt-12 pb-8 flex flex-col items-center gap-12 shrink-0">
 				<div className="text-center space-y-2">
 					<h1 className="text-4xl lg:text-7xl font-black text-foreground tracking-tighter uppercase">
@@ -255,7 +255,7 @@ export default function Leaderboard() {
 
 			{/* Floating User Rank Card - Only visible if user has a rank */}
 			{userRank && (
-				<div className="fixed bottom-12 left-1/2 -translate-x-1/2 w-[92%] max-w-4xl z-50 lg:bottom-12">
+				<div className="fixed bottom-32 left-1/2 -translate-x-1/2 w-[92%] max-w-4xl z-50 lg:bottom-12">
 					<Card className="p-6 bg-foreground text-background border-none shadow-[0_32px_64px_-12px_rgba(0,0,0,0.5)] rounded-[2.5rem] relative overflow-hidden group">
 						<div className="absolute top-0 left-0 w-2 h-full bg-brand-amber animate-pulse" />
 						<div className="flex items-center gap-6 relative z-10">

@@ -95,7 +95,7 @@ export default function Achievements() {
 	}
 
 	return (
-		<div className="flex flex-col h-full bg-background pb-24 lg:px-8">
+		<div className="flex flex-col h-full bg-background p-4 pb-32 lg:px-8">
 			<main className="max-w-6xl mx-auto w-full pt-12 space-y-12">
 				{/* Hero Statistics Card */}
 				<m.div

@@ -112,7 +112,7 @@ export default function Profile() {
 	}
 
 	return (
-		<div className="flex flex-col h-full bg-background pb-24 lg:px-8">
+		<div className="flex flex-col h-full bg-background pb-32 px-6 lg:px-8">
 			<BackgroundMesh variant="subtle" />
 
 			<main className="max-w-6xl mx-auto w-full pt-8 space-y-12 relative z-10">
