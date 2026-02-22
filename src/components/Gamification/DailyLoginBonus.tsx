@@ -78,7 +78,7 @@ export function DailyLoginBonus({ onClaimed }: DailyLoginBonusProps) {
 						exit={{ scale: 0.9, opacity: 0 }}
 						onClick={(e) => e.stopPropagation()}
 					>
-						<Card className="w-full max-w-md p-6 rounded-3xl bg-gradient-to-br from-white to-amber-50 dark:from-zinc-900 dark:to-zinc-800 border-brand-amber/20 shadow-2xl">
+						<Card className="w-full max-w-md p-6 rounded-3xl bg-linear-to-br from-white to-amber-50 dark:from-zinc-900 dark:to-zinc-800 border-brand-amber/20 shadow-2xl">
 							<div className="flex items-center justify-between mb-6">
 								<div className="flex items-center gap-2">
 									<div className="w-10 h-10 rounded-xl bg-brand-amber/20 flex items-center justify-center">
@@ -98,7 +98,7 @@ export function DailyLoginBonus({ onClaimed }: DailyLoginBonusProps) {
 											initial={{ scale: 0.8 }}
 											animate={{ scale: 1 }}
 											transition={{ type: 'spring', damping: 10 }}
-											className="w-24 h-24 mx-auto mb-4 rounded-full bg-gradient-to-br from-brand-amber to-orange-500 flex items-center justify-center shadow-lg shadow-brand-amber/30"
+											className="w-24 h-24 mx-auto mb-4 rounded-full bg-linear-to-br from-brand-amber to-orange-500 flex items-center justify-center shadow-lg shadow-brand-amber/30"
 										>
 											<Calendar className="w-12 h-12 text-white" />
 										</m.div>
@@ -176,7 +176,7 @@ export function DailyLoginBonus({ onClaimed }: DailyLoginBonusProps) {
 										initial={{ scale: 0.95, opacity: 0 }}
 										animate={{ scale: 1 }}
 										transition={{ type: 'spring', damping: 10, delay: 0.1 }}
-										className="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-br from-green-400 to-emerald-500 flex items-center justify-center shadow-lg"
+										className="w-20 h-20 mx-auto mb-4 rounded-full bg-linear-to-br from-green-400 to-emerald-500 flex items-center justify-center shadow-lg"
 									>
 										<Sparkles className="w-10 h-10 text-white" />
 									</m.div>
@@ -261,7 +261,7 @@ export function DailyLoginBonusTrigger({ onClick }: { onClick: () => void }) {
 		>
 			<Button
 				onClick={onClick}
-				className="relative bg-gradient-to-r from-brand-amber to-orange-500 text-zinc-900 rounded-full font-bold shadow-lg shadow-brand-amber/20"
+				className="relative bg-linear-to-r from-brand-amber to-orange-500 text-zinc-900 rounded-full font-bold shadow-lg shadow-brand-amber/20"
 			>
 				<Gift className="w-4 h-4 mr-2" />
 				Daily Bonus
