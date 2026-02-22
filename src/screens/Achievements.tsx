@@ -95,8 +95,8 @@ export default function Achievements() {
 	}
 
 	return (
-		<div className="flex flex-col h-full bg-background font-inter pb-24 lg:px-8">
-			<main className="max-w-6xl mx-auto w-full pt-8 space-y-12">
+		<div className="flex flex-col h-full bg-background pb-24 lg:px-8">
+			<main className="max-w-6xl mx-auto w-full pt-12 space-y-12">
 				{/* Hero Statistics Card */}
 				<m.div
 					initial={{ opacity: 0, y: 20 }}
@@ -110,10 +110,10 @@ export default function Achievements() {
 						<div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center relative z-10">
 							<div className="space-y-6">
 								<div className="space-y-1">
-									<p className="text-xs font-black uppercase tracking-[0.4em] opacity-60">
+									<p className="text-xs font-black uppercase tracking-[0.4em] opacity-80">
 										Matric Master
 									</p>
-									<h2 className="text-5xl lg:text-7xl font-black tracking-tighter uppercase">
+									<h2 className="text-5xl lg:text-8xl font-black tracking-tighter uppercase leading-none">
 										Level {masteryLevel}
 									</h2>
 								</div>

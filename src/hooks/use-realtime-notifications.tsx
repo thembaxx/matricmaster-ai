@@ -29,6 +29,7 @@ const fetcher = async (url: string) => {
 
 export function useRealtimeNotifications(): UseRealtimeNotificationsReturn {
 	const { data: session } = useSession();
+	const channelName = session?.user?.id ? `user:${session.user.id}:notifications` : 'dummy-channel';
 	const [realtimeIncrement, setRealtimeIncrement] = useState(0);
 
 	const { data: notificationData } = useSWR(
@@ -81,11 +82,7 @@ export function useRealtimeNotifications(): UseRealtimeNotificationsReturn {
 		}
 	}, []);
 
-	const channelName = session?.user?.id ? `user:${session.user.id}:notifications` : null;
-
-	useChannel(channelName || 'dummy-channel', (message) => {
-		if (!channelName) return;
-
+	useChannel(channelName, (message) => {
 		const notification = message.data as RealtimeNotification;
 		if (notification) {
 			handleNotification(notification);

@@ -121,8 +121,8 @@ export default function InteractiveQuiz() {
 	if (!currentQuestion) return null;
 
 	return (
-		<div className="flex flex-col h-full bg-zinc-50 dark:bg-zinc-950 font-lexend relative overflow-hidden">
-			<header className="px-6 pt-12 pb-4 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl sticky top-0 z-20 border-b border-zinc-100 dark:border-zinc-800 shrink-0">
+		<div className="flex flex-col h-full bg-background relative overflow-hidden">
+			<header className="px-6 pt-12 pb-4 ios-glass sticky top-0 z-20 shrink-0">
 				<div className="max-w-2xl mx-auto w-full">
 					<div className="flex items-center gap-4 mb-4">
 						<Button

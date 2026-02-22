@@ -27,7 +27,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 	const shouldHideBottomNav = hideBottomNavigation.some((path) => pathname.startsWith(path));
 
 	return (
-		<div className="flex min-h-screen bg-zinc-50 dark:bg-zinc-950 overflow-x-hidden">
+		<div className="flex min-h-screen bg-background overflow-x-hidden transition-colors duration-500">
 			<ClientOnly>{user && <DailyLoginBonus />}</ClientOnly>
 
 			{user && !shouldHideNav && (
@@ -39,9 +39,9 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 				/>
 			)}
 
-			<div className="flex-1 flex flex-col min-h-screen relative">
+			<div className="flex-1 flex flex-col min-h-screen relative max-w-full">
 				<div
-					className={`flex-1 flex flex-col w-full mx-auto transition-all duration-300 ${!shouldHideNav && user ? 'max-w-7xl lg:px-8' : 'max-w-full'}`}
+					className={`flex-1 flex flex-col w-full mx-auto transition-all duration-300 ${!shouldHideNav && user ? 'max-w-7xl lg:px-8 xl:px-12' : 'max-w-full'}`}
 				>
 					{!shouldHideNav && (
 						<ResponsiveHeader
