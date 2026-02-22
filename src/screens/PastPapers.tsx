@@ -9,6 +9,7 @@ import {
 	Filter,
 	Loader2,
 	Search as SearchIcon,
+	X,
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -16,11 +17,129 @@ import { BackgroundMesh } from '@/components/ui/background-mesh';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { Checkbox } from '@/components/ui/checkbox';
+import {
+	Drawer,
+	DrawerClose,
+	DrawerContent,
+	DrawerFooter,
+	DrawerHeader,
+	DrawerTitle,
+} from '@/components/ui/drawer';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
+import { Switch } from '@/components/ui/switch';
 import { STAGGER_CONTAINER, STAGGER_ITEM } from '@/lib/animation-presets';
 import { getPastPapersAction } from '@/lib/db/actions';
 import type { PastPaper } from '@/lib/db/schema';
+import { cn } from '@/lib/utils';
+
+interface FilterContentProps {
+	availableSubjects: string[];
+	availablePapers: string[];
+	availableMonths: string[];
+	selectedSubjects: string[];
+	selectedPapers: string[];
+	selectedMonths: string[];
+	extractedOnly: boolean;
+	onToggleSubject: (subject: string) => void;
+	onTogglePaper: (paper: string) => void;
+	onToggleMonth: (month: string) => void;
+	onToggleExtracted: (value: boolean) => void;
+}
+
+function FilterContent({
+	availableSubjects,
+	availablePapers,
+	availableMonths,
+	selectedSubjects,
+	selectedPapers,
+	selectedMonths,
+	extractedOnly,
+	onToggleSubject,
+	onTogglePaper,
+	onToggleMonth,
+	onToggleExtracted,
+}: FilterContentProps) {
+	return (
+		<div className="space-y-8">
+			<div className="space-y-4">
+				<h4 className="text-xs font-black uppercase tracking-[0.2em] text-muted-foreground">
+					Subjects
+				</h4>
+				<div className="grid grid-cols-2 gap-3">
+					{availableSubjects.map((subject) => (
+						<div key={subject} className="flex items-center gap-3 cursor-pointer">
+							<Checkbox
+								id={`subject-${subject}`}
+								checked={selectedSubjects.includes(subject)}
+								onCheckedChange={() => onToggleSubject(subject)}
+							/>
+							<label htmlFor={`subject-${subject}`} className="text-sm font-bold cursor-pointer">
+								{subject}
+							</label>
+						</div>
+					))}
+				</div>
+			</div>
+
+			<div className="space-y-4">
+				<h4 className="text-xs font-black uppercase tracking-[0.2em] text-muted-foreground">
+					Paper Type
+				</h4>
+				<div className="grid grid-cols-2 gap-3">
+					{availablePapers.map((paper) => (
+						<div key={paper} className="flex items-center gap-3 cursor-pointer">
+							<Checkbox
+								id={`paper-${paper}`}
+								checked={selectedPapers.includes(paper)}
+								onCheckedChange={() => onTogglePaper(paper)}
+							/>
+							<label htmlFor={`paper-${paper}`} className="text-sm font-bold cursor-pointer">
+								{paper}
+							</label>
+						</div>
+					))}
+				</div>
+			</div>
+
+			<div className="space-y-4">
+				<h4 className="text-xs font-black uppercase tracking-[0.2em] text-muted-foreground">
+					Month
+				</h4>
+				<div className="grid grid-cols-2 gap-3">
+					{availableMonths.map((month) => (
+						<div key={month} className="flex items-center gap-3 cursor-pointer">
+							<Checkbox
+								id={`month-${month}`}
+								checked={selectedMonths.includes(month)}
+								onCheckedChange={() => onToggleMonth(month)}
+							/>
+							<label htmlFor={`month-${month}`} className="text-sm font-bold cursor-pointer">
+								{month}
+							</label>
+						</div>
+					))}
+				</div>
+			</div>
+
+			<div className="space-y-4">
+				<div className="flex items-center justify-between">
+					<div>
+						<h4 className="text-xs font-black uppercase tracking-[0.2em] text-muted-foreground">
+							Extracted Only
+						</h4>
+						<p className="text-xs text-muted-foreground mt-1">
+							Show papers with AI-extracted questions
+						</p>
+					</div>
+					<Switch checked={extractedOnly} onCheckedChange={onToggleExtracted} />
+				</div>
+			</div>
+		</div>
+	);
+}
 
 export default function PastPapers() {
 	const router = useRouter();
@@ -28,8 +147,38 @@ export default function PastPapers() {
 	const [selectedYear, setSelectedYear] = useState<number | 'All'>('All');
 	const [papers, setPapers] = useState<PastPaper[]>([]);
 	const [isLoading, setIsLoading] = useState(true);
+	const [isAdvancedFilterOpen, setIsAdvancedFilterOpen] = useState(false);
+	const [selectedSubjects, setSelectedSubjects] = useState<string[]>([]);
+	const [selectedPapers, setSelectedPapers] = useState<string[]>([]);
+	const [selectedMonths, setSelectedMonths] = useState<string[]>([]);
+	const [extractedOnly, setExtractedOnly] = useState(false);
 
 	const years = ['All', 2024, 2023, 2022, 2021, 2020];
+
+	const availableSubjects = [...new Set(papers.map((p) => p.subject))].sort();
+	const availablePapers = [...new Set(papers.map((p) => p.paper))].sort();
+	const availableMonths = [...new Set(papers.map((p) => p.month))].sort();
+
+	const activeFilterCount =
+		selectedSubjects.length +
+		selectedPapers.length +
+		selectedMonths.length +
+		(extractedOnly ? 1 : 0);
+
+	const clearAllFilters = () => {
+		setSelectedSubjects([]);
+		setSelectedPapers([]);
+		setSelectedMonths([]);
+		setExtractedOnly(false);
+	};
+
+	const toggleArrayItem = (arr: string[], setArr: (v: string[]) => void, item: string) => {
+		if (arr.includes(item)) {
+			setArr(arr.filter((i) => i !== item));
+		} else {
+			setArr([...arr, item]);
+		}
+	};
 
 	useEffect(() => {
 		const fetchPapers = async () => {
@@ -50,7 +199,19 @@ export default function PastPapers() {
 			paper.subject.toLowerCase().includes(searchQuery.toLowerCase()) ||
 			paper.paper.toLowerCase().includes(searchQuery.toLowerCase());
 		const matchesYear = selectedYear === 'All' || paper.year === selectedYear;
-		return matchesSearch && matchesYear;
+		const matchesSubjects =
+			selectedSubjects.length === 0 || selectedSubjects.includes(paper.subject);
+		const matchesPapers = selectedPapers.length === 0 || selectedPapers.includes(paper.paper);
+		const matchesMonths = selectedMonths.length === 0 || selectedMonths.includes(paper.month);
+		const matchesExtracted = !extractedOnly || paper.isExtracted;
+		return (
+			matchesSearch &&
+			matchesYear &&
+			matchesSubjects &&
+			matchesPapers &&
+			matchesMonths &&
+			matchesExtracted
+		);
 	});
 
 	return (
@@ -70,12 +231,31 @@ export default function PastPapers() {
 							</p>
 						</div>
 						<div className="flex items-center gap-2">
+							{activeFilterCount > 0 && (
+								<Button
+									variant="ghost"
+									onClick={clearAllFilters}
+									className="rounded-2xl font-black text-[10px] uppercase tracking-widest px-4 h-12 text-muted-foreground hover:text-foreground"
+								>
+									<X className="w-4 h-4 mr-2" />
+									Clear
+								</Button>
+							)}
 							<Button
 								variant="outline"
-								className="rounded-2xl border-2 font-black text-[10px] uppercase tracking-widest px-6 h-12"
+								onClick={() => setIsAdvancedFilterOpen(true)}
+								className={cn(
+									'rounded-2xl border-2 font-black text-[10px] uppercase tracking-widest px-6 h-12',
+									activeFilterCount > 0 && 'border-primary bg-primary/10 text-primary'
+								)}
 							>
 								<Filter className="w-4 h-4 mr-2" />
 								Advanced Filter
+								{activeFilterCount > 0 && (
+									<Badge className="ml-2 rounded-full px-2 py-0.5 text-[9px] bg-primary text-primary-foreground">
+										{activeFilterCount}
+									</Badge>
+								)}
 							</Button>
 						</div>
 					</div>
@@ -224,6 +404,95 @@ export default function PastPapers() {
 					</AnimatePresence>
 				</main>
 			</ScrollArea>
+
+			<Sheet open={isAdvancedFilterOpen} onOpenChange={setIsAdvancedFilterOpen}>
+				<SheetContent className="w-full sm:max-w-lg hidden lg:block">
+					<SheetHeader>
+						<SheetTitle className="text-xl font-black uppercase tracking-tight">
+							Advanced Filters
+						</SheetTitle>
+					</SheetHeader>
+					<div className="py-6 overflow-y-auto">
+						<FilterContent
+							availableSubjects={availableSubjects}
+							availablePapers={availablePapers}
+							availableMonths={availableMonths}
+							selectedSubjects={selectedSubjects}
+							selectedPapers={selectedPapers}
+							selectedMonths={selectedMonths}
+							extractedOnly={extractedOnly}
+							onToggleSubject={(subject) =>
+								toggleArrayItem(selectedSubjects, setSelectedSubjects, subject)
+							}
+							onTogglePaper={(paper) => toggleArrayItem(selectedPapers, setSelectedPapers, paper)}
+							onToggleMonth={(month) => toggleArrayItem(selectedMonths, setSelectedMonths, month)}
+							onToggleExtracted={setExtractedOnly}
+						/>
+					</div>
+					<div className="border-t pt-4 flex gap-3">
+						<Button
+							variant="outline"
+							onClick={clearAllFilters}
+							className="flex-1 rounded-2xl font-black text-xs uppercase tracking-widest"
+						>
+							Reset
+						</Button>
+						<Button
+							onClick={() => setIsAdvancedFilterOpen(false)}
+							className="flex-1 rounded-2xl font-black text-xs uppercase tracking-widest"
+						>
+							Apply Filters
+						</Button>
+					</div>
+				</SheetContent>
+			</Sheet>
+
+			<Drawer open={isAdvancedFilterOpen} onOpenChange={setIsAdvancedFilterOpen}>
+				<DrawerContent className="lg:hidden">
+					<DrawerHeader>
+						<DrawerTitle className="text-xl font-black uppercase tracking-tight text-left">
+							Advanced Filters
+						</DrawerTitle>
+					</DrawerHeader>
+					<div className="px-4 py-4 overflow-y-auto max-h-[60vh]">
+						<FilterContent
+							availableSubjects={availableSubjects}
+							availablePapers={availablePapers}
+							availableMonths={availableMonths}
+							selectedSubjects={selectedSubjects}
+							selectedPapers={selectedPapers}
+							selectedMonths={selectedMonths}
+							extractedOnly={extractedOnly}
+							onToggleSubject={(subject) =>
+								toggleArrayItem(selectedSubjects, setSelectedSubjects, subject)
+							}
+							onTogglePaper={(paper) => toggleArrayItem(selectedPapers, setSelectedPapers, paper)}
+							onToggleMonth={(month) => toggleArrayItem(selectedMonths, setSelectedMonths, month)}
+							onToggleExtracted={setExtractedOnly}
+						/>
+					</div>
+					<DrawerFooter>
+						<Button
+							onClick={() => setIsAdvancedFilterOpen(false)}
+							className="w-full rounded-2xl font-black text-xs uppercase tracking-widest"
+						>
+							Apply Filters
+						</Button>
+						<Button
+							variant="outline"
+							onClick={clearAllFilters}
+							className="w-full rounded-2xl font-black text-xs uppercase tracking-widest"
+						>
+							Reset
+						</Button>
+						<DrawerClose asChild>
+							<Button variant="ghost" className="w-full">
+								Cancel
+							</Button>
+						</DrawerClose>
+					</DrawerFooter>
+				</DrawerContent>
+			</Drawer>
 		</div>
 	);
 }
