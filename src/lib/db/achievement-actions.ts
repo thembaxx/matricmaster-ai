@@ -2,8 +2,9 @@
 
 import { and, count, eq } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
+import { headers } from 'next/headers';
 import { ACHIEVEMENTS, getAchievementById } from '@/constants/achievements';
-import { auth } from '@/lib/auth';
+import { getAuth } from '@/lib/auth';
 import { type DbType, dbManager } from '@/lib/db';
 import { bookmarks, studySessions, userAchievements, userProgress } from '@/lib/db/schema';
 import { createNotification } from './notification-actions';
@@ -34,7 +35,10 @@ export async function getUserAchievements(): Promise<{
 	unlocked: UserAchievement[];
 	available: typeof ACHIEVEMENTS;
 }> {
-	const session = await auth.api.getSession();
+	const auth = await getAuth();
+	const session = await auth.api.getSession({
+		headers: await headers(),
+	});
 	if (!session?.user) {
 		return { unlocked: [], available: ACHIEVEMENTS };
 	}
@@ -66,7 +70,10 @@ export async function getUserAchievements(): Promise<{
 }
 
 export async function checkAndUnlockAchievements(): Promise<AchievementCheckResult> {
-	const session = await auth.api.getSession();
+	const auth = await getAuth();
+	const session = await auth.api.getSession({
+		headers: await headers(),
+	});
 	if (!session?.user) {
 		return { unlocked: [], existing: [] };
 	}
@@ -136,7 +143,10 @@ export async function getAchievementStatus(achievementId: string): Promise<{
 	unlocked: boolean;
 	unlockedAt?: Date;
 }> {
-	const session = await auth.api.getSession();
+	const auth = await getAuth();
+	const session = await auth.api.getSession({
+		headers: await headers(),
+	});
 	if (!session?.user) {
 		return { unlocked: false };
 	}
@@ -166,7 +176,10 @@ export async function getAchievementStatus(achievementId: string): Promise<{
 }
 
 export async function unlockAchievement(achievementId: string): Promise<boolean> {
-	const session = await auth.api.getSession();
+	const auth = await getAuth();
+	const session = await auth.api.getSession({
+		headers: await headers(),
+	});
 	if (!session?.user) {
 		return false;
 	}

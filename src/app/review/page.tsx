@@ -155,7 +155,7 @@ export default function ReviewPage() {
 			: 0;
 
 	return (
-		<div className="container mx-auto max-w-6xl px-4 py-8">
+		<div className="container mx-auto max-w-6xl px-4 pt-8 pb-32">
 			<div className="mb-8">
 				<h1 className="text-3xl font-bold tracking-tight">Review Dashboard</h1>
 				<p className="text-muted-foreground">
@@ -166,7 +166,7 @@ export default function ReviewPage() {
 			<div className="grid gap-6 lg:grid-cols-3">
 				<div className="lg:col-span-2 space-y-6">
 					{dueCards.length > 0 && (
-						<Card className="border-primary/20 bg-gradient-to-br from-primary/5 to-transparent">
+						<Card className="border-primary/20 bg-linear-to-br from-primary/5 to-transparent">
 							<CardHeader>
 								<CardTitle className="flex items-center gap-2">
 									<Zap className="h-5 w-5 text-primary" />
@@ -195,7 +195,7 @@ export default function ReviewPage() {
 								<CardDescription>{recommendations.summary}</CardDescription>
 							</CardHeader>
 							<CardContent>
-								<ScrollArea className="h-[300px] pr-4">
+								<ScrollArea className="h-75 pr-4">
 									<div className="space-y-3">
 										{recommendations.recommendations.map((rec, index) => (
 											<div

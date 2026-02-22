@@ -2,7 +2,8 @@
 
 import { and, desc, eq } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
-import { auth } from '@/lib/auth';
+import { headers } from 'next/headers';
+import { getAuth } from '@/lib/auth';
 import { type DbType, dbManager } from '@/lib/db';
 import { studySessions, userProgress } from '@/lib/db/schema';
 
@@ -46,7 +47,10 @@ export interface SessionData {
 }
 
 export async function getUserProgressSummary(): Promise<UserProgressSummary | null> {
-	const session = await auth.api.getSession();
+	const auth = await getAuth();
+	const session = await auth.api.getSession({
+		headers: await headers(),
+	});
 	if (!session?.user) {
 		return null;
 	}
@@ -122,7 +126,10 @@ export async function getSubjectProgress(subjectId: number): Promise<{
 	accuracy: number;
 	streakDays: number;
 } | null> {
-	const session = await auth.api.getSession();
+	const auth = await getAuth();
+	const session = await auth.api.getSession({
+		headers: await headers(),
+	});
 	if (!session?.user) {
 		return null;
 	}
@@ -168,7 +175,10 @@ export async function recordStudySession(data: ProgressUpdateData): Promise<{
 	success: boolean;
 	newAchievements?: string[];
 }> {
-	const session = await auth.api.getSession();
+	const auth = await getAuth();
+	const session = await auth.api.getSession({
+		headers: await headers(),
+	});
 	if (!session?.user) {
 		return { success: false };
 	}
@@ -242,7 +252,10 @@ export async function updateUserStreak(): Promise<{
 	streakDays: number;
 	streakIncreased: boolean;
 }> {
-	const session = await auth.api.getSession();
+	const auth = await getAuth();
+	const session = await auth.api.getSession({
+		headers: await headers(),
+	});
 	if (!session?.user) {
 		return { streakDays: 0, streakIncreased: false };
 	}
@@ -324,7 +337,10 @@ export async function getUserStreak(): Promise<{
 	bestStreak: number;
 	lastActivityDate: string | null;
 }> {
-	const session = await auth.api.getSession();
+	const auth = await getAuth();
+	const session = await auth.api.getSession({
+		headers: await headers(),
+	});
 	if (!session?.user) {
 		return { currentStreak: 0, bestStreak: 0, lastActivityDate: null };
 	}

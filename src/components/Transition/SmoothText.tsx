@@ -65,7 +65,7 @@ export function SmoothText({
 			variants={containerVariants}
 			initial="hidden"
 			whileInView="visible"
-			viewport={{ once }}
+			viewport={{ once, amount: 0.3 }}
 			className={className}
 		>
 			{text.split('').map((char, index) => (
@@ -140,7 +140,7 @@ export function SmoothWords({
 			variants={containerVariants}
 			initial="hidden"
 			whileInView="visible"
-			viewport={{ once }}
+			viewport={{ once, amount: 0.3 }}
 			className={className}
 		>
 			{text.split(' ').map((word, index) => (
