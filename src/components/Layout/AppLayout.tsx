@@ -21,7 +21,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 	const [sheetOpen, setSheetOpen] = useState(false);
 
 	const hideNavigation = ['/test'];
-	const hideBottomNavigation = ['/sign-in', '/sign-up', '/test'];
+	const hideBottomNavigation = ['/sign-in', '/sign-up', '/test', '/'];
 
 	const shouldHideNav = hideNavigation.some((path) => pathname.startsWith(path));
 	const shouldHideBottomNav = hideBottomNavigation.some((path) => pathname.startsWith(path));

@@ -427,7 +427,7 @@ export default function CMS() {
 	const fileInputId = useId();
 
 	return (
-		<div className="flex-1 flex flex-col bg-background overflow-hidden pb-12">
+		<div className="flex-1 flex flex-col bg-background overflow-hidden pb-32">
 			{/* Header */}
 			<header className="px-8 pt-8 pb-6 bg-background shrink-0 space-y-8">
 				<div className="flex flex-col md:flex-row md:items-center justify-between gap-6">

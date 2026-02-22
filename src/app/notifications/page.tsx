@@ -171,7 +171,7 @@ export default function NotificationsPage() {
 
 	if (isPending) {
 		return (
-			<div className="container mx-auto py-8 max-w-4xl">
+			<div className="container mx-auto py-8 px-6 max-w-4xl">
 				<Card>
 					<CardContent className="py-12 text-center">
 						<Bell className="h-12 w-12 mx-auto mb-4 text-muted-foreground animate-pulse" />
@@ -184,7 +184,7 @@ export default function NotificationsPage() {
 
 	if (!session) {
 		return (
-			<div className="container mx-auto py-8 max-w-4xl">
+			<div className="container mx-auto py-8 px-6 max-w-4xl">
 				<Card>
 					<CardContent className="py-12 text-center">
 						<Bell className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
@@ -199,7 +199,7 @@ export default function NotificationsPage() {
 	}
 
 	return (
-		<div className="container mx-auto py-8 max-w-4xl">
+		<div className="container mx-auto py-8 px-6 max-w-4xl">
 			<div className="flex items-center justify-between mb-6">
 				<div className="flex items-center gap-3">
 					<Bell className="h-8 w-8 text-primary" />

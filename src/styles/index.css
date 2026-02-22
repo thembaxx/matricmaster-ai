@@ -114,7 +114,8 @@
   --color-geography: oklch(0.65 0.15 210);
   --color-history: oklch(0.7 0.18 45);
 
-  --font-inter: var(--font-inter);
+  --font-geist-sans: var(--font-geist-sans);
+  --font-geist-mono: var(--font-geist-mono);
   --font-lexend: var(--font-lexend);
   --font-outfit: var(--font-outfit);
   --font-sf-pro: var(--font-sf-pro);
@@ -250,7 +251,7 @@
   }
   body {
     @apply bg-background text-foreground antialiased;
-    font-family: var(--font-inter), var(--font-system);
+    font-family: var(--font-geist-sans), var(--font-system);
     font-feature-settings:
       "rlig" 1,
       "calt" 1;

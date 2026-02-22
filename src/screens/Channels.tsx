@@ -110,7 +110,7 @@ export default function Channels() {
 	);
 
 	return (
-		<div className="flex flex-col h-full bg-[#f8f9fb] dark:bg-[#0a0f18] font-inter">
+		<div className="flex flex-col h-full bg-[#f8f9fb] dark:bg-neutral-950 font-inter">
 			{/* Header */}
 			<header className="px-6 pt-12 pb-6 shrink-0 bg-[#f8f9fb] dark:bg-[#0a0f18]">
 				<div className="flex items-center justify-between">
@@ -345,7 +345,7 @@ export default function Channels() {
 			<button
 				aria-label="Play"
 				type="button"
-				className="absolute bottom-24 right-6 w-16 h-16 bg-[#1e293b] dark:bg-white text-background dark:text-foreground rounded-full shadow-2xl flex items-center justify-center transform hover:scale-110 active:scale-95 transition-all z-30"
+				className="absolute bottom-24 right-6 w-16 h-16 bg-[#1e293b] dark:bg-white text-background  rounded-full shadow-2xl flex items-center justify-center transform hover:scale-110 active:scale-95 transition-all z-30"
 			>
 				<Play className="w-8 h-8 fill-current translate-x-0.5" />
 			</button>

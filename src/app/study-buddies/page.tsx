@@ -241,7 +241,7 @@ export default function StudyBuddiesPage() {
 	});
 
 	return (
-		<div className="container mx-auto py-8 max-w-6xl">
+		<div className="container mx-auto py-8 max-w-6xl px-6">
 			<div className="flex items-center gap-3 mb-6">
 				<Users className="h-8 w-8 text-primary" />
 				<div>
