@@ -149,7 +149,7 @@ export default function FlashcardsPage() {
 	}
 
 	return (
-		<div className="container mx-auto max-w-6xl px-4 py-8">
+		<div className="container mx-auto max-w-6xl px-4 pt-8 pb-32">
 			<div className="mb-8 flex items-center justify-between">
 				<div>
 					<h1 className="text-3xl font-bold tracking-tight">Flashcards</h1>
