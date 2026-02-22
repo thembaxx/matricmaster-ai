@@ -1,13 +1,16 @@
 'use client';
 
+import { usePathname, useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { ClientOnly } from '@/components/ClientOnly';
 import { DailyLoginBonus } from '@/components/Gamification/DailyLoginBonus';
 import { useNotificationContextSafe } from '@/components/Notifications/NotificationListener';
+import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
 import { useTheme } from '@/hooks/use-theme';
 import { authClient } from '@/lib/auth-client';
 import PageTransition from '../Transition/PageTransition';
 import { BottomNavigation } from './BottomNavigation';
-import { DesktopSidebar } from './DesktopSidebar';
+import { AppSidebar } from './DesktopSidebar';
 import { MobileMenuSheet } from './MobileMenuSheet';
 import { ResponsiveHeader } from './ResponsiveHeader';
 
@@ -18,7 +21,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 	const { data: session } = authClient.useSession();
 	const user = session?.user;
 	const { unreadCount } = useNotificationContextSafe();
-	const [sheetOpen, setSheetOpen] = useState(false);
+	const [sidebarOpen, setSidebarOpen] = useState(true);
 
 	const hideNavigation = ['/test'];
 	const hideBottomNavigation = ['/sign-in', '/sign-up', '/test', '/'];
@@ -26,54 +29,68 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 	const shouldHideNav = hideNavigation.some((path) => pathname.startsWith(path));
 	const shouldHideBottomNav = hideBottomNavigation.some((path) => pathname.startsWith(path));
 
+	if (!user || shouldHideNav) {
+		return (
+			<div className="flex min-h-screen bg-background overflow-x-hidden transition-colors duration-500">
+				<ClientOnly>{user && <DailyLoginBonus />}</ClientOnly>
+				<div className="flex-1 flex flex-col min-h-screen relative max-w-full">
+					<div className="flex-1 flex flex-col w-full mx-auto max-w-full">
+						{!shouldHideNav && (
+							<ResponsiveHeader
+								user={user ?? null}
+								unreadCount={unreadCount}
+								onNotificationClick={() => router.push('/notifications')}
+								onSignIn={() => router.push('/sign-in')}
+								onSignUp={() => router.push('/sign-up')}
+							/>
+						)}
+						<main
+							id="main-content"
+							className={`flex-1 relative flex flex-col ${!shouldHideNav ? 'pt-20' : ''}`}
+						>
+							<PageTransition>{children}</PageTransition>
+						</main>
+					</div>
+					{!shouldHideBottomNav && user && <BottomNavigation pathname={pathname} />}
+				</div>
+				<GlobalStyles />
+			</div>
+		);
+	}
+
 	return (
-		<div className="flex min-h-screen bg-background overflow-x-hidden transition-colors duration-500">
-			<ClientOnly>{user && <DailyLoginBonus />}</ClientOnly>
-
-			{user && !shouldHideNav && (
-				<DesktopSidebar
-					user={user}
-					pathname={pathname}
-					theme={theme}
-					onToggleTheme={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-				/>
-			)}
-
-			<div className="flex-1 flex flex-col min-h-screen relative max-w-full">
-				<div
-					className={`flex-1 flex flex-col w-full mx-auto transition-all duration-300 ${!shouldHideNav && user ? 'max-w-7xl lg:px-8 xl:px-12' : 'max-w-full'}`}
-				>
-					{!shouldHideNav && (
+		<SidebarProvider defaultOpen={sidebarOpen} onOpenChange={setSidebarOpen}>
+			<ClientOnly>
+				<DailyLoginBonus />
+			</ClientOnly>
+			<AppSidebar
+				user={user}
+				pathname={pathname}
+				theme={theme}
+				onToggleTheme={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+			/>
+			<SidebarInset>
+				<div className="flex-1 flex flex-col min-h-screen relative max-w-full">
+					<div className="flex-1 flex flex-col w-full mx-auto transition-all duration-300 max-w-7xl lg:px-8 xl:px-12">
 						<ResponsiveHeader
 							user={user ?? null}
 							unreadCount={unreadCount}
 							onNotificationClick={() => router.push('/notifications')}
 							onSignIn={() => router.push('/sign-in')}
 							onSignUp={() => router.push('/sign-up')}
-							mobileMenuTrigger={
-								<MobileMenuSheet open={sheetOpen} onOpenChange={setSheetOpen} pathname={pathname} />
-							}
+							mobileMenuTrigger={<MobileMenuSheet />}
 						/>
-					)}
-
-					<main
-						id="main-content"
-						className={`flex-1 relative flex flex-col ${!shouldHideNav ? 'pt-20 lg:pt-0' : ''}`}
-					>
-						<PageTransition>{children}</PageTransition>
-					</main>
+						<main id="main-content" className="flex-1 relative flex flex-col pt-20 lg:pt-8">
+							<PageTransition>{children}</PageTransition>
+						</main>
+					</div>
+					{!shouldHideBottomNav && user && <BottomNavigation pathname={pathname} />}
 				</div>
-
-				{!shouldHideBottomNav && user && <BottomNavigation pathname={pathname} />}
-			</div>
-
+			</SidebarInset>
 			<GlobalStyles />
-		</div>
+		</SidebarProvider>
 	);
 }
-
-import { usePathname, useRouter } from 'next/navigation';
-import { useState } from 'react';
 
 function GlobalStyles() {
 	return (
