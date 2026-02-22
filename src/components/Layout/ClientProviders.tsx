@@ -12,7 +12,7 @@ interface ClientProvidersProps {
 
 export function ClientProviders({ children }: ClientProvidersProps) {
 	return (
-		<LazyMotion features={domAnimation} strict>
+		<LazyMotion features={domAnimation}>
 			<AblyClientProvider>
 				<NotificationListener>
 					<AppLayout>{children}</AppLayout>
