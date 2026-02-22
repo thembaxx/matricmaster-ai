@@ -1,7 +1,9 @@
 'use server';
 
 import { and, asc, desc, eq, inArray, isNotNull, isNull, sql } from 'drizzle-orm';
+import { headers } from 'next/headers';
 import { z } from 'zod';
+import { getAuth, type SessionUser } from '@/lib/auth';
 import type { User } from './better-auth-schema';
 import { users } from './better-auth-schema';
 import { type DbType, dbManager } from './index';
@@ -64,6 +66,19 @@ const createOptionSchema = z.object({
 
 const userIdSchema = z.string().min(1);
 const querySchema = z.string().min(1).max(500);
+
+/**
+ * Ensures the current user has admin privileges
+ */
+async function ensureAdmin() {
+	const auth = await getAuth();
+	const session = await auth.api.getSession({
+		headers: await headers(),
+	});
+	if ((session?.user as SessionUser | undefined)?.role !== 'admin') {
+		throw new Error('Unauthorized: Admin access required');
+	}
+}
 
 async function getDb(): Promise<DbType> {
 	const connected = await dbManager.waitForConnection(3, 2000);
@@ -196,6 +211,7 @@ const mockOptions: Option[] = [
 ];
 
 export async function createSubjectAction(data: NewSubject): Promise<Subject> {
+	await ensureAdmin();
 	const validated = createSubjectSchema.parse(data);
 	const db = await getDb();
 	const [subject] = await db
@@ -236,6 +252,7 @@ export async function updateSubjectAction(
 	id: number,
 	data: Partial<NewSubject>
 ): Promise<Subject | null> {
+	await ensureAdmin();
 	// Validate input data
 	const validatedData = updateSubjectSchema.parse(data);
 
@@ -255,6 +272,7 @@ export async function updateSubjectAction(
 }
 
 export async function softDeleteSubjectAction(id: number): Promise<boolean> {
+	await ensureAdmin();
 	const db = await getDb();
 	const result = await db
 		.update(subjects)
@@ -265,6 +283,7 @@ export async function softDeleteSubjectAction(id: number): Promise<boolean> {
 }
 
 export async function hardDeleteSubjectAction(id: number): Promise<boolean> {
+	await ensureAdmin();
 	const db = await getDb();
 	const result = await db.delete(subjects).where(eq(subjects.id, id)).returning();
 	return result.length > 0;
@@ -282,6 +301,7 @@ export async function createQuestionAction(
 	questionData: NewQuestion,
 	optionsData: Omit<NewOption, 'questionId'>[]
 ): Promise<Question & { options: Option[] }> {
+	await ensureAdmin();
 	const validatedQuestion = createQuestionSchema.parse(questionData);
 	const validatedOptions = z.array(createOptionSchema).min(2).parse(optionsData);
 	const db = await getDb();
@@ -407,6 +427,7 @@ export async function updateQuestionAction(
 	id: string,
 	data: Partial<NewQuestion>
 ): Promise<Question | null> {
+	await ensureAdmin();
 	const db = await getDb();
 	const [question] = await db
 		.update(questions)
@@ -417,6 +438,7 @@ export async function updateQuestionAction(
 }
 
 export async function softDeleteQuestionAction(id: string): Promise<boolean> {
+	await ensureAdmin();
 	const db = await getDb();
 	await db.transaction(async (tx) => {
 		await tx
@@ -429,6 +451,7 @@ export async function softDeleteQuestionAction(id: string): Promise<boolean> {
 }
 
 export async function hardDeleteQuestionAction(id: string): Promise<boolean> {
+	await ensureAdmin();
 	const db = await getDb();
 	const result = await db.delete(questions).where(eq(questions.id, id)).returning();
 	return result.length > 0;
@@ -520,6 +543,7 @@ export async function clearSearchHistoryAction(userId: string): Promise<boolean>
 }
 
 export async function seedDatabaseAction(): Promise<{ success: boolean; message: string }> {
+	await ensureAdmin();
 	try {
 		const { seedDatabase } = await import('./seed/index');
 		await seedDatabase();
@@ -546,6 +570,7 @@ export interface UserFilters {
 }
 
 export async function getUsersAction(filters: UserFilters = {}): Promise<User[]> {
+	await ensureAdmin();
 	try {
 		const db = await getDb();
 
@@ -591,6 +616,7 @@ export async function updateUserAction(
 	id: string,
 	data: { name?: string; email?: string; role?: 'admin' | 'moderator' | 'user' }
 ): Promise<User | null> {
+	await ensureAdmin();
 	const validatedData = updateUserSchema.parse(data);
 
 	if (Object.keys(validatedData).length === 0) {
@@ -610,6 +636,7 @@ export async function updateUserAction(
 export async function toggleUserBlockAction(
 	id: string
 ): Promise<{ success: boolean; isBlocked: boolean; user?: User }> {
+	await ensureAdmin();
 	const db = await getDb();
 
 	// Get current user state
@@ -635,6 +662,7 @@ export async function toggleUserBlockAction(
 }
 
 export async function deleteUserAction(id: string): Promise<{ success: boolean; user?: User }> {
+	await ensureAdmin();
 	const db = await getDb();
 	const [user] = await db
 		.update(users)
@@ -645,6 +673,7 @@ export async function deleteUserAction(id: string): Promise<{ success: boolean; 
 }
 
 export async function restoreUserAction(id: string): Promise<{ success: boolean; user?: User }> {
+	await ensureAdmin();
 	const db = await getDb();
 	const [user] = await db
 		.update(users)
@@ -693,6 +722,7 @@ export interface PastPaperFilters {
 export async function createPastPaperAction(
 	data: z.infer<typeof createPastPaperSchema>
 ): Promise<PastPaper> {
+	await ensureAdmin();
 	const validated = createPastPaperSchema.parse(data);
 	const db = await getDb();
 	const [pastPaper] = await db
@@ -762,6 +792,7 @@ export async function updatePastPaperAction(
 	id: string,
 	data: z.infer<typeof updatePastPaperSchema>
 ): Promise<PastPaper | null> {
+	await ensureAdmin();
 	const validatedData = updatePastPaperSchema.parse(data);
 
 	if (Object.keys(validatedData).length === 0) {
@@ -779,6 +810,7 @@ export async function updatePastPaperAction(
 }
 
 export async function deletePastPaperAction(id: string): Promise<boolean> {
+	await ensureAdmin();
 	const db = await getDb();
 	const result = await db.delete(pastPapers).where(eq(pastPapers.id, id)).returning();
 	return result.length > 0;
@@ -791,6 +823,7 @@ export async function saveExtractedQuestionsAction(
 	paperId: string,
 	extractedQuestions: string
 ): Promise<PastPaper | null> {
+	await ensureAdmin();
 	const db = await getDb();
 
 	// Try to find by paperId first, then by id
@@ -822,6 +855,7 @@ export async function saveExtractedQuestionsAction(
  * Get extracted questions for a past paper
  */
 export async function getExtractedQuestionsAction(paperId: string): Promise<string | null> {
+	await ensureAdmin();
 	const db = await getDb();
 
 	let [paper] = await db.select().from(pastPapers).where(eq(pastPapers.paperId, paperId)).limit(1);
@@ -874,6 +908,7 @@ export async function createContentFlagAction(
 export async function getContentFlagsAction(
 	status?: 'pending' | 'reviewed' | 'actioned' | 'dismissed'
 ): Promise<ContentFlag[]> {
+	await ensureAdmin();
 	const db = await getDb();
 	if (status) {
 		return db
@@ -892,6 +927,7 @@ export async function dismissFlagAction(
 	flagId: string,
 	reviewerId: string
 ): Promise<{ success: boolean }> {
+	await ensureAdmin();
 	const db = await getDb();
 	const result = await db
 		.update(contentFlags)
@@ -912,6 +948,7 @@ export async function actionFlagAction(
 	flagId: string,
 	reviewerId: string
 ): Promise<{ success: boolean }> {
+	await ensureAdmin();
 	const db = await getDb();
 	const result = await db
 		.update(contentFlags)
@@ -1021,6 +1058,7 @@ export interface AdminStats {
 }
 
 export async function getAdminStatsAction(): Promise<AdminStats> {
+	await ensureAdmin();
 	try {
 		const db = await getDb();
 
@@ -1079,6 +1117,7 @@ export interface SubjectPerformance {
 }
 
 export async function getSubjectPerformanceAction(): Promise<SubjectPerformance[]> {
+	await ensureAdmin();
 	try {
 		const db = await getDb();
 
