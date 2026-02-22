@@ -2,7 +2,7 @@
 
 import { eq } from 'drizzle-orm';
 import { getDailyLoginReward } from '@/constants/rewards';
-import { auth } from '@/lib/auth';
+import { getAuth } from '@/lib/auth';
 import { type DbType, dbManager } from '@/lib/db';
 import { userProgress } from '@/lib/db/schema';
 import { addStreakFreeze } from './streak-actions';
@@ -59,6 +59,7 @@ function getMillisecondsUntilMidnight(): number {
 }
 
 export async function getLoginBonusStatus(): Promise<LoginBonusStatus> {
+	const auth = await getAuth();
 	const session = await auth.api.getSession();
 	if (!session?.user) {
 		return {
@@ -136,6 +137,7 @@ export async function getLoginBonusStatus(): Promise<LoginBonusStatus> {
 }
 
 export async function claimLoginBonus(): Promise<ClaimLoginBonusResult> {
+	const auth = await getAuth();
 	const session = await auth.api.getSession();
 	if (!session?.user) {
 		return {
