@@ -298,7 +298,7 @@ export default function AITutorPage() {
 	}
 
 	return (
-		<div className="min-h-screen bg-background flex pb-32">
+		<div className="min-h-screen bg-background flex pb-40">
 			{session.user && (
 				<ConversationSidebar
 					userId={session.user.id}
@@ -309,14 +309,16 @@ export default function AITutorPage() {
 			)}
 
 			<div className="flex-1 flex flex-col min-w-0 bg-zinc-50 dark:bg-zinc-950">
-				<header className="border-b bg-card/50 backdrop-blur-xl sticky top-0 z-10 px-6 py-4">
-					<div className="max-w-4xl mx-auto flex items-center justify-between">
-						<div className="flex items-center gap-4">
-							<div className="h-12 w-12 rounded-2xl bg-primary/10 flex items-center justify-center shadow-inner">
-								<Sparkles className="h-6 w-6 text-primary animate-pulse-soft" />
+				<header className="border-b bg-card/50 backdrop-blur-xl sticky top-0 z-10 px-4 py-3 md:px-6 md:py-4">
+					<div className="max-w-4xl mx-auto flex items-center justify-between gap-2">
+						<div className="flex items-center gap-3 md:gap-4">
+							<div className="h-10 w-10 md:h-12 md:w-12 rounded-xl md:rounded-2xl bg-primary/10 flex items-center justify-center shadow-inner">
+								<Sparkles className="h-5 w-5 md:h-6 md:w-6 text-primary animate-pulse-soft" />
 							</div>
 							<div>
-								<h1 className="text-xl font-black font-lexend tracking-tight">AI Study Tutor</h1>
+								<h1 className="text-lg md:text-xl font-black font-lexend tracking-tight">
+									AI Tutor
+								</h1>
 								<div className="flex items-center gap-2">
 									<span className="flex h-2 w-2 rounded-full bg-green-500 animate-pulse" />
 									<p className="text-xs font-bold text-muted-foreground uppercase tracking-widest">
@@ -325,44 +327,44 @@ export default function AITutorPage() {
 								</div>
 							</div>
 						</div>
-						<div className="flex items-center gap-2">
+						<div className="flex items-center gap-1 md:gap-2">
 							<Button
 								variant="outline"
 								size="sm"
-								className="rounded-xl border-border/50 bg-surface-elevated/50"
+								className="rounded-xl border-border/50 bg-surface-elevated/50 px-2 md:px-3"
 								onClick={handleGenerateFlashcards}
 								disabled={isGeneratingFlashcards || messages.length <= 1}
 							>
 								{isGeneratingFlashcards ? (
 									<Loader2 className="h-4 w-4 animate-spin" />
 								) : (
-									<BookOpen className="h-4 w-4 mr-2" />
+									<BookOpen className="h-4 w-4" />
 								)}
-								Flashcards
+								<span className="hidden md:inline ml-2">Flashcards</span>
 							</Button>
 							<Button
 								variant="outline"
 								size="sm"
-								className="rounded-xl border-border/50 bg-surface-elevated/50"
+								className="rounded-xl border-border/50 bg-surface-elevated/50 px-2 md:px-3"
 								onClick={handleGeneratePractice}
 								disabled={isGeneratingPractice || messages.length <= 1}
 							>
 								{isGeneratingPractice ? (
 									<Loader2 className="h-4 w-4 animate-spin" />
 								) : (
-									<Dumbbell className="h-4 w-4 mr-2" />
+									<Dumbbell className="h-4 w-4" />
 								)}
-								Practice
+								<span className="hidden md:inline ml-2">Practice</span>
 							</Button>
 							<Button variant="ios" size="sm" className="rounded-xl" onClick={handleSave}>
-								<Save className="h-4 w-4 mr-2" />
-								Save
+								<Save className="h-4 w-4" />
+								<span className="hidden md:inline ml-2">Save</span>
 							</Button>
 						</div>
 					</div>
 				</header>
 
-				<div className="border-b bg-surface-base/50 backdrop-blur-md px-6 py-3">
+				<div className="border-b bg-surface-base/50 backdrop-blur-md px-4 md:px-6 py-3">
 					<div className="max-w-4xl mx-auto">
 						<div className="flex flex-wrap gap-2">
 							{subjects.map((subject) => (
@@ -374,33 +376,33 @@ export default function AITutorPage() {
 										setSelectedSubject(selectedSubject === subject.id ? null : subject.id)
 									}
 									className={cn(
-										'gap-2 rounded-2xl border-border/50 transition-all duration-300',
+										'gap-1.5 md:gap-2 rounded-xl md:rounded-2xl border-border/50 transition-all duration-300 text-xs md:text-sm',
 										selectedSubject === subject.id
 											? 'shadow-lg scale-105'
 											: 'bg-surface-elevated/30 hover:bg-surface-elevated'
 									)}
 								>
 									<span className="text-sm">{subject.icon}</span>
-									<span className="font-bold">{subject.name}</span>
+									<span className="font-bold hidden sm:inline">{subject.name}</span>
 								</Button>
 							))}
 						</div>
 					</div>
 				</div>
 
-				<ScrollArea className="flex-1 px-6">
-					<div className="max-w-4xl mx-auto py-8 space-y-8">
+				<ScrollArea className="flex-1 px-3 md:px-6">
+					<div className="max-w-4xl mx-auto py-6 md:py-8 space-y-6 md:space-y-8">
 						{messages.map((message) => (
 							<div
 								key={message.id}
 								className={cn(
-									'flex gap-4 group transition-all duration-300 animate-in fade-in slide-in-from-bottom-2',
+									'flex gap-2 md:gap-4 group transition-all duration-300 animate-in fade-in slide-in-from-bottom-2',
 									message.role === 'user' ? 'flex-row-reverse' : 'flex-row'
 								)}
 							>
 								<Avatar
 									className={cn(
-										'h-10 w-10 shrink-0 rounded-2xl border-2',
+										'h-8 w-8 md:h-10 md:w-10 shrink-0 rounded-xl md:rounded-2xl border-2',
 										message.role === 'user'
 											? 'border-primary/20 shadow-primary/10'
 											: 'border-border/50 shadow-sm'
@@ -408,7 +410,7 @@ export default function AITutorPage() {
 								>
 									<AvatarFallback
 										className={cn(
-											'font-black',
+											'font-black text-xs md:text-base',
 											message.role === 'user'
 												? 'bg-primary text-primary-foreground'
 												: 'bg-surface-elevated text-primary'
@@ -419,13 +421,13 @@ export default function AITutorPage() {
 								</Avatar>
 								<div
 									className={cn(
-										'flex-1 max-w-[85%] relative',
+										'flex-1 max-w-[80%] md:max-w-[85%] relative',
 										message.role === 'user' ? 'items-end' : 'items-start'
 									)}
 								>
 									<div
 										className={cn(
-											'rounded-[2rem] px-6 py-4 shadow-sm relative group/bubble transition-all duration-300',
+											'rounded-2xl md:rounded-[2rem] px-3 md:px-6 py-3 md:py-4 shadow-sm relative group/bubble transition-all duration-300',
 											message.role === 'user'
 												? 'bg-primary text-primary-foreground rounded-tr-sm'
 												: 'bg-card border border-border/50 rounded-tl-sm hover:shadow-md'
@@ -433,8 +435,8 @@ export default function AITutorPage() {
 									>
 										<div
 											className={cn(
-												'absolute top-4',
-												message.role === 'user' ? '-left-10' : '-right-10'
+												'absolute top-2 md:top-4',
+												message.role === 'user' ? '-left-8 md:-left-10' : '-right-8 md:-right-10'
 											)}
 										>
 											<BookmarkButton
@@ -502,8 +504,8 @@ export default function AITutorPage() {
 					</div>
 				</ScrollArea>
 
-				<div className="border-t bg-surface-base/80 backdrop-blur-xl p-6">
-					<div className="max-w-4xl mx-auto space-y-4">
+				<div className="border-t bg-surface-base/80 backdrop-blur-xl p-3 md:p-6">
+					<div className="max-w-4xl mx-auto space-y-3 md:space-y-4">
 						<QuickPrompts
 							onSelectPrompt={(prompt) => handleSend(prompt)}
 							selectedSubject={selectedSubject}
