@@ -140,6 +140,7 @@ export function Footer() {
 								type="email"
 								placeholder="Your professional email"
 								className="w-full focus:border-primary/50 transition-colors"
+								aria-label="Email address for updates"
 							/>
 							<Button size="sm" className="w-full font-bold hover:scale-105 transition-transform">
 								Join Now

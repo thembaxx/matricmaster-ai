@@ -4,3 +4,6 @@
 ## 2026-02-22 - [Accessibility Audit and Nested Button Fix]
 **Learning:** Nested interactive elements (buttons inside buttons) are a major accessibility violation and cause issues with screen readers and keyboard navigation. Additionally, missing aria-current and aria-pressed attributes make it difficult for assistive technology users to understand the current state of the application.
 **Action:** Always check for nested interactive elements when reviewing list-like components with multiple actions. Ensure all navigation links have aria-current and toggle buttons have aria-pressed.
+## 2026-02-23 - [Heading Hierarchy and Dynamic ARIA Labels]
+**Learning:** In screens where multiple components are composed, it's easy to end up with multiple `h1` tags, which is an accessibility violation. Changing component-level headers to `h2` ensures a proper document outline. Additionally, dynamic ARIA labels (e.g., including unread count in a bell icon's label) provide much better context than static ones.
+**Action:** Always check for existing `h1` tags on the parent screen before adding one in a sub-component. Use template literals for ARIA labels when they represent stateful information.

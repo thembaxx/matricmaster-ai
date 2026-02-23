@@ -64,20 +64,30 @@ const createOptionSchema = z.object({
 	explanation: z.string().max(1000).optional().nullable(),
 });
 
-const userIdSchema = z.string().min(1);
 const querySchema = z.string().min(1).max(500);
 
 /**
  * Ensures the current user has admin privileges
  */
 async function ensureAdmin() {
+	const user = await ensureAuthenticated();
+	if ((user as SessionUser).role !== 'admin') {
+		throw new Error('Unauthorized: Admin access required');
+	}
+}
+
+/**
+ * Ensures the current user is authenticated and returns the user object
+ */
+async function ensureAuthenticated() {
 	const auth = await getAuth();
 	const session = await auth.api.getSession({
 		headers: await headers(),
 	});
-	if ((session?.user as SessionUser | undefined)?.role !== 'admin') {
-		throw new Error('Unauthorized: Admin access required');
+	if (!session?.user) {
+		throw new Error('Unauthorized: Authentication required');
 	}
+	return session.user;
 }
 
 async function getDb(): Promise<DbType> {
@@ -470,11 +480,9 @@ export async function getOptionsByQuestionIdAction(questionId: string): Promise<
 	}
 }
 
-export async function addSearchHistoryAction(
-	userId: string,
-	query: string
-): Promise<SearchHistory> {
-	const validUserId = userIdSchema.parse(userId);
+export async function addSearchHistoryAction(query: string): Promise<SearchHistory> {
+	const user = await ensureAuthenticated();
+	const validUserId = user.id;
 	const validQuery = querySchema.parse(query);
 	const db = await getDb();
 
@@ -512,14 +520,14 @@ export async function addSearchHistoryAction(
 	return newSearch;
 }
 
-export async function getSearchHistoryAction(userId: string): Promise<SearchHistory[]> {
-	const validUserId = userIdSchema.parse(userId);
+export async function getSearchHistoryAction(): Promise<SearchHistory[]> {
+	const user = await ensureAuthenticated();
 	try {
 		const db = await getDb();
 		return db
 			.select()
 			.from(searchHistory)
-			.where(eq(searchHistory.userId, validUserId))
+			.where(eq(searchHistory.userId, user.id))
 			.orderBy(desc(searchHistory.createdAt))
 			.limit(5);
 	} catch {
@@ -527,18 +535,23 @@ export async function getSearchHistoryAction(userId: string): Promise<SearchHist
 	}
 }
 
-export async function deleteSearchHistoryItemAction(id: string, userId: string): Promise<boolean> {
+export async function deleteSearchHistoryItemAction(id: string): Promise<boolean> {
+	const user = await ensureAuthenticated();
 	const db = await getDb();
 	const result = await db
 		.delete(searchHistory)
-		.where(and(eq(searchHistory.id, id), eq(searchHistory.userId, userId)))
+		.where(and(eq(searchHistory.id, id), eq(searchHistory.userId, user.id)))
 		.returning();
 	return result.length > 0;
 }
 
-export async function clearSearchHistoryAction(userId: string): Promise<boolean> {
+export async function clearSearchHistoryAction(): Promise<boolean> {
+	const user = await ensureAuthenticated();
 	const db = await getDb();
-	const result = await db.delete(searchHistory).where(eq(searchHistory.userId, userId)).returning();
+	const result = await db
+		.delete(searchHistory)
+		.where(eq(searchHistory.userId, user.id))
+		.returning();
 	return result.length > 0;
 }
 
