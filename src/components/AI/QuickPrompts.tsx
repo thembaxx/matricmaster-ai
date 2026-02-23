@@ -74,24 +74,24 @@ export function QuickPrompts({ onSelectPrompt, selectedSubject }: QuickPromptsPr
 	}
 
 	return (
-		<div className="space-y-3">
+		<div className="space-y-2 md:space-y-3">
 			<div className="flex items-center gap-2 px-1">
-				<Lightbulb className="h-4 w-4 text-brand-amber" />
+				<Lightbulb className="h-3.5 w-3.5 md:h-4 md:w-4 text-brand-amber" />
 				<span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">
 					Quick Prompts
 				</span>
 			</div>
 			<ScrollArea className="w-full">
-				<div className="flex gap-2 pb-3">
+				<div className="flex gap-1.5 md:gap-2 pb-2 md:pb-3">
 					{displayPrompts.map((prompt) => (
 						<Button
 							key={prompt}
 							variant="outline"
 							size="sm"
-							className="h-auto py-2.5 px-4 text-xs whitespace-nowrap rounded-2xl border-border/50 bg-surface-elevated/30 hover:bg-surface-elevated hover:border-primary/30 transition-all duration-200 ios-active-scale"
+							className="h-auto py-2 px-3 md:py-2.5 md:px-4 text-[10px] md:text-xs whitespace-nowrap rounded-xl md:rounded-2xl border-border/50 bg-surface-elevated/30 hover:bg-surface-elevated hover:border-primary/30 transition-all duration-200 ios-active-scale"
 							onClick={() => onSelectPrompt(prompt)}
 						>
-							<MessageSquarePlus className="h-3.5 w-3.5 mr-2 text-primary/70 shrink-0" />
+							<MessageSquarePlus className="h-3 w-3 md:h-3.5 md:w-3.5 mr-1.5 md:mr-2 text-primary/70 shrink-0" />
 							<span className="font-medium">{prompt}</span>
 						</Button>
 					))}
@@ -99,10 +99,10 @@ export function QuickPrompts({ onSelectPrompt, selectedSubject }: QuickPromptsPr
 						<Button
 							variant="ghost"
 							size="sm"
-							className="h-auto py-2.5 px-4 text-xs shrink-0 text-primary font-bold hover:bg-primary/5 rounded-2xl"
+							className="h-auto py-2 px-3 md:py-2.5 md:px-4 text-[10px] md:text-xs shrink-0 text-primary font-bold hover:bg-primary/5 rounded-xl md:rounded-2xl"
 							onClick={() => setShowAll(true)}
 						>
-							Show more...
+							More...
 						</Button>
 					)}
 				</div>
