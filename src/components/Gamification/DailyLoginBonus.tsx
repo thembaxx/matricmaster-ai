@@ -86,7 +86,13 @@ export function DailyLoginBonus({ onClaimed }: DailyLoginBonusProps) {
 									</div>
 									<h2 className="text-xl font-black text-foreground">Daily Bonus</h2>
 								</div>
-								<Button variant="ghost" size="icon" onClick={handleClose} className="rounded-full">
+								<Button
+									variant="ghost"
+									size="icon"
+									onClick={handleClose}
+									className="rounded-full"
+									aria-label="Close"
+								>
 									<X className="w-5 h-5" />
 								</Button>
 							</div>

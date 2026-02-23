@@ -58,6 +58,7 @@ export function DashboardHeader({ userName, userImage, unreadCount }: DashboardH
 						size="icon"
 						className="w-12 h-12 rounded-2xl bg-card/50 backdrop-blur-md border border-border/20 shadow-sm relative"
 						onClick={() => router.push('/notifications')}
+						aria-label={`Notifications${unreadCount > 0 ? `, ${unreadCount} unread` : ''}`}
 					>
 						<Bell className="w-6 h-6 text-foreground" />
 						{unreadCount > 0 && (
