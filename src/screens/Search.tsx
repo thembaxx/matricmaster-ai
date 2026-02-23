@@ -34,7 +34,7 @@ export default function Search() {
 		const loadSearchHistory = async () => {
 			if (session?.user?.id) {
 				setIsLoadingHistory(true);
-				const history = await getSearchHistoryAction(session.user.id);
+				const history = await getSearchHistoryAction();
 				setRecentSearches(history);
 				setIsLoadingHistory(false);
 			}
@@ -63,8 +63,8 @@ export default function Search() {
 				setIsAiLoading(false);
 
 				if (session?.user?.id) {
-					await addSearchHistoryAction(session.user.id, query);
-					const history = await getSearchHistoryAction(session.user.id);
+					await addSearchHistoryAction(query);
+					const history = await getSearchHistoryAction();
 					setRecentSearches(history);
 				}
 			} else {
@@ -86,14 +86,14 @@ export default function Search() {
 	const handleDeleteSearch = async (id: string, e: React.MouseEvent) => {
 		e.stopPropagation();
 		if (session?.user?.id) {
-			await deleteSearchHistoryItemAction(id, session.user.id);
+			await deleteSearchHistoryItemAction(id);
 			setRecentSearches((prev) => prev.filter((s) => s.id !== id));
 		}
 	};
 
 	const handleClearAllSearches = async () => {
 		if (session?.user?.id) {
-			await clearSearchHistoryAction(session.user.id);
+			await clearSearchHistoryAction();
 			setRecentSearches([]);
 		}
 	};
