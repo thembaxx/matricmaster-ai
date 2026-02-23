@@ -12,7 +12,7 @@ interface SearchHeaderProps {
 export function SearchHeader({ query, onQueryChange }: SearchHeaderProps) {
 	return (
 		<div className="space-y-1">
-			<h1 className="text-3xl font-black text-foreground tracking-tighter uppercase">Search</h1>
+			<h2 className="text-3xl font-black text-foreground tracking-tighter uppercase">Search</h2>
 			<p className="text-muted-foreground font-bold text-sm">
 				Find topics, questions, and past papers
 			</p>

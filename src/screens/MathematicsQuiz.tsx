@@ -71,6 +71,7 @@ export default function MathematicsQuiz() {
 							size="icon"
 							onClick={() => router.push('/dashboard')}
 							className="rounded-full"
+							aria-label="Back to dashboard"
 						>
 							<ArrowLeft className="w-5 h-5" />
 						</Button>
@@ -133,6 +134,7 @@ export default function MathematicsQuiz() {
 													size="icon"
 													className="h-8 w-8 rounded-full hover:bg-red-50 hover:text-red-500"
 													onClick={() => handleStepClick(stepId)}
+													aria-label="Remove step"
 												>
 													<X className="w-4 h-4" />
 												</Button>

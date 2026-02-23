@@ -268,6 +268,7 @@ export default function PastPapers() {
 								onChange={(e) => setSearchQuery(e.target.value)}
 								placeholder="Search subjects or papers..."
 								className="pl-12 sm:pl-16 bg-muted/30 backdrop-blur-md border-2 h-12 sm:h-16 rounded-xl sm:rounded-2xl text-base sm:text-lg font-bold shadow-inner"
+								aria-label="Search past papers"
 							/>
 						</div>
 						<div className="lg:col-span-4 flex gap-2 sm:gap-3 overflow-x-auto no-scrollbar py-1">
