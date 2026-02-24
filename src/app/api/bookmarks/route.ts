@@ -35,7 +35,7 @@ export async function GET(request: NextRequest) {
 			return NextResponse.json({ error: 'Invalid bookmark type' }, { status: 400 });
 		}
 
-		const bookmarks = await getBookmarksAction(session.user.id, type ?? undefined);
+		const bookmarks = await getBookmarksAction(type ?? undefined);
 
 		return NextResponse.json({ success: true, data: bookmarks });
 	} catch (error) {
@@ -72,12 +72,12 @@ export async function POST(request: NextRequest) {
 		}
 
 		// Check if already bookmarked
-		const alreadyBookmarked = await isBookmarkedAction(session.user.id, referenceId);
+		const alreadyBookmarked = await isBookmarkedAction(referenceId);
 		if (alreadyBookmarked) {
 			return NextResponse.json({ error: 'Already bookmarked' }, { status: 409 });
 		}
 
-		const result = await createBookmarkAction(session.user.id, bookmarkType, referenceId, note);
+		const result = await createBookmarkAction(bookmarkType, referenceId, note);
 
 		if (!result.success) {
 			return NextResponse.json(
@@ -109,7 +109,7 @@ export async function DELETE(request: NextRequest) {
 			return NextResponse.json({ error: 'Missing required parameter: id' }, { status: 400 });
 		}
 
-		const result = await deleteBookmarkAction(bookmarkId, session.user.id);
+		const result = await deleteBookmarkAction(bookmarkId);
 
 		if (!result.success) {
 			return NextResponse.json({ error: 'Failed to delete bookmark' }, { status: 500 });
