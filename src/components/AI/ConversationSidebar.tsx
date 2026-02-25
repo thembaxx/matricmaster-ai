@@ -1,6 +1,7 @@
 'use client';
 
-import { Archive, Loader2, MessageSquare, Plus, Search, Trash2 } from 'lucide-react';
+import { AnimatePresence, m } from 'framer-motion';
+import { Archive, Loader2, MessageSquare, Plus, Search, Trash2, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
@@ -65,8 +66,23 @@ function ConversationList({
 						placeholder="Search conversations..."
 						value={searchQuery}
 						onChange={(e) => setSearchQuery(e.target.value)}
-						className="pl-9"
+						className="pl-9 pr-8"
+						aria-label="Search conversations"
 					/>
+					<AnimatePresence>
+						{searchQuery && (
+							<m.button
+								initial={{ opacity: 0, scale: 0.8 }}
+								animate={{ opacity: 1, scale: 1 }}
+								exit={{ opacity: 0, scale: 0.8 }}
+								onClick={() => setSearchQuery('')}
+								className="absolute right-2 top-1/2 -translate-y-1/2 h-6 w-6 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
+								aria-label="Clear search"
+							>
+								<X className="h-4 w-4" />
+							</m.button>
+						)}
+					</AnimatePresence>
 				</div>
 				<Button onClick={onNewConversation} className="w-full" size="sm">
 					<Plus className="h-4 w-4 mr-2" />
@@ -122,6 +138,7 @@ function ConversationList({
 										className="h-7 w-7 shrink-0 text-muted-foreground hover:text-destructive"
 										onClick={(e) => onDelete(e, conversation.id)}
 										disabled={deletingId === conversation.id}
+										aria-label="Delete conversation"
 									>
 										{deletingId === conversation.id ? (
 											<Loader2 className="h-3.5 w-3.5 animate-spin" />
@@ -223,7 +240,12 @@ export function ConversationSidebar({
 			{/* Mobile Sheet */}
 			<Sheet open={isOpen} onOpenChange={setIsOpen}>
 				<SheetTrigger asChild>
-					<Button variant="outline" size="icon" className="lg:hidden">
+					<Button
+						variant="outline"
+						size="icon"
+						className="lg:hidden"
+						aria-label="Open conversation history"
+					>
 						<Archive className="h-4 w-4" />
 					</Button>
 				</SheetTrigger>
