@@ -20,6 +20,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import type { SessionUser } from '@/lib/auth';
 import { useSession } from '@/lib/auth-client';
 
 interface ContentFlag {
@@ -109,7 +110,7 @@ export default function ModerationDashboard() {
 	}
 
 	// Admin role check
-	const isAdmin = session.user?.email?.includes('admin');
+	const isAdmin = (session?.user as SessionUser | undefined)?.role === 'admin';
 	if (!isAdmin) {
 		return (
 			<div className="container mx-auto py-8 text-center">
