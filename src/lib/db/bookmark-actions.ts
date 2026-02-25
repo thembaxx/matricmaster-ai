@@ -2,6 +2,7 @@
 
 import { and, desc, eq } from 'drizzle-orm';
 import { z } from 'zod';
+import { ensureAuthenticated } from './actions';
 import { dbManager, getDb } from './index';
 import { type Bookmark, bookmarks, type NewBookmark } from './schema';
 
@@ -22,6 +23,10 @@ export async function createBookmarkAction(
 	note?: string
 ): Promise<{ success: boolean; bookmark?: Bookmark; error?: string }> {
 	try {
+		const user = await ensureAuthenticated();
+		if (user.id !== userId) {
+			return { success: false, error: 'Unauthorized' };
+		}
 		const validated = bookmarkSchema.parse({ userId, bookmarkType, referenceId, note });
 
 		const connected = await dbManager.waitForConnection(3, 2000);
@@ -75,6 +80,10 @@ export async function getBookmarksAction(
 	type?: 'question' | 'past_paper' | 'study_note' | 'quiz'
 ): Promise<Bookmark[]> {
 	try {
+		const user = await ensureAuthenticated();
+		if (user.id !== userId) {
+			throw new Error('Unauthorized');
+		}
 		const connected = await dbManager.waitForConnection(3, 2000);
 		if (!connected) {
 			return [];
@@ -107,6 +116,10 @@ export async function deleteBookmarkAction(
 	userId: string
 ): Promise<{ success: boolean }> {
 	try {
+		const user = await ensureAuthenticated();
+		if (user.id !== userId) {
+			return { success: false };
+		}
 		const connected = await dbManager.waitForConnection(3, 2000);
 		if (!connected) {
 			return { success: false };
@@ -130,6 +143,10 @@ export async function deleteBookmarkAction(
  */
 export async function isBookmarkedAction(userId: string, referenceId: string): Promise<boolean> {
 	try {
+		const user = await ensureAuthenticated();
+		if (user.id !== userId) {
+			return false;
+		}
 		const connected = await dbManager.waitForConnection(3, 2000);
 		if (!connected) {
 			return false;
@@ -157,6 +174,10 @@ export async function updateBookmarkNoteAction(
 	note: string
 ): Promise<{ success: boolean }> {
 	try {
+		const user = await ensureAuthenticated();
+		if (user.id !== userId) {
+			return { success: false };
+		}
 		const connected = await dbManager.waitForConnection(3, 2000);
 		if (!connected) {
 			return { success: false };

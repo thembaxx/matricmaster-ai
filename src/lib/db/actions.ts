@@ -69,7 +69,7 @@ const querySchema = z.string().min(1).max(500);
 /**
  * Ensures the current user has admin privileges
  */
-async function ensureAdmin() {
+export async function ensureAdmin() {
 	const user = await ensureAuthenticated();
 	if ((user as SessionUser).role !== 'admin') {
 		throw new Error('Unauthorized: Admin access required');
@@ -79,7 +79,7 @@ async function ensureAdmin() {
 /**
  * Ensures the current user is authenticated and returns the user object
  */
-async function ensureAuthenticated() {
+export async function ensureAuthenticated() {
 	const auth = await getAuth();
 	const session = await auth.api.getSession({
 		headers: await headers(),
