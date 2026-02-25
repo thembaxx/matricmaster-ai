@@ -1,7 +1,3 @@
-## 2026-02-25 - [Hydration Safety vs. Render Optimization]
-**Learning:** In Next.js App Router, using `new Date()` or other non-deterministic values in a `useState` lazy initializer causes hydration mismatches between the server-rendered HTML and the client's initial state.
-**Action:** Always perform time-dependent state initialization inside `useEffect` or use a client-only component pattern to ensure hydration safety, even if it means an extra render cycle.
-
-## 2026-02-25 - [Memoization Effectiveness]
-**Learning:** Wrapping a component in `React.memo` is only effective if its props are stable. Passing inline arrow functions or handlers that aren't wrapped in `useCallback` will break memoization because the function reference changes on every parent render.
-**Action:** Use `useCallback` for all handlers passed to memoized components, and prefer functional state updates (e.g., `setArr(prev => ...)`) to keep the dependency array of `useCallback` minimal and stable.
+## 2026-02-24 - [Memoizing Multi-Filter Screen Logic]
+**Learning:** Filter screens with multiple state dependencies (search, checkboxes, toggles) frequently trigger expensive O(N) array operations on every render, even for unrelated UI state changes (like opening a drawer). Wrapping derived data in `useMemo` and sub-components in `memo` with stable `useCallback` handlers is a standard but high-impact optimization for these patterns.
+**Action:** Identify screens with `list.filter(...)` or `[...new Set(list.map(...))]` in the render body and apply memoization clusters (data + handlers + component memo).

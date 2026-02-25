@@ -155,6 +155,7 @@ export default function PastPapers() {
 
 	const years = useMemo(() => ['All', 2024, 2023, 2022, 2021, 2020], []);
 
+	// Performance: Memoize extracted fields to avoid O(N) recalculation on every render
 	const availableSubjects = useMemo(
 		() => [...new Set(papers.map((p) => p.subject))].sort(),
 		[papers]
@@ -171,12 +172,18 @@ export default function PastPapers() {
 		[selectedSubjects, selectedPapers, selectedMonths, extractedOnly]
 	);
 
-	const clearAllFilters = () => {
+	const clearAllFilters = useCallback(() => {
 		setSelectedSubjects([]);
 		setSelectedPapers([]);
 		setSelectedMonths([]);
 		setExtractedOnly(false);
-	};
+	}, []);
+
+	const handleToggleSubject = useCallback((subject: string) => {
+		setSelectedSubjects((prev) =>
+			prev.includes(subject) ? prev.filter((i) => i !== subject) : [...prev, subject]
+		);
+	}, []);
 
 	const toggleArrayItem = useCallback(
 		(setArr: (v: string[] | ((prev: string[]) => string[])) => void, item: string) => {
@@ -221,6 +228,8 @@ export default function PastPapers() {
 		fetchPapers();
 	}, []);
 
+	// Performance: Memoize filtered results to avoid re-filtering on every render
+	// (e.g. when opening drawers or clicking unrelated UI elements)
 	const filteredPapers = useMemo(() => {
 		return papers.filter((paper) => {
 			const matchesSearch =
@@ -462,7 +471,7 @@ export default function PastPapers() {
 							onToggleSubject={handleToggleSubject}
 							onTogglePaper={handleTogglePaper}
 							onToggleMonth={handleToggleMonth}
-							onToggleExtracted={handleToggleExtracted}
+							onToggleExtracted={setExtractedOnly}
 						/>
 					</div>
 					<div className="border-t pt-4 flex gap-3">
@@ -502,7 +511,7 @@ export default function PastPapers() {
 							onToggleSubject={handleToggleSubject}
 							onTogglePaper={handleTogglePaper}
 							onToggleMonth={handleToggleMonth}
-							onToggleExtracted={handleToggleExtracted}
+							onToggleExtracted={setExtractedOnly}
 						/>
 					</div>
 					<DrawerFooter>

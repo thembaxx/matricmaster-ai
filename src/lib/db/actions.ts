@@ -1,9 +1,8 @@
 'use server';
 
 import { and, asc, desc, eq, inArray, isNotNull, isNull, sql } from 'drizzle-orm';
-import { headers } from 'next/headers';
 import { z } from 'zod';
-import { getAuth, type SessionUser } from '@/lib/auth';
+import { ensureAdmin, ensureAuthenticated } from './auth-utils';
 import type { User } from './better-auth-schema';
 import { users } from './better-auth-schema';
 import { type DbType, dbManager } from './index';
@@ -65,30 +64,6 @@ const createOptionSchema = z.object({
 });
 
 const querySchema = z.string().min(1).max(500);
-
-/**
- * Ensures the current user has admin privileges
- */
-async function ensureAdmin() {
-	const user = await ensureAuthenticated();
-	if ((user as SessionUser).role !== 'admin') {
-		throw new Error('Unauthorized: Admin access required');
-	}
-}
-
-/**
- * Ensures the current user is authenticated and returns the user object
- */
-async function ensureAuthenticated() {
-	const auth = await getAuth();
-	const session = await auth.api.getSession({
-		headers: await headers(),
-	});
-	if (!session?.user) {
-		throw new Error('Unauthorized: Authentication required');
-	}
-	return session.user;
-}
 
 async function getDb(): Promise<DbType> {
 	const connected = await dbManager.waitForConnection(3, 2000);
