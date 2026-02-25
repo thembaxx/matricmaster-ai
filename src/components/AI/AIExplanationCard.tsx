@@ -56,6 +56,8 @@ export function AIExplanationCard({
 							size="icon"
 							onClick={() => setIsExpanded(!isExpanded)}
 							className="rounded-full hover:bg-primary/5"
+							aria-label={isExpanded ? 'Collapse explanation' : 'Expand explanation'}
+							aria-expanded={isExpanded}
 						>
 							{isExpanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
 						</Button>

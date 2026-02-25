@@ -51,6 +51,7 @@ export function AIPrompt({
 						placeholder={placeholder}
 						className="pl-12 pr-4 h-14 bg-surface-elevated/50 backdrop-blur-xl border-border/50 rounded-2xl shadow-sm transition-all focus:shadow-md focus:bg-surface-elevated"
 						disabled={isLoading}
+						aria-label="Ask a question"
 					/>
 				</div>
 				<AnimatePresence>
@@ -68,6 +69,7 @@ export function AIPrompt({
 									'h-14 w-14 rounded-2xl shadow-lg transition-all active:scale-95',
 									isLoading ? 'bg-muted' : 'bg-primary hover:bg-primary/90'
 								)}
+								aria-label="Send message"
 							>
 								{isLoading ? (
 									<Loader2 className="h-6 w-6 animate-spin" />
