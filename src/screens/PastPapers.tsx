@@ -12,7 +12,7 @@ import {
 	X,
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { BackgroundMesh } from '@/components/ui/background-mesh';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -49,7 +49,7 @@ interface FilterContentProps {
 	onToggleExtracted: (value: boolean) => void;
 }
 
-function FilterContent({
+const FilterContent = memo(function FilterContent({
 	availableSubjects,
 	availablePapers,
 	availableMonths,
@@ -139,7 +139,7 @@ function FilterContent({
 			</div>
 		</div>
 	);
-}
+});
 
 export default function PastPapers() {
 	const router = useRouter();
@@ -153,17 +153,23 @@ export default function PastPapers() {
 	const [selectedMonths, setSelectedMonths] = useState<string[]>([]);
 	const [extractedOnly, setExtractedOnly] = useState(false);
 
-	const years = ['All', 2024, 2023, 2022, 2021, 2020];
+	const years = useMemo(() => ['All', 2024, 2023, 2022, 2021, 2020], []);
 
-	const availableSubjects = [...new Set(papers.map((p) => p.subject))].sort();
-	const availablePapers = [...new Set(papers.map((p) => p.paper))].sort();
-	const availableMonths = [...new Set(papers.map((p) => p.month))].sort();
+	const availableSubjects = useMemo(
+		() => [...new Set(papers.map((p) => p.subject))].sort(),
+		[papers]
+	);
+	const availablePapers = useMemo(() => [...new Set(papers.map((p) => p.paper))].sort(), [papers]);
+	const availableMonths = useMemo(() => [...new Set(papers.map((p) => p.month))].sort(), [papers]);
 
-	const activeFilterCount =
-		selectedSubjects.length +
-		selectedPapers.length +
-		selectedMonths.length +
-		(extractedOnly ? 1 : 0);
+	const activeFilterCount = useMemo(
+		() =>
+			selectedSubjects.length +
+			selectedPapers.length +
+			selectedMonths.length +
+			(extractedOnly ? 1 : 0),
+		[selectedSubjects, selectedPapers, selectedMonths, extractedOnly]
+	);
 
 	const clearAllFilters = () => {
 		setSelectedSubjects([]);
@@ -172,13 +178,34 @@ export default function PastPapers() {
 		setExtractedOnly(false);
 	};
 
-	const toggleArrayItem = (arr: string[], setArr: (v: string[]) => void, item: string) => {
-		if (arr.includes(item)) {
-			setArr(arr.filter((i) => i !== item));
-		} else {
-			setArr([...arr, item]);
-		}
-	};
+	const toggleArrayItem = useCallback(
+		(setArr: (v: string[] | ((prev: string[]) => string[])) => void, item: string) => {
+			setArr((prev) => {
+				if (prev.includes(item)) {
+					return prev.filter((i) => i !== item);
+				}
+				return [...prev, item];
+			});
+		},
+		[]
+	);
+
+	const handleToggleSubject = useCallback(
+		(subject: string) => toggleArrayItem(setSelectedSubjects, subject),
+		[toggleArrayItem]
+	);
+
+	const handleTogglePaper = useCallback(
+		(paper: string) => toggleArrayItem(setSelectedPapers, paper),
+		[toggleArrayItem]
+	);
+
+	const handleToggleMonth = useCallback(
+		(month: string) => toggleArrayItem(setSelectedMonths, month),
+		[toggleArrayItem]
+	);
+
+	const handleToggleExtracted = useCallback((value: boolean) => setExtractedOnly(value), []);
 
 	useEffect(() => {
 		const fetchPapers = async () => {
@@ -194,25 +221,35 @@ export default function PastPapers() {
 		fetchPapers();
 	}, []);
 
-	const filteredPapers = papers.filter((paper) => {
-		const matchesSearch =
-			paper.subject.toLowerCase().includes(searchQuery.toLowerCase()) ||
-			paper.paper.toLowerCase().includes(searchQuery.toLowerCase());
-		const matchesYear = selectedYear === 'All' || paper.year === selectedYear;
-		const matchesSubjects =
-			selectedSubjects.length === 0 || selectedSubjects.includes(paper.subject);
-		const matchesPapers = selectedPapers.length === 0 || selectedPapers.includes(paper.paper);
-		const matchesMonths = selectedMonths.length === 0 || selectedMonths.includes(paper.month);
-		const matchesExtracted = !extractedOnly || paper.isExtracted;
-		return (
-			matchesSearch &&
-			matchesYear &&
-			matchesSubjects &&
-			matchesPapers &&
-			matchesMonths &&
-			matchesExtracted
-		);
-	});
+	const filteredPapers = useMemo(() => {
+		return papers.filter((paper) => {
+			const matchesSearch =
+				paper.subject.toLowerCase().includes(searchQuery.toLowerCase()) ||
+				paper.paper.toLowerCase().includes(searchQuery.toLowerCase());
+			const matchesYear = selectedYear === 'All' || paper.year === selectedYear;
+			const matchesSubjects =
+				selectedSubjects.length === 0 || selectedSubjects.includes(paper.subject);
+			const matchesPapers = selectedPapers.length === 0 || selectedPapers.includes(paper.paper);
+			const matchesMonths = selectedMonths.length === 0 || selectedMonths.includes(paper.month);
+			const matchesExtracted = !extractedOnly || paper.isExtracted;
+			return (
+				matchesSearch &&
+				matchesYear &&
+				matchesSubjects &&
+				matchesPapers &&
+				matchesMonths &&
+				matchesExtracted
+			);
+		});
+	}, [
+		papers,
+		searchQuery,
+		selectedYear,
+		selectedSubjects,
+		selectedPapers,
+		selectedMonths,
+		extractedOnly,
+	]);
 
 	return (
 		<div className="flex flex-col h-full min-w-0 bg-background relative overflow-x-hidden lg:px-8">
@@ -422,12 +459,10 @@ export default function PastPapers() {
 							selectedPapers={selectedPapers}
 							selectedMonths={selectedMonths}
 							extractedOnly={extractedOnly}
-							onToggleSubject={(subject) =>
-								toggleArrayItem(selectedSubjects, setSelectedSubjects, subject)
-							}
-							onTogglePaper={(paper) => toggleArrayItem(selectedPapers, setSelectedPapers, paper)}
-							onToggleMonth={(month) => toggleArrayItem(selectedMonths, setSelectedMonths, month)}
-							onToggleExtracted={setExtractedOnly}
+							onToggleSubject={handleToggleSubject}
+							onTogglePaper={handleTogglePaper}
+							onToggleMonth={handleToggleMonth}
+							onToggleExtracted={handleToggleExtracted}
 						/>
 					</div>
 					<div className="border-t pt-4 flex gap-3">
@@ -464,12 +499,10 @@ export default function PastPapers() {
 							selectedPapers={selectedPapers}
 							selectedMonths={selectedMonths}
 							extractedOnly={extractedOnly}
-							onToggleSubject={(subject) =>
-								toggleArrayItem(selectedSubjects, setSelectedSubjects, subject)
-							}
-							onTogglePaper={(paper) => toggleArrayItem(selectedPapers, setSelectedPapers, paper)}
-							onToggleMonth={(month) => toggleArrayItem(selectedMonths, setSelectedMonths, month)}
-							onToggleExtracted={setExtractedOnly}
+							onToggleSubject={handleToggleSubject}
+							onTogglePaper={handleTogglePaper}
+							onToggleMonth={handleToggleMonth}
+							onToggleExtracted={handleToggleExtracted}
 						/>
 					</div>
 					<DrawerFooter>
