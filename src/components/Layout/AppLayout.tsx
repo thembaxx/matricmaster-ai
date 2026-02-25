@@ -24,7 +24,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 	const [sidebarOpen, setSidebarOpen] = useState(true);
 
 	const hideNavigation = ['/test'];
-	const hideBottomNavigation = ['/sign-in', '/sign-up', '/test', '/'];
+	const hideBottomNavigation = ['/sign-in', '/sign-up', '/test', '/interactive-quiz'];
 
 	const shouldHideNav = hideNavigation.some((path) => pathname.startsWith(path));
 	const shouldHideBottomNav = hideBottomNavigation.some((path) => pathname.startsWith(path));
@@ -51,7 +51,9 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 							<PageTransition>{children}</PageTransition>
 						</main>
 					</div>
-					{!shouldHideBottomNav && user && <BottomNavigation pathname={pathname} />}
+					{!shouldHideBottomNav && (user || pathname === '/') && (
+						<BottomNavigation pathname={pathname} />
+					)}
 				</div>
 				<GlobalStyles />
 			</div>
@@ -84,7 +86,9 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 							<PageTransition>{children}</PageTransition>
 						</main>
 					</div>
-					{!shouldHideBottomNav && user && <BottomNavigation pathname={pathname} />}
+					{!shouldHideBottomNav && (user || pathname === '/') && (
+						<BottomNavigation pathname={pathname} />
+					)}
 				</div>
 			</SidebarInset>
 			<GlobalStyles />

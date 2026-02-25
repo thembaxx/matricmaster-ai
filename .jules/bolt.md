@@ -1,0 +1,3 @@
+## 2026-02-24 - [Memoizing Multi-Filter Screen Logic]
+**Learning:** Filter screens with multiple state dependencies (search, checkboxes, toggles) frequently trigger expensive O(N) array operations on every render, even for unrelated UI state changes (like opening a drawer). Wrapping derived data in `useMemo` and sub-components in `memo` with stable `useCallback` handlers is a standard but high-impact optimization for these patterns.
+**Action:** Identify screens with `list.filter(...)` or `[...new Set(list.map(...))]` in the render body and apply memoization clusters (data + handlers + component memo).

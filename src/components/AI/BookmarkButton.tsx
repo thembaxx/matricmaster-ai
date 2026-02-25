@@ -76,6 +76,7 @@ export function BookmarkButton({ messageId, content, role, subject }: BookmarkBu
 			className="h-7 w-7 opacity-0 group-hover:opacity-100 transition-opacity"
 			onClick={handleToggle}
 			aria-label={isBookmarked ? 'Remove bookmark' : 'Add bookmark'}
+			aria-pressed={isBookmarked}
 		>
 			{isBookmarked ? (
 				<BookmarkCheck className="h-4 w-4 text-primary" />
