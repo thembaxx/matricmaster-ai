@@ -2,7 +2,7 @@
 
 import { and, desc, eq } from 'drizzle-orm';
 import { z } from 'zod';
-import { ensureAuthenticated } from './auth-utils';
+import { ensureAuthenticated } from './actions';
 import { dbManager, getDb } from './index';
 import { type Bookmark, bookmarks, type NewBookmark } from './schema';
 
@@ -22,8 +22,10 @@ export async function createBookmarkAction(
 ): Promise<{ success: boolean; bookmark?: Bookmark; error?: string }> {
 	try {
 		const user = await ensureAuthenticated();
-		const userId = user.id;
-		const validated = bookmarkSchema.parse({ bookmarkType, referenceId, note });
+		if (user.id !== userId) {
+			return { success: false, error: 'Unauthorized' };
+		}
+		const validated = bookmarkSchema.parse({ userId, bookmarkType, referenceId, note });
 
 		const connected = await dbManager.waitForConnection(3, 2000);
 		if (!connected) {
@@ -71,7 +73,9 @@ export async function getBookmarksAction(
 ): Promise<Bookmark[]> {
 	try {
 		const user = await ensureAuthenticated();
-		const userId = user.id;
+		if (user.id !== userId) {
+			throw new Error('Unauthorized');
+		}
 		const connected = await dbManager.waitForConnection(3, 2000);
 		if (!connected) {
 			return [];
@@ -102,7 +106,9 @@ export async function getBookmarksAction(
 export async function deleteBookmarkAction(bookmarkId: string): Promise<{ success: boolean }> {
 	try {
 		const user = await ensureAuthenticated();
-		const userId = user.id;
+		if (user.id !== userId) {
+			return { success: false };
+		}
 		const connected = await dbManager.waitForConnection(3, 2000);
 		if (!connected) {
 			return { success: false };
@@ -127,7 +133,9 @@ export async function deleteBookmarkAction(bookmarkId: string): Promise<{ succes
 export async function isBookmarkedAction(referenceId: string): Promise<boolean> {
 	try {
 		const user = await ensureAuthenticated();
-		const userId = user.id;
+		if (user.id !== userId) {
+			return false;
+		}
 		const connected = await dbManager.waitForConnection(3, 2000);
 		if (!connected) {
 			return false;
@@ -155,7 +163,9 @@ export async function updateBookmarkNoteAction(
 ): Promise<{ success: boolean }> {
 	try {
 		const user = await ensureAuthenticated();
-		const userId = user.id;
+		if (user.id !== userId) {
+			return { success: false };
+		}
 		const connected = await dbManager.waitForConnection(3, 2000);
 		if (!connected) {
 			return { success: false };
