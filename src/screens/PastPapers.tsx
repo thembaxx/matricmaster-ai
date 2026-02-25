@@ -153,7 +153,7 @@ export default function PastPapers() {
 	const [selectedMonths, setSelectedMonths] = useState<string[]>([]);
 	const [extractedOnly, setExtractedOnly] = useState(false);
 
-	const years = ['All', 2024, 2023, 2022, 2021, 2020];
+	const years = useMemo(() => ['All', 2024, 2023, 2022, 2021, 2020], []);
 
 	// Performance: Memoize extracted fields to avoid O(N) recalculation on every render
 	const availableSubjects = useMemo(
@@ -163,11 +163,14 @@ export default function PastPapers() {
 	const availablePapers = useMemo(() => [...new Set(papers.map((p) => p.paper))].sort(), [papers]);
 	const availableMonths = useMemo(() => [...new Set(papers.map((p) => p.month))].sort(), [papers]);
 
-	const activeFilterCount =
-		selectedSubjects.length +
-		selectedPapers.length +
-		selectedMonths.length +
-		(extractedOnly ? 1 : 0);
+	const activeFilterCount = useMemo(
+		() =>
+			selectedSubjects.length +
+			selectedPapers.length +
+			selectedMonths.length +
+			(extractedOnly ? 1 : 0),
+		[selectedSubjects, selectedPapers, selectedMonths, extractedOnly]
+	);
 
 	const clearAllFilters = useCallback(() => {
 		setSelectedSubjects([]);
@@ -182,17 +185,34 @@ export default function PastPapers() {
 		);
 	}, []);
 
-	const handleTogglePaper = useCallback((paper: string) => {
-		setSelectedPapers((prev) =>
-			prev.includes(paper) ? prev.filter((i) => i !== paper) : [...prev, paper]
-		);
-	}, []);
+	const toggleArrayItem = useCallback(
+		(setArr: (v: string[] | ((prev: string[]) => string[])) => void, item: string) => {
+			setArr((prev) => {
+				if (prev.includes(item)) {
+					return prev.filter((i) => i !== item);
+				}
+				return [...prev, item];
+			});
+		},
+		[]
+	);
 
-	const handleToggleMonth = useCallback((month: string) => {
-		setSelectedMonths((prev) =>
-			prev.includes(month) ? prev.filter((i) => i !== month) : [...prev, month]
-		);
-	}, []);
+	const handleToggleSubject = useCallback(
+		(subject: string) => toggleArrayItem(setSelectedSubjects, subject),
+		[toggleArrayItem]
+	);
+
+	const handleTogglePaper = useCallback(
+		(paper: string) => toggleArrayItem(setSelectedPapers, paper),
+		[toggleArrayItem]
+	);
+
+	const handleToggleMonth = useCallback(
+		(month: string) => toggleArrayItem(setSelectedMonths, month),
+		[toggleArrayItem]
+	);
+
+	const handleToggleExtracted = useCallback((value: boolean) => setExtractedOnly(value), []);
 
 	useEffect(() => {
 		const fetchPapers = async () => {

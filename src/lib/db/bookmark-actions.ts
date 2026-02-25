@@ -7,7 +7,6 @@ import { dbManager, getDb } from './index';
 import { type Bookmark, bookmarks, type NewBookmark } from './schema';
 
 const bookmarkSchema = z.object({
-	userId: z.string().min(1),
 	bookmarkType: z.enum(['question', 'past_paper', 'study_note', 'quiz']),
 	referenceId: z.string().min(1),
 	note: z.string().optional(),
@@ -17,7 +16,6 @@ const bookmarkSchema = z.object({
  * Create a new bookmark
  */
 export async function createBookmarkAction(
-	userId: string,
 	bookmarkType: 'question' | 'past_paper' | 'study_note' | 'quiz',
 	referenceId: string,
 	note?: string
@@ -40,12 +38,7 @@ export async function createBookmarkAction(
 		const existing = await db
 			.select()
 			.from(bookmarks)
-			.where(
-				and(
-					eq(bookmarks.userId, validated.userId),
-					eq(bookmarks.referenceId, validated.referenceId)
-				)
-			)
+			.where(and(eq(bookmarks.userId, userId), eq(bookmarks.referenceId, validated.referenceId)))
 			.limit(1);
 
 		if (existing.length > 0) {
@@ -55,7 +48,7 @@ export async function createBookmarkAction(
 		const [bookmark] = await db
 			.insert(bookmarks)
 			.values({
-				userId: validated.userId,
+				userId: userId,
 				bookmarkType: validated.bookmarkType,
 				referenceId: validated.referenceId,
 				note: validated.note,
@@ -76,7 +69,6 @@ export async function createBookmarkAction(
  * Get user's bookmarks
  */
 export async function getBookmarksAction(
-	userId: string,
 	type?: 'question' | 'past_paper' | 'study_note' | 'quiz'
 ): Promise<Bookmark[]> {
 	try {
@@ -111,10 +103,7 @@ export async function getBookmarksAction(
 /**
  * Delete a bookmark
  */
-export async function deleteBookmarkAction(
-	bookmarkId: string,
-	userId: string
-): Promise<{ success: boolean }> {
+export async function deleteBookmarkAction(bookmarkId: string): Promise<{ success: boolean }> {
 	try {
 		const user = await ensureAuthenticated();
 		if (user.id !== userId) {
@@ -141,7 +130,7 @@ export async function deleteBookmarkAction(
 /**
  * Check if an item is bookmarked
  */
-export async function isBookmarkedAction(userId: string, referenceId: string): Promise<boolean> {
+export async function isBookmarkedAction(referenceId: string): Promise<boolean> {
 	try {
 		const user = await ensureAuthenticated();
 		if (user.id !== userId) {
@@ -170,7 +159,6 @@ export async function isBookmarkedAction(userId: string, referenceId: string): P
  */
 export async function updateBookmarkNoteAction(
 	bookmarkId: string,
-	userId: string,
 	note: string
 ): Promise<{ success: boolean }> {
 	try {

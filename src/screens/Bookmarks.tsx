@@ -50,7 +50,7 @@ export default function Bookmarks() {
 		const loadBookmarks = async () => {
 			if (session?.user?.id) {
 				setIsLoading(true);
-				const data = await getBookmarksAction(session.user.id);
+				const data = await getBookmarksAction();
 				setBookmarks(data);
 				setIsLoading(false);
 			} else {
@@ -66,7 +66,7 @@ export default function Bookmarks() {
 		e.stopPropagation();
 		if (!session?.user?.id) return;
 
-		const result = await deleteBookmarkAction(bookmarkId, session.user.id);
+		const result = await deleteBookmarkAction(bookmarkId);
 		if (result.success) {
 			setBookmarks((prev) => prev.filter((b) => b.id !== bookmarkId));
 			toast.success('Bookmark removed');
