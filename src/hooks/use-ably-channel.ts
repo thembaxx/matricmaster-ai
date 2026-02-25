@@ -1,7 +1,8 @@
 'use client';
 
-import type { Realtime } from 'ably';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useChannel } from 'ably/react';
+import { useCallback, useEffect, useState } from 'react';
+import { useAblyStatus } from '@/lib/ably/provider';
 
 interface UseAblyChannelOptions {
 	channelName: string;
@@ -14,77 +15,50 @@ export function useAblyChannel({
 	onMessage,
 	enablePresence = false,
 }: UseAblyChannelOptions) {
-	const [presenceMembers, setPresenceMembers] = useState<
-		Array<{ clientId: string; data: unknown }>
-	>([]);
-	const channelRef = useRef<ReturnType<Realtime['channels']['get']> | null>(null);
+	const { isReady } = useAblyStatus();
+	const [presenceMembers, setPresenceMembers] = useState<unknown[]>([]);
 
-	const publish = useCallback(async (eventName: string, data: unknown) => {
-		if (channelRef.current) {
-			await channelRef.current.publish(eventName, data);
+	const { channel } = useChannel({ channelName, skip: !isReady }, (message) => {
+		if (onMessage) {
+			onMessage(message as { data: unknown });
 		}
-	}, []);
+	});
 
 	useEffect(() => {
-		if (typeof window === 'undefined') return;
+		if (!isReady || !enablePresence || !channel) return;
 
-		const initChannel = async () => {
-			const { Realtime } = await import('ably');
-
-			const client = new Realtime({
-				authUrl: '/api/ably/auth',
-				authMethod: 'POST',
-				authParams: {
-					clientId: `anon-${Date.now()}`,
-				},
-			});
-
-			await client.connection.once('connected');
-
-			const channel = client.channels.get(channelName);
-			channelRef.current = channel;
-
-			if (onMessage) {
-				channel.subscribe((message) => {
-					onMessage(message as { data: unknown });
-				});
-			}
-
-			if (enablePresence) {
-				const handlePresenceUpdate = async () => {
-					const members = await channel.presence.get();
-					setPresenceMembers(members);
-				};
-
-				channel.presence.subscribe('enter', handlePresenceUpdate);
-				channel.presence.subscribe('leave', handlePresenceUpdate);
-				channel.presence.subscribe('update', handlePresenceUpdate);
-
-				channel.presence.enter();
-
-				return () => {
-					channel.presence.leave();
-					channel.presence.unsubscribe('enter', handlePresenceUpdate);
-					channel.presence.unsubscribe('leave', handlePresenceUpdate);
-					channel.presence.unsubscribe('update', handlePresenceUpdate);
-				};
-			}
-
-			return () => {
-				channel.unsubscribe();
-				client.close();
-			};
+		const handlePresenceUpdate = async () => {
+			const members = await channel.presence.get();
+			setPresenceMembers(members);
 		};
 
-		const cleanup = initChannel();
+		channel.presence.subscribe('enter', handlePresenceUpdate);
+		channel.presence.subscribe('leave', handlePresenceUpdate);
+		channel.presence.subscribe('update', handlePresenceUpdate);
+
+		channel.presence.enter();
+
+		handlePresenceUpdate();
 
 		return () => {
-			cleanup.then((fn) => fn?.());
+			channel.presence.leave();
+			channel.presence.unsubscribe('enter', handlePresenceUpdate);
+			channel.presence.unsubscribe('leave', handlePresenceUpdate);
+			channel.presence.unsubscribe('update', handlePresenceUpdate);
 		};
-	}, [channelName, onMessage, enablePresence]);
+	}, [isReady, enablePresence, channel]);
+
+	const publish = useCallback(
+		async (eventName: string, data: unknown) => {
+			if (channel) {
+				await channel.publish(eventName, data);
+			}
+		},
+		[channel]
+	);
 
 	return {
-		channel: channelRef.current,
+		channel: isReady ? channel : null,
 		presenceMembers,
 		publish,
 	};

@@ -8,12 +8,12 @@ test.describe('Past Papers', () => {
 
 		test('page loads successfully', async ({ page }) => {
 			await expect(page).toHaveURL(/past-papers/);
-			await expect(page.getByRole('heading', { name: /past papers/i })).toBeVisible();
+			await expect(page.getByRole('heading', { name: /past paper vault/i })).toBeVisible();
 		});
 
 		test('displays list of past papers', async ({ page }) => {
 			// Wait for papers to load
-			await expect(page.getByText('Papers Found')).toBeVisible();
+			await expect(page.getByText(/archive results/i)).toBeVisible();
 			// Should have at least one paper card
 			await expect(page.locator('[class*="rounded-"][class*="p-"]').first()).toBeVisible();
 		});
@@ -26,7 +26,7 @@ test.describe('Past Papers', () => {
 			// Click on a specific year
 			await page.getByRole('button', { name: '2024' }).click();
 			// Should still show papers (or none if no 2024 papers)
-			await expect(page.getByText('Papers Found')).toBeVisible();
+			await expect(page.getByText(/archive results/i)).toBeVisible();
 		});
 
 		test('search input is functional', async ({ page }) => {
@@ -37,7 +37,7 @@ test.describe('Past Papers', () => {
 			// Type a search query
 			await searchInput.fill('Mathematics');
 			// Results should filter (or show no results)
-			await expect(page.getByText('Papers Found')).toBeVisible();
+			await expect(page.getByText(/archive results/i)).toBeVisible();
 		});
 	});
 

@@ -4,6 +4,7 @@ import { useChannel } from 'ably/react';
 import { useCallback, useState } from 'react';
 import { toast } from 'sonner';
 import useSWR from 'swr';
+import { useAblyStatus } from '@/lib/ably/provider';
 import { useSession } from '@/lib/auth-client';
 
 export interface RealtimeNotification {
@@ -29,6 +30,7 @@ const fetcher = async (url: string) => {
 
 export function useRealtimeNotifications(): UseRealtimeNotificationsReturn {
 	const { data: session } = useSession();
+	const { isReady } = useAblyStatus();
 	const channelName = session?.user?.id ? `user:${session.user.id}:notifications` : 'dummy-channel';
 	const [realtimeIncrement, setRealtimeIncrement] = useState(0);
 
@@ -82,7 +84,7 @@ export function useRealtimeNotifications(): UseRealtimeNotificationsReturn {
 		}
 	}, []);
 
-	useChannel(channelName, (message) => {
+	useChannel({ channelName, skip: !isReady }, (message) => {
 		const notification = message.data as RealtimeNotification;
 		if (notification) {
 			handleNotification(notification);

@@ -77,7 +77,7 @@ export default function Channels() {
 	useEffect(() => {
 		const onlineCounts = new Map<string, number>();
 		presenceMembers.forEach((member) => {
-			const channelId = (member.data as { channelId?: string })?.channelId;
+			const channelId = (member as { data?: { channelId?: string } }).data?.channelId;
 			if (channelId) {
 				onlineCounts.set(channelId, (onlineCounts.get(channelId) || 0) + 1);
 			}
