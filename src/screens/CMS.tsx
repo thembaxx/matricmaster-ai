@@ -2,7 +2,7 @@
 
 import { Database, Edit2, ImagePlus, Plus, Search, Trash2, X } from 'lucide-react';
 import Image from 'next/image';
-import { useCallback, useEffect, useId, useRef, useState } from 'react';
+import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -142,26 +142,39 @@ export default function CMS() {
 		}
 	};
 
-	const filteredUsers = users.filter((u) => {
-		const matchesSearch =
-			u.name.toLowerCase().includes(userSearchQuery.toLowerCase()) ||
-			u.email.toLowerCase().includes(userSearchQuery.toLowerCase());
+	// Bolt: Memoize subject lookup to convert O(S) array search into O(1) Map lookup
+	const subjectMap = useMemo(() => {
+		return new Map(subjects.map((s) => [s.id, s.name]));
+	}, [subjects]);
 
-		if (userFilter === 'active') return matchesSearch && !u.isBlocked && !u.deletedAt;
-		if (userFilter === 'blocked') return matchesSearch && u.isBlocked;
-		if (userFilter === 'deleted') return matchesSearch && !!u.deletedAt;
+	// Bolt: Memoize filtered users to prevent O(N) filtering on unrelated state changes (like drawer toggle)
+	const filteredUsers = useMemo(() => {
+		const query = userSearchQuery.toLowerCase(); // Bolt: Lowercase once outside loop
+		return users.filter((u) => {
+			const matchesSearch =
+				u.name.toLowerCase().includes(query) || u.email.toLowerCase().includes(query);
 
-		return matchesSearch;
-	});
+			if (userFilter === 'active') return matchesSearch && !u.isBlocked && !u.deletedAt;
+			if (userFilter === 'blocked') return matchesSearch && u.isBlocked;
+			if (userFilter === 'deleted') return matchesSearch && !!u.deletedAt;
 
-	const filteredQuestions = questions.filter((q) => {
-		const matchesSearch =
-			q.questionText.toLowerCase().includes(searchQuery.toLowerCase()) ||
-			q.topic.toLowerCase().includes(searchQuery.toLowerCase());
-		const matchesSubject = selectedSubject === 'all' || q.subjectId.toString() === selectedSubject;
-		const matchesDifficulty = selectedDifficulty === 'all' || q.difficulty === selectedDifficulty;
-		return matchesSearch && matchesSubject && matchesDifficulty;
-	});
+			return matchesSearch;
+		});
+	}, [users, userSearchQuery, userFilter]);
+
+	// Bolt: Memoize filtered questions to prevent O(N) filtering on unrelated state changes
+	const filteredQuestions = useMemo(() => {
+		const query = searchQuery.toLowerCase(); // Bolt: Lowercase once outside loop
+		const subjectIdFilter = selectedSubject !== 'all' ? Number.parseInt(selectedSubject, 10) : null; // Bolt: Parse once outside loop
+
+		return questions.filter((q) => {
+			const matchesSearch =
+				q.questionText.toLowerCase().includes(query) || q.topic.toLowerCase().includes(query);
+			const matchesSubject = subjectIdFilter === null || q.subjectId === subjectIdFilter; // Bolt: Fast numeric comparison
+			const matchesDifficulty = selectedDifficulty === 'all' || q.difficulty === selectedDifficulty;
+			return matchesSearch && matchesSubject && matchesDifficulty;
+		});
+	}, [questions, searchQuery, selectedSubject, selectedDifficulty]);
 
 	const handleCreateQuestion = () => {
 		setEditingQuestion({ ...EMPTY_QUESTION });
@@ -383,9 +396,13 @@ export default function CMS() {
 		setEditingQuestion({ ...editingQuestion, options: newOptions });
 	};
 
-	const getSubjectName = (subjectId: number) => {
-		return subjects.find((s) => s.id === subjectId)?.name || 'Unknown';
-	};
+	// Bolt: O(1) lookup using memoized subjectMap
+	const getSubjectName = useCallback(
+		(subjectId: number) => {
+			return subjectMap.get(subjectId) || 'Unknown';
+		},
+		[subjectMap]
+	);
 
 	const getDifficultyColor = (difficulty: string) => {
 		switch (difficulty) {
