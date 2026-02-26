@@ -1,7 +1,9 @@
 'use server';
 
 import { and, asc, desc, eq, inArray, isNotNull, isNull, sql } from 'drizzle-orm';
+import { headers } from 'next/headers';
 import { z } from 'zod';
+import { getAuth, type SessionUser } from '@/lib/auth';
 import type { User } from './better-auth-schema';
 import { users } from './better-auth-schema';
 import { type DbType, dbManager } from './index';
