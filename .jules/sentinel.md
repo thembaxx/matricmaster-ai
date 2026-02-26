@@ -7,3 +7,8 @@
 **Vulnerability:** Insecure Direct Object Reference (IDOR) in Bookmark management. All exported actions in `bookmark-actions.ts` accepted `userId` as a parameter and used it without verifying it against the authenticated session.
 **Learning:** Even when using centralized authentication helpers, developers must remember to apply them across all related action files, not just the main `actions.ts`. Exporting these helpers allows for a consistent security model.
 **Prevention:** Centralize authentication and authorization helpers (like `ensureAuthenticated`) and export them for use in all server action files. Always verify client-provided IDs against the session ID.
+
+## 2026-03-05 - [Fix IDOR in Comment Server Actions]
+**Vulnerability:** Insecure Direct Object Reference (IDOR) and unauthenticated access in Comment management. Exported server functions (`createComment`, `updateComment`, `deleteComment`, `voteOnComment`, `getUserVote`, `flagComment`) in `comment-actions.ts` either accepted `userId` from the client without verification or lacked authentication altogether (in the case of `flagComment`).
+**Learning:** When fixing IDOR in existing server functions with many potential callers, it's safer to maintain the function signature for backward compatibility but ignore the client-provided `userId` in favor of a session-derived ID obtained via `ensureAuthenticated()`.
+**Prevention:** Always use `ensureAuthenticated()` to retrieve the user's ID on the server side. If a function already has a `userId` parameter, prefix it with an underscore (e.g., `_userId`) to indicate it's intentionally ignored for security reasons, while avoiding breaking changes to the API contract.
