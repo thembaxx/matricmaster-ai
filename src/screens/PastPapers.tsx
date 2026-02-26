@@ -179,12 +179,6 @@ export default function PastPapers() {
 		setExtractedOnly(false);
 	}, []);
 
-	const handleToggleSubject = useCallback((subject: string) => {
-		setSelectedSubjects((prev) =>
-			prev.includes(subject) ? prev.filter((i) => i !== subject) : [...prev, subject]
-		);
-	}, []);
-
 	const toggleArrayItem = useCallback(
 		(setArr: (v: string[] | ((prev: string[]) => string[])) => void, item: string) => {
 			setArr((prev) => {
@@ -281,6 +275,7 @@ export default function PastPapers() {
 								<Button
 									variant="ghost"
 									onClick={clearAllFilters}
+									aria-label="Clear all filters"
 									className="rounded-2xl font-black text-[10px] uppercase tracking-widest px-3 sm:px-4 h-10 sm:h-12 text-muted-foreground hover:text-foreground"
 								>
 									<X className="w-4 h-4 mr-1 sm:mr-2" />
@@ -290,6 +285,7 @@ export default function PastPapers() {
 							<Button
 								variant="outline"
 								onClick={() => setIsAdvancedFilterOpen(true)}
+								aria-label={`Advanced Filter${activeFilterCount > 0 ? `, ${activeFilterCount} active` : ''}`}
 								className={cn(
 									'rounded-2xl border-2 font-black text-[10px] uppercase tracking-widest px-4 sm:px-6 h-10 sm:h-12',
 									activeFilterCount > 0 && 'border-primary bg-primary/10 text-primary'
@@ -313,9 +309,25 @@ export default function PastPapers() {
 								value={searchQuery}
 								onChange={(e) => setSearchQuery(e.target.value)}
 								placeholder="Search subjects or papers..."
-								className="pl-12 sm:pl-16 bg-muted/30 backdrop-blur-md border-2 h-12 sm:h-16 rounded-xl sm:rounded-2xl text-base sm:text-lg font-bold shadow-inner"
+								className="pl-12 sm:pl-16 pr-12 sm:pr-16 bg-muted/30 backdrop-blur-md border-2 h-12 sm:h-16 rounded-xl sm:rounded-2xl text-base sm:text-lg font-bold shadow-inner"
 								aria-label="Search past papers"
 							/>
+							<AnimatePresence>
+								{searchQuery && (
+									<m.button
+										initial={{ scale: 0.95, opacity: 0 }}
+										animate={{ scale: 1, opacity: 1 }}
+										exit={{ scale: 0.95, opacity: 0 }}
+										title="Clear search"
+										aria-label="Clear search"
+										type="button"
+										onClick={() => setSearchQuery('')}
+										className="absolute right-4 sm:right-6 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+									>
+										<X className="w-5 sm:w-6 h-5 sm:h-6" />
+									</m.button>
+								)}
+							</AnimatePresence>
 						</div>
 						<div className="lg:col-span-4 flex gap-2 sm:gap-3 overflow-x-auto no-scrollbar py-1">
 							{years.map((year) => (
@@ -324,6 +336,7 @@ export default function PastPapers() {
 									type="button"
 									// biome-ignore lint/suspicious/noExplicitAny: Year type casting
 									onClick={() => setSelectedYear(year as any)}
+									aria-pressed={selectedYear === year}
 									className={`rounded-xl sm:rounded-2xl px-4 sm:px-8 py-2 sm:py-3 text-[11px] font-black uppercase tracking-widest transition-all h-10 sm:h-16 whitespace-nowrap ${
 										selectedYear === year
 											? 'bg-primary text-primary-foreground shadow-2xl shadow-primary/30'
@@ -471,7 +484,7 @@ export default function PastPapers() {
 							onToggleSubject={handleToggleSubject}
 							onTogglePaper={handleTogglePaper}
 							onToggleMonth={handleToggleMonth}
-							onToggleExtracted={setExtractedOnly}
+							onToggleExtracted={handleToggleExtracted}
 						/>
 					</div>
 					<div className="border-t pt-4 flex gap-3">
@@ -511,7 +524,7 @@ export default function PastPapers() {
 							onToggleSubject={handleToggleSubject}
 							onTogglePaper={handleTogglePaper}
 							onToggleMonth={handleToggleMonth}
-							onToggleExtracted={setExtractedOnly}
+							onToggleExtracted={handleToggleExtracted}
 						/>
 					</div>
 					<DrawerFooter>
