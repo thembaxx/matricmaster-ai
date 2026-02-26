@@ -1,6 +1,7 @@
 'use server';
 
 import { and, desc, eq, sql } from 'drizzle-orm';
+import { ensureAuthenticated } from './auth-utils';
 import { dbManager } from './index';
 import { comments, commentVotes, users } from './schema';
 
@@ -8,9 +9,10 @@ const getDb = () => dbManager.getDb();
 
 /**
  * Create a comment
+ * Uses session-based authentication to prevent IDOR
  */
 export async function createComment(
-	userId: string,
+	_userId: string,
 	data: {
 		content: string;
 		resourceType: string;
@@ -19,11 +21,15 @@ export async function createComment(
 	}
 ) {
 	try {
+		const user = await ensureAuthenticated();
+		// Always use the authenticated session's user ID to prevent IDOR
+		const activeUserId = user.id;
+
 		const db = getDb();
 		const [comment] = await db
 			.insert(comments)
 			.values({
-				userId,
+				userId: activeUserId,
 				content: data.content,
 				resourceType: data.resourceType,
 				resourceId: data.resourceId,
@@ -103,9 +109,14 @@ export async function getComment(commentId: string) {
 
 /**
  * Update a comment
+ * Verifies that the comment belongs to the authenticated user
  */
-export async function updateComment(commentId: string, userId: string, content: string) {
+export async function updateComment(commentId: string, _userId: string, content: string) {
 	try {
+		const user = await ensureAuthenticated();
+		// Always use the authenticated session's user ID to prevent IDOR
+		const activeUserId = user.id;
+
 		const db = getDb();
 		const [updated] = await db
 			.update(comments)
@@ -114,7 +125,7 @@ export async function updateComment(commentId: string, userId: string, content: 
 				isEdited: true,
 				updatedAt: new Date(),
 			})
-			.where(and(eq(comments.id, commentId), eq(comments.userId, userId)))
+			.where(and(eq(comments.id, commentId), eq(comments.userId, activeUserId)))
 			.returning();
 		return { success: true, comment: updated };
 	} catch (error) {
@@ -125,11 +136,18 @@ export async function updateComment(commentId: string, userId: string, content: 
 
 /**
  * Delete a comment
+ * Verifies that the comment belongs to the authenticated user
  */
-export async function deleteComment(commentId: string, userId: string) {
+export async function deleteComment(commentId: string, _userId: string) {
 	try {
+		const user = await ensureAuthenticated();
+		// Always use the authenticated session's user ID to prevent IDOR
+		const activeUserId = user.id;
+
 		const db = getDb();
-		await db.delete(comments).where(and(eq(comments.id, commentId), eq(comments.userId, userId)));
+		await db
+			.delete(comments)
+			.where(and(eq(comments.id, commentId), eq(comments.userId, activeUserId)));
 		return { success: true };
 	} catch (error) {
 		console.error('[Comments] Error deleting comment:', error);
@@ -139,16 +157,21 @@ export async function deleteComment(commentId: string, userId: string) {
 
 /**
  * Vote on a comment (upvote/downvote)
+ * Uses session-based authentication to prevent IDOR
  */
-export async function voteOnComment(userId: string, commentId: string, voteType: 'up' | 'down') {
+export async function voteOnComment(_userId: string, commentId: string, voteType: 'up' | 'down') {
 	try {
+		const user = await ensureAuthenticated();
+		// Always use the authenticated session's user ID to prevent IDOR
+		const activeUserId = user.id;
+
 		const db = getDb();
 
 		// Check if user already voted
 		const existing = await db
 			.select()
 			.from(commentVotes)
-			.where(and(eq(commentVotes.userId, userId), eq(commentVotes.commentId, commentId)))
+			.where(and(eq(commentVotes.userId, activeUserId), eq(commentVotes.commentId, commentId)))
 			.limit(1);
 
 		if (existing.length > 0) {
@@ -195,7 +218,7 @@ export async function voteOnComment(userId: string, commentId: string, voteType:
 		} else {
 			// New vote
 			await db.insert(commentVotes).values({
-				userId,
+				userId: activeUserId,
 				commentId,
 				voteType,
 			});
@@ -224,13 +247,17 @@ export async function voteOnComment(userId: string, commentId: string, voteType:
 /**
  * Get user's vote on a comment
  */
-export async function getUserVote(userId: string, commentId: string) {
+export async function getUserVote(_userId: string, commentId: string) {
 	try {
+		const user = await ensureAuthenticated();
+		// Always use the authenticated session's user ID to prevent IDOR
+		const activeUserId = user.id;
+
 		const db = getDb();
 		const [vote] = await db
 			.select()
 			.from(commentVotes)
-			.where(and(eq(commentVotes.userId, userId), eq(commentVotes.commentId, commentId)))
+			.where(and(eq(commentVotes.userId, activeUserId), eq(commentVotes.commentId, commentId)))
 			.limit(1);
 		return vote?.voteType || null;
 	} catch (error) {
@@ -241,9 +268,11 @@ export async function getUserVote(userId: string, commentId: string) {
 
 /**
  * Flag a comment
+ * Requires authentication
  */
 export async function flagComment(commentId: string, reason: string) {
 	try {
+		await ensureAuthenticated();
 		const db = getDb();
 		await db
 			.update(comments)
