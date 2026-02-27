@@ -16,10 +16,6 @@ export const SearchHeader = memo(function SearchHeader({
 }: SearchHeaderProps) {
 	return (
 		<div className="space-y-1">
-			<h2 className="text-3xl font-black text-foreground tracking-tighter uppercase">Search</h2>
-			<p className="text-muted-foreground font-bold text-sm">
-				Find topics, questions, and past papers
-			</p>
 			<m.div
 				initial={{ scale: 0.95, opacity: 0 }}
 				animate={{ scale: 1, opacity: 1 }}
@@ -30,7 +26,7 @@ export const SearchHeader = memo(function SearchHeader({
 					value={query}
 					onChange={(e) => onQueryChange(e.target.value)}
 					placeholder="What are you looking for?"
-					className="pl-14 bg-muted/30 h-16 rounded-[1.5rem] border-2 text-lg font-bold focus:ring-primary/20"
+					className="pl-14 pr-14 bg-muted/30 h-16 rounded-[1.5rem] border-2 text-lg font-bold focus:ring-primary/20"
 					aria-label="Search topics, questions, and past papers"
 				/>
 				<AnimatePresence>
