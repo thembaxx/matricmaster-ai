@@ -2,6 +2,7 @@
 
 import { AnimatePresence, m } from 'framer-motion';
 import { Clock, Loader2, Trash2, X } from 'lucide-react';
+import { memo } from 'react';
 import { Button } from '@/components/ui/button';
 import { STAGGER_ITEM } from '@/lib/animation-presets';
 import type { SearchHistory } from '@/lib/db/schema';
@@ -14,7 +15,7 @@ interface SearchHistoryListProps {
 	onSearchClick: (query: string) => void;
 }
 
-export function SearchHistoryList({
+export const SearchHistoryList = memo(function SearchHistoryList({
 	searches,
 	isLoading,
 	onDelete,
@@ -90,4 +91,4 @@ export function SearchHistoryList({
 			</div>
 		</m.div>
 	);
-}
+});

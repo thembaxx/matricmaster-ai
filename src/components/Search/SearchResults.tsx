@@ -3,6 +3,7 @@
 import { AnimatePresence, m } from 'framer-motion';
 import { ChevronRight, FileText, Search as SearchIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { memo } from 'react';
 import { Card } from '@/components/ui/card';
 import { STAGGER_CONTAINER, STAGGER_ITEM } from '@/lib/animation-presets';
 import type { PastPaper } from '@/lib/db/schema';
@@ -11,7 +12,7 @@ interface SearchResultsProps {
 	results: PastPaper[];
 }
 
-export function SearchResults({ results }: SearchResultsProps) {
+export const SearchResults = memo(function SearchResults({ results }: SearchResultsProps) {
 	const router = useRouter();
 
 	return (
@@ -77,4 +78,4 @@ export function SearchResults({ results }: SearchResultsProps) {
 			</AnimatePresence>
 		</m.div>
 	);
-}
+});
