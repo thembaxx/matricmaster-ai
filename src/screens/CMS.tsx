@@ -615,6 +615,7 @@ export default function CMS() {
 															size="icon"
 															className="h-10 w-10 rounded-xl hover:bg-primary/10 hover:text-primary transition-colors"
 															onClick={() => handleEditQuestion(q)}
+															aria-label="Edit question"
 														>
 															<Edit2 className="h-5 w-5" />
 														</Button>
@@ -623,6 +624,7 @@ export default function CMS() {
 															size="icon"
 															className="h-10 w-10 rounded-xl hover:bg-rose-500/10 hover:text-rose-500 transition-colors"
 															onClick={() => handleDeleteQuestion(q.id)}
+															aria-label="Delete question"
 														>
 															<Trash2 className="h-5 w-5" />
 														</Button>
@@ -807,6 +809,7 @@ export default function CMS() {
 															size="icon"
 															className="rounded-xl h-10 w-10"
 															onClick={handleRemoveImage}
+															aria-label="Remove image"
 														>
 															<X className="h-5 w-5" />
 														</Button>
@@ -891,10 +894,14 @@ export default function CMS() {
 
 										<div className="grid grid-cols-2 gap-8">
 											<div className="space-y-3">
-												<Label className="font-black text-xs uppercase tracking-widest text-muted-foreground">
+												<Label
+													htmlFor="cms-topic"
+													className="font-black text-xs uppercase tracking-widest text-muted-foreground"
+												>
 													Topic
 												</Label>
 												<Input
+													id="cms-topic"
 													value={editingQuestion.topic}
 													onChange={(e) =>
 														setEditingQuestion({ ...editingQuestion, topic: e.target.value })
@@ -930,10 +937,14 @@ export default function CMS() {
 								{drawerTab === 'question' && (
 									<div className="space-y-8">
 										<div className="space-y-3">
-											<Label className="font-black text-xs uppercase tracking-widest text-muted-foreground">
+											<Label
+												htmlFor="cms-question-text"
+												className="font-black text-xs uppercase tracking-widest text-muted-foreground"
+											>
 												Question Content
 											</Label>
 											<Textarea
+												id="cms-question-text"
 												value={editingQuestion.questionText}
 												onChange={(e) =>
 													setEditingQuestion({ ...editingQuestion, questionText: e.target.value })
@@ -943,10 +954,14 @@ export default function CMS() {
 											/>
 										</div>
 										<div className="space-y-3 max-w-50">
-											<Label className="font-black text-xs uppercase tracking-widest text-muted-foreground">
+											<Label
+												htmlFor="cms-points"
+												className="font-black text-xs uppercase tracking-widest text-muted-foreground"
+											>
 												Points
 											</Label>
 											<Input
+												id="cms-points"
 												type="number"
 												value={editingQuestion.marks}
 												onChange={(e) =>
@@ -1002,6 +1017,7 @@ export default function CMS() {
 																size="icon"
 																className="h-8 w-8 text-rose-500"
 																onClick={() => removeOption(idx)}
+																aria-label="Remove option"
 															>
 																<X className="h-4 w-4" />
 															</Button>
