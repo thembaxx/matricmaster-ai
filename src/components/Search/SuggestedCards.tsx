@@ -3,10 +3,11 @@
 import { Icon } from '@iconify/react';
 import { m } from 'framer-motion';
 import { Sparkles } from 'lucide-react';
+import { memo } from 'react';
 import { Card } from '@/components/ui/card';
 import { STAGGER_ITEM } from '@/lib/animation-presets';
 
-export function SuggestedCards() {
+export const SuggestedCards = memo(function SuggestedCards() {
 	return (
 		<m.div variants={STAGGER_ITEM} className="space-y-6">
 			<h2 className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.3em]">
@@ -55,4 +56,4 @@ export function SuggestedCards() {
 			</div>
 		</m.div>
 	);
-}
+});

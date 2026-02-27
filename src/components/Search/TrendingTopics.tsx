@@ -2,6 +2,7 @@
 
 import { Icon } from '@iconify/react';
 import { m } from 'framer-motion';
+import { memo } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { STAGGER_ITEM } from '@/lib/animation-presets';
 
@@ -18,7 +19,7 @@ interface TrendingTopicsProps {
 	onTopicClick: (topic: string) => void;
 }
 
-export function TrendingTopics({ onTopicClick }: TrendingTopicsProps) {
+export const TrendingTopics = memo(function TrendingTopics({ onTopicClick }: TrendingTopicsProps) {
 	return (
 		<m.div variants={STAGGER_ITEM} className="space-y-6">
 			<div className="flex items-center gap-2">
@@ -42,4 +43,4 @@ export function TrendingTopics({ onTopicClick }: TrendingTopicsProps) {
 			</div>
 		</m.div>
 	);
-}
+});

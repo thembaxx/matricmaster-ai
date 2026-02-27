@@ -2,6 +2,7 @@
 
 import { AnimatePresence, m } from 'framer-motion';
 import { Loader2, Sparkles } from 'lucide-react';
+import { memo } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
 
@@ -12,7 +13,12 @@ interface AiInsightsProps {
 	onSuggestionClick: (suggestion: string) => void;
 }
 
-export function AiInsights({ isLoading, suggestions, tip, onSuggestionClick }: AiInsightsProps) {
+export const AiInsights = memo(function AiInsights({
+	isLoading,
+	suggestions,
+	tip,
+	onSuggestionClick,
+}: AiInsightsProps) {
 	return (
 		<AnimatePresence mode="wait">
 			{(isLoading || suggestions) && (
@@ -61,4 +67,4 @@ export function AiInsights({ isLoading, suggestions, tip, onSuggestionClick }: A
 			)}
 		</AnimatePresence>
 	);
-}
+});
