@@ -1,7 +1,7 @@
 'use client';
 
 import { m } from 'framer-motion';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { AiInsights } from '@/components/Search/AiInsights';
 import { SearchHeader } from '@/components/Search/SearchHeader';
 import { SearchHistoryList } from '@/components/Search/SearchHistoryList';
@@ -75,28 +75,33 @@ export default function Search() {
 		return () => clearTimeout(timer);
 	}, [query, session?.user?.id]);
 
-	const filteredResults = query
-		? papers.filter(
-				(p: PastPaper) =>
-					p.subject.toLowerCase().includes(query.toLowerCase()) ||
-					p.paper.toLowerCase().includes(query.toLowerCase())
-			)
-		: [];
+	// Bolt: Memoize filtered results and pre-normalize search query to avoid O(N) recalculation on every render
+	const filteredResults = useMemo(() => {
+		if (!query) return [];
+		const lowerQuery = query.toLowerCase();
+		return papers.filter(
+			(p: PastPaper) =>
+				p.subject.toLowerCase().includes(lowerQuery) || p.paper.toLowerCase().includes(lowerQuery)
+		);
+	}, [papers, query]);
 
-	const handleDeleteSearch = async (id: string, e: React.MouseEvent) => {
-		e.stopPropagation();
-		if (session?.user?.id) {
-			await deleteSearchHistoryItemAction(id);
-			setRecentSearches((prev) => prev.filter((s) => s.id !== id));
-		}
-	};
+	const handleDeleteSearch = useCallback(
+		async (id: string, e: React.MouseEvent) => {
+			e.stopPropagation();
+			if (session?.user?.id) {
+				await deleteSearchHistoryItemAction(id);
+				setRecentSearches((prev) => prev.filter((s) => s.id !== id));
+			}
+		},
+		[session?.user?.id]
+	);
 
-	const handleClearAllSearches = async () => {
+	const handleClearAllSearches = useCallback(async () => {
 		if (session?.user?.id) {
 			await clearSearchHistoryAction();
 			setRecentSearches([]);
 		}
-	};
+	}, [session?.user?.id]);
 
 	return (
 		<div className="flex flex-col h-full bg-background lg:px-12">

@@ -5,3 +5,7 @@
 ## 2026-02-26 - [Optimizing CMS Filter & Lookup Complexity]
 **Learning:** O(N) array operations inside render loops (like filtering) or inside mapping (like name lookups) create exponential slowdowns as datasets grow. Converting array searches to Map lookups ((S) \to O(1)$) and lowercasing search queries once outside loops significantly reduces CPU cycles during renders, especially when triggered by unrelated UI state changes (like drawer toggles).
 **Action:** Always check if a repeated lookup in a map/list can be converted to a memoized Map, and ensure string normalizations in filters happen before the iteration begins.
+
+## 2026-02-28 - [Memoizing Search Screen & Sub-components]
+**Learning:** In a search interface, typing triggers high-frequency state updates in the parent. Without memoization, every child component (even static ones like 'SuggestedCards') re-renders on every keystroke. Combining 'useMemo' for the O(N) filter and 'React.memo' for all sub-components with 'useCallback' handlers ensures that only the relevant parts of the UI update, significantly reducing the main thread load during active searching.
+**Action:** For search/filter screens, always apply a triple-layer memoization: 'useMemo' for data derivation, 'useCallback' for event handlers, and 'React.memo' for sub-components.

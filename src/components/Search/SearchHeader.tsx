@@ -2,6 +2,7 @@
 
 import { AnimatePresence, m } from 'framer-motion';
 import { Search as SearchIcon, X } from 'lucide-react';
+import { memo } from 'react';
 import { Input } from '@/components/ui/input';
 
 interface SearchHeaderProps {
@@ -9,7 +10,10 @@ interface SearchHeaderProps {
 	onQueryChange: (q: string) => void;
 }
 
-export function SearchHeader({ query, onQueryChange }: SearchHeaderProps) {
+export const SearchHeader = memo(function SearchHeader({
+	query,
+	onQueryChange,
+}: SearchHeaderProps) {
 	return (
 		<div className="space-y-1">
 			<h2 className="text-3xl font-black text-foreground tracking-tighter uppercase">Search</h2>
@@ -48,4 +52,4 @@ export function SearchHeader({ query, onQueryChange }: SearchHeaderProps) {
 			</m.div>
 		</div>
 	);
-}
+});
