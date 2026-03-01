@@ -2,6 +2,7 @@
 
 import { and, desc, eq } from 'drizzle-orm';
 import { z } from 'zod';
+import { ensureAuthenticated } from './auth-utils';
 import { dbManager, getDb } from './index';
 import { type AiConversation, aiConversations, type NewAiConversation } from './schema';
 
@@ -20,17 +21,21 @@ const conversationSchema = z.object({
 
 /**
  * Save AI tutor conversation to database
+ * Uses session-based authentication to prevent IDOR
  */
 export async function saveConversationAction(
-	userId: string,
+	_userId: string,
 	title: string,
 	messages: { role: 'user' | 'assistant'; content: string; timestamp: Date }[],
 	subject?: string
 ): Promise<{ success: boolean; error?: string; conversationId?: string }> {
 	try {
+		const user = await ensureAuthenticated();
+		const activeUserId = user.id;
+
 		// Validate input
 		const validated = conversationSchema.parse({
-			userId,
+			userId: activeUserId,
 			title,
 			messages: messages.map((m) => ({
 				...m,
@@ -52,7 +57,7 @@ export async function saveConversationAction(
 		const [conversation] = await db
 			.insert(aiConversations)
 			.values({
-				userId: validated.userId,
+				userId: activeUserId,
 				title: validated.title,
 				subject: validated.subject,
 				messages: messagesJson,
@@ -74,9 +79,13 @@ export async function saveConversationAction(
 
 /**
  * Get user's AI tutor conversations
+ * Verifies identity via session to prevent IDOR
  */
-export async function getConversationsAction(userId: string): Promise<AiConversation[]> {
+export async function getConversationsAction(_userId: string): Promise<AiConversation[]> {
 	try {
+		const user = await ensureAuthenticated();
+		const activeUserId = user.id;
+
 		const connected = await dbManager.waitForConnection(3, 2000);
 		if (!connected) {
 			return [];
@@ -86,7 +95,7 @@ export async function getConversationsAction(userId: string): Promise<AiConversa
 		return db
 			.select()
 			.from(aiConversations)
-			.where(eq(aiConversations.userId, userId))
+			.where(eq(aiConversations.userId, activeUserId))
 			.orderBy(desc(aiConversations.updatedAt));
 	} catch (error) {
 		console.error('[AI Tutor] Error getting conversations:', error);
@@ -96,12 +105,16 @@ export async function getConversationsAction(userId: string): Promise<AiConversa
 
 /**
  * Get a specific conversation by ID
+ * Verifies ownership via session to prevent IDOR
  */
 export async function getConversationByIdAction(
 	conversationId: string,
-	userId: string
+	_userId: string
 ): Promise<AiConversation | null> {
 	try {
+		const user = await ensureAuthenticated();
+		const activeUserId = user.id;
+
 		const connected = await dbManager.waitForConnection(3, 2000);
 		if (!connected) {
 			return null;
@@ -111,7 +124,7 @@ export async function getConversationByIdAction(
 		const [conversation] = await db
 			.select()
 			.from(aiConversations)
-			.where(and(eq(aiConversations.id, conversationId), eq(aiConversations.userId, userId)))
+			.where(and(eq(aiConversations.id, conversationId), eq(aiConversations.userId, activeUserId)))
 			.limit(1);
 
 		return conversation ?? null;
@@ -123,12 +136,16 @@ export async function getConversationByIdAction(
 
 /**
  * Delete a conversation
+ * Verifies ownership via session to prevent IDOR
  */
 export async function deleteConversationAction(
 	conversationId: string,
-	userId: string
+	_userId: string
 ): Promise<{ success: boolean; error?: string }> {
 	try {
+		const user = await ensureAuthenticated();
+		const activeUserId = user.id;
+
 		const connected = await dbManager.waitForConnection(3, 2000);
 		if (!connected) {
 			return { success: false, error: 'Database not available' };
@@ -137,7 +154,7 @@ export async function deleteConversationAction(
 		const db = getDb();
 		const result = await db
 			.delete(aiConversations)
-			.where(and(eq(aiConversations.id, conversationId), eq(aiConversations.userId, userId)))
+			.where(and(eq(aiConversations.id, conversationId), eq(aiConversations.userId, activeUserId)))
 			.returning();
 
 		return { success: result.length > 0 };
