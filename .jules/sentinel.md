@@ -12,3 +12,8 @@
 **Vulnerability:** Insecure Direct Object Reference (IDOR) and unauthenticated access in Comment management. Exported server functions (`createComment`, `updateComment`, `deleteComment`, `voteOnComment`, `getUserVote`, `flagComment`) in `comment-actions.ts` either accepted `userId` from the client without verification or lacked authentication altogether (in the case of `flagComment`).
 **Learning:** When fixing IDOR in existing server functions with many potential callers, it's safer to maintain the function signature for backward compatibility but ignore the client-provided `userId` in favor of a session-derived ID obtained via `ensureAuthenticated()`.
 **Prevention:** Always use `ensureAuthenticated()` to retrieve the user's ID on the server side. If a function already has a `userId` parameter, prefix it with an underscore (e.g., `_userId`) to indicate it's intentionally ignored for security reasons, while avoiding breaking changes to the API contract.
+
+## 2026-03-06 - [Fix IDOR in AI Tutor Server Actions]
+**Vulnerability:** Insecure Direct Object Reference (IDOR) in AI Tutor conversation management. Server actions (`saveConversationAction`, `getConversationsAction`, `getConversationByIdAction`, `deleteConversationAction`) in `src/lib/db/ai-tutor-actions.ts` accepted `userId` from the client and used it in database queries without server-side session verification.
+**Learning:** Security patterns established in one module (like search or bookmarks) must be proactively applied to new features like AI Tutor to maintain a consistent security posture.
+**Prevention:** Audit all new server action files for client-controlled `userId` parameters and replace them with session-verified IDs using `ensureAuthenticated()`.
