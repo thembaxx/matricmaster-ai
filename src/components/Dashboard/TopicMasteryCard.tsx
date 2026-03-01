@@ -10,7 +10,7 @@ import {
 	TrendingUp,
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
@@ -21,7 +21,9 @@ interface TopicMasteryCardProps {
 	className?: string;
 }
 
-export function TopicMasteryCard({ className }: TopicMasteryCardProps) {
+export const TopicMasteryCard = memo(function TopicMasteryCard({
+	className,
+}: TopicMasteryCardProps) {
 	const router = useRouter();
 	const [isLoading, setIsLoading] = useState(true);
 	const [stats, setStats] = useState<LearningStats | null>(null);
@@ -171,7 +173,7 @@ export function TopicMasteryCard({ className }: TopicMasteryCardProps) {
 			</CardContent>
 		</Card>
 	);
-}
+});
 
 interface TopicItemProps {
 	topic: TopicPerformance;

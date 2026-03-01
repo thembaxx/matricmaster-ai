@@ -2,6 +2,7 @@
 
 import { m } from 'framer-motion';
 import { Flame, Trophy } from 'lucide-react';
+import { memo } from 'react';
 import { Card } from '@/components/ui/card';
 import { STAGGER_ITEM } from '@/lib/animation-presets';
 
@@ -10,7 +11,7 @@ interface StatsCardsProps {
 	accuracy: number;
 }
 
-export function StatsCards({ streak, accuracy }: StatsCardsProps) {
+export const StatsCards = memo(function StatsCards({ streak, accuracy }: StatsCardsProps) {
 	return (
 		<div className="flex flex-col gap-6">
 			<m.div variants={STAGGER_ITEM} className="flex-1">
@@ -80,4 +81,4 @@ export function StatsCards({ streak, accuracy }: StatsCardsProps) {
 			</m.div>
 		</div>
 	);
-}
+});

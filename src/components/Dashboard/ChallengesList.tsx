@@ -3,6 +3,7 @@
 import { m } from 'framer-motion';
 import { BookOpen, Clock, FlaskConical, Play, Sigma } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { memo } from 'react';
 import { Button } from '@/components/ui/button';
 import { STAGGER_ITEM } from '@/lib/animation-presets';
 
@@ -38,7 +39,7 @@ const defaultChallenges: Challenge[] = [
 	},
 ];
 
-export function ChallengesList() {
+export const ChallengesList = memo(function ChallengesList() {
 	const router = useRouter();
 
 	return (
@@ -100,4 +101,4 @@ export function ChallengesList() {
 			</div>
 		</m.div>
 	);
-}
+});

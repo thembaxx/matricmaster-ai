@@ -75,8 +75,7 @@ export default function Search() {
 		return () => clearTimeout(timer);
 	}, [query, session?.user?.id]);
 
-	// Bolt: Memoize filtered results and normalize query once outside the loop
-	// This prevents O(N) filtering on every keystroke/render if unrelated state changes
+	// Bolt: Memoize filtered results and pre-normalize search query to avoid O(N) recalculation on every render
 	const filteredResults = useMemo(() => {
 		if (!query) return [];
 		const lowerQuery = query.toLowerCase();
