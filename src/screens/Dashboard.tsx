@@ -1,7 +1,7 @@
 'use client';
 
 import { m } from 'framer-motion';
-import { useEffect, useState, useTransition } from 'react';
+import { useCallback, useEffect, useState, useTransition } from 'react';
 import useSWRMutation from 'swr/mutation';
 import { ChallengesList } from '@/components/Dashboard/ChallengesList';
 import { DailyGoals } from '@/components/Dashboard/DailyGoals';
@@ -98,11 +98,11 @@ export default function Dashboard({ initialProgress, initialStreak }: DashboardP
 		setDailyProgress(66);
 	}, []);
 
-	const handleNavigateToQuiz = () => {
+	const handleNavigateToQuiz = useCallback(() => {
 		startTransition(() => {
 			window.location.href = '/quiz';
 		});
-	};
+	}, []);
 
 	const isLoading = isSessionLoading || isPending;
 

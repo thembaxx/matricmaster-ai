@@ -2,7 +2,7 @@
 
 import { m } from 'framer-motion';
 import { Clock, Sparkles, Zap } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { getUserProgressSummary } from '@/lib/db/progress-actions';
@@ -60,7 +60,7 @@ function getDaysUntilMonday(): number {
 	return daysUntilMonday;
 }
 
-export function WeeklyChallenge() {
+export const WeeklyChallenge = memo(function WeeklyChallenge() {
 	const [challenge, setChallenge] = useState<WeeklyChallengeData | null>(null);
 	const [isLoading, setIsLoading] = useState(true);
 
@@ -192,4 +192,4 @@ export function WeeklyChallenge() {
 			</div>
 		</Card>
 	);
-}
+});

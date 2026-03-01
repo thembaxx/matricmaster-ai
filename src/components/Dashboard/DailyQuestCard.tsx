@@ -2,6 +2,7 @@
 
 import { m } from 'framer-motion';
 import { ArrowRight, Loader2, Sparkles } from 'lucide-react';
+import { memo } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { STAGGER_ITEM } from '@/lib/animation-presets';
@@ -13,7 +14,7 @@ interface DailyQuestCardProps {
 	onNavigateToQuiz: () => void;
 }
 
-export function DailyQuestCard({
+export const DailyQuestCard = memo(function DailyQuestCard({
 	totalQuestions,
 	dailyProgress,
 	isLoading,
@@ -88,4 +89,4 @@ export function DailyQuestCard({
 			</Card>
 		</m.div>
 	);
-}
+});

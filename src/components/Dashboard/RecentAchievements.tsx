@@ -2,7 +2,7 @@
 
 import { m } from 'framer-motion';
 import { Award, ChevronRight, Trophy } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
 import { ACHIEVEMENTS } from '@/constants/achievements';
@@ -19,7 +19,7 @@ interface UnlockedAchievement {
 	isNew: boolean;
 }
 
-export function RecentAchievements() {
+export const RecentAchievements = memo(function RecentAchievements() {
 	const [achievements, setAchievements] = useState<UnlockedAchievement[]>([]);
 	const [isLoading, setIsLoading] = useState(true);
 
@@ -156,4 +156,4 @@ export function RecentAchievements() {
 			</div>
 		</Card>
 	);
-}
+});

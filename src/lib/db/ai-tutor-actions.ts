@@ -21,6 +21,7 @@ const conversationSchema = z.object({
 
 /**
  * Save AI tutor conversation to database
+ * Uses session-based authentication to prevent IDOR
  */
 export async function saveConversationAction(
 	_userId: string,
@@ -78,6 +79,7 @@ export async function saveConversationAction(
 
 /**
  * Get user's AI tutor conversations
+ * Verifies identity via session to prevent IDOR
  */
 export async function getConversationsAction(_userId: string): Promise<AiConversation[]> {
 	try {
@@ -103,6 +105,7 @@ export async function getConversationsAction(_userId: string): Promise<AiConvers
 
 /**
  * Get a specific conversation by ID
+ * Verifies ownership via session to prevent IDOR
  */
 export async function getConversationByIdAction(
 	conversationId: string,
@@ -133,6 +136,7 @@ export async function getConversationByIdAction(
 
 /**
  * Delete a conversation
+ * Verifies ownership via session to prevent IDOR
  */
 export async function deleteConversationAction(
 	conversationId: string,
