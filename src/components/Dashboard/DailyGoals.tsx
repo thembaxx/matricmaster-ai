@@ -2,7 +2,7 @@
 
 import { m } from 'framer-motion';
 import { CheckCircle, Circle, Target } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { getUserProgressSummary, getUserStreak } from '@/lib/db/progress-actions';
@@ -16,7 +16,7 @@ interface DailyGoal {
 	isComplete: boolean;
 }
 
-export function DailyGoals() {
+export const DailyGoals = memo(function DailyGoals() {
 	const [goals, setGoals] = useState<DailyGoal[]>([]);
 	const [isLoading, setIsLoading] = useState(true);
 	const [allComplete, setAllComplete] = useState(false);
@@ -149,4 +149,4 @@ export function DailyGoals() {
 			)}
 		</Card>
 	);
-}
+});

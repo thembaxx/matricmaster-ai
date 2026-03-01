@@ -2,7 +2,7 @@
 
 import { m } from 'framer-motion';
 import { ChevronRight, Medal } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
@@ -18,7 +18,7 @@ interface LeaderboardEntry {
 	isCurrentUser?: boolean;
 }
 
-export function LeaderboardPreview() {
+export const LeaderboardPreview = memo(function LeaderboardPreview() {
 	const { data: session } = useSession();
 	const [entries, setEntries] = useState<LeaderboardEntry[]>([]);
 	const [userRank, setUserRank] = useState<number | null>(null);
@@ -167,4 +167,4 @@ export function LeaderboardPreview() {
 			</m.button>
 		</Card>
 	);
-}
+});

@@ -2,6 +2,7 @@
 
 import { m } from 'framer-motion';
 import { Check } from 'lucide-react';
+import { memo } from 'react';
 import { Card } from '@/components/ui/card';
 import { STAGGER_ITEM } from '@/lib/animation-presets';
 
@@ -15,7 +16,9 @@ interface WeeklyChartCardProps {
 	weekProgress: DayProgress[];
 }
 
-export function WeeklyChartCard({ weekProgress }: WeeklyChartCardProps) {
+export const WeeklyChartCard = memo(function WeeklyChartCard({
+	weekProgress,
+}: WeeklyChartCardProps) {
 	return (
 		<m.div variants={STAGGER_ITEM} className="lg:col-span-2">
 			<Card className="p-8 premium-glass border-none rounded-[2.5rem] h-full flex flex-col justify-between">
@@ -65,4 +68,4 @@ export function WeeklyChartCard({ weekProgress }: WeeklyChartCardProps) {
 			</Card>
 		</m.div>
 	);
-}
+});
