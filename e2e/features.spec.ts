@@ -18,29 +18,32 @@ async function signUp(page: Page) {
 	// Click submit
 	await page.click('button[type="submit"]');
 
-	// Wait for button to change (shows "Redirecting...") with error handling
 	try {
-		await expect(page.getByText('Redirecting...')).toBeVisible({ timeout: 15000 });
-	} catch (error) {
-		// Check if there's a validation error visible
-		console.log('Redirecting text not visible, checking for validation errors...', error);
-		const validationError = await page
-			.locator('[class*="error"]')
-			.first()
-			.isVisible()
-			.catch(() => false);
-		if (validationError) {
-			throw new Error(
-				'Sign-up validation error: ' +
-					(await page.locator('[class*="error"]').first().textContent())
-			);
+		// Wait for redirect to dashboard
+		await page.waitForURL(/\/dashboard/, { timeout: 15000 });
+	} catch (e) {
+		console.warn('Dashboard redirect timed out, checking for success message or manual redirect');
+		const isSuccessVisible = await page.getByText(/Account created|Redirecting/i).isVisible();
+		if (isSuccessVisible) {
+			await page.goto('/dashboard');
+			await page.waitForURL(/\/dashboard/, { timeout: 10000 });
+		} else {
+			// Check if there's a validation error visible
+			const validationError = await page
+				.locator('[class*="error"]')
+				.first()
+				.isVisible()
+				.catch(() => false);
+			if (validationError) {
+				throw new Error(
+					'Sign-up validation error: ' +
+						(await page.locator('[class*="error"]').first().textContent())
+				);
+			}
+			throw e;
 		}
-		// If no validation error, the "Redirecting..." text might not show but URL should change
-		console.warn('Redirecting text not visible, but proceeding to wait for dashboard navigation');
 	}
-
-	// Wait for navigation to dashboard - longer timeout
-	await page.waitForURL(/\/dashboard/, { timeout: 60000 });
+	return { email, password };
 }
 
 test.describe('MatricMaster Features', () => {

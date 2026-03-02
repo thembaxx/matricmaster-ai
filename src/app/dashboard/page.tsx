@@ -39,5 +39,7 @@ export default async function DashboardPage() {
 		getUserStreak(),
 	]);
 
-	return <Dashboard initialProgress={initialProgress} initialStreak={initialStreak} />;
+	return (
+		<Dashboard initialProgress={initialProgress} initialStreak={initialStreak} session={session} />
+	);
 }

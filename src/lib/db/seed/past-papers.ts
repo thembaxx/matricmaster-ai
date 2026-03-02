@@ -1,0 +1,26 @@
+export const pastPapersData = [
+	{
+		paperId: 'math-p1-2024',
+		originalPdfUrl: 'https://example.com/math-p1-2024.pdf',
+		subject: 'Mathematics',
+		paper: 'P1',
+		year: 2024,
+		month: 'November',
+		totalMarks: 150,
+		instructions: 'Answer all questions.',
+		summary: 'Final 2024 Mathematics Paper 1',
+		isExtracted: true,
+	},
+	{
+		paperId: 'phys-p1-2024',
+		originalPdfUrl: 'https://example.com/phys-p1-2024.pdf',
+		subject: 'Physical Sciences',
+		paper: 'P1',
+		year: 2024,
+		month: 'November',
+		totalMarks: 150,
+		instructions: 'Answer all questions.',
+		summary: 'Final 2024 Physical Sciences Paper 1',
+		isExtracted: true,
+	},
+];

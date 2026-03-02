@@ -2,7 +2,6 @@
 
 import { m } from 'framer-motion';
 import { useCallback, useEffect, useState, useTransition } from 'react';
-import useSWRMutation from 'swr/mutation';
 import { ChallengesList } from '@/components/Dashboard/ChallengesList';
 import { DailyGoals } from '@/components/Dashboard/DailyGoals';
 import { DailyQuestCard } from '@/components/Dashboard/DailyQuestCard';
@@ -19,7 +18,7 @@ import { useNotificationContextSafe } from '@/components/Notifications/Notificat
 import { BackgroundMesh } from '@/components/ui/background-mesh';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { STAGGER_CONTAINER, STAGGER_ITEM } from '@/lib/animation-presets';
-import { useSession } from '@/lib/auth-client';
+import type { AuthSession } from '@/lib/auth';
 import type { UserProgressSummary } from '@/lib/db/progress-actions';
 
 interface DayProgress {
@@ -37,18 +36,14 @@ export interface DashboardInitialStreak {
 interface DashboardProps {
 	initialProgress?: UserProgressSummary | null;
 	initialStreak?: DashboardInitialStreak | null;
+	session?: AuthSession | null;
 }
 
-async function initDatabase() {
-	const response = await fetch('/api/db/init', {
-		method: 'POST',
-		headers: { 'Content-Type': 'application/json' },
-	});
-	return response.json();
-}
-
-export default function Dashboard({ initialProgress, initialStreak }: DashboardProps = {}) {
-	const { data: session, isPending: isSessionLoading } = useSession();
+export default function Dashboard({
+	initialProgress,
+	initialStreak,
+	session,
+}: DashboardProps = {}) {
 	const { unreadCount } = useNotificationContextSafe();
 	const [isPending, startTransition] = useTransition();
 	const [streak] = useState(initialStreak?.currentStreak ?? 0);
@@ -67,15 +62,6 @@ export default function Dashboard({ initialProgress, initialStreak }: DashboardP
 				}
 			: null
 	);
-
-	const { trigger: triggerDbInit } = useSWRMutation('/api/db/init', () => initDatabase(), {
-		revalidate: false,
-		populateCache: false,
-	});
-
-	useEffect(() => {
-		triggerDbInit().catch((err) => console.error('Error initializing database:', err));
-	}, [triggerDbInit]);
 
 	useEffect(() => {
 		const now = new Date();
@@ -104,7 +90,7 @@ export default function Dashboard({ initialProgress, initialStreak }: DashboardP
 		});
 	}, []);
 
-	const isLoading = isSessionLoading || isPending;
+	const isLoading = isPending;
 
 	if (!progressData) {
 		return <DashboardSkeleton />;

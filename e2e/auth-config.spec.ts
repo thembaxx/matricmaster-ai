@@ -39,8 +39,8 @@ test.describe('Auth System Verification (auth.ts)', () => {
 		await page.fill('input[name="password"]', password);
 		await page.click('button[type="submit"]');
 
-		// Verify 'Signed in as' toast notification (implemented in SignInForm.tsx)
-		await expect(page.getByText(`Signed in as ${email}`)).toBeVisible({ timeout: 10000 });
+		// Verify 'Welcome back' toast notification (implemented in SignInForm.tsx)
+		await expect(page.getByText(`Welcome back, ${email}!`)).toBeVisible({ timeout: 10000 });
 		console.log('✅ Sign-in toast verified.');
 
 		// Wait for redirection (approx 2s delay in SignInForm.tsx)

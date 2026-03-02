@@ -7,10 +7,11 @@ config({ path: envPath });
 
 import { auth } from '@/lib/auth';
 import { dbManager } from '../index';
-import { options, questions, subjects } from '../schema';
+import { options, pastPapers, questions, subjects } from '../schema';
 import { englishQuestions } from './english-questions';
 import { historyQuestions } from './history-questions';
 import { mathematicsQuestions } from './mathematics-questions';
+import { pastPapersData } from './past-papers';
 import { physicsQuestions } from './physics-questions';
 
 function getDb() {
@@ -265,6 +266,23 @@ export async function seedDatabase() {
 			physicsCount++;
 		}
 		console.log(`✓ ${physicsCount} new Physics questions seeded`);
+
+		// Seed Past Papers
+		console.log('Seeding Past Papers...');
+		let papersCount = 0;
+		for (const p of pastPapersData) {
+			const existing = await useDb
+				.select()
+				.from(pastPapers)
+				.where(eq(pastPapers.paperId, p.paperId))
+				.limit(1);
+
+			if (existing.length > 0) continue;
+
+			await useDb.insert(pastPapers).values(p);
+			papersCount++;
+		}
+		console.log(`✓ ${papersCount} new Past Papers seeded`);
 
 		// Seed Test User
 		const testEmail = 'student@matricmaster.ai';
