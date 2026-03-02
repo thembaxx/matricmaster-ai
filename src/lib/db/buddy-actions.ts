@@ -1,6 +1,7 @@
 'use server';
 
 import { eq, inArray } from 'drizzle-orm';
+import { ensureAuthenticated } from './auth-utils';
 import { dbManager } from './index';
 import { studyBuddies, studyBuddyProfiles, studyBuddyRequests, users } from './schema';
 
@@ -30,7 +31,9 @@ function stringifyField(value: unknown): string {
 /**
  * Get or create a study buddy profile for a user
  */
-export async function getStudyBuddyProfile(userId: string) {
+export async function getStudyBuddyProfile(_userId: string) {
+	const user = await ensureAuthenticated();
+	const userId = user.id;
 	try {
 		const db = getDb();
 		const [profile] = await db
@@ -57,7 +60,7 @@ export async function getStudyBuddyProfile(userId: string) {
  * Create or update study buddy profile
  */
 export async function upsertStudyBuddyProfile(
-	userId: string,
+	_userId: string,
 	data: {
 		bio?: string;
 		studyGoals?: string;
@@ -66,6 +69,8 @@ export async function upsertStudyBuddyProfile(
 		isVisible?: boolean;
 	}
 ) {
+	const user = await ensureAuthenticated();
+	const userId = user.id;
 	try {
 		const db = getDb();
 		const existing = await getStudyBuddyProfile(userId);
@@ -108,7 +113,9 @@ export async function upsertStudyBuddyProfile(
 /**
  * Get discoverable study buddies (users with visible profiles)
  */
-export async function getDiscoverableBuddies(userId: string, limit = 20) {
+export async function getDiscoverableBuddies(_userId: string, limit = 20) {
+	const user = await ensureAuthenticated();
+	const userId = user.id;
 	try {
 		const db = getDb();
 		// Get users who are visible and not the current user
@@ -135,7 +142,13 @@ export async function getDiscoverableBuddies(userId: string, limit = 20) {
 /**
  * Send a buddy request
  */
-export async function sendBuddyRequest(requesterId: string, recipientId: string, message?: string) {
+export async function sendBuddyRequest(
+	_requesterId: string,
+	recipientId: string,
+	message?: string
+) {
+	const user = await ensureAuthenticated();
+	const requesterId = user.id;
 	try {
 		const db = getDb();
 
@@ -170,7 +183,9 @@ export async function sendBuddyRequest(requesterId: string, recipientId: string,
 /**
  * Get pending buddy requests for a user
  */
-export async function getPendingRequests(userId: string) {
+export async function getPendingRequests(_userId: string) {
+	const user = await ensureAuthenticated();
+	const userId = user.id;
 	try {
 		const db = getDb();
 		const { and } = await import('drizzle-orm');
@@ -192,26 +207,31 @@ export async function getPendingRequests(userId: string) {
 /**
  * Accept a buddy request
  */
-export async function acceptBuddyRequest(requestId: string, recipientId: string) {
+export async function acceptBuddyRequest(requestId: string, _recipientId: string) {
+	const user = await ensureAuthenticated();
+	const recipientId = user.id;
 	try {
 		const db = getDb();
+		const { and } = await import('drizzle-orm');
+
+		// Get requester ID from request and verify recipient
+		const [request] = await db
+			.select()
+			.from(studyBuddyRequests)
+			.where(
+				and(eq(studyBuddyRequests.id, requestId), eq(studyBuddyRequests.recipientId, recipientId))
+			)
+			.limit(1);
+
+		if (!request) {
+			return { success: false, error: 'Request not found' };
+		}
 
 		// Update request status
 		await db
 			.update(studyBuddyRequests)
 			.set({ status: 'accepted', respondedAt: new Date() })
 			.where(eq(studyBuddyRequests.id, requestId));
-
-		// Get requester ID from request
-		const [request] = await db
-			.select()
-			.from(studyBuddyRequests)
-			.where(eq(studyBuddyRequests.id, requestId))
-			.limit(1);
-
-		if (!request) {
-			return { success: false, error: 'Request not found' };
-		}
 
 		// Create buddy connection (both ways)
 		await db.insert(studyBuddies).values({
@@ -230,13 +250,18 @@ export async function acceptBuddyRequest(requestId: string, recipientId: string)
  * Reject a buddy request
  */
 export async function rejectBuddyRequest(requestId: string) {
+	const user = await ensureAuthenticated();
+	const recipientId = user.id;
 	try {
 		const db = getDb();
+		const { and } = await import('drizzle-orm');
 
 		await db
 			.update(studyBuddyRequests)
 			.set({ status: 'rejected', respondedAt: new Date() })
-			.where(eq(studyBuddyRequests.id, requestId));
+			.where(
+				and(eq(studyBuddyRequests.id, requestId), eq(studyBuddyRequests.recipientId, recipientId))
+			);
 
 		return { success: true };
 	} catch (error) {
@@ -248,7 +273,9 @@ export async function rejectBuddyRequest(requestId: string) {
 /**
  * Get user's buddies
  */
-export async function getUserBuddies(userId: string) {
+export async function getUserBuddies(_userId: string) {
+	const user = await ensureAuthenticated();
+	const userId = user.id;
 	try {
 		const db = getDb();
 
@@ -286,7 +313,9 @@ export async function getUserBuddies(userId: string) {
 /**
  * Remove a buddy connection
  */
-export async function removeBuddy(userId: string, buddyId: string) {
+export async function removeBuddy(_userId: string, buddyId: string) {
+	const user = await ensureAuthenticated();
+	const userId = user.id;
 	try {
 		const db = getDb();
 		const { and } = await import('drizzle-orm');

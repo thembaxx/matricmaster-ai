@@ -17,3 +17,8 @@
 **Vulnerability:** Insecure Direct Object Reference (IDOR) in AI Tutor conversation management. Server actions (`saveConversationAction`, `getConversationsAction`, `getConversationByIdAction`, `deleteConversationAction`) in `src/lib/db/ai-tutor-actions.ts` accepted `userId` from the client and used it in database queries without server-side session verification.
 **Learning:** Security patterns established in one module (like search or bookmarks) must be proactively applied to new features like AI Tutor to maintain a consistent security posture.
 **Prevention:** Audit all new server action files for client-controlled `userId` parameters and replace them with session-verified IDs using `ensureAuthenticated()`.
+
+## 2026-03-02 - [Fix IDOR in Buddy and Notification Server Actions]
+**Vulnerability:** Insecure Direct Object Reference (IDOR) in Buddy management (`buddy-actions.ts`) and Notification management (`notification-actions.ts`). Server actions accepted `userId`, `requesterId`, or `recipientId` from the client and used them in database queries without verifying against the authenticated session, allowing users to impersonate others or access/modify their data.
+**Learning:** Security audits must be comprehensive across all modules that handle user-specific data. Even "internal" helpers like notification management or social features like buddy requests are critical vectors for IDOR if they trust client-provided IDs.
+**Prevention:** Always use `ensureAuthenticated()` to retrieve the user's ID on the server and verify ownership or participation in the requested operation (e.g., ensuring the `recipientId` of a buddy request matches the session user before allowing it to be accepted).
