@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
-import dynamic from 'next/dynamic';
 import { Suspense } from 'react';
+import { InteractiveQuizClient } from '@/components/InteractiveQuizClient';
 import { QuizSkeleton } from '@/components/QuizSkeleton';
 import { QUIZ_DATA } from '@/constants/quiz-data';
 
@@ -30,17 +30,12 @@ export async function generateMetadata({ searchParams }: PageProps): Promise<Met
 	};
 }
 
-const InteractiveQuiz = dynamic(() => import('@/screens/InteractiveQuiz'), {
-	ssr: false,
-	loading: () => <QuizSkeleton />,
-});
-
 export default async function InteractiveQuizPage({ searchParams }: PageProps) {
 	const { id } = await searchParams;
 
 	return (
 		<Suspense fallback={<QuizSkeleton />}>
-			<InteractiveQuiz initialId={id} />
+			<InteractiveQuizClient initialId={id} />
 		</Suspense>
 	);
 }

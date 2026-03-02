@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
-import dynamic from 'next/dynamic';
 import { Suspense } from 'react';
+import { PastPaperViewerClient } from '@/components/PastPaperViewerClient';
 import { PdfViewerSkeleton } from '@/components/QuizSkeleton';
 import { PAST_PAPERS } from '@/constants/mock-data';
 
@@ -31,17 +31,12 @@ export async function generateMetadata({ searchParams }: PageProps): Promise<Met
 	};
 }
 
-const PastPaperViewerScreen = dynamic(() => import('@/screens/PastPaperViewer'), {
-	ssr: false,
-	loading: () => <PdfViewerSkeleton />,
-});
-
 export default async function PastPaperViewerPage({ searchParams }: PageProps) {
 	const { id, mode } = await searchParams;
 
 	return (
 		<Suspense fallback={<PdfViewerSkeleton />}>
-			<PastPaperViewerScreen initialId={id} initialMode={mode} />
+			<PastPaperViewerClient initialId={id} initialMode={mode} />
 		</Suspense>
 	);
 }
