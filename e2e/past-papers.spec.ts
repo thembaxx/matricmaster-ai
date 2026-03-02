@@ -1,8 +1,37 @@
-import { expect, test } from '@playwright/test';
+import { expect, type Page, test } from '@playwright/test';
+
+// Helper function to sign up for tests
+async function signUp(page: Page) {
+	const uniqueId = crypto.randomUUID();
+	const email = `testuser-${uniqueId}@matricmaster.test`;
+	const password = 'TestPassword123!';
+
+	await page.goto('/sign-up');
+	await page.fill('input[name="name"]', 'Test User');
+	await page.fill('input[name="email"]', email);
+	await page.fill('input[name="password"]', password);
+	await page.click('button[type="submit"]');
+
+	try {
+		// Wait for redirect to dashboard
+		await page.waitForURL(/\/dashboard/, { timeout: 15000 });
+	} catch (e) {
+		console.warn('Dashboard redirect timed out, checking for success message or manual redirect');
+		const isSuccessVisible = await page.getByText(/Account created|Redirecting/i).isVisible();
+		if (isSuccessVisible) {
+			await page.goto('/dashboard');
+			await page.waitForURL(/\/dashboard/, { timeout: 10000 });
+		} else {
+			throw e;
+		}
+	}
+	return { email, password };
+}
 
 test.describe('Past Papers', () => {
 	test.describe('Past Papers List Page', () => {
 		test.beforeEach(async ({ page }) => {
+			await signUp(page);
 			await page.goto('/past-papers');
 		});
 
@@ -43,8 +72,9 @@ test.describe('Past Papers', () => {
 
 	test.describe('Past Paper Viewer', () => {
 		test.beforeEach(async ({ page }) => {
+			await signUp(page);
 			// Navigate to a specific paper viewer
-			await page.goto('/past-paper?id=math-p1-2025-may');
+			await page.goto('/past-paper?id=math-p1-2024');
 		});
 
 		test('viewer page loads', async ({ page }) => {
@@ -103,8 +133,9 @@ test.describe('Past Papers', () => {
 
 	test.describe('Pagination (when questions loaded)', () => {
 		test('pagination controls appear when questions are loaded', async ({ page }) => {
+			await signUp(page);
 			// Navigate to a paper that should have questions
-			await page.goto('/past-paper?id=math-p1-2025-may');
+			await page.goto('/past-paper?id=math-p1-2024');
 
 			// Wait for either loading to complete or questions to appear
 			try {

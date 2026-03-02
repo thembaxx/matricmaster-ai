@@ -17,10 +17,10 @@ import { QUIZ_DATA } from '@/constants/quiz-data';
 import { getExplanation } from '@/services/geminiService';
 import { useQuizResultStore } from '@/stores/useQuizResultStore';
 
-export default function InteractiveQuiz() {
+export default function InteractiveQuiz({ initialId }: { initialId?: string }) {
 	const router = useRouter();
 	const searchParams = useSearchParams();
-	const paperId = searchParams.get('id');
+	const paperId = initialId || searchParams.get('id');
 
 	const allSubjects = Object.values(QUIZ_DATA).map((q) => q.subject);
 	const uniqueSubjects = Array.from(new Set(allSubjects));

@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import {
 	Facebook01Icon as Facebook,
 	InstagramIcon as Instagram,
@@ -46,7 +46,7 @@ export function Footer() {
 		<footer className="bg-muted/30 border-t">
 			<div className="container mx-auto px-4 py-12 md:py-16">
 				<div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-6">
-					<motion.div
+					<m.div
 						initial={{ opacity: 0, y: 20 }}
 						whileInView={{ opacity: 1, y: 0 }}
 						viewport={{ once: true }}
@@ -64,7 +64,7 @@ export function Footer() {
 						</p>
 						<div className="flex space-x-3">
 							{socialLinks.map((social, index) => (
-								<motion.div
+								<m.div
 									key={social.label}
 									initial={{ opacity: 0, scale: 0 }}
 									whileInView={{ opacity: 1, scale: 1 }}
@@ -78,12 +78,12 @@ export function Footer() {
 									>
 										<social.icon className="h-5 w-5" />
 									</Link>
-								</motion.div>
+								</m.div>
 							))}
 						</div>
-					</motion.div>
+					</m.div>
 
-					<motion.div
+					<m.div
 						initial={{ opacity: 0, y: 20 }}
 						whileInView={{ opacity: 1, y: 0 }}
 						viewport={{ once: true }}
@@ -102,9 +102,9 @@ export function Footer() {
 								</li>
 							))}
 						</ul>
-					</motion.div>
+					</m.div>
 
-					<motion.div
+					<m.div
 						initial={{ opacity: 0, y: 20 }}
 						whileInView={{ opacity: 1, y: 0 }}
 						viewport={{ once: true }}
@@ -123,9 +123,9 @@ export function Footer() {
 								</li>
 							))}
 						</ul>
-					</motion.div>
+					</m.div>
 
-					<motion.div
+					<m.div
 						initial={{ opacity: 0, y: 20 }}
 						whileInView={{ opacity: 1, y: 0 }}
 						viewport={{ once: true }}
@@ -146,12 +146,12 @@ export function Footer() {
 								Join Now
 							</Button>
 						</div>
-					</motion.div>
+					</m.div>
 				</div>
 
 				<Separator className="my-8" />
 
-				<motion.div
+				<m.div
 					initial={{ opacity: 0 }}
 					whileInView={{ opacity: 1 }}
 					viewport={{ once: true }}
@@ -181,7 +181,7 @@ export function Footer() {
 							<span>support@helios.com</span>
 						</div>
 					</div>
-				</motion.div>
+				</m.div>
 			</div>
 		</footer>
 	);

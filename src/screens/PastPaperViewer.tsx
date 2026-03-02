@@ -33,11 +33,17 @@ const PdfViewer = dynamic(() => import('@/components/PdfViewer'), {
 	),
 });
 
-export default function PastPaperViewer() {
+export default function PastPaperViewer({
+	initialId,
+	initialMode,
+}: {
+	initialId?: string;
+	initialMode?: string;
+}) {
 	const router = useRouter();
 	const searchParams = useSearchParams();
-	const paperId = searchParams.get('id');
-	const mode = searchParams.get('mode');
+	const paperId = initialId || searchParams.get('id');
+	const mode = initialMode || searchParams.get('mode');
 
 	const [zoom, setZoom] = useState(100);
 	const [activeTab, setActiveTab] = useState('questions');

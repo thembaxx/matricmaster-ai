@@ -1,7 +1,7 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, m } from 'framer-motion';
 import { Check, Eye, EyeOff, Loader2, Sparkles } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -138,7 +138,7 @@ export function SignInForm() {
 			{/* Success Toast */}
 			<AnimatePresence>
 				{successEmail && (
-					<motion.div
+					<m.div
 						initial={{ y: -100, opacity: 0 }}
 						animate={{ y: 0, opacity: 1 }}
 						exit={{ y: -100, opacity: 0 }}
@@ -151,62 +151,59 @@ export function SignInForm() {
 							</div>
 							<span className="font-medium text-sm">Welcome back, {successEmail}!</span>
 						</div>
-					</motion.div>
+					</m.div>
 				)}
 			</AnimatePresence>
 
 			<div className="w-full max-w-md p-4 relative z-10">
-				<motion.div
+				<m.div
 					initial={{ opacity: 0, scale: 0.9, y: 20 }}
 					animate={{ opacity: 1, scale: 1, y: 0 }}
 					transition={{ type: 'spring', stiffness: 200, damping: 25 }}
 					className="w-full premium-glass border-none rounded-[2.5rem] shadow-2xl overflow-hidden p-8"
 				>
-					<motion.div
+					<m.div
 						variants={STAGGER_CONTAINER}
 						initial="hidden"
 						animate="visible"
 						className="text-center space-y-2 mb-8"
 					>
-						<motion.div
+						<m.div
 							variants={STAGGER_ITEM}
 							whileHover={{ rotate: 15, scale: 1.1 }}
 							className="w-12 h-12 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-4 text-primary"
 						>
 							<Sparkles className="w-6 h-6" />
-						</motion.div>
+						</m.div>
 						<SmoothWords
 							as="h1"
 							text="Welcome Back"
 							className="text-3xl font-black tracking-tight text-foreground"
 						/>
-						<motion.p
-							variants={STAGGER_ITEM}
-							className="text-muted-foreground text-balance font-medium"
-						>
+						<m.p variants={STAGGER_ITEM} className="text-muted-foreground text-balance font-medium">
 							Sign in to continue your Grade 12 journey.
-						</motion.p>
-					</motion.div>
+						</m.p>
+					</m.div>
 
 					{error && (
-						<motion.div
+						<m.div
 							initial={{ opacity: 0, x: -10 }}
 							animate={{ opacity: 1, x: 0 }}
 							className="p-4 mb-6 bg-destructive/10 border border-destructive/20 text-destructive text-sm font-medium rounded-2xl flex items-center gap-2"
 						>
 							<div className="w-1.5 h-1.5 rounded-full bg-destructive shrink-0" />
 							{error}
-						</motion.div>
+						</m.div>
 					)}
 
-					<motion.form
+					<m.form
 						variants={STAGGER_CONTAINER}
 						initial="hidden"
 						animate="visible"
 						onSubmit={handleSubmit(onSubmit)}
 						className="space-y-5"
 					>
-						<motion.div variants={STAGGER_ITEM} className="space-y-2">
+						<m.div variants={STAGGER_ITEM} className="space-y-2">
 							<label
 								htmlFor="email"
 								className="block text-sm font-bold text-muted-foreground ml-1 uppercase tracking-wider text-[10px]"
@@ -223,9 +220,9 @@ export function SignInForm() {
 							{errors.email && (
 								<p className="text-xs text-destructive font-medium ml-1">{errors.email.message}</p>
 							)}
-						</motion.div>
+						</m.div>
 
-						<motion.div variants={STAGGER_ITEM} className="space-y-2">
+						<m.div variants={STAGGER_ITEM} className="space-y-2">
 							<div className="flex items-center justify-between">
 								<label
 									htmlFor="password"
@@ -262,9 +259,9 @@ export function SignInForm() {
 									{errors.password.message}
 								</p>
 							)}
-						</motion.div>
+						</m.div>
 
-						<motion.div variants={STAGGER_ITEM}>
+						<m.div variants={STAGGER_ITEM}>
 							<Button
 								type="submit"
 								disabled={isLoading || !!successEmail}
@@ -283,10 +280,10 @@ export function SignInForm() {
 									'Sign In'
 								)}
 							</Button>
-						</motion.div>
-					</motion.form>
+						</m.div>
+					</m.form>
 
-					<motion.div
+					<m.div
 						initial={{ opacity: 0 }}
 						animate={{ opacity: 1 }}
 						transition={{ delay: 1 }}
@@ -300,23 +297,23 @@ export function SignInForm() {
 								Or
 							</span>
 						</div>
-					</motion.div>
+					</m.div>
 
-					<motion.div
+					<m.div
 						variants={STAGGER_CONTAINER}
 						initial="hidden"
 						animate="visible"
 						className="flex flex-col gap-3"
 					>
-						<motion.div variants={STAGGER_ITEM}>
+						<m.div variants={STAGGER_ITEM}>
 							<SocialAuthButton provider="google" onClick={() => handleSocialSignIn('google')} />
-						</motion.div>
-						<motion.div variants={STAGGER_ITEM}>
+						</m.div>
+						<m.div variants={STAGGER_ITEM}>
 							<SocialAuthButton provider="twitter" onClick={() => handleSocialSignIn('twitter')} />
-						</motion.div>
-					</motion.div>
+						</m.div>
+					</m.div>
 
-					<motion.p
+					<m.p
 						initial={{ opacity: 0 }}
 						animate={{ opacity: 1 }}
 						transition={{ delay: 1.2 }}
@@ -329,18 +326,18 @@ export function SignInForm() {
 						>
 							Sign Up
 						</Link>
-					</motion.p>
-				</motion.div>
+					</m.p>
+				</m.div>
 
 				{/* Footer simple copyright or branding */}
-				<motion.p
+				<m.p
 					initial={{ opacity: 0 }}
 					animate={{ opacity: 1 }}
 					transition={{ delay: 1.5 }}
 					className="text-center text-muted-foreground/40 text-[10px] font-bold uppercase tracking-widest mt-8"
 				>
 					&copy; {new Date().getFullYear()} MatricMaster AI
-				</motion.p>
+				</m.p>
 			</div>
 		</div>
 	);
