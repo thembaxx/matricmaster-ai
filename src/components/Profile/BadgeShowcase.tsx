@@ -2,7 +2,7 @@
 
 import { m } from 'framer-motion';
 import { Award, Crown, Plus, Star } from 'lucide-react';
-import { useState } from 'react';
+import { memo, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { ACHIEVEMENTS } from '@/constants/achievements';
@@ -15,7 +15,7 @@ interface BadgeShowcaseProps {
 	className?: string;
 }
 
-export function BadgeShowcase({
+export const BadgeShowcase = memo(function BadgeShowcase({
 	unlockedIds,
 	featuredIds = [],
 	onUpdateFeatured,
@@ -60,7 +60,12 @@ export function BadgeShowcase({
 					</div>
 					<p className="text-sm font-bold text-muted-foreground mb-2">No featured badges</p>
 					{unlockedAchievements.length > 0 && (
-						<Button variant="outline" size="sm" onClick={() => setIsEditing(true)}>
+						<Button
+							variant="outline"
+							size="sm"
+							onClick={() => setIsEditing(true)}
+							aria-label="Add featured badges"
+						>
 							<Plus className="w-4 h-4 mr-1" />
 							Add Badges
 						</Button>
@@ -101,7 +106,9 @@ export function BadgeShowcase({
 											className="w-16 h-16 rounded-xl flex items-center justify-center mb-2"
 											style={{ backgroundColor: achievement.iconBg }}
 										>
-											<span className="text-3xl">{achievement.icon}</span>
+											<span className="text-3xl" aria-hidden="true">
+												{achievement.icon}
+											</span>
 										</div>
 										<p className="text-sm font-bold text-foreground text-center">
 											{achievement.name}
@@ -130,6 +137,7 @@ export function BadgeShowcase({
 							size="lg"
 							className="w-24 h-32 rounded-2xl border-dashed"
 							onClick={() => setIsEditing(true)}
+							aria-label="Add more featured badges"
 						>
 							<Plus className="w-6 h-6 text-muted-foreground" />
 						</Button>
@@ -151,13 +159,17 @@ export function BadgeShowcase({
 										key={achievement.id}
 										type="button"
 										onClick={() => handleToggleFeature(achievement.id)}
+										aria-label={achievement.name}
+										aria-pressed={isFeatured}
 										className={`relative aspect-square rounded-xl flex flex-col items-center justify-center p-2 transition-all ${
 											isFeatured
 												? 'bg-brand-amber/20 border-2 border-brand-amber shadow-md'
 												: 'bg-muted/50 border-2 border-transparent hover:border-muted-foreground/30'
 										} ${tempFeatured.length >= maxFeatured && !isFeatured ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
 									>
-										<span className="text-2xl">{achievement.icon}</span>
+										<span className="text-2xl" aria-hidden="true">
+											{achievement.icon}
+										</span>
 										{isFeatured && (
 											<div className="absolute -top-1 -right-1 w-5 h-5 bg-brand-amber rounded-full flex items-center justify-center">
 												<Star className="w-3 h-3 text-white" />
@@ -186,7 +198,7 @@ export function BadgeShowcase({
 	);
 }
 
-export function BadgeShowcaseCompact({
+export const BadgeShowcaseCompact = memo(function BadgeShowcaseCompact({
 	unlockedIds: _unlockedIds,
 	featuredIds = [],
 	onClick,
@@ -207,6 +219,7 @@ export function BadgeShowcaseCompact({
 		<button
 			type="button"
 			onClick={onClick}
+			aria-label="View featured badges"
 			className="flex items-center gap-1 hover:opacity-80 transition-opacity"
 		>
 			{featuredAchievements.slice(0, 3).map((achievement, index) =>
@@ -219,7 +232,9 @@ export function BadgeShowcaseCompact({
 						className="-ml-1 first:ml-0 w-8 h-8 rounded-full flex items-center justify-center border-2 border-background shadow-sm"
 						style={{ backgroundColor: achievement.iconBg }}
 					>
-						<span className="text-sm">{achievement.icon}</span>
+						<span className="text-sm" aria-hidden="true">
+							{achievement.icon}
+						</span>
 					</m.div>
 				) : null
 			)}
