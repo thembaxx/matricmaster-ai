@@ -1,9 +1,10 @@
 'use client';
 
 import { Flame, Sparkles, Trophy, Zap } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { memo, useEffect, useMemo, useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
+import { ACHIEVEMENT_POINTS_MAP } from '@/constants/achievements';
 import { getUserAchievements } from '@/lib/db/achievement-actions';
 import { getUserStreak } from '@/lib/db/progress-actions';
 import { formatXp, getLevelInfo } from '@/lib/level-utils';
@@ -26,7 +27,7 @@ interface XpData {
 	streak: number;
 }
 
-export function XpHeader({ variant = 'full', className = '' }: XpHeaderProps) {
+export const XpHeader = memo(function XpHeader({ variant = 'full', className = '' }: XpHeaderProps) {
 	const [data, setData] = useState<XpData | null>(null);
 	const [isLoading, setIsLoading] = useState(true);
 
@@ -41,9 +42,9 @@ export function XpHeader({ variant = 'full', className = '' }: XpHeaderProps) {
 				const unlocked = achievements.unlocked.length;
 				const total = unlocked + achievements.available.length;
 
+				// Bolt: Fix logic bug (was searching available instead of all) and optimize with O(1) Map lookup
 				const totalXp = achievements.unlocked.reduce((sum, a) => {
-					const def = achievements.available.find((d) => d.id === a.achievementId);
-					return sum + (def?.points || 0);
+					return sum + (ACHIEVEMENT_POINTS_MAP.get(a.achievementId) || 0);
 				}, 0);
 
 				const levelInfo = getLevelInfo(totalXp);
