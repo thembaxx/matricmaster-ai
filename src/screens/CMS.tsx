@@ -3,6 +3,7 @@
 import { Database, Edit2, ImagePlus, Plus, Search, Trash2, X } from 'lucide-react';
 import Image from 'next/image';
 import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
+import { toast } from 'sonner';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -27,6 +28,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '@/components/ui/select';
+import { Spinner } from '@/components/ui/spinner';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
 import {
@@ -90,6 +92,7 @@ export default function CMS() {
 	const [originalImageUrl, setOriginalImageUrl] = useState<string | null>(null);
 	const [activeTab, setActiveTab] = useState('questions');
 	const [seeding, setSeeding] = useState(false);
+	const [isSaving, setIsSaving] = useState(false);
 	const [drawerTab, setDrawerTab] = useState<'basic' | 'question' | 'options'>('basic');
 	const [localImageFile, setLocalImageFile] = useState<File | null>(null);
 	const [localImagePreview, setLocalImagePreview] = useState<string | null>(null);
@@ -129,14 +132,14 @@ export default function CMS() {
 			setSeeding(true);
 			const result = await seedDatabaseAction();
 			if (result.success) {
-				alert(result.message);
+				toast.success(result.message);
 				await loadData();
 			} else {
-				alert(`Seeding failed: ${result.message}`);
+				toast.error(`Seeding failed: ${result.message}`);
 			}
 		} catch (error) {
 			console.error('Seeding error:', error);
-			alert('An error occurred while seeding.');
+			toast.error('An error occurred while seeding.');
 		} finally {
 			setSeeding(false);
 		}
@@ -216,9 +219,11 @@ export default function CMS() {
 		if (confirm('Are you sure you want to delete this question?')) {
 			try {
 				await softDeleteQuestionAction(id);
+				toast.success('Question deleted');
 				await loadData();
 			} catch (error) {
 				console.error('Failed to delete question:', error);
+				toast.error('Failed to delete question');
 			}
 		}
 	};
@@ -228,32 +233,33 @@ export default function CMS() {
 
 		// Validation
 		if (!editingQuestion.questionText.trim()) {
-			alert('Please enter a question');
+			toast.error('Please enter a question');
 			setDrawerTab('question');
 			return;
 		}
 		if (editingQuestion.subjectId === 0) {
-			alert('Please select a subject');
+			toast.error('Please select a subject');
 			setDrawerTab('basic');
 			return;
 		}
 		if (!editingQuestion.topic.trim()) {
-			alert('Please enter a topic');
+			toast.error('Please enter a topic');
 			setDrawerTab('basic');
 			return;
 		}
 		if (editingQuestion.options.some((opt) => !opt.optionText.trim())) {
-			alert('Please fill in all option texts');
+			toast.error('Please fill in all option texts');
 			setDrawerTab('options');
 			return;
 		}
 		if (!editingQuestion.options.some((opt) => opt.isCorrect)) {
-			alert('Please select at least one correct answer');
+			toast.error('Please select at least one correct answer');
 			setDrawerTab('options');
 			return;
 		}
 
 		try {
+			setIsSaving(true);
 			let imageUrlToSave = editingQuestion.imageUrl;
 
 			if (localImageFile) {
@@ -263,7 +269,7 @@ export default function CMS() {
 				if (uploadResult?.[0]?.ufsUrl) {
 					imageUrlToSave = uploadResult[0].ufsUrl;
 				} else {
-					alert('Failed to upload image. Please try again.');
+					toast.error('Failed to upload image. Please try again.');
 					return;
 				}
 			} else if (editingQuestion.id && originalImageUrl && !editingQuestion.imageUrl) {
@@ -290,9 +296,11 @@ export default function CMS() {
 			if (editingQuestion.id) {
 				// Update existing question
 				await updateQuestionAction(editingQuestion.id, questionData);
+				toast.success('Question updated successfully');
 			} else {
 				// Create new question
 				await createQuestionAction(questionData, optionsData);
+				toast.success('Question created successfully');
 			}
 
 			if (localImagePreview) {
@@ -307,7 +315,9 @@ export default function CMS() {
 			await loadData();
 		} catch (error) {
 			console.error('Failed to save question:', error);
-			alert('Failed to save question. Please try again.');
+			toast.error('Failed to save question. Please try again.');
+		} finally {
+			setIsSaving(false);
 		}
 	};
 
@@ -315,7 +325,7 @@ export default function CMS() {
 		const file = event.target.files?.[0];
 		if (file) {
 			if (file.size > 4 * 1024 * 1024) {
-				alert('Image must be less than 4MB');
+				toast.error('Image must be less than 4MB');
 				return;
 			}
 			setLocalImageFile(file);
@@ -1005,13 +1015,17 @@ export default function CMS() {
 														</Badge>
 														<div className="flex items-center gap-2">
 															<Checkbox
+																id={`correct-${idx}`}
 																checked={opt.isCorrect}
 																onCheckedChange={(v) => updateOption(idx, 'isCorrect', !!v)}
 																className="h-6 w-6 rounded-lg border-2"
 															/>
-															<span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">
+															<Label
+																htmlFor={`correct-${idx}`}
+																className="text-[10px] font-black uppercase tracking-widest text-muted-foreground cursor-pointer"
+															>
 																Correct
-															</span>
+															</Label>
 															<Button
 																variant="ghost"
 																size="icon"
@@ -1048,6 +1062,7 @@ export default function CMS() {
 						<DrawerClose asChild>
 							<Button
 								variant="outline"
+								disabled={isSaving}
 								className="flex-1 h-14 rounded-2xl border-2 font-black uppercase tracking-widest text-xs"
 							>
 								Discard
@@ -1055,10 +1070,16 @@ export default function CMS() {
 						</DrawerClose>
 						<Button
 							onClick={handleSaveQuestion}
-							disabled={!isFormValid()}
+							disabled={!isFormValid() || isSaving}
 							className="flex-1 h-14 bg-primary hover:bg-primary/90 rounded-2xl font-black uppercase tracking-widest text-xs shadow-2xl shadow-primary/20"
 						>
-							{editingQuestion?.id ? 'Update Content' : 'Save Content'}
+							{isSaving ? (
+								<Spinner className="h-5 w-5 text-primary-foreground" />
+							) : editingQuestion?.id ? (
+								'Update Content'
+							) : (
+								'Save Content'
+							)}
 						</Button>
 					</DrawerFooter>
 				</DrawerContent>
