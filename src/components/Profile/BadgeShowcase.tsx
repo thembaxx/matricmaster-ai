@@ -196,7 +196,7 @@ export const BadgeShowcase = memo(function BadgeShowcase({
 			)}
 		</div>
 	);
-}
+});
 
 export const BadgeShowcaseCompact = memo(function BadgeShowcaseCompact({
 	unlockedIds: _unlockedIds,
@@ -240,4 +240,4 @@ export const BadgeShowcaseCompact = memo(function BadgeShowcaseCompact({
 			)}
 		</button>
 	);
-}
+});

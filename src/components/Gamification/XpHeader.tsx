@@ -1,7 +1,7 @@
 'use client';
 
 import { Flame, Sparkles, Trophy, Zap } from 'lucide-react';
-import { memo, useEffect, useMemo, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { ACHIEVEMENT_POINTS_MAP } from '@/constants/achievements';
@@ -27,7 +27,10 @@ interface XpData {
 	streak: number;
 }
 
-export const XpHeader = memo(function XpHeader({ variant = 'full', className = '' }: XpHeaderProps) {
+export const XpHeader = memo(function XpHeader({
+	variant = 'full',
+	className = '',
+}: XpHeaderProps) {
 	const [data, setData] = useState<XpData | null>(null);
 	const [isLoading, setIsLoading] = useState(true);
 
@@ -161,7 +164,7 @@ export const XpHeader = memo(function XpHeader({ variant = 'full', className = '
 				</div>
 
 				{data.streak > 0 && (
-					<div className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-orange-100 to-amber-100 dark:from-orange-900/20 dark:to-amber-900/20 rounded-2xl">
+					<div className="flex items-center gap-2 px-4 py-2 bg-linear-to-r from-orange-100 to-amber-100 dark:from-orange-900/20 dark:to-amber-900/20 rounded-2xl">
 						<Flame className="w-5 h-5 text-orange-500" />
 						<div>
 							<span className="text-xl font-black text-orange-500">{data.streak}</span>
@@ -190,4 +193,4 @@ export const XpHeader = memo(function XpHeader({ variant = 'full', className = '
 			</div>
 		</div>
 	);
-}
+});
