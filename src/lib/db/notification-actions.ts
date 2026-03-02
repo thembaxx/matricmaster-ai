@@ -1,6 +1,7 @@
 'use server';
 
 import { and, eq } from 'drizzle-orm';
+import { ensureAuthenticated } from './auth-utils';
 import { dbManager } from './index';
 import { notifications } from './schema';
 
@@ -69,13 +70,15 @@ export async function createNotification(
  * Get user's notifications
  */
 export async function getNotifications(
-	userId: string,
+	_userId: string,
 	options?: {
 		unreadOnly?: boolean;
 		limit?: number;
 		offset?: number;
 	}
 ) {
+	const user = await ensureAuthenticated();
+	const userId = user.id;
 	try {
 		const db = getDb();
 		const query = db.select().from(notifications).where(eq(notifications.userId, userId));
@@ -108,7 +111,9 @@ export async function getNotifications(
 /**
  * Get unread notification count
  */
-export async function getUnreadCount(userId: string) {
+export async function getUnreadCount(_userId: string) {
+	const user = await ensureAuthenticated();
+	const userId = user.id;
 	try {
 		const db = getDb();
 		const result = await db
@@ -126,7 +131,9 @@ export async function getUnreadCount(userId: string) {
 /**
  * Mark notification as read
  */
-export async function markAsRead(notificationId: string, userId: string) {
+export async function markAsRead(notificationId: string, _userId: string) {
+	const user = await ensureAuthenticated();
+	const userId = user.id;
 	try {
 		const db = getDb();
 		await db
@@ -143,7 +150,9 @@ export async function markAsRead(notificationId: string, userId: string) {
 /**
  * Mark all notifications as read
  */
-export async function markAllAsRead(userId: string) {
+export async function markAllAsRead(_userId: string) {
+	const user = await ensureAuthenticated();
+	const userId = user.id;
 	try {
 		const db = getDb();
 		await db
@@ -160,7 +169,9 @@ export async function markAllAsRead(userId: string) {
 /**
  * Delete a notification
  */
-export async function deleteNotification(notificationId: string, userId: string) {
+export async function deleteNotification(notificationId: string, _userId: string) {
+	const user = await ensureAuthenticated();
+	const userId = user.id;
 	try {
 		const db = getDb();
 		await db
@@ -176,7 +187,9 @@ export async function deleteNotification(notificationId: string, userId: string)
 /**
  * Delete all notifications for a user
  */
-export async function deleteAllNotifications(userId: string) {
+export async function deleteAllNotifications(_userId: string) {
+	const user = await ensureAuthenticated();
+	const userId = user.id;
 	try {
 		const db = getDb();
 		await db.delete(notifications).where(eq(notifications.userId, userId));
@@ -190,7 +203,9 @@ export async function deleteAllNotifications(userId: string) {
 /**
  * Get a single notification
  */
-export async function getNotification(notificationId: string, userId: string) {
+export async function getNotification(notificationId: string, _userId: string) {
+	const user = await ensureAuthenticated();
+	const userId = user.id;
 	try {
 		const db = getDb();
 		const [notification] = await db
