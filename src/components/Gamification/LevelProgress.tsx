@@ -183,7 +183,7 @@ export const LevelProgress = memo(function LevelProgress({
 			</div>
 		</div>
 	);
-}
+});
 
 export const LevelBadge = memo(function LevelBadge({
 	level,
@@ -215,6 +215,6 @@ export const LevelBadge = memo(function LevelBadge({
 			<span>{badgeIcon}</span>
 		</div>
 	);
-}
+});
 
 export { getLevelInfo, getLevelTitle };

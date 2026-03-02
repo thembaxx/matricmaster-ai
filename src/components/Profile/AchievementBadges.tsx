@@ -85,11 +85,13 @@ export const AchievementBadges = memo(function AchievementBadges({
 			})}
 		</div>
 	);
-}
+});
 
 export const AchievementBadgesCompact = memo(function AchievementBadgesCompact({
 	unlockedIds,
-}: { unlockedIds: string[] }) {
+}: {
+	unlockedIds: string[];
+}) {
 	const unlockedSet = new Set(unlockedIds);
 	const unlockedAchievements = ACHIEVEMENTS.filter((a) => unlockedSet.has(a.id)).slice(0, 6);
 	const remainingCount = unlockedSet.size - 6;
@@ -128,11 +130,13 @@ export const AchievementBadgesCompact = memo(function AchievementBadgesCompact({
 			)}
 		</div>
 	);
-}
+});
 
 export const AchievementProgress = memo(function AchievementProgress({
 	unlockedIds,
-}: { unlockedIds: string[] }) {
+}: {
+	unlockedIds: string[];
+}) {
 	const unlockedSet = new Set(unlockedIds);
 	const total = ACHIEVEMENTS.length;
 	const unlocked = unlockedSet.size;
@@ -157,4 +161,4 @@ export const AchievementProgress = memo(function AchievementProgress({
 			<p className="text-xs text-muted-foreground text-right">{percentage}% complete</p>
 		</div>
 	);
-}
+});

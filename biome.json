@@ -27,7 +27,8 @@
 				"noArrayIndexKey": "off"
 			},
 			"correctness": {
-				"useExhaustiveDependencies": "warn"
+				"useExhaustiveDependencies": "warn",
+				"noUnusedImports": "error"
 			},
 			"style": {
 				"noNonNullAssertion": "off",

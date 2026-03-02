@@ -1,24 +1,6 @@
-## 2026-02-23 - [Fix IDOR in Search History Server Actions]
-**Vulnerability:** Insecure Direct Object Reference (IDOR) in Search History management. Server actions (`addSearchHistoryAction`, `getSearchHistoryAction`, etc.) accepted `userId` as a parameter from the client and used it in database queries without verifying it against the authenticated session.
-**Learning:** In Next.js Server Actions, parameters are user-controlled input. Trusting `userId` passed from the client allows malicious users to impersonate others by providing their IDs.
-**Prevention:** Always retrieve the user ID from the authenticated session on the server side using utilities like `getAuth().api.getSession` and never trust a `userId` passed as an argument to a public-facing server action.
+# Sentinel Journal - Critical Security Learnings
 
-## 2026-02-24 - [Fix IDOR in Bookmark Server Actions]
-**Vulnerability:** Insecure Direct Object Reference (IDOR) in Bookmark management. All exported actions in `bookmark-actions.ts` accepted `userId` as a parameter and used it without verifying it against the authenticated session.
-**Learning:** Even when using centralized authentication helpers, developers must remember to apply them across all related action files, not just the main `actions.ts`. Exporting these helpers allows for a consistent security model.
-**Prevention:** Centralize authentication and authorization helpers (like `ensureAuthenticated`) and export them for use in all server action files. Always verify client-provided IDs against the session ID.
-
-## 2026-03-05 - [Fix IDOR in Comment Server Actions]
-**Vulnerability:** Insecure Direct Object Reference (IDOR) and unauthenticated access in Comment management. Exported server functions (`createComment`, `updateComment`, `deleteComment`, `voteOnComment`, `getUserVote`, `flagComment`) in `comment-actions.ts` either accepted `userId` from the client without verification or lacked authentication altogether (in the case of `flagComment`).
-**Learning:** When fixing IDOR in existing server functions with many potential callers, it's safer to maintain the function signature for backward compatibility but ignore the client-provided `userId` in favor of a session-derived ID obtained via `ensureAuthenticated()`.
-**Prevention:** Always use `ensureAuthenticated()` to retrieve the user's ID on the server side. If a function already has a `userId` parameter, prefix it with an underscore (e.g., `_userId`) to indicate it's intentionally ignored for security reasons, while avoiding breaking changes to the API contract.
-
-## 2026-03-06 - [Fix IDOR in AI Tutor Server Actions]
-**Vulnerability:** Insecure Direct Object Reference (IDOR) in AI Tutor conversation management. Server actions (`saveConversationAction`, `getConversationsAction`, `getConversationByIdAction`, `deleteConversationAction`) in `src/lib/db/ai-tutor-actions.ts` accepted `userId` from the client and used it in database queries without server-side session verification.
-**Learning:** Security patterns established in one module (like search or bookmarks) must be proactively applied to new features like AI Tutor to maintain a consistent security posture.
-**Prevention:** Audit all new server action files for client-controlled `userId` parameters and replace them with session-verified IDs using `ensureAuthenticated()`.
-
-## 2026-03-02 - [Fix IDOR in Buddy and Notification Server Actions]
-**Vulnerability:** Insecure Direct Object Reference (IDOR) in Buddy management (`buddy-actions.ts`) and Notification management (`notification-actions.ts`). Server actions accepted `userId`, `requesterId`, or `recipientId` from the client and used them in database queries without verifying against the authenticated session, allowing users to impersonate others or access/modify their data.
-**Learning:** Security audits must be comprehensive across all modules that handle user-specific data. Even "internal" helpers like notification management or social features like buddy requests are critical vectors for IDOR if they trust client-provided IDs.
-**Prevention:** Always use `ensureAuthenticated()` to retrieve the user's ID on the server and verify ownership or participation in the requested operation (e.g., ensuring the `recipientId` of a buddy request matches the session user before allowing it to be accepted).
+## 2025-05-20 - [Lack of Authorization in Server Actions]
+**Vulnerability:** Numerous server actions in `src/lib/db/actions.ts` (including user management, content modification, and database seeding) lacked authorization checks, making them callable by any authenticated (or sometimes unauthenticated) user if the action ID was known.
+**Learning:** Next.js server actions are public endpoints by default. Relying solely on client-side UI visibility for security is insufficient. Defense in depth requires authorization checks within each server action.
+**Prevention:** Use a centralized helper like `ensureAdmin()` at the beginning of sensitive server actions to verify user roles. Always pass `headers()` to `getSession()` in server contexts to ensure correct authentication.
