@@ -72,9 +72,24 @@ export function ProfileMenu({
 				<DropdownMenuSeparator />
 				<DropdownMenuItem
 					onClick={async () => {
-						await authClient.signOut();
-						// Force navigation to sign-in page
-						window.location.href = '/sign-in';
+						try {
+							await authClient.signOut({
+								fetchOptions: {
+									onSuccess: () => {
+										window.location.href = '/sign-in';
+									},
+								},
+							});
+							// Fallback navigation if onSuccess doesn't trigger
+							setTimeout(() => {
+								if (!window.location.pathname.includes('/sign-in')) {
+									window.location.href = '/sign-in';
+								}
+							}, 500);
+						} catch {
+							// Force navigation on error
+							window.location.href = '/sign-in';
+						}
 					}}
 				>
 					Log out

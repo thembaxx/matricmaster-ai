@@ -41,6 +41,13 @@ export default defineConfig({
 		},
 	],
 
-	/* Run your local dev server before starting the tests - disabled for local testing */
-	webServer: undefined,
+	/* Run your local dev server before starting the tests */
+	webServer: {
+		command: 'bun run dev',
+		url: 'http://localhost:3000',
+		reuseExistingServer: !process.env.CI,
+		stdout: 'pipe',
+		stderr: 'pipe',
+		timeout: 120000,
+	},
 });
