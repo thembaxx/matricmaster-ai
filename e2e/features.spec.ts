@@ -22,7 +22,6 @@ async function signUp(page: Page) {
 	try {
 		await expect(page.getByText('Redirecting...')).toBeVisible({ timeout: 15000 });
 	} catch (error) {
-		// Check if there's a validation error visible
 		console.log('Redirecting text not visible, checking for validation errors...', error);
 		const validationError = await page
 			.locator('[class*="error"]')
