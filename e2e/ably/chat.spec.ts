@@ -12,19 +12,22 @@ async function signUp(page: Page) {
 	await page.fill('input[name="password"]', password);
 	await page.click('button[type="submit"]');
 
+	// Wait for success message which appears after signup
 	try {
-		// Wait for redirect to dashboard
-		await page.waitForURL(/\/dashboard/, { timeout: 15000 });
-	} catch (e) {
-		console.warn('Dashboard redirect timed out, checking for success message or manual redirect');
-		const isSuccessVisible = await page.getByText(/Account created|Redirecting/i).isVisible();
-		if (isSuccessVisible) {
-			await page.goto('/dashboard');
-			await page.waitForURL(/\/dashboard/, { timeout: 10000 });
-		} else {
-			throw e;
+		await page
+			.getByText('Account created successfully!', { timeout: 20000 })
+			.waitFor({ state: 'visible' });
+	} catch {
+		// If success message not found, check if already on dashboard
+		const currentURL = page.url();
+		if (currentURL.includes('/dashboard')) {
+			return { email, password };
 		}
+		throw new Error('Signup failed - no success message and not redirected');
 	}
+
+	// Wait for redirect to dashboard
+	await page.waitForURL(/\/dashboard/, { timeout: 20000 });
 	return { email, password };
 }
 
