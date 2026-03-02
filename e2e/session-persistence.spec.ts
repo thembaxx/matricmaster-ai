@@ -46,7 +46,7 @@ test.describe('Session Persistence', () => {
 
 		// Check for success toast
 		console.log('Checking for success toast...');
-		await expect(page.getByText(/Signed in as/)).toBeVisible({ timeout: 10000 });
+		await expect(page.getByText(/Welcome back/)).toBeVisible({ timeout: 10000 });
 		console.log('Success toast verified');
 
 		// Wait for navigation to dashboard
