@@ -2,6 +2,7 @@
 
 import { m } from 'framer-motion';
 import { Check, Lock, Star } from 'lucide-react';
+import { memo } from 'react';
 import { ACHIEVEMENTS } from '@/constants/achievements';
 
 interface AchievementBadgesProps {
@@ -9,7 +10,10 @@ interface AchievementBadgesProps {
 	className?: string;
 }
 
-export function AchievementBadges({ unlockedIds, className = '' }: AchievementBadgesProps) {
+export const AchievementBadges = memo(function AchievementBadges({
+	unlockedIds,
+	className = '',
+}: AchievementBadgesProps) {
 	const unlockedSet = new Set(unlockedIds);
 
 	return (
@@ -83,7 +87,9 @@ export function AchievementBadges({ unlockedIds, className = '' }: AchievementBa
 	);
 }
 
-export function AchievementBadgesCompact({ unlockedIds }: { unlockedIds: string[] }) {
+export const AchievementBadgesCompact = memo(function AchievementBadgesCompact({
+	unlockedIds,
+}: { unlockedIds: string[] }) {
 	const unlockedSet = new Set(unlockedIds);
 	const unlockedAchievements = ACHIEVEMENTS.filter((a) => unlockedSet.has(a.id)).slice(0, 6);
 	const remainingCount = unlockedSet.size - 6;
@@ -124,7 +130,9 @@ export function AchievementBadgesCompact({ unlockedIds }: { unlockedIds: string[
 	);
 }
 
-export function AchievementProgress({ unlockedIds }: { unlockedIds: string[] }) {
+export const AchievementProgress = memo(function AchievementProgress({
+	unlockedIds,
+}: { unlockedIds: string[] }) {
 	const unlockedSet = new Set(unlockedIds);
 	const total = ACHIEVEMENTS.length;
 	const unlocked = unlockedSet.size;

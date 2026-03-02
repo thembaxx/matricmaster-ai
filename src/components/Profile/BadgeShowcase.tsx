@@ -2,7 +2,7 @@
 
 import { m } from 'framer-motion';
 import { Award, Crown, Plus, Star } from 'lucide-react';
-import { useState } from 'react';
+import { memo, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { ACHIEVEMENTS } from '@/constants/achievements';
@@ -15,7 +15,7 @@ interface BadgeShowcaseProps {
 	className?: string;
 }
 
-export function BadgeShowcase({
+export const BadgeShowcase = memo(function BadgeShowcase({
 	unlockedIds,
 	featuredIds = [],
 	onUpdateFeatured,
@@ -198,7 +198,7 @@ export function BadgeShowcase({
 	);
 }
 
-export function BadgeShowcaseCompact({
+export const BadgeShowcaseCompact = memo(function BadgeShowcaseCompact({
 	unlockedIds: _unlockedIds,
 	featuredIds = [],
 	onClick,

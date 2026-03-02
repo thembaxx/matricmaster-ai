@@ -2,6 +2,7 @@
 
 import { m } from 'framer-motion';
 import { Sparkles, Zap } from 'lucide-react';
+import { memo } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { LEVEL_BADGE_ICONS, MAX_LEVEL } from '@/constants/levels';
@@ -28,7 +29,7 @@ function getLevelBadgeIcon(level: number): string {
 	return '🌱';
 }
 
-export function LevelProgress({
+export const LevelProgress = memo(function LevelProgress({
 	totalXp,
 	variant = 'full',
 	showTitle = true,
@@ -184,7 +185,7 @@ export function LevelProgress({
 	);
 }
 
-export function LevelBadge({
+export const LevelBadge = memo(function LevelBadge({
 	level,
 	size = 'default',
 	className = '',

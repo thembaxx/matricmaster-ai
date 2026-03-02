@@ -246,3 +246,9 @@ export function getAchievementsByCategory(
 	if (category === 'all') return ACHIEVEMENTS;
 	return ACHIEVEMENTS.filter((a) => a.category === category || a.category === 'all');
 }
+
+/**
+ * A memoized Map of achievement IDs to their point values.
+ * Used for O(1) lookups during XP calculations.
+ */
+export const ACHIEVEMENT_POINTS_MAP = new Map(ACHIEVEMENTS.map((a) => [a.id, a.points]));

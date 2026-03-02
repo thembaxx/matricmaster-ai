@@ -2,7 +2,7 @@
 
 import { m } from 'framer-motion';
 import { Award, Flame, GraduationCap, Target } from 'lucide-react';
-import { useEffect, useId, useState } from 'react';
+import { useEffect, useId, useMemo, useState } from 'react';
 import { PolarAngleAxis, PolarGrid, Radar, RadarChart } from 'recharts';
 import { LevelProgress } from '@/components/Gamification/LevelProgress';
 import { AchievementBadges, AchievementProgress } from '@/components/Profile/AchievementBadges';
@@ -17,6 +17,7 @@ import {
 	ChartTooltip,
 	ChartTooltipContent,
 } from '@/components/ui/chart';
+import { ACHIEVEMENT_POINTS_MAP } from '@/constants/achievements';
 import { useSession } from '@/lib/auth-client';
 import { getUserAchievements } from '@/lib/db/achievement-actions';
 import { getUserProgressSummary, getUserStreak } from '@/lib/db/progress-actions';
@@ -72,9 +73,9 @@ export default function Profile() {
 					getUserAchievements(),
 				]);
 
+				// Bolt: Fix logic bug (was searching available instead of all) and optimize with O(1) Map lookup
 				const totalXp = achievements.unlocked.reduce((sum, a) => {
-					const def = achievements.available.find((d) => d.id === a.achievementId);
-					return sum + (def?.points || 0);
+					return sum + (ACHIEVEMENT_POINTS_MAP.get(a.achievementId) || 0);
 				}, 0);
 
 				setUserStats({
@@ -94,14 +95,18 @@ export default function Profile() {
 		fetchData();
 	}, []);
 
-	// Calculate chart data based on user performance
-	const chartData: ChartDataItem[] = defaultChartData.map((item) => ({
-		...item,
-		you:
-			item.subject === 'MATH'
-				? userStats?.accuracy || 0
-				: Math.max(0, (userStats?.accuracy || 0) - 10),
-	}));
+	// Bolt: Memoize chart data to avoid O(N) recalculation on every render
+	const chartData: ChartDataItem[] = useMemo(
+		() =>
+			defaultChartData.map((item) => ({
+				...item,
+				you:
+					item.subject === 'MATH'
+						? userStats?.accuracy || 0
+						: Math.max(0, (userStats?.accuracy || 0) - 10),
+			})),
+		[userStats?.accuracy]
+	);
 
 	if (isLoading) {
 		return (
