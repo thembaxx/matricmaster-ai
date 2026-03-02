@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { ChannelProviderWrapper } from '@/lib/ably/provider';
 import ChannelsScreen from '@/screens/Channels';
 
 export const metadata: Metadata = {
@@ -7,5 +8,9 @@ export const metadata: Metadata = {
 };
 
 export default function ChannelsPage() {
-	return <ChannelsScreen />;
+	return (
+		<ChannelProviderWrapper channelName="channels:study-channels">
+			<ChannelsScreen />
+		</ChannelProviderWrapper>
+	);
 }
