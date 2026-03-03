@@ -26,15 +26,13 @@ test.describe('Authentication Flow', () => {
 		// 2. Sign Out
 		console.log('Step 2: Sign Out');
 
-		// Open profile menu
+		// Try to find profile menu - either mobile button or desktop sidebar
 		try {
 			console.log('Opening profile menu...');
-			await page.click('button[aria-label="Open profile menu"]', { timeout: 5000 });
-
+			await page.click('button[aria-label="User profile menu"]', { timeout: 3000 });
 			// Click Log out
 			console.log('Clicking Log out...');
 			await page.click('text=Log out', { timeout: 5000 });
-
 			console.log('Waiting for navigation to sign-in...');
 			await page.waitForURL(/\/sign-in/, { timeout: 5000 });
 			console.log('Successfully signed out via UI');

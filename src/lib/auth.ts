@@ -301,6 +301,7 @@ function createAuth(): AuthInstance {
 	};
 
 	// Use type assertion to bypass the type mismatch during build
+	// biome-ignore lint/suspicious/noExplicitAny: Type mismatch between authConfig and betterAuth during build
 	return betterAuth(authConfig as any);
 }
 

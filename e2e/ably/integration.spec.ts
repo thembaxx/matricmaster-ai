@@ -1,43 +1,20 @@
 import { expect, type Page, test } from '@playwright/test';
 
 async function signUp(page: Page) {
-	await page.waitForTimeout(2000);
-
 	const uniqueId = crypto.randomUUID();
 	const email = `testuser-${uniqueId}@matricmaster.test`;
 	const password = 'TestPassword123!';
 	const name = 'Test User';
 
 	await page.goto('/sign-up');
-
-	await page.waitForLoadState('networkidle');
-	await page.waitForTimeout(3000);
-
-	await page.waitForSelector('input[name="name"]');
 	await page.fill('input[name="name"]', name);
 	await page.fill('input[name="email"]', email);
 	await page.fill('input[name="password"]', password);
 
-	await page.waitForTimeout(2000);
+	// Click submit and wait for navigation - use Promise.all pattern
+	await Promise.all([page.waitForURL(/\/dashboard/), page.click('button[type="submit"]')]);
 
-	await page.locator('button[type="submit"]').click({ force: true });
-
-	try {
-		await page.waitForURL(/\/dashboard/, { timeout: 30000 });
-		return { email, password };
-	} catch {
-		const successVisible = await page
-			.getByText('Account created')
-			.isVisible()
-			.catch(() => false);
-		if (successVisible) {
-			await page.waitForURL(/\/dashboard/, { timeout: 20000 });
-			return { email, password };
-		}
-	}
-
-	const currentURL = page.url();
-	throw new Error(`Signup failed - URL: ${currentURL}`);
+	return { email, password };
 }
 
 test.describe('Ably Integration', () => {
