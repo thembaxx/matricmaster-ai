@@ -1,5 +1,6 @@
 import { GoogleGenAI } from '@google/genai';
 import { type NextRequest, NextResponse } from 'next/server';
+import { getAuth } from '@/lib/auth';
 
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
@@ -56,6 +57,15 @@ Examples: ["Can you explain the chain rule?", "Show me a practice problem", "Wha
 
 export async function POST(request: NextRequest) {
 	try {
+		const auth = await getAuth();
+		const session = await auth.api.getSession({
+			headers: request.headers,
+		});
+
+		if (!session?.user?.id) {
+			return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+		}
+
 		if (!GEMINI_API_KEY) {
 			return NextResponse.json(
 				{ error: 'AI service not configured. Please set GEMINI_API_KEY.' },
