@@ -10,3 +10,6 @@
 ## 2026-02-24 - [AI Tutor Accessibility & Search UX]
 **Learning:** AI interaction components like AIPrompt and BookmarkButton are critical for the user experience but often lack the necessary ARIA attributes (label, pressed, expanded) for screen reader users. Adding a "Clear search" button to inputs significantly improves the "search and refine" loop.
 **Action:** Ensure all AI Tutor components have explicit ARIA labels. Implement animated clear buttons in search inputs using AnimatePresence for a polished, responsive feel.
+## 2026-02-25 - [Search Shortcut & Discoverability]
+**Learning:** Adding a common keyboard shortcut (like `/` for search) significantly boosts productivity for power users. However, shortcuts need a subtle visual hint (like a `kbd` element) to be discoverable without cluttering the UI for casual users.
+**Action:** Implement a global keydown listener for search focus and include an animated visual hint that appears when the input is empty and blurred. Ensure the listener ignores events when other inputs or textareas are focused to avoid interfering with user typing.
