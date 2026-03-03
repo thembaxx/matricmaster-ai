@@ -33,7 +33,7 @@ export function QuizQuestionCard({
 	onSelect,
 }: QuizQuestionCardProps) {
 	return (
-		<Card className="p-8 bg-card border-none rounded-[2.5rem] shadow-sm relative overflow-hidden group">
+		<Card className="p-6 sm:p-8 bg-card border-none rounded-[2.5rem] shadow-sm relative overflow-hidden group">
 			<div
 				className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity ${colors.bgSoft}`}
 			/>
@@ -49,24 +49,21 @@ export function QuizQuestionCard({
 						<RadioGroupItem value={option.id} id={option.id} className="sr-only" />
 						<Label
 							htmlFor={option.id}
-							className={`flex-1 p-5 rounded-2xl border-2 cursor-pointer transition-all flex items-center gap-4 ${
-								selectedAnswer === option.id
+							className={`flex-1 p-4 sm:p-5 rounded-2xl border-2 cursor-pointer transition-all flex items-center gap-4 ${selectedAnswer === option.id
 									? `${colors.border} ${colors.bgSoft} shadow-md scale-[1.02]`
 									: `border-border ${colors.borderSoft}`
-							} ${
-								showResult && option.id === correctAnswer
+								} ${showResult && option.id === correctAnswer
 									? 'border-green-500 bg-green-500/10'
 									: showResult && selectedAnswer === option.id && option.id !== correctAnswer
 										? 'border-red-500 bg-red-500/10'
 										: ''
-							}`}
+								}`}
 						>
 							<span
-								className={`w-8 h-8 rounded-full flex items-center justify-center font-black text-xs ${
-									selectedAnswer === option.id
+								className={`w-8 h-8 rounded-full flex items-center justify-center font-black text-xs ${selectedAnswer === option.id
 										? `${colors.bg} text-white`
 										: 'bg-muted text-zinc-500'
-								}`}
+									}`}
 							>
 								{option.id}
 							</span>

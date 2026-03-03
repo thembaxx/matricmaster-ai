@@ -9,7 +9,7 @@ import {
 	QuizHintCard,
 	QuizQuestionCard,
 	QuizResultFeedback,
-	SimpleQuizFooter,
+	MobileQuizFooter,
 	SubjectFilterPills,
 } from '@/components/Quiz';
 import { Button } from '@/components/ui/button';
@@ -121,8 +121,8 @@ export default function InteractiveQuiz({ initialId }: { initialId?: string }) {
 	if (!currentQuestion) return null;
 
 	return (
-		<div className="flex flex-col h-full min-w-0 bg-background relative overflow-x-hidden">
-			<header className="px-4 sm:px-6 pt-8 sm:pt-12 pb-4 ios-glass sticky top-0 z-20 shrink-0">
+		<div className="flex flex-col h-full w-full min-w-0 bg-background relative overflow-x-hidden">
+			<header className="px-4 sm:px-6 pt-4 sm:pt-6 pb-4 ios-glass sticky top-0 z-20 shrink-0">
 				<div className="max-w-2xl mx-auto w-full">
 					<div className="flex items-center gap-3 sm:gap-4 mb-4">
 						<Button
@@ -171,8 +171,8 @@ export default function InteractiveQuiz({ initialId }: { initialId?: string }) {
 				</div>
 			</header>
 
-			<div className="grow overflow-hidden">
-				<main className="px-4 sm:px-6 py-6 sm:py-8 space-y-6 sm:space-y-8 pb-64 max-w-2xl mx-auto w-full">
+			<div className="grow overflow-hidden w-full">
+				<main className="px-4 sm:px-6 py-6 sm:py-8 space-y-6 sm:space-y-8 mobile-safe-bottom max-w-2xl mx-auto w-full">
 					<div className="space-y-6">
 						<div className="flex items-center gap-3">
 							<TrendingUp className={`w-5 h-5 ${colors.text}`} />
@@ -180,7 +180,7 @@ export default function InteractiveQuiz({ initialId }: { initialId?: string }) {
 								{quiz.title}
 							</h3>
 						</div>
-						<h2 className="text-3xl font-bold text-foreground leading-tight">
+						<h2 className="text-2xl sm:text-3xl font-bold text-foreground leading-tight">
 							{currentQuestion.question}
 						</h2>
 
@@ -211,7 +211,7 @@ export default function InteractiveQuiz({ initialId }: { initialId?: string }) {
 				</main>
 			</div>
 
-			<SimpleQuizFooter
+			<MobileQuizFooter
 				showCheckButton={!showResult}
 				selectedAnswer={selectedAnswer}
 				hasMoreQuestions={currentQuestionIndex < quiz.questions.length - 1}

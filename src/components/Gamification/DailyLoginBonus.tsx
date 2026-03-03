@@ -65,20 +65,20 @@ export function DailyLoginBonus({ onClaimed }: DailyLoginBonusProps) {
 	return (
 		<AnimatePresence>
 			{showModal && (
-				<m.div
-					initial={{ opacity: 0 }}
-					animate={{ opacity: 1 }}
-					exit={{ opacity: 0 }}
-					className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
-					onClick={handleClose}
-				>
+					<m.div
+						initial={{ opacity: 0 }}
+						animate={{ opacity: 1 }}
+						exit={{ opacity: 0 }}
+						className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+						onClick={handleClose}
+					>
 					<m.div
 						initial={{ scale: 0.9, opacity: 0 }}
 						animate={{ scale: 1, opacity: 1 }}
 						exit={{ scale: 0.9, opacity: 0 }}
 						onClick={(e) => e.stopPropagation()}
 					>
-						<Card className="w-full max-w-md p-6 rounded-3xl bg-linear-to-br from-white to-amber-50 dark:from-zinc-900 dark:to-zinc-800 border-brand-amber/20 shadow-2xl">
+						<Card className="w-full  p-6 rounded-3xl bg-linear-to-br from-white to-amber-50 dark:from-zinc-900 dark:to-zinc-800 border-brand-amber/20 shadow-2xl">
 							<div className="flex items-center justify-between mb-6">
 								<div className="flex items-center gap-2">
 									<div className="w-10 h-10 rounded-xl bg-brand-amber/20 flex items-center justify-center">

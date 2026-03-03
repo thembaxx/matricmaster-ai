@@ -17,7 +17,7 @@ export function SubjectFilterPills({
 	getColor,
 }: SubjectFilterPillsProps) {
 	return (
-		<div className="w-full overflow-x-auto whitespace-nowrap pb-2">
+		<div className="w-full overflow-x-auto whitespace-nowrap pb-2 no-scrollbar">
 			<div className="flex gap-2 px-1">
 				{subjects.map((subject) => {
 					const colors = getColor(subject);
@@ -27,11 +27,10 @@ export function SubjectFilterPills({
 							type="button"
 							key={subject}
 							onClick={() => onSelect(subject)}
-							className={`px-4 py-2 rounded-full text-xs font-bold transition-all shrink-0 ${
-								isSelected
+							className={`px-4 py-2 rounded-full text-xs font-bold transition-all shrink-0 ${isSelected
 									? `${colors.bg} text-white shadow-md scale-105`
 									: 'bg-muted text-muted-foreground hover:bg-accent hover:text-accent-foreground'
-							}`}
+								}`}
 						>
 							{subject}
 						</button>

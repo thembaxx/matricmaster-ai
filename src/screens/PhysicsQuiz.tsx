@@ -8,10 +8,9 @@ import {
 	QuizHintCard,
 	QuizQuestionCard,
 	QuizResultFeedback,
-	SimpleQuizFooter,
+	MobileQuizFooter,
 } from '@/components/Quiz';
 import { Button } from '@/components/ui/button';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import { getExplanation } from '@/services/geminiService';
 import { useQuizResultStore } from '@/stores/useQuizResultStore';
 
@@ -276,8 +275,8 @@ export default function PhysicsQuiz() {
 				</div>
 			</header>
 
-			<ScrollArea className="flex-1">
-				<main className="px-6 py-8 space-y-8 pb-64 max-w-2xl mx-auto w-full">
+			<div className="grow">
+				<main className="px-6 py-8 space-y-8 mobile-safe-bottom max-w-2xl mx-auto w-full">
 					<div className="space-y-6">
 						<div className="flex items-center gap-3">
 							<TrendingUp className="w-5 h-5 text-brand-purple" />
@@ -315,9 +314,9 @@ export default function PhysicsQuiz() {
 						subject="Physical Sciences"
 					/>
 				</main>
-			</ScrollArea>
+			</div>
 
-			<SimpleQuizFooter
+			<MobileQuizFooter
 				showCheckButton={!showResult}
 				selectedAnswer={selectedAnswer}
 				hasMoreQuestions={currentQuestionIndex < questions.length - 1}

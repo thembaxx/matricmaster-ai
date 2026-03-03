@@ -38,6 +38,31 @@
   .ios-active-scale {
     @apply active:scale-[0.96] transition-transform duration-200;
   }
+  
+  /* Mobile-specific utilities */
+  .mobile-safe-bottom {
+    padding-bottom: var(--mobile-safe-bottom-padding, 120px);
+  }
+  
+  .mobile-footer-safe {
+    bottom: var(--mobile-nav-height, 80px);
+  }
+  
+  .mobile-content {
+    min-height: calc(100vh - var(--mobile-nav-height, 80px));
+  }
+  
+  @media (min-width: 768px) {
+    .mobile-safe-bottom {
+      padding-bottom: 0;
+    }
+    .mobile-footer-safe {
+      bottom: 0;
+    }
+    .mobile-content {
+      min-height: 100vh;
+    }
+  }
 }
 
 @theme inline {
