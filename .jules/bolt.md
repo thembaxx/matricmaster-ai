@@ -13,3 +13,7 @@
 ## 2026-03-01 - [Memoizing Dashboard Sub-components]
 **Learning:** Root level context consumers (like notifications) trigger full-screen re-renders on state updates (e.g., receiving a notification). In complex screens like the Dashboard, this causes all sub-widgets (charts, lists, goal trackers) to re-render even if their internal data hasn't changed. Memoizing these sub-components ensures the UI remains responsive and avoids expensive DOM updates during background data synchronization.
 **Action:** Identify main entry screens with global context dependencies and wrap all child widgets in `React.memo`, ensuring all passed callbacks are stabilized with `useCallback`.
+
+## 2026-03-03 - [Optimizing Leaderboard Tab Switches & Renders]
+**Learning:** Screens with tabbed data fetching often include common metadata (like user streaks) in a shared `Promise.all` block. This causes redundant database/API calls for the common metadata on every tab switch. Separating common metadata into a mount-only `useEffect` and memoizing the resulting filtered lists and sub-components ensures a snappier UI and reduced server-side load during user interaction.
+**Action:** Decouple one-time metadata fetching from tab-dependent data fetching, and always wrap filtered leaderboard arrays in `useMemo` to prevent O(N) work on unrelated re-renders.
