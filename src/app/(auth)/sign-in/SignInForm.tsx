@@ -206,7 +206,7 @@ export function SignInForm() {
 						<m.div variants={STAGGER_ITEM} className="space-y-2">
 							<label
 								htmlFor="email"
-								className="block text-sm font-bold text-muted-foreground ml-1 uppercase tracking-wider text-[10px]"
+								className="block text-xs font-bold text-foreground ml-1 uppercase tracking-wider"
 							>
 								Email Address
 							</label>
@@ -226,13 +226,13 @@ export function SignInForm() {
 							<div className="flex items-center justify-between">
 								<label
 									htmlFor="password"
-									className="block text-sm font-bold text-muted-foreground ml-1 uppercase tracking-wider text-[10px]"
+									className="block text-xs font-bold text-foreground ml-1 uppercase tracking-wider"
 								>
 									Password
 								</label>
 								<Link
 									href="/forgot-password"
-									className="text-[10px] font-bold text-primary hover:text-primary/80 uppercase tracking-wider"
+									className="text-xs font-bold text-primary hover:text-primary/80 uppercase tracking-wider"
 								>
 									Forgot?
 								</Link>
@@ -334,7 +334,7 @@ export function SignInForm() {
 					initial={{ opacity: 0 }}
 					animate={{ opacity: 1 }}
 					transition={{ delay: 1.5 }}
-					className="text-center text-muted-foreground/40 text-[10px] font-bold uppercase tracking-widest mt-8"
+					className="text-center text-muted-foreground/60 text-xs font-bold uppercase tracking-widest mt-8"
 				>
 					&copy; {new Date().getFullYear()} MatricMaster AI
 				</m.p>

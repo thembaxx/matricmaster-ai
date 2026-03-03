@@ -3,6 +3,7 @@
 import { m } from 'framer-motion';
 import { Bell } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 import { SmoothWords } from '@/components/Transition/SmoothText';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -57,7 +58,16 @@ export function DashboardHeader({ userName, userImage, unreadCount }: DashboardH
 						variant="ghost"
 						size="icon"
 						className="w-12 h-12 rounded-2xl bg-card/50 backdrop-blur-md border border-border/20 shadow-sm relative"
-						onClick={() => router.push('/notifications')}
+						onClick={() => {
+							if (!userName) {
+								toast.info('Login Required', {
+									description: 'Please sign in to view your notifications.',
+								});
+								router.push('/sign-in');
+								return;
+							}
+							router.push('/notifications');
+						}}
 						aria-label={`Notifications${unreadCount > 0 ? `, ${unreadCount} unread` : ''}`}
 					>
 						<Bell className="w-6 h-6 text-foreground" />

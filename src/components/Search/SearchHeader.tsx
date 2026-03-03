@@ -19,7 +19,11 @@ export const SearchHeader = memo(function SearchHeader({
 
 	useEffect(() => {
 		const handleKeyDown = (e: KeyboardEvent) => {
-			if (e.key === '/' && document.activeElement?.tagName !== 'INPUT' && document.activeElement?.tagName !== 'TEXTAREA') {
+			if (
+				e.key === '/' &&
+				document.activeElement?.tagName !== 'INPUT' &&
+				document.activeElement?.tagName !== 'TEXTAREA'
+			) {
 				e.preventDefault();
 				inputRef.current?.focus();
 			}

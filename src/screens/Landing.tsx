@@ -5,6 +5,7 @@ import { Atom, Calculator, ChevronRight, FlaskConical, Microscope, Sparkles } fr
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useId } from 'react';
+import { toast } from 'sonner';
 import { Footer } from '@/components/Layout/footer';
 import { SmoothText, SmoothWords } from '@/components/Transition/SmoothText';
 import { Badge } from '@/components/ui/badge';
@@ -13,6 +14,7 @@ import { Card } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { SUBJECTS } from '@/constants/mock-data';
 import { STAGGER_CONTAINER, STAGGER_ITEM } from '@/lib/animation-presets';
+import { useSession } from '@/lib/auth-client';
 
 const ICON_MAP: Record<string, React.ElementType> = {
 	Calculator: Calculator,
@@ -107,6 +109,18 @@ const ICON_MAP: Record<string, React.ElementType> = {
 export default function Landing() {
 	const router = useRouter();
 	const gradientId = useId();
+	const { data: session } = useSession();
+
+	const handleAuthRoute = (path: string) => {
+		if (!session?.user) {
+			toast.info('Login Required', {
+				description: 'Please sign in to access this feature.',
+			});
+			router.push('/sign-in');
+			return;
+		}
+		router.push(path);
+	};
 
 	return (
 		<div className="flex flex-col h-full min-w-0 w-full bg-background overflow-x-hidden relative">
@@ -125,14 +139,14 @@ export default function Landing() {
 									animate={{ opacity: 1, scale: 1 }}
 									transition={{ type: 'spring', stiffness: 300, damping: 20 }}
 								>
-									<Badge className="bg-brand-green/10 text-brand-green border-none rounded-full px-4 sm:px-6 py-2 font-black text-xs tracking-widest uppercase mb-4 shadow-sm">
+									<Badge className="bg-brand-green/20 text-brand-green-darker border-none rounded-full px-4 sm:px-6 py-2 font-black text-xs tracking-widest uppercase mb-4 shadow-sm">
 										Trusted by 50,000+ Students
 									</Badge>
 								</m.div>
 								<SmoothWords
 									as="h1"
 									text="Master your Matrics through practice."
-									className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black text-foreground leading-[1.05] tracking-tighter"
+									className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black text-foreground drop-shadow-sm leading-[1.05] tracking-tighter"
 									stagger={0.08}
 								/>
 								<SmoothText
@@ -151,7 +165,7 @@ export default function Landing() {
 								<Button
 									size="lg"
 									className="w-full sm:w-auto lg:flex-none lg:w-72 rounded-2xl shrink-0 h-12 lg:h-14 xl:h-16 text-base lg:text-lg xl:text-xl font-black shadow-2xl hover:scale-[1.02] active:scale-95 transition-all shadow-primary/20 bg-primary"
-									onClick={() => router.push('/dashboard')}
+									onClick={() => handleAuthRoute('/dashboard')}
 								>
 									Start Learning
 									<ChevronRight className="w-5 h-5 ml-2" />
@@ -160,7 +174,7 @@ export default function Landing() {
 									variant="outline"
 									size="lg"
 									className="w-full sm:w-auto lg:flex-none lg:w-64 rounded-2xl h-12 lg:h-14 xl:h-16 text-base lg:text-lg font-black border-2 hover:bg-muted active:scale-95 transition-all"
-									onClick={() => router.push('/past-papers')}
+									onClick={() => handleAuthRoute('/past-papers')}
 								>
 									Past Papers
 								</Button>
@@ -289,7 +303,7 @@ export default function Landing() {
 									<m.div key={subject.id} variants={STAGGER_ITEM}>
 										<Card
 											className="bg-card p-6 sm:p-8 rounded-2xl sm:rounded-[2.5rem] border border-border shadow-sm group hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 cursor-pointer overflow-hidden relative h-full flex flex-col justify-between"
-											onClick={() => router.push(subject.path)}
+											onClick={() => handleAuthRoute(subject.path)}
 										>
 											<m.div
 												className={`absolute top-0 right-0 w-48 h-48 ${subject.bg} rounded-full -mr-24 -mt-24 blur-3xl opacity-0 group-hover:opacity-40 transition-opacity duration-700`}

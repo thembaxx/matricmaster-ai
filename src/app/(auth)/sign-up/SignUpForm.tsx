@@ -171,7 +171,7 @@ export default function SignUpForm() {
 						<m.div variants={STAGGER_ITEM} className="space-y-2">
 							<label
 								htmlFor="name"
-								className="block text-sm font-bold text-muted-foreground ml-1 uppercase tracking-wider text-[10px]"
+								className="block text-xs font-bold text-foreground ml-1 uppercase tracking-wider"
 							>
 								Full Name
 							</label>
@@ -190,7 +190,7 @@ export default function SignUpForm() {
 						<m.div variants={STAGGER_ITEM} className="space-y-2">
 							<label
 								htmlFor="email"
-								className="block text-sm font-bold text-muted-foreground ml-1 uppercase tracking-wider text-[10px]"
+								className="block text-xs font-bold text-foreground ml-1 uppercase tracking-wider"
 							>
 								Email
 							</label>
@@ -209,7 +209,7 @@ export default function SignUpForm() {
 						<m.div variants={STAGGER_ITEM} className="space-y-2">
 							<label
 								htmlFor="password"
-								className="block text-sm font-bold text-muted-foreground ml-1 uppercase tracking-wider text-[10px]"
+								className="block text-xs font-bold text-foreground ml-1 uppercase tracking-wider"
 							>
 								Create Password
 							</label>
@@ -310,7 +310,7 @@ export default function SignUpForm() {
 					initial={{ opacity: 0 }}
 					animate={{ opacity: 1 }}
 					transition={{ delay: 1.5 }}
-					className="text-center text-muted-foreground/40 text-[10px] font-bold uppercase tracking-widest mt-8"
+					className="text-center text-muted-foreground/60 text-xs font-bold uppercase tracking-widest mt-8"
 				>
 					&copy; {new Date().getFullYear()} MatricMaster AI
 				</m.p>

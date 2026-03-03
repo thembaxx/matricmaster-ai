@@ -2,6 +2,7 @@
 
 import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { toast } from 'sonner';
 import { ClientOnly } from '@/components/ClientOnly';
 import { DailyLoginBonus } from '@/components/Gamification/DailyLoginBonus';
 import { useNotificationContextSafe } from '@/components/Notifications/NotificationListener';
@@ -39,7 +40,16 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 							<ResponsiveHeader
 								user={user ?? null}
 								unreadCount={unreadCount}
-								onNotificationClick={() => router.push('/notifications')}
+								onNotificationClick={() => {
+									if (!user) {
+										toast.info('Login Required', {
+											description: 'Please sign in to view your notifications.',
+										});
+										router.push('/sign-in');
+										return;
+									}
+									router.push('/notifications');
+								}}
 								onSignIn={() => router.push('/sign-in')}
 								onSignUp={() => router.push('/sign-up')}
 							/>
@@ -77,7 +87,16 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 						<ResponsiveHeader
 							user={user ?? null}
 							unreadCount={unreadCount}
-							onNotificationClick={() => router.push('/notifications')}
+							onNotificationClick={() => {
+								if (!user) {
+									toast.info('Login Required', {
+										description: 'Please sign in to view your notifications.',
+									});
+									router.push('/sign-in');
+									return;
+								}
+								router.push('/notifications');
+							}}
 							onSignIn={() => router.push('/sign-in')}
 							onSignUp={() => router.push('/sign-up')}
 							mobileMenuTrigger={<MobileMenuSheet />}
