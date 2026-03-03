@@ -1,7 +1,7 @@
 'use client';
 
 import { Award, Flame, Trophy as TrophyIcon } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { memo, useEffect, useMemo, useState } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -28,7 +28,7 @@ interface UserRankData {
 	percentile: number;
 }
 
-function Podium({ data }: { data: LeaderboardEntry[] }) {
+const Podium = memo(function Podium({ data }: { data: LeaderboardEntry[] }) {
 	const r2 = data.find((p) => p.rank === 2);
 	const r1 = data.find((p) => p.rank === 1);
 	const r3 = data.find((p) => p.rank === 3);
@@ -115,9 +115,9 @@ function Podium({ data }: { data: LeaderboardEntry[] }) {
 			</div>
 		</div>
 	);
-}
+});
 
-function RankingList({ data }: { data: LeaderboardEntry[] }) {
+const RankingList = memo(function RankingList({ data }: { data: LeaderboardEntry[] }) {
 	return (
 		<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-1">
 			{data.map((student) => (
@@ -156,7 +156,7 @@ function RankingList({ data }: { data: LeaderboardEntry[] }) {
 			))}
 		</div>
 	);
-}
+});
 
 export default function Leaderboard() {
 	const [activeTab, setActiveTab] = useState('weekly');
@@ -165,17 +165,29 @@ export default function Leaderboard() {
 	const [userStreak, setUserStreak] = useState<{ currentStreak: number } | null>(null);
 	const [isLoading, setIsLoading] = useState(true);
 
+	// Bolt: Separate streak fetching into its own effect to avoid redundant database calls on every tab switch
+	useEffect(() => {
+		async function fetchStreak() {
+			try {
+				const streak = await getUserStreak();
+				setUserStreak(streak);
+			} catch (error) {
+				console.error('Error fetching user streak:', error);
+			}
+		}
+		fetchStreak();
+	}, []);
+
 	useEffect(() => {
 		async function fetchData() {
 			try {
-				const [data, rank, streak] = await Promise.all([
+				setIsLoading(true);
+				const [data, rank] = await Promise.all([
 					getLeaderboard(activeTab as 'weekly' | 'monthly' | 'all_time', 50),
 					getUserRank(activeTab as 'weekly' | 'monthly' | 'all_time'),
-					getUserStreak(),
 				]);
 				setLeaderboardData(data);
 				setUserRank(rank);
-				setUserStreak(streak);
 			} catch (error) {
 				console.error('Error fetching leaderboard:', error);
 			} finally {
@@ -185,8 +197,9 @@ export default function Leaderboard() {
 		fetchData();
 	}, [activeTab]);
 
-	const topThree = leaderboardData.filter((e) => e.rank <= 3);
-	const others = leaderboardData.filter((e) => e.rank > 3);
+	// Bolt: Memoize filtered results to avoid O(N) recalculation on every render
+	const topThree = useMemo(() => leaderboardData.filter((e) => e.rank <= 3), [leaderboardData]);
+	const others = useMemo(() => leaderboardData.filter((e) => e.rank > 3), [leaderboardData]);
 
 	if (isLoading) {
 		return (
