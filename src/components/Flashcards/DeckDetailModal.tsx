@@ -1,7 +1,7 @@
 'use client';
 
 import { Loader2, Plus, Trash2 } from 'lucide-react';
-import { useState } from 'react';
+import { useId, useState } from 'react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import {
@@ -47,6 +47,7 @@ export function DeckDetailModal({
 	flashcards,
 	onUpdated,
 }: DeckDetailModalProps) {
+	const modalId = useId();
 	const [showAddCard, setShowAddCard] = useState(false);
 	const [front, setFront] = useState('');
 	const [back, setBack] = useState('');
@@ -125,9 +126,9 @@ export function DeckDetailModal({
 					{showAddCard && (
 						<div className="space-y-3 rounded-lg border p-4">
 							<div className="space-y-2">
-								<Label htmlFor="front">Front</Label>
+								<Label htmlFor={`front-${modalId}`}>Front</Label>
 								<Textarea
-									id="front"
+									id={`front-${modalId}`}
 									placeholder="Question or term..."
 									value={front}
 									onChange={(e) => setFront(e.target.value)}
@@ -135,9 +136,9 @@ export function DeckDetailModal({
 								/>
 							</div>
 							<div className="space-y-2">
-								<Label htmlFor="back">Back</Label>
+								<Label htmlFor={`back-${modalId}`}>Back</Label>
 								<Textarea
-									id="back"
+									id={`back-${modalId}`}
 									placeholder="Answer or definition..."
 									value={back}
 									onChange={(e) => setBack(e.target.value)}
