@@ -64,6 +64,13 @@
 			"when": 1771667748690,
 			"tag": "0008_aromatic_rattler",
 			"breakpoints": true
+		},
+		{
+			"idx": 9,
+			"version": "7",
+			"when": 1772564818064,
+			"tag": "0009_loud_inertia",
+			"breakpoints": true
 		}
 	]
 }

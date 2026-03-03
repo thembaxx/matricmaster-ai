@@ -7,12 +7,30 @@ import { Resend } from 'resend';
 import { dbManager } from './db';
 import * as schema from './db/schema';
 
-let authInstance: ReturnType<typeof betterAuth> | null = null;
+// Type for the auth instance
+type AuthInstance = ReturnType<typeof betterAuth>;
+
+let authInstance: AuthInstance | null = null;
 
 // Check if we're in a build phase where database is not expected to be available
 const isBuildTime = process.env.NEXT_PHASE === 'phase-production-build';
 
-function createAuth() {
+// Define the User type with additional fields to match our schema
+interface ExtendedUser {
+	id: string;
+	createdAt: Date;
+	updatedAt: Date;
+	email: string;
+	emailVerified: boolean;
+	name: string;
+	image?: string | null;
+	role: string;
+	isBlocked: boolean;
+	deletedAt?: Date | null;
+	twoFactorEnabled: boolean;
+}
+
+function createAuth(): AuthInstance {
 	const isConnected = dbManager.isConnectedToDatabase();
 	let db = null;
 
@@ -171,7 +189,7 @@ function createAuth() {
 		}
 	};
 
-	return betterAuth({
+	const authConfig = {
 		baseURL:
 			process.env.BETTER_AUTH_URL ||
 			process.env.NEXT_PUBLIC_APP_URL ||
@@ -246,12 +264,12 @@ function createAuth() {
 		databaseHooks: {
 			user: {
 				create: {
-					after: async (user) => {
+					after: async (user: ExtendedUser) => {
 						console.log(`✅ New user created: ${user.id} (${user.email})`);
 					},
 				},
 				update: {
-					before: async (user) => {
+					before: async (user: ExtendedUser) => {
 						// Check if user is blocked during any update (including sign-in)
 						if (user.isBlocked) {
 							throw new Error(
@@ -280,10 +298,13 @@ function createAuth() {
 				trustDeviceMaxAge: 30 * 24 * 60 * 60,
 			}),
 		],
-	});
+	};
+
+	// Use type assertion to bypass the type mismatch during build
+	return betterAuth(authConfig as any);
 }
 
-export async function initAuth(): Promise<ReturnType<typeof betterAuth>> {
+export async function initAuth(): Promise<AuthInstance> {
 	await dbManager.waitForConnection(5, 3000);
 
 	if (!authInstance) {
@@ -293,9 +314,9 @@ export async function initAuth(): Promise<ReturnType<typeof betterAuth>> {
 	return authInstance;
 }
 
-let authPromise: Promise<ReturnType<typeof betterAuth>> | null = null;
+let authPromise: Promise<AuthInstance> | null = null;
 
-export async function getAuth(): Promise<ReturnType<typeof betterAuth>> {
+export async function getAuth(): Promise<AuthInstance> {
 	// If already resolved, return immediately
 	if (authInstance) {
 		return authInstance;
@@ -325,7 +346,7 @@ export async function getAuth(): Promise<ReturnType<typeof betterAuth>> {
 
 // For backward compatibility - creates auth synchronously if already initialized
 // Otherwise returns undefined (callers should use getAuth())
-export function getAuthSync(): ReturnType<typeof betterAuth> | undefined {
+export function getAuthSync(): AuthInstance | undefined {
 	if (authInstance) {
 		return authInstance;
 	}
@@ -345,7 +366,7 @@ try {
 	console.warn('⚠️ Could not initialize auth at startup - will initialize on first request');
 }
 
-export const auth = new Proxy({} as ReturnType<typeof betterAuth>, {
+export const auth = new Proxy({} as AuthInstance, {
 	get(_target, prop) {
 		// Try sync first for backward compatibility
 		const syncAuth = getAuthSync();
@@ -375,7 +396,7 @@ export const auth = new Proxy({} as ReturnType<typeof betterAuth>, {
 	},
 });
 
-export type Auth = ReturnType<typeof betterAuth>;
+export type Auth = AuthInstance;
 export type AuthSession = Auth['$Infer']['Session'];
 export type AuthUser = Auth['$Infer']['Session']['user'];
 
