@@ -7,7 +7,13 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import {
+	Sheet,
+	SheetContent,
+	SheetTitle,
+	SheetTrigger,
+	VisuallyHidden,
+} from '@/components/ui/sheet';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 const playClickSound = () => {
@@ -281,6 +287,9 @@ function CalculatorLauncher({ router, onKeyClick, onDelete, moveCursor }: Calcul
 					side="bottom"
 					className="h-[520px] rounded-t-[3rem] p-0 border-none bg-[#f1f5f9] dark:bg-[#0a0f18] focus-visible:outline-none overflow-hidden"
 				>
+					<SheetTitle>
+						<VisuallyHidden>Calculator</VisuallyHidden>
+					</SheetTitle>
 					<CalculatorContent
 						router={router}
 						onKeyClick={onKeyClick}
