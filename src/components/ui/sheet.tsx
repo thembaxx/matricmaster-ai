@@ -1,6 +1,7 @@
 'use client';
 
 import * as SheetPrimitive from '@radix-ui/react-dialog';
+import * as VisuallyHiddenPrimitive from '@radix-ui/react-visually-hidden';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { X } from 'lucide-react';
 import * as React from 'react';
@@ -107,6 +108,8 @@ const SheetDescription = React.forwardRef<
 ));
 SheetDescription.displayName = SheetPrimitive.Description.displayName;
 
+const VisuallyHidden = VisuallyHiddenPrimitive.Root;
+
 export {
 	Sheet,
 	SheetPortal,
@@ -118,4 +121,5 @@ export {
 	SheetFooter,
 	SheetTitle,
 	SheetDescription,
+	VisuallyHidden,
 };
