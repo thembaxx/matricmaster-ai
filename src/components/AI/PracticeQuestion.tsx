@@ -1,4 +1,5 @@
 import { CheckCircle, XCircle } from 'lucide-react';
+import { useId } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -26,6 +27,7 @@ export function PracticeQuestion({
 	showExplanation,
 	onAnswerSelect,
 }: PracticeQuestionProps) {
+	const questionId = useId();
 	const getDifficultyColor = (type: string) => {
 		switch (type) {
 			case 'multiple-choice':
@@ -81,9 +83,9 @@ export function PracticeQuestion({
 
 			{problem.type === 'short-answer' && (
 				<div className="space-y-2">
-					<Label htmlFor="short-answer">Your Answer</Label>
+					<Label htmlFor={`short-answer-${questionId}`}>Your Answer</Label>
 					<Input
-						id="short-answer"
+						id={`short-answer-${questionId}`}
 						value={answer || ''}
 						onChange={(e) => onAnswerSelect(e.target.value)}
 						placeholder="Type your answer..."

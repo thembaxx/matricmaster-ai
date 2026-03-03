@@ -5,7 +5,10 @@ import { config } from 'dotenv';
 const envPath = resolve(process.cwd(), '.env.local');
 config({ path: envPath });
 
+// Ensure the and/eq utilities are available
+import { and, eq } from 'drizzle-orm';
 import { auth } from '@/lib/auth';
+import { users } from '../better-auth-schema';
 import { dbManager } from '../index';
 import { options, pastPapers, questions, subjects } from '../schema';
 import { englishQuestions } from './english-questions';
@@ -24,23 +27,61 @@ function getDb() {
 export async function seedDatabase() {
 	console.log('🔄 Starting database seeding...');
 
-	// Ensure database is initialized
-	if (!dbManager.isConnectedToDatabase()) {
-		console.log('🔄 Initializing database connection...');
-		await dbManager.initialize();
+	// Validate environment variables
+	if (!process.env.DATABASE_URL) {
+		throw new Error('DATABASE_URL environment variable is not set');
 	}
 
 	console.log('DATABASE_URL defined:', !!process.env.DATABASE_URL);
 	console.log('Using database: PostgreSQL');
 
+	// Ensure database is initialized with error handling
+	try {
+		if (!dbManager.isConnectedToDatabase()) {
+			console.log('🔄 Initializing database connection...');
+			await dbManager.initialize();
+		}
+	} catch (dbError) {
+		console.error(
+			'❌ Failed to connect to database:',
+			dbError instanceof Error ? dbError.message : dbError
+		);
+		throw new Error(
+			'Database connection failed. Please check your DATABASE_URL and ensure PostgreSQL is running.'
+		);
+	}
+
 	const useDb = getDb();
 
 	try {
+		console.log('📊 Checking existing data...');
+
+		// Check existing subjects
 		const existingSubjects = await useDb.select().from(subjects);
 		console.log(
 			'Existing subjects found:',
 			existingSubjects.map((s) => s.name)
 		);
+
+		// Get or create required subjects
+		const requiredSubjects = [
+			{ name: 'History', description: 'CAPS History Grades 10-12', curriculumCode: 'CAPS-HIST' },
+			{
+				name: 'English FAL',
+				description: 'CAPS English First Additional Language Grades 10-12',
+				curriculumCode: 'CAPS-EFAL',
+			},
+			{
+				name: 'Mathematics',
+				description: 'CAPS Mathematics Grades 10-12 covering Algebra, Calculus, Trigonometry',
+				curriculumCode: 'CAPS-MATH',
+			},
+			{
+				name: 'Physical Sciences',
+				description: 'CAPS Physical Sciences Grades 9-12 covering Physics topics',
+				curriculumCode: 'CAPS-PHYS',
+			},
+		];
 
 		let historySubject = existingSubjects.find((s) => s.name === 'History');
 		let englishSubject = existingSubjects.find((s) => s.name === 'English FAL');
@@ -48,55 +89,41 @@ export async function seedDatabase() {
 		let physicsSubject = existingSubjects.find((s) => s.name === 'Physical Sciences');
 
 		// Insert missing subjects
-		const subjectsToInsert = [];
-
-		if (!historySubject) {
-			subjectsToInsert.push({
-				name: 'History',
-				description: 'CAPS History Grades 10-12',
-				curriculumCode: 'CAPS-HIST',
-				isActive: true,
-			});
-		}
-
-		if (!englishSubject) {
-			subjectsToInsert.push({
-				name: 'English FAL',
-				description: 'CAPS English First Additional Language Grades 10-12',
-				curriculumCode: 'CAPS-EFAL',
-				isActive: true,
-			});
-		}
-
-		if (!mathematicsSubject) {
-			subjectsToInsert.push({
-				name: 'Mathematics',
-				description: 'CAPS Mathematics Grades 10-12 covering Algebra, Calculus, Trigonometry',
-				curriculumCode: 'CAPS-MATH',
-				isActive: true,
-			});
-		}
-
-		if (!physicsSubject) {
-			subjectsToInsert.push({
-				name: 'Physical Sciences',
-				description: 'CAPS Physical Sciences Grades 9-12 covering Physics topics',
-				curriculumCode: 'CAPS-PHYS',
-				isActive: true,
-			});
-		}
+		const subjectsToInsert = requiredSubjects.filter(
+			(subject) => !existingSubjects.some((existing) => existing.name === subject.name)
+		);
 
 		if (subjectsToInsert.length > 0) {
-			console.log(`Inserting ${subjectsToInsert.length} missing subjects...`);
-			const insertedSubjects = await useDb.insert(subjects).values(subjectsToInsert).returning();
+			console.log(`📝 Inserting ${subjectsToInsert.length} missing subjects...`);
+			try {
+				const insertedSubjects = await useDb
+					.insert(subjects)
+					.values(
+						subjectsToInsert.map((subject) => ({
+							...subject,
+							isActive: true,
+						}))
+					)
+					.returning();
 
-			// Update references
-			insertedSubjects.forEach((subject) => {
-				if (subject.name === 'History') historySubject = subject;
-				if (subject.name === 'English FAL') englishSubject = subject;
-				if (subject.name === 'Mathematics') mathematicsSubject = subject;
-				if (subject.name === 'Physical Sciences') physicsSubject = subject;
-			});
+				// Update references
+				insertedSubjects.forEach((subject) => {
+					if (subject.name === 'History') historySubject = subject;
+					if (subject.name === 'English FAL') englishSubject = subject;
+					if (subject.name === 'Mathematics') mathematicsSubject = subject;
+					if (subject.name === 'Physical Sciences') physicsSubject = subject;
+				});
+
+				console.log(`✓ Successfully inserted ${insertedSubjects.length} subjects`);
+			} catch (insertError) {
+				console.error(
+					'❌ Failed to insert subjects:',
+					insertError instanceof Error ? insertError.message : insertError
+				);
+				throw insertError;
+			}
+		} else {
+			console.log('✓ All required subjects already exist');
 		}
 
 		// Ensure we have all subjects
@@ -297,6 +324,7 @@ export async function seedDatabase() {
 		if (existingUser.length === 0) {
 			console.log('Seeding test user...');
 			try {
+				// Try to create user via Auth API
 				await auth.api.signUpEmail({
 					body: {
 						email: testEmail,
@@ -304,9 +332,34 @@ export async function seedDatabase() {
 						name: 'Test Student',
 					},
 				});
-				console.log('✓ Test user seeded: student@matricmaster.ai / password123');
-			} catch (e) {
-				console.error('⚠️ Failed to seed user via Auth API:', e instanceof Error ? e.message : e);
+				console.log('✓ Test user seeded via Auth API: student@matricmaster.ai / password123');
+			} catch (_authError) {
+				console.warn('⚠️ Auth API failed, attempting direct database insertion...');
+				try {
+					// Fallback: create user directly in database
+					await useDb.insert(users).values({
+						id: crypto.randomUUID(), // Generate a unique ID
+						email: testEmail,
+						name: 'Test Student',
+						emailVerified: true, // Boolean, not Date
+						role: 'user',
+						isBlocked: false,
+						twoFactorEnabled: false,
+						createdAt: new Date(),
+						updatedAt: new Date(),
+					});
+					console.log(
+						'✓ Test user seeded directly to database: student@matricmaster.ai / password123'
+					);
+				} catch (dbError) {
+					console.error(
+						'❌ Failed to seed user via database:',
+						dbError instanceof Error ? dbError.message : dbError
+					);
+					console.log(
+						'ℹ️  You may need to create the test user manually or check your auth configuration.'
+					);
+				}
 			}
 		} else {
 			console.log('✓ Test user already exists.');
@@ -318,9 +371,5 @@ export async function seedDatabase() {
 		throw error;
 	}
 }
-
-// Ensure the and/eq utilities are available
-import { and, eq } from 'drizzle-orm';
-import { users } from '../better-auth-schema';
 
 // End of file

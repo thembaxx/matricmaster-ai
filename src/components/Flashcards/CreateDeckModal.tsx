@@ -1,7 +1,7 @@
 'use client';
 
 import { Loader2, Plus } from 'lucide-react';
-import { useState } from 'react';
+import { useId, useState } from 'react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import {
@@ -32,6 +32,7 @@ interface CreateDeckModalProps {
 }
 
 export function CreateDeckModal({ open, onOpenChange, onCreated }: CreateDeckModalProps) {
+	const modalId = useId();
 	const [name, setName] = useState('');
 	const [description, setDescription] = useState('');
 	const [isCreating, setIsCreating] = useState(false);
@@ -86,9 +87,9 @@ export function CreateDeckModal({ open, onOpenChange, onCreated }: CreateDeckMod
 
 				<div className="space-y-4 py-4">
 					<div className="space-y-2">
-						<Label htmlFor="name">Deck Name</Label>
+						<Label htmlFor={`name-${modalId}`}>Deck Name</Label>
 						<Input
-							id="name"
+							id={`name-${modalId}`}
 							placeholder="e.g., Mathematics Formulas"
 							value={name}
 							onChange={(e) => setName(e.target.value)}
@@ -97,9 +98,9 @@ export function CreateDeckModal({ open, onOpenChange, onCreated }: CreateDeckMod
 					</div>
 
 					<div className="space-y-2">
-						<Label htmlFor="description">Description (optional)</Label>
+						<Label htmlFor={`description-${modalId}`}>Description (optional)</Label>
 						<Textarea
-							id="description"
+							id={`description-${modalId}`}
 							placeholder="What topics does this deck cover?"
 							value={description}
 							onChange={(e) => setDescription(e.target.value)}
