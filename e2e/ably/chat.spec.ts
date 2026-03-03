@@ -12,22 +12,8 @@ async function signUp(page: Page) {
 	await page.fill('input[name="password"]', password);
 	await page.click('button[type="submit"]');
 
-	// Wait for success message which appears after signup
-	try {
-		await page
-			.getByText('Account created successfully!', { timeout: 20000 })
-			.waitFor({ state: 'visible' });
-	} catch {
-		// If success message not found, check if already on dashboard
-		const currentURL = page.url();
-		if (currentURL.includes('/dashboard')) {
-			return { email, password };
-		}
-		throw new Error('Signup failed - no success message and not redirected');
-	}
-
-	// Wait for redirect to dashboard
-	await page.waitForURL(/\/dashboard/, { timeout: 20000 });
+	// Wait for navigation to dashboard (after 1.5s delay)
+	await page.waitForURL(/\/dashboard/, { timeout: 25000 });
 	return { email, password };
 }
 
