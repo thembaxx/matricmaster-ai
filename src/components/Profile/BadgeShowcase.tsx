@@ -5,7 +5,7 @@ import { Award, Crown, Plus, Star } from 'lucide-react';
 import { memo, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { ACHIEVEMENTS } from '@/constants/achievements';
+import { ACHIEVEMENTS, getAchievementById } from '@/constants/achievements';
 
 interface BadgeShowcaseProps {
 	unlockedIds: string[];
@@ -27,9 +27,7 @@ export const BadgeShowcase = memo(function BadgeShowcase({
 
 	const unlockedSet = new Set(unlockedIds);
 	const unlockedAchievements = ACHIEVEMENTS.filter((a) => unlockedSet.has(a.id));
-	const featuredAchievements = featuredIds
-		.map((id) => ACHIEVEMENTS.find((a) => a.id === id))
-		.filter(Boolean);
+	const featuredAchievements = featuredIds.map((id) => getAchievementById(id)).filter(Boolean);
 
 	const handleToggleFeature = (achievementId: string) => {
 		if (tempFeatured.includes(achievementId)) {
@@ -207,9 +205,7 @@ export const BadgeShowcaseCompact = memo(function BadgeShowcaseCompact({
 	featuredIds?: string[];
 	onClick?: () => void;
 }) {
-	const featuredAchievements = featuredIds
-		.map((id) => ACHIEVEMENTS.find((a) => a.id === id))
-		.filter(Boolean);
+	const featuredAchievements = featuredIds.map((id) => getAchievementById(id)).filter(Boolean);
 
 	if (featuredAchievements.length === 0) {
 		return null;

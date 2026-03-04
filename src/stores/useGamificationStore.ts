@@ -4,8 +4,7 @@ import { toast } from 'sonner';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { AchievementToast } from '@/components/Gamification/AchievementToast';
-import type { AchievementDefinition } from '@/constants/achievements';
-import { ACHIEVEMENTS } from '@/constants/achievements';
+import { getAchievementById } from '@/constants/achievements';
 import { checkAndUnlockAchievements } from '@/lib/db/achievement-actions';
 
 export interface UnlockedAchievement {
@@ -54,9 +53,7 @@ export const useGamificationStore = create<GamificationState>()(
 					const unlocked: UnlockedAchievement[] = [];
 
 					for (const achievementId of result.unlocked) {
-						const definition = ACHIEVEMENTS.find(
-							(a: AchievementDefinition) => a.id === achievementId
-						);
+						const definition = getAchievementById(achievementId);
 						if (definition) {
 							const achievement: UnlockedAchievement = {
 								id: definition.id,

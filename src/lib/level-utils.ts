@@ -5,6 +5,7 @@ import {
 	getXpForLevel,
 	LEVEL_TITLES,
 	MAX_LEVEL,
+	TOTAL_XP_AT_LEVEL,
 } from '@/constants/levels';
 
 export interface LevelInfo {
@@ -18,22 +19,20 @@ export interface LevelInfo {
 	color: string;
 }
 
+/**
+ * Optimized level calculation using O(N) precomputed cumulative XP search.
+ * Since MAX_LEVEL is small (100), O(N) is efficient.
+ */
 export function calculateLevel(totalXp: number): number {
 	if (totalXp <= 0) return 1;
 
-	let level = 1;
-	let accumulatedXp = 0;
-
-	while (level < MAX_LEVEL) {
-		const xpNeeded = getXpForLevel(level + 1);
-		if (accumulatedXp + xpNeeded > totalXp) {
-			break;
+	for (let i = MAX_LEVEL; i >= 1; i--) {
+		if (totalXp >= TOTAL_XP_AT_LEVEL[i]) {
+			return i;
 		}
-		accumulatedXp += xpNeeded;
-		level++;
 	}
 
-	return Math.min(level, MAX_LEVEL);
+	return 1;
 }
 
 export function getXpInCurrentLevel(totalXp: number): number {
@@ -60,12 +59,15 @@ export function getProgressToNextLevel(totalXp: number): number {
 	return Math.min(100, Math.round((xpInLevel / xpNeeded) * 100));
 }
 
-export function getLevelTitle(level: number): string {
-	const thresholds = Object.keys(LEVEL_TITLES)
-		.map(Number)
-		.sort((a, b) => b - a);
+/**
+ * Precomputed sorted title thresholds for O(1) or O(log N) lookup.
+ */
+const TITLE_THRESHOLDS = Object.keys(LEVEL_TITLES)
+	.map(Number)
+	.sort((a, b) => b - a);
 
-	for (const threshold of thresholds) {
+export function getLevelTitle(level: number): string {
+	for (const threshold of TITLE_THRESHOLDS) {
 		if (level >= threshold) {
 			return LEVEL_TITLES[threshold];
 		}
@@ -87,14 +89,24 @@ export function getXpRemainingForNextLevel(totalXp: number): number {
 export function getLevelInfo(totalXp: number): LevelInfo {
 	const level = calculateLevel(totalXp);
 	const currentLevel = Math.min(level, MAX_LEVEL);
+	const xpAtLevelStart = TOTAL_XP_AT_LEVEL[currentLevel];
+	const xpInCurrentLevel = Math.max(0, totalXp - xpAtLevelStart);
+	const xpForNextLevel = currentLevel < MAX_LEVEL ? getXpForLevel(currentLevel + 1) : 0;
+
+	const progressPercent =
+		currentLevel >= MAX_LEVEL
+			? 100
+			: xpForNextLevel > 0
+				? Math.min(100, Math.round((xpInCurrentLevel / xpForNextLevel) * 100))
+				: 100;
 
 	return {
 		level: currentLevel,
 		title: getLevelTitle(currentLevel),
 		currentXp: totalXp,
-		xpInCurrentLevel: getXpInCurrentLevel(totalXp),
-		xpForNextLevel: currentLevel < MAX_LEVEL ? getXpForLevel(currentLevel + 1) : 0,
-		progressPercent: getProgressToNextLevel(totalXp),
+		xpInCurrentLevel,
+		xpForNextLevel,
+		progressPercent,
 		nextMilestone: getNextMilestone(currentLevel),
 		color: getLevelColor(currentLevel),
 	};
