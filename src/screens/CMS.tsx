@@ -1,9 +1,10 @@
 'use client';
 
-import { Database, Edit2, ImagePlus, Plus, Search, Trash2, X } from 'lucide-react';
+import { Database, Edit2, FileUp, ImagePlus, Plus, Search, Trash2, X } from 'lucide-react';
 import Image from 'next/image';
 import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
 import { toast } from 'sonner';
+import { PdfUploadDrawer } from '@/components/CMS/PdfUploadDrawer';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -34,6 +35,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import {
 	createQuestionAction,
+	getPastPapersAction,
 	getQuestionsAction,
 	getQuestionWithOptionsAction,
 	getSubjectsAction,
@@ -97,7 +99,11 @@ export default function CMS() {
 	const [drawerTab, setDrawerTab] = useState<'basic' | 'question' | 'options'>('basic');
 	const [localImageFile, setLocalImageFile] = useState<File | null>(null);
 	const [localImagePreview, setLocalImagePreview] = useState<string | null>(null);
+	const [isPdfDrawerOpen, setIsPdfDrawerOpen] = useState(false);
 	const fileInputRef = useRef<HTMLInputElement>(null);
+
+	// Past Paper state
+	const [pastPapers, setPastPapers] = useState<any[]>([]);
 
 	// User management state
 	const [userSearchQuery, setUserSearchQuery] = useState('');
@@ -106,14 +112,16 @@ export default function CMS() {
 	const loadData = useCallback(async () => {
 		try {
 			setLoading(true);
-			const [subjectsData, questionsData, usersData] = await Promise.all([
+			const [subjectsData, questionsData, usersData, pastPapersData] = await Promise.all([
 				getSubjectsAction(),
 				getQuestionsAction({}),
 				getUsersAction({}),
+				getPastPapersAction(),
 			]);
 			setSubjects(subjectsData);
 			setQuestions(questionsData);
 			setUsers(usersData);
+			setPastPapers(pastPapersData);
 		} catch (error) {
 			console.error('Failed to load data:', error);
 		} finally {
@@ -478,15 +486,25 @@ export default function CMS() {
 							<Database className="h-4 w-4 mr-2" />
 							{seeding ? 'Seeding...' : 'Seed DB'}
 						</Button>
-						<Button
-							onClick={() => {
-								handleCreateQuestion();
-							}}
-							className="rounded-2xl h-12 px-6 bg-primary hover:bg-primary/90 shadow-2xl shadow-primary/20 font-black text-sm uppercase tracking-widest"
-						>
-							<Plus className="h-5 w-5 mr-2" />
-							Create New
-						</Button>
+						{activeTab === 'past-papers' ? (
+							<Button
+								onClick={() => setIsPdfDrawerOpen(true)}
+								className="rounded-2xl h-12 px-6 bg-primary hover:bg-primary/90 shadow-2xl shadow-primary/20 font-black text-sm uppercase tracking-widest"
+							>
+								<FileUp className="h-5 w-5 mr-2" />
+								Upload PDF
+							</Button>
+						) : (
+							<Button
+								onClick={() => {
+									handleCreateQuestion();
+								}}
+								className="rounded-2xl h-12 px-6 bg-primary hover:bg-primary/90 shadow-2xl shadow-primary/20 font-black text-sm uppercase tracking-widest"
+							>
+								<Plus className="h-5 w-5 mr-2" />
+								Create New
+							</Button>
+						)}
 					</div>
 				</div>
 
@@ -715,6 +733,61 @@ export default function CMS() {
 													>
 														{getStatusText(u.isBlocked, u.deletedAt)}
 													</Badge>
+												</div>
+											</CardContent>
+										</Card>
+									))}
+								</div>
+							)}
+
+							{activeTab === 'past-papers' && (
+								<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+									{pastPapers.map((p) => (
+										<Card
+											key={p.id}
+											className="rounded-[2rem] border-2 border-border/50 hover:border-primary/20 transition-all duration-300 group"
+										>
+											<CardContent className="p-6 space-y-6">
+												<div className="flex items-start justify-between">
+													<div className="flex flex-wrap gap-2">
+														<Badge className="rounded-lg uppercase tracking-widest text-[9px] font-black bg-primary/10 text-primary border-primary/20">
+															{p.year}
+														</Badge>
+														<Badge
+															variant="outline"
+															className="rounded-lg uppercase tracking-widest text-[9px] font-black"
+														>
+															{p.paper}
+														</Badge>
+													</div>
+												</div>
+
+												<div>
+													<h3 className="text-lg font-black text-foreground tracking-tighter uppercase line-clamp-1">
+														{p.paperId}
+													</h3>
+													<p className="text-xs font-bold text-muted-foreground">{p.subject}</p>
+												</div>
+
+												<div className="pt-4 border-t border-border/50 flex items-center justify-between">
+													<div className="space-y-1">
+														<p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">
+															Status
+														</p>
+														<Badge
+															className={`rounded-lg uppercase tracking-widest text-[9px] font-black ${p.isExtracted ? 'bg-emerald-500/10 text-emerald-500' : 'bg-brand-amber/10 text-brand-amber'}`}
+														>
+															{p.isExtracted ? 'Extracted' : 'Pending'}
+														</Badge>
+													</div>
+													<div className="text-right">
+														<p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">
+															Month
+														</p>
+														<p className="text-xs font-black text-foreground uppercase">
+															{p.month}
+														</p>
+													</div>
 												</div>
 											</CardContent>
 										</Card>

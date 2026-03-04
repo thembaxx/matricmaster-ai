@@ -5,17 +5,27 @@ import { z } from 'zod';
 import { uploadPdfFromUrl } from '@/lib/pdf-upload';
 
 // Types for extracted questions
+export interface ExtractedOption {
+	letter: string;
+	text: string;
+	isCorrect: boolean;
+	explanation?: string;
+}
+
 export interface ExtractedQuestion {
 	id: string;
 	questionNumber: string;
 	questionText: string;
+	options?: ExtractedOption[];
 	subQuestions?: {
 		id: string;
 		text: string;
 		marks?: number;
+		options?: ExtractedOption[];
 	}[];
 	marks: number;
 	topic?: string;
+	difficulty?: 'easy' | 'medium' | 'hard';
 }
 
 export interface ExtractedPaper {
@@ -46,22 +56,32 @@ interface PastPaperRecord {
 	total_marks: number | null;
 }
 
+const extractedOptionSchema = z.object({
+	letter: z.string().length(1),
+	text: z.string(),
+	isCorrect: z.boolean(),
+	explanation: z.string().optional(),
+});
+
 // Schema for validation
 const extractedQuestionSchema = z.object({
 	id: z.string(),
 	questionNumber: z.string(),
 	questionText: z.string(),
+	options: z.array(extractedOptionSchema).optional(),
 	subQuestions: z
 		.array(
 			z.object({
 				id: z.string(),
 				text: z.string(),
 				marks: z.number().optional(),
+				options: z.array(extractedOptionSchema).optional(),
 			})
 		)
 		.optional(),
 	marks: z.number(),
 	topic: z.string().optional(),
+	difficulty: z.enum(['easy', 'medium', 'hard']).optional(),
 });
 
 const extractedPaperSchema = z.object({
@@ -275,15 +295,22 @@ Extract ALL questions from this exam paper and return a JSON object with this ex
       "id": "1",
       "questionNumber": "1",
       "questionText": "Full question text including any diagrams or tables described",
+      "options": [
+        { "letter": "A", "text": "Option A text", "isCorrect": false, "explanation": "Why this is correct or incorrect" }
+      ],
       "subQuestions": [
         {
           "id": "1.1",
           "text": "Sub-question text",
-          "marks": 5
+          "marks": 5,
+          "options": [
+             { "letter": "A", "text": "Option A text", "isCorrect": true, "explanation": "..." }
+          ]
         }
       ],
       "marks": 25,
-      "topic": "Detected topic name"
+      "topic": "Detected topic name",
+      "difficulty": "easy" | "medium" | "hard"
     }
   ]
 }
@@ -293,8 +320,9 @@ IMPORTANT:
 2. Include ALL sub-questions (1.1, 1.2, 2.1, etc.)
 3. Include the marks for each question/sub-question if available
 4. Detect the topic/topic area for each question
-5. Return ONLY valid JSON, no additional text
-6. If you cannot see the full question clearly, still include what you can see
+5. For Multiple Choice Questions, extract the options and identify the correct answer if possible.
+6. Return ONLY valid JSON, no additional text
+7. If you cannot see the full question clearly, still include what you can see
 
 Format the response as a JSON object.`;
 
@@ -348,4 +376,38 @@ export async function getCachedQuestions(paperId: string): Promise<ExtractedPape
 
 export async function clearCache(): Promise<void> {
 	memoryCache.clear();
+}
+
+/**
+ * Flattens a complex exam paper structure into a flat list of questions
+ * suitable for the database's question bank.
+ */
+export function flattenExtractedPaper(paper: ExtractedPaper): any[] {
+	const flatQuestions: any[] = [];
+
+	for (const q of paper.questions) {
+		if (q.subQuestions && q.subQuestions.length > 0) {
+			for (const sq of q.subQuestions) {
+				flatQuestions.push({
+					questionText: `${q.questionText}\n\n${sq.text}`,
+					marks: sq.marks || 0,
+					topic: q.topic || 'General',
+					difficulty: q.difficulty || 'medium',
+					options: sq.options || q.options || [],
+					questionNumber: sq.id,
+				});
+			}
+		} else {
+			flatQuestions.push({
+				questionText: q.questionText,
+				marks: q.marks,
+				topic: q.topic || 'General',
+				difficulty: q.difficulty || 'medium',
+				options: q.options || [],
+				questionNumber: q.questionNumber,
+			});
+		}
+	}
+
+	return flatQuestions;
 }
