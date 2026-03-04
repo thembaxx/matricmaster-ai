@@ -41,22 +41,37 @@ export function getXpForLevel(level: number): number {
 	return Math.floor(level * level * 50);
 }
 
-export function getTotalXpForLevel(level: number): number {
-	let total = 0;
-	for (let i = 2; i <= level; i++) {
-		total += getXpForLevel(i);
+/**
+ * Precomputed cumulative XP required to reach the start of each level.
+ * TOTAL_XP_AT_LEVEL[level] = total XP needed to reach 'level' from level 1.
+ */
+export const TOTAL_XP_AT_LEVEL: number[] = (() => {
+	const totalXp = new Array(MAX_LEVEL + 1).fill(0);
+	let accumulated = 0;
+	for (let i = 2; i <= MAX_LEVEL; i++) {
+		accumulated += getXpForLevel(i);
+		totalXp[i] = accumulated;
 	}
-	return total;
+	return totalXp;
+})();
+
+export function getTotalXpForLevel(level: number): number {
+	if (level <= 1) return 0;
+	if (level > MAX_LEVEL) return TOTAL_XP_AT_LEVEL[MAX_LEVEL];
+	return TOTAL_XP_AT_LEVEL[level];
 }
 
-export function getLevelColor(level: number): string {
-	const thresholds = Object.keys(LEVEL_COLORS)
-		.map(Number)
-		.sort((a, b) => a - b);
+/**
+ * Precomputed sorted color thresholds for O(1) or O(log N) lookup.
+ */
+const COLOR_THRESHOLDS = Object.keys(LEVEL_COLORS)
+	.map(Number)
+	.sort((a, b) => b - a);
 
-	for (let i = thresholds.length - 1; i >= 0; i--) {
-		if (level >= thresholds[i]) {
-			return LEVEL_COLORS[thresholds[i]];
+export function getLevelColor(level: number): string {
+	for (const threshold of COLOR_THRESHOLDS) {
+		if (level >= threshold) {
+			return LEVEL_COLORS[threshold];
 		}
 	}
 	return LEVEL_COLORS[1];

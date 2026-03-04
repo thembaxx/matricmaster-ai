@@ -234,9 +234,21 @@ export const ACHIEVEMENTS: AchievementDefinition[] = [
 	},
 ];
 
+/**
+ * A memoized Map of achievement IDs to their point values.
+ * Used for O(1) lookups during XP calculations.
+ */
+export const ACHIEVEMENT_POINTS_MAP = new Map(ACHIEVEMENTS.map((a) => [a.id, a.points]));
+
+/**
+ * A memoized Map of achievement IDs to their full definitions.
+ * Used for O(1) lookups in UI components and stores.
+ */
+export const ACHIEVEMENTS_MAP = new Map(ACHIEVEMENTS.map((a) => [a.id, a]));
+
 // Helper function to get achievement by ID
 export function getAchievementById(id: string): AchievementDefinition | undefined {
-	return ACHIEVEMENTS.find((a) => a.id === id);
+	return ACHIEVEMENTS_MAP.get(id);
 }
 
 // Helper function to get achievements by category
@@ -246,9 +258,3 @@ export function getAchievementsByCategory(
 	if (category === 'all') return ACHIEVEMENTS;
 	return ACHIEVEMENTS.filter((a) => a.category === category || a.category === 'all');
 }
-
-/**
- * A memoized Map of achievement IDs to their point values.
- * Used for O(1) lookups during XP calculations.
- */
-export const ACHIEVEMENT_POINTS_MAP = new Map(ACHIEVEMENTS.map((a) => [a.id, a.points]));

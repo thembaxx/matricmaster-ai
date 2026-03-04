@@ -16,12 +16,15 @@ interface LevelProgressProps {
 	className?: string;
 }
 
-function getLevelBadgeIcon(level: number): string {
-	const thresholds = Object.keys(LEVEL_BADGE_ICONS)
-		.map(Number)
-		.sort((a, b) => b - a);
+/**
+ * Precomputed sorted badge thresholds for O(1) or O(log N) lookup.
+ */
+const BADGE_THRESHOLDS = Object.keys(LEVEL_BADGE_ICONS)
+	.map(Number)
+	.sort((a, b) => b - a);
 
-	for (const threshold of thresholds) {
+function getLevelBadgeIcon(level: number): string {
+	for (const threshold of BADGE_THRESHOLDS) {
 		if (level >= threshold) {
 			return LEVEL_BADGE_ICONS[threshold];
 		}

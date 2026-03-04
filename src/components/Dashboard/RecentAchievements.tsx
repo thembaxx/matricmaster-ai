@@ -5,7 +5,7 @@ import { Award, ChevronRight, Trophy } from 'lucide-react';
 import { memo, useEffect, useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
-import { ACHIEVEMENTS } from '@/constants/achievements';
+import { getAchievementById } from '@/constants/achievements';
 import { getUserAchievements } from '@/lib/db/achievement-actions';
 
 interface UnlockedAchievement {
@@ -32,7 +32,7 @@ export const RecentAchievements = memo(function RecentAchievements() {
 
 				const unlocked = result.unlocked
 					.map((ua) => {
-						const def = ACHIEVEMENTS.find((a) => a.id === ua.achievementId);
+						const def = getAchievementById(ua.achievementId);
 						const unlockedAt = new Date(ua.unlockedAt || now);
 						return {
 							id: ua.achievementId,
