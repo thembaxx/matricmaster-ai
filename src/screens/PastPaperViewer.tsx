@@ -21,6 +21,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { PAST_PAPERS } from '@/constants/mock-data';
 import { useQuestionExtractor } from '@/hooks/useQuestionExtractor';
+import { getPastPaperByIdAction } from '@/lib/db/actions';
 import { getExplanation } from '@/services/geminiService';
 
 // Lazy load PdfViewer to avoid SSR issues
@@ -49,7 +50,7 @@ export default function PastPaperViewer({
 	const [activeTab, setActiveTab] = useState('questions');
 	const [rotation, setRotation] = useState(0);
 	const [isSaved, setIsSaved] = useState(false);
-	const [paper, setPaper] = useState(PAST_PAPERS[0]);
+	const [paper, setPaper] = useState<any>(PAST_PAPERS[0]);
 	const [showAiExplanation, setShowAiExplanation] = useState(false);
 	const [aiExplanation, setAiExplanation] = useState<string | null>(null);
 	const [isExplaining, setIsExplaining] = useState(false);
@@ -72,11 +73,44 @@ export default function PastPaperViewer({
 
 	// Find paper data
 	useEffect(() => {
-		if (paperId) {
+		const loadPaper = async () => {
+			if (!paperId) return;
+
+			// Try DB first
+			try {
+				const dbPaper = await getPastPaperByIdAction(paperId);
+				if (dbPaper) {
+					const paperData = {
+						id: dbPaper.id,
+						paperId: dbPaper.paperId,
+						subject: dbPaper.subject,
+						paper: dbPaper.paper,
+						year: dbPaper.year,
+						month: dbPaper.month,
+						marks: dbPaper.totalMarks || 0,
+						downloadUrl: dbPaper.storedPdfUrl || dbPaper.originalPdfUrl,
+					};
+					setPaper(paperData);
+					if (mode !== 'read') {
+						extractQuestions(
+							paperData.paperId,
+							paperData.downloadUrl,
+							paperData.subject,
+							paperData.paper,
+							paperData.year,
+							paperData.month
+						);
+					}
+					return;
+				}
+			} catch (err) {
+				console.error('Failed to load paper from DB:', err);
+			}
+
+			// Fallback to mock data
 			const found = PAST_PAPERS.find((p) => p.id === paperId);
 			if (found) {
 				setPaper(found);
-				// Only extract questions if not in "read" mode (PDF viewer only)
 				if (mode !== 'read') {
 					extractQuestions(
 						found.id,
@@ -88,7 +122,9 @@ export default function PastPaperViewer({
 					);
 				}
 			}
-		}
+		};
+
+		loadPaper();
 	}, [paperId, extractQuestions, mode]);
 
 	const handleDownload = () => {

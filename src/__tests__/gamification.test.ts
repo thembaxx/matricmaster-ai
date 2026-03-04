@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
+import { getXpForLevel, TOTAL_XP_AT_LEVEL } from '@/constants/levels';
 import { calculateLevel, getLevelInfo, getLevelTitle } from '@/lib/level-utils';
-import { TOTAL_XP_AT_LEVEL, getXpForLevel } from '@/constants/levels';
 
 describe('Gamification Logic', () => {
 	describe('calculateLevel', () => {
@@ -45,7 +45,7 @@ describe('Gamification Logic', () => {
 			const xpForLevel6 = getXpForLevel(level + 1);
 
 			// 50% through level 5
-			const totalXp = xpAtLevel5 + (xpForLevel6 / 2);
+			const totalXp = xpAtLevel5 + xpForLevel6 / 2;
 			const info = getLevelInfo(totalXp);
 
 			expect(info.level).toBe(level);
