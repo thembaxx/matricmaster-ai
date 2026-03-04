@@ -25,10 +25,11 @@ export function createAIClient() {
  * Available Gemini models with fallback hierarchy
  */
 export const AI_MODELS = {
-	PRIMARY: 'gemini-2.0-flash',
+	PRIMARY: 'gemini-2.5-flash',
 	FALLBACK_1: 'gemini-2.0-pro',
-	FALLBACK_2: 'gemini-1.5-flash',
+	FALLBACK_2: 'gemini-2.0-flash',
 	FALLBACK_3: 'gemini-1.5-pro',
+	FALLBACK_4: 'gemini-3.1-flash-lite', // Newer model added as fallback
 } as const;
 
 /**

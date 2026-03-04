@@ -45,10 +45,10 @@ describe('AI Configuration', () => {
 	describe('AI_MODELS', () => {
 		it('should have correct model hierarchy', () => {
 			expect(AI_MODELS.PRIMARY).toBe('gemini-2.5-flash');
-			expect(AI_MODELS.FALLBACK_1).toBe('gemini-2.5-pro');
+			expect(AI_MODELS.FALLBACK_1).toBe('gemini-2.0-pro');
 			expect(AI_MODELS.FALLBACK_2).toBe('gemini-2.0-flash');
-			expect(AI_MODELS.FALLBACK_3).toBe('gemini-1.5-flash');
-			expect(AI_MODELS.FALLBACK_4).toBe('gemini-1.5-pro');
+			expect(AI_MODELS.FALLBACK_3).toBe('gemini-1.5-pro');
+			expect(AI_MODELS.FALLBACK_4).toBe('gemini-3.1-flash-lite');
 		});
 	});
 
