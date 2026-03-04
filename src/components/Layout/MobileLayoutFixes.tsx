@@ -10,7 +10,7 @@ export function MobileLayoutFixes() {
 		const checkMobile = () => {
 			const mobile = window.innerWidth < 768;
 			setIsMobile(mobile);
-			
+
 			// Calculate actual navigation height
 			const bottomNav = document.getElementById('bottom-navigation');
 

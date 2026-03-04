@@ -6,10 +6,10 @@ import { useEffect, useRef, useState } from 'react';
 import { AIExplanationCard } from '@/components/AI/AIExplanationCard';
 import {
 	getSubjectColor,
+	MobileQuizFooter,
 	QuizHintCard,
 	QuizQuestionCard,
 	QuizResultFeedback,
-	MobileQuizFooter,
 	SubjectFilterPills,
 } from '@/components/Quiz';
 import { Button } from '@/components/ui/button';
@@ -173,7 +173,7 @@ export default function InteractiveQuiz({ initialId }: { initialId?: string }) {
 
 			<div className="flex-1 overflow-y-auto w-full scroll-smooth">
 				<main className="px-4 sm:px-6 py-6 sm:py-8 space-y-6 sm:space-y-8 max-w-2xl mx-auto w-full mobile-safe-bottom lg:pb-12">
-					<div className="space-y-6">
+					<div className="space-y-6 px-6">
 						<div className="flex items-center gap-3">
 							<TrendingUp className={`w-5 h-5 ${colors.text}`} />
 							<h3 className="text-[10px] font-black uppercase text-muted-foreground tracking-[0.2em]">

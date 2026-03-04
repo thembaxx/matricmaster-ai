@@ -28,7 +28,8 @@ export function MobileViewTest() {
 				const hasCSSVars = navHeight.trim() !== '' && safePadding.trim() !== '';
 
 				// Test footer positioning
-				const footer = document.querySelector('.mobile-footer-safe') || document.querySelector('footer');
+				const footer =
+					document.querySelector('.mobile-footer-safe') || document.querySelector('footer');
 				const hasFooter = !!footer;
 
 				// Test spacing utilities
@@ -72,9 +73,7 @@ export function MobileViewTest() {
 						{Object.entries(testResults).map(([key, passed]) => (
 							<div
 								key={key}
-								className={`w-3 h-3 rounded-full ${
-									passed ? 'bg-green-500' : 'bg-red-500'
-								}`}
+								className={`w-3 h-3 rounded-full ${passed ? 'bg-green-500' : 'bg-red-500'}`}
 								title={key}
 							/>
 						))}

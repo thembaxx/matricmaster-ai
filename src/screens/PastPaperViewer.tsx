@@ -289,7 +289,7 @@ export default function PastPaperViewer({
 					style={{
 						transform: `scale(${zoom / 100}) rotate(${rotation}deg)`,
 						transformOrigin: 'top center',
-						minHeight: '100vh',
+						// minHeight: '100vh',
 					}}
 				>
 					{/* Instructions */}
@@ -316,10 +316,11 @@ export default function PastPaperViewer({
 										type="button"
 										key={q.id}
 										onClick={() => goToQuestion(idx)}
-										className={`w-10 h-10 p-0 rounded-xl font-bold border-2 transition-all ${currentQuestionIndex === idx
+										className={`w-10 h-10 p-0 rounded-xl font-bold border-2 transition-all ${
+											currentQuestionIndex === idx
 												? 'border-brand-blue bg-brand-blue text-white'
 												: 'border-zinc-200 dark:border-zinc-700 text-muted-foreground hover:border-brand-blue'
-											}`}
+										}`}
 									>
 										{q.questionNumber}
 									</button>
@@ -475,10 +476,11 @@ export default function PastPaperViewer({
 												type="button"
 												key={i}
 												onClick={() => goToQuestion(i)}
-												className={`w-8 h-8 rounded-lg font-bold text-xs transition-all ${currentQuestionIndex === i
+												className={`w-8 h-8 rounded-lg font-bold text-xs transition-all ${
+													currentQuestionIndex === i
 														? 'bg-brand-blue text-white'
 														: 'bg-muted text-muted-foreground hover:bg-brand-blue/10'
-													}`}
+												}`}
 											>
 												{i + 1}
 											</button>
@@ -515,12 +517,14 @@ export default function PastPaperViewer({
 								type="button"
 								key={item.id}
 								onClick={() => setActiveTab(item.id)}
-								className={`flex flex-col items-center gap-1 transition-all duration-300 ${activeTab === item.id ? 'text-brand-blue scale-110' : 'text-zinc-400'
-									}`}
+								className={`flex flex-col items-center gap-1 transition-all duration-300 ${
+									activeTab === item.id ? 'text-brand-blue scale-110' : 'text-zinc-400'
+								}`}
 							>
 								<span
-									className={`text-[10px] font-black uppercase tracking-wider ${activeTab === item.id ? 'text-brand-blue' : ''
-										}`}
+									className={`text-[10px] font-black uppercase tracking-wider ${
+										activeTab === item.id ? 'text-brand-blue' : ''
+									}`}
 								>
 									{item.label}
 								</span>

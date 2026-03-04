@@ -5,10 +5,10 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import { AIExplanationCard } from '@/components/AI/AIExplanationCard';
 import {
+	MobileQuizFooter,
 	QuizHintCard,
 	QuizQuestionCard,
 	QuizResultFeedback,
-	MobileQuizFooter,
 } from '@/components/Quiz';
 import { Button } from '@/components/ui/button';
 import { getExplanation } from '@/services/geminiService';
