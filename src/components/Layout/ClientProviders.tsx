@@ -6,6 +6,8 @@ import NotificationListener from '@/components/Notifications/NotificationListene
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { AblyClientProvider } from '@/lib/ably/provider';
 import AppLayout from './AppLayout';
+import QueryErrorBoundary from './QueryErrorBoundary';
+import QueryProvider from './QueryProvider';
 
 interface ClientProvidersProps {
 	children: ReactNode;
@@ -13,14 +15,18 @@ interface ClientProvidersProps {
 
 export function ClientProviders({ children }: ClientProvidersProps) {
 	return (
-		<LazyMotion features={domAnimation}>
-			<TooltipProvider>
-				<AblyClientProvider>
-					<NotificationListener>
-						<AppLayout>{children}</AppLayout>
-					</NotificationListener>
-				</AblyClientProvider>
-			</TooltipProvider>
-		</LazyMotion>
+		<QueryErrorBoundary>
+			<QueryProvider>
+				<LazyMotion features={domAnimation}>
+					<TooltipProvider>
+						<AblyClientProvider>
+							<NotificationListener>
+								<AppLayout>{children}</AppLayout>
+							</NotificationListener>
+						</AblyClientProvider>
+					</TooltipProvider>
+				</LazyMotion>
+			</QueryProvider>
+		</QueryErrorBoundary>
 	);
 }
