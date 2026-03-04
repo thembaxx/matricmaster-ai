@@ -256,7 +256,7 @@ export function PdfUploadDrawer({ isOpen, onClose, subjects, onSuccess }: PdfUpl
 					</DrawerDescription>
 				</DrawerHeader>
 
-				<div className="flex-1 overflow-hidden">
+				<div className="grow overflow-y-auto">
 					{step === 'upload' && (
 						<div className="p-8 space-y-6">
 							<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -375,12 +375,12 @@ export function PdfUploadDrawer({ isOpen, onClose, subjects, onSuccess }: PdfUpl
 									/>
 									<label
 										htmlFor="pdf-upload"
-										className="w-full h-40 rounded-3xl border-2 border-dashed border-border flex flex-col items-center justify-center gap-4 hover:border-primary hover:bg-primary/5 transition-all cursor-pointer"
+										className="w-full h-40 rounded-3xl border-2 border-dashed border-border flex flex-col items-center justify-center gap-4 hover:border-primary hover:bg-primary/5 transition-all cursor-pointer overflow-hidden"
 									>
 										<div className="h-12 w-12 rounded-2xl bg-muted flex items-center justify-center">
 											<FileUp className="h-6 w-6 text-muted-foreground" />
 										</div>
-										<span className="text-sm font-black uppercase tracking-widest text-muted-foreground">
+										<span className="text-sm font-black uppercase tracking-widest text-muted-foreground px-6 truncate line-clamp-1">
 											{file ? file.name : 'Choose PDF File'}
 										</span>
 									</label>

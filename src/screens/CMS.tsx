@@ -463,7 +463,7 @@ export default function CMS() {
 	const fileInputId = useId();
 
 	return (
-		<div className="flex-1 flex flex-col bg-background overflow-hidden pb-32">
+		<div className="grow flex flex-col bg-background overflow-hidden pb-32">
 			<PdfUploadDrawer
 				isOpen={isPdfDrawerOpen}
 				onClose={() => setIsPdfDrawerOpen(false)}
@@ -498,7 +498,7 @@ export default function CMS() {
 								className="rounded-2xl h-12 px-6 bg-primary hover:bg-primary/90 shadow-2xl shadow-primary/20 font-black text-sm uppercase tracking-widest"
 							>
 								<FileUp className="h-5 w-5 mr-2" />
-								Upload PDF
+								Add
 							</Button>
 						) : (
 							<Button
@@ -615,7 +615,7 @@ export default function CMS() {
 
 			{/* Main Content Grid */}
 			<main className="flex-1 overflow-hidden px-4 sm:px-8">
-				<ScrollArea className="h-full no-scrollbar">
+				<div className="h-full no-scrollbar overflow-y-auto">
 					{loading ? (
 						<div className="flex items-center justify-center py-40">
 							<div className="animate-spin rounded-full h-12 w-12 border-4 border-primary border-t-transparent" />
@@ -835,7 +835,7 @@ export default function CMS() {
 							)}
 						</div>
 					)}
-				</ScrollArea>
+				</div>
 			</main>
 
 			{/* Question Drawer */}
