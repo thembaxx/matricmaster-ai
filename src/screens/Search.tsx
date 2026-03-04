@@ -104,14 +104,14 @@ export default function Search() {
 	}, [session?.user?.id]);
 
 	return (
-		<div className="flex flex-col h-full bg-background lg:px-12">
-			<div className="px-6 py-12 bg-background shrink-0 lg:px-0">
+		<div className="flex flex-col h-full bg-background lg:px-12 relative overflow-hidden">
+			<div className="px-4 sm:px-6 py-8 sm:py-12 bg-background shrink-0 lg:px-0">
 				<div className="max-w-5xl mx-auto w-full">
-					<div className="mb-12 space-y-2">
-						<h1 className="text-4xl lg:text-7xl font-black text-foreground tracking-tighter uppercase">
+					<div className="mb-8 sm:mb-12 space-y-2">
+						<h1 className="text-3xl sm:text-4xl lg:text-7xl font-black text-foreground tracking-tighter uppercase">
 							Smart Search
 						</h1>
-						<p className="text-muted-foreground font-bold lg:text-lg">
+						<p className="text-muted-foreground font-bold text-sm sm:text-lg">
 							Find papers, topics, and AI-powered insights instantly
 						</p>
 					</div>

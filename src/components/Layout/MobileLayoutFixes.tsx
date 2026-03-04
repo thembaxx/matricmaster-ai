@@ -12,10 +12,15 @@ export function MobileLayoutFixes() {
 			setIsMobile(mobile);
 			
 			// Calculate actual navigation height
-			const nav = document.querySelector('.ios-glass');
-			if (nav) {
-				const rect = nav.getBoundingClientRect();
-				setNavHeight(rect.height);
+			const bottomNav = document.getElementById('bottom-navigation');
+
+			if (bottomNav) {
+				const rect = bottomNav.getBoundingClientRect();
+				// For bottom navigation, we use its height + distance from bottom
+				setNavHeight(rect.height + 32);
+			} else {
+				// If no bottom navigation, reset to 0
+				setNavHeight(0);
 			}
 		};
 
@@ -30,7 +35,7 @@ export function MobileLayoutFixes() {
 			document.documentElement.style.setProperty('--mobile-nav-height', `${navHeight}px`);
 			document.documentElement.style.setProperty(
 				'--mobile-safe-bottom-padding',
-				`${navHeight + 32}px`
+				navHeight > 0 ? `${navHeight + 16}px` : '120px'
 			);
 		} else {
 			// Reset for desktop

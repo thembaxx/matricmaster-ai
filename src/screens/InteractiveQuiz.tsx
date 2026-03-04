@@ -121,8 +121,8 @@ export default function InteractiveQuiz({ initialId }: { initialId?: string }) {
 	if (!currentQuestion) return null;
 
 	return (
-		<div className="flex flex-col h-full w-full min-w-0 bg-background relative overflow-x-hidden">
-			<header className="px-4 sm:px-6 pt-4 sm:pt-6 pb-4 ios-glass sticky top-0 z-20 shrink-0">
+		<div className="fixed inset-0 flex flex-col w-full min-w-0 bg-background overflow-hidden">
+			<header className="px-4 sm:px-6 pt-4 sm:pt-6 pb-4 ios-glass sticky top-0 z-30 shrink-0 border-b border-border/10">
 				<div className="max-w-2xl mx-auto w-full">
 					<div className="flex items-center gap-3 sm:gap-4 mb-4">
 						<Button
@@ -171,8 +171,8 @@ export default function InteractiveQuiz({ initialId }: { initialId?: string }) {
 				</div>
 			</header>
 
-			<div className="grow overflow-hidden w-full">
-				<main className="px-4 sm:px-6 py-6 sm:py-8 space-y-6 sm:space-y-8 mobile-safe-bottom max-w-2xl mx-auto w-full">
+			<div className="flex-1 overflow-y-auto w-full scroll-smooth">
+				<main className="px-4 sm:px-6 py-6 sm:py-8 space-y-6 sm:space-y-8 max-w-2xl mx-auto w-full mobile-safe-bottom lg:pb-12">
 					<div className="space-y-6">
 						<div className="flex items-center gap-3">
 							<TrendingUp className={`w-5 h-5 ${colors.text}`} />

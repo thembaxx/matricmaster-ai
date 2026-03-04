@@ -117,33 +117,41 @@ export default function Dashboard({
 					animate="visible"
 					className="px-4 sm:px-6 py-6 space-y-6 sm:space-y-8 lg:px-0"
 				>
-					<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-						<m.div variants={STAGGER_ITEM}>
+					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+						<m.div variants={STAGGER_ITEM} className="md:col-span-1">
 							<WeeklyChallenge />
 						</m.div>
-						<m.div variants={STAGGER_ITEM}>
+						<m.div variants={STAGGER_ITEM} className="md:col-span-1">
 							<DailyGoals />
 						</m.div>
 
-						<DailyQuestCard
-							totalQuestions={progressData.totalQuestions}
-							dailyProgress={dailyProgress}
-							isLoading={isLoading}
-							onNavigateToQuiz={handleNavigateToQuiz}
-						/>
+						<div className="md:col-span-2">
+							<DailyQuestCard
+								totalQuestions={progressData.totalQuestions}
+								dailyProgress={dailyProgress}
+								isLoading={isLoading}
+								onNavigateToQuiz={handleNavigateToQuiz}
+							/>
+						</div>
 
-						<StatsCards streak={streak} accuracy={progressData.accuracy} />
+						<div className="md:col-span-2 lg:col-span-1">
+							<StatsCards streak={streak} accuracy={progressData.accuracy} />
+						</div>
 
-						<WeeklyChartCard weekProgress={weekProgress} />
+						<div className="md:col-span-2 lg:col-span-2">
+							<WeeklyChartCard weekProgress={weekProgress} />
+						</div>
 
-						<m.div variants={STAGGER_ITEM}>
+						<m.div variants={STAGGER_ITEM} className="md:col-span-1">
 							<RecentAchievements />
 						</m.div>
-						<m.div variants={STAGGER_ITEM}>
+						<m.div variants={STAGGER_ITEM} className="md:col-span-1 lg:col-span-1">
 							<LeaderboardPreview />
 						</m.div>
 
-						<ChallengesList />
+						<div className="md:col-span-2 lg:col-span-1">
+							<ChallengesList />
+						</div>
 
 						<m.div variants={STAGGER_ITEM} className="md:col-span-2 lg:col-span-3">
 							<TopicMasteryCard />
