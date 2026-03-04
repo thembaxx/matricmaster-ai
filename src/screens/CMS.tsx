@@ -463,7 +463,7 @@ export default function CMS() {
 	const fileInputId = useId();
 
 	return (
-		<div className="grow flex flex-col bg-background overflow-hidden pb-32">
+		<div className="flex-1 flex flex-col bg-background overflow-hidden pb-32">
 			<PdfUploadDrawer
 				isOpen={isPdfDrawerOpen}
 				onClose={() => setIsPdfDrawerOpen(false)}
@@ -494,23 +494,21 @@ export default function CMS() {
 						</Button>
 						{activeTab === 'past-papers' ? (
 							<Button
-								size="sm"
 								onClick={() => setIsPdfDrawerOpen(true)}
-								className="rounded-2xl px-6 bg-primary hover:bg-primary/90 shadow-2xl shadow-primary/20 font-black text-sm uppercase tracking-widest"
+								className="rounded-2xl h-12 px-6 bg-primary hover:bg-primary/90 shadow-2xl shadow-primary/20 font-black text-sm uppercase tracking-widest"
 							>
 								<FileUp className="h-5 w-5 mr-2" />
-								Add
+								Upload PDF
 							</Button>
 						) : (
 							<Button
-								size="sm"
 								onClick={() => {
 									handleCreateQuestion();
 								}}
-								className="rounded-2xl px-6 bg-primary hover:bg-primary/90 shadow-2xl shadow-primary/20 font-black text-sm uppercase tracking-widest"
+								className="rounded-2xl h-12 px-6 bg-primary hover:bg-primary/90 shadow-2xl shadow-primary/20 font-black text-sm uppercase tracking-widest"
 							>
 								<Plus className="h-5 w-5 mr-2" />
-								Create
+								Create New
 							</Button>
 						)}
 					</div>
