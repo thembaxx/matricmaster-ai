@@ -1,5 +1,5 @@
-import { GoogleGenAI } from '@google/genai';
 import { type NextRequest, NextResponse } from 'next/server';
+import { AI_MODELS, generateAI, streamAI } from '@/lib/ai-config';
 import { getAuth } from '@/lib/auth';
 
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
@@ -14,6 +14,7 @@ interface RequestBody {
 	subject?: string | null;
 	history?: ChatMessage[];
 	includeSuggestions?: boolean;
+	stream?: boolean;
 }
 
 const systemPrompt = `You are an expert South African Matriculation (Grade 12) study tutor. Your role is to help students master their subjects through clear explanations, step-by-step guidance, and practice problems.
@@ -74,44 +75,40 @@ export async function POST(request: NextRequest) {
 		}
 
 		const body: RequestBody = await request.json();
-		const { message, subject, history, includeSuggestions = true } = body;
+		const { message, subject, history, includeSuggestions = true, stream = false } = body;
 
 		if (!message || message.trim().length === 0) {
 			return NextResponse.json({ error: 'Message is required' }, { status: 400 });
 		}
 
-		const genAI = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
-
-		const conversationParts: { role: string; parts: { text: string }[] }[] = [];
-
-		conversationParts.push({
-			role: 'user',
-			parts: [{ text: systemPrompt }],
-		});
+		let conversationContext = `${systemPrompt}\n\n`;
 
 		if (history && history.length > 0) {
 			const recentHistory = history.slice(-10);
 			for (const msg of recentHistory) {
-				conversationParts.push({
-					role: msg.role,
-					parts: [{ text: msg.content }],
-				});
+				conversationContext += `${msg.role === 'assistant' ? 'Assistant' : 'Student'}: ${msg.content}\n`;
 			}
 		}
 
-		const contextualMessage = subject ? `[Subject: ${subject}] ${message}` : message;
+		const contextualMessage = subject
+			? `[Subject: ${subject}] Student asks: ${message}`
+			: `Student asks: ${message}`;
 
-		conversationParts.push({
-			role: 'user',
-			parts: [{ text: contextualMessage }],
+		conversationContext += `\n${contextualMessage}`;
+
+		if (stream) {
+			const result = streamAI({
+				prompt: conversationContext,
+				model: AI_MODELS.PRIMARY,
+			});
+
+			return result.toTextStreamResponse();
+		}
+
+		const response = await generateAI({
+			prompt: conversationContext,
+			model: AI_MODELS.PRIMARY,
 		});
-
-		const result = await genAI.models.generateContent({
-			model: 'gemini-2.5-flash',
-			contents: conversationParts,
-		});
-
-		const response = result.text;
 
 		if (!response) {
 			return NextResponse.json({ error: 'Failed to generate response' }, { status: 500 });
@@ -121,26 +118,14 @@ export async function POST(request: NextRequest) {
 
 		if (includeSuggestions) {
 			try {
-				const suggestionResult = await genAI.models.generateContent({
-					model: 'gemini-2.5-flash',
-					contents: [
-						{
-							role: 'user',
-							parts: [
-								{
-									text: `${suggestionsPrompt}\n\nStudent asked: "${message}"\nTutor responded: "${response.slice(0, 500)}..."`,
-								},
-							],
-						},
-					],
+				const suggestionsResult = await generateAI({
+					prompt: `${suggestionsPrompt}\n\nStudent asked: "${message}"\nTutor responded: "${response.slice(0, 500)}..."`,
+					model: AI_MODELS.PRIMARY,
 				});
 
-				const suggestionsText = suggestionResult.text;
-				if (suggestionsText) {
-					const jsonMatch = suggestionsText.match(/\[[\s\S]*\]/);
-					if (jsonMatch) {
-						suggestions = JSON.parse(jsonMatch[0]);
-					}
+				const jsonMatch = suggestionsResult.match(/\[[\s\S]*\]/);
+				if (jsonMatch) {
+					suggestions = JSON.parse(jsonMatch[0]);
 				}
 			} catch (error) {
 				console.warn('Failed to generate suggestions:', error);

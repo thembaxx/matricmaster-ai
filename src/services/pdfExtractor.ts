@@ -1,7 +1,6 @@
-'use server';
-
 import { GoogleGenAI } from '@google/genai';
 import { z } from 'zod';
+import { logError, logInfo, logWarn, performance } from '@/lib/monitoring';
 
 // Types for extracted questions
 export interface ExtractedOption {
@@ -107,7 +106,16 @@ const memoryCache: Map<string, ExtractedPaper> = new Map();
 
 let ai: GoogleGenAI | null = null;
 
-function getAI(): GoogleGenAI | null {
+// Model fallback chain - use latest stable models
+const MODEL_FALLBACKS = [
+	'gemini-2.5-flash',
+	'gemini-2.5-pro',
+	'gemini-2.0-flash',
+	'gemini-1.5-flash',
+	'gemini-1.5-pro',
+];
+
+export function getAI(): GoogleGenAI | null {
 	if (!ai) {
 		const apiKey = process.env.GEMINI_API_KEY;
 		if (!apiKey) {
@@ -117,6 +125,31 @@ function getAI(): GoogleGenAI | null {
 		ai = new GoogleGenAI({ apiKey });
 	}
 	return ai;
+}
+
+async function getModelWithFallback(): Promise<string> {
+	const client = getAI();
+	if (!client) throw new Error('AI service not configured.');
+
+	// Test each model in the fallback chain
+	for (const model of MODEL_FALLBACKS) {
+		try {
+			// Simple test to check if model is available
+			await client.models.generateContent({
+				model,
+				contents: [{ role: 'user', parts: [{ text: 'test' }] }],
+				config: { responseMimeType: 'text/plain' },
+			});
+			console.log(`[PDF Extractor] Using model: ${model}`);
+			return model;
+		} catch (error) {
+			console.warn(`[PDF Extractor] Model ${model} not available:`, error);
+		}
+	}
+
+	throw new Error(
+		'No available Gemini models found. Please check your API key and model permissions.'
+	);
 }
 
 function cleanJson(text: string): string {
@@ -157,51 +190,104 @@ export async function extractQuestionsFromPDF(
 	year: number,
 	month: string
 ): Promise<ExtractedPaper> {
-	// 1. Check Cache
-	const memCached = memoryCache.get(paperId);
-	if (memCached) return { ...memCached, extractedFromDb: false };
+	const startTime = Date.now();
 
-	// Only check DB if we have a paperId
-	if (typeof pdfSource === 'string') {
-		const dbRecord = await checkDbForPaper(paperId);
-		if (dbRecord?.is_extracted && dbRecord.extracted_questions) {
-			memoryCache.set(paperId, dbRecord.extracted_questions);
-			return {
-				...dbRecord.extracted_questions,
-				extractedFromDb: true,
-				storedPdfUrl: dbRecord.stored_pdf_url || undefined,
-			};
-		}
-	}
-
-	// 2. Get Base64
-	let base64: string;
-	if (typeof pdfSource === 'object' && 'base64' in pdfSource) {
-		base64 = pdfSource.base64;
-	} else {
-		const response = await fetch(pdfSource);
-		if (!response.ok) throw new Error(`Failed to fetch PDF: ${response.statusText}`);
-		const arrayBuffer = await response.arrayBuffer();
-		base64 = Buffer.from(arrayBuffer).toString('base64');
-	}
-
-	// 3. Perform Extraction
-	console.log(`[PDF Extractor] Extracting ${paperId} with superpowered AI...`);
-	let extractedData: ExtractedPaper;
+	logInfo('pdf-extraction', `Starting extraction for ${paperId}`, {
+		subject,
+		paper,
+		year,
+		month,
+		sourceType: typeof pdfSource === 'string' ? 'url' : 'base64',
+	});
 
 	try {
-		// Attempt full extraction first (efficient for most NSC papers)
-		extractedData = await performFullExtraction(base64, paperId, subject, paper, year, month);
+		// 1. Check Cache
+		const memCached = memoryCache.get(paperId);
+		if (memCached) {
+			logInfo('pdf-extraction', `Cache hit for ${paperId}`, { cached: true });
+			return { ...memCached, extractedFromDb: false };
+		}
+
+		// Only check DB if we have a paperId
+		if (typeof pdfSource === 'string') {
+			const dbRecord = await checkDbForPaper(paperId);
+			if (dbRecord?.is_extracted && dbRecord.extracted_questions) {
+				memoryCache.set(paperId, dbRecord.extracted_questions);
+				logInfo('pdf-extraction', `DB cache hit for ${paperId}`, { cached: true });
+				return {
+					...dbRecord.extracted_questions,
+					extractedFromDb: true,
+					storedPdfUrl: dbRecord.stored_pdf_url || undefined,
+				};
+			}
+		}
+
+		// 2. Get Base64
+		let base64: string;
+		if (typeof pdfSource === 'object' && 'base64' in pdfSource) {
+			base64 = pdfSource.base64;
+			logInfo('pdf-extraction', `Using base64 source for ${paperId}`);
+		} else {
+			logInfo('pdf-extraction', `Fetching PDF from URL for ${paperId}`);
+			const response = await fetch(pdfSource);
+			if (!response.ok) throw new Error(`Failed to fetch PDF: ${response.statusText}`);
+			const arrayBuffer = await response.arrayBuffer();
+			base64 = Buffer.from(arrayBuffer).toString('base64');
+			logInfo('pdf-extraction', `PDF fetched successfully for ${paperId}`, {
+				size: `${((base64.length * 3) / 4 / 1024).toFixed(2)} KB`,
+			});
+		}
+
+		// 3. Perform Extraction
+		logInfo('pdf-extraction', `Starting AI extraction for ${paperId}`);
+		let extractedData: ExtractedPaper;
+
+		try {
+			// Attempt full extraction first (efficient for most NSC papers)
+			extractedData = await performFullExtraction(base64, paperId, subject, paper, year, month);
+			logInfo('pdf-extraction', `Full extraction successful for ${paperId}`, {
+				questionsCount: extractedData.questions.length,
+				method: 'full',
+			});
+		} catch (error) {
+			logWarn('pdf-extraction', `Full extraction failed for ${paperId}, trying fallback`, {
+				error: error instanceof Error ? error.message : 'Unknown error',
+			});
+			// Fallback to page-by-page if full extraction fails
+			extractedData = await performExtractionBySections(
+				base64,
+				paperId,
+				subject,
+				paper,
+				year,
+				month
+			);
+			logInfo('pdf-extraction', `Fallback extraction successful for ${paperId}`, {
+				questionsCount: extractedData.questions.length,
+				method: 'fallback',
+			});
+		}
+
+		// 4. Update memory cache
+		memoryCache.set(paperId, extractedData);
+		const duration = Date.now() - startTime;
+		performance.recordExtractionTime(duration);
+
+		logInfo('pdf-extraction', `Extraction completed for ${paperId}`, {
+			duration: `${duration}ms`,
+			questionsCount: extractedData.questions.length,
+			success: true,
+		});
+
+		return extractedData;
 	} catch (error) {
-		console.warn('[PDF Extractor] Full extraction failed, attempting page-by-page fallback...', error);
-		// Fallback to page-by-page if full extraction fails
-		extractedData = await performExtractionBySections(base64, paperId, subject, paper, year, month);
+		const duration = Date.now() - startTime;
+		logError('pdf-extraction', `Extraction failed for ${paperId}`, {
+			error: error instanceof Error ? error.message : 'Unknown error',
+			duration: `${duration}ms`,
+		});
+		throw error;
 	}
-
-	// 4. Update memory cache
-	memoryCache.set(paperId, extractedData);
-
-	return extractedData;
 }
 
 async function performFullExtraction(
@@ -214,6 +300,9 @@ async function performFullExtraction(
 ): Promise<ExtractedPaper> {
 	const client = getAI();
 	if (!client) throw new Error('AI service not configured.');
+
+	// Get the best available model
+	const model = await getModelWithFallback();
 
 	const extractionPrompt = `You are a world-class educational AI specialized in South African NSC (National Senior Certificate) exam analysis.
 Your task is to extract EVERY SINGLE question and sub-question from the provided PDF with 100% accuracy.
@@ -264,31 +353,38 @@ SPECIAL INSTRUCTIONS:
 5. **No Hallucinations**: Only extract what is in the paper. If a topic is unclear, label it 'General'.
 6. **Diagrams**: If a question refers to a diagram, include [Diagram: Description of what the diagram shows] in the question text.`;
 
-	const result = await (client as any).models.generateContent({
-		model: 'gemini-3.0-flash-preview',
-		contents: [
-			{
-				role: 'user',
-				parts: [
-					{ text: extractionPrompt },
-					{
-						inlineData: {
-							mimeType: 'application/pdf',
-							data: base64,
+	try {
+		console.log(`[PDF Extractor] Using model ${model} for full extraction of ${paperId}`);
+
+		const result = await (client as GoogleGenAI).models.generateContent({
+			model,
+			contents: [
+				{
+					role: 'user',
+					parts: [
+						{ text: extractionPrompt },
+						{
+							inlineData: {
+								mimeType: 'application/pdf',
+								data: base64,
+							},
 						},
-					},
-				],
+					],
+				},
+			],
+			config: {
+				responseMimeType: 'application/json',
 			},
-		],
-		config: {
-			responseMimeType: 'application/json',
-		},
-	});
+		});
 
-	if (!result.text) throw new Error('No response from AI');
+		if (!result.text) throw new Error('No response from AI');
 
-	const cleaned = cleanJson(result.text);
-	return extractedPaperSchema.parse(JSON.parse(cleaned));
+		const cleaned = cleanJson(result.text);
+		return extractedPaperSchema.parse(JSON.parse(cleaned));
+	} catch (error) {
+		console.error(`[PDF Extractor] Full extraction failed with model ${model}:`, error);
+		throw error;
+	}
 }
 
 async function performExtractionBySections(
@@ -302,36 +398,46 @@ async function performExtractionBySections(
 	const client = getAI();
 	if (!client) throw new Error('AI service not configured.');
 
+	// Get the best available model for fallback
+	const model = await getModelWithFallback();
+
 	// In a real "page-by-page" we might split the PDF, but here we'll ask Gemini to do it in chunks
 	// by focusing on sections. Since we don't have a PDF splitter here, we'll use a more descriptive prompt.
 	const prompt = `Extract questions from this PDF paper page by page. Ensure NO question is missed.
 Combine them into a single JSON structure for ${subject} ${paper} ${year} (${month}) with paperId ${paperId}.`;
 
-	const result = await (client as any).models.generateContent({
-		model: 'gemini-2.5-flash',
-		contents: [
-			{
-				role: 'user',
-				parts: [
-					{ text: prompt },
-					{
-						inlineData: {
-							mimeType: 'application/pdf',
-							data: base64,
+	try {
+		console.log(`[PDF Extractor] Using model ${model} for section extraction of ${paperId}`);
+
+		const result = await (client as GoogleGenAI).models.generateContent({
+			model,
+			contents: [
+				{
+					role: 'user',
+					parts: [
+						{ text: prompt },
+						{
+							inlineData: {
+								mimeType: 'application/pdf',
+								data: base64,
+							},
 						},
-					},
-				],
+					],
+				},
+			],
+			config: {
+				responseMimeType: 'application/json',
 			},
-		],
-		config: {
-			responseMimeType: 'application/json',
-		},
-	});
+		});
 
-	if (!result.text) throw new Error('No response from AI');
+		if (!result.text) throw new Error('No response from AI');
 
-	const cleaned = cleanJson(result.text);
-	return extractedPaperSchema.parse(JSON.parse(cleaned));
+		const cleaned = cleanJson(result.text);
+		return extractedPaperSchema.parse(JSON.parse(cleaned));
+	} catch (error) {
+		console.error(`[PDF Extractor] Section extraction failed with model ${model}:`, error);
+		throw error;
+	}
 }
 
 export async function getCachedQuestions(paperId: string): Promise<ExtractedPaper | undefined> {

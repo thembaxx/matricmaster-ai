@@ -1,5 +1,5 @@
-import { GoogleGenAI } from '@google/genai';
 import { type NextRequest, NextResponse } from 'next/server';
+import { generateAI } from '@/lib/ai-config';
 import { getAuth } from '@/lib/auth';
 
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
@@ -64,8 +64,6 @@ export async function POST(request: NextRequest) {
 			return NextResponse.json({ error: 'Context is required' }, { status: 400 });
 		}
 
-		const genAI = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
-
 		const prompt = `${PRACTICE_PROMPT}
 
 Subject: ${subject || 'General'}
@@ -77,30 +75,18 @@ ${context}
 
 Generate ${count} practice problems now. Return only valid JSON.`;
 
-		const result = await genAI.models.generateContent({
-			model: 'gemini-2.5-flash',
-			contents: [
-				{
-					role: 'user',
-					parts: [{ text: prompt }],
-				},
-			],
-		});
-
-		const responseText = result.text;
+		const responseText = await generateAI({ prompt });
 
 		if (!responseText) {
 			return NextResponse.json({ error: 'Failed to generate problems' }, { status: 500 });
 		}
 
-		// Extract JSON from response (handle potential markdown code blocks)
 		let jsonStr = responseText;
 		const jsonMatch = responseText.match(/```(?:json)?\s*([\s\S]*?)```/);
 		if (jsonMatch) {
 			jsonStr = jsonMatch[1].trim();
 		}
 
-		// Parse and validate the JSON
 		let problems: PracticeProblem[];
 		try {
 			problems = JSON.parse(jsonStr);
@@ -109,7 +95,6 @@ Generate ${count} practice problems now. Return only valid JSON.`;
 			return NextResponse.json({ error: 'Failed to parse generated problems' }, { status: 500 });
 		}
 
-		// Validate structure
 		if (!Array.isArray(problems)) {
 			return NextResponse.json({ error: 'Invalid response format' }, { status: 500 });
 		}

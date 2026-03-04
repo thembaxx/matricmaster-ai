@@ -76,71 +76,95 @@ export function PdfUploadDrawer({ isOpen, onClose, subjects, onSuccess }: PdfUpl
 	};
 
 	const handleStartExtraction = async () => {
-		if (!file || !paperDetails.paperId || !paperDetails.subjectId) {
-			toast.error('Please fill in all required fields');
+		// Client-side validation
+		if (!file) {
+			toast.error('Please select a PDF file');
+			return;
+		}
+
+		if (!paperDetails.paperId.trim()) {
+			toast.error('Please enter a paper ID');
+			return;
+		}
+
+		if (!paperDetails.subjectId) {
+			toast.error('Please select a subject');
+			return;
+		}
+
+		// File size validation
+		const maxSize = 16 * 1024 * 1024; // 16MB
+		if (file.size > maxSize) {
+			toast.error(
+				`File too large. Maximum size is 16MB. Your file is ${(file.size / 1024 / 1024).toFixed(2)}MB`
+			);
+			return;
+		}
+
+		// File type validation
+		if (file.type !== 'application/pdf') {
+			toast.error('Invalid file type. Only PDF files are supported');
 			return;
 		}
 
 		try {
 			setStep('processing');
 			setProcessingProgress(10);
-			setProcessingStatus('Reading file locally...');
+			setProcessingStatus('Uploading PDF to storage...');
 
-			// 1. Read file as base64 for instant extraction
-			const reader = new FileReader();
-			const base64Promise = new Promise<string>((resolve) => {
-				reader.onload = () => {
-					const result = reader.result as string;
-					resolve(result.split(',')[1]);
-				};
-				reader.readAsDataURL(file);
-			});
+			// 1. Upload PDF to UploadThing first (sequential approach)
+			const uploadResult = await uploadPdfFile(file);
 
-			const base64 = await base64Promise;
-			setProcessingProgress(30);
-			setProcessingStatus('AI is analyzing questions (Superpowered mode)...');
+			if (!uploadResult.success) {
+				throw new Error(`Upload failed: ${uploadResult.error}`);
+			}
 
-			// 2. Start Extraction and Upload simultaneously
+			setUploadedUrl(uploadResult.url || null);
+			setProcessingProgress(40);
+			setProcessingStatus('PDF uploaded successfully, starting AI analysis...');
+
+			// 2. Extract questions using the uploaded URL
 			const subjectObj = subjects.find((s) => s.id === paperDetails.subjectId);
 
-			const extractionPromise = extractQuestionsFromPDF(
+			setProcessingProgress(60);
+			setProcessingStatus('AI is analyzing questions (Superpowered mode)...');
+
+			const extractionResult = await extractQuestionsFromPDF(
 				paperDetails.paperId,
-				{ base64 },
+				uploadResult.url!, // Use uploaded URL instead of base64
 				subjectObj?.name || paperDetails.subject,
 				paperDetails.paper,
 				paperDetails.year,
 				paperDetails.month
 			);
 
-			const uploadPromise = uploadPdfFile(file);
-
-			// Update status while waiting
-			const statusInterval = setInterval(() => {
-				setProcessingProgress(prev => Math.min(prev + 5, 85));
-			}, 2000);
-
-			const [extractionResult, uploadResult] = await Promise.all([
-				extractionPromise,
-				uploadPromise
-			]);
-
-			clearInterval(statusInterval);
 			setProcessingProgress(95);
 			setProcessingStatus('Finalizing...');
-
-			if (uploadResult.success) {
-				setUploadedUrl(uploadResult.url || null);
-			} else {
-				console.warn('UploadThing failed, but extraction succeeded:', uploadResult.error);
-			}
 
 			setExtractedData(extractionResult);
 			setStep('review');
 			setProcessingProgress(100);
-			toast.success('AI successfully analyzed the paper!');
+			toast.success(
+				`AI successfully analyzed ${extractionResult.questions.length} questions from the paper!`
+			);
 		} catch (error) {
 			console.error('Processing error:', error);
-			toast.error(error instanceof Error ? error.message : 'Processing failed');
+
+			// Provide specific error messages
+			if (error instanceof Error) {
+				if (error.message.includes('Upload failed')) {
+					toast.error('Failed to upload PDF. Please check your internet connection and try again.');
+				} else if (error.message.includes('AI service not configured')) {
+					toast.error('AI service is not configured. Please contact support.');
+				} else if (error.message.includes('Failed to fetch PDF')) {
+					toast.error('Failed to process PDF. The file may be corrupted or too large.');
+				} else {
+					toast.error(`Processing failed: ${error.message}`);
+				}
+			} else {
+				toast.error('An unexpected error occurred. Please try again.');
+			}
+
 			setStep('upload');
 		}
 	};
@@ -167,7 +191,7 @@ export function PdfUploadDrawer({ isOpen, onClose, subjects, onSuccess }: PdfUpl
 	const handleUpdateExtractedQuestion = (
 		idx: number,
 		field: keyof ExtractedQuestion,
-		value: any
+		value: ExtractedQuestion[keyof ExtractedQuestion]
 	) => {
 		if (!extractedData) return;
 		const newData = { ...extractedData };
@@ -211,7 +235,8 @@ export function PdfUploadDrawer({ isOpen, onClose, subjects, onSuccess }: PdfUpl
 					paperId: paperDetails.paperId,
 					originalPdfUrl: uploadedUrl || '',
 					storedPdfUrl: uploadedUrl || null,
-					subject: subjects.find((s) => s.id === paperDetails.subjectId)?.name || extractedData.subject,
+					subject:
+						subjects.find((s) => s.id === paperDetails.subjectId)?.name || extractedData.subject,
 					paper: paperDetails.paper,
 					year: paperDetails.year,
 					month: paperDetails.month,
@@ -398,14 +423,20 @@ export function PdfUploadDrawer({ isOpen, onClose, subjects, onSuccess }: PdfUpl
 												: 'border-border hover:border-brand-blue hover:bg-muted/50'
 										}`}
 									>
-										<div className={`h-16 w-16 rounded-2xl flex items-center justify-center ${file ? 'bg-brand-blue text-white' : 'bg-muted text-muted-foreground'}`}>
+										<div
+											className={`h-16 w-16 rounded-2xl flex items-center justify-center ${file ? 'bg-brand-blue text-white' : 'bg-muted text-muted-foreground'}`}
+										>
 											<FileUp className="h-8 w-8" />
 										</div>
 										<div className="text-center">
 											<p className="font-black uppercase tracking-widest text-xs">
 												{file ? file.name : 'Drop PDF or Click to Browse'}
 											</p>
-											{file && <p className="text-[10px] font-bold text-muted-foreground mt-1">{(file.size / 1024 / 1024).toFixed(2)} MB</p>}
+											{file && (
+												<p className="text-[10px] font-bold text-muted-foreground mt-1">
+													{(file.size / 1024 / 1024).toFixed(2)} MB
+												</p>
+											)}
 										</div>
 									</label>
 								</div>
@@ -425,9 +456,7 @@ export function PdfUploadDrawer({ isOpen, onClose, subjects, onSuccess }: PdfUpl
 										<h3 className="text-2xl font-black uppercase tracking-tighter">
 											Working Magic
 										</h3>
-										<p className="text-muted-foreground font-bold text-sm">
-											{processingStatus}
-										</p>
+										<p className="text-muted-foreground font-bold text-sm">{processingStatus}</p>
 									</div>
 									<span className="font-black text-brand-blue">{processingProgress}%</span>
 								</div>
@@ -469,13 +498,19 @@ export function PdfUploadDrawer({ isOpen, onClose, subjects, onSuccess }: PdfUpl
 								<div className="space-y-6">
 									<div className="flex items-center justify-between">
 										<h4 className="font-black uppercase text-sm tracking-widest flex items-center gap-2">
-											Verification List <Badge variant="secondary" className="rounded-md">{extractedData.questions.length}</Badge>
+											Verification List{' '}
+											<Badge variant="secondary" className="rounded-md">
+												{extractedData.questions.length}
+											</Badge>
 										</h4>
 									</div>
 
 									<div className="space-y-6">
 										{extractedData.questions.map((q, idx) => (
-											<div key={idx} className="p-8 rounded-[2rem] border-2 bg-background hover:border-brand-blue/30 transition-all space-y-6 shadow-sm">
+											<div
+												key={idx}
+												className="p-8 rounded-[2rem] border-2 bg-background hover:border-brand-blue/30 transition-all space-y-6 shadow-sm"
+											>
 												<div className="flex justify-between items-center">
 													<div className="flex items-center gap-4">
 														<Badge className="h-10 px-4 rounded-xl font-black text-sm bg-brand-blue shadow-lg shadow-brand-blue/20">
@@ -501,7 +536,9 @@ export function PdfUploadDrawer({ isOpen, onClose, subjects, onSuccess }: PdfUpl
 													</div>
 													<Select
 														value={q.difficulty}
-														onValueChange={(v) => handleUpdateExtractedQuestion(idx, 'difficulty', v)}
+														onValueChange={(v) =>
+															handleUpdateExtractedQuestion(idx, 'difficulty', v)
+														}
 													>
 														<SelectTrigger className="w-32 h-10 rounded-xl font-bold border-2">
 															<SelectValue />
@@ -515,7 +552,9 @@ export function PdfUploadDrawer({ isOpen, onClose, subjects, onSuccess }: PdfUpl
 												</div>
 
 												<div className="space-y-3">
-													<Label className="text-[10px] font-black uppercase text-muted-foreground">Question Stem</Label>
+													<Label className="text-[10px] font-black uppercase text-muted-foreground">
+														Question Stem
+													</Label>
 													<Textarea
 														value={q.questionText}
 														onChange={(e) =>
@@ -527,10 +566,15 @@ export function PdfUploadDrawer({ isOpen, onClose, subjects, onSuccess }: PdfUpl
 
 												{q.options && q.options.length > 0 && (
 													<div className="space-y-3">
-														<Label className="text-[10px] font-black uppercase text-muted-foreground">Multiple Choice Options</Label>
+														<Label className="text-[10px] font-black uppercase text-muted-foreground">
+															Multiple Choice Options
+														</Label>
 														<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 															{q.options.map((opt, oIdx) => (
-																<div key={oIdx} className={`flex gap-3 items-center p-3 rounded-2xl border-2 transition-all ${opt.isCorrect ? 'border-emerald-500 bg-emerald-50/30' : 'bg-muted/10'}`}>
+																<div
+																	key={oIdx}
+																	className={`flex gap-3 items-center p-3 rounded-2xl border-2 transition-all ${opt.isCorrect ? 'border-emerald-500 bg-emerald-50/30' : 'bg-muted/10'}`}
+																>
 																	<Badge
 																		variant={opt.isCorrect ? 'default' : 'outline'}
 																		className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 font-black text-sm ${opt.isCorrect ? 'bg-emerald-500 hover:bg-emerald-500' : ''}`}
@@ -559,10 +603,15 @@ export function PdfUploadDrawer({ isOpen, onClose, subjects, onSuccess }: PdfUpl
 
 												{q.subQuestions && q.subQuestions.length > 0 && (
 													<div className="pt-6 border-t space-y-4">
-														<Label className="text-[10px] font-black uppercase text-muted-foreground tracking-widest">Sub-Questions ({q.subQuestions.length})</Label>
+														<Label className="text-[10px] font-black uppercase text-muted-foreground tracking-widest">
+															Sub-Questions ({q.subQuestions.length})
+														</Label>
 														<div className="space-y-6">
 															{q.subQuestions.map((sq, sIdx) => (
-																<div key={sIdx} className="pl-6 border-l-4 border-brand-blue/20 space-y-4 py-2">
+																<div
+																	key={sIdx}
+																	className="pl-6 border-l-4 border-brand-blue/20 space-y-4 py-2"
+																>
 																	<div className="flex items-center justify-between">
 																		<span className="text-xs font-black text-brand-blue uppercase">
 																			Sub-Item {sq.id}
@@ -574,13 +623,16 @@ export function PdfUploadDrawer({ isOpen, onClose, subjects, onSuccess }: PdfUpl
 																				onChange={(e) => {
 																					const newData = { ...extractedData };
 																					if (newData.questions[idx].subQuestions) {
-																						newData.questions[idx].subQuestions[sIdx].marks = Number.parseInt(e.target.value, 10);
+																						newData.questions[idx].subQuestions[sIdx].marks =
+																							Number.parseInt(e.target.value, 10);
 																						setExtractedData(newData);
 																					}
 																				}}
 																				className="w-14 h-8 rounded-lg border-2 text-center font-black p-0 text-xs"
 																			/>
-																			<span className="text-[10px] font-black uppercase text-muted-foreground">Marks</span>
+																			<span className="text-[10px] font-black uppercase text-muted-foreground">
+																				Marks
+																			</span>
 																		</div>
 																	</div>
 																	<Textarea
@@ -588,7 +640,8 @@ export function PdfUploadDrawer({ isOpen, onClose, subjects, onSuccess }: PdfUpl
 																		onChange={(e) => {
 																			const newData = { ...extractedData };
 																			if (newData.questions[idx].subQuestions) {
-																				newData.questions[idx].subQuestions[sIdx].text = e.target.value;
+																				newData.questions[idx].subQuestions[sIdx].text =
+																					e.target.value;
 																				setExtractedData(newData);
 																			}
 																		}}
@@ -636,7 +689,8 @@ export function PdfUploadDrawer({ isOpen, onClose, subjects, onSuccess }: PdfUpl
 								<Spinner className="h-5 w-5 text-white" />
 							) : (
 								<>
-									<Save className="h-4 w-4 mr-2" /> Save Paper & {extractedData?.questions.length} Questions
+									<Save className="h-4 w-4 mr-2" /> Save Paper & {extractedData?.questions.length}{' '}
+									Questions
 								</>
 							)}
 						</Button>

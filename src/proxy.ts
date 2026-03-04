@@ -10,6 +10,7 @@ const publicRoutes = [
 	'/forgot-password',
 	'/api/auth',
 	'/api/db/init',
+	'/api/health',
 	'/search',
 	'/past-papers',
 	'/physics',
