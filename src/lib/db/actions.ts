@@ -830,6 +830,116 @@ export async function deletePastPaperAction(id: string): Promise<boolean> {
 }
 
 /**
+ * Bulk save questions and options from an extracted paper
+ */
+export async function saveProcessedExtractedPaperAction(
+	paperData: NewPastPaper,
+	questionsList: {
+		questionText: string;
+		marks: number;
+		topic: string;
+		difficulty: 'easy' | 'medium' | 'hard';
+		gradeLevel: number;
+		subjectId: number;
+		options: {
+			letter: string;
+			text: string;
+			isCorrect: boolean;
+			explanation?: string;
+		}[];
+	}[]
+) {
+	await ensureAdmin();
+	const db = await getDb();
+
+	return db.transaction(async (tx) => {
+		// 1. Save/Update Past Paper
+		const [paper] = await tx
+			.insert(pastPapers)
+			.values(paperData)
+			.onConflictDoUpdate({
+				target: pastPapers.paperId,
+				set: {
+					...paperData,
+					updatedAt: new Date(),
+				},
+			})
+			.returning();
+
+		// 2. Save Questions and Options
+		if (questionsList.length > 0) {
+			for (const q of questionsList) {
+				// Idempotency: Check if question already exists in this subject with same text
+				const [existingQuestion] = await tx
+					.select()
+					.from(questions)
+					.where(
+						and(eq(questions.subjectId, q.subjectId), eq(questions.questionText, q.questionText))
+					)
+					.limit(1);
+
+				if (existingQuestion) {
+					// Update existing question
+					const [updatedQuestion] = await tx
+						.update(questions)
+						.set({
+							gradeLevel: q.gradeLevel,
+							topic: q.topic,
+							difficulty: q.difficulty,
+							marks: q.marks,
+							updatedAt: new Date(),
+						})
+						.where(eq(questions.id, existingQuestion.id))
+						.returning();
+
+					// Refresh options: Delete and re-insert to ensure accuracy
+					await tx.delete(options).where(eq(options.questionId, updatedQuestion.id));
+
+					if (q.options && q.options.length > 0) {
+						await tx.insert(options).values(
+							q.options.map((opt) => ({
+								questionId: updatedQuestion.id,
+								optionText: opt.text,
+								optionLetter: opt.letter,
+								isCorrect: opt.isCorrect,
+								explanation: opt.explanation || null,
+							}))
+						);
+					}
+				} else {
+					// Insert new question
+					const [newQuestion] = await tx
+						.insert(questions)
+						.values({
+							subjectId: q.subjectId,
+							questionText: q.questionText,
+							gradeLevel: q.gradeLevel,
+							topic: q.topic,
+							difficulty: q.difficulty,
+							marks: q.marks,
+						})
+						.returning();
+
+					if (q.options && q.options.length > 0) {
+						await tx.insert(options).values(
+							q.options.map((opt) => ({
+								questionId: newQuestion.id,
+								optionText: opt.text,
+								optionLetter: opt.letter,
+								isCorrect: opt.isCorrect,
+								explanation: opt.explanation || null,
+							}))
+						);
+					}
+				}
+			}
+		}
+
+		return paper;
+	});
+}
+
+/**
  * Save extracted questions to a past paper
  */
 export async function saveExtractedQuestionsAction(
