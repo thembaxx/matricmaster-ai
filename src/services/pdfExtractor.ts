@@ -40,6 +40,15 @@ export interface ExtractedPaper {
 	storedPdfUrl?: string;
 }
 
+export interface FlatQuestion {
+	questionText: string;
+	marks: number;
+	topic: string;
+	difficulty: 'easy' | 'medium' | 'hard';
+	options: ExtractedOption[];
+	questionNumber: string;
+}
+
 // Database types (for reference - we'll use raw SQL via fetch)
 interface PastPaperRecord {
 	id: string;
@@ -382,8 +391,8 @@ export async function clearCache(): Promise<void> {
  * Flattens a complex exam paper structure into a flat list of questions
  * suitable for the database's question bank.
  */
-export function flattenExtractedPaper(paper: ExtractedPaper): any[] {
-	const flatQuestions: any[] = [];
+export async function flattenExtractedPaper(paper: ExtractedPaper): Promise<FlatQuestion[]> {
+	const flatQuestions: FlatQuestion[] = [];
 
 	for (const q of paper.questions) {
 		if (q.subQuestions && q.subQuestions.length > 0) {
@@ -392,7 +401,7 @@ export function flattenExtractedPaper(paper: ExtractedPaper): any[] {
 					questionText: `${q.questionText}\n\n${sq.text}`,
 					marks: sq.marks || 0,
 					topic: q.topic || 'General',
-					difficulty: q.difficulty || 'medium',
+					difficulty: (q.difficulty as 'easy' | 'medium' | 'hard') || 'medium',
 					options: sq.options || q.options || [],
 					questionNumber: sq.id,
 				});
@@ -402,7 +411,7 @@ export function flattenExtractedPaper(paper: ExtractedPaper): any[] {
 				questionText: q.questionText,
 				marks: q.marks,
 				topic: q.topic || 'General',
-				difficulty: q.difficulty || 'medium',
+				difficulty: (q.difficulty as 'easy' | 'medium' | 'hard') || 'medium',
 				options: q.options || [],
 				questionNumber: q.questionNumber,
 			});

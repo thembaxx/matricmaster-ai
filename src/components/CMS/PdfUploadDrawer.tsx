@@ -30,7 +30,13 @@ import { Textarea } from '@/components/ui/textarea';
 import { createSubjectAction, saveProcessedExtractedPaperAction } from '@/lib/db/actions';
 import type { Subject } from '@/lib/db/schema';
 import { uploadPdfFile } from '@/lib/pdf-upload';
-import { extractQuestionsFromPDF, flattenExtractedPaper } from '@/services/pdfExtractor';
+import {
+	type ExtractedOption,
+	type ExtractedPaper,
+	type ExtractedQuestion,
+	extractQuestionsFromPDF,
+	flattenExtractedPaper,
+} from '@/services/pdfExtractor';
 
 interface PdfUploadDrawerProps {
 	isOpen: boolean;
@@ -51,7 +57,7 @@ export function PdfUploadDrawer({ isOpen, onClose, subjects, onSuccess }: PdfUpl
 		gradeLevel: 12,
 		subjectId: 0,
 	});
-	const [extractedData, setExtractedData] = useState<any>(null);
+	const [extractedData, setExtractedData] = useState<ExtractedPaper | null>(null);
 	const [isProcessing, setIsProcessing] = useState(false);
 	const [isCreatingSubject, setIsCreatingSubject] = useState(false);
 	const [newSubjectName, setNewSubjectName] = useState('');
@@ -122,9 +128,14 @@ export function PdfUploadDrawer({ isOpen, onClose, subjects, onSuccess }: PdfUpl
 		}
 	};
 
-	const handleUpdateExtractedQuestion = (idx: number, field: string, value: any) => {
+	const handleUpdateExtractedQuestion = (
+		idx: number,
+		field: keyof ExtractedQuestion,
+		value: string | number
+	) => {
+		if (!extractedData) return;
 		const newData = { ...extractedData };
-		newData.questions[idx] = { ...newData.questions[idx], [field]: value };
+		newData.questions[idx] = { ...newData.questions[idx], [field]: value } as ExtractedQuestion;
 		setExtractedData(newData);
 	};
 
@@ -132,38 +143,45 @@ export function PdfUploadDrawer({ isOpen, onClose, subjects, onSuccess }: PdfUpl
 		qIdx: number,
 		sqIdx: number,
 		field: string,
-		value: any
+		value: string | number
 	) => {
+		if (!extractedData) return;
 		const newData = { ...extractedData };
-		newData.questions[qIdx].subQuestions[sqIdx] = {
-			...newData.questions[qIdx].subQuestions[sqIdx],
-			[field]: value,
-		};
+		const subQuestions = newData.questions[qIdx].subQuestions;
+		if (subQuestions) {
+			subQuestions[sqIdx] = {
+				...subQuestions[sqIdx],
+				[field]: value,
+			} as any;
+		}
 		setExtractedData(newData);
 	};
 
 	const handleUpdateExtractedOption = (
 		qIdx: number,
 		optIdx: number,
-		field: string,
-		value: any,
+		field: keyof ExtractedOption,
+		value: string | boolean,
 		sqIdx?: number
 	) => {
+		if (!extractedData) return;
 		const newData = { ...extractedData };
 		if (sqIdx !== undefined) {
-			const sq = newData.questions[qIdx].subQuestions[sqIdx];
-			if (!sq.options) sq.options = [];
-			sq.options[optIdx] = {
-				...sq.options[optIdx],
-				[field]: value,
-			};
+			const sq = newData.questions[qIdx].subQuestions?.[sqIdx];
+			if (sq) {
+				if (!sq.options) sq.options = [];
+				sq.options[optIdx] = {
+					...sq.options[optIdx],
+					[field]: value,
+				} as ExtractedOption;
+			}
 		} else {
 			const q = newData.questions[qIdx];
 			if (!q.options) q.options = [];
 			q.options[optIdx] = {
 				...q.options[optIdx],
 				[field]: value,
-			};
+			} as ExtractedOption;
 		}
 		setExtractedData(newData);
 	};
@@ -174,7 +192,7 @@ export function PdfUploadDrawer({ isOpen, onClose, subjects, onSuccess }: PdfUpl
 		try {
 			setIsProcessing(true);
 
-			const flatQuestions = flattenExtractedPaper(extractedData);
+			const flatQuestions = await flattenExtractedPaper(extractedData);
 
 			await saveProcessedExtractedPaperAction(
 				{
@@ -410,7 +428,7 @@ export function PdfUploadDrawer({ isOpen, onClose, subjects, onSuccess }: PdfUpl
 									<h4 className="font-black uppercase text-sm tracking-widest">
 										Extracted Questions
 									</h4>
-									{extractedData.questions.map((q: any, idx: number) => (
+									{extractedData.questions.map((q, idx) => (
 										<div key={idx} className="p-6 rounded-2xl border-2 bg-muted/20 space-y-4">
 											<div className="flex justify-between items-center">
 												<div className="flex items-center gap-3">
@@ -448,7 +466,7 @@ export function PdfUploadDrawer({ isOpen, onClose, subjects, onSuccess }: PdfUpl
 
 											{q.options && q.options.length > 0 && (
 												<div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-													{q.options.map((opt: any, oIdx: number) => (
+													{q.options.map((opt, oIdx) => (
 														<div key={oIdx} className="flex gap-2 items-center">
 															<Badge
 																variant="outline"
@@ -474,9 +492,9 @@ export function PdfUploadDrawer({ isOpen, onClose, subjects, onSuccess }: PdfUpl
 												</div>
 											)}
 
-											{q.subQuestions?.length > 0 && (
+											{q.subQuestions && q.subQuestions.length > 0 && (
 												<div className="pl-6 border-l-4 border-primary/10 space-y-4">
-													{q.subQuestions.map((sq: any, sIdx: number) => (
+													{q.subQuestions.map((sq, sIdx) => (
 														<div key={sIdx} className="space-y-4">
 															<div className="space-y-2">
 																<div className="flex items-center justify-between">
@@ -519,7 +537,7 @@ export function PdfUploadDrawer({ isOpen, onClose, subjects, onSuccess }: PdfUpl
 
 															{sq.options && sq.options.length > 0 && (
 																<div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-																	{sq.options.map((opt: any, oIdx: number) => (
+																	{sq.options.map((opt, oIdx) => (
 																		<div key={oIdx} className="flex gap-2 items-center">
 																			<Badge
 																				variant="outline"
