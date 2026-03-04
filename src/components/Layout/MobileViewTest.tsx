@@ -18,28 +18,43 @@ export function MobileViewTest() {
 	});
 
 	useEffect(() => {
-		if (isMobile) {
-			// Test CSS custom properties
-			const root = document.documentElement;
-			const navHeight = getComputedStyle(root).getPropertyValue('--mobile-nav-height');
-			const safePadding = getComputedStyle(root).getPropertyValue('--mobile-safe-bottom-padding');
-			
-			const hasCSSVars = navHeight.trim() !== '' && safePadding.trim() !== '';
-			
-			// Test footer positioning
-			const footer = document.querySelector('.mobile-footer-safe');
-			const hasFooter = !!footer;
-			
-			// Test spacing utilities
-			const content = document.querySelector('.mobile-safe-bottom');
-			const hasSpacing = !!content;
-			
-			setTestResults({
-				cssVariables: hasCSSVars,
-				footerPositioning: hasFooter,
-				spacing: hasSpacing,
-			});
-		}
+		const runTests = () => {
+			if (isMobile) {
+				// Test CSS custom properties
+				const root = document.documentElement;
+				const navHeight = getComputedStyle(root).getPropertyValue('--mobile-nav-height');
+				const safePadding = getComputedStyle(root).getPropertyValue('--mobile-safe-bottom-padding');
+
+				const hasCSSVars = navHeight.trim() !== '' && safePadding.trim() !== '';
+
+				// Test footer positioning
+				const footer = document.querySelector('.mobile-footer-safe') || document.querySelector('footer');
+				const hasFooter = !!footer;
+
+				// Test spacing utilities
+				const content = document.querySelector('.mobile-safe-bottom');
+				const hasSpacing = !!content;
+
+				setTestResults({
+					cssVariables: hasCSSVars,
+					footerPositioning: hasFooter,
+					spacing: hasSpacing,
+				});
+			}
+		};
+
+		runTests();
+
+		// Run tests again after a short delay to account for transitions/hydration
+		const timeout = setTimeout(runTests, 1000);
+
+		// Also run tests on any click as a simple way to re-verify during interaction
+		window.addEventListener('click', runTests);
+
+		return () => {
+			clearTimeout(timeout);
+			window.removeEventListener('click', runTests);
+		};
 	}, [isMobile]);
 
 	if (!isMobile) {

@@ -237,7 +237,7 @@ export default function PhysicsQuiz() {
 	};
 
 	return (
-		<div className="flex flex-col h-full bg-background font-lexend relative">
+		<div className="fixed inset-0 flex flex-col w-full min-w-0 bg-background overflow-hidden">
 			<header className="px-6 pt-12 pb-4 bg-background/80 backdrop-blur-xl sticky top-0 z-20 border-b border-border shrink-0">
 				<div className="max-w-2xl mx-auto w-full flex items-center gap-4 mb-4">
 					<Button
@@ -275,7 +275,7 @@ export default function PhysicsQuiz() {
 				</div>
 			</header>
 
-			<div className="grow">
+			<div className="flex-1 overflow-y-auto w-full scroll-smooth">
 				<main className="px-6 py-8 space-y-8 mobile-safe-bottom max-w-2xl mx-auto w-full">
 					<div className="space-y-6">
 						<div className="flex items-center gap-3">

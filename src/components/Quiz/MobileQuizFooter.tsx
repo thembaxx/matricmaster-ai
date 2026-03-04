@@ -27,7 +27,7 @@ export function MobileQuizFooter({
 			initial={{ y: 50, opacity: 0 }}
 			animate={{ y: 0, opacity: 1 }}
 			transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-			className="fixed mobile-footer-safe left-0 right-0 bg-card/90 backdrop-blur-xl border-t border-border z-40 px-4"
+			className="fixed bottom-0 left-0 right-0 bg-card/90 backdrop-blur-xl border-t border-border z-40 px-4 mobile-footer-safe"
 		>
 			<div className="max-w-2xl mx-auto w-full p-4">
 				{showCheckButton ? (

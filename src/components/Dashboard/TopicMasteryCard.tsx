@@ -102,11 +102,11 @@ export const TopicMasteryCard = memo(function TopicMasteryCard({
 	}
 
 	return (
-		<Card className={className}>
-			<CardHeader className="pb-2">
+		<Card className={`${className} premium-glass border-none rounded-[2.5rem] overflow-hidden`}>
+			<CardHeader className="pb-2 px-8 pt-8">
 				<CardTitle className="flex items-center justify-between">
-					<span className="flex items-center gap-2">
-						<Brain className="h-5 w-5" />
+					<span className="flex items-center gap-2 text-xl font-black text-foreground tracking-tight uppercase">
+						<Brain className="h-5 w-5 text-primary" />
 						Topic Progress
 					</span>
 					<Button variant="ghost" size="sm" onClick={() => router.push('/review')}>
@@ -115,8 +115,8 @@ export const TopicMasteryCard = memo(function TopicMasteryCard({
 					</Button>
 				</CardTitle>
 			</CardHeader>
-			<CardContent>
-				<ScrollArea className="h-[280px] pr-2">
+			<CardContent className="px-8 pb-8">
+				<ScrollArea className="h-[320px] pr-4 -mr-4">
 					<div className="space-y-4">
 						{stats.weakTopics.length > 0 && (
 							<div className="space-y-2">
@@ -195,7 +195,9 @@ function TopicItem({ topic, variant, getMasteryColor }: TopicItemProps) {
 	};
 
 	return (
-		<div className={`rounded-lg border p-3 ${borderColors[variant]} ${bgColors[variant]}`}>
+		<div
+			className={`rounded-2xl border p-4 transition-all hover:bg-white/50 dark:hover:bg-black/20 ${borderColors[variant]} ${bgColors[variant]}`}
+		>
 			<div className="flex items-center justify-between mb-2">
 				<span className="text-sm font-medium line-clamp-1">{topic.topic}</span>
 				<span className={`text-sm font-bold ${getMasteryColor(topic.accuracy)}`}>

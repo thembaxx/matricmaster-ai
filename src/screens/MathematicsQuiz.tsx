@@ -8,7 +8,6 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import { getExplanation } from '@/services/geminiService';
 
 // import type { Screen } from '@/types'; // Removed unused import
@@ -61,7 +60,7 @@ export default function MathematicsQuiz() {
 	};
 
 	return (
-		<div className="flex flex-col h-full bg-background font-lexend relative">
+		<div className="fixed inset-0 flex flex-col w-full min-w-0 bg-background overflow-hidden">
 			{/* Header */}
 			<header className="px-6 pt-12 pb-4 bg-background/80 backdrop-blur-xl sticky top-0 z-20 border-b border-border shrink-0">
 				<div className="max-w-2xl mx-auto w-full">
@@ -91,7 +90,7 @@ export default function MathematicsQuiz() {
 				</div>
 			</header>
 
-			<ScrollArea className="flex-1">
+			<div className="flex-1 overflow-y-auto w-full scroll-smooth">
 				<main className="px-6 py-8 space-y-8 pb-64 max-w-2xl mx-auto w-full">
 					{/* Question */}
 					<div className="space-y-4">
@@ -197,10 +196,10 @@ export default function MathematicsQuiz() {
 						subject="Mathematics"
 					/>
 				</main>
-			</ScrollArea>
+			</div>
 
 			{/* Math Keyboard & Actions */}
-			<footer className="absolute bottom-0 left-0 right-0 bg-background/80 backdrop-blur-xl border-t border-border z-30">
+			<footer className="fixed bottom-0 left-0 right-0 bg-background/80 backdrop-blur-xl border-t border-border z-30">
 				<div className="max-w-2xl mx-auto w-full">
 					{/* Math Symbols */}
 					<div className="px-6 py-3 overflow-x-auto no-scrollbar">
