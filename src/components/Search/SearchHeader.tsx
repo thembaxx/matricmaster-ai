@@ -4,6 +4,7 @@ import { AnimatePresence, m } from 'framer-motion';
 import { Search as SearchIcon, X } from 'lucide-react';
 import { memo, useEffect, useRef, useState } from 'react';
 import { Input } from '@/components/ui/input';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 
 interface SearchHeaderProps {
 	query: string;
@@ -70,18 +71,22 @@ export const SearchHeader = memo(function SearchHeader({
 				</AnimatePresence>
 				<AnimatePresence>
 					{query && (
-						<m.button
-							initial={{ scale: 0.95, opacity: 0 }}
-							animate={{ scale: 1, opacity: 1 }}
-							exit={{ scale: 0.95, opacity: 0 }}
-							title="Clear search"
-							aria-label="Clear search"
-							type="button"
-							onClick={() => onQueryChange('')}
-							className="absolute right-5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
-						>
-							<X className="w-6 h-6" />
-						</m.button>
+						<Tooltip>
+							<TooltipTrigger asChild>
+								<m.button
+									initial={{ scale: 0.95, opacity: 0 }}
+									animate={{ scale: 1, opacity: 1 }}
+									exit={{ scale: 0.95, opacity: 0 }}
+									aria-label="Clear search"
+									type="button"
+									onClick={() => onQueryChange('')}
+									className="absolute right-5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+								>
+									<X className="w-6 h-6" />
+								</m.button>
+							</TooltipTrigger>
+							<TooltipContent>Clear search</TooltipContent>
+						</Tooltip>
 					)}
 				</AnimatePresence>
 			</m.div>

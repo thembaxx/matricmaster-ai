@@ -31,6 +31,7 @@ import {
 import { Spinner } from '@/components/ui/spinner';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import {
 	createQuestionAction,
 	getQuestionsAction,
@@ -620,24 +621,34 @@ export default function CMS() {
 														</Badge>
 													</div>
 													<div className="flex items-center gap-1">
-														<Button
-															variant="ghost"
-															size="icon"
-															className="h-10 w-10 rounded-xl hover:bg-primary/10 hover:text-primary transition-colors"
-															onClick={() => handleEditQuestion(q)}
-															aria-label="Edit question"
-														>
-															<Edit2 className="h-5 w-5" />
-														</Button>
-														<Button
-															variant="ghost"
-															size="icon"
-															className="h-10 w-10 rounded-xl hover:bg-rose-500/10 hover:text-rose-500 transition-colors"
-															onClick={() => handleDeleteQuestion(q.id)}
-															aria-label="Delete question"
-														>
-															<Trash2 className="h-5 w-5" />
-														</Button>
+														<Tooltip>
+															<TooltipTrigger asChild>
+																<Button
+																	variant="ghost"
+																	size="icon"
+																	className="h-10 w-10 rounded-xl hover:bg-primary/10 hover:text-primary transition-colors"
+																	onClick={() => handleEditQuestion(q)}
+																	aria-label="Edit question"
+																>
+																	<Edit2 className="h-5 w-5" />
+																</Button>
+															</TooltipTrigger>
+															<TooltipContent>Edit question</TooltipContent>
+														</Tooltip>
+														<Tooltip>
+															<TooltipTrigger asChild>
+																<Button
+																	variant="ghost"
+																	size="icon"
+																	className="h-10 w-10 rounded-xl hover:bg-rose-500/10 hover:text-rose-500 transition-colors"
+																	onClick={() => handleDeleteQuestion(q.id)}
+																	aria-label="Delete question"
+																>
+																	<Trash2 className="h-5 w-5" />
+																</Button>
+															</TooltipTrigger>
+															<TooltipContent>Delete question</TooltipContent>
+														</Tooltip>
 													</div>
 												</div>
 
