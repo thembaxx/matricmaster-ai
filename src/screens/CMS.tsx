@@ -482,7 +482,7 @@ export default function CMS() {
 						</p>
 					</div>
 
-					<div className="flex items-center gap-3">
+					<div className="flex items-center justify-between gap-3">
 						<Button
 							onClick={handleSeedDatabase}
 							disabled={seeding}
@@ -494,21 +494,23 @@ export default function CMS() {
 						</Button>
 						{activeTab === 'past-papers' ? (
 							<Button
+								size="sm"
 								onClick={() => setIsPdfDrawerOpen(true)}
-								className="rounded-2xl h-12 px-6 bg-primary hover:bg-primary/90 shadow-2xl shadow-primary/20 font-black text-sm uppercase tracking-widest"
+								className="rounded-2xl px-6 bg-primary hover:bg-primary/90 shadow-2xl shadow-primary/20 font-black text-sm uppercase tracking-widest"
 							>
 								<FileUp className="h-5 w-5 mr-2" />
 								Add
 							</Button>
 						) : (
 							<Button
+								size="sm"
 								onClick={() => {
 									handleCreateQuestion();
 								}}
-								className="rounded-2xl h-12 px-6 bg-primary hover:bg-primary/90 shadow-2xl shadow-primary/20 font-black text-sm uppercase tracking-widest"
+								className="rounded-2xl px-6 bg-primary hover:bg-primary/90 shadow-2xl shadow-primary/20 font-black text-sm uppercase tracking-widest"
 							>
 								<Plus className="h-5 w-5 mr-2" />
-								Create New
+								Create
 							</Button>
 						)}
 					</div>
