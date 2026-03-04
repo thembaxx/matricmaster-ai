@@ -45,7 +45,7 @@ import {
 	updateQuestionAction,
 } from '@/lib/db/actions';
 import type { User } from '@/lib/db/better-auth-schema';
-import type { Question, Subject } from '@/lib/db/schema';
+import type { PastPaper, Question, Subject } from '@/lib/db/schema';
 import { uploadFiles } from '@/lib/uploadthing';
 
 interface QuestionFormData {
@@ -103,7 +103,7 @@ export default function CMS() {
 	const fileInputRef = useRef<HTMLInputElement>(null);
 
 	// Past Paper state
-	const [pastPapers, setPastPapers] = useState<PastPaper[]>([]);
+	const [allPastPapers, setAllPastPapers] = useState<PastPaper[]>([]);
 
 	// User management state
 	const [userSearchQuery, setUserSearchQuery] = useState('');
@@ -121,7 +121,7 @@ export default function CMS() {
 			setSubjects(subjectsData);
 			setQuestions(questionsData);
 			setUsers(usersData);
-			setPastPapers(pastPapersData);
+			setAllPastPapers(pastPapersData);
 		} catch (error) {
 			console.error('Failed to load data:', error);
 		} finally {
@@ -748,7 +748,7 @@ export default function CMS() {
 
 							{activeTab === 'past-papers' && (
 								<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-									{pastPapers.map((p) => (
+									{allPastPapers.map((p) => (
 										<Card
 											key={p.id}
 											className="rounded-[2rem] border-2 border-border/50 hover:border-primary/20 transition-all duration-300 group"
