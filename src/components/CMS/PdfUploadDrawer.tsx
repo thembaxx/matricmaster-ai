@@ -1,6 +1,6 @@
 'use client';
 
-import { Edit2, FileUp, Loader2, Plus, Save, X } from 'lucide-react';
+import { FileUp, Loader2, Plus, Save, X } from 'lucide-react';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { Badge } from '@/components/ui/badge';
@@ -115,13 +115,13 @@ export function PdfUploadDrawer({ isOpen, onClose, subjects, onSuccess }: PdfUpl
 			setIsProcessing(true);
 			const newSubject = await createSubjectAction({
 				name: newSubjectName.trim(),
-				curriculumCode: 'CAPS-' + newSubjectName.trim().substring(0, 3).toUpperCase(),
+				curriculumCode: `CAPS-${newSubjectName.trim().substring(0, 3).toUpperCase()}`,
 			});
 			toast.success(`Subject "${newSubject.name}" created!`);
 			setPaperDetails((prev) => ({ ...prev, subjectId: newSubject.id }));
 			setIsCreatingSubject(false);
 			onSuccess(); // Refresh subjects list in parent
-		} catch (error) {
+		} catch (_error) {
 			toast.error('Failed to create subject');
 		} finally {
 			setIsProcessing(false);
@@ -152,7 +152,7 @@ export function PdfUploadDrawer({ isOpen, onClose, subjects, onSuccess }: PdfUpl
 			subQuestions[sqIdx] = {
 				...subQuestions[sqIdx],
 				[field]: value,
-			} as any;
+			} as { id: string; text: string; marks?: number; options?: ExtractedOption[] };
 		}
 		setExtractedData(newData);
 	};
@@ -299,7 +299,7 @@ export function PdfUploadDrawer({ isOpen, onClose, subjects, onSuccess }: PdfUpl
 											<Select
 												value={paperDetails.subjectId.toString()}
 												onValueChange={(v) =>
-													setPaperDetails({ ...paperDetails, subjectId: Number.parseInt(v) })
+													setPaperDetails({ ...paperDetails, subjectId: Number.parseInt(v, 10) })
 												}
 											>
 												<SelectTrigger className="h-12 rounded-xl border-2 font-bold flex-1">
@@ -330,7 +330,7 @@ export function PdfUploadDrawer({ isOpen, onClose, subjects, onSuccess }: PdfUpl
 									<Select
 										value={paperDetails.gradeLevel.toString()}
 										onValueChange={(v) =>
-											setPaperDetails({ ...paperDetails, gradeLevel: Number.parseInt(v) })
+											setPaperDetails({ ...paperDetails, gradeLevel: Number.parseInt(v, 10) })
 										}
 									>
 										<SelectTrigger className="h-12 rounded-xl border-2 font-bold">
@@ -351,7 +351,10 @@ export function PdfUploadDrawer({ isOpen, onClose, subjects, onSuccess }: PdfUpl
 										type="number"
 										value={paperDetails.year}
 										onChange={(e) =>
-											setPaperDetails({ ...paperDetails, year: Number.parseInt(e.target.value) })
+											setPaperDetails({
+												...paperDetails,
+												year: Number.parseInt(e.target.value, 10),
+											})
 										}
 										className="h-12 rounded-xl border-2 font-bold"
 									/>
@@ -443,7 +446,7 @@ export function PdfUploadDrawer({ isOpen, onClose, subjects, onSuccess }: PdfUpl
 																handleUpdateExtractedQuestion(
 																	idx,
 																	'marks',
-																	Number.parseInt(e.target.value)
+																	Number.parseInt(e.target.value, 10)
 																)
 															}
 															className="w-16 h-8 rounded-lg border-2 text-center font-black p-0"
@@ -510,7 +513,7 @@ export function PdfUploadDrawer({ isOpen, onClose, subjects, onSuccess }: PdfUpl
 																					idx,
 																					sIdx,
 																					'marks',
-																					Number.parseInt(e.target.value)
+																					Number.parseInt(e.target.value, 10)
 																				)
 																			}
 																			className="w-12 h-6 rounded-md border-2 text-center font-black p-0 text-[10px]"

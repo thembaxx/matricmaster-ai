@@ -103,7 +103,7 @@ export default function CMS() {
 	const fileInputRef = useRef<HTMLInputElement>(null);
 
 	// Past Paper state
-	const [pastPapers, setPastPapers] = useState<any[]>([]);
+	const [pastPapers, setPastPapers] = useState<PastPaper[]>([]);
 
 	// User management state
 	const [userSearchQuery, setUserSearchQuery] = useState('');
@@ -464,6 +464,12 @@ export default function CMS() {
 
 	return (
 		<div className="flex-1 flex flex-col bg-background overflow-hidden pb-32">
+			<PdfUploadDrawer
+				isOpen={isPdfDrawerOpen}
+				onClose={() => setIsPdfDrawerOpen(false)}
+				subjects={subjects}
+				onSuccess={loadData}
+			/>
 			{/* Header */}
 			<header className="px-4 sm:px-8 pt-6 sm:pt-8 pb-6 bg-background shrink-0 space-y-6 sm:space-y-8">
 				<div className="flex flex-col md:flex-row md:items-center justify-between gap-4 sm:gap-6">
