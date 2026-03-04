@@ -482,7 +482,7 @@ export default function CMS() {
 						</p>
 					</div>
 
-					<div className="flex items-center gap-3">
+					<div className="flex items-center justify-between gap-3">
 						<Button
 							onClick={handleSeedDatabase}
 							disabled={seeding}
@@ -615,7 +615,7 @@ export default function CMS() {
 
 			{/* Main Content Grid */}
 			<main className="flex-1 overflow-hidden px-4 sm:px-8">
-				<ScrollArea className="h-full no-scrollbar">
+				<div className="h-full no-scrollbar overflow-y-auto">
 					{loading ? (
 						<div className="flex items-center justify-center py-40">
 							<div className="animate-spin rounded-full h-12 w-12 border-4 border-primary border-t-transparent" />
@@ -835,7 +835,7 @@ export default function CMS() {
 							)}
 						</div>
 					)}
-				</ScrollArea>
+				</div>
 			</main>
 
 			{/* Question Drawer */}
