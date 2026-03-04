@@ -259,14 +259,14 @@ export default function PastPapers() {
 			<BackgroundMesh variant="subtle" />
 
 			{/* Header */}
-			<header className="px-4 sm:px-6 py-8 sm:py-12 bg-background shrink-0 lg:px-0">
-				<div className="max-w-7xl mx-auto w-full space-y-8 sm:space-y-12">
+			<header className="px-4 sm:px-6 py-6 sm:py-12 bg-background shrink-0 lg:px-0">
+				<div className="max-w-7xl mx-auto w-full space-y-6 sm:space-y-12">
 					<div className="flex flex-col md:flex-row md:items-center justify-between gap-4 sm:gap-6">
 						<div className="space-y-2">
-							<h1 className="text-3xl sm:text-4xl lg:text-7xl font-black text-foreground tracking-tighter uppercase">
+							<h1 className="text-2xl sm:text-4xl lg:text-7xl font-black text-foreground tracking-tighter uppercase">
 								Past Paper Vault
 							</h1>
-							<p className="text-muted-foreground font-bold text-sm sm:lg:text-lg">
+							<p className="text-muted-foreground font-bold text-xs sm:text-lg">
 								Access thousands of Grade 12 exam papers
 							</p>
 						</div>

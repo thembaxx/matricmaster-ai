@@ -36,10 +36,10 @@ const Podium = memo(function Podium({ data }: { data: LeaderboardEntry[] }) {
 	return (
 		<div className="flex items-end justify-center gap-4 md:gap-12 pt-16 pb-12 lg:pt-24 lg:pb-20">
 			{/* 2nd Place */}
-			<div className="flex flex-col items-center">
+			<div className="flex flex-col items-center flex-1 sm:flex-none">
 				<div className="relative mb-4 group cursor-pointer">
 					<div className="absolute inset-0 bg-zinc-200 dark:bg-zinc-800 rounded-full blur-2xl opacity-0 group-hover:opacity-40 transition-opacity" />
-					<Avatar className="w-20 h-20 md:w-28 md:h-28 border-4 border-zinc-200 dark:border-zinc-800 relative z-10 transition-transform group-hover:scale-110 shadow-xl">
+					<Avatar className="w-16 h-16 sm:w-28 sm:h-28 border-4 border-zinc-200 dark:border-zinc-800 relative z-10 transition-transform group-hover:scale-110 shadow-xl">
 						<AvatarImage src={r2?.userImage || undefined} className="object-cover" />
 						<AvatarFallback className="font-black text-xl">
 							{r2?.userName?.[0] || '?'}
@@ -61,13 +61,13 @@ const Podium = memo(function Podium({ data }: { data: LeaderboardEntry[] }) {
 			</div>
 
 			{/* 1st Place */}
-			<div className="flex flex-col items-center">
+			<div className="flex flex-col items-center flex-1 sm:flex-none">
 				<div className="relative mb-6 group cursor-pointer">
-					<div className="absolute -top-10 left-1/2 -translate-x-1/2 text-brand-amber animate-bounce">
-						<TrophyIcon className="w-10 h-10 fill-brand-amber/20" />
+					<div className="absolute -top-8 sm:-top-10 left-1/2 -translate-x-1/2 text-brand-amber animate-bounce">
+						<TrophyIcon className="w-8 h-8 sm:w-10 sm:h-10 fill-brand-amber/20" />
 					</div>
 					<div className="absolute -inset-4 bg-brand-amber/20 rounded-full opacity-40 blur-3xl group-hover:opacity-60 transition-opacity" />
-					<Avatar className="w-28 h-28 md:w-40 md:h-40 border-4 border-brand-amber relative z-10 transition-transform group-hover:scale-110 shadow-2xl">
+					<Avatar className="w-24 h-24 sm:w-40 sm:h-40 border-4 border-brand-amber relative z-10 transition-transform group-hover:scale-110 shadow-2xl">
 						<AvatarImage src={r1?.userImage || undefined} className="object-cover" />
 						<AvatarFallback className="font-black text-3xl">
 							{r1?.userName?.[0] || '?'}
@@ -90,10 +90,10 @@ const Podium = memo(function Podium({ data }: { data: LeaderboardEntry[] }) {
 			</div>
 
 			{/* 3rd Place */}
-			<div className="flex flex-col items-center">
+			<div className="flex flex-col items-center flex-1 sm:flex-none">
 				<div className="relative mb-4 group cursor-pointer">
 					<div className="absolute inset-0 bg-orange-200 dark:bg-orange-800 rounded-full blur-2xl opacity-0 group-hover:opacity-40 transition-opacity" />
-					<Avatar className="w-20 h-20 md:w-28 md:h-28 border-4 border-orange-200 dark:border-orange-800 relative z-10 transition-transform group-hover:scale-110 shadow-xl">
+					<Avatar className="w-16 h-16 sm:w-28 sm:h-28 border-4 border-orange-200 dark:border-orange-800 relative z-10 transition-transform group-hover:scale-110 shadow-xl">
 						<AvatarImage src={r3?.userImage || undefined} className="object-cover" />
 						<AvatarFallback className="font-black text-xl">
 							{r3?.userName?.[0] || '?'}

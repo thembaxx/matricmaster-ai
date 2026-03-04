@@ -336,15 +336,17 @@ export default function Profile() {
 						initial={{ opacity: 0, y: 20 }}
 						animate={{ opacity: 1, y: 0 }}
 						transition={{ delay: 0.3 }}
-						className="mt-12"
+						className="mt-8 sm:mt-12"
 					>
-						<div className="flex items-center justify-between mb-6">
+						<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 mb-8">
 							<h3 className="text-xl font-black text-foreground tracking-tighter uppercase">
 								Achievement Collection
 							</h3>
-							<AchievementProgress unlockedIds={userStats.unlockedAchievementIds} />
+							<div className="w-full sm:w-72">
+								<AchievementProgress unlockedIds={userStats.unlockedAchievementIds} />
+							</div>
 						</div>
-						<Card className="p-8 rounded-[2.5rem] border-2 border-border/50 bg-card/50 backdrop-blur-sm">
+						<Card className="p-4 sm:p-8 rounded-[2rem] sm:rounded-[2.5rem] border-2 border-border/50 bg-card/50 backdrop-blur-sm">
 							<AchievementBadges unlockedIds={userStats.unlockedAchievementIds} />
 						</Card>
 					</m.div>

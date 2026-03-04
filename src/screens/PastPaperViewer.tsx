@@ -217,8 +217,8 @@ export default function PastPaperViewer({
 	return (
 		<div className="flex flex-col h-full bg-background relative">
 			{/* Header */}
-			<header className="px-6 pt-12 pb-4 bg-card sticky top-0 z-20 border-b border-border shrink-0">
-				<div className="flex items-center justify-between mb-4">
+			<header className="px-6 pt-8 pb-4 bg-card sticky top-0 z-20 border-b border-border shrink-0">
+				<div className="flex flex-col items-center justify-between mb-4 gap-3">
 					<div className="flex items-center gap-4">
 						<Button variant="ghost" size="icon" onClick={() => router.back()}>
 							<ArrowLeft className="w-5 h-5" />
@@ -285,10 +285,11 @@ export default function PastPaperViewer({
 
 			<div className="grow overflow-hidden">
 				<main
-					className="px-6 py-6 pb-32 transition-transform duration-300"
+					className="px-6 py-6 mobile-safe-bottom transition-transform duration-300"
 					style={{
 						transform: `scale(${zoom / 100}) rotate(${rotation}deg)`,
 						transformOrigin: 'top center',
+						// minHeight: '100vh',
 					}}
 				>
 					{/* Instructions */}
@@ -413,7 +414,7 @@ export default function PastPaperViewer({
 
 					{/* Conversion Banner */}
 					<Card
-						className="p-6 mt-6 bg-brand-blue/5 border-brand-blue/20 rounded-[2rem] flex flex-col gap-3 group cursor-pointer hover:bg-brand-blue/10 transition-colors"
+						className="p-6 mt-6 bg-brand-blue/5 w-full border-brand-blue/20 rounded-[2rem] flex flex-col gap-3 group cursor-pointer hover:bg-brand-blue/10 transition-colors"
 						onClick={handleConvertToInteractive}
 					>
 						<div className="flex flex-col gap-4">
@@ -503,33 +504,35 @@ export default function PastPaperViewer({
 			)}
 
 			{/* Bottom Toolbar (for tabs) */}
-			<nav className="absolute bottom-0 left-0 right-0 bg-white/90 dark:bg-zinc-900/90 backdrop-blur-xl border-t border-border px-6 py-3 pb-8">
-				<div className="flex justify-around items-center">
-					{[
-						{ id: 'questions', label: 'Questions' },
-						{ id: 'formulae', label: 'Formulae' },
-						{ id: 'saved', label: 'Saved' },
-						{ id: 'profile', label: 'Profile' },
-					].map((item) => (
-						<button
-							type="button"
-							key={item.id}
-							onClick={() => setActiveTab(item.id)}
-							className={`flex flex-col items-center gap-1 transition-all duration-300 ${
-								activeTab === item.id ? 'text-brand-blue scale-110' : 'text-zinc-400'
-							}`}
-						>
-							<span
-								className={`text-[10px] font-black uppercase tracking-wider ${
-									activeTab === item.id ? 'text-brand-blue' : ''
+			<div className="px-6 relative rounded-2xl absolute bottom-0 mb-32 left-0 right-0">
+				<nav className="rounded-2xl bg-white/90 dark:bg-zinc-900/90 backdrop-blur-xl border-t border-border px-4 py-4">
+					<div className="flex justify-around items-center">
+						{[
+							{ id: 'questions', label: 'Questions' },
+							{ id: 'formulae', label: 'Formulae' },
+							{ id: 'saved', label: 'Saved' },
+							{ id: 'profile', label: 'Profile' },
+						].map((item) => (
+							<button
+								type="button"
+								key={item.id}
+								onClick={() => setActiveTab(item.id)}
+								className={`flex flex-col items-center gap-1 transition-all duration-300 ${
+									activeTab === item.id ? 'text-brand-blue scale-110' : 'text-zinc-400'
 								}`}
 							>
-								{item.label}
-							</span>
-						</button>
-					))}
-				</div>
-			</nav>
+								<span
+									className={`text-[10px] font-black uppercase tracking-wider ${
+										activeTab === item.id ? 'text-brand-blue' : ''
+									}`}
+								>
+									{item.label}
+								</span>
+							</button>
+						))}
+					</div>
+				</nav>
+			</div>
 		</div>
 	);
 }

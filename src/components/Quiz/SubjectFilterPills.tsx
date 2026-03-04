@@ -17,7 +17,7 @@ export function SubjectFilterPills({
 	getColor,
 }: SubjectFilterPillsProps) {
 	return (
-		<div className="w-full overflow-x-auto whitespace-nowrap pb-2">
+		<div className="w-full overflow-x-auto whitespace-nowrap pb-2 px-10 no-scrollbar">
 			<div className="flex gap-2 px-1">
 				{subjects.map((subject) => {
 					const colors = getColor(subject);

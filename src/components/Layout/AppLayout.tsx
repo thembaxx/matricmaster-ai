@@ -5,6 +5,8 @@ import { useState } from 'react';
 import { toast } from 'sonner';
 import { ClientOnly } from '@/components/ClientOnly';
 import { DailyLoginBonus } from '@/components/Gamification/DailyLoginBonus';
+import { MobileLayoutFixes } from '@/components/Layout/MobileLayoutFixes';
+import { MobileViewTest } from '@/components/Layout/MobileViewTest';
 import { useNotificationContextSafe } from '@/components/Notifications/NotificationListener';
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
 import { useTheme } from '@/hooks/use-theme';
@@ -34,6 +36,10 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 		return (
 			<div className="flex min-h-screen bg-background overflow-x-hidden transition-colors duration-500">
 				<ClientOnly>{user && <DailyLoginBonus />}</ClientOnly>
+				<ClientOnly>
+					<MobileLayoutFixes />
+					<MobileViewTest />
+				</ClientOnly>
 				<div className="flex-1 flex flex-col min-h-screen relative max-w-full">
 					<div className="flex-1 flex flex-col w-full mx-auto max-w-full">
 						{!shouldHideNav && (
@@ -74,6 +80,8 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 		<SidebarProvider defaultOpen={sidebarOpen} onOpenChange={setSidebarOpen}>
 			<ClientOnly>
 				<DailyLoginBonus />
+				<MobileLayoutFixes />
+				<MobileViewTest />
 			</ClientOnly>
 			<AppSidebar
 				user={user}

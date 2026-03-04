@@ -456,8 +456,8 @@ export default function CMS() {
 	return (
 		<div className="flex-1 flex flex-col bg-background overflow-hidden pb-32">
 			{/* Header */}
-			<header className="px-8 pt-8 pb-6 bg-background shrink-0 space-y-8">
-				<div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+			<header className="px-4 sm:px-8 pt-6 sm:pt-8 pb-6 bg-background shrink-0 space-y-6 sm:space-y-8">
+				<div className="flex flex-col md:flex-row md:items-center justify-between gap-4 sm:gap-6">
 					<div className="space-y-1">
 						<h1 className="text-3xl font-black text-foreground tracking-tighter uppercase">
 							Content Management
@@ -519,8 +519,8 @@ export default function CMS() {
 				</Tabs>
 
 				{/* Search & Filters */}
-				<div className="grid grid-cols-1 md:grid-cols-12 gap-4">
-					<div className="md:col-span-6 relative">
+				<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-12 gap-3 sm:gap-4">
+					<div className="sm:col-span-2 md:col-span-6 relative">
 						<Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
 						<Input
 							value={activeTab === 'users' ? userSearchQuery : searchQuery}
@@ -589,7 +589,7 @@ export default function CMS() {
 			</header>
 
 			{/* Main Content Grid */}
-			<main className="flex-1 overflow-hidden px-8">
+			<main className="flex-1 overflow-hidden px-4 sm:px-8">
 				<ScrollArea className="h-full no-scrollbar">
 					{loading ? (
 						<div className="flex items-center justify-center py-40">

@@ -129,8 +129,8 @@ export function SimpleQuizFooter({
 	onNext,
 }: SimpleQuizFooterProps) {
 	return (
-		<footer className="absolute bottom-26 left-0 right-0 backdrop-blur-xl z-30">
-			<div className="max-w-2xl mx-auto w-full p-6 flex gap-4">
+		<footer className="fixed bottom-0 left-0 right-0 bg-card/80 backdrop-blur-xl border-t border-border z-30">
+			<div className="max-w-2xl mx-auto w-full p-4 sm:p-6 flex gap-4">
 				{showCheckButton ? (
 					<Button
 						className={`flex-1 h-16 rounded-[2rem] font-bold text-lg shadow-xl ${primaryColor} ${shadowColor} disabled:opacity-50 transition-all active:scale-95`}
