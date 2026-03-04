@@ -1,6 +1,7 @@
 'use server';
 
 import { and, eq } from 'drizzle-orm';
+import { ensureAuthenticated } from './auth-utils';
 import { dbManager } from './index';
 import { calendarEvents } from './schema';
 
@@ -29,9 +30,10 @@ function stringifyField(value: unknown): string {
 
 /**
  * Create a calendar event
+ * Uses session-based authentication to prevent IDOR
  */
 export async function createCalendarEvent(
-	userId: string,
+	_userId: string,
 	data: {
 		title: string;
 		description?: string;
@@ -49,11 +51,14 @@ export async function createCalendarEvent(
 	}
 ) {
 	try {
+		const user = await ensureAuthenticated();
+		const activeUserId = user.id;
+
 		const db = getDb();
 		const [event] = await db
 			.insert(calendarEvents)
 			.values({
-				userId,
+				userId: activeUserId,
 				title: data.title,
 				description: data.description,
 				eventType: data.eventType,
@@ -78,9 +83,10 @@ export async function createCalendarEvent(
 
 /**
  * Get user's calendar events
+ * Verifies identity via session to prevent IDOR
  */
 export async function getCalendarEvents(
-	userId: string,
+	_userId: string,
 	options?: {
 		startDate?: Date;
 		endDate?: Date;
@@ -88,8 +94,11 @@ export async function getCalendarEvents(
 	}
 ) {
 	try {
+		const user = await ensureAuthenticated();
+		const activeUserId = user.id;
+
 		const db = getDb();
-		const query = db.select().from(calendarEvents).where(eq(calendarEvents.userId, userId));
+		const query = db.select().from(calendarEvents).where(eq(calendarEvents.userId, activeUserId));
 
 		// Note: Drizzle doesn't support complex where clauses easily in one call
 		// We'll filter in JavaScript for date ranges
@@ -125,14 +134,18 @@ export async function getCalendarEvents(
 
 /**
  * Get a single calendar event
+ * Verifies ownership via session to prevent IDOR
  */
-export async function getCalendarEvent(eventId: string, userId: string) {
+export async function getCalendarEvent(eventId: string, _userId: string) {
 	try {
+		const user = await ensureAuthenticated();
+		const activeUserId = user.id;
+
 		const db = getDb();
 		const [event] = await db
 			.select()
 			.from(calendarEvents)
-			.where(and(eq(calendarEvents.id, eventId), eq(calendarEvents.userId, userId)))
+			.where(and(eq(calendarEvents.id, eventId), eq(calendarEvents.userId, activeUserId)))
 			.limit(1);
 
 		if (!event) return null;
@@ -149,10 +162,11 @@ export async function getCalendarEvent(eventId: string, userId: string) {
 
 /**
  * Update a calendar event
+ * Verifies ownership via session to prevent IDOR
  */
 export async function updateCalendarEvent(
 	eventId: string,
-	userId: string,
+	_userId: string,
 	data: {
 		title?: string;
 		description?: string;
@@ -168,6 +182,9 @@ export async function updateCalendarEvent(
 	}
 ) {
 	try {
+		const user = await ensureAuthenticated();
+		const activeUserId = user.id;
+
 		const db = getDb();
 		const [updated] = await db
 			.update(calendarEvents)
@@ -185,7 +202,7 @@ export async function updateCalendarEvent(
 				isCompleted: data.isCompleted,
 				updatedAt: new Date(),
 			})
-			.where(and(eq(calendarEvents.id, eventId), eq(calendarEvents.userId, userId)))
+			.where(and(eq(calendarEvents.id, eventId), eq(calendarEvents.userId, activeUserId)))
 			.returning();
 		return { success: true, event: updated };
 	} catch (error) {
@@ -196,13 +213,17 @@ export async function updateCalendarEvent(
 
 /**
  * Delete a calendar event
+ * Verifies ownership via session to prevent IDOR
  */
-export async function deleteCalendarEvent(eventId: string, userId: string) {
+export async function deleteCalendarEvent(eventId: string, _userId: string) {
 	try {
+		const user = await ensureAuthenticated();
+		const activeUserId = user.id;
+
 		const db = getDb();
 		await db
 			.delete(calendarEvents)
-			.where(and(eq(calendarEvents.id, eventId), eq(calendarEvents.userId, userId)));
+			.where(and(eq(calendarEvents.id, eventId), eq(calendarEvents.userId, activeUserId)));
 		return { success: true };
 	} catch (error) {
 		console.error('[Calendar] Error deleting event:', error);
@@ -213,29 +234,31 @@ export async function deleteCalendarEvent(eventId: string, userId: string) {
 /**
  * Mark event as completed
  */
-export async function completeCalendarEvent(eventId: string, userId: string) {
-	return updateCalendarEvent(eventId, userId, { isCompleted: true });
+export async function completeCalendarEvent(eventId: string, _userId: string) {
+	return updateCalendarEvent(eventId, _userId, { isCompleted: true });
 }
 
 /**
  * Get upcoming events (next 7 days)
+ * Verifies identity via session to prevent IDOR
  */
-export async function getUpcomingEvents(userId: string, days = 7) {
+export async function getUpcomingEvents(_userId: string, days = 7) {
 	const now = new Date();
 	const endDate = new Date();
 	endDate.setDate(endDate.getDate() + days);
 
-	return getCalendarEvents(userId, { startDate: now, endDate });
+	return getCalendarEvents(_userId, { startDate: now, endDate });
 }
 
 /**
  * Get today's events
+ * Verifies identity via session to prevent IDOR
  */
-export async function getTodayEvents(userId: string) {
+export async function getTodayEvents(_userId: string) {
 	const today = new Date();
 	today.setHours(0, 0, 0, 0);
 	const tomorrow = new Date(today);
 	tomorrow.setDate(tomorrow.getDate() + 1);
 
-	return getCalendarEvents(userId, { startDate: today, endDate: tomorrow });
+	return getCalendarEvents(_userId, { startDate: today, endDate: tomorrow });
 }
