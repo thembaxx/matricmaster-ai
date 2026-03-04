@@ -1,29 +1,71 @@
-import { apiError, apiSuccess } from '@/lib/api-utils';
-import { dbManager } from '@/lib/db';
+import { NextResponse } from 'next/server';
+import { healthCheck, monitoring, performance } from '@/lib/monitoring';
+
+export const dynamic = 'force-dynamic';
+export const fetchCache = 'force-no-store';
+export const revalidate = 0;
 
 export async function GET() {
 	try {
-		const isConnected = await dbManager.waitForConnection(3, 1000);
+		// Run health checks
+		const [geminiCheck, uploadThingCheck] = await Promise.all([
+			healthCheck.checkGemini(),
+			healthCheck.checkUploadThing(),
+		]);
 
-		if (isConnected) {
-			return apiSuccess({
-				status: 'healthy',
-				database: 'connected',
-				timestamp: new Date().toISOString(),
-			});
-		}
+		// Get monitoring stats
+		const stats = monitoring.getStats();
+		const perfStats = performance.getStats();
 
-		return apiError('Database connection failed', 503, {
-			status: 'degraded',
-			database: 'disconnected',
+		const healthStatus = healthCheck.getHealthStatus();
+
+		const response = {
+			status: 'ok',
 			timestamp: new Date().toISOString(),
-		});
+			health: {
+				...healthStatus,
+				services: {
+					gemini: geminiCheck,
+					uploadThing: uploadThingCheck,
+				},
+			},
+			monitoring: {
+				...stats,
+				performance: perfStats,
+			},
+		};
+
+		return NextResponse.json(response);
 	} catch (error) {
-		return apiError('Health check failed', 500, {
-			status: 'unhealthy',
-			database: 'error',
-			error: error instanceof Error ? error.message : 'Unknown error',
+		const response = {
+			status: 'error',
 			timestamp: new Date().toISOString(),
+			error: error instanceof Error ? error.message : 'Unknown error',
+			health: healthCheck.getHealthStatus(),
+		};
+
+		return NextResponse.json(response, { status: 500 });
+	}
+}
+
+export async function POST(request: Request) {
+	const body = await request.json();
+
+	if (body.action === 'clear-logs') {
+		monitoring.clearLogs();
+		return NextResponse.json({ success: true, message: 'Logs cleared' });
+	}
+
+	if (body.action === 'run-health-check') {
+		const geminiCheck = await healthCheck.checkGemini();
+		const uploadThingCheck = await healthCheck.checkUploadThing();
+
+		return NextResponse.json({
+			gemini: geminiCheck,
+			uploadThing: uploadThingCheck,
+			health: healthCheck.getHealthStatus(),
 		});
 	}
+
+	return NextResponse.json({ error: 'Invalid action' }, { status: 400 });
 }

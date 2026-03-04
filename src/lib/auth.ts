@@ -1,5 +1,5 @@
+import { drizzleAdapter } from '@better-auth/drizzle-adapter';
 import { betterAuth } from 'better-auth';
-import { drizzleAdapter } from 'better-auth/adapters/drizzle';
 import { nextCookies } from 'better-auth/next-js';
 import { twoFactor } from 'better-auth/plugins';
 import { Resend } from 'resend';
@@ -14,6 +14,90 @@ let authInstance: AuthInstance | null = null;
 
 // Check if we're in a build phase where database is not expected to be available
 const isBuildTime = process.env.NEXT_PHASE === 'phase-production-build';
+
+export const authConfig = {
+	baseURL:
+		process.env.BETTER_AUTH_URL ||
+		process.env.NEXT_PUBLIC_APP_URL ||
+		(process.env.NODE_ENV === 'production' ? undefined : 'http://localhost:3000'),
+	secret: process.env.BETTER_AUTH_SECRET,
+	emailAndPassword: {
+		enabled: true,
+		requireEmailVerification: process.env.NODE_ENV === 'production',
+	},
+	socialProviders: {
+		google: {
+			clientId: process.env.GOOGLE_CLIENT_ID ?? '',
+			clientSecret: process.env.GOOGLE_SECRET_KEY ?? '',
+		},
+	},
+	session: {
+		expiresIn: 60 * 60 * 24 * 7,
+		updateAge: 60 * 60 * 24,
+		cookieCache: {
+			enabled: true,
+			maxAge: 5 * 60,
+		},
+	},
+	user: {
+		additionalFields: {
+			role: {
+				type: 'string',
+				required: false,
+				defaultValue: 'user',
+				input: false,
+			},
+			isBlocked: {
+				type: 'boolean',
+				required: false,
+				defaultValue: false,
+				input: false,
+			},
+			deletedAt: {
+				type: 'date',
+				required: false,
+				input: false,
+			},
+			twoFactorEnabled: {
+				type: 'boolean',
+				required: false,
+				defaultValue: false,
+				input: false,
+			},
+		},
+	},
+	trustedOrigins: [
+		process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000',
+		process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : '',
+	].filter(Boolean),
+	rateLimit: {
+		enabled: true,
+		window: 60,
+		max: 10,
+	},
+	advanced: {
+		useSecureCookies: process.env.NODE_ENV === 'production',
+		crossSubDomainCookies: {
+			enabled: process.env.NODE_ENV === 'production',
+		},
+	},
+	plugins: [
+		twoFactor({
+			issuer: 'MatricMaster AI',
+			totpOptions: {
+				digits: 6,
+				period: 30,
+			},
+			backupCodeOptions: {
+				amount: 10,
+				length: 10,
+				storeBackupCodes: 'encrypted',
+			},
+			twoFactorCookieMaxAge: 600,
+			trustDeviceMaxAge: 30 * 24 * 60 * 60,
+		}),
+	],
+};
 
 // Define the User type with additional fields to match our schema
 interface ExtendedUser {
@@ -189,12 +273,9 @@ function createAuth(): AuthInstance {
 		}
 	};
 
-	const authConfig = {
-		baseURL:
-			process.env.BETTER_AUTH_URL ||
-			process.env.NEXT_PUBLIC_APP_URL ||
-			(process.env.NODE_ENV === 'production' ? undefined : 'http://localhost:3000'),
-		secret: process.env.BETTER_AUTH_SECRET,
+	// Merge static config with dynamic runtime config
+	const runtimeConfig = {
+		...authConfig,
 		database: db
 			? drizzleAdapter(db, {
 					provider: 'pg',
@@ -202,65 +283,11 @@ function createAuth(): AuthInstance {
 				})
 			: undefined,
 		emailAndPassword: {
-			enabled: true,
-			requireEmailVerification: process.env.NODE_ENV === 'production',
+			...authConfig.emailAndPassword,
 			sendVerificationEmail,
 			sendPasswordResetEmail,
 		},
 		socialProviders,
-		session: {
-			expiresIn: 60 * 60 * 24 * 7,
-			updateAge: 60 * 60 * 24,
-			cookieCache: {
-				enabled: true,
-				maxAge: 5 * 60,
-			},
-		},
-		user: {
-			additionalFields: {
-				role: {
-					type: 'string',
-					required: false,
-					defaultValue: 'user',
-					input: false,
-				},
-				isBlocked: {
-					type: 'boolean',
-					required: false,
-					defaultValue: false,
-					input: false,
-				},
-				deletedAt: {
-					type: 'date',
-					required: false,
-					input: false,
-				},
-				twoFactorEnabled: {
-					type: 'boolean',
-					required: false,
-					defaultValue: false,
-					input: false,
-				},
-			},
-		},
-		trustedOrigins: [
-			process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000',
-			process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : '',
-		].filter(Boolean),
-		rateLimit: {
-			enabled: true,
-			window: 60,
-			max: 10,
-		},
-		advanced: {
-			useSecureCookies: process.env.NODE_ENV === 'production',
-			crossSubDomainCookies: {
-				enabled: process.env.NODE_ENV === 'production',
-			},
-			ipAddress: {
-				ipAddressHeaders: ['x-forwarded-for', 'x-real-ip'],
-			},
-		},
 		databaseHooks: {
 			user: {
 				create: {
@@ -281,28 +308,12 @@ function createAuth(): AuthInstance {
 				},
 			},
 		},
-		plugins: [
-			nextCookies(),
-			twoFactor({
-				issuer: 'MatricMaster AI',
-				totpOptions: {
-					digits: 6,
-					period: 30,
-				},
-				backupCodeOptions: {
-					amount: 10,
-					length: 10,
-					storeBackupCodes: 'encrypted',
-				},
-				twoFactorCookieMaxAge: 600,
-				trustDeviceMaxAge: 30 * 24 * 60 * 60,
-			}),
-		],
+		plugins: [nextCookies(), authConfig.plugins[0]],
 	};
 
 	// Use type assertion to bypass the type mismatch during build
 	// biome-ignore lint/suspicious/noExplicitAny: Type mismatch between authConfig and betterAuth during build
-	return betterAuth(authConfig as any);
+	return betterAuth(runtimeConfig as any);
 }
 
 export async function initAuth(): Promise<AuthInstance> {
@@ -369,6 +380,17 @@ try {
 
 export const auth = new Proxy({} as AuthInstance, {
 	get(_target, prop) {
+		// CLI detection - check if being accessed by better-auth CLI generate
+		// The CLI runs with 'generate' command and doesn't need DB connection
+		const isCLIGenerate = typeof process !== 'undefined' && process.argv?.includes('generate');
+
+		// For CLI generate, return authConfig to satisfy the CLI
+		if (isCLIGenerate) {
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			// biome-ignore lint/suspicious/noExplicitAny: na
+			return Reflect.get(authConfig as any, prop, authConfig);
+		}
+
 		// Try sync first for backward compatibility
 		const syncAuth = getAuthSync();
 		if (syncAuth) {
@@ -396,6 +418,9 @@ export const auth = new Proxy({} as AuthInstance, {
 		);
 	},
 });
+
+// Default export for better-auth CLI
+export default auth;
 
 export type Auth = AuthInstance;
 export type AuthSession = Auth['$Infer']['Session'];

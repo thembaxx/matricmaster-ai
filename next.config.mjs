@@ -60,6 +60,8 @@ const nextConfig = {
 			'@iconify/react',
 			'recharts',
 			'framer-motion',
+			'@vercel/ai',
+			'@ai-sdk/google',
 		],
 	},
 	turbopack: {

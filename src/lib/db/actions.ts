@@ -852,91 +852,134 @@ export async function saveProcessedExtractedPaperAction(
 	await ensureAdmin();
 	const db = await getDb();
 
-	return db.transaction(async (tx) => {
-		// 1. Save/Update Past Paper
-		const [paper] = await tx
-			.insert(pastPapers)
-			.values(paperData)
-			.onConflictDoUpdate({
-				target: pastPapers.paperId,
-				set: {
+	try {
+		// Validate input data
+		if (!paperData.paperId || !paperData.subject) {
+			throw new Error('Invalid paper data: missing paperId or subject');
+		}
+
+		if (!Array.isArray(questionsList)) {
+			throw new Error('Invalid questions data: must be an array');
+		}
+
+		return await db.transaction(async (tx) => {
+			// 1. Save/Update Past Paper with validation
+			const [paper] = await tx
+				.insert(pastPapers)
+				.values({
 					...paperData,
 					updatedAt: new Date(),
-				},
-			})
-			.returning();
+				})
+				.onConflictDoUpdate({
+					target: pastPapers.paperId,
+					set: {
+						...paperData,
+						updatedAt: new Date(),
+					},
+				})
+				.returning();
 
-		// 2. Save Questions and Options
-		if (questionsList.length > 0) {
-			for (const q of questionsList) {
-				// Idempotency: Check if question already exists in this subject with same text
-				const [existingQuestion] = await tx
-					.select()
-					.from(questions)
-					.where(
-						and(eq(questions.subjectId, q.subjectId), eq(questions.questionText, q.questionText))
-					)
-					.limit(1);
+			if (!paper) {
+				throw new Error('Failed to save paper record');
+			}
 
-				if (existingQuestion) {
-					// Update existing question
-					const [updatedQuestion] = await tx
-						.update(questions)
-						.set({
-							gradeLevel: q.gradeLevel,
-							topic: q.topic,
-							difficulty: q.difficulty,
-							marks: q.marks,
-							updatedAt: new Date(),
-						})
-						.where(eq(questions.id, existingQuestion.id))
-						.returning();
+			// 2. Save Questions and Options
+			if (questionsList.length > 0) {
+				console.log(`[DB] Saving ${questionsList.length} questions for paper ${paper.paperId}`);
 
-					// Refresh options: Delete and re-insert to ensure accuracy
-					await tx.delete(options).where(eq(options.questionId, updatedQuestion.id));
+				for (const [index, q] of questionsList.entries()) {
+					try {
+						// Validate question data
+						if (!q.questionText || !q.subjectId) {
+							console.warn(`[DB] Skipping invalid question ${index}: missing text or subject`);
+							continue;
+						}
 
-					if (q.options && q.options.length > 0) {
-						await tx.insert(options).values(
-							q.options.map((opt) => ({
-								questionId: updatedQuestion.id,
-								optionText: opt.text,
-								optionLetter: opt.letter,
-								isCorrect: opt.isCorrect,
-								explanation: opt.explanation || null,
-							}))
-						);
-					}
-				} else {
-					// Insert new question
-					const [newQuestion] = await tx
-						.insert(questions)
-						.values({
-							subjectId: q.subjectId,
-							questionText: q.questionText,
-							gradeLevel: q.gradeLevel,
-							topic: q.topic,
-							difficulty: q.difficulty,
-							marks: q.marks,
-						})
-						.returning();
+						// Check if question already exists (case-insensitive)
+						const [existingQuestion] = await tx
+							.select()
+							.from(questions)
+							.where(
+								and(
+									eq(questions.subjectId, q.subjectId),
+									sql`LOWER(${questions.questionText}) = LOWER(${q.questionText})`
+								)
+							)
+							.limit(1);
 
-					if (q.options && q.options.length > 0) {
-						await tx.insert(options).values(
-							q.options.map((opt) => ({
-								questionId: newQuestion.id,
-								optionText: opt.text,
-								optionLetter: opt.letter,
-								isCorrect: opt.isCorrect,
-								explanation: opt.explanation || null,
-							}))
-						);
+						if (existingQuestion) {
+							// Update existing question
+							const [updatedQuestion] = await tx
+								.update(questions)
+								.set({
+									gradeLevel: q.gradeLevel || existingQuestion.gradeLevel,
+									topic: q.topic || existingQuestion.topic,
+									difficulty: q.difficulty || existingQuestion.difficulty,
+									marks: q.marks || existingQuestion.marks,
+									updatedAt: new Date(),
+								})
+								.where(eq(questions.id, existingQuestion.id))
+								.returning();
+
+							// Refresh options: Delete and re-insert to ensure accuracy
+							await tx.delete(options).where(eq(options.questionId, updatedQuestion.id));
+
+							if (q.options && q.options.length > 0) {
+								const optionValues = q.options.map((opt) => ({
+									questionId: updatedQuestion.id,
+									optionText: opt.text || '',
+									optionLetter: opt.letter || '',
+									isCorrect: opt.isCorrect || false,
+									explanation: opt.explanation || null,
+								}));
+
+								await tx.insert(options).values(optionValues);
+							}
+
+							console.log(`[DB] Updated existing question: ${updatedQuestion.id}`);
+						} else {
+							// Insert new question
+							const [newQuestion] = await tx
+								.insert(questions)
+								.values({
+									subjectId: q.subjectId,
+									questionText: q.questionText,
+									gradeLevel: q.gradeLevel || 12,
+									topic: q.topic || 'General',
+									difficulty: q.difficulty || 'medium',
+									marks: q.marks || 1,
+								})
+								.returning();
+
+							if (q.options && q.options.length > 0) {
+								const optionValues = q.options.map((opt) => ({
+									questionId: newQuestion.id,
+									optionText: opt.text || '',
+									optionLetter: opt.letter || '',
+									isCorrect: opt.isCorrect || false,
+									explanation: opt.explanation || null,
+								}));
+
+								await tx.insert(options).values(optionValues);
+							}
+
+							console.log(`[DB] Created new question: ${newQuestion.id}`);
+						}
+					} catch (questionError) {
+						console.error(`[DB] Error processing question ${index}:`, questionError);
 					}
 				}
 			}
-		}
 
-		return paper;
-	});
+			console.log(
+				`[DB] Successfully saved paper ${paper.paperId} with ${questionsList.length} questions`
+			);
+			return paper;
+		});
+	} catch (error) {
+		console.error('[DB] Error in saveProcessedExtractedPaperAction:', error);
+		throw error;
+	}
 }
 
 /**
