@@ -74,6 +74,7 @@ export async function ensureAdmin() {
 	if ((user as SessionUser).role !== 'admin') {
 		throw new Error('Unauthorized: Admin access required');
 	}
+	return user;
 }
 
 /**
@@ -1045,18 +1046,19 @@ export async function getExtractedQuestionsAction(paperId: string): Promise<stri
  * Create a new content flag
  */
 export async function createContentFlagAction(
-	reporterId: string,
+	_reporterId: string,
 	contentType: string,
 	contentId: string,
 	flagReason: string,
 	contentPreview?: string,
 	flagDetails?: string
 ): Promise<ContentFlag> {
+	const user = await ensureAuthenticated();
 	const db = await getDb();
 	const [flag] = await db
 		.insert(contentFlags)
 		.values({
-			reporterId,
+			reporterId: user.id,
 			contentType,
 			contentId,
 			flagReason,
@@ -1091,15 +1093,15 @@ export async function getContentFlagsAction(
  */
 export async function dismissFlagAction(
 	flagId: string,
-	reviewerId: string
+	_reviewerId: string
 ): Promise<{ success: boolean }> {
-	await ensureAdmin();
+	const user = await ensureAdmin();
 	const db = await getDb();
 	const result = await db
 		.update(contentFlags)
 		.set({
 			status: 'dismissed',
-			reviewedBy: reviewerId,
+			reviewedBy: user.id,
 			reviewedAt: new Date(),
 		})
 		.where(eq(contentFlags.id, flagId))
@@ -1112,15 +1114,15 @@ export async function dismissFlagAction(
  */
 export async function actionFlagAction(
 	flagId: string,
-	reviewerId: string
+	_reviewerId: string
 ): Promise<{ success: boolean }> {
-	await ensureAdmin();
+	const user = await ensureAdmin();
 	const db = await getDb();
 	const result = await db
 		.update(contentFlags)
 		.set({
 			status: 'actioned',
-			reviewedBy: reviewerId,
+			reviewedBy: user.id,
 			reviewedAt: new Date(),
 		})
 		.where(eq(contentFlags.id, flagId))
@@ -1136,23 +1138,24 @@ export async function actionFlagAction(
  * Send a buddy request
  */
 export async function sendBuddyRequestAction(
-	fromUserId: string,
+	_fromUserId: string,
 	toUserId: string,
 	message?: string
 ): Promise<{ success: boolean; error?: string; requestId?: string }> {
 	try {
+		const user = await ensureAuthenticated();
 		const db = await getDb();
 		const [request] = await db
 			.insert(buddyRequests)
 			.values({
-				fromUserId,
+				fromUserId: user.id,
 				toUserId,
 				message,
 				status: 'pending',
 			})
 			.returning();
 
-		console.log(`[Buddy Request] ${fromUserId} -> ${toUserId}: ${message || 'No message'}`);
+		console.log(`[Buddy Request] ${user.id} -> ${toUserId}: ${message || 'No message'}`);
 		return { success: true, requestId: request.id };
 	} catch (error) {
 		console.error('[Buddy Request] Error:', error);
@@ -1163,12 +1166,13 @@ export async function sendBuddyRequestAction(
 /**
  * Get buddy requests for a user
  */
-export async function getBuddyRequestsAction(userId: string): Promise<BuddyRequest[]> {
+export async function getBuddyRequestsAction(_userId: string): Promise<BuddyRequest[]> {
+	const user = await ensureAuthenticated();
 	const db = await getDb();
 	return db
 		.select()
 		.from(buddyRequests)
-		.where(eq(buddyRequests.toUserId, userId))
+		.where(eq(buddyRequests.toUserId, user.id))
 		.orderBy(desc(buddyRequests.createdAt));
 }
 
@@ -1177,8 +1181,9 @@ export async function getBuddyRequestsAction(userId: string): Promise<BuddyReque
  */
 export async function acceptBuddyRequestAction(
 	requestId: string,
-	userId: string
+	_userId: string
 ): Promise<{ success: boolean }> {
+	const user = await ensureAuthenticated();
 	const db = await getDb();
 	const result = await db
 		.update(buddyRequests)
@@ -1186,7 +1191,7 @@ export async function acceptBuddyRequestAction(
 			status: 'accepted',
 			respondedAt: new Date(),
 		})
-		.where(and(eq(buddyRequests.id, requestId), eq(buddyRequests.toUserId, userId)))
+		.where(and(eq(buddyRequests.id, requestId), eq(buddyRequests.toUserId, user.id)))
 		.returning();
 	return { success: result.length > 0 };
 }
@@ -1196,8 +1201,9 @@ export async function acceptBuddyRequestAction(
  */
 export async function rejectBuddyRequestAction(
 	requestId: string,
-	userId: string
+	_userId: string
 ): Promise<{ success: boolean }> {
+	const user = await ensureAuthenticated();
 	const db = await getDb();
 	const result = await db
 		.update(buddyRequests)
@@ -1205,7 +1211,7 @@ export async function rejectBuddyRequestAction(
 			status: 'rejected',
 			respondedAt: new Date(),
 		})
-		.where(and(eq(buddyRequests.id, requestId), eq(buddyRequests.toUserId, userId)))
+		.where(and(eq(buddyRequests.id, requestId), eq(buddyRequests.toUserId, user.id)))
 		.returning();
 	return { success: result.length > 0 };
 }
