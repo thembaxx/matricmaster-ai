@@ -5,7 +5,7 @@ import { Clock, Sparkles, Zap } from 'lucide-react';
 import { memo, useEffect, useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
-import { getUserProgressSummary } from '@/lib/db/progress-actions';
+import { type UserProgressSummary, getUserProgressSummary } from '@/lib/db/progress-actions';
 
 interface WeeklyChallengeData {
 	title: string;
@@ -14,6 +14,10 @@ interface WeeklyChallengeData {
 	bonusXp: number;
 	current: number;
 	daysRemaining: number;
+}
+
+interface WeeklyChallengeProps {
+	initialProgress?: UserProgressSummary;
 }
 
 const WEEKLY_CHALLENGES = [
@@ -60,11 +64,47 @@ function getDaysUntilMonday(): number {
 	return daysUntilMonday;
 }
 
-export const WeeklyChallenge = memo(function WeeklyChallenge() {
-	const [challenge, setChallenge] = useState<WeeklyChallengeData | null>(null);
-	const [isLoading, setIsLoading] = useState(true);
+export const WeeklyChallenge = memo(function WeeklyChallenge({
+	initialProgress,
+}: WeeklyChallengeProps) {
+	const [challenge, setChallenge] = useState<WeeklyChallengeData | null>(() => {
+		if (initialProgress) {
+			const weekNumber = getWeekNumber(new Date());
+			const challengeIndex = weekNumber % WEEKLY_CHALLENGES.length;
+			const challengeDef = WEEKLY_CHALLENGES[challengeIndex];
+
+			let current = 0;
+			switch (challengeDef.type) {
+				case 'questions':
+					current = initialProgress.totalQuestionsAttempted || 0;
+					break;
+				case 'correct':
+					current = initialProgress.totalCorrect || 0;
+					break;
+				case 'quizzes':
+					current = initialProgress.recentSessions?.length || 0;
+					break;
+				case 'accuracy':
+					current = initialProgress.accuracy || 0;
+					break;
+			}
+
+			return {
+				title: challengeDef.title,
+				description: challengeDef.description,
+				target: challengeDef.target,
+				bonusXp: challengeDef.bonusXp,
+				current,
+				daysRemaining: getDaysUntilMonday(),
+			};
+		}
+		return null;
+	});
+	const [isLoading, setIsLoading] = useState(!challenge);
 
 	useEffect(() => {
+		if (challenge) return; // Skip fetch if initialized with initial data
+
 		async function fetchChallenge() {
 			try {
 				const progress = await getUserProgressSummary();
@@ -104,7 +144,7 @@ export const WeeklyChallenge = memo(function WeeklyChallenge() {
 		}
 
 		fetchChallenge();
-	}, []);
+	}, [challenge]);
 
 	if (isLoading) {
 		return (
