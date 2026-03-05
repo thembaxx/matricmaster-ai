@@ -4,6 +4,7 @@ import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { DashboardSkeleton } from '@/components/DashboardSkeleton';
 import { getAuth } from '@/lib/auth';
+import { getUserAchievements } from '@/lib/db/achievement-actions';
 import { getUserProgressSummary, getUserStreak } from '@/lib/db/progress-actions';
 
 const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://matricmaster.ai';
@@ -34,12 +35,18 @@ export default async function DashboardPage() {
 		redirect('/sign-in');
 	}
 
-	const [initialProgress, initialStreak] = await Promise.all([
+	const [initialProgress, initialStreak, initialAchievements] = await Promise.all([
 		getUserProgressSummary(),
 		getUserStreak(),
+		getUserAchievements(),
 	]);
 
 	return (
-		<Dashboard initialProgress={initialProgress} initialStreak={initialStreak} session={session} />
+		<Dashboard
+			initialProgress={initialProgress}
+			initialStreak={initialStreak}
+			initialAchievements={initialAchievements}
+			session={session}
+		/>
 	);
 }

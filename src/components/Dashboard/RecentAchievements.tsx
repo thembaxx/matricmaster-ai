@@ -5,8 +5,8 @@ import { Award, ChevronRight, Trophy } from 'lucide-react';
 import { memo, useEffect, useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
-import { getAchievementById } from '@/constants/achievements';
-import { getUserAchievements } from '@/lib/db/achievement-actions';
+import { type ACHIEVEMENTS, getAchievementById } from '@/constants/achievements';
+import { type UserAchievement, getUserAchievements } from '@/lib/db/achievement-actions';
 
 interface UnlockedAchievement {
 	id: string;
@@ -19,11 +19,47 @@ interface UnlockedAchievement {
 	isNew: boolean;
 }
 
-export const RecentAchievements = memo(function RecentAchievements() {
-	const [achievements, setAchievements] = useState<UnlockedAchievement[]>([]);
-	const [isLoading, setIsLoading] = useState(true);
+interface RecentAchievementsProps {
+	initialAchievements?: {
+		unlocked: UserAchievement[];
+		available: typeof ACHIEVEMENTS;
+	};
+}
+
+export const RecentAchievements = memo(function RecentAchievements({
+	initialAchievements,
+}: RecentAchievementsProps) {
+	const [achievements, setAchievements] = useState<UnlockedAchievement[]>(() => {
+		if (initialAchievements) {
+			const now = new Date();
+			const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+			const unlocked = initialAchievements.unlocked
+				.map((ua) => {
+					const def = getAchievementById(ua.achievementId);
+					const unlockedAt = new Date(ua.unlockedAt || now);
+					return {
+						id: ua.achievementId,
+						name: def?.name || 'Achievement',
+						description: def?.description || '',
+						icon: def?.icon || '🏆',
+						iconBg: def?.iconBg || '#fef3c7',
+						points: def?.points || 0,
+						unlockedAt,
+						isNew: unlockedAt >= today,
+					};
+				})
+				.sort((a, b) => b.unlockedAt.getTime() - a.unlockedAt.getTime())
+				.slice(0, 3);
+			return unlocked;
+		}
+		return [];
+	});
+	const [isLoading, setIsLoading] = useState(achievements.length === 0 && !initialAchievements);
 
 	useEffect(() => {
+		if (achievements.length > 0 || initialAchievements) return; // Skip fetch if initialized with initial data
+
 		async function fetchAchievements() {
 			try {
 				const result = await getUserAchievements();
@@ -57,7 +93,7 @@ export const RecentAchievements = memo(function RecentAchievements() {
 		}
 
 		fetchAchievements();
-	}, []);
+	}, [achievements.length, initialAchievements]);
 
 	const formatTimeAgo = (date: Date) => {
 		const now = new Date();
