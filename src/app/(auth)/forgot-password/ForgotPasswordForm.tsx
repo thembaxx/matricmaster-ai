@@ -12,6 +12,7 @@ import { SmoothWords } from '@/components/Transition/SmoothText';
 import { BackgroundMesh } from '@/components/ui/background-mesh';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { STAGGER_CONTAINER, STAGGER_ITEM } from '@/lib/animation-presets';
 import { authClient } from '@/lib/auth-client';
 import { cn } from '@/lib/utils';
@@ -80,21 +81,24 @@ export function ForgotPasswordForm() {
 						variants={STAGGER_CONTAINER}
 						initial="hidden"
 						animate="visible"
-						className="text-center space-y-2 mb-8"
+						className="text-center space-y-3 mb-8"
 					>
 						<m.div
 							variants={STAGGER_ITEM}
 							whileHover={{ rotate: 15, scale: 1.1 }}
-							className="w-12 h-12 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-4 text-primary"
+							className="w-14 h-14 bg-primary/10 rounded-3xl flex items-center justify-center mx-auto mb-5 text-primary"
 						>
-							<Sparkles className="w-6 h-6" />
+							<Sparkles className="w-7 h-7" />
 						</m.div>
 						<SmoothWords
 							as="h1"
 							text="Reset Password"
-							className="text-3xl font-black tracking-tight text-foreground"
+							className="text-4xl font-black tracking-tight text-foreground"
 						/>
-						<m.p variants={STAGGER_ITEM} className="text-muted-foreground text-balance font-medium">
+						<m.p
+							variants={STAGGER_ITEM}
+							className="text-muted-foreground text-balance font-medium text-base"
+						>
 							{!isSubmitted
 								? 'Enter your email address to receive a password reset link.'
 								: 'Check your email for the reset link!'}
@@ -105,10 +109,10 @@ export function ForgotPasswordForm() {
 						<m.div
 							initial={{ opacity: 0, x: -10 }}
 							animate={{ opacity: 1, x: 0 }}
-							className="p-4 mb-6 bg-destructive/10 border border-destructive/20 text-destructive text-sm font-medium rounded-2xl flex items-center gap-2"
+							className="p-4 mb-6 bg-destructive/10 border border-destructive/20 text-destructive text-sm font-medium rounded-2xl flex items-center gap-3"
 						>
-							<div className="w-1.5 h-1.5 rounded-full bg-destructive shrink-0" />
-							{error}
+							<div className="w-2 h-2 rounded-full bg-destructive shrink-0" />
+							<span className="flex-1">{error}</span>
 						</m.div>
 					)}
 
@@ -118,15 +122,15 @@ export function ForgotPasswordForm() {
 							initial="hidden"
 							animate="visible"
 							onSubmit={handleSubmit(onSubmit)}
-							className="space-y-5"
+							className="space-y-6"
 						>
 							<m.div variants={STAGGER_ITEM} className="space-y-2">
-								<label
+								<Label
 									htmlFor="email"
-									className="block text-xs font-bold text-foreground ml-1 uppercase tracking-wider"
+									className="text-xs font-bold text-label-primary uppercase tracking-wider ml-1"
 								>
 									Email Address
-								</label>
+								</Label>
 								<Input
 									{...register('email')}
 									id="email"
@@ -135,7 +139,7 @@ export function ForgotPasswordForm() {
 									className="bg-background/50"
 								/>
 								{errors.email && (
-									<p className="text-xs text-destructive font-medium ml-1">
+									<p className="text-xs text-destructive font-semibold ml-1">
 										{errors.email.message}
 									</p>
 								)}
@@ -158,7 +162,7 @@ export function ForgotPasswordForm() {
 						<m.div variants={STAGGER_ITEM} className="flex justify-center mt-6">
 							<Button
 								variant="outline"
-								className="h-12 px-8 rounded-2xl font-bold"
+								className="h-12 px-8 rounded-2xl font-bold border-border/60"
 								onClick={() => setIsSubmitted(false)}
 							>
 								Try another email
@@ -171,7 +175,7 @@ export function ForgotPasswordForm() {
 					initial={{ opacity: 0 }}
 					animate={{ opacity: 1 }}
 					transition={{ delay: 0.5 }}
-					className="text-center text-muted-foreground/60 text-xs font-bold uppercase tracking-widest mt-8"
+					className="text-center text-muted-foreground/60 text-[10px] font-bold uppercase tracking-widest mt-8"
 				>
 					&copy; {new Date().getFullYear()} MatricMaster AI
 				</m.p>

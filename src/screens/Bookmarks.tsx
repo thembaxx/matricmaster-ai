@@ -162,10 +162,11 @@ export default function Bookmarks() {
 										<button
 											type="button"
 											onClick={(e) => handleDelete(e, bookmark.id)}
-											className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity p-1 hover:bg-destructive hover:text-destructive-foreground rounded-full"
+											className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity p-2 hover:bg-destructive hover:text-destructive-foreground rounded-full min-w-[44px] min-h-[44px] flex items-center justify-center"
 											title="Remove bookmark"
+											aria-label="Remove bookmark"
 										>
-											<Bookmark className="w-4 h-4 fill-current" />
+											<Bookmark className="w-5 h-5 fill-current" />
 										</button>
 										<div className="flex justify-between items-start mb-4">
 											<div

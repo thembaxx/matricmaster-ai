@@ -180,9 +180,9 @@ export default function Lessons() {
 												>
 													{lesson.subject}
 												</p>
-												<h4 className="text-xl font-bold text-foreground leading-tight">
+												<h3 className="text-xl font-bold text-foreground leading-tight">
 													{lesson.title}
-												</h4>
+												</h3>
 
 												{lesson.progress !== undefined ? (
 													<div className="flex items-center gap-3 pt-2">

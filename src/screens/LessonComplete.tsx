@@ -170,7 +170,7 @@ export default function LessonComplete() {
 					>
 						<div className="bg-white dark:bg-[#111827] p-4 rounded-2xl flex flex-col items-center shadow-sm border border-border">
 							<div className="w-10 h-10 rounded-full bg-yellow-50 dark:bg-yellow-900/20 flex items-center justify-center mb-3">
-								<CheckCircle2 className="w-6 h-6 text-[#efb036]" />
+								<CheckCircle2 className="w-6 h-6 text-brand-amber" />
 							</div>
 							<span className="text-xl font-bold text-zinc-900 dark:text-white tracking-tight">
 								{result.accuracy}%
@@ -267,7 +267,7 @@ export default function LessonComplete() {
 						className="w-full max-w-md space-y-4"
 					>
 						<Button
-							className="w-full h-14 bg-[#efb036] hover:bg-[#d99d2b] text-zinc-900 rounded-2xl text-lg font-bold shadow-lg shadow-yellow-500/20 active:scale-[0.98] transition-all flex items-center justify-center gap-2"
+							className="w-full h-14 bg-brand-amber hover:bg-brand-amber-darker text-zinc-900 rounded-2xl text-lg font-bold shadow-lg shadow-brand-amber/20 active:scale-[0.98] transition-all flex items-center justify-center gap-2"
 							onClick={() => router.push('/dashboard')}
 						>
 							Keep Going

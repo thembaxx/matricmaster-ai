@@ -202,7 +202,7 @@ function GraphSVG() {
 			<path
 				d="M 40 140 Q 90 40 140 140"
 				fill="none"
-				stroke="#efb036"
+				stroke="var(--brand-amber)"
 				strokeWidth="3"
 				strokeLinecap="round"
 			/>

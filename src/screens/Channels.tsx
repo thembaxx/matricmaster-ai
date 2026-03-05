@@ -215,6 +215,7 @@ export default function Channels() {
 									}}
 									type="button"
 									tabIndex={0}
+									aria-label={`Open ${item.title} channel`}
 									className="bg-card p-4 rounded-3xl flex items-center justify-between shadow-sm border border-zinc-50 dark:border-zinc-800/50 hover:shadow-md transition-all cursor-pointer group"
 								>
 									<div className="flex items-center gap-4">

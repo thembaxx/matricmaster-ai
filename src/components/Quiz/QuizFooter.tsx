@@ -70,7 +70,8 @@ export function QuizFooter({
 							<button
 								type="button"
 								onClick={onReport}
-								className="flex items-center gap-2.5 text-muted-foreground font-black text-[10px] uppercase tracking-widest hover:text-foreground transition-colors"
+								className="flex items-center gap-2.5 text-muted-foreground font-black text-[10px] uppercase tracking-widest hover:text-foreground transition-colors min-h-[44px]"
+								aria-label="Report issue with this question"
 							>
 								<span className="w-5 h-5 bg-muted rounded-lg flex items-center justify-center">
 									?
@@ -82,7 +83,8 @@ export function QuizFooter({
 							<button
 								type="button"
 								onClick={onShowSolution}
-								className="flex items-center gap-2 text-primary font-black text-[10px] uppercase tracking-widest hover:text-primary/80 transition-colors"
+								className="flex items-center gap-2 text-primary font-black text-[10px] uppercase tracking-widest hover:text-primary/80 transition-colors min-h-[44px]"
+								aria-label="Show solution"
 							>
 								<HelpCircle className="w-4 h-4" />
 								Show Solution
