@@ -1,8 +1,7 @@
 'use client';
 
-import { createContext, useContext, useEffect, useState } from 'react';
-
-type Theme = 'dark' | 'light' | 'system';
+import { useEffect, useState } from 'react';
+import { useThemeStore, type Theme } from '@/stores/useThemeStore';
 
 type ThemeProviderProps = {
 	children: React.ReactNode;
@@ -10,36 +9,15 @@ type ThemeProviderProps = {
 	storageKey?: string;
 };
 
-type ThemeProviderState = {
-	theme: Theme;
-	setTheme: (theme: Theme) => void;
-};
-
-const initialState: ThemeProviderState = {
-	theme: 'system',
-	setTheme: () => null,
-};
-
-const ThemeProviderContext = createContext<ThemeProviderState>(initialState);
-
 export function ThemeProvider({
 	children,
-	defaultTheme = 'system',
-	storageKey = 'matric-master-theme',
-	...props
 }: ThemeProviderProps) {
-	// Initialize with 'system' to avoid hydration mismatch
-	// The actual theme will be set after mounting
-	const [theme, setTheme] = useState<Theme>('system');
+	const { theme } = useThemeStore();
 	const [mounted, setMounted] = useState(false);
 
 	useEffect(() => {
 		setMounted(true);
-		const stored = localStorage.getItem(storageKey) as Theme;
-		if (stored) {
-			setTheme(stored);
-		}
-	}, [storageKey]);
+	}, []);
 
 	useEffect(() => {
 		if (!mounted) return;
@@ -57,27 +35,20 @@ export function ThemeProvider({
 		}
 	}, [theme, mounted]);
 
-	const value = {
-		theme,
-		setTheme: (newTheme: Theme) => {
-			localStorage.setItem(storageKey, newTheme);
-			setTheme(newTheme);
-		},
-	};
-
 	// Prevent hydration mismatch by rendering children without theme class initially
-	// The layout.tsx already has suppressHydrationWarning on the html element
-	return (
-		<ThemeProviderContext.Provider {...props} value={value}>
-			{children}
-		</ThemeProviderContext.Provider>
-	);
+	return <>{children}</>;
 }
 
 export const useTheme = () => {
-	const context = useContext(ThemeProviderContext);
+	const { theme, setTheme } = useThemeStore();
+	const [mounted, setMounted] = useState(false);
 
-	if (context === undefined) throw new Error('useTheme must be used within a ThemeProvider');
+	useEffect(() => {
+		setMounted(true);
+	}, []);
 
-	return context;
+	return {
+		theme: mounted ? theme : 'system',
+		setTheme,
+	};
 };

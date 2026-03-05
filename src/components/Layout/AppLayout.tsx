@@ -7,10 +7,10 @@ import { ClientOnly } from '@/components/ClientOnly';
 import { DailyLoginBonus } from '@/components/Gamification/DailyLoginBonus';
 import { MobileLayoutFixes } from '@/components/Layout/MobileLayoutFixes';
 import { MobileViewTest } from '@/components/Layout/MobileViewTest';
-import { useNotificationContextSafe } from '@/components/Notifications/NotificationListener';
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
 import { useTheme } from '@/hooks/use-theme';
 import { authClient } from '@/lib/auth-client';
+import { useNotificationStore } from '@/stores/useNotificationStore';
 import PageTransition from '../Transition/PageTransition';
 import { BottomNavigation } from './BottomNavigation';
 import { AppSidebar } from './DesktopSidebar';
@@ -23,7 +23,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 	const { theme, setTheme } = useTheme();
 	const { data: session } = authClient.useSession();
 	const user = session?.user;
-	const { unreadCount } = useNotificationContextSafe();
+	const { unreadCount } = useNotificationStore();
 	const [sidebarOpen, setSidebarOpen] = useState(true);
 
 	const hideNavigation = ['/test'];

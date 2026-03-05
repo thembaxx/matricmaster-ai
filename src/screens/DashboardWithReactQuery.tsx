@@ -15,12 +15,12 @@ import { WeeklyChallenge } from '@/components/Dashboard/WeeklyChallenge';
 import { WeeklyChartCard } from '@/components/Dashboard/WeeklyChartCard';
 import { DashboardSkeleton } from '@/components/DashboardSkeleton';
 import { XpHeader } from '@/components/Gamification/XpHeader';
-import { useNotificationContextSafe } from '@/components/Notifications/NotificationListener';
 import { BackgroundMesh } from '@/components/ui/background-mesh';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { STAGGER_CONTAINER, STAGGER_ITEM } from '@/lib/animation-presets';
 import type { AuthSession } from '@/lib/auth';
 import type { UserProgressSummary } from '@/lib/db/progress-actions';
+import { useNotificationStore } from '@/stores/useNotificationStore';
 
 interface DayProgress {
 	day: string;
@@ -45,7 +45,7 @@ export default function DashboardWithReactQuery({
 	initialStreak,
 	session,
 }: DashboardProps = {}) {
-	const { unreadCount } = useNotificationContextSafe();
+	const { unreadCount } = useNotificationStore();
 	const [isPending, startTransition] = useTransition();
 	const [streak] = useState(initialStreak?.currentStreak ?? 0);
 	const [dailyProgress, setDailyProgress] = useState(0);

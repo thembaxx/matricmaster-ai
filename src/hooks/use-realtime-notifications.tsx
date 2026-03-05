@@ -1,11 +1,12 @@
 'use client';
 
 import { useChannel } from 'ably/react';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect } from 'react';
 import { toast } from 'sonner';
 import useSWR from 'swr';
 import { useAblyStatus } from '@/lib/ably/provider';
 import { useSession } from '@/lib/auth-client';
+import { useNotificationStore } from '@/stores/useNotificationStore';
 
 export interface RealtimeNotification {
 	id: string;
@@ -31,8 +32,8 @@ const fetcher = async (url: string) => {
 export function useRealtimeNotifications(): UseRealtimeNotificationsReturn {
 	const { data: session } = useSession();
 	const { isReady } = useAblyStatus();
+	const { unreadCount, incrementUnread, resetUnread, setUnreadCount } = useNotificationStore();
 	const channelName = session?.user?.id ? `user:${session.user.id}:notifications` : 'dummy-channel';
-	const [realtimeIncrement, setRealtimeIncrement] = useState(0);
 
 	const { data: notificationData } = useSWR(
 		session?.user?.id ? '/api/notifications?unreadOnly=true&limit=0' : null,
@@ -44,45 +45,51 @@ export function useRealtimeNotifications(): UseRealtimeNotificationsReturn {
 		}
 	);
 
-	const baseUnreadCount = notificationData?.unreadCount ?? 0;
-	const unreadCount = baseUnreadCount + realtimeIncrement;
-
-	const handleNotification = useCallback((notification: RealtimeNotification) => {
-		setRealtimeIncrement((prev) => prev + 1);
-
-		const icon = notification.data?.icon || '🏆';
-		const title = `${icon} ${notification.title}`;
-
-		switch (notification.type) {
-			case 'achievement_unlocked':
-				toast.success(title, {
-					description: notification.message,
-					duration: 5000,
-					position: 'top-right',
-				});
-				break;
-			case 'buddy_request':
-				toast.info(notification.title, {
-					description: notification.message,
-					duration: 5000,
-					position: 'top-right',
-				});
-				break;
-			case 'level_up':
-				toast.success(title, {
-					description: notification.message,
-					duration: 7000,
-					position: 'top-right',
-				});
-				break;
-			default:
-				toast.info(notification.title, {
-					description: notification.message,
-					duration: 5000,
-					position: 'top-right',
-				});
+	useEffect(() => {
+		if (notificationData?.unreadCount !== undefined) {
+			setUnreadCount(notificationData.unreadCount);
 		}
-	}, []);
+	}, [notificationData?.unreadCount, setUnreadCount]);
+
+	const handleNotification = useCallback(
+		(notification: RealtimeNotification) => {
+			incrementUnread();
+
+			const icon = notification.data?.icon || '🏆';
+			const title = `${icon} ${notification.title}`;
+
+			switch (notification.type) {
+				case 'achievement_unlocked':
+					toast.success(title, {
+						description: notification.message,
+						duration: 5000,
+						position: 'top-right',
+					});
+					break;
+				case 'buddy_request':
+					toast.info(notification.title, {
+						description: notification.message,
+						duration: 5000,
+						position: 'top-right',
+					});
+					break;
+				case 'level_up':
+					toast.success(title, {
+						description: notification.message,
+						duration: 7000,
+						position: 'top-right',
+					});
+					break;
+				default:
+					toast.info(notification.title, {
+						description: notification.message,
+						duration: 5000,
+						position: 'top-right',
+					});
+			}
+		},
+		[incrementUnread]
+	);
 
 	useChannel({ channelName, skip: !isReady }, (message) => {
 		const notification = message.data as RealtimeNotification;
@@ -90,14 +97,6 @@ export function useRealtimeNotifications(): UseRealtimeNotificationsReturn {
 			handleNotification(notification);
 		}
 	});
-
-	const incrementUnread = useCallback(() => {
-		setRealtimeIncrement((prev) => prev + 1);
-	}, []);
-
-	const resetUnread = useCallback(() => {
-		setRealtimeIncrement(0);
-	}, []);
 
 	return {
 		unreadCount,

@@ -10,7 +10,7 @@ import {
 	Users,
 	XCircle,
 } from 'lucide-react';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -19,31 +19,7 @@ import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
 import { useSession } from '@/lib/auth-client';
-import {
-	getDiscoverableBuddies,
-	getPendingRequests,
-	getStudyBuddyProfile,
-	getUserBuddies,
-	getUserInfo,
-} from '@/lib/db/buddy-actions';
-
-interface StudyBuddy {
-	id: string;
-	name: string;
-	avatar?: string;
-	bio: string;
-	subjects: string[];
-	studyGoals: string;
-	isOnline?: boolean;
-	userId?: string;
-}
-
-interface BuddyRequest {
-	id: string;
-	fromUser: StudyBuddy;
-	message?: string;
-	createdAt: string;
-}
+import { useStudyBuddyStore } from '@/stores/useStudyBuddyStore';
 
 const SUBJECTS = [
 	'Mathematics',
@@ -59,177 +35,30 @@ const SUBJECTS = [
 
 export default function StudyBuddiesPage() {
 	const { data: session } = useSession();
-	const [searchQuery, setSearchQuery] = useState('');
-	const [selectedSubjects, setSelectedSubjects] = useState<string[]>([]);
-	const [activeTab, setActiveTab] = useState('discover');
-	const [buddyRequests, setBuddyRequests] = useState<BuddyRequest[]>([]);
-	const [myBuddies, setMyBuddies] = useState<StudyBuddy[]>([]);
-	const [discoverableBuddies, setDiscoverableBuddies] = useState<StudyBuddy[]>([]);
-	const [profile, setProfile] = useState({
-		bio: '',
-		studyGoals: '',
-		selectedSubjects: [] as string[],
-	});
-	const [_isLoading, setIsLoading] = useState(true);
 
-	const loadData = useCallback(async () => {
-		if (!session?.user?.id) return;
-		setIsLoading(true);
+	const searchQuery = useStudyBuddyStore((s) => s.searchQuery);
+	const selectedSubjects = useStudyBuddyStore((s) => s.selectedSubjects);
+	const activeTab = useStudyBuddyStore((s) => s.activeTab);
+	const buddyRequests = useStudyBuddyStore((s) => s.buddyRequests);
+	const myBuddies = useStudyBuddyStore((s) => s.myBuddies);
+	const discoverableBuddies = useStudyBuddyStore((s) => s.discoverableBuddies);
+	const profile = useStudyBuddyStore((s) => s.profile);
 
-		try {
-			// Load profile
-			const profileData = await getStudyBuddyProfile(session.user.id);
-			if (profileData) {
-				// Parse preferredSubjects from JSON string if needed
-				let subjects: string[] = [];
-				if (profileData.preferredSubjects) {
-					try {
-						subjects =
-							typeof profileData.preferredSubjects === 'string'
-								? JSON.parse(profileData.preferredSubjects)
-								: profileData.preferredSubjects;
-					} catch {
-						subjects = [];
-					}
-				}
-				setProfile({
-					bio: profileData.bio || '',
-					studyGoals: profileData.studyGoals || '',
-					selectedSubjects: subjects,
-				});
-			}
-
-			// Load discoverable buddies
-			const discoverable = await getDiscoverableBuddies(session.user.id, 20);
-
-			// Get user names for each buddy
-			const buddiesWithNames = await Promise.all(
-				discoverable.map(async (buddy) => {
-					try {
-						const user = await getUserInfo(buddy.userId);
-						return {
-							id: buddy.userId,
-							userId: buddy.userId,
-							name: user?.name || 'Unknown User',
-							avatar: user?.image || undefined,
-							bio: buddy.bio || '',
-							subjects: buddy.preferredSubjects || [],
-							studyGoals: buddy.studyGoals || '',
-						} as StudyBuddy;
-					} catch {
-						return {
-							id: buddy.userId,
-							userId: buddy.userId,
-							name: 'Unknown User',
-							bio: buddy.bio || '',
-							subjects: buddy.preferredSubjects || [],
-							studyGoals: buddy.studyGoals || '',
-						} as StudyBuddy;
-					}
-				})
-			);
-			setDiscoverableBuddies(buddiesWithNames);
-
-			// Load user's buddies
-			const buddies = await getUserBuddies(session.user.id);
-			const buddiesList = await Promise.all(
-				buddies.map(async (buddy) => {
-					try {
-						const user = await getUserInfo(buddy.userId);
-						return {
-							id: buddy.userId,
-							userId: buddy.userId,
-							name: user?.name || 'Unknown User',
-							avatar: user?.image || undefined,
-							bio: buddy.bio || '',
-							subjects: buddy.preferredSubjects || [],
-							studyGoals: buddy.studyGoals || '',
-						} as StudyBuddy;
-					} catch {
-						return {
-							id: buddy.userId,
-							userId: buddy.userId,
-							name: 'Unknown User',
-							bio: buddy.bio || '',
-							subjects: buddy.preferredSubjects || [],
-							studyGoals: buddy.studyGoals || '',
-						} as StudyBuddy;
-					}
-				})
-			);
-			setMyBuddies(buddiesList);
-
-			// Load pending requests
-			const requests = await getPendingRequests(session.user.id);
-			const requestsWithUsers = await Promise.all(
-				requests.map(async (req) => {
-					try {
-						const user = await getUserInfo(req.requesterId);
-						return {
-							id: req.id,
-							fromUser: {
-								id: req.requesterId,
-								userId: req.requesterId,
-								name: user?.name || 'Unknown User',
-								avatar: user?.image || undefined,
-								bio: '',
-								subjects: [],
-								studyGoals: '',
-							},
-							message: req.message || undefined,
-							createdAt: req.createdAt?.toISOString() ?? new Date().toISOString(),
-						} as BuddyRequest;
-					} catch {
-						return {
-							id: req.id,
-							fromUser: {
-								id: req.requesterId,
-								userId: req.requesterId,
-								name: 'Unknown User',
-								bio: '',
-								subjects: [],
-								studyGoals: '',
-							},
-							message: req.message || undefined,
-							createdAt: req.createdAt?.toISOString() ?? new Date().toISOString(),
-						} as BuddyRequest;
-					}
-				})
-			);
-			setBuddyRequests(requestsWithUsers);
-		} catch (error) {
-			console.error('Error loading study buddies data:', error);
-		} finally {
-			setIsLoading(false);
-		}
-	}, [session?.user?.id]);
+	const setSearchQuery = useStudyBuddyStore((s) => s.setSearchQuery);
+	const setActiveTab = useStudyBuddyStore((s) => s.setActiveTab);
+	const setProfile = useStudyBuddyStore((s) => s.setProfile);
+	const loadData = useStudyBuddyStore((s) => s.loadData);
+	const handleSubjectToggle = useStudyBuddyStore((s) => s.handleSubjectToggle);
+	const handleSendRequest = useStudyBuddyStore((s) => s.handleSendRequest);
+	const handleAcceptRequest = useStudyBuddyStore((s) => s.handleAcceptRequest);
+	const handleRejectRequest = useStudyBuddyStore((s) => s.handleRejectRequest);
 
 	// Load data on mount
 	useEffect(() => {
 		if (session?.user?.id) {
-			loadData();
+			loadData(session.user.id);
 		}
 	}, [session?.user?.id, loadData]);
-
-	const handleSubjectToggle = (subject: string) => {
-		setSelectedSubjects((prev) =>
-			prev.includes(subject) ? prev.filter((s) => s !== subject) : [...prev, subject]
-		);
-	};
-
-	const handleSendRequest = async (buddyId: string) => {
-		// API call would go here
-		console.log('Sending buddy request to:', buddyId);
-	};
-
-	const handleAcceptRequest = async (requestId: string) => {
-		setBuddyRequests((prev) => prev.filter((r) => r.id !== requestId));
-		// API call would go here
-	};
-
-	const handleRejectRequest = async (requestId: string) => {
-		setBuddyRequests((prev) => prev.filter((r) => r.id !== requestId));
-	};
 
 	const filteredBuddies = discoverableBuddies.filter((buddy) => {
 		const matchesSearch =
@@ -465,7 +294,7 @@ export default function StudyBuddiesPage() {
 									id="profile_input"
 									placeholder="Tell others about yourself and your study goals..."
 									value={profile.bio}
-									onChange={(e) => setProfile({ ...profile, bio: e.target.value })}
+									onChange={(e) => setProfile((prev) => ({ ...prev, bio: e.target.value }))}
 									className="min-h-25"
 								/>
 							</div>
@@ -478,7 +307,7 @@ export default function StudyBuddiesPage() {
 									id="goal_input"
 									placeholder="What do you want to achieve?"
 									value={profile.studyGoals}
-									onChange={(e) => setProfile({ ...profile, studyGoals: e.target.value })}
+									onChange={(e) => setProfile((prev) => ({ ...prev, studyGoals: e.target.value }))}
 								/>
 							</div>
 
