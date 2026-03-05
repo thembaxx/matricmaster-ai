@@ -230,7 +230,10 @@ export default function Landing() {
 									<defs>
 										<linearGradient id={gradientId} x1="0%" y1="0%" x2="100%" y2="100%">
 											<stop offset="0%" style={{ stopColor: 'var(--primary)', stopOpacity: 1 }} />
-											<stop offset="100%" style={{ stopColor: '#7c3aed', stopOpacity: 1 }} />
+											<stop
+												offset="100%"
+												style={{ stopColor: 'var(--color-brand-purple)', stopOpacity: 1 }}
+											/>
 										</linearGradient>
 									</defs>
 									<circle
@@ -253,12 +256,12 @@ export default function Landing() {
 									<path
 										d="M 5 50 Q 25 20 50 50 T 95 50"
 										fill="none"
-										stroke="#10b981"
+										stroke="var(--color-brand-green)"
 										strokeWidth="2"
 									/>
-									<circle cx="50" cy="15" r="4" fill="#f59e0b" />
-									<circle cx="85" cy="75" r="4" fill="#f59e0b" />
-									<circle cx="15" cy="75" r="4" fill="#f59e0b" />
+									<circle cx="50" cy="15" r="4" fill="var(--color-brand-amber)" />
+									<circle cx="85" cy="75" r="4" fill="var(--color-brand-amber)" />
+									<circle cx="15" cy="75" r="4" fill="var(--color-brand-amber)" />
 								</svg>
 							</m.div>
 

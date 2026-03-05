@@ -65,12 +65,12 @@ export function QuizQuestionCard({
 								className={`w-8 h-8 rounded-full flex items-center justify-center font-black text-xs ${
 									selectedAnswer === option.id
 										? `${colors.bg} text-white`
-										: 'bg-muted text-zinc-500'
+										: 'bg-muted text-muted-foreground'
 								}`}
 							>
 								{option.id}
 							</span>
-							<span className="font-bold text-zinc-700 dark:text-zinc-300">{option.text}</span>
+							<span className="font-bold text-foreground">{option.text}</span>
 						</Label>
 					</div>
 				))}
@@ -88,7 +88,9 @@ export function QuestionMeta({ icon, label }: QuestionMetaProps) {
 	return (
 		<div className="flex items-center gap-3">
 			{icon}
-			<h3 className="text-[10px] font-black uppercase text-zinc-400 tracking-[0.2em]">{label}</h3>
+			<h3 className="text-[10px] font-black uppercase text-muted-foreground tracking-[0.2em]">
+				{label}
+			</h3>
 		</div>
 	);
 }

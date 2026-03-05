@@ -31,8 +31,8 @@ const lessons = [
 		progress: 75,
 		status: 'completed',
 		icon: '📐',
-		color: 'bg-yellow-50 dark:bg-yellow-900/20',
-		iconColor: 'text-yellow-600',
+		color: 'bg-brand-amber/10',
+		iconColor: 'text-brand-amber',
 	},
 	{
 		id: 2,
@@ -41,8 +41,8 @@ const lessons = [
 		progress: 25,
 		status: 'active',
 		icon: '⚡',
-		color: 'bg-blue-50 dark:bg-blue-900/20',
-		iconColor: 'text-blue-600',
+		color: 'bg-primary/10',
+		iconColor: 'text-primary',
 		isContinue: true,
 	},
 	{
@@ -52,8 +52,8 @@ const lessons = [
 		time: '15 min',
 		status: 'locked',
 		icon: '📚',
-		color: 'bg-rose-50 dark:bg-rose-900/20',
-		iconColor: 'text-rose-600',
+		color: 'bg-brand-red/10',
+		iconColor: 'text-brand-red',
 	},
 	{
 		id: 4,
@@ -62,8 +62,8 @@ const lessons = [
 		time: '20 min',
 		status: 'locked',
 		icon: '🧬',
-		color: 'bg-emerald-50 dark:bg-emerald-900/20',
-		iconColor: 'text-emerald-600',
+		color: 'bg-brand-green/10',
+		iconColor: 'text-brand-green',
 	},
 ];
 
@@ -78,7 +78,7 @@ export default function Lessons() {
 					<div className="space-y-1">
 						<h1 className="text-2xl font-black text-foreground tracking-tight">Grade 12 Prep</h1>
 						<p className="text-muted-foreground font-medium flex items-center gap-1.5 text-sm">
-							Keep up the streak! <Flame className="w-4 h-4 text-orange-500 fill-orange-500" />{' '}
+							Keep up the streak! <Flame className="w-4 h-4 text-brand-amber fill-brand-amber" />{' '}
 							<span className="font-bold text-foreground">5 days</span>
 						</p>
 					</div>
@@ -131,8 +131,8 @@ export default function Lessons() {
 								{/* Node Icon */}
 								<div className="shrink-0 pt-4 flex flex-col items-center">
 									{lesson.status === 'completed' && (
-										<div className="w-8 h-8 rounded-full bg-orange-500 flex items-center justify-center shadow-lg shadow-orange-500/20 translate-y-1">
-											<Check className="w-5 h-5 text-white stroke-[3px]" />
+										<div className="w-8 h-8 rounded-full bg-brand-amber flex items-center justify-center shadow-lg shadow-brand-amber/20 translate-y-1">
+											<Check className="w-5 h-5 text-primary-foreground stroke-[3px]" />
 										</div>
 									)}
 									{lesson.status === 'active' && (
@@ -170,11 +170,11 @@ export default function Lessons() {
 														lesson.status === 'active'
 															? 'text-primary'
 															: lesson.status === 'completed'
-																? 'text-orange-500'
+																? 'text-brand-amber'
 																: lesson.subject.includes('LANGUAGE')
-																	? 'text-rose-500'
+																	? 'text-brand-red'
 																	: lesson.subject.includes('LIFE')
-																		? 'text-emerald-500'
+																		? 'text-brand-green'
 																		: 'text-muted-foreground'
 													}`}
 												>
@@ -189,7 +189,7 @@ export default function Lessons() {
 														<div className="flex-1 h-1.5 bg-muted rounded-full overflow-hidden">
 															<div
 																className={`h-full rounded-full transition-all ${
-																	lesson.status === 'active' ? 'bg-primary' : 'bg-orange-500'
+																	lesson.status === 'active' ? 'bg-primary' : 'bg-brand-amber'
 																}`}
 																style={{ width: `${lesson.progress}%` }}
 															/>
@@ -210,7 +210,7 @@ export default function Lessons() {
 											>
 												{lesson.status === 'active' ? (
 													<div className="relative">
-														<div className="absolute inset-0 blur-lg bg-yellow-400 opacity-50" />
+														<div className="absolute inset-0 blur-lg bg-brand-amber opacity-50" />
 														<span className="relative z-10">⚡</span>
 													</div>
 												) : (

@@ -88,7 +88,7 @@ export default function PracticeQuiz() {
 	};
 
 	return (
-		<div className="flex flex-col h-full bg-[#f8f9fb] dark:bg-[#0a0f18] font-inter">
+		<div className="flex flex-col h-full bg-muted dark:bg-background font-inter">
 			<PracticeQuizHeader router={router} />
 			<ScrollArea className="flex-1">
 				<main className="px-6 py-4 space-y-8 pb-32">
@@ -121,11 +121,9 @@ function PracticeQuizHeader({ router }: HeaderProps) {
 				className="rounded-full"
 				onClick={() => router.push('/dashboard')}
 			>
-				<ArrowLeft className="w-6 h-6 text-zinc-900 dark:text-white" />
+				<ArrowLeft className="w-6 h-6 text-foreground" />
 			</Button>
-			<h1 className="text-xl font-black text-zinc-900 dark:text-white tracking-tight">
-				Practice Quiz
-			</h1>
+			<h1 className="text-xl font-black text-foreground tracking-tight">Practice Quiz</h1>
 			<div className="w-10" />
 		</header>
 	);
@@ -134,26 +132,24 @@ function PracticeQuizHeader({ router }: HeaderProps) {
 function QuestionMeta() {
 	return (
 		<div className="flex items-center gap-3">
-			<div className="px-3 py-1.5 bg-[#fef3c7] dark:bg-yellow-900/30 rounded-xl">
-				<span className="text-[10px] font-black text-[#92400e] dark:text-yellow-500 uppercase tracking-widest">
+			<div className="px-3 py-1.5 bg-brand-amber/20 dark:bg-brand-amber/20 rounded-xl">
+				<span className="text-[10px] font-black text-brand-amber-darker dark:text-brand-amber uppercase tracking-widest">
 					Calculus
 				</span>
 			</div>
-			<span className="text-sm font-bold text-zinc-400 dark:text-zinc-500">Difficulty: Hard</span>
+			<span className="text-sm font-bold text-muted-foreground">Difficulty: Hard</span>
 		</div>
 	);
 }
 
 function QuestionTitle() {
-	return (
-		<h2 className="text-3xl font-black text-zinc-900 dark:text-white tracking-tight">Question 4</h2>
-	);
+	return <h2 className="text-3xl font-black text-foreground tracking-tight">Question 4</h2>;
 }
 
 function QuestionBody() {
 	return (
 		<div className="space-y-4">
-			<p className="text-xl font-medium text-zinc-700 dark:text-zinc-300 leading-relaxed">
+			<p className="text-xl font-medium text-muted-foreground leading-relaxed">
 				Calculate the exact area under the curve for the function{' '}
 				<span className="math-serif font-bold">sin(x)</span> from{' '}
 				<span className="math-serif font-bold">0</span> to{' '}
@@ -161,7 +157,7 @@ function QuestionBody() {
 			</p>
 
 			<Card className="p-8 bg-card border-none shadow-sm rounded-[2.5rem] relative overflow-hidden flex items-center justify-center min-h-[240px]">
-				<div className="absolute inset-0 bg-[#f8fafc]/50 dark:bg-zinc-800/20" />
+				<div className="absolute inset-0 bg-muted/50 dark:bg-muted/20" />
 				<div
 					className="absolute inset-0 opacity-[0.03] dark:opacity-[0.05]"
 					style={{
@@ -279,13 +275,13 @@ function CalculatorLauncher({ router, onKeyClick, onDelete, moveCursor }: Calcul
 			<Sheet>
 				<SheetTrigger asChild>
 					<Button className="bg-card text-zinc-900 dark:text-white shadow-2xl rounded-2xl h-14 px-8 border-none hover:bg-zinc-50 transition-all gap-3 group">
-						<Keyboard className="w-5 h-5 text-blue-500 group-hover:scale-110 transition-transform" />
+						<Keyboard className="w-5 h-5 text-primary group-hover:scale-110 transition-transform" />
 						<span className="font-bold">Show Calculator</span>
 					</Button>
 				</SheetTrigger>
 				<SheetContent
 					side="bottom"
-					className="h-[520px] rounded-t-[3rem] p-0 border-none bg-[#f1f5f9] dark:bg-[#0a0f18] focus-visible:outline-none overflow-hidden"
+					className="h-[520px] rounded-t-[3rem] p-0 border-none bg-muted dark:bg-background focus-visible:outline-none overflow-hidden"
 				>
 					<SheetTitle>
 						<VisuallyHidden>Calculator</VisuallyHidden>
@@ -312,14 +308,14 @@ type CalculatorContentProps = {
 function CalculatorContent({ router, onKeyClick, moveCursor }: CalculatorContentProps) {
 	return (
 		<>
-			<div className="w-12 h-1.5 bg-zinc-300 dark:bg-zinc-800 rounded-full mx-auto mt-4 mb-6" />
+			<div className="w-12 h-1.5 bg-muted-foreground/20 dark:bg-muted rounded-full mx-auto mt-4 mb-6" />
 			<Tabs defaultValue="calculus" className="w-full flex flex-col h-full">
 				<TabsList className="bg-transparent border-none w-full px-6 flex justify-between gap-0 h-14">
 					{['basic', 'calculus', 'arithmetic', 'greek'].map((tab) => (
 						<TabsTrigger
 							key={tab}
 							value={tab}
-							className="flex-1 rounded-none border-b-2 border-transparent data-[state=active]:border-orange-400 data-[state=active]:bg-transparent data-[state=active]:shadow-none font-bold text-zinc-400 data-[state=active]:text-zinc-900 dark:data-[state=active]:text-white transition-all h-full capitalize"
+							className="flex-1 rounded-none border-b-2 border-transparent data-[state=active]:border-brand-amber data-[state=active]:bg-transparent data-[state=active]:shadow-none font-bold text-muted-foreground data-[state=active]:text-foreground transition-all h-full capitalize"
 						>
 							{tab}
 						</TabsTrigger>
@@ -342,15 +338,15 @@ function CalculatorContent({ router, onKeyClick, moveCursor }: CalculatorContent
 							<CalcKey
 								label={<ChevronLeft className="w-6 h-6" />}
 								onClick={() => moveCursor('left')}
-								className="bg-zinc-200 dark:bg-zinc-800/50"
+								className="bg-secondary dark:bg-secondary/50"
 							/>
 							<CalcKey
 								label={<ChevronRight className="w-6 h-6" />}
 								onClick={() => moveCursor('right')}
-								className="bg-zinc-200 dark:bg-zinc-800/50"
+								className="bg-secondary dark:bg-secondary/50"
 							/>
 							<Button
-								className="col-span-2 h-16 bg-[#efb036] hover:bg-orange-500 text-[#0a0f18] font-black text-xl rounded-2xl shadow-xl shadow-orange-500/20 transition-all active:scale-95"
+								className="col-span-2 h-16 bg-brand-amber hover:bg-brand-amber/90 text-foreground font-black text-xl rounded-2xl shadow-xl shadow-brand-amber/20 transition-all active:scale-95"
 								onClick={() => router.push('/lesson-complete')}
 							>
 								Enter
@@ -410,7 +406,7 @@ function CalcKey({
 			whileTap={{ scale: 0.9, backgroundColor: 'rgba(239, 176, 54, 0.1)' }}
 			transition={{ type: 'spring', stiffness: 500, damping: 30 }}
 			onClick={onClick}
-			className={`h-16 flex items-center justify-center bg-card rounded-2xl shadow-sm text-lg font-bold text-zinc-900 dark:text-white border border-transparent hover:border-orange-200 transition-colors ${className}`}
+			className={`h-16 flex items-center justify-center bg-card rounded-2xl shadow-sm text-lg font-bold text-foreground border border-transparent hover:border-brand-amber/30 transition-colors ${className}`}
 		>
 			{label}
 		</m.button>
