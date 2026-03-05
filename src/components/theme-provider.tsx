@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useThemeStore, type Theme } from '@/stores/useThemeStore';
+import { type Theme, useThemeStore } from '@/stores/useThemeStore';
 
 type ThemeProviderProps = {
 	children: React.ReactNode;
@@ -9,9 +9,7 @@ type ThemeProviderProps = {
 	storageKey?: string;
 };
 
-export function ThemeProvider({
-	children,
-}: ThemeProviderProps) {
+export function ThemeProvider({ children }: ThemeProviderProps) {
 	const { theme } = useThemeStore();
 	const [mounted, setMounted] = useState(false);
 

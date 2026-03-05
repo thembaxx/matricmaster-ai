@@ -6,7 +6,7 @@ import { memo, useEffect, useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
 import { type ACHIEVEMENTS, getAchievementById } from '@/constants/achievements';
-import { type UserAchievement, getUserAchievements } from '@/lib/db/achievement-actions';
+import { getUserAchievements, type UserAchievement } from '@/lib/db/achievement-actions';
 
 interface UnlockedAchievement {
 	id: string;
