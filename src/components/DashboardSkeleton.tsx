@@ -4,7 +4,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 export function DashboardSkeleton() {
 	return (
-		<div className="flex flex-col h-full bg-background font-inter pb-24 relative overflow-hidden">
+		<div className="flex flex-col h-full bg-background pb-24 relative overflow-hidden">
 			<header className="px-6 pt-6 pb-2 flex items-center justify-between shrink-0">
 				<div className="flex items-center gap-3">
 					<Skeleton className="w-12 h-12 rounded-full" />

@@ -110,31 +110,31 @@ export default function Channels() {
 	);
 
 	return (
-		<div className="flex flex-col h-full bg-[#f8f9fb] dark:bg-neutral-950 font-inter">
+		<div className="flex flex-col h-full bg-background">
 			{/* Header */}
-			<header className="px-6 pt-12 pb-6 shrink-0 bg-[#f8f9fb] dark:bg-[#0a0f18]">
+			<header className="px-6 pt-12 pb-6 shrink-0 bg-background">
 				<div className="flex items-center justify-between">
 					<div>
-						<h1 className="text-[34px] font-black tracking-tight text-zinc-900 dark:text-white">
+						<h1 className="text-4xl font-black tracking-tight text-foreground">
 							Channels
 						</h1>
 						<div className="flex items-center gap-2">
-							<p className="text-zinc-500 dark:text-zinc-400 font-medium">
+							<p className="text-label-secondary font-black text-[11px] uppercase tracking-wider">
 								South Africa • Grade 12
 							</p>
 							{isAblyConnected && (
-								<span className="flex items-center gap-1 text-[10px] font-bold text-emerald-500">
+								<span className="flex items-center gap-1 text-[10px] font-black text-success uppercase tracking-widest">
 									<Wifi className="w-3 h-3" />
 									Live
 								</span>
 							)}
 						</div>
 					</div>
-					<Avatar className="w-10 h-10 border-2 border-white dark:border-zinc-800 shadow-sm">
+					<Avatar className="w-10 h-10 border-2 border-background shadow-sm ring-1 ring-border">
 						<AvatarImage
 							src={user?.image || `https://api.dicebear.com/7.x/avataaars/svg?seed=${user?.name}`}
 						/>
-						<AvatarFallback className="bg-blue-100 text-blue-600 font-bold">
+						<AvatarFallback className="bg-primary/10 text-primary font-black">
 							{user?.name?.charAt(0) || 'U'}
 						</AvatarFallback>
 					</Avatar>
@@ -142,11 +142,11 @@ export default function Channels() {
 
 				{/* Search Bar */}
 				<div className="mt-6 relative">
-					<Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-400" />
+					<Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-label-tertiary" />
 					<input
 						type="text"
 						placeholder="Find subjects, papers, or topics..."
-						className="w-full pl-12 pr-6 py-4 bg-card rounded-2xl text-sm border-none shadow-sm focus:ring-2 focus:ring-blue-500/20 dark:text-white dark:placeholder-zinc-500"
+						className="w-full pl-12 pr-6 py-4 bg-card rounded-2xl text-sm border border-border shadow-sm focus:ring-2 focus:ring-primary/20 text-foreground placeholder-label-tertiary"
 					/>
 				</div>
 
@@ -157,10 +157,10 @@ export default function Channels() {
 							key={cat}
 							type="button"
 							onClick={() => setActiveCategory(cat)}
-							className={`px-6 py-2.5 rounded-full text-sm font-bold whitespace-nowrap transition-all ${
+							className={`px-6 py-2.5 rounded-full text-[11px] font-black uppercase tracking-widest whitespace-nowrap transition-all ios-active-scale ${
 								activeCategory === cat
-									? 'bg-[#1e293b] text-white dark:bg-white dark:text-zinc-950 shadow-md'
-									: 'bg-white text-zinc-600 dark:bg-zinc-900 dark:text-zinc-400 border border-border shadow-sm'
+									? 'bg-foreground text-background shadow-md'
+									: 'bg-card text-label-secondary border border-border shadow-sm'
 							}`}
 						>
 							{cat}
@@ -173,36 +173,36 @@ export default function Channels() {
 				<main className="px-6 pb-32 space-y-8">
 					{/* Continue Learning */}
 					<section className="space-y-4">
-						<h3 className="text-[10px] font-black text-zinc-400 dark:text-zinc-500 uppercase tracking-widest">
+						<h3 className="text-[10px] font-black text-label-tertiary uppercase tracking-[0.2em]">
 							Continue Learning
 						</h3>
-						<div className="bg-card p-5 rounded-3xl shadow-sm border border-zinc-50 dark:border-zinc-800/50 relative overflow-hidden group cursor-pointer hover:shadow-md transition-all">
+						<div className="bg-card p-5 rounded-3xl shadow-sm border border-border relative overflow-hidden group cursor-pointer hover:shadow-md transition-all ios-active-scale">
 							<div className="flex items-center gap-5">
-								<div className="w-16 h-16 rounded-2xl bg-linear-to-br from-[#f9b122] to-[#f59e0b] flex items-center justify-center shadow-lg shadow-orange-500/20 transform group-hover:scale-105 transition-transform">
-									<div className="text-white text-3xl font-black italic">Σ</div>
+								<div className="w-16 h-16 rounded-2xl bg-warning flex items-center justify-center shadow-lg shadow-warning/20 transform group-hover:scale-105 transition-transform">
+									<div className="text-warning-foreground text-3xl font-black italic">Σ</div>
 								</div>
 								<div className="flex-1">
-									<h4 className="text-lg font-bold text-zinc-900 dark:text-white">
+									<h4 className="text-lg font-black text-foreground">
 										Mathematics P1
 									</h4>
-									<p className="text-sm text-zinc-500 dark:text-zinc-400 font-medium leading-tight">
+									<p className="text-xs text-label-secondary font-black uppercase tracking-wider leading-tight">
 										Functions & Graphs • 65% Complete
 									</p>
 								</div>
-								<div className="w-10 h-10 rounded-full bg-zinc-50 dark:bg-zinc-800 flex items-center justify-center">
-									<Play className="w-4 h-4 text-zinc-400 fill-zinc-400" />
+								<div className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center">
+									<Play className="w-4 h-4 text-label-tertiary fill-label-tertiary" />
 								</div>
 							</div>
 							{/* Progress Bar Line */}
 							<div className="absolute bottom-0 left-0 right-0 h-1 bg-muted">
-								<div className="h-full bg-blue-500 w-[65%]" />
+								<div className="h-full bg-primary w-[65%]" />
 							</div>
 						</div>
 					</section>
 
 					{/* STEM Skills */}
 					<section className="space-y-4">
-						<h3 className="text-xl font-bold text-zinc-900 dark:text-white">STEM Skills</h3>
+						<h3 className="text-xl font-black text-foreground uppercase tracking-tight">STEM Skills</h3>
 						<div className="space-y-3">
 							{channels.map((item) => (
 								<button
@@ -216,7 +216,7 @@ export default function Channels() {
 									type="button"
 									tabIndex={0}
 									aria-label={`Open ${item.title} channel`}
-									className="bg-card p-4 rounded-3xl flex items-center justify-between shadow-sm border border-zinc-50 dark:border-zinc-800/50 hover:shadow-md transition-all cursor-pointer group"
+									className="bg-card p-4 rounded-3xl flex items-center justify-between shadow-sm border border-border hover:shadow-md transition-all cursor-pointer group ios-active-scale w-full"
 								>
 									<div className="flex items-center gap-4">
 										<div
@@ -224,17 +224,17 @@ export default function Channels() {
 										>
 											{item.icon}
 										</div>
-										<div>
-											<h4 className="font-bold text-zinc-900 dark:text-white">{item.title}</h4>
+										<div className="text-left">
+											<h4 className="font-black text-foreground uppercase tracking-tight">{item.title}</h4>
 											<div className="flex items-center gap-2">
-												<div className="flex items-center gap-1 text-[11px] font-bold text-zinc-400">
+												<div className="flex items-center gap-1 text-[10px] font-black text-label-tertiary uppercase tracking-widest">
 													<Users className="w-3 h-3" />
 													{item.info}
 												</div>
 												{item.tag && (
 													<>
-														<span className="w-1 h-1 rounded-full bg-zinc-300 dark:bg-zinc-700" />
-														<span className="text-[10px] font-black text-emerald-500 uppercase">
+														<span className="w-1 h-1 rounded-full bg-border-strong" />
+														<span className="text-[10px] font-black text-success uppercase tracking-widest">
 															{item.tag}
 														</span>
 													</>
@@ -244,12 +244,12 @@ export default function Channels() {
 									</div>
 									<div className="flex items-center gap-3">
 										{item.onlineCount > 0 && (
-											<span className="text-[10px] font-bold text-emerald-500 flex items-center gap-1">
-												<span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+											<span className="text-[10px] font-black text-success uppercase tracking-widest flex items-center gap-1">
+												<span className="w-1.5 h-1.5 rounded-full bg-success animate-pulse" />
 												{item.onlineCount} online
 											</span>
 										)}
-										<ChevronRight className="w-5 h-5 text-zinc-300 group-hover:text-zinc-600 transition-colors" />
+										<ChevronRight className="w-5 h-5 text-label-tertiary group-hover:text-foreground transition-colors" />
 									</div>
 								</button>
 							))}
@@ -259,10 +259,10 @@ export default function Channels() {
 					{/* Language Arts */}
 					<section className="space-y-4">
 						<div className="flex items-center justify-between px-1">
-							<h3 className="text-xl font-bold text-zinc-900 dark:text-white">Language Arts</h3>
+							<h3 className="text-xl font-black text-foreground uppercase tracking-tight">Language Arts</h3>
 							<button
 								type="button"
-								className="text-[11px] font-black text-blue-500 uppercase tracking-widest hover:underline"
+								className="text-[11px] font-black text-primary uppercase tracking-[0.2em] hover:underline ios-active-scale"
 							>
 								View All
 							</button>
@@ -272,19 +272,19 @@ export default function Channels() {
 								{
 									title: 'English Home Language',
 									students: '18k Students',
-									icon: <BookOpen className="w-6 h-6 text-rose-500" />,
-									bg: 'bg-rose-50 dark:bg-rose-900/20',
+									icon: <BookOpen className="w-6 h-6 text-english" />,
+									bg: 'bg-english/10',
 								},
 								{
 									title: 'Afrikaans FAL',
 									students: '10.5k Students',
-									icon: <LanguagesIcon className="w-6 h-6 text-orange-500" />,
-									bg: 'bg-orange-50 dark:bg-orange-900/20',
+									icon: <LanguagesIcon className="w-6 h-6 text-warning" />,
+									bg: 'bg-warning/10',
 								},
 							].map((item) => (
 								<div
 									key={item.title}
-									className="bg-card p-5 rounded-3xl flex flex-col gap-4 shadow-sm border border-zinc-50 dark:border-zinc-800/50 hover:shadow-md transition-all cursor-pointer"
+									className="bg-card p-5 rounded-3xl flex flex-col gap-4 shadow-sm border border-border hover:shadow-md transition-all cursor-pointer ios-active-scale"
 								>
 									<div
 										className={`w-12 h-12 rounded-2xl flex items-center justify-center ${item.bg}`}
@@ -292,11 +292,11 @@ export default function Channels() {
 										{item.icon}
 									</div>
 									<div>
-										<h4 className="font-bold text-zinc-900 dark:text-white leading-tight">
+										<h4 className="font-black text-foreground uppercase tracking-tight leading-tight">
 											{item.title}
 										</h4>
-										<div className="mt-3 inline-block px-3 py-1 bg-zinc-50 dark:bg-zinc-800 rounded-lg">
-											<span className="text-[11px] font-bold text-zinc-400">{item.students}</span>
+										<div className="mt-3 inline-block px-3 py-1 bg-secondary rounded-lg">
+											<span className="text-[10px] font-black text-label-tertiary uppercase tracking-widest">{item.students}</span>
 										</div>
 									</div>
 								</div>
@@ -306,15 +306,15 @@ export default function Channels() {
 
 					{/* Commerce */}
 					<section className="space-y-4">
-						<h3 className="text-xl font-bold text-zinc-900 dark:text-white">Commerce</h3>
-						<div className="bg-card p-4 rounded-3xl flex items-center justify-between shadow-sm border border-zinc-50 dark:border-zinc-800/50 hover:shadow-md transition-all cursor-pointer group">
+						<h3 className="text-xl font-black text-foreground uppercase tracking-tight">Commerce</h3>
+						<div className="bg-card p-4 rounded-3xl flex items-center justify-between shadow-sm border border-border hover:shadow-md transition-all cursor-pointer group ios-active-scale">
 							<div className="flex items-center gap-4">
-								<div className="w-12 h-12 rounded-2xl flex items-center justify-center bg-teal-50 dark:bg-teal-900/20">
-									<BarChart3 className="w-6 h-6 text-teal-500" />
+								<div className="w-12 h-12 rounded-2xl flex items-center justify-center bg-accounting/10">
+									<BarChart3 className="w-6 h-6 text-accounting" />
 								</div>
-								<div>
-									<h4 className="font-bold text-zinc-900 dark:text-white">Accounting</h4>
-									<div className="flex items-center gap-1 text-[11px] font-bold text-zinc-400">
+								<div className="text-left">
+									<h4 className="font-black text-foreground uppercase tracking-tight">Accounting</h4>
+									<div className="flex items-center gap-1 text-[10px] font-black text-label-tertiary uppercase tracking-widest">
 										<Users className="w-3 h-3" />
 										8.2k
 									</div>
@@ -324,7 +324,7 @@ export default function Channels() {
 								{[1, 2, 3].map((i) => (
 									<div
 										key={i}
-										className="w-7 h-7 rounded-full border-2 border-white dark:border-zinc-900 bg-zinc-200 overflow-hidden relative"
+										className="w-7 h-7 rounded-full border-2 border-background bg-secondary overflow-hidden relative shadow-sm"
 									>
 										<Avatar className="w-full h-full">
 											<AvatarImage
@@ -333,7 +333,7 @@ export default function Channels() {
 										</Avatar>
 									</div>
 								))}
-								<div className="w-7 h-7 rounded-full border-2 border-white dark:border-zinc-900 bg-muted flex items-center justify-center text-[8px] font-black text-zinc-400">
+								<div className="w-7 h-7 rounded-full border-2 border-background bg-muted flex items-center justify-center text-[8px] font-black text-label-tertiary">
 									+4
 								</div>
 							</div>
@@ -346,7 +346,7 @@ export default function Channels() {
 			<button
 				aria-label="Play"
 				type="button"
-				className="absolute bottom-24 right-6 w-16 h-16 bg-[#1e293b] dark:bg-white text-background  rounded-full shadow-2xl flex items-center justify-center transform hover:scale-110 active:scale-95 transition-all z-30"
+				className="absolute bottom-24 right-6 w-16 h-16 bg-foreground text-background rounded-full shadow-2xl flex items-center justify-center transform hover:scale-110 active:scale-95 transition-all z-30"
 			>
 				<Play className="w-8 h-8 fill-current translate-x-0.5" />
 			</button>

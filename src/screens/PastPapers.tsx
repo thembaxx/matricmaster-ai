@@ -65,18 +65,18 @@ const FilterContent = memo(function FilterContent({
 	return (
 		<div className="space-y-8">
 			<div className="space-y-4">
-				<h4 className="text-xs font-black uppercase tracking-[0.2em] text-muted-foreground">
+				<h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-label-tertiary">
 					Subjects
 				</h4>
 				<div className="grid grid-cols-2 gap-3">
 					{availableSubjects.map((subject) => (
-						<div key={subject} className="flex items-center gap-3 cursor-pointer">
+						<div key={subject} className="flex items-center gap-3 cursor-pointer ios-active-scale">
 							<Checkbox
 								id={`subject-${subject}`}
 								checked={selectedSubjects.includes(subject)}
 								onCheckedChange={() => onToggleSubject(subject)}
 							/>
-							<label htmlFor={`subject-${subject}`} className="text-sm font-bold cursor-pointer">
+							<label htmlFor={`subject-${subject}`} className="text-sm font-black uppercase tracking-tight cursor-pointer text-label-secondary">
 								{subject}
 							</label>
 						</div>
@@ -85,18 +85,18 @@ const FilterContent = memo(function FilterContent({
 			</div>
 
 			<div className="space-y-4">
-				<h4 className="text-xs font-black uppercase tracking-[0.2em] text-muted-foreground">
+				<h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-label-tertiary">
 					Paper Type
 				</h4>
 				<div className="grid grid-cols-2 gap-3">
 					{availablePapers.map((paper) => (
-						<div key={paper} className="flex items-center gap-3 cursor-pointer">
+						<div key={paper} className="flex items-center gap-3 cursor-pointer ios-active-scale">
 							<Checkbox
 								id={`paper-${paper}`}
 								checked={selectedPapers.includes(paper)}
 								onCheckedChange={() => onTogglePaper(paper)}
 							/>
-							<label htmlFor={`paper-${paper}`} className="text-sm font-bold cursor-pointer">
+							<label htmlFor={`paper-${paper}`} className="text-sm font-black uppercase tracking-tight cursor-pointer text-label-secondary">
 								{paper}
 							</label>
 						</div>
@@ -105,18 +105,18 @@ const FilterContent = memo(function FilterContent({
 			</div>
 
 			<div className="space-y-4">
-				<h4 className="text-xs font-black uppercase tracking-[0.2em] text-muted-foreground">
+				<h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-label-tertiary">
 					Month
 				</h4>
 				<div className="grid grid-cols-2 gap-3">
 					{availableMonths.map((month) => (
-						<div key={month} className="flex items-center gap-3 cursor-pointer">
+						<div key={month} className="flex items-center gap-3 cursor-pointer ios-active-scale">
 							<Checkbox
 								id={`month-${month}`}
 								checked={selectedMonths.includes(month)}
 								onCheckedChange={() => onToggleMonth(month)}
 							/>
-							<label htmlFor={`month-${month}`} className="text-sm font-bold cursor-pointer">
+							<label htmlFor={`month-${month}`} className="text-sm font-black uppercase tracking-tight cursor-pointer text-label-secondary">
 								{month}
 							</label>
 						</div>
@@ -127,10 +127,10 @@ const FilterContent = memo(function FilterContent({
 			<div className="space-y-4">
 				<div className="flex items-center justify-between">
 					<div>
-						<h4 className="text-xs font-black uppercase tracking-[0.2em] text-muted-foreground">
+						<h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-label-tertiary">
 							Extracted Only
 						</h4>
-						<p className="text-xs text-muted-foreground mt-1">
+						<p className="text-[10px] text-label-tertiary mt-1 uppercase tracking-wider">
 							Show papers with AI-extracted questions
 						</p>
 					</div>
@@ -266,7 +266,7 @@ export default function PastPapers() {
 							<h1 className="text-2xl sm:text-4xl lg:text-7xl font-black text-foreground tracking-tighter uppercase">
 								Past Paper Vault
 							</h1>
-							<p className="text-muted-foreground font-bold text-xs sm:text-lg">
+							<p className="text-label-secondary font-black text-[11px] sm:text-lg uppercase tracking-widest">
 								Access thousands of Grade 12 exam papers
 							</p>
 						</div>
@@ -276,7 +276,7 @@ export default function PastPapers() {
 									variant="ghost"
 									onClick={clearAllFilters}
 									aria-label="Clear all filters"
-									className="rounded-2xl font-black text-[10px] uppercase tracking-widest px-3 sm:px-4 h-10 sm:h-12 text-muted-foreground hover:text-foreground"
+									className="rounded-2xl font-black text-[10px] uppercase tracking-widest px-3 sm:px-4 h-10 sm:h-12 text-label-tertiary hover:text-foreground ios-active-scale"
 								>
 									<X className="w-4 h-4 mr-1 sm:mr-2" />
 									<span className="hidden sm:inline">Clear</span>
@@ -287,7 +287,7 @@ export default function PastPapers() {
 								onClick={() => setIsAdvancedFilterOpen(true)}
 								aria-label={`Advanced Filter${activeFilterCount > 0 ? `, ${activeFilterCount} active` : ''}`}
 								className={cn(
-									'rounded-2xl border-2 font-black text-[10px] uppercase tracking-widest px-4 sm:px-6 h-10 sm:h-12',
+									'rounded-2xl border-2 font-black text-[10px] uppercase tracking-widest px-4 sm:px-6 h-10 sm:h-12 ios-active-scale',
 									activeFilterCount > 0 && 'border-primary bg-primary/10 text-primary'
 								)}
 							>
@@ -304,12 +304,12 @@ export default function PastPapers() {
 
 					<div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6">
 						<div className="lg:col-span-8 relative">
-							<SearchIcon className="absolute left-4 sm:left-6 top-1/2 -translate-y-1/2 w-5 sm:w-6 h-5 sm:h-6 text-muted-foreground" />
+							<SearchIcon className="absolute left-4 sm:left-6 top-1/2 -translate-y-1/2 w-5 sm:w-6 h-5 sm:h-6 text-label-tertiary" />
 							<Input
 								value={searchQuery}
 								onChange={(e) => setSearchQuery(e.target.value)}
 								placeholder="Search subjects or papers..."
-								className="pl-12 sm:pl-16 pr-12 sm:pr-16 bg-muted/30 backdrop-blur-md border-2 h-12 sm:h-16 rounded-xl sm:rounded-2xl text-base sm:text-lg font-bold shadow-inner"
+								className="pl-12 sm:pl-16 pr-12 sm:pr-16 bg-card backdrop-blur-md border-border border-2 h-12 sm:h-16 rounded-xl sm:rounded-2xl text-base sm:text-lg font-black uppercase tracking-tight shadow-inner"
 								aria-label="Search past papers"
 							/>
 							<AnimatePresence>
@@ -322,7 +322,7 @@ export default function PastPapers() {
 										aria-label="Clear search"
 										type="button"
 										onClick={() => setSearchQuery('')}
-										className="absolute right-4 sm:right-6 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+										className="absolute right-4 sm:right-6 top-1/2 -translate-y-1/2 text-label-tertiary hover:text-foreground transition-colors ios-active-scale"
 									>
 										<X className="w-5 sm:w-6 h-5 sm:h-6" />
 									</m.button>
@@ -337,10 +337,10 @@ export default function PastPapers() {
 									// biome-ignore lint/suspicious/noExplicitAny: Year type casting
 									onClick={() => setSelectedYear(year as any)}
 									aria-pressed={selectedYear === year}
-									className={`rounded-xl sm:rounded-2xl px-4 sm:px-8 py-2 sm:py-3 text-[11px] font-black uppercase tracking-widest transition-all h-10 sm:h-16 whitespace-nowrap ${
+									className={`rounded-xl sm:rounded-2xl px-4 sm:px-8 py-2 sm:py-3 text-[11px] font-black uppercase tracking-widest transition-all h-10 sm:h-16 whitespace-nowrap ios-active-scale ${
 										selectedYear === year
 											? 'bg-primary text-primary-foreground shadow-2xl shadow-primary/30'
-											: 'bg-muted/50 text-muted-foreground border-2 border-transparent hover:border-border backdrop-blur-sm'
+											: 'bg-secondary text-label-secondary border-2 border-transparent hover:border-border backdrop-blur-sm'
 									}`}
 								>
 									{year}
@@ -353,8 +353,8 @@ export default function PastPapers() {
 
 			<ScrollArea className="flex-1 no-scrollbar">
 				<main className="px-4 sm:px-6 py-6 sm:py-8 max-w-7xl mx-auto w-full space-y-8 sm:space-y-12 pb-32 lg:px-0">
-					<div className="flex items-center justify-between border-b-2 border-border/50 pb-4">
-						<h2 className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.4em]">
+					<div className="flex items-center justify-between border-b border-border pb-4">
+						<h2 className="text-[10px] font-black text-label-tertiary uppercase tracking-[0.4em]">
 							Archive Results ({filteredPapers.length})
 						</h2>
 					</div>
@@ -373,16 +373,16 @@ export default function PastPapers() {
 							>
 								{filteredPapers.map((paper) => (
 									<m.div key={paper.id} variants={STAGGER_ITEM} layout whileHover={{ y: -8 }}>
-										<Card className="p-8 rounded-[3rem] border-2 border-border/50 hover:border-primary/20 hover:shadow-2xl transition-all duration-500 group relative overflow-hidden bg-card/50 backdrop-blur-sm">
+										<Card className="p-8 rounded-3xl border border-border hover:border-primary/20 hover:shadow-2xl transition-all duration-500 group relative overflow-hidden bg-card/50 backdrop-blur-sm">
 											<div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
 
 											<div className="space-y-6 relative z-10">
 												<div className="flex items-start justify-between">
-													<div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
+													<div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-500 shadow-inner">
 														<FileText className="w-8 h-8 text-primary" />
 													</div>
 													<div className="text-right">
-														<span className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] block mb-1">
+														<span className="text-[10px] font-black text-label-tertiary uppercase tracking-[0.2em] block mb-1">
 															Total Marks
 														</span>
 														<span className="text-2xl font-black text-primary tracking-tighter">
@@ -398,13 +398,13 @@ export default function PastPapers() {
 													<div className="flex flex-wrap gap-2">
 														<Badge
 															variant="outline"
-															className="rounded-lg font-black text-[9px] uppercase tracking-widest border-2"
+															className="rounded-lg font-black text-[9px] uppercase tracking-widest border border-border bg-secondary/50"
 														>
 															{paper.month} {paper.year}
 														</Badge>
 														<Badge
 															variant="outline"
-															className="rounded-lg font-black text-[9px] uppercase tracking-widest border-2"
+															className="rounded-lg font-black text-[9px] uppercase tracking-widest border border-border bg-secondary/50"
 														>
 															NSC Grade 12
 														</Badge>
@@ -414,7 +414,7 @@ export default function PastPapers() {
 												<div className="grid grid-cols-2 gap-3 pt-4">
 													<Button
 														variant="secondary"
-														className="rounded-2xl font-black text-[10px] uppercase tracking-widest h-12 shadow-sm"
+														className="rounded-2xl font-black text-[10px] uppercase tracking-widest h-12 shadow-sm ios-active-scale"
 														onClick={() => router.push(`/past-paper?id=${paper.id}`)}
 													>
 														<Eye className="w-4 h-4 mr-2" />
@@ -422,7 +422,7 @@ export default function PastPapers() {
 													</Button>
 													<Button
 														variant="outline"
-														className="rounded-2xl font-black text-[10px] uppercase tracking-widest h-12 border-2"
+														className="rounded-2xl font-black text-[10px] uppercase tracking-widest h-12 border border-border ios-active-scale"
 														onClick={() => router.push(`/past-paper?id=${paper.id}&mode=read`)}
 													>
 														<BookOpen className="w-4 h-4 mr-2" />
@@ -431,7 +431,7 @@ export default function PastPapers() {
 												</div>
 
 												<Button
-													className="w-full rounded-2xl h-14 bg-muted hover:bg-primary hover:text-primary-foreground text-muted-foreground font-black text-xs uppercase tracking-[0.2em] transition-all duration-300 group/btn"
+													className="w-full rounded-2xl h-14 bg-secondary hover:bg-primary hover:text-primary-foreground text-label-secondary font-black text-[10px] uppercase tracking-widest transition-all duration-300 group/btn ios-active-scale"
 													onClick={() => window.open(paper.originalPdfUrl, '_blank')}
 												>
 													<Download className="w-4 h-4 mr-2 group-hover/btn:animate-bounce" />
@@ -448,7 +448,7 @@ export default function PastPapers() {
 								animate={{ opacity: 1, scale: 1 }}
 								className="py-32 flex flex-col items-center justify-center text-center space-y-6 opacity-40"
 							>
-								<div className="w-32 h-32 bg-muted rounded-[3.5rem] flex items-center justify-center">
+								<div className="w-32 h-32 bg-muted rounded-3xl flex items-center justify-center">
 									<FileText className="w-16 h-16 text-muted-foreground" />
 								</div>
 								<div className="space-y-2">
@@ -491,13 +491,13 @@ export default function PastPapers() {
 						<Button
 							variant="outline"
 							onClick={clearAllFilters}
-							className="flex-1 rounded-2xl font-black text-xs uppercase tracking-widest"
+							className="flex-1 rounded-2xl font-black text-[10px] uppercase tracking-widest ios-active-scale"
 						>
 							Reset
 						</Button>
 						<Button
 							onClick={() => setIsAdvancedFilterOpen(false)}
-							className="flex-1 rounded-2xl font-black text-xs uppercase tracking-widest"
+							className="flex-1 rounded-2xl font-black text-[10px] uppercase tracking-widest ios-active-scale"
 						>
 							Apply Filters
 						</Button>
@@ -530,19 +530,19 @@ export default function PastPapers() {
 					<DrawerFooter>
 						<Button
 							onClick={() => setIsAdvancedFilterOpen(false)}
-							className="w-full rounded-2xl font-black text-xs uppercase tracking-widest"
+							className="w-full rounded-2xl font-black text-[10px] uppercase tracking-widest ios-active-scale"
 						>
 							Apply Filters
 						</Button>
 						<Button
 							variant="outline"
 							onClick={clearAllFilters}
-							className="w-full rounded-2xl font-black text-xs uppercase tracking-widest"
+							className="w-full rounded-2xl font-black text-[10px] uppercase tracking-widest ios-active-scale"
 						>
 							Reset
 						</Button>
 						<DrawerClose asChild>
-							<Button variant="ghost" className="w-full">
+							<Button variant="ghost" className="w-full ios-active-scale">
 								Cancel
 							</Button>
 						</DrawerClose>

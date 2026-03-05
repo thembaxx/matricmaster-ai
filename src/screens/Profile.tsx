@@ -152,16 +152,16 @@ export default function Profile() {
 									<h1 className="text-4xl md:text-6xl font-black tracking-tighter uppercase leading-none">
 										{session?.user?.name || 'Scholar'}
 									</h1>
-									<p className="text-sm md:text-base font-black text-primary uppercase tracking-[0.4em]">
+									<p className="text-[11px] font-black text-primary uppercase tracking-[0.4em]">
 										Grade 12 Elite Candidate
 									</p>
 								</div>
 
 								<div className="flex flex-wrap justify-center md:justify-start gap-4">
-									<Badge className="bg-white/10 text-white border-none px-6 py-2 rounded-xl font-black text-[10px] uppercase tracking-widest">
+									<Badge className="bg-primary/20 text-primary-foreground border-none px-6 py-2 rounded-xl font-black text-[10px] uppercase tracking-widest">
 										Class of 2026
 									</Badge>
-									<Badge className="bg-emerald-500/20 text-emerald-400 border-none px-6 py-2 rounded-xl font-black text-[10px] uppercase tracking-widest">
+									<Badge className="bg-success/20 text-success border-none px-6 py-2 rounded-xl font-black text-[10px] uppercase tracking-widest">
 										Academic Pro
 									</Badge>
 								</div>
@@ -183,7 +183,7 @@ export default function Profile() {
 										type="button"
 										onClick={() => setViewMode('my_stats')}
 										aria-pressed={viewMode === 'my_stats'}
-										className={`px-3 sm:px-4 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all ${viewMode === 'my_stats' ? 'bg-background shadow-sm' : 'text-muted-foreground'}`}
+										className={`px-3 sm:px-4 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all ios-active-scale ${viewMode === 'my_stats' ? 'bg-background shadow-sm text-foreground' : 'text-label-tertiary'}`}
 									>
 										Individual
 									</button>
@@ -191,14 +191,14 @@ export default function Profile() {
 										type="button"
 										onClick={() => setViewMode('provincial')}
 										aria-pressed={viewMode === 'provincial'}
-										className={`px-3 sm:px-4 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all ${viewMode === 'provincial' ? 'bg-background shadow-sm' : 'text-muted-foreground'}`}
+										className={`px-3 sm:px-4 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all ios-active-scale ${viewMode === 'provincial' ? 'bg-background shadow-sm text-foreground' : 'text-label-tertiary'}`}
 									>
 										Benchmarked
 									</button>
 								</div>
 							</div>
 
-							<Card className="rounded-2xl sm:rounded-[2.5rem] border-2 border-border/50 p-6 sm:p-8 bg-card/50 backdrop-blur-sm">
+							<Card className="rounded-3xl border border-border p-6 sm:p-8 bg-card/50 backdrop-blur-sm">
 								<ChartContainer config={chartConfig} className="h-75 sm:h-100 w-full">
 									<RadarChart cx="50%" cy="50%" outerRadius="80%" data={chartData}>
 										<defs>
@@ -210,7 +210,7 @@ export default function Profile() {
 										<PolarGrid stroke="var(--border)" strokeOpacity={0.5} />
 										<PolarAngleAxis
 											dataKey="subject"
-											tick={{ fill: 'var(--muted-foreground)', fontSize: 10, fontWeight: 900 }}
+											tick={{ fill: 'var(--label-secondary)', fontSize: 10, fontWeight: 900 }}
 										/>
 										<Radar
 											name="You"
@@ -224,7 +224,7 @@ export default function Profile() {
 											<Radar
 												name="Average"
 												dataKey="average"
-												stroke="var(--muted-foreground)"
+												stroke="var(--label-tertiary)"
 												strokeWidth={2}
 												fill="transparent"
 												strokeDasharray="8 8"
@@ -246,20 +246,20 @@ export default function Profile() {
 
 						{/* Level Progress Section */}
 						{userStats && (
-							<Card className="p-8 rounded-[2.5rem] border-2 border-border/50 bg-card/50 backdrop-blur-sm">
+							<Card className="p-8 rounded-3xl border border-border bg-card/50 backdrop-blur-sm">
 								<LevelProgress totalXp={userStats.totalXp} variant="full" showTitle />
 							</Card>
 						)}
 
 						<div className="grid grid-cols-1 gap-6">
 							{/* Questions Card */}
-							<Card className="p-8 rounded-[2.5rem] border-2 border-border/50 bg-card/50 backdrop-blur-sm relative overflow-hidden group">
+							<Card className="p-8 rounded-3xl border border-border bg-card/50 backdrop-blur-sm relative overflow-hidden group">
 								<div className="flex items-center gap-8 relative z-10">
-									<div className="w-20 h-20 rounded-[1.5rem] bg-primary/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-500 shadow-inner">
+									<div className="w-20 h-20 rounded-2xl bg-primary/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-500 shadow-inner">
 										<GraduationCap className="w-10 h-10 text-primary" />
 									</div>
 									<div className="space-y-1">
-										<p className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.3em]">
+										<p className="text-[10px] font-black text-label-tertiary uppercase tracking-[0.3em]">
 											Total Knowledge
 										</p>
 										<h4 className="text-4xl font-black text-foreground tracking-tighter">
@@ -270,13 +270,13 @@ export default function Profile() {
 							</Card>
 
 							{/* Accuracy Card */}
-							<Card className="p-8 rounded-[2.5rem] border-2 border-border/50 bg-card/50 backdrop-blur-sm relative overflow-hidden group">
+							<Card className="p-8 rounded-3xl border border-border bg-card/50 backdrop-blur-sm relative overflow-hidden group">
 								<div className="flex items-center gap-8 relative z-10">
-									<div className="w-20 h-20 rounded-[1.5rem] bg-emerald-500/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-500 shadow-inner">
-										<Target className="w-10 h-10 text-emerald-500" />
+									<div className="w-20 h-20 rounded-2xl bg-success/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-500 shadow-inner">
+										<Target className="w-10 h-10 text-success" />
 									</div>
 									<div className="space-y-1">
-										<p className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.3em]">
+										<p className="text-[10px] font-black text-label-tertiary uppercase tracking-[0.3em]">
 											Precision Rate
 										</p>
 										<h4 className="text-4xl font-black text-foreground tracking-tighter">
@@ -287,13 +287,13 @@ export default function Profile() {
 							</Card>
 
 							{/* Streak Card */}
-							<Card className="p-8 rounded-[2.5rem] border-2 border-border/50 bg-card/50 backdrop-blur-sm relative overflow-hidden group">
+							<Card className="p-8 rounded-3xl border border-border bg-card/50 backdrop-blur-sm relative overflow-hidden group">
 								<div className="flex items-center gap-8 relative z-10">
-									<div className="w-20 h-20 rounded-[1.5rem] bg-brand-amber/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-500 shadow-inner">
-										<Flame className="w-10 h-10 text-brand-amber fill-brand-amber" />
+									<div className="w-20 h-20 rounded-2xl bg-warning/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-500 shadow-inner">
+										<Flame className="w-10 h-10 text-warning fill-warning" />
 									</div>
 									<div className="space-y-1">
-										<p className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.3em]">
+										<p className="text-[10px] font-black text-label-tertiary uppercase tracking-[0.3em]">
 											Active Momentum
 										</p>
 										<h4 className="text-4xl font-black text-foreground tracking-tighter">
@@ -304,13 +304,13 @@ export default function Profile() {
 							</Card>
 
 							{/* Achievements Unlock */}
-							<Card className="p-8 rounded-[2.5rem] border-2 border-border/50 bg-primary/5 relative overflow-hidden group border-dashed">
+							<Card className="p-8 rounded-3xl border border-border bg-primary/5 relative overflow-hidden group border-dashed">
 								<div className="flex items-center gap-8 relative z-10">
-									<div className="w-20 h-20 rounded-[1.5rem] bg-primary/10 flex items-center justify-center">
+									<div className="w-20 h-20 rounded-2xl bg-primary/10 flex items-center justify-center">
 										<Award className="w-10 h-10 text-primary" />
 									</div>
 									<div className="space-y-1">
-										<p className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.3em]">
+										<p className="text-[10px] font-black text-label-tertiary uppercase tracking-[0.3em]">
 											Mastery Unlocked
 										</p>
 										<h4 className="text-2xl font-black text-foreground tracking-tighter uppercase">

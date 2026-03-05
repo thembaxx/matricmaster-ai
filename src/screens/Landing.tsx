@@ -139,19 +139,19 @@ export default function Landing() {
 									animate={{ opacity: 1, scale: 1 }}
 									transition={{ type: 'spring', stiffness: 300, damping: 20 }}
 								>
-									<Badge className="bg-brand-green/20 text-brand-green-darker border-none rounded-full px-4 sm:px-6 py-2 font-black text-xs tracking-widest uppercase mb-4 shadow-sm">
+									<Badge className="bg-success/20 text-success border-none rounded-full px-4 sm:px-6 py-2 font-black text-[10px] tracking-widest uppercase mb-4 shadow-sm">
 										Trusted by 50,000+ Students
 									</Badge>
 								</m.div>
 								<SmoothWords
 									as="h1"
 									text="Master your Matrics through practice."
-									className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black text-foreground drop-shadow-sm leading-[1.05] tracking-tighter"
+									className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black text-foreground drop-shadow-sm leading-[1.05] tracking-tighter uppercase"
 									stagger={0.08}
 								/>
 								<SmoothText
 									text="Interactive past papers and step-by-step guides for South African Grade 12 students."
-									className="text-base md:text-lg lg:text-xl font-medium text-muted-foreground max-w-lg mx-auto lg:mx-0 leading-relaxed pt-2 sm:pt-4"
+									className="text-base md:text-lg lg:text-xl font-black text-label-secondary max-w-lg mx-auto lg:mx-0 leading-relaxed pt-2 sm:pt-4 uppercase tracking-tight"
 									delay={0.5}
 								/>
 							</div>
@@ -164,7 +164,7 @@ export default function Landing() {
 							>
 								<Button
 									size="lg"
-									className="w-full sm:w-auto lg:flex-none lg:w-72 rounded-2xl shrink-0 h-12 lg:h-14 xl:h-16 text-base lg:text-lg xl:text-xl font-black shadow-2xl hover:scale-[1.02] active:scale-95 transition-all shadow-primary/20 bg-primary"
+									className="w-full sm:w-auto lg:flex-none lg:w-72 rounded-2xl shrink-0 h-12 lg:h-14 xl:h-16 text-base lg:text-lg xl:text-xl font-black uppercase tracking-widest shadow-xl ios-active-scale transition-all shadow-primary/20 bg-primary"
 									onClick={() => handleAuthRoute('/dashboard')}
 								>
 									Start Learning
@@ -173,7 +173,7 @@ export default function Landing() {
 								<Button
 									variant="outline"
 									size="lg"
-									className="w-full sm:w-auto lg:flex-none lg:w-64 rounded-2xl h-12 lg:h-14 xl:h-16 text-base lg:text-lg font-black border-2 hover:bg-muted active:scale-95 transition-all"
+									className="w-full sm:w-auto lg:flex-none lg:w-64 rounded-2xl h-12 lg:h-14 xl:h-16 text-base lg:text-lg font-black uppercase tracking-widest border-2 hover:bg-muted ios-active-scale transition-all"
 									onClick={() => handleAuthRoute('/past-papers')}
 								>
 									Past Papers
@@ -185,7 +185,7 @@ export default function Landing() {
 									{[1, 2, 3, 4].map((i) => (
 										<div
 											key={i}
-											className="w-10 h-10 rounded-full border-2 border-background bg-muted flex items-center justify-center overflow-hidden relative"
+											className="w-10 h-10 rounded-full border-2 border-background bg-secondary flex items-center justify-center overflow-hidden relative shadow-sm"
 										>
 											<Image
 												src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${i}`}
@@ -199,7 +199,7 @@ export default function Landing() {
 										</div>
 									))}
 								</div>
-								<p className="text-xs font-black uppercase tracking-widest text-muted-foreground">
+								<p className="text-[10px] font-black uppercase tracking-widest text-label-tertiary">
 									Join our growing community
 								</p>
 							</div>
@@ -212,12 +212,12 @@ export default function Landing() {
 							transition={{ type: 'spring', stiffness: 100, damping: 20, delay: 0.3 }}
 							className="relative flex-1 w-full max-w-[320px] sm:max-w-100 md:max-w-112.5 lg:max-w-none flex items-center justify-center"
 						>
-							<div className="absolute inset-0 bg-linear-to-tr from-primary/20 to-brand-purple/20 rounded-full blur-[100px] animate-pulse-slow" />
+							<div className="absolute inset-0 bg-primary/10 rounded-full blur-[100px] animate-pulse-slow" />
 
 							<m.div
 								whileHover={{ scale: 1.02 }}
-								className="relative w-full aspect-square max-w-75 sm:max-w-87.5 md:max-w-112.5 bg-card rounded-2xl sm:rounded-[3rem] md:rounded-[4rem] shadow-2xl flex items-center justify-center transform border-4 border-card transition-transform duration-700 overflow-hidden"
-								style={{ boxShadow: '0 40px 100px -20px rgba(0,0,0,0.15)' }}
+								className="relative w-full aspect-square max-w-75 sm:max-w-87.5 md:max-w-112.5 bg-card rounded-3xl sm:rounded-[4rem] shadow-2xl flex items-center justify-center transform border border-border transition-transform duration-700 overflow-hidden"
+								style={{ boxShadow: 'var(--premium-shadow)' }}
 							>
 								<div className="absolute inset-0 bg-primary/5" />
 
@@ -232,7 +232,7 @@ export default function Landing() {
 											<stop offset="0%" style={{ stopColor: 'var(--primary)', stopOpacity: 1 }} />
 											<stop
 												offset="100%"
-												style={{ stopColor: 'var(--color-brand-purple)', stopOpacity: 1 }}
+												style={{ stopColor: 'var(--color-brand-blue)', stopOpacity: 1 }}
 											/>
 										</linearGradient>
 									</defs>
@@ -256,12 +256,12 @@ export default function Landing() {
 									<path
 										d="M 5 50 Q 25 20 50 50 T 95 50"
 										fill="none"
-										stroke="var(--color-brand-green)"
+										stroke="var(--success)"
 										strokeWidth="2"
 									/>
-									<circle cx="50" cy="15" r="4" fill="var(--color-brand-amber)" />
-									<circle cx="85" cy="75" r="4" fill="var(--color-brand-amber)" />
-									<circle cx="15" cy="75" r="4" fill="var(--color-brand-amber)" />
+									<circle cx="50" cy="15" r="4" fill="var(--warning)" />
+									<circle cx="85" cy="75" r="4" fill="var(--warning)" />
+									<circle cx="15" cy="75" r="4" fill="var(--warning)" />
 								</svg>
 							</m.div>
 
@@ -269,16 +269,16 @@ export default function Landing() {
 							<m.div
 								animate={{ y: [0, -15, 0] }}
 								transition={{ duration: 4, repeat: Number.POSITIVE_INFINITY, ease: 'easeInOut' }}
-								className="absolute -top-3 sm:-top-4 right-0 sm:right-2 w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 bg-brand-amber rounded-2xl sm:rounded-3xl shadow-2xl flex items-center justify-center -rotate-12 z-20"
+								className="absolute -top-3 sm:-top-4 right-0 sm:right-2 w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 bg-warning rounded-2xl sm:rounded-3xl shadow-2xl flex items-center justify-center -rotate-12 z-20"
 							>
-								<Sparkles className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 text-white fill-white" />
+								<Sparkles className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 text-warning-foreground fill-current" />
 							</m.div>
 							<m.div
 								animate={{ y: [0, 20, 0], rotate: [12, 18, 12] }}
 								transition={{ duration: 6, repeat: Number.POSITIVE_INFINITY, ease: 'easeInOut' }}
-								className="absolute -bottom-4 sm:-bottom-6 left-0 sm:left-2 w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 bg-brand-green rounded-2xl sm:rounded-[2rem] md:rounded-[2.5rem] shadow-2xl flex items-center justify-center z-20"
+								className="absolute -bottom-4 sm:-bottom-6 left-0 sm:left-2 w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 bg-success rounded-2xl sm:rounded-3xl shadow-2xl flex items-center justify-center z-20"
 							>
-								<Atom className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 text-white" />
+								<Atom className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 text-success-foreground" />
 							</m.div>
 						</m.div>
 					</section>
@@ -286,11 +286,11 @@ export default function Landing() {
 					{/* Subjects Section - Responsive Grid */}
 					<section className="space-y-12 sm:space-y-16 lg:space-y-24">
 						<div className="flex items-center gap-6 sm:gap-8 lg:gap-12">
-							<div className="h-px flex-1 bg-border/60" />
-							<h2 className="text-xs sm:text-sm font-black text-muted-foreground uppercase tracking-[0.3em] lg:tracking-[0.4em] whitespace-nowrap">
+							<div className="h-px flex-1 bg-border" />
+							<h2 className="text-[10px] sm:text-[11px] font-black text-label-tertiary uppercase tracking-[0.4em] whitespace-nowrap">
 								Explore Subjects
 							</h2>
-							<div className="h-px flex-1 bg-border/60" />
+							<div className="h-px flex-1 bg-border" />
 						</div>
 
 						<m.div
@@ -305,7 +305,7 @@ export default function Landing() {
 								return (
 									<m.div key={subject.id} variants={STAGGER_ITEM}>
 										<Card
-											className="bg-card p-6 sm:p-8 rounded-2xl sm:rounded-[2.5rem] border border-border shadow-sm group hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 cursor-pointer overflow-hidden relative h-full flex flex-col justify-between"
+											className="bg-card p-6 sm:p-8 rounded-3xl border border-border shadow-sm group hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 cursor-pointer overflow-hidden relative h-full flex flex-col justify-between ios-active-scale"
 											onClick={() => handleAuthRoute(subject.path)}
 										>
 											<m.div
@@ -316,30 +316,30 @@ export default function Landing() {
 												<div className="flex items-start justify-between">
 													<m.div
 														whileHover={{ scale: 1.1, rotate: 5 }}
-														className={`w-16 h-16 sm:w-20 sm:h-20 rounded-xl sm:rounded-[2rem] ${subject.bg} flex items-center justify-center shrink-0 shadow-inner group-hover:scale-110 transition-transform duration-500 relative overflow-hidden`}
+														className={`w-16 h-16 sm:w-20 sm:h-20 rounded-2xl ${subject.bg} flex items-center justify-center shrink-0 shadow-inner group-hover:scale-110 transition-transform duration-500 relative overflow-hidden`}
 													>
 														<Icon
 															className={`w-8 h-8 sm:w-10 sm:h-10 ${subject.color} relative z-10`}
 															aria-hidden="true"
 														/>
 													</m.div>
-													<div className="w-12 h-12 rounded-full bg-muted flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 -translate-x-4 group-hover:translate-x-0">
+													<div className="w-12 h-12 rounded-full bg-secondary flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 -translate-x-4 group-hover:translate-x-0">
 														<ChevronRight className="w-5 h-5 text-foreground" />
 													</div>
 												</div>
 
 												<div className="space-y-3">
-													<h3 className="text-xl sm:text-2xl font-black text-foreground tracking-tighter">
+													<h3 className="text-xl sm:text-2xl font-black text-foreground tracking-tighter uppercase">
 														{subject.name}
 													</h3>
-													<p className="text-base text-muted-foreground font-medium leading-relaxed opacity-80">
+													<p className="text-sm text-label-secondary font-black uppercase tracking-tight leading-relaxed opacity-80">
 														{subject.topics}
 													</p>
 												</div>
 											</div>
 
 											<div className="pt-6 sm:pt-8 relative z-10">
-												<div className="flex items-center gap-2 text-xs font-black uppercase tracking-widest text-primary opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+												<div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-primary opacity-0 group-hover:opacity-100 transition-opacity duration-500">
 													Learn More
 													<ChevronRight className="w-4 h-4" />
 												</div>
@@ -353,16 +353,16 @@ export default function Landing() {
 
 					{/* Final CTA Section */}
 					<section className="mt-24 sm:mt-32 lg:mt-48 pb-12 sm:pb-16">
-						<Card className="bg-primary p-8 sm:p-12 lg:p-16 xl:p-24 rounded-2xl sm:rounded-[3rem] lg:rounded-[4rem] text-center space-y-8 sm:space-y-12 relative overflow-hidden group">
+						<Card className="bg-primary p-8 sm:p-12 lg:p-16 xl:p-24 rounded-3xl lg:rounded-[4rem] text-center space-y-8 sm:space-y-12 relative overflow-hidden group border-none">
 							<div className="absolute inset-0 bg-linear-to-br from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
 							<div className="absolute -top-24 -left-24 w-96 h-96 bg-white/5 rounded-full blur-[100px] pointer-events-none" />
 							<div className="absolute -bottom-24 -right-24 w-96 h-96 bg-black/10 rounded-full blur-[100px] pointer-events-none" />
 
 							<div className="space-y-4 sm:space-y-6 relative z-10">
-								<h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black text-primary-foreground tracking-tighter leading-none">
+								<h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black text-primary-foreground tracking-tighter leading-none uppercase">
 									Ready to ace your exams?
 								</h2>
-								<p className="text-base sm:text-lg md:text-xl lg:text-2xl font-bold text-primary-foreground/80 max-w-xl sm:max-w-2xl mx-auto">
+								<p className="text-base sm:text-lg md:text-xl lg:text-2xl font-black text-primary-foreground/80 max-w-xl sm:max-w-2xl mx-auto uppercase tracking-tight">
 									Join thousands of students and start your journey to success today.
 								</p>
 							</div>
@@ -370,12 +370,12 @@ export default function Landing() {
 							<div className="relative z-10">
 								<Button
 									size="lg"
-									className="w-full sm:w-auto bg-white text-primary hover:bg-zinc-100 rounded-[2rem] h-12 sm:h-14 lg:h-16 px-8 lg:px-12 text-lg lg:text-xl xl:text-2xl font-black shadow-2xl transition-all hover:scale-105 active:scale-95"
+									className="w-full sm:w-auto bg-foreground text-background hover:bg-foreground/90 rounded-full h-12 sm:h-14 lg:h-16 px-8 lg:px-12 text-lg lg:text-xl xl:text-2xl font-black uppercase tracking-widest shadow-2xl transition-all hover:scale-105 active:scale-95 ios-active-scale"
 									onClick={() => router.push('/dashboard')}
 								>
 									Get Started for Free
 								</Button>
-								<p className="mt-6 sm:mt-8 text-xs font-black uppercase tracking-[0.3em] text-primary-foreground/60">
+								<p className="mt-6 sm:mt-8 text-[10px] font-black uppercase tracking-[0.3em] text-primary-foreground/60">
 									No credit card required • Instant access
 								</p>
 							</div>
