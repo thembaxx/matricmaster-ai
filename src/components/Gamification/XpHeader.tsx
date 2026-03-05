@@ -4,14 +4,21 @@ import { Flame, Sparkles, Trophy, Zap } from 'lucide-react';
 import { memo, useEffect, useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { ACHIEVEMENT_POINTS_MAP } from '@/constants/achievements';
-import { getUserAchievements } from '@/lib/db/achievement-actions';
+import { ACHIEVEMENT_POINTS_MAP, type ACHIEVEMENTS } from '@/constants/achievements';
+import { type UserAchievement, getUserAchievements } from '@/lib/db/achievement-actions';
 import { getUserStreak } from '@/lib/db/progress-actions';
 import { formatXp, getLevelInfo } from '@/lib/level-utils';
 
 interface XpHeaderProps {
 	variant?: 'full' | 'compact';
 	className?: string;
+	initialAchievements?: {
+		unlocked: UserAchievement[];
+		available: typeof ACHIEVEMENTS;
+	};
+	initialStreak?: {
+		currentStreak: number;
+	};
 }
 
 interface XpData {
@@ -30,11 +37,40 @@ interface XpData {
 export const XpHeader = memo(function XpHeader({
 	variant = 'full',
 	className = '',
+	initialAchievements,
+	initialStreak,
 }: XpHeaderProps) {
-	const [data, setData] = useState<XpData | null>(null);
-	const [isLoading, setIsLoading] = useState(true);
+	const [data, setData] = useState<XpData | null>(() => {
+		if (initialAchievements && initialStreak) {
+			const unlocked = initialAchievements.unlocked.length;
+			const total = unlocked + initialAchievements.available.length;
+
+			const totalXp = initialAchievements.unlocked.reduce((sum, a) => {
+				return sum + (ACHIEVEMENT_POINTS_MAP.get(a.achievementId) || 0);
+			}, 0);
+
+			const levelInfo = getLevelInfo(totalXp);
+
+			return {
+				level: levelInfo.level,
+				title: levelInfo.title,
+				color: levelInfo.color,
+				currentXp: totalXp,
+				xpInCurrentLevel: levelInfo.xpInCurrentLevel,
+				xpToNextLevel: levelInfo.xpForNextLevel,
+				progress: levelInfo.progressPercent,
+				totalAchievements: total,
+				unlockedAchievements: unlocked,
+				streak: initialStreak.currentStreak,
+			};
+		}
+		return null;
+	});
+	const [isLoading, setIsLoading] = useState(!data);
 
 	useEffect(() => {
+		if (data) return; // Skip fetch if initialized with initial data
+
 		async function fetchData() {
 			try {
 				const [achievements, streakData] = await Promise.all([
@@ -72,7 +108,7 @@ export const XpHeader = memo(function XpHeader({
 		}
 
 		fetchData();
-	}, []);
+	}, [data]);
 
 	if (isLoading) {
 		return (

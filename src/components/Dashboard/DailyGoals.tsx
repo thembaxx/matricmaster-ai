@@ -5,7 +5,11 @@ import { CheckCircle, Circle, Target } from 'lucide-react';
 import { memo, useEffect, useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
-import { getUserProgressSummary, getUserStreak } from '@/lib/db/progress-actions';
+import {
+	type UserProgressSummary,
+	getUserProgressSummary,
+	getUserStreak,
+} from '@/lib/db/progress-actions';
 
 interface DailyGoal {
 	id: string;
@@ -16,12 +20,57 @@ interface DailyGoal {
 	isComplete: boolean;
 }
 
-export const DailyGoals = memo(function DailyGoals() {
-	const [goals, setGoals] = useState<DailyGoal[]>([]);
-	const [isLoading, setIsLoading] = useState(true);
-	const [allComplete, setAllComplete] = useState(false);
+interface DailyGoalsProps {
+	initialProgress?: UserProgressSummary;
+	initialStreak?: {
+		currentStreak: number;
+	};
+}
+
+export const DailyGoals = memo(function DailyGoals({
+	initialProgress,
+	initialStreak,
+}: DailyGoalsProps) {
+	const [goals, setGoals] = useState<DailyGoal[]>(() => {
+		if (initialProgress && initialStreak) {
+			const dailyGoals: DailyGoal[] = [
+				{
+					id: 'questions',
+					title: 'Answer 10 Questions',
+					description: 'Complete practice questions today',
+					current: Math.min(initialProgress.totalQuestionsAttempted || 0, 10),
+					target: 10,
+					isComplete: (initialProgress.totalQuestionsAttempted || 0) >= 10,
+				},
+				{
+					id: 'accuracy',
+					title: 'Hit 70% Accuracy',
+					description: 'Maintain good accuracy in your answers',
+					current: initialProgress.accuracy || 0,
+					target: 70,
+					isComplete: (initialProgress.accuracy || 0) >= 70,
+				},
+				{
+					id: 'streak',
+					title: 'Keep Your Streak',
+					description: 'Stay active to maintain your streak',
+					current: initialStreak.currentStreak > 0 ? 1 : 0,
+					target: 1,
+					isComplete: initialStreak.currentStreak > 0,
+				},
+			];
+			return dailyGoals;
+		}
+		return [];
+	});
+	const [isLoading, setIsLoading] = useState(goals.length === 0);
+	const [allComplete, setAllComplete] = useState(() =>
+		goals.length > 0 ? goals.every((g) => g.isComplete) : false
+	);
 
 	useEffect(() => {
+		if (goals.length > 0) return; // Skip fetch if initialized with initial data
+
 		async function fetchGoals() {
 			try {
 				const [progress, streakData] = await Promise.all([
@@ -66,7 +115,7 @@ export const DailyGoals = memo(function DailyGoals() {
 		}
 
 		fetchGoals();
-	}, []);
+	}, [goals.length]);
 
 	if (isLoading) {
 		return (

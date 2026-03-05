@@ -4,12 +4,14 @@ import { ChatClient, LogLevel } from '@ably/chat';
 import { ChatClientProvider } from '@ably/chat/react';
 import * as Ably from 'ably';
 import { AblyProvider, ChannelProvider } from 'ably/react';
-import { createContext, type ReactNode, useContext, useMemo } from 'react';
+import { type ReactNode, useEffect, useMemo } from 'react';
 import { useSession } from '@/lib/auth-client';
+import { useAblyStore } from '@/stores/useAblyStore';
 
-const AblyStatusContext = createContext<{ isReady: boolean }>({ isReady: false });
-
-export const useAblyStatus = () => useContext(AblyStatusContext);
+export const useAblyStatus = () => {
+	const { isReady } = useAblyStore();
+	return { isReady };
+};
 
 interface AblyClientProviderProps {
 	children: ReactNode;
@@ -18,6 +20,7 @@ interface AblyClientProviderProps {
 export function AblyClientProvider({ children }: AblyClientProviderProps) {
 	const { data: session } = useSession();
 	const user = session?.user;
+	const { setIsReady } = useAblyStore();
 
 	const client = useMemo(() => {
 		if (typeof window === 'undefined') return null;
@@ -43,19 +46,18 @@ export function AblyClientProvider({ children }: AblyClientProviderProps) {
 		});
 	}, [client]);
 
+	useEffect(() => {
+		const isReady = !!(client && chatClient);
+		setIsReady(isReady);
+	}, [client, chatClient, setIsReady]);
+
 	if (!client || !chatClient) {
-		return (
-			<AblyStatusContext.Provider value={{ isReady: false }}>{children}</AblyStatusContext.Provider>
-		);
+		return <>{children}</>;
 	}
 
 	return (
 		<AblyProvider client={client}>
-			<ChatClientProvider client={chatClient}>
-				<AblyStatusContext.Provider value={{ isReady: true }}>
-					{children}
-				</AblyStatusContext.Provider>
-			</ChatClientProvider>
+			<ChatClientProvider client={chatClient}>{children}</ChatClientProvider>
 		</AblyProvider>
 	);
 }

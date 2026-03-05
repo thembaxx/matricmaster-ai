@@ -15,12 +15,14 @@ import { WeeklyChallenge } from '@/components/Dashboard/WeeklyChallenge';
 import { WeeklyChartCard } from '@/components/Dashboard/WeeklyChartCard';
 import { DashboardSkeleton } from '@/components/DashboardSkeleton';
 import { XpHeader } from '@/components/Gamification/XpHeader';
-import { useNotificationContextSafe } from '@/components/Notifications/NotificationListener';
 import { BackgroundMesh } from '@/components/ui/background-mesh';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { STAGGER_CONTAINER, STAGGER_ITEM } from '@/lib/animation-presets';
 import type { AuthSession } from '@/lib/auth';
+import type { ACHIEVEMENTS } from '@/constants/achievements';
+import type { UserAchievement } from '@/lib/db/achievement-actions';
 import type { UserProgressSummary } from '@/lib/db/progress-actions';
+import { useNotificationStore } from '@/stores/useNotificationStore';
 
 interface DayProgress {
 	day: string;
@@ -37,15 +39,20 @@ export interface DashboardInitialStreak {
 interface DashboardProps {
 	initialProgress?: UserProgressSummary | null;
 	initialStreak?: DashboardInitialStreak | null;
+	initialAchievements?: {
+		unlocked: UserAchievement[];
+		available: typeof ACHIEVEMENTS;
+	} | null;
 	session?: AuthSession | null;
 }
 
 export default function DashboardWithReactQuery({
 	initialProgress,
 	initialStreak,
+	initialAchievements,
 	session,
 }: DashboardProps = {}) {
-	const { unreadCount } = useNotificationContextSafe();
+	const { unreadCount } = useNotificationStore();
 	const [isPending, startTransition] = useTransition();
 	const [streak] = useState(initialStreak?.currentStreak ?? 0);
 	const [dailyProgress, setDailyProgress] = useState(0);
@@ -145,7 +152,11 @@ export default function DashboardWithReactQuery({
 			/>
 
 			<div className="px-4 sm:px-6 pb-4 lg:px-0">
-				<XpHeader variant="full" />
+				<XpHeader
+					variant="full"
+					initialAchievements={initialAchievements ?? undefined}
+					initialStreak={initialStreak ?? undefined}
+				/>
 			</div>
 
 			<ScrollArea className="flex-1 relative z-10 no-scrollbar">
@@ -157,10 +168,13 @@ export default function DashboardWithReactQuery({
 				>
 					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
 						<m.div variants={STAGGER_ITEM} className="md:col-span-1">
-							<WeeklyChallenge />
+							<WeeklyChallenge initialProgress={initialProgress ?? undefined} />
 						</m.div>
 						<m.div variants={STAGGER_ITEM} className="md:col-span-1">
-							<DailyGoals />
+							<DailyGoals
+								initialProgress={initialProgress ?? undefined}
+								initialStreak={initialStreak ?? undefined}
+							/>
 						</m.div>
 
 						<div className="md:col-span-2">
@@ -184,7 +198,7 @@ export default function DashboardWithReactQuery({
 						</div>
 
 						<m.div variants={STAGGER_ITEM} className="md:col-span-1">
-							<RecentAchievements />
+							<RecentAchievements initialAchievements={initialAchievements ?? undefined} />
 						</m.div>
 						<m.div variants={STAGGER_ITEM} className="md:col-span-1 lg:col-span-1">
 							<LeaderboardPreview />
