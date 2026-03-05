@@ -38,14 +38,14 @@ const Podium = memo(function Podium({ data }: { data: LeaderboardEntry[] }) {
 			{/* 2nd Place */}
 			<div className="flex flex-col items-center flex-1 sm:flex-none">
 				<div className="relative mb-4 group cursor-pointer">
-					<div className="absolute inset-0 bg-zinc-200 dark:bg-zinc-800 rounded-full blur-2xl opacity-0 group-hover:opacity-40 transition-opacity" />
-					<Avatar className="w-16 h-16 sm:w-28 sm:h-28 border-4 border-zinc-200 dark:border-zinc-800 relative z-10 transition-transform group-hover:scale-110 shadow-xl">
+					<div className="absolute inset-0 bg-muted rounded-full blur-2xl opacity-0 group-hover:opacity-40 transition-opacity" />
+					<Avatar className="w-16 h-16 sm:w-28 sm:h-28 border-4 border-muted relative z-10 transition-transform group-hover:scale-110 shadow-xl">
 						<AvatarImage src={r2?.userImage || undefined} className="object-cover" />
 						<AvatarFallback className="font-black text-xl">
 							{r2?.userName?.[0] || '?'}
 						</AvatarFallback>
 					</Avatar>
-					<div className="absolute -bottom-3 left-1/2 -translate-x-1/2 w-10 h-10 bg-zinc-400 rounded-full flex items-center justify-center text-white text-base font-black border-4 border-background z-20 shadow-lg">
+					<div className="absolute -bottom-3 left-1/2 -translate-x-1/2 w-10 h-10 bg-muted-foreground rounded-full flex items-center justify-center text-primary-foreground text-base font-black border-4 border-background z-20 shadow-lg">
 						2
 					</div>
 				</div>
@@ -53,11 +53,11 @@ const Podium = memo(function Podium({ data }: { data: LeaderboardEntry[] }) {
 					<p className="text-sm md:text-base font-black text-foreground tracking-tight">
 						{r2?.userName || 'TBD'}
 					</p>
-					<p className="text-[11px] md:text-xs font-black text-zinc-400 uppercase tracking-widest">
+					<p className="text-[11px] md:text-xs font-black text-muted-foreground uppercase tracking-widest">
 						{r2 ? formatPoints(r2.totalPoints) : '0'} KP
 					</p>
 				</div>
-				<div className="w-20 h-24 md:w-28 md:h-32 bg-linear-to-t from-zinc-100 dark:from-zinc-900 to-transparent mt-6 rounded-t-3xl border-x border-t border-zinc-200 dark:border-zinc-800 opacity-50" />
+				<div className="w-20 h-24 md:w-28 md:h-32 bg-linear-to-t from-muted to-transparent mt-6 rounded-t-3xl border-x border-t border-muted opacity-50" />
 			</div>
 
 			{/* 1st Place */}
@@ -73,7 +73,7 @@ const Podium = memo(function Podium({ data }: { data: LeaderboardEntry[] }) {
 							{r1?.userName?.[0] || '?'}
 						</AvatarFallback>
 					</Avatar>
-					<div className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-14 h-14 bg-brand-amber rounded-full flex items-center justify-center text-white text-2xl font-black border-4 border-background z-20 shadow-2xl">
+					<div className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-14 h-14 bg-brand-amber rounded-full flex items-center justify-center text-primary-foreground text-2xl font-black border-4 border-background z-20 shadow-2xl">
 						1
 					</div>
 				</div>
@@ -82,7 +82,7 @@ const Podium = memo(function Podium({ data }: { data: LeaderboardEntry[] }) {
 						{r1?.userName || 'TBD'}
 					</p>
 					<p className="text-sm md:text-base font-black text-brand-amber uppercase tracking-widest flex items-center justify-center gap-2">
-						<Flame className="w-4 h-4 fill-current" />
+						<Flame className="w-4 h-4 fill-brand-amber" />
 						{r1 ? formatPoints(r1.totalPoints) : '0'} KP
 					</p>
 				</div>
@@ -92,14 +92,14 @@ const Podium = memo(function Podium({ data }: { data: LeaderboardEntry[] }) {
 			{/* 3rd Place */}
 			<div className="flex flex-col items-center flex-1 sm:flex-none">
 				<div className="relative mb-4 group cursor-pointer">
-					<div className="absolute inset-0 bg-orange-200 dark:bg-orange-800 rounded-full blur-2xl opacity-0 group-hover:opacity-40 transition-opacity" />
-					<Avatar className="w-16 h-16 sm:w-28 sm:h-28 border-4 border-orange-200 dark:border-orange-800 relative z-10 transition-transform group-hover:scale-110 shadow-xl">
+					<div className="absolute inset-0 bg-brand-orange/20 rounded-full blur-2xl opacity-0 group-hover:opacity-40 transition-opacity" />
+					<Avatar className="w-16 h-16 sm:w-28 sm:h-28 border-4 border-brand-orange/30 relative z-10 transition-transform group-hover:scale-110 shadow-xl">
 						<AvatarImage src={r3?.userImage || undefined} className="object-cover" />
 						<AvatarFallback className="font-black text-xl">
 							{r3?.userName?.[0] || '?'}
 						</AvatarFallback>
 					</Avatar>
-					<div className="absolute -bottom-3 left-1/2 -translate-x-1/2 w-10 h-10 bg-orange-400 rounded-full flex items-center justify-center text-white text-base font-black border-4 border-background z-20 shadow-lg">
+					<div className="absolute -bottom-3 left-1/2 -translate-x-1/2 w-10 h-10 bg-brand-orange rounded-full flex items-center justify-center text-primary-foreground text-base font-black border-4 border-background z-20 shadow-lg">
 						3
 					</div>
 				</div>
@@ -107,11 +107,11 @@ const Podium = memo(function Podium({ data }: { data: LeaderboardEntry[] }) {
 					<p className="text-sm md:text-base font-black text-foreground tracking-tight">
 						{r3?.userName || 'TBD'}
 					</p>
-					<p className="text-[11px] md:text-xs font-black text-orange-400 uppercase tracking-widest">
+					<p className="text-[11px] md:text-xs font-black text-brand-orange uppercase tracking-widest">
 						{r3 ? formatPoints(r3.totalPoints) : '0'} KP
 					</p>
 				</div>
-				<div className="w-20 h-16 md:w-28 md:h-24 bg-linear-to-t from-orange-100 dark:from-orange-900 to-transparent mt-6 rounded-t-3xl border-x border-t border-orange-200 dark:border-orange-800 opacity-50" />
+				<div className="w-20 h-16 md:w-28 md:h-24 bg-linear-to-t from-brand-orange/10 to-transparent mt-6 rounded-t-3xl border-x border-t border-brand-orange/20 opacity-50" />
 			</div>
 		</div>
 	);
@@ -146,8 +146,8 @@ const RankingList = memo(function RankingList({ data }: { data: LeaderboardEntry
 							{formatPoints(student.totalPoints)} <span className="text-[10px]">KP</span>
 						</p>
 						<div className="flex items-center justify-end gap-1 mt-0.5">
-							<div className="w-1 h-1 rounded-full bg-emerald-500" />
-							<p className="text-[8px] sm:text-[9px] font-black text-emerald-500 uppercase tracking-widest">
+							<div className="w-1 h-1 rounded-full bg-brand-green" />
+							<p className="text-[8px] sm:text-[9px] font-black text-brand-green uppercase tracking-widest">
 								{student.accuracyPercentage}% accuracy
 							</p>
 						</div>
@@ -280,11 +280,11 @@ export default function Leaderboard() {
 										src="https://api.dicebear.com/7.x/avataaars/svg?seed=user"
 										className="object-cover"
 									/>
-									<AvatarFallback className="font-black text-sm sm:text-base text-zinc-900">
+									<AvatarFallback className="font-black text-sm sm:text-base text-foreground">
 										ME
 									</AvatarFallback>
 								</Avatar>
-								<div className="absolute -bottom-1.5 sm:-bottom-2 -right-1.5 sm:-right-2 bg-brand-amber text-zinc-950 text-[8px] sm:text-[9px] font-black px-2 sm:px-3 py-0.5 sm:py-1 rounded-full border-2 sm:border-4 border-foreground uppercase tracking-tighter">
+								<div className="absolute -bottom-1.5 sm:-bottom-2 -right-1.5 sm:-right-2 bg-brand-amber text-foreground text-[8px] sm:text-[9px] font-black px-2 sm:px-3 py-0.5 sm:py-1 rounded-full border-2 sm:border-4 border-background uppercase tracking-tighter">
 									You
 								</div>
 							</div>

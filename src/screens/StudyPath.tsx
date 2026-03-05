@@ -79,7 +79,7 @@ export default function StudyPath() {
 	}
 
 	return (
-		<div className="min-h-screen flex flex-col bg-zinc-50 dark:bg-[#0a0f18]">
+		<div className="min-h-screen flex flex-col bg-muted dark:bg-background">
 			<StudyPathHeader router={router} progress={overallProgress} />
 			<StudyPathMap pathNodes={pathNodes} />
 			<ResumeButton router={router} title={pathNodes[1].title} />
@@ -89,7 +89,7 @@ export default function StudyPath() {
 
 function StudyPathLoading() {
 	return (
-		<div className="min-h-screen flex flex-col items-center justify-center bg-zinc-50 dark:bg-[#0a0f18]">
+		<div className="min-h-screen flex flex-col items-center justify-center bg-muted dark:bg-background">
 			<Loader2 className="w-8 h-8 animate-spin text-primary" />
 			<p className="mt-4 text-muted-foreground">Loading your study path...</p>
 		</div>
@@ -98,21 +98,21 @@ function StudyPathLoading() {
 
 function NoPlanState({ router }: { router: ReturnType<typeof useRouter> }) {
 	return (
-		<div className="min-h-screen flex flex-col bg-zinc-50 dark:bg-[#0a0f18]">
+		<div className="min-h-screen flex flex-col bg-muted dark:bg-background">
 			<StudyPathHeader router={router} />
 			<main className="flex-1 flex flex-col items-center justify-center px-4 text-center space-y-6">
 				<div className="w-24 h-24 rounded-full bg-primary/10 flex items-center justify-center">
 					<Sparkles className="w-12 h-12 text-primary" />
 				</div>
 				<div className="space-y-2">
-					<h2 className="text-2xl font-bold text-zinc-900 dark:text-white">No Study Plan Yet</h2>
+					<h2 className="text-2xl font-bold text-foreground">No Study Plan Yet</h2>
 					<p className="text-muted-foreground max-w-xs">
 						Create your personalized study plan with AI and track your progress
 					</p>
 				</div>
 				<Button
 					onClick={() => router.push('/study-plan')}
-					className="bg-primary hover:bg-primary/90 text-white font-semibold px-8"
+					className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold px-8"
 				>
 					Create Study Plan
 				</Button>
@@ -123,16 +123,16 @@ function NoPlanState({ router }: { router: ReturnType<typeof useRouter> }) {
 
 function SignInPrompt({ router }: { router: ReturnType<typeof useRouter> }) {
 	return (
-		<div className="min-h-screen flex flex-col bg-zinc-50 dark:bg-[#0a0f18]">
+		<div className="min-h-screen flex flex-col bg-muted dark:bg-background">
 			<StudyPathHeader router={router} />
 			<main className="flex-1 flex flex-col items-center justify-center px-4 text-center space-y-6">
 				<div className="space-y-2">
-					<h2 className="text-2xl font-bold text-zinc-900 dark:text-white">Sign In Required</h2>
+					<h2 className="text-2xl font-bold text-foreground">Sign In Required</h2>
 					<p className="text-muted-foreground max-w-xs">Please sign in to view your study path</p>
 				</div>
 				<Button
 					onClick={() => router.push('/sign-in')}
-					className="bg-primary hover:bg-primary/90 text-white font-semibold px-8"
+					className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold px-8"
 				>
 					Sign In
 				</Button>
@@ -215,25 +215,17 @@ function PathConnections() {
 			<path
 				d="M 25 18 Q 45 25, 65 40"
 				fill="none"
-				stroke="rgb(209, 213, 219)"
+				stroke="var(--color-border)"
 				strokeWidth="0.5"
 				strokeDasharray="2,2"
-				className="dark:stroke-zinc-700"
 			/>
 			<path
 				d="M 65 45 Q 55 55, 45 65"
 				fill="none"
-				stroke="#3b82f6"
+				stroke="var(--color-primary)"
 				strokeWidth="0.8"
-				className="dark:stroke-blue-500"
 			/>
-			<path
-				d="M 45 72 L 45 80"
-				fill="none"
-				stroke="#3b82f6"
-				strokeWidth="0.8"
-				className="dark:stroke-blue-500"
-			/>
+			<path d="M 45 72 L 45 80" fill="none" stroke="var(--color-primary)" strokeWidth="0.8" />
 		</svg>
 	);
 }
@@ -276,14 +268,14 @@ function LockedNode({ node }: { node: PathNode }) {
 					className="w-16 h-16 rounded-2xl flex items-center justify-center shadow-lg"
 					style={{ backgroundColor: node.iconBg }}
 				>
-					<span className="text-2xl font-bold text-purple-600">÷±</span>
+					<span className="text-2xl font-bold text-brand-purple">÷±</span>
 				</div>
-				<div className="absolute -top-1 -right-1 w-8 h-8 rounded-full bg-white dark:bg-zinc-800 border-2 border-zinc-200 dark:border-zinc-700 flex items-center justify-center shadow-sm">
-					<Lock className="w-4 h-4 text-zinc-400" />
+				<div className="absolute -top-1 -right-1 w-8 h-8 rounded-full bg-card dark:bg-card border-2 border-border flex items-center justify-center shadow-sm">
+					<Lock className="w-4 h-4 text-muted-foreground" />
 				</div>
 			</div>
 			<div className="bg-card px-3 py-1.5 rounded-full shadow-sm">
-				<span className="text-sm font-medium text-zinc-700 dark:text-zinc-300">{node.title}</span>
+				<span className="text-sm font-medium text-muted-foreground">{node.title}</span>
 			</div>
 		</div>
 	);
@@ -296,14 +288,17 @@ function CurrentNode({ node }: { node: PathNode }) {
 				<div
 					className="absolute inset-[-8px] rounded-full opacity-20"
 					style={{
-						background: 'radial-gradient(circle, rgba(59, 130, 246, 0.5) 0%, transparent 70%)',
+						background: 'radial-gradient(circle, var(--color-primary) 0%, transparent 70%)',
 					}}
 				/>
 				<div
 					className="w-20 h-20 rounded-full flex items-center justify-center shadow-xl relative"
-					style={{ background: 'linear-gradient(135deg, #60a5fa 0%, #3b82f6 50%, #2563eb 100%)' }}
+					style={{
+						background:
+							'linear-gradient(135deg, var(--color-primary-light) 0%, var(--color-primary) 50%, var(--color-primary) 100%)',
+					}}
 				>
-					<svg className="w-10 h-10 text-white" viewBox="0 0 24 24" fill="none">
+					<svg className="w-10 h-10 text-primary-foreground" viewBox="0 0 24 24" fill="none">
 						<title>Cube icon</title>
 						<path
 							d="M12 2L2 7L12 12L22 7L12 2Z"
@@ -328,20 +323,20 @@ function CurrentNode({ node }: { node: PathNode }) {
 						/>
 					</svg>
 				</div>
-				<div className="absolute -top-2 -right-2 flex items-center gap-1 px-2 py-1 bg-green-500 text-white text-xs font-bold rounded-full shadow-lg">
+				<div className="absolute -top-2 -right-2 flex items-center gap-1 px-2 py-1 bg-brand-green text-white text-xs font-bold rounded-full shadow-lg">
 					<span>NEXT</span>
 					<span className="text-[10px]">🚩</span>
 				</div>
 			</div>
 
 			<div className="bg-card rounded-2xl shadow-lg p-4 min-w-[140px]">
-				<h3 className="font-bold text-zinc-900 dark:text-white text-center">{node.title}</h3>
-				<p className="text-blue-500 text-xs font-semibold uppercase tracking-wide text-center mt-1">
+				<h3 className="font-bold text-foreground text-center">{node.title}</h3>
+				<p className="text-primary text-xs font-semibold uppercase tracking-wide text-center mt-1">
 					IN PROGRESS
 				</p>
 				<div className="mt-3 w-full h-1.5 bg-muted rounded-full overflow-hidden">
 					<div
-						className="h-full rounded-full transition-all duration-500 bg-blue-500"
+						className="h-full rounded-full transition-all duration-500 bg-primary"
 						style={{ width: `${node.progress}%` }}
 					/>
 				</div>
@@ -355,19 +350,22 @@ function CompletedNode({ node }: { node: PathNode }) {
 		<div className="flex flex-col items-center gap-2">
 			<div
 				className="w-16 h-16 rounded-full flex items-center justify-center shadow-lg"
-				style={{ background: 'linear-gradient(135deg, #4ade80 0%, #22c55e 50%, #16a34a 100%)' }}
+				style={{
+					background:
+						'linear-gradient(135deg, var(--color-brand-green-light) 0%, var(--color-brand-green) 50%, var(--color-brand-green) 100%)',
+				}}
 			>
-				<Check className="w-8 h-8 text-white" strokeWidth={3} />
+				<Check className="w-8 h-8 text-primary-foreground" strokeWidth={3} />
 			</div>
-			<p className="text-sm font-bold text-zinc-900 dark:text-white text-center">{node.title}</p>
+			<p className="text-sm font-bold text-foreground text-center">{node.title}</p>
 			<div className="flex gap-1">
 				{Array.from({ length: 3 }).map((_, i) => (
 					<Star
 						key={`star-${node.id}-${i}`}
 						className={`w-5 h-5 ${
 							i < (node.stars || 0)
-								? 'fill-yellow-400 text-yellow-400'
-								: 'text-zinc-300 dark:text-zinc-600'
+								? 'fill-brand-amber text-brand-amber'
+								: 'text-muted-foreground/30'
 						}`}
 					/>
 				))}
@@ -385,17 +383,20 @@ function ResumeButton({ router, title }: ResumeButtonProps) {
 	return (
 		<div className="px-4 pb-8 pt-4 shrink-0">
 			<Button
-				className="w-full h-16 rounded-2xl text-white font-semibold shadow-lg shadow-blue-500/25 flex items-center justify-between px-4"
-				style={{ background: 'linear-gradient(135deg, #60a5fa 0%, #3b82f6 50%, #2563eb 100%)' }}
+				className="w-full h-16 rounded-2xl text-primary-foreground font-semibold shadow-lg shadow-primary/25 flex items-center justify-between px-4"
+				style={{
+					background:
+						'linear-gradient(135deg, var(--color-primary-light) 0%, var(--color-primary) 50%, var(--color-primary) 100%)',
+				}}
 				onClick={() => router.push('/quiz')}
 			>
 				<div className="flex items-center gap-3">
 					<div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
-						<Play className="w-5 h-5 fill-white text-white" />
+						<Play className="w-5 h-5 fill-primary-foreground text-primary-foreground" />
 					</div>
 					<div className="text-left">
 						<p className="font-bold text-base">Resume: {title}</p>
-						<p className="text-xs text-white/80">Estimated time: 15 mins</p>
+						<p className="text-xs text-primary-foreground/80">Estimated time: 15 mins</p>
 					</div>
 				</div>
 				<ChevronRight className="w-6 h-6" />

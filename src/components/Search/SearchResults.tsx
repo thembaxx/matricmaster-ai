@@ -4,7 +4,6 @@ import { AnimatePresence, m } from 'framer-motion';
 import { ChevronRight, FileText, Search as SearchIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { memo } from 'react';
-import { Card } from '@/components/ui/card';
 import { STAGGER_CONTAINER, STAGGER_ITEM } from '@/lib/animation-presets';
 import type { PastPaper } from '@/lib/db/schema';
 
@@ -33,8 +32,9 @@ export const SearchResults = memo(function SearchResults({ results }: SearchResu
 								whileHover={{ y: -4, scale: 1.02 }}
 								whileTap={{ scale: 0.98 }}
 							>
-								<Card
-									className="p-6 border-2 border-border/50 shadow-sm bg-card rounded-[2rem] flex items-center justify-between group cursor-pointer hover:border-primary/20 hover:shadow-2xl transition-all"
+								<button
+									type="button"
+									className="p-6 w-full text-left border-2 border-border/50 shadow-sm bg-card rounded-[2rem] flex items-center justify-between group cursor-pointer hover:border-primary/20 hover:shadow-2xl transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
 									onClick={() => router.push(`/past-paper?id=${paper.id}`)}
 								>
 									<div className="flex items-center gap-5">
@@ -53,7 +53,7 @@ export const SearchResults = memo(function SearchResults({ results }: SearchResu
 									<div className="w-10 h-10 rounded-xl bg-muted group-hover:bg-primary group-hover:text-primary-foreground flex items-center justify-center transition-all">
 										<ChevronRight className="w-5 h-5" />
 									</div>
-								</Card>
+								</button>
 							</m.div>
 						))}
 					</div>
