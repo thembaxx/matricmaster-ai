@@ -486,7 +486,7 @@ export default function PdfViewer({ url, onClose, title }: PdfViewerProps) {
 					className="flex-1 overflow-hidden bg-muted/30 dark:bg-muted/10 relative grid place-items-center"
 					aria-label="PDF Content"
 				>
-					<ScrollArea className="h-full w-full overflow-auto">
+					<ScrollArea className="h-full w-full overflow-y-auto">
 						<div
 							className="min-h-full flex items-center justify-center p-4 md:p-8 lg:p-12"
 							onMouseUp={handleTextSelection}
@@ -748,40 +748,6 @@ export default function PdfViewer({ url, onClose, title }: PdfViewerProps) {
 						</ScrollArea>
 					</div>
 				</aside>
-			</div>
-
-			{/* Mobile Context Bar */}
-			<div className="md:hidden shrink-0 border-t border-border/50 premium-glass px-6 py-4 pb-10 flex items-center justify-between sticky bottom-0 z-30 shadow-[0_-10px_30px_rgba(0,0,0,0.05)] dark:shadow-none">
-				<div className="flex flex-col gap-0.5">
-					<span className="text-[9px] font-black uppercase tracking-[0.2em] text-zinc-400">
-						Viewing Page
-					</span>
-					<span className="text-sm font-bold tabular-nums">
-						{pageNumber} <span className="text-zinc-400 font-medium">of</span> {numPages}
-					</span>
-				</div>
-				<div className="flex gap-3">
-					<Button
-						variant="outline"
-						size="sm"
-						className="rounded-2xl h-10 w-12 border-zinc-200 dark:border-zinc-800 active:scale-90 transition-transform"
-						onClick={goToPrevPage}
-						disabled={pageNumber <= 1}
-						aria-label="Previous page"
-					>
-						<ChevronLeft className="w-5 h-5" />
-					</Button>
-					<Button
-						variant="outline"
-						size="sm"
-						className="rounded-2xl h-10 w-12 border-zinc-200 dark:border-zinc-800 active:scale-90 transition-transform"
-						onClick={goToNextPage}
-						disabled={pageNumber >= numPages}
-						aria-label="Next page"
-					>
-						<ChevronRight className="w-5 h-5" />
-					</Button>
-				</div>
 			</div>
 
 			<style jsx global>{`
