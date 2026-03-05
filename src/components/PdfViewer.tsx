@@ -1,5 +1,6 @@
 'use client';
 
+import { AnimatePresence, motion } from 'framer-motion';
 import {
 	ChevronLeft,
 	ChevronRight,
@@ -21,10 +22,12 @@ import {
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Document, Page, pdfjs } from 'react-pdf';
 import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch';
+import { BackgroundMesh } from '@/components/ui/background-mesh';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
+import { useThemeStore } from '@/stores/useThemeStore';
 
 // Configure PDF.js worker
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
@@ -58,7 +61,9 @@ export default function PdfViewer({ url, onClose, title }: PdfViewerProps) {
 	const [numPages, setNumPages] = useState<number>(0);
 	const [pageNumber, setPageNumber] = useState(1);
 	const [scale, setScale] = useState(1);
+	const { theme, setTheme } = useThemeStore();
 	const [isDarkMode, setIsDarkMode] = useState(false);
+	const [mounted, setMounted] = useState(false);
 	const [searchQuery, setSearchQuery] = useState('');
 	const [showSearch, setShowSearch] = useState(false);
 	const [showNotes, setShowNotes] = useState(false);
@@ -68,6 +73,34 @@ export default function PdfViewer({ url, onClose, title }: PdfViewerProps) {
 	const [isFullscreen, setIsFullscreen] = useState(false);
 	const [containerWidth, setContainerWidth] = useState(0);
 	const [rotation, setRotation] = useState(0);
+
+	useEffect(() => {
+		setMounted(true);
+	}, []);
+
+	// Handle system theme changes
+	useEffect(() => {
+		if (!mounted) return;
+
+		const updateTheme = () => {
+			if (theme === 'system') {
+				setIsDarkMode(window.matchMedia('(prefers-color-scheme: dark)').matches);
+			} else {
+				setIsDarkMode(theme === 'dark');
+			}
+		};
+
+		updateTheme();
+
+		const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+		const handleChange = () => {
+			if (theme === 'system') {
+				setIsDarkMode(mediaQuery.matches);
+			}
+		};
+		mediaQuery.addEventListener('change', handleChange);
+		return () => mediaQuery.removeEventListener('change', handleChange);
+	}, [theme, mounted]);
 
 	// Handle responsive container
 	useEffect(() => {
@@ -159,7 +192,7 @@ export default function PdfViewer({ url, onClose, title }: PdfViewerProps) {
 	};
 
 	const toggleTheme = () => {
-		setIsDarkMode((prev) => !prev);
+		setTheme(isDarkMode ? 'light' : 'dark');
 	};
 
 	const handleRotate = () => {
@@ -203,18 +236,13 @@ export default function PdfViewer({ url, onClose, title }: PdfViewerProps) {
 	return (
 		<section
 			ref={containerRef}
-			className={cn(
-				'flex flex-col h-[100dvh] w-full overflow-hidden transition-colors duration-500 relative',
-				isDarkMode ? 'bg-[#0a0a0a] text-zinc-100' : 'bg-[#f8f9fa] text-zinc-900'
-			)}
+			className="flex flex-col h-[100dvh] w-full overflow-hidden transition-colors duration-500 relative bg-background/50 text-foreground"
 			aria-label="PDF Document Viewer"
 		>
+			<BackgroundMesh variant="subtle" />
 			{/* Professional Toolbar */}
 			<header
-				className={cn(
-					'shrink-0 flex items-center justify-between px-4 md:px-6 py-3 border-b backdrop-blur-md sticky top-0 z-30 transition-all duration-300',
-					isDarkMode ? 'bg-zinc-900/80 border-zinc-800' : 'bg-white/80 border-zinc-200 shadow-sm'
-				)}
+				className="shrink-0 flex items-center justify-between px-4 md:px-6 py-3 border-b border-border/50 premium-glass sticky top-0 z-30 transition-all duration-300 shadow-sm"
 				role="toolbar"
 				aria-label="PDF Viewer Controls"
 			>
@@ -222,10 +250,21 @@ export default function PdfViewer({ url, onClose, title }: PdfViewerProps) {
 				<div className="flex items-center gap-4 md:gap-6">
 					{title && (
 						<div className="hidden lg:flex flex-col">
-							<span className="text-[10px] font-black uppercase tracking-widest text-brand-blue">
+							<motion.span
+								initial={{ opacity: 0, x: -10 }}
+								animate={{ opacity: 1, x: 0 }}
+								className="text-[10px] font-black uppercase tracking-widest text-brand-blue"
+							>
 								Document
-							</span>
-							<h2 className="text-sm font-bold truncate max-w-[200px]">{title}</h2>
+							</motion.span>
+							<motion.h2
+								initial={{ opacity: 0, x: -10 }}
+								animate={{ opacity: 1, x: 0 }}
+								transition={{ delay: 0.1 }}
+								className="text-sm font-bold truncate max-w-[200px]"
+							>
+								{title}
+							</motion.h2>
 						</div>
 					)}
 
@@ -354,12 +393,12 @@ export default function PdfViewer({ url, onClose, title }: PdfViewerProps) {
 							size="icon"
 							className="h-8 w-8 rounded-full hover:bg-white dark:hover:bg-zinc-700 hover:shadow-sm transition-all focus-visible:ring-2 focus-visible:ring-brand-blue"
 							onClick={toggleTheme}
-							aria-label={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
+							aria-label={mounted && isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
 						>
-							{isDarkMode ? (
+							{mounted && isDarkMode ? (
 								<Sun className="w-4 h-4 text-yellow-500" />
 							) : (
-								<Moon className="w-4 h-4 text-zinc-600" />
+								<Moon className="w-4 h-4 text-zinc-600 dark:text-zinc-400" />
 							)}
 						</Button>
 					</div>
@@ -408,36 +447,43 @@ export default function PdfViewer({ url, onClose, title }: PdfViewerProps) {
 			</header>
 
 			{/* Floating Search Bar */}
-			{showSearch && (
-				<div className="absolute top-20 left-1/2 -translate-x-1/2 z-40 w-full max-w-md px-4 animate-in fade-in slide-in-from-top-4 duration-300">
-					<div className="premium-glass p-2 rounded-2xl flex items-center gap-2 shadow-2xl border border-white/20 dark:border-zinc-800/50">
-						<Search className="w-4 h-4 text-zinc-400 ml-2" />
-						<Input
-							type="text"
-							placeholder="Find in document..."
-							value={searchQuery}
-							onChange={(e) => setSearchQuery(e.target.value)}
-							className="h-9 bg-transparent border-none focus-visible:ring-0 font-medium"
-							aria-label="Search query"
-						/>
-						<Button
-							variant="ghost"
-							size="icon"
-							className="h-8 w-8 rounded-full hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors"
-							onClick={() => setShowSearch(false)}
-							aria-label="Close search"
-						>
-							<X className="w-4 h-4" />
-						</Button>
-					</div>
-				</div>
-			)}
+			<AnimatePresence>
+				{showSearch && (
+					<motion.div
+						initial={{ opacity: 0, y: -20, x: '-50%' }}
+						animate={{ opacity: 1, y: 0, x: '-50%' }}
+						exit={{ opacity: 0, y: -20, x: '-50%' }}
+						className="absolute top-20 left-1/2 z-40 w-full max-w-md px-4"
+					>
+						<div className="premium-glass p-2 rounded-2xl flex items-center gap-2 shadow-2xl border border-white/20 dark:border-zinc-800/50">
+							<Search className="w-4 h-4 text-zinc-400 ml-2" />
+							<Input
+								type="text"
+								placeholder="Find in document..."
+								value={searchQuery}
+								onChange={(e) => setSearchQuery(e.target.value)}
+								className="h-9 bg-transparent border-none focus-visible:ring-0 font-medium"
+								aria-label="Search query"
+							/>
+							<Button
+								variant="ghost"
+								size="icon"
+								className="h-8 w-8 rounded-full hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors"
+								onClick={() => setShowSearch(false)}
+								aria-label="Close search"
+							>
+								<X className="w-4 h-4" />
+							</Button>
+						</div>
+					</motion.div>
+				)}
+			</AnimatePresence>
 
 			{/* Main Content Area */}
 			<div className="flex flex-1 overflow-hidden relative">
 				{/* PDF Render Container */}
 				<main
-					className="flex-1 overflow-hidden bg-zinc-200 dark:bg-[#121212] relative grid place-items-center"
+					className="flex-1 overflow-hidden bg-muted/30 dark:bg-muted/10 relative grid place-items-center"
 					aria-label="PDF Content"
 				>
 					<ScrollArea className="h-full w-full overflow-auto">
@@ -460,11 +506,13 @@ export default function PdfViewer({ url, onClose, title }: PdfViewerProps) {
 										wrapperClass="!w-full !h-full"
 										contentClass={cn(
 											'transition-transform duration-200 ease-out will-change-transform',
-											isDarkMode && 'invert brightness-90 contrast-125'
+											mounted &&
+												isDarkMode &&
+												'invert-[0.9] brightness-90 contrast-125 hue-rotate-180'
 										)}
 									>
 										<div
-											className="relative shadow-[0_20px_60px_rgba(0,0,0,0.4)] rounded-md overflow-hidden bg-white"
+											className="relative  rounded-md overflow-hidden bg-white"
 											style={{
 												transform: `rotate(${rotation}deg)`,
 												transition: 'transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1)',
@@ -546,48 +594,55 @@ export default function PdfViewer({ url, onClose, title }: PdfViewerProps) {
 					</ScrollArea>
 
 					{/* Selection Action Bubble */}
-					{selectedText && (
-						<div className="absolute bottom-12 left-1/2 -translate-x-1/2 z-50 animate-in slide-in-from-bottom-6 duration-500">
-							<div className="premium-glass p-3 rounded-2xl flex items-center gap-3 shadow-2xl border border-brand-blue/20">
-								<div className="px-3 py-1.5 bg-brand-blue/10 rounded-xl max-w-[180px] truncate border border-brand-blue/5">
-									<span className="text-[11px] font-bold text-brand-blue italic">
-										"{selectedText}"
-									</span>
+					<AnimatePresence>
+						{selectedText && (
+							<motion.div
+								initial={{ opacity: 0, y: 20, x: '-50%' }}
+								animate={{ opacity: 1, y: 0, x: '-50%' }}
+								exit={{ opacity: 0, y: 20, x: '-50%' }}
+								className="absolute bottom-12 left-1/2 z-50 px-4 w-full max-w-fit"
+							>
+								<div className="premium-glass p-3 rounded-2xl flex items-center gap-3 shadow-2xl border border-brand-blue/20">
+									<div className="px-3 py-1.5 bg-brand-blue/10 rounded-xl max-w-[180px] truncate border border-brand-blue/5">
+										<span className="text-[11px] font-bold text-brand-blue italic">
+											"{selectedText}"
+										</span>
+									</div>
+									<div className="flex gap-1.5">
+										{HIGHLIGHT_COLORS.map((color) => (
+											<button
+												type="button"
+												key={color.value}
+												onClick={() => {
+													setSelectedColor(color.value);
+													addHighlight();
+												}}
+												className="w-8 h-8 rounded-full border-2 border-white dark:border-zinc-800 shadow-sm transition-all hover:scale-125 active:scale-90 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-brand-blue focus:ring-offset-2 dark:focus:ring-offset-zinc-900"
+												style={{ backgroundColor: color.value }}
+												aria-label={`Highlight with ${color.name}`}
+											/>
+										))}
+									</div>
+									<div className="w-px h-6 bg-zinc-200 dark:bg-zinc-700 mx-1" />
+									<Button
+										size="icon"
+										variant="ghost"
+										className="h-8 w-8 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+										onClick={() => setSelectedText('')}
+										aria-label="Cancel selection"
+									>
+										<X className="w-4 h-4" />
+									</Button>
 								</div>
-								<div className="flex gap-1.5">
-									{HIGHLIGHT_COLORS.map((color) => (
-										<button
-											type="button"
-											key={color.value}
-											onClick={() => {
-												setSelectedColor(color.value);
-												addHighlight();
-											}}
-											className="w-8 h-8 rounded-full border-2 border-white dark:border-zinc-800 shadow-sm transition-all hover:scale-125 active:scale-90 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-brand-blue focus:ring-offset-2 dark:focus:ring-offset-zinc-900"
-											style={{ backgroundColor: color.value }}
-											aria-label={`Highlight with ${color.name}`}
-										/>
-									))}
-								</div>
-								<div className="w-px h-6 bg-zinc-200 dark:bg-zinc-700 mx-1" />
-								<Button
-									size="icon"
-									variant="ghost"
-									className="h-8 w-8 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
-									onClick={() => setSelectedText('')}
-									aria-label="Cancel selection"
-								>
-									<X className="w-4 h-4" />
-								</Button>
-							</div>
-						</div>
-					)}
+							</motion.div>
+						)}
+					</AnimatePresence>
 				</main>
 
 				{/* Notes Sidebar - Premium Design */}
 				<aside
 					className={cn(
-						'fixed md:relative inset-y-0 right-0 z-50 w-full md:w-[360px] border-l transform transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] bg-white/95 dark:bg-zinc-950/95 backdrop-blur-2xl shadow-2xl md:shadow-none',
+						'fixed md:relative inset-y-0 right-0 z-50 w-full md:w-[360px] border-l border-border/50 transform transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] premium-glass shadow-2xl md:shadow-none',
 						showNotes ? 'translate-x-0' : 'translate-x-full'
 					)}
 					aria-label="Annotations Sidebar"
@@ -696,7 +751,7 @@ export default function PdfViewer({ url, onClose, title }: PdfViewerProps) {
 			</div>
 
 			{/* Mobile Context Bar */}
-			<div className="md:hidden shrink-0 border-t bg-white dark:bg-[#0a0a0a] px-6 py-4 pb-10 flex items-center justify-between sticky bottom-0 z-30 shadow-[0_-10px_30px_rgba(0,0,0,0.05)]">
+			<div className="md:hidden shrink-0 border-t border-border/50 premium-glass px-6 py-4 pb-10 flex items-center justify-between sticky bottom-0 z-30 shadow-[0_-10px_30px_rgba(0,0,0,0.05)] dark:shadow-none">
 				<div className="flex flex-col gap-0.5">
 					<span className="text-[9px] font-black uppercase tracking-[0.2em] text-zinc-400">
 						Viewing Page

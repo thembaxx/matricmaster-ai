@@ -6,9 +6,9 @@ import { memo, useEffect, useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import {
-	type UserProgressSummary,
 	getUserProgressSummary,
 	getUserStreak,
+	type UserProgressSummary,
 } from '@/lib/db/progress-actions';
 
 interface DailyGoal {

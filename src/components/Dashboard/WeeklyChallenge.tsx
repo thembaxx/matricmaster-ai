@@ -5,7 +5,7 @@ import { Clock, Sparkles, Zap } from 'lucide-react';
 import { memo, useEffect, useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
-import { type UserProgressSummary, getUserProgressSummary } from '@/lib/db/progress-actions';
+import { getUserProgressSummary, type UserProgressSummary } from '@/lib/db/progress-actions';
 
 interface WeeklyChallengeData {
 	title: string;
