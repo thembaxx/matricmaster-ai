@@ -272,12 +272,12 @@ export default function PdfViewer({ url, onClose, title }: PdfViewerProps) {
 						<Button
 							variant="ghost"
 							size="icon"
-							className="h-8 w-8 rounded-full hover:bg-white dark:hover:bg-zinc-700 hover:shadow-sm transition-all focus-visible:ring-2 focus-visible:ring-brand-blue"
+							className="h-11 w-11 rounded-full hover:bg-white dark:hover:bg-zinc-700 hover:shadow-sm transition-all focus-visible:ring-2 focus-visible:ring-brand-blue"
 							onClick={goToPrevPage}
 							disabled={pageNumber <= 1}
 							aria-label="Previous page"
 						>
-							<ChevronLeft className="w-4 h-4" />
+							<ChevronLeft className="w-5 h-5" />
 						</Button>
 						<div className="px-2 md:px-3 flex items-center gap-1 min-w-[70px] md:min-w-[80px] justify-center">
 							<Input
@@ -295,12 +295,12 @@ export default function PdfViewer({ url, onClose, title }: PdfViewerProps) {
 						<Button
 							variant="ghost"
 							size="icon"
-							className="h-8 w-8 rounded-full hover:bg-white dark:hover:bg-zinc-700 hover:shadow-sm transition-all focus-visible:ring-2 focus-visible:ring-brand-blue"
+							className="h-11 w-11 rounded-full hover:bg-white dark:hover:bg-zinc-700 hover:shadow-sm transition-all focus-visible:ring-2 focus-visible:ring-brand-blue"
 							onClick={goToNextPage}
 							disabled={pageNumber >= numPages}
 							aria-label="Next page"
 						>
-							<ChevronRight className="w-4 h-4" />
+							<ChevronRight className="w-5 h-5" />
 						</Button>
 					</div>
 				</div>
@@ -310,11 +310,11 @@ export default function PdfViewer({ url, onClose, title }: PdfViewerProps) {
 					<Button
 						variant="ghost"
 						size="icon"
-						className="h-8 w-8 rounded-full hover:bg-white dark:hover:bg-zinc-700 hover:shadow-sm transition-all focus-visible:ring-2 focus-visible:ring-brand-blue"
+						className="h-11 w-11 rounded-full hover:bg-white dark:hover:bg-zinc-700 hover:shadow-sm transition-all focus-visible:ring-2 focus-visible:ring-brand-blue"
 						onClick={handleZoomOut}
 						aria-label="Zoom out"
 					>
-						<ZoomOut className="w-4 h-4" />
+						<ZoomOut className="w-5 h-5" />
 					</Button>
 					<span
 						className="text-xs font-bold min-w-[50px] text-center tabular-nums"
@@ -325,32 +325,32 @@ export default function PdfViewer({ url, onClose, title }: PdfViewerProps) {
 					<Button
 						variant="ghost"
 						size="icon"
-						className="h-8 w-8 rounded-full hover:bg-white dark:hover:bg-zinc-700 hover:shadow-sm transition-all focus-visible:ring-2 focus-visible:ring-brand-blue"
+						className="h-11 w-11 rounded-full hover:bg-white dark:hover:bg-zinc-700 hover:shadow-sm transition-all focus-visible:ring-2 focus-visible:ring-brand-blue"
 						onClick={handleZoomIn}
 						aria-label="Zoom in"
 					>
-						<ZoomIn className="w-4 h-4" />
+						<ZoomIn className="w-5 h-5" />
 					</Button>
 					<div className="w-px h-4 bg-zinc-300 dark:bg-zinc-600 mx-1" aria-hidden="true" />
 					<Button
 						variant="ghost"
 						size="icon"
-						className="h-8 w-8 rounded-full hover:bg-white dark:hover:bg-zinc-700 hover:shadow-sm transition-all focus-visible:ring-2 focus-visible:ring-brand-blue"
+						className="h-11 w-11 rounded-full hover:bg-white dark:hover:bg-zinc-700 hover:shadow-sm transition-all focus-visible:ring-2 focus-visible:ring-brand-blue"
 						onClick={() => setScale(1)}
 						title="Reset zoom"
 						aria-label="Reset zoom to 100%"
 					>
-						<RotateCw className="w-3 h-3" />
+						<RotateCw className="w-5 h-5" />
 					</Button>
 					<Button
 						variant="ghost"
 						size="icon"
-						className="h-8 w-8 rounded-full hover:bg-white dark:hover:bg-zinc-700 hover:shadow-sm transition-all focus-visible:ring-2 focus-visible:ring-brand-blue"
+						className="h-11 w-11 rounded-full hover:bg-white dark:hover:bg-zinc-700 hover:shadow-sm transition-all focus-visible:ring-2 focus-visible:ring-brand-blue"
 						onClick={handleRotate}
 						title="Rotate 90deg"
 						aria-label="Rotate document clockwise"
 					>
-						<RotateCw className="w-4 h-4 rotate-90" />
+						<RotateCw className="w-5 h-5 rotate-90" />
 					</Button>
 				</div>
 				{/* Right: Actions */}
@@ -360,7 +360,7 @@ export default function PdfViewer({ url, onClose, title }: PdfViewerProps) {
 							variant="ghost"
 							size="icon"
 							className={cn(
-								'h-8 w-8 rounded-full transition-all focus-visible:ring-2 focus-visible:ring-brand-blue',
+								'h-11 w-11 rounded-full transition-all focus-visible:ring-2 focus-visible:ring-brand-blue',
 								showSearch
 									? 'bg-white dark:bg-zinc-700 shadow-sm'
 									: 'hover:bg-white dark:hover:bg-zinc-700'
@@ -369,14 +369,14 @@ export default function PdfViewer({ url, onClose, title }: PdfViewerProps) {
 							aria-label="Search in document"
 							aria-expanded={showSearch}
 						>
-							<Search className="w-4 h-4" />
+							<Search className="w-5 h-5" />
 						</Button>
 
 						<Button
 							variant="ghost"
 							size="icon"
 							className={cn(
-								'h-8 w-8 rounded-full transition-all focus-visible:ring-2 focus-visible:ring-brand-blue',
+								'h-11 w-11 rounded-full transition-all focus-visible:ring-2 focus-visible:ring-brand-blue',
 								showNotes
 									? 'bg-white dark:bg-zinc-700 shadow-sm'
 									: 'hover:bg-white dark:hover:bg-zinc-700'
@@ -385,20 +385,20 @@ export default function PdfViewer({ url, onClose, title }: PdfViewerProps) {
 							aria-label="Toggle annotations sidebar"
 							aria-expanded={showNotes}
 						>
-							<StickyNote className="w-4 h-4" />
+							<StickyNote className="w-5 h-5" />
 						</Button>
 
 						<Button
 							variant="ghost"
 							size="icon"
-							className="h-8 w-8 rounded-full hover:bg-white dark:hover:bg-zinc-700 hover:shadow-sm transition-all focus-visible:ring-2 focus-visible:ring-brand-blue"
+							className="h-11 w-11 rounded-full hover:bg-white dark:hover:bg-zinc-700 hover:shadow-sm transition-all focus-visible:ring-2 focus-visible:ring-brand-blue"
 							onClick={toggleTheme}
 							aria-label={mounted && isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
 						>
 							{mounted && isDarkMode ? (
-								<Sun className="w-4 h-4 text-yellow-500" />
+								<Sun className="w-5 h-5 text-yellow-500" />
 							) : (
-								<Moon className="w-4 h-4 text-zinc-600 dark:text-zinc-400" />
+								<Moon className="w-5 h-5 text-zinc-600 dark:text-zinc-400" />
 							)}
 						</Button>
 					</div>
@@ -407,17 +407,17 @@ export default function PdfViewer({ url, onClose, title }: PdfViewerProps) {
 						<Button
 							variant="ghost"
 							size="icon"
-							className="h-8 w-8 rounded-full hover:bg-white dark:hover:bg-zinc-700 hover:shadow-sm transition-all focus-visible:ring-2 focus-visible:ring-brand-blue"
+							className="h-11 w-11 rounded-full hover:bg-white dark:hover:bg-zinc-700 hover:shadow-sm transition-all focus-visible:ring-2 focus-visible:ring-brand-blue"
 							onClick={toggleFullscreen}
 							aria-label={isFullscreen ? 'Exit fullscreen' : 'Enter fullscreen'}
 						>
-							{isFullscreen ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
+							{isFullscreen ? <Minimize2 className="w-5 h-5" /> : <Maximize2 className="w-5 h-5" />}
 						</Button>
 
 						<Button
 							variant="ghost"
 							size="icon"
-							className="h-8 w-8 rounded-full hover:bg-white dark:hover:bg-zinc-700 hover:shadow-sm transition-all focus-visible:ring-2 focus-visible:ring-brand-blue"
+							className="h-11 w-11 rounded-full hover:bg-white dark:hover:bg-zinc-700 hover:shadow-sm transition-all focus-visible:ring-2 focus-visible:ring-brand-blue"
 							asChild
 						>
 							<a
@@ -427,7 +427,7 @@ export default function PdfViewer({ url, onClose, title }: PdfViewerProps) {
 								rel="noopener noreferrer"
 								aria-label="Download PDF"
 							>
-								<Download className="w-4 h-4" />
+								<Download className="w-5 h-5" />
 							</a>
 						</Button>
 					</div>
@@ -436,7 +436,7 @@ export default function PdfViewer({ url, onClose, title }: PdfViewerProps) {
 						<Button
 							variant="ghost"
 							size="icon"
-							className="h-9 w-9 rounded-full hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-500 transition-all focus-visible:ring-2 focus-visible:ring-red-500"
+							className="h-11 w-11 rounded-full hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-500 transition-all focus-visible:ring-2 focus-visible:ring-red-500"
 							onClick={onClose}
 							aria-label="Close viewer"
 						>

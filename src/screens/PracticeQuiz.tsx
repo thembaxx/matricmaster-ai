@@ -88,7 +88,7 @@ export default function PracticeQuiz() {
 	};
 
 	return (
-		<div className="flex flex-col h-full bg-muted dark:bg-background font-inter">
+		<div className="flex flex-col h-full bg-muted dark:bg-background">
 			<PracticeQuizHeader router={router} />
 			<ScrollArea className="flex-1">
 				<main className="px-6 py-4 space-y-8 pb-32">
@@ -202,7 +202,7 @@ function GraphSVG() {
 			<path
 				d="M 40 140 Q 90 40 140 140"
 				fill="none"
-				stroke="#efb036"
+				stroke="var(--brand-amber)"
 				strokeWidth="3"
 				strokeLinecap="round"
 			/>

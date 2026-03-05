@@ -14,6 +14,7 @@ import { SmoothWords } from '@/components/Transition/SmoothText';
 import { BackgroundMesh } from '@/components/ui/background-mesh';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { STAGGER_CONTAINER, STAGGER_ITEM } from '@/lib/animation-presets';
 import { authClient } from '@/lib/auth-client';
 import { cn } from '@/lib/utils';
@@ -145,11 +146,11 @@ export function SignInForm() {
 						transition={{ type: 'spring', stiffness: 300, damping: 30 }}
 						className="fixed top-6 left-0 right-0 z-50 flex justify-center pointer-events-none"
 					>
-						<div className="bg-emerald-500 text-white px-6 py-3 rounded-full shadow-lg shadow-emerald-500/30 flex items-center gap-3 pointer-events-auto backdrop-blur-md">
+						<div className="bg-success/90 text-white px-6 py-3 rounded-full shadow-lg shadow-success/30 flex items-center gap-3 pointer-events-auto backdrop-blur-md">
 							<div className="bg-white/20 p-1 rounded-full">
 								<Check className="w-4 h-4 text-white" />
 							</div>
-							<span className="font-medium text-sm">Welcome back, {successEmail}!</span>
+							<span className="font-semibold text-sm">Welcome back, {successEmail}!</span>
 						</div>
 					</m.div>
 				)}
@@ -166,21 +167,24 @@ export function SignInForm() {
 						variants={STAGGER_CONTAINER}
 						initial="hidden"
 						animate="visible"
-						className="text-center space-y-2 mb-8"
+						className="text-center space-y-3 mb-8"
 					>
 						<m.div
 							variants={STAGGER_ITEM}
 							whileHover={{ rotate: 15, scale: 1.1 }}
-							className="w-12 h-12 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-4 text-primary"
+							className="w-14 h-14 bg-primary/10 rounded-3xl flex items-center justify-center mx-auto mb-5 text-primary"
 						>
-							<Sparkles className="w-6 h-6" />
+							<Sparkles className="w-7 h-7" />
 						</m.div>
 						<SmoothWords
 							as="h1"
 							text="Welcome Back"
-							className="text-3xl font-black tracking-tight text-foreground"
+							className="text-4xl font-black tracking-tight text-foreground"
 						/>
-						<m.p variants={STAGGER_ITEM} className="text-muted-foreground text-balance font-medium">
+						<m.p
+							variants={STAGGER_ITEM}
+							className="text-muted-foreground text-balance font-medium text-base"
+						>
 							Sign in to continue your Grade 12 journey.
 						</m.p>
 					</m.div>
@@ -189,10 +193,10 @@ export function SignInForm() {
 						<m.div
 							initial={{ opacity: 0, x: -10 }}
 							animate={{ opacity: 1, x: 0 }}
-							className="p-4 mb-6 bg-destructive/10 border border-destructive/20 text-destructive text-sm font-medium rounded-2xl flex items-center gap-2"
+							className="p-4 mb-6 bg-destructive/10 border border-destructive/20 text-destructive text-sm font-medium rounded-2xl flex items-center gap-3"
 						>
-							<div className="w-1.5 h-1.5 rounded-full bg-destructive shrink-0" />
-							{error}
+							<div className="w-2 h-2 rounded-full bg-destructive shrink-0" />
+							<span className="flex-1">{error}</span>
 						</m.div>
 					)}
 
@@ -201,15 +205,15 @@ export function SignInForm() {
 						initial="hidden"
 						animate="visible"
 						onSubmit={handleSubmit(onSubmit)}
-						className="space-y-5"
+						className="space-y-6"
 					>
 						<m.div variants={STAGGER_ITEM} className="space-y-2">
-							<label
+							<Label
 								htmlFor="email"
-								className="block text-xs font-bold text-foreground ml-1 uppercase tracking-wider"
+								className="text-xs font-bold text-label-primary uppercase tracking-wider ml-1"
 							>
 								Email Address
-							</label>
+							</Label>
 							<Input
 								{...register('email')}
 								id="email"
@@ -218,18 +222,20 @@ export function SignInForm() {
 								className="bg-background/50"
 							/>
 							{errors.email && (
-								<p className="text-xs text-destructive font-medium ml-1">{errors.email.message}</p>
+								<p className="text-xs text-destructive font-semibold ml-1">
+									{errors.email.message}
+								</p>
 							)}
 						</m.div>
 
 						<m.div variants={STAGGER_ITEM} className="space-y-2">
 							<div className="flex items-center justify-between">
-								<label
+								<Label
 									htmlFor="password"
-									className="block text-xs font-bold text-foreground ml-1 uppercase tracking-wider"
+									className="text-xs font-bold text-label-primary uppercase tracking-wider ml-1"
 								>
 									Password
-								</label>
+								</Label>
 								<Link
 									href="/forgot-password"
 									className="text-xs font-bold text-primary hover:text-primary/80 uppercase tracking-wider"
@@ -255,7 +261,7 @@ export function SignInForm() {
 								</button>
 							</div>
 							{errors.password && (
-								<p className="text-xs text-destructive font-medium ml-1">
+								<p className="text-xs text-destructive font-semibold ml-1">
 									{errors.password.message}
 								</p>
 							)}
@@ -268,7 +274,7 @@ export function SignInForm() {
 								className={cn(
 									'w-full h-14 rounded-2xl font-black text-base shadow-xl transition-all active:scale-[0.98]',
 									successEmail
-										? 'bg-emerald-500 text-white'
+										? 'bg-success text-white shadow-success/30'
 										: 'bg-primary text-primary-foreground shadow-primary/20'
 								)}
 							>
@@ -290,7 +296,7 @@ export function SignInForm() {
 						className="relative my-8"
 					>
 						<div className="absolute inset-0 flex items-center">
-							<div className="w-full border-t border-border" />
+							<div className="w-full border-t border-border/60" />
 						</div>
 						<div className="relative flex justify-center text-[10px] uppercase tracking-[0.2em]">
 							<span className="px-4 text-muted-foreground font-black bg-card/80 backdrop-blur-xl rounded-full">
@@ -317,12 +323,12 @@ export function SignInForm() {
 						initial={{ opacity: 0 }}
 						animate={{ opacity: 1 }}
 						transition={{ delay: 1.2 }}
-						className="text-center text-muted-foreground mt-8 text-sm font-medium"
+						className="text-center text-muted-foreground mt-8 text-sm font-semibold"
 					>
 						Don't have an account?{' '}
 						<Link
 							href="/sign-up"
-							className="font-black text-primary hover:underline underline-offset-4"
+							className="font-black text-primary hover:text-primary/80 underline-offset-4 transition-colors"
 						>
 							Sign Up
 						</Link>
@@ -334,7 +340,7 @@ export function SignInForm() {
 					initial={{ opacity: 0 }}
 					animate={{ opacity: 1 }}
 					transition={{ delay: 1.5 }}
-					className="text-center text-muted-foreground/60 text-xs font-bold uppercase tracking-widest mt-8"
+					className="text-center text-muted-foreground/60 text-[10px] font-bold uppercase tracking-widest mt-8"
 				>
 					&copy; {new Date().getFullYear()} MatricMaster AI
 				</m.p>

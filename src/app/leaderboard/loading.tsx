@@ -1,6 +1,6 @@
 export default function LeaderboardLoading() {
 	return (
-		<div className="flex flex-col h-full bg-[#fcfdfd] dark:bg-[#0a0f18] font-inter pb-28">
+		<div className="flex flex-col h-full bg-background pb-28">
 			<header className="px-6 pt-12 pb-6 shrink-0 bg-white dark:bg-[#0a0f18]">
 				{/* Tabs Skeleton */}
 				<div className="h-14 bg-zinc-100 dark:bg-zinc-900 rounded-2xl p-1.5 mb-8">

@@ -76,10 +76,10 @@ export default function MathematicsQuiz() {
 						</Button>
 						<div className="flex-1">
 							<div className="flex justify-between items-center mb-2">
-								<span className="text-sm font-bold text-muted-foreground">Question 1 of 5</span>
+								<span className="text-[10px] font-black text-label-tertiary uppercase tracking-widest">Question 1 of 5</span>
 								<Badge
 									variant="secondary"
-									className="text-[10px] font-black uppercase tracking-tighter rounded-full"
+									className="text-[10px] font-black uppercase tracking-tighter rounded-full bg-primary/10 text-primary border-none"
 								>
 									Integration
 								</Badge>
@@ -94,24 +94,24 @@ export default function MathematicsQuiz() {
 				<main className="px-6 py-8 space-y-8 pb-64 max-w-2xl mx-auto w-full">
 					{/* Question */}
 					<div className="space-y-4">
-						<h2 className="text-3xl font-black text-foreground">Find the integral</h2>
-						<Card className="p-12 bg-card border-none rounded-[2.5rem] shadow-sm relative overflow-hidden group">
-							<div className="absolute inset-0 bg-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity" />
+						<h2 className="text-3xl font-black text-foreground tracking-tighter uppercase">Find the integral</h2>
+						<Card className="p-12 bg-card border border-border rounded-3xl shadow-sm relative overflow-hidden group">
+							<div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity" />
 							<div className="text-center relative z-10">
-								<span className="text-4xl font-mono font-bold text-foreground">∫(3x² + 2x) dx</span>
+								<span className="text-4xl font-mono font-black text-foreground tracking-tighter uppercase">∫(3x² + 2x) dx</span>
 							</div>
 						</Card>
 					</div>
 
 					{/* Selected Steps Area */}
 					<div className="space-y-4">
-						<h3 className="text-[10px] font-black uppercase text-muted-foreground tracking-widest px-1">
+						<h3 className="text-[10px] font-black uppercase text-label-tertiary tracking-[0.2em] px-1">
 							Your Solution Path
 						</h3>
-						<div className="min-h-[160px] p-6 bg-blue-50/50 dark:bg-blue-900/10 rounded-[2rem] border-2 border-dashed border-blue-200 dark:border-blue-900/50">
+						<div className="min-h-[160px] p-6 bg-primary/5 rounded-3xl border-2 border-dashed border-primary/20">
 							{selectedSteps.length === 0 ? (
-								<div className="flex flex-col items-center justify-center py-8 text-muted-foreground space-y-2">
-									<p className="text-sm font-medium">Tap steps below to solve</p>
+								<div className="flex flex-col items-center justify-center py-8 text-label-tertiary space-y-2">
+									<p className="text-[10px] font-black uppercase tracking-widest">Tap steps below to solve</p>
 								</div>
 							) : (
 								<div className="space-y-3">
@@ -120,18 +120,18 @@ export default function MathematicsQuiz() {
 										return (
 											<div
 												key={stepId}
-												className="flex items-center gap-4 p-5 bg-card rounded-[1.5rem] shadow-sm border border-blue-100 dark:border-blue-900/30 animate-in fade-in slide-in-from-left-2"
+												className="flex items-center gap-4 p-5 bg-card rounded-2xl shadow-sm border border-primary/10 animate-in fade-in slide-in-from-left-2 ios-active-scale"
 											>
-												<span className="w-7 h-7 rounded-full bg-blue-500 text-white text-xs flex items-center justify-center font-black">
+												<span className="w-7 h-7 rounded-full bg-primary text-primary-foreground text-[10px] flex items-center justify-center font-black">
 													{index + 1}
 												</span>
-												<span className="font-mono font-bold text-foreground flex-1">
+												<span className="font-mono font-black text-foreground flex-1 uppercase tracking-tight">
 													{step?.text}
 												</span>
 												<Button
 													variant="ghost"
 													size="icon"
-													className="h-8 w-8 rounded-full hover:bg-red-50 hover:text-red-500"
+													className="h-8 w-8 rounded-full hover:bg-destructive/10 hover:text-destructive ios-active-scale"
 													onClick={() => handleStepClick(stepId)}
 													aria-label="Remove step"
 												>
@@ -147,7 +147,7 @@ export default function MathematicsQuiz() {
 
 					{/* Available Steps Pool */}
 					<div className="space-y-4">
-						<h3 className="text-[10px] font-black uppercase text-muted-foreground tracking-widest px-1">
+						<h3 className="text-[10px] font-black uppercase text-label-tertiary tracking-[0.2em] px-1">
 							Step Fragments
 						</h3>
 						<div className="grid grid-cols-1 gap-3">
@@ -158,13 +158,13 @@ export default function MathematicsQuiz() {
 										type="button"
 										key={step.id}
 										onClick={() => handleStepClick(step.id)}
-										className="p-6 bg-card border border-border rounded-[2rem] text-left hover:border-blue-500 dark:hover:border-blue-500 transition-all hover:shadow-md active:scale-[0.98] group"
+										className="p-6 bg-card border border-border rounded-3xl text-left hover:border-primary transition-all hover:shadow-md active:scale-[0.98] group ios-active-scale"
 									>
 										<div className="flex items-center gap-4">
-											<div className="w-8 h-8 rounded-lg bg-zinc-50 dark:bg-zinc-800 flex items-center justify-center group-hover:bg-blue-50 dark:group-hover:bg-blue-900/30 transition-colors">
-												<GripVertical className="w-4 h-4 text-muted-foreground group-hover:text-blue-500" />
+											<div className="w-8 h-8 rounded-lg bg-secondary flex items-center justify-center group-hover:bg-primary/10 transition-colors">
+												<GripVertical className="w-4 h-4 text-label-tertiary group-hover:text-primary" />
 											</div>
-											<span className="font-mono font-bold text-zinc-700 dark:text-zinc-300">
+											<span className="font-mono font-black text-label-secondary uppercase tracking-tight">
 												{step.text}
 											</span>
 										</div>
@@ -174,15 +174,15 @@ export default function MathematicsQuiz() {
 					</div>
 
 					{/* Hint */}
-					<div className="p-6 bg-amber-50 dark:bg-amber-900/10 border border-amber-100 dark:border-amber-900/30 rounded-[2rem] flex items-start gap-4">
-						<div className="w-10 h-10 rounded-full bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center shrink-0">
-							<Lightbulb className="w-5 h-5 text-amber-600" />
+					<div className="p-6 bg-warning/10 border border-warning/20 rounded-3xl flex items-start gap-4">
+						<div className="w-10 h-10 rounded-full bg-warning/20 flex items-center justify-center shrink-0">
+							<Lightbulb className="w-5 h-5 text-warning" />
 						</div>
 						<div>
-							<h4 className="font-black text-amber-900 dark:text-amber-100 text-xs uppercase tracking-widest mb-1">
+							<h4 className="font-black text-warning text-[10px] uppercase tracking-widest mb-1">
 								Teacher's Hint
 							</h4>
-							<p className="text-sm text-amber-800/80 dark:text-amber-200/80 font-medium">
+							<p className="text-sm text-label-secondary font-black uppercase tracking-tight">
 								Remember the power rule: ∫xⁿ dx = xⁿ⁺¹/(n+1) + C
 							</p>
 						</div>
@@ -209,7 +209,7 @@ export default function MathematicsQuiz() {
 									type="button"
 									key={symbol}
 									onClick={() => insertSymbol(symbol)}
-									className="px-4 py-2.5 bg-muted rounded-xl text-sm font-mono font-bold hover:bg-blue-500 hover:text-white dark:hover:bg-blue-600 transition-all whitespace-nowrap active:scale-90"
+									className="px-4 py-2.5 bg-secondary rounded-xl text-sm font-mono font-black uppercase hover:bg-primary hover:text-primary-foreground transition-all whitespace-nowrap ios-active-scale shadow-sm"
 								>
 									{symbol}
 								</button>
@@ -221,13 +221,13 @@ export default function MathematicsQuiz() {
 					<div className="p-6 pt-2 flex gap-4">
 						<Button
 							variant="outline"
-							className="h-16 px-8 rounded-[2rem] font-bold border-zinc-200 dark:border-zinc-700"
+							className="h-16 px-8 rounded-full font-black uppercase tracking-widest border-border text-[10px] ios-active-scale"
 						>
-							<Lightbulb className="w-5 h-5 mr-2 text-amber-500" />
+							<Lightbulb className="w-5 h-5 mr-2 text-warning" />
 							Hint
 						</Button>
 						<Button
-							className="flex-1 h-16 bg-foreground dark:bg-background text-background dark:text-foreground rounded-[2rem] font-bold text-lg shadow-xl shadow-zinc-900/10 disabled:opacity-50 transition-all active:scale-95"
+							className="flex-1 h-16 bg-primary text-primary-foreground rounded-full font-black text-sm uppercase tracking-widest shadow-xl shadow-primary/20 disabled:opacity-50 transition-all active:scale-95 ios-active-scale"
 							disabled={selectedSteps.length === 0}
 							onClick={() => router.push('/lesson-complete')}
 						>

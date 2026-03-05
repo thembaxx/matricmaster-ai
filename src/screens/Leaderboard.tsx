@@ -1,5 +1,6 @@
 'use client';
 
+import { m } from 'framer-motion';
 import { Award, Flame, Trophy as TrophyIcon } from 'lucide-react';
 import { memo, useEffect, useMemo, useState } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -63,9 +64,13 @@ const Podium = memo(function Podium({ data }: { data: LeaderboardEntry[] }) {
 			{/* 1st Place */}
 			<div className="flex flex-col items-center flex-1 sm:flex-none">
 				<div className="relative mb-6 group cursor-pointer">
-					<div className="absolute -top-8 sm:-top-10 left-1/2 -translate-x-1/2 text-brand-amber animate-bounce">
+					<m.div
+						animate={{ y: [0, -8, 0] }}
+						transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY, ease: [0.16, 1, 0.3, 1] }}
+						className="absolute -top-8 sm:-top-10 left-1/2 -translate-x-1/2 text-brand-amber"
+					>
 						<TrophyIcon className="w-8 h-8 sm:w-10 sm:h-10 fill-brand-amber/20" />
-					</div>
+					</m.div>
 					<div className="absolute -inset-4 bg-brand-amber/20 rounded-full opacity-40 blur-3xl group-hover:opacity-60 transition-opacity" />
 					<Avatar className="w-24 h-24 sm:w-40 sm:h-40 border-4 border-brand-amber relative z-10 transition-transform group-hover:scale-110 shadow-2xl">
 						<AvatarImage src={r1?.userImage || undefined} className="object-cover" />
@@ -289,9 +294,9 @@ export default function Leaderboard() {
 								</div>
 							</div>
 							<div className="flex-1 min-w-0">
-								<h4 className="font-black text-sm sm:text-lg text-background truncate tracking-tight">
+								<h3 className="font-black text-sm sm:text-lg text-background truncate tracking-tight">
 									Your Global Rank
-								</h4>
+								</h3>
 								<p className="text-[10px] sm:text-[11px] font-black text-background/60 uppercase tracking-widest flex items-center gap-1 sm:gap-2">
 									<Flame className="w-3 h-3 sm:w-4 sm:h-4 text-brand-amber fill-brand-amber" />
 									{userStreak?.currentStreak || 0} Day Streak

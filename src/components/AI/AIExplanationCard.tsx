@@ -115,9 +115,36 @@ export function AIExplanationCard({
 						className="py-8 flex flex-col items-center justify-center space-y-3"
 					>
 						<div className="flex gap-1.5">
-							<span className="w-2 h-2 bg-primary/40 rounded-full animate-bounce [animation-delay:-0.3s]" />
-							<span className="w-2 h-2 bg-primary/60 rounded-full animate-bounce [animation-delay:-0.15s]" />
-							<span className="w-2 h-2 bg-primary/80 rounded-full animate-bounce" />
+							<m.span
+								animate={{ y: [0, -6, 0] }}
+								transition={{
+									duration: 0.6,
+									repeat: Number.POSITIVE_INFINITY,
+									ease: [0.16, 1, 0.3, 1],
+									delay: 0,
+								}}
+								className="w-2 h-2 bg-primary/40 rounded-full"
+							/>
+							<m.span
+								animate={{ y: [0, -6, 0] }}
+								transition={{
+									duration: 0.6,
+									repeat: Number.POSITIVE_INFINITY,
+									ease: [0.16, 1, 0.3, 1],
+									delay: 0.15,
+								}}
+								className="w-2 h-2 bg-primary/60 rounded-full"
+							/>
+							<m.span
+								animate={{ y: [0, -6, 0] }}
+								transition={{
+									duration: 0.6,
+									repeat: Number.POSITIVE_INFINITY,
+									ease: [0.16, 1, 0.3, 1],
+									delay: 0.3,
+								}}
+								className="w-2 h-2 bg-primary/80 rounded-full"
+							/>
 						</div>
 						<p className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground animate-pulse">
 							Analyzing question
