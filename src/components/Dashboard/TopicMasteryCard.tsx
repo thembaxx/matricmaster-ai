@@ -26,6 +26,7 @@ export const TopicMasteryCard = memo(function TopicMasteryCard({
 }: TopicMasteryCardProps) {
 	const router = useRouter();
 	const [isLoading, setIsLoading] = useState(true);
+	const [error, setError] = useState<string | null>(null);
 	const [stats, setStats] = useState<LearningStats | null>(null);
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies: loadStats runs once on mount
@@ -35,14 +36,17 @@ export const TopicMasteryCard = memo(function TopicMasteryCard({
 
 	const loadStats = async () => {
 		setIsLoading(true);
+		setError(null);
 		try {
 			const response = await fetch('/api/quiz/analytics');
-			if (response.ok) {
-				const data = await response.json();
-				setStats(data);
+			if (!response.ok) {
+				throw new Error('Failed to load analytics');
 			}
-		} catch (error) {
-			console.error('Failed to load analytics:', error);
+			const data = await response.json();
+			setStats(data);
+		} catch (err) {
+			console.error('Failed to load analytics:', err);
+			setError('Unable to load topic progress');
 		} finally {
 			setIsLoading(false);
 		}
@@ -70,8 +74,45 @@ export const TopicMasteryCard = memo(function TopicMasteryCard({
 		);
 	}
 
+	if (error) {
+		return (
+			<Card className={className}>
+				<CardHeader>
+					<CardTitle className="flex items-center gap-2">
+						<Brain className="h-5 w-5" />
+						Topic Progress
+					</CardTitle>
+				</CardHeader>
+				<CardContent className="text-center py-6">
+					<p className="text-sm text-destructive mb-3">{error}</p>
+					<Button variant="outline" size="sm" onClick={loadStats}>
+						Try Again
+					</Button>
+				</CardContent>
+			</Card>
+		);
+	}
+
 	if (!stats) {
-		return null;
+		return (
+			<Card className={className}>
+				<CardHeader>
+					<CardTitle className="flex items-center gap-2">
+						<Brain className="h-5 w-5" />
+						Topic Progress
+					</CardTitle>
+				</CardHeader>
+				<CardContent className="text-center py-6">
+					<Target className="h-12 w-12 text-muted-foreground/50 mx-auto mb-3" />
+					<p className="text-sm text-muted-foreground">
+						Complete more quizzes to see your topic progress
+					</p>
+					<Button variant="outline" size="sm" className="mt-4" onClick={() => router.push('/quiz')}>
+						Take a Quiz
+					</Button>
+				</CardContent>
+			</Card>
+		);
 	}
 
 	const hasTopics =
