@@ -118,6 +118,7 @@ export const sideMenuSections: MenuSection[] = [
 			{ href: '/language', label: 'Language', icon: Globe },
 			{ href: '/2fa', label: 'Two-Factor Auth', icon: Key },
 			{ href: '/settings', label: 'Settings', icon: Settings },
+			{ href: '/onboarding', label: 'Test Onboarding', icon: Sparkles },
 		],
 	},
 	{

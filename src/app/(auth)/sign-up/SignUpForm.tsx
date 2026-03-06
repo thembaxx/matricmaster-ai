@@ -79,7 +79,7 @@ export default function SignUpForm() {
 				initializeDatabase().catch(console.error);
 
 				setTimeout(() => {
-					router.push('/dashboard');
+					router.push('/onboarding');
 					router.refresh();
 				}, 1500);
 			}

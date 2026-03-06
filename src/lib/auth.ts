@@ -64,6 +64,12 @@ export const authConfig = {
 				defaultValue: false,
 				input: false,
 			},
+			hasCompletedOnboarding: {
+				type: 'boolean',
+				required: false,
+				defaultValue: false,
+				input: false,
+			},
 		},
 	},
 	trustedOrigins: [
@@ -112,6 +118,7 @@ interface ExtendedUser {
 	isBlocked: boolean;
 	deletedAt?: Date | null;
 	twoFactorEnabled: boolean;
+	hasCompletedOnboarding: boolean;
 }
 
 function createAuth(): AuthInstance {
@@ -431,4 +438,5 @@ export type SessionUser = AuthUser & {
 	isBlocked: boolean;
 	deletedAt: Date | null;
 	twoFactorEnabled: boolean | null;
+	hasCompletedOnboarding: boolean | null;
 };

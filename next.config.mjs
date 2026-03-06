@@ -40,6 +40,10 @@ const nextConfig = {
 			},
 			{
 				protocol: 'https',
+				hostname: 'cdn3d.iconscout.com',
+			},
+			{
+				protocol: 'https',
 				hostname: 'images.unsplash.com',
 			},
 			{
