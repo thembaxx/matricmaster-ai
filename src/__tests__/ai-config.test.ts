@@ -1,17 +1,27 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { AI_MODELS, checkAIProviderHealth, createAIClient } from '@/lib/ai-config';
+import * as aiProvider from '@/lib/ai';
 
 // Mock the Google Generative AI library
 vi.mock('@google/generative-ai', () => ({
-	GoogleGenerativeAI: vi.fn().mockImplementation(() => ({
-		getGenerativeModel: vi.fn().mockImplementation(() => ({
-			generateContent: vi.fn().mockResolvedValue({
-				response: {
-					text: () => 'Test response',
-				},
-			}),
-		})),
-	})),
+	GoogleGenerativeAI: vi.fn().mockImplementation(function () {
+		return {
+			getGenerativeModel: vi.fn().mockImplementation(() => ({
+				generateContent: vi.fn().mockResolvedValue({
+					response: {
+						text: () => 'Test response',
+					},
+				}),
+			})),
+		};
+	}),
+}));
+
+// Mock the AI provider
+vi.mock('@/lib/ai', () => ({
+	generateTextWithAI: vi.fn(),
+	generateWithFallback: vi.fn(),
+	streamTextWithAI: vi.fn(),
 }));
 
 describe('AI Configuration', () => {
@@ -62,6 +72,8 @@ describe('AI Configuration', () => {
 
 		it('should return healthy when API is working', async () => {
 			process.env.GEMINI_API_KEY = 'test-api-key';
+			vi.mocked(aiProvider.generateTextWithAI).mockResolvedValueOnce('Test response');
+
 			const result = await checkAIProviderHealth();
 			expect(result.status).toBe('healthy');
 			expect(result.latency).toBeDefined();
@@ -70,16 +82,7 @@ describe('AI Configuration', () => {
 
 		it('should return unhealthy when API fails', async () => {
 			process.env.GEMINI_API_KEY = 'test-api-key';
-
-			// Mock a failing API call
-			const { GoogleGenerativeAI } = await import('@google/generative-ai');
-			const mockClient = {
-				getGenerativeModel: vi.fn().mockImplementation(() => ({
-					generateContent: vi.fn().mockRejectedValue(new Error('API Error')),
-				})),
-			};
-			// @ts-expect-error - Mocking a class for testing purposes
-			GoogleGenerativeAI.mockImplementation(() => mockClient);
+			vi.mocked(aiProvider.generateTextWithAI).mockRejectedValueOnce(new Error('API Error'));
 
 			const result = await checkAIProviderHealth();
 			expect(result.status).toBe('unhealthy');

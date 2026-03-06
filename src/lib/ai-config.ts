@@ -73,7 +73,7 @@ export async function checkAIProviderHealth(): Promise<{
 	if (!process.env.GEMINI_API_KEY) {
 		return {
 			status: 'unhealthy',
-			error: 'GEMINI_API_KEY not configured',
+			error: 'AI client not configured',
 		};
 	}
 
