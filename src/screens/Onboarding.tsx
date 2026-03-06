@@ -200,6 +200,7 @@ export default function OnboardingScreen({ user }: OnboardingScreenProps) {
 									height={256}
 									className="relative z-10 w-full h-full object-contain drop-shadow-2xl"
 									priority={currentStep === 0}
+									unoptimized
 								/>
 							</m.div>
 
