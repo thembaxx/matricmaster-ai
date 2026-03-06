@@ -13,6 +13,7 @@ export const users = pgTable(
 		role: text('role').notNull().default('user'), // 'admin', 'moderator', 'user'
 		isBlocked: boolean('is_blocked').notNull().default(false),
 		twoFactorEnabled: boolean('twoFactorEnabled').notNull().default(false),
+		hasCompletedOnboarding: boolean('has_completed_onboarding').notNull().default(false),
 		deletedAt: timestamp('deleted_at'),
 		createdAt: timestamp('createdAt').notNull().defaultNow(),
 		updatedAt: timestamp('updatedAt').notNull().defaultNow(),

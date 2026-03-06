@@ -115,9 +115,7 @@ export default function Channels() {
 			<header className="px-6 pt-12 pb-6 shrink-0 bg-background">
 				<div className="flex items-center justify-between">
 					<div>
-						<h1 className="text-4xl font-black tracking-tight text-foreground">
-							Channels
-						</h1>
+						<h1 className="text-4xl font-black tracking-tight text-foreground">Channels</h1>
 						<div className="flex items-center gap-2">
 							<p className="text-label-secondary font-black text-[11px] uppercase tracking-wider">
 								South Africa • Grade 12
@@ -182,9 +180,7 @@ export default function Channels() {
 									<div className="text-warning-foreground text-3xl font-black italic">Σ</div>
 								</div>
 								<div className="flex-1">
-									<h4 className="text-lg font-black text-foreground">
-										Mathematics P1
-									</h4>
+									<h4 className="text-lg font-black text-foreground">Mathematics P1</h4>
 									<p className="text-xs text-label-secondary font-black uppercase tracking-wider leading-tight">
 										Functions & Graphs • 65% Complete
 									</p>
@@ -202,7 +198,9 @@ export default function Channels() {
 
 					{/* STEM Skills */}
 					<section className="space-y-4">
-						<h3 className="text-xl font-black text-foreground uppercase tracking-tight">STEM Skills</h3>
+						<h3 className="text-xl font-black text-foreground uppercase tracking-tight">
+							STEM Skills
+						</h3>
 						<div className="space-y-3">
 							{channels.map((item) => (
 								<button
@@ -225,7 +223,9 @@ export default function Channels() {
 											{item.icon}
 										</div>
 										<div className="text-left">
-											<h4 className="font-black text-foreground uppercase tracking-tight">{item.title}</h4>
+											<h4 className="font-black text-foreground uppercase tracking-tight">
+												{item.title}
+											</h4>
 											<div className="flex items-center gap-2">
 												<div className="flex items-center gap-1 text-[10px] font-black text-label-tertiary uppercase tracking-widest">
 													<Users className="w-3 h-3" />
@@ -259,7 +259,9 @@ export default function Channels() {
 					{/* Language Arts */}
 					<section className="space-y-4">
 						<div className="flex items-center justify-between px-1">
-							<h3 className="text-xl font-black text-foreground uppercase tracking-tight">Language Arts</h3>
+							<h3 className="text-xl font-black text-foreground uppercase tracking-tight">
+								Language Arts
+							</h3>
 							<button
 								type="button"
 								className="text-[11px] font-black text-primary uppercase tracking-[0.2em] hover:underline ios-active-scale"
@@ -296,7 +298,9 @@ export default function Channels() {
 											{item.title}
 										</h4>
 										<div className="mt-3 inline-block px-3 py-1 bg-secondary rounded-lg">
-											<span className="text-[10px] font-black text-label-tertiary uppercase tracking-widest">{item.students}</span>
+											<span className="text-[10px] font-black text-label-tertiary uppercase tracking-widest">
+												{item.students}
+											</span>
 										</div>
 									</div>
 								</div>
@@ -306,14 +310,18 @@ export default function Channels() {
 
 					{/* Commerce */}
 					<section className="space-y-4">
-						<h3 className="text-xl font-black text-foreground uppercase tracking-tight">Commerce</h3>
+						<h3 className="text-xl font-black text-foreground uppercase tracking-tight">
+							Commerce
+						</h3>
 						<div className="bg-card p-4 rounded-3xl flex items-center justify-between shadow-sm border border-border hover:shadow-md transition-all cursor-pointer group ios-active-scale">
 							<div className="flex items-center gap-4">
 								<div className="w-12 h-12 rounded-2xl flex items-center justify-center bg-accounting/10">
 									<BarChart3 className="w-6 h-6 text-accounting" />
 								</div>
 								<div className="text-left">
-									<h4 className="font-black text-foreground uppercase tracking-tight">Accounting</h4>
+									<h4 className="font-black text-foreground uppercase tracking-tight">
+										Accounting
+									</h4>
 									<div className="flex items-center gap-1 text-[10px] font-black text-label-tertiary uppercase tracking-widest">
 										<Users className="w-3 h-3" />
 										8.2k
