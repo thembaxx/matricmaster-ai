@@ -2,9 +2,10 @@
 
 import { m } from 'framer-motion';
 import { ChevronRight, Medal } from 'lucide-react';
-import { memo, useEffect, useState } from 'react';
+import { memo, useCallback, useEffect, useState } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { useSession } from '@/lib/auth-client';
 import { getLeaderboard, getUserRank } from '@/lib/db/leaderboard-actions';
@@ -23,51 +24,57 @@ export const LeaderboardPreview = memo(function LeaderboardPreview() {
 	const [entries, setEntries] = useState<LeaderboardEntry[]>([]);
 	const [userRank, setUserRank] = useState<number | null>(null);
 	const [isLoading, setIsLoading] = useState(true);
+	const [error, setError] = useState<string | null>(null);
 
-	useEffect(() => {
-		async function fetchLeaderboard() {
-			if (!session?.user?.id) return;
-
-			try {
-				const [leaderboardData, rankData] = await Promise.all([
-					getLeaderboard('weekly', 10),
-					getUserRank('weekly'),
-				]);
-
-				const topEntries: LeaderboardEntry[] = leaderboardData.slice(0, 3).map((entry) => ({
-					userId: entry.userId,
-					rank: entry.rank,
-					name: entry.userName,
-					image: entry.userImage || undefined,
-					totalPoints: entry.totalPoints,
-					isCurrentUser: entry.userId === session.user.id,
-				}));
-
-				if (rankData && rankData.rank > 3) {
-					const userEntry = leaderboardData.find((e) => e.userId === session.user.id);
-					if (userEntry) {
-						topEntries.push({
-							userId: userEntry.userId,
-							rank: rankData.rank,
-							name: 'You',
-							image: userEntry.userImage || undefined,
-							totalPoints: userEntry.totalPoints,
-							isCurrentUser: true,
-						});
-					}
-				}
-
-				setEntries(topEntries);
-				setUserRank(rankData?.rank || null);
-			} catch (error) {
-				console.error('[LeaderboardPreview] Error fetching:', error);
-			} finally {
-				setIsLoading(false);
-			}
+	const fetchLeaderboard = useCallback(async () => {
+		if (!session?.user?.id) {
+			setIsLoading(false);
+			return;
 		}
 
-		fetchLeaderboard();
+		try {
+			setError(null);
+			const [leaderboardData, rankData] = await Promise.all([
+				getLeaderboard('weekly', 10),
+				getUserRank('weekly'),
+			]);
+
+			const topEntries: LeaderboardEntry[] = leaderboardData.slice(0, 3).map((entry) => ({
+				userId: entry.userId,
+				rank: entry.rank,
+				name: entry.userName,
+				image: entry.userImage || undefined,
+				totalPoints: entry.totalPoints,
+				isCurrentUser: entry.userId === session.user.id,
+			}));
+
+			if (rankData && rankData.rank > 3) {
+				const userEntry = leaderboardData.find((e) => e.userId === session.user.id);
+				if (userEntry) {
+					topEntries.push({
+						userId: userEntry.userId,
+						rank: rankData.rank,
+						name: 'You',
+						image: userEntry.userImage || undefined,
+						totalPoints: userEntry.totalPoints,
+						isCurrentUser: true,
+					});
+				}
+			}
+
+			setEntries(topEntries);
+			setUserRank(rankData?.rank || null);
+		} catch (err) {
+			console.error('[LeaderboardPreview] Error fetching:', err);
+			setError('Unable to load leaderboard');
+		} finally {
+			setIsLoading(false);
+		}
 	}, [session?.user?.id]);
+
+	useEffect(() => {
+		fetchLeaderboard();
+	}, [fetchLeaderboard]);
 
 	if (isLoading) {
 		return (
@@ -84,6 +91,25 @@ export const LeaderboardPreview = memo(function LeaderboardPreview() {
 							</div>
 						</div>
 					))}
+				</div>
+			</Card>
+		);
+	}
+
+	if (error) {
+		return (
+			<Card className="p-6 premium-glass border-none rounded-[2.5rem] h-full">
+				<div className="flex items-center justify-between mb-4">
+					<div className="flex items-center gap-2">
+						<Medal className="w-5 h-5 text-brand-amber" />
+						<h3 className="text-lg font-black text-foreground tracking-tight">Leaderboard</h3>
+					</div>
+				</div>
+				<div className="flex flex-col items-center justify-center py-8 text-center">
+					<p className="text-sm text-destructive mb-3">{error}</p>
+					<Button variant="outline" size="sm" onClick={fetchLeaderboard}>
+						Try Again
+					</Button>
 				</div>
 			</Card>
 		);

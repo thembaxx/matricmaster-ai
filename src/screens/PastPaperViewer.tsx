@@ -305,7 +305,7 @@ export default function PastPaperViewer({
 				{/* Progress Bar */}
 				{totalQuestions > 0 && (
 					<div className="space-y-2">
-						<div className="flex items-center justify-between text-xs text-zinc-500">
+						<div className="flex items-center justify-between text-xs text-muted-foreground">
 							<span>
 								Question {currentQuestionIndex + 1} of {totalQuestions}
 							</span>
@@ -332,8 +332,8 @@ export default function PastPaperViewer({
 				>
 					{/* Instructions */}
 					{extractedPaper?.instructions && (
-						<Card className="p-6 mb-6 bg-zinc-50 dark:bg-zinc-800/50 rounded-[2rem]">
-							<h3 className="font-bold text-zinc-900 dark:text-white mb-3 text-sm">
+						<Card className="p-6 mb-6 bg-card dark:bg-card/80 rounded-[2rem]">
+							<h3 className="font-bold text-foreground mb-3 text-sm">
 								INSTRUCTIONS AND INFORMATION
 							</h3>
 							<p className="text-xs text-muted-foreground whitespace-pre-wrap">
@@ -345,7 +345,7 @@ export default function PastPaperViewer({
 					{/* Question Navigation - Jump to Question */}
 					{totalQuestions > 0 && (
 						<div className="mb-6">
-							<h3 className="font-black text-[10px] text-zinc-400 uppercase tracking-widest mb-3 px-1">
+							<h3 className="font-black text-[10px] text-muted-foreground uppercase tracking-widest mb-3 px-1">
 								Jump to Question
 							</h3>
 							<div className="flex flex-wrap gap-2">
@@ -478,7 +478,7 @@ export default function PastPaperViewer({
 
 			{/* Pagination Footer */}
 			{extractedPaper && totalQuestions > 0 && (
-				<footer className="absolute bottom-0 left-0 right-0 bg-white/90 dark:bg-zinc-900/90 backdrop-blur-xl border-t border-border px-6 py-4 pb-8 z-30">
+				<footer className="absolute bottom-0 left-0 right-0 ios-glass border-t border-border px-6 py-4 pb-8 z-30">
 					<div className="max-w-2xl mx-auto flex items-center justify-between gap-4">
 						<Button
 							variant="outline"
@@ -506,7 +506,7 @@ export default function PastPaperViewer({
 									return (
 										<>
 											{showEllipsis && (
-												<span key={`ellipsis-${i}`} className="text-zinc-400">
+												<span key={`ellipsis-${i}`} className="text-muted-foreground">
 													...
 												</span>
 											)}
@@ -543,7 +543,7 @@ export default function PastPaperViewer({
 
 			{/* Bottom Toolbar (for tabs) */}
 			<div className="px-6 relative rounded-2xl absolute bottom-0 mb-32 left-0 right-0">
-				<nav className="rounded-2xl bg-white/90 dark:bg-zinc-900/90 backdrop-blur-xl border-t border-border px-4 py-4">
+				<nav className="rounded-2xl ios-glass border-t border-border px-4 py-4">
 					<div className="flex justify-around items-center">
 						{[
 							{ id: 'questions', label: 'Questions' },
@@ -556,7 +556,7 @@ export default function PastPaperViewer({
 								key={item.id}
 								onClick={() => setActiveTab(item.id)}
 								className={`flex flex-col items-center gap-1 transition-all duration-300 ${
-									activeTab === item.id ? 'text-brand-blue scale-110' : 'text-zinc-400'
+									activeTab === item.id ? 'text-brand-blue scale-110' : 'text-muted-foreground'
 								}`}
 							>
 								<span

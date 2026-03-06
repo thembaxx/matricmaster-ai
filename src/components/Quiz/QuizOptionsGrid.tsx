@@ -2,6 +2,7 @@
 
 import { AnimatePresence, m } from 'framer-motion';
 import { Sparkles } from 'lucide-react';
+import { memo } from 'react';
 import { STAGGER_CONTAINER, STAGGER_ITEM } from '@/lib/animation-presets';
 
 type QuizOption = {
@@ -19,7 +20,7 @@ type QuizOptionsGridProps = {
 	variant?: 'grid' | 'list';
 };
 
-export function QuizOptionsGrid({
+export const QuizOptionsGrid = memo(function QuizOptionsGrid({
 	options,
 	selectedOption,
 	isChecked,
@@ -124,4 +125,4 @@ export function QuizOptionsGrid({
 			})}
 		</m.div>
 	);
-}
+});

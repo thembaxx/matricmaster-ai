@@ -1,7 +1,15 @@
 'use client';
 
 import { AnimatePresence, m } from 'framer-motion';
-import { Atom, ChevronLeft, ChevronRight, Rocket, Sparkles, Trophy } from 'lucide-react';
+import {
+	Calculator,
+	ChevronLeft,
+	ChevronRight,
+	Rocket,
+	Sparkles,
+	Target,
+	Trophy,
+} from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useCallback, useState } from 'react';
@@ -23,6 +31,10 @@ interface OnboardingStep {
 	image: string;
 	color: string;
 	icon: React.ElementType;
+	cta?: {
+		label: string;
+		action: () => void;
+	};
 }
 
 const STEPS: OnboardingStep[] = [
@@ -30,7 +42,7 @@ const STEPS: OnboardingStep[] = [
 		id: 0,
 		title: 'Welcome to MatricMaster AI',
 		description:
-			'Master your Grade 12 exams with AI-powered personalized learning and past papers.',
+			'Master your Grade 12 exams with AI-powered personalized learning, past papers, and interactive quizzes.',
 		image:
 			'https://cdn3d.iconscout.com/3d/premium/thumb/student-studying-on-laptop-3d-icon-download-in-png-blend-fbx-gltf-file-formats--young-man-elearning-online-education-pack-icons-4809249.png',
 		color: 'from-blue-500 to-indigo-600',
@@ -38,18 +50,33 @@ const STEPS: OnboardingStep[] = [
 	},
 	{
 		id: 1,
-		title: 'Science & Mathematics',
+		title: 'Choose Your Focus',
 		description:
-			'Dive deep into Physics and Math with interactive questions and instant AI explanations.',
+			'Select the subjects you want to master. You can always change these later in settings.',
 		image:
-			'https://cdn3d.iconscout.com/3d/premium/thumb/mathematics-3d-icon-download-in-png-blend-fbx-gltf-file-formats--math-formula-education-school-tools-pack-icons-5353110.png',
-		color: 'from-purple-500 to-pink-600',
-		icon: Atom,
+			'https://cdn3d.iconscout.com/3d/premium/thumb/target-3d-icon-download-in-png-blend-fbx-gltf-file-formats--aim-goal-success-pack-business-icons-5648218.png',
+		color: 'from-green-500 to-emerald-600',
+		icon: Target,
+		cta: {
+			label: 'Choose Subjects',
+			action: () => {},
+		},
 	},
 	{
 		id: 2,
-		title: 'Gamified Excellence',
-		description: 'Earn achievements, maintain streaks, and climb the leaderboard as you study.',
+		title: 'Start Your First Quiz',
+		description:
+			'Practice with past exam questions. Get instant feedback and AI explanations for any question.',
+		image:
+			'https://cdn3d.iconscout.com/3d/premium/thumb/mathematics-3d-icon-download-in-png-blend-fbx-gltf-file-formats--math-formula-education-school-tools-pack-icons-5353110.png',
+		color: 'from-purple-500 to-pink-600',
+		icon: Calculator,
+	},
+	{
+		id: 3,
+		title: 'Track Your Progress',
+		description:
+			'Earn XP, unlock achievements, and climb the leaderboard as you build consistent study habits.',
 		image:
 			'https://cdn3d.iconscout.com/3d/premium/thumb/trophy-3d-icon-download-in-png-blend-fbx-gltf-file-formats--award-win-victory-success-celebration-pack-business-icons-6060416.png',
 		color: 'from-amber-400 to-orange-500',

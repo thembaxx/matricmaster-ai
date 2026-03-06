@@ -1,5 +1,6 @@
 'use client';
 
+import { memo, type ReactNode } from 'react';
 import { Card } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
@@ -24,7 +25,7 @@ type QuizQuestionCardProps = {
 	onSelect: (id: string) => void;
 };
 
-export function QuizQuestionCard({
+export const QuizQuestionCard = memo(function QuizQuestionCard({
 	options,
 	selectedAnswer,
 	correctAnswer,
@@ -77,14 +78,14 @@ export function QuizQuestionCard({
 			</RadioGroup>
 		</Card>
 	);
-}
+});
 
 type QuestionMetaProps = {
-	icon: React.ReactNode;
+	icon: ReactNode;
 	label: string;
 };
 
-export function QuestionMeta({ icon, label }: QuestionMetaProps) {
+export const QuestionMeta = memo(function QuestionMeta({ icon, label }: QuestionMetaProps) {
 	return (
 		<div className="flex items-center gap-3">
 			{icon}
@@ -93,4 +94,4 @@ export function QuestionMeta({ icon, label }: QuestionMetaProps) {
 			</h3>
 		</div>
 	);
-}
+});

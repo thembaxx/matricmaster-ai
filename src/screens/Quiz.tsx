@@ -215,7 +215,7 @@ function FunctionGraph() {
 					cx="75"
 					cy="40"
 					r="5"
-					fill="#10b981"
+					fill="var(--color-success)"
 					animate={{ scale: [1, 1.2, 1] }}
 					transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
 				/>
