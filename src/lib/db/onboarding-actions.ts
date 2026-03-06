@@ -1,9 +1,9 @@
 'use server';
 
 import { eq } from 'drizzle-orm';
+import { ensureAuthenticated } from './actions';
 import { users } from './better-auth-schema';
 import { dbManager } from './index';
-import { ensureAuthenticated } from './actions';
 
 export async function completeOnboardingAction() {
 	try {
@@ -14,7 +14,7 @@ export async function completeOnboardingAction() {
 			.update(users)
 			.set({
 				hasCompletedOnboarding: true,
-				updatedAt: new Date()
+				updatedAt: new Date(),
 			})
 			.where(eq(users.id, user.id));
 
@@ -23,7 +23,7 @@ export async function completeOnboardingAction() {
 		console.error('Error completing onboarding:', error);
 		return {
 			success: false,
-			error: error instanceof Error ? error.message : 'Failed to complete onboarding'
+			error: error instanceof Error ? error.message : 'Failed to complete onboarding',
 		};
 	}
 }

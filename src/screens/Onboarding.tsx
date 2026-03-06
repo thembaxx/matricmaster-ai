@@ -1,18 +1,20 @@
 'use client';
 
-import { AnimatePresence, m, useMotionValue, useTransform } from 'framer-motion';
+import { AnimatePresence, m } from 'framer-motion';
 import { Atom, ChevronLeft, ChevronRight, Rocket, Sparkles, Trophy } from 'lucide-react';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useCallback, useState } from 'react';
+import { toast } from 'sonner';
 import { SmoothWords } from '@/components/Transition/SmoothText';
 import { BackgroundMesh } from '@/components/ui/background-mesh';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
-import { STAGGER_CONTAINER, STAGGER_ITEM } from '@/lib/animation-presets';
-import { cn } from '@/lib/utils';
+import { STAGGER_CONTAINER } from '@/lib/animation-presets';
+import type { SessionUser } from '@/lib/auth';
 import { completeOnboardingAction } from '@/lib/db/onboarding-actions';
-import { toast } from 'sonner';
+import { cn } from '@/lib/utils';
 
 interface OnboardingStep {
 	id: number;
@@ -27,16 +29,20 @@ const STEPS: OnboardingStep[] = [
 	{
 		id: 0,
 		title: 'Welcome to MatricMaster AI',
-		description: 'Master your Grade 12 exams with AI-powered personalized learning and past papers.',
-		image: 'https://cdn3d.iconscout.com/3d/premium/thumb/student-studying-on-laptop-3d-icon-download-in-png-blend-fbx-gltf-file-formats--young-man-elearning-online-education-pack-icons-4809249.png',
+		description:
+			'Master your Grade 12 exams with AI-powered personalized learning and past papers.',
+		image:
+			'https://cdn3d.iconscout.com/3d/premium/thumb/student-studying-on-laptop-3d-icon-download-in-png-blend-fbx-gltf-file-formats--young-man-elearning-online-education-pack-icons-4809249.png',
 		color: 'from-blue-500 to-indigo-600',
 		icon: Rocket,
 	},
 	{
 		id: 1,
 		title: 'Science & Mathematics',
-		description: 'Dive deep into Physics and Math with interactive questions and instant AI explanations.',
-		image: 'https://cdn3d.iconscout.com/3d/premium/thumb/mathematics-3d-icon-download-in-png-blend-fbx-gltf-file-formats--math-formula-education-school-tools-pack-icons-5353110.png',
+		description:
+			'Dive deep into Physics and Math with interactive questions and instant AI explanations.',
+		image:
+			'https://cdn3d.iconscout.com/3d/premium/thumb/mathematics-3d-icon-download-in-png-blend-fbx-gltf-file-formats--math-formula-education-school-tools-pack-icons-5353110.png',
 		color: 'from-purple-500 to-pink-600',
 		icon: Atom,
 	},
@@ -44,14 +50,15 @@ const STEPS: OnboardingStep[] = [
 		id: 2,
 		title: 'Gamified Excellence',
 		description: 'Earn achievements, maintain streaks, and climb the leaderboard as you study.',
-		image: 'https://cdn3d.iconscout.com/3d/premium/thumb/trophy-3d-icon-download-in-png-blend-fbx-gltf-file-formats--award-win-victory-success-celebration-pack-business-icons-6060416.png',
+		image:
+			'https://cdn3d.iconscout.com/3d/premium/thumb/trophy-3d-icon-download-in-png-blend-fbx-gltf-file-formats--award-win-victory-success-celebration-pack-business-icons-6060416.png',
 		color: 'from-amber-400 to-orange-500',
 		icon: Trophy,
 	},
 ];
 
 interface OnboardingScreenProps {
-	user?: any;
+	user?: SessionUser | null;
 }
 
 export default function OnboardingScreen({ user }: OnboardingScreenProps) {
@@ -60,16 +67,15 @@ export default function OnboardingScreen({ user }: OnboardingScreenProps) {
 	const [direction, setDirection] = useState(0);
 	const [isLoading, setIsLoading] = useState(false);
 
-	const x = useMotionValue(0);
-	const rotate = useTransform(x, [-200, 200], [-25, 25]);
-	const opacity = useTransform(x, [-200, -150, 0, 150, 200], [0, 1, 1, 1, 0]);
-
-	const paginate = useCallback((newDirection: number) => {
-		if (currentStep + newDirection >= 0 && currentStep + newDirection < STEPS.length) {
-			setDirection(newDirection);
-			setCurrentStep((prev) => prev + newDirection);
-		}
-	}, [currentStep]);
+	const paginate = useCallback(
+		(newDirection: number) => {
+			if (currentStep + newDirection >= 0 && currentStep + newDirection < STEPS.length) {
+				setDirection(newDirection);
+				setCurrentStep((prev) => prev + newDirection);
+			}
+		},
+		[currentStep]
+	);
 
 	const handleComplete = async () => {
 		setIsLoading(true);
@@ -157,7 +163,7 @@ export default function OnboardingScreen({ user }: OnboardingScreenProps) {
 							x: { type: 'spring', stiffness: 300, damping: 30 },
 							opacity: { duration: 0.2 },
 							scale: { duration: 0.4 },
-							filter: { duration: 0.4 }
+							filter: { duration: 0.4 },
 						}}
 						drag="x"
 						dragConstraints={{ left: 0, right: 0 }}
@@ -178,26 +184,33 @@ export default function OnboardingScreen({ user }: OnboardingScreenProps) {
 								<m.div
 									animate={{
 										scale: [1, 1.1, 1],
-										rotate: [0, 10, 0]
+										rotate: [0, 10, 0],
 									}}
-									transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+									transition={{ duration: 5, repeat: Number.POSITIVE_INFINITY, ease: 'easeInOut' }}
 									className={cn(
-										"absolute inset-0 bg-gradient-to-br opacity-20 blur-3xl rounded-full",
+										'absolute inset-0 bg-gradient-to-br opacity-20 blur-3xl rounded-full',
 										step.color
 									)}
 								/>
 
-								<img
+								<Image
 									src={step.image}
 									alt={step.title}
+									width={256}
+									height={256}
 									className="relative z-10 w-full h-full object-contain drop-shadow-2xl"
+									priority={currentStep === 0}
 								/>
 							</m.div>
 
 							<div className="space-y-4">
 								<SmoothWords
 									as="h1"
-									text={step.title}
+									text={
+										currentStep === 0 && user?.name
+											? `Welcome, ${user.name.split(' ')[0]}!`
+											: step.title
+									}
 									className="text-3xl font-black tracking-tight text-foreground"
 								/>
 								<m.p
@@ -236,7 +249,7 @@ export default function OnboardingScreen({ user }: OnboardingScreenProps) {
 							{isLoading ? (
 								<m.div
 									animate={{ rotate: 360 }}
-									transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+									transition={{ duration: 1, repeat: Number.POSITIVE_INFINITY, ease: 'linear' }}
 								>
 									<Sparkles className="w-6 h-6" />
 								</m.div>
