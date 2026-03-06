@@ -1,7 +1,15 @@
 'use client';
 
 import { m } from 'framer-motion';
-import { Atom, Calculator, ChevronRight, FlaskConical, Microscope, Sparkles } from 'lucide-react';
+import {
+	Atom,
+	Calculator,
+	ChevronRight,
+	FileText,
+	FlaskConical,
+	Microscope,
+	Sparkles,
+} from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useId } from 'react';
@@ -139,44 +147,51 @@ export default function Landing() {
 									animate={{ opacity: 1, scale: 1 }}
 									transition={{ type: 'spring', stiffness: 300, damping: 20 }}
 								>
-									<Badge className="bg-success/20 text-success border-none rounded-full px-4 sm:px-6 py-2 font-black text-[10px] tracking-widest uppercase mb-4 shadow-sm">
+									<Badge className="bg-brand-amber/20 text-brand-amber border-none rounded-full px-4 sm:px-6 py-2 font-black text-[10px] tracking-widest uppercase mb-4 shadow-sm animate-pulse-slow">
+										<Sparkles className="w-3 h-3 mr-1.5" />
 										Trusted by 50,000+ Students
 									</Badge>
 								</m.div>
 								<SmoothWords
 									as="h1"
 									text="Master your Matrics through practice."
-									className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black text-foreground drop-shadow-sm leading-[1.05] tracking-tighter uppercase"
-									stagger={0.08}
+									className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-black text-foreground drop-shadow-sm leading-[0.95] tracking-tighter uppercase"
+									stagger={0.06}
 								/>
 								<SmoothText
 									text="Interactive past papers and step-by-step guides for South African Grade 12 students."
-									className="text-base md:text-lg lg:text-xl font-black text-label-secondary max-w-lg mx-auto lg:mx-0 leading-relaxed pt-2 sm:pt-4 uppercase tracking-tight"
-									delay={0.5}
+									className="text-base md:text-lg lg:text-xl font-bold text-label-secondary max-w-xl mx-auto lg:mx-0 leading-relaxed pt-4 sm:pt-6 tracking-tight"
+									delay={0.4}
 								/>
 							</div>
 
 							<m.div
 								initial={{ opacity: 0, y: 20 }}
 								animate={{ opacity: 1, y: 0 }}
-								transition={{ delay: 0.8 }}
+								transition={{ delay: 0.6 }}
 								className="w-full max-w-sm flex flex-col sm:flex-row gap-3 sm:gap-4 lg:max-w-none"
 							>
 								<Button
 									size="lg"
-									className="w-full sm:w-auto lg:flex-none lg:w-72 rounded-2xl shrink-0 h-12 lg:h-14 xl:h-16 text-base lg:text-lg xl:text-xl font-black uppercase tracking-widest shadow-xl ios-active-scale transition-all shadow-primary/20 bg-primary"
+									className="group relative w-full sm:w-auto lg:flex-none lg:w-72 rounded-2xl shrink-0 h-14 lg:h-16 xl:h-18 text-base lg:text-lg xl:text-xl font-black uppercase tracking-widest shadow-2xl ios-active-scale transition-all shadow-primary/30 bg-primary hover:bg-primary/90"
 									onClick={() => handleAuthRoute('/dashboard')}
 								>
-									Start Learning
-									<ChevronRight className="w-5 h-5 ml-2" />
+									<span className="relative z-10 flex items-center justify-center">
+										Start Learning
+										<ChevronRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+									</span>
+									<div className="absolute inset-0 bg-gradient-to-r from-primary to-brand-blue opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl" />
 								</Button>
 								<Button
 									variant="outline"
 									size="lg"
-									className="w-full sm:w-auto lg:flex-none lg:w-64 rounded-2xl h-12 lg:h-14 xl:h-16 text-base lg:text-lg font-black uppercase tracking-widest border-2 hover:bg-muted ios-active-scale transition-all"
+									className="group w-full sm:w-auto lg:flex-none lg:w-64 rounded-2xl h-14 lg:h-16 xl:h-18 text-base lg:text-lg font-black uppercase tracking-widest border-3 border-border hover:border-primary/50 hover:bg-primary/5 ios-active-scale transition-all"
 									onClick={() => handleAuthRoute('/past-papers')}
 								>
-									Past Papers
+									<span className="flex items-center gap-2">
+										<FileText className="w-5 h-5" />
+										Past Papers
+									</span>
 								</Button>
 							</m.div>
 
@@ -353,31 +368,39 @@ export default function Landing() {
 
 					{/* Final CTA Section */}
 					<section className="mt-24 sm:mt-32 lg:mt-48 pb-12 sm:pb-16">
-						<Card className="bg-primary p-8 sm:p-12 lg:p-16 xl:p-24 rounded-3xl lg:rounded-[4rem] text-center space-y-8 sm:space-y-12 relative overflow-hidden group border-none">
-							<div className="absolute inset-0 bg-linear-to-br from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-							<div className="absolute -top-24 -left-24 w-96 h-96 bg-white/5 rounded-full blur-[100px] pointer-events-none" />
-							<div className="absolute -bottom-24 -right-24 w-96 h-96 bg-black/10 rounded-full blur-[100px] pointer-events-none" />
+						<Card className="relative p-1 rounded-3xl lg:rounded-[4rem] overflow-hidden group border-none">
+							<div className="absolute inset-0 bg-gradient-to-br from-primary via-brand-blue to-brand-purple-light opacity-100" />
+							<div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0zNiAxOGMtOS45NDEgMC0xOCA4LjA1OS0xOCAxOHM4LjA1OSAxOCAxOCAxOCAxOC04LjA1OSAxOC0xOC04LjA1OS0xOC0xOC0xOHptMCAzMmMtNy43MzIgMC0xNC02LjI2OC0xNC0xNHM2LjI2OC0xNCAxNC0xNCAxNCA2LjI2OCAxNCAxNC02LjI2OCAxNC0xNCAxNHoiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4wNSkiLz48L2c+PC9zdmc+')] opacity-30 mix-blend-overlay" />
 
-							<div className="space-y-4 sm:space-y-6 relative z-10">
-								<h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black text-primary-foreground tracking-tighter leading-none uppercase">
-									Ready to ace your exams?
-								</h2>
-								<p className="text-base sm:text-lg md:text-xl lg:text-2xl font-black text-primary-foreground/80 max-w-xl sm:max-w-2xl mx-auto uppercase tracking-tight">
-									Join thousands of students and start your journey to success today.
-								</p>
-							</div>
+							<div className="relative p-8 sm:p-12 lg:p-16 xl:p-24 rounded-3xl lg:rounded-[4rem] bg-primary/90 backdrop-blur-sm">
+								<div className="absolute top-0 right-0 w-64 h-64 bg-brand-amber/30 rounded-full blur-[100px] -mr-32 -mt-32 pointer-events-none" />
+								<div className="absolute bottom-0 left-0 w-64 h-64 bg-brand-blue/30 rounded-full blur-[100px] -ml-32 -mb-32 pointer-events-none" />
 
-							<div className="relative z-10">
-								<Button
-									size="lg"
-									className="w-full sm:w-auto bg-foreground text-background hover:bg-foreground/90 rounded-full h-12 sm:h-14 lg:h-16 px-8 lg:px-12 text-lg lg:text-xl xl:text-2xl font-black uppercase tracking-widest shadow-2xl transition-all hover:scale-105 active:scale-95 ios-active-scale"
-									onClick={() => router.push('/dashboard')}
-								>
-									Get Started for Free
-								</Button>
-								<p className="mt-6 sm:mt-8 text-[10px] font-black uppercase tracking-[0.3em] text-primary-foreground/60">
-									No credit card required • Instant access
-								</p>
+								<div className="space-y-6 sm:space-y-8 relative z-10">
+									<h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black text-white tracking-tighter leading-[0.95] uppercase">
+										Ready to ace
+										<br className="hidden sm:block" /> your exams?
+									</h2>
+									<p className="text-base sm:text-lg md:text-xl lg:text-2xl font-bold text-white/90 max-w-xl sm:max-w-2xl mx-auto tracking-tight">
+										Join thousands of students and start your journey to success today.
+									</p>
+								</div>
+
+								<div className="relative z-10 mt-10 sm:mt-12">
+									<Button
+										size="lg"
+										className="group/cta w-full sm:w-auto bg-brand-amber hover:bg-brand-amber/90 text-zinc-900 rounded-full h-14 sm:h-16 lg:h-20 px-10 lg:px-16 text-lg lg:text-xl xl:text-2xl font-black uppercase tracking-widest shadow-2xl transition-all hover:scale-105 active:scale-95 ios-active-scale"
+										onClick={() => router.push('/dashboard')}
+									>
+										<span className="flex items-center gap-3">
+											Get Started Free
+											<Sparkles className="w-5 h-5 lg:w-6 lg:h-6 group-hover/cta:animate-bounce-subtle" />
+										</span>
+									</Button>
+									<p className="mt-6 sm:mt-8 text-[10px] font-bold uppercase tracking-[0.3em] text-white/60">
+										No credit card required • Instant access
+									</p>
+								</div>
 							</div>
 						</Card>
 					</section>
