@@ -2,7 +2,7 @@
 
 import { m } from 'framer-motion';
 import { ChevronRight, Medal } from 'lucide-react';
-import { memo, useEffect, useState } from 'react';
+import { memo, useCallback, useEffect, useState } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -26,7 +26,7 @@ export const LeaderboardPreview = memo(function LeaderboardPreview() {
 	const [isLoading, setIsLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
 
-	const fetchLeaderboard = async () => {
+	const fetchLeaderboard = useCallback(async () => {
 		if (!session?.user?.id) {
 			setIsLoading(false);
 			return;
@@ -70,11 +70,11 @@ export const LeaderboardPreview = memo(function LeaderboardPreview() {
 		} finally {
 			setIsLoading(false);
 		}
-	};
+	}, [session?.user?.id]);
 
 	useEffect(() => {
 		fetchLeaderboard();
-	}, [session?.user?.id]);
+	}, [fetchLeaderboard]);
 
 	if (isLoading) {
 		return (
