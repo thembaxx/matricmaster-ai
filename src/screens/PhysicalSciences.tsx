@@ -135,7 +135,7 @@ export default function PhysicalSciences() {
 										y="70"
 										width="40"
 										height="20"
-										fill="#fbbf24"
+										fill="var(--color-brand-amber)"
 										stroke="currentColor"
 										strokeWidth="2"
 									/>
@@ -154,7 +154,7 @@ export default function PhysicalSciences() {
 										y="140"
 										width="20"
 										height="40"
-										fill="#fbbf24"
+										fill="var(--color-brand-amber)"
 										stroke="currentColor"
 										strokeWidth="2"
 									/>
@@ -173,7 +173,7 @@ export default function PhysicalSciences() {
 										y="210"
 										width="40"
 										height="20"
-										fill="#fbbf24"
+										fill="var(--color-brand-amber)"
 										stroke="currentColor"
 										strokeWidth="2"
 									/>
@@ -194,7 +194,7 @@ export default function PhysicalSciences() {
 												cy="80"
 												r="15"
 												fill="none"
-												stroke="#ef4444"
+												stroke="var(--color-destructive)"
 												strokeWidth="2"
 											/>
 											<text x="160" y="45" textAnchor="middle" className="text-xs fill-red-500">
@@ -206,7 +206,7 @@ export default function PhysicalSciences() {
 												cy="150"
 												r="20"
 												fill="none"
-												stroke="#22c55e"
+												stroke="var(--color-success)"
 												strokeWidth="2"
 											/>
 											<text x="320" y="130" textAnchor="middle" className="text-xs fill-green-500">

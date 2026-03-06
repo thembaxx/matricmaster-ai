@@ -432,7 +432,7 @@ export default function CMS() {
 			case 'hard':
 				return 'bg-rose-100 text-rose-700 dark:bg-rose-900/20 dark:text-rose-400';
 			default:
-				return 'bg-gray-100 text-gray-700';
+				return 'bg-muted text-label-secondary';
 		}
 	};
 

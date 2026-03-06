@@ -1,6 +1,6 @@
 export default function AchievementsLoading() {
 	return (
-		<div className="min-h-screen flex flex-col bg-zinc-50 dark:bg-[#0a0f18]">
+		<div className="min-h-screen flex flex-col bg-background">
 			<div className="flex-1">
 				<main className="px-4 pb-32">
 					{/* Mastery Level Card Skeleton */}

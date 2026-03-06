@@ -125,7 +125,7 @@ export default function LessonComplete() {
 							initial={{ scale: 0.95, opacity: 0 }}
 							animate={{ scale: 1 }}
 							transition={{ type: 'spring', damping: 10, stiffness: 200 }}
-							className="absolute inset-0 bg-[#fde68a] dark:bg-yellow-900/20 rounded-3xl opacity-20"
+							className="absolute inset-0 bg-amber-200 dark:bg-amber-900/20 rounded-3xl opacity-20"
 						/>
 						<m.div
 							initial={{ scale: 0.95, opacity: 0, rotate: -180 }}

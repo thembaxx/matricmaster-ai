@@ -24,7 +24,7 @@ const defaultPathNodes: PathNode[] = [
 		id: 1,
 		title: 'Physics Circuits',
 		status: 'locked',
-		iconBg: '#f8e8f4',
+		iconBg: 'var(--color-brand-purple-light)',
 		position: { x: 15, y: 8 },
 	},
 	{

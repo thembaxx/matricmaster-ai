@@ -51,7 +51,7 @@ export default function GlobalError({ error, reset }: GlobalErrorProps) {
 								margin: '0 auto',
 							}}
 						>
-							<AlertTriangle size={32} style={{ color: '#dc2626' }} />
+							<AlertTriangle size={32} style={{ color: 'var(--color-destructive)' }} />
 						</div>
 
 						<div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>

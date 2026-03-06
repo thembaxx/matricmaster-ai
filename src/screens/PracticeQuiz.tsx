@@ -161,7 +161,7 @@ function QuestionBody() {
 				<div
 					className="absolute inset-0 opacity-[0.03] dark:opacity-[0.05]"
 					style={{
-						backgroundImage: 'radial-gradient(#000 1px, transparent 1px)',
+						backgroundImage: 'radial-gradient(var(--muted-foreground) 1px, transparent 1px)',
 						backgroundSize: '30px 30px',
 					}}
 				/>
@@ -195,8 +195,7 @@ function GraphSVG() {
 			/>
 			<path
 				d="M 40 140 Q 90 40 140 140"
-				fill="#fef3c7"
-				className="dark:fill-yellow-900/20"
+				className="fill-yellow-200 dark:fill-yellow-900/20"
 				stroke="none"
 			/>
 			<path

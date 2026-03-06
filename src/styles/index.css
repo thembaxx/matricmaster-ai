@@ -288,13 +288,16 @@
   }
   body {
     @apply bg-background text-foreground antialiased;
-    font-family: var(--font-geist-sans), var(--font-system);
+    font-family: var(--font-system);
     font-feature-settings:
       "rlig" 1,
       "calt" 1;
     font-size: 1rem; /* 16px base for better scaling */
     line-height: 1.5;
     letter-spacing: -0.011em;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-lexend), var(--font-system);
   }
   @media (min-width: 640px) {
     body {
