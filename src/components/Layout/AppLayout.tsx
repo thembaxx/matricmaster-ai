@@ -6,7 +6,7 @@ import { toast } from 'sonner';
 import { ClientOnly } from '@/components/ClientOnly';
 import { DailyLoginBonus } from '@/components/Gamification/DailyLoginBonus';
 import { MobileLayoutFixes } from '@/components/Layout/MobileLayoutFixes';
-import { MobileViewTest } from '@/components/Layout/MobileViewTest';
+// import { MobileViewTest } from '@/components/Layout/MobileViewTest';
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
 import { useTheme } from '@/hooks/use-theme';
 import { authClient } from '@/lib/auth-client';
@@ -26,8 +26,8 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 	const { unreadCount } = useNotificationStore();
 	const [sidebarOpen, setSidebarOpen] = useState(true);
 
-	const hideNavigation = ['/test'];
-	const hideBottomNavigation = ['/sign-in', '/sign-up', '/test', '/interactive-quiz'];
+	const hideNavigation = ['/test', '/onboarding'];
+	const hideBottomNavigation = ['/','/sign-in', '/sign-up', '/test', '/interactive-quiz', '/onboarding'];
 
 	const shouldHideNav = hideNavigation.some((path) => pathname.startsWith(path));
 	const shouldHideBottomNav = hideBottomNavigation.some((path) => pathname.startsWith(path));
@@ -81,7 +81,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 			<ClientOnly>
 				<DailyLoginBonus />
 				<MobileLayoutFixes />
-				<MobileViewTest />
+				{/* <MobileViewTest /> */}
 			</ClientOnly>
 			<AppSidebar
 				user={user}
