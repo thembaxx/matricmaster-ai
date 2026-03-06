@@ -72,12 +72,12 @@ export default function Landing() {
 								<SmoothWords
 									as="h1"
 									text="Master your Matrics through practice."
-									className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-black text-foreground drop-shadow-sm leading-[0.95] tracking-tighter uppercase"
+									className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-extrabold text-foreground drop-shadow-sm leading-[0.95] tracking-tighter uppercase"
 									stagger={0.06}
 								/>
 								<SmoothText
 									text="Interactive past papers and step-by-step guides for South African Grade 12 students."
-									className="text-base md:text-lg lg:text-xl font-bold text-label-secondary max-w-xl mx-auto lg:mx-0 leading-relaxed pt-4 sm:pt-6 tracking-tight"
+									className="text-base md:text-lg lg:text-xl font-medium text-label-secondary max-w-xl mx-auto lg:mx-0 leading-relaxed pt-4 sm:pt-6 tracking-tight"
 									delay={0.4}
 								/>
 							</div>

@@ -40,45 +40,41 @@ interface OnboardingStep {
 const STEPS: OnboardingStep[] = [
 	{
 		id: 0,
-		title: 'Welcome to MatricMaster AI',
+		title: 'Your AI Study Partner',
 		description:
-			'Master your Grade 12 exams with AI-powered personalized learning, past papers, and interactive quizzes.',
-		image:
-			'https://cdn3d.iconscout.com/3d/premium/thumb/student-studying-on-laptop-3d-icon-download-in-png-blend-fbx-gltf-file-formats--young-man-elearning-online-education-pack-icons-4809249.png',
+			'Experience the future of education. MatricMaster AI provides personalized guidance tailored to the South African Grade 12 curriculum.',
+		image: '/onboarding/welcome.png',
 		color: 'from-blue-500 to-indigo-600',
 		icon: Rocket,
 	},
 	{
 		id: 1,
-		title: 'Choose Your Focus',
+		title: 'Define Your Path',
 		description:
-			'Select the subjects you want to master. You can always change these later in settings.',
-		image:
-			'https://cdn3d.iconscout.com/3d/premium/thumb/target-3d-icon-download-in-png-blend-fbx-gltf-file-formats--aim-goal-success-pack-business-icons-5648218.png',
+			"Select the subjects you're tackling this year. We'll curate the most relevant past papers and study materials just for you.",
+		image: '/onboarding/focus.png',
 		color: 'from-green-500 to-emerald-600',
 		icon: Target,
 		cta: {
 			label: 'Choose Subjects',
-			action: () => {},
+			action: () => { },
 		},
 	},
 	{
 		id: 2,
-		title: 'Start Your First Quiz',
+		title: 'Master Every Topic',
 		description:
-			'Practice with past exam questions. Get instant feedback and AI explanations for any question.',
-		image:
-			'https://cdn3d.iconscout.com/3d/premium/thumb/mathematics-3d-icon-download-in-png-blend-fbx-gltf-file-formats--math-formula-education-school-tools-pack-icons-5353110.png',
+			'Dive into interactive quizzes with real exam questions. Get instant AI-powered explanations that turn mistakes into milestones.',
+		image: '/onboarding/quiz.png',
 		color: 'from-purple-500 to-pink-600',
 		icon: Calculator,
 	},
 	{
 		id: 3,
-		title: 'Track Your Progress',
+		title: 'Level Up Your Grade',
 		description:
-			'Earn XP, unlock achievements, and climb the leaderboard as you build consistent study habits.',
-		image:
-			'https://cdn3d.iconscout.com/3d/premium/thumb/trophy-3d-icon-download-in-png-blend-fbx-gltf-file-formats--award-win-victory-success-celebration-pack-business-icons-6060416.png',
+			'Track your progress in real-time. Earn XP, unlock achievements, and stay motivated as you climb your way to university entrance.',
+		image: '/onboarding/progress.png',
 		color: 'from-amber-400 to-orange-500',
 		icon: Trophy,
 	},
@@ -150,7 +146,7 @@ export default function OnboardingScreen({ user }: OnboardingScreenProps) {
 	};
 
 	return (
-		<div className="fixed inset-0 flex flex-col bg-background overflow-hidden select-none">
+		<div className="fixed inset-0 h-screen bg-background flex flex-col overflow-hidden select-none">
 			<BackgroundMesh />
 
 			{/* Top Progress */}
@@ -177,7 +173,7 @@ export default function OnboardingScreen({ user }: OnboardingScreenProps) {
 			</div>
 
 			{/* Main Content (Swipable) */}
-			<div className="flex-1 relative flex items-center justify-center p-6">
+			<div className="flex-1 relative flex items-center justify-center p-6 grow">
 				<AnimatePresence initial={false} custom={direction} mode="wait">
 					<m.div
 						key={currentStep}
@@ -220,15 +216,17 @@ export default function OnboardingScreen({ user }: OnboardingScreenProps) {
 									)}
 								/>
 
-								<Image
-									src={step.image}
-									alt={step.title}
-									width={256}
-									height={256}
-									className="relative z-10 w-full h-full object-contain drop-shadow-2xl"
-									priority={currentStep === 0}
-									unoptimized
-								/>
+								<div className='rounded-2xl overflow-hidden'>
+									<Image
+										src={step.image}
+										alt={step.title}
+										width={256}
+										height={256}
+										className="relative z-10 w-full h-full object-contain drop-shadow-2xl"
+										priority={currentStep === 0}
+										unoptimized
+									/>
+								</div>
 							</m.div>
 
 							<div className="space-y-4">
@@ -239,13 +237,13 @@ export default function OnboardingScreen({ user }: OnboardingScreenProps) {
 											? `Welcome, ${user.name.split(' ')[0]}!`
 											: step.title
 									}
-									className="text-3xl font-black tracking-tight text-foreground"
+									className="text-2xl font-extrabold tracking-tight text-foreground text-pretty"
 								/>
 								<m.p
 									initial={{ opacity: 0, y: 10 }}
 									animate={{ opacity: 1, y: 0 }}
 									transition={{ delay: 0.2 }}
-									className="text-muted-foreground font-medium text-lg leading-relaxed px-2"
+									className="text-muted-foreground font-medium text-base leading-relaxed px-2 text-pretty"
 								>
 									{step.description}
 								</m.p>
@@ -256,7 +254,7 @@ export default function OnboardingScreen({ user }: OnboardingScreenProps) {
 			</div>
 
 			{/* Bottom Controls */}
-			<div className="relative z-20 px-6 pb-12 w-full max-w-lg mx-auto flex flex-col gap-4">
+			<div className="relative z-20 px-6 pb-0 w-full max-w-lg mx-auto flex flex-col gap-4">
 				<div className="flex items-center justify-between gap-4">
 					<Button
 						variant="outline"
@@ -270,7 +268,7 @@ export default function OnboardingScreen({ user }: OnboardingScreenProps) {
 
 					{currentStep === STEPS.length - 1 ? (
 						<Button
-							className="flex-1 h-14 rounded-2xl font-black text-lg bg-primary text-primary-foreground shadow-xl shadow-primary/20 transition-all active:scale-[0.98]"
+							className="flex-1 h-14 rounded-2xl font-bold text-lg bg-primary text-primary-foreground shadow-xl shadow-primary/20 transition-all active:scale-[0.98]"
 							onClick={handleComplete}
 							disabled={isLoading}
 						>
@@ -287,7 +285,7 @@ export default function OnboardingScreen({ user }: OnboardingScreenProps) {
 						</Button>
 					) : (
 						<Button
-							className="flex-1 h-14 rounded-2xl font-black text-lg bg-foreground text-background shadow-xl transition-all active:scale-[0.98]"
+							className="flex-1 h-14 rounded-2xl font-bold text-lg bg-foreground text-background shadow-xl transition-all active:scale-[0.98]"
 							onClick={() => paginate(1)}
 						>
 							Next
@@ -297,7 +295,7 @@ export default function OnboardingScreen({ user }: OnboardingScreenProps) {
 				</div>
 
 				{/* Step Indicators */}
-				<div className="flex justify-center gap-2">
+				<div className="flex justify-center gap-2 -mb-1">
 					{STEPS.map((_, i) => (
 						<m.div
 							key={i}

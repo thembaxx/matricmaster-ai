@@ -99,8 +99,8 @@ export function MobileViewTest() {
 						</span>
 					</div>
 					<div className="border-t border-border mt-2 pt-2">
-						<div className="flex justify-between items-center">
-							<span className="font-bold text-xs">
+						<div className="flex justify-between items-center gap-2">
+							<span className="font-bold text-xs grow truncate">
 								Status: {allTestsPassed ? 'All Tests Passed' : 'Some Issues Found'}
 							</span>
 							{!allTestsPassed && (

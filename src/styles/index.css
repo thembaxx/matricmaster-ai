@@ -148,7 +148,7 @@
   --font-sf-pro: var(--font-sf-pro);
   --font-sf-mono: var(--font-sf-mono);
   --font-system:
-    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,
+    "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,
     sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
 
@@ -311,33 +311,41 @@
   h5,
   h6 {
     font-family: var(--font-lexend), var(--font-inter);
-    letter-spacing: -0.03em;
     line-height: 1.2;
-    font-weight: 900;
   }
   h1 {
     font-size: 2.5rem;
     line-height: 1.1;
+    font-weight: 800;
+    letter-spacing: -0.025em;
   }
   h2 {
     font-size: 2rem;
     line-height: 1.2;
+    font-weight: 800;
+    letter-spacing: -0.02em;
   }
   h3 {
     font-size: 1.5rem;
     line-height: 1.3;
+    font-weight: 700;
+    letter-spacing: -0.015em;
   }
   h4 {
     font-size: 1.25rem;
     line-height: 1.4;
+    font-weight: 700;
+    letter-spacing: -0.01em;
   }
   h5 {
     font-size: 1.125rem;
     line-height: 1.5;
+    font-weight: 700;
   }
   h6 {
     font-size: 1rem;
     line-height: 1.5;
+    font-weight: 700;
   }
   html {
     scroll-behavior: smooth;
