@@ -1,4 +1,5 @@
 import { headers } from 'next/headers';
+import type { SessionUser } from '@/lib/auth';
 import { getAuth } from '@/lib/auth';
 import OnboardingScreen from '@/screens/Onboarding';
 
@@ -15,5 +16,5 @@ export default async function OnboardingPage() {
 		console.warn('Auth check failed in OnboardingPage:', e);
 	}
 
-	return <OnboardingScreen user={user} />;
+	return <OnboardingScreen user={user as SessionUser} />;
 }
