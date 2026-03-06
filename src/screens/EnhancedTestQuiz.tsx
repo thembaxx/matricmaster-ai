@@ -130,9 +130,6 @@ export default function EnhancedTestQuizScreen() {
 	const [aiExplanation, setAiExplanation] = useState<string | null>(null);
 	const [isExplaining, setIsExplaining] = useState(false);
 
-	// const [aiExplanation, setAiExplanation] = useState<string | null>(null);
-	// const [isExplaining, setIsExplaining] = useState(false);
-
 	const handleExplain = async (subject: string, questionContext: string) => {
 		setIsExplaining(true);
 		setAiExplanation(null);

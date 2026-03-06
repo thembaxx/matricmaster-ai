@@ -124,7 +124,6 @@
   --color-brand-amber-light: oklch(0.88 0.12 80);
   --color-brand-amber-darker: oklch(0.65 0.15 75);
   --color-brand-yellow: oklch(0.75 0.15 85);
-  --color-brand-blue: oklch(0.6 0.17 250);
   --color-brand-purple-light: oklch(0.7 0.15 300);
   --color-brand-green: oklch(0.65 0.18 150);
   --color-brand-green-light: oklch(0.8 0.12 150);
@@ -344,6 +343,15 @@
 }
 
 /* Custom Animations */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 @keyframes float {
   0%,
   100% {
@@ -463,6 +471,14 @@
 
 .animate-shake {
   animation: shake 0.5s ease-in-out;
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+.animate-spin-slow {
+  animation: spin 3s linear infinite;
 }
 
 /* Enhanced micro-interactions */
