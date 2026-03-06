@@ -67,18 +67,18 @@ const Podium = memo(function Podium({ data }: { data: LeaderboardEntry[] }) {
 					<m.div
 						animate={{ y: [0, -8, 0] }}
 						transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY, ease: [0.16, 1, 0.3, 1] }}
-						className="absolute -top-8 sm:-top-10 left-1/2 -translate-x-1/2 text-brand-amber"
+						className="absolute -top-8 sm:-top-10 left-1/2 -translate-x-1/2 text-primary-orange"
 					>
-						<TrophyIcon className="w-8 h-8 sm:w-10 sm:h-10 fill-brand-amber/20" />
+						<TrophyIcon className="w-8 h-8 sm:w-10 sm:h-10 fill-primary-orange/20" />
 					</m.div>
-					<div className="absolute -inset-4 bg-brand-amber/20 rounded-full opacity-40 blur-3xl group-hover:opacity-60 transition-opacity" />
-					<Avatar className="w-24 h-24 sm:w-40 sm:h-40 border-4 border-brand-amber relative z-10 transition-transform group-hover:scale-110 shadow-2xl">
+					<div className="absolute -inset-4 bg-primary-orange/20 rounded-full opacity-40 blur-3xl group-hover:opacity-60 transition-opacity" />
+					<Avatar className="w-24 h-24 sm:w-40 sm:h-40 border-4 border-primary-orange relative z-10 transition-transform group-hover:scale-110 shadow-2xl">
 						<AvatarImage src={r1?.userImage || undefined} className="object-cover" />
 						<AvatarFallback className="font-black text-3xl">
 							{r1?.userName?.[0] || '?'}
 						</AvatarFallback>
 					</Avatar>
-					<div className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-14 h-14 bg-brand-amber rounded-full flex items-center justify-center text-primary-foreground text-2xl font-black border-4 border-background z-20 shadow-2xl">
+					<div className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-14 h-14 bg-primary-orange rounded-full flex items-center justify-center text-white text-2xl font-black border-4 border-background z-20 shadow-2xl">
 						1
 					</div>
 				</div>
@@ -86,25 +86,25 @@ const Podium = memo(function Podium({ data }: { data: LeaderboardEntry[] }) {
 					<p className="text-xl md:text-3xl font-black text-foreground tracking-tighter">
 						{r1?.userName || 'TBD'}
 					</p>
-					<p className="text-sm md:text-base font-black text-brand-amber uppercase tracking-widest flex items-center justify-center gap-2">
-						<Flame className="w-4 h-4 fill-brand-amber" />
+					<p className="text-sm md:text-base font-black text-primary-orange uppercase tracking-widest flex items-center justify-center gap-2">
+						<Flame className="w-4 h-4 fill-primary-orange" />
 						{r1 ? formatPoints(r1.totalPoints) : '0'} KP
 					</p>
 				</div>
-				<div className="w-32 h-40 md:w-44 md:h-56 bg-linear-to-t from-brand-amber/10 to-transparent mt-8 rounded-t-[3rem] border-x border-t border-brand-amber/20" />
+				<div className="w-32 h-40 md:w-44 md:h-56 bg-linear-to-t from-primary-orange/10 to-transparent mt-8 rounded-t-[3rem] border-x border-t border-primary-orange/20" />
 			</div>
 
 			{/* 3rd Place */}
 			<div className="flex flex-col items-center flex-1 sm:flex-none">
 				<div className="relative mb-4 group cursor-pointer">
-					<div className="absolute inset-0 bg-brand-orange/20 rounded-full blur-2xl opacity-0 group-hover:opacity-40 transition-opacity" />
-					<Avatar className="w-16 h-16 sm:w-28 sm:h-28 border-4 border-brand-orange/30 relative z-10 transition-transform group-hover:scale-110 shadow-xl">
+					<div className="absolute inset-0 bg-primary-cyan/20 rounded-full blur-2xl opacity-0 group-hover:opacity-40 transition-opacity" />
+					<Avatar className="w-16 h-16 sm:w-28 sm:h-28 border-4 border-primary-cyan/30 relative z-10 transition-transform group-hover:scale-110 shadow-xl">
 						<AvatarImage src={r3?.userImage || undefined} className="object-cover" />
 						<AvatarFallback className="font-black text-xl">
 							{r3?.userName?.[0] || '?'}
 						</AvatarFallback>
 					</Avatar>
-					<div className="absolute -bottom-3 left-1/2 -translate-x-1/2 w-10 h-10 bg-brand-orange rounded-full flex items-center justify-center text-primary-foreground text-base font-black border-4 border-background z-20 shadow-lg">
+					<div className="absolute -bottom-3 left-1/2 -translate-x-1/2 w-10 h-10 bg-primary-cyan rounded-full flex items-center justify-center text-white text-base font-black border-4 border-background z-20 shadow-lg">
 						3
 					</div>
 				</div>
@@ -112,11 +112,11 @@ const Podium = memo(function Podium({ data }: { data: LeaderboardEntry[] }) {
 					<p className="text-sm md:text-base font-black text-foreground tracking-tight">
 						{r3?.userName || 'TBD'}
 					</p>
-					<p className="text-[11px] md:text-xs font-black text-brand-orange uppercase tracking-widest">
+					<p className="text-[11px] md:text-xs font-black text-primary-cyan uppercase tracking-widest">
 						{r3 ? formatPoints(r3.totalPoints) : '0'} KP
 					</p>
 				</div>
-				<div className="w-20 h-16 md:w-28 md:h-24 bg-linear-to-t from-brand-orange/10 to-transparent mt-6 rounded-t-3xl border-x border-t border-brand-orange/20 opacity-50" />
+				<div className="w-20 h-16 md:w-28 md:h-24 bg-linear-to-t from-primary-cyan/10 to-transparent mt-6 rounded-t-3xl border-x border-t border-primary-cyan/20 opacity-50" />
 			</div>
 		</div>
 	);
@@ -147,12 +147,12 @@ const RankingList = memo(function RankingList({ data }: { data: LeaderboardEntry
 						</p>
 					</div>
 					<div className="text-right">
-						<p className="text-base sm:text-lg font-black text-brand-amber tracking-tighter">
+						<p className="text-base sm:text-lg font-black text-primary-orange tracking-tighter">
 							{formatPoints(student.totalPoints)} <span className="text-[10px]">KP</span>
 						</p>
 						<div className="flex items-center justify-end gap-1 mt-0.5">
-							<div className="w-1 h-1 rounded-full bg-brand-green" />
-							<p className="text-[8px] sm:text-[9px] font-black text-brand-green uppercase tracking-widest">
+							<div className="w-1 h-1 rounded-full bg-accent-lime" />
+							<p className="text-[8px] sm:text-[9px] font-black text-accent-lime uppercase tracking-widest">
 								{student.accuracyPercentage}% accuracy
 							</p>
 						</div>
@@ -273,14 +273,14 @@ export default function Leaderboard() {
 
 			{userRank && (
 				<div className="fixed bottom-32 left-1/2 -translate-x-1/2 w-[92%] max-w-4xl z-50 lg:bottom-12">
-					<Card className="p-4 sm:p-6 bg-foreground text-background border-none shadow-[0_32px_64px_-12px_rgba(0,0,0,0.5)] rounded-2xl sm:rounded-[2.5rem] relative overflow-hidden group">
-						<div className="absolute top-0 left-0 w-2 h-full bg-brand-amber animate-pulse" />
+					<Card className="p-4 sm:p-6 bg-neutral-900 text-white border-none shadow-[0_32px_64px_-12px_rgba(0,0,0,0.5)] rounded-2xl sm:rounded-[2.5rem] relative overflow-hidden group">
+						<div className="absolute top-0 left-0 w-2 h-full bg-primary-orange animate-pulse" />
 						<div className="flex items-center gap-3 sm:gap-6 relative z-10">
-							<span className="text-2xl sm:text-3xl font-black text-brand-amber w-8 sm:w-12 text-center tracking-tighter">
+							<span className="text-2xl sm:text-3xl font-black text-primary-orange w-8 sm:w-12 text-center tracking-tighter">
 								{userRank.rank}
 							</span>
 							<div className="relative">
-								<Avatar className="w-12 h-12 sm:w-16 sm:h-16 border-4 border-brand-amber/30 p-1 rounded-xl sm:rounded-2xl bg-muted/20">
+								<Avatar className="w-12 h-12 sm:w-16 sm:h-16 border-4 border-primary-orange/30 p-1 rounded-xl sm:rounded-2xl bg-muted/20">
 									<AvatarImage
 										src="https://api.dicebear.com/7.x/avataaars/svg?seed=user"
 										className="object-cover"
@@ -289,24 +289,24 @@ export default function Leaderboard() {
 										ME
 									</AvatarFallback>
 								</Avatar>
-								<div className="absolute -bottom-1.5 sm:-bottom-2 -right-1.5 sm:-right-2 bg-brand-amber text-foreground text-[8px] sm:text-[9px] font-black px-2 sm:px-3 py-0.5 sm:py-1 rounded-full border-2 sm:border-4 border-background uppercase tracking-tighter">
+								<div className="absolute -bottom-1.5 sm:-bottom-2 -right-1.5 sm:-right-2 bg-primary-orange text-white text-[8px] sm:text-[9px] font-black px-2 sm:px-3 py-0.5 sm:py-1 rounded-full border-2 sm:border-4 border-background uppercase tracking-tighter shadow-lg">
 									You
 								</div>
 							</div>
 							<div className="flex-1 min-w-0">
-								<h3 className="font-black text-sm sm:text-lg text-background truncate tracking-tight">
+								<h3 className="font-black text-sm sm:text-lg text-white truncate tracking-tight">
 									Your Global Rank
 								</h3>
-								<p className="text-[10px] sm:text-[11px] font-black text-background/60 uppercase tracking-widest flex items-center gap-1 sm:gap-2">
-									<Flame className="w-3 h-3 sm:w-4 sm:h-4 text-brand-amber fill-brand-amber" />
+								<p className="text-[10px] sm:text-[11px] font-black text-white/60 uppercase tracking-widest flex items-center gap-1 sm:gap-2">
+									<Flame className="w-3 h-3 sm:w-4 sm:h-4 text-primary-orange fill-primary-orange" />
 									{userStreak?.currentStreak || 0} Day Streak
 								</p>
 							</div>
 							<div className="text-right">
-								<p className="text-xl sm:text-2xl font-black text-brand-amber tracking-tighter flex items-center justify-end gap-1">
+								<p className="text-xl sm:text-2xl font-black text-primary-orange tracking-tighter flex items-center justify-end gap-1">
 									{formatPoints(userRank.totalPoints)} <span className="text-xs uppercase">KP</span>
 								</p>
-								<p className="text-[9px] sm:text-[10px] font-black text-background/60 uppercase tracking-widest">
+								<p className="text-[9px] sm:text-[10px] font-black text-white/60 uppercase tracking-widest">
 									Top {100 - userRank.percentile}% of Students
 								</p>
 							</div>

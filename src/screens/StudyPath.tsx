@@ -153,15 +153,15 @@ function StudyPathHeader({ router, progress }: StudyPathHeaderProps) {
 				variant="ghost"
 				size="icon"
 				onClick={() => router.back()}
-				className="rounded-full text-zinc-900 dark:text-white"
+				className="rounded-full text-foreground"
 			>
 				<ArrowLeft className="w-6 h-6" />
 			</Button>
-			<h1 className="text-lg font-bold text-zinc-900 dark:text-white">My Physics Path</h1>
+			<h1 className="text-lg font-black text-foreground tracking-tight uppercase">My Physics Path</h1>
 			{progress !== undefined && (
-				<div className="flex items-center gap-1 text-blue-500">
-					<Zap className="w-5 h-5 fill-yellow-400 text-yellow-400" />
-					<span className="font-bold text-sm">{progress}%</span>
+				<div className="flex items-center gap-2 px-3 py-1.5 bg-primary-violet/10 rounded-full">
+					<Zap className="w-4 h-4 fill-primary-violet text-primary-violet" />
+					<span className="font-black text-xs text-primary-violet">{progress}%</span>
 				</div>
 			)}
 		</header>
@@ -262,20 +262,21 @@ function PathNode({ node }: PathNodeProps) {
 
 function LockedNode({ node }: { node: PathNode }) {
 	return (
-		<div className="flex flex-col items-center gap-2">
+		<div className="flex flex-col items-center gap-2 opacity-60">
 			<div className="relative">
 				<div
-					className="w-16 h-16 rounded-2xl flex items-center justify-center shadow-lg"
-					style={{ backgroundColor: node.iconBg }}
+					className="w-16 h-16 rounded-[1.5rem] flex items-center justify-center shadow-lg bg-muted grayscale"
 				>
-					<span className="text-2xl font-bold text-brand-purple">÷±</span>
+					<span className="text-2xl font-black text-muted-foreground">÷±</span>
 				</div>
-				<div className="absolute -top-1 -right-1 w-8 h-8 rounded-full bg-card dark:bg-card border-2 border-border flex items-center justify-center shadow-sm">
+				<div className="absolute -top-1 -right-1 w-8 h-8 rounded-full bg-background border-2 border-border flex items-center justify-center shadow-sm">
 					<Lock className="w-4 h-4 text-muted-foreground" />
 				</div>
 			</div>
-			<div className="bg-card px-3 py-1.5 rounded-full shadow-sm">
-				<span className="text-sm font-medium text-muted-foreground">{node.title}</span>
+			<div className="bg-muted/50 px-3 py-1 rounded-full border border-border/10">
+				<span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">
+					{node.title}
+				</span>
 			</div>
 		</div>
 	);
@@ -283,19 +284,19 @@ function LockedNode({ node }: { node: PathNode }) {
 
 function CurrentNode({ node }: { node: PathNode }) {
 	return (
-		<div className="flex flex-col items-center gap-3">
+		<div className="flex flex-col items-center gap-4 scale-110">
 			<div className="relative">
 				<div
-					className="absolute inset-[-8px] rounded-full opacity-20"
+					className="absolute inset-[-12px] rounded-full opacity-30 animate-pulse"
 					style={{
-						background: 'radial-gradient(circle, var(--color-primary) 0%, transparent 70%)',
+						background: 'radial-gradient(circle, var(--primary-violet) 0%, transparent 70%)',
 					}}
 				/>
 				<div
-					className="w-20 h-20 rounded-full flex items-center justify-center shadow-xl relative"
+					className="w-20 h-20 rounded-3xl flex items-center justify-center shadow-2xl relative"
 					style={{
 						background:
-							'linear-gradient(135deg, var(--color-primary-light) 0%, var(--color-primary) 50%, var(--color-primary) 100%)',
+							'linear-gradient(135deg, var(--primary-violet) 0%, var(--accent-indigo) 100%)',
 					}}
 				>
 					<svg className="w-10 h-10 text-primary-foreground" viewBox="0 0 24 24" fill="none">
@@ -323,20 +324,22 @@ function CurrentNode({ node }: { node: PathNode }) {
 						/>
 					</svg>
 				</div>
-				<div className="absolute -top-2 -right-2 flex items-center gap-1 px-2 py-1 bg-brand-green text-white text-xs font-bold rounded-full shadow-lg">
+				<div className="absolute -top-3 -right-3 flex items-center gap-1 px-3 py-1 bg-primary-orange text-white text-[10px] font-black uppercase tracking-tighter rounded-full shadow-xl animate-bounce-subtle">
 					<span>NEXT</span>
-					<span className="text-[10px]">🚩</span>
+					<span>🚩</span>
 				</div>
 			</div>
 
-			<div className="bg-card rounded-2xl shadow-lg p-4 min-w-[140px]">
-				<h3 className="font-bold text-foreground text-center">{node.title}</h3>
-				<p className="text-primary text-xs font-semibold uppercase tracking-wide text-center mt-1">
-					IN PROGRESS
+			<div className="bg-card rounded-3xl shadow-2xl p-5 min-w-[160px] border-2 border-primary-violet/10">
+				<h3 className="font-black text-foreground text-center tracking-tight leading-none uppercase text-xs">
+					{node.title}
+				</h3>
+				<p className="text-primary-violet text-[9px] font-black uppercase tracking-widest text-center mt-2 opacity-70">
+					Active Quest
 				</p>
-				<div className="mt-3 w-full h-1.5 bg-muted rounded-full overflow-hidden">
+				<div className="mt-4 w-full h-2.5 bg-muted/50 rounded-full overflow-hidden shadow-inner">
 					<div
-						className="h-full rounded-full transition-all duration-500 bg-primary"
+						className="h-full rounded-full transition-all duration-700 ease-out bg-gradient-to-r from-primary-violet to-primary-cyan"
 						style={{ width: `${node.progress}%` }}
 					/>
 				</div>
@@ -352,20 +355,22 @@ function CompletedNode({ node }: { node: PathNode }) {
 				className="w-16 h-16 rounded-full flex items-center justify-center shadow-lg"
 				style={{
 					background:
-						'linear-gradient(135deg, var(--color-brand-green-light) 0%, var(--color-brand-green) 50%, var(--color-brand-green) 100%)',
+						'linear-gradient(135deg, var(--accent-lime) 0%, #65A30D 100%)',
 				}}
 			>
-				<Check className="w-8 h-8 text-primary-foreground" strokeWidth={3} />
+				<Check className="w-8 h-8 text-white" strokeWidth={4} />
 			</div>
-			<p className="text-sm font-bold text-foreground text-center">{node.title}</p>
+			<p className="text-[10px] font-black text-foreground text-center uppercase tracking-tight opacity-80">
+				{node.title}
+			</p>
 			<div className="flex gap-1">
 				{Array.from({ length: 3 }).map((_, i) => (
 					<Star
 						key={`star-${node.id}-${i}`}
 						className={`w-5 h-5 ${
 							i < (node.stars || 0)
-								? 'fill-brand-amber text-brand-amber'
-								: 'text-muted-foreground/30'
+								? 'fill-primary-orange text-primary-orange'
+								: 'text-muted-foreground/20'
 						}`}
 					/>
 				))}
@@ -381,22 +386,23 @@ type ResumeButtonProps = {
 
 function ResumeButton({ router, title }: ResumeButtonProps) {
 	return (
-		<div className="px-4 pb-8 pt-4 shrink-0">
+		<div className="px-4 pb-8 pt-4 shrink-0 max-w-md mx-auto w-full">
 			<Button
-				className="w-full h-16 rounded-2xl text-primary-foreground font-semibold shadow-lg shadow-primary/25 flex items-center justify-between px-4"
-				style={{
-					background:
-						'linear-gradient(135deg, var(--color-primary-light) 0%, var(--color-primary) 50%, var(--color-primary) 100%)',
-				}}
+				variant="gradient"
+				className="w-full h-20 rounded-3xl text-white font-black shadow-2xl flex items-center justify-between px-6 ios-active-scale"
 				onClick={() => router.push('/quiz')}
 			>
-				<div className="flex items-center gap-3">
-					<div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
-						<Play className="w-5 h-5 fill-primary-foreground text-primary-foreground" />
+				<div className="flex items-center gap-5">
+					<div className="w-12 h-12 rounded-2xl bg-white/20 flex items-center justify-center">
+						<Play className="w-6 h-6 fill-white text-white" />
 					</div>
 					<div className="text-left">
-						<p className="font-bold text-base">Resume: {title}</p>
-						<p className="text-xs text-primary-foreground/80">Estimated time: 15 mins</p>
+						<p className="font-black text-lg tracking-tight uppercase leading-none">
+							Resume Path
+						</p>
+						<p className="text-[10px] text-white/70 uppercase tracking-widest mt-1 font-bold">
+							{title} • 15 mins
+						</p>
 					</div>
 				</div>
 				<ChevronRight className="w-6 h-6" />

@@ -27,7 +27,7 @@ export default function PhysicalSciences() {
 						<Button variant="ghost" size="icon" onClick={() => router.push('/dashboard')}>
 							<ArrowLeft className="w-5 h-5" />
 						</Button>
-						<h1 className="text-lg font-bold text-zinc-900 dark:text-white">Physics P1</h1>
+						<h1 className="text-lg font-black text-foreground tracking-tight uppercase">Physics P1</h1>
 					</div>
 					<div className="flex gap-2">
 						<Button variant="ghost" size="icon">
@@ -49,7 +49,8 @@ export default function PhysicalSciences() {
 				{/* Quick Action */}
 				<div className="mb-4">
 					<Button
-						className="w-full bg-brand-purple text-white rounded-2xl font-bold h-12 gap-2 shadow-lg shadow-brand-purple/20"
+						variant="gradient"
+						className="w-full rounded-2xl font-black h-12 gap-2 shadow-xl shadow-primary-violet/20"
 						onClick={() => router.push('/physics-quiz')}
 					>
 						<Sparkles className="w-4 h-4" />
@@ -135,7 +136,7 @@ export default function PhysicalSciences() {
 										y="70"
 										width="40"
 										height="20"
-										fill="var(--color-brand-amber)"
+										fill="var(--primary-orange)"
 										stroke="currentColor"
 										strokeWidth="2"
 									/>
@@ -154,7 +155,7 @@ export default function PhysicalSciences() {
 										y="140"
 										width="20"
 										height="40"
-										fill="var(--color-brand-amber)"
+										fill="var(--primary-orange)"
 										stroke="currentColor"
 										strokeWidth="2"
 									/>
@@ -173,7 +174,7 @@ export default function PhysicalSciences() {
 										y="210"
 										width="40"
 										height="20"
-										fill="var(--color-brand-amber)"
+										fill="var(--primary-orange)"
 										stroke="currentColor"
 										strokeWidth="2"
 									/>
@@ -254,11 +255,11 @@ export default function PhysicalSciences() {
 							</div>
 
 							{/* Given Data */}
-							<div className="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-								<h4 className="font-semibold text-sm text-blue-900 dark:text-blue-100 mb-2">
+							<div className="mt-6 p-4 bg-primary-cyan/10 rounded-2xl border border-primary-cyan/20 shadow-sm">
+								<h4 className="font-black text-xs text-primary-cyan uppercase tracking-widest mb-2">
 									Given:
 								</h4>
-								<ul className="space-y-1 text-sm text-blue-800 dark:text-blue-200">
+								<ul className="space-y-1 text-sm font-bold text-foreground/80">
 									<li>• V = 12 V</li>
 									<li>• R₁ = 4 Ω</li>
 									<li>• R₂ = 6 Ω</li>

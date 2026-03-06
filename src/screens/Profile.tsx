@@ -123,13 +123,14 @@ export default function Profile() {
 			<main className="max-w-6xl mx-auto w-full pt-6 sm:pt-8 space-y-8 sm:space-y-12 relative z-10">
 				{/* Profile Header Card */}
 				<m.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-					<Card className="rounded-2xl sm:rounded-[3rem] p-6 sm:p-12 relative overflow-hidden bg-foreground text-background border-none shadow-2xl">
-						<div className="absolute top-0 right-0 w-96 h-96 bg-primary/20 rounded-full blur-[100px] -mr-32 -mt-32" />
+					<Card className="rounded-2xl sm:rounded-[3rem] p-6 sm:p-12 relative overflow-hidden bg-primary-violet text-white border-none shadow-2xl shadow-primary-violet/20">
+						<div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-[100px] -mr-32 -mt-32 pointer-events-none" />
+						<div className="absolute bottom-0 left-0 w-64 h-64 bg-black/10 rounded-full blur-[80px] -ml-24 -mb-24 pointer-events-none" />
 
 						<div className="flex flex-col md:flex-row items-center gap-8 sm:gap-12 relative z-10">
 							<div className="relative group">
-								<div className="absolute -inset-4 bg-primary/20 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity" />
-								<div className="w-24 h-24 sm:w-32 sm:h-32 md:w-48 md:h-48 rounded-full overflow-hidden border-4 border-white/10 shadow-2xl relative ring-4 sm:ring-8 ring-white/5 group-hover:scale-105 transition-transform duration-500">
+									<div className="absolute -inset-4 bg-white/20 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity" />
+									<div className="w-24 h-24 sm:w-32 sm:h-32 md:w-48 md:h-48 rounded-full overflow-hidden border-4 border-white/20 shadow-2xl relative ring-4 sm:ring-8 ring-white/10 group-hover:scale-105 transition-transform duration-500">
 									<SafeImage
 										src={
 											session?.user?.image ||
@@ -149,19 +150,19 @@ export default function Profile() {
 
 							<div className="flex-1 text-center md:text-left space-y-6">
 								<div className="space-y-2">
-									<h1 className="text-4xl md:text-6xl font-black tracking-tighter uppercase leading-none">
+									<h1 className="text-4xl md:text-6xl font-black tracking-tighter uppercase leading-none text-white">
 										{session?.user?.name || 'Scholar'}
 									</h1>
-									<p className="text-[11px] font-black text-primary uppercase tracking-[0.4em]">
+									<p className="text-[11px] font-black text-primary-cyan uppercase tracking-[0.4em]">
 										Grade 12 Elite Candidate
 									</p>
 								</div>
 
 								<div className="flex flex-wrap justify-center md:justify-start gap-4">
-									<Badge className="bg-primary/20 text-primary-foreground border-none px-6 py-2 rounded-xl font-black text-[10px] uppercase tracking-widest">
+									<Badge className="bg-white/20 text-white border-none px-6 py-2 rounded-xl font-black text-[10px] uppercase tracking-widest">
 										Class of 2026
 									</Badge>
-									<Badge className="bg-success/20 text-success border-none px-6 py-2 rounded-xl font-black text-[10px] uppercase tracking-widest">
+									<Badge className="bg-accent-lime/20 text-accent-lime border-none px-6 py-2 rounded-xl font-black text-[10px] uppercase tracking-widest">
 										Academic Pro
 									</Badge>
 								</div>
@@ -203,8 +204,8 @@ export default function Profile() {
 									<RadarChart cx="50%" cy="50%" outerRadius="80%" data={chartData}>
 										<defs>
 											<linearGradient id={radarGradientId} x1="0" y1="0" x2="0" y2="1">
-												<stop offset="0%" stopColor="var(--primary)" stopOpacity={0.8} />
-												<stop offset="100%" stopColor="var(--primary)" stopOpacity={0.2} />
+												<stop offset="0%" stopColor="var(--primary-violet)" stopOpacity={0.8} />
+												<stop offset="100%" stopColor="var(--primary-violet)" stopOpacity={0.2} />
 											</linearGradient>
 										</defs>
 										<PolarGrid stroke="var(--border)" strokeOpacity={0.5} />
@@ -215,7 +216,7 @@ export default function Profile() {
 										<Radar
 											name="You"
 											dataKey="you"
-											stroke="var(--primary)"
+											stroke="var(--primary-violet)"
 											strokeWidth={4}
 											fill={`url(#${radarGradientId})`}
 											fillOpacity={0.6}
@@ -253,10 +254,10 @@ export default function Profile() {
 
 						<div className="grid grid-cols-1 gap-6">
 							{/* Questions Card */}
-							<Card className="p-8 rounded-3xl border border-border bg-card/50 backdrop-blur-sm relative overflow-hidden group">
+							<Card className="p-8 rounded-3xl border border-border bg-card/50 backdrop-blur-sm relative overflow-hidden group shadow-xl hover:shadow-2xl transition-all duration-500">
 								<div className="flex items-center gap-8 relative z-10">
-									<div className="w-20 h-20 rounded-2xl bg-primary/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-500 shadow-inner">
-										<GraduationCap className="w-10 h-10 text-primary" />
+									<div className="w-20 h-20 rounded-2xl bg-primary-violet/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-500 shadow-inner">
+										<GraduationCap className="w-10 h-10 text-primary-violet" />
 									</div>
 									<div className="space-y-1">
 										<p className="text-[10px] font-black text-label-tertiary uppercase tracking-[0.3em]">
@@ -270,10 +271,10 @@ export default function Profile() {
 							</Card>
 
 							{/* Accuracy Card */}
-							<Card className="p-8 rounded-3xl border border-border bg-card/50 backdrop-blur-sm relative overflow-hidden group">
+							<Card className="p-8 rounded-3xl border border-border bg-card/50 backdrop-blur-sm relative overflow-hidden group shadow-xl hover:shadow-2xl transition-all duration-500">
 								<div className="flex items-center gap-8 relative z-10">
-									<div className="w-20 h-20 rounded-2xl bg-success/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-500 shadow-inner">
-										<Target className="w-10 h-10 text-success" />
+									<div className="w-20 h-20 rounded-2xl bg-accent-lime/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-500 shadow-inner">
+										<Target className="w-10 h-10 text-accent-lime" />
 									</div>
 									<div className="space-y-1">
 										<p className="text-[10px] font-black text-label-tertiary uppercase tracking-[0.3em]">
@@ -287,10 +288,10 @@ export default function Profile() {
 							</Card>
 
 							{/* Streak Card */}
-							<Card className="p-8 rounded-3xl border border-border bg-card/50 backdrop-blur-sm relative overflow-hidden group">
+							<Card className="p-8 rounded-3xl border border-border bg-card/50 backdrop-blur-sm relative overflow-hidden group shadow-xl hover:shadow-2xl transition-all duration-500">
 								<div className="flex items-center gap-8 relative z-10">
-									<div className="w-20 h-20 rounded-2xl bg-warning/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-500 shadow-inner">
-										<Flame className="w-10 h-10 text-warning fill-warning" />
+									<div className="w-20 h-20 rounded-2xl bg-primary-orange/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-500 shadow-inner">
+										<Flame className="w-10 h-10 text-primary-orange fill-primary-orange" />
 									</div>
 									<div className="space-y-1">
 										<p className="text-[10px] font-black text-label-tertiary uppercase tracking-[0.3em]">
@@ -304,10 +305,10 @@ export default function Profile() {
 							</Card>
 
 							{/* Achievements Unlock */}
-							<Card className="p-8 rounded-3xl border border-border bg-primary/5 relative overflow-hidden group border-dashed">
+							<Card className="p-8 rounded-3xl border border-border bg-primary-violet/5 relative overflow-hidden group border-dashed">
 								<div className="flex items-center gap-8 relative z-10">
-									<div className="w-20 h-20 rounded-2xl bg-primary/10 flex items-center justify-center">
-										<Award className="w-10 h-10 text-primary" />
+									<div className="w-20 h-20 rounded-2xl bg-primary-violet/10 flex items-center justify-center">
+										<Award className="w-10 h-10 text-primary-violet" />
 									</div>
 									<div className="space-y-1">
 										<p className="text-[10px] font-black text-label-tertiary uppercase tracking-[0.3em]">
