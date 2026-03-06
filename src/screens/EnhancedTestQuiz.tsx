@@ -353,7 +353,7 @@ export default function EnhancedTestQuizScreen() {
 							>
 								<ArrowLeft className="w-6 h-6" />
 							</Button>
-							<h1 className="text-lg font-medium text-left grow text-zinc-900 dark:text-white opacity-80">
+							<h1 className="text-lg font-medium text-left grow text-foreground opacity-80">
 								Select Subjects
 							</h1>
 						</m.div>
@@ -369,11 +369,11 @@ export default function EnhancedTestQuizScreen() {
 											<div className="w-10 h-10 rounded-2xl bg-brand-blue/10 flex items-center justify-center">
 												<CheckCircle2 className="w-5 h-5 text-brand-blue" />
 											</div>
-											<h2 className="text-xl font-bold text-zinc-900 dark:text-white tracking-tight">
+											<h2 className="text-xl font-bold text-foreground tracking-tight">
 												Choose your subjects
 											</h2>
 										</div>
-										<p className="text-sm font-medium text-zinc-500 dark:text-zinc-400 mb-4 leading-relaxed">
+										<p className="text-sm font-medium text-muted-foreground mb-4 leading-relaxed">
 											{quizState.isMixedMode
 												? `Mixed mode: ${quizState.selectedSubjects.length} subjects selected`
 												: `Single subject: ${quizState.selectedSubjects.length > 0 ? subjects.find((s) => s.id === quizState.selectedSubjects[0])?.name || 'Unknown' : 'None'} selected`}
@@ -396,7 +396,7 @@ export default function EnhancedTestQuizScreen() {
 														className={`cursor-pointer px-3.5 py-1.5 rounded-2xl text-[13px] font-semibold transition-all border-2 ${
 															isSelected
 																? 'border-brand-blue bg-brand-blue text-white shadow-lg shadow-brand-blue/30'
-																: 'border-zinc-200 dark:border-zinc-700 bg-transparent text-muted-foreground hover:border-zinc-300 dark:hover:border-zinc-600'
+																: 'border-border bg-transparent text-muted-foreground hover:border-primary/50 hover:bg-primary/5'
 														}`}
 														onClick={() => toggleSubject(subject.id)}
 													>
@@ -412,7 +412,7 @@ export default function EnhancedTestQuizScreen() {
 											variant="secondary"
 											size="sm"
 											onClick={selectRandomSubjects}
-											className="w-full rounded-2xl border border-zinc-300 dark:border-zinc-700 hover:border-brand-blue/50 hover:bg-brand-blue/5 dark:hover:bg-brand-blue/10 transition-all text-zinc-500 dark:text-zinc-200 font-semibold h-12"
+											className="w-full rounded-2xl border border-border hover:border-brand-blue/50 hover:bg-brand-blue/5 transition-all text-muted-foreground font-semibold h-12"
 										>
 											<Sparkles className="w-4 h-4 mr-2" />
 											I'm feeling lucky
@@ -455,7 +455,7 @@ export default function EnhancedTestQuizScreen() {
 					>
 						{/* Header */}
 						<div className="p-4 rounded-2xl relative z-60">
-							<header className="bg-white/50 dark:bg-zinc-900/50 rounded-2xl backdrop-blur-xl border-b border-white/10 dark:border-white/5 shrink-0 sticky top-0 z-30">
+							<header className="ios-glass rounded-2xl border-b border-border shrink-0 sticky top-0 z-30">
 								<div className="max-w-2xl mx-auto w-full">
 									<div
 										className="px-6 pt-12 pb-2 flex items-center justify-between"
@@ -470,13 +470,13 @@ export default function EnhancedTestQuizScreen() {
 											<ArrowLeft className="w-6 h-6" />
 										</Button>
 										<div className="text-center">
-											<h1 className="text-[10px] font-black text-zinc-400 uppercase tracking-widest">
+											<h1 className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">
 												{subjects.find(
 													(s) =>
 														s.id === quizState.questions[quizState.currentQuestionIndex]?.subjectId
 												)?.name || 'Subject'}
 											</h1>
-											<p className="text-sm font-black text-zinc-900 dark:text-white">
+											<p className="text-sm font-black text-foreground">
 												Question {quizState.currentQuestionIndex + 1} of{' '}
 												{quizState.questions.length}
 											</p>
@@ -485,7 +485,7 @@ export default function EnhancedTestQuizScreen() {
 									</div>
 									{/* Progress */}
 									<div className="px-6 pb-6">
-										<div className="relative h-2 w-full bg-black/5 dark:bg-white/5 rounded-full overflow-hidden mb-3">
+										<div className="relative h-2 w-full bg-muted rounded-full overflow-hidden mb-3">
 											<m.div
 												className="absolute top-0 left-0 h-full bg-brand-blue rounded-full shadow-[0_0_12px_rgba(59,130,246,0.4)]"
 												initial={{ width: 0 }}
@@ -583,8 +583,8 @@ export default function EnhancedTestQuizScreen() {
 																className={cn(
 																	'premium-glass border-none p-4 rounded-2xl flex items-center gap-4 cursor-pointer transition-all duration-300 group',
 																	isSelected
-																		? 'ring-2 ring-brand-blue bg-white dark:bg-zinc-800'
-																		: 'hover:bg-white/60 dark:hover:bg-zinc-800/60'
+																		? 'ring-2 ring-brand-blue bg-card dark:bg-card/80'
+																		: 'hover:bg-card/80 dark:hover:bg-card/60'
 																)}
 															>
 																<div
@@ -592,12 +592,12 @@ export default function EnhancedTestQuizScreen() {
 																		'w-10 h-10 rounded-xl flex items-center justify-center text-sm font-black transition-colors shrink-0',
 																		isSelected
 																			? 'bg-brand-blue text-white shadow-lg shadow-brand-blue/30'
-																			: 'bg-black/5 dark:bg-white/5 text-zinc-500 dark:text-zinc-400 group-hover:bg-brand-blue/10 group-hover:text-brand-blue'
+																			: 'bg-muted text-muted-foreground group-hover:bg-brand-blue/10 group-hover:text-brand-blue'
 																	)}
 																>
 																	{option.optionLetter}
 																</div>
-																<span className="text-base font-medium text-zinc-700 dark:text-zinc-200 leading-snug">
+																<span className="text-base font-medium text-foreground leading-snug">
 																	{option.optionText}
 																</span>
 																{isSelected && (
@@ -650,7 +650,7 @@ export default function EnhancedTestQuizScreen() {
 												size="sm"
 												onClick={handlePrevious}
 												disabled={quizState.currentQuestionIndex === 0}
-												className="flex-1 h-12 rounded-2xl text-base font-semibold bg-white/50 dark:bg-zinc-900/50 backdrop-blur-md"
+												className="flex-1 h-12 rounded-2xl text-base font-semibold ios-glass"
 											>
 												Previous
 											</Button>
@@ -694,11 +694,11 @@ export default function EnhancedTestQuizScreen() {
 									<div className="w-24 h-24 bg-brand-green/10 rounded-full flex items-center justify-center mx-auto mb-6 shrink-0 shadow-[0_0_32px_rgba(16,185,129,0.2)]">
 										<TrendingUp className="w-12 h-12 text-brand-green" />
 									</div>
-									<h2 className="text-3xl font-black mb-2 text-zinc-900 dark:text-white tracking-tight">
+									<h2 className="text-3xl font-black mb-2 text-foreground tracking-tight">
 										Quiz Complete!
 									</h2>
 									<div className="flex flex-col gap-2 items-center">
-										<p className="text-zinc-500 dark:text-zinc-400 font-medium flex items-center justify-center gap-2 bg-black/5 dark:bg-white/5 py-1 px-4 rounded-full w-fit mx-auto mt-4">
+										<p className="text-muted-foreground font-medium flex items-center justify-center gap-2 bg-muted py-1 px-4 rounded-full w-fit mx-auto mt-4">
 											<Clock className="w-4 h-4" />
 											Time taken: {getTimeTaken()}
 										</p>

@@ -168,38 +168,38 @@ export default function LessonComplete() {
 						transition={{ delay: 0.4 }}
 						className="grid grid-cols-3 gap-3 w-full max-w-md mb-8"
 					>
-						<div className="bg-white dark:bg-[#111827] p-4 rounded-2xl flex flex-col items-center shadow-sm border border-border">
+						<div className="bg-card dark:bg-card/80 p-4 rounded-2xl flex flex-col items-center shadow-sm border border-border">
 							<div className="w-10 h-10 rounded-full bg-yellow-50 dark:bg-yellow-900/20 flex items-center justify-center mb-3">
 								<CheckCircle2 className="w-6 h-6 text-brand-amber" />
 							</div>
-							<span className="text-xl font-bold text-zinc-900 dark:text-white tracking-tight">
+							<span className="text-xl font-bold text-foreground tracking-tight">
 								{result.accuracy}%
 							</span>
-							<span className="text-[10px] uppercase font-bold text-zinc-400 dark:text-zinc-500 tracking-wider">
+							<span className="text-[10px] uppercase font-bold text-muted-foreground tracking-wider">
 								Accuracy
 							</span>
 						</div>
 
-						<div className="bg-white dark:bg-[#111827] p-4 rounded-2xl flex flex-col items-center shadow-sm border border-border">
+						<div className="bg-card dark:bg-card/80 p-4 rounded-2xl flex flex-col items-center shadow-sm border border-border">
 							<div className="w-10 h-10 rounded-full bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center mb-3">
 								<Clock className="w-6 h-6 text-blue-500" />
 							</div>
-							<span className="text-xl font-bold text-zinc-900 dark:text-white tracking-tight">
+							<span className="text-xl font-bold text-foreground tracking-tight">
 								{formatDuration(result.durationSeconds)}
 							</span>
-							<span className="text-[10px] uppercase font-bold text-zinc-400 dark:text-zinc-500 tracking-wider">
+							<span className="text-[10px] uppercase font-bold text-muted-foreground tracking-wider">
 								Time
 							</span>
 						</div>
 
-						<div className="bg-white dark:bg-[#111827] p-4 rounded-2xl flex flex-col items-center shadow-sm border border-border">
+						<div className="bg-card dark:bg-card/80 p-4 rounded-2xl flex flex-col items-center shadow-sm border border-border">
 							<div className="w-10 h-10 rounded-full bg-orange-50 dark:bg-orange-900/20 flex items-center justify-center mb-3">
 								<Zap className="w-6 h-6 text-orange-500" />
 							</div>
 							<span className="text-xl font-bold text-orange-500 tracking-tight">
 								{isCompleting ? '...' : `+${pointsEarned}`}
 							</span>
-							<span className="text-[10px] uppercase font-bold text-zinc-400 dark:text-zinc-500 tracking-wider">
+							<span className="text-[10px] uppercase font-bold text-muted-foreground tracking-wider">
 								XP Gained
 							</span>
 						</div>
@@ -214,7 +214,7 @@ export default function LessonComplete() {
 								transition={{ delay: 0.5 }}
 								className="w-full max-w-md space-y-3 mb-8"
 							>
-								<h3 className="text-lg font-bold text-zinc-900 dark:text-white text-left ml-1 flex items-center gap-2">
+								<h3 className="text-lg font-bold text-foreground text-left ml-1 flex items-center gap-2">
 									<Sparkles className="w-5 h-5 text-brand-amber" />
 									Rewards Unlocked
 								</h3>
@@ -226,10 +226,8 @@ export default function LessonComplete() {
 										<p className="text-[10px] font-extrabold text-brand-amber uppercase tracking-widest mb-0.5">
 											New Achievement
 										</p>
-										<h4 className="text-xl font-bold text-zinc-900 dark:text-white">
-											Achievement Unlocked!
-										</h4>
-										<p className="text-sm text-zinc-500 dark:text-zinc-400 font-medium">
+										<h4 className="text-xl font-bold text-foreground">Achievement Unlocked!</h4>
+										<p className="text-sm text-muted-foreground font-medium">
 											Keep learning to unlock more
 										</p>
 									</div>
@@ -245,16 +243,14 @@ export default function LessonComplete() {
 						className="w-full max-w-md space-y-3 mb-10 px-1"
 					>
 						<div className="flex justify-between items-end">
-							<span className="text-base font-bold text-zinc-900 dark:text-white">
-								Level {level}
-							</span>
-							<span className="text-xs font-bold text-zinc-400 dark:text-zinc-500">
+							<span className="text-base font-bold text-foreground">Level {level}</span>
+							<span className="text-xs font-bold text-muted-foreground">
 								{currentXp} / {xpToNext} XP
 							</span>
 						</div>
 						<Progress value={xpProgress} className="h-2.5" />
 						<div className="flex justify-end">
-							<span className="text-xs font-bold text-zinc-400 dark:text-zinc-500">
+							<span className="text-xs font-bold text-muted-foreground">
 								Next: Level {level + 1}
 							</span>
 						</div>
