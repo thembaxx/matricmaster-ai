@@ -104,7 +104,9 @@ export default function StudyPlanWizard() {
 				>
 					<ArrowLeft className="w-6 h-6 text-muted-foreground" />
 				</Button>
-				<h1 className="text-[10px] font-black text-label-tertiary uppercase tracking-[0.2em]">Study Plan</h1>
+				<h1 className="text-[10px] font-black text-label-tertiary uppercase tracking-[0.2em]">
+					Study Plan
+				</h1>
 				<Button variant="ghost" size="icon" className="rounded-full ios-active-scale">
 					<Settings2 className="w-6 h-6 text-muted-foreground" />
 				</Button>
@@ -115,10 +117,10 @@ export default function StudyPlanWizard() {
 					{/* Focus Areas Section */}
 					<div className="space-y-4">
 						<div className="flex justify-between items-end">
-							<h2 className="text-3xl font-black text-foreground tracking-tight">
-								Focus Areas
-							</h2>
-							<span className="text-[11px] font-black text-primary uppercase tracking-widest">Step 1 of 3</span>
+							<h2 className="text-3xl font-black text-foreground tracking-tight">Focus Areas</h2>
+							<span className="text-[11px] font-black text-primary uppercase tracking-widest">
+								Step 1 of 3
+							</span>
 						</div>
 						<div className="w-full h-2 bg-muted rounded-full overflow-hidden">
 							<div

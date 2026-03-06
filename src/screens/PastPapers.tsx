@@ -76,7 +76,10 @@ const FilterContent = memo(function FilterContent({
 								checked={selectedSubjects.includes(subject)}
 								onCheckedChange={() => onToggleSubject(subject)}
 							/>
-							<label htmlFor={`subject-${subject}`} className="text-sm font-black uppercase tracking-tight cursor-pointer text-label-secondary">
+							<label
+								htmlFor={`subject-${subject}`}
+								className="text-sm font-black uppercase tracking-tight cursor-pointer text-label-secondary"
+							>
 								{subject}
 							</label>
 						</div>
@@ -96,7 +99,10 @@ const FilterContent = memo(function FilterContent({
 								checked={selectedPapers.includes(paper)}
 								onCheckedChange={() => onTogglePaper(paper)}
 							/>
-							<label htmlFor={`paper-${paper}`} className="text-sm font-black uppercase tracking-tight cursor-pointer text-label-secondary">
+							<label
+								htmlFor={`paper-${paper}`}
+								className="text-sm font-black uppercase tracking-tight cursor-pointer text-label-secondary"
+							>
 								{paper}
 							</label>
 						</div>
@@ -116,7 +122,10 @@ const FilterContent = memo(function FilterContent({
 								checked={selectedMonths.includes(month)}
 								onCheckedChange={() => onToggleMonth(month)}
 							/>
-							<label htmlFor={`month-${month}`} className="text-sm font-black uppercase tracking-tight cursor-pointer text-label-secondary">
+							<label
+								htmlFor={`month-${month}`}
+								className="text-sm font-black uppercase tracking-tight cursor-pointer text-label-secondary"
+							>
 								{month}
 							</label>
 						</div>

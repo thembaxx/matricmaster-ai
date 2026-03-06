@@ -76,7 +76,9 @@ export default function MathematicsQuiz() {
 						</Button>
 						<div className="flex-1">
 							<div className="flex justify-between items-center mb-2">
-								<span className="text-[10px] font-black text-label-tertiary uppercase tracking-widest">Question 1 of 5</span>
+								<span className="text-[10px] font-black text-label-tertiary uppercase tracking-widest">
+									Question 1 of 5
+								</span>
 								<Badge
 									variant="secondary"
 									className="text-[10px] font-black uppercase tracking-tighter rounded-full bg-primary/10 text-primary border-none"
@@ -94,11 +96,15 @@ export default function MathematicsQuiz() {
 				<main className="px-6 py-8 space-y-8 pb-64 max-w-2xl mx-auto w-full">
 					{/* Question */}
 					<div className="space-y-4">
-						<h2 className="text-3xl font-black text-foreground tracking-tighter uppercase">Find the integral</h2>
+						<h2 className="text-3xl font-black text-foreground tracking-tighter uppercase">
+							Find the integral
+						</h2>
 						<Card className="p-12 bg-card border border-border rounded-3xl shadow-sm relative overflow-hidden group">
 							<div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity" />
 							<div className="text-center relative z-10">
-								<span className="text-4xl font-mono font-black text-foreground tracking-tighter uppercase">∫(3x² + 2x) dx</span>
+								<span className="text-4xl font-mono font-black text-foreground tracking-tighter uppercase">
+									∫(3x² + 2x) dx
+								</span>
 							</div>
 						</Card>
 					</div>
@@ -111,7 +117,9 @@ export default function MathematicsQuiz() {
 						<div className="min-h-[160px] p-6 bg-primary/5 rounded-3xl border-2 border-dashed border-primary/20">
 							{selectedSteps.length === 0 ? (
 								<div className="flex flex-col items-center justify-center py-8 text-label-tertiary space-y-2">
-									<p className="text-[10px] font-black uppercase tracking-widest">Tap steps below to solve</p>
+									<p className="text-[10px] font-black uppercase tracking-widest">
+										Tap steps below to solve
+									</p>
 								</div>
 							) : (
 								<div className="space-y-3">
