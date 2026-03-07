@@ -716,6 +716,7 @@ const createPastPaperSchema = z.object({
 const updatePastPaperSchema = z.object({
 	originalPdfUrl: z.string().url().max(500).optional(),
 	storedPdfUrl: z.string().url().max(500).optional(),
+	markdownFileUrl: z.string().url().max(500).optional(),
 	subject: z.string().min(1).max(100).optional(),
 	paper: z.string().min(1).max(20).optional(),
 	year: z.number().int().min(2000).max(2030).optional(),
@@ -749,7 +750,10 @@ export async function createPastPaperAction(
 export async function getPastPapersAction(filters: PastPaperFilters = {}): Promise<PastPaper[]> {
 	try {
 		const db = await getDb();
-		const conditions = [];
+		const conditions = [
+			// Only show papers that have a stored PDF
+			isNotNull(pastPapers.storedPdfUrl),
+		];
 
 		if (filters.subject !== undefined) {
 			conditions.push(eq(pastPapers.subject, filters.subject));
@@ -761,19 +765,13 @@ export async function getPastPapersAction(filters: PastPaperFilters = {}): Promi
 			conditions.push(eq(pastPapers.isExtracted, filters.isExtracted));
 		}
 
-		if (conditions.length > 0) {
-			return db
-				.select()
-				.from(pastPapers)
-				.where(and(...conditions))
-				.orderBy(desc(pastPapers.year), asc(pastPapers.month), asc(pastPapers.paper));
-		}
-
 		return db
 			.select()
 			.from(pastPapers)
+			.where(and(...conditions))
 			.orderBy(desc(pastPapers.year), asc(pastPapers.month), asc(pastPapers.paper));
-	} catch {
+	} catch (error) {
+		console.error('[DB] Error in getPastPapersAction:', error);
 		return [];
 	}
 }
@@ -988,7 +986,8 @@ export async function saveProcessedExtractedPaperAction(
  */
 export async function saveExtractedQuestionsAction(
 	paperId: string,
-	extractedQuestions: string
+	extractedQuestions: string,
+	markdownFileUrl?: string
 ): Promise<PastPaper | null> {
 	await ensureAdmin();
 	const db = await getDb();
@@ -1005,13 +1004,19 @@ export async function saveExtractedQuestionsAction(
 		return null;
 	}
 
+	const updateData: Partial<typeof pastPapers.$inferSelect> = {
+		extractedQuestions,
+		isExtracted: true,
+		updatedAt: new Date(),
+	};
+
+	if (markdownFileUrl) {
+		updateData.markdownFileUrl = markdownFileUrl;
+	}
+
 	const [updatedPaper] = await db
 		.update(pastPapers)
-		.set({
-			extractedQuestions,
-			isExtracted: true,
-			updatedAt: new Date(),
-		})
+		.set(updateData as any)
 		.where(eq(pastPapers.id, paper.id))
 		.returning();
 

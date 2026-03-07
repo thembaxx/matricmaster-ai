@@ -123,6 +123,7 @@ export const pastPapers = pgTable(
 		paperId: varchar('paper_id', { length: 100 }).notNull().unique(),
 		originalPdfUrl: text('original_pdf_url').notNull(),
 		storedPdfUrl: text('stored_pdf_url'),
+		markdownFileUrl: text('markdown_file_url'),
 		subject: varchar('subject', { length: 100 }).notNull(),
 		paper: varchar('paper', { length: 20 }).notNull(),
 		year: integer('year').notNull(),

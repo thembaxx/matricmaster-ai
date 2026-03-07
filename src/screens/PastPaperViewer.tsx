@@ -57,6 +57,7 @@ export default function PastPaperViewer({
 	const [aiExplanation, setAiExplanation] = useState<string | null>(null);
 	const [isExplaining, setIsExplaining] = useState(false);
 	const [showPdfFallback, setShowPdfFallback] = useState(mode === 'read');
+	const [viewMode, setViewMode] = useState<'smart' | 'original'>('smart');
 
 	const {
 		extractedPaper,
@@ -91,6 +92,7 @@ export default function PastPaperViewer({
 						month: dbPaper.month,
 						marks: dbPaper.totalMarks || 0,
 						downloadUrl: dbPaper.storedPdfUrl || dbPaper.originalPdfUrl,
+						markdownUrl: dbPaper.markdownFileUrl,
 					};
 					setPaper(paperData);
 					if (mode !== 'read') {
@@ -270,35 +272,47 @@ export default function PastPaperViewer({
 							</p>
 						</div>
 					</div>
-					<div className="flex gap-1">
+					<div className="flex items-center gap-2">
 						<Button
 							variant="ghost"
-							size="icon"
-							className="h-8 w-8"
-							onClick={() => setZoom((z) => Math.max(50, z - 10))}
+							size="sm"
+							onClick={() => setViewMode((v) => (v === 'smart' ? 'original' : 'smart'))}
+							className="gap-2 h-8 px-3 text-xs font-bold uppercase tracking-wider text-brand-blue bg-brand-blue/5 rounded-xl border border-brand-blue/10"
 						>
-							<ZoomOut className="w-4 h-4" />
+							{viewMode === 'smart' ? (
+								<>
+									<FileText className="w-3.5 h-3.5" />
+									Smart View
+								</>
+							) : (
+								<>
+									<FileText className="w-3.5 h-3.5" />
+									Original PDF
+								</>
+							)}
 						</Button>
-						<span className="text-sm font-medium w-12 text-center flex items-center justify-center">
-							{zoom}%
-						</span>
-						<Button
-							variant="ghost"
-							size="icon"
-							className="h-8 w-8"
-							onClick={() => setZoom((z) => Math.min(200, z + 10))}
-						>
-							<ZoomIn className="w-4 h-4" />
-						</Button>
-						<Button variant="ghost" size="icon" className="h-8 w-8" onClick={handleRotate}>
-							<Download className="w-4 h-4" />
-						</Button>
-						<Button variant="ghost" size="icon" className="h-8 w-8" onClick={handleDownload}>
-							<Bookmark className="w-4 h-4" />
-						</Button>
-						<Button variant="ghost" size="icon" className="h-8 w-8" onClick={handleSave}>
-							<Bookmark className={`w-4 h-4 ${isSaved ? 'fill-current text-brand-blue' : ''}`} />
-						</Button>
+
+						<div className="flex gap-1 border-l border-border pl-2">
+							<Button
+								variant="ghost"
+								size="icon"
+								className="h-8 w-8"
+								onClick={() => setZoom((z) => Math.max(50, z - 10))}
+							>
+								<ZoomOut className="w-4 h-4" />
+							</Button>
+							<span className="text-sm font-medium w-12 text-center flex items-center justify-center">
+								{zoom}%
+							</span>
+							<Button
+								variant="ghost"
+								size="icon"
+								className="h-8 w-8"
+								onClick={() => setZoom((z) => Math.min(200, z + 10))}
+							>
+								<ZoomIn className="w-4 h-4" />
+							</Button>
+						</div>
 					</div>
 				</div>
 
