@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { convertPdfToMarkdown } from '../services/markdownConverter';
 import { extractQuestionsFromMarkdown } from '../services/markdownExtractor';
 

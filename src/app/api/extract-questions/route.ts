@@ -92,11 +92,7 @@ export async function POST(request: NextRequest) {
 		if (cached && Object.keys(cached).length > 0) {
 			// Save to database for future use
 			try {
-				await saveExtractedQuestionsAction(
-					paperId,
-					JSON.stringify(cached),
-					cached.markdownFileUrl
-				);
+				await saveExtractedQuestionsAction(paperId, JSON.stringify(cached), cached.markdownFileUrl);
 				console.log(`[API] Saved extracted questions to database: ${paperId}`);
 			} catch (saveError) {
 				console.warn('[API] Failed to save to database:', saveError);

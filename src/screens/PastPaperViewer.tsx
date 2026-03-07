@@ -2,10 +2,8 @@
 
 import {
 	ArrowLeft,
-	Bookmark,
 	ChevronLeft,
 	ChevronRight,
-	Download,
 	FileText,
 	Loader2,
 	Sparkles,
@@ -48,8 +46,6 @@ export default function PastPaperViewer({
 
 	const [zoom, setZoom] = useState(100);
 	const [activeTab, setActiveTab] = useState('questions');
-	const [rotation, setRotation] = useState(0);
-	const [isSaved, setIsSaved] = useState(false);
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	// biome-ignore lint/suspicious/noExplicitAny: na
 	const [paper, setPaper] = useState<any>(PAST_PAPERS[0]);
@@ -130,18 +126,6 @@ export default function PastPaperViewer({
 
 		loadPaper();
 	}, [paperId, extractQuestions, mode]);
-
-	const handleDownload = () => {
-		window.open(paper.downloadUrl, '_blank');
-	};
-
-	const handleRotate = () => {
-		setRotation((r) => (r + 90) % 360);
-	};
-
-	const handleSave = () => {
-		setIsSaved(!isSaved);
-	};
 
 	const handleConvertToInteractive = () => {
 		router.push(`/interactive-quiz?id=${paper.id}`);
@@ -339,7 +323,7 @@ export default function PastPaperViewer({
 				<main
 					className="px-6 py-6 mobile-safe-bottom transition-transform duration-300"
 					style={{
-						transform: `scale(${zoom / 100}) rotate(${rotation}deg)`,
+						transform: `scale(${zoom / 100})`,
 						transformOrigin: 'top center',
 						// minHeight: '100vh',
 					}}

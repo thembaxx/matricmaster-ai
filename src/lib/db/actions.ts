@@ -1004,7 +1004,12 @@ export async function saveExtractedQuestionsAction(
 		return null;
 	}
 
-	const updateData: Partial<typeof pastPapers.$inferSelect> = {
+	const updateData: {
+		extractedQuestions: string;
+		isExtracted: boolean;
+		updatedAt: Date;
+		markdownFileUrl?: string;
+	} = {
 		extractedQuestions,
 		isExtracted: true,
 		updatedAt: new Date(),
@@ -1016,7 +1021,7 @@ export async function saveExtractedQuestionsAction(
 
 	const [updatedPaper] = await db
 		.update(pastPapers)
-		.set(updateData as any)
+		.set(updateData)
 		.where(eq(pastPapers.id, paper.id))
 		.returning();
 

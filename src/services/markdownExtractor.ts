@@ -1,8 +1,7 @@
 'use server';
 
 import { GoogleGenAI } from '@google/genai';
-import { z } from 'zod';
-import { logError, logInfo } from '@/lib/monitoring';
+import { logInfo } from '@/lib/monitoring';
 import { type ExtractedPaper, extractedPaperSchema } from './pdfExtractor';
 
 const extractionPrompt = `You are a world-class educational AI specialized in South African NSC (National Senior Certificate) exam analysis.
@@ -81,7 +80,7 @@ export async function extractQuestionsFromMarkdown(
 		contents: [
 			{
 				role: 'user',
-				parts: [{ text: prompt }, { text: '\n\n---\n\nMARKDOWN CONTENT:\n\n' + markdown }],
+				parts: [{ text: prompt }, { text: `\n\n---\n\nMARKDOWN CONTENT:\n\n${markdown}` }],
 			},
 		],
 		config: { responseMimeType: 'application/json' },
