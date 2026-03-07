@@ -27,7 +27,14 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 	const [sidebarOpen, setSidebarOpen] = useState(true);
 
 	const hideNavigation = ['/test', '/onboarding'];
-	const hideBottomNavigation = ['/','/sign-in', '/sign-up', '/test', '/interactive-quiz', '/onboarding'];
+	const hideBottomNavigation = [
+		'',
+		'/sign-in',
+		'/sign-up',
+		'/test',
+		'/interactive-quiz',
+		'/onboarding',
+	];
 
 	const shouldHideNav = hideNavigation.some((path) => pathname.startsWith(path));
 	const shouldHideBottomNav = hideBottomNavigation.some((path) => pathname.startsWith(path));

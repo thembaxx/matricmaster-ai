@@ -443,7 +443,7 @@ export default function PastPapers() {
 													className="w-full rounded-2xl h-14 bg-secondary hover:bg-primary hover:text-primary-foreground text-label-secondary font-black text-[10px] uppercase tracking-widest transition-all duration-300 group/btn ios-active-scale"
 													onClick={() => window.open(paper.originalPdfUrl, '_blank')}
 												>
-													<Download className="w-4 h-4 mr-2 group-hover/btn:animate-bounce" />
+													<Download className="w-4 h-4 mr-2" />
 													Download PDF
 												</Button>
 											</div>

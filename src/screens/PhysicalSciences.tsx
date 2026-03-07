@@ -27,7 +27,9 @@ export default function PhysicalSciences() {
 						<Button variant="ghost" size="icon" onClick={() => router.push('/dashboard')}>
 							<ArrowLeft className="w-5 h-5" />
 						</Button>
-						<h1 className="text-lg font-black text-foreground tracking-tight uppercase">Physics P1</h1>
+						<h1 className="text-lg font-black text-foreground tracking-tight uppercase">
+							Physics P1
+						</h1>
 					</div>
 					<div className="flex gap-2">
 						<Button variant="ghost" size="icon">

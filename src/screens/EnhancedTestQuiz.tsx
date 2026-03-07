@@ -711,10 +711,10 @@ export default function EnhancedTestQuizScreen() {
 								<Card className="premium-glass border-none p-8 w-full mb-8 relative overflow-hidden text-center">
 									<div className="absolute top-0 left-0 w-full h-2 bg-linear-to-r from-blue-500 via-purple-500 to-pink-500" />
 									<div className="space-y-2 mb-8">
-										<p className="text-[10px] font-black uppercase tracking-widest text-zinc-400">
+										<p className="text-[10px] font-black uppercase tracking-widest text-label-tertiary">
 											Your Performance
 										</p>
-										<div className="text-6xl font-black text-transparent bg-clip-text bg-linear-to-br from-zinc-900 to-zinc-600 dark:from-white dark:to-zinc-400">
+										<div className="text-6xl font-black text-foreground">
 											{Math.round((calculateScore() / quizState.questions.length) * 100)}%
 										</div>
 									</div>

@@ -49,10 +49,6 @@ export default function Landing() {
 
 	return (
 		<div className="flex flex-col h-full min-w-0 w-full bg-background overflow-x-hidden relative">
-			{/* Decorative Orbs */}
-			<div className="absolute top-[-10%] right-[-10%] w-125 h-125 bg-primary/5 rounded-full blur-[120px] pointer-events-none" />
-			{/* <div className="absolute bottom-[-10%] left-[-10%] w-100 h-100 bg-brand-purple/5 rounded-full blur-[100px] pointer-events-none" /> */}
-
 			<ScrollArea className="flex-1 no-scrollbar relative z-10">
 				<main className="pb-4 px-6 sm:px-6 max-w-7xl mx-auto w-full lg:px-0 lg:pb-24">
 					{/* Hero Section - Responsive Layout */}
@@ -90,14 +86,13 @@ export default function Landing() {
 							>
 								<Button
 									size="lg"
-									className="group relative w-full sm:w-auto lg:flex-none lg:w-72 rounded-2xl shrink-0 h-14 lg:h-16 xl:h-18 text-base lg:text-lg xl:text-xl font-black uppercase tracking-widest shadow-2xl ios-active-scale transition-all shadow-primary-violet/30 bg-primary-violet hover:opacity-90"
+									className="group relative w-full sm:w-auto lg:flex-none lg:w-72 rounded-2xl shrink-0 h-14 lg:h-16 xl:h-18 text-base lg:text-lg xl:text-xl font-black uppercase tracking-widest shadow-2xl ios-active-scale transition-all bg-primary hover:bg-primary/90"
 									onClick={() => handleAuthRoute('/dashboard')}
 								>
 									<span className="relative z-10 flex items-center justify-center">
 										Start Learning
 										<ChevronRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
 									</span>
-									<div className="absolute inset-0 bg-gradient-to-r from-primary-violet to-primary-cyan opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl" />
 								</Button>
 								<Button
 									variant="outline"
@@ -144,12 +139,9 @@ export default function Landing() {
 							transition={{ type: 'spring', stiffness: 100, damping: 20, delay: 0.3 }}
 							className="relative flex-1 w-full max-w-[320px] sm:max-w-100 md:max-w-112.5 lg:max-w-none flex items-center justify-center"
 						>
-							<div className="absolute inset-0 bg-primary/10 rounded-full blur-[100px] animate-pulse-slow" />
-
 							<m.div
 								whileHover={{ scale: 1.02 }}
-								className="relative w-full aspect-square max-w-75 sm:max-w-87.5 md:max-w-112.5 bg-card rounded-3xl sm:rounded-[4rem] shadow-2xl flex items-center justify-center transform border border-border transition-transform duration-700 overflow-hidden"
-								style={{ boxShadow: 'var(--premium-shadow)' }}
+								className="relative w-full aspect-square max-w-75 sm:max-w-87.5 md:max-w-112.5 bg-card rounded-3xl sm:rounded-[4rem] shadow-xl flex items-center justify-center transform border border-border transition-transform duration-700 overflow-hidden"
 							>
 								<div className="absolute inset-0 bg-primary/5" />
 
@@ -161,10 +153,13 @@ export default function Landing() {
 									<title>Mathematical Geometry Illustration</title>
 									<defs>
 										<linearGradient id={gradientId} x1="0%" y1="0%" x2="100%" y2="100%">
-												<stop offset="0%" style={{ stopColor: 'var(--primary-violet)', stopOpacity: 1 }} />
+											<stop
+												offset="0%"
+												style={{ stopColor: 'var(--primary-violet)', stopOpacity: 1 }}
+											/>
 											<stop
 												offset="100%"
-													style={{ stopColor: 'var(--primary-cyan)', stopOpacity: 1 }}
+												style={{ stopColor: 'var(--primary-cyan)', stopOpacity: 1 }}
 											/>
 										</linearGradient>
 									</defs>
@@ -195,22 +190,6 @@ export default function Landing() {
 									<circle cx="85" cy="75" r="4" fill="var(--warning)" />
 									<circle cx="15" cy="75" r="4" fill="var(--warning)" />
 								</svg>
-							</m.div>
-
-							{/* Floating Badges */}
-							<m.div
-								animate={{ y: [0, -15, 0] }}
-								transition={{ duration: 4, repeat: Number.POSITIVE_INFINITY, ease: 'easeInOut' }}
-								className="absolute -top-3 sm:-top-4 right-0 sm:right-2 w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 bg-primary-orange rounded-2xl sm:rounded-3xl shadow-2xl flex items-center justify-center -rotate-12 z-20"
-							>
-								<Sparkles className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 text-white fill-current" />
-							</m.div>
-							<m.div
-								animate={{ y: [0, 20, 0], rotate: [12, 18, 12] }}
-								transition={{ duration: 6, repeat: Number.POSITIVE_INFINITY, ease: 'easeInOut' }}
-								className="absolute -bottom-4 sm:-bottom-6 left-0 sm:left-2 w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 bg-accent-lime rounded-2xl sm:rounded-3xl shadow-2xl flex items-center justify-center z-20"
-							>
-								<Atom className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 text-white" />
 							</m.div>
 						</m.div>
 					</section>
@@ -285,39 +264,28 @@ export default function Landing() {
 
 					{/* Final CTA Section */}
 					<section className="mt-24 sm:mt-32 lg:mt-48 pb-12 sm:pb-16">
-						<Card className="relative p-1 rounded-3xl lg:rounded-[4rem] overflow-hidden group border-none">
-							<div className="absolute inset-0 bg-gradient-to-br from-primary-violet via-accent-indigo to-primary-cyan opacity-100" />
-							<div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0zNiAxOGMtOS45NDEgMC0xOCA4LjA1OS0xOCAxOHM4LjA1OSAxOCAxOCAxOCAxOC04LjA1OSAxOC0xOC04LjA1OS0xOC0xOC0xOHptMCAzMmMtNy43MzIgMC0xNC02LjI2OC0xNC0xNHM2LjI2OC0xNCAxNC0xNCAxNCA2LjI2OCAxNCAxNC02LjI2OCAxNC0xNCAxNHoiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4wNSkiLz48L2c+PC9zdmc+')] opacity-30 mix-blend-overlay" />
+						<Card className="relative p-8 sm:p-12 lg:p-16 xl:p-24 rounded-3xl lg:rounded-[4rem] bg-primary overflow-hidden">
+							<div className="space-y-6 sm:space-y-8">
+								<h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black text-white tracking-tighter leading-[0.95] uppercase">
+									Ready to ace
+									<br className="hidden sm:block" /> your exams?
+								</h2>
+								<p className="text-base sm:text-lg md:text-xl lg:text-2xl font-bold text-white/90 max-w-xl sm:max-w-2xl mx-auto tracking-tight">
+									Join thousands of students and start your journey to success today.
+								</p>
+							</div>
 
-							<div className="relative p-8 sm:p-12 lg:p-16 xl:p-24 rounded-3xl lg:rounded-[4rem] bg-primary-violet/90 backdrop-blur-sm">
-								<div className="absolute top-0 right-0 w-64 h-64 bg-primary-orange/30 rounded-full blur-[100px] -mr-32 -mt-32 pointer-events-none" />
-								<div className="absolute bottom-0 left-0 w-64 h-64 bg-primary-cyan/30 rounded-full blur-[100px] -ml-32 -mb-32 pointer-events-none" />
-
-								<div className="space-y-6 sm:space-y-8 relative z-10">
-									<h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black text-white tracking-tighter leading-[0.95] uppercase">
-										Ready to ace
-										<br className="hidden sm:block" /> your exams?
-									</h2>
-									<p className="text-base sm:text-lg md:text-xl lg:text-2xl font-bold text-white/90 max-w-xl sm:max-w-2xl mx-auto tracking-tight">
-										Join thousands of students and start your journey to success today.
-									</p>
-								</div>
-
-								<div className="relative z-10 mt-10 sm:mt-12">
-									<Button
-										size="lg"
-										className="group/cta w-full sm:w-auto bg-primary-orange hover:bg-primary-orange/90 text-white rounded-full h-14 sm:h-16 lg:h-20 px-10 lg:px-16 text-lg lg:text-xl xl:text-2xl font-black uppercase tracking-widest shadow-2xl transition-all hover:scale-105 active:scale-95 ios-active-scale border-none"
-										onClick={() => router.push('/dashboard')}
-									>
-										<span className="flex items-center gap-3">
-											Get Started Free
-											<Sparkles className="w-5 h-5 lg:w-6 lg:h-6 group-hover/cta:animate-bounce-subtle" />
-										</span>
-									</Button>
-									<p className="mt-6 sm:mt-8 text-[10px] font-bold uppercase tracking-[0.3em] text-white/60">
-										No credit card required • Instant access
-									</p>
-								</div>
+							<div className="mt-10 sm:mt-12">
+								<Button
+									size="lg"
+									className="w-full sm:w-auto bg-white text-primary hover:bg-white/90 rounded-full h-14 sm:h-16 lg:h-20 px-10 lg:px-16 text-lg lg:text-xl xl:text-2xl font-black uppercase tracking-widest shadow-lg transition-all hover:scale-105 active:scale-95 ios-active-scale border-none"
+									onClick={() => router.push('/dashboard')}
+								>
+									<span className="flex items-center gap-3">Get Started Free</span>
+								</Button>
+								<p className="mt-6 sm:mt-8 text-[10px] font-bold uppercase tracking-[0.3em] text-white/60">
+									No credit card required
+								</p>
 							</div>
 						</Card>
 					</section>

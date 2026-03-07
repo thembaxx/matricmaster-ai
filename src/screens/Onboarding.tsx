@@ -57,7 +57,7 @@ const STEPS: OnboardingStep[] = [
 		icon: Target,
 		cta: {
 			label: 'Choose Subjects',
-			action: () => { },
+			action: () => {},
 		},
 	},
 	{
@@ -216,7 +216,7 @@ export default function OnboardingScreen({ user }: OnboardingScreenProps) {
 									)}
 								/>
 
-								<div className='rounded-2xl overflow-hidden'>
+								<div className="rounded-2xl overflow-hidden">
 									<Image
 										src={step.image}
 										alt={step.title}

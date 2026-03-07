@@ -1,20 +1,18 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { AI_MODELS, checkAIProviderHealth, createAIClient } from '@/lib/ai-config';
 import * as aiProvider from '@/lib/ai';
+import { AI_MODELS, checkAIProviderHealth, createAIClient } from '@/lib/ai-config';
 
 // Mock the Google Generative AI library
 vi.mock('@google/generative-ai', () => ({
-	GoogleGenerativeAI: vi.fn().mockImplementation(function () {
-		return {
-			getGenerativeModel: vi.fn().mockImplementation(() => ({
-				generateContent: vi.fn().mockResolvedValue({
-					response: {
-						text: () => 'Test response',
-					},
-				}),
-			})),
-		};
-	}),
+	GoogleGenerativeAI: vi.fn().mockImplementation(() => ({
+		getGenerativeModel: vi.fn().mockImplementation(() => ({
+			generateContent: vi.fn().mockResolvedValue({
+				response: {
+					text: () => 'Test response',
+				},
+			}),
+		})),
+	})),
 }));
 
 // Mock the AI provider

@@ -129,8 +129,8 @@ export default function Profile() {
 
 						<div className="flex flex-col md:flex-row items-center gap-8 sm:gap-12 relative z-10">
 							<div className="relative group">
-									<div className="absolute -inset-4 bg-white/20 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity" />
-									<div className="w-24 h-24 sm:w-32 sm:h-32 md:w-48 md:h-48 rounded-full overflow-hidden border-4 border-white/20 shadow-2xl relative ring-4 sm:ring-8 ring-white/10 group-hover:scale-105 transition-transform duration-500">
+								<div className="absolute -inset-4 bg-white/20 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity" />
+								<div className="w-24 h-24 sm:w-32 sm:h-32 md:w-48 md:h-48 rounded-full overflow-hidden border-4 border-white/20 shadow-2xl relative ring-4 sm:ring-8 ring-white/10 group-hover:scale-105 transition-transform duration-500">
 									<SafeImage
 										src={
 											session?.user?.image ||

@@ -157,7 +157,9 @@ function StudyPathHeader({ router, progress }: StudyPathHeaderProps) {
 			>
 				<ArrowLeft className="w-6 h-6" />
 			</Button>
-			<h1 className="text-lg font-black text-foreground tracking-tight uppercase">My Physics Path</h1>
+			<h1 className="text-lg font-black text-foreground tracking-tight uppercase">
+				My Physics Path
+			</h1>
 			{progress !== undefined && (
 				<div className="flex items-center gap-2 px-3 py-1.5 bg-primary-violet/10 rounded-full">
 					<Zap className="w-4 h-4 fill-primary-violet text-primary-violet" />
@@ -264,9 +266,7 @@ function LockedNode({ node }: { node: PathNode }) {
 	return (
 		<div className="flex flex-col items-center gap-2 opacity-60">
 			<div className="relative">
-				<div
-					className="w-16 h-16 rounded-[1.5rem] flex items-center justify-center shadow-lg bg-muted grayscale"
-				>
+				<div className="w-16 h-16 rounded-[1.5rem] flex items-center justify-center shadow-lg bg-muted grayscale">
 					<span className="text-2xl font-black text-muted-foreground">÷±</span>
 				</div>
 				<div className="absolute -top-1 -right-1 w-8 h-8 rounded-full bg-background border-2 border-border flex items-center justify-center shadow-sm">
@@ -324,7 +324,7 @@ function CurrentNode({ node }: { node: PathNode }) {
 						/>
 					</svg>
 				</div>
-				<div className="absolute -top-3 -right-3 flex items-center gap-1 px-3 py-1 bg-primary-orange text-white text-[10px] font-black uppercase tracking-tighter rounded-full shadow-xl animate-bounce-subtle">
+				<div className="absolute -top-3 -right-3 flex items-center gap-1 px-3 py-1 bg-primary-orange text-white text-[10px] font-black uppercase tracking-tighter rounded-full shadow-xl">
 					<span>NEXT</span>
 					<span>🚩</span>
 				</div>
@@ -354,8 +354,7 @@ function CompletedNode({ node }: { node: PathNode }) {
 			<div
 				className="w-16 h-16 rounded-full flex items-center justify-center shadow-lg"
 				style={{
-					background:
-						'linear-gradient(135deg, var(--accent-lime) 0%, #65A30D 100%)',
+					background: 'linear-gradient(135deg, var(--accent-lime) 0%, #65A30D 100%)',
 				}}
 			>
 				<Check className="w-8 h-8 text-white" strokeWidth={4} />
@@ -397,9 +396,7 @@ function ResumeButton({ router, title }: ResumeButtonProps) {
 						<Play className="w-6 h-6 fill-white text-white" />
 					</div>
 					<div className="text-left">
-						<p className="font-black text-lg tracking-tight uppercase leading-none">
-							Resume Path
-						</p>
+						<p className="font-black text-lg tracking-tight uppercase leading-none">Resume Path</p>
 						<p className="text-[10px] text-white/70 uppercase tracking-widest mt-1 font-bold">
 							{title} • 15 mins
 						</p>
