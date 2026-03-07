@@ -1,6 +1,6 @@
 'use client';
 
-import { FileUp, Plus, Save, Sparkles, X } from 'lucide-react';
+import { FileArrowUp, FloppyDisk, Plus, Sparkle, X } from '@phosphor-icons/react';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { Badge } from '@/components/ui/badge';
@@ -256,7 +256,7 @@ export function PdfUploadDrawer({ isOpen, onClose, subjects, onSuccess }: PdfUpl
 			onClose();
 			reset();
 		} catch (error) {
-			console.error('Save error:', error);
+			console.error('FloppyDisk error:', error);
 			toast.error('Failed to save paper');
 		} finally {
 			setIsSaving(false);
@@ -290,7 +290,7 @@ export function PdfUploadDrawer({ isOpen, onClose, subjects, onSuccess }: PdfUpl
 						</DrawerTitle>
 						{step === 'review' && (
 							<Badge className="bg-brand-blue/10 text-brand-blue border-brand-blue/20">
-								<Sparkles className="h-3 w-3 mr-1" /> Superpowered
+								<Sparkle weight="bold" className="h-3 w-3 mr-1" /> Superpowered
 							</Badge>
 						)}
 					</div>
@@ -426,7 +426,7 @@ export function PdfUploadDrawer({ isOpen, onClose, subjects, onSuccess }: PdfUpl
 										<div
 											className={`h-16 w-16 rounded-2xl flex items-center justify-center ${file ? 'bg-brand-blue text-white' : 'bg-muted text-muted-foreground'}`}
 										>
-											<FileUp className="h-8 w-8" />
+											<FileArrowUp className="h-8 w-8" />
 										</div>
 										<div className="text-center">
 											<p className="font-black uppercase tracking-widest text-xs">
@@ -448,7 +448,10 @@ export function PdfUploadDrawer({ isOpen, onClose, subjects, onSuccess }: PdfUpl
 						<div className="flex flex-col items-center justify-center py-24 px-8 space-y-8">
 							<div className="relative">
 								<div className="absolute inset-0 bg-brand-blue/20 blur-3xl rounded-full animate-pulse" />
-								<Sparkles className="h-16 w-16 text-brand-blue relative z-10 animate-bounce" />
+								<Sparkle
+									weight="bold"
+									className="h-16 w-16 text-brand-blue relative z-10 animate-bounce"
+								/>
 							</div>
 							<div className="w-full max-w-md space-y-4">
 								<div className="flex justify-between items-end">
@@ -676,7 +679,7 @@ export function PdfUploadDrawer({ isOpen, onClose, subjects, onSuccess }: PdfUpl
 							disabled={!file || !paperDetails.paperId || !paperDetails.subjectId}
 							className="flex-1 h-14 bg-brand-blue hover:bg-brand-blue/90 rounded-2xl font-black uppercase tracking-widest text-xs shadow-2xl shadow-brand-blue/20"
 						>
-							<Sparkles className="h-4 w-4 mr-2" /> Start Superpowered AI Extraction
+							<Sparkle weight="bold" className="h-4 w-4 mr-2" /> Start Superpowered AI Extraction
 						</Button>
 					)}
 					{step === 'review' && (
@@ -689,8 +692,8 @@ export function PdfUploadDrawer({ isOpen, onClose, subjects, onSuccess }: PdfUpl
 								<Spinner className="h-5 w-5 text-white" />
 							) : (
 								<>
-									<Save className="h-4 w-4 mr-2" /> Save Paper & {extractedData?.questions.length}{' '}
-									Questions
+									<FloppyDisk className="h-4 w-4 mr-2" /> FloppyDisk Paper &{' '}
+									{extractedData?.questions.length} Questions
 								</>
 							)}
 						</Button>

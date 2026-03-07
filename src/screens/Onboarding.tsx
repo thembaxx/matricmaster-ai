@@ -1,15 +1,15 @@
 'use client';
 
-import { AnimatePresence, m } from 'framer-motion';
 import {
 	Calculator,
-	ChevronLeft,
-	ChevronRight,
+	CaretLeft,
+	CaretRight,
 	Rocket,
-	Sparkles,
+	Sparkle,
 	Target,
 	Trophy,
-} from 'lucide-react';
+} from '@phosphor-icons/react';
+import { AnimatePresence, m } from 'framer-motion';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useCallback, useState } from 'react';
@@ -154,7 +154,7 @@ export default function OnboardingScreen({ user }: OnboardingScreenProps) {
 				<div className="flex items-center justify-between mb-4">
 					<div className="flex items-center gap-2">
 						<div className="w-8 h-8 bg-primary/10 rounded-xl flex items-center justify-center">
-							<Sparkles className="w-4 h-4 text-primary" />
+							<Sparkle weight="bold" className="w-4 h-4 text-primary" />
 						</div>
 						<span className="text-sm font-bold tracking-tight uppercase text-muted-foreground">
 							Step {currentStep + 1} of {STEPS.length}
@@ -263,7 +263,7 @@ export default function OnboardingScreen({ user }: OnboardingScreenProps) {
 						disabled={currentStep === 0}
 						onClick={() => paginate(-1)}
 					>
-						<ChevronLeft className="w-6 h-6" />
+						<CaretLeft className="w-6 h-6" />
 					</Button>
 
 					{currentStep === STEPS.length - 1 ? (
@@ -277,7 +277,7 @@ export default function OnboardingScreen({ user }: OnboardingScreenProps) {
 									animate={{ rotate: 360 }}
 									transition={{ duration: 1, repeat: Number.POSITIVE_INFINITY, ease: 'linear' }}
 								>
-									<Sparkles className="w-6 h-6" />
+									<Sparkle weight="bold" className="w-6 h-6" />
 								</m.div>
 							) : (
 								"Let's Go!"
@@ -289,7 +289,7 @@ export default function OnboardingScreen({ user }: OnboardingScreenProps) {
 							onClick={() => paginate(1)}
 						>
 							Next
-							<ChevronRight className="ml-2 w-5 h-5" />
+							<CaretRight className="ml-2 w-5 h-5" />
 						</Button>
 					)}
 				</div>

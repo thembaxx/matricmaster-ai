@@ -1,6 +1,15 @@
 'use client';
 
-import { Database, Edit2, FileUp, ImagePlus, Plus, Search, Trash2, X } from 'lucide-react';
+import {
+	Database,
+	FileArrowUp,
+	ImageSquare,
+	MagnifyingGlass,
+	PencilSimple,
+	Plus,
+	Trash,
+	X,
+} from '@phosphor-icons/react';
 import Image from 'next/image';
 import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
 import { toast } from 'sonner';
@@ -154,11 +163,10 @@ export default function CMS() {
 		}
 	};
 
-	// Bolt: Memoize subject lookup to convert O(S) array search into O(1) Map lookup
+	// Bolt: Memoize subject lookup to convert O(S) array search into O(1) MapTrifold lookup
 	const subjectMap = useMemo(() => {
 		return new Map(subjects.map((s) => [s.id, s.name]));
 	}, [subjects]);
-
 	// Bolt: Memoize filtered users to prevent O(N) filtering on unrelated state changes (like drawer toggle)
 	const filteredUsers = useMemo(() => {
 		const query = userSearchQuery.toLowerCase(); // Bolt: Lowercase once outside loop
@@ -497,7 +505,7 @@ export default function CMS() {
 								onClick={() => setIsPdfDrawerOpen(true)}
 								className="rounded-2xl h-12 px-6 bg-primary hover:bg-primary/90 shadow-2xl shadow-primary/20 font-black text-sm uppercase tracking-widest"
 							>
-								<FileUp className="h-5 w-5 mr-2" />
+								<FileArrowUp className="h-5 w-5 mr-2" />
 								Upload PDF
 							</Button>
 						) : (
@@ -543,10 +551,10 @@ export default function CMS() {
 					</TabsList>
 				</Tabs>
 
-				{/* Search & Filters */}
+				{/* MagnifyingGlass & Filters */}
 				<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-12 gap-3 sm:gap-4">
 					<div className="sm:col-span-2 md:col-span-6 relative">
-						<Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+						<MagnifyingGlass className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
 						<Input
 							value={activeTab === 'users' ? userSearchQuery : searchQuery}
 							onChange={(e) =>
@@ -554,7 +562,9 @@ export default function CMS() {
 									? setUserSearchQuery(e.target.value)
 									: setSearchQuery(e.target.value)
 							}
-							placeholder={activeTab === 'users' ? 'Search users...' : 'Search content...'}
+							placeholder={
+								activeTab === 'users' ? 'MagnifyingGlass users...' : 'MagnifyingGlass content...'
+							}
 							className="pl-12 text-base h-14 bg-muted/30 border-2 rounded-2xl focus:ring-primary/20"
 						/>
 					</div>
@@ -599,7 +609,7 @@ export default function CMS() {
 								onValueChange={(v) => setUserFilter(v as typeof userFilter)}
 							>
 								<SelectTrigger className="h-14 rounded-2xl border-2 bg-muted/30">
-									<SelectValue placeholder="Filter users" />
+									<SelectValue placeholder="Faders users" />
 								</SelectTrigger>
 								<SelectContent className="rounded-2xl">
 									<SelectItem value="all">All Users</SelectItem>
@@ -652,12 +662,12 @@ export default function CMS() {
 																	size="icon"
 																	className="h-10 w-10 rounded-xl hover:bg-primary/10 hover:text-primary transition-colors"
 																	onClick={() => handleEditQuestion(q)}
-																	aria-label="Edit question"
+																	aria-label="Pencil question"
 																>
-																	<Edit2 className="h-5 w-5" />
+																	<PencilSimple className="h-5 w-5" />
 																</Button>
 															</TooltipTrigger>
-															<TooltipContent>Edit question</TooltipContent>
+															<TooltipContent>Pencil question</TooltipContent>
 														</Tooltip>
 														<Tooltip>
 															<TooltipTrigger asChild>
@@ -666,12 +676,12 @@ export default function CMS() {
 																	size="icon"
 																	className="h-10 w-10 rounded-xl hover:bg-rose-500/10 hover:text-rose-500 transition-colors"
 																	onClick={() => handleDeleteQuestion(q.id)}
-																	aria-label="Delete question"
+																	aria-label="Backspace question"
 																>
-																	<Trash2 className="h-5 w-5" />
+																	<Trash className="h-5 w-5" />
 																</Button>
 															</TooltipTrigger>
-															<TooltipContent>Delete question</TooltipContent>
+															<TooltipContent>Backspace question</TooltipContent>
 														</Tooltip>
 													</div>
 												</div>
@@ -849,7 +859,7 @@ export default function CMS() {
 				<DrawerContent className="max-h-[90vh] flex flex-col z-50 rounded-t-[3rem] pb-8 lg:max-w-4xl lg:mx-auto">
 					<DrawerHeader className="text-left border-b pb-8 px-8">
 						<DrawerTitle className="text-3xl font-black tracking-tighter uppercase">
-							{editingQuestion?.id ? 'Edit Question' : 'New Question'}
+							{editingQuestion?.id ? 'Pencil Question' : 'New Question'}
 						</DrawerTitle>
 						<DrawerDescription className="font-bold">
 							Manage educational content for students
@@ -931,7 +941,7 @@ export default function CMS() {
 														className="w-full h-48 rounded-3xl border-2 border-dashed border-border flex flex-col items-center justify-center gap-4 hover:border-primary hover:bg-primary/5 transition-all cursor-pointer"
 													>
 														<div className="h-16 w-16 rounded-2xl bg-muted flex items-center justify-center">
-															<ImagePlus className="h-8 w-8 text-muted-foreground" />
+															<ImageSquare className="h-8 w-8 text-muted-foreground" />
 														</div>
 														<span className="text-xs font-black uppercase tracking-widest text-muted-foreground">
 															Upload Image (Max 4MB)
@@ -1050,7 +1060,7 @@ export default function CMS() {
 													setEditingQuestion({ ...editingQuestion, questionText: e.target.value })
 												}
 												className="min-h-50 rounded-3xl border-2 p-6 font-bold text-lg leading-relaxed"
-												placeholder="Type the question..."
+												placeholder="TextT the question..."
 											/>
 										</div>
 										<div className="space-y-3 max-w-50">
@@ -1168,7 +1178,7 @@ export default function CMS() {
 							) : editingQuestion?.id ? (
 								'Update Content'
 							) : (
-								'Save Content'
+								'FloppyDisk Content'
 							)}
 						</Button>
 					</DrawerFooter>

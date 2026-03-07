@@ -1,6 +1,6 @@
 'use client';
 
-import { BookOpen, Dumbbell, Loader2, Save, Sparkles } from 'lucide-react';
+import { Barbell, BookOpen, CircleNotch, FloppyDisk, Sparkle } from '@phosphor-icons/react';
 import Link from 'next/link';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { toast } from 'sonner';
@@ -91,7 +91,7 @@ export default function AITutorPage() {
 		try {
 			const response = await fetch('/api/ai-tutor', {
 				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
+				headers: { 'Content-TextT': 'application/json' },
 				body: JSON.stringify({
 					message: textToSend,
 					subject: selectedSubject,
@@ -176,7 +176,7 @@ export default function AITutorPage() {
 
 			const response = await fetch('/api/ai-tutor/practice', {
 				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
+				headers: { 'Content-TextT': 'application/json' },
 				body: JSON.stringify({
 					context,
 					subject: selectedSubject,
@@ -211,7 +211,7 @@ export default function AITutorPage() {
 
 			const response = await fetch('/api/ai-tutor/flashcards', {
 				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
+				headers: { 'Content-TextT': 'application/json' },
 				body: JSON.stringify({
 					context,
 					subject: selectedSubject,
@@ -313,7 +313,10 @@ export default function AITutorPage() {
 					<div className="max-w-4xl mx-auto flex items-center justify-between gap-2">
 						<div className="flex items-center gap-3 md:gap-4">
 							<div className="h-10 w-10 md:h-12 md:w-12 rounded-xl md:rounded-2xl bg-primary/10 flex items-center justify-center shadow-inner">
-								<Sparkles className="h-5 w-5 md:h-6 md:w-6 text-primary animate-pulse-soft" />
+								<Sparkle
+									weight="bold"
+									className="h-5 w-5 md:h-6 md:w-6 text-primary animate-pulse-soft"
+								/>
 							</div>
 							<div>
 								<h1 className="text-lg md:text-xl font-black font-lexend tracking-tight">
@@ -336,7 +339,7 @@ export default function AITutorPage() {
 								disabled={isGeneratingFlashcards || messages.length <= 1}
 							>
 								{isGeneratingFlashcards ? (
-									<Loader2 className="h-4 w-4 animate-spin" />
+									<CircleNotch className="h-4 w-4 animate-spin" />
 								) : (
 									<BookOpen className="h-4 w-4" />
 								)}
@@ -350,15 +353,15 @@ export default function AITutorPage() {
 								disabled={isGeneratingPractice || messages.length <= 1}
 							>
 								{isGeneratingPractice ? (
-									<Loader2 className="h-4 w-4 animate-spin" />
+									<CircleNotch className="h-4 w-4 animate-spin" />
 								) : (
-									<Dumbbell className="h-4 w-4" />
+									<Barbell className="h-4 w-4" />
 								)}
 								<span className="hidden md:inline ml-2">Practice</span>
 							</Button>
 							<Button variant="ios" size="sm" className="rounded-xl" onClick={handleSave}>
-								<Save className="h-4 w-4" />
-								<span className="hidden md:inline ml-2">Save</span>
+								<FloppyDisk className="h-4 w-4" />
+								<span className="hidden md:inline ml-2">FloppyDisk</span>
 							</Button>
 						</div>
 					</div>

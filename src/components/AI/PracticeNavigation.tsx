@@ -1,4 +1,4 @@
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { CaretLeft, CaretRight } from '@phosphor-icons/react';
 import { Button } from '@/components/ui/button';
 
 interface PracticeNavigationProps {
@@ -23,7 +23,7 @@ export function PracticeNavigation({
 	return (
 		<div className="flex justify-between items-center pt-4 border-t">
 			<Button variant="outline" onClick={onPrevious} disabled={currentIndex === 0}>
-				<ChevronLeft className="h-4 w-4 mr-1" />
+				<CaretLeft className="h-4 w-4 mr-1" />
 				Previous
 			</Button>
 
@@ -34,7 +34,7 @@ export function PracticeNavigation({
 			) : (
 				<Button onClick={onNext} disabled={currentIndex === totalProblems - 1}>
 					Next
-					<ChevronRight className="h-4 w-4 ml-1" />
+					<CaretRight className="h-4 w-4 ml-1" />
 				</Button>
 			)}
 		</div>

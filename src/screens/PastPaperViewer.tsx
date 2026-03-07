@@ -2,14 +2,14 @@
 
 import {
 	ArrowLeft,
-	ChevronLeft,
-	ChevronRight,
+	CaretLeft,
+	CaretRight,
+	CircleNotch,
 	FileText,
-	Loader2,
-	Sparkles,
-	ZoomIn,
-	ZoomOut,
-} from 'lucide-react';
+	MagnifyingGlassMinus,
+	MagnifyingGlassPlus,
+	Sparkle,
+} from '@phosphor-icons/react';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -27,7 +27,7 @@ const PdfViewer = dynamic(() => import('@/components/PdfViewer'), {
 	ssr: false,
 	loading: () => (
 		<div className="flex items-center justify-center h-full">
-			<Loader2 className="w-8 h-8 animate-spin text-brand-blue" />
+			<CircleNotch className="w-8 h-8 animate-spin text-brand-blue" />
 		</div>
 	),
 });
@@ -156,7 +156,7 @@ export default function PastPaperViewer({
 			<div className="flex flex-col h-full bg-background relative grow overflow-hidden">
 				<div className="flex-1 flex flex-col items-center justify-center p-6">
 					<div className="text-center space-y-4">
-						<Loader2 className="w-12 h-12 animate-spin text-brand-blue mx-auto" />
+						<CircleNotch className="w-12 h-12 animate-spin text-brand-blue mx-auto" />
 						<div className="space-y-2">
 							<h3 className="font-bold text-zinc-900 dark:text-white">Extracting Questions...</h3>
 							<p className="text-sm text-zinc-500">Using AI to parse the exam paper</p>
@@ -205,7 +205,7 @@ export default function PastPaperViewer({
 				<div className="flex-1 flex flex-col items-center justify-center p-6">
 					<div className="text-center space-y-4 max-w-sm">
 						<div className="w-16 h-16 bg-red-100 dark:bg-red-900/20 rounded-full flex items-center justify-center mx-auto">
-							<Sparkles className="w-8 h-8 text-red-500" />
+							<Sparkle weight="bold" className="w-8 h-8 text-red-500" />
 						</div>
 						<div className="space-y-2">
 							<h3 className="font-bold text-zinc-900 dark:text-white">Extraction Failed</h3>
@@ -283,7 +283,7 @@ export default function PastPaperViewer({
 								className="h-8 w-8"
 								onClick={() => setZoom((z) => Math.max(50, z - 10))}
 							>
-								<ZoomOut className="w-4 h-4" />
+								<MagnifyingGlassMinus className="w-4 h-4" />
 							</Button>
 							<span className="text-sm font-medium w-12 text-center flex items-center justify-center">
 								{zoom}%
@@ -294,7 +294,7 @@ export default function PastPaperViewer({
 								className="h-8 w-8"
 								onClick={() => setZoom((z) => Math.min(200, z + 10))}
 							>
-								<ZoomIn className="w-4 h-4" />
+								<MagnifyingGlassPlus className="w-4 h-4" />
 							</Button>
 						</div>
 					</div>
@@ -425,9 +425,9 @@ export default function PastPaperViewer({
 									disabled={isExplaining}
 								>
 									{isExplaining ? (
-										<Loader2 className="w-4 h-4 mr-2 animate-spin" />
+										<CircleNotch className="w-4 h-4 mr-2 animate-spin" />
 									) : (
-										<Sparkles className="w-4 h-4 mr-2 text-brand-blue" />
+										<Sparkle weight="bold" className="w-4 h-4 mr-2 text-brand-blue" />
 									)}
 									{isExplaining ? 'Getting Explanation...' : 'Explain This Question'}
 								</Button>
@@ -436,7 +436,7 @@ export default function PastPaperViewer({
 								{showAiExplanation && aiExplanation && (
 									<div className="mt-4 p-4 bg-brand-blue/5 border border-brand-blue/20 rounded-xl">
 										<div className="flex items-center gap-2 mb-2">
-											<Sparkles className="w-4 h-4 text-brand-blue" />
+											<Sparkle weight="bold" className="w-4 h-4 text-brand-blue" />
 											<span className="text-sm font-bold text-brand-blue">AI Explanation</span>
 										</div>
 										<p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-wrap">
@@ -467,7 +467,7 @@ export default function PastPaperViewer({
 							size="sm"
 							className="bg-brand-blue text-white rounded-xl font-black text-[11px] uppercase tracking-wider"
 						>
-							<Sparkles className="w-6 h-6" />
+							<Sparkle weight="bold" className="w-6 h-6" />
 							Start Quiz
 						</Button>
 					</Card>
@@ -485,7 +485,7 @@ export default function PastPaperViewer({
 							onClick={previousQuestion}
 							className="gap-2"
 						>
-							<ChevronLeft className="w-4 h-4" />
+							<CaretLeft className="w-4 h-4" />
 							Previous
 						</Button>
 
@@ -533,7 +533,7 @@ export default function PastPaperViewer({
 							className="gap-2"
 						>
 							Next
-							<ChevronRight className="w-4 h-4" />
+							<CaretRight className="w-4 h-4" />
 						</Button>
 					</div>
 				</footer>

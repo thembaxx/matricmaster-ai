@@ -1,6 +1,6 @@
 'use client';
 
-import { ArrowLeft, TrendingUp } from 'lucide-react';
+import { ArrowLeft, TrendUp } from '@phosphor-icons/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import { AIExplanationCard } from '@/components/AI/AIExplanationCard';
@@ -118,13 +118,13 @@ const questions = [
 		question:
 			'In a circuit with internal resistance, Graph K has negative slope (V vs I) and Graph L has positive slope. Which voltmeters?',
 		options: [
-			{ id: 'A', text: 'K: V1 (Terminal), L: V1' },
-			{ id: 'B', text: 'K: V1 (Terminal), L: V2 (External)' },
-			{ id: 'C', text: 'K: V2 (External), L: V1 (Terminal)' },
+			{ id: 'A', text: 'K: V1 (TerminalWindow), L: V1' },
+			{ id: 'B', text: 'K: V1 (TerminalWindow), L: V2 (External)' },
+			{ id: 'C', text: 'K: V2 (External), L: V1 (TerminalWindow)' },
 			{ id: 'D', text: 'K: V2, L: V2' },
 		],
 		correctAnswer: 'B',
-		hint: 'Terminal voltage decreases with current (V = ε - Ir). Resistor voltage increases (V = IR).',
+		hint: 'TerminalWindow voltage decreases with current (V = ε - Ir). Resistor voltage increases (V = IR).',
 		topic: 'Electric Circuits',
 	},
 	{
@@ -279,7 +279,7 @@ export default function PhysicsQuiz() {
 				<main className="px-6 py-8 space-y-8 mobile-safe-bottom max-w-2xl mx-auto w-full">
 					<div className="space-y-6">
 						<div className="flex items-center gap-3">
-							<TrendingUp className="w-5 h-5 text-brand-purple" />
+							<TrendUp className="w-5 h-5 text-brand-purple" />
 							<h3 className="text-[10px] font-black uppercase text-muted-foreground tracking-[0.2em]">
 								NSC Physics P1 2025
 							</h3>

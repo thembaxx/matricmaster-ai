@@ -1,16 +1,16 @@
 'use client';
 
 import {
+	ArrowCounterClockwise,
 	Check,
 	FlipHorizontal,
 	Lightbulb,
-	RotateCcw,
 	Shuffle,
 	Tag,
 	ThumbsDown,
 	ThumbsUp,
 	X,
-} from 'lucide-react';
+} from '@phosphor-icons/react';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { Badge } from '@/components/ui/badge';
@@ -272,7 +272,7 @@ export function FlashcardModal({
 												Shuffle
 											</Button>
 											<Button variant="outline" size="sm" onClick={handleReset}>
-												<RotateCcw className="h-4 w-4 mr-1" />
+												<ArrowCounterClockwise className="h-4 w-4 mr-1" />
 												Reset
 											</Button>
 										</>

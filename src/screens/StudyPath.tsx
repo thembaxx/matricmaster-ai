@@ -2,15 +2,15 @@
 
 import {
 	ArrowLeft,
+	CaretRight,
 	Check,
-	ChevronRight,
-	Loader2,
+	CircleNotch,
+	Lightning,
 	Lock,
 	Play,
-	Sparkles,
+	Sparkle,
 	Star,
-	Zap,
-} from 'lucide-react';
+} from '@phosphor-icons/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
@@ -90,7 +90,7 @@ export default function StudyPath() {
 function StudyPathLoading() {
 	return (
 		<div className="min-h-screen flex flex-col items-center justify-center bg-muted dark:bg-background">
-			<Loader2 className="w-8 h-8 animate-spin text-primary" />
+			<CircleNotch className="w-8 h-8 animate-spin text-primary" />
 			<p className="mt-4 text-muted-foreground">Loading your study path...</p>
 		</div>
 	);
@@ -102,7 +102,7 @@ function NoPlanState({ router }: { router: ReturnType<typeof useRouter> }) {
 			<StudyPathHeader router={router} />
 			<main className="flex-1 flex flex-col items-center justify-center px-4 text-center space-y-6">
 				<div className="w-24 h-24 rounded-full bg-primary/10 flex items-center justify-center">
-					<Sparkles className="w-12 h-12 text-primary" />
+					<Sparkle weight="bold" className="w-12 h-12 text-primary" />
 				</div>
 				<div className="space-y-2">
 					<h2 className="text-2xl font-bold text-foreground">No Study Plan Yet</h2>
@@ -162,7 +162,7 @@ function StudyPathHeader({ router, progress }: StudyPathHeaderProps) {
 			</h1>
 			{progress !== undefined && (
 				<div className="flex items-center gap-2 px-3 py-1.5 bg-primary-violet/10 rounded-full">
-					<Zap className="w-4 h-4 fill-primary-violet text-primary-violet" />
+					<Lightning weight="bold" className="w-4 h-4 fill-primary-violet text-primary-violet" />
 					<span className="font-black text-xs text-primary-violet">{progress}%</span>
 				</div>
 			)}
@@ -402,7 +402,7 @@ function ResumeButton({ router, title }: ResumeButtonProps) {
 						</p>
 					</div>
 				</div>
-				<ChevronRight className="w-6 h-6" />
+				<CaretRight className="w-6 h-6" />
 			</Button>
 		</div>
 	);

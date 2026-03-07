@@ -1,7 +1,7 @@
 'use client';
 
+import { Fire, GraduationCap, Medal, Target } from '@phosphor-icons/react';
 import { m } from 'framer-motion';
-import { Award, Flame, GraduationCap, Target } from 'lucide-react';
 import { useEffect, useId, useMemo, useState } from 'react';
 import { PolarAngleAxis, PolarGrid, Radar, RadarChart } from 'recharts';
 import { LevelProgress } from '@/components/Gamification/LevelProgress';
@@ -73,7 +73,7 @@ export default function Profile() {
 					getUserAchievements(),
 				]);
 
-				// Bolt: Fix logic bug (was searching available instead of all) and optimize with O(1) Map lookup
+				// Bolt: Fix logic bug (was searching available instead of all) and optimize with O(1) MapTrifold lookup
 				const totalXp = achievements.unlocked.reduce((sum, a) => {
 					return sum + (ACHIEVEMENT_POINTS_MAP.get(a.achievementId) || 0);
 				}, 0);
@@ -144,7 +144,7 @@ export default function Profile() {
 									/>
 								</div>
 								<div className="absolute bottom-2 right-2 rounded-full p-2 bg-primary ring-4 ring-zinc-900 text-white shadow-xl">
-									<Target className="w-5 h-5" />
+									<Target weight="bold" className="w-5 h-5" />
 								</div>
 							</div>
 
@@ -274,7 +274,7 @@ export default function Profile() {
 							<Card className="p-8 rounded-3xl border border-border bg-card/50 backdrop-blur-sm relative overflow-hidden group shadow-xl hover:shadow-2xl transition-all duration-500">
 								<div className="flex items-center gap-8 relative z-10">
 									<div className="w-20 h-20 rounded-2xl bg-accent-lime/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-500 shadow-inner">
-										<Target className="w-10 h-10 text-accent-lime" />
+										<Target weight="bold" className="w-10 h-10 text-accent-lime" />
 									</div>
 									<div className="space-y-1">
 										<p className="text-[10px] font-black text-label-tertiary uppercase tracking-[0.3em]">
@@ -291,7 +291,10 @@ export default function Profile() {
 							<Card className="p-8 rounded-3xl border border-border bg-card/50 backdrop-blur-sm relative overflow-hidden group shadow-xl hover:shadow-2xl transition-all duration-500">
 								<div className="flex items-center gap-8 relative z-10">
 									<div className="w-20 h-20 rounded-2xl bg-primary-orange/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-500 shadow-inner">
-										<Flame className="w-10 h-10 text-primary-orange fill-primary-orange" />
+										<Fire
+											weight="bold"
+											className="w-10 h-10 text-primary-orange fill-primary-orange"
+										/>
 									</div>
 									<div className="space-y-1">
 										<p className="text-[10px] font-black text-label-tertiary uppercase tracking-[0.3em]">
@@ -308,7 +311,7 @@ export default function Profile() {
 							<Card className="p-8 rounded-3xl border border-border bg-primary-violet/5 relative overflow-hidden group border-dashed">
 								<div className="flex items-center gap-8 relative z-10">
 									<div className="w-20 h-20 rounded-2xl bg-primary-violet/10 flex items-center justify-center">
-										<Award className="w-10 h-10 text-primary-violet" />
+										<Medal weight="bold" className="w-10 h-10 text-primary-violet" />
 									</div>
 									<div className="space-y-1">
 										<p className="text-[10px] font-black text-label-tertiary uppercase tracking-[0.3em]">

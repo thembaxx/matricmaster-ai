@@ -1,7 +1,7 @@
 'use client';
 
+import { MagnifyingGlass as SearchIcon, X } from '@phosphor-icons/react';
 import { AnimatePresence, m } from 'framer-motion';
-import { Search as SearchIcon, X } from 'lucide-react';
 import { memo, useEffect, useRef, useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
@@ -50,7 +50,7 @@ export const SearchHeader = memo(function SearchHeader({
 					onBlur={() => setIsFocused(false)}
 					placeholder="What are you looking for?"
 					className="pl-14 pr-14 bg-muted/30 h-16 rounded-[1.5rem] border-2 text-lg font-bold focus:ring-primary/20"
-					aria-label="Search topics, questions, and past papers"
+					aria-label="MagnifyingGlass topics, questions, and past papers"
 				/>
 				<AnimatePresence>
 					{!query && !isFocused && (

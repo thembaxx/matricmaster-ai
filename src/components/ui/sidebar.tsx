@@ -1,7 +1,7 @@
 'use client';
 
+import { Sidebar as SidebarIcon } from '@phosphor-icons/react';
 import { Slot } from '@radix-ui/react-slot';
-import { PanelLeft } from 'lucide-react';
 import * as React from 'react';
 
 import { Button } from '@/components/ui/button';
@@ -275,7 +275,7 @@ const SidebarTrigger = React.forwardRef<
 			}}
 			{...props}
 		>
-			<PanelLeft />
+			<SidebarIcon />
 			<span className="sr-only">Toggle Sidebar</span>
 		</Button>
 	);

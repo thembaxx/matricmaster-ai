@@ -1,7 +1,7 @@
 'use client';
 
+import { Fire, Lightning, Lock, Medal, Star, Trophy } from '@phosphor-icons/react';
 import { AnimatePresence, m } from 'framer-motion';
-import { Award, Flame, Lock, Star, Trophy, Zap } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
@@ -81,9 +81,9 @@ export default function Achievements() {
 
 	const categories = [
 		{ id: 'all', label: 'All Badges', icon: Star },
-		{ id: 'science', label: 'Science', icon: Zap },
-		{ id: 'math', label: 'Math', icon: Award },
-		{ id: 'streak', label: 'Streaks', icon: Flame },
+		{ id: 'science', label: 'Science', icon: Lightning },
+		{ id: 'math', label: 'Math', icon: Medal },
+		{ id: 'streak', label: 'Streaks', icon: Fire },
 	];
 
 	if (isLoading) {
@@ -141,6 +141,7 @@ export default function Achievements() {
 									/>
 									<div className="w-32 h-32 sm:w-48 sm:h-48 lg:w-64 lg:h-64 rounded-2xl sm:rounded-[3.5rem] bg-white/10 backdrop-blur-3xl flex items-center justify-center border-4 border-white/20 shadow-2xl relative z-10">
 										<Trophy
+											weight="bold"
 											aria-hidden="true"
 											className="w-16 h-16 sm:w-24 sm:h-24 lg:w-32 lg:h-32 text-white drop-shadow-2xl"
 										/>
@@ -167,7 +168,7 @@ export default function Achievements() {
 								type="button"
 								onClick={() => setActiveTab(category.id)}
 								aria-pressed={isActive}
-								aria-label={`Filter by ${category.label}`}
+								aria-label={`Faders by ${category.label}`}
 								className={`flex items-center gap-2 sm:gap-3 px-4 sm:px-8 py-2.5 sm:py-4 rounded-xl sm:rounded-3xl text-xs sm:text-sm font-black uppercase tracking-widest transition-all duration-300 whitespace-nowrap ${
 									isActive
 										? 'bg-primary text-primary-foreground shadow-2xl shadow-primary/20 scale-105'
@@ -226,7 +227,11 @@ export default function Achievements() {
 														{badge.icon}
 													</span>
 												) : (
-													<Trophy aria-hidden="true" className="w-12 h-12 text-primary" />
+													<Trophy
+														weight="bold"
+														aria-hidden="true"
+														className="w-12 h-12 text-primary"
+													/>
 												)
 											) : (
 												<Lock aria-hidden="true" className="w-10 h-10 text-muted-foreground/30" />

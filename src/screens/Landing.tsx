@@ -1,15 +1,15 @@
 'use client';
 
-import { m } from 'framer-motion';
 import {
 	Atom,
 	Calculator,
-	ChevronRight,
+	CaretRight,
 	FileText,
-	FlaskConical,
+	Flask,
 	Microscope,
-	Sparkles,
-} from 'lucide-react';
+	Sparkle,
+} from '@phosphor-icons/react';
+import { m } from 'framer-motion';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useId } from 'react';
@@ -27,7 +27,7 @@ import { useSession } from '@/lib/auth-client';
 const ICON_MAP: Record<string, React.ElementType> = {
 	Calculator: Calculator,
 	Atom: Atom,
-	FlaskConical: FlaskConical,
+	Flask: Flask,
 	Microscope: Microscope,
 };
 
@@ -61,7 +61,7 @@ export default function Landing() {
 									transition={{ type: 'spring', stiffness: 300, damping: 20 }}
 								>
 									<Badge className="bg-primary-orange/20 text-primary-orange border-none rounded-full px-4 sm:px-6 py-2 font-black text-[10px] tracking-widest uppercase mb-4 shadow-sm animate-pulse-slow">
-										<Sparkles className="w-3 h-3 mr-1.5" />
+										<Sparkle weight="bold" className="w-3 h-3 mr-1.5" />
 										Trusted by 50,000+ Students
 									</Badge>
 								</m.div>
@@ -91,7 +91,7 @@ export default function Landing() {
 								>
 									<span className="relative z-10 flex items-center justify-center">
 										Start Learning
-										<ChevronRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+										<CaretRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
 									</span>
 								</Button>
 								<Button
@@ -198,7 +198,10 @@ export default function Landing() {
 								transition={{ duration: 4, repeat: Number.POSITIVE_INFINITY, ease: 'easeInOut' }}
 								className="absolute -top-3 sm:-top-4 right-0 sm:right-2 w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 bg-primary-orange rounded-2xl sm:rounded-3xl shadow-2xl flex items-center justify-center -rotate-12 z-20"
 							>
-								<Sparkles className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 text-white fill-current" />
+								<Sparkle
+									weight="bold"
+									className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 text-white fill-current"
+								/>
 							</m.div>
 							<m.div
 								animate={{ y: [0, 20, 0], rotate: [12, 18, 12] }}
@@ -251,7 +254,7 @@ export default function Landing() {
 														/>
 													</m.div>
 													<div className="w-12 h-12 rounded-full bg-secondary flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 -translate-x-4 group-hover:translate-x-0">
-														<ChevronRight className="w-5 h-5 text-foreground" />
+														<CaretRight className="w-5 h-5 text-foreground" />
 													</div>
 												</div>
 
@@ -268,7 +271,7 @@ export default function Landing() {
 											<div className="pt-6 sm:pt-8 relative z-10">
 												<div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-primary opacity-0 group-hover:opacity-100 transition-opacity duration-500">
 													Learn More
-													<ChevronRight className="w-4 h-4" />
+													<CaretRight className="w-4 h-4" />
 												</div>
 											</div>
 										</Card>

@@ -1,7 +1,7 @@
 'use client';
 
+import { ArrowsClockwise, WarningCircle } from '@phosphor-icons/react';
 import { QueryErrorResetBoundary } from '@tanstack/react-query';
-import { AlertCircle, RefreshCw } from 'lucide-react';
 import type { ReactNode } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { Button } from '@/components/ui/button';
@@ -22,7 +22,7 @@ function DefaultErrorFallback({
 		<div className="min-h-screen flex items-center justify-center bg-background">
 			<div className="max-w-md w-full mx-auto p-6 bg-card rounded-lg shadow-lg border">
 				<div className="flex items-center gap-3 mb-4">
-					<AlertCircle className="h-6 w-6 text-destructive" />
+					<WarningCircle className="h-6 w-6 text-destructive" />
 					<h2 className="text-lg font-semibold text-foreground">Something went wrong</h2>
 				</div>
 				<p className="text-sm text-muted-foreground mb-6">
@@ -33,7 +33,7 @@ function DefaultErrorFallback({
 					<p className="text-xs text-muted-foreground">Error: {error.message}</p>
 					<div className="flex gap-3">
 						<Button onClick={resetErrorBoundary} className="flex items-center gap-2">
-							<RefreshCw className="h-4 w-4" />
+							<ArrowsClockwise className="h-4 w-4" />
 							Try again
 						</Button>
 						<Button variant="outline" onClick={() => window.location.reload()}>

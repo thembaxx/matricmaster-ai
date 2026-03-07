@@ -2,13 +2,13 @@
 
 import {
 	Brain,
-	ChevronRight,
+	CaretRight,
+	CircleNotch,
 	Clock,
-	Loader2,
 	Target,
-	TrendingDown,
-	TrendingUp,
-} from 'lucide-react';
+	TrendDown,
+	TrendUp,
+} from '@phosphor-icons/react';
 import { useRouter } from 'next/navigation';
 import { memo, useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
@@ -68,7 +68,7 @@ export const TopicMasteryCard = memo(function TopicMasteryCard({
 					</CardTitle>
 				</CardHeader>
 				<CardContent className="flex items-center justify-center py-8">
-					<Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+					<CircleNotch className="h-6 w-6 animate-spin text-muted-foreground" />
 				</CardContent>
 			</Card>
 		);
@@ -103,7 +103,7 @@ export const TopicMasteryCard = memo(function TopicMasteryCard({
 					</CardTitle>
 				</CardHeader>
 				<CardContent className="text-center py-6">
-					<Target className="h-12 w-12 text-muted-foreground/50 mx-auto mb-3" />
+					<Target weight="bold" className="h-12 w-12 text-muted-foreground/50 mx-auto mb-3" />
 					<p className="text-sm text-muted-foreground">
 						Complete more quizzes to see your topic progress
 					</p>
@@ -130,7 +130,7 @@ export const TopicMasteryCard = memo(function TopicMasteryCard({
 					</CardTitle>
 				</CardHeader>
 				<CardContent className="text-center py-6">
-					<Target className="h-12 w-12 text-muted-foreground/50 mx-auto mb-3" />
+					<Target weight="bold" className="h-12 w-12 text-muted-foreground/50 mx-auto mb-3" />
 					<p className="text-sm text-muted-foreground">
 						Complete more quizzes to see your topic progress
 					</p>
@@ -152,7 +152,7 @@ export const TopicMasteryCard = memo(function TopicMasteryCard({
 					</span>
 					<Button variant="ghost" size="sm" onClick={() => router.push('/review')}>
 						View All
-						<ChevronRight className="ml-1 h-4 w-4" />
+						<CaretRight className="ml-1 h-4 w-4" />
 					</Button>
 				</CardTitle>
 			</CardHeader>
@@ -162,7 +162,7 @@ export const TopicMasteryCard = memo(function TopicMasteryCard({
 						{stats.weakTopics.length > 0 && (
 							<div className="space-y-2">
 								<div className="flex items-center gap-2 text-sm font-medium">
-									<TrendingDown className="h-4 w-4 text-red-500" />
+									<TrendDown className="h-4 w-4 text-red-500" />
 									<span className="text-red-600">Needs Focus</span>
 								</div>
 								{stats.weakTopics.slice(0, 3).map((topic) => (
@@ -179,7 +179,7 @@ export const TopicMasteryCard = memo(function TopicMasteryCard({
 						{stats.improvingTopics.length > 0 && (
 							<div className="space-y-2">
 								<div className="flex items-center gap-2 text-sm font-medium">
-									<TrendingUp className="h-4 w-4 text-yellow-500" />
+									<TrendUp className="h-4 w-4 text-yellow-500" />
 									<span className="text-yellow-600">Improving</span>
 								</div>
 								{stats.improvingTopics.slice(0, 2).map((topic) => (
@@ -196,7 +196,7 @@ export const TopicMasteryCard = memo(function TopicMasteryCard({
 						{stats.strongTopics.length > 0 && (
 							<div className="space-y-2">
 								<div className="flex items-center gap-2 text-sm font-medium">
-									<Target className="h-4 w-4 text-green-500" />
+									<Target weight="bold" className="h-4 w-4 text-green-500" />
 									<span className="text-green-600">Mastered</span>
 								</div>
 								{stats.strongTopics.slice(0, 2).map((topic) => (

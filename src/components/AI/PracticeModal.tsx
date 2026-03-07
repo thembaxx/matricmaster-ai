@@ -1,6 +1,6 @@
 'use client';
 
-import { Lightbulb } from 'lucide-react';
+import { Lightbulb } from '@phosphor-icons/react';
 import { useState } from 'react';
 import {
 	Dialog,

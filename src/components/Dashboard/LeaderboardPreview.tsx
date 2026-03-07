@@ -1,7 +1,7 @@
 'use client';
 
+import { CaretRight, Medal } from '@phosphor-icons/react';
 import { m } from 'framer-motion';
-import { ChevronRight, Medal } from 'lucide-react';
 import { memo, useCallback, useEffect, useState } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
@@ -101,7 +101,7 @@ export const LeaderboardPreview = memo(function LeaderboardPreview() {
 			<Card className="p-6 premium-glass border-none rounded-[2.5rem] h-full">
 				<div className="flex items-center justify-between mb-4">
 					<div className="flex items-center gap-2">
-						<Medal className="w-5 h-5 text-brand-amber" />
+						<Medal weight="bold" className="w-5 h-5 text-brand-amber" />
 						<h3 className="text-lg font-black text-foreground tracking-tight">Leaderboard</h3>
 					</div>
 				</div>
@@ -119,7 +119,7 @@ export const LeaderboardPreview = memo(function LeaderboardPreview() {
 		<Card className="p-6 premium-glass border-none rounded-[2.5rem] h-full">
 			<div className="flex items-center justify-between mb-4">
 				<div className="flex items-center gap-2">
-					<Medal className="w-5 h-5 text-brand-amber" />
+					<Medal weight="bold" className="w-5 h-5 text-brand-amber" />
 					<h3 className="text-lg font-black text-foreground tracking-tight">Leaderboard</h3>
 				</div>
 				{userRank && (
@@ -189,7 +189,7 @@ export const LeaderboardPreview = memo(function LeaderboardPreview() {
 				className="w-full mt-4 py-3 px-4 rounded-2xl bg-muted/50 hover:bg-muted text-sm font-bold text-muted-foreground hover:text-foreground transition-colors flex items-center justify-center gap-2"
 			>
 				View Full Leaderboard
-				<ChevronRight className="w-4 h-4" />
+				<CaretRight className="w-4 h-4" />
 			</m.button>
 		</Card>
 	);

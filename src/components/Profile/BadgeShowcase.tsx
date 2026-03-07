@@ -1,7 +1,7 @@
 'use client';
 
+import { Crown, Medal, Plus, Star } from '@phosphor-icons/react';
 import { m } from 'framer-motion';
-import { Award, Crown, Plus, Star } from 'lucide-react';
 import { memo, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -54,7 +54,7 @@ export const BadgeShowcase = memo(function BadgeShowcase({
 			>
 				<div className="flex flex-col items-center text-center">
 					<div className="w-12 h-12 rounded-full bg-muted flex items-center justify-center mb-3">
-						<Award className="w-6 h-6 text-muted-foreground" />
+						<Medal weight="bold" className="w-6 h-6 text-muted-foreground" />
 					</div>
 					<p className="text-sm font-bold text-muted-foreground mb-2">No featured badges</p>
 					{unlockedAchievements.length > 0 && (
@@ -82,7 +82,7 @@ export const BadgeShowcase = memo(function BadgeShowcase({
 				</div>
 				{unlockedAchievements.length > 0 && !isEditing && (
 					<Button variant="ghost" size="sm" onClick={() => setIsEditing(true)}>
-						Edit
+						Pencil
 					</Button>
 				)}
 			</div>
@@ -186,7 +186,7 @@ export const BadgeShowcase = memo(function BadgeShowcase({
 								onClick={handleSave}
 								className="bg-brand-amber text-zinc-900 hover:bg-brand-amber/90"
 							>
-								Save Changes
+								FloppyDisk Changes
 							</Button>
 						</div>
 					</div>

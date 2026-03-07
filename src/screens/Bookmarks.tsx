@@ -1,6 +1,14 @@
 'use client';
 
-import { Activity, Bookmark, Calculator, Microscope, Plus, TrendingUp, Zap } from 'lucide-react';
+import {
+	ActivityIcon,
+	Bookmark,
+	Calculator,
+	Lightning,
+	Microscope,
+	Plus,
+	TrendUp,
+} from '@phosphor-icons/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
@@ -20,12 +28,12 @@ const getIconForType = (type: string) => {
 			return Calculator;
 		case 'physics':
 		case 'past_paper':
-			return Zap;
+			return Lightning;
 		case 'life_sciences':
 		case 'study_note':
 			return Microscope;
 		default:
-			return TrendingUp;
+			return TrendUp;
 	}
 };
 
@@ -97,7 +105,7 @@ export default function Bookmarks() {
 							<div className="space-y-2">
 								<h3 className="text-xl font-bold">Sign in to view bookmarks</h3>
 								<p className="text-sm text-muted-foreground max-w-60 mx-auto">
-									Save difficult questions or important concepts to review them later.
+									FloppyDisk difficult questions or important concepts to review them later.
 								</p>
 							</div>
 							<Button onClick={() => router.push('/sign-in')} className="rounded-full px-8">
@@ -185,7 +193,7 @@ export default function Bookmarks() {
 												</span>
 											) : (
 												<div className="text-muted-foreground/50">
-													<Activity className="w-8 h-8" />
+													<ActivityIcon className="w-8 h-8" />
 												</div>
 											)}
 										</div>
@@ -217,7 +225,7 @@ export default function Bookmarks() {
 							<div className="space-y-2">
 								<h3 className="text-xl font-bold">Nothing saved yet</h3>
 								<p className="text-sm text-muted-foreground max-w-60 mx-auto">
-									Save difficult questions or important concepts to review them later.
+									FloppyDisk difficult questions or important concepts to review them later.
 								</p>
 							</div>
 							<Button onClick={() => router.push('/quiz')} className="rounded-full px-8">

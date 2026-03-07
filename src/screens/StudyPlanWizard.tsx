@@ -2,18 +2,18 @@
 
 import {
 	ArrowLeft,
+	Bank,
 	Book,
 	Calculator,
 	Check,
-	FlaskConical,
-	Landmark,
-	Languages,
+	Flask,
+	GearSix,
 	Lock,
 	Microscope,
 	Play,
-	Settings2,
-	Sparkles,
-} from 'lucide-react';
+	Sparkle,
+	Translate,
+} from '@phosphor-icons/react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Badge } from '@/components/ui/badge';
@@ -25,11 +25,11 @@ import { createStudyPlanAction } from '@/lib/db/study-plan-actions';
 
 const subjects = [
 	{ id: 'math', name: 'Mathematics', icon: Calculator, color: 'text-blue-500' },
-	{ id: 'physics', name: 'Physical Sci', icon: FlaskConical, color: 'text-blue-500' },
+	{ id: 'physics', name: 'Physical Sci', icon: Flask, color: 'text-blue-500' },
 	{ id: 'life', name: 'Life Sciences', icon: Microscope, color: 'text-zinc-500' },
 	{ id: 'english', name: 'English HL', icon: Book, color: 'text-zinc-500' },
-	{ id: 'afrikaans', name: 'Afrikaans FAL', icon: Languages, color: 'text-zinc-500' },
-	{ id: 'accounting', name: 'Accounting', icon: Landmark, color: 'text-zinc-500' },
+	{ id: 'afrikaans', name: 'Afrikaans FAL', icon: Translate, color: 'text-zinc-500' },
+	{ id: 'accounting', name: 'Accounting', icon: Bank, color: 'text-zinc-500' },
 ];
 
 export default function StudyPlanWizard() {
@@ -55,7 +55,7 @@ export default function StudyPlanWizard() {
 
 			const planText = await generateStudyPlan(subjectNames, weeklyHours[0]);
 
-			// Save plan to database if user is logged in
+			// FloppyDisk plan to database if user is logged in
 			if (session?.user?.id) {
 				const title = `${subjectNames.join(', ')} Study Plan`;
 				await createStudyPlanAction(
@@ -80,7 +80,7 @@ export default function StudyPlanWizard() {
 		return (
 			<div className="flex flex-col items-center justify-center h-full bg-background p-6">
 				<div className="w-32 h-32 rounded-3xl bg-primary/10 flex items-center justify-center mb-8 animate-pulse">
-					<Sparkles className="w-16 h-16 text-primary" />
+					<Sparkle weight="bold" className="w-16 h-16 text-primary" />
 				</div>
 				<h2 className="text-3xl font-black text-foreground mb-3 text-center">
 					Generating Your Path...
@@ -108,7 +108,7 @@ export default function StudyPlanWizard() {
 					Study Plan
 				</h1>
 				<Button variant="ghost" size="icon" className="rounded-full ios-active-scale">
-					<Settings2 className="w-6 h-6 text-muted-foreground" />
+					<GearSix className="w-6 h-6 text-muted-foreground" />
 				</Button>
 			</header>
 
@@ -207,13 +207,13 @@ export default function StudyPlanWizard() {
 					{/* Preview Section */}
 					<div className="p-8 premium-glass rounded-3xl space-y-8">
 						<div className="flex items-center gap-2">
-							<Sparkles className="w-4 h-4 text-primary" />
+							<Sparkle weight="bold" className="w-4 h-4 text-primary" />
 							<h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-label-secondary">
 								Preview: Learning Path
 							</h3>
 						</div>
 
-						{/* Vertical Path Map */}
+						{/* Vertical Path MapTrifold */}
 						<div className="flex flex-col items-center relative gap-4">
 							{/* Connecting Line */}
 							<div className="absolute top-8 bottom-8 w-1 bg-border-strong" />
@@ -253,7 +253,7 @@ export default function StudyPlanWizard() {
 					disabled={selectedSubjects.length === 0}
 				>
 					Generate My Plan
-					<Sparkles className="w-5 h-5" />
+					<Sparkle weight="bold" className="w-5 h-5" />
 				</Button>
 			</div>
 		</div>

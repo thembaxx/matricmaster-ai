@@ -1,6 +1,6 @@
 'use client';
 
-import { AlertTriangle, Home, RefreshCw } from 'lucide-react';
+import { ArrowsClockwise, House, Warning } from '@phosphor-icons/react';
 import Link from 'next/link';
 import { useEffect } from 'react';
 
@@ -51,7 +51,7 @@ export default function GlobalError({ error, reset }: GlobalErrorProps) {
 								margin: '0 auto',
 							}}
 						>
-							<AlertTriangle size={32} style={{ color: 'var(--color-destructive)' }} />
+							<Warning size={32} style={{ color: 'var(--color-destructive)' }} />
 						</div>
 
 						<div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
@@ -85,7 +85,7 @@ export default function GlobalError({ error, reset }: GlobalErrorProps) {
 									fontWeight: 500,
 								}}
 							>
-								<RefreshCw size={16} />
+								<ArrowsClockwise size={16} />
 								Try Again
 							</button>
 							<Link
@@ -103,8 +103,8 @@ export default function GlobalError({ error, reset }: GlobalErrorProps) {
 									fontWeight: 500,
 								}}
 							>
-								<Home size={16} />
-								Go Home
+								<House size={16} />
+								Go House
 							</Link>
 						</div>
 					</div>

@@ -1,6 +1,6 @@
 'use client';
 
-import { Loader2, Plus } from 'lucide-react';
+import { CircleNotch, Plus } from '@phosphor-icons/react';
 import { useId, useState } from 'react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
@@ -47,7 +47,7 @@ export function CreateDeckModal({ open, onOpenChange, onCreated }: CreateDeckMod
 		try {
 			const response = await fetch('/api/flashcards/decks', {
 				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
+				headers: { 'Content-TextT': 'application/json' },
 				body: JSON.stringify({ name: name.trim(), description: description.trim() || null }),
 			});
 
@@ -115,7 +115,7 @@ export function CreateDeckModal({ open, onOpenChange, onCreated }: CreateDeckMod
 					</Button>
 					<Button onClick={handleCreate} disabled={isCreating || !name.trim()}>
 						{isCreating ? (
-							<Loader2 className="mr-2 h-4 w-4 animate-spin" />
+							<CircleNotch className="mr-2 h-4 w-4 animate-spin" />
 						) : (
 							<Plus className="mr-2 h-4 w-4" />
 						)}

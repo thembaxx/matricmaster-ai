@@ -1,8 +1,8 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Check, CircleNotch, Eye, EyeSlash, Sparkle } from '@phosphor-icons/react';
 import { AnimatePresence, m } from 'framer-motion';
-import { Check, Eye, EyeOff, Loader2, Sparkles } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
@@ -64,7 +64,7 @@ export function SignInForm() {
 			console.log('🔄 Initializing database after login...');
 			const response = await fetch('/api/db/init', {
 				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
+				headers: { 'Content-TextT': 'application/json' },
 			});
 
 			let result: { success?: boolean; message?: string };
@@ -174,7 +174,7 @@ export function SignInForm() {
 							whileHover={{ rotate: 15, scale: 1.1 }}
 							className="w-14 h-14 bg-primary/10 rounded-3xl flex items-center justify-center mx-auto mb-5 text-primary"
 						>
-							<Sparkles className="w-7 h-7" />
+							<Sparkle weight="bold" className="w-7 h-7" />
 						</m.div>
 						<SmoothWords
 							as="h1"
@@ -257,7 +257,7 @@ export function SignInForm() {
 									className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
 									aria-label={showPassword ? 'Hide password' : 'Show password'}
 								>
-									{showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+									{showPassword ? <EyeSlash className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
 								</button>
 							</div>
 							{errors.password && (
@@ -279,7 +279,7 @@ export function SignInForm() {
 								)}
 							>
 								{isLoading ? (
-									<Loader2 className="w-5 h-5 animate-spin" />
+									<CircleNotch className="w-5 h-5 animate-spin" />
 								) : successEmail ? (
 									'Success!'
 								) : (

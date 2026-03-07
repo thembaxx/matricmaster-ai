@@ -1,8 +1,8 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import { ArrowLeft, CircleNotch, Sparkle } from '@phosphor-icons/react';
 import { m } from 'framer-motion';
-import { ArrowLeft, Loader2, Sparkles } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -88,7 +88,7 @@ export function ForgotPasswordForm() {
 							whileHover={{ rotate: 15, scale: 1.1 }}
 							className="w-14 h-14 bg-primary/10 rounded-3xl flex items-center justify-center mx-auto mb-5 text-primary"
 						>
-							<Sparkles className="w-7 h-7" />
+							<Sparkle weight="bold" className="w-7 h-7" />
 						</m.div>
 						<SmoothWords
 							as="h1"
@@ -154,7 +154,11 @@ export function ForgotPasswordForm() {
 										'bg-primary text-primary-foreground shadow-primary/20'
 									)}
 								>
-									{isLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Send Reset Link'}
+									{isLoading ? (
+										<CircleNotch className="w-5 h-5 animate-spin" />
+									) : (
+										'PaperPlaneRight Reset Link'
+									)}
 								</Button>
 							</m.div>
 						</m.form>

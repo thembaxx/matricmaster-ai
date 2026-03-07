@@ -35,12 +35,12 @@ Return a strictly valid JSON object following this schema:
           "id": "1.1",
           "text": "Specific sub-question text",
           "marks": 5,
-          "options": [] // Only if sub-question is MCQ
+          "options": []
         }
       ],
       "marks": 15,
       "topic": "Identify the CAPS curriculum topic (e.g., 'Newton's Laws', 'Calculus', 'Organic Chemistry')",
-      "difficulty": "easy" | "medium" | "hard"
+      "difficulty": "easy, medium, or hard"
     }
   ]
 }

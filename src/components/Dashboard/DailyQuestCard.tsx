@@ -1,7 +1,7 @@
 'use client';
 
+import { ArrowRight, CircleNotch, Sparkle } from '@phosphor-icons/react';
 import { m } from 'framer-motion';
-import { ArrowRight, Loader2, Sparkles } from 'lucide-react';
 import { memo } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -49,7 +49,7 @@ export const DailyQuestCard = memo(function DailyQuestCard({
 						transition={{ type: 'spring', stiffness: 200 }}
 						className="w-16 h-16 bg-card/50 rounded-2xl flex items-center justify-center border border-border/20 shadow-xl"
 					>
-						<Sparkles className="w-8 h-8 text-brand-amber" />
+						<Sparkle weight="bold" className="w-8 h-8 text-brand-amber" />
 					</m.div>
 				</div>
 
@@ -77,7 +77,7 @@ export const DailyQuestCard = memo(function DailyQuestCard({
 						disabled={isLoading}
 					>
 						{isLoading ? (
-							<Loader2 className="w-6 h-6 animate-spin" />
+							<CircleNotch className="w-6 h-6 animate-spin" />
 						) : (
 							<>
 								Continue Learning

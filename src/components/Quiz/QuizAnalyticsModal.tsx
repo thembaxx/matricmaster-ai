@@ -1,15 +1,15 @@
 'use client';
 
 import {
-	BarChart3,
 	Brain,
+	ChartBar,
+	CircleNotch,
 	Clock,
-	Loader2,
 	Target,
-	TrendingDown,
-	TrendingUp,
+	TrendDown,
+	TrendUp,
 	Trophy,
-} from 'lucide-react';
+} from '@phosphor-icons/react';
 import { useEffect, useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -73,7 +73,7 @@ export function QuizAnalyticsModal({ open, onOpenChange }: QuizAnalyticsModalPro
 			<DialogContent className="max-w-2xl max-h-[85vh]">
 				<DialogHeader>
 					<DialogTitle className="flex items-center gap-2">
-						<BarChart3 className="h-5 w-5" />
+						<ChartBar className="h-5 w-5" />
 						Quiz Analytics
 					</DialogTitle>
 					<DialogDescription>Your learning progress and topic performance</DialogDescription>
@@ -81,19 +81,19 @@ export function QuizAnalyticsModal({ open, onOpenChange }: QuizAnalyticsModalPro
 
 				{isLoading ? (
 					<div className="flex items-center justify-center py-8">
-						<Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+						<CircleNotch className="h-8 w-8 animate-spin text-muted-foreground" />
 					</div>
 				) : stats ? (
 					<ScrollArea className="max-h-[60vh] pr-4">
 						<div className="space-y-6">
 							<div className="grid grid-cols-3 gap-4">
 								<div className="rounded-lg border p-4 text-center">
-									<Trophy className="h-6 w-6 mx-auto mb-2 text-yellow-500" />
+									<Trophy weight="bold" className="h-6 w-6 mx-auto mb-2 text-yellow-500" />
 									<div className="text-2xl font-bold">{stats.totalQuestions}</div>
 									<div className="text-xs text-muted-foreground">Questions</div>
 								</div>
 								<div className="rounded-lg border p-4 text-center">
-									<Target className="h-6 w-6 mx-auto mb-2 text-blue-500" />
+									<Target weight="bold" className="h-6 w-6 mx-auto mb-2 text-blue-500" />
 									<div className={`text-2xl font-bold ${getAccuracyColor(stats.overallAccuracy)}`}>
 										{stats.overallAccuracy.toFixed(0)}%
 									</div>
@@ -112,7 +112,7 @@ export function QuizAnalyticsModal({ open, onOpenChange }: QuizAnalyticsModalPro
 
 							<div className="space-y-2">
 								<h4 className="font-medium flex items-center gap-2">
-									<TrendingUp className="h-4 w-4 text-green-500" />
+									<TrendUp className="h-4 w-4 text-green-500" />
 									Strong Topics
 								</h4>
 								{stats.strongTopics.length > 0 ? (
@@ -139,7 +139,7 @@ export function QuizAnalyticsModal({ open, onOpenChange }: QuizAnalyticsModalPro
 
 							<div className="space-y-2">
 								<h4 className="font-medium flex items-center gap-2">
-									<TrendingDown className="h-4 w-4 text-orange-500" />
+									<TrendDown className="h-4 w-4 text-orange-500" />
 									Topics to Focus On
 								</h4>
 								{stats.weakTopics.length > 0 ? (

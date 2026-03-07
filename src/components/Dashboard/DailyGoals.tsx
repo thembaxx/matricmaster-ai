@@ -1,7 +1,7 @@
 'use client';
 
+import { CheckCircle, Circle, Target } from '@phosphor-icons/react';
 import { m } from 'framer-motion';
-import { CheckCircle, Circle, Target } from 'lucide-react';
 import { memo, useEffect, useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
@@ -136,7 +136,7 @@ export const DailyGoals = memo(function DailyGoals({
 	return (
 		<Card className="p-6 premium-glass border-none rounded-[2.5rem] h-full">
 			<div className="flex items-center gap-2 mb-4">
-				<Target className="w-5 h-5 text-primary" />
+				<Target weight="bold" className="w-5 h-5 text-primary" />
 				<h3 className="text-lg font-black text-foreground tracking-tight">Daily Goals</h3>
 				{allComplete && (
 					<m.span initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1 }} className="text-lg">

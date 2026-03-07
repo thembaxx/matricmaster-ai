@@ -1,8 +1,8 @@
 'use client';
 
+import { X } from '@phosphor-icons/react';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
 import * as VisuallyHiddenPrimitive from '@radix-ui/react-visually-hidden';
-import { X } from 'lucide-react';
 import * as React from 'react';
 
 import { cn } from '@/lib/utils';
