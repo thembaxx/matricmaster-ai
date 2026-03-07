@@ -191,6 +191,22 @@ export default function Landing() {
 									<circle cx="15" cy="75" r="4" fill="var(--warning)" />
 								</svg>
 							</m.div>
+
+							{/* Floating Badges */}
+							<m.div
+								animate={{ y: [0, -15, 0] }}
+								transition={{ duration: 4, repeat: Number.POSITIVE_INFINITY, ease: 'easeInOut' }}
+								className="absolute -top-3 sm:-top-4 right-0 sm:right-2 w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 bg-primary-orange rounded-2xl sm:rounded-3xl shadow-2xl flex items-center justify-center -rotate-12 z-20"
+							>
+								<Sparkles className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 text-white fill-current" />
+							</m.div>
+							<m.div
+								animate={{ y: [0, 20, 0], rotate: [12, 18, 12] }}
+								transition={{ duration: 6, repeat: Number.POSITIVE_INFINITY, ease: 'easeInOut' }}
+								className="absolute -bottom-4 sm:-bottom-6 left-0 sm:left-2 w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 bg-accent-lime rounded-2xl sm:rounded-3xl shadow-2xl flex items-center justify-center z-20"
+							>
+								<Atom className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 text-white" />
+							</m.div>
 						</m.div>
 					</section>
 

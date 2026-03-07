@@ -43,7 +43,7 @@ export function ResponsiveHeader({
 		<header
 			className={cn(
 				'flex items-center pr-6 py-4 fixed top-0 z-30 transition-all duration-300 w-full left-0 lg:relative lg:px-0 lg:py-8',
-				user ? 'pl-14' : 'pl-6',
+				user ? 'pl-6' : 'pl-6',
 				scrolled
 					? 'ios-glass py-3 shadow-lg lg:shadow-none lg:bg-transparent lg:border-none'
 					: 'bg-transparent'
