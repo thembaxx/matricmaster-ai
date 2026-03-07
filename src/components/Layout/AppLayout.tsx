@@ -28,7 +28,6 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 
 	const hideNavigation = ['/test', '/onboarding'];
 	const hideBottomNavigation = [
-		'',
 		'/sign-in',
 		'/sign-up',
 		'/test',
