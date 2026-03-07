@@ -368,6 +368,7 @@ export default function SettingsPage() {
 										value={displayName}
 										onChange={(e) => setDisplayName(e.target.value)}
 										placeholder="Your name"
+										maxLength={100}
 									/>
 								</div>
 								<div className="grid gap-2">

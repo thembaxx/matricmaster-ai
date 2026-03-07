@@ -172,7 +172,7 @@ export function DeckDetailModal({
 										<Button
 											variant="ghost"
 											size="icon"
-											className="h-8 w-8 opacity-0 group-hover:opacity-100 text-destructive"
+											className="h-9 w-9 md:h-8 md:w-8 md:opacity-0 md:group-hover:opacity-100 opacity-100 text-destructive touch-manipulation"
 											onClick={() => handleDeleteCard(card.id)}
 											disabled={deletingId === card.id}
 										>

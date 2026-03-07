@@ -185,6 +185,7 @@ export default function SignUpForm() {
 								type="text"
 								placeholder="e.g., Thabo Mokoena"
 								className="bg-background/50"
+								maxLength={100}
 							/>
 							{errors.name && (
 								<p className="text-xs text-destructive font-semibold ml-1">{errors.name.message}</p>
@@ -204,6 +205,7 @@ export default function SignUpForm() {
 								type="email"
 								placeholder="name@example.com"
 								className="bg-background/50"
+								maxLength={254}
 							/>
 							{errors.email && (
 								<p className="text-xs text-destructive font-semibold ml-1">
@@ -226,6 +228,7 @@ export default function SignUpForm() {
 									type={showPassword ? 'text' : 'password'}
 									placeholder="Create a strong password"
 									className="bg-background/50 pr-12"
+									maxLength={128}
 								/>
 								<button
 									type="button"

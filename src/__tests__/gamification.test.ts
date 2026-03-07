@@ -25,16 +25,20 @@ describe('Gamification Logic', () => {
 	});
 
 	describe('getLevelTitle', () => {
-		it('should return Beginner for level 1', () => {
-			expect(getLevelTitle(1)).toBe('Beginner');
+		it('should return Starter for level 1', () => {
+			expect(getLevelTitle(1)).toBe('Starter');
 		});
 
-		it('should return Novice for level 5', () => {
-			expect(getLevelTitle(5)).toBe('Novice');
+		it('should return Starter for level 5', () => {
+			expect(getLevelTitle(5)).toBe('Starter');
 		});
 
-		it('should return Mythic for level 100', () => {
-			expect(getLevelTitle(100)).toBe('Mythic');
+		it('should return Scholar for level 10', () => {
+			expect(getLevelTitle(10)).toBe('Scholar');
+		});
+
+		it('should return Legend for level 100', () => {
+			expect(getLevelTitle(100)).toBe('Legend');
 		});
 	});
 

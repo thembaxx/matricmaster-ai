@@ -1,5 +1,6 @@
 'use client';
 
+import { m } from 'framer-motion';
 import { Bookmark, BookmarkCheck } from 'lucide-react';
 import { useState } from 'react';
 import { toast } from 'sonner';
@@ -73,16 +74,21 @@ export function BookmarkButton({ messageId, content, role, subject }: BookmarkBu
 		<Button
 			variant="ghost"
 			size="icon"
-			className="h-7 w-7 opacity-0 group-hover:opacity-100 transition-opacity"
+			className="h-9 w-9 md:h-7 md:w-7 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity touch-manipulation"
 			onClick={handleToggle}
 			aria-label={isBookmarked ? 'Remove bookmark' : 'Add bookmark'}
 			aria-pressed={isBookmarked}
 		>
-			{isBookmarked ? (
-				<BookmarkCheck className="h-4 w-4 text-primary" />
-			) : (
-				<Bookmark className="h-4 w-4" />
-			)}
+			<m.div
+				animate={isBookmarked ? { scale: [1, 1.3, 1] } : { scale: [1, 0.8, 1] }}
+				transition={{ duration: 0.3 }}
+			>
+				{isBookmarked ? (
+					<BookmarkCheck className="h-4 w-4 text-primary" />
+				) : (
+					<Bookmark className="h-4 w-4" />
+				)}
+			</m.div>
 		</Button>
 	);
 }

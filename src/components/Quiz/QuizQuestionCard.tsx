@@ -34,11 +34,7 @@ export const QuizQuestionCard = memo(function QuizQuestionCard({
 	onSelect,
 }: QuizQuestionCardProps) {
 	return (
-		<Card className="p-4 bg-card border-none rounded-[2.5rem] shadow-sm relative overflow-hidden group">
-			<div
-				className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity ${colors.bgSoft}`}
-			/>
-
+		<Card className="p-4 bg-card border-none rounded-[2.5rem] shadow-sm relative overflow-hidden">
 			<RadioGroup
 				value={selectedAnswer || ''}
 				onValueChange={onSelect}

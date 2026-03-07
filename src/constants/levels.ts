@@ -1,39 +1,21 @@
 export const MAX_LEVEL = 100;
 
 export const LEVEL_TITLES: Record<number, string> = {
-	1: 'Beginner',
-	5: 'Novice',
-	10: 'Learner',
-	15: 'Student',
-	20: 'Apprentice',
-	25: 'Scholar',
-	30: 'Practitioner',
-	35: 'Achiever',
-	40: 'Skilled',
-	45: 'Proficient',
+	1: 'Starter',
+	10: 'Scholar',
+	25: 'Star',
 	50: 'Expert',
-	55: 'Specialist',
-	60: 'Veteran',
-	65: 'Authority',
-	70: 'Champion',
-	75: 'Master',
-	80: 'Elite',
-	85: 'Grandmaster',
-	90: 'Legend',
-	95: 'Icon',
-	100: 'Mythic',
+	100: 'Legend',
 };
 
-export const LEVEL_MILESTONES = [10, 25, 50, 75, 100] as const;
+export const LEVEL_MILESTONES = [10, 25, 50, 100] as const;
 
 export const LEVEL_COLORS: Record<number, string> = {
-	1: '#6b7280',
-	5: '#3b82f6',
-	10: '#8b5cf6',
-	25: '#ec4899',
-	50: '#f59e0b',
-	75: '#ef4444',
-	100: '#fbbf24',
+	1: '#7C3AED', // Primary Violet
+	10: '#06B6D4', // Primary Cyan
+	25: '#F97316', // Primary Orange
+	50: '#EC4899', // Accent Pink
+	100: '#84CC16', // Accent Lime
 };
 
 export function getXpForLevel(level: number): number {

@@ -48,15 +48,16 @@ export class AuthenticatedApiClient {
 
 	async get<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
 		const url = `${this.baseURL}${endpoint}`;
+		const { headers: customHeaders, ...restOptions } = options;
 		const headers = await this.getAuthHeaders();
 
 		const response = await fetch(url, {
 			method: 'GET',
 			headers: {
 				...headers,
-				...options.headers,
+				...customHeaders,
 			},
-			...options,
+			...restOptions,
 		});
 
 		if (!response.ok) {
@@ -75,16 +76,17 @@ export class AuthenticatedApiClient {
 
 	async post<T>(endpoint: string, data?: unknown, options: RequestInit = {}): Promise<T> {
 		const url = `${this.baseURL}${endpoint}`;
+		const { headers: customHeaders, ...restOptions } = options;
 		const headers = await this.getAuthHeaders();
 
 		const response = await fetch(url, {
 			method: 'POST',
 			headers: {
 				...headers,
-				...options.headers,
+				...customHeaders,
 			},
 			body: data ? JSON.stringify(data) : undefined,
-			...options,
+			...restOptions,
 		});
 
 		if (!response.ok) {
@@ -103,16 +105,17 @@ export class AuthenticatedApiClient {
 
 	async put<T>(endpoint: string, data?: unknown, options: RequestInit = {}): Promise<T> {
 		const url = `${this.baseURL}${endpoint}`;
+		const { headers: customHeaders, ...restOptions } = options;
 		const headers = await this.getAuthHeaders();
 
 		const response = await fetch(url, {
 			method: 'PUT',
 			headers: {
 				...headers,
-				...options.headers,
+				...customHeaders,
 			},
 			body: data ? JSON.stringify(data) : undefined,
-			...options,
+			...restOptions,
 		});
 
 		if (!response.ok) {
@@ -131,15 +134,16 @@ export class AuthenticatedApiClient {
 
 	async delete<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
 		const url = `${this.baseURL}${endpoint}`;
+		const { headers: customHeaders, ...restOptions } = options;
 		const headers = await this.getAuthHeaders();
 
 		const response = await fetch(url, {
 			method: 'DELETE',
 			headers: {
 				...headers,
-				...options.headers,
+				...customHeaders,
 			},
-			...options,
+			...restOptions,
 		});
 
 		if (!response.ok) {

@@ -76,7 +76,7 @@ export const SearchHistoryList = memo(function SearchHistoryList({
 									aria-label={`Delete search for ${search.query}`}
 									type="button"
 									onClick={(e) => onDelete(search.id, e)}
-									className="opacity-0 group-hover:opacity-100 focus-visible:opacity-100 transition-opacity text-muted-foreground hover:text-rose-500 p-5 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-inset"
+									className="md:opacity-0 opacity-100 md:group-hover:opacity-100 focus-visible:opacity-100 transition-opacity text-muted-foreground hover:text-rose-500 p-5 min-w-[44px] min-h-[44px] flex items-center justify-center touch-manipulation focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-inset"
 								>
 									<X className="w-5 h-5" />
 								</button>

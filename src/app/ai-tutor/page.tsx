@@ -490,9 +490,9 @@ export default function AITutorPage() {
 								<Avatar className="h-10 w-10 shrink-0 rounded-2xl border-2 border-border/50 bg-surface-elevated animate-pulse" />
 								<div className="bg-card border border-border/50 rounded-[2rem] rounded-tl-sm px-6 py-4 flex items-center gap-3 shadow-sm">
 									<div className="flex gap-1">
-										<span className="w-1.5 h-1.5 bg-primary/40 rounded-full animate-bounce [animation-delay:-0.3s]" />
-										<span className="w-1.5 h-1.5 bg-primary/60 rounded-full animate-bounce [animation-delay:-0.15s]" />
-										<span className="w-1.5 h-1.5 bg-primary/80 rounded-full animate-bounce" />
+										<span className="w-1.5 h-1.5 bg-primary/40 rounded-full animate-pulse" />
+										<span className="w-1.5 h-1.5 bg-primary/60 rounded-full animate-pulse [animation-delay:0.2s]" />
+										<span className="w-1.5 h-1.5 bg-primary/80 rounded-full animate-pulse [animation-delay:0.4s]" />
 									</div>
 									<span className="text-xs font-black uppercase tracking-widest text-muted-foreground">
 										Thinking

@@ -687,7 +687,7 @@ export default function PdfViewer({ url, onClose, title }: PdfViewerProps) {
 												<Button
 													variant="ghost"
 													size="icon"
-													className="h-8 w-8 rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-50 dark:hover:bg-red-900/20 text-zinc-400 hover:text-red-500"
+													className="h-9 w-9 md:h-8 md:w-8 rounded-full md:opacity-0 md:group-hover:opacity-100 opacity-100 transition-opacity hover:bg-red-50 dark:hover:bg-red-900/20 text-zinc-400 hover:text-red-500 touch-manipulation"
 													onClick={() => deleteHighlight(highlight.id)}
 													aria-label="Delete highlight"
 												>

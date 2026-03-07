@@ -44,11 +44,11 @@ export function ProfileMenu({
 									<Icon icon="material-symbols-light:verified" className="text-blue-600 w-5 h-5" />
 								</div>
 							</div>
-							<div className="space-y-0 text-left">
+							<div className="space-y-0 text-left flex flex-col overflow-hidden">
 								<h2 className="font-black truncate text-base uppercase tracking-tighter">
 									{user.name}
 								</h2>
-								<p className="text-muted-foreground text-[0.75rem] font-bold uppercase tracking-wider">
+								<p className="text-muted-foreground text-[0.75rem] font-bold uppercase tracking-wider truncate w-full line-clamp-1 overflow-hidden">
 									{user.email}
 								</p>
 								<div className="flex gap-4 items-center pt-4">

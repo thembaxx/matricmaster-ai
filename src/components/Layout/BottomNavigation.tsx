@@ -36,7 +36,7 @@ export function BottomNavigation({ pathname }: BottomNavigationProps) {
 						key={item.href}
 						href={item.href}
 						aria-current={isActive ? 'page' : undefined}
-						className="relative flex flex-col items-center justify-center py-2 transition-all duration-300 group rounded-2xl"
+						className="relative flex flex-col items-center justify-center py-3 min-h-[56px] transition-all duration-300 group rounded-2xl touch-manipulation"
 					>
 						<AnimatePresence>
 							{isActive && (
@@ -63,7 +63,7 @@ export function BottomNavigation({ pathname }: BottomNavigationProps) {
 							/>
 						</div>
 						<span
-							className={`relative z-10 text-[9px] font-black uppercase tracking-tighter mt-1 ${
+							className={`relative z-10 text-[10px] xs:text-[11px] sm:text-[12px] font-bold uppercase tracking-tight ${
 								isActive ? 'text-primary-foreground' : 'text-muted-foreground'
 							}`}
 						>

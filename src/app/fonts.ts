@@ -1,9 +1,16 @@
 import { GeistMono, GeistSans } from 'geist/font';
-import { Inter, Lexend, Outfit } from 'next/font/google';
+import { Inter, Lexend, Outfit, Space_Grotesk } from 'next/font/google';
 
 export const geistSans = GeistSans;
 
 export const geistMono = GeistMono;
+
+export const spaceGrotesk = Space_Grotesk({
+	subsets: ['latin'],
+	display: 'swap',
+	variable: '--font-space-grotesk',
+	preload: true,
+});
 
 export const inter = Inter({
 	subsets: ['latin'],
