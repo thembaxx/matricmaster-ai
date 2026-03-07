@@ -2,40 +2,39 @@
 
 import {
 	Atom,
-	Award,
 	Bell,
 	Bookmark,
 	BookOpen,
 	Brain,
 	Calculator,
 	Calendar,
-	CalendarDays,
-	ChevronDown,
-	ChevronRight,
-	ClipboardList,
+	CaretDown,
+	CaretRight,
+	ChatCircle,
+	ClipboardText,
 	FileText,
-	Gamepad2,
+	GameController,
+	Gear,
 	Globe,
-	HelpCircle,
-	Home,
+	House,
 	Key,
-	Layers,
 	Layout,
-	LogOut,
-	Map as MapIcon,
-	MessageCircle,
+	MapTrifold as MapIcon,
+	Medal,
 	Moon,
-	Search as SearchIcon,
-	Settings,
+	Question,
+	MagnifyingGlass as SearchIcon,
 	Shield,
-	ShieldAlert,
-	Sparkles,
+	ShieldWarning,
+	SignOut,
+	Sparkle,
+	Stack,
 	Sun,
 	Trophy,
 	User as UserIcon,
 	UserPlus,
 	Users,
-} from 'lucide-react';
+} from '@phosphor-icons/react';
 import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -76,11 +75,11 @@ export const sideMenuSections: MenuSection[] = [
 	{
 		title: 'Learning & Study',
 		items: [
-			{ href: '/dashboard', label: 'Dashboard', icon: Home },
-			{ href: '/search', label: 'Search', icon: SearchIcon },
+			{ href: '/dashboard', label: 'Dashboard', icon: House },
+			{ href: '/search', label: 'MagnifyingGlass', icon: SearchIcon },
 			{ href: '/lessons', label: 'Lessons', icon: BookOpen },
 			{ href: '/physics', label: 'Physics', icon: Atom },
-			{ href: '/ai-tutor', label: 'AI Tutor', icon: Sparkles },
+			{ href: '/ai-tutor', label: 'AI Tutor', icon: Sparkle },
 			{ href: '/study-path', label: 'Study Path', icon: MapIcon },
 			{ href: '/study-plan', label: 'Study Plan', icon: Calendar },
 		],
@@ -89,12 +88,12 @@ export const sideMenuSections: MenuSection[] = [
 		title: 'Practice & Quizzes',
 		items: [
 			{ href: '/past-papers', label: 'Past Papers', icon: FileText },
-			{ href: '/interactive-quiz', label: 'Interactive Quiz', icon: Gamepad2 },
-			{ href: '/quiz', label: 'Quiz', icon: HelpCircle },
+			{ href: '/interactive-quiz', label: 'Interactive Quiz', icon: GameController },
+			{ href: '/quiz', label: 'Quiz', icon: Question },
 			{ href: '/math-quiz', label: 'Math Quiz', icon: Calculator },
 			{ href: '/physics-quiz', label: 'Physics Quiz', icon: Atom },
-			{ href: '/practice-quiz', label: 'Practice Quiz', icon: ClipboardList },
-			{ href: '/flashcards', label: 'Flashcards', icon: Layers },
+			{ href: '/practice-quiz', label: 'Practice Quiz', icon: ClipboardText },
+			{ href: '/flashcards', label: 'Flashcards', icon: Stack },
 			{ href: '/review', label: 'Review Dashboard', icon: Brain },
 		],
 	},
@@ -103,29 +102,29 @@ export const sideMenuSections: MenuSection[] = [
 		items: [
 			{ href: '/channels', label: 'Study Channels', icon: Users },
 			{ href: '/study-buddies', label: 'Study Buddies', icon: UserPlus },
-			{ href: '/comments', label: 'Comments', icon: MessageCircle },
+			{ href: '/comments', label: 'Comments', icon: ChatCircle },
 			{ href: '/leaderboard', label: 'Leaderboard', icon: Trophy },
-			{ href: '/achievements', label: 'Achievements', icon: Award },
+			{ href: '/achievements', label: 'Achievements', icon: Medal },
 		],
 	},
 	{
-		title: 'Account & Settings',
+		title: 'Account & Gear',
 		items: [
 			{ href: '/profile', label: 'My Profile', icon: UserIcon },
 			{ href: '/bookmarks', label: 'Bookmarks', icon: Bookmark },
 			{ href: '/notifications', label: 'Notifications', icon: Bell },
-			{ href: '/calendar', label: 'Calendar', icon: CalendarDays },
+			{ href: '/calendar', label: 'Calendar', icon: Calendar },
 			{ href: '/language', label: 'Language', icon: Globe },
 			{ href: '/2fa', label: 'Two-Factor Auth', icon: Key },
-			{ href: '/settings', label: 'Settings', icon: Settings },
-			{ href: '/onboarding', label: 'Test Onboarding', icon: Sparkles },
+			{ href: '/settings', label: 'Gear', icon: Gear },
+			{ href: '/onboarding', label: 'Test Onboarding', icon: Sparkle },
 		],
 	},
 	{
 		title: 'Admin',
 		items: [
 			{ href: '/admin', label: 'Admin Panel', icon: Shield },
-			{ href: '/admin/moderation', label: 'Admin Moderation', icon: ShieldAlert },
+			{ href: '/admin/moderation', label: 'Admin Moderation', icon: ShieldWarning },
 			{ href: '/cms', label: 'Content Management', icon: Layout },
 		],
 	},
@@ -188,7 +187,7 @@ export function AppSidebar({ user, pathname, theme, onToggleTheme }: AppSidebarP
 				<div className="relative flex items-center px-2 pb-3">
 					<SearchIcon className="absolute left-5 w-4 h-4 text-sidebar-foreground/40" />
 					<Input
-						placeholder="Search menu..."
+						placeholder="MagnifyingGlass menu..."
 						value={searchQuery}
 						onChange={(e) => setSearchQuery(e.target.value)}
 						className="pl-9 h-9 bg-sidebar-accent/50 placeholder:text-xs border-sidebar-border focus-visible:ring-sidebar-ring"
@@ -213,9 +212,9 @@ export function AppSidebar({ user, pathname, theme, onToggleTheme }: AppSidebarP
 									<SidebarGroupLabel className="cursor-pointer hover:bg-sidebar-accent rounded-md select-none flex items-center justify-between pr-2">
 										<span>{section.title}</span>
 										{openSection === section.title ? (
-											<ChevronDown className="w-4 h-4" />
+											<CaretDown className="w-4 h-4" />
 										) : (
-											<ChevronRight className="w-4 h-4" />
+											<CaretRight className="w-4 h-4" />
 										)}
 									</SidebarGroupLabel>
 								</CollapsibleTrigger>
@@ -317,7 +316,7 @@ export function LogoutButton() {
 			className="w-full justify-start gap-3 text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent"
 			onClick={handleLogout}
 		>
-			<LogOut className="w-4 h-4" />
+			<SignOut className="w-4 h-4" />
 			<span>Logout</span>
 		</Button>
 	);

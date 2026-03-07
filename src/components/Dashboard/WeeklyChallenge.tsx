@@ -1,7 +1,7 @@
 'use client';
 
+import { Clock, Lightning, Sparkle } from '@phosphor-icons/react';
 import { m } from 'framer-motion';
-import { Clock, Sparkles, Zap } from 'lucide-react';
 import { memo, useEffect, useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
@@ -179,7 +179,7 @@ export const WeeklyChallenge = memo(function WeeklyChallenge({
 				<div className="flex items-start justify-between">
 					<div className="space-y-1">
 						<div className="flex items-center gap-2">
-							<Zap className="w-4 h-4 text-brand-amber" />
+							<Lightning weight="bold" className="w-4 h-4 text-brand-amber" />
 							<span className="text-[10px] font-black text-brand-amber uppercase tracking-widest">
 								Weekly Challenge
 							</span>
@@ -220,7 +220,7 @@ export const WeeklyChallenge = memo(function WeeklyChallenge({
 
 				<div className="flex items-center justify-between pt-2">
 					<div className="flex items-center gap-2">
-						<Sparkles className="w-4 h-4 text-brand-amber" />
+						<Sparkle weight="bold" className="w-4 h-4 text-brand-amber" />
 						<span className="text-xs font-bold text-muted-foreground">Bonus Reward</span>
 					</div>
 					<span

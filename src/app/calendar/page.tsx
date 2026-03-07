@@ -2,13 +2,13 @@
 
 import {
 	Calendar as CalendarIcon,
-	ChevronLeft,
-	ChevronRight,
+	CaretLeft,
+	CaretRight,
 	Clock,
-	Edit,
+	Pencil,
 	Plus,
-	Trash2,
-} from 'lucide-react';
+	Trash,
+} from '@phosphor-icons/react';
 import { useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -242,13 +242,13 @@ export default function CalendarPage() {
 							<div className="flex items-center justify-between">
 								<div className="flex items-center gap-4">
 									<Button variant="outline" size="icon" onClick={prevMonth}>
-										<ChevronLeft className="h-4 w-4" />
+										<CaretLeft className="h-4 w-4" />
 									</Button>
 									<h2 className="text-xl font-semibold">
 										{MONTHS[month]} {year}
 									</h2>
 									<Button variant="outline" size="icon" onClick={nextMonth}>
-										<ChevronRight className="h-4 w-4" />
+										<CaretRight className="h-4 w-4" />
 									</Button>
 								</div>
 								<Button variant="outline" onClick={goToToday}>
@@ -320,7 +320,7 @@ export default function CalendarPage() {
 												</div>
 												<div className="flex gap-1">
 													<Button variant="ghost" size="icon" className="h-6 w-6">
-														<Edit className="h-3 w-3" />
+														<Pencil className="h-3 w-3" />
 													</Button>
 													<Button
 														variant="ghost"
@@ -328,7 +328,7 @@ export default function CalendarPage() {
 														className="h-6 w-6"
 														onClick={() => handleDeleteEvent(event.id)}
 													>
-														<Trash2 className="h-3 w-3" />
+														<Trash className="h-3 w-3" />
 													</Button>
 												</div>
 											</div>
@@ -464,7 +464,7 @@ export default function CalendarPage() {
 								</div>
 							</div>
 							<div>
-								<span className="text-sm font-medium mb-1 block">Event Type</span>
+								<span className="text-sm font-medium mb-1 block">Event TextT</span>
 								<div className="flex gap-2 flex-wrap">
 									{EVENT_TYPES.map((type) => (
 										<Badge

@@ -1,20 +1,20 @@
 'use client';
 
 import {
-	Activity,
-	AlertTriangle,
-	BarChart3,
+	ActivityIcon,
+	ArrowCounterClockwise,
 	BookOpen,
-	Loader2,
-	MoreHorizontal,
-	Search,
-	Settings,
+	ChartBar,
+	CircleNotch,
+	DotsThree,
+	Gear,
+	MagnifyingGlass,
 	Shield,
-	Trash2,
-	TrendingUp,
-	Undo2,
+	Trash,
+	TrendUp,
 	Users,
-} from 'lucide-react';
+	Warning,
+} from '@phosphor-icons/react';
 import Link from 'next/link';
 import { useCallback, useEffect, useState, useTransition } from 'react';
 import { toast } from 'sonner';
@@ -247,8 +247,8 @@ export default function AdminDashboardPage() {
 						<p className="text-muted-foreground">Platform management and analytics</p>
 					</div>
 					<Button variant="outline" size="sm">
-						<Settings className="h-4 w-4 mr-2" />
-						Settings
+						<Gear className="h-4 w-4 mr-2" />
+						Gear
 					</Button>
 				</div>
 
@@ -258,7 +258,7 @@ export default function AdminDashboardPage() {
 						<CardContent className="pt-6">
 							{isLoadingStats ? (
 								<div className="flex items-center justify-center h-20">
-									<Loader2 className="h-6 w-6 animate-spin text-primary" />
+									<CircleNotch className="h-6 w-6 animate-spin text-primary" />
 								</div>
 							) : (
 								<div className="flex items-center gap-4">
@@ -277,12 +277,12 @@ export default function AdminDashboardPage() {
 						<CardContent className="pt-6">
 							{isLoadingStats ? (
 								<div className="flex items-center justify-center h-20">
-									<Loader2 className="h-6 w-6 animate-spin text-green-500" />
+									<CircleNotch className="h-6 w-6 animate-spin text-green-500" />
 								</div>
 							) : (
 								<div className="flex items-center gap-4">
 									<div className="h-12 w-12 rounded-full bg-green-500/10 flex items-center justify-center">
-										<Activity className="h-6 w-6 text-green-500" />
+										<ActivityIcon className="h-6 w-6 text-green-500" />
 									</div>
 									<div>
 										<p className="text-2xl font-bold">{stats.activeUsers.toLocaleString()}</p>
@@ -296,7 +296,7 @@ export default function AdminDashboardPage() {
 						<CardContent className="pt-6">
 							{isLoadingStats ? (
 								<div className="flex items-center justify-center h-20">
-									<Loader2 className="h-6 w-6 animate-spin text-blue-500" />
+									<CircleNotch className="h-6 w-6 animate-spin text-blue-500" />
 								</div>
 							) : (
 								<div className="flex items-center gap-4">
@@ -317,12 +317,12 @@ export default function AdminDashboardPage() {
 						<CardContent className="pt-6">
 							{isLoadingStats ? (
 								<div className="flex items-center justify-center h-20">
-									<Loader2 className="h-6 w-6 animate-spin text-amber-500" />
+									<CircleNotch className="h-6 w-6 animate-spin text-amber-500" />
 								</div>
 							) : (
 								<div className="flex items-center gap-4">
 									<div className="h-12 w-12 rounded-full bg-amber-500/10 flex items-center justify-center">
-										<TrendingUp className="h-6 w-6 text-amber-500" />
+										<TrendUp className="h-6 w-6 text-amber-500" />
 									</div>
 									<div>
 										<p className="text-2xl font-bold">{stats.averageScore}%</p>
@@ -352,8 +352,8 @@ export default function AdminDashboardPage() {
 							<Card>
 								<CardHeader>
 									<CardTitle className="flex items-center gap-2">
-										<Activity className="h-5 w-5" />
-										Recent Activity
+										<ActivityIcon className="h-5 w-5" />
+										Recent ActivityIcon
 									</CardTitle>
 								</CardHeader>
 								<CardContent>
@@ -384,7 +384,7 @@ export default function AdminDashboardPage() {
 							<Card>
 								<CardHeader>
 									<CardTitle className="flex items-center gap-2">
-										<AlertTriangle className="h-5 w-5 text-amber-500" />
+										<Warning className="h-5 w-5 text-amber-500" />
 										Flagged Content
 									</CardTitle>
 									<CardDescription>Items requiring moderation</CardDescription>
@@ -417,14 +417,14 @@ export default function AdminDashboardPage() {
 						<Card>
 							<CardHeader>
 								<CardTitle>User Management</CardTitle>
-								<CardDescription>Search and manage users</CardDescription>
+								<CardDescription>MagnifyingGlass and manage users</CardDescription>
 							</CardHeader>
 							<CardContent className="space-y-4">
 								<div className="flex gap-2 flex-col sm:flex-row">
 									<div className="relative flex-1">
-										<Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+										<MagnifyingGlass className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
 										<Input
-											placeholder="Search users by name or email..."
+											placeholder="MagnifyingGlass users by name or email..."
 											value={searchQuery}
 											onChange={(e) => setSearchQuery(e.target.value)}
 											onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
@@ -436,7 +436,7 @@ export default function AdminDashboardPage() {
 										onValueChange={(value) => setUserFilter(value as typeof userFilter)}
 									>
 										<SelectTrigger className="w-45">
-											<SelectValue placeholder="Filter users" />
+											<SelectValue placeholder="Faders users" />
 										</SelectTrigger>
 										<SelectContent>
 											<SelectItem value="all">All Users</SelectItem>
@@ -446,13 +446,17 @@ export default function AdminDashboardPage() {
 										</SelectContent>
 									</Select>
 									<Button onClick={handleSearch} disabled={isLoadingUsers}>
-										{isLoadingUsers ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Search'}
+										{isLoadingUsers ? (
+											<CircleNotch className="h-4 w-4 animate-spin" />
+										) : (
+											'MagnifyingGlass'
+										)}
 									</Button>
 								</div>
 
 								{isLoadingUsers ? (
 									<div className="flex items-center justify-center py-8">
-										<Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+										<CircleNotch className="h-8 w-8 animate-spin text-muted-foreground" />
 									</div>
 								) : users.length === 0 ? (
 									<p className="text-center text-muted-foreground py-8">No users found</p>
@@ -498,13 +502,13 @@ export default function AdminDashboardPage() {
 															<DropdownMenu>
 																<DropdownMenuTrigger asChild>
 																	<Button variant="ghost" size="sm">
-																		<MoreHorizontal className="h-4 w-4" />
+																		<DotsThree className="h-4 w-4" />
 																	</Button>
 																</DropdownMenuTrigger>
 																<DropdownMenuContent align="end">
 																	{user.deletedAt ? (
 																		<DropdownMenuItem onClick={() => handleRestoreUser(user.id)}>
-																			<Undo2 className="mr-2 h-4 w-4" />
+																			<ArrowCounterClockwise className="mr-2 h-4 w-4" />
 																			Restore
 																		</DropdownMenuItem>
 																	) : (
@@ -516,8 +520,8 @@ export default function AdminDashboardPage() {
 																				onClick={() => handleDeleteUser(user.id)}
 																				className="text-destructive"
 																			>
-																				<Trash2 className="mr-2 h-4 w-4" />
-																				Delete
+																				<Trash className="mr-2 h-4 w-4" />
+																				Backspace
 																			</DropdownMenuItem>
 																		</>
 																	)}
@@ -559,7 +563,7 @@ export default function AdminDashboardPage() {
 						<Card>
 							<CardHeader>
 								<CardTitle className="flex items-center gap-2">
-									<BarChart3 className="h-5 w-5" />
+									<ChartBar className="h-5 w-5" />
 									Subject Performance
 								</CardTitle>
 								<CardDescription>Questions attempted and average scores by subject</CardDescription>
@@ -567,7 +571,7 @@ export default function AdminDashboardPage() {
 							<CardContent>
 								{isLoadingStats ? (
 									<div className="flex items-center justify-center py-12">
-										<Loader2 className="h-8 w-8 animate-spin text-primary" />
+										<CircleNotch className="h-8 w-8 animate-spin text-primary" />
 									</div>
 								) : subjectPerformance.length > 0 ? (
 									<div className="space-y-4">

@@ -1,4 +1,4 @@
-import { CheckCircle, XCircle } from 'lucide-react';
+import { CheckCircle, XCircle } from '@phosphor-icons/react';
 import { useId } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
@@ -88,7 +88,7 @@ export function PracticeQuestion({
 						id={`short-answer-${questionId}`}
 						value={answer || ''}
 						onChange={(e) => onAnswerSelect(e.target.value)}
-						placeholder="Type your answer..."
+						placeholder="TextT your answer..."
 						disabled={showExplanation}
 					/>
 					{showExplanation && (
@@ -108,7 +108,7 @@ export function PracticeQuestion({
 					<Input
 						value={answer || ''}
 						onChange={(e) => onAnswerSelect(e.target.value)}
-						placeholder="Type your final answer..."
+						placeholder="TextT your final answer..."
 						disabled={showExplanation}
 					/>
 				</div>

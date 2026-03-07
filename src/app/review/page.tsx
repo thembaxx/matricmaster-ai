@@ -4,14 +4,14 @@ import {
 	BookOpen,
 	Brain,
 	Calendar,
-	ChevronRight,
+	CaretRight,
+	CircleNotch,
 	Clock,
-	Loader2,
+	Lightning,
 	Star,
 	Target,
 	Trophy,
-	Zap,
-} from 'lucide-react';
+} from '@phosphor-icons/react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
@@ -90,7 +90,7 @@ export default function ReviewPage() {
 		try {
 			const response = await fetch('/api/flashcards/review', {
 				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
+				headers: { 'Content-TextT': 'application/json' },
 				body: JSON.stringify({
 					flashcardId,
 					rating,
@@ -129,7 +129,7 @@ export default function ReviewPage() {
 	const getRecommendationIcon = (type: string) => {
 		switch (type) {
 			case 'weak_topic':
-				return <Target className="h-4 w-4" />;
+				return <Target weight="bold" className="h-4 w-4" />;
 			case 'review':
 				return <Clock className="h-4 w-4" />;
 			case 'practice':
@@ -144,7 +144,7 @@ export default function ReviewPage() {
 	if (isLoading) {
 		return (
 			<div className="flex min-h-[60vh] items-center justify-center">
-				<Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+				<CircleNotch className="h-8 w-8 animate-spin text-muted-foreground" />
 			</div>
 		);
 	}
@@ -169,7 +169,7 @@ export default function ReviewPage() {
 						<Card className="border-primary/20 bg-linear-to-br from-primary/5 to-transparent">
 							<CardHeader>
 								<CardTitle className="flex items-center gap-2">
-									<Zap className="h-5 w-5 text-primary" />
+									<Lightning weight="bold" className="h-5 w-5 text-primary" />
 									Cards Due for Review
 								</CardTitle>
 								<CardDescription>
@@ -189,7 +189,7 @@ export default function ReviewPage() {
 						<Card>
 							<CardHeader>
 								<CardTitle className="flex items-center gap-2">
-									<Target className="h-5 w-5" />
+									<Target weight="bold" className="h-5 w-5" />
 									Personalized Recommendations
 								</CardTitle>
 								<CardDescription>{recommendations.summary}</CardDescription>
@@ -226,7 +226,7 @@ export default function ReviewPage() {
 														{rec.estimatedTime}
 													</div>
 												</div>
-												<ChevronRight className="h-4 w-4 text-muted-foreground" />
+												<CaretRight className="h-4 w-4 text-muted-foreground" />
 											</div>
 										))}
 									</div>
@@ -255,7 +255,7 @@ export default function ReviewPage() {
 								</Button>
 								<Button variant="outline" asChild>
 									<Link href="/ai-tutor">
-										<Target className="mr-2 h-4 w-4" />
+										<Target weight="bold" className="mr-2 h-4 w-4" />
 										AI Tutor
 									</Link>
 								</Button>
@@ -274,7 +274,7 @@ export default function ReviewPage() {
 					<Card>
 						<CardHeader>
 							<CardTitle className="flex items-center gap-2">
-								<Trophy className="h-5 w-5 text-yellow-500" />
+								<Trophy weight="bold" className="h-5 w-5 text-yellow-500" />
 								Review Statistics
 							</CardTitle>
 						</CardHeader>

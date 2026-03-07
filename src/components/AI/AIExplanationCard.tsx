@@ -1,7 +1,7 @@
 'use client';
 
+import { CaretDown, CaretUp, CircleNotch, Sparkle } from '@phosphor-icons/react';
 import { AnimatePresence, m } from 'framer-motion';
-import { ChevronDown, ChevronUp, Loader2, Sparkles } from 'lucide-react';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -40,7 +40,7 @@ export function AIExplanationCard({
 				<div className="flex items-center justify-between">
 					<div className="flex items-center gap-3">
 						<div className="h-10 w-10 rounded-2xl bg-primary/10 flex items-center justify-center shadow-inner">
-							<Sparkles className="h-5 w-5 text-primary animate-pulse-soft" />
+							<Sparkle weight="bold" className="h-5 w-5 text-primary animate-pulse-soft" />
 						</div>
 						<div>
 							<h4 className="text-sm font-black font-lexend tracking-tight">MatricMaster AI</h4>
@@ -59,7 +59,7 @@ export function AIExplanationCard({
 							aria-label={isExpanded ? 'Collapse explanation' : 'Expand explanation'}
 							aria-expanded={isExpanded}
 						>
-							{isExpanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+							{isExpanded ? <CaretUp className="h-4 w-4" /> : <CaretDown className="h-4 w-4" />}
 						</Button>
 					) : (
 						<Button
@@ -70,9 +70,9 @@ export function AIExplanationCard({
 							className="rounded-xl h-9 px-4 font-black text-xs uppercase tracking-wider"
 						>
 							{isLoading ? (
-								<Loader2 className="h-3.5 w-3.5 mr-2 animate-spin" />
+								<CircleNotch className="h-3.5 w-3.5 mr-2 animate-spin" />
 							) : (
-								<Sparkles className="h-3.5 w-3.5 mr-2" />
+								<Sparkle weight="bold" className="h-3.5 w-3.5 mr-2" />
 							)}
 							Explain
 						</Button>

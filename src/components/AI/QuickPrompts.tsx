@@ -1,6 +1,6 @@
 'use client';
 
-import { Lightbulb, MessageSquarePlus } from 'lucide-react';
+import { ChatCenteredText, Lightbulb } from '@phosphor-icons/react';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
@@ -91,7 +91,7 @@ export function QuickPrompts({ onSelectPrompt, selectedSubject }: QuickPromptsPr
 							className="h-auto py-2 px-3 md:py-2.5 md:px-4 text-[10px] md:text-xs whitespace-nowrap rounded-xl md:rounded-2xl border-border/50 bg-surface-elevated/30 hover:bg-surface-elevated hover:border-primary/30 transition-all duration-200 ios-active-scale"
 							onClick={() => onSelectPrompt(prompt)}
 						>
-							<MessageSquarePlus className="h-3 w-3 md:h-3.5 md:w-3.5 mr-1.5 md:mr-2 text-primary/70 shrink-0" />
+							<ChatCenteredText className="h-3 w-3 md:h-3.5 md:w-3.5 mr-1.5 md:mr-2 text-primary/70 shrink-0" />
 							<span className="font-medium">{prompt}</span>
 						</Button>
 					))}

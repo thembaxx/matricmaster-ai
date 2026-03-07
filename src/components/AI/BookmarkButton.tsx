@@ -1,7 +1,7 @@
 'use client';
 
+import { Bookmark, BookmarkSimple } from '@phosphor-icons/react';
 import { m } from 'framer-motion';
-import { Bookmark, BookmarkCheck } from 'lucide-react';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
@@ -84,7 +84,7 @@ export function BookmarkButton({ messageId, content, role, subject }: BookmarkBu
 				transition={{ duration: 0.3 }}
 			>
 				{isBookmarked ? (
-					<BookmarkCheck className="h-4 w-4 text-primary" />
+					<BookmarkSimple className="h-4 w-4 text-primary" />
 				) : (
 					<Bookmark className="h-4 w-4" />
 				)}

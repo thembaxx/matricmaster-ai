@@ -1,7 +1,7 @@
 'use client';
 
+import { Sparkle } from '@phosphor-icons/react';
 import { AnimatePresence, m } from 'framer-motion';
-import { Sparkles } from 'lucide-react';
 import { memo } from 'react';
 import { STAGGER_CONTAINER, STAGGER_ITEM } from '@/lib/animation-presets';
 
@@ -116,7 +116,7 @@ export const QuizOptionsGrid = memo(function QuizOptionsGrid({
 									animate={{ scale: 1, rotate: 0 }}
 									className="absolute -top-2 -right-2 w-8 h-8 bg-white text-brand-green rounded-full flex items-center justify-center shadow-lg"
 								>
-									<Sparkles className="w-4 h-4 fill-brand-green" />
+									<Sparkle weight="bold" className="w-4 h-4 fill-brand-green" />
 								</m.div>
 							)}
 						</AnimatePresence>

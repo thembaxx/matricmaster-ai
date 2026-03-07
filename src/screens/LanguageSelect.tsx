@@ -1,7 +1,7 @@
 'use client';
 
 // import type { Screen } from '@/types'; // Removed unused import
-import { Globe, X } from 'lucide-react';
+import { Globe, X } from '@phosphor-icons/react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';

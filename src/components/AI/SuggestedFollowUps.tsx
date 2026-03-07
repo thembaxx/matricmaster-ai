@@ -1,6 +1,6 @@
 'use client';
 
-import { ArrowRight, Sparkles } from 'lucide-react';
+import { ArrowRight, Sparkle } from '@phosphor-icons/react';
 import { Button } from '@/components/ui/button';
 
 interface SuggestedFollowUpsProps {
@@ -17,7 +17,7 @@ export function SuggestedFollowUps({ suggestions, onSelectSuggestion }: Suggeste
 		<div className="mt-4 pt-4 border-t border-border/30">
 			<div className="flex items-center gap-2 mb-3">
 				<div className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center">
-					<Sparkles className="h-3 w-3 text-primary" />
+					<Sparkle weight="bold" className="h-3 w-3 text-primary" />
 				</div>
 				<span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">
 					Suggested follow-ups

@@ -1,7 +1,7 @@
 'use client';
 
+import { Check, Lock, Star } from '@phosphor-icons/react';
 import { m } from 'framer-motion';
-import { Check, Lock, Star } from 'lucide-react';
 import { memo } from 'react';
 import { ACHIEVEMENTS } from '@/constants/achievements';
 

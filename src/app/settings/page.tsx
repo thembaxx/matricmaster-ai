@@ -2,16 +2,16 @@
 
 import {
 	Bell,
-	CheckCircle2,
-	KeyRound,
-	Loader2,
+	CheckCircle,
+	CircleNotch,
+	DeviceMobile,
+	Key,
 	Lock,
 	Shield,
-	Smartphone,
-	Trash2,
+	Trash,
 	User,
 	XCircle,
-} from 'lucide-react';
+} from '@phosphor-icons/react';
 import Link from 'next/link';
 import { useEffect, useState, useTransition } from 'react';
 import { toast } from 'sonner';
@@ -245,7 +245,7 @@ export default function SettingsPage() {
 				setShowBackupCodes(true);
 				setIs2FAEnabled(true);
 				toast.success('2FA enabled successfully!', {
-					description: 'Save your backup codes in a safe place.',
+					description: 'FloppyDisk your backup codes in a safe place.',
 				});
 			} else if (result.error) {
 				toast.error(result.error.message);
@@ -296,7 +296,7 @@ export default function SettingsPage() {
 				setBackupCodes(result.data.backupCodes);
 				setShowBackupCodes(true);
 				toast.success('Backup codes regenerated', {
-					description: 'Save your new backup codes.',
+					description: 'FloppyDisk your new backup codes.',
 				});
 			} else if (result.error) {
 				toast.error(result.error.message);
@@ -330,7 +330,7 @@ export default function SettingsPage() {
 	return (
 		<div className="min-h-screen bg-background pt-4 pb-32 px-6 md:p-8">
 			<div className="max-w-4xl mx-auto">
-				<h1 className="text-3xl font-bold mb-2">Settings</h1>
+				<h1 className="text-3xl font-bold mb-2">Gear</h1>
 				<p className="text-muted-foreground mb-8">Manage your account settings and preferences</p>
 
 				<Tabs defaultValue="account" className="space-y-6">
@@ -387,11 +387,11 @@ export default function SettingsPage() {
 								<Button onClick={handleSaveProfile} disabled={isPendingProfile}>
 									{isPendingProfile ? (
 										<>
-											<Loader2 className="mr-2 h-4 w-4 animate-spin" />
+											<CircleNotch className="mr-2 h-4 w-4 animate-spin" />
 											Saving...
 										</>
 									) : (
-										'Save Changes'
+										'FloppyDisk Changes'
 									)}
 								</Button>
 							</CardContent>
@@ -428,7 +428,7 @@ export default function SettingsPage() {
 						<Card>
 							<CardHeader>
 								<CardTitle className="flex items-center gap-2">
-									<Smartphone className="h-5 w-5" />
+									<DeviceMobile className="h-5 w-5" />
 									Two-Factor Authentication
 								</CardTitle>
 								<CardDescription>Add an extra layer of security to your account</CardDescription>
@@ -437,7 +437,7 @@ export default function SettingsPage() {
 								<div className="flex items-center justify-between">
 									<div className="flex items-center gap-2">
 										{is2FAEnabled ? (
-											<CheckCircle2 className="h-5 w-5 text-green-500" />
+											<CheckCircle className="h-5 w-5 text-green-500" />
 										) : (
 											<XCircle className="h-5 w-5 text-muted-foreground" />
 										)}
@@ -471,13 +471,15 @@ export default function SettingsPage() {
 														onClick={handleDisable2FA}
 														disabled={isLoading2FA}
 													>
-														{isLoading2FA && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+														{isLoading2FA && <CircleNotch className="mr-2 h-4 w-4 animate-spin" />}
 														Disable 2FA
 													</Button>
 												) : (
 													<>
 														<Button onClick={handleEnable2FA} disabled={isLoading2FA}>
-															{isLoading2FA && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+															{isLoading2FA && (
+																<CircleNotch className="mr-2 h-4 w-4 animate-spin" />
+															)}
 															Enable 2FA
 														</Button>
 														<Button
@@ -485,7 +487,7 @@ export default function SettingsPage() {
 															onClick={handleRegenerateBackupCodes}
 															disabled={isLoading2FA || !is2FAEnabled}
 														>
-															<KeyRound className="mr-2 h-4 w-4" />
+															<Key className="mr-2 h-4 w-4" />
 															Regenerate Backup Codes
 														</Button>
 													</>
@@ -498,7 +500,7 @@ export default function SettingsPage() {
 										<Separator />
 										<div className="rounded-lg bg-amber-50 border border-amber-200 p-4">
 											<h4 className="font-semibold text-amber-800 mb-2">
-												⚠️ Save Your Backup Codes
+												⚠️ FloppyDisk Your Backup Codes
 											</h4>
 											<p className="text-sm text-amber-700 mb-4">
 												Store these codes somewhere safe. You can use them to access your account if
@@ -562,7 +564,7 @@ export default function SettingsPage() {
 								<Button onClick={handlePasswordChange} disabled={isPendingPassword}>
 									{isPendingPassword ? (
 										<>
-											<Loader2 className="mr-2 h-4 w-4 animate-spin" />
+											<CircleNotch className="mr-2 h-4 w-4 animate-spin" />
 											Updating...
 										</>
 									) : (
@@ -649,7 +651,7 @@ export default function SettingsPage() {
 					<TabsContent value="privacy" className="space-y-6">
 						<Card>
 							<CardHeader>
-								<CardTitle>Privacy Settings</CardTitle>
+								<CardTitle>Privacy Gear</CardTitle>
 								<CardDescription>Control your privacy preferences</CardDescription>
 							</CardHeader>
 							<CardContent className="space-y-6">
@@ -702,7 +704,7 @@ export default function SettingsPage() {
 							<CardContent className="space-y-4">
 								<div className="flex items-center justify-between">
 									<div>
-										<p className="font-medium">Delete Account</p>
+										<p className="font-medium">Backspace Account</p>
 										<p className="text-sm text-muted-foreground">
 											Permanently delete your account and all data
 										</p>
@@ -710,13 +712,13 @@ export default function SettingsPage() {
 									<Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
 										<DialogTrigger asChild>
 											<Button variant="destructive" size="sm">
-												<Trash2 className="mr-2 h-4 w-4" />
-												Delete Account
+												<Trash className="mr-2 h-4 w-4" />
+												Backspace Account
 											</Button>
 										</DialogTrigger>
 										<DialogContent>
 											<DialogHeader>
-												<DialogTitle>Delete Account</DialogTitle>
+												<DialogTitle>Backspace Account</DialogTitle>
 												<DialogDescription>
 													Are you sure you want to delete your account? This action cannot be
 													undone. All your data, progress, and achievements will be permanently
@@ -745,11 +747,11 @@ export default function SettingsPage() {
 												>
 													{isDeletingAccount ? (
 														<>
-															<Loader2 className="mr-2 h-4 w-4 animate-spin" />
+															<CircleNotch className="mr-2 h-4 w-4 animate-spin" />
 															Deleting...
 														</>
 													) : (
-														'Delete My Account'
+														'Backspace My Account'
 													)}
 												</Button>
 											</DialogFooter>

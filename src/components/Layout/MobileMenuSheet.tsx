@@ -1,6 +1,6 @@
 'use client';
 
-import { Menu } from 'lucide-react';
+import { List } from '@phosphor-icons/react';
 import { Button } from '@/components/ui/button';
 import { useSidebar } from '@/components/ui/sidebar';
 
@@ -15,7 +15,7 @@ export function MobileMenuSheet() {
 			onClick={toggleSidebar}
 			aria-label="Open navigation menu"
 		>
-			<Menu className="w-5 h-5 text-foreground" />
+			<List className="w-5 h-5 text-foreground" />
 		</Button>
 	);
 }

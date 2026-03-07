@@ -1,7 +1,7 @@
 'use client';
 
+import { CaretRight, FileText, MagnifyingGlass as SearchIcon } from '@phosphor-icons/react';
 import { AnimatePresence, m } from 'framer-motion';
-import { ChevronRight, FileText, Search as SearchIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { memo } from 'react';
 import { STAGGER_CONTAINER, STAGGER_ITEM } from '@/lib/animation-presets';
@@ -51,7 +51,7 @@ export const SearchResults = memo(function SearchResults({ results }: SearchResu
 										</div>
 									</div>
 									<div className="w-10 h-10 rounded-xl bg-muted group-hover:bg-primary group-hover:text-primary-foreground flex items-center justify-center transition-all">
-										<ChevronRight className="w-5 h-5" />
+										<CaretRight className="w-5 h-5" />
 									</div>
 								</button>
 							</m.div>

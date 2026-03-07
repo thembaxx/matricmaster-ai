@@ -1,6 +1,6 @@
 'use client';
 
-import { Clock } from 'lucide-react';
+import { Clock } from '@phosphor-icons/react';
 import { Badge } from '@/components/ui/badge';
 
 type QuizHeaderProps = {

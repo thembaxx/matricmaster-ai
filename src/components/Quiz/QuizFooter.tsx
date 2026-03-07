@@ -1,7 +1,7 @@
 'use client';
 
+import { Question } from '@phosphor-icons/react';
 import { m } from 'framer-motion';
-import { HelpCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 type QuizFooterProps = {
@@ -86,7 +86,7 @@ export function QuizFooter({
 								className="flex items-center gap-2 text-primary font-black text-[10px] uppercase tracking-widest hover:text-primary/80 transition-colors min-h-[44px]"
 								aria-label="Show solution"
 							>
-								<HelpCircle className="w-4 h-4" />
+								<Question className="w-4 h-4" />
 								Show Solution
 							</button>
 						)}

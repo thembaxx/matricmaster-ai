@@ -1,18 +1,18 @@
 'use client';
 
 import {
-	AlertTriangle,
+	ChatCenteredText,
 	Check,
 	Code,
 	Eye,
+	Faders,
 	FileText,
-	Filter,
 	Flag,
-	MessageSquare,
-	Search,
+	MagnifyingGlass,
 	Shield,
+	Warning,
 	X,
-} from 'lucide-react';
+} from '@phosphor-icons/react';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { Badge } from '@/components/ui/badge';
@@ -200,7 +200,7 @@ export default function ModerationDashboard() {
 					<CardContent className="pt-6">
 						<div className="flex items-center gap-4">
 							<div className="p-3 bg-yellow-100 rounded-lg">
-								<AlertTriangle className="h-6 w-6 text-yellow-600" />
+								<Warning className="h-6 w-6 text-yellow-600" />
 							</div>
 							<div>
 								<p className="text-2xl font-bold">
@@ -245,7 +245,7 @@ export default function ModerationDashboard() {
 					<CardContent className="pt-6">
 						<div className="flex items-center gap-4">
 							<div className="p-3 bg-purple-100 rounded-lg">
-								<Filter className="h-6 w-6 text-purple-600" />
+								<Faders className="h-6 w-6 text-purple-600" />
 							</div>
 							<div>
 								<p className="text-2xl font-bold">{patterns.filter((p) => p.isActive).length}</p>
@@ -263,7 +263,7 @@ export default function ModerationDashboard() {
 						Flagged Content
 					</TabsTrigger>
 					<TabsTrigger value="patterns">
-						<Filter className="h-4 w-4 mr-2" />
+						<Faders className="h-4 w-4 mr-2" />
 						Auto-Moderation
 					</TabsTrigger>
 					<TabsTrigger value="stats">
@@ -279,9 +279,9 @@ export default function ModerationDashboard() {
 						<CardContent className="pt-6">
 							<div className="flex gap-4">
 								<div className="flex-1 relative">
-									<Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+									<MagnifyingGlass className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
 									<Input
-										placeholder="Search flagged content..."
+										placeholder="MagnifyingGlass flagged content..."
 										value={searchQuery}
 										onChange={(e) => setSearchQuery(e.target.value)}
 										className="pl-10"
@@ -312,7 +312,7 @@ export default function ModerationDashboard() {
 										<div className="flex items-start gap-4">
 											<div className="p-2 bg-muted rounded-lg">
 												{flag.contentType === 'comment' ? (
-													<MessageSquare className="h-5 w-5" />
+													<ChatCenteredText className="h-5 w-5" />
 												) : (
 													<FileText className="h-5 w-5" />
 												)}
@@ -382,7 +382,7 @@ export default function ModerationDashboard() {
 					<div className="flex justify-between items-center">
 						<h2 className="text-lg font-semibold">Moderation Patterns</h2>
 						<Button>
-							<Filter className="h-4 w-4 mr-2" />
+							<Faders className="h-4 w-4 mr-2" />
 							Add Pattern
 						</Button>
 					</div>
@@ -414,7 +414,7 @@ export default function ModerationDashboard() {
 												{pattern.isActive ? 'Active' : 'Inactive'}
 											</Badge>
 											<Button size="sm" variant="outline">
-												Edit
+												Pencil
 											</Button>
 										</div>
 									</div>
@@ -460,7 +460,7 @@ export default function ModerationDashboard() {
 										{contentTypes.map((item) => (
 											<div key={item.type} className="flex items-center justify-between">
 												<span className="text-sm flex items-center gap-2">
-													<MessageSquare className="h-4 w-4" />
+													<ChatCenteredText className="h-4 w-4" />
 													{item.type}
 												</span>
 												<div className="flex items-center gap-2">

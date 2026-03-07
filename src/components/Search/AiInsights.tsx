@@ -1,7 +1,7 @@
 'use client';
 
+import { CircleNotch, Sparkle } from '@phosphor-icons/react';
 import { AnimatePresence, m } from 'framer-motion';
-import { Loader2, Sparkles } from 'lucide-react';
 import { memo } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
@@ -29,7 +29,7 @@ export const AiInsights = memo(function AiInsights({
 					className="space-y-6"
 				>
 					<div className="flex items-center gap-2">
-						<Sparkles className="w-5 h-5 text-primary" />
+						<Sparkle weight="bold" className="w-5 h-5 text-primary" />
 						<h2 className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.3em]">
 							AI Insights
 						</h2>
@@ -38,7 +38,7 @@ export const AiInsights = memo(function AiInsights({
 						<div className="absolute top-0 right-0 w-64 h-64 bg-primary/20 rounded-full blur-[80px] -mr-32 -mt-32" />
 						{isLoading ? (
 							<div className="flex items-center justify-center py-12">
-								<Loader2 className="w-10 h-10 text-primary animate-spin" />
+								<CircleNotch className="w-10 h-10 text-primary animate-spin" />
 							</div>
 						) : (
 							<div className="space-y-8 relative z-10">

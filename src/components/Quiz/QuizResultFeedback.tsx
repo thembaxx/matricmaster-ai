@@ -1,6 +1,6 @@
 'use client';
 
-import { CheckCircle2, SkipForward } from 'lucide-react';
+import { CheckCircle, SkipForward } from '@phosphor-icons/react';
 
 type QuizResultFeedbackProps = {
 	showResult: boolean;
@@ -34,7 +34,7 @@ export function QuizResultFeedback({
 					}`}
 				>
 					{isCorrect ? (
-						<CheckCircle2 className="w-5 h-5 text-green-600" />
+						<CheckCircle className="w-5 h-5 text-green-600" />
 					) : (
 						<SkipForward className="w-5 h-5 text-red-600" />
 					)}

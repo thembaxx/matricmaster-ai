@@ -1,7 +1,7 @@
 'use client';
 
+import { Lightning, Sparkle } from '@phosphor-icons/react';
 import { m } from 'framer-motion';
-import { Sparkles, Zap } from 'lucide-react';
 import { memo } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
@@ -132,7 +132,7 @@ export const LevelProgress = memo(function LevelProgress({
 										borderColor: `${info.color}30`,
 									}}
 								>
-									<Sparkles className="w-3 h-3 mr-1" />
+									<Sparkle weight="bold" className="w-3 h-3 mr-1" />
 									{info.title}
 								</Badge>
 							)}
@@ -178,7 +178,7 @@ export const LevelProgress = memo(function LevelProgress({
 					className="absolute top-1/2 -translate-y-1/2 right-0 flex items-center gap-1 px-2 py-0.5 bg-background rounded-full border shadow-sm"
 					style={{ borderColor: `${info.color}30` }}
 				>
-					<Zap className="w-3 h-3" style={{ color: info.color }} />
+					<Lightning weight="bold" className="w-3 h-3" style={{ color: info.color }} />
 					<span className="text-[10px] font-black text-muted-foreground">
 						{info.progressPercent}%
 					</span>

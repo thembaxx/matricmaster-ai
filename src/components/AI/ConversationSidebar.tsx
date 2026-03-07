@@ -1,7 +1,15 @@
 'use client';
 
+import {
+	Archive,
+	ChatCenteredText,
+	CircleNotch,
+	MagnifyingGlass,
+	Plus,
+	Trash,
+	X,
+} from '@phosphor-icons/react';
 import { AnimatePresence, m } from 'framer-motion';
-import { Archive, Loader2, MessageSquare, Plus, Search, Trash2, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
@@ -56,18 +64,18 @@ function ConversationList({
 				<div className="flex items-center justify-between">
 					<div className="flex items-center gap-2">
 						<Archive className="h-5 w-5 text-primary" />
-						<h2 className="font-bold">History</h2>
+						<h2 className="font-bold">ClockCounterClockwise</h2>
 					</div>
 					<span className="text-xs text-muted-foreground">{conversations.length} saved</span>
 				</div>
 				<div className="relative">
-					<Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+					<MagnifyingGlass className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
 					<Input
-						placeholder="Search conversations..."
+						placeholder="MagnifyingGlass conversations..."
 						value={searchQuery}
 						onChange={(e) => setSearchQuery(e.target.value)}
 						className="pl-9 pr-8"
-						aria-label="Search conversations"
+						aria-label="MagnifyingGlass conversations"
 					/>
 					<AnimatePresence>
 						{searchQuery && (
@@ -94,11 +102,11 @@ function ConversationList({
 				<div className="p-2 space-y-1">
 					{isLoading ? (
 						<div className="flex items-center justify-center py-8">
-							<Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+							<CircleNotch className="h-6 w-6 animate-spin text-muted-foreground" />
 						</div>
 					) : filteredConversations.length === 0 ? (
 						<div className="text-center py-8 text-muted-foreground">
-							<MessageSquare className="h-8 w-8 mx-auto mb-2 opacity-50" />
+							<ChatCenteredText className="h-8 w-8 mx-auto mb-2 opacity-50" />
 							<p className="text-sm">
 								{searchQuery ? 'No matching conversations' : 'No saved conversations yet'}
 							</p>
@@ -138,12 +146,12 @@ function ConversationList({
 										className="h-7 w-7 shrink-0 text-muted-foreground hover:text-destructive"
 										onClick={(e) => onDelete(e, conversation.id)}
 										disabled={deletingId === conversation.id}
-										aria-label="Delete conversation"
+										aria-label="Backspace conversation"
 									>
 										{deletingId === conversation.id ? (
-											<Loader2 className="h-3.5 w-3.5 animate-spin" />
+											<CircleNotch className="h-3.5 w-3.5 animate-spin" />
 										) : (
-											<Trash2 className="h-3.5 w-3.5" />
+											<Trash className="h-3.5 w-3.5" />
 										)}
 									</Button>
 								</div>
@@ -251,7 +259,7 @@ export function ConversationSidebar({
 				</SheetTrigger>
 				<SheetContent side="left" className="w-80 p-0">
 					<SheetHeader className="sr-only">
-						<SheetTitle>Conversation History</SheetTitle>
+						<SheetTitle>Conversation ClockCounterClockwise</SheetTitle>
 					</SheetHeader>
 					<ConversationList {...listProps} onSelectAndClose={() => setIsOpen(false)} />
 				</SheetContent>

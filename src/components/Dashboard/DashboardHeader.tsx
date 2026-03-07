@@ -1,7 +1,7 @@
 'use client';
 
+import { Bell } from '@phosphor-icons/react';
 import { m } from 'framer-motion';
-import { Bell } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { SmoothWords } from '@/components/Transition/SmoothText';

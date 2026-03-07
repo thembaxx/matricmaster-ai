@@ -1,16 +1,16 @@
 'use client';
 
 import { Icon } from '@iconify/react';
-import { AnimatePresence, m } from 'framer-motion';
 import {
 	ArrowLeft,
-	CheckCircle2,
+	CheckCircle,
+	CircleNotch,
 	Clock,
-	Loader2,
-	Sparkles,
-	TrendingUp,
+	Sparkle,
+	TrendUp,
 	XCircle,
-} from 'lucide-react';
+} from '@phosphor-icons/react';
+import { AnimatePresence, m } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { AIExplanationCard } from '@/components/AI/AIExplanationCard';
@@ -364,7 +364,7 @@ export default function EnhancedTestQuizScreen() {
 									<div>
 										<div className="flex items-center gap-3 mb-4">
 											<div className="w-10 h-10 rounded-2xl bg-brand-blue/10 flex items-center justify-center">
-												<CheckCircle2 className="w-5 h-5 text-brand-blue" />
+												<CheckCircle className="w-5 h-5 text-brand-blue" />
 											</div>
 											<h2 className="text-xl font-bold text-foreground tracking-tight">
 												Choose your subjects
@@ -411,7 +411,7 @@ export default function EnhancedTestQuizScreen() {
 											onClick={selectRandomSubjects}
 											className="w-full rounded-2xl border border-border hover:border-brand-blue/50 hover:bg-brand-blue/5 transition-all text-muted-foreground font-semibold h-12"
 										>
-											<Sparkles className="w-4 h-4 mr-2" />
+											<Sparkle weight="bold" className="w-4 h-4 mr-2" />
 											I'm feeling lucky
 										</Button>
 									</m.div>
@@ -426,7 +426,7 @@ export default function EnhancedTestQuizScreen() {
 								className="w-full bg-brand-blue hover:bg-brand-blue/90 shadow-xl shadow-brand-blue/20 gap-3 text-white h-16 rounded-[2rem] font-semibold text-base transition-all active:scale-95"
 							>
 								{loading ? (
-									<Loader2 className="w-6 h-6 animate-spin" />
+									<CircleNotch className="w-6 h-6 animate-spin" />
 								) : (
 									<>
 										<Icon
@@ -535,7 +535,7 @@ export default function EnhancedTestQuizScreen() {
 									{quizState.questions[quizState.currentQuestionIndex].hint && (
 										<div className="p-4 bg-yellow-500/5 dark:bg-yellow-500/10 rounded-2xl border border-yellow-500/10 flex gap-3">
 											<div className="shrink-0 text-yellow-600 dark:text-yellow-500">
-												<Sparkles className="w-5 h-5 fill-current" />
+												<Sparkle weight="bold" className="w-5 h-5 fill-current" />
 											</div>
 											<p className="text-sm text-yellow-700 dark:text-yellow-400 font-medium">
 												{quizState.questions[quizState.currentQuestionIndex].hint}
@@ -599,7 +599,7 @@ export default function EnhancedTestQuizScreen() {
 																</span>
 																{isSelected && (
 																	<div className="ml-auto text-brand-blue">
-																		<CheckCircle2 className="w-5 h-5 fill-current" />
+																		<CheckCircle className="w-5 h-5 fill-current" />
 																	</div>
 																)}
 															</Label>
@@ -689,7 +689,7 @@ export default function EnhancedTestQuizScreen() {
 							>
 								<div className="text-center mb-8">
 									<div className="w-24 h-24 bg-brand-green/10 rounded-full flex items-center justify-center mx-auto mb-6 shrink-0 shadow-[0_0_32px_rgba(16,185,129,0.2)]">
-										<TrendingUp className="w-12 h-12 text-brand-green" />
+										<TrendUp className="w-12 h-12 text-brand-green" />
 									</div>
 									<h2 className="text-3xl font-black mb-2 text-foreground tracking-tight">
 										Quiz Complete!
@@ -758,7 +758,7 @@ export default function EnhancedTestQuizScreen() {
 													Question {index + 1}
 												</span>
 												{isCorrect ? (
-													<CheckCircle2 className="w-5 h-5 text-green-500" />
+													<CheckCircle className="w-5 h-5 text-green-500" />
 												) : (
 													<XCircle className="w-5 h-5 text-red-500" />
 												)}
@@ -799,7 +799,7 @@ export default function EnhancedTestQuizScreen() {
 										}}
 										className="flex-1 h-14 rounded-2xl font-black uppercase tracking-wider bg-brand-amber text-zinc-900 hover:bg-brand-amber/90"
 									>
-										<Sparkles className="w-4 h-4 mr-2" />
+										<Sparkle weight="bold" className="w-4 h-4 mr-2" />
 										Claim XP
 									</Button>
 								</div>

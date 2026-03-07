@@ -1,6 +1,6 @@
 'use client';
 
-import { Loader2, Plus, Trash2 } from 'lucide-react';
+import { CircleNotch, Plus, Trash } from '@phosphor-icons/react';
 import { useId, useState } from 'react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
@@ -64,7 +64,7 @@ export function DeckDetailModal({
 		try {
 			const response = await fetch(`/api/flashcards/decks/${deck.id}/cards`, {
 				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
+				headers: { 'Content-TextT': 'application/json' },
 				body: JSON.stringify({ front: front.trim(), back: back.trim() }),
 			});
 
@@ -85,7 +85,7 @@ export function DeckDetailModal({
 	};
 
 	const handleDeleteCard = async (cardId: string) => {
-		if (!confirm('Delete this card?')) return;
+		if (!confirm('Backspace this card?')) return;
 
 		setDeletingId(cardId);
 		try {
@@ -147,7 +147,7 @@ export function DeckDetailModal({
 							</div>
 							<Button onClick={handleAddCard} disabled={isAdding} className="w-full">
 								{isAdding ? (
-									<Loader2 className="mr-2 h-4 w-4 animate-spin" />
+									<CircleNotch className="mr-2 h-4 w-4 animate-spin" />
 								) : (
 									<Plus className="mr-2 h-4 w-4" />
 								)}
@@ -177,9 +177,9 @@ export function DeckDetailModal({
 											disabled={deletingId === card.id}
 										>
 											{deletingId === card.id ? (
-												<Loader2 className="h-4 w-4 animate-spin" />
+												<CircleNotch className="h-4 w-4 animate-spin" />
 											) : (
-												<Trash2 className="h-4 w-4" />
+												<Trash className="h-4 w-4" />
 											)}
 										</Button>
 									</div>

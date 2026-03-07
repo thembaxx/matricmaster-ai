@@ -1,16 +1,16 @@
 'use client';
 
-import { AnimatePresence, m } from 'framer-motion';
 import {
 	BookOpen,
-	Download,
+	CircleNotch,
+	DownloadSimple,
 	Eye,
+	Faders,
 	FileText,
-	Filter,
-	Loader2,
-	Search as SearchIcon,
+	MagnifyingGlass as SearchIcon,
 	X,
-} from 'lucide-react';
+} from '@phosphor-icons/react';
+import { AnimatePresence, m } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { BackgroundMesh } from '@/components/ui/background-mesh';
@@ -89,7 +89,7 @@ const FilterContent = memo(function FilterContent({
 
 			<div className="space-y-4">
 				<h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-label-tertiary">
-					Paper Type
+					Paper TextT
 				</h4>
 				<div className="grid grid-cols-2 gap-3">
 					{availablePapers.map((paper) => (
@@ -294,14 +294,14 @@ export default function PastPapers() {
 							<Button
 								variant="outline"
 								onClick={() => setIsAdvancedFilterOpen(true)}
-								aria-label={`Advanced Filter${activeFilterCount > 0 ? `, ${activeFilterCount} active` : ''}`}
+								aria-label={`Advanced Faders${activeFilterCount > 0 ? `, ${activeFilterCount} active` : ''}`}
 								className={cn(
 									'rounded-2xl border-2 font-black text-[10px] uppercase tracking-widest px-4 sm:px-6 h-10 sm:h-12 ios-active-scale',
 									activeFilterCount > 0 && 'border-primary bg-primary/10 text-primary'
 								)}
 							>
-								<Filter className="w-4 h-4 mr-2" />
-								<span className="hidden sm:inline">Advanced Filter</span>
+								<Faders className="w-4 h-4 mr-2" />
+								<span className="hidden sm:inline">Advanced Faders</span>
 								{activeFilterCount > 0 && (
 									<Badge className="ml-2 rounded-full px-2 py-0.5 text-[9px] bg-primary text-primary-foreground">
 										{activeFilterCount}
@@ -317,9 +317,9 @@ export default function PastPapers() {
 							<Input
 								value={searchQuery}
 								onChange={(e) => setSearchQuery(e.target.value)}
-								placeholder="Search subjects or papers..."
+								placeholder="MagnifyingGlass subjects or papers..."
 								className="pl-12 sm:pl-16 pr-12 sm:pr-16 bg-card backdrop-blur-md border-border border-2 h-12 sm:h-16 rounded-xl sm:rounded-2xl text-base sm:text-lg font-black uppercase tracking-tight shadow-inner"
-								aria-label="Search past papers"
+								aria-label="MagnifyingGlass past papers"
 							/>
 							<AnimatePresence>
 								{searchQuery && (
@@ -371,7 +371,7 @@ export default function PastPapers() {
 					<AnimatePresence mode="popLayout">
 						{isLoading ? (
 							<div className="flex items-center justify-center py-20">
-								<Loader2 className="w-8 h-8 animate-spin text-primary" />
+								<CircleNotch className="w-8 h-8 animate-spin text-primary" />
 							</div>
 						) : filteredPapers.length > 0 ? (
 							<m.div
@@ -443,8 +443,8 @@ export default function PastPapers() {
 													className="w-full rounded-2xl h-14 bg-secondary hover:bg-primary hover:text-primary-foreground text-label-secondary font-black text-[10px] uppercase tracking-widest transition-all duration-300 group/btn ios-active-scale"
 													onClick={() => window.open(paper.originalPdfUrl, '_blank')}
 												>
-													<Download className="w-4 h-4 mr-2" />
-													Download PDF
+													<DownloadSimple className="w-4 h-4 mr-2" />
+													DownloadSimple PDF
 												</Button>
 											</div>
 										</Card>

@@ -1,6 +1,6 @@
 'use client';
 
-import { KeyRound, Loader2, Shield, Smartphone } from 'lucide-react';
+import { CircleNotch, DeviceMobile, Key, Shield } from '@phosphor-icons/react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
@@ -113,8 +113,8 @@ export default function TwoFactorPage() {
 									onClick={handleSendOtp}
 									disabled={isLoading}
 								>
-									<Smartphone className="mr-2 h-4 w-4" />
-									Send code to email
+									<DeviceMobile className="mr-2 h-4 w-4" />
+									PaperPlaneRight code to email
 								</Button>
 							</div>
 						) : (
@@ -150,12 +150,12 @@ export default function TwoFactorPage() {
 						<Button type="submit" className="w-full" disabled={isLoading}>
 							{isLoading ? (
 								<>
-									<Loader2 className="mr-2 h-4 w-4 animate-spin" />
+									<CircleNotch className="mr-2 h-4 w-4 animate-spin" />
 									Verifying...
 								</>
 							) : (
 								<>
-									<KeyRound className="mr-2 h-4 w-4" />
+									<Key className="mr-2 h-4 w-4" />
 									Verify
 								</>
 							)}

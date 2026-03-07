@@ -1,15 +1,15 @@
 'use client';
 
 import {
+	ChatCircle,
 	CheckCircle,
 	Clock,
-	MessageCircle,
-	Search,
+	MagnifyingGlass,
 	Target,
 	UserPlus,
 	Users,
 	XCircle,
-} from 'lucide-react';
+} from '@phosphor-icons/react';
 import { useEffect } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
@@ -26,7 +26,7 @@ const SUBJECTS = [
 	'Physical Sciences',
 	'Life Sciences',
 	'Geography',
-	'History',
+	'ClockCounterClockwise',
 	'English',
 	'Afrikaans',
 	'Accounting',
@@ -99,15 +99,15 @@ export default function StudyBuddiesPage() {
 
 				{/* Discover Tab */}
 				<TabsContent value="discover" className="space-y-4">
-					{/* Search & Filters */}
+					{/* MagnifyingGlass & Filters */}
 					<Card>
 						<CardContent className="pt-6">
 							<div className="flex gap-4 flex-wrap">
 								<div className="flex-1 min-w-50">
 									<div className="relative">
-										<Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+										<MagnifyingGlass className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
 										<Input
-											placeholder="Search by name or bio..."
+											placeholder="MagnifyingGlass by name or bio..."
 											value={searchQuery}
 											onChange={(e) => setSearchQuery(e.target.value)}
 											className="pl-10"
@@ -155,7 +155,7 @@ export default function StudyBuddiesPage() {
 								<CardContent>
 									<p className="text-sm text-muted-foreground mb-4">{buddy.bio}</p>
 									<p className="text-xs text-muted-foreground mb-4">
-										<Target className="h-3 w-3 inline mr-1" />
+										<Target weight="bold" className="h-3 w-3 inline mr-1" />
 										{buddy.studyGoals}
 									</p>
 									<div className="flex gap-2">
@@ -168,7 +168,7 @@ export default function StudyBuddiesPage() {
 											Connect
 										</Button>
 										<Button size="sm" variant="outline">
-											<MessageCircle className="h-4 w-4" />
+											<ChatCircle className="h-4 w-4" />
 										</Button>
 									</div>
 								</CardContent>
@@ -258,7 +258,7 @@ export default function StudyBuddiesPage() {
 											</div>
 										</div>
 										<Button size="sm" className="w-full">
-											<MessageCircle className="h-4 w-4 mr-2" />
+											<ChatCircle className="h-4 w-4 mr-2" />
 											Message
 										</Button>
 									</CardContent>
@@ -346,7 +346,7 @@ export default function StudyBuddiesPage() {
 							</div>
 
 							<div className="flex items-center gap-4">
-								<Button>Save Profile</Button>
+								<Button>FloppyDisk Profile</Button>
 								<Button variant="outline">Make Profile Visible</Button>
 							</div>
 						</CardContent>

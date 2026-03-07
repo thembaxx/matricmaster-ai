@@ -1,7 +1,7 @@
 'use client';
 
+import { Lightbulb, Sparkle } from '@phosphor-icons/react';
 import { AnimatePresence, m } from 'framer-motion';
-import { Lightbulb, Sparkles } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import { QuizFooter, QuizHintCard, QuizOptionsGrid, SimpleQuizHeader } from '@/components/Quiz';
@@ -264,7 +264,7 @@ function ExplanationCard({ showExplanation }: ExplanationCardProps) {
 								transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
 								className="w-12 h-12 bg-brand-green text-white rounded-2xl flex items-center justify-center shadow-lg shadow-brand-green/20"
 							>
-								<Sparkles className="w-6 h-6" />
+								<Sparkle weight="bold" className="w-6 h-6" />
 							</m.div>
 							<div>
 								<h4 className="font-black text-brand-green text-lg">Aha! Moment</h4>
@@ -319,7 +319,7 @@ function AIExplanationSection({
 							transition={{ duration: 3, repeat: Number.POSITIVE_INFINITY }}
 							className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center"
 						>
-							<Sparkles className="w-5 h-5 text-primary" />
+							<Sparkle weight="bold" className="w-5 h-5 text-primary" />
 						</m.div>
 						<div>
 							<h4 className="font-bold text-foreground text-sm">Need a deeper explanation?</h4>

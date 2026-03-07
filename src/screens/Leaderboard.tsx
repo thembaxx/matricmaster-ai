@@ -1,7 +1,7 @@
 'use client';
 
+import { Fire, Medal, Trophy as TrophyIcon } from '@phosphor-icons/react';
 import { m } from 'framer-motion';
-import { Award, Flame, Trophy as TrophyIcon } from 'lucide-react';
 import { memo, useEffect, useMemo, useState } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card } from '@/components/ui/card';
@@ -87,7 +87,7 @@ const Podium = memo(function Podium({ data }: { data: LeaderboardEntry[] }) {
 						{r1?.userName || 'TBD'}
 					</p>
 					<p className="text-sm md:text-base font-black text-primary-orange uppercase tracking-widest flex items-center justify-center gap-2">
-						<Flame className="w-4 h-4 fill-primary-orange" />
+						<Fire weight="bold" className="w-4 h-4 fill-primary-orange" />
 						{r1 ? formatPoints(r1.totalPoints) : '0'} KP
 					</p>
 				</div>
@@ -142,7 +142,7 @@ const RankingList = memo(function RankingList({ data }: { data: LeaderboardEntry
 							{student.userName}
 						</h4>
 						<p className="text-[10px] sm:text-[11px] font-black text-muted-foreground uppercase tracking-widest flex items-center gap-1 sm:gap-2">
-							<Award className="w-3 h-3.5 sm:w-3.5 sm:h-3.5" />
+							<Medal weight="bold" className="w-3 h-3.5 sm:w-3.5 sm:h-3.5" />
 							{student.questionsCompleted} questions
 						</p>
 					</div>
@@ -254,7 +254,7 @@ export default function Leaderboard() {
 				<div className="max-w-6xl mx-auto w-full pb-32">
 					{leaderboardData.length === 0 ? (
 						<div className="text-center py-32 space-y-4 opacity-50">
-							<Award className="w-16 h-16 mx-auto text-muted-foreground" />
+							<Medal weight="bold" className="w-16 h-16 mx-auto text-muted-foreground" />
 							<p className="text-xl font-bold">The arena is empty... for now.</p>
 						</div>
 					) : (
@@ -298,7 +298,10 @@ export default function Leaderboard() {
 									Your Global Rank
 								</h3>
 								<p className="text-[10px] sm:text-[11px] font-black text-white/60 uppercase tracking-widest flex items-center gap-1 sm:gap-2">
-									<Flame className="w-3 h-3 sm:w-4 sm:h-4 text-primary-orange fill-primary-orange" />
+									<Fire
+										weight="bold"
+										className="w-3 h-3 sm:w-4 sm:h-4 text-primary-orange fill-primary-orange"
+									/>
 									{userStreak?.currentStreak || 0} Day Streak
 								</p>
 							</div>

@@ -1,7 +1,7 @@
 'use client';
 
+import { ArrowLeft, Backspace, CaretLeft, CaretRight, Keyboard } from '@phosphor-icons/react';
 import { AnimatePresence, m } from 'framer-motion';
-import { ArrowLeft, ChevronLeft, ChevronRight, Delete, Keyboard } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
@@ -244,7 +244,7 @@ function MathInputField({ input, cursorPos, onDelete }: MathInputFieldProps) {
 				className="shrink-0 text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-900/20"
 				onClick={onDelete}
 			>
-				<Delete className="w-6 h-6 fill-current" />
+				<Backspace className="w-6 h-6 fill-current" />
 			</Button>
 		</Card>
 	);
@@ -335,12 +335,12 @@ function CalculatorContent({ router, onKeyClick, moveCursor }: CalculatorContent
 								/>
 							))}
 							<CalcKey
-								label={<ChevronLeft className="w-6 h-6" />}
+								label={<CaretLeft className="w-6 h-6" />}
 								onClick={() => moveCursor('left')}
 								className="bg-secondary dark:bg-secondary/50"
 							/>
 							<CalcKey
-								label={<ChevronRight className="w-6 h-6" />}
+								label={<CaretRight className="w-6 h-6" />}
 								onClick={() => moveCursor('right')}
 								className="bg-secondary dark:bg-secondary/50"
 							/>

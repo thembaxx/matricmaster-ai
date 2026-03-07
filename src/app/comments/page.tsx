@@ -1,6 +1,12 @@
 'use client';
 
-import { Flag, MessageSquare, Reply, ThumbsDown, ThumbsUp } from 'lucide-react';
+import {
+	ArrowBendUpLeft,
+	ChatCenteredText,
+	Flag,
+	ThumbsDown,
+	ThumbsUp,
+} from '@phosphor-icons/react';
 import { useSearchParams } from 'next/navigation';
 import { Suspense, useState } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -58,7 +64,7 @@ function CommentsContent() {
 		try {
 			const response = await fetch('/api/comments', {
 				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
+				headers: { 'Content-TextT': 'application/json' },
 				body: JSON.stringify({
 					content: newComment,
 					resourceType,
@@ -84,7 +90,7 @@ function CommentsContent() {
 		try {
 			await fetch(`/api/comments/${commentId}/vote`, {
 				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
+				headers: { 'Content-TextT': 'application/json' },
 				body: JSON.stringify({ voteType }),
 			});
 		} catch (error) {
@@ -98,7 +104,7 @@ function CommentsContent() {
 		try {
 			await fetch(`/api/comments/${commentId}/flag`, {
 				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
+				headers: { 'Content-TextT': 'application/json' },
 				body: JSON.stringify({ reason }),
 			});
 		} catch (error) {
@@ -112,7 +118,7 @@ function CommentsContent() {
 		try {
 			const response = await fetch('/api/comments', {
 				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
+				headers: { 'Content-TextT': 'application/json' },
 				body: JSON.stringify({
 					content: replyContent,
 					resourceType,
@@ -141,7 +147,7 @@ function CommentsContent() {
 			<Card>
 				<CardHeader>
 					<CardTitle className="flex items-center gap-2">
-						<MessageSquare className="h-5 w-5" />
+						<ChatCenteredText className="h-5 w-5" />
 						Discussion
 						<span className="text-sm font-normal text-muted-foreground">
 							({comments.length} comments)
@@ -197,7 +203,7 @@ function CommentsContent() {
 
 					{comments.length === 0 && (
 						<div className="text-center py-8 text-muted-foreground">
-							<MessageSquare className="h-12 w-12 mx-auto mb-4 opacity-50" />
+							<ChatCenteredText className="h-12 w-12 mx-auto mb-4 opacity-50" />
 							<p>No comments yet. Be the first to share your thoughts!</p>
 						</div>
 					)}
@@ -283,8 +289,8 @@ function CommentItem({
 							onClick={() => onReply(comment.id)}
 							className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground"
 						>
-							<Reply className="h-3 w-3" />
-							Reply
+							<ArrowBendUpLeft className="h-3 w-3" />
+							ArrowBendUpLeft
 						</button>
 
 						<button
@@ -319,7 +325,7 @@ function CommentItem({
 						</div>
 					)}
 
-					{/* Reply Input */}
+					{/* ArrowBendUpLeft Input */}
 					{replyingTo === comment.id && (
 						<div className="mt-3 pl-4 border-l-2">
 							<Textarea
@@ -330,7 +336,7 @@ function CommentItem({
 							/>
 							<div className="flex gap-2 mt-2">
 								<Button size="sm" onClick={() => handleReply(comment.id)}>
-									Reply
+									ArrowBendUpLeft
 								</Button>
 								<Button size="sm" variant="ghost" onClick={() => setReplyingTo(null)}>
 									Cancel

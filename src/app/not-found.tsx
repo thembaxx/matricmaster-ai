@@ -1,7 +1,7 @@
 'use client';
 
+import { House, MagnifyingGlass } from '@phosphor-icons/react';
 import { m } from 'framer-motion';
-import { Home, Search } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 
@@ -39,14 +39,14 @@ export default function NotFound() {
 				>
 					<Link href="/">
 						<Button size="lg" className="gap-2 rounded-2xl shadow-xl shadow-primary/20">
-							<Home className="w-5 h-5" />
-							Go Home
+							<House className="w-5 h-5" />
+							Go House
 						</Button>
 					</Link>
 					<Link href="/search">
 						<Button size="lg" variant="outline" className="gap-2 rounded-2xl">
-							<Search className="w-5 h-5" />
-							Search
+							<MagnifyingGlass className="w-5 h-5" />
+							MagnifyingGlass
 						</Button>
 					</Link>
 				</m.div>

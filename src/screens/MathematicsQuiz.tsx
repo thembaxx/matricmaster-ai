@@ -1,6 +1,6 @@
 'use client';
 
-import { ArrowLeft, CheckCircle2, GripVertical, Lightbulb, X } from 'lucide-react';
+import { ArrowLeft, CheckCircle, DotsSixVertical, Lightbulb, X } from '@phosphor-icons/react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { AIExplanationCard } from '@/components/AI/AIExplanationCard';
@@ -170,7 +170,7 @@ export default function MathematicsQuiz() {
 									>
 										<div className="flex items-center gap-4">
 											<div className="w-8 h-8 rounded-lg bg-secondary flex items-center justify-center group-hover:bg-primary/10 transition-colors">
-												<GripVertical className="w-4 h-4 text-label-tertiary group-hover:text-primary" />
+												<DotsSixVertical className="w-4 h-4 text-label-tertiary group-hover:text-primary" />
 											</div>
 											<span className="font-mono font-black text-label-secondary uppercase tracking-tight">
 												{step.text}
@@ -239,7 +239,7 @@ export default function MathematicsQuiz() {
 							disabled={selectedSteps.length === 0}
 							onClick={() => router.push('/lesson-complete')}
 						>
-							<CheckCircle2 className="w-5 h-5 mr-2" />
+							<CheckCircle className="w-5 h-5 mr-2" />
 							Check Answer
 						</Button>
 					</div>

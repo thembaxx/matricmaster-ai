@@ -1,7 +1,7 @@
 'use client';
 
+import { X } from '@phosphor-icons/react';
 import { AnimatePresence, m } from 'framer-motion';
-import { X } from 'lucide-react';
 import { useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { useFeatureTooltip } from '@/hooks/use-feature-tooltip';

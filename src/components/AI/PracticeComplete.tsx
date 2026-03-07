@@ -1,5 +1,5 @@
-import type { LucideIcon } from 'lucide-react';
-import { CheckCircle, Clock, Lightbulb } from 'lucide-react';
+import type { Icon } from '@phosphor-icons/react';
+import { CheckCircle, Clock, Lightbulb } from '@phosphor-icons/react';
 import { Button } from '@/components/ui/button';
 
 interface PracticeCompleteProps {
@@ -17,7 +17,7 @@ export function PracticeComplete({
 	onToggleAnswers,
 	onReset,
 }: PracticeCompleteProps) {
-	const getIcon = (): LucideIcon => {
+	const getIcon = (): Icon => {
 		if (correctCount === totalProblems) return CheckCircle;
 		if (correctCount >= totalProblems / 2) return Lightbulb;
 		return Clock;

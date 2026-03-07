@@ -1,6 +1,6 @@
 'use client';
 
-import { AlertTriangle } from 'lucide-react';
+import { Warning } from '@phosphor-icons/react';
 import { Component, type ReactNode } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -39,7 +39,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
 				<div className="flex flex-col items-center justify-center min-h-screen p-6 bg-zinc-50 dark:bg-zinc-950">
 					<Card className="p-8 max-w-md w-full text-center space-y-6">
 						<div className="w-16 h-16 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center mx-auto">
-							<AlertTriangle className="w-8 h-8 text-red-600 dark:text-red-400" />
+							<Warning className="w-8 h-8 text-red-600 dark:text-red-400" />
 						</div>
 						<div className="space-y-2">
 							<h2 className="text-2xl font-black text-zinc-900 dark:text-white">
@@ -60,7 +60,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
 								}}
 								className="flex-1"
 							>
-								Go Home
+								Go House
 							</Button>
 						</div>
 					</Card>

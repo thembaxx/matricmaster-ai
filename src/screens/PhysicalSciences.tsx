@@ -1,6 +1,15 @@
 'use client';
 
-import { ArrowLeft, Download, Eye, Moon, Settings, Sparkles, Split, Sun } from 'lucide-react';
+import {
+	ArrowLeft,
+	DownloadSimple,
+	Eye,
+	Gear,
+	Moon,
+	Sparkle,
+	SplitVertical,
+	Sun,
+} from '@phosphor-icons/react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Badge } from '@/components/ui/badge';
@@ -33,7 +42,7 @@ export default function PhysicalSciences() {
 					</div>
 					<div className="flex gap-2">
 						<Button variant="ghost" size="icon">
-							<Settings className="w-5 h-5" />
+							<Gear className="w-5 h-5" />
 						</Button>
 						<Button
 							variant="ghost"
@@ -43,7 +52,7 @@ export default function PhysicalSciences() {
 							{theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
 						</Button>
 						<Button variant="ghost" size="icon">
-							<Download className="w-5 h-5" />
+							<DownloadSimple className="w-5 h-5" />
 						</Button>
 					</div>
 				</div>
@@ -55,7 +64,7 @@ export default function PhysicalSciences() {
 						className="w-full rounded-2xl font-black h-12 gap-2 shadow-xl shadow-primary-violet/20"
 						onClick={() => router.push('/physics-quiz')}
 					>
-						<Sparkles className="w-4 h-4" />
+						<Sparkle weight="bold" className="w-4 h-4" />
 						Practice Interactive Paper (May/June 2025)
 					</Button>
 				</div>
@@ -72,8 +81,8 @@ export default function PhysicalSciences() {
 							Question Only
 						</TabsTrigger>
 						<TabsTrigger value="split" className="flex items-center gap-2">
-							<Split className="w-4 h-4" />
-							Split View
+							<SplitVertical className="w-4 h-4" />
+							SplitVertical View
 						</TabsTrigger>
 					</TabsList>
 				</Tabs>

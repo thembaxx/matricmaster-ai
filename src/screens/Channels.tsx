@@ -1,25 +1,25 @@
 'use client';
 
 import {
-	BarChart3,
 	BookOpen,
-	ChevronRight,
-	FlaskConical,
-	Languages as LanguagesIcon,
+	CaretRight,
+	ChartBar,
+	Flask,
+	Translate as LanguagesIcon,
 	Leaf,
+	MagnifyingGlass,
 	Play,
-	Search,
-	Terminal,
+	TerminalWindow,
 	Users,
-	Wifi,
-} from 'lucide-react';
+	WifiHigh,
+} from '@phosphor-icons/react';
 import { useCallback, useEffect, useState } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useAblyChannel } from '@/hooks/use-ably-channel';
 import { useSession } from '@/lib/auth-client';
 
-const categories = ['All Paths', 'STEM Skills', 'Languages', 'Commerce', 'Humanities'];
+const categories = ['All Paths', 'STEM Skills', 'Translate', 'Commerce', 'Humanities'];
 
 interface Channel {
 	id: string;
@@ -37,7 +37,7 @@ const stemChannels: Channel[] = [
 		title: 'Physical Sciences',
 		info: '12.1k',
 		tag: 'NEW',
-		icon: <FlaskConical className="w-6 h-6 text-blue-500" />,
+		icon: <Flask className="w-6 h-6 text-blue-500" />,
 		bg: 'bg-blue-50 dark:bg-blue-900/20',
 		onlineCount: 0,
 	},
@@ -53,7 +53,7 @@ const stemChannels: Channel[] = [
 		id: 'info-tech',
 		title: 'Info Tech (IT)',
 		info: '4.3k',
-		icon: <Terminal className="w-6 h-6 text-violet-500" />,
+		icon: <TerminalWindow className="w-6 h-6 text-violet-500" />,
 		bg: 'bg-violet-50 dark:bg-violet-900/20',
 		onlineCount: 0,
 	},
@@ -122,7 +122,7 @@ export default function Channels() {
 							</p>
 							{isAblyConnected && (
 								<span className="flex items-center gap-1 text-[10px] font-black text-success uppercase tracking-widest">
-									<Wifi className="w-3 h-3" />
+									<WifiHigh className="w-3 h-3" />
 									Live
 								</span>
 							)}
@@ -138,9 +138,9 @@ export default function Channels() {
 					</Avatar>
 				</div>
 
-				{/* Search Bar */}
+				{/* MagnifyingGlass Bar */}
 				<div className="mt-6 relative">
-					<Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-label-tertiary" />
+					<MagnifyingGlass className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-label-tertiary" />
 					<input
 						type="text"
 						placeholder="Find subjects, papers, or topics..."
@@ -249,7 +249,7 @@ export default function Channels() {
 												{item.onlineCount} online
 											</span>
 										)}
-										<ChevronRight className="w-5 h-5 text-label-tertiary group-hover:text-foreground transition-colors" />
+										<CaretRight className="w-5 h-5 text-label-tertiary group-hover:text-foreground transition-colors" />
 									</div>
 								</button>
 							))}
@@ -272,7 +272,7 @@ export default function Channels() {
 						<div className="grid grid-cols-2 gap-4">
 							{[
 								{
-									title: 'English Home Language',
+									title: 'English House Language',
 									students: '18k Students',
 									icon: <BookOpen className="w-6 h-6 text-english" />,
 									bg: 'bg-english/10',
@@ -316,7 +316,7 @@ export default function Channels() {
 						<div className="bg-card p-4 rounded-3xl flex items-center justify-between shadow-sm border border-border hover:shadow-md transition-all cursor-pointer group ios-active-scale">
 							<div className="flex items-center gap-4">
 								<div className="w-12 h-12 rounded-2xl flex items-center justify-center bg-accounting/10">
-									<BarChart3 className="w-6 h-6 text-accounting" />
+									<ChartBar className="w-6 h-6 text-accounting" />
 								</div>
 								<div className="text-left">
 									<h4 className="font-black text-foreground uppercase tracking-tight">

@@ -1,6 +1,14 @@
 'use client';
 
-import { BookOpen, Brain, Clock, Loader2, MoreVertical, Plus, Trash2 } from 'lucide-react';
+import {
+	BookOpen,
+	Brain,
+	CircleNotch,
+	Clock,
+	DotsThreeVertical,
+	Plus,
+	Trash,
+} from '@phosphor-icons/react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
@@ -143,7 +151,7 @@ export default function FlashcardsPage() {
 	if (isLoading) {
 		return (
 			<div className="flex min-h-[60vh] items-center justify-center">
-				<Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+				<CircleNotch className="h-8 w-8 animate-spin text-muted-foreground" />
 			</div>
 		);
 	}
@@ -250,7 +258,7 @@ export default function FlashcardsPage() {
 													size="icon"
 													className="h-9 w-9 md:h-8 md:w-8 md:opacity-0 md:group-hover:opacity-100 opacity-100 transition-opacity touch-manipulation"
 												>
-													<MoreVertical className="h-4 w-4" />
+													<DotsThreeVertical className="h-4 w-4" />
 												</Button>
 											</DropdownMenuTrigger>
 											<DropdownMenuContent align="end">
@@ -266,8 +274,8 @@ export default function FlashcardsPage() {
 													onClick={() => handleDeleteDeck(deck)}
 													className="text-destructive"
 												>
-													<Trash2 className="mr-2 h-4 w-4" />
-													Delete
+													<Trash className="mr-2 h-4 w-4" />
+													Backspace
 												</DropdownMenuItem>
 											</DropdownMenuContent>
 										</DropdownMenu>

@@ -1,7 +1,7 @@
 'use client';
 
+import { BookOpen, Clock, Flask, Play, Sigma } from '@phosphor-icons/react';
 import { m } from 'framer-motion';
-import { BookOpen, Clock, FlaskConical, Play, Sigma } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { memo } from 'react';
 import { Button } from '@/components/ui/button';
@@ -27,7 +27,7 @@ const defaultChallenges: Challenge[] = [
 		title: "Newton's Second Law",
 		time: '20m',
 		difficulty: 'Hard',
-		icon: <FlaskConical className="w-6 h-6 text-purple-500" />,
+		icon: <Flask className="w-6 h-6 text-purple-500" />,
 		iconBg: 'bg-purple-50 dark:bg-purple-900/20',
 	},
 	{

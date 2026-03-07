@@ -1,7 +1,7 @@
 'use client';
 
+import { Sparkle, X } from '@phosphor-icons/react';
 import { m } from 'framer-motion';
-import { Sparkles, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import type { UnlockedAchievement } from '@/stores/useGamificationStore';
 
@@ -120,7 +120,7 @@ export function AchievementToast({ achievement, onDismiss }: AchievementToastPro
 
 						<div className="flex-1 min-w-0">
 							<div className="flex items-center gap-2 mb-1">
-								<Sparkles className="w-4 h-4 text-brand-amber" />
+								<Sparkle weight="bold" className="w-4 h-4 text-brand-amber" />
 								<span className="text-[10px] font-black uppercase tracking-[0.2em] text-brand-amber">
 									Achievement Unlocked!
 								</span>

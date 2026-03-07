@@ -1,7 +1,7 @@
 'use client';
 
+import { Lightbulb, Sparkle } from '@phosphor-icons/react';
 import { AnimatePresence, m } from 'framer-motion';
-import { Lightbulb, Sparkles } from 'lucide-react';
 
 type QuizHintCardProps = {
 	hint: string;
@@ -28,7 +28,7 @@ export function QuizHintCard({
 					className="p-6 bg-primary/5 rounded-[2rem] border border-primary/10 flex gap-5 items-start transition-all hover:bg-primary/10"
 				>
 					<div className="w-12 h-12 bg-card rounded-2xl flex items-center justify-center shrink-0 shadow-sm border border-primary/10">
-						<Sparkles className="w-6 h-6 text-primary" />
+						<Sparkle weight="bold" className="w-6 h-6 text-primary" />
 					</div>
 					<div className="space-y-1">
 						<h4 className="font-black text-primary text-xs uppercase tracking-widest">

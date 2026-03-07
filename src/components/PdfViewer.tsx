@@ -1,24 +1,24 @@
 'use client';
 
-import { AnimatePresence, motion } from 'framer-motion';
 import {
-	ChevronLeft,
-	ChevronRight,
-	Download,
+	ArrowClockwise,
+	CaretLeft,
+	CaretRight,
+	CornersIn,
+	CornersOut,
+	DownloadSimple,
 	Highlighter,
-	Maximize2,
-	Minimize2,
+	MagnifyingGlass,
+	MagnifyingGlassMinus,
+	MagnifyingGlassPlus,
 	Moon,
-	RotateCw,
-	Search,
-	Sparkles,
-	StickyNote,
+	Note,
+	Sparkle,
 	Sun,
-	Type,
+	TextT,
 	X,
-	ZoomIn,
-	ZoomOut,
-} from 'lucide-react';
+} from '@phosphor-icons/react';
+import { AnimatePresence, motion } from 'framer-motion';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Document, Page, pdfjs } from 'react-pdf';
 import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch';
@@ -277,7 +277,7 @@ export default function PdfViewer({ url, onClose, title }: PdfViewerProps) {
 							disabled={pageNumber <= 1}
 							aria-label="Previous page"
 						>
-							<ChevronLeft className="w-5 h-5" />
+							<CaretLeft className="w-5 h-5" />
 						</Button>
 						<div className="px-2 md:px-3 flex items-center gap-1 min-w-[70px] md:min-w-[80px] justify-center">
 							<Input
@@ -300,7 +300,7 @@ export default function PdfViewer({ url, onClose, title }: PdfViewerProps) {
 							disabled={pageNumber >= numPages}
 							aria-label="Next page"
 						>
-							<ChevronRight className="w-5 h-5" />
+							<CaretRight className="w-5 h-5" />
 						</Button>
 					</div>
 				</div>
@@ -314,7 +314,7 @@ export default function PdfViewer({ url, onClose, title }: PdfViewerProps) {
 						onClick={handleZoomOut}
 						aria-label="Zoom out"
 					>
-						<ZoomOut className="w-5 h-5" />
+						<MagnifyingGlassMinus className="w-5 h-5" />
 					</Button>
 					<span
 						className="text-xs font-bold min-w-[50px] text-center tabular-nums"
@@ -329,7 +329,7 @@ export default function PdfViewer({ url, onClose, title }: PdfViewerProps) {
 						onClick={handleZoomIn}
 						aria-label="Zoom in"
 					>
-						<ZoomIn className="w-5 h-5" />
+						<MagnifyingGlassPlus className="w-5 h-5" />
 					</Button>
 					<div className="w-px h-4 bg-zinc-300 dark:bg-zinc-600 mx-1" aria-hidden="true" />
 					<Button
@@ -340,7 +340,7 @@ export default function PdfViewer({ url, onClose, title }: PdfViewerProps) {
 						title="Reset zoom"
 						aria-label="Reset zoom to 100%"
 					>
-						<RotateCw className="w-5 h-5" />
+						<ArrowClockwise className="w-5 h-5" />
 					</Button>
 					<Button
 						variant="ghost"
@@ -350,7 +350,7 @@ export default function PdfViewer({ url, onClose, title }: PdfViewerProps) {
 						title="Rotate 90deg"
 						aria-label="Rotate document clockwise"
 					>
-						<RotateCw className="w-5 h-5 rotate-90" />
+						<ArrowClockwise className="w-5 h-5 rotate-90" />
 					</Button>
 				</div>
 				{/* Right: Actions */}
@@ -366,10 +366,10 @@ export default function PdfViewer({ url, onClose, title }: PdfViewerProps) {
 									: 'hover:bg-white dark:hover:bg-zinc-700'
 							)}
 							onClick={() => setShowSearch(!showSearch)}
-							aria-label="Search in document"
+							aria-label="MagnifyingGlass in document"
 							aria-expanded={showSearch}
 						>
-							<Search className="w-5 h-5" />
+							<MagnifyingGlass className="w-5 h-5" />
 						</Button>
 
 						<Button
@@ -385,7 +385,7 @@ export default function PdfViewer({ url, onClose, title }: PdfViewerProps) {
 							aria-label="Toggle annotations sidebar"
 							aria-expanded={showNotes}
 						>
-							<StickyNote className="w-5 h-5" />
+							<Note className="w-5 h-5" />
 						</Button>
 
 						<Button
@@ -411,7 +411,11 @@ export default function PdfViewer({ url, onClose, title }: PdfViewerProps) {
 							onClick={toggleFullscreen}
 							aria-label={isFullscreen ? 'Exit fullscreen' : 'Enter fullscreen'}
 						>
-							{isFullscreen ? <Minimize2 className="w-5 h-5" /> : <Maximize2 className="w-5 h-5" />}
+							{isFullscreen ? (
+								<CornersIn className="w-5 h-5" />
+							) : (
+								<CornersOut className="w-5 h-5" />
+							)}
 						</Button>
 
 						<Button
@@ -425,9 +429,9 @@ export default function PdfViewer({ url, onClose, title }: PdfViewerProps) {
 								download
 								target="_blank"
 								rel="noopener noreferrer"
-								aria-label="Download PDF"
+								aria-label="DownloadSimple PDF"
 							>
-								<Download className="w-5 h-5" />
+								<DownloadSimple className="w-5 h-5" />
 							</a>
 						</Button>
 					</div>
@@ -446,7 +450,7 @@ export default function PdfViewer({ url, onClose, title }: PdfViewerProps) {
 				</div>
 			</header>
 
-			{/* Floating Search Bar */}
+			{/* Floating MagnifyingGlass Bar */}
 			<AnimatePresence>
 				{showSearch && (
 					<motion.div
@@ -456,14 +460,14 @@ export default function PdfViewer({ url, onClose, title }: PdfViewerProps) {
 						className="absolute top-20 left-1/2 z-40 w-full max-w-md px-4"
 					>
 						<div className="premium-glass p-2 rounded-2xl flex items-center gap-2 shadow-2xl border border-white/20 dark:border-zinc-800/50">
-							<Search className="w-4 h-4 text-zinc-400 ml-2" />
+							<MagnifyingGlass className="w-4 h-4 text-zinc-400 ml-2" />
 							<Input
 								type="text"
 								placeholder="Find in document..."
 								value={searchQuery}
 								onChange={(e) => setSearchQuery(e.target.value)}
 								className="h-9 bg-transparent border-none focus-visible:ring-0 font-medium"
-								aria-label="Search query"
+								aria-label="MagnifyingGlass query"
 							/>
 							<Button
 								variant="ghost"
@@ -651,7 +655,7 @@ export default function PdfViewer({ url, onClose, title }: PdfViewerProps) {
 						<header className="px-6 py-5 border-b flex items-center justify-between sticky top-0 bg-transparent z-10">
 							<div className="flex items-center gap-3">
 								<div className="w-10 h-10 rounded-2xl bg-brand-blue/10 flex items-center justify-center">
-									<StickyNote className="w-5 h-5 text-brand-blue" />
+									<Note className="w-5 h-5 text-brand-blue" />
 								</div>
 								<div>
 									<h3 className="font-bold tracking-tight text-lg">My Notes</h3>
@@ -689,7 +693,7 @@ export default function PdfViewer({ url, onClose, title }: PdfViewerProps) {
 													size="icon"
 													className="h-9 w-9 md:h-8 md:w-8 rounded-full md:opacity-0 md:group-hover:opacity-100 opacity-100 transition-opacity hover:bg-red-50 dark:hover:bg-red-900/20 text-zinc-400 hover:text-red-500 touch-manipulation"
 													onClick={() => deleteHighlight(highlight.id)}
-													aria-label="Delete highlight"
+													aria-label="Backspace highlight"
 												>
 													<X className="w-4 h-4" />
 												</Button>
@@ -720,8 +724,8 @@ export default function PdfViewer({ url, onClose, title }: PdfViewerProps) {
 														if (note) addNote(highlight.id, note);
 													}}
 												>
-													<Type className="w-3 h-3 transition-transform group-hover/btn:scale-125" />
-													{highlight.note ? 'Edit My Note' : 'Add a Note'}
+													<TextT className="w-3 h-3 transition-transform group-hover/btn:scale-125" />
+													{highlight.note ? 'Pencil My Note' : 'Add a Note'}
 												</Button>
 											</div>
 										</div>
@@ -733,7 +737,7 @@ export default function PdfViewer({ url, onClose, title }: PdfViewerProps) {
 												<Highlighter className="w-10 h-10 text-zinc-300" />
 											</div>
 											<div className="absolute -bottom-2 -right-2 w-10 h-10 bg-brand-blue rounded-full flex items-center justify-center shadow-lg border-4 border-white dark:border-zinc-950">
-												<Sparkles className="w-4 h-4 text-white" />
+												<Sparkle weight="bold" className="w-4 h-4 text-white" />
 											</div>
 										</div>
 										<h4 className="font-black text-sm uppercase tracking-widest mb-3">

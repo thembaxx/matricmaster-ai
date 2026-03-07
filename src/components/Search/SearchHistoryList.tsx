@@ -1,7 +1,7 @@
 'use client';
 
+import { CircleNotch, Clock, Trash, X } from '@phosphor-icons/react';
 import { AnimatePresence, m } from 'framer-motion';
-import { Clock, Loader2, Trash2, X } from 'lucide-react';
 import { memo } from 'react';
 import { Button } from '@/components/ui/button';
 import { STAGGER_ITEM } from '@/lib/animation-presets';
@@ -28,7 +28,7 @@ export const SearchHistoryList = memo(function SearchHistoryList({
 				<div className="flex items-center gap-2">
 					<Clock className="w-4 h-4 text-muted-foreground" />
 					<h2 className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.3em]">
-						History
+						ClockCounterClockwise
 					</h2>
 				</div>
 				{searches.length > 0 && (
@@ -38,7 +38,7 @@ export const SearchHistoryList = memo(function SearchHistoryList({
 						onClick={onClearAll}
 						className="h-8 px-4 text-[10px] font-black uppercase tracking-widest text-muted-foreground hover:text-rose-500"
 					>
-						<Trash2 className="w-4 h-4 mr-2" />
+						<Trash className="w-4 h-4 mr-2" />
 						Clear All
 					</Button>
 				)}
@@ -47,7 +47,7 @@ export const SearchHistoryList = memo(function SearchHistoryList({
 				<AnimatePresence mode="popLayout">
 					{isLoading ? (
 						<div className="col-span-full flex items-center justify-center py-12">
-							<Loader2 className="w-8 h-8 text-primary animate-spin" />
+							<CircleNotch className="w-8 h-8 text-primary animate-spin" />
 						</div>
 					) : searches.length > 0 ? (
 						searches.map((search) => (
@@ -65,15 +65,15 @@ export const SearchHistoryList = memo(function SearchHistoryList({
 									type="button"
 									onClick={() => onSearchClick(search.query)}
 									className="flex-1 flex items-center p-5 text-left focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-inset outline-none"
-									aria-label={`Search for ${search.query}`}
+									aria-label={`MagnifyingGlass for ${search.query}`}
 								>
 									<span className="text-sm font-black text-foreground group-hover:text-primary transition-colors">
 										{search.query}
 									</span>
 								</button>
 								<button
-									title="Delete search item"
-									aria-label={`Delete search for ${search.query}`}
+									title="Backspace search item"
+									aria-label={`Backspace search for ${search.query}`}
 									type="button"
 									onClick={(e) => onDelete(search.id, e)}
 									className="md:opacity-0 opacity-100 md:group-hover:opacity-100 focus-visible:opacity-100 transition-opacity text-muted-foreground hover:text-rose-500 p-5 min-w-[44px] min-h-[44px] flex items-center justify-center touch-manipulation focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-inset"

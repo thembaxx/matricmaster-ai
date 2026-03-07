@@ -1,7 +1,7 @@
 'use client';
 
+import { Calendar, Gift, Lightning, Sparkle, Star, X } from '@phosphor-icons/react';
 import { AnimatePresence, m } from 'framer-motion';
-import { Calendar, Gift, Sparkles, Star, X, Zap } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -121,7 +121,7 @@ export function DailyLoginBonus({ onClaimed }: DailyLoginBonusProps) {
 											<div className="flex items-center justify-between">
 												<div className="flex items-center gap-3">
 													<div className="w-12 h-12 rounded-xl bg-brand-amber/10 flex items-center justify-center">
-														<Zap className="w-6 h-6 text-brand-amber" />
+														<Lightning weight="bold" className="w-6 h-6 text-brand-amber" />
 													</div>
 													<div>
 														<p className="text-sm font-bold text-muted-foreground">
@@ -141,7 +141,7 @@ export function DailyLoginBonus({ onClaimed }: DailyLoginBonusProps) {
 											</div>
 											{nextReward.specialReward && (
 												<p className="mt-2 text-sm font-bold text-brand-amber text-center">
-													<Sparkles className="w-4 h-4 inline mr-1" />
+													<Sparkle weight="bold" className="w-4 h-4 inline mr-1" />
 													{nextReward.specialReward}
 												</p>
 											)}
@@ -162,7 +162,7 @@ export function DailyLoginBonus({ onClaimed }: DailyLoginBonusProps) {
 													ease: 'linear',
 												}}
 											>
-												<Sparkles className="w-6 h-6" />
+												<Sparkle weight="bold" className="w-6 h-6" />
 											</m.div>
 										) : (
 											<>
@@ -184,7 +184,7 @@ export function DailyLoginBonus({ onClaimed }: DailyLoginBonusProps) {
 										transition={{ type: 'spring', damping: 10, delay: 0.1 }}
 										className="w-20 h-20 mx-auto mb-4 rounded-full bg-linear-to-br from-green-400 to-emerald-500 flex items-center justify-center shadow-lg"
 									>
-										<Sparkles className="w-10 h-10 text-white" />
+										<Sparkle weight="bold" className="w-10 h-10 text-white" />
 									</m.div>
 									<h3 className="text-2xl font-black text-foreground mb-2">Reward Claimed!</h3>
 									<p className="text-3xl font-black text-brand-amber mb-2">

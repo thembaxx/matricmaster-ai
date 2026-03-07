@@ -1,6 +1,6 @@
 'use client';
 
-import { Bell, Check, CheckCheck, Trash2 } from 'lucide-react';
+import { Bell, Check, Checks, Trash } from '@phosphor-icons/react';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'sonner';
@@ -212,7 +212,7 @@ export default function NotificationsPage() {
 				</div>
 				{unreadCount > 0 && (
 					<Button variant="outline" onClick={markAllAsRead}>
-						<CheckCheck className="h-4 w-4 mr-2" />
+						<Checks className="h-4 w-4 mr-2" />
 						Mark all as read
 					</Button>
 				)}
@@ -296,7 +296,7 @@ export default function NotificationsPage() {
 														className="h-8 w-8 text-destructive"
 														onClick={() => deleteNotification(notification.id)}
 													>
-														<Trash2 className="h-4 w-4" />
+														<Trash className="h-4 w-4" />
 													</Button>
 												</div>
 											</div>
