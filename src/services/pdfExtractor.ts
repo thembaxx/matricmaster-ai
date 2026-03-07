@@ -1,6 +1,8 @@
 import { GoogleGenAI } from '@google/genai';
 import { z } from 'zod';
 import { logError, logInfo, logWarn, performance } from '@/lib/monitoring';
+import { convertPdfToMarkdown, uploadMarkdownToUploadThing } from './markdownConverter';
+import { extractQuestionsFromMarkdown } from './markdownExtractor';
 
 // Types for extracted questions
 export interface ExtractedOption {
@@ -36,6 +38,7 @@ export interface ExtractedPaper {
 	questions: ExtractedQuestion[];
 	extractedFromDb?: boolean;
 	storedPdfUrl?: string;
+	markdownFileUrl?: string;
 }
 
 export interface FlatQuestion {
@@ -53,6 +56,7 @@ interface PastPaperRecord {
 	paper_id: string;
 	original_pdf_url: string;
 	stored_pdf_url: string | null;
+	markdown_file_url: string | null;
 	subject: string;
 	paper: string;
 	year: number;
@@ -64,14 +68,14 @@ interface PastPaperRecord {
 }
 
 // Schemas for validation
-const extractedOptionSchema = z.object({
+export const extractedOptionSchema = z.object({
 	letter: z.string(),
 	text: z.string(),
 	isCorrect: z.boolean(),
 	explanation: z.string().optional(),
 });
 
-const extractedQuestionSchema = z.object({
+export const extractedQuestionSchema = z.object({
 	id: z.string(),
 	questionNumber: z.string(),
 	questionText: z.string(),
@@ -91,7 +95,7 @@ const extractedQuestionSchema = z.object({
 	difficulty: z.enum(['easy', 'medium', 'hard']).optional(),
 });
 
-const extractedPaperSchema = z.object({
+export const extractedPaperSchema = z.object({
 	paperId: z.string(),
 	subject: z.string(),
 	paper: z.string(),
@@ -99,6 +103,7 @@ const extractedPaperSchema = z.object({
 	month: z.string(),
 	instructions: z.string().optional(),
 	questions: z.array(extractedQuestionSchema),
+	markdownFileUrl: z.string().optional(),
 });
 
 // In-memory cache
@@ -218,54 +223,100 @@ export async function extractQuestionsFromPDF(
 					...dbRecord.extracted_questions,
 					extractedFromDb: true,
 					storedPdfUrl: dbRecord.stored_pdf_url || undefined,
+					markdownFileUrl: dbRecord.markdown_file_url || undefined,
 				};
 			}
 		}
 
-		// 2. Get Base64
+		// 2. Get Base64 and attempt markdown conversion
 		let base64: string;
-		if (typeof pdfSource === 'object' && 'base64' in pdfSource) {
+		let extractedData: ExtractedPaper | null = null;
+
+		if (typeof pdfSource === 'string') {
+			// Try markdown conversion first
+			logInfo('pdf-extraction', `Attempting markdown conversion for ${paperId}`);
+			const markdownResult = await convertPdfToMarkdown(pdfSource);
+
+			if (markdownResult.success && markdownResult.markdown) {
+				logInfo(
+					'pdf-extraction',
+					`Markdown conversion successful for ${paperId}, extracting questions`
+				);
+				try {
+					extractedData = await extractQuestionsFromMarkdown(
+						markdownResult.markdown,
+						paperId,
+						subject,
+						paper,
+						year,
+						month
+					);
+
+					// Upload markdown to UploadThing
+					const markdownUpload = await uploadMarkdownToUploadThing(
+						markdownResult.markdown,
+						paperId
+					);
+					if (markdownUpload.success && markdownUpload.url) {
+						extractedData.markdownFileUrl = markdownUpload.url;
+					}
+				} catch (error) {
+					logWarn('pdf-extraction', `Markdown extraction failed for ${paperId}`, {
+						error: error instanceof Error ? error.message : 'Unknown error',
+					});
+					// Fallback to PDF extraction
+				}
+			} else {
+				logWarn('pdf-extraction', `Markdown conversion failed for ${paperId}`, {
+					error: markdownResult.error,
+				});
+			}
+
+			// If markdown failed, fetch PDF
+			if (!extractedData) {
+				logInfo('pdf-extraction', `Fetching PDF from URL for ${paperId} (fallback)`);
+				const response = await fetch(pdfSource);
+				if (!response.ok) throw new Error(`Failed to fetch PDF: ${response.statusText}`);
+				const arrayBuffer = await response.arrayBuffer();
+				base64 = Buffer.from(arrayBuffer).toString('base64');
+			} else {
+				// We have extractedData from markdown, just need to set base64 to something
+				base64 = '';
+			}
+		} else {
+			// Base64 already provided
 			base64 = pdfSource.base64;
 			logInfo('pdf-extraction', `Using base64 source for ${paperId}`);
-		} else {
-			logInfo('pdf-extraction', `Fetching PDF from URL for ${paperId}`);
-			const response = await fetch(pdfSource);
-			if (!response.ok) throw new Error(`Failed to fetch PDF: ${response.statusText}`);
-			const arrayBuffer = await response.arrayBuffer();
-			base64 = Buffer.from(arrayBuffer).toString('base64');
-			logInfo('pdf-extraction', `PDF fetched successfully for ${paperId}`, {
-				size: `${((base64.length * 3) / 4 / 1024).toFixed(2)} KB`,
-			});
 		}
 
-		// 3. Perform Extraction
-		logInfo('pdf-extraction', `Starting AI extraction for ${paperId}`);
-		let extractedData: ExtractedPaper;
-
-		try {
-			// Attempt full extraction first (efficient for most NSC papers)
-			extractedData = await performFullExtraction(base64, paperId, subject, paper, year, month);
-			logInfo('pdf-extraction', `Full extraction successful for ${paperId}`, {
-				questionsCount: extractedData.questions.length,
-				method: 'full',
-			});
-		} catch (error) {
-			logWarn('pdf-extraction', `Full extraction failed for ${paperId}, trying fallback`, {
-				error: error instanceof Error ? error.message : 'Unknown error',
-			});
-			// Fallback to page-by-page if full extraction fails
-			extractedData = await performExtractionBySections(
-				base64,
-				paperId,
-				subject,
-				paper,
-				year,
-				month
-			);
-			logInfo('pdf-extraction', `Fallback extraction successful for ${paperId}`, {
-				questionsCount: extractedData.questions.length,
-				method: 'fallback',
-			});
+		// 3. Perform Extraction (if not already done via markdown)
+		if (!extractedData) {
+			logInfo('pdf-extraction', `Starting AI extraction from PDF for ${paperId}`);
+			try {
+				// Attempt full extraction first (efficient for most NSC papers)
+				extractedData = await performFullExtraction(base64, paperId, subject, paper, year, month);
+				logInfo('pdf-extraction', `Full extraction successful for ${paperId}`, {
+					questionsCount: extractedData.questions.length,
+					method: 'full',
+				});
+			} catch (error) {
+				logWarn('pdf-extraction', `Full extraction failed for ${paperId}, trying fallback`, {
+					error: error instanceof Error ? error.message : 'Unknown error',
+				});
+				// Fallback to page-by-page if full extraction fails
+				extractedData = await performExtractionBySections(
+					base64,
+					paperId,
+					subject,
+					paper,
+					year,
+					month
+				);
+				logInfo('pdf-extraction', `Fallback extraction successful for ${paperId}`, {
+					questionsCount: extractedData.questions.length,
+					method: 'fallback',
+				});
+			}
 		}
 
 		// 4. Update memory cache

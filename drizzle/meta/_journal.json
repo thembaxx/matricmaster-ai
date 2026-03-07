@@ -71,6 +71,13 @@
 			"when": 1772564818064,
 			"tag": "0009_loud_inertia",
 			"breakpoints": true
+		},
+		{
+			"idx": 10,
+			"version": "7",
+			"when": 1772902103557,
+			"tag": "0010_lazy_dreaming_celestial",
+			"breakpoints": true
 		}
 	]
 }

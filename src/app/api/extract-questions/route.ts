@@ -92,7 +92,7 @@ export async function POST(request: NextRequest) {
 		if (cached && Object.keys(cached).length > 0) {
 			// Save to database for future use
 			try {
-				await saveExtractedQuestionsAction(paperId, JSON.stringify(cached));
+				await saveExtractedQuestionsAction(paperId, JSON.stringify(cached), cached.markdownFileUrl);
 				console.log(`[API] Saved extracted questions to database: ${paperId}`);
 			} catch (saveError) {
 				console.warn('[API] Failed to save to database:', saveError);
@@ -130,7 +130,7 @@ export async function POST(request: NextRequest) {
 		// Save extracted questions to database
 		try {
 			const questionsJson = JSON.stringify(extractedPaper);
-			await saveExtractedQuestionsAction(paperId, questionsJson);
+			await saveExtractedQuestionsAction(paperId, questionsJson, extractedPaper.markdownFileUrl);
 			console.log(`[API] Saved extracted questions to database: ${paperId}`);
 		} catch (saveError) {
 			console.warn('[API] Failed to save extracted questions to database:', saveError);

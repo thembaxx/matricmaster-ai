@@ -42,6 +42,19 @@ export const ourFileRouter = {
 			return { url: file.ufsUrl };
 		}),
 
+	// Past paper markdown uploader (for converted markdown files)
+	pastPaperMarkdown: f({
+		text: { maxFileSize: '4MB', maxFileCount: 1 },
+	})
+		.middleware(async () => {
+			// Public access - no auth required for past papers
+			return {};
+		})
+		.onUploadComplete(async ({ file }) => {
+			console.log('Past paper markdown uploaded:', file.ufsUrl);
+			return { url: file.ufsUrl };
+		}),
+
 	// Paper image extractor (for images extracted from PDFs)
 	paperImage: f({ image: { maxFileSize: '8MB', maxFileCount: 10 } })
 		.middleware(async () => {
