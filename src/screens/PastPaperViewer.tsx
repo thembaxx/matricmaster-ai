@@ -540,7 +540,7 @@ export default function PastPaperViewer({
 			)}
 
 			{/* Bottom Toolbar (for tabs) */}
-			<div className="px-6 relative rounded-2xl absolute bottom-0 mb-32 left-0 right-0">
+			<div className="px-6 rounded-2xl absolute bottom-0 mb-16 left-0 right-0">
 				<nav className="rounded-2xl ios-glass border-t border-border px-4 py-4">
 					<div className="flex justify-around items-center">
 						{[
