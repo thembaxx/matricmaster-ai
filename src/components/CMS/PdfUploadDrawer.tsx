@@ -360,7 +360,7 @@ export function PdfUploadDrawer({ isOpen, onClose, subjects, onSuccess }: PdfUpl
 					</DrawerDescription>
 				</DrawerHeader>
 
-				<div className="flex-1 overflow-hidden">
+				<div className="flex-1 overflow-y-auto">
 					{step === 'upload' && (
 						<div className="p-8 space-y-8">
 							<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -620,7 +620,7 @@ export function PdfUploadDrawer({ isOpen, onClose, subjects, onSuccess }: PdfUpl
 							disabled={!file || !paperDetails.paperId || !paperDetails.subjectId}
 							className="flex-1 h-14 bg-brand-blue hover:bg-brand-blue/90 rounded-2xl font-black uppercase tracking-widest text-xs shadow-2xl shadow-brand-blue/20"
 						>
-							<Sparkle weight="bold" className="h-4 w-4 mr-2" /> Start Superpowered AI Extraction
+							<Sparkle weight="bold" className="h-4 w-4 mr-2" /> Start
 						</Button>
 					)}
 					{step === 'review' && (
@@ -633,7 +633,7 @@ export function PdfUploadDrawer({ isOpen, onClose, subjects, onSuccess }: PdfUpl
 								<div className="h-5 w-5 animate-spin border-2 border-white border-t-transparent rounded-full" />
 							) : (
 								<>
-									<FloppyDisk className="h-4 w-4 mr-2" /> FloppyDisk Paper &{' '}
+									<FloppyDisk className="h-4 w-4 mr-2" /> Paper &{' '}
 									{extractedData?.questions.length} Questions
 								</>
 							)}
