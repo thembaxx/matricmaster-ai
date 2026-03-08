@@ -238,7 +238,6 @@ export function PdfUploadDrawer({ isOpen, onClose, subjects, onSuccess }: PdfUpl
 	) => {
 		if (!extractedData) return;
 		const newData = { ...extractedData };
-		// @ts-expect-error - Dynamic field access
 		newData.questions[idx] = { ...newData.questions[idx], [field]: value } as ExtractedQuestion;
 		setExtractedData(newData);
 	};
@@ -256,13 +255,11 @@ export function PdfUploadDrawer({ isOpen, onClose, subjects, onSuccess }: PdfUpl
 			const sq = newData.questions[qIdx].subQuestions?.[sqIdx];
 			if (sq) {
 				if (!sq.options) sq.options = [];
-				// @ts-expect-error - Dynamic field access
 				sq.options[optIdx] = { ...sq.options[optIdx], [field]: value } as ExtractedOption;
 			}
 		} else {
 			const q = newData.questions[qIdx];
 			if (!q.options) q.options = [];
-			// @ts-expect-error - Dynamic field access
 			q.options[optIdx] = { ...q.options[optIdx], [field]: value } as ExtractedOption;
 		}
 		setExtractedData(newData);
