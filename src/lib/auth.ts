@@ -350,8 +350,10 @@ export async function getAuth(): Promise<AuthInstance> {
 	authPromise = (async () => {
 		// Wait for database connection before creating auth instance
 		// This ensures the database adapter is properly passed to better-auth
-		if (!dbManager.isConnectedToDatabase()) {
-			await dbManager.waitForConnection(5, 3000);
+		try {
+			await dbManager.initialize();
+		} catch (err) {
+			console.error('❌ Failed to initialize database for auth:', err);
 		}
 
 		if (!authInstance) {
