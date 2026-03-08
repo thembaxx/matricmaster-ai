@@ -17,7 +17,7 @@ import type { ExtractedOption, ExtractedQuestion } from '@/services/pdfExtractor
 interface ExtractedQuestionCardProps {
 	question: ExtractedQuestion;
 	index: number;
-	onUpdateQuestion: (idx: number, field: keyof ExtractedQuestion, value: any) => void;
+	onUpdateQuestion: (idx: number, field: keyof ExtractedQuestion, value: string | number) => void;
 	onUpdateOption: (
 		qIdx: number,
 		optIdx: number,
@@ -25,7 +25,7 @@ interface ExtractedQuestionCardProps {
 		value: string | boolean,
 		sqIdx?: number
 	) => void;
-	onUpdateSubQuestion: (qIdx: number, sqIdx: number, field: string, value: any) => void;
+	onUpdateSubQuestion: (qIdx: number, sqIdx: number, field: string, value: string | number) => void;
 }
 
 export function ExtractedQuestionCard({

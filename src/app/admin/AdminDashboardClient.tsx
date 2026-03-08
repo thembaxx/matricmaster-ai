@@ -19,12 +19,11 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import type { AuthSession } from '@/lib/auth';
 import {
-	// deleteUserAction,
 	getAdminStatsAction,
 	getSubjectPerformanceAction,
 	getUsersAction,
-	// restoreUserAction,
 	toggleUserBlockAction,
 } from '@/lib/db/actions';
 import type { User } from '@/lib/db/better-auth-schema';
@@ -54,7 +53,18 @@ const mockFlaggedContent = [
 	},
 ];
 
-export default function AdminDashboardClient({ initialSession }: { initialSession: any }) {
+interface SubjectPerformance {
+	subjectId: number;
+	subjectName: string;
+	questionsAttempted: number;
+	averageScore: number;
+}
+
+export default function AdminDashboardClient({
+	initialSession,
+}: {
+	initialSession: AuthSession | null;
+}) {
 	const [activeTab, setActiveTab] = useState('overview');
 	const [stats, setStats] = useState({
 		totalUsers: 0,
@@ -64,15 +74,15 @@ export default function AdminDashboardClient({ initialSession }: { initialSessio
 		questionsCount: 0,
 		subjectsCount: 0,
 	});
-	const [subjectPerformance, setSubjectPerformance] = useState<any[]>([]);
+	const [subjectPerformance, setSubjectPerformance] = useState<SubjectPerformance[]>([]);
 	const [isLoadingStats, setIsLoadingStats] = useState(true);
 	const [users, setUsers] = useState<User[]>([]);
 	const [isLoadingUsers, setIsLoadingUsers] = useState(false);
 	const [searchQuery, setSearchQuery] = useState('');
-	const [userFilter, setUserFilter] = useState<'all' | 'active' | 'blocked' | 'deleted'>('all');
+	const [userFilter, _setUserFilter] = useState<'all' | 'active' | 'blocked' | 'deleted'>('all');
 	const [, startTransition] = useTransition();
 
-	console.log(subjectPerformance, setUserFilter, initialSession);
+	console.log(initialSession);
 
 	useEffect(() => {
 		const loadStats = async () => {
@@ -124,26 +134,6 @@ export default function AdminDashboardClient({ initialSession }: { initialSessio
 			}
 		});
 	};
-
-	// const handleDeleteUser = (userId: string) => {
-	// 	startTransition(async () => {
-	// 		const result = await deleteUserAction(userId);
-	// 		if (result.success) {
-	// 			toast.success('User deleted');
-	// 			loadUsers();
-	// 		}
-	// 	});
-	// };
-
-	// const handleRestoreUser = (userId: string) => {
-	// 	startTransition(async () => {
-	// 		const result = await restoreUserAction(userId);
-	// 		if (result.success) {
-	// 			toast.success('User restored');
-	// 			loadUsers();
-	// 		}
-	// 	});
-	// };
 
 	return (
 		<div className="min-h-screen bg-background py-4 px-6 md:p-8 pb-32">
@@ -374,6 +364,43 @@ export default function AdminDashboardClient({ initialSession }: { initialSessio
 												))}
 											</tbody>
 										</table>
+									</div>
+								)}
+							</CardContent>
+						</Card>
+					</TabsContent>
+
+					<TabsContent value="analytics" className="space-y-4">
+						<Card>
+							<CardHeader>
+								<CardTitle>Subject Performance</CardTitle>
+							</CardHeader>
+							<CardContent>
+								{isLoadingStats ? (
+									<div className="flex items-center justify-center py-12">
+										<CircleNotch className="h-8 w-8 animate-spin text-primary" />
+									</div>
+								) : subjectPerformance.length > 0 ? (
+									<div className="space-y-4">
+										{subjectPerformance.map((subject) => (
+											<div key={subject.subjectId} className="flex items-center gap-4">
+												<div className="w-32 font-medium">{subject.subjectName}</div>
+												<div className="flex-1 h-2 bg-muted rounded-full overflow-hidden">
+													<div
+														className="h-full bg-primary rounded-full"
+														style={{ width: `${subject.averageScore}%` }}
+													/>
+												</div>
+												<div className="w-20 text-right text-sm">
+													{subject.questionsAttempted.toLocaleString()} attempts
+												</div>
+												<div className="w-12 text-right font-medium">{subject.averageScore}%</div>
+											</div>
+										))}
+									</div>
+								) : (
+									<div className="text-center py-8 text-muted-foreground">
+										<p>No performance data available yet.</p>
 									</div>
 								)}
 							</CardContent>
