@@ -755,7 +755,7 @@ export default function PdfViewer({ url, onClose, title }: PdfViewerProps) {
 					</aside>
 				</div>
 
-				<style jsx global>{`
+				<style>{`
 				.pdf-page canvas {
 					margin: 0 auto;
 					max-width: 100%;
