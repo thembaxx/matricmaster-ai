@@ -1,5 +1,3 @@
-'use server';
-
 /**
  * PDF Upload Helper
  * Handles uploading PDFs to UploadThing for storage/backup
@@ -44,16 +42,31 @@ export async function uploadPdfFromUrl(pdfUrl: string): Promise<UploadResult> {
 		const fileName = pdfUrl.split('/').pop() || `past-paper-${Date.now()}.pdf`;
 		const file = new File([blob], fileName, { type: 'application/pdf' });
 
-		// Upload to UploadThing
-		const result = await uploadFiles('pastPaperPDF', {
-			files: [file],
-		});
+		// Handle server vs client upload
+		if (typeof window === 'undefined') {
+			// On the server, use UTApi
+			const { UTApi } = await import('uploadthing/server');
+			const utapi = new UTApi();
+			const result = await utapi.uploadFiles(file);
 
-		if (result?.[0]?.ufsUrl) {
-			return {
-				success: true,
-				url: result[0].ufsUrl,
-			};
+			if (result?.data?.ufsUrl) {
+				return {
+					success: true,
+					url: result.data.ufsUrl,
+				};
+			}
+		} else {
+			// On the client, use uploadFiles
+			const result = await uploadFiles('pastPaperPDF', {
+				files: [file],
+			});
+
+			if (result?.[0]?.ufsUrl) {
+				return {
+					success: true,
+					url: result[0].ufsUrl,
+				};
+			}
 		}
 
 		return {
@@ -91,16 +104,31 @@ export async function uploadPdfFile(file: File): Promise<UploadResult> {
 			};
 		}
 
-		// Upload to UploadThing
-		const result = await uploadFiles('pastPaperPDF', {
-			files: [file],
-		});
+		// Handle server vs client upload
+		if (typeof window === 'undefined') {
+			// On the server, use UTApi
+			const { UTApi } = await import('uploadthing/server');
+			const utapi = new UTApi();
+			const result = await utapi.uploadFiles(file);
 
-		if (result?.[0]?.ufsUrl) {
-			return {
-				success: true,
-				url: result[0].ufsUrl,
-			};
+			if (result?.data?.ufsUrl) {
+				return {
+					success: true,
+					url: result.data.ufsUrl,
+				};
+			}
+		} else {
+			// On the client, use uploadFiles
+			const result = await uploadFiles('pastPaperPDF', {
+				files: [file],
+			});
+
+			if (result?.[0]?.ufsUrl) {
+				return {
+					success: true,
+					url: result[0].ufsUrl,
+				};
+			}
 		}
 
 		return {

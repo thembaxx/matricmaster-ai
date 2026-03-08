@@ -115,6 +115,8 @@ export function PdfUploadDrawer({ isOpen, onClose, subjects, onSuccess }: PdfUpl
 			// 1. Upload PDF to UploadThing first (sequential approach)
 			const uploadResult = await uploadPdfFile(file);
 
+			console.log('Upload result:', uploadResult);
+
 			if (!uploadResult.success) {
 				throw new Error(`Upload failed: ${uploadResult.error}`);
 			}

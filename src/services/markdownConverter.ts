@@ -1,5 +1,3 @@
-'use server';
-
 import { logError, logInfo } from '@/lib/monitoring';
 import { uploadFiles } from '@/lib/uploadthing';
 
@@ -57,12 +55,25 @@ export async function uploadMarkdownToUploadThing(
 		const fileName = `${paperId}-${Date.now()}.md`;
 		const file = new File([markdown], fileName, { type: 'text/markdown' });
 
-		const result = await uploadFiles('pastPaperMarkdown', {
-			files: [file],
-		});
+		// Handle server vs client upload
+		if (typeof window === 'undefined') {
+			// On the server, use UTApi
+			const { UTApi } = await import('uploadthing/server');
+			const utapi = new UTApi();
+			const result = await utapi.uploadFiles(file);
 
-		if (result?.[0]?.ufsUrl) {
-			return { success: true, url: result[0].ufsUrl };
+			if (result?.data?.ufsUrl) {
+				return { success: true, url: result.data.ufsUrl };
+			}
+		} else {
+			// On the client, use uploadFiles
+			const result = await uploadFiles('pastPaperMarkdown', {
+				files: [file],
+			});
+
+			if (result?.[0]?.ufsUrl) {
+				return { success: true, url: result[0].ufsUrl };
+			}
 		}
 
 		return { success: false, error: 'Upload failed - no URL returned' };
