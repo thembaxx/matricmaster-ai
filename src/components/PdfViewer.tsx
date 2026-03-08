@@ -239,6 +239,7 @@ export default function PdfViewer({ url, onClose, title }: PdfViewerProps) {
 				ref={containerRef}
 				className="flex flex-col h-[100dvh] w-full overflow-hidden transition-colors duration-500 relative bg-background/50 text-foreground"
 				aria-label="PDF Document Viewer"
+				suppressHydrationWarning
 			>
 				<BackgroundMesh variant="subtle" />
 				{/* Professional Toolbar */}

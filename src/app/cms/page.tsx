@@ -3,8 +3,8 @@ import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { Suspense } from 'react';
 import { ClientOnly } from '@/components/ClientOnly';
-import { dbManager } from '@/lib/db';
 import { getAuth, type SessionUser } from '@/lib/auth';
+import { dbManager } from '@/lib/db';
 import CMSScreen from '@/screens/CMS';
 
 export const metadata: Metadata = {

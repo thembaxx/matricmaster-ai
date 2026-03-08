@@ -2,49 +2,29 @@
 
 import {
 	ActivityIcon,
-	ArrowCounterClockwise,
 	BookOpen,
-	ChartBar,
 	CircleNotch,
-	DotsThree,
 	Gear,
 	MagnifyingGlass,
 	Shield,
-	Trash,
 	TrendUp,
 	Users,
 	Warning,
 } from '@phosphor-icons/react';
-import Link from 'next/link';
 import { useCallback, useEffect, useState, useTransition } from 'react';
 import { toast } from 'sonner';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import type { SessionUser } from '@/lib/auth';
 import {
-	deleteUserAction,
+	// deleteUserAction,
 	getAdminStatsAction,
 	getSubjectPerformanceAction,
 	getUsersAction,
-	restoreUserAction,
+	// restoreUserAction,
 	toggleUserBlockAction,
 } from '@/lib/db/actions';
 import type { User } from '@/lib/db/better-auth-schema';
@@ -52,13 +32,26 @@ import type { User } from '@/lib/db/better-auth-schema';
 // Recent activity mock
 const mockRecentActivity = [
 	{ id: 1, user: 'John D.', action: 'Completed Math Quiz', score: 85, time: '5 min ago' },
-	{ id: 2, user: 'Sarah M.', action: 'Unlocked Achievement', achievement: 'First Perfect Score', time: '12 min ago' },
+	{
+		id: 2,
+		user: 'Sarah M.',
+		action: 'Unlocked Achievement',
+		achievement: 'First Perfect Score',
+		time: '12 min ago',
+	},
 	{ id: 3, user: 'Mike T.', action: 'Started Physics Study Session', time: '18 min ago' },
 ];
 
 // Mock flagged content
 const mockFlaggedContent = [
-	{ id: 1, type: 'question', content: 'Question #234 - Incorrect answer key', severity: 'high', reportedBy: 'User123', date: '2026-02-17' },
+	{
+		id: 1,
+		type: 'question',
+		content: 'Question #234 - Incorrect answer key',
+		severity: 'high',
+		reportedBy: 'User123',
+		date: '2026-02-17',
+	},
 ];
 
 export default function AdminDashboardClient({ initialSession }: { initialSession: any }) {
@@ -78,6 +71,8 @@ export default function AdminDashboardClient({ initialSession }: { initialSessio
 	const [searchQuery, setSearchQuery] = useState('');
 	const [userFilter, setUserFilter] = useState<'all' | 'active' | 'blocked' | 'deleted'>('all');
 	const [, startTransition] = useTransition();
+
+	console.log(subjectPerformance, setUserFilter, initialSession);
 
 	useEffect(() => {
 		const loadStats = async () => {
@@ -130,25 +125,25 @@ export default function AdminDashboardClient({ initialSession }: { initialSessio
 		});
 	};
 
-	const handleDeleteUser = (userId: string) => {
-		startTransition(async () => {
-			const result = await deleteUserAction(userId);
-			if (result.success) {
-				toast.success('User deleted');
-				loadUsers();
-			}
-		});
-	};
+	// const handleDeleteUser = (userId: string) => {
+	// 	startTransition(async () => {
+	// 		const result = await deleteUserAction(userId);
+	// 		if (result.success) {
+	// 			toast.success('User deleted');
+	// 			loadUsers();
+	// 		}
+	// 	});
+	// };
 
-	const handleRestoreUser = (userId: string) => {
-		startTransition(async () => {
-			const result = await restoreUserAction(userId);
-			if (result.success) {
-				toast.success('User restored');
-				loadUsers();
-			}
-		});
-	};
+	// const handleRestoreUser = (userId: string) => {
+	// 	startTransition(async () => {
+	// 		const result = await restoreUserAction(userId);
+	// 		if (result.success) {
+	// 			toast.success('User restored');
+	// 			loadUsers();
+	// 		}
+	// 	});
+	// };
 
 	return (
 		<div className="min-h-screen bg-background py-4 px-6 md:p-8 pb-32">
@@ -187,7 +182,7 @@ export default function AdminDashboardClient({ initialSession }: { initialSessio
 							)}
 						</CardContent>
 					</Card>
-                    <Card>
+					<Card>
 						<CardContent className="pt-6">
 							{isLoadingStats ? (
 								<div className="flex items-center justify-center h-20">
@@ -206,7 +201,7 @@ export default function AdminDashboardClient({ initialSession }: { initialSessio
 							)}
 						</CardContent>
 					</Card>
-                    <Card>
+					<Card>
 						<CardContent className="pt-6">
 							{isLoadingStats ? (
 								<div className="flex items-center justify-center h-20">
@@ -218,14 +213,16 @@ export default function AdminDashboardClient({ initialSession }: { initialSessio
 										<BookOpen className="h-6 w-6 text-blue-500" />
 									</div>
 									<div>
-										<p className="text-2xl font-bold">{stats.questionsAttempted.toLocaleString()}</p>
+										<p className="text-2xl font-bold">
+											{stats.questionsAttempted.toLocaleString()}
+										</p>
 										<p className="text-sm text-muted-foreground">Attempts</p>
 									</div>
 								</div>
 							)}
 						</CardContent>
 					</Card>
-                    <Card>
+					<Card>
 						<CardContent className="pt-6">
 							{isLoadingStats ? (
 								<div className="flex items-center justify-center h-20">
@@ -246,7 +243,12 @@ export default function AdminDashboardClient({ initialSession }: { initialSessio
 					</Card>
 				</div>
 
-				<Tabs defaultValue="overview" value={activeTab} onValueChange={setActiveTab} className="space-y-4">
+				<Tabs
+					defaultValue="overview"
+					value={activeTab}
+					onValueChange={setActiveTab}
+					className="space-y-4"
+				>
 					<TabsList>
 						<TabsTrigger value="overview">Overview</TabsTrigger>
 						<TabsTrigger value="users">Users</TabsTrigger>
@@ -268,7 +270,9 @@ export default function AdminDashboardClient({ initialSession }: { initialSessio
 											{mockRecentActivity.map((activity) => (
 												<div key={activity.id} className="flex items-center gap-3">
 													<Avatar className="h-8 w-8">
-														<AvatarFallback className="text-xs">{activity.user.charAt(0)}</AvatarFallback>
+														<AvatarFallback className="text-xs">
+															{activity.user.charAt(0)}
+														</AvatarFallback>
 													</Avatar>
 													<div className="flex-1">
 														<p className="text-sm font-medium">{activity.user}</p>
@@ -295,7 +299,9 @@ export default function AdminDashboardClient({ initialSession }: { initialSessio
 											{mockFlaggedContent.map((item) => (
 												<div key={item.id} className="p-3 border rounded-lg">
 													<p className="text-sm">{item.content}</p>
-													<p className="text-xs text-muted-foreground mt-1">Reported by {item.reportedBy}</p>
+													<p className="text-xs text-muted-foreground mt-1">
+														Reported by {item.reportedBy}
+													</p>
 												</div>
 											))}
 										</div>
@@ -322,7 +328,9 @@ export default function AdminDashboardClient({ initialSession }: { initialSessio
 											className="pl-10"
 										/>
 									</div>
-									<Button onClick={handleSearch} disabled={isLoadingUsers}>Search</Button>
+									<Button onClick={handleSearch} disabled={isLoadingUsers}>
+										Search
+									</Button>
 								</div>
 
 								{isLoadingUsers ? (
@@ -345,14 +353,20 @@ export default function AdminDashboardClient({ initialSession }: { initialSessio
 														<td className="p-3">
 															<div className="flex items-center gap-2">
 																<Avatar className="h-8 w-8">
-																	<AvatarFallback className="text-xs">{user.name?.charAt(0) || 'U'}</AvatarFallback>
+																	<AvatarFallback className="text-xs">
+																		{user.name?.charAt(0) || 'U'}
+																	</AvatarFallback>
 																</Avatar>
 																<span className="font-medium">{user.name}</span>
 															</div>
 														</td>
 														<td className="p-3 text-sm text-muted-foreground">{user.email}</td>
 														<td className="p-3 text-right">
-															<Button variant="ghost" size="sm" onClick={() => handleToggleBlock(user.id)}>
+															<Button
+																variant="ghost"
+																size="sm"
+																onClick={() => handleToggleBlock(user.id)}
+															>
 																{user.isBlocked ? 'Unblock' : 'Block'}
 															</Button>
 														</td>

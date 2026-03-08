@@ -1,7 +1,7 @@
 import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
-import { dbManager } from '@/lib/db';
 import { getAuth, type SessionUser } from '@/lib/auth';
+import { dbManager } from '@/lib/db';
 import AdminDashboardClient from './AdminDashboardClient';
 
 export default async function AdminDashboardPage() {

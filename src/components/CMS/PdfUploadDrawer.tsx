@@ -5,7 +5,6 @@ import { useState } from 'react';
 import { toast } from 'sonner';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
 import {
 	Drawer,
 	DrawerClose,
@@ -27,7 +26,6 @@ import {
 	SelectValue,
 } from '@/components/ui/select';
 import { Spinner } from '@/components/ui/spinner';
-import { Textarea } from '@/components/ui/textarea';
 import { createSubjectAction, saveProcessedExtractedPaperAction } from '@/lib/db/actions';
 import type { Subject } from '@/lib/db/schema';
 import { uploadPdfFile } from '@/lib/pdf-upload';
@@ -38,6 +36,7 @@ import {
 	extractQuestionsFromPDF,
 	flattenExtractedPaper,
 } from '@/services/pdfExtractor';
+import { ExtractedQuestionCard } from './ExtractedQuestionCard';
 
 interface PdfUploadDrawerProps {
 	isOpen: boolean;
@@ -222,6 +221,17 @@ export function PdfUploadDrawer({ isOpen, onClose, subjects, onSuccess }: PdfUpl
 			q.options[optIdx] = { ...q.options[optIdx], [field]: value } as ExtractedOption;
 		}
 		setExtractedData(newData);
+	};
+
+	const handleUpdateSubQuestion = (qIdx: number, sqIdx: number, field: string, value: any) => {
+		if (!extractedData) return;
+		const newData = { ...extractedData };
+		const sq = newData.questions[qIdx].subQuestions?.[sqIdx];
+		if (sq) {
+			// @ts-expect-error
+			sq[field] = value;
+			setExtractedData(newData);
+		}
 	};
 
 	const handleSave = async () => {
@@ -512,152 +522,14 @@ export function PdfUploadDrawer({ isOpen, onClose, subjects, onSuccess }: PdfUpl
 
 									<div className="space-y-6">
 										{extractedData.questions.map((q, idx) => (
-											<div
-												key={idx}
-												className="p-8 rounded-[2rem] border-2 bg-background hover:border-brand-blue/30 transition-all space-y-6 shadow-sm"
-											>
-												<div className="flex justify-between items-center">
-													<div className="flex items-center gap-4">
-														<Badge className="h-10 px-4 rounded-xl font-black text-sm bg-brand-blue shadow-lg shadow-brand-blue/20">
-															Q{q.questionNumber}
-														</Badge>
-														<div className="flex items-center gap-2">
-															<Input
-																type="number"
-																value={q.marks}
-																onChange={(e) =>
-																	handleUpdateExtractedQuestion(
-																		idx,
-																		'marks',
-																		Number.parseInt(e.target.value, 10)
-																	)
-																}
-																className="w-16 h-10 rounded-xl border-2 text-center font-black"
-															/>
-															<span className="text-[10px] font-black uppercase text-muted-foreground tracking-wider">
-																Marks
-															</span>
-														</div>
-													</div>
-													<Select
-														value={q.difficulty}
-														onValueChange={(v) =>
-															handleUpdateExtractedQuestion(idx, 'difficulty', v)
-														}
-													>
-														<SelectTrigger className="w-32 h-10 rounded-xl font-bold border-2">
-															<SelectValue />
-														</SelectTrigger>
-														<SelectContent>
-															<SelectItem value="easy">Easy</SelectItem>
-															<SelectItem value="medium">Medium</SelectItem>
-															<SelectItem value="hard">Hard</SelectItem>
-														</SelectContent>
-													</Select>
-												</div>
-
-												<div className="space-y-3">
-													<Label className="text-[10px] font-black uppercase text-muted-foreground">
-														Question Stem
-													</Label>
-													<Textarea
-														value={q.questionText}
-														onChange={(e) =>
-															handleUpdateExtractedQuestion(idx, 'questionText', e.target.value)
-														}
-														className="min-h-24 rounded-2xl border-2 font-bold text-sm bg-muted/20"
-													/>
-												</div>
-
-												{q.options && q.options.length > 0 && (
-													<div className="space-y-3">
-														<Label className="text-[10px] font-black uppercase text-muted-foreground">
-															Multiple Choice Options
-														</Label>
-														<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-															{q.options.map((opt, oIdx) => (
-																<div
-																	key={oIdx}
-																	className={`flex gap-3 items-center p-3 rounded-2xl border-2 transition-all ${opt.isCorrect ? 'border-emerald-500 bg-emerald-50/30' : 'bg-muted/10'}`}
-																>
-																	<Badge
-																		variant={opt.isCorrect ? 'default' : 'outline'}
-																		className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 font-black text-sm ${opt.isCorrect ? 'bg-emerald-500 hover:bg-emerald-500' : ''}`}
-																	>
-																		{opt.letter}
-																	</Badge>
-																	<Input
-																		value={opt.text}
-																		onChange={(e) =>
-																			handleUpdateExtractedOption(idx, oIdx, 'text', e.target.value)
-																		}
-																		className="h-10 text-xs font-bold rounded-xl border-none shadow-none bg-transparent"
-																	/>
-																	<Checkbox
-																		checked={opt.isCorrect}
-																		onCheckedChange={(v) =>
-																			handleUpdateExtractedOption(idx, oIdx, 'isCorrect', !!v)
-																		}
-																		className="h-5 w-5 rounded-md border-2 border-emerald-500 data-[state=checked]:bg-emerald-500"
-																	/>
-																</div>
-															))}
-														</div>
-													</div>
-												)}
-
-												{q.subQuestions && q.subQuestions.length > 0 && (
-													<div className="pt-6 border-t space-y-4">
-														<Label className="text-[10px] font-black uppercase text-muted-foreground tracking-widest">
-															Sub-Questions ({q.subQuestions.length})
-														</Label>
-														<div className="space-y-6">
-															{q.subQuestions.map((sq, sIdx) => (
-																<div
-																	key={sIdx}
-																	className="pl-6 border-l-4 border-brand-blue/20 space-y-4 py-2"
-																>
-																	<div className="flex items-center justify-between">
-																		<span className="text-xs font-black text-brand-blue uppercase">
-																			Sub-Item {sq.id}
-																		</span>
-																		<div className="flex items-center gap-2">
-																			<Input
-																				type="number"
-																				value={sq.marks}
-																				onChange={(e) => {
-																					const newData = { ...extractedData };
-																					if (newData.questions[idx].subQuestions) {
-																						newData.questions[idx].subQuestions[sIdx].marks =
-																							Number.parseInt(e.target.value, 10);
-																						setExtractedData(newData);
-																					}
-																				}}
-																				className="w-14 h-8 rounded-lg border-2 text-center font-black p-0 text-xs"
-																			/>
-																			<span className="text-[10px] font-black uppercase text-muted-foreground">
-																				Marks
-																			</span>
-																		</div>
-																	</div>
-																	<Textarea
-																		value={sq.text}
-																		onChange={(e) => {
-																			const newData = { ...extractedData };
-																			if (newData.questions[idx].subQuestions) {
-																				newData.questions[idx].subQuestions[sIdx].text =
-																					e.target.value;
-																				setExtractedData(newData);
-																			}
-																		}}
-																		className="min-h-20 rounded-xl border-2 font-bold text-xs bg-muted/10"
-																	/>
-																</div>
-															))}
-														</div>
-													</div>
-												)}
-											</div>
+											<ExtractedQuestionCard
+												key={q.id || `q-${idx}`}
+												question={q}
+												index={idx}
+												onUpdateQuestion={handleUpdateExtractedQuestion}
+												onUpdateOption={handleUpdateExtractedOption}
+												onUpdateSubQuestion={handleUpdateSubQuestion}
+											/>
 										))}
 									</div>
 								</div>
