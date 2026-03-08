@@ -172,14 +172,11 @@ export default function PastPapers() {
 	const availablePapers = useMemo(() => [...new Set(papers.map((p) => p.paper))].sort(), [papers]);
 	const availableMonths = useMemo(() => [...new Set(papers.map((p) => p.month))].sort(), [papers]);
 
-	const activeFilterCount = useMemo(
-		() =>
-			selectedSubjects.length +
-			selectedPapers.length +
-			selectedMonths.length +
-			(extractedOnly ? 1 : 0),
-		[selectedSubjects, selectedPapers, selectedMonths, extractedOnly]
-	);
+	const activeFilterCount =
+		selectedSubjects.length +
+		selectedPapers.length +
+		selectedMonths.length +
+		(extractedOnly ? 1 : 0);
 
 	const clearAllFilters = useCallback(() => {
 		setSelectedSubjects([]);

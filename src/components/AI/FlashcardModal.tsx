@@ -11,7 +11,7 @@ import {
 	ThumbsUp,
 	X,
 } from '@phosphor-icons/react';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { toast } from 'sonner';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -55,12 +55,15 @@ export function FlashcardModal({
 }: FlashcardModalProps) {
 	const [currentIndex, setCurrentIndex] = useState(0);
 	const [isFlipped, setIsFlipped] = useState(false);
-	const [shuffledCards, setShuffledCards] = useState<Flashcard[]>(flashcards);
 	const [isShuffled, setIsShuffled] = useState(false);
 	const [reviewedCards, setReviewedCards] = useState<Set<string>>(new Set());
 	const [isRating, setIsRating] = useState(false);
 	const [showRatingButtons, setShowRatingButtons] = useState(false);
 
+	const shuffledCards = useMemo(
+		() => [...flashcards].sort(() => Math.random() - 0.5),
+		[flashcards]
+	);
 	const currentCard = isShuffled ? shuffledCards[currentIndex] : flashcards[currentIndex];
 	const progress = ((currentIndex + 1) / flashcards.length) * 100;
 	const isComplete = reviewedCards.size === flashcards.length;
@@ -118,10 +121,6 @@ export function FlashcardModal({
 	};
 
 	const handleShuffle = () => {
-		if (!isShuffled) {
-			const shuffled = [...flashcards].sort(() => Math.random() - 0.5);
-			setShuffledCards(shuffled);
-		}
 		setIsShuffled(!isShuffled);
 		setCurrentIndex(0);
 		setIsFlipped(false);
@@ -132,7 +131,6 @@ export function FlashcardModal({
 		setCurrentIndex(0);
 		setIsFlipped(false);
 		setIsShuffled(false);
-		setShuffledCards(flashcards);
 		setReviewedCards(new Set());
 		setShowRatingButtons(false);
 	};

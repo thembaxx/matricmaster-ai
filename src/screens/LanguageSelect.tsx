@@ -3,7 +3,6 @@
 // import type { Screen } from '@/types'; // Removed unused import
 import { Globe, X } from '@phosphor-icons/react';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
@@ -29,7 +28,6 @@ const languages = [
 
 export default function LanguageSelect({ currentLanguage = 'EN' }: LanguageSelectProps) {
 	const router = useRouter();
-	const [selectedLanguage, setSelectedLanguage] = useState(currentLanguage);
 
 	return (
 		<div className="flex flex-col min-h-screen bg-zinc-50 dark:bg-zinc-950 font-lexend">
@@ -62,8 +60,10 @@ export default function LanguageSelect({ currentLanguage = 'EN' }: LanguageSelec
 				{/* Language List */}
 				<ScrollArea className="flex-1 p-6">
 					<RadioGroup
-						value={selectedLanguage}
-						onValueChange={setSelectedLanguage}
+						value={currentLanguage}
+						onValueChange={(value) => {
+							router.push(`/?lang=${value}`);
+						}}
 						className="grid grid-cols-1 gap-4"
 					>
 						{languages.map((lang) => (
@@ -84,7 +84,7 @@ export default function LanguageSelect({ currentLanguage = 'EN' }: LanguageSelec
 											{lang.code}
 										</p>
 									</div>
-									{selectedLanguage === lang.code && (
+									{currentLanguage === lang.code && (
 										<div className="w-8 h-8 rounded-full bg-brand-blue flex items-center justify-center animate-in zoom-in">
 											<svg
 												className="w-5 h-5 text-white"

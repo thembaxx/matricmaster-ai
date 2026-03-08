@@ -111,11 +111,11 @@ export default function Landing() {
 								<div className="flex -space-x-3">
 									{[1, 2, 3, 4].map((i) => (
 										<div
-											key={i}
+											key={`avatar-${i}`}
 											className="w-10 h-10 rounded-full border-2 border-background bg-secondary flex items-center justify-center overflow-hidden relative shadow-sm"
 										>
 											<Image
-												src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${i}`}
+												src={`https://api.dicebear.com/7.x/avataaars/svg?seed=user-${i}`}
 												alt="user"
 												fill
 												sizes="40px"

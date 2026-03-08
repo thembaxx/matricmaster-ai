@@ -2,8 +2,18 @@
 
 import { Fire, GraduationCap, Medal, Target } from '@phosphor-icons/react';
 import { m } from 'framer-motion';
+import dynamic from 'next/dynamic';
 import { useEffect, useId, useMemo, useState } from 'react';
-import { PolarAngleAxis, PolarGrid, Radar, RadarChart } from 'recharts';
+
+const RadarChart = dynamic(() => import('recharts').then((mod) => mod.RadarChart), { ssr: false });
+const PolarGrid = dynamic(() => import('recharts').then((mod) => mod.PolarGrid), { ssr: false });
+const PolarAngleAxis = dynamic(() => import('recharts').then((mod) => mod.PolarAngleAxis), {
+	ssr: false,
+});
+const Radar = dynamic(() => import('recharts').then((mod) => mod.Radar), {
+	ssr: false,
+});
+
 import { LevelProgress } from '@/components/Gamification/LevelProgress';
 import { AchievementBadges, AchievementProgress } from '@/components/Profile/AchievementBadges';
 import { BadgeShowcase } from '@/components/Profile/BadgeShowcase';
