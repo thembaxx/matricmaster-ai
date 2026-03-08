@@ -633,8 +633,8 @@ export function PdfUploadDrawer({ isOpen, onClose, subjects, onSuccess }: PdfUpl
 								<div className="h-5 w-5 animate-spin border-2 border-white border-t-transparent rounded-full" />
 							) : (
 								<>
-									<FloppyDisk className="h-4 w-4 mr-2" /> Paper &{' '}
-									{extractedData?.questions.length} Questions
+									<FloppyDisk className="h-4 w-4 mr-2" /> Paper & {extractedData?.questions.length}{' '}
+									Questions
 								</>
 							)}
 						</Button>
