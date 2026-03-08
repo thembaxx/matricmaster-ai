@@ -22,7 +22,7 @@ const nextConfig = {
 					{
 						key: 'Content-Security-Policy-Report-Only',
 						value:
-							"default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://va.vercel-scripts.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' data:; connect-src 'self' https://api.dicebear.com https://va.vercel-scripts.com wss://*.ably.com wss://main.realtime.ably.net https://*.ably.com https://main.realtime.ably.net https://api.iconify.design; frame-ancestors 'none'; report-uri /api/csp-report;",
+							"default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://va.vercel-scripts.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' data:; https://api.dicebear.com https://va.vercel-scripts.com wss://*.ably.com wss://main.realtime.ably.net https://*.ably.com https://main.realtime.ably.net https://api.iconify.design; frame-ancestors 'none'; report-uri /api/csp-report;",
 					},
 					{
 						key: 'Strict-Transport-Security',

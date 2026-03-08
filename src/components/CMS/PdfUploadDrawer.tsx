@@ -25,7 +25,6 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '@/components/ui/select';
-import { Spinner } from '@/components/ui/spinner';
 import { createSubjectAction, saveProcessedExtractedPaperAction } from '@/lib/db/actions';
 import type { Subject } from '@/lib/db/schema';
 import { uploadPdfFile } from '@/lib/pdf-upload';
@@ -33,7 +32,6 @@ import {
 	type ExtractedOption,
 	type ExtractedPaper,
 	type ExtractedQuestion,
-	extractQuestionsFromPDF,
 	flattenExtractedPaper,
 } from '@/services/pdfExtractor';
 import { ExtractedQuestionCard } from './ExtractedQuestionCard';
@@ -64,14 +62,44 @@ export function PdfUploadDrawer({ isOpen, onClose, subjects, onSuccess }: PdfUpl
 	const [processingProgress, setProcessingProgress] = useState(0);
 	const [processingStatus, setProcessingStatus] = useState('');
 	const [uploadedUrl, setUploadedUrl] = useState<string | null>(null);
+	const [isDragging, setIsDragging] = useState(false);
 
 	const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		if (e.target.files?.[0]) {
 			const selectedFile = e.target.files[0];
-			setFile(selectedFile);
-			const name = selectedFile.name.replace('.pdf', '');
-			setPaperDetails((prev) => ({ ...prev, paperId: name }));
+			processFile(selectedFile);
 		}
+	};
+
+	const handleDrag = (e: React.DragEvent) => {
+		e.preventDefault();
+		e.stopPropagation();
+		if (e.type === 'dragenter' || e.type === 'dragover') {
+			setIsDragging(true);
+		} else if (e.type === 'dragleave') {
+			setIsDragging(false);
+		}
+	};
+
+	const handleDrop = (e: React.DragEvent) => {
+		e.preventDefault();
+		e.stopPropagation();
+		setIsDragging(false);
+
+		if (e.dataTransfer.files?.[0]) {
+			const droppedFile = e.dataTransfer.files[0];
+			if (droppedFile.type === 'application/pdf') {
+				processFile(droppedFile);
+			} else {
+				toast.error('Only PDF files are allowed');
+			}
+		}
+	};
+
+	const processFile = (selectedFile: File) => {
+		setFile(selectedFile);
+		const name = selectedFile.name.replace('.pdf', '');
+		setPaperDetails((prev) => ({ ...prev, paperId: name }));
 	};
 
 	const handleStartExtraction = async () => {
@@ -130,14 +158,28 @@ export function PdfUploadDrawer({ isOpen, onClose, subjects, onSuccess }: PdfUpl
 			setProcessingProgress(60);
 			setProcessingStatus('AI is analyzing questions (Superpowered mode)...');
 
-			const extractionResult = await extractQuestionsFromPDF(
-				paperDetails.paperId,
-				uploadResult.url!, // Use uploaded URL instead of base64
-				subjectObj?.name || paperDetails.subject,
-				paperDetails.paper,
-				paperDetails.year,
-				paperDetails.month
-			);
+			const response = await fetch('/api/extract-questions', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({
+					paperId: paperDetails.paperId,
+					pdfUrl: uploadResult.url!,
+					subject: subjectObj?.name || paperDetails.subject,
+					paper: paperDetails.paper,
+					year: paperDetails.year,
+					month: paperDetails.month,
+				}),
+			});
+
+			if (!response.ok) {
+				const errorData = await response.json();
+				throw new Error(errorData.details || errorData.error || 'Failed to extract questions');
+			}
+
+			const result = await response.json();
+			const extractionResult = result.data;
 
 			setProcessingProgress(95);
 			setProcessingStatus('Finalizing...');
@@ -192,7 +234,7 @@ export function PdfUploadDrawer({ isOpen, onClose, subjects, onSuccess }: PdfUpl
 	const handleUpdateExtractedQuestion = (
 		idx: number,
 		field: keyof ExtractedQuestion,
-		value: ExtractedQuestion[keyof ExtractedQuestion]
+		value: string | number
 	) => {
 		if (!extractedData) return;
 		const newData = { ...extractedData };
@@ -223,12 +265,17 @@ export function PdfUploadDrawer({ isOpen, onClose, subjects, onSuccess }: PdfUpl
 		setExtractedData(newData);
 	};
 
-	const handleUpdateSubQuestion = (qIdx: number, sqIdx: number, field: string, value: any) => {
+	const handleUpdateSubQuestion = (
+		qIdx: number,
+		sqIdx: number,
+		field: string,
+		value: string | number
+	) => {
 		if (!extractedData) return;
 		const newData = { ...extractedData };
 		const sq = newData.questions[qIdx].subQuestions?.[sqIdx];
 		if (sq) {
-			// @ts-expect-error
+			// @ts-expect-error - Dynamic field access
 			sq[field] = value;
 			setExtractedData(newData);
 		}
@@ -419,7 +466,14 @@ export function PdfUploadDrawer({ isOpen, onClose, subjects, onSuccess }: PdfUpl
 								<Label className="font-black text-[10px] uppercase tracking-widest text-muted-foreground">
 									PDF Document
 								</Label>
-								<div className="relative">
+								<section
+									className="relative"
+									onDragEnter={handleDrag}
+									onDragOver={handleDrag}
+									onDragLeave={handleDrag}
+									onDrop={handleDrop}
+									aria-label="PDF upload area"
+								>
 									<input
 										type="file"
 										id="pdf-upload"
@@ -430,28 +484,41 @@ export function PdfUploadDrawer({ isOpen, onClose, subjects, onSuccess }: PdfUpl
 									<label
 										htmlFor="pdf-upload"
 										className={`w-full h-48 rounded-[2rem] border-2 border-dashed flex flex-col items-center justify-center gap-4 transition-all cursor-pointer ${
-											file
+											file || isDragging
 												? 'border-brand-blue bg-brand-blue/5'
 												: 'border-border hover:border-brand-blue hover:bg-muted/50'
-										}`}
+										} ${isDragging ? 'scale-[0.98] ring-4 ring-brand-blue/10' : ''}`}
 									>
 										<div
-											className={`h-16 w-16 rounded-2xl flex items-center justify-center ${file ? 'bg-brand-blue text-white' : 'bg-muted text-muted-foreground'}`}
+											className={`h-16 w-16 rounded-2xl flex items-center justify-center ${
+												file || isDragging
+													? 'bg-brand-blue text-white'
+													: 'bg-muted text-muted-foreground'
+											} ${isDragging ? 'animate-pulse' : ''}`}
 										>
 											<FileArrowUp className="h-8 w-8" />
 										</div>
 										<div className="text-center">
 											<p className="font-black uppercase tracking-widest text-xs">
-												{file ? file.name : 'Drop PDF or Click to Browse'}
+												{isDragging
+													? 'Drop PDF Here'
+													: file
+														? file.name
+														: 'Drop PDF or Click to Browse'}
 											</p>
-											{file && (
+											{file && !isDragging && (
 												<p className="text-[10px] font-bold text-muted-foreground mt-1">
 													{(file.size / 1024 / 1024).toFixed(2)} MB
 												</p>
 											)}
+											{!file && !isDragging && (
+												<p className="text-[10px] font-bold text-muted-foreground mt-1">
+													PDF ONLY (MAX 16MB)
+												</p>
+											)}
 										</div>
 									</label>
-								</div>
+								</section>
 							</div>
 						</div>
 					)}
@@ -563,7 +630,7 @@ export function PdfUploadDrawer({ isOpen, onClose, subjects, onSuccess }: PdfUpl
 							className="flex-1 h-14 bg-brand-blue hover:bg-brand-blue/90 rounded-2xl font-black uppercase tracking-widest text-xs shadow-2xl shadow-brand-blue/20"
 						>
 							{isSaving ? (
-								<Spinner className="h-5 w-5 text-white" />
+								<div className="h-5 w-5 animate-spin border-2 border-white border-t-transparent rounded-full" />
 							) : (
 								<>
 									<FloppyDisk className="h-4 w-4 mr-2" /> FloppyDisk Paper &{' '}

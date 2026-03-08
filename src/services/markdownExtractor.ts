@@ -61,10 +61,11 @@ export async function extractQuestionsFromMarkdown(
 	year: number,
 	month: string
 ): Promise<ExtractedPaper> {
-	const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
-	if (!ai) {
+	if (!process.env.GEMINI_API_KEY) {
 		throw new Error('AI service not configured');
 	}
+
+	const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
 	logInfo('markdown-extractor', `Extracting questions from markdown for ${paperId}`);
 
