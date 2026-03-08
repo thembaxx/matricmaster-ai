@@ -15,7 +15,7 @@ export const ROUTE_CATEGORIES = {
 		'/onboarding',
 		'/api/health',
 		'/api/csp-report',
-		"/api/uploadthing"
+		'/api/uploadthing',
 	],
 
 	// Routes that are public but may have enhanced features for authenticated users

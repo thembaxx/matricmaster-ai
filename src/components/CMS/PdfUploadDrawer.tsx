@@ -32,7 +32,6 @@ import {
 	type ExtractedOption,
 	type ExtractedPaper,
 	type ExtractedQuestion,
-	extractQuestionsFromPDF,
 	flattenExtractedPaper,
 } from '@/services/pdfExtractor';
 import { ExtractedQuestionCard } from './ExtractedQuestionCard';
@@ -159,14 +158,28 @@ export function PdfUploadDrawer({ isOpen, onClose, subjects, onSuccess }: PdfUpl
 			setProcessingProgress(60);
 			setProcessingStatus('AI is analyzing questions (Superpowered mode)...');
 
-			const extractionResult = await extractQuestionsFromPDF(
-				paperDetails.paperId,
-				uploadResult.url!, // Use uploaded URL instead of base64
-				subjectObj?.name || paperDetails.subject,
-				paperDetails.paper,
-				paperDetails.year,
-				paperDetails.month
-			);
+			const response = await fetch('/api/extract-questions', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({
+					paperId: paperDetails.paperId,
+					pdfUrl: uploadResult.url!,
+					subject: subjectObj?.name || paperDetails.subject,
+					paper: paperDetails.paper,
+					year: paperDetails.year,
+					month: paperDetails.month,
+				}),
+			});
+
+			if (!response.ok) {
+				const errorData = await response.json();
+				throw new Error(errorData.details || errorData.error || 'Failed to extract questions');
+			}
+
+			const result = await response.json();
+			const extractionResult = result.data;
 
 			setProcessingProgress(95);
 			setProcessingStatus('Finalizing...');
@@ -225,7 +238,7 @@ export function PdfUploadDrawer({ isOpen, onClose, subjects, onSuccess }: PdfUpl
 	) => {
 		if (!extractedData) return;
 		const newData = { ...extractedData };
-		// @ts-ignore - Dynamic field access
+		// @ts-expect-error - Dynamic field access
 		newData.questions[idx] = { ...newData.questions[idx], [field]: value } as ExtractedQuestion;
 		setExtractedData(newData);
 	};
@@ -243,13 +256,13 @@ export function PdfUploadDrawer({ isOpen, onClose, subjects, onSuccess }: PdfUpl
 			const sq = newData.questions[qIdx].subQuestions?.[sqIdx];
 			if (sq) {
 				if (!sq.options) sq.options = [];
-				// @ts-ignore - Dynamic field access
+				// @ts-expect-error - Dynamic field access
 				sq.options[optIdx] = { ...sq.options[optIdx], [field]: value } as ExtractedOption;
 			}
 		} else {
 			const q = newData.questions[qIdx];
 			if (!q.options) q.options = [];
-			// @ts-ignore - Dynamic field access
+			// @ts-expect-error - Dynamic field access
 			q.options[optIdx] = { ...q.options[optIdx], [field]: value } as ExtractedOption;
 		}
 		setExtractedData(newData);
@@ -265,7 +278,7 @@ export function PdfUploadDrawer({ isOpen, onClose, subjects, onSuccess }: PdfUpl
 		const newData = { ...extractedData };
 		const sq = newData.questions[qIdx].subQuestions?.[sqIdx];
 		if (sq) {
-			// @ts-ignore - Dynamic field access
+			// @ts-expect-error - Dynamic field access
 			sq[field] = value;
 			setExtractedData(newData);
 		}

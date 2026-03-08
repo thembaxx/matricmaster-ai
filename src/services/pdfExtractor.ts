@@ -121,6 +121,11 @@ const MODEL_FALLBACKS = [
 ];
 
 export function getAI(): GoogleGenAI | null {
+	if (typeof window !== 'undefined') {
+		console.warn(
+			'[PDF Extractor] getAI called on client side. GEMINI_API_KEY will not be available.'
+		);
+	}
 	if (!ai) {
 		const apiKey = process.env.GEMINI_API_KEY;
 		if (!apiKey) {
