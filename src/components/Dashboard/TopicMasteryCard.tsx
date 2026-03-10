@@ -143,7 +143,7 @@ export const TopicMasteryCard = memo(function TopicMasteryCard({
 	}
 
 	return (
-		<Card className={`${className} premium-glass border-none rounded-[2.5rem] overflow-hidden`}>
+		<Card className={`${className} premium-glass border-none rounded-[2rem] overflow-hidden`}>
 			<CardHeader className="pb-2 px-8 pt-8">
 				<CardTitle className="flex items-center justify-between">
 					<span className="flex items-center gap-2 text-xl font-black text-foreground tracking-tight uppercase">
