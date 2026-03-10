@@ -1,26 +1,27 @@
 import type { Variants } from 'framer-motion';
 
 export const SPRING_CONFIG = {
-	responsive: { stiffness: 260, damping: 22, mass: 1 },
-	bouncy: { stiffness: 400, damping: 25, mass: 1 },
-	gentle: { stiffness: 180, damping: 20, mass: 1 },
-	fluid: { stiffness: 300, damping: 24, mass: 0.8 },
+	responsive: { stiffness: 300, damping: 30, mass: 1 },
+	bouncy: { stiffness: 400, damping: 28, mass: 1 },
+	gentle: { stiffness: 200, damping: 24, mass: 1 },
+	fluid: { stiffness: 350, damping: 28, mass: 0.9 },
+	press: { stiffness: 400, damping: 30, mass: 0.8 },
 };
 
 export const DURATION = {
 	instant: 0.1,
-	quick: 0.2,
-	normal: 0.3,
-	slow: 0.5,
-	slower: 0.7,
+	quick: 0.15,
+	normal: 0.25,
+	slow: 0.35,
+	slower: 0.5,
 };
 
 export const EASING = {
-	ios: [0.4, 0, 0.2, 1],
+	ios: [0.33, 1, 0.68, 1],
 	decelerate: [0, 0, 0.2, 1],
 	accelerate: [0.4, 0, 1, 1],
 	liquid: [0.2, 0, 0.2, 1],
-	smooth: [0.4, 0, 0.2, 1],
+	smooth: [0.33, 1, 0.68, 1],
 } as const;
 
 export const MATERIALIZATION: Variants = {
@@ -53,12 +54,12 @@ export const FADE_SCALE: Variants = {
 
 export const LIQUID_FLEX = {
 	whileHover: { scale: 1.02 },
-	whileTap: { scale: 0.97 },
-	transition: { type: 'spring', stiffness: 400, damping: 25 },
+	whileTap: { scale: 0.98 },
+	transition: { type: 'spring', stiffness: 350, damping: 28 },
 };
 
 export const HOVER_LIFT = {
-	whileHover: { y: -2, transition: { duration: 0.2 } },
+	whileHover: { y: -1, transition: { duration: 0.15 } },
 	whileTap: { y: 0 },
 };
 
@@ -66,16 +67,16 @@ export const STAGGER_CONTAINER: Variants = {
 	hidden: { opacity: 0 },
 	visible: {
 		opacity: 1,
-		transition: { staggerChildren: 0.05, delayChildren: 0.1 },
+		transition: { staggerChildren: 0.04, delayChildren: 0.06 },
 	},
 };
 
 export const STAGGER_ITEM: Variants = {
-	hidden: { opacity: 0, y: 16 },
+	hidden: { opacity: 0, y: 12 },
 	visible: {
 		opacity: 1,
 		y: 0,
-		transition: { type: 'spring', stiffness: 260, damping: 22 },
+		transition: { type: 'spring', stiffness: 300, damping: 28 },
 	},
 };
 
@@ -86,13 +87,13 @@ export const SLIDE_IN_RIGHT: Variants = {
 };
 
 export const SCALE_IN: Variants = {
-	initial: { opacity: 0, scale: 0.9 },
+	initial: { opacity: 0, scale: 0.94 },
 	animate: {
 		opacity: 1,
 		scale: 1,
-		transition: { type: 'spring', stiffness: 400, damping: 25 },
+		transition: { type: 'spring', stiffness: 350, damping: 28 },
 	},
-	exit: { opacity: 0, scale: 0.9 },
+	exit: { opacity: 0, scale: 0.94 },
 };
 
 export const BLUR_REVEAL: Variants = {
@@ -125,48 +126,48 @@ export const SHADOW_DEPTH = {
 
 export const ANIMATION_PRESETS = {
 	page: {
-		initial: { opacity: 0, y: 8 },
+		initial: { opacity: 0, y: 6 },
 		animate: { opacity: 1, y: 0 },
-		exit: { opacity: 0, y: -8 },
-		transition: { duration: 0.3, ease: EASING.ios },
+		exit: { opacity: 0, y: -6 },
+		transition: { duration: 0.2, ease: EASING.ios },
 	},
 	card: {
-		initial: { opacity: 0, y: 16, scale: 0.98 },
+		initial: { opacity: 0, y: 12, scale: 0.98 },
 		animate: { opacity: 1, y: 0, scale: 1 },
-		exit: { opacity: 0, y: -8 },
-		transition: { type: 'spring', stiffness: 260, damping: 22 },
+		exit: { opacity: 0, y: -6 },
+		transition: { type: 'spring', stiffness: 300, damping: 30 },
 	},
 	button: {
 		whileHover: { scale: 1.02 },
-		whileTap: { scale: 0.97 },
-		transition: { type: 'spring', stiffness: 400, damping: 25 },
+		whileTap: { scale: 0.98 },
+		transition: { type: 'spring', stiffness: 350, damping: 28 },
 	},
 	modal: {
-		initial: { opacity: 0, scale: 0.95, y: 20 },
+		initial: { opacity: 0, scale: 0.95, y: 16 },
 		animate: {
 			opacity: 1,
 			scale: 1,
 			y: 0,
-			transition: { type: 'spring', stiffness: 300, damping: 24 },
+			transition: { type: 'spring', stiffness: 300, damping: 28 },
 		},
-		exit: { opacity: 0, scale: 0.95, y: 20 },
+		exit: { opacity: 0, scale: 0.95, y: 16 },
 	},
 	toast: {
-		initial: { opacity: 0, y: 50, scale: 0.9 },
+		initial: { opacity: 0, y: 40, scale: 0.9 },
 		animate: {
 			opacity: 1,
 			y: 0,
 			scale: 1,
-			transition: { type: 'spring', stiffness: 400, damping: 25 },
+			transition: { type: 'spring', stiffness: 350, damping: 28 },
 		},
-		exit: { opacity: 0, y: 20, scale: 0.9 },
+		exit: { opacity: 0, y: 16, scale: 0.9 },
 	},
 	list: {
 		hidden: { opacity: 0 },
-		visible: { opacity: 1, transition: { staggerChildren: 0.05 } },
+		visible: { opacity: 1, transition: { staggerChildren: 0.04 } },
 	},
 	listItem: {
-		hidden: { opacity: 0, x: -10 },
+		hidden: { opacity: 0, x: -8 },
 		visible: { opacity: 1, x: 0 },
 	},
 };
