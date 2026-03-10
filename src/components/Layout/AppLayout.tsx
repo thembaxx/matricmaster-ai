@@ -6,7 +6,6 @@ import { toast } from "sonner";
 import { ClientOnly } from "@/components/ClientOnly";
 import { DailyLoginBonus } from "@/components/Gamification/DailyLoginBonus";
 import { MobileLayoutFixes } from "@/components/Layout/MobileLayoutFixes";
-// import { MobileViewTest } from '@/components/Layout/MobileViewTest';
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { useTheme } from "@/hooks/use-theme";
 import { authClient } from "@/lib/auth-client";
@@ -46,13 +45,15 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   const isFullScreen =
     pathname.startsWith("/past-paper") && searchParams.get("id");
 
+  // Monochrome & Minimal App Shell
+  const appShellClasses = "flex min-h-screen bg-background overflow-x-hidden selection:bg-electric-blue selection:text-white transition-colors duration-500";
+
   if (!user || shouldHideNav) {
     return (
-      <div className="flex min-h-screen bg-background overflow-x-hidden transition-colors duration-500">
+      <div className={appShellClasses}>
         <ClientOnly>{user && <DailyLoginBonus />}</ClientOnly>
         <ClientOnly>
           <MobileLayoutFixes />
-          {/* <MobileViewTest /> */}
         </ClientOnly>
         <div className="flex-1 flex flex-col min-h-screen relative max-w-full">
           <div className="flex-1 flex flex-col w-full mx-auto max-w-full">
@@ -76,7 +77,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             )}
             <main
               id="main-content"
-              className={`flex-1 relative flex flex-col ${!shouldHideNav ? "pt-20" : ""} ${!shouldHideBottomNav ? "pb-40" : ""}`}
+              className={`flex-1 relative flex flex-col ${!shouldHideNav ? "pt-10" : ""} ${!shouldHideBottomNav ? "pb-32" : ""}`}
             >
               <PageTransition>{children}</PageTransition>
             </main>
@@ -85,7 +86,6 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             <BottomNavigation pathname={pathname} />
           )}
         </div>
-        <GlobalStyles />
       </div>
     );
   }
@@ -95,7 +95,6 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
       <ClientOnly>
         <DailyLoginBonus />
         <MobileLayoutFixes />
-        {/* <MobileViewTest /> */}
       </ClientOnly>
       <AppSidebar
         user={user}
@@ -103,9 +102,9 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         theme={theme}
         onToggleTheme={() => setTheme(theme === "dark" ? "light" : "dark")}
       />
-      <SidebarInset>
+      <SidebarInset className="bg-background">
         <div className="flex-1 flex flex-col min-h-screen relative max-w-full">
-          <div className="flex-1 flex flex-col w-full mx-auto transition-all duration-300 max-w-7xl lg:px-8 xl:px-12">
+          <div className="flex-1 flex flex-col w-full mx-auto transition-all duration-300 max-w-5xl lg:px-8">
             {!isFullScreen && (
               <ResponsiveHeader
                 user={user ?? null}
@@ -127,7 +126,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             )}
             <main
               id="main-content"
-              className={"flex-1 relative flex flex-col pt-16 lg:pt-8"}
+              className={"flex-1 relative flex flex-col pt-10 pb-32 lg:pb-10"}
             >
               <PageTransition>{children}</PageTransition>
             </main>
@@ -139,26 +138,6 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             )}
         </div>
       </SidebarInset>
-      <GlobalStyles />
     </SidebarProvider>
-  );
-}
-
-function GlobalStyles() {
-  return (
-    <style jsx global>{`
-      .no-scrollbar::-webkit-scrollbar {
-        display: none;
-      }
-      .no-scrollbar {
-        -ms-overflow-style: none;
-        scrollbar-width: none;
-      }
-
-      ::selection {
-        background-color: var(--primary);
-        color: var(--primary-foreground);
-      }
-    `}</style>
   );
 }

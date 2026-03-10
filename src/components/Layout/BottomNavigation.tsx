@@ -1,36 +1,42 @@
 "use client";
 
-import { Icon } from "@iconify/react";
 import { AnimatePresence, m } from "framer-motion";
 import Link from "next/link";
+import {
+  Home01Icon,
+  AiCloudIcon,
+  Notebook01Icon,
+  UserCircleIcon,
+  QuillWrite01Icon
+} from "hugeicons-react";
 
 type NavItem = {
   href: string;
   label: string;
-  icon: string;
+  icon: React.ElementType;
 };
 
 const navItems: NavItem[] = [
-  { href: "/dashboard", label: "Home", icon: "fluent:clover-24-filled" },
+  { href: "/dashboard", label: "Home", icon: Home01Icon },
   {
     href: "/interactive-quiz",
     label: "Quiz",
-    icon: "fluent:checkmark-circle-sparkle-24-filled",
+    icon: QuillWrite01Icon,
   },
   {
     href: "/ai-tutor",
     label: "AI Tutor",
-    icon: "fluent:bot-sparkle-24-filled",
+    icon: AiCloudIcon,
   },
   {
     href: "/past-papers",
     label: "Papers",
-    icon: "fluent:hat-graduation-sparkle-24-filled",
+    icon: Notebook01Icon,
   },
   {
     href: "/profile",
     label: "Profile",
-    icon: "fluent:person-circle-24-filled",
+    icon: UserCircleIcon,
   },
 ];
 
@@ -43,24 +49,26 @@ export function BottomNavigation({ pathname }: BottomNavigationProps) {
     <nav
       id="bottom-navigation"
       aria-label="Bottom navigation"
-      className="lg:hidden fixed bottom-8 left-1/2 -translate-x-1/2 w-[92%] max-w-md z-40 ios-glass rounded-[2.5rem] shadow-2xl border-white/20 dark:border-white/10 grid grid-cols-5 p-2 transition-all duration-500"
+      className="fixed bottom-10 left-1/2 -translate-x-1/2 w-[90%] max-w-md z-40 ios-dock rounded-[2.5rem] grid grid-cols-5 p-2"
     >
       {navItems.map((item) => {
         const isActive =
           pathname === item.href ||
           (item.href === "/dashboard" && pathname === "/");
+        const Icon = item.icon;
+
         return (
           <Link
             key={item.href}
             href={item.href}
             aria-current={isActive ? "page" : undefined}
-            className="relative flex flex-col items-center justify-center py-3 min-h-[56px] transition-all duration-300 group rounded-2xl touch-manipulation"
+            className="relative flex flex-col items-center justify-center py-2 min-h-[64px] transition-all duration-300 group rounded-2xl touch-manipulation"
           >
             <AnimatePresence>
               {isActive && (
                 <m.div
                   layoutId="active-pill"
-                  className="absolute inset-0 bg-primary rounded-2xl z-0"
+                  className="absolute inset-x-2 inset-y-1 bg-electric-blue/10 rounded-2xl z-0"
                   transition={{
                     type: "spring",
                     stiffness: 400,
@@ -70,23 +78,24 @@ export function BottomNavigation({ pathname }: BottomNavigationProps) {
               )}
             </AnimatePresence>
 
-            <div className="relative z-10 flex items-center justify-center">
+            <div className="relative z-10 flex flex-col items-center justify-center gap-1">
               <Icon
-                icon={item.icon}
-                className={`h-6 w-6 transition-all duration-300 ${
+                size={24}
+                variant={isActive ? "solid" : "linear"}
+                className={`transition-all duration-300 ${
                   isActive
-                    ? "text-primary-foreground scale-110"
+                    ? "text-electric-blue scale-110"
                     : "text-muted-foreground group-hover:text-foreground"
                 }`}
               />
+              <span
+                className={`text-[10px] font-bold uppercase tracking-widest ${
+                  isActive ? "text-electric-blue" : "text-muted-foreground"
+                }`}
+              >
+                {item.label}
+              </span>
             </div>
-            <span
-              className={`relative z-10 text-[10px] xs:text-[11px] sm:text-[12px] font-bold uppercase tracking-tight ${
-                isActive ? "text-primary-foreground" : "text-muted-foreground"
-              }`}
-            >
-              {item.label}
-            </span>
           </Link>
         );
       })}

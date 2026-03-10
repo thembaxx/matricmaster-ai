@@ -1,6 +1,12 @@
 'use client';
 
-import { BookOpen, Clock, Flask, Play, Sigma } from '@phosphor-icons/react';
+import {
+	Book01Icon,
+	Clock01Icon,
+	FlaskIcon,
+	PlayIcon,
+	MathematicalBook01Icon
+} from 'hugeicons-react';
 import { m } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { memo } from 'react';
@@ -20,21 +26,21 @@ const defaultChallenges: Challenge[] = [
 		title: 'Differentiation Rules',
 		time: '10m',
 		difficulty: 'Medium',
-		icon: <Sigma className="w-6 h-6 text-blue-500" />,
+		icon: <MathematicalBook01Icon size={24} className="text-blue-500" />,
 		iconBg: 'bg-blue-50 dark:bg-blue-900/20',
 	},
 	{
 		title: "Newton's Second Law",
 		time: '20m',
 		difficulty: 'Hard',
-		icon: <Flask className="w-6 h-6 text-purple-500" />,
+		icon: <FlaskIcon size={24} className="text-purple-500" />,
 		iconBg: 'bg-purple-50 dark:bg-purple-900/20',
 	},
 	{
 		title: 'Poetry Analysis',
 		time: '5m',
 		difficulty: 'Easy',
-		icon: <BookOpen className="w-6 h-6 text-emerald-500" />,
+		icon: <Book01Icon size={24} className="text-emerald-500" />,
 		iconBg: 'bg-emerald-50 dark:bg-emerald-900/20',
 	},
 ];
@@ -45,11 +51,11 @@ export const ChallengesList = memo(function ChallengesList() {
 	return (
 		<m.div variants={STAGGER_ITEM} className="space-y-6">
 			<div className="flex justify-between items-center">
-				<h3 className="text-xl font-black text-foreground tracking-tighter uppercase">Deep Work</h3>
+				<h3 className="text-xl font-black text-foreground tracking-tighter uppercase">Quick Practice</h3>
 				<Button
 					variant="ghost"
 					size="sm"
-					className="font-black text-[10px] uppercase tracking-widest text-primary"
+					className="font-black text-[10px] uppercase tracking-widest text-electric-blue rounded-full"
 				>
 					View All
 				</Button>
@@ -62,7 +68,7 @@ export const ChallengesList = memo(function ChallengesList() {
 						whileHover={{ x: 10 }}
 						whileTap={{ scale: 0.98 }}
 						type="button"
-						className="w-full text-left premium-glass p-5 rounded-[2rem] flex items-center justify-between group transition-all cursor-pointer border-transparent hover:border-primary/20 premium-glass-hover shadow-sm"
+						className="w-full text-left bg-white dark:bg-neutral-900 p-5 rounded-[2rem] flex items-center justify-between group transition-all cursor-pointer border border-border/50 hover:border-electric-blue/30 shadow-sm"
 						onClick={() => router.push('/quiz')}
 					>
 						<div className="flex items-center gap-4">
@@ -75,7 +81,7 @@ export const ChallengesList = memo(function ChallengesList() {
 								<h4 className="font-black text-sm text-foreground">{challenge.title}</h4>
 								<div className="flex items-center gap-2 text-[10px] font-black text-muted-foreground uppercase tracking-widest opacity-60">
 									<div className="flex items-center gap-1">
-										<Clock className="w-3 h-3" />
+										<Clock01Icon size={12} />
 										{challenge.time}
 									</div>
 									<span className="w-1 h-1 rounded-full bg-border" />
@@ -93,8 +99,8 @@ export const ChallengesList = memo(function ChallengesList() {
 								</div>
 							</div>
 						</div>
-						<div className="w-10 h-10 rounded-2xl bg-muted/50 flex items-center justify-center group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300">
-							<Play className="w-4 h-4 fill-current ml-0.5" />
+						<div className="w-10 h-10 rounded-2xl bg-secondary flex items-center justify-center group-hover:bg-electric-blue group-hover:text-white transition-all duration-300">
+							<PlayIcon size={16} variant="solid" className="ml-0.5" />
 						</div>
 					</m.button>
 				))}

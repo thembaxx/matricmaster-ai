@@ -1,14 +1,14 @@
 'use client';
 
 import {
-	Brain,
-	CaretRight,
-	CircleNotch,
-	Clock,
-	Target,
-	TrendDown,
-	TrendUp,
-} from '@phosphor-icons/react';
+	Brain01Icon as Brain,
+	ArrowRight01Icon as CaretRight,
+	Loading03Icon as CircleNotch,
+	Clock01Icon as Clock,
+	Target02Icon as Target,
+	AiTrendDownIcon as TrendDown,
+	AiTrendUpIcon as TrendUp,
+} from 'hugeicons-react';
 import { useRouter } from 'next/navigation';
 import { memo, useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
@@ -143,14 +143,14 @@ export const TopicMasteryCard = memo(function TopicMasteryCard({
 	}
 
 	return (
-		<Card className={`${className} premium-glass border-none rounded-[2.5rem] overflow-hidden`}>
+		<Card className={`${className} bg-white dark:bg-neutral-900 border border-border/50 rounded-[2.5rem] shadow-sm overflow-hidden`}>
 			<CardHeader className="pb-2 px-8 pt-8">
 				<CardTitle className="flex items-center justify-between">
 					<span className="flex items-center gap-2 text-xl font-black text-foreground tracking-tight uppercase">
-						<Brain className="h-5 w-5 text-primary" />
+						<Brain weight="bold" className="h-5 w-5 text-electric-blue" />
 						Topic Progress
 					</span>
-					<Button variant="ghost" size="sm" onClick={() => router.push('/review')}>
+					<Button variant="ghost" size="sm" className="rounded-full hover:bg-secondary" onClick={() => router.push('/review')}>
 						View All
 						<CaretRight className="ml-1 h-4 w-4" />
 					</Button>
