@@ -5,10 +5,12 @@ import { useCallback, useEffect, useState, useTransition } from 'react';
 import { ChallengesList } from '@/components/Dashboard/ChallengesList';
 import { DailyGoals } from '@/components/Dashboard/DailyGoals';
 import { DailyQuestCard } from '@/components/Dashboard/DailyQuestCard';
+import { DashboardAIPrompt } from '@/components/Dashboard/DashboardAIPrompt';
 import { DashboardHeader } from '@/components/Dashboard/DashboardHeader';
 import { LeaderboardPreview } from '@/components/Dashboard/LeaderboardPreview';
 import { RecentAchievements } from '@/components/Dashboard/RecentAchievements';
 import { StatsCards } from '@/components/Dashboard/StatsCards';
+import { SubjectCards } from '@/components/Dashboard/SubjectCards';
 import { TopicMasteryCard } from '@/components/Dashboard/TopicMasteryCard';
 import { WeeklyChallenge } from '@/components/Dashboard/WeeklyChallenge';
 import { WeeklyChartCard } from '@/components/Dashboard/WeeklyChartCard';
@@ -126,9 +128,34 @@ export default function Dashboard({
 					variants={STAGGER_CONTAINER}
 					initial="hidden"
 					animate="visible"
-					className="px-4 sm:px-6 py-6 space-y-6 sm:space-y-8 lg:px-0"
+					className="px-4 sm:px-6 py-8 space-y-12 sm:space-y-16 lg:px-0"
 				>
-					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+					{/* AI Prompt Section */}
+					<m.section variants={STAGGER_ITEM} className="max-w-4xl mx-auto px-4">
+						<div className="text-center mb-8 space-y-2">
+							<h1 className="text-4xl sm:text-6xl font-black tracking-tighter uppercase">
+								Your <span className="text-primary">AI Journey</span> Starts Here
+							</h1>
+							<p className="text-muted-foreground max-w-lg mx-auto">
+								Ask a question, generate a study plan, or take a practice quiz to level up your
+								mastery.
+							</p>
+						</div>
+						<DashboardAIPrompt />
+					</m.section>
+
+					{/* Subjects Section */}
+					<m.section variants={STAGGER_ITEM} className="space-y-6">
+						<div className="flex items-center justify-between">
+							<h2 className="text-2xl font-black tracking-tighter uppercase">Subject Workspace</h2>
+							<button type="button" className="text-sm font-bold text-primary hover:underline">
+								Customize
+							</button>
+						</div>
+						<SubjectCards />
+					</m.section>
+
+					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
 						<m.div variants={STAGGER_ITEM} className="md:col-span-1">
 							<WeeklyChallenge initialProgress={initialProgress ?? undefined} />
 						</m.div>

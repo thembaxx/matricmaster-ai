@@ -15,7 +15,7 @@ export const StatsCards = memo(function StatsCards({ streak, accuracy }: StatsCa
 	return (
 		<div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
 			<m.div variants={STAGGER_ITEM} className="flex-1">
-				<Card className="h-full p-5 premium-glass border-none rounded-3xl flex flex-col justify-between relative overflow-hidden group">
+				<Card className="h-full p-6 premium-glass border-none rounded-[2rem] flex flex-col justify-between relative overflow-hidden group">
 					<m.div
 						animate={{ scale: [1, 1.15, 1], rotate: [0, 8, 0] }}
 						transition={{ duration: 8, repeat: Number.POSITIVE_INFINITY, ease: [0.16, 1, 0.3, 1] }}
@@ -46,7 +46,7 @@ export const StatsCards = memo(function StatsCards({ streak, accuracy }: StatsCa
 			</m.div>
 
 			<m.div variants={STAGGER_ITEM} className="flex-1">
-				<Card className="h-full p-5 premium-glass border-none rounded-3xl flex flex-col justify-between relative overflow-hidden group">
+				<Card className="h-full p-6 premium-glass border-none rounded-[2rem] flex flex-col justify-between relative overflow-hidden group">
 					<m.div
 						animate={{ scale: [1.15, 1, 1.15], rotate: [0, -8, 0] }}
 						transition={{ duration: 10, repeat: Number.POSITIVE_INFINITY, ease: [0.16, 1, 0.3, 1] }}

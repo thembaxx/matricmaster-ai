@@ -13,7 +13,7 @@ import {
 	Warning,
 	X,
 } from '@phosphor-icons/react';
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -52,53 +52,36 @@ export default function ModerationDashboard() {
 	const [activeTab, setActiveTab] = useState('flags');
 	const [searchQuery, setSearchQuery] = useState('');
 	const [statusFilter, setStatusFilter] = useState<string>('all');
+	const [isLoading, setIsLoading] = useState(true);
 
-	// Mock data
-	const [flags, setFlags] = useState<ContentFlag[]>([
-		{
-			id: '1',
-			reporterId: 'user1',
-			reporterName: 'John D.',
-			contentType: 'comment',
-			contentId: 'comment-123',
-			contentPreview: 'This is an inappropriate comment...',
-			flagReason: 'Inappropriate content',
-			flagDetails: 'Contains offensive language',
-			status: 'pending',
-			createdAt: '2026-02-17T10:30:00Z',
-		},
-		{
-			id: '2',
-			reporterId: 'user2',
-			reporterName: 'Jane S.',
-			contentType: 'comment',
-			contentId: 'comment-456',
-			contentPreview: 'Check out this link for free answers...',
-			flagReason: 'Spam',
-			flagDetails: 'Suspicious link',
-			status: 'pending',
-			createdAt: '2026-02-17T11:00:00Z',
-		},
-	]);
+	const [flags, setFlags] = useState<ContentFlag[]>([]);
+	const [patterns] = useState<ModerationPattern[]>([]);
 
-	const [patterns] = useState<ModerationPattern[]>([
-		{
-			id: '1',
-			pattern: '\\b(free|buy now|limited offer)\\b',
-			patternType: 'regex',
-			severity: 'medium',
-			action: 'flag',
-			isActive: true,
-		},
-		{
-			id: '2',
-			pattern: '(?i)(scam|fraud|cheat)',
-			patternType: 'regex',
-			severity: 'high',
-			action: 'block',
-			isActive: true,
-		},
-	]);
+	const loadFlags = useCallback(async () => {
+		if (!session?.user?.id) return;
+
+		try {
+			const url = new URL('/api/moderation/flags', window.location.origin);
+			if (statusFilter !== 'all') {
+				url.searchParams.set('status', statusFilter);
+			}
+
+			const response = await fetch(url.toString());
+			const result = await response.json();
+
+			if (result.success && result.data) {
+				setFlags(result.data);
+			}
+		} catch (error) {
+			console.error('Error loading flags:', error);
+		} finally {
+			setIsLoading(false);
+		}
+	}, [session?.user?.id, statusFilter]);
+
+	useEffect(() => {
+		loadFlags();
+	}, [loadFlags]);
 
 	// Session check - in production, add proper admin authorization
 	if (!session) {
@@ -119,21 +102,34 @@ export default function ModerationDashboard() {
 		);
 	}
 
-	// Stable mock data for stats (deterministic values)
-	const flagReasons = [
-		{ name: 'Spam', count: 12 },
-		{ name: 'Inappropriate', count: 8 },
-		{ name: 'Harassment', count: 5 },
-		{ name: 'Incorrect', count: 3 },
-		{ name: 'Other', count: 2 },
-	];
+	// Calculate stats from real data
+	const flagReasons = flags.reduce((acc: { name: string; count: number }[], flag) => {
+		const existing = acc.find((r) => r.name === flag.flagReason);
+		if (existing) {
+			existing.count++;
+		} else {
+			acc.push({ name: flag.flagReason, count: 1 });
+		}
+		return acc;
+	}, []);
 
-	const contentTypes = [
-		{ type: 'Comments', count: 18 },
-		{ type: 'Quiz Answers', count: 6 },
-		{ type: 'Study Notes', count: 3 },
-		{ type: 'Profiles', count: 2 },
-	];
+	const contentTypes = flags.reduce((acc: { type: string; count: number }[], flag) => {
+		const existing = acc.find((r) => r.type === flag.contentType);
+		if (existing) {
+			existing.count++;
+		} else {
+			acc.push({ type: flag.contentType, count: 1 });
+		}
+		return acc;
+	}, []);
+
+	if (isLoading) {
+		return (
+			<div className="container mx-auto py-8 text-center">
+				<div className="animate-spin rounded-full h-12 w-12 border-4 border-primary border-t-transparent mx-auto" />
+			</div>
+		);
+	}
 
 	const getSeverityColor = (severity: string) => {
 		switch (severity) {
@@ -146,7 +142,7 @@ export default function ModerationDashboard() {
 			case 'low':
 				return 'bg-green-100 text-green-800';
 			default:
-				return 'bg-gray-100 text-gray-800';
+				return 'bg-muted text-muted-foreground';
 		}
 	};
 
@@ -159,20 +155,38 @@ export default function ModerationDashboard() {
 			case 'actioned':
 				return 'bg-green-100 text-green-800';
 			case 'dismissed':
-				return 'bg-gray-100 text-gray-800';
+				return 'bg-muted text-muted-foreground';
 			default:
-				return 'bg-gray-100 text-gray-800';
+				return 'bg-muted text-muted-foreground';
 		}
 	};
 
-	const handleAction = (flagId: string, action: 'remove' | 'dismiss') => {
-		// Update local state by filtering out the handled flag
-		setFlags((prevFlags) => prevFlags.filter((flag) => flag.id !== flagId));
+	const handleAction = async (flagId: string, action: 'remove' | 'dismiss') => {
+		try {
+			const url = new URL(`/api/moderation/flags/${flagId}/action`, window.location.origin);
 
-		if (action === 'dismiss') {
-			toast.success(`Flag ${flagId} dismissed`);
-		} else if (action === 'remove') {
-			toast.success(`Content ${flagId} removed`);
+			const response = await fetch(url.toString(), {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ action }),
+			});
+
+			const result = await response.json();
+
+			if (result.success) {
+				setFlags((prevFlags) => prevFlags.filter((flag) => flag.id !== flagId));
+
+				if (action === 'dismiss') {
+					toast.success(`Flag ${flagId} dismissed`);
+				} else if (action === 'remove') {
+					toast.success(`Content ${flagId} removed`);
+				}
+			} else {
+				toast.error(result.error || 'Failed to process flag');
+			}
+		} catch (error) {
+			console.error('Error processing flag:', error);
+			toast.error('Failed to process flag');
 		}
 	};
 
