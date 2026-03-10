@@ -732,6 +732,32 @@ export const studyBuddies = pgTable(
 );
 
 // ============================================================================
+// USER SETTINGS TABLE
+// ============================================================================
+
+export const userSettings = pgTable(
+	'user_settings',
+	{
+		userId: text('user_id')
+			.primaryKey()
+			.references(() => users.id, { onDelete: 'cascade' }),
+		emailNotifications: boolean('email_notifications').notNull().default(true),
+		pushNotifications: boolean('push_notifications').notNull().default(true),
+		studyReminders: boolean('study_reminders').notNull().default(true),
+		achievementAlerts: boolean('achievement_alerts').notNull().default(true),
+		profileVisibility: boolean('profile_visibility').notNull().default(true),
+		showOnLeaderboard: boolean('show_on_leaderboard').notNull().default(true),
+		analyticsTracking: boolean('analytics_tracking').notNull().default(true),
+		language: varchar('language', { length: 10 }).notNull().default('en'),
+		theme: varchar('theme', { length: 20 }).notNull().default('system'),
+		updatedAt: timestamp('updated_at').defaultNow(),
+	},
+	(table) => ({
+		userIdIdx: index('user_settings_user_id_idx').on(table.userId),
+	})
+);
+
+// ============================================================================
 // RELATIONS
 // ============================================================================
 
@@ -963,6 +989,13 @@ export const studyBuddiesRelations = relations(studyBuddies, ({ one }) => ({
 	}),
 }));
 
+export const userSettingsRelations = relations(userSettings, ({ one }) => ({
+	user: one(users, {
+		fields: [userSettings.userId],
+		references: [users.id],
+	}),
+}));
+
 // ============================================================================
 // TYPE EXPORTS
 // ============================================================================
@@ -1028,6 +1061,9 @@ export type NewBuddyRequest = typeof buddyRequests.$inferInsert;
 
 export type ContentFlag = typeof contentFlags.$inferSelect;
 export type NewContentFlag = typeof contentFlags.$inferInsert;
+
+export type UserSettings = typeof userSettings.$inferSelect;
+export type NewUserSettings = typeof userSettings.$inferInsert;
 
 // Chat schema exports
 export {

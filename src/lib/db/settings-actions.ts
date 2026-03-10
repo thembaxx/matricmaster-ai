@@ -1,10 +1,11 @@
 'use server';
 
 import { eq } from 'drizzle-orm';
+import { headers } from 'next/headers';
 import { z } from 'zod';
-import { authClient } from '@/lib/auth-client';
-import { users } from './better-auth-schema';
+import { getAuth } from '@/lib/auth';
 import { type DbType, dbManager } from './index';
+import { userSettings, users } from './schema';
 
 const updateProfileSchema = z.object({
 	name: z.string().min(1).max(100).optional(),
@@ -13,12 +14,6 @@ const updateProfileSchema = z.object({
 const changePasswordSchema = z.object({
 	currentPassword: z.string().min(1, 'Current password is required'),
 	newPassword: z.string().min(8, 'Password must be at least 8 characters'),
-});
-
-const privacySettingsSchema = z.object({
-	profileVisibility: z.boolean().optional(),
-	showOnLeaderboard: z.boolean().optional(),
-	analyticsTracking: z.boolean().optional(),
 });
 
 async function getDb(): Promise<DbType> {
@@ -38,24 +33,7 @@ export interface ActionResult<T = void> {
 /**
  * Update user profile (name)
  */
-export async function updateProfileAction(
-	userId: string,
-	data: { name?: string }
-): Promise<
-	ActionResult<{
-		id: string;
-		name: string;
-		email: string;
-		emailVerified: boolean;
-		image: string | null;
-		role: string;
-		isBlocked: boolean;
-		twoFactorEnabled: boolean;
-		deletedAt: Date | null;
-		createdAt: Date;
-		updatedAt: Date;
-	}>
-> {
+export async function updateProfileAction(userId: string, data: { name?: string }) {
 	try {
 		const validatedData = updateProfileSchema.parse(data);
 
@@ -88,46 +66,27 @@ export async function updateProfileAction(
  * Change user password
  */
 export async function changePasswordAction(
-	userId: string,
+	_userId: string,
 	data: { currentPassword: string; newPassword: string }
 ): Promise<ActionResult> {
 	try {
 		const validatedData = changePasswordSchema.parse(data);
+		const auth = await getAuth();
 
-		// Get user email for verification
-		const db = await getDb();
-		const [user] = await db.select().from(users).where(eq(users.id, userId)).limit(1);
-
-		if (!user || !user.email) {
-			return { success: false, error: 'User not found' };
-		}
-
-		// Use better-auth's password change
-		const result = await authClient.signIn.email(
-			{
-				email: user.email,
-				password: validatedData.currentPassword,
+		const result = await auth.api.changePassword({
+			body: {
+				currentPassword: validatedData.currentPassword,
+				newPassword: validatedData.newPassword,
+				revokeOtherSessions: true,
 			},
-			{
-				onSuccess: () => {
-					// Sign in successful, password is correct
-				},
-			}
-		);
+			headers: await headers(),
+		});
 
-		// If sign in failed with current password
-		if (result.error) {
-			return { success: false, error: 'Current password is incorrect' };
+		if (!result) {
+			return { success: false, error: 'Failed to change password' };
 		}
 
-		// Note: Better Auth doesn't have a direct "change password" API
-		// This would require the user to use password reset flow
-		// For now, we'll return a message about the password reset
-
-		return {
-			success: false,
-			error: 'Password change requires password reset. Please use the "Forgot Password" feature.',
-		};
+		return { success: true };
 	} catch (error) {
 		console.error('Error changing password:', error);
 		return {
@@ -140,24 +99,7 @@ export async function changePasswordAction(
 /**
  * Delete user account
  */
-export async function deleteAccountAction(
-	userId: string,
-	password: string
-): Promise<
-	ActionResult<{
-		id: string;
-		name: string;
-		email: string;
-		emailVerified: boolean;
-		image: string | null;
-		role: string;
-		isBlocked: boolean;
-		twoFactorEnabled: boolean;
-		deletedAt: Date | null;
-		createdAt: Date;
-		updatedAt: Date;
-	}>
-> {
+export async function deleteAccountAction(userId: string, password: string) {
 	try {
 		if (!password) {
 			return { success: false, error: 'Password is required to delete account' };
@@ -170,18 +112,18 @@ export async function deleteAccountAction(
 			return { success: false, error: 'User not found' };
 		}
 
-		// Verify password before deletion
-		const verifyResult = await authClient.signIn.email(
-			{
-				email: user.email,
-				password: password,
-			},
-			{
-				onSuccess: () => {},
-			}
-		);
+		const auth = await getAuth();
 
-		if (verifyResult.error) {
+		// Verify password before deletion using signIn.email
+		try {
+			await auth.api.signInEmail({
+				body: {
+					email: user.email,
+					password: password,
+				},
+				headers: await headers(),
+			});
+		} catch (_err) {
 			return { success: false, error: 'Incorrect password' };
 		}
 
@@ -202,7 +144,9 @@ export async function deleteAccountAction(
 		}
 
 		// Sign out after deletion
-		await authClient.signOut();
+		await auth.api.signOut({
+			headers: await headers(),
+		});
 
 		return { success: true, data: deletedUser };
 	} catch (error) {
@@ -215,74 +159,31 @@ export async function deleteAccountAction(
 }
 
 /**
- * Get active sessions (placeholder - Better Auth handles sessions)
+ * Get active sessions
  */
-export async function getActiveSessionsAction(
-	_userId: string
-): Promise<ActionResult<{ id: string; device: string; location: string; lastActive: Date }[]>> {
-	// Better Auth manages sessions, this is a placeholder for UI
-	// In production, you'd query the sessions table
-	return {
-		success: true,
-		data: [
-			{
-				id: 'current',
-				device: 'Current Browser',
-				location: 'Current Session',
-				lastActive: new Date(),
-			},
-		],
-	};
-}
-
-/**
- * Update privacy settings
- */
-export async function updatePrivacySettingsAction(
-	userId: string,
-	data: { profileVisibility?: boolean; showOnLeaderboard?: boolean; analyticsTracking?: boolean }
-): Promise<
-	ActionResult<{
-		id: string;
-		name: string;
-		email: string;
-		emailVerified: boolean;
-		image: string | null;
-		role: string;
-		isBlocked: boolean;
-		twoFactorEnabled: boolean;
-		deletedAt: Date | null;
-		createdAt: Date;
-		updatedAt: Date;
-	}>
-> {
+export async function getActiveSessionsAction(_userId: string) {
 	try {
-		// Validate input
-		privacySettingsSchema.parse(data);
+		const auth = await getAuth();
+		const sessions = await auth.api.listSessions({
+			headers: await headers(),
+		});
 
-		const db = await getDb();
-
-		// Update privacy metadata (stored as JSON in metadata field or separate table)
-		const [updatedUser] = await db
-			.update(users)
-			.set({ updatedAt: new Date() })
-			.where(eq(users.id, userId))
-			.returning();
-
-		if (!updatedUser) {
-			return { success: false, error: 'User not found' };
+		if (!sessions) {
+			return { success: false, error: 'Failed to list sessions' };
 		}
 
-		// Note: Privacy settings would need a separate table or metadata field
-		// For now, this is a placeholder
-
-		return { success: true, data: updatedUser };
-	} catch (error) {
-		console.error('Error updating privacy settings:', error);
 		return {
-			success: false,
-			error: error instanceof Error ? error.message : 'Failed to update privacy settings',
+			success: true,
+			data: sessions.map((s) => ({
+				id: s.id,
+				device: s.userAgent || 'Unknown Device',
+				location: s.ipAddress || 'Unknown Location',
+				lastActive: new Date(s.updatedAt),
+			})),
 		};
+	} catch (error) {
+		console.error('Error getting sessions:', error);
+		return { success: false, error: 'Failed to get active sessions' };
 	}
 }
 
@@ -291,128 +192,147 @@ export async function updatePrivacySettingsAction(
  */
 export async function revokeSessionAction(
 	_userId: string,
-	_sessionId: string
+	sessionId: string
 ): Promise<ActionResult> {
-	// Better Auth session management would go here
-	// For now, return success as a placeholder
-	return { success: true };
+	try {
+		const auth = await getAuth();
+		await auth.api.revokeSession({
+			body: {
+				token: sessionId,
+			},
+			headers: await headers(),
+		});
+
+		return { success: true };
+	} catch (error) {
+		console.error('Error revoking session:', error);
+		return { success: false, error: 'Failed to revoke session' };
+	}
 }
 
 // ============================================================================
-// NOTIFICATION SETTINGS
+// NOTIFICATION & PRIVACY SETTINGS
 // ============================================================================
 
-export interface NotificationSettings {
+export interface CombinedSettings {
 	emailNotifications: boolean;
 	pushNotifications: boolean;
 	studyReminders: boolean;
 	achievementAlerts: boolean;
+	profileVisibility: boolean;
+	showOnLeaderboard: boolean;
+	analyticsTracking: boolean;
+	language: string;
+	theme: string;
 }
 
-const defaultNotificationSettings: NotificationSettings = {
+const defaultSettings: CombinedSettings = {
 	emailNotifications: true,
 	pushNotifications: true,
 	studyReminders: true,
 	achievementAlerts: true,
-};
-
-/**
- * Get notification settings (placeholder - would need dedicated table)
- */
-export async function getNotificationSettingsAction(
-	_userId: string
-): Promise<ActionResult<NotificationSettings>> {
-	// For now, return defaults. In production, query from user_settings table
-	return {
-		success: true,
-		data: defaultNotificationSettings,
-	};
-}
-
-/**
- * Update notification settings (placeholder - would need dedicated table)
- */
-export async function updateNotificationSettingsAction(
-	_userId: string,
-	data: Partial<NotificationSettings>
-): Promise<ActionResult<NotificationSettings>> {
-	// Validate input
-	const validKeys = [
-		'emailNotifications',
-		'pushNotifications',
-		'studyReminders',
-		'achievementAlerts',
-	];
-	const filteredData: NotificationSettings = {} as NotificationSettings;
-
-	for (const key of validKeys) {
-		if (key in data) {
-			(filteredData as unknown as Record<string, unknown>)[key] = (
-				data as unknown as Record<string, unknown>
-			)[key];
-		}
-	}
-
-	// In production, save to user_settings table
-	// For now, return success with merged settings
-	return {
-		success: true,
-		data: { ...defaultNotificationSettings, ...filteredData },
-	};
-}
-
-// ============================================================================
-// PRIVACY SETTINGS (Extended)
-// ============================================================================
-
-export interface PrivacySettings {
-	profileVisibility: boolean;
-	showOnLeaderboard: boolean;
-	analyticsTracking: boolean;
-}
-
-const defaultPrivacySettings: PrivacySettings = {
 	profileVisibility: true,
 	showOnLeaderboard: true,
 	analyticsTracking: true,
+	language: 'en',
+	theme: 'system',
 };
 
 /**
- * Get privacy settings (placeholder - would need dedicated table)
+ * Get user settings
  */
-export async function getPrivacySettingsAction(
-	_userId: string
-): Promise<ActionResult<PrivacySettings>> {
-	// For now, return defaults. In production, query from user_settings table
-	return {
-		success: true,
-		data: defaultPrivacySettings,
-	};
+export async function getUserSettingsAction(
+	userId: string
+): Promise<ActionResult<CombinedSettings>> {
+	try {
+		const db = await getDb();
+		const [settings] = await db
+			.select()
+			.from(userSettings)
+			.where(eq(userSettings.userId, userId))
+			.limit(1);
+
+		if (!settings) {
+			// Create default settings if they don't exist
+			const [newSettings] = await db
+				.insert(userSettings)
+				.values({
+					userId,
+					...defaultSettings,
+				})
+				.returning();
+
+			return { success: true, data: newSettings as CombinedSettings };
+		}
+
+		return {
+			success: true,
+			data: settings as CombinedSettings,
+		};
+	} catch (error) {
+		console.error('Error getting user settings:', error);
+		return { success: true, data: defaultSettings };
+	}
 }
 
 /**
- * Update privacy settings (placeholder - would need dedicated table)
+ * Update user settings
  */
-export async function updatePrivacySettingsActionExtended(
-	_userId: string,
-	data: Partial<PrivacySettings>
-): Promise<ActionResult<PrivacySettings>> {
-	// Validate input
-	const validKeys = ['profileVisibility', 'showOnLeaderboard', 'analyticsTracking'];
-	const filteredData: PrivacySettings = {} as PrivacySettings;
+export async function updateUserSettingsAction(
+	userId: string,
+	data: Partial<CombinedSettings>
+): Promise<ActionResult<CombinedSettings>> {
+	try {
+		const db = await getDb();
 
-	for (const key of validKeys) {
-		if (key in data) {
-			(filteredData as unknown as Record<string, unknown>)[key] = (
-				data as unknown as Record<string, unknown>
-			)[key];
-		}
+		const [updatedSettings] = await db
+			.insert(userSettings)
+			.values({
+				userId,
+				...data,
+				updatedAt: new Date(),
+			})
+			.onConflictDoUpdate({
+				target: userSettings.userId,
+				set: {
+					...data,
+					updatedAt: new Date(),
+				},
+			})
+			.returning();
+
+		return {
+			success: true,
+			data: updatedSettings as CombinedSettings,
+		};
+	} catch (error) {
+		console.error('Error updating user settings:', error);
+		return {
+			success: false,
+			error: error instanceof Error ? error.message : 'Failed to update settings',
+		};
 	}
+}
 
-	// In production, save to user_settings table
-	// For now, return success with merged settings
-	return {
-		success: true,
-		data: { ...defaultPrivacySettings, ...filteredData },
-	};
+// Legacy exports for backward compatibility if needed
+export async function getNotificationSettingsAction(userId: string) {
+	return getUserSettingsAction(userId);
+}
+
+export async function updateNotificationSettingsAction(
+	userId: string,
+	data: Partial<CombinedSettings>
+) {
+	return updateUserSettingsAction(userId, data);
+}
+
+export async function getPrivacySettingsAction(userId: string) {
+	return getUserSettingsAction(userId);
+}
+
+export async function updatePrivacySettingsActionExtended(
+	userId: string,
+	data: Partial<CombinedSettings>
+) {
+	return updateUserSettingsAction(userId, data);
 }

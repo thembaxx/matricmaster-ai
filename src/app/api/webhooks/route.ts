@@ -1,4 +1,6 @@
+import { headers } from 'next/headers';
 import { type NextRequest, NextResponse } from 'next/server';
+import { getAuth, type SessionUser } from '@/lib/auth';
 
 import {
 	deleteWebhookConfig,
@@ -10,22 +12,34 @@ import {
 	type WebhookEvent,
 } from '@/lib/webhook-utils';
 
+async function checkAdmin() {
+	const auth = await getAuth();
+	const session = await auth.api.getSession({
+		headers: await headers(),
+	});
+
+	if (!session || (session.user as SessionUser).role !== 'admin') {
+		return false;
+	}
+	return true;
+}
+
 // GET - List webhook configurations
 export async function GET() {
-	// In production, add admin authentication check
-	// For now, return empty array to avoid exposing config
-	const webhooks = getWebhookConfigs();
-
-	// Don't expose sensitive config in production without auth
-	if (process.env.NODE_ENV === 'production') {
-		return NextResponse.json({ webhooks: [] });
+	if (!(await checkAdmin())) {
+		return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 	}
 
+	const webhooks = getWebhookConfigs();
 	return NextResponse.json({ webhooks });
 }
 
 // POST - Create or update webhook configuration
 export async function POST(request: NextRequest) {
+	if (!(await checkAdmin())) {
+		return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+	}
+
 	try {
 		const body = await request.json();
 		const { webhookId, url, events, secret } = body;
@@ -93,6 +107,10 @@ export async function POST(request: NextRequest) {
 
 // DELETE - Remove webhook configuration
 export async function DELETE(request: NextRequest) {
+	if (!(await checkAdmin())) {
+		return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+	}
+
 	const webhookId = request.nextUrl.searchParams.get('webhookId');
 
 	if (!webhookId) {
