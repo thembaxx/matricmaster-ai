@@ -3,6 +3,8 @@ import type { SessionUser } from '@/lib/auth';
 import { getAuth } from '@/lib/auth';
 import OnboardingScreen from '@/screens/Onboarding';
 
+export const dynamic = 'force-dynamic';
+
 export default async function OnboardingPage() {
 	// Try to get session, but don't crash if it fails in a dev/mock environment
 	let user = null;
