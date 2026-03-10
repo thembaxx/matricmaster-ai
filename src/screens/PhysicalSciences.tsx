@@ -1,15 +1,16 @@
 'use client';
 
 import {
-	ArrowLeft,
-	DownloadSimple,
-	Eye,
-	Gear,
-	Moon,
-	Sparkle,
-	SplitVertical,
-	Sun,
-} from '@phosphor-icons/react';
+	ArrowLeft02Icon,
+	Download01Icon,
+	LayoutLeftIcon,
+	MoonIcon,
+	Settings01Icon,
+	SparklesIcon,
+	Sun01Icon,
+	ViewIcon,
+} from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Badge } from '@/components/ui/badge';
@@ -34,7 +35,7 @@ export default function PhysicalSciences() {
 				<div className="flex items-center justify-between mb-4">
 					<div className="flex items-center gap-4">
 						<Button variant="ghost" size="icon" onClick={() => router.push('/dashboard')}>
-							<ArrowLeft className="w-5 h-5" />
+							<HugeiconsIcon icon={ArrowLeft02Icon} className="w-5 h-5" />
 						</Button>
 						<h1 className="text-lg font-black text-foreground tracking-tight uppercase">
 							Physics P1
@@ -42,17 +43,21 @@ export default function PhysicalSciences() {
 					</div>
 					<div className="flex gap-2">
 						<Button variant="ghost" size="icon">
-							<Gear className="w-5 h-5" />
+							<HugeiconsIcon icon={Settings01Icon} className="w-5 h-5" />
 						</Button>
 						<Button
 							variant="ghost"
 							size="icon"
 							onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
 						>
-							{theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+							{theme === 'dark' ? (
+								<HugeiconsIcon icon={Sun01Icon} className="w-5 h-5" />
+							) : (
+								<HugeiconsIcon icon={MoonIcon} className="w-5 h-5" />
+							)}
 						</Button>
 						<Button variant="ghost" size="icon">
-							<DownloadSimple className="w-5 h-5" />
+							<HugeiconsIcon icon={Download01Icon} className="w-5 h-5" />
 						</Button>
 					</div>
 				</div>
@@ -64,7 +69,7 @@ export default function PhysicalSciences() {
 						className="w-full rounded-2xl font-black h-12 gap-2 shadow-xl shadow-primary-violet/20"
 						onClick={() => router.push('/physics-quiz')}
 					>
-						<Sparkle weight="bold" className="w-4 h-4" />
+						<HugeiconsIcon icon={SparklesIcon} className="w-4 h-4" />
 						Practice Interactive Paper (May/June 2025)
 					</Button>
 				</div>
@@ -77,11 +82,11 @@ export default function PhysicalSciences() {
 				>
 					<TabsList className="grid grid-cols-2 w-full">
 						<TabsTrigger value="question" className="flex items-center gap-2">
-							<Eye className="w-4 h-4" />
+							<HugeiconsIcon icon={ViewIcon} className="w-4 h-4" />
 							Question Only
 						</TabsTrigger>
 						<TabsTrigger value="split" className="flex items-center gap-2">
-							<SplitVertical className="w-4 h-4" />
+							<HugeiconsIcon icon={LayoutLeftIcon} className="w-4 h-4" />
 							SplitVertical View
 						</TabsTrigger>
 					</TabsList>
@@ -96,7 +101,7 @@ export default function PhysicalSciences() {
 						{/* Circuit Diagram */}
 						<Card className="p-6">
 							<div className="flex justify-between items-center mb-4">
-								<h3 className="font-semibold text-zinc-900 dark:text-white">Figure 1</h3>
+								<h3 className="font-semibold text-foreground">Figure 1</h3>
 								<Button
 									variant="ghost"
 									size="sm"
@@ -107,7 +112,7 @@ export default function PhysicalSciences() {
 							</div>
 
 							{/* Circuit Diagram */}
-							<div className="relative bg-white dark:bg-zinc-800 rounded-xl p-8 min-h-[300px]">
+							<div className="relative bg-card rounded-xl p-8 min-h-[300px]">
 								<svg
 									viewBox="0 0 400 300"
 									className="w-full h-full"
@@ -234,7 +239,7 @@ export default function PhysicalSciences() {
 						<Card className="p-6">
 							<div className="flex items-center gap-2 mb-4">
 								<Badge>QUESTION 2.1</Badge>
-								<span className="text-sm text-zinc-500">(5 marks)</span>
+								<span className="text-sm text-muted-foreground">(5 marks)</span>
 							</div>
 
 							<div className="space-y-4 text-zinc-800 dark:text-zinc-200">

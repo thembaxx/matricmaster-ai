@@ -1,6 +1,7 @@
 'use client';
 
-import { CaretRight, FileText, MagnifyingGlass as SearchIcon } from '@phosphor-icons/react';
+import { ArrowRight01Icon, File01Icon, Search01Icon } from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import { AnimatePresence, m } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { memo } from 'react';
@@ -39,7 +40,7 @@ export const SearchResults = memo(function SearchResults({ results }: SearchResu
 								>
 									<div className="flex items-center gap-5">
 										<div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center group-hover:scale-110 transition-transform">
-											<FileText className="w-6 h-6 text-primary" />
+											<HugeiconsIcon icon={File01Icon} className="w-6 h-6 text-primary" />
 										</div>
 										<div>
 											<h4 className="font-black text-foreground text-base tracking-tight uppercase">
@@ -51,7 +52,7 @@ export const SearchResults = memo(function SearchResults({ results }: SearchResu
 										</div>
 									</div>
 									<div className="w-10 h-10 rounded-xl bg-muted group-hover:bg-primary group-hover:text-primary-foreground flex items-center justify-center transition-all">
-										<CaretRight className="w-5 h-5" />
+										<HugeiconsIcon icon={ArrowRight01Icon} className="w-5 h-5" />
 									</div>
 								</button>
 							</m.div>
@@ -65,7 +66,7 @@ export const SearchResults = memo(function SearchResults({ results }: SearchResu
 						className="py-32 flex flex-col items-center justify-center text-center space-y-6 opacity-40"
 					>
 						<div className="w-32 h-32 bg-muted rounded-[3.5rem] flex items-center justify-center">
-							<SearchIcon className="w-16 h-16 text-muted-foreground" />
+							<HugeiconsIcon icon={Search01Icon} className="w-16 h-16 text-muted-foreground" />
 						</div>
 						<div className="space-y-2">
 							<h3 className="font-black text-muted-foreground uppercase tracking-widest text-sm">

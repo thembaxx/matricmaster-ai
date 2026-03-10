@@ -1,14 +1,15 @@
 'use client';
 
 import {
-	BookOpen,
-	Brain,
-	CircleNotch,
-	Clock,
-	DotsThreeVertical,
-	Plus,
-	Trash,
-} from '@phosphor-icons/react';
+	Add01Icon,
+	AiBrain01Icon,
+	BookOpen01Icon,
+	Clock01Icon,
+	Delete02Icon,
+	Loading03Icon,
+	MoreVerticalIcon,
+} from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
@@ -151,7 +152,10 @@ export default function FlashcardsPage() {
 	if (isLoading) {
 		return (
 			<div className="flex min-h-[60vh] items-center justify-center">
-				<CircleNotch className="h-8 w-8 animate-spin text-muted-foreground" />
+				<HugeiconsIcon
+					icon={Loading03Icon}
+					className="h-8 w-8 animate-spin text-muted-foreground"
+				/>
 			</div>
 		);
 	}
@@ -166,7 +170,7 @@ export default function FlashcardsPage() {
 					</p>
 				</div>
 				<Button onClick={() => setShowCreateModal(true)}>
-					<Plus className="mr-2 h-4 w-4" />
+					<HugeiconsIcon icon={Add01Icon} className="mr-2 h-4 w-4" />
 					New Deck
 				</Button>
 			</div>
@@ -176,7 +180,7 @@ export default function FlashcardsPage() {
 					<CardContent className="pt-6">
 						<div className="flex items-center gap-4">
 							<div className="rounded-full bg-primary/10 p-3">
-								<BookOpen className="h-6 w-6 text-primary" />
+								<HugeiconsIcon icon={BookOpen01Icon} className="h-6 w-6 text-primary" />
 							</div>
 							<div>
 								<div className="text-2xl font-bold">{decks.length}</div>
@@ -189,7 +193,7 @@ export default function FlashcardsPage() {
 					<CardContent className="pt-6">
 						<div className="flex items-center gap-4">
 							<div className="rounded-full bg-green-500/10 p-3">
-								<Brain className="h-6 w-6 text-green-500" />
+								<HugeiconsIcon icon={AiBrain01Icon} className="h-6 w-6 text-green-500" />
 							</div>
 							<div>
 								<div className="text-2xl font-bold">
@@ -204,7 +208,7 @@ export default function FlashcardsPage() {
 					<CardContent className="pt-6">
 						<div className="flex items-center gap-4">
 							<div className="rounded-full bg-orange-500/10 p-3">
-								<Clock className="h-6 w-6 text-orange-500" />
+								<HugeiconsIcon icon={Clock01Icon} className="h-6 w-6 text-orange-500" />
 							</div>
 							<div>
 								<div className="text-2xl font-bold">
@@ -218,7 +222,7 @@ export default function FlashcardsPage() {
 				<Card className="flex items-center justify-center">
 					<Button variant="outline" asChild className="w-full h-full">
 						<Link href="/review">
-							<Brain className="mr-2 h-4 w-4" />
+							<HugeiconsIcon icon={AiBrain01Icon} className="mr-2 h-4 w-4" />
 							Start Review
 						</Link>
 					</Button>
@@ -228,14 +232,17 @@ export default function FlashcardsPage() {
 			{decks.length === 0 ? (
 				<Card className="border-dashed">
 					<CardContent className="flex flex-col items-center justify-center py-16">
-						<BookOpen className="h-16 w-16 text-muted-foreground/50 mb-4" />
+						<HugeiconsIcon
+							icon={BookOpen01Icon}
+							className="h-16 w-16 text-muted-foreground/50 mb-4"
+						/>
 						<h3 className="text-xl font-semibold mb-2">No flashcard decks yet</h3>
 						<p className="text-muted-foreground text-center mb-4 max-w-md">
 							Create your first deck to start studying with spaced repetition. You can also generate
 							flashcards from the AI Tutor.
 						</p>
 						<Button onClick={() => setShowCreateModal(true)}>
-							<Plus className="mr-2 h-4 w-4" />
+							<HugeiconsIcon icon={Add01Icon} className="mr-2 h-4 w-4" />
 							Create Your First Deck
 						</Button>
 					</CardContent>
@@ -258,23 +265,23 @@ export default function FlashcardsPage() {
 													size="icon"
 													className="h-9 w-9 md:h-8 md:w-8 md:opacity-0 md:group-hover:opacity-100 opacity-100 transition-opacity touch-manipulation"
 												>
-													<DotsThreeVertical className="h-4 w-4" />
+													<HugeiconsIcon icon={MoreVerticalIcon} className="h-4 w-4" />
 												</Button>
 											</DropdownMenuTrigger>
 											<DropdownMenuContent align="end">
 												<DropdownMenuItem onClick={() => handleOpenDeck(deck)}>
-													<BookOpen className="mr-2 h-4 w-4" />
+													<HugeiconsIcon icon={BookOpen01Icon} className="mr-2 h-4 w-4" />
 													View Cards
 												</DropdownMenuItem>
 												<DropdownMenuItem onClick={() => handleStartReview(deck)}>
-													<Brain className="mr-2 h-4 w-4" />
+													<HugeiconsIcon icon={AiBrain01Icon} className="mr-2 h-4 w-4" />
 													Study Deck
 												</DropdownMenuItem>
 												<DropdownMenuItem
 													onClick={() => handleDeleteDeck(deck)}
 													className="text-destructive"
 												>
-													<Trash className="mr-2 h-4 w-4" />
+													<HugeiconsIcon icon={Delete02Icon} className="mr-2 h-4 w-4" />
 													Backspace
 												</DropdownMenuItem>
 											</DropdownMenuContent>

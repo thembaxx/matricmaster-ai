@@ -1,9 +1,9 @@
 'use client';
 
-import { Sidebar as SidebarIcon } from '@phosphor-icons/react';
+import { LayoutLeftIcon } from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import { Slot } from '@radix-ui/react-slot';
 import * as React from 'react';
-
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
@@ -275,7 +275,7 @@ const SidebarTrigger = React.forwardRef<
 			}}
 			{...props}
 		>
-			<SidebarIcon />
+			<HugeiconsIcon icon={LayoutLeftIcon} />
 			<span className="sr-only">Toggle Sidebar</span>
 		</Button>
 	);

@@ -1,18 +1,19 @@
 'use client';
 
 import {
-	BookOpen,
-	CaretRight,
+	ArrowRight01Icon,
+	BookOpen01Icon,
 	ChartBar,
-	Flask,
-	Translate as LanguagesIcon,
-	Leaf,
-	MagnifyingGlass,
-	Play,
-	TerminalWindow,
-	Users,
-	WifiHigh,
-} from '@phosphor-icons/react';
+	Chemistry01Icon,
+	ComputerTerminal01Icon,
+	Leaf01Icon,
+	PlayIcon,
+	Search01Icon,
+	TranslateIcon,
+	UserGroupIcon,
+	Wifi01Icon,
+} from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import { useCallback, useEffect, useState } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -37,7 +38,7 @@ const stemChannels: Channel[] = [
 		title: 'Physical Sciences',
 		info: '12.1k',
 		tag: 'NEW',
-		icon: <Flask className="w-6 h-6 text-blue-500" />,
+		icon: <HugeiconsIcon icon={Chemistry01Icon} className="w-6 h-6 text-blue-500" />,
 		bg: 'bg-blue-50 dark:bg-blue-900/20',
 		onlineCount: 0,
 	},
@@ -45,7 +46,7 @@ const stemChannels: Channel[] = [
 		id: 'life-sciences',
 		title: 'Life Sciences',
 		info: '9.8k',
-		icon: <Leaf className="w-6 h-6 text-emerald-500" />,
+		icon: <HugeiconsIcon icon={Leaf01Icon} className="w-6 h-6 text-emerald-500" />,
 		bg: 'bg-emerald-50 dark:bg-emerald-900/20',
 		onlineCount: 0,
 	},
@@ -53,7 +54,7 @@ const stemChannels: Channel[] = [
 		id: 'info-tech',
 		title: 'Info Tech (IT)',
 		info: '4.3k',
-		icon: <TerminalWindow className="w-6 h-6 text-violet-500" />,
+		icon: <HugeiconsIcon icon={ComputerTerminal01Icon} className="w-6 h-6 text-violet-500" />,
 		bg: 'bg-violet-50 dark:bg-violet-900/20',
 		onlineCount: 0,
 	},
@@ -122,7 +123,7 @@ export default function Channels() {
 							</p>
 							{isAblyConnected && (
 								<span className="flex items-center gap-1 text-[10px] font-black text-success uppercase tracking-widest">
-									<WifiHigh className="w-3 h-3" />
+									<HugeiconsIcon icon={Wifi01Icon} className="w-3 h-3" />
 									Live
 								</span>
 							)}
@@ -140,7 +141,10 @@ export default function Channels() {
 
 				{/* MagnifyingGlass Bar */}
 				<div className="mt-6 relative">
-					<MagnifyingGlass className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-label-tertiary" />
+					<HugeiconsIcon
+						icon={Search01Icon}
+						className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-label-tertiary"
+					/>
 					<input
 						type="text"
 						placeholder="Find subjects, papers, or topics..."
@@ -186,7 +190,10 @@ export default function Channels() {
 									</p>
 								</div>
 								<div className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center">
-									<Play className="w-4 h-4 text-label-tertiary fill-label-tertiary" />
+									<HugeiconsIcon
+										icon={PlayIcon}
+										className="w-4 h-4 text-label-tertiary fill-label-tertiary"
+									/>
 								</div>
 							</div>
 							{/* Progress Bar Line */}
@@ -228,7 +235,7 @@ export default function Channels() {
 											</h4>
 											<div className="flex items-center gap-2">
 												<div className="flex items-center gap-1 text-[10px] font-black text-label-tertiary uppercase tracking-widest">
-													<Users className="w-3 h-3" />
+													<HugeiconsIcon icon={UserGroupIcon} className="w-3 h-3" />
 													{item.info}
 												</div>
 												{item.tag && (
@@ -249,7 +256,10 @@ export default function Channels() {
 												{item.onlineCount} online
 											</span>
 										)}
-										<CaretRight className="w-5 h-5 text-label-tertiary group-hover:text-foreground transition-colors" />
+										<HugeiconsIcon
+											icon={ArrowRight01Icon}
+											className="w-5 h-5 text-label-tertiary group-hover:text-foreground transition-colors"
+										/>
 									</div>
 								</button>
 							))}
@@ -274,13 +284,13 @@ export default function Channels() {
 								{
 									title: 'English House Language',
 									students: '18k Students',
-									icon: <BookOpen className="w-6 h-6 text-english" />,
+									icon: <HugeiconsIcon icon={BookOpen01Icon} className="w-6 h-6 text-english" />,
 									bg: 'bg-english/10',
 								},
 								{
 									title: 'Afrikaans FAL',
 									students: '10.5k Students',
-									icon: <LanguagesIcon className="w-6 h-6 text-warning" />,
+									icon: <HugeiconsIcon icon={TranslateIcon} className="w-6 h-6 text-warning" />,
 									bg: 'bg-warning/10',
 								},
 							].map((item) => (
@@ -316,14 +326,14 @@ export default function Channels() {
 						<div className="bg-card p-4 rounded-3xl flex items-center justify-between shadow-sm border border-border hover:shadow-md transition-all cursor-pointer group ios-active-scale">
 							<div className="flex items-center gap-4">
 								<div className="w-12 h-12 rounded-2xl flex items-center justify-center bg-accounting/10">
-									<ChartBar className="w-6 h-6 text-accounting" />
+									<HugeiconsIcon icon={ChartBar} className="w-6 h-6 text-accounting" />
 								</div>
 								<div className="text-left">
 									<h4 className="font-black text-foreground uppercase tracking-tight">
 										Accounting
 									</h4>
 									<div className="flex items-center gap-1 text-[10px] font-black text-label-tertiary uppercase tracking-widest">
-										<Users className="w-3 h-3" />
+										<HugeiconsIcon icon={UserGroupIcon} className="w-3 h-3" />
 										8.2k
 									</div>
 								</div>
@@ -356,7 +366,7 @@ export default function Channels() {
 				type="button"
 				className="absolute bottom-24 right-6 w-16 h-16 bg-foreground text-background rounded-full shadow-2xl flex items-center justify-center transform hover:scale-110 active:scale-95 transition-all z-30"
 			>
-				<Play className="w-8 h-8 fill-current translate-x-0.5" />
+				<HugeiconsIcon icon={PlayIcon} className="w-8 h-8 fill-current translate-x-0.5" />
 			</button>
 		</div>
 	);

@@ -1,6 +1,7 @@
 'use client';
 
-import { ArrowLeft, TrendUp } from '@phosphor-icons/react';
+import { AnalyticsUpIcon, ArrowLeft02Icon } from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import { AIExplanationCard } from '@/components/AI/AIExplanationCard';
@@ -246,7 +247,7 @@ export default function PhysicsQuiz() {
 						onClick={() => router.back()}
 						className="rounded-full"
 					>
-						<ArrowLeft className="w-5 h-5" />
+						<HugeiconsIcon icon={ArrowLeft02Icon} className="w-5 h-5" />
 					</Button>
 					<div className="flex-1">
 						<div className="flex justify-between items-center mb-2">
@@ -279,7 +280,7 @@ export default function PhysicsQuiz() {
 				<main className="px-6 py-8 space-y-8 mobile-safe-bottom max-w-2xl mx-auto w-full">
 					<div className="space-y-6">
 						<div className="flex items-center gap-3">
-							<TrendUp className="w-5 h-5 text-brand-purple" />
+							<HugeiconsIcon icon={AnalyticsUpIcon} className="w-5 h-5 text-brand-purple" />
 							<h3 className="text-[10px] font-black uppercase text-muted-foreground tracking-[0.2em]">
 								NSC Physics P1 2025
 							</h3>

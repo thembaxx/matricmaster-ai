@@ -1,6 +1,7 @@
 'use client';
 
-import { CheckCircle, Circle, Target } from '@phosphor-icons/react';
+import { CheckmarkCircle02Icon, CircleIcon, Target01Icon } from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import { m } from 'framer-motion';
 import { memo, useEffect, useState } from 'react';
 import { Card } from '@/components/ui/card';
@@ -136,7 +137,7 @@ export const DailyGoals = memo(function DailyGoals({
 	return (
 		<Card className="p-6 premium-glass border-none rounded-[2.5rem] h-full">
 			<div className="flex items-center gap-2 mb-4">
-				<Target weight="bold" className="w-5 h-5 text-primary" />
+				<HugeiconsIcon icon={Target01Icon} className="w-5 h-5 text-primary" />
 				<h3 className="text-lg font-black text-foreground tracking-tight">Daily Goals</h3>
 				{allComplete && (
 					<m.span initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1 }} className="text-lg">
@@ -174,9 +175,12 @@ export const DailyGoals = memo(function DailyGoals({
 							<div className="flex items-center justify-between">
 								<div className="flex items-center gap-2">
 									{goal.isComplete ? (
-										<CheckCircle className="w-4 h-4 text-brand-green" />
+										<HugeiconsIcon
+											icon={CheckmarkCircle02Icon}
+											className="w-4 h-4 text-brand-green"
+										/>
 									) : (
-										<Circle className="w-4 h-4 text-muted-foreground/30" />
+										<HugeiconsIcon icon={CircleIcon} className="w-4 h-4 text-muted-foreground/30" />
 									)}
 									<span
 										className={`text-sm font-bold ${goal.isComplete ? 'text-brand-green' : 'text-foreground'}`}

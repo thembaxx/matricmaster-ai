@@ -1,6 +1,7 @@
 'use client';
 
-import { Clock } from '@phosphor-icons/react';
+import { Clock01Icon } from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import { Badge } from '@/components/ui/badge';
 
 type QuizHeaderProps = {
@@ -52,9 +53,9 @@ export function QuizHeader({
 						)}
 						<Badge
 							variant="outline"
-							className="text-[10px] font-bold text-zinc-500 border-zinc-200 bg-zinc-50 dark:bg-zinc-800 dark:border-zinc-700"
+							className="text-[10px] font-bold text-muted-foreground border-zinc-200 bg-zinc-50 dark:bg-zinc-800 dark:border-zinc-700"
 						>
-							<Clock className="w-3 h-3 mr-1" />
+							<HugeiconsIcon icon={Clock01Icon} className="w-3 h-3 mr-1" />
 							{formatTime(elapsedSeconds)}
 						</Badge>
 					</div>
@@ -125,9 +126,9 @@ export function SimpleQuizHeader({
 					</div>
 					<Badge
 						variant="outline"
-						className="text-[10px] font-bold text-zinc-500 border-zinc-200 bg-zinc-50 dark:bg-zinc-800 dark:border-zinc-700"
+						className="text-[10px] font-bold text-muted-foreground border-zinc-200 bg-zinc-50 dark:bg-zinc-800 dark:border-zinc-700"
 					>
-						<Clock className="w-3 h-3 mr-1" />
+						<HugeiconsIcon icon={Clock01Icon} className="w-3 h-3 mr-1" />
 						{formatTime(elapsedSeconds)}
 					</Badge>
 				</div>

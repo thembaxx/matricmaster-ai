@@ -1,6 +1,13 @@
 'use client';
 
-import { ArrowLeft, Backspace, CaretLeft, CaretRight, Keyboard } from '@phosphor-icons/react';
+import {
+	ArrowLeft01Icon,
+	ArrowLeft02Icon,
+	ArrowRight01Icon,
+	Delete01Icon,
+	KeyboardIcon,
+} from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import { AnimatePresence, m } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -121,7 +128,7 @@ function PracticeQuizHeader({ router }: HeaderProps) {
 				className="rounded-full"
 				onClick={() => router.push('/dashboard')}
 			>
-				<ArrowLeft className="w-6 h-6 text-foreground" />
+				<HugeiconsIcon icon={ArrowLeft02Icon} className="w-6 h-6 text-foreground" />
 			</Button>
 			<h1 className="text-xl font-black text-foreground tracking-tight">Practice Quiz</h1>
 			<div className="w-10" />
@@ -228,7 +235,7 @@ function MathInputField({ input, cursorPos, onDelete }: MathInputFieldProps) {
 	return (
 		<Card className="p-6 bg-card border-none shadow-xl rounded-3xl flex items-center gap-4 relative mt-12">
 			<div className="flex-1 min-h-[60px] flex items-center px-2">
-				<div className="text-2xl font-serif text-zinc-900 dark:text-white flex items-center flex-wrap gap-0.5 relative">
+				<div className="text-2xl font-serif text-foreground flex items-center flex-wrap gap-0.5 relative">
 					{input.split('').map((char, i) => (
 						<span key={i} className="relative">
 							{i === cursorPos && <CursorBlink />}
@@ -244,7 +251,7 @@ function MathInputField({ input, cursorPos, onDelete }: MathInputFieldProps) {
 				className="shrink-0 text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-900/20"
 				onClick={onDelete}
 			>
-				<Backspace className="w-6 h-6 fill-current" />
+				<HugeiconsIcon icon={Delete01Icon} className="w-6 h-6 fill-current" />
 			</Button>
 		</Card>
 	);
@@ -273,8 +280,11 @@ function CalculatorLauncher({ router, onKeyClick, onDelete, moveCursor }: Calcul
 		<div className="fixed bottom-0 left-0 right-0 p-6 flex justify-center z-40">
 			<Sheet>
 				<SheetTrigger asChild>
-					<Button className="bg-card text-zinc-900 dark:text-white shadow-2xl rounded-2xl h-14 px-8 border-none hover:bg-zinc-50 transition-all gap-3 group">
-						<Keyboard className="w-5 h-5 text-primary group-hover:scale-110 transition-transform" />
+					<Button className="bg-card text-foreground shadow-2xl rounded-2xl h-14 px-8 border-none hover:bg-zinc-50 transition-all gap-3 group">
+						<HugeiconsIcon
+							icon={KeyboardIcon}
+							className="w-5 h-5 text-primary group-hover:scale-110 transition-transform"
+						/>
 						<span className="font-bold">Show Calculator</span>
 					</Button>
 				</SheetTrigger>
@@ -335,12 +345,12 @@ function CalculatorContent({ router, onKeyClick, moveCursor }: CalculatorContent
 								/>
 							))}
 							<CalcKey
-								label={<CaretLeft className="w-6 h-6" />}
+								label={<HugeiconsIcon icon={ArrowLeft01Icon} className="w-6 h-6" />}
 								onClick={() => moveCursor('left')}
 								className="bg-secondary dark:bg-secondary/50"
 							/>
 							<CalcKey
-								label={<CaretRight className="w-6 h-6" />}
+								label={<HugeiconsIcon icon={ArrowRight01Icon} className="w-6 h-6" />}
 								onClick={() => moveCursor('right')}
 								className="bg-secondary dark:bg-secondary/50"
 							/>

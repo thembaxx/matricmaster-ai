@@ -1,6 +1,7 @@
-'use client';
+import { CheckmarkCircle02Icon, ForwardIcon } from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 
-import { CheckCircle, SkipForward } from '@phosphor-icons/react';
+('use client');
 
 type QuizResultFeedbackProps = {
 	showResult: boolean;
@@ -34,9 +35,9 @@ export function QuizResultFeedback({
 					}`}
 				>
 					{isCorrect ? (
-						<CheckCircle className="w-5 h-5 text-green-600" />
+						<HugeiconsIcon icon={CheckmarkCircle02Icon} className="w-5 h-5 text-green-600" />
 					) : (
-						<SkipForward className="w-5 h-5 text-red-600" />
+						<HugeiconsIcon icon={ForwardIcon} className="w-5 h-5 text-red-600" />
 					)}
 				</div>
 				<div>

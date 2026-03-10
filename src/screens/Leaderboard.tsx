@@ -1,6 +1,7 @@
 'use client';
 
-import { Fire, Medal, Trophy as TrophyIcon } from '@phosphor-icons/react';
+import { ChampionIcon, FireIcon, Medal01Icon } from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import { m } from 'framer-motion';
 import { memo, useEffect, useMemo, useState } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -69,7 +70,10 @@ const Podium = memo(function Podium({ data }: { data: LeaderboardEntry[] }) {
 						transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY, ease: [0.16, 1, 0.3, 1] }}
 						className="absolute -top-8 sm:-top-10 left-1/2 -translate-x-1/2 text-primary-orange"
 					>
-						<TrophyIcon className="w-8 h-8 sm:w-10 sm:h-10 fill-primary-orange/20" />
+						<HugeiconsIcon
+							icon={ChampionIcon}
+							className="w-8 h-8 sm:w-10 sm:h-10 fill-primary-orange/20"
+						/>
 					</m.div>
 					<div className="absolute -inset-4 bg-primary-orange/20 rounded-full opacity-40 blur-3xl group-hover:opacity-60 transition-opacity" />
 					<Avatar className="w-24 h-24 sm:w-40 sm:h-40 border-4 border-primary-orange relative z-10 transition-transform group-hover:scale-110 shadow-2xl">
@@ -87,7 +91,7 @@ const Podium = memo(function Podium({ data }: { data: LeaderboardEntry[] }) {
 						{r1?.userName || 'TBD'}
 					</p>
 					<p className="text-sm md:text-base font-black text-primary-orange uppercase tracking-widest flex items-center justify-center gap-2">
-						<Fire weight="bold" className="w-4 h-4 fill-primary-orange" />
+						<HugeiconsIcon icon={FireIcon} className="w-4 h-4 fill-primary-orange" />
 						{r1 ? formatPoints(r1.totalPoints) : '0'} KP
 					</p>
 				</div>
@@ -142,7 +146,7 @@ const RankingList = memo(function RankingList({ data }: { data: LeaderboardEntry
 							{student.userName}
 						</h4>
 						<p className="text-[10px] sm:text-[11px] font-black text-muted-foreground uppercase tracking-widest flex items-center gap-1 sm:gap-2">
-							<Medal weight="bold" className="w-3 h-3.5 sm:w-3.5 sm:h-3.5" />
+							<HugeiconsIcon icon={Medal01Icon} className="w-3 h-3.5 sm:w-3.5 sm:h-3.5" />
 							{student.questionsCompleted} questions
 						</p>
 					</div>
@@ -254,7 +258,10 @@ export default function Leaderboard() {
 				<div className="max-w-6xl mx-auto w-full pb-32">
 					{leaderboardData.length === 0 ? (
 						<div className="text-center py-32 space-y-4 opacity-50">
-							<Medal weight="bold" className="w-16 h-16 mx-auto text-muted-foreground" />
+							<HugeiconsIcon
+								icon={Medal01Icon}
+								className="w-16 h-16 mx-auto text-muted-foreground"
+							/>
 							<p className="text-xl font-bold">The arena is empty... for now.</p>
 						</div>
 					) : (
@@ -273,7 +280,7 @@ export default function Leaderboard() {
 
 			{userRank && (
 				<div className="fixed bottom-32 left-1/2 -translate-x-1/2 w-[92%] max-w-4xl z-50 lg:bottom-12">
-					<Card className="p-4 sm:p-6 bg-neutral-900 text-white border-none shadow-[0_32px_64px_-12px_rgba(0,0,0,0.5)] rounded-2xl sm:rounded-[2.5rem] relative overflow-hidden group">
+					<Card className="p-4 sm:p-6 premium-glass text-foreground border-none shadow-2xl rounded-2xl sm:rounded-[2.5rem] relative overflow-hidden group">
 						<div className="absolute top-0 left-0 w-2 h-full bg-primary-orange animate-pulse" />
 						<div className="flex items-center gap-3 sm:gap-6 relative z-10">
 							<span className="text-2xl sm:text-3xl font-black text-primary-orange w-8 sm:w-12 text-center tracking-tighter">
@@ -298,8 +305,8 @@ export default function Leaderboard() {
 									Your Global Rank
 								</h3>
 								<p className="text-[10px] sm:text-[11px] font-black text-white/60 uppercase tracking-widest flex items-center gap-1 sm:gap-2">
-									<Fire
-										weight="bold"
+									<HugeiconsIcon
+										icon={FireIcon}
 										className="w-3 h-3 sm:w-4 sm:h-4 text-primary-orange fill-primary-orange"
 									/>
 									{userStreak?.currentStreak || 0} Day Streak

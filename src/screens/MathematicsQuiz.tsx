@@ -1,6 +1,13 @@
 'use client';
 
-import { ArrowLeft, CheckCircle, DotsSixVertical, Lightbulb, X } from '@phosphor-icons/react';
+import {
+	ArrowLeft02Icon,
+	Cancel01Icon,
+	CheckmarkCircle02Icon,
+	Idea01Icon,
+	Menu01Icon,
+} from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { AIExplanationCard } from '@/components/AI/AIExplanationCard';
@@ -72,7 +79,7 @@ export default function MathematicsQuiz() {
 							className="rounded-full"
 							aria-label="Back to dashboard"
 						>
-							<ArrowLeft className="w-5 h-5" />
+							<HugeiconsIcon icon={ArrowLeft02Icon} className="w-5 h-5" />
 						</Button>
 						<div className="flex-1">
 							<div className="flex justify-between items-center mb-2">
@@ -143,7 +150,7 @@ export default function MathematicsQuiz() {
 													onClick={() => handleStepClick(stepId)}
 													aria-label="Remove step"
 												>
-													<X className="w-4 h-4" />
+													<HugeiconsIcon icon={Cancel01Icon} className="w-4 h-4" />
 												</Button>
 											</div>
 										);
@@ -170,7 +177,10 @@ export default function MathematicsQuiz() {
 									>
 										<div className="flex items-center gap-4">
 											<div className="w-8 h-8 rounded-lg bg-secondary flex items-center justify-center group-hover:bg-primary/10 transition-colors">
-												<DotsSixVertical className="w-4 h-4 text-label-tertiary group-hover:text-primary" />
+												<HugeiconsIcon
+													icon={Menu01Icon}
+													className="w-4 h-4 text-label-tertiary group-hover:text-primary"
+												/>
 											</div>
 											<span className="font-mono font-black text-label-secondary uppercase tracking-tight">
 												{step.text}
@@ -184,7 +194,7 @@ export default function MathematicsQuiz() {
 					{/* Hint */}
 					<div className="p-6 bg-warning/10 border border-warning/20 rounded-3xl flex items-start gap-4">
 						<div className="w-10 h-10 rounded-full bg-warning/20 flex items-center justify-center shrink-0">
-							<Lightbulb className="w-5 h-5 text-warning" />
+							<HugeiconsIcon icon={Idea01Icon} className="w-5 h-5 text-warning" />
 						</div>
 						<div>
 							<h4 className="font-black text-warning text-[10px] uppercase tracking-widest mb-1">
@@ -231,7 +241,7 @@ export default function MathematicsQuiz() {
 							variant="outline"
 							className="h-16 px-8 rounded-full font-black uppercase tracking-widest border-border text-[10px] ios-active-scale"
 						>
-							<Lightbulb className="w-5 h-5 mr-2 text-warning" />
+							<HugeiconsIcon icon={Idea01Icon} className="w-5 h-5 mr-2 text-warning" />
 							Hint
 						</Button>
 						<Button
@@ -239,7 +249,7 @@ export default function MathematicsQuiz() {
 							disabled={selectedSteps.length === 0}
 							onClick={() => router.push('/lesson-complete')}
 						>
-							<CheckCircle className="w-5 h-5 mr-2" />
+							<HugeiconsIcon icon={CheckmarkCircle02Icon} className="w-5 h-5 mr-2" />
 							Check Answer
 						</Button>
 					</div>

@@ -1,18 +1,19 @@
 'use client';
 
 import {
-	ChatCenteredText,
-	Check,
-	Code,
-	Eye,
-	Faders,
-	FileText,
+	Cancel01Icon,
+	Chat01Icon,
+	CodeIcon,
+	File01Icon,
 	Flag,
-	MagnifyingGlass,
-	Shield,
+	Search01Icon,
+	Settings02Icon,
+	Shield01Icon,
+	Tick01Icon,
+	ViewIcon,
 	Warning,
-	X,
-} from '@phosphor-icons/react';
+} from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { Badge } from '@/components/ui/badge';
@@ -201,7 +202,7 @@ export default function ModerationDashboard() {
 	return (
 		<div className="container mx-auto py-8 max-w-6xl">
 			<div className="flex items-center gap-3 mb-6">
-				<Shield className="h-8 w-8 text-primary" />
+				<HugeiconsIcon icon={Shield01Icon} className="h-8 w-8 text-primary" />
 				<div>
 					<h1 className="text-3xl font-bold">Content Moderation</h1>
 					<p className="text-muted-foreground">Review flagged content and manage auto-moderation</p>
@@ -214,7 +215,7 @@ export default function ModerationDashboard() {
 					<CardContent className="pt-6">
 						<div className="flex items-center gap-4">
 							<div className="p-3 bg-yellow-100 rounded-lg">
-								<Warning className="h-6 w-6 text-yellow-600" />
+								<HugeiconsIcon icon={Warning} className="h-6 w-6 text-yellow-600" />
 							</div>
 							<div>
 								<p className="text-2xl font-bold">
@@ -229,7 +230,7 @@ export default function ModerationDashboard() {
 					<CardContent className="pt-6">
 						<div className="flex items-center gap-4">
 							<div className="p-3 bg-blue-100 rounded-lg">
-								<Eye className="h-6 w-6 text-blue-600" />
+								<HugeiconsIcon icon={ViewIcon} className="h-6 w-6 text-blue-600" />
 							</div>
 							<div>
 								<p className="text-2xl font-bold">
@@ -244,7 +245,7 @@ export default function ModerationDashboard() {
 					<CardContent className="pt-6">
 						<div className="flex items-center gap-4">
 							<div className="p-3 bg-green-100 rounded-lg">
-								<Check className="h-6 w-6 text-green-600" />
+								<HugeiconsIcon icon={Tick01Icon} className="h-6 w-6 text-green-600" />
 							</div>
 							<div>
 								<p className="text-2xl font-bold">
@@ -259,7 +260,7 @@ export default function ModerationDashboard() {
 					<CardContent className="pt-6">
 						<div className="flex items-center gap-4">
 							<div className="p-3 bg-purple-100 rounded-lg">
-								<Faders className="h-6 w-6 text-purple-600" />
+								<HugeiconsIcon icon={Settings02Icon} className="h-6 w-6 text-purple-600" />
 							</div>
 							<div>
 								<p className="text-2xl font-bold">{patterns.filter((p) => p.isActive).length}</p>
@@ -273,15 +274,15 @@ export default function ModerationDashboard() {
 			<Tabs value={activeTab} onValueChange={setActiveTab}>
 				<TabsList className="grid w-full grid-cols-3">
 					<TabsTrigger value="flags">
-						<Flag className="h-4 w-4 mr-2" />
+						<HugeiconsIcon icon={Flag} className="h-4 w-4 mr-2" />
 						Flagged Content
 					</TabsTrigger>
 					<TabsTrigger value="patterns">
-						<Faders className="h-4 w-4 mr-2" />
+						<HugeiconsIcon icon={Settings02Icon} className="h-4 w-4 mr-2" />
 						Auto-Moderation
 					</TabsTrigger>
 					<TabsTrigger value="stats">
-						<Eye className="h-4 w-4 mr-2" />
+						<HugeiconsIcon icon={ViewIcon} className="h-4 w-4 mr-2" />
 						Overview
 					</TabsTrigger>
 				</TabsList>
@@ -293,7 +294,10 @@ export default function ModerationDashboard() {
 						<CardContent className="pt-6">
 							<div className="flex gap-4">
 								<div className="flex-1 relative">
-									<MagnifyingGlass className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+									<HugeiconsIcon
+										icon={Search01Icon}
+										className="absolute left-3 top-3 h-4 w-4 text-muted-foreground"
+									/>
 									<Input
 										placeholder="MagnifyingGlass flagged content..."
 										value={searchQuery}
@@ -326,9 +330,9 @@ export default function ModerationDashboard() {
 										<div className="flex items-start gap-4">
 											<div className="p-2 bg-muted rounded-lg">
 												{flag.contentType === 'comment' ? (
-													<ChatCenteredText className="h-5 w-5" />
+													<HugeiconsIcon icon={Chat01Icon} className="h-5 w-5" />
 												) : (
-													<FileText className="h-5 w-5" />
+													<HugeiconsIcon icon={File01Icon} className="h-5 w-5" />
 												)}
 											</div>
 											<div>
@@ -362,7 +366,7 @@ export default function ModerationDashboard() {
 													variant="destructive"
 													onClick={() => handleAction(flag.id, 'remove')}
 												>
-													<X className="h-4 w-4 mr-1" />
+													<HugeiconsIcon icon={Cancel01Icon} className="h-4 w-4 mr-1" />
 													Remove
 												</Button>
 												<Button
@@ -370,7 +374,7 @@ export default function ModerationDashboard() {
 													variant="outline"
 													onClick={() => handleAction(flag.id, 'dismiss')}
 												>
-													<Check className="h-4 w-4 mr-1" />
+													<HugeiconsIcon icon={Tick01Icon} className="h-4 w-4 mr-1" />
 													Dismiss
 												</Button>
 											</div>
@@ -384,7 +388,10 @@ export default function ModerationDashboard() {
 					{filteredFlags.length === 0 && (
 						<Card>
 							<CardContent className="py-12 text-center">
-								<Shield className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
+								<HugeiconsIcon
+									icon={Shield01Icon}
+									className="h-12 w-12 mx-auto mb-4 text-muted-foreground"
+								/>
 								<p className="text-muted-foreground">No flagged content to review</p>
 							</CardContent>
 						</Card>
@@ -396,7 +403,7 @@ export default function ModerationDashboard() {
 					<div className="flex justify-between items-center">
 						<h2 className="text-lg font-semibold">Moderation Patterns</h2>
 						<Button>
-							<Faders className="h-4 w-4 mr-2" />
+							<HugeiconsIcon icon={Settings02Icon} className="h-4 w-4 mr-2" />
 							Add Pattern
 						</Button>
 					</div>
@@ -408,7 +415,7 @@ export default function ModerationDashboard() {
 									<div className="flex items-center justify-between">
 										<div className="flex items-center gap-4">
 											<div className="p-2 bg-muted rounded-lg">
-												<Code className="h-5 w-5" />
+												<HugeiconsIcon icon={CodeIcon} className="h-5 w-5" />
 											</div>
 											<div>
 												<div className="flex items-center gap-2 mb-1">
@@ -474,7 +481,7 @@ export default function ModerationDashboard() {
 										{contentTypes.map((item) => (
 											<div key={item.type} className="flex items-center justify-between">
 												<span className="text-sm flex items-center gap-2">
-													<ChatCenteredText className="h-4 w-4" />
+													<HugeiconsIcon icon={Chat01Icon} className="h-4 w-4" />
 													{item.type}
 												</span>
 												<div className="flex items-center gap-2">

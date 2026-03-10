@@ -1,6 +1,7 @@
 'use client';
 
-import { CircleNotch, Clock, Trash, X } from '@phosphor-icons/react';
+import { Cancel01Icon, Clock01Icon, Delete02Icon, Loading03Icon } from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import { AnimatePresence, m } from 'framer-motion';
 import { memo } from 'react';
 import { Button } from '@/components/ui/button';
@@ -26,7 +27,7 @@ export const SearchHistoryList = memo(function SearchHistoryList({
 		<m.div variants={STAGGER_ITEM} className="space-y-6">
 			<div className="flex items-center justify-between">
 				<div className="flex items-center gap-2">
-					<Clock className="w-4 h-4 text-muted-foreground" />
+					<HugeiconsIcon icon={Clock01Icon} className="w-4 h-4 text-muted-foreground" />
 					<h2 className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.3em]">
 						ClockCounterClockwise
 					</h2>
@@ -38,7 +39,7 @@ export const SearchHistoryList = memo(function SearchHistoryList({
 						onClick={onClearAll}
 						className="h-8 px-4 text-[10px] font-black uppercase tracking-widest text-muted-foreground hover:text-rose-500"
 					>
-						<Trash className="w-4 h-4 mr-2" />
+						<HugeiconsIcon icon={Delete02Icon} className="w-4 h-4 mr-2" />
 						Clear All
 					</Button>
 				)}
@@ -47,7 +48,7 @@ export const SearchHistoryList = memo(function SearchHistoryList({
 				<AnimatePresence mode="popLayout">
 					{isLoading ? (
 						<div className="col-span-full flex items-center justify-center py-12">
-							<CircleNotch className="w-8 h-8 text-primary animate-spin" />
+							<HugeiconsIcon icon={Loading03Icon} className="w-8 h-8 text-primary animate-spin" />
 						</div>
 					) : searches.length > 0 ? (
 						searches.map((search) => (
@@ -78,7 +79,7 @@ export const SearchHistoryList = memo(function SearchHistoryList({
 									onClick={(e) => onDelete(search.id, e)}
 									className="md:opacity-0 opacity-100 md:group-hover:opacity-100 focus-visible:opacity-100 transition-opacity text-muted-foreground hover:text-rose-500 p-5 min-w-[44px] min-h-[44px] flex items-center justify-center touch-manipulation focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-inset"
 								>
-									<X className="w-5 h-5" />
+									<HugeiconsIcon icon={Cancel01Icon} className="w-5 h-5" />
 								</button>
 							</m.div>
 						))

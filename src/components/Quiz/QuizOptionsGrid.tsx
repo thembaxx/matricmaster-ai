@@ -1,6 +1,7 @@
 'use client';
 
-import { Sparkle } from '@phosphor-icons/react';
+import { SparklesIcon } from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import { AnimatePresence, m } from 'framer-motion';
 import { memo } from 'react';
 import { STAGGER_CONTAINER, STAGGER_ITEM } from '@/lib/animation-presets';
@@ -46,7 +47,9 @@ export const QuizOptionsGrid = memo(function QuizOptionsGrid({
 						>
 							<span
 								className={`w-8 h-8 rounded-full flex items-center justify-center font-black text-xs ${
-									isSelected ? 'bg-primary text-primary-foreground' : 'bg-muted text-zinc-500'
+									isSelected
+										? 'bg-primary text-primary-foreground'
+										: 'bg-muted text-muted-foreground'
 								}`}
 							>
 								{option.id}
@@ -116,7 +119,7 @@ export const QuizOptionsGrid = memo(function QuizOptionsGrid({
 									animate={{ scale: 1, rotate: 0 }}
 									className="absolute -top-2 -right-2 w-8 h-8 bg-white text-brand-green rounded-full flex items-center justify-center shadow-lg"
 								>
-									<Sparkle weight="bold" className="w-4 h-4 fill-brand-green" />
+									<HugeiconsIcon icon={SparklesIcon} className="w-4 h-4 fill-brand-green" />
 								</m.div>
 							)}
 						</AnimatePresence>

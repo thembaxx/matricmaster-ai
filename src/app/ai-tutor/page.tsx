@@ -1,6 +1,13 @@
 'use client';
 
-import { Barbell, BookOpen, CircleNotch, FloppyDisk, Sparkle } from '@phosphor-icons/react';
+import {
+	BookOpen01Icon,
+	Loading03Icon,
+	SaveIcon,
+	SparklesIcon,
+	WorkoutSportIcon,
+} from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import Link from 'next/link';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { toast } from 'sonner';
@@ -313,8 +320,8 @@ export default function AITutorPage() {
 					<div className="max-w-4xl mx-auto flex items-center justify-between gap-2">
 						<div className="flex items-center gap-3 md:gap-4">
 							<div className="h-10 w-10 md:h-12 md:w-12 rounded-xl md:rounded-2xl bg-primary/10 flex items-center justify-center shadow-inner">
-								<Sparkle
-									weight="bold"
+								<HugeiconsIcon
+									icon={SparklesIcon}
 									className="h-5 w-5 md:h-6 md:w-6 text-primary animate-pulse-soft"
 								/>
 							</div>
@@ -339,9 +346,9 @@ export default function AITutorPage() {
 								disabled={isGeneratingFlashcards || messages.length <= 1}
 							>
 								{isGeneratingFlashcards ? (
-									<CircleNotch className="h-4 w-4 animate-spin" />
+									<HugeiconsIcon icon={Loading03Icon} className="h-4 w-4 animate-spin" />
 								) : (
-									<BookOpen className="h-4 w-4" />
+									<HugeiconsIcon icon={BookOpen01Icon} className="h-4 w-4" />
 								)}
 								<span className="hidden md:inline ml-2">Flashcards</span>
 							</Button>
@@ -353,14 +360,14 @@ export default function AITutorPage() {
 								disabled={isGeneratingPractice || messages.length <= 1}
 							>
 								{isGeneratingPractice ? (
-									<CircleNotch className="h-4 w-4 animate-spin" />
+									<HugeiconsIcon icon={Loading03Icon} className="h-4 w-4 animate-spin" />
 								) : (
-									<Barbell className="h-4 w-4" />
+									<HugeiconsIcon icon={WorkoutSportIcon} className="h-4 w-4" />
 								)}
 								<span className="hidden md:inline ml-2">Practice</span>
 							</Button>
 							<Button variant="ios" size="sm" className="rounded-xl" onClick={handleSave}>
-								<FloppyDisk className="h-4 w-4" />
+								<HugeiconsIcon icon={SaveIcon} className="h-4 w-4" />
 								<span className="hidden md:inline ml-2">FloppyDisk</span>
 							</Button>
 						</div>

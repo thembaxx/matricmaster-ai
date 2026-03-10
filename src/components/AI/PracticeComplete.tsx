@@ -1,5 +1,5 @@
-import type { Icon } from '@phosphor-icons/react';
-import { CheckCircle, Clock, Lightbulb } from '@phosphor-icons/react';
+import { CheckmarkCircle02Icon, Clock01Icon, Idea01Icon } from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import { Button } from '@/components/ui/button';
 
 interface PracticeCompleteProps {
@@ -17,10 +17,10 @@ export function PracticeComplete({
 	onToggleAnswers,
 	onReset,
 }: PracticeCompleteProps) {
-	const getIcon = (): Icon => {
-		if (correctCount === totalProblems) return CheckCircle;
-		if (correctCount >= totalProblems / 2) return Lightbulb;
-		return Clock;
+	const getIcon = () => {
+		if (correctCount === totalProblems) return CheckmarkCircle02Icon;
+		if (correctCount >= totalProblems / 2) return Idea01Icon;
+		return Clock01Icon;
 	};
 
 	const getMessage = () => {
@@ -29,12 +29,13 @@ export function PracticeComplete({
 		return 'Keep Learning!';
 	};
 
-	const Icon = getIcon();
+	const icon = getIcon();
 
 	return (
 		<div className="text-center py-8 space-y-6">
 			<div className="flex justify-center">
-				<Icon
+				<HugeiconsIcon
+					icon={icon}
 					className={`h-16 w-16 ${
 						correctCount === totalProblems
 							? 'text-green-500'

@@ -1,6 +1,7 @@
 'use client';
 
-import { Bookmark, BookmarkSimple } from '@phosphor-icons/react';
+import { Bookmark01Icon, BookmarkIcon } from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import { m } from 'framer-motion';
 import { useState } from 'react';
 import { toast } from 'sonner';
@@ -84,9 +85,9 @@ export function BookmarkButton({ messageId, content, role, subject }: BookmarkBu
 				transition={{ duration: 0.3 }}
 			>
 				{isBookmarked ? (
-					<BookmarkSimple className="h-4 w-4 text-primary" />
+					<HugeiconsIcon icon={Bookmark01Icon} className="h-4 w-4 text-primary" />
 				) : (
-					<Bookmark className="h-4 w-4" />
+					<HugeiconsIcon icon={BookmarkIcon} className="h-4 w-4" />
 				)}
 			</m.div>
 		</Button>

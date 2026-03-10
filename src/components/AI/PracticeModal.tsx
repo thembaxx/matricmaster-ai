@@ -1,6 +1,7 @@
 'use client';
 
-import { Lightbulb } from '@phosphor-icons/react';
+import { Idea01Icon } from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import { useState } from 'react';
 import {
 	Dialog,
@@ -85,7 +86,7 @@ export function PracticeModal({ open, onOpenChange, problems, subject }: Practic
 					<div className="flex items-center justify-between">
 						<div>
 							<DialogTitle className="flex items-center gap-2">
-								<Lightbulb className="h-5 w-5 text-brand-amber" />
+								<HugeiconsIcon icon={Idea01Icon} className="h-5 w-5 text-brand-amber" />
 								Practice Problems
 							</DialogTitle>
 							<DialogDescription>

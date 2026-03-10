@@ -1,19 +1,20 @@
 'use client';
 
 import {
-	ArrowLeft,
-	Bank,
-	Book,
-	Calculator,
-	Check,
-	Flask,
-	GearSix,
-	Lock,
-	Microscope,
-	Play,
-	Sparkle,
-	Translate,
-} from '@phosphor-icons/react';
+	ArrowLeft02Icon,
+	BankIcon,
+	Book01Icon,
+	CalculatorIcon,
+	Chemistry01Icon,
+	LockIcon,
+	MicroscopeIcon,
+	PlayIcon,
+	Settings01Icon,
+	SparklesIcon,
+	Tick01Icon,
+	TranslateIcon,
+} from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Badge } from '@/components/ui/badge';
@@ -24,12 +25,12 @@ import { useSession } from '@/lib/auth-client';
 import { createStudyPlanAction } from '@/lib/db/study-plan-actions';
 
 const subjects = [
-	{ id: 'math', name: 'Mathematics', icon: Calculator, color: 'text-blue-500' },
-	{ id: 'physics', name: 'Physical Sci', icon: Flask, color: 'text-blue-500' },
-	{ id: 'life', name: 'Life Sciences', icon: Microscope, color: 'text-zinc-500' },
-	{ id: 'english', name: 'English HL', icon: Book, color: 'text-zinc-500' },
-	{ id: 'afrikaans', name: 'Afrikaans FAL', icon: Translate, color: 'text-zinc-500' },
-	{ id: 'accounting', name: 'Accounting', icon: Bank, color: 'text-zinc-500' },
+	{ id: 'math', name: 'Mathematics', icon: CalculatorIcon, color: 'text-blue-500' },
+	{ id: 'physics', name: 'Physical Sci', icon: Chemistry01Icon, color: 'text-blue-500' },
+	{ id: 'life', name: 'Life Sciences', icon: MicroscopeIcon, color: 'text-muted-foreground' },
+	{ id: 'english', name: 'English HL', icon: Book01Icon, color: 'text-muted-foreground' },
+	{ id: 'afrikaans', name: 'Afrikaans FAL', icon: TranslateIcon, color: 'text-muted-foreground' },
+	{ id: 'accounting', name: 'Accounting', icon: BankIcon, color: 'text-muted-foreground' },
 ];
 
 export default function StudyPlanWizard() {
@@ -80,7 +81,7 @@ export default function StudyPlanWizard() {
 		return (
 			<div className="flex flex-col items-center justify-center h-full bg-background p-6">
 				<div className="w-32 h-32 rounded-3xl bg-primary/10 flex items-center justify-center mb-8 animate-pulse">
-					<Sparkle weight="bold" className="w-16 h-16 text-primary" />
+					<HugeiconsIcon icon={SparklesIcon} className="w-16 h-16 text-primary" />
 				</div>
 				<h2 className="text-3xl font-black text-foreground mb-3 text-center">
 					Generating Your Path...
@@ -102,13 +103,13 @@ export default function StudyPlanWizard() {
 					onClick={() => router.push('/')}
 					className="rounded-full ios-active-scale"
 				>
-					<ArrowLeft className="w-6 h-6 text-muted-foreground" />
+					<HugeiconsIcon icon={ArrowLeft02Icon} className="w-6 h-6 text-muted-foreground" />
 				</Button>
 				<h1 className="text-[10px] font-black text-label-tertiary uppercase tracking-[0.2em]">
 					Study Plan
 				</h1>
 				<Button variant="ghost" size="icon" className="rounded-full ios-active-scale">
-					<GearSix className="w-6 h-6 text-muted-foreground" />
+					<HugeiconsIcon icon={Settings01Icon} className="w-6 h-6 text-muted-foreground" />
 				</Button>
 			</header>
 
@@ -159,11 +160,16 @@ export default function StudyPlanWizard() {
 								>
 									{isSelected && (
 										<div className="absolute top-3 right-3 w-6 h-6 bg-primary rounded-full flex items-center justify-center shadow-lg animate-scale-in">
-											<Check className="w-4 h-4 text-primary-foreground" strokeWidth={4} />
+											<HugeiconsIcon
+												icon={Tick01Icon}
+												className="w-4 h-4 text-primary-foreground"
+												strokeWidth={4}
+											/>
 										</div>
 									)}
 									<div className="w-16 h-16 rounded-full bg-card flex items-center justify-center shadow-sm">
-										<subject.icon
+										<HugeiconsIcon
+											icon={subject.icon}
 											className={`w-8 h-8 ${isSelected ? 'text-primary' : 'text-muted-foreground'}`}
 										/>
 									</div>
@@ -207,7 +213,7 @@ export default function StudyPlanWizard() {
 					{/* Preview Section */}
 					<div className="p-8 premium-glass rounded-3xl space-y-8">
 						<div className="flex items-center gap-2">
-							<Sparkle weight="bold" className="w-4 h-4 text-primary" />
+							<HugeiconsIcon icon={SparklesIcon} className="w-4 h-4 text-primary" />
 							<h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-label-secondary">
 								Preview: Learning Path
 							</h3>
@@ -220,13 +226,13 @@ export default function StudyPlanWizard() {
 
 							{/* Node 1: Completed */}
 							<div className="relative z-10 w-16 h-16 rounded-full bg-card border-2 border-success flex items-center justify-center shadow-lg">
-								<Check className="w-8 h-8 text-success" strokeWidth={4} />
+								<HugeiconsIcon icon={Tick01Icon} className="w-8 h-8 text-success" strokeWidth={4} />
 							</div>
 
 							{/* Node 2: Current */}
 							<div className="flex flex-col items-center gap-2 relative">
 								<div className="relative z-10 w-16 h-16 rounded-full border-[3px] border-primary bg-card flex items-center justify-center shadow-xl animate-pulse-soft">
-									<Play className="w-6 h-6 text-primary fill-primary" />
+									<HugeiconsIcon icon={PlayIcon} className="w-6 h-6 text-primary fill-primary" />
 									<div className="absolute -top-1 -right-0.5 w-4 h-4 bg-destructive rounded-full border-2 border-background" />
 								</div>
 								<div className="bg-card px-3 py-1 rounded-full shadow-sm border border-border/50">
@@ -238,7 +244,7 @@ export default function StudyPlanWizard() {
 
 							{/* Node 3: Locked */}
 							<div className="relative z-10 w-16 h-16 rounded-full bg-muted flex items-center justify-center">
-								<Lock className="w-6 h-6 text-muted-foreground/50" />
+								<HugeiconsIcon icon={LockIcon} className="w-6 h-6 text-muted-foreground/50" />
 							</div>
 						</div>
 					</div>
@@ -253,7 +259,7 @@ export default function StudyPlanWizard() {
 					disabled={selectedSubjects.length === 0}
 				>
 					Generate My Plan
-					<Sparkle weight="bold" className="w-5 h-5" />
+					<HugeiconsIcon icon={SparklesIcon} className="w-5 h-5" />
 				</Button>
 			</div>
 		</div>

@@ -1,6 +1,7 @@
 'use client';
 
-import { Sparkle, X } from '@phosphor-icons/react';
+import { Cancel01Icon, SparklesIcon } from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import { m } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import type { UnlockedAchievement } from '@/stores/useGamificationStore';
@@ -105,7 +106,7 @@ export function AchievementToast({ achievement, onDismiss }: AchievementToastPro
 						onClick={onDismiss}
 						className="absolute top-3 right-3 p-1.5 rounded-full hover:bg-muted transition-colors"
 					>
-						<X className="w-4 h-4 text-muted-foreground" />
+						<HugeiconsIcon icon={Cancel01Icon} className="w-4 h-4 text-muted-foreground" />
 					</button>
 
 					<div className="flex items-start gap-4">
@@ -120,7 +121,7 @@ export function AchievementToast({ achievement, onDismiss }: AchievementToastPro
 
 						<div className="flex-1 min-w-0">
 							<div className="flex items-center gap-2 mb-1">
-								<Sparkle weight="bold" className="w-4 h-4 text-brand-amber" />
+								<HugeiconsIcon icon={SparklesIcon} className="w-4 h-4 text-brand-amber" />
 								<span className="text-[10px] font-black uppercase tracking-[0.2em] text-brand-amber">
 									Achievement Unlocked!
 								</span>

@@ -1,7 +1,13 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ArrowLeft, CircleNotch, Sparkle } from '@phosphor-icons/react';
+import {
+	ArrowLeft02Icon as ArrowLeft,
+	Loading03Icon,
+	SentIcon,
+	SparklesIcon,
+} from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import { m } from 'framer-motion';
 import Link from 'next/link';
 import { useState } from 'react';
@@ -18,7 +24,7 @@ import { authClient } from '@/lib/auth-client';
 import { cn } from '@/lib/utils';
 
 const resetSchema = z.object({
-	email: z.email('Invalid email address'),
+	email: z.string().email('Invalid email address'),
 });
 
 type ResetValues = z.infer<typeof resetSchema>;
@@ -74,7 +80,7 @@ export function ForgotPasswordForm() {
 						href="/sign-in"
 						className="inline-flex items-center text-xs font-bold text-muted-foreground hover:text-foreground transition-colors mb-6 uppercase tracking-wider"
 					>
-						<ArrowLeft className="w-4 h-4 mr-2" /> Back to Sign In
+						<HugeiconsIcon icon={ArrowLeft} className="w-4 h-4 mr-2" /> Back to Sign In
 					</Link>
 
 					<m.div
@@ -88,7 +94,7 @@ export function ForgotPasswordForm() {
 							whileHover={{ rotate: 15, scale: 1.1 }}
 							className="w-14 h-14 bg-primary/10 rounded-3xl flex items-center justify-center mx-auto mb-5 text-primary"
 						>
-							<Sparkle weight="bold" className="w-7 h-7" />
+							<HugeiconsIcon icon={SparklesIcon} className="w-7 h-7" />
 						</m.div>
 						<SmoothWords
 							as="h1"
@@ -155,9 +161,12 @@ export function ForgotPasswordForm() {
 									)}
 								>
 									{isLoading ? (
-										<CircleNotch className="w-5 h-5 animate-spin" />
+										<HugeiconsIcon icon={Loading03Icon} className="w-5 h-5 animate-spin" />
 									) : (
-										'PaperPlaneRight Reset Link'
+										<span className="flex items-center justify-center gap-2">
+											<HugeiconsIcon icon={SentIcon} className="w-5 h-5" />
+											Send Reset Link
+										</span>
 									)}
 								</Button>
 							</m.div>

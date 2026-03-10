@@ -1,6 +1,7 @@
 'use client';
 
-import { Check } from '@phosphor-icons/react';
+import { Tick01Icon } from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import { m } from 'framer-motion';
 import { memo } from 'react';
 import { Card } from '@/components/ui/card';
@@ -57,7 +58,7 @@ export const WeeklyChartCard = memo(function WeeklyChartCard({
 								}`}
 							>
 								{item.status === 'complete' ? (
-									<Check className="w-6 h-6 stroke-[4px]" />
+									<HugeiconsIcon icon={Tick01Icon} className="w-6 h-6 stroke-[4px]" />
 								) : (
 									<span className="text-sm font-black">{item.date}</span>
 								)}

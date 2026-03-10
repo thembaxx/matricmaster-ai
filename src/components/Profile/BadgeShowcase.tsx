@@ -1,6 +1,7 @@
 'use client';
 
-import { Crown, Medal, Plus, Star } from '@phosphor-icons/react';
+import { Add01Icon, CrownIcon, Medal01Icon, StarIcon } from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import { m } from 'framer-motion';
 import { memo, useState } from 'react';
 import { Button } from '@/components/ui/button';
@@ -54,7 +55,7 @@ export const BadgeShowcase = memo(function BadgeShowcase({
 			>
 				<div className="flex flex-col items-center text-center">
 					<div className="w-12 h-12 rounded-full bg-muted flex items-center justify-center mb-3">
-						<Medal weight="bold" className="w-6 h-6 text-muted-foreground" />
+						<HugeiconsIcon icon={Medal01Icon} className="w-6 h-6 text-muted-foreground" />
 					</div>
 					<p className="text-sm font-bold text-muted-foreground mb-2">No featured badges</p>
 					{unlockedAchievements.length > 0 && (
@@ -64,7 +65,7 @@ export const BadgeShowcase = memo(function BadgeShowcase({
 							onClick={() => setIsEditing(true)}
 							aria-label="Add featured badges"
 						>
-							<Plus className="w-4 h-4 mr-1" />
+							<HugeiconsIcon icon={Add01Icon} className="w-4 h-4 mr-1" />
 							Add Badges
 						</Button>
 					)}
@@ -77,7 +78,7 @@ export const BadgeShowcase = memo(function BadgeShowcase({
 		<div className={className}>
 			<div className="flex items-center justify-between mb-4">
 				<div className="flex items-center gap-2">
-					<Crown className="w-5 h-5 text-brand-amber" />
+					<HugeiconsIcon icon={CrownIcon} className="w-5 h-5 text-brand-amber" />
 					<h3 className="text-lg font-black text-foreground">Featured Badges</h3>
 				</div>
 				{unlockedAchievements.length > 0 && !isEditing && (
@@ -112,7 +113,7 @@ export const BadgeShowcase = memo(function BadgeShowcase({
 											{achievement.name}
 										</p>
 										<div className="flex items-center gap-1 mt-1">
-											<Star className="w-3 h-3 text-brand-amber" />
+											<HugeiconsIcon icon={StarIcon} className="w-3 h-3 text-brand-amber" />
 											<span className="text-xs font-bold text-brand-amber">
 												{achievement.points} XP
 											</span>
@@ -122,7 +123,7 @@ export const BadgeShowcase = memo(function BadgeShowcase({
 
 								{index === 0 && (
 									<div className="absolute -top-2 -left-2 w-6 h-6 bg-brand-amber rounded-full flex items-center justify-center shadow-md">
-										<Crown className="w-3 h-3 text-white" />
+										<HugeiconsIcon icon={CrownIcon} className="w-3 h-3 text-white" />
 									</div>
 								)}
 							</m.div>
@@ -137,7 +138,7 @@ export const BadgeShowcase = memo(function BadgeShowcase({
 							onClick={() => setIsEditing(true)}
 							aria-label="Add more featured badges"
 						>
-							<Plus className="w-6 h-6 text-muted-foreground" />
+							<HugeiconsIcon icon={Add01Icon} className="w-6 h-6 text-muted-foreground" />
 						</Button>
 					)}
 				</div>
@@ -170,7 +171,7 @@ export const BadgeShowcase = memo(function BadgeShowcase({
 										</span>
 										{isFeatured && (
 											<div className="absolute -top-1 -right-1 w-5 h-5 bg-brand-amber rounded-full flex items-center justify-center">
-												<Star className="w-3 h-3 text-white" />
+												<HugeiconsIcon icon={StarIcon} className="w-3 h-3 text-white" />
 											</div>
 										)}
 									</button>

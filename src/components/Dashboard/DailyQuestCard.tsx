@@ -1,6 +1,7 @@
 'use client';
 
-import { ArrowRight, CircleNotch, Sparkle } from '@phosphor-icons/react';
+import { ArrowRight02Icon, Loading03Icon, SparklesIcon } from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import { m } from 'framer-motion';
 import { memo } from 'react';
 import { Button } from '@/components/ui/button';
@@ -49,7 +50,7 @@ export const DailyQuestCard = memo(function DailyQuestCard({
 						transition={{ type: 'spring', stiffness: 200 }}
 						className="w-16 h-16 bg-card/50 rounded-2xl flex items-center justify-center border border-border/20 shadow-xl"
 					>
-						<Sparkle weight="bold" className="w-8 h-8 text-brand-amber" />
+						<HugeiconsIcon icon={SparklesIcon} className="w-8 h-8 text-brand-amber" />
 					</m.div>
 				</div>
 
@@ -77,11 +78,11 @@ export const DailyQuestCard = memo(function DailyQuestCard({
 						disabled={isLoading}
 					>
 						{isLoading ? (
-							<CircleNotch className="w-6 h-6 animate-spin" />
+							<HugeiconsIcon icon={Loading03Icon} className="w-6 h-6 animate-spin" />
 						) : (
 							<>
 								Continue Learning
-								<ArrowRight className="w-6 h-6" />
+								<HugeiconsIcon icon={ArrowRight02Icon} className="w-6 h-6" />
 							</>
 						)}
 					</Button>

@@ -1,6 +1,7 @@
 'use client';
 
-import { Warning } from '@phosphor-icons/react';
+import { Warning } from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import { Component, type ReactNode } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -39,13 +40,11 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
 				<div className="flex flex-col items-center justify-center min-h-screen p-6 bg-zinc-50 dark:bg-zinc-950">
 					<Card className="p-8 max-w-md w-full text-center space-y-6">
 						<div className="w-16 h-16 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center mx-auto">
-							<Warning className="w-8 h-8 text-red-600 dark:text-red-400" />
+							<HugeiconsIcon icon={Warning} className="w-8 h-8 text-red-600 dark:text-red-400" />
 						</div>
 						<div className="space-y-2">
-							<h2 className="text-2xl font-black text-zinc-900 dark:text-white">
-								Something went wrong
-							</h2>
-							<p className="text-sm text-zinc-500 dark:text-zinc-400">
+							<h2 className="text-2xl font-black text-foreground">Something went wrong</h2>
+							<p className="text-sm text-muted-foreground dark:text-muted-foreground">
 								{this.state.error?.message || 'An unexpected error occurred'}
 							</p>
 						</div>

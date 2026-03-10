@@ -1,7 +1,14 @@
 'use client';
 
+import {
+	BookOpen01Icon as BookOpen,
+	Cancel01Icon,
+	File01Icon,
+	Loading03Icon,
+	Settings02Icon,
+} from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import { Icon } from '@iconify/react';
-import { BookOpen, CircleNotch, Faders, FileText, X } from '@phosphor-icons/react';
 import { AnimatePresence, m } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { memo, useCallback, useEffect, useMemo, useState } from 'react';
@@ -276,7 +283,7 @@ export default function PastPapers() {
 									aria-label="Clear all filters"
 									className="rounded-2xl font-black text-[10px] uppercase tracking-widest px-3 sm:px-4 h-10 sm:h-12 text-label-tertiary hover:text-foreground ios-active-scale"
 								>
-									<X className="w-4 h-4 mr-1 sm:mr-2" />
+									<HugeiconsIcon icon={Cancel01Icon} className="w-4 h-4 mr-1 sm:mr-2" />
 									<span className="hidden sm:inline">Clear</span>
 								</Button>
 							)}
@@ -289,7 +296,7 @@ export default function PastPapers() {
 									activeFilterCount > 0 && 'border-primary bg-primary/10 text-primary'
 								)}
 							>
-								<Faders className="w-4 h-4 mr-2" />
+								<HugeiconsIcon icon={Settings02Icon} className="w-4 h-4 mr-2" />
 								<span className="hidden sm:inline">Advanced Faders</span>
 								{activeFilterCount > 0 && (
 									<Badge className="ml-2 rounded-full px-2 py-0.5 text-[9px] bg-primary text-primary-foreground">
@@ -325,7 +332,7 @@ export default function PastPapers() {
 										onClick={() => setSearchQuery('')}
 										className="absolute right-4 sm:right-6 top-1/2 -translate-y-1/2 text-label-tertiary hover:text-foreground transition-colors ios-active-scale"
 									>
-										<X className="w-5 sm:w-6 h-5 sm:h-6" />
+										<HugeiconsIcon icon={Cancel01Icon} className="w-5 sm:w-6 h-5 sm:h-6" />
 									</m.button>
 								)}
 							</AnimatePresence>
@@ -363,7 +370,7 @@ export default function PastPapers() {
 					<AnimatePresence mode="popLayout">
 						{isLoading ? (
 							<div className="flex items-center justify-center py-20">
-								<CircleNotch className="w-8 h-8 animate-spin text-primary" />
+								<HugeiconsIcon icon={Loading03Icon} className="w-8 h-8 animate-spin text-primary" />
 							</div>
 						) : filteredPapers.length > 0 ? (
 							<m.div
@@ -380,7 +387,7 @@ export default function PastPapers() {
 											<div className="space-y-6 relative z-10">
 												<div className="flex items-start justify-between">
 													<div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-500 shadow-inner">
-														<FileText className="w-8 h-8 text-primary" />
+														<HugeiconsIcon icon={File01Icon} className="w-8 h-8 text-primary" />
 													</div>
 													<div className="text-right">
 														<span className="text-[10px] font-black text-label-tertiary uppercase tracking-[0.2em] block mb-1">
@@ -429,7 +436,7 @@ export default function PastPapers() {
 														className="rounded-2xl font-black text-[10px] uppercase tracking-widest h-12 border border-border ios-active-scale"
 														onClick={() => router.push(`/past-paper?id=${paper.id}&mode=read`)}
 													>
-														<BookOpen className="w-4 h-4 mr-2" />
+														<HugeiconsIcon icon={BookOpen} className="w-4 h-4 mr-2" />
 														Read
 													</Button>
 												</div>
@@ -456,7 +463,7 @@ export default function PastPapers() {
 								className="py-32 flex flex-col items-center justify-center text-center space-y-6 opacity-40"
 							>
 								<div className="w-32 h-32 bg-muted rounded-3xl flex items-center justify-center">
-									<FileText className="w-16 h-16 text-muted-foreground" />
+									<HugeiconsIcon icon={File01Icon} className="w-16 h-16 text-muted-foreground" />
 								</div>
 								<div className="space-y-2">
 									<h3 className="font-black text-muted-foreground uppercase tracking-[0.4em] text-xs">

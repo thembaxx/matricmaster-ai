@@ -2,15 +2,16 @@
 
 import {
 	ActivityIcon,
-	BookOpen,
-	CircleNotch,
-	Gear,
-	MagnifyingGlass,
-	Shield,
-	TrendUp,
-	Users,
+	AnalyticsUpIcon,
+	BookOpen01Icon,
+	Loading03Icon,
+	Search01Icon,
+	Settings01Icon,
+	Shield01Icon,
+	UserGroupIcon,
 	Warning,
-} from '@phosphor-icons/react';
+} from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import { useCallback, useEffect, useState, useTransition } from 'react';
 import { toast } from 'sonner';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
@@ -141,13 +142,13 @@ export default function AdminDashboardClient({
 				<div className="flex items-center justify-between mb-8">
 					<div>
 						<h1 className="text-3xl font-bold flex items-center gap-2">
-							<Shield className="h-8 w-8 text-primary" />
+							<HugeiconsIcon icon={Shield01Icon} className="h-8 w-8 text-primary" />
 							Admin Dashboard
 						</h1>
 						<p className="text-muted-foreground">Platform management and analytics</p>
 					</div>
 					<Button variant="outline" size="sm">
-						<Gear className="h-4 w-4 mr-2" />
+						<HugeiconsIcon icon={Settings01Icon} className="h-4 w-4 mr-2" />
 						Settings
 					</Button>
 				</div>
@@ -157,12 +158,15 @@ export default function AdminDashboardClient({
 						<CardContent className="pt-6">
 							{isLoadingStats ? (
 								<div className="flex items-center justify-center h-20">
-									<CircleNotch className="h-6 w-6 animate-spin text-primary" />
+									<HugeiconsIcon
+										icon={Loading03Icon}
+										className="h-6 w-6 animate-spin text-primary"
+									/>
 								</div>
 							) : (
 								<div className="flex items-center gap-4">
 									<div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
-										<Users className="h-6 w-6 text-primary" />
+										<HugeiconsIcon icon={UserGroupIcon} className="h-6 w-6 text-primary" />
 									</div>
 									<div>
 										<p className="text-2xl font-bold">{stats.totalUsers.toLocaleString()}</p>
@@ -176,12 +180,15 @@ export default function AdminDashboardClient({
 						<CardContent className="pt-6">
 							{isLoadingStats ? (
 								<div className="flex items-center justify-center h-20">
-									<CircleNotch className="h-6 w-6 animate-spin text-green-500" />
+									<HugeiconsIcon
+										icon={Loading03Icon}
+										className="h-6 w-6 animate-spin text-green-500"
+									/>
 								</div>
 							) : (
 								<div className="flex items-center gap-4">
 									<div className="h-12 w-12 rounded-full bg-green-500/10 flex items-center justify-center">
-										<ActivityIcon className="h-6 w-6 text-green-500" />
+										<HugeiconsIcon icon={ActivityIcon} className="h-6 w-6 text-green-500" />
 									</div>
 									<div>
 										<p className="text-2xl font-bold">{stats.activeUsers.toLocaleString()}</p>
@@ -195,12 +202,15 @@ export default function AdminDashboardClient({
 						<CardContent className="pt-6">
 							{isLoadingStats ? (
 								<div className="flex items-center justify-center h-20">
-									<CircleNotch className="h-6 w-6 animate-spin text-blue-500" />
+									<HugeiconsIcon
+										icon={Loading03Icon}
+										className="h-6 w-6 animate-spin text-blue-500"
+									/>
 								</div>
 							) : (
 								<div className="flex items-center gap-4">
 									<div className="h-12 w-12 rounded-full bg-blue-500/10 flex items-center justify-center">
-										<BookOpen className="h-6 w-6 text-blue-500" />
+										<HugeiconsIcon icon={BookOpen01Icon} className="h-6 w-6 text-blue-500" />
 									</div>
 									<div>
 										<p className="text-2xl font-bold">
@@ -216,12 +226,15 @@ export default function AdminDashboardClient({
 						<CardContent className="pt-6">
 							{isLoadingStats ? (
 								<div className="flex items-center justify-center h-20">
-									<CircleNotch className="h-6 w-6 animate-spin text-amber-500" />
+									<HugeiconsIcon
+										icon={Loading03Icon}
+										className="h-6 w-6 animate-spin text-amber-500"
+									/>
 								</div>
 							) : (
 								<div className="flex items-center gap-4">
 									<div className="h-12 w-12 rounded-full bg-amber-500/10 flex items-center justify-center">
-										<TrendUp className="h-6 w-6 text-amber-500" />
+										<HugeiconsIcon icon={AnalyticsUpIcon} className="h-6 w-6 text-amber-500" />
 									</div>
 									<div>
 										<p className="text-2xl font-bold">{stats.averageScore}%</p>
@@ -250,7 +263,7 @@ export default function AdminDashboardClient({
 							<Card>
 								<CardHeader>
 									<CardTitle className="flex items-center gap-2">
-										<ActivityIcon className="h-5 w-5" />
+										<HugeiconsIcon icon={ActivityIcon} className="h-5 w-5" />
 										Recent Activity
 									</CardTitle>
 								</CardHeader>
@@ -279,7 +292,7 @@ export default function AdminDashboardClient({
 							<Card>
 								<CardHeader>
 									<CardTitle className="flex items-center gap-2">
-										<Warning className="h-5 w-5 text-amber-500" />
+										<HugeiconsIcon icon={Warning} className="h-5 w-5 text-amber-500" />
 										Flagged Content
 									</CardTitle>
 								</CardHeader>
@@ -309,7 +322,10 @@ export default function AdminDashboardClient({
 							<CardContent className="space-y-4">
 								<div className="flex gap-2 flex-col sm:flex-row">
 									<div className="relative flex-1">
-										<MagnifyingGlass className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+										<HugeiconsIcon
+											icon={Search01Icon}
+											className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground"
+										/>
 										<Input
 											placeholder="Search users..."
 											value={searchQuery}
@@ -325,7 +341,10 @@ export default function AdminDashboardClient({
 
 								{isLoadingUsers ? (
 									<div className="flex items-center justify-center py-8">
-										<CircleNotch className="h-8 w-8 animate-spin text-muted-foreground" />
+										<HugeiconsIcon
+											icon={Loading03Icon}
+											className="h-8 w-8 animate-spin text-muted-foreground"
+										/>
 									</div>
 								) : (
 									<div className="border rounded-lg overflow-hidden">
@@ -378,7 +397,10 @@ export default function AdminDashboardClient({
 							<CardContent>
 								{isLoadingStats ? (
 									<div className="flex items-center justify-center py-12">
-										<CircleNotch className="h-8 w-8 animate-spin text-primary" />
+										<HugeiconsIcon
+											icon={Loading03Icon}
+											className="h-8 w-8 animate-spin text-primary"
+										/>
 									</div>
 								) : subjectPerformance.length > 0 ? (
 									<div className="space-y-4">

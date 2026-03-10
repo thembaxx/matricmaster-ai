@@ -1,15 +1,15 @@
 'use client';
 
 import {
-	ArrowLeft,
-	CaretLeft,
-	CaretRight,
-	CircleNotch,
-	FileText,
-	MagnifyingGlassMinus,
-	MagnifyingGlassPlus,
-	Sparkle,
-} from '@phosphor-icons/react';
+	ArrowLeft01Icon,
+	ArrowLeft02Icon,
+	ArrowRight01Icon,
+	File01Icon,
+	Loading03Icon,
+	Search01Icon,
+	SparklesIcon,
+} from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -27,7 +27,7 @@ const PdfViewer = dynamic(() => import('@/components/PdfViewer'), {
 	ssr: false,
 	loading: () => (
 		<div className="flex items-center justify-center h-full">
-			<CircleNotch className="w-8 h-8 animate-spin text-brand-blue" />
+			<HugeiconsIcon icon={Loading03Icon} className="w-8 h-8 animate-spin text-brand-blue" />
 		</div>
 	),
 });
@@ -156,10 +156,13 @@ export default function PastPaperViewer({
 			<div className="flex flex-col h-full bg-background relative grow overflow-hidden">
 				<div className="flex-1 flex flex-col items-center justify-center p-6">
 					<div className="text-center space-y-4">
-						<CircleNotch className="w-12 h-12 animate-spin text-brand-blue mx-auto" />
+						<HugeiconsIcon
+							icon={Loading03Icon}
+							className="w-12 h-12 animate-spin text-brand-blue mx-auto"
+						/>
 						<div className="space-y-2">
-							<h3 className="font-bold text-zinc-900 dark:text-white">Extracting Questions...</h3>
-							<p className="text-sm text-zinc-500">Using AI to parse the exam paper</p>
+							<h3 className="font-bold text-foreground">Extracting Questions...</h3>
+							<p className="text-sm text-muted-foreground">Using AI to parse the exam paper</p>
 						</div>
 					</div>
 				</div>
@@ -188,9 +191,9 @@ export default function PastPaperViewer({
 					<div className="flex items-center justify-between mb-4">
 						<div className="flex items-center gap-4">
 							<Button variant="ghost" size="icon" onClick={() => router.back()}>
-								<ArrowLeft className="w-5 h-5" />
+								<HugeiconsIcon icon={ArrowLeft02Icon} className="w-5 h-5" />
 							</Button>
-							<h1 className="text-lg font-bold text-zinc-900 dark:text-white">
+							<h1 className="text-lg font-bold text-foreground">
 								{paper.subject} {paper.paper}
 							</h1>
 						</div>
@@ -199,11 +202,11 @@ export default function PastPaperViewer({
 				<div className="flex-1 flex flex-col items-center justify-center p-6">
 					<div className="text-center space-y-4 max-w-sm">
 						<div className="w-16 h-16 bg-red-100 dark:bg-red-900/20 rounded-full flex items-center justify-center mx-auto">
-							<Sparkle weight="bold" className="w-8 h-8 text-red-500" />
+							<HugeiconsIcon icon={SparklesIcon} className="w-8 h-8 text-red-500" />
 						</div>
 						<div className="space-y-2">
-							<h3 className="font-bold text-zinc-900 dark:text-white">Extraction Failed</h3>
-							<p className="text-sm text-zinc-500">{error}</p>
+							<h3 className="font-bold text-foreground">Extraction Failed</h3>
+							<p className="text-sm text-muted-foreground">{error}</p>
 						</div>
 						<div className="flex flex-col gap-2">
 							<Button
@@ -222,7 +225,7 @@ export default function PastPaperViewer({
 								Try Again
 							</Button>
 							<Button variant="outline" onClick={() => setShowPdfFallback(true)} className="gap-2">
-								<FileText className="w-4 h-4" />
+								<HugeiconsIcon icon={File01Icon} className="w-4 h-4" />
 								View Original PDF
 							</Button>
 						</div>
@@ -239,13 +242,13 @@ export default function PastPaperViewer({
 				<div className="flex flex-col  justify-between mb-4 gap-3">
 					<div className="flex items-center gap-4">
 						<Button variant="ghost" size="icon" onClick={() => router.back()}>
-							<ArrowLeft className="w-5 h-5" />
+							<HugeiconsIcon icon={ArrowLeft02Icon} className="w-5 h-5" />
 						</Button>
 						<div>
-							<h1 className="text-lg font-bold text-zinc-900 dark:text-white">
+							<h1 className="text-lg font-bold text-foreground">
 								{paper.subject} {paper.paper}
 							</h1>
-							<p className="text-xs text-zinc-500">
+							<p className="text-xs text-muted-foreground">
 								{paper.month} {paper.year} • {paper.marks} marks
 							</p>
 						</div>
@@ -259,12 +262,12 @@ export default function PastPaperViewer({
 						>
 							{viewMode === 'smart' ? (
 								<>
-									<FileText className="w-3.5 h-3.5" />
+									<HugeiconsIcon icon={File01Icon} className="w-3.5 h-3.5" />
 									Smart View
 								</>
 							) : (
 								<>
-									<FileText className="w-3.5 h-3.5" />
+									<HugeiconsIcon icon={File01Icon} className="w-3.5 h-3.5" />
 									Original PDF
 								</>
 							)}
@@ -277,7 +280,7 @@ export default function PastPaperViewer({
 								className="h-8 w-8"
 								onClick={() => setZoom((z) => Math.max(50, z - 10))}
 							>
-								<MagnifyingGlassMinus className="w-4 h-4" />
+								<HugeiconsIcon icon={Search01Icon} className="w-4 h-4" />
 							</Button>
 							<span className="text-sm font-medium w-12 text-center flex items-center justify-center">
 								{zoom}%
@@ -288,7 +291,7 @@ export default function PastPaperViewer({
 								className="h-8 w-8"
 								onClick={() => setZoom((z) => Math.min(200, z + 10))}
 							>
-								<MagnifyingGlassPlus className="w-4 h-4" />
+								<HugeiconsIcon icon={Search01Icon} className="w-4 h-4" />
 							</Button>
 						</div>
 					</div>
@@ -378,7 +381,7 @@ export default function PastPaperViewer({
 									<Badge className="bg-brand-blue text-white rounded-lg px-3 py-1.5 text-[10px]">
 										QUESTION {currentQuestion.questionNumber}
 									</Badge>
-									<p className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider">
+									<p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
 										({currentQuestion.marks} marks)
 									</p>
 								</div>
@@ -402,7 +405,9 @@ export default function PastPaperViewer({
 												<p className="font-semibold text-sm dark:text-zinc-300 text-pretty">
 													{sq.id}. {sq.text}
 													{sq.marks && (
-														<span className="text-xs text-zinc-400 ml-2">({sq.marks} marks)</span>
+														<span className="text-xs text-muted-foreground ml-2">
+															({sq.marks} marks)
+														</span>
 													)}
 												</p>
 											</div>
@@ -420,9 +425,9 @@ export default function PastPaperViewer({
 									disabled={isExplaining}
 								>
 									{isExplaining ? (
-										<CircleNotch className="w-4 h-4 mr-2 animate-spin" />
+										<HugeiconsIcon icon={Loading03Icon} className="w-4 h-4 mr-2 animate-spin" />
 									) : (
-										<Sparkle weight="bold" className="w-4 h-4 mr-2 text-brand-blue" />
+										<HugeiconsIcon icon={SparklesIcon} className="w-4 h-4 mr-2 text-brand-blue" />
 									)}
 									{isExplaining ? 'Getting Explanation...' : 'Explain This Question'}
 								</Button>
@@ -431,7 +436,7 @@ export default function PastPaperViewer({
 								{showAiExplanation && aiExplanation && (
 									<div className="mt-4 p-4 bg-brand-blue/5 border border-brand-blue/20 rounded-xl">
 										<div className="flex items-center gap-2 mb-2">
-											<Sparkle weight="bold" className="w-4 h-4 text-brand-blue" />
+											<HugeiconsIcon icon={SparklesIcon} className="w-4 h-4 text-brand-blue" />
 											<span className="text-sm font-bold text-brand-blue">AI Explanation</span>
 										</div>
 										<p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-wrap">
@@ -453,7 +458,7 @@ export default function PastPaperViewer({
 								<h4 className="font-bold text-zinc-900 dark:text-zinc-300">
 									Convert to Interactive
 								</h4>
-								<p className="text-xs font-semibold text-zinc-500">
+								<p className="text-xs font-semibold text-muted-foreground">
 									Practice this paper with AI-powered feedback
 								</p>
 							</div>
@@ -462,7 +467,7 @@ export default function PastPaperViewer({
 							size="sm"
 							className="bg-brand-blue text-white rounded-xl font-black text-[11px] uppercase tracking-wider"
 						>
-							<Sparkle weight="bold" className="w-6 h-6" />
+							<HugeiconsIcon icon={SparklesIcon} className="w-6 h-6" />
 							Start Quiz
 						</Button>
 					</Card>
@@ -480,7 +485,7 @@ export default function PastPaperViewer({
 							onClick={previousQuestion}
 							className="gap-2"
 						>
-							<CaretLeft className="w-4 h-4" />
+							<HugeiconsIcon icon={ArrowLeft01Icon} className="w-4 h-4" />
 						</Button>
 
 						<div className="flex items-center gap-2 grow">
@@ -526,7 +531,7 @@ export default function PastPaperViewer({
 							onClick={nextQuestion}
 							className="gap-2"
 						>
-							<CaretRight className="w-4 h-4" />
+							<HugeiconsIcon icon={ArrowRight01Icon} className="w-4 h-4" />
 						</Button>
 					</div>
 				</footer>

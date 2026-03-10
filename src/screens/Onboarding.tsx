@@ -1,14 +1,15 @@
 'use client';
 
 import {
-	Calculator,
-	CaretLeft,
-	CaretRight,
-	Rocket,
-	Sparkle,
-	Target,
-	Trophy,
-} from '@phosphor-icons/react';
+	ArrowLeft01Icon,
+	ArrowRight01Icon,
+	CalculatorIcon,
+	ChampionIcon,
+	Rocket01Icon,
+	SparklesIcon,
+	Target01Icon,
+} from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import { AnimatePresence, m } from 'framer-motion';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -30,7 +31,7 @@ interface OnboardingStep {
 	description: string;
 	image: string;
 	color: string;
-	icon: React.ElementType;
+	icon: any;
 	cta?: {
 		label: string;
 		action: () => void;
@@ -45,7 +46,7 @@ const STEPS: OnboardingStep[] = [
 			'Experience the future of education. MatricMaster AI provides personalized guidance tailored to the South African Grade 12 curriculum.',
 		image: '/onboarding/welcome.png',
 		color: 'from-blue-500 to-indigo-600',
-		icon: Rocket,
+		icon: Rocket01Icon,
 	},
 	{
 		id: 1,
@@ -54,7 +55,7 @@ const STEPS: OnboardingStep[] = [
 			"Select the subjects you're tackling this year. We'll curate the most relevant past papers and study materials just for you.",
 		image: '/onboarding/focus.png',
 		color: 'from-green-500 to-emerald-600',
-		icon: Target,
+		icon: Target01Icon,
 		cta: {
 			label: 'Choose Subjects',
 			action: () => {},
@@ -67,7 +68,7 @@ const STEPS: OnboardingStep[] = [
 			'Dive into interactive quizzes with real exam questions. Get instant AI-powered explanations that turn mistakes into milestones.',
 		image: '/onboarding/quiz.png',
 		color: 'from-purple-500 to-pink-600',
-		icon: Calculator,
+		icon: CalculatorIcon,
 	},
 	{
 		id: 3,
@@ -76,7 +77,7 @@ const STEPS: OnboardingStep[] = [
 			'Track your progress in real-time. Earn XP, unlock achievements, and stay motivated as you climb your way to university entrance.',
 		image: '/onboarding/progress.png',
 		color: 'from-amber-400 to-orange-500',
-		icon: Trophy,
+		icon: ChampionIcon,
 	},
 ];
 
@@ -154,7 +155,7 @@ export default function OnboardingScreen({ user }: OnboardingScreenProps) {
 				<div className="flex items-center justify-between mb-4">
 					<div className="flex items-center gap-2">
 						<div className="w-8 h-8 bg-primary/10 rounded-xl flex items-center justify-center">
-							<Sparkle weight="bold" className="w-4 h-4 text-primary" />
+							<HugeiconsIcon icon={SparklesIcon} className="w-4 h-4 text-primary" />
 						</div>
 						<span className="text-sm font-bold tracking-tight uppercase text-muted-foreground">
 							Step {currentStep + 1} of {STEPS.length}
@@ -263,7 +264,7 @@ export default function OnboardingScreen({ user }: OnboardingScreenProps) {
 						disabled={currentStep === 0}
 						onClick={() => paginate(-1)}
 					>
-						<CaretLeft className="w-6 h-6" />
+						<HugeiconsIcon icon={ArrowLeft01Icon} className="w-6 h-6" />
 					</Button>
 
 					{currentStep === STEPS.length - 1 ? (
@@ -277,7 +278,7 @@ export default function OnboardingScreen({ user }: OnboardingScreenProps) {
 									animate={{ rotate: 360 }}
 									transition={{ duration: 1, repeat: Number.POSITIVE_INFINITY, ease: 'linear' }}
 								>
-									<Sparkle weight="bold" className="w-6 h-6" />
+									<HugeiconsIcon icon={SparklesIcon} className="w-6 h-6" />
 								</m.div>
 							) : (
 								"Let's Go!"
@@ -289,7 +290,7 @@ export default function OnboardingScreen({ user }: OnboardingScreenProps) {
 							onClick={() => paginate(1)}
 						>
 							Next
-							<CaretRight className="ml-2 w-5 h-5" />
+							<HugeiconsIcon icon={ArrowRight01Icon} className="ml-2 w-5 h-5" />
 						</Button>
 					)}
 				</div>

@@ -1,15 +1,16 @@
 'use client';
 
 import {
-	Database,
-	FileArrowUp,
-	ImageSquare,
-	MagnifyingGlass,
-	PencilSimple,
-	Plus,
-	Trash,
-	X,
-} from '@phosphor-icons/react';
+	Add01Icon,
+	Cancel01Icon,
+	DatabaseIcon,
+	Delete02Icon,
+	ImageIcon,
+	PencilEdit01Icon,
+	Search01Icon,
+	Upload01Icon,
+} from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import Image from 'next/image';
 import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
 import { toast } from 'sonner';
@@ -497,7 +498,7 @@ export default function CMS() {
 							variant="outline"
 							className="rounded-2xl border-2 font-black text-xs uppercase tracking-widest px-6"
 						>
-							<Database className="h-4 w-4 mr-2" />
+							<HugeiconsIcon icon={DatabaseIcon} className="h-4 w-4 mr-2" />
 							{seeding ? 'Seeding...' : 'Seed DB'}
 						</Button>
 						{activeTab === 'past-papers' ? (
@@ -505,7 +506,7 @@ export default function CMS() {
 								onClick={() => setIsPdfDrawerOpen(true)}
 								className="rounded-2xl h-12 px-6 bg-primary hover:bg-primary/90 shadow-2xl shadow-primary/20 font-black text-sm uppercase tracking-widest"
 							>
-								<FileArrowUp className="h-5 w-5 mr-2" />
+								<HugeiconsIcon icon={Upload01Icon} className="h-5 w-5 mr-2" />
 								Upload PDF
 							</Button>
 						) : (
@@ -515,7 +516,7 @@ export default function CMS() {
 								}}
 								className="rounded-2xl h-12 px-6 bg-primary hover:bg-primary/90 shadow-2xl shadow-primary/20 font-black text-sm uppercase tracking-widest"
 							>
-								<Plus className="h-5 w-5 mr-2" />
+								<HugeiconsIcon icon={Add01Icon} className="h-5 w-5 mr-2" />
 								Create New
 							</Button>
 						)}
@@ -554,7 +555,10 @@ export default function CMS() {
 				{/* MagnifyingGlass & Filters */}
 				<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-12 gap-3 sm:gap-4">
 					<div className="sm:col-span-2 md:col-span-6 relative">
-						<MagnifyingGlass className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+						<HugeiconsIcon
+							icon={Search01Icon}
+							className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground"
+						/>
 						<Input
 							value={activeTab === 'users' ? userSearchQuery : searchQuery}
 							onChange={(e) =>
@@ -664,7 +668,7 @@ export default function CMS() {
 																	onClick={() => handleEditQuestion(q)}
 																	aria-label="Pencil question"
 																>
-																	<PencilSimple className="h-5 w-5" />
+																	<HugeiconsIcon icon={PencilEdit01Icon} className="h-5 w-5" />
 																</Button>
 															</TooltipTrigger>
 															<TooltipContent>Pencil question</TooltipContent>
@@ -678,7 +682,7 @@ export default function CMS() {
 																	onClick={() => handleDeleteQuestion(q.id)}
 																	aria-label="Backspace question"
 																>
-																	<Trash className="h-5 w-5" />
+																	<HugeiconsIcon icon={Delete02Icon} className="h-5 w-5" />
 																</Button>
 															</TooltipTrigger>
 															<TooltipContent>Backspace question</TooltipContent>
@@ -921,7 +925,7 @@ export default function CMS() {
 															onClick={handleRemoveImage}
 															aria-label="Remove image"
 														>
-															<X className="h-5 w-5" />
+															<HugeiconsIcon icon={Cancel01Icon} className="h-5 w-5" />
 														</Button>
 													</div>
 												</div>
@@ -941,7 +945,10 @@ export default function CMS() {
 														className="w-full h-48 rounded-3xl border-2 border-dashed border-border flex flex-col items-center justify-center gap-4 hover:border-primary hover:bg-primary/5 transition-all cursor-pointer"
 													>
 														<div className="h-16 w-16 rounded-2xl bg-muted flex items-center justify-center">
-															<ImageSquare className="h-8 w-8 text-muted-foreground" />
+															<HugeiconsIcon
+																icon={ImageIcon}
+																className="h-8 w-8 text-muted-foreground"
+															/>
 														</div>
 														<span className="text-xs font-black uppercase tracking-widest text-muted-foreground">
 															Upload Image (Max 4MB)
@@ -1099,7 +1106,7 @@ export default function CMS() {
 												onClick={addOption}
 												className="rounded-xl h-10 px-4 font-black text-[10px] uppercase tracking-widest border-2"
 											>
-												<Plus className="h-4 w-4 mr-2" /> Add
+												<HugeiconsIcon icon={Add01Icon} className="h-4 w-4 mr-2" /> Add
 											</Button>
 										</div>
 
@@ -1133,7 +1140,7 @@ export default function CMS() {
 																onClick={() => removeOption(idx)}
 																aria-label="Remove option"
 															>
-																<X className="h-4 w-4" />
+																<HugeiconsIcon icon={Cancel01Icon} className="h-4 w-4" />
 															</Button>
 														</div>
 													</div>

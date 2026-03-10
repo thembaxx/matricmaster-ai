@@ -1,7 +1,8 @@
 'use client';
 
+import { SparklesIcon } from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import { Icon } from '@iconify/react';
-import { Sparkle } from '@phosphor-icons/react';
 import { m } from 'framer-motion';
 import { memo } from 'react';
 import { Card } from '@/components/ui/card';
@@ -19,7 +20,7 @@ export const SuggestedCards = memo(function SuggestedCards() {
 						<div className="absolute top-0 right-0 w-40 h-40 bg-primary/10 rounded-full -mr-20 -mt-20 blur-3xl group-hover:scale-125 transition-transform duration-700" />
 						<div className="relative z-10 flex items-center gap-8">
 							<div className="w-20 h-20 rounded-[1.5rem] bg-card flex items-center justify-center shadow-xl group-hover:rotate-6 transition-transform">
-								<Sparkle weight="bold" className="w-10 h-10 text-brand-amber" />
+								<HugeiconsIcon icon={SparklesIcon} className="w-10 h-10 text-brand-amber" />
 							</div>
 							<div className="space-y-1">
 								<h3 className="text-xl font-black text-foreground tracking-tighter uppercase">

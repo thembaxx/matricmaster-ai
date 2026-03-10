@@ -1,6 +1,7 @@
 'use client';
 
-import { Check, Lock, Star } from '@phosphor-icons/react';
+import { LockIcon, StarIcon, Tick01Icon } from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import { m } from 'framer-motion';
 import { memo } from 'react';
 import { ACHIEVEMENTS } from '@/constants/achievements';
@@ -45,17 +46,17 @@ export const AchievementBadges = memo(function AchievementBadges({
 
 							{isUnlocked ? (
 								<div className="absolute -top-1 -right-1 w-5 h-5 bg-green-500 rounded-full flex items-center justify-center shadow-sm">
-									<Check className="w-3 h-3 text-white" />
+									<HugeiconsIcon icon={Tick01Icon} className="w-3 h-3 text-white" />
 								</div>
 							) : (
 								<div className="absolute inset-0 flex items-center justify-center bg-background/50 rounded-2xl">
-									<Lock className="w-4 h-4 text-muted-foreground" />
+									<HugeiconsIcon icon={LockIcon} className="w-4 h-4 text-muted-foreground" />
 								</div>
 							)}
 
 							{achievement.points > 0 && isUnlocked && (
 								<div className="absolute -bottom-1 -right-1 flex items-center gap-0.5 px-1.5 py-0.5 bg-brand-amber rounded-full">
-									<Star className="w-2.5 h-2.5 text-white" />
+									<HugeiconsIcon icon={StarIcon} className="w-2.5 h-2.5 text-white" />
 									<span className="text-[8px] font-black text-white">{achievement.points}</span>
 								</div>
 							)}
@@ -99,7 +100,7 @@ export const AchievementBadgesCompact = memo(function AchievementBadgesCompact({
 	if (unlockedAchievements.length === 0) {
 		return (
 			<div className="flex items-center gap-2 text-muted-foreground">
-				<Lock className="w-4 h-4" />
+				<HugeiconsIcon icon={LockIcon} className="w-4 h-4" />
 				<span className="text-xs font-medium">No achievements yet</span>
 			</div>
 		);

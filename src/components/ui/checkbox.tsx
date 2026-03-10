@@ -1,9 +1,9 @@
 'use client';
 
-import { Check } from '@phosphor-icons/react';
+import { Tick01Icon } from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import * as CheckboxPrimitive from '@radix-ui/react-checkbox';
 import * as React from 'react';
-
 import { cn } from '@/lib/utils';
 
 const Checkbox = React.forwardRef<
@@ -19,7 +19,7 @@ const Checkbox = React.forwardRef<
 		{...props}
 	>
 		<CheckboxPrimitive.Indicator className={cn('grid place-content-center text-current')}>
-			<Check className="h-4 w-4" />
+			<HugeiconsIcon icon={Tick01Icon} className="h-4 w-4" />
 		</CheckboxPrimitive.Indicator>
 	</CheckboxPrimitive.Root>
 ));

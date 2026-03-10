@@ -1,4 +1,5 @@
-import { CaretLeft, CaretRight } from '@phosphor-icons/react';
+import { ArrowLeft01Icon, ArrowRight01Icon } from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import { Button } from '@/components/ui/button';
 
 interface PracticeNavigationProps {
@@ -23,7 +24,7 @@ export function PracticeNavigation({
 	return (
 		<div className="flex justify-between items-center pt-4 border-t">
 			<Button variant="outline" onClick={onPrevious} disabled={currentIndex === 0}>
-				<CaretLeft className="h-4 w-4 mr-1" />
+				<HugeiconsIcon icon={ArrowLeft01Icon} className="h-4 w-4 mr-1" />
 				Previous
 			</Button>
 
@@ -34,7 +35,7 @@ export function PracticeNavigation({
 			) : (
 				<Button onClick={onNext} disabled={currentIndex === totalProblems - 1}>
 					Next
-					<CaretRight className="h-4 w-4 ml-1" />
+					<HugeiconsIcon icon={ArrowRight01Icon} className="h-4 w-4 ml-1" />
 				</Button>
 			)}
 		</div>
