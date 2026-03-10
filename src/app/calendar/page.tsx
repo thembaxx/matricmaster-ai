@@ -9,7 +9,8 @@ import {
 	Plus,
 	Trash,
 } from '@phosphor-icons/react';
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { toast } from 'sonner';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -92,7 +93,7 @@ function CalendarGrid({
 						<div
 							key={event.id}
 							className={`text-xs px-1 py-0.5 rounded truncate ${
-								EVENT_TYPES.find((t) => t.value === event.eventType)?.color || 'bg-gray-100'
+								EVENT_TYPES.find((t) => t.value === event.eventType)?.color || 'bg-muted'
 							}`}
 						>
 							{event.title}
@@ -127,29 +128,60 @@ const MONTHS = [
 
 export default function CalendarPage() {
 	const { data: session } = useSession();
-	// Session available for future use with user-specific data
-	void session;
 	const [currentDate, setCurrentDate] = useState(new Date());
 	const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-	const [events, setEvents] = useState<CalendarEvent[]>([
-		{
-			id: '1',
-			title: 'Mathematics Paper 1',
-			description: 'Grade 12 Final Exam',
-			startTime: new Date(2026, 2, 15, 9, 0),
-			endTime: new Date(2026, 2, 15, 12, 0),
-			eventType: 'exam',
-			subject: 'Mathematics',
-		},
-		{
-			id: '2',
-			title: 'Physics Study Group',
-			startTime: new Date(2026, 2, 18, 14, 0),
-			endTime: new Date(2026, 2, 18, 16, 0),
-			eventType: 'study',
-			subject: 'Physical Sciences',
-		},
-	]);
+	const [events, setEvents] = useState<CalendarEvent[]>([]);
+	const [isLoading, setIsLoading] = useState(true);
+
+	const loadEvents = useCallback(async () => {
+		if (!session?.user?.id) {
+			setIsLoading(false);
+			return;
+		}
+
+		try {
+			const startDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+			const endDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+
+			const url = new URL('/api/calendar/events', window.location.origin);
+			url.searchParams.set('startDate', startDate.toISOString());
+			url.searchParams.set('endDate', endDate.toISOString());
+
+			const response = await fetch(url.toString());
+			const result = await response.json();
+
+			if (result.success && result.data) {
+				const mappedEvents: CalendarEvent[] = result.data.map(
+					(event: {
+						id: string;
+						title: string;
+						description?: string;
+						startTime: Date;
+						endTime: Date;
+						eventType: string;
+						subject?: string;
+					}) => ({
+						id: event.id,
+						title: event.title,
+						description: event.description,
+						startTime: new Date(event.startTime),
+						endTime: new Date(event.endTime),
+						eventType: event.eventType as CalendarEvent['eventType'],
+						subject: event.subject,
+					})
+				);
+				setEvents(mappedEvents);
+			}
+		} catch (error) {
+			console.error('Error loading events:', error);
+		} finally {
+			setIsLoading(false);
+		}
+	}, [session?.user?.id, currentDate]);
+
+	useEffect(() => {
+		loadEvents();
+	}, [loadEvents]);
 	const [showEventForm, setShowEventForm] = useState(false);
 	const [newEvent, setNewEvent] = useState<{
 		title: string;
@@ -200,20 +232,49 @@ export default function CalendarPage() {
 		});
 	};
 
-	const handleAddEvent = () => {
+	const handleAddEvent = async () => {
 		if (!newEvent.title || !newEvent.startTime || !newEvent.endTime) return;
 
-		const event: CalendarEvent = {
-			id: Date.now().toString(),
-			title: newEvent.title,
-			description: newEvent.description,
-			startTime: new Date(newEvent.startTime),
-			endTime: new Date(newEvent.endTime),
-			eventType: newEvent.eventType,
-			subject: newEvent.subject,
-		};
+		if (!session?.user?.id) {
+			toast.error('Please sign in to create events');
+			return;
+		}
 
-		setEvents([...events, event]);
+		try {
+			const response = await fetch('/api/calendar/events', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({
+					title: newEvent.title,
+					description: newEvent.description,
+					startTime: newEvent.startTime,
+					endTime: newEvent.endTime,
+					eventType: newEvent.eventType,
+				}),
+			});
+
+			const result = await response.json();
+
+			if (result.success) {
+				const createdEvent: CalendarEvent = {
+					id: result.data.id,
+					title: result.data.title,
+					description: result.data.description,
+					startTime: new Date(result.data.startTime),
+					endTime: new Date(result.data.endTime),
+					eventType: result.data.eventType,
+					subject: result.data.subject,
+				};
+				setEvents([...events, createdEvent]);
+				toast.success('Event created successfully');
+			} else {
+				toast.error(result.error || 'Failed to create event');
+			}
+		} catch (error) {
+			console.error('Error creating event:', error);
+			toast.error('Failed to create event');
+		}
+
 		setShowEventForm(false);
 		setNewEvent({
 			title: '',
@@ -226,13 +287,47 @@ export default function CalendarPage() {
 		});
 	};
 
-	const handleDeleteEvent = (eventId: string) => {
-		setEvents(events.filter((e) => e.id !== eventId));
+	const handleDeleteEvent = async (eventId: string) => {
+		if (!session?.user?.id) {
+			toast.error('Please sign in to delete events');
+			return;
+		}
+
+		try {
+			const url = new URL('/api/calendar/events', window.location.origin);
+			url.searchParams.set('id', eventId);
+
+			const response = await fetch(url.toString(), {
+				method: 'DELETE',
+			});
+
+			const result = await response.json();
+
+			if (result.success) {
+				setEvents(events.filter((e) => e.id !== eventId));
+				toast.success('Event deleted successfully');
+			} else {
+				toast.error(result.error || 'Failed to delete event');
+			}
+		} catch (error) {
+			console.error('Error deleting event:', error);
+			toast.error('Failed to delete event');
+		}
 	};
 
 	const selectedDateEvents = selectedDate
 		? events.filter((e) => new Date(e.startTime).toDateString() === selectedDate.toDateString())
 		: [];
+
+	if (isLoading) {
+		return (
+			<div className="container mx-auto py-8 max-w-6xl">
+				<div className="flex items-center justify-center h-64">
+					<div className="animate-spin rounded-full h-12 w-12 border-4 border-primary border-t-transparent" />
+				</div>
+			</div>
+		);
+	}
 
 	return (
 		<div className="container mx-auto py-8 max-w-6xl">
@@ -244,7 +339,7 @@ export default function CalendarPage() {
 						<p className="text-muted-foreground">Schedule and manage your study time</p>
 					</div>
 				</div>
-				<Button onClick={() => setShowEventForm(true)}>
+				<Button onClick={() => setShowEventForm(true)} disabled={!session?.user}>
 					<Plus className="h-4 w-4 mr-2" />
 					Add Event
 				</Button>
@@ -490,7 +585,7 @@ export default function CalendarPage() {
 								</div>
 							</div>
 							<div>
-								<span className="text-sm font-medium mb-1 block">Event TextT</span>
+								<span className="text-sm font-medium mb-1 block">Event Type</span>
 								<div className="flex gap-2 flex-wrap">
 									{EVENT_TYPES.map((type) => (
 										<Badge

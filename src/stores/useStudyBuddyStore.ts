@@ -1,3 +1,4 @@
+import { toast } from 'sonner';
 import { create } from 'zustand';
 import {
 	getDiscoverableBuddies,
@@ -221,21 +222,71 @@ export const useStudyBuddyStore = create<StudyBuddyState>((set, _get) => ({
 	},
 
 	handleSendRequest: async (buddyId: string) => {
-		console.log('Sending buddy request to:', buddyId);
-		// API call implementation would go here
+		try {
+			const response = await fetch('/api/buddies', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ recipientId: buddyId }),
+			});
+
+			const result = await response.json();
+
+			if (result.success) {
+				toast.success('Buddy request sent!');
+			} else {
+				toast.error(result.error || 'Failed to send request');
+			}
+		} catch (error) {
+			console.error('Error sending buddy request:', error);
+			toast.error('Failed to send buddy request');
+		}
 	},
 
 	handleAcceptRequest: async (requestId: string) => {
-		set((state) => ({
-			buddyRequests: state.buddyRequests.filter((r) => r.id !== requestId),
-		}));
-		// API call implementation would go here
+		try {
+			const response = await fetch('/api/buddies', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ action: 'accept', requestId }),
+			});
+
+			const result = await response.json();
+
+			if (result.success) {
+				set((state) => ({
+					buddyRequests: state.buddyRequests.filter((r) => r.id !== requestId),
+				}));
+				toast.success('Buddy request accepted!');
+			} else {
+				toast.error(result.error || 'Failed to accept request');
+			}
+		} catch (error) {
+			console.error('Error accepting buddy request:', error);
+			toast.error('Failed to accept buddy request');
+		}
 	},
 
 	handleRejectRequest: async (requestId: string) => {
-		set((state) => ({
-			buddyRequests: state.buddyRequests.filter((r) => r.id !== requestId),
-		}));
-		// API call implementation would go here
+		try {
+			const response = await fetch('/api/buddies', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ action: 'reject', requestId }),
+			});
+
+			const result = await response.json();
+
+			if (result.success) {
+				set((state) => ({
+					buddyRequests: state.buddyRequests.filter((r) => r.id !== requestId),
+				}));
+				toast.success('Buddy request rejected');
+			} else {
+				toast.error(result.error || 'Failed to reject request');
+			}
+		} catch (error) {
+			console.error('Error rejecting buddy request:', error);
+			toast.error('Failed to reject buddy request');
+		}
 	},
 }));
