@@ -56,69 +56,69 @@ export default function Landing() {
 						<div className="flex-1 flex flex-col items-center lg:items-start text-center lg:text-left space-y-6 sm:space-y-8">
 							<div className="space-y-6">
 								<m.div
-									initial={{ opacity: 0, scale: 0.9 }}
+									initial={{ opacity: 0, scale: 0.95 }}
 									animate={{ opacity: 1, scale: 1 }}
-									transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+									transition={{ type: 'spring', stiffness: 300, damping: 28 }}
 								>
-									<Badge className="bg-primary-orange/20 text-primary-orange border-none rounded-full px-4 sm:px-6 py-2 font-black text-[10px] tracking-widest uppercase mb-4 shadow-sm animate-pulse-slow">
+									<Badge className="bg-primary/10 text-primary border-none rounded-full px-4 py-1.5 text-xs font-medium mb-4">
 										<Sparkle weight="bold" className="w-3 h-3 mr-1.5" />
-										Trusted by 50,000+ Students
+										Trusted by 50,000+ students
 									</Badge>
 								</m.div>
 								<SmoothWords
 									as="h1"
-									text="Master your Matrics through practice."
-									className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-extrabold text-foreground drop-shadow-sm leading-[0.95] tracking-tighter uppercase"
-									stagger={0.06}
+									text="Master your Matric exams"
+									className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-foreground leading-tight tracking-tight"
+									stagger={0.04}
 								/>
 								<SmoothText
-									text="Interactive past papers and step-by-step guides for South African Grade 12 students."
-									className="text-base md:text-lg lg:text-xl font-medium text-label-secondary max-w-xl mx-auto lg:mx-0 leading-relaxed pt-4 sm:pt-6 tracking-tight"
-									delay={0.4}
+									text="Interactive past papers and step-by-step explanations built for South African Grade 12 students."
+									className="text-base md:text-lg text-muted-foreground max-w-xl mx-auto lg:mx-0"
+									delay={0.3}
 								/>
 							</div>
 
 							<m.div
-								initial={{ opacity: 0, y: 20 }}
+								initial={{ opacity: 0, y: 12 }}
 								animate={{ opacity: 1, y: 0 }}
-								transition={{ delay: 0.6 }}
+								transition={{ delay: 0.4, type: 'spring', stiffness: 300, damping: 28 }}
 								className="w-full max-w-sm flex flex-col sm:flex-row gap-3 sm:gap-4 lg:max-w-none"
 							>
 								<Button
 									size="lg"
-									className="group relative w-full sm:w-auto lg:flex-none lg:w-72 rounded-2xl shrink-0 h-14 lg:h-16 xl:h-18 text-base lg:text-lg xl:text-xl font-black uppercase tracking-widest shadow-2xl ios-active-scale transition-all bg-primary hover:bg-primary/90"
+									className="group relative w-full sm:w-auto lg:flex-none lg:w-64 rounded-xl shrink-0 h-12 text-base font-semibold shadow-sm ios-active-scale"
 									onClick={() => handleAuthRoute('/dashboard')}
 								>
 									<span className="relative z-10 flex items-center justify-center">
 										Start Learning
-										<CaretRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+										<CaretRight className="w-4 h-4 ml-2 group-hover:translate-x-0.5 transition-transform" />
 									</span>
 								</Button>
 								<Button
 									variant="outline"
 									size="lg"
-									className="group w-full sm:w-auto lg:flex-none lg:w-64 rounded-2xl h-14 lg:h-16 xl:h-18 text-base lg:text-lg font-black uppercase tracking-widest border-3 border-border hover:border-primary-violet/50 hover:bg-primary-violet/5 ios-active-scale transition-all"
+									className="group w-full sm:w-auto lg:flex-none lg:w-56 rounded-xl h-12 text-base font-medium ios-active-scale"
 									onClick={() => handleAuthRoute('/past-papers')}
 								>
 									<span className="flex items-center gap-2">
-										<FileText className="w-5 h-5" />
-										Past Papers
+										<FileText className="w-4 h-4" />
+										Browse Past Papers
 									</span>
 								</Button>
 							</m.div>
 
-							<div className="flex items-center gap-4 pt-4 opacity-60">
-								<div className="flex -space-x-3">
+							<div className="flex items-center gap-3 pt-2">
+								<div className="flex -space-x-2">
 									{[1, 2, 3, 4].map((i) => (
 										<div
 											key={`avatar-${i}`}
-											className="w-10 h-10 rounded-full border-2 border-background bg-secondary flex items-center justify-center overflow-hidden relative shadow-sm"
+											className="w-8 h-8 rounded-full border-2 border-background bg-secondary flex items-center justify-center overflow-hidden relative shadow-sm"
 										>
 											<Image
 												src={`https://api.dicebear.com/7.x/avataaars/svg?seed=user-${i}`}
 												alt="user"
 												fill
-												sizes="40px"
+												sizes="32px"
 												className="object-cover"
 												unoptimized
 												priority={i < 2}
@@ -126,22 +126,21 @@ export default function Landing() {
 										</div>
 									))}
 								</div>
-								<p className="text-[10px] font-black uppercase tracking-widest text-label-tertiary">
-									Join our growing community
-								</p>
+								<p className="text-sm text-muted-foreground">Join our community</p>
 							</div>
 						</div>
 
 						{/* Hero Illustration - Desktop Sizing */}
 						<m.div
-							initial={{ opacity: 0, x: 50, rotate: 5 }}
-							animate={{ opacity: 1, x: 0, rotate: 0 }}
-							transition={{ type: 'spring', stiffness: 100, damping: 20, delay: 0.3 }}
+							initial={{ opacity: 0, x: 30 }}
+							animate={{ opacity: 1, x: 0 }}
+							transition={{ type: 'spring', stiffness: 300, damping: 28, delay: 0.2 }}
 							className="relative flex-1 w-full max-w-[320px] sm:max-w-100 md:max-w-112.5 lg:max-w-none flex items-center justify-center"
 						>
 							<m.div
-								whileHover={{ scale: 1.02 }}
-								className="relative w-full aspect-square max-w-75 sm:max-w-87.5 md:max-w-112.5 bg-card rounded-3xl sm:rounded-[4rem] shadow-xl flex items-center justify-center transform border border-border transition-transform duration-700 overflow-hidden"
+								whileHover={{ scale: 1.01 }}
+								whileTap={{ scale: 0.99 }}
+								className="relative w-full aspect-square max-w-75 sm:max-w-87.5 md:max-w-112.5 bg-card rounded-3xl shadow-md flex items-center justify-center transform border border-border transition-all duration-300 overflow-hidden"
 							>
 								<div className="absolute inset-0 bg-primary/5" />
 
