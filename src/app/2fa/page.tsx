@@ -1,6 +1,12 @@
 'use client';
 
-import { CircleNotch, DeviceMobile, Key, Shield } from '@phosphor-icons/react';
+import {
+	Key01Icon,
+	Loading03Icon,
+	Shield01Icon,
+	SmartPhone01Icon,
+} from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
@@ -77,7 +83,7 @@ export default function TwoFactorPage() {
 			<Card className="w-full max-w-md">
 				<CardHeader className="text-center">
 					<div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
-						<Shield className="h-8 w-8 text-primary" />
+						<HugeiconsIcon icon={Shield01Icon} className="h-8 w-8 text-primary" />
 					</div>
 					<CardTitle className="text-2xl font-bold">Two-Factor Authentication</CardTitle>
 					<CardDescription>
@@ -113,7 +119,7 @@ export default function TwoFactorPage() {
 									onClick={handleSendOtp}
 									disabled={isLoading}
 								>
-									<DeviceMobile className="mr-2 h-4 w-4" />
+									<HugeiconsIcon icon={SmartPhone01Icon} className="mr-2 h-4 w-4" />
 									PaperPlaneRight code to email
 								</Button>
 							</div>
@@ -150,12 +156,12 @@ export default function TwoFactorPage() {
 						<Button type="submit" className="w-full" disabled={isLoading}>
 							{isLoading ? (
 								<>
-									<CircleNotch className="mr-2 h-4 w-4 animate-spin" />
+									<HugeiconsIcon icon={Loading03Icon} className="mr-2 h-4 w-4 animate-spin" />
 									Verifying...
 								</>
 							) : (
 								<>
-									<Key className="mr-2 h-4 w-4" />
+									<HugeiconsIcon icon={Key01Icon} className="mr-2 h-4 w-4" />
 									Verify
 								</>
 							)}

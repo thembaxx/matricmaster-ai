@@ -1,6 +1,14 @@
 'use client';
 
-import { Fire, Lightning, Lock, Medal, Star, Trophy } from '@phosphor-icons/react';
+import {
+	ChampionIcon,
+	FireIcon,
+	FlashIcon,
+	LockIcon,
+	Medal01Icon,
+	StarIcon,
+} from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import { AnimatePresence, m } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { Card } from '@/components/ui/card';
@@ -80,10 +88,10 @@ export default function Achievements() {
 	const badgesToNext = nextMilestone - unlockedCount;
 
 	const categories = [
-		{ id: 'all', label: 'All Badges', icon: Star },
-		{ id: 'science', label: 'Science', icon: Lightning },
-		{ id: 'math', label: 'Math', icon: Medal },
-		{ id: 'streak', label: 'Streaks', icon: Fire },
+		{ id: 'all', label: 'All Badges', icon: StarIcon },
+		{ id: 'science', label: 'Science', icon: FlashIcon },
+		{ id: 'math', label: 'Math', icon: Medal01Icon },
+		{ id: 'streak', label: 'Streaks', icon: FireIcon },
 	];
 
 	if (isLoading) {
@@ -140,8 +148,8 @@ export default function Achievements() {
 										className="absolute inset-0 bg-white/10 rounded-full blur-2xl"
 									/>
 									<div className="w-32 h-32 sm:w-48 sm:h-48 lg:w-64 lg:h-64 rounded-2xl sm:rounded-[3.5rem] bg-white/10 backdrop-blur-3xl flex items-center justify-center border-4 border-white/20 shadow-2xl relative z-10">
-										<Trophy
-											weight="bold"
+										<HugeiconsIcon
+											icon={ChampionIcon}
 											aria-hidden="true"
 											className="w-16 h-16 sm:w-24 sm:h-24 lg:w-32 lg:h-32 text-white drop-shadow-2xl"
 										/>
@@ -175,7 +183,8 @@ export default function Achievements() {
 										: 'text-muted-foreground hover:bg-muted hover:text-foreground'
 								}`}
 							>
-								<Icon
+								<HugeiconsIcon
+									icon={Icon}
 									aria-hidden="true"
 									className={`w-4 h-4 sm:w-5 sm:h-5 ${isActive ? 'scale-110' : ''}`}
 								/>
@@ -194,7 +203,11 @@ export default function Achievements() {
 							exit={{ opacity: 0 }}
 							className="text-center py-32 space-y-4 opacity-50"
 						>
-							<Lock aria-hidden="true" className="w-16 h-16 mx-auto text-muted-foreground" />
+							<HugeiconsIcon
+								icon={LockIcon}
+								aria-hidden="true"
+								className="w-16 h-16 mx-auto text-muted-foreground"
+							/>
 							<p className="text-xl font-bold uppercase tracking-widest">No achievements yet.</p>
 						</m.div>
 					) : (
@@ -227,14 +240,18 @@ export default function Achievements() {
 														{badge.icon}
 													</span>
 												) : (
-													<Trophy
-														weight="bold"
+													<HugeiconsIcon
+														icon={ChampionIcon}
 														aria-hidden="true"
 														className="w-12 h-12 text-primary"
 													/>
 												)
 											) : (
-												<Lock aria-hidden="true" className="w-10 h-10 text-muted-foreground/30" />
+												<HugeiconsIcon
+													icon={LockIcon}
+													aria-hidden="true"
+													className="w-10 h-10 text-muted-foreground/30"
+												/>
 											)}
 										</div>
 

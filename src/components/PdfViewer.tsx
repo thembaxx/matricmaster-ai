@@ -1,23 +1,22 @@
 'use client';
 
 import {
-	ArrowClockwise,
-	CaretLeft,
-	CaretRight,
-	CornersIn,
-	CornersOut,
-	DownloadSimple,
-	Highlighter,
-	MagnifyingGlass,
-	MagnifyingGlassMinus,
-	MagnifyingGlassPlus,
-	Moon,
-	Note,
-	Sparkle,
-	Sun,
-	TextT,
-	X,
-} from '@phosphor-icons/react';
+	ArrowLeft01Icon,
+	ArrowRight01Icon,
+	Cancel01Icon,
+	Download01Icon,
+	MaximizeIcon,
+	MinimizeIcon,
+	MoonIcon,
+	Note01Icon,
+	PencilEdit01Icon,
+	Refresh01Icon,
+	Search01Icon,
+	SparklesIcon,
+	Sun01Icon,
+	TextIcon,
+} from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import { AnimatePresence, domAnimation, LazyMotion, m } from 'framer-motion';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Document, Page, pdfjs } from 'react-pdf';
@@ -279,7 +278,7 @@ export default function PdfViewer({ url, onClose, title }: PdfViewerProps) {
 								disabled={pageNumber <= 1}
 								aria-label="Previous page"
 							>
-								<CaretLeft className="w-5 h-5" />
+								<HugeiconsIcon icon={ArrowLeft01Icon} className="w-5 h-5" />
 							</Button>
 							<div className="px-2 md:px-3 flex items-center gap-1 min-w-[70px] md:min-w-[80px] justify-center">
 								<Input
@@ -292,7 +291,7 @@ export default function PdfViewer({ url, onClose, title }: PdfViewerProps) {
 									className="w-8 md:w-10 h-7 p-0 text-center bg-transparent border-none font-bold text-sm focus-visible:ring-0 appearance-none"
 									aria-label={`Current page: ${pageNumber}`}
 								/>
-								<span className="text-xs font-medium text-zinc-500">/ {numPages}</span>
+								<span className="text-xs font-medium text-muted-foreground">/ {numPages}</span>
 							</div>
 							<Button
 								variant="ghost"
@@ -302,7 +301,7 @@ export default function PdfViewer({ url, onClose, title }: PdfViewerProps) {
 								disabled={pageNumber >= numPages}
 								aria-label="Next page"
 							>
-								<CaretRight className="w-5 h-5" />
+								<HugeiconsIcon icon={ArrowRight01Icon} className="w-5 h-5" />
 							</Button>
 						</div>
 					</div>
@@ -316,7 +315,7 @@ export default function PdfViewer({ url, onClose, title }: PdfViewerProps) {
 							onClick={handleZoomOut}
 							aria-label="Zoom out"
 						>
-							<MagnifyingGlassMinus className="w-5 h-5" />
+							<HugeiconsIcon icon={Search01Icon} className="w-5 h-5" />
 						</Button>
 						<span
 							className="text-xs font-bold min-w-[50px] text-center tabular-nums"
@@ -331,7 +330,7 @@ export default function PdfViewer({ url, onClose, title }: PdfViewerProps) {
 							onClick={handleZoomIn}
 							aria-label="Zoom in"
 						>
-							<MagnifyingGlassPlus className="w-5 h-5" />
+							<HugeiconsIcon icon={Search01Icon} className="w-5 h-5" />
 						</Button>
 						<div className="w-px h-4 bg-zinc-300 dark:bg-zinc-600 mx-1" aria-hidden="true" />
 						<Button
@@ -342,7 +341,7 @@ export default function PdfViewer({ url, onClose, title }: PdfViewerProps) {
 							title="Reset zoom"
 							aria-label="Reset zoom to 100%"
 						>
-							<ArrowClockwise className="w-5 h-5" />
+							<HugeiconsIcon icon={Refresh01Icon} className="w-5 h-5" />
 						</Button>
 						<Button
 							variant="ghost"
@@ -352,7 +351,7 @@ export default function PdfViewer({ url, onClose, title }: PdfViewerProps) {
 							title="Rotate 90deg"
 							aria-label="Rotate document clockwise"
 						>
-							<ArrowClockwise className="w-5 h-5 rotate-90" />
+							<HugeiconsIcon icon={Refresh01Icon} className="w-5 h-5 rotate-90" />
 						</Button>
 					</div>
 					{/* Right: Actions */}
@@ -371,7 +370,7 @@ export default function PdfViewer({ url, onClose, title }: PdfViewerProps) {
 								aria-label="MagnifyingGlass in document"
 								aria-expanded={showSearch}
 							>
-								<MagnifyingGlass className="w-5 h-5" />
+								<HugeiconsIcon icon={Search01Icon} className="w-5 h-5" />
 							</Button>
 
 							<Button
@@ -387,7 +386,7 @@ export default function PdfViewer({ url, onClose, title }: PdfViewerProps) {
 								aria-label="Toggle annotations sidebar"
 								aria-expanded={showNotes}
 							>
-								<Note className="w-5 h-5" />
+								<HugeiconsIcon icon={Note01Icon} className="w-5 h-5" />
 							</Button>
 
 							<Button
@@ -398,9 +397,12 @@ export default function PdfViewer({ url, onClose, title }: PdfViewerProps) {
 								aria-label={mounted && isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
 							>
 								{mounted && isDarkMode ? (
-									<Sun className="w-5 h-5 text-yellow-500" />
+									<HugeiconsIcon icon={Sun01Icon} className="w-5 h-5 text-yellow-500" />
 								) : (
-									<Moon className="w-5 h-5 text-zinc-600 dark:text-zinc-400" />
+									<HugeiconsIcon
+										icon={MoonIcon}
+										className="w-5 h-5 text-zinc-600 dark:text-muted-foreground"
+									/>
 								)}
 							</Button>
 						</div>
@@ -414,9 +416,9 @@ export default function PdfViewer({ url, onClose, title }: PdfViewerProps) {
 								aria-label={isFullscreen ? 'Exit fullscreen' : 'Enter fullscreen'}
 							>
 								{isFullscreen ? (
-									<CornersIn className="w-5 h-5" />
+									<HugeiconsIcon icon={MinimizeIcon} className="w-5 h-5" />
 								) : (
-									<CornersOut className="w-5 h-5" />
+									<HugeiconsIcon icon={MaximizeIcon} className="w-5 h-5" />
 								)}
 							</Button>
 
@@ -433,7 +435,7 @@ export default function PdfViewer({ url, onClose, title }: PdfViewerProps) {
 									rel="noopener noreferrer"
 									aria-label="DownloadSimple PDF"
 								>
-									<DownloadSimple className="w-5 h-5" />
+									<HugeiconsIcon icon={Download01Icon} className="w-5 h-5" />
 								</a>
 							</Button>
 						</div>
@@ -446,7 +448,7 @@ export default function PdfViewer({ url, onClose, title }: PdfViewerProps) {
 								onClick={onClose}
 								aria-label="Close viewer"
 							>
-								<X className="w-5 h-5" />
+								<HugeiconsIcon icon={Cancel01Icon} className="w-5 h-5" />
 							</Button>
 						)}
 					</div>
@@ -462,7 +464,7 @@ export default function PdfViewer({ url, onClose, title }: PdfViewerProps) {
 							className="absolute top-20 left-1/2 z-40 w-full max-w-md px-4"
 						>
 							<div className="premium-glass p-2 rounded-2xl flex items-center gap-2 shadow-2xl border border-white/20 dark:border-zinc-800/50">
-								<MagnifyingGlass className="w-4 h-4 text-zinc-400 ml-2" />
+								<HugeiconsIcon icon={Search01Icon} className="w-4 h-4 text-muted-foreground ml-2" />
 								<Input
 									type="text"
 									placeholder="Find in document..."
@@ -478,7 +480,7 @@ export default function PdfViewer({ url, onClose, title }: PdfViewerProps) {
 									onClick={() => setShowSearch(false)}
 									aria-label="Close search"
 								>
-									<X className="w-4 h-4" />
+									<HugeiconsIcon icon={Cancel01Icon} className="w-4 h-4" />
 								</Button>
 							</div>
 						</m.div>
@@ -535,7 +537,7 @@ export default function PdfViewer({ url, onClose, title }: PdfViewerProps) {
 																	<div className="h-8 w-8 bg-brand-blue/20 rounded-full animate-pulse" />
 																</div>
 															</div>
-															<p className="text-sm font-black text-zinc-500 animate-pulse uppercase tracking-[0.2em]">
+															<p className="text-sm font-black text-muted-foreground animate-pulse uppercase tracking-[0.2em]">
 																Preparing View...
 															</p>
 														</div>
@@ -543,11 +545,14 @@ export default function PdfViewer({ url, onClose, title }: PdfViewerProps) {
 													error={
 														<div className="flex flex-col items-center justify-center p-20 text-center gap-6 min-h-[600px]">
 															<div className="w-20 h-20 bg-red-100 dark:bg-red-900/20 rounded-3xl flex items-center justify-center shadow-inner">
-																<X className="w-10 h-10 text-red-500" />
+																<HugeiconsIcon
+																	icon={Cancel01Icon}
+																	className="w-10 h-10 text-red-500"
+																/>
 															</div>
 															<div className="space-y-2">
 																<h3 className="font-bold text-xl">Unable to load PDF</h3>
-																<p className="text-sm text-zinc-500 max-w-xs">
+																<p className="text-sm text-muted-foreground max-w-xs">
 																	There was an error fetching the document. Please check your
 																	connection.
 																</p>
@@ -637,7 +642,7 @@ export default function PdfViewer({ url, onClose, title }: PdfViewerProps) {
 											onClick={() => setSelectedText('')}
 											aria-label="Cancel selection"
 										>
-											<X className="w-4 h-4" />
+											<HugeiconsIcon icon={Cancel01Icon} className="w-4 h-4" />
 										</Button>
 									</div>
 								</m.div>
@@ -657,11 +662,11 @@ export default function PdfViewer({ url, onClose, title }: PdfViewerProps) {
 							<header className="px-6 py-5 border-b flex items-center justify-between sticky top-0 bg-transparent z-10">
 								<div className="flex items-center gap-3">
 									<div className="w-10 h-10 rounded-2xl bg-brand-blue/10 flex items-center justify-center">
-										<Note className="w-5 h-5 text-brand-blue" />
+										<HugeiconsIcon icon={Note01Icon} className="w-5 h-5 text-brand-blue" />
 									</div>
 									<div>
 										<h3 className="font-bold tracking-tight text-lg">My Notes</h3>
-										<p className="text-[10px] font-black uppercase tracking-widest text-zinc-400">
+										<p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">
 											{highlights.length} Annotations
 										</p>
 									</div>
@@ -673,7 +678,7 @@ export default function PdfViewer({ url, onClose, title }: PdfViewerProps) {
 									onClick={() => setShowNotes(false)}
 									aria-label="Hide sidebar"
 								>
-									<X className="w-5 h-5" />
+									<HugeiconsIcon icon={Cancel01Icon} className="w-5 h-5" />
 								</Button>
 							</header>
 
@@ -683,21 +688,21 @@ export default function PdfViewer({ url, onClose, title }: PdfViewerProps) {
 										highlights.map((highlight) => (
 											<div
 												key={highlight.id}
-												className="group relative p-5 rounded-[2rem] border border-zinc-200 dark:border-zinc-800 transition-all hover:shadow-xl hover:border-brand-blue/30 bg-card/50"
+												className="group relative p-5 rounded-[2rem] border border-border transition-all hover:shadow-xl hover:border-brand-blue/30 bg-card/50"
 												style={{ borderLeftWidth: '8px', borderLeftColor: highlight.color }}
 											>
 												<div className="flex items-start justify-between gap-4 mb-4">
-													<span className="px-3 py-1 rounded-full bg-muted text-[10px] font-black uppercase tracking-[0.15em] text-zinc-500 border border-zinc-200 dark:border-zinc-700">
+													<span className="px-3 py-1 rounded-full bg-muted text-[10px] font-black uppercase tracking-[0.15em] text-muted-foreground border border-zinc-200 dark:border-zinc-700">
 														Page {highlight.pageNumber}
 													</span>
 													<Button
 														variant="ghost"
 														size="icon"
-														className="h-9 w-9 md:h-8 md:w-8 rounded-full md:opacity-0 md:group-hover:opacity-100 opacity-100 transition-opacity hover:bg-red-50 dark:hover:bg-red-900/20 text-zinc-400 hover:text-red-500 touch-manipulation"
+														className="h-9 w-9 md:h-8 md:w-8 rounded-full md:opacity-0 md:group-hover:opacity-100 opacity-100 transition-opacity hover:bg-red-50 dark:hover:bg-red-900/20 text-muted-foreground hover:text-red-500 touch-manipulation"
 														onClick={() => deleteHighlight(highlight.id)}
 														aria-label="Backspace highlight"
 													>
-														<X className="w-4 h-4" />
+														<HugeiconsIcon icon={Cancel01Icon} className="w-4 h-4" />
 													</Button>
 												</div>
 
@@ -709,7 +714,10 @@ export default function PdfViewer({ url, onClose, title }: PdfViewerProps) {
 													{highlight.note ? (
 														<div className="p-4 rounded-2xl bg-zinc-50 dark:bg-zinc-900 border border-border text-sm shadow-inner relative overflow-hidden">
 															<div className="absolute top-0 right-0 p-1">
-																<Highlighter className="w-3 h-3 text-zinc-300 opacity-50" />
+																<HugeiconsIcon
+																	icon={PencilEdit01Icon}
+																	className="w-3 h-3 text-zinc-300 opacity-50"
+																/>
 															</div>
 															<p className="text-muted-foreground leading-relaxed">
 																{highlight.note}
@@ -720,13 +728,16 @@ export default function PdfViewer({ url, onClose, title }: PdfViewerProps) {
 													<Button
 														variant="outline"
 														size="sm"
-														className="w-full rounded-2xl text-[11px] font-black uppercase tracking-widest gap-2 py-5 border-zinc-200 dark:border-zinc-800 hover:border-brand-blue hover:text-brand-blue transition-all group/btn"
+														className="w-full rounded-2xl text-[11px] font-black uppercase tracking-widest gap-2 py-5 border-border hover:border-brand-blue hover:text-brand-blue transition-all group/btn"
 														onClick={() => {
 															const note = prompt('Add a note to this highlight:');
 															if (note) addNote(highlight.id, note);
 														}}
 													>
-														<TextT className="w-3 h-3 transition-transform group-hover/btn:scale-125" />
+														<HugeiconsIcon
+															icon={TextIcon}
+															className="w-3 h-3 transition-transform group-hover/btn:scale-125"
+														/>
 														{highlight.note ? 'Pencil My Note' : 'Add a Note'}
 													</Button>
 												</div>
@@ -736,16 +747,19 @@ export default function PdfViewer({ url, onClose, title }: PdfViewerProps) {
 										<div className="py-24 flex flex-col items-center justify-center text-center px-4">
 											<div className="relative mb-6">
 												<div className="w-20 h-20 bg-muted rounded-[2.5rem] flex items-center justify-center transform rotate-6 animate-pulse">
-													<Highlighter className="w-10 h-10 text-zinc-300" />
+													<HugeiconsIcon
+														icon={PencilEdit01Icon}
+														className="w-10 h-10 text-zinc-300"
+													/>
 												</div>
 												<div className="absolute -bottom-2 -right-2 w-10 h-10 bg-brand-blue rounded-full flex items-center justify-center shadow-lg border-4 border-white dark:border-zinc-950">
-													<Sparkle weight="bold" className="w-4 h-4 text-white" />
+													<HugeiconsIcon icon={SparklesIcon} className="w-4 h-4 text-white" />
 												</div>
 											</div>
 											<h4 className="font-black text-sm uppercase tracking-widest mb-3">
 												No highlights yet
 											</h4>
-											<p className="text-xs text-zinc-500 leading-relaxed max-w-[200px]">
+											<p className="text-xs text-muted-foreground leading-relaxed max-w-[200px]">
 												Select any text in the document to create a highlight and add notes.
 											</p>
 										</div>

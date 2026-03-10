@@ -1,17 +1,18 @@
 'use client';
 
 import {
-	CaretRight,
+	ArrowRight01Icon,
+	Cancel01Icon,
+	ChampionIcon,
 	ChartBar,
-	CheckCircle,
-	CircleNotch,
-	Clock,
-	ClockCounterClockwise,
-	Lightning,
-	Sparkle,
-	Trophy,
-	X,
-} from '@phosphor-icons/react';
+	CheckmarkCircle02Icon,
+	Clock01Icon,
+	FlashIcon,
+	Loading03Icon,
+	Refresh01Icon,
+	SparklesIcon,
+} from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import confetti from 'canvas-confetti';
 import { AnimatePresence, m } from 'framer-motion';
 import Image from 'next/image';
@@ -118,7 +119,7 @@ export default function LessonComplete() {
 	if (!result) {
 		return (
 			<div className="flex flex-col h-full bg-background items-center justify-center">
-				<CircleNotch className="w-12 h-12 animate-spin text-primary" />
+				<HugeiconsIcon icon={Loading03Icon} className="w-12 h-12 animate-spin text-primary" />
 			</div>
 		);
 	}
@@ -132,7 +133,7 @@ export default function LessonComplete() {
 					onClick={() => router.push('/dashboard')}
 					className="rounded-full text-foreground"
 				>
-					<X className="w-6 h-6" />
+					<HugeiconsIcon icon={Cancel01Icon} className="w-6 h-6" />
 				</Button>
 				<h1 className="text-xl font-black text-foreground tracking-tight uppercase">Success</h1>
 				<div className="w-10" />
@@ -173,7 +174,7 @@ export default function LessonComplete() {
 						<h2 className="text-5xl lg:text-7xl font-black text-foreground tracking-tighter uppercase leading-none">
 							Lesson Complete!
 						</h2>
-						<p className="text-zinc-500 dark:text-zinc-400 font-medium text-lg">
+						<p className="text-muted-foreground dark:text-muted-foreground font-medium text-lg">
 							{result.accuracy >= 80
 								? 'Excellent work! You nailed it!'
 								: result.accuracy >= 60
@@ -190,7 +191,7 @@ export default function LessonComplete() {
 					>
 						<div className="bg-card p-4 rounded-3xl flex flex-col items-center shadow-xl border border-border/50">
 							<div className="w-10 h-10 rounded-2xl bg-accent-lime/10 flex items-center justify-center mb-3">
-								<CheckCircle className="w-6 h-6 text-accent-lime" />
+								<HugeiconsIcon icon={CheckmarkCircle02Icon} className="w-6 h-6 text-accent-lime" />
 							</div>
 							<span className="text-xl font-black text-foreground tracking-tight">
 								{result.accuracy}%
@@ -202,7 +203,7 @@ export default function LessonComplete() {
 
 						<div className="bg-card p-4 rounded-3xl flex flex-col items-center shadow-xl border border-border/50">
 							<div className="w-10 h-10 rounded-2xl bg-primary-cyan/10 flex items-center justify-center mb-3">
-								<Clock className="w-6 h-6 text-primary-cyan" />
+								<HugeiconsIcon icon={Clock01Icon} className="w-6 h-6 text-primary-cyan" />
 							</div>
 							<span className="text-xl font-black text-foreground tracking-tight">
 								{formatDuration(result.durationSeconds)}
@@ -214,7 +215,7 @@ export default function LessonComplete() {
 
 						<div className="bg-card p-4 rounded-3xl flex flex-col items-center shadow-xl border border-border/50">
 							<div className="w-10 h-10 rounded-2xl bg-primary-orange/10 flex items-center justify-center mb-3">
-								<Lightning weight="bold" className="w-6 h-6 text-primary-orange" />
+								<HugeiconsIcon icon={FlashIcon} className="w-6 h-6 text-primary-orange" />
 							</div>
 							<span className="text-xl font-black text-primary-orange tracking-tight">
 								{isCompleting ? '...' : `+${pointsEarned}`}
@@ -235,12 +236,12 @@ export default function LessonComplete() {
 								className="w-full max-w-md space-y-3 mb-8"
 							>
 								<h3 className="text-lg font-black text-foreground text-left ml-1 flex items-center gap-2 uppercase tracking-tight">
-									<Sparkle weight="bold" className="w-5 h-5 text-primary-orange" />
+									<HugeiconsIcon icon={SparklesIcon} className="w-5 h-5 text-primary-orange" />
 									Rewards Unlocked
 								</h3>
-								<div className="bg-white dark:bg-neutral-900 p-6 rounded-[2rem] flex items-center gap-5 shadow-2xl border border-primary-orange/20">
+								<div className="bg-card p-6 rounded-[2rem] flex items-center gap-5 shadow-2xl border border-primary-orange/20">
 									<div className="w-16 h-16 bg-gradient-to-br from-primary-orange to-accent-pink rounded-2xl flex items-center justify-center shrink-0 shadow-lg">
-										<Trophy weight="bold" className="w-8 h-8 text-white" />
+										<HugeiconsIcon icon={ChampionIcon} className="w-8 h-8 text-white" />
 									</div>
 									<div className="flex-1">
 										<p className="text-[10px] font-black text-primary-orange uppercase tracking-widest mb-0.5 opacity-80">
@@ -298,14 +299,14 @@ export default function LessonComplete() {
 							onClick={() => router.push('/dashboard')}
 						>
 							Keep Going
-							<CaretRight className="w-5 h-5" />
+							<HugeiconsIcon icon={ArrowRight01Icon} className="w-5 h-5" />
 						</Button>
 						<Button
 							variant="ghost"
 							className="w-full h-14 rounded-2xl font-black text-sm uppercase tracking-widest text-muted-foreground hover:text-foreground flex items-center justify-center gap-2"
 							onClick={() => setShowAnalytics(true)}
 						>
-							<ChartBar className="w-5 h-5" />
+							<HugeiconsIcon icon={ChartBar} className="w-5 h-5" />
 							View Analytics
 						</Button>
 						<Button
@@ -313,7 +314,7 @@ export default function LessonComplete() {
 							className="w-full h-14 rounded-2xl font-black text-sm uppercase tracking-widest text-muted-foreground hover:text-foreground flex items-center justify-center gap-2"
 							onClick={() => router.push('/quiz')}
 						>
-							<ClockCounterClockwise className="w-5 h-5" />
+							<HugeiconsIcon icon={Refresh01Icon} className="w-5 h-5" />
 							Try Another Quiz
 						</Button>
 					</m.div>

@@ -1,40 +1,41 @@
 'use client';
 
 import {
-	Atom,
-	Bell,
-	Bookmark,
-	BookOpen,
-	Brain,
-	Calculator,
-	Calendar,
-	CaretDown,
-	CaretRight,
-	ChatCircle,
-	ClipboardText,
-	FileText,
-	GameController,
-	Gear,
-	Globe,
-	House,
-	Key,
-	Layout,
-	MapTrifold as MapIcon,
-	Medal,
-	Moon,
-	Question,
-	MagnifyingGlass as SearchIcon,
-	Shield,
-	ShieldWarning,
-	SignOut,
-	Sparkle,
-	Stack,
-	Sun,
-	Trophy,
-	User as UserIcon,
-	UserPlus,
-	Users,
-} from '@phosphor-icons/react';
+	AiBrain01Icon,
+	AlertCircleIcon,
+	ArrowDown01Icon,
+	ArrowRight01Icon,
+	AtomIcon,
+	BookmarkIcon,
+	BookOpen01Icon,
+	CalculatorIcon,
+	Calendar01Icon,
+	ChampionIcon,
+	Chat01Icon,
+	File01Icon,
+	WorkoutSportIcon as GamePlayer01Icon,
+	GlobeIcon,
+	Home01Icon,
+	Key01Icon,
+	Layers01Icon,
+	LayoutLeftIcon,
+	Logout01Icon,
+	MapsIcon,
+	Medal01Icon,
+	MoonIcon,
+	Notification03Icon,
+	QuestionIcon,
+	Search01Icon,
+	Settings01Icon,
+	Shield01Icon,
+	SparklesIcon,
+	Sun01Icon,
+	Task01Icon,
+	UserIcon as User,
+	UserGroupIcon,
+	UserAdd01Icon as UserPlus,
+} from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -63,7 +64,7 @@ type AuthUser = typeof authClient.$Infer.Session.user;
 type MenuItem = {
 	href: string;
 	label: string;
-	icon: React.ComponentType<{ className?: string }>;
+	icon: any;
 };
 
 type MenuSection = {
@@ -75,57 +76,57 @@ export const sideMenuSections: MenuSection[] = [
 	{
 		title: 'Learning & Study',
 		items: [
-			{ href: '/dashboard', label: 'Dashboard', icon: House },
-			{ href: '/search', label: 'MagnifyingGlass', icon: SearchIcon },
-			{ href: '/lessons', label: 'Lessons', icon: BookOpen },
-			{ href: '/physics', label: 'Physics', icon: Atom },
-			{ href: '/ai-tutor', label: 'AI Tutor', icon: Sparkle },
-			{ href: '/study-path', label: 'Study Path', icon: MapIcon },
-			{ href: '/study-plan', label: 'Study Plan', icon: Calendar },
+			{ href: '/dashboard', label: 'Dashboard', icon: Home01Icon },
+			{ href: '/search', label: 'Search', icon: Search01Icon },
+			{ href: '/lessons', label: 'Lessons', icon: BookOpen01Icon },
+			{ href: '/physics', label: 'Physics', icon: AtomIcon },
+			{ href: '/ai-tutor', label: 'AI Tutor', icon: SparklesIcon },
+			{ href: '/study-path', label: 'Study Path', icon: MapsIcon },
+			{ href: '/study-plan', label: 'Study Plan', icon: Calendar01Icon },
 		],
 	},
 	{
 		title: 'Practice & Quizzes',
 		items: [
-			{ href: '/past-papers', label: 'Past Papers', icon: FileText },
-			{ href: '/interactive-quiz', label: 'Interactive Quiz', icon: GameController },
-			{ href: '/quiz', label: 'Quiz', icon: Question },
-			{ href: '/math-quiz', label: 'Math Quiz', icon: Calculator },
-			{ href: '/physics-quiz', label: 'Physics Quiz', icon: Atom },
-			{ href: '/practice-quiz', label: 'Practice Quiz', icon: ClipboardText },
-			{ href: '/flashcards', label: 'Flashcards', icon: Stack },
-			{ href: '/review', label: 'Review Dashboard', icon: Brain },
+			{ href: '/past-papers', label: 'Past Papers', icon: File01Icon },
+			{ href: '/interactive-quiz', label: 'Interactive Quiz', icon: GamePlayer01Icon },
+			{ href: '/quiz', label: 'Quiz', icon: QuestionIcon },
+			{ href: '/math-quiz', label: 'Math Quiz', icon: CalculatorIcon },
+			{ href: '/physics-quiz', label: 'Physics Quiz', icon: AtomIcon },
+			{ href: '/practice-quiz', label: 'Practice Quiz', icon: Task01Icon },
+			{ href: '/flashcards', label: 'Flashcards', icon: Layers01Icon },
+			{ href: '/review', label: 'Review Dashboard', icon: AiBrain01Icon },
 		],
 	},
 	{
 		title: 'Social & Community',
 		items: [
-			{ href: '/channels', label: 'Study Channels', icon: Users },
+			{ href: '/channels', label: 'Study Channels', icon: UserGroupIcon },
 			{ href: '/study-buddies', label: 'Study Buddies', icon: UserPlus },
-			{ href: '/comments', label: 'Comments', icon: ChatCircle },
-			{ href: '/leaderboard', label: 'Leaderboard', icon: Trophy },
-			{ href: '/achievements', label: 'Achievements', icon: Medal },
+			{ href: '/comments', label: 'Comments', icon: Chat01Icon },
+			{ href: '/leaderboard', label: 'Leaderboard', icon: ChampionIcon },
+			{ href: '/achievements', label: 'Achievements', icon: Medal01Icon },
 		],
 	},
 	{
-		title: 'Account & Gear',
+		title: 'Account & Settings',
 		items: [
-			{ href: '/profile', label: 'My Profile', icon: UserIcon },
-			{ href: '/bookmarks', label: 'Bookmarks', icon: Bookmark },
-			{ href: '/notifications', label: 'Notifications', icon: Bell },
-			{ href: '/calendar', label: 'Calendar', icon: Calendar },
-			{ href: '/language', label: 'Language', icon: Globe },
-			{ href: '/2fa', label: 'Two-Factor Auth', icon: Key },
-			{ href: '/settings', label: 'Gear', icon: Gear },
-			{ href: '/onboarding', label: 'Test Onboarding', icon: Sparkle },
+			{ href: '/profile', label: 'My Profile', icon: User },
+			{ href: '/bookmarks', label: 'Bookmarks', icon: BookmarkIcon },
+			{ href: '/notifications', label: 'Notifications', icon: Notification03Icon },
+			{ href: '/calendar', label: 'Calendar', icon: Calendar01Icon },
+			{ href: '/language', label: 'Language', icon: GlobeIcon },
+			{ href: '/2fa', label: 'Two-Factor Auth', icon: Key01Icon },
+			{ href: '/settings', label: 'Settings', icon: Settings01Icon },
+			{ href: '/onboarding', label: 'Test Onboarding', icon: SparklesIcon },
 		],
 	},
 	{
 		title: 'Admin',
 		items: [
-			{ href: '/admin', label: 'Admin Panel', icon: Shield },
-			{ href: '/admin/moderation', label: 'Admin Moderation', icon: ShieldWarning },
-			{ href: '/cms', label: 'Content Management', icon: Layout },
+			{ href: '/admin', label: 'Admin Panel', icon: Shield01Icon },
+			{ href: '/admin/moderation', label: 'Admin Moderation', icon: AlertCircleIcon },
+			{ href: '/cms', label: 'Content Management', icon: LayoutLeftIcon },
 		],
 	},
 ];
@@ -185,9 +186,12 @@ export function AppSidebar({ user, pathname, theme, onToggleTheme }: AppSidebarP
 					</p>
 				</Link>
 				<div className="relative flex items-center px-2 pb-3">
-					<SearchIcon className="absolute left-5 w-4 h-4 text-sidebar-foreground/40" />
+					<HugeiconsIcon
+						icon={Search01Icon}
+						className="absolute left-5 w-4 h-4 text-sidebar-foreground/40"
+					/>
 					<Input
-						placeholder="MagnifyingGlass menu..."
+						placeholder="Search menu..."
 						value={searchQuery}
 						onChange={(e) => setSearchQuery(e.target.value)}
 						className="pl-9 h-9 bg-sidebar-accent/50 placeholder:text-xs border-sidebar-border focus-visible:ring-sidebar-ring"
@@ -198,7 +202,7 @@ export function AppSidebar({ user, pathname, theme, onToggleTheme }: AppSidebarP
 			<SidebarContent className="px-2">
 				{filteredSections.length === 0 ? (
 					<div className="flex flex-col items-center justify-center py-8 text-sidebar-foreground/50">
-						<SearchIcon className="w-8 h-8 mb-2" />
+						<HugeiconsIcon icon={Search01Icon} className="w-8 h-8 mb-2" />
 						<p className="text-sm">No results found</p>
 					</div>
 				) : (
@@ -212,9 +216,9 @@ export function AppSidebar({ user, pathname, theme, onToggleTheme }: AppSidebarP
 									<SidebarGroupLabel className="cursor-pointer hover:bg-sidebar-accent rounded-md select-none flex items-center justify-between pr-2">
 										<span>{section.title}</span>
 										{openSection === section.title ? (
-											<CaretDown className="w-4 h-4" />
+											<HugeiconsIcon icon={ArrowDown01Icon} className="w-4 h-4" />
 										) : (
-											<CaretRight className="w-4 h-4" />
+											<HugeiconsIcon icon={ArrowRight01Icon} className="w-4 h-4" />
 										)}
 									</SidebarGroupLabel>
 								</CollapsibleTrigger>
@@ -227,7 +231,7 @@ export function AppSidebar({ user, pathname, theme, onToggleTheme }: AppSidebarP
 													<SidebarMenuItem key={item.href}>
 														<SidebarMenuButton asChild isActive={isActive} tooltip={item.label}>
 															<Link href={item.href} onClick={handleLinkClick}>
-																<item.icon className="w-4 h-4" />
+																<HugeiconsIcon icon={item.icon} className="w-4 h-4" />
 																<span>{item.label}</span>
 															</Link>
 														</SidebarMenuButton>
@@ -269,9 +273,9 @@ function ThemeToggle({ theme, onToggle }: ThemeToggleProps) {
 				aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
 			>
 				{theme === 'dark' ? (
-					<Sun className="w-4 h-4 text-yellow-500" />
+					<HugeiconsIcon icon={Sun01Icon} className="w-4 h-4 text-yellow-500" />
 				) : (
-					<Moon className="w-4 h-4 text-sidebar-foreground/70" />
+					<HugeiconsIcon icon={MoonIcon} className="w-4 h-4 text-sidebar-foreground/70" />
 				)}
 			</Button>
 		</div>
@@ -316,7 +320,7 @@ export function LogoutButton() {
 			className="w-full justify-start gap-3 text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent"
 			onClick={handleLogout}
 		>
-			<SignOut className="w-4 h-4" />
+			<HugeiconsIcon icon={Logout01Icon} className="w-4 h-4" />
 			<span>Logout</span>
 		</Button>
 	);

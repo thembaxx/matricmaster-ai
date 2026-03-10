@@ -1,14 +1,20 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Check, CircleNotch, Eye, EyeSlash, Sparkle } from '@phosphor-icons/react';
+import {
+	Tick01Icon as Check,
+	Loading03Icon,
+	SparklesIcon,
+	ViewIcon,
+	ViewOffIcon,
+} from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import { AnimatePresence, m } from 'framer-motion';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
-
 import { SocialAuthButton } from '@/components/auth/SocialAuthButton';
 import { SmoothWords } from '@/components/Transition/SmoothText';
 import { BackgroundMesh } from '@/components/ui/background-mesh';
@@ -47,7 +53,7 @@ export default function SignUpForm() {
 			console.log('🔄 Initializing database after signup...');
 			const response = await fetch('/api/db/init', {
 				method: 'POST',
-				headers: { 'Content-TextT': 'application/json' },
+				headers: { 'Content-Type': 'application/json' },
 			});
 			const result = await response.json();
 			if (result.success) {
@@ -113,7 +119,7 @@ export default function SignUpForm() {
 					>
 						<div className="bg-success/90 text-white px-6 py-3 rounded-full shadow-lg shadow-success/30 flex items-center gap-3 pointer-events-auto backdrop-blur-md">
 							<div className="bg-white/20 p-1 rounded-full">
-								<Check className="w-4 h-4 text-white" />
+								<HugeiconsIcon icon={Check} className="w-4 h-4 text-white" />
 							</div>
 							<span className="font-semibold text-sm">Account created successfully!</span>
 						</div>
@@ -139,7 +145,7 @@ export default function SignUpForm() {
 							whileHover={{ rotate: 15, scale: 1.1 }}
 							className="w-14 h-14 bg-primary/10 rounded-3xl flex items-center justify-center mx-auto mb-5 text-primary"
 						>
-							<Sparkle weight="bold" className="w-7 h-7" />
+							<HugeiconsIcon icon={SparklesIcon} className="w-7 h-7" />
 						</m.div>
 						<SmoothWords
 							as="h1"
@@ -236,7 +242,11 @@ export default function SignUpForm() {
 									className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
 									aria-label={showPassword ? 'Hide password' : 'Show password'}
 								>
-									{showPassword ? <EyeSlash className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+									{showPassword ? (
+										<HugeiconsIcon icon={ViewOffIcon} className="w-5 h-5" />
+									) : (
+										<HugeiconsIcon icon={ViewIcon} className="w-5 h-5" />
+									)}
 								</button>
 							</div>
 							{errors.password && (
@@ -258,7 +268,7 @@ export default function SignUpForm() {
 								)}
 							>
 								{isLoading ? (
-									<CircleNotch className="w-5 h-5 animate-spin" />
+									<HugeiconsIcon icon={Loading03Icon} className="w-5 h-5 animate-spin" />
 								) : success ? (
 									'Redirecting...'
 								) : (

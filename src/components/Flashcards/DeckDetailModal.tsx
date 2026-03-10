@@ -1,6 +1,7 @@
 'use client';
 
-import { CircleNotch, Plus, Trash } from '@phosphor-icons/react';
+import { Add01Icon, Delete02Icon, Loading03Icon } from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import { useId, useState } from 'react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
@@ -119,7 +120,7 @@ export function DeckDetailModal({
 
 				<div className="space-y-4">
 					<Button onClick={() => setShowAddCard(!showAddCard)} variant="outline" className="w-full">
-						<Plus className="mr-2 h-4 w-4" />
+						<HugeiconsIcon icon={Add01Icon} className="mr-2 h-4 w-4" />
 						Add Card
 					</Button>
 
@@ -147,9 +148,9 @@ export function DeckDetailModal({
 							</div>
 							<Button onClick={handleAddCard} disabled={isAdding} className="w-full">
 								{isAdding ? (
-									<CircleNotch className="mr-2 h-4 w-4 animate-spin" />
+									<HugeiconsIcon icon={Loading03Icon} className="mr-2 h-4 w-4 animate-spin" />
 								) : (
-									<Plus className="mr-2 h-4 w-4" />
+									<HugeiconsIcon icon={Add01Icon} className="mr-2 h-4 w-4" />
 								)}
 								Add Card
 							</Button>
@@ -177,9 +178,9 @@ export function DeckDetailModal({
 											disabled={deletingId === card.id}
 										>
 											{deletingId === card.id ? (
-												<CircleNotch className="h-4 w-4 animate-spin" />
+												<HugeiconsIcon icon={Loading03Icon} className="h-4 w-4 animate-spin" />
 											) : (
-												<Trash className="h-4 w-4" />
+												<HugeiconsIcon icon={Delete02Icon} className="h-4 w-4" />
 											)}
 										</Button>
 									</div>

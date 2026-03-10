@@ -1,13 +1,14 @@
 'use client';
 
-import { m } from 'framer-motion';
 import {
-	Facebook01Icon as Facebook,
-	InstagramIcon as Instagram,
-	Linkedin01Icon as Linkedin,
-	Mail01Icon as Mail,
-	NewTwitterIcon as Twitter,
-} from 'hugeicons-react';
+	Facebook01Icon,
+	InstagramIcon,
+	Linkedin01Icon,
+	Mail01Icon,
+	NewTwitterIcon,
+} from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
+import { m } from 'framer-motion';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -35,10 +36,10 @@ const footerLinks = {
 };
 
 const socialLinks = [
-	{ icon: Facebook, href: 'https://facebook.com', label: 'Facebook' },
-	{ icon: Twitter, href: 'https://twitter.com', label: 'Twitter' },
-	{ icon: Instagram, href: 'https://instagram.com', label: 'Instagram' },
-	{ icon: Linkedin, href: 'https://linkedin.com', label: 'LinkedIn' },
+	{ icon: Facebook01Icon, href: 'https://facebook.com', label: 'Facebook' },
+	{ icon: NewTwitterIcon, href: 'https://twitter.com', label: 'Twitter' },
+	{ icon: InstagramIcon, href: 'https://instagram.com', label: 'Instagram' },
+	{ icon: Linkedin01Icon, href: 'https://linkedin.com', label: 'LinkedIn' },
 ];
 
 export function Footer() {
@@ -76,7 +77,7 @@ export function Footer() {
 										className="text-muted-foreground hover:text-foreground hover:scale-110 transition-all rounded-full p-2 hover:bg-background/50"
 										aria-label={social.label}
 									>
-										<social.icon className="h-5 w-5" />
+										<HugeiconsIcon icon={social.icon} className="h-5 w-5" />
 									</Link>
 								</m.div>
 							))}
@@ -177,7 +178,7 @@ export function Footer() {
 					</div>
 					<div className="flex items-center gap-4 text-sm text-muted-foreground">
 						<div className="flex items-center gap-1 hover:text-foreground transition-colors">
-							<Mail className="h-4 w-4" />
+							<HugeiconsIcon icon={Mail01Icon} className="h-4 w-4" />
 							<span>support@helios.com</span>
 						</div>
 					</div>

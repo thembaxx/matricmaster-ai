@@ -1,6 +1,14 @@
 'use client';
 
-import { Calendar, Gift, Lightning, Sparkle, Star, X } from '@phosphor-icons/react';
+import {
+	Calendar01Icon,
+	Cancel01Icon,
+	FlashIcon,
+	GiftIcon,
+	SparklesIcon,
+	StarIcon,
+} from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import { AnimatePresence, m } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
@@ -82,7 +90,7 @@ export function DailyLoginBonus({ onClaimed }: DailyLoginBonusProps) {
 							<div className="flex items-center justify-between mb-6">
 								<div className="flex items-center gap-2">
 									<div className="w-10 h-10 rounded-xl bg-brand-amber/20 flex items-center justify-center">
-										<Gift className="w-5 h-5 text-brand-amber" />
+										<HugeiconsIcon icon={GiftIcon} className="w-5 h-5 text-brand-amber" />
 									</div>
 									<h2 className="text-xl font-black text-foreground">Daily Bonus</h2>
 								</div>
@@ -93,7 +101,7 @@ export function DailyLoginBonus({ onClaimed }: DailyLoginBonusProps) {
 									className="rounded-full"
 									aria-label="Close"
 								>
-									<X className="w-5 h-5" />
+									<HugeiconsIcon icon={Cancel01Icon} className="w-5 h-5" />
 								</Button>
 							</div>
 
@@ -106,7 +114,7 @@ export function DailyLoginBonus({ onClaimed }: DailyLoginBonusProps) {
 											transition={{ type: 'spring', damping: 10 }}
 											className="w-24 h-24 mx-auto mb-4 rounded-full bg-linear-to-br from-brand-amber to-orange-500 flex items-center justify-center shadow-lg shadow-brand-amber/30"
 										>
-											<Calendar className="w-12 h-12 text-white" />
+											<HugeiconsIcon icon={Calendar01Icon} className="w-12 h-12 text-white" />
 										</m.div>
 										<p className="text-sm text-muted-foreground mb-1">Day {currentDay} of 30</p>
 										<h3 className="text-2xl font-black text-foreground">
@@ -121,7 +129,7 @@ export function DailyLoginBonus({ onClaimed }: DailyLoginBonusProps) {
 											<div className="flex items-center justify-between">
 												<div className="flex items-center gap-3">
 													<div className="w-12 h-12 rounded-xl bg-brand-amber/10 flex items-center justify-center">
-														<Lightning weight="bold" className="w-6 h-6 text-brand-amber" />
+														<HugeiconsIcon icon={FlashIcon} className="w-6 h-6 text-brand-amber" />
 													</div>
 													<div>
 														<p className="text-sm font-bold text-muted-foreground">
@@ -134,14 +142,14 @@ export function DailyLoginBonus({ onClaimed }: DailyLoginBonusProps) {
 												</div>
 												{nextReward.streakFreeze && (
 													<div className="flex items-center gap-1 px-2 py-1 bg-blue-100 dark:bg-blue-900/20 rounded-full">
-														<Star className="w-4 h-4 text-blue-500" />
+														<HugeiconsIcon icon={StarIcon} className="w-4 h-4 text-blue-500" />
 														<span className="text-xs font-bold text-blue-500">+1 Freeze</span>
 													</div>
 												)}
 											</div>
 											{nextReward.specialReward && (
 												<p className="mt-2 text-sm font-bold text-brand-amber text-center">
-													<Sparkle weight="bold" className="w-4 h-4 inline mr-1" />
+													<HugeiconsIcon icon={SparklesIcon} className="w-4 h-4 inline mr-1" />
 													{nextReward.specialReward}
 												</p>
 											)}
@@ -162,11 +170,11 @@ export function DailyLoginBonus({ onClaimed }: DailyLoginBonusProps) {
 													ease: 'linear',
 												}}
 											>
-												<Sparkle weight="bold" className="w-6 h-6" />
+												<HugeiconsIcon icon={SparklesIcon} className="w-6 h-6" />
 											</m.div>
 										) : (
 											<>
-												<Gift className="w-5 h-5 mr-2" />
+												<HugeiconsIcon icon={GiftIcon} className="w-5 h-5 mr-2" />
 												Claim Reward
 											</>
 										)}
@@ -184,7 +192,7 @@ export function DailyLoginBonus({ onClaimed }: DailyLoginBonusProps) {
 										transition={{ type: 'spring', damping: 10, delay: 0.1 }}
 										className="w-20 h-20 mx-auto mb-4 rounded-full bg-linear-to-br from-green-400 to-emerald-500 flex items-center justify-center shadow-lg"
 									>
-										<Sparkle weight="bold" className="w-10 h-10 text-white" />
+										<HugeiconsIcon icon={SparklesIcon} className="w-10 h-10 text-white" />
 									</m.div>
 									<h3 className="text-2xl font-black text-foreground mb-2">Reward Claimed!</h3>
 									<p className="text-3xl font-black text-brand-amber mb-2">
@@ -192,7 +200,8 @@ export function DailyLoginBonus({ onClaimed }: DailyLoginBonusProps) {
 									</p>
 									{claimResult.streakFreezeAwarded && (
 										<p className="text-sm font-bold text-blue-500 flex items-center justify-center gap-1">
-											<Star className="w-4 h-4" /> +1 Streak Freeze Awarded!
+											<HugeiconsIcon icon={StarIcon} className="w-4 h-4" /> +1 Streak Freeze
+											Awarded!
 										</p>
 									)}
 									{claimResult.specialReward && (
@@ -269,7 +278,7 @@ export function DailyLoginBonusTrigger({ onClick }: { onClick: () => void }) {
 				onClick={onClick}
 				className="relative bg-linear-to-r from-brand-amber to-orange-500 text-zinc-900 rounded-full font-bold shadow-lg shadow-brand-amber/20"
 			>
-				<Gift className="w-4 h-4 mr-2" />
+				<HugeiconsIcon icon={GiftIcon} className="w-4 h-4 mr-2" />
 				Daily Bonus
 				<span className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full animate-pulse" />
 			</Button>

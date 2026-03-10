@@ -1,6 +1,12 @@
 'use client';
 
-import { Bell, Check, Checks, Trash } from '@phosphor-icons/react';
+import {
+	Delete02Icon,
+	Notification03Icon,
+	Tick01Icon,
+	TickDouble02Icon,
+} from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'sonner';
@@ -174,7 +180,10 @@ export default function NotificationsPage() {
 			<div className="container mx-auto py-8 px-6 max-w-4xl">
 				<Card>
 					<CardContent className="py-12 text-center">
-						<Bell className="h-12 w-12 mx-auto mb-4 text-muted-foreground animate-pulse" />
+						<HugeiconsIcon
+							icon={Notification03Icon}
+							className="h-12 w-12 mx-auto mb-4 text-muted-foreground animate-pulse"
+						/>
 						<p className="text-muted-foreground">Loading notifications...</p>
 					</CardContent>
 				</Card>
@@ -187,7 +196,10 @@ export default function NotificationsPage() {
 			<div className="container mx-auto py-8 px-6 max-w-4xl">
 				<Card>
 					<CardContent className="py-12 text-center">
-						<Bell className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
+						<HugeiconsIcon
+							icon={Notification03Icon}
+							className="h-12 w-12 mx-auto mb-4 text-muted-foreground"
+						/>
 						<p className="text-muted-foreground">Please sign in to view your notifications.</p>
 						<Button className="mt-4" onClick={() => router.push('/sign-in')}>
 							Sign In
@@ -202,7 +214,7 @@ export default function NotificationsPage() {
 		<div className="container mx-auto py-8 px-6 max-w-4xl">
 			<div className="flex items-center justify-between mb-6">
 				<div className="flex items-center gap-3">
-					<Bell className="h-8 w-8 text-primary" />
+					<HugeiconsIcon icon={Notification03Icon} className="h-8 w-8 text-primary" />
 					<div>
 						<h1 className="text-3xl font-bold">Notifications</h1>
 						<p className="text-muted-foreground">
@@ -212,7 +224,7 @@ export default function NotificationsPage() {
 				</div>
 				{unreadCount > 0 && (
 					<Button variant="outline" onClick={markAllAsRead}>
-						<Checks className="h-4 w-4 mr-2" />
+						<HugeiconsIcon icon={TickDouble02Icon} className="h-4 w-4 mr-2" />
 						Mark all as read
 					</Button>
 				)}
@@ -246,7 +258,10 @@ export default function NotificationsPage() {
 					) : filteredNotifications.length === 0 ? (
 						<Card>
 							<CardContent className="py-12 text-center">
-								<Bell className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
+								<HugeiconsIcon
+									icon={Notification03Icon}
+									className="h-12 w-12 mx-auto mb-4 text-muted-foreground"
+								/>
 								<p className="text-muted-foreground">
 									{activeTab === 'unread' ? 'No unread notifications' : 'No notifications yet'}
 								</p>
@@ -287,7 +302,7 @@ export default function NotificationsPage() {
 															className="h-8 w-8"
 															onClick={() => markAsRead(notification.id)}
 														>
-															<Check className="h-4 w-4" />
+															<HugeiconsIcon icon={Tick01Icon} className="h-4 w-4" />
 														</Button>
 													)}
 													<Button
@@ -296,7 +311,7 @@ export default function NotificationsPage() {
 														className="h-8 w-8 text-destructive"
 														onClick={() => deleteNotification(notification.id)}
 													>
-														<Trash className="h-4 w-4" />
+														<HugeiconsIcon icon={Delete02Icon} className="h-4 w-4" />
 													</Button>
 												</div>
 											</div>

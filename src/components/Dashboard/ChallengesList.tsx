@@ -1,6 +1,13 @@
 'use client';
 
-import { BookOpen, Clock, Flask, Play, Sigma } from '@phosphor-icons/react';
+import {
+	BookOpen01Icon,
+	Chemistry01Icon,
+	Clock01Icon,
+	MathIcon,
+	PlayIcon,
+} from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import { m } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { memo } from 'react';
@@ -20,21 +27,21 @@ const defaultChallenges: Challenge[] = [
 		title: 'Differentiation Rules',
 		time: '10m',
 		difficulty: 'Medium',
-		icon: <Sigma className="w-6 h-6 text-blue-500" />,
+		icon: <HugeiconsIcon icon={MathIcon} className="w-6 h-6 text-blue-500" />,
 		iconBg: 'bg-blue-50 dark:bg-blue-900/20',
 	},
 	{
 		title: "Newton's Second Law",
 		time: '20m',
 		difficulty: 'Hard',
-		icon: <Flask className="w-6 h-6 text-purple-500" />,
+		icon: <HugeiconsIcon icon={Chemistry01Icon} className="w-6 h-6 text-purple-500" />,
 		iconBg: 'bg-purple-50 dark:bg-purple-900/20',
 	},
 	{
 		title: 'Poetry Analysis',
 		time: '5m',
 		difficulty: 'Easy',
-		icon: <BookOpen className="w-6 h-6 text-emerald-500" />,
+		icon: <HugeiconsIcon icon={BookOpen01Icon} className="w-6 h-6 text-emerald-500" />,
 		iconBg: 'bg-emerald-50 dark:bg-emerald-900/20',
 	},
 ];
@@ -75,7 +82,7 @@ export const ChallengesList = memo(function ChallengesList() {
 								<h4 className="font-black text-sm text-foreground">{challenge.title}</h4>
 								<div className="flex items-center gap-2 text-[10px] font-black text-muted-foreground uppercase tracking-widest opacity-60">
 									<div className="flex items-center gap-1">
-										<Clock className="w-3 h-3" />
+										<HugeiconsIcon icon={Clock01Icon} className="w-3 h-3" />
 										{challenge.time}
 									</div>
 									<span className="w-1 h-1 rounded-full bg-border" />
@@ -94,7 +101,7 @@ export const ChallengesList = memo(function ChallengesList() {
 							</div>
 						</div>
 						<div className="w-10 h-10 rounded-2xl bg-muted/50 flex items-center justify-center group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300">
-							<Play className="w-4 h-4 fill-current ml-0.5" />
+							<HugeiconsIcon icon={PlayIcon} className="w-4 h-4 fill-current ml-0.5" />
 						</div>
 					</m.button>
 				))}

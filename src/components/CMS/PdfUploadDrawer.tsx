@@ -1,6 +1,13 @@
 'use client';
 
-import { FileArrowUp, FloppyDisk, Plus, Sparkle, X } from '@phosphor-icons/react';
+import {
+	Add01Icon,
+	Cancel01Icon,
+	SaveIcon,
+	SparklesIcon,
+	Upload01Icon,
+} from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { Badge } from '@/components/ui/badge';
@@ -349,7 +356,7 @@ export function PdfUploadDrawer({ isOpen, onClose, subjects, onSuccess }: PdfUpl
 						</DrawerTitle>
 						{step === 'review' && (
 							<Badge className="bg-brand-blue/10 text-brand-blue border-brand-blue/20">
-								<Sparkle weight="bold" className="h-3 w-3 mr-1" /> Superpowered
+								<HugeiconsIcon icon={SparklesIcon} className="h-3 w-3 mr-1" /> Superpowered
 							</Badge>
 						)}
 					</div>
@@ -388,14 +395,14 @@ export function PdfUploadDrawer({ isOpen, onClose, subjects, onSuccess }: PdfUpl
 												className="h-12 rounded-xl border-2 font-bold"
 											/>
 											<Button onClick={handleCreateSubject} className="h-12 px-4 rounded-xl">
-												<Plus className="h-4 w-4" />
+												<HugeiconsIcon icon={Add01Icon} className="h-4 w-4" />
 											</Button>
 											<Button
 												variant="ghost"
 												onClick={() => setIsCreatingSubject(false)}
 												className="h-12 px-4 rounded-xl"
 											>
-												<X className="h-4 w-4" />
+												<HugeiconsIcon icon={Cancel01Icon} className="h-4 w-4" />
 											</Button>
 										</div>
 									) : (
@@ -422,7 +429,7 @@ export function PdfUploadDrawer({ isOpen, onClose, subjects, onSuccess }: PdfUpl
 												onClick={() => setIsCreatingSubject(true)}
 												className="h-12 px-4 rounded-xl border-2"
 											>
-												<Plus className="h-4 w-4" />
+												<HugeiconsIcon icon={Add01Icon} className="h-4 w-4" />
 											</Button>
 										</div>
 									)}
@@ -496,7 +503,7 @@ export function PdfUploadDrawer({ isOpen, onClose, subjects, onSuccess }: PdfUpl
 													: 'bg-muted text-muted-foreground'
 											} ${isDragging ? 'animate-pulse' : ''}`}
 										>
-											<FileArrowUp className="h-8 w-8" />
+											<HugeiconsIcon icon={Upload01Icon} className="h-8 w-8" />
 										</div>
 										<div className="text-center">
 											<p className="font-black uppercase tracking-widest text-xs">
@@ -527,8 +534,8 @@ export function PdfUploadDrawer({ isOpen, onClose, subjects, onSuccess }: PdfUpl
 						<div className="flex flex-col items-center justify-center py-24 px-8 space-y-8">
 							<div className="relative">
 								<div className="absolute inset-0 bg-brand-blue/20 blur-3xl rounded-full animate-pulse" />
-								<Sparkle
-									weight="bold"
+								<HugeiconsIcon
+									icon={SparklesIcon}
 									className="h-16 w-16 text-brand-blue relative z-10 animate-bounce"
 								/>
 							</div>
@@ -620,7 +627,7 @@ export function PdfUploadDrawer({ isOpen, onClose, subjects, onSuccess }: PdfUpl
 							disabled={!file || !paperDetails.paperId || !paperDetails.subjectId}
 							className="flex-1 h-14 bg-brand-blue hover:bg-brand-blue/90 rounded-2xl font-black uppercase tracking-widest text-xs shadow-2xl shadow-brand-blue/20"
 						>
-							<Sparkle weight="bold" className="h-4 w-4 mr-2" /> Start
+							<HugeiconsIcon icon={SparklesIcon} className="h-4 w-4 mr-2" /> Start
 						</Button>
 					)}
 					{step === 'review' && (
@@ -633,8 +640,8 @@ export function PdfUploadDrawer({ isOpen, onClose, subjects, onSuccess }: PdfUpl
 								<div className="h-5 w-5 animate-spin border-2 border-white border-t-transparent rounded-full" />
 							) : (
 								<>
-									<FloppyDisk className="h-4 w-4 mr-2" /> Paper & {extractedData?.questions.length}{' '}
-									Questions
+									<HugeiconsIcon icon={SaveIcon} className="h-4 w-4 mr-2" /> Paper &{' '}
+									{extractedData?.questions.length} Questions
 								</>
 							)}
 						</Button>

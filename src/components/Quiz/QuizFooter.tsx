@@ -1,6 +1,7 @@
 'use client';
 
-import { Question } from '@phosphor-icons/react';
+import { QuestionIcon } from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import { m } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 
@@ -86,7 +87,7 @@ export function QuizFooter({
 								className="flex items-center gap-2 text-primary font-black text-[10px] uppercase tracking-widest hover:text-primary/80 transition-colors min-h-[44px]"
 								aria-label="Show solution"
 							>
-								<Question className="w-4 h-4" />
+								<HugeiconsIcon icon={QuestionIcon} className="w-4 h-4" />
 								Show Solution
 							</button>
 						)}

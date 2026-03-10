@@ -1,15 +1,16 @@
 'use client';
 
 import {
-	ChatCircle,
-	CheckCircle,
-	Clock,
-	MagnifyingGlass,
-	Target,
+	CancelCircleIcon,
+	Chat01Icon,
+	CheckmarkCircle02Icon,
+	Clock01Icon,
+	Search01Icon,
+	Target01Icon,
+	UserGroupIcon,
 	UserPlus,
-	Users,
-	XCircle,
-} from '@phosphor-icons/react';
+} from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import { useEffect } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
@@ -72,7 +73,7 @@ export default function StudyBuddiesPage() {
 	return (
 		<div className="container mx-auto py-8 max-w-6xl px-6">
 			<div className="flex items-center gap-3 mb-6">
-				<Users className="h-8 w-8 text-primary" />
+				<HugeiconsIcon icon={UserGroupIcon} className="h-8 w-8 text-primary" />
 				<div>
 					<h1 className="text-3xl font-bold">Study Buddies</h1>
 					<p className="text-muted-foreground">Find and connect with fellow learners</p>
@@ -105,7 +106,10 @@ export default function StudyBuddiesPage() {
 							<div className="flex gap-4 flex-wrap">
 								<div className="flex-1 min-w-50">
 									<div className="relative">
-										<MagnifyingGlass className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+										<HugeiconsIcon
+											icon={Search01Icon}
+											className="absolute left-3 top-3 h-4 w-4 text-muted-foreground"
+										/>
 										<Input
 											placeholder="MagnifyingGlass by name or bio..."
 											value={searchQuery}
@@ -155,7 +159,7 @@ export default function StudyBuddiesPage() {
 								<CardContent>
 									<p className="text-sm text-muted-foreground mb-4">{buddy.bio}</p>
 									<p className="text-xs text-muted-foreground mb-4">
-										<Target weight="bold" className="h-3 w-3 inline mr-1" />
+										<HugeiconsIcon icon={Target01Icon} className="h-3 w-3 inline mr-1" />
 										{buddy.studyGoals}
 									</p>
 									<div className="flex gap-2">
@@ -164,11 +168,11 @@ export default function StudyBuddiesPage() {
 											className="flex-1"
 											onClick={() => handleSendRequest(buddy.id)}
 										>
-											<UserPlus className="h-4 w-4 mr-2" />
+											<HugeiconsIcon icon={UserPlus} className="h-4 w-4 mr-2" />
 											Connect
 										</Button>
 										<Button size="sm" variant="outline">
-											<ChatCircle className="h-4 w-4" />
+											<HugeiconsIcon icon={Chat01Icon} className="h-4 w-4" />
 										</Button>
 									</div>
 								</CardContent>
@@ -179,7 +183,10 @@ export default function StudyBuddiesPage() {
 					{filteredBuddies.length === 0 && (
 						<Card>
 							<CardContent className="py-12 text-center">
-								<Users className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
+								<HugeiconsIcon
+									icon={UserGroupIcon}
+									className="h-12 w-12 mx-auto mb-4 text-muted-foreground"
+								/>
 								<p className="text-muted-foreground">
 									No study buddies found matching your criteria
 								</p>
@@ -208,7 +215,7 @@ export default function StudyBuddiesPage() {
 										</div>
 										<div className="flex gap-2">
 											<Button size="sm" onClick={() => handleAcceptRequest(request.id)}>
-												<CheckCircle className="h-4 w-4 mr-1" />
+												<HugeiconsIcon icon={CheckmarkCircle02Icon} className="h-4 w-4 mr-1" />
 												Accept
 											</Button>
 											<Button
@@ -216,7 +223,7 @@ export default function StudyBuddiesPage() {
 												variant="outline"
 												onClick={() => handleRejectRequest(request.id)}
 											>
-												<XCircle className="h-4 w-4 mr-1" />
+												<HugeiconsIcon icon={CancelCircleIcon} className="h-4 w-4 mr-1" />
 												Decline
 											</Button>
 										</div>
@@ -227,7 +234,10 @@ export default function StudyBuddiesPage() {
 					) : (
 						<Card>
 							<CardContent className="py-12 text-center">
-								<Clock className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
+								<HugeiconsIcon
+									icon={Clock01Icon}
+									className="h-12 w-12 mx-auto mb-4 text-muted-foreground"
+								/>
 								<p className="text-muted-foreground">No pending buddy requests</p>
 							</CardContent>
 						</Card>
@@ -258,7 +268,7 @@ export default function StudyBuddiesPage() {
 											</div>
 										</div>
 										<Button size="sm" className="w-full">
-											<ChatCircle className="h-4 w-4 mr-2" />
+											<HugeiconsIcon icon={Chat01Icon} className="h-4 w-4 mr-2" />
 											Message
 										</Button>
 									</CardContent>
@@ -268,7 +278,10 @@ export default function StudyBuddiesPage() {
 					) : (
 						<Card>
 							<CardContent className="py-12 text-center">
-								<Users className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
+								<HugeiconsIcon
+									icon={UserGroupIcon}
+									className="h-12 w-12 mx-auto mb-4 text-muted-foreground"
+								/>
 								<p className="text-muted-foreground mb-4">
 									You haven't connected with any study buddies yet
 								</p>

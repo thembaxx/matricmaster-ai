@@ -1,6 +1,12 @@
 'use client';
 
-import { CaretDown, CaretUp, CircleNotch, Sparkle } from '@phosphor-icons/react';
+import {
+	ArrowDown01Icon,
+	ArrowUp01Icon,
+	Loading03Icon,
+	SparklesIcon,
+} from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import { AnimatePresence, m } from 'framer-motion';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
@@ -40,7 +46,10 @@ export function AIExplanationCard({
 				<div className="flex items-center justify-between">
 					<div className="flex items-center gap-3">
 						<div className="h-10 w-10 rounded-2xl bg-primary/10 flex items-center justify-center shadow-inner">
-							<Sparkle weight="bold" className="h-5 w-5 text-primary animate-pulse-soft" />
+							<HugeiconsIcon
+								icon={SparklesIcon}
+								className="h-5 w-5 text-primary animate-pulse-soft"
+							/>
 						</div>
 						<div>
 							<h4 className="text-sm font-black font-lexend tracking-tight">MatricMaster AI</h4>
@@ -59,7 +68,11 @@ export function AIExplanationCard({
 							aria-label={isExpanded ? 'Collapse explanation' : 'Expand explanation'}
 							aria-expanded={isExpanded}
 						>
-							{isExpanded ? <CaretUp className="h-4 w-4" /> : <CaretDown className="h-4 w-4" />}
+							{isExpanded ? (
+								<HugeiconsIcon icon={ArrowUp01Icon} className="h-4 w-4" />
+							) : (
+								<HugeiconsIcon icon={ArrowDown01Icon} className="h-4 w-4" />
+							)}
 						</Button>
 					) : (
 						<Button
@@ -70,9 +83,9 @@ export function AIExplanationCard({
 							className="rounded-xl h-9 px-4 font-black text-xs uppercase tracking-wider"
 						>
 							{isLoading ? (
-								<CircleNotch className="h-3.5 w-3.5 mr-2 animate-spin" />
+								<HugeiconsIcon icon={Loading03Icon} className="h-3.5 w-3.5 mr-2 animate-spin" />
 							) : (
-								<Sparkle weight="bold" className="h-3.5 w-3.5 mr-2" />
+								<HugeiconsIcon icon={SparklesIcon} className="h-3.5 w-3.5 mr-2" />
 							)}
 							Explain
 						</Button>

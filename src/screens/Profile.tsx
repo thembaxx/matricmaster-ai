@@ -1,6 +1,5 @@
 'use client';
 
-import { Fire, GraduationCap, Medal, Target } from '@phosphor-icons/react';
 import { m } from 'framer-motion';
 import dynamic from 'next/dynamic';
 import { useEffect, useId, useMemo, useState } from 'react';
@@ -14,6 +13,8 @@ const Radar = dynamic(() => import('recharts').then((mod) => mod.Radar), {
 	ssr: false,
 });
 
+import { FireIcon, GraduationCap, Medal01Icon, Target01Icon } from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import { LevelProgress } from '@/components/Gamification/LevelProgress';
 import { AchievementBadges, AchievementProgress } from '@/components/Profile/AchievementBadges';
 import { BadgeShowcase } from '@/components/Profile/BadgeShowcase';
@@ -249,7 +250,7 @@ export default function Profile() {
 							<Card className="p-8 rounded-3xl border border-border bg-card/50 backdrop-blur-sm relative overflow-hidden group shadow-xl hover:shadow-2xl transition-all duration-500">
 								<div className="flex items-center gap-8 relative z-10">
 									<div className="w-20 h-20 rounded-2xl bg-primary-violet/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-500 shadow-inner">
-										<GraduationCap className="w-10 h-10 text-primary-violet" />
+										<HugeiconsIcon icon={GraduationCap} className="w-10 h-10 text-primary-violet" />
 									</div>
 									<div className="space-y-1">
 										<p className="text-[10px] font-black text-label-tertiary uppercase tracking-[0.3em]">
@@ -266,7 +267,7 @@ export default function Profile() {
 							<Card className="p-8 rounded-3xl border border-border bg-card/50 backdrop-blur-sm relative overflow-hidden group shadow-xl hover:shadow-2xl transition-all duration-500">
 								<div className="flex items-center gap-8 relative z-10">
 									<div className="w-20 h-20 rounded-2xl bg-accent-lime/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-500 shadow-inner">
-										<Target weight="bold" className="w-10 h-10 text-accent-lime" />
+										<HugeiconsIcon icon={Target01Icon} className="w-10 h-10 text-accent-lime" />
 									</div>
 									<div className="space-y-1">
 										<p className="text-[10px] font-black text-label-tertiary uppercase tracking-[0.3em]">
@@ -283,8 +284,8 @@ export default function Profile() {
 							<Card className="p-8 rounded-3xl border border-border bg-card/50 backdrop-blur-sm relative overflow-hidden group shadow-xl hover:shadow-2xl transition-all duration-500">
 								<div className="flex items-center gap-8 relative z-10">
 									<div className="w-20 h-20 rounded-2xl bg-primary-orange/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-500 shadow-inner">
-										<Fire
-											weight="bold"
+										<HugeiconsIcon
+											icon={FireIcon}
 											className="w-10 h-10 text-primary-orange fill-primary-orange"
 										/>
 									</div>
@@ -303,7 +304,7 @@ export default function Profile() {
 							<Card className="p-8 rounded-3xl border border-border bg-primary-violet/5 relative overflow-hidden group border-dashed">
 								<div className="flex items-center gap-8 relative z-10">
 									<div className="w-20 h-20 rounded-2xl bg-primary-violet/10 flex items-center justify-center">
-										<Medal weight="bold" className="w-10 h-10 text-primary-violet" />
+										<HugeiconsIcon icon={Medal01Icon} className="w-10 h-10 text-primary-violet" />
 									</div>
 									<div className="space-y-1">
 										<p className="text-[10px] font-black text-label-tertiary uppercase tracking-[0.3em]">

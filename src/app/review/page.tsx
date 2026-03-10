@@ -1,17 +1,18 @@
 'use client';
 
 import {
-	BookOpen,
-	Brain,
-	Calendar,
-	CaretRight,
-	CircleNotch,
-	Clock,
-	Lightning,
-	Star,
-	Target,
-	Trophy,
-} from '@phosphor-icons/react';
+	AiBrain01Icon,
+	ArrowRight01Icon,
+	BookOpen01Icon,
+	Calendar01Icon,
+	ChampionIcon,
+	Clock01Icon,
+	FlashIcon,
+	Loading03Icon,
+	StarIcon,
+	Target01Icon,
+} from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
@@ -129,22 +130,25 @@ export default function ReviewPage() {
 	const getRecommendationIcon = (type: string) => {
 		switch (type) {
 			case 'weak_topic':
-				return <Target weight="bold" className="h-4 w-4" />;
+				return <HugeiconsIcon icon={Target01Icon} className="h-4 w-4" />;
 			case 'review':
-				return <Clock className="h-4 w-4" />;
+				return <HugeiconsIcon icon={Clock01Icon} className="h-4 w-4" />;
 			case 'practice':
-				return <Brain className="h-4 w-4" />;
+				return <HugeiconsIcon icon={AiBrain01Icon} className="h-4 w-4" />;
 			case 'flashcard':
-				return <BookOpen className="h-4 w-4" />;
+				return <HugeiconsIcon icon={BookOpen01Icon} className="h-4 w-4" />;
 			default:
-				return <Star className="h-4 w-4" />;
+				return <HugeiconsIcon icon={StarIcon} className="h-4 w-4" />;
 		}
 	};
 
 	if (isLoading) {
 		return (
 			<div className="flex min-h-[60vh] items-center justify-center">
-				<CircleNotch className="h-8 w-8 animate-spin text-muted-foreground" />
+				<HugeiconsIcon
+					icon={Loading03Icon}
+					className="h-8 w-8 animate-spin text-muted-foreground"
+				/>
 			</div>
 		);
 	}
@@ -169,7 +173,7 @@ export default function ReviewPage() {
 						<Card className="border-primary/20 bg-linear-to-br from-primary/5 to-transparent">
 							<CardHeader>
 								<CardTitle className="flex items-center gap-2">
-									<Lightning weight="bold" className="h-5 w-5 text-primary" />
+									<HugeiconsIcon icon={FlashIcon} className="h-5 w-5 text-primary" />
 									Cards Due for Review
 								</CardTitle>
 								<CardDescription>
@@ -178,7 +182,7 @@ export default function ReviewPage() {
 							</CardHeader>
 							<CardContent>
 								<Button onClick={() => setShowReviewModal(true)} className="w-full sm:w-auto">
-									<BookOpen className="mr-2 h-4 w-4" />
+									<HugeiconsIcon icon={BookOpen01Icon} className="mr-2 h-4 w-4" />
 									Start Review Session
 								</Button>
 							</CardContent>
@@ -189,7 +193,7 @@ export default function ReviewPage() {
 						<Card>
 							<CardHeader>
 								<CardTitle className="flex items-center gap-2">
-									<Target weight="bold" className="h-5 w-5" />
+									<HugeiconsIcon icon={Target01Icon} className="h-5 w-5" />
 									Personalized Recommendations
 								</CardTitle>
 								<CardDescription>{recommendations.summary}</CardDescription>
@@ -222,11 +226,14 @@ export default function ReviewPage() {
 													</div>
 													<p className="text-sm text-muted-foreground">{rec.reason}</p>
 													<div className="flex items-center gap-2 text-xs text-muted-foreground">
-														<Clock className="h-3 w-3" />
+														<HugeiconsIcon icon={Clock01Icon} className="h-3 w-3" />
 														{rec.estimatedTime}
 													</div>
 												</div>
-												<CaretRight className="h-4 w-4 text-muted-foreground" />
+												<HugeiconsIcon
+													icon={ArrowRight01Icon}
+													className="h-4 w-4 text-muted-foreground"
+												/>
 											</div>
 										))}
 									</div>
@@ -243,25 +250,25 @@ export default function ReviewPage() {
 							<div className="grid gap-3 sm:grid-cols-2">
 								<Button variant="outline" asChild>
 									<Link href="/quiz">
-										<Brain className="mr-2 h-4 w-4" />
+										<HugeiconsIcon icon={AiBrain01Icon} className="mr-2 h-4 w-4" />
 										Practice Quiz
 									</Link>
 								</Button>
 								<Button variant="outline" asChild>
 									<Link href="/flashcards">
-										<BookOpen className="mr-2 h-4 w-4" />
+										<HugeiconsIcon icon={BookOpen01Icon} className="mr-2 h-4 w-4" />
 										Flashcard Decks
 									</Link>
 								</Button>
 								<Button variant="outline" asChild>
 									<Link href="/ai-tutor">
-										<Target weight="bold" className="mr-2 h-4 w-4" />
+										<HugeiconsIcon icon={Target01Icon} className="mr-2 h-4 w-4" />
 										AI Tutor
 									</Link>
 								</Button>
 								<Button variant="outline" asChild>
 									<Link href="/dashboard">
-										<Calendar className="mr-2 h-4 w-4" />
+										<HugeiconsIcon icon={Calendar01Icon} className="mr-2 h-4 w-4" />
 										Study Schedule
 									</Link>
 								</Button>
@@ -274,7 +281,7 @@ export default function ReviewPage() {
 					<Card>
 						<CardHeader>
 							<CardTitle className="flex items-center gap-2">
-								<Trophy weight="bold" className="h-5 w-5 text-yellow-500" />
+								<HugeiconsIcon icon={ChampionIcon} className="h-5 w-5 text-yellow-500" />
 								Review Statistics
 							</CardTitle>
 						</CardHeader>
@@ -313,7 +320,7 @@ export default function ReviewPage() {
 							<Card className="border-orange-500/20 bg-orange-500/5">
 								<CardHeader>
 									<CardTitle className="flex items-center gap-2 text-orange-600">
-										<Calendar className="h-5 w-5" />
+										<HugeiconsIcon icon={Calendar01Icon} className="h-5 w-5" />
 										Attention Needed
 									</CardTitle>
 								</CardHeader>

@@ -1,6 +1,7 @@
 'use client';
 
-import { List } from '@phosphor-icons/react';
+import { Menu01Icon } from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import { Button } from '@/components/ui/button';
 import { useSidebar } from '@/components/ui/sidebar';
 
@@ -15,7 +16,7 @@ export function MobileMenuSheet() {
 			onClick={toggleSidebar}
 			aria-label="Open navigation menu"
 		>
-			<List className="w-5 h-5 text-foreground" />
+			<HugeiconsIcon icon={Menu01Icon} className="w-5 h-5 text-foreground" />
 		</Button>
 	);
 }

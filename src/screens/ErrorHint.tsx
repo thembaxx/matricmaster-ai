@@ -1,6 +1,7 @@
 'use client';
 
-import { Eye, Lightbulb, Warning, X } from '@phosphor-icons/react';
+import { Cancel01Icon, Idea01Icon, ViewIcon, Warning } from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -16,7 +17,7 @@ export default function ErrorHint() {
 			<div className="px-6 pt-12 pb-2 sticky top-0 z-20 bg-background/80 backdrop-blur-sm shrink-0">
 				<div className="bg-amber-100 dark:bg-amber-900/30 text-amber-900 dark:text-amber-100 px-4 py-3 rounded-2xl flex items-center justify-between shadow-sm border border-amber-200 dark:border-amber-800">
 					<div className="flex items-center gap-3">
-						<Warning className="w-5 h-5 fill-amber-500 text-amber-500" />
+						<HugeiconsIcon icon={Warning} className="w-5 h-5 fill-amber-500 text-amber-500" />
 						<span className="font-bold text-sm">Not quite right yet</span>
 					</div>
 					<button
@@ -25,7 +26,10 @@ export default function ErrorHint() {
 						className="min-w-[44px] min-h-[44px] flex items-center justify-center -mr-2"
 						aria-label="Close hint"
 					>
-						<X className="w-5 h-5 opacity-50 hover:opacity-100 transition-opacity" />
+						<HugeiconsIcon
+							icon={Cancel01Icon}
+							className="w-5 h-5 opacity-50 hover:opacity-100 transition-opacity"
+						/>
 					</button>
 				</div>
 			</div>
@@ -35,21 +39,17 @@ export default function ErrorHint() {
 					{/* Original Question */}
 					<div className="mb-8">
 						<div className="flex justify-between items-start mb-1">
-							<span className="text-xs font-bold text-zinc-400 uppercase tracking-widest">
+							<span className="text-xs font-bold text-muted-foreground uppercase tracking-widest">
 								ORIGINAL QUESTION
 							</span>
 							<div className="w-12 h-12 bg-zinc-800 rounded-xl" />{' '}
 							{/* Placeholder for question thumbnail */}
 						</div>
-						<h2 className="text-lg font-bold text-zinc-900 dark:text-white mb-1">
-							Q4: Circuit Analysis
-						</h2>
-						<p className="text-sm text-zinc-500">Calculate the total resistance...</p>
+						<h2 className="text-lg font-bold text-foreground mb-1">Q4: Circuit Analysis</h2>
+						<p className="text-sm text-muted-foreground">Calculate the total resistance...</p>
 					</div>
 
-					<h1 className="text-3xl font-bold text-zinc-900 dark:text-white mb-6">
-						Let's break it down
-					</h1>
+					<h1 className="text-3xl font-bold text-foreground mb-6">Let's break it down</h1>
 
 					{/* Diagram Card */}
 					<Card className="p-8 mb-8 bg-card rounded-3xl shadow-sm border-border relative overflow-hidden">
@@ -68,26 +68,24 @@ export default function ErrorHint() {
 						</div>
 
 						{/* Focus Badge */}
-						<div className="absolute bottom-4 right-4 bg-white dark:bg-zinc-800 shadow-md border border-zinc-100 dark:border-zinc-700 rounded-full px-3 py-1.5 flex items-center gap-2">
-							<Eye className="w-4 h-4 text-amber-500" />
-							<span className="text-xs font-bold text-zinc-900 dark:text-white">
-								Focus: Series Path
-							</span>
+						<div className="absolute bottom-4 right-4 bg-card shadow-md border border-border rounded-full px-3 py-1.5 flex items-center gap-2">
+							<HugeiconsIcon icon={ViewIcon} className="w-4 h-4 text-amber-500" />
+							<span className="text-xs font-bold text-foreground">Focus: Series Path</span>
 						</div>
 					</Card>
 
 					{/* Hint Section */}
 					<div className="mb-8">
 						<div className="flex items-center gap-2 mb-3">
-							<Lightbulb className="w-5 h-5 text-amber-500 fill-current" />
+							<HugeiconsIcon icon={Idea01Icon} className="w-5 h-5 text-amber-500 fill-current" />
 							<span className="font-bold text-amber-500 text-sm tracking-widest">HINT</span>
 						</div>
-						<h3 className="text-xl font-bold text-zinc-900 dark:text-white mb-4 leading-tight">
+						<h3 className="text-xl font-bold text-foreground mb-4 leading-tight">
 							Think about how the resistance changes if we add another resistor in series.
 						</h3>
-						<p className="text-zinc-500 text-sm leading-relaxed mb-6">
+						<p className="text-muted-foreground text-sm leading-relaxed mb-6">
 							When components are lined up one after another, the current must flow through{' '}
-							<strong className="text-zinc-900 dark:text-white">all of them</strong>.
+							<strong className="text-foreground">all of them</strong>.
 						</p>
 
 						{/* Formula Box */}
@@ -112,7 +110,7 @@ export default function ErrorHint() {
 						</Button>
 						<button
 							type="button"
-							className="text-zinc-400 hover:text-zinc-900 font-bold text-sm"
+							className="text-muted-foreground hover:text-zinc-900 font-bold text-sm"
 							onClick={() => router.push('/quiz')} // Or show solution
 						>
 							See Solution

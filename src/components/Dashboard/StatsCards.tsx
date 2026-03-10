@@ -1,6 +1,7 @@
 'use client';
 
-import { Fire, Trophy } from '@phosphor-icons/react';
+import { ChampionIcon, FireIcon } from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import { m } from 'framer-motion';
 import { memo } from 'react';
 import { Card } from '@/components/ui/card';
@@ -27,7 +28,10 @@ export const StatsCards = memo(function StatsCards({ streak, accuracy }: StatsCa
 								whileHover={{ scale: 1.1, rotate: 12 }}
 								className="w-10 h-10 bg-brand-amber/15 rounded-xl flex items-center justify-center border border-brand-amber/25"
 							>
-								<Fire weight="bold" className="w-5 h-5 text-brand-amber fill-brand-amber" />
+								<HugeiconsIcon
+									icon={FireIcon}
+									className="w-5 h-5 text-brand-amber fill-brand-amber"
+								/>
 							</m.div>
 							<span className="text-sm font-semibold text-foreground">Study Streak</span>
 						</div>
@@ -58,7 +62,7 @@ export const StatsCards = memo(function StatsCards({ streak, accuracy }: StatsCa
 								whileHover={{ scale: 1.1, rotate: -12 }}
 								className="w-10 h-10 bg-primary/15 rounded-xl flex items-center justify-center border border-primary/25"
 							>
-								<Trophy weight="bold" className="w-5 h-5 text-primary" />
+								<HugeiconsIcon icon={ChampionIcon} className="w-5 h-5 text-primary" />
 							</m.div>
 							<span className="text-sm font-semibold text-foreground">Accuracy</span>
 						</div>

@@ -1,6 +1,7 @@
 'use client';
 
-import { Check, Copy } from '@phosphor-icons/react';
+import { CopyIcon, Tick01Icon } from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import { useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import rehypeKatex from 'rehype-katex';
@@ -46,9 +47,9 @@ function CodeBlock({ children, className }: { children: React.ReactNode; classNa
 					onClick={handleCopy}
 				>
 					{copied ? (
-						<Check className="h-3.5 w-3.5 text-green-500" />
+						<HugeiconsIcon icon={Tick01Icon} className="h-3.5 w-3.5 text-green-500" />
 					) : (
-						<Copy className="h-3.5 w-3.5" />
+						<HugeiconsIcon icon={CopyIcon} className="h-3.5 w-3.5" />
 					)}
 					<span className="ml-2 text-[10px] font-black uppercase tracking-widest">
 						{copied ? 'Copied!' : 'Copy'}

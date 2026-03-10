@@ -1,6 +1,7 @@
 'use client';
 
-import { X } from '@phosphor-icons/react';
+import { Cancel01Icon } from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import { AnimatePresence, m } from 'framer-motion';
 import { useEffect } from 'react';
 import { Button } from '@/components/ui/button';
@@ -76,7 +77,10 @@ export function FeatureTooltip({
 									className="shrink-0 p-1 hover:bg-muted rounded-lg transition-colors"
 									aria-label="Dismiss"
 								>
-									<X className="w-3.5 h-3.5 text-muted-foreground" />
+									<HugeiconsIcon
+										icon={Cancel01Icon}
+										className="w-3.5 h-3.5 text-muted-foreground"
+									/>
 								</button>
 							</div>
 							<p className="text-sm text-muted-foreground leading-relaxed mb-3">{content}</p>

@@ -1,15 +1,16 @@
 'use client';
 
-import { Icon } from '@iconify/react';
 import {
-	ArrowLeft,
-	CheckCircle,
-	CircleNotch,
-	Clock,
-	Sparkle,
-	TrendUp,
-	XCircle,
-} from '@phosphor-icons/react';
+	AnalyticsUpIcon,
+	ArrowLeft02Icon as ArrowLeft,
+	CancelCircleIcon,
+	CheckmarkCircle02Icon,
+	Clock01Icon,
+	Loading03Icon,
+	SparklesIcon,
+} from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
+import { Icon } from '@iconify/react';
 import { AnimatePresence, m } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
@@ -348,7 +349,7 @@ export default function EnhancedTestQuizScreen() {
 								onClick={() => router.back()}
 								className="rounded-full hover:bg-black/5 dark:hover:bg-white/10"
 							>
-								<ArrowLeft className="w-6 h-6" />
+								<HugeiconsIcon icon={ArrowLeft} className="w-6 h-6" />
 							</Button>
 							<h1 className="text-lg font-medium text-left grow text-foreground opacity-80">
 								Select Subjects
@@ -364,7 +365,10 @@ export default function EnhancedTestQuizScreen() {
 									<div>
 										<div className="flex items-center gap-3 mb-4">
 											<div className="w-10 h-10 rounded-2xl bg-brand-blue/10 flex items-center justify-center">
-												<CheckCircle className="w-5 h-5 text-brand-blue" />
+												<HugeiconsIcon
+													icon={CheckmarkCircle02Icon}
+													className="w-5 h-5 text-brand-blue"
+												/>
 											</div>
 											<h2 className="text-xl font-bold text-foreground tracking-tight">
 												Choose your subjects
@@ -411,7 +415,7 @@ export default function EnhancedTestQuizScreen() {
 											onClick={selectRandomSubjects}
 											className="w-full rounded-2xl border border-border hover:border-brand-blue/50 hover:bg-brand-blue/5 transition-all text-muted-foreground font-semibold h-12"
 										>
-											<Sparkle weight="bold" className="w-4 h-4 mr-2" />
+											<HugeiconsIcon icon={SparklesIcon} className="w-4 h-4 mr-2" />
 											I'm feeling lucky
 										</Button>
 									</m.div>
@@ -426,7 +430,7 @@ export default function EnhancedTestQuizScreen() {
 								className="w-full bg-brand-blue hover:bg-brand-blue/90 shadow-xl shadow-brand-blue/20 gap-3 text-white h-16 rounded-[2rem] font-semibold text-base transition-all active:scale-95"
 							>
 								{loading ? (
-									<CircleNotch className="w-6 h-6 animate-spin" />
+									<HugeiconsIcon icon={Loading03Icon} className="w-6 h-6 animate-spin" />
 								) : (
 									<>
 										<Icon
@@ -464,7 +468,7 @@ export default function EnhancedTestQuizScreen() {
 											onClick={() => router.push('/dashboard')}
 											className="rounded-full hover:bg-black/5 dark:hover:bg-white/10"
 										>
-											<ArrowLeft className="w-6 h-6" />
+											<HugeiconsIcon icon={ArrowLeft} className="w-6 h-6" />
 										</Button>
 										<div className="text-center">
 											<h1 className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">
@@ -511,11 +515,11 @@ export default function EnhancedTestQuizScreen() {
 											>
 												{quizState.questions[quizState.currentQuestionIndex].topic || 'General'}
 											</Badge>
-											<div className="text-xs font-bold text-zinc-400 uppercase tracking-widest">
+											<div className="text-xs font-bold text-muted-foreground uppercase tracking-widest">
 												{quizState.questions[quizState.currentQuestionIndex].marks} Marks
 											</div>
 										</div>
-										<h2 className="text-2xl font-medium text-zinc-900 dark:text-white leading-relaxed">
+										<h2 className="text-2xl font-medium text-foreground leading-relaxed">
 											{quizState.questions[quizState.currentQuestionIndex].questionText}
 										</h2>
 									</div>
@@ -535,7 +539,7 @@ export default function EnhancedTestQuizScreen() {
 									{quizState.questions[quizState.currentQuestionIndex].hint && (
 										<div className="p-4 bg-yellow-500/5 dark:bg-yellow-500/10 rounded-2xl border border-yellow-500/10 flex gap-3">
 											<div className="shrink-0 text-yellow-600 dark:text-yellow-500">
-												<Sparkle weight="bold" className="w-5 h-5 fill-current" />
+												<HugeiconsIcon icon={SparklesIcon} className="w-5 h-5 fill-current" />
 											</div>
 											<p className="text-sm text-yellow-700 dark:text-yellow-400 font-medium">
 												{quizState.questions[quizState.currentQuestionIndex].hint}
@@ -599,14 +603,17 @@ export default function EnhancedTestQuizScreen() {
 																</span>
 																{isSelected && (
 																	<div className="ml-auto text-brand-blue">
-																		<CheckCircle className="w-5 h-5 fill-current" />
+																		<HugeiconsIcon
+																			icon={CheckmarkCircle02Icon}
+																			className="w-5 h-5 fill-current"
+																		/>
 																	</div>
 																)}
 															</Label>
 
 															{/* AI Explanation for selected option (optional feature, kept simple for now) */}
 															{isSelected && false && (
-																<div className="mt-2 text-xs text-zinc-500 px-4">
+																<div className="mt-2 text-xs text-muted-foreground px-4">
 																	Show detailed explanation here...
 																</div>
 															)}
@@ -689,14 +696,14 @@ export default function EnhancedTestQuizScreen() {
 							>
 								<div className="text-center mb-8">
 									<div className="w-24 h-24 bg-brand-green/10 rounded-full flex items-center justify-center mx-auto mb-6 shrink-0 shadow-[0_0_32px_rgba(16,185,129,0.2)]">
-										<TrendUp className="w-12 h-12 text-brand-green" />
+										<HugeiconsIcon icon={AnalyticsUpIcon} className="w-12 h-12 text-brand-green" />
 									</div>
 									<h2 className="text-3xl font-black mb-2 text-foreground tracking-tight">
 										Quiz Complete!
 									</h2>
 									<div className="flex flex-col gap-2 items-center">
 										<p className="text-muted-foreground font-medium flex items-center justify-center gap-2 bg-muted py-1 px-4 rounded-full w-fit mx-auto mt-4">
-											<Clock className="w-4 h-4" />
+											<HugeiconsIcon icon={Clock01Icon} className="w-4 h-4" />
 											Time taken: {getTimeTaken()}
 										</p>
 										<Badge
@@ -736,7 +743,7 @@ export default function EnhancedTestQuizScreen() {
 								</Card>
 
 								<div className="w-full space-y-3 mb-8">
-									<h3 className="text-sm font-black text-zinc-500 uppercase tracking-widest px-1">
+									<h3 className="text-sm font-black text-muted-foreground uppercase tracking-widest px-1">
 										Review Answers
 									</h3>
 									{quizState.questions.map((question, index) => {
@@ -758,9 +765,12 @@ export default function EnhancedTestQuizScreen() {
 													Question {index + 1}
 												</span>
 												{isCorrect ? (
-													<CheckCircle className="w-5 h-5 text-green-500" />
+													<HugeiconsIcon
+														icon={CheckmarkCircle02Icon}
+														className="w-5 h-5 text-green-500"
+													/>
 												) : (
-													<XCircle className="w-5 h-5 text-red-500" />
+													<HugeiconsIcon icon={CancelCircleIcon} className="w-5 h-5 text-red-500" />
 												)}
 											</div>
 										);
@@ -799,7 +809,7 @@ export default function EnhancedTestQuizScreen() {
 										}}
 										className="flex-1 h-14 rounded-2xl font-black uppercase tracking-wider bg-brand-amber text-zinc-900 hover:bg-brand-amber/90"
 									>
-										<Sparkle weight="bold" className="w-4 h-4 mr-2" />
+										<HugeiconsIcon icon={SparklesIcon} className="w-4 h-4 mr-2" />
 										Claim XP
 									</Button>
 								</div>

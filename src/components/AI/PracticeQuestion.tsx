@@ -1,4 +1,5 @@
-import { CheckCircle, XCircle } from '@phosphor-icons/react';
+import { CancelCircleIcon, CheckmarkCircle02Icon } from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import { useId } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
@@ -71,10 +72,10 @@ export function PracticeQuestion({
 								{option}
 							</Label>
 							{showExplanation && option === problem.answer && (
-								<CheckCircle className="h-5 w-5 text-green-500" />
+								<HugeiconsIcon icon={CheckmarkCircle02Icon} className="h-5 w-5 text-green-500" />
 							)}
 							{showExplanation && answer === option && option !== problem.answer && (
-								<XCircle className="h-5 w-5 text-red-500" />
+								<HugeiconsIcon icon={CancelCircleIcon} className="h-5 w-5 text-red-500" />
 							)}
 						</div>
 					))}

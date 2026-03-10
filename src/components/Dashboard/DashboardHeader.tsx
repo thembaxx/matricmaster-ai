@@ -1,6 +1,7 @@
 'use client';
 
-import { Bell } from '@phosphor-icons/react';
+import { Notification03Icon } from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import { m } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
@@ -70,7 +71,7 @@ export function DashboardHeader({ userName, userImage, unreadCount }: DashboardH
 						}}
 						aria-label={`Notifications${unreadCount > 0 ? `, ${unreadCount} unread` : ''}`}
 					>
-						<Bell className="w-6 h-6 text-foreground" />
+						<HugeiconsIcon icon={Notification03Icon} className="w-6 h-6 text-foreground" />
 						{unreadCount > 0 && (
 							<m.span
 								initial={{ scale: 0.95, opacity: 0 }}

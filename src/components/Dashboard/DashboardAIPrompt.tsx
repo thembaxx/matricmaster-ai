@@ -1,6 +1,7 @@
 'use client';
 
-import { ArrowRight, Sparkle } from '@phosphor-icons/react';
+import { ArrowRight02Icon, SparklesIcon } from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import { AnimatePresence, m } from 'framer-motion';
 import { useState } from 'react';
 import { ThinkingAnimation } from '@/components/AI/ThinkingAnimation';
@@ -27,8 +28,8 @@ export function DashboardAIPrompt() {
 				onSubmit={handleSubmit}
 				className="relative z-10 flex items-center gap-4 p-2 pl-6 bg-card/50 backdrop-blur-xl border border-white/10 rounded-[2.5rem] shadow-2xl focus-within:ring-2 focus-within:ring-primary/50 transition-all duration-500"
 			>
-				<Sparkle
-					weight="fill"
+				<HugeiconsIcon
+					icon={SparklesIcon}
 					className={`h-6 w-6 transition-colors duration-500 ${isThinking ? 'text-primary animate-pulse' : 'text-muted-foreground'}`}
 				/>
 				<input
@@ -43,7 +44,7 @@ export function DashboardAIPrompt() {
 					type="submit"
 					className="h-12 w-12 flex items-center justify-center bg-primary text-primary-foreground rounded-full shadow-lg hover:shadow-primary/20 transition-all"
 				>
-					<ArrowRight weight="bold" className="h-5 w-5" />
+					<HugeiconsIcon icon={ArrowRight02Icon} className="h-5 w-5" />
 				</m.button>
 			</form>
 

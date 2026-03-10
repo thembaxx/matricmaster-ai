@@ -1,6 +1,7 @@
 'use client';
 
-import { MagnifyingGlass as SearchIcon, X } from '@phosphor-icons/react';
+import { Cancel01Icon, Search01Icon } from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import { AnimatePresence, m } from 'framer-motion';
 import { memo, useEffect, useRef, useState } from 'react';
 import { Input } from '@/components/ui/input';
@@ -41,7 +42,10 @@ export const SearchHeader = memo(function SearchHeader({
 				animate={{ scale: 1, opacity: 1 }}
 				className="relative mt-6"
 			>
-				<SearchIcon className="absolute left-5 top-1/2 -translate-y-1/2 w-6 h-6 text-muted-foreground" />
+				<HugeiconsIcon
+					icon={Search01Icon}
+					className="absolute left-5 top-1/2 -translate-y-1/2 w-6 h-6 text-muted-foreground"
+				/>
 				<Input
 					ref={inputRef}
 					value={query}
@@ -82,7 +86,7 @@ export const SearchHeader = memo(function SearchHeader({
 									onClick={() => onQueryChange('')}
 									className="absolute right-5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
 								>
-									<X className="w-6 h-6" />
+									<HugeiconsIcon icon={Cancel01Icon} className="w-6 h-6" />
 								</m.button>
 							</TooltipTrigger>
 							<TooltipContent>Clear search</TooltipContent>

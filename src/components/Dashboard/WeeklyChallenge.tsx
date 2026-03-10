@@ -1,6 +1,7 @@
 'use client';
 
-import { Clock, Lightning, Sparkle } from '@phosphor-icons/react';
+import { Clock01Icon, FlashIcon, SparklesIcon } from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import { m } from 'framer-motion';
 import { memo, useEffect, useState } from 'react';
 import { Card } from '@/components/ui/card';
@@ -179,7 +180,7 @@ export const WeeklyChallenge = memo(function WeeklyChallenge({
 				<div className="flex items-start justify-between">
 					<div className="space-y-1">
 						<div className="flex items-center gap-2">
-							<Lightning weight="bold" className="w-4 h-4 text-brand-amber" />
+							<HugeiconsIcon icon={FlashIcon} className="w-4 h-4 text-brand-amber" />
 							<span className="text-[10px] font-black text-brand-amber uppercase tracking-widest">
 								Weekly Challenge
 							</span>
@@ -198,7 +199,7 @@ export const WeeklyChallenge = memo(function WeeklyChallenge({
 					) : (
 						<div className="text-right">
 							<div className="flex items-center gap-1 text-muted-foreground">
-								<Clock className="w-3 h-3" />
+								<HugeiconsIcon icon={Clock01Icon} className="w-3 h-3" />
 								<span className="text-xs font-bold">{challenge.daysRemaining}d left</span>
 							</div>
 						</div>
@@ -220,7 +221,7 @@ export const WeeklyChallenge = memo(function WeeklyChallenge({
 
 				<div className="flex items-center justify-between pt-2">
 					<div className="flex items-center gap-2">
-						<Sparkle weight="bold" className="w-4 h-4 text-brand-amber" />
+						<HugeiconsIcon icon={SparklesIcon} className="w-4 h-4 text-brand-amber" />
 						<span className="text-xs font-bold text-muted-foreground">Bonus Reward</span>
 					</div>
 					<span

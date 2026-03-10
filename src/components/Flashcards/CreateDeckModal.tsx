@@ -1,6 +1,7 @@
 'use client';
 
-import { CircleNotch, Plus } from '@phosphor-icons/react';
+import { Add01Icon, Loading03Icon } from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import { useId, useState } from 'react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
@@ -115,9 +116,9 @@ export function CreateDeckModal({ open, onOpenChange, onCreated }: CreateDeckMod
 					</Button>
 					<Button onClick={handleCreate} disabled={isCreating || !name.trim()}>
 						{isCreating ? (
-							<CircleNotch className="mr-2 h-4 w-4 animate-spin" />
+							<HugeiconsIcon icon={Loading03Icon} className="mr-2 h-4 w-4 animate-spin" />
 						) : (
-							<Plus className="mr-2 h-4 w-4" />
+							<HugeiconsIcon icon={Add01Icon} className="mr-2 h-4 w-4" />
 						)}
 						Create Deck
 					</Button>

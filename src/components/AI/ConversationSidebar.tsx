@@ -1,14 +1,15 @@
 'use client';
 
 import {
-	Archive,
-	ChatCenteredText,
-	CircleNotch,
-	MagnifyingGlass,
-	Plus,
-	Trash,
-	X,
-} from '@phosphor-icons/react';
+	Add01Icon,
+	ArchiveIcon,
+	Cancel01Icon,
+	Chat01Icon,
+	Delete02Icon,
+	Loading03Icon,
+	Search01Icon,
+} from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import { AnimatePresence, m } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
@@ -63,13 +64,16 @@ function ConversationList({
 			<div className="p-4 border-b space-y-3">
 				<div className="flex items-center justify-between">
 					<div className="flex items-center gap-2">
-						<Archive className="h-5 w-5 text-primary" />
+						<HugeiconsIcon icon={ArchiveIcon} className="h-5 w-5 text-primary" />
 						<h2 className="font-bold">ClockCounterClockwise</h2>
 					</div>
 					<span className="text-xs text-muted-foreground">{conversations.length} saved</span>
 				</div>
 				<div className="relative">
-					<MagnifyingGlass className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+					<HugeiconsIcon
+						icon={Search01Icon}
+						className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground"
+					/>
 					<Input
 						placeholder="MagnifyingGlass conversations..."
 						value={searchQuery}
@@ -87,13 +91,13 @@ function ConversationList({
 								className="absolute right-2 top-1/2 -translate-y-1/2 h-6 w-6 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
 								aria-label="Clear search"
 							>
-								<X className="h-4 w-4" />
+								<HugeiconsIcon icon={Cancel01Icon} className="h-4 w-4" />
 							</m.button>
 						)}
 					</AnimatePresence>
 				</div>
 				<Button onClick={onNewConversation} className="w-full" size="sm">
-					<Plus className="h-4 w-4 mr-2" />
+					<HugeiconsIcon icon={Add01Icon} className="h-4 w-4 mr-2" />
 					New Conversation
 				</Button>
 			</div>
@@ -102,11 +106,14 @@ function ConversationList({
 				<div className="p-2 space-y-1">
 					{isLoading ? (
 						<div className="flex items-center justify-center py-8">
-							<CircleNotch className="h-6 w-6 animate-spin text-muted-foreground" />
+							<HugeiconsIcon
+								icon={Loading03Icon}
+								className="h-6 w-6 animate-spin text-muted-foreground"
+							/>
 						</div>
 					) : filteredConversations.length === 0 ? (
 						<div className="text-center py-8 text-muted-foreground">
-							<ChatCenteredText className="h-8 w-8 mx-auto mb-2 opacity-50" />
+							<HugeiconsIcon icon={Chat01Icon} className="h-8 w-8 mx-auto mb-2 opacity-50" />
 							<p className="text-sm">
 								{searchQuery ? 'No matching conversations' : 'No saved conversations yet'}
 							</p>
@@ -149,9 +156,9 @@ function ConversationList({
 										aria-label="Backspace conversation"
 									>
 										{deletingId === conversation.id ? (
-											<CircleNotch className="h-3.5 w-3.5 animate-spin" />
+											<HugeiconsIcon icon={Loading03Icon} className="h-3.5 w-3.5 animate-spin" />
 										) : (
-											<Trash className="h-3.5 w-3.5" />
+											<HugeiconsIcon icon={Delete02Icon} className="h-3.5 w-3.5" />
 										)}
 									</Button>
 								</div>
@@ -254,7 +261,7 @@ export function ConversationSidebar({
 						className="lg:hidden"
 						aria-label="Open conversation history"
 					>
-						<Archive className="h-4 w-4" />
+						<HugeiconsIcon icon={ArchiveIcon} className="h-4 w-4" />
 					</Button>
 				</SheetTrigger>
 				<SheetContent side="left" className="w-80 p-0">

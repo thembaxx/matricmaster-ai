@@ -1,14 +1,15 @@
 'use client';
 
 import {
-	Calendar as CalendarIcon,
-	CaretLeft,
-	CaretRight,
-	Clock,
-	Pencil,
-	Plus,
-	Trash,
-} from '@phosphor-icons/react';
+	Add01Icon,
+	ArrowLeft01Icon,
+	ArrowRight01Icon,
+	Calendar01Icon,
+	Clock01Icon,
+	Delete02Icon,
+	PencilEdit01Icon,
+} from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { Badge } from '@/components/ui/badge';
@@ -333,14 +334,14 @@ export default function CalendarPage() {
 		<div className="container mx-auto py-8 max-w-6xl">
 			<div className="flex items-center justify-between mb-6">
 				<div className="flex items-center gap-3">
-					<CalendarIcon className="h-8 w-8 text-primary" />
+					<HugeiconsIcon icon={Calendar01Icon} className="h-8 w-8 text-primary" />
 					<div>
 						<h1 className="text-3xl font-bold">Calendar</h1>
 						<p className="text-muted-foreground">Schedule and manage your study time</p>
 					</div>
 				</div>
 				<Button onClick={() => setShowEventForm(true)} disabled={!session?.user}>
-					<Plus className="h-4 w-4 mr-2" />
+					<HugeiconsIcon icon={Add01Icon} className="h-4 w-4 mr-2" />
 					Add Event
 				</Button>
 			</div>
@@ -353,13 +354,13 @@ export default function CalendarPage() {
 							<div className="flex items-center justify-between">
 								<div className="flex items-center gap-4">
 									<Button variant="outline" size="icon" onClick={prevMonth}>
-										<CaretLeft className="h-4 w-4" />
+										<HugeiconsIcon icon={ArrowLeft01Icon} className="h-4 w-4" />
 									</Button>
 									<h2 className="text-xl font-semibold">
 										{MONTHS[month]} {year}
 									</h2>
 									<Button variant="outline" size="icon" onClick={nextMonth}>
-										<CaretRight className="h-4 w-4" />
+										<HugeiconsIcon icon={ArrowRight01Icon} className="h-4 w-4" />
 									</Button>
 								</div>
 								<Button variant="outline" onClick={goToToday}>
@@ -441,7 +442,7 @@ export default function CalendarPage() {
 												</div>
 												<div className="flex gap-1">
 													<Button variant="ghost" size="icon" className="h-6 w-6">
-														<Pencil className="h-3 w-3" />
+														<HugeiconsIcon icon={PencilEdit01Icon} className="h-3 w-3" />
 													</Button>
 													<Button
 														variant="ghost"
@@ -449,13 +450,13 @@ export default function CalendarPage() {
 														className="h-6 w-6"
 														onClick={() => handleDeleteEvent(event.id)}
 													>
-														<Trash className="h-3 w-3" />
+														<HugeiconsIcon icon={Delete02Icon} className="h-3 w-3" />
 													</Button>
 												</div>
 											</div>
 											<div className="flex items-center gap-4 mt-2 text-xs text-muted-foreground">
 												<span className="flex items-center gap-1">
-													<Clock className="h-3 w-3" />
+													<HugeiconsIcon icon={Clock01Icon} className="h-3 w-3" />
 													{new Date(event.startTime).toLocaleTimeString([], {
 														hour: '2-digit',
 														minute: '2-digit',
@@ -470,7 +471,10 @@ export default function CalendarPage() {
 								</div>
 							) : (
 								<div className="text-center py-8 text-muted-foreground">
-									<CalendarIcon className="h-8 w-8 mx-auto mb-2 opacity-50" />
+									<HugeiconsIcon
+										icon={Calendar01Icon}
+										className="h-8 w-8 mx-auto mb-2 opacity-50"
+									/>
 									<p className="text-sm">No events for this day</p>
 								</div>
 							)}

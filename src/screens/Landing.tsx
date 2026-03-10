@@ -1,14 +1,15 @@
 'use client';
 
 import {
-	Atom,
-	Calculator,
-	CaretRight,
-	FileText,
-	Flask,
-	Microscope,
-	Sparkle,
-} from '@phosphor-icons/react';
+	ArrowRight01Icon,
+	AtomIcon,
+	CalculatorIcon,
+	Chemistry01Icon,
+	File01Icon,
+	MicroscopeIcon,
+	SparklesIcon,
+} from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import { m } from 'framer-motion';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -24,11 +25,11 @@ import { SUBJECTS } from '@/constants/mock-data';
 import { STAGGER_CONTAINER, STAGGER_ITEM } from '@/lib/animation-presets';
 import { useSession } from '@/lib/auth-client';
 
-const ICON_MAP: Record<string, React.ElementType> = {
-	Calculator: Calculator,
-	Atom: Atom,
-	Flask: Flask,
-	Microscope: Microscope,
+const ICON_MAP: Record<string, any> = {
+	Calculator: CalculatorIcon,
+	Atom: AtomIcon,
+	Flask: Chemistry01Icon,
+	Microscope: MicroscopeIcon,
 };
 
 export default function Landing() {
@@ -61,7 +62,7 @@ export default function Landing() {
 									transition={{ type: 'spring', stiffness: 300, damping: 28 }}
 								>
 									<Badge className="bg-primary/10 text-primary border-none rounded-full px-4 py-1.5 text-xs font-medium mb-4">
-										<Sparkle weight="bold" className="w-3 h-3 mr-1.5" />
+										<HugeiconsIcon icon={SparklesIcon} className="w-3 h-3 mr-1.5" />
 										Trusted by 50,000+ students
 									</Badge>
 								</m.div>
@@ -91,7 +92,10 @@ export default function Landing() {
 								>
 									<span className="relative z-10 flex items-center justify-center">
 										Start Learning
-										<CaretRight className="w-4 h-4 ml-2 group-hover:translate-x-0.5 transition-transform" />
+										<HugeiconsIcon
+											icon={ArrowRight01Icon}
+											className="w-4 h-4 ml-2 group-hover:translate-x-0.5 transition-transform"
+										/>
 									</span>
 								</Button>
 								<Button
@@ -101,7 +105,7 @@ export default function Landing() {
 									onClick={() => handleAuthRoute('/past-papers')}
 								>
 									<span className="flex items-center gap-2">
-										<FileText className="w-4 h-4" />
+										<HugeiconsIcon icon={File01Icon} className="w-4 h-4" />
 										Browse Past Papers
 									</span>
 								</Button>
@@ -197,8 +201,8 @@ export default function Landing() {
 								transition={{ duration: 4, repeat: Number.POSITIVE_INFINITY, ease: 'easeInOut' }}
 								className="absolute -top-3 sm:-top-4 right-0 sm:right-2 w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 bg-primary-orange rounded-2xl sm:rounded-3xl shadow-2xl flex items-center justify-center -rotate-12 z-20"
 							>
-								<Sparkle
-									weight="bold"
+								<HugeiconsIcon
+									icon={SparklesIcon}
 									className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 text-white fill-current"
 								/>
 							</m.div>
@@ -207,7 +211,10 @@ export default function Landing() {
 								transition={{ duration: 6, repeat: Number.POSITIVE_INFINITY, ease: 'easeInOut' }}
 								className="absolute -bottom-4 sm:-bottom-6 left-0 sm:left-2 w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 bg-accent-lime rounded-2xl sm:rounded-3xl shadow-2xl flex items-center justify-center z-20"
 							>
-								<Atom className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 text-white" />
+								<HugeiconsIcon
+									icon={AtomIcon}
+									className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 text-white"
+								/>
 							</m.div>
 						</m.div>
 					</section>
@@ -230,7 +237,7 @@ export default function Landing() {
 							className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8"
 						>
 							{SUBJECTS.map((subject) => {
-								const Icon = ICON_MAP[subject.icon] || Calculator;
+								const icon = ICON_MAP[subject.icon] || CalculatorIcon;
 								return (
 									<m.div key={subject.id} variants={STAGGER_ITEM}>
 										<Card
@@ -247,13 +254,17 @@ export default function Landing() {
 														whileHover={{ scale: 1.1, rotate: 5 }}
 														className={`w-16 h-16 sm:w-20 sm:h-20 rounded-2xl ${subject.bg} flex items-center justify-center shrink-0 shadow-inner group-hover:scale-110 transition-transform duration-500 relative overflow-hidden`}
 													>
-														<Icon
+														<HugeiconsIcon
+															icon={icon}
 															className={`w-8 h-8 sm:w-10 sm:h-10 ${subject.color} relative z-10`}
 															aria-hidden="true"
 														/>
 													</m.div>
 													<div className="w-12 h-12 rounded-full bg-secondary flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 -translate-x-4 group-hover:translate-x-0">
-														<CaretRight className="w-5 h-5 text-foreground" />
+														<HugeiconsIcon
+															icon={ArrowRight01Icon}
+															className="w-5 h-5 text-foreground"
+														/>
 													</div>
 												</div>
 
@@ -270,7 +281,7 @@ export default function Landing() {
 											<div className="pt-6 sm:pt-8 relative z-10">
 												<div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-primary opacity-0 group-hover:opacity-100 transition-opacity duration-500">
 													Learn More
-													<CaretRight className="w-4 h-4" />
+													<HugeiconsIcon icon={ArrowRight01Icon} className="w-4 h-4" />
 												</div>
 											</div>
 										</Card>

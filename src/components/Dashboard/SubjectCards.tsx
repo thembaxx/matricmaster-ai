@@ -1,14 +1,15 @@
 'use client';
 
 import {
-	ArrowUpRight,
-	Atom,
-	BookOpen,
-	Calculator,
-	ChartBar,
-	ClockCounterClockwise,
-	X,
-} from '@phosphor-icons/react';
+	ArrowUpRight01Icon as ArrowUpRight,
+	AtomIcon,
+	BookOpen01Icon,
+	CalculatorIcon,
+	Cancel01Icon,
+	Analytics01Icon as ChartBar,
+	Refresh01Icon,
+} from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import { AnimatePresence, m } from 'framer-motion';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
@@ -20,7 +21,7 @@ interface Subject {
 	title: string;
 	progress: number;
 	color: string;
-	icon: React.ElementType;
+	icon: any;
 	topics: number;
 	description: string;
 }
@@ -31,7 +32,7 @@ const subjects: Subject[] = [
 		title: 'Mathematics',
 		progress: 78,
 		color: 'bg-math',
-		icon: Calculator,
+		icon: CalculatorIcon,
 		topics: 12,
 		description: 'Calculus, Trigonometry, and Financial Maths.',
 	},
@@ -40,7 +41,7 @@ const subjects: Subject[] = [
 		title: 'Physical Sciences',
 		progress: 62,
 		color: 'bg-physics',
-		icon: Atom,
+		icon: AtomIcon,
 		topics: 15,
 		description: 'Newtonian Mechanics, Electricity, and Chemistry.',
 	},
@@ -49,7 +50,7 @@ const subjects: Subject[] = [
 		title: 'Life Sciences',
 		progress: 85,
 		color: 'bg-life-sci',
-		icon: BookOpen,
+		icon: BookOpen01Icon,
 		topics: 10,
 		description: 'DNA, Genetics, and Human Evolution.',
 	},
@@ -83,10 +84,13 @@ export function SubjectCards() {
 						<div className="flex flex-col h-full gap-4">
 							<div className="flex justify-between items-start">
 								<div className={`p-3 rounded-2xl ${subject.color}/10`}>
-									<subject.icon className={`h-6 w-6 ${subject.color.replace('bg-', 'text-')}`} />
+									<HugeiconsIcon
+										icon={subject.icon}
+										className={`h-6 w-6 ${subject.color.replace('bg-', 'text-')}`}
+									/>
 								</div>
 								<div className="p-2 rounded-full bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity">
-									<ArrowUpRight className="h-4 w-4 text-muted-foreground" />
+									<HugeiconsIcon icon={ArrowUpRight} className="h-4 w-4 text-muted-foreground" />
 								</div>
 							</div>
 
@@ -132,7 +136,8 @@ export function SubjectCards() {
 								<div className="flex justify-between items-start">
 									<div className="flex items-center gap-4">
 										<div className={`p-4 rounded-[1.5rem] ${selectedSubject.color}/10`}>
-											<selectedSubject.icon
+											<HugeiconsIcon
+												icon={selectedSubject.icon}
 												className={`h-8 w-8 ${selectedSubject.color.replace('bg-', 'text-')}`}
 											/>
 										</div>
@@ -164,7 +169,7 @@ export function SubjectCards() {
 											setSelectedId(null);
 										}}
 									>
-										<X className="h-5 w-5" />
+										<HugeiconsIcon icon={Cancel01Icon} className="h-5 w-5" />
 									</Button>
 								</div>
 
@@ -176,14 +181,14 @@ export function SubjectCards() {
 								>
 									<Card className="p-6 rounded-[2rem] bg-white/5 border-none">
 										<div className="flex items-center gap-3 mb-2">
-											<ClockCounterClockwise className="h-5 w-5 text-brand-blue" />
+											<HugeiconsIcon icon={Refresh01Icon} className="h-5 w-5 text-brand-blue" />
 											<span className="text-sm font-bold uppercase tracking-wide">Last Study</span>
 										</div>
 										<p className="text-xl font-black">2 Days Ago</p>
 									</Card>
 									<Card className="p-6 rounded-[2rem] bg-white/5 border-none">
 										<div className="flex items-center gap-3 mb-2">
-											<ChartBar className="h-5 w-5 text-brand-green" />
+											<HugeiconsIcon icon={ChartBar} className="h-5 w-5 text-brand-green" />
 											<span className="text-sm font-bold uppercase tracking-wide">Mastery</span>
 										</div>
 										<p className="text-xl font-black">{selectedSubject.progress}%</p>
@@ -207,7 +212,10 @@ export function SubjectCards() {
 													<div className="h-2 w-2 rounded-full bg-primary" />
 													<span className="font-medium">Active Topic {i}</span>
 												</div>
-												<ArrowUpRight className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
+												<HugeiconsIcon
+													icon={ArrowUpRight}
+													className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors"
+												/>
 											</div>
 										))}
 									</div>
@@ -223,7 +231,7 @@ export function SubjectCards() {
 										Resume Learning
 									</Button>
 									<Button variant="outline" className="h-14 w-14 rounded-2xl border-white/10">
-										<BookOpen className="h-6 w-6" />
+										<HugeiconsIcon icon={BookOpen01Icon} className="h-6 w-6" />
 									</Button>
 								</m.div>
 							</div>

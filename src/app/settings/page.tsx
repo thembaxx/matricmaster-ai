@@ -1,17 +1,18 @@
 'use client';
 
 import {
-	Bell,
-	CheckCircle,
-	CircleNotch,
-	DeviceMobile,
-	Key,
-	Lock,
-	Shield,
-	Trash,
-	User,
-	XCircle,
-} from '@phosphor-icons/react';
+	CancelCircleIcon,
+	CheckmarkCircle02Icon,
+	Delete02Icon,
+	Key01Icon,
+	Loading03Icon,
+	LockIcon,
+	Notification03Icon,
+	Shield01Icon,
+	SmartPhone01Icon,
+	UserIcon as User,
+} from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import Link from 'next/link';
 import { useEffect, useState, useTransition } from 'react';
 import { toast } from 'sonner';
@@ -32,6 +33,7 @@ import { Separator } from '@/components/ui/separator';
 import { Switch } from '@/components/ui/switch';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { authClient } from '@/lib/auth-client';
+
 import {
 	changePasswordAction,
 	deleteAccountAction,
@@ -245,7 +247,7 @@ export default function SettingsPage() {
 				setShowBackupCodes(true);
 				setIs2FAEnabled(true);
 				toast.success('2FA enabled successfully!', {
-					description: 'FloppyDisk your backup codes in a safe place.',
+					description: 'Save your backup codes in a safe place.',
 				});
 			} else if (result.error) {
 				toast.error(result.error.message);
@@ -296,7 +298,7 @@ export default function SettingsPage() {
 				setBackupCodes(result.data.backupCodes);
 				setShowBackupCodes(true);
 				toast.success('Backup codes regenerated', {
-					description: 'FloppyDisk your new backup codes.',
+					description: 'Save your new backup codes.',
 				});
 			} else if (result.error) {
 				toast.error(result.error.message);
@@ -330,25 +332,25 @@ export default function SettingsPage() {
 	return (
 		<div className="min-h-screen bg-background pt-4 pb-32 px-6 md:p-8">
 			<div className="max-w-4xl mx-auto">
-				<h1 className="text-3xl font-bold mb-2">Gear</h1>
+				<h1 className="text-3xl font-bold mb-2">Settings</h1>
 				<p className="text-muted-foreground mb-8">Manage your account settings and preferences</p>
 
 				<Tabs defaultValue="account" className="space-y-6">
 					<TabsList className="grid w-full grid-cols-4">
 						<TabsTrigger value="account">
-							<User className="h-4 w-4 mr-2" />
+							<HugeiconsIcon icon={User} className="h-4 w-4 mr-2" />
 							Account
 						</TabsTrigger>
 						<TabsTrigger value="security">
-							<Shield className="h-4 w-4 mr-2" />
+							<HugeiconsIcon icon={Shield01Icon} className="h-4 w-4 mr-2" />
 							Security
 						</TabsTrigger>
 						<TabsTrigger value="notifications">
-							<Bell className="h-4 w-4 mr-2" />
+							<HugeiconsIcon icon={Notification03Icon} className="h-4 w-4 mr-2" />
 							Notifications
 						</TabsTrigger>
 						<TabsTrigger value="privacy">
-							<Lock className="h-4 w-4 mr-2" />
+							<HugeiconsIcon icon={LockIcon} className="h-4 w-4 mr-2" />
 							Privacy
 						</TabsTrigger>
 					</TabsList>
@@ -387,11 +389,11 @@ export default function SettingsPage() {
 								<Button onClick={handleSaveProfile} disabled={isPendingProfile}>
 									{isPendingProfile ? (
 										<>
-											<CircleNotch className="mr-2 h-4 w-4 animate-spin" />
+											<HugeiconsIcon icon={Loading03Icon} className="mr-2 h-4 w-4 animate-spin" />
 											Saving...
 										</>
 									) : (
-										'FloppyDisk Changes'
+										'Save Changes'
 									)}
 								</Button>
 							</CardContent>
@@ -428,7 +430,7 @@ export default function SettingsPage() {
 						<Card>
 							<CardHeader>
 								<CardTitle className="flex items-center gap-2">
-									<DeviceMobile className="h-5 w-5" />
+									<HugeiconsIcon icon={SmartPhone01Icon} className="h-5 w-5" />
 									Two-Factor Authentication
 								</CardTitle>
 								<CardDescription>Add an extra layer of security to your account</CardDescription>
@@ -437,9 +439,15 @@ export default function SettingsPage() {
 								<div className="flex items-center justify-between">
 									<div className="flex items-center gap-2">
 										{is2FAEnabled ? (
-											<CheckCircle className="h-5 w-5 text-green-500" />
+											<HugeiconsIcon
+												icon={CheckmarkCircle02Icon}
+												className="h-5 w-5 text-green-500"
+											/>
 										) : (
-											<XCircle className="h-5 w-5 text-muted-foreground" />
+											<HugeiconsIcon
+												icon={CancelCircleIcon}
+												className="h-5 w-5 text-muted-foreground"
+											/>
 										)}
 										<div>
 											<p className="font-medium">2FA Status</p>
@@ -471,14 +479,22 @@ export default function SettingsPage() {
 														onClick={handleDisable2FA}
 														disabled={isLoading2FA}
 													>
-														{isLoading2FA && <CircleNotch className="mr-2 h-4 w-4 animate-spin" />}
+														{isLoading2FA && (
+															<HugeiconsIcon
+																icon={Loading03Icon}
+																className="mr-2 h-4 w-4 animate-spin"
+															/>
+														)}
 														Disable 2FA
 													</Button>
 												) : (
 													<>
 														<Button onClick={handleEnable2FA} disabled={isLoading2FA}>
 															{isLoading2FA && (
-																<CircleNotch className="mr-2 h-4 w-4 animate-spin" />
+																<HugeiconsIcon
+																	icon={Loading03Icon}
+																	className="mr-2 h-4 w-4 animate-spin"
+																/>
 															)}
 															Enable 2FA
 														</Button>
@@ -487,7 +503,7 @@ export default function SettingsPage() {
 															onClick={handleRegenerateBackupCodes}
 															disabled={isLoading2FA || !is2FAEnabled}
 														>
-															<Key className="mr-2 h-4 w-4" />
+															<HugeiconsIcon icon={Key01Icon} className="mr-2 h-4 w-4" />
 															Regenerate Backup Codes
 														</Button>
 													</>
@@ -500,7 +516,7 @@ export default function SettingsPage() {
 										<Separator />
 										<div className="rounded-lg bg-amber-50 border border-amber-200 p-4">
 											<h4 className="font-semibold text-amber-800 mb-2">
-												⚠️ FloppyDisk Your Backup Codes
+												⚠️ Save Your Backup Codes
 											</h4>
 											<p className="text-sm text-amber-700 mb-4">
 												Store these codes somewhere safe. You can use them to access your account if
@@ -564,7 +580,7 @@ export default function SettingsPage() {
 								<Button onClick={handlePasswordChange} disabled={isPendingPassword}>
 									{isPendingPassword ? (
 										<>
-											<CircleNotch className="mr-2 h-4 w-4 animate-spin" />
+											<HugeiconsIcon icon={Loading03Icon} className="mr-2 h-4 w-4 animate-spin" />
 											Updating...
 										</>
 									) : (
@@ -651,7 +667,7 @@ export default function SettingsPage() {
 					<TabsContent value="privacy" className="space-y-6">
 						<Card>
 							<CardHeader>
-								<CardTitle>Privacy Gear</CardTitle>
+								<CardTitle>Privacy Settings</CardTitle>
 								<CardDescription>Control your privacy preferences</CardDescription>
 							</CardHeader>
 							<CardContent className="space-y-6">
@@ -704,7 +720,7 @@ export default function SettingsPage() {
 							<CardContent className="space-y-4">
 								<div className="flex items-center justify-between">
 									<div>
-										<p className="font-medium">Backspace Account</p>
+										<p className="font-medium">Delete Account</p>
 										<p className="text-sm text-muted-foreground">
 											Permanently delete your account and all data
 										</p>
@@ -712,13 +728,13 @@ export default function SettingsPage() {
 									<Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
 										<DialogTrigger asChild>
 											<Button variant="destructive" size="sm">
-												<Trash className="mr-2 h-4 w-4" />
-												Backspace Account
+												<HugeiconsIcon icon={Delete02Icon} className="mr-2 h-4 w-4" />
+												Delete Account
 											</Button>
 										</DialogTrigger>
 										<DialogContent>
 											<DialogHeader>
-												<DialogTitle>Backspace Account</DialogTitle>
+												<DialogTitle>Delete Account</DialogTitle>
 												<DialogDescription>
 													Are you sure you want to delete your account? This action cannot be
 													undone. All your data, progress, and achievements will be permanently
@@ -747,11 +763,14 @@ export default function SettingsPage() {
 												>
 													{isDeletingAccount ? (
 														<>
-															<CircleNotch className="mr-2 h-4 w-4 animate-spin" />
+															<HugeiconsIcon
+																icon={Loading03Icon}
+																className="mr-2 h-4 w-4 animate-spin"
+															/>
 															Deleting...
 														</>
 													) : (
-														'Backspace My Account'
+														'Delete My Account'
 													)}
 												</Button>
 											</DialogFooter>

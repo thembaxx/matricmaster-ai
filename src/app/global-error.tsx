@@ -1,6 +1,7 @@
 'use client';
 
-import { ArrowsClockwise, House, Warning } from '@phosphor-icons/react';
+import { Home01Icon, Refresh01Icon, Warning } from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import Link from 'next/link';
 import { useEffect } from 'react';
 
@@ -51,7 +52,11 @@ export default function GlobalError({ error, reset }: GlobalErrorProps) {
 								margin: '0 auto',
 							}}
 						>
-							<Warning size={32} style={{ color: 'var(--color-destructive)' }} />
+							<HugeiconsIcon
+								icon={Warning}
+								size={32}
+								style={{ color: 'var(--color-destructive)' }}
+							/>
 						</div>
 
 						<div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
@@ -85,7 +90,7 @@ export default function GlobalError({ error, reset }: GlobalErrorProps) {
 									fontWeight: 500,
 								}}
 							>
-								<ArrowsClockwise size={16} />
+								<HugeiconsIcon icon={Refresh01Icon} size={16} />
 								Try Again
 							</button>
 							<Link
@@ -103,7 +108,7 @@ export default function GlobalError({ error, reset }: GlobalErrorProps) {
 									fontWeight: 500,
 								}}
 							>
-								<House size={16} />
+								<HugeiconsIcon icon={Home01Icon} size={16} />
 								Go House
 							</Link>
 						</div>

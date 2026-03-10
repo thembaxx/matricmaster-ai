@@ -1,16 +1,17 @@
 'use client';
 
 import {
-	ArrowLeft,
-	CaretRight,
-	Check,
-	CircleNotch,
-	Lightning,
-	Lock,
-	Play,
-	Sparkle,
-	Star,
-} from '@phosphor-icons/react';
+	ArrowLeft02Icon,
+	ArrowRight01Icon,
+	FlashIcon,
+	Loading03Icon,
+	LockIcon,
+	PlayIcon,
+	SparklesIcon,
+	StarIcon,
+	Tick01Icon,
+} from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
@@ -90,7 +91,7 @@ export default function StudyPath() {
 function StudyPathLoading() {
 	return (
 		<div className="min-h-screen flex flex-col items-center justify-center bg-muted dark:bg-background">
-			<CircleNotch className="w-8 h-8 animate-spin text-primary" />
+			<HugeiconsIcon icon={Loading03Icon} className="w-8 h-8 animate-spin text-primary" />
 			<p className="mt-4 text-muted-foreground">Loading your study path...</p>
 		</div>
 	);
@@ -102,7 +103,7 @@ function NoPlanState({ router }: { router: ReturnType<typeof useRouter> }) {
 			<StudyPathHeader router={router} />
 			<main className="flex-1 flex flex-col items-center justify-center px-4 text-center space-y-6">
 				<div className="w-24 h-24 rounded-full bg-primary/10 flex items-center justify-center">
-					<Sparkle weight="bold" className="w-12 h-12 text-primary" />
+					<HugeiconsIcon icon={SparklesIcon} className="w-12 h-12 text-primary" />
 				</div>
 				<div className="space-y-2">
 					<h2 className="text-2xl font-bold text-foreground">No Study Plan Yet</h2>
@@ -155,14 +156,17 @@ function StudyPathHeader({ router, progress }: StudyPathHeaderProps) {
 				onClick={() => router.back()}
 				className="rounded-full text-foreground"
 			>
-				<ArrowLeft className="w-6 h-6" />
+				<HugeiconsIcon icon={ArrowLeft02Icon} className="w-6 h-6" />
 			</Button>
 			<h1 className="text-lg font-black text-foreground tracking-tight uppercase">
 				My Physics Path
 			</h1>
 			{progress !== undefined && (
 				<div className="flex items-center gap-2 px-3 py-1.5 bg-primary-violet/10 rounded-full">
-					<Lightning weight="bold" className="w-4 h-4 fill-primary-violet text-primary-violet" />
+					<HugeiconsIcon
+						icon={FlashIcon}
+						className="w-4 h-4 fill-primary-violet text-primary-violet"
+					/>
 					<span className="font-black text-xs text-primary-violet">{progress}%</span>
 				</div>
 			)}
@@ -270,7 +274,7 @@ function LockedNode({ node }: { node: PathNode }) {
 					<span className="text-2xl font-black text-muted-foreground">÷±</span>
 				</div>
 				<div className="absolute -top-1 -right-1 w-8 h-8 rounded-full bg-background border-2 border-border flex items-center justify-center shadow-sm">
-					<Lock className="w-4 h-4 text-muted-foreground" />
+					<HugeiconsIcon icon={LockIcon} className="w-4 h-4 text-muted-foreground" />
 				</div>
 			</div>
 			<div className="bg-muted/50 px-3 py-1 rounded-full border border-border/10">
@@ -357,14 +361,15 @@ function CompletedNode({ node }: { node: PathNode }) {
 					background: 'linear-gradient(135deg, var(--accent-lime) 0%, #65A30D 100%)',
 				}}
 			>
-				<Check className="w-8 h-8 text-white" strokeWidth={4} />
+				<HugeiconsIcon icon={Tick01Icon} className="w-8 h-8 text-white" strokeWidth={4} />
 			</div>
 			<p className="text-[10px] font-black text-foreground text-center uppercase tracking-tight opacity-80">
 				{node.title}
 			</p>
 			<div className="flex gap-1">
 				{Array.from({ length: 3 }).map((_, i) => (
-					<Star
+					<HugeiconsIcon
+						icon={StarIcon}
 						key={`star-${node.id}-${i}`}
 						className={`w-5 h-5 ${
 							i < (node.stars || 0)
@@ -393,7 +398,7 @@ function ResumeButton({ router, title }: ResumeButtonProps) {
 			>
 				<div className="flex items-center gap-5">
 					<div className="w-12 h-12 rounded-2xl bg-white/20 flex items-center justify-center">
-						<Play className="w-6 h-6 fill-white text-white" />
+						<HugeiconsIcon icon={PlayIcon} className="w-6 h-6 fill-white text-white" />
 					</div>
 					<div className="text-left">
 						<p className="font-black text-lg tracking-tight uppercase leading-none">Resume Path</p>
@@ -402,7 +407,7 @@ function ResumeButton({ router, title }: ResumeButtonProps) {
 						</p>
 					</div>
 				</div>
-				<CaretRight className="w-6 h-6" />
+				<HugeiconsIcon icon={ArrowRight01Icon} className="w-6 h-6" />
 			</Button>
 		</div>
 	);

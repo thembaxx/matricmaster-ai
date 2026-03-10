@@ -1,16 +1,16 @@
 'use client';
 
 import {
-	ArrowCounterClockwise,
-	Check,
-	FlipHorizontal,
-	Lightbulb,
-	Shuffle,
-	Tag,
-	ThumbsDown,
-	ThumbsUp,
-	X,
-} from '@phosphor-icons/react';
+	Cancel01Icon,
+	Idea01Icon,
+	Refresh01Icon,
+	ShuffleIcon,
+	Tag01Icon,
+	ThumbsDownIcon,
+	ThumbsUpIcon,
+	Tick01Icon,
+} from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import { useEffect, useMemo, useState } from 'react';
 import { toast } from 'sonner';
 import { Badge } from '@/components/ui/badge';
@@ -138,10 +138,10 @@ export function FlashcardModal({
 	if (!currentCard) return null;
 
 	const ratingButtons = [
-		{ rating: 1 as Rating, icon: X, label: 'Again', shortcut: '1' },
-		{ rating: 2 as Rating, icon: ThumbsDown, label: 'Hard', shortcut: '2' },
-		{ rating: 3 as Rating, icon: Check, label: 'Good', shortcut: '3' },
-		{ rating: 4 as Rating, icon: ThumbsUp, label: 'Easy', shortcut: '4' },
+		{ rating: 1 as Rating, icon: Cancel01Icon, label: 'Again', shortcut: '1' },
+		{ rating: 2 as Rating, icon: ThumbsDownIcon, label: 'Hard', shortcut: '2' },
+		{ rating: 3 as Rating, icon: Tick01Icon, label: 'Good', shortcut: '3' },
+		{ rating: 4 as Rating, icon: ThumbsUpIcon, label: 'Easy', shortcut: '4' },
 	];
 
 	return (
@@ -149,7 +149,7 @@ export function FlashcardModal({
 			<DialogContent className="max-w-lg">
 				<DialogHeader>
 					<DialogTitle className="flex items-center gap-2">
-						<Lightbulb className="h-5 w-5 text-brand-amber" />
+						<HugeiconsIcon icon={Idea01Icon} className="h-5 w-5 text-brand-amber" />
 						{reviewMode ? 'Review Session' : 'Flashcards'}
 					</DialogTitle>
 					<DialogDescription>
@@ -170,7 +170,7 @@ export function FlashcardModal({
 					{isComplete ? (
 						<div className="text-center py-12 space-y-4">
 							<div className="w-20 h-20 mx-auto bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center">
-								<Check className="w-10 h-10 text-green-600" />
+								<HugeiconsIcon icon={Tick01Icon} className="w-10 h-10 text-green-600" />
 							</div>
 							<div>
 								<h3 className="text-xl font-bold">Review Complete!</h3>
@@ -215,7 +215,7 @@ export function FlashcardModal({
 											<div className="flex flex-wrap gap-1 mt-4">
 												{currentCard.tags.map((tag) => (
 													<Badge key={tag} variant="secondary" className="text-xs">
-														<Tag className="h-3 w-3 mr-1" />
+														<HugeiconsIcon icon={Tag01Icon} className="h-3 w-3 mr-1" />
 														{tag}
 													</Badge>
 												))}
@@ -236,7 +236,7 @@ export function FlashcardModal({
 										How well did you remember?
 									</p>
 									<div className="grid grid-cols-4 gap-2">
-										{ratingButtons.map(({ rating, icon: Icon, label, shortcut }) => (
+										{ratingButtons.map(({ rating, icon, label, shortcut }) => (
 											<Button
 												key={rating}
 												variant="outline"
@@ -245,7 +245,7 @@ export function FlashcardModal({
 												onClick={() => handleRate(rating)}
 												disabled={isRating}
 											>
-												<Icon className="h-4 w-4 mb-1" />
+												<HugeiconsIcon icon={icon} className="h-4 w-4 mb-1" />
 												<span className="text-xs">{label}</span>
 												<span className="text-[10px] opacity-50">{shortcut}</span>
 											</Button>
@@ -255,7 +255,7 @@ export function FlashcardModal({
 							) : (
 								<div className="flex justify-center gap-2">
 									<Button variant="outline" size="sm" onClick={handleFlip}>
-										<FlipHorizontal className="h-4 w-4 mr-1" />
+										<HugeiconsIcon icon={Refresh01Icon} className="h-4 w-4 mr-1" />
 										Flip
 									</Button>
 									{!reviewMode && (
@@ -266,11 +266,11 @@ export function FlashcardModal({
 												onClick={handleShuffle}
 												className={isShuffled ? 'bg-primary/10' : ''}
 											>
-												<Shuffle className="h-4 w-4 mr-1" />
+												<HugeiconsIcon icon={ShuffleIcon} className="h-4 w-4 mr-1" />
 												Shuffle
 											</Button>
 											<Button variant="outline" size="sm" onClick={handleReset}>
-												<ArrowCounterClockwise className="h-4 w-4 mr-1" />
+												<HugeiconsIcon icon={Refresh01Icon} className="h-4 w-4 mr-1" />
 												Reset
 											</Button>
 										</>

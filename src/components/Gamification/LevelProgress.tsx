@@ -1,6 +1,7 @@
 'use client';
 
-import { Lightning, Sparkle } from '@phosphor-icons/react';
+import { FlashIcon, SparklesIcon } from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import { m } from 'framer-motion';
 import { memo } from 'react';
 import { Badge } from '@/components/ui/badge';
@@ -132,7 +133,7 @@ export const LevelProgress = memo(function LevelProgress({
 										borderColor: `${info.color}30`,
 									}}
 								>
-									<Sparkle weight="bold" className="w-3 h-3 mr-1" />
+									<HugeiconsIcon icon={SparklesIcon} className="w-3 h-3 mr-1" />
 									{info.title}
 								</Badge>
 							)}
@@ -178,7 +179,7 @@ export const LevelProgress = memo(function LevelProgress({
 					className="absolute top-1/2 -translate-y-1/2 right-0 flex items-center gap-1 px-2 py-0.5 bg-background rounded-full border shadow-sm"
 					style={{ borderColor: `${info.color}30` }}
 				>
-					<Lightning weight="bold" className="w-3 h-3" style={{ color: info.color }} />
+					<HugeiconsIcon icon={FlashIcon} className="w-3 h-3" style={{ color: info.color }} />
 					<span className="text-[10px] font-black text-muted-foreground">
 						{info.progressPercent}%
 					</span>

@@ -1,12 +1,13 @@
 'use client';
 
 import {
-	ArrowBendUpLeft,
-	ChatCenteredText,
+	ArrowLeft02Icon,
+	Chat01Icon,
 	Flag,
-	ThumbsDown,
-	ThumbsUp,
-} from '@phosphor-icons/react';
+	ThumbsDownIcon,
+	ThumbsUpIcon,
+} from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import { useSearchParams } from 'next/navigation';
 import { Suspense, useState } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -147,7 +148,7 @@ function CommentsContent() {
 			<Card>
 				<CardHeader>
 					<CardTitle className="flex items-center gap-2">
-						<ChatCenteredText className="h-5 w-5" />
+						<HugeiconsIcon icon={Chat01Icon} className="h-5 w-5" />
 						Discussion
 						<span className="text-sm font-normal text-muted-foreground">
 							({comments.length} comments)
@@ -203,7 +204,7 @@ function CommentsContent() {
 
 					{comments.length === 0 && (
 						<div className="text-center py-8 text-muted-foreground">
-							<ChatCenteredText className="h-12 w-12 mx-auto mb-4 opacity-50" />
+							<HugeiconsIcon icon={Chat01Icon} className="h-12 w-12 mx-auto mb-4 opacity-50" />
 							<p>No comments yet. Be the first to share your thoughts!</p>
 						</div>
 					)}
@@ -270,7 +271,7 @@ function CommentItem({
 								onClick={() => onVote(comment.id, 'up')}
 								className="p-1 hover:bg-accent rounded"
 							>
-								<ThumbsUp className="h-4 w-4" />
+								<HugeiconsIcon icon={ThumbsUpIcon} className="h-4 w-4" />
 							</button>
 							<span className="text-xs">{comment.upvotes}</span>
 							<button
@@ -279,7 +280,7 @@ function CommentItem({
 								onClick={() => onVote(comment.id, 'down')}
 								className="p-1 hover:bg-accent rounded"
 							>
-								<ThumbsDown className="h-4 w-4" />
+								<HugeiconsIcon icon={ThumbsDownIcon} className="h-4 w-4" />
 							</button>
 							<span className="text-xs">{comment.downvotes}</span>
 						</div>
@@ -289,7 +290,7 @@ function CommentItem({
 							onClick={() => onReply(comment.id)}
 							className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground"
 						>
-							<ArrowBendUpLeft className="h-3 w-3" />
+							<HugeiconsIcon icon={ArrowLeft02Icon} className="h-3 w-3" />
 							ArrowBendUpLeft
 						</button>
 
@@ -298,7 +299,7 @@ function CommentItem({
 							onClick={() => setShowFlagDialog(!showFlagDialog)}
 							className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground"
 						>
-							<Flag className="h-3 w-3" />
+							<HugeiconsIcon icon={Flag} className="h-3 w-3" />
 							Report
 						</button>
 					</div>

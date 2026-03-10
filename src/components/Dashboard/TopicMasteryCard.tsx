@@ -1,14 +1,15 @@
 'use client';
 
 import {
-	Brain,
-	CaretRight,
-	CircleNotch,
-	Clock,
-	Target,
-	TrendDown,
-	TrendUp,
-} from '@phosphor-icons/react';
+	AiBrain01Icon,
+	AnalyticsDownIcon,
+	AnalyticsUpIcon,
+	ArrowRight01Icon,
+	Clock01Icon,
+	Loading03Icon,
+	Target01Icon,
+} from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import { useRouter } from 'next/navigation';
 import { memo, useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
@@ -63,12 +64,15 @@ export const TopicMasteryCard = memo(function TopicMasteryCard({
 			<Card className={className}>
 				<CardHeader>
 					<CardTitle className="flex items-center gap-2">
-						<Brain className="h-5 w-5" />
+						<HugeiconsIcon icon={AiBrain01Icon} className="h-5 w-5" />
 						Topic Progress
 					</CardTitle>
 				</CardHeader>
 				<CardContent className="flex items-center justify-center py-8">
-					<CircleNotch className="h-6 w-6 animate-spin text-muted-foreground" />
+					<HugeiconsIcon
+						icon={Loading03Icon}
+						className="h-6 w-6 animate-spin text-muted-foreground"
+					/>
 				</CardContent>
 			</Card>
 		);
@@ -79,7 +83,7 @@ export const TopicMasteryCard = memo(function TopicMasteryCard({
 			<Card className={className}>
 				<CardHeader>
 					<CardTitle className="flex items-center gap-2">
-						<Brain className="h-5 w-5" />
+						<HugeiconsIcon icon={AiBrain01Icon} className="h-5 w-5" />
 						Topic Progress
 					</CardTitle>
 				</CardHeader>
@@ -98,12 +102,15 @@ export const TopicMasteryCard = memo(function TopicMasteryCard({
 			<Card className={className}>
 				<CardHeader>
 					<CardTitle className="flex items-center gap-2">
-						<Brain className="h-5 w-5" />
+						<HugeiconsIcon icon={AiBrain01Icon} className="h-5 w-5" />
 						Topic Progress
 					</CardTitle>
 				</CardHeader>
 				<CardContent className="text-center py-6">
-					<Target weight="bold" className="h-12 w-12 text-muted-foreground/50 mx-auto mb-3" />
+					<HugeiconsIcon
+						icon={Target01Icon}
+						className="h-12 w-12 text-muted-foreground/50 mx-auto mb-3"
+					/>
 					<p className="text-sm text-muted-foreground">
 						Complete more quizzes to see your topic progress
 					</p>
@@ -125,12 +132,15 @@ export const TopicMasteryCard = memo(function TopicMasteryCard({
 			<Card className={className}>
 				<CardHeader>
 					<CardTitle className="flex items-center gap-2">
-						<Brain className="h-5 w-5" />
+						<HugeiconsIcon icon={AiBrain01Icon} className="h-5 w-5" />
 						Topic Progress
 					</CardTitle>
 				</CardHeader>
 				<CardContent className="text-center py-6">
-					<Target weight="bold" className="h-12 w-12 text-muted-foreground/50 mx-auto mb-3" />
+					<HugeiconsIcon
+						icon={Target01Icon}
+						className="h-12 w-12 text-muted-foreground/50 mx-auto mb-3"
+					/>
 					<p className="text-sm text-muted-foreground">
 						Complete more quizzes to see your topic progress
 					</p>
@@ -147,12 +157,12 @@ export const TopicMasteryCard = memo(function TopicMasteryCard({
 			<CardHeader className="pb-2 px-8 pt-8">
 				<CardTitle className="flex items-center justify-between">
 					<span className="flex items-center gap-2 text-xl font-black text-foreground tracking-tight uppercase">
-						<Brain className="h-5 w-5 text-primary" />
+						<HugeiconsIcon icon={AiBrain01Icon} className="h-5 w-5 text-primary" />
 						Topic Progress
 					</span>
 					<Button variant="ghost" size="sm" onClick={() => router.push('/review')}>
 						View All
-						<CaretRight className="ml-1 h-4 w-4" />
+						<HugeiconsIcon icon={ArrowRight01Icon} className="ml-1 h-4 w-4" />
 					</Button>
 				</CardTitle>
 			</CardHeader>
@@ -162,7 +172,7 @@ export const TopicMasteryCard = memo(function TopicMasteryCard({
 						{stats.weakTopics.length > 0 && (
 							<div className="space-y-2">
 								<div className="flex items-center gap-2 text-sm font-medium">
-									<TrendDown className="h-4 w-4 text-red-500" />
+									<HugeiconsIcon icon={AnalyticsDownIcon} className="h-4 w-4 text-red-500" />
 									<span className="text-red-600">Needs Focus</span>
 								</div>
 								{stats.weakTopics.slice(0, 3).map((topic) => (
@@ -179,7 +189,7 @@ export const TopicMasteryCard = memo(function TopicMasteryCard({
 						{stats.improvingTopics.length > 0 && (
 							<div className="space-y-2">
 								<div className="flex items-center gap-2 text-sm font-medium">
-									<TrendUp className="h-4 w-4 text-yellow-500" />
+									<HugeiconsIcon icon={AnalyticsUpIcon} className="h-4 w-4 text-yellow-500" />
 									<span className="text-yellow-600">Improving</span>
 								</div>
 								{stats.improvingTopics.slice(0, 2).map((topic) => (
@@ -196,7 +206,7 @@ export const TopicMasteryCard = memo(function TopicMasteryCard({
 						{stats.strongTopics.length > 0 && (
 							<div className="space-y-2">
 								<div className="flex items-center gap-2 text-sm font-medium">
-									<Target weight="bold" className="h-4 w-4 text-green-500" />
+									<HugeiconsIcon icon={Target01Icon} className="h-4 w-4 text-green-500" />
 									<span className="text-green-600">Mastered</span>
 								</div>
 								{stats.strongTopics.slice(0, 2).map((topic) => (
@@ -252,7 +262,7 @@ function TopicItem({ topic, variant, getMasteryColor }: TopicItemProps) {
 					<>
 						<span>•</span>
 						<span className="flex items-center gap-1">
-							<Clock className="h-3 w-3" />
+							<HugeiconsIcon icon={Clock01Icon} className="h-3 w-3" />
 							{formatLastPracticed(topic.lastPracticed)}
 						</span>
 					</>

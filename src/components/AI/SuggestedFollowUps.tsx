@@ -1,6 +1,7 @@
 'use client';
 
-import { ArrowRight, Sparkle } from '@phosphor-icons/react';
+import { ArrowRight02Icon, SparklesIcon } from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import { Button } from '@/components/ui/button';
 
 interface SuggestedFollowUpsProps {
@@ -17,7 +18,7 @@ export function SuggestedFollowUps({ suggestions, onSelectSuggestion }: Suggeste
 		<div className="mt-4 pt-4 border-t border-border/30">
 			<div className="flex items-center gap-2 mb-3">
 				<div className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center">
-					<Sparkle weight="bold" className="h-3 w-3 text-primary" />
+					<HugeiconsIcon icon={SparklesIcon} className="h-3 w-3 text-primary" />
 				</div>
 				<span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">
 					Suggested follow-ups
@@ -33,7 +34,10 @@ export function SuggestedFollowUps({ suggestions, onSelectSuggestion }: Suggeste
 						onClick={() => onSelectSuggestion(suggestion)}
 					>
 						{suggestion}
-						<ArrowRight className="h-3 w-3 ml-2 opacity-50 group-hover:opacity-100 transition-opacity" />
+						<HugeiconsIcon
+							icon={ArrowRight02Icon}
+							className="h-3 w-3 ml-2 opacity-50 group-hover:opacity-100 transition-opacity"
+						/>
 					</Button>
 				))}
 			</div>

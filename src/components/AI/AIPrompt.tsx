@@ -1,6 +1,7 @@
 'use client';
 
-import { CircleNotch, PaperPlaneRight, Sparkle } from '@phosphor-icons/react';
+import { Loading03Icon, SentIcon, SparklesIcon } from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import { AnimatePresence, m } from 'framer-motion';
 import type React from 'react';
 import { useRef, useState } from 'react';
@@ -37,8 +38,8 @@ export function AIPrompt({
 			<form onSubmit={handleSubmit} className="relative group flex items-center gap-2">
 				<div className="relative flex-1">
 					<div className="absolute left-4 top-1/2 -translate-y-1/2">
-						<Sparkle
-							weight="bold"
+						<HugeiconsIcon
+							icon={SparklesIcon}
 							className={cn(
 								'h-5 w-5 transition-colors duration-300',
 								input.trim() ? 'text-primary' : 'text-muted-foreground/50'
@@ -73,9 +74,9 @@ export function AIPrompt({
 								aria-label="PaperPlaneRight message"
 							>
 								{isLoading ? (
-									<CircleNotch className="h-6 w-6 animate-spin" />
+									<HugeiconsIcon icon={Loading03Icon} className="h-6 w-6 animate-spin" />
 								) : (
-									<PaperPlaneRight className="h-6 w-6" />
+									<HugeiconsIcon icon={SentIcon} className="h-6 w-6" />
 								)}
 							</Button>
 						</m.div>

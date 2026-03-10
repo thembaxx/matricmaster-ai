@@ -19,13 +19,13 @@ export function SocialAuthButton({
 			icon: 'logos:google-icon',
 			label: 'Google',
 			style:
-				'hover:bg-zinc-50 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-200 border-zinc-200 dark:border-zinc-800',
+				'hover:bg-zinc-50 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-200 border-border',
 		},
 		twitter: {
 			icon: 'logos:twitter', // Or a custom path if preferred, sticking to standard logos for now
 			label: 'Twitter',
 			style:
-				'hover:bg-blue-50 dark:hover:bg-blue-900/20 text-zinc-700 dark:text-zinc-200 border-zinc-200 dark:border-zinc-800',
+				'hover:bg-blue-50 dark:hover:bg-blue-900/20 text-zinc-700 dark:text-zinc-200 border-border',
 		},
 	};
 

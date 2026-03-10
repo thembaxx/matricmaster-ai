@@ -1,7 +1,7 @@
 'use client';
 
-// import type { Screen } from '@/types'; // Removed unused import
-import { Globe, X } from '@phosphor-icons/react';
+import { Cancel01Icon, GlobeIcon } from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
@@ -37,13 +37,15 @@ export default function LanguageSelect({ currentLanguage = 'EN' }: LanguageSelec
 					<div className="flex justify-between items-center">
 						<div className="flex items-center gap-4">
 							<div className="w-12 h-12 rounded-2xl bg-muted flex items-center justify-center">
-								<Globe className="w-6 h-6 text-muted-foreground" />
+								<HugeiconsIcon icon={GlobeIcon} className="w-6 h-6 text-muted-foreground" />
 							</div>
 							<div>
-								<h2 className="text-2xl font-black text-zinc-900 dark:text-white tracking-tighter">
+								<h2 className="text-2xl font-black text-foreground tracking-tighter">
 									Select Language
 								</h2>
-								<p className="text-sm font-bold text-zinc-500">Choose your preferred tongue</p>
+								<p className="text-sm font-bold text-muted-foreground">
+									Choose your preferred tongue
+								</p>
 							</div>
 						</div>
 						<Button
@@ -52,7 +54,7 @@ export default function LanguageSelect({ currentLanguage = 'EN' }: LanguageSelec
 							onClick={() => router.push('/')}
 							className="rounded-full h-12 w-12"
 						>
-							<X className="w-6 h-6" />
+							<HugeiconsIcon icon={Cancel01Icon} className="w-6 h-6" />
 						</Button>
 					</div>
 				</div>
@@ -79,8 +81,8 @@ export default function LanguageSelect({ currentLanguage = 'EN' }: LanguageSelec
 										{lang.code}
 									</div>
 									<div className="flex-1">
-										<p className="font-black text-zinc-900 dark:text-white text-lg">{lang.name}</p>
-										<p className="text-xs font-bold text-zinc-400 uppercase tracking-widest">
+										<p className="font-black text-foreground text-lg">{lang.name}</p>
+										<p className="text-xs font-bold text-muted-foreground uppercase tracking-widest">
 											{lang.code}
 										</p>
 									</div>

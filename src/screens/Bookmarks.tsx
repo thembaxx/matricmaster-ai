@@ -2,13 +2,14 @@
 
 import {
 	ActivityIcon,
-	Bookmark,
-	Calculator,
-	Lightning,
-	Microscope,
-	Plus,
-	TrendUp,
-} from '@phosphor-icons/react';
+	Add01Icon,
+	BookmarkIcon,
+	CalculatorIcon as Calculator,
+	FlashIcon as Lightning,
+	MicroscopeIcon as Microscope,
+	AnalyticsUpIcon as TrendUp,
+} from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
@@ -100,7 +101,7 @@ export default function Bookmarks() {
 					<main className="px-6 py-6 pb-40">
 						<div className="flex flex-col items-center justify-center py-24 text-center space-y-6">
 							<div className="w-32 h-32 bg-muted rounded-[2.5rem] flex items-center justify-center">
-								<Bookmark className="w-16 h-16 text-muted-foreground" />
+								<HugeiconsIcon icon={BookmarkIcon} className="w-16 h-16 text-muted-foreground" />
 							</div>
 							<div className="space-y-2">
 								<h3 className="text-xl font-bold">Sign in to view bookmarks</h3>
@@ -174,15 +175,18 @@ export default function Bookmarks() {
 											title="Remove bookmark"
 											aria-label="Remove bookmark"
 										>
-											<Bookmark className="w-5 h-5 fill-current" />
+											<HugeiconsIcon icon={BookmarkIcon} className="w-5 h-5 fill-current" />
 										</button>
 										<div className="flex justify-between items-start mb-4">
 											<div
 												className={`w-10 h-10 rounded-xl ${colors.bg} flex items-center justify-center`}
 											>
-												<Icon className={`w-5 h-5 ${colors.color}`} />
+												<HugeiconsIcon icon={Icon} className={`w-5 h-5 ${colors.color}`} />
 											</div>
-											<Bookmark className={`w-5 h-5 ${colors.color} fill-current`} />
+											<HugeiconsIcon
+												icon={BookmarkIcon}
+												className={`w-5 h-5 ${colors.color} fill-current`}
+											/>
 										</div>
 
 										{/* Content Preview */}
@@ -193,7 +197,7 @@ export default function Bookmarks() {
 												</span>
 											) : (
 												<div className="text-muted-foreground/50">
-													<ActivityIcon className="w-8 h-8" />
+													<HugeiconsIcon icon={ActivityIcon} className="w-8 h-8" />
 												</div>
 											)}
 										</div>
@@ -220,7 +224,7 @@ export default function Bookmarks() {
 					) : (
 						<div className="flex flex-col items-center justify-center py-24 text-center space-y-6">
 							<div className="w-32 h-32 bg-muted rounded-[2.5rem] flex items-center justify-center">
-								<Bookmark className="w-16 h-16 text-muted-foreground" />
+								<HugeiconsIcon icon={BookmarkIcon} className="w-16 h-16 text-muted-foreground" />
 							</div>
 							<div className="space-y-2">
 								<h3 className="text-xl font-bold">Nothing saved yet</h3>
@@ -229,7 +233,7 @@ export default function Bookmarks() {
 								</p>
 							</div>
 							<Button onClick={() => router.push('/quiz')} className="rounded-full px-8">
-								<Plus className="w-4 h-4 mr-2" />
+								<HugeiconsIcon icon={Add01Icon} className="w-4 h-4 mr-2" />
 								Browse Questions
 							</Button>
 						</div>

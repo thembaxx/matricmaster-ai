@@ -1,15 +1,16 @@
 'use client';
 
 import {
-	Brain,
+	AiBrain01Icon,
+	AnalyticsDownIcon,
+	AnalyticsUpIcon,
+	ChampionIcon,
 	ChartBar,
-	CircleNotch,
-	Clock,
-	Target,
-	TrendDown,
-	TrendUp,
-	Trophy,
-} from '@phosphor-icons/react';
+	Clock01Icon,
+	Loading03Icon,
+	Target01Icon,
+} from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import { useEffect, useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -73,7 +74,7 @@ export function QuizAnalyticsModal({ open, onOpenChange }: QuizAnalyticsModalPro
 			<DialogContent className="max-w-2xl max-h-[85vh]">
 				<DialogHeader>
 					<DialogTitle className="flex items-center gap-2">
-						<ChartBar className="h-5 w-5" />
+						<HugeiconsIcon icon={ChartBar} className="h-5 w-5" />
 						Quiz Analytics
 					</DialogTitle>
 					<DialogDescription>Your learning progress and topic performance</DialogDescription>
@@ -81,26 +82,38 @@ export function QuizAnalyticsModal({ open, onOpenChange }: QuizAnalyticsModalPro
 
 				{isLoading ? (
 					<div className="flex items-center justify-center py-8">
-						<CircleNotch className="h-8 w-8 animate-spin text-muted-foreground" />
+						<HugeiconsIcon
+							icon={Loading03Icon}
+							className="h-8 w-8 animate-spin text-muted-foreground"
+						/>
 					</div>
 				) : stats ? (
 					<ScrollArea className="max-h-[60vh] pr-4">
 						<div className="space-y-6">
 							<div className="grid grid-cols-3 gap-4">
 								<div className="rounded-lg border p-4 text-center">
-									<Trophy weight="bold" className="h-6 w-6 mx-auto mb-2 text-yellow-500" />
+									<HugeiconsIcon
+										icon={ChampionIcon}
+										className="h-6 w-6 mx-auto mb-2 text-yellow-500"
+									/>
 									<div className="text-2xl font-bold">{stats.totalQuestions}</div>
 									<div className="text-xs text-muted-foreground">Questions</div>
 								</div>
 								<div className="rounded-lg border p-4 text-center">
-									<Target weight="bold" className="h-6 w-6 mx-auto mb-2 text-blue-500" />
+									<HugeiconsIcon
+										icon={Target01Icon}
+										className="h-6 w-6 mx-auto mb-2 text-blue-500"
+									/>
 									<div className={`text-2xl font-bold ${getAccuracyColor(stats.overallAccuracy)}`}>
 										{stats.overallAccuracy.toFixed(0)}%
 									</div>
 									<div className="text-xs text-muted-foreground">Accuracy</div>
 								</div>
 								<div className="rounded-lg border p-4 text-center">
-									<Brain className="h-6 w-6 mx-auto mb-2 text-purple-500" />
+									<HugeiconsIcon
+										icon={AiBrain01Icon}
+										className="h-6 w-6 mx-auto mb-2 text-purple-500"
+									/>
 									<div className="text-2xl font-bold">
 										{stats.weakTopics.length +
 											stats.strongTopics.length +
@@ -112,7 +125,7 @@ export function QuizAnalyticsModal({ open, onOpenChange }: QuizAnalyticsModalPro
 
 							<div className="space-y-2">
 								<h4 className="font-medium flex items-center gap-2">
-									<TrendUp className="h-4 w-4 text-green-500" />
+									<HugeiconsIcon icon={AnalyticsUpIcon} className="h-4 w-4 text-green-500" />
 									Strong Topics
 								</h4>
 								{stats.strongTopics.length > 0 ? (
@@ -139,7 +152,7 @@ export function QuizAnalyticsModal({ open, onOpenChange }: QuizAnalyticsModalPro
 
 							<div className="space-y-2">
 								<h4 className="font-medium flex items-center gap-2">
-									<TrendDown className="h-4 w-4 text-orange-500" />
+									<HugeiconsIcon icon={AnalyticsDownIcon} className="h-4 w-4 text-orange-500" />
 									Topics to Focus On
 								</h4>
 								{stats.weakTopics.length > 0 ? (
@@ -174,7 +187,7 @@ export function QuizAnalyticsModal({ open, onOpenChange }: QuizAnalyticsModalPro
 
 							<div className="space-y-2">
 								<h4 className="font-medium flex items-center gap-2">
-									<Clock className="h-4 w-4 text-blue-500" />
+									<HugeiconsIcon icon={Clock01Icon} className="h-4 w-4 text-blue-500" />
 									Recently Improved
 								</h4>
 								{stats.improvingTopics.length > 0 ? (

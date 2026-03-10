@@ -1,6 +1,7 @@
 'use client';
 
-import { Lightbulb, Sparkle } from '@phosphor-icons/react';
+import { Idea01Icon, SparklesIcon } from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import { AnimatePresence, m } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
@@ -238,7 +239,7 @@ function HintBadge() {
 			whileHover={{ scale: 1.05 }}
 			className="bg-brand-amber/10 text-brand-amber px-6 py-2.5 rounded-full flex items-center gap-2.5 text-xs font-black uppercase tracking-widest shadow-sm border border-brand-amber/20 relative z-10"
 		>
-			<Lightbulb className="w-4 h-4 fill-brand-amber" />
+			<HugeiconsIcon icon={Idea01Icon} className="w-4 h-4 fill-brand-amber" />
 			Use f'(x) = 0 to find stationary points
 		</m.div>
 	);
@@ -264,7 +265,7 @@ function ExplanationCard({ showExplanation }: ExplanationCardProps) {
 								transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
 								className="w-12 h-12 bg-brand-green text-white rounded-2xl flex items-center justify-center shadow-lg shadow-brand-green/20"
 							>
-								<Sparkle weight="bold" className="w-6 h-6" />
+								<HugeiconsIcon icon={SparklesIcon} className="w-6 h-6" />
 							</m.div>
 							<div>
 								<h4 className="font-black text-brand-green text-lg">Aha! Moment</h4>
@@ -319,7 +320,7 @@ function AIExplanationSection({
 							transition={{ duration: 3, repeat: Number.POSITIVE_INFINITY }}
 							className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center"
 						>
-							<Sparkle weight="bold" className="w-5 h-5 text-primary" />
+							<HugeiconsIcon icon={SparklesIcon} className="w-5 h-5 text-primary" />
 						</m.div>
 						<div>
 							<h4 className="font-bold text-foreground text-sm">Need a deeper explanation?</h4>
