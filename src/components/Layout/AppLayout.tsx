@@ -27,7 +27,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   const { unreadCount } = useNotificationStore();
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
-  const hideNavigation = ["/test", "/onboarding"];
+  const hideNavigation = ["/test", "/onboarding", "/sign-in", "/sign-up", "/interactive-quiz"];
   const hideBottomNavigation = [
     "/sign-in",
     "/sign-up",

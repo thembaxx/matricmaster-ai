@@ -19,7 +19,6 @@ import { AchievementBadges, AchievementProgress } from '@/components/Profile/Ach
 import { BadgeShowcase } from '@/components/Profile/BadgeShowcase';
 import { SafeImage } from '@/components/SafeImage';
 import { BackgroundMesh } from '@/components/ui/background-mesh';
-import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
 import {
 	type ChartConfig,
@@ -131,57 +130,41 @@ export default function Profile() {
 			<BackgroundMesh variant="subtle" />
 
 			<main className="max-w-6xl mx-auto w-full pt-6 sm:pt-8 space-y-8 sm:space-y-12 relative z-10">
-				{/* Profile Header Card */}
-				<m.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-					<Card className="rounded-2xl sm:rounded-[3rem] p-6 sm:p-12 relative overflow-hidden bg-primary-violet text-white border-none shadow-2xl shadow-primary-violet/20">
-						<div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-[100px] -mr-32 -mt-32 pointer-events-none" />
-						<div className="absolute bottom-0 left-0 w-64 h-64 bg-black/10 rounded-full blur-[80px] -ml-24 -mb-24 pointer-events-none" />
+				{/* Avatar Section */}
+				<div className="relative mb-4">
+					<div
+						className="w-28 h-28 rounded-full overflow-hidden shadow-2xl relative border-4 border-background"
+					>
+						<SafeImage
+							src={session?.user?.image || '/default-avatar.png'}
+							alt="Thabo Mbeki"
+							className="w-full h-full object-cover"
+						/>
+					</div>
+					<div
+						className="absolute bottom-0 right-0 rounded-full p-1 border-3 border-background"
+						style={{ backgroundColor: '#22d3ee' }}
+					>
+						<svg className="w-3.5 h-3.5 text-white" fill="currentColor" viewBox="0 0 20 20">
+							<path
+								fillRule="evenodd"
+								d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+								clipRule="evenodd"
+							/>
+						</svg>
+					</div>
+				</div>
 
-						<div className="flex flex-col md:flex-row items-center gap-8 sm:gap-12 relative z-10">
-							<div className="relative group">
-								<div className="absolute -inset-4 bg-white/20 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity" />
-								<div className="w-24 h-24 sm:w-32 sm:h-32 md:w-48 md:h-48 rounded-full overflow-hidden border-4 border-white/20 shadow-2xl relative ring-4 sm:ring-8 ring-white/10 group-hover:scale-105 transition-transform duration-500">
-									<SafeImage
-										src={
-											session?.user?.image ||
-											`https://api.dicebear.com/7.x/avataaars/svg?seed=${session?.user?.name || 'default'}`
-										}
-										alt={session?.user?.name || 'User'}
-										width={192}
-										height={192}
-										className="w-full h-full object-cover"
-										priority
-									/>
-								</div>
-								<div className="absolute bottom-2 right-2 rounded-full p-2 bg-primary ring-4 ring-zinc-900 text-white shadow-xl">
-									<Target weight="bold" className="w-5 h-5" />
-								</div>
-							</div>
+				<div className="text-center mb-6">
+					<h2 className="text-2xl font-bold mb-1">
+						{session?.user?.name || 'Scholar'}
+					</h2>
+					<p className="text-sm">
+						{session?.user?.email || 'Unkown'}
+					</p>
+				</div>
 
-							<div className="flex-1 text-center md:text-left space-y-6">
-								<div className="space-y-2">
-									<h1 className="text-4xl md:text-6xl font-black tracking-tighter uppercase leading-none text-white">
-										{session?.user?.name || 'Scholar'}
-									</h1>
-									<p className="text-[11px] font-black text-primary-cyan uppercase tracking-[0.4em]">
-										Grade 12 Elite Candidate
-									</p>
-								</div>
-
-								<div className="flex flex-wrap justify-center md:justify-start gap-4">
-									<Badge className="bg-white/20 text-white border-none px-6 py-2 rounded-xl font-black text-[10px] uppercase tracking-widest">
-										Class of 2026
-									</Badge>
-									<Badge className="bg-accent-lime/20 text-accent-lime border-none px-6 py-2 rounded-xl font-black text-[10px] uppercase tracking-widest">
-										Academic Pro
-									</Badge>
-								</div>
-							</div>
-						</div>
-					</Card>
-				</m.div>
-
-				<div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
+				<div className="grid grid-cols-1 lg:grid-cols-12 pt-8 gap-8 lg:gap-12">
 					{/* Left Column: Stats & Performance */}
 					<div className="lg:col-span-7 space-y-8 lg:space-y-12">
 						<div className="space-y-6">
@@ -189,7 +172,7 @@ export default function Profile() {
 								<h3 className="text-xl font-black text-foreground tracking-tighter uppercase">
 									Performance Matrix
 								</h3>
-								<div className="flex p-1 bg-muted rounded-xl">
+								<div className="flex justify-start p-1 bg-muted rounded-xl">
 									<button
 										type="button"
 										onClick={() => setViewMode('my_stats')}
