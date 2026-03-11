@@ -1,6 +1,6 @@
 'use client';
 
-import { Lightbulb, Sparkle } from '@phosphor-icons/react';
+import { IdeaIcon as Lightbulb, SparklesIcon as Sparkle } from 'hugeicons-react';
 import { AnimatePresence, m } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
@@ -48,7 +48,7 @@ export default function Quiz() {
 				explanation ?? "I'm sorry, I couldn't generate an explanation for this question."
 			);
 		} catch (error) {
-			console.error('Failed to get AI explanation:', error);
+			console.error('Failed to get expert explanation:', error);
 			setAiExplanation("Sorry, I couldn't generate an explanation right now.");
 		} finally {
 			setIsExplaining(false);
@@ -114,7 +114,7 @@ export default function Quiz() {
 						variant="smart"
 						showWhen={!showExplanation}
 					/>
-					<AIExplanationSection
+					<ExpertExplanationSection
 						aiExplanation={aiExplanation}
 						isExplaining={isExplaining}
 						onExplain={handleExplain}
@@ -293,17 +293,17 @@ function ExplanationCard({ showExplanation }: ExplanationCardProps) {
 	);
 }
 
-type AIExplanationSectionProps = {
+type ExpertExplanationSectionProps = {
 	aiExplanation: string | null;
 	isExplaining: boolean;
 	onExplain: () => void;
 };
 
-function AIExplanationSection({
+function ExpertExplanationSection({
 	aiExplanation,
 	isExplaining,
 	onExplain,
-}: AIExplanationSectionProps) {
+}: ExpertExplanationSectionProps) {
 	return (
 		<m.div
 			initial={{ opacity: 0 }}
@@ -324,7 +324,7 @@ function AIExplanationSection({
 						<div>
 							<h4 className="font-bold text-foreground text-sm">Need a deeper explanation?</h4>
 							<p className="text-[10px] font-bold text-muted-foreground uppercase tracking-tight">
-								Ask MatricMaster AI
+								Ask a personal tutor
 							</p>
 						</div>
 					</div>

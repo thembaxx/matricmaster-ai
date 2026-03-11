@@ -1,6 +1,6 @@
 'use client';
 
-import { ArrowRight, CircleNotch, Sparkle } from '@phosphor-icons/react';
+import { ArrowRight01Icon as ArrowRight, Loading03Icon as CircleNotch, SparklesIcon as Sparkle } from 'hugeicons-react';
 import { m } from 'framer-motion';
 import { memo } from 'react';
 import { Button } from '@/components/ui/button';
@@ -34,11 +34,11 @@ export const DailyQuestCard = memo(function DailyQuestCard({
 							className="inline-flex items-center px-3 py-1 bg-primary/10 rounded-full"
 						>
 							<span className="text-[10px] font-black text-primary uppercase tracking-wider lg:text-xs">
-								Daily Quest
+								Daily quest
 							</span>
 						</m.div>
-						<h3 className="text-3xl font-black text-foreground tracking-tighter lg:text-5xl">
-							Algebra Master
+						<h3 className="text-3xl font-black text-foreground tracking-tighter lg:text-5xl uppercase">
+							Algebra master
 						</h3>
 						<p className="text-sm text-muted-foreground font-bold lg:text-base">
 							{totalQuestions} questions answered
@@ -80,7 +80,7 @@ export const DailyQuestCard = memo(function DailyQuestCard({
 							<CircleNotch className="w-6 h-6 animate-spin" />
 						) : (
 							<>
-								Continue Learning
+								Level up now
 								<ArrowRight className="w-6 h-6" />
 							</>
 						)}

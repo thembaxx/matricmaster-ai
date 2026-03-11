@@ -1,6 +1,6 @@
 'use client';
 
-import { Bell } from '@phosphor-icons/react';
+import { Notification03Icon as Bell } from 'hugeicons-react';
 import { m } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';

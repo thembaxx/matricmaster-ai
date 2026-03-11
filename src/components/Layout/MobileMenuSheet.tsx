@@ -1,6 +1,6 @@
 'use client';
 
-import { List } from '@phosphor-icons/react';
+import { Menu01Icon as List } from 'hugeicons-react';
 import { Button } from '@/components/ui/button';
 import { useSidebar } from '@/components/ui/sidebar';
 

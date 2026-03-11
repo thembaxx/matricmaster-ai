@@ -1,8 +1,9 @@
 'use client';
 
-import { Fire, Medal, Trophy as TrophyIcon } from '@phosphor-icons/react';
+import { FireIcon as Fire, MedalIcon as Medal, Trophy01Icon as TrophyIcon, TimeClockIcon as Clock } from 'hugeicons-react';
 import { m } from 'framer-motion';
 import { memo, useEffect, useMemo, useState } from 'react';
+import { useSession } from '@/lib/auth-client';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -35,88 +36,87 @@ const Podium = memo(function Podium({ data }: { data: LeaderboardEntry[] }) {
 	const r3 = data.find((p) => p.rank === 3);
 
 	return (
-		<div className="flex items-end justify-center gap-4 md:gap-12 pt-16 pb-12 lg:pt-24 lg:pb-20">
+		<div className="flex items-end justify-center gap-6 md:gap-16 pt-24 pb-16 lg:pt-32 lg:pb-24">
 			{/* 2nd Place */}
 			<div className="flex flex-col items-center flex-1 sm:flex-none">
-				<div className="relative mb-4 group cursor-pointer">
-					<div className="absolute inset-0 bg-muted rounded-full blur-2xl opacity-0 group-hover:opacity-40 transition-opacity" />
-					<Avatar className="w-16 h-16 sm:w-28 sm:h-28 border-4 border-muted relative z-10 transition-transform group-hover:scale-110 shadow-xl">
+				<div className="relative mb-6 group cursor-pointer">
+					<Avatar className="w-20 h-20 sm:w-32 sm:h-32 border-4 border-tiimo-blue/20 relative z-10 transition-transform group-hover:scale-110 shadow-xl rounded-[2.5rem]">
 						<AvatarImage src={r2?.userImage || undefined} className="object-cover" />
-						<AvatarFallback className="font-black text-xl">
+						<AvatarFallback className="bg-tiimo-blue/10 text-tiimo-blue font-black text-2xl">
 							{r2?.userName?.[0] || '?'}
 						</AvatarFallback>
 					</Avatar>
-					<div className="absolute -bottom-3 left-1/2 -translate-x-1/2 w-10 h-10 bg-muted-foreground rounded-full flex items-center justify-center text-primary-foreground text-base font-black border-4 border-background z-20 shadow-lg">
+					<div className="absolute -bottom-3 left-1/2 -translate-x-1/2 w-12 h-12 bg-tiimo-blue rounded-2xl flex items-center justify-center text-white text-lg font-black border-4 border-white dark:border-zinc-950 z-20 shadow-lg">
 						2
 					</div>
 				</div>
 				<div className="text-center space-y-1">
-					<p className="text-sm md:text-base font-black text-foreground tracking-tight">
+					<p className="text-md md:text-lg font-black text-foreground tracking-tight">
 						{r2?.userName || 'TBD'}
 					</p>
-					<p className="text-[11px] md:text-xs font-black text-muted-foreground uppercase tracking-widest">
+					<p className="text-xs font-black text-tiimo-blue uppercase tracking-widest">
 						{r2 ? formatPoints(r2.totalPoints) : '0'} KP
 					</p>
 				</div>
-				<div className="w-20 h-24 md:w-28 md:h-32 bg-linear-to-t from-muted to-transparent mt-6 rounded-t-3xl border-x border-t border-muted opacity-50" />
+				<div className="w-24 h-28 md:w-32 md:h-36 bg-tiimo-blue/5 mt-8 rounded-t-[2.5rem] border-x-4 border-t-4 border-tiimo-blue/10" />
 			</div>
 
 			{/* 1st Place */}
 			<div className="flex flex-col items-center flex-1 sm:flex-none">
-				<div className="relative mb-6 group cursor-pointer">
+				<div className="relative mb-8 group cursor-pointer">
 					<m.div
-						animate={{ y: [0, -8, 0] }}
-						transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY, ease: [0.16, 1, 0.3, 1] }}
-						className="absolute -top-8 sm:-top-10 left-1/2 -translate-x-1/2 text-primary-orange"
+						animate={{ y: [0, -12, 0], rotate: [0, 10, -10, 0] }}
+						transition={{ duration: 3, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
+						className="absolute -top-12 sm:-top-16 left-1/2 -translate-x-1/2"
 					>
-						<TrophyIcon className="w-8 h-8 sm:w-10 sm:h-10 fill-primary-orange/20" />
+						<TrophyIcon size={48} className="text-tiimo-orange fill-tiimo-orange/20 stroke-[3px]" />
 					</m.div>
-					<div className="absolute -inset-4 bg-primary-orange/20 rounded-full opacity-40 blur-3xl group-hover:opacity-60 transition-opacity" />
-					<Avatar className="w-24 h-24 sm:w-40 sm:h-40 border-4 border-primary-orange relative z-10 transition-transform group-hover:scale-110 shadow-2xl">
+					<Avatar className="w-28 h-28 sm:w-44 sm:h-44 border-8 border-tiimo-orange relative z-10 transition-transform group-hover:scale-110 shadow-[0_30px_70px_rgba(249,115,22,0.3)] rounded-[3rem]">
 						<AvatarImage src={r1?.userImage || undefined} className="object-cover" />
-						<AvatarFallback className="font-black text-3xl">
+						<AvatarFallback className="bg-tiimo-orange/10 text-tiimo-orange font-black text-4xl">
 							{r1?.userName?.[0] || '?'}
 						</AvatarFallback>
 					</Avatar>
-					<div className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-14 h-14 bg-primary-orange rounded-full flex items-center justify-center text-white text-2xl font-black border-4 border-background z-20 shadow-2xl">
+					<div className="absolute -bottom-5 left-1/2 -translate-x-1/2 w-16 h-16 bg-tiimo-orange rounded-[1.25rem] flex items-center justify-center text-white text-3xl font-black border-4 border-white dark:border-zinc-950 z-20 shadow-2xl">
 						1
 					</div>
 				</div>
 				<div className="text-center space-y-1">
-					<p className="text-xl md:text-3xl font-black text-foreground tracking-tighter">
+					<p className="text-2xl md:text-4xl font-black text-foreground tracking-tighter">
 						{r1?.userName || 'TBD'}
 					</p>
-					<p className="text-sm md:text-base font-black text-primary-orange uppercase tracking-widest flex items-center justify-center gap-2">
-						<Fire weight="bold" className="w-4 h-4 fill-primary-orange" />
-						{r1 ? formatPoints(r1.totalPoints) : '0'} KP
-					</p>
+					<div className="flex items-center justify-center gap-3">
+						<Fire size={24} className="text-tiimo-orange fill-tiimo-orange/20 stroke-[3px]" />
+						<p className="text-lg md:text-xl font-black text-tiimo-orange uppercase tracking-widest">
+							{r1 ? formatPoints(r1.totalPoints) : '0'} KP
+						</p>
+					</div>
 				</div>
-				<div className="w-32 h-40 md:w-44 md:h-56 bg-linear-to-t from-primary-orange/10 to-transparent mt-8 rounded-t-[3rem] border-x border-t border-primary-orange/20" />
+				<div className="w-36 h-48 md:w-48 md:h-64 bg-tiimo-orange/10 mt-10 rounded-t-[3.5rem] border-x-4 border-t-4 border-tiimo-orange/20 shadow-inner" />
 			</div>
 
 			{/* 3rd Place */}
 			<div className="flex flex-col items-center flex-1 sm:flex-none">
-				<div className="relative mb-4 group cursor-pointer">
-					<div className="absolute inset-0 bg-primary-cyan/20 rounded-full blur-2xl opacity-0 group-hover:opacity-40 transition-opacity" />
-					<Avatar className="w-16 h-16 sm:w-28 sm:h-28 border-4 border-primary-cyan/30 relative z-10 transition-transform group-hover:scale-110 shadow-xl">
+				<div className="relative mb-6 group cursor-pointer">
+					<Avatar className="w-20 h-20 sm:w-32 sm:h-32 border-4 border-tiimo-pink/20 relative z-10 transition-transform group-hover:scale-110 shadow-xl rounded-[2.5rem]">
 						<AvatarImage src={r3?.userImage || undefined} className="object-cover" />
-						<AvatarFallback className="font-black text-xl">
+						<AvatarFallback className="bg-tiimo-pink/10 text-tiimo-pink font-black text-2xl">
 							{r3?.userName?.[0] || '?'}
 						</AvatarFallback>
 					</Avatar>
-					<div className="absolute -bottom-3 left-1/2 -translate-x-1/2 w-10 h-10 bg-primary-cyan rounded-full flex items-center justify-center text-white text-base font-black border-4 border-background z-20 shadow-lg">
+					<div className="absolute -bottom-3 left-1/2 -translate-x-1/2 w-12 h-12 bg-tiimo-pink rounded-2xl flex items-center justify-center text-white text-lg font-black border-4 border-white dark:border-zinc-950 z-20 shadow-lg">
 						3
 					</div>
 				</div>
 				<div className="text-center space-y-1">
-					<p className="text-sm md:text-base font-black text-foreground tracking-tight">
+					<p className="text-md md:text-lg font-black text-foreground tracking-tight">
 						{r3?.userName || 'TBD'}
 					</p>
-					<p className="text-[11px] md:text-xs font-black text-primary-cyan uppercase tracking-widest">
+					<p className="text-xs font-black text-tiimo-pink uppercase tracking-widest">
 						{r3 ? formatPoints(r3.totalPoints) : '0'} KP
 					</p>
 				</div>
-				<div className="w-20 h-16 md:w-28 md:h-24 bg-linear-to-t from-primary-cyan/10 to-transparent mt-6 rounded-t-3xl border-x border-t border-primary-cyan/20 opacity-50" />
+				<div className="w-24 h-20 md:w-32 md:h-28 bg-tiimo-pink/5 mt-8 rounded-t-[2.5rem] border-x-4 border-t-4 border-tiimo-pink/10" />
 			</div>
 		</div>
 	);
@@ -124,38 +124,39 @@ const Podium = memo(function Podium({ data }: { data: LeaderboardEntry[] }) {
 
 const RankingList = memo(function RankingList({ data }: { data: LeaderboardEntry[] }) {
 	return (
-		<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-1">
+		<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-4">
 			{data.map((student) => (
 				<div
 					key={student.userId}
-					className="flex items-center gap-4 sm:gap-6 px-4 sm:px-8 py-4 sm:py-5 hover:bg-muted/50 transition-all group cursor-pointer rounded-3xl"
+					className="flex items-center gap-6 px-8 py-6 hover:bg-muted/10 transition-all group cursor-pointer rounded-[2rem]"
 				>
-					<span className="w-6 sm:w-8 text-muted-foreground font-black text-sm sm:text-base text-center group-hover:text-primary transition-colors">
+					<div className="w-12 h-12 rounded-2xl bg-muted/10 flex items-center justify-center font-black text-muted-foreground/40 group-hover:bg-primary group-hover:text-white transition-all duration-500">
 						{student.rank}
-					</span>
-					<Avatar className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl border-2 border-border shadow-sm group-hover:scale-105 transition-transform">
+					</div>
+					<Avatar className="w-16 h-16 rounded-[1.25rem] border-4 border-white dark:border-zinc-900 shadow-lg group-hover:rotate-6 transition-transform">
 						<AvatarImage src={student.userImage || undefined} className="object-cover" />
-						<AvatarFallback className="font-black">{student.userName?.[0]}</AvatarFallback>
+						<AvatarFallback className="font-black bg-muted/20">{student.userName?.[0]}</AvatarFallback>
 					</Avatar>
 					<div className="flex-1 min-w-0">
-						<h4 className="font-black text-sm sm:text-base text-foreground truncate tracking-tight">
+						<h4 className="font-black text-xl text-foreground truncate tracking-tight leading-none mb-2">
 							{student.userName}
 						</h4>
-						<p className="text-[10px] sm:text-[11px] font-black text-muted-foreground uppercase tracking-widest flex items-center gap-1 sm:gap-2">
-							<Medal weight="bold" className="w-3 h-3.5 sm:w-3.5 sm:h-3.5" />
-							{student.questionsCompleted} questions
-						</p>
+						<div className="flex items-center gap-4">
+							<div className="flex items-center gap-2 text-[10px] font-black text-muted-foreground/40 uppercase tracking-widest">
+								<Medal size={14} className="stroke-[3px]" />
+								{student.questionsCompleted} solved
+							</div>
+							<div className="flex items-center gap-2 text-[10px] font-black text-tiimo-green uppercase tracking-widest">
+								<div className="w-1.5 h-1.5 rounded-full bg-tiimo-green" />
+								{student.accuracyPercentage}%
+							</div>
+						</div>
 					</div>
 					<div className="text-right">
-						<p className="text-base sm:text-lg font-black text-primary-orange tracking-tighter">
-							{formatPoints(student.totalPoints)} <span className="text-[10px]">KP</span>
+						<p className="text-2xl font-black text-tiimo-orange tracking-tighter leading-none">
+							{formatPoints(student.totalPoints)}
 						</p>
-						<div className="flex items-center justify-end gap-1 mt-0.5">
-							<div className="w-1 h-1 rounded-full bg-accent-lime" />
-							<p className="text-[8px] sm:text-[9px] font-black text-accent-lime uppercase tracking-widest">
-								{student.accuracyPercentage}% accuracy
-							</p>
-						</div>
+						<span className="text-[10px] font-black text-tiimo-orange/40 uppercase tracking-[0.2em]">Kudos</span>
 					</div>
 				</div>
 			))}
@@ -164,6 +165,7 @@ const RankingList = memo(function RankingList({ data }: { data: LeaderboardEntry
 });
 
 export default function Leaderboard() {
+	const { data: session } = useSession();
 	const [activeTab, setActiveTab] = useState('weekly');
 	const [leaderboardData, setLeaderboardData] = useState<LeaderboardEntry[]>([]);
 	const [userRank, setUserRank] = useState<UserRankData | null>(null);
@@ -215,34 +217,34 @@ export default function Leaderboard() {
 	}
 
 	return (
-		<div className="flex flex-col h-full min-w-0 bg-background pb-24 overflow-x-hidden lg:px-8">
-			<header className="pt-8 sm:pt-12 pb-6 sm:pb-8 flex flex-col items-center gap-8 sm:gap-12 shrink-0">
-				<div className="text-center space-y-2 px-4">
-					<h1 className="text-3xl sm:text-4xl lg:text-7xl font-black text-foreground tracking-tighter uppercase">
-						Global Rankings
+		<div className="flex flex-col h-full min-w-0 bg-white dark:bg-zinc-950 pb-40 overflow-x-hidden lg:px-12">
+			<header className="pt-20 sm:pt-32 pb-12 sm:pb-16 flex flex-col items-center gap-12 sm:gap-16 shrink-0">
+				<div className="text-center space-y-4 px-6">
+					<h1 className="text-5xl sm:text-7xl lg:text-9xl font-black text-foreground tracking-tighter leading-none">
+						Global
 					</h1>
-					<p className="text-muted-foreground font-bold text-sm sm:text-lg lg:text-lg">
-						See how you compare with students nationwide
+					<p className="text-muted-foreground/40 font-black text-lg sm:text-2xl uppercase tracking-[0.3em] leading-none">
+						Elite students board
 					</p>
 				</div>
 
-				<Tabs value={activeTab} onValueChange={setActiveTab} className="w-full max-w-4xl px-4">
-					<TabsList className="w-full h-12 sm:h-16 p-1.5 sm:p-2 bg-muted/30 backdrop-blur-md rounded-xl sm:rounded-2xl border-2 border-border/50 shadow-inner">
+				<Tabs value={activeTab} onValueChange={setActiveTab} className="w-full max-w-4xl px-6">
+					<TabsList className="w-full h-20 p-2 bg-muted/10 rounded-[2.5rem] border-none shadow-inner">
 						<TabsTrigger
 							value="weekly"
-							className="flex-1 rounded-lg sm:rounded-xl font-black text-[10px] sm:text-xs uppercase tracking-[0.2em] data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-xl transition-all"
+							className="flex-1 h-full rounded-[2rem] font-black text-xs uppercase tracking-[0.2em] data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-2xl transition-all duration-500"
 						>
 							Weekly
 						</TabsTrigger>
 						<TabsTrigger
 							value="monthly"
-							className="flex-1 rounded-lg sm:rounded-xl font-black text-[10px] sm:text-xs uppercase tracking-[0.2em] data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-xl transition-all"
+							className="flex-1 h-full rounded-[2rem] font-black text-xs uppercase tracking-[0.2em] data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-2xl transition-all duration-500"
 						>
 							Monthly
 						</TabsTrigger>
 						<TabsTrigger
 							value="all_time"
-							className="flex-1 rounded-lg sm:rounded-xl font-black text-[10px] sm:text-xs uppercase tracking-[0.2em] data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-xl transition-all"
+							className="flex-1 h-full rounded-[2rem] font-black text-xs uppercase tracking-[0.2em] data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-2xl transition-all duration-500"
 						>
 							All Time
 						</TabsTrigger>
@@ -250,19 +252,25 @@ export default function Leaderboard() {
 				</Tabs>
 			</header>
 
-			<ScrollArea className="flex-1 no-scrollbar">
-				<div className="max-w-6xl mx-auto w-full pb-32">
+			<ScrollArea className="flex-1 no-scrollbar px-6">
+				<div className="max-w-6xl mx-auto w-full pb-64">
 					{leaderboardData.length === 0 ? (
-						<div className="text-center py-32 space-y-4 opacity-50">
-							<Medal weight="bold" className="w-16 h-16 mx-auto text-muted-foreground" />
-							<p className="text-xl font-bold">The arena is empty... for now.</p>
+						<div className="text-center py-40 space-y-8">
+							<div className="w-32 h-32 bg-muted/10 rounded-[3rem] flex items-center justify-center mx-auto">
+								<Medal size={48} className="text-muted-foreground/20 stroke-[3px]" />
+							</div>
+							<p className="text-2xl font-black text-muted-foreground/30 uppercase tracking-widest">Board is empty</p>
 						</div>
 					) : (
-						<div className="space-y-12">
+						<div className="space-y-24">
 							<Podium data={topThree} />
 
-							<div className="grid grid-cols-1 gap-8">
-								<div className="bg-card/20 backdrop-blur-sm rounded-[2.5rem] border-2 border-border/50 shadow-sm p-2 overflow-hidden mx-4 lg:mx-0">
+							<div className="space-y-12">
+								<div className="flex items-center gap-4 px-2">
+									<h2 className="text-[10px] font-black text-muted-foreground/40 uppercase tracking-[0.4em]">Ranking results</h2>
+									<div className="h-px flex-1 bg-muted/10" />
+								</div>
+								<div className="bg-card rounded-[3.5rem] border-none shadow-[0_20px_60px_rgba(0,0,0,0.06)] p-6 overflow-hidden">
 									<RankingList data={others} />
 								</div>
 							</div>
@@ -273,48 +281,53 @@ export default function Leaderboard() {
 
 			{userRank && (
 				<div className="fixed bottom-32 left-1/2 -translate-x-1/2 w-[92%] max-w-4xl z-50 lg:bottom-12">
-					<Card className="p-4 sm:p-6 bg-neutral-900 text-white border-none shadow-[0_32px_64px_-12px_rgba(0,0,0,0.5)] rounded-2xl sm:rounded-[2.5rem] relative overflow-hidden group">
-						<div className="absolute top-0 left-0 w-2 h-full bg-primary-orange animate-pulse" />
-						<div className="flex items-center gap-3 sm:gap-6 relative z-10">
-							<span className="text-2xl sm:text-3xl font-black text-primary-orange w-8 sm:w-12 text-center tracking-tighter">
-								{userRank.rank}
-							</span>
-							<div className="relative">
-								<Avatar className="w-12 h-12 sm:w-16 sm:h-16 border-4 border-primary-orange/30 p-1 rounded-xl sm:rounded-2xl bg-muted/20">
-									<AvatarImage
-										src="https://api.dicebear.com/7.x/avataaars/svg?seed=user"
-										className="object-cover"
-									/>
-									<AvatarFallback className="font-black text-sm sm:text-base text-foreground">
-										ME
-									</AvatarFallback>
-								</Avatar>
-								<div className="absolute -bottom-1.5 sm:-bottom-2 -right-1.5 sm:-right-2 bg-primary-orange text-white text-[8px] sm:text-[9px] font-black px-2 sm:px-3 py-0.5 sm:py-1 rounded-full border-2 sm:border-4 border-background uppercase tracking-tighter shadow-lg">
-									You
+					<m.div
+						initial={{ y: 100, opacity: 0 }}
+						animate={{ y: 0, opacity: 1 }}
+						transition={{ type: 'spring', damping: 25, delay: 0.5 }}
+					>
+						<Card className="p-8 bg-zinc-950 text-white border-none shadow-[0_40px_100px_rgba(0,0,0,0.4)] rounded-[3rem] relative overflow-hidden group">
+							<div className="absolute top-0 left-0 w-3 h-full bg-tiimo-orange animate-pulse" />
+							<div className="flex items-center gap-8 relative z-10">
+								<span className="text-5xl font-black text-tiimo-orange w-16 text-center tracking-tighter">
+									{userRank.rank}
+								</span>
+								<div className="relative">
+									<Avatar className="w-20 h-20 border-4 border-tiimo-orange/30 p-1 rounded-[1.5rem] bg-white/5">
+										<AvatarImage
+											src={session?.user?.image || "https://api.dicebear.com/7.x/avataaars/svg?seed=user"}
+											className="object-cover rounded-[1.25rem]"
+										/>
+										<AvatarFallback className="font-black bg-zinc-900">ME</AvatarFallback>
+									</Avatar>
+									<div className="absolute -bottom-2 -right-2 bg-tiimo-orange text-white text-[10px] font-black px-4 py-1 rounded-full border-4 border-zinc-950 uppercase tracking-tighter shadow-xl">
+										YOU
+									</div>
+								</div>
+								<div className="flex-1 min-w-0 space-y-1">
+									<h3 className="font-black text-2xl text-white truncate tracking-tight">
+										Your standing
+									</h3>
+									<div className="flex items-center gap-4">
+										<div className="flex items-center gap-2 text-[10px] font-black text-white/40 uppercase tracking-widest">
+											<Fire size={14} className="text-tiimo-orange fill-tiimo-orange/20 stroke-[3px]" />
+											{userStreak?.currentStreak || 0} Day Streak
+										</div>
+										<div className="h-1 w-1 rounded-full bg-white/20" />
+										<p className="text-[10px] font-black text-tiimo-green uppercase tracking-widest">
+											Top {100 - userRank.percentile}%
+										</p>
+									</div>
+								</div>
+								<div className="text-right">
+									<p className="text-4xl font-black text-tiimo-orange tracking-tighter leading-none mb-1">
+										{formatPoints(userRank.totalPoints)}
+									</p>
+									<span className="text-[10px] font-black text-tiimo-orange/40 uppercase tracking-[0.2em]">Kudos</span>
 								</div>
 							</div>
-							<div className="flex-1 min-w-0">
-								<h3 className="font-black text-sm sm:text-lg text-white truncate tracking-tight">
-									Your Global Rank
-								</h3>
-								<p className="text-[10px] sm:text-[11px] font-black text-white/60 uppercase tracking-widest flex items-center gap-1 sm:gap-2">
-									<Fire
-										weight="bold"
-										className="w-3 h-3 sm:w-4 sm:h-4 text-primary-orange fill-primary-orange"
-									/>
-									{userStreak?.currentStreak || 0} Day Streak
-								</p>
-							</div>
-							<div className="text-right">
-								<p className="text-xl sm:text-2xl font-black text-primary-orange tracking-tighter flex items-center justify-end gap-1">
-									{formatPoints(userRank.totalPoints)} <span className="text-xs uppercase">KP</span>
-								</p>
-								<p className="text-[9px] sm:text-[10px] font-black text-white/60 uppercase tracking-widest">
-									Top {100 - userRank.percentile}% of Students
-								</p>
-							</div>
-						</div>
-					</Card>
+						</Card>
+					</m.div>
 				</div>
 			)}
 		</div>

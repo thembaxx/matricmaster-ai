@@ -164,8 +164,33 @@ export default function DashboardWithReactQuery({
 					variants={STAGGER_CONTAINER}
 					initial="hidden"
 					animate="visible"
-					className="px-4 sm:px-6 py-6 space-y-6 sm:space-y-8 lg:px-0"
+					className="px-4 sm:px-6 py-8 space-y-12 sm:space-y-16 lg:px-0"
 				>
+					{/* Smart Prompt Section */}
+					<m.section variants={STAGGER_ITEM} className="max-w-4xl mx-auto px-4">
+						<div className="text-center mb-8 space-y-2">
+							<h1 className="text-4xl sm:text-6xl font-black tracking-tighter uppercase">
+								Your <span className="text-primary">Mastery journey</span> starts here
+							</h1>
+							<p className="text-muted-foreground max-w-lg mx-auto">
+								Ask a question, find a study path, or take a practice quiz to level up your
+								knowledge.
+							</p>
+						</div>
+						<DashboardTutorPrompt />
+					</m.section>
+
+					{/* Subjects Section */}
+					<m.section variants={STAGGER_ITEM} className="space-y-6">
+						<div className="flex items-center justify-between">
+							<h2 className="text-2xl font-black tracking-tighter uppercase">Subject workspace</h2>
+							<button type="button" className="text-sm font-bold text-primary hover:underline">
+								Customize
+							</button>
+						</div>
+						<SubjectCards />
+					</m.section>
+
 					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
 						<m.div variants={STAGGER_ITEM} className="md:col-span-1">
 							<WeeklyChallenge initialProgress={initialProgress ?? undefined} />

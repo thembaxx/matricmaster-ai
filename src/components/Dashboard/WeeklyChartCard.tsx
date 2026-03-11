@@ -1,6 +1,6 @@
 'use client';
 
-import { Check } from '@phosphor-icons/react';
+import { CheckmarkCircle01Icon as Check } from 'hugeicons-react';
 import { m } from 'framer-motion';
 import { memo } from 'react';
 import { Card } from '@/components/ui/card';
@@ -24,7 +24,7 @@ export const WeeklyChartCard = memo(function WeeklyChartCard({
 			<Card className="p-8 premium-glass border-none rounded-[2.5rem] h-full flex flex-col justify-between">
 				<div className="flex justify-between items-center mb-8">
 					<h3 className="text-xl font-black text-foreground tracking-tight uppercase">
-						Weekly ActivityIcon
+						Weekly activity
 					</h3>
 					<div className="flex items-center gap-2">
 						<span className="w-3 h-3 rounded-full bg-primary" />

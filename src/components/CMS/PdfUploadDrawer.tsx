@@ -150,13 +150,13 @@ export function PdfUploadDrawer({ isOpen, onClose, subjects, onSuccess }: PdfUpl
 
 			setUploadedUrl(uploadResult.url || null);
 			setProcessingProgress(40);
-			setProcessingStatus('PDF uploaded successfully, starting AI analysis...');
+			setProcessingStatus('PDF uploaded successfully, starting analysis...');
 
 			// 2. Extract questions using the uploaded URL
 			const subjectObj = subjects.find((s) => s.id === paperDetails.subjectId);
 
 			setProcessingProgress(60);
-			setProcessingStatus('AI is analyzing questions (Superpowered mode)...');
+			setProcessingStatus('Analyzing questions (Superpowered mode)...');
 
 			const response = await fetch('/api/extract-questions', {
 				method: 'POST',
@@ -188,7 +188,7 @@ export function PdfUploadDrawer({ isOpen, onClose, subjects, onSuccess }: PdfUpl
 			setStep('review');
 			setProcessingProgress(100);
 			toast.success(
-				`AI successfully analyzed ${extractionResult.questions.length} questions from the paper!`
+				`Successfully analyzed ${extractionResult.questions.length} questions from the paper!`
 			);
 		} catch (error) {
 			console.error('Processing error:', error);
@@ -197,8 +197,8 @@ export function PdfUploadDrawer({ isOpen, onClose, subjects, onSuccess }: PdfUpl
 			if (error instanceof Error) {
 				if (error.message.includes('Upload failed')) {
 					toast.error('Failed to upload PDF. Please check your internet connection and try again.');
-				} else if (error.message.includes('AI service not configured')) {
-					toast.error('AI service is not configured. Please contact support.');
+				} else if (error.message.includes('Extraction service not configured')) {
+					toast.error('Extraction service is not configured. Please contact support.');
 				} else if (error.message.includes('Failed to fetch PDF')) {
 					toast.error('Failed to process PDF. The file may be corrupted or too large.');
 				} else {
@@ -345,7 +345,7 @@ export function PdfUploadDrawer({ isOpen, onClose, subjects, onSuccess }: PdfUpl
 				<DrawerHeader className="text-left border-b pb-6 px-8">
 					<div className="flex items-center gap-3">
 						<DrawerTitle className="text-3xl font-black tracking-tighter uppercase">
-							{step === 'review' ? 'Review AI Results' : 'AI Paper Extraction'}
+							{step === 'review' ? 'Review results' : 'Paper extraction'}
 						</DrawerTitle>
 						{step === 'review' && (
 							<Badge className="bg-brand-blue/10 text-brand-blue border-brand-blue/20">
@@ -356,7 +356,7 @@ export function PdfUploadDrawer({ isOpen, onClose, subjects, onSuccess }: PdfUpl
 					<DrawerDescription className="font-bold">
 						{step === 'review'
 							? `Analyzed ${extractedData?.questions.length} questions from ${paperDetails.paperId}.`
-							: 'Transform any NSC PDF into an interactive quiz instantly using AI.'}
+							: 'Transform any NSC PDF into an interactive quiz instantly.'}
 					</DrawerDescription>
 				</DrawerHeader>
 

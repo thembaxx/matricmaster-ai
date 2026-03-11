@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
 import { InteractiveQuizClient } from '@/components/InteractiveQuizClient';
+import PageTransition from '@/components/Transition/PageTransition';
 import { QuizSkeleton } from '@/components/QuizSkeleton';
 import { QUIZ_DATA } from '@/constants/quiz-data';
 
@@ -14,17 +15,17 @@ export async function generateMetadata({ searchParams }: PageProps): Promise<Met
 
 	if (!quiz) {
 		return {
-			title: 'Interactive Quiz | MatricMaster AI',
-			description: 'Test your knowledge with AI-powered interactive quizzes.',
+			title: 'Interactive Quiz | MatricMaster',
+			description: 'Test your knowledge with expert-guided interactive quizzes.',
 		};
 	}
 
 	return {
-		title: `${quiz.title} | MatricMaster AI`,
-		description: `Interactive ${quiz.subject} quiz: ${quiz.title}. Get instant feedback and AI explanations.`,
+		title: `${quiz.title} | MatricMaster`,
+		description: `Interactive ${quiz.subject} quiz: ${quiz.title}. Get instant feedback and expert explanations.`,
 		openGraph: {
-			title: `${quiz.title} | MatricMaster AI`,
-			description: `Interactive ${quiz.subject} quiz: ${quiz.title}. Get instant feedback and AI explanations.`,
+			title: `${quiz.title} | MatricMaster`,
+			description: `Interactive ${quiz.subject} quiz: ${quiz.title}. Get instant feedback and expert explanations.`,
 			type: 'website',
 		},
 	};
@@ -34,8 +35,10 @@ export default async function InteractiveQuizPage({ searchParams }: PageProps) {
 	const { id } = await searchParams;
 
 	return (
-		<Suspense fallback={<QuizSkeleton />}>
-			<InteractiveQuizClient initialId={id} />
-		</Suspense>
+		<PageTransition>
+			<Suspense fallback={<QuizSkeleton />}>
+				<InteractiveQuizClient initialId={id} />
+			</Suspense>
+		</PageTransition>
 	);
 }

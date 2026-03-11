@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-	title: 'Mathematics Quiz | MatricMaster AI',
+	title: 'Mathematics Quiz | MatricMaster',
 	description: 'Practice Mathematics questions to ace your exams.',
 };
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { ChatCenteredText, Lightbulb } from '@phosphor-icons/react';
+import { Chat01Icon as ChatCenteredText, IdeaIcon as Lightbulb } from 'hugeicons-react';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
@@ -78,7 +78,7 @@ export function QuickPrompts({ onSelectPrompt, selectedSubject }: QuickPromptsPr
 			<div className="flex items-center gap-2 px-1">
 				<Lightbulb className="h-3.5 w-3.5 md:h-4 md:w-4 text-brand-amber" />
 				<span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">
-					Quick Prompts
+					Quick prompts
 				</span>
 			</div>
 			<ScrollArea className="w-full">

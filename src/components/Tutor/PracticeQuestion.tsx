@@ -1,4 +1,4 @@
-import { CheckCircle, XCircle } from '@phosphor-icons/react';
+import { CheckCircleIcon as CheckCircle, CancelCircleIcon as XCircle } from 'hugeicons-react';
 import { useId } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
@@ -83,12 +83,12 @@ export function PracticeQuestion({
 
 			{problem.type === 'short-answer' && (
 				<div className="space-y-2">
-					<Label htmlFor={`short-answer-${questionId}`}>Your Answer</Label>
+					<Label htmlFor={`short-answer-${questionId}`}>Your answer</Label>
 					<Input
 						id={`short-answer-${questionId}`}
 						value={answer || ''}
 						onChange={(e) => onAnswerSelect(e.target.value)}
-						placeholder="TextT your answer..."
+						placeholder="Type your answer..."
 						disabled={showExplanation}
 					/>
 					{showExplanation && (
@@ -108,7 +108,7 @@ export function PracticeQuestion({
 					<Input
 						value={answer || ''}
 						onChange={(e) => onAnswerSelect(e.target.value)}
-						placeholder="TextT your final answer..."
+						placeholder="Type your final answer..."
 						disabled={showExplanation}
 					/>
 				</div>

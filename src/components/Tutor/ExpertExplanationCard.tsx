@@ -1,6 +1,6 @@
 'use client';
 
-import { CaretDown, CaretUp, CircleNotch, Sparkle } from '@phosphor-icons/react';
+import { ArrowDown01Icon as CaretDown, ArrowUp01Icon as CaretUp, Loading03Icon as CircleNotch, SparklesIcon as Sparkle } from 'hugeicons-react';
 import { AnimatePresence, m } from 'framer-motion';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
@@ -8,7 +8,7 @@ import { Card } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import { MarkdownRenderer } from './MarkdownRenderer';
 
-interface AIExplanationCardProps {
+interface ExpertExplanationCardProps {
 	explanation: string | null;
 	isLoading: boolean;
 	onExplain: () => void;
@@ -16,13 +16,13 @@ interface AIExplanationCardProps {
 	className?: string;
 }
 
-export function AIExplanationCard({
+export function ExpertExplanationCard({
 	explanation,
 	isLoading,
 	onExplain,
 	subject,
 	className,
-}: AIExplanationCardProps) {
+}: ExpertExplanationCardProps) {
 	const [isExpanded, setIsExpanded] = useState(true);
 
 	return (
@@ -43,9 +43,9 @@ export function AIExplanationCard({
 							<Sparkle weight="bold" className="h-5 w-5 text-primary animate-pulse-soft" />
 						</div>
 						<div>
-							<h4 className="text-sm font-black font-lexend tracking-tight">MatricMaster AI</h4>
+							<h4 className="text-sm font-black font-lexend tracking-tight">MatricMaster expert</h4>
 							<p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
-								Personal Tutor {subject ? `• ${subject}` : ''}
+								Personal tutor {subject ? `• ${subject}` : ''}
 							</p>
 						</div>
 					</div>
@@ -91,7 +91,7 @@ export function AIExplanationCard({
 								<MarkdownRenderer content={explanation} className="prose-sm" />
 								<div className="mt-4 flex items-center justify-between">
 									<p className="text-[9px] font-bold text-muted-foreground uppercase tracking-[0.2em]">
-										AI-generated explanation
+										Expert-guided explanation
 									</p>
 									<Button
 										variant="link"

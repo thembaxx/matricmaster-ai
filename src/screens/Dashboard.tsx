@@ -5,7 +5,7 @@ import { useCallback, useEffect, useState, useTransition } from 'react';
 import { ChallengesList } from '@/components/Dashboard/ChallengesList';
 import { DailyGoals } from '@/components/Dashboard/DailyGoals';
 import { DailyQuestCard } from '@/components/Dashboard/DailyQuestCard';
-import { DashboardAIPrompt } from '@/components/Dashboard/DashboardAIPrompt';
+import { DashboardTutorPrompt } from '@/components/Dashboard/DashboardTutorPrompt';
 import { DashboardHeader } from '@/components/Dashboard/DashboardHeader';
 import { LeaderboardPreview } from '@/components/Dashboard/LeaderboardPreview';
 import { RecentAchievements } from '@/components/Dashboard/RecentAchievements';
@@ -130,24 +130,24 @@ export default function Dashboard({
 					animate="visible"
 					className="px-4 sm:px-6 py-8 space-y-12 sm:space-y-16 lg:px-0"
 				>
-					{/* AI Prompt Section */}
+					{/* Tutor prompt section */}
 					<m.section variants={STAGGER_ITEM} className="max-w-4xl mx-auto px-4">
 						<div className="text-center mb-8 space-y-2">
 							<h1 className="text-4xl sm:text-6xl font-black tracking-tighter uppercase">
-								Your <span className="text-primary">AI Journey</span> Starts Here
+								Your <span className="text-primary">Mastery journey</span> starts here
 							</h1>
 							<p className="text-muted-foreground max-w-lg mx-auto">
-								Ask a question, generate a study plan, or take a practice quiz to level up your
-								mastery.
+								Ask a question, find a study path, or take a practice quiz to level up your
+								knowledge.
 							</p>
 						</div>
-						<DashboardAIPrompt />
+						<DashboardTutorPrompt />
 					</m.section>
 
 					{/* Subjects Section */}
 					<m.section variants={STAGGER_ITEM} className="space-y-6">
 						<div className="flex items-center justify-between">
-							<h2 className="text-2xl font-black tracking-tighter uppercase">Subject Workspace</h2>
+							<h2 className="text-2xl font-black tracking-tighter uppercase">Subject workspace</h2>
 							<button type="button" className="text-sm font-bold text-primary hover:underline">
 								Customize
 							</button>

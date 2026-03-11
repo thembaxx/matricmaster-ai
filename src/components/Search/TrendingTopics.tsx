@@ -1,10 +1,10 @@
 'use client';
 
-import { Icon } from '@iconify/react';
+import { FireIcon as Fire } from 'hugeicons-react';
 import { m } from 'framer-motion';
 import { memo } from 'react';
-import { Badge } from '@/components/ui/badge';
 import { STAGGER_ITEM } from '@/lib/animation-presets';
+import { cn } from '@/lib/utils';
 
 const TRENDING_TOPICS = [
 	'Calculus P1',
@@ -21,24 +21,24 @@ interface TrendingTopicsProps {
 
 export const TrendingTopics = memo(function TrendingTopics({ onTopicClick }: TrendingTopicsProps) {
 	return (
-		<m.div variants={STAGGER_ITEM} className="space-y-6">
-			<div className="flex items-center gap-2">
-				<Icon icon="fluent-emoji-flat:fire" className="w-5 h-5" />
-				<h2 className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.3em]">
-					Trending Now
+		<m.div variants={STAGGER_ITEM} className="space-y-8">
+			<div className="flex items-center gap-4 px-2">
+				<Fire size={20} className="text-tiimo-orange fill-tiimo-orange/20 stroke-[3px]" />
+				<h2 className="text-[10px] font-black text-muted-foreground/40 uppercase tracking-[0.4em]">
+					Viral topics
 				</h2>
 			</div>
-			<div className="flex flex-wrap gap-3">
+			<div className="flex flex-wrap gap-4">
 				{TRENDING_TOPICS.map((topic) => (
-					<m.div key={topic} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-						<Badge
-							variant="secondary"
-							className="px-6 py-3 rounded-2xl bg-card text-sm font-black uppercase tracking-widest hover:bg-primary hover:text-primary-foreground transition-all cursor-pointer border-2 border-border shadow-sm"
-							onClick={() => onTopicClick(topic)}
-						>
-							{topic}
-						</Badge>
-					</m.div>
+					<m.button
+						key={topic}
+						whileHover={{ scale: 1.05, y: -4 }}
+						whileTap={{ scale: 0.95 }}
+						onClick={() => onTopicClick(topic)}
+						className="px-8 py-5 rounded-[2rem] bg-card text-md font-black uppercase tracking-widest hover:bg-primary hover:text-white transition-all shadow-[0_10px_25px_rgba(0,0,0,0.04)] hover:shadow-xl hover:shadow-primary/20 border-none"
+					>
+						{topic}
+					</m.button>
 				))}
 			</div>
 		</m.div>

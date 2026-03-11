@@ -1,6 +1,6 @@
 'use client';
 
-import { Bell } from '@phosphor-icons/react';
+import { Notification03Icon as Bell } from 'hugeicons-react';
 import { m } from 'framer-motion';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
@@ -102,7 +102,7 @@ function NotificationButton({ count, onClick }: NotificationButtonProps) {
 			onClick={onClick}
 			aria-label={`Notifications${count > 0 ? `, ${count} unread` : ''}`}
 		>
-			<Bell className="w-5 h-5 text-foreground" />
+			<Bell className="w-5 h-5 text-foreground stroke-[3]" />
 			{count > 0 && (
 				<m.span
 					initial={{ scale: 0.95, opacity: 0 }}

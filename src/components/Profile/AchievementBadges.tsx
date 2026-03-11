@@ -1,6 +1,6 @@
 'use client';
 
-import { Check, Lock, Star } from '@phosphor-icons/react';
+import { CheckmarkCircle01Icon as Check, Lock01Icon as Lock, StarIcon as Star } from 'hugeicons-react';
 import { m } from 'framer-motion';
 import { memo } from 'react';
 import { ACHIEVEMENTS } from '@/constants/achievements';
@@ -17,68 +17,75 @@ export const AchievementBadges = memo(function AchievementBadges({
 	const unlockedSet = new Set(unlockedIds);
 
 	return (
-		<div className={`grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 gap-3 ${className}`}>
+		<div className={cn("grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-6", className)}>
 			{ACHIEVEMENTS.map((achievement, index) => {
 				const isUnlocked = unlockedSet.has(achievement.id);
 				return (
 					<m.div
 						key={achievement.id}
-						initial={{ opacity: 0, scale: 0.8 }}
-						animate={{ opacity: 1, scale: 1 }}
-						transition={{ delay: index * 0.02 }}
+						initial={{ opacity: 0, scale: 0.8, y: 20 }}
+						animate={{ opacity: 1, scale: 1, y: 0 }}
+						transition={{ delay: index * 0.02, type: 'spring' }}
 						className="group relative"
 					>
 						<div
-							className={`relative aspect-square rounded-2xl flex flex-col items-center justify-center p-2 transition-all duration-300 ${
+							className={cn(
+								"relative aspect-square rounded-[2rem] flex flex-col items-center justify-center p-4 transition-all duration-500",
 								isUnlocked
-									? 'bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 border-2 border-brand-amber/30 shadow-lg shadow-brand-amber/10'
-									: 'bg-muted/50 border-2 border-dashed border-muted-foreground/20 opacity-50'
-							}`}
+									? 'bg-white dark:bg-zinc-900 shadow-[0_10px_25px_rgba(0,0,0,0.05)] hover:shadow-[0_20px_45px_rgba(0,0,0,0.1)] hover:-translate-y-2'
+									: 'bg-muted/10 opacity-40 grayscale border-none'
+							)}
 						>
 							<div
-								className={`text-2xl mb-1 transition-transform duration-300 ${
-									isUnlocked ? 'group-hover:scale-110' : 'grayscale'
-								}`}
+								className={cn(
+									"text-4xl mb-2 transition-transform duration-500",
+									isUnlocked ? 'group-hover:scale-125 group-hover:rotate-6' : ''
+								)}
 							>
 								{achievement.icon}
 							</div>
 
 							{isUnlocked ? (
-								<div className="absolute -top-1 -right-1 w-5 h-5 bg-green-500 rounded-full flex items-center justify-center shadow-sm">
-									<Check className="w-3 h-3 text-white" />
+								<div className="absolute -top-2 -right-2 w-8 h-8 bg-tiimo-green text-white rounded-xl flex items-center justify-center shadow-xl border-4 border-white dark:border-zinc-900 scale-0 group-hover:scale-100 transition-transform">
+									<Check size={14} className="stroke-[3px]" />
 								</div>
 							) : (
-								<div className="absolute inset-0 flex items-center justify-center bg-background/50 rounded-2xl">
-									<Lock className="w-4 h-4 text-muted-foreground" />
+								<div className="absolute inset-0 flex items-center justify-center">
+									<Lock size={20} className="text-muted-foreground/30 stroke-[3px]" />
 								</div>
 							)}
 
 							{achievement.points > 0 && isUnlocked && (
-								<div className="absolute -bottom-1 -right-1 flex items-center gap-0.5 px-1.5 py-0.5 bg-brand-amber rounded-full">
-									<Star className="w-2.5 h-2.5 text-white" />
-									<span className="text-[8px] font-black text-white">{achievement.points}</span>
+								<div className="absolute -bottom-2 -right-2 flex items-center gap-1 px-3 py-1 bg-tiimo-orange text-white rounded-xl shadow-lg border-4 border-white dark:border-zinc-900">
+									<Star size={10} className="stroke-[3px] fill-white/20" />
+									<span className="text-[8px] font-black uppercase">{achievement.points}</span>
 								</div>
 							)}
 						</div>
 
-						<div className="mt-1.5 text-center">
+						<div className="mt-3 text-center">
 							<p
-								className={`text-[9px] font-bold truncate ${
-									isUnlocked ? 'text-foreground' : 'text-muted-foreground'
-								}`}
+								className={cn(
+									"text-[10px] font-black uppercase tracking-widest truncate",
+									isUnlocked ? 'text-foreground' : 'text-muted-foreground/40'
+								)}
 							>
 								{achievement.name}
 							</p>
 						</div>
 
 						<div
-							className={`absolute z-50 left-1/2 -translate-x-1/2 bottom-full mb-2 px-3 py-2 bg-popover text-popover-foreground text-xs rounded-lg shadow-xl border opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap ${
+							className={cn(
+								"absolute z-50 left-1/2 -translate-x-1/2 bottom-full mb-4 px-5 py-4 bg-white dark:bg-zinc-800 text-foreground rounded-2xl shadow-2xl border-none opacity-0 group-hover:opacity-100 transition-all pointer-events-none min-w-[200px] scale-90 group-hover:scale-100",
 								isUnlocked ? '' : 'hidden'
-							}`}
+							)}
 						>
-							<p className="font-bold">{achievement.name}</p>
-							<p className="text-muted-foreground text-[10px]">{achievement.description}</p>
-							<p className="text-brand-amber font-bold mt-1">+{achievement.points} XP</p>
+							<p className="font-black text-lg tracking-tight mb-1">{achievement.name}</p>
+							<p className="text-muted-foreground font-bold text-xs leading-relaxed">{achievement.description}</p>
+							<div className="mt-3 flex items-center gap-2 text-tiimo-orange font-black text-[10px] uppercase tracking-widest">
+								<Star size={12} className="stroke-[3px]" />
+								Worth {achievement.points} Mastery Points
+							</div>
 						</div>
 					</m.div>
 				);
@@ -143,22 +150,24 @@ export const AchievementProgress = memo(function AchievementProgress({
 	const percentage = Math.round((unlocked / total) * 100);
 
 	return (
-		<div className="space-y-2">
-			<div className="flex items-center justify-between">
-				<span className="text-sm font-bold text-foreground">Achievements</span>
-				<span className="text-sm font-bold text-muted-foreground">
-					{unlocked}/{total}
-				</span>
+		<div className="space-y-4">
+			<div className="flex items-end justify-between">
+				<div className="space-y-1">
+					<span className="text-xs font-black text-muted-foreground/40 uppercase tracking-[0.2em]">Collection Progress</span>
+					<div className="text-2xl font-black text-foreground leading-none">
+						{unlocked} <span className="text-muted-foreground/40">/ {total}</span>
+					</div>
+				</div>
+				<span className="text-xl font-black text-primary">{percentage}%</span>
 			</div>
-			<div className="h-2 bg-muted rounded-full overflow-hidden">
+			<div className="h-4 w-full bg-muted/20 rounded-full overflow-hidden p-1 shadow-inner">
 				<m.div
 					initial={{ width: 0 }}
 					animate={{ width: `${percentage}%` }}
-					transition={{ duration: 0.5, ease: 'easeOut' }}
-					className="h-full bg-gradient-to-r from-brand-amber to-orange-400 rounded-full"
+					transition={{ duration: 1, type: 'spring', damping: 20 }}
+					className="h-full bg-linear-to-r from-primary to-tiimo-purple rounded-full shadow-lg"
 				/>
 			</div>
-			<p className="text-xs text-muted-foreground text-right">{percentage}% complete</p>
 		</div>
 	);
 });

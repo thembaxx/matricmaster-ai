@@ -1,6 +1,6 @@
 'use client';
 
-import { Sparkle } from '@phosphor-icons/react';
+import { SparklesIcon as Sparkle } from 'hugeicons-react';
 import { AnimatePresence, m } from 'framer-motion';
 import { memo } from 'react';
 import { STAGGER_CONTAINER, STAGGER_ITEM } from '@/lib/animation-presets';

@@ -1,17 +1,18 @@
 'use client';
 
 import {
-	CaretDown,
-	Check,
-	Clock,
-	Fire,
-	Flask,
-	Globe,
-	Translate as LanguagesIcon,
-	Layout,
-	Lock,
-	Medal,
-} from '@phosphor-icons/react';
+	ArrowDown01Icon as CaretDown,
+	CheckmarkCircle01Icon as Check,
+	TimeClockIcon as Clock,
+	FireIcon as Fire,
+	FlaskIcon as Flask,
+	Globe02Icon as Globe,
+	TranslateIcon as LanguagesIcon,
+	Layout01Icon as Layout,
+	Lock01Icon as Lock,
+	MedalIcon as Medal,
+	ZapIcon as Zap,
+} from 'hugeicons-react';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -71,32 +72,37 @@ export default function Lessons() {
 	const [activeCategory, setActiveCategory] = useState('all');
 
 	return (
-		<div className="flex flex-col h-full min-w-0 bg-background overflow-x-hidden">
+		<div className="flex flex-col h-full min-w-0 bg-white dark:bg-zinc-950 overflow-x-hidden lg:px-12">
 			{/* Header */}
-			<header className="px-4 sm:px-6 pt-8 sm:pt-12 pb-4 sm:pb-6 shrink-0">
-				<div className="flex items-start justify-between gap-4">
-					<div className="space-y-1">
-						<h1 className="text-2xl font-black text-foreground tracking-tight">Grade 12 Prep</h1>
-						<p className="text-muted-foreground font-medium flex items-center gap-1.5 text-sm">
-							Keep up the streak!{' '}
-							<Fire weight="bold" className="w-4 h-4 text-brand-amber fill-brand-amber" />{' '}
-							<span className="font-bold text-foreground">5 days</span>
-						</p>
+			<header className="px-6 sm:px-10 pt-20 sm:pt-32 pb-12 shrink-0 lg:px-0">
+				<div className="flex items-start justify-between gap-8 mb-12">
+					<div className="space-y-4">
+						<h1 className="text-5xl sm:text-7xl lg:text-9xl font-black text-foreground tracking-tighter leading-none">
+							Quest
+						</h1>
+						<div className="flex items-center gap-4">
+							<p className="text-muted-foreground/40 font-black text-sm sm:text-lg uppercase tracking-[0.3em] leading-none">
+								Grade 12 Journey
+							</p>
+							<div className="flex items-center gap-2 px-3 py-1 bg-tiimo-orange/10 rounded-full">
+								<Fire size={14} className="text-tiimo-orange fill-tiimo-orange/20 stroke-[3px]" />
+								<span className="text-[10px] font-black text-tiimo-orange uppercase tracking-widest">5 Day Streak</span>
+							</div>
+						</div>
 					</div>
 					<Button
-						variant="outline"
-						size="sm"
-						className="rounded-full bg-card border-border shadow-sm gap-1 sm:gap-2 h-9 sm:h-10 px-3 sm:px-4"
+						variant="ghost"
+						className="h-14 px-6 rounded-2xl bg-muted/10 font-black text-xs uppercase tracking-widest hover:bg-muted/20 transition-all border-none shadow-sm gap-3"
 					>
-						<Globe className="w-4 h-4 text-muted-foreground" />
-						<span className="font-bold text-foreground hidden sm:inline">English</span>
-						<CaretDown className="w-4 h-4 text-muted-foreground/50" />
+						<Globe size={20} className="text-muted-foreground stroke-[3px]" />
+						<span className="hidden sm:inline">English</span>
+						<CaretDown size={18} className="text-muted-foreground/40 stroke-[3px]" />
 					</Button>
 				</div>
 
 				{/* Category selector */}
 				<nav
-					className="flex gap-2 sm:gap-3 mt-6 sm:mt-8 overflow-x-auto no-scrollbar"
+					className="flex gap-3 overflow-x-auto no-scrollbar p-2 bg-muted/10 rounded-[2.5rem] max-w-fit"
 					aria-label="Lesson categories"
 				>
 					{categories.map((cat) => (
@@ -104,16 +110,14 @@ export default function Lessons() {
 							key={cat.id}
 							type="button"
 							onClick={() => setActiveCategory(cat.id)}
-							aria-pressed={activeCategory === cat.id ? 'true' : 'false'}
-							className={`flex items-center gap-1.5 sm:gap-2 px-4 sm:px-5 py-2.5 sm:py-3 rounded-full text-xs sm:text-sm font-bold whitespace-nowrap transition-all border shadow-sm ${
+							className={cn(
+								"flex items-center gap-3 px-8 h-14 rounded-[2rem] text-sm font-black uppercase tracking-widest transition-all duration-500 whitespace-nowrap",
 								activeCategory === cat.id
-									? 'bg-foreground text-background border-foreground shadow-lg'
-									: 'bg-card text-muted-foreground border-border hover:text-foreground'
-							}`}
+									? 'bg-primary text-white shadow-xl shadow-primary/30 scale-105'
+									: 'text-muted-foreground/40 hover:bg-muted/20'
+							)}
 						>
-							<cat.icon
-								className={`w-4 h-4 ${activeCategory === cat.id ? 'text-primary' : 'text-muted-foreground'}`}
-							/>
+							<cat.icon size={20} className={cn("stroke-[3px]", activeCategory === cat.id ? 'scale-110' : '')} />
 							{cat.name}
 						</button>
 					))}
@@ -121,137 +125,135 @@ export default function Lessons() {
 			</header>
 
 			{/* Path Content */}
-			<ScrollArea className="flex-1">
-				<main className="px-4 sm:px-6 py-4 relative">
+			<ScrollArea className="flex-1 no-scrollbar px-6 sm:px-10 lg:px-0">
+				<main className="max-w-4xl mx-auto w-full pb-64 relative">
 					{/* Vertical Line */}
-					<div className="absolute left-9.5 top-0 bottom-0 w-0.5 border-l-2 border-dashed border-border/50 z-0" />
+					<div className="absolute left-10 top-0 bottom-0 w-2 bg-muted/10 rounded-full z-0" />
 
-					<div className="space-y-6">
+					<div className="space-y-12">
 						{lessons.map((lesson) => (
-							<div key={lesson.id} className="flex gap-6 relative z-10">
+							<div key={lesson.id} className="flex gap-10 relative z-10">
 								{/* Node Icon */}
-								<div className="shrink-0 pt-4 flex flex-col items-center">
+								<div className="shrink-0 pt-6">
 									{lesson.status === 'completed' && (
-										<div className="w-8 h-8 rounded-full bg-brand-amber flex items-center justify-center shadow-lg shadow-brand-amber/20 translate-y-1">
-											<Check className="w-5 h-5 text-primary-foreground stroke-[3px]" />
-										</div>
+										<m.div
+											whileHover={{ scale: 1.1, rotate: -10 }}
+											className="w-20 h-20 rounded-[2rem] bg-tiimo-green text-white flex items-center justify-center shadow-xl shadow-tiimo-green/20 transition-all duration-500"
+										>
+											<Check size={36} className="stroke-[4.5px]" />
+										</m.div>
 									)}
 									{lesson.status === 'active' && (
-										<div className="w-8 h-8 rounded-full bg-card border-2 border-primary flex items-center justify-center shadow-lg shadow-primary/20 translate-y-1 ring-4 ring-primary/10">
-											<div className="w-2.5 h-2.5 rounded-full bg-primary" />
-										</div>
+										<m.div
+											animate={{ scale: [1, 1.1, 1] }}
+											transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
+											className="w-20 h-20 rounded-[2rem] bg-primary text-white flex items-center justify-center shadow-[0_20px_50px_rgba(var(--primary),0.3)] relative"
+										>
+											<div className="w-4 h-4 bg-white rounded-full animate-ping absolute" />
+											<div className="w-4 h-4 bg-white rounded-full relative z-10" />
+										</m.div>
 									)}
 									{lesson.status === 'locked' && (
-										<div className="w-8 h-8 rounded-full bg-muted border border-border flex items-center justify-center translate-y-1">
-											<Lock className="w-4 h-4 text-muted-foreground/50" />
+										<div className="w-20 h-20 rounded-[2rem] bg-muted/20 text-muted-foreground/20 flex items-center justify-center">
+											<Lock size={32} className="stroke-[3px]" />
 										</div>
 									)}
 								</div>
 
 								{/* Lesson Card */}
 								<div className="flex-1">
-									<Card
-										className={`p-6 rounded-[2rem] border-2 shadow-sm relative overflow-hidden group hover:shadow-md transition-all ${
-											lesson.status === 'active'
-												? 'border-primary bg-card'
-												: 'border-transparent bg-card'
-										}`}
+									<m.div
+										whileHover={{ scale: 1.02, x: 8 }}
+										className={cn(
+											"p-10 rounded-[3.5rem] shadow-[0_20px_60px_rgba(0,0,0,0.05)] relative overflow-hidden group transition-all duration-700 cursor-pointer",
+											lesson.status === 'active' ? 'bg-primary text-white' : 'bg-card'
+										)}
 									>
 										{lesson.isContinue && (
 											<div className="absolute top-0 right-0">
-												<div className="bg-primary text-primary-foreground text-[10px] font-black px-4 py-1.5 rounded-bl-2xl uppercase tracking-widest shadow-sm">
-													Continue
+												<div className="bg-tiimo-orange text-white text-[10px] font-black px-6 py-2.5 rounded-bl-[2rem] uppercase tracking-[0.2em] shadow-lg">
+													Priority
 												</div>
 											</div>
 										)}
-										<div className="flex items-center justify-between">
-											<div className="space-y-1.5 pr-4">
+										<div className="flex items-center justify-between gap-8">
+											<div className="flex-1 space-y-3">
 												<p
-													className={`text-[10px] font-black uppercase tracking-widest ${
-														lesson.status === 'active'
-															? 'text-primary'
-															: lesson.status === 'completed'
-																? 'text-brand-amber'
-																: lesson.subject.includes('LANGUAGE')
-																	? 'text-brand-red'
-																	: lesson.subject.includes('LIFE')
-																		? 'text-brand-green'
-																		: 'text-muted-foreground'
-													}`}
+													className={cn(
+														"text-[10px] font-black uppercase tracking-[0.3em]",
+														lesson.status === 'active' ? "text-white/60" : "text-muted-foreground/40"
+													)}
 												>
 													{lesson.subject}
 												</p>
-												<h3 className="text-xl font-bold text-foreground leading-tight">
+												<h3 className="text-3xl font-black tracking-tight leading-tight">
 													{lesson.title}
 												</h3>
 
 												{lesson.progress !== undefined ? (
-													<div className="flex items-center gap-3 pt-2">
-														<div className="flex-1 h-1.5 bg-muted rounded-full overflow-hidden">
-															<div
-																className={`h-full rounded-full transition-all ${
-																	lesson.status === 'active' ? 'bg-primary' : 'bg-brand-amber'
-																}`}
-																style={{ width: `${lesson.progress}%` }}
+													<div className="space-y-3 pt-4">
+														<div className="h-4 w-full bg-black/10 dark:bg-white/10 rounded-full overflow-hidden p-1 shadow-inner">
+															<m.div
+																initial={{ width: 0 }}
+																animate={{ width: `${lesson.progress}%` }}
+																transition={{ duration: 1.5, type: 'spring' }}
+																className={cn(
+																	"h-full rounded-full",
+																	lesson.status === 'active' ? 'bg-white' : 'bg-tiimo-orange'
+																)}
 															/>
 														</div>
-														<span className="text-xs font-bold text-muted-foreground">
-															{lesson.progress}%
+														<span className={cn(
+															"text-[10px] font-black uppercase tracking-widest block",
+															lesson.status === 'active' ? "text-white/40" : "text-muted-foreground/40"
+														)}>
+															{lesson.progress}% Mastery Achieved
 														</span>
 													</div>
 												) : (
-													<div className="flex items-center gap-1.5 pt-2 text-muted-foreground font-medium text-xs">
-														<Clock className="w-3.5 h-3.5" />
-														{lesson.time}
+													<div className="flex items-center gap-3 pt-4 text-[10px] font-black uppercase tracking-widest opacity-40">
+														<Clock size={16} className="stroke-[3px]" />
+														{lesson.time} Estimated
 													</div>
 												)}
 											</div>
 											<div
-												className={`w-16 h-16 rounded-4xl flex items-center justify-center text-3xl shadow-inner ${lesson.color} border border-border shrink-0 transform group-hover:scale-110 transition-transform`}
-											>
-												{lesson.status === 'active' ? (
-													<div className="relative">
-														<div className="absolute inset-0 blur-lg bg-brand-amber opacity-50" />
-														<span className="relative z-10">⚡</span>
-													</div>
-												) : (
-													lesson.icon
+												className={cn(
+													"w-24 h-24 rounded-[2.5rem] flex items-center justify-center text-5xl shadow-inner transition-all duration-700",
+													lesson.status === 'active' ? "bg-white/10" : "bg-muted/10 group-hover:scale-110"
 												)}
+											>
+												{lesson.status === 'active' ? <Zap size={48} className="text-white fill-white/20 stroke-[2.5px]" /> : lesson.icon}
 											</div>
 										</div>
-									</Card>
+									</m.div>
 								</div>
 							</div>
 						))}
 
-						{/* Premium Upsell Card */}
-						<div className="flex gap-6 relative z-10 pt-4">
-							<div className="w-8 shrink-0" /> {/* Spacer for alignment */}
-							<Card className="flex-1 bg-foreground text-background p-8 rounded-[2.5rem] text-center space-y-6 relative overflow-hidden shadow-2xl border-none">
-								<div className="absolute -top-12 -right-12 w-32 h-32 bg-primary/20 rounded-full blur-3xl" />
-								<div className="absolute -bottom-12 -left-12 w-32 h-32 bg-primary/10 rounded-full blur-3xl" />
+						{/* Premium Unlock Section */}
+						<div className="flex gap-10 relative z-10 pt-12">
+							<div className="w-20 shrink-0" />
+							<Card className="flex-1 bg-zinc-950 text-white p-12 rounded-[4rem] text-center space-y-10 relative overflow-hidden shadow-[0_40px_100px_rgba(0,0,0,0.5)] border-none">
+								<div className="absolute -top-20 -right-20 w-64 h-64 bg-primary/20 rounded-full blur-[100px]" />
 
-								<div className="w-14 h-14 bg-background/10 rounded-2xl flex items-center justify-center mx-auto shadow-inner relative group cursor-pointer hover:scale-105 transition-transform">
-									<Medal weight="bold" className="w-8 h-8 text-yellow-400" />
-									<div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-foreground" />
+								<div className="w-20 h-20 bg-white/5 rounded-[1.75rem] flex items-center justify-center mx-auto shadow-inner relative group cursor-pointer hover:scale-110 transition-transform duration-700">
+									<Medal size={40} className="text-tiimo-orange stroke-[3px] fill-tiimo-orange/20" />
 								</div>
 
-								<div className="space-y-2">
-									<h3 className="text-2xl font-black tracking-tight">Unlock Past Papers</h3>
-									<p className="text-muted-foreground font-medium text-sm px-4">
-										Get access to 2018-2023 exams with memos.
+								<div className="space-y-4">
+									<h3 className="text-4xl font-black tracking-tight leading-none">Unlock History</h3>
+									<p className="text-lg font-bold text-white/40 max-w-sm mx-auto">
+										Access the complete archive of past exams with expert memos.
 									</p>
 								</div>
 
-								<Button className="w-full bg-background text-foreground hover:bg-muted h-14 rounded-2xl font-black text-lg shadow-xl shadow-black/10 transition-all active:scale-[0.98]">
-									Go Premium
+								<Button className="w-full bg-white text-zinc-950 hover:bg-white/90 h-20 rounded-[2rem] font-black text-xl shadow-2xl transition-all active:scale-95">
+									Go Elite
 								</Button>
 							</Card>
 						</div>
 					</div>
-
-					{/* Space for bottom nav */}
-					<div className="h-32" />
 				</main>
 			</ScrollArea>
 		</div>

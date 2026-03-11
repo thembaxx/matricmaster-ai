@@ -1,16 +1,17 @@
 import type { Metadata } from 'next';
 import PastPapersScreen from '@/screens/PastPapers';
+import PageTransition from '@/components/Transition/PageTransition';
 
 const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://matricmaster.ai';
 
 export const metadata: Metadata = {
-	title: 'Past Papers | MatricMaster AI',
-	description: 'Access NSC past papers with AI-powered explanations.',
+	title: 'Past Papers | MatricMaster',
+	description: 'Access NSC past papers with expert-guided explanations.',
 	alternates: { canonical: `${baseUrl}/past-papers` },
 	openGraph: {
-		title: 'NSC Past Papers | MatricMaster AI',
+		title: 'NSC Past Papers | MatricMaster',
 		description:
-			'Access past papers from 2015-2024 with AI-powered explanations for South African Grade 12 students.',
+			'Access past papers from 2015-2024 with expert-guided explanations for South African Grade 12 students.',
 		url: `${baseUrl}/past-papers`,
 		type: 'website',
 	},
@@ -20,7 +21,7 @@ const jsonLd = {
 	'@context': 'https://schema.org',
 	'@type': 'ItemList',
 	name: 'NSC Past Papers',
-	description: 'Collection of National Senior Certificate past papers with AI explanations',
+	description: 'Collection of National Senior Certificate past papers with expert explanations',
 	itemListElement: [
 		{
 			'@type': 'ListItem',
@@ -45,13 +46,13 @@ const jsonLd = {
 
 export default function PastPapersPage() {
 	return (
-		<>
+		<PageTransition>
 			<script
 				type="application/ld+json"
 				// biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD schema only, no user input
 				dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
 			/>
 			<PastPapersScreen />
-		</>
+		</PageTransition>
 	);
 }

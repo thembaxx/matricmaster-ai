@@ -1,7 +1,7 @@
 'use client';
 
 import { Icon } from '@iconify/react';
-import { BookOpen, CircleNotch, Faders, FileText, X } from '@phosphor-icons/react';
+import { BookOpen01Icon as BookOpen, Loading03Icon as CircleNotch, FilterIcon as Faders, File01Icon as FileText, Cancel01Icon as X, Search01Icon as MagnifyingGlass, CloudDownloadIcon as Download, SparklesIcon as Sparkle } from 'hugeicons-react';
 import { AnimatePresence, m } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { memo, useCallback, useEffect, useMemo, useState } from 'react';
@@ -132,7 +132,7 @@ const FilterContent = memo(function FilterContent({
 							Extracted Only
 						</h4>
 						<p className="text-[10px] text-label-tertiary mt-1 uppercase tracking-wider">
-							Show papers with AI-extracted questions
+							Show papers with digitised questions
 						</p>
 					</div>
 					<Switch checked={extractedOnly} onCheckedChange={onToggleExtracted} />
@@ -253,96 +253,91 @@ export default function PastPapers() {
 	]);
 
 	return (
-		<div className="flex flex-col h-full min-w-0 bg-background relative overflow-x-hidden lg:px-8">
+		<div className="flex flex-col h-full min-w-0 bg-white dark:bg-zinc-950 relative overflow-x-hidden lg:px-12">
 			<BackgroundMesh variant="subtle" />
 
 			{/* Header */}
-			<header className="px-4 sm:px-6 pb-6 sm:py-12 pt-24 bg-background shrink-0 lg:px-0">
-				<div className="max-w-7xl mx-auto w-full space-y-6 sm:space-y-12">
-					<div className="flex flex-col md:flex-row md:items-center justify-between gap-4 sm:gap-6">
-						<div className="space-y-2">
-							<h1 className="text-2xl sm:text-4xl lg:text-7xl font-black text-foreground tracking-tighter uppercase">
-								Past Paper Vault
+			<header className="px-6 sm:px-10 pb-10 sm:py-20 pt-32 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-3xl shrink-0 lg:px-0">
+				<div className="max-w-7xl mx-auto w-full space-y-12 sm:space-y-16">
+					<div className="flex flex-col md:flex-row md:items-end justify-between gap-8 sm:gap-12">
+						<div className="space-y-3">
+							<h1 className="text-5xl sm:text-7xl lg:text-9xl font-black text-foreground tracking-tighter leading-none">
+								Vault
 							</h1>
-							<p className="text-label-secondary font-black text-[11px] sm:text-lg uppercase tracking-widest">
-								Access thousands of Grade 12 exam papers
+							<p className="text-muted-foreground/40 font-black text-lg sm:text-2xl uppercase tracking-[0.3em] leading-none">
+								Grade 12 archive
 							</p>
 						</div>
-						<div className="flex items-center gap-2">
+						<div className="flex items-center gap-3">
 							{activeFilterCount > 0 && (
 								<Button
 									variant="ghost"
 									onClick={clearAllFilters}
-									aria-label="Clear all filters"
-									className="rounded-2xl font-black text-[10px] uppercase tracking-widest px-3 sm:px-4 h-10 sm:h-12 text-label-tertiary hover:text-foreground ios-active-scale"
+									className="h-14 px-6 rounded-2xl bg-tiimo-pink/10 text-tiimo-pink font-black text-xs uppercase tracking-widest hover:bg-tiimo-pink hover:text-white transition-all ios-active-scale"
 								>
-									<X className="w-4 h-4 mr-1 sm:mr-2" />
-									<span className="hidden sm:inline">Clear</span>
+									<X size={20} className="mr-2 stroke-[3px]" />
+									Reset
 								</Button>
 							)}
 							<Button
-								variant="outline"
+								variant="ghost"
 								onClick={() => setIsAdvancedFilterOpen(true)}
-								aria-label={`Advanced Faders${activeFilterCount > 0 ? `, ${activeFilterCount} active` : ''}`}
 								className={cn(
-									'rounded-2xl border-2 font-black text-[10px] uppercase tracking-widest px-4 sm:px-6 h-10 sm:h-12 ios-active-scale',
-									activeFilterCount > 0 && 'border-primary bg-primary/10 text-primary'
+									'h-14 px-8 rounded-2xl bg-muted/10 font-black text-xs uppercase tracking-widest transition-all ios-active-scale border-none shadow-sm',
+									activeFilterCount > 0 && 'bg-primary text-white shadow-xl shadow-primary/20'
 								)}
 							>
-								<Faders className="w-4 h-4 mr-2" />
-								<span className="hidden sm:inline">Advanced Faders</span>
+								<Faders size={20} className="mr-3 stroke-[3px]" />
+								<span>Filters</span>
 								{activeFilterCount > 0 && (
-									<Badge className="ml-2 rounded-full px-2 py-0.5 text-[9px] bg-primary text-primary-foreground">
+									<div className="ml-3 h-6 w-6 rounded-lg bg-white/20 flex items-center justify-center text-[10px]">
 										{activeFilterCount}
-									</Badge>
+									</div>
 								)}
 							</Button>
 						</div>
 					</div>
 
-					<div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6">
-						<div className="lg:col-span-8 flex items-center relative">
-							<Icon
-								icon="fluent:search-20-regular"
-								className="w-5 sm:w-6 h-5 absolute left-4 z-1 sm:h-6 text-label-tertiary"
+					<div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8">
+						<div className="lg:col-span-8 flex items-center relative group">
+							<MagnifyingGlass
+								size={24}
+								className="absolute left-6 z-10 text-muted-foreground/30 stroke-[3px] group-focus-within:text-primary transition-colors"
 							/>
 							<Input
 								value={searchQuery}
 								onChange={(e) => setSearchQuery(e.target.value)}
-								placeholder="Search"
-								className="pl-12 sm:pl-16 placeholder:font-medium placeholder:capitalize pr-12 sm:pr-16 bg-card backdrop-blur-md border-border border-2 h-12 sm:h-16 rounded-xl sm:rounded-2xl text-base sm:text-lg font-black uppercase tracking-tight shadow-inner"
+								placeholder="Search papers..."
+								className="h-20 pl-16 pr-16 bg-muted/10 border-none rounded-[2.5rem] text-xl font-bold placeholder:text-muted-foreground/30 focus:ring-4 focus:ring-primary/5 transition-all"
 								aria-label="Search past papers"
 							/>
 							<AnimatePresence>
 								{searchQuery && (
 									<m.button
-										initial={{ scale: 0.95, opacity: 0 }}
+										initial={{ scale: 0.8, opacity: 0 }}
 										animate={{ scale: 1, opacity: 1 }}
-										exit={{ scale: 0.95, opacity: 0 }}
-										title="Clear search"
-										aria-label="Clear search"
-										type="button"
+										exit={{ scale: 0.8, opacity: 0 }}
 										onClick={() => setSearchQuery('')}
-										className="absolute right-4 sm:right-6 top-1/2 -translate-y-1/2 text-label-tertiary hover:text-foreground transition-colors ios-active-scale"
+										className="absolute right-6 top-1/2 -translate-y-1/2 text-muted-foreground/40 hover:text-tiimo-pink transition-colors ios-active-scale"
 									>
-										<X className="w-5 sm:w-6 h-5 sm:h-6" />
+										<X size={24} className="stroke-[3px]" />
 									</m.button>
 								)}
 							</AnimatePresence>
 						</div>
-						<div className="lg:col-span-4 flex gap-2 sm:gap-3 overflow-x-auto no-scrollbar py-1">
+						<div className="lg:col-span-4 flex gap-3 overflow-x-auto no-scrollbar py-2">
 							{years.map((year) => (
 								<button
 									key={year}
 									type="button"
 									// biome-ignore lint/suspicious/noExplicitAny: Year type casting
 									onClick={() => setSelectedYear(year as any)}
-									aria-pressed={selectedYear === year}
-									className={`rounded-xl sm:rounded-2xl px-4 sm:px-8 py-2 sm:py-3 text-[11px] font-black uppercase tracking-widest transition-all h-10 sm:h-16 whitespace-nowrap ios-active-scale ${
+									className={cn(
+										"h-20 min-w-[100px] rounded-[1.75rem] px-8 text-lg font-black transition-all ios-active-scale shadow-sm",
 										selectedYear === year
-											? 'bg-primary text-primary-foreground shadow-2xl shadow-primary/30'
-											: 'bg-secondary text-label-secondary border-2 border-transparent hover:border-border backdrop-blur-sm'
-									}`}
+											? 'bg-primary text-white shadow-xl shadow-primary/30 scale-105'
+											: 'bg-muted/10 text-muted-foreground/40 hover:bg-muted/20'
+									)}
 								>
 									{year}
 								</button>
@@ -352,97 +347,86 @@ export default function PastPapers() {
 				</div>
 			</header>
 
-			<ScrollArea className="flex-1 no-scrollbar">
-				<main className="px-4 sm:px-6 py-6 sm:py-8 max-w-7xl mx-auto w-full space-y-8 sm:space-y-12 pb-32 lg:px-0">
-					<div className="flex items-center justify-between border-b border-border pb-4">
-						<h2 className="text-[10px] font-black text-label-tertiary uppercase tracking-[0.4em]">
-							Archive Results ({filteredPapers.length})
+			<ScrollArea className="flex-1 no-scrollbar px-6 sm:px-10 lg:px-0">
+				<main className="max-w-7xl mx-auto w-full space-y-12 sm:space-y-16 pb-64">
+					<div className="flex items-center justify-between border-b border-muted/10 pb-6 px-2">
+						<h2 className="text-[10px] font-black text-muted-foreground/40 uppercase tracking-[0.4em]">
+							Available sessions ({filteredPapers.length})
 						</h2>
 					</div>
 
 					<AnimatePresence mode="popLayout">
 						{isLoading ? (
-							<div className="flex items-center justify-center py-20">
-								<CircleNotch className="w-8 h-8 animate-spin text-primary" />
+							<div className="flex items-center justify-center py-40">
+								<CircleNotch size={64} className="animate-spin text-primary opacity-20" />
 							</div>
 						) : filteredPapers.length > 0 ? (
 							<m.div
 								variants={STAGGER_CONTAINER}
 								initial="hidden"
 								animate="visible"
-								className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8"
+								className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-10 lg:gap-12"
 							>
 								{filteredPapers.map((paper) => (
-									<m.div key={paper.id} variants={STAGGER_ITEM} layout whileHover={{ y: -8 }}>
-										<Card className="p-8 rounded-3xl border border-border hover:border-primary/20 hover:shadow-2xl transition-all duration-500 group relative overflow-hidden bg-card/50 backdrop-blur-sm">
-											<div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+									<m.div key={paper.id} variants={STAGGER_ITEM} layout whileHover={{ y: -12 }}>
+										<Card className="p-10 rounded-[3.5rem] border-none bg-card shadow-[0_20px_60px_rgba(0,0,0,0.06)] hover:shadow-[0_40px_100px_rgba(0,0,0,0.12)] transition-all duration-700 group relative overflow-hidden">
+											<div className="absolute -top-10 -right-10 w-40 h-40 bg-tiimo-blue/5 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
 
-											<div className="space-y-6 relative z-10">
+											<div className="space-y-8 relative z-10">
 												<div className="flex items-start justify-between">
-													<div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-500 shadow-inner">
-														<FileText className="w-8 h-8 text-primary" />
+													<div className="w-20 h-20 rounded-[1.5rem] bg-tiimo-blue text-white flex items-center justify-center group-hover:rotate-12 transition-transform duration-700 shadow-xl shadow-tiimo-blue/20">
+														<FileText size={36} className="stroke-[3px]" />
 													</div>
-													<div className="text-right">
-														<span className="text-[10px] font-black text-label-tertiary uppercase tracking-[0.2em] block mb-1">
-															Total Marks
+													<div className="text-right space-y-1">
+														<span className="text-[10px] font-black text-muted-foreground/30 uppercase tracking-[0.2em] block">
+															Value
 														</span>
-														<span className="text-2xl font-black text-primary tracking-tighter">
+														<span className="text-3xl font-black text-tiimo-blue tracking-tighter">
 															{paper.totalMarks}m
 														</span>
 													</div>
 												</div>
 
-												<div className="space-y-2">
-													<h3 className="text-2xl font-black text-foreground tracking-tighter uppercase leading-tight group-hover:text-primary transition-colors">
-														{paper.subject} {paper.paper}
+												<div className="space-y-4">
+													<h3 className="text-3xl font-black text-foreground tracking-tight leading-tight group-hover:text-primary transition-colors">
+														{paper.subject} <br />
+														<span className="text-muted-foreground/40">{paper.paper}</span>
 													</h3>
 													<div className="flex flex-wrap gap-2">
-														<Badge
-															variant="outline"
-															className="rounded-lg font-black text-[9px] uppercase tracking-widest border border-border bg-secondary/50"
-														>
+														<div className="h-8 px-4 rounded-xl bg-muted/10 flex items-center justify-center text-[10px] font-black uppercase tracking-widest text-muted-foreground/60">
 															{paper.month} {paper.year}
-														</Badge>
-														<Badge
-															variant="outline"
-															className="rounded-lg font-black text-[9px] uppercase tracking-widest border border-border bg-secondary/50"
-														>
-															NSC Grade 12
-														</Badge>
+														</div>
+														<div className="h-8 px-4 rounded-xl bg-muted/10 flex items-center justify-center text-[10px] font-black uppercase tracking-widest text-muted-foreground/60">
+															NSC Exam
+														</div>
 													</div>
 												</div>
 
-												<div className="grid grid-cols-2 gap-3 pt-4">
+												<div className="grid grid-cols-2 gap-4 pt-4">
 													<Button
-														variant="secondary"
-														className="rounded-2xl font-black text-[10px] uppercase tracking-widest h-12 shadow-sm ios-active-scale"
 														onClick={() => router.push(`/past-paper?id=${paper.id}`)}
+														className="h-14 rounded-2xl bg-primary text-white font-black text-xs uppercase tracking-widest shadow-lg shadow-primary/20 hover:scale-105 transition-all gap-2"
 													>
-														<Icon
-															icon="fluent:document-sparkle-24-filled"
-															className="w-5 h-5 mr-0 shrink-0"
-														/>
-														Smart view
+														<Sparkle size={18} className="stroke-[3.5px]" />
+														Focus
 													</Button>
 													<Button
-														variant="outline"
-														className="rounded-2xl font-black text-[10px] uppercase tracking-widest h-12 border border-border ios-active-scale"
+														variant="ghost"
 														onClick={() => router.push(`/past-paper?id=${paper.id}&mode=read`)}
+														className="h-14 rounded-2xl bg-muted/10 font-black text-xs uppercase tracking-widest hover:bg-muted/20 transition-all gap-2"
 													>
-														<BookOpen className="w-4 h-4 mr-2" />
+														<BookOpen size={18} className="stroke-[3px]" />
 														Read
 													</Button>
 												</div>
 
 												<Button
-													className="w-full dark:bg-white/60 dark:text-[#07090d] backdrop-blur-2xl shadow-none rounded-2xl h-14 bg-secondary hover:bg-primary hover:text-primary-foreground text-label-secondary font-black text-[10px] uppercase tracking-widest transition-all duration-300 group/btn ios-active-scale"
+													variant="ghost"
 													onClick={() => window.open(paper.originalPdfUrl, '_blank')}
+													className="w-full h-14 rounded-2xl bg-muted/5 hover:bg-tiimo-blue hover:text-white font-black text-[10px] uppercase tracking-widest transition-all duration-500 gap-3 group/dl"
 												>
-													<Icon
-														icon="fluent:cloud-download-24-regular"
-														className="w-5 h-5 mr-2 shrink-0"
-													/>
-													Download
+													<Download size={20} className="stroke-[3px] group-hover/dl:translate-y-0.5 transition-transform" />
+													PDF download
 												</Button>
 											</div>
 										</Card>
@@ -453,17 +437,17 @@ export default function PastPapers() {
 							<m.div
 								initial={{ opacity: 0, scale: 0.9 }}
 								animate={{ opacity: 1, scale: 1 }}
-								className="py-32 flex flex-col items-center justify-center text-center space-y-6 opacity-40"
+								className="py-40 flex flex-col items-center justify-center text-center space-y-8"
 							>
-								<div className="w-32 h-32 bg-muted rounded-3xl flex items-center justify-center">
-									<FileText className="w-16 h-16 text-muted-foreground" />
+								<div className="w-32 h-32 bg-muted/10 rounded-[2.5rem] flex items-center justify-center">
+									<FileText size={48} className="text-muted-foreground/20 stroke-[3px]" />
 								</div>
 								<div className="space-y-2">
-									<h3 className="font-black text-muted-foreground uppercase tracking-[0.4em] text-xs">
-										Empty Archive
+									<h3 className="text-2xl font-black text-muted-foreground/30 uppercase tracking-[0.4em]">
+										Vault empty
 									</h3>
-									<p className="text-muted-foreground font-bold">
-										Refine your filters to see more results
+									<p className="text-muted-foreground/20 font-bold">
+										Try adjusting your search criteria
 									</p>
 								</div>
 							</m.div>
@@ -476,7 +460,7 @@ export default function PastPapers() {
 				<SheetContent className="w-full sm:max-w-lg hidden lg:block">
 					<SheetHeader>
 						<SheetTitle className="text-xl font-black uppercase tracking-tight">
-							Advanced Filters
+							Advanced filters
 						</SheetTitle>
 					</SheetHeader>
 					<div className="py-6 overflow-y-auto">
@@ -516,7 +500,7 @@ export default function PastPapers() {
 				<DrawerContent className="lg:hidden">
 					<DrawerHeader>
 						<DrawerTitle className="text-xl font-black uppercase tracking-tight text-left">
-							Advanced Filters
+							Advanced filters
 						</DrawerTitle>
 					</DrawerHeader>
 					<div className="px-4 py-4 overflow-y-auto max-h-[60vh]">

@@ -6,15 +6,16 @@ import { DashboardSkeleton } from '@/components/DashboardSkeleton';
 import { getAuth } from '@/lib/auth';
 import { getUserAchievements } from '@/lib/db/achievement-actions';
 import { getUserProgressSummary, getUserStreak } from '@/lib/db/progress-actions';
+import PageTransition from '@/components/Transition/PageTransition';
 
 const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://matricmaster.ai';
 
 export const metadata: Metadata = {
-	title: 'Dashboard | MatricMaster AI',
+	title: 'Dashboard | MatricMaster',
 	description: 'Track your learning progress, view achievements, and continue your study journey.',
 	alternates: { canonical: `${baseUrl}/dashboard` },
 	openGraph: {
-		title: 'My Dashboard | MatricMaster AI',
+		title: 'My Dashboard | MatricMaster',
 		description:
 			'Track your learning progress, view achievements, and continue your study journey.',
 		url: `${baseUrl}/dashboard`,
@@ -42,11 +43,13 @@ export default async function DashboardPage() {
 	]);
 
 	return (
-		<Dashboard
-			initialProgress={initialProgress}
-			initialStreak={initialStreak}
-			initialAchievements={initialAchievements}
-			session={session}
-		/>
+		<PageTransition>
+			<Dashboard
+				initialProgress={initialProgress}
+				initialStreak={initialStreak}
+				initialAchievements={initialAchievements}
+				session={session}
+			/>
+		</PageTransition>
 	);
 }

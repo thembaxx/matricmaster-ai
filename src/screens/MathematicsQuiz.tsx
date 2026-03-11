@@ -1,9 +1,9 @@
 'use client';
 
-import { ArrowLeft, CheckCircle, DotsSixVertical, Lightbulb, X } from '@phosphor-icons/react';
+import { ArrowLeft01Icon as ArrowLeft, CheckmarkCircle01Icon as CheckCircle, MoreHorizontalIcon as DotsSixVertical, Lightbulb01Icon as Lightbulb, Cancel01Icon as X } from 'hugeicons-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { AIExplanationCard } from '@/components/AI/AIExplanationCard';
+import { ExpertExplanationCard } from '@/components/Tutor/ExpertExplanationCard';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -38,7 +38,7 @@ export default function MathematicsQuiz() {
 				explanation ?? "I'm sorry, I couldn't generate an explanation for this question."
 			);
 		} catch (error) {
-			console.error('Failed to get AI explanation:', error);
+			console.error('Failed to get expert explanation:', error);
 			setAiExplanation(
 				"Sorry, I couldn't generate an explanation right now. Please check your internet connection and try again."
 			);
@@ -60,49 +60,51 @@ export default function MathematicsQuiz() {
 	};
 
 	return (
-		<div className="fixed inset-0 flex flex-col w-full min-w-0 bg-background overflow-hidden">
+		<div className="fixed inset-0 flex flex-col w-full min-w-0 bg-white dark:bg-zinc-950 overflow-hidden">
 			{/* Header */}
-			<header className="px-6 pt-12 pb-4 bg-background/80 backdrop-blur-xl sticky top-0 z-20 border-b border-border shrink-0">
+			<header className="px-8 pt-16 pb-8 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-3xl sticky top-0 z-20 border-none shrink-0">
 				<div className="max-w-2xl mx-auto w-full">
-					<div className="flex items-center gap-4 mb-4">
+					<div className="flex items-center gap-6 mb-8">
 						<Button
 							variant="ghost"
 							size="icon"
 							onClick={() => router.push('/dashboard')}
-							className="rounded-full"
+							className="h-14 w-14 rounded-2xl bg-muted/10 hover:bg-muted/20"
 							aria-label="Back to dashboard"
 						>
-							<ArrowLeft className="w-5 h-5" />
+							<ArrowLeft size={24} className="stroke-[3px]" />
 						</Button>
-						<div className="flex-1">
-							<div className="flex justify-between items-center mb-2">
-								<span className="text-[10px] font-black text-label-tertiary uppercase tracking-widest">
-									Question 1 of 5
-								</span>
-								<Badge
-									variant="secondary"
-									className="text-[10px] font-black uppercase tracking-tighter rounded-full bg-primary/10 text-primary border-none"
-								>
-									Integration
-								</Badge>
+						<div className="flex-1 space-y-4">
+							<div className="flex justify-between items-end">
+								<div className="space-y-1">
+									<h1 className="text-[10px] font-black text-muted-foreground/40 uppercase tracking-[0.3em] leading-none">
+										Mathematics session
+									</h1>
+									<span className="text-2xl font-black text-primary block tracking-tight">
+										Integration
+									</span>
+								</div>
+								<div className="text-[10px] font-black text-muted-foreground/40 uppercase tracking-[0.2em]">Step 1 of 5</div>
 							</div>
-							<Progress value={20} className="h-2 rounded-full" />
+							<div className="h-4 w-full bg-muted/20 rounded-full overflow-hidden p-1 shadow-inner">
+								<div className="h-full w-1/5 bg-primary rounded-full shadow-lg" />
+							</div>
 						</div>
 					</div>
 				</div>
 			</header>
 
-			<div className="flex-1 overflow-y-auto w-full scroll-smooth">
-				<main className="px-6 py-8 space-y-8 pb-64 max-w-2xl mx-auto w-full">
+			<div className="flex-1 overflow-y-auto w-full scroll-smooth no-scrollbar">
+				<main className="px-8 py-10 space-y-12 pb-64 max-w-2xl mx-auto w-full">
 					{/* Question */}
-					<div className="space-y-4">
-						<h2 className="text-3xl font-black text-foreground tracking-tighter uppercase">
+					<div className="space-y-6">
+						<h2 className="text-4xl font-black text-foreground tracking-tight leading-none">
 							Find the integral
 						</h2>
-						<Card className="p-12 bg-card border border-border rounded-3xl shadow-sm relative overflow-hidden group">
-							<div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity" />
+						<Card className="p-16 bg-card border-none rounded-[3.5rem] shadow-[0_20px_60px_rgba(0,0,0,0.06)] relative overflow-hidden group">
+							<div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
 							<div className="text-center relative z-10">
-								<span className="text-4xl font-mono font-black text-foreground tracking-tighter uppercase">
+								<span className="text-5xl font-serif italic font-black text-foreground tracking-tighter">
 									∫(3x² + 2x) dx
 								</span>
 							</div>
@@ -110,42 +112,47 @@ export default function MathematicsQuiz() {
 					</div>
 
 					{/* Selected Steps Area */}
-					<div className="space-y-4">
-						<h3 className="text-[10px] font-black uppercase text-label-tertiary tracking-[0.2em] px-1">
-							Your Solution Path
-						</h3>
-						<div className="min-h-[160px] p-6 bg-primary/5 rounded-3xl border-2 border-dashed border-primary/20">
+					<div className="space-y-6">
+						<div className="flex items-center gap-4 px-2">
+							<h3 className="text-[10px] font-black uppercase text-muted-foreground/40 tracking-[0.4em]">
+								Your solution
+							</h3>
+							<div className="h-px flex-1 bg-muted/10" />
+						</div>
+						<div className="min-h-[200px] p-8 bg-muted/5 rounded-[3rem] border-4 border-dashed border-muted/10">
 							{selectedSteps.length === 0 ? (
-								<div className="flex flex-col items-center justify-center py-8 text-label-tertiary space-y-2">
-									<p className="text-[10px] font-black uppercase tracking-widest">
-										Tap steps below to solve
+								<div className="flex flex-col items-center justify-center py-12 opacity-30">
+									<p className="text-[10px] font-black uppercase tracking-[0.3em]">
+										Construct path below
 									</p>
 								</div>
 							) : (
-								<div className="space-y-3">
+								<div className="space-y-4">
 									{selectedSteps.map((stepId, index) => {
 										const step = steps.find((s) => s.id === stepId);
 										return (
-											<div
+											<m.div
 												key={stepId}
-												className="flex items-center gap-4 p-5 bg-card rounded-2xl shadow-sm border border-primary/10 animate-in fade-in slide-in-from-left-2 ios-active-scale"
+												initial={{ opacity: 0, x: -20 }}
+												animate={{ opacity: 1, x: 0 }}
+												className="flex items-center gap-6 p-6 bg-card rounded-3xl shadow-sm border-none transition-all"
 											>
-												<span className="w-7 h-7 rounded-full bg-primary text-primary-foreground text-[10px] flex items-center justify-center font-black">
+												<div className="w-12 h-12 rounded-2xl bg-primary text-white text-lg flex items-center justify-center font-black shadow-lg shadow-primary/20">
 													{index + 1}
-												</span>
-												<span className="font-mono font-black text-foreground flex-1 uppercase tracking-tight">
+												</div>
+												<span className="font-serif italic font-black text-2xl text-foreground flex-1">
 													{step?.text}
 												</span>
 												<Button
 													variant="ghost"
 													size="icon"
-													className="h-8 w-8 rounded-full hover:bg-destructive/10 hover:text-destructive ios-active-scale"
+													className="h-10 w-10 rounded-xl bg-muted/10 text-tiimo-pink hover:bg-tiimo-pink hover:text-white transition-all"
 													onClick={() => handleStepClick(stepId)}
-													aria-label="Remove step"
+													aria-label="Remove"
 												>
-													<X className="w-4 h-4" />
+													<X size={20} className="stroke-[3px]" />
 												</Button>
-											</div>
+											</m.div>
 										);
 									})}
 								</div>
@@ -154,11 +161,14 @@ export default function MathematicsQuiz() {
 					</div>
 
 					{/* Available Steps Pool */}
-					<div className="space-y-4">
-						<h3 className="text-[10px] font-black uppercase text-label-tertiary tracking-[0.2em] px-1">
-							Step Fragments
-						</h3>
-						<div className="grid grid-cols-1 gap-3">
+					<div className="space-y-6">
+						<div className="flex items-center gap-4 px-2">
+							<h3 className="text-[10px] font-black uppercase text-muted-foreground/40 tracking-[0.4em]">
+								Fragments
+							</h3>
+							<div className="h-px flex-1 bg-muted/10" />
+						</div>
+						<div className="grid grid-cols-1 gap-4">
 							{availableSteps
 								.filter((s) => !selectedSteps.includes(s.id))
 								.map((step) => (
@@ -166,13 +176,13 @@ export default function MathematicsQuiz() {
 										type="button"
 										key={step.id}
 										onClick={() => handleStepClick(step.id)}
-										className="p-6 bg-card border border-border rounded-3xl text-left hover:border-primary transition-all hover:shadow-md active:scale-[0.98] group ios-active-scale"
+										className="p-8 bg-card border-none rounded-[2.5rem] text-left hover:bg-muted/5 transition-all shadow-[0_10px_25px_rgba(0,0,0,0.03)] hover:shadow-lg active:scale-[0.98] group"
 									>
-										<div className="flex items-center gap-4">
-											<div className="w-8 h-8 rounded-lg bg-secondary flex items-center justify-center group-hover:bg-primary/10 transition-colors">
-												<DotsSixVertical className="w-4 h-4 text-label-tertiary group-hover:text-primary" />
+										<div className="flex items-center gap-6">
+											<div className="w-12 h-12 rounded-2xl bg-muted/10 flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all duration-500">
+												<DotsSixVertical size={24} className="stroke-[3px]" />
 											</div>
-											<span className="font-mono font-black text-label-secondary uppercase tracking-tight">
+											<span className="font-serif italic font-black text-2xl text-muted-foreground group-hover:text-foreground transition-colors">
 												{step.text}
 											</span>
 										</div>
@@ -181,23 +191,10 @@ export default function MathematicsQuiz() {
 						</div>
 					</div>
 
-					{/* Hint */}
-					<div className="p-6 bg-warning/10 border border-warning/20 rounded-3xl flex items-start gap-4">
-						<div className="w-10 h-10 rounded-full bg-warning/20 flex items-center justify-center shrink-0">
-							<Lightbulb className="w-5 h-5 text-warning" />
-						</div>
-						<div>
-							<h4 className="font-black text-warning text-[10px] uppercase tracking-widest mb-1">
-								Teacher's Hint
-							</h4>
-							<p className="text-sm text-label-secondary font-black uppercase tracking-tight">
-								Remember the power rule: ∫xⁿ dx = xⁿ⁺¹/(n+1) + C
-							</p>
-						</div>
-					</div>
+					<QuizHintCard hint="Remember the power rule: ∫xⁿ dx = xⁿ⁺¹/(n+1) + C" />
 
-					{/* AI Explanation */}
-					<AIExplanationCard
+					{/* Expert Explanation */}
+					<ExpertExplanationCard
 						explanation={aiExplanation}
 						isLoading={isExplaining}
 						onExplain={handleExplain}
@@ -207,40 +204,31 @@ export default function MathematicsQuiz() {
 			</div>
 
 			{/* Math Keyboard & Actions */}
-			<footer className="fixed bottom-0 left-0 right-0 bg-background/80 backdrop-blur-xl border-t border-border z-30">
-				<div className="max-w-2xl mx-auto w-full">
+			<footer className="fixed bottom-0 left-0 right-0 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-3xl p-10 z-30 border-none">
+				<div className="max-w-2xl mx-auto w-full space-y-8">
 					{/* Math Symbols */}
-					<div className="px-6 py-3 overflow-x-auto no-scrollbar">
-						<div className="flex gap-2">
-							{mathSymbols.map((symbol) => (
-								<button
-									type="button"
-									key={symbol}
-									onClick={() => insertSymbol(symbol)}
-									className="px-4 py-2.5 bg-secondary rounded-xl text-sm font-mono font-black uppercase hover:bg-primary hover:text-primary-foreground transition-all whitespace-nowrap ios-active-scale shadow-sm"
-								>
-									{symbol}
-								</button>
-							))}
-						</div>
+					<div className="flex gap-3 overflow-x-auto no-scrollbar px-2">
+						{mathSymbols.map((symbol) => (
+							<button
+								type="button"
+								key={symbol}
+								onClick={() => insertSymbol(symbol)}
+								className="h-12 px-6 bg-muted/10 rounded-2xl text-lg font-serif italic font-black hover:bg-tiimo-blue hover:text-white transition-all whitespace-nowrap active:scale-95"
+							>
+								{symbol}
+							</button>
+						))}
 					</div>
 
 					{/* Action Buttons */}
-					<div className="p-6 pt-2 flex gap-4">
+					<div className="flex gap-4">
 						<Button
-							variant="outline"
-							className="h-16 px-8 rounded-full font-black uppercase tracking-widest border-border text-[10px] ios-active-scale"
-						>
-							<Lightbulb className="w-5 h-5 mr-2 text-warning" />
-							Hint
-						</Button>
-						<Button
-							className="flex-1 h-16 bg-primary text-primary-foreground rounded-full font-black text-sm uppercase tracking-widest shadow-xl shadow-primary/20 disabled:opacity-50 transition-all active:scale-95 ios-active-scale"
+							className="flex-1 h-20 bg-primary text-white rounded-[2.5rem] font-black text-2xl shadow-xl shadow-primary/30 transition-all active:scale-95 disabled:opacity-30"
 							disabled={selectedSteps.length === 0}
 							onClick={() => router.push('/lesson-complete')}
 						>
-							<CheckCircle className="w-5 h-5 mr-2" />
-							Check Answer
+							<CheckCircle size={32} className="stroke-[3px] mr-3" />
+							Check solution
 						</Button>
 					</div>
 				</div>

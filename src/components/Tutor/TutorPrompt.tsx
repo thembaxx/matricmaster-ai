@@ -1,6 +1,6 @@
 'use client';
 
-import { CircleNotch, PaperPlaneRight, Sparkle } from '@phosphor-icons/react';
+import { Loading03Icon as CircleNotch, Sent01Icon as PaperPlaneRight, SparklesIcon as Sparkle } from 'hugeicons-react';
 import { AnimatePresence, m } from 'framer-motion';
 import type React from 'react';
 import { useRef, useState } from 'react';
@@ -8,19 +8,19 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 
-interface AIPromptProps {
+interface TutorPromptProps {
 	onSend: (message: string) => void;
 	isLoading?: boolean;
 	placeholder?: string;
 	className?: string;
 }
 
-export function AIPrompt({
+export function TutorPrompt({
 	onSend,
 	isLoading = false,
-	placeholder = 'Ask me anything...',
+	placeholder = 'Ask anything...',
 	className,
-}: AIPromptProps) {
+}: TutorPromptProps) {
 	const [input, setInput] = useState('');
 	const inputRef = useRef<HTMLInputElement>(null);
 
@@ -70,7 +70,7 @@ export function AIPrompt({
 									'h-14 w-14 rounded-2xl shadow-lg transition-all active:scale-95',
 									isLoading ? 'bg-muted' : 'bg-primary hover:bg-primary/90'
 								)}
-								aria-label="PaperPlaneRight message"
+								aria-label="Send message"
 							>
 								{isLoading ? (
 									<CircleNotch className="h-6 w-6 animate-spin" />

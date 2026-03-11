@@ -1,19 +1,20 @@
 'use client';
 
 import {
-	ArrowLeft,
-	Bank,
-	Book,
-	Calculator,
-	Check,
-	Flask,
-	GearSix,
-	Lock,
-	Microscope,
-	Play,
-	Sparkle,
-	Translate,
-} from '@phosphor-icons/react';
+	ArrowLeft01Icon as ArrowLeft,
+	BankIcon as Bank,
+	Book01Icon as Book,
+	Calculator01Icon as Calculator,
+	CheckmarkCircle01Icon as Check,
+	FlaskIcon as Flask,
+	Settings02Icon as GearSix,
+	Lock01Icon as Lock,
+	MicroscopeIcon as Microscope,
+	PlayIcon as Play,
+	SparklesIcon as Sparkle,
+	TranslateIcon as Translate,
+	Loading03Icon as CircleNotch,
+} from 'hugeicons-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Badge } from '@/components/ui/badge';
@@ -24,12 +25,12 @@ import { useSession } from '@/lib/auth-client';
 import { createStudyPlanAction } from '@/lib/db/study-plan-actions';
 
 const subjects = [
-	{ id: 'math', name: 'Mathematics', icon: Calculator, color: 'text-blue-500' },
-	{ id: 'physics', name: 'Physical Sci', icon: Flask, color: 'text-blue-500' },
-	{ id: 'life', name: 'Life Sciences', icon: Microscope, color: 'text-zinc-500' },
-	{ id: 'english', name: 'English HL', icon: Book, color: 'text-zinc-500' },
-	{ id: 'afrikaans', name: 'Afrikaans FAL', icon: Translate, color: 'text-zinc-500' },
-	{ id: 'accounting', name: 'Accounting', icon: Bank, color: 'text-zinc-500' },
+	{ id: 'math', name: 'Mathematics', icon: Calculator, color: 'text-tiimo-blue' },
+	{ id: 'physics', name: 'Physical Sci', icon: Flask, color: 'text-tiimo-purple' },
+	{ id: 'life', name: 'Life Sciences', icon: Microscope, color: 'text-tiimo-green' },
+	{ id: 'english', name: 'English HL', icon: Book, color: 'text-tiimo-pink' },
+	{ id: 'afrikaans', name: 'Afrikaans FAL', icon: Translate, color: 'text-tiimo-orange' },
+	{ id: 'accounting', name: 'Accounting', icon: Bank, color: 'text-tiimo-blue' },
 ];
 
 export default function StudyPlanWizard() {
@@ -80,181 +81,193 @@ export default function StudyPlanWizard() {
 		return (
 			<div className="flex flex-col items-center justify-center h-full bg-background p-6">
 				<div className="w-32 h-32 rounded-3xl bg-primary/10 flex items-center justify-center mb-8 animate-pulse">
-					<Sparkle weight="bold" className="w-16 h-16 text-primary" />
+					<Sparkle className="w-16 h-16 text-primary stroke-[3]" />
 				</div>
 				<h2 className="text-3xl font-black text-foreground mb-3 text-center">
-					Generating Your Path...
+					Generating your path...
 				</h2>
 				<p className="text-sm text-muted-foreground text-center max-w-xs leading-relaxed">
-					Our AI is analyzing the curriculum and your goals to create the perfect quest map.
+					We are analyzing the curriculum and your goals to create the perfect quest map.
 				</p>
 			</div>
 		);
 	}
 
 	return (
-		<div className="flex flex-col h-full bg-background relative">
+		<div className="flex flex-col h-full bg-white dark:bg-zinc-950 relative">
 			{/* Header */}
-			<header className="px-6 py-4 flex items-center justify-between shrink-0">
+			<header className="px-6 py-8 flex items-center justify-between shrink-0">
 				<Button
 					variant="ghost"
 					size="icon"
 					onClick={() => router.push('/')}
-					className="rounded-full ios-active-scale"
+					className="h-14 w-14 rounded-2xl bg-muted/10 hover:bg-muted/20 transition-all"
 				>
-					<ArrowLeft className="w-6 h-6 text-muted-foreground" />
+					<ArrowLeft size={24} className="stroke-[3px]" />
 				</Button>
-				<h1 className="text-[10px] font-black text-label-tertiary uppercase tracking-[0.2em]">
-					Study Plan
+				<h1 className="text-xl font-black text-foreground tracking-tight">
+					Custom plan
 				</h1>
-				<Button variant="ghost" size="icon" className="rounded-full ios-active-scale">
-					<GearSix className="w-6 h-6 text-muted-foreground" />
+				<Button
+					variant="ghost"
+					size="icon"
+					className="h-14 w-14 rounded-2xl bg-muted/10 hover:bg-muted/20 transition-all"
+				>
+					<GearSix size={24} className="stroke-[3px]" />
 				</Button>
 			</header>
 
-			<ScrollArea className="flex-1">
-				<main className="px-6 py-4 space-y-8 pb-48 max-w-2xl mx-auto w-full">
-					{/* Focus Areas Section */}
-					<div className="space-y-4">
-						<div className="flex justify-between items-end">
-							<h2 className="text-3xl font-black text-foreground tracking-tight">Focus Areas</h2>
-							<span className="text-[11px] font-black text-primary uppercase tracking-widest">
-								Step 1 of 3
-							</span>
+			<ScrollArea className="flex-1 no-scrollbar">
+				<main className="px-8 py-4 space-y-12 pb-64 max-w-3xl mx-auto w-full">
+					{/* Progress Section */}
+					<div className="space-y-6">
+						<div className="flex justify-between items-end px-1">
+							<div className="space-y-1">
+								<h2 className="text-4xl font-black text-foreground tracking-tight uppercase">Focus</h2>
+								<p className="text-sm font-bold text-muted-foreground/40 uppercase tracking-widest">Step 1 of 3</p>
+							</div>
+							<span className="text-2xl font-black text-primary">33%</span>
 						</div>
-						<div className="w-full h-2 bg-muted rounded-full overflow-hidden">
-							<div
-								className="h-full w-1/3 rounded-full bg-primary"
-								style={{
-									background: 'var(--color-primary)',
-								}}
-							/>
+						<div className="h-4 w-full bg-muted/20 rounded-full overflow-hidden p-1 shadow-inner">
+							<div className="h-full w-1/3 rounded-full bg-primary shadow-lg" />
 						</div>
 					</div>
 
 					{/* Question Section */}
-					<div className="space-y-2">
-						<h3 className="text-2xl font-black text-foreground leading-tight">
-							What subjects are you tackling for Finals?
+					<div className="space-y-3">
+						<h3 className="text-3xl font-black text-foreground leading-tight tracking-tight">
+							What subjects are you tackling for finals?
 						</h3>
-						<p className="text-muted-foreground text-sm">
-							Our AI will prioritize these in your daily quests.
+						<p className="text-lg font-bold text-muted-foreground/60 leading-relaxed">
+							Your personalized learning journey will focus on these key areas.
 						</p>
 					</div>
 
 					{/* Subject Grid */}
-					<div className="grid grid-cols-2 gap-4">
+					<div className="grid grid-cols-2 gap-6">
 						{subjects.map((subject) => {
 							const isSelected = selectedSubjects.includes(subject.id);
 							return (
-								<button
+								<m.button
+									whileHover={{ scale: 1.02, y: -4 }}
+									whileTap={{ scale: 0.98 }}
 									type="button"
 									key={subject.id}
 									onClick={() => toggleSubject(subject.id)}
-									className={`relative p-6 rounded-2xl border-2 transition-all cursor-pointer flex flex-col items-center gap-4 ios-active-scale ${
+									className={cn(
+										"relative p-8 rounded-[2.5rem] transition-all cursor-pointer flex flex-col items-center gap-6 border-none shadow-[0_15px_40px_rgba(0,0,0,0.05)]",
 										isSelected
-											? 'border-primary bg-primary/5'
-											: 'border-transparent bg-secondary/50 hover:bg-secondary'
-									}`}
+											? 'bg-primary text-white shadow-primary/30'
+											: 'bg-muted/5 hover:bg-muted/10'
+									)}
 								>
 									{isSelected && (
-										<div className="absolute top-3 right-3 w-6 h-6 bg-primary rounded-full flex items-center justify-center shadow-lg animate-scale-in">
-											<Check className="w-4 h-4 text-primary-foreground" strokeWidth={4} />
+										<div className="absolute top-4 right-4 w-8 h-8 bg-white/20 text-white rounded-full flex items-center justify-center shadow-lg">
+											<Check size={18} className="stroke-[4px]" />
 										</div>
 									)}
-									<div className="w-16 h-16 rounded-full bg-card flex items-center justify-center shadow-sm">
+									<div className={cn(
+										"w-20 h-20 rounded-[1.5rem] flex items-center justify-center shadow-xl transition-all duration-500",
+										isSelected ? "bg-white/20" : "bg-white dark:bg-zinc-900"
+									)}>
 										<subject.icon
-											className={`w-8 h-8 ${isSelected ? 'text-primary' : 'text-muted-foreground'}`}
+											size={40}
+											className={cn("stroke-[2.5px]", isSelected ? 'text-white' : 'text-muted-foreground/40')}
 										/>
 									</div>
 									<span
-										className={`text-sm font-black uppercase tracking-wider ${isSelected ? 'text-primary' : 'text-label-secondary'}`}
+										className={cn("text-md font-black uppercase tracking-widest", isSelected ? 'text-white' : 'text-muted-foreground/60')}
 									>
 										{subject.name}
 									</span>
-								</button>
+								</m.button>
 							);
 						})}
 					</div>
 
 					{/* Weekly Commitment Section */}
-					<div className="space-y-6 pt-4">
-						<div className="flex justify-between items-center">
-							<h4 className="text-lg font-black text-foreground">Weekly Commitment</h4>
-							<Badge className="bg-primary/10 text-primary rounded-xl px-4 py-2 hover:bg-primary/20 border-none font-black text-base">
-								{weeklyHours[0]} Hours
-							</Badge>
+					<div className="space-y-8 pt-6">
+						<div className="flex justify-between items-end px-2">
+							<div className="space-y-1">
+								<h4 className="text-2xl font-black text-foreground uppercase">Commitment</h4>
+								<p className="text-sm font-bold text-muted-foreground/40 uppercase tracking-widest">Time per week</p>
+							</div>
+							<div className="h-16 px-8 rounded-2xl bg-tiimo-orange/10 flex items-center justify-center text-3xl font-black text-tiimo-orange">
+								{weeklyHours[0]}h
+							</div>
 						</div>
-						<div className="px-1">
+						<div className="px-4">
 							<Slider
 								value={weeklyHours}
 								onValueChange={setWeeklyHours}
 								min={2}
 								max={20}
 								step={1}
-								className="py-4"
+								className="py-6"
 							/>
 						</div>
-						<div className="flex justify-between text-[10px] font-black text-label-tertiary uppercase tracking-widest">
-							<span>2h / week</span>
-							<span>20h+ / week</span>
+						<div className="flex justify-between px-2 text-[10px] font-black text-muted-foreground/30 uppercase tracking-[0.3em]">
+							<span>Casual (2h)</span>
+							<span>Elite (20h+)</span>
 						</div>
-						<p className="text-xs text-label-tertiary text-center italic">
-							Recommended: 10-15 hours for distinction pass.
-						</p>
 					</div>
 
 					{/* Preview Section */}
-					<div className="p-8 premium-glass rounded-3xl space-y-8">
-						<div className="flex items-center gap-2">
-							<Sparkle weight="bold" className="w-4 h-4 text-primary" />
-							<h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-label-secondary">
-								Preview: Learning Path
+					<div className="p-10 bg-muted/5 rounded-[3.5rem] space-y-10 border-none">
+						<div className="flex items-center gap-4">
+							<Sparkle size={20} className="text-tiimo-purple stroke-[3px]" />
+							<h3 className="text-xs font-black uppercase tracking-[0.3em] text-muted-foreground/40">
+								Roadmap preview
 							</h3>
 						</div>
 
-						{/* Vertical Path MapTrifold */}
-						<div className="flex flex-col items-center relative gap-4">
-							{/* Connecting Line */}
-							<div className="absolute top-8 bottom-8 w-1 bg-border-strong" />
+						{/* Vertical Path */}
+						<div className="flex flex-col items-center relative gap-8 pb-4">
+							<div className="absolute top-10 bottom-10 w-2 bg-muted/10 rounded-full" />
 
 							{/* Node 1: Completed */}
-							<div className="relative z-10 w-16 h-16 rounded-full bg-card border-2 border-success flex items-center justify-center shadow-lg">
-								<Check className="w-8 h-8 text-success" strokeWidth={4} />
+							<div className="relative z-10 w-20 h-20 rounded-[1.5rem] bg-tiimo-green text-white flex items-center justify-center shadow-xl shadow-tiimo-green/20">
+								<Check size={32} className="stroke-[4px]" />
 							</div>
 
 							{/* Node 2: Current */}
-							<div className="flex flex-col items-center gap-2 relative">
-								<div className="relative z-10 w-16 h-16 rounded-full border-[3px] border-primary bg-card flex items-center justify-center shadow-xl animate-pulse-soft">
-									<Play className="w-6 h-6 text-primary fill-primary" />
-									<div className="absolute -top-1 -right-0.5 w-4 h-4 bg-destructive rounded-full border-2 border-background" />
-								</div>
-								<div className="bg-card px-3 py-1 rounded-full shadow-sm border border-border/50">
-									<span className="text-[10px] font-black text-foreground uppercase tracking-wider whitespace-nowrap">
-										Start Here
+							<div className="flex flex-col items-center gap-4 relative">
+								<m.div
+									animate={{ scale: [1, 1.1, 1] }}
+									transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
+									className="relative z-10 w-24 h-24 rounded-[2rem] bg-primary text-white flex items-center justify-center shadow-2xl shadow-primary/30"
+								>
+									<Play size={40} className="fill-current stroke-[3px] ml-1" />
+									<div className="absolute -top-1 -right-1 w-6 h-6 bg-tiimo-pink rounded-xl border-4 border-white dark:border-zinc-950 shadow-lg" />
+								</m.div>
+								<div className="bg-white dark:bg-zinc-900 px-5 py-2 rounded-2xl shadow-xl border-none">
+									<span className="text-[10px] font-black text-primary uppercase tracking-[0.2em]">
+										Your Start
 									</span>
 								</div>
 							</div>
 
 							{/* Node 3: Locked */}
-							<div className="relative z-10 w-16 h-16 rounded-full bg-muted flex items-center justify-center">
-								<Lock className="w-6 h-6 text-muted-foreground/50" />
+							<div className="relative z-10 w-20 h-20 rounded-[1.5rem] bg-muted/20 text-muted-foreground/20 flex items-center justify-center">
+								<Lock size={32} className="stroke-[3px]" />
 							</div>
 						</div>
 					</div>
 				</main>
 			</ScrollArea>
 
-			{/* Footer */}
-			<div className="absolute bottom-6 left-6 right-6 z-30">
-				<Button
-					className="w-full h-16 bg-primary hover:bg-primary/90 text-primary-foreground rounded-2xl text-lg font-black uppercase tracking-widest shadow-xl shadow-primary/25 ios-active-scale transition-all gap-2"
-					onClick={handleGenerate}
-					disabled={selectedSubjects.length === 0}
-				>
-					Generate My Plan
-					<Sparkle weight="bold" className="w-5 h-5" />
-				</Button>
+			{/* Footer Action */}
+			<div className="fixed bottom-10 left-10 right-10 z-40 max-w-3xl mx-auto">
+				<m.div whileHover={{ scale: 1.02, y: -4 }} whileTap={{ scale: 0.98 }}>
+					<Button
+						className="w-full h-24 bg-zinc-950 dark:bg-white text-white dark:text-zinc-950 rounded-[2.5rem] text-2xl font-black shadow-[0_30px_70px_rgba(0,0,0,0.4)] transition-all flex items-center justify-center gap-4 border-none"
+						onClick={handleGenerate}
+						disabled={selectedSubjects.length === 0}
+					>
+						<span>Build study path</span>
+						<Sparkle size={32} className="stroke-[3.5px] text-tiimo-purple fill-tiimo-purple/20" />
+					</Button>
+				</m.div>
 			</div>
 		</div>
 	);

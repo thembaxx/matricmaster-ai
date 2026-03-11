@@ -14,18 +14,18 @@ export async function generateMetadata({ searchParams }: PageProps): Promise<Met
 
 	if (!paper) {
 		return {
-			title: 'Past Paper | MatricMaster AI',
-			description: 'Access NSC past papers with AI-powered explanations.',
+			title: 'Past Paper | MatricMaster',
+			description: 'Access NSC past papers with expert-guided explanations.',
 		};
 	}
 
 	const title = `${paper.subject} ${paper.paper} (${paper.year})`;
 	return {
-		title: `${title} | MatricMaster AI`,
-		description: `Interactive viewer for ${title} past paper with AI explanations.`,
+		title: `${title} | MatricMaster`,
+		description: `Interactive viewer for ${title} past paper with expert explanations.`,
 		openGraph: {
-			title: `${title} | MatricMaster AI`,
-			description: `Interactive viewer for ${title} past paper with AI explanations.`,
+			title: `${title} | MatricMaster`,
+			description: `Interactive viewer for ${title} past paper with expert explanations.`,
 			type: 'website',
 		},
 	};

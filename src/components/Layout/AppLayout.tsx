@@ -73,7 +73,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 							id="main-content"
 							className={`flex-1 relative flex flex-col ${!shouldHideNav ? 'pt-20' : ''} ${!shouldHideBottomNav ? 'pb-40' : ''}`}
 						>
-							<PageTransition>{children}</PageTransition>
+							{children}
 						</main>
 					</div>
 					{!shouldHideBottomNav && (user || pathname === '/') && (
@@ -121,7 +121,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 							/>
 						)}
 						<main id="main-content" className={'flex-1 relative flex flex-col pt-16 lg:pt-8'}>
-							<PageTransition>{children}</PageTransition>
+							{children}
 						</main>
 					</div>
 					{!shouldHideBottomNav && !isFullScreen && (user || pathname === '/') && (

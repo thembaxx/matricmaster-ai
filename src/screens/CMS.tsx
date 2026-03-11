@@ -1,15 +1,18 @@
 'use client';
 
 import {
-	Database,
-	FileArrowUp,
-	ImageSquare,
-	MagnifyingGlass,
-	PencilSimple,
-	Plus,
-	Trash,
-	X,
-} from '@phosphor-icons/react';
+	DatabaseIcon as Database,
+	FileArrowUp01Icon as FileArrowUp,
+	Image01Icon as ImageSquare,
+	Search01Icon as MagnifyingGlass,
+	PencilEdit01Icon as PencilSimple,
+	PlusSignIcon as Plus,
+	Delete02Icon as Trash,
+	Cancel01Icon as X,
+	UserIcon as UserIconHuge,
+	Bookmark01Icon as BookmarkIcon,
+	Layout01Icon as LayoutIcon,
+} from 'hugeicons-react';
 import Image from 'next/image';
 import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
 import { toast } from 'sonner';
@@ -471,7 +474,7 @@ export default function CMS() {
 	const fileInputId = useId();
 
 	return (
-		<div className="flex-1 flex flex-col bg-background overflow-hidden pb-32">
+		<div className="flex-1 flex flex-col bg-white dark:bg-zinc-950 overflow-hidden pb-40 lg:px-12">
 			<PdfUploadDrawer
 				isOpen={isPdfDrawerOpen}
 				onClose={() => setIsPdfDrawerOpen(false)}
@@ -479,43 +482,41 @@ export default function CMS() {
 				onSuccess={loadData}
 			/>
 			{/* Header */}
-			<header className="px-4 sm:px-8 pt-6 sm:pt-8 pb-6 bg-background shrink-0 space-y-6 sm:space-y-8">
-				<div className="flex flex-col md:flex-row md:items-center justify-between gap-4 sm:gap-6">
-					<div className="space-y-1">
-						<h1 className="text-3xl font-black text-foreground tracking-tighter uppercase">
-							Content Management
+			<header className="px-6 sm:px-10 pt-20 sm:pt-32 pb-12 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-3xl shrink-0 space-y-12 lg:px-0">
+				<div className="flex flex-col md:flex-row md:items-end justify-between gap-8 sm:gap-12">
+					<div className="space-y-3">
+						<h1 className="text-5xl sm:text-7xl lg:text-9xl font-black text-foreground tracking-tighter leading-none uppercase">
+							Editor
 						</h1>
-						<p className="text-muted-foreground font-bold text-sm">
-							Manage questions, papers, and users
+						<p className="text-muted-foreground/40 font-black text-lg sm:text-2xl uppercase tracking-[0.3em] leading-none">
+							Workspace hub
 						</p>
 					</div>
 
-					<div className="flex items-center justify-between gap-3">
+					<div className="flex items-center gap-3">
 						<Button
 							onClick={handleSeedDatabase}
 							disabled={seeding}
-							variant="outline"
-							className="rounded-2xl border-2 font-black text-xs uppercase tracking-widest px-6"
+							variant="ghost"
+							className="h-14 px-6 rounded-2xl bg-muted/10 font-black text-xs uppercase tracking-widest hover:bg-muted/20 transition-all border-none"
 						>
-							<Database className="h-4 w-4 mr-2" />
-							{seeding ? 'Seeding...' : 'Seed DB'}
+							<Database size={20} className="mr-2 stroke-[3px]" />
+							{seeding ? 'Seeding...' : 'Seed'}
 						</Button>
 						{activeTab === 'past-papers' ? (
 							<Button
 								onClick={() => setIsPdfDrawerOpen(true)}
-								className="rounded-2xl h-12 px-6 bg-primary hover:bg-primary/90 shadow-2xl shadow-primary/20 font-black text-sm uppercase tracking-widest"
+								className="h-14 px-8 bg-primary hover:bg-primary/90 text-white rounded-[1.5rem] shadow-xl shadow-primary/20 font-black text-xs uppercase tracking-widest transition-all scale-105 active:scale-95"
 							>
-								<FileArrowUp className="h-5 w-5 mr-2" />
+								<FileArrowUp size={20} className="mr-3 stroke-[3.5px]" />
 								Upload PDF
 							</Button>
 						) : (
 							<Button
-								onClick={() => {
-									handleCreateQuestion();
-								}}
-								className="rounded-2xl h-12 px-6 bg-primary hover:bg-primary/90 shadow-2xl shadow-primary/20 font-black text-sm uppercase tracking-widest"
+								onClick={() => handleCreateQuestion()}
+								className="h-14 px-8 bg-primary hover:bg-primary/90 text-white rounded-[1.5rem] shadow-xl shadow-primary/20 font-black text-xs uppercase tracking-widest transition-all scale-105 active:scale-95"
 							>
-								<Plus className="h-5 w-5 mr-2" />
+								<Plus size={20} className="mr-3 stroke-[3.5px]" />
 								Create New
 							</Button>
 						)}
@@ -523,38 +524,28 @@ export default function CMS() {
 				</div>
 
 				<Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-					<TabsList className="grid w-full grid-cols-2 md:grid-cols-4 h-14 bg-muted/50 p-1 rounded-2xl">
-						<TabsTrigger
-							value="questions"
-							className="rounded-xl font-black text-xs uppercase tracking-widest"
-						>
-							Questions
-						</TabsTrigger>
-						<TabsTrigger
-							value="past-papers"
-							className="rounded-xl font-black text-xs uppercase tracking-widest"
-						>
-							Past Papers
-						</TabsTrigger>
-						<TabsTrigger
-							value="subjects"
-							className="rounded-xl font-black text-xs uppercase tracking-widest"
-						>
-							Subjects
-						</TabsTrigger>
-						<TabsTrigger
-							value="users"
-							className="rounded-xl font-black text-xs uppercase tracking-widest"
-						>
-							Users
-						</TabsTrigger>
+					<TabsList className="h-20 p-2 bg-muted/10 rounded-[2.5rem] border-none shadow-inner flex gap-2">
+						{[
+							{ id: 'questions', label: 'Questions' },
+							{ id: 'past-papers', label: 'Vault' },
+							{ id: 'subjects', label: 'Catalog' },
+							{ id: 'users', label: 'Team' },
+						].map((tab) => (
+							<TabsTrigger
+								key={tab.id}
+								value={tab.id}
+								className="flex-1 h-full rounded-[2rem] font-black text-xs uppercase tracking-[0.2em] data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-2xl transition-all duration-500"
+							>
+								{tab.label}
+							</TabsTrigger>
+						))}
 					</TabsList>
 				</Tabs>
 
-				{/* MagnifyingGlass & Filters */}
-				<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-12 gap-3 sm:gap-4">
-					<div className="sm:col-span-2 md:col-span-6 relative">
-						<MagnifyingGlass className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+				{/* Search & Filters */}
+				<div className="grid grid-cols-1 md:grid-cols-12 gap-6">
+					<div className={cn("relative group", activeTab === 'questions' ? "md:col-span-6" : "md:col-span-12")}>
+						<MagnifyingGlass size={24} className="absolute left-6 top-1/2 -translate-y-1/2 text-muted-foreground/30 stroke-[3px] group-focus-within:text-primary transition-colors" />
 						<Input
 							value={activeTab === 'users' ? userSearchQuery : searchQuery}
 							onChange={(e) =>
@@ -562,10 +553,8 @@ export default function CMS() {
 									? setUserSearchQuery(e.target.value)
 									: setSearchQuery(e.target.value)
 							}
-							placeholder={
-								activeTab === 'users' ? 'MagnifyingGlass users...' : 'MagnifyingGlass content...'
-							}
-							className="pl-12 text-base h-14 bg-muted/30 border-2 rounded-2xl focus:ring-primary/20"
+							placeholder="Search library..."
+							className="h-20 pl-16 pr-8 bg-muted/10 border-none rounded-[2.5rem] text-xl font-bold placeholder:text-muted-foreground/30 focus:ring-4 focus:ring-primary/5 transition-all"
 						/>
 					</div>
 
@@ -573,13 +562,13 @@ export default function CMS() {
 						<>
 							<div className="md:col-span-3">
 								<Select value={selectedSubject} onValueChange={setSelectedSubject}>
-									<SelectTrigger className="h-14 rounded-2xl border-2 bg-muted/30">
-										<SelectValue placeholder="All Subjects" />
+									<SelectTrigger className="h-20 rounded-[1.75rem] border-none bg-muted/10 px-8 text-lg font-black uppercase tracking-widest text-muted-foreground focus:ring-4 focus:ring-primary/5">
+										<SelectValue placeholder="Subject" />
 									</SelectTrigger>
-									<SelectContent className="rounded-2xl">
-										<SelectItem value="all">All Subjects</SelectItem>
+									<SelectContent className="rounded-[2rem] border-none shadow-2xl p-2">
+										<SelectItem value="all" className="rounded-xl font-black uppercase tracking-widest text-xs">All Subjects</SelectItem>
 										{subjects.map((s) => (
-											<SelectItem key={s.id} value={s.id.toString()}>
+											<SelectItem key={s.id} value={s.id.toString()} className="rounded-xl font-black uppercase tracking-widest text-xs">
 												{s.name}
 											</SelectItem>
 										))}
@@ -588,14 +577,14 @@ export default function CMS() {
 							</div>
 							<div className="md:col-span-3">
 								<Select value={selectedDifficulty} onValueChange={setSelectedDifficulty}>
-									<SelectTrigger className="h-14 rounded-2xl border-2 bg-muted/30">
-										<SelectValue placeholder="Difficulty" />
+									<SelectTrigger className="h-20 rounded-[1.75rem] border-none bg-muted/10 px-8 text-lg font-black uppercase tracking-widest text-muted-foreground focus:ring-4 focus:ring-primary/5">
+										<SelectValue placeholder="Level" />
 									</SelectTrigger>
-									<SelectContent className="rounded-2xl">
-										<SelectItem value="all">All Levels</SelectItem>
-										<SelectItem value="easy">Easy</SelectItem>
-										<SelectItem value="medium">Medium</SelectItem>
-										<SelectItem value="hard">Hard</SelectItem>
+									<SelectContent className="rounded-[2rem] border-none shadow-2xl p-2">
+										<SelectItem value="all" className="rounded-xl font-black uppercase tracking-widest text-xs">All Levels</SelectItem>
+										<SelectItem value="easy" className="rounded-xl font-black uppercase tracking-widest text-xs">Easy</SelectItem>
+										<SelectItem value="medium" className="rounded-xl font-black uppercase tracking-widest text-xs">Medium</SelectItem>
+										<SelectItem value="hard" className="rounded-xl font-black uppercase tracking-widest text-xs">Hard</SelectItem>
 									</SelectContent>
 								</Select>
 							</div>
@@ -603,107 +592,89 @@ export default function CMS() {
 					)}
 
 					{activeTab === 'users' && (
-						<div className="md:col-span-6">
-							<Select
-								value={userFilter}
-								onValueChange={(v) => setUserFilter(v as typeof userFilter)}
-							>
-								<SelectTrigger className="h-14 rounded-2xl border-2 bg-muted/30">
-									<SelectValue placeholder="Faders users" />
-								</SelectTrigger>
-								<SelectContent className="rounded-2xl">
-									<SelectItem value="all">All Users</SelectItem>
-									<SelectItem value="active">Active Only</SelectItem>
-									<SelectItem value="blocked">Blocked Only</SelectItem>
-									<SelectItem value="deleted">Deleted Only</SelectItem>
-								</SelectContent>
-							</Select>
+						<div className="md:col-span-6 hidden md:block">
+							{/* Reserved for user-specific filtering if needed */}
 						</div>
 					)}
 				</div>
 			</header>
 
 			{/* Main Content Grid */}
-			<main className="flex-1 overflow-hidden px-4 sm:px-8">
+			<main className="flex-1 overflow-hidden px-6 sm:px-10 lg:px-0">
 				<div className="h-full no-scrollbar overflow-y-auto">
 					{loading ? (
-						<div className="flex items-center justify-center py-40">
-							<div className="animate-spin rounded-full h-12 w-12 border-4 border-primary border-t-transparent" />
+						<div className="flex items-center justify-center py-64">
+							<CircleNotch size={64} className="animate-spin text-primary opacity-20" />
 						</div>
 					) : (
-						<div className="pb-12">
+						<div className="pb-32 space-y-12">
+							<div className="flex items-center gap-4 px-2">
+								<h2 className="text-[10px] font-black text-muted-foreground/40 uppercase tracking-[0.4em]">
+									Database Results ({activeTab === 'users' ? filteredUsers.length : activeTab === 'questions' ? filteredQuestions.length : activeTab === 'past-papers' ? allPastPapers.length : subjects.length})
+								</h2>
+								<div className="h-px flex-1 bg-muted/10" />
+							</div>
+
 							{activeTab === 'questions' && (
-								<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+								<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 									{filteredQuestions.map((q) => (
 										<Card
 											key={q.id}
-											className="rounded-[2rem] border-2 border-border/50 hover:border-primary/20 hover:shadow-2xl hover:shadow-primary/5 transition-all duration-300 group"
+											className="rounded-[3.5rem] border-none bg-card shadow-[0_15px_45px_rgba(0,0,0,0.05)] hover:shadow-[0_30px_80px_rgba(0,0,0,0.1)] transition-all duration-700 group overflow-hidden"
 										>
-											<CardContent className="p-6 space-y-6">
+											<CardContent className="p-10 space-y-8">
 												<div className="flex items-start justify-between">
 													<div className="flex flex-wrap gap-2">
-														<Badge
-															className={`rounded-lg uppercase tracking-widest text-[9px] font-black ${getDifficultyColor(q.difficulty)}`}
-														>
+														<div className={cn(
+															"h-8 px-4 rounded-xl flex items-center justify-center text-[10px] font-black uppercase tracking-widest",
+															getDifficultyColor(q.difficulty)
+														)}>
 															{q.difficulty}
-														</Badge>
-														<Badge
-															variant="outline"
-															className="rounded-lg uppercase tracking-widest text-[9px] font-black"
-														>
-															Grade {q.gradeLevel}
-														</Badge>
+														</div>
+														<div className="h-8 px-4 rounded-xl flex items-center justify-center text-[10px] font-black uppercase tracking-widest bg-muted/10 text-muted-foreground/60">
+															Grd {q.gradeLevel}
+														</div>
 													</div>
-													<div className="flex items-center gap-1">
-														<Tooltip>
-															<TooltipTrigger asChild>
-																<Button
-																	variant="ghost"
-																	size="icon"
-																	className="h-10 w-10 rounded-xl hover:bg-primary/10 hover:text-primary transition-colors"
-																	onClick={() => handleEditQuestion(q)}
-																	aria-label="Pencil question"
-																>
-																	<PencilSimple className="h-5 w-5" />
-																</Button>
-															</TooltipTrigger>
-															<TooltipContent>Pencil question</TooltipContent>
-														</Tooltip>
-														<Tooltip>
-															<TooltipTrigger asChild>
-																<Button
-																	variant="ghost"
-																	size="icon"
-																	className="h-10 w-10 rounded-xl hover:bg-rose-500/10 hover:text-rose-500 transition-colors"
-																	onClick={() => handleDeleteQuestion(q.id)}
-																	aria-label="Backspace question"
-																>
-																	<Trash className="h-5 w-5" />
-																</Button>
-															</TooltipTrigger>
-															<TooltipContent>Backspace question</TooltipContent>
-														</Tooltip>
+													<div className="flex items-center gap-2">
+														<Button
+															variant="ghost"
+															size="icon"
+															className="h-12 w-12 rounded-xl bg-muted/10 hover:bg-primary hover:text-white transition-all shadow-sm"
+															onClick={() => handleEditQuestion(q)}
+															aria-label="Edit"
+														>
+															<PencilSimple size={20} className="stroke-[3px]" />
+														</Button>
+														<Button
+															variant="ghost"
+															size="icon"
+															className="h-12 w-12 rounded-xl bg-muted/10 hover:bg-tiimo-pink hover:text-white transition-all shadow-sm"
+															onClick={() => handleDeleteQuestion(q.id)}
+															aria-label="Delete"
+														>
+															<Trash size={20} className="stroke-[3px]" />
+														</Button>
 													</div>
 												</div>
 
-												<p className="text-sm font-bold text-foreground line-clamp-3 leading-relaxed">
+												<p className="text-xl font-black text-foreground tracking-tight line-clamp-3 leading-tight group-hover:text-primary transition-colors">
 													{q.questionText}
 												</p>
 
-												<div className="pt-4 border-t border-border/50 flex items-center justify-between">
+												<div className="pt-8 border-t border-muted/10 flex items-center justify-between">
 													<div className="space-y-1">
-														<p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">
+														<p className="text-[10px] font-black text-muted-foreground/40 uppercase tracking-[0.2em]">
 															{getSubjectName(q.subjectId)}
 														</p>
-														<p className="text-xs font-bold text-foreground truncate max-w-37.5">
+														<p className="text-sm font-bold text-foreground truncate max-w-[150px]">
 															{q.topic}
 														</p>
 													</div>
-													<div className="text-right">
-														<p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">
-															Points
+													<div className="text-right space-y-1">
+														<p className="text-[10px] font-black text-muted-foreground/40 uppercase tracking-[0.2em]">
+															Worth
 														</p>
-														<p className="text-lg font-black text-primary">{q.marks}</p>
+														<p className="text-3xl font-black text-primary tracking-tighter leading-none">{q.marks}m</p>
 													</div>
 												</div>
 											</CardContent>
@@ -713,42 +684,43 @@ export default function CMS() {
 							)}
 
 							{activeTab === 'users' && (
-								<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+								<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 									{filteredUsers.map((u) => (
 										<Card
 											key={u.id}
-											className="rounded-[2rem] border-2 border-border/50 hover:border-primary/20 cursor-pointer transition-all duration-300 group"
+											className="rounded-[3rem] border-none bg-card shadow-[0_15px_45px_rgba(0,0,0,0.05)] hover:shadow-[0_30px_80px_rgba(0,0,0,0.1)] transition-all duration-700 group cursor-pointer"
 										>
-											<CardContent className="p-6">
-												<div className="flex items-center gap-4">
-													<Avatar className="h-16 w-16 border-2 border-background shadow-xl">
+											<CardContent className="p-10 space-y-8">
+												<div className="flex flex-col items-center text-center space-y-6">
+													<Avatar className="h-28 w-28 border-8 border-white dark:border-zinc-900 shadow-2xl rounded-[2.5rem] group-hover:scale-105 transition-transform duration-700">
 														<AvatarImage src={u.image || undefined} alt={u.name} />
-														<AvatarFallback className="bg-primary text-primary-foreground font-black text-xl">
+														<AvatarFallback className="bg-primary text-white font-black text-3xl">
 															{u.name.charAt(0)}
 														</AvatarFallback>
 													</Avatar>
-													<div className="flex-1 min-w-0">
-														<h3 className="font-black text-lg text-foreground truncate tracking-tighter">
+													<div className="space-y-2">
+														<h3 className="font-black text-2xl text-foreground tracking-tight leading-none">
 															{u.name}
 														</h3>
-														<p className="text-xs font-bold text-muted-foreground truncate">
+														<p className="text-sm font-bold text-muted-foreground/40 uppercase tracking-widest">
 															{u.email}
 														</p>
 													</div>
 												</div>
 
-												<div className="mt-6 pt-6 border-t border-border/50 flex items-center justify-between">
-													<Badge
-														className={`rounded-lg uppercase tracking-widest text-[9px] font-black ${getRoleColor(u.role || 'user')}`}
-													>
+												<div className="pt-8 border-t border-muted/10 flex items-center justify-between">
+													<div className={cn(
+														"h-10 px-5 rounded-2xl flex items-center justify-center text-[10px] font-black uppercase tracking-widest shadow-sm",
+														getRoleColor(u.role || 'user')
+													)}>
 														{u.role || 'user'}
-													</Badge>
-													<Badge
-														variant="outline"
-														className={`rounded-lg uppercase tracking-widest text-[9px] font-black border-2 ${getStatusColor(u.isBlocked, u.deletedAt)}`}
-													>
+													</div>
+													<div className={cn(
+														"h-10 px-5 rounded-2xl flex items-center justify-center text-[10px] font-black uppercase tracking-widest border-none",
+														getStatusColor(u.isBlocked, u.deletedAt)
+													)}>
 														{getStatusText(u.isBlocked, u.deletedAt)}
-													</Badge>
+													</div>
 												</div>
 											</CardContent>
 										</Card>
@@ -757,50 +729,48 @@ export default function CMS() {
 							)}
 
 							{activeTab === 'past-papers' && (
-								<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+								<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 									{allPastPapers.map((p) => (
 										<Card
 											key={p.id}
-											className="rounded-[2rem] border-2 border-border/50 hover:border-primary/20 transition-all duration-300 group"
+											className="rounded-[3.5rem] border-none bg-card shadow-[0_15px_45px_rgba(0,0,0,0.05)] hover:shadow-[0_30px_80px_rgba(0,0,0,0.1)] transition-all duration-700 group overflow-hidden"
 										>
-											<CardContent className="p-6 space-y-6">
+											<CardContent className="p-10 space-y-8">
 												<div className="flex items-start justify-between">
 													<div className="flex flex-wrap gap-2">
-														<Badge className="rounded-lg uppercase tracking-widest text-[9px] font-black bg-primary/10 text-primary border-primary/20">
+														<div className="h-8 px-4 rounded-xl bg-primary/10 text-primary flex items-center justify-center text-[10px] font-black uppercase tracking-widest">
 															{p.year}
-														</Badge>
-														<Badge
-															variant="outline"
-															className="rounded-lg uppercase tracking-widest text-[9px] font-black"
-														>
+														</div>
+														<div className="h-8 px-4 rounded-xl bg-muted/10 text-muted-foreground/60 flex items-center justify-center text-[10px] font-black uppercase tracking-widest">
 															{p.paper}
-														</Badge>
+														</div>
 													</div>
 												</div>
 
-												<div>
-													<h3 className="text-lg font-black text-foreground tracking-tighter uppercase line-clamp-1">
+												<div className="space-y-2">
+													<h3 className="text-2xl font-black text-foreground tracking-tight uppercase line-clamp-1">
 														{p.paperId}
 													</h3>
-													<p className="text-xs font-bold text-muted-foreground">{p.subject}</p>
+													<p className="text-sm font-bold text-muted-foreground/40 uppercase tracking-widest">{p.subject}</p>
 												</div>
 
-												<div className="pt-4 border-t border-border/50 flex items-center justify-between">
+												<div className="pt-8 border-t border-muted/10 flex items-center justify-between">
 													<div className="space-y-1">
-														<p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">
-															Status
+														<p className="text-[10px] font-black text-muted-foreground/40 uppercase tracking-[0.2em]">
+															Content
 														</p>
-														<Badge
-															className={`rounded-lg uppercase tracking-widest text-[9px] font-black ${p.isExtracted ? 'bg-emerald-500/10 text-emerald-500' : 'bg-brand-amber/10 text-brand-amber'}`}
-														>
-															{p.isExtracted ? 'Extracted' : 'Pending'}
-														</Badge>
+														<div className={cn(
+															"h-8 px-4 rounded-xl flex items-center justify-center text-[10px] font-black uppercase tracking-widest",
+															p.isExtracted ? 'bg-tiimo-green/10 text-tiimo-green' : 'bg-tiimo-orange/10 text-tiimo-orange'
+														)}>
+															{p.isExtracted ? 'Ready' : 'Pending'}
+														</div>
 													</div>
-													<div className="text-right">
-														<p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">
+													<div className="text-right space-y-1">
+														<p className="text-[10px] font-black text-muted-foreground/40 uppercase tracking-[0.2em]">
 															Month
 														</p>
-														<p className="text-xs font-black text-foreground uppercase">
+														<p className="text-xl font-black text-foreground uppercase tracking-tight">
 															{p.month}
 														</p>
 													</div>
@@ -812,32 +782,33 @@ export default function CMS() {
 							)}
 
 							{activeTab === 'subjects' && (
-								<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+								<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 									{subjects.map((s) => (
 										<Card
 											key={s.id}
-											className="rounded-[2.5rem] border-2 border-border/50 p-8 space-y-4"
+											className="rounded-[3.5rem] border-none bg-card shadow-[0_15px_45px_rgba(0,0,0,0.05)] p-10 space-y-8 group hover:shadow-[0_30px_80px_rgba(0,0,0,0.1)] transition-all duration-700"
 										>
 											<div className="flex items-center justify-between">
-												<h3 className="text-2xl font-black text-foreground tracking-tighter uppercase">
+												<h3 className="text-3xl font-black text-foreground tracking-tighter uppercase leading-none">
 													{s.name}
 												</h3>
-												<Badge
-													className={`rounded-lg uppercase tracking-widest text-[9px] font-black ${s.isActive ? 'bg-emerald-500 text-white' : 'bg-muted text-muted-foreground'}`}
-												>
-													{s.isActive ? 'Active' : 'Inactive'}
-												</Badge>
+												<div className={cn(
+													"h-10 px-5 rounded-2xl flex items-center justify-center text-[10px] font-black uppercase tracking-widest",
+													s.isActive ? 'bg-tiimo-green text-white shadow-lg shadow-tiimo-green/20' : 'bg-muted/20 text-muted-foreground/40'
+												)}>
+													{s.isActive ? 'Active' : 'Draft'}
+												</div>
 											</div>
-											<p className="text-sm font-bold text-muted-foreground line-clamp-2">
+											<p className="text-lg font-bold text-muted-foreground/60 leading-relaxed line-clamp-3">
 												{s.description}
 											</p>
-											<div className="pt-4 border-t border-border/50">
-												<p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">
-													Curriculum Code
+											<div className="pt-8 border-t border-muted/10">
+												<p className="text-[10px] font-black text-muted-foreground/40 uppercase tracking-[0.3em] mb-2">
+													Curriculum ID
 												</p>
-												<p className="text-sm font-black text-foreground uppercase">
+												<div className="h-12 px-6 rounded-2xl bg-muted/10 flex items-center text-md font-black text-foreground uppercase tracking-widest w-fit">
 													{s.curriculumCode}
-												</p>
+												</div>
 											</div>
 										</Card>
 									))}
@@ -856,72 +827,79 @@ export default function CMS() {
 					if (!open) setDrawerTab('basic');
 				}}
 			>
-				<DrawerContent className="max-h-[90vh] flex flex-col z-50 rounded-t-[3rem] pb-8 lg:max-w-4xl lg:mx-auto">
-					<DrawerHeader className="text-left border-b pb-8 px-8">
-						<DrawerTitle className="text-3xl font-black tracking-tighter uppercase">
-							{editingQuestion?.id ? 'Pencil Question' : 'New Question'}
-						</DrawerTitle>
-						<DrawerDescription className="font-bold">
-							Manage educational content for students
-						</DrawerDescription>
+				<DrawerContent className="max-h-[90vh] flex flex-col z-50 rounded-t-[4rem] pb-8 lg:max-w-5xl lg:mx-auto border-none shadow-[0_-20px_60px_rgba(0,0,0,0.2)]">
+					<DrawerHeader className="text-left border-b border-muted/10 pb-8 px-10 pt-10">
+						<div className="flex items-center gap-6 mb-8">
+							<div className="w-16 h-16 rounded-[1.5rem] bg-primary text-white flex items-center justify-center shadow-xl shadow-primary/20">
+								<PencilSimple size={32} className="stroke-[3px]" />
+							</div>
+							<div className="space-y-1">
+								<DrawerTitle className="text-4xl font-black tracking-tight leading-none">
+									{editingQuestion?.id ? 'Refine question' : 'Draft question'}
+								</DrawerTitle>
+								<DrawerDescription className="text-lg font-bold text-muted-foreground/60 uppercase tracking-widest">
+									Educational workspace
+								</DrawerDescription>
+							</div>
+						</div>
 
 						<Tabs
 							value={drawerTab}
 							onValueChange={(v) => setDrawerTab(v as typeof drawerTab)}
-							className="w-full mt-8"
+							className="w-full"
 						>
-							<TabsList className="grid w-full grid-cols-3 h-12 bg-muted/50 p-1 rounded-xl">
+							<TabsList className="h-16 p-1.5 bg-muted/10 rounded-2xl border-none shadow-inner flex gap-2">
 								<TabsTrigger
 									value="basic"
-									className="rounded-lg font-black text-[10px] uppercase tracking-widest"
+									className="flex-1 h-full rounded-[1.25rem] font-black text-[10px] uppercase tracking-[0.2em] data-[state=active]:bg-white dark:data-[state=active]:bg-zinc-900 data-[state=active]:shadow-lg transition-all"
 								>
-									Basic
+									Metadata
 								</TabsTrigger>
 								<TabsTrigger
 									value="question"
-									className="rounded-lg font-black text-[10px] uppercase tracking-widest"
+									className="flex-1 h-full rounded-[1.25rem] font-black text-[10px] uppercase tracking-[0.2em] data-[state=active]:bg-white dark:data-[state=active]:bg-zinc-900 data-[state=active]:shadow-lg transition-all"
 								>
-									Content
+									Text
 								</TabsTrigger>
 								<TabsTrigger
 									value="options"
-									className="rounded-lg font-black text-[10px] uppercase tracking-widest"
+									className="flex-1 h-full rounded-[1.25rem] font-black text-[10px] uppercase tracking-[0.2em] data-[state=active]:bg-white dark:data-[state=active]:bg-zinc-900 data-[state=active]:shadow-lg transition-all"
 								>
-									Options
+									Answers
 								</TabsTrigger>
 							</TabsList>
 						</Tabs>
 					</DrawerHeader>
 
 					{editingQuestion && (
-						<ScrollArea className="flex-1 px-8 py-8 no-scrollbar">
-							<div className="space-y-8">
+						<ScrollArea className="flex-1 px-10 py-10 no-scrollbar">
+							<div className="space-y-10">
 								{drawerTab === 'basic' && (
-									<div className="space-y-8">
-										<div className="space-y-3">
-											<Label className="font-black text-xs uppercase tracking-widest text-muted-foreground">
-												Illustration
+									<div className="space-y-10">
+										<div className="space-y-4">
+											<Label className="font-black text-xs uppercase tracking-[0.2em] text-muted-foreground/40 ml-2">
+												Graphic Aid
 											</Label>
 											{editingQuestion.imageUrl ? (
-												<div className="relative aspect-video w-full rounded-3xl overflow-hidden border-2 border-border shadow-xl group">
+												<div className="relative aspect-video w-full rounded-[2.5rem] overflow-hidden shadow-2xl group border-none">
 													<Image
 														src={editingQuestion.imageUrl}
 														alt="Question"
 														width={800}
 														height={400}
-														className="w-full h-full object-contain bg-muted"
+														className="w-full h-full object-contain bg-muted/20"
 														unoptimized
 													/>
-													<div className="absolute top-4 right-4 flex gap-2">
+													<div className="absolute top-6 right-6">
 														<Button
 															type="button"
-															variant="destructive"
+															variant="ghost"
 															size="icon"
-															className="rounded-xl h-10 w-10"
+															className="h-12 w-12 rounded-xl bg-zinc-950/80 text-white backdrop-blur-xl hover:bg-tiimo-pink transition-all"
 															onClick={handleRemoveImage}
 															aria-label="Remove image"
 														>
-															<X className="h-5 w-5" />
+															<X size={24} className="stroke-[3px]" />
 														</Button>
 													</div>
 												</div>
@@ -938,23 +916,23 @@ export default function CMS() {
 													<label
 														htmlFor={fileInputId}
 														onClick={triggerFileInput}
-														className="w-full h-48 rounded-3xl border-2 border-dashed border-border flex flex-col items-center justify-center gap-4 hover:border-primary hover:bg-primary/5 transition-all cursor-pointer"
+														className="w-full h-64 rounded-[2.5rem] bg-muted/5 border-4 border-dashed border-muted/10 flex flex-col items-center justify-center gap-6 hover:bg-muted/10 transition-all cursor-pointer group"
 													>
-														<div className="h-16 w-16 rounded-2xl bg-muted flex items-center justify-center">
-															<ImageSquare className="h-8 w-8 text-muted-foreground" />
+														<div className="w-20 h-20 rounded-[1.5rem] bg-muted/10 flex items-center justify-center group-hover:scale-110 transition-transform">
+															<ImageSquare size={36} className="text-muted-foreground/30 stroke-[3px]" />
 														</div>
-														<span className="text-xs font-black uppercase tracking-widest text-muted-foreground">
-															Upload Image (Max 4MB)
+														<span className="text-sm font-black uppercase tracking-[0.3em] text-muted-foreground/40">
+															Click to upload illustration
 														</span>
 													</label>
 												</div>
 											)}
 										</div>
 
-										<div className="grid grid-cols-2 gap-8">
-											<div className="space-y-3">
-												<Label className="font-black text-xs uppercase tracking-widest text-muted-foreground">
-													Subject
+										<div className="grid grid-cols-2 gap-10">
+											<div className="space-y-4">
+												<Label className="font-black text-xs uppercase tracking-[0.2em] text-muted-foreground/40 ml-2">
+													Subject Domain
 												</Label>
 												<Select
 													value={editingQuestion.subjectId.toString()}
@@ -965,21 +943,21 @@ export default function CMS() {
 														})
 													}
 												>
-													<SelectTrigger className="h-14 rounded-2xl border-2">
-														<SelectValue placeholder="Select" />
+													<SelectTrigger className="h-16 rounded-2xl bg-muted/10 border-none px-6 text-lg font-black uppercase tracking-widest text-muted-foreground focus:ring-4 focus:ring-primary/5">
+														<SelectValue placeholder="Domain" />
 													</SelectTrigger>
-													<SelectContent className="rounded-2xl">
+													<SelectContent className="rounded-2xl border-none shadow-2xl">
 														{subjects.map((s) => (
-															<SelectItem key={s.id} value={s.id.toString()}>
+															<SelectItem key={s.id} value={s.id.toString()} className="rounded-xl font-black text-xs uppercase tracking-widest">
 																{s.name}
 															</SelectItem>
 														))}
 													</SelectContent>
 												</Select>
 											</div>
-											<div className="space-y-3">
-												<Label className="font-black text-xs uppercase tracking-widest text-muted-foreground">
-													Grade
+											<div className="space-y-4">
+												<Label className="font-black text-xs uppercase tracking-[0.2em] text-muted-foreground/40 ml-2">
+													Curriculum Level
 												</Label>
 												<Select
 													value={editingQuestion.gradeLevel.toString()}
@@ -990,25 +968,25 @@ export default function CMS() {
 														})
 													}
 												>
-													<SelectTrigger className="h-14 rounded-2xl border-2">
-														<SelectValue placeholder="Select" />
+													<SelectTrigger className="h-16 rounded-2xl bg-muted/10 border-none px-6 text-lg font-black uppercase tracking-widest text-muted-foreground focus:ring-4 focus:ring-primary/5">
+														<SelectValue placeholder="Grade" />
 													</SelectTrigger>
-													<SelectContent className="rounded-2xl">
-														<SelectItem value="10">Grade 10</SelectItem>
-														<SelectItem value="11">Grade 11</SelectItem>
-														<SelectItem value="12">Grade 12</SelectItem>
+													<SelectContent className="rounded-2xl border-none shadow-2xl">
+														<SelectItem value="10" className="rounded-xl font-black text-xs uppercase tracking-widest">Grade 10</SelectItem>
+														<SelectItem value="11" className="rounded-xl font-black text-xs uppercase tracking-widest">Grade 11</SelectItem>
+														<SelectItem value="12" className="rounded-xl font-black text-xs uppercase tracking-widest">Grade 12</SelectItem>
 													</SelectContent>
 												</Select>
 											</div>
 										</div>
 
-										<div className="grid grid-cols-2 gap-8">
-											<div className="space-y-3">
+										<div className="grid grid-cols-2 gap-10">
+											<div className="space-y-4">
 												<Label
 													htmlFor="cms-topic"
-													className="font-black text-xs uppercase tracking-widest text-muted-foreground"
+													className="font-black text-xs uppercase tracking-[0.2em] text-muted-foreground/40 ml-2"
 												>
-													Topic
+													Study Topic
 												</Label>
 												<Input
 													id="cms-topic"
@@ -1016,12 +994,13 @@ export default function CMS() {
 													onChange={(e) =>
 														setEditingQuestion({ ...editingQuestion, topic: e.target.value })
 													}
-													className="h-14 rounded-2xl border-2 font-bold"
+													className="h-16 rounded-2xl bg-muted/10 border-none px-6 text-lg font-black placeholder:text-muted-foreground/20 focus:ring-4 focus:ring-primary/5"
+													placeholder="e.g. Kinematics"
 												/>
 											</div>
-											<div className="space-y-3">
-												<Label className="font-black text-xs uppercase tracking-widest text-muted-foreground">
-													Difficulty
+											<div className="space-y-4">
+												<Label className="font-black text-xs uppercase tracking-[0.2em] text-muted-foreground/40 ml-2">
+													Challenge Tier
 												</Label>
 												<Select
 													value={editingQuestion.difficulty}
@@ -1030,13 +1009,13 @@ export default function CMS() {
 														setEditingQuestion({ ...editingQuestion, difficulty: v })
 													}
 												>
-													<SelectTrigger className="h-14 rounded-2xl border-2">
-														<SelectValue placeholder="Select" />
+													<SelectTrigger className="h-16 rounded-2xl bg-muted/10 border-none px-6 text-lg font-black uppercase tracking-widest text-muted-foreground focus:ring-4 focus:ring-primary/5">
+														<SelectValue placeholder="Tier" />
 													</SelectTrigger>
-													<SelectContent className="rounded-2xl">
-														<SelectItem value="easy">Easy</SelectItem>
-														<SelectItem value="medium">Medium</SelectItem>
-														<SelectItem value="hard">Hard</SelectItem>
+													<SelectContent className="rounded-2xl border-none shadow-2xl">
+														<SelectItem value="easy" className="rounded-xl font-black text-xs uppercase tracking-widest">Easy</SelectItem>
+														<SelectItem value="medium" className="rounded-xl font-black text-xs uppercase tracking-widest">Medium</SelectItem>
+														<SelectItem value="hard" className="rounded-xl font-black text-xs uppercase tracking-widest">Hard</SelectItem>
 													</SelectContent>
 												</Select>
 											</div>
@@ -1045,13 +1024,13 @@ export default function CMS() {
 								)}
 
 								{drawerTab === 'question' && (
-									<div className="space-y-8">
-										<div className="space-y-3">
+									<div className="space-y-10">
+										<div className="space-y-4">
 											<Label
 												htmlFor="cms-question-text"
-												className="font-black text-xs uppercase tracking-widest text-muted-foreground"
+												className="font-black text-xs uppercase tracking-[0.2em] text-muted-foreground/40 ml-2"
 											>
-												Question Content
+												Inquiry Text
 											</Label>
 											<Textarea
 												id="cms-question-text"
@@ -1059,97 +1038,104 @@ export default function CMS() {
 												onChange={(e) =>
 													setEditingQuestion({ ...editingQuestion, questionText: e.target.value })
 												}
-												className="min-h-50 rounded-3xl border-2 p-6 font-bold text-lg leading-relaxed"
-												placeholder="TextT the question..."
+												className="min-h-64 rounded-[2.5rem] bg-muted/5 border-none p-10 font-black text-2xl leading-tight placeholder:text-muted-foreground/10 focus:ring-8 focus:ring-primary/5 transition-all"
+												placeholder="Draft your question here..."
 											/>
 										</div>
-										<div className="space-y-3 max-w-50">
+										<div className="space-y-4 w-48">
 											<Label
 												htmlFor="cms-points"
-												className="font-black text-xs uppercase tracking-widest text-muted-foreground"
+												className="font-black text-xs uppercase tracking-[0.2em] text-muted-foreground/40 ml-2"
 											>
-												Points
+												Point Value
 											</Label>
-											<Input
-												id="cms-points"
-												type="number"
-												value={editingQuestion.marks}
-												onChange={(e) =>
-													setEditingQuestion({
-														...editingQuestion,
-														marks: Number.parseInt(e.target.value, 10),
-													})
-												}
-												className="h-14 rounded-2xl border-2 font-black text-xl text-center"
-											/>
+											<div className="relative">
+												<Input
+													id="cms-points"
+													type="number"
+													value={editingQuestion.marks}
+													onChange={(e) =>
+														setEditingQuestion({
+															...editingQuestion,
+															marks: Number.parseInt(e.target.value, 10),
+														})
+													}
+													className="h-20 rounded-2xl bg-primary text-white border-none font-black text-4xl text-center shadow-xl shadow-primary/20"
+												/>
+												<div className="absolute right-4 top-1/2 -translate-y-1/2 font-black text-xs text-white/40 uppercase tracking-widest">MAR</div>
+											</div>
 										</div>
 									</div>
 								)}
 
 								{drawerTab === 'options' && (
-									<div className="space-y-6">
-										<div className="flex items-center justify-between mb-4">
-											<Label className="font-black text-xs uppercase tracking-widest text-muted-foreground">
-												Answer Possibilities
-											</Label>
+									<div className="space-y-8">
+										<div className="flex items-end justify-between px-2">
+											<div className="space-y-1">
+												<Label className="text-2xl font-black text-foreground tracking-tight">Propositions</Label>
+												<p className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/40">Multiple Choice Answers</p>
+											</div>
 											<Button
 												type="button"
-												variant="outline"
-												size="sm"
+												variant="ghost"
 												onClick={addOption}
-												className="rounded-xl h-10 px-4 font-black text-[10px] uppercase tracking-widest border-2"
+												className="h-12 px-6 rounded-2xl bg-muted/10 hover:bg-primary hover:text-white font-black text-xs uppercase tracking-widest transition-all gap-2"
 											>
-												<Plus className="h-4 w-4 mr-2" /> Add
+												<Plus size={18} className="stroke-[3px]" /> Add Option
 											</Button>
 										</div>
 
-										<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+										<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
 											{editingQuestion.options.map((opt, idx) => (
-												<div
+												<Card
 													key={opt.optionLetter}
-													className="p-6 rounded-3xl border-2 bg-muted/20 space-y-4 relative"
+													className="p-8 rounded-[3rem] border-none bg-muted/5 space-y-6 relative overflow-hidden group shadow-sm hover:shadow-md transition-all"
 												>
-													<div className="flex items-center justify-between">
-														<Badge className="w-10 h-10 rounded-xl flex items-center justify-center font-black text-lg bg-primary shadow-lg shadow-primary/20">
+													<div className="flex items-center justify-between relative z-10">
+														<div className="w-14 h-14 rounded-2xl flex items-center justify-center font-black text-2xl bg-primary text-white shadow-xl shadow-primary/20">
 															{opt.optionLetter}
-														</Badge>
-														<div className="flex items-center gap-2">
-															<Checkbox
-																id={`correct-${idx}`}
-																checked={opt.isCorrect}
-																onCheckedChange={(v) => updateOption(idx, 'isCorrect', !!v)}
-																className="h-6 w-6 rounded-lg border-2"
-															/>
-															<Label
-																htmlFor={`correct-${idx}`}
-																className="text-[10px] font-black uppercase tracking-widest text-muted-foreground cursor-pointer"
-															>
-																Correct
-															</Label>
+														</div>
+														<div className="flex items-center gap-4">
+															<div className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-zinc-900 rounded-xl shadow-sm">
+																<Checkbox
+																	id={`correct-${idx}`}
+																	checked={opt.isCorrect}
+																	onCheckedChange={(v) => updateOption(idx, 'isCorrect', !!v)}
+																	className="h-5 w-5 rounded-md border-2 border-tiimo-green data-[state=checked]:bg-tiimo-green data-[state=checked]:border-tiimo-green"
+																/>
+																<Label
+																	htmlFor={`correct-${idx}`}
+																	className="text-[10px] font-black uppercase tracking-widest text-tiimo-green cursor-pointer"
+																>
+																	Target
+																</Label>
+															</div>
 															<Button
 																variant="ghost"
 																size="icon"
-																className="h-8 w-8 text-rose-500"
+																className="h-10 w-10 rounded-xl bg-muted/10 text-tiimo-pink hover:bg-tiimo-pink hover:text-white transition-all"
 																onClick={() => removeOption(idx)}
-																aria-label="Remove option"
+																aria-label="Remove"
 															>
-																<X className="h-4 w-4" />
+																<Trash size={20} className="stroke-[3px]" />
 															</Button>
 														</div>
 													</div>
-													<Textarea
-														value={opt.optionText}
-														onChange={(e) => updateOption(idx, 'optionText', e.target.value)}
-														className="min-h-20 rounded-xl border-2 font-bold"
-														placeholder="Answer text..."
-													/>
-													<Textarea
-														value={opt.explanation}
-														onChange={(e) => updateOption(idx, 'explanation', e.target.value)}
-														className="min-h-15 rounded-xl border-2 text-xs font-bold bg-background"
-														placeholder="Explanation..."
-													/>
-												</div>
+													<div className="space-y-4 relative z-10">
+														<Textarea
+															value={opt.optionText}
+															onChange={(e) => updateOption(idx, 'optionText', e.target.value)}
+															className="min-h-24 rounded-2xl bg-white dark:bg-zinc-900 border-none px-6 py-5 font-bold text-lg placeholder:text-muted-foreground/10 focus:ring-4 focus:ring-primary/5 transition-all"
+															placeholder="Draft possibility..."
+														/>
+														<Textarea
+															value={opt.explanation}
+															onChange={(e) => updateOption(idx, 'explanation', e.target.value)}
+															className="min-h-20 rounded-2xl bg-muted/10 border-none px-6 py-4 text-xs font-bold italic placeholder:text-muted-foreground/20 focus:ring-4 focus:ring-primary/5 transition-all"
+															placeholder="Draft rationale..."
+														/>
+													</div>
+												</Card>
 											))}
 										</div>
 									</div>
@@ -1158,12 +1144,12 @@ export default function CMS() {
 						</ScrollArea>
 					)}
 
-					<DrawerFooter className="pt-8 border-t flex-row gap-4 px-8">
+					<DrawerFooter className="pt-10 border-t border-muted/10 flex-row gap-6 px-10">
 						<DrawerClose asChild>
 							<Button
-								variant="outline"
+								variant="ghost"
 								disabled={isSaving}
-								className="flex-1 h-14 rounded-2xl border-2 font-black uppercase tracking-widest text-xs"
+								className="flex-1 h-20 rounded-[2.25rem] bg-muted/10 font-black uppercase tracking-[0.2em] text-xs hover:bg-tiimo-pink hover:text-white transition-all"
 							>
 								Discard
 							</Button>
@@ -1171,14 +1157,14 @@ export default function CMS() {
 						<Button
 							onClick={handleSaveQuestion}
 							disabled={!isFormValid() || isSaving}
-							className="flex-1 h-14 bg-primary hover:bg-primary/90 rounded-2xl font-black uppercase tracking-widest text-xs shadow-2xl shadow-primary/20"
+							className="flex-[2] h-20 bg-zinc-950 dark:bg-white text-white dark:text-zinc-950 rounded-[2.25rem] font-black uppercase tracking-[0.2em] text-xs shadow-2xl shadow-black/30 hover:opacity-90 active:scale-95 transition-all"
 						>
 							{isSaving ? (
-								<Spinner className="h-5 w-5 text-primary-foreground" />
+								<CircleNotch size={32} className="animate-spin" />
 							) : editingQuestion?.id ? (
-								'Update Content'
+								'Finalize Edits'
 							) : (
-								'FloppyDisk Content'
+								'Commit to Database'
 							)}
 						</Button>
 					</DrawerFooter>

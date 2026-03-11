@@ -1,19 +1,20 @@
 'use client';
 
 import {
-	Bell,
-	CheckCircle,
-	CircleNotch,
-	DeviceMobile,
-	Key,
-	Lock,
-	Shield,
-	Trash,
-	User,
-	XCircle,
-} from '@phosphor-icons/react';
+	Notification03Icon as Bell,
+	CheckmarkCircle01Icon as CheckCircle,
+	Loading03Icon as CircleNotch,
+	SmartPhone01Icon as DeviceMobile,
+	Key01Icon as Key,
+	Lock01Icon as Lock,
+	Shield01Icon as Shield,
+	Delete02Icon as Trash,
+	UserIcon as User,
+	CancelCircleIcon as XCircle,
+} from 'hugeicons-react';
 import Link from 'next/link';
 import { useEffect, useState, useTransition } from 'react';
+import PageTransition from '@/components/Transition/PageTransition';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -328,9 +329,10 @@ export default function SettingsPage() {
 	}
 
 	return (
-		<div className="min-h-screen bg-background pt-4 pb-32 px-6 md:p-8">
+		<PageTransition>
+			<div className="min-h-screen bg-background pt-4 pb-32 px-6 md:p-8">
 			<div className="max-w-4xl mx-auto">
-				<h1 className="text-3xl font-bold mb-2">Gear</h1>
+				<h1 className="text-3xl font-bold mb-2">Settings</h1>
 				<p className="text-muted-foreground mb-8">Manage your account settings and preferences</p>
 
 				<Tabs defaultValue="account" className="space-y-6">
@@ -651,7 +653,7 @@ export default function SettingsPage() {
 					<TabsContent value="privacy" className="space-y-6">
 						<Card>
 							<CardHeader>
-								<CardTitle>Privacy Gear</CardTitle>
+								<CardTitle>Privacy Settings</CardTitle>
 								<CardDescription>Control your privacy preferences</CardDescription>
 							</CardHeader>
 							<CardContent className="space-y-6">
@@ -704,7 +706,7 @@ export default function SettingsPage() {
 							<CardContent className="space-y-4">
 								<div className="flex items-center justify-between">
 									<div>
-										<p className="font-medium">Backspace Account</p>
+										<p className="font-medium">Delete Account</p>
 										<p className="text-sm text-muted-foreground">
 											Permanently delete your account and all data
 										</p>
@@ -713,12 +715,12 @@ export default function SettingsPage() {
 										<DialogTrigger asChild>
 											<Button variant="destructive" size="sm">
 												<Trash className="mr-2 h-4 w-4" />
-												Backspace Account
+												Delete Account
 											</Button>
 										</DialogTrigger>
 										<DialogContent>
 											<DialogHeader>
-												<DialogTitle>Backspace Account</DialogTitle>
+												<DialogTitle>Delete Account</DialogTitle>
 												<DialogDescription>
 													Are you sure you want to delete your account? This action cannot be
 													undone. All your data, progress, and achievements will be permanently
@@ -751,7 +753,7 @@ export default function SettingsPage() {
 															Deleting...
 														</>
 													) : (
-														'Backspace My Account'
+														'Delete My Account'
 													)}
 												</Button>
 											</DialogFooter>
@@ -764,5 +766,6 @@ export default function SettingsPage() {
 				</Tabs>
 			</div>
 		</div>
+		</PageTransition>
 	);
 }

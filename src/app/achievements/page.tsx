@@ -1,14 +1,15 @@
 import type { Metadata } from 'next';
 import AchievementsScreen from '@/screens/Achievements';
+import PageTransition from '@/components/Transition/PageTransition';
 
 const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://matricmaster.ai';
 
 export const metadata: Metadata = {
-	title: 'Achievements | MatricMaster AI',
+	title: 'Achievements | MatricMaster',
 	description: 'Track your accomplishments and earn badges.',
 	alternates: { canonical: `${baseUrl}/achievements` },
 	openGraph: {
-		title: 'My Achievements | MatricMaster AI',
+		title: 'My Achievements | MatricMaster',
 		description: 'Track your accomplishments and earn badges for your learning progress.',
 		url: `${baseUrl}/achievements`,
 		type: 'website',
@@ -16,5 +17,9 @@ export const metadata: Metadata = {
 };
 
 export default function AchievementsPage() {
-	return <AchievementsScreen />;
+	return (
+		<PageTransition>
+			<AchievementsScreen />
+		</PageTransition>
+	);
 }

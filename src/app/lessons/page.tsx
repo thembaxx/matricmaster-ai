@@ -1,14 +1,15 @@
 import type { Metadata } from 'next';
 import LessonsScreen from '@/screens/Lessons';
+import PageTransition from '@/components/Transition/PageTransition';
 
 const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://matricmaster.ai';
 
 export const metadata: Metadata = {
-	title: 'Lessons | MatricMaster AI',
+	title: 'Lessons | MatricMaster',
 	description: 'Browse and complete interactive lessons.',
 	alternates: { canonical: `${baseUrl}/lessons` },
 	openGraph: {
-		title: 'Interactive Lessons | MatricMaster AI',
+		title: 'Interactive Lessons | MatricMaster',
 		description:
 			'Step-by-step lessons for Mathematics, Physical Sciences, and more for South African Grade 12 students.',
 		url: `${baseUrl}/lessons`,
@@ -45,13 +46,13 @@ const jsonLd = {
 
 export default function LessonsPage() {
 	return (
-		<>
+		<PageTransition>
 			<script
 				type="application/ld+json"
 				// biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD schema only, no user input
 				dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
 			/>
 			<LessonsScreen />
-		</>
+		</PageTransition>
 	);
 }

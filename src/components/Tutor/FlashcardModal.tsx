@@ -1,16 +1,16 @@
 'use client';
 
 import {
-	ArrowCounterClockwise,
-	Check,
-	FlipHorizontal,
-	Lightbulb,
-	Shuffle,
-	Tag,
-	ThumbsDown,
-	ThumbsUp,
-	X,
-} from '@phosphor-icons/react';
+	ArrowPathIcon as ArrowCounterClockwise,
+	CheckmarkCircle01Icon as Check,
+	ViewIcon as FlipHorizontal,
+	IdeaIcon as Lightbulb,
+	Shuffle01Icon as Shuffle,
+	Tag01Icon as Tag,
+	ThumbsDownIcon as ThumbsDown,
+	ThumbsUpIcon as ThumbsUp,
+	Cancel01Icon as X,
+} from 'hugeicons-react';
 import { useEffect, useMemo, useState } from 'react';
 import { toast } from 'sonner';
 import { Badge } from '@/components/ui/badge';
@@ -150,12 +150,12 @@ export function FlashcardModal({
 				<DialogHeader>
 					<DialogTitle className="flex items-center gap-2">
 						<Lightbulb className="h-5 w-5 text-brand-amber" />
-						{reviewMode ? 'Review Session' : 'Flashcards'}
+						{reviewMode ? 'Review session' : 'Flashcards'}
 					</DialogTitle>
 					<DialogDescription>
 						{subject && <span className="capitalize">{subject}</span>}
 						{subject && ' • '}
-						{isComplete ? 'Session Complete!' : `Card ${currentIndex + 1} of ${flashcards.length}`}
+						{isComplete ? 'Session complete!' : `Card ${currentIndex + 1} of ${flashcards.length}`}
 					</DialogDescription>
 				</DialogHeader>
 
@@ -173,10 +173,10 @@ export function FlashcardModal({
 								<Check className="w-10 h-10 text-green-600" />
 							</div>
 							<div>
-								<h3 className="text-xl font-bold">Review Complete!</h3>
+								<h3 className="text-xl font-bold">Review complete!</h3>
 								<p className="text-muted-foreground">You reviewed {reviewedCards.size} cards</p>
 							</div>
-							<Button onClick={handleReset}>Start New Session</Button>
+							<Button onClick={handleReset}>Start new session</Button>
 						</div>
 					) : (
 						<>

@@ -12,13 +12,13 @@ export default function PageTransition({ children }: { children: React.ReactNode
 	const variants: Variants = {
 		initial: prefersReducedMotion
 			? { opacity: 1 }
-			: { opacity: 0, scale: 0.98, filter: 'blur(10px)', y: 10 },
+			: { opacity: 0, scale: 0.98, filter: 'blur(10px)', y: 20 },
 		animate: prefersReducedMotion
 			? { opacity: 1 }
 			: { opacity: 1, scale: 1, filter: 'blur(0px)', y: 0 },
 		exit: prefersReducedMotion
 			? { opacity: 1 }
-			: { opacity: 0, scale: 0.99, filter: 'blur(5px)', y: -10 },
+			: { opacity: 0, scale: 0.99, filter: 'blur(5px)', y: -20 },
 	};
 
 	return (
@@ -30,8 +30,8 @@ export default function PageTransition({ children }: { children: React.ReactNode
 			variants={variants}
 			transition={{
 				type: 'spring',
-				stiffness: 260,
-				damping: 25,
+				stiffness: 300,
+				damping: 30,
 				mass: 1,
 				...transition,
 			}}

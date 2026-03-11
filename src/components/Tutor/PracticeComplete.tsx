@@ -1,5 +1,4 @@
-import type { Icon } from '@phosphor-icons/react';
-import { CheckCircle, Clock, Lightbulb } from '@phosphor-icons/react';
+import { CheckCircleIcon as CheckCircle, Clock01Icon as Clock, IdeaIcon as Lightbulb } from 'hugeicons-react';
 import { Button } from '@/components/ui/button';
 
 interface PracticeCompleteProps {
@@ -17,25 +16,24 @@ export function PracticeComplete({
 	onToggleAnswers,
 	onReset,
 }: PracticeCompleteProps) {
-	const getIcon = (): Icon => {
-		if (correctCount === totalProblems) return CheckCircle;
-		if (correctCount >= totalProblems / 2) return Lightbulb;
-		return Clock;
-	};
+	const CurrentIcon =
+		correctCount === totalProblems
+			? CheckCircle
+			: correctCount >= totalProblems / 2
+				? Lightbulb
+				: Clock;
 
 	const getMessage = () => {
-		if (correctCount === totalProblems) return 'Perfect Score! 🎉';
-		if (correctCount >= totalProblems / 2) return 'Good Job! Keep Practicing!';
-		return 'Keep Learning!';
+		if (correctCount === totalProblems) return 'Perfect score! 🎉';
+		if (correctCount >= totalProblems / 2) return 'Good job! Keep practicing!';
+		return 'Keep learning!';
 	};
-
-	const Icon = getIcon();
 
 	return (
 		<div className="text-center py-8 space-y-6">
 			<div className="flex justify-center">
-				<Icon
-					className={`h-16 w-16 ${
+				<CurrentIcon
+					className={`h-16 w-16 stroke-[3] ${
 						correctCount === totalProblems
 							? 'text-green-500'
 							: correctCount >= totalProblems / 2
@@ -52,9 +50,9 @@ export function PracticeComplete({
 			</div>
 			<div className="flex gap-3 justify-center">
 				<Button variant="outline" onClick={onToggleAnswers}>
-					{showAllAnswers ? 'Hide' : 'Show'} All Answers
+					{showAllAnswers ? 'Hide' : 'Show'} all answers
 				</Button>
-				<Button onClick={onReset}>Try Again</Button>
+				<Button onClick={onReset}>Try again</Button>
 			</div>
 		</div>
 	);

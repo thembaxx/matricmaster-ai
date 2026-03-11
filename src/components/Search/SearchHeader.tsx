@@ -1,6 +1,6 @@
 'use client';
 
-import { MagnifyingGlass as SearchIcon, X } from '@phosphor-icons/react';
+import { Search01Icon as SearchIcon, Cancel01Icon as X } from 'hugeicons-react';
 import { AnimatePresence, m } from 'framer-motion';
 import { memo, useEffect, useRef, useState } from 'react';
 import { Input } from '@/components/ui/input';
@@ -35,35 +35,35 @@ export const SearchHeader = memo(function SearchHeader({
 	}, []);
 
 	return (
-		<div className="space-y-1">
+		<div className="space-y-4">
 			<m.div
-				initial={{ scale: 0.95, opacity: 0 }}
+				initial={{ scale: 0.9, opacity: 0 }}
 				animate={{ scale: 1, opacity: 1 }}
-				className="relative mt-6"
+				className="relative"
 			>
-				<SearchIcon className="absolute left-5 top-1/2 -translate-y-1/2 w-6 h-6 text-muted-foreground" />
+				<SearchIcon size={24} className="absolute left-6 top-1/2 -translate-y-1/2 text-muted-foreground/30 stroke-[3px]" />
 				<Input
 					ref={inputRef}
 					value={query}
 					onChange={(e) => onQueryChange(e.target.value)}
 					onFocus={() => setIsFocused(true)}
 					onBlur={() => setIsFocused(false)}
-					placeholder="What are you looking for?"
-					className="pl-14 pr-14 bg-muted/30 h-16 rounded-[1.5rem] border-2 text-lg font-bold focus:ring-primary/20"
-					aria-label="MagnifyingGlass topics, questions, and past papers"
+					placeholder="Find knowledge..."
+					className="pl-16 pr-16 bg-muted/10 h-20 rounded-[2.5rem] border-none text-xl font-bold placeholder:text-muted-foreground/20 focus:ring-4 focus:ring-primary/5 transition-all"
+					aria-label="Search topics, questions, and past papers"
 				/>
 				<AnimatePresence>
 					{!query && !isFocused && (
 						<m.div
-							initial={{ opacity: 0, x: 10 }}
+							initial={{ opacity: 0, x: 20 }}
 							animate={{ opacity: 1, x: 0 }}
-							exit={{ opacity: 0, x: 10 }}
-							className="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none hidden sm:flex items-center gap-1.5"
+							exit={{ opacity: 0, x: 20 }}
+							className="absolute right-6 top-1/2 -translate-y-1/2 pointer-events-none hidden sm:flex items-center gap-3"
 						>
-							<span className="text-[10px] font-black text-muted-foreground/50 uppercase tracking-widest">
+							<span className="text-[10px] font-black text-muted-foreground/30 uppercase tracking-[0.2em]">
 								Press
 							</span>
-							<kbd className="h-6 min-w-[24px] px-1.5 rounded-md border-2 border-muted-foreground/20 flex items-center justify-center bg-muted/50 text-[10px] font-black text-muted-foreground shadow-sm">
+							<kbd className="h-10 min-w-[40px] px-3 rounded-xl border-none flex items-center justify-center bg-white dark:bg-zinc-900 text-sm font-black text-primary shadow-lg">
 								/
 							</kbd>
 						</m.div>
@@ -74,18 +74,18 @@ export const SearchHeader = memo(function SearchHeader({
 						<Tooltip>
 							<TooltipTrigger asChild>
 								<m.button
-									initial={{ scale: 0.95, opacity: 0 }}
+									initial={{ scale: 0.5, opacity: 0 }}
 									animate={{ scale: 1, opacity: 1 }}
-									exit={{ scale: 0.95, opacity: 0 }}
+									exit={{ scale: 0.5, opacity: 0 }}
 									aria-label="Clear search"
 									type="button"
 									onClick={() => onQueryChange('')}
-									className="absolute right-5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+									className="absolute right-6 top-1/2 -translate-y-1/2 h-10 w-10 bg-muted/10 hover:bg-tiimo-pink hover:text-white rounded-xl transition-all flex items-center justify-center"
 								>
-									<X className="w-6 h-6" />
+									<X size={20} className="stroke-[3px]" />
 								</m.button>
 							</TooltipTrigger>
-							<TooltipContent>Clear search</TooltipContent>
+							<TooltipContent className="rounded-xl border-none shadow-xl font-black text-xs uppercase tracking-widest">Clear search</TooltipContent>
 						</Tooltip>
 					)}
 				</AnimatePresence>

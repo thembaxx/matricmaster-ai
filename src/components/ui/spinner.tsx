@@ -1,4 +1,4 @@
-import { CircleNotch } from '@phosphor-icons/react';
+import { Loading03Icon as CircleNotch } from 'hugeicons-react';
 
 import { cn } from '@/lib/utils';
 

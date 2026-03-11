@@ -2,7 +2,7 @@
 
 import { m } from 'framer-motion';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { AiInsights } from '@/components/Search/AiInsights';
+import { SmartInsights } from '@/components/Search/SmartInsights';
 import { SearchHeader } from '@/components/Search/SearchHeader';
 import { SearchHistoryList } from '@/components/Search/SearchHistoryList';
 import { SearchResults } from '@/components/Search/SearchResults';
@@ -24,8 +24,8 @@ import { smartSearch } from '@/services/geminiService';
 export default function Search() {
 	const { data: session } = useSession();
 	const [query, setQuery] = useState('');
-	const [aiResults, setAiResults] = useState<{ suggestions: string[]; tip: string } | null>(null);
-	const [isAiLoading, setIsAiLoading] = useState(false);
+	const [smartResults, setSmartResults] = useState<{ suggestions: string[]; tip: string } | null>(null);
+	const [isSmartLoading, setIsSmartLoading] = useState(false);
 	const [recentSearches, setRecentSearches] = useState<SearchHistory[]>([]);
 	const [isLoadingHistory, setIsLoadingHistory] = useState(true);
 	const [papers, setPapers] = useState<PastPaper[]>([]);
@@ -57,10 +57,10 @@ export default function Search() {
 	useEffect(() => {
 		const timer = setTimeout(async () => {
 			if (query.length > 3) {
-				setIsAiLoading(true);
+				setIsSmartLoading(true);
 				const results = await smartSearch(query);
-				setAiResults(results);
-				setIsAiLoading(false);
+				setSmartResults(results);
+				setIsSmartLoading(false);
 
 				if (session?.user?.id) {
 					await addSearchHistoryAction(query);
@@ -68,7 +68,7 @@ export default function Search() {
 					setRecentSearches(history);
 				}
 			} else {
-				setAiResults(null);
+				setSmartResults(null);
 			}
 		}, 800);
 
@@ -104,23 +104,23 @@ export default function Search() {
 	}, [session?.user?.id]);
 
 	return (
-		<div className="flex flex-col h-full bg-background lg:px-12 relative overflow-hidden">
-			<div className="px-4 sm:px-6 py-8 sm:py-12 bg-background shrink-0 lg:px-0">
-				<div className="max-w-5xl mx-auto w-full">
-					<div className="mb-8 sm:mb-12 space-y-2">
-						<h1 className="text-3xl sm:text-4xl lg:text-7xl font-black text-foreground tracking-tighter uppercase">
-							Smart Search
+		<div className="flex flex-col h-full bg-white dark:bg-zinc-950 lg:px-16 relative overflow-hidden">
+			<div className="px-6 sm:px-10 pt-20 sm:pt-32 pb-12 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-3xl shrink-0 lg:px-0">
+				<div className="max-w-5xl mx-auto w-full space-y-12">
+					<div className="space-y-4">
+						<h1 className="text-5xl sm:text-7xl lg:text-9xl font-black text-foreground tracking-tighter leading-none">
+							Search
 						</h1>
-						<p className="text-muted-foreground font-bold text-sm sm:text-lg">
-							Find papers, topics, and AI-powered insights instantly
+						<p className="text-muted-foreground/40 font-black text-lg sm:text-2xl uppercase tracking-[0.3em] leading-none">
+							Intelligent archive
 						</p>
 					</div>
 					<SearchHeader query={query} onQueryChange={setQuery} />
 				</div>
 			</div>
 
-			<ScrollArea className="flex-1 no-scrollbar">
-				<main className="px-6 py-8 max-w-5xl mx-auto w-full space-y-12 pb-32 lg:px-0">
+			<ScrollArea className="flex-1 no-scrollbar px-6 sm:px-10 lg:px-0">
+				<main className="max-w-5xl mx-auto w-full space-y-16 sm:space-y-24 pb-64">
 					{!query ? (
 						<m.div
 							variants={STAGGER_CONTAINER}
@@ -142,10 +142,10 @@ export default function Search() {
 						</m.div>
 					) : (
 						<div className="space-y-12">
-							<AiInsights
-								isLoading={isAiLoading}
-								suggestions={aiResults?.suggestions}
-								tip={aiResults?.tip}
+							<SmartInsights
+								isLoading={isSmartLoading}
+								suggestions={smartResults?.suggestions}
+								tip={smartResults?.tip}
 								onSuggestionClick={setQuery}
 							/>
 							<SearchResults results={filteredResults} />

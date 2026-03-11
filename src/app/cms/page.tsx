@@ -8,7 +8,7 @@ import { dbManager } from '@/lib/db';
 import CMSScreen from '@/screens/CMS';
 
 export const metadata: Metadata = {
-	title: 'CMS | MatricMaster AI',
+	title: 'CMS | MatricMaster',
 	description: 'Content management system for administrators.',
 };
 

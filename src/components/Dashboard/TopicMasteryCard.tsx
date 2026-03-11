@@ -1,14 +1,14 @@
 'use client';
 
 import {
-	Brain,
-	CaretRight,
-	CircleNotch,
-	Clock,
-	Target,
-	TrendDown,
-	TrendUp,
-} from '@phosphor-icons/react';
+	Brain01Icon as Brain,
+	ArrowRight01Icon as CaretRight,
+	Loading03Icon as CircleNotch,
+	Clock01Icon as Clock,
+	Target02Icon as Target,
+	TrendDown01Icon as TrendDown,
+	TrendUp01Icon as TrendUp,
+} from 'hugeicons-react';
 import { useRouter } from 'next/navigation';
 import { memo, useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
@@ -64,7 +64,7 @@ export const TopicMasteryCard = memo(function TopicMasteryCard({
 				<CardHeader>
 					<CardTitle className="flex items-center gap-2">
 						<Brain className="h-5 w-5" />
-						Topic Progress
+						Topic progress
 					</CardTitle>
 				</CardHeader>
 				<CardContent className="flex items-center justify-center py-8">
@@ -80,7 +80,9 @@ export const TopicMasteryCard = memo(function TopicMasteryCard({
 				<CardHeader>
 					<CardTitle className="flex items-center gap-2">
 						<Brain className="h-5 w-5" />
-						Topic Progress
+						Topic progress
+						Topic progress
+						Topic progress
 					</CardTitle>
 				</CardHeader>
 				<CardContent className="text-center py-6">
@@ -103,7 +105,7 @@ export const TopicMasteryCard = memo(function TopicMasteryCard({
 					</CardTitle>
 				</CardHeader>
 				<CardContent className="text-center py-6">
-					<Target weight="bold" className="h-12 w-12 text-muted-foreground/50 mx-auto mb-3" />
+					<Target className="h-12 w-12 text-muted-foreground/50 mx-auto mb-3 stroke-[3]" />
 					<p className="text-sm text-muted-foreground">
 						Complete more quizzes to see your topic progress
 					</p>
@@ -148,7 +150,7 @@ export const TopicMasteryCard = memo(function TopicMasteryCard({
 				<CardTitle className="flex items-center justify-between">
 					<span className="flex items-center gap-2 text-xl font-black text-foreground tracking-tight uppercase">
 						<Brain className="h-5 w-5 text-primary" />
-						Topic Progress
+						Topic progress
 					</span>
 					<Button variant="ghost" size="sm" onClick={() => router.push('/review')}>
 						View All
@@ -163,7 +165,7 @@ export const TopicMasteryCard = memo(function TopicMasteryCard({
 							<div className="space-y-2">
 								<div className="flex items-center gap-2 text-sm font-medium">
 									<TrendDown className="h-4 w-4 text-red-500" />
-									<span className="text-red-600">Needs Focus</span>
+									<span className="text-red-600">Needs focus</span>
 								</div>
 								{stats.weakTopics.slice(0, 3).map((topic) => (
 									<TopicItem
@@ -196,7 +198,7 @@ export const TopicMasteryCard = memo(function TopicMasteryCard({
 						{stats.strongTopics.length > 0 && (
 							<div className="space-y-2">
 								<div className="flex items-center gap-2 text-sm font-medium">
-									<Target weight="bold" className="h-4 w-4 text-green-500" />
+									<Target className="h-4 w-4 text-green-500 stroke-[3]" />
 									<span className="text-green-600">Mastered</span>
 								</div>
 								{stats.strongTopics.slice(0, 2).map((topic) => (

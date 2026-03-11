@@ -1,6 +1,6 @@
 'use client';
 
-import { Sparkle, X } from '@phosphor-icons/react';
+import { SparklesIcon as Sparkle, Cancel01Icon as X } from 'hugeicons-react';
 import { m } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import type { UnlockedAchievement } from '@/stores/useGamificationStore';

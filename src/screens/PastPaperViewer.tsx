@@ -49,8 +49,8 @@ export default function PastPaperViewer({
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	// biome-ignore lint/suspicious/noExplicitAny: na
 	const [paper, setPaper] = useState<any>(PAST_PAPERS[0]);
-	const [showAiExplanation, setShowAiExplanation] = useState(false);
-	const [aiExplanation, setAiExplanation] = useState<string | null>(null);
+	const [showExpertExplanation, setShowExpertExplanation] = useState(false);
+	const [expertExplanation, setExpertExplanation] = useState<string | null>(null);
 	const [isExplaining, setIsExplaining] = useState(false);
 	const [showPdfFallback, setShowPdfFallback] = useState(mode === 'read');
 	const [viewMode, setViewMode] = useState<'smart' | 'original'>('smart');
@@ -134,15 +134,15 @@ export default function PastPaperViewer({
 	const handleExplainQuestion = useCallback(async () => {
 		if (!currentQuestion) return;
 		setIsExplaining(true);
-		setShowAiExplanation(true);
+		setShowExpertExplanation(true);
 		try {
 			const explanation = await getExplanation(paper.subject, currentQuestion.questionText);
-			setAiExplanation(
+			setExpertExplanation(
 				explanation ?? "I'm sorry, I couldn't generate an explanation for this question."
 			);
 		} catch (err) {
-			console.error('Failed to get AI explanation:', err);
-			setAiExplanation('Sorry, I could not generate an explanation right now.');
+			console.error('Failed to get expert explanation:', err);
+			setExpertExplanation('Sorry, I could not generate an explanation right now.');
 		} finally {
 			setIsExplaining(false);
 		}
@@ -159,7 +159,7 @@ export default function PastPaperViewer({
 						<CircleNotch className="w-12 h-12 animate-spin text-brand-blue mx-auto" />
 						<div className="space-y-2">
 							<h3 className="font-bold text-zinc-900 dark:text-white">Extracting Questions...</h3>
-							<p className="text-sm text-zinc-500">Using AI to parse the exam paper</p>
+							<p className="text-sm text-zinc-500">Processing the exam paper</p>
 						</div>
 					</div>
 				</div>
@@ -411,7 +411,7 @@ export default function PastPaperViewer({
 								)}
 							</div>
 
-							{/* AI Explain Button */}
+							{/* Expert Explain Button */}
 							<div className="mt-8 pt-6 border-t border-border relative z-10">
 								<Button
 									variant="outline"
@@ -427,15 +427,15 @@ export default function PastPaperViewer({
 									{isExplaining ? 'Getting Explanation...' : 'Explain This Question'}
 								</Button>
 
-								{/* AI Explanation Display */}
-								{showAiExplanation && aiExplanation && (
+								{/* Expert Explanation Display */}
+								{showExpertExplanation && expertExplanation && (
 									<div className="mt-4 p-4 bg-brand-blue/5 border border-brand-blue/20 rounded-xl">
 										<div className="flex items-center gap-2 mb-2">
 											<Sparkle weight="bold" className="w-4 h-4 text-brand-blue" />
-											<span className="text-sm font-bold text-brand-blue">AI Explanation</span>
+											<span className="text-sm font-bold text-brand-blue">Expert explanation</span>
 										</div>
 										<p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-wrap">
-											{aiExplanation}
+											{expertExplanation}
 										</p>
 									</div>
 								)}
@@ -454,7 +454,7 @@ export default function PastPaperViewer({
 									Convert to Interactive
 								</h4>
 								<p className="text-xs font-semibold text-zinc-500">
-									Practice this paper with AI-powered feedback
+									Practice this paper with expert feedback
 								</p>
 							</div>
 						</div>

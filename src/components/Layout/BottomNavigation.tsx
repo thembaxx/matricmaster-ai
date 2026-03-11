@@ -18,9 +18,9 @@ const navItems: NavItem[] = [
 		icon: 'fluent:checkmark-circle-sparkle-24-filled',
 	},
 	{
-		href: '/ai-tutor',
-		label: 'AI Tutor',
-		icon: 'fluent:bot-sparkle-24-filled',
+		href: '/tutor',
+		label: 'Tutor',
+		icon: 'fluent:hat-graduation-24-filled',
 	},
 	{
 		href: '/past-papers',

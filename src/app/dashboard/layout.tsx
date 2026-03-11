@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://matricmaster.ai';
 
 export const metadata: Metadata = {
-	title: 'Dashboard | MatricMaster AI',
+	title: 'Dashboard | MatricMaster',
 	description: 'Track your learning progress and continue your journey.',
 	alternates: { canonical: `${baseUrl}/dashboard` },
 };

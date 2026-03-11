@@ -1,6 +1,6 @@
 'use client';
 
-import { Lightbulb } from '@phosphor-icons/react';
+import { IdeaIcon as Lightbulb } from 'hugeicons-react';
 import { useState } from 'react';
 import {
 	Dialog,
@@ -85,8 +85,8 @@ export function PracticeModal({ open, onOpenChange, problems, subject }: Practic
 					<div className="flex items-center justify-between">
 						<div>
 							<DialogTitle className="flex items-center gap-2">
-								<Lightbulb className="h-5 w-5 text-brand-amber" />
-								Practice Problems
+								<Lightbulb className="h-5 w-5 text-brand-amber stroke-[3]" />
+								Practice problems
 							</DialogTitle>
 							<DialogDescription>
 								{subject && <span className="capitalize">{subject}</span>}

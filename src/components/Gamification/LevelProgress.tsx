@@ -1,6 +1,6 @@
 'use client';
 
-import { Lightning, Sparkle } from '@phosphor-icons/react';
+import { Lightning01Icon as Lightning, SparklesIcon as Sparkle } from 'hugeicons-react';
 import { m } from 'framer-motion';
 import { memo } from 'react';
 import { Badge } from '@/components/ui/badge';
@@ -45,142 +45,136 @@ export const LevelProgress = memo(function LevelProgress({
 	if (variant === 'badge') {
 		return (
 			<div
-				className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full font-black text-sm ${className}`}
-				style={{ backgroundColor: `${info.color}15`, color: info.color }}
+				className={cn(
+					"inline-flex items-center gap-2 px-4 py-2 rounded-2xl font-black text-sm transition-transform active:scale-95 shadow-sm",
+					className
+				)}
+				style={{ backgroundColor: `${info.color}20`, color: info.color }}
 			>
-				<span>{badgeIcon}</span>
-				<span>Lv.{info.level}</span>
+				<span className="text-lg">{badgeIcon}</span>
+				<span className="uppercase tracking-widest">Lv {info.level}</span>
 			</div>
 		);
 	}
 
 	if (variant === 'compact') {
 		return (
-			<div className={`flex items-center gap-3 ${className}`}>
+			<div className={cn("flex items-center gap-4", className)}>
 				<div
-					className="flex items-center gap-2 px-3 py-2 rounded-2xl"
+					className="flex items-center gap-3 px-4 py-3 rounded-[1.25rem] shadow-sm"
 					style={{ backgroundColor: `${info.color}15` }}
 				>
-					<span className="text-xl">{badgeIcon}</span>
+					<span className="text-2xl">{badgeIcon}</span>
 					<div className="flex flex-col">
-						<span className="text-sm font-black" style={{ color: info.color }}>
-							Level {info.level}
+						<span className="text-md font-black leading-none" style={{ color: info.color }}>
+							Lvl {info.level}
 						</span>
 						{showTitle && (
-							<span className="text-[10px] font-medium text-muted-foreground">{info.title}</span>
+							<span className="text-[10px] font-black text-muted-foreground/60 uppercase tracking-widest mt-1.5">{info.title}</span>
 						)}
 					</div>
 				</div>
-				<div className="flex-1 max-w-[120px]">
-					<Progress
-						value={info.progressPercent}
-						className="h-2"
-						style={
-							{
-								'--progress-background': info.color,
-							} as React.CSSProperties
-						}
-					/>
-					<p className="text-[9px] text-muted-foreground text-center mt-1">
-						{info.level < MAX_LEVEL
-							? `${formatXp(info.xpInCurrentLevel)}/${formatXp(info.xpForNextLevel)} XP`
-							: 'MAX'}
-					</p>
+				<div className="flex-1 space-y-2">
+					<div className="h-4 w-full bg-muted/20 rounded-full overflow-hidden p-1 shadow-inner">
+						<div
+							className="h-full rounded-full transition-all duration-1000 shadow-lg shadow-primary/20"
+							style={{
+								width: `${info.progressPercent}%`,
+								backgroundColor: info.color,
+							}}
+						/>
+					</div>
+					<div className="flex justify-between items-center text-[10px] font-black tracking-widest text-muted-foreground/40 uppercase">
+						<span>Progress</span>
+						<span>{info.level < MAX_LEVEL ? `${Math.round(info.progressPercent)}%` : 'MAX'}</span>
+					</div>
 				</div>
 			</div>
 		);
 	}
 
 	return (
-		<div className={`space-y-3 ${className}`}>
+		<div className={cn("space-y-6", className)}>
 			<div className="flex items-center justify-between">
-				<div className="flex items-center gap-4">
+				<div className="flex items-center gap-6">
 					<div className="relative">
 						<m.div
-							initial={animate ? { scale: 0.8 } : undefined}
-							animate={{ scale: 1 }}
-							transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+							whileHover={{ scale: 1.1, rotate: 10 }}
+							className="w-20 h-20 rounded-[1.75rem] flex items-center justify-center shadow-2xl transition-all duration-500"
+							style={{
+								background: `linear-gradient(135deg, ${info.color}, ${info.color}dd)`,
+								boxShadow: `0 15px 35px ${info.color}30`,
+							}}
 						>
-							<div
-								className="w-16 h-16 rounded-2xl flex items-center justify-center shadow-lg"
-								style={{
-									background: `linear-gradient(135deg, ${info.color}, ${info.color}cc)`,
-									boxShadow: `0 8px 24px ${info.color}30`,
-								}}
-							>
-								<span className="text-3xl">{badgeIcon}</span>
-							</div>
+							<span className="text-4xl filter drop-shadow-lg">{badgeIcon}</span>
 						</m.div>
 						<div
-							className="absolute -bottom-2 -right-2 min-w-[28px] h-7 bg-background rounded-full flex items-center justify-center border-2 shadow-sm px-2"
+							className="absolute -bottom-2 -right-2 w-10 h-10 bg-white dark:bg-zinc-900 rounded-2xl flex items-center justify-center border-4 shadow-xl px-2"
 							style={{ borderColor: info.color }}
 						>
-							<span className="text-xs font-black" style={{ color: info.color }}>
+							<span className="text-sm font-black" style={{ color: info.color }}>
 								{info.level}
 							</span>
 						</div>
 					</div>
-					<div>
-						<div className="flex items-center gap-2">
-							<span className="text-xl font-black text-foreground">Level {info.level}</span>
+					<div className="space-y-2">
+						<div className="flex items-center gap-3">
+							<span className="text-3xl font-black text-foreground tracking-tight leading-none">Level {info.level}</span>
 							{showTitle && (
 								<Badge
-									className="text-[9px] font-black uppercase tracking-wider"
+									className="h-7 px-3 text-[10px] font-black uppercase tracking-[0.15em] border-none"
 									style={{
-										backgroundColor: `${info.color}15`,
+										backgroundColor: `${info.color}20`,
 										color: info.color,
-										borderColor: `${info.color}30`,
 									}}
 								>
-									<Sparkle weight="bold" className="w-3 h-3 mr-1" />
+									<Sparkle size={12} className="mr-1.5 fill-current" />
 									{info.title}
 								</Badge>
 							)}
 						</div>
-						<p className="text-sm text-muted-foreground mt-0.5">
+						<p className="text-sm font-bold text-muted-foreground/60 leading-tight">
 							{info.level < MAX_LEVEL ? (
 								<>
-									{formatXp(info.xpInCurrentLevel)} / {formatXp(info.xpForNextLevel)} XP to next
-									level
+									<span className="text-foreground">{formatXp(info.xpInCurrentLevel)}</span> / {formatXp(info.xpForNextLevel)} XP to reach Level {info.level + 1}
 								</>
 							) : (
-								<span className="text-brand-amber font-bold">Maximum level reached!</span>
+								<span className="text-tiimo-orange font-black uppercase tracking-widest">Ultimate Mastery Reached!</span>
 							)}
 						</p>
 					</div>
 				</div>
 
 				{info.nextMilestone && (
-					<div className="text-right">
-						<p className="text-xs text-muted-foreground">Next milestone</p>
-						<p className="text-sm font-black text-foreground">Level {info.nextMilestone}</p>
+					<div className="hidden sm:block text-right space-y-1">
+						<p className="text-[10px] font-black text-muted-foreground/40 uppercase tracking-[0.2em]">Milestone</p>
+						<p className="text-xl font-black text-foreground leading-none">Lvl {info.nextMilestone}</p>
 					</div>
 				)}
 			</div>
 
-			<div className="relative">
-				<m.div
-					initial={animate ? { opacity: 0 } : undefined}
-					animate={{ opacity: 1 }}
-					transition={{ delay: 0.2 }}
-				>
-					<Progress
-						value={info.progressPercent}
-						className="h-3 bg-muted"
-						style={
-							{
-								'--progress-background': info.color,
-							} as React.CSSProperties
-						}
-					/>
-				</m.div>
-				<div
-					className="absolute top-1/2 -translate-y-1/2 right-0 flex items-center gap-1 px-2 py-0.5 bg-background rounded-full border shadow-sm"
-					style={{ borderColor: `${info.color}30` }}
-				>
-					<Lightning weight="bold" className="w-3 h-3" style={{ color: info.color }} />
-					<span className="text-[10px] font-black text-muted-foreground">
-						{info.progressPercent}%
+			<div className="space-y-3">
+				<div className="h-6 w-full bg-muted/20 rounded-full overflow-hidden p-1.5 shadow-inner">
+					<m.div
+						initial={animate ? { width: 0 } : { width: `${info.progressPercent}%` }}
+						animate={{ width: `${info.progressPercent}%` }}
+						transition={{ duration: 1.5, type: 'spring', damping: 25 }}
+						className="h-full rounded-full transition-all duration-1000 relative group"
+						style={{
+							backgroundColor: info.color,
+							boxShadow: `0 0 20px ${info.color}40`,
+						}}
+					>
+						<div className="absolute inset-0 bg-linear-to-r from-white/0 via-white/20 to-white/0 animate-shimmer" />
+					</m.div>
+				</div>
+				<div className="flex justify-between items-center px-1">
+					<div className="flex items-center gap-2">
+						<Lightning size={16} className="stroke-[3px]" style={{ color: info.color }} />
+						<span className="text-xs font-black uppercase tracking-widest text-muted-foreground/60">Energy Potential</span>
+					</div>
+					<span className="text-sm font-black" style={{ color: info.color }}>
+						{Math.round(info.progressPercent)}%
 					</span>
 				</div>
 			</div>
@@ -198,25 +192,30 @@ export const LevelBadge = memo(function LevelBadge({
 	className?: string;
 }) {
 	const info = getLevelInfo(0);
-	const levelInfo = { ...info, level, color: getLevelTitle(level) ? info.color : '#6b7280' };
+	const levelInfo = { ...info, level, color: getLevelTitle(level) ? info.color : '#cbd5e1' };
 
 	const badgeIcon = getLevelBadgeIcon(level);
 	const sizeClasses = {
-		sm: 'w-8 h-8 text-lg',
-		default: 'w-12 h-12 text-2xl',
-		lg: 'w-16 h-16 text-3xl',
+		sm: 'w-10 h-10 text-xl rounded-xl',
+		default: 'w-16 h-16 text-3xl rounded-[1.25rem]',
+		lg: 'w-24 h-24 text-5xl rounded-[2rem]',
 	};
 
 	return (
-		<div
-			className={`rounded-xl flex items-center justify-center ${sizeClasses[size]} ${className}`}
+		<m.div
+			whileHover={{ scale: 1.1, rotate: -5 }}
+			className={cn(
+				"flex items-center justify-center shadow-xl transition-all duration-300",
+				sizeClasses[size],
+				className
+			)}
 			style={{
-				background: `linear-gradient(135deg, ${levelInfo.color}, ${levelInfo.color}cc)`,
-				boxShadow: `0 4px 12px ${levelInfo.color}30`,
+				background: `linear-gradient(135deg, ${levelInfo.color}, ${levelInfo.color}dd)`,
+				boxShadow: `0 10px 30px ${levelInfo.color}40`,
 			}}
 		>
-			<span>{badgeIcon}</span>
-		</div>
+			<span className="filter drop-shadow-md">{badgeIcon}</span>
+		</m.div>
 	);
 });
 

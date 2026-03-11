@@ -3,11 +3,11 @@ import type { Metadata } from 'next';
 const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://matricmaster.ai';
 
 export const metadata: Metadata = {
-	title: 'Quiz | MatricMaster AI',
+	title: 'Quiz | MatricMaster',
 	description: 'Practice with interactive quizzes tailored to your learning needs.',
 	alternates: { canonical: `${baseUrl}/quiz` },
 	openGraph: {
-		title: 'Interactive Quizzes | MatricMaster AI',
+		title: 'Interactive Quizzes | MatricMaster',
 		description:
 			'Test your knowledge with adaptive quizzes for Mathematics, Physical Sciences, and more.',
 		url: `${baseUrl}/quiz`,

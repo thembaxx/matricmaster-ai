@@ -15,6 +15,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
 import { useSession } from '@/lib/auth-client';
 import { cn } from '@/lib/utils';
+import PageTransition from '@/components/Transition/PageTransition';
 
 interface Comment {
 	id: string;
@@ -143,6 +144,7 @@ function CommentsContent() {
 	};
 
 	return (
+		<PageTransition>
 		<div className="container mx-auto py-8 max-w-4xl">
 			<Card>
 				<CardHeader>
@@ -210,6 +212,7 @@ function CommentsContent() {
 				</CardContent>
 			</Card>
 		</div>
+		</PageTransition>
 	);
 }
 

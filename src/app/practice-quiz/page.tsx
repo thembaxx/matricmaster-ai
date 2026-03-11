@@ -2,6 +2,7 @@
 
 import dynamic from 'next/dynamic';
 import { QuizSkeleton } from '@/components/QuizSkeleton';
+import PageTransition from '@/components/Transition/PageTransition';
 
 const PracticeQuiz = dynamic(() => import('@/screens/PracticeQuiz'), {
 	ssr: false,
@@ -9,5 +10,9 @@ const PracticeQuiz = dynamic(() => import('@/screens/PracticeQuiz'), {
 });
 
 export default function PracticeQuizPage() {
-	return <PracticeQuiz />;
+	return (
+		<PageTransition>
+			<PracticeQuiz />
+		</PageTransition>
+	);
 }

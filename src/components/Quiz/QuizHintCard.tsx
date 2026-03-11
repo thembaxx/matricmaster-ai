@@ -1,6 +1,6 @@
 'use client';
 
-import { Lightbulb, Sparkle } from '@phosphor-icons/react';
+import { IdeaIcon as Lightbulb, SparklesIcon as Sparkle } from 'hugeicons-react';
 import { AnimatePresence, m } from 'framer-motion';
 
 type QuizHintCardProps = {

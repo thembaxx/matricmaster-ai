@@ -85,7 +85,7 @@ export function DeckDetailModal({
 	};
 
 	const handleDeleteCard = async (cardId: string) => {
-		if (!confirm('Backspace this card?')) return;
+		if (!confirm('Delete this card?')) return;
 
 		setDeletingId(cardId);
 		try {

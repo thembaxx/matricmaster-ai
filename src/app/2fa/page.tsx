@@ -114,7 +114,7 @@ export default function TwoFactorPage() {
 									disabled={isLoading}
 								>
 									<DeviceMobile className="mr-2 h-4 w-4" />
-									PaperPlaneRight code to email
+									Send code to email
 								</Button>
 							</div>
 						) : (

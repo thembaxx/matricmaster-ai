@@ -1,6 +1,6 @@
 'use client';
 
-import { CaretRight, Medal } from '@phosphor-icons/react';
+import { ArrowRight01Icon as CaretRight, Medal01Icon as Medal } from 'hugeicons-react';
 import { m } from 'framer-motion';
 import { memo, useCallback, useEffect, useState } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -119,7 +119,8 @@ export const LeaderboardPreview = memo(function LeaderboardPreview() {
 		<Card className="p-6 premium-glass border-none rounded-[2.5rem] h-full">
 			<div className="flex items-center justify-between mb-4">
 				<div className="flex items-center gap-2">
-					<Medal weight="bold" className="w-5 h-5 text-brand-amber" />
+					<Medal className="w-5 h-5 text-brand-amber stroke-[3]" />
+					<Medal className="w-5 h-5 text-brand-amber stroke-[3]" />
 					<h3 className="text-lg font-black text-foreground tracking-tight">Leaderboard</h3>
 				</div>
 				{userRank && (

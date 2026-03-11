@@ -1,14 +1,14 @@
 'use client';
 
 import {
-	Archive,
-	ChatCenteredText,
-	CircleNotch,
-	MagnifyingGlass,
-	Plus,
-	Trash,
-	X,
-} from '@phosphor-icons/react';
+	Archive01Icon as Archive,
+	Chat01Icon as ChatCenteredText,
+	Loading03Icon as CircleNotch,
+	Search01Icon as MagnifyingGlass,
+	PlusSignIcon as Plus,
+	Delete02Icon as Trash,
+	Cancel01Icon as X,
+} from 'hugeicons-react';
 import { AnimatePresence, m } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
@@ -64,18 +64,18 @@ function ConversationList({
 				<div className="flex items-center justify-between">
 					<div className="flex items-center gap-2">
 						<Archive className="h-5 w-5 text-primary" />
-						<h2 className="font-bold">ClockCounterClockwise</h2>
+						<h2 className="font-bold">Archive</h2>
 					</div>
 					<span className="text-xs text-muted-foreground">{conversations.length} saved</span>
 				</div>
 				<div className="relative">
 					<MagnifyingGlass className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
 					<Input
-						placeholder="MagnifyingGlass conversations..."
+						placeholder="Search conversations..."
 						value={searchQuery}
 						onChange={(e) => setSearchQuery(e.target.value)}
 						className="pl-9 pr-8"
-						aria-label="MagnifyingGlass conversations"
+						aria-label="Search conversations"
 					/>
 					<AnimatePresence>
 						{searchQuery && (
@@ -94,7 +94,7 @@ function ConversationList({
 				</div>
 				<Button onClick={onNewConversation} className="w-full" size="sm">
 					<Plus className="h-4 w-4 mr-2" />
-					New Conversation
+					New conversation
 				</Button>
 			</div>
 
@@ -146,7 +146,7 @@ function ConversationList({
 										className="h-7 w-7 shrink-0 text-muted-foreground hover:text-destructive"
 										onClick={(e) => onDelete(e, conversation.id)}
 										disabled={deletingId === conversation.id}
-										aria-label="Backspace conversation"
+										aria-label="Delete conversation"
 									>
 										{deletingId === conversation.id ? (
 											<CircleNotch className="h-3.5 w-3.5 animate-spin" />
@@ -259,7 +259,7 @@ export function ConversationSidebar({
 				</SheetTrigger>
 				<SheetContent side="left" className="w-80 p-0">
 					<SheetHeader className="sr-only">
-						<SheetTitle>Conversation ClockCounterClockwise</SheetTitle>
+						<SheetTitle>Conversation archive</SheetTitle>
 					</SheetHeader>
 					<ConversationList {...listProps} onSelectAndClose={() => setIsOpen(false)} />
 				</SheetContent>

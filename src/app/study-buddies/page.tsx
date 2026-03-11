@@ -1,15 +1,15 @@
 'use client';
 
 import {
-	ChatCircle,
-	CheckCircle,
-	Clock,
-	MagnifyingGlass,
-	Target,
-	UserPlus,
-	Users,
-	XCircle,
-} from '@phosphor-icons/react';
+	Chat01Icon as ChatCircle,
+	CheckCircleIcon as CheckCircle,
+	Clock01Icon as Clock,
+	Search01Icon as MagnifyingGlass,
+	Target02Icon as Target,
+	UserPlus01Icon as UserPlus,
+	UserGroupIcon as Users,
+	CancelCircleIcon as XCircle,
+} from 'hugeicons-react';
 import { useEffect } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
@@ -20,6 +20,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
 import { useSession } from '@/lib/auth-client';
 import { useStudyBuddyStore } from '@/stores/useStudyBuddyStore';
+import PageTransition from '@/components/Transition/PageTransition';
 
 const SUBJECTS = [
 	'Mathematics',
@@ -70,19 +71,22 @@ export default function StudyBuddiesPage() {
 	});
 
 	return (
-		<div className="container mx-auto py-8 max-w-6xl px-6">
-			<div className="flex items-center gap-3 mb-6">
-				<Users className="h-8 w-8 text-primary" />
+		<PageTransition>
+			<div className="container mx-auto py-8 max-w-6xl px-6">
+			<div className="flex items-center gap-4 mb-12">
+				<div className="w-16 h-16 rounded-[2rem] bg-primary/10 flex items-center justify-center">
+					<Users size={32} className="text-primary stroke-[3]" />
+				</div>
 				<div>
-					<h1 className="text-3xl font-bold">Study Buddies</h1>
-					<p className="text-muted-foreground">Find and connect with fellow learners</p>
+					<h1 className="text-4xl font-black tracking-tighter uppercase">Study buddies</h1>
+					<p className="text-muted-foreground font-bold">Find and connect with fellow learners</p>
 				</div>
 			</div>
 
 			<Tabs value={activeTab} onValueChange={setActiveTab}>
-				<TabsList className="grid w-full grid-cols-4">
-					<TabsTrigger value="discover">Discover</TabsTrigger>
-					<TabsTrigger value="requests">
+				<TabsList className="grid w-full grid-cols-4 h-16 p-1.5 bg-muted/20 rounded-[2rem] mb-8">
+					<TabsTrigger value="discover" className="rounded-[1.5rem] font-black uppercase text-[10px] tracking-widest">Discover</TabsTrigger>
+					<TabsTrigger value="requests" className="rounded-[1.5rem] font-black uppercase text-[10px] tracking-widest">
 						Requests
 						{buddyRequests.length > 0 && (
 							<Badge
@@ -93,8 +97,8 @@ export default function StudyBuddiesPage() {
 							</Badge>
 						)}
 					</TabsTrigger>
-					<TabsTrigger value="my-buddies">My Buddies</TabsTrigger>
-					<TabsTrigger value="profile">My Profile</TabsTrigger>
+					<TabsTrigger value="my-buddies" className="rounded-[1.5rem] font-black uppercase text-[10px] tracking-widest">My buddies</TabsTrigger>
+					<TabsTrigger value="profile" className="rounded-[1.5rem] font-black uppercase text-[10px] tracking-widest">My profile</TabsTrigger>
 				</TabsList>
 
 				{/* Discover Tab */}
@@ -105,12 +109,12 @@ export default function StudyBuddiesPage() {
 							<div className="flex gap-4 flex-wrap">
 								<div className="flex-1 min-w-50">
 									<div className="relative">
-										<MagnifyingGlass className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+										<MagnifyingGlass className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground/40 stroke-[3]" />
 										<Input
-											placeholder="MagnifyingGlass by name or bio..."
+											placeholder="Search by name or bio..."
 											value={searchQuery}
 											onChange={(e) => setSearchQuery(e.target.value)}
-											className="pl-10"
+											className="pl-12 h-14 rounded-2xl border-none bg-muted/20 focus-visible:ring-primary/20"
 										/>
 									</div>
 								</div>
@@ -346,7 +350,7 @@ export default function StudyBuddiesPage() {
 							</div>
 
 							<div className="flex items-center gap-4">
-								<Button>FloppyDisk Profile</Button>
+								<Button>Save Profile</Button>
 								<Button variant="outline">Make Profile Visible</Button>
 							</div>
 						</CardContent>
@@ -354,5 +358,6 @@ export default function StudyBuddiesPage() {
 				</TabsContent>
 			</Tabs>
 		</div>
+		</PageTransition>
 	);
 }

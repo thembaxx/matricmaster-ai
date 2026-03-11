@@ -1,6 +1,6 @@
 'use client';
 
-import { CheckCircle, SkipForward } from '@phosphor-icons/react';
+import { CheckCircleIcon as CheckCircle, SquareArrowRight01Icon as SkipForward } from 'hugeicons-react';
 
 type QuizResultFeedbackProps = {
 	showResult: boolean;

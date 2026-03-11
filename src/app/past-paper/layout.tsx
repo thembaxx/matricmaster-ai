@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-	title: 'Past Paper Viewer | MatricMaster AI',
+	title: 'Past Paper Viewer | MatricMaster',
 	description: 'View and practice with past exam papers.',
 };
 

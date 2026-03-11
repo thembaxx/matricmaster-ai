@@ -1,11 +1,16 @@
 import type { Metadata } from 'next';
 import LanguageSelectScreen from '@/screens/LanguageSelect';
+import PageTransition from '@/components/Transition/PageTransition';
 
 export const metadata: Metadata = {
-	title: 'Language Selection | MatricMaster AI',
+	title: 'Language Selection | MatricMaster',
 	description: 'Choose your preferred language for learning.',
 };
 
 export default function LanguageSelectPage() {
-	return <LanguageSelectScreen />;
+	return (
+		<PageTransition>
+			<LanguageSelectScreen />
+		</PageTransition>
+	);
 }

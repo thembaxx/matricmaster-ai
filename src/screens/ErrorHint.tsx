@@ -1,6 +1,6 @@
 'use client';
 
-import { Eye, Lightbulb, Warning, X } from '@phosphor-icons/react';
+import { ViewIcon as Eye, IdeaIcon as Lightbulb, AlertCircleIcon as Warning, Cancel01Icon as X } from 'hugeicons-react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -108,14 +108,14 @@ export default function ErrorHint() {
 							className="w-full bg-amber-500 hover:bg-amber-600 text-white rounded-full h-14 text-base font-bold shadow-lg shadow-amber-500/20"
 							onClick={() => router.push('/quiz')}
 						>
-							Try Again
+							Try again
 						</Button>
 						<button
 							type="button"
 							className="text-zinc-400 hover:text-zinc-900 font-bold text-sm"
 							onClick={() => router.push('/quiz')} // Or show solution
 						>
-							See Solution
+							See solution
 						</button>
 					</div>
 				</main>

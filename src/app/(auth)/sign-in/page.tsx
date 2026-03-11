@@ -4,8 +4,8 @@ import { Suspense } from 'react';
 import { SignInForm } from './SignInForm';
 
 export const metadata: Metadata = {
-	title: 'Sign In | MatricMaster AI',
-	description: 'Sign in to your MatricMaster AI account to continue learning.',
+	title: 'Sign In | MatricMaster',
+	description: 'Sign in to your MatricMaster account to continue learning.',
 };
 
 export default function SignInPage() {

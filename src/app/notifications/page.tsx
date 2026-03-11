@@ -1,8 +1,9 @@
 'use client';
 
-import { Bell, Check, Checks, Trash } from '@phosphor-icons/react';
+import { Notification03Icon as Bell, CheckmarkCircle01Icon as Check, CheckmarkCircle02Icon as Checks, Delete02Icon as Trash } from 'hugeicons-react';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
+import PageTransition from '@/components/Transition/PageTransition';
 import { toast } from 'sonner';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -199,7 +200,8 @@ export default function NotificationsPage() {
 	}
 
 	return (
-		<div className="container mx-auto py-8 px-6 max-w-4xl">
+		<PageTransition>
+			<div className="container mx-auto py-8 px-6 max-w-4xl">
 			<div className="flex items-center justify-between mb-6">
 				<div className="flex items-center gap-3">
 					<Bell className="h-8 w-8 text-primary" />
@@ -309,5 +311,6 @@ export default function NotificationsPage() {
 				</TabsContent>
 			</Tabs>
 		</div>
+		</PageTransition>
 	);
 }

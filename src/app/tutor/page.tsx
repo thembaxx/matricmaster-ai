@@ -1,17 +1,18 @@
 'use client';
 
-import { Barbell, BookOpen, CircleNotch, FloppyDisk, Sparkle } from '@phosphor-icons/react';
+import { Barbell01Icon as Barbell, BookOpen01Icon as BookOpen, Loading03Icon as CircleNotch, Disk01Icon as FloppyDisk, SparklesIcon as Sparkle } from 'hugeicons-react';
 import Link from 'next/link';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import PageTransition from '@/components/Transition/PageTransition';
 import { toast } from 'sonner';
-import { AIPrompt } from '@/components/AI/AIPrompt';
-import { BookmarkButton } from '@/components/AI/BookmarkButton';
-import { ConversationSidebar } from '@/components/AI/ConversationSidebar';
-import { FlashcardModal } from '@/components/AI/FlashcardModal';
-import { MarkdownRenderer } from '@/components/AI/MarkdownRenderer';
-import { PracticeModal } from '@/components/AI/PracticeModal';
-import { QuickPrompts } from '@/components/AI/QuickPrompts';
-import { SuggestedFollowUps } from '@/components/AI/SuggestedFollowUps';
+import { TutorPrompt } from '@/components/Tutor/TutorPrompt';
+import { BookmarkButton } from '@/components/Tutor/BookmarkButton';
+import { ConversationSidebar } from '@/components/Tutor/ConversationSidebar';
+import { FlashcardModal } from '@/components/Tutor/FlashcardModal';
+import { MarkdownRenderer } from '@/components/Tutor/MarkdownRenderer';
+import { PracticeModal } from '@/components/Tutor/PracticeModal';
+import { QuickPrompts } from '@/components/Tutor/QuickPrompts';
+import { SuggestedFollowUps } from '@/components/Tutor/SuggestedFollowUps';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -45,14 +46,14 @@ interface Flashcard {
 	tags: string[];
 }
 
-export default function AITutorPage() {
+export default function TutorPage() {
 	const { data: session } = authClient.useSession();
 	const [messages, setMessages] = useState<Message[]>([
 		{
 			id: '1',
 			role: 'assistant',
 			content:
-				"Hello! I'm your AI Study Tutor. I can help you understand any topic, answer questions, or explain difficult concepts. What would you like to learn about today?",
+				"Hello! I'm your personal study tutor. I can help you understand any topic, answer questions, or explain difficult concepts. What would you like to learn about today?",
 			timestamp: new Date(),
 		},
 	]);
@@ -89,9 +90,9 @@ export default function AITutorPage() {
 		setIsLoading(true);
 
 		try {
-			const response = await fetch('/api/ai-tutor', {
+			const response = await fetch('/api/tutor', {
 				method: 'POST',
-				headers: { 'Content-TextT': 'application/json' },
+				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({
 					message: textToSend,
 					subject: selectedSubject,
@@ -174,9 +175,9 @@ export default function AITutorPage() {
 			const recentMessages = messages.slice(-6);
 			const context = recentMessages.map((m) => `${m.role}: ${m.content}`).join('\n\n');
 
-			const response = await fetch('/api/ai-tutor/practice', {
+			const response = await fetch('/api/tutor/practice', {
 				method: 'POST',
-				headers: { 'Content-TextT': 'application/json' },
+				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({
 					context,
 					subject: selectedSubject,
@@ -209,9 +210,9 @@ export default function AITutorPage() {
 			const recentMessages = messages.slice(-6);
 			const context = recentMessages.map((m) => `${m.role}: ${m.content}`).join('\n\n');
 
-			const response = await fetch('/api/ai-tutor/flashcards', {
+			const response = await fetch('/api/tutor/flashcards', {
 				method: 'POST',
-				headers: { 'Content-TextT': 'application/json' },
+				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({
 					context,
 					subject: selectedSubject,
@@ -256,7 +257,7 @@ export default function AITutorPage() {
 			{
 				id: '1',
 				role: 'assistant',
-				content: "Hello! I'm your AI Study Tutor. What would you like to learn about today?",
+				content: "Hello! I'm your personal study tutor. What would you like to learn about today?",
 				timestamp: new Date(),
 			},
 		]);
@@ -284,10 +285,10 @@ export default function AITutorPage() {
 			<div className="min-h-screen flex items-center justify-center bg-background p-4">
 				<Card className="w-full max-w-md">
 					<CardHeader>
-						<CardTitle>AI Tutor</CardTitle>
+						<CardTitle>Personal Tutor</CardTitle>
 					</CardHeader>
 					<CardContent className="space-y-4">
-						<p className="text-muted-foreground">Please sign in to access the AI Tutor.</p>
+						<p className="text-muted-foreground">Please sign in to access the Tutor Hub.</p>
 						<Button asChild className="w-full">
 							<Link href="/sign-in">Sign In</Link>
 						</Button>
@@ -298,7 +299,8 @@ export default function AITutorPage() {
 	}
 
 	return (
-		<div className="min-h-screen bg-background flex pb-40">
+		<PageTransition>
+			<div className="min-h-screen bg-background flex pb-40">
 			{session.user && (
 				<ConversationSidebar
 					userId={session.user.id}
@@ -314,17 +316,16 @@ export default function AITutorPage() {
 						<div className="flex items-center gap-3 md:gap-4">
 							<div className="h-10 w-10 md:h-12 md:w-12 rounded-xl md:rounded-2xl bg-primary/10 flex items-center justify-center shadow-inner">
 								<Sparkle
-									weight="bold"
-									className="h-5 w-5 md:h-6 md:w-6 text-primary animate-pulse-soft"
+									className="h-5 w-5 md:h-6 md:w-6 text-primary animate-pulse-soft stroke-[3]"
 								/>
 							</div>
 							<div>
-								<h1 className="text-lg md:text-xl font-black font-lexend tracking-tight">
-									AI Tutor
+								<h1 className="text-lg md:text-xl font-black font-lexend tracking-tight uppercase">
+									Tutor hub
 								</h1>
 								<div className="flex items-center gap-2">
 									<span className="flex h-2 w-2 rounded-full bg-green-500 animate-pulse" />
-									<p className="text-xs font-bold text-muted-foreground uppercase tracking-widest">
+									<p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">
 										Online
 									</p>
 								</div>
@@ -361,7 +362,7 @@ export default function AITutorPage() {
 							</Button>
 							<Button variant="ios" size="sm" className="rounded-xl" onClick={handleSave}>
 								<FloppyDisk className="h-4 w-4" />
-								<span className="hidden md:inline ml-2">FloppyDisk</span>
+								<span className="hidden md:inline ml-2">Save</span>
 							</Button>
 						</div>
 					</div>
@@ -513,7 +514,7 @@ export default function AITutorPage() {
 							onSelectPrompt={(prompt) => handleSend(prompt)}
 							selectedSubject={selectedSubject}
 						/>
-						<AIPrompt
+						<TutorPrompt
 							onSend={(msg) => handleSend(msg)}
 							isLoading={isLoading}
 							placeholder="Ask me anything about your studies..."
@@ -539,5 +540,6 @@ export default function AITutorPage() {
 				subject={selectedSubject || undefined}
 			/>
 		</div>
+		</PageTransition>
 	);
 }

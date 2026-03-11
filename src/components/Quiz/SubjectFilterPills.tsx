@@ -1,5 +1,7 @@
 'use client';
 
+import { cn } from '@/lib/utils';
+
 type SubjectFilterPillsProps = {
 	subjects: string[];
 	selectedSubject: string;
@@ -17,8 +19,8 @@ export function SubjectFilterPills({
 	getColor,
 }: SubjectFilterPillsProps) {
 	return (
-		<div className="w-full overflow-x-auto whitespace-nowrap pb-2 px-10 no-scrollbar">
-			<div className="flex gap-2 px-1">
+		<div className="w-full overflow-x-auto whitespace-nowrap pb-4 no-scrollbar">
+			<div className="flex gap-3 px-1">
 				{subjects.map((subject) => {
 					const colors = getColor(subject);
 					const isSelected = subject === selectedSubject;
@@ -27,11 +29,12 @@ export function SubjectFilterPills({
 							type="button"
 							key={subject}
 							onClick={() => onSelect(subject)}
-							className={`px-4 py-2 rounded-full text-xs font-bold transition-all shrink-0 ${
+							className={cn(
+								"h-12 px-6 rounded-2xl text-sm font-black transition-all shrink-0 active:scale-95",
 								isSelected
-									? `${colors.bg} text-white shadow-md scale-105`
-									: 'bg-muted text-muted-foreground hover:bg-accent hover:text-accent-foreground'
-							}`}
+									? cn(colors.bg, "text-white shadow-xl scale-105 shadow-primary/20")
+									: "bg-muted/10 text-muted-foreground/60 hover:bg-muted/20"
+							)}
 						>
 							{subject}
 						</button>

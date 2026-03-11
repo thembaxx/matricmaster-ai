@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import ErrorHintScreen from '@/screens/ErrorHint';
 
 export const metadata: Metadata = {
-	title: 'Error Hint | MatricMaster AI',
+	title: 'Error Hint | MatricMaster',
 	description: 'Get hints and explanations for quiz questions.',
 };
 

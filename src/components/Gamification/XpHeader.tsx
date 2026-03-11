@@ -1,6 +1,6 @@
 'use client';
 
-import { Fire, Lightning, Sparkle, Trophy } from '@phosphor-icons/react';
+import { FireIcon as Fire, LightningIcon as Lightning, SparklesIcon as Sparkle, Trophy01Icon as Trophy } from 'hugeicons-react';
 import { memo, useEffect, useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
@@ -140,14 +140,14 @@ export const XpHeader = memo(function XpHeader({
 					className="flex items-center gap-1.5 px-3 py-1.5 rounded-full"
 					style={{ backgroundColor: `${data.color}15` }}
 				>
-					<Trophy weight="bold" className="w-4 h-4" style={{ color: data.color }} />
+					<Trophy className="w-4 h-4 stroke-[3]" style={{ color: data.color }} />
 					<span className="text-sm font-black" style={{ color: data.color }}>
 						Lv.{data.level}
 					</span>
 				</div>
 				{data.streak > 0 && (
 					<div className="flex items-center gap-1.5 px-3 py-1.5 bg-orange-100 dark:bg-orange-900/20 rounded-full">
-						<Fire weight="bold" className="w-4 h-4 text-orange-500" />
+						<Fire className="w-4 h-4 text-orange-500 stroke-[3]" />
 						<span className="text-sm font-black text-orange-500">{data.streak}</span>
 					</div>
 				)}
@@ -167,7 +167,7 @@ export const XpHeader = memo(function XpHeader({
 								boxShadow: `0 8px 24px ${data.color}30`,
 							}}
 						>
-							<Trophy weight="bold" className="w-7 h-7 text-white" />
+							<Trophy className="w-7 h-7 text-white stroke-[3]" />
 						</div>
 						<div
 							className="absolute -bottom-1 -right-1 w-6 h-6 bg-background rounded-full flex items-center justify-center border-2 shadow-sm"
@@ -189,7 +189,7 @@ export const XpHeader = memo(function XpHeader({
 									borderColor: `${data.color}30`,
 								}}
 							>
-								<Sparkle weight="bold" className="w-3 h-3 mr-1" />
+								<Sparkle className="w-3 h-3 mr-1 stroke-[3]" />
 								{data.title}
 							</Badge>
 						</div>
@@ -201,7 +201,7 @@ export const XpHeader = memo(function XpHeader({
 
 				{data.streak > 0 && (
 					<div className="flex items-center gap-2 px-4 py-2 bg-linear-to-r from-orange-100 to-amber-100 dark:from-orange-900/20 dark:to-amber-900/20 rounded-2xl">
-						<Fire weight="bold" className="w-5 h-5 text-orange-500" />
+						<Fire className="w-5 h-5 text-orange-500 stroke-[3]" />
 						<div>
 							<span className="text-xl font-black text-orange-500">{data.streak}</span>
 							<span className="text-xs font-bold text-orange-500/70 ml-1">day streak</span>
@@ -221,7 +221,7 @@ export const XpHeader = memo(function XpHeader({
 					}
 				/>
 				<div className="absolute top-1/2 -translate-y-1/2 right-0 flex items-center gap-1 px-2 py-0.5 bg-background rounded-full border border-border shadow-sm">
-					<Lightning weight="bold" className="w-3 h-3" style={{ color: data.color }} />
+					<Lightning className="w-3 h-3 stroke-[3]" style={{ color: data.color }} />
 					<span className="text-[10px] font-black text-muted-foreground">
 						{Math.round(data.progress)}%
 					</span>

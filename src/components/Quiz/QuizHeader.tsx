@@ -1,6 +1,6 @@
 'use client';
 
-import { Clock } from '@phosphor-icons/react';
+import { Clock01Icon as Clock } from 'hugeicons-react';
 import { Badge } from '@/components/ui/badge';
 
 type QuizHeaderProps = {

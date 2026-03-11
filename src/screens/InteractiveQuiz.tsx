@@ -1,9 +1,9 @@
 'use client';
 
-import { ArrowLeft, TrendUp } from '@phosphor-icons/react';
+import { ArrowLeft01Icon as ArrowLeft, ChartPin01Icon as TrendUp } from 'hugeicons-react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
-import { AIExplanationCard } from '@/components/AI/AIExplanationCard';
+import { ExpertExplanationCard } from '@/components/Tutor/ExpertExplanationCard';
 import {
 	getSubjectColor,
 	MobileQuizFooter,
@@ -76,7 +76,7 @@ export default function InteractiveQuiz({ initialId }: { initialId?: string }) {
 			const explanation = await getExplanation(quiz.subject, currentQuestion.question);
 			setAiExplanation(explanation ?? "I'm sorry, I couldn't generate an explanation.");
 		} catch (error) {
-			console.error('Failed to get AI explanation:', error);
+			console.error('Failed to get expert explanation:', error);
 			setAiExplanation("Sorry, I couldn't generate an explanation right now.");
 		} finally {
 			setIsExplaining(false);
@@ -202,7 +202,7 @@ export default function InteractiveQuiz({ initialId }: { initialId?: string }) {
 
 					<QuizHintCard hint={currentQuestion.hint} />
 
-					<AIExplanationCard
+					<ExpertExplanationCard
 						explanation={aiExplanation}
 						isLoading={isExplaining}
 						onExplain={handleExplain}

@@ -1,6 +1,6 @@
 'use client';
 
-import { ArrowRight, Sparkle } from '@phosphor-icons/react';
+import { ArrowRight01Icon as ArrowRight, SparklesIcon as Sparkle } from 'hugeicons-react';
 import { Button } from '@/components/ui/button';
 
 interface SuggestedFollowUpsProps {

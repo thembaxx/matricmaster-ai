@@ -2,6 +2,7 @@
 
 import dynamicImport from 'next/dynamic';
 import { QuizSkeleton } from '@/components/QuizSkeleton';
+import PageTransition from '@/components/Transition/PageTransition';
 
 const MathematicsQuizScreen = dynamicImport(() => import('@/screens/MathematicsQuiz'), {
 	ssr: false,
@@ -11,5 +12,9 @@ const MathematicsQuizScreen = dynamicImport(() => import('@/screens/MathematicsQ
 export const dynamic = 'force-dynamic';
 
 export default function MathematicsQuizPage() {
-	return <MathematicsQuizScreen />;
+	return (
+		<PageTransition>
+			<MathematicsQuizScreen />
+		</PageTransition>
+	);
 }

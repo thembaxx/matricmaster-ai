@@ -1,9 +1,9 @@
 'use client';
 
-import { ArrowLeft, TrendUp } from '@phosphor-icons/react';
+import { ArrowLeft01Icon as ArrowLeft, ZapIcon as TrendUp, TimeClockIcon as Clock } from 'hugeicons-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
-import { AIExplanationCard } from '@/components/AI/AIExplanationCard';
+import { ExpertExplanationCard } from '@/components/Tutor/ExpertExplanationCard';
 import {
 	MobileQuizFooter,
 	QuizHintCard,
@@ -171,7 +171,7 @@ export default function PhysicsQuiz() {
 	const [showResult, setShowResult] = useState(false);
 	const [isCorrect, setIsCorrect] = useState(false);
 	const [score, setScore] = useState(0);
-	const [aiExplanation, setAiExplanation] = useState<string | null>(null);
+	const [expertExplanation, setExpertExplanation] = useState<string | null>(null);
 	const [isExplaining, setIsExplaining] = useState(false);
 	const [elapsedSeconds, setElapsedSeconds] = useState(0);
 	const startTimeRef = useRef<number>(Date.now());
@@ -188,13 +188,13 @@ export default function PhysicsQuiz() {
 
 	const handleExplain = async () => {
 		setIsExplaining(true);
-		setAiExplanation(null);
+		setExpertExplanation(null);
 		try {
 			const explanation = await getExplanation('Physical Sciences', currentQuestion.question);
-			setAiExplanation(explanation ?? "I'm sorry, I couldn't generate an explanation.");
+			setExpertExplanation(explanation ?? "I'm sorry, I couldn't generate an explanation.");
 		} catch (error) {
-			console.error('Failed to get AI explanation:', error);
-			setAiExplanation("Sorry, I couldn't generate an explanation right now.");
+			console.error('Failed to get expert explanation:', error);
+			setExpertExplanation("Sorry, I couldn't generate an explanation right now.");
 		} finally {
 			setIsExplaining(false);
 		}
@@ -213,7 +213,7 @@ export default function PhysicsQuiz() {
 			setCurrentQuestionIndex((prev) => prev + 1);
 			setSelectedAnswer(null);
 			setShowResult(false);
-			setAiExplanation(null);
+			setExpertExplanation(null);
 		} else {
 			const durationSeconds = Math.floor((Date.now() - startTimeRef.current) / 1000);
 			useQuizResultStore.getState().save({
@@ -237,56 +237,64 @@ export default function PhysicsQuiz() {
 	};
 
 	return (
-		<div className="fixed inset-0 flex flex-col w-full min-w-0 bg-background overflow-hidden">
-			<header className="px-6 pt-12 pb-4 bg-background/80 backdrop-blur-xl sticky top-0 z-20 border-b border-border shrink-0">
-				<div className="max-w-2xl mx-auto w-full flex items-center gap-4 mb-4">
+		<div className="fixed inset-0 flex flex-col w-full min-w-0 bg-white dark:bg-zinc-950 overflow-hidden">
+			<header className="px-8 pt-16 pb-8 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-3xl sticky top-0 z-20 border-none shrink-0">
+				<div className="max-w-2xl mx-auto w-full flex items-center gap-6 mb-8">
 					<Button
 						variant="ghost"
 						size="icon"
 						onClick={() => router.back()}
-						className="rounded-full"
+						className="h-14 w-14 rounded-2xl bg-muted/10 hover:bg-muted/20 transition-all"
 					>
-						<ArrowLeft className="w-5 h-5" />
+						<ArrowLeft size={24} className="stroke-[3px]" />
 					</Button>
-					<div className="flex-1">
-						<div className="flex justify-between items-center mb-2">
-							<span className="text-sm font-bold text-muted-foreground">
-								Question {currentQuestionIndex + 1} of {questions.length}
-							</span>
-							<div className="flex items-center gap-2">
-								{score > 0 && (
-									<span className="text-[10px] font-bold text-brand-green bg-brand-green/10 px-2 py-0.5 rounded-full">
-										Score: {score}
-									</span>
-								)}
-								<span className="text-xs text-muted-foreground">{formatTime(elapsedSeconds)}</span>
+					<div className="flex-1 space-y-4">
+						<div className="flex justify-between items-end">
+							<div className="space-y-1">
+								<h1 className="text-[10px] font-black text-muted-foreground/40 uppercase tracking-[0.3em] leading-none">
+									Physics session
+								</h1>
+								<span className="text-2xl font-black text-tiimo-purple block tracking-tight">
+									{currentQuestion.topic}
+								</span>
+							</div>
+							<div className="flex items-center gap-3 px-4 py-2 bg-muted/20 rounded-[1.25rem]">
+								<Clock size={18} className="text-muted-foreground stroke-[3px]" />
+								<span className="text-md font-black text-muted-foreground">{formatTime(elapsedSeconds)}</span>
 							</div>
 						</div>
-						<div className="relative h-2 w-full overflow-hidden rounded-full bg-muted">
-							<div
-								className="h-full bg-brand-purple transition-all"
-								style={{ width: `${progress}%` }}
-							/>
+						<div className="space-y-2">
+							<div className="relative h-4 w-full overflow-hidden rounded-full bg-muted/20 p-1 shadow-inner">
+								<m.div
+									initial={{ width: 0 }}
+									animate={{ width: `${progress}%` }}
+									className="h-full bg-tiimo-purple rounded-full shadow-[0_0_20px_rgba(var(--tiimo-purple),0.4)]"
+									transition={{ duration: 1.5, type: 'spring' }}
+								/>
+							</div>
+							<div className="flex justify-between items-center text-[10px] font-black tracking-[0.2em] text-muted-foreground/40 uppercase px-1">
+								<span>Question {currentQuestionIndex + 1} of {questions.length}</span>
+								<span>{Math.round(progress)}% progress</span>
+							</div>
 						</div>
-						<span className="text-[10px] font-bold text-brand-purple mt-1 block">
-							{currentQuestion.topic}
-						</span>
 					</div>
 				</div>
 			</header>
 
-			<div className="flex-1 overflow-y-auto w-full scroll-smooth">
-				<main className="px-6 py-8 space-y-8 mobile-safe-bottom max-w-2xl mx-auto w-full">
-					<div className="space-y-6">
-						<div className="flex items-center gap-3">
-							<TrendUp className="w-5 h-5 text-brand-purple" />
-							<h3 className="text-[10px] font-black uppercase text-muted-foreground tracking-[0.2em]">
-								NSC Physics P1 2025
-							</h3>
+			<div className="flex-1 overflow-y-auto w-full scroll-smooth no-scrollbar">
+				<main className="px-8 py-10 space-y-12 mobile-safe-bottom max-w-2xl mx-auto w-full pb-64">
+					<div className="space-y-10">
+						<div className="space-y-4">
+							<div className="flex items-center gap-3">
+								<TrendUp size={18} className="text-tiimo-purple stroke-[3px]" />
+								<h3 className="text-[10px] font-black uppercase text-muted-foreground/40 tracking-[0.3em]">
+									NSC Grade 12 • 2025
+								</h3>
+							</div>
+							<h2 className="text-4xl sm:text-5xl font-black text-foreground leading-tight tracking-tight">
+								{currentQuestion.question}
+							</h2>
 						</div>
-						<h2 className="text-2xl font-black text-foreground leading-tight">
-							{currentQuestion.question}
-						</h2>
 
 						<QuizQuestionCard
 							options={currentQuestion.options}
@@ -302,13 +310,13 @@ export default function PhysicsQuiz() {
 						showResult={showResult}
 						isCorrect={isCorrect}
 						correctAnswer={currentQuestion.correctAnswer}
-						correctMessage="Excellent understanding of the physics principles involved."
+						correctMessage="Flawless analysis of the physics principles."
 					/>
 
-					<QuizHintCard hint={currentQuestion.hint} />
+					<QuizHintCard hint={currentQuestion.hint} variant="smart" />
 
-					<AIExplanationCard
-						explanation={aiExplanation}
+					<ExpertExplanationCard
+						explanation={expertExplanation}
 						isLoading={isExplaining}
 						onExplain={handleExplain}
 						subject="Physical Sciences"
@@ -320,8 +328,8 @@ export default function PhysicsQuiz() {
 				showCheckButton={!showResult}
 				selectedAnswer={selectedAnswer}
 				hasMoreQuestions={currentQuestionIndex < questions.length - 1}
-				primaryColor="bg-brand-purple text-white"
-				shadowColor="shadow-brand-purple/20"
+				primaryColor="bg-primary text-white shadow-primary/30"
+				shadowColor="shadow-xl"
 				onCheck={handleCheckAnswer}
 				onNext={handleNextQuestion}
 			/>

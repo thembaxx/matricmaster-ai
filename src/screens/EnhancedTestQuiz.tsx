@@ -13,7 +13,7 @@ import {
 import { AnimatePresence, m } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
-import { AIExplanationCard } from '@/components/AI/AIExplanationCard';
+import { ExpertExplanationCard } from '@/components/Tutor/ExpertExplanationCard';
 import { SafeImage } from '@/components/SafeImage';
 import { BackgroundMesh } from '@/components/ui/background-mesh';
 import { Badge } from '@/components/ui/badge';
@@ -139,7 +139,7 @@ export default function EnhancedTestQuizScreen() {
 				explanation ?? "I'm sorry, I couldn't generate an explanation for this question."
 			);
 		} catch (error) {
-			console.error('Failed to get AI explanation:', error);
+			console.error('Failed to get expert explanation:', error);
 			setAiExplanation(
 				"Sorry, I couldn't generate an explanation right now. Please check your internet connection and try again."
 			);
@@ -618,7 +618,7 @@ export default function EnhancedTestQuizScreen() {
 									</div>
 
 									<div className="mt-8">
-										<AIExplanationCard
+										<ExpertExplanationCard
 											explanation={aiExplanation}
 											isLoading={isExplaining}
 											onExplain={() =>

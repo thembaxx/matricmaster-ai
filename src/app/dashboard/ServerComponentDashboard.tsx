@@ -9,11 +9,11 @@ import { getUserProgressSummary, getUserStreak } from '@/lib/db/progress-actions
 const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://matricmaster.ai';
 
 export const metadata: Metadata = {
-	title: 'Dashboard | MatricMaster AI',
+	title: 'Dashboard | MatricMaster',
 	description: 'Track your learning progress, view achievements, and continue your study journey.',
 	alternates: { canonical: `${baseUrl}/dashboard` },
 	openGraph: {
-		title: 'My Dashboard | MatricMaster AI',
+		title: 'My Dashboard | MatricMaster',
 		description:
 			'Track your learning progress, view achievements, and continue your study journey.',
 		url: `${baseUrl}/dashboard`,

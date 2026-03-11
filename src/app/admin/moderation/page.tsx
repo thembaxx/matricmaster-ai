@@ -295,7 +295,7 @@ export default function ModerationDashboard() {
 								<div className="flex-1 relative">
 									<MagnifyingGlass className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
 									<Input
-										placeholder="MagnifyingGlass flagged content..."
+											placeholder="Search flagged content..."
 										value={searchQuery}
 										onChange={(e) => setSearchQuery(e.target.value)}
 										className="pl-10"
@@ -428,7 +428,7 @@ export default function ModerationDashboard() {
 												{pattern.isActive ? 'Active' : 'Inactive'}
 											</Badge>
 											<Button size="sm" variant="outline">
-												Pencil
+												Edit
 											</Button>
 										</div>
 									</div>

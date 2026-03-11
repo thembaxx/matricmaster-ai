@@ -15,7 +15,7 @@ import {
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
-import { FlashcardModal } from '@/components/AI/FlashcardModal';
+import { FlashcardModal } from '@/components/Tutor/FlashcardModal';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -61,7 +61,7 @@ export default function ReviewPage() {
 			const [dueCardsRes, statsRes, recsRes] = await Promise.all([
 				fetch('/api/flashcards/due'),
 				fetch('/api/flashcards/stats'),
-				fetch('/api/ai-tutor/recommendations', { method: 'POST' }),
+				fetch('/api/tutor/recommendations', { method: 'POST' }),
 			]);
 
 			if (dueCardsRes.ok) {
@@ -254,9 +254,9 @@ export default function ReviewPage() {
 									</Link>
 								</Button>
 								<Button variant="outline" asChild>
-									<Link href="/ai-tutor">
+									<Link href="/tutor">
 										<Target weight="bold" className="mr-2 h-4 w-4" />
-										AI Tutor
+										Tutor hub
 									</Link>
 								</Button>
 								<Button variant="outline" asChild>

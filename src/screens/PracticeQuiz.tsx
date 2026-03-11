@@ -1,6 +1,6 @@
 'use client';
 
-import { ArrowLeft, Backspace, CaretLeft, CaretRight, Keyboard } from '@phosphor-icons/react';
+import { ArrowLeft01Icon as ArrowLeft, Delete02Icon as DeleteIcon, ArrowLeft01Icon as CaretLeft, ArrowRight01Icon as CaretRight, Keyboard01Icon as Keyboard } from 'hugeicons-react';
 import { AnimatePresence, m } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -244,7 +244,7 @@ function MathInputField({ input, cursorPos, onDelete }: MathInputFieldProps) {
 				className="shrink-0 text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-900/20"
 				onClick={onDelete}
 			>
-				<Backspace className="w-6 h-6 fill-current" />
+				<DeleteIcon className="w-6 h-6 fill-current" />
 			</Button>
 		</Card>
 	);

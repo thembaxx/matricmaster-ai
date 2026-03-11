@@ -1,6 +1,6 @@
 'use client';
 
-import { Question } from '@phosphor-icons/react';
+import { HelpCircleIcon as Question } from 'hugeicons-react';
 import { m } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 

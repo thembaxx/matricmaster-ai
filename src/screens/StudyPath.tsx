@@ -1,16 +1,16 @@
 'use client';
 
 import {
-	ArrowLeft,
-	CaretRight,
-	Check,
-	CircleNotch,
-	Lightning,
-	Lock,
-	Play,
-	Sparkle,
-	Star,
-} from '@phosphor-icons/react';
+	ArrowLeft01Icon as ArrowLeft,
+	ArrowRight01Icon as CaretRight,
+	CheckmarkCircle01Icon as Check,
+	Loading03Icon as CircleNotch,
+	Lightning01Icon as Lightning,
+	Lock01Icon as Lock,
+	PlayIcon as Play,
+	SparklesIcon as Sparkle,
+	StarIcon as Star,
+} from 'hugeicons-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
@@ -79,7 +79,7 @@ export default function StudyPath() {
 	}
 
 	return (
-		<div className="min-h-screen flex flex-col bg-muted dark:bg-background">
+		<div className="min-h-screen flex flex-col bg-white dark:bg-zinc-950">
 			<StudyPathHeader router={router} progress={overallProgress} />
 			<StudyPathMap pathNodes={pathNodes} />
 			<ResumeButton router={router} title={pathNodes[1].title} />
@@ -89,32 +89,32 @@ export default function StudyPath() {
 
 function StudyPathLoading() {
 	return (
-		<div className="min-h-screen flex flex-col items-center justify-center bg-muted dark:bg-background">
-			<CircleNotch className="w-8 h-8 animate-spin text-primary" />
-			<p className="mt-4 text-muted-foreground">Loading your study path...</p>
+		<div className="min-h-screen flex flex-col items-center justify-center bg-white dark:bg-zinc-950">
+			<CircleNotch size={64} className="animate-spin text-primary opacity-20" />
+			<p className="mt-6 text-lg font-black text-muted-foreground/40 uppercase tracking-[0.3em]">Preparing Journey</p>
 		</div>
 	);
 }
 
 function NoPlanState({ router }: { router: ReturnType<typeof useRouter> }) {
 	return (
-		<div className="min-h-screen flex flex-col bg-muted dark:bg-background">
+		<div className="min-h-screen flex flex-col bg-white dark:bg-zinc-950">
 			<StudyPathHeader router={router} />
-			<main className="flex-1 flex flex-col items-center justify-center px-4 text-center space-y-6">
-				<div className="w-24 h-24 rounded-full bg-primary/10 flex items-center justify-center">
-					<Sparkle weight="bold" className="w-12 h-12 text-primary" />
+			<main className="flex-1 flex flex-col items-center justify-center px-8 text-center space-y-12">
+				<div className="w-32 h-32 rounded-[2.5rem] bg-tiimo-purple text-white flex items-center justify-center shadow-2xl shadow-tiimo-purple/30">
+					<Sparkle size={64} className="stroke-[2.5px]" />
 				</div>
-				<div className="space-y-2">
-					<h2 className="text-2xl font-bold text-foreground">No Study Plan Yet</h2>
-					<p className="text-muted-foreground max-w-xs">
-						Create your personalized study plan with AI and track your progress
+				<div className="space-y-4">
+					<h2 className="text-5xl font-black text-foreground tracking-tighter">Your Path Awaits</h2>
+					<p className="text-xl font-bold text-muted-foreground/60 max-w-sm mx-auto leading-relaxed">
+							Create your personalized roadmap and start your mastery journey today.
 					</p>
 				</div>
 				<Button
 					onClick={() => router.push('/study-plan')}
-					className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold px-8"
+					className="h-20 px-12 bg-primary hover:bg-primary/90 text-white font-black text-2xl rounded-[2.5rem] shadow-2xl shadow-primary/30 active:scale-95 transition-all"
 				>
-					Create Study Plan
+					Start quest
 				</Button>
 			</main>
 		</div>
@@ -123,18 +123,21 @@ function NoPlanState({ router }: { router: ReturnType<typeof useRouter> }) {
 
 function SignInPrompt({ router }: { router: ReturnType<typeof useRouter> }) {
 	return (
-		<div className="min-h-screen flex flex-col bg-muted dark:bg-background">
+		<div className="min-h-screen flex flex-col bg-white dark:bg-zinc-950">
 			<StudyPathHeader router={router} />
-			<main className="flex-1 flex flex-col items-center justify-center px-4 text-center space-y-6">
-				<div className="space-y-2">
-					<h2 className="text-2xl font-bold text-foreground">Sign In Required</h2>
-					<p className="text-muted-foreground max-w-xs">Please sign in to view your study path</p>
+			<main className="flex-1 flex flex-col items-center justify-center px-8 text-center space-y-12">
+				<div className="w-32 h-32 rounded-[2.5rem] bg-muted/10 flex items-center justify-center">
+					<Lock size={64} className="text-muted-foreground/20 stroke-[3px]" />
+				</div>
+				<div className="space-y-4">
+					<h2 className="text-4xl font-black text-foreground tracking-tighter uppercase">Sign in required</h2>
+					<p className="text-lg font-bold text-muted-foreground/60 max-w-xs mx-auto">Please join the community to track your learning journey.</p>
 				</div>
 				<Button
 					onClick={() => router.push('/sign-in')}
-					className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold px-8"
+					className="h-16 px-10 bg-primary hover:bg-primary/90 text-white font-black text-xl rounded-2xl shadow-xl shadow-primary/30"
 				>
-					Sign In
+					Sign in
 				</Button>
 			</main>
 		</div>
@@ -148,22 +151,22 @@ type StudyPathHeaderProps = {
 
 function StudyPathHeader({ router, progress }: StudyPathHeaderProps) {
 	return (
-		<header className="px-4 py-4 flex items-center justify-between shrink-0">
+		<header className="px-8 py-10 flex items-center justify-between shrink-0">
 			<Button
 				variant="ghost"
 				size="icon"
 				onClick={() => router.back()}
-				className="rounded-full text-foreground"
+				className="h-14 w-14 rounded-2xl bg-muted/10 hover:bg-muted/20 transition-all"
 			>
-				<ArrowLeft className="w-6 h-6" />
+				<ArrowLeft size={24} className="stroke-[3px]" />
 			</Button>
-			<h1 className="text-lg font-black text-foreground tracking-tight uppercase">
-				My Physics Path
+			<h1 className="text-3xl font-black text-foreground tracking-tight uppercase">
+				Map
 			</h1>
 			{progress !== undefined && (
-				<div className="flex items-center gap-2 px-3 py-1.5 bg-primary-violet/10 rounded-full">
-					<Lightning weight="bold" className="w-4 h-4 fill-primary-violet text-primary-violet" />
-					<span className="font-black text-xs text-primary-violet">{progress}%</span>
+				<div className="flex items-center gap-3 px-5 py-2.5 bg-tiimo-orange/10 rounded-2xl">
+					<Lightning size={18} className="text-tiimo-orange fill-tiimo-orange stroke-[3px]" />
+					<span className="font-black text-md text-tiimo-orange">{progress}%</span>
 				</div>
 			)}
 		</header>
@@ -264,17 +267,14 @@ function PathNode({ node }: PathNodeProps) {
 
 function LockedNode({ node }: { node: PathNode }) {
 	return (
-		<div className="flex flex-col items-center gap-2 opacity-60">
+		<div className="flex flex-col items-center gap-4 opacity-30 scale-90">
 			<div className="relative">
-				<div className="w-16 h-16 rounded-[1.5rem] flex items-center justify-center shadow-lg bg-muted grayscale">
-					<span className="text-2xl font-black text-muted-foreground">÷±</span>
-				</div>
-				<div className="absolute -top-1 -right-1 w-8 h-8 rounded-full bg-background border-2 border-border flex items-center justify-center shadow-sm">
-					<Lock className="w-4 h-4 text-muted-foreground" />
+				<div className="w-20 h-20 rounded-[2rem] flex items-center justify-center shadow-sm bg-muted/20">
+					<Lock size={32} className="text-muted-foreground/30 stroke-[3px]" />
 				</div>
 			</div>
-			<div className="bg-muted/50 px-3 py-1 rounded-full border border-border/10">
-				<span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">
+			<div className="px-4 py-1.5 rounded-full bg-muted/10">
+				<span className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/40 whitespace-nowrap">
 					{node.title}
 				</span>
 			</div>
@@ -284,64 +284,43 @@ function LockedNode({ node }: { node: PathNode }) {
 
 function CurrentNode({ node }: { node: PathNode }) {
 	return (
-		<div className="flex flex-col items-center gap-4 scale-110">
-			<div className="relative">
-				<div
-					className="absolute inset-[-12px] rounded-full opacity-30 animate-pulse"
-					style={{
-						background: 'radial-gradient(circle, var(--primary-violet) 0%, transparent 70%)',
-					}}
+		<div className="flex flex-col items-center gap-6 scale-125 z-10">
+			<div className="relative group cursor-pointer">
+				<m.div
+					animate={{ scale: [1, 1.15, 1], opacity: [0.3, 0.5, 0.3] }}
+					transition={{ duration: 4, repeat: Number.POSITIVE_INFINITY }}
+					className="absolute inset-[-20px] rounded-full bg-primary/20 blur-2xl"
 				/>
-				<div
-					className="w-20 h-20 rounded-3xl flex items-center justify-center shadow-2xl relative"
-					style={{
-						background:
-							'linear-gradient(135deg, var(--primary-violet) 0%, var(--accent-indigo) 100%)',
-					}}
+				<m.div
+					whileHover={{ rotate: 10, scale: 1.1 }}
+					className="w-24 h-24 rounded-[2.5rem] bg-primary text-white flex items-center justify-center shadow-[0_20px_50px_rgba(var(--primary),0.3)] relative transition-all duration-500"
 				>
-					<svg className="w-10 h-10 text-primary-foreground" viewBox="0 0 24 24" fill="none">
-						<title>Cube icon</title>
-						<path
-							d="M12 2L2 7L12 12L22 7L12 2Z"
-							stroke="currentColor"
-							strokeWidth="2"
-							strokeLinecap="round"
-							strokeLinejoin="round"
-						/>
-						<path
-							d="M2 17L12 22L22 17"
-							stroke="currentColor"
-							strokeWidth="2"
-							strokeLinecap="round"
-							strokeLinejoin="round"
-						/>
-						<path
-							d="M2 12L12 17L22 12"
-							stroke="currentColor"
-							strokeWidth="2"
-							strokeLinecap="round"
-							strokeLinejoin="round"
-						/>
-					</svg>
-				</div>
-				<div className="absolute -top-3 -right-3 flex items-center gap-1 px-3 py-1 bg-primary-orange text-white text-[10px] font-black uppercase tracking-tighter rounded-full shadow-xl">
-					<span>NEXT</span>
-					<span>🚩</span>
+					<Play size={44} className="fill-current stroke-[3px] ml-1.5" />
+				</m.div>
+				<div className="absolute -top-4 -right-4 flex items-center gap-2 px-4 py-1.5 bg-tiimo-pink text-white text-[10px] font-black uppercase tracking-widest rounded-2xl shadow-xl border-4 border-white dark:border-zinc-950">
+					Active
 				</div>
 			</div>
 
-			<div className="bg-card rounded-3xl shadow-2xl p-5 min-w-[160px] border-2 border-primary-violet/10">
-				<h3 className="font-black text-foreground text-center tracking-tight leading-none uppercase text-xs">
-					{node.title}
-				</h3>
-				<p className="text-primary-violet text-[9px] font-black uppercase tracking-widest text-center mt-2 opacity-70">
-					Active Quest
-				</p>
-				<div className="mt-4 w-full h-2.5 bg-muted/50 rounded-full overflow-hidden shadow-inner">
-					<div
-						className="h-full rounded-full transition-all duration-700 ease-out bg-gradient-to-r from-primary-violet to-primary-cyan"
-						style={{ width: `${node.progress}%` }}
-					/>
+			<div className="bg-card rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.1)] p-6 min-w-[200px] border-none text-center space-y-4">
+				<div className="space-y-1">
+					<h3 className="font-black text-foreground tracking-tight text-md uppercase">
+						{node.title}
+					</h3>
+					<p className="text-[10px] font-black uppercase tracking-[0.2em] text-primary/60">
+						Priority step
+					</p>
+				</div>
+				<div className="space-y-2">
+					<div className="w-full h-4 bg-muted/20 rounded-full overflow-hidden p-1 shadow-inner">
+						<m.div
+							initial={{ width: 0 }}
+							animate={{ width: `${node.progress}%` }}
+							transition={{ duration: 2, type: 'spring' }}
+							className="h-full rounded-full bg-primary"
+						/>
+					</div>
+					<span className="text-[10px] font-black text-muted-foreground/40 uppercase tracking-widest">{node.progress}% Done</span>
 				</div>
 			</div>
 		</div>
@@ -350,29 +329,31 @@ function CurrentNode({ node }: { node: PathNode }) {
 
 function CompletedNode({ node }: { node: PathNode }) {
 	return (
-		<div className="flex flex-col items-center gap-2">
-			<div
-				className="w-16 h-16 rounded-full flex items-center justify-center shadow-lg"
-				style={{
-					background: 'linear-gradient(135deg, var(--accent-lime) 0%, #65A30D 100%)',
-				}}
+		<div className="flex flex-col items-center gap-4">
+			<m.div
+				whileHover={{ scale: 1.1, rotate: -5 }}
+				className="w-20 h-20 rounded-[2rem] flex items-center justify-center shadow-xl shadow-tiimo-green/20 transition-all duration-500 bg-tiimo-green text-white"
 			>
-				<Check className="w-8 h-8 text-white" strokeWidth={4} />
-			</div>
-			<p className="text-[10px] font-black text-foreground text-center uppercase tracking-tight opacity-80">
-				{node.title}
-			</p>
-			<div className="flex gap-1">
-				{Array.from({ length: 3 }).map((_, i) => (
-					<Star
-						key={`star-${node.id}-${i}`}
-						className={`w-5 h-5 ${
-							i < (node.stars || 0)
-								? 'fill-primary-orange text-primary-orange'
-								: 'text-muted-foreground/20'
-						}`}
-					/>
-				))}
+				<Check size={32} className="stroke-[4px]" />
+			</m.div>
+			<div className="text-center space-y-2">
+				<p className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em]">
+					{node.title}
+				</p>
+				<div className="flex justify-center gap-1.5">
+					{Array.from({ length: 3 }).map((_, i) => (
+						<Star
+							key={`star-${node.id}-${i}`}
+							size={14}
+							className={cn(
+								"stroke-[3px]",
+								i < (node.stars || 0)
+									? 'fill-tiimo-orange text-tiimo-orange'
+									: 'text-muted-foreground/20'
+							)}
+						/>
+					))}
+				</div>
 			</div>
 		</div>
 	);
@@ -385,25 +366,26 @@ type ResumeButtonProps = {
 
 function ResumeButton({ router, title }: ResumeButtonProps) {
 	return (
-		<div className="px-4 pb-8 pt-4 shrink-0 max-w-md mx-auto w-full">
-			<Button
-				variant="gradient"
-				className="w-full h-20 rounded-3xl text-white font-black shadow-2xl flex items-center justify-between px-6 ios-active-scale"
-				onClick={() => router.push('/quiz')}
-			>
-				<div className="flex items-center gap-5">
-					<div className="w-12 h-12 rounded-2xl bg-white/20 flex items-center justify-center">
-						<Play className="w-6 h-6 fill-white text-white" />
+		<div className="fixed bottom-12 left-1/2 -translate-x-1/2 w-[90%] max-w-md z-40">
+			<m.div whileHover={{ scale: 1.02, y: -4 }} whileTap={{ scale: 0.98 }}>
+				<Button
+					className="w-full h-24 rounded-[2.5rem] bg-zinc-950 dark:bg-white text-white dark:text-zinc-950 font-black shadow-[0_30px_60px_rgba(0,0,0,0.4)] flex items-center justify-between px-10 transition-all border-none"
+					onClick={() => router.push('/quiz')}
+				>
+					<div className="flex items-center gap-6">
+						<div className="w-14 h-14 rounded-2xl bg-white/20 dark:bg-zinc-900/20 flex items-center justify-center">
+							<Play size={28} className="fill-current stroke-[3px] ml-1" />
+						</div>
+						<div className="text-left space-y-1">
+						<p className="text-2xl tracking-tighter leading-none uppercase">Resume quest</p>
+							<p className="text-[10px] text-muted-foreground font-black uppercase tracking-[0.2em]">
+								{title} • 15 min
+							</p>
+						</div>
 					</div>
-					<div className="text-left">
-						<p className="font-black text-lg tracking-tight uppercase leading-none">Resume Path</p>
-						<p className="text-[10px] text-white/70 uppercase tracking-widest mt-1 font-bold">
-							{title} • 15 mins
-						</p>
-					</div>
-				</div>
-				<CaretRight className="w-6 h-6" />
-			</Button>
+					<CaretRight size={28} className="stroke-[3.5px]" />
+				</Button>
+			</m.div>
 		</div>
 	);
 }

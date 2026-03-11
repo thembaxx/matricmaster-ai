@@ -12,7 +12,8 @@ import {
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
-import { FlashcardModal } from '@/components/AI/FlashcardModal';
+import { FlashcardModal } from '@/components/Tutor/FlashcardModal';
+import PageTransition from '@/components/Transition/PageTransition';
 import { CreateDeckModal } from '@/components/Flashcards/CreateDeckModal';
 import { DeckDetailModal } from '@/components/Flashcards/DeckDetailModal';
 import { Badge } from '@/components/ui/badge';
@@ -157,7 +158,8 @@ export default function FlashcardsPage() {
 	}
 
 	return (
-		<div className="container mx-auto max-w-6xl px-4 pt-8 pb-32">
+		<PageTransition>
+			<div className="container mx-auto max-w-6xl px-4 pt-8 pb-32">
 			<div className="mb-8 flex items-center justify-between">
 				<div>
 					<h1 className="text-3xl font-bold tracking-tight">Flashcards</h1>
@@ -275,7 +277,7 @@ export default function FlashcardsPage() {
 													className="text-destructive"
 												>
 													<Trash className="mr-2 h-4 w-4" />
-													Backspace
+													Delete
 												</DropdownMenuItem>
 											</DropdownMenuContent>
 										</DropdownMenu>
@@ -332,5 +334,6 @@ export default function FlashcardsPage() {
 				/>
 			)}
 		</div>
+		</PageTransition>
 	);
 }

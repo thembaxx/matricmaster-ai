@@ -1,14 +1,14 @@
 'use client';
 
 import {
-	Calculator,
-	CaretLeft,
-	CaretRight,
-	Rocket,
-	Sparkle,
-	Target,
-	Trophy,
-} from '@phosphor-icons/react';
+	Calculator01Icon as Calculator,
+	ArrowLeft01Icon as CaretLeft,
+	ArrowRight01Icon as CaretRight,
+	Rocket01Icon as Rocket,
+	SparklesIcon as Sparkle,
+	Target02Icon as Target,
+	Trophy01Icon as Trophy,
+} from 'hugeicons-react';
 import { AnimatePresence, m } from 'framer-motion';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -40,38 +40,38 @@ interface OnboardingStep {
 const STEPS: OnboardingStep[] = [
 	{
 		id: 0,
-		title: 'Your AI Study Partner',
+		title: 'Your personal study partner',
 		description:
-			'Experience the future of education. MatricMaster AI provides personalized guidance tailored to the South African Grade 12 curriculum.',
+			'Experience the future of education. MatricMaster provides personalized guidance tailored to the South African Grade 12 curriculum.',
 		image: '/onboarding/welcome.png',
 		color: 'from-blue-500 to-indigo-600',
 		icon: Rocket,
 	},
 	{
 		id: 1,
-		title: 'Define Your Path',
+		title: 'Define your path',
 		description:
 			"Select the subjects you're tackling this year. We'll curate the most relevant past papers and study materials just for you.",
 		image: '/onboarding/focus.png',
 		color: 'from-green-500 to-emerald-600',
 		icon: Target,
 		cta: {
-			label: 'Choose Subjects',
+			label: 'Choose subjects',
 			action: () => {},
 		},
 	},
 	{
 		id: 2,
-		title: 'Master Every Topic',
+		title: 'Master every topic',
 		description:
-			'Dive into interactive quizzes with real exam questions. Get instant AI-powered explanations that turn mistakes into milestones.',
+			'Dive into interactive quizzes with real exam questions. Get instant expert explanations that turn mistakes into milestones.',
 		image: '/onboarding/quiz.png',
 		color: 'from-purple-500 to-pink-600',
 		icon: Calculator,
 	},
 	{
 		id: 3,
-		title: 'Level Up Your Grade',
+		title: 'Level up your grade',
 		description:
 			'Track your progress in real-time. Earn XP, unlock achievements, and stay motivated as you climb your way to university entrance.',
 		image: '/onboarding/progress.png',
@@ -146,34 +146,43 @@ export default function OnboardingScreen({ user }: OnboardingScreenProps) {
 	};
 
 	return (
-		<div className="fixed inset-0 h-screen bg-background flex flex-col overflow-hidden select-none">
+		<div className="fixed inset-0 h-screen bg-white dark:bg-zinc-950 flex flex-col overflow-hidden select-none">
 			<BackgroundMesh />
 
 			{/* Top Progress */}
-			<div className="relative z-20 px-6 pt-12 pb-6 w-full max-w-lg mx-auto">
-				<div className="flex items-center justify-between mb-4">
-					<div className="flex items-center gap-2">
-						<div className="w-8 h-8 bg-primary/10 rounded-xl flex items-center justify-center">
-							<Sparkle weight="bold" className="w-4 h-4 text-primary" />
+			<div className="relative z-20 px-8 pt-16 pb-8 w-full max-w-xl mx-auto">
+				<div className="flex items-center justify-between mb-8">
+					<div className="flex items-center gap-4">
+						<div className="w-12 h-12 bg-tiimo-purple text-white rounded-2xl flex items-center justify-center shadow-lg shadow-tiimo-purple/20">
+							<Sparkle size={24} className="stroke-[3px]" />
 						</div>
-						<span className="text-sm font-bold tracking-tight uppercase text-muted-foreground">
-							Step {currentStep + 1} of {STEPS.length}
-						</span>
+						<div className="text-left">
+								<p className="text-sm font-black text-foreground tracking-tight leading-none uppercase">Onboarding</p>
+							<span className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/40 mt-2 block">
+								Step {currentStep + 1} of {STEPS.length}
+							</span>
+						</div>
 					</div>
 					<Button
 						variant="ghost"
-						size="sm"
-						className="text-xs font-bold text-muted-foreground uppercase"
+						className="h-10 px-4 rounded-xl bg-muted/10 text-[10px] font-black uppercase tracking-widest text-muted-foreground/60 hover:bg-tiimo-pink hover:text-white transition-all"
 						onClick={handleComplete}
 					>
 						Skip
 					</Button>
 				</div>
-				<Progress value={((currentStep + 1) / STEPS.length) * 100} className="h-2 rounded-full" />
+				<div className="h-4 w-full bg-muted/20 rounded-full overflow-hidden p-1 shadow-inner">
+					<m.div
+						initial={{ width: 0 }}
+						animate={{ width: `${((currentStep + 1) / STEPS.length) * 100}%` }}
+						transition={{ duration: 1, type: 'spring' }}
+						className="h-full bg-primary rounded-full shadow-lg"
+					/>
+				</div>
 			</div>
 
 			{/* Main Content (Swipable) */}
-			<div className="flex-1 relative flex items-center justify-center p-6 grow">
+			<div className="flex-1 relative flex items-center justify-center px-8 grow">
 				<AnimatePresence initial={false} custom={direction} mode="wait">
 					<m.div
 						key={currentStep}
@@ -194,56 +203,52 @@ export default function OnboardingScreen({ user }: OnboardingScreenProps) {
 							if (info.offset.x > 100) paginate(-1);
 							else if (info.offset.x < -100) paginate(1);
 						}}
-						className="w-full max-w-md"
+						className="w-full max-w-lg"
 					>
-						<Card className="premium-glass border-none shadow-2xl overflow-hidden rounded-[2.5rem] p-8 flex flex-col items-center text-center space-y-8">
+						<Card className="bg-card border-none shadow-[0_30px_80px_rgba(0,0,0,0.08)] overflow-hidden rounded-[4rem] p-12 flex flex-col items-center text-center space-y-12 transition-all duration-500">
 							<m.div
 								variants={STAGGER_CONTAINER}
 								initial="hidden"
 								animate="visible"
-								className="relative w-full aspect-square max-h-64 flex items-center justify-center"
+								className="relative w-full aspect-square max-h-80 flex items-center justify-center"
 							>
 								{/* Decorative Background Blob */}
 								<m.div
 									animate={{
-										scale: [1, 1.1, 1],
-										rotate: [0, 10, 0],
+										scale: [1, 1.2, 1],
+										rotate: [0, 15, 0],
 									}}
-									transition={{ duration: 5, repeat: Number.POSITIVE_INFINITY, ease: 'easeInOut' }}
+									transition={{ duration: 6, repeat: Number.POSITIVE_INFINITY, ease: 'easeInOut' }}
 									className={cn(
-										'absolute inset-0 bg-gradient-to-br opacity-20 blur-3xl rounded-full',
+										'absolute inset-0 bg-gradient-to-br opacity-20 blur-[100px] rounded-full',
 										step.color
 									)}
 								/>
 
-								<div className="rounded-2xl overflow-hidden">
+								<div className="rounded-[3rem] overflow-hidden group">
 									<Image
 										src={step.image}
 										alt={step.title}
-										width={256}
-										height={256}
-										className="relative z-10 w-full h-full object-contain drop-shadow-2xl"
+										width={320}
+										height={320}
+										className="relative z-10 w-full h-full object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.15)] group-hover:scale-110 transition-transform duration-700"
 										priority={currentStep === 0}
 										unoptimized
 									/>
 								</div>
 							</m.div>
 
-							<div className="space-y-4">
-								<SmoothWords
-									as="h1"
-									text={
-										currentStep === 0 && user?.name
-											? `Welcome, ${user.name.split(' ')[0]}!`
-											: step.title
-									}
-									className="text-2xl font-extrabold tracking-tight text-foreground text-pretty"
-								/>
+							<div className="space-y-6">
+								<h1 className="text-5xl font-black tracking-tighter text-foreground leading-none">
+									{currentStep === 0 && user?.name
+										? `Hi, ${user.name.split(' ')[0]}!`
+										: step.title}
+								</h1>
 								<m.p
 									initial={{ opacity: 0, y: 10 }}
 									animate={{ opacity: 1, y: 0 }}
 									transition={{ delay: 0.2 }}
-									className="text-muted-foreground font-medium text-base leading-relaxed px-2 text-pretty"
+									className="text-xl font-bold text-muted-foreground/60 leading-relaxed px-4"
 								>
 									{step.description}
 								</m.p>
@@ -254,56 +259,52 @@ export default function OnboardingScreen({ user }: OnboardingScreenProps) {
 			</div>
 
 			{/* Bottom Controls */}
-			<div className="relative z-20 px-6 pb-0 w-full max-w-lg mx-auto flex flex-col gap-4">
-				<div className="flex items-center justify-between gap-4">
+			<div className="relative z-20 px-8 pb-16 w-full max-w-xl mx-auto flex flex-col gap-8">
+				<div className="flex items-center justify-between gap-6">
 					<Button
-						variant="outline"
+						variant="ghost"
 						size="icon"
-						className="w-14 h-14 rounded-2xl border-2 shrink-0"
+						className="h-20 w-20 rounded-[2rem] bg-muted/10 hover:bg-muted/20 shrink-0"
 						disabled={currentStep === 0}
 						onClick={() => paginate(-1)}
 					>
-						<CaretLeft className="w-6 h-6" />
+						<CaretLeft size={32} className="stroke-[3.5px] text-muted-foreground" />
 					</Button>
 
 					{currentStep === STEPS.length - 1 ? (
 						<Button
-							className="flex-1 h-14 rounded-2xl font-bold text-lg bg-primary text-primary-foreground shadow-xl shadow-primary/20 transition-all active:scale-[0.98]"
+							className="flex-1 h-20 rounded-[2rem] font-black text-2xl bg-primary text-white shadow-2xl shadow-primary/30 transition-all active:scale-[0.95] hover:bg-primary/90"
 							onClick={handleComplete}
 							disabled={isLoading}
 						>
 							{isLoading ? (
-								<m.div
-									animate={{ rotate: 360 }}
-									transition={{ duration: 1, repeat: Number.POSITIVE_INFINITY, ease: 'linear' }}
-								>
-									<Sparkle weight="bold" className="w-6 h-6" />
-								</m.div>
+								<CircleNotch size={32} className="animate-spin" />
 							) : (
-								"Let's Go!"
+								"Start quest"
 							)}
 						</Button>
 					) : (
 						<Button
-							className="flex-1 h-14 rounded-2xl font-bold text-lg bg-foreground text-background shadow-xl transition-all active:scale-[0.98]"
+							className="flex-1 h-20 rounded-[2rem] font-black text-2xl bg-zinc-950 dark:bg-white text-white dark:text-zinc-950 shadow-2xl transition-all active:scale-[0.95] hover:opacity-90 flex items-center justify-center gap-4"
 							onClick={() => paginate(1)}
 						>
 							Next
-							<CaretRight className="ml-2 w-5 h-5" />
+							<CaretRight size={32} className="stroke-[3.5px]" />
 						</Button>
 					)}
 				</div>
 
 				{/* Step Indicators */}
-				<div className="flex justify-center gap-2 -mb-1">
+				<div className="flex justify-center gap-3">
 					{STEPS.map((_, i) => (
 						<m.div
 							key={i}
 							animate={{
-								width: i === currentStep ? 24 : 8,
+								width: i === currentStep ? 40 : 12,
 								backgroundColor: i === currentStep ? 'var(--primary)' : 'var(--muted)',
+								opacity: i === currentStep ? 1 : 0.2
 							}}
-							className="h-2 rounded-full transition-all duration-300"
+							className="h-3 rounded-full transition-all duration-500"
 						/>
 					))}
 				</div>

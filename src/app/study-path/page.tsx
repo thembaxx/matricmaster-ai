@@ -1,11 +1,16 @@
 import type { Metadata } from 'next';
 import StudyPathScreen from '@/screens/StudyPath';
+import PageTransition from '@/components/Transition/PageTransition';
 
 export const metadata: Metadata = {
-	title: 'Study Path | MatricMaster AI',
+	title: 'Study path | MatricMaster',
 	description: 'Track your learning path and progress.',
 };
 
 export default function StudyPathPage() {
-	return <StudyPathScreen />;
+	return (
+		<PageTransition>
+			<StudyPathScreen />
+		</PageTransition>
+	);
 }

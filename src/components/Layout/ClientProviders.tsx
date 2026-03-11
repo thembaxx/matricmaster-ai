@@ -1,6 +1,6 @@
 'use client';
 
-import { domAnimation, LazyMotion } from 'framer-motion';
+import { AnimatePresence, domAnimation, LazyMotion } from 'framer-motion';
 import type { ReactNode } from 'react';
 import NotificationListener from '@/components/Notifications/NotificationListener';
 import { TooltipProvider } from '@/components/ui/tooltip';
@@ -21,7 +21,11 @@ export function ClientProviders({ children }: ClientProvidersProps) {
 					<TooltipProvider>
 						<AblyClientProvider>
 							<NotificationListener>
-								<AppLayout>{children}</AppLayout>
+								<AppLayout>
+									<AnimatePresence mode="wait" initial={false}>
+										{children}
+									</AnimatePresence>
+								</AppLayout>
 							</NotificationListener>
 						</AblyClientProvider>
 					</TooltipProvider>

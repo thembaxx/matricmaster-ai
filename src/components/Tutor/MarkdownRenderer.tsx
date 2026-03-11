@@ -1,6 +1,6 @@
 'use client';
 
-import { Check, Copy } from '@phosphor-icons/react';
+import { CheckmarkCircle01Icon as Check, Copy01Icon as Copy } from 'hugeicons-react';
 import { useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import rehypeKatex from 'rehype-katex';

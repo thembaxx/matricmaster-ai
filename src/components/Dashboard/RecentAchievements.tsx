@@ -1,6 +1,6 @@
 'use client';
 
-import { CaretRight, Medal, Trophy } from '@phosphor-icons/react';
+import { ArrowRight01Icon as CaretRight, Medal01Icon as Medal, Trophy01Icon as Trophy } from 'hugeicons-react';
 import { m } from 'framer-motion';
 import { memo, useEffect, useState } from 'react';
 import { Badge } from '@/components/ui/badge';
@@ -130,12 +130,12 @@ export const RecentAchievements = memo(function RecentAchievements({
 		return (
 			<Card className="p-6 premium-glass border-none rounded-[2.5rem] h-full">
 				<div className="flex items-center gap-2 mb-4">
-					<Trophy weight="bold" className="w-5 h-5 text-brand-amber" />
+					<Trophy className="w-5 h-5 text-brand-amber stroke-[3]" />
 					<h3 className="text-lg font-black text-foreground tracking-tight">Recent Achievements</h3>
 				</div>
 				<div className="flex flex-col items-center justify-center py-8 text-center">
 					<div className="w-16 h-16 bg-muted/50 rounded-2xl flex items-center justify-center mb-4">
-						<Medal weight="bold" className="w-8 h-8 text-muted-foreground/50" />
+						<Medal className="w-8 h-8 text-muted-foreground/50 stroke-[3]" />
 					</div>
 					<p className="text-sm text-muted-foreground font-medium">No achievements yet</p>
 					<p className="text-xs text-muted-foreground/70 mt-1">Complete quizzes to earn badges!</p>
@@ -148,7 +148,7 @@ export const RecentAchievements = memo(function RecentAchievements({
 		<Card className="p-6 premium-glass border-none rounded-[2.5rem] h-full">
 			<div className="flex items-center justify-between mb-4">
 				<div className="flex items-center gap-2">
-					<Trophy weight="bold" className="w-5 h-5 text-brand-amber" />
+					<Trophy className="w-5 h-5 text-brand-amber stroke-[3]" />
 					<h3 className="text-lg font-black text-foreground tracking-tight">Recent Achievements</h3>
 				</div>
 				<Badge variant="secondary" className="text-[10px] font-black uppercase tracking-wider">
