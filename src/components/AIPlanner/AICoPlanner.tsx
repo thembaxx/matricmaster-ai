@@ -3,13 +3,7 @@
 import { m } from 'framer-motion';
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
-import {
-	ROUTINE_TEMPLATES,
-	type Routine,
-	type RoutineBlock,
-	SUBJECTS,
-	type SubjectId,
-} from '@/types/schedule';
+import { ROUTINE_TEMPLATES, type Routine, SUBJECTS } from '@/types/schedule';
 
 const QUICK_PROMPTS = [
 	'Plan my study session',

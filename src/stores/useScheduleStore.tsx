@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, type ReactNode, useCallback, useContext, useEffect, useState } from 'react';
+import { createContext, type ReactNode, useCallback, useContext, useState } from 'react';
 import type { ScheduleView, StudyTask } from '@/types/schedule';
 
 interface ScheduleContextType {
@@ -48,91 +48,55 @@ const DEMO_TASKS: StudyTask[] = [
 		completed: false,
 		steps: [
 			{ id: 's1', title: 'Read chapter on circuits', completed: false },
-			{ id: 's2', title: 'Solve 5 circuit problems', completed: false },
+			{ id: 's2', title: 'Solve practice problems', completed: false },
+			{ id: 's3', title: 'Review solutions', completed: false },
 		],
 	},
 	{
 		id: '3',
-		title: 'Essay outline',
+		title: 'Essay writing practice',
 		subject: 'english',
-		duration: 25,
-		completed: true,
-		steps: [
-			{ id: 's1', title: 'Choose essay topic', completed: true },
-			{ id: 's2', title: 'Create thesis statement', completed: true },
-			{ id: 's3', title: 'Outline main points', completed: true },
-		],
-	},
-	{
-		id: '4',
-		title: 'Cell structures review',
-		subject: 'life-sciences',
-		duration: 40,
+		duration: 60,
 		completed: false,
 		steps: [
-			{ id: 's1', title: 'Review mitochondria', completed: false },
-			{ id: 's2', title: 'Review chloroplasts', completed: false },
+			{ id: 's1', title: 'Choose essay topic', completed: false },
+			{ id: 's2', title: 'Outline essay structure', completed: false },
+			{ id: 's3', title: 'Write first draft', completed: false },
+			{ id: 's4', title: 'Edit and revise', completed: false },
 		],
 	},
 ];
 
 export function ScheduleProvider({ children }: { children: ReactNode }) {
 	const [tasks, setTasks] = useState<StudyTask[]>(DEMO_TASKS);
-	const [currentTask, setCurrentTask] = useState<StudyTask | null>(DEMO_TASKS[0]);
+	const [currentTask, setCurrentTaskState] = useState<StudyTask | null>(DEMO_TASKS[0]);
 	const [view, setView] = useState<ScheduleView>('active');
-	const [isTimerRunning, setIsTimerRunning] = useState(false);
-	const [timeRemaining, setTimeRemaining] = useState(45 * 60);
-
-	useEffect(() => {
-		if (isTimerRunning && timeRemaining > 0) {
-			const interval = setInterval(() => {
-				setTimeRemaining((prev) => Math.max(0, prev - 1));
-			}, 1000);
-			return () => clearInterval(interval);
-		}
-		if (timeRemaining === 0) {
-			setIsTimerRunning(false);
-		}
-	}, [isTimerRunning, timeRemaining]);
+	const [isTimerRunning, setIsTimerRunning] = useState<boolean>(false);
+	const [timeRemaining, setTimeRemaining] = useState<number>(0);
 
 	const addTask = useCallback((task: StudyTask) => {
 		setTasks((prev) => [...prev, { ...task, id: generateId() }]);
 	}, []);
 
-	const removeTask = useCallback(
-		(id: string) => {
-			setTasks((prev) => prev.filter((t) => t.id !== id));
-			if (currentTask?.id === id) {
-				setCurrentTask(null);
-			}
-		},
-		[currentTask]
-	);
-
-	const updateTask = useCallback((id: string, updates: Partial<StudyTask>) => {
-		setTasks((prev) => prev.map((t) => (t.id === id ? { ...t, ...updates } : t)));
+	const removeTask = useCallback((id: string) => {
+		setTasks((prev) => prev.filter((task) => task.id !== id));
 	}, []);
 
-	const completeTask = useCallback(
-		(id: string) => {
-			updateTask(id, { completed: true });
-			const remaining = tasks.filter((t) => !t.completed && t.id !== id);
-			if (remaining.length > 0) {
-				setCurrentTask(remaining[0]);
-				setTimeRemaining(remaining[0].duration * 60);
-			} else {
-				setCurrentTask(null);
-			}
-		},
-		[tasks, updateTask]
-	);
+	const updateTask = useCallback((id: string, updates: Partial<StudyTask>) => {
+		setTasks((prev) => prev.map((task) => (task.id === id ? { ...task, ...updates } : task)));
+	}, []);
+
+	const completeTask = useCallback((id: string) => {
+		setTasks((prev) => prev.map((task) => (task.id === id ? { ...task, completed: true } : task)));
+	}, []);
+
+	const setCurrentTask = useCallback((task: StudyTask | null) => {
+		setCurrentTaskState(task);
+	}, []);
 
 	const startTimer = useCallback(() => {
-		if (currentTask && timeRemaining === 0) {
-			setTimeRemaining(currentTask.duration * 60);
-		}
 		setIsTimerRunning(true);
-	}, [currentTask, timeRemaining]);
+	}, []);
 
 	const pauseTimer = useCallback(() => {
 		setIsTimerRunning(false);
@@ -140,27 +104,26 @@ export function ScheduleProvider({ children }: { children: ReactNode }) {
 
 	const resetTimer = useCallback(() => {
 		setIsTimerRunning(false);
-		if (currentTask) {
-			setTimeRemaining(currentTask.duration * 60);
-		}
-	}, [currentTask]);
+		setTimeRemaining(0);
+	}, []);
 
 	const addTime = useCallback((seconds: number) => {
-		setTimeRemaining((prev) => Math.max(0, prev + seconds));
+		setTimeRemaining((prev) => prev + seconds);
 	}, []);
 
 	const toggleStep = useCallback((taskId: string, stepId: string) => {
 		setTasks((prev) =>
-			prev.map((task) =>
-				task.id === taskId
-					? {
-							...task,
-							steps: task.steps.map((step) =>
-								step.id === stepId ? { ...step, completed: !step.completed } : step
-							),
-						}
-					: task
-			)
+			prev.map((task) => {
+				if (task.id === taskId) {
+					return {
+						...task,
+						steps: task.steps.map((step) =>
+							step.id === stepId ? { ...step, completed: !step.completed } : step
+						),
+					};
+				}
+				return task;
+			})
 		);
 	}, []);
 
@@ -188,14 +151,11 @@ export function ScheduleProvider({ children }: { children: ReactNode }) {
 				addTime,
 				toggleStep,
 				reorderTasks,
-			}
-}
->
-{
-	children;
-}
-</ScheduleContext.Provider>
-)
+			}}
+		>
+			{children}
+		</ScheduleContext.Provider>
+	);
 }
 
 export function useSchedule() {

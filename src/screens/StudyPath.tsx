@@ -79,7 +79,7 @@ const DEMO_JOURNEY: JourneyModule = {
 
 export default function StudyPath() {
 	const router = useRouter();
-	const [journey, setJourney] = useState(DEMO_JOURNEY);
+	const [journey] = useState(DEMO_JOURNEY);
 	const [expandedStep, setExpandedStep] = useState<string | null>(null);
 
 	const toggleStep = (stepId: string) => {

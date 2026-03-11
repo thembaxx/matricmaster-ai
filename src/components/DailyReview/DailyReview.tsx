@@ -20,7 +20,6 @@ const MOODS = [
 export function DailyReviewModal({ isOpen = false, onClose }: DailyReviewProps) {
 	const { tasks } = useSchedule();
 	const [selectedMood, setSelectedMood] = useState<number | null>(null);
-	const [completed, setCompleted] = useState(0);
 
 	const pendingTasks = tasks.filter((t) => !t.completed);
 	const completedTasks = tasks.filter((t) => t.completed);

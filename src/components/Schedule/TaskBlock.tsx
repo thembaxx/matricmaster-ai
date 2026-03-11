@@ -18,7 +18,7 @@ export function TaskBlock({
 	task,
 	isActive = false,
 	completed = false,
-	showTime = false,
+	showTime: _showTime = false,
 	onClick,
 	onComplete,
 	onRemove,

@@ -19,7 +19,6 @@ import { Footer } from '@/components/Layout/footer';
 import { SmoothText, SmoothWords } from '@/components/Transition/SmoothText';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { SUBJECTS } from '@/constants/mock-data';
 import { STAGGER_CONTAINER, STAGGER_ITEM } from '@/lib/animation-presets';
@@ -61,7 +60,7 @@ export default function Landing() {
 									animate={{ opacity: 1, scale: 1 }}
 									transition={{ type: 'spring', stiffness: 300, damping: 28 }}
 								>
-									<Badge className="bg-primary/10 text-primary border-none rounded-full px-4 py-1.5 text-xs font-medium mb-4">
+									<Badge className="tiimo-glass rounded-full px-4 py-1.5 text-xs font-medium mb-4">
 										<HugeiconsIcon icon={SparklesIcon} className="w-3 h-3 mr-1.5" />
 										Trusted by 50,000+ students
 									</Badge>
@@ -69,12 +68,12 @@ export default function Landing() {
 								<SmoothWords
 									as="h1"
 									text="Master your Matric exams"
-									className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-foreground leading-tight tracking-tight"
+									className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-foreground leading-tight tracking-tight tiimo-transition"
 									stagger={0.04}
 								/>
 								<SmoothText
 									text="Interactive past papers and step-by-step explanations built for South African Grade 12 students."
-									className="text-base md:text-lg text-muted-foreground max-w-xl mx-auto lg:mx-0"
+									className="text-base md:text-lg text-muted-foreground max-w-xl mx-auto lg:mx-0 tiimo-transition"
 									delay={0.3}
 								/>
 							</div>
@@ -86,15 +85,33 @@ export default function Landing() {
 								className="w-full max-w-sm flex flex-col sm:flex-row gap-3 sm:gap-4 lg:max-w-none"
 							>
 								<Button
-									size="lg"
-									className="group relative w-full sm:w-auto lg:flex-none lg:w-64 rounded-xl shrink-0 h-12 text-base font-semibold shadow-sm ios-active-scale"
+									className="group relative w-full sm:w-auto lg:flex-none lg:w-64 tiimo-card rounded-2xl p-5 flex flex-col items-center gap-3 text-base font-medium shadow-sm ios-active-scale tiimo-transition hover:shadow-lg"
 									onClick={() => handleAuthRoute('/dashboard')}
 								>
-									<span className="relative z-10 flex items-center justify-center">
+									<div className="tiimo-icon-2xl bg-primary/10 text-primary rounded-full flex-shrink-0">
+										<HugeiconsIcon icon={CalculatorIcon} className="w-6 h-6" />
+									</div>
+									<span className="relative z-10 flex items-center justify-center text-center">
 										Start Learning
 										<HugeiconsIcon
 											icon={ArrowRight01Icon}
-											className="w-4 h-4 ml-2 group-hover:translate-x-0.5 transition-transform"
+											className="w-4 h-4 ml-2 mt-2 group-hover:translate-x-0.5 transition-transform"
+										/>
+									</span>
+								</Button>
+								<Button
+									variant="outline"
+									className="group relative w-full sm:w-auto lg:flex-none lg:w-64 tiimo-card rounded-2xl p-5 flex flex-col items-center gap-3 text-base font-medium shadow-sm ios-active-scale tiimo-transition hover:shadow-lg hover:border-primary/30"
+									onClick={() => handleAuthRoute('/dashboard')}
+								>
+									<div className="tiimo-icon-2xl bg-primary/10 text-primary rounded-full flex-shrink-0">
+										<HugeiconsIcon icon={AtomIcon} className="w-6 h-6" />
+									</div>
+									<span className="relative z-10 flex items-center justify-center text-center">
+										How It Works
+										<HugeiconsIcon
+											icon={SparklesIcon}
+											className="w-4 h-4 ml-2 mt-2 group-hover:translate-x-0.5 transition-transform"
 										/>
 									</span>
 								</Button>
@@ -240,8 +257,8 @@ export default function Landing() {
 								const icon = ICON_MAP[subject.icon] || CalculatorIcon;
 								return (
 									<m.div key={subject.id} variants={STAGGER_ITEM}>
-										<Card
-											className="bg-card p-6 sm:p-8 rounded-3xl border border-border shadow-sm group hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 cursor-pointer overflow-hidden relative h-full flex flex-col justify-between ios-active-scale"
+										<div
+											className="tiimo-card rounded-3xl p-6 sm:p-8 border border-border shadow-sm group hover:shadow-lg hover:-translate-y-2 transition-all duration-500 cursor-pointer overflow-hidden relative h-full flex flex-col justify-between ios-active-scale"
 											onClick={() => handleAuthRoute(subject.path)}
 										>
 											<m.div
@@ -284,7 +301,7 @@ export default function Landing() {
 													<HugeiconsIcon icon={ArrowRight01Icon} className="w-4 h-4" />
 												</div>
 											</div>
-										</Card>
+										</div>
 									</m.div>
 								);
 							})}
@@ -293,7 +310,7 @@ export default function Landing() {
 
 					{/* Final CTA Section */}
 					<section className="mt-24 sm:mt-32 lg:mt-48 pb-12 sm:pb-16">
-						<Card className="relative p-8 sm:p-12 lg:p-16 xl:p-24 rounded-3xl lg:rounded-[4rem] bg-primary overflow-hidden">
+						<div className="tiimo-card relative p-8 sm:p-12 lg:p-16 xl:p-24 rounded-3xl lg:rounded-[4rem] bg-primary overflow-hidden">
 							<div className="space-y-6 sm:space-y-8">
 								<h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black text-white tracking-tighter leading-[0.95] uppercase">
 									Ready to ace
@@ -316,7 +333,7 @@ export default function Landing() {
 									No credit card required
 								</p>
 							</div>
-						</Card>
+						</div>
 					</section>
 
 					{/* Footer Section */}

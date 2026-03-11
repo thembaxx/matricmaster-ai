@@ -5,7 +5,7 @@ import { useSchedule } from '@/stores/useScheduleStore';
 import { SUBJECTS } from '@/types/schedule';
 
 export function NextTaskWidget() {
-	const { currentTask, tasks } = useSchedule();
+	const { currentTask } = useSchedule();
 
 	if (!currentTask) {
 		return (

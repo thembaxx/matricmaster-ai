@@ -6,7 +6,6 @@ import { useEffect, useRef, useState } from 'react';
 import { FocusContent } from '@/components/Layout/FocusContent';
 import { TimelineSidebar } from '@/components/Layout/TimelineSidebar';
 import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
 import { useQuizResultStore } from '@/stores/useQuizResultStore';
@@ -42,7 +41,7 @@ export default function Quiz() {
 	const router = useRouter();
 	const startTimeRef = useRef<number>(Date.now());
 	const [selectedOption, setSelectedOption] = useState<string | null>(null);
-	const [isChecked, setIsChecked] = useState(false);
+	const [isChecked, setIsChecked] = useState<boolean>(false);
 	const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
 	const [elapsedSeconds, setElapsedSeconds] = useState(0);
 	const [showHint, setShowHint] = useState(false);
@@ -99,7 +98,11 @@ export default function Quiz() {
 
 			<FocusContent>
 				{/* Progress Header */}
-				<m.header initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+				<m.header
+					initial={{ opacity: 0, y: -20 }}
+					animate={{ opacity: 1, y: 0 }}
+					className="mb-6 tiimo-transition"
+				>
 					<div className="flex items-center justify-between mb-4">
 						<div className="flex items-center gap-2">
 							<span className="text-2xl">🧮</span>
@@ -145,7 +148,7 @@ export default function Quiz() {
 					</div>
 				</m.header>
 
-				<ScrollArea className="h-[calc(100vh-320px)]">
+				<ScrollArea className="h-[calc(100vh-320px)] no-scrollbar">
 					<div className="space-y-6">
 						{/* Question Card */}
 						<m.div
@@ -153,7 +156,7 @@ export default function Quiz() {
 							animate={{ opacity: 1, y: 0 }}
 							transition={{ delay: 0.1 }}
 						>
-							<Card className="p-6 rounded-3xl border border-border shadow-sm">
+							<div className="tiimo-card p-6 rounded-3xl border border-border shadow-sm">
 								<div className="mb-6">
 									<span className="inline-block px-3 py-1 rounded-full bg-primary-soft text-primary text-xs font-semibold mb-3">
 										Local extrema
@@ -224,7 +227,7 @@ export default function Quiz() {
 														: 'bg-primary-soft border-primary'
 													: isChecked && option.isCorrect
 														? 'bg-success-soft border-success'
-														: 'bg-card border-border hover:border-primary/50'
+														: 'bg-card/50 border-border hover:border-primary/50'
 											)}
 										>
 											<div
@@ -260,7 +263,7 @@ export default function Quiz() {
 										</m.button>
 									))}
 								</div>
-							</Card>
+							</div>
 						</m.div>
 
 						{/* Hint */}
@@ -277,7 +280,7 @@ export default function Quiz() {
 										<div>
 											<p className="font-semibold text-priority-medium mb-1">Hint</p>
 											<p className="text-sm">
-												A local maximum occurs where f'(x) = 0 and f&quot;(x) is negative
+												A local maximum occurs where f'(x) = 0 and f''(x) is negative
 											</p>
 										</div>
 									</div>
@@ -293,7 +296,7 @@ export default function Quiz() {
 									animate={{ opacity: 1, y: 0 }}
 									exit={{ opacity: 0, y: 20 }}
 								>
-									<Card className="p-6 rounded-3xl bg-success-soft border-success/20">
+									<div className="tiimo-card p-6 rounded-3xl bg-success-soft border-success/20">
 										<div className="flex items-center gap-3 mb-4">
 											<span className="text-3xl">🎯</span>
 											<div>
@@ -305,16 +308,16 @@ export default function Quiz() {
 											<p>
 												To find the local maximum, we first find where the derivative equals zero:
 											</p>
-											<div className="bg-card p-3 rounded-xl text-center font-mono">
+											<div className="tiimo-card p-3 rounded-2xl text-center font-mono">
 												f'(x) = 3x² - 3 = 0
 												<br />
 												x² = 1
 												<br />x = ±1
 											</div>
 											<p>Then we check the second derivative: f"(x) = 6x</p>
-											<p>At x equals -1: f&quot;(-1) equals -6, so this is a local maximum</p>
+											<p>At x equals -1: f"(-1) equals -6, so this is a local maximum</p>
 										</div>
-									</Card>
+									</div>
 								</m.div>
 							)}
 						</AnimatePresence>

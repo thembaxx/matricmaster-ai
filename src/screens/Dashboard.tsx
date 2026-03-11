@@ -6,7 +6,24 @@ import { useState } from 'react';
 import { FocusContent } from '@/components/Layout/FocusContent';
 import { TimelineSidebar } from '@/components/Layout/TimelineSidebar';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import type { UserProgressSummary } from '@/lib/db/progress-actions';
 import { cn } from '@/lib/utils';
+
+export interface DashboardInitialStreak {
+	currentStreak: number;
+	bestStreak: number;
+	lastActivityDate: string | null;
+}
+
+interface DashboardProps {
+	initialProgress?: UserProgressSummary | null;
+	initialStreak?: DashboardInitialStreak | null;
+	initialAchievements?: {
+		unlocked: unknown[];
+		available: unknown;
+	} | null;
+	session?: unknown | null;
+}
 
 // Study Task interface
 interface StudyTask {
@@ -102,7 +119,7 @@ const SUBJECTS = [
 	},
 ];
 
-export default function Dashboard() {
+export default function Dashboard({}: DashboardProps) {
 	const [tasks, setTasks] = useState<Record<string, StudyTask[]>>(DEMO_TASKS);
 	const [expanded, setExpanded] = useState<Record<string, boolean>>({
 		high: true,
@@ -130,14 +147,18 @@ export default function Dashboard() {
 
 			<FocusContent>
 				{/* Header */}
-				<m.header initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
-					<h1 className="text-3xl font-display font-bold text-foreground mb-2">Wednesday</h1>
-					<p className="text-muted-foreground">
+				<m.header
+					initial={{ opacity: 0, y: -20 }}
+					animate={{ opacity: 1, y: 0 }}
+					className="mb-8 tiimo-transition"
+				>
+					<h1 className="text-4xl font-display font-bold text-foreground mb-2">Wednesday</h1>
+					<p className="text-lg text-muted-foreground">
 						{completedCount} of {totalCount} tasks completed
 					</p>
 				</m.header>
 
-				<ScrollArea className="h-[calc(100vh-200px)]">
+				<ScrollArea className="h-[calc(100vh-200px)] no-scrollbar">
 					<div className="space-y-8 pb-24">
 						{/* Priority Sections */}
 
@@ -207,10 +228,13 @@ export default function Dashboard() {
 									>
 										<Link
 											href={`/subjects/${subject.id}`}
-											className={cn('block p-4 rounded-2xl transition-all', subject.color)}
+											className={cn(
+												'block p-6 rounded-2xl transition-all tiimo-card hover:shadow-md hover:border-primary/20',
+												subject.color.replace('bg-', 'bg-').replace('-soft', '-soft')
+											)}
 										>
-											<span className="text-3xl mb-2 block">{subject.emoji}</span>
-											<span className="font-semibold text-sm">{subject.name}</span>
+											<span className="tiimo-icon-2xl mb-4 block">{subject.emoji}</span>
+											<span className="font-semibold text-lg">{subject.name}</span>
 										</Link>
 									</m.div>
 								))}
@@ -239,24 +263,27 @@ function PrioritySection({
 	onToggle: () => void;
 	children: React.ReactNode;
 }) {
-	const priorityStyles = {
-		high: 'bg-priority-high-soft text-priority-high',
-		medium: 'bg-priority-medium-soft text-priority-medium',
-		low: 'bg-priority-low-soft text-priority-low',
-	};
-
 	return (
 		<section>
-			<button onClick={onToggle} className="flex items-center gap-2 mb-3 w-full text-left">
+			<button
+				onClick={onToggle}
+				className="flex items-center gap-3 mb-4 w-full text-left tiimo-card rounded-xl p-4 hover:shadow-sm transition-all"
+			>
 				<span
 					className={cn(
-						'px-3 py-1 rounded-full text-xs font-semibold uppercase',
-						priorityStyles[priority]
+						'px-3 py-2 rounded-full text-xs font-semibold uppercase',
+						priority === 'high'
+							? 'bg-priority-high-soft text-priority-high'
+							: priority === 'medium'
+								? 'bg-priority-medium-soft text-priority-medium'
+								: 'bg-priority-low-soft text-priority-low'
 					)}
 				>
 					{title} ({count})
 				</span>
-				<span className="text-muted-foreground text-sm">{expanded ? '▼' : '▶'}</span>
+				<span className="text-muted-foreground text-sm tiimo-transition">
+					{expanded ? '▼' : '▶'}
+				</span>
 			</button>
 
 			<AnimatePresence>
@@ -265,7 +292,7 @@ function PrioritySection({
 						initial={{ opacity: 0, height: 0 }}
 						animate={{ opacity: 1, height: 'auto' }}
 						exit={{ opacity: 0, height: 0 }}
-						className="space-y-2"
+						className="space-y-3"
 					>
 						{children}
 					</m.div>
@@ -285,38 +312,25 @@ function TaskCard({
 	index: number;
 	onToggle: () => void;
 }) {
-	const priorityStyles = {
-		high: 'border-l-4 border-l-priority-high',
-		medium: 'border-l-4 border-l-priority-medium',
-		low: 'border-l-4 border-l-priority-low',
-	};
-
 	return (
 		<m.div
 			initial={{ opacity: 0, x: -20 }}
 			animate={{ opacity: 1, x: 0 }}
 			transition={{ delay: index * 0.1 }}
 			className={cn(
-				'flex items-center gap-4 p-4 bg-card rounded-2xl shadow-sm border border-border',
-				priorityStyles[task.priority],
-				task.completed && 'opacity-50'
+				'tiimo-task-card hover:shadow-md hover:border-primary/20 transition-all',
+				task.completed && 'opacity-70'
 			)}
 		>
 			{/* Huge Checkbox */}
-			<button
-				type="button"
-				onClick={onToggle}
-				className="flex items-center gap-2 mb-3 w-full text-left"
-			>
+			<button type="button" onClick={onToggle} className="tiimo-checkbox">
 				{task.completed && (
 					<m.svg
-						initial={{ scale: 0 }}
-						animate={{ scale: 1 }}
-						className="w-5 h-5"
+						className="w-4 h-4"
 						fill="none"
 						viewBox="0 0 24 24"
 						stroke="currentColor"
-						strokeWidth={3}
+						strokeWidth={2}
 					>
 						<path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
 					</m.svg>
@@ -324,7 +338,7 @@ function TaskCard({
 			</button>
 
 			{/* Task Info */}
-			<div className="flex-1 min-w-0">
+			<div className="flex-1 min-w-0 space-y-1">
 				<p
 					className={cn(
 						'font-semibold text-foreground',
@@ -333,13 +347,13 @@ function TaskCard({
 				>
 					{task.title}
 				</p>
-				<p className="text-xs text-muted-foreground">
+				<p className="text-sm text-muted-foreground">
 					{task.subject} • {task.duration}
 				</p>
 			</div>
 
 			{/* Emoji */}
-			<div className="w-12 h-12 rounded-full bg-background flex items-center justify-center text-2xl shadow-sm">
+			<div className="tiimo-icon-xl bg-background/50 text-foreground/80 rounded-full flex items-center justify-center">
 				{task.emoji}
 			</div>
 		</m.div>
