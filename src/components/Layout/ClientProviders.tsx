@@ -5,6 +5,7 @@ import type { ReactNode } from 'react';
 import NotificationListener from '@/components/Notifications/NotificationListener';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { AblyClientProvider } from '@/lib/ably/provider';
+import { ScheduleProvider } from '@/stores/useScheduleStore';
 import AppLayout from './AppLayout';
 import QueryErrorBoundary from './QueryErrorBoundary';
 import QueryProvider from './QueryProvider';
@@ -20,9 +21,11 @@ export function ClientProviders({ children }: ClientProvidersProps) {
 				<LazyMotion features={domAnimation}>
 					<TooltipProvider>
 						<AblyClientProvider>
-							<NotificationListener>
-								<AppLayout>{children}</AppLayout>
-							</NotificationListener>
+							<ScheduleProvider>
+								<NotificationListener>
+									<AppLayout>{children}</AppLayout>
+								</NotificationListener>
+							</ScheduleProvider>
 						</AblyClientProvider>
 					</TooltipProvider>
 				</LazyMotion>

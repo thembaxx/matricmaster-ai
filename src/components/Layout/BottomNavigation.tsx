@@ -5,10 +5,10 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 const navItems = [
-	{ href: '/dashboard', label: 'Home', emoji: '🏠', color: 'bg-primary-soft' },
-	{ href: '/interactive-quiz', label: 'Study', emoji: '✍️', color: 'bg-success-soft' },
-	{ href: '/study-companion', label: 'Help', emoji: '💡', color: 'bg-priority-medium-soft' },
-	{ href: '/profile', label: 'Profile', emoji: '👤', color: 'bg-subject-accounting-soft' },
+	{ href: '/schedule', label: 'Schedule', emoji: '📅', color: 'bg-primary/20' },
+	{ href: '/planner', label: 'Planner', emoji: '🤖', color: 'bg-success/20' },
+	{ href: '/focus', label: 'Focus', emoji: '⏱️', color: 'bg-warning/20' },
+	{ href: '/profile', label: 'Profile', emoji: '👤', color: 'bg-purple-500/20' },
 ];
 
 interface BottomNavigationProps {
@@ -26,7 +26,7 @@ export function BottomNavigation({ pathname }: BottomNavigationProps) {
 			className="lg:hidden fixed bottom-6 left-1/2 -translate-x-1/2 w-[92%] max-w-md z-50 tiimo-glass rounded-[2rem] shadow-xl grid grid-cols-4 p-2"
 		>
 			{navItems.map((item) => {
-				const isActive = pathname === item.href || (item.href === '/dashboard' && pathname === '/');
+				const isActive = pathname === item.href || (item.href === '/schedule' && pathname === '/');
 				return (
 					<Link
 						key={item.href}
