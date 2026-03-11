@@ -459,7 +459,7 @@ export default function PastPaperViewer({
 									Convert to Interactive
 								</h4>
 								<p className="text-xs font-semibold text-muted-foreground">
-									Practice this paper with AI-powered feedback
+									Practice this paper with step-by-step feedback
 								</p>
 							</div>
 						</div>

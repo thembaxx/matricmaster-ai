@@ -41,9 +41,9 @@ interface OnboardingStep {
 const STEPS: OnboardingStep[] = [
 	{
 		id: 0,
-		title: 'Your AI Study Partner',
+		title: 'Your Study Companion',
 		description:
-			'Experience the future of education. MatricMaster AI provides personalized guidance tailored to the South African Grade 12 curriculum.',
+			'The smart way to ace your Matrics. Get personalized guidance tailored to the South African Grade 12 curriculum.',
 		image: '/onboarding/welcome.png',
 		color: 'from-blue-500 to-indigo-600',
 		icon: Rocket01Icon,
@@ -65,7 +65,7 @@ const STEPS: OnboardingStep[] = [
 		id: 2,
 		title: 'Master Every Topic',
 		description:
-			'Dive into interactive quizzes with real exam questions. Get instant AI-powered explanations that turn mistakes into milestones.',
+			'Dive into interactive quizzes with real exam questions. Get step-by-step explanations that turn mistakes into milestones.',
 		image: '/onboarding/quiz.png',
 		color: 'from-purple-500 to-pink-600',
 		icon: CalculatorIcon,

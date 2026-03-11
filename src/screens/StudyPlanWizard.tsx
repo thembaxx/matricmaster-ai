@@ -87,7 +87,7 @@ export default function StudyPlanWizard() {
 					Generating Your Path...
 				</h2>
 				<p className="text-sm text-muted-foreground text-center max-w-xs leading-relaxed">
-					Our AI is analyzing the curriculum and your goals to create the perfect quest map.
+					Analyzing the curriculum and your goals to create the perfect study path for you.
 				</p>
 			</div>
 		);
@@ -139,7 +139,7 @@ export default function StudyPlanWizard() {
 							What subjects are you tackling for Finals?
 						</h3>
 						<p className="text-muted-foreground text-sm">
-							Our AI will prioritize these in your daily quests.
+							We'll prioritize these in your daily study plan.
 						</p>
 					</div>
 

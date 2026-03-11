@@ -80,7 +80,7 @@ export const sideMenuSections: MenuSection[] = [
 			{ href: '/search', label: 'Search', icon: Search01Icon },
 			{ href: '/lessons', label: 'Lessons', icon: BookOpen01Icon },
 			{ href: '/physics', label: 'Physics', icon: AtomIcon },
-			{ href: '/ai-tutor', label: 'AI Tutor', icon: SparklesIcon },
+			{ href: '/study-companion', label: 'Study Companion', icon: SparklesIcon },
 			{ href: '/study-path', label: 'Study Path', icon: MapsIcon },
 			{ href: '/study-plan', label: 'Study Plan', icon: Calendar01Icon },
 		],

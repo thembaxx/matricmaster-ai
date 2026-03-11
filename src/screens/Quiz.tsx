@@ -1,59 +1,64 @@
 'use client';
 
-import { Idea01Icon, SparklesIcon } from '@hugeicons/core-free-icons';
-import { HugeiconsIcon } from '@hugeicons/react';
 import { AnimatePresence, m } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
-import { QuizFooter, QuizHintCard, QuizOptionsGrid, SimpleQuizHeader } from '@/components/Quiz';
-import { SmoothWords } from '@/components/Transition/SmoothText';
+import { FocusContent } from '@/components/Layout/FocusContent';
+import { TimelineSidebar } from '@/components/Layout/TimelineSidebar';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { getExplanation } from '@/services/geminiService';
+import { cn } from '@/lib/utils';
 import { useQuizResultStore } from '@/stores/useQuizResultStore';
 
-const options = [
-	{ id: 'A', expression: '(1, 0)', isCorrect: false },
-	{ id: 'B', expression: '(-1, 4)', isCorrect: true },
-	{ id: 'C', expression: '(0, 2)', isCorrect: false },
-	{ id: 'D', expression: '(1, 4)', isCorrect: false },
+interface QuizStep {
+	id: string;
+	emoji: string;
+	title: string;
+	status: 'completed' | 'current' | 'upcoming';
+}
+
+interface QuestionOption {
+	id: string;
+	label: string;
+	isCorrect: boolean;
+}
+
+const QUIZ_STEPS: QuizStep[] = [
+	{ id: '1', emoji: '📋', title: 'Review', status: 'completed' },
+	{ id: '2', emoji: '🧮', title: 'Problem', status: 'current' },
+	{ id: '3', emoji: '🎯', title: 'Practice', status: 'upcoming' },
+	{ id: '4', emoji: '✅', title: 'Done', status: 'upcoming' },
+];
+
+const QUESTION_OPTIONS: QuestionOption[] = [
+	{ id: 'A', label: '(1, 0)', isCorrect: false },
+	{ id: 'B', label: '(-1, 4)', isCorrect: true },
+	{ id: 'C', label: '(0, 2)', isCorrect: false },
+	{ id: 'D', label: '(1, 4)', isCorrect: false },
 ];
 
 export default function Quiz() {
 	const router = useRouter();
+	const startTimeRef = useRef<number>(Date.now());
 	const [selectedOption, setSelectedOption] = useState<string | null>(null);
 	const [isChecked, setIsChecked] = useState(false);
 	const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
-	const [showExplanation, setShowExplanation] = useState(false);
-	const [aiExplanation, setAiExplanation] = useState<string | null>(null);
-	const [isExplaining, setIsExplaining] = useState(false);
 	const [elapsedSeconds, setElapsedSeconds] = useState(0);
-	const startTimeRef = useRef<number>(Date.now());
+	const [showHint, setShowHint] = useState(false);
+	const [showExplanation, setShowExplanation] = useState(false);
 
 	useEffect(() => {
-		const interval = setInterval(() => {
+		const timer = setInterval(() => {
 			setElapsedSeconds(Math.floor((Date.now() - startTimeRef.current) / 1000));
 		}, 1000);
-		return () => clearInterval(interval);
+		return () => clearInterval(timer);
 	}, []);
 
-	const handleExplain = async () => {
-		setIsExplaining(true);
-		setAiExplanation(null);
-		try {
-			const questionContext =
-				'Local Extrema - Find the coordinates of the local maximum for f(x) = x³ - 3x + 2';
-			const explanation = await getExplanation('Mathematics', questionContext);
-			setAiExplanation(
-				explanation ?? "I'm sorry, I couldn't generate an explanation for this question."
-			);
-		} catch (error) {
-			console.error('Failed to get AI explanation:', error);
-			setAiExplanation("Sorry, I couldn't generate an explanation right now.");
-		} finally {
-			setIsExplaining(false);
-		}
+	const formatTime = (seconds: number) => {
+		const mins = Math.floor(seconds / 60);
+		const secs = seconds % 60;
+		return `${mins}:${secs.toString().padStart(2, '0')}`;
 	};
 
 	const handleCheck = () => {
@@ -81,7 +86,7 @@ export default function Quiz() {
 			return;
 		}
 
-		const option = options.find((o) => o.id === selectedOption);
+		const option = QUESTION_OPTIONS.find((o) => o.id === selectedOption);
 		const correct = option?.isCorrect || false;
 		setIsCorrect(correct);
 		setIsChecked(true);
@@ -89,271 +94,275 @@ export default function Quiz() {
 	};
 
 	return (
-		<div className="flex flex-col h-full bg-background font-lexend relative">
-			<SimpleQuizHeader
-				title="Mathematics P1"
-				subtitle="Nov 2023 • NSC"
-				elapsedSeconds={elapsedSeconds}
-				currentQuestion={3}
-				totalQuestions={12}
-				progressPercent={33.3}
-			/>
+		<div className="min-h-screen bg-background">
+			<TimelineSidebar />
 
-			<ScrollArea className="flex-1">
-				<main className="px-6 py-8 pb-48 max-w-2xl mx-auto w-full space-y-8">
-					<QuestionSection />
-					<GraphCard />
-					<QuizOptionsGrid
-						options={options}
-						selectedOption={selectedOption}
-						isChecked={isChecked}
-						onSelect={setSelectedOption}
-					/>
-					<ExplanationCard showExplanation={showExplanation} />
-					<QuizHintCard
-						hint="A local maximum occurs where the function stops increasing and starts decreasing. This always happens at a stationary point."
-						variant="smart"
-						showWhen={!showExplanation}
-					/>
-					<AIExplanationSection
-						aiExplanation={aiExplanation}
-						isExplaining={isExplaining}
-						onExplain={handleExplain}
-					/>
-				</main>
-			</ScrollArea>
-
-			<QuizFooter
-				selectedOption={selectedOption}
-				isChecked={isChecked}
-				isCorrect={isCorrect ?? false}
-				hasMoreQuestions={false}
-				onCheck={handleCheck}
-				onNext={handleCheck}
-			/>
-		</div>
-	);
-}
-
-function QuestionSection() {
-	return (
-		<div className="space-y-3">
-			<SmoothWords
-				as="h2"
-				text="Local Extrema"
-				className="text-4xl font-black text-foreground leading-tight"
-			/>
-			<m.p
-				initial={{ opacity: 0, x: -10 }}
-				animate={{ opacity: 1, x: 0 }}
-				transition={{ delay: 0.3 }}
-				className="text-muted-foreground font-medium leading-relaxed"
-			>
-				Find the coordinates of the local maximum for the function graphed below.
-			</m.p>
-		</div>
-	);
-}
-
-function GraphCard() {
-	return (
-		<m.div
-			initial={{ opacity: 0, y: 20 }}
-			animate={{ opacity: 1, y: 0 }}
-			transition={{ delay: 0.4 }}
-		>
-			<Card className="p-8 flex flex-col items-center justify-center bg-card border-none rounded-[2.5rem] shadow-sm relative overflow-hidden group">
-				<div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity" />
-
-				<m.div
-					whileHover={{ scale: 1.1 }}
-					className="text-2xl font-serif italic font-bold text-foreground mb-6 relative z-10"
-				>
-					f(x) = x³ - 3x + 2
-				</m.div>
-
-				<FunctionGraph />
-				<HintBadge />
-			</Card>
-		</m.div>
-	);
-}
-
-function FunctionGraph() {
-	return (
-		<div className="w-full h-48 relative mb-6 z-10 bg-muted/50 rounded-2xl border border-border flex items-center justify-center overflow-hidden">
-			<svg viewBox="0 0 200 120" className="w-full h-full p-4">
-				<title>Graph of f(x) = x³ - 3x + 2</title>
-				<line
-					x1="0"
-					y1="60"
-					x2="200"
-					y2="60"
-					stroke="currentColor"
-					strokeWidth="0.5"
-					className="text-border"
-				/>
-				<line
-					x1="100"
-					y1="0"
-					x2="100"
-					y2="120"
-					stroke="currentColor"
-					strokeWidth="0.5"
-					className="text-border"
-				/>
-				<m.path
-					d="M 20 100 Q 60 20 100 60 T 180 20"
-					fill="none"
-					stroke="var(--primary)"
-					strokeWidth="3"
-					strokeLinecap="round"
-					initial={{ pathLength: 0 }}
-					animate={{ pathLength: 1 }}
-					transition={{ duration: 2, ease: 'easeInOut' }}
-				/>
-				<m.circle
-					cx="75"
-					cy="40"
-					r="5"
-					fill="var(--color-success)"
-					animate={{ scale: [1, 1.2, 1] }}
-					transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
-				/>
-				<text
-					x="65"
-					y="30"
-					fontSize="8"
-					className="fill-muted-foreground font-black tracking-widest uppercase"
-				>
-					Max
-				</text>
-			</svg>
-		</div>
-	);
-}
-
-function HintBadge() {
-	return (
-		<m.div
-			whileHover={{ scale: 1.05 }}
-			className="bg-brand-amber/10 text-brand-amber px-6 py-2.5 rounded-full flex items-center gap-2.5 text-xs font-black uppercase tracking-widest shadow-sm border border-brand-amber/20 relative z-10"
-		>
-			<HugeiconsIcon icon={Idea01Icon} className="w-4 h-4 fill-brand-amber" />
-			Use f'(x) = 0 to find stationary points
-		</m.div>
-	);
-}
-
-type ExplanationCardProps = {
-	showExplanation: boolean;
-};
-
-function ExplanationCard({ showExplanation }: ExplanationCardProps) {
-	return (
-		<AnimatePresence>
-			{showExplanation && (
-				<m.div
-					initial={{ opacity: 0, height: 0, y: 20 }}
-					animate={{ opacity: 1, height: 'auto', y: 0 }}
-					exit={{ opacity: 0, height: 0 }}
-				>
-					<Card className="p-8 bg-brand-green/5 border-2 border-brand-green/20 rounded-[2.5rem] space-y-6">
-						<div className="flex items-center gap-4">
-							<m.div
-								animate={{ rotate: [0, 15, 0] }}
-								transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
-								className="w-12 h-12 bg-brand-green text-white rounded-2xl flex items-center justify-center shadow-lg shadow-brand-green/20"
-							>
-								<HugeiconsIcon icon={SparklesIcon} className="w-6 h-6" />
-							</m.div>
+			<FocusContent>
+				{/* Progress Header */}
+				<m.header initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+					<div className="flex items-center justify-between mb-4">
+						<div className="flex items-center gap-2">
+							<span className="text-2xl">🧮</span>
 							<div>
-								<h4 className="font-black text-brand-green text-lg">Aha! Moment</h4>
-								<p className="text-xs font-black text-muted-foreground uppercase tracking-widest">
-									The "Why" behind the math
-								</p>
+								<h1 className="text-lg font-display font-bold">Calculus</h1>
+								<p className="text-sm text-muted-foreground">Mathematics P1 • NSC</p>
 							</div>
 						</div>
-
-						<div className="space-y-4 text-muted-foreground font-medium leading-relaxed">
-							<p>To find the local maximum, we first find where the slope (derivative) is zero:</p>
-							<div className="bg-card p-4 rounded-2xl font-serif italic text-center text-lg border border-border">
-								f'(x) = 3x² - 3 = 0 <br />
-								3(x² - 1) = 0 <br />x = 1 or x = -1
-							</div>
-							<p>
-								By checking the second derivative <span className="italic">f''(x) = 6x</span>, we
-								see that <span className="italic">f''(-1) = -6</span> (negative), which confirms a
-								local maximum at <span className="italic">x = -1</span>.
-							</p>
-						</div>
-					</Card>
-				</m.div>
-			)}
-		</AnimatePresence>
-	);
-}
-
-type AIExplanationSectionProps = {
-	aiExplanation: string | null;
-	isExplaining: boolean;
-	onExplain: () => void;
-};
-
-function AIExplanationSection({
-	aiExplanation,
-	isExplaining,
-	onExplain,
-}: AIExplanationSectionProps) {
-	return (
-		<m.div
-			initial={{ opacity: 0 }}
-			whileInView={{ opacity: 1 }}
-			viewport={{ once: true }}
-			className="p-1 bg-linear-to-r from-primary to-brand-green rounded-[2rem]"
-		>
-			<div className="bg-card rounded-[1.9rem] p-6 space-y-4">
-				<div className="flex items-center justify-between">
-					<div className="flex items-center gap-4">
-						<m.div
-							animate={{ scale: [1, 1.1, 1] }}
-							transition={{ duration: 3, repeat: Number.POSITIVE_INFINITY }}
-							className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center"
-						>
-							<HugeiconsIcon icon={SparklesIcon} className="w-5 h-5 text-primary" />
-						</m.div>
-						<div>
-							<h4 className="font-bold text-foreground text-sm">Need a deeper explanation?</h4>
-							<p className="text-[10px] font-bold text-muted-foreground uppercase tracking-tight">
-								Ask MatricMaster AI
-							</p>
-						</div>
+						<span className="font-mono text-muted-foreground">{formatTime(elapsedSeconds)}</span>
 					</div>
-					<Button
-						size="sm"
-						variant="ghost"
-						className="font-black text-primary hover:bg-primary/5"
-						onClick={onExplain}
-						disabled={isExplaining}
-					>
-						{isExplaining ? '...' : 'Explain'}
-					</Button>
-				</div>
 
-				<AnimatePresence>
-					{aiExplanation && (
+					{/* Step List */}
+					<div className="flex items-center gap-2 mb-4">
+						{QUIZ_STEPS.map((step, index) => (
+							<m.div
+								key={step.id}
+								initial={{ opacity: 0, scale: 0.9 }}
+								animate={{ opacity: 1, scale: 1 }}
+								transition={{ delay: index * 0.1 }}
+								className={cn(
+									'flex flex-col items-center gap-1 p-2 rounded-xl flex-1',
+									step.status === 'current'
+										? 'bg-primary-soft ring-2 ring-primary'
+										: step.status === 'completed'
+											? 'bg-success-soft'
+											: 'bg-muted opacity-50'
+								)}
+							>
+								<span className="text-xl">{step.emoji}</span>
+								<span className="text-[10px] font-medium">{step.title}</span>
+							</m.div>
+						))}
+					</div>
+
+					{/* Progress Bar */}
+					<div className="h-2 bg-border rounded-full overflow-hidden">
 						<m.div
-							initial={{ opacity: 0, height: 0 }}
-							animate={{ opacity: 1, height: 'auto' }}
-							className="pt-4 border-t border-border"
+							className="h-full bg-primary rounded-full"
+							initial={{ width: 0 }}
+							animate={{ width: '50%' }}
+							transition={{ duration: 0.5 }}
+						/>
+					</div>
+				</m.header>
+
+				<ScrollArea className="h-[calc(100vh-320px)]">
+					<div className="space-y-6">
+						{/* Question Card */}
+						<m.div
+							initial={{ opacity: 0, y: 20 }}
+							animate={{ opacity: 1, y: 0 }}
+							transition={{ delay: 0.1 }}
 						>
-							<p className="text-sm text-muted-foreground font-medium leading-relaxed whitespace-pre-wrap">
-								{aiExplanation}
-							</p>
+							<Card className="p-6 rounded-3xl border border-border shadow-sm">
+								<div className="mb-6">
+									<span className="inline-block px-3 py-1 rounded-full bg-primary-soft text-primary text-xs font-semibold mb-3">
+										Local extrema
+									</span>
+									<h2 className="text-xl font-semibold leading-relaxed">
+										Find the coordinates of the local maximum for the function f(x) = x³ - 3x + 2
+									</h2>
+								</div>
+
+								{/* Graph visualization */}
+								<div className="w-full h-48 bg-muted rounded-2xl mb-6 relative overflow-hidden">
+									<svg viewBox="0 0 300 150" className="w-full h-full">
+										<title>Graph of f(x) = x³ - 3x + 2</title>
+										{/* Axes */}
+										<line
+											x1="150"
+											y1="10"
+											x2="150"
+											y2="140"
+											stroke="currentColor"
+											strokeWidth="0.5"
+											className="text-border"
+										/>
+										<line
+											x1="10"
+											y1="75"
+											x2="290"
+											y2="75"
+											stroke="currentColor"
+											strokeWidth="0.5"
+											className="text-border"
+										/>
+
+										{/* Curve */}
+										<path
+											d="M 40 120 Q 100 20, 150 75 T 260 30"
+											fill="none"
+											stroke="var(--primary)"
+											strokeWidth="3"
+											strokeLinecap="round"
+										/>
+
+										{/* Max point */}
+										<circle cx="110" cy="45" r="5" fill="var(--color-success)" />
+										<text x="95" y="35" fontSize="10" className="fill-muted-foreground">
+											Max
+										</text>
+									</svg>
+								</div>
+
+								{/* Options */}
+								<div className="space-y-3">
+									{QUESTION_OPTIONS.map((option, index) => (
+										<m.button
+											key={option.id}
+											initial={{ opacity: 0, x: -20 }}
+											animate={{ opacity: 1, x: 0 }}
+											transition={{ delay: index * 0.1 }}
+											onClick={() => !isChecked && setSelectedOption(option.id)}
+											disabled={isChecked}
+											className={cn(
+												'w-full flex items-center gap-4 p-4 rounded-2xl border-2 transition-all tiimo-press',
+												selectedOption === option.id
+													? isChecked
+														? option.isCorrect
+															? 'bg-success-soft border-success'
+															: 'bg-destructive-soft border-destructive'
+														: 'bg-primary-soft border-primary'
+													: isChecked && option.isCorrect
+														? 'bg-success-soft border-success'
+														: 'bg-card border-border hover:border-primary/50'
+											)}
+										>
+											<div
+												className={cn(
+													'w-12 h-12 rounded-full flex items-center justify-center font-bold text-lg transition-colors',
+													selectedOption === option.id
+														? isChecked
+															? option.isCorrect
+																? 'bg-success text-white'
+																: 'bg-destructive text-white'
+															: 'bg-primary text-primary-foreground'
+														: isChecked && option.isCorrect
+															? 'bg-success text-white'
+															: 'bg-muted text-muted-foreground'
+												)}
+											>
+												{option.id}
+											</div>
+											<span className="flex-1 text-left font-medium text-lg">{option.label}</span>
+
+											{isChecked && selectedOption === option.id && (
+												<m.span
+													initial={{ scale: 0 }}
+													animate={{ scale: 1 }}
+													className={cn(
+														'text-2xl',
+														option.isCorrect ? 'text-success' : 'text-destructive'
+													)}
+												>
+													{option.isCorrect ? '✓' : '✕'}
+												</m.span>
+											)}
+										</m.button>
+									))}
+								</div>
+							</Card>
 						</m.div>
+
+						{/* Hint */}
+						<AnimatePresence>
+							{showHint && (
+								<m.div
+									initial={{ opacity: 0, height: 0 }}
+									animate={{ opacity: 1, height: 'auto' }}
+									exit={{ opacity: 0, height: 0 }}
+									className="bg-priority-medium-soft rounded-2xl p-4 border border-priority-medium/30"
+								>
+									<div className="flex items-start gap-3">
+										<span className="text-2xl">💡</span>
+										<div>
+											<p className="font-semibold text-priority-medium mb-1">Hint</p>
+											<p className="text-sm">
+												A local maximum occurs where f'(x) = 0 and f&quot;(x) is negative
+											</p>
+										</div>
+									</div>
+								</m.div>
+							)}
+						</AnimatePresence>
+
+						{/* Explanation */}
+						<AnimatePresence>
+							{showExplanation && (
+								<m.div
+									initial={{ opacity: 0, y: 20 }}
+									animate={{ opacity: 1, y: 0 }}
+									exit={{ opacity: 0, y: 20 }}
+								>
+									<Card className="p-6 rounded-3xl bg-success-soft border-success/20">
+										<div className="flex items-center gap-3 mb-4">
+											<span className="text-3xl">🎯</span>
+											<div>
+												<h3 className="font-bold text-success">Great work!</h3>
+												<p className="text-xs text-success/80">Here's why this is correct</p>
+											</div>
+										</div>
+										<div className="space-y-3 text-sm">
+											<p>
+												To find the local maximum, we first find where the derivative equals zero:
+											</p>
+											<div className="bg-card p-3 rounded-xl text-center font-mono">
+												f'(x) = 3x² - 3 = 0
+												<br />
+												x² = 1
+												<br />x = ±1
+											</div>
+											<p>Then we check the second derivative: f"(x) = 6x</p>
+											<p>At x equals -1: f&quot;(-1) equals -6, so this is a local maximum</p>
+										</div>
+									</Card>
+								</m.div>
+							)}
+						</AnimatePresence>
+					</div>
+				</ScrollArea>
+
+				{/* Actions */}
+				<m.div
+					initial={{ opacity: 0, y: 20 }}
+					animate={{ opacity: 1, y: 0 }}
+					transition={{ delay: 0.3 }}
+					className="mt-6 space-y-3"
+				>
+					{!isChecked ? (
+						<>
+							<Button
+								size="lg"
+								className="w-full rounded-2xl h-14 text-lg"
+								disabled={!selectedOption}
+								onClick={handleCheck}
+							>
+								Check answer
+							</Button>
+							<button
+								type="button"
+								onClick={() => setShowHint(!showHint)}
+								className="w-full py-3 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+							>
+								{showHint ? 'Hide hint' : 'Need a hint?'}
+							</button>
+						</>
+					) : (
+						<div className="flex gap-3">
+							<Button
+								variant="outline"
+								size="lg"
+								className="flex-1 rounded-2xl h-14"
+								onClick={() => router.push('/dashboard')}
+							>
+								Exit
+							</Button>
+							<Button size="lg" className="flex-1 rounded-2xl h-14" onClick={handleCheck}>
+								{isCorrect ? 'Continue →' : 'Try again'}
+							</Button>
+						</div>
 					)}
-				</AnimatePresence>
-			</div>
-		</m.div>
+				</m.div>
+			</FocusContent>
+		</div>
 	);
 }

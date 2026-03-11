@@ -14,14 +14,14 @@ export async function generateMetadata({ searchParams }: PageProps): Promise<Met
 
 	if (!quiz) {
 		return {
-			title: 'Interactive Quiz | MatricMaster AI',
-			description: 'Test your knowledge with AI-powered interactive quizzes.',
+			title: 'Interactive Quiz | MatricMaster',
+			description: 'Test your knowledge with interactive quizzes.',
 		};
 	}
 
 	return {
-		title: `${quiz.title} | MatricMaster AI`,
-		description: `Interactive ${quiz.subject} quiz: ${quiz.title}. Get instant feedback and AI explanations.`,
+		title: `${quiz.title} | MatricMaster`,
+		description: `Interactive ${quiz.subject} quiz: ${quiz.title}. Get instant feedback and detailed explanations.`,
 		openGraph: {
 			title: `${quiz.title} | MatricMaster AI`,
 			description: `Interactive ${quiz.subject} quiz: ${quiz.title}. Get instant feedback and AI explanations.`,

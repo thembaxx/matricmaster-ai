@@ -112,7 +112,7 @@ export default function Search() {
 							Smart Search
 						</h1>
 						<p className="text-muted-foreground font-bold text-sm sm:text-lg">
-							Find papers, topics, and AI-powered insights instantly
+							Find papers, topics, and helpful insights instantly
 						</p>
 					</div>
 					<SearchHeader query={query} onQueryChange={setQuery} />
