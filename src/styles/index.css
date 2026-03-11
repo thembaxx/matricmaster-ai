@@ -5,13 +5,13 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  /* Font Families */
-  --font-display: 'Lexend', -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
-  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+  /* Font Families - Tiimo Redesign */
+  --font-display: var(--font-outfit), 'Lexend', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: var(--font-outfit), 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-mono: 'SF Mono', ui-monospace, Menlo, monospace;
   
   /* Apple HIG: System Font Stack */
-  --font-sf-pro: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", "Segoe UI", system-ui, sans-serif;
+  --font-sf-pro: var(--font-outfit), -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", "Segoe UI", system-ui, sans-serif;
   --font-sf-mono: "SF Mono", Menlo, Monaco, "Cascadia Code", ui-monospace, monospace;
 
   /* Typography Scale - Apple proportions */
@@ -37,11 +37,13 @@
   --space-12: 3rem;
   --space-16: 4rem;
 
-  /* Radius - refined Apple sizes */
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
-  --radius-xl: 24px;
+  /* Radius - Tiimo bubbly sizes */
+  --radius-sm: 12px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-xl: 32px;
+  --radius-2xl: 40px;
+  --radius-3xl: 48px;
   --radius-full: 9999px;
 
   /* Animation - spring physics preferred over durations */
@@ -55,36 +57,36 @@
   --focus-ring-width: 2px;
   --focus-ring-offset: 2px;
 
-  /* Primary Brand - refined Apple blue */
-  --primary: oklch(0.55 0.2 260);
-  --primary-hover: oklch(0.5 0.22 260);
+  /* Primary Brand - Tiimo Vibrant Blue */
+  --primary: oklch(0.6 0.2 250);
+  --primary-hover: oklch(0.55 0.22 250);
   --primary-foreground: oklch(0.99 0 0);
 
-  /* Secondary */
-  --secondary: oklch(0.96 0 0);
-  --secondary-foreground: oklch(0.25 0 0);
+  /* Secondary - Soft Lavender */
+  --secondary: oklch(0.94 0.03 270);
+  --secondary-foreground: oklch(0.3 0.1 270);
 
   /* Muted */
-  --muted: oklch(0.96 0 0);
-  --muted-foreground: oklch(0.55 0 0);
+  --muted: oklch(0.97 0.01 250);
+  --muted-foreground: oklch(0.5 0.05 250);
 
-  /* Accent */
-  --accent: oklch(0.94 0.01 260);
-  --accent-foreground: oklch(0.2 0.04 260);
+  /* Accent - Tiimo Pink */
+  --accent: oklch(0.7 0.2 330);
+  --accent-foreground: oklch(0.99 0 0);
 
   /* Destructive */
-  --destructive: oklch(0.55 0.18 25);
+  --destructive: oklch(0.6 0.2 25);
   --destructive-foreground: oklch(0.99 0 0);
 
   /* Border */
-  --border: oklch(0.92 0 0);
-  --border-strong: oklch(0.85 0 0);
-  --input: oklch(0.92 0 0);
-  --ring: oklch(0.55 0.2 260);
+  --border: oklch(0.9 0.02 250);
+  --border-strong: oklch(0.8 0.04 250);
+  --input: oklch(0.95 0.01 250);
+  --ring: oklch(0.6 0.2 250);
 
-  /* Background & Foreground */
-  --background: oklch(0.99 0 0);
-  --foreground: oklch(0.15 0 0);
+  /* Background & Foreground - Clean Paper Feel */
+  --background: oklch(0.98 0.01 250);
+  --foreground: oklch(0.2 0.05 250);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.15 0 0);
   --popover: oklch(1 0 0);
@@ -124,14 +126,14 @@
   --info: oklch(0.6 0.15 260);
   --error: oklch(0.55 0.18 25);
 
-  /* Subject Colors - kept for curriculum identification */
-  --color-math: oklch(0.6 0.17 250);
-  --color-physics: oklch(0.55 0.2 300);
-  --color-life-sci: oklch(0.65 0.18 150);
-  --color-accounting: oklch(0.8 0.18 80);
-  --color-english: oklch(0.65 0.22 350);
-  --color-geography: oklch(0.65 0.15 210);
-  --color-history: oklch(0.7 0.18 45);
+  /* Subject Colors - Tiimo Rainbow Palette */
+  --color-math: oklch(0.65 0.2 240);       /* Vibrant Blue */
+  --color-physics: oklch(0.7 0.22 300);    /* Vivid Purple */
+  --color-life-sci: oklch(0.75 0.2 140);   /* Bright Green */
+  --color-accounting: oklch(0.85 0.18 80);  /* Sunny Yellow */
+  --color-english: oklch(0.7 0.25 350);    /* Soft Red/Pink */
+  --color-geography: oklch(0.7 0.18 200);   /* Teal */
+  --color-history: oklch(0.75 0.15 40);     /* Warm Orange */
 }
 
 .dark {
@@ -310,6 +312,14 @@
 
   .premium-shadow {
     box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.08), 0 8px 24px -4px rgba(0, 0, 0, 0.04);
+  }
+
+  .tiimo-block {
+    @apply rounded-3xl border-none shadow-sm transition-all duration-300;
+  }
+
+  .tiimo-block-hover {
+    @apply hover:scale-[1.02] hover:shadow-md active:scale-[0.98];
   }
 }
 

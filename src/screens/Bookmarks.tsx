@@ -54,7 +54,6 @@ export default function Bookmarks() {
 	const [bookmarks, setBookmarks] = useState<BookmarkType[]>([]);
 	const [isLoading, setIsLoading] = useState(true);
 
-	// Load bookmarks on mount
 	useEffect(() => {
 		const loadBookmarks = async () => {
 			if (session?.user?.id) {
@@ -120,14 +119,21 @@ export default function Bookmarks() {
 	}
 
 	return (
-		<div className="flex flex-col h-full bg-background">
+		<div className="flex flex-col h-full bg-white dark:bg-zinc-950">
 			{/* Header */}
-			<header className="px-6 pt-12 pb-2 bg-card shrink-0">
-				<h1 className="text-3xl font-bold mb-1">Bookmarks</h1>
-				<p className="text-sm text-muted-foreground mb-6">Your saved revision questions</p>
+			<header className="px-6 pt-16 pb-8 shrink-0 max-w-4xl mx-auto w-full">
+				<div className="space-y-4 mb-8">
+					<div className="flex items-center gap-3">
+						<div className="h-10 w-10 bg-primary/10 rounded-xl flex items-center justify-center">
+							<span className="text-xl">🔖</span>
+						</div>
+						<span className="text-sm font-black uppercase tracking-[0.2em] text-primary">Saved</span>
+					</div>
+					<h1 className="text-5xl lg:text-7xl font-black text-foreground tracking-tighter uppercase leading-none">Your <br />Favorites</h1>
+				</div>
 
 				<Tabs defaultValue="all" className="w-full">
-					<TabsList className="w-full justify-start gap-2 bg-transparent p-0 h-auto overflow-x-auto no-scrollbar">
+					<TabsList className="w-full h-16 p-2 bg-zinc-100 dark:bg-zinc-900 rounded-[2.5rem] border-none shadow-inner">
 						{[
 							{ id: 'all', label: 'All' },
 							{ id: 'question', label: 'Questions' },
@@ -138,7 +144,7 @@ export default function Bookmarks() {
 								key={tab.id}
 								value={tab.id}
 								onClick={() => setActiveTab(tab.id)}
-								className="rounded-full border px-4 py-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+								className="flex-1 rounded-3xl font-black text-[10px] uppercase tracking-[0.2em] data-[state=active]:bg-white dark:data-[state=active]:bg-zinc-800 data-[state=active]:text-primary data-[state=active]:shadow-xl transition-all duration-500"
 							>
 								{tab.label}
 							</TabsTrigger>
@@ -154,14 +160,14 @@ export default function Bookmarks() {
 							<div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
 						</div>
 					) : filteredBookmarks.length > 0 ? (
-						<div className="grid grid-cols-2 gap-4">
+						<div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-4xl mx-auto w-full">
 							{filteredBookmarks.map((bookmark) => {
 								const Icon = getIconForType(bookmark.bookmarkType);
 								const colors = getColorForSubject(bookmark.bookmarkType);
 								return (
-									<Card
+									<div
 										key={bookmark.id}
-										className="p-5 hover:shadow-lg transition-all cursor-pointer rounded-[2.5rem] border bg-card shadow-sm flex flex-col h-64 relative group"
+										className="p-8 hover:shadow-2xl transition-all duration-500 cursor-pointer rounded-[3rem] bg-zinc-100 dark:bg-zinc-900 border-none flex flex-col h-72 relative group tiimo-block tiimo-block-hover"
 										onClick={() =>
 											router.push(
 												`/${bookmark.bookmarkType === 'past_paper' ? 'past-paper' : 'quiz'}?id=${bookmark.referenceId}`
@@ -171,53 +177,53 @@ export default function Bookmarks() {
 										<button
 											type="button"
 											onClick={(e) => handleDelete(e, bookmark.id)}
-											className="absolute top-4 right-4 md:opacity-0 opacity-100 md:group-hover:opacity-100 transition-opacity p-2 hover:bg-destructive hover:text-destructive-foreground rounded-full min-w-[44px] min-h-[44px] flex items-center justify-center touch-manipulation"
+											className="absolute top-6 right-6 p-3 bg-white dark:bg-zinc-800 text-red-500 shadow-lg rounded-2xl opacity-0 group-hover:opacity-100 transition-all active:scale-90"
 											title="Remove bookmark"
 											aria-label="Remove bookmark"
 										>
 											<HugeiconsIcon icon={BookmarkIcon} className="w-5 h-5 fill-current" />
 										</button>
-										<div className="flex justify-between items-start mb-4">
+
+										<div className="flex items-start gap-4 mb-6">
 											<div
-												className={`w-10 h-10 rounded-xl ${colors.bg} flex items-center justify-center`}
+												className={`w-16 h-16 rounded-[1.5rem] bg-white dark:bg-zinc-800 shadow-sm flex items-center justify-center`}
 											>
-												<HugeiconsIcon icon={Icon} className={`w-5 h-5 ${colors.color}`} />
+												<HugeiconsIcon icon={Icon} className={`w-8 h-8 ${colors.color}`} variant="solid" />
 											</div>
-											<HugeiconsIcon
-												icon={BookmarkIcon}
-												className={`w-5 h-5 ${colors.color} fill-current`}
-											/>
+											<div className="pt-2">
+												<p
+													className={`text-[10px] font-black uppercase tracking-widest opacity-60 mb-1`}
+												>
+													{bookmark.bookmarkType}
+												</p>
+												<h3 className="text-xl font-black tracking-tighter uppercase leading-none">
+													{bookmark.referenceId}
+												</h3>
+											</div>
 										</div>
 
 										{/* Content Preview */}
-										<div className="flex-1 bg-muted/50 border border-dashed border-border rounded-xl mb-4 flex items-center justify-center p-2">
+										<div className="flex-1 bg-white/50 dark:bg-zinc-800/50 rounded-2xl mb-4 flex items-center justify-center p-4 border border-border/50">
 											{bookmark.note ? (
-												<span className="text-sm text-muted-foreground line-clamp-3">
+												<span className="text-sm font-bold text-muted-foreground line-clamp-3">
 													{bookmark.note}
 												</span>
 											) : (
-												<div className="text-muted-foreground/50">
-													<HugeiconsIcon icon={ActivityIcon} className="w-8 h-8" />
+												<div className="text-muted-foreground/30">
+													<HugeiconsIcon icon={ActivityIcon} className="w-10 h-10" />
 												</div>
 											)}
 										</div>
 
-										<div>
-											<p
-												className={`text-[10px] font-bold mb-1 uppercase tracking-wide ${colors.color}`}
-											>
-												{bookmark.bookmarkType}
-											</p>
-											<h3 className="text-sm font-bold leading-tight mb-1">
-												{bookmark.referenceId}
-											</h3>
-											<p className="text-[10px] text-muted-foreground">
+										<div className="flex justify-between items-center px-2">
+											<p className="text-[10px] font-black text-muted-foreground/40 uppercase tracking-widest">
 												{bookmark.createdAt
 													? new Date(bookmark.createdAt).toLocaleDateString()
-													: 'Unknown'}
+													: 'Recently Added'}
 											</p>
+											<div className="h-2 w-2 rounded-full bg-primary" />
 										</div>
-									</Card>
+									</div>
 								);
 							})}
 						</div>

@@ -80,7 +80,7 @@ export default function StudyPath() {
 	}
 
 	return (
-		<div className="min-h-screen flex flex-col bg-muted dark:bg-background">
+		<div className="min-h-screen flex flex-col bg-white dark:bg-zinc-950">
 			<StudyPathHeader router={router} progress={overallProgress} />
 			<StudyPathMap pathNodes={pathNodes} />
 			<ResumeButton router={router} title={pathNodes[1].title} />
@@ -90,32 +90,34 @@ export default function StudyPath() {
 
 function StudyPathLoading() {
 	return (
-		<div className="min-h-screen flex flex-col items-center justify-center bg-muted dark:bg-background">
-			<HugeiconsIcon icon={Loading03Icon} className="w-8 h-8 animate-spin text-primary" />
-			<p className="mt-4 text-muted-foreground">Loading your study path...</p>
+		<div className="min-h-screen flex flex-col items-center justify-center bg-white dark:bg-zinc-950">
+			<div className="w-24 h-24 rounded-[2rem] bg-zinc-100 dark:bg-zinc-900 flex items-center justify-center shadow-xl mb-6 animate-pulse">
+				<HugeiconsIcon icon={Loading03Icon} className="w-10 h-10 animate-spin text-primary" />
+			</div>
+			<p className="text-sm font-black uppercase tracking-widest text-muted-foreground">Loading Map</p>
 		</div>
 	);
 }
 
 function NoPlanState({ router }: { router: ReturnType<typeof useRouter> }) {
 	return (
-		<div className="min-h-screen flex flex-col bg-muted dark:bg-background">
+		<div className="min-h-screen flex flex-col bg-white dark:bg-zinc-950">
 			<StudyPathHeader router={router} />
-			<main className="flex-1 flex flex-col items-center justify-center px-4 text-center space-y-6">
-				<div className="w-24 h-24 rounded-full bg-primary/10 flex items-center justify-center">
-					<HugeiconsIcon icon={SparklesIcon} className="w-12 h-12 text-primary" />
+			<main className="flex-1 flex flex-col items-center justify-center px-8 text-center space-y-12">
+				<div className="w-40 h-40 rounded-[3rem] bg-primary/10 flex items-center justify-center shadow-inner">
+					<HugeiconsIcon icon={SparklesIcon} className="w-16 h-16 text-primary" variant="solid" />
 				</div>
-				<div className="space-y-2">
-					<h2 className="text-2xl font-bold text-foreground">No Study Plan Yet</h2>
-					<p className="text-muted-foreground max-w-xs">
-						Create your personalized study plan with AI and track your progress
+				<div className="space-y-4">
+					<h2 className="text-4xl font-black text-foreground tracking-tighter uppercase leading-none">Your Path is Empty</h2>
+					<p className="text-lg font-bold text-muted-foreground max-w-xs mx-auto">
+						Let AI build a personalized study journey for you.
 					</p>
 				</div>
 				<Button
 					onClick={() => router.push('/study-plan')}
-					className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold px-8"
+					className="h-20 w-full max-w-sm rounded-[2.5rem] bg-primary text-white font-black text-xl uppercase tracking-widest shadow-xl shadow-primary/20 transition-all hover:scale-105 active:scale-95"
 				>
-					Create Study Plan
+					Generate Plan
 				</Button>
 			</main>
 		</div>
@@ -124,16 +126,19 @@ function NoPlanState({ router }: { router: ReturnType<typeof useRouter> }) {
 
 function SignInPrompt({ router }: { router: ReturnType<typeof useRouter> }) {
 	return (
-		<div className="min-h-screen flex flex-col bg-muted dark:bg-background">
+		<div className="min-h-screen flex flex-col bg-white dark:bg-zinc-950">
 			<StudyPathHeader router={router} />
-			<main className="flex-1 flex flex-col items-center justify-center px-4 text-center space-y-6">
-				<div className="space-y-2">
-					<h2 className="text-2xl font-bold text-foreground">Sign In Required</h2>
-					<p className="text-muted-foreground max-w-xs">Please sign in to view your study path</p>
+			<main className="flex-1 flex flex-col items-center justify-center px-8 text-center space-y-12">
+				<div className="w-40 h-40 rounded-[3rem] bg-zinc-100 dark:bg-zinc-900 flex items-center justify-center shadow-inner">
+					<span className="text-6xl">🔒</span>
+				</div>
+				<div className="space-y-4">
+					<h2 className="text-4xl font-black text-foreground tracking-tighter uppercase leading-none">Locked Path</h2>
+					<p className="text-lg font-bold text-muted-foreground max-w-xs mx-auto">Please sign in to unlock your custom curriculum.</p>
 				</div>
 				<Button
 					onClick={() => router.push('/sign-in')}
-					className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold px-8"
+					className="h-20 w-full max-w-sm rounded-[2.5rem] bg-primary text-white font-black text-xl uppercase tracking-widest shadow-xl shadow-primary/20 transition-all hover:scale-105 active:scale-95"
 				>
 					Sign In
 				</Button>
@@ -149,25 +154,26 @@ type StudyPathHeaderProps = {
 
 function StudyPathHeader({ router, progress }: StudyPathHeaderProps) {
 	return (
-		<header className="px-4 py-4 flex items-center justify-between shrink-0">
+		<header className="px-6 pt-16 pb-8 flex items-center justify-between shrink-0">
 			<Button
 				variant="ghost"
 				size="icon"
 				onClick={() => router.back()}
-				className="rounded-full text-foreground"
+				className="rounded-[1.5rem] h-14 w-14 bg-zinc-100 dark:bg-zinc-900 shadow-sm"
 			>
 				<HugeiconsIcon icon={ArrowLeft02Icon} className="w-6 h-6" />
 			</Button>
-			<h1 className="text-lg font-black text-foreground tracking-tight uppercase">
-				My Physics Path
+			<h1 className="text-xl font-black text-foreground tracking-tighter uppercase">
+				Curriculum Map
 			</h1>
 			{progress !== undefined && (
-				<div className="flex items-center gap-2 px-3 py-1.5 bg-primary-violet/10 rounded-full">
+				<div className="flex items-center gap-2 px-4 py-2 bg-primary/10 rounded-2xl shadow-sm border border-primary/20">
 					<HugeiconsIcon
 						icon={FlashIcon}
-						className="w-4 h-4 fill-primary-violet text-primary-violet"
+						className="w-4 h-4 text-primary"
+						variant="solid"
 					/>
-					<span className="font-black text-xs text-primary-violet">{progress}%</span>
+					<span className="font-black text-xs text-primary">{progress}%</span>
 				</div>
 			)}
 		</header>
@@ -288,65 +294,36 @@ function LockedNode({ node }: { node: PathNode }) {
 
 function CurrentNode({ node }: { node: PathNode }) {
 	return (
-		<div className="flex flex-col items-center gap-4 scale-110">
+		<div className="flex flex-col items-center gap-6 scale-110">
 			<div className="relative">
 				<div
-					className="absolute inset-[-12px] rounded-full opacity-30 animate-pulse"
-					style={{
-						background: 'radial-gradient(circle, var(--primary-violet) 0%, transparent 70%)',
-					}}
+					className="absolute inset-[-16px] rounded-full opacity-20 animate-pulse bg-primary"
 				/>
 				<div
-					className="w-20 h-20 rounded-3xl flex items-center justify-center shadow-2xl relative"
-					style={{
-						background:
-							'linear-gradient(135deg, var(--primary-violet) 0%, var(--accent-indigo) 100%)',
-					}}
+					className="w-24 h-24 rounded-[2.5rem] flex items-center justify-center shadow-2xl relative bg-primary text-white"
 				>
-					<svg className="w-10 h-10 text-primary-foreground" viewBox="0 0 24 24" fill="none">
-						<title>Cube icon</title>
-						<path
-							d="M12 2L2 7L12 12L22 7L12 2Z"
-							stroke="currentColor"
-							strokeWidth="2"
-							strokeLinecap="round"
-							strokeLinejoin="round"
-						/>
-						<path
-							d="M2 17L12 22L22 17"
-							stroke="currentColor"
-							strokeWidth="2"
-							strokeLinecap="round"
-							strokeLinejoin="round"
-						/>
-						<path
-							d="M2 12L12 17L22 12"
-							stroke="currentColor"
-							strokeWidth="2"
-							strokeLinecap="round"
-							strokeLinejoin="round"
-						/>
-					</svg>
+					<HugeiconsIcon icon={PlayIcon} className="w-10 h-10 fill-white" />
 				</div>
-				<div className="absolute -top-3 -right-3 flex items-center gap-1 px-3 py-1 bg-primary-orange text-white text-[10px] font-black uppercase tracking-tighter rounded-full shadow-xl">
-					<span>NEXT</span>
-					<span>🚩</span>
+				<div className="absolute -top-4 -right-4 flex items-center gap-2 px-4 py-2 bg-orange-500 text-white text-[10px] font-black uppercase tracking-widest rounded-2xl shadow-xl border-4 border-white dark:border-zinc-900">
+					Active
 				</div>
 			</div>
 
-			<div className="bg-card rounded-3xl shadow-2xl p-5 min-w-[160px] border-2 border-primary-violet/10">
-				<h3 className="font-black text-foreground text-center tracking-tight leading-none uppercase text-xs">
+			<div className="bg-white dark:bg-zinc-900 rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.1)] p-6 min-w-[200px] border-none">
+				<h3 className="font-black text-foreground text-center tracking-tighter uppercase leading-none text-sm">
 					{node.title}
 				</h3>
-				<p className="text-primary-violet text-[9px] font-black uppercase tracking-widest text-center mt-2 opacity-70">
-					Active Quest
-				</p>
-				<div className="mt-4 w-full h-2.5 bg-muted/50 rounded-full overflow-hidden shadow-inner">
-					<div
-						className="h-full rounded-full transition-all duration-700 ease-out bg-gradient-to-r from-primary-violet to-primary-cyan"
-						style={{ width: `${node.progress}%` }}
+				<div className="mt-6 w-full h-4 bg-muted rounded-full overflow-hidden border-2 border-border/10">
+					<m.div
+						initial={{ width: 0 }}
+						animate={{ width: `${node.progress}%` }}
+						transition={{ duration: 1.5, ease: "circOut" }}
+						className="h-full rounded-full bg-primary"
 					/>
 				</div>
+				<p className="text-[10px] font-black uppercase tracking-[0.2em] text-primary text-center mt-3">
+					{node.progress}% Mastered
+				</p>
 			</div>
 		</div>
 	);
@@ -390,24 +367,23 @@ type ResumeButtonProps = {
 
 function ResumeButton({ router, title }: ResumeButtonProps) {
 	return (
-		<div className="px-4 pb-8 pt-4 shrink-0 max-w-md mx-auto w-full">
+		<div className="px-6 pb-12 pt-4 shrink-0 max-w-lg mx-auto w-full">
 			<Button
-				variant="gradient"
-				className="w-full h-20 rounded-3xl text-white font-black shadow-2xl flex items-center justify-between px-6 ios-active-scale"
+				className="w-full h-24 rounded-[2.5rem] bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 font-black shadow-2xl flex items-center justify-between px-8 transition-all hover:scale-105 active:scale-95"
 				onClick={() => router.push('/quiz')}
 			>
-				<div className="flex items-center gap-5">
-					<div className="w-12 h-12 rounded-2xl bg-white/20 flex items-center justify-center">
-						<HugeiconsIcon icon={PlayIcon} className="w-6 h-6 fill-white text-white" />
+				<div className="flex items-center gap-6">
+					<div className="w-14 h-14 rounded-2xl bg-white/10 dark:bg-black/10 flex items-center justify-center">
+						<HugeiconsIcon icon={PlayIcon} className="w-8 h-8 fill-current" />
 					</div>
 					<div className="text-left">
-						<p className="font-black text-lg tracking-tight uppercase leading-none">Resume Path</p>
-						<p className="text-[10px] text-white/70 uppercase tracking-widest mt-1 font-bold">
-							{title} • 15 mins
+						<p className="font-black text-xl tracking-tighter uppercase leading-none">Resume</p>
+						<p className="text-[10px] opacity-60 uppercase tracking-widest mt-1 font-black">
+							{title}
 						</p>
 					</div>
 				</div>
-				<HugeiconsIcon icon={ArrowRight01Icon} className="w-6 h-6" />
+				<HugeiconsIcon icon={ArrowRight01Icon} className="w-8 h-8" />
 			</Button>
 		</div>
 	);
