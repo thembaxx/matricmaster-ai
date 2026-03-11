@@ -1,6 +1,6 @@
 'use client';
 
-import { AnimatePresence, m } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import {
 	BookOpen,
 	Download,
@@ -10,13 +10,15 @@ import {
 	Loader2,
 	Search as SearchIcon,
 	X,
+	CheckCircle2,
+	ChevronRight
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { BackgroundMesh } from '@/components/ui/background-mesh';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
 import {
 	Drawer,
@@ -34,6 +36,7 @@ import { STAGGER_CONTAINER, STAGGER_ITEM } from '@/lib/animation-presets';
 import { getPastPapersAction } from '@/lib/db/actions';
 import type { PastPaper } from '@/lib/db/schema';
 import { cn } from '@/lib/utils';
+import { ProgressRing } from '@/components/ui/ProgressRing';
 
 interface FilterContentProps {
 	availableSubjects: string[];
@@ -65,7 +68,7 @@ const FilterContent = memo(function FilterContent({
 	return (
 		<div className="space-y-8">
 			<div className="space-y-4">
-				<h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-label-tertiary">
+				<h4 className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
 					Subjects
 				</h4>
 				<div className="grid grid-cols-2 gap-3">
@@ -78,7 +81,7 @@ const FilterContent = memo(function FilterContent({
 							/>
 							<label
 								htmlFor={`subject-${subject}`}
-								className="text-sm font-black uppercase tracking-tight cursor-pointer text-label-secondary"
+								className="text-sm font-bold cursor-pointer text-foreground"
 							>
 								{subject}
 							</label>
@@ -88,7 +91,7 @@ const FilterContent = memo(function FilterContent({
 			</div>
 
 			<div className="space-y-4">
-				<h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-label-tertiary">
+				<h4 className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
 					Paper Type
 				</h4>
 				<div className="grid grid-cols-2 gap-3">
@@ -101,7 +104,7 @@ const FilterContent = memo(function FilterContent({
 							/>
 							<label
 								htmlFor={`paper-${paper}`}
-								className="text-sm font-black uppercase tracking-tight cursor-pointer text-label-secondary"
+								className="text-sm font-bold cursor-pointer text-foreground"
 							>
 								{paper}
 							</label>
@@ -111,7 +114,7 @@ const FilterContent = memo(function FilterContent({
 			</div>
 
 			<div className="space-y-4">
-				<h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-label-tertiary">
+				<h4 className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
 					Month
 				</h4>
 				<div className="grid grid-cols-2 gap-3">
@@ -124,7 +127,7 @@ const FilterContent = memo(function FilterContent({
 							/>
 							<label
 								htmlFor={`month-${month}`}
-								className="text-sm font-black uppercase tracking-tight cursor-pointer text-label-secondary"
+								className="text-sm font-bold cursor-pointer text-foreground"
 							>
 								{month}
 							</label>
@@ -136,10 +139,10 @@ const FilterContent = memo(function FilterContent({
 			<div className="space-y-4">
 				<div className="flex items-center justify-between">
 					<div>
-						<h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-label-tertiary">
+						<h4 className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
 							Extracted Only
 						</h4>
-						<p className="text-[10px] text-label-tertiary mt-1 uppercase tracking-wider">
+						<p className="text-[10px] text-muted-foreground mt-1 font-medium">
 							Show papers with AI-extracted questions
 						</p>
 					</div>
@@ -164,7 +167,6 @@ export default function PastPapers() {
 
 	const years = useMemo(() => ['All', 2024, 2023, 2022, 2021, 2020], []);
 
-	// Performance: Memoize extracted fields to avoid O(N) recalculation on every render
 	const availableSubjects = useMemo(
 		() => [...new Set(papers.map((p) => p.subject))].sort(),
 		[papers]
@@ -231,8 +233,6 @@ export default function PastPapers() {
 		fetchPapers();
 	}, []);
 
-	// Performance: Memoize filtered results to avoid re-filtering on every render
-	// (e.g. when opening drawers or clicking unrelated UI elements)
 	const filteredPapers = useMemo(() => {
 		return papers.filter((paper) => {
 			const matchesSearch =
@@ -264,93 +264,74 @@ export default function PastPapers() {
 	]);
 
 	return (
-		<div className="flex flex-col h-full min-w-0 bg-background relative overflow-x-hidden lg:px-8">
+		<div className="flex flex-col h-full min-w-0 bg-background relative overflow-x-hidden">
 			<BackgroundMesh variant="subtle" />
 
-			{/* Header */}
-			<header className="px-4 sm:px-6 py-6 sm:py-12 bg-background shrink-0 lg:px-0">
-				<div className="max-w-7xl mx-auto w-full space-y-6 sm:space-y-12">
-					<div className="flex flex-col md:flex-row md:items-center justify-between gap-4 sm:gap-6">
-						<div className="space-y-2">
-							<h1 className="text-2xl sm:text-4xl lg:text-7xl font-black text-foreground tracking-tighter uppercase">
-								Past Paper Vault
-							</h1>
-							<p className="text-label-secondary font-black text-[11px] sm:text-lg uppercase tracking-widest">
-								Access thousands of Grade 12 exam papers
-							</p>
+			{/* Hero Header */}
+			<header className="px-6 py-10 sm:py-16 shrink-0 lg:px-0 max-w-7xl mx-auto w-full">
+				<div className="space-y-8">
+					<div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+						<div className="space-y-4">
+							<motion.div
+								initial={{ opacity: 0, x: -20 }}
+								animate={{ opacity: 1, x: 0 }}
+							>
+								<Badge variant="violet" size="lg" className="mb-2">NSC Grade 12</Badge>
+								<h1 className="text-4xl sm:text-6xl font-heading font-black text-foreground tracking-tight">
+									Subject Vault
+								</h1>
+								<p className="text-muted-foreground text-lg sm:text-xl font-medium max-w-xl">
+									Practice with interactive past papers and master every topic.
+								</p>
+							</motion.div>
 						</div>
-						<div className="flex items-center gap-2">
-							{activeFilterCount > 0 && (
-								<Button
-									variant="ghost"
-									onClick={clearAllFilters}
-									aria-label="Clear all filters"
-									className="rounded-2xl font-black text-[10px] uppercase tracking-widest px-3 sm:px-4 h-10 sm:h-12 text-label-tertiary hover:text-foreground ios-active-scale"
-								>
-									<X className="w-4 h-4 mr-1 sm:mr-2" />
-									<span className="hidden sm:inline">Clear</span>
-								</Button>
-							)}
+						<div className="flex items-center gap-3">
 							<Button
 								variant="outline"
 								onClick={() => setIsAdvancedFilterOpen(true)}
-								aria-label={`Advanced Filter${activeFilterCount > 0 ? `, ${activeFilterCount} active` : ''}`}
 								className={cn(
-									'rounded-2xl border-2 font-black text-[10px] uppercase tracking-widest px-4 sm:px-6 h-10 sm:h-12 ios-active-scale',
-									activeFilterCount > 0 && 'border-primary bg-primary/10 text-primary'
+									'rounded-2xl h-12 px-6',
+									activeFilterCount > 0 && 'border-primary-violet bg-primary-violet/5 text-primary-violet'
 								)}
+								leftIcon={<Filter className="w-4 h-4" />}
 							>
-								<Filter className="w-4 h-4 mr-2" />
-								<span className="hidden sm:inline">Advanced Filter</span>
+								Filters
 								{activeFilterCount > 0 && (
-									<Badge className="ml-2 rounded-full px-2 py-0.5 text-[9px] bg-primary text-primary-foreground">
+									<span className="ml-2 w-5 h-5 flex items-center justify-center bg-primary-violet text-white rounded-full text-[10px]">
 										{activeFilterCount}
-									</Badge>
+									</span>
 								)}
 							</Button>
+							{activeFilterCount > 0 && (
+								<Button variant="ghost" onClick={clearAllFilters} size="icon" className="h-12 w-12 rounded-2xl">
+									<X className="w-5 h-5" />
+								</Button>
+							)}
 						</div>
 					</div>
 
-					<div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6">
+					<div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
 						<div className="lg:col-span-8 relative">
-							<SearchIcon className="absolute left-4 sm:left-6 top-1/2 -translate-y-1/2 w-5 sm:w-6 h-5 sm:h-6 text-label-tertiary" />
+							<SearchIcon className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
 							<Input
 								value={searchQuery}
 								onChange={(e) => setSearchQuery(e.target.value)}
-								placeholder="Search subjects or papers..."
-								className="pl-12 sm:pl-16 pr-12 sm:pr-16 bg-card backdrop-blur-md border-border border-2 h-12 sm:h-16 rounded-xl sm:rounded-2xl text-base sm:text-lg font-black uppercase tracking-tight shadow-inner"
-								aria-label="Search past papers"
+								placeholder="Search subjects or topics..."
+								className="pl-14 h-14 rounded-2xl bg-card border-border border-2 text-lg shadow-inner focus:border-primary-violet/50"
 							/>
-							<AnimatePresence>
-								{searchQuery && (
-									<m.button
-										initial={{ scale: 0.95, opacity: 0 }}
-										animate={{ scale: 1, opacity: 1 }}
-										exit={{ scale: 0.95, opacity: 0 }}
-										title="Clear search"
-										aria-label="Clear search"
-										type="button"
-										onClick={() => setSearchQuery('')}
-										className="absolute right-4 sm:right-6 top-1/2 -translate-y-1/2 text-label-tertiary hover:text-foreground transition-colors ios-active-scale"
-									>
-										<X className="w-5 sm:w-6 h-5 sm:h-6" />
-									</m.button>
-								)}
-							</AnimatePresence>
 						</div>
-						<div className="lg:col-span-4 flex gap-2 sm:gap-3 overflow-x-auto no-scrollbar py-1">
+						<div className="lg:col-span-4 flex gap-2 overflow-x-auto no-scrollbar py-1">
 							{years.map((year) => (
 								<button
 									key={year}
 									type="button"
-									// biome-ignore lint/suspicious/noExplicitAny: Year type casting
 									onClick={() => setSelectedYear(year as any)}
-									aria-pressed={selectedYear === year}
-									className={`rounded-xl sm:rounded-2xl px-4 sm:px-8 py-2 sm:py-3 text-[11px] font-black uppercase tracking-widest transition-all h-10 sm:h-16 whitespace-nowrap ios-active-scale ${
+									className={cn(
+										"rounded-2xl px-6 py-3 font-bold text-sm transition-all h-14 whitespace-nowrap",
 										selectedYear === year
-											? 'bg-primary text-primary-foreground shadow-2xl shadow-primary/30'
-											: 'bg-secondary text-label-secondary border-2 border-transparent hover:border-border backdrop-blur-sm'
-									}`}
+											? "bg-primary-violet text-white shadow-lg shadow-primary-violet/20"
+											: "bg-card text-muted-foreground border-2 border-transparent hover:border-border"
+									)}
 								>
 									{year}
 								</button>
@@ -361,114 +342,101 @@ export default function PastPapers() {
 			</header>
 
 			<ScrollArea className="flex-1 no-scrollbar">
-				<main className="px-4 sm:px-6 py-6 sm:py-8 max-w-7xl mx-auto w-full space-y-8 sm:space-y-12 pb-32 lg:px-0">
-					<div className="flex items-center justify-between border-b border-border pb-4">
-						<h2 className="text-[10px] font-black text-label-tertiary uppercase tracking-[0.4em]">
-							Archive Results ({filteredPapers.length})
+				<main className="px-6 py-8 max-w-7xl mx-auto w-full space-y-8 pb-32 lg:px-0">
+					<div className="flex items-center justify-between">
+						<h2 className="text-xs font-bold text-muted-foreground uppercase tracking-widest">
+							All Papers ({filteredPapers.length})
 						</h2>
 					</div>
 
 					<AnimatePresence mode="popLayout">
 						{isLoading ? (
-							<div className="flex items-center justify-center py-20">
-								<Loader2 className="w-8 h-8 animate-spin text-primary" />
+							<div className="flex flex-col items-center justify-center py-20 gap-4">
+								<Loader2 className="w-10 h-10 animate-spin text-primary-violet" />
+								<p className="text-muted-foreground font-bold animate-pulse">Loading vault...</p>
 							</div>
 						) : filteredPapers.length > 0 ? (
-							<m.div
+							<motion.div
 								variants={STAGGER_CONTAINER}
 								initial="hidden"
 								animate="visible"
-								className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8"
+								className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
 							>
 								{filteredPapers.map((paper) => (
-									<m.div key={paper.id} variants={STAGGER_ITEM} layout whileHover={{ y: -8 }}>
-										<Card className="p-8 rounded-3xl border border-border hover:border-primary/20 hover:shadow-2xl transition-all duration-500 group relative overflow-hidden bg-card/50 backdrop-blur-sm">
-											<div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-
-											<div className="space-y-6 relative z-10">
+									<motion.div key={paper.id} variants={STAGGER_ITEM} layout>
+										<Card variant="interactive" className="h-full flex flex-col group overflow-hidden border-2">
+											<div className="p-6 flex flex-col h-full gap-6">
 												<div className="flex items-start justify-between">
-													<div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-500 shadow-inner">
-														<FileText className="w-8 h-8 text-primary" />
+													<div className="w-14 h-14 rounded-2xl bg-primary-violet/10 flex items-center justify-center transition-transform group-hover:scale-110 duration-500">
+														<FileText className="w-7 h-7 text-primary-violet" />
 													</div>
-													<div className="text-right">
-														<span className="text-[10px] font-black text-label-tertiary uppercase tracking-[0.2em] block mb-1">
-															Total Marks
-														</span>
-														<span className="text-2xl font-black text-primary tracking-tighter">
-															{paper.totalMarks}m
-														</span>
+													<div className="flex flex-col items-end">
+														<Badge variant="cyan" size="sm">{paper.year}</Badge>
+														<span className="text-[10px] font-bold text-muted-foreground uppercase mt-2">{paper.month}</span>
 													</div>
 												</div>
 
 												<div className="space-y-2">
-													<h3 className="text-2xl font-black text-foreground tracking-tighter uppercase leading-tight group-hover:text-primary transition-colors">
-														{paper.subject} {paper.paper}
+													<h3 className="text-2xl font-heading font-black text-foreground leading-tight">
+														{paper.subject}
 													</h3>
-													<div className="flex flex-wrap gap-2">
-														<Badge
-															variant="outline"
-															className="rounded-lg font-black text-[9px] uppercase tracking-widest border border-border bg-secondary/50"
+													<p className="text-sm font-bold text-muted-foreground uppercase tracking-widest">
+														Paper {paper.paper}
+													</p>
+												</div>
+
+												<div className="mt-auto space-y-4">
+													<div className="flex items-center justify-between text-xs font-bold text-muted-foreground">
+														<span>{paper.totalMarks} Marks</span>
+														<div className="flex items-center gap-1 text-success">
+															<CheckCircle2 className="w-3 h-3" />
+															<span>Practice Ready</span>
+														</div>
+													</div>
+
+													<div className="grid grid-cols-2 gap-2">
+														<Button
+															variant="primary"
+															className="h-12 rounded-xl text-sm"
+															onClick={() => router.push(`/past-paper?id=${paper.id}`)}
+															rightIcon={<ChevronRight className="w-4 h-4" />}
 														>
-															{paper.month} {paper.year}
-														</Badge>
-														<Badge
+															Start
+														</Button>
+														<Button
 															variant="outline"
-															className="rounded-lg font-black text-[9px] uppercase tracking-widest border border-border bg-secondary/50"
+															className="h-12 rounded-xl text-sm"
+															onClick={() => window.open(paper.originalPdfUrl, '_blank')}
+															leftIcon={<Download className="w-4 h-4" />}
 														>
-															NSC Grade 12
-														</Badge>
+															PDF
+														</Button>
 													</div>
 												</div>
-
-												<div className="grid grid-cols-2 gap-3 pt-4">
-													<Button
-														variant="secondary"
-														className="rounded-2xl font-black text-[10px] uppercase tracking-widest h-12 shadow-sm ios-active-scale"
-														onClick={() => router.push(`/past-paper?id=${paper.id}`)}
-													>
-														<Eye className="w-4 h-4 mr-2" />
-														Analyze
-													</Button>
-													<Button
-														variant="outline"
-														className="rounded-2xl font-black text-[10px] uppercase tracking-widest h-12 border border-border ios-active-scale"
-														onClick={() => router.push(`/past-paper?id=${paper.id}&mode=read`)}
-													>
-														<BookOpen className="w-4 h-4 mr-2" />
-														Read
-													</Button>
-												</div>
-
-												<Button
-													className="w-full rounded-2xl h-14 bg-secondary hover:bg-primary hover:text-primary-foreground text-label-secondary font-black text-[10px] uppercase tracking-widest transition-all duration-300 group/btn ios-active-scale"
-													onClick={() => window.open(paper.originalPdfUrl, '_blank')}
-												>
-													<Download className="w-4 h-4 mr-2 group-hover/btn:animate-bounce" />
-													Download PDF
-												</Button>
 											</div>
 										</Card>
-									</m.div>
+									</motion.div>
 								))}
-							</m.div>
+							</motion.div>
 						) : (
-							<m.div
+							<motion.div
 								initial={{ opacity: 0, scale: 0.9 }}
 								animate={{ opacity: 1, scale: 1 }}
-								className="py-32 flex flex-col items-center justify-center text-center space-y-6 opacity-40"
+								className="py-32 flex flex-col items-center justify-center text-center space-y-6"
 							>
-								<div className="w-32 h-32 bg-muted rounded-3xl flex items-center justify-center">
-									<FileText className="w-16 h-16 text-muted-foreground" />
+								<div className="w-32 h-32 bg-muted rounded-[2.5rem] flex items-center justify-center">
+									<SearchIcon className="w-16 h-16 text-muted-foreground" />
 								</div>
 								<div className="space-y-2">
-									<h3 className="font-black text-muted-foreground uppercase tracking-[0.4em] text-xs">
-										Empty Archive
-									</h3>
-									<p className="text-muted-foreground font-bold">
-										Refine your filters to see more results
+									<h3 className="font-heading font-black text-2xl">No papers found</h3>
+									<p className="text-muted-foreground font-medium max-w-xs mx-auto">
+										We couldn't find any papers matching your current filters.
 									</p>
+									<Button variant="tertiary" onClick={clearAllFilters} className="mt-4">
+										Clear all filters
+									</Button>
 								</div>
-							</m.div>
+							</motion.div>
 						)}
 					</AnimatePresence>
 				</main>
@@ -477,11 +445,11 @@ export default function PastPapers() {
 			<Sheet open={isAdvancedFilterOpen} onOpenChange={setIsAdvancedFilterOpen}>
 				<SheetContent className="w-full sm:max-w-lg hidden lg:block">
 					<SheetHeader>
-						<SheetTitle className="text-xl font-black uppercase tracking-tight">
+						<SheetTitle className="text-2xl font-heading font-black">
 							Advanced Filters
 						</SheetTitle>
 					</SheetHeader>
-					<div className="py-6 overflow-y-auto">
+					<div className="py-8">
 						<FilterContent
 							availableSubjects={availableSubjects}
 							availablePapers={availablePapers}
@@ -496,19 +464,20 @@ export default function PastPapers() {
 							onToggleExtracted={handleToggleExtracted}
 						/>
 					</div>
-					<div className="border-t pt-4 flex gap-3">
+					<div className="absolute bottom-8 left-8 right-8 flex gap-3">
 						<Button
 							variant="outline"
 							onClick={clearAllFilters}
-							className="flex-1 rounded-2xl font-black text-[10px] uppercase tracking-widest ios-active-scale"
+							className="flex-1 h-14 rounded-2xl"
 						>
 							Reset
 						</Button>
 						<Button
+							variant="primary"
 							onClick={() => setIsAdvancedFilterOpen(false)}
-							className="flex-1 rounded-2xl font-black text-[10px] uppercase tracking-widest ios-active-scale"
+							className="flex-1 h-14 rounded-2xl"
 						>
-							Apply Filters
+							Apply
 						</Button>
 					</div>
 				</SheetContent>
@@ -517,11 +486,11 @@ export default function PastPapers() {
 			<Drawer open={isAdvancedFilterOpen} onOpenChange={setIsAdvancedFilterOpen}>
 				<DrawerContent className="lg:hidden">
 					<DrawerHeader>
-						<DrawerTitle className="text-xl font-black uppercase tracking-tight text-left">
+						<DrawerTitle className="text-2xl font-heading font-black text-left">
 							Advanced Filters
 						</DrawerTitle>
 					</DrawerHeader>
-					<div className="px-4 py-4 overflow-y-auto max-h-[60vh]">
+					<div className="px-6 py-6 overflow-y-auto max-h-[60vh]">
 						<FilterContent
 							availableSubjects={availableSubjects}
 							availablePapers={availablePapers}
@@ -536,25 +505,23 @@ export default function PastPapers() {
 							onToggleExtracted={handleToggleExtracted}
 						/>
 					</div>
-					<DrawerFooter>
-						<Button
-							onClick={() => setIsAdvancedFilterOpen(false)}
-							className="w-full rounded-2xl font-black text-[10px] uppercase tracking-widest ios-active-scale"
-						>
-							Apply Filters
-						</Button>
-						<Button
-							variant="outline"
-							onClick={clearAllFilters}
-							className="w-full rounded-2xl font-black text-[10px] uppercase tracking-widest ios-active-scale"
-						>
-							Reset
-						</Button>
-						<DrawerClose asChild>
-							<Button variant="ghost" className="w-full ios-active-scale">
-								Cancel
+					<DrawerFooter className="px-6 pb-10">
+						<div className="flex gap-3 w-full">
+							<Button
+								variant="outline"
+								onClick={clearAllFilters}
+								className="flex-1 h-14 rounded-2xl"
+							>
+								Reset
 							</Button>
-						</DrawerClose>
+							<Button
+								variant="primary"
+								onClick={() => setIsAdvancedFilterOpen(false)}
+								className="flex-1 h-14 rounded-2xl"
+							>
+								Show Results
+							</Button>
+						</div>
 					</DrawerFooter>
 				</DrawerContent>
 			</Drawer>

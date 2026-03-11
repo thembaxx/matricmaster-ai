@@ -1,26 +1,28 @@
 'use client';
 
-import { m } from 'framer-motion';
-import { Award, Flame, GraduationCap, Target } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Award, Flame, GraduationCap, Target, Settings, Share2, Camera, User } from 'lucide-react';
 import { useEffect, useId, useMemo, useState } from 'react';
-import { PolarAngleAxis, PolarGrid, Radar, RadarChart } from 'recharts';
+import { PolarAngleAxis, PolarGrid, Radar, RadarChart, ResponsiveContainer } from 'recharts';
 import { LevelProgress } from '@/components/Gamification/LevelProgress';
 import { AchievementBadges, AchievementProgress } from '@/components/Profile/AchievementBadges';
 import { BadgeShowcase } from '@/components/Profile/BadgeShowcase';
 import { SafeImage } from '@/components/SafeImage';
 import { BackgroundMesh } from '@/components/ui/background-mesh';
 import { Badge } from '@/components/ui/badge';
-import { Card } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
 	type ChartConfig,
 	ChartContainer,
 	ChartTooltip,
 	ChartTooltipContent,
 } from '@/components/ui/chart';
+import { Button } from '@/components/ui/button';
 import { ACHIEVEMENT_POINTS_MAP } from '@/constants/achievements';
 import { useSession } from '@/lib/auth-client';
 import { getUserAchievements } from '@/lib/db/achievement-actions';
 import { getUserProgressSummary, getUserStreak } from '@/lib/db/progress-actions';
+import { cn } from '@/lib/utils';
 
 interface ChartDataItem {
 	subject: string;
@@ -41,7 +43,7 @@ const defaultChartData: ChartDataItem[] = [
 const chartConfig = {
 	you: {
 		label: 'You',
-		color: 'var(--primary)',
+		color: 'var(--primary-violet)',
 	},
 	average: {
 		label: 'Average',
@@ -73,7 +75,6 @@ export default function Profile() {
 					getUserAchievements(),
 				]);
 
-				// Bolt: Fix logic bug (was searching available instead of all) and optimize with O(1) Map lookup
 				const totalXp = achievements.unlocked.reduce((sum, a) => {
 					return sum + (ACHIEVEMENT_POINTS_MAP.get(a.achievementId) || 0);
 				}, 0);
@@ -95,7 +96,6 @@ export default function Profile() {
 		fetchData();
 	}, []);
 
-	// Bolt: Memoize chart data to avoid O(N) recalculation on every render
 	const chartData: ChartDataItem[] = useMemo(
 		() =>
 			defaultChartData.map((item) => ({
@@ -110,125 +110,136 @@ export default function Profile() {
 
 	if (isLoading) {
 		return (
-			<div className="flex-1 flex items-center justify-center py-40">
-				<div className="animate-spin rounded-full h-12 w-12 border-4 border-primary border-t-transparent" />
+			<div className="flex-1 flex flex-col items-center justify-center py-40 gap-4">
+				<div className="animate-spin rounded-full h-12 w-12 border-4 border-primary-violet border-t-transparent" />
+				<p className="font-bold text-muted-foreground animate-pulse uppercase tracking-widest text-xs">Loading Profile...</p>
 			</div>
 		);
 	}
 
 	return (
-		<div className="flex flex-col h-full min-w-0 bg-background pb-32 px-4 sm:px-6 lg:px-8 overflow-x-hidden">
+		<div className="flex flex-col h-full min-w-0 bg-background relative overflow-x-hidden">
 			<BackgroundMesh variant="subtle" />
 
-			<main className="max-w-6xl mx-auto w-full pt-6 sm:pt-8 space-y-8 sm:space-y-12 relative z-10">
-				{/* Profile Header Card */}
-				<m.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-					<Card className="rounded-2xl sm:rounded-[3rem] p-6 sm:p-12 relative overflow-hidden bg-foreground text-background border-none shadow-2xl">
-						<div className="absolute top-0 right-0 w-96 h-96 bg-primary/20 rounded-full blur-[100px] -mr-32 -mt-32" />
-
-						<div className="flex flex-col md:flex-row items-center gap-8 sm:gap-12 relative z-10">
-							<div className="relative group">
-								<div className="absolute -inset-4 bg-primary/20 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity" />
-								<div className="w-24 h-24 sm:w-32 sm:h-32 md:w-48 md:h-48 rounded-full overflow-hidden border-4 border-white/10 shadow-2xl relative ring-4 sm:ring-8 ring-white/5 group-hover:scale-105 transition-transform duration-500">
-									<SafeImage
-										src={
-											session?.user?.image ||
-											`https://api.dicebear.com/7.x/avataaars/svg?seed=${session?.user?.name || 'default'}`
-										}
-										alt={session?.user?.name || 'User'}
-										width={192}
-										height={192}
-										className="w-full h-full object-cover"
-										priority
-									/>
-								</div>
-								<div className="absolute bottom-2 right-2 rounded-full p-2 bg-primary ring-4 ring-zinc-900 text-white shadow-xl">
-									<Target className="w-5 h-5" />
-								</div>
-							</div>
-
-							<div className="flex-1 text-center md:text-left space-y-6">
-								<div className="space-y-2">
-									<h1 className="text-4xl md:text-6xl font-black tracking-tighter uppercase leading-none">
-										{session?.user?.name || 'Scholar'}
-									</h1>
-									<p className="text-[11px] font-black text-primary uppercase tracking-[0.4em]">
-										Grade 12 Elite Candidate
-									</p>
+			<main className="max-w-7xl mx-auto w-full px-6 py-10 sm:py-16 space-y-12 pb-32 lg:px-0 relative z-10">
+				{/* Modern Profile Header */}
+				<motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+					<Card variant="elevated" className="overflow-hidden border-2 border-primary-violet/10">
+						<div className="relative h-32 sm:h-48 bg-gradient-to-r from-primary-violet via-primary-cyan to-primary-orange opacity-20" />
+						<div className="p-6 sm:p-10 -mt-16 sm:-mt-24">
+							<div className="flex flex-col md:flex-row items-end gap-6 md:gap-10">
+								<div className="relative group">
+									<div className="w-32 h-32 sm:w-48 sm:h-48 rounded-[2.5rem] overflow-hidden border-4 border-background shadow-2xl relative bg-card">
+										<SafeImage
+											src={
+												session?.user?.image ||
+												`https://api.dicebear.com/7.x/avataaars/svg?seed=${session?.user?.name || 'default'}`
+											}
+											alt={session?.user?.name || 'User'}
+											width={192}
+											height={192}
+											className="w-full h-full object-cover"
+											priority
+										/>
+									</div>
+									<Button
+										size="icon"
+										variant="secondary"
+										className="absolute bottom-2 right-2 rounded-xl shadow-lg border-2 border-background h-10 w-10"
+									>
+										<Camera className="w-5 h-5" />
+									</Button>
 								</div>
 
-								<div className="flex flex-wrap justify-center md:justify-start gap-4">
-									<Badge className="bg-primary/20 text-primary-foreground border-none px-6 py-2 rounded-xl font-black text-[10px] uppercase tracking-widest">
-										Class of 2026
-									</Badge>
-									<Badge className="bg-success/20 text-success border-none px-6 py-2 rounded-xl font-black text-[10px] uppercase tracking-widest">
-										Academic Pro
-									</Badge>
+								<div className="flex-1 space-y-4 pb-2">
+									<div className="space-y-1 text-center md:text-left">
+										<h1 className="text-4xl sm:text-6xl font-heading font-black tracking-tight text-foreground leading-none">
+											{session?.user?.name || 'Scholar'}
+										</h1>
+										<div className="flex items-center justify-center md:justify-start gap-2">
+											<Badge variant="violet" size="sm" className="font-bold">Grade 12</Badge>
+											<span className="text-sm font-bold text-muted-foreground uppercase tracking-widest">Candidate 2026</span>
+										</div>
+									</div>
+
+									<div className="flex flex-wrap justify-center md:justify-start gap-3">
+										<Button variant="outline" size="sm" className="rounded-xl" leftIcon={<Settings className="w-4 h-4" />}>
+											Settings
+										</Button>
+										<Button variant="outline" size="sm" className="rounded-xl" leftIcon={<Share2 className="w-4 h-4" />}>
+											Share
+										</Button>
+									</div>
+								</div>
+
+								<div className="hidden lg:block w-72">
+									{userStats && (
+										<div className="space-y-2">
+											<div className="flex justify-between text-xs font-bold text-primary-violet uppercase tracking-widest">
+												<span>Level Progress</span>
+												<span>{userStats.totalXp} XP</span>
+											</div>
+											<LevelProgress totalXp={userStats.totalXp} variant="full" />
+										</div>
+									)}
 								</div>
 							</div>
 						</div>
 					</Card>
-				</m.div>
+				</motion.div>
 
-				<div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
-					{/* Left Column: Stats & Performance */}
-					<div className="lg:col-span-7 space-y-8 lg:space-y-12">
+				<div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
+					{/* Left Column: Analysis */}
+					<div className="lg:col-span-7 space-y-10">
 						<div className="space-y-6">
-							<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-								<h3 className="text-xl font-black text-foreground tracking-tighter uppercase">
-									Performance Matrix
-								</h3>
-								<div className="flex p-1 bg-muted rounded-xl">
+							<div className="flex items-center justify-between">
+								<h3 className="text-2xl font-heading font-black tracking-tight">Skill Matrix</h3>
+								<div className="flex p-1 bg-muted rounded-2xl">
 									<button
-										type="button"
 										onClick={() => setViewMode('my_stats')}
-										aria-pressed={viewMode === 'my_stats'}
-										className={`px-3 sm:px-4 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all ios-active-scale ${viewMode === 'my_stats' ? 'bg-background shadow-sm text-foreground' : 'text-label-tertiary'}`}
+										className={cn(
+											"px-4 py-2 rounded-xl text-xs font-bold transition-all",
+											viewMode === 'my_stats' ? "bg-card shadow-sm text-primary-violet" : "text-muted-foreground"
+										)}
 									>
-										Individual
+										Personal
 									</button>
 									<button
-										type="button"
 										onClick={() => setViewMode('provincial')}
-										aria-pressed={viewMode === 'provincial'}
-										className={`px-3 sm:px-4 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all ios-active-scale ${viewMode === 'provincial' ? 'bg-background shadow-sm text-foreground' : 'text-label-tertiary'}`}
+										className={cn(
+											"px-4 py-2 rounded-xl text-xs font-bold transition-all",
+											viewMode === 'provincial' ? "bg-card shadow-sm text-primary-violet" : "text-muted-foreground"
+										)}
 									>
-										Benchmarked
+										Benchmark
 									</button>
 								</div>
 							</div>
 
-							<Card className="rounded-3xl border border-border p-6 sm:p-8 bg-card/50 backdrop-blur-sm">
-								<ChartContainer config={chartConfig} className="h-75 sm:h-100 w-full">
+							<Card variant="default" className="p-6 sm:p-10 border-2">
+								<ChartContainer config={chartConfig} className="h-[400px] w-full">
 									<RadarChart cx="50%" cy="50%" outerRadius="80%" data={chartData}>
-										<defs>
-											<linearGradient id={radarGradientId} x1="0" y1="0" x2="0" y2="1">
-												<stop offset="0%" stopColor="var(--primary)" stopOpacity={0.8} />
-												<stop offset="100%" stopColor="var(--primary)" stopOpacity={0.2} />
-											</linearGradient>
-										</defs>
-										<PolarGrid stroke="var(--border)" strokeOpacity={0.5} />
+										<PolarGrid stroke="var(--border)" />
 										<PolarAngleAxis
 											dataKey="subject"
-											tick={{ fill: 'var(--label-secondary)', fontSize: 10, fontWeight: 900 }}
+											tick={{ fill: 'var(--muted-foreground)', fontSize: 10, fontWeight: 700 }}
 										/>
 										<Radar
 											name="You"
 											dataKey="you"
-											stroke="var(--primary)"
-											strokeWidth={4}
-											fill={`url(#${radarGradientId})`}
-											fillOpacity={0.6}
+											stroke="var(--primary-violet)"
+											strokeWidth={3}
+											fill="var(--primary-violet)"
+											fillOpacity={0.2}
 										/>
 										{viewMode === 'provincial' && (
 											<Radar
 												name="Average"
 												dataKey="average"
-												stroke="var(--label-tertiary)"
+												stroke="var(--primary-cyan)"
 												strokeWidth={2}
 												fill="transparent"
-												strokeDasharray="8 8"
-												opacity={0.4}
+												strokeDasharray="4 4"
 											/>
 										)}
 										<ChartTooltip cursor={false} content={<ChartTooltipContent />} />
@@ -238,118 +249,87 @@ export default function Profile() {
 						</div>
 					</div>
 
-					{/* Right Column: Cards */}
-					<div className="lg:col-span-5 space-y-8">
-						<h3 className="text-xl font-black text-foreground tracking-tighter uppercase">
-							Academic Standing
-						</h3>
+					{/* Right Column: Stats Cards */}
+					<div className="lg:col-span-5 space-y-10">
+						<h3 className="text-2xl font-heading font-black tracking-tight">Quick Stats</h3>
 
-						{/* Level Progress Section */}
-						{userStats && (
-							<Card className="p-8 rounded-3xl border border-border bg-card/50 backdrop-blur-sm">
-								<LevelProgress totalXp={userStats.totalXp} variant="full" showTitle />
-							</Card>
-						)}
-
-						<div className="grid grid-cols-1 gap-6">
-							{/* Questions Card */}
-							<Card className="p-8 rounded-3xl border border-border bg-card/50 backdrop-blur-sm relative overflow-hidden group">
-								<div className="flex items-center gap-8 relative z-10">
-									<div className="w-20 h-20 rounded-2xl bg-primary/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-500 shadow-inner">
-										<GraduationCap className="w-10 h-10 text-primary" />
+						<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4">
+							<Card variant="interactive" className="p-6 border-2 group">
+								<div className="flex items-center gap-6">
+									<div className="w-16 h-16 rounded-2xl bg-primary-violet/10 flex items-center justify-center group-hover:scale-110 transition-transform">
+										<GraduationCap className="w-8 h-8 text-primary-violet" />
 									</div>
 									<div className="space-y-1">
-										<p className="text-[10px] font-black text-label-tertiary uppercase tracking-[0.3em]">
-											Total Knowledge
-										</p>
-										<h4 className="text-4xl font-black text-foreground tracking-tighter">
-											{userStats?.totalQuestions || 0} Questions
-										</h4>
+										<div className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Solved</div>
+										<div className="text-3xl font-heading font-black">{userStats?.totalQuestions || 0}</div>
 									</div>
 								</div>
 							</Card>
 
-							{/* Accuracy Card */}
-							<Card className="p-8 rounded-3xl border border-border bg-card/50 backdrop-blur-sm relative overflow-hidden group">
-								<div className="flex items-center gap-8 relative z-10">
-									<div className="w-20 h-20 rounded-2xl bg-success/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-500 shadow-inner">
-										<Target className="w-10 h-10 text-success" />
+							<Card variant="interactive" className="p-6 border-2 group">
+								<div className="flex items-center gap-6">
+									<div className="w-16 h-16 rounded-2xl bg-primary-cyan/10 flex items-center justify-center group-hover:scale-110 transition-transform">
+										<Target className="w-8 h-8 text-primary-cyan" />
 									</div>
 									<div className="space-y-1">
-										<p className="text-[10px] font-black text-label-tertiary uppercase tracking-[0.3em]">
-											Precision Rate
-										</p>
-										<h4 className="text-4xl font-black text-foreground tracking-tighter">
-											{userStats?.accuracy || 0}% Accuracy
-										</h4>
+										<div className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Accuracy</div>
+										<div className="text-3xl font-heading font-black">{userStats?.accuracy || 0}%</div>
 									</div>
 								</div>
 							</Card>
 
-							{/* Streak Card */}
-							<Card className="p-8 rounded-3xl border border-border bg-card/50 backdrop-blur-sm relative overflow-hidden group">
-								<div className="flex items-center gap-8 relative z-10">
-									<div className="w-20 h-20 rounded-2xl bg-warning/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-500 shadow-inner">
-										<Flame className="w-10 h-10 text-warning fill-warning" />
+							<Card variant="interactive" className="p-6 border-2 group">
+								<div className="flex items-center gap-6">
+									<div className="w-16 h-16 rounded-2xl bg-primary-orange/10 flex items-center justify-center group-hover:scale-110 transition-transform">
+										<Flame className="w-8 h-8 text-primary-orange" />
 									</div>
 									<div className="space-y-1">
-										<p className="text-[10px] font-black text-label-tertiary uppercase tracking-[0.3em]">
-											Active Momentum
-										</p>
-										<h4 className="text-4xl font-black text-foreground tracking-tighter">
-											{userStats?.streak || 0} Day Streak
-										</h4>
+										<div className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Streak</div>
+										<div className="text-3xl font-heading font-black">{userStats?.streak || 0} Days</div>
 									</div>
 								</div>
 							</Card>
 
-							{/* Achievements Unlock */}
-							<Card className="p-8 rounded-3xl border border-border bg-primary/5 relative overflow-hidden group border-dashed">
-								<div className="flex items-center gap-8 relative z-10">
-									<div className="w-20 h-20 rounded-2xl bg-primary/10 flex items-center justify-center">
-										<Award className="w-10 h-10 text-primary" />
+							<Card variant="interactive" className="p-6 border-2 group border-dashed bg-muted/30">
+								<div className="flex items-center gap-6">
+									<div className="w-16 h-16 rounded-2xl bg-primary-violet/5 flex items-center justify-center">
+										<Award className="w-8 h-8 text-primary-violet opacity-50" />
 									</div>
 									<div className="space-y-1">
-										<p className="text-[10px] font-black text-label-tertiary uppercase tracking-[0.3em]">
-											Mastery Unlocked
-										</p>
-										<h4 className="text-2xl font-black text-foreground tracking-tighter uppercase">
-											{userStats?.achievementsUnlocked || 0} Master Badges
-										</h4>
+										<div className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Awards</div>
+										<div className="text-3xl font-heading font-black">{userStats?.achievementsUnlocked || 0}</div>
 									</div>
 								</div>
 							</Card>
 						</div>
 
-						{/* Badge Showcase Section */}
 						{userStats && userStats.unlockedAchievementIds.length > 0 && (
-							<div className="mt-8">
+							<div className="space-y-6 pt-4">
+								<h3 className="text-xl font-heading font-black tracking-tight">Featured Badges</h3>
 								<BadgeShowcase unlockedIds={userStats.unlockedAchievementIds} maxFeatured={3} />
 							</div>
 						)}
 					</div>
 				</div>
 
-				{/* Achievement Badges Section */}
+				{/* Detailed Collection */}
 				{userStats && (
-					<m.div
+					<motion.div
 						initial={{ opacity: 0, y: 20 }}
-						animate={{ opacity: 1, y: 0 }}
-						transition={{ delay: 0.3 }}
-						className="mt-8 sm:mt-12"
+						whileInView={{ opacity: 1, y: 0 }}
+						viewport={{ once: true }}
+						className="space-y-8"
 					>
-						<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 mb-8">
-							<h3 className="text-xl font-black text-foreground tracking-tighter uppercase">
-								Achievement Collection
-							</h3>
-							<div className="w-full sm:w-72">
+						<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
+							<h3 className="text-2xl font-heading font-black tracking-tight">Full Collection</h3>
+							<div className="w-full sm:w-80">
 								<AchievementProgress unlockedIds={userStats.unlockedAchievementIds} />
 							</div>
 						</div>
-						<Card className="p-4 sm:p-8 rounded-[2rem] sm:rounded-[2.5rem] border-2 border-border/50 bg-card/50 backdrop-blur-sm">
+						<Card variant="default" className="p-8 rounded-[2.5rem] border-2">
 							<AchievementBadges unlockedIds={userStats.unlockedAchievementIds} />
 						</Card>
-					</m.div>
+					</motion.div>
 				)}
 			</main>
 		</div>

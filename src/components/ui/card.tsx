@@ -1,14 +1,44 @@
 import * as React from 'react';
-
+import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
 
-const Card = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
-	({ className, ...props }, ref) => (
+const cardVariants = cva(
+	'rounded-[1.5rem] border transition-all duration-300 ease-out',
+	{
+		variants: {
+			variant: {
+				default: 'border-border bg-card text-card-foreground shadow-sm',
+				elevated: 'border-transparent bg-card text-card-foreground shadow-xl shadow-primary-violet/5',
+				outlined: 'border-2 border-border bg-transparent text-card-foreground',
+				interactive: 'border-border bg-card text-card-foreground shadow-sm hover:shadow-lg hover:-translate-y-1 cursor-pointer active:scale-[0.98]',
+			},
+			padding: {
+				none: 'p-0',
+				sm: 'p-4',
+				md: 'p-6',
+				lg: 'p-8',
+			},
+		},
+		defaultVariants: {
+			variant: 'default',
+			padding: 'none',
+		},
+	}
+);
+
+export interface CardProps
+	extends React.HTMLAttributes<HTMLDivElement>,
+		VariantProps<typeof cardVariants> {
+	hoverable?: boolean;
+}
+
+const Card = React.forwardRef<HTMLDivElement, CardProps>(
+	({ className, variant, padding, hoverable, ...props }, ref) => (
 		<div
 			ref={ref}
 			className={cn(
-				'rounded-[2.5rem] border border-border bg-card text-card-foreground shadow-sm transition-all duration-300 ease-out hover:shadow-lg hover:-translate-y-0.5',
-				className
+				cardVariants({ variant, padding, className }),
+				hoverable && 'hover:shadow-lg hover:-translate-y-1 transition-all duration-300'
 			)}
 			{...props}
 		/>
@@ -27,7 +57,7 @@ const CardTitle = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivE
 	({ className, ...props }, ref) => (
 		<div
 			ref={ref}
-			className={cn('font-semibold leading-none tracking-tight', className)}
+			className={cn('font-bold leading-none tracking-tight text-xl font-heading', className)}
 			{...props}
 		/>
 	)

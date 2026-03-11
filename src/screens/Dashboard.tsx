@@ -113,7 +113,7 @@ export default function Dashboard({
 				unreadCount={unreadCount}
 			/>
 
-			<div className="px-4 sm:px-6 pb-4 lg:px-0">
+			<div className="px-4 sm:px-6 pb-4 lg:px-0 max-w-7xl mx-auto w-full">
 				<XpHeader
 					variant="full"
 					initialAchievements={initialAchievements ?? undefined}
@@ -126,7 +126,7 @@ export default function Dashboard({
 					variants={STAGGER_CONTAINER}
 					initial="hidden"
 					animate="visible"
-					className="px-4 sm:px-6 py-6 space-y-6 sm:space-y-8 lg:px-0"
+					className="px-4 sm:px-6 py-6 space-y-6 sm:space-y-8 lg:px-0 max-w-7xl mx-auto w-full"
 				>
 					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
 						<m.div variants={STAGGER_ITEM} className="md:col-span-1">

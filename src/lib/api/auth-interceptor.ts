@@ -12,8 +12,12 @@ export class AuthenticatedApiClient {
 		// Try to get token from various sources
 		if (typeof window !== 'undefined') {
 			// Client-side: try to get from localStorage or cookies
-			const token = localStorage.getItem('auth-token');
-			if (token) return token;
+			try {
+				const token = localStorage.getItem('auth-token');
+				if (token) return token;
+			} catch (e) {
+				console.error('Error accessing localStorage:', e);
+			}
 		}
 		return null;
 	}
@@ -29,6 +33,28 @@ export class AuthenticatedApiClient {
 		}
 
 		return headers;
+	}
+
+	private async mergeHeaders(optionsHeaders?: HeadersInit): Promise<Record<string, string>> {
+		const authHeaders = await this.getAuthHeaders();
+		const merged: Record<string, string> = { ...authHeaders };
+
+		if (optionsHeaders) {
+			if (optionsHeaders instanceof Headers) {
+				optionsHeaders.forEach((value, key) => {
+					merged[key] = value;
+				});
+			} else if (Array.isArray(optionsHeaders)) {
+				for (const [key, value] of optionsHeaders) {
+					merged[key] = value;
+				}
+			} else {
+				// Record<string, string>
+				Object.assign(merged, optionsHeaders);
+			}
+		}
+
+		return merged;
 	}
 
 	private handleAuthError(status: number) {
@@ -48,15 +74,13 @@ export class AuthenticatedApiClient {
 
 	async get<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
 		const url = `${this.baseURL}${endpoint}`;
-		const headers = await this.getAuthHeaders();
+		const { headers: customHeaders, ...restOptions } = options;
+		const mergedHeaders = await this.mergeHeaders(customHeaders);
 
 		const response = await fetch(url, {
 			method: 'GET',
-			headers: {
-				...headers,
-				...options.headers,
-			},
-			...options,
+			headers: mergedHeaders,
+			...restOptions,
 		});
 
 		if (!response.ok) {
@@ -75,16 +99,14 @@ export class AuthenticatedApiClient {
 
 	async post<T>(endpoint: string, data?: unknown, options: RequestInit = {}): Promise<T> {
 		const url = `${this.baseURL}${endpoint}`;
-		const headers = await this.getAuthHeaders();
+		const { headers: customHeaders, ...restOptions } = options;
+		const mergedHeaders = await this.mergeHeaders(customHeaders);
 
 		const response = await fetch(url, {
 			method: 'POST',
-			headers: {
-				...headers,
-				...options.headers,
-			},
+			headers: mergedHeaders,
 			body: data ? JSON.stringify(data) : undefined,
-			...options,
+			...restOptions,
 		});
 
 		if (!response.ok) {
@@ -103,16 +125,14 @@ export class AuthenticatedApiClient {
 
 	async put<T>(endpoint: string, data?: unknown, options: RequestInit = {}): Promise<T> {
 		const url = `${this.baseURL}${endpoint}`;
-		const headers = await this.getAuthHeaders();
+		const { headers: customHeaders, ...restOptions } = options;
+		const mergedHeaders = await this.mergeHeaders(customHeaders);
 
 		const response = await fetch(url, {
 			method: 'PUT',
-			headers: {
-				...headers,
-				...options.headers,
-			},
+			headers: mergedHeaders,
 			body: data ? JSON.stringify(data) : undefined,
-			...options,
+			...restOptions,
 		});
 
 		if (!response.ok) {
@@ -131,15 +151,13 @@ export class AuthenticatedApiClient {
 
 	async delete<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
 		const url = `${this.baseURL}${endpoint}`;
-		const headers = await this.getAuthHeaders();
+		const { headers: customHeaders, ...restOptions } = options;
+		const mergedHeaders = await this.mergeHeaders(customHeaders);
 
 		const response = await fetch(url, {
 			method: 'DELETE',
-			headers: {
-				...headers,
-				...options.headers,
-			},
-			...options,
+			headers: mergedHeaders,
+			...restOptions,
 		});
 
 		if (!response.ok) {

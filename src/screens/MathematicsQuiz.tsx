@@ -1,16 +1,15 @@
 'use client';
 
-import { ArrowLeft, CheckCircle2, GripVertical, Lightbulb, X } from 'lucide-react';
+import { ArrowLeft, CheckCircle2, GripVertical, Lightbulb, X, ChevronLeft, BrainCircuit } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { AIExplanationCard } from '@/components/AI/AIExplanationCard';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { getExplanation } from '@/services/geminiService';
-
-// import type { Screen } from '@/types'; // Removed unused import
+import { motion, AnimatePresence } from 'framer-motion';
 
 const mathSymbols = ['√', 'x²', '∫', 'd/dx', 'lim', 'Σ', '∞', 'π', 'e', 'ln', 'sin', 'cos', 'tan'];
 
@@ -61,142 +60,167 @@ export default function MathematicsQuiz() {
 
 	return (
 		<div className="fixed inset-0 flex flex-col w-full min-w-0 bg-background overflow-hidden">
-			{/* Header */}
-			<header className="px-6 pt-12 pb-4 bg-background/80 backdrop-blur-xl sticky top-0 z-20 border-b border-border shrink-0">
+			{/* Modern Header */}
+			<header className="px-6 py-8 bg-card/50 backdrop-blur-2xl sticky top-0 z-20 border-b border-border/50 shrink-0">
 				<div className="max-w-2xl mx-auto w-full">
-					<div className="flex items-center gap-4 mb-4">
+					<div className="flex items-center gap-6">
 						<Button
 							variant="ghost"
 							size="icon"
-							onClick={() => router.push('/dashboard')}
-							className="rounded-full"
-							aria-label="Back to dashboard"
+							onClick={() => router.push('/past-papers')}
+							className="rounded-2xl h-12 w-12 bg-muted/50"
+							aria-label="Back"
 						>
-							<ArrowLeft className="w-5 h-5" />
+							<ChevronLeft className="w-6 h-6" />
 						</Button>
-						<div className="flex-1">
-							<div className="flex justify-between items-center mb-2">
-								<span className="text-[10px] font-black text-label-tertiary uppercase tracking-widest">
-									Question 1 of 5
+						<div className="flex-1 space-y-3">
+							<div className="flex justify-between items-center">
+								<span className="text-xs font-bold text-muted-foreground uppercase tracking-widest">
+									Question 5 of 20
 								</span>
 								<Badge
-									variant="secondary"
-									className="text-[10px] font-black uppercase tracking-tighter rounded-full bg-primary/10 text-primary border-none"
+									variant="violet"
+									size="sm"
+									className="rounded-xl"
 								>
 									Integration
 								</Badge>
 							</div>
-							<Progress value={20} className="h-2 rounded-full" />
+							<Progress value={25} variant="violet" className="h-2.5" />
 						</div>
 					</div>
 				</div>
 			</header>
 
 			<div className="flex-1 overflow-y-auto w-full scroll-smooth">
-				<main className="px-6 py-8 space-y-8 pb-64 max-w-2xl mx-auto w-full">
-					{/* Question */}
-					<div className="space-y-4">
-						<h2 className="text-3xl font-black text-foreground tracking-tighter uppercase">
-							Find the integral
+				<main className="px-6 py-10 space-y-10 pb-64 max-w-2xl mx-auto w-full">
+					{/* Question Card */}
+					<div className="space-y-6">
+						<h2 className="text-3xl font-heading font-black text-foreground tracking-tight text-center">
+							Solve the integral
 						</h2>
-						<Card className="p-12 bg-card border border-border rounded-3xl shadow-sm relative overflow-hidden group">
-							<div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity" />
-							<div className="text-center relative z-10">
-								<span className="text-4xl font-mono font-black text-foreground tracking-tighter uppercase">
+						<Card variant="elevated" className="overflow-hidden border-2 border-primary-violet/10 group">
+							<div className="p-12 text-center bg-gradient-to-br from-primary-violet/5 via-transparent to-primary-cyan/5">
+								<span className="text-4xl font-mono font-black text-primary-violet tracking-tight">
 									∫(3x² + 2x) dx
 								</span>
 							</div>
 						</Card>
 					</div>
 
-					{/* Selected Steps Area */}
+					{/* Solution Workspace */}
 					<div className="space-y-4">
-						<h3 className="text-[10px] font-black uppercase text-label-tertiary tracking-[0.2em] px-1">
-							Your Solution Path
-						</h3>
-						<div className="min-h-[160px] p-6 bg-primary/5 rounded-3xl border-2 border-dashed border-primary/20">
-							{selectedSteps.length === 0 ? (
-								<div className="flex flex-col items-center justify-center py-8 text-label-tertiary space-y-2">
-									<p className="text-[10px] font-black uppercase tracking-widest">
-										Tap steps below to solve
-									</p>
-								</div>
-							) : (
-								<div className="space-y-3">
-									{selectedSteps.map((stepId, index) => {
+						<div className="flex items-center justify-between px-1">
+							<h3 className="text-xs font-bold uppercase text-muted-foreground tracking-widest">
+								Your Solution
+							</h3>
+							{selectedSteps.length > 0 && (
+								<button
+									onClick={() => setSelectedSteps([])}
+									className="text-[10px] font-bold text-destructive uppercase tracking-widest hover:underline"
+								>
+									Clear All
+								</button>
+							)}
+						</div>
+						<div className="min-h-[160px] p-6 bg-muted/30 rounded-[2rem] border-2 border-dashed border-border flex flex-col gap-3">
+							<AnimatePresence mode="popLayout">
+								{selectedSteps.length === 0 ? (
+									<motion.div
+										initial={{ opacity: 0 }}
+										animate={{ opacity: 1 }}
+										className="flex-1 flex flex-col items-center justify-center text-muted-foreground gap-2"
+									>
+										<BrainCircuit className="w-8 h-8 opacity-20" />
+										<p className="text-xs font-bold uppercase tracking-widest opacity-40">
+											Tap fragments to build path
+										</p>
+									</motion.div>
+								) : (
+									selectedSteps.map((stepId, index) => {
 										const step = steps.find((s) => s.id === stepId);
 										return (
-											<div
+											<motion.div
 												key={stepId}
-												className="flex items-center gap-4 p-5 bg-card rounded-2xl shadow-sm border border-primary/10 animate-in fade-in slide-in-from-left-2 ios-active-scale"
+												layout
+												initial={{ opacity: 0, x: -20 }}
+												animate={{ opacity: 1, x: 0 }}
+												exit={{ opacity: 0, scale: 0.95 }}
+												className="flex items-center gap-4 p-4 bg-card rounded-2xl shadow-sm border border-border group"
 											>
-												<span className="w-7 h-7 rounded-full bg-primary text-primary-foreground text-[10px] flex items-center justify-center font-black">
+												<span className="w-8 h-8 rounded-xl bg-primary-violet text-white text-xs flex items-center justify-center font-black shadow-lg shadow-primary-violet/20">
 													{index + 1}
 												</span>
-												<span className="font-mono font-black text-foreground flex-1 uppercase tracking-tight">
+												<span className="font-mono font-bold text-foreground flex-1">
 													{step?.text}
 												</span>
 												<Button
-													variant="ghost"
+													variant="tertiary"
 													size="icon"
-													className="h-8 w-8 rounded-full hover:bg-destructive/10 hover:text-destructive ios-active-scale"
+													className="h-8 w-8 text-muted-foreground hover:text-destructive"
 													onClick={() => handleStepClick(stepId)}
-													aria-label="Remove step"
 												>
 													<X className="w-4 h-4" />
 												</Button>
-											</div>
+											</motion.div>
 										);
-									})}
-								</div>
-							)}
+									})
+								)}
+							</AnimatePresence>
 						</div>
 					</div>
 
-					{/* Available Steps Pool */}
+					{/* Fragments Pool */}
 					<div className="space-y-4">
-						<h3 className="text-[10px] font-black uppercase text-label-tertiary tracking-[0.2em] px-1">
+						<h3 className="text-xs font-bold uppercase text-muted-foreground tracking-widest px-1">
 							Step Fragments
 						</h3>
 						<div className="grid grid-cols-1 gap-3">
-							{availableSteps
-								.filter((s) => !selectedSteps.includes(s.id))
-								.map((step) => (
-									<button
-										type="button"
-										key={step.id}
-										onClick={() => handleStepClick(step.id)}
-										className="p-6 bg-card border border-border rounded-3xl text-left hover:border-primary transition-all hover:shadow-md active:scale-[0.98] group ios-active-scale"
-									>
-										<div className="flex items-center gap-4">
-											<div className="w-8 h-8 rounded-lg bg-secondary flex items-center justify-center group-hover:bg-primary/10 transition-colors">
-												<GripVertical className="w-4 h-4 text-label-tertiary group-hover:text-primary" />
+							<AnimatePresence mode="popLayout">
+								{availableSteps
+									.filter((s) => !selectedSteps.includes(s.id))
+									.map((step) => (
+										<motion.button
+											layout
+											type="button"
+											key={step.id}
+											initial={{ opacity: 0, scale: 0.9 }}
+											animate={{ opacity: 1, scale: 1 }}
+											exit={{ opacity: 0, scale: 0.9 }}
+											onClick={() => handleStepClick(step.id)}
+											className="p-5 bg-card border-2 border-border rounded-2xl text-left hover:border-primary-violet/50 transition-all hover:shadow-md active:scale-[0.98] group flex items-center gap-4"
+										>
+											<div className="w-10 h-10 rounded-xl bg-muted flex items-center justify-center group-hover:bg-primary-violet/10 transition-colors">
+												<GripVertical className="w-5 h-5 text-muted-foreground group-hover:text-primary-violet" />
 											</div>
-											<span className="font-mono font-black text-label-secondary uppercase tracking-tight">
+											<span className="font-mono font-bold text-foreground">
 												{step.text}
 											</span>
-										</div>
-									</button>
-								))}
+										</motion.button>
+									))}
+							</AnimatePresence>
 						</div>
 					</div>
 
-					{/* Hint */}
-					<div className="p-6 bg-warning/10 border border-warning/20 rounded-3xl flex items-start gap-4">
-						<div className="w-10 h-10 rounded-full bg-warning/20 flex items-center justify-center shrink-0">
-							<Lightbulb className="w-5 h-5 text-warning" />
+					{/* Teacher's Hint */}
+					<motion.div
+						initial={{ opacity: 0, y: 20 }}
+						whileInView={{ opacity: 1, y: 0 }}
+						className="p-6 bg-primary-orange/10 border-2 border-primary-orange/20 rounded-[2rem] flex items-start gap-4"
+					>
+						<div className="w-12 h-12 rounded-2xl bg-primary-orange/20 flex items-center justify-center shrink-0">
+							<Lightbulb className="w-6 h-6 text-primary-orange" />
 						</div>
-						<div>
-							<h4 className="font-black text-warning text-[10px] uppercase tracking-widest mb-1">
-								Teacher's Hint
+						<div className="space-y-1">
+							<h4 className="font-black text-primary-orange text-xs uppercase tracking-widest">
+								Pro Tip
 							</h4>
-							<p className="text-sm text-label-secondary font-black uppercase tracking-tight">
-								Remember the power rule: ∫xⁿ dx = xⁿ⁺¹/(n+1) + C
+							<p className="text-sm text-foreground font-medium leading-relaxed">
+								Remember the power rule: ∫xⁿ dx = xⁿ⁺¹/(n+1) + C. Don't forget the constant!
 							</p>
 						</div>
-					</div>
+					</motion.div>
 
-					{/* AI Explanation */}
 					<AIExplanationCard
 						explanation={aiExplanation}
 						isLoading={isExplaining}
@@ -206,41 +230,39 @@ export default function MathematicsQuiz() {
 				</main>
 			</div>
 
-			{/* Math Keyboard & Actions */}
-			<footer className="fixed bottom-0 left-0 right-0 bg-background/80 backdrop-blur-xl border-t border-border z-30">
-				<div className="max-w-2xl mx-auto w-full">
-					{/* Math Symbols */}
-					<div className="px-6 py-3 overflow-x-auto no-scrollbar">
-						<div className="flex gap-2">
-							{mathSymbols.map((symbol) => (
-								<button
-									type="button"
-									key={symbol}
-									onClick={() => insertSymbol(symbol)}
-									className="px-4 py-2.5 bg-secondary rounded-xl text-sm font-mono font-black uppercase hover:bg-primary hover:text-primary-foreground transition-all whitespace-nowrap ios-active-scale shadow-sm"
-								>
-									{symbol}
-								</button>
-							))}
-						</div>
+			{/* Action Dock */}
+			<footer className="fixed bottom-0 left-0 right-0 bg-card/80 backdrop-blur-2xl border-t border-border/50 z-30 pb-safe">
+				<div className="max-w-2xl mx-auto w-full p-6 space-y-6">
+					{/* Symbol Strip */}
+					<div className="flex gap-2 overflow-x-auto no-scrollbar py-1">
+						{mathSymbols.map((symbol) => (
+							<button
+								type="button"
+								key={symbol}
+								onClick={() => insertSymbol(symbol)}
+								className="h-10 px-4 bg-muted rounded-xl text-sm font-mono font-black hover:bg-primary-violet hover:text-white transition-all whitespace-nowrap shadow-sm active:scale-90"
+							>
+								{symbol}
+							</button>
+						))}
 					</div>
 
-					{/* Action Buttons */}
-					<div className="p-6 pt-2 flex gap-4">
+					<div className="flex gap-4">
 						<Button
 							variant="outline"
-							className="h-16 px-8 rounded-full font-black uppercase tracking-widest border-border text-[10px] ios-active-scale"
+							className="h-14 px-8 rounded-2xl font-black uppercase text-xs tracking-widest"
+							leftIcon={<Lightbulb className="w-5 h-5 text-primary-orange" />}
 						>
-							<Lightbulb className="w-5 h-5 mr-2 text-warning" />
 							Hint
 						</Button>
 						<Button
-							className="flex-1 h-16 bg-primary text-primary-foreground rounded-full font-black text-sm uppercase tracking-widest shadow-xl shadow-primary/20 disabled:opacity-50 transition-all active:scale-95 ios-active-scale"
+							variant="primary"
+							className="flex-1 h-14 rounded-2xl font-black text-lg uppercase tracking-widest shadow-xl"
 							disabled={selectedSteps.length === 0}
 							onClick={() => router.push('/lesson-complete')}
+							rightIcon={<CheckCircle2 className="w-6 h-6" />}
 						>
-							<CheckCircle2 className="w-5 h-5 mr-2" />
-							Check Answer
+							Check
 						</Button>
 					</div>
 				</div>

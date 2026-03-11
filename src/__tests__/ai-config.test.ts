@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { AI_MODELS, checkAIProviderHealth, createAIClient } from '@/lib/ai-config';
 
-// Mock the Google Generative AI library
+// Mock the Google Generative AI library (legacy)
 vi.mock('@google/generative-ai', () => ({
 	GoogleGenerativeAI: vi.fn().mockImplementation(() => ({
 		getGenerativeModel: vi.fn().mockImplementation(() => ({
@@ -14,9 +14,17 @@ vi.mock('@google/generative-ai', () => ({
 	})),
 }));
 
+// Mock the new AI provider
+vi.mock('@/lib/ai', () => ({
+	generateTextWithAI: vi.fn().mockResolvedValue('Test response'),
+	generateWithFallback: vi.fn().mockResolvedValue('Test response'),
+	streamTextWithAI: vi.fn().mockReturnValue({}),
+}));
+
 describe('AI Configuration', () => {
 	beforeEach(() => {
 		vi.clearAllMocks();
+		process.env.GEMINI_API_KEY = 'test-api-key';
 	});
 
 	describe('createAIClient', () => {
@@ -57,11 +65,14 @@ describe('AI Configuration', () => {
 			delete process.env.GEMINI_API_KEY;
 			const result = await checkAIProviderHealth();
 			expect(result.status).toBe('unhealthy');
-			expect(result.error).toBe('AI client not configured');
+			expect(result.error).toBe('GEMINI_API_KEY not configured');
 		});
 
 		it('should return healthy when API is working', async () => {
 			process.env.GEMINI_API_KEY = 'test-api-key';
+			const { generateTextWithAI } = await import('@/lib/ai');
+			(generateTextWithAI as any).mockResolvedValue('ok');
+
 			const result = await checkAIProviderHealth();
 			expect(result.status).toBe('healthy');
 			expect(result.latency).toBeDefined();
@@ -70,16 +81,8 @@ describe('AI Configuration', () => {
 
 		it('should return unhealthy when API fails', async () => {
 			process.env.GEMINI_API_KEY = 'test-api-key';
-
-			// Mock a failing API call
-			const { GoogleGenerativeAI } = await import('@google/generative-ai');
-			const mockClient = {
-				getGenerativeModel: vi.fn().mockImplementation(() => ({
-					generateContent: vi.fn().mockRejectedValue(new Error('API Error')),
-				})),
-			};
-			// @ts-expect-error - Mocking a class for testing purposes
-			GoogleGenerativeAI.mockImplementation(() => mockClient);
+			const { generateTextWithAI } = await import('@/lib/ai');
+			(generateTextWithAI as any).mockRejectedValue(new Error('API Error'));
 
 			const result = await checkAIProviderHealth();
 			expect(result.status).toBe('unhealthy');
