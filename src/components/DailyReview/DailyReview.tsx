@@ -43,8 +43,18 @@ export function DailyReviewModal({ isOpen = false, onClose }: DailyReviewProps) 
 			>
 				<div className="flex items-center justify-between mb-6">
 					<h2 className="text-xl font-bold">Review Your Day</h2>
-					<button onClick={onClose} className="p-2 hover:bg-muted rounded-full transition-colors">
-						<svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+					<button
+						type="button"
+						onClick={onClose}
+						className="p-2 hover:bg-muted rounded-full transition-colors"
+					>
+						<svg
+							className="w-5 h-5"
+							fill="none"
+							viewBox="0 0 24 24"
+							stroke="currentColor"
+							aria-label="Close"
+						>
 							<path
 								strokeLinecap="round"
 								strokeLinejoin="round"
@@ -60,6 +70,7 @@ export function DailyReviewModal({ isOpen = false, onClose }: DailyReviewProps) 
 					<div className="grid grid-cols-4 gap-2">
 						{MOODS.map((mood, index) => (
 							<button
+								type="button"
 								key={mood.label}
 								onClick={() => setSelectedMood(index)}
 								className={cn(
@@ -105,7 +116,7 @@ export function DailyReviewModal({ isOpen = false, onClose }: DailyReviewProps) 
 					</div>
 				)}
 
-				<button className="w-full py-3 rounded-xl bg-primary text-white font-medium">
+				<button type="button" className="w-full py-3 rounded-xl bg-primary text-white font-medium">
 					Save & Finish Day
 				</button>
 			</m.div>

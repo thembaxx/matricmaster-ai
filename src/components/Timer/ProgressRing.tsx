@@ -23,7 +23,7 @@ export function ProgressRing({
 
 	return (
 		<div className={cn('relative inline-flex items-center justify-center', className)}>
-			<svg width={size} height={size} className="transform -rotate-90">
+			<svg width={size} height={size} className="transform -rotate-90" aria-label="Progress ring">
 				<circle
 					cx={size / 2}
 					cy={size / 2}

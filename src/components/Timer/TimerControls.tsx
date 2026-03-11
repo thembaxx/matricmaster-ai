@@ -13,9 +13,16 @@ export function TimerControls() {
 				whileHover={{ scale: 1.05 }}
 				whileTap={{ scale: 0.95 }}
 				onClick={() => addTime(-60)}
+				type="button"
 				className="p-3 rounded-full bg-muted hover:bg-muted/80 transition-colors"
 			>
-				<svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+				<svg
+					className="w-5 h-5"
+					fill="none"
+					viewBox="0 0 24 24"
+					stroke="currentColor"
+					aria-label="Remove 1 minute"
+				>
 					<path
 						strokeLinecap="round"
 						strokeLinejoin="round"
@@ -30,31 +37,48 @@ export function TimerControls() {
 				whileHover={{ scale: 1.05 }}
 				whileTap={{ scale: 0.95 }}
 				onClick={isTimerRunning ? pauseTimer : startTimer}
+				type="button"
 				className={cn(
 					'w-20 h-20 rounded-full flex items-center justify-center transition-colors',
 					isTimerRunning ? 'bg-warning hover:bg-warning/80' : 'bg-primary hover:bg-primary/80'
 				)}
 			>
 				{isTimerRunning ? (
-					<svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
+					<svg
+						className="w-8 h-8 text-white"
+						fill="currentColor"
+						viewBox="0 0 24 24"
+						aria-label="Pause"
+					>
 						<rect x="6" y="4" width="4" height="16" rx="1" />
 						<rect x="14" y="4" width="4" height="16" rx="1" />
 					</svg>
 				) : (
-					<svg className="w-8 h-8 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
+					<svg
+						className="w-8 h-8 text-white ml-1"
+						fill="currentColor"
+						viewBox="0 0 24 24"
+						aria-label="Start"
+					>
 						<path d="M8 5v14l11-7z" />
 					</svg>
 				)}
-				<span className="sr-only">{isTimerRunning ? 'Pause' : 'Start'}</span>
 			</m.button>
 
 			<m.button
 				whileHover={{ scale: 1.05 }}
 				whileTap={{ scale: 0.95 }}
 				onClick={() => addTime(60)}
+				type="button"
 				className="p-3 rounded-full bg-muted hover:bg-muted/80 transition-colors"
 			>
-				<svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+				<svg
+					className="w-5 h-5"
+					fill="none"
+					viewBox="0 0 24 24"
+					stroke="currentColor"
+					aria-label="Add 1 minute"
+				>
 					<path
 						strokeLinecap="round"
 						strokeLinejoin="round"
@@ -69,9 +93,16 @@ export function TimerControls() {
 				whileHover={{ scale: 1.05 }}
 				whileTap={{ scale: 0.95 }}
 				onClick={resetTimer}
+				type="button"
 				className="p-3 rounded-full bg-muted hover:bg-muted/80 transition-colors"
 			>
-				<svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+				<svg
+					className="w-5 h-5"
+					fill="none"
+					viewBox="0 0 24 24"
+					stroke="currentColor"
+					aria-label="Reset timer"
+				>
 					<path
 						strokeLinecap="round"
 						strokeLinejoin="round"

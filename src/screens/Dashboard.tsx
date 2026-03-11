@@ -119,7 +119,7 @@ const SUBJECTS = [
 	},
 ];
 
-export default function Dashboard({}: DashboardProps) {
+export default function Dashboard(_props: DashboardProps) {
 	const [tasks, setTasks] = useState<Record<string, StudyTask[]>>(DEMO_TASKS);
 	const [expanded, setExpanded] = useState<Record<string, boolean>>({
 		high: true,
@@ -266,6 +266,7 @@ function PrioritySection({
 	return (
 		<section>
 			<button
+				type="button"
 				onClick={onToggle}
 				className="flex items-center gap-3 mb-4 w-full text-left tiimo-card rounded-xl p-4 hover:shadow-sm transition-all"
 			>

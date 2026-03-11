@@ -95,7 +95,12 @@ export default function FocusHero() {
 						{/* Progress Ring with Emoji */}
 						<div className="relative w-64 h-64 mx-auto mb-8">
 							{/* SVG Ring */}
-							<svg className="w-full h-full -rotate-90" viewBox="0 0 100 100">
+							<svg
+								className="w-full h-full -rotate-90"
+								viewBox="0 0 100 100"
+								aria-label="Progress ring showing focus session completion"
+							>
+								<title>Focus progress ring</title>
 								<circle cx="50" cy="50" r="45" fill="none" stroke="var(--border)" strokeWidth="6" />
 								<m.circle
 									cx="50"
@@ -172,6 +177,7 @@ export default function FocusHero() {
 												viewBox="0 0 24 24"
 												stroke="currentColor"
 												strokeWidth={3}
+												aria-label="Completed task"
 											>
 												<path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
 											</svg>

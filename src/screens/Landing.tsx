@@ -24,7 +24,9 @@ import { SUBJECTS } from '@/constants/mock-data';
 import { STAGGER_CONTAINER, STAGGER_ITEM } from '@/lib/animation-presets';
 import { useSession } from '@/lib/auth-client';
 
-const ICON_MAP: Record<string, any> = {
+type IconSvg = typeof CalculatorIcon;
+
+const ICON_MAP: Record<string, IconSvg> = {
 	Calculator: CalculatorIcon,
 	Atom: AtomIcon,
 	Flask: Chemistry01Icon,
@@ -257,8 +259,9 @@ export default function Landing() {
 								const icon = ICON_MAP[subject.icon] || CalculatorIcon;
 								return (
 									<m.div key={subject.id} variants={STAGGER_ITEM}>
-										<div
-											className="tiimo-card rounded-3xl p-6 sm:p-8 border border-border shadow-sm group hover:shadow-lg hover:-translate-y-2 transition-all duration-500 cursor-pointer overflow-hidden relative h-full flex flex-col justify-between ios-active-scale"
+										<button
+											type="button"
+											className="tiimo-card rounded-3xl p-6 sm:p-8 border border-border shadow-sm group hover:shadow-lg hover:-translate-y-2 transition-all duration-500 cursor-pointer overflow-hidden relative h-full flex flex-col justify-between ios-active-scale text-left w-full"
 											onClick={() => handleAuthRoute(subject.path)}
 										>
 											<m.div
@@ -301,7 +304,7 @@ export default function Landing() {
 													<HugeiconsIcon icon={ArrowRight01Icon} className="w-4 h-4" />
 												</div>
 											</div>
-										</div>
+										</button>
 									</m.div>
 								);
 							})}

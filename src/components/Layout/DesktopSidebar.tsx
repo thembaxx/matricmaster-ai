@@ -61,10 +61,12 @@ import { ProfileMenu } from './profile-menu';
 
 type AuthUser = typeof authClient.$Infer.Session.user;
 
+type IconSvg = typeof Home01Icon;
+
 type MenuItem = {
 	href: string;
 	label: string;
-	icon: any;
+	icon: IconSvg;
 };
 
 type MenuSection = {

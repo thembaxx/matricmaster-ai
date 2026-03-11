@@ -43,6 +43,7 @@ export function TaskBlock({
 			<div className="flex items-center gap-3">
 				{!completed && onComplete && (
 					<button
+						type="button"
 						onClick={(e) => {
 							e.stopPropagation();
 							onComplete();
@@ -60,6 +61,7 @@ export function TaskBlock({
 							fill="none"
 							viewBox="0 0 24 24"
 							stroke="currentColor"
+							aria-label="Completed"
 						>
 							<path
 								strokeLinecap="round"
@@ -99,6 +101,7 @@ export function TaskBlock({
 							e.stopPropagation();
 							onRemove();
 						}}
+						type="button"
 						className="opacity-0 group-hover:opacity-100 p-2 hover:bg-destructive/10 rounded-lg transition-all"
 					>
 						<svg
@@ -106,6 +109,7 @@ export function TaskBlock({
 							fill="none"
 							viewBox="0 0 24 24"
 							stroke="currentColor"
+							aria-label="Delete"
 						>
 							<path
 								strokeLinecap="round"

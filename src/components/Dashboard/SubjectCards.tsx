@@ -16,12 +16,14 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 
+type IconSvg = typeof CalculatorIcon;
+
 interface Subject {
 	id: string;
 	title: string;
 	progress: number;
 	color: string;
-	icon: any;
+	icon: IconSvg;
 	topics: number;
 	description: string;
 }

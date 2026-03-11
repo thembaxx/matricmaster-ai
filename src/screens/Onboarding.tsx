@@ -25,13 +25,15 @@ import type { SessionUser } from '@/lib/auth';
 import { completeOnboardingAction } from '@/lib/db/onboarding-actions';
 import { cn } from '@/lib/utils';
 
+type IconSvg = typeof SparklesIcon;
+
 interface OnboardingStep {
 	id: number;
 	title: string;
 	description: string;
 	image: string;
 	color: string;
-	icon: any;
+	icon: IconSvg;
 	cta?: {
 		label: string;
 		action: () => void;
