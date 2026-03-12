@@ -11,6 +11,8 @@ import { TrendingTopics } from '@/components/Search/TrendingTopics';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { STAGGER_CONTAINER } from '@/lib/animation-presets';
 import { useSession } from '@/lib/auth-client';
+import { Card } from '@/components/ui/card';
+import Link from 'next/link';
 import {
 	addSearchHistoryAction,
 	clearSearchHistoryAction,
@@ -20,6 +22,7 @@ import {
 } from '@/lib/db/actions';
 import type { PastPaper, SearchHistory } from '@/lib/db/schema';
 import { smartSearch } from '@/services/geminiService';
+import { getLessonsBySubject } from '@/lib/lessons';
 
 export default function Search() {
 	const { data: session } = useSession();
@@ -29,6 +32,7 @@ export default function Search() {
 	const [recentSearches, setRecentSearches] = useState<SearchHistory[]>([]);
 	const [isLoadingHistory, setIsLoadingHistory] = useState(true);
 	const [papers, setPapers] = useState<PastPaper[]>([]);
+	const [allLessons, setAllLessons] = useState<any[]>([]);
 
 	useEffect(() => {
 		const loadSearchHistory = async () => {
@@ -43,15 +47,20 @@ export default function Search() {
 	}, [session?.user?.id]);
 
 	useEffect(() => {
-		const loadPapers = async () => {
+		const loadData = async () => {
 			try {
-				const data = await getPastPapersAction();
-				setPapers(data);
+				const [papersData] = await Promise.all([getPastPapersAction()]);
+				setPapers(papersData);
+				
+				// Collect all lessons from all subjects
+				const subjects = ['math', 'physics', 'life', 'accounting', 'geography', 'business', 'history', 'chemistry', 'economics', 'lo'];
+				const lessons = subjects.flatMap(s => getLessonsBySubject(s));
+				setAllLessons(lessons);
 			} catch (error) {
-				console.error('Failed to load papers:', error);
+				console.error('Failed to load data:', error);
 			}
 		};
-		loadPapers();
+		loadData();
 	}, []);
 
 	useEffect(() => {
@@ -75,15 +84,21 @@ export default function Search() {
 		return () => clearTimeout(timer);
 	}, [query, session?.user?.id]);
 
-	// Bolt: Memoize filtered results and pre-normalize search query to avoid O(N) recalculation on every render
 	const filteredResults = useMemo(() => {
-		if (!query) return [];
+		if (!query) return { papers: [], lessons: [] };
 		const lowerQuery = query.toLowerCase();
-		return papers.filter(
-			(p: PastPaper) =>
-				p.subject.toLowerCase().includes(lowerQuery) || p.paper.toLowerCase().includes(lowerQuery)
-		);
-	}, [papers, query]);
+		
+		return {
+			papers: papers.filter(
+				(p: PastPaper) =>
+					p.subject.toLowerCase().includes(lowerQuery) || p.paper.toLowerCase().includes(lowerQuery)
+			),
+			lessons: allLessons.filter(
+				(l: any) =>
+					l.title.toLowerCase().includes(lowerQuery) || l.topic.toLowerCase().includes(lowerQuery)
+			)
+		};
+	}, [papers, allLessons, query]);
 
 	const handleDeleteSearch = useCallback(
 		async (id: string, e: React.MouseEvent) => {
@@ -148,7 +163,40 @@ export default function Search() {
 								tip={aiResults?.tip}
 								onSuggestionClick={setQuery}
 							/>
-							<SearchResults results={filteredResults} />
+							
+							<div className="space-y-8">
+								{filteredResults.lessons.length > 0 && (
+									<section>
+										<h3 className="text-sm font-black uppercase text-muted-foreground tracking-widest mb-4">Lessons</h3>
+										<div className="grid gap-4 sm:grid-cols-2">
+											{filteredResults.lessons.map((l: any) => (
+												<Link key={l.id} href={`/focus?lessonId=${l.id}`}>
+													<Card className="p-6 hover:border-primary/50 transition-all group shadow-tiimo">
+														<div className="flex items-center justify-between mb-2">
+															<span className="text-[10px] font-black uppercase text-primary tracking-widest">{l.topic}</span>
+															<span className="text-[10px] font-bold text-muted-foreground uppercase">{l.duration} min</span>
+														</div>
+														<h4 className="font-bold text-foreground group-hover:text-primary transition-colors">{l.title}</h4>
+													</Card>
+												</Link>
+											))}
+										</div>
+									</section>
+								)}
+
+								{filteredResults.papers.length > 0 && (
+									<section>
+										<h3 className="text-sm font-black uppercase text-muted-foreground tracking-widest mb-4">Past Papers</h3>
+										<SearchResults results={filteredResults.papers} />
+									</section>
+								)}
+
+								{filteredResults.lessons.length === 0 && filteredResults.papers.length === 0 && (
+									<div className="py-20 text-center">
+										<p className="text-muted-foreground font-bold uppercase text-xs tracking-[0.2em]">No matches found for "{query}"</p>
+									</div>
+								)}
+							</div>
 						</div>
 					)}
 				</main>
