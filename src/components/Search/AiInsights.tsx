@@ -1,11 +1,12 @@
 'use client';
 
-import { Loading03Icon, SparklesIcon } from '@hugeicons/core-free-icons';
+import { SparklesIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { AnimatePresence, m } from 'framer-motion';
 import { memo } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
 
 interface AiInsightsProps {
 	isLoading: boolean;
@@ -38,11 +39,13 @@ export const AiInsights = memo(function AiInsights({
 					<Card className="p-8 bg-zinc-900 text-white rounded-[3rem] relative overflow-hidden border-none shadow-2xl">
 						<div className="absolute top-0 right-0 w-64 h-64 bg-primary/20 rounded-full blur-[80px] -mr-32 -mt-32" />
 						{isLoading ? (
-							<div className="flex items-center justify-center py-12">
-								<HugeiconsIcon
-									icon={Loading03Icon}
-									className="w-10 h-10 text-primary animate-spin"
-								/>
+							<div className="space-y-6 relative z-10">
+								<Skeleton className="h-8 w-3/4 rounded-full bg-white/5" />
+								<div className="flex flex-wrap gap-3">
+									{[1, 2, 3].map((i) => (
+										<Skeleton key={i} className="h-10 w-32 rounded-xl bg-white/5" />
+									))}
+								</div>
 							</div>
 						) : (
 							<div className="space-y-8 relative z-10">

@@ -23,6 +23,7 @@ interface Subject {
 	title: string;
 	progress: number;
 	color: string;
+	bgColor: string;
 	icon: IconSvg;
 	topics: number;
 	description: string;
@@ -33,7 +34,8 @@ const subjects: Subject[] = [
 		id: 'math',
 		title: 'Mathematics',
 		progress: 78,
-		color: 'bg-math',
+		color: 'text-subject-math',
+		bgColor: 'bg-subject-math-soft',
 		icon: CalculatorIcon,
 		topics: 12,
 		description: 'Calculus, Trigonometry, and Financial Maths.',
@@ -42,7 +44,8 @@ const subjects: Subject[] = [
 		id: 'physics',
 		title: 'Physical Sciences',
 		progress: 62,
-		color: 'bg-physics',
+		color: 'text-subject-physics',
+		bgColor: 'bg-subject-physics-soft',
 		icon: AtomIcon,
 		topics: 15,
 		description: 'Newtonian Mechanics, Electricity, and Chemistry.',
@@ -51,7 +54,8 @@ const subjects: Subject[] = [
 		id: 'lifesci',
 		title: 'Life Sciences',
 		progress: 85,
-		color: 'bg-life-sci',
+		color: 'text-subject-life',
+		bgColor: 'bg-subject-life-soft',
 		icon: BookOpen01Icon,
 		topics: 10,
 		description: 'DNA, Genetics, and Human Evolution.',
@@ -60,7 +64,8 @@ const subjects: Subject[] = [
 		id: 'accounting',
 		title: 'Accounting',
 		progress: 45,
-		color: 'bg-accounting',
+		color: 'text-subject-accounting',
+		bgColor: 'bg-subject-accounting-soft',
 		icon: ChartBar,
 		topics: 8,
 		description: 'Financial Statements and Cost Accounting.',
@@ -73,49 +78,50 @@ export function SubjectCards() {
 	const selectedSubject = subjects.find((s) => s.id === selectedId);
 
 	return (
-		<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 relative">
+		<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 relative">
 			{subjects.map((subject) => (
 				<m.div
 					key={subject.id}
 					layoutId={subject.id}
 					onClick={() => setSelectedId(subject.id)}
-					className="group cursor-pointer"
-					whileTap={{ scale: 0.98 }}
+					className="group cursor-pointer tiimo-press"
+					whileTap={{ scale: 0.96 }}
 				>
-					<Card className="h-full rounded-[2rem] border-none premium-glass overflow-hidden p-6 transition-all duration-300 hover:shadow-2xl hover:shadow-primary/10">
+					<div className="h-full rounded-[2rem] bg-card shadow-tiimo border border-border/50 overflow-hidden p-6 transition-all duration-300 hover:shadow-tiimo-lg hover:border-primary/20">
 						<div className="flex flex-col h-full gap-4">
 							<div className="flex justify-between items-start">
-								<div className={`p-3 rounded-2xl ${subject.color}/10`}>
-									<HugeiconsIcon
-										icon={subject.icon}
-										className={`h-6 w-6 ${subject.color.replace('bg-', 'text-')}`}
-									/>
+								<div className={`p-4 rounded-[1.25rem] ${subject.bgColor}`}>
+									<HugeiconsIcon icon={subject.icon} className={`h-7 w-7 ${subject.color}`} />
 								</div>
-								<div className="p-2 rounded-full bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity">
-									<HugeiconsIcon icon={ArrowUpRight} className="h-4 w-4 text-muted-foreground" />
+								<div className="p-2 rounded-full bg-tiimo-cream opacity-0 group-hover:opacity-100 transition-opacity">
+									<HugeiconsIcon icon={ArrowUpRight} className="h-4 w-4 text-tiimo-gray-muted" />
 								</div>
 							</div>
 
 							<div className="mt-2">
-								<h3 className="text-xl font-bold tracking-tighter text-foreground group-hover:text-primary transition-colors">
+								<h3 className="text-xl font-bold tracking-tight text-foreground group-hover:text-primary transition-colors">
 									{subject.title}
 								</h3>
-								<p className="text-sm text-muted-foreground mt-1 line-clamp-1">
+								<p className="text-sm text-tiimo-gray-muted mt-1 line-clamp-1">
 									{subject.description}
 								</p>
 							</div>
 
-							<div className="mt-auto space-y-2">
-								<div className="flex justify-between items-center text-xs font-semibold">
-									<span className="text-muted-foreground uppercase tracking-wider">
+							<div className="mt-auto space-y-3">
+								<div className="flex justify-between items-center text-xs font-bold">
+									<span className="text-tiimo-gray-muted uppercase tracking-widest">
 										{subject.topics} Topics
 									</span>
 									<span className="text-foreground">{subject.progress}%</span>
 								</div>
-								<Progress value={subject.progress} className="h-1.5" />
+								<Progress
+									value={subject.progress}
+									className="h-2 bg-secondary"
+									indicatorClassName={subject.bgColor.replace('bg-', 'bg-').replace('-soft', '')}
+								/>
 							</div>
 						</div>
-					</Card>
+					</div>
 				</m.div>
 			))}
 

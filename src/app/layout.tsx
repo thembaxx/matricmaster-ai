@@ -6,7 +6,7 @@ import { Toaster } from '@/components/Toaster';
 import { ThemeProvider } from '@/components/theme-provider';
 import '@/styles/index.css';
 import { appConfig } from '../app.config';
-import { geistMono, inter, lexend, outfit, spaceGrotesk } from './fonts';
+import { geistMono, inter, lexend, outfit, sora, spaceGrotesk } from './fonts';
 
 const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://matricmaster.ai';
 
@@ -119,7 +119,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 		<html
 			lang="en"
 			suppressHydrationWarning
-			className={`${geistMono.variable} ${inter.variable} ${lexend.variable} ${outfit.variable} ${spaceGrotesk.variable}`}
+			className={`${geistMono.variable} ${inter.variable} ${lexend.variable} ${outfit.variable} ${sora.variable} ${spaceGrotesk.variable}`}
 		>
 			<head>
 				<link rel="preconnect" href="https://fonts.googleapis.com" />

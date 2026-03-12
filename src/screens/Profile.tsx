@@ -59,6 +59,8 @@ const chartConfig = {
 	},
 } satisfies ChartConfig;
 
+import { ProfileSkeleton } from '@/components/ProfileSkeleton';
+
 export default function Profile() {
 	const [viewMode, setViewMode] = useState<'my_stats' | 'provincial'>('my_stats');
 	const radarGradientId = useId();
@@ -119,11 +121,7 @@ export default function Profile() {
 	);
 
 	if (isLoading) {
-		return (
-			<div className="flex-1 flex items-center justify-center py-40">
-				<div className="animate-spin rounded-full h-12 w-12 border-4 border-primary border-t-transparent" />
-			</div>
-		);
+		return <ProfileSkeleton />;
 	}
 
 	return (

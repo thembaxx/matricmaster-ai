@@ -149,6 +149,8 @@ const FilterContent = memo(function FilterContent({
 	);
 });
 
+import { PastPapersSkeleton } from '@/components/PastPapersSkeleton';
+
 export default function PastPapers() {
 	const router = useRouter();
 	const [searchQuery, setSearchQuery] = useState('');
@@ -369,9 +371,7 @@ export default function PastPapers() {
 
 					<AnimatePresence mode="popLayout">
 						{isLoading ? (
-							<div className="flex items-center justify-center py-20">
-								<HugeiconsIcon icon={Loading03Icon} className="w-8 h-8 animate-spin text-primary" />
-							</div>
+							<PastPapersSkeleton />
 						) : filteredPapers.length > 0 ? (
 							<m.div
 								variants={STAGGER_CONTAINER}

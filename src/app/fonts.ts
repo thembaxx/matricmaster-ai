@@ -1,5 +1,5 @@
 import { GeistMono, GeistSans } from 'geist/font';
-import { Inter, Lexend, Outfit, Space_Grotesk } from 'next/font/google';
+import { Inter, Lexend, Outfit, Sora, Space_Grotesk } from 'next/font/google';
 
 export const geistSans = GeistSans;
 
@@ -30,5 +30,12 @@ export const outfit = Outfit({
 	subsets: ['latin'],
 	display: 'swap',
 	variable: '--font-outfit',
+	preload: true,
+});
+
+export const sora = Sora({
+	subsets: ['latin'],
+	display: 'swap',
+	variable: '--font-sora',
 	preload: true,
 });

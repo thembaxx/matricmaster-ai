@@ -4,7 +4,6 @@ import { ChampionIcon, FireIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { m } from 'framer-motion';
 import { memo } from 'react';
-import { Card } from '@/components/ui/card';
 import { STAGGER_ITEM } from '@/lib/animation-presets';
 
 interface StatsCardsProps {
@@ -14,70 +13,67 @@ interface StatsCardsProps {
 
 export const StatsCards = memo(function StatsCards({ streak, accuracy }: StatsCardsProps) {
 	return (
-		<div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+		<div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
 			<m.div variants={STAGGER_ITEM} className="flex-1">
-				<Card className="h-full p-6 premium-glass border-none rounded-[2rem] flex flex-col justify-between relative overflow-hidden group">
-					<m.div
-						animate={{ scale: [1, 1.15, 1], rotate: [0, 8, 0] }}
-						transition={{ duration: 8, repeat: Number.POSITIVE_INFINITY, ease: [0.16, 1, 0.3, 1] }}
-						className="absolute -right-3 -bottom-3 w-24 h-24 bg-brand-amber/15 rounded-full blur-xl pointer-events-none"
-					/>
-					<div className="space-y-2 relative z-10">
-						<div className="flex items-center gap-2">
+				<div className="h-full p-8 bg-card rounded-[2.5rem] shadow-tiimo border border-border/50 flex flex-col justify-between relative overflow-hidden tiimo-press group">
+					<div className="absolute top-0 left-0 w-2 h-full bg-tiimo-yellow opacity-40" />
+					<div className="space-y-4 relative z-10">
+						<div className="flex items-center gap-3">
 							<m.div
 								whileHover={{ scale: 1.1, rotate: 12 }}
-								className="w-10 h-10 bg-brand-amber/15 rounded-xl flex items-center justify-center border border-brand-amber/25"
+								className="w-12 h-12 bg-tiimo-yellow/15 rounded-2xl flex items-center justify-center"
 							>
-								<HugeiconsIcon
-									icon={FireIcon}
-									className="w-5 h-5 text-brand-amber fill-brand-amber"
-								/>
+								<HugeiconsIcon icon={FireIcon} className="w-7 h-7 text-tiimo-yellow" />
 							</m.div>
-							<span className="text-sm font-semibold text-foreground">Study Streak</span>
+							<span className="text-base font-bold text-foreground tracking-tight">
+								Current Streak
+							</span>
 						</div>
-						<div className="mt-3">
+						<div className="flex items-baseline gap-2">
 							<m.span
-								initial={{ scale: 0.95, opacity: 0 }}
+								initial={{ scale: 0.9, opacity: 0 }}
 								animate={{ scale: 1, opacity: 1 }}
-								className="text-3xl font-bold text-foreground"
+								className="text-4xl font-black text-foreground tracking-tighter"
 							>
 								{streak}
 							</m.span>
-							<span className="text-sm text-muted-foreground ml-2">days</span>
+							<span className="text-sm font-bold text-tiimo-gray-muted uppercase tracking-widest">
+								Days
+							</span>
 						</div>
 					</div>
-				</Card>
+				</div>
 			</m.div>
 
 			<m.div variants={STAGGER_ITEM} className="flex-1">
-				<Card className="h-full p-6 premium-glass border-none rounded-[2rem] flex flex-col justify-between relative overflow-hidden group">
-					<m.div
-						animate={{ scale: [1.15, 1, 1.15], rotate: [0, -8, 0] }}
-						transition={{ duration: 10, repeat: Number.POSITIVE_INFINITY, ease: [0.16, 1, 0.3, 1] }}
-						className="absolute -right-3 -bottom-3 w-24 h-24 bg-primary/15 rounded-full blur-xl pointer-events-none"
-					/>
-					<div className="space-y-2 relative z-10">
-						<div className="flex items-center gap-2">
+				<div className="h-full p-8 bg-card rounded-[2.5rem] shadow-tiimo border border-border/50 flex flex-col justify-between relative overflow-hidden tiimo-press group">
+					<div className="absolute top-0 left-0 w-2 h-full bg-tiimo-lavender opacity-40" />
+					<div className="space-y-4 relative z-10">
+						<div className="flex items-center gap-3">
 							<m.div
 								whileHover={{ scale: 1.1, rotate: -12 }}
-								className="w-10 h-10 bg-primary/15 rounded-xl flex items-center justify-center border border-primary/25"
+								className="w-12 h-12 bg-tiimo-lavender/15 rounded-2xl flex items-center justify-center"
 							>
-								<HugeiconsIcon icon={ChampionIcon} className="w-5 h-5 text-primary" />
+								<HugeiconsIcon icon={ChampionIcon} className="w-7 h-7 text-tiimo-lavender" />
 							</m.div>
-							<span className="text-sm font-semibold text-foreground">Accuracy</span>
+							<span className="text-base font-bold text-foreground tracking-tight">
+								Overall Mastery
+							</span>
 						</div>
-						<div className="mt-3">
+						<div className="flex items-baseline gap-2">
 							<m.span
-								initial={{ scale: 0.95, opacity: 0 }}
+								initial={{ scale: 0.9, opacity: 0 }}
 								animate={{ scale: 1, opacity: 1 }}
-								className="text-3xl font-bold text-foreground"
+								className="text-4xl font-black text-foreground tracking-tighter"
 							>
 								{accuracy}
 							</m.span>
-							<span className="text-sm text-muted-foreground ml-2">average</span>
+							<span className="text-sm font-bold text-tiimo-gray-muted uppercase tracking-widest">
+								Average
+							</span>
 						</div>
 					</div>
-				</Card>
+				</div>
 			</m.div>
 		</div>
 	);
