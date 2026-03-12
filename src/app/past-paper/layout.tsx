@@ -1,7 +1,9 @@
 import type { Metadata } from 'next';
 
+import { appConfig } from '@/app.config';
+
 export const metadata: Metadata = {
-	title: 'Past Paper Viewer | MatricMaster AI',
+	title: `Past Paper Viewer | ${appConfig.name} AI`,
 	description: 'View and practice with past exam papers.',
 };
 

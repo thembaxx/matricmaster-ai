@@ -1,11 +1,12 @@
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
 
+import { appConfig } from '@/app.config';
 import { SignInForm } from './SignInForm';
 
 export const metadata: Metadata = {
-	title: 'Sign In | MatricMaster AI',
-	description: 'Sign in to your MatricMaster AI account to continue learning.',
+	title: `Sign In | ${appConfig.name} AI`,
+	description: `Sign in to your ${appConfig.name} AI account to continue learning.`,
 };
 
 export default function SignInPage() {

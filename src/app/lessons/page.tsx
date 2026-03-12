@@ -1,14 +1,16 @@
 import type { Metadata } from 'next';
+
+import { appConfig } from '@/app.config';
 import LessonsScreen from '@/screens/Lessons';
 
 const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://matricmaster.ai';
 
 export const metadata: Metadata = {
-	title: 'Lessons | MatricMaster AI',
+	title: `Lessons | ${appConfig.name} AI`,
 	description: 'Browse and complete interactive lessons.',
 	alternates: { canonical: `${baseUrl}/lessons` },
 	openGraph: {
-		title: 'Interactive Lessons | MatricMaster AI',
+		title: `Interactive Lessons | ${appConfig.name} AI`,
 		description:
 			'Step-by-step lessons for Mathematics, Physical Sciences, and more for South African Grade 12 students.',
 		url: `${baseUrl}/lessons`,

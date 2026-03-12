@@ -1,14 +1,16 @@
 import type { Metadata } from 'next';
+
+import { appConfig } from '@/app.config';
 import PastPapersScreen from '@/screens/PastPapers';
 
 const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://matricmaster.ai';
 
 export const metadata: Metadata = {
-	title: 'Past Papers | MatricMaster',
+	title: `Past Papers | ${appConfig.name}`,
 	description: 'Access NSC past papers with step-by-step explanations.',
 	alternates: { canonical: `${baseUrl}/past-papers` },
 	openGraph: {
-		title: 'NSC Past Papers | MatricMaster',
+		title: `NSC Past Papers | ${appConfig.name}`,
 		description:
 			'Access past papers from 2015-2024 with personalized explanations for South African Grade 12 students.',
 		url: `${baseUrl}/past-papers`,

@@ -2,6 +2,7 @@
 
 import { m } from 'framer-motion';
 import Link from 'next/link';
+import { appConfig } from '@/app.config';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
@@ -75,7 +76,7 @@ export function TimelineSidebar() {
 			{/* Header */}
 			<div className="p-6 border-b border-border">
 				<Link href="/dashboard" className="flex items-center gap-2 mb-6">
-					<span className="text-2xl font-display font-bold text-foreground">MatricMaster</span>
+					<span className="text-2xl font-display font-bold text-foreground">{appConfig.name}</span>
 				</Link>
 
 				{/* Date Selector */}

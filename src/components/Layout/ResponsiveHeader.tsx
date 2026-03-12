@@ -5,11 +5,19 @@ import { HugeiconsIcon } from '@hugeicons/react';
 import { m } from 'framer-motion';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import { appConfig } from '@/app.config';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import type { authClient } from '@/lib/auth-client';
 import { cn } from '@/lib/utils';
 import { ProfileMenu } from './profile-menu';
+
+const desktopNavItems = [
+	{ href: '/schedule', label: 'Schedule' },
+	{ href: '/planner', label: 'Planner' },
+	{ href: '/focus', label: 'Focus' },
+	{ href: '/profile', label: 'Profile' },
+];
 
 type AuthUser = typeof authClient.$Infer.Session.user;
 
@@ -50,11 +58,28 @@ export function ResponsiveHeader({
 					: 'bg-transparent'
 			)}
 		>
+			<div className="hidden lg:flex items-center gap-8">
+				<Link href="/" className="flex-shrink-0">
+					<p className="font-black text-lg tracking-tight text-foreground">{appConfig.name}</p>
+				</Link>
+				<nav className="flex items-center gap-6">
+					{desktopNavItems.map((item) => (
+						<Link
+							key={item.href}
+							href={item.href}
+							className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+						>
+							{item.label}
+						</Link>
+					))}
+				</nav>
+			</div>
+
 			{user && <div className="lg:hidden mr-4">{mobileMenuTrigger}</div>}
 
 			<Link href="/" className="lg:hidden">
 				<p className="font-black text-lg tracking-tighter text-foreground uppercase">
-					MatricMaster
+					{appConfig.name}
 				</p>
 			</Link>
 
@@ -66,23 +91,21 @@ export function ResponsiveHeader({
 				{!user ? (
 					<AuthButtons onSignIn={onSignIn} onSignUp={onSignUp} />
 				) : (
-					<div className="lg:hidden">
-						<ProfileMenu user={user}>
-							<m.button
-								type="button"
-								className="rounded-full focus:outline-none"
-								whileTap={{ scale: 0.9 }}
-								aria-label="User profile menu"
-							>
-								<Avatar className="h-10 w-10 border-2 border-background shadow-md">
-									<AvatarImage src={user.image || undefined} alt={user.name} />
-									<AvatarFallback className="bg-primary text-primary-foreground">
-										{user.name?.charAt(0)}
-									</AvatarFallback>
-								</Avatar>
-							</m.button>
-						</ProfileMenu>
-					</div>
+					<ProfileMenu user={user}>
+						<m.button
+							type="button"
+							className="rounded-full focus:outline-none"
+							whileTap={{ scale: 0.9 }}
+							aria-label="User profile menu"
+						>
+							<Avatar className="h-10 w-10 border-2 border-background shadow-md">
+								<AvatarImage src={user.image || undefined} alt={user.name} />
+								<AvatarFallback className="bg-primary text-primary-foreground">
+									{user.name?.charAt(0)}
+								</AvatarFallback>
+							</Avatar>
+						</m.button>
+					</ProfileMenu>
 				)}
 			</div>
 		</header>

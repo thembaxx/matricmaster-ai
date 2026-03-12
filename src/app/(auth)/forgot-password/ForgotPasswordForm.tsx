@@ -14,6 +14,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import * as z from 'zod';
+import { appConfig } from '@/app.config';
 import { SmoothWords } from '@/components/Transition/SmoothText';
 import { BackgroundMesh } from '@/components/ui/background-mesh';
 import { Button } from '@/components/ui/button';
@@ -190,7 +191,7 @@ export function ForgotPasswordForm() {
 					transition={{ delay: 0.5 }}
 					className="text-center text-muted-foreground/60 text-[10px] font-bold uppercase tracking-widest mt-8"
 				>
-					&copy; {new Date().getFullYear()} MatricMaster AI
+					&copy; {new Date().getFullYear()} {appConfig.name} AI
 				</m.p>
 			</div>
 		</div>

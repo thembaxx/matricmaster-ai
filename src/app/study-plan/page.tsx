@@ -1,8 +1,10 @@
 import type { Metadata } from 'next';
+
+import { appConfig } from '@/app.config';
 import StudyPlanWizardScreen from '@/screens/StudyPlanWizard';
 
 export const metadata: Metadata = {
-	title: 'Study Plan | MatricMaster AI',
+	title: `Study Plan | ${appConfig.name} AI`,
 	description: 'Create your personalized study plan.',
 };
 

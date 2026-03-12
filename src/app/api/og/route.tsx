@@ -1,12 +1,14 @@
 import { ImageResponse } from 'next/og';
 import type { NextRequest } from 'next/server';
 
+import { appConfig } from '@/app.config';
+
 export const runtime = 'edge';
 
 export async function GET(request: NextRequest) {
 	try {
 		const { searchParams } = new URL(request.url);
-		const title = searchParams.get('title') || 'MatricMaster AI';
+		const title = searchParams.get('title') || `${appConfig.name} AI`;
 		const description = searchParams.get('description') || 'Master your Matric exams';
 
 		return new ImageResponse(
@@ -53,7 +55,7 @@ export async function GET(request: NextRequest) {
 							fontFamily: 'Inter',
 						}}
 					>
-						MatricMaster
+						{appConfig.name}
 					</div>
 				</div>
 				<div

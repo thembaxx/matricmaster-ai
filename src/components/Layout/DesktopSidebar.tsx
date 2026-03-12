@@ -38,6 +38,7 @@ import {
 import { HugeiconsIcon } from '@hugeicons/react';
 import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
+import { appConfig } from '@/app.config';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
@@ -181,7 +182,7 @@ export function AppSidebar({ user, pathname, theme, onToggleTheme }: AppSidebarP
 			<SidebarHeader className="border-b border-sidebar-border bg-sidebar/50 backdrop-blur-sm">
 				<Link href="/dashboard" className="block px-2 py-3">
 					<h1 className="text-lg font-black text-sidebar-foreground uppercase tracking-tighter">
-						MatricMaster
+						{appConfig.name}
 					</h1>
 					<p className="text-sidebar-foreground/60 font-bold text-[10px] uppercase tracking-wide">
 						Level up your learning

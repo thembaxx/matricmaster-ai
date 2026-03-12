@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import dynamic from 'next/dynamic';
 import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
+
+import { appConfig } from '@/app.config';
 import { DashboardSkeleton } from '@/components/DashboardSkeleton';
 import { getAuth } from '@/lib/auth';
 import { getUserAchievements } from '@/lib/db/achievement-actions';
@@ -10,11 +12,11 @@ import { getUserProgressSummary, getUserStreak } from '@/lib/db/progress-actions
 const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://matricmaster.ai';
 
 export const metadata: Metadata = {
-	title: 'Dashboard | MatricMaster AI',
+	title: `Dashboard | ${appConfig.name} AI`,
 	description: 'Track your learning progress, view achievements, and continue your study journey.',
 	alternates: { canonical: `${baseUrl}/dashboard` },
 	openGraph: {
-		title: 'My Dashboard | MatricMaster AI',
+		title: `My Dashboard | ${appConfig.name} AI`,
 		description:
 			'Track your learning progress, view achievements, and continue your study journey.',
 		url: `${baseUrl}/dashboard`,

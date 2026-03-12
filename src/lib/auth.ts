@@ -4,6 +4,7 @@ import { nextCookies } from 'better-auth/next-js';
 import { twoFactor } from 'better-auth/plugins';
 import { Resend } from 'resend';
 
+import { appConfig } from '../app.config';
 import { dbManager } from './db';
 import * as schema from './db/schema';
 
@@ -89,7 +90,7 @@ export const authConfig = {
 	},
 	plugins: [
 		twoFactor({
-			issuer: 'MatricMaster AI',
+			issuer: `${appConfig.name} AI`,
 			totpOptions: {
 				digits: 6,
 				period: 30,
@@ -163,7 +164,7 @@ function createAuth(): AuthInstance {
 
 	// Initialize Resend for transactional emails
 	const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
-	const fromEmail = process.env.FROM_EMAIL || 'MatricMaster AI <noreply@matricmaster.ai>';
+	const fromEmail = process.env.FROM_EMAIL || `${appConfig.name} AI <noreply@matricmaster.ai>`;
 
 	// Email templates using Resend
 	const sendVerificationEmail = async ({
@@ -184,7 +185,7 @@ function createAuth(): AuthInstance {
 			await resend.emails.send({
 				from: fromEmail,
 				to: email,
-				subject: 'Verify your MatricMaster AI account',
+				subject: `Verify your ${appConfig.name} AI account`,
 				html: `
 					<!DOCTYPE html>
 					<html>
@@ -196,11 +197,11 @@ function createAuth(): AuthInstance {
 					<body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background-color: #f5f5f5; padding: 20px;">
 						<div style="max-width: 500px; margin: 0 auto; background: white; border-radius: 12px; padding: 32px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
 							<div style="text-align: center; margin-bottom: 24px;">
-								<h1 style="color: #2563eb; font-size: 28px; margin: 0;">MatricMaster AI</h1>
+								<h1 style="color: #2563eb; font-size: 28px; margin: 0;">${appConfig.name} AI</h1>
 							</div>
 							<h2 style="color: #1f2937; font-size: 20px; margin-bottom: 16px;">Verify your email address</h2>
 							<p style="color: #4b5563; font-size: 16px; line-height: 1.6; margin-bottom: 24px;">
-								Hi${user.name ? ` ${user.name}` : ''}, welcome to MatricMaster AI! Please verify your email address to get started with your exam preparation.
+								Hi${user.name ? ` ${user.name}` : ''}, welcome to ${appConfig.name} AI! Please verify your email address to get started with your exam preparation.
 							</p>
 							<a href="${url}" style="display: inline-block; background: #2563eb; color: white; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 16px; margin-bottom: 24px;">
 								Verify Email
@@ -237,7 +238,7 @@ function createAuth(): AuthInstance {
 			await resend.emails.send({
 				from: fromEmail,
 				to: email,
-				subject: 'Reset your MatricMaster AI password',
+				subject: `Reset your ${appConfig.name} AI password`,
 				html: `
 					<!DOCTYPE html>
 					<html>
@@ -249,7 +250,7 @@ function createAuth(): AuthInstance {
 					<body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background-color: #f5f5f5; padding: 20px;">
 						<div style="max-width: 500px; margin: 0 auto; background: white; border-radius: 12px; padding: 32px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
 							<div style="text-align: center; margin-bottom: 24px;">
-								<h1 style="color: #2563eb; font-size: 28px; margin: 0;">MatricMaster AI</h1>
+								<h1 style="color: #2563eb; font-size: 28px; margin: 0;">${appConfig.name} AI</h1>
 							</div>
 							<h2 style="color: #1f2937; font-size: 20px; margin-bottom: 16px;">Reset your password</h2>
 							<p style="color: #4b5563; font-size: 16px; line-height: 1.6; margin-bottom: 24px;">

@@ -1,8 +1,10 @@
 import type { Metadata } from 'next';
+
+import { appConfig } from '@/app.config';
 import ErrorHintScreen from '@/screens/ErrorHint';
 
 export const metadata: Metadata = {
-	title: 'Error Hint | MatricMaster AI',
+	title: `Error Hint | ${appConfig.name} AI`,
 	description: 'Get hints and explanations for quiz questions.',
 };
 
