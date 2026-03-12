@@ -23,7 +23,6 @@ import { Card } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Spinner } from '@/components/ui/spinner';
 import {
 	getOptionsByQuestionIdAction,
 	getRandomQuestionsAction,

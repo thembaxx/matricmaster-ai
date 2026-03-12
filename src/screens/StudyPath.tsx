@@ -151,11 +151,9 @@ export default function StudyPath() {
 						className="w-full rounded-2xl h-14 text-lg"
 						onClick={() => router.push('/focus')}
 					>
-						{journey.steps.find((s) => s.status === 'current') ? (
-							<>Continue learning →</>
-						) : (
-							<>Start journey →</>
-						)}
+						{journey.steps.find((s) => s.status === 'current')
+							? 'Continue learning →'
+							: 'Start journey →'}
 					</Button>
 				</m.div>
 			</FocusContent>

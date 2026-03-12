@@ -4,7 +4,6 @@ import {
 	BookOpen01Icon as BookOpen,
 	Cancel01Icon,
 	File01Icon,
-	Loading03Icon,
 	Settings02Icon,
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';

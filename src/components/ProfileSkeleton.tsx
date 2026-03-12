@@ -1,7 +1,7 @@
 'use client';
 
-import { Skeleton } from '@/components/ui/skeleton';
 import { Card } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export function ProfileSkeleton() {
 	return (
@@ -33,7 +33,7 @@ export function ProfileSkeleton() {
 					{/* Right Column Skeleton */}
 					<div className="lg:col-span-5 space-y-8">
 						<Skeleton className="h-6 w-40 rounded-full" />
-						
+
 						{/* Level Progress Skeleton */}
 						<Card className="p-8 rounded-[2rem] border border-border bg-card/50">
 							<div className="space-y-4">

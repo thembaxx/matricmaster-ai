@@ -1,7 +1,7 @@
 'use client';
 
-import { Skeleton } from '@/components/ui/skeleton';
 import { Card } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export function AchievementsSkeleton() {
 	return (
@@ -39,7 +39,10 @@ export function AchievementsSkeleton() {
 				{/* Grid Skeleton */}
 				<div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 lg:gap-8">
 					{[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i) => (
-						<Card key={i} className="h-64 sm:h-80 rounded-[2.5rem] p-8 border-2 border-border bg-card/50 flex flex-col items-center gap-6">
+						<Card
+							key={i}
+							className="h-64 sm:h-80 rounded-[2.5rem] p-8 border-2 border-border bg-card/50 flex flex-col items-center gap-6"
+						>
 							<Skeleton className="w-24 h-24 lg:w-32 lg:h-32 rounded-[2rem]" />
 							<div className="space-y-2 flex flex-col items-center">
 								<Skeleton className="h-5 w-32 rounded-full" />

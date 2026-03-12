@@ -1,0 +1,147 @@
+{
+	"mathematics": [
+		{
+			"id": "math-calculus-derivatives-intro",
+			"subject": "mathematics",
+			"topic": "calculus",
+			"title": "Introduction to Derivatives",
+			"content": "# Introduction to Derivatives\n\nDerivatives represent the rate of change of a function at any given point. In Grade 12 Mathematics, understanding derivatives is crucial for solving optimization problems, analyzing motion, and understanding the behavior of functions.\n\n## Key Concepts\n\n1. **Definition**: The derivative of a function f(x) at point x = a is defined as:\n   ```\n   f'(a) = lim(h→0) [f(a+h) - f(a)] / h\n   ```\n\n2. **Notation**: Derivatives can be written as f'(x), dy/dx, or Df(x)\n\n3. **Geometric Interpretation**: The derivative represents the slope of the tangent line to the curve at a given point.\n\n## Basic Derivative Rules\n\n| Rule | Formula | Example |\n|------|---------|---------|\n| Constant | d/dx[c] = 0 | d/dx[5] = 0 |\n| Power | d/dx[xⁿ] = nxⁿ⁻¹ | d/dx[x³] = 3x² |\n| Constant Multiple | d/dx[c·f(x)] = c·f'(x) | d/dx[3x²] = 6x |\n| Sum/Difference | d/dx[f(x) ± g(x)] = f'(x) ± g'(x) | d/dx[x² + 2x] = 2x + 2 |\n\n## Applications\n\n1. **Finding Tangents**: Use derivative to find slope, then point-slope form\n2. **Optimization**: Find maximum/minimum values by setting f'(x) = 0\n3. **Motion Problems**: Velocity = derivative of position, Acceleration = derivative of velocity\n\n## Practice Questions\n\n1. Find the derivative of f(x) = 3x⁴ - 2x² + 5\n2. Determine the slope of the tangent to y = x³ at x = 2\n3. Find the maximum value of f(x) = -x² + 4x + 1\n\n## Resources\n\n- Video: Introduction to Calculus (15 min)\n- Worksheet: Derivative Practice Problems\n- Interactive: Derivative Visualizer",
+			"duration": 45,
+			"difficulty": "intermediate",
+			"prerequisites": ["functions", "limits"],
+			"learning_objectives": [
+				"Understand the concept of derivative as instantaneous rate of change",
+				"Apply basic derivative rules (power, constant, sum/difference)",
+				"Use derivatives to solve practical problems including optimization"
+			]
+		},
+		{
+			"id": "math-calculus-integrals-intro",
+			"subject": "mathematics",
+			"topic": "calculus",
+			"title": "Introduction to Integrals",
+			"content": "# Introduction to Integrals\n\nIntegration is the reverse process of differentiation. While derivatives find rates of change, integrals find total accumulation or area under curves.\n\n## Key Concepts\n\n1. **Antiderivative**: A function F(x) is an antiderivative of f(x) if F'(x) = f(x)\n2. **Indefinite Integral**: ∫f(x)dx = F(x) + C, where C is the constant of integration\n3. **Definite Integral**: ∫ₐᵇ f(x)dx represents the area under f(x) from x=a to x=b\n\n## Basic Integration Rules\n\n| Rule | Formula | Example |\n|------|---------|---------|\n| Constant | ∫c dx = cx + C | ∫5 dx = 5x + C |\n| Power | ∫xⁿ dx = xⁿ⁺¹/(n+1) + C (n ≠ -1) | ∫x² dx = x³/3 + C |\n| Constant Multiple | ∫c·f(x) dx = c∫f(x) dx | ∫3x² dx = x³ + C |\n| Sum/Difference | ∫[f(x) ± g(x)] dx = ∫f(x) dx ± ∫g(x) dx | ∫[x² + 2x] dx = x³/3 + x² + C |\n\n## Fundamental Theorem of Calculus\n\nThe definite integral can be evaluated using antiderivatives:\n∫ₐᵇ f(x)dx = F(b) - F(a), where F'(x) = f(x)\n\n## Applications\n\n1. **Area Problems**: Find area between curves\n2. **Volume Problems**: Use disk/washer method for solids of revolution\n3. **Accumulation Problems**: Total distance, total work, etc.\n\n## Practice Questions\n\n1. Evaluate ∫(2x + 3)dx\n2. Find the area under y = x² from x=0 to x=3\n3. Determine ∫₀² (3x² + 2x)dx\n\n## Resources\n\n- Video: Understanding Integration (20 min)\n- Worksheet: Integration Practice\n- Interactive: Area Under Curve Visualizer",
+			"duration": 50,
+			"difficulty": "intermediate",
+			"prerequisites": ["derivatives"],
+			"learning_objectives": [
+				"Understand integration as the inverse of differentiation",
+				"Apply basic integration rules",
+				"Use definite integrals to calculate areas under curves"
+			]
+		}
+	],
+	"algebra": [
+		{
+			"id": "math-algebra-quadratic-equations",
+			"subject": "mathematics",
+			"topic": "algebra",
+			"title": "Quadratic Equations and Functions",
+			"content": "# Quadratic Equations and Functions\n\nQuadratic functions are polynomial functions of degree 2, written in the form f(x) = ax² + bx + c, where a ≠ 0.\n\n## Key Concepts\n\n1. **Standard Form**: f(x) = ax² + bx + c\n2. **Vertex Form**: f(x) = a(x-h)² + k, where (h,k) is the vertex\n3. **Factored Form**: f(x) = a(x-r₁)(x-r₂), where r₁ and r₂ are roots\n\n## Solving Quadratic Equations\n\n### Method 1: Factoring\n- Express as product of linear factors\n- Set each factor to zero\n- Example: x² - 5x + 6 = (x-2)(x-3) = 0, so x = 2 or x = 3\n\n### Method 2: Completing the Square\n- Rewrite in vertex form\n- Solve for x\n- Example: x² + 6x + 5 = 0 → (x+3)² - 4 = 0 → x = -3 ± 2\n\n### Method 3: Quadratic Formula\n- x = [-b ± √(b²-4ac)] / (2a)\n- Discriminant (b²-4ac) determines nature of roots\n\n## Graphing Quadratic Functions\n\n1. **Vertex**: (-b/2a, f(-b/2a))\n2. **Axis of Symmetry**: x = -b/2a\n3. **Y-intercept**: (0, c)\n4. **X-intercepts**: Solve f(x) = 0\n5. **Direction**: Opens up if a > 0, down if a < 0\n\n## Applications\n\n1. **Projectile Motion**: Height = -16t² + v₀t + h₀\n2. **Optimization Problems**: Maximize area, minimize cost\n3. **Business Applications**: Profit = Revenue - Cost\n\n## Practice Questions\n\n1. Solve 2x² - 7x + 3 = 0 using the quadratic formula\n2. Find the vertex of f(x) = -3x² + 12x - 7\n3. A ball is thrown upward with initial velocity 20 m/s. When does it reach maximum height?\n\n## Resources\n\n- Video: Quadratic Functions Overview (25 min)\n- Worksheet: Quadratic Equation Solving\n- Interactive: Quadratic Function Explorer",
+			"duration": 40,
+			"difficulty": "intermediate",
+			"prerequisites": ["linear equations", "factoring"],
+			"learning_objectives": [
+				"Solve quadratic equations using factoring, completing the square, and quadratic formula",
+				"Graph quadratic functions and identify key features",
+				"Apply quadratic functions to real-world problems"
+			]
+		}
+	],
+	"trigonometry": [
+		{
+			"id": "math-trig-identities",
+			"subject": "mathematics",
+			"topic": "trigonometry",
+			"title": "Trigonometric Identities",
+			"content": "# Trigonometric Identities\n\nTrigonometric identities are equations involving trigonometric functions that are true for all values of the variables where both sides are defined.\n\n## Fundamental Identities\n\n### Reciprocal Identities\n- sin θ = 1/csc θ\n- cos θ = 1/sec θ\n- tan θ = 1/cot θ\n- csc θ = 1/sin θ\n- sec θ = 1/cos θ\n- cot θ = 1/tan θ\n\n### Quotient Identities\n- tan θ = sin θ / cos θ\n- cot θ = cos θ / sin θ\n\n### Pythagorean Identities\n- sin² θ + cos² θ = 1\n- 1 + tan² θ = sec² θ\n- 1 + cot² θ = csc² θ\n\n## Proving Identities\n\n**Strategies:**\n1. Start with the more complex side\n2. Convert all functions to sine and cosine\n3. Use fundamental identities\n4. Factor or combine fractions\n5. Work with one side until it matches the other\n\n## Example Proof\n\nProve: (1 - cos² θ) / cos θ = sin θ tan θ\n\nLeft Side: (1 - cos² θ) / cos θ\n= sin² θ / cos θ (using sin² θ + cos² θ = 1)\n= sin θ · (sin θ / cos θ)\n= sin θ tan θ\n= Right Side\n\n## Applications\n\n1. **Simplifying Expressions**: Reduce complex trig expressions\n2. **Solving Equations**: Transform equations to solvable forms\n3. **Calculus**: Essential for derivatives and integrals of trig functions\n\n## Practice Questions\n\n1. Simplify: sin θ sec θ\n2. Prove: tan² θ + 1 = sec² θ\n3. If sin θ = 3/5 and θ is in quadrant II, find cos θ and tan θ.\n\n## Resources\n\n- Video: Trigonometric Identities Explained (30 min)\n- Worksheet: Identity Proof Practice\n- Interactive: Identity Verifier",
+			"duration": 35,
+			"difficulty": "advanced",
+			"prerequisites": ["trigonometric functions", "unit circle"],
+			"learning_objectives": [
+				"Recall and apply fundamental trigonometric identities",
+				"Prove trigonometric identities using algebraic manipulation",
+				"Use identities to simplify expressions and solve equations"
+			]
+		},
+		{
+			"id": "math-trig-equations",
+			"subject": "mathematics",
+			"topic": "trigonometry",
+			"title": "Trigonometric Equations",
+			"content": "# Trigonometric Equations\n\nTrigonometric equations involve finding the values of angles that satisfy a given trigonometric equation.\n\n## Solving Basic Trigonometric Equations\n\n### For sin θ = k\n- θ = sin⁻¹(k) + 360°n OR θ = 180° - sin⁻¹(k) + 360°n\n- Where n is any integer\n\n### For cos θ = k\n- θ = cos⁻¹(k) + 360°n OR θ = 360° - cos⁻¹(k) + 360°n\n### For tan θ = k\n- θ = tan⁻¹(k) + 180°n\n\n## Solving Equations in Radians\n\nUse 2π instead of 360° and π instead of 180°\n\n## Special Considerations\n\n1. **Domain Restrictions**: Find solutions within given interval\n2. **Quadrant Analysis**: Use ASTC to find related angles\n3. **Identities**: Use trig identities to simplify first\n\n## Worked Examples\n\n### Example 1: sin θ = 0.5\nθ = 30° + 360°n OR θ = 150° + 360°n\n\n### Example 2: 2cos²θ - cosθ - 1 = 0\n1. Let u = cosθ\n2. 2u² - u - 1 = 0\n3. (2u + 1)(u - 1) = 0\n4. u = -½ or u = 1\n5. cosθ = -½ → θ = 120°, 240°\n   cosθ = 1 → θ = 0°, 360°\n\n## Practice Questions\n\n1. Solve for θ (0° ≤ θ < 360°): sin θ = -0.5\n2. Solve: 2sin²θ + sinθ - 1 = 0\n3. Find all solutions: tan²θ = 3\n\n## Resources\n\n- Video: Solving Trig Equations (25 min)\n- Worksheet: Trig Equation Practice\n- Interactive: Trig Equation Solver",
+			"duration": 40,
+			"difficulty": "advanced",
+			"prerequisites": ["trigonometric identities", "inverse trig functions"],
+			"learning_objectives": [
+				"Solve basic trigonometric equations for specified intervals",
+				"Use algebraic techniques and identities to solve complex equations",
+				"Find all solutions including those from periodicity"
+			]
+		},
+		{
+			"id": "math-trig-3d",
+			"subject": "mathematics",
+			"topic": "trigonometry",
+			"title": "Three-Dimensional Trigonometry",
+			"content": "# Three-Dimensional Trigonometry\n\nThree-dimensional trigonometry extends 2D trig concepts to three-dimensional space, essential for solving problems involving angles and distances in 3D objects.\n\n## Key Concepts\n\n### Coordinate Systems\n- Cartesian (x, y, z)\n- Spherical (ρ, θ, φ)\n- Cylindrical (r, θ, z)\n\n### Distance Formula in 3D\nd = √[(x₂-x₁)² + (y₂-y₁)² + (z₂-z₁)²]\n\n### Midpoint in 3D\nM = ((x₁+x₂)/2, (y₁+y₂)/2, (z₁+z₂)/2)\n\n## Angles in 3D\n\n### Direction Cosines\nFor vector (a, b, c):\n- cos α = a/|v| (angle with x-axis)\n- cos β = b/|v| (angle with y-axis)\n- cos γ = c/|v| (angle with z-axis)\n\n### Angle Between Two Lines\ncos θ = |a₁a₂ + b₁b₂ + c₁c₂| / (|v₁||v₂|)\n\n## Applications\n\n### Finding Angles in 3D Shapes\n1. Angle between line and plane\n2. Angle between two planes\n3. Dihedral angle (angle between faces)\n\n### Example: Line-Plane Angle\nThe angle α between a line with direction vector v and a plane with normal n is:\nsin α = |v·n| / (|v||n|)\nOR\nα = 90° - θ, where θ is angle between v and n\n\n## Practice Questions\n\n1. Find the distance between points P(1, 2, 3) and Q(4, 6, 8)\n2. Find the angle between vectors (1, 2, 3) and (4, 5, 6)\n3. Find the angle between the line with direction (1, 1, 1) and the plane 2x + y + 2z = 6\n\n## Resources\n\n- Video: 3D Trig Explained (35 min)\n- Worksheet: 3D Practice Problems\n- Interactive: 3D Angle Calculator",
+			"duration": 45,
+			"difficulty": "advanced",
+			"prerequisites": ["2D trigonometry", "vectors"],
+			"learning_objectives": [
+				"Apply trigonometric concepts to three-dimensional problems",
+				"Calculate angles between lines and planes in 3D",
+				"Solve real-world problems involving 3D geometry"
+			]
+		}
+	],
+	"sequences": [
+		{
+			"id": "math-sequences-arithmetic",
+			"subject": "mathematics",
+			"topic": "sequences",
+			"title": "Arithmetic Sequences",
+			"content": "# Arithmetic Sequences\n\nAn arithmetic sequence is a sequence where each term differs from the previous term by a constant difference.\n\n## Key Concepts\n\n### Definition\nA sequence is arithmetic if: aₙ - aₙ₋₁ = d (constant)\n\n### General Term\naₙ = a₁ + (n-1)d\n\n### Sum of n Terms\nSₙ = n/2 (a₁ + aₙ)\nSₙ = n/2 [2a₁ + (n-1)d]\n\n## Properties\n\n1. **Common Difference (d)**: Can be positive, negative, or zero\n2. **Linear Growth**: Terms change linearly\n3. **Graph**: Points lie on a straight line\n\n## Examples\n\n### Example 1: Given a₁ = 3, d = 5\nSequence: 3, 8, 13, 18, 23, ...\na₁₀ = 3 + (10-1)(5) = 48\n\n### Example 2: Find the sum of 2 + 5 + 8 + ... + 50\nFirst, find n: aₙ = 50 = 2 + (n-1)(3)\nn = 17\nS₁₇ = 17/2 (2 + 50) = 442\n\n## Applications\n\n1. **Financial Planning**: Regular deposits/withdrawals\n2. **Sequential Patterns**: Many natural patterns\n3. **Salary Increments**: Annual raises\n\n## Practice Questions\n\n1. Find the 25th term of the sequence: 7, 10, 13, ...\n2. The first term is 12 and the 10th term is 48. Find the common difference.\n3. Sum the arithmetic series: 5 + 10 + 15 + ... + 100\n\n## Resources\n\n- Video: Arithmetic Sequences (20 min)\n- Worksheet: Sequence Practice\n- Interactive: Sequence Generator",
+			"duration": 35,
+			"difficulty": "intermediate",
+			"prerequisites": ["basic algebra"],
+			"learning_objectives": [
+				"Identify arithmetic sequences and find common difference",
+				"Find the nth term of an arithmetic sequence",
+				"Calculate sum of arithmetic series"
+			]
+		},
+		{
+			"id": "math-sequences-geometric",
+			"subject": "mathematics",
+			"topic": "sequences",
+			"title": "Geometric Sequences",
+			"content": "# Geometric Sequences\n\nA geometric sequence is a sequence where each term is found by multiplying the previous term by a constant ratio.\n\n## Key Concepts\n\n### Definition\nA sequence is geometric if: aₙ / aₙ₋₁ = r (constant)\n\n### General Term\naₙ = a₁ × r^(n-1)\n\n### Sum of n Terms\nFor r ≠ 1: Sₙ = a₁(1 - r^n) / (1 - r)\nFor r = 1: Sₙ = n × a₁\n\n### Infinite Geometric Series\nIf |r| < 1: S∞ = a₁ / (1 - r)\n\n## Properties\n\n1. **Common Ratio (r)**: Can be positive, negative, or fractional\n2. **Exponential Growth/Decay**: Terms change multiplicatively\n3. **Graph**: Points lie on exponential curve\n\n## Examples\n\n### Example 1: Given a₁ = 2, r = 3\nSequence: 2, 6, 18, 54, 162, ...\na₈ = 2 × 3^7 = 4374\n\n### Example 2: Find sum of 1 + 2 + 4 + 8 + ... + 1024\nr = 2, n = 11 (2^10 = 1024)\nS₁₁ = 1(1 - 2^11) / (1 - 2) = 2047\n\n## Applications\n\n1. **Compound Interest**: A = P(1 + r)^n\n2. **Population Growth**: Exponential models\n3. **Radioactive Decay**: Exponential decay\n\n## Practice Questions\n\n1. Find the 7th term of: 3, 6, 12, ...\n2. Find the sum: 1 + 1/2 + 1/4 + ... + 1/256\n3. A ball bounces to 2/3 of its height. After 5 bounces, how high?\n\n## Resources\n\n- Video: Geometric Sequences (25 min)\n- Worksheet: Geometric Practice\n- Interactive: Growth/Decay Calculator",
+			"duration": 40,
+			"difficulty": "intermediate",
+			"prerequisites": ["arithmetic sequences", "exponents"],
+			"learning_objectives": [
+				"Identify geometric sequences and find common ratio",
+				"Find the nth term of a geometric sequence",
+				"Calculate sum of finite and infinite geometric series"
+			]
+		}
+	],
+	"probability": [
+		{
+			"id": "math-probability-basics",
+			"subject": "mathematics",
+			"topic": "probability",
+			"title": "Probability Fundamentals",
+			"content": "# Probability Fundamentals\n\nProbability measures the likelihood of an event occurring, expressed as a number between 0 and 1.\n\n## Key Concepts\n\n### Definitions\n- **Experiment**: A procedure with uncertain outcomes\n- **Outcome**: A single result\n- **Sample Space (S)**: All possible outcomes\n- **Event**: A subset of sample space\n\n### Probability Formula\nP(A) = n(A) / n(S)\n\nWhere n(A) = number of favorable outcomes\n      n(S) = total number of outcomes\n\n### Probability Rules\n1. **Complementary**: P(A') = 1 - P(A)\n2. **Addition**: P(A∪B) = P(A) + P(B) - P(A∩B)\n3. **Multiplication (Independent)**: P(A∩B) = P(A) × P(B)\n\n## Types of Probability\n\n### Theoretical Probability\nBased on mathematical reasoning\n\n### Experimental Probability\nBased on actual experiments\nP(A) ≈ frequency of A / total trials\n\n### Subjective Probability\nBased on judgment or experience\n\n## Worked Examples\n\n### Example 1: Dice\nP(rolling a 4) = 1/6\n\n### Example 2: Cards\nP(drawing a heart) = 13/52 = 1/4\n\n### Example 3: Two Dice\nP(sum = 7) = 6/36 = 1/6\n\n## Practice Questions\n\n1. A bag contains 5 red and 3 blue balls. Find P(red).\n2. Two coins are tossed. Find P(exactly one head).\n3. A code has 4 digits. What's P(all digits different)?\n\n## Resources\n\n- Video: Probability Basics (20 min)\n- Worksheet: Probability Practice\n- Interactive: Probability Simulator",
+			"duration": 35,
+			"difficulty": "intermediate",
+			"prerequisites": ["counting principles"],
+			"learning_objectives": [
+				"Understand and apply basic probability concepts",
+				"Use probability rules for combined events",
+				"Distinguish between different types of probability"
+			]
+		}
+	]
+}

@@ -1,0 +1,100 @@
+{
+	"life_sciences": [
+		{
+			"id": "life-sciences-dna-genetics",
+			"subject": "life sciences",
+			"topic": "genetics",
+			"title": "DNA & Genetics",
+			"content": "# DNA and Genetics\n\nDNA (Deoxyribonucleic acid) is the hereditary material in humans and almost all other organisms. Nearly every cell in a person's body has the same DNA.\n\n## Structure of DNA\n\n- **Double Helix**: DNA consists of two strands that wind around each other like a twisted ladder\n- **Sugar-Phosphate Backbone**: The sides of the ladder are made of alternating sugar (deoxyribose) and phosphate groups\n- **Nitrogenous Bases**: The rungs of the ladder consist of pairs of nitrogenous bases\n- **Base Pairing Rules**: Adenine (A) pairs with Thymine (T), Guanine (G) pairs with Cytosine (C)\n\n## DNA Replication\n\n- **Semi-Conservative Replication**: Each new DNA molecule consists of one old strand and one new strand\n- **Key Enzymes**: Helicase (unwinds), DNA Polymerase (adds nucleotides), Ligase (joins fragments)\n- **Process**: Unwinding → Primer binding → Elongation → Proofreading\n\n## Protein Synthesis\n\nProtein synthesis consists of two main stages: transcription and translation.\n\n### Transcription\n- Occurs in the nucleus\n- DNA segment (gene) is copied into mRNA\n- RNA Polymerase enzyme builds mRNA strand\n- mRNA undergoes processing (capping, tailing, splicing)\n\n### Translation\n- Occurs in the cytoplasm on ribosomes\n- mRNA code is read in groups of three nucleotides (codons)\n- Each codon specifies a particular amino acid\n- tRNA molecules bring amino acids to the ribosome\n\n## Genetic Code\n\n- **Codons**: Three-nucleotide sequences that specify amino acids\n- **Start Codon**: AUG (codes for Methionine)\n- **Stop Codons**: UAA, UAG, UGA (do not code for amino acids)\n- **Degeneracy**: Most amino acids are specified by more than one codon\n\n## Applications\n\n1. **Medical Diagnostics**: Genetic testing for hereditary diseases\n2. **Forensic Science**: DNA fingerprinting for identification\n3. **Biotechnology**: Genetic engineering and recombinant DNA technology\n4. **Evolutionary Studies**: Comparing DNA sequences to determine relationships\n\n## Practice Questions\n\n1. Draw and label the structure of DNA\n2. Explain the process of DNA replication\n3. How does transcription differ from translation?\n4. If a DNA strand has the sequence ATG, what is the complementary strand?\n\n## Resources\n\n- Video: DNA Structure (15 min)\n- Interactive: DNA Replication Simulator\n- Worksheet: Protein Synthesis Practice",
+			"duration": 20,
+			"difficulty": "intermediate",
+			"prerequisites": ["basic biology", "cell structure"],
+			"learning_objectives": [
+				"Describe the structure of DNA and explain base pairing rules",
+				"Explain the process of DNA replication",
+				"Describe the two stages of protein synthesis",
+				"Understand the genetic code and its significance"
+			]
+		},
+		{
+			"id": "life-sciences-evolution",
+			"subject": "life sciences",
+			"topic": "evolution",
+			"title": "Evolution and Natural Selection",
+			"content": "# Evolution and Natural Selection\n\nEvolution is the change in the heritable characteristics of biological populations over successive generations. Natural selection is the differential survival and reproduction of individuals due to differences in phenotype.\n\n## Evidence for Evolution\n\n- **Fossil Record**: Shows progression of life forms over time\n- **Comparative Anatomy**: Homologous structures indicate common ancestry\n- **Comparative Embryology**: Similar embryonic development patterns\n- **Molecular Biology**: DNA and protein sequence similarities\n- **Biogeography**: Geographic distribution of species\n\n## Mechanisms of Evolution\n\n1. **Natural Selection**: Differential survival and reproduction\n2. **Genetic Drift**: Random changes in allele frequencies\n3. **Gene Flow**: Transfer of genetic variation between populations\n4. **Mutation**: Source of new genetic variation\n\n## Natural Selection Process\n\n- **Variation**: Individuals in a population vary in traits\n- **Inheritance**: Traits are passed from parents to offspring\n- **Selection Pressure**: Environmental factors favor certain traits\n- **Differential Reproduction**: Individuals with favorable traits leave more offspring\n\n## Types of Natural Selection\n\n- **Directional Selection**: Favors one extreme phenotype\n- **Stabilizing Selection**: Favors intermediate phenotype\n- **Disruptive Selection**: Favors both extremes\n\n## Speciation\n\n- **Allopatric Speciation**: Geographic isolation leads to new species\n- **Sympatric Speciation**: New species arise without geographic isolation\n- **Reproductive Isolation**: Barriers prevent gene flow between populations\n\n## Human Evolution\n\n- **Hominidae Family**: Includes humans and great apes\n- **Key Traits**: Bipedalism, enlarged brain, tool use\n- **Fossil Evidence**: Australopithecus, Homo habilis, Homo erectus, Homo sapiens\n- **Cultural Evolution**: Development of language, art, technology\n\n## Practice Questions\n\n1. State three types of evidence for evolution\n2. Explain the process of natural selection\n3. What is the difference between directional and disruptive selection?\n4. How does genetic drift differ from natural selection?\n\n## Resources\n\n- Video: Evolution Overview (25 min)\n- Interactive: Natural Selection Simulator\n- Worksheet: Evolution Practice",
+			"duration": 30,
+			"difficulty": "intermediate",
+			"prerequisites": ["genetics", "basic biology"],
+			"learning_objectives": [
+				"Describe the evidence supporting evolution",
+				"Explain the process of natural selection",
+				"Differentiate between types of natural selection",
+				"Understand speciation and human evolution"
+			]
+		},
+		{
+			"id": "life-sciences-cells",
+			"subject": "life sciences",
+			"topic": "cell biology",
+			"title": "Cell Structure and Function",
+			"content": "# Cell Structure and Function\n\nCells are the basic structural and functional units of all living organisms. Understanding cell structure is fundamental to understanding life processes.\n\n## Cell Theory\n\n1. All living organisms are composed of cells\n2. The cell is the basic unit of life\n3. All cells arise from pre-existing cells\n\n## Types of Cells\n\n### Prokaryotic Cells\n- No membrane-bound nucleus\n- No membrane-bound organelles\n- Examples: Bacteria, Archaea\n- Size: 0.1-5 μm\n\n### Eukaryotic Cells\n- Membrane-bound nucleus\n- Membrane-bound organelles\n- Examples: Plants, Animals, Fungi, Protists\n- Size: 10-100 μm\n\n## Organelles and Their Functions\n\n### Nucleus\n- Contains genetic material (DNA)\n- Controls cell activities\n- Site of DNA replication and transcription\n\n### Mitochondria\n- Powerhouse of the cell\n- Cellular respiration\n- ATP production\n\n### Chloroplasts (Plant cells only)\n- Site of photosynthesis\n- Contains chlorophyll\n- Converts light energy to chemical energy\n\n### Endoplasmic Reticulum (ER)\n- Rough ER: Protein synthesis\n- Smooth ER: Lipid synthesis\n\n### Golgi Apparatus\n- Modifies, sorts, and packages proteins\n- Forms lysosomes\n\n### Ribosomes\n- Protein synthesis\n- Found free or on rough ER\n\n### Cell Membrane\n- Phospholipid bilayer\n- Selective permeability\n- Transport proteins\n\n## Cell Transport\n\n### Passive Transport\n- **Diffusion**: Movement from high to low concentration\n- **Osmosis**: Diffusion of water\n- **Facilitated Diffusion**: Using transport proteins\n\n### Active Transport\n- Uses energy (ATP)\n- Against concentration gradient\n- Examples: Na+/K+ pump, proton pump\n\n## Practice Questions\n\n1. Compare prokaryotic and eukaryotic cells\n2. Describe the function of the mitochondria\n3. Explain the difference between diffusion and osmosis\n4. How does the cell membrane maintain selectivity?\n\n## Resources\n\n- Video: Cell Structure (20 min)\n- Interactive: Cell Explorer\n- Worksheet: Cell Transport Practice",
+			"duration": 40,
+			"difficulty": "intermediate",
+			"prerequisites": ["basic biology"],
+			"learning_objectives": [
+				"Understand the cell theory",
+				"Compare prokaryotic and eukaryotic cells",
+				"Describe the structure and function of organelles",
+				"Explain different types of cell transport"
+			]
+		},
+		{
+			"id": "life-sciences-photosynthesis",
+			"subject": "life sciences",
+			"topic": "plant biology",
+			"title": "Photosynthesis",
+			"content": "# Photosynthesis\n\nPhotosynthesis is the process by which green plants and some other organisms use sunlight to synthesize foods from carbon dioxide and water.\n\n## Overall Equation\n\n6CO₂ + 6H₂O + light energy → C₆H₁₂O₆ + 6O₂\n\n## Location\n\n- **Chloroplasts**: Contain chlorophyll\n- **Grana**: Stacked thylakoid membranes\n- **Stroma**: Fluid-filled region\n- **Thylakoids**: Site of light reactions\n\n## Two Stages\n\n### Light-Dependent Reactions\n- Location: Thylakoid membrane\n- Requirements: Light, H₂O\n- Products: ATP, NADPH, O₂\n- Process:\n  1. Light absorption by chlorophyll\n  2. Photolysis of water: 2H₂O → 4H⁺ + 4e⁻ + O₂\n  3. Electron transport chain\n  4. ATP synthesis (photophosphorylation)\n  5. NADP⁺ reduction to NADPH\n\n### Light-Independent Reactions (Calvin Cycle)\n- Location: Stroma\n- Requirements: ATP, NADPH, CO₂\n- Product: Glucose (C₆H₁₂O₆)\n- Process:\n  1. Carbon fixation: CO₂ + RuBP → 2 × 3C compound\n  2. Reduction: Uses ATP and NADPH\n  3. Regeneration: RuBP regenerated\n\n## Factors Affecting Photosynthesis\n\n1. **Light Intensity**: Increases rate until saturation\n2. **CO₂ Concentration**: Limited by stomatal opening\n3. **Temperature**: Enzyme denaturation above 40°C\n4. **Water Availability**: Affects stomatal regulation\n\n## C4 and CAM Plants\n\n### C4 Plants\n- Fix CO₂ in mesophyll cells\n- Bundle sheath cells for Calvin cycle\n- Example: Maize, sugarcane\n\n### CAM Plants\n- Open stomata at night\n- Fix CO₂ into malic acid\n- Close stomata during day\n- Example: Succulents, cactus\n\n## Practice Questions\n\n1. Write the balanced equation for photosynthesis\n2. Where in the chloroplast does the Calvin cycle occur?\n3. Explain what happens during photolysis\n4. Why do C4 plants have an advantage in hot climates?\n\n## Resources\n\n- Video: Photosynthesis (25 min)\n- Interactive: Calvin Cycle Simulator\n- Worksheet: Photosynthesis Practice",
+			"duration": 45,
+			"difficulty": "advanced",
+			"prerequisites": ["cell biology", "energy"],
+			"learning_objectives": [
+				"Understand the process of photosynthesis",
+				"Explain light-dependent and light-independent reactions",
+				"Identify factors affecting photosynthesis",
+				"Compare C3, C4, and CAM plants"
+			]
+		},
+		{
+			"id": "life-sciences-respiration",
+			"subject": "life sciences",
+			"topic": "energy",
+			"title": "Cellular Respiration",
+			"content": "# Cellular Respiration\n\nCellular respiration is the process by which organisms combine oxygen with food molecules, diverting the chemical energy in these substances into life-sustaining activities.\n\n## Overall Equation\n\nC₆H₁₂O₆ + 6O₂ → 6CO₂ + 6H₂O + ATP (38 ATP total)\n\n## Three Stages\n\n### 1. Glycolysis\n- Location: Cytoplasm\n- Input: Glucose (6C)\n- Output: 2 pyruvate, 2 ATP, 2 NADH\n- Anaerobic (doesn't require oxygen)\n\n### 2. Krebs Cycle (Citric Acid Cycle)\n- Location: Mitochondrial matrix\n- Input: Acetyl-CoA (from pyruvate)\n- Output: 2 ATP, 6 NADH, 2 FADH₂, CO₂\n- Aerobic (requires oxygen)\n\n### 3. Electron Transport Chain (ETC)\n- Location: Inner mitochondrial membrane\n- Output: 34 ATP\n- Final electron acceptor: Oxygen → H₂O\n\n## ATP Production\n\n| Stage | ATP Produced |\n|-------|-------------|\n| Glycolysis | 2 ATP |\n| Krebs Cycle | 2 ATP |\n| ETC | 34 ATP |\n| **Total** | **38 ATP** |\n\n## Anaerobic Respiration\n\n### Lactic Acid Fermentation\n- In animals\n- Lactate produced\n- Example: Exercise, muscle fatigue\n\n### Alcoholic Fermentation\n- In yeast\n- Ethanol and CO₂ produced\n- Example: Bread making, brewing\n\n## Factors Affecting Respiration\n\n1. **Temperature**: Optimal around 37°C\n2. **Oxygen Availability**: Aerobic vs anaerobic\n3. **Glucose Concentration**: Rate increases with substrate\n4. **Enzyme Activity**: Denaturation at high temperatures\n\n## Comparison: Photosynthesis vs Respiration\n\n| Feature | Photosynthesis | Respiration |\n|---------|----------------|-------------|\n| Location | Chloroplasts | Mitochondria |\n| Reactants | CO₂ + H₂O + Light | Glucose + O₂ |\n| Products | Glucose + O₂ | CO₂ + H₂O + ATP |\n| Energy | Stores energy | Releases energy |\n\n## Practice Questions\n\n1. Where in the cell does glycolysis occur?\n2. Compare aerobic and anaerobic respiration\n3. How many ATP molecules are produced in total?\n4. Explain why we breathe out CO₂\n\n## Resources\n\n- Video: Cellular Respiration (25 min)\n- Interactive: ETC Simulator\n- Worksheet: Respiration Practice",
+			"duration": 45,
+			"difficulty": "advanced",
+			"prerequisites": ["cell biology", "photosynthesis"],
+			"learning_objectives": [
+				"Understand the three stages of cellular respiration",
+				"Explain ATP production in each stage",
+				"Compare aerobic and anaerobic respiration",
+				"Relate respiration to photosynthesis"
+			]
+		},
+		{
+			"id": "life-sciences-human-systems",
+			"subject": "life sciences",
+			"topic": "human biology",
+			"title": "Human Respiratory System",
+			"content": "# Human Respiratory System\n\nThe respiratory system is responsible for gas exchange - taking in oxygen and releasing carbon dioxide.\n\n## Structures and Functions\n\n### Nasal Cavity\n- Filters particles\n- Warms and moistens air\n- Contains olfactory receptors\n\n### Pharynx (Throat)\n- Common passage for air and food\n- Lymphoid tissue (tonsils) for immunity\n\n### Larynx (Voice Box)\n- Contains vocal cords\n- Epiglottis prevents food entering airway\n\n### Trachea (Windpipe)\n- C-shaped cartilage rings keep it open\n- Lined with ciliated epithelium\n- Mucus traps particles\n\n### Bronchi\n- Primary bronchi branch into secondary\n- Further branch into bronchioles\n- Smooth muscle controls airflow\n\n### Lungs\n- ~300 million alveoli\n- Surface area for gas exchange: 70m²\n- Surrounded by pleural membrane\n\n### Alveoli\n- Thin-walled air sacs\n- Capillary network for diffusion\n- Large surface area\n\n## Gas Exchange\n\n### Alveolar Structure\n- Single cell layer for diffusion\n- Rich capillary network\n- Moist surface for gas dissolution\n\n### Process\n1. Oxygen diffuses from alveoli into blood\n2. CO₂ diffuses from blood into alveoli\n3. Blood carries O₂ to tissues\n4. Blood carries CO₂ from tissues\n\n## Mechanism of Breathing\n\n### Inspiration (Inhalation)\n- Diaphragm contracts and flattens\n- External intercostal muscles contract\n- Thoracic cavity expands\n- Air rushes in (negative pressure)\n\n### Exhalation\n- Diaphragm relaxes\n- Internal intercostal muscles contract\n- Thoracic cavity decreases\n- Air rushes out\n\n## Control of Breathing\n\n- **Medulla Oblongata**: Respiratory center\n- **CO₂ Levels**: Primary stimulus\n- **Chemoreceptors**: Detect O₂, CO₂, pH\n- **Hering-Breuer**: Prevents overinflation\n\n## Disorders\n\n1. **Asthma**: Bronchoconstriction\n2. **Emphysema**: Alveolar damage\n3. **Bronchitis**: Airway inflammation\n4. **Pneumonia**: Lung infection\n\n## Practice Questions\n\n1. Describe the path of air from nose to alveoli\n2. Explain how gas exchange occurs in the alveoli\n3. What muscles are involved in breathing?\n4. How does the body control breathing rate?\n\n## Resources\n\n- Video: Respiratory System (20 min)\n- Interactive: Lung Function Simulator\n- Worksheet: Breathing Practice",
+			"duration": 40,
+			"difficulty": "intermediate",
+			"prerequisites": ["cell biology"],
+			"learning_objectives": [
+				"Identify structures of the respiratory system",
+				"Explain the mechanism of breathing",
+				"Understand gas exchange at alveoli",
+				"Describe control of breathing"
+			]
+		}
+	]
+}

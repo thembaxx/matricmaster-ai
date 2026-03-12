@@ -5,10 +5,9 @@ import { HugeiconsIcon } from '@hugeicons/react';
 import { AnimatePresence, m } from 'framer-motion';
 import { memo } from 'react';
 import { Button } from '@/components/ui/button';
+import { Skeleton } from '@/components/ui/skeleton';
 import { STAGGER_ITEM } from '@/lib/animation-presets';
 import type { SearchHistory } from '@/lib/db/schema';
-
-import { Skeleton } from '@/components/ui/skeleton';
 
 interface SearchHistoryListProps {
 	searches: SearchHistory[];
@@ -49,13 +48,14 @@ export const SearchHistoryList = memo(function SearchHistoryList({
 			<div className="grid grid-cols-1 md:grid-cols-2 gap-3">
 				<AnimatePresence mode="popLayout">
 					{isLoading ? (
-						<>
-							{[1, 2, 3, 4].map((i) => (
-								<m.div key={i} className="h-[68px] rounded-[1.5rem] overflow-hidden border-2 border-border/50">
-									<Skeleton className="w-full h-full" />
-								</m.div>
-							))}
-						</>
+						[1, 2, 3, 4].map((i) => (
+							<m.div
+								key={i}
+								className="h-[68px] rounded-[1.5rem] overflow-hidden border-2 border-border/50"
+							>
+								<Skeleton className="w-full h-full" />
+							</m.div>
+						))
 					) : searches.length > 0 ? (
 						searches.map((search) => (
 							<m.div

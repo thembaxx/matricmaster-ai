@@ -93,6 +93,25 @@ export const options = pgTable('options', {
 });
 
 // ============================================================================
+// QUIZ RESULTS TABLE
+// ============================================================================
+export const quizResults = pgTable('quiz_results', {
+	id: uuid('id').defaultRandom().primaryKey(),
+	userId: text('user_id')
+		.notNull()
+		.references(() => users.id, { onDelete: 'cascade' }),
+	quizId: varchar('quiz_id', { length: 100 }).notNull(),
+	score: integer('score').notNull(),
+	totalQuestions: integer('total_questions').notNull(),
+	percentage: numeric('percentage', { precision: 5, scale: 2 }).notNull(),
+	timeTaken: integer('time_taken').notNull(), // in seconds
+	completedAt: timestamp('completed_at').defaultNow().notNull(),
+});
+
+export type QuizResult = typeof quizResults.$inferSelect;
+export type NewQuizResult = typeof quizResults.$inferInsert;
+
+// ============================================================================
 // SEARCH HISTORY TABLE
 // ============================================================================
 

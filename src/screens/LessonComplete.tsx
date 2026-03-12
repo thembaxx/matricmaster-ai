@@ -8,7 +8,6 @@ import {
 	CheckmarkCircle02Icon,
 	Clock01Icon,
 	FlashIcon,
-	Loading03Icon,
 	Refresh01Icon,
 	SparklesIcon,
 } from '@hugeicons/core-free-icons';

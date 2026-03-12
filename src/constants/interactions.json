@@ -1,0 +1,95 @@
+{
+	"suggestionCards": [
+		{
+			"id": "prioritize",
+			"emoji": "🎯",
+			"title": "Help me prioritize",
+			"description": "Figure out what to study first based on your weak areas and upcoming exams",
+			"prompt": "Analyze my current progress, quiz results, and study habits to create a personalized priority list of topics I should focus on for my upcoming NSC exams. Consider which subjects I struggle with most, what topics have the highest weight in the exams, and how much time I have left to prepare."
+		},
+		{
+			"id": "routine",
+			"emoji": "🧘",
+			"title": "Start a routine",
+			"description": "Create a study schedule that fits your lifestyle and goals",
+			"prompt": "Help me create a realistic weekly study schedule that balances all my NSC subjects. Consider my current commitments, preferred study times, and the recommended hours per subject. Include breaks, review sessions, and flexibility for unexpected events."
+		},
+		{
+			"id": "explain",
+			"emoji": "📚",
+			"title": "Explain a topic",
+			"description": "Break down any concept you're struggling with",
+			"prompt": "I'm having trouble understanding [TOPIC]. Please explain this concept in simple terms with examples relevant to the NSC curriculum. Include common misconceptions to avoid and provide a simple analogy if possible. Then give me a practice problem to test my understanding."
+		},
+		{
+			"id": "practice",
+			"emoji": "✍️",
+			"title": "Practice questions",
+			"description": "Get exercises to try on specific topics",
+			"prompt": "Generate 5 practice questions on [TOPIC] for NSC Grade 12 level. Include a mix of multiple choice and short answer questions. For each question, provide the answer and a detailed explanation. Start with easier questions and gradually increase difficulty."
+		}
+	],
+	"subjectCards": [
+		{
+			"id": "mathematics",
+			"emoji": "🧮",
+			"title": "Mathematics",
+			"subtitle": "Algebra, Calculus, Geometry, Trigonometry",
+			"topics": [
+				"Algebraic Expressions",
+				"Quadratic Equations",
+				"Functions and Graphs",
+				"Differential Calculus",
+				"Integral Calculus",
+				"Sequences and Series",
+				"Analytical Geometry",
+				"Trigonometry",
+				"Statistics and Probability"
+			]
+		},
+		{
+			"id": "physical_sciences",
+			"emoji": "⚛️",
+			"title": "Physical Sciences",
+			"subtitle": "Physics and Chemistry",
+			"topics": [
+				"Mechanics",
+				"Waves, Sound and Light",
+				"Electricity and Magnetism",
+				"Matter and Materials",
+				"Chemical Change",
+				"Chemical Systems",
+				"Energy and Change"
+			]
+		},
+		{
+			"id": "life_sciences",
+			"emoji": "🧬",
+			"title": "Life Sciences",
+			"subtitle": "Genetics, Evolution, Human Body",
+			"topics": [
+				"DNA and Protein Synthesis",
+				"Meiosis and Genetics",
+				"Evolution",
+				"Human Endocrine System",
+				"Homeostasis",
+				"Respiration",
+				"Gaseous Exchange",
+				"Excretion",
+				"Population Ecology"
+			]
+		},
+		{
+			"id": "english",
+			"emoji": "📖",
+			"title": "English",
+			"subtitle": "Language, Literature, Writing",
+			"topics": [
+				"Language Structures and Conventions",
+				"Reading and Viewing Comprehension",
+				"Writing and Presenting",
+				"Literature Studies"
+			]
+		}
+	]
+}

@@ -2,7 +2,8 @@
 
 import { m } from 'framer-motion';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import { FocusContent } from '@/components/Layout/FocusContent';
 import { TimelineSidebar } from '@/components/Layout/TimelineSidebar';
 import { Button } from '@/components/ui/button';
@@ -43,13 +44,54 @@ const HELP_CARDS: StudyHelpCard[] = [
 ];
 
 export default function StudyCompanion() {
+	const router = useRouter();
+	const searchParams = useSearchParams();
 	const [showInput, setShowInput] = useState(false);
 	const [inputValue, setInputValue] = useState('');
 	const [selectedCard, setSelectedCard] = useState<string | null>(null);
+	const [isLoading, setIsLoading] = useState(false);
+
+	useEffect(() => {
+		const question = searchParams.get('question');
+		if (question) {
+			setInputValue(question);
+			setShowInput(true);
+		}
+	}, [searchParams]);
+
+	const getPromptForCard = (cardId: string): string => {
+		switch (cardId) {
+			case '1':
+				return 'Help me prioritize my study topics. I want to focus on what will have the biggest impact on my matric exams.';
+			case '2':
+				return 'Help me create a study routine/schedule. I want to balance all my subjects effectively.';
+			case '3':
+				return 'Explain this topic in simple terms: ';
+			case '4':
+				return 'Give me some practice questions for: ';
+			default:
+				return '';
+		}
+	};
+
+	const handleGetHelp = async () => {
+		if (!inputValue.trim()) return;
+
+		setIsLoading(true);
+		try {
+			const prompt = selectedCard ? getPromptForCard(selectedCard) + inputValue : inputValue;
+			router.push(`/ai-tutor?new=true&prompt=${encodeURIComponent(prompt)}`);
+		} catch (error) {
+			console.error('Error starting chat:', error);
+			setIsLoading(false);
+		}
+	};
 
 	const handleCardClick = (cardId: string) => {
 		setSelectedCard(cardId);
 		setShowInput(true);
+		const prompt = getPromptForCard(cardId);
+		setInputValue(prompt);
 	};
 
 	return (
@@ -174,8 +216,13 @@ export default function StudyCompanion() {
 								>
 									Cancel
 								</Button>
-								<Button size="lg" className="flex-1 rounded-2xl" disabled={!inputValue.trim()}>
-									Get help
+								<Button
+									size="lg"
+									className="flex-1 rounded-2xl"
+									disabled={!inputValue.trim() || isLoading}
+									onClick={handleGetHelp}
+								>
+									{isLoading ? 'Starting...' : 'Get help'}
 								</Button>
 							</div>
 						</m.div>
