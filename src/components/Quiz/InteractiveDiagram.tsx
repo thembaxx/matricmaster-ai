@@ -144,12 +144,12 @@ export function InteractiveDiagram({ type, data, className }: InteractiveDiagram
 
 	if (type.toLowerCase().includes('ledger') || type.toLowerCase().includes('account')) {
 		return (
-			<div className={cn("w-full h-48 bg-secondary/30 rounded-xl relative overflow-hidden p-4", className)}>
+			<div className={cn("w-full h-auto bg-secondary/30 rounded-xl relative overflow-hidden p-4", className)}>
 				<div className="w-full h-full flex flex-col border-2 border-border rounded-lg bg-card">
 					<div className="p-2 border-b-2 border-border text-center font-bold text-xs uppercase tracking-widest bg-muted/50">
 						General Ledger: Equipment
 					</div>
-					<div className="flex-1 flex">
+					<div className="flex flex-row min-h-[120px]">
 						{/* Debit side */}
 						<div className="flex-1 border-r-2 border-border p-2">
 							<div className="text-[8px] font-black text-tiimo-gray-muted uppercase mb-2">Debit (Dr)</div>
@@ -157,9 +157,17 @@ export function InteractiveDiagram({ type, data, className }: InteractiveDiagram
 								initial={{ opacity: 0, x: -10 }}
 								animate={{ opacity: 1, x: 0 }}
 								className="flex justify-between text-[10px] mb-1">
-								<span>Bank (Purchase)</span>
+								<span>Bank</span>
 								<span className="font-bold text-tiimo-green">R 12,000</span>
 							</m.div>
+							{/* Input area for students */}
+							<div className="mt-4 pt-2 border-t border-border/30">
+								<input 
+									type="text" 
+									placeholder="Amount..." 
+									className="w-full bg-muted/50 text-[10px] p-1 rounded border border-border focus:ring-1 focus:ring-primary/20"
+								/>
+							</div>
 						</div>
 						{/* Credit side */}
 						<div className="flex-1 p-2 text-right">
@@ -170,11 +178,21 @@ export function InteractiveDiagram({ type, data, className }: InteractiveDiagram
 								transition={{ delay: 0.5 }}
 								className="flex justify-between text-[10px] mb-1">
 								<span className="text-destructive font-bold italic opacity-50">?</span>
-								<span>Depreciation</span>
+								<span>Accum. Depr.</span>
 							</m.div>
+							<div className="mt-4 pt-2 border-t border-border/30">
+								<input 
+									type="text" 
+									placeholder="Amount..." 
+									className="w-full bg-muted/50 text-[10px] p-1 rounded border border-border text-right focus:ring-1 focus:ring-primary/20"
+								/>
+							</div>
 						</div>
 					</div>
 				</div>
+				<p className="text-[8px] text-center text-muted-foreground mt-2 uppercase font-bold tracking-widest italic">
+					Interactive Ledger: Enter missing values
+				</p>
 			</div>
 		);
 	}

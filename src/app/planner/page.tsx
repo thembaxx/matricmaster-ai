@@ -15,18 +15,44 @@ import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
+import { createStudyPlanAction, getStudyPlansAction } from '@/lib/db/actions';
+import { toast } from 'sonner';
+
 export default function PlannerPage() {
 	const [daysLeft, setDaysLeft] = useState(0);
+	const [plans, setPlans] = useState<any[]>([]);
+	const [isAdding, setIsAdding] = useState(false);
+	const [newTitle, setNewTitle] = useState('');
 
 	useEffect(() => {
 		const examDate = new Date('2026-10-20');
 		const today = new Date();
 		const diff = examDate.getTime() - today.getTime();
 		setDaysLeft(Math.ceil(diff / (1000 * 60 * 60 * 24)));
+		
+		async function loadPlans() {
+			const data = await getStudyPlansAction();
+			setPlans(data);
+		}
+		loadPlans();
 	}, []);
+
+	const handleAddPlan = async () => {
+		if (!newTitle.trim()) return;
+		const result = await createStudyPlanAction({ title: newTitle });
+		if (result.success) {
+			setPlans([...plans, { title: newTitle }]);
+			setNewTitle('');
+			setIsAdding(false);
+			toast.success('Task added to priority focus');
+		} else {
+			toast.error('Failed to add task');
+		}
+	};
 
 	return (
 		<div className="container mx-auto max-w-6xl px-4 pt-8 pb-32">
+			{/* ... previous header ... */}
 			<div className="mb-8">
 				<h1 className="text-4xl font-black tracking-tight text-foreground uppercase">Study Planner</h1>
 				<p className="text-muted-foreground font-bold uppercase text-xs tracking-widest mt-1">
@@ -36,6 +62,7 @@ export default function PlannerPage() {
 
 			<div className="grid gap-6 md:grid-cols-3">
 				{/* Countdown Card */}
+				{/* ... same as before ... */}
 				<Card className="md:col-span-2 overflow-hidden border-primary/20 bg-linear-to-br from-primary/10 to-transparent shadow-tiimo">
 					<CardContent className="p-8 flex items-center justify-between">
 						<div className="space-y-2">
@@ -53,6 +80,7 @@ export default function PlannerPage() {
 				</Card>
 
 				{/* Quick Stats */}
+				{/* ... same ... */}
 				<div className="space-y-4">
 					<Card className="shadow-tiimo border-border/50">
 						<CardContent className="p-6 flex items-center gap-4">
@@ -88,34 +116,47 @@ export default function PlannerPage() {
 					</CardHeader>
 					<CardContent>
 						<div className="space-y-3">
-							{[
-								{ task: 'Master Calculus Optimization', subject: 'Maths', priority: 'High' },
-								{ task: 'Review Momentum & Impulse', subject: 'Physics', priority: 'High' },
-								{ task: 'DNA Replication Diagrams', subject: 'Life Sci', priority: 'Medium' },
-							].map((item, i) => (
+							{plans.length > 0 ? plans.map((item, i) => (
 								<div key={i} className="flex items-center justify-between p-4 bg-muted/30 rounded-2xl border border-border/50">
 									<div className="flex items-center gap-4">
 										<div className="w-2 h-2 rounded-full bg-primary" />
 										<div>
-											<p className="font-bold text-sm">{item.task}</p>
-											<p className="text-[10px] font-black text-muted-foreground uppercase">{item.subject}</p>
+											<p className="font-bold text-sm">{item.title}</p>
+											<p className="text-[10px] font-black text-muted-foreground uppercase">General Focus</p>
 										</div>
 									</div>
-									<span className={`text-[10px] font-black px-2 py-1 rounded-full ${
-										item.priority === 'High' ? 'bg-destructive/10 text-destructive' : 'bg-secondary text-foreground'
-									}`}>
-										{item.priority}
-									</span>
+									<span className="text-[10px] font-black px-2 py-1 rounded-full bg-destructive/10 text-destructive">High</span>
 								</div>
-							))}
+							)) : (
+								<p className="py-8 text-center text-muted-foreground text-sm font-bold uppercase tracking-widest">No priority tasks yet.</p>
+							)}
 						</div>
-						<Button variant="ghost" className="w-full mt-4 font-black uppercase text-[10px] tracking-widest">
-							Add Priority Task
-						</Button>
+						
+						{isAdding ? (
+							<div className="mt-4 flex gap-2">
+								<input 
+									type="text" 
+									value={newTitle}
+									onChange={(e) => setNewTitle(e.target.value)}
+									placeholder="What is your focus?"
+									className="flex-1 bg-card border-2 border-border rounded-xl px-4 py-2 text-sm"
+								/>
+								<Button onClick={handleAddPlan} size="sm" className="rounded-xl">Add</Button>
+							</div>
+						) : (
+							<Button 
+								onClick={() => setIsAdding(true)}
+								variant="ghost" 
+								className="w-full mt-4 font-black uppercase text-[10px] tracking-widest"
+							>
+								Add Priority Task
+							</Button>
+						)}
 					</CardContent>
 				</Card>
 
 				{/* Daily Habit Tracker */}
+				{/* ... same ... */}
 				<Card className="shadow-tiimo border-border/50">
 					<CardHeader>
 						<CardTitle className="text-lg font-black uppercase tracking-tight">Consistency</CardTitle>

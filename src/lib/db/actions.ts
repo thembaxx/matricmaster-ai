@@ -99,6 +99,134 @@ async function getDb(): Promise<DbType> {
 	return dbManager.getDb();
 }
 
+/**
+ * Enrolls a user in a subject by creating an entry in userProgress
+ */
+export async function enrollInSubjectAction(subjectId: number) {
+	try {
+		const user = await ensureAuthenticated();
+		const db = await getDb();
+
+		// Check if already enrolled
+		const existing = await db.query.userProgress.findFirst({
+			where: and(eq(userProgress.userId, user.id), eq(userProgress.subjectId, subjectId)),
+		});
+
+		if (existing) {
+			return { success: true, message: 'Already enrolled' };
+		}
+
+		await db.insert(userProgress).values({
+			userId: user.id,
+			subjectId: subjectId,
+			totalQuestionsAttempted: 0,
+			totalCorrect: 0,
+			totalMarksEarned: 0,
+		});
+
+		return { success: true };
+	} catch (error) {
+		console.error('Error enrolling in subject:', error);
+		return { success: false, error: 'Failed to enroll' };
+	}
+}
+
+/**
+ * Adds a new study plan / priority task
+ */
+export async function createStudyPlanAction(data: { title: string; focusAreas?: string }) {
+	try {
+		const user = await ensureAuthenticated();
+		const db = await getDb();
+
+		await db.insert(studyPlans).values({
+			userId: user.id,
+			title: data.title,
+			focusAreas: data.focusAreas,
+			isActive: true,
+		});
+
+		return { success: true };
+	} catch (error) {
+		console.error('Error creating study plan:', error);
+		return { success: false, error: 'Failed to create plan' };
+	}
+}
+
+export async function getStudyPlansAction() {
+	try {
+		const user = await ensureAuthenticated();
+		const db = await getDb();
+		return await db.select().from(studyPlans).where(eq(studyPlans.userId, user.id));
+	} catch (error) {
+		console.error('Error fetching study plans:', error);
+		return [];
+	}
+}
+
+/**
+ * Adds a calendar event (study block)
+ */
+export async function createCalendarEventAction(data: {
+	title: string;
+	startTime: Date;
+	endTime: Date;
+	subjectId?: number;
+	eventType: string;
+}) {
+	try {
+		const user = await ensureAuthenticated();
+		const db = await getDb();
+
+		await db.insert(calendarEvents).values({
+			userId: user.id,
+			title: data.title,
+			startTime: data.startTime,
+			endTime: data.endTime,
+			subjectId: data.subjectId ? BigInt(data.subjectId) : null,
+			eventType: data.eventType,
+		});
+
+		return { success: true };
+	} catch (error) {
+		console.error('Error creating calendar event:', error);
+		return { success: false, error: 'Failed to create event' };
+	}
+}
+
+export async function getCalendarEventsAction() {
+	try {
+		const user = await ensureAuthenticated();
+		const db = await getDb();
+		return await db.select().from(calendarEvents).where(eq(calendarEvents.userId, user.id));
+	} catch (error) {
+		console.error('Error fetching events:', error);
+		return [];
+	}
+}
+
+export async function getEnrolledSubjectsAction() {
+	try {
+		const user = await ensureAuthenticated();
+		const db = await getDb();
+
+		const enrolled = await db
+			.select({
+				id: subjects.id,
+				name: subjects.name,
+				description: subjects.description,
+			})
+			.from(userProgress)
+			.innerJoin(subjects, eq(userProgress.subjectId, subjects.id))
+			.where(eq(userProgress.userId, user.id));
+
+		return enrolled;
+	} catch (error) {
+		console.error('Error fetching enrolled subjects:', error);
+		return [];
+	}
+}
+
 const mockSubjects: Subject[] = [
 	{
 		id: 1,

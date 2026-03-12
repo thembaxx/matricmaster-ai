@@ -14,19 +14,67 @@ import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
 
+import { createCalendarEventAction, getCalendarEventsAction } from '@/lib/db/actions';
+import { toast } from 'sonner';
+
 const DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 const HOURS = Array.from({ length: 14 }, (_, i) => i + 8); // 8 AM to 9 PM
 
-const MOCK_EVENTS = [
-	{ day: 'Mon', start: 14, end: 15.5, subject: 'Maths', color: 'bg-subject-math', title: 'Calculus' },
-	{ day: 'Tue', start: 16, end: 17.5, subject: 'Physics', color: 'bg-subject-physics', title: 'Mechanics' },
-	{ day: 'Wed', start: 15, end: 16.5, subject: 'Life Sci', color: 'bg-subject-life', title: 'Genetics' },
-	{ day: 'Thu', start: 14, end: 15.5, subject: 'Maths', color: 'bg-subject-math', title: 'Functions' },
-	{ day: 'Fri', start: 16, end: 18, subject: 'Past Paper', color: 'bg-primary', title: 'Mock Exam' },
-];
-
 export default function SchedulePage() {
 	const [selectedDay, setSelectedDay] = useState('Mon');
+	const [events, setEvents] = useState<any[]>([]);
+	const [isAdding, setIsAdding] = useState(false);
+
+	useEffect(() => {
+		async function loadEvents() {
+			const data = await getCalendarEventsAction();
+			// Map DB events to UI format
+			const mapped = data.map(e => {
+				const start = new Date(e.startTime);
+				const end = new Date(e.endTime);
+				const dayName = DAYS[start.getDay() === 0 ? 6 : start.getDay() - 1];
+				return {
+					day: dayName,
+					start: start.getHours() + start.getMinutes() / 60,
+					end: end.getHours() + end.getMinutes() / 60,
+					title: e.title,
+					subject: 'Study',
+					color: 'bg-primary'
+				};
+			});
+			setEvents(mapped);
+		}
+		loadEvents();
+	}, []);
+
+	const handleAddBlock = async () => {
+		const now = new Date();
+		const result = await createCalendarEventAction({
+			title: 'New Study Block',
+			startTime: new Date(now.setHours(14, 0, 0, 0)),
+			endTime: new Date(now.setHours(15, 30, 0, 0)),
+			eventType: 'study_session'
+		});
+		
+		if (result.success) {
+			toast.success('Study block added!');
+			// Refresh events
+			const data = await getCalendarEventsAction();
+			setEvents(data.map(e => {
+				const start = new Date(e.startTime);
+				const end = new Date(e.endTime);
+				const dayName = DAYS[start.getDay() === 0 ? 6 : start.getDay() - 1];
+				return {
+					day: dayName,
+					start: start.getHours() + start.getMinutes() / 60,
+					end: end.getHours() + end.getMinutes() / 60,
+					title: e.title,
+					subject: 'Study',
+					color: 'bg-primary'
+				};
+			}));
+		}
+	};
 
 	return (
 		<div className="container mx-auto max-w-6xl px-4 pt-8 pb-32">
@@ -37,7 +85,7 @@ export default function SchedulePage() {
 						Your weekly routine
 					</p>
 				</div>
-				<Button className="rounded-full gap-2 font-black uppercase text-xs tracking-widest px-6 h-12 shadow-xl shadow-primary/20">
+				<Button onClick={handleAddBlock} className="rounded-full gap-2 font-black uppercase text-xs tracking-widest px-6 h-12 shadow-xl shadow-primary/20">
 					<HugeiconsIcon icon={PlusSignIcon} className="w-4 h-4" />
 					Add Block
 				</Button>
@@ -76,7 +124,7 @@ export default function SchedulePage() {
 								))}
 								
 								{/* Events */}
-								{MOCK_EVENTS.filter(e => e.day === day).map((event, i) => (
+								{events.filter(e => e.day === day).map((event, i) => (
 									<m.div
 										key={i}
 										initial={{ opacity: 0, scale: 0.9 }}
@@ -120,7 +168,7 @@ export default function SchedulePage() {
 				</div>
 
 				<div className="space-y-4">
-					{MOCK_EVENTS.filter(e => e.day === selectedDay).map((event, i) => (
+					{events.filter(e => e.day === selectedDay).map((event, i) => (
 						<Card key={i} className="shadow-tiimo border-border/50 overflow-hidden">
 							<CardContent className="p-0 flex h-24">
 								<div className={cn("w-3 h-full", event.color)} />
@@ -129,7 +177,7 @@ export default function SchedulePage() {
 										<div className="flex items-center gap-2">
 											<HugeiconsIcon icon={Clock01Icon} className="w-3 h-3 text-muted-foreground" />
 											<span className="text-[10px] font-bold text-muted-foreground">
-												{event.start}:00 - {event.end % 1 === 0 ? `${event.end}:00` : `${Math.floor(event.end)}:30`}
+												{Math.floor(event.start)}:00 - {Math.floor(event.end)}:00
 											</span>
 										</div>
 										<h3 className="text-lg font-black uppercase tracking-tight">{event.title}</h3>
@@ -142,7 +190,7 @@ export default function SchedulePage() {
 							</CardContent>
 						</Card>
 					))}
-					{MOCK_EVENTS.filter(e => e.day === selectedDay).length === 0 && (
+					{events.filter(e => e.day === selectedDay).length === 0 && (
 						<div className="py-12 text-center">
 							<div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center mx-auto mb-4 opacity-50">
 								<HugeiconsIcon icon={Calendar01Icon} className="w-8 h-8" />
