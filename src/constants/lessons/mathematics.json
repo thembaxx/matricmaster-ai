@@ -101,7 +101,7 @@
 			"subject": "mathematics",
 			"topic": "sequences",
 			"title": "Arithmetic Sequences",
-			"content": "# Arithmetic Sequences\n\nAn arithmetic sequence is a sequence where each term differs from the previous term by a constant difference.\n\n## Key Concepts\n\n### Definition\nA sequence is arithmetic if: aₙ - aₙ₋₁ = d (constant)\n\n### General Term\naₙ = a₁ + (n-1)d\n\n### Sum of n Terms\nSₙ = n/2 (a₁ + aₙ)\nSₙ = n/2 [2a₁ + (n-1)d]\n\n## Properties\n\n1. **Common Difference (d)**: Can be positive, negative, or zero\n2. **Linear Growth**: Terms change linearly\n3. **Graph**: Points lie on a straight line\n\n## Examples\n\n### Example 1: Given a₁ = 3, d = 5\nSequence: 3, 8, 13, 18, 23, ...\na₁₀ = 3 + (10-1)(5) = 48\n\n### Example 2: Find the sum of 2 + 5 + 8 + ... + 50\nFirst, find n: aₙ = 50 = 2 + (n-1)(3)\nn = 17\nS₁₇ = 17/2 (2 + 50) = 442\n\n## Applications\n\n1. **Financial Planning**: Regular deposits/withdrawals\n2. **Sequential Patterns**: Many natural patterns\n3. **Salary Increments**: Annual raises\n\n## Practice Questions\n\n1. Find the 25th term of the sequence: 7, 10, 13, ...\n2. The first term is 12 and the 10th term is 48. Find the common difference.\n3. Sum the arithmetic series: 5 + 10 + 15 + ... + 100\n\n## Resources\n\n- Video: Arithmetic Sequences (20 min)\n- Worksheet: Sequence Practice\n- Interactive: Sequence Generator",
+			"content": "# Arithmetic Sequences\n\nAn arithmetic sequence is a sequence where each term differs from the previous term by a constant difference.\n\n## Key Concepts\n\n- **Definition**: A sequence is arithmetic if $T_n - T_{n-1} = d$ (constant common difference).\n- **General Term ($T_n$)**: $T_n = a + (n-1)d$\n  - $a$: first term ($T_1$)\n  - $d$: common difference\n- **Arithmetic Series ($S_n$)**: The sum of the first $n$ terms.\n  - $S_n = \\frac{n}{2}[2a + (n-1)d]$\n  - $S_n = \\frac{n}{2}[a + l]$ (where $l$ is the last term)\n\n## Examples\n\nGiven the sequence: $5; 12; 19; ...$\n1. Find $d$: $12 - 5 = 7$\n2. Find $T_{10}$: $T_{10} = 5 + (10-1)(7) = 5 + 63 = 68$\n\n## Practice Questions\n\n1. Find the 20th term of $3; 7; 11; ...$\n2. Calculate the sum of the first 50 terms of the series $2 + 5 + 8 + ...$",
 			"duration": 35,
 			"difficulty": "intermediate",
 			"prerequisites": ["basic algebra"],
@@ -116,7 +116,7 @@
 			"subject": "mathematics",
 			"topic": "sequences",
 			"title": "Geometric Sequences",
-			"content": "# Geometric Sequences\n\nA geometric sequence is a sequence where each term is found by multiplying the previous term by a constant ratio.\n\n## Key Concepts\n\n### Definition\nA sequence is geometric if: aₙ / aₙ₋₁ = r (constant)\n\n### General Term\naₙ = a₁ × r^(n-1)\n\n### Sum of n Terms\nFor r ≠ 1: Sₙ = a₁(1 - r^n) / (1 - r)\nFor r = 1: Sₙ = n × a₁\n\n### Infinite Geometric Series\nIf |r| < 1: S∞ = a₁ / (1 - r)\n\n## Properties\n\n1. **Common Ratio (r)**: Can be positive, negative, or fractional\n2. **Exponential Growth/Decay**: Terms change multiplicatively\n3. **Graph**: Points lie on exponential curve\n\n## Examples\n\n### Example 1: Given a₁ = 2, r = 3\nSequence: 2, 6, 18, 54, 162, ...\na₈ = 2 × 3^7 = 4374\n\n### Example 2: Find sum of 1 + 2 + 4 + 8 + ... + 1024\nr = 2, n = 11 (2^10 = 1024)\nS₁₁ = 1(1 - 2^11) / (1 - 2) = 2047\n\n## Applications\n\n1. **Compound Interest**: A = P(1 + r)^n\n2. **Population Growth**: Exponential models\n3. **Radioactive Decay**: Exponential decay\n\n## Practice Questions\n\n1. Find the 7th term of: 3, 6, 12, ...\n2. Find the sum: 1 + 1/2 + 1/4 + ... + 1/256\n3. A ball bounces to 2/3 of its height. After 5 bounces, how high?\n\n## Resources\n\n- Video: Geometric Sequences (25 min)\n- Worksheet: Geometric Practice\n- Interactive: Growth/Decay Calculator",
+			"content": "# Geometric Sequences\n\nA geometric sequence is a sequence where each term is found by multiplying the previous term by a constant ratio.\n\n## Key Concepts\n\n- **Definition**: A sequence is geometric if $\\frac{T_n}{T_{n-1}} = r$ (constant common ratio).\n- **General Term ($T_n$)**: $T_n = ar^{n-1}$\n  - $a$: first term\n  - $r$: common ratio\n- **Geometric Series ($S_n$)**: \n  - $S_n = \\frac{a(r^n - 1)}{r-1}$ for $r \\neq 1$\n- **Sum to Infinity ($S_{\\infty}$)**: Converges only if $-1 < r < 1$.\n  - $S_{\\infty} = \\frac{a}{1-r}$\n\n## Practice Questions\n\n1. Find the 7th term of $2; 6; 18; ...$\n2. Calculate $S_{\\infty}$ for $10 + 5 + 2.5 + ...$",
 			"duration": 40,
 			"difficulty": "intermediate",
 			"prerequisites": ["arithmetic sequences", "exponents"],
@@ -124,6 +124,21 @@
 				"Identify geometric sequences and find common ratio",
 				"Find the nth term of a geometric sequence",
 				"Calculate sum of finite and infinite geometric series"
+			]
+		},
+		{
+			"id": "math-sequences-quadratic",
+			"subject": "mathematics",
+			"topic": "sequences",
+			"title": "Quadratic Sequences",
+			"content": "# Quadratic Sequences\n\nA quadratic sequence is a sequence where the **second difference** between terms is constant.\n\n## Key Concepts\n\n- **General Term ($T_n$)**: $T_n = an^2 + bn + c$\n- **Solving for constants**:\n  1. $2a = \\text{second difference}$\n  2. $3a + b = T_2 - T_1$\n  3. $a + b + c = T_1$\n\n## Example\nSequence: $3; 9; 17; 27; ...$\n- First differences: $6; 8; 10$\n- Second difference: $2$\n- $2a = 2 \\implies a = 1$\n- $3(1) + b = 6 \\implies b = 3$\n- $1 + 3 + c = 3 \\implies c = -1$\n- $T_n = n^2 + 3n - 1$",
+			"duration": 45,
+			"difficulty": "intermediate",
+			"prerequisites": ["arithmetic sequences", "simultaneous equations"],
+			"learning_objectives": [
+				"Identify quadratic sequences by finding constant second differences",
+				"Determine the general term of a quadratic sequence",
+				"Predict future terms in a quadratic sequence"
 			]
 		}
 	],

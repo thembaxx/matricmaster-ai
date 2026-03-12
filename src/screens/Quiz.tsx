@@ -96,6 +96,7 @@ export default function Quiz() {
 								selectedOption={selectedOption}
 								isChecked={isChecked}
 								onSelect={setSelectedOption}
+								diagram="Parabola function graph"
 							/>
 						</div>
 					</ScrollArea>

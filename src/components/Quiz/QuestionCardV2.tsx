@@ -9,6 +9,7 @@ import {
 import { HugeiconsIcon } from '@hugeicons/react';
 import { m } from 'framer-motion';
 import { cn } from '@/lib/utils';
+import { InteractiveDiagram } from './InteractiveDiagram';
 
 export interface QuestionOption {
 	id: string;
@@ -22,6 +23,7 @@ interface QuestionCardProps {
 	selectedOption: string | null;
 	isChecked: boolean;
 	onSelect: (id: string) => void;
+	diagram?: string;
 }
 
 export function QuestionCard({
@@ -30,6 +32,7 @@ export function QuestionCard({
 	selectedOption,
 	isChecked,
 	onSelect,
+	diagram,
 }: QuestionCardProps) {
 	return (
 		<m.div
@@ -53,22 +56,9 @@ export function QuestionCard({
 				</div>
 
 				{/* Visual Area */}
-				<div className="w-full h-48 bg-secondary rounded-[2rem] mb-10 relative overflow-hidden group">
-					<div className="absolute inset-0 flex items-center justify-center opacity-10">
-						<HugeiconsIcon icon={CalculatorIcon} className="w-24 h-24" />
-					</div>
-					<svg viewBox="0 0 300 150" className="w-full h-full relative z-10 p-4">
-						<title>Math Visualization</title>
-						<path
-							d="M 40 120 Q 100 20, 150 75 T 260 30"
-							fill="none"
-							stroke="var(--tiimo-lavender)"
-							strokeWidth="4"
-							strokeLinecap="round"
-						/>
-						<circle cx="110" cy="45" r="6" fill="var(--tiimo-green)" className="animate-pulse" />
-					</svg>
-				</div>
+				{diagram && (
+					<InteractiveDiagram type={diagram} className="mb-10" />
+				)}
 
 				<div className="grid grid-cols-1 gap-3">
 					{options.map((option, index) => {
