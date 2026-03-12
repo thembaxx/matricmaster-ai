@@ -9,6 +9,8 @@ import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
 
+import studyPathsData from '@/constants/study-paths.json';
+
 interface JourneyStep {
 	id: string;
 	emoji: string;
@@ -17,77 +19,51 @@ interface JourneyStep {
 	duration: string;
 	status: 'completed' | 'current' | 'locked';
 	progress?: number;
+	type: 'lesson' | 'practice' | 'quiz';
 }
 
 interface JourneyModule {
 	id: string;
 	title: string;
-	emoji: string;
+	description: string;
 	progress: number;
 	steps: JourneyStep[];
 }
 
-const DEMO_JOURNEY: JourneyModule = {
-	id: '1',
-	title: 'Calculus fundamentals',
-	emoji: '🧮',
-	progress: 45,
-	steps: [
-		{
-			id: '1',
-			emoji: '📖',
-			title: 'Review notes',
-			description: 'Read through your calculus notes',
-			duration: '15 min',
-			status: 'completed',
-		},
-		{
-			id: '2',
-			emoji: '🎬',
-			title: 'Watch video',
-			description: 'Understand the core concepts',
-			duration: '20 min',
-			status: 'completed',
-		},
-		{
-			id: '3',
-			emoji: '✍️',
-			title: 'Practice problems',
-			description: 'Apply what you learned',
-			duration: '30 min',
-			status: 'current',
-			progress: 40,
-		},
-		{
-			id: '4',
-			emoji: '✅',
-			title: 'Take quiz',
-			description: 'Test your understanding',
-			duration: '15 min',
-			status: 'locked',
-		},
-		{
-			id: '5',
-			emoji: '🎯',
-			title: 'Mock exam',
-			description: 'Full practice test',
-			duration: '45 min',
-			status: 'locked',
-		},
-	],
-};
+interface StudyPathScreenProps {
+	pathId?: string;
+}
 
-export default function StudyPath() {
+export default function StudyPath({ pathId = 'math-p1-mastery' }: StudyPathScreenProps) {
 	const router = useRouter();
-	const [journey] = useState(DEMO_JOURNEY);
+	
+	// Load data from JSON
+	const pathData = studyPathsData.studyPaths.find(p => p.id === pathId) || studyPathsData.studyPaths[0];
+	
+	// Map JSON structure to UI structure
+	// For this UI, we'll flatten the modules into a single list of steps or show one module at a time
+	// Let's show the first incomplete module or the first one if all complete
+	const [activeModuleIndex, setActiveModuleIndex] = useState(0);
 	const [expandedStep, setExpandedStep] = useState<string | null>(null);
+
+	const module = pathData.modules[activeModuleIndex];
+	
+	const steps: JourneyStep[] = module.steps.map((step, idx) => ({
+		id: `${module.id}-${idx}`,
+		emoji: step.type === 'lesson' ? '📖' : step.type === 'quiz' ? '✅' : '✍️',
+		title: step.title,
+		description: step.type === 'lesson' ? 'Learn core concepts' : 'Apply your knowledge',
+		duration: `${step.duration} min`,
+		status: idx === 0 ? 'current' : 'locked', // Mock status logic
+		type: step.type as 'lesson' | 'practice' | 'quiz',
+	}));
 
 	const toggleStep = (stepId: string) => {
 		setExpandedStep(expandedStep === stepId ? null : stepId);
 	};
 
-	const completedSteps = journey.steps.filter((s) => s.status === 'completed').length;
-	const totalSteps = journey.steps.length;
+	const completedSteps = steps.filter((s) => s.status === 'completed').length;
+	const totalSteps = steps.length;
 	const progressPercent = (completedSteps / totalSteps) * 100;
 
 	return (
@@ -98,17 +74,32 @@ export default function StudyPath() {
 				{/* Header */}
 				<m.header initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
 					<div className="flex items-center gap-3 mb-4">
-						<span className="text-4xl">{journey.emoji}</span>
+						<span className="text-4xl">{pathData.icon}</span>
 						<div>
-							<h1 className="text-2xl font-display font-bold">{journey.title}</h1>
-							<p className="text-sm text-muted-foreground">Your learning journey</p>
+							<h1 className="text-2xl font-display font-bold">{pathData.title}</h1>
+							<p className="text-sm text-muted-foreground">{module.title}</p>
 						</div>
+					</div>
+
+					{/* Module Selector */}
+					<div className="flex gap-2 mb-6 overflow-x-auto no-scrollbar pb-2">
+						{pathData.modules.map((m, idx) => (
+							<Button
+								key={m.id}
+								variant={activeModuleIndex === idx ? "default" : "outline"}
+								size="sm"
+								className="rounded-full whitespace-nowrap"
+								onClick={() => setActiveModuleIndex(idx)}
+							>
+								Module {idx + 1}
+							</Button>
+						))}
 					</div>
 
 					{/* Progress */}
 					<div className="bg-card rounded-2xl p-4 border border-border">
 						<div className="flex items-center justify-between mb-2">
-							<span className="text-sm font-medium">Progress</span>
+							<span className="text-sm font-medium">Module Progress</span>
 							<span className="text-sm font-bold text-primary">{Math.round(progressPercent)}%</span>
 						</div>
 						<div className="h-3 bg-muted rounded-full overflow-hidden">
@@ -125,15 +116,16 @@ export default function StudyPath() {
 					</div>
 				</m.header>
 
-				<ScrollArea className="h-[calc(100vh-320px)]">
+				<ScrollArea className="h-[calc(100vh-380px)]">
 					<div className="space-y-4">
-						{journey.steps.map((step, index) => (
+						{steps.map((step, index) => (
 							<JourneyStepCard
 								key={step.id}
 								step={step}
 								index={index}
 								isExpanded={expandedStep === step.id}
 								onToggle={() => toggleStep(step.id)}
+								onNavigate={(path) => router.push(path)}
 							/>
 						))}
 					</div>
@@ -151,7 +143,7 @@ export default function StudyPath() {
 						className="w-full rounded-2xl h-14 text-lg"
 						onClick={() => router.push('/focus')}
 					>
-						{journey.steps.find((s) => s.status === 'current')
+						{steps.find((s) => s.status === 'current')
 							? 'Continue learning →'
 							: 'Start journey →'}
 					</Button>
@@ -166,11 +158,13 @@ function JourneyStepCard({
 	index,
 	isExpanded,
 	onToggle,
+	onNavigate,
 }: {
 	step: JourneyStep;
 	index: number;
 	isExpanded: boolean;
 	onToggle: () => void;
+	onNavigate: (path: string) => void;
 }) {
 	const statusStyles = {
 		completed: 'bg-success-soft border-success/30',
@@ -182,6 +176,15 @@ function JourneyStepCard({
 		completed: 'bg-success',
 		current: 'bg-primary',
 		locked: 'bg-muted-foreground',
+	};
+
+	const handleAction = (e: React.MouseEvent) => {
+		e.stopPropagation();
+		if (step.title.toLowerCase().includes('quiz') || step.title.toLowerCase().includes('exam')) {
+			onNavigate('/quiz');
+		} else {
+			onNavigate('/focus');
+		}
 	};
 
 	return (
@@ -283,7 +286,7 @@ function JourneyStepCard({
 						size="sm"
 						className="w-full rounded-xl"
 						variant={step.status === 'completed' ? 'outline' : 'default'}
-						onClick={() => {}}
+						onClick={handleAction}
 					>
 						{step.status === 'completed'
 							? 'Review again'

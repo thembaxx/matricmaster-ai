@@ -36,11 +36,25 @@ const SUBJECTS = [
 		bgColor: 'bg-subject-accounting-soft',
 	},
 	{
-		id: 'english',
-		name: 'English',
+		id: 'geography',
+		name: 'Geography',
 		icon: BookOpen01Icon,
-		color: 'text-subject-english',
-		bgColor: 'bg-subject-english-soft',
+		color: 'text-subject-geography',
+		bgColor: 'bg-subject-geography-soft',
+	},
+	{
+		id: 'business',
+		name: 'Business',
+		icon: CalculatorIcon,
+		color: 'text-subject-history',
+		bgColor: 'bg-subject-history-soft',
+	},
+	{
+		id: 'history',
+		name: 'History',
+		icon: BookOpen01Icon,
+		color: 'text-subject-history',
+		bgColor: 'bg-subject-history-soft',
 	},
 ];
 

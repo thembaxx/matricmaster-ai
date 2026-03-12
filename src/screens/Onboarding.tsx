@@ -34,10 +34,6 @@ interface OnboardingStep {
 	image: string;
 	color: string;
 	icon: IconSvg;
-	cta?: {
-		label: string;
-		action: () => void;
-	};
 }
 
 const STEPS: OnboardingStep[] = [
@@ -58,10 +54,6 @@ const STEPS: OnboardingStep[] = [
 		image: '/onboarding/focus.png',
 		color: 'from-green-500 to-emerald-600',
 		icon: Target01Icon,
-		cta: {
-			label: 'Choose Subjects',
-			action: () => {},
-		},
 	},
 	{
 		id: 2,
