@@ -87,7 +87,7 @@ export default function Landing() {
 				<main
 					ref={containerRef}
 					className="pb-4 px-6 sm:px-6 max-w-7xl mx-auto w-full lg:px-0 lg:pb-24"
-				>				
+				>
 					{/* Hero Section */}
 					<section className="pt-8 pb-20 lg:pt-16 lg:pb-32 flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
 						<div className="flex-1 flex flex-col items-center lg:items-start text-center lg:text-left space-y-8">
@@ -97,9 +97,9 @@ export default function Landing() {
 								transition={{ type: 'spring', stiffness: 300, damping: 28 }}
 								className="space-y-8"
 							>
-								<Badge className="tiimo-glass rounded-full px-4 py-1.5 text-xs font-medium bg-primary-cyan! text-white/90!">
+								<Badge className="tiimo-glass rounded-full px-4 py-1.5 text-[10px] font-medium bg-primary-orange! text-white/90!">
 									<HugeiconsIcon icon={SparklesIcon} className="w-3 h-3 mr-1.5" />
-									The AI-powered exam prep platform
+									The exam prep platform
 								</Badge>
 
 								<m.h1
@@ -117,7 +117,7 @@ export default function Landing() {
 									initial={{ opacity: 0, y: 20 }}
 									animate={{ opacity: 1, y: 0 }}
 									transition={{ delay: 0.2 }}
-									className="text-lg md:text-xl text-muted-foreground max-w-lg mx-auto lg:mx-0 leading-relaxed"
+									className="text-lg md:text-xl text-muted-foreground max-w-lg text-pretty mx-auto lg:mx-0 leading-relaxed"
 								>
 									Interactive past papers, AI-powered explanations, and smart study tools designed
 									for South African Grade 12 students.

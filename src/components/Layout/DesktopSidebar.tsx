@@ -4,7 +4,6 @@ import {
 	AiBrain01Icon,
 	AlertCircleIcon,
 	ArrowDown01Icon,
-	ArrowRight01Icon,
 	AtomIcon,
 	BookmarkIcon,
 	BookOpen01Icon,
@@ -13,13 +12,11 @@ import {
 	ChampionIcon,
 	Chat01Icon,
 	File01Icon,
-	WorkoutSportIcon as GamePlayer01Icon,
 	GlobeIcon,
 	Home01Icon,
 	Key01Icon,
 	Layers01Icon,
 	LayoutLeftIcon,
-	Logout01Icon,
 	MapsIcon,
 	Medal01Icon,
 	MoonIcon,
@@ -31,25 +28,23 @@ import {
 	SparklesIcon,
 	Sun01Icon,
 	Task01Icon,
-	UserIcon as User,
 	UserGroupIcon,
-	UserAdd01Icon as UserPlus,
+	User as UserIcon,
+	WorkoutSportIcon,
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
+import { m } from 'framer-motion';
 import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
 import { appConfig } from '@/app.config';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { Input } from '@/components/ui/input';
 import {
 	Sidebar,
 	SidebarContent,
 	SidebarFooter,
 	SidebarGroup,
-	SidebarGroupContent,
-	SidebarGroupLabel,
 	SidebarHeader,
 	SidebarMenu,
 	SidebarMenuButton,
@@ -58,6 +53,7 @@ import {
 	useSidebar,
 } from '@/components/ui/sidebar';
 import { authClient } from '@/lib/auth-client';
+import { cn } from '@/lib/utils';
 import { ProfileMenu } from './profile-menu';
 
 type AuthUser = typeof authClient.$Infer.Session.user;
@@ -77,58 +73,57 @@ type MenuSection = {
 
 export const sideMenuSections: MenuSection[] = [
 	{
-		title: 'Learning & Study',
+		title: 'Learning',
 		items: [
 			{ href: '/dashboard', label: 'Dashboard', icon: Home01Icon },
-			{ href: '/search', label: 'Search', icon: Search01Icon },
 			{ href: '/lessons', label: 'Lessons', icon: BookOpen01Icon },
 			{ href: '/physics', label: 'Physics', icon: AtomIcon },
+			{ href: '/search', label: 'Search', icon: Search01Icon },
 			{ href: '/study-companion', label: 'Study Companion', icon: SparklesIcon },
 			{ href: '/study-path', label: 'Study Path', icon: MapsIcon },
 			{ href: '/study-plan', label: 'Study Plan', icon: Calendar01Icon },
 		],
 	},
 	{
-		title: 'Practice & Quizzes',
+		title: 'Practice',
 		items: [
-			{ href: '/past-papers', label: 'Past Papers', icon: File01Icon },
-			{ href: '/interactive-quiz', label: 'Interactive Quiz', icon: GamePlayer01Icon },
-			{ href: '/quiz', label: 'Quiz', icon: QuestionIcon },
+			{ href: '/flashcards', label: 'Flashcards', icon: Layers01Icon },
+			{ href: '/interactive-quiz', label: 'Interactive Quiz', icon: WorkoutSportIcon },
 			{ href: '/math-quiz', label: 'Math Quiz', icon: CalculatorIcon },
+			{ href: '/past-papers', label: 'Past Papers', icon: File01Icon },
 			{ href: '/physics-quiz', label: 'Physics Quiz', icon: AtomIcon },
 			{ href: '/practice-quiz', label: 'Practice Quiz', icon: Task01Icon },
-			{ href: '/flashcards', label: 'Flashcards', icon: Layers01Icon },
-			{ href: '/review', label: 'Review Dashboard', icon: AiBrain01Icon },
+			{ href: '/quiz', label: 'Quiz', icon: QuestionIcon },
+			{ href: '/review', label: 'Review', icon: AiBrain01Icon },
 		],
 	},
 	{
-		title: 'Social & Community',
+		title: 'Social',
 		items: [
+			{ href: '/achievements', label: 'Achievements', icon: Medal01Icon },
 			{ href: '/channels', label: 'Study Channels', icon: UserGroupIcon },
-			{ href: '/study-buddies', label: 'Study Buddies', icon: UserPlus },
 			{ href: '/comments', label: 'Comments', icon: Chat01Icon },
 			{ href: '/leaderboard', label: 'Leaderboard', icon: ChampionIcon },
-			{ href: '/achievements', label: 'Achievements', icon: Medal01Icon },
+			{ href: '/study-buddies', label: 'Study Buddies', icon: UserGroupIcon },
 		],
 	},
 	{
-		title: 'Account & Settings',
+		title: 'Account',
 		items: [
-			{ href: '/profile', label: 'My Profile', icon: User },
+			{ href: '/2fa', label: 'Two-Factor Auth', icon: Key01Icon },
 			{ href: '/bookmarks', label: 'Bookmarks', icon: BookmarkIcon },
-			{ href: '/notifications', label: 'Notifications', icon: Notification03Icon },
 			{ href: '/calendar', label: 'Calendar', icon: Calendar01Icon },
 			{ href: '/language', label: 'Language', icon: GlobeIcon },
-			{ href: '/2fa', label: 'Two-Factor Auth', icon: Key01Icon },
+			{ href: '/notifications', label: 'Notifications', icon: Notification03Icon },
+			{ href: '/profile', label: 'Profile', icon: UserIcon },
 			{ href: '/settings', label: 'Settings', icon: Settings01Icon },
-			{ href: '/onboarding', label: 'Test Onboarding', icon: SparklesIcon },
 		],
 	},
 	{
 		title: 'Admin',
 		items: [
 			{ href: '/admin', label: 'Admin Panel', icon: Shield01Icon },
-			{ href: '/admin/moderation', label: 'Admin Moderation', icon: AlertCircleIcon },
+			{ href: '/admin/moderation', label: 'Moderation', icon: AlertCircleIcon },
 			{ href: '/cms', label: 'Content Management', icon: LayoutLeftIcon },
 		],
 	},
@@ -146,7 +141,7 @@ type AppSidebarProps = {
 export function AppSidebar({ user, pathname, theme, onToggleTheme }: AppSidebarProps) {
 	const { setOpenMobile } = useSidebar();
 	const [searchQuery, setSearchQuery] = useState('');
-	const [openSection, setOpenSection] = useState<string | null>(null);
+	const [openSection, setOpenSection] = useState<string | null>('Learning');
 
 	const filteredSections = useMemo(() => {
 		if (!searchQuery.trim()) return sideMenuSections;
@@ -179,80 +174,131 @@ export function AppSidebar({ user, pathname, theme, onToggleTheme }: AppSidebarP
 
 	return (
 		<Sidebar collapsible="offcanvas" variant="sidebar">
-			<SidebarHeader className="border-b border-sidebar-border bg-sidebar/50 backdrop-blur-sm">
-				<Link href="/dashboard" className="block px-2 py-3">
-					<h1 className="text-lg font-black text-sidebar-foreground uppercase tracking-tighter">
-						{appConfig.name}
-					</h1>
-					<p className="text-sidebar-foreground/60 font-bold text-[10px] uppercase tracking-wide">
-						Level up your learning
-					</p>
+			<SidebarHeader className="border-b-0 px-4 pt-4 pb-2">
+				<Link href="/dashboard" className="block px-2 py-2">
+					<m.div
+						initial={{ opacity: 0, y: -10 }}
+						animate={{ opacity: 1, y: 0 }}
+						className="flex items-center gap-3"
+					>
+						<div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-sidebar-primary to-purple-400 flex items-center justify-center shadow-lg shadow-sidebar-primary/20">
+							<HugeiconsIcon icon={BookOpen01Icon} className="w-5 h-5 text-white" />
+						</div>
+						<div>
+							<h1 className="text-lg font-black text-sidebar-foreground uppercase tracking-tight leading-none">
+								{appConfig.name}
+							</h1>
+							<p className="text-[9px] font-bold text-sidebar-foreground/50 uppercase tracking-widest mt-0.5">
+								AI Exam Prep
+							</p>
+						</div>
+					</m.div>
 				</Link>
-				<div className="relative flex items-center px-2 pb-3">
+				<div className="relative flex items-center px-2 mt-2">
 					<HugeiconsIcon
 						icon={Search01Icon}
-						className="absolute left-5 w-4 h-4 text-sidebar-foreground/40"
+						className="absolute left-5 w-4 h-4 text-sidebar-foreground/30"
 					/>
 					<Input
-						placeholder="Search menu..."
+						placeholder="Search..."
 						value={searchQuery}
 						onChange={(e) => setSearchQuery(e.target.value)}
-						className="pl-9 h-9 bg-sidebar-accent/50 placeholder:text-xs border-sidebar-border focus-visible:ring-sidebar-ring"
+						className="pl-9 h-10 bg-sidebar-accent/40 placeholder:text-xs placeholder:text-sidebar-foreground/40 border-sidebar-border/50 focus-visible:ring-sidebar-ring rounded-xl text-sm"
 					/>
 				</div>
 			</SidebarHeader>
 
-			<SidebarContent className="px-2">
+			<SidebarContent className="px-3">
 				{filteredSections.length === 0 ? (
-					<div className="flex flex-col items-center justify-center py-8 text-sidebar-foreground/50">
+					<div className="flex flex-col items-center justify-center py-8 text-sidebar-foreground/40">
 						<HugeiconsIcon icon={Search01Icon} className="w-8 h-8 mb-2" />
 						<p className="text-sm">No results found</p>
 					</div>
 				) : (
 					filteredSections.map((section) => (
-						<SidebarGroup key={section.title}>
-							<Collapsible
-								open={openSection === section.title}
-								onOpenChange={() => handleSectionToggle(section.title)}
+						<SidebarGroup key={section.title} className="py-1">
+							<m.button
+								type="button"
+								onClick={() => handleSectionToggle(section.title)}
+								className="w-full flex items-center justify-between px-3 py-2 rounded-lg hover:bg-sidebar-accent/50 transition-colors group"
 							>
-								<CollapsibleTrigger asChild>
-									<SidebarGroupLabel className="cursor-pointer hover:bg-sidebar-accent rounded-md select-none flex items-center justify-between pr-2">
-										<span>{section.title}</span>
-										{openSection === section.title ? (
-											<HugeiconsIcon icon={ArrowDown01Icon} className="w-4 h-4" />
-										) : (
-											<HugeiconsIcon icon={ArrowRight01Icon} className="w-4 h-4" />
-										)}
-									</SidebarGroupLabel>
-								</CollapsibleTrigger>
-								<CollapsibleContent>
-									<SidebarGroupContent>
-										<SidebarMenu>
-											{section.items.map((item) => {
-												const isActive = pathname === item.href;
-												return (
-													<SidebarMenuItem key={item.href}>
-														<SidebarMenuButton asChild isActive={isActive} tooltip={item.label}>
-															<Link href={item.href} onClick={handleLinkClick}>
-																<HugeiconsIcon icon={item.icon} className="w-4 h-4" />
-																<span>{item.label}</span>
-															</Link>
-														</SidebarMenuButton>
-													</SidebarMenuItem>
-												);
-											})}
-										</SidebarMenu>
-									</SidebarGroupContent>
-								</CollapsibleContent>
-							</Collapsible>
+								<span className="text-[10px] font-black uppercase tracking-widest text-sidebar-foreground/50">
+									{section.title}
+								</span>
+								<m.div
+									animate={{ rotate: openSection === section.title ? 180 : 0 }}
+									transition={{ duration: 0.2 }}
+								>
+									<HugeiconsIcon
+										icon={ArrowDown01Icon}
+										className="w-3 h-3 text-sidebar-foreground/30 group-hover:text-sidebar-foreground/70"
+									/>
+								</m.div>
+							</m.button>
+							<m.div
+								initial={false}
+								animate={{
+									height: openSection === section.title ? 'auto' : 0,
+									opacity: openSection === section.title ? 1 : 0,
+								}}
+								transition={{ duration: 0.2 }}
+								className="overflow-hidden"
+							>
+								<SidebarMenu className="pt-1">
+									{section.items.map((item, idx) => {
+										const isActive = pathname === item.href;
+										return (
+											<SidebarMenuItem key={item.href}>
+												<SidebarMenuButton
+													asChild
+													isActive={isActive}
+													className={cn(
+														'mx-1 rounded-xl h-11 transition-all duration-200',
+														isActive
+															? 'bg-sidebar-primary/10 text-sidebar-primary shadow-sm'
+															: 'text-sidebar-foreground/60 hover:text-sidebar-foreground hover:bg-sidebar-accent/50'
+													)}
+												>
+													<Link
+														href={item.href}
+														onClick={handleLinkClick}
+														className="flex items-center gap-3"
+													>
+														<m.div
+															initial={{ opacity: 0, x: -10 }}
+															animate={{ opacity: 1, x: 0 }}
+															transition={{ delay: idx * 0.02 }}
+														>
+															<HugeiconsIcon
+																icon={item.icon}
+																className={cn(
+																	'w-[18px] h-[18px]',
+																	isActive ? 'text-sidebar-primary' : 'text-sidebar-foreground/50'
+																)}
+															/>
+														</m.div>
+														<span className="font-medium text-sm">{item.label}</span>
+														{isActive && (
+															<m.div
+																layoutId="sidebar-active"
+																className="ml-auto w-1.5 h-1.5 rounded-full bg-sidebar-primary"
+															/>
+														)}
+													</Link>
+												</SidebarMenuButton>
+											</SidebarMenuItem>
+										);
+									})}
+								</SidebarMenu>
+							</m.div>
 						</SidebarGroup>
 					))
 				)}
 			</SidebarContent>
 
-			<SidebarFooter className="border-t border-sidebar-border p-3">
+			<SidebarFooter className="border-t border-sidebar-border/50 p-3 space-y-2">
 				<ThemeToggle theme={theme} onToggle={onToggleTheme} />
-				<SidebarSeparator className="my-2" />
+				<SidebarSeparator className="bg-sidebar-border/50" />
 				<UserProfileSection user={user} />
 			</SidebarFooter>
 		</Sidebar>
@@ -266,22 +312,24 @@ type ThemeToggleProps = {
 
 function ThemeToggle({ theme, onToggle }: ThemeToggleProps) {
 	return (
-		<div className="flex items-center justify-between p-2 bg-sidebar-accent/50 rounded-md pl-6">
-			<span className="text-xs font-medium text-sidebar-foreground/70">Theme</span>
-			<Button
-				variant="ghost"
-				size="sm"
-				className="h-7 w-7 p-0 hover:bg-sidebar-accent"
-				onClick={onToggle}
-				aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+		<button
+			type="button"
+			onClick={onToggle}
+			className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl bg-sidebar-accent/40 hover:bg-sidebar-accent transition-colors group"
+		>
+			<span className="text-xs font-medium text-sidebar-foreground/60">Appearance</span>
+			<m.div
+				whileHover={{ scale: 1.1 }}
+				whileTap={{ scale: 0.95 }}
+				className="w-7 h-7 rounded-lg bg-sidebar flex items-center justify-center shadow-sm"
 			>
 				{theme === 'dark' ? (
-					<HugeiconsIcon icon={Sun01Icon} className="w-4 h-4 text-yellow-500" />
+					<HugeiconsIcon icon={Sun01Icon} className="w-3.5 h-3.5 text-amber-500" />
 				) : (
-					<HugeiconsIcon icon={MoonIcon} className="w-4 h-4 text-sidebar-foreground/70" />
+					<HugeiconsIcon icon={MoonIcon} className="w-3.5 h-3.5 text-sidebar-foreground/60" />
 				)}
-			</Button>
-		</div>
+			</m.div>
+		</button>
 	);
 }
 
@@ -294,17 +342,17 @@ function UserProfileSection({ user }: UserProfileSectionProps) {
 		<ProfileMenu user={user}>
 			<button
 				type="button"
-				className="flex items-center gap-3 w-full p-2 rounded-md hover:bg-sidebar-accent transition-colors"
+				className="w-full flex items-center gap-3 p-2 rounded-xl hover:bg-sidebar-accent transition-colors text-left"
 			>
-				<Avatar className="h-9 w-9 border-2 border-sidebar-border">
+				<Avatar className="h-10 w-10 border-2 border-sidebar-primary/30 shadow-sm">
 					<AvatarImage src={user.image || undefined} alt={user.name} />
-					<AvatarFallback className="bg-sidebar-primary text-sidebar-primary-foreground text-sm font-bold">
+					<AvatarFallback className="bg-sidebar-primary text-sidebar-primary-foreground font-bold text-sm">
 						{user.name?.charAt(0)?.toUpperCase() || 'U'}
 					</AvatarFallback>
 				</Avatar>
-				<div className="flex-1 text-left overflow-hidden min-w-0">
-					<p className="text-sm font-medium text-sidebar-foreground truncate">{user.name}</p>
-					<p className="text-xs text-sidebar-foreground/50 truncate">{user.email}</p>
+				<div className="flex-1 min-w-0">
+					<p className="text-sm font-semibold text-sidebar-foreground truncate">{user.name}</p>
+					<p className="text-[10px] text-sidebar-foreground/40 truncate">{user.email}</p>
 				</div>
 			</button>
 		</ProfileMenu>
@@ -320,10 +368,10 @@ export function LogoutButton() {
 	return (
 		<Button
 			variant="ghost"
-			className="w-full justify-start gap-3 text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent"
+			className="w-full justify-start gap-3 text-sidebar-foreground/60 hover:text-sidebar-foreground hover:bg-sidebar-accent"
 			onClick={handleLogout}
 		>
-			<HugeiconsIcon icon={Logout01Icon} className="w-4 h-4" />
+			<HugeiconsIcon icon={Settings01Icon} className="w-4 h-4" />
 			<span>Logout</span>
 		</Button>
 	);

@@ -6,7 +6,6 @@ import { toast } from 'sonner';
 import { ClientOnly } from '@/components/ClientOnly';
 import { DailyLoginBonus } from '@/components/Gamification/DailyLoginBonus';
 import { MobileLayoutFixes } from '@/components/Layout/MobileLayoutFixes';
-// import { MobileViewTest } from '@/components/Layout/MobileViewTest';
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
 import { useTheme } from '@/hooks/use-theme';
 import { authClient } from '@/lib/auth-client';
@@ -14,7 +13,7 @@ import { useNotificationStore } from '@/stores/useNotificationStore';
 import PageTransition from '../Transition/PageTransition';
 import { BottomNavigation } from './BottomNavigation';
 import { AppSidebar } from './DesktopSidebar';
-import { MobileMenuSheet } from './MobileMenuSheet';
+import { MobileNavDrawer } from './MobileNavDrawer';
 import { ResponsiveHeader } from './ResponsiveHeader';
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
@@ -117,7 +116,31 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 								}}
 								onSignIn={() => router.push('/sign-in')}
 								onSignUp={() => router.push('/sign-up')}
-								mobileMenuTrigger={<MobileMenuSheet />}
+								mobileMenuTrigger={
+									<MobileNavDrawer user={user}>
+										<button
+											type="button"
+											className="w-11 h-11 rounded-2xl bg-card/80 backdrop-blur-md border border-border/50 shadow-tiimo hover:bg-card active:scale-95 transition-all flex items-center justify-center"
+											aria-label="Open navigation menu"
+										>
+											<svg
+												xmlns="http://www.w3.org/2000/svg"
+												width="20"
+												height="20"
+												viewBox="0 0 24 24"
+												fill="none"
+												stroke="currentColor"
+												strokeWidth="2"
+												strokeLinecap="round"
+												strokeLinejoin="round"
+											>
+												<line x1="4" x2="20" y1="12" y2="12" />
+												<line x1="4" x2="20" y1="6" y2="6" />
+												<line x1="4" x2="20" y1="18" y2="18" />
+											</svg>
+										</button>
+									</MobileNavDrawer>
+								}
 							/>
 						)}
 						<main id="main-content" className={'flex-1 relative flex flex-col pt-16 lg:pt-8'}>
