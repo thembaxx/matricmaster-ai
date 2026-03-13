@@ -89,7 +89,7 @@ export default function Landing() {
 					className="pb-4 px-6 sm:px-6 max-w-7xl mx-auto w-full lg:px-0 lg:pb-24"
 				>
 					{/* Hero Section */}
-					<section className="pt-8 pb-20 lg:pt-16 lg:pb-32 flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
+					<section className="pt-8 pb-20 lg:pt-8 lg:pb-32 flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
 						<div className="flex-1 flex flex-col items-center lg:items-start text-center lg:text-left space-y-8">
 							<m.div
 								initial={{ opacity: 0, scale: 0.95 }}

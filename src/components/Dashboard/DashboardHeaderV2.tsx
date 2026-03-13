@@ -37,10 +37,10 @@ export function DashboardHeader({
 						Today's Schedule
 					</span>
 				</div>
-				<h1 className="text-3xl sm:text-4xl font-black text-foreground tracking-tighter">
+				<h1 className="text-xl sm:text-2xl font-black text-foreground tracking-normal">
 					{today.split(',')[0]}
 				</h1>
-				<p className="text-base font-bold text-tiimo-gray-muted mt-1">
+				<p className="text-[13px] font-semibold text-tiimo-gray-muted mt-1">
 					{completedCount} of {totalCount} goals crushed
 				</p>
 			</div>
@@ -61,13 +61,13 @@ export function DashboardHeader({
 					initial={{ scale: 0.9, opacity: 0 }}
 					animate={{ scale: 1, opacity: 1 }}
 					transition={{ delay: 0.1 }}
-					className="bg-tiimo-lavender/10 px-6 py-4 rounded-[2rem] border border-tiimo-lavender/20 flex items-center gap-4"
+					className="bg-tiimo-lavender/10 pl-2.5 pr-6 py-1.5 rounded-[2rem] border border-tiimo-lavender/20 flex items-center gap-4"
 				>
 					<div
-						className="w-12 h-12 rounded-full flex items-center justify-center text-white shadow-tiimo"
+						className="w-10 h-10 rounded-full flex items-center justify-center text-white shadow-tiimo"
 						style={{ backgroundColor: levelInfo.color }}
 					>
-						<HugeiconsIcon icon={Mortarboard01Icon} className="w-7 h-7" />
+						<HugeiconsIcon icon={Mortarboard01Icon} className="w-4 h-4" />
 					</div>
 					<div>
 						<p
@@ -76,7 +76,7 @@ export function DashboardHeader({
 						>
 							Level {levelInfo.level}
 						</p>
-						<p className="text-sm font-black text-foreground">{levelInfo.title}</p>
+						<p className="text-[10px] font-bold text-foreground">{levelInfo.title}</p>
 					</div>
 				</m.div>
 			</div>

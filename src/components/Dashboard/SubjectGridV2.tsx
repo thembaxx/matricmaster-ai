@@ -38,6 +38,15 @@ interface EnrolledSubject {
 	description: string | null;
 }
 
+const MOCK_SUBJECTS: EnrolledSubject[] = [
+	{ id: 1, name: 'Mathematics', description: 'Core mathematics curriculum' },
+	{ id: 2, name: 'Physics', description: 'Physical sciences and mechanics' },
+	{ id: 3, name: 'English', description: 'Language and literature' },
+	{ id: 4, name: 'Life Sciences', description: 'Biology and biotechnology' },
+	{ id: 5, name: 'Geography', description: 'Earth sciences and spatial awareness' },
+	{ id: 6, name: 'History', description: 'South African and world history' },
+];
+
 export function SubjectGrid() {
 	const router = useRouter();
 	const [subjects, setSubjects] = useState<EnrolledSubject[]>([]);
@@ -46,7 +55,7 @@ export function SubjectGrid() {
 	useEffect(() => {
 		async function load() {
 			const data = await getEnrolledSubjectsAction();
-			setSubjects(data);
+			setSubjects(data.length > 0 ? data : MOCK_SUBJECTS);
 			setIsLoading(false);
 		}
 		load();
@@ -86,9 +95,7 @@ export function SubjectGrid() {
 						>
 							<HugeiconsIcon icon={Icon} className="w-8 h-8 text-white" />
 						</div>
-						<span className="font-black text-xs uppercase tracking-widest text-center">
-							{subject.name}
-						</span>
+						<span className="font-medium text-xs text-center">{subject.name}</span>
 					</m.button>
 				);
 			})}
@@ -101,7 +108,7 @@ export function SubjectGrid() {
 				<div className="w-12 h-12 rounded-full border-2 border-dashed border-tiimo-gray-muted/50 flex items-center justify-center">
 					<span className="text-2xl font-light">+</span>
 				</div>
-				<span className="font-black text-[10px] uppercase tracking-[0.2em]">Add More</span>
+				<span className="font-medium text-[10px]">Add more</span>
 			</button>
 		</div>
 	);

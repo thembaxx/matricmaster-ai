@@ -30,7 +30,7 @@ export function TaskSection({ title, priority, expanded, onToggle, children }: T
 				<div className="flex items-center gap-3">
 					<div
 						className={cn(
-							'px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest shadow-sm',
+							'px-4 py-1.5 rounded-full text-[10px] font-medium tracking-wide shadow-sm',
 							colors[priority]
 						)}
 					>
