@@ -21,30 +21,41 @@ export type SubjectId =
 	| 'economics'
 	| 'lo';
 
-const LESSON_MAP: Record<string, any> = {
-	math: Object.values(mathematics).flat(),
-	mathematics: Object.values(mathematics).flat(),
-	physics: Object.values(physics).flat(),
-	physical_sciences: Object.values(physics).flat(),
-	life: Object.values(lifeSciences).flat(),
-	life_sciences: Object.values(lifeSciences).flat(),
-	accounting: Object.values(accounting).flat(),
-	geography: Object.values(geography).flat(),
-	business: Object.values(businessStudies).flat(),
-	business_studies: Object.values(businessStudies).flat(),
-	history: Object.values(history).flat(),
-	chemistry: Object.values(chemistry).flat(),
-	economics: Object.values(economics).flat(),
-	lo: Object.values(lifeOrientation).flat(),
-	life_orientation: Object.values(lifeOrientation).flat(),
+export interface Lesson {
+	id: string;
+	subject: string;
+	topic: string;
+	title: string;
+	content: string;
+	duration: number;
+	difficulty: string;
+	completed?: boolean;
+}
+
+const LESSON_MAP: Record<string, Lesson[]> = {
+	math: Object.values(mathematics).flat() as Lesson[],
+	mathematics: Object.values(mathematics).flat() as Lesson[],
+	physics: Object.values(physics).flat() as Lesson[],
+	physical_sciences: Object.values(physics).flat() as Lesson[],
+	life: Object.values(lifeSciences).flat() as Lesson[],
+	life_sciences: Object.values(lifeSciences).flat() as Lesson[],
+	accounting: Object.values(accounting).flat() as Lesson[],
+	geography: Object.values(geography).flat() as Lesson[],
+	business: Object.values(businessStudies).flat() as Lesson[],
+	business_studies: Object.values(businessStudies).flat() as Lesson[],
+	history: Object.values(history).flat() as Lesson[],
+	chemistry: Object.values(chemistry).flat() as Lesson[],
+	economics: Object.values(economics).flat() as Lesson[],
+	lo: Object.values(lifeOrientation).flat() as Lesson[],
+	life_orientation: Object.values(lifeOrientation).flat() as Lesson[],
 };
 
-export function getLessonsBySubject(subjectId: string) {
+export function getLessonsBySubject(subjectId: string): Lesson[] {
 	const normalizedId = subjectId.toLowerCase();
 	return LESSON_MAP[normalizedId] || [];
 }
 
-export function getLessonById(subjectId: string, lessonId: string) {
+export function getLessonById(subjectId: string, lessonId: string): Lesson | undefined {
 	const lessons = getLessonsBySubject(subjectId);
-	return lessons.find((l: any) => l.id === lessonId);
+	return lessons.find((l) => l.id === lessonId);
 }

@@ -14,7 +14,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { MarkdownRenderer } from '@/components/AI/MarkdownRenderer';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { getLessonsBySubject } from '@/lib/lessons';
+import { getLessonsBySubject, type Lesson } from '@/lib/lessons';
 
 export default function FocusScreen() {
 	const router = useRouter();
@@ -24,7 +24,7 @@ export default function FocusScreen() {
 
 	const lessons = useMemo(() => getLessonsBySubject(subjectId), [subjectId]);
 	const lesson = useMemo(
-		() => lessons.find((l: any) => l.id === lessonId) || lessons[0],
+		() => lessons.find((l: Lesson) => l.id === lessonId) || lessons[0],
 		[lessons, lessonId]
 	);
 

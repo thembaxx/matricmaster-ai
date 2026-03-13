@@ -3,11 +3,18 @@
 import { useEffect, useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { getRecentActivityAction } from '@/lib/db/actions';
-import type { StudySession } from '@/lib/db/schema';
 import { cn } from '@/lib/utils';
 
+interface RecentActivity {
+	id: string;
+	sessionType: string;
+	marksEarned: number;
+	completedAt: Date | null;
+	subjectName: string | null;
+}
+
 export function ActivityFeed() {
-	const [activities, setActivities] = useState<StudySession[]>([]);
+	const [activities, setActivities] = useState<RecentActivity[]>([]);
 	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
@@ -53,10 +60,11 @@ export function ActivityFeed() {
 						</div>
 						<div>
 							<h4 className="font-black text-sm uppercase tracking-tight">
-								{activity.topic || 'Practice Session'}
+								{activity.subjectName || 'Practice Session'}
 							</h4>
 							<p className="text-[10px] font-bold text-tiimo-gray-muted uppercase tracking-widest mt-0.5">
-								{new Date(activity.completedAt).toLocaleDateString()} • {activity.durationMinutes}m
+								{activity.completedAt ? new Date(activity.completedAt).toLocaleDateString() : 'N/A'}{' '}
+								• {activity.sessionType}
 							</p>
 						</div>
 					</Card>

@@ -1,11 +1,6 @@
 'use client';
 
-import {
-	Book01Icon,
-	CalculatorIcon,
-	Chemistry01Icon,
-	Compass01Icon,
-} from '@hugeicons/core-free-icons';
+import { CalculatorIcon, Chemistry01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { m } from 'framer-motion';
 import { useState } from 'react';

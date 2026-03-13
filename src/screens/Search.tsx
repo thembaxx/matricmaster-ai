@@ -20,8 +20,8 @@ import {
 	getPastPapersAction,
 	getSearchHistoryAction,
 } from '@/lib/db/actions';
-import type { Lesson, PastPaper, SearchHistory } from '@/lib/db/schema';
-import { getLessonsBySubject } from '@/lib/lessons';
+import type { PastPaper, SearchHistory } from '@/lib/db/schema';
+import { getLessonsBySubject, type Lesson } from '@/lib/lessons';
 import { smartSearch } from '@/services/geminiService';
 
 export default function Search() {

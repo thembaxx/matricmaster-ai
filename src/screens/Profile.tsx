@@ -23,11 +23,15 @@ import {
 	Target01Icon,
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
+import { toast } from 'sonner';
 import { LevelProgress } from '@/components/Gamification/LevelProgress';
 import { AchievementBadges, AchievementProgress } from '@/components/Profile/AchievementBadges';
+import { AvatarPicker } from '@/components/Profile/AvatarPicker';
 import { BadgeShowcase } from '@/components/Profile/BadgeShowcase';
+import { ProfileSkeleton } from '@/components/ProfileSkeleton';
 import { SafeImage } from '@/components/SafeImage';
 import { BackgroundMesh } from '@/components/ui/background-mesh';
+import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import {
 	type ChartConfig,
@@ -36,8 +40,9 @@ import {
 	ChartTooltipContent,
 } from '@/components/ui/chart';
 import { ACHIEVEMENT_POINTS_MAP } from '@/constants/achievements';
-import { useSession } from '@/lib/auth-client';
+import { authClient, useSession } from '@/lib/auth-client';
 import { getUserAchievements } from '@/lib/db/achievement-actions';
+import { updateUserProfileAction } from '@/lib/db/actions';
 import { getUserProgressSummary, getUserStreak } from '@/lib/db/progress-actions';
 
 interface ChartDataItem {
@@ -67,12 +72,6 @@ const chartConfig = {
 	},
 } satisfies ChartConfig;
 
-import { toast } from 'sonner';
-import { AvatarPicker } from '@/components/Profile/AvatarPicker';
-import { ProfileSkeleton } from '@/components/ProfileSkeleton';
-import { Button } from '@/components/ui/button';
-import { updateUserProfileAction } from '@/lib/db/actions';
-
 interface User {
 	id: string;
 	name: string;
@@ -86,10 +85,7 @@ export default function Profile() {
 	const [viewMode, setViewMode] = useState<'my_stats' | 'provincial'>('my_stats');
 	const [isEditing, setIsAdding] = useState(false);
 	const radarGradientId = useId();
-	const { data: session, update } = useSession() as {
-		data: any | null;
-		update: (data?: any) => Promise<any | null>;
-	};
+	const { data: session } = useSession();
 
 	const [editForm, setEditForm] = useState({
 		name: '',
@@ -114,7 +110,7 @@ export default function Profile() {
 			toast.success('Profile updated successfully!');
 			setIsAdding(false);
 			// Refresh session to show updated data
-			if (update) await update();
+			await authClient.getSession();
 		} else {
 			toast.error('Failed to update profile');
 		}
@@ -206,6 +202,7 @@ export default function Profile() {
 						</div>
 						{!isEditing && (
 							<button
+								type="button"
 								onClick={() => setIsAdding(true)}
 								className="absolute -bottom-2 -right-2 w-10 h-10 bg-primary text-white rounded-2xl flex items-center justify-center shadow-xl hover:scale-110 transition-transform"
 							>

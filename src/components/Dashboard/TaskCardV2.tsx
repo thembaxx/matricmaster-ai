@@ -9,7 +9,7 @@ export interface StudyTask {
 	id: string;
 	title: string;
 	subject: string;
-	icon: React.ElementType;
+	icon: any;
 	duration: string;
 	priority: 'high' | 'medium' | 'low';
 	completed: boolean;

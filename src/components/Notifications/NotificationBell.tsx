@@ -1,6 +1,6 @@
 'use client';
 
-import { Bell01Icon, Notification01Icon } from '@hugeicons/core-free-icons';
+import { Notification01Icon, Notification03Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
@@ -45,7 +45,7 @@ export function NotificationBell() {
 					className="relative w-12 h-12 rounded-2xl bg-secondary hover:bg-secondary/80 tiimo-press"
 				>
 					<HugeiconsIcon
-						icon={unreadCount > 0 ? Notification01Icon : Bell01Icon}
+						icon={unreadCount > 0 ? Notification01Icon : Notification03Icon}
 						className={cn('w-6 h-6', unreadCount > 0 ? 'text-primary' : 'text-tiimo-gray-muted')}
 					/>
 					{unreadCount > 0 && (

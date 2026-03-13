@@ -1063,6 +1063,9 @@ export type NewFlashcardReview = typeof flashcardReviews.$inferInsert;
 export type TopicMastery = typeof topicMastery.$inferSelect;
 export type NewTopicMastery = typeof topicMastery.$inferInsert;
 
+export type Notification = typeof notifications.$inferSelect;
+export type NewNotification = typeof notifications.$inferInsert;
+
 export type Bookmark = typeof bookmarks.$inferSelect;
 export type NewBookmark = typeof bookmarks.$inferInsert;
 

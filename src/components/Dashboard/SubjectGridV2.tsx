@@ -11,10 +11,9 @@ import { m } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { getEnrolledSubjectsAction } from '@/lib/db/actions';
-import type { Subject } from '@/lib/db/schema';
 import { cn } from '@/lib/utils';
 
-const ICON_MAP: Record<string, React.ElementType> = {
+const ICON_MAP: Record<string, any> = {
 	math: CalculatorIcon,
 	mathematics: CalculatorIcon,
 	physics: Chemistry01Icon,
@@ -33,9 +32,15 @@ const COLOR_MAP: Record<string, string> = {
 	geography: 'bg-tiimo-green',
 };
 
+interface EnrolledSubject {
+	id: number;
+	name: string;
+	description: string | null;
+}
+
 export function SubjectGrid() {
 	const router = useRouter();
-	const [subjects, setSubjects] = useState<Subject[]>([]);
+	const [subjects, setSubjects] = useState<EnrolledSubject[]>([]);
 	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {

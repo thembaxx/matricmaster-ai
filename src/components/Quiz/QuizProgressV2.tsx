@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils';
 
 export interface QuizStep {
 	id: string;
-	icon: React.ElementType;
+	icon: any;
 	title: string;
 	status: 'completed' | 'current' | 'upcoming';
 }
