@@ -1,13 +1,6 @@
 'use client';
 
-import {
-	AtomIcon,
-	BookOpen01Icon,
-	CalculatorIcon,
-	Cancel01Icon,
-	Clock01Icon,
-	ListViewIcon,
-} from '@hugeicons/core-free-icons';
+import { AtomIcon, CalculatorIcon, Cancel01Icon, Clock01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { AnimatePresence, m } from 'framer-motion';
 import { useState } from 'react';
@@ -32,7 +25,7 @@ export function MathFormulaSheet() {
 
 	return (
 		<>
-			<Button 
+			<Button
 				onClick={() => setIsOpen(true)}
 				className="fixed right-6 bottom-32 w-14 h-14 rounded-full bg-subject-math text-white shadow-xl z-40"
 			>
@@ -41,7 +34,7 @@ export function MathFormulaSheet() {
 
 			<AnimatePresence>
 				{isOpen && (
-					<m.div 
+					<m.div
 						initial={{ x: '100%' }}
 						animate={{ x: 0 }}
 						exit={{ x: '100%' }}
@@ -57,7 +50,9 @@ export function MathFormulaSheet() {
 							<div className="space-y-6">
 								{formulas.map((f, i) => (
 									<div key={i} className="space-y-2">
-										<p className="text-[10px] font-black text-muted-foreground uppercase">{f.title}</p>
+										<p className="text-[10px] font-black text-muted-foreground uppercase">
+											{f.title}
+										</p>
 										<div className="p-4 bg-muted rounded-xl font-mono text-xs break-all">
 											{f.formula}
 										</div>
@@ -103,21 +98,23 @@ export function HistoryTimeline() {
 								key={i}
 								onClick={() => setActiveIndex(i)}
 								className={cn(
-									"w-6 h-6 rounded-full border-4 border-card transition-all",
-									i <= activeIndex ? "bg-primary scale-110" : "bg-muted-foreground/30"
+									'w-6 h-6 rounded-full border-4 border-card transition-all',
+									i <= activeIndex ? 'bg-primary scale-110' : 'bg-muted-foreground/30'
 								)}
 							/>
 						))}
 					</div>
 				</div>
-				<m.div 
+				<m.div
 					key={activeIndex}
 					initial={{ opacity: 0, y: 10 }}
 					animate={{ opacity: 1, y: 0 }}
 					className="text-center"
 				>
 					<span className="text-2xl font-black text-primary">{events[activeIndex].year}</span>
-					<h4 className="text-lg font-black uppercase tracking-tight mt-1">{events[activeIndex].title}</h4>
+					<h4 className="text-lg font-black uppercase tracking-tight mt-1">
+						{events[activeIndex].title}
+					</h4>
 					<p className="text-sm text-muted-foreground mt-2">{events[activeIndex].desc}</p>
 				</m.div>
 			</CardContent>
@@ -147,9 +144,14 @@ export function PeriodicTableMini() {
 			</CardHeader>
 			<CardContent className="p-4 grid grid-cols-2 gap-3">
 				{elements.map((el, i) => (
-					<div key={i} className="p-3 bg-muted/50 rounded-xl border border-border/50 flex flex-col items-center group hover:bg-primary/10 transition-colors">
+					<div
+						key={i}
+						className="p-3 bg-muted/50 rounded-xl border border-border/50 flex flex-col items-center group hover:bg-primary/10 transition-colors"
+					>
 						<span className="text-2xl font-black text-foreground">{el.sym}</span>
-						<span className="text-[8px] font-black uppercase text-muted-foreground tracking-widest">{el.name}</span>
+						<span className="text-[8px] font-black uppercase text-muted-foreground tracking-widest">
+							{el.name}
+						</span>
 						<span className="text-[10px] font-bold text-primary mt-1">{el.mass}</span>
 					</div>
 				))}

@@ -13,7 +13,15 @@ const Radar = dynamic(() => import('recharts').then((mod) => mod.Radar), {
 	ssr: false,
 });
 
-import { FireIcon, GraduationCap, Medal01Icon, Target01Icon } from '@hugeicons/core-free-icons';
+import {
+	FireIcon,
+	GraduationCap,
+	Medal01Icon,
+	PencilEdit01Icon,
+	SaveIcon,
+	SchoolReportCardIcon,
+	Target01Icon,
+} from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { LevelProgress } from '@/components/Gamification/LevelProgress';
 import { AchievementBadges, AchievementProgress } from '@/components/Profile/AchievementBadges';
@@ -59,12 +67,55 @@ const chartConfig = {
 	},
 } satisfies ChartConfig;
 
+import { toast } from 'sonner';
+import { AvatarPicker } from '@/components/Profile/AvatarPicker';
 import { ProfileSkeleton } from '@/components/ProfileSkeleton';
+import { Button } from '@/components/ui/button';
+import { updateUserProfileAction } from '@/lib/db/actions';
+
+interface User {
+	id: string;
+	name: string;
+	email: string;
+	image?: string | null;
+	school?: string | null;
+	avatarId?: string | null;
+}
 
 export default function Profile() {
 	const [viewMode, setViewMode] = useState<'my_stats' | 'provincial'>('my_stats');
+	const [isEditing, setIsAdding] = useState(false);
 	const radarGradientId = useId();
-	const { data: session } = useSession();
+	const { data: session, update } = useSession() as any;
+
+	const [editForm, setEditForm] = useState({
+		name: '',
+		school: '',
+		avatarId: '',
+	});
+
+	useEffect(() => {
+		if (session?.user) {
+			const u = session.user as User;
+			setEditForm({
+				name: u.name || '',
+				school: u.school || '',
+				avatarId: u.avatarId || '',
+			});
+		}
+	}, [session]);
+
+	const handleSaveProfile = async () => {
+		const result = await updateUserProfileAction(editForm);
+		if (result.success) {
+			toast.success('Profile updated successfully!');
+			setIsAdding(false);
+			// Refresh session to show updated data
+			if (update) await update();
+		} else {
+			toast.error('Failed to update profile');
+		}
+	};
 
 	const [userStats, setUserStats] = useState<{
 		totalQuestions: number;
@@ -86,7 +137,7 @@ export default function Profile() {
 				]);
 
 				// Bolt: Fix logic bug (was searching available instead of all) and optimize with O(1) MapTrifold lookup
-				const totalXp = achievements.unlocked.reduce((sum, a) => {
+				const totalXp = achievements.unlocked.reduce((sum: number, a: any) => {
 					return sum + (ACHIEVEMENT_POINTS_MAP.get(a.achievementId) || 0);
 				}, 0);
 
@@ -96,7 +147,7 @@ export default function Profile() {
 					streak: streak?.currentStreak || 0,
 					achievementsUnlocked: achievements?.unlocked?.length || 0,
 					totalXp,
-					unlockedAchievementIds: achievements.unlocked.map((a) => a.achievementId),
+					unlockedAchievementIds: achievements.unlocked.map((a: any) => a.achievementId),
 				});
 			} catch (error) {
 				console.error('Error fetching profile data:', error);
@@ -124,42 +175,109 @@ export default function Profile() {
 		return <ProfileSkeleton />;
 	}
 
+	const u = session?.user as User;
+
 	return (
 		<div className="flex flex-col h-full min-w-0 bg-background pb-32 px-4 sm:px-6 lg:px-8 overflow-x-hidden">
 			<BackgroundMesh variant="subtle" />
 
 			<main className="max-w-6xl mx-auto w-full pt-6 sm:pt-8 space-y-8 sm:space-y-12 relative z-10">
 				{/* Avatar Section */}
-				<div className="relative mb-4">
-					<div className="w-28 h-28 rounded-full overflow-hidden shadow-2xl relative border-4 border-background">
-						<SafeImage
-							src={session?.user?.image || '/default-avatar.png'}
-							alt="Thabo Mbeki"
-							className="w-full h-full object-cover"
-						/>
+				<div className="flex flex-col sm:flex-row items-center gap-8 bg-card/30 p-8 rounded-[2.5rem] border border-border/50">
+					<div className="relative">
+						<div className="w-32 h-32 rounded-[2.5rem] overflow-hidden shadow-2xl relative border-4 border-background bg-muted flex items-center justify-center">
+							{editForm.avatarId ? (
+								<AvatarPicker selectedId={editForm.avatarId} onSelect={() => {}} />
+							) : (
+								<SafeImage
+									src={session?.user?.image || '/default-avatar.png'}
+									alt={session?.user?.name || 'User'}
+									className="w-full h-full object-cover"
+								/>
+							)}
+						</div>
+						{!isEditing && (
+							<button
+								onClick={() => setIsAdding(true)}
+								className="absolute -bottom-2 -right-2 w-10 h-10 bg-primary text-white rounded-2xl flex items-center justify-center shadow-xl hover:scale-110 transition-transform"
+							>
+								<HugeiconsIcon icon={PencilEdit01Icon} className="w-5 h-5" />
+							</button>
+						)}
 					</div>
-					<div
-						className="absolute bottom-0 right-0 rounded-full p-1 border-3 border-background"
-						style={{ backgroundColor: '#22d3ee' }}
-					>
-						<svg
-							className="w-3.5 h-3.5 text-white"
-							fill="currentColor"
-							viewBox="0 0 20 20"
-							aria-label="Verified badge"
-						>
-							<path
-								fillRule="evenodd"
-								d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-								clipRule="evenodd"
-							/>
-						</svg>
-					</div>
-				</div>
 
-				<div className="text-center mb-6">
-					<h2 className="text-2xl font-bold mb-1">{session?.user?.name || 'Scholar'}</h2>
-					<p className="text-sm">{session?.user?.email || 'Unkown'}</p>
+					<div className="flex-1 space-y-4 text-center sm:text-left w-full">
+						{isEditing ? (
+							<div className="space-y-4 max-w-md">
+								<div className="space-y-2">
+									<label className="text-[10px] font-black uppercase text-muted-foreground tracking-widest ml-1">
+										Display Name
+									</label>
+									<input
+										type="text"
+										value={editForm.name}
+										onChange={(e) => setEditForm({ ...editForm, name: e.target.value })}
+										className="w-full bg-background border-2 border-border rounded-2xl px-4 py-3 font-bold"
+									/>
+								</div>
+								<div className="space-y-2">
+									<label className="text-[10px] font-black uppercase text-muted-foreground tracking-widest ml-1">
+										Current School
+									</label>
+									<input
+										type="text"
+										value={editForm.school}
+										onChange={(e) => setEditForm({ ...editForm, school: e.target.value })}
+										placeholder="e.g. Pretoria Boys High"
+										className="w-full bg-background border-2 border-border rounded-2xl px-4 py-3 font-bold"
+									/>
+								</div>
+								<div className="pt-4">
+									<p className="text-[10px] font-black uppercase text-muted-foreground tracking-widest mb-4 ml-1">
+										Choose Mascot
+									</p>
+									<AvatarPicker
+										selectedId={editForm.avatarId}
+										onSelect={(id) => setEditForm({ ...editForm, avatarId: id })}
+									/>
+								</div>
+								<div className="flex gap-2 pt-6">
+									<Button
+										onClick={handleSaveProfile}
+										className="rounded-full flex-1 gap-2 h-12 shadow-xl shadow-primary/20"
+									>
+										<HugeiconsIcon icon={SaveIcon} className="w-4 h-4" />
+										Save Changes
+									</Button>
+									<Button
+										variant="ghost"
+										onClick={() => setIsAdding(false)}
+										className="rounded-full h-12"
+									>
+										Cancel
+									</Button>
+								</div>
+							</div>
+						) : (
+							<div className="space-y-2">
+								<h2 className="text-4xl font-black text-foreground tracking-tighter uppercase leading-none">
+									{session?.user?.name || 'Matric Scholar'}
+								</h2>
+								<div className="flex flex-wrap justify-center sm:justify-start gap-4">
+									<div className="flex items-center gap-2 text-muted-foreground font-bold">
+										<HugeiconsIcon icon={SchoolReportCardIcon} className="w-4 h-4" />
+										<span className="text-sm uppercase tracking-widest">
+											{u?.school || 'High School Student'}
+										</span>
+									</div>
+									<div className="flex items-center gap-2 text-muted-foreground font-bold">
+										<HugeiconsIcon icon={Target01Icon} className="w-4 h-4" />
+										<span className="text-sm uppercase tracking-widest">Class of 2026</span>
+									</div>
+								</div>
+							</div>
+						)}
+					</div>
 				</div>
 
 				<div className="grid grid-cols-1 lg:grid-cols-12 pt-8 gap-8 lg:gap-12">

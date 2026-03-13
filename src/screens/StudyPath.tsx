@@ -7,9 +7,8 @@ import { FocusContent } from '@/components/Layout/FocusContent';
 import { TimelineSidebar } from '@/components/Layout/TimelineSidebar';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { cn } from '@/lib/utils';
-
 import studyPathsData from '@/constants/study-paths.json';
+import { cn } from '@/lib/utils';
 
 interface JourneyStep {
 	id: string;
@@ -22,24 +21,17 @@ interface JourneyStep {
 	type: 'lesson' | 'practice' | 'quiz';
 }
 
-interface JourneyModule {
-	id: string;
-	title: string;
-	description: string;
-	progress: number;
-	steps: JourneyStep[];
-}
-
 interface StudyPathScreenProps {
 	pathId?: string;
 }
 
 export default function StudyPath({ pathId = 'math-p1-mastery' }: StudyPathScreenProps) {
 	const router = useRouter();
-	
+
 	// Load data from JSON
-	const pathData = studyPathsData.studyPaths.find(p => p.id === pathId) || studyPathsData.studyPaths[0];
-	
+	const pathData =
+		studyPathsData.studyPaths.find((p) => p.id === pathId) || studyPathsData.studyPaths[0];
+
 	// Map JSON structure to UI structure
 	// For this UI, we'll flatten the modules into a single list of steps or show one module at a time
 	// Let's show the first incomplete module or the first one if all complete
@@ -47,7 +39,7 @@ export default function StudyPath({ pathId = 'math-p1-mastery' }: StudyPathScree
 	const [expandedStep, setExpandedStep] = useState<string | null>(null);
 
 	const module = pathData.modules[activeModuleIndex];
-	
+
 	const steps: JourneyStep[] = module.steps.map((step, idx) => ({
 		id: `${module.id}-${idx}`,
 		emoji: step.type === 'lesson' ? '📖' : step.type === 'quiz' ? '✅' : '✍️',
@@ -86,7 +78,7 @@ export default function StudyPath({ pathId = 'math-p1-mastery' }: StudyPathScree
 						{pathData.modules.map((m, idx) => (
 							<Button
 								key={m.id}
-								variant={activeModuleIndex === idx ? "default" : "outline"}
+								variant={activeModuleIndex === idx ? 'default' : 'outline'}
 								size="sm"
 								className="rounded-full whitespace-nowrap"
 								onClick={() => setActiveModuleIndex(idx)}
@@ -143,9 +135,7 @@ export default function StudyPath({ pathId = 'math-p1-mastery' }: StudyPathScree
 						className="w-full rounded-2xl h-14 text-lg"
 						onClick={() => router.push('/focus')}
 					>
-						{steps.find((s) => s.status === 'current')
-							? 'Continue learning →'
-							: 'Start journey →'}
+						{steps.find((s) => s.status === 'current') ? 'Continue learning →' : 'Start journey →'}
 					</Button>
 				</m.div>
 			</FocusContent>

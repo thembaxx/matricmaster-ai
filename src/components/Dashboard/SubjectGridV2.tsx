@@ -1,13 +1,19 @@
 'use client';
 
-import { AtomIcon, BookOpen01Icon, CalculatorIcon, Cursor01Icon, PlusSignIcon } from '@hugeicons/core-free-icons';
+import {
+	AtomIcon,
+	BookOpen01Icon,
+	CalculatorIcon,
+	Cursor01Icon,
+	PlusSignIcon,
+} from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { m } from 'framer-motion';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { cn } from '@/lib/utils';
-import { getEnrolledSubjectsAction } from '@/lib/db/actions';
 import { Button } from '@/components/ui/button';
+import { getEnrolledSubjectsAction } from '@/lib/db/actions';
+import { cn } from '@/lib/utils';
 
 const ICON_MAP: Record<string, any> = {
 	math: CalculatorIcon,
@@ -52,7 +58,11 @@ export function SubjectGrid() {
 	}, []);
 
 	if (isLoading) {
-		return <div className="h-32 flex items-center justify-center font-bold uppercase text-[10px] tracking-widest text-muted-foreground animate-pulse">Syncing Subjects...</div>;
+		return (
+			<div className="h-32 flex items-center justify-center font-bold uppercase text-[10px] tracking-widest text-muted-foreground animate-pulse">
+				Syncing Subjects...
+			</div>
+		);
 	}
 
 	return (
@@ -67,7 +77,7 @@ export function SubjectGrid() {
 					Add More
 				</Link>
 			</div>
-			
+
 			{subjects.length > 0 ? (
 				<div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
 					{subjects.map((subject, index) => {
@@ -106,8 +116,13 @@ export function SubjectGrid() {
 				</div>
 			) : (
 				<div className="p-12 text-center bg-muted/20 rounded-[2.5rem] border border-dashed border-border">
-					<p className="text-sm font-bold text-muted-foreground uppercase tracking-widest mb-4">No subjects enrolled</p>
-					<Button asChild className="rounded-full font-black uppercase text-xs tracking-widest px-8">
+					<p className="text-sm font-bold text-muted-foreground uppercase tracking-widest mb-4">
+						No subjects enrolled
+					</p>
+					<Button
+						asChild
+						className="rounded-full font-black uppercase text-xs tracking-widest px-8"
+					>
 						<Link href="/subjects">Explore Marketplace</Link>
 					</Button>
 				</div>

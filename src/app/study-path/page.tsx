@@ -8,10 +8,6 @@ export const metadata: Metadata = {
 	description: 'Track your learning path and progress.',
 };
 
-export default function StudyPathPage({
-	searchParams,
-}: {
-	searchParams: { pathId?: string };
-}) {
+export default function StudyPathPage({ searchParams }: { searchParams: { pathId?: string } }) {
 	return <StudyPathScreen pathId={searchParams.pathId} />;
 }

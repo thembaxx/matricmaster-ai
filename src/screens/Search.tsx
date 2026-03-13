@@ -1,6 +1,7 @@
 'use client';
 
 import { m } from 'framer-motion';
+import Link from 'next/link';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { AiInsights } from '@/components/Search/AiInsights';
 import { SearchHeader } from '@/components/Search/SearchHeader';
@@ -8,11 +9,10 @@ import { SearchHistoryList } from '@/components/Search/SearchHistoryList';
 import { SearchResults } from '@/components/Search/SearchResults';
 import { SuggestedCards } from '@/components/Search/SuggestedCards';
 import { TrendingTopics } from '@/components/Search/TrendingTopics';
+import { Card } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { STAGGER_CONTAINER } from '@/lib/animation-presets';
 import { useSession } from '@/lib/auth-client';
-import { Card } from '@/components/ui/card';
-import Link from 'next/link';
 import {
 	addSearchHistoryAction,
 	clearSearchHistoryAction,
@@ -21,8 +21,8 @@ import {
 	getSearchHistoryAction,
 } from '@/lib/db/actions';
 import type { PastPaper, SearchHistory } from '@/lib/db/schema';
-import { smartSearch } from '@/services/geminiService';
 import { getLessonsBySubject } from '@/lib/lessons';
+import { smartSearch } from '@/services/geminiService';
 
 export default function Search() {
 	const { data: session } = useSession();
@@ -51,10 +51,21 @@ export default function Search() {
 			try {
 				const [papersData] = await Promise.all([getPastPapersAction()]);
 				setPapers(papersData);
-				
+
 				// Collect all lessons from all subjects
-				const subjects = ['math', 'physics', 'life', 'accounting', 'geography', 'business', 'history', 'chemistry', 'economics', 'lo'];
-				const lessons = subjects.flatMap(s => getLessonsBySubject(s));
+				const subjects = [
+					'math',
+					'physics',
+					'life',
+					'accounting',
+					'geography',
+					'business',
+					'history',
+					'chemistry',
+					'economics',
+					'lo',
+				];
+				const lessons = subjects.flatMap((s) => getLessonsBySubject(s));
 				setAllLessons(lessons);
 			} catch (error) {
 				console.error('Failed to load data:', error);
@@ -87,7 +98,7 @@ export default function Search() {
 	const filteredResults = useMemo(() => {
 		if (!query) return { papers: [], lessons: [] };
 		const lowerQuery = query.toLowerCase();
-		
+
 		return {
 			papers: papers.filter(
 				(p: PastPaper) =>
@@ -96,7 +107,7 @@ export default function Search() {
 			lessons: allLessons.filter(
 				(l: any) =>
 					l.title.toLowerCase().includes(lowerQuery) || l.topic.toLowerCase().includes(lowerQuery)
-			)
+			),
 		};
 	}, [papers, allLessons, query]);
 
@@ -163,20 +174,28 @@ export default function Search() {
 								tip={aiResults?.tip}
 								onSuggestionClick={setQuery}
 							/>
-							
+
 							<div className="space-y-8">
 								{filteredResults.lessons.length > 0 && (
 									<section>
-										<h3 className="text-sm font-black uppercase text-muted-foreground tracking-widest mb-4">Lessons</h3>
+										<h3 className="text-sm font-black uppercase text-muted-foreground tracking-widest mb-4">
+											Lessons
+										</h3>
 										<div className="grid gap-4 sm:grid-cols-2">
 											{filteredResults.lessons.map((l: any) => (
 												<Link key={l.id} href={`/focus?lessonId=${l.id}`}>
 													<Card className="p-6 hover:border-primary/50 transition-all group shadow-tiimo">
 														<div className="flex items-center justify-between mb-2">
-															<span className="text-[10px] font-black uppercase text-primary tracking-widest">{l.topic}</span>
-															<span className="text-[10px] font-bold text-muted-foreground uppercase">{l.duration} min</span>
+															<span className="text-[10px] font-black uppercase text-primary tracking-widest">
+																{l.topic}
+															</span>
+															<span className="text-[10px] font-bold text-muted-foreground uppercase">
+																{l.duration} min
+															</span>
 														</div>
-														<h4 className="font-bold text-foreground group-hover:text-primary transition-colors">{l.title}</h4>
+														<h4 className="font-bold text-foreground group-hover:text-primary transition-colors">
+															{l.title}
+														</h4>
 													</Card>
 												</Link>
 											))}
@@ -186,14 +205,18 @@ export default function Search() {
 
 								{filteredResults.papers.length > 0 && (
 									<section>
-										<h3 className="text-sm font-black uppercase text-muted-foreground tracking-widest mb-4">Past Papers</h3>
+										<h3 className="text-sm font-black uppercase text-muted-foreground tracking-widest mb-4">
+											Past Papers
+										</h3>
 										<SearchResults results={filteredResults.papers} />
 									</section>
 								)}
 
 								{filteredResults.lessons.length === 0 && filteredResults.papers.length === 0 && (
 									<div className="py-20 text-center">
-										<p className="text-muted-foreground font-bold uppercase text-xs tracking-[0.2em]">No matches found for "{query}"</p>
+										<p className="text-muted-foreground font-bold uppercase text-xs tracking-[0.2em]">
+											No matches found for "{query}"
+										</p>
 									</div>
 								)}
 							</div>

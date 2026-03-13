@@ -2,6 +2,7 @@
 
 import { AtomIcon, BookOpen01Icon, CalculatorIcon } from '@hugeicons/core-free-icons';
 import { useState } from 'react';
+import { ActivityFeed } from '@/components/Dashboard/ActivityFeed';
 import { DashboardHeader } from '@/components/Dashboard/DashboardHeaderV2';
 import { SubjectGrid } from '@/components/Dashboard/SubjectGridV2';
 import { type StudyTask, TaskCard } from '@/components/Dashboard/TaskCardV2';
@@ -141,6 +142,13 @@ export default function Dashboard(_props: DashboardProps) {
 							</div>
 
 							<SubjectGrid />
+
+							<section>
+								<h2 className="text-xl font-black text-foreground tracking-tight mb-6 uppercase">
+									Recent Activity
+								</h2>
+								<ActivityFeed />
+							</section>
 						</div>
 					</ScrollArea>
 				</div>

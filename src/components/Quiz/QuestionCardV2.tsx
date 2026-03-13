@@ -1,7 +1,6 @@
 'use client';
 
 import {
-	CalculatorIcon,
 	CancelCircleIcon,
 	CheckmarkCircle02Icon,
 	Mortarboard01Icon,
@@ -56,9 +55,7 @@ export function QuestionCard({
 				</div>
 
 				{/* Visual Area */}
-				{diagram && (
-					<InteractiveDiagram type={diagram} className="mb-10" />
-				)}
+				{diagram && <InteractiveDiagram type={diagram} className="mb-10" />}
 
 				<div className="grid grid-cols-1 gap-3">
 					{options.map((option, index) => {

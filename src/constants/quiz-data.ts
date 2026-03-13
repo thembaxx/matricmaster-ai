@@ -78,7 +78,7 @@ export const QUIZ_DATA: QuizData = {
 					{ id: 'D', text: "f'(x) = 12x² - 2x + 5" },
 				],
 				correctAnswer: 'A',
-				hint: 'Use power rule: d/dx(axⁿ) = anx⁻¹. f\'(x) = 12x² - 4x + 5',
+				hint: "Use power rule: d/dx(axⁿ) = anxⁿ⁻¹. f'(x) = 12x² - 4x + 5",
 				topic: 'Calculus',
 				subtopic: 'Derivatives',
 				difficulty: 'medium',
@@ -122,8 +122,8 @@ export const QUIZ_DATA: QuizData = {
 					{ id: 'C', text: '31' },
 					{ id: 'D', text: '28' },
 				],
-				correctAnswer: 'C',
-				hint: '2⁵ = x + 3, so 32 = x + 3, therefore x = 29. Wait, 2⁵ = 32, so x = 32 - 3 = 29',
+				correctAnswer: 'A',
+				hint: '2⁵ = x + 3, so 32 = x + 3, therefore x = 29.',
 				topic: 'Logarithms',
 				subtopic: 'Exponential Equations',
 				difficulty: 'medium',
@@ -175,15 +175,15 @@ export const QUIZ_DATA: QuizData = {
 			},
 			{
 				id: 'math-2023-p1-q10',
-				question: 'If f(x) = (2x - 1)³, find f\'(1)',
+				question: "If f(x) = (2x - 1)³, find f'(1)",
 				options: [
 					{ id: 'A', text: '12' },
 					{ id: 'B', text: '6' },
 					{ id: 'C', text: '9' },
 					{ id: 'D', text: '3' },
 				],
-				correctAnswer: 'A',
-				hint: 'Use chain rule: f\'(x) = 3(2x - 1)² × 2 = 6(2x - 1)². At x = 1: 6(2-1)² = 6(1) = 6. Wait, 6×1² = 6. Let me recalculate: 6×1 = 6',
+				correctAnswer: 'B',
+				hint: "Use chain rule: f'(x) = 3(2x - 1)² × 2 = 6(2x - 1)². At x = 1: 6(2-1)² = 6(1) = 6",
 				diagram: 'Function f(x) = (2x - 1)³, find gradient at x=1',
 				topic: 'Calculus',
 				subtopic: 'Chain Rule',
@@ -229,7 +229,7 @@ export const QUIZ_DATA: QuizData = {
 					{ id: 'D', text: "f''(x) = 12x² - 2" },
 				],
 				correctAnswer: 'A',
-				hint: 'f\'(x) = 12x³ - 4x + 1. Then f\'\'(x) = 36x² - 4',
+				hint: "f'(x) = 12x³ - 4x + 1. Then f''(x) = 36x² - 4",
 				topic: 'Calculus',
 				subtopic: 'Second Derivative',
 				difficulty: 'hard',
@@ -353,7 +353,8 @@ export const QUIZ_DATA: QuizData = {
 		questions: [
 			{
 				id: 'math-2023-p2-q1',
-				question: 'In ΔABC, angle A = 30°, angle B = 45°, and side a = 10. Find side b (to nearest whole number).',
+				question:
+					'In ΔABC, angle A = 30°, angle B = 45°, and side a = 10. Find side b (to nearest whole number).',
 				options: [
 					{ id: 'A', text: '14' },
 					{ id: 'B', text: '12' },
@@ -386,13 +387,13 @@ export const QUIZ_DATA: QuizData = {
 				id: 'math-2023-p2-q3',
 				question: 'Calculate the distance between points P(3, 4) and Q(-1, 0)',
 				options: [
-					{ id: 'A', text: '√20' },
-					{ id: 'B', text: '√32' },
+					{ id: 'A', text: '√32' },
+					{ id: 'B', text: '√20' },
 					{ id: 'C', text: '√16' },
 					{ id: 'D', text: '√8' },
 				],
 				correctAnswer: 'A',
-				hint: 'd = √[(x₂-x₁)² + (y₂-y₁)²] = √[(-1-3)² + (0-4)²] = √[(-4)² + (-4)²] = √(16+16) = √32. Wait, (-4)² = 16, so 16+16 = 32, √32 = 4√2. Let me recalculate: dx = -1-3 = -4, dy = 0-4 = -4. d = √((-4)² + (-4)²) = √(16+16) = √32',
+				hint: 'd = √[(x₂-x₁)² + (y₂-y₁)²] = √[(-1-3)² + (0-4)²] = √[(-4)² + (-4)²] = √(16+16) = √32.',
 				topic: 'Analytical Geometry',
 				subtopic: 'Distance Formula',
 				difficulty: 'easy',
@@ -489,14 +490,15 @@ export const QUIZ_DATA: QuizData = {
 			},
 			{
 				id: 'math-2023-p2-q10',
-				question: 'The mean of 5 numbers is 12. If four of them are 8, 10, 14, and 15, find the fifth number.',
+				question:
+					'The mean of 5 numbers is 12. If four of them are 8, 10, 14, and 15, find the fifth number.',
 				options: [
-					{ id: 'A', text: '14' },
-					{ id: 'B', text: '13' },
+					{ id: 'A', text: '13' },
+					{ id: 'B', text: '14' },
 					{ id: 'C', text: '12' },
 					{ id: 'D', text: '15' },
 				],
-				correctAnswer: 'B',
+				correctAnswer: 'A',
 				hint: 'Sum = mean × n = 12 × 5 = 60. Sum of 4 numbers = 8 + 10 + 14 + 15 = 47. Fifth = 60 - 47 = 13',
 				topic: 'Statistics',
 				subtopic: 'Mean',
@@ -511,15 +513,16 @@ export const QUIZ_DATA: QuizData = {
 					{ id: 'C', text: '135°' },
 					{ id: 'D', text: '45° or 135°' },
 				],
-				correctAnswer: 'D',
-				hint: 'tan 45° = 1. tan 135° = tan(180° - 45°) = -tan 45° = -1. Wait, tan 135° = tan(180°-45°) = -tan 45° = -1. Hmm, let me reconsider. tan θ = 1, so θ = 45° in first quadrant. Also consider 180°+45°=225° but out of range. Actually tan(180° - 45°) = tan(135°) = -1. So only 45° gives tan = 1.',
+				correctAnswer: 'A',
+				hint: 'tan 45° = 1. tan 135° = -1. So only 45° gives tan = 1.',
 				topic: 'Trigonometry',
 				subtopic: 'Trigonometric Equations',
 				difficulty: 'medium',
 			},
 			{
 				id: 'math-2023-p2-q12',
-				question: 'A bag contains 3 red and 5 blue balls. What is probability of drawing a red ball?',
+				question:
+					'A bag contains 3 red and 5 blue balls. What is probability of drawing a red ball?',
 				options: [
 					{ id: 'A', text: '3/8' },
 					{ id: 'B', text: '5/8' },
@@ -558,7 +561,7 @@ export const QUIZ_DATA: QuizData = {
 					{ id: 'D', text: '16' },
 				],
 				correctAnswer: 'A',
-				hint: 'Mean = (2+4+4+4+5+5+7+9)/8 = 40/8 = 5. Sum of squared deviations = (2-5)² + 3(4-5)² + 2(5-5)² + (7-5)² + (9-5)² = 9 + 3(1) + 0 + 4 + 16 = 9 + 3 + 0 + 4 + 16 = 32. Variance = 32/8 = 4',
+				hint: 'Mean = 5. Sum of squared deviations = (2-5)² + 3(4-5)² + 2(5-5)² + (7-5)² + (9-5)² = 9 + 3 + 0 + 4 + 16 = 32. Variance = 32/8 = 4',
 				topic: 'Statistics',
 				subtopic: 'Variance',
 				difficulty: 'hard',
@@ -698,7 +701,8 @@ export const QUIZ_DATA: QuizData = {
 			},
 			{
 				id: 'phys-2023-p1-q3',
-				question: 'A ball is thrown upwards with initial velocity 20 m/s. What maximum height does it reach? (g = 10 m/s²)',
+				question:
+					'A ball is thrown upwards with initial velocity 20 m/s. What maximum height does it reach? (g = 10 m/s²)',
 				options: [
 					{ id: 'A', text: '20 m' },
 					{ id: 'B', text: '10 m' },
@@ -729,7 +733,8 @@ export const QUIZ_DATA: QuizData = {
 			},
 			{
 				id: 'phys-2023-p1-q5',
-				question: 'A force of 10N acts for 3s on a 2kg object initially at rest. What is the final velocity?',
+				question:
+					'A force of 10N acts for 3s on a 2kg object initially at rest. What is the final velocity?',
 				options: [
 					{ id: 'A', text: '15 m/s' },
 					{ id: 'B', text: '5 m/s' },
@@ -737,7 +742,7 @@ export const QUIZ_DATA: QuizData = {
 					{ id: 'D', text: '0.6 m/s' },
 				],
 				correctAnswer: 'A',
-				hint: 'F = ma = 10N/2kg = 5 m/s². v = at = 5 × 3 = 15 m/s. OR: Impulse = FΔt = 10 × 3 = 30 N·s = Δp = mv - 0 = 2v, v = 15 m/s',
+				hint: 'F = ma = 10N/2kg = 5 m/s². v = at = 5 × 3 = 15 m/s.',
 				diagram: 'Force applied to stationary object on frictionless surface',
 				topic: 'Mechanics',
 				subtopic: 'Impulse',
@@ -760,7 +765,8 @@ export const QUIZ_DATA: QuizData = {
 			},
 			{
 				id: 'phys-2023-p1-q7',
-				question: 'A car of mass 1000kg accelerates from 0 to 20 m/s in 10s. What is its average power output?',
+				question:
+					'A car of mass 1000kg accelerates from 0 to 20 m/s in 10s. What is its average power output?',
 				options: [
 					{ id: 'A', text: '20 kW' },
 					{ id: 'B', text: '2 kW' },
@@ -776,7 +782,8 @@ export const QUIZ_DATA: QuizData = {
 			},
 			{
 				id: 'phys-2023-p1-q8',
-				question: 'A 2kg ball falls from 10m height. What is its velocity just before hitting the ground? (g = 10 m/s²)',
+				question:
+					'A 2kg ball falls from 10m height. What is its velocity just before hitting the ground? (g = 10 m/s²)',
 				options: [
 					{ id: 'A', text: '14.14 m/s' },
 					{ id: 'B', text: '10 m/s' },
@@ -791,15 +798,16 @@ export const QUIZ_DATA: QuizData = {
 			},
 			{
 				id: 'phys-2023-p1-q9',
-				question: 'Three forces of 3N, 4N, and 5N act on an object. Which arrangement gives ZERO resultant?',
+				question:
+					'Three forces of 3N, 4N, and 5N act on an object. Which arrangement gives ZERO resultant?',
 				options: [
-					{ id: 'A', text: '3N, 4N at 180°; 5N at 90° to them' },
+					{ id: 'A', text: '3N and 4N at 90 deg, 5N opposite to resultant' },
 					{ id: 'B', text: 'All in the same direction' },
 					{ id: 'C', text: 'All mutually perpendicular' },
 					{ id: 'D', text: '3N and 4N opposite, 5N perpendicular' },
 				],
 				correctAnswer: 'A',
-				hint: '3N + 4N in opposite directions cancel, leaving 5N. If 5N is perpendicular, the resultant is 5N in that direction. Need all three such that vector sum = 0. Consider: 3N east, 4N west (= 1N west), need 1N east to balance - impossible with 5N. Wait, try: 3N east, 4N north (resultant 5N NE), then 5N SW gives zero. Option A: 3+4 at 180° = 1N (say east), 5N at 90° (north). Resultant = √(1² + 5²) = √26, not zero. Need vectors that form closed triangle: 3, 4, 5 can form right triangle, so if arranged tip-to-tail at 90° to each other, they can balance.',
+				hint: '3, 4, 5 form a right triangle. √(3²+4²) = 5.',
 				diagram: 'Three force vectors showing equilibrium',
 				topic: 'Mechanics',
 				subtopic: 'Vector Addition',
@@ -822,7 +830,8 @@ export const QUIZ_DATA: QuizData = {
 			},
 			{
 				id: 'phys-2023-p1-q11',
-				question: 'A horizontal force of 20N pushes a 5kg block across a rough surface (μ = 0.3). What is the acceleration? (g = 10 m/s²)',
+				question:
+					'A horizontal force of 20N pushes a 5kg block across a rough surface (μ = 0.3). What is the acceleration? (g = 10 m/s²)',
 				options: [
 					{ id: 'A', text: '1 m/s²' },
 					{ id: 'B', text: '4 m/s²' },
@@ -830,7 +839,7 @@ export const QUIZ_DATA: QuizData = {
 					{ id: 'D', text: '0 m/s²' },
 				],
 				correctAnswer: 'A',
-				hint: 'Normal force N = mg = 5×10 = 50N. Friction f = μN = 0.3×50 = 15N. Net force = 20-15 = 5N. a = F/m = 5/5 = 1 m/s²',
+				hint: 'Normal force N = mg = 50N. Friction f = μN = 15N. Net force = 20-15 = 5N. a = F/m = 1 m/s²',
 				diagram: 'Block on horizontal surface with applied force and friction',
 				topic: 'Mechanics',
 				subtopic: 'Friction',
@@ -838,7 +847,8 @@ export const QUIZ_DATA: QuizData = {
 			},
 			{
 				id: 'phys-2023-p1-q12',
-				question: 'Two identical balls collide elastically. Ball A (2kg) moves at 3m/s, Ball B (2kg) is stationary. What are their velocities after collision?',
+				question:
+					'Two identical balls collide elastically. Ball A (2kg) moves at 3m/s, Ball B (2kg) is stationary. What are their velocities after collision?',
 				options: [
 					{ id: 'A', text: 'A: 0, B: 3 m/s' },
 					{ id: 'B', text: 'A: 3 m/s, B: 0' },
@@ -846,7 +856,7 @@ export const QUIZ_DATA: QuizData = {
 					{ id: 'D', text: 'A: -3 m/s, B: 3 m/s' },
 				],
 				correctAnswer: 'A',
-				hint: 'In elastic collision of equal masses, velocities are exchanged. A stops, B takes A\'s velocity.',
+				hint: 'In elastic collision of equal masses, velocities are exchanged.',
 				diagram: 'Two identical balls before and after elastic collision',
 				topic: 'Mechanics',
 				subtopic: 'Elastic Collisions',
@@ -862,7 +872,7 @@ export const QUIZ_DATA: QuizData = {
 					{ id: 'D', text: '100 N' },
 				],
 				correctAnswer: 'A',
-				hint: 'In an ideal pulley, MA = VR = Load/Effort. Effort = Load/VR = 200/4 = 50N',
+				hint: 'Effort = Load/VR = 200/4 = 50N',
 				diagram: 'Pulley system with 4 ropes supporting the load',
 				topic: 'Mechanics',
 				subtopic: 'Machines',
@@ -870,7 +880,8 @@ export const QUIZ_DATA: QuizData = {
 			},
 			{
 				id: 'phys-2023-p1-q14',
-				question: 'A car travels around a circular track at constant speed. Which statement is TRUE?',
+				question:
+					'A car travels around a circular track at constant speed. Which statement is TRUE?',
 				options: [
 					{ id: 'A', text: 'Its velocity is changing' },
 					{ id: 'B', text: 'Its acceleration is zero' },
@@ -878,7 +889,7 @@ export const QUIZ_DATA: QuizData = {
 					{ id: 'D', text: 'Its speed is changing' },
 				],
 				correctAnswer: 'A',
-				hint: 'Constant speed but changing direction means velocity changes (vector). Therefore acceleration is non-zero (centripetal).',
+				hint: 'Constant speed but changing direction means velocity changes.',
 				diagram: 'Car on circular track with velocity and acceleration vectors',
 				topic: 'Kinematics',
 				subtopic: 'Circular Motion',
@@ -886,15 +897,16 @@ export const QUIZ_DATA: QuizData = {
 			},
 			{
 				id: 'phys-2023-p1-q15',
-				question: 'A roller coaster car (mass 500kg) goes through a loop. At the top of the loop (radius 20m), speed is 10m/s. What normal force acts on the car? (g = 10 m/s²)',
+				question:
+					'A roller coaster car (mass 500kg) goes through a loop. At the top of the loop (radius 20m), speed is 10m/s. What normal force acts on the car? (g = 10 m/s²)',
 				options: [
-					{ id: 'A', text: '2500 N' },
+					{ id: 'A', text: '0 N (loses contact)' },
 					{ id: 'B', text: '5000 N' },
 					{ id: 'C', text: '7500 N' },
 					{ id: 'D', text: '10000 N' },
 				],
 				correctAnswer: 'A',
-				hint: 'At top: N + mg = mv²/r. N = mv²/r - mg = 500×100/20 - 500×10 = 2500 - 5000 = -2500? Wait: 500×100/20 = 500×5 = 2500. N = 2500 - 5000 = -2500. Negative means no normal force - contact lost! If still in contact: v = √(gr) = √(10×20) = √200 ≈ 14.14 m/s needed. With 10 m/s, N = 500(100/20 - 10) = 500(5-10) = -2500N. So no contact - wait, let me use g=10: v²/r = 100/20 = 5 m/s², mg = 5000 N, centripetal needed = 2500 N. Since mg > centripetal, car stays on track. N = centripetal - mg? No: centripetal = N + mg pointing down. N = mv²/r - mg = 2500 - 5000 = -2500. Actually if negative, no normal force, car falls. But physically at low speed car might lose contact.',
+				hint: 'At top: N + mg = mv²/r. N = mv²/r - mg = 2500 - 5000 = -2500. So no contact.',
 				diagram: 'Roller coaster car at top of vertical loop',
 				topic: 'Kinematics',
 				subtopic: 'Circular Motion',
@@ -917,7 +929,8 @@ export const QUIZ_DATA: QuizData = {
 			},
 			{
 				id: 'phys-2023-p1-q17',
-				question: 'A projectile is fired at 45° with speed 20 m/s. What is its maximum height? (g = 10 m/s²)',
+				question:
+					'A projectile is fired at 45° with speed 20 m/s. What is its maximum height? (g = 10 m/s²)',
 				options: [
 					{ id: 'A', text: '10 m' },
 					{ id: 'B', text: '20 m' },
@@ -925,7 +938,7 @@ export const QUIZ_DATA: QuizData = {
 					{ id: 'D', text: '40 m' },
 				],
 				correctAnswer: 'A',
-				hint: 'At 45°, u_y = u sin45° = 20 × 0.707 = 14.14 m/s. H = u_y²/(2g) = 200/(20) = 10 m',
+				hint: 'u_y = u sin45° = 14.14 m/s. H = u_y²/(2g) = 200/20 = 10 m',
 				diagram: 'Projectile fired at 45° angle showing parabolic path',
 				topic: 'Kinematics',
 				subtopic: 'Projectiles',
@@ -933,30 +946,32 @@ export const QUIZ_DATA: QuizData = {
 			},
 			{
 				id: 'phys-2023-p1-q18',
-				question: 'A 2kg object moving at 5m/s is stopped by a constant force. The work done to stop it is -25J. What is the stopping force?',
+				question:
+					'A 2kg object moving at 5m/s is stopped by a constant force. The work done to stop it is -25J. What is the displacement while stopping?',
 				options: [
-					{ id: 'A', text: '10 N' },
-					{ id: 'B', text: '5 N' },
-					{ id: 'C', text: '25 N' },
-					{ id: 'D', text: '2.5 N' },
+					{ id: 'A', text: 'It depends on force' },
+					{ id: 'B', text: '5 m' },
+					{ id: 'C', text: '25 m' },
+					{ id: 'D', text: '2.5 m' },
 				],
 				correctAnswer: 'A',
-				hint: 'Initial KE = 1/2 mv^2 = 1/2 x 2 x 25 = 25J. Work = -Delta KE = -25J. Using v^2 = u^2 + 2as, find distance first, then use Work = Force x distance to find force.',
+				hint: 'Work = Force x displacement.',
 				topic: 'Mechanics',
 				subtopic: 'Work and Energy',
 				difficulty: 'hard',
 			},
 			{
 				id: 'phys-2023-p1-q19',
-				question: 'A satellite orbits Earth at 8km/s. What centripetal acceleration? (radius from Earth center = 7000km)',
+				question:
+					'A satellite orbits Earth at 8km/s. What centripetal acceleration? (radius = 7000km)',
 				options: [
-					{ id: 'A', text: '0.009 m/s²' },
-					{ id: 'B', text: '9.14 m/s²' },
+					{ id: 'A', text: '9.14 m/s²' },
+					{ id: 'B', text: '0.009 m/s²' },
 					{ id: 'C', text: '91.4 m/s²' },
 					{ id: 'D', text: '0.091 m/s²' },
 				],
-				correctAnswer: 'B',
-				hint: 'a = v²/r = (8000)² / (7×10⁶) = 64×10⁶ / 7×10⁶ = 9.14 m/s²',
+				correctAnswer: 'A',
+				hint: 'a = v²/r = (8000)² / (7×10⁶) ≈ 9.14 m/s²',
 				diagram: 'Satellite orbiting Earth showing centripetal acceleration',
 				topic: 'Kinematics',
 				subtopic: 'Orbital Motion',
@@ -1006,7 +1021,8 @@ export const QUIZ_DATA: QuizData = {
 			},
 			{
 				id: 'phys-2023-p2-q2',
-				question: 'Three resistors of 2Ω, 3Ω, and 6Ω are connected in parallel. What is the equivalent resistance?',
+				question:
+					'Three resistors of 2Ω, 3Ω, and 6Ω are connected in parallel. What is the equivalent resistance?',
 				options: [
 					{ id: 'A', text: '1 Ω' },
 					{ id: 'B', text: '11 Ω' },
@@ -1014,7 +1030,7 @@ export const QUIZ_DATA: QuizData = {
 					{ id: 'D', text: '5.5 Ω' },
 				],
 				correctAnswer: 'A',
-				hint: '1/R = 1/2 + 1/3 + 1/6 = 3/6 + 2/6 + 1/6 = 6/6 = 1. So R = 1Ω',
+				hint: '1/R = 1/2 + 1/3 + 1/6 = 1. So R = 1Ω',
 				diagram: 'Three resistors in parallel combination',
 				topic: 'Electricity',
 				subtopic: 'Parallel Circuits',
@@ -1030,7 +1046,7 @@ export const QUIZ_DATA: QuizData = {
 					{ id: 'D', text: '440 Ω' },
 				],
 				correctAnswer: 'A',
-				hint: 'P = V²/R, so R = V²/P = 220²/100 = 48400/100 = 484Ω',
+				hint: 'P = V²/R, so R = V²/P = 220²/100 = 484Ω',
 				topic: 'Electricity',
 				subtopic: 'Power',
 				difficulty: 'medium',
@@ -1052,7 +1068,8 @@ export const QUIZ_DATA: QuizData = {
 			},
 			{
 				id: 'phys-2023-p2-q5',
-				question: 'Light enters glass (n = 1.5) from air at 30° to the normal. What is the angle of refraction?',
+				question:
+					'Light enters glass (n = 1.5) from air at 30° to the normal. What is the angle of refraction?',
 				options: [
 					{ id: 'A', text: '19.5°' },
 					{ id: 'B', text: '45°' },
@@ -1060,7 +1077,7 @@ export const QUIZ_DATA: QuizData = {
 					{ id: 'D', text: '15°' },
 				],
 				correctAnswer: 'A',
-				hint: 'Using Snell\'s law: n₁ sinθ₁ = n₂ sinθ₂. 1×sin30° = 1.5×sinθ₂. sinθ₂ = 0.5/1.5 = 0.333. θ₂ = sin⁻¹(0.333) ≈ 19.5°',
+				hint: "Using Snell's law: n₁ sinθ₁ = n₂ sinθ₂. sinθ₂ = 0.5/1.5. θ₂ ≈ 19.5°",
 				diagram: 'Light ray entering glass at 30° showing refraction',
 				topic: 'Waves',
 				subtopic: 'Refraction',
@@ -1076,14 +1093,15 @@ export const QUIZ_DATA: QuizData = {
 					{ id: 'D', text: '0.33 W' },
 				],
 				correctAnswer: 'A',
-				hint: 'P = V²/R = 12²/4 = 144/4 = 36W',
+				hint: 'P = V²/R = 144/4 = 36W',
 				topic: 'Electricity',
 				subtopic: 'Power',
 				difficulty: 'easy',
 			},
 			{
 				id: 'phys-2023-p2-q7',
-				question: 'Two point charges of +2μC and -2μC are 0.1m apart. What is the force between them? (k = 9×10⁹ N·m²/C²)',
+				question:
+					'Two point charges of +2μC and -2μC are 0.1m apart. What is the force between them?',
 				options: [
 					{ id: 'A', text: '3.6 N (attractive)' },
 					{ id: 'B', text: '3.6 N (repulsive)' },
@@ -1091,15 +1109,16 @@ export const QUIZ_DATA: QuizData = {
 					{ id: 'D', text: '0.36 N (attractive)' },
 				],
 				correctAnswer: 'A',
-				hint: 'F = kq₁q₂/r² = 9×10⁹ × (2×10⁻⁶)² / (0.1)² = 9×10⁹ × 4×10⁻¹² / 0.01 = 36×10⁻³ / 0.01 = 3.6N. Since opposite charges, force is attractive.',
+				hint: 'F = kq₁q₂/r² = 3.6N.',
 				diagram: 'Two opposite point charges showing force direction',
 				topic: 'Electricity',
-				subtopic: 'Coulomb\'s Law',
+				subtopic: "Coulomb's Law",
 				difficulty: 'hard',
 			},
 			{
 				id: 'phys-2023-p2-q8',
-				question: 'A copper wire has resistance R. If its length is doubled and cross-section halved, what is the new resistance?',
+				question:
+					'A copper wire has resistance R. If its length is doubled and cross-section halved, what is the new resistance?',
 				options: [
 					{ id: 'A', text: '4R' },
 					{ id: 'B', text: 'R/4' },
@@ -1107,7 +1126,7 @@ export const QUIZ_DATA: QuizData = {
 					{ id: 'D', text: '2R' },
 				],
 				correctAnswer: 'A',
-				hint: 'R ∝ L/A. New R ∝ (2L)/(A/2) = 4L/A = 4R',
+				hint: 'R ∝ L/A. New R ∝ (2L)/(A/2) = 4R',
 				topic: 'Electricity',
 				subtopic: 'Resistance',
 				difficulty: 'medium',
@@ -1129,7 +1148,8 @@ export const QUIZ_DATA: QuizData = {
 			},
 			{
 				id: 'phys-2023-p2-q10',
-				question: 'A ray of light reflects off a mirror. If the angle of incidence is 30°, what is the angle between incident and reflected rays?',
+				question:
+					'A ray of light reflects off a mirror. If the angle of incidence is 30°, what is the angle between incident and reflected rays?',
 				options: [
 					{ id: 'A', text: '60°' },
 					{ id: 'B', text: '30°' },
@@ -1137,7 +1157,7 @@ export const QUIZ_DATA: QuizData = {
 					{ id: 'D', text: '120°' },
 				],
 				correctAnswer: 'A',
-				hint: 'Angle of incidence = angle of reflection = 30°. Total angle between rays = 30° + 30° = 60°',
+				hint: 'Angle of incidence = angle of reflection = 30°. Total = 60°',
 				diagram: 'Light ray reflecting off flat mirror showing angles',
 				topic: 'Waves',
 				subtopic: 'Reflection',
@@ -1153,14 +1173,15 @@ export const QUIZ_DATA: QuizData = {
 					{ id: 'D', text: '120 V' },
 				],
 				correctAnswer: 'A',
-				hint: 'V_rms = V_peak/√2 = 340/1.414 ≈ 240V',
+				hint: 'V_rms = V_peak/√2 ≈ 240V',
 				topic: 'Electricity',
 				subtopic: 'AC Circuits',
 				difficulty: 'medium',
 			},
 			{
 				id: 'phys-2023-p2-q12',
-				question: 'The critical angle for glass to air interface is 42°. What is the refractive index of glass?',
+				question:
+					'The critical angle for glass to air interface is 42°. What is the refractive index of glass?',
 				options: [
 					{ id: 'A', text: '1.48' },
 					{ id: 'B', text: '0.74' },
@@ -1168,7 +1189,7 @@ export const QUIZ_DATA: QuizData = {
 					{ id: 'D', text: '0.42' },
 				],
 				correctAnswer: 'A',
-				hint: 'n_glass = 1/sin(critical angle) = 1/sin42° = 1/0.669 = 1.494 ≈ 1.48',
+				hint: 'n_glass = 1/sin(critical angle) ≈ 1.48',
 				diagram: 'Light at critical angle in glass showing total internal reflection',
 				topic: 'Waves',
 				subtopic: 'Total Internal Reflection',
@@ -1176,7 +1197,8 @@ export const QUIZ_DATA: QuizData = {
 			},
 			{
 				id: 'phys-2023-p2-q13',
-				question: 'A transformer has 100 turns primary and 400 turns secondary. If primary voltage is 50V, secondary voltage is:',
+				question:
+					'A transformer has 100 turns primary and 400 turns secondary. If primary voltage is 50V, secondary voltage is:',
 				options: [
 					{ id: 'A', text: '200 V' },
 					{ id: 'B', text: '12.5 V' },
@@ -1184,7 +1206,7 @@ export const QUIZ_DATA: QuizData = {
 					{ id: 'D', text: '800 V' },
 				],
 				correctAnswer: 'A',
-				hint: 'V_s/V_p = N_s/N_p. V_s = 50 × (400/100) = 50 × 4 = 200V',
+				hint: 'V_s = V_p × (N_s/N_p) = 200V',
 				topic: 'Electricity',
 				subtopic: 'Transformers',
 				difficulty: 'medium',
@@ -1199,7 +1221,7 @@ export const QUIZ_DATA: QuizData = {
 					{ id: 'D', text: 'Becomes zero' },
 				],
 				correctAnswer: 'A',
-				hint: 'For conductors, resistance increases with temperature due to increased lattice vibrations.',
+				hint: 'Resistance increases with temperature for conductors.',
 				topic: 'Electricity',
 				subtopic: 'Temperature and Resistance',
 				difficulty: 'easy',
@@ -1230,14 +1252,15 @@ export const QUIZ_DATA: QuizData = {
 					{ id: 'D', text: 'Kinetic energy' },
 				],
 				correctAnswer: 'A',
-				hint: 'Capacitors store energy in the electric field between their plates.',
+				hint: 'Capacitors store energy in the electric field.',
 				topic: 'Electricity',
 				subtopic: 'Capacitors',
 				difficulty: 'easy',
 			},
 			{
 				id: 'phys-2023-p2-q17',
-				question: 'The frequency of the second harmonic of a string fixed at both ends is 100Hz. What is the fundamental frequency?',
+				question:
+					'The frequency of the second harmonic of a string fixed at both ends is 100Hz. What is the fundamental frequency?',
 				options: [
 					{ id: 'A', text: '50 Hz' },
 					{ id: 'B', text: '200 Hz' },
@@ -1245,7 +1268,7 @@ export const QUIZ_DATA: QuizData = {
 					{ id: 'D', text: '100 Hz' },
 				],
 				correctAnswer: 'A',
-				hint: 'f_n = n × f_1. For second harmonic, n=2. So f_1 = f_2/2 = 100/2 = 50Hz',
+				hint: 'f_n = n × f_1. So f_1 = 50Hz',
 				diagram: 'String showing first two harmonics',
 				topic: 'Waves',
 				subtopic: 'Standing Waves',
@@ -1261,7 +1284,7 @@ export const QUIZ_DATA: QuizData = {
 					{ id: 'D', text: '500 C' },
 				],
 				correctAnswer: 'A',
-				hint: 'Q = It = 5A × 10s = 50C',
+				hint: 'Q = It = 50C',
 				topic: 'Electricity',
 				subtopic: 'Current',
 				difficulty: 'easy',
@@ -1276,7 +1299,7 @@ export const QUIZ_DATA: QuizData = {
 					{ id: 'D', text: '1.67 × 10⁻¹⁵ Hz' },
 				],
 				correctAnswer: 'A',
-				hint: 'f = c/λ = 3×10⁸ / (500×10⁻⁹) = 3×10⁸ / 5×10⁻⁷ = 0.6×10¹⁵ = 6×10¹⁴ Hz',
+				hint: 'f = c/λ = 6×10¹⁴ Hz',
 				topic: 'Waves',
 				subtopic: 'Electromagnetic Waves',
 				difficulty: 'medium',
@@ -1291,7 +1314,7 @@ export const QUIZ_DATA: QuizData = {
 					{ id: 'D', text: 'Potential energy' },
 				],
 				correctAnswer: 'A',
-				hint: 'Inductors store energy in the magnetic field created by current flow.',
+				hint: 'Inductors store energy in the magnetic field.',
 				topic: 'Electricity',
 				subtopic: 'Inductors',
 				difficulty: 'easy',
@@ -1318,7 +1341,7 @@ export const QUIZ_DATA: QuizData = {
 					{ id: 'D', text: '18' },
 				],
 				correctAnswer: 'A',
-				hint: 'Electron configuration: 2, 8, 8, 2. Third shell (M) has 8 electrons.',
+				hint: 'Electron configuration: 2, 8, 8, 2.',
 				topic: 'Atomic Structure',
 				subtopic: 'Electron Configuration',
 				difficulty: 'easy',
@@ -1333,7 +1356,7 @@ export const QUIZ_DATA: QuizData = {
 					{ id: 'D', text: 'CH₄' },
 				],
 				correctAnswer: 'A',
-				hint: 'NaCl forms between metal (Na) and non-metal (Cl) - ionic bond. Others are covalent.',
+				hint: 'NaCl forms between metal and non-metal.',
 				topic: 'Chemical Bonding',
 				subtopic: 'Ionic Bonds',
 				difficulty: 'easy',
@@ -1348,7 +1371,7 @@ export const QUIZ_DATA: QuizData = {
 					{ id: 'D', text: '1' },
 				],
 				correctAnswer: 'A',
-				hint: 'Neutral solutions have equal [H⁺] and [OH⁻], pH = 7 at 25°C.',
+				hint: 'pH = 7 is neutral.',
 				topic: 'Acids and Bases',
 				subtopic: 'pH Scale',
 				difficulty: 'easy',
@@ -1363,7 +1386,7 @@ export const QUIZ_DATA: QuizData = {
 					{ id: 'D', text: '+2' },
 				],
 				correctAnswer: 'A',
-				hint: 'O is usually -2. Let C = x. x + 2(-2) = 0. x - 4 = 0. x = +4',
+				hint: 'O is -2. x + 2(-2) = 0.',
 				topic: 'Redox Reactions',
 				subtopic: 'Oxidation States',
 				difficulty: 'medium',
@@ -1378,7 +1401,7 @@ export const QUIZ_DATA: QuizData = {
 					{ id: 'D', text: 'Nitrogen' },
 				],
 				correctAnswer: 'A',
-				hint: 'Zn + 2HCl → ZnCl₂ + H₂↑ (hydrogen gas bubbles out)',
+				hint: 'Zn + 2HCl → ZnCl₂ + H₂↑',
 				diagram: 'Zinc metal reacting with acid in test tube with gas bubbles',
 				topic: 'Chemical Reactions',
 				subtopic: 'Metals and Acids',
@@ -1394,7 +1417,7 @@ export const QUIZ_DATA: QuizData = {
 					{ id: 'D', text: 'K₂MnO₃' },
 				],
 				correctAnswer: 'A',
-				hint: 'Potassium (K⁺) + permanganate (MnO₄⁻) → KMnO₄',
+				hint: 'K⁺ + MnO₄⁻ → KMnO₄',
 				topic: 'Chemical Formulas',
 				subtopic: 'Ionic Compounds',
 				difficulty: 'easy',
@@ -1409,7 +1432,7 @@ export const QUIZ_DATA: QuizData = {
 					{ id: 'D', text: 'No heat change' },
 				],
 				correctAnswer: 'A',
-				hint: 'Endothermic reactions absorb heat from surroundings (feels cold).',
+				hint: 'Endothermic reactions absorb heat.',
 				topic: 'Chemical Energy',
 				subtopic: 'Endothermic/Exothermic',
 				difficulty: 'easy',
@@ -1424,7 +1447,7 @@ export const QUIZ_DATA: QuizData = {
 					{ id: 'D', text: '33.3%' },
 				],
 				correctAnswer: 'A',
-				hint: 'Molar mass H₂O = 2(1) + 16 = 18g/mol. %O = 16/18 × 100 = 88.9%',
+				hint: '16/18 × 100 = 88.9%',
 				topic: 'Quantitative Chemistry',
 				subtopic: 'Percentage Composition',
 				difficulty: 'medium',
@@ -1439,7 +1462,7 @@ export const QUIZ_DATA: QuizData = {
 					{ id: 'D', text: 'Chlorine' },
 				],
 				correctAnswer: 'A',
-				hint: 'Fluorine (4.0) is the most electronegative element on the periodic table.',
+				hint: 'Fluorine is the most electronegative.',
 				topic: 'Periodic Table',
 				subtopic: 'Electronegativity',
 				difficulty: 'easy',
@@ -1454,7 +1477,7 @@ export const QUIZ_DATA: QuizData = {
 					{ id: 'D', text: '3, 2, 4' },
 				],
 				correctAnswer: 'A',
-				hint: 'Fe: 4 to 2x2. O: 3x2 = 6 to 2x3. Answer: 4Fe + 3O2 -> 2Fe2O3',
+				hint: 'Answer: 4Fe + 3O2 -> 2Fe2O3',
 				topic: 'Chemical Equations',
 				subtopic: 'Balancing',
 				difficulty: 'medium',
@@ -1463,704 +1486,459 @@ export const QUIZ_DATA: QuizData = {
 				id: 'chem-2023-p1-q11',
 				question: 'A catalyst works by:',
 				options: [
-	id: 'A', text
-	: '4, 3, 2'
-	,
-	id: 'B', text
-	: '2, 3, 1'
-	,
-	id: 'C', text
-	: '1, 1, 1'
-	,
-	id: 'D', text
-	: '3, 2, 4'
-	,
+					{ id: 'A', text: 'Lowering activation energy' },
+					{ id: 'B', text: 'Increasing activation energy' },
+					{ id: 'C', text: 'Changing the reaction products' },
+					{ id: 'D', text: 'Being consumed in reaction' },
 				],
 				correctAnswer: 'A',
-				hint: 'Fe: 4 → 2×2 ✓. O: 3×2 = 6 → 2×3 ✓. Answer: 4Fe + 3O₂ → 2Fe₂O₃',
-				topic: 'Chemical Equations',
-				subtopic: 'Balancing',
-				difficulty: 'medium',
-}
-,
-{
-	id: 'chem-2023-p1-q11', question;
-	: 'A catalyst works by:',
-				options: [
-	id: 'A', text
-	: 'Lowering activation energy'
-	,
-	id: 'B', text
-	: 'Increasing activation energy'
-	,
-	id: 'C', text
-	: 'Changing the reaction products'
-	,
-	id: 'D', text
-	: 'Being consumed in reaction'
-	,
-				],
-				correctAnswer: 'A',
-				hint: 'Catalysts provide alternative pathway with lower activation energy, speeding up reaction.',
+				hint: 'Catalysts provide alternative pathway with lower activation energy.',
 				topic: 'Chemical Kinetics',
 				subtopic: 'Catalysts',
 				difficulty: 'easy',
-}
-,
-{
-	id: 'chem-2023-p1-q12', question;
-	: 'How many moles are in 36g of water? (H=1, O=16)',
+			},
+			{
+				id: 'chem-2023-p1-q12',
+				question: 'How many moles are in 36g of water? (H=1, O=16)',
 				options: [
-	id: 'A', text
-	: '2 mol'
-	,
-	id: 'B', text
-	: '18 mol'
-	,
-	id: 'C', text
-	: '1 mol'
-	,
-	id: 'D', text
-	: '0.5 mol'
-	,
+					{ id: 'A', text: '2 mol' },
+					{ id: 'B', text: '18 mol' },
+					{ id: 'C', text: '1 mol' },
+					{ id: 'D', text: '0.5 mol' },
 				],
 				correctAnswer: 'A',
-				hint: 'Molar mass H₂O = 18g/mol. Moles = mass/molar mass = 36/18 = 2 mol',
+				hint: 'Moles = mass/molar mass = 36/18 = 2 mol',
 				topic: 'Quantitative Chemistry',
 				subtopic: 'Moles',
 				difficulty: 'medium',
-}
-,
-{
-	id: 'chem-2023-p1-q13', question;
-	: 'The particle that has the same number of electrons as Ca²⁺ is:',
+			},
+			{
+				id: 'chem-2023-p1-q13',
+				question: 'The particle that has the same number of electrons as Ca²⁺ is:',
 				options: [
-	id: 'A', text
-	: 'Ar'
-	,
-	id: 'B', text
-	: 'Na⁺'
-	,
-	id: 'C', text
-	: 'Cl⁻'
-	,
-	id: 'D', text
-	: 'Mg²⁺'
-	,
+					{ id: 'A', text: 'Ar' },
+					{ id: 'B', text: 'Na⁺' },
+					{ id: 'C', text: 'Cl⁻' },
+					{ id: 'D', text: 'Mg²⁺' },
 				],
 				correctAnswer: 'A',
-				hint: 'Ca (Z=20), Ca²⁺ has 18 electrons. Ar has atomic number 18 (18 electrons).',
+				hint: 'Ca²⁺ has 18 electrons. Ar has 18 electrons.',
 				topic: 'Atomic Structure',
 				subtopic: 'Ions',
 				difficulty: 'medium',
-}
-,
-{
-	id: 'chem-2023-p1-q14', question;
-	: 'Which type of reaction is: 2H₂ + O₂ → 2H₂O?',
+			},
+			{
+				id: 'chem-2023-p1-q14',
+				question: 'Which type of reaction is: 2H₂ + O₂ → 2H₂O?',
 				options: [
-	id: 'A', text
-	: 'Synthesis'
-	,
-	id: 'B', text
-	: 'Decomposition'
-	,
-	id: 'C', text
-	: 'Single replacement'
-	,
-	id: 'D', text
-	: 'Combustion'
-	,
+					{ id: 'A', text: 'Synthesis' },
+					{ id: 'B', text: 'Decomposition' },
+					{ id: 'C', text: 'Single replacement' },
+					{ id: 'D', text: 'Combustion' },
 				],
 				correctAnswer: 'A',
-				hint: 'Synthesis/combination: two or more reactants combine to form a single product.',
+				hint: 'Two reactants combine to form a single product.',
 				topic: 'Chemical Reactions',
 				subtopic: 'Reaction Types',
 				difficulty: 'easy',
-}
-,
-{
-	id: 'chem-2023-p1-q15', question;
-	: 'What is the shape of a molecule with 4 electron pairs around the central atom (tetrahedral arrangement)?',
+			},
+			{
+				id: 'chem-2023-p1-q15',
+				question: 'What is the shape of a molecule with 4 electron pairs around the central atom?',
 				options: [
-	id: 'A', text
-	: 'Tetrahedral'
-	,
-	id: 'B', text
-	: 'Linear'
-	,
-	id: 'C', text
-	: 'Trigonal planar'
-	,
-	id: 'D', text
-	: 'Bent'
-	,
+					{ id: 'A', text: 'Tetrahedral' },
+					{ id: 'B', text: 'Linear' },
+					{ id: 'C', text: 'Trigonal planar' },
+					{ id: 'D', text: 'Bent' },
 				],
 				correctAnswer: 'A',
-				hint: '4 bonding pairs with no lone pairs → tetrahedral geometry (109.5°)',
+				hint: '4 bonding pairs → tetrahedral geometry.',
 				diagram: 'Methane molecule showing tetrahedral shape',
 				topic: 'Chemical Bonding',
 				subtopic: 'VSEPR Theory',
 				difficulty: 'medium',
-}
-,
-{
-	id: 'chem-2023-p1-q16', question;
-	: 'In electrolysis of water, what volumes of H₂ and O₂ are produced?',
+			},
+			{
+				id: 'chem-2023-p1-q16',
+				question: 'In electrolysis of water, what volumes of H₂ and O₂ are produced?',
 				options: [
-	id: 'A', text
-	: '2:1 ratio'
-	,
-	id: 'B', text
-	: '1:2 ratio'
-	,
-	id: 'C', text
-	: '1:1 ratio'
-	,
-	id: 'D', text
-	: '1:8 ratio'
-	,
+					{ id: 'A', text: '2:1 ratio' },
+					{ id: 'B', text: '1:2 ratio' },
+					{ id: 'C', text: '1:1 ratio' },
+					{ id: 'D', text: '1:8 ratio' },
 				],
 				correctAnswer: 'A',
-				hint: '2H₂O → 2H₂ + O₂. For every 2 volumes H₂, 1 volume O₂ is produced (2:1).',
+				hint: '2H₂O → 2H₂ + O₂.',
 				diagram: 'Electrolysis of water showing gas collection',
 				topic: 'Electrochemistry',
 				subtopic: 'Electrolysis',
 				difficulty: 'medium',
-}
-,
-{
-	id: 'chem-2023-p1-q17', question;
-	: 'A solution with pH 4 has [H⁺] of:',
+			},
+			{
+				id: 'chem-2023-p1-q17',
+				question: 'A solution with pH 4 has [H⁺] of:',
 				options: [
-	id: 'A', text
-	: '1×10⁻⁴ M'
-	,
-	id: 'B', text
-	: '1×10⁻⁷ M'
-	,
-	id: 'C', text
-	: '1×10⁻¹⁰ M'
-	,
-	id: 'D', text
-	: '4 M'
-	,
+					{ id: 'A', text: '1×10⁻⁴ M' },
+					{ id: 'B', text: '1×10⁻⁷ M' },
+					{ id: 'C', text: '1×10⁻¹⁰ M' },
+					{ id: 'D', text: '4 M' },
 				],
 				correctAnswer: 'A',
-				hint: 'pH = -log[H⁺]. So [H⁺] = 10^(-pH) = 10^(-4) = 1×10⁻⁴ M',
+				hint: '[H⁺] = 10^(-pH).',
 				topic: 'Acids and Bases',
 				subtopic: 'pH Calculations',
 				difficulty: 'medium',
-}
-,
-{
-	id: 'chem-2023-p1-q18', question;
-	: 'Which gas turns moist litmus paper blue?',
+			},
+			{
+				id: 'chem-2023-p1-q18',
+				question: 'Which gas turns moist litmus paper blue?',
 				options: [
-	id: 'A', text
-	: 'Ammonia'
-	,
-	id: 'B', text
-	: 'Hydrogen chloride'
-	,
-	id: 'C', text
-	: 'Carbon dioxide'
-	,
-	id: 'D', text
-	: 'Oxygen'
-	,
+					{ id: 'A', text: 'Ammonia' },
+					{ id: 'B', text: 'Hydrogen chloride' },
+					{ id: 'C', text: 'Carbon dioxide' },
+					{ id: 'D', text: 'Oxygen' },
 				],
 				correctAnswer: 'A',
-				hint: 'Ammonia (NH₃) is a base, turns red litmus blue.',
+				hint: 'Ammonia is a base.',
 				topic: 'Acids and Bases',
 				subtopic: 'Indicators',
 				difficulty: 'easy',
-}
-,
-{
-	id: 'chem-2023-p1-q19', question;
-	: 'The rate of a reaction doubles when temperature increases by 10°C. This is due to:',
+			},
+			{
+				id: 'chem-2023-p1-q19',
+				question:
+					'The rate of a reaction doubles when temperature increases by 10°C. This is due to:',
 				options: [
-	id: 'A', text
-	: 'More particles with activation energy'
-	,
-	id: 'B', text
-	: 'Lower activation energy'
-	,
-	id: 'C', text
-	: 'Decreased collision frequency'
-	,
-	id: 'D', text
-	: 'Catalyst presence'
-	,
+					{ id: 'A', text: 'More particles with activation energy' },
+					{ id: 'B', text: 'Lower activation energy' },
+					{ id: 'C', text: 'Decreased collision frequency' },
+					{ id: 'D', text: 'Catalyst presence' },
 				],
 				correctAnswer: 'A',
-				hint: 'Higher temperature increases kinetic energy, more molecules have energy ≥ Eₐ, more effective collisions.',
+				hint: 'Higher temperature increases kinetic energy.',
 				topic: 'Chemical Kinetics',
 				subtopic: 'Temperature and Rate',
 				difficulty: 'medium',
-}
-,
-{
-	id: 'chem-2023-p1-q20', question;
-	: 'In a redox reaction, the oxidizing agent is the substance that:',
+			},
+			{
+				id: 'chem-2023-p1-q20',
+				question: 'In a redox reaction, the oxidizing agent is the substance that:',
 				options: [
-	id: 'A', text
-	: 'Gains electrons'
-	,
-	id: 'B', text
-	: 'Loses electrons'
-	,
-	id: 'C', text
-	: 'Gains oxygen'
-	,
-	id: 'D', text
-	: 'Loses oxygen'
-	,
+					{ id: 'A', text: 'Gains electrons' },
+					{ id: 'B', text: 'Loses electrons' },
+					{ id: 'C', text: 'Gains oxygen' },
+					{ id: 'D', text: 'Loses oxygen' },
 				],
 				correctAnswer: 'A',
-				hint: 'Oxidizing agent ACCEPT electrons (is reduced) and causes oxidation of another substance.',
+				hint: 'Oxidizing agent ACCEPT electrons (is reduced).',
 				topic: 'Redox Reactions',
 				subtopic: 'Oxidizing Agents',
 				difficulty: 'medium',
-}
-,
+			},
 		],
 	},
 	// ============================================================================
 	// LIFE SCIENCES - Paper 1 (Human Systems, Genetics)
 	// ============================================================================
-	'life-p1-2023-nov':
-{
-	title: 'NSC Life Sciences P1 November 2023', subject;
-	: 'Life Sciences',
+	'life-p1-2023-nov': {
+		title: 'NSC Life Sciences P1 November 2023',
+		subject: 'Life Sciences',
 		year: 2023,
 		session: 'November',
 		paper: 1,
 		questions: [
-	id: 'life-2023-p1-q1', question
-	: 'Which organelle is responsible for cellular respiration?',
+			{
+				id: 'life-2023-p1-q1',
+				question: 'Which organelle is responsible for cellular respiration?',
 				options: [
-	id: 'A', text
-	: 'Mitochondria'
-	,
-	id: 'B', text
-	: 'Ribosome'
-	,
-	id: 'C', text
-	: 'Nucleus'
-	,
-	id: 'D', text
-	: 'Chloroplast'
-	,
+					{ id: 'A', text: 'Mitochondria' },
+					{ id: 'B', text: 'Ribosome' },
+					{ id: 'C', text: 'Nucleus' },
+					{ id: 'D', text: 'Chloroplast' },
 				],
 				correctAnswer: 'A',
-				hint: 'Mitochondria are the "powerhouses" of the cell, producing ATP through respiration.',
+				hint: 'Mitochondria produce ATP through respiration.',
 				diagram: 'Animal cell showing mitochondria location',
 				topic: 'Cell Biology',
 				subtopic: 'Organelles',
 				difficulty: 'easy',
-	,
-	id: 'life-2023-p1-q2', question
-	: 'DNA replication occurs during which phase of the cell cycle?',
+			},
+			{
+				id: 'life-2023-p1-q2',
+				question: 'DNA replication occurs during which phase of the cell cycle?',
 				options: [
-	id: 'A', text
-	: 'S phase of interphase'
-	,
-	id: 'B', text
-	: 'Prophase'
-	,
-	id: 'C', text
-	: 'Metaphase'
-	,
-	id: 'D', text
-	: 'Cytokinesis'
-	,
+					{ id: 'A', text: 'S phase of interphase' },
+					{ id: 'B', text: 'Prophase' },
+					{ id: 'C', text: 'Metaphase' },
+					{ id: 'D', text: 'Cytokinesis' },
 				],
 				correctAnswer: 'A',
-				hint: 'DNA replicates during the S (synthesis) phase of interphase, before mitosis.',
+				hint: 'DNA replicates during the S (synthesis) phase.',
 				topic: 'Cell Biology',
 				subtopic: 'Cell Division',
 				difficulty: 'medium',
-	,
-	id: 'life-2023-p1-q3', question
-	: 'The basic structural unit of life is the:',
+			},
+			{
+				id: 'life-2023-p1-q3',
+				question: 'The basic structural unit of life is the:',
 				options: [
-	id: 'A', text
-	: 'Cell'
-	,
-	id: 'B', text
-	: 'Tissue'
-	,
-	id: 'C', text
-	: 'Organ'
-	,
-	id: 'D', text
-	: 'Atom'
-	,
+					{ id: 'A', text: 'Cell' },
+					{ id: 'B', text: 'Tissue' },
+					{ id: 'C', text: 'Organ' },
+					{ id: 'D', text: 'Atom' },
 				],
 				correctAnswer: 'A',
-				hint: 'The cell is the smallest unit that can carry out all life processes independently.',
+				hint: 'The cell is the smallest unit of life.',
 				topic: 'Cell Biology',
 				subtopic: 'Cell Theory',
 				difficulty: 'easy',
-	,
-	id: 'life-2023-p1-q4', question
-	: 'Which blood vessels carry blood away from the heart?',
+			},
+			{
+				id: 'life-2023-p1-q4',
+				question: 'Which blood vessels carry blood away from the heart?',
 				options: [
-	id: 'A', text
-	: 'Arteries'
-	,
-	id: 'B', text
-	: 'Veins'
-	,
-	id: 'C', text
-	: 'Capillaries'
-	,
-	id: 'D', text
-	: 'Lymph vessels'
-	,
+					{ id: 'A', text: 'Arteries' },
+					{ id: 'B', text: 'Veins' },
+					{ id: 'C', text: 'Capillaries' },
+					{ id: 'D', text: 'Lymph vessels' },
 				],
 				correctAnswer: 'A',
-				hint: 'Arteries carry oxygenated blood AWAY from the heart (except pulmonary artery).',
+				hint: 'Arteries carry blood AWAY.',
 				diagram: 'Heart and blood vessels showing arterial system',
 				topic: 'Human Biology',
 				subtopic: 'Circulatory System',
 				difficulty: 'easy',
-	,
-	id: 'life-2023-p1-q5', question
-	: 'In meiosis, what is reduced:',
+			},
+			{
+				id: 'life-2023-p1-q5',
+				question: 'In meiosis, what is reduced:',
 				options: [
-	id: 'A', text
-	: 'Chromosome number'
-	,
-	id: 'B', text
-	: 'DNA content'
-	,
-	id: 'C', text
-	: 'Cell size'
-	,
-	id: 'D', text
-	: 'Nucleus number'
-	,
+					{ id: 'A', text: 'Chromosome number' },
+					{ id: 'B', text: 'DNA content' },
+					{ id: 'C', text: 'Cell size' },
+					{ id: 'D', text: 'Nucleus number' },
 				],
 				correctAnswer: 'A',
-				hint: 'Meiosis reduces chromosome number by half (from diploid to haploid) to produce gametes.',
+				hint: 'Meiosis reduces chromosome number by half.',
 				topic: 'Cell Biology',
 				subtopic: 'Meiosis',
 				difficulty: 'medium',
-	,
-	id: 'life-2023-p1-q6', question
-	: 'Which nitrogenous base is NOT found in DNA?',
+			},
+			{
+				id: 'life-2023-p1-q6',
+				question: 'Which nitrogenous base is NOT found in DNA?',
 				options: [
-	id: 'A', text
-	: 'Uracil'
-	,
-	id: 'B', text
-	: 'Adenine'
-	,
-	id: 'C', text
-	: 'Guanine'
-	,
-	id: 'D', text
-	: 'Cytosine'
-	,
+					{ id: 'A', text: 'Uracil' },
+					{ id: 'B', text: 'Adenine' },
+					{ id: 'C', text: 'Guanine' },
+					{ id: 'D', text: 'Cytosine' },
 				],
 				correctAnswer: 'A',
-				hint: 'DNA contains A, T, G, C. Uracil (U) is found in RNA, replacing Thymine (T).',
+				hint: 'Uracil is found in RNA.',
 				topic: 'Genetics',
 				subtopic: 'DNA Structure',
 				difficulty: 'easy',
-	,
-	id: 'life-2023-p1-q7', question
-	: 'The largest organ in the human body is the:',
+			},
+			{
+				id: 'life-2023-p1-q7',
+				question: 'The largest organ in the human body is the:',
 				options: [
-	id: 'A', text
-	: 'Skin'
-	,
-	id: 'B', text
-	: 'Liver'
-	,
-	id: 'C', text
-	: 'Brain'
-	,
-	id: 'D', text
-	: 'Lungs'
-	,
+					{ id: 'A', text: 'Skin' },
+					{ id: 'B', text: 'Liver' },
+					{ id: 'C', text: 'Brain' },
+					{ id: 'D', text: 'Lungs' },
 				],
 				correctAnswer: 'A',
-				hint: 'Skin (integumentary system) is the largest organ by surface area.',
+				hint: 'Skin is the largest organ.',
 				topic: 'Human Biology',
 				subtopic: 'Organs',
 				difficulty: 'easy',
-	,
-	id: 'life-2023-p1-q8', question
-	: 'During photosynthesis, oxygen is released from:',
+			},
+			{
+				id: 'life-2023-p1-q8',
+				question: 'During photosynthesis, oxygen is released from:',
 				options: [
-	id: 'A', text
-	: 'Water (photolysis)'
-	,
-	id: 'B', text
-	: 'Carbon dioxide'
-	,
-	id: 'C', text
-	: 'Glucose'
-	,
-	id: 'D', text
-	: 'Chlorophyll'
-	,
+					{ id: 'A', text: 'Water (photolysis)' },
+					{ id: 'B', text: 'Carbon dioxide' },
+					{ id: 'C', text: 'Glucose' },
+					{ id: 'D', text: 'Chlorophyll' },
 				],
 				correctAnswer: 'A',
-				hint: 'Photolysis of water in light reactions splits H₂O → O₂ + H⁺ + e⁻',
+				hint: 'Photolysis of water splits H₂O.',
 				diagram: 'Chloroplast showing light reactions location',
 				topic: 'Plant Biology',
 				subtopic: 'Photosynthesis',
 				difficulty: 'medium',
-	,
-	id: 'life-2023-p1-q9', question
-	: 'A person with blood type AB can receive blood from:',
+			},
+			{
+				id: 'life-2023-p1-q9',
+				question: 'A person with blood type AB can receive blood from:',
 				options: [
-	id: 'A', text
-	: 'All blood types'
-	,
-	id: 'B', text
-	: 'Only AB'
-	,
-	id: 'C', text
-	: 'Only O'
-	,
-	id: 'D', text
-	: 'A and B only'
-	,
+					{ id: 'A', text: 'All blood types' },
+					{ id: 'B', text: 'Only AB' },
+					{ id: 'C', text: 'Only O' },
+					{ id: 'D', text: 'A and B only' },
 				],
 				correctAnswer: 'A',
-				hint: 'AB is universal recipient - has both A and B antigens, no anti-A or anti-B antibodies.',
+				hint: 'AB is universal recipient.',
 				topic: 'Human Biology',
 				subtopic: 'Blood Types',
 				difficulty: 'medium',
-	,
-	id: 'life-2023-p1-q10', question
-	: 'The process where plants lose water vapor is called:',
+			},
+			{
+				id: 'life-2023-p1-q10',
+				question: 'The process where plants lose water vapor is called:',
 				options: [
-	id: 'A', text
-	: 'Transpiration'
-	,
-	id: 'B', text
-	: 'Respiration'
-	,
-	id: 'C', text
-	: 'Photosynthesis'
-	,
-	id: 'D', text
-	: 'Diffusion'
-	,
+					{ id: 'A', text: 'Transpiration' },
+					{ id: 'B', text: 'Respiration' },
+					{ id: 'C', text: 'Photosynthesis' },
+					{ id: 'D', text: 'Diffusion' },
 				],
 				correctAnswer: 'A',
-				hint: 'Transpiration is water loss from stomata, driving water uptake in plants.',
+				hint: 'Transpiration is water loss from stomata.',
 				topic: 'Plant Biology',
 				subtopic: 'Water Movement',
 				difficulty: 'easy',
-	,
-	id: 'life-2023-p1-q11', question
-	: 'Which type of white blood cell produces antibodies?',
+			},
+			{
+				id: 'life-2023-p1-q11',
+				question: 'Which type of white blood cell produces antibodies?',
 				options: [
-	id: 'A', text
-	: 'B lymphocytes'
-	,
-	id: 'B', text
-	: 'T lymphocytes'
-	,
-	id: 'C', text
-	: 'Neutrophils'
-	,
-	id: 'D', text
-	: 'Erythrocytes'
-	,
+					{ id: 'A', text: 'B lymphocytes' },
+					{ id: 'B', text: 'T lymphocytes' },
+					{ id: 'C', text: 'Neutrophils' },
+					{ id: 'D', text: 'Erythrocytes' },
 				],
 				correctAnswer: 'A',
-				hint: 'B-cells (B lymphocytes) mature into plasma cells that produce antibodies.',
+				hint: 'B lymphocytes produce antibodies.',
 				topic: 'Human Biology',
 				subtopic: 'Immune System',
 				difficulty: 'medium',
-	,
-	id: 'life-2023-p1-q12', question
-	: 'In genetics, codominance occurs when:',
+			},
+			{
+				id: 'life-2023-p1-q12',
+				question: 'In genetics, codominance occurs when:',
 				options: [
-	id: 'A', text
-	: 'Both alleles are expressed'
-	,
-	id: 'B', text
-	: 'One allele masks the other'
-	,
-	id: 'C', text
-	: 'Alleles blend'
-	,
-	id: 'D', text
-	: 'Only one allele is inherited'
-	,
+					{ id: 'A', text: 'Both alleles are expressed' },
+					{ id: 'B', text: 'One allele masks the other' },
+					{ id: 'C', text: 'Alleles blend' },
+					{ id: 'D', text: 'Only one allele is inherited' },
 				],
 				correctAnswer: 'A',
-				hint: 'Codominance: both alleles show in phenotype (e.g., AB blood type).',
+				hint: 'Codominance: both alleles show in phenotype.',
 				diagram: 'Codominance example with flower colors',
 				topic: 'Genetics',
 				subtopic: 'Inheritance Patterns',
 				difficulty: 'medium',
-	,
-	id: 'life-2023-p1-q13', question
-	: 'The pancreas produces which hormone?',
+			},
+			{
+				id: 'life-2023-p1-q13',
+				question: 'The pancreas produces which hormone?',
 				options: [
-	id: 'A', text
-	: 'Insulin'
-	,
-	id: 'B', text
-	: 'Adrenaline'
-	,
-	id: 'C', text
-	: 'Thyroxine'
-	,
-	id: 'D', text
-	: 'Cortisol'
-	,
+					{ id: 'A', text: 'Insulin' },
+					{ id: 'B', text: 'Adrenaline' },
+					{ id: 'C', text: 'Thyroxine' },
+					{ id: 'D', text: 'Cortisol' },
 				],
 				correctAnswer: 'A',
-				hint: 'Pancreas produces insulin (lowers blood sugar) and glucagon (raises blood sugar).',
+				hint: 'Pancreas produces insulin.',
 				topic: 'Human Biology',
 				subtopic: 'Endocrine System',
 				difficulty: 'easy',
-	,
-	id: 'life-2023-p1-q14', question
-	: 'What is the function of the kidneys?',
+			},
+			{
+				id: 'life-2023-p1-q14',
+				question: 'What is the function of the kidneys?',
 				options: [
-	id: 'A', text
-	: 'Filter blood and produce urine'
-	,
-	id: 'B', text
-	: 'Digest food'
-	,
-	id: 'C', text
-	: 'Pump blood'
-	,
-	id: 'D', text
-	: 'Produce bile'
-	,
+					{ id: 'A', text: 'Filter blood and produce urine' },
+					{ id: 'B', text: 'Digest food' },
+					{ id: 'C', text: 'Pump blood' },
+					{ id: 'D', text: 'Produce bile' },
 				],
 				correctAnswer: 'A',
-				hint: 'Kidneys filter blood, remove wastes, regulate water balance, produce urine.',
+				hint: 'Kidneys filter blood.',
 				topic: 'Human Biology',
 				subtopic: 'Excretory System',
 				difficulty: 'easy',
-	,
-	id: 'life-2023-p1-q15', question
-	: 'If a heterozygous tall plant (Tt) is crossed with a homozygous short plant (tt), what phenotypic ratio is expected?',
+			},
+			{
+				id: 'life-2023-p1-q15',
+				question:
+					'If a heterozygous tall plant (Tt) is crossed with a homozygous short plant (tt), what phenotypic ratio is expected?',
 				options: [
-	id: 'A', text
-	: '1:1 (tall:short)'
-	,
-	id: 'B', text
-	: '3:1 (tall:short)'
-	,
-	id: 'C', text
-	: 'All tall'
-	,
-	id: 'D', text
-	: 'All short'
-	,
+					{ id: 'A', text: '1:1 (tall:short)' },
+					{ id: 'B', text: '3:1 (tall:short)' },
+					{ id: 'C', text: 'All tall' },
+					{ id: 'D', text: 'All short' },
 				],
 				correctAnswer: 'A',
-				hint: 'Tt × tt → Tt, Tt, tt, tt (50% tall, 50% short)',
+				hint: 'Tt × tt → 50% tall, 50% short.',
 				diagram: 'Punnett square showing Tt x tt cross',
 				topic: 'Genetics',
 				subtopic: 'Monohybrid Cross',
 				difficulty: 'medium',
-	,
-	id: 'life-2023-p1-q16', question
-	: 'Which gas do plants need for photosynthesis?',
+			},
+			{
+				id: 'life-2023-p1-q16',
+				question: 'Which gas do plants need for photosynthesis?',
 				options: [
-	id: 'A', text
-	: 'Carbon dioxide'
-	,
-	id: 'B', text
-	: 'Oxygen'
-	,
-	id: 'C', text
-	: 'Nitrogen'
-	,
-	id: 'D', text
-	: 'Hydrogen'
-	,
+					{ id: 'A', text: 'Carbon dioxide' },
+					{ id: 'B', text: 'Oxygen' },
+					{ id: 'C', text: 'Nitrogen' },
+					{ id: 'D', text: 'Hydrogen' },
 				],
 				correctAnswer: 'A',
-				hint: 'Plants use CO₂ in Calvin cycle to make glucose: 6CO₂ + 6H₂O → C₆H₁₂O₆ + 6O₂',
+				hint: 'Plants use CO₂.',
 				topic: 'Plant Biology',
 				subtopic: 'Photosynthesis',
 				difficulty: 'easy',
-	,
-	id: 'life-2023-p1-q17', question
-	: 'The part of the brain that controls balance and coordination is the:',
+			},
+			{
+				id: 'life-2023-p1-q17',
+				question: 'The part of the brain that controls balance and coordination is the:',
 				options: [
-	id: 'A', text
-	: 'Cerebellum'
-	,
-	id: 'B', text
-	: 'Cerebrum'
-	,
-	id: 'C', text
-	: 'Medulla oblongata'
-	,
-	id: 'D', text
-	: 'Hypothalamus'
-	,
+					{ id: 'A', text: 'Cerebellum' },
+					{ id: 'B', text: 'Cerebrum' },
+					{ id: 'C', text: 'Medulla oblongata' },
+					{ id: 'D', text: 'Hypothalamus' },
 				],
 				correctAnswer: 'A',
-				hint: 'Cerebellum coordinates voluntary movements and maintains balance.',
+				hint: 'Cerebellum coordinates movements.',
 				topic: 'Human Biology',
 				subtopic: 'Nervous System',
 				difficulty: 'medium',
-	,
-	id: 'life-2023-p1-q18', question
-	: 'Evolution occurs through:',
+			},
+			{
+				id: 'life-2023-p1-q18',
+				question: 'Evolution occurs through:',
 				options: [
-	id: 'A', text
-	: 'Natural selection'
-	,
-	id: 'B', text
-	: 'Artificial selection'
-	,
-	id: 'C', text
-	: 'Selective breeding'
-	,
-	id: 'D', text
-	: 'Genetic engineering'
-	,
+					{ id: 'A', text: 'Natural selection' },
+					{ id: 'B', text: 'Artificial selection' },
+					{ id: 'C', text: 'Selective breeding' },
+					{ id: 'D', text: 'Genetic engineering' },
 				],
 				correctAnswer: 'A',
-				hint: 'Natural selection: individuals with favorable traits survive and reproduce more.',
+				hint: 'Natural selection.',
 				topic: 'Evolution',
 				subtopic: 'Natural Selection',
 				difficulty: 'easy',
-	,
-	id: 'life-2023-p1-q19', question
-	: 'Which organelle is found in plant cells but NOT in animal cells?',
+			},
+			{
+				id: 'life-2023-p1-q19',
+				question: 'Which organelle is found in plant cells but NOT in animal cells?',
 				options: [
-	id: 'A', text
-	: 'Chloroplast'
-	,
-	id: 'B', text
-	: 'Mitochondria'
-	,
-	id: 'C', text
-	: 'Nucleus'
-	,
-	id: 'D', text
-	: 'Ribosome'
-	,
+					{ id: 'A', text: 'Chloroplast' },
+					{ id: 'B', text: 'Mitochondria' },
+					{ id: 'C', text: 'Nucleus' },
+					{ id: 'D', text: 'Ribosome' },
 				],
 				correctAnswer: 'A',
-				hint: 'Chloroplasts contain chlorophyll for photosynthesis - only in photosynthetic organisms.',
+				hint: 'Chloroplasts contain chlorophyll.',
 				diagram: 'Plant cell showing chloroplast',
 				topic: 'Cell Biology',
 				subtopic: 'Cell Differences',
 				difficulty: 'easy',
+			},
 			{
 				id: 'life-2023-p1-q20',
 				question: 'During inhalation, the diaphragm:',
@@ -2171,7 +1949,7 @@ export const QUIZ_DATA: QuizData = {
 					{ id: 'D', text: 'Expands to fill with blood' },
 				],
 				correctAnswer: 'A',
-				hint: 'Diaphragm contracts → moves down → increases thoracic volume → air rushes in.',
+				hint: 'Diaphragm contracts and moves down.',
 				diagram: 'Diaphragm position during inhalation vs exhalation',
 				topic: 'Human Biology',
 				subtopic: 'Respiratory System',
@@ -2191,7 +1969,8 @@ export const QUIZ_DATA: QuizData = {
 		questions: [
 			{
 				id: 'math-seq-q1',
-				question: 'The first three terms of an arithmetic sequence are 2x + 1; 4x; and 5x + 3. Calculate the value of x.',
+				question:
+					'The first three terms of an arithmetic sequence are 2x + 1; 4x; and 5x + 3. Calculate the value of x.',
 				options: [
 					{ id: 'A', text: '4' },
 					{ id: 'B', text: '3' },
@@ -2221,7 +2000,8 @@ export const QUIZ_DATA: QuizData = {
 			},
 			{
 				id: 'phys-mom-q1',
-				question: 'A car of mass m moving at velocity v stops in time t when the brakes are applied. Which expression represents the magnitude of the average net force?',
+				question:
+					'A car of mass m moving at velocity v stops in time t when the brakes are applied. Which expression represents the magnitude of the average net force?',
 				options: [
 					{ id: 'A', text: 'mv/t' },
 					{ id: 'B', text: 'mvt' },
@@ -2236,7 +2016,8 @@ export const QUIZ_DATA: QuizData = {
 			},
 			{
 				id: 'phys-mom-q2',
-				question: 'In a collision between two trolleys, the total kinetic energy before is 50J and after is 42J. Is this collision elastic or inelastic?',
+				question:
+					'In a collision between two trolleys, the total kinetic energy before is 50J and after is 42J. Is this collision elastic or inelastic?',
 				options: [
 					{ id: 'A', text: 'Inelastic' },
 					{ id: 'B', text: 'Elastic' },
@@ -2298,7 +2079,7 @@ export const QUIZ_DATA: QuizData = {
 					{ id: 'A', text: 'To show historical changes in cash and equivalents' },
 					{ id: 'B', text: 'To calculate the net profit for the year' },
 					{ id: 'C', text: 'To list all fixed assets of the company' },
-					{ id: 'D', text: 'To record the owner\'s personal expenses' },
+					{ id: 'D', text: "To record the owner's personal expenses" },
 				],
 				correctAnswer: 'A',
 				hint: 'It classifies cash flows into operating, investing, and financing activities.',
@@ -2326,8 +2107,14 @@ export const QUIZ_DATA: QuizData = {
 				id: 'bs-q1',
 				question: 'Distinguish between Autocratic and Democratic leadership styles.',
 				options: [
-					{ id: 'A', text: 'Autocratic makes decisions alone; Democratic encourages participation' },
-					{ id: 'B', text: 'Democratic makes decisions alone; Autocratic encourages participation' },
+					{
+						id: 'A',
+						text: 'Autocratic makes decisions alone; Democratic encourages participation',
+					},
+					{
+						id: 'B',
+						text: 'Democratic makes decisions alone; Autocratic encourages participation',
+					},
 					{ id: 'C', text: 'Both involve consulting all staff equally' },
 					{ id: 'D', text: 'Neither involves making final decisions' },
 				],
@@ -2351,7 +2138,7 @@ export const QUIZ_DATA: QuizData = {
 				topic: 'History',
 				subtopic: 'South African History',
 				difficulty: 'medium',
-			}
+			},
 		],
 	},
 };

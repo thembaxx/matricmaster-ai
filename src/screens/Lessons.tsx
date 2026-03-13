@@ -14,6 +14,7 @@ import {
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { useEffect, useState } from 'react';
+import { TTSButton } from '@/components/Lessons/TTSButton';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -307,6 +308,10 @@ export default function Lessons() {
 												<h3 className="text-xl font-bold text-foreground leading-tight">
 													{lesson.title}
 												</h3>
+
+												<div className="pt-2">
+													<TTSButton text={`${lesson.title}. ${lesson.content.slice(0, 200)}`} />
+												</div>
 
 												{lesson.progress !== undefined ? (
 													<div className="flex items-center gap-3 pt-2">

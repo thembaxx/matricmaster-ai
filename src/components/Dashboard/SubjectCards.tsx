@@ -142,8 +142,8 @@ export function SubjectCards() {
 							className="relative w-full max-w-2xl bg-card rounded-xl shadow-tiimo-lg overflow-hidden pointer-events-auto border border-border/50"
 						>
 							{/* Tiimo Vertical Strip in Modal */}
-							<div className={cn("tiimo-timeline-strip w-3", selectedSubject.bgColor)} />
-							
+							<div className={cn('tiimo-timeline-strip w-3', selectedSubject.bgColor)} />
+
 							<div className="p-8 sm:p-10 flex flex-col gap-8 pl-12">
 								<div className="flex justify-between items-start">
 									<div className="flex items-center gap-4">
@@ -194,14 +194,18 @@ export function SubjectCards() {
 									<Card className="p-6 rounded-md bg-secondary/50 border-none shadow-none">
 										<div className="flex items-center gap-3 mb-2">
 											<HugeiconsIcon icon={Refresh01Icon} className="h-5 w-5 text-tiimo-lavender" />
-											<span className="text-[10px] font-black uppercase tracking-widest text-tiimo-gray-muted">Last Study</span>
+											<span className="text-[10px] font-black uppercase tracking-widest text-tiimo-gray-muted">
+												Last Study
+											</span>
 										</div>
 										<p className="text-xl font-bold text-foreground">2 Days Ago</p>
 									</Card>
 									<Card className="p-6 rounded-md bg-secondary/50 border-none shadow-none">
 										<div className="flex items-center gap-3 mb-2">
 											<HugeiconsIcon icon={ChartBar} className="h-5 w-5 text-tiimo-green" />
-											<span className="text-[10px] font-black uppercase tracking-widest text-tiimo-gray-muted">Mastery</span>
+											<span className="text-[10px] font-black uppercase tracking-widest text-tiimo-gray-muted">
+												Mastery
+											</span>
 										</div>
 										<p className="text-xl font-bold text-foreground">{selectedSubject.progress}%</p>
 									</Card>

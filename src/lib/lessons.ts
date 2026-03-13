@@ -1,33 +1,42 @@
 import accounting from '@/constants/lessons/accounting.json';
 import businessStudies from '@/constants/lessons/business-studies.json';
 import chemistry from '@/constants/lessons/chemistry.json';
+import economics from '@/constants/lessons/economics.json';
 import geography from '@/constants/lessons/geography.json';
 import history from '@/constants/lessons/history.json';
+import lifeOrientation from '@/constants/lessons/life-orientation.json';
 import lifeSciences from '@/constants/lessons/life-sciences.json';
 import mathematics from '@/constants/lessons/mathematics.json';
 import physics from '@/constants/lessons/physics.json';
 
-import economics from '@/constants/lessons/economics.json';
-import lifeOrientation from '@/constants/lessons/life-orientation.json';
-
-export type SubjectId = 'math' | 'physics' | 'life' | 'accounting' | 'geography' | 'business' | 'history' | 'chemistry' | 'economics' | 'lo';
+export type SubjectId =
+	| 'math'
+	| 'physics'
+	| 'life'
+	| 'accounting'
+	| 'geography'
+	| 'business'
+	| 'history'
+	| 'chemistry'
+	| 'economics'
+	| 'lo';
 
 const LESSON_MAP: Record<string, any> = {
-	math: mathematics.mathematics,
-	mathematics: mathematics.mathematics,
-	physics: physics.physical_sciences,
-	physical_sciences: physics.physical_sciences,
-	life: lifeSciences.life_sciences,
-	life_sciences: lifeSciences.life_sciences,
-	accounting: accounting.accounting,
-	geography: geography.geography,
-	business: businessStudies.business_studies,
-	business_studies: businessStudies.business_studies,
-	history: history.history,
-	chemistry: chemistry.chemistry,
-	economics: economics.economics,
-	lo: lifeOrientation.life_orientation,
-	life_orientation: lifeOrientation.life_orientation,
+	math: Object.values(mathematics).flat(),
+	mathematics: Object.values(mathematics).flat(),
+	physics: Object.values(physics).flat(),
+	physical_sciences: Object.values(physics).flat(),
+	life: Object.values(lifeSciences).flat(),
+	life_sciences: Object.values(lifeSciences).flat(),
+	accounting: Object.values(accounting).flat(),
+	geography: Object.values(geography).flat(),
+	business: Object.values(businessStudies).flat(),
+	business_studies: Object.values(businessStudies).flat(),
+	history: Object.values(history).flat(),
+	chemistry: Object.values(chemistry).flat(),
+	economics: Object.values(economics).flat(),
+	lo: Object.values(lifeOrientation).flat(),
+	life_orientation: Object.values(lifeOrientation).flat(),
 };
 
 export function getLessonsBySubject(subjectId: string) {

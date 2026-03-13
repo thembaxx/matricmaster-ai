@@ -22,11 +22,13 @@ import type {
 } from './schema';
 import {
 	buddyRequests,
+	calendarEvents,
 	contentFlags,
 	options,
 	pastPapers,
 	questions,
 	searchHistory,
+	studyPlans,
 	studySessions,
 	subjects,
 	userProgress,
@@ -183,7 +185,7 @@ export async function createCalendarEventAction(data: {
 			title: data.title,
 			startTime: data.startTime,
 			endTime: data.endTime,
-			subjectId: data.subjectId ? BigInt(data.subjectId) : null,
+			subjectId: data.subjectId ?? null,
 			eventType: data.eventType,
 		});
 
@@ -201,6 +203,30 @@ export async function getCalendarEventsAction() {
 		return await db.select().from(calendarEvents).where(eq(calendarEvents.userId, user.id));
 	} catch (error) {
 		console.error('Error fetching events:', error);
+		return [];
+	}
+}
+
+export async function getRecentActivityAction() {
+	try {
+		const user = await ensureAuthenticated();
+		const db = await getDb();
+
+		return await db
+			.select({
+				id: studySessions.id,
+				sessionType: studySessions.sessionType,
+				marksEarned: studySessions.marksEarned,
+				completedAt: studySessions.completedAt,
+				subjectName: subjects.name,
+			})
+			.from(studySessions)
+			.leftJoin(subjects, eq(studySessions.subjectId, subjects.id))
+			.where(and(eq(studySessions.userId, user.id), isNotNull(studySessions.completedAt)))
+			.orderBy(desc(studySessions.completedAt))
+			.limit(5);
+	} catch (error) {
+		console.error('Error fetching recent activity:', error);
 		return [];
 	}
 }
@@ -756,7 +782,13 @@ export async function getUsersAction(filters: UserFilters = {}): Promise<User[]>
 
 export async function updateUserAction(
 	id: string,
-	data: { name?: string; email?: string; role?: 'admin' | 'moderator' | 'user' }
+	data: {
+		name?: string;
+		email?: string;
+		role?: 'admin' | 'moderator' | 'user';
+		school?: string;
+		avatarId?: string;
+	}
 ): Promise<User | null> {
 	await ensureAdmin();
 	const validatedData = updateUserSchema.parse(data);
@@ -773,6 +805,34 @@ export async function updateUserAction(
 		.where(eq(users.id, id))
 		.returning();
 	return user ?? null;
+}
+
+/**
+ * Updates current user's profile
+ */
+export async function updateUserProfileAction(data: {
+	name?: string;
+	school?: string;
+	avatarId?: string;
+}) {
+	try {
+		const user = await ensureAuthenticated();
+		const db = await getDb();
+
+		const [updated] = await db
+			.update(users)
+			.set({
+				...data,
+				updatedAt: new Date(),
+			})
+			.where(eq(users.id, user.id))
+			.returning();
+
+		return { success: true, user: updated };
+	} catch (error) {
+		console.error('Error updating profile:', error);
+		return { success: false, error: 'Failed to update profile' };
+	}
 }
 
 export async function toggleUserBlockAction(

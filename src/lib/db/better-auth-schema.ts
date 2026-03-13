@@ -14,6 +14,8 @@ export const users = pgTable(
 		isBlocked: boolean('is_blocked').notNull().default(false),
 		twoFactorEnabled: boolean('twoFactorEnabled').notNull().default(false),
 		hasCompletedOnboarding: boolean('has_completed_onboarding').notNull().default(false),
+		school: text('school'),
+		avatarId: text('avatar_id'),
 		deletedAt: timestamp('deleted_at'),
 		createdAt: timestamp('createdAt').notNull().defaultNow(),
 		updatedAt: timestamp('updatedAt').notNull().defaultNow(),

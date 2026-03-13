@@ -1,8 +1,9 @@
 'use client';
 
-import { Calendar01Icon, Mortarboard01Icon } from '@hugeicons/core-free-icons';
+import { Calendar01Icon, Camera01Icon, Mortarboard01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { m } from 'framer-motion';
+import Link from 'next/link';
 
 interface DashboardHeaderProps {
 	today: string;
@@ -34,22 +35,34 @@ export function DashboardHeader({ today, completedCount, totalCount }: Dashboard
 				</p>
 			</div>
 
-			<m.div
-				initial={{ scale: 0.9, opacity: 0 }}
-				animate={{ scale: 1, opacity: 1 }}
-				transition={{ delay: 0.1 }}
-				className="bg-tiimo-lavender/10 px-6 py-4 rounded-[2rem] border border-tiimo-lavender/20 flex items-center gap-4"
-			>
-				<div className="w-12 h-12 rounded-full bg-tiimo-lavender flex items-center justify-center text-white shadow-tiimo">
-					<HugeiconsIcon icon={Mortarboard01Icon} className="w-7 h-7" />
-				</div>
-				<div>
-					<p className="text-[10px] font-black text-tiimo-lavender uppercase tracking-widest">
-						Level 12
-					</p>
-					<p className="text-sm font-black text-foreground">Future Scientist</p>
-				</div>
-			</m.div>
+			<div className="flex items-center gap-3">
+				<Link href="/snap-and-solve">
+					<m.div
+						whileHover={{ scale: 1.05 }}
+						whileTap={{ scale: 0.95 }}
+						className="flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-2xl shadow-lg shadow-primary/20 cursor-pointer"
+					>
+						<HugeiconsIcon icon={Camera01Icon} className="w-5 h-5" />
+						<span className="text-[10px] font-black uppercase tracking-widest">Snap & Solve</span>
+					</m.div>
+				</Link>
+				<m.div
+					initial={{ scale: 0.9, opacity: 0 }}
+					animate={{ scale: 1, opacity: 1 }}
+					transition={{ delay: 0.1 }}
+					className="bg-tiimo-lavender/10 px-6 py-4 rounded-[2rem] border border-tiimo-lavender/20 flex items-center gap-4"
+				>
+					<div className="w-12 h-12 rounded-full bg-tiimo-lavender flex items-center justify-center text-white shadow-tiimo">
+						<HugeiconsIcon icon={Mortarboard01Icon} className="w-7 h-7" />
+					</div>
+					<div>
+						<p className="text-[10px] font-black text-tiimo-lavender uppercase tracking-widest">
+							Level 12
+						</p>
+						<p className="text-sm font-black text-foreground">Future Scientist</p>
+					</div>
+				</m.div>
+			</div>
 		</m.header>
 	);
 }
