@@ -43,7 +43,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
 							<HugeiconsIcon icon={Warning} className="w-8 h-8 text-red-600 dark:text-red-400" />
 						</div>
 						<div className="space-y-2">
-							<h2 className="text-2xl font-black text-foreground">Something went wrong</h2>
+							<h2 className="text-2xl font-semibold text-foreground">Something went wrong</h2>
 							<p className="text-sm text-muted-foreground dark:text-muted-foreground">
 								{this.state.error?.message || 'An unexpected error occurred'}
 							</p>

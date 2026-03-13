@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import { FocusContent } from '@/components/Layout/FocusContent';
 import { TimelineSidebar } from '@/components/Layout/TimelineSidebar';
+import { AIExplanation } from '@/components/Quiz/AIExplanation';
 import { QuestionCard, type QuestionOption } from '@/components/Quiz/QuestionCardV2';
 import { QuizActions } from '@/components/Quiz/QuizActionsV2';
 import { QuizHeader } from '@/components/Quiz/QuizHeaderV2';
@@ -100,13 +101,10 @@ export default function Quiz({ quizId = 'math-p1-2023-nov' }: QuizProps) {
 
 					<div className="mb-8">
 						<div className="flex justify-between items-center mb-2">
-							<span className="text-[10px] font-black uppercase text-muted-foreground tracking-widest">
+							<span className="text-[10px] font-medium text-muted-foreground">
 								Question {currentQuestionIndex + 1} of {quiz.questions.length}
 							</span>
-							<Badge
-								variant="secondary"
-								className="text-[10px] font-black uppercase rounded-full px-3"
-							>
+							<Badge variant="secondary" className="text-[10px] font-medium rounded-full px-3">
 								{currentQuestion.difficulty}
 							</Badge>
 						</div>
@@ -122,6 +120,13 @@ export default function Quiz({ quizId = 'math-p1-2023-nov' }: QuizProps) {
 								isChecked={isChecked}
 								onSelect={setSelectedOption}
 								diagram={currentQuestion.diagram}
+							/>
+
+							<AIExplanation
+								question={currentQuestion.question}
+								correctAnswer={
+									currentQuestion.options.find((o) => o.id === currentQuestion.correctAnswer)?.text
+								}
 							/>
 
 							{isChecked && (
@@ -147,7 +152,7 @@ export default function Quiz({ quizId = 'math-p1-2023-nov' }: QuizProps) {
 												/>
 											</div>
 											<div>
-												<h4 className="font-black uppercase text-sm tracking-tight">
+												<h4 className="font-semibold text-sm">
 													{isCorrect ? 'Brilliant!' : 'Not quite right'}
 												</h4>
 												<p className="text-sm font-medium opacity-80 mt-1">

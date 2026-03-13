@@ -144,6 +144,44 @@ export default function OnboardingScreen({ user }: OnboardingScreenProps) {
 		<div className="fixed inset-0 h-screen bg-background flex flex-col overflow-hidden select-none">
 			<BackgroundMesh />
 
+			{/* Animated floating shapes */}
+			<div className="absolute inset-0 overflow-hidden pointer-events-none">
+				<m.div
+					animate={{
+						y: [0, -20, 0],
+						rotate: [0, 10, 0],
+					}}
+					transition={{ duration: 6, repeat: Number.POSITIVE_INFINITY, ease: 'easeInOut' }}
+					className="absolute top-1/4 left-1/4 w-32 h-32 bg-gradient-to-br from-tiimo-lavender/20 to-purple-500/20 rounded-full blur-3xl"
+				/>
+				<m.div
+					animate={{
+						y: [0, 30, 0],
+						rotate: [0, -15, 0],
+					}}
+					transition={{
+						duration: 8,
+						repeat: Number.POSITIVE_INFINITY,
+						ease: 'easeInOut',
+						delay: 1,
+					}}
+					className="absolute bottom-1/3 right-1/4 w-48 h-48 bg-gradient-to-br from-blue-400/20 to-cyan-500/20 rounded-full blur-3xl"
+				/>
+				<m.div
+					animate={{
+						y: [0, -15, 0],
+						x: [0, 10, 0],
+					}}
+					transition={{
+						duration: 7,
+						repeat: Number.POSITIVE_INFINITY,
+						ease: 'easeInOut',
+						delay: 2,
+					}}
+					className="absolute top-1/2 right-1/3 w-24 h-24 bg-gradient-to-br from-amber-400/20 to-orange-500/20 rounded-full blur-2xl"
+				/>
+			</div>
+
 			{/* Top Progress */}
 			<div className="relative z-20 px-6 pt-12 pb-6 w-full max-w-lg mx-auto">
 				<div className="flex items-center justify-between mb-4">
@@ -151,14 +189,14 @@ export default function OnboardingScreen({ user }: OnboardingScreenProps) {
 						<div className="w-8 h-8 bg-primary/10 rounded-xl flex items-center justify-center">
 							<HugeiconsIcon icon={SparklesIcon} className="w-4 h-4 text-primary" />
 						</div>
-						<span className="text-sm font-bold tracking-tight uppercase text-muted-foreground">
+						<span className="text-sm font-medium text-muted-foreground">
 							Step {currentStep + 1} of {STEPS.length}
 						</span>
 					</div>
 					<Button
 						variant="ghost"
 						size="sm"
-						className="text-xs font-bold text-muted-foreground uppercase"
+						className="text-xs font-medium text-muted-foreground"
 						onClick={handleComplete}
 					>
 						Skip
@@ -232,7 +270,7 @@ export default function OnboardingScreen({ user }: OnboardingScreenProps) {
 											? `Welcome, ${user.name.split(' ')[0]}!`
 											: step.title
 									}
-									className="text-2xl font-extrabold tracking-tight text-foreground text-pretty"
+									className="text-2xl font-bold text-foreground text-pretty"
 								/>
 								<m.p
 									initial={{ opacity: 0, y: 10 }}

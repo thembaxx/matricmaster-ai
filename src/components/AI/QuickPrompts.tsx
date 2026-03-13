@@ -20,6 +20,8 @@ const PROMPTS_BY_SUBJECT: Record<string, { label: string; prompts: string[] }> =
 			'What is the chain rule?',
 			'Explain integration basics',
 			'How do I factor polynomials?',
+			'Explain the quadratic formula',
+			'Calculate the area under a curve',
 		],
 	},
 	physics: {
@@ -30,6 +32,8 @@ const PROMPTS_BY_SUBJECT: Record<string, { label: string; prompts: string[] }> =
 			'What is the difference between speed and velocity?',
 			'Explain energy conservation',
 			'Help me understand circuits',
+			'Explain the Doppler effect',
+			'What is momentum and impulse?',
 		],
 	},
 	chemistry: {
@@ -40,6 +44,8 @@ const PROMPTS_BY_SUBJECT: Record<string, { label: string; prompts: string[] }> =
 			'Help me balance this equation',
 			'Explain organic chemistry basics',
 			'What are acids and bases?',
+			'Explain chemical equilibrium',
+			'What are redox reactions?',
 		],
 	},
 	'life sciences': {
@@ -50,6 +56,56 @@ const PROMPTS_BY_SUBJECT: Record<string, { label: string; prompts: string[] }> =
 			'Help me understand genetics',
 			'Explain photosynthesis',
 			'What is natural selection?',
+			'Explain the carbon cycle',
+			'What is protein synthesis?',
+		],
+	},
+	accounting: {
+		label: 'Accounting',
+		prompts: [
+			'Explain the accounting equation',
+			'Help me understand financial statements',
+			'What is depreciation?',
+			'Explain cash flow statements',
+			'How do I prepare a balance sheet?',
+			'Explain VAT calculations',
+			'What are the principles of auditing?',
+		],
+	},
+	geography: {
+		label: 'Geography',
+		prompts: [
+			'Explain tectonic plate movement',
+			'What is the water cycle?',
+			'Help me understand climate change',
+			'Explain weathering and erosion',
+			'What are map reading skills?',
+			'Explain rural and urban settlement',
+			'What is economic globalization?',
+		],
+	},
+	english: {
+		label: 'English',
+		prompts: [
+			'Help me understand this poem',
+			'Explain literary devices',
+			'Analyze this essay question',
+			'What makes a good argumentative essay?',
+			'Explain symbolism in literature',
+			'Help with comprehension answers',
+			'What are the different text types?',
+		],
+	},
+	history: {
+		label: 'History',
+		prompts: [
+			'Explain the Cold War',
+			'What caused World War 2?',
+			'Help me understand apartheid',
+			'Explain the Renaissance period',
+			'What was the Industrial Revolution?',
+			'Explain decolonization in Africa',
+			'What are human rights violations?',
 		],
 	},
 };
@@ -60,6 +116,9 @@ const GENERAL_PROMPTS = [
 	'What are common exam questions on this?',
 	'Create a study summary',
 	'Quiz me on this topic',
+	'Give me exam tips for this subject',
+	'What are the most important topics?',
+	'Help me remember this with mnemonics',
 ];
 
 export function QuickPrompts({ onSelectPrompt, selectedSubject }: QuickPromptsProps) {
@@ -78,9 +137,7 @@ export function QuickPrompts({ onSelectPrompt, selectedSubject }: QuickPromptsPr
 		<div className="space-y-2 md:space-y-3">
 			<div className="flex items-center gap-2 px-1">
 				<HugeiconsIcon icon={Idea01Icon} className="h-3.5 w-3.5 md:h-4 md:w-4 text-brand-amber" />
-				<span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">
-					Quick Prompts
-				</span>
+				<span className="text-[10px] font-medium text-muted-foreground">Quick prompts</span>
 			</div>
 			<ScrollArea className="w-full">
 				<div className="flex gap-1.5 md:gap-2 pb-2 md:pb-3">

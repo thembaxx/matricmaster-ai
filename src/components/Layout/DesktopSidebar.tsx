@@ -91,6 +91,7 @@ export const sideMenuSections: MenuSection[] = [
 	{
 		title: 'Practice',
 		items: [
+			{ href: '/common-questions', label: 'Common Questions', icon: QuestionIcon },
 			{ href: '/flashcards', label: 'Flashcards', icon: Layers01Icon },
 			{ href: '/interactive-quiz', label: 'Interactive Quiz', icon: WorkoutSportIcon },
 			{ href: '/math-quiz', label: 'Math Quiz', icon: CalculatorIcon },

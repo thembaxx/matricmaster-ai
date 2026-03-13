@@ -43,7 +43,7 @@ export default function CurriculumMap() {
 				<Button variant="ghost" size="icon" onClick={() => router.back()} className="rounded-full">
 					<HugeiconsIcon icon={ArrowLeft01Icon} className="w-6 h-6" />
 				</Button>
-				<h1 className="text-xl font-black uppercase tracking-tight">Curriculum Map (CAPS)</h1>
+				<h1 className="text-xl font-semibold">Curriculum map (CAPS)</h1>
 				<div className="w-10" />
 			</header>
 

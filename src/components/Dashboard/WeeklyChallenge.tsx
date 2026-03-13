@@ -184,7 +184,9 @@ export const WeeklyChallenge = memo(function WeeklyChallenge({
 							<span className="text-[10px] font-medium text-brand-amber">Weekly challenge</span>
 						</div>
 						<h3 className="text-lg font-semibold text-foreground">{challenge.title}</h3>
-						<p className="text-[12.6px] text-pretty text-muted-foreground">{challenge.description}</p>
+						<p className="text-[12.6px] text-pretty text-muted-foreground">
+							{challenge.description}
+						</p>
 					</div>
 					{isComplete ? (
 						<m.div

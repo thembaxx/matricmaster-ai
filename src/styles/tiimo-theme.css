@@ -105,6 +105,8 @@
   --duration-fast: 150ms;
   --duration-normal: 300ms;
   --duration-slow: 500ms;
+
+  --color-primary-purple: #8957e5;
 }
 
 /* --- DARK MODE (Energetic Gray Variant) --- */
