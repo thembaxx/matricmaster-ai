@@ -168,7 +168,7 @@ export function SignInForm() {
 					initial={{ opacity: 0, scale: 0.9, y: 20 }}
 					animate={{ opacity: 1, scale: 1, y: 0 }}
 					transition={{ type: 'spring', stiffness: 200, damping: 25 }}
-					className="w-full premium-glass border-none rounded-[2.5rem] shadow-2xl overflow-hidden p-8"
+					className="w-full tiimo-glass border-none rounded-[var(--radius-2xl)] shadow-2xl overflow-hidden p-8"
 				>
 					<m.div
 						variants={STAGGER_CONTAINER}
@@ -179,7 +179,7 @@ export function SignInForm() {
 						<m.div
 							variants={STAGGER_ITEM}
 							whileHover={{ rotate: 15, scale: 1.1 }}
-							className="w-14 h-14 bg-primary/10 rounded-3xl flex items-center justify-center mx-auto mb-5 text-primary"
+							className="w-14 h-14 bg-primary/10 rounded-[var(--radius-xl)] flex items-center justify-center mx-auto mb-5 text-primary"
 						>
 							<HugeiconsIcon icon={SparklesIcon} className="w-7 h-7" />
 						</m.div>
@@ -200,7 +200,7 @@ export function SignInForm() {
 						<m.div
 							initial={{ opacity: 0, x: -10 }}
 							animate={{ opacity: 1, x: 0 }}
-							className="p-4 mb-6 bg-destructive/10 border border-destructive/20 text-destructive text-sm font-medium rounded-2xl flex items-center gap-3"
+							className="p-4 mb-6 bg-destructive/10 border border-destructive/20 text-destructive text-sm font-medium rounded-[var(--radius-lg)] flex items-center gap-3"
 						>
 							<div className="w-2 h-2 rounded-full bg-destructive shrink-0" />
 							<span className="flex-1">{error}</span>
@@ -215,10 +215,7 @@ export function SignInForm() {
 						className="space-y-6"
 					>
 						<m.div variants={STAGGER_ITEM} className="space-y-2">
-							<Label
-								htmlFor="email"
-								className="text-xs font-bold text-label-primary uppercase tracking-wider ml-1"
-							>
+							<Label htmlFor="email" className="label-xs ml-1">
 								Email Address
 							</Label>
 							<Input
@@ -226,7 +223,7 @@ export function SignInForm() {
 								id="email"
 								type="email"
 								placeholder="name@school.edu.za"
-								className="bg-background/50"
+								className="bg-background/50 rounded-[var(--radius-md)]"
 							/>
 							{errors.email && (
 								<p className="text-xs text-destructive font-semibold ml-1">
@@ -237,15 +234,12 @@ export function SignInForm() {
 
 						<m.div variants={STAGGER_ITEM} className="space-y-2">
 							<div className="flex items-center justify-between">
-								<Label
-									htmlFor="password"
-									className="text-xs font-bold text-label-primary uppercase tracking-wider ml-1"
-								>
+								<Label htmlFor="password" className="label-xs ml-1">
 									Password
 								</Label>
 								<Link
 									href="/forgot-password"
-									className="text-xs font-bold text-primary hover:text-primary/80 uppercase tracking-wider"
+									className="label-xs text-primary hover:text-primary/80"
 								>
 									Forgot?
 								</Link>
@@ -256,7 +250,7 @@ export function SignInForm() {
 									id="password"
 									type={showPassword ? 'text' : 'password'}
 									placeholder="Enter your password"
-									className="bg-background/50 pr-12"
+									className="bg-background/50 pr-12 rounded-[var(--radius-md)]"
 								/>
 								<button
 									type="button"
@@ -283,7 +277,7 @@ export function SignInForm() {
 								type="submit"
 								disabled={isLoading || !!successEmail}
 								className={cn(
-									'w-full h-14 rounded-2xl font-black text-base shadow-xl transition-all active:scale-[0.98]',
+									'w-full h-14 rounded-[var(--radius-lg)] font-black text-base shadow-xl transition-all active:scale-[0.98]',
 									successEmail
 										? 'bg-success text-white shadow-success/30'
 										: 'bg-primary text-primary-foreground shadow-primary/20'
@@ -309,8 +303,8 @@ export function SignInForm() {
 						<div className="absolute inset-0 flex items-center">
 							<div className="w-full border-t border-border/60" />
 						</div>
-						<div className="relative flex justify-center text-[10px] uppercase tracking-[0.2em]">
-							<span className="px-4 text-muted-foreground font-black bg-card/80 backdrop-blur-xl rounded-full">
+						<div className="relative flex justify-center">
+							<span className="px-4 text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-black bg-card/80 backdrop-blur-xl rounded-full">
 								Or
 							</span>
 						</div>
