@@ -62,7 +62,7 @@ export default function Landing() {
 									animate={{ opacity: 1, scale: 1 }}
 									transition={{ type: 'spring', stiffness: 300, damping: 28 }}
 								>
-									<Badge className="tiimo-glass rounded-full px-4 py-1.5 text-xs font-medium mb-4">
+									<Badge className="tiimo-glass rounded-full px-4 py-1.5 text-xs font-medium mb-4 dark:text-white/70">
 										<HugeiconsIcon icon={SparklesIcon} className="w-3 h-3 mr-1.5" />
 										Trusted by 50,000+ students
 									</Badge>
@@ -161,9 +161,8 @@ export default function Landing() {
 							className="relative flex-1 w-full max-w-[320px] sm:max-w-100 md:max-w-112.5 lg:max-w-none flex items-center justify-center"
 						>
 							<m.div
-								whileHover={{ scale: 1.01 }}
-								whileTap={{ scale: 0.99 }}
-								className="relative w-full aspect-square max-w-75 sm:max-w-87.5 md:max-w-112.5 bg-card rounded-3xl shadow-md flex items-center justify-center transform border border-border transition-all duration-300 overflow-hidden"
+								whileHover={{ scale: 1.02 }}
+								className="relative w-full aspect-square max-w-75 sm:max-w-87.5 md:max-w-112.5 bg-card rounded-3xl sm:rounded-[4rem] shadow-xl flex items-center justify-center transform border border-border transition-transform duration-700 overflow-hidden"
 							>
 								<div className="absolute inset-0 bg-primary/5" />
 
@@ -319,7 +318,7 @@ export default function Landing() {
 									Ready to ace
 									<br className="hidden sm:block" /> your exams?
 								</h2>
-								<p className="text-base sm:text-lg md:text-xl lg:text-2xl font-bold text-white/90 max-w-xl sm:max-w-2xl mx-auto tracking-tight">
+								<p className="text-base sm:text-lg md:text-xl lg:text-2xl font-bold text-white/90 max-w-xl sm:max-w-2xl text-pretty tracking-tight text-left">
 									Join thousands of students and start your journey to success today.
 								</p>
 							</div>

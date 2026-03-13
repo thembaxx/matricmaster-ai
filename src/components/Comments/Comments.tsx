@@ -355,7 +355,7 @@ function CommentItem({
 					<div className="flex items-center gap-4 pt-1">
 						<div className="flex items-center bg-muted/50 rounded-full px-2 py-1">
 							<button
-								type='button'
+								type="button"
 								onClick={() => onVote(comment.id, 'up')}
 								className="p-1.5 hover:text-primary transition-colors"
 							>
@@ -365,7 +365,7 @@ function CommentItem({
 								{comment.upvotes - comment.downvotes}
 							</span>
 							<button
-								type='button'
+								type="button"
 								onClick={() => onVote(comment.id, 'down')}
 								className="p-1.5 hover:text-destructive transition-colors"
 							>
@@ -375,7 +375,7 @@ function CommentItem({
 
 						{!isReply && (
 							<button
-								type='button'
+								type="button"
 								onClick={() => onReply(comment.id)}
 								className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-muted-foreground hover:text-primary transition-colors"
 							>

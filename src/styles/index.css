@@ -189,6 +189,32 @@
   --color-tiimo-gray-dark: var(--tiimo-gray-dark);
   --color-tiimo-gray-muted: var(--tiimo-gray-muted);
   --color-tiimo-gray-subtle: var(--tiimo-gray-subtle);
+
+   /* Semantic Colors */
+  --success: #10B981;
+  --warning: #F59E0B;
+  --error: #EF4444;
+  --info: #3B82F6;
+
+  /* New Design System Colors */
+  --color-primary-violet: #7C3AED;
+  --color-primary-cyan: #06B6D4;
+  --color-primary-orange: #F97316;
+  --color-accent-pink: #EC4899;
+  --color-accent-lime: #84CC16;
+  --color-accent-indigo: #6366F1;
+  --color-neutral-50: #F8FAFC;
+  --color-neutral-100: #F1F5F9;
+  --color-neutral-900: #0F172A;
+
+  /* Subject Colors - Expressive Palette */
+  --color-math: oklch(0.6 0.17 250);
+  --color-physics: oklch(0.55 0.2 300);
+  --color-life-sci: oklch(0.65 0.18 150);
+  --color-accounting: oklch(0.8 0.18 80);
+  --color-english: oklch(0.65 0.22 350);
+  --color-geography: oklch(0.65 0.15 210);
+  --color-history: oklch(0.7 0.18 45);
 }
 
 @layer base {
