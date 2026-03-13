@@ -2153,7 +2153,8 @@ export const QUIZ_DATA: QuizData = {
 		questions: [
 			{
 				id: 'eco-q1',
-				question: 'In the circular flow model, which sector is the owner of the factors of production?',
+				question:
+					'In the circular flow model, which sector is the owner of the factors of production?',
 				options: [
 					{ id: 'A', text: 'Households' },
 					{ id: 'B', text: 'Businesses' },
@@ -2168,7 +2169,8 @@ export const QUIZ_DATA: QuizData = {
 			},
 			{
 				id: 'bs-q2',
-				question: 'Which leadership style is most effective during a crisis that requires immediate action?',
+				question:
+					'Which leadership style is most effective during a crisis that requires immediate action?',
 				options: [
 					{ id: 'A', text: 'Autocratic' },
 					{ id: 'B', text: 'Democratic' },
@@ -2183,7 +2185,8 @@ export const QUIZ_DATA: QuizData = {
 			},
 			{
 				id: 'eco-q3',
-				question: 'What happens to national income if injections (I+G+X) are greater than leakages (S+T+M)?',
+				question:
+					'What happens to national income if injections (I+G+X) are greater than leakages (S+T+M)?',
 				options: [
 					{ id: 'A', text: 'It increases' },
 					{ id: 'B', text: 'It decreases' },
@@ -2210,7 +2213,181 @@ export const QUIZ_DATA: QuizData = {
 				topic: 'Business Studies',
 				subtopic: 'Business Environments',
 				difficulty: 'easy',
-			}
+			},
+		],
+	},
+	// ============================================================================
+	// GEOGRAPHY & HISTORY - NSC 2025
+	// ============================================================================
+	'geog-hist-2025': {
+		title: 'Geography & History NSC 2025',
+		subject: 'Multiple',
+		year: 2025,
+		session: 'May/June',
+		paper: 1,
+		questions: [
+			{
+				id: 'geo-q2',
+				question: 'Which synoptic symbol represents a cold front?',
+				options: [
+					{ id: 'A', text: 'Line with blue triangles' },
+					{ id: 'B', text: 'Line with red semi-circles' },
+					{ id: 'C', text: 'Solid black circle' },
+					{ id: 'D', text: 'H representing high pressure' },
+				],
+				correctAnswer: 'A',
+				hint: 'Look for triangles pointing in the direction of movement.',
+				topic: 'Geography',
+				subtopic: 'Climatology',
+				difficulty: 'easy',
+				diagram: 'Synoptic chart symbols legend',
+			},
+			{
+				id: 'his-q2',
+				question: 'Who was the leader of the Black Consciousness Movement in South Africa?',
+				options: [
+					{ id: 'A', text: 'Steve Biko' },
+					{ id: 'B', text: 'Nelson Mandela' },
+					{ id: 'C', text: 'Desmond Tutu' },
+					{ id: 'D', text: 'Robert Sobukwe' },
+				],
+				correctAnswer: 'A',
+				hint: 'He focused on the psychological liberation of Black South Africans.',
+				topic: 'History',
+				subtopic: 'Civil Resistance',
+				difficulty: 'medium',
+			},
+			{
+				id: 'geo-q3',
+				question:
+					'What is the characteristic weather associated with a high-pressure system (Anticyclone)?',
+				options: [
+					{ id: 'A', text: 'Clear skies and dry conditions' },
+					{ id: 'B', text: 'Heavy rain and thunderstorms' },
+					{ id: 'C', text: 'Cold and snowy' },
+					{ id: 'D', text: 'Tornadoes' },
+				],
+				correctAnswer: 'A',
+				hint: 'High pressure involves descending air which prevents cloud formation.',
+				topic: 'Geography',
+				subtopic: 'Weather Systems',
+				difficulty: 'medium',
+			},
+		],
+	},
+	// ============================================================================
+	// ENGLISH FAL & LIFE ORIENTATION
+	// ============================================================================
+	'eng-lo-2025': {
+		title: 'English & LO NSC 2025',
+		subject: 'Multiple',
+		year: 2025,
+		session: 'May/June',
+		paper: 1,
+		questions: [
+			{
+				id: 'eng-q1',
+				question: 'Identify the figure of speech: "The wind whispered through the trees."',
+				options: [
+					{ id: 'A', text: 'Personification' },
+					{ id: 'B', text: 'Metaphor' },
+					{ id: 'C', text: 'Simile' },
+					{ id: 'D', text: 'Alliteration' },
+				],
+				correctAnswer: 'A',
+				hint: 'Giving human qualities to non-human things.',
+				topic: 'English FAL',
+				subtopic: 'Language Structures',
+				difficulty: 'easy',
+			},
+			{
+				id: 'lo-q1',
+				question: 'Which of the following is an example of an "Active Recall" study technique?',
+				options: [
+					{ id: 'A', text: 'Testing yourself with flashcards' },
+					{ id: 'B', text: 'Re-reading a chapter 5 times' },
+					{ id: 'C', text: 'Highlighting important sentences' },
+					{ id: 'D', text: 'Listening to music while studying' },
+				],
+				correctAnswer: 'A',
+				hint: 'Actively retrieving information from memory.',
+				topic: 'Life Orientation',
+				subtopic: 'Study Skills',
+				difficulty: 'easy',
+			},
+		],
+	},
+	// ============================================================================
+	// ACCOUNTING & ENGLISH FAL - NSC 2025
+	// ============================================================================
+	'acc-eng-2025': {
+		title: 'Accounting & English NSC 2025',
+		subject: 'Multiple',
+		year: 2025,
+		session: 'May/June',
+		paper: 1,
+		questions: [
+			{
+				id: 'acc-q2',
+				question: 'Which of the following is an example of an Intangible Asset?',
+				options: [
+					{ id: 'A', text: 'Goodwill' },
+					{ id: 'B', text: 'Inventory' },
+					{ id: 'C', text: 'Cash in Bank' },
+					{ id: 'D', text: 'Delivery Vehicle' },
+				],
+				correctAnswer: 'A',
+				hint: 'Intangible assets are non-physical resources that have value.',
+				topic: 'Accounting',
+				subtopic: 'Fixed Assets',
+				difficulty: 'easy',
+			},
+			{
+				id: 'eng-q2',
+				question:
+					'What is the tone of the following sentence: "The candidate has consistently failed to meet minimum requirements despite numerous warnings."',
+				options: [
+					{ id: 'A', text: 'Formal and serious' },
+					{ id: 'B', text: 'Humorous and lighthearted' },
+					{ id: 'C', text: 'Sarcastic and playful' },
+					{ id: 'D', text: 'Empathetic and kind' },
+				],
+				correctAnswer: 'A',
+				hint: 'Consider the vocabulary used and the professional context.',
+				topic: 'English FAL',
+				subtopic: 'Comprehension & Tone',
+				difficulty: 'medium',
+			},
+			{
+				id: 'acc-q3',
+				question: 'What is the effect of an entry on the DEBIT side of a Liability account?',
+				options: [
+					{ id: 'A', text: 'Decreases the liability' },
+					{ id: 'B', text: 'Increases the liability' },
+					{ id: 'C', text: 'Has no effect' },
+					{ id: 'D', text: "Increases owner's equity" },
+				],
+				correctAnswer: 'A',
+				hint: 'Remember the DEAD CLIC rule for debits and credits.',
+				topic: 'Accounting',
+				subtopic: 'Double Entry System',
+				difficulty: 'medium',
+			},
+			{
+				id: 'eng-q3',
+				question: 'Change the following to Passive Voice: "The teacher marked the exam papers."',
+				options: [
+					{ id: 'A', text: 'The exam papers were marked by the teacher.' },
+					{ id: 'B', text: 'The teacher has marked the exam papers.' },
+					{ id: 'C', text: 'The exam papers are being marked by the teacher.' },
+					{ id: 'D', text: 'Marking the exam papers is what the teacher did.' },
+				],
+				correctAnswer: 'A',
+				hint: 'The object of the active sentence becomes the subject of the passive sentence.',
+				topic: 'English FAL',
+				subtopic: 'Grammar & Punctuation',
+				difficulty: 'easy',
+			},
 		],
 	},
 };

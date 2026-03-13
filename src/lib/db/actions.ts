@@ -24,6 +24,7 @@ import {
 	buddyRequests,
 	calendarEvents,
 	contentFlags,
+	notifications,
 	options,
 	pastPapers,
 	questions,
@@ -102,6 +103,46 @@ async function getDb(): Promise<DbType> {
 }
 
 /**
+ * Fetches all notifications for the current user
+ */
+export async function getNotificationsAction() {
+	try {
+		const user = await ensureAuthenticated();
+		const db = await getDb();
+
+		return await db
+			.select()
+			.from(notifications)
+			.where(eq(notifications.userId, user.id))
+			.orderBy(desc(notifications.createdAt))
+			.limit(20);
+	} catch (error) {
+		console.error('Error fetching notifications:', error);
+		return [];
+	}
+}
+
+/**
+ * Marks a notification as read
+ */
+export async function markNotificationAsReadAction(notificationId: string) {
+	try {
+		const user = await ensureAuthenticated();
+		const db = await getDb();
+
+		await db
+			.update(notifications)
+			.set({ isRead: true, readAt: new Date() })
+			.where(and(eq(notifications.id, notificationId), eq(notifications.userId, user.id)));
+
+		return { success: true };
+	} catch (error) {
+		console.error('Error marking notification as read:', error);
+		return { success: false };
+	}
+}
+
+/**
  * Enrolls a user in a subject by creating an entry in userProgress
  */
 export async function enrollInSubjectAction(subjectId: number) {
@@ -141,14 +182,17 @@ export async function createStudyPlanAction(data: { title: string; focusAreas?: 
 		const user = await ensureAuthenticated();
 		const db = await getDb();
 
-		await db.insert(studyPlans).values({
-			userId: user.id,
-			title: data.title,
-			focusAreas: data.focusAreas,
-			isActive: true,
-		});
+		const [newPlan] = await db
+			.insert(studyPlans)
+			.values({
+				userId: user.id,
+				title: data.title,
+				focusAreas: data.focusAreas,
+				isActive: true,
+			})
+			.returning();
 
-		return { success: true };
+		return { success: true, plan: newPlan };
 	} catch (error) {
 		console.error('Error creating study plan:', error);
 		return { success: false, error: 'Failed to create plan' };
@@ -180,16 +224,19 @@ export async function createCalendarEventAction(data: {
 		const user = await ensureAuthenticated();
 		const db = await getDb();
 
-		await db.insert(calendarEvents).values({
-			userId: user.id,
-			title: data.title,
-			startTime: data.startTime,
-			endTime: data.endTime,
-			subjectId: data.subjectId ?? null,
-			eventType: data.eventType,
-		});
+		const [newEvent] = await db
+			.insert(calendarEvents)
+			.values({
+				userId: user.id,
+				title: data.title,
+				startTime: data.startTime,
+				endTime: data.endTime,
+				subjectId: data.subjectId ?? null,
+				eventType: data.eventType,
+			})
+			.returning();
 
-		return { success: true };
+		return { success: true, event: newEvent };
 	} catch (error) {
 		console.error('Error creating calendar event:', error);
 		return { success: false, error: 'Failed to create event' };

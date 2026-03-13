@@ -9,9 +9,11 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { createStudyPlanAction, getStudyPlansAction } from '@/lib/db/actions';
 
+import type { StudyPlan } from '@/lib/db/schema';
+
 export default function PlannerPage() {
 	const [daysLeft, setDaysLeft] = useState(0);
-	const [plans, setPlans] = useState<any[]>([]);
+	const [plans, setPlans] = useState<StudyPlan[]>([]);
 	const [isAdding, setIsAdding] = useState(false);
 	const [newTitle, setNewTitle] = useState('');
 
@@ -31,8 +33,8 @@ export default function PlannerPage() {
 	const handleAddPlan = async () => {
 		if (!newTitle.trim()) return;
 		const result = await createStudyPlanAction({ title: newTitle });
-		if (result.success) {
-			setPlans([...plans, { title: newTitle }]);
+		if (result.success && result.plan) {
+			setPlans([...plans, result.plan]);
 			setNewTitle('');
 			setIsAdding(false);
 			toast.success('Task added to priority focus');

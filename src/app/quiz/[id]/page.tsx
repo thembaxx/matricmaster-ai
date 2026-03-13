@@ -1,4 +1,3 @@
-import dynamic from 'next/dynamic';
 import { QUIZ_DATA } from '@/constants/quiz-data';
 import QuizScreen from '@/screens/Quiz';
 

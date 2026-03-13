@@ -1,63 +1,122 @@
 'use client';
 
 import { m } from 'framer-motion';
+import { useState } from 'react';
 import { cn } from '@/lib/utils';
 
 interface InteractiveDiagramProps {
 	type: string;
-	data?: any;
+	data?: Record<string, any>;
 	className?: string;
 }
 
 export function InteractiveDiagram({ type, className }: InteractiveDiagramProps) {
+	const [parabolaC, setParabolaC] = useState(0);
+	const [punnett, setPunnett] = useState<Record<string, string>>({});
+
 	// Simple SVG visualizers based on topic/type
 
 	if (type.toLowerCase().includes('parabola') || type.toLowerCase().includes('function')) {
 		return (
 			<div
+				className={cn('w-full bg-secondary/30 rounded-[2rem] p-8 flex flex-col gap-6', className)}
+			>
+				<div className="h-48 relative bg-card rounded-2xl border border-border/50 overflow-hidden">
+					<svg
+						viewBox="0 0 200 100"
+						className="w-full h-full"
+						role="img"
+						aria-label="Parabola graph"
+					>
+						<title>Parabola graph</title>
+						<line
+							x1="0"
+							y1="50"
+							x2="200"
+							y2="50"
+							stroke="currentColor"
+							strokeWidth="0.5"
+							opacity="0.2"
+						/>
+						<line
+							x1="100"
+							y1="0"
+							x2="100"
+							y2="100"
+							stroke="currentColor"
+							strokeWidth="0.5"
+							opacity="0.2"
+						/>
+						{/* y = x^2 + c */}
+						<m.path
+							animate={{
+								d: `M 20 ${80 - parabolaC} Q 100 ${-20 - parabolaC} 180 ${80 - parabolaC}`,
+							}}
+							fill="none"
+							stroke="var(--tiimo-lavender)"
+							strokeWidth="3"
+						/>
+					</svg>
+					<div className="absolute top-4 right-6 bg-primary/10 px-3 py-1 rounded-full border border-primary/20">
+						<span className="text-[10px] font-black font-mono text-primary uppercase">
+							y = x² + {parabolaC}
+						</span>
+					</div>
+				</div>
+				<div className="space-y-2">
+					<div className="flex justify-between text-[10px] font-black uppercase tracking-widest text-muted-foreground">
+						<span>Down</span>
+						<span>Vertical Shift (c)</span>
+						<span>Up</span>
+					</div>
+					<input
+						type="range"
+						min="-40"
+						max="40"
+						value={parabolaC}
+						onChange={(e) => setParabolaC(Number.parseInt(e.target.value, 10))}
+						className="w-full accent-primary"
+					/>
+				</div>
+			</div>
+		);
+	}
+
+	// Life Sciences: Punnett Square Builder
+	if (type.toLowerCase().includes('punnett') || type.toLowerCase().includes('genetic')) {
+		const cells = ['TL', 'TR', 'BL', 'BR'];
+		return (
+			<div
 				className={cn(
-					'w-full h-48 bg-secondary/30 rounded-xl relative overflow-hidden p-4',
+					'w-full bg-secondary/30 rounded-[2rem] p-8 flex flex-col items-center gap-6',
 					className
 				)}
 			>
-				<svg viewBox="0 0 200 100" className="w-full h-full">
-					<line
-						x1="0"
-						y1="50"
-						x2="200"
-						y2="50"
-						stroke="currentColor"
-						strokeWidth="0.5"
-						opacity="0.3"
-					/>
-					<line
-						x1="100"
-						y1="0"
-						x2="100"
-						y2="100"
-						stroke="currentColor"
-						strokeWidth="0.5"
-						opacity="0.3"
-					/>
-					<m.path
-						initial={{ pathLength: 0 }}
-						animate={{ pathLength: 1 }}
-						transition={{ duration: 1.5, ease: 'easeInOut' }}
-						d="M 20 80 Q 100 -20 180 80"
-						fill="none"
-						stroke="var(--tiimo-lavender)"
-						strokeWidth="3"
-					/>
-					<m.circle
-						initial={{ opacity: 0 }}
-						animate={{ opacity: 1 }}
-						transition={{ delay: 1 }}
-						cx="100"
-						cy="30"
-						r="4"
-						fill="var(--tiimo-green)"
-					/>
-				</svg>
+				<div className="grid grid-cols-3 gap-2 w-full max-w-[240px]">
+					<div />
+					<div className="flex items-center justify-center font-black text-primary">T</div>
+					<div className="flex items-center justify-center font-black text-primary">t</div>
+					<div className="flex items-center justify-center font-black text-primary py-4">T</div>
+					{cells.map((cell) => (
+						<button
+							key={cell}
+							type="button"
+							onClick={() =>
+								setPunnett((prev) => ({
+									...prev,
+									[cell]: prev[cell] === 'TT' ? 'Tt' : prev[cell] === 'Tt' ? 'tt' : 'TT',
+								}))
+							}
+							className="aspect-square bg-card border-2 border-border rounded-xl flex items-center justify-center font-black text-lg hover:border-primary transition-all active:scale-95"
+						>
+							{punnett[cell] || '?'}
+						</button>
+					))}
+					<div className="flex items-center justify-center font-black text-primary py-4">t</div>
+				</div>
+				<p className="text-[10px] font-black uppercase text-muted-foreground tracking-widest text-center">
+					Tap cells to cycle alleles (T/t)
+				</p>
 			</div>
 		);
 	}
@@ -70,7 +129,13 @@ export function InteractiveDiagram({ type, className }: InteractiveDiagramProps)
 					className
 				)}
 			>
-				<svg viewBox="0 0 200 100" className="w-full h-full">
+				<svg
+					viewBox="0 0 200 100"
+					className="w-full h-full"
+					role="img"
+					aria-label="Electric circuit diagram"
+				>
+					<title>Electric circuit diagram</title>
 					<rect
 						x="40"
 						y="20"
@@ -112,7 +177,13 @@ export function InteractiveDiagram({ type, className }: InteractiveDiagramProps)
 					className
 				)}
 			>
-				<svg viewBox="0 0 200 100" className="w-full h-full">
+				<svg
+					viewBox="0 0 200 100"
+					className="w-full h-full"
+					role="img"
+					aria-label="Weather map with isobars"
+				>
+					<title>Weather map with isobars</title>
 					{/* Isobars */}
 					<m.circle
 						initial={{ opacity: 0 }}
@@ -186,7 +257,13 @@ export function InteractiveDiagram({ type, className }: InteractiveDiagramProps)
 					className
 				)}
 			>
-				<svg viewBox="0 0 200 100" className="w-full h-full">
+				<svg
+					viewBox="0 0 200 100"
+					className="w-full h-full"
+					role="img"
+					aria-label="DNA double helix structure"
+				>
+					<title>DNA double helix structure</title>
 					{/* Helix strands */}
 					{[0, 1].map((strand) => (
 						<m.path
@@ -194,31 +271,27 @@ export function InteractiveDiagram({ type, className }: InteractiveDiagramProps)
 							initial={{ pathLength: 0 }}
 							animate={{ pathLength: 1 }}
 							transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY, ease: 'linear' }}
-							d={`M 20 ${strand === 0 ? 30 : 70} ${Array.from({ length: 10 })
-								.map(
-									(_, i) =>
-										`Q ${20 + i * 16 + 8} ${strand === 0 ? (i % 2 === 0 ? 80 : 20) : i % 2 === 0 ? 20 : 80} ${20 + (i + 1) * 16} ${strand === 0 ? (i % 2 === 0 ? 70 : 30) : i % 2 === 0 ? 30 : 70}`
-								)
-								.join(' ')}`}
+							d={
+								strand === 0 ? 'M 20 50 Q 60 0 100 50 T 180 50' : 'M 20 50 Q 60 100 100 50 T 180 50'
+							}
 							fill="none"
-							stroke={strand === 0 ? 'var(--tiimo-lavender)' : 'var(--tiimo-green)'}
-							strokeWidth="3"
+							stroke={strand === 0 ? 'var(--tiimo-lavender)' : 'var(--tiimo-blue)'}
+							strokeWidth="4"
+							strokeLinecap="round"
+							opacity="0.8"
 						/>
 					))}
-					{/* Base pairs */}
-					{Array.from({ length: 10 }).map((_, i) => (
-						<m.line
-							key={i}
-							initial={{ opacity: 0 }}
-							animate={{ opacity: [0, 1, 0] }}
-							transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY, delay: i * 0.2 }}
-							x1={28 + i * 16}
-							y1="40"
-							x2={28 + i * 16}
-							y2="60"
+					{/* Nucleotide rungs */}
+					{[40, 60, 80, 100, 120, 140, 160].map((x) => (
+						<line
+							key={x}
+							x1={x}
+							y1={50 + 30 * Math.sin((x / 40) * Math.PI)}
+							x2={x}
+							y2={50 - 30 * Math.sin((x / 40) * Math.PI)}
 							stroke="currentColor"
-							strokeWidth="1"
-							opacity="0.5"
+							strokeWidth="2"
+							opacity="0.3"
 						/>
 					))}
 				</svg>
@@ -226,81 +299,5 @@ export function InteractiveDiagram({ type, className }: InteractiveDiagramProps)
 		);
 	}
 
-	if (type.toLowerCase().includes('ledger') || type.toLowerCase().includes('account')) {
-		return (
-			<div
-				className={cn(
-					'w-full h-auto bg-secondary/30 rounded-xl relative overflow-hidden p-4',
-					className
-				)}
-			>
-				<div className="w-full h-full flex flex-col border-2 border-border rounded-lg bg-card">
-					<div className="p-2 border-b-2 border-border text-center font-bold text-xs uppercase tracking-widest bg-muted/50">
-						General Ledger: Equipment
-					</div>
-					<div className="flex flex-row min-h-[120px]">
-						{/* Debit side */}
-						<div className="flex-1 border-r-2 border-border p-2">
-							<div className="text-[8px] font-black text-tiimo-gray-muted uppercase mb-2">
-								Debit (Dr)
-							</div>
-							<m.div
-								initial={{ opacity: 0, x: -10 }}
-								animate={{ opacity: 1, x: 0 }}
-								className="flex justify-between text-[10px] mb-1"
-							>
-								<span>Bank</span>
-								<span className="font-bold text-tiimo-green">R 12,000</span>
-							</m.div>
-							{/* Input area for students */}
-							<div className="mt-4 pt-2 border-t border-border/30">
-								<input
-									type="text"
-									placeholder="Amount..."
-									className="w-full bg-muted/50 text-[10px] p-1 rounded border border-border focus:ring-1 focus:ring-primary/20"
-								/>
-							</div>
-						</div>
-						{/* Credit side */}
-						<div className="flex-1 p-2 text-right">
-							<div className="text-[8px] font-black text-tiimo-gray-muted uppercase mb-2">
-								Credit (Cr)
-							</div>
-							<m.div
-								initial={{ opacity: 0, x: 10 }}
-								animate={{ opacity: 1, x: 0 }}
-								transition={{ delay: 0.5 }}
-								className="flex justify-between text-[10px] mb-1"
-							>
-								<span className="text-destructive font-bold italic opacity-50">?</span>
-								<span>Accum. Depr.</span>
-							</m.div>
-							<div className="mt-4 pt-2 border-t border-border/30">
-								<input
-									type="text"
-									placeholder="Amount..."
-									className="w-full bg-muted/50 text-[10px] p-1 rounded border border-border text-right focus:ring-1 focus:ring-primary/20"
-								/>
-							</div>
-						</div>
-					</div>
-				</div>
-				<p className="text-[8px] text-center text-muted-foreground mt-2 uppercase font-bold tracking-widest italic">
-					Interactive Ledger: Enter missing values
-				</p>
-			</div>
-		);
-	}
-
-	// Default fallback for description-based diagrams
-	return (
-		<div
-			className={cn(
-				'w-full p-4 bg-secondary/20 rounded-xl border border-border/50 italic text-sm text-tiimo-gray-muted',
-				className
-			)}
-		>
-			[Interactive Diagram: {type}]
-		</div>
-	);
+	return <div className={cn('w-full aspect-video bg-secondary/30 rounded-xl', className)} />;
 }

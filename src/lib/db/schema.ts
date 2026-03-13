@@ -1048,6 +1048,9 @@ export type NewStudySession = typeof studySessions.$inferInsert;
 export type StudyPlan = typeof studyPlans.$inferSelect;
 export type NewStudyPlan = typeof studyPlans.$inferInsert;
 
+export type CalendarEvent = typeof calendarEvents.$inferSelect;
+export type NewCalendarEvent = typeof calendarEvents.$inferInsert;
+
 export type FlashcardDeck = typeof flashcardDecks.$inferSelect;
 export type NewFlashcardDeck = typeof flashcardDecks.$inferInsert;
 

@@ -13,6 +13,7 @@ import { useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
 import { toast } from 'sonner';
 import { MarkdownRenderer } from '@/components/AI/MarkdownRenderer';
+import { SafeImage } from '@/components/SafeImage';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -126,8 +127,13 @@ export default function SnapAndSolve() {
 					) : (
 						<div className="w-full space-y-6">
 							<div className="relative w-full aspect-video rounded-[2.5rem] overflow-hidden border-4 border-card shadow-2xl">
-								<img src={preview} alt="Question preview" className="w-full h-full object-cover" />
+								<SafeImage
+									src={preview}
+									alt="Question preview"
+									className="w-full h-full object-cover"
+								/>
 								<button
+									type="button"
 									onClick={() => {
 										setPreview(null);
 										setImage(null);
@@ -149,6 +155,7 @@ export default function SnapAndSolve() {
 											{SUBJECTS.map((s) => (
 												<button
 													key={s}
+													type="button"
 													onClick={() => setSubject(s)}
 													className={cn(
 														'px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-widest transition-all',

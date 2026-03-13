@@ -1,132 +1,103 @@
 'use client';
 
 import {
-	AtomIcon,
-	BookOpen01Icon,
+	Book01Icon,
 	CalculatorIcon,
-	Cursor01Icon,
-	PlusSignIcon,
+	Chemistry01Icon,
+	Compass01Icon,
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { m } from 'framer-motion';
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { Button } from '@/components/ui/button';
 import { getEnrolledSubjectsAction } from '@/lib/db/actions';
+import type { Subject } from '@/lib/db/schema';
 import { cn } from '@/lib/utils';
 
-const ICON_MAP: Record<string, any> = {
+const ICON_MAP: Record<string, React.ElementType> = {
 	math: CalculatorIcon,
 	mathematics: CalculatorIcon,
-	physics: AtomIcon,
-	physical_sciences: AtomIcon,
-	life: AtomIcon,
-	life_sciences: AtomIcon,
-	accounting: Cursor01Icon,
-	geography: BookOpen01Icon,
-	business: CalculatorIcon,
-	history: BookOpen01Icon,
-	economics: CalculatorIcon,
-	lo: BookOpen01Icon,
+	physics: Chemistry01Icon,
+	science: Chemistry01Icon,
+	'physical sciences': Chemistry01Icon,
+	english: Book01Icon,
+	geography: Compass01Icon,
 };
 
-const COLOR_MAP: Record<string, { color: string; bgColor: string }> = {
-	math: { color: 'text-subject-math', bgColor: 'bg-subject-math-soft' },
-	physics: { color: 'text-subject-physics', bgColor: 'bg-subject-physics-soft' },
-	life: { color: 'text-subject-life', bgColor: 'bg-subject-life-soft' },
-	accounting: { color: 'text-subject-accounting', bgColor: 'bg-subject-accounting-soft' },
-	geography: { color: 'text-subject-geography', bgColor: 'bg-subject-geography-soft' },
-	history: { color: 'text-subject-history', bgColor: 'bg-subject-history-soft' },
+const COLOR_MAP: Record<string, string> = {
+	math: 'bg-tiimo-lavender',
+	mathematics: 'bg-tiimo-lavender',
+	physics: 'bg-tiimo-blue',
+	'physical sciences': 'bg-tiimo-blue',
+	english: 'bg-tiimo-orange',
+	geography: 'bg-tiimo-green',
 };
 
 export function SubjectGrid() {
-	const [subjects, setSubjects] = useState<any[]>([]);
+	const router = useRouter();
+	const [subjects, setSubjects] = useState<Subject[]>([]);
 	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
-		async function loadEnrolled() {
-			try {
-				const enrolled = await getEnrolledSubjectsAction();
-				setSubjects(enrolled);
-			} catch (error) {
-				console.error('Failed to load enrolled subjects:', error);
-			} finally {
-				setIsLoading(false);
-			}
+		async function load() {
+			const data = await getEnrolledSubjectsAction();
+			setSubjects(data);
+			setIsLoading(false);
 		}
-		loadEnrolled();
+		load();
 	}, []);
 
 	if (isLoading) {
 		return (
-			<div className="h-32 flex items-center justify-center font-bold uppercase text-[10px] tracking-widest text-muted-foreground animate-pulse">
-				Syncing Subjects...
+			<div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+				{[1, 2, 3].map((i) => (
+					<div key={i} className="aspect-square bg-secondary/50 animate-pulse rounded-[2.5rem]" />
+				))}
 			</div>
 		);
 	}
 
 	return (
-		<section>
-			<div className="flex items-center justify-between mb-6">
-				<h2 className="text-xl font-black text-foreground tracking-tight">Your Subjects</h2>
-				<Link
-					href="/subjects"
-					className="text-[10px] font-black text-tiimo-lavender uppercase tracking-widest hover:underline flex items-center gap-1"
-				>
-					<HugeiconsIcon icon={PlusSignIcon} className="w-3 h-3" />
-					Add More
-				</Link>
-			</div>
+		<div className="grid grid-cols-2 sm:grid-cols-3 gap-6">
+			{subjects.map((subject, index) => {
+				const subjectKey = subject.name.toLowerCase();
+				const Icon = ICON_MAP[subjectKey] || Book01Icon;
+				const color = COLOR_MAP[subjectKey] || 'bg-tiimo-gray-muted';
 
-			{subjects.length > 0 ? (
-				<div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
-					{subjects.map((subject, index) => {
-						const slug = subject.name.toLowerCase().replace(/ /g, '_');
-						const theme = COLOR_MAP[slug] || COLOR_MAP.math;
-						const Icon = ICON_MAP[slug] || BookOpen01Icon;
-
-						return (
-							<m.div
-								key={subject.id}
-								initial={{ opacity: 0, scale: 0.9 }}
-								animate={{ opacity: 1, scale: 1 }}
-								transition={{ delay: index * 0.05 }}
-								whileTap={{ scale: 0.95 }}
-								className="tiimo-press"
-							>
-								<Link
-									href={`/subjects/${subject.id}`}
-									className={cn(
-										'flex flex-col items-center justify-center p-6 rounded-[2rem] transition-all border border-border/50 shadow-tiimo bg-card hover:shadow-tiimo-lg hover:border-primary/20 h-full'
-									)}
-								>
-									<m.div
-										layoutId={`subject-icon-${subject.id}`}
-										className={cn('p-4 rounded-[1.5rem] mb-3', theme.bgColor)}
-									>
-										<HugeiconsIcon icon={Icon} className={cn('w-7 h-7', theme.color)} />
-									</m.div>
-									<span className="font-black text-xs uppercase tracking-tighter text-center line-clamp-1">
-										{subject.name}
-									</span>
-								</Link>
-							</m.div>
-						);
-					})}
-				</div>
-			) : (
-				<div className="p-12 text-center bg-muted/20 rounded-[2.5rem] border border-dashed border-border">
-					<p className="text-sm font-bold text-muted-foreground uppercase tracking-widest mb-4">
-						No subjects enrolled
-					</p>
-					<Button
-						asChild
-						className="rounded-full font-black uppercase text-xs tracking-widest px-8"
+				return (
+					<m.button
+						key={subject.id}
+						initial={{ opacity: 0, scale: 0.9 }}
+						animate={{ opacity: 1, scale: 1 }}
+						transition={{ delay: index * 0.05 }}
+						onClick={() => router.push(`/subjects/${subject.id}`)}
+						className="aspect-square bg-card rounded-[2.5rem] p-6 flex flex-col items-center justify-center gap-4 shadow-tiimo border border-border/50 transition-all hover:scale-105 group active:scale-95"
 					>
-						<Link href="/subjects">Explore Marketplace</Link>
-					</Button>
+						<div
+							className={cn(
+								'w-16 h-16 rounded-[1.5rem] flex items-center justify-center transition-transform group-hover:rotate-12',
+								color
+							)}
+						>
+							<HugeiconsIcon icon={Icon} className="w-8 h-8 text-white" />
+						</div>
+						<span className="font-black text-xs uppercase tracking-widest text-center">
+							{subject.name}
+						</span>
+					</m.button>
+				);
+			})}
+
+			<button
+				type="button"
+				onClick={() => router.push('/subjects')}
+				className="aspect-square bg-secondary/30 rounded-[2.5rem] border-2 border-dashed border-border/50 flex flex-col items-center justify-center gap-3 text-tiimo-gray-muted hover:bg-secondary/50 transition-all active:scale-95"
+			>
+				<div className="w-12 h-12 rounded-full border-2 border-dashed border-tiimo-gray-muted/50 flex items-center justify-center">
+					<span className="text-2xl font-light">+</span>
 				</div>
-			)}
-		</section>
+				<span className="font-black text-[10px] uppercase tracking-[0.2em]">Add More</span>
+			</button>
+		</div>
 	);
 }

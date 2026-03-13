@@ -1,11 +1,8 @@
 'use client';
 
-import {
-	AiBrain01Icon,
-	BookOpen01Icon,
-	CalculatorIcon,
-	CheckmarkCircle02Icon,
-} from '@hugeicons/core-free-icons';
+import { Cancel01Icon, CheckmarkCircle02Icon } from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
+import { m } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import { FocusContent } from '@/components/Layout/FocusContent';
@@ -13,12 +10,13 @@ import { TimelineSidebar } from '@/components/Layout/TimelineSidebar';
 import { QuestionCard, type QuestionOption } from '@/components/Quiz/QuestionCardV2';
 import { QuizActions } from '@/components/Quiz/QuizActionsV2';
 import { QuizHeader } from '@/components/Quiz/QuizHeaderV2';
-import { QuizProgress, type QuizStep } from '@/components/Quiz/QuizProgressV2';
+import { Badge } from '@/components/ui/badge';
+import { Card } from '@/components/ui/card';
+import { Progress } from '@/components/ui/progress';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { useQuizResultStore } from '@/stores/useQuizResultStore';
-
 import { QUIZ_DATA } from '@/constants/quiz-data';
 import { useQuizCompletion } from '@/hooks/use-quiz-completion';
+import { cn } from '@/lib/utils';
 
 interface QuizProps {
 	quizId?: string;
@@ -34,7 +32,7 @@ export default function Quiz({ quizId = 'math-p1-2023-nov' }: QuizProps) {
 	const [elapsedSeconds, setElapsedSeconds] = useState(0);
 	const [showHint, setShowHint] = useState(false);
 	const [score, setScore] = useState(0);
-	
+
 	const { completeQuiz, isCompleting } = useQuizCompletion();
 
 	const quiz = QUIZ_DATA[quizId] || QUIZ_DATA['math-p1-2023-nov'];
@@ -49,10 +47,10 @@ export default function Quiz({ quizId = 'math-p1-2023-nov' }: QuizProps) {
 
 	const formatTime = (s: number) => `${Math.floor(s / 60)}:${(s % 60).toString().padStart(2, '0')}`;
 
-	const options: QuestionOption[] = currentQuestion.options.map(o => ({
+	const options: QuestionOption[] = currentQuestion.options.map((o) => ({
 		id: o.id,
 		label: o.text,
-		isCorrect: o.id === currentQuestion.correctAnswer
+		isCorrect: o.id === currentQuestion.correctAnswer,
 	}));
 
 	const handleCheck = async () => {
@@ -71,9 +69,10 @@ export default function Quiz({ quizId = 'math-p1-2023-nov' }: QuizProps) {
 					topic: quiz.title,
 					totalQuestions: quiz.questions.length,
 					correctAnswers: finalScore,
-					score: finalScore * 10,
+					marksEarned: finalScore * 10,
 					durationMinutes: Math.ceil(elapsedSeconds / 60),
-					sessionType: 'quiz'
+					difficulty: 'medium',
+					sessionType: 'test',
 				});
 				router.push('/lesson-complete');
 			}
@@ -82,7 +81,7 @@ export default function Quiz({ quizId = 'math-p1-2023-nov' }: QuizProps) {
 
 		const correct = options.find((o) => o.id === selectedOption)?.isCorrect || false;
 		setIsCorrect(correct);
-		if (correct) setScore(prev => prev + 1);
+		if (correct) setScore((prev) => prev + 1);
 		setIsChecked(true);
 	};
 
@@ -98,13 +97,16 @@ export default function Quiz({ quizId = 'math-p1-2023-nov' }: QuizProps) {
 						subtitle={`${quiz.subject} • ${quiz.session} ${quiz.year}`}
 						elapsedTime={formatTime(elapsedSeconds)}
 					/>
-					
+
 					<div className="mb-8">
 						<div className="flex justify-between items-center mb-2">
 							<span className="text-[10px] font-black uppercase text-muted-foreground tracking-widest">
 								Question {currentQuestionIndex + 1} of {quiz.questions.length}
 							</span>
-							<Badge variant="secondary" className="text-[10px] font-black uppercase rounded-full">
+							<Badge
+								variant="secondary"
+								className="text-[10px] font-black uppercase rounded-full px-3"
+							>
 								{currentQuestion.difficulty}
 							</Badge>
 						</div>
@@ -121,27 +123,36 @@ export default function Quiz({ quizId = 'math-p1-2023-nov' }: QuizProps) {
 								onSelect={setSelectedOption}
 								diagram={currentQuestion.diagram}
 							/>
-							
+
 							{isChecked && (
 								<m.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
-									<Card className={cn(
-										"p-6 rounded-[2rem] border-2",
-										isCorrect 
-											? "bg-success/10 border-success/30" 
-											: "bg-destructive/10 border-destructive/30"
-									)}>
+									<Card
+										className={cn(
+											'p-6 rounded-[2rem] border-2',
+											isCorrect
+												? 'bg-success/10 border-success/30'
+												: 'bg-destructive/10 border-destructive/30'
+										)}
+									>
 										<div className="flex gap-4">
-											<div className={cn(
-												"w-10 h-10 rounded-xl flex items-center justify-center shrink-0",
-												isCorrect ? "bg-success text-white" : "bg-destructive text-white"
-											)}>
-												<HugeiconsIcon icon={isCorrect ? CheckmarkCircle02Icon : Cancel01Icon} className="w-6 h-6" />
+											<div
+												className={cn(
+													'w-10 h-10 rounded-xl flex items-center justify-center shrink-0',
+													isCorrect ? 'bg-success text-white' : 'bg-destructive text-white'
+												)}
+											>
+												<HugeiconsIcon
+													icon={isCorrect ? CheckmarkCircle02Icon : Cancel01Icon}
+													className="w-6 h-6"
+												/>
 											</div>
 											<div>
 												<h4 className="font-black uppercase text-sm tracking-tight">
 													{isCorrect ? 'Brilliant!' : 'Not quite right'}
 												</h4>
-												<p className="text-sm font-medium opacity-80 mt-1">{currentQuestion.hint}</p>
+												<p className="text-sm font-medium opacity-80 mt-1">
+													{currentQuestion.hint}
+												</p>
 											</div>
 										</div>
 									</Card>
@@ -165,9 +176,3 @@ export default function Quiz({ quizId = 'math-p1-2023-nov' }: QuizProps) {
 		</div>
 	);
 }
-
-import { Badge } from '@/components/ui/badge';
-import { Progress } from '@/components/ui/progress';
-import { Card } from '@/components/ui/card';
-import { Cancel01Icon } from '@hugeicons/core-free-icons';
-import { cn } from '@/lib/utils';

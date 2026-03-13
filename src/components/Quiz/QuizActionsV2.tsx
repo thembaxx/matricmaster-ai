@@ -14,6 +14,7 @@ interface QuizActionsProps {
 	onToggleHint: () => void;
 	onCheck: () => void;
 	onExit: () => void;
+	disabled?: boolean;
 }
 
 export function QuizActions({
@@ -24,6 +25,7 @@ export function QuizActions({
 	onToggleHint,
 	onCheck,
 	onExit,
+	disabled,
 }: QuizActionsProps) {
 	return (
 		<m.div
@@ -37,6 +39,7 @@ export function QuizActions({
 					<button
 						type="button"
 						onClick={onToggleHint}
+						disabled={disabled}
 						className={cn(
 							'p-4 rounded-3xl bg-secondary text-tiimo-gray-muted transition-all tiimo-press',
 							showHint && 'bg-tiimo-yellow text-white shadow-tiimo'
@@ -47,7 +50,7 @@ export function QuizActions({
 					<Button
 						size="lg"
 						className="flex-1 rounded-[2rem] h-16 text-lg font-black shadow-tiimo tiimo-press bg-tiimo-lavender hover:bg-tiimo-lavender/90 text-white"
-						disabled={!selectedOption}
+						disabled={!selectedOption || disabled}
 						onClick={onCheck}
 					>
 						Check Answer
@@ -59,6 +62,7 @@ export function QuizActions({
 					<Button
 						variant="outline"
 						size="lg"
+						disabled={disabled}
 						className="flex-1 rounded-[2rem] h-16 font-black uppercase tracking-widest text-[10px] bg-secondary border-none tiimo-press text-tiimo-gray-muted"
 						onClick={onExit}
 					>
@@ -67,6 +71,7 @@ export function QuizActions({
 					</Button>
 					<Button
 						size="lg"
+						disabled={disabled}
 						className={cn(
 							'flex-[2] rounded-[2rem] h-16 text-lg font-black shadow-tiimo tiimo-press text-white',
 							isCorrect

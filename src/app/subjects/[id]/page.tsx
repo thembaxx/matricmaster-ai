@@ -1,4 +1,5 @@
 'use client';
+
 import {
 	ArrowLeft01Icon,
 	BookOpen01Icon,
@@ -6,126 +7,123 @@ import {
 	PlayIcon,
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
+import { m } from 'framer-motion';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { getLessonsBySubject } from '@/lib/lessons';
 import { cn } from '@/lib/utils';
 
-export default function SubjectDetailsPage({ params }: { params: { id: string } }) {
+export default function SubjectDetailsPage() {
+	const params = useParams();
 	const router = useRouter();
-	const subjectId = params.id;
+	const subjectId = params.id as string;
 	const lessons = getLessonsBySubject(subjectId);
 
+	const completedCount = lessons.filter((l) => l.completed).length;
+	const progress = lessons.length > 0 ? (completedCount / lessons.length) * 100 : 0;
+
 	return (
-		<div className="container mx-auto max-w-4xl px-4 pt-8 pb-32">
-			<header className="flex items-center gap-4 mb-8">
-				<Button variant="ghost" size="icon" onClick={() => router.back()} className="rounded-full">
-					<HugeiconsIcon icon={ArrowLeft01Icon} className="w-6 h-6" />
-				</Button>
-				<div>
-					<h1 className="text-3xl font-black uppercase tracking-tight capitalize">
-						{subjectId.replace(/-/g, ' ')}
-					</h1>
-					<p className="text-xs font-black text-muted-foreground uppercase tracking-widest">
-						South African NSC Curriculum
-					</p>
+		<div className="min-h-screen bg-background p-4 sm:p-8 pb-32">
+			<m.div
+				initial={{ opacity: 0, y: 20 }}
+				animate={{ opacity: 1, y: 0 }}
+				className="max-w-4xl mx-auto space-y-8"
+			>
+				<button
+					type="button"
+					onClick={() => router.back()}
+					className="flex items-center gap-2 text-tiimo-gray-muted hover:text-foreground transition-colors group"
+				>
+					<HugeiconsIcon
+						icon={ArrowLeft01Icon}
+						className="w-5 h-5 transition-transform group-hover:-translate-x-1"
+					/>
+					<span className="font-black uppercase tracking-widest text-[10px]">Back</span>
+				</button>
+
+				<div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 bg-card rounded-[2.5rem] p-8 shadow-tiimo border border-border/50">
+					<div className="space-y-4">
+						<div className="w-16 h-16 rounded-[1.5rem] bg-primary flex items-center justify-center text-white shadow-xl shadow-primary/20">
+							<HugeiconsIcon icon={BookOpen01Icon} className="w-8 h-8" />
+						</div>
+						<div>
+							<h1 className="text-4xl font-black uppercase tracking-tighter mb-1">
+								{subjectId.charAt(0).toUpperCase() + subjectId.slice(1)}
+							</h1>
+							<p className="text-tiimo-gray-muted font-bold uppercase tracking-[0.2em] text-[10px]">
+								NSC CURRICULUM • GRADE 12
+							</p>
+						</div>
+					</div>
+
+					<div className="w-full sm:w-64 space-y-3">
+						<div className="flex justify-between items-end">
+							<span className="text-[10px] font-black uppercase tracking-widest text-tiimo-gray-muted">
+								Overall Progress
+							</span>
+							<span className="text-sm font-black text-primary">{Math.round(progress)}%</span>
+						</div>
+						<Progress value={progress} className="h-3 rounded-full bg-secondary" />
+					</div>
 				</div>
-			</header>
 
-			<div className="grid gap-6 md:grid-cols-3 mb-12">
-				<Card className="shadow-tiimo border-border/50">
-					<CardContent className="p-6 text-center">
-						<p className="text-[10px] font-black uppercase text-muted-foreground mb-2">
-							Completion
-						</p>
-						<span className="text-3xl font-black">{lessons.length > 0 ? '12%' : '0%'}</span>
-						<Progress value={lessons.length > 0 ? 12 : 0} className="h-1.5 mt-4" />
-					</CardContent>
-				</Card>
-				<Card className="shadow-tiimo border-border/50">
-					<CardContent className="p-6 text-center">
-						<p className="text-[10px] font-black uppercase text-muted-foreground mb-2">
-							Total Modules
-						</p>
-						<span className="text-3xl font-black text-primary">{lessons.length}</span>
-						<div className="flex items-center justify-center gap-1 mt-4 text-xs font-bold text-success uppercase tracking-widest">
-							Ready to study
-						</div>
-					</CardContent>
-				</Card>
-				<Card className="shadow-tiimo border-border/50">
-					<CardContent className="p-6 text-center">
-						<p className="text-[10px] font-black uppercase text-muted-foreground mb-2">Mastery</p>
-						<span className="text-3xl font-black text-warning">Gold</span>
-						<div className="flex items-center justify-center gap-1 mt-4 text-xs font-bold text-warning">
-							<HugeiconsIcon icon={ChampionIcon} className="w-3 h-3" />
-							Top 10%
-						</div>
-					</CardContent>
-				</Card>
-			</div>
-
-			<section className="space-y-6">
-				<h2 className="text-xl font-black uppercase tracking-tight">Learning Modules</h2>
-				<div className="space-y-3">
-					{lessons.length > 0 ? (
-						lessons.map((lesson: any) => (
-							<Link key={lesson.id} href={`/focus?lessonId=${lesson.id}&subject=${subjectId}`}>
-								<Card className={cn(
-										'group hover:border-primary/50 transition-all mb-3',
-										lesson.completed ? 'bg-muted/30' : 'bg-card'
+				<div className="grid gap-4">
+					<h2 className="text-xs font-black uppercase tracking-[0.2em] text-tiimo-gray-muted ml-4">
+						Learning Path
+					</h2>
+					{lessons.map((lesson, index) => (
+						<m.div
+							key={lesson.id}
+							initial={{ opacity: 0, x: -20 }}
+							animate={{ opacity: 1, x: 0 }}
+							transition={{ delay: index * 0.1 }}
+						>
+							<Link href={`/focus?lessonId=${lesson.id}&subject=${subjectId}`}>
+								<Card
+									className={cn(
+										'group rounded-[2rem] border-border/50 shadow-tiimo transition-all hover:scale-[1.01] active:scale-[0.99] overflow-hidden',
+										lesson.completed ? 'bg-secondary/30' : 'bg-card'
 									)}
 								>
-									<CardContent className="p-5 flex items-center justify-between">
-										<div className="flex items-center gap-4">
+									<CardContent className="p-0">
+										<div className="flex items-center gap-6 p-6">
 											<div
 												className={cn(
-													'w-10 h-10 rounded-xl flex items-center justify-center',
+													'w-14 h-14 rounded-2xl flex items-center justify-center transition-colors',
 													lesson.completed
-														? 'bg-success/10 text-success'
-														: 'bg-primary/10 text-primary'
+														? 'bg-tiimo-green text-white'
+														: 'bg-secondary text-tiimo-gray-muted group-hover:bg-primary group-hover:text-white'
 												)}
 											>
 												<HugeiconsIcon
-													icon={lesson.completed ? BookOpen01Icon : PlayIcon}
-													className="w-5 h-5"
+													icon={lesson.completed ? ChampionIcon : PlayIcon}
+													className="w-6 h-6"
 												/>
 											</div>
-											<div>
-												<h3 className="font-bold text-foreground group-hover:text-primary transition-colors">
+											<div className="flex-1 min-w-0">
+												<h3 className="text-lg font-black uppercase tracking-tight truncate">
 													{lesson.title}
 												</h3>
-												<p className="text-[10px] font-black text-muted-foreground uppercase">
-													{lesson.duration} min
+												<p className="text-[10px] font-bold text-tiimo-gray-muted uppercase tracking-widest mt-0.5">
+													{lesson.topic} • 15-20 MINS
 												</p>
 											</div>
+											{lesson.completed && (
+												<div className="hidden sm:block px-4 py-2 rounded-full bg-tiimo-green/10 text-tiimo-green text-[10px] font-black uppercase tracking-widest">
+													Mastered
+												</div>
+											)}
 										</div>
-										{lesson.completed ? (
-											<span className="text-[10px] font-black text-success uppercase tracking-widest">
-												Completed
-											</span>
-										) : (
-											<HugeiconsIcon
-												icon={PlayIcon}
-												className="w-4 h-4 text-muted-foreground group-hover:text-primary"
-											/>
-										)}
 									</CardContent>
 								</Card>
 							</Link>
-						))
-					) : (
-						<div className="py-12 text-center bg-muted/20 rounded-3xl border border-dashed border-border">
-							<p className="text-sm font-bold text-muted-foreground uppercase tracking-widest">
-								No modules found for this subject yet.
-							</p>
-						</div>
-					)}
+						</m.div>
+					))}
 				</div>
-			</section>
+			</m.div>
 		</div>
 	);
 }

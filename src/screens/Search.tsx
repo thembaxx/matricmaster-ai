@@ -20,7 +20,7 @@ import {
 	getPastPapersAction,
 	getSearchHistoryAction,
 } from '@/lib/db/actions';
-import type { PastPaper, SearchHistory } from '@/lib/db/schema';
+import type { Lesson, PastPaper, SearchHistory } from '@/lib/db/schema';
 import { getLessonsBySubject } from '@/lib/lessons';
 import { smartSearch } from '@/services/geminiService';
 
@@ -32,7 +32,7 @@ export default function Search() {
 	const [recentSearches, setRecentSearches] = useState<SearchHistory[]>([]);
 	const [isLoadingHistory, setIsLoadingHistory] = useState(true);
 	const [papers, setPapers] = useState<PastPaper[]>([]);
-	const [allLessons, setAllLessons] = useState<any[]>([]);
+	const [allLessons, setAllLessons] = useState<Lesson[]>([]);
 
 	useEffect(() => {
 		const loadSearchHistory = async () => {
@@ -105,7 +105,7 @@ export default function Search() {
 					p.subject.toLowerCase().includes(lowerQuery) || p.paper.toLowerCase().includes(lowerQuery)
 			),
 			lessons: allLessons.filter(
-				(l: any) =>
+				(l) =>
 					l.title.toLowerCase().includes(lowerQuery) || l.topic.toLowerCase().includes(lowerQuery)
 			),
 		};
@@ -182,8 +182,9 @@ export default function Search() {
 											Lessons
 										</h3>
 										<div className="grid gap-4 sm:grid-cols-2">
-											{filteredResults.lessons.map((l: any) => (
+											{filteredResults.lessons.map((l) => (
 												<Link key={l.id} href={`/focus?lessonId=${l.id}`}>
+													{' '}
 													<Card className="p-6 hover:border-primary/50 transition-all group shadow-tiimo">
 														<div className="flex items-center justify-between mb-2">
 															<span className="text-[10px] font-black uppercase text-primary tracking-widest">

@@ -20,28 +20,39 @@ import { cn } from '@/lib/utils';
 const DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 const HOURS = Array.from({ length: 14 }, (_, i) => i + 8); // 8 AM to 9 PM
 
+import type { CalendarEvent } from '@/lib/db/schema';
+
+interface UIEvent {
+	day: string;
+	start: number;
+	end: number;
+	title: string;
+	subject: string;
+	color: string;
+}
+
+const mapDbEventToUI = (e: CalendarEvent): UIEvent => {
+	const start = new Date(e.startTime);
+	const end = new Date(e.endTime);
+	const dayName = DAYS[start.getDay() === 0 ? 6 : start.getDay() - 1];
+	return {
+		day: dayName,
+		start: start.getHours() + start.getMinutes() / 60,
+		end: end.getHours() + end.getMinutes() / 60,
+		title: e.title,
+		subject: 'Study',
+		color: 'bg-primary',
+	};
+};
+
 export default function SchedulePage() {
 	const [selectedDay, setSelectedDay] = useState('Mon');
-	const [events, setEvents] = useState<any[]>([]);
+	const [events, setEvents] = useState<UIEvent[]>([]);
 
 	useEffect(() => {
 		async function loadEvents() {
 			const data = await getCalendarEventsAction();
-			// Map DB events to UI format
-			const mapped = data.map((e) => {
-				const start = new Date(e.startTime);
-				const end = new Date(e.endTime);
-				const dayName = DAYS[start.getDay() === 0 ? 6 : start.getDay() - 1];
-				return {
-					day: dayName,
-					start: start.getHours() + start.getMinutes() / 60,
-					end: end.getHours() + end.getMinutes() / 60,
-					title: e.title,
-					subject: 'Study',
-					color: 'bg-primary',
-				};
-			});
-			setEvents(mapped);
+			setEvents(data.map(mapDbEventToUI));
 		}
 		loadEvents();
 	}, []);
@@ -57,23 +68,8 @@ export default function SchedulePage() {
 
 		if (result.success) {
 			toast.success('Study block added!');
-			// Refresh events
 			const data = await getCalendarEventsAction();
-			setEvents(
-				data.map((e) => {
-					const start = new Date(e.startTime);
-					const end = new Date(e.endTime);
-					const dayName = DAYS[start.getDay() === 0 ? 6 : start.getDay() - 1];
-					return {
-						day: dayName,
-						start: start.getHours() + start.getMinutes() / 60,
-						end: end.getHours() + end.getMinutes() / 60,
-						title: e.title,
-						subject: 'Study',
-						color: 'bg-primary',
-					};
-				})
-			);
+			setEvents(data.map(mapDbEventToUI));
 		}
 	};
 
@@ -173,6 +169,7 @@ export default function SchedulePage() {
 					{DAYS.map((day) => (
 						<button
 							key={day}
+							type="button"
 							onClick={() => setSelectedDay(day)}
 							className={cn(
 								'px-6 py-3 rounded-full text-[10px] font-black uppercase tracking-widest transition-all',

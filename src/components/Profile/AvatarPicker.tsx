@@ -28,6 +28,7 @@ export function AvatarPicker({ selectedId, onSelect }: AvatarPickerProps) {
 			{AVATARS.map((avatar) => (
 				<button
 					key={avatar.id}
+					type="button"
 					onClick={() => onSelect(avatar.id)}
 					className={cn(
 						'relative group flex flex-col items-center gap-2 transition-all',

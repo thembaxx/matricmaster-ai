@@ -7,6 +7,8 @@ import { DashboardHeader } from '@/components/Dashboard/DashboardHeaderV2';
 import { SubjectGrid } from '@/components/Dashboard/SubjectGridV2';
 import { type StudyTask, TaskCard } from '@/components/Dashboard/TaskCardV2';
 import { TaskSection } from '@/components/Dashboard/TaskSectionV2';
+import { WeeklyChallenge } from '@/components/Dashboard/WeeklyChallenge';
+import { XpHeader } from '@/components/Gamification/XpHeader';
 import { FocusContent } from '@/components/Layout/FocusContent';
 import { TimelineSidebar } from '@/components/Layout/TimelineSidebar';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -75,7 +77,12 @@ const DEMO_TASKS: Record<string, StudyTask[]> = {
 	],
 };
 
-export default function Dashboard(_props: DashboardProps) {
+export default function Dashboard({
+	initialProgress,
+	initialStreak,
+	initialAchievements,
+	session,
+}: DashboardProps) {
 	const [tasks, setTasks] = useState<Record<string, StudyTask[]>>(DEMO_TASKS);
 	const [expanded, setExpanded] = useState<Record<string, boolean>>({ high: true, medium: true });
 
@@ -103,15 +110,37 @@ export default function Dashboard(_props: DashboardProps) {
 			<TimelineSidebar />
 			<FocusContent>
 				<div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-					<DashboardHeader 
-						today={today} 
-						completedCount={completedCount} 
-						totalCount={totalCount} 
+					<DashboardHeader
+						today={today}
+						completedCount={completedCount}
+						totalCount={totalCount}
 						initialXp={initialProgress?.totalMarksEarned || 0}
 					/>
 
 					<ScrollArea className="h-[calc(100vh-280px)] no-scrollbar pr-4">
 						<div className="space-y-10 pb-32">
+							{/* Welcome & Stats Row */}
+							<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+								<div className="space-y-6">
+									<div className="space-y-1">
+										<h2 className="text-2xl font-black tracking-tight uppercase">
+											Hello, {session?.user?.name?.split(' ')[0] || 'Scholar'}!
+										</h2>
+										<p className="text-sm font-bold text-tiimo-gray-muted uppercase tracking-widest">
+											Let's crush your goals today.
+										</p>
+									</div>
+									<XpHeader
+										variant="full"
+										initialAchievements={initialAchievements || undefined}
+										initialStreak={
+											initialStreak ? { currentStreak: initialStreak.currentStreak } : undefined
+										}
+									/>
+								</div>
+								<WeeklyChallenge initialProgress={initialProgress || undefined} />
+							</div>
+
 							<div className="space-y-6">
 								<TaskSection
 									title="High Priority"

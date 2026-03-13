@@ -1,15 +1,20 @@
 'use client';
 
+import {
+	ArrowLeft01Icon,
+	BookOpen01Icon,
+	CheckmarkCircle02Icon,
+	PauseIcon,
+	PlayIcon,
+} from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import { AnimatePresence, m } from 'framer-motion';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useState, useMemo } from 'react';
-import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
-import { getLessonsBySubject } from '@/lib/lessons';
+import { useEffect, useMemo, useState } from 'react';
 import { MarkdownRenderer } from '@/components/AI/MarkdownRenderer';
+import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { ArrowLeft01Icon, BookOpen01Icon, CheckmarkCircle02Icon, PlayIcon, PauseIcon } from '@hugeicons/core-free-icons';
-import { HugeiconsIcon } from '@hugeicons/react';
+import { getLessonsBySubject } from '@/lib/lessons';
 
 export default function FocusScreen() {
 	const router = useRouter();
@@ -18,7 +23,10 @@ export default function FocusScreen() {
 	const subjectId = searchParams.get('subject') || 'math';
 
 	const lessons = useMemo(() => getLessonsBySubject(subjectId), [subjectId]);
-	const lesson = useMemo(() => lessons.find((l: any) => l.id === lessonId) || lessons[0], [lessons, lessonId]);
+	const lesson = useMemo(
+		() => lessons.find((l: any) => l.id === lessonId) || lessons[0],
+		[lessons, lessonId]
+	);
 
 	const [timeRemaining, setTimeRemaining] = useState((lesson?.duration || 25) * 60);
 	const [isPaused, setIsPaused] = useState(true);
@@ -50,7 +58,12 @@ export default function FocusScreen() {
 		return `${mins}:${secs.toString().padStart(2, '0')}`;
 	};
 
-	if (!lesson) return <div className="flex items-center justify-center h-screen uppercase font-black tracking-widest animate-pulse">Loading Lesson...</div>;
+	if (!lesson)
+		return (
+			<div className="flex items-center justify-center h-screen uppercase font-black tracking-widest animate-pulse">
+				Loading Lesson...
+			</div>
+		);
 
 	return (
 		<div className="min-h-screen bg-background flex flex-col items-center p-6 overflow-x-hidden">
@@ -60,11 +73,13 @@ export default function FocusScreen() {
 				</Button>
 				<div className="flex items-center gap-2 bg-muted/50 px-4 py-2 rounded-full border border-border/50">
 					<div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-					<span className="text-[10px] font-black uppercase tracking-widest">Focusing: {lesson.topic}</span>
+					<span className="text-[10px] font-black uppercase tracking-widest">
+						Focusing: {lesson.topic}
+					</span>
 				</div>
-				<Button 
-					variant="outline" 
-					size="sm" 
+				<Button
+					variant="outline"
+					size="sm"
 					onClick={() => setViewMode(viewMode === 'timer' ? 'content' : 'timer')}
 					className="rounded-full font-black uppercase text-[10px] gap-2 h-10 px-4"
 				>
@@ -93,11 +108,28 @@ export default function FocusScreen() {
 							</div>
 
 							<div className="relative w-72 h-72 mx-auto mb-12">
-								<svg className="w-full h-full -rotate-90" viewBox="0 0 100 100">
-									<circle cx="50" cy="50" r="45" fill="none" stroke="var(--muted)" strokeWidth="4" />
+								<svg
+									className="w-full h-full -rotate-90"
+									viewBox="0 0 100 100"
+									role="img"
+									aria-label="Study timer"
+								>
+									<title>Study timer</title>
+									<circle
+										cx="50"
+										cy="50"
+										r="45"
+										fill="none"
+										stroke="var(--muted)"
+										strokeWidth="4"
+									/>
 									<m.circle
-										cx="50" cy="50" r="45" fill="none"
-										stroke="var(--primary)" strokeWidth="4"
+										cx="50"
+										cy="50"
+										r="45"
+										fill="none"
+										stroke="var(--primary)"
+										strokeWidth="4"
 										strokeLinecap="round"
 										strokeDasharray={`${2 * Math.PI * 45}`}
 										initial={{ strokeDashoffset: `${2 * Math.PI * 45}` }}
@@ -115,7 +147,7 @@ export default function FocusScreen() {
 							<div className="flex items-center gap-4">
 								<Button
 									size="lg"
-									variant={isPaused ? "default" : "outline"}
+									variant={isPaused ? 'default' : 'outline'}
 									onClick={() => setIsPaused(!isPaused)}
 									className="rounded-full px-10 h-16 text-xs font-black uppercase tracking-widest gap-2 shadow-2xl shadow-primary/20"
 								>
@@ -136,7 +168,7 @@ export default function FocusScreen() {
 								<MarkdownRenderer content={lesson.content} />
 							</ScrollArea>
 							<div className="p-8 bg-muted/30 border-t border-border/50 flex justify-center">
-								<Button 
+								<Button
 									onClick={() => setViewMode('timer')}
 									className="rounded-full font-black uppercase text-xs px-8 h-12"
 								>
@@ -155,7 +187,9 @@ export default function FocusScreen() {
 						<div className="w-24 h-24 rounded-full bg-success/10 flex items-center justify-center mx-auto mb-8 text-success shadow-success/20 shadow-2xl">
 							<HugeiconsIcon icon={CheckmarkCircle02Icon} className="w-12 h-12" />
 						</div>
-						<h2 className="text-4xl font-black tracking-tighter uppercase mb-2">Session Complete!</h2>
+						<h2 className="text-4xl font-black tracking-tighter uppercase mb-2">
+							Session Complete!
+						</h2>
 						<p className="text-muted-foreground font-bold uppercase text-xs tracking-widest mb-12">
 							You've mastered {lesson.title}
 						</p>

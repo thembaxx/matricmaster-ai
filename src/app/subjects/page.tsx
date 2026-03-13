@@ -12,10 +12,11 @@ import {
 	getEnrolledSubjectsAction,
 	getSubjectsAction,
 } from '@/lib/db/actions';
+import type { Subject } from '@/lib/db/schema';
 
 export default function SubjectsPage() {
 	const router = useRouter();
-	const [allSubjects, setAllSubjects] = useState<any[]>([]);
+	const [allSubjects, setAllSubjects] = useState<Subject[]>([]);
 	const [enrolledIds, setEnrolledIds] = useState<number[]>([]);
 	const [isLoading, setIsLoading] = useState(true);
 
@@ -28,7 +29,7 @@ export default function SubjectsPage() {
 					getEnrolledSubjectsAction(),
 				]);
 				setAllSubjects(subs);
-				setEnrolledIds(enrolled.map((e: any) => e.id));
+				setEnrolledIds(enrolled.map((e) => e.id));
 			} catch (error) {
 				console.error('Failed to load subjects:', error);
 			} finally {

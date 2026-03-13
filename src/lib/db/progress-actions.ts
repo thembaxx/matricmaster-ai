@@ -3,7 +3,7 @@
 import { and, desc, eq } from 'drizzle-orm';
 import { ensureAuthenticated } from './actions';
 import { dbManager } from './index';
-import { leaderboardEntries, studySessions, userProgress } from './schema';
+import { leaderboardEntries, type StudySession, studySessions, userProgress } from './schema';
 
 export interface ActivityResult {
 	subjectId?: number;
@@ -21,7 +21,7 @@ export interface UserProgressSummary {
 	totalMarksEarned: number;
 	accuracy: number;
 	streakDays: number;
-	recentSessions: any[];
+	recentSessions: StudySession[];
 }
 
 /**

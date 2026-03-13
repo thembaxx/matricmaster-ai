@@ -86,7 +86,10 @@ export default function Profile() {
 	const [viewMode, setViewMode] = useState<'my_stats' | 'provincial'>('my_stats');
 	const [isEditing, setIsAdding] = useState(false);
 	const radarGradientId = useId();
-	const { data: session, update } = useSession() as any;
+	const { data: session, update } = useSession() as {
+		data: any | null;
+		update: (data?: any) => Promise<any | null>;
+	};
 
 	const [editForm, setEditForm] = useState({
 		name: '',
@@ -137,9 +140,12 @@ export default function Profile() {
 				]);
 
 				// Bolt: Fix logic bug (was searching available instead of all) and optimize with O(1) MapTrifold lookup
-				const totalXp = achievements.unlocked.reduce((sum: number, a: any) => {
-					return sum + (ACHIEVEMENT_POINTS_MAP.get(a.achievementId) || 0);
-				}, 0);
+				const totalXp = achievements.unlocked.reduce(
+					(sum: number, a: { achievementId: string }) => {
+						return sum + (ACHIEVEMENT_POINTS_MAP.get(a.achievementId) || 0);
+					},
+					0
+				);
 
 				setUserStats({
 					totalQuestions: progress?.totalQuestionsAttempted || 0,
@@ -147,7 +153,9 @@ export default function Profile() {
 					streak: streak?.currentStreak || 0,
 					achievementsUnlocked: achievements?.unlocked?.length || 0,
 					totalXp,
-					unlockedAchievementIds: achievements.unlocked.map((a: any) => a.achievementId),
+					unlockedAchievementIds: achievements.unlocked.map(
+						(a: { achievementId: string }) => a.achievementId
+					),
 				});
 			} catch (error) {
 				console.error('Error fetching profile data:', error);
@@ -210,10 +218,14 @@ export default function Profile() {
 						{isEditing ? (
 							<div className="space-y-4 max-w-md">
 								<div className="space-y-2">
-									<label className="text-[10px] font-black uppercase text-muted-foreground tracking-widest ml-1">
+									<label
+										htmlFor="displayName"
+										className="text-[10px] font-black uppercase text-muted-foreground tracking-widest ml-1"
+									>
 										Display Name
 									</label>
 									<input
+										id="displayName"
 										type="text"
 										value={editForm.name}
 										onChange={(e) => setEditForm({ ...editForm, name: e.target.value })}
@@ -221,10 +233,14 @@ export default function Profile() {
 									/>
 								</div>
 								<div className="space-y-2">
-									<label className="text-[10px] font-black uppercase text-muted-foreground tracking-widest ml-1">
+									<label
+										htmlFor="school"
+										className="text-[10px] font-black uppercase text-muted-foreground tracking-widest ml-1"
+									>
 										Current School
 									</label>
 									<input
+										id="school"
 										type="text"
 										value={editForm.school}
 										onChange={(e) => setEditForm({ ...editForm, school: e.target.value })}
