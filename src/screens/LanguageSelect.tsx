@@ -7,32 +7,39 @@ import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { LANGUAGES, type Language, useLanguageStore } from '@/stores/useLanguageStore';
 
-interface LanguageSelectProps {
-	currentLanguage?: string;
+const languageList = Object.entries(LANGUAGES).map(([code, info]) => ({
+	code: code as Language,
+	name: info.name,
+	native: info.native,
+	color: getLanguageColor(code),
+}));
+
+function getLanguageColor(code: string): string {
+	const colors: Record<string, string> = {
+		EN: 'bg-brand-blue',
+		AF: 'bg-brand-red',
+		ZU: 'bg-brand-green',
+		XH: 'bg-brand-amber',
+		NS: 'bg-brand-purple',
+		TN: 'bg-brand-orange',
+		SS: 'bg-pink-500',
+		TS: 'bg-teal-500',
+		VE: 'bg-indigo-500',
+		NR: 'bg-amber-800',
+		ST: 'bg-cyan-500',
+	};
+	return colors[code] || 'bg-gray-500';
 }
 
-const languages = [
-	{ code: 'EN', name: 'English', color: 'bg-brand-blue' },
-	{ code: 'AF', name: 'Afrikaans', color: 'bg-brand-red' },
-	{ code: 'ZU', name: 'isiZulu', color: 'bg-brand-green' },
-	{ code: 'XH', name: 'isiXhosa', color: 'bg-brand-amber' },
-	{ code: 'NS', name: 'Sepedi', color: 'bg-brand-purple' },
-	{ code: 'TN', name: 'Setswana', color: 'bg-brand-orange' },
-	{ code: 'SS', name: 'siSwati', color: 'bg-pink-500' },
-	{ code: 'TS', name: 'Xitsonga', color: 'bg-teal-500' },
-	{ code: 'VE', name: 'Tshivenda', color: 'bg-indigo-500' },
-	{ code: 'NR', name: 'isiNdebele', color: 'bg-amber-800' },
-	{ code: 'ST', name: 'Sesotho', color: 'bg-cyan-500' },
-];
-
-export default function LanguageSelect({ currentLanguage = 'EN' }: LanguageSelectProps) {
+export default function LanguageSelect() {
 	const router = useRouter();
+	const { language, setLanguage } = useLanguageStore();
 
 	return (
 		<div className="flex flex-col min-h-screen bg-zinc-50 dark:bg-zinc-950 font-lexend">
 			<div className="flex-1 flex flex-col max-w-2xl mx-auto w-full">
-				{/* Header */}
 				<div className="px-6 pt-12 pb-6 border-b border-border bg-card">
 					<div className="flex justify-between items-center">
 						<div className="flex items-center gap-4">
@@ -44,7 +51,7 @@ export default function LanguageSelect({ currentLanguage = 'EN' }: LanguageSelec
 									Select Language
 								</h2>
 								<p className="text-sm font-bold text-muted-foreground">
-									Choose your preferred tongue
+									Choose your preferred language
 								</p>
 							</div>
 						</div>
@@ -59,16 +66,15 @@ export default function LanguageSelect({ currentLanguage = 'EN' }: LanguageSelec
 					</div>
 				</div>
 
-				{/* Language List */}
 				<ScrollArea className="flex-1 p-6">
 					<RadioGroup
-						value={currentLanguage}
+						value={language}
 						onValueChange={(value) => {
-							router.push(`/?lang=${value}`);
+							setLanguage(value as Language);
 						}}
 						className="grid grid-cols-1 gap-4"
 					>
-						{languages.map((lang) => (
+						{languageList.map((lang) => (
 							<div key={lang.code}>
 								<RadioGroupItem value={lang.code} id={lang.code} className="peer sr-only" />
 								<Label
@@ -83,10 +89,10 @@ export default function LanguageSelect({ currentLanguage = 'EN' }: LanguageSelec
 									<div className="flex-1">
 										<p className="font-black text-foreground text-lg">{lang.name}</p>
 										<p className="text-xs font-bold text-muted-foreground uppercase tracking-widest">
-											{lang.code}
+											{lang.native}
 										</p>
 									</div>
-									{currentLanguage === lang.code && (
+									{language === lang.code && (
 										<div className="w-8 h-8 rounded-full bg-brand-blue flex items-center justify-center animate-in zoom-in">
 											<svg
 												className="w-5 h-5 text-white"
@@ -112,7 +118,6 @@ export default function LanguageSelect({ currentLanguage = 'EN' }: LanguageSelec
 					</RadioGroup>
 				</ScrollArea>
 
-				{/* Footer */}
 				<div className="p-8 border-t border-border bg-card">
 					<Button
 						className="w-full h-16 bg-foreground dark:bg-background text-background dark:text-foreground rounded-[2rem] font-black text-xl shadow-2xl active:scale-[0.98] transition-all"
