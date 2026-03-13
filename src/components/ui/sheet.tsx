@@ -112,14 +112,14 @@ const VisuallyHidden = VisuallyHiddenPrimitive.Root;
 
 export {
 	Sheet,
-	SheetPortal,
-	SheetOverlay,
-	SheetTrigger,
 	SheetClose,
 	SheetContent,
-	SheetHeader,
-	SheetFooter,
-	SheetTitle,
 	SheetDescription,
+	SheetFooter,
+	SheetHeader,
+	SheetOverlay,
+	SheetPortal,
+	SheetTitle,
+	SheetTrigger,
 	VisuallyHidden,
 };

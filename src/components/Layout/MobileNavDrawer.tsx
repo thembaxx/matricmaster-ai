@@ -84,6 +84,7 @@ const MOBILE_NAV_SECTIONS: MobileNavSection[] = [
 	{
 		title: 'Practice',
 		items: [
+			{ href: '/common-questions', label: 'Common Questions', icon: QuestionIcon },
 			{ href: '/flashcards', label: 'Flashcards', icon: Layers01Icon },
 			{ href: '/interactive-quiz', label: 'Interactive Quiz', icon: GameController01Icon },
 			{ href: '/math-quiz', label: 'Math Quiz', icon: CalculatorIcon },
@@ -211,7 +212,7 @@ export function MobileNavDrawer({
 									<div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-sidebar-primary to-purple-400 flex items-center justify-center shadow-lg">
 										<HugeiconsIcon icon={BookOpen01Icon} className="w-5 h-5 text-white" />
 									</div>
-									<h1 className="text-lg font-black text-sidebar-foreground uppercase tracking-tight">
+									<h1 className="text-lg font-semibold text-sidebar-foreground">
 										{appConfig.name}
 									</h1>
 								</button>
@@ -244,7 +245,7 @@ export function MobileNavDrawer({
 					<div className="flex-1 overflow-y-auto px-4 py-4">
 						{filteredSections.map((section) => (
 							<div key={section.title} className="mb-5">
-								<p className="px-3 mb-2 text-[10px] font-black uppercase tracking-widest text-sidebar-foreground/40">
+								<p className="px-3 mb-2 text-[10px] font-medium text-sidebar-foreground/40">
 									{section.title}
 								</p>
 								<div className="space-y-0.5">
