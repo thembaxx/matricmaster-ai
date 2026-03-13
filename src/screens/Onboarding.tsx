@@ -41,16 +41,16 @@ const STEPS: OnboardingStep[] = [
 		id: 0,
 		title: 'Your Study Companion',
 		description:
-			'The smart way to ace your Matrics. Get personalized guidance tailored to the South African Grade 12 curriculum.',
+			'We help you pass your Matric. Practice past papers, get instant help, and track your progress.',
 		image: '/onboarding/welcome.png',
 		color: 'from-blue-500 to-indigo-600',
 		icon: Rocket01Icon,
 	},
 	{
 		id: 1,
-		title: 'Define Your Path',
+		title: 'Pick Your Subjects',
 		description:
-			"Select the subjects you're tackling this year. We'll curate the most relevant past papers and study materials just for you.",
+			"Choose the subjects you're writing. We'll show you past papers and study materials for each one.",
 		image: '/onboarding/focus.png',
 		color: 'from-green-500 to-emerald-600',
 		icon: Target01Icon,
@@ -59,7 +59,7 @@ const STEPS: OnboardingStep[] = [
 		id: 2,
 		title: 'Master Every Topic',
 		description:
-			'Dive into interactive quizzes with real exam questions. Get step-by-step explanations that turn mistakes into milestones.',
+			'Practice with real NSC questions. Get clear explanations so you actually understand.',
 		image: '/onboarding/quiz.png',
 		color: 'from-purple-500 to-pink-600',
 		icon: CalculatorIcon,
@@ -68,7 +68,7 @@ const STEPS: OnboardingStep[] = [
 		id: 3,
 		title: 'Level Up Your Grade',
 		description:
-			'Track your progress in real-time. Earn XP, unlock achievements, and stay motivated as you climb your way to university entrance.',
+			'Track your progress. Earn XP, unlock achievements, and stay motivated until exam day.',
 		image: '/onboarding/progress.png',
 		color: 'from-amber-400 to-orange-500',
 		icon: ChampionIcon,

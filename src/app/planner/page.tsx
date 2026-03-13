@@ -51,7 +51,7 @@ export default function PlannerPage() {
 					Study Planner
 				</h1>
 				<p className="text-muted-foreground font-bold uppercase text-xs tracking-widest mt-1">
-					Optimize your exam preparation
+					Plan your NSC exam prep
 				</p>
 			</div>
 

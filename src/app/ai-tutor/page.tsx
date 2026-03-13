@@ -59,7 +59,7 @@ export default function AITutorPage() {
 			id: '1',
 			role: 'assistant',
 			content:
-				"Hello! I'm your AI Study Tutor. I can help you understand any topic, answer questions, or explain difficult concepts. What would you like to learn about today?",
+				"Hey! I'm your Study Buddy. I can help you understand any NSC topic, answer exam questions, or explain tricky concepts. What do you need help with today?",
 			timestamp: new Date(),
 		},
 	]);
@@ -263,7 +263,7 @@ export default function AITutorPage() {
 			{
 				id: '1',
 				role: 'assistant',
-				content: "Hello! I'm your AI Study Tutor. What would you like to learn about today?",
+				content: "Hey! I'm your Study Buddy. What do you need help with today?",
 				timestamp: new Date(),
 			},
 		]);
@@ -291,10 +291,10 @@ export default function AITutorPage() {
 			<div className="min-h-screen flex items-center justify-center bg-background p-4">
 				<Card className="w-full max-w-md">
 					<CardHeader>
-						<CardTitle>AI Tutor</CardTitle>
+						<CardTitle>Study Helper</CardTitle>
 					</CardHeader>
 					<CardContent className="space-y-4">
-						<p className="text-muted-foreground">Please sign in to access the AI Tutor.</p>
+						<p className="text-muted-foreground">Sign in to get help with your studies.</p>
 						<Button asChild className="w-full">
 							<Link href="/sign-in">Sign In</Link>
 						</Button>
@@ -327,7 +327,7 @@ export default function AITutorPage() {
 							</div>
 							<div>
 								<h1 className="text-lg md:text-xl font-black font-lexend tracking-tight">
-									AI Tutor
+									Study Helper
 								</h1>
 								<div className="flex items-center gap-2">
 									<span className="flex h-2 w-2 rounded-full bg-green-500 animate-pulse" />
@@ -526,7 +526,7 @@ export default function AITutorPage() {
 							placeholder="Ask me anything about your studies..."
 						/>
 						<p className="text-[10px] font-bold text-muted-foreground/60 text-center uppercase tracking-[0.2em]">
-							Powered by Google Gemini • Verify important info
+							Help from Google Gemini • Check important info
 						</p>
 					</div>
 				</div>

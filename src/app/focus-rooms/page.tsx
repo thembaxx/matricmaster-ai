@@ -4,8 +4,8 @@ import { ChannelProviderWrapper } from '@/lib/ably/provider';
 import FocusRoomsScreen from '@/screens/FocusRooms';
 
 export const metadata: Metadata = {
-	title: `Focus Rooms | ${appConfig.name} AI`,
-	description: 'Study in real-time with other students across South Africa.',
+	title: `Focus Rooms | ${appConfig.name}`,
+	description: 'Study in real-time with other Matric students across South Africa.',
 };
 
 export default function FocusRoomsPage() {

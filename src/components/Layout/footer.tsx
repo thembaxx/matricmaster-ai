@@ -25,7 +25,7 @@ const footerLinks = {
 		{ label: 'Study guides', href: '/resources' },
 		{ label: 'Past papers', href: '/past-papers' },
 		{ label: 'Flashcards', href: '/flashcards' },
-		{ label: 'AI tutor', href: '/ai-tutor' },
+		{ label: 'Study Helper', href: '/ai-tutor' },
 	],
 	company: [
 		{ label: 'About us', href: '/about' },
@@ -66,8 +66,8 @@ export function Footer() {
 							<span className="text-xl font-semibold">MatricMaster</span>
 						</Link>
 						<p className="text-sm text-muted-foreground mb-6 max-w-sm leading-relaxed">
-							Your AI-powered study companion for South African Grade 12 students. Master your
-							matric exams with personalized practice and expert guidance.
+							Your study companion for South African Matric students. Pass your NSC exams with
+							practice and expert help.
 						</p>
 						<div className="flex gap-2">
 							{socialLinks.map((social, index) => (
@@ -192,7 +192,7 @@ export function Footer() {
 					className="flex flex-col md:flex-row justify-between items-center gap-4"
 				>
 					<div className="flex flex-col md:flex-row items-center gap-2 text-xs text-muted-foreground">
-						<span>© {new Date().getFullYear()} MatricMaster AI. All rights reserved.</span>
+						<span>© {new Date().getFullYear()} MatricMaster. All rights reserved.</span>
 						<span className="hidden md:inline">•</span>
 						<div className="flex gap-4">
 							{footerLinks.legal.map((link) => (

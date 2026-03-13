@@ -39,20 +39,20 @@ const ICON_MAP: Record<string, IconSvg> = {
 const FEATURES = [
 	{
 		icon: MagicWand01Icon,
-		title: 'AI-Powered Learning',
-		description: 'Get instant explanations and step-by-step guidance from our AI tutor.',
+		title: 'Study Buddy',
+		description: 'Stuck on a question? Get help instantly, anytime.',
 		color: 'bg-tiimo-lavender/10 text-tiimo-lavender',
 	},
 	{
 		icon: Task02Icon,
-		title: 'Practice Makes Perfect',
-		description: 'Access thousands of NSC past paper questions with detailed solutions.',
+		title: 'Past Papers',
+		description: 'Practice with real NSC exam questions. Full solutions included.',
 		color: 'bg-subject-math/10 text-subject-math',
 	},
 	{
 		icon: Timer02Icon,
-		title: 'Track Your Progress',
-		description: 'Monitor your study streaks and see how far you have come.',
+		title: 'Track Progress',
+		description: "Study streaks, XP, and achievements. See how far you've come.",
 		color: 'bg-subject-life/10 text-subject-life',
 	},
 ];
@@ -99,7 +99,7 @@ export default function Landing() {
 							>
 								<Badge className="tiimo-glass rounded-full px-4 py-1.5 text-[10px] font-medium text-white">
 									<HugeiconsIcon icon={SparklesIcon} className="w-3 h-3 mr-1.5" />
-									The exam prep platform
+									The #1 NSC prep platform
 								</Badge>
 
 								<m.h1
@@ -119,8 +119,8 @@ export default function Landing() {
 									transition={{ delay: 0.2 }}
 									className="text-lg md:text-xl text-muted-foreground max-w-lg text-pretty mx-auto lg:mx-0 leading-relaxed"
 								>
-									Interactive past papers, AI-powered explanations, and smart study tools designed
-									for South African Grade 12 students.
+									Practice past papers, get instant help when you're stuck, and track your progress.
+									We help you pass your Matric.
 								</m.p>
 							</m.div>
 
@@ -311,10 +311,10 @@ export default function Landing() {
 						>
 							<h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
 								Everything you need to
-								<span className="text-tiimo-lavender"> succeed</span>
+								<span className="text-tiimo-lavender"> pass</span>
 							</h2>
 							<p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-								Powerful study tools designed specifically for NSC exam preparation.
+								Study tools built specifically for the NSC Grade 12 exams.
 							</p>
 						</m.div>
 
@@ -353,10 +353,12 @@ export default function Landing() {
 							className="mb-12"
 						>
 							<h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
-								Explore your
+								Your
 								<span className="text-tiimo-lavender"> subjects</span>
 							</h2>
-							<p className="text-lg text-muted-foreground">Choose a subject to start practicing.</p>
+							<p className="text-lg text-muted-foreground">
+								Pick your subjects and start practicing for the NSC.
+							</p>
 						</m.div>
 
 						<m.div

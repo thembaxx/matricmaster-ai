@@ -202,7 +202,7 @@ export function AppSidebar({ user, pathname, theme, onToggleTheme }: AppSidebarP
 								{appConfig.name}
 							</h1>
 							<p className="text-[9px] font-medium text-sidebar-foreground/50 mt-0.5">
-								AI exam prep
+								NSC exam prep
 							</p>
 						</div>
 					</m.div>
