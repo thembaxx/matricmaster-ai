@@ -44,10 +44,14 @@ function ForceVectorDiagram({ className }: { className?: string }) {
 			</div>
 
 			<div className="mt-4">
-				<label className="text-xs font-bold uppercase text-muted-foreground block mb-2">
+				<label
+					htmlFor="applied-force"
+					className="text-xs font-bold uppercase text-muted-foreground block mb-2"
+				>
 					Applied Force
 				</label>
 				<input
+					id="applied-force"
 					type="range"
 					min="0"
 					max="100"
@@ -141,7 +145,8 @@ function WaveMotionDiagram({ className }: { className?: string }) {
 			<h4 className="font-bold mb-4 text-center">Wave Properties</h4>
 
 			<div className="relative h-48 bg-muted/10 rounded-xl flex items-center overflow-hidden mb-4">
-				<svg className="w-full h-full" preserveAspectRatio="none">
+				<svg className="w-full h-full" preserveAspectRatio="none" aria-hidden="true">
+					<title>Wave visualization</title>
 					<m.path
 						d="M0 100 Q 25 100, 50 100 T 100 100 T 150 100 T 200 100 T 250 100 T 300 100 T 350 100 T 400 100"
 						fill="none"
@@ -177,10 +182,14 @@ function WaveMotionDiagram({ className }: { className?: string }) {
 
 			<div className="grid grid-cols-2 gap-4">
 				<div>
-					<label className="text-xs font-bold uppercase text-muted-foreground block mb-2">
+					<label
+						htmlFor="amplitude"
+						className="text-xs font-bold uppercase text-muted-foreground block mb-2"
+					>
 						Amplitude
 					</label>
 					<input
+						id="amplitude"
 						type="range"
 						min="0"
 						max="50"
@@ -190,10 +199,14 @@ function WaveMotionDiagram({ className }: { className?: string }) {
 					/>
 				</div>
 				<div>
-					<label className="text-xs font-bold uppercase text-muted-foreground block mb-2">
+					<label
+						htmlFor="frequency"
+						className="text-xs font-bold uppercase text-muted-foreground block mb-2"
+					>
 						Frequency
 					</label>
 					<input
+						id="frequency"
 						type="range"
 						min="0.5"
 						max="3"

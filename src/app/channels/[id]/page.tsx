@@ -55,7 +55,7 @@ export default function ChannelPage() {
 		if (scrollRef.current) {
 			scrollRef.current.scrollIntoView({ behavior: 'smooth' });
 		}
-	}, [messages]);
+	}, []);
 
 	const handleSendMessage = async (e: React.FormEvent) => {
 		e.preventDefault();

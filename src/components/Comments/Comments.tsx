@@ -143,7 +143,7 @@ export function Comments({
 				setReplyingTo(null);
 				fetchComments();
 			}
-		} catch (error) {
+		} catch (_error) {
 			toast.error('Failed to post reply');
 		}
 	};

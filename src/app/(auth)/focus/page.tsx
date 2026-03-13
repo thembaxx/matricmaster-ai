@@ -23,7 +23,7 @@ import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { getLessonsBySubject, type Lesson } from '@/lib/lessons';
 import { cn } from '@/lib/utils';
 import { useSchedule } from '@/stores/useScheduleStore';
-import type { StudyTask } from '@/types/schedule';
+import type { StudyTask, SubjectId } from '@/types/schedule';
 
 export default function FocusPage() {
 	const router = useRouter();
@@ -59,7 +59,7 @@ export default function FocusPage() {
 			setCurrentTask({
 				id: lesson.id,
 				title: lesson.title,
-				subject: subjectId as any,
+				subject: subjectId as SubjectId,
 				duration: lesson.duration,
 				completed: lesson.completed || false,
 				steps: [],
@@ -129,7 +129,11 @@ export default function FocusPage() {
 					</div>
 				</div>
 
-				<Tabs value={activeTab} onValueChange={(v: any) => setActiveTab(v)} className="w-auto">
+				<Tabs
+					value={activeTab}
+					onValueChange={(v) => setActiveTab(v as 'timer' | 'lesson' | 'discussion')}
+					className="w-auto"
+				>
 					<TabsList className="bg-muted/50 p-1 rounded-full h-12 border border-border/50">
 						<TabsTrigger
 							value="timer"
@@ -180,6 +184,7 @@ export default function FocusPage() {
 								<div className="flex items-center gap-2 bg-muted/50 p-1 rounded-full relative z-10">
 									{(['focus', 'short-break', 'long-break'] as const).map((m) => (
 										<button
+											type="button"
 											key={m}
 											onClick={() => setMode(m)}
 											className={cn(
