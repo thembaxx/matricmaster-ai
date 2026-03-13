@@ -1,6 +1,6 @@
 'use client';
 
-import { Calendar02Icon, Clock01Icon, FlashIcon, SparklesIcon } from '@hugeicons/core-free-icons';
+import { Calendar02Icon, Clock01Icon, SparklesIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { m } from 'framer-motion';
 import { memo, useEffect, useState } from 'react';
