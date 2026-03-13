@@ -2141,4 +2141,76 @@ export const QUIZ_DATA: QuizData = {
 			},
 		],
 	},
+	// ============================================================================
+	// ECONOMICS & BUSINESS STUDIES NSC PRACTICE
+	// ============================================================================
+	'eco-bs-2025': {
+		title: 'Economics & Business NSC 2025',
+		subject: 'Multiple',
+		year: 2025,
+		session: 'May/June',
+		paper: 1,
+		questions: [
+			{
+				id: 'eco-q1',
+				question: 'In the circular flow model, which sector is the owner of the factors of production?',
+				options: [
+					{ id: 'A', text: 'Households' },
+					{ id: 'B', text: 'Businesses' },
+					{ id: 'C', text: 'Government' },
+					{ id: 'D', text: 'Foreign Sector' },
+				],
+				correctAnswer: 'A',
+				hint: 'Households provide labor, land, capital, and entrepreneurship to firms.',
+				topic: 'Economics',
+				subtopic: 'Circular Flow',
+				difficulty: 'easy',
+			},
+			{
+				id: 'bs-q2',
+				question: 'Which leadership style is most effective during a crisis that requires immediate action?',
+				options: [
+					{ id: 'A', text: 'Autocratic' },
+					{ id: 'B', text: 'Democratic' },
+					{ id: 'C', text: 'Laissez-faire' },
+					{ id: 'D', text: 'Charismatic' },
+				],
+				correctAnswer: 'A',
+				hint: 'This style involves quick decision-making by a single leader.',
+				topic: 'Business Studies',
+				subtopic: 'Leadership Styles',
+				difficulty: 'medium',
+			},
+			{
+				id: 'eco-q3',
+				question: 'What happens to national income if injections (I+G+X) are greater than leakages (S+T+M)?',
+				options: [
+					{ id: 'A', text: 'It increases' },
+					{ id: 'B', text: 'It decreases' },
+					{ id: 'C', text: 'It remains constant' },
+					{ id: 'D', text: 'It becomes zero' },
+				],
+				correctAnswer: 'A',
+				hint: 'Higher injections stimulate economic growth and increase total output.',
+				topic: 'Economics',
+				subtopic: 'National Income',
+				difficulty: 'medium',
+			},
+			{
+				id: 'bs-q4',
+				question: 'Which of the following is a component of the PESTLE analysis?',
+				options: [
+					{ id: 'A', text: 'Technological factors' },
+					{ id: 'B', text: 'Strengths' },
+					{ id: 'C', text: 'Weaknesses' },
+					{ id: 'D', text: 'Product development' },
+				],
+				correctAnswer: 'A',
+				hint: 'PESTLE stands for Political, Economic, Social, Technological, Legal, and Environmental.',
+				topic: 'Business Studies',
+				subtopic: 'Business Environments',
+				difficulty: 'easy',
+			}
+		],
+	},
 };

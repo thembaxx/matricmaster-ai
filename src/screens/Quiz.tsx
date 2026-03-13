@@ -17,28 +17,28 @@ import { QuizProgress, type QuizStep } from '@/components/Quiz/QuizProgressV2';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useQuizResultStore } from '@/stores/useQuizResultStore';
 
-const QUIZ_STEPS: QuizStep[] = [
-	{ id: '1', icon: BookOpen01Icon, title: 'Review', status: 'completed' },
-	{ id: '2', icon: CalculatorIcon, title: 'Problem', status: 'current' },
-	{ id: '3', icon: AiBrain01Icon, title: 'Practice', status: 'upcoming' },
-	{ id: '4', icon: CheckmarkCircle02Icon, title: 'Done', status: 'upcoming' },
-];
+import { QUIZ_DATA } from '@/constants/quiz-data';
+import { useQuizCompletion } from '@/hooks/use-quiz-completion';
 
-const QUESTION_OPTIONS: QuestionOption[] = [
-	{ id: 'A', label: '(1, 0)', isCorrect: false },
-	{ id: 'B', label: '(-1, 4)', isCorrect: true },
-	{ id: 'C', label: '(0, 2)', isCorrect: false },
-	{ id: 'D', label: '(1, 4)', isCorrect: false },
-];
+interface QuizProps {
+	quizId?: string;
+}
 
-export default function Quiz() {
+export default function Quiz({ quizId = 'math-p1-2023-nov' }: QuizProps) {
 	const router = useRouter();
 	const startTimeRef = useRef<number>(Date.now());
+	const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
 	const [selectedOption, setSelectedOption] = useState<string | null>(null);
 	const [isChecked, setIsChecked] = useState<boolean>(false);
 	const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
 	const [elapsedSeconds, setElapsedSeconds] = useState(0);
 	const [showHint, setShowHint] = useState(false);
+	const [score, setScore] = useState(0);
+	
+	const { completeQuiz, isCompleting } = useQuizCompletion();
+
+	const quiz = QUIZ_DATA[quizId] || QUIZ_DATA['math-p1-2023-nov'];
+	const currentQuestion = quiz.questions[currentQuestionIndex];
 
 	useEffect(() => {
 		const timer = setInterval(() => {
@@ -49,32 +49,44 @@ export default function Quiz() {
 
 	const formatTime = (s: number) => `${Math.floor(s / 60)}:${(s % 60).toString().padStart(2, '0')}`;
 
-	const handleCheck = () => {
+	const options: QuestionOption[] = currentQuestion.options.map(o => ({
+		id: o.id,
+		label: o.text,
+		isCorrect: o.id === currentQuestion.correctAnswer
+	}));
+
+	const handleCheck = async () => {
 		if (isChecked) {
-			if (isCorrect) {
-				useQuizResultStore.getState().save({
-					correctAnswers: 1,
-					totalQuestions: 1,
-					durationSeconds: elapsedSeconds,
-					accuracy: 100,
-					subjectName: 'Mathematics',
-					subjectId: 2,
-					difficulty: 'medium',
-					topic: 'Algebra',
-					completedAt: new Date(),
-				});
-				router.push('/lesson-complete');
-			} else {
+			if (currentQuestionIndex < quiz.questions.length - 1) {
+				setCurrentQuestionIndex((prev) => prev + 1);
+				setSelectedOption(null);
 				setIsChecked(false);
 				setIsCorrect(null);
-				setSelectedOption(null);
+				setShowHint(false);
+			} else {
+				// Quiz Complete
+				const finalScore = score + (isCorrect ? 1 : 0);
+				await completeQuiz({
+					subjectId: 1,
+					topic: quiz.title,
+					totalQuestions: quiz.questions.length,
+					correctAnswers: finalScore,
+					score: finalScore * 10,
+					durationMinutes: Math.ceil(elapsedSeconds / 60),
+					sessionType: 'quiz'
+				});
+				router.push('/lesson-complete');
 			}
 			return;
 		}
-		const correct = QUESTION_OPTIONS.find((o) => o.id === selectedOption)?.isCorrect || false;
+
+		const correct = options.find((o) => o.id === selectedOption)?.isCorrect || false;
 		setIsCorrect(correct);
+		if (correct) setScore(prev => prev + 1);
 		setIsChecked(true);
 	};
+
+	const progressPercent = ((currentQuestionIndex + 1) / quiz.questions.length) * 100;
 
 	return (
 		<div className="min-h-screen bg-background flex">
@@ -82,22 +94,59 @@ export default function Quiz() {
 			<FocusContent>
 				<div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 					<QuizHeader
-						title="Calculus"
-						subtitle="Mathematics P1 • NSC"
+						title={quiz.title}
+						subtitle={`${quiz.subject} • ${quiz.session} ${quiz.year}`}
 						elapsedTime={formatTime(elapsedSeconds)}
 					/>
-					<QuizProgress steps={QUIZ_STEPS} progressPercent={50} />
+					
+					<div className="mb-8">
+						<div className="flex justify-between items-center mb-2">
+							<span className="text-[10px] font-black uppercase text-muted-foreground tracking-widest">
+								Question {currentQuestionIndex + 1} of {quiz.questions.length}
+							</span>
+							<Badge variant="secondary" className="text-[10px] font-black uppercase rounded-full">
+								{currentQuestion.difficulty}
+							</Badge>
+						</div>
+						<Progress value={progressPercent} className="h-2 rounded-full" />
+					</div>
 
 					<ScrollArea className="h-[calc(100vh-320px)] no-scrollbar pr-4">
 						<div className="space-y-8 pb-32">
 							<QuestionCard
-								question="Find the coordinates of the local maximum for the function f(x) = x³ - 3x + 2"
-								options={QUESTION_OPTIONS}
+								question={currentQuestion.question}
+								options={options}
 								selectedOption={selectedOption}
 								isChecked={isChecked}
 								onSelect={setSelectedOption}
-								diagram="Parabola function graph"
+								diagram={currentQuestion.diagram}
 							/>
+							
+							{isChecked && (
+								<m.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
+									<Card className={cn(
+										"p-6 rounded-[2rem] border-2",
+										isCorrect 
+											? "bg-success/10 border-success/30" 
+											: "bg-destructive/10 border-destructive/30"
+									)}>
+										<div className="flex gap-4">
+											<div className={cn(
+												"w-10 h-10 rounded-xl flex items-center justify-center shrink-0",
+												isCorrect ? "bg-success text-white" : "bg-destructive text-white"
+											)}>
+												<HugeiconsIcon icon={isCorrect ? CheckmarkCircle02Icon : Cancel01Icon} className="w-6 h-6" />
+											</div>
+											<div>
+												<h4 className="font-black uppercase text-sm tracking-tight">
+													{isCorrect ? 'Brilliant!' : 'Not quite right'}
+												</h4>
+												<p className="text-sm font-medium opacity-80 mt-1">{currentQuestion.hint}</p>
+											</div>
+										</div>
+									</Card>
+								</m.div>
+							)}
 						</div>
 					</ScrollArea>
 
@@ -109,9 +158,16 @@ export default function Quiz() {
 						onToggleHint={() => setShowHint(!showHint)}
 						onCheck={handleCheck}
 						onExit={() => router.push('/dashboard')}
+						disabled={isCompleting}
 					/>
 				</div>
 			</FocusContent>
 		</div>
 	);
 }
+
+import { Badge } from '@/components/ui/badge';
+import { Progress } from '@/components/ui/progress';
+import { Card } from '@/components/ui/card';
+import { Cancel01Icon } from '@hugeicons/core-free-icons';
+import { cn } from '@/lib/utils';

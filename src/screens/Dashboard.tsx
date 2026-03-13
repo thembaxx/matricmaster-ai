@@ -103,7 +103,12 @@ export default function Dashboard(_props: DashboardProps) {
 			<TimelineSidebar />
 			<FocusContent>
 				<div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-					<DashboardHeader today={today} completedCount={completedCount} totalCount={totalCount} />
+					<DashboardHeader 
+						today={today} 
+						completedCount={completedCount} 
+						totalCount={totalCount} 
+						initialXp={initialProgress?.totalMarksEarned || 0}
+					/>
 
 					<ScrollArea className="h-[calc(100vh-280px)] no-scrollbar pr-4">
 						<div className="space-y-10 pb-32">

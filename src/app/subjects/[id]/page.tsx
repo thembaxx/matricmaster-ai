@@ -73,9 +73,8 @@ export default function SubjectDetailsPage({ params }: { params: { id: string } 
 				<div className="space-y-3">
 					{lessons.length > 0 ? (
 						lessons.map((lesson: any) => (
-							<Link key={lesson.id} href={`/focus?lessonId=${lesson.id}`}>
-								<Card
-									className={cn(
+							<Link key={lesson.id} href={`/focus?lessonId=${lesson.id}&subject=${subjectId}`}>
+								<Card className={cn(
 										'group hover:border-primary/50 transition-all mb-3',
 										lesson.completed ? 'bg-muted/30' : 'bg-card'
 									)}
