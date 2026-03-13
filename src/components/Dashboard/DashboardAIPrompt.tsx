@@ -36,7 +36,7 @@ export function DashboardAIPrompt() {
 					type="text"
 					value={value}
 					onChange={(e) => setValue(e.target.value)}
-					placeholder="Ask your AI Tutor anything..."
+					placeholder="Ask anything about your studies..."
 					className="flex-1 bg-transparent border-none outline-none text-lg font-medium placeholder:text-muted-foreground/50"
 				/>
 				<m.button

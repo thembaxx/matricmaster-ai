@@ -5,7 +5,7 @@ export const SUBJECTS = [
 		topics: 'Calculus, Euclidean Geometry, Trig',
 		icon: 'Calculator',
 		color: 'text-brand-blue',
-		bg: 'bg-brand-blue/10',
+		bg: 'bg-subject-math',
 		path: '/quiz',
 		image:
 			'https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&q=80&w=400',
@@ -16,7 +16,7 @@ export const SUBJECTS = [
 		topics: 'Newtonian Laws, Electrodynamics, Organic',
 		icon: 'Atom',
 		color: 'text-brand-purple',
-		bg: 'bg-brand-purple/10',
+		bg: 'bg-subject-physics',
 		path: '/physics',
 		image:
 			'https://images.unsplash.com/photo-1636466497217-26a8cbeaf0aa?auto=format&fit=crop&q=80&w=400',
@@ -27,7 +27,7 @@ export const SUBJECTS = [
 		topics: 'Rate of Reaction, Organic Molecules',
 		icon: 'FlaskConical',
 		color: 'text-brand-amber',
-		bg: 'bg-brand-amber/10',
+		bg: 'bg-subject-physics-soft',
 		path: '/quiz',
 		image:
 			'https://images.unsplash.com/photo-1532187875605-1ef6c237f142?auto=format&fit=crop&q=80&w=400',
@@ -38,7 +38,7 @@ export const SUBJECTS = [
 		topics: 'Genetics, Evolution, DNA',
 		icon: 'Microscope',
 		color: 'text-brand-green',
-		bg: 'bg-brand-green/10',
+		bg: 'bg-subject-life',
 		path: '/quiz',
 		image:
 			'https://images.unsplash.com/photo-1530026405186-ed1f139313f8?auto=format&fit=crop&q=80&w=400',

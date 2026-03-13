@@ -1,13 +1,15 @@
 import type { Metadata } from 'next';
 
+import { appConfig } from '@/app.config';
+
 const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://matricmaster.ai';
 
 export const metadata: Metadata = {
-	title: 'Quiz | MatricMaster AI',
+	title: `Quiz | ${appConfig.name} AI`,
 	description: 'Practice with interactive quizzes tailored to your learning needs.',
 	alternates: { canonical: `${baseUrl}/quiz` },
 	openGraph: {
-		title: 'Interactive Quizzes | MatricMaster AI',
+		title: `Interactive Quizzes | ${appConfig.name} AI`,
 		description:
 			'Test your knowledge with adaptive quizzes for Mathematics, Physical Sciences, and more.',
 		url: `${baseUrl}/quiz`,
@@ -18,7 +20,7 @@ export const metadata: Metadata = {
 const jsonLd = {
 	'@context': 'https://schema.org',
 	'@type': 'Quiz',
-	name: 'MatricMaster Practice Quizzes',
+	name: `${appConfig.name} Practice Quizzes`,
 	description: 'Interactive quizzes for South African NSC curriculum',
 	educationalLevel: 'Grade 12',
 	educationalUse: 'Practice',

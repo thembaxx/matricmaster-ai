@@ -23,7 +23,6 @@ import { Card } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Spinner } from '@/components/ui/spinner';
 import {
 	getOptionsByQuestionIdAction,
 	getRandomQuestionsAction,
@@ -112,6 +111,8 @@ const badgeVariants = {
 		scale: 1,
 	},
 };
+
+import { EnhancedTestQuizSkeleton } from '@/components/EnhancedTestQuizSkeleton';
 
 export default function EnhancedTestQuizScreen() {
 	const router = useRouter();
@@ -316,14 +317,7 @@ export default function EnhancedTestQuizScreen() {
 	};
 
 	if (loading && screen === 'selection') {
-		return (
-			<div className="flex items-center justify-center h-screen overflow-hidden bg-background">
-				<div className="text-center flex flex-col items-center gap-3 mb-20">
-					<Spinner className="size-12" />
-					<p className="text-zinc-600 dark:text-neutral-400 text-xs">Loading subjects...</p>
-				</div>
-			</div>
-		);
+		return <EnhancedTestQuizSkeleton />;
 	}
 
 	return (

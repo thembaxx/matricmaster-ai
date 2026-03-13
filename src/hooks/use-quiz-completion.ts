@@ -10,6 +10,7 @@ export interface QuizCompletionData {
 	totalQuestions: number;
 	durationMinutes: number;
 	difficulty: 'easy' | 'medium' | 'hard';
+	marksEarned?: number;
 	subjectId?: number;
 	topic?: string;
 	sessionType?: 'practice' | 'test' | 'past_paper';
@@ -37,7 +38,7 @@ export function useQuizCompletion() {
 						topic: data.topic,
 						questionsAttempted: data.totalQuestions,
 						correctAnswers: data.correctAnswers,
-						marksEarned: data.correctAnswers * 2,
+						marksEarned: data.marksEarned || data.correctAnswers * 2,
 						durationMinutes: data.durationMinutes,
 						sessionType: data.sessionType || 'practice',
 					}),

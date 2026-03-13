@@ -1,0 +1,290 @@
+{
+	"studyPaths": [
+		{
+			"id": "math-p1-mastery",
+			"title": "Mathematics Paper 1 Mastery",
+			"description": "Comprehensive preparation for NSC Mathematics Paper 1 covering Algebra, Calculus, and Trigonometry",
+			"icon": "🧮",
+			"totalDurationWeeks": 8,
+			"modules": [
+				{
+					"id": "math-p1-algebra",
+					"title": "Algebra Fundamentals",
+					"description": "Master quadratic equations, inequalities, and functions",
+					"durationWeeks": 2,
+					"steps": [
+						{
+							"type": "lesson",
+							"contentId": "math-algebra-quadratic-equations",
+							"title": "Quadratic Equations and Functions",
+							"duration": 40
+						},
+						{
+							"type": "practice",
+							"title": "Quadratic Equation Practice",
+							"questionCount": 10,
+							"duration": 30
+						},
+						{
+							"type": "lesson",
+							"contentId": "math-algebra-exponents-logarithms",
+							"title": "Exponents and Logarithms",
+							"duration": 35
+						},
+						{
+							"type": "quiz",
+							"quizId": "math-p1-2025-may",
+							"title": "Algebra Mastery Quiz",
+							"duration": 25
+						}
+					]
+				},
+				{
+					"id": "math-p1-calculus",
+					"title": "Calculus Essentials",
+					"description": "Understand derivatives and integrals with applications",
+					"durationWeeks": 3,
+					"steps": [
+						{
+							"type": "lesson",
+							"contentId": "math-calculus-derivatives-intro",
+							"title": "Introduction to Derivatives",
+							"duration": 45
+						},
+						{
+							"type": "practice",
+							"title": "Derivative Practice Problems",
+							"questionCount": 8,
+							"duration": 25
+						},
+						{
+							"type": "lesson",
+							"contentId": "math-calculus-integrals-intro",
+							"title": "Introduction to Integrals",
+							"duration": 50
+						},
+						{
+							"type": "practice",
+							"title": "Integral Practice Problems",
+							"questionCount": 8,
+							"duration": 25
+						},
+						{
+							"type": "quiz",
+							"quizId": "math-p1-2025-may",
+							"title": "Calculus Application Quiz",
+							"duration": 25
+						}
+					]
+				},
+				{
+					"id": "math-p1-trigonometry",
+					"title": "Trigonometry Mastery",
+					"description": "Advanced trigonometric identities and applications",
+					"durationWeeks": 2,
+					"steps": [
+						{
+							"type": "lesson",
+							"contentId": "math-trig-identities",
+							"title": "Trigonometric Identities",
+							"duration": 35
+						},
+						{
+							"type": "practice",
+							"title": "Trigonometric Identity Practice",
+							"questionCount": 10,
+							"duration": 30
+						},
+						{
+							"type": "lesson",
+							"contentId": "math-trig-equations",
+							"title": "Solving Trigonometric Equations",
+							"duration": 40
+						},
+						{
+							"type": "quiz",
+							"quizId": "math-p1-2025-may",
+							"title": "Trigonometry Mastery Quiz",
+							"duration": 25
+						}
+					]
+				},
+				{
+					"id": "math-p1-final-review",
+					"title": "Final Review and Practice",
+					"description": "Comprehensive review and exam preparation",
+					"durationWeeks": 1,
+					"steps": [
+						{
+							"type": "practice",
+							"title": "Mixed Practice Set 1",
+							"questionCount": 15,
+							"duration": 30
+						},
+						{
+							"type": "practice",
+							"title": "Mixed Practice Set 2",
+							"questionCount": 15,
+							"duration": 30
+						},
+						{
+							"type": "quiz",
+							"quizId": "math-p1-2024-nov",
+							"title": "Past Paper Practice",
+							"duration": 45
+						},
+						{
+							"type": "quiz",
+							"quizId": "math-p1-2025-may",
+							"title": "Final Mock Exam",
+							"duration": 45
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "physics-p1-mastery",
+			"title": "Physical Sciences Paper 1 Mastery",
+			"description": "Complete preparation for NSC Physical Sciences Paper 1 covering Mechanics, Waves, and Electricity",
+			"icon": "⚛️",
+			"totalDurationWeeks": 8,
+			"modules": [
+				{
+					"id": "physics-p1-mechanics",
+					"title": "Mechanics Foundation",
+					"description": "Newton's laws, work, energy, and power",
+					"durationWeeks": 3,
+					"steps": [
+						{
+							"type": "lesson",
+							"contentId": "physics-mechanics-newton-laws",
+							"title": "Newton's Laws of Motion",
+							"duration": 40
+						},
+						{
+							"type": "practice",
+							"title": "Forces and Motion Problems",
+							"questionCount": 10,
+							"duration": 25
+						},
+						{
+							"type": "lesson",
+							"contentId": "physics-mechanics-work-energy",
+							"title": "Work, Energy, and Power",
+							"duration": 45
+						},
+						{
+							"type": "practice",
+							"title": "Energy Conservation Problems",
+							"questionCount": 10,
+							"duration": 25
+						},
+						{
+							"type": "quiz",
+							"quizId": "phys-p1-2025-may",
+							"title": "Mechanics Mastery Quiz",
+							"duration": 25
+						}
+					]
+				},
+				{
+					"id": "physics-p1-waves",
+					"title": "Wave Phenomena",
+					"description": "Wave properties, sound, and light",
+					"durationWeeks": 2,
+					"steps": [
+						{
+							"type": "lesson",
+							"contentId": "physics-waves-properties",
+							"title": "Wave Properties and Phenomena",
+							"duration": 40
+						},
+						{
+							"type": "practice",
+							"title": "Wave Equation Practice",
+							"questionCount": 8,
+							"duration": 20
+						},
+						{
+							"type": "lesson",
+							"contentId": "physics-waves-sound",
+							"title": "Sound Waves and Applications",
+							"duration": 35
+						},
+						{
+							"type": "quiz",
+							"quizId": "phys-p1-2025-may",
+							"title": "Waves and Sound Quiz",
+							"duration": 25
+						}
+					]
+				},
+				{
+					"id": "physics-p1-electricity",
+					"title": "Electric Circuits",
+					"description": "Ohm's law, circuit analysis, and electrical power",
+					"durationWeeks": 2,
+					"steps": [
+						{
+							"type": "lesson",
+							"contentId": "physics-electricity-circuits",
+							"title": "Electric Circuits and Ohm's Law",
+							"duration": 45
+						},
+						{
+							"type": "practice",
+							"title": "Circuit Analysis Problems",
+							"questionCount": 10,
+							"duration": 25
+						},
+						{
+							"type": "lesson",
+							"contentId": "physics-electricity-power",
+							"title": "Electrical Power and Energy",
+							"duration": 35
+						},
+						{
+							"type": "quiz",
+							"quizId": "phys-p1-2025-may",
+							"title": "Electricity Mastery Quiz",
+							"duration": 25
+						}
+					]
+				},
+				{
+					"id": "physics-p1-final-review",
+					"title": "Final Review and Practice",
+					"description": "Comprehensive review and exam preparation",
+					"durationWeeks": 1,
+					"steps": [
+						{
+							"type": "practice",
+							"title": "Mixed Practice Set 1",
+							"questionCount": 15,
+							"duration": 30
+						},
+						{
+							"type": "practice",
+							"title": "Mixed Practice Set 2",
+							"questionCount": 15,
+							"duration": 30
+						},
+						{
+							"type": "quiz",
+							"quizId": "phys-p1-2024-nov",
+							"title": "Past Paper Practice",
+							"duration": 45
+						},
+						{
+							"type": "quiz",
+							"quizId": "phys-p1-2025-may",
+							"title": "Final Mock Exam",
+							"duration": 45
+						}
+					]
+				}
+			]
+		}
+	]
+}

@@ -1,0 +1,138 @@
+{
+	"mechanics": [
+		{
+			"id": "physics-mechanics-newton-laws",
+			"subject": "physical_sciences",
+			"topic": "mechanics",
+			"title": "Newton's Laws of Motion",
+			"content": "# Newton's Laws of Motion\n\nNewton's three laws form the foundation of classical mechanics, describing the relationship between a body and the forces acting upon it.\n\n## Newton's First Law (Law of Inertia)\n\nAn object at rest stays at rest and an object in motion stays in motion with the same speed and in the same direction unless acted upon by an unbalanced force.\n\n**Key Points:**\n- Inertia: tendency of an object to resist changes in its state of motion\n- Mass is a measure of inertia\n- Net force = 0 means constant velocity (including zero velocity)\n\n## Newton's Second Law\n\nThe acceleration of an object is directly proportional to the net force acting on it and inversely proportional to its mass. The direction of the acceleration is in the direction of the net force.\n\n**Formula:** F_net = ma\n\n[DIAGRAM:force-vector]\n\n**Units:** Force in newtons (N), mass in kilograms (kg), acceleration in m/s²\n\n**Applications:**\n- Calculating acceleration given force and mass\n- Determining required force for desired acceleration\n- Analyzing systems with multiple forces\n\n## Newton's Third Law\n\nFor every action, there is an equal and opposite reaction.\n\n**Key Points:**\n- Forces always occur in pairs\n- Action-reaction pairs act on different objects\n- Pair forces are equal in magnitude and opposite in direction\n- Does NOT cancel out because they act on different objects\n\n## Free-Body Diagrams\n\nEssential tool for analyzing forces:\n1. Isolate the object of interest\n2. Draw and label all external forces acting on it\n3. Do NOT include forces the object exerts on others\n4. Include only gravity, normal, friction, tension, applied forces\n\n## Common Problem Types\n\n1. **Single Object Problems**: Apply F_net = ma directly\n2. **Connected Objects**: Treat as system or analyze individually\n3. **Inclined Planes**: Resolve weight into components\n4. **Elevator Problems**: Consider apparent weight\n5. **Pulley Systems**: Assume massless, frictionless pulleys unless stated\n\n## Friction\n\n- **Static Friction**: f_s ≤ μ_sN (prevents motion)\n- **Kinetic Friction**: f_k = μ_kN (opposes motion)\n- Coefficients depend on surfaces in contact\n\n## Practice Questions\n\n1. A 5 kg block is pulled by a 20 N force on a frictionless surface. What is its acceleration?\n2. What is the weight of a 60 kg person on Earth?\n3. Two boxes (3 kg and 5 kg) are connected by a light string. A force of 32 N pulls the 5 kg box. What is the tension in the string?\n\n## Resources\n\n- Video: Newton's Laws Explained (20 min)\n- Simulation: Force and Motion Basics\n- Worksheet: Free-Body Diagram Practice\n- Interactive: Newton's Second Law Explorer",
+			"duration": 40,
+			"difficulty": "intermediate",
+			"prerequisites": ["vectors", "basic algebra"],
+			"learning_objectives": [
+				"State and explain Newton's three laws of motion",
+				"Draw and interpret free-body diagrams",
+				"Apply Newton's second law to solve problems involving forces and motion",
+				"Analyze action-reaction force pairs"
+			]
+		},
+		{
+			"id": "physics-mechanics-work-energy",
+			"subject": "physical_sciences",
+			"topic": "mechanics",
+			"title": "Work, Energy, and Power",
+			"content": "# Work, Energy, and Power\n\nWork and energy are fundamental concepts in physics that describe how forces cause changes in motion and position.\n\n## Work\n\nWork is done when a force causes displacement. Only the component of force in the direction of displacement does work.\n\n**Formula:** W = Fd cosθ\n- W = work in joules (J)\n- F = force magnitude in newtons (N)\n- d = displacement magnitude in meters (m)\n- θ = angle between force and displacement vectors\n\n**Key Points:**\n- Work is positive when force has component in direction of displacement\n- Work is negative when force has component opposite to displacement\n- Work is zero when force is perpendicular to displacement or no displacement occurs\n\n## Energy\n\nEnergy is the capacity to do work. Main types in mechanics:\n\n### Kinetic Energy (KE)\n- Energy of motion\n- Formula: KE = ½mv²\n- m = mass in kg, v = speed in m/s\n\n### Gravitational Potential Energy (GPE)\n- Energy due to position in gravitational field\n- Formula: GPE = mgh\n- m = mass in kg, g = 9.8 m/s², h = height in m\n\n### Elastic Potential Energy (EPE)\n- Energy stored in stretched/compressed springs\n- Formula: EPE = ½kx²\n- k = spring constant in N/m, x = displacement from equilibrium in m\n\n## Work-Energy Theorem\n\nThe net work done on an object equals its change in kinetic energy.\n\n**Formula:** W_net = ΔKE = KE_final - KE_initial\n\n## Conservation of Mechanical Energy\n\nIn the absence of non-conservative forces (like friction), mechanical energy is conserved.\n\n**Principle:** KE_initial + PE_initial = KE_final + PE_final\n\n## Power\n\nPower is the rate at which work is done or energy is transferred.\n\n**Formula:** P = W/t or P = Fv\n- P = power in watts (W)\n- W = work in joules (J)\n- t = time in seconds (s)\n- F = force in newtons (N)\n- v = velocity in m/s\n\n## Applications\n\n1. **Roller Coaster Problems**: Use energy conservation\n2. **Spring Problems**: Apply Hooke's law and energy conservation\n3. **Vehicle Performance**: Calculate power requirements\n4. **Efficiency**: Useful work output / total energy input\n\n## Practice Questions\n\n1. How much work is done lifting a 10 kg box 2 meters vertically?\n2. What is the kinetic energy of a 1000 kg car moving at 20 m/s?\n3. A 0.5 kg ball is dropped from 10 m. What is its speed just before hitting the ground? (Ignore air resistance)\n\n## Resources\n\n- Video: Work and Energy Principles (25 min)\n- Simulation: Energy Skate Park\n- Worksheet: Work-Energy Theorem Problems\n- Interactive: Conservation of Energy Explorer",
+			"duration": 45,
+			"difficulty": "intermediate",
+			"prerequisites": ["newton's laws", "vectors"],
+			"learning_objectives": [
+				"Calculate work done by constant and variable forces",
+				"Apply the work-energy theorem",
+				"Use conservation of mechanical energy to solve problems",
+				"Calculate power in mechanical systems"
+			]
+		}
+	],
+	"waves": [
+		{
+			"id": "physics-waves-properties",
+			"subject": "physical_sciences",
+			"topic": "waves",
+			"title": "Wave Properties and Phenomena",
+			"content": "# Wave Properties and Phenomena\n\nWaves are disturbances that transfer energy from one place to another without transferring matter. Understanding waves is crucial for optics, acoustics, and many modern technologies.\n\n## Types of Waves\n\n### Mechanical Waves\n- Require a medium to propagate\n- Examples: sound waves, water waves, seismic waves\n- Can be transverse or longitudinal\n\n### Electromagnetic Waves\n- Do not require a medium\n- Can travel through vacuum\n- Examples: radio waves, microwaves, visible light, X-rays\n- Are transverse waves\n\n## Key Wave Properties\n\n| Property | Symbol | Description | Unit |\n|----------|--------|-------------|------|\n| Amplitude | A | Maximum displacement from equilibrium | meters (m) |\n| Wavelength | λ | Distance between consecutive crests or troughs | meters (m) |\n| Frequency | f | Number of complete cycles per second | hertz (Hz) |\n| Period | T | Time for one complete cycle | seconds (s) |\n| Wave Speed | v | Distance traveled by wave per second | meters/second (m/s) |\n\n## Wave Equation\n\nThe fundamental relationship between wave properties:\n\n**v = fλ**\n\n[DIAGRAM:wave-motion]\n\nWhere:\n- v = wave speed (m/s)\n- f = frequency (Hz)\n- λ = wavelength (m)\n\n## Wave Behaviors\n\n### Reflection\n- Wave bounces off a barrier\n- Angle of incidence = angle of reflection\n\n### Refraction\n- Wave changes direction when entering a medium with different speed\n- Governed by Snell's law: n₁sinθ₁ = n₂sinθ₂\n\n### Diffraction\n- Wave bends around obstacles or through openings\n- Significant when opening size ≈ wavelength\n\n### Interference\n- Superposition of two or more waves\n- **Constructive**: waves in phase → amplitude increases\n- **Destructive**: waves out of phase → amplitude decreases\n\n### Standing Waves\n- Formed by interference of incident and reflected waves\n- Nodes: points of zero amplitude\n- Antinodes: points of maximum amplitude\n- Harmonics: integer multiples of fundamental frequency\n\n## Sound Waves\n\n- Longitudinal mechanical waves\n- Speed depends on medium: ~343 m/s in air at 20°C\n- Pitch determined by frequency\n- Loudness determined by amplitude\n- Human hearing range: ~20 Hz to 20,000 Hz\n\n## Applications\n\n1. **Medical Imaging**: Ultrasound uses wave reflection\n2. **Communication**: Radio waves for wireless transmission\n3. **Music**: Understanding pitch, timbre, and acoustics\n4. **Earthquake Detection**: Seismic waves reveal Earth's interior\n5. **Optics**: Lenses, mirrors, and fiber optics rely on wave principles\n\n## Practice Questions\n\n1. A wave has frequency 50 Hz and wavelength 2 m. What is its speed?\n2. What is the wavelength of a sound wave with frequency 256 Hz in air (v = 340 m/s)?\n3. Two waves interfere constructively. What is the phase difference between them?\n\n## Resources\n\n- Video: Wave Properties Explained (30 min)\n- Simulation: Wave Interference\n- Worksheet: Wave Equation Problems\n- Interactive: Standing Wave Generator",
+			"duration": 40,
+			"difficulty": "intermediate",
+			"prerequisites": ["vectors", "basic algebra"],
+			"learning_objectives": [
+				"Describe the properties of waves and their relationships",
+				"Apply the wave equation v = fλ to solve problems",
+				"Explain reflection, refraction, diffraction, and interference",
+				"Apply wave principles to sound and light phenomena"
+			]
+		}
+	],
+	"electricity": [
+		{
+			"id": "physics-electricity-circuits",
+			"subject": "physical_sciences",
+			"topic": "electricity",
+			"title": "Electric Circuits and Ohm's Law",
+			"content": "# Electric Circuits and Ohm's Law\n\nElectric circuits are closed loops through which electric current can flow. Understanding circuits is essential for everything from household wiring to electronic devices.\n\n## Electric Current\n\nCurrent is the rate of flow of electric charge.\n\n**Formula:** I = Q/t\n- I = current in amperes (A)\n- Q = charge in coulombs (C)\n- t = time in seconds (s)\n\n**Conventional Current**: Flows from positive to negative terminal\n\n## Voltage (Potential Difference)\n\nVoltage is the energy per unit charge available to move electrons through a circuit.\n\n**Formula:** V = W/Q\n- V = voltage in volts (V)\n- W = work or energy in joules (J)\n- Q = charge in coulombs (C)\n\n## Resistance\n\nResistance is the opposition to flow of electric current in a conductor.\n\n**Formula:** R = V/I (Ohm's Law)\n- R = resistance in ohms (Ω)\n- V = voltage in volts (V)\n- I = current in amperes (A)\n\n**Factors Affecting Resistance:**\n- Material: resistivity (ρ) of the substance\n- Length: R ∝ L (longer wire = more resistance)\n- Cross-sectional area: R ∝ 1/A (thicker wire = less resistance)\n- Temperature: usually increases with temperature for metals\n\n## Ohm's Law\n\nThe current through a conductor between two points is directly proportional to the voltage across the two points.\n\n**Formula:** V = IR\n\n**Ohmic vs Non-Ohmic Conductors:**\n- Ohmic: resistance constant (V-I graph is straight line)\n- Non-Ohmic: resistance changes with voltage/current (diodes, bulbs)\n\n## Circuit Diagrams\n\nStandard symbols represent circuit components:\n- Battery/cell: long and short parallel lines\n- Resistor: zigzag line\n- Switch: break in line with connecting arm\n- Lamp/bulb: circle with cross\n- Ammeter: circle with \"A\" (measures current, in series)\n- Voltmeter: circle with \"V\" (measures voltage, in parallel)\n\n## Series Circuits\n\nComponents connected end-to-end forming a single path for current.\n\n**Characteristics:**\n- Same current through all components: I_total = I₁ = I₂ = I₃...\n- Voltage splits across components: V_total = V₁ + V₂ + V₃...\n- Total resistance: R_total = R₁ + R₂ + R₃ + ...\n- If one component fails, entire circuit stops working\n\n## Parallel Circuits\n\nComponents connected across common points, providing multiple paths for current.\n\n**Characteristics:**\n- Same voltage across all components: V_total = V₁ = V₂ = V₃...\n- Current splits between branches: I_total = I₁ + I₂ + I₃...\n- Total resistance: 1/R_total = 1/R₁ + 1/R₂ + 1/R₃ + ...\n- If one component fails, others continue working\n\n## Electrical Power and Energy\n\n**Power Formulas:**\n- P = VI\n- P = I²R\n- P = V²/R\n\n**Energy Formula:**\n- E = Pt = VIt\n\n**Units:**\n- Power: watts (W)\n- Energy: joules (J) or kilowatt-hours (kWh)\n\n## Applications\n\n1. **Household Wiring**: Parallel circuits for outlets and lights\n2. **Electronic Devices**: Complex combinations of series and parallel\n3. **Safety Devices**: Fuses and circuit breakers prevent overloads\n4. **Measuring Instruments**: Multimeters measure V, I, R\n\n## Practice Questions\n\n1. What is the current through a 12 Ω resistor connected to a 6 V battery?\n2. Three resistors (2 Ω, 3 Ω, 6 Ω) are connected in series. What is the total resistance?\n3. Two identical bulbs are connected in parallel to a 12 V battery. If each bulb draws 0.5 A, what is the total current from the battery?\n\n## Resources\n\n- Video: Electric Circuits and Ohm's Law (25 min)\n- Simulation: Circuit Construction Kit (DC Only)\n- Worksheet: Ohm's Law and Circuit Problems\n- Interactive: Series and Parallel Circuit Builder",
+			"duration": 45,
+			"difficulty": "intermediate",
+			"prerequisites": ["basic algebra"],
+			"learning_objectives": [
+				"Apply Ohm's law to relate voltage, current, and resistance",
+				"Analyze series and parallel circuits",
+				"Calculate electrical power and energy consumption",
+				"Use circuit diagrams to represent and troubleshoot circuits"
+			]
+		}
+	],
+	"optics": [
+		{
+			"id": "physics-optics-light",
+			"subject": "physical sciences",
+			"topic": "optics",
+			"title": "Light and Optics",
+			"content": "# Light and Optics\n\nOptics is the study of light and its interaction with matter. Understanding optics is crucial for cameras, telescopes, microscopes, and many other technologies.\n\n## Nature of Light\n\n### Particle Theory\n- Light consists of particles called photons\n- Each photon has energy E = hf = hc/λ\n- Explains photoelectric effect\n\n### Wave Theory\n- Light is an electromagnetic wave\n- Does not require a medium\n- Speed in vacuum: c = 3 × 10⁸ m/s\n\n### Wave-Particle Duality\n- Light exhibits both wave and particle properties\n- Which model applies depends on the experiment\n\n## Reflection\n\n### Laws of Reflection\n1. Angle of incidence = Angle of reflection\n2. Incident ray, reflected ray, and normal all lie in the same plane\n\n### Types of Reflection\n- **Regular (specular)**: Smooth surfaces (mirrors)\n- **Diffuse**: Rough surfaces\n\n### Mirror Equation\n1/f = 1/do + 1/di\n\nWhere:\n- f = focal length\n- do = object distance\n- di = image distance\n\n### Magnification\nM = -di/do = hi/ho\n\n## Refraction\n\n### Snell's Law\nn₁ sin θ₁ = n₂ sin θ₂\n\nWhere:\n- n = refractive index\n- θ = angle from normal\n\n### Critical Angle\nWhen light goes from denser to rarer:\nθc = sin⁻¹(n₂/n₁)\n\nTotal Internal Reflection occurs when θi > θc\n\n## Lenses\n\n### Convex (Converging) Lens\n- Thicker in middle\n- Real images (except when object within f)\n- Used in microscopes, cameras\n\n### Concave (Diverging) Lens\n- Thinner in middle\n- Always virtual, upright, diminished\n- Used in glasses for nearsightedness\n\n### Lens Equation\n1/f = 1/do + 1/di\n\n## Applications\n\n1. **Cameras**: Capture images\n2. **Microscopes**: Magnify small objects\n3. **Telescopes**: View distant objects\n4. **Eyeglasses**: Correct vision problems\n\n## Practice Questions\n\n1. An object is placed 20cm from a convex lens with focal length 10cm. Find the image distance.\n2. Calculate the critical angle for glass (n=1.5) to air interface.\n3. Draw a ray diagram for an object placed beyond 2f for a convex lens.\n\n## Resources\n\n- Video: Optics Fundamentals (30 min)\n- Interactive: Lens Simulator\n- Worksheet: Optics Practice",
+			"duration": 45,
+			"difficulty": "intermediate",
+			"prerequisites": ["waves", "electricity"],
+			"learning_objectives": [
+				"Understand the nature of light and electromagnetic radiation",
+				"Apply laws of reflection and refraction",
+				"Solve problems using mirror and lens equations",
+				"Analyze optical instruments"
+			]
+		},
+		{
+			"id": "physics-momentum-impulse",
+			"subject": "physical_sciences",
+			"topic": "mechanics",
+			"title": "Momentum and Impulse",
+			"content": "# Momentum and Impulse\n\nMomentum and impulse are fundamental concepts in physics that describe the motion of objects and the effects of forces over time.\n\n## Momentum ($p$)\n\n- **Definition**: The product of an object's mass and its velocity.\n- **Formula**: $p = m \\cdot v$\n- **Units**: $kg \\cdot m \\cdot s^{-1}$\n- **Vector Nature**: Momentum is a vector quantity. It has the same direction as the velocity. **Always choose a direction as positive** before starting calculations.\n\n## Newton’s Second Law in terms of Momentum\n\n- **Definition**: The net (resultant) force acting on an object is equal to the rate of change of momentum of the object in the direction of the net force.\n- **Formula**: $F_{net} = \\frac{\\Delta p}{\\Delta t} = \\frac{m(v_f - v_i)}{\\Delta t}$\n\n## Impulse ($J$)\n\n- **Definition**: The product of the net force acting on an object and the time interval during which the force acts.\n- **Formula**: $Impulse = F_{net} \\cdot \\Delta t = \\Delta p$\n- **Impulse-Momentum Theorem**: Impulse is equal to the change in momentum.\n- **Safety Applications**: Airbags, seatbelts, and arrestor beds increase the **time of impact** ($\\Delta t$), which decreases the **net force** ($F_{net}$) for the same change in momentum ($\\Delta p$).\n\n## Conservation of Momentum\n\n- **Isolated System**: A system where the net external force is zero.\n- **Principle**: The total linear momentum of an isolated system remains constant.\n- **Formula**: $\\sum p_{before} = \\sum p_{after}$\n\n## Elastic vs. Inelastic Collisions\n\n- **Elastic**: Both total linear momentum and **total kinetic energy** ($E_k = \\frac{1}{2}mv^2$) are conserved.\n- **Inelastic**: Total linear momentum is conserved, but **kinetic energy is NOT conserved** (converted to heat/sound).",
+			"duration": 45,
+			"difficulty": "intermediate",
+			"prerequisites": ["newton's laws", "kinematics"],
+			"learning_objectives": [
+				"Define and calculate momentum and impulse",
+				"Apply conservation of momentum to collisions",
+				"Differentiate between elastic and inelastic collisions",
+				"Relate impulse to real-world safety features"
+			]
+		},
+		{
+			"id": "physics-gravitation",
+			"subject": "physical sciences",
+			"topic": "gravitation",
+			"title": "Gravitation",
+			"content": "# Gravitation\n\nGravitation is the force of attraction between objects with mass. It's responsible for keeping planets in orbit, causing objects to fall, and creating tides.\n\n## Newton's Law of Universal Gravitation\n\n### The Law\nEvery particle attracts every other particle with a force proportional to the product of their masses and inversely proportional to the square of the distance between them.\n\n**F = Gm₁m₂ / r²**\n\nWhere:\n- F = gravitational force (N)\n- G = gravitational constant = 6.674 × 10⁻¹¹ N·m²/kg²\n- m₁, m₂ = masses (kg)\n- r = distance between centers (m)\n\n### Key Points\n- Force is always attractive\n- Acts along the line joining centers\n- Independent of medium\n- Inverse square law\n\n## Gravitational Field\n\n### Definition\nThe gravitational field (g) at a point is the gravitational force per unit mass experienced by a small test mass placed at that point.\n\n**g = F/m = GM/r²**\n\n### Variation with Altitude\ng decreases as you move away from Earth's center\n\ng(h) = g₀ / (1 + h/R)²\n\n### Variation with Latitude\n- Earth rotates, so effective g varies\n- Slightly higher at poles, lower at equator\n\n## Orbital Motion\n\n### Circular Orbits\nFor a stable orbit:\n\n**v = √(GM/r)**\n\n**T = 2π√(r³/GM)**\n\nWhere:\n- v = orbital velocity\n- T = orbital period\n- r = orbital radius\n\n### Types of Orbits\n- **Low Earth Orbit (LEO)**: ~200-2000 km\n- **Medium Earth Orbit (MEO)**: GPS satellites ~20,000 km\n- **Geostationary Orbit**: ~36,000 km\n\n## Kepler's Laws\n\n### First Law\nPlanets move in elliptical orbits with the Sun at one focus.\n\n### Second Law\nA line from the Sun to a planet sweeps equal areas in equal times.\n\n**dA/dt = constant**\n\n### Third Law\nThe square of the orbital period is proportional to the cube of the semi-major axis.\n\n**T² ∝ a³**\n\n## Practice Questions\nn\n1. Calculate the gravitational force between two 1kg masses 1m apart.\n2. What is the weight of a 60kg person on the Moon (g = 1.62 m/s²)?\n3. A satellite orbits Earth at 300km altitude. Calculate its orbital velocity.\n\n## Resources\n\n- Video: Gravitation (30 min)\n- Interactive: Orbital Simulator\n- Worksheet: Gravitation Practice",
+			"duration": 45,
+			"difficulty": "advanced",
+			"prerequisites": ["newton's laws", "work and energy"],
+			"learning_objectives": [
+				"Apply Newton's law of universal gravitation",
+				"Understand gravitational fields and variation of g",
+				"Analyze orbital motion using Kepler's laws",
+				"Solve problems involving gravitational force and orbits"
+			]
+		},
+		{
+			"id": "physics-thermodynamics",
+			"subject": "physical sciences",
+			"topic": "thermodynamics",
+			"title": "Heat and Thermodynamics",
+			"content": "# Heat and Thermodynamics\n\nThermodynamics is the study of heat, work, and the properties of systems at different temperatures.\n\n## Heat and Temperature\n\n### Temperature\n- Measure of average kinetic energy of particles\n- Measured in Celsius (°C), Kelvin (K), or Fahrenheit (°F)\n- K = °C + 273.15\n\n### Heat\n- Energy transferred due to temperature difference\n- Measured in Joules (J)\n- Q = mcΔT\n\n## Specific Heat Capacity\n\n### Definition\nThe heat required to raise 1kg of a substance by 1°C or 1K.\n\n**Q = mcΔT**\n\n- Q = heat (J)\n- m = mass (kg)\n- c = specific heat capacity (J/kg·K)\n- ΔT = temperature change (K)\n\n### Applications\n- Water has high c = 4186 J/kg·K (good coolant)\n- Metals have low c (heat up/cool down quickly)\n\n## Latent Heat\n\n### Definition\nHeat required to change phase without temperature change.\n\n[DIAGRAM:phase-change]\n\n**Q = mL**\n\n- L = specific latent heat (J/kg)\n- Fusion: solid ↔ liquid\n- Vaporization: liquid ↔ gas\n\n## Thermodynamic Systems\n\n### System\n- The part being studied\n- Can be isolated, closed, or open\n\n### Surroundings\n- Everything outside the system\n\n### Boundaries\n- Separates system from surroundings\n\n## Laws of Thermodynamics\n\n### First Law (Conservation of Energy)\nΔU = Q - W\n\n- ΔU = change in internal energy\n- Q = heat added to system\n- W = work done by system\n\n### Second Law (Entropy)\n- Heat flows spontaneously from hot to cold\n- Total entropy of isolated system always increases\n- No 100% efficient heat engine possible\n\n### Third Law\n- Absolute zero (0K) cannot be reached\n- As T → 0, entropy → minimum (often zero)\n\n## Heat Transfer\n\n### Conduction\n- Through materials without movement\n- Best in solids, especially metals\n- Q/t = kA(ΔT/d)\n\n### Convection\n- Through fluid movement\n- Creates weather patterns, ocean currents\n\n### Radiation\n- Through electromagnetic waves\n- No medium required\n- All objects emit radiation\n\n## Practice Questions\n\n1. How much heat is needed to raise 2kg water from 20°C to 80°C?\n2. Calculate the latent heat of fusion from data.\n3. Explain why a wooden handle is better than metal for cooking pots.\n\n## Resources\n\n- Video: Thermodynamics (35 min)\n- Interactive: Heat Transfer Simulator\n- Worksheet: Thermodynamics Practice",
+			"duration": 50,
+			"difficulty": "advanced",
+			"prerequisites": ["work and energy", "kinetics"],
+			"learning_objectives": [
+				"Understand heat, temperature, and their relationship",
+				"Apply specific heat and latent heat formulas",
+				"Explain and apply the laws of thermodynamics",
+				"Analyze heat transfer mechanisms"
+			]
+		}
+	]
+}

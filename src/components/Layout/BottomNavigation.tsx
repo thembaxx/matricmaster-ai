@@ -1,93 +1,97 @@
 'use client';
 
-import { Icon } from '@iconify/react';
-import { AnimatePresence, m } from 'framer-motion';
+import { Calendar01Icon, MagicWandIcon, Search01Icon, UserIcon } from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
+import { m } from 'framer-motion';
 import Link from 'next/link';
 
-type NavItem = {
-	href: string;
-	label: string;
-	icon: string;
-};
-
-const navItems: NavItem[] = [
-	{ href: '/dashboard', label: 'Home', icon: 'fluent:clover-24-filled' },
+const navItems = [
 	{
-		href: '/interactive-quiz',
-		label: 'Quiz',
-		icon: 'fluent:checkmark-circle-sparkle-24-filled',
+		href: '/schedule',
+		label: 'Daily',
+		icon: Calendar01Icon,
+		activeColor: 'text-tiimo-lavender',
+		bgColor: 'bg-tiimo-lavender/10',
 	},
 	{
-		href: '/ai-tutor',
-		label: 'AI Tutor',
-		icon: 'fluent:bot-sparkle-24-filled',
+		href: '/planner',
+		label: 'Planner',
+		icon: MagicWandIcon,
+		activeColor: 'text-tiimo-green',
+		bgColor: 'bg-tiimo-green/10',
 	},
 	{
-		href: '/past-papers',
-		label: 'Papers',
-		icon: 'fluent:hat-graduation-sparkle-24-filled',
+		href: '/focus',
+		label: 'Focus',
+		icon: Search01Icon,
+		activeColor: 'text-tiimo-blue',
+		bgColor: 'bg-tiimo-blue/10',
 	},
 	{
 		href: '/profile',
-		label: 'Profile',
-		icon: 'fluent:person-circle-24-filled',
+		label: 'Me',
+		icon: UserIcon,
+		activeColor: 'text-tiimo-pink',
+		bgColor: 'bg-tiimo-pink/10',
 	},
 ];
 
-type BottomNavigationProps = {
+interface BottomNavigationProps {
 	pathname: string;
-};
+}
 
 export function BottomNavigation({ pathname }: BottomNavigationProps) {
 	return (
-		<nav
+		<m.nav
+			initial={{ y: 100 }}
+			animate={{ y: 0 }}
+			transition={{ type: 'spring', stiffness: 260, damping: 20 }}
 			id="bottom-navigation"
 			aria-label="Bottom navigation"
-			className="lg:hidden fixed bottom-8 left-1/2 -translate-x-1/2 w-[92%] max-w-md z-40 ios-glass rounded-[2.5rem] shadow-2xl border-white/20 dark:border-white/10 grid grid-cols-5 p-2 transition-all duration-500"
+			className="lg:hidden fixed bottom-6 left-1/2 -translate-x-1/2 w-[94%] max-w-md z-50 tiimo-glass rounded-[2.5rem] shadow-tiimo-lg grid grid-cols-4 p-1.5"
 		>
 			{navItems.map((item) => {
-				const isActive = pathname === item.href || (item.href === '/dashboard' && pathname === '/');
+				const isActive = pathname === item.href || (item.href === '/schedule' && pathname === '/');
 				return (
 					<Link
 						key={item.href}
 						href={item.href}
 						aria-current={isActive ? 'page' : undefined}
-						className="relative flex flex-col items-center justify-center py-3 min-h-[56px] transition-all duration-300 group rounded-2xl touch-manipulation"
+						className="relative flex flex-col items-center justify-center py-1.5 min-h-[76px] transition-all duration-300 group"
 					>
-						<AnimatePresence>
-							{isActive && (
-								<m.div
-									layoutId="active-pill"
-									className="absolute inset-0 bg-primary rounded-2xl z-0"
-									transition={{
-										type: 'spring',
-										stiffness: 400,
-										damping: 30,
-									}}
-								/>
-							)}
-						</AnimatePresence>
-
-						<div className="relative z-10 flex items-center justify-center">
-							<Icon
-								icon={item.icon}
-								className={`h-6 w-6 transition-all duration-300 ${
-									isActive
-										? 'text-primary-foreground scale-110'
-										: 'text-muted-foreground group-hover:text-foreground'
+						<div className="relative z-10 flex flex-col items-center justify-center gap-1">
+							<m.div
+								whileHover={{ scale: 1.05 }}
+								whileTap={{ scale: 0.9 }}
+								className={`w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 tiimo-press ${
+									isActive ? item.bgColor : 'bg-transparent'
 								}`}
-							/>
+							>
+								<HugeiconsIcon
+									icon={item.icon}
+									className={`w-6 h-6 transition-colors duration-300 ${
+										isActive ? item.activeColor : 'text-tiimo-gray-muted'
+									}`}
+								/>
+							</m.div>
+							<span
+								className={`text-[10px] font-bold tracking-tight transition-colors duration-300 ${
+									isActive ? 'text-foreground' : 'text-tiimo-gray-muted'
+								}`}
+							>
+								{item.label}
+							</span>
 						</div>
-						<span
-							className={`relative z-10 text-[10px] xs:text-[11px] sm:text-[12px] font-bold uppercase tracking-tight ${
-								isActive ? 'text-primary-foreground' : 'text-muted-foreground'
-							}`}
-						>
-							{item.label}
-						</span>
+
+						{isActive && (
+							<m.div
+								layoutId="nav-active-dot"
+								className={`absolute -bottom-1 w-1 h-1 rounded-full ${item.activeColor.replace('text-', 'bg-')}`}
+							/>
+						)}
 					</Link>
 				);
 			})}
-		</nav>
+		</m.nav>
 	);
 }

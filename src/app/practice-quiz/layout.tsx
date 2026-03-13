@@ -1,7 +1,9 @@
 import type { Metadata } from 'next';
 
+import { appConfig } from '@/app.config';
+
 export const metadata: Metadata = {
-	title: 'Practice Quiz | MatricMaster AI',
+	title: `Practice Quiz | ${appConfig.name} AI`,
 	description: 'Practice with interactive quizzes tailored to your learning needs.',
 };
 

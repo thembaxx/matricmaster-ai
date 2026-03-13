@@ -5,17 +5,17 @@ import ClientProviders from '@/components/Layout/ClientProvidersDynamic';
 import { Toaster } from '@/components/Toaster';
 import { ThemeProvider } from '@/components/theme-provider';
 import '@/styles/index.css';
-import { geistMono, inter, lexend, outfit, spaceGrotesk } from './fonts';
+import { appConfig } from '../app.config';
+import { geistMono, inter, lexend, outfit, sora, spaceGrotesk } from './fonts';
 
 const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://matricmaster.ai';
 
 export const metadata: Metadata = {
 	title: {
-		default: 'MatricMaster AI',
-		template: '%s | MatricMaster AI',
+		default: appConfig.name,
+		template: `%s | ${appConfig.name}`,
 	},
-	description:
-		'Master your Matric exams through interactive practice. Access past papers, step-by-step guides, and AI-powered explanations for South African Grade 12 students.',
+	description: appConfig.description,
 	keywords: [
 		'matric',
 		'grade 12',
@@ -28,9 +28,9 @@ export const metadata: Metadata = {
 		'chemistry',
 		'NSC',
 	],
-	authors: [{ name: 'MatricMaster AI' }],
-	creator: 'MatricMaster AI',
-	publisher: 'MatricMaster AI',
+	authors: [{ name: appConfig.name }],
+	creator: appConfig.name,
+	publisher: appConfig.name,
 	formatDetection: {
 		email: false,
 		address: false,
@@ -41,30 +41,32 @@ export const metadata: Metadata = {
 	appleWebApp: {
 		capable: true,
 		statusBarStyle: 'default',
-		title: 'MatricMaster',
+		title: appConfig.name,
 	},
 	openGraph: {
 		type: 'website',
 		locale: 'en_ZA',
 		url: '/',
-		title: 'MatricMaster AI - Master Your Matric Exams',
+		title: `${appConfig.name} - Master Your Matric Exams`,
 		description:
 			'Interactive past papers and step-by-step guides for South African Grade 12 students.',
-		siteName: 'MatricMaster AI',
+		siteName: appConfig.name,
 		images: [
 			{
-				url: '/api/og?title=MatricMaster+AI&description=Master+your+Matric+exams',
+				url: `/api/og?title=${appConfig.name.replace(' ', '+')}&description=Master+your+Matric+exams`,
 				width: 1200,
 				height: 630,
-				alt: 'MatricMaster AI - Master Your Matric Exams',
+				alt: `${appConfig.name} - Master Your Matric Exams`,
 			},
 		],
 	},
 	twitter: {
 		card: 'summary_large_image',
-		title: 'MatricMaster AI',
+		title: appConfig.name,
 		description: 'Master your Matric exams through interactive practice.',
-		images: ['/api/og?title=MatricMaster+AI&description=Master+your+Matric+exams'],
+		images: [
+			`/api/og?title=${appConfig.name.replace(' ', '+')}&description=Master+your+Matric+exams`,
+		],
 		creator: '@matricmaster',
 	},
 	robots: {
@@ -95,18 +97,17 @@ const jsonLd = {
 	'@graph': [
 		{
 			'@type': 'Organization',
-			name: 'MatricMaster AI',
+			name: appConfig.name,
 			url: baseUrl,
-			description:
-				'Master your Matric exams through interactive practice. Access past papers, step-by-step guides, and AI-powered explanations for South African Grade 12 students.',
+			description: appConfig.description,
 			logo: `${baseUrl}/icon-192.png`,
 		},
 		{
 			'@type': 'WebApplication',
-			name: 'MatricMaster AI',
+			name: appConfig.name,
 			url: baseUrl,
 			description:
-				'Interactive past papers and step-by-step guides for South African Grade 12 students. AI-powered explanations and practice for NSC exams.',
+				'Interactive past papers and step-by-step guides for South African Grade 12 students. Personalized explanations and practice for NSC exams.',
 			applicationCategory: 'EducationalApplication',
 			operatingSystem: 'Any',
 		},
@@ -118,7 +119,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 		<html
 			lang="en"
 			suppressHydrationWarning
-			className={`${geistMono.variable} ${inter.variable} ${lexend.variable} ${outfit.variable} ${spaceGrotesk.variable}`}
+			className={`${geistMono.variable} ${inter.variable} ${lexend.variable} ${outfit.variable} ${sora.variable} ${spaceGrotesk.variable}`}
 		>
 			<head>
 				<link rel="preconnect" href="https://fonts.googleapis.com" />

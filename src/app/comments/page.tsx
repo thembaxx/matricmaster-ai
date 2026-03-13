@@ -65,7 +65,7 @@ function CommentsContent() {
 		try {
 			const response = await fetch('/api/comments', {
 				method: 'POST',
-				headers: { 'Content-TextT': 'application/json' },
+				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({
 					content: newComment,
 					resourceType,
@@ -91,7 +91,7 @@ function CommentsContent() {
 		try {
 			await fetch(`/api/comments/${commentId}/vote`, {
 				method: 'POST',
-				headers: { 'Content-TextT': 'application/json' },
+				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({ voteType }),
 			});
 		} catch (error) {
@@ -105,7 +105,7 @@ function CommentsContent() {
 		try {
 			await fetch(`/api/comments/${commentId}/flag`, {
 				method: 'POST',
-				headers: { 'Content-TextT': 'application/json' },
+				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({ reason }),
 			});
 		} catch (error) {
@@ -119,7 +119,7 @@ function CommentsContent() {
 		try {
 			const response = await fetch('/api/comments', {
 				method: 'POST',
-				headers: { 'Content-TextT': 'application/json' },
+				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({
 					content: replyContent,
 					resourceType,

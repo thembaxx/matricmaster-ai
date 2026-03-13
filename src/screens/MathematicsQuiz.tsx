@@ -31,6 +31,8 @@ const steps = [
 export default function MathematicsQuiz() {
 	const router = useRouter();
 	const [selectedSteps, setSelectedSteps] = useState<number[]>([]);
+	const [manualSteps, setManualSteps] = useState<string[]>([]);
+	const [customInput, setCustomInput] = useState('');
 	const [aiExplanation, setAiExplanation] = useState<string | null>(null);
 	const [isExplaining, setIsExplaining] = useState(false);
 	const availableSteps = steps;
@@ -63,7 +65,18 @@ export default function MathematicsQuiz() {
 	};
 
 	const insertSymbol = (symbol: string) => {
-		console.log('Insert symbol:', symbol);
+		setCustomInput((prev) => prev + symbol);
+	};
+
+	const handleAddManualStep = () => {
+		if (customInput.trim()) {
+			setManualSteps((prev) => [...prev, customInput]);
+			setCustomInput('');
+		}
+	};
+
+	const handleRemoveManualStep = (index: number) => {
+		setManualSteps((prev) => prev.filter((_, i) => i !== index));
 	};
 
 	return (
@@ -122,19 +135,20 @@ export default function MathematicsQuiz() {
 							Your Solution Path
 						</h3>
 						<div className="min-h-[160px] p-6 bg-primary/5 rounded-3xl border-2 border-dashed border-primary/20">
-							{selectedSteps.length === 0 ? (
+							{selectedSteps.length === 0 && manualSteps.length === 0 ? (
 								<div className="flex flex-col items-center justify-center py-8 text-label-tertiary space-y-2">
 									<p className="text-[10px] font-black uppercase tracking-widest">
-										Tap steps below to solve
+										Tap steps below or type manual step
 									</p>
 								</div>
 							) : (
 								<div className="space-y-3">
+									{/* Selected From Pool */}
 									{selectedSteps.map((stepId, index) => {
 										const step = steps.find((s) => s.id === stepId);
 										return (
 											<div
-												key={stepId}
+												key={`pool-${stepId}`}
 												className="flex items-center gap-4 p-5 bg-card rounded-2xl shadow-sm border border-primary/10 animate-in fade-in slide-in-from-left-2 ios-active-scale"
 											>
 												<span className="w-7 h-7 rounded-full bg-primary text-primary-foreground text-[10px] flex items-center justify-center font-black">
@@ -155,8 +169,54 @@ export default function MathematicsQuiz() {
 											</div>
 										);
 									})}
+									{/* Manual Steps */}
+									{manualSteps.map((text, index) => (
+										<div
+											key={`manual-${index}`}
+											className="flex items-center gap-4 p-5 bg-card rounded-2xl shadow-sm border border-primary/10 border-dashed animate-in fade-in slide-in-from-left-2 ios-active-scale"
+										>
+											<span className="w-7 h-7 rounded-full bg-primary/50 text-primary-foreground text-[10px] flex items-center justify-center font-black">
+												{selectedSteps.length + index + 1}
+											</span>
+											<span className="font-mono font-black text-foreground flex-1 uppercase tracking-tight italic">
+												{text}
+											</span>
+											<Button
+												variant="ghost"
+												size="icon"
+												className="h-8 w-8 rounded-full hover:bg-destructive/10 hover:text-destructive ios-active-scale"
+												onClick={() => handleRemoveManualStep(index)}
+												aria-label="Remove step"
+											>
+												<HugeiconsIcon icon={Cancel01Icon} className="w-4 h-4" />
+											</Button>
+										</div>
+									))}
 								</div>
 							)}
+						</div>
+					</div>
+
+					{/* Manual Entry Field */}
+					<div className="space-y-4">
+						<h3 className="text-[10px] font-black uppercase text-label-tertiary tracking-[0.2em] px-1">
+							Manual Entry
+						</h3>
+						<div className="flex gap-2">
+							<input
+								type="text"
+								value={customInput}
+								onChange={(e) => setCustomInput(e.target.value)}
+								placeholder="Type or use keyboard below..."
+								className="flex-1 px-6 py-4 bg-card rounded-2xl text-sm border border-border shadow-sm focus:ring-2 focus:ring-primary/20 font-mono font-black text-foreground"
+							/>
+							<Button
+								onClick={handleAddManualStep}
+								disabled={!customInput.trim()}
+								className="h-14 rounded-2xl px-6 bg-foreground text-background font-black uppercase text-xs"
+							>
+								Add
+							</Button>
 						</div>
 					</div>
 

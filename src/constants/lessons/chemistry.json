@@ -1,0 +1,84 @@
+{
+	"chemistry": [
+		{
+			"id": "chemistry-matter-atomic-structure",
+			"subject": "chemistry",
+			"topic": "matter and materials",
+			"title": "Atomic Structure and Periodic Table",
+			"content": "# Atomic Structure and Periodic Table\n\nUnderstanding the structure of atoms and the organization of the periodic table is fundamental to chemistry.\n\n## Atomic Structure\n\n- **Subatomic Particles**: Protons (positive), neutrons (neutral), electrons (negative)\n- **Nucleus**: Contains protons and neutrons\n- **Electron Shells**: Electrons occupy energy levels/shells around the nucleus\n- **Atomic Number (Z)**: Number of protons in the nucleus\n- **Mass Number (A)**: Total number of protons and neutrons\n\n## Electron Configuration\n\n- **Shells**: K, L, M, N (corresponding to n=1,2,3,4)\n- **Subshells**: s, p, d, f\n- **Capacity**: s=2, p=6, d=10, f=14 electrons\n- **Aufbau Principle**: Electrons fill lowest energy orbitals first\n- **Hund's Rule**: Electrons occupy degenerate orbitals singly before pairing\n- **Pauli Exclusion Principle**: Maximum 2 electrons per orbital with opposite spins\n\n## Periodic Table Organization\n\n- **Groups (Columns)**: Elements with similar chemical properties\n- **Periods (Rows)**: Elements with same number of electron shells\n- **Blocks**: s-block, p-block, d-block, f-block based on electron configuration\n\n## Key Groups\n\n1. **Alkali Metals (Group 1)**: Highly reactive, +1 oxidation state\n2. **Alkaline Earth Metals (Group 2)**: Reactive, +2 oxidation state\n3. **Halogens (Group 17)**: Highly reactive nonmetals, -1 oxidation state\n4. **Noble Gases (Group 18)**: Unreactive, complete valence shells\n\n## Chemical Bonding Preliminaries\n\n- **Ionic Bonding**: Transfer of electrons between metals and nonmetals\n- **Covalent Bonding**: Sharing of electrons between nonmetals\n- **Metallic Bonding**: Sea of delocalized electrons in metals\n\n## Practice Questions\n\n1. What is the electron configuration of sodium (Na, Z=11)?\n2. How many valence electrons does chlorine (Cl, Z=17) have?\n3. Explain why noble gases are generally unreactive.\n\n## Resources\n\n- Video: Atomic Structure Overview (20 min)\n- Interactive: Electron Configurator\n- Worksheet: Periodic Table Practice",
+			"duration": 35,
+			"difficulty": "intermediate",
+			"prerequisites": ["basic science"],
+			"learning_objectives": [
+				"Describe the structure of atoms and subatomic particles",
+				"Explain electron configuration and orbital filling principles",
+				"Understand the organization of the periodic table",
+				"Relate periodic trends to electron configuration"
+			]
+		},
+		{
+			"id": "chemistry-chemical-bonding",
+			"subject": "chemistry",
+			"topic": "chemical bonding",
+			"title": "Ionic and Covalent Bonding",
+			"content": "# Ionic and Covalent Bonding\n\nChemical bonding is the process by which atoms combine to form compounds. The two main types are ionic and covalent bonding.\n\n## Ionic Bonding\n\n- **Formation**: Between metals and nonmetals with large electronegativity difference\n- **Process**: Metal loses electrons (oxidation), nonmetal gains electrons (reduction)\n- **Result**: Formation of cations and anions held together by electrostatic forces\n- **Properties**: High melting/boiling points, brittle, conductive when molten/dissolved\n- **Examples**: NaCl (table salt), MgO, CaF₂\n\n## Covalent Bonding\n\n- **Formation**: Between nonmetals with similar electronegativity\n- **Process**: Sharing of electron pairs to achieve stable electron configurations\n- **Result**: Molecules held together by shared electrons\n- **Properties**: Lower melting/boiling points, often gases/liquids, poor electrical conductors\n- **Examples**: H₂O, CO₂, CH₄, O₂\n\n## Bond Characteristics\n\n| Property | Ionic Bonds | Covalent Bonds |\n|----------|-------------|----------------|\n| Particle Type | Ions | Molecules |\n| Melting Point | High | Variable (often low) |\n| Electrical Conductivity | Good when molten/dissolved | Poor |\n| Solubility in Water | Often high | Variable |\n| Bond Directionality | Non-directional | Directional |\n\n## Lewis Structures\n\n- **Valence Electrons**: Electrons in outermost shell\n- **Octet Rule**: Atoms tend to gain, lose, or share electrons to achieve 8 valence electrons\n- **Steps**: Count valence electrons → place least electronegative atom center → connect with single bonds → distribute remaining electrons → check octets → form multiple bonds if needed\n\n## Molecular Geometry\n\n- **VSEPR Theory**: Electron pairs repel and arrange to minimize repulsion\n- **Shapes**: Linear, trigonal planar, tetrahedral, trigonal bipyramidal, octahedral\n- **Bond Angles**: Determined by electron pair geometry\n\n## Practice Questions\n\n1. Write the Lewis structure for CO₂ and predict its shape\n2. Explain why NaCl has a high melting point but CO₂ sublimes at room temperature\n3. Predict the geometry of PCl₃\n\n## Resources\n\n- Video: Chemical Bonding (30 min)\n- Interactive: Molecular Shape Builder\n- Worksheet: Lewis Structure Practice",
+			"duration": 40,
+			"difficulty": "intermediate",
+			"prerequisites": ["atomic structure", "periodic table"],
+			"learning_objectives": [
+				"Differentiate between ionic and covalent bonding",
+				"Draw Lewis structures for simple molecules",
+				"Predict molecular geometry using VSEPR theory",
+				"Explain properties of ionic and covalent compounds"
+			]
+		},
+		{
+			"id": "chemistry-rate-reactions",
+			"subject": "chemistry",
+			"topic": "chemical kinetics",
+			"title": "Chemical Reaction Rates",
+			"content": "# Chemical Reaction Rates\n\nChemical kinetics studies the rates of chemical reactions and the factors that affect them.\n\n## Rate of Reaction\n\n- **Definition**: Change in concentration of reactants or products per unit time\n- **Units**: mol·L⁻¹·s⁻¹\n\n### Average Rate\nRate = -Δ[Reactant]/Δt = Δ[Product]/Δt\n\n### Instantaneous Rate\nRate at a specific moment, determined from tangent to concentration-time graph\n\n## Factors Affecting Rate\n\n### 1. Concentration\n- Increasing concentration increases collision frequency\n- Rate ∝ [A]^m where m is reaction order\n\n### 2. Temperature\n- Increase temperature increases kinetic energy\n- More particles have energy ≥ activation energy\n- Arrhenius Equation: k = Ae^(-Ea/RT)\n\n### 3. Catalyst\n- Lowers activation energy\n- Provides alternative reaction pathway\n- Not consumed in reaction\n\n### 4. Surface Area\n- Higher surface area = more collisions\n- Important for heterogeneous reactions\n\n### 5. Nature of Reactants\n- Ionic reactions are fast\n- Covalent molecules react slower\n\n## Collision Theory\n\n1. **Collision**: Particles must collide\n2. **Orientation**: Proper alignment needed\n3. **Energy**: Sufficient energy (≥ Ea)\n\n## Rate Laws\n\n### General Form\nRate = k[A]^m[B]^n\n\n- k = rate constant\n- m, n = reaction orders (determined experimentally)\n\n### Zero Order\nRate = k\n[A] vs t gives straight line\n\n### First Order\nRate = k[A]\nln[A] vs t gives straight line\n\n### Second Order\nRate = k[A]²\n1/[A] vs t gives straight line\n\n## Practice Questions\n\n1. How does increasing temperature affect reaction rate?\n2. Define activation energy and explain its role in reactions\n3. A reaction is first order with k = 0.05 s⁻¹. If [A]₀ = 0.1 M, find [A] after 20 seconds.\n\n## Resources\n\n- Video: Reaction Rates (25 min)\n- Interactive: Rate Law Calculator\n- Worksheet: Kinetics Practice",
+			"duration": 45,
+			"difficulty": "advanced",
+			"prerequisites": ["chemical bonding", "energy changes"],
+			"learning_objectives": [
+				"Understand and calculate reaction rates",
+				"Explain factors affecting reaction rates",
+				"Apply collision theory to reaction kinetics",
+				"Use rate laws and determine reaction order"
+			]
+		},
+		{
+			"id": "chemistry-electrochemistry",
+			"subject": "chemistry",
+			"topic": "electrochemistry",
+			"title": "Electrochemical Cells",
+			"content": "# Electrochemical Cells\n\nElectrochemistry deals with the relationship between electricity and chemical reactions.\n\n## Types of Cells\n\n### Galvanic (Voltaic) Cells\n- Spontaneous reactions (ΔG < 0)\n- Generate electrical energy\n- Anode = oxidation = negative electrode\n- Cathode = reduction = positive electrode\n\n### Electrolytic Cells\n- Non-spontaneous reactions (ΔG > 0)\n- Require electrical energy\n- Anode = positive, Cathode = negative\n\n## Cell Notation\n\nZn(s) | Zn²⁺(aq) || Cu²⁺(aq) | Cu(s)\n\n- Single line = phase change\n\n[DIAGRAM:phase-change]\n\n- Double line = salt bridge\n- Left = anode, Right = cathode\n\n## Standard Reduction Potentials\n\nE° = standard electrode potential (25°C, 1M, 1atm)\n\n| Half-Reaction | E° (V) |\n|---------------|--------|\n| F₂ + 2e⁻ → 2F⁻ | +2.87 |\n| Au³⁺ + 3e⁻ → Au | +1.50 |\n| Cl₂ + 2e⁻ → 2Cl⁻ | +1.36 |\n| Ag⁺ + e⁻ → Ag | +0.80 |\n| Cu²⁺ + 2e⁻ → Cu | +0.34 |\n| 2H⁺ + 2e⁻ → H₂ | 0.00 |\n| Fe²⁺ + 2e⁻ → Fe | -0.44 |\n| Zn²⁺ + 2e⁻ → Zn | -0.76 |\n\n## Calculating Cell Potential\n\nE°cell = E°cathode - E°anode\n\n- E° > 0: Spontaneous\n- E° < 0: Non-spontaneous\n\n## Faraday's Laws\n\n### First Law\nm = (Q × M) / (n × F)\n\n- m = mass deposited (g)\n- Q = charge (C)\n- M = molar mass\n- n = electrons transferred\n- F = Faraday constant = 96485 C/mol\n\n### Second Law\nMass proportional to charge and equivalent weight\n\n## Applications\n\n1. **Batteries**: Portable power sources\n2. **Electroplating**: Coating metals\n3. **Electrorefining**: Purifying metals\n4. **Corrosion Prevention**: Cathodic protection\n\n## Practice Questions\n\n1. Calculate E°cell for: Zn + Cu²⁺ → Zn²⁺ + Cu\n2. How long will it take to deposit 5.0g Ag using 5A current?\n3. Explain why iron corrodes but gold doesn't.\n\n## Resources\n\n- Video: Electrochemistry (30 min)\n- Interactive: Cell Potential Calculator\n- Worksheet: Electrochemistry Practice",
+			"duration": 50,
+			"difficulty": "advanced",
+			"prerequisites": ["redox reactions", "energy changes"],
+			"learning_objectives": [
+				"Understand galvanic and electrolytic cells",
+				"Calculate cell potentials",
+				"Apply Faraday's laws to electrolysis",
+				"Explain practical applications of electrochemistry"
+			]
+		},
+		{
+			"id": "chemistry-acids-bases",
+			"subject": "chemistry",
+			"topic": "acids and bases",
+			"title": "Acids, Bases and pH",
+			"content": "# Acids, Bases and pH\n\nAcids and bases are fundamental chemical species with distinct properties and behaviors.\n\n## Definitions\n\n### Arrhenius\n- **Acid**: Produces H⁺ in water\n- **Base**: Produces OH⁻ in water\n\n### Brønsted-Lowry\n- **Acid**: Proton (H⁺) donor\n- **Base**: Proton (H⁺) acceptor\n- **Conjugate pairs**: Differ by one proton\n\n### Lewis\n- **Acid**: Electron pair acceptor\n- **Base**: Electron pair donor\n\n## pH and pOH\n\npH = -log[H⁺]\npOH = -log[OH⁻]\npH + pOH = 14\n\n### Strong Acids\n- HCl, HBr, HI, HNO₃, H₂SO₄, HClO₄\n- Completely dissociate\n- [H⁺] = acid concentration\n\n### Strong Bases\n- Group 1 hydroxides (NaOH, KOH, etc.)\n- Group 2 hydroxides (Ca(OH)₂, etc.)\n- Completely dissociate\n\n### Weak Acids/ Bases\n- Partially dissociate\n- Use Ka or Kb\n\n## Indicators and Buffers\n\n### Indicators\n- Change color at specific pH ranges\n- Universal indicator: pH 1-14 colors\n\n### Buffers\n- Resist pH changes\n- Mixture of weak acid + conjugate base\n- Henderson-Hasselbalch: pH = pKa + log([A⁻]/[HA])\n\n## Titrations\n\n### Acid-Base Titrations\n- Neutralization reaction\n- Equivalence point: moles acid = moles base\n- Indicators: phenolphthalein, methyl orange\n\n### Calculations\nM₁V₁ = M₂V₂ (at equivalence)\n\n## Practice Questions\n\n1. Calculate pH of 0.01M HCl\n2. If pH = 5.3, find [H⁺] and [OH⁻]\n3. What is the pH of a buffer with [HA] = 0.5M and [A⁻] = 0.25M (Ka = 1.8 × 10⁻⁵)?\n\n## Resources\n\n- Video: Acids and Bases (25 min)\n- Interactive: pH Calculator\n- Worksheet: Titration Practice",
+			"duration": 45,
+			"difficulty": "intermediate",
+			"prerequisites": ["chemical bonding", "equilibrium"],
+			"learning_objectives": [
+				"Apply different acid-base theories",
+				"Calculate pH, pOH, [H⁺], [OH⁻]",
+				"Understand and prepare buffers",
+				"Perform titration calculations"
+			]
+		}
+	]
+}

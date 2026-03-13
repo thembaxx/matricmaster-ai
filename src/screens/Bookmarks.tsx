@@ -47,6 +47,8 @@ const getColorForSubject = (subject: string) => {
 	return { color: 'text-orange-500', bg: 'bg-orange-100' };
 };
 
+import { BookmarksSkeleton } from '@/components/BookmarksSkeleton';
+
 export default function Bookmarks() {
 	const router = useRouter();
 	const { data: session, isPending } = useSession();
@@ -119,6 +121,10 @@ export default function Bookmarks() {
 		);
 	}
 
+	if (isLoading) {
+		return <BookmarksSkeleton />;
+	}
+
 	return (
 		<div className="flex flex-col h-full bg-background">
 			{/* Header */}
@@ -149,11 +155,7 @@ export default function Bookmarks() {
 
 			<ScrollArea className="flex-1">
 				<main className="px-6 py-6 pb-40">
-					{isLoading ? (
-						<div className="flex items-center justify-center py-24">
-							<div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
-						</div>
-					) : filteredBookmarks.length > 0 ? (
+					{filteredBookmarks.length > 0 ? (
 						<div className="grid grid-cols-2 gap-4">
 							{filteredBookmarks.map((bookmark) => {
 								const Icon = getIconForType(bookmark.bookmarkType);

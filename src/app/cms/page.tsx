@@ -2,13 +2,15 @@ import type { Metadata } from 'next';
 import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { Suspense } from 'react';
+
+import { appConfig } from '@/app.config';
 import { ClientOnly } from '@/components/ClientOnly';
 import { getAuth, type SessionUser } from '@/lib/auth';
 import { dbManager } from '@/lib/db';
 import CMSScreen from '@/screens/CMS';
 
 export const metadata: Metadata = {
-	title: 'CMS | MatricMaster AI',
+	title: `CMS | ${appConfig.name} AI`,
 	description: 'Content management system for administrators.',
 };
 

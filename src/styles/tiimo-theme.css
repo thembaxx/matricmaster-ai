@@ -1,0 +1,283 @@
+@import "tailwindcss";
+
+@plugin "tailwindcss-animate";
+
+@custom-variant dark (&:is(.dark *));
+
+/* ==========================================================================
+   TIIMO 3.0 EXACT THEME (2025/2026)
+   Designed for neuro-inclusion, clarity, and low cognitive load.
+   ========================================================================== */
+
+:root {
+  /* --- CORE PALETTE --- */
+  --tiimo-lavender: #9F85FF;
+  --tiimo-cream: #FAF8F5;
+  --tiimo-green: #5CB587;
+  --tiimo-gray-dark: #464644;
+  --tiimo-gray-muted: #8E8E8E;
+  --tiimo-gray-subtle: #D1D1D1;
+  --tiimo-white: #FFFFFF;
+
+  /* --- SUBJECT PASTELS (Tiimo 3.0 Style) --- */
+  --subject-math: #F2C945;
+  --subject-math-soft: rgba(242, 201, 69, 0.12);
+  --subject-physics: #48A7DE;
+  --subject-physics-soft: rgba(72, 167, 222, 0.12);
+  --subject-life: #5CB587;
+  --subject-life-soft: rgba(92, 181, 135, 0.12);
+  --subject-accounting: #F472B6;
+  --subject-accounting-soft: rgba(244, 114, 182, 0.12);
+  --subject-english: #818CF8;
+  --subject-english-soft: rgba(129, 140, 248, 0.12);
+  --subject-geography: #2DD4BF;
+  --subject-geography-soft: rgba(45, 212, 191, 0.12);
+  --subject-history: #FB923C;
+  --subject-history-soft: rgba(251, 146, 60, 0.12);
+
+  /* --- SEMANTIC MAPPINGS --- */
+  --background: var(--tiimo-cream);
+  --foreground: var(--tiimo-gray-dark);
+  
+  --primary: var(--tiimo-lavender);
+  --primary-foreground: var(--tiimo-white);
+  
+  --secondary: #F0EDE8;
+  --secondary-foreground: var(--tiimo-gray-dark);
+  
+  --accent: rgba(159, 133, 255, 0.12);
+  --accent-foreground: var(--tiimo-lavender);
+  
+  --muted: #F0EDE8;
+  --muted-foreground: var(--tiimo-gray-muted);
+  
+  --card: var(--tiimo-white);
+  --card-foreground: var(--tiimo-gray-dark);
+  
+  --border: #E8E4DE;
+  --input: #E8E4DE;
+  --ring: var(--tiimo-lavender);
+
+  --success: var(--tiimo-green);
+  --success-soft: rgba(92, 181, 135, 0.12);
+  --destructive: #FF5C5C;
+  --destructive-soft: rgba(255, 92, 92, 0.12);
+  --warning: var(--subject-math);
+  --warning-soft: var(--subject-math-soft);
+  --info: var(--subject-physics);
+  --info-soft: var(--subject-physics-soft);
+
+  /* --- TYPOGRAPHY --- */
+  --font-display: var(--font-outfit), sans-serif;
+  --font-body: var(--font-sora), sans-serif;
+  --font-mono: var(--font-space-grotesk), monospace;
+
+  /* --- RADII --- */
+  --radius-sm: 12px;
+  --radius-md: 18px;
+  --radius-lg: 24px;
+  --radius-xl: 32px;
+  --radius-full: 9999px;
+
+  /* --- SHADOWS --- */
+  --shadow-tiimo: 0 8px 32px -4px rgba(70, 70, 68, 0.08);
+  --shadow-tiimo-lg: 0 16px 48px -8px rgba(70, 70, 68, 0.12);
+  
+  /* --- ANIMATION --- */
+  --ease-tiimo: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-normal: 300ms;
+}
+
+/* --- DARK MODE (Energetic Gray Variant) --- */
+.dark {
+  --tiimo-gray-bg: #1F1F1F;
+  --tiimo-gray-elevated: #2A2A2A;
+  --tiimo-gray-border: #383838;
+  
+  --background: var(--tiimo-gray-bg);
+  --foreground: #F2F2F2;
+  
+  --primary: #A88FFF;
+  --primary-foreground: #1F1F1F;
+  
+  --secondary: var(--tiimo-gray-elevated);
+  --secondary-foreground: #F2F2F2;
+  
+  --accent: rgba(168, 143, 255, 0.18);
+  --accent-foreground: #A88FFF;
+  
+  --muted: var(--tiimo-gray-elevated);
+  --muted-foreground: #9E9E9E;
+  
+  --card: #262626;
+  --card-foreground: #F2F2F2;
+  
+  --border: var(--tiimo-gray-border);
+  --input: var(--tiimo-gray-border);
+
+  /* Desaturated but Energetic Subject Colors for Dark Mode */
+  --subject-math-soft: rgba(242, 201, 69, 0.18);
+  --subject-physics-soft: rgba(72, 167, 222, 0.18);
+  --subject-life-soft: rgba(92, 181, 135, 0.18);
+  --subject-accounting-soft: rgba(244, 114, 182, 0.18);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-soft: var(--accent);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --radius-xl: var(--radius-xl);
+  
+  --font-display: var(--font-display);
+  --font-body: var(--font-body);
+  --font-mono: var(--font-mono);
+
+  --shadow-tiimo: var(--shadow-tiimo);
+  --shadow-tiimo-lg: var(--shadow-tiimo-lg);
+
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+  --color-destructive: var(--destructive);
+  --color-destructive-soft: var(--destructive-soft);
+  --color-warning: var(--warning);
+  --color-warning-soft: var(--warning-soft);
+  --color-info: var(--info);
+  --color-info-soft: var(--info-soft);
+  
+  /* Subject Colors Mapping */
+  --color-subject-math: var(--subject-math);
+  --color-subject-math-soft: var(--subject-math-soft);
+  --color-subject-physics: var(--subject-physics);
+  --color-subject-physics-soft: var(--subject-physics-soft);
+  --color-subject-life: var(--subject-life);
+  --color-subject-life-soft: var(--subject-life-soft);
+  --color-subject-accounting: var(--subject-accounting);
+  --color-subject-accounting-soft: var(--subject-accounting-soft);
+  --color-subject-english: var(--subject-english);
+  --color-subject-english-soft: var(--subject-english-soft);
+  --color-subject-geography: var(--subject-geography);
+  --color-subject-geography-soft: var(--subject-geography-soft);
+  --color-subject-history: var(--subject-history);
+  --color-subject-history-soft: var(--subject-history-soft);
+
+  /* Tiimo Specific Colors */
+  --color-tiimo-lavender: var(--tiimo-lavender);
+  --color-tiimo-cream: var(--tiimo-cream);
+  --color-tiimo-green: var(--tiimo-green);
+  --color-tiimo-yellow: var(--tiimo-yellow);
+  --color-tiimo-blue: var(--tiimo-blue);
+  --color-tiimo-orange: var(--tiimo-orange);
+  --color-tiimo-pink: var(--tiimo-pink);
+  --color-tiimo-teal: var(--tiimo-teal);
+  --color-tiimo-gray-dark: var(--tiimo-gray-dark);
+  --color-tiimo-gray-muted: var(--tiimo-gray-muted);
+  --color-tiimo-gray-subtle: var(--tiimo-gray-subtle);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: var(--font-body);
+    letter-spacing: -0.01em;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    @apply font-semibold tracking-tight leading-tight;
+  }
+
+  h1 { @apply text-3xl; }
+  h2 { @apply text-2xl; }
+  h3 { @apply text-xl; }
+  h4 { @apply text-lg; }
+}
+
+@layer utilities {
+  /* Bouncy Press Interaction */
+  .tiimo-press {
+    @apply transition-transform duration-200;
+    transition-timing-function: var(--ease-tiimo);
+  }
+  .tiimo-press:active {
+    @apply scale-95;
+  }
+  
+  /* Tiimo Card Style */
+  .tiimo-card {
+    @apply bg-card rounded-lg shadow-tiimo border border-border/50 transition-all duration-300;
+  }
+  .tiimo-card:hover {
+    @apply shadow-tiimo-lg border-primary/20;
+  }
+  
+  /* Tiimo Glass */
+  .tiimo-glass {
+    @apply bg-white/70 backdrop-blur-xl border border-white/20;
+  }
+  .dark .tiimo-glass {
+    @apply bg-black/40 border-white/10;
+  }
+  
+  /* Vertical Timeline Strip */
+  .tiimo-timeline-strip {
+    @apply absolute left-0 top-0 bottom-0 w-1.5 rounded-l-full;
+  }
+  
+  /* Large Rounded Button */
+  .tiimo-btn {
+    @apply rounded-full px-8 py-3 font-semibold transition-all duration-200 inline-flex items-center justify-center gap-2 transition-transform active:scale-95;
+    transition-timing-function: var(--ease-tiimo);
+  }
+  .tiimo-btn-primary {
+    @apply bg-primary text-primary-foreground hover:brightness-110;
+  }
+  .tiimo-btn-secondary {
+    @apply bg-secondary text-secondary-foreground hover:bg-secondary/80;
+  }
+  
+  /* Circle Checkbox */
+  .tiimo-checkbox {
+    @apply w-10 h-10 rounded-full border-2 border-tiimo-gray-subtle flex items-center justify-center transition-all duration-300;
+  }
+  .tiimo-checkbox.checked {
+    @apply bg-success border-success text-white;
+  }
+
+  /* Subject Helpers */
+  .bg-math { @apply bg-subject-math-soft text-subject-math; }
+  .bg-physics { @apply bg-subject-physics-soft text-subject-physics; }
+  .bg-life { @apply bg-subject-life-soft text-subject-life; }
+}
+
+/* --- ANIMATIONS --- */
+@keyframes tiimo-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.animate-tiimo-float {
+  animation: tiimo-float 4s var(--ease-smooth) infinite;
+}

@@ -27,6 +27,8 @@ interface Badge {
 	description?: string;
 }
 
+import { AchievementsSkeleton } from '@/components/AchievementsSkeleton';
+
 export default function Achievements() {
 	const [activeTab, setActiveTab] = useState('all');
 	const [badges, setBadges] = useState<Badge[]>([]);
@@ -95,11 +97,7 @@ export default function Achievements() {
 	];
 
 	if (isLoading) {
-		return (
-			<div className="flex-1 flex items-center justify-center py-40">
-				<div className="animate-spin rounded-full h-12 w-12 border-4 border-primary border-t-transparent" />
-			</div>
-		);
+		return <AchievementsSkeleton />;
 	}
 
 	return (

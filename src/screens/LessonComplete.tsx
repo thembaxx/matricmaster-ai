@@ -8,7 +8,6 @@ import {
 	CheckmarkCircle02Icon,
 	Clock01Icon,
 	FlashIcon,
-	Loading03Icon,
 	Refresh01Icon,
 	SparklesIcon,
 } from '@hugeicons/core-free-icons';
@@ -34,6 +33,8 @@ function formatDuration(seconds: number): string {
 	const secs = seconds % 60;
 	return secs > 0 ? `${mins}m ${secs}s` : `${mins}m`;
 }
+
+import { LessonCompleteSkeleton } from '@/components/LessonCompleteSkeleton';
 
 export default function LessonComplete() {
 	const router = useRouter();
@@ -117,11 +118,7 @@ export default function LessonComplete() {
 	}, [completeQuiz, router]);
 
 	if (!result) {
-		return (
-			<div className="flex flex-col h-full bg-background items-center justify-center">
-				<HugeiconsIcon icon={Loading03Icon} className="w-12 h-12 animate-spin text-primary" />
-			</div>
-		);
+		return <LessonCompleteSkeleton />;
 	}
 
 	return (

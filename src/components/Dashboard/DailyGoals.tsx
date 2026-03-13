@@ -1,11 +1,9 @@
 'use client';
 
-import { CheckmarkCircle02Icon, CircleIcon, Target01Icon } from '@hugeicons/core-free-icons';
+import { CheckmarkCircle02Icon, Target01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { m } from 'framer-motion';
 import { memo, useEffect, useState } from 'react';
-import { Card } from '@/components/ui/card';
-import { Progress } from '@/components/ui/progress';
 import {
 	getUserProgressSummary,
 	getUserStreak,
@@ -120,86 +118,108 @@ export const DailyGoals = memo(function DailyGoals({
 
 	if (isLoading) {
 		return (
-			<Card className="p-6 premium-glass border-none rounded-[2.5rem] h-full">
-				<div className="animate-pulse space-y-4">
-					<div className="h-5 w-28 bg-muted rounded-lg" />
+			<div className="p-8 bg-card rounded-[2.5rem] shadow-tiimo border border-border/50 h-full">
+				<div className="animate-pulse space-y-6">
+					<div className="h-6 w-32 bg-muted rounded-full" />
 					{[1, 2, 3].map((i) => (
-						<div key={i} className="space-y-2">
-							<div className="h-4 w-32 bg-muted rounded" />
-							<div className="h-2 w-full bg-muted rounded" />
+						<div key={i} className="flex gap-4 items-center">
+							<div className="w-10 h-10 rounded-full bg-muted" />
+							<div className="flex-1 space-y-2">
+								<div className="h-4 w-3/4 bg-muted rounded-full" />
+								<div className="h-2 w-full bg-muted rounded-full" />
+							</div>
 						</div>
 					))}
 				</div>
-			</Card>
+			</div>
 		);
 	}
 
 	return (
-		<Card className="p-6 premium-glass border-none rounded-[2.5rem] h-full">
-			<div className="flex items-center gap-2 mb-4">
-				<HugeiconsIcon icon={Target01Icon} className="w-5 h-5 text-primary" />
-				<h3 className="text-lg font-black text-foreground tracking-tight">Daily Goals</h3>
+		<div className="p-8 bg-card rounded-[2.5rem] shadow-tiimo border border-border/50 h-full relative overflow-hidden">
+			<div className="flex items-center justify-between mb-8">
+				<div className="flex items-center gap-3">
+					<div className="p-2.5 bg-tiimo-lavender/15 rounded-2xl">
+						<HugeiconsIcon icon={Target01Icon} className="w-6 h-6 text-tiimo-lavender" />
+					</div>
+					<h3 className="text-xl font-bold text-foreground tracking-tight">Today's Focus</h3>
+				</div>
 				{allComplete && (
-					<m.span initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1 }} className="text-lg">
-						🎉
-					</m.span>
+					<m.div
+						initial={{ scale: 0, rotate: -20 }}
+						animate={{ scale: 1, rotate: 0 }}
+						className="bg-tiimo-green text-white px-4 py-1.5 rounded-full text-xs font-bold shadow-sm"
+					>
+						DONE!
+					</m.div>
 				)}
 			</div>
 
-			{allComplete ? (
-				<m.div
-					initial={{ opacity: 0, y: 10 }}
-					animate={{ opacity: 1, y: 0 }}
-					className="text-center py-6"
-				>
+			<div className="space-y-6">
+				{goals.map((goal, index) => (
 					<m.div
-						animate={{ scale: [1, 1.1, 1] }}
-						transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
-						className="w-16 h-16 mx-auto mb-4 bg-brand-amber/20 rounded-2xl flex items-center justify-center"
+						key={goal.id}
+						initial={{ opacity: 0, y: 10 }}
+						animate={{ opacity: 1, y: 0 }}
+						transition={{ delay: index * 0.1 }}
+						className="relative pl-6 group"
 					>
-						<span className="text-3xl">🏆</span>
-					</m.div>
-					<p className="text-sm font-bold text-foreground">All goals complete!</p>
-					<p className="text-xs text-muted-foreground mt-1">Great work today!</p>
-				</m.div>
-			) : (
-				<div className="space-y-4">
-					{goals.map((goal, index) => (
-						<m.div
-							key={goal.id}
-							initial={{ opacity: 0, x: -20 }}
-							animate={{ opacity: 1, x: 0 }}
-							transition={{ delay: index * 0.1 }}
-							className="space-y-2"
-						>
-							<div className="flex items-center justify-between">
-								<div className="flex items-center gap-2">
-									{goal.isComplete ? (
-										<HugeiconsIcon
-											icon={CheckmarkCircle02Icon}
-											className="w-4 h-4 text-brand-green"
-										/>
-									) : (
-										<HugeiconsIcon icon={CircleIcon} className="w-4 h-4 text-muted-foreground/30" />
-									)}
-									<span
-										className={`text-sm font-bold ${goal.isComplete ? 'text-brand-green' : 'text-foreground'}`}
+						{/* Vertical Timeline Strip */}
+						<div
+							className={`absolute left-0 top-1 bottom-1 w-1.5 rounded-full transition-colors duration-300 ${
+								goal.isComplete ? 'bg-tiimo-green' : 'bg-tiimo-lavender/20'
+							}`}
+						/>
+
+						<div className="flex items-center gap-4">
+							<m.button
+								whileTap={{ scale: 0.9 }}
+								className={`tiimo-checkbox shrink-0 ${goal.isComplete ? 'checked' : ''}`}
+							>
+								{goal.isComplete && (
+									<HugeiconsIcon icon={CheckmarkCircle02Icon} className="w-6 h-6" />
+								)}
+							</m.button>
+
+							<div className="flex-1 min-w-0">
+								<div className="flex items-center justify-between mb-1.5">
+									<p
+										className={`text-sm font-bold tracking-tight transition-colors truncate ${
+											goal.isComplete ? 'text-tiimo-gray-muted line-through' : 'text-foreground'
+										}`}
 									>
 										{goal.title}
+									</p>
+									<span className="text-[10px] font-black text-tiimo-gray-muted/60 uppercase tracking-widest bg-secondary px-2 py-0.5 rounded-full">
+										{Math.min(goal.current, goal.target)}/{goal.target}
 									</span>
 								</div>
-								<span className="text-xs font-black text-muted-foreground">
-									{Math.min(goal.current, goal.target)}/{goal.target}
-								</span>
+								<div className="relative h-2.5 w-full bg-secondary rounded-full overflow-hidden">
+									<m.div
+										initial={{ width: 0 }}
+										animate={{ width: `${Math.min((goal.current / goal.target) * 100, 100)}%` }}
+										transition={{ duration: 1, ease: 'circOut' }}
+										className={`absolute h-full left-0 top-0 rounded-full ${
+											goal.isComplete ? 'bg-tiimo-green' : 'bg-tiimo-lavender'
+										}`}
+									/>
+								</div>
 							</div>
-							<Progress
-								value={Math.min((goal.current / goal.target) * 100, 100)}
-								className={`h-2 ${goal.isComplete ? '[&>div]:bg-brand-green' : ''}`}
-							/>
-						</m.div>
-					))}
-				</div>
+						</div>
+					</m.div>
+				))}
+			</div>
+
+			{allComplete && (
+				<m.div
+					initial={{ opacity: 0 }}
+					animate={{ opacity: 1 }}
+					className="mt-8 p-4 bg-tiimo-green/10 rounded-[1.5rem] border border-tiimo-green/20 text-center"
+				>
+					<p className="text-sm font-bold text-tiimo-green">✨ Energy Restored!</p>
+					<p className="text-xs text-tiimo-green/70 font-medium">You crushed your goals today.</p>
+				</m.div>
 			)}
-		</Card>
+		</div>
 	);
 });

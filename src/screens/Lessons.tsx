@@ -13,63 +13,173 @@ import {
 	TranslateIcon,
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { TTSButton } from '@/components/Lessons/TTSButton';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import chemistryData from '@/constants/lessons/chemistry.json';
+import lifeSciencesData from '@/constants/lessons/life-sciences.json';
+import mathematicsData from '@/constants/lessons/mathematics.json';
+import physicsData from '@/constants/lessons/physics.json';
 
-const categories = [
-	{ id: 'all', name: 'All Subjects', icon: LayoutLeftIcon },
-	{ id: 'sciences', name: 'Sciences', icon: Chemistry01Icon },
-	{ id: 'languages', name: 'Translate', icon: TranslateIcon },
-];
-
-const lessons = [
-	{
-		id: 1,
-		subject: 'MATHEMATICS P1',
-		title: 'Algebra & Equations',
-		progress: 75,
-		status: 'completed',
-		icon: '📐',
-		color: 'bg-brand-amber/10',
-		iconColor: 'text-brand-amber',
-	},
-	{
-		id: 2,
-		subject: 'PHYSICAL SCIENCES',
-		title: "Newton's Laws",
-		progress: 25,
-		status: 'active',
-		icon: '⚡',
-		color: 'bg-primary/10',
-		iconColor: 'text-primary',
-		isContinue: true,
-	},
-	{
-		id: 3,
-		subject: 'HOME LANGUAGE',
-		title: 'Poetry Analysis',
-		time: '15 min',
-		status: 'locked',
-		icon: '📚',
-		color: 'bg-brand-red/10',
-		iconColor: 'text-brand-red',
-	},
-	{
-		id: 4,
-		subject: 'LIFE SCIENCES',
-		title: 'DNA & Genetics',
-		time: '20 min',
-		status: 'locked',
-		icon: '🧬',
-		color: 'bg-brand-green/10',
-		iconColor: 'text-brand-green',
-	},
-];
+interface Lesson {
+	id: string;
+	subject: string;
+	topic: string;
+	title: string;
+	content: string;
+	duration: number;
+	difficulty: string;
+	prerequisites: string[];
+	learning_objectives: string[];
+	progress?: number;
+	status?: 'completed' | 'active' | 'locked';
+	icon?: string;
+	color?: string;
+	iconColor?: string;
+	isContinue?: boolean;
+	time?: string;
+}
 
 export default function Lessons() {
+	const [lessonsData, setLessonsData] = useState<Lesson[]>([]);
+	const [loading, setLoading] = useState(true);
 	const [activeCategory, setActiveCategory] = useState('all');
+
+	useEffect(() => {
+		const getIconForSubject = (subject: string): string => {
+			switch (subject.toLowerCase()) {
+				case 'mathematics':
+					return '🧮';
+				case 'physical sciences':
+					return '⚛️';
+				case 'life sciences':
+					return '🧬';
+				case 'english':
+					return '📖';
+				default:
+					return '📚';
+			}
+		};
+
+		const getColorForSubject = (subject: string): string => {
+			switch (subject.toLowerCase()) {
+				case 'mathematics':
+					return 'bg-brand-amber/10';
+				case 'physical sciences':
+					return 'bg-primary/10';
+				case 'life sciences':
+					return 'bg-brand-green/10';
+				case 'english':
+					return 'bg-brand-red/10';
+				default:
+					return 'bg-muted/10';
+			}
+		};
+
+		const getIconColorForSubject = (subject: string): string => {
+			switch (subject.toLowerCase()) {
+				case 'mathematics':
+					return 'text-brand-amber';
+				case 'physical sciences':
+					return 'text-primary';
+				case 'life sciences':
+					return 'text-brand-green';
+				case 'english':
+					return 'text-brand-red';
+				default:
+					return 'text-muted-foreground';
+			}
+		};
+
+		// Load lesson data from JSON files
+		const loadLessons = async () => {
+			try {
+				// Convert JSON objects to flat arrays of lessons
+				const mathArray = mathematicsData.mathematics || [];
+				const mechanicsArray = physicsData.mechanics || [];
+				const wavesArray = physicsData.waves || [];
+				const electricityArray = physicsData.electricity || [];
+				const chemistryArray = chemistryData.chemistry || [];
+				const lifeArray = lifeSciencesData.life_sciences || [];
+
+				const getRandomStatus = (): 'completed' | 'active' | 'locked' => {
+					const rand = Math.random();
+					return (rand > 0.7 ? 'completed' : rand > 0.3 ? 'active' : 'locked') as
+						| 'completed'
+						| 'active'
+						| 'locked';
+				};
+
+				// Map to Lesson type with UI-specific fields
+				type LessonWithStatus = Lesson & {
+					progress: number;
+					status: 'completed' | 'active' | 'locked';
+					icon: string;
+					color: string;
+					iconColor: string;
+					isContinue: boolean;
+				};
+
+				const mapLesson = (lesson: Lesson): LessonWithStatus => {
+					const status = getRandomStatus();
+					return {
+						id: lesson.id,
+						subject: lesson.subject,
+						topic: lesson.topic,
+						title: lesson.title,
+						content: lesson.content,
+						duration: lesson.duration,
+						difficulty: lesson.difficulty,
+						prerequisites: lesson.prerequisites,
+						learning_objectives: lesson.learning_objectives,
+						progress: Math.floor(Math.random() * 101),
+						status,
+						icon: getIconForSubject(lesson.subject),
+						color: getColorForSubject(lesson.subject),
+						iconColor: getIconColorForSubject(lesson.subject),
+						isContinue: false,
+					};
+				};
+
+				const allLessons: Lesson[] = [
+					...mathArray.map(mapLesson),
+					...mechanicsArray.map(mapLesson),
+					...wavesArray.map(mapLesson),
+					...electricityArray.map(mapLesson),
+					...chemistryArray.map(mapLesson),
+					...lifeArray.map(mapLesson),
+				];
+
+				setLessonsData(allLessons);
+				setLoading(false);
+			} catch (error) {
+				console.error('Error loading lessons:', error);
+				setLoading(false);
+			}
+		};
+
+		loadLessons();
+	}, []);
+
+	if (loading) {
+		return (
+			<div className="flex flex-col h-full items-center justify-center bg-background">
+				<div className="animate-pulse">
+					<div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+						<HugeiconsIcon icon={LayoutLeftIcon} className="w-10 h-10 text-primary" />
+					</div>
+					<p className="text-muted-foreground">Loading lessons...</p>
+				</div>
+			</div>
+		);
+	}
+
+	const filteredLessons = lessonsData.filter(
+		(lesson) =>
+			activeCategory === 'all' || lesson.subject.toLowerCase() === activeCategory.toLowerCase()
+	);
 
 	return (
 		<div className="flex flex-col h-full min-w-0 bg-background overflow-x-hidden">
@@ -103,7 +213,13 @@ export default function Lessons() {
 					className="flex gap-2 sm:gap-3 mt-6 sm:mt-8 overflow-x-auto no-scrollbar"
 					aria-label="Lesson categories"
 				>
-					{categories.map((cat) => (
+					{[
+						{ id: 'all', name: 'All Subjects', icon: LayoutLeftIcon },
+						{ id: 'mathematics', name: 'Mathematics', icon: LayoutLeftIcon },
+						{ id: 'physical_sciences', name: 'Physical Sciences', icon: Chemistry01Icon },
+						{ id: 'life_sciences', name: 'Life Sciences', icon: LayoutLeftIcon },
+						{ id: 'languages', name: 'Languages', icon: TranslateIcon },
+					].map((cat) => (
 						<button
 							key={cat.id}
 							type="button"
@@ -132,7 +248,7 @@ export default function Lessons() {
 					<div className="absolute left-9.5 top-0 bottom-0 w-0.5 border-l-2 border-dashed border-border/50 z-0" />
 
 					<div className="space-y-6">
-						{lessons.map((lesson) => (
+						{filteredLessons.map((lesson) => (
 							<div key={lesson.id} className="flex gap-6 relative z-10">
 								{/* Node Icon */}
 								<div className="shrink-0 pt-4 flex flex-col items-center">
@@ -145,7 +261,7 @@ export default function Lessons() {
 										</div>
 									)}
 									{lesson.status === 'active' && (
-										<div className="w-8 h-8 rounded-full bg-card border-2 border-primary flex items-center justify-center shadow-lg shadow-primary/20 translate-y-1 ring-4 ring-primary/10">
+										<div className="w-8 h-8 rounded-full bg-card border-2 border-primary flex items-center justify-center shadow-lg shadow-primary/20 translate-y-1">
 											<div className="w-2.5 h-2.5 rounded-full bg-primary" />
 										</div>
 									)}
@@ -192,6 +308,10 @@ export default function Lessons() {
 												<h3 className="text-xl font-bold text-foreground leading-tight">
 													{lesson.title}
 												</h3>
+
+												<div className="pt-2">
+													<TTSButton text={`${lesson.title}. ${lesson.content.slice(0, 200)}`} />
+												</div>
 
 												{lesson.progress !== undefined ? (
 													<div className="flex items-center gap-3 pt-2">
@@ -249,11 +369,11 @@ export default function Lessons() {
 									<p className="text-muted-foreground font-medium text-sm px-4">
 										Get access to 2018-2023 exams with memos.
 									</p>
-								</div>
 
-								<Button className="w-full bg-background text-foreground hover:bg-muted h-14 rounded-2xl font-black text-lg shadow-xl shadow-black/10 transition-all active:scale-[0.98]">
-									Go Premium
-								</Button>
+									<Button className="w-full bg-background text-foreground hover:bg-muted h-14 rounded-2xl font-black text-lg shadow-xl shadow-black/10 transition-all active:scale-[0.98]">
+										Go Premium
+									</Button>
+								</div>
 							</Card>
 						</div>
 					</div>

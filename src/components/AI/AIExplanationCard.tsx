@@ -9,6 +9,7 @@ import {
 import { HugeiconsIcon } from '@hugeicons/react';
 import { AnimatePresence, m } from 'framer-motion';
 import { useState } from 'react';
+import { appConfig } from '@/app.config';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
@@ -52,7 +53,7 @@ export function AIExplanationCard({
 							/>
 						</div>
 						<div>
-							<h4 className="text-sm font-black font-lexend tracking-tight">MatricMaster AI</h4>
+							<h4 className="text-sm font-black font-lexend tracking-tight">{appConfig.name} AI</h4>
 							<p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
 								Personal Tutor {subject ? `• ${subject}` : ''}
 							</p>

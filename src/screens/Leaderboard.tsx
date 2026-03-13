@@ -167,6 +167,8 @@ const RankingList = memo(function RankingList({ data }: { data: LeaderboardEntry
 	);
 });
 
+import { LeaderboardSkeleton } from '@/components/LeaderboardSkeleton';
+
 export default function Leaderboard() {
 	const [activeTab, setActiveTab] = useState('weekly');
 	const [leaderboardData, setLeaderboardData] = useState<LeaderboardEntry[]>([]);
@@ -211,11 +213,7 @@ export default function Leaderboard() {
 	const others = useMemo(() => leaderboardData.filter((e) => e.rank > 3), [leaderboardData]);
 
 	if (isLoading) {
-		return (
-			<div className="flex flex-col h-full bg-background items-center justify-center py-40">
-				<div className="animate-spin rounded-full h-14 w-14 border-4 border-primary border-t-transparent shadow-2xl" />
-			</div>
-		);
+		return <LeaderboardSkeleton />;
 	}
 
 	return (

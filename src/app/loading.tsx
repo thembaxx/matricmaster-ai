@@ -1,4 +1,5 @@
 import { Skeleton } from '@/components/ui/skeleton';
+import { appConfig } from '../app.config';
 
 export default function Loading() {
 	return (
@@ -17,7 +18,7 @@ export default function Loading() {
 					/>
 					<div className="flex flex-col items-center gap-2">
 						<p className="text-sm font-black uppercase tracking-[0.2em] text-foreground">
-							MatricMaster
+							{appConfig.name}
 						</p>
 						<div className="flex gap-1">
 							<span

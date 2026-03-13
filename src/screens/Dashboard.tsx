@@ -1,35 +1,20 @@
 'use client';
 
-import { m } from 'framer-motion';
-import { useCallback, useEffect, useState, useTransition } from 'react';
-import { ChallengesList } from '@/components/Dashboard/ChallengesList';
-import { DailyGoals } from '@/components/Dashboard/DailyGoals';
-import { DailyQuestCard } from '@/components/Dashboard/DailyQuestCard';
-import { DashboardAIPrompt } from '@/components/Dashboard/DashboardAIPrompt';
-import { DashboardHeader } from '@/components/Dashboard/DashboardHeader';
-import { LeaderboardPreview } from '@/components/Dashboard/LeaderboardPreview';
-import { RecentAchievements } from '@/components/Dashboard/RecentAchievements';
-import { StatsCards } from '@/components/Dashboard/StatsCards';
-import { SubjectCards } from '@/components/Dashboard/SubjectCards';
-import { TopicMasteryCard } from '@/components/Dashboard/TopicMasteryCard';
+import { AtomIcon, BookOpen01Icon, CalculatorIcon } from '@hugeicons/core-free-icons';
+import { useState } from 'react';
+import { ActivityFeed } from '@/components/Dashboard/ActivityFeed';
+import { DashboardHeader } from '@/components/Dashboard/DashboardHeaderV2';
+import { SubjectGrid } from '@/components/Dashboard/SubjectGridV2';
+import { type StudyTask, TaskCard } from '@/components/Dashboard/TaskCardV2';
+import { TaskSection } from '@/components/Dashboard/TaskSectionV2';
 import { WeeklyChallenge } from '@/components/Dashboard/WeeklyChallenge';
-import { WeeklyChartCard } from '@/components/Dashboard/WeeklyChartCard';
-import { DashboardSkeleton } from '@/components/DashboardSkeleton';
 import { XpHeader } from '@/components/Gamification/XpHeader';
-import { BackgroundMesh } from '@/components/ui/background-mesh';
+import { FocusContent } from '@/components/Layout/FocusContent';
+import { TimelineSidebar } from '@/components/Layout/TimelineSidebar';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import type { ACHIEVEMENTS } from '@/constants/achievements';
-import { STAGGER_CONTAINER, STAGGER_ITEM } from '@/lib/animation-presets';
-import type { AuthSession } from '@/lib/auth';
 import type { UserAchievement } from '@/lib/db/achievement-actions';
 import type { UserProgressSummary } from '@/lib/db/progress-actions';
-import { useNotificationStore } from '@/stores/useNotificationStore';
-
-interface DayProgress {
-	day: string;
-	date: number;
-	status: 'complete' | 'active' | 'idle';
-}
 
 export interface DashboardInitialStreak {
 	currentStreak: number;
@@ -44,162 +29,166 @@ interface DashboardProps {
 		unlocked: UserAchievement[];
 		available: typeof ACHIEVEMENTS;
 	} | null;
-	session?: AuthSession | null;
+	session?: { user: { name?: string | null } } | null;
 }
+
+const DEMO_TASKS: Record<string, StudyTask[]> = {
+	high: [
+		{
+			id: '1',
+			title: 'Calculus derivatives',
+			subject: 'Mathematics',
+			icon: CalculatorIcon,
+			duration: '45 min',
+			priority: 'high',
+			completed: false,
+			color: 'bg-tiimo-yellow',
+		},
+		{
+			id: '2',
+			title: 'Circuit analysis',
+			subject: 'Physics',
+			icon: AtomIcon,
+			duration: '30 min',
+			priority: 'high',
+			completed: false,
+			color: 'bg-tiimo-blue',
+		},
+	],
+	medium: [
+		{
+			id: '3',
+			title: 'Essay planning',
+			subject: 'English',
+			icon: BookOpen01Icon,
+			duration: '60 min',
+			priority: 'medium',
+			completed: false,
+			color: 'bg-tiimo-lavender',
+		},
+		{
+			id: '4',
+			title: 'Cell structures review',
+			subject: 'Life Sciences',
+			icon: AtomIcon,
+			duration: '45 min',
+			priority: 'medium',
+			completed: true,
+			color: 'bg-tiimo-green',
+		},
+	],
+};
 
 export default function Dashboard({
 	initialProgress,
 	initialStreak,
 	initialAchievements,
 	session,
-}: DashboardProps = {}) {
-	const { unreadCount } = useNotificationStore();
-	const [isPending, startTransition] = useTransition();
-	const [streak] = useState(initialStreak?.currentStreak ?? 0);
-	const [dailyProgress, setDailyProgress] = useState(0);
-	const [weekProgress, setWeekProgress] = useState<DayProgress[]>([]);
-	const [progressData] = useState<{
-		totalQuestions: number;
-		accuracy: number;
-		totalPoints: number;
-	} | null>(() =>
-		initialProgress
-			? {
-					totalQuestions: initialProgress.totalQuestionsAttempted,
-					accuracy: initialProgress.accuracy,
-					totalPoints: initialProgress.totalMarksEarned * 10,
-				}
-			: null
-	);
+}: DashboardProps) {
+	const [tasks, setTasks] = useState<Record<string, StudyTask[]>>(DEMO_TASKS);
+	const [expanded, setExpanded] = useState<Record<string, boolean>>({ high: true, medium: true });
 
-	useEffect(() => {
-		const now = new Date();
-		const today = now.getDay();
-		const dayOfWeek = today === 0 ? 6 : today - 1;
+	const toggleTask = (taskId: string, priority: string) => {
+		setTasks((prev) => ({
+			...prev,
+			[priority]: prev[priority].map((task) =>
+				task.id === taskId ? { ...task, completed: !task.completed } : task
+			),
+		}));
+	};
 
-		const days: DayProgress[] = [];
-		for (let i = 0; i < 7; i++) {
-			const date = new Date(now);
-			date.setDate(now.getDate() - dayOfWeek + i);
-
-			const dayNames = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
-			days.push({
-				day: dayNames[i],
-				date: date.getDate(),
-				status: i < dayOfWeek ? 'complete' : i === dayOfWeek ? 'active' : 'idle',
-			});
-		}
-		setWeekProgress(days);
-		setDailyProgress(66);
-	}, []);
-
-	const handleNavigateToQuiz = useCallback(() => {
-		startTransition(() => {
-			window.location.href = '/quiz';
-		});
-	}, []);
-
-	const isLoading = isPending;
-
-	if (!progressData) {
-		return <DashboardSkeleton />;
-	}
+	const completedCount = Object.values(tasks)
+		.flat()
+		.filter((t) => t.completed).length;
+	const totalCount = Object.values(tasks).flat().length;
+	const today = new Date().toLocaleDateString('en-US', {
+		weekday: 'long',
+		month: 'long',
+		day: 'numeric',
+	});
 
 	return (
-		<div className="flex flex-col h-full min-w-0 bg-background pb-24 lg:pb-12 relative overflow-x-hidden">
-			<BackgroundMesh variant="subtle" />
+		<div className="min-h-screen bg-background flex">
+			<TimelineSidebar />
+			<FocusContent>
+				<div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+					<DashboardHeader
+						today={today}
+						completedCount={completedCount}
+						totalCount={totalCount}
+						initialXp={initialProgress?.totalMarksEarned || 0}
+					/>
 
-			<DashboardHeader
-				userName={session?.user?.name ?? undefined}
-				userImage={session?.user?.image ?? undefined}
-				unreadCount={unreadCount}
-			/>
+					<ScrollArea className="h-[calc(100vh-280px)] no-scrollbar pr-4">
+						<div className="space-y-10 pb-32">
+							{/* Welcome & Stats Row */}
+							<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+								<div className="space-y-6">
+									<div className="space-y-1">
+										<h2 className="text-2xl font-black tracking-tight uppercase">
+											Hello, {session?.user?.name?.split(' ')[0] || 'Scholar'}!
+										</h2>
+										<p className="text-sm font-bold text-tiimo-gray-muted uppercase tracking-widest">
+											Let's crush your goals today.
+										</p>
+									</div>
+									<XpHeader
+										variant="full"
+										initialAchievements={initialAchievements || undefined}
+										initialStreak={
+											initialStreak ? { currentStreak: initialStreak.currentStreak } : undefined
+										}
+									/>
+								</div>
+								<WeeklyChallenge initialProgress={initialProgress || undefined} />
+							</div>
 
-			<div className="px-4 sm:px-6 pb-4 lg:px-0">
-				<XpHeader
-					variant="full"
-					initialAchievements={initialAchievements ?? undefined}
-					initialStreak={initialStreak ?? undefined}
-				/>
-			</div>
+							<div className="space-y-6">
+								<TaskSection
+									title="High Priority"
+									priority="high"
+									expanded={expanded.high}
+									onToggle={() => setExpanded((p) => ({ ...p, high: !p.high }))}
+								>
+									{tasks.high.map((task, index) => (
+										<TaskCard
+											key={task.id}
+											task={task}
+											index={index}
+											onToggle={() => toggleTask(task.id, 'high')}
+										/>
+									))}
+								</TaskSection>
 
-			<ScrollArea className="flex-1 relative z-10 no-scrollbar">
-				<m.main
-					variants={STAGGER_CONTAINER}
-					initial="hidden"
-					animate="visible"
-					className="px-4 sm:px-6 py-8 space-y-12 sm:space-y-16 lg:px-0"
-				>
-					{/* AI Prompt Section */}
-					<m.section variants={STAGGER_ITEM} className="max-w-4xl mx-auto px-4">
-						<div className="text-center mb-8 space-y-2">
-							<h1 className="text-4xl sm:text-6xl font-black tracking-tighter uppercase">
-								Your <span className="text-primary">AI Journey</span> Starts Here
-							</h1>
-							<p className="text-muted-foreground max-w-lg mx-auto">
-								Ask a question, generate a study plan, or take a practice quiz to level up your
-								mastery.
-							</p>
+								<TaskSection
+									title="Quick Tasks"
+									priority="medium"
+									expanded={expanded.medium}
+									onToggle={() => setExpanded((p) => ({ ...p, medium: !p.medium }))}
+								>
+									{tasks.medium.map((task, index) => (
+										<TaskCard
+											key={task.id}
+											task={task}
+											index={index}
+											onToggle={() => toggleTask(task.id, 'medium')}
+										/>
+									))}
+								</TaskSection>
+							</div>
+
+							<SubjectGrid />
+
+							<section>
+								<h2 className="text-xl font-black text-foreground tracking-tight mb-6 uppercase">
+									Recent Activity
+								</h2>
+								<ActivityFeed />
+							</section>
 						</div>
-						<DashboardAIPrompt />
-					</m.section>
-
-					{/* Subjects Section */}
-					<m.section variants={STAGGER_ITEM} className="space-y-6">
-						<div className="flex items-center justify-between">
-							<h2 className="text-2xl font-black tracking-tighter uppercase">Subject Workspace</h2>
-							<button type="button" className="text-sm font-bold text-primary hover:underline">
-								Customize
-							</button>
-						</div>
-						<SubjectCards />
-					</m.section>
-
-					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-						<m.div variants={STAGGER_ITEM} className="md:col-span-1">
-							<WeeklyChallenge initialProgress={initialProgress ?? undefined} />
-						</m.div>
-						<m.div variants={STAGGER_ITEM} className="md:col-span-1">
-							<DailyGoals
-								initialProgress={initialProgress ?? undefined}
-								initialStreak={initialStreak ?? undefined}
-							/>
-						</m.div>
-
-						<div className="md:col-span-2">
-							<DailyQuestCard
-								totalQuestions={progressData.totalQuestions}
-								dailyProgress={dailyProgress}
-								isLoading={isLoading}
-								onNavigateToQuiz={handleNavigateToQuiz}
-							/>
-						</div>
-
-						<div className="md:col-span-2 lg:col-span-1">
-							<StatsCards streak={streak} accuracy={progressData.accuracy} />
-						</div>
-
-						<div className="md:col-span-2 lg:col-span-2">
-							<WeeklyChartCard weekProgress={weekProgress} />
-						</div>
-
-						<m.div variants={STAGGER_ITEM} className="md:col-span-1">
-							<RecentAchievements initialAchievements={initialAchievements ?? undefined} />
-						</m.div>
-						<m.div variants={STAGGER_ITEM} className="md:col-span-1 lg:col-span-1">
-							<LeaderboardPreview />
-						</m.div>
-
-						<div className="md:col-span-2 lg:col-span-1">
-							<ChallengesList />
-						</div>
-
-						<m.div variants={STAGGER_ITEM} className="md:col-span-2 lg:col-span-3">
-							<TopicMasteryCard />
-						</m.div>
-					</div>
-				</m.main>
-			</ScrollArea>
+					</ScrollArea>
+				</div>
+			</FocusContent>
 		</div>
 	);
 }

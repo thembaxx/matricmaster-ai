@@ -22,11 +22,14 @@ import type {
 } from './schema';
 import {
 	buddyRequests,
+	calendarEvents,
 	contentFlags,
+	notifications,
 	options,
 	pastPapers,
 	questions,
 	searchHistory,
+	studyPlans,
 	studySessions,
 	subjects,
 	userProgress,
@@ -97,6 +100,204 @@ async function getDb(): Promise<DbType> {
 		throw new Error('Database not available');
 	}
 	return dbManager.getDb();
+}
+
+/**
+ * Fetches all notifications for the current user
+ */
+export async function getNotificationsAction() {
+	try {
+		const user = await ensureAuthenticated();
+		const db = await getDb();
+
+		return await db
+			.select()
+			.from(notifications)
+			.where(eq(notifications.userId, user.id))
+			.orderBy(desc(notifications.createdAt))
+			.limit(20);
+	} catch (error) {
+		console.error('Error fetching notifications:', error);
+		return [];
+	}
+}
+
+/**
+ * Marks a notification as read
+ */
+export async function markNotificationAsReadAction(notificationId: string) {
+	try {
+		const user = await ensureAuthenticated();
+		const db = await getDb();
+
+		await db
+			.update(notifications)
+			.set({ isRead: true, readAt: new Date() })
+			.where(and(eq(notifications.id, notificationId), eq(notifications.userId, user.id)));
+
+		return { success: true };
+	} catch (error) {
+		console.error('Error marking notification as read:', error);
+		return { success: false };
+	}
+}
+
+/**
+ * Enrolls a user in a subject by creating an entry in userProgress
+ */
+export async function enrollInSubjectAction(subjectId: number) {
+	try {
+		const user = await ensureAuthenticated();
+		const db = await getDb();
+
+		// Check if already enrolled
+		const existing = await db.query.userProgress.findFirst({
+			where: and(eq(userProgress.userId, user.id), eq(userProgress.subjectId, subjectId)),
+		});
+
+		if (existing) {
+			return { success: true, message: 'Already enrolled' };
+		}
+
+		await db.insert(userProgress).values({
+			userId: user.id,
+			subjectId: subjectId,
+			totalQuestionsAttempted: 0,
+			totalCorrect: 0,
+			totalMarksEarned: 0,
+		});
+
+		return { success: true };
+	} catch (error) {
+		console.error('Error enrolling in subject:', error);
+		return { success: false, error: 'Failed to enroll' };
+	}
+}
+
+/**
+ * Adds a new study plan / priority task
+ */
+export async function createStudyPlanAction(data: { title: string; focusAreas?: string }) {
+	try {
+		const user = await ensureAuthenticated();
+		const db = await getDb();
+
+		const [newPlan] = await db
+			.insert(studyPlans)
+			.values({
+				userId: user.id,
+				title: data.title,
+				focusAreas: data.focusAreas,
+				isActive: true,
+			})
+			.returning();
+
+		return { success: true, plan: newPlan };
+	} catch (error) {
+		console.error('Error creating study plan:', error);
+		return { success: false, error: 'Failed to create plan' };
+	}
+}
+
+export async function getStudyPlansAction() {
+	try {
+		const user = await ensureAuthenticated();
+		const db = await getDb();
+		return await db.select().from(studyPlans).where(eq(studyPlans.userId, user.id));
+	} catch (error) {
+		console.error('Error fetching study plans:', error);
+		return [];
+	}
+}
+
+/**
+ * Adds a calendar event (study block)
+ */
+export async function createCalendarEventAction(data: {
+	title: string;
+	startTime: Date;
+	endTime: Date;
+	subjectId?: number;
+	eventType: string;
+}) {
+	try {
+		const user = await ensureAuthenticated();
+		const db = await getDb();
+
+		const [newEvent] = await db
+			.insert(calendarEvents)
+			.values({
+				userId: user.id,
+				title: data.title,
+				startTime: data.startTime,
+				endTime: data.endTime,
+				subjectId: data.subjectId ?? null,
+				eventType: data.eventType,
+			})
+			.returning();
+
+		return { success: true, event: newEvent };
+	} catch (error) {
+		console.error('Error creating calendar event:', error);
+		return { success: false, error: 'Failed to create event' };
+	}
+}
+
+export async function getCalendarEventsAction() {
+	try {
+		const user = await ensureAuthenticated();
+		const db = await getDb();
+		return await db.select().from(calendarEvents).where(eq(calendarEvents.userId, user.id));
+	} catch (error) {
+		console.error('Error fetching events:', error);
+		return [];
+	}
+}
+
+export async function getRecentActivityAction() {
+	try {
+		const user = await ensureAuthenticated();
+		const db = await getDb();
+
+		return await db
+			.select({
+				id: studySessions.id,
+				sessionType: studySessions.sessionType,
+				marksEarned: studySessions.marksEarned,
+				completedAt: studySessions.completedAt,
+				subjectName: subjects.name,
+			})
+			.from(studySessions)
+			.leftJoin(subjects, eq(studySessions.subjectId, subjects.id))
+			.where(and(eq(studySessions.userId, user.id), isNotNull(studySessions.completedAt)))
+			.orderBy(desc(studySessions.completedAt))
+			.limit(5);
+	} catch (error) {
+		console.error('Error fetching recent activity:', error);
+		return [];
+	}
+}
+
+export async function getEnrolledSubjectsAction() {
+	try {
+		const user = await ensureAuthenticated();
+		const db = await getDb();
+
+		const enrolled = await db
+			.select({
+				id: subjects.id,
+				name: subjects.name,
+				description: subjects.description,
+			})
+			.from(userProgress)
+			.innerJoin(subjects, eq(userProgress.subjectId, subjects.id))
+			.where(eq(userProgress.userId, user.id));
+
+		return enrolled;
+	} catch (error) {
+		console.error('Error fetching enrolled subjects:', error);
+		return [];
+	}
 }
 
 const mockSubjects: Subject[] = [
@@ -628,7 +829,13 @@ export async function getUsersAction(filters: UserFilters = {}): Promise<User[]>
 
 export async function updateUserAction(
 	id: string,
-	data: { name?: string; email?: string; role?: 'admin' | 'moderator' | 'user' }
+	data: {
+		name?: string;
+		email?: string;
+		role?: 'admin' | 'moderator' | 'user';
+		school?: string;
+		avatarId?: string;
+	}
 ): Promise<User | null> {
 	await ensureAdmin();
 	const validatedData = updateUserSchema.parse(data);
@@ -645,6 +852,34 @@ export async function updateUserAction(
 		.where(eq(users.id, id))
 		.returning();
 	return user ?? null;
+}
+
+/**
+ * Updates current user's profile
+ */
+export async function updateUserProfileAction(data: {
+	name?: string;
+	school?: string;
+	avatarId?: string;
+}) {
+	try {
+		const user = await ensureAuthenticated();
+		const db = await getDb();
+
+		const [updated] = await db
+			.update(users)
+			.set({
+				...data,
+				updatedAt: new Date(),
+			})
+			.where(eq(users.id, user.id))
+			.returning();
+
+		return { success: true, user: updated };
+	} catch (error) {
+		console.error('Error updating profile:', error);
+		return { success: false, error: 'Failed to update profile' };
+	}
 }
 
 export async function toggleUserBlockAction(

@@ -25,25 +25,23 @@ import type { SessionUser } from '@/lib/auth';
 import { completeOnboardingAction } from '@/lib/db/onboarding-actions';
 import { cn } from '@/lib/utils';
 
+type IconSvg = typeof SparklesIcon;
+
 interface OnboardingStep {
 	id: number;
 	title: string;
 	description: string;
 	image: string;
 	color: string;
-	icon: any;
-	cta?: {
-		label: string;
-		action: () => void;
-	};
+	icon: IconSvg;
 }
 
 const STEPS: OnboardingStep[] = [
 	{
 		id: 0,
-		title: 'Your AI Study Partner',
+		title: 'Your Study Companion',
 		description:
-			'Experience the future of education. MatricMaster AI provides personalized guidance tailored to the South African Grade 12 curriculum.',
+			'The smart way to ace your Matrics. Get personalized guidance tailored to the South African Grade 12 curriculum.',
 		image: '/onboarding/welcome.png',
 		color: 'from-blue-500 to-indigo-600',
 		icon: Rocket01Icon,
@@ -56,16 +54,12 @@ const STEPS: OnboardingStep[] = [
 		image: '/onboarding/focus.png',
 		color: 'from-green-500 to-emerald-600',
 		icon: Target01Icon,
-		cta: {
-			label: 'Choose Subjects',
-			action: () => {},
-		},
 	},
 	{
 		id: 2,
 		title: 'Master Every Topic',
 		description:
-			'Dive into interactive quizzes with real exam questions. Get instant AI-powered explanations that turn mistakes into milestones.',
+			'Dive into interactive quizzes with real exam questions. Get step-by-step explanations that turn mistakes into milestones.',
 		image: '/onboarding/quiz.png',
 		color: 'from-purple-500 to-pink-600',
 		icon: CalculatorIcon,

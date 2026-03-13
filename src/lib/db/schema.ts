@@ -93,6 +93,25 @@ export const options = pgTable('options', {
 });
 
 // ============================================================================
+// QUIZ RESULTS TABLE
+// ============================================================================
+export const quizResults = pgTable('quiz_results', {
+	id: uuid('id').defaultRandom().primaryKey(),
+	userId: text('user_id')
+		.notNull()
+		.references(() => users.id, { onDelete: 'cascade' }),
+	quizId: varchar('quiz_id', { length: 100 }).notNull(),
+	score: integer('score').notNull(),
+	totalQuestions: integer('total_questions').notNull(),
+	percentage: numeric('percentage', { precision: 5, scale: 2 }).notNull(),
+	timeTaken: integer('time_taken').notNull(), // in seconds
+	completedAt: timestamp('completed_at').defaultNow().notNull(),
+});
+
+export type QuizResult = typeof quizResults.$inferSelect;
+export type NewQuizResult = typeof quizResults.$inferInsert;
+
+// ============================================================================
 // SEARCH HISTORY TABLE
 // ============================================================================
 
@@ -1029,6 +1048,9 @@ export type NewStudySession = typeof studySessions.$inferInsert;
 export type StudyPlan = typeof studyPlans.$inferSelect;
 export type NewStudyPlan = typeof studyPlans.$inferInsert;
 
+export type CalendarEvent = typeof calendarEvents.$inferSelect;
+export type NewCalendarEvent = typeof calendarEvents.$inferInsert;
+
 export type FlashcardDeck = typeof flashcardDecks.$inferSelect;
 export type NewFlashcardDeck = typeof flashcardDecks.$inferInsert;
 
@@ -1040,6 +1062,9 @@ export type NewFlashcardReview = typeof flashcardReviews.$inferInsert;
 
 export type TopicMastery = typeof topicMastery.$inferSelect;
 export type NewTopicMastery = typeof topicMastery.$inferInsert;
+
+export type Notification = typeof notifications.$inferSelect;
+export type NewNotification = typeof notifications.$inferInsert;
 
 export type Bookmark = typeof bookmarks.$inferSelect;
 export type NewBookmark = typeof bookmarks.$inferInsert;

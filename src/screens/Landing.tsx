@@ -3,39 +3,72 @@
 import {
 	ArrowRight01Icon,
 	AtomIcon,
+	BookOpen01Icon,
 	CalculatorIcon,
 	Chemistry01Icon,
-	File01Icon,
+	FlashIcon,
+	MagicWand01Icon,
 	MicroscopeIcon,
 	SparklesIcon,
+	Task02Icon,
+	Timer02Icon,
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { m } from 'framer-motion';
+import { m, useScroll, useTransform } from 'framer-motion';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { useId } from 'react';
+import { useId, useRef } from 'react';
 import { toast } from 'sonner';
 import { Footer } from '@/components/Layout/footer';
-import { SmoothText, SmoothWords } from '@/components/Transition/SmoothText';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { SUBJECTS } from '@/constants/mock-data';
 import { STAGGER_CONTAINER, STAGGER_ITEM } from '@/lib/animation-presets';
 import { useSession } from '@/lib/auth-client';
 
-const ICON_MAP: Record<string, any> = {
+type IconSvg = typeof CalculatorIcon;
+
+const ICON_MAP: Record<string, IconSvg> = {
 	Calculator: CalculatorIcon,
 	Atom: AtomIcon,
-	Flask: Chemistry01Icon,
+	FlaskConical: Chemistry01Icon,
 	Microscope: MicroscopeIcon,
 };
 
+const FEATURES = [
+	{
+		icon: MagicWand01Icon,
+		title: 'AI-Powered Learning',
+		description: 'Get instant explanations and step-by-step guidance from our AI tutor.',
+		color: 'bg-tiimo-lavender/10 text-tiimo-lavender',
+	},
+	{
+		icon: Task02Icon,
+		title: 'Practice Makes Perfect',
+		description: 'Access thousands of NSC past paper questions with detailed solutions.',
+		color: 'bg-subject-math/10 text-subject-math',
+	},
+	{
+		icon: Timer02Icon,
+		title: 'Track Your Progress',
+		description: 'Monitor your study streaks and see how far you have come.',
+		color: 'bg-subject-life/10 text-subject-life',
+	},
+];
+
 export default function Landing() {
 	const router = useRouter();
-	const gradientId = useId();
 	const { data: session } = useSession();
+	const containerRef = useRef<HTMLDivElement>(null);
+	const ctaPatternId = useId();
+	const { scrollYProgress } = useScroll({
+		target: containerRef,
+		offset: ['start start', 'end start'],
+	});
+
+	const y = useTransform(scrollYProgress, [0, 1], [0, -100]);
+	const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
 
 	const handleAuthRoute = (path: string) => {
 		if (!session?.user) {
@@ -50,273 +83,371 @@ export default function Landing() {
 
 	return (
 		<div className="flex flex-col h-full min-w-0 w-full bg-background overflow-x-hidden relative">
-			<ScrollArea className="flex-1 no-scrollbar relative z-10">
-				<main className="pb-4 px-6 sm:px-6 max-w-7xl mx-auto w-full lg:px-0 lg:pb-24">
-					{/* Hero Section - Responsive Layout */}
-					<section className="pt-10 pb-16 sm:pt-12 sm:pb-20 lg:pt-24 lg:pb-32 flex flex-col lg:flex-row items-center gap-12 lg:gap-16 xl:gap-24">
-						<div className="flex-1 flex flex-col items-center lg:items-start text-center lg:text-left space-y-6 sm:space-y-8">
-							<div className="space-y-6">
-								<m.div
-									initial={{ opacity: 0, scale: 0.95 }}
-									animate={{ opacity: 1, scale: 1 }}
-									transition={{ type: 'spring', stiffness: 300, damping: 28 }}
+			<ScrollArea className="flex-1 no-scrollbar relative">
+				<main
+					ref={containerRef}
+					className="pb-4 px-6 sm:px-6 max-w-7xl mx-auto w-full lg:px-0 lg:pb-24"
+				>
+					{/* Hero Section */}
+					<section className="pt-8 pb-20 lg:pt-16 lg:pb-32 flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
+						<div className="flex-1 flex flex-col items-center lg:items-start text-center lg:text-left space-y-8">
+							<m.div
+								initial={{ opacity: 0, scale: 0.95 }}
+								animate={{ opacity: 1, scale: 1 }}
+								transition={{ type: 'spring', stiffness: 300, damping: 28 }}
+								className="space-y-8"
+							>
+								<Badge className="tiimo-glass rounded-full px-4 py-1.5 text-[10px] font-medium bg-primary-orange! text-white/90!">
+									<HugeiconsIcon icon={SparklesIcon} className="w-3 h-3 mr-1.5" />
+									The exam prep platform
+								</Badge>
+
+								<m.h1
+									initial={{ opacity: 0, y: 20 }}
+									animate={{ opacity: 1, y: 0 }}
+									transition={{ delay: 0.1 }}
+									className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-black text-foreground leading-[0.95] tracking-tight"
 								>
-									<Badge className="bg-primary/10 text-primary border-none rounded-full px-4 py-1.5 text-xs font-medium mb-4">
-										<HugeiconsIcon icon={SparklesIcon} className="w-3 h-3 mr-1.5" />
-										Trusted by 50,000+ students
-									</Badge>
-								</m.div>
-								<SmoothWords
-									as="h1"
-									text="Master your Matric exams"
-									className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-foreground leading-tight tracking-tight"
-									stagger={0.04}
-								/>
-								<SmoothText
-									text="Interactive past papers and step-by-step explanations built for South African Grade 12 students."
-									className="text-base md:text-lg text-muted-foreground max-w-xl mx-auto lg:mx-0"
-									delay={0.3}
-								/>
-							</div>
+									Master your
+									<br />
+									<span className="text-tiimo-lavender">Matric exams</span>
+								</m.h1>
+
+								<m.p
+									initial={{ opacity: 0, y: 20 }}
+									animate={{ opacity: 1, y: 0 }}
+									transition={{ delay: 0.2 }}
+									className="text-lg md:text-xl text-muted-foreground max-w-lg text-pretty mx-auto lg:mx-0 leading-relaxed"
+								>
+									Interactive past papers, AI-powered explanations, and smart study tools designed
+									for South African Grade 12 students.
+								</m.p>
+							</m.div>
 
 							<m.div
-								initial={{ opacity: 0, y: 12 }}
+								initial={{ opacity: 0, y: 20 }}
 								animate={{ opacity: 1, y: 0 }}
-								transition={{ delay: 0.4, type: 'spring', stiffness: 300, damping: 28 }}
-								className="w-full max-w-sm flex flex-col sm:flex-row gap-3 sm:gap-4 lg:max-w-none"
+								transition={{ delay: 0.3 }}
+								className="flex flex-col sm:flex-row gap-4 w-full max-w-md"
 							>
 								<Button
 									size="lg"
-									className="group relative w-full sm:w-auto lg:flex-none lg:w-64 rounded-xl shrink-0 h-12 text-base font-semibold shadow-sm ios-active-scale"
+									className="w-full sm:w-auto h-14 rounded-2xl text-base font-semibold shadow-lg shadow-tiimo-lavender/25 hover:shadow-xl hover:shadow-tiimo-lavender/30 transition-all"
 									onClick={() => handleAuthRoute('/dashboard')}
 								>
-									<span className="relative z-10 flex items-center justify-center">
+									<span className="flex items-center gap-2">
 										Start Learning
-										<HugeiconsIcon
-											icon={ArrowRight01Icon}
-											className="w-4 h-4 ml-2 group-hover:translate-x-0.5 transition-transform"
-										/>
+										<HugeiconsIcon icon={ArrowRight01Icon} className="w-5 h-5" />
 									</span>
 								</Button>
 								<Button
-									variant="outline"
 									size="lg"
-									className="group w-full sm:w-auto lg:flex-none lg:w-56 rounded-xl h-12 text-base font-medium ios-active-scale"
-									onClick={() => handleAuthRoute('/past-papers')}
+									variant="outline"
+									className="w-full sm:w-auto h-14 rounded-2xl text-base font-medium"
+									onClick={() => router.push('/past-papers')}
 								>
 									<span className="flex items-center gap-2">
-										<HugeiconsIcon icon={File01Icon} className="w-4 h-4" />
-										Browse Past Papers
+										Browse Papers
+										<HugeiconsIcon icon={BookOpen01Icon} className="w-5 h-5" />
 									</span>
 								</Button>
 							</m.div>
 
-							<div className="flex items-center gap-3 pt-2">
-								<div className="flex -space-x-2">
-									{[1, 2, 3, 4].map((i) => (
+							<m.div
+								initial={{ opacity: 0 }}
+								animate={{ opacity: 1 }}
+								transition={{ delay: 0.5 }}
+								className="flex items-center gap-4 pt-4"
+							>
+								<div className="flex -space-x-3">
+									{[1, 2, 3, 4, 5].map((i) => (
 										<div
 											key={`avatar-${i}`}
-											className="w-8 h-8 rounded-full border-2 border-background bg-secondary flex items-center justify-center overflow-hidden relative shadow-sm"
+											className="w-10 h-10 rounded-full border-3 border-background bg-secondary flex items-center justify-center overflow-hidden relative shadow-sm"
 										>
 											<Image
 												src={`https://api.dicebear.com/7.x/avataaars/svg?seed=user-${i}`}
 												alt="user"
 												fill
-												sizes="32px"
+												sizes="40px"
 												className="object-cover"
 												unoptimized
-												priority={i < 2}
 											/>
 										</div>
 									))}
 								</div>
-								<p className="text-sm text-muted-foreground">Join our community</p>
-							</div>
+								<div className="text-left">
+									<p className="text-sm font-semibold">50,000+ students</p>
+									<p className="text-xs text-muted-foreground">trust MatricMaster</p>
+								</div>
+							</m.div>
 						</div>
 
-						{/* Hero Illustration - Desktop Sizing */}
+						{/* Hero Visual */}
 						<m.div
-							initial={{ opacity: 0, x: 30 }}
+							initial={{ opacity: 0, x: 40 }}
 							animate={{ opacity: 1, x: 0 }}
 							transition={{ type: 'spring', stiffness: 300, damping: 28, delay: 0.2 }}
-							className="relative flex-1 w-full max-w-[320px] sm:max-w-100 md:max-w-112.5 lg:max-w-none flex items-center justify-center"
+							className="relative w-full max-w-lg lg:max-w-xl"
+							style={{ y, opacity }}
 						>
+							{/* Main Card */}
 							<m.div
-								whileHover={{ scale: 1.01 }}
-								whileTap={{ scale: 0.99 }}
-								className="relative w-full aspect-square max-w-75 sm:max-w-87.5 md:max-w-112.5 bg-card rounded-3xl shadow-md flex items-center justify-center transform border border-border transition-all duration-300 overflow-hidden"
+								whileHover={{ scale: 1.02 }}
+								className="relative w-full aspect-square max-w-lg mx-auto"
 							>
-								<div className="absolute inset-0 bg-primary/5" />
+								<div className="absolute inset-0 bg-gradient-to-br from-tiimo-lavender/20 via-transparent to-subject-physics/20 rounded-[3rem]" />
 
-								{/* Large SVG Illustration */}
-								<svg
-									viewBox="0 0 100 100"
-									className="w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 relative z-10 opacity-80"
+								{/* Abstract Shapes */}
+								<m.div
+									animate={{ rotate: 360 }}
+									transition={{ duration: 60, repeat: Number.POSITIVE_INFINITY, ease: 'linear' }}
+									className="absolute inset-8 rounded-full border border-tiimo-lavender/20"
+								/>
+								<m.div
+									animate={{ rotate: -360 }}
+									transition={{ duration: 45, repeat: Number.POSITIVE_INFINITY, ease: 'linear' }}
+									className="absolute inset-16 rounded-full border border-subject-physics/20 border-dashed"
+								/>
+
+								{/* Central Illustration */}
+								<div className="absolute inset-0 flex items-center justify-center">
+									<div className="relative w-48 h-48">
+										{/* Floating Cards */}
+										<m.div
+											animate={{ y: [0, -10, 0] }}
+											transition={{
+												duration: 4,
+												repeat: Number.POSITIVE_INFINITY,
+												ease: 'easeInOut',
+											}}
+											className="absolute -top-4 -left-8 w-24 h-28 bg-card rounded-2xl shadow-xl border border-border/50 flex flex-col items-center justify-center p-3 z-10"
+										>
+											<div className="w-10 h-10 rounded-xl bg-subject-math/20 flex items-center justify-center mb-2">
+												<HugeiconsIcon
+													icon={CalculatorIcon}
+													className="w-5 h-5 text-subject-math"
+												/>
+											</div>
+											<div className="h-1.5 w-16 bg-secondary rounded-full overflow-hidden">
+												<div className="h-full w-3/4 bg-subject-math rounded-full" />
+											</div>
+										</m.div>
+
+										<m.div
+											animate={{ y: [0, 10, 0] }}
+											transition={{
+												duration: 5,
+												repeat: Number.POSITIVE_INFINITY,
+												ease: 'easeInOut',
+												delay: 0.5,
+											}}
+											className="absolute -bottom-2 -right-6 w-24 h-28 bg-card rounded-2xl shadow-xl border border-border/50 flex flex-col items-center justify-center p-3 z-20"
+										>
+											<div className="w-10 h-10 rounded-xl bg-subject-life/20 flex items-center justify-center mb-2">
+												<HugeiconsIcon icon={AtomIcon} className="w-5 h-5 text-subject-life" />
+											</div>
+											<div className="h-1.5 w-16 bg-secondary rounded-full overflow-hidden">
+												<div className="h-full w-1/2 bg-subject-life rounded-full" />
+											</div>
+										</m.div>
+
+										{/* Center Circle */}
+										<div className="absolute inset-0 flex items-center justify-center">
+											<div className="w-32 h-32 rounded-full bg-tiimo-lavender flex items-center justify-center shadow-2xl shadow-tiimo-lavender/30">
+												<HugeiconsIcon icon={SparklesIcon} className="w-12 h-12 text-white" />
+											</div>
+										</div>
+									</div>
+								</div>
+
+								{/* Stats Card */}
+								<m.div
+									initial={{ opacity: 0, x: 20 }}
+									animate={{ opacity: 1, x: 0 }}
+									transition={{ delay: 0.8 }}
+									className="absolute -right-4 top-1/4 bg-card rounded-2xl p-4 shadow-xl border border-border/50"
 								>
-									<title>Mathematical Geometry Illustration</title>
-									<defs>
-										<linearGradient id={gradientId} x1="0%" y1="0%" x2="100%" y2="100%">
-											<stop
-												offset="0%"
-												style={{ stopColor: 'var(--primary-violet)', stopOpacity: 1 }}
-											/>
-											<stop
-												offset="100%"
-												style={{ stopColor: 'var(--primary-cyan)', stopOpacity: 1 }}
-											/>
-										</linearGradient>
-									</defs>
-									<circle
-										cx="50"
-										cy="50"
-										r="35"
-										stroke={`url(#${gradientId})`}
-										strokeWidth="0.5"
-										fill="none"
-										strokeDasharray="2 2"
-										className="animate-spin-slow"
-									/>
-									<path
-										d="M 50 15 L 85 75 L 15 75 Z"
-										fill="none"
-										stroke={`url(#${gradientId})`}
-										strokeWidth="2"
-										strokeLinejoin="round"
-									/>
-									<path
-										d="M 5 50 Q 25 20 50 50 T 95 50"
-										fill="none"
-										stroke="var(--success)"
-										strokeWidth="2"
-									/>
-									<circle cx="50" cy="15" r="4" fill="var(--warning)" />
-									<circle cx="85" cy="75" r="4" fill="var(--warning)" />
-									<circle cx="15" cy="75" r="4" fill="var(--warning)" />
-								</svg>
-							</m.div>
+									<div className="flex items-center gap-3">
+										<div className="w-10 h-10 rounded-xl bg-success/10 flex items-center justify-center">
+											<HugeiconsIcon icon={FlashIcon} className="w-5 h-5 text-success" />
+										</div>
+										<div>
+											<p className="text-lg font-black">2,450</p>
+											<p className="text-xs text-muted-foreground">XP Earned</p>
+										</div>
+									</div>
+								</m.div>
 
-							{/* Floating Badges */}
-							<m.div
-								animate={{ y: [0, -15, 0] }}
-								transition={{ duration: 4, repeat: Number.POSITIVE_INFINITY, ease: 'easeInOut' }}
-								className="absolute -top-3 sm:-top-4 right-0 sm:right-2 w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 bg-primary-orange rounded-2xl sm:rounded-3xl shadow-2xl flex items-center justify-center -rotate-12 z-20"
-							>
-								<HugeiconsIcon
-									icon={SparklesIcon}
-									className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 text-white fill-current"
-								/>
-							</m.div>
-							<m.div
-								animate={{ y: [0, 20, 0], rotate: [12, 18, 12] }}
-								transition={{ duration: 6, repeat: Number.POSITIVE_INFINITY, ease: 'easeInOut' }}
-								className="absolute -bottom-4 sm:-bottom-6 left-0 sm:left-2 w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 bg-accent-lime rounded-2xl sm:rounded-3xl shadow-2xl flex items-center justify-center z-20"
-							>
-								<HugeiconsIcon
-									icon={AtomIcon}
-									className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 text-white"
-								/>
+								{/* Streak Card */}
+								<m.div
+									initial={{ opacity: 0, x: -20 }}
+									animate={{ opacity: 1, x: 0 }}
+									transition={{ delay: 1 }}
+									className="absolute -left-4 bottom-1/4 bg-card rounded-2xl p-4 shadow-xl border border-border/50"
+								>
+									<div className="flex items-center gap-3">
+										<div className="w-10 h-10 rounded-xl bg-orange-100 flex items-center justify-center">
+											<span className="text-lg">🔥</span>
+										</div>
+										<div>
+											<p className="text-lg font-black">12 Day</p>
+											<p className="text-xs text-muted-foreground">Study Streak</p>
+										</div>
+									</div>
+								</m.div>
 							</m.div>
 						</m.div>
 					</section>
 
-					{/* Subjects Section - Responsive Grid */}
-					<section className="space-y-12 sm:space-y-16 lg:space-y-24">
-						<div className="flex items-center gap-6 sm:gap-8 lg:gap-12">
-							<div className="h-px flex-1 bg-border" />
-							<h2 className="text-[10px] sm:text-[11px] font-black text-label-tertiary uppercase tracking-[0.4em] whitespace-nowrap">
-								Explore Subjects
+					{/* Features Section */}
+					<section className="py-20 lg:py-32">
+						<m.div
+							initial={{ opacity: 0, y: 40 }}
+							whileInView={{ opacity: 1, y: 0 }}
+							viewport={{ once: true, margin: '-100px' }}
+							transition={{ duration: 0.6 }}
+							className="text-center mb-16"
+						>
+							<h2 className="text-3xl md:text-4xl lg:text-5xl font-black tracking-tight mb-4">
+								Everything you need to
+								<span className="text-tiimo-lavender"> succeed</span>
 							</h2>
-							<div className="h-px flex-1 bg-border" />
-						</div>
+							<p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+								Powerful study tools designed specifically for NSC exam preparation.
+							</p>
+						</m.div>
 
 						<m.div
 							variants={STAGGER_CONTAINER}
 							initial="hidden"
 							whileInView="visible"
 							viewport={{ once: true, margin: '-100px' }}
-							className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8"
+							className="grid md:grid-cols-3 gap-6 lg:gap-8"
+						>
+							{FEATURES.map((feature) => (
+								<m.div
+									key={feature.title}
+									variants={STAGGER_ITEM}
+									className="group p-8 rounded-3xl bg-card border border-border/50 hover:border-tiimo-lavender/30 hover:shadow-xl hover:shadow-tiimo-lavender/10 transition-all duration-300"
+								>
+									<div
+										className={`w-14 h-14 rounded-2xl ${feature.color} flex items-center justify-center mb-6`}
+									>
+										<HugeiconsIcon icon={feature.icon} className="w-7 h-7" />
+									</div>
+									<h3 className="text-xl font-bold mb-3">{feature.title}</h3>
+									<p className="text-muted-foreground leading-relaxed">{feature.description}</p>
+								</m.div>
+							))}
+						</m.div>
+					</section>
+
+					{/* Subjects Section */}
+					<section className="py-20 lg:py-32">
+						<m.div
+							initial={{ opacity: 0, y: 40 }}
+							whileInView={{ opacity: 1, y: 0 }}
+							viewport={{ once: true, margin: '-100px' }}
+							transition={{ duration: 0.6 }}
+							className="mb-12"
+						>
+							<h2 className="text-3xl md:text-4xl lg:text-5xl font-black tracking-tight mb-4">
+								Explore your
+								<span className="text-tiimo-lavender"> subjects</span>
+							</h2>
+							<p className="text-lg text-muted-foreground">Choose a subject to start practicing.</p>
+						</m.div>
+
+						<m.div
+							variants={STAGGER_CONTAINER}
+							initial="hidden"
+							whileInView="visible"
+							viewport={{ once: true, margin: '-100px' }}
+							className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4"
 						>
 							{SUBJECTS.map((subject) => {
 								const icon = ICON_MAP[subject.icon] || CalculatorIcon;
 								return (
-									<m.div key={subject.id} variants={STAGGER_ITEM}>
-										<Card
-											className="bg-card p-6 sm:p-8 rounded-3xl border border-border shadow-sm group hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 cursor-pointer overflow-hidden relative h-full flex flex-col justify-between ios-active-scale"
-											onClick={() => handleAuthRoute(subject.path)}
-										>
-											<m.div
-												className={`absolute top-0 right-0 w-48 h-48 ${subject.bg} rounded-full -mr-24 -mt-24 blur-3xl opacity-0 group-hover:opacity-40 transition-opacity duration-700`}
-											/>
+									<m.button
+										key={subject.id}
+										type="button"
+										variants={STAGGER_ITEM}
+										onClick={() => handleAuthRoute(subject.path)}
+										className="group relative p-6 rounded-3xl bg-card border border-border/50 hover:border-primary/30 transition-all duration-300 text-left overflow-hidden"
+									>
+										<div
+											className={`absolute top-0 right-0 w-32 h-32 ${subject.bg} rounded-full -mr-16 -mt-16 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-3xl`}
+										/>
 
-											<div className="space-y-6 sm:space-y-8 relative z-10">
-												<div className="flex items-start justify-between">
-													<m.div
-														whileHover={{ scale: 1.1, rotate: 5 }}
-														className={`w-16 h-16 sm:w-20 sm:h-20 rounded-2xl ${subject.bg} flex items-center justify-center shrink-0 shadow-inner group-hover:scale-110 transition-transform duration-500 relative overflow-hidden`}
-													>
-														<HugeiconsIcon
-															icon={icon}
-															className={`w-8 h-8 sm:w-10 sm:h-10 ${subject.color} relative z-10`}
-															aria-hidden="true"
-														/>
-													</m.div>
-													<div className="w-12 h-12 rounded-full bg-secondary flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 -translate-x-4 group-hover:translate-x-0">
-														<HugeiconsIcon
-															icon={ArrowRight01Icon}
-															className="w-5 h-5 text-foreground"
-														/>
-													</div>
-												</div>
-
-												<div className="space-y-3">
-													<h3 className="text-xl sm:text-2xl font-black text-foreground tracking-tighter uppercase">
-														{subject.name}
-													</h3>
-													<p className="text-sm text-label-secondary font-black uppercase tracking-tight leading-relaxed opacity-80">
-														{subject.topics}
-													</p>
-												</div>
+										<div className="relative z-10">
+											<div
+												className={`w-12 h-12 rounded-2xl ${subject.bg} flex items-center justify-center mb-4`}
+											>
+												<HugeiconsIcon icon={icon} className={`w-6 h-6 ${subject.color}`} />
 											</div>
+											<h3 className="text-lg font-bold mb-1">{subject.name}</h3>
+											<p className="text-sm text-muted-foreground">{subject.topics}</p>
+										</div>
 
-											<div className="pt-6 sm:pt-8 relative z-10">
-												<div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-primary opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-													Learn More
-													<HugeiconsIcon icon={ArrowRight01Icon} className="w-4 h-4" />
-												</div>
-											</div>
-										</Card>
-									</m.div>
+										<div className="absolute bottom-4 right-4 w-8 h-8 rounded-full bg-secondary flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:translate-x-0 -translate-x-2">
+											<HugeiconsIcon icon={ArrowRight01Icon} className="w-4 h-4" />
+										</div>
+									</m.button>
 								);
 							})}
 						</m.div>
 					</section>
 
 					{/* Final CTA Section */}
-					<section className="mt-24 sm:mt-32 lg:mt-48 pb-12 sm:pb-16">
-						<Card className="relative p-8 sm:p-12 lg:p-16 xl:p-24 rounded-3xl lg:rounded-[4rem] bg-primary overflow-hidden">
-							<div className="space-y-6 sm:space-y-8">
-								<h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black text-white tracking-tighter leading-[0.95] uppercase">
-									Ready to ace
-									<br className="hidden sm:block" /> your exams?
-								</h2>
-								<p className="text-base sm:text-lg md:text-xl lg:text-2xl font-bold text-white/90 max-w-xl sm:max-w-2xl mx-auto tracking-tight">
-									Join thousands of students and start your journey to success today.
-								</p>
+					<section className="py-20 lg:py-32">
+						<m.div
+							initial={{ opacity: 0, scale: 0.95 }}
+							whileInView={{ opacity: 1, scale: 1 }}
+							viewport={{ once: true }}
+							transition={{ duration: 0.6 }}
+							className="relative overflow-hidden rounded-[3rem] bg-gradient-to-br from-tiimo-lavender via-tiimo-lavender to-subject-physics p-12 lg:p-20"
+						>
+							{/* Background Pattern */}
+							<div className="absolute inset-0 opacity-10">
+								<svg
+									className="w-full h-full"
+									viewBox="0 0 100 100"
+									preserveAspectRatio="none"
+									role="img"
+									aria-label="Decorative pattern"
+								>
+									<pattern id={ctaPatternId} width="10" height="10" patternUnits="userSpaceOnUse">
+										<circle cx="1" cy="1" r="1" fill="white" />
+									</pattern>
+									<rect width="100%" height="100%" fill={`url(#${ctaPatternId})`} />
+								</svg>
 							</div>
 
-							<div className="mt-10 sm:mt-12">
-								<Button
-									size="lg"
-									className="w-full sm:w-auto bg-white text-primary hover:bg-white/90 rounded-full h-14 sm:h-16 lg:h-20 px-10 lg:px-16 text-lg lg:text-xl xl:text-2xl font-black uppercase tracking-widest shadow-lg transition-all hover:scale-105 active:scale-95 ios-active-scale border-none"
-									onClick={() => router.push('/dashboard')}
-								>
-									<span className="flex items-center gap-3">Get Started Free</span>
-								</Button>
-								<p className="mt-6 sm:mt-8 text-[10px] font-bold uppercase tracking-[0.3em] text-white/60">
-									No credit card required
+							<div className="relative z-10 text-center space-y-8">
+								<h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tight">
+									Ready to ace
+									<br />
+									your exams?
+								</h2>
+								<p className="text-lg md:text-xl text-white/80 max-w-xl mx-auto">
+									Join thousands of South African students who are already mastering their subjects.
 								</p>
+								<div className="flex flex-col sm:flex-row gap-4 justify-center">
+									<Button
+										size="lg"
+										className="w-full sm:w-auto h-14 rounded-2xl text-base font-semibold bg-white text-tiimo-lavender hover:bg-white/90 shadow-xl"
+										onClick={() => router.push('/sign-up')}
+									>
+										<span className="flex items-center gap-2">
+											Get Started Free
+											<HugeiconsIcon icon={ArrowRight01Icon} className="w-5 h-5" />
+										</span>
+									</Button>
+								</div>
+								<p className="text-sm text-white/60">No credit card required · Cancel anytime</p>
 							</div>
-						</Card>
+						</m.div>
 					</section>
 
 					{/* Footer Section */}

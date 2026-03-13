@@ -1,8 +1,10 @@
 import type { Metadata } from 'next';
 
+import { appConfig } from '@/app.config';
+
 export const metadata: Metadata = {
-	title: 'Interactive Quiz | MatricMaster AI',
-	description: 'Engage with AI-powered interactive quizzes for better learning.',
+	title: `Interactive Quiz | ${appConfig.name}`,
+	description: 'Engage with interactive quizzes for better learning.',
 };
 
 export default function InteractiveQuizLayout({ children }: { children: React.ReactNode }) {
