@@ -5,21 +5,25 @@ import {
 	ArrowLeft01Icon,
 	Analytics01Icon as BarChartSquare01Icon,
 	BookOpen01Icon,
+	BulbIcon,
+	ChampionIcon,
 	ArrowDown01Icon as ChevronDown01Icon,
 	Clock01Icon,
 	Cancel01Icon as CloseIcon,
 	FireIcon,
+	FlashIcon,
 	GridIcon,
 	PlusSignIcon,
 	Search01Icon,
 	SparklesIcon,
 	StarIcon,
 	Tick01Icon,
+	ArrowUp01Icon as TrendingUpIcon,
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { AnimatePresence, m } from 'framer-motion';
 import { useRouter } from 'next/navigation';
-import { useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
@@ -40,6 +44,7 @@ interface Topic {
 	timeToMaster?: number;
 	weaknesses?: string[];
 	isCustom?: boolean;
+	prerequisites?: string[];
 }
 
 interface Subject {
@@ -48,6 +53,36 @@ interface Subject {
 	color: string;
 	icon: string;
 	topics: Topic[];
+}
+
+interface StudyRecommendation {
+	topicId: string;
+	subjectId: string;
+	subjectName: string;
+	topicName: string;
+	reason: string;
+	priority: number;
+}
+
+const STORAGE_KEY = 'matricmaster-custom-topics';
+
+function loadCustomTopics(): Record<string, Topic[]> {
+	if (typeof window === 'undefined') return {};
+	try {
+		const stored = localStorage.getItem(STORAGE_KEY);
+		return stored ? JSON.parse(stored) : {};
+	} catch {
+		return {};
+	}
+}
+
+function saveCustomTopics(topics: Record<string, Topic[]>) {
+	if (typeof window === 'undefined') return;
+	try {
+		localStorage.setItem(STORAGE_KEY, JSON.stringify(topics));
+	} catch {
+		console.error('Failed to save custom topics');
+	}
 }
 
 const CURRICULUM_DATA: Subject[] = [
@@ -1378,22 +1413,172 @@ export default function CurriculumMap() {
 	const router = useRouter();
 	const [searchQuery, setSearchQuery] = useState('');
 	const [statusFilter, setStatusFilter] = useState<FilterType>('all');
+	const [customTopics, setCustomTopics] = useState<Record<string, Topic[]>>({});
 	const [expandedSubjects, setExpandedSubjects] = useState<Set<string>>(
 		new Set(CURRICULUM_DATA.slice(0, 2).map((s) => s.id))
 	);
 	const [selectedTopic, setSelectedTopic] = useState<{ topic: Topic; subject: Subject } | null>(
 		null
 	);
-	const [customTopics, setCustomTopics] = useState<Record<string, Topic[]>>({});
 	const [showAddTopic, setShowAddTopic] = useState<string | null>(null);
 	const [newTopicName, setNewTopicName] = useState('');
+	const [userXP, _setUserXP] = useState(2450);
+	const [userStreak, _setUserStreak] = useState(12);
+	const [userLevel, _setUserLevel] = useState(8);
+	const [showRecommendations, setShowRecommendations] = useState(true);
+
+	useEffect(() => {
+		const loaded = loadCustomTopics();
+		setCustomTopics(loaded);
+	}, []);
+
+	useEffect(() => {
+		saveCustomTopics(customTopics);
+	}, [customTopics]);
+
+	const getTopicPrerequisites = useCallback((topicId: string): string[] => {
+		const prereqs: Record<string, string[]> = {
+			m3: ['m1', 'm2'],
+			m4: ['m1'],
+			m5: ['m1', 'm2'],
+			m6: ['m1', 'm2'],
+			m7: ['m1', 'm2', 'm5'],
+			m8: ['m1'],
+			p2: ['p1'],
+			p3: ['p1', 'p2'],
+			p4: ['p2', 'p3'],
+			p5: ['p4'],
+			p6: ['p5'],
+			p7: ['p1'],
+			p8: ['p7'],
+			l3: ['l1', 'l2'],
+			l4: ['l3'],
+			l5: ['l3'],
+			l6: ['l5'],
+			l7: ['l5'],
+			l8: ['l3', 'l7'],
+			e3: ['e1', 'e2'],
+			e4: ['e1', 'e2'],
+			e5: ['e3', 'e4'],
+			e6: ['e1', 'e2'],
+			e7: ['e1'],
+			e8: ['e1'],
+			a2: ['a1'],
+			a3: ['a1', 'a2'],
+			a4: ['a1', 'a2'],
+			a5: ['a1', 'a4'],
+			a6: ['a1', 'a4'],
+			a7: ['a1', 'a2', 'a6'],
+			a8: ['a1', 'a7'],
+			g3: ['g1', 'g2'],
+			g4: ['g1', 'g2'],
+			g5: ['g4'],
+			g6: ['g4'],
+			g7: ['g5'],
+			g8: ['g2', 'g3'],
+			h3: ['h1', 'h2'],
+			h4: ['h1', 'h2'],
+			h5: ['h1', 'h2'],
+			h6: ['h1', 'h2', 'h3'],
+			h7: ['h1', 'h2', 'h3'],
+			h8: ['h1', 'h2'],
+			eco2: ['eco1'],
+			eco3: ['eco1', 'eco2'],
+			eco4: ['eco1', 'eco2'],
+			eco5: ['eco2', 'eco3'],
+			eco6: ['eco2', 'eco3'],
+			eco7: ['eco1', 'eco6'],
+			eco8: ['eco5', 'eco6', 'eco7'],
+			bs2: ['bs1'],
+			bs3: ['bs1', 'bs2'],
+			bs4: ['bs1', 'bs2', 'bs3'],
+			bs5: ['bs1', 'bs4'],
+			bs6: ['bs1', 'bs2'],
+			bs7: ['bs1', 'bs2', 'bs6'],
+			bs8: ['bs1', 'bs2', 'bs7'],
+			cat3: ['cat1'],
+			cat4: ['cat1'],
+			cat5: ['cat1', 'cat4'],
+			cat6: ['cat1', 'cat4'],
+			cat7: ['cat1'],
+			cat8: ['cat1', 'cat7'],
+			rs3: ['rs1', 'rs2'],
+			rs4: ['rs1'],
+			rs5: ['rs1'],
+			rs6: ['rs1'],
+			rs7: ['rs1', 'rs2'],
+			rs8: ['rs1', 'rs7'],
+		};
+		return prereqs[topicId] || [];
+	}, []);
 
 	const allData = useMemo(() => {
 		return CURRICULUM_DATA.map((subject) => ({
 			...subject,
-			topics: [...subject.topics, ...(customTopics[subject.id] || [])],
+			topics: [
+				...subject.topics.map((t) => ({
+					...t,
+					prerequisites: getTopicPrerequisites(t.id),
+				})),
+				...(customTopics[subject.id] || []),
+			],
 		}));
-	}, [customTopics]);
+	}, [customTopics, getTopicPrerequisites]);
+
+	const getStudyRecommendations = useCallback(
+		(allSubjects: Subject[]): StudyRecommendation[] => {
+			const recommendations: StudyRecommendation[] = [];
+
+			for (const subject of allSubjects) {
+				for (const topic of subject.topics) {
+					if (topic.status === 'not-started') {
+						const prereqs = topic.prerequisites || getTopicPrerequisites(topic.id);
+						const prereqsMet = prereqs.every((prereqId) => {
+							const prereqTopic = subject.topics.find((t) => t.id === prereqId);
+							return prereqTopic?.status === 'mastered';
+						});
+
+						if (prereqsMet) {
+							let reason = 'Ready to start';
+							let priority = 50;
+
+							if (prereqs.length > 0) {
+								reason = 'Prerequisites mastered';
+								priority = 80;
+							}
+
+							const weakTopics = allSubjects
+								.flatMap((s) => s.topics)
+								.filter((t) => t.status === 'in-progress' && t.progress < 60);
+
+							if (weakTopics.length > 0) {
+								priority = 30;
+								reason = 'Focus on weak topics first';
+							}
+
+							recommendations.push({
+								subjectId: subject.id,
+								subjectName: subject.name,
+								topicId: topic.id,
+								topicName: topic.name,
+								reason,
+								priority,
+							});
+						}
+					}
+				}
+			}
+
+			recommendations.sort((a, b) => b.priority - a.priority);
+			return recommendations.slice(0, 5);
+		},
+		[getTopicPrerequisites]
+	);
+
+	const recommendations = useMemo(
+		() => getStudyRecommendations(allData),
+		[allData, getStudyRecommendations]
+	);
 
 	const filteredSubjects = useMemo(() => {
 		return allData
@@ -1470,7 +1655,7 @@ export default function CurriculumMap() {
 
 	return (
 		<div className="flex flex-col h-full bg-background min-w-0">
-			<header className="px-4 sm:px-6 pt-6 pb-4 flex items-center justify-between shrink-0 max-w-4xl mx-auto w-full">
+			<header className="px-4 sm:px-6 pt-6 pb-2 flex items-center justify-between shrink-0 max-w-4xl mx-auto w-full">
 				<Button
 					variant="ghost"
 					size="icon"
@@ -1491,6 +1676,67 @@ export default function CurriculumMap() {
 					</Button>
 				</div>
 			</header>
+
+			<div className="px-4 sm:px-6 pb-2 max-w-4xl mx-auto w-full">
+				<div className="flex items-center gap-3 bg-gradient-to-r from-primary/10 to-warning/10 rounded-2xl p-3 mb-3">
+					<div className="flex items-center gap-2 px-3 py-1.5 bg-white rounded-xl shadow-sm">
+						<HugeiconsIcon icon={FireIcon} className="w-4 h-4 text-orange-500" />
+						<span className="text-sm font-black">{userStreak}</span>
+						<span className="text-[10px] text-muted-foreground">day streak</span>
+					</div>
+					<div className="flex items-center gap-2 px-3 py-1.5 bg-white rounded-xl shadow-sm">
+						<HugeiconsIcon icon={FlashIcon} className="w-4 h-4 text-warning" />
+						<span className="text-sm font-black">{userXP.toLocaleString()}</span>
+						<span className="text-[10px] text-muted-foreground">XP</span>
+					</div>
+					<div className="flex items-center gap-2 px-3 py-1.5 bg-white rounded-xl shadow-sm">
+						<HugeiconsIcon icon={ChampionIcon} className="w-4 h-4 text-primary" />
+						<span className="text-sm font-black">Level {userLevel}</span>
+					</div>
+				</div>
+
+				{showRecommendations && recommendations.length > 0 && (
+					<div className="bg-gradient-to-r from-success/10 to-primary/10 rounded-2xl p-4 mb-3">
+						<div className="flex items-center justify-between mb-3">
+							<div className="flex items-center gap-2">
+								<HugeiconsIcon icon={BulbIcon} className="w-5 h-5 text-warning" />
+								<span className="font-bold text-sm">AI Recommendations</span>
+							</div>
+							<button
+								type="button"
+								onClick={() => setShowRecommendations(false)}
+								className="text-muted-foreground hover:text-foreground"
+							>
+								<HugeiconsIcon icon={CloseIcon} className="w-4 h-4" />
+							</button>
+						</div>
+						<div className="space-y-2">
+							{recommendations.slice(0, 3).map((rec) => {
+								const subject = allData.find((s) => s.id === rec.subjectId);
+								const topic = subject?.topics.find((t) => t.id === rec.topicId);
+								return (
+									<button
+										key={rec.topicId}
+										type="button"
+										onClick={() => {
+											setExpandedSubjects(new Set([rec.subjectId]));
+											setSelectedTopic({ topic: topic!, subject: subject! });
+										}}
+										className="w-full flex items-center gap-3 p-3 bg-white rounded-xl text-left hover:shadow-md transition-shadow"
+									>
+										<span className="text-xl">{subject?.icon}</span>
+										<div className="flex-1 min-w-0">
+											<p className="font-bold text-sm truncate">{topic?.name}</p>
+											<p className="text-[10px] text-muted-foreground">{rec.reason}</p>
+										</div>
+										<HugeiconsIcon icon={TrendingUpIcon} className="w-4 h-4 text-success" />
+									</button>
+								);
+							})}
+						</div>
+					</div>
+				)}
+			</div>
 
 			<ScrollArea className="flex-1">
 				<main className="px-4 sm:px-6 py-4 pb-40 max-w-4xl mx-auto w-full">
