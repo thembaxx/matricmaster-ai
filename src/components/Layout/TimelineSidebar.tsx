@@ -89,9 +89,7 @@ export function TimelineSidebar() {
 
 			{/* Timeline */}
 			<div className="flex-1 overflow-y-auto p-4 space-y-1">
-				<p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-4 px-2">
-					Your day
-				</p>
+				<p className="text-xs font-medium text-muted-foreground mb-4 px-2">Your day</p>
 
 				<div className="relative">
 					{/* Timeline Line */}
@@ -135,9 +133,12 @@ function TimelineEventCard({ event, index }: { event: TimelineEvent; index: numb
 	};
 
 	return (
-		<m.div initial={{ opacity: 0, x: -20 }}
+		<m.div
+			initial={{ opacity: 0, x: -20 }}
 			animate={{ opacity: 1, x: 0 }}
-			transition={{ delay: index * 0.1, duration: 0.4 }} className='relative rounded-xl overflow-hidden border mb-2 '>
+			transition={{ delay: index * 0.1, duration: 0.4 }}
+			className="relative rounded-xl overflow-hidden border mb-2 "
+		>
 			<m.div
 				initial={{ opacity: 0, x: -20 }}
 				animate={{ opacity: 1, x: 0 }}
@@ -168,7 +169,7 @@ function TimelineEventCard({ event, index }: { event: TimelineEvent; index: numb
 				</div>
 			</m.div>
 
-			<div className='absolute h-full w-full left-0 top-0 bg-white/90 backdrop-blur-2xl'/>
+			<div className="absolute h-full w-full left-0 top-0 bg-white/90 backdrop-blur-2xl" />
 		</m.div>
 	);
 }

@@ -91,6 +91,7 @@ export const sideMenuSections: MenuSection[] = [
 	{
 		title: 'Practice',
 		items: [
+			{ href: '/common-questions', label: 'Common Questions', icon: QuestionIcon },
 			{ href: '/flashcards', label: 'Flashcards', icon: Layers01Icon },
 			{ href: '/interactive-quiz', label: 'Interactive Quiz', icon: WorkoutSportIcon },
 			{ href: '/math-quiz', label: 'Math Quiz', icon: CalculatorIcon },
@@ -197,11 +198,11 @@ export function AppSidebar({ user, pathname, theme, onToggleTheme }: AppSidebarP
 							<HugeiconsIcon icon={BookOpen01Icon} className="w-5 h-5 text-white" />
 						</div>
 						<div>
-							<h1 className="text-lg font-black text-sidebar-foreground uppercase tracking-tight leading-none">
+							<h1 className="text-lg font-semibold text-sidebar-foreground leading-none">
 								{appConfig.name}
 							</h1>
-							<p className="text-[9px] font-bold text-sidebar-foreground/50 uppercase tracking-widest mt-0.5">
-								AI Exam Prep
+							<p className="text-[9px] font-medium text-sidebar-foreground/50 mt-0.5">
+								AI exam prep
 							</p>
 						</div>
 					</m.div>
@@ -234,7 +235,7 @@ export function AppSidebar({ user, pathname, theme, onToggleTheme }: AppSidebarP
 								onClick={() => handleSectionToggle(section.title)}
 								className="w-full flex items-center justify-between px-3 py-2 rounded-lg hover:bg-sidebar-accent/50 transition-colors group"
 							>
-								<span className="text-[10px] font-black uppercase tracking-widest text-sidebar-foreground/50">
+								<span className="text-[10px] font-medium text-sidebar-foreground/50">
 									{section.title}
 								</span>
 								<m.div

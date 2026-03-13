@@ -45,13 +45,9 @@ export function QuestionCard({
 						<div className="p-1.5 bg-tiimo-lavender/10 rounded-lg">
 							<HugeiconsIcon icon={Mortarboard01Icon} className="w-4 h-4 text-tiimo-lavender" />
 						</div>
-						<span className="text-[10px] font-black text-tiimo-lavender uppercase tracking-widest">
-							Practice Problem
-						</span>
+						<span className="text-[10px] font-medium text-tiimo-lavender">Practice problem</span>
 					</div>
-					<h2 className="text-xl font-black leading-tight text-foreground tracking-tight">
-						{question}
-					</h2>
+					<h2 className="text-xl font-semibold leading-tight text-foreground">{question}</h2>
 				</div>
 
 				{/* Visual Area */}
@@ -83,7 +79,7 @@ export function QuestionCard({
 							>
 								<div
 									className={cn(
-										'w-12 h-12 rounded-xl flex items-center justify-center font-black text-lg transition-all',
+										'w-12 h-12 rounded-xl flex items-center justify-center font-semibold text-lg transition-all',
 										isSelected
 											? isChecked
 												? option.isCorrect
@@ -99,7 +95,7 @@ export function QuestionCard({
 								</div>
 								<span
 									className={cn(
-										'flex-1 text-left font-bold text-base tracking-tight',
+										'flex-1 text-left font-medium text-base',
 										isSelected && isChecked && !option.isCorrect
 											? 'text-tiimo-gray-muted'
 											: 'text-foreground'

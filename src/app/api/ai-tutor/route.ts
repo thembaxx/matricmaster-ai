@@ -1,6 +1,7 @@
 import { type NextRequest, NextResponse } from 'next/server';
 import { AI_MODELS, generateAI, streamAI } from '@/lib/ai-config';
 import { getAuth } from '@/lib/auth';
+import { checkRateLimit, getRateLimitHeaders } from '@/lib/rate-limit';
 
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
@@ -69,6 +70,20 @@ export async function POST(request: NextRequest) {
 
 		if (!session?.user?.id) {
 			return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+		}
+
+		const rateLimitResult = checkRateLimit(session.user.id, 'ai-tutor');
+		if (!rateLimitResult.success) {
+			return NextResponse.json(
+				{
+					error: `Rate limit exceeded. Please try again in ${rateLimitResult.resetIn} seconds.`,
+					retryAfter: rateLimitResult.resetIn,
+				},
+				{
+					status: 429,
+					headers: getRateLimitHeaders(rateLimitResult),
+				}
+			);
 		}
 
 		if (!GEMINI_API_KEY) {

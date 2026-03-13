@@ -27,12 +27,14 @@ import {
 
 // Re-export better-auth tables with consistent naming
 export {
+	accounts as account,
+	accountsRelations,
 	authUsers as user,
 	sessions as session,
-	accounts as account,
+	sessionsRelations,
+	usersRelations,
 	verifications as verification,
 };
-export { usersRelations, sessionsRelations, accountsRelations };
 
 // Also export users directly for schema references
 export const users = authUsers;

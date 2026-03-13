@@ -153,6 +153,5 @@ process.on('SIGINT', async () => {
 	process.exit(0);
 });
 
+export type { DatabaseConfig, DbType };
 export { pgManager };
-export type { DatabaseConfig };
-export type { DbType };

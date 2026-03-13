@@ -34,4 +34,4 @@ vi.mock('@/lib/auth-client', () => ({
 }));
 
 // Export mocks for use in tests
-export { mockPush, mockReplace, mockBack, mockForward, mockRefresh, mockPrefetch };
+export { mockBack, mockForward, mockPrefetch, mockPush, mockRefresh, mockReplace };

@@ -15,55 +15,61 @@ import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
 
 const footerLinks = {
+	product: [
+		{ label: 'Features', href: '/#features' },
+		{ label: 'How it works', href: '/onboarding' },
+		{ label: 'Pricing', href: '/pricing' },
+		{ label: 'For schools', href: '/schools' },
+	],
+	resources: [
+		{ label: 'Study guides', href: '/resources' },
+		{ label: 'Past papers', href: '/past-papers' },
+		{ label: 'Flashcards', href: '/flashcards' },
+		{ label: 'AI tutor', href: '/ai-tutor' },
+	],
 	company: [
-		{ label: 'About Us', href: '/about' },
-		{ label: 'How It Works', href: '/dashboard/onboarding' },
+		{ label: 'About us', href: '/about' },
 		{ label: 'Careers', href: '/careers' },
+		{ label: 'Blog', href: '/blog' },
 		{ label: 'Press', href: '/press' },
 	],
-	support: [
-		{ label: 'Help Center', href: '/help' },
-		{ label: 'Safety', href: '/safety' },
-		{ label: 'Community Guidelines', href: '/guidelines' },
-		{ label: 'Contact Us', href: '/contact' },
-	],
 	legal: [
-		{ label: 'Terms of Service', href: '/terms' },
-		{ label: 'Privacy Policy', href: '/privacy' },
-		{ label: 'Cookie Policy', href: '/cookies' },
-		{ label: 'Accessibility', href: '/accessibility' },
+		{ label: 'Terms of service', href: '/terms' },
+		{ label: 'Privacy policy', href: '/privacy' },
 	],
 };
 
 const socialLinks = [
-	{ icon: Facebook01Icon, href: 'https://facebook.com', label: 'Facebook' },
-	{ icon: NewTwitterIcon, href: 'https://twitter.com', label: 'Twitter' },
-	{ icon: InstagramIcon, href: 'https://instagram.com', label: 'Instagram' },
-	{ icon: Linkedin01Icon, href: 'https://linkedin.com', label: 'LinkedIn' },
+	{ icon: Facebook01Icon, href: 'https://facebook.com/matricmaster', label: 'Facebook' },
+	{ icon: NewTwitterIcon, href: 'https://twitter.com/matricmaster', label: 'Twitter' },
+	{ icon: InstagramIcon, href: 'https://instagram.com/matricmaster', label: 'Instagram' },
+	{ icon: Linkedin01Icon, href: 'https://linkedin.com/company/matricmaster', label: 'LinkedIn' },
 ];
 
 export function Footer() {
 	return (
-		<footer className="bg-muted/30 border-t">
+		<footer className="bg-background border-t">
 			<div className="container mx-auto px-4 py-12 md:py-16">
-				<div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-6">
+				<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 lg:gap-12">
+					{/* Brand */}
 					<m.div
 						initial={{ opacity: 0, y: 20 }}
 						whileInView={{ opacity: 1, y: 0 }}
 						viewport={{ once: true }}
 						transition={{ duration: 0.5 }}
-						className="lg:col-span-2"
+						className="col-span-2 md:col-span-3 lg:col-span-2"
 					>
-						<Link href="/" className="flex items-center space-x-2 mb-4">
-							<span className="text-xl font-bold bg-linear-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
-								Helios
-							</span>
+						<Link href="/" className="flex items-center gap-2 mb-4">
+							<div className="w-8 h-8 rounded-lg bg-gradient-to-br from-tiimo-lavender to-purple-600 flex items-center justify-center">
+								<span className="text-white font-bold text-sm">M</span>
+							</div>
+							<span className="text-xl font-semibold">MatricMaster</span>
 						</Link>
-						<p className="text-sm text-muted-foreground mb-6 max-w-xs leading-relaxed">
-							Empowering the modern workforce with a curated marketplace for elite home services.
-							Verified excellence, community-driven trust.
+						<p className="text-sm text-muted-foreground mb-6 max-w-sm leading-relaxed">
+							Your AI-powered study companion for South African Grade 12 students. Master your
+							matric exams with personalized practice and expert guidance.
 						</p>
-						<div className="flex space-x-3">
+						<div className="flex gap-2">
 							{socialLinks.map((social, index) => (
 								<m.div
 									key={social.label}
@@ -74,29 +80,30 @@ export function Footer() {
 								>
 									<Link
 										href={social.href}
-										className="text-muted-foreground hover:text-foreground hover:scale-110 transition-all rounded-full p-2 hover:bg-background/50"
+										className="text-muted-foreground hover:text-foreground hover:scale-110 transition-all rounded-full p-2 hover:bg-muted"
 										aria-label={social.label}
 									>
-										<HugeiconsIcon icon={social.icon} className="h-5 w-5" />
+										<HugeiconsIcon icon={social.icon} className="h-4 w-4" />
 									</Link>
 								</m.div>
 							))}
 						</div>
 					</m.div>
 
+					{/* Product */}
 					<m.div
 						initial={{ opacity: 0, y: 20 }}
 						whileInView={{ opacity: 1, y: 0 }}
 						viewport={{ once: true }}
 						transition={{ duration: 0.5, delay: 0.1 }}
 					>
-						<h3 className="font-semibold mb-4">Company</h3>
-						<ul className="space-y-3">
-							{footerLinks.company.map((link) => (
+						<h3 className="font-medium text-sm mb-4">Product</h3>
+						<ul className="space-y-2.5">
+							{footerLinks.product.map((link) => (
 								<li key={link.label}>
 									<Link
 										href={link.href}
-										className="text-sm text-muted-foreground hover:text-foreground hover:translate-x-1 transition-all"
+										className="text-sm text-muted-foreground hover:text-foreground transition-colors"
 									>
 										{link.label}
 									</Link>
@@ -105,19 +112,42 @@ export function Footer() {
 						</ul>
 					</m.div>
 
+					{/* Resources */}
+					<m.div
+						initial={{ opacity: 0, y: 20 }}
+						whileInView={{ opacity: 1, y: 0 }}
+						viewport={{ once: true }}
+						transition={{ duration: 0.5, delay: 0.15 }}
+					>
+						<h3 className="font-medium text-sm mb-4">Resources</h3>
+						<ul className="space-y-2.5">
+							{footerLinks.resources.map((link) => (
+								<li key={link.label}>
+									<Link
+										href={link.href}
+										className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+									>
+										{link.label}
+									</Link>
+								</li>
+							))}
+						</ul>
+					</m.div>
+
+					{/* Company */}
 					<m.div
 						initial={{ opacity: 0, y: 20 }}
 						whileInView={{ opacity: 1, y: 0 }}
 						viewport={{ once: true }}
 						transition={{ duration: 0.5, delay: 0.2 }}
 					>
-						<h3 className="font-semibold mb-4">Support</h3>
-						<ul className="space-y-3">
-							{footerLinks.support.map((link) => (
+						<h3 className="font-medium text-sm mb-4">Company</h3>
+						<ul className="space-y-2.5">
+							{footerLinks.company.map((link) => (
 								<li key={link.label}>
 									<Link
 										href={link.href}
-										className="text-sm text-muted-foreground hover:text-foreground hover:translate-x-1 transition-all"
+										className="text-sm text-muted-foreground hover:text-foreground transition-colors"
 									>
 										{link.label}
 									</Link>
@@ -126,25 +156,27 @@ export function Footer() {
 						</ul>
 					</m.div>
 
+					{/* Newsletter */}
 					<m.div
 						initial={{ opacity: 0, y: 20 }}
 						whileInView={{ opacity: 1, y: 0 }}
 						viewport={{ once: true }}
 						transition={{ duration: 0.5, delay: 0.25 }}
+						className="col-span-2 md:col-span-3 lg:col-span-1"
 					>
-						<h3 className="font-semibold mb-4">Stay Updated</h3>
-						<p className="text-sm text-muted-foreground mb-4">
-							Join our exclusive circle for industry insights and early access to promotions.
+						<h3 className="font-medium text-sm mb-4">Stay updated</h3>
+						<p className="text-xs text-muted-foreground mb-4">
+							Get study tips and exam prep delivered to your inbox.
 						</p>
-						<div className="flex flex-col space-y-2">
+						<div className="flex flex-col gap-2">
 							<Input
 								type="email"
-								placeholder="Your professional email"
-								className="w-full focus:border-primary/50 transition-colors"
-								aria-label="Email address for updates"
+								placeholder="your@email.com"
+								className="h-9 text-sm"
+								aria-label="Email for updates"
 							/>
-							<Button size="sm" className="w-full font-bold hover:scale-105 transition-transform">
-								Join Now
+							<Button size="sm" className="h-9 text-sm font-medium">
+								Subscribe
 							</Button>
 						</div>
 					</m.div>
@@ -157,31 +189,30 @@ export function Footer() {
 					whileInView={{ opacity: 1 }}
 					viewport={{ once: true }}
 					transition={{ duration: 0.5 }}
-					className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0"
+					className="flex flex-col md:flex-row justify-between items-center gap-4"
 				>
-					<div className="flex flex-wrap justify-center md:justify-start gap-4 text-sm text-muted-foreground">
-						<span>
-							© {new Date().getFullYear()} Helios Platform. All rights reserved. Built for
-							excellence.
-						</span>
+					<div className="flex flex-col md:flex-row items-center gap-2 text-xs text-muted-foreground">
+						<span>© {new Date().getFullYear()} MatricMaster AI. All rights reserved.</span>
+						<span className="hidden md:inline">•</span>
 						<div className="flex gap-4">
 							{footerLinks.legal.map((link) => (
 								<Link
 									key={link.label}
 									href={link.href}
-									className="hover:text-foreground transition-colors hover:underline"
+									className="hover:text-foreground transition-colors"
 								>
 									{link.label}
 								</Link>
 							))}
 						</div>
 					</div>
-					<div className="flex items-center gap-4 text-sm text-muted-foreground">
-						<div className="flex items-center gap-1 hover:text-foreground transition-colors">
-							<HugeiconsIcon icon={Mail01Icon} className="h-4 w-4" />
-							<span>support@helios.com</span>
-						</div>
-					</div>
+					<Link
+						href="mailto:hello@matricmaster.ai"
+						className="flex items-center gap-2 text-xs text-muted-foreground hover:text-foreground transition-colors"
+					>
+						<HugeiconsIcon icon={Mail01Icon} className="h-3.5 w-3.5" />
+						<span>hello@matricmaster.ai</span>
+					</Link>
 				</m.div>
 			</div>
 		</footer>

@@ -95,14 +95,14 @@ const VisuallyHidden = VisuallyHiddenPrimitive.Root;
 
 export {
 	Dialog,
-	DialogPortal,
-	DialogOverlay,
-	DialogTrigger,
 	DialogClose,
 	DialogContent,
-	DialogHeader,
-	DialogFooter,
-	DialogTitle,
 	DialogDescription,
+	DialogFooter,
+	DialogHeader,
+	DialogOverlay,
+	DialogPortal,
+	DialogTitle,
+	DialogTrigger,
 	VisuallyHidden,
 };

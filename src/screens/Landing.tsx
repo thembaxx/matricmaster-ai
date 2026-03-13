@@ -106,7 +106,7 @@ export default function Landing() {
 									initial={{ opacity: 0, y: 20 }}
 									animate={{ opacity: 1, y: 0 }}
 									transition={{ delay: 0.1 }}
-									className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-black text-foreground leading-[0.95] tracking-tight"
+									className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-bold text-foreground leading-[0.95]"
 								>
 									Master your
 									<br />
@@ -273,7 +273,7 @@ export default function Landing() {
 											<HugeiconsIcon icon={FlashIcon} className="w-5 h-5 text-success" />
 										</div>
 										<div>
-											<p className="text-lg font-black">2,450</p>
+											<p className="text-lg font-bold">2,450</p>
 											<p className="text-xs text-muted-foreground">XP Earned</p>
 										</div>
 									</div>
@@ -291,7 +291,7 @@ export default function Landing() {
 											<span className="text-lg">🔥</span>
 										</div>
 										<div>
-											<p className="text-lg font-black">12 Day</p>
+											<p className="text-lg font-bold">12 day</p>
 											<p className="text-xs text-muted-foreground">Study Streak</p>
 										</div>
 									</div>
@@ -309,7 +309,7 @@ export default function Landing() {
 							transition={{ duration: 0.6 }}
 							className="text-center mb-16"
 						>
-							<h2 className="text-3xl md:text-4xl lg:text-5xl font-black tracking-tight mb-4">
+							<h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
 								Everything you need to
 								<span className="text-tiimo-lavender"> succeed</span>
 							</h2>
@@ -352,7 +352,7 @@ export default function Landing() {
 							transition={{ duration: 0.6 }}
 							className="mb-12"
 						>
-							<h2 className="text-3xl md:text-4xl lg:text-5xl font-black tracking-tight mb-4">
+							<h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
 								Explore your
 								<span className="text-tiimo-lavender"> subjects</span>
 							</h2>
@@ -425,7 +425,7 @@ export default function Landing() {
 							</div>
 
 							<div className="relative z-10 text-center space-y-8">
-								<h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tight">
+								<h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white">
 									Ready to ace
 									<br />
 									your exams?
