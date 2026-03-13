@@ -5,8 +5,8 @@
 @custom-variant dark (&:is(.dark *));
 
 /* ==========================================================================
-   TIIMO 3.0 EXACT THEME (2025/2026)
-   Designed for neuro-inclusion, clarity, and low cognitive load.
+   TIIMO 3.0 DESIGN SYSTEM (2025/2026)
+   Unified design tokens for consistent styling across all screens
    ========================================================================== */
 
 :root {
@@ -18,6 +18,13 @@
   --tiimo-gray-muted: #8E8E8E;
   --tiimo-gray-subtle: #D1D1D1;
   --tiimo-white: #FFFFFF;
+  
+  /* --- EXTENDED TIIMO COLORS --- */
+  --tiimo-yellow: #F2C945;
+  --tiimo-blue: #48A7DE;
+  --tiimo-orange: #F97316;
+  --tiimo-pink: #EC4899;
+  --tiimo-teal: #14B8A6;
 
   /* --- SUBJECT PASTELS (Tiimo 3.0 Style) --- */
   --subject-math: #F2C945;
@@ -72,21 +79,32 @@
   --font-body: var(--font-sora), sans-serif;
   --font-mono: var(--font-space-grotesk), monospace;
 
-  /* --- RADII --- */
-  --radius-sm: 12px;
-  --radius-md: 18px;
-  --radius-lg: 24px;
-  --radius-xl: 32px;
+  /* --- UNIFIED BORDER RADIUS SYSTEM --- */
+  --radius-xs: 8px;    /* Small elements, badges */
+  --radius-sm: 12px;   /* Inputs, small cards */
+  --radius-md: 18px;   /* Cards, buttons */
+  --radius-lg: 24px;   /* Large cards, sections */
+  --radius-xl: 32px;   /* Hero sections */
+  --radius-2xl: 48px;  /* Large containers */
   --radius-full: 9999px;
+  
+  /* Legacy aliases for compatibility */
+  --radius-card: var(--radius-lg);
+  --radius-button: var(--radius-md);
+  --radius-input: var(--radius-sm);
 
   /* --- SHADOWS --- */
   --shadow-tiimo: 0 8px 32px -4px rgba(70, 70, 68, 0.08);
   --shadow-tiimo-lg: 0 16px 48px -8px rgba(70, 70, 68, 0.12);
+  --shadow-tiimo-xl: 0 24px 64px -12px rgba(70, 70, 68, 0.16);
   
   /* --- ANIMATION --- */
   --ease-tiimo: cubic-bezier(0.34, 1.56, 0.64, 1);
   --ease-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-fast: 150ms;
   --duration-normal: 300ms;
+  --duration-slow: 500ms;
 }
 
 /* --- DARK MODE (Energetic Gray Variant) --- */
@@ -121,38 +139,62 @@
   --subject-physics-soft: rgba(72, 167, 222, 0.18);
   --subject-life-soft: rgba(92, 181, 135, 0.18);
   --subject-accounting-soft: rgba(244, 114, 182, 0.18);
+  --subject-english-soft: rgba(129, 140, 248, 0.18);
+  --subject-geography-soft: rgba(45, 212, 191, 0.18);
+  --subject-history-soft: rgba(251, 146, 60, 0.18);
 }
 
 @theme inline {
+  /* Base Colors */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  
+  /* Primary */
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
   --color-primary-soft: var(--accent);
+  
+  /* Secondary */
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
+  
+  /* Accent */
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
+  
+  /* Muted */
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
+  
+  /* Card */
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
+  
+  /* Border & Input */
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
   
+  /* Radius Tokens */
+  --radius-xs: var(--radius-xs);
   --radius-sm: var(--radius-sm);
   --radius-md: var(--radius-md);
   --radius-lg: var(--radius-lg);
   --radius-xl: var(--radius-xl);
+  --radius-2xl: var(--radius-2xl);
+  --radius-full: var(--radius-full);
   
+  /* Typography */
   --font-display: var(--font-display);
   --font-body: var(--font-body);
   --font-mono: var(--font-mono);
 
+  /* Shadows */
   --shadow-tiimo: var(--shadow-tiimo);
   --shadow-tiimo-lg: var(--shadow-tiimo-lg);
+  --shadow-tiimo-xl: var(--shadow-tiimo-xl);
 
+  /* Semantic Colors */
   --color-success: var(--success);
   --color-success-soft: var(--success-soft);
   --color-destructive: var(--destructive);
@@ -162,7 +204,7 @@
   --color-info: var(--info);
   --color-info-soft: var(--info-soft);
   
-  /* Subject Colors Mapping */
+  /* Subject Colors */
   --color-subject-math: var(--subject-math);
   --color-subject-math-soft: var(--subject-math-soft);
   --color-subject-physics: var(--subject-physics);
@@ -178,7 +220,7 @@
   --color-subject-history: var(--subject-history);
   --color-subject-history-soft: var(--subject-history-soft);
 
-  /* Tiimo Specific Colors */
+  /* Tiimo Brand Colors */
   --color-tiimo-lavender: var(--tiimo-lavender);
   --color-tiimo-cream: var(--tiimo-cream);
   --color-tiimo-green: var(--tiimo-green);
@@ -216,6 +258,69 @@
 }
 
 @layer utilities {
+  /* === TYPOGRAPHY UTILITIES === */
+  
+  /* Label Style - Standardized small uppercase labels */
+  .label-sm {
+    @apply text-[10px] font-black uppercase tracking-[0.2em];
+  }
+  .label-xs {
+    @apply text-[10px] font-bold uppercase tracking-widest;
+  }
+  
+  /* Heading Styles */
+  .heading-1 {
+    @apply text-3xl sm:text-4xl font-black tracking-tight;
+  }
+  .heading-2 {
+    @apply text-2xl sm:text-3xl font-black tracking-tight;
+  }
+  .heading-3 {
+    @apply text-xl sm:text-2xl font-bold tracking-tight;
+  }
+  .heading-4 {
+    @apply text-lg sm:text-xl font-semibold;
+  }
+  
+  /* Body Text */
+  .body-lg {
+    @apply text-lg leading-relaxed;
+  }
+  .body-md {
+    @apply text-base leading-relaxed;
+  }
+  .body-sm {
+    @apply text-sm leading-relaxed;
+  }
+  
+  /* === CARD UTILITIES === */
+  
+  /* Standard Tiimo Card */
+  .tiimo-card {
+    @apply bg-card border border-border/50 transition-all duration-300;
+    border-radius: var(--radius-lg);
+  }
+  .tiimo-card:hover {
+    @apply shadow-tiimo-lg border-primary/20;
+  }
+  
+  /* Elevated Card */
+  .tiimo-card-elevated {
+    @apply bg-card/80 backdrop-blur-sm border border-border/50 shadow-tiimo;
+    border-radius: var(--radius-lg);
+  }
+  
+  /* Glass Card */
+  .tiimo-glass {
+    @apply bg-white/70 backdrop-blur-xl border border-white/20;
+    border-radius: var(--radius-lg);
+  }
+  .dark .tiimo-glass {
+    @apply bg-black/40 border-white/10;
+  }
+  
+  /* === BUTTON UTILITIES === */
+  
   /* Bouncy Press Interaction */
   .tiimo-press {
     @apply transition-transform duration-200;
@@ -225,37 +330,29 @@
     @apply scale-95;
   }
   
-  /* Tiimo Card Style */
-  .tiimo-card {
-    @apply bg-card rounded-lg shadow-tiimo border border-border/50 transition-all duration-300;
-  }
-  .tiimo-card:hover {
-    @apply shadow-tiimo-lg border-primary/20;
-  }
-  
-  /* Tiimo Glass */
-  .tiimo-glass {
-    @apply bg-white/70 backdrop-blur-xl border border-white/20;
-  }
-  .dark .tiimo-glass {
-    @apply bg-black/40 border-white/10;
-  }
-  
-  /* Vertical Timeline Strip */
-  .tiimo-timeline-strip {
-    @apply absolute left-0 top-0 bottom-0 w-1.5 rounded-l-full;
-  }
-  
-  /* Large Rounded Button */
+  /* Standard Button */
   .tiimo-btn {
-    @apply rounded-full px-8 py-3 font-semibold transition-all duration-200 inline-flex items-center justify-center gap-2 transition-transform active:scale-95;
+    @apply inline-flex items-center justify-center gap-2 font-semibold transition-all duration-200;
+    border-radius: var(--radius-md);
     transition-timing-function: var(--ease-tiimo);
   }
+  .tiimo-btn:active {
+    @apply scale-95;
+  }
+  
+  /* Primary Button */
   .tiimo-btn-primary {
     @apply bg-primary text-primary-foreground hover:brightness-110;
   }
+  
+  /* Secondary Button */
   .tiimo-btn-secondary {
     @apply bg-secondary text-secondary-foreground hover:bg-secondary/80;
+  }
+  
+  /* Ghost Button */
+  .tiimo-btn-ghost {
+    @apply bg-transparent text-foreground hover:bg-muted;
   }
   
   /* Circle Checkbox */
@@ -265,17 +362,119 @@
   .tiimo-checkbox.checked {
     @apply bg-success border-success text-white;
   }
-
-  /* Subject Helpers */
+  
+  /* === SPACING UTILITIES === */
+  
+  /* Section Padding */
+  .section-padding {
+    @apply py-8 lg:py-12 px-4 sm:px-6 lg:px-8;
+  }
+  
+  /* Container */
+  .tiimo-container {
+    @apply max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8;
+  }
+  
+  /* === SUBJECT HELPERS === */
   .bg-math { @apply bg-subject-math-soft text-subject-math; }
   .bg-physics { @apply bg-subject-physics-soft text-subject-physics; }
   .bg-life { @apply bg-subject-life-soft text-subject-life; }
+  
+  /* === VERTICAL TIMELINE === */
+  .tiimo-timeline-strip {
+    @apply absolute left-0 top-0 bottom-0 w-1.5 rounded-l-full;
+  }
 }
 
-/* --- ANIMATIONS --- */
+/* === ANIMATIONS === */
+
+/* Float Animation */
 @keyframes tiimo-float {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-10px); }
+}
+
+.animate-tiimo-float {
+  animation: tiimo-float 4s var(--ease-smooth) infinite;
+}
+
+/* Pulse Animation */
+@keyframes tiimo-pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.05); opacity: 0.8; }
+}
+
+.animate-tiimo-pulse {
+  animation: tiimo-pulse 2s var(--ease-smooth) infinite;
+}
+
+/* Spin Animation */
+@keyframes tiimo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.animate-tiimo-spin {
+  animation: tiimo-spin 20s linear infinite;
+}
+
+/* shimmer effect for loading states */
+@keyframes tiimo-shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.animate-tiimo-shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--muted) 25%,
+    var(--card) 50%,
+    var(--muted) 75%
+  );
+  background-size: 200% 100%;
+  animation: tiimo-shimmer 1.5s ease-in-out infinite;
+}
+
+/* === SIDEBAR & DRAWER STYLING === */
+
+:root {
+  /* Sidebar - Light Mode */
+  --sidebar-background: var(--tiimo-cream);
+  --sidebar-foreground: var(--tiimo-gray-dark);
+  --sidebar-primary: var(--tiimo-lavender);
+  --sidebar-primary-foreground: var(--tiimo-white);
+  --sidebar-accent: rgba(159, 133, 255, 0.08);
+  --sidebar-accent-foreground: var(--tiimo-lavender);
+  --sidebar-border: var(--border);
+  --sidebar-ring: var(--tiimo-lavender);
+}
+
+.dark {
+  /* Sidebar - Dark Mode */
+  --sidebar-background: #1F1F1F;
+  --sidebar-foreground: #F2F2F2;
+  --sidebar-primary: #A88FFF;
+  --sidebar-primary-foreground: #1F1F1F;
+  --sidebar-accent: rgba(168, 143, 255, 0.12);
+  --sidebar-accent-foreground: #A88FFF;
+  --sidebar-border: #383838;
+  --sidebar-ring: #A88FFF;
+}
+
+@theme inline {
+  --color-sidebar-background: var(--sidebar-background);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+/* Mobile Drawer Overlay */
+[data-sidebar="sidebar"][data-mobile="true"] {
+  backdrop-filter: blur(20px);
 }
 
 .animate-tiimo-float {

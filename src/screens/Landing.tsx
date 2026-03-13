@@ -97,7 +97,7 @@ export default function Landing() {
 								transition={{ type: 'spring', stiffness: 300, damping: 28 }}
 								className="space-y-8"
 							>
-								<Badge className="tiimo-glass rounded-full px-4 py-1.5 text-[10px] font-medium bg-primary-orange! text-white/90!">
+								<Badge className="tiimo-glass rounded-full px-4 py-1.5 text-[10px] font-medium text-white">
 									<HugeiconsIcon icon={SparklesIcon} className="w-3 h-3 mr-1.5" />
 									The exam prep platform
 								</Badge>
@@ -132,7 +132,7 @@ export default function Landing() {
 							>
 								<Button
 									size="lg"
-									className="w-full sm:w-auto h-14 rounded-2xl text-base font-semibold shadow-lg shadow-tiimo-lavender/25 hover:shadow-xl hover:shadow-tiimo-lavender/30 transition-all"
+									className="w-full sm:w-auto h-14 rounded-[var(--radius-lg)] text-base font-semibold shadow-lg shadow-tiimo-lavender/25 hover:shadow-xl hover:shadow-tiimo-lavender/30 transition-all"
 									onClick={() => handleAuthRoute('/dashboard')}
 								>
 									<span className="flex items-center gap-2">
@@ -143,7 +143,7 @@ export default function Landing() {
 								<Button
 									size="lg"
 									variant="outline"
-									className="w-full sm:w-auto h-14 rounded-2xl text-base font-medium"
+									className="w-full sm:w-auto h-14 rounded-[var(--radius-lg)] text-base font-medium"
 									onClick={() => router.push('/past-papers')}
 								>
 									<span className="flex items-center gap-2">
@@ -196,7 +196,7 @@ export default function Landing() {
 								whileHover={{ scale: 1.02 }}
 								className="relative w-full aspect-square max-w-lg mx-auto"
 							>
-								<div className="absolute inset-0 bg-gradient-to-br from-tiimo-lavender/20 via-transparent to-subject-physics/20 rounded-[3rem]" />
+								<div className="absolute inset-0 bg-gradient-to-br from-tiimo-lavender/20 via-transparent to-subject-physics/20 rounded-[var(--radius-2xl)]" />
 
 								{/* Abstract Shapes */}
 								<m.div
@@ -221,9 +221,9 @@ export default function Landing() {
 												repeat: Number.POSITIVE_INFINITY,
 												ease: 'easeInOut',
 											}}
-											className="absolute -top-4 -left-8 w-24 h-28 bg-card rounded-2xl shadow-xl border border-border/50 flex flex-col items-center justify-center p-3 z-10"
+											className="absolute -top-4 -left-8 w-24 h-28 bg-card rounded-[var(--radius-lg)] shadow-xl border border-border/50 flex flex-col items-center justify-center p-3 z-10"
 										>
-											<div className="w-10 h-10 rounded-xl bg-subject-math/20 flex items-center justify-center mb-2">
+											<div className="w-10 h-10 rounded-[var(--radius-md)] bg-subject-math/20 flex items-center justify-center mb-2">
 												<HugeiconsIcon
 													icon={CalculatorIcon}
 													className="w-5 h-5 text-subject-math"
@@ -242,9 +242,9 @@ export default function Landing() {
 												ease: 'easeInOut',
 												delay: 0.5,
 											}}
-											className="absolute -bottom-2 -right-6 w-24 h-28 bg-card rounded-2xl shadow-xl border border-border/50 flex flex-col items-center justify-center p-3 z-20"
+											className="absolute -bottom-2 -right-6 w-24 h-28 bg-card rounded-[var(--radius-lg)] shadow-xl border border-border/50 flex flex-col items-center justify-center p-3 z-20"
 										>
-											<div className="w-10 h-10 rounded-xl bg-subject-life/20 flex items-center justify-center mb-2">
+											<div className="w-10 h-10 rounded-[var(--radius-md)] bg-subject-life/20 flex items-center justify-center mb-2">
 												<HugeiconsIcon icon={AtomIcon} className="w-5 h-5 text-subject-life" />
 											</div>
 											<div className="h-1.5 w-16 bg-secondary rounded-full overflow-hidden">
@@ -266,10 +266,10 @@ export default function Landing() {
 									initial={{ opacity: 0, x: 20 }}
 									animate={{ opacity: 1, x: 0 }}
 									transition={{ delay: 0.8 }}
-									className="absolute -right-4 top-1/4 bg-card rounded-2xl p-4 shadow-xl border border-border/50"
+									className="absolute -right-4 top-1/4 bg-card rounded-[var(--radius-lg)] p-4 shadow-xl border border-border/50"
 								>
 									<div className="flex items-center gap-3">
-										<div className="w-10 h-10 rounded-xl bg-success/10 flex items-center justify-center">
+										<div className="w-10 h-10 rounded-[var(--radius-md)] bg-success/10 flex items-center justify-center">
 											<HugeiconsIcon icon={FlashIcon} className="w-5 h-5 text-success" />
 										</div>
 										<div>
@@ -284,10 +284,10 @@ export default function Landing() {
 									initial={{ opacity: 0, x: -20 }}
 									animate={{ opacity: 1, x: 0 }}
 									transition={{ delay: 1 }}
-									className="absolute -left-4 bottom-1/4 bg-card rounded-2xl p-4 shadow-xl border border-border/50"
+									className="absolute -left-4 bottom-1/4 bg-card rounded-[var(--radius-lg)] p-4 shadow-xl border border-border/50"
 								>
 									<div className="flex items-center gap-3">
-										<div className="w-10 h-10 rounded-xl bg-orange-100 flex items-center justify-center">
+										<div className="w-10 h-10 rounded-[var(--radius-md)] bg-orange-100 flex items-center justify-center">
 											<span className="text-lg">🔥</span>
 										</div>
 										<div>
@@ -329,10 +329,10 @@ export default function Landing() {
 								<m.div
 									key={feature.title}
 									variants={STAGGER_ITEM}
-									className="group p-8 rounded-3xl bg-card border border-border/50 hover:border-tiimo-lavender/30 hover:shadow-xl hover:shadow-tiimo-lavender/10 transition-all duration-300"
+									className="group p-8 rounded-[var(--radius-xl)] bg-card border border-border/50 hover:border-tiimo-lavender/30 hover:shadow-xl hover:shadow-tiimo-lavender/10 transition-all duration-300"
 								>
 									<div
-										className={`w-14 h-14 rounded-2xl ${feature.color} flex items-center justify-center mb-6`}
+										className={`w-14 h-14 rounded-[var(--radius-lg)] ${feature.color} flex items-center justify-center mb-6`}
 									>
 										<HugeiconsIcon icon={feature.icon} className="w-7 h-7" />
 									</div>
@@ -374,7 +374,7 @@ export default function Landing() {
 										type="button"
 										variants={STAGGER_ITEM}
 										onClick={() => handleAuthRoute(subject.path)}
-										className="group relative p-6 rounded-3xl bg-card border border-border/50 hover:border-primary/30 transition-all duration-300 text-left overflow-hidden"
+										className="group relative p-6 rounded-[var(--radius-xl)] bg-card border border-border/50 hover:border-primary/30 transition-all duration-300 text-left overflow-hidden"
 									>
 										<div
 											className={`absolute top-0 right-0 w-32 h-32 ${subject.bg} rounded-full -mr-16 -mt-16 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-3xl`}
@@ -382,7 +382,7 @@ export default function Landing() {
 
 										<div className="relative z-10">
 											<div
-												className={`w-12 h-12 rounded-2xl ${subject.bg} flex items-center justify-center mb-4`}
+												className={`w-12 h-12 rounded-[var(--radius-lg)] ${subject.bg} flex items-center justify-center mb-4`}
 											>
 												<HugeiconsIcon icon={icon} className={`w-6 h-6 ${subject.color}`} />
 											</div>
@@ -406,7 +406,7 @@ export default function Landing() {
 							whileInView={{ opacity: 1, scale: 1 }}
 							viewport={{ once: true }}
 							transition={{ duration: 0.6 }}
-							className="relative overflow-hidden rounded-[3rem] bg-gradient-to-br from-tiimo-lavender via-tiimo-lavender to-subject-physics p-12 lg:p-20"
+							className="relative overflow-hidden rounded-[var(--radius-2xl)] bg-gradient-to-br from-tiimo-lavender via-tiimo-lavender to-subject-physics p-12 lg:p-20"
 						>
 							{/* Background Pattern */}
 							<div className="absolute inset-0 opacity-10">
@@ -436,7 +436,7 @@ export default function Landing() {
 								<div className="flex flex-col sm:flex-row gap-4 justify-center">
 									<Button
 										size="lg"
-										className="w-full sm:w-auto h-14 rounded-2xl text-base font-semibold bg-white text-tiimo-lavender hover:bg-white/90 shadow-xl"
+										className="w-full sm:w-auto h-14 rounded-[var(--radius-lg)] text-base font-semibold bg-white text-tiimo-lavender hover:bg-white/90 shadow-xl"
 										onClick={() => router.push('/sign-up')}
 									>
 										<span className="flex items-center gap-2">
