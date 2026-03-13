@@ -1,10 +1,9 @@
 'use client';
 
 import {
-	Calendar01Icon,
+	ArrowRight01Icon,
 	Cancel01Icon,
-	FlashIcon,
-	GiftIcon,
+	CheckmarkCircleIcon,
 	SparklesIcon,
 	StarIcon,
 } from '@hugeicons/core-free-icons';
@@ -12,8 +11,7 @@ import { HugeiconsIcon } from '@hugeicons/react';
 import { AnimatePresence, m } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
-import { DAILY_LOGIN_REWARDS } from '@/constants/rewards';
+import { Card, CardContent } from '@/components/ui/card';
 import { claimLoginBonus, getLoginBonusStatus } from '@/lib/db/login-bonus-actions';
 
 interface DailyLoginBonusProps {
@@ -77,174 +75,174 @@ export function DailyLoginBonus({ onClaimed }: DailyLoginBonusProps) {
 					initial={{ opacity: 0 }}
 					animate={{ opacity: 1 }}
 					exit={{ opacity: 0 }}
-					className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+					className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
 					onClick={handleClose}
 				>
 					<m.div
-						initial={{ scale: 0.9, opacity: 0 }}
-						animate={{ scale: 1, opacity: 1 }}
-						exit={{ scale: 0.9, opacity: 0 }}
+						initial={{ scale: 0.9, opacity: 0, y: 20 }}
+						animate={{ scale: 1, opacity: 1, y: 0 }}
+						exit={{ scale: 0.9, opacity: 0, y: 20 }}
+						transition={{ type: 'spring', damping: 25, stiffness: 300 }}
 						onClick={(e) => e.stopPropagation()}
+						className="w-full max-w-sm"
 					>
-						<Card className="w-full  p-6 rounded-3xl bg-linear-to-br from-white to-amber-50 dark:from-zinc-900 dark:to-zinc-800 border-brand-amber/20 shadow-2xl">
-							<div className="flex items-center justify-between mb-6">
-								<div className="flex items-center gap-2">
-									<div className="w-10 h-10 rounded-xl bg-brand-amber/20 flex items-center justify-center">
-										<HugeiconsIcon icon={GiftIcon} className="w-5 h-5 text-brand-amber" />
-									</div>
-									<h2 className="text-xl font-black text-foreground">Daily Bonus</h2>
-								</div>
-								<Button
-									variant="ghost"
-									size="icon"
-									onClick={handleClose}
-									className="rounded-full"
-									aria-label="Close"
-								>
-									<HugeiconsIcon icon={Cancel01Icon} className="w-5 h-5" />
-								</Button>
-							</div>
-
+						<Card className="overflow-hidden border-0 shadow-2xl">
 							{!claimResult ? (
-								<>
-									<div className="text-center mb-6">
-										<m.div
-											initial={{ scale: 0.8 }}
-											animate={{ scale: 1 }}
-											transition={{ type: 'spring', damping: 10 }}
-											className="w-24 h-24 mx-auto mb-4 rounded-full bg-linear-to-br from-brand-amber to-orange-500 flex items-center justify-center shadow-lg shadow-brand-amber/30"
+								<div>
+									<div className="relative px-6 pt-8 pb-6 bg-gradient-to-b from-primary/5 to-transparent">
+										<Button
+											variant="ghost"
+											size="icon"
+											onClick={handleClose}
+											className="absolute top-4 right-4 h-8 w-8 rounded-full"
 										>
-											<HugeiconsIcon icon={Calendar01Icon} className="w-12 h-12 text-white" />
+											<HugeiconsIcon icon={Cancel01Icon} className="w-4 h-4" />
+										</Button>
+
+										<m.div
+											initial={{ scale: 0 }}
+											animate={{ scale: 1 }}
+											transition={{ delay: 0.1, type: 'spring', damping: 15 }}
+											className="w-20 h-20 mx-auto mb-4 rounded-full bg-primary/10 flex items-center justify-center"
+										>
+											<div className="w-16 h-16 rounded-full bg-gradient-to-br from-primary to-primary/60 flex items-center justify-center">
+												<HugeiconsIcon icon={SparklesIcon} className="w-8 h-8 text-white" />
+											</div>
 										</m.div>
-										<p className="text-sm text-muted-foreground mb-1">Day {currentDay} of 30</p>
-										<h3 className="text-2xl font-black text-foreground">
-											{status.consecutiveDays === 0
-												? 'Welcome Back!'
-												: `${status.consecutiveDays} Day Streak!`}
-										</h3>
+
+										<div className="text-center">
+											<p className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-1">
+												Day {currentDay}
+											</p>
+											<h2 className="text-2xl font-bold tracking-tight">
+												{status.consecutiveDays === 0
+													? 'Welcome Back!'
+													: `${status.consecutiveDays} Day Streak`}
+											</h2>
+										</div>
 									</div>
 
-									{nextReward && (
-										<div className="bg-muted/50 rounded-2xl p-4 mb-6">
-											<div className="flex items-center justify-between">
-												<div className="flex items-center gap-3">
-													<div className="w-12 h-12 rounded-xl bg-brand-amber/10 flex items-center justify-center">
-														<HugeiconsIcon icon={FlashIcon} className="w-6 h-6 text-brand-amber" />
+									<CardContent className="px-6 pb-6 space-y-6">
+										{nextReward && (
+											<div className="p-4 rounded-2xl bg-muted/50">
+												<div className="flex items-center justify-between">
+													<div className="flex items-center gap-3">
+														<div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+															<HugeiconsIcon icon={SparklesIcon} className="w-5 h-5 text-primary" />
+														</div>
+														<div>
+															<p className="text-xs font-medium text-muted-foreground">
+																Today&apos;s Reward
+															</p>
+															<p className="text-lg font-bold">+{nextReward.xpBonus} XP</p>
+														</div>
 													</div>
-													<div>
-														<p className="text-sm font-bold text-muted-foreground">
-															Today's Reward
-														</p>
-														<p className="text-xl font-black text-foreground">
-															+{nextReward.xpBonus} XP
-														</p>
-													</div>
+													{nextReward.streakFreeze && (
+														<div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-blue-500/10">
+															<HugeiconsIcon
+																icon={StarIcon}
+																className="w-3.5 h-3.5 text-blue-500"
+															/>
+															<span className="text-xs font-medium text-blue-500">+1 Freeze</span>
+														</div>
+													)}
 												</div>
-												{nextReward.streakFreeze && (
-													<div className="flex items-center gap-1 px-2 py-1 bg-blue-100 dark:bg-blue-900/20 rounded-full">
-														<HugeiconsIcon icon={StarIcon} className="w-4 h-4 text-blue-500" />
-														<span className="text-xs font-bold text-blue-500">+1 Freeze</span>
-													</div>
+												{nextReward.specialReward && (
+													<p className="mt-2 text-xs font-medium text-center text-primary">
+														{nextReward.specialReward}
+													</p>
 												)}
 											</div>
-											{nextReward.specialReward && (
-												<p className="mt-2 text-sm font-bold text-brand-amber text-center">
-													<HugeiconsIcon icon={SparklesIcon} className="w-4 h-4 inline mr-1" />
-													{nextReward.specialReward}
-												</p>
-											)}
-										</div>
-									)}
-
-									<Button
-										onClick={handleClaim}
-										disabled={isClaiming}
-										className="w-full h-14 bg-brand-amber hover:bg-brand-amber/90 text-zinc-900 rounded-2xl text-lg font-bold shadow-lg shadow-brand-amber/20"
-									>
-										{isClaiming ? (
-											<m.div
-												animate={{ rotate: 360 }}
-												transition={{
-													repeat: Number.POSITIVE_INFINITY,
-													duration: 1,
-													ease: 'linear',
-												}}
-											>
-												<HugeiconsIcon icon={SparklesIcon} className="w-6 h-6" />
-											</m.div>
-										) : (
-											<>
-												<HugeiconsIcon icon={GiftIcon} className="w-5 h-5 mr-2" />
-												Claim Reward
-											</>
 										)}
-									</Button>
-								</>
+
+										<div className="flex justify-center gap-2">
+											{Array.from({ length: 7 }).map((_, index) => {
+												const dayNum = index + 1;
+												const isPast = dayNum <= status.consecutiveDays;
+												const isCurrent = dayNum === currentDay;
+												return (
+													<div
+														key={dayNum}
+														className={`w-9 h-9 rounded-full flex items-center justify-center text-xs font-semibold transition-all ${
+															isPast
+																? 'bg-success text-white'
+																: isCurrent
+																	? 'bg-primary text-white ring-4 ring-primary/20'
+																	: 'bg-muted text-muted-foreground'
+														}`}
+													>
+														{isPast ? (
+															<HugeiconsIcon icon={CheckmarkCircleIcon} className="w-4 h-4" />
+														) : (
+															dayNum
+														)}
+													</div>
+												);
+											})}
+										</div>
+
+										<Button
+											onClick={handleClaim}
+											disabled={isClaiming}
+											className="w-full h-12 rounded-xl font-semibold"
+										>
+											{isClaiming ? (
+												<m.div
+													animate={{ rotate: 360 }}
+													transition={{
+														repeat: Number.POSITIVE_INFINITY,
+														duration: 1,
+														ease: 'linear',
+													}}
+												>
+													<HugeiconsIcon icon={SparklesIcon} className="w-5 h-5" />
+												</m.div>
+											) : (
+												<>
+													Claim Reward
+													<HugeiconsIcon icon={ArrowRight01Icon} className="w-4 h-4 ml-2" />
+												</>
+											)}
+										</Button>
+									</CardContent>
+								</div>
 							) : (
-								<m.div
-									initial={{ scale: 0.8, opacity: 0 }}
-									animate={{ scale: 1, opacity: 1 }}
-									className="text-center py-6"
-								>
+								<CardContent className="px-6 py-8 text-center">
 									<m.div
-										initial={{ scale: 0.95, opacity: 0 }}
+										initial={{ scale: 0 }}
 										animate={{ scale: 1 }}
-										transition={{ type: 'spring', damping: 10, delay: 0.1 }}
-										className="w-20 h-20 mx-auto mb-4 rounded-full bg-linear-to-br from-green-400 to-emerald-500 flex items-center justify-center shadow-lg"
+										transition={{ delay: 0.1, type: 'spring', damping: 15 }}
+										className="w-20 h-20 mx-auto mb-4 rounded-full bg-success/10 flex items-center justify-center"
 									>
-										<HugeiconsIcon icon={SparklesIcon} className="w-10 h-10 text-white" />
+										<div className="w-16 h-16 rounded-full bg-success flex items-center justify-center">
+											<HugeiconsIcon icon={CheckmarkCircleIcon} className="w-8 h-8 text-white" />
+										</div>
 									</m.div>
-									<h3 className="text-2xl font-black text-foreground mb-2">Reward Claimed!</h3>
-									<p className="text-3xl font-black text-brand-amber mb-2">
+
+									<h3 className="text-xl font-bold mb-2">Reward Claimed!</h3>
+									<p className="text-3xl font-black text-success mb-2">
 										+{claimResult.xpEarned} XP
 									</p>
+									<p className="text-sm text-muted-foreground mb-4">
+										Total: {claimResult.totalXp} XP
+									</p>
+
 									{claimResult.streakFreezeAwarded && (
-										<p className="text-sm font-bold text-blue-500 flex items-center justify-center gap-1">
+										<p className="text-sm font-medium text-blue-500 flex items-center justify-center gap-1.5 mb-4">
 											<HugeiconsIcon icon={StarIcon} className="w-4 h-4" /> +1 Streak Freeze
-											Awarded!
 										</p>
 									)}
+
 									{claimResult.specialReward && (
-										<p className="mt-2 text-sm font-bold text-brand-amber">
+										<p className="text-sm font-medium text-primary mb-4">
 											{claimResult.specialReward}
 										</p>
 									)}
-									<Button
-										onClick={handleClose}
-										className="mt-6 bg-brand-amber hover:bg-brand-amber/90 text-zinc-900 rounded-xl font-bold"
-									>
+
+									<Button onClick={handleClose} className="w-full h-11 rounded-xl font-medium">
 										Continue
 									</Button>
-								</m.div>
-							)}
-
-							{!claimResult && (
-								<div className="mt-4 pt-4 border-t border-border">
-									<div className="flex justify-center gap-1">
-										{DAILY_LOGIN_REWARDS.slice(0, 7).map((reward, index) => {
-											const dayNum = index + 1;
-											const isPast = dayNum <= status.consecutiveDays;
-											const isCurrent = dayNum === currentDay;
-											return (
-												<div
-													key={reward.day}
-													className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-black ${
-														isPast
-															? 'bg-green-100 text-green-600 dark:bg-green-900/20'
-															: isCurrent
-																? 'bg-brand-amber text-zinc-900'
-																: 'bg-muted text-muted-foreground'
-													}`}
-												>
-													{isPast ? '✓' : dayNum}
-												</div>
-											);
-										})}
-									</div>
-									<p className="text-xs text-center text-muted-foreground mt-2">
-										Claim daily for bonus rewards on day 7!
-									</p>
-								</div>
+								</CardContent>
 							)}
 						</Card>
 					</m.div>
@@ -271,16 +269,13 @@ export function DailyLoginBonusTrigger({ onClick }: { onClick: () => void }) {
 		<m.div
 			initial={{ scale: 0.9, opacity: 0 }}
 			animate={{ scale: 1, opacity: 1 }}
-			whileHover={{ scale: 1.05 }}
-			whileTap={{ scale: 0.95 }}
+			whileHover={{ scale: 1.02 }}
+			whileTap={{ scale: 0.98 }}
 		>
-			<Button
-				onClick={onClick}
-				className="relative bg-linear-to-r from-brand-amber to-orange-500 text-zinc-900 rounded-full font-bold shadow-lg shadow-brand-amber/20"
-			>
-				<HugeiconsIcon icon={GiftIcon} className="w-4 h-4 mr-2" />
+			<Button onClick={onClick} className="relative gap-2 h-10 px-4 rounded-full font-medium">
+				<HugeiconsIcon icon={SparklesIcon} className="w-4 h-4" />
 				Daily Bonus
-				<span className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full animate-pulse" />
+				<span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-success rounded-full animate-pulse" />
 			</Button>
 		</m.div>
 	);

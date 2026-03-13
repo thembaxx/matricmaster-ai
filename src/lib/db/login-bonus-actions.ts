@@ -31,6 +31,7 @@ export interface LoginBonusStatus {
 export interface ClaimLoginBonusResult {
 	success: boolean;
 	xpEarned: number;
+	totalXp: number;
 	streakFreezeAwarded: boolean;
 	specialReward: string | undefined;
 	consecutiveDays: number;
@@ -148,6 +149,7 @@ export async function claimLoginBonus(): Promise<ClaimLoginBonusResult> {
 		return {
 			success: false,
 			xpEarned: 0,
+			totalXp: 0,
 			streakFreezeAwarded: false,
 			specialReward: undefined,
 			consecutiveDays: 0,
@@ -169,6 +171,7 @@ export async function claimLoginBonus(): Promise<ClaimLoginBonusResult> {
 			return {
 				success: false,
 				xpEarned: 0,
+				totalXp: 0,
 				streakFreezeAwarded: false,
 				specialReward: undefined,
 				consecutiveDays: 0,
@@ -184,6 +187,7 @@ export async function claimLoginBonus(): Promise<ClaimLoginBonusResult> {
 			return {
 				success: false,
 				xpEarned: 0,
+				totalXp: progress.totalMarksEarned,
 				streakFreezeAwarded: false,
 				specialReward: undefined,
 				consecutiveDays: progress.consecutiveLoginDays || 0,
@@ -201,6 +205,7 @@ export async function claimLoginBonus(): Promise<ClaimLoginBonusResult> {
 			return {
 				success: false,
 				xpEarned: 0,
+				totalXp: progress.totalMarksEarned,
 				streakFreezeAwarded: false,
 				specialReward: undefined,
 				consecutiveDays: newConsecutiveDays,
@@ -229,6 +234,7 @@ export async function claimLoginBonus(): Promise<ClaimLoginBonusResult> {
 		return {
 			success: true,
 			xpEarned: reward.xpBonus,
+			totalXp: progress.totalMarksEarned + xpToAdd,
 			streakFreezeAwarded,
 			specialReward: reward.specialReward,
 			consecutiveDays: newConsecutiveDays,
@@ -239,6 +245,7 @@ export async function claimLoginBonus(): Promise<ClaimLoginBonusResult> {
 		return {
 			success: false,
 			xpEarned: 0,
+			totalXp: 0,
 			streakFreezeAwarded: false,
 			specialReward: undefined,
 			consecutiveDays: 0,

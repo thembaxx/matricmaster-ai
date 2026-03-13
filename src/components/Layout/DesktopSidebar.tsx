@@ -13,6 +13,7 @@ import {
 	Chat01Icon,
 	File01Icon,
 	GlobeIcon,
+	GridIcon,
 	Home01Icon,
 	Key01Icon,
 	Layers01Icon,
@@ -28,6 +29,7 @@ import {
 	SparklesIcon,
 	Sun01Icon,
 	Task01Icon,
+	Timer01Icon,
 	UserGroupIcon,
 	User as UserIcon,
 	WorkoutSportIcon,
@@ -82,6 +84,8 @@ export const sideMenuSections: MenuSection[] = [
 			{ href: '/study-companion', label: 'Study Companion', icon: SparklesIcon },
 			{ href: '/study-path', label: 'Study Path', icon: MapsIcon },
 			{ href: '/study-plan', label: 'Study Plan', icon: Calendar01Icon },
+			{ href: '/curriculum-map', label: 'Curriculum Map', icon: GridIcon },
+			{ href: '/periodic-table', label: 'Periodic Table', icon: AtomIcon },
 		],
 	},
 	{
@@ -95,6 +99,13 @@ export const sideMenuSections: MenuSection[] = [
 			{ href: '/practice-quiz', label: 'Practice Quiz', icon: Task01Icon },
 			{ href: '/quiz', label: 'Quiz', icon: QuestionIcon },
 			{ href: '/review', label: 'Review', icon: AiBrain01Icon },
+		],
+	},
+	{
+		title: 'Focus',
+		items: [
+			{ href: '/focus', label: 'Focus Mode', icon: Timer01Icon },
+			{ href: '/focus-rooms', label: 'Focus Rooms', icon: UserGroupIcon },
 		],
 	},
 	{
@@ -115,6 +126,7 @@ export const sideMenuSections: MenuSection[] = [
 			{ href: '/calendar', label: 'Calendar', icon: Calendar01Icon },
 			{ href: '/language', label: 'Language', icon: GlobeIcon },
 			{ href: '/notifications', label: 'Notifications', icon: Notification03Icon },
+			{ href: '/parent-dashboard', label: 'Parent Portal', icon: UserGroupIcon },
 			{ href: '/profile', label: 'Profile', icon: UserIcon },
 			{ href: '/settings', label: 'Settings', icon: Settings01Icon },
 		],

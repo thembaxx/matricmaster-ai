@@ -1,99 +1,468 @@
 {
 	"life_sciences": [
 		{
-			"id": "life-sciences-dna-structure-replication",
-			"subject": "life_sciences",
-			"topic": "genetics",
-			"title": "DNA: Structure and Replication",
-			"content": "# DNA Structure and Replication\n\nDNA (Deoxyribonucleic acid) is the blueprint of life, carrying hereditary information in almost all living organisms.\n\n## DNA Structure\n\n- **Location**: Primarily in the nucleus (**Nuclear DNA**), but also in mitochondria (**Mitochondrial DNA**) and chloroplasts.\n- **The Model**: Proposed by **Watson and Crick**. It is a **double helix** (twisted ladder).\n- **The Building Block**: The **Nucleotide**. Each consists of:\n  1. A **Phosphate group**.\n  2. A **Deoxyribose sugar**.\n  3. A **Nitrogenous base**.\n- **Nitrogenous Bases**:\n  - **Adenine (A)** pairs with **Thymine (T)** (2 hydrogen bonds).\n  - **Guanine (G)** pairs with **Cytosine (C)** (3 hydrogen bonds).\n  - *Mnemonic: **A**pples in the **T**ree, **C**ars in the **G**arage.*\n\n## DNA Replication\n\n- **When**: Occurs during **Interphase** of the cell cycle (before cell division).\n- **Where**: In the **nucleus**.\n- **The Process**:\n  1. The DNA double helix **unwinds**.\n  2. Weak **hydrogen bonds break**, causing the strands to **unzip**.\n  3. Each original strand acts as a **template**.\n  4. **Free nucleotides** from the nucleoplasm attach to complementary partners (A-T, G-C).\n  5. Two **identical** DNA molecules are formed (**Semi-conservative replication**).\n- **Significance**: Ensures daughter cells receive an identical copy of genetic information.",
-			"duration": 30,
-			"difficulty": "intermediate",
-			"prerequisites": ["basic biology", "cell structure"],
-			"learning_objectives": [
-				"Describe the structure of a DNA nucleotide",
-				"Explain the double helix model and base pairing",
-				"Detail the process of semi-conservative DNA replication",
-				"Understand the significance of DNA replication for growth"
-			]
-		},
-		{
-			"id": "life-sciences-evolution",
-			"subject": "life sciences",
-			"topic": "evolution",
-			"title": "Evolution and Natural Selection",
-			"content": "# Evolution and Natural Selection\n\nEvolution is the change in the heritable characteristics of biological populations over successive generations. Natural selection is the differential survival and reproduction of individuals due to differences in phenotype.\n\n## Evidence for Evolution\n\n- **Fossil Record**: Shows progression of life forms over time\n- **Comparative Anatomy**: Homologous structures indicate common ancestry\n- **Comparative Embryology**: Similar embryonic development patterns\n- **Molecular Biology**: DNA and protein sequence similarities\n- **Biogeography**: Geographic distribution of species\n\n## Mechanisms of Evolution\n\n1. **Natural Selection**: Differential survival and reproduction\n2. **Genetic Drift**: Random changes in allele frequencies\n3. **Gene Flow**: Transfer of genetic variation between populations\n4. **Mutation**: Source of new genetic variation\n\n## Natural Selection Process\n\n- **Variation**: Individuals in a population vary in traits\n- **Inheritance**: Traits are passed from parents to offspring\n- **Selection Pressure**: Environmental factors favor certain traits\n- **Differential Reproduction**: Individuals with favorable traits leave more offspring\n\n## Types of Natural Selection\n\n- **Directional Selection**: Favors one extreme phenotype\n- **Stabilizing Selection**: Favors intermediate phenotype\n- **Disruptive Selection**: Favors both extremes\n\n## Speciation\n\n- **Allopatric Speciation**: Geographic isolation leads to new species\n- **Sympatric Speciation**: New species arise without geographic isolation\n- **Reproductive Isolation**: Barriers prevent gene flow between populations\n\n## Human Evolution\n\n- **Hominidae Family**: Includes humans and great apes\n- **Key Traits**: Bipedalism, enlarged brain, tool use\n- **Fossil Evidence**: Australopithecus, Homo habilis, Homo erectus, Homo sapiens\n- **Cultural Evolution**: Development of language, art, technology\n\n## Practice Questions\n\n1. State three types of evidence for evolution\n2. Explain the process of natural selection\n3. What is the difference between directional and disruptive selection?\n4. How does genetic drift differ from natural selection?\n\n## Resources\n\n- Video: Evolution Overview (25 min)\n- Interactive: Natural Selection Simulator\n- Worksheet: Evolution Practice",
-			"duration": 30,
-			"difficulty": "intermediate",
-			"prerequisites": ["genetics", "basic biology"],
-			"learning_objectives": [
-				"Describe the evidence supporting evolution",
-				"Explain the process of natural selection",
-				"Differentiate between types of natural selection",
-				"Understand speciation and human evolution"
-			]
-		},
-		{
-			"id": "life-sciences-cells",
-			"subject": "life sciences",
-			"topic": "cell biology",
-			"title": "Cell Structure and Function",
-			"content": "# Cell Structure and Function\n\nCells are the basic structural and functional units of all living organisms. Understanding cell structure is fundamental to understanding life processes.\n\n## Cell Theory\n\n1. All living organisms are composed of cells\n2. The cell is the basic unit of life\n3. All cells arise from pre-existing cells\n\n## Types of Cells\n\n### Prokaryotic Cells\n- No membrane-bound nucleus\n- No membrane-bound organelles\n- Examples: Bacteria, Archaea\n- Size: 0.1-5 μm\n\n### Eukaryotic Cells\n- Membrane-bound nucleus\n- Membrane-bound organelles\n- Examples: Plants, Animals, Fungi, Protists\n- Size: 10-100 μm\n\n## Organelles and Their Functions\n\n### Nucleus\n- Contains genetic material (DNA)\n- Controls cell activities\n- Site of DNA replication and transcription\n\n### Mitochondria\n- Powerhouse of the cell\n- Cellular respiration\n- ATP production\n\n### Chloroplasts (Plant cells only)\n- Site of photosynthesis\n- Contains chlorophyll\n- Converts light energy to chemical energy\n\n### Endoplasmic Reticulum (ER)\n- Rough ER: Protein synthesis\n- Smooth ER: Lipid synthesis\n\n### Golgi Apparatus\n- Modifies, sorts, and packages proteins\n- Forms lysosomes\n\n### Ribosomes\n- Protein synthesis\n- Found free or on rough ER\n\n### Cell Membrane\n- Phospholipid bilayer\n- Selective permeability\n- Transport proteins\n\n## Cell Transport\n\n### Passive Transport\n- **Diffusion**: Movement from high to low concentration\n- **Osmosis**: Diffusion of water\n- **Facilitated Diffusion**: Using transport proteins\n\n### Active Transport\n- Uses energy (ATP)\n- Against concentration gradient\n- Examples: Na+/K+ pump, proton pump\n\n## Practice Questions\n\n1. Compare prokaryotic and eukaryotic cells\n2. Describe the function of the mitochondria\n3. Explain the difference between diffusion and osmosis\n4. How does the cell membrane maintain selectivity?\n\n## Resources\n\n- Video: Cell Structure (20 min)\n- Interactive: Cell Explorer\n- Worksheet: Cell Transport Practice",
+			"id": "life-cells-cell-theory",
+			"subject": "life-sciences",
+			"topic": "cells",
+			"title": "Cell Theory and Structure",
+			"content": "# Cell Theory and Structure\n\nThe cell is the basic unit of life.\n\n## Cell Theory\n\n1. All living organisms are composed of cells\n2. Cells are the basic units of structure and function\n3. All cells come from pre-existing cells\n\n## Cell Types\n\n### Prokaryotic\n- No nucleus\n- No membrane-bound organelles\n- Examples: bacteria\n\n### Eukaryotic\n- True nucleus\n- Membrane-bound organelles\n- Examples: plant, animal cells\n\n## Cell Structure\n\n### Nucleus\n- Contains genetic material (DNA)\n- Controls cell activities\n- Has nucleolus for ribosome production\n\n### Mitochondria\n- Powerhouse of cell\n- Cellular respiration\n- Produces ATP\n\n### Ribosomes\n- Protein synthesis\n- Found free or on rough ER\n\n### Endoplasmic Reticulum\n- Rough: protein synthesis\n- Smooth: lipid synthesis\n\n### Golgi Apparatus\n- Modifies, packages proteins\n- Forms lysosomes\n\n## Practice Questions\n\n1. Name 3 differences between plant and animal cells\n2. What organelle is involved in cellular respiration?\n3. Explain the function of the nucleus",
 			"duration": 40,
 			"difficulty": "intermediate",
 			"prerequisites": ["basic biology"],
 			"learning_objectives": [
-				"Understand the cell theory",
+				"Understand cell theory",
 				"Compare prokaryotic and eukaryotic cells",
-				"Describe the structure and function of organelles",
-				"Explain different types of cell transport"
+				"Identify cell organelles and functions"
 			]
 		},
 		{
-			"id": "life-sciences-photosynthesis",
-			"subject": "life sciences",
-			"topic": "plant biology",
-			"title": "Photosynthesis",
-			"content": "# Photosynthesis\n\nPhotosynthesis is the process by which green plants and some other organisms use sunlight to synthesize foods from carbon dioxide and water.\n\n## Overall Equation\n\n6CO₂ + 6H₂O + light energy → C₆H₁₂O₆ + 6O₂\n\n## Location\n\n- **Chloroplasts**: Contain chlorophyll\n- **Grana**: Stacked thylakoid membranes\n- **Stroma**: Fluid-filled region\n- **Thylakoids**: Site of light reactions\n\n## Two Stages\n\n### Light-Dependent Reactions\n- Location: Thylakoid membrane\n- Requirements: Light, H₂O\n- Products: ATP, NADPH, O₂\n- Process:\n  1. Light absorption by chlorophyll\n  2. Photolysis of water: 2H₂O → 4H⁺ + 4e⁻ + O₂\n  3. Electron transport chain\n  4. ATP synthesis (photophosphorylation)\n  5. NADP⁺ reduction to NADPH\n\n### Light-Independent Reactions (Calvin Cycle)\n- Location: Stroma\n- Requirements: ATP, NADPH, CO₂\n- Product: Glucose (C₆H₁₂O₆)\n- Process:\n  1. Carbon fixation: CO₂ + RuBP → 2 × 3C compound\n  2. Reduction: Uses ATP and NADPH\n  3. Regeneration: RuBP regenerated\n\n## Factors Affecting Photosynthesis\n\n1. **Light Intensity**: Increases rate until saturation\n2. **CO₂ Concentration**: Limited by stomatal opening\n3. **Temperature**: Enzyme denaturation above 40°C\n4. **Water Availability**: Affects stomatal regulation\n\n## C4 and CAM Plants\n\n### C4 Plants\n- Fix CO₂ in mesophyll cells\n- Bundle sheath cells for Calvin cycle\n- Example: Maize, sugarcane\n\n### CAM Plants\n- Open stomata at night\n- Fix CO₂ into malic acid\n- Close stomata during day\n- Example: Succulents, cactus\n\n## Practice Questions\n\n1. Write the balanced equation for photosynthesis\n2. Where in the chloroplast does the Calvin cycle occur?\n3. Explain what happens during photolysis\n4. Why do C4 plants have an advantage in hot climates?\n\n## Resources\n\n- Video: Photosynthesis (25 min)\n- Interactive: Calvin Cycle Simulator\n- Worksheet: Photosynthesis Practice",
-			"duration": 45,
-			"difficulty": "advanced",
-			"prerequisites": ["cell biology", "energy"],
-			"learning_objectives": [
-				"Understand the process of photosynthesis",
-				"Explain light-dependent and light-independent reactions",
-				"Identify factors affecting photosynthesis",
-				"Compare C3, C4, and CAM plants"
-			]
-		},
-		{
-			"id": "life-sciences-respiration",
-			"subject": "life sciences",
-			"topic": "energy",
-			"title": "Cellular Respiration",
-			"content": "# Cellular Respiration\n\nCellular respiration is the process by which organisms combine oxygen with food molecules, diverting the chemical energy in these substances into life-sustaining activities.\n\n## Overall Equation\n\nC₆H₁₂O₆ + 6O₂ → 6CO₂ + 6H₂O + ATP (38 ATP total)\n\n## Three Stages\n\n### 1. Glycolysis\n- Location: Cytoplasm\n- Input: Glucose (6C)\n- Output: 2 pyruvate, 2 ATP, 2 NADH\n- Anaerobic (doesn't require oxygen)\n\n### 2. Krebs Cycle (Citric Acid Cycle)\n- Location: Mitochondrial matrix\n- Input: Acetyl-CoA (from pyruvate)\n- Output: 2 ATP, 6 NADH, 2 FADH₂, CO₂\n- Aerobic (requires oxygen)\n\n### 3. Electron Transport Chain (ETC)\n- Location: Inner mitochondrial membrane\n- Output: 34 ATP\n- Final electron acceptor: Oxygen → H₂O\n\n## ATP Production\n\n| Stage | ATP Produced |\n|-------|-------------|\n| Glycolysis | 2 ATP |\n| Krebs Cycle | 2 ATP |\n| ETC | 34 ATP |\n| **Total** | **38 ATP** |\n\n## Anaerobic Respiration\n\n### Lactic Acid Fermentation\n- In animals\n- Lactate produced\n- Example: Exercise, muscle fatigue\n\n### Alcoholic Fermentation\n- In yeast\n- Ethanol and CO₂ produced\n- Example: Bread making, brewing\n\n## Factors Affecting Respiration\n\n1. **Temperature**: Optimal around 37°C\n2. **Oxygen Availability**: Aerobic vs anaerobic\n3. **Glucose Concentration**: Rate increases with substrate\n4. **Enzyme Activity**: Denaturation at high temperatures\n\n## Comparison: Photosynthesis vs Respiration\n\n| Feature | Photosynthesis | Respiration |\n|---------|----------------|-------------|\n| Location | Chloroplasts | Mitochondria |\n| Reactants | CO₂ + H₂O + Light | Glucose + O₂ |\n| Products | Glucose + O₂ | CO₂ + H₂O + ATP |\n| Energy | Stores energy | Releases energy |\n\n## Practice Questions\n\n1. Where in the cell does glycolysis occur?\n2. Compare aerobic and anaerobic respiration\n3. How many ATP molecules are produced in total?\n4. Explain why we breathe out CO₂\n\n## Resources\n\n- Video: Cellular Respiration (25 min)\n- Interactive: ETC Simulator\n- Worksheet: Respiration Practice",
-			"duration": 45,
-			"difficulty": "advanced",
-			"prerequisites": ["cell biology", "photosynthesis"],
-			"learning_objectives": [
-				"Understand the three stages of cellular respiration",
-				"Explain ATP production in each stage",
-				"Compare aerobic and anaerobic respiration",
-				"Relate respiration to photosynthesis"
-			]
-		},
-		{
-			"id": "life-sciences-human-systems",
-			"subject": "life sciences",
-			"topic": "human biology",
-			"title": "Human Respiratory System",
-			"content": "# Human Respiratory System\n\nThe respiratory system is responsible for gas exchange - taking in oxygen and releasing carbon dioxide.\n\n## Structures and Functions\n\n### Nasal Cavity\n- Filters particles\n- Warms and moistens air\n- Contains olfactory receptors\n\n### Pharynx (Throat)\n- Common passage for air and food\n- Lymphoid tissue (tonsils) for immunity\n\n### Larynx (Voice Box)\n- Contains vocal cords\n- Epiglottis prevents food entering airway\n\n### Trachea (Windpipe)\n- C-shaped cartilage rings keep it open\n- Lined with ciliated epithelium\n- Mucus traps particles\n\n### Bronchi\n- Primary bronchi branch into secondary\n- Further branch into bronchioles\n- Smooth muscle controls airflow\n\n### Lungs\n- ~300 million alveoli\n- Surface area for gas exchange: 70m²\n- Surrounded by pleural membrane\n\n### Alveoli\n- Thin-walled air sacs\n- Capillary network for diffusion\n- Large surface area\n\n## Gas Exchange\n\n### Alveolar Structure\n- Single cell layer for diffusion\n- Rich capillary network\n- Moist surface for gas dissolution\n\n### Process\n1. Oxygen diffuses from alveoli into blood\n2. CO₂ diffuses from blood into alveoli\n3. Blood carries O₂ to tissues\n4. Blood carries CO₂ from tissues\n\n## Mechanism of Breathing\n\n### Inspiration (Inhalation)\n- Diaphragm contracts and flattens\n- External intercostal muscles contract\n- Thoracic cavity expands\n- Air rushes in (negative pressure)\n\n### Exhalation\n- Diaphragm relaxes\n- Internal intercostal muscles contract\n- Thoracic cavity decreases\n- Air rushes out\n\n## Control of Breathing\n\n- **Medulla Oblongata**: Respiratory center\n- **CO₂ Levels**: Primary stimulus\n- **Chemoreceptors**: Detect O₂, CO₂, pH\n- **Hering-Breuer**: Prevents overinflation\n\n## Disorders\n\n1. **Asthma**: Bronchoconstriction\n2. **Emphysema**: Alveolar damage\n3. **Bronchitis**: Airway inflammation\n4. **Pneumonia**: Lung infection\n\n## Practice Questions\n\n1. Describe the path of air from nose to alveoli\n2. Explain how gas exchange occurs in the alveoli\n3. What muscles are involved in breathing?\n4. How does the body control breathing rate?\n\n## Resources\n\n- Video: Respiratory System (20 min)\n- Interactive: Lung Function Simulator\n- Worksheet: Breathing Practice",
+			"id": "life-cells-membrane",
+			"subject": "life-sciences",
+			"topic": "cells",
+			"title": "Cell Membrane Structure and Function",
+			"content": "# Cell Membrane\n\nThe cell membrane controls what enters and exits the cell.\n\n## Fluid Mosaic Model\n\n- Phospholipid bilayer\n- Proteins embedded (mosaic)\n- Cholesterol for stability\n- Fluid: proteins move laterally\n\n## Phospholipids\n\n- Hydrophilic head (phosphate)\n- Hydrophobic tails (fatty acids)\n- Form bilayer in water\n\n## Membrane Proteins\n\n### Integral Proteins\n- Span the membrane\n- Transport proteins\n\n### Peripheral Proteins\n- Attached to surface\n- Cell recognition, signaling\n\n## Functions\n\n1. Selective permeability\n2. Cell recognition\n3. Communication\n4. Structural support\n\n## Transport Mechanisms\n\n### Passive Transport\n- No energy required\n- Diffusion, osmosis, facilitated diffusion\n\n### Active Transport\n- Energy required (ATP)\n- Against concentration gradient\n- Protein pumps\n\n## Practice Questions\n\n1. Explain the fluid mosaic model\n2. How does osmosis differ from diffusion?\n3. What is the role of cholesterol in membranes?",
 			"duration": 40,
 			"difficulty": "intermediate",
-			"prerequisites": ["cell biology"],
+			"prerequisites": ["cell theory"],
 			"learning_objectives": [
-				"Identify structures of the respiratory system",
-				"Explain the mechanism of breathing",
-				"Understand gas exchange at alveoli",
-				"Describe control of breathing"
+				"Understand membrane structure",
+				"Explain transport mechanisms",
+				"Apply knowledge to transport problems"
+			]
+		},
+		{
+			"id": "life-cells-respiration",
+			"subject": "life-sciences",
+			"topic": "cells",
+			"title": "Cellular Respiration",
+			"content": "# Cellular Respiration\n\nCellular respiration releases energy from glucose.\n\n## Overview\n\nC₆H₁₂O₆ + 6O₂ → 6CO₂ + 6H₂O + Energy (ATP)\n\n## Glycolysis\n\nLocation: Cytoplasm\n- Breaks glucose (6C) to pyruvate (3C)\n- Net gain: 2 ATP, 2 NADH\n- Anaerobic (no oxygen needed)\n\n## Krebs Cycle (Citric Acid)\n\nLocation: Mitochondrial matrix\n- Pyruvate enters (after conversion to acetyl-CoA)\n- Produces: 2 ATP, 6 NADH, 2 FADH₂\n- Releases CO₂\n\n## Electron Transport Chain\n\nLocation: Inner mitochondrial membrane\n- Produces: ~32-34 ATP\n- Oxygen is final electron acceptor\n- Forms water\n\n## Anaerobic Respiration\n\n### Lactic Acid (Animals)\n- Pyruvate → lactate\n- Occurs during strenuous exercise\n\n### Alcoholic (Yeast)\n- Pyruvate → ethanol + CO₂\n\n## Practice Questions\n\n1. Where does glycolysis occur?\n2. What is the final electron acceptor in ETC?\n3. Compare aerobic and anaerobic respiration",
+			"duration": 45,
+			"difficulty": "advanced",
+			"prerequisites": ["cell membrane"],
+			"learning_objectives": [
+				"Understand cellular respiration stages",
+				"Calculate ATP yield",
+				"Compare aerobic and anaerobic"
+			]
+		},
+		{
+			"id": "life-cells-photosynthesis",
+			"subject": "life-sciences",
+			"topic": "cells",
+			"title": "Photosynthesis",
+			"content": "# Photosynthesis\n\nPhotosynthesis converts light energy to chemical energy.\n\n## Overview\n\n6CO₂ + 6H₂O → C₆H₁₂O₆ + 6O₂\n\n## Light-Dependent Reactions\n\nLocation: Thylakoid membrane\n- Light energy captured by chlorophyll\n- Photolysis: H₂O → O₂ + H⁺ + e⁻\n- Produces: ATP, NADPH, O₂\n\n## Light-Independent Reactions (Calvin Cycle)\n\nLocation: Stroma\n- Uses ATP, NADPH from light reactions\n- CO₂ fixed to organic molecules\n- Produces glucose (G3P)\n\n## Factors Affecting Photosynthesis\n\n1. Light intensity\n2. CO₂ concentration\n3. Temperature\n4. Water availability\n\n## C4 and CAM Plants\n\n### C4 Plants\n- Fix CO₂ in mesophyll\n- Minimize photorespiration\n- Examples: maize, sugarcane\n\n### CAM Plants\n- Open stomata at night\n- Fix CO₂ into malic acid\n- Examples: pineapples, cacti\n\n## Practice Questions\n\n1. Where does the Calvin cycle occur?\n2. What is the role of chlorophyll?\n3. Why do C4 plants have an advantage in hot climates?",
+			"duration": 45,
+			"difficulty": "advanced",
+			"prerequisites": ["cell structure"],
+			"learning_objectives": [
+				"Understand photosynthesis",
+				"Explain light-dependent and independent reactions",
+				"Apply factors affecting photosynthesis"
+			]
+		},
+		{
+			"id": "life-genetics-dna",
+			"subject": "life-sciences",
+			"topic": "genetics",
+			"title": "DNA Structure and Replication",
+			"content": "# DNA Structure and Replication\n\nDNA carries genetic information.\n\n## DNA Structure\n\n### Double Helix\n- Two antiparallel strands\n- Sugar-phosphate backbone\n- Nitrogenous bases inside\n\n### Base Pairing\n- Adenine (A) pairs with Thymine (T) - 2 hydrogen bonds\n- Guanine (G) pairs with Cytosine (C) - 3 hydrogen bonds\n\n## DNA Replication\n\n### Semi-Conservative\n- Each new DNA molecule has one old and one new strand\n\n### Steps\n1. Helicase unwinds DNA\n2. SSB proteins stabilize\n3. Primase adds RNA primer\n4. DNA polymerase adds nucleotides (5'→3')\n5. Ligase joins Okazaki fragments\n\n### Enzymes Involved\n- Helicase: unwinds\n- DNA polymerase: synthesizes\n- Ligase: joins fragments\n- Topoisomerase: relieves tension\n\n## Practice Questions\n\n1. Explain base pairing in DNA\n2. Why is DNA replication called semi-conservative?\n3. What is the role of helicase?",
+			"duration": 45,
+			"difficulty": "advanced",
+			"prerequisites": ["cell theory"],
+			"learning_objectives": [
+				"Understand DNA structure",
+				"Explain DNA replication process",
+				"Identify enzymes involved"
+			]
+		},
+		{
+			"id": "life-genetics-proteinsynthesis",
+			"subject": "life-sciences",
+			"topic": "genetics",
+			"title": "Protein Synthesis",
+			"content": "# Protein Synthesis\n\nProteins are made from DNA instructions.\n\n## Transcription\n\nLocation: Nucleus\n1. RNA polymerase binds to promoter\n2. DNA unwinds\n3. Complementary RNA nucleotides added\n4. Intron removal (splicing)\n5. mRNA leaves nucleus\n\n### Types of RNA\n- mRNA: carries code\n- tRNA: brings amino acids\n- rRNA: makes ribosomes\n\n## Translation\n\nLocation: Ribosome\n\n### Steps\n1. mRNA binds to ribosome\n2. tRNA with anticodon matches codon\n3. Amino acids link (peptide bonds)\n4. Ribosome moves along mRNA\n5. Process continues until stop codon\n\n## Genetic Code\n\n- Codon: 3 nucleotide sequence\n- 64 codons, 20 amino acids\n- Start codon: AUG\n- Stop codons: UAA, UAG, UGA\n\n## Practice Questions\n\n1. What is the difference between transcription and translation?\n2. What is a codon?\n3. How does mRNA leave the nucleus?",
+			"duration": 45,
+			"difficulty": "advanced",
+			"prerequisites": ["DNA structure"],
+			"learning_objectives": [
+				"Understand transcription and translation",
+				"Apply genetic code",
+				"Explain protein synthesis"
+			]
+		},
+		{
+			"id": "life-genetics-mendel",
+			"subject": "life-sciences",
+			"topic": "genetics",
+			"title": "Mendelian Genetics",
+			"content": "# Mendelian Genetics\n\nGregor Mendel's laws explain inheritance patterns.\n\n## Mendel's Laws\n\n### Law of Segregation\n- Each organism has 2 alleles for each trait\n- Alleles separate during gamete formation\n- One allele goes to each gamete\n\n### Law of Independent Assortment\n- Alleles of different genes assort independently\n- Applies to genes on different chromosomes\n\n## Punnett Square\n\nUsed to predict offspring genotypes and phenotypes.\n\n### Example\nCross: Tt × Tt (T = tall, t = short)\n\n|   | T | t |\n|---|---|---|\n| T | TT | Tt |\n| t | Tt | tt |\n\nResults: 1 TT : 2 Tt : 1 tt\n3 Tall : 1 Short\n\n## Terms\n\n- **Genotype**: Genetic makeup (TT, Tt, tt)\n- **Phenotype**: Physical appearance (tall, short)\n- **Homozygous**: Same alleles (TT, tt)\n- **Heterozygous**: Different alleles (Tt)\n- **Dominant**: Shows in heterozygote (T)\n- **Recessive**: masked in heterozygote (t)\n\n## Practice Questions\n\n1. Cross: Tt × tt. What are offspring ratios?\n2. What is the difference between genotype and phenotype?\n3. A tall plant (Tt) is crossed with short (tt). What % are tall?",
+			"duration": 45,
+			"difficulty": "intermediate",
+			"prerequisites": ["DNA"],
+			"learning_objectives": [
+				"Apply Mendel's laws",
+				"Use Punnett squares",
+				"Solve inheritance problems"
+			]
+		},
+		{
+			"id": "life-genetics-nonmendel",
+			"subject": "life-sciences",
+			"topic": "genetics",
+			"title": "Non-Mendelian Genetics",
+			"content": "# Non-Mendelian Genetics\n\nSome traits don't follow Mendelian patterns.\n\n## Incomplete Dominance\n\nHeterozygote shows intermediate phenotype.\n\n### Example\nRR = red, rr = white, Rr = pink\n\n## Codominance\n\nBoth alleles expressed in heterozygote.\n\n### Example\nBlood type: IAIB = AB\n\n## Multiple Alleles\n\nMore than 2 alleles for a trait.\n\n### Example\nBlood types: IA, IB, i (3 alleles)\n\n## Polygenic Inheritance\n\nMultiple genes affect one trait.\n\n### Examples\n- Height\n- Skin color\n- Eye color\n\n## Linkage\n\nGenes on same chromosome tend to inherit together.\n\n## Practice Questions\n\n1. A pink flower (Rr) self-pollinates. What are offspring colors?\n2. What blood type can a Type O parent not have?\n3. Explain why height shows continuous variation.",
+			"duration": 40,
+			"difficulty": "advanced",
+			"prerequisites": ["mendelian genetics"],
+			"learning_objectives": [
+				"Understand incomplete dominance",
+				"Apply multiple allele concepts",
+				"Explain polygenic inheritance"
+			]
+		},
+		{
+			"id": "life-evolution-evidence",
+			"subject": "life-sciences",
+			"topic": "evolution",
+			"title": "Evidence for Evolution",
+			"content": "# Evidence for Evolution\n\nEvolution is supported by multiple lines of evidence.\n\n## Fossil Evidence\n\n- Fossils show transitional forms\n- Geological timescale\n- Radioactive dating\n\n## Comparative Anatomy\n\n### Homologous Structures\n- Similar structure, different function\n- Indicates common ancestry\n- Example: forelimb bones\n\n### Analogous Structures\n- Similar function, different structure\n- Indicates convergent evolution\n\n### Vestigial Structures\n- Remnants of ancestral features\n- Example: appendix, wisdom teeth\n\n## Molecular Evidence\n\n- DNA sequence similarities\n- Protein comparisons\n- Cytochrome c universal\n\n## Biogeography\n\n- Distribution of species\n- Islands have unique species\n- Continental drift effect\n\n## Practice Questions\n\n1. How do homologous structures support evolution?\n2. What is a vestigial structure?\n3. Why is DNA evidence useful for evolution?",
+			"duration": 40,
+			"difficulty": "intermediate",
+			"prerequisites": ["genetics"],
+			"learning_objectives": [
+				"Understand evidence for evolution",
+				"Apply comparative anatomy",
+				"Use molecular evidence"
+			]
+		},
+		{
+			"id": "life-evolution-mechanisms",
+			"subject": "life-sciences",
+			"topic": "evolution",
+			"title": "Mechanisms of Evolution",
+			"content": "# Mechanisms of Evolution\n\nEvolution occurs through various mechanisms.\n\n## Natural Selection\n\n### Darwin's Theory\n1. Variation exists in populations\n2. More offspring than can survive\n3. Competition for resources\n4. Those best adapted survive\n5. Pass traits to offspring\n\n### Types\n- Directional\n- Stabilizing\n- Disruptive\n\n## Mutation\n\n- Source of new variation\n- Changes DNA sequence\n- Can be harmful, neutral, or beneficial\n\n## Gene Flow\n\n- Movement of genes between populations\n- Increases genetic variation\n- Reduces differences between populations\n\n## Genetic Drift\n\n- Random change in allele frequencies\n- Stronger effect in small populations\n- Founder effect\n- Bottleneck effect\n\n## Speciation\n\n### Allopatric\n- Geographic isolation\n\n### Sympatric\n- Same geographic area\n- Usually different niche\n\n## Practice Questions\n\n1. How does natural selection lead to adaptation?\n2. What is genetic drift?\n3. Explain the bottleneck effect.",
+			"duration": 45,
+			"difficulty": "advanced",
+			"prerequisites": ["evidence for evolution"],
+			"learning_objectives": [
+				"Understand natural selection",
+				"Apply evolutionary mechanisms",
+				"Explain speciation"
+			]
+		},
+		{
+			"id": "life-ecology-ecosystems",
+			"subject": "life-sciences",
+			"topic": "ecology",
+			"title": "Ecosystems and Communities",
+			"content": "# Ecosystems and Communities\n\nEcosystems include biotic and abiotic components.\n\n## Ecosystem Components\n\n### Biotic (Living)\n- Producers (autotrophs)\n- Consumers (heterotrophs)\n- Decomposers\n\n### Abiotic (Non-living)\n- Light\n- Temperature\n- Water\n- Soil\n- pH\n\n## Trophic Levels\n\n1. Producers (plants)\n2. Primary consumers (herbivores)\n3. Secondary consumers (carnivores)\n4. Tertiary consumers\n\n### Energy Flow\n- 10% rule: only 10% passes to next level\n- Energy lost as heat\n\n## Food Chains and Webs\n\n### Food Chain\nLinear energy transfer\n\n### Food Web\nInterconnected food chains\n\n## Ecological Pyramids\n\n- Numbers\n- Biomass\n- Energy\n\n## Practice Questions\n\n1. What is the difference between biotic and abiotic factors?\n2. Why is energy flow one-directional?\n3. Draw a simple food web.",
+			"duration": 40,
+			"difficulty": "intermediate",
+			"prerequisites": ["basic biology"],
+			"learning_objectives": [
+				"Understand ecosystem components",
+				"Explain energy flow",
+				"Apply trophic level concepts"
+			]
+		},
+		{
+			"id": "life-ecology-populations",
+			"subject": "life-sciences",
+			"topic": "ecology",
+			"title": "Population Ecology",
+			"content": "# Population Ecology\n\nPopulation ecology studies factors affecting population size.\n\n## Population Growth\n\n### Exponential Growth\n- J-shaped curve\n- Unlimited resources\n\n### Logistic Growth\n- S-shaped curve\n- Carrying capacity (K)\n- Logistic: dN/dt = rN(1 - N/K)\n\n## Limiting Factors\n\n### Density-Dependent\n- Competition\n- Predation\n- Disease\n- Parasitism\n\n### Density-Independent\n- Temperature\n- Natural disasters\n- Climate\n\n## Population Interactions\n\n### Competition\n- Intraspecific: within species\n- Interspecific: between species\n- Competitive exclusion principle\n\n### Predation\n- Predator-prey cycles\n\n### Symbiosis\n- Mutualism: both benefit\n- Commensalism: one benefits\n- Parasitism: one benefits, one harmed\n\n## Practice Questions\n\n1. What is carrying capacity?\n2. Give an example of density-dependent factor\n3. Explain competitive exclusion principle.",
+			"duration": 40,
+			"difficulty": "intermediate",
+			"prerequisites": ["ecosystems"],
+			"learning_objectives": [
+				"Understand population growth",
+				"Apply limiting factors",
+				"Explain population interactions"
+			]
+		},
+		{
+			"id": "life-ecology-biomes",
+			"subject": "life-sciences",
+			"topic": "ecology",
+			"title": "Biomes and Biodiversity",
+			"content": "# Biomes and Biodiversity\n\nBiomes are large ecological areas with distinct climates.\n\n## Major Biomes\n\n### Terrestrial\n- Tundra\n- Taiga (boreal forest)\n- Temperate forest\n- Tropical rainforest\n- Grassland\n- Desert\n\n### Aquatic\n- Freshwater\n- Marine\n- Wetlands\n\n## Characteristics\n\n### Tropical Rainforest\n- High rainfall\n- High biodiversity\n- Evergreens\n- Warm year-round\n\n### Desert\n- Low rainfall\n- Extreme temperatures\n- Adaptations: water storage, nocturnal\n\n### Tundra\n- Cold, dry\n- Permafrost\n- Low biodiversity\n- Short growing season\n\n## Biodiversity\n\n### Levels\n- Genetic diversity\n- Species diversity\n- Ecosystem diversity\n\n### Importance\n- Ecosystem stability\n- Medical resources\n- Economic value\n- Aesthetic value\n\n## Conservation\n\n- Protected areas\n- Endangered species programs\n- Sustainable development\n\n## Practice Questions\n\n1. Name 3 terrestrial biomes\n2. Why do tropical rainforests have high biodiversity?\n3. What is the importance of biodiversity?",
+			"duration": 35,
+			"difficulty": "intermediate",
+			"prerequisites": ["ecosystems"],
+			"learning_objectives": [
+				"Identify major biomes",
+				"Understand biodiversity importance",
+				"Apply conservation concepts"
+			]
+		},
+		{
+			"id": "life-human-impact",
+			"subject": "life-sciences",
+			"topic": "ecology",
+			"title": "Human Impact on the Environment",
+			"content": "# Human Impact on the Environment\n\nHuman activities significantly affect ecosystems.\n\n## Pollution\n\n### Air Pollution\n- Greenhouse gases (CO₂, CH₄)\n- Acid rain (SO₂, NOₓ)\n- Smog\n- Ozone depletion\n\n### Water Pollution\n- Industrial waste\n- Agricultural runoff (fertilizers, pesticides)\n- Sewage\n- Oil spills\n\n### Land Pollution\n- Plastic waste\n- Deforestation\n- Habitat destruction\n\n## Climate Change\n\n### Causes\n- Fossil fuel burning\n- Deforestation\n- Industrial processes\n\n### Effects\n- Global warming\n- Sea level rise\n- Extreme weather\n- Species extinction\n\n## Conservation Strategies\n\n1. Reduce, reuse, recycle\n2. Renewable energy\n3. Sustainable agriculture\n4. Protected areas\n5. Pollution control\n\n## Practice Questions\n\n1. What causes acid rain?\n2. How does deforestation affect climate?\n3. Give 3 ways to reduce environmental impact.",
+			"duration": 40,
+			"difficulty": "intermediate",
+			"prerequisites": ["ecology"],
+			"learning_objectives": [
+				"Understand human impacts",
+				"Apply conservation strategies",
+				"Explain climate change"
+			]
+		},
+		{
+			"id": "life-human-systems-digestion",
+			"subject": "life-sciences",
+			"topic": "human biology",
+			"title": "Human Digestive System",
+			"content": "# Human Digestive System\n\nThe digestive system breaks down food for absorption.\n\n## Organs\n\n### Mouth\n- Mechanical: chewing\n- Chemical: salivary amylase (starch)\n\n### Stomach\n- Mechanical: churning\n- Chemical: pepsin (protein), HCl\n- Acid: activates pepsin, kills bacteria\n\n### Small Intestine\n- Site of most digestion and absorption\n- Duodenum: pancreatic enzymes, bile\n- Jejunum/ileum: absorption\n\n### Large Intestine\n- Water absorption\n- Vitamin K production (bacteria)\n- Feces formation\n\n## Enzymes\n\n| Enzyme | Substrate | Product |\n|--------|-----------|---------|\n| Amylase | Starch | Maltose |\n| Protease | Protein | Amino acids |\n| Lipase | Fats | Fatty acids, glycerol |\n\n## Absorption\n\n- Villi and microvilli increase surface area\n- Nutrients enter blood or lymph\n\n## Practice Questions\n\n1. Where is bile produced and released?\n2. What is the function of the large intestine?\n3. How do villi increase absorption?",
+			"duration": 40,
+			"difficulty": "intermediate",
+			"prerequisites": ["cell theory"],
+			"learning_objectives": [
+				"Understand digestive organs",
+				"Apply enzyme functions",
+				"Explain absorption"
+			]
+		},
+		{
+			"id": "life-human-systems-circulation",
+			"subject": "life-sciences",
+			"topic": "human biology",
+			"title": "Human Circulatory System",
+			"content": "# Human Circulatory System\n\nThe circulatory system transports materials.\n\n## Components\n\n### Heart\n- 4 chambers: 2 atria, 2 ventricles\n- Right side: pumps deoxygenated blood\n- Left side: pumps oxygenated blood\n- Valves prevent backflow\n\n### Blood Vessels\n- Arteries: away from heart\n- Veins: toward heart\n- Capillaries: exchange\n\n### Blood\n- Red blood cells: oxygen transport (hemoglobin)\n- White blood cells: immunity\n- Platelets: clotting\n- Plasma: transport\n\n## Circulation\n\n### Pulmonary\nHeart → Lungs → Heart\n\n### Systemic\nHeart → Body → Heart\n\n## Blood Groups\n\n- A, B, AB, O\n- Rh factor: positive/negative\n- Antibodies in plasma\n- Antigens on red blood cells\n\n## Practice Questions\n\n1. What is the function of red blood cells?\n2. Explain double circulation\n3. What determines blood type?",
+			"duration": 45,
+			"difficulty": "intermediate",
+			"prerequisites": ["human biology"],
+			"learning_objectives": [
+				"Understand heart structure",
+				"Explain blood vessel types",
+				"Apply circulation concepts"
+			]
+		},
+		{
+			"id": "life-human-systems-respiration",
+			"subject": "life-sciences",
+			"topic": "human biology",
+			"title": "Human Respiratory System",
+			"content": "# Human Respiratory System\n\nThe respiratory system enables gas exchange.\n\n## Structures\n\n### Nasal cavity\n- Filters, warms, moistens air\n\n### Pharynx/ Larynx\n- Passageway\n- Contains vocal cords\n\n### Trachea\n- Cartilage rings keep open\n- Lined with cilia and mucus\n\n### Bronchi/ Bronchioles\n- Lead to lungs\n- Branching increases surface area\n\n### Alveoli\n- Gas exchange site\n- Thin walls (one cell)\n- Rich capillary network\n\n## Mechanism\n\n### Inhalation\n1. Diaphragm contracts, flattens\n2. Intercostals contract\n3. Volume increases\n4. Pressure decreases\n5. Air flows in\n\n### Exhalation\n1. Diaphragm relaxes\n2. Volume decreases\n3. Pressure increases\n4. Air flows out\n\n## Gas Exchange\n\n- O₂: alveoli → blood\n- CO₂: blood → alveoli\n- Diffusion based on partial pressure\n\n## Practice Questions\n\n1. Where does gas exchange occur?\n2. What happens during inhalation?\n3. How is O₂ transported in blood?",
+			"duration": 40,
+			"difficulty": "intermediate",
+			"prerequisites": ["circulation"],
+			"learning_objectives": [
+				"Understand respiratory structures",
+				"Explain gas exchange",
+				"Apply mechanism of breathing"
+			]
+		},
+		{
+			"id": "life-human-systems-nervous",
+			"subject": "life-sciences",
+			"topic": "human biology",
+			"title": "Human Nervous System",
+			"content": "# Human Nervous System\n\nThe nervous system controls body functions.\n\n## Divisions\n\n### CNS (Central)\n- Brain\n- Spinal cord\n- Processes information\n\n### PNS (Peripheral)\n- Somatic: conscious control\n- Autonomic: unconscious\n  - Sympathetic: fight or flight\n  - Parasympathetic: rest and digest\n\n## Neurons\n\n### Structure\n- Cell body\n- Dendrites: receive signals\n- Axon: transmits signal\n\n### Types\n- Sensory: receptors → CNS\n- Motor: CNS → effectors\n- Relay: between neurons\n\n## Nerve Impulse\n\n### Resting Potential\n- Na⁺ outside, K⁺ inside\n- -70mV\n\n### Action Potential\n1. Depolarization: Na⁺ enters\n2. Repolarization: K⁺ exits\n3. Refractory period\n4. Propagation\n\n### Synapse\n- Neurotransmitters cross cleft\n- Bind to receptors\n\n## Practice Questions\n\n1. What is the function of the sympathetic nervous system?\n2. Explain action potential\n3. How do neurons communicate?",
+			"duration": 45,
+			"difficulty": "advanced",
+			"prerequisites": ["human biology"],
+			"learning_objectives": [
+				"Understand nervous system divisions",
+				"Explain nerve impulse",
+				"Apply synapse concepts"
+			]
+		},
+		{
+			"id": "life-human-systems-endocrine",
+			"subject": "life-sciences",
+			"topic": "human biology",
+			"title": "Human Endocrine System",
+			"content": "# Human Endocrine System\n\nThe endocrine system uses hormones for communication.\n\n## Glands\n\n### Pituitary\n- Master gland\n- Growth hormone\n- TSH, ACTH, FSH, LH\n- ADH, oxytocin\n\n### Thyroid\n- Thyroxine: metabolism\n- Calcitonin: blood calcium\n\n### Parathyroid\n- PTH: raises blood calcium\n\n### Adrenal\n- Adrenaline: fight or flight\n- Cortisol: stress response\n\n### Pancreas\n- Insulin: lowers blood glucose\n- Glucagon: raises blood glucose\n\n### Gonads\n- Testes: testosterone\n- Ovaries: estrogen, progesterone\n\n## Hormones\n\n### Properties\n- Specificity\n- Feedback control\n- Half-life\n\n## Feedback Mechanisms\n\n### Negative\n- Most hormones\n- Example: insulin lowers glucose, stops secretion\n\n### Positive\n- Oxytocin during labor\n- LH surge during ovulation\n\n## Practice Questions\n\n1. What is the function of insulin?\n2. Explain negative feedback\n3. What hormones do the thyroid produce?",
+			"duration": 45,
+			"difficulty": "advanced",
+			"prerequisites": ["human biology"],
+			"learning_objectives": [
+				"Identify endocrine glands",
+				"Understand hormone functions",
+				"Apply feedback mechanisms"
+			]
+		},
+		{
+			"id": "life-human-systems-excretion",
+			"subject": "life-sciences",
+			"topic": "human biology",
+			"title": "Excretion and Homeostasis",
+			"content": "# Excretion and Homeostasis\n\nExcretion removes metabolic wastes; homeostasis maintains internal balance.\n\n## Excretory Organs\n\n### Kidneys\n- Filter blood\n- Form urine\n- Maintain water balance\n\n### Lungs\n- Remove CO₂\n- Release water vapor\n\n### Skin\n- Removes water, salts\n- Urea in sweat\n\n## Kidney Structure\n\n### Nephron\n- Glomerulus: filtration\n- Bowman's capsule\n- Tubule: reabsorption, secretion\n- Loop of Henle: water reabsorption\n\n## Urine Formation\n\n1. Filtration: at glomerulus\n2. Reabsorption: in tubule\n3. Secretion: from blood to tubule\n\n### Composition\n- Water\n- Urea (nitrogenous waste)\n- Salts\n- Excess substances\n\n## Homeostasis\n\n### Temperature\n- Thermoregulation\n- Sweating, shivering\n\n### Water Balance\n- Osmoregulation\n- ADH controls\n\n### Blood Glucose\n- Insulin and glucagon\n- Maintains ~80-120 mg/dL\n\n## Practice Questions\n\n1. What is the functional unit of the kidney?\n2. How does ADH affect urine concentration?\n3. Explain how body maintains blood glucose.",
+			"duration": 45,
+			"difficulty": "intermediate",
+			"prerequisites": ["circulation", "endocrines"],
+			"learning_objectives": [
+				"Understand excretion",
+				"Apply nephron function",
+				"Explain homeostasis"
+			]
+		},
+		{
+			"id": "life-human-immunity",
+			"subject": "life-sciences",
+			"topic": "human biology",
+			"title": "Human Immune System",
+			"content": "# Human Immune System\n\nThe immune system defends against pathogens.\n\n## Lines of Defense\n\n### First Line (Non-specific)\n- Skin\n- Mucus membranes\n- Secretions (tears, stomach acid)\n\n### Second Line (Non-specific)\n- Phagocytes (neutrophils, macrophages)\n- Inflammation\n- Interferons\n- Complement proteins\n\n### Third Line (Specific)\n- Lymphocytes\n- Produces antibodies\n\n## Immune Response\n\n### B Cells\n- Produce antibodies\n- Humoral immunity\n- Memory cells\n\n### T Cells\n- Cell-mediated immunity\n- Helper T cells: coordinate\n- Cytotoxic T cells: kill infected cells\n- Memory cells\n\n## Immunity Types\n\n### Active\n- Natural: infection\n- Vaccine: immunization\n\n### Passive\n- Natural: mother to fetus\n- Artificial: antibodies\n\n## Practice Questions\n\n1. What is the difference between B and T cells?\n2. How do vaccines work?\n3. Explain the role of memory cells.",
+			"duration": 45,
+			"difficulty": "advanced",
+			"prerequisites": ["human biology"],
+			"learning_objectives": [
+				"Understand immune system",
+				"Apply immunity concepts",
+				"Explain vaccination"
+			]
+		},
+		{
+			"id": "life-reproduction-mitosis",
+			"subject": "life-sciences",
+			"topic": "reproduction",
+			"title": "Cell Division: Mitosis",
+			"content": "# Cell Division: Mitosis\n\nMitosis produces identical cells for growth and repair.\n\n## Cell Cycle\n\n### Interphase (90%)\n- G1: growth, organelle duplication\n- S: DNA replication\n- G2: final preparations\n\n### M Phase\n- Prophase\n- Metaphase\n- Anaphase\n- Telophase\n- Cytokinesis\n\n## Stages\n\n### Prophase\n- Chromatin condenses\n- Nuclear membrane breaks down\n- Spindle fibers form\n\n### Metaphase\n- Chromosomes align at equator\n- Attached to spindle fibers\n\n### Anaphase\n- Sister chromatids separate\n- Move to opposite poles\n\n### Telophase\n- Nuclear membranes reform\n- Chromosomes uncoil\n- Spindle disappears\n\n### Cytokinesis\n- Cytoplasm divides\n- Two daughter cells form\n\n## Significance\n\n- Growth\n- Repair\n- Asexual reproduction\n\n## Practice Questions\n\n1. What happens during metaphase?\n2. Why is mitosis important?\n3. How does cytokinesis differ from mitosis?",
+			"duration": 40,
+			"difficulty": "intermediate",
+			"prerequisites": ["DNA"],
+			"learning_objectives": [
+				"Understand mitosis stages",
+				"Apply cell cycle concepts",
+				"Explain significance"
+			]
+		},
+		{
+			"id": "life-reproduction-meiosis",
+			"subject": "life-sciences",
+			"topic": "reproduction",
+			"title": "Cell Division: Meiosis",
+			"content": "# Cell Division: Meiosis\n\nMeiosis produces gametes for sexual reproduction.\n\n## Overview\n\n- Two divisions\n- Reduces chromosome number by half\n- Creates genetic variation\n\n## Meiosis I (Reduction)\n\n### Prophase I\n- Crossing over (genetic recombination)\n- Homologous chromosomes pair\n\n### Metaphase I\n- Homologous pairs align\n\n### Anaphase I\n- Homologs separate\n\n### Telophase I\n- Two cells form\n\n## Meiosis II (Division)\n\nSimilar to mitosis\n- Sister chromatids separate\n\n## Products\n\n- 4 haploid daughter cells\n- Genetic variation from:\n  - Crossing over\n  - Independent assortment\n\n## Practice Questions\n\n1. What is the main purpose of meiosis?\n2. What is crossing over and why is it important?\n3. How many cells result from meiosis?",
+			"duration": 45,
+			"difficulty": "advanced",
+			"prerequisites": ["mitosis"],
+			"learning_objectives": [
+				"Understand meiosis stages",
+				"Apply genetic variation",
+				"Compare mitosis and meiosis"
+			]
+		},
+		{
+			"id": "life-reproduction-human",
+			"subject": "life-sciences",
+			"topic": "reproduction",
+			"title": "Human Reproduction",
+			"content": "# Human Reproduction\n\nHuman reproduction involves specialized organs.\n\n## Male Reproductive System\n\n### Testes\n- Produce sperm\n- Produce testosterone\n\n### Accessory Glands\n- Seminal vesicles\n- Prostate gland\n- Bulbourethral glands\n\n## Female Reproductive System\n\n### Ovaries\n- Produce eggs (oocytes)\n- Produce hormones (estrogen, progesterone)\n\n### Fallopian Tubes\n- Site of fertilization\n- Cilia move egg to uterus\n\n### Uterus\n- Site of embryo development\n- Endometrium: lining\n\n### Menstrual Cycle\n- Follicular: follicle develops\n- Ovulation: egg released\n- Luteal: progesterone production\n\n## Fertilization\n\n- Occurs in fallopian tube\n- Sperm penetrates egg\n- Zygote forms\n- Implantation in uterus\n\n## Practice Questions\n\n1. Where does fertilization occur?\n2. What hormones control the menstrual cycle?\n3. Explain the role of the testes.",
+			"duration": 40,
+			"difficulty": "intermediate",
+			"prerequisites": ["meiosis"],
+			"learning_objectives": [
+				"Understand reproductive organs",
+				"Apply menstrual cycle",
+				"Explain fertilization"
+			]
+		},
+		{
+			"id": "life-development-embryology",
+			"subject": "life-sciences",
+			"topic": "development",
+			"title": "Embryonic Development",
+			"content": "# Embryonic Development\n\nDevelopment begins after fertilization.\n\n## Cleavage\n\n- Rapid cell divisions\n- No growth\n- Morula forms\n\n## Blastula/Blastocyst\n\n- Fluid-filled cavity\n- Inner cell mass: embryo\n- Trophoblast: placenta\n\n## Gastrulation\n\n### Three Germ Layers\n\n1. **Ectoderm**: skin, nervous system\n2. **Mesoderm**: muscles, bones, circulatory\n3. **Endoderm**: digestive, respiratory\n\n## Organogenesis\n\n- Organs form from germ layers\n- Critical period: first trimester\n\n## Placenta\n\n- Exchange: nutrients, wastes\n- Hormones: hCG, progesterone\n- Barrier: some substances cross\n\n## Practice Questions\n\n1. What are the three germ layers?\n2. What is the function of the placenta?\n3. Explain the difference between morula and blastocyst.",
+			"duration": 40,
+			"difficulty": "advanced",
+			"prerequisites": ["human reproduction"],
+			"learning_objectives": [
+				"Understand embryonic development",
+				"Apply germ layer concepts",
+				"Explain placenta function"
+			]
+		},
+		{
+			"id": "life-biodiversity-classification",
+			"subject": "life-sciences",
+			"topic": "biodiversity",
+			"title": "Classification of Living Organisms",
+			"content": "# Classification of Living Organisms\n\nTaxonomy organizes living organisms.\n\n## Hierarchy\n\n1. Domain\n2. Kingdom\n3. Phylum\n4. Class\n5. Order\n6. Family\n7. Genus\n8. Species\n\n## Domains\n\n### Bacteria\n- Prokaryotic\n- Single-celled\n- Different from Archaea\n\n### Archaea\n- Prokaryotic\n- Extreme environments\n\n### Eukarya\n- Eukaryotic\n- Includes all other kingdoms\n\n## Kingdoms (Eukarya)\n\n### Protista\n- Mostly single-celled\n- Diverse\n- Examples: amoeba, algae\n\n### Fungi\n- Heterotrophic\n- Cell walls (chitin)\n- Examples: mushrooms, yeast\n\n### Plantae\n- Autotrophic\n- Cell walls (cellulose)\n- Photosynthesis\n\n### Animalia\n- Heterotrophic\n- No cell walls\n- Multicellular\n\n## Binomial Nomenclature\n\nGenus species\n- Italicized\n- Genus capitalized\n- Example: Homo sapiens\n\n## Practice Questions\n\n1. What are the 3 domains?\n2. What is binomial nomenclature?\n3. How do fungi differ from plants?",
+			"duration": 35,
+			"difficulty": "intermediate",
+			"prerequisites": ["basic biology"],
+			"learning_objectives": [
+				"Understand taxonomic hierarchy",
+				"Apply classification",
+				"Identify kingdoms"
+			]
+		},
+		{
+			"id": "life-biodiversity-viruses",
+			"subject": "life-sciences",
+			"topic": "biodiversity",
+			"title": "Viruses and Bacteria",
+			"content": "# Viruses and Bacteria\n\nMicroorganisms have significant impact.\n\n## Viruses\n\n### Characteristics\n- Not living\n- Require host cells\n- DNA or RNA\n- Protein coat\n\n### Replication\n1. Attachment\n2. Entry\n3. Replication\n4. Assembly\n5. Release\n\n### Examples\n- HIV\n- Influenza\n- COVID-19\n\n## Bacteria\n\n### Characteristics\n- Prokaryotic\n- Single-celled\n- Reproduce binary fission\n- Various shapes: cocci, bacilli, spirilla\n\n### Importance\n- Decomposers\n- Nitrogen fixation\n- Food production\n- Pathogens\n\n## Antibiotics\n\n- Kill bacteria or inhibit growth\n- Penicillin: cell wall\n- Not effective against viruses\n\n## Antibiotic Resistance\n\n- Overuse selects resistant bacteria\n- MRSA: major concern\n\n## Practice Questions\n\n1. Why are viruses considered not living?\n2. How do antibiotics work?\n3. What is antibiotic resistance?",
+			"duration": 40,
+			"difficulty": "intermediate",
+			"prerequisites": ["classification"],
+			"learning_objectives": [
+				"Understand viruses",
+				"Apply bacteria concepts",
+				"Explain antibiotic resistance"
+			]
+		},
+		{
+			"id": "life-biodiversity-fungi",
+			"subject": "life-sciences",
+			"topic": "biodiversity",
+			"title": "Kingdom Fungi",
+			"content": "# Kingdom Fungi\n\nFungi are eukaryotic decomposers.\n\n## Characteristics\n\n- Heterotrophic (saprophytic, parasitic, mutualistic)\n- Cell walls of chitin\n- Reproduce via spores\n- Multicellular (mostly)\n\n## Structure\n\n### Hyphae\n- Thread-like structures\n- Form mycelium\n\n### Fruiting Bodies\n- Produce spores\n- Examples: mushrooms, toadstools\n\n## Types\n\n### Zygomycetes\n- Bread mold\n- Rhizopus\n\n### Ascomycetes\n- Sac fungi\n- Yeast, morels\n\n### Basidiomycetes\n- Club fungi\n- Mushrooms, puffballs\n\n## Importance\n\n### Ecological\n- Decomposers\n- Mycorrhizae (symbiosis with plants)\n\n### Economic\n- Food (mushrooms, yeast)\n- Medicine (penicillin)\n- Brewing, baking\n\n## Practice Questions\n\n1. What is the cell wall of fungi made of?\n2. How do fungi obtain nutrients?\n3. Give 2 examples of fungal importance.",
+			"duration": 35,
+			"difficulty": "intermediate",
+			"prerequisites": ["classification"],
+			"learning_objectives": [
+				"Understand fungi characteristics",
+				"Apply fungal types",
+				"Explain importance"
+			]
+		},
+		{
+			"id": "life-biodiversity-plants",
+			"subject": "life-sciences",
+			"topic": "biodiversity",
+			"title": "Kingdom Plantae",
+			"content": "# Kingdom Plantae\n\nPlants are eukaryotic autotrophs.\n\n## Characteristics\n\n- Autotrophic (photosynthesis)\n- Cell walls of cellulose\n- Multicellular\n- Live on land (mostly)\n\n## Plant Groups\n\n### Bryophytes\n- Mosses, liverworts\n- No vascular tissue\n- Require water for reproduction\n\n### Pteridophytes\n- Ferns\n- Vascular, no seeds\n- Spores\n\n### Gymnosperms\n- Conifers\n- Naked seeds (cones)\n- Vascular\n\n### Angiosperms\n- Flowering plants\n- Seeds in fruit\n- Most diverse\n\n## Plant Tissues\n\n### Dermal\n- Protection\n- Stomata\n\n### Vascular\n- Xylem: water transport\n- Phloem: sugar transport\n\n### Ground\n- Photosynthesis\n- Storage\n- Support\n\n## Practice Questions\n\n1. What is the main difference between gymnosperms and angiosperms?\n2. What is the function of xylem?\n3. Why do mosses require water for reproduction?",
+			"duration": 40,
+			"difficulty": "intermediate",
+			"prerequisites": ["classification"],
+			"learning_objectives": [
+				"Identify plant groups",
+				"Apply plant tissues",
+				"Understand plant classification"
+			]
+		},
+		{
+			"id": "life-biodiversity-animals",
+			"subject": "life-sciences",
+			"topic": "biodiversity",
+			"title": "Kingdom Animalia",
+			"content": "# Kingdom Animalia\n\nAnimals are eukaryotic heterotrophs.\n\n## Characteristics\n\n- Heterotrophic\n- Multicellular\n- No cell walls\n- Most have tissues\n- Mobility (most)\n\n## Major Phyla\n\n### Porifera\n- Sponges\n- Simplest\n- No true tissues\n\n### Cnidaria\n- Jellyfish, corals\n- Nematocysts\n- Radial symmetry\n\n### Platyhelminthes\n- Flatworms\n- Acoelomates\n- Bilateral symmetry\n\n### Annelida\n- Segmented worms\n- Earthworms\n- True coelom\n\n### Arthropoda\n- Insects, spiders, crustaceans\n- Exoskeleton\n- Jointed appendages\n\n### Chordata\n- Vertebrates\n- Backbone\n- Includes mammals\n\n## Practice Questions\n\n1. What characteristics define animals?\n2. What is the difference between radial and bilateral symmetry?\n3. Give 2 examples of arthropods.",
+			"duration": 40,
+			"difficulty": "intermediate",
+			"prerequisites": ["classification"],
+			"learning_objectives": [
+				"Identify major animal phyla",
+				"Apply body plans",
+				"Understand animal diversity"
+			]
+		},
+		{
+			"id": "life-biotechnology",
+			"subject": "life-sciences",
+			"topic": "biotechnology",
+			"title": "Biotechnology",
+			"content": "# Biotechnology\n\nBiotechnology uses living organisms for practical purposes.\n\n## Applications\n\n### Medical\n- Insulin production\n- Vaccines\n- Gene therapy\n- Diagnostic tests\n\n### Agricultural\n- GM crops\n- Pest resistance\n- Herbicide tolerance\n- Increased nutrition\n\n### Industrial\n- Bioremediation\n- Biofuels\n- Food production\n\n## Techniques\n\n### Recombinant DNA\n- Combine DNA from different sources\n- Insert into host organism\n- Express desired trait\n\n### PCR (Polymerase Chain Reaction)\n- Amplify DNA\n- Billions of copies\n- Forensics, diagnostics\n\n### Gel Electrophoresis\n- Separate DNA fragments\n- Based on size/charge\n- DNA fingerprinting\n\n## Ethical Concerns\n\n- GM food safety\n- Gene editing (CRISPR)\n- Privacy (genetic information)\n- Access and equity\n\n## Practice Questions\n\n1. What is recombinant DNA technology?\n2. How is PCR used in biotechnology?\n3. What are ethical concerns about GM crops?",
+			"duration": 45,
+			"difficulty": "advanced",
+			"prerequisites": ["genetics"],
+			"learning_objectives": [
+				"Apply biotechnology techniques",
+				"Understand applications",
+				"Discuss ethical issues"
 			]
 		}
 	]

@@ -15,6 +15,7 @@ import {
 	File01Icon,
 	GameController01Icon,
 	GlobeIcon,
+	GridIcon,
 	Home01Icon,
 	Key01Icon,
 	Layers01Icon,
@@ -29,6 +30,7 @@ import {
 	Shield01Icon,
 	SparklesIcon,
 	Task01Icon,
+	Timer01Icon,
 	UserAdd01Icon,
 	UserGroupIcon,
 	User as UserIcon,
@@ -36,7 +38,7 @@ import {
 import { HugeiconsIcon } from '@hugeicons/react';
 import { m } from 'framer-motion';
 import { usePathname, useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { appConfig } from '@/app.config';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -47,6 +49,7 @@ import {
 	DrawerTitle,
 	DrawerTrigger,
 } from '@/components/ui/drawer';
+import { Input } from '@/components/ui/input';
 import { authClient } from '@/lib/auth-client';
 import { cn } from '@/lib/utils';
 
@@ -74,6 +77,8 @@ const MOBILE_NAV_SECTIONS: MobileNavSection[] = [
 			{ href: '/study-companion', label: 'Study Companion', icon: SparklesIcon },
 			{ href: '/study-path', label: 'Study Path', icon: MapsIcon },
 			{ href: '/study-plan', label: 'Study Plan', icon: Calendar01Icon },
+			{ href: '/curriculum-map', label: 'Curriculum Map', icon: GridIcon },
+			{ href: '/periodic-table', label: 'Periodic Table', icon: AtomIcon },
 		],
 	},
 	{
@@ -87,6 +92,13 @@ const MOBILE_NAV_SECTIONS: MobileNavSection[] = [
 			{ href: '/practice-quiz', label: 'Practice Quiz', icon: Task01Icon },
 			{ href: '/quiz', label: 'Quiz', icon: QuestionIcon },
 			{ href: '/review', label: 'Review', icon: AiBrain01Icon },
+		],
+	},
+	{
+		title: 'Focus',
+		items: [
+			{ href: '/focus', label: 'Focus Mode', icon: Timer01Icon },
+			{ href: '/focus-rooms', label: 'Focus Rooms', icon: UserGroupIcon },
 		],
 	},
 	{
@@ -107,6 +119,7 @@ const MOBILE_NAV_SECTIONS: MobileNavSection[] = [
 			{ href: '/calendar', label: 'Calendar', icon: Calendar01Icon },
 			{ href: '/language', label: 'Language', icon: GlobeIcon },
 			{ href: '/notifications', label: 'Notifications', icon: Notification03Icon },
+			{ href: '/parent-dashboard', label: 'Parent Portal', icon: UserGroupIcon },
 			{ href: '/profile', label: 'Profile', icon: UserIcon },
 			{ href: '/settings', label: 'Settings', icon: Settings01Icon },
 		],
@@ -129,7 +142,17 @@ export function MobileNavDrawer({
 	user: { name?: string | null; email?: string | null; image?: string | null } | null | undefined;
 }) {
 	const [open, setOpen] = useState(false);
+	const [searchQuery, setSearchQuery] = useState('');
 	const router = useRouter();
+
+	const filteredSections = useMemo(() => {
+		if (!searchQuery.trim()) return MOBILE_NAV_SECTIONS;
+		const query = searchQuery.toLowerCase();
+		return MOBILE_NAV_SECTIONS.map((section) => ({
+			...section,
+			items: section.items.filter((item) => item.label.toLowerCase().includes(query)),
+		})).filter((section) => section.items.length > 0);
+	}, [searchQuery]);
 
 	const handleSignOut = async () => {
 		await authClient.signOut();
@@ -139,6 +162,7 @@ export function MobileNavDrawer({
 
 	const handleNavigation = (href: string) => {
 		setOpen(false);
+		setSearchQuery('');
 		router.push(href);
 	};
 
@@ -155,33 +179,29 @@ export function MobileNavDrawer({
 					className="flex flex-col"
 					style={{ maxHeight: '85vh' }}
 				>
-					{/* Header */}
-					<div className="px-6 pb-5 border-b border-sidebar-border/50">
-						<div className="flex items-center justify-between">
-							{/* User Section */}
+					<div className="px-6 pb-4 border-b border-sidebar-border/50">
+						<div className="flex items-center justify-between mb-4">
 							{user ? (
-								<div className="pr-6 py-4 border-b border-sidebar-border/50 bg-sidebar-accent/20">
-									<button
-										type="button"
-										onClick={() => handleNavigation('/profile')}
-										className="flex items-center gap-3 p-2 -m-2 w-full rounded-xl hover:bg-sidebar-accent transition-colors text-left"
-									>
-										<Avatar className="h-11 w-11 border-2 border-sidebar-primary/30">
-											<AvatarImage src={user.image || undefined} alt={user.name || 'User'} />
-											<AvatarFallback className="bg-sidebar-primary text-sidebar-primary-foreground font-bold">
-												{user.name?.charAt(0)?.toUpperCase() || 'U'}
-											</AvatarFallback>
-										</Avatar>
-										<div className="flex-1 min-w-0">
-											<p className="font-semibold text-sidebar-foreground truncate">{user.name}</p>
-											<p className="text-xs text-sidebar-foreground/50 truncate">{user.email}</p>
-										</div>
-										<HugeiconsIcon
-											icon={ArrowRight01Icon}
-											className="w-4 h-4 text-sidebar-foreground/30"
-										/>
-									</button>
-								</div>
+								<button
+									type="button"
+									onClick={() => handleNavigation('/profile')}
+									className="flex items-center gap-3 p-2 -m-2 w-full rounded-xl hover:bg-sidebar-accent transition-colors text-left"
+								>
+									<Avatar className="h-11 w-11 border-2 border-sidebar-primary/30">
+										<AvatarImage src={user.image || undefined} alt={user.name || 'User'} />
+										<AvatarFallback className="bg-sidebar-primary text-sidebar-primary-foreground font-bold">
+											{user.name?.charAt(0)?.toUpperCase() || 'U'}
+										</AvatarFallback>
+									</Avatar>
+									<div className="flex-1 min-w-0">
+										<p className="font-semibold text-sidebar-foreground truncate">{user.name}</p>
+										<p className="text-xs text-sidebar-foreground/50 truncate">{user.email}</p>
+									</div>
+									<HugeiconsIcon
+										icon={ArrowRight01Icon}
+										className="w-4 h-4 text-sidebar-foreground/30"
+									/>
+								</button>
 							) : (
 								<button
 									type="button"
@@ -191,14 +211,11 @@ export function MobileNavDrawer({
 									<div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-sidebar-primary to-purple-400 flex items-center justify-center shadow-lg">
 										<HugeiconsIcon icon={BookOpen01Icon} className="w-5 h-5 text-white" />
 									</div>
-									<div>
-										<h1 className="text-lg font-black text-sidebar-foreground uppercase tracking-tight">
-											{appConfig.name}
-										</h1>
-									</div>
+									<h1 className="text-lg font-black text-sidebar-foreground uppercase tracking-tight">
+										{appConfig.name}
+									</h1>
 								</button>
 							)}
-
 							<Button
 								variant="ghost"
 								size="icon"
@@ -208,11 +225,24 @@ export function MobileNavDrawer({
 								<HugeiconsIcon icon={Cancel01Icon} className="w-5 h-5" />
 							</Button>
 						</div>
+
+						<div className="relative">
+							<HugeiconsIcon
+								icon={Search01Icon}
+								className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-sidebar-foreground/40"
+							/>
+							<Input
+								type="text"
+								placeholder="Search pages..."
+								value={searchQuery}
+								onChange={(e) => setSearchQuery(e.target.value)}
+								className="pl-10 bg-sidebar-accent/50 border-sidebar-border/50 rounded-xl h-11"
+							/>
+						</div>
 					</div>
 
-					{/* Navigation Items */}
 					<div className="flex-1 overflow-y-auto px-4 py-4">
-						{MOBILE_NAV_SECTIONS.map((section) => (
+						{filteredSections.map((section) => (
 							<div key={section.title} className="mb-5">
 								<p className="px-3 mb-2 text-[10px] font-black uppercase tracking-widest text-sidebar-foreground/40">
 									{section.title}
@@ -224,9 +254,13 @@ export function MobileNavDrawer({
 								</div>
 							</div>
 						))}
+						{filteredSections.length === 0 && (
+							<div className="text-center py-8 text-sidebar-foreground/40">
+								<p className="text-sm">No results found</p>
+							</div>
+						)}
 					</div>
 
-					{/* Footer */}
 					<div className="px-4 py-4 border-t border-sidebar-border/50 bg-sidebar-accent/10">
 						<Button
 							variant="ghost"

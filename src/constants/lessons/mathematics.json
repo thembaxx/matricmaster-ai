@@ -29,9 +29,37 @@
 				"Apply basic integration rules",
 				"Use definite integrals to calculate areas under curves"
 			]
-		}
-	],
-	"algebra": [
+		},
+		{
+			"id": "math-calculus-applications",
+			"subject": "mathematics",
+			"topic": "calculus",
+			"title": "Applications of Derivatives",
+			"content": "# Applications of Derivatives\n\nDerivatives have numerous practical applications in solving real-world problems involving rates of change and optimization.\n\n## Finding Turning Points\n\n### Critical Points\nA critical point occurs where f'(x) = 0 or f'(x) does not exist.\n\n### Stationary Points\nWhen f'(x) = 0, we have a stationary point. Types:\n- **Local Minimum**: f'(x) changes from negative to positive\n- **Local Maximum**: f'(x) changes from positive to negative\n- **Point of Inflection**: f'(x) doesn't change sign\n\n### Second Derivative Test\n- If f'(a) = 0 and f''(a) > 0: local minimum\n- If f'(a) = 0 and f''(a) < 0: local maximum\n- If f''(a) = 0: test fails, use first derivative test\n\n## Optimization Problems\n\n### Steps to Solve:\n1. Identify the quantity to optimize\n2. Express it as a function of one variable\n3. Find the derivative and set to zero\n4. Verify it's a maximum/minimum\n5. Answer the question\n\n### Example: Maximize Area\nA farmer has 200m of fencing. Find dimensions of largest rectangular field.\n\nSolution:\n- Let width = x, length = y\n- Perimeter: 2x + 2y = 200 → y = 100 - x\n- Area: A = xy = x(100 - x) = 100x - x²\n- dA/dx = 100 - 2x = 0 → x = 50m\n- y = 50m, Max Area = 2500m²\n\n## Rate of Change Problems\n\n### Related Rates\nWhen two or more quantities are related and we know how fast one is changing, we can find how fast others are changing.\n\n### Example: Expanding Circle\nA circle's radius increases at 2cm/s. Find rate of area increase when r = 10cm.\n\nSolution:\n- A = πr²\n- dA/dt = 2πr(dr/dt) = 2π(10)(2) = 40π cm²/s\n\n## Practice Questions\n\n1. Find the maximum value of f(x) = -2x² + 8x - 3\n2. A box with square base has volume 64cm³. Find dimensions for minimum surface area.\n3. Water flows into a cone at 5cm³/min. Find rate of height change when height is 12cm.",
+			"duration": 55,
+			"difficulty": "advanced",
+			"prerequisites": ["derivatives"],
+			"learning_objectives": [
+				"Find and classify stationary points using first and second derivative tests",
+				"Solve optimization problems in real-world contexts",
+				"Apply related rates to solve practical problems"
+			]
+		},
+		{
+			"id": "math-calculus-cubic-polynomials",
+			"subject": "mathematics",
+			"topic": "calculus",
+			"title": "Calculus with Cubic Polynomials",
+			"content": "# Calculus with Cubic Polynomials\n\nCubic polynomials (degree 3) are essential in Grade 12 calculus. Understanding their graphs and derivatives helps solve complex problems.\n\n## Cubic Function Basics\n\nA cubic function has the form:\nf(x) = ax³ + bx² + cx + d, where a ≠ 0\n\n### Key Features:\n- Up to 3 x-intercepts\n- 2 turning points (local max and min)\n- Point of inflection at x = -b/(3a)\n- End behavior: as x → ∞, f(x) → ∞ (if a > 0)\n\n## Factorisation of Cubics\n\n### Factor Theorem\nIf f(a) = 0, then (x - a) is a factor of f(x)\n\n### Remainder Theorem\nWhen dividing f(x) by (x - a), remainder = f(a)\n\n### Steps to Factorise:\n1. Use trial and error to find a root\n2. Use synthetic division to reduce degree\n3. Factor the remaining quadratic\n\n### Example: Factor f(x) = x³ - 6x² + 11x - 6\n- f(1) = 1 - 6 + 11 - 6 = 0 → (x - 1) is a factor\n- Divide: (x³ - 6x² + 11x - 6) ÷ (x - 1) = x² - 5x + 6\n- = (x - 1)(x - 2)(x - 3)\n\n## Sketching Cubic Graphs\n\n### Using Calculus:\n1. Find y-intercept: f(0)\n2. Find x-intercepts: solve f(x) = 0\n3. Find turning points: f'(x) = 0\n4. Determine nature of turning points\n5. Find point of inflection: f''(x) = 0\n\n### Example: Sketch f(x) = x³ - 3x²\n- y-intercept: (0, 0)\n- x-intercepts: x²(x - 3) = 0 → x = 0, 3\n- f'(x) = 3x² - 6x = 3x(x - 2)\n- Stationary points: x = 0, 2\n- f''(x) = 6x - 6 → inflection at x = 1\n\n## Practice Questions\n\n1. Factorise: x³ + 4x² - 7x - 10\n2. Sketch f(x) = x³ - 3x² - 4x + 12\n3. Find coordinates of all turning points for f(x) = 2x³ - 9x² + 12x",
+			"duration": 50,
+			"difficulty": "advanced",
+			"prerequisites": ["derivatives", "factorisation"],
+			"learning_objectives": [
+				"Factorise cubic polynomials using factor and remainder theorems",
+				"Sketch cubic graphs using calculus techniques",
+				"Identify and classify turning points and points of inflection"
+			]
+		},
 		{
 			"id": "math-algebra-quadratic-equations",
 			"subject": "mathematics",
@@ -46,9 +74,37 @@
 				"Graph quadratic functions and identify key features",
 				"Apply quadratic functions to real-world problems"
 			]
-		}
-	],
-	"trigonometry": [
+		},
+		{
+			"id": "math-algebra-exponents-logarithms",
+			"subject": "mathematics",
+			"topic": "algebra",
+			"title": "Exponents and Logarithms",
+			"content": "# Exponents and Logarithms\n\nExponents and logarithms are closely related concepts that are essential for solving equations involving growth, decay, and many other real-world applications.\n\n## Laws of Exponents\n\n| Law | Formula | Example |\n|-----|---------|---------|\n| Product | aᵐ · aⁿ = aᵐ⁺ⁿ | x² · x³ = x⁵ |\n| Quotient | aᵐ ÷ aⁿ = aᵐ⁻ⁿ | x⁵ ÷ x² = x³ |\n| Power | (aᵐ)ⁿ = aᵐⁿ | (x²)³ = x⁶ |\n| Zero | a⁰ = 1 (a ≠ 0) | 5⁰ = 1 |\n| Negative | a⁻ⁿ = 1/aⁿ | x⁻² = 1/x² |\n| Fraction | aᵐ/ⁿ = ⁿ√aᵐ | x¹/² = √x |\n\n## Logarithm Basics\n\n### Definition\nIf aʸ = x, then logₐx = y\n- a is the base (a > 0, a ≠ 1)\n- logₐx is the exponent to which a must be raised to get x\n\n### Common Logarithms\n- **Base 10**: log₁₀x (written as log x)\n- **Natural**: logₑx (written as ln x), where e ≈ 2.718\n\n## Laws of Logarithms\n\n| Law | Formula | Example |\n|-----|---------|---------|\n| Product | log(AB) = log A + log B | log 6 = log 2 + log 3 |\n| Quotient | log(A/B) = log A - log B | log 2 = log 6 - log 3 |\n| Power | log(Aⁿ) = n log A | log 4 = 2 log 2 |\n| Change of Base | logₐx = log x / log a | log₂5 = log 5 / log 2 |\n\n## Solving Exponential Equations\n\n### Method 1: Same Base\nIf bases are same, set exponents equal\n\n### Method 2: Logarithms\nTake log of both sides\n\n### Example: Solve 3ˣ = 20\n- x log 3 = log 20\n- x = log 20 / log 3 ≈ 2.73\n\n## Solving Logarithmic Equations\n\n### Example: Solve log(x + 3) = 2\n- x + 3 = 10²\n- x = 100 - 3 = 97\n\n## Practice Questions\n\n1. Simplify: 2⁴ · 2³ ÷ 2⁵\n2. Solve: 5ˣ = 125\n3. Solve: log(x + 2) + log x = log 6",
+			"duration": 45,
+			"difficulty": "intermediate",
+			"prerequisites": ["basic algebra"],
+			"learning_objectives": [
+				"Apply laws of exponents to simplify expressions",
+				"Apply laws of logarithms to solve equations",
+				"Solve exponential and logarithmic equations"
+			]
+		},
+		{
+			"id": "math-algebra-inequalities",
+			"subject": "mathematics",
+			"topic": "algebra",
+			"title": "Quadratic Inequalities",
+			"content": "# Quadratic Inequalities\n\nQuadratic inequalities involve finding the range of x values that satisfy an inequality involving a quadratic expression.\n\n## Key Concepts\n\n### Types of Inequalities\n- f(x) > 0 (above x-axis)\n- f(x) < 0 (below x-axis)\n- f(x) ≥ 0 (on/above x-axis)\n- f(x) ≤ 0 (on/below x-axis)\n\n## Solving Steps\n\n### Method 1: Graphical\n1. Find x-intercepts (where f(x) = 0)\n2. Sketch the parabola\n3. Determine which regions satisfy the inequality\n\n### Method 2: Algebraic\n1. Rearrange so all terms on one side\n2. Factor or use quadratic formula to find roots\n3. Use test values in each interval\n\n## Example: Solve x² - 5x + 6 > 0\n\n1. Factor: (x - 2)(x - 3) > 0\n2. Critical points: x = 2, 3\n3. Test intervals:\n   - x < 2: (1)(-1) = -1 < 0 ❌\n   - 2 < x < 3: (1)(-1) = -1 < 0 ❌\n   - x > 3: (4)(1) = 4 > 0 ✓\n4. Solution: x < 2 or x > 3\n\n## Special Cases\n\n### No Real Roots\nIf discriminant < 0:\n- If a > 0: f(x) > 0 for all x\n- If a < 0: f(x) < 0 for all x\n\n### Perfect Square\nIf quadratic is a perfect square:\n- (x - h)² ≥ 0 for all x\n- (x - h)² ≤ 0 only at x = h\n\n## Practice Questions\n\n1. Solve: x² - 4x - 5 < 0\n2. Solve: x² + 6x + 9 ≥ 0\n3. Solve: 2x² - 5x + 2 > 0",
+			"duration": 35,
+			"difficulty": "intermediate",
+			"prerequisites": ["quadratic equations"],
+			"learning_objectives": [
+				"Solve quadratic inequalities using graphical and algebraic methods",
+				"Interpret solution sets on number lines",
+				"Apply quadratic inequalities to real-world problems"
+			]
+		},
 		{
 			"id": "math-trig-identities",
 			"subject": "mathematics",
@@ -69,7 +125,7 @@
 			"subject": "mathematics",
 			"topic": "trigonometry",
 			"title": "Trigonometric Equations",
-			"content": "# Trigonometric Equations\n\nTrigonometric equations involve finding the values of angles that satisfy a given trigonometric equation.\n\n## Solving Basic Trigonometric Equations\n\n### For sin θ = k\n- θ = sin⁻¹(k) + 360°n OR θ = 180° - sin⁻¹(k) + 360°n\n- Where n is any integer\n\n### For cos θ = k\n- θ = cos⁻¹(k) + 360°n OR θ = 360° - cos⁻¹(k) + 360°n\n### For tan θ = k\n- θ = tan⁻¹(k) + 180°n\n\n## Solving Equations in Radians\n\nUse 2π instead of 360° and π instead of 180°\n\n## Special Considerations\n\n1. **Domain Restrictions**: Find solutions within given interval\n2. **Quadrant Analysis**: Use ASTC to find related angles\n3. **Identities**: Use trig identities to simplify first\n\n## Worked Examples\n\n### Example 1: sin θ = 0.5\nθ = 30° + 360°n OR θ = 150° + 360°n\n\n### Example 2: 2cos²θ - cosθ - 1 = 0\n1. Let u = cosθ\n2. 2u² - u - 1 = 0\n3. (2u + 1)(u - 1) = 0\n4. u = -½ or u = 1\n5. cosθ = -½ → θ = 120°, 240°\n   cosθ = 1 → θ = 0°, 360°\n\n## Practice Questions\n\n1. Solve for θ (0° ≤ θ < 360°): sin θ = -0.5\n2. Solve: 2sin²θ + sinθ - 1 = 0\n3. Find all solutions: tan²θ = 3\n\n## Resources\n\n- Video: Solving Trig Equations (25 min)\n- Worksheet: Trig Equation Practice\n- Interactive: Trig Equation Solver",
+			"content": "# Trigonometric Equations\n\nTrigonometric equations involve finding the values of angles that satisfy a given trigonometric equation.\n\n## Solving Basic Trigonometric Equations\n\n### For sin θ = k\n- θ = sin⁻¹(k) + 360°n OR θ = 180° - sin⁻¹(k) + 360°n\n- Where n is any integer\n\n### For cos θ = k\n- θ = cos⁻¹(k) + 360°n OR θ = 360° - cos⁻¹(k) + 360°n\n\n## Solving Equations in Radians\n\nUse 2π instead of 360° and π instead of 180°\n\n## Special Considerations\n\n1. **Domain Restrictions**: Find solutions within given interval\n2. **Quadrant Analysis**: Use ASTC to find related angles\n3. **Identities**: Use trig identities to simplify first\n\n## Worked Examples\n\n### Example 1: sin θ = 0.5\nθ = 30° + 360°n OR θ = 150° + 360°n\n\n### Example 2: 2cos²θ - cosθ - 1 = 0\n1. Let u = cosθ\n2. 2u² - u - 1 = 0\n3. (2u + 1)(u - 1) = 0\n4. u = -½ or u = 1\n5. cosθ = -½ → θ = 120°, 240°\n   cosθ = 1 → θ = 0°, 360°\n\n## Practice Questions\n\n1. Solve for θ (0° ≤ θ < 360°): sin θ = -0.5\n2. Solve: 2sin²θ + sinθ - 1 = 0\n3. Find all solutions: tan²θ = 3\n\n## Resources\n\n- Video: Solving Trig Equations (25 min)\n- Worksheet: Trig Equation Practice\n- Interactive: Trig Equation Solver",
 			"duration": 40,
 			"difficulty": "advanced",
 			"prerequisites": ["trigonometric identities", "inverse trig functions"],
@@ -93,9 +149,37 @@
 				"Calculate angles between lines and planes in 3D",
 				"Solve real-world problems involving 3D geometry"
 			]
-		}
-	],
-	"sequences": [
+		},
+		{
+			"id": "math-trig-compound-angles",
+			"subject": "mathematics",
+			"topic": "trigonometry",
+			"title": "Compound Angle Identities",
+			"content": "# Compound Angle Identities\n\nCompound angle identities express trigonometric functions of sums or differences of angles in terms of functions of individual angles.\n\n## Addition Formulas\n\n### Sine\nsin(α + β) = sin α cos β + cos α sin β\nsin(α - β) = sin α cos β - cos α sin β\n\n### Cosine\ncos(α + β) = cos α cos β - sin α sin β\ncos(α - β) = cos α cos β + sin α sin β\n\n### Tangent\ntan(α + β) = (tan α + tan β) / (1 - tan α tan β)\ntan(α - β) = (tan α - tan β) / (1 + tan α tan β)\n\n## Double Angle Formulas\n\n### From addition formulas with β = α:\nsin 2α = 2 sin α cos α\ncos 2α = cos²α - sin²α\n             = 2cos²α - 1\n             = 1 - 2sin²α\ntan 2α = 2 tan α / (1 - tan²α)\n\n## Worked Examples\n\n### Example 1: Find sin 15°\nsin 15° = sin(45° - 30°)\n= sin 45° cos 30° - cos 45° sin 30°\n= (√2/2)(√3/2) - (√2/2)(1/2)\n= (√6 - √2)/4\n\n### Example 2: Prove sin 3θ = 3 sin θ - 4 sin³θ\nsin 3θ = sin(2θ + θ)\n= sin 2θ cos θ + cos 2θ sin θ\n= 2 sin θ cos θ cos θ + (1 - 2 sin²θ) sin θ\n= 2 sin θ cos²θ + sin θ - 2 sin³θ\n= 2 sin θ(1 - sin²θ) + sin θ - 2 sin³θ\n= 3 sin θ - 4 sin³θ\n\n## Practice Questions\n\n1. Prove: cos(90° - θ) = sin θ\n2. Find the exact value of cos 75°\n3. If sin A = 4/5 and cos B = 12/13, find sin(A + B)",
+			"duration": 45,
+			"difficulty": "advanced",
+			"prerequisites": ["trigonometric identities"],
+			"learning_objectives": [
+				"Apply compound angle formulas to simplify expressions",
+				"Derive and use double angle formulas",
+				"Solve problems involving angles sums and differences"
+			]
+		},
+		{
+			"id": "math-trig-area-sine-cosine-rule",
+			"subject": "mathematics",
+			"topic": "trigonometry",
+			"title": "Sine, Cosine and Area Rules",
+			"content": "# Sine, Cosine and Area Rules\n\nThe sine rule, cosine rule, and area rule are essential tools for solving triangles, especially those that are not right-angled.\n\n## Sine Rule\n\n### For Any Triangle\n$$\\frac{a}{\\sin A} = \\frac{b}{\\sin B} = \\frac{c}{\\sin C}$$\n\n### Used When:\n- Two angles and one side known (AAS/ASA)\n- Two sides and an angle opposite one known (SSA)\n\n### Example\nIn △ABC, A = 30°, B = 45°, a = 10. Find b.\n\nSolution:\nb / sin B = a / sin A\nb = 10 × sin 45° / sin 30°\nb = 10 × 0.707 / 0.5 = 14.14\n\n## Cosine Rule\n\n### For Any Triangle\n$$a² = b² + c² - 2bc \\cos A$$\n$$b² = a² + c² - 2ac \\cos B$$\n$$c² = a² + b² - 2ab \\cos C$$\n\n### Used When:\n- Two sides and the included angle known (SAS)\n- All three sides known (SSS)\n\n### Example\nIn △ABC, a = 7, b = 5, C = 60°. Find c.\n\nSolution:\nc² = a² + b² - 2ab cos C\nc² = 49 + 25 - 2(7)(5)(0.5)\nc² = 74 - 35 = 39\nc = √39 ≈ 6.24\n\n## Area Rule\n\n### Formula\nArea = ½ ab sin C = ½ bc sin A = ½ ac sin B\n\n### Example\nFind area of triangle with sides a = 8, b = 6, and included angle C = 45°.\n\nArea = ½ × 8 × 6 × sin 45°\n     = 24 × 0.707\n     = 16.97 square units\n\n## Practice Questions\n\n1. In △ABC, A = 40°, B = 60°, a = 12. Find b.\n2. In △ABC, a = 10, b = 8, C = 70°. Find c.\n3. Find the area of △ABC where a = 13, b = 14, c = 15.",
+			"duration": 50,
+			"difficulty": "intermediate",
+			"prerequisites": ["basic trigonometry"],
+			"learning_objectives": [
+				"Apply sine rule to solve triangles",
+				"Apply cosine rule to solve triangles",
+				"Use area rule to find areas of triangles"
+			]
+		},
 		{
 			"id": "math-sequences-arithmetic",
 			"subject": "mathematics",
@@ -140,9 +224,22 @@
 				"Determine the general term of a quadratic sequence",
 				"Predict future terms in a quadratic sequence"
 			]
-		}
-	],
-	"probability": [
+		},
+		{
+			"id": "math-sequences-sigma-notation",
+			"subject": "mathematics",
+			"topic": "sequences",
+			"title": "Sigma Notation",
+			"content": "# Sigma Notation\n\nSigma notation provides a concise way to represent sums of sequences.\n\n## Key Concepts\n\n### Sigma Symbol (Σ)\n$$\\sum_{i=1}^{n} a_i$$\n\n- Σ (sigma) means \"sum of\"\n- i is the index of summation\n- 1 is the lower limit\n- n is the upper limit\n\n### Examples\n\n1. $$\\sum_{k=1}^{5} k = 1 + 2 + 3 + 4 + 5 = 15$$\n\n2. $$\\sum_{k=1}^{3} 2k = 2 + 4 + 6 = 12$$\n\n3. $$\\sum_{k=0}^{2} (k^2 + 1) = (0+1) + (1+1) + (4+1) = 7$$\n\n## Properties\n\n$$\\sum_{i=1}^{n} (a_i + b_i) = \\sum_{i=1}^{n} a_i + \\sum_{i=1}^{n} b_i$$\n\n$$\\sum_{i=1}^{n} c \\cdot a_i = c \\cdot \\sum_{i=1}^{n} a_i$$\n\n## Converting to Series\n\n### Arithmetic Series\n$$\\sum_{k=1}^{n} (a + (k-1)d) = \\frac{n}{2}[2a + (n-1)d]$$\n\n### Geometric Series\n$$\\sum_{k=0}^{n-1} ar^k = a \\cdot \\frac{r^n - 1}{r-1}$$\n\n## Practice Questions\n\n1. Evaluate: $\\sum_{k=1}^{10} k$\n2. Evaluate: $\\sum_{k=1}^{5} (2k + 1)$\n3. Write in sigma notation: $1 + 4 + 9 + 16 + 25$",
+			"duration": 30,
+			"difficulty": "intermediate",
+			"prerequisites": ["arithmetic sequences", "geometric sequences"],
+			"learning_objectives": [
+				"Understand and interpret sigma notation",
+				"Evaluate sums expressed in sigma notation",
+				"Convert between sigma notation and expanded form"
+			]
+		},
 		{
 			"id": "math-probability-basics",
 			"subject": "mathematics",
@@ -156,6 +253,276 @@
 				"Understand and apply basic probability concepts",
 				"Use probability rules for combined events",
 				"Distinguish between different types of probability"
+			]
+		},
+		{
+			"id": "math-probability-counting",
+			"subject": "mathematics",
+			"topic": "probability",
+			"title": "Counting Principles",
+			"content": "# Counting Principles\n\nCounting principles form the foundation for calculating probabilities involving large sample spaces.\n\n## Fundamental Counting Principle\n\nIf task 1 can be done in m ways and task 2 can be done in n ways, then both tasks can be done in m × n ways.\n\n### Example\nHow many 3-digit numbers can be formed from {1,2,3,4,5}?\n- Hundreds digit: 5 choices\n- Tens digit: 5 choices\n- Units digit: 5 choices\n- Total: 5 × 5 × 5 = 125\n\n## Permutations\n\n### Definition\nAn arrangement of objects in a specific order.\n\n### Formula\n$$P(n,r) = \\frac{n!}{(n-r)!}$$\n\nWhere n = total objects, r = objects chosen\n\n### Example\nHow many ways to arrange 4 books on a shelf?\nP(4,4) = 4! = 24\n\n### With Repetition\n$$P(n,r) = n^r$$\n\n## Combinations\n\n### Definition\nA selection of objects without regard to order.\n\n### Formula\n$$C(n,r) = \\binom{n}{r} = \\frac{n!}{r!(n-r)!}$$\n\n### Example\nHow many ways to choose 3 students from 10?\nC(10,3) = 10!/(3!7!) = 120\n\n## Practice Questions\nn\n1. How many ways can 4 people sit in a row?\n2. How many committees of 5 can be formed from 8 people?\n3. How many 4-letter words can be formed from 'MATHEMATICS'?",
+			"duration": 40,
+			"difficulty": "intermediate",
+			"prerequisites": ["basic probability"],
+			"learning_objectives": [
+				"Apply the fundamental counting principle",
+				"Distinguish between permutations and combinations",
+				"Calculate permutations and combinations"
+			]
+		},
+		{
+			"id": "math-probability-venn",
+			"subject": "mathematics",
+			"topic": "probability",
+			"title": "Probability with Venn Diagrams",
+			"content": "# Probability with Venn Diagrams\n\nVenn diagrams provide a visual way to solve probability problems involving multiple events.\n\n## Key Concepts\n\n### Set Notation\n- A ∪ B: Union (A or B or both)\n- A ∩ B: Intersection (both A and B)\n- A': Complement (not A)\n- A \\ B: Difference (in A but not B)\n\n### Addition Rule\nP(A ∪ B) = P(A) + P(B) - P(A ∩ B)\n\nFor mutually exclusive events:\nP(A ∪ B) = P(A) + P(B)\n\n## Venn Diagram Problem Solving\n\n### Example\nIn a class of 50 students:\n- 30 play soccer (S)\n- 25 play basketball (B)\n- 18 play both\n\nFind:\n1. P(play at least one): P(S ∪ B) = 30/50 + 25/50 - 18/50 = 37/50\n2. P(play neither): 1 - 37/50 = 13/50\n3. P(play only soccer): (30-18)/50 = 12/50\n\n## Conditional Probability\n\n### Definition\nP(A|B) = P(A ∩ B) / P(B)\n\n### Independent Events\nP(A ∩ B) = P(A) × P(B)\nP(A|B) = P(A)\n\n## Practice Questions\n\n1. In a survey, 60 people like tea (T), 45 like coffee (C), and 20 like both. Find P(like at least one).\n2. If P(A) = 0.4, P(B) = 0.5, and P(A ∩ B) = 0.2, find P(A|B).\n3. A die is rolled. A = {1,2,3}, B = {3,4,5}. Find P(A ∪ B).",
+			"duration": 45,
+			"difficulty": "advanced",
+			"prerequisites": ["probability basics", "counting principles"],
+			"learning_objectives": [
+				"Use Venn diagrams to solve probability problems",
+				"Apply addition and multiplication rules",
+				"Calculate conditional probability"
+			]
+		},
+		{
+			"id": "math-functions-inverse",
+			"subject": "mathematics",
+			"topic": "functions",
+			"title": "Inverse Functions",
+			"content": "# Inverse Functions\n\nAn inverse function reverses the operation of the original function, essentially \"undoing\" what the original function did.\n\n## Key Concepts\n\n### Definition\nIf f(g(x)) = x and g(f(x)) = x, then g is the inverse of f, written as f⁻¹(x)\n\n### Domain and Range\n- Domain of f⁻¹ = Range of f\n- Range of f⁻¹ = Domain of f\n\n### Horizontal Line Test\nA function is one-to-one (invertible) if no horizontal line crosses the graph more than once.\n\n## Finding Inverse Functions\n\n### Steps:\n1. Replace f(x) with y\n2. Swap x and y\n3. Solve for y\n4. Replace y with f⁻¹(x)\n\n### Example: f(x) = 2x + 3\n1. y = 2x + 3\n2. x = 2y + 3\n3. x - 3 = 2y → y = (x-3)/2\n4. f⁻¹(x) = (x-3)/2\n\n## Restricting Domain\n\nFor functions that fail horizontal line test, restrict domain to make them one-to-one.\n\n### Example: f(x) = x²\n- Restrict to x ≥ 0 → f⁻¹(x) = √x\n- Restrict to x ≤ 0 → f⁻¹(x) = -√x\n\n## Graphs of Inverse Functions\n\n- f⁻¹ is the reflection of f across y = x\n- (a, b) on f becomes (b, a) on f⁻¹\n\n## Practice Questions\n\n1. Find f⁻¹(x) for f(x) = 3x - 7\n2. Find the inverse of f(x) = x³\n3. Explain why f(x) = x² doesn't have an inverse (without restriction)",
+			"duration": 40,
+			"difficulty": "intermediate",
+			"prerequisites": ["basic functions"],
+			"learning_objectives": [
+				"Understand the concept of inverse functions",
+				"Find inverses of functions algebraically",
+				"Graph inverse functions and understand their relationship"
+			]
+		},
+		{
+			"id": "math-functions-exponential",
+			"subject": "mathematics",
+			"topic": "functions",
+			"title": "Exponential Functions",
+			"content": "# Exponential Functions\n\nExponential functions have the form f(x) = aᵇˣ where b > 0 and b ≠ 1. They model growth and decay phenomena.\n\n## Key Concepts\n\n### General Form\nf(x) = a · bˣ\n- a is the initial value\n- b is the base/growth factor\n\n### Key Features\n- Domain: all real numbers\n- Range: (0, ∞) if a > 0\n- Y-intercept: (0, a)\n- No x-intercepts\n\n## Growth vs Decay\n\n### Exponential Growth (b > 1)\nf(x) = 2ˣ, f(x) = 1.05ˣ\n- Increasing function\n- As x → ∞, f(x) → ∞\n- As x → -∞, f(x) → 0\n\n### Exponential Decay (0 < b < 1)\nf(x) = (0.5)ˣ, f(x) = 0.9ˣ\n- Decreasing function\n- As x → ∞, f(x) → 0\n- As x → -∞, f(x) → ∞\n\n## Graphing Exponential Functions\n\n### Characteristics\n1. Always passes through (0, a)\n2. Asymptote: y = 0 (x-axis)\n3. If b > 1: increases from left to right\n4. If 0 < b < 1: decreases from left to right\n\n## Applications\n\n### Population Growth\nP(t) = P₀ · eʳᵗ (continuous)\n\n### Compound Interest\nA = P(1 + r/n)ⁿᵗ\n\n### Radioactive Decay\nN(t) = N₀ · e⁻λᵗ\n\n## Practice Questions\n\n1. Sketch f(x) = 2ˣ and f(x) = (1/2)ˣ on the same axes\n2. If a population doubles every 3 years, write the exponential function\n3. A car worth R200,000 depreciates 15% per year. Find value after 5 years.",
+			"duration": 45,
+			"difficulty": "intermediate",
+			"prerequisites": ["exponents", "basic functions"],
+			"learning_objectives": [
+				"Understand exponential functions and their graphs",
+				"Distinguish between growth and decay",
+				"Apply exponential functions to real-world problems"
+			]
+		},
+		{
+			"id": "math-functions-logarithmic",
+			"subject": "mathematics",
+			"topic": "functions",
+			"title": "Logarithmic Functions",
+			"content": "# Logarithmic Functions\n\nLogarithmic functions are the inverses of exponential functions and are essential for solving equations involving exponents.\n\n## Key Concepts\n\n### Definition\nIf bʸ = x, then log_b(x) = y\n- b is the base\n- log_b(x) asks: \"to what power must b be raised to get x?\"\n\n### Relationship with Exponential\nf(x) = bˣ ↔ f⁻¹(x) = log_b(x)\n\n## Graph of Logarithmic Function\n\n### Characteristics\n- Domain: (0, ∞)\n- Range: all real numbers\n- Y-intercept: none\n- X-intercept: (1, 0)\n- Vertical asymptote: x = 0 (y-axis)\n\n### Shape\n- If b > 1: increasing function\n- If 0 < b < 1: decreasing function\n\n## Common Logarithms\n\n### Base 10\nlog₁₀(x) written as log(x)\n\n### Natural Logarithm\nlogₑ(x) written as ln(x)\n- e ≈ 2.71828...\n\n## Solving Logarithmic Equations\n\n### Method\n1. Convert to exponential form\n2. Solve the resulting equation\n\n### Example\nlog₂(x + 3) = 5\nx + 3 = 2⁵\nx + 3 = 32\nx = 29\n\n## Practice Questions\n\n1. Find the domain of f(x) = log(x - 4)\n2. Solve: log₃(x) = 4\n3. Sketch y = log₂(x) and y = log(1/2)(x)",
+			"duration": 40,
+			"difficulty": "intermediate",
+			"prerequisites": ["exponential functions", "logarithms"],
+			"learning_objectives": [
+				"Understand logarithmic functions and their graphs",
+				"Solve logarithmic equations",
+				"Apply logarithmic functions to real-world problems"
+			]
+		},
+		{
+			"id": "math-finance-simple-compound",
+			"subject": "mathematics",
+			"topic": "finance",
+			"title": "Simple and Compound Interest",
+			"content": "# Simple and Compound Interest\n\nUnderstanding interest calculations is crucial for financial literacy and many real-world applications.\n\n## Simple Interest\n\n### Formula\nI = P × r × n\n- I = Interest\n- P = Principal (initial amount)\n- r = rate (as decimal)\n- n = time (years)\n\n### Total Amount\nA = P + I = P(1 + rn)\n\n### Example\nR5000 invested at 8% per year for 3 years:\nI = 5000 × 0.08 × 3 = R1200\nA = 5000 + 1200 = R6200\n\n## Compound Interest\n\n### Formula\nA = P(1 + r)ⁿ\n- Interest is calculated on the principal AND accumulated interest\n\n### Example\nR5000 at 8% p.a. compounded annually for 3 years:\nYear 1: 5000 × 1.08 = 5400\nYear 2: 5400 × 1.08 = 5832\nYear 3: 5832 × 1.08 = 6298.56\nA = R6298.56\n\n### More Frequent Compounding\n- Semi-annually: A = P(1 + r/2)²ⁿ\n- Quarterly: A = P(1 + r/4)⁴ⁿ\n- Monthly: A = P(1 + r/12)¹²ⁿ\n- Daily: A = P(1 + r/365)³⁶⁵ⁿ\n\n## Comparing Simple vs Compound\n\n| Year | Simple (R5000 @ 8%) | Compound (R5000 @ 8%) |\n|------|---------------------|----------------------|\n| 1    | R5400               | R5400                |\n| 5    | R7000               | R7346.64             |\n| 10   | R9000               | R10794.62            |\n\n## Practice Questions\n\n1. Calculate simple interest on R10,000 at 12% for 4 years\n2. Find the amount if R5000 is invested at 10% p.a. compound interest for 5 years\n3. Compare simple vs compound interest on R2000 at 7% for 10 years",
+			"duration": 40,
+			"difficulty": "intermediate",
+			"prerequisites": ["percentages", "exponents"],
+			"learning_objectives": [
+				"Calculate simple interest and total amount",
+				"Calculate compound interest with various compounding periods",
+				"Compare simple and compound interest over time"
+			]
+		},
+		{
+			"id": "math-finance-growth-decay",
+			"subject": "mathematics",
+			"topic": "finance",
+			"title": "Growth and Decay",
+			"content": "# Growth and Decay\n\nExponential growth and decay models are used in various real-world scenarios including population growth, radioactive decay, and depreciation.\n\n## Exponential Growth\n\n### Formula\nA = P(1 + r)ⁿ\n- P = initial amount\n- r = growth rate (as decimal)\n- n = number of periods\n\n### Population Growth Example\nA town has 10,000 people growing at 5% per year.\nPopulation after 8 years:\nA = 10000(1.05)⁸ ≈ 14774 people\n\n## Exponential Decay\n\n### Formula\nA = P(1 - r)ⁿ\n- r = decay rate (as decimal)\n\n### Depreciation Example\nA car costs R200,000 and depreciates 20% per year.\nValue after 5 years:\nA = 200000(0.8)⁵ = R65,536\n\n## Continuous Growth/Decay\n\n### Formula\nA = Peʳᵗ\n- e = Euler's number (≈2.718)\n- r = continuous rate\n- t = time\n\n### Example\nR1000 at 10% continuous compounding for 5 years:\nA = 1000 × e^(0.1×5) = R1648.72\n\n## Finding Rate or Time\n\n### Example: Finding Time\nHow long for R1000 to become R2000 at 7% compound interest?\n2000 = 1000(1.07)ⁿ\n2 = 1.07ⁿ\nn = log(2)/log(1.07) ≈ 10.2 years\n\n## Practice Questions\n\n1. A bacteria colony doubles every 3 hours. Starting with 100, find population after 12 hours.\n2. A machine costs R50,000 and depreciates 15% annually. Find value after 6 years.\n3. The half-life of Carbon-14 is 5730 years. How much remains after 10,000 years?",
+			"duration": 45,
+			"difficulty": "advanced",
+			"prerequisites": ["compound interest", "logarithms"],
+			"learning_objectives": [
+				"Apply exponential growth formulas to real-world problems",
+				"Apply exponential decay (depreciation) formulas",
+				"Solve problems involving rates and time periods"
+			]
+		},
+		{
+			"id": "math-finance-annuities",
+			"subject": "mathematics",
+			"topic": "finance",
+			"title": "Annuities and Investments",
+			"content": "# Annuities and Investments\n\nAnnuities involve regular payments or investments made at fixed intervals, essential for understanding loans, retirement planning, and savings.\n\n## Types of Annuities\n\n### Ordinary Annuity\nPayments made at the END of each period\n\n### Annuity Due\nPayments made at the BEGINNING of each period\n\n## Future Value of an Ordinary Annuity\n\n### Formula\nFV = PMT × [(1 + r)ⁿ - 1] / r\n- PMT = payment per period\n- r = interest rate per period\n- n = number of payments\n\n### Example\nR500 saved monthly at 12% p.a. (1% monthly) for 5 years (60 months):\nFV = 500 × [(1.01)⁶⁰ - 1] / 0.01\nFV = 500 × [1.817] / 0.01\nFV = R90,850\n\n## Present Value of an Ordinary Annuity\n\n### Formula\nPV = PMT × [1 - (1 + r)⁻ⁿ] / r\n\n### Example\nMonthly payments of R1000 for 10 years at 9% p.a.\nPV = 1000 × [1 - (1.0075)⁻¹²⁰] / 0.0075\nPV ≈ R83,454\n\n## Loans and Mortgages\n\n### Loan Payment Formula\nPMT = P × [r(1 + r)ⁿ] / [(1 + r)ⁿ - 1]\n\n### Example: Home Loan\nR500,000 loan at 10% p.a. for 20 years (240 months):\nr = 0.10/12 = 0.00833\nPMT = 500000 × [0.00833(1.00833)²⁴⁰] / [(1.00833)²⁴⁰ - 1]\nPMT ≈ R4,825 per month\n\n## Practice Questions\n\n1. Save R200 monthly at 8% p.a. Find amount after 10 years.\n2. Calculate monthly payment on R100,000 loan at 12% for 5 years.\n3. Determine the present value of R500 monthly for 15 years at 9% p.a.",
+			"duration": 50,
+			"difficulty": "advanced",
+			"prerequisites": ["compound interest", "geometric series"],
+			"learning_objectives": [
+				"Calculate future value of regular savings",
+				"Calculate present value of future payments",
+				"Solve loan and mortgage problems"
+			]
+		},
+		{
+			"id": "math-analytical-geometry-lines",
+			"subject": "mathematics",
+			"topic": "analytical-geometry",
+			"title": "Equation of a Line",
+			"content": "# Equation of a Line\n\nAnalytical geometry allows us to use algebraic methods to solve geometric problems involving lines.\n\n## Key Formulas\n\n### Point-Slope Form\ny - y₁ = m(x - x₁)\n\n### Slope-Intercept Form\ny = mx + c\n- m = slope/gradient\n- c = y-intercept\n\n### Standard Form\nAx + By + C = 0\n\n## Finding Equations\n\n### Given Two Points\n1. Find slope: m = (y₂ - y₁)/(x₂ - x₁)\n2. Use point-slope form\n\n### Example\nLine through (2, 3) and (5, 9):\nm = (9 - 3)/(5 - 2) = 6/3 = 2\ny - 3 = 2(x - 2)\ny = 2x - 1\n\n## Parallel and Perpendicular Lines\n\n### Parallel Lines\n- Same gradient: m₁ = m₂\n- Example: y = 2x + 3 and y = 2x - 1\n\n### Perpendicular Lines\n- Product of gradients = -1: m₁ × m₂ = -1\n- Or: m₂ = -1/m₁\n- Example: y = 2x + 3 and y = -½x + 1\n\n## Angle Between Lines\n\ntan θ = |(m₁ - m₂)/(1 + m₁m₂)|\n\n### Example\nLines with gradients 2 and -½:\ntan θ = |(2 - (-½))/(1 + 2(-½))|\n     = |2.5/0| = undefined → θ = 90°\n\n## Distance from Point to Line\n\n### Formula\nDistance = |Ax₀ + By₀ + C| / √(A² + B²)\n\n### Example\nDistance from (3, 4) to 3x + 4y - 5 = 0:\n= |3(3) + 4(4) - 5| / √(9 + 16)\n= |9 + 16 - 5| / 5\n= 20/5 = 4\n\n## Practice Questions\n\n1. Find equation of line through (1, -2) with gradient 3\n2. Find equation of line through (-1, 4) parallel to y = 2x + 5\n3. Find distance from (2, 3) to line 4x - 3y + 1 = 0",
+			"duration": 45,
+			"difficulty": "intermediate",
+			"prerequisites": ["linear equations"],
+			"learning_objectives": [
+				"Find equations of lines using various forms",
+				"Determine if lines are parallel or perpendicular",
+				"Calculate distance from a point to a line"
+			]
+		},
+		{
+			"id": "math-analytical-geometry-circles",
+			"subject": "mathematics",
+			"topic": "analytical-geometry",
+			"title": "Circles",
+			"content": "# Circles\n\nCircles are fundamental shapes in analytical geometry with many real-world applications.\n\n## Circle Equation\n\n### Standard Form\n(x - a)² + (y - b)² = r²\n- Center: (a, b)\n- Radius: r\n\n### Example\n(x - 3)² + (y + 2)² = 25\n- Center: (3, -2)\n- Radius: 5\n\n### From General Form\nx² + y² + Dx + Ey + F = 0\n- Complete the square\n- Center: (-D/2, -E/2)\n- Radius: √[(D/2)² + (E/2)² - F]\n\n## Point on Circle\n\nA point (x, y) lies on the circle if it satisfies the equation.\n\n### Example\nIs (4, 3) on circle (x - 1)² + (y - 2)² = 13?\n(4-1)² + (3-2)² = 9 + 1 = 10 ≠ 13\n→ No\n\n## Tangent to a Circle\n\n### Key Concept\nThe radius to the point of tangency is perpendicular to the tangent.\n\n### Finding Tangent Equation\n1. Find gradient of radius: mᵣ = (y - b)/(x - a)\n2. Find gradient of tangent: mₜ = -1/mᵣ\n3. Use point-slope form\n\n### Example\nFind tangent to circle x² + y² = 25 at point (3, 4)\n- Center: (0, 0)\n- mᵣ = 4/3\n- mₜ = -3/4\n- Equation: y - 4 = -¾(x - 3)\n\n## Intersection of Lines and Circles\n\n### Method\n1. Substitute line equation into circle equation\n2. Solve the resulting quadratic\n3. Check discriminant for number of intersections\n\n## Practice Questions\n\n1. Find center and radius of (x + 3)² + (y - 5)² = 49\n2. Find equation of tangent to x² + y² = 25 at (3, 4)\n3. Determine intersection points of x² + y² = 25 and y = x + 2",
+			"duration": 45,
+			"difficulty": "advanced",
+			"prerequisites": ["equation of a line", "quadratic equations"],
+			"learning_objectives": [
+				"Write and interpret circle equations",
+				"Find equations of tangents to circles",
+				"Solve problems involving circle-line intersections"
+			]
+		},
+		{
+			"id": "math-euclidean-geometry-theorems",
+			"subject": "mathematics",
+			"topic": "euclidean-geometry",
+			"title": "Euclidean Geometry Theorems",
+			"content": "# Euclidean Geometry Theorems\n\nEuclidean geometry deals with shapes, sizes, and positions based on axioms and theorems. These are essential for Grade 12 geometry problems.\n\n## Key Theorems\n\n### Theorem 1: Proportional Segments\nA line parallel to one side of a triangle divides the other two sides proportionally.\n\nIf DE || BC in △ABC:\nAD/DB = AE/EC\n\n### Theorem 2: Midpoint Theorem\nThe line segment joining midpoints of two sides of a triangle is parallel to the third side and half its length.\n\nIf D and E are midpoints:\nDE = ½ BC\n\n### Theorem 3: Similar Triangles\nTriangles with corresponding angles equal are similar:\n- AAA (Angle-Angle-Angle)\n- SSS (Side-Side-Side)\n- SAS (Side-Angle-Side)\n\n### Theorem 4: Pythagorean Theorem\nIn a right triangle:\na² + b² = c²\n\n## Proving Triangles Similar\n\n### Example\nIn △ABC, DE || BC, AD = 3, DB = 6, AE = 2. Find EC.\n\nSolution:\nAD/DB = AE/EC\n3/6 = 2/EC\n½ = 2/EC\nEC = 4\n\n## Area Ratios\n\nIf two triangles are similar with ratio k:\n- Sides are in ratio k\n- Areas are in ratio k²\n\n## Practice Questions\n\n1. In △ABC, DE || BC. AD = 4, DB = 8, AE = 3. Find EC.\n2. Triangle sides are 3, 4, 5. Prove it's a right triangle.\n3. Two similar triangles have areas 25cm² and 100cm². Find ratio of corresponding sides.",
+			"duration": 50,
+			"difficulty": "advanced",
+			"prerequisites": ["triangles", "ratios"],
+			"learning_objectives": [
+				"Apply proportional segment theorems",
+				"Use midpoint theorem to solve problems",
+				"Prove and apply triangle similarity"
+			]
+		},
+		{
+			"id": "math-euclidean-circle-theorems",
+			"subject": "mathematics",
+			"topic": "euclidean-geometry",
+			"title": "Circle Geometry Theorems",
+			"content": "# Circle Geometry Theorems\n\nCircle geometry involves theorems about angles, chords, tangents, and secants in circles.\n\n## Key Theorems\n\n### Theorem 1: Angle at Center\nThe angle subtended by an arc at the center is twice the angle subtended at the circumference.\n\n∠AOB = 2∠ACB\n\n### Theorem 2: Angles in Same Segment\nAngles subtended by the same chord (or arc) in the same segment are equal.\n\n∠ACB = ∠ADB\n\n### Theorem 3: Cyclic Quadrilateral\nOpposite angles of a cyclic quadrilateral sum to 180°.\n\n∠A + ∠C = 180°\n∠B + ∠D = 180°\n\n### Theorem 4: Tangent-Chord Theorem\nThe angle between a tangent and a chord through the point of contact equals the angle in the alternate segment.\n\n∠PTB = ∠PAB\n\n### Theorem 5: Equal Chords\nEqual chords subtend equal angles at the center.\n\nIf chord AB = chord CD, then ∠AOB = ∠COD\n\n## Practical Applications\n\n### Finding Unknown Angles\n\n### Example\nIn a cyclic quadrilateral ABCD, ∠A = 70°. Find ∠C.\n\nSolution:\n∠C = 180° - ∠A = 180° - 70° = 110°\n\n## Tangent Properties\n\n### Tangent-Radius Property\nThe tangent is perpendicular to the radius at the point of contact.\n\n### Two Tangents Property\nTangents from an external point to a circle are equal in length.\n\n## Practice Questions\n\n1. In a circle, chord AB subtends 50° at the center. Find angle at circumference.\n2. ∠ABC = 60° in cyclic quadrilateral. Find ∠ADC.\n3. From point P outside circle, tangents PA and PB touch at A and B. If PA = 8cm, find PB.",
+			"duration": 55,
+			"difficulty": "advanced",
+			"prerequisites": ["circle properties", "angle relationships"],
+			"learning_objectives": [
+				"Apply circle theorems to find angles",
+				"Solve problems involving cyclic quadrilaterals",
+				"Use tangent properties in geometric proofs"
+			]
+		},
+		{
+			"id": "math-statistics-basics",
+			"subject": "mathematics",
+			"topic": "statistics",
+			"title": "Statistical Measures",
+			"content": "# Statistical Measures\n\nStatistics involves collecting, organizing, and interpreting data. Key measures include central tendency and spread.\n\n## Measures of Central Tendency\n\n### Mean (Average)\nx̄ = Σx / n\n\n### Median\n- Arrange data in order\n- Middle value (odd n)\n- Average of two middle values (even n)\n\n### Mode\nMost frequently occurring value\n\n## Measures of Spread (Dispersion)\n\n### Range\nRange = Maximum - Minimum\n\n### Variance\ns² = Σ(x - x̄)² / (n - 1) [sample]\nσ² = Σ(x - μ)² / N [population]\n\n### Standard Deviation\ns = √variance\n\n## Worked Example\n\nData: 4, 7, 8, 9, 11\n\nMean = (4+7+8+9+11)/5 = 39/5 = 7.8\n\nDeviations: -3.8, -0.8, 0.2, 1.2, 3.2\nSquared: 14.44, 0.64, 0.04, 1.44, 10.24\nSum = 26.8\nVariance = 26.8/4 = 6.7\nStd Dev = √6.7 ≈ 2.59\n\n## Interpreting Standard Deviation\n\n- Small σ: Data clustered around mean\n- Large σ: Data spread out\n\n## Practice Questions\n\n1. Find mean, median, mode: 12, 15, 12, 18, 20, 15, 12\n2. Calculate variance and std dev: 5, 7, 8, 10, 12, 14\n3. Two classes have same mean but different std devs. What does this tell us?",
+			"duration": 45,
+			"difficulty": "intermediate",
+			"prerequisites": ["basic arithmetic"],
+			"learning_objectives": [
+				"Calculate mean, median, and mode",
+				"Calculate variance and standard deviation",
+				"Interpret statistical measures"
+			]
+		},
+		{
+			"id": "math-statistics-ogives",
+			"subject": "mathematics",
+			"topic": "statistics",
+			"title": "Ogives and Cumulative Frequency",
+			"content": "# Ogives and Cumulative Frequency\n\nOgives (cumulative frequency curves) display how data accumulates over intervals.\n\n## Key Concepts\n\n### Cumulative Frequency\nAdding up frequencies as you progress through data.\n\n### Less Than Ogive\nPlot upper class boundaries vs cumulative frequency\n\n### More Than Ogive\nPlot lower class boundaries vs cumulative frequency\n\n## Constructing an Ogive\n\n### Steps:\n1. Create grouped frequency table\n2. Find cumulative frequencies\n3. Plot points at class boundaries\n4. Connect with smooth curve\n\n## Using Ogives\n\n### Finding Median\n- Draw horizontal line at n/2\n- Read corresponding x-value\n\n### Finding Quartiles\n- Q1: at n/4\n- Q2 (Median): at n/2\n- Q3: at 3n/4\n\n### Finding Percentiles\n- Pth percentile: at pn/100\n\n## Worked Example\n\n| Class | f |\n|-------|---|\n| 0-9   | 5 |\n| 10-19 | 12|\n| 20-29 | 18|\n| 30-39 | 10|\n| 40-49 | 5 |\n\nLess than cumulative:\n< 10: 5\n< 20: 17\n< 30: 35\n< 40: 45\n< 50: 50\n\n## Practice Questions\n\n1. Create an ogive from: 2, 5, 8, 12, 15, 18, 20\n2. Use ogive to find median of 50 data points\n3. Find Q1 and Q3 from an ogive",
+			"duration": 40,
+			"difficulty": "intermediate",
+			"prerequisites": ["frequency tables"],
+			"learning_objectives": [
+				"Construct ogives from grouped data",
+				"Use ogives to find median and quartiles",
+				"Interpret cumulative frequency curves"
+			]
+		},
+		{
+			"id": "math-statistics-regression",
+			"subject": "mathematics",
+			"topic": "statistics",
+			"title": "Regression and Correlation",
+			"content": "# Regression and Correlation\n\nRegression and correlation analysis help understand relationships between variables.\n\n## Key Concepts\n\n### Scatter Plot\nGraph of paired (x, y) data points\n\n### Correlation\nMeasures strength and direction of linear relationship\n\n### Correlation Coefficient (r)\n- -1 ≤ r ≤ 1\n- r > 0: positive correlation\n- r < 0: negative correlation\n- r = 0: no correlation\n- |r| close to 1: strong correlation\n\n## Linear Regression\n\n### Line of Best Fit (Least Squares)\nŷ = a + bx\n\n### Finding Equation\n\nb = Σ(x - x̄)(y - ȳ) / Σ(x - x̄)²\na = ȳ - bx̄\n\n### Example\nData: (1, 2), (2, 4), (3, 5), (4, 4), (5, 5)\n\nx̄ = 3, ȳ = 4\nΣ(x-x̄)(y-ȳ) = 6\nΣ(x-x̄)² = 10\nb = 6/10 = 0.6\na = 4 - 0.6(3) = 2.2\ny = 2.2 + 0.6x\n\n## Interpolation and Extrapolation\n\n### Interpolation\nEstimating within the data range - more reliable\n\n### Extrapolation\nEstimating outside the data range - less reliable\n\n## Coefficient of Determination (r²)\n\n- Shows proportion of variation in y explained by x\n- r² = 0.81 means 81% of variation is explained\n\n## Practice Questions\n\n1. Calculate correlation coefficient for: (1,3), (2,5), (3,6), (4,8)\n2. Find equation of line of best fit for above data\n3. Interpret r = -0.85",
+			"duration": 50,
+			"difficulty": "advanced",
+			"prerequisites": ["statistical measures"],
+			"learning_objectives": [
+				"Understand correlation and its measurement",
+				"Calculate linear regression equation",
+				"Interpret correlation coefficient and regression line"
+			]
+		},
+		{
+			"id": "math-algebraic-expressions",
+			"subject": "mathematics",
+			"topic": "algebra",
+			"title": "Algebraic Expressions and Factorisation",
+			"content": "# Algebraic Expressions and Factorisation\n\nFactorisation is essential for simplifying expressions and solving equations in Grade 12 Mathematics.\n\n## Common Factor\n\n### Example\n3x² + 6x = 3x(x + 2)\n\n## Difference of Squares\n\n### Formula\nx² - y² = (x + y)(x - y)\n\n### Examples\n- x² - 4 = (x + 2)(x - 2)\n- 9x² - 25y² = (3x + 5y)(3x - 5y)\n\n## Trinomials\n\n### Quadratic Trinomials\nx² + (a + b)x + ab = (x + a)(x + b)\n\n### Example\nx² + 7x + 12 = (x + 3)(x + 4)\n\n### With Coefficient\n2x² + 7x + 3 = (2x + 1)(x + 3)\n\n## Sum and Difference of Cubes\n\n### Sum of Cubes\nx³ + y³ = (x + y)(x² - xy + y²)\n\n### Difference of Cubes\nx³ - y³ = (x - y)(x² + xy + y²)\n\n### Examples\n- x³ + 8 = (x + 2)(x² - 2x + 4)\n- 27x³ - 1 = (3x - 1)(9x² + 3x + 1)\n\n## Completing the Square\n\n### Method\nx² + 6x + 9 = (x + 3)²\n\n### Example\nx² + 6x + 5 = 0\n(x² + 6x + 9) = 4\n(x + 3)² = 4\nx + 3 = ±2\nx = -1 or x = -5\n\n## Practice Questions\n\n1. Factorise: x² - 144\n2. Factorise: 2x² + 11x + 12\n3. Factorise: x³ + 27",
+			"duration": 45,
+			"difficulty": "intermediate",
+			"prerequisites": ["basic algebra"],
+			"learning_objectives": [
+				"Factorise using common factors and special products",
+				"Factorise quadratic trinomials",
+				"Complete the square for solving equations"
+			]
+		},
+		{
+			"id": "math-algebra-simultaneous",
+			"subject": "mathematics",
+			"topic": "algebra",
+			"title": "Simultaneous Equations",
+			"content": "# Simultaneous Equations\n\nSimultaneous equations involve solving for multiple variables at once.\n\n## Substitution Method\n\n### Steps:\n1. Express one variable in terms of the other\n2. Substitute into the second equation\n3. Solve for one variable\n4. Substitute back to find the other\n\n### Example\ny = 2x + 3\nx + y = 12\n\nSubstitute: x + 2x + 3 = 12\n3x = 9\nx = 3\ny = 2(3) + 3 = 9\n\n## Elimination Method\n\n### Steps:\n1. Multiply equations to get same coefficient\n2. Add or subtract to eliminate one variable\n3. Solve for remaining variable\n4. Substitute back\n\n### Example\n2x + y = 10\nx - y = 2\n\nAdd: 3x = 12\nx = 4\n4 - y = 2 → y = 2\n\n## Quadratic Simultaneous\n\n### Method\n1. Express one variable in terms of the other\n2. Substitute into quadratic equation\n3. Solve the resulting equation\n\n### Example\nx + y = 5\nxy = 6\n\ny = 5 - x\nx(5 - x) = 6\n5x - x² = 6\nx² - 5x + 6 = 0\n(x - 2)(x - 3) = 0\nx = 2 or 3\ny = 3 or 2\n\n## Practice Questions\n\n1. Solve: 3x + 2y = 12, x - y = 3\n2. Solve: x + 2y = 0, x² + y² = 5\n3. Find two numbers with sum 10 and product 24",
+			"duration": 45,
+			"difficulty": "intermediate",
+			"prerequisites": ["linear equations", "quadratic equations"],
+			"learning_objectives": [
+				"Solve simultaneous equations using substitution",
+				"Solve simultaneous equations using elimination",
+				"Solve quadratic simultaneous equations"
+			]
+		},
+		{
+			"id": "math-calculus-limits",
+			"subject": "mathematics",
+			"topic": "calculus",
+			"title": "Limits and Continuity",
+			"content": "# Limits and Continuity\n\nLimits form the foundation of calculus, describing the behavior of functions as they approach specific values.\n\n## Key Concepts\n\n### Limit Notation\nlim(x→a) f(x) = L\n- As x approaches a, f(x) approaches L\n\n### One-Sided Limits\n- Left-hand: lim(x→a⁻) f(x)\n- Right-hand: lim(x→a⁺) f(x)\n\n## Evaluating Limits\n\n### Direct Substitution\nIf f(a) exists, that's the limit\n\n### Factorisation\nlim(x→2) (x² - 4)/(x - 2)\n= lim(x→2) (x+2)(x-2)/(x-2)\n= lim(x→2) (x+2) = 4\n\n### Rationalisation\nFor limits with square roots:\nMultiply numerator and denominator by conjugate\n\n## Continuity\n\n### Definition\nA function is continuous at x = a if:\n1. f(a) exists\n2. lim(x→a) f(x) exists\n3. lim(x→a) f(x) = f(a)\n\n### Types of Discontinuities\n- Hole (removable)\n- Jump (step)\n- Asymptote (infinite)\n\n## Limits to Infinity\n\nlim(x→∞) 1/x = 0\nlim(x→∞) x² = ∞\n\n### Rational Functions\nDivide by highest power of x in denominator\n\n## Practice Questions\n\n1. Evaluate: lim(x→3) (x² - 9)/(x - 3)\n2. Evaluate: lim(x→0) sin(x)/x\n3. Determine if f(x) = (x² - 1)/(x - 1) is continuous at x = 1",
+			"duration": 40,
+			"difficulty": "advanced",
+			"prerequisites": ["functions", "factorisation"],
+			"learning_objectives": [
+				"Evaluate limits using various methods",
+				"Understand continuity and discontinuities",
+				"Apply limits to infinity problems"
 			]
 		}
 	]
