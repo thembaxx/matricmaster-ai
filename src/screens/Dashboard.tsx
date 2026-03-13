@@ -12,9 +12,54 @@ import { XpHeader } from '@/components/Gamification/XpHeader';
 import { FocusContent } from '@/components/Layout/FocusContent';
 import { TimelineSidebar } from '@/components/Layout/TimelineSidebar';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import type { ACHIEVEMENTS } from '@/constants/achievements';
+import { ACHIEVEMENTS } from '@/constants/achievements';
 import type { UserAchievement } from '@/lib/db/achievement-actions';
 import type { UserProgressSummary } from '@/lib/db/progress-actions';
+
+const MOCK_PROGRESS: UserProgressSummary = {
+	totalQuestionsAttempted: 127,
+	totalCorrect: 98,
+	totalMarksEarned: 2450,
+	accuracy: 77,
+	streakDays: 12,
+	recentSessions: [],
+};
+
+const MOCK_STREAK = {
+	currentStreak: 12,
+	bestStreak: 21,
+	lastActivityDate: new Date().toISOString(),
+};
+
+const MOCK_ACHIEVEMENTS = {
+	unlocked: [
+		{
+			id: '1',
+			achievementId: 'first-quiz',
+			title: 'First steps',
+			description: 'Complete your first quiz',
+			icon: '🎯',
+			unlockedAt: new Date(),
+		},
+		{
+			id: '2',
+			achievementId: 'streak-7',
+			title: 'Week warrior',
+			description: 'Maintain a 7-day streak',
+			icon: '🔥',
+			unlockedAt: new Date(),
+		},
+		{
+			id: '3',
+			achievementId: 'perfect-score',
+			title: 'Perfectionist',
+			description: 'Get 100% on a quiz',
+			icon: '⭐',
+			unlockedAt: new Date(),
+		},
+	] as UserAchievement[],
+	available: ACHIEVEMENTS,
+} as const;
 
 export interface DashboardInitialStreak {
 	currentStreak: number;
@@ -88,6 +133,10 @@ export default function Dashboard({
 	const [tasks, setTasks] = useState<Record<string, StudyTask[]>>(DEMO_TASKS);
 	const [expanded, setExpanded] = useState<Record<string, boolean>>({ high: true, medium: true });
 
+	const progress = initialProgress ?? MOCK_PROGRESS;
+	const streak = initialStreak ?? MOCK_STREAK;
+	const achievements = initialAchievements ?? MOCK_ACHIEVEMENTS;
+
 	const toggleTask = (taskId: string, priority: string) => {
 		setTasks((prev) => ({
 			...prev,
@@ -111,12 +160,12 @@ export default function Dashboard({
 		<div className="min-h-screen bg-background flex">
 			<TimelineSidebar />
 			<FocusContent>
-				<div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+				<div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-8">
 					<DashboardHeader
 						today={today}
 						completedCount={completedCount}
 						totalCount={totalCount}
-						initialXp={initialProgress?.totalMarksEarned || 0}
+						initialXp={progress.totalMarksEarned}
 					/>
 
 					<ScrollArea className="h-[calc(100vh-280px)] no-scrollbar pr-4">
@@ -125,22 +174,18 @@ export default function Dashboard({
 							<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 								<div className="space-y-6">
 									<div className="space-y-1">
-										<h2 className="text-2xl font-black tracking-tight uppercase">
+										<h2 className="text-base font-semibold tracking-tight">
 											Hello, {session?.user?.name?.split(' ')[0] || 'Scholar'}!
 										</h2>
-										<p className="text-sm font-bold text-tiimo-gray-muted uppercase tracking-widest">
-											Let's crush your goals today.
-										</p>
+										<p className="text-xs text-tiimo-gray-muted">Let's crush your goals today.</p>
 									</div>
 									<XpHeader
 										variant="full"
-										initialAchievements={initialAchievements || undefined}
-										initialStreak={
-											initialStreak ? { currentStreak: initialStreak.currentStreak } : undefined
-										}
+										initialAchievements={achievements}
+										initialStreak={{ currentStreak: streak.currentStreak }}
 									/>
 								</div>
-								<WeeklyChallenge initialProgress={initialProgress || undefined} />
+								<WeeklyChallenge initialProgress={progress} />
 							</div>
 
 							<div className="space-y-6">
@@ -180,9 +225,7 @@ export default function Dashboard({
 							<SubjectGrid />
 
 							<section>
-								<h2 className="text-xl font-black text-foreground tracking-tight mb-6 uppercase">
-									Recent Activity
-								</h2>
+								<h2 className="text-xl font-semibold text-foreground mb-6">Recent activity</h2>
 								<ActivityFeed />
 							</section>
 						</div>

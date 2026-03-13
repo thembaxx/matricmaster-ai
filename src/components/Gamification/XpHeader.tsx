@@ -142,14 +142,14 @@ export const XpHeader = memo(function XpHeader({
 					style={{ backgroundColor: `${data.color}15` }}
 				>
 					<HugeiconsIcon icon={ChampionIcon} className="w-4 h-4" style={{ color: data.color }} />
-					<span className="text-sm font-black" style={{ color: data.color }}>
+					<span className="text-sm font-semibold" style={{ color: data.color }}>
 						Lv.{data.level}
 					</span>
 				</div>
 				{data.streak > 0 && (
 					<div className="flex items-center gap-1.5 px-3 py-1.5 bg-orange-100 dark:bg-orange-900/20 rounded-full">
 						<HugeiconsIcon icon={FireIcon} className="w-4 h-4 text-orange-500" />
-						<span className="text-sm font-black text-orange-500">{data.streak}</span>
+						<span className="text-sm font-semibold text-orange-500">{data.streak}</span>
 					</div>
 				)}
 			</div>
@@ -174,16 +174,16 @@ export const XpHeader = memo(function XpHeader({
 							className="absolute -bottom-1 -right-1 w-6 h-6 bg-background rounded-full flex items-center justify-center border-2 shadow-sm"
 							style={{ borderColor: data.color }}
 						>
-							<span className="text-[10px] font-black" style={{ color: data.color }}>
+							<span className="text-[10px] font-medium" style={{ color: data.color }}>
 								{data.level}
 							</span>
 						</div>
 					</div>
 					<div>
 						<div className="flex items-center gap-2">
-							<span className="text-lg font-black text-foreground">Level {data.level}</span>
+							<span className="text-lg font-semibold text-foreground">Level {data.level}</span>
 							<Badge
-								className="text-[9px] font-black uppercase tracking-wider"
+								className="text-[9px] font-medium"
 								style={{
 									backgroundColor: `${data.color}15`,
 									color: data.color,
@@ -204,8 +204,8 @@ export const XpHeader = memo(function XpHeader({
 					<div className="flex items-center gap-2 px-4 py-2 bg-linear-to-r from-orange-100 to-amber-100 dark:from-orange-900/20 dark:to-amber-900/20 rounded-2xl">
 						<HugeiconsIcon icon={FireIcon} className="w-5 h-5 text-orange-500" />
 						<div>
-							<span className="text-xl font-black text-orange-500">{data.streak}</span>
-							<span className="text-xs font-bold text-orange-500/70 ml-1">day streak</span>
+							<span className="text-xl font-semibold text-orange-500">{data.streak}</span>
+							<span className="text-xs text-orange-500/70 ml-1">day streak</span>
 						</div>
 					</div>
 				)}
@@ -223,7 +223,7 @@ export const XpHeader = memo(function XpHeader({
 				/>
 				<div className="absolute top-1/2 -translate-y-1/2 right-0 flex items-center gap-1 px-2 py-0.5 bg-background rounded-full border border-border shadow-sm">
 					<HugeiconsIcon icon={FlashIcon} className="w-3 h-3" style={{ color: data.color }} />
-					<span className="text-[10px] font-black text-muted-foreground">
+					<span className="text-[10px] font-medium text-muted-foreground">
 						{Math.round(data.progress)}%
 					</span>
 				</div>

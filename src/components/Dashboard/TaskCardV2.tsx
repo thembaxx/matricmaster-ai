@@ -60,17 +60,17 @@ export function TaskCard({ task, index, onToggle }: TaskCardProps) {
 			<div className="flex-1 min-w-0">
 				<h3
 					className={cn(
-						'text-base font-black tracking-tight transition-all',
+						'text-base font-medium transition-all',
 						task.completed ? 'text-tiimo-gray-muted line-through' : 'text-foreground'
 					)}
 				>
 					{task.title}
 				</h3>
 				<div className="flex items-center gap-2 mt-0.5">
-					<span className="text-[10px] font-bold text-tiimo-gray-muted uppercase tracking-wider bg-secondary px-2 py-0.5 rounded-md">
+					<span className="text-[10px] text-tiimo-gray-muted bg-secondary px-2 py-0.5 rounded-md">
 						{task.subject}
 					</span>
-					<span className="text-[10px] font-medium text-tiimo-gray-muted/70">{task.duration}</span>
+					<span className="text-[10px] text-tiimo-gray-muted/70">{task.duration}</span>
 				</div>
 			</div>
 

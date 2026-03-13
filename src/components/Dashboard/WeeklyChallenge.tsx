@@ -1,6 +1,6 @@
 'use client';
 
-import { Clock01Icon, FlashIcon, SparklesIcon } from '@hugeicons/core-free-icons';
+import { Calendar02Icon, Clock01Icon, SparklesIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { m } from 'framer-motion';
 import { memo, useEffect, useState } from 'react';
@@ -180,13 +180,11 @@ export const WeeklyChallenge = memo(function WeeklyChallenge({
 				<div className="flex items-start justify-between">
 					<div className="space-y-1">
 						<div className="flex items-center gap-2">
-							<HugeiconsIcon icon={FlashIcon} className="w-4 h-4 text-brand-amber" />
-							<span className="text-[10px] font-black text-brand-amber uppercase tracking-widest">
-								Weekly Challenge
-							</span>
+							<HugeiconsIcon icon={Calendar02Icon} className="w-4 h-4 text-brand-amber" />
+							<span className="text-[10px] font-medium text-brand-amber">Weekly challenge</span>
 						</div>
-						<h3 className="text-xl font-black text-foreground tracking-tight">{challenge.title}</h3>
-						<p className="text-sm text-muted-foreground">{challenge.description}</p>
+						<h3 className="text-lg font-semibold text-foreground">{challenge.title}</h3>
+						<p className="text-[12.6px] text-pretty text-muted-foreground">{challenge.description}</p>
 					</div>
 					{isComplete ? (
 						<m.div
@@ -198,9 +196,9 @@ export const WeeklyChallenge = memo(function WeeklyChallenge({
 						</m.div>
 					) : (
 						<div className="text-right">
-							<div className="flex items-center gap-1 text-muted-foreground">
-								<HugeiconsIcon icon={Clock01Icon} className="w-3 h-3" />
-								<span className="text-xs font-bold">{challenge.daysRemaining}d left</span>
+							<div className="flex items-center gap-1 text-muted-foreground whitespace-nowrap">
+								<HugeiconsIcon icon={Clock01Icon} className="w-3.5 h-3.5" />
+								<span className="text-[10px] font-semibold">{challenge.daysRemaining}d left</span>
 							</div>
 						</div>
 					)}
@@ -208,10 +206,10 @@ export const WeeklyChallenge = memo(function WeeklyChallenge({
 
 				<div className="space-y-2">
 					<div className="flex justify-between items-center">
-						<span className="text-xs font-black text-muted-foreground uppercase tracking-wider">
+						<span className="text-xs font-medium text-muted-foreground">
 							{Math.min(challenge.current, challenge.target)} / {challenge.target}
 						</span>
-						<span className="text-sm font-black text-foreground">{Math.round(progress)}%</span>
+						<span className="text-sm font-medium text-foreground">{Math.round(progress)}%</span>
 					</div>
 					<Progress
 						value={progress}
@@ -222,10 +220,10 @@ export const WeeklyChallenge = memo(function WeeklyChallenge({
 				<div className="flex items-center justify-between pt-2">
 					<div className="flex items-center gap-2">
 						<HugeiconsIcon icon={SparklesIcon} className="w-4 h-4 text-brand-amber" />
-						<span className="text-xs font-bold text-muted-foreground">Bonus Reward</span>
+						<span className="text-xs text-muted-foreground">Bonus reward</span>
 					</div>
 					<span
-						className={`text-lg font-black ${isComplete ? 'text-brand-amber' : 'text-foreground'}`}
+						className={`text-lg font-semibold ${isComplete ? 'text-brand-amber' : 'text-foreground'}`}
 					>
 						+{challenge.bonusXp} XP
 					</span>

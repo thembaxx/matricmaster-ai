@@ -1,8 +1,6 @@
 'use client';
 
 import { m } from 'framer-motion';
-import Link from 'next/link';
-import { appConfig } from '@/app.config';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
@@ -75,10 +73,6 @@ export function TimelineSidebar() {
 		<aside className="fixed left-0 top-0 h-screen w-72 bg-background-elevated border-r border-border hidden lg:flex flex-col z-20">
 			{/* Header */}
 			<div className="p-6 border-b border-border">
-				<Link href="/dashboard" className="flex items-center gap-2 mb-6">
-					<span className="text-2xl font-display font-bold text-foreground">{appConfig.name}</span>
-				</Link>
-
 				{/* Date Selector */}
 				<div className="flex items-center gap-2">
 					<Button variant="ghost" size="icon" className="rounded-full h-8 w-8">
@@ -136,39 +130,45 @@ function TimelineEventCard({ event, index }: { event: TimelineEvent; index: numb
 
 	const dotStyles = {
 		completed: 'bg-success',
-		current: 'bg-primary ring-4 ring-primary-soft animate-pulse',
+		current: 'bg-primary ring-4 ring-primary-soft/10 animate-pulse',
 		upcoming: 'bg-border',
 	};
 
 	return (
-		<m.div
-			initial={{ opacity: 0, x: -20 }}
+		<m.div initial={{ opacity: 0, x: -20 }}
 			animate={{ opacity: 1, x: 0 }}
-			transition={{ delay: index * 0.1, duration: 0.4 }}
-			className={cn(
-				'relative flex items-start gap-3 p-3 rounded-xl border mb-2 cursor-pointer tiimo-press',
-				statusStyles[event.status]
-			)}
-		>
-			{/* Timeline Dot */}
-			<div className="relative flex-shrink-0 pt-1">
-				<div className={cn('w-3 h-3 rounded-full', dotStyles[event.status])} />
-			</div>
-
-			{/* Content */}
-			<div className="flex-1 min-w-0">
-				<div className="flex items-center gap-2 mb-0.5">
-					<span className="text-xs font-mono text-muted-foreground">{event.time}</span>
-					<span className="text-xs text-muted-foreground">•</span>
-					<span className="text-xs text-muted-foreground">{event.duration}</span>
+			transition={{ delay: index * 0.1, duration: 0.4 }} className='relative rounded-xl overflow-hidden border mb-2 '>
+			<m.div
+				initial={{ opacity: 0, x: -20 }}
+				animate={{ opacity: 1, x: 0 }}
+				transition={{ delay: index * 0.1, duration: 0.4 }}
+				className={cn(
+					'relative flex items-start gap-3 p-3 rounded-xl cursor-pointer tiimo-press relative z-2',
+					statusStyles[event.status]
+				)}
+			>
+				{/* Timeline Dot */}
+				<div className="relative flex-shrink-0 pt-1">
+					<div className={cn('w-3 h-3 rounded-full', dotStyles[event.status])} />
 				</div>
-				<p className="text-sm font-semibold text-foreground truncate">{event.title}</p>
-			</div>
 
-			{/* Emoji */}
-			<div className="flex-shrink-0 w-8 h-8 rounded-full bg-background flex items-center justify-center text-lg shadow-sm">
-				{event.emoji}
-			</div>
+				{/* Content */}
+				<div className="flex-1 min-w-0">
+					<div className="flex items-center gap-2 mb-0.5 text-[10px] font-mono text-muted-foreground">
+						<span>{event.time}</span>
+						<span>•</span>
+						<span>{event.duration}</span>
+					</div>
+					<p className="text-[13px] font-semibold text-foreground truncate">{event.title}</p>
+				</div>
+
+				{/* Emoji */}
+				<div className="flex-shrink-0 w-8 h-8 rounded-full bg-background flex items-center justify-center text-lg shadow-sm">
+					{event.emoji}
+				</div>
+			</m.div>
+
+			<div className='absolute h-full w-full left-0 top-0 bg-white/90 backdrop-blur-2xl'/>
 		</m.div>
 	);
 }
