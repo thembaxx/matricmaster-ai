@@ -12,6 +12,8 @@ import { XpHeader } from '@/components/Gamification/XpHeader';
 import { FocusContent } from '@/components/Layout/FocusContent';
 import { TimelineSidebar } from '@/components/Layout/TimelineSidebar';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import type { ACHIEVEMENTS } from '@/constants/achievements';
+import type { UserAchievement } from '@/lib/db/achievement-actions';
 import type { UserProgressSummary } from '@/lib/db/progress-actions';
 
 export interface DashboardInitialStreak {
@@ -24,10 +26,10 @@ interface DashboardProps {
 	initialProgress?: UserProgressSummary | null;
 	initialStreak?: DashboardInitialStreak | null;
 	initialAchievements?: {
-		unlocked: any[];
-		available: any;
+		unlocked: UserAchievement[];
+		available: typeof ACHIEVEMENTS;
 	} | null;
-	session?: any | null;
+	session?: { user: { name?: string | null } } | null;
 }
 
 const DEMO_TASKS: Record<string, StudyTask[]> = {

@@ -34,7 +34,8 @@ const GROUP_COLORS: Record<string, string> = {
 
 export default function PeriodicTable() {
 	const router = useRouter();
-	const [selectedElement, setSelectedElement] = useState<any>(null);
+	type ElementType = (typeof ELEMENTS)[number];
+	const [selectedElement, setSelectedElement] = useState<ElementType | null>(null);
 
 	return (
 		<div className="flex flex-col h-full bg-background min-w-0">

@@ -13,7 +13,7 @@ import { useEffect, useState } from 'react';
 import { getEnrolledSubjectsAction } from '@/lib/db/actions';
 import { cn } from '@/lib/utils';
 
-const ICON_MAP: Record<string, any> = {
+const ICON_MAP: Record<string, typeof CalculatorIcon> = {
 	math: CalculatorIcon,
 	mathematics: CalculatorIcon,
 	physics: Chemistry01Icon,

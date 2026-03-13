@@ -6,7 +6,6 @@ import { cn } from '@/lib/utils';
 
 interface InteractiveDiagramProps {
 	type: string;
-	data?: Record<string, any>;
 	className?: string;
 }
 

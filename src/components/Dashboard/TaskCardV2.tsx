@@ -5,11 +5,13 @@ import { HugeiconsIcon } from '@hugeicons/react';
 import { m } from 'framer-motion';
 import { cn } from '@/lib/utils';
 
+type IconSvgElement = readonly (readonly [string, { readonly [key: string]: string | number }])[];
+
 export interface StudyTask {
 	id: string;
 	title: string;
 	subject: string;
-	icon: any;
+	icon: IconSvgElement;
 	duration: string;
 	priority: 'high' | 'medium' | 'low';
 	completed: boolean;

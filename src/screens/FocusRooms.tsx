@@ -8,7 +8,7 @@ import {
 	UserGroupIcon,
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { usePresence } from 'ably/react';
+import { usePresence, usePresenceListener } from 'ably/react';
 import { m } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -22,10 +22,11 @@ export default function FocusRooms() {
 	const { data: session } = useSession();
 	const [isActive, setIsActive] = useState(false);
 	const [timeLeft, setTimeLeft] = useState(25 * 60);
-	const { presenceData, updateStatus } = usePresence('focus-room', {
+	const { updateStatus } = usePresence<{ user: string; status: string }>('focus-room', {
 		user: session?.user?.name || 'Anonymous',
 		status: isActive ? 'Studying' : 'Resting',
-	}) as any;
+	});
+	const { presenceData } = usePresenceListener<{ user: string; status: string }>('focus-room');
 
 	useEffect(() => {
 		let interval: NodeJS.Timeout | null = null;
@@ -105,33 +106,35 @@ export default function FocusRooms() {
 							</div>
 							<div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
 								{Array.isArray(presenceData) &&
-									presenceData.map((member: any) => (
-										<m.div
-											key={member.clientId}
-											initial={{ opacity: 0, scale: 0.9 }}
-											animate={{ opacity: 1, scale: 1 }}
-											className="bg-card p-4 rounded-3xl border border-border/50 shadow-tiimo flex flex-col items-center text-center gap-3"
-										>
-											<div className="w-12 h-12 rounded-2xl bg-secondary flex items-center justify-center font-black text-primary text-xl">
-												{member.data?.user?.charAt(0) || 'S'}
-											</div>
-											<div>
-												<p className="font-black text-xs uppercase truncate w-full">
-													{member.data?.user || 'Scholar'}
-												</p>
-												<span
-													className={cn(
-														'text-[8px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full',
-														member.data?.status === 'Studying'
-															? 'bg-tiimo-green/10 text-tiimo-green'
-															: 'bg-tiimo-yellow/10 text-tiimo-yellow'
-													)}
-												>
-													{member.data?.status || 'Resting'}
-												</span>
-											</div>
-										</m.div>
-									))}
+									presenceData.map(
+										(member: { clientId: string; data: { user?: string; status?: string } }) => (
+											<m.div
+												key={member.clientId}
+												initial={{ opacity: 0, scale: 0.9 }}
+												animate={{ opacity: 1, scale: 1 }}
+												className="bg-card p-4 rounded-3xl border border-border/50 shadow-tiimo flex flex-col items-center text-center gap-3"
+											>
+												<div className="w-12 h-12 rounded-2xl bg-secondary flex items-center justify-center font-black text-primary text-xl">
+													{member.data?.user?.charAt(0) || 'S'}
+												</div>
+												<div>
+													<p className="font-black text-xs uppercase truncate w-full">
+														{member.data?.user || 'Scholar'}
+													</p>
+													<span
+														className={cn(
+															'text-[8px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full',
+															member.data?.status === 'Studying'
+																? 'bg-tiimo-green/10 text-tiimo-green'
+																: 'bg-tiimo-yellow/10 text-tiimo-yellow'
+														)}
+													>
+														{member.data?.status || 'Resting'}
+													</span>
+												</div>
+											</m.div>
+										)
+									)}
 							</div>
 						</div>
 					</div>
