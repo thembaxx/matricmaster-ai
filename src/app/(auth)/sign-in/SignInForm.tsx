@@ -192,7 +192,7 @@ export function SignInForm() {
 							variants={STAGGER_ITEM}
 							className="text-muted-foreground text-balance font-medium text-base"
 						>
-							Sign in to continue your Grade 12 journey.
+							Sign in to continue your matric prep.
 						</m.p>
 					</m.div>
 
@@ -347,7 +347,7 @@ export function SignInForm() {
 					transition={{ delay: 1.5 }}
 					className="text-center text-muted-foreground/60 text-[10px] font-bold uppercase tracking-widest mt-8"
 				>
-					&copy; {new Date().getFullYear()} {appConfig.name} AI
+					&copy; {new Date().getFullYear()} {appConfig.name}
 				</m.p>
 			</div>
 		</div>

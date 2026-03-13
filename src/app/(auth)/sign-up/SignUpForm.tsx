@@ -150,14 +150,14 @@ export default function SignUpForm() {
 						</m.div>
 						<SmoothWords
 							as="h1"
-							text="Start Your Journey"
+							text="Start Your Prep"
 							className="text-4xl font-black tracking-tight text-foreground"
 						/>
 						<m.p
 							variants={STAGGER_ITEM}
 							className="text-muted-foreground text-balance font-medium text-base"
 						>
-							Grade 12 success starts here.
+							Crush your NSC exams. Create your free account.
 						</m.p>
 					</m.div>
 
@@ -332,7 +332,7 @@ export default function SignUpForm() {
 					transition={{ delay: 1.5 }}
 					className="text-center text-muted-foreground/60 text-[10px] font-bold uppercase tracking-widest mt-8"
 				>
-					&copy; {new Date().getFullYear()} {appConfig.name} AI
+					&copy; {new Date().getFullYear()} {appConfig.name}
 				</m.p>
 			</div>
 		</div>

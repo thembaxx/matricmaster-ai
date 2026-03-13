@@ -39,9 +39,9 @@ export function AICoPlanner({ onGeneratePlan }: AICoPlannerProps) {
 		<div className="min-h-screen bg-gradient-to-b from-background to-background/80 pb-40">
 			<div className="p-4 pt-8">
 				<header className="mb-6">
-					<h1 className="text-2xl font-bold text-foreground mb-2">AI Study Planner</h1>
+					<h1 className="text-2xl font-bold text-foreground mb-2">Study Planner</h1>
 					<p className="text-muted-foreground">
-						Describe what you need to study and let AI create a plan
+						Tell us what you need to study and we'll create a plan
 					</p>
 				</header>
 

@@ -3,8 +3,9 @@ import type { Metadata } from 'next';
 import { appConfig } from '@/app.config';
 
 export const metadata: Metadata = {
-	title: `Sign Up | ${appConfig.name} AI`,
-	description: `Create your ${appConfig.name} AI account and start your journey to Grade 12 success.`,
+	title: `Sign Up | ${appConfig.name}`,
+	description:
+		'Create your free account. Start practicing NSC past papers and prepare for your matric exams.',
 };
 
 import SignUpForm from './SignUpForm';

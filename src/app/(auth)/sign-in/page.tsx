@@ -5,8 +5,9 @@ import { appConfig } from '@/app.config';
 import { SignInForm } from './SignInForm';
 
 export const metadata: Metadata = {
-	title: `Sign In | ${appConfig.name} AI`,
-	description: `Sign in to your ${appConfig.name} AI account to continue learning.`,
+	title: `Sign In | ${appConfig.name}`,
+	description:
+		'Sign in to continue your matric exam preparation. Track your progress and ace your NSC exams.',
 };
 
 export default function SignInPage() {

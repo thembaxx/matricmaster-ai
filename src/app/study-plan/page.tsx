@@ -4,8 +4,8 @@ import { appConfig } from '@/app.config';
 import StudyPlanWizardScreen from '@/screens/StudyPlanWizard';
 
 export const metadata: Metadata = {
-	title: `Study Plan | ${appConfig.name} AI`,
-	description: 'Create your personalized study plan.',
+	title: `Study Plan | ${appConfig.name}`,
+	description: 'Create your personalized NSC exam study plan.',
 };
 
 export default function StudyPlanPage() {

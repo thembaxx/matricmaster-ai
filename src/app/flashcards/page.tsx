@@ -239,7 +239,7 @@ export default function FlashcardsPage() {
 						<h3 className="text-xl font-semibold mb-2">No flashcard decks yet</h3>
 						<p className="text-muted-foreground text-center mb-4 max-w-md">
 							Create your first deck to start studying with spaced repetition. You can also generate
-							flashcards from the AI Tutor.
+							flashcards from the Study Helper.
 						</p>
 						<Button onClick={() => setShowCreateModal(true)}>
 							<HugeiconsIcon icon={Add01Icon} className="mr-2 h-4 w-4" />

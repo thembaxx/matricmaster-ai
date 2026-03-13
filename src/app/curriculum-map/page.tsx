@@ -3,8 +3,8 @@ import { appConfig } from '@/app.config';
 import CurriculumMapScreen from '@/screens/CurriculumMap';
 
 export const metadata: Metadata = {
-	title: `Curriculum Map | ${appConfig.name} AI`,
-	description: 'Visualize your progress across the entire South African Grade 12 NSC syllabus.',
+	title: `Curriculum Map | ${appConfig.name}`,
+	description: 'Visualize your progress across the NSC Grade 12 syllabus.',
 };
 
 export default function CurriculumMapPage() {

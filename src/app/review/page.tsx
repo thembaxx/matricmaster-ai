@@ -263,7 +263,7 @@ export default function ReviewPage() {
 								<Button variant="outline" asChild>
 									<Link href="/ai-tutor">
 										<HugeiconsIcon icon={Target01Icon} className="mr-2 h-4 w-4" />
-										AI Tutor
+										Study Helper
 									</Link>
 								</Button>
 								<Button variant="outline" asChild>

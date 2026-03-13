@@ -7,12 +7,12 @@ import { ProfileSkeleton } from '@/components/ProfileSkeleton';
 const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://matricmaster.ai';
 
 export const metadata: Metadata = {
-	title: `Profile | ${appConfig.name} AI`,
-	description: 'Manage your account and view your learning statistics.',
+	title: `Profile | ${appConfig.name}`,
+	description: 'Manage your account and track your NSC exam preparation progress.',
 	alternates: { canonical: `${baseUrl}/profile` },
 	openGraph: {
-		title: `My Profile | ${appConfig.name} AI`,
-		description: 'Manage your account and view your learning statistics.',
+		title: `My Profile | ${appConfig.name}`,
+		description: 'Manage your account and view your matric exam prep progress.',
 		url: `${baseUrl}/profile`,
 		type: 'profile',
 	},
