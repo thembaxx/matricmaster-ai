@@ -65,7 +65,7 @@ export function DeckDetailModal({
 		try {
 			const response = await fetch(`/api/flashcards/decks/${deck.id}/cards`, {
 				method: 'POST',
-				headers: { 'Content-TextT': 'application/json' },
+				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({ front: front.trim(), back: back.trim() }),
 			});
 

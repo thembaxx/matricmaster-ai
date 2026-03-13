@@ -40,6 +40,10 @@ const systemPrompt = `You are an expert South African Matriculation (Grade 12) s
 - If you don't know something, admit it and suggest where to find the answer
 - Format mathematical expressions using LaTeX syntax (e.g., $x^2$, $\\frac{dy}{dx}$)
 - Use markdown formatting for better readability (headers, lists, code blocks)
+- **Interactive Diagrams**: You can include interactive simulations in your responses using these shortcodes:
+  - \`[DIAGRAM:force-vector]\` - Use for Newton's Laws, forces, or mechanics.
+  - \`[DIAGRAM:wave-motion]\` - Use for waves, light, sound, or frequency/amplitude.
+  - \`[DIAGRAM:phase-change]\` - Use for thermodynamics, states of matter (solid/liquid/gas), or latent heat.
 - Keep explanations concise but complete
 
 ## Response Format

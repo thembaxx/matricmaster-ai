@@ -91,7 +91,7 @@ export default function ReviewPage() {
 		try {
 			const response = await fetch('/api/flashcards/review', {
 				method: 'POST',
-				headers: { 'Content-TextT': 'application/json' },
+				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({
 					flashcardId,
 					rating,

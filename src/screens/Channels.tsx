@@ -14,6 +14,7 @@ import {
 	Wifi01Icon,
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
+import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -61,6 +62,7 @@ const stemChannels: Channel[] = [
 ];
 
 export default function Channels() {
+	const router = useRouter();
 	const { data: session } = useSession();
 	const user = session?.user;
 	const [activeCategory, setActiveCategory] = useState('All Paths');
@@ -93,21 +95,10 @@ export default function Channels() {
 	}, [presenceMembers]);
 
 	const handleChannelClick = useCallback(
-		async (channelId: string) => {
-			if (!user?.id) {
-				console.log('User not logged in');
-				return;
-			}
-			if (channel) {
-				await channel.publish('channel_joined', {
-					userId: user.id,
-					channelId,
-					timestamp: Date.now(),
-				});
-			}
-			console.log(`Joined channel: ${channelId}`);
+		(channelId: string) => {
+			router.push(`/channels/${channelId}`);
 		},
-		[channel, user?.id]
+		[router]
 	);
 
 	return (

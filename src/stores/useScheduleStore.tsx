@@ -1,167 +1,146 @@
-'use client';
+import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
+import type { StudyTask } from '@/types/schedule';
 
-import { createContext, type ReactNode, useCallback, useContext, useState } from 'react';
-import type { ScheduleView, StudyTask } from '@/types/schedule';
-
-interface ScheduleContextType {
-	tasks: StudyTask[];
-	currentTask: StudyTask | null;
-	view: ScheduleView;
-	isTimerRunning: boolean;
+interface ScheduleState {
 	timeRemaining: number;
-	addTask: (task: StudyTask) => void;
-	removeTask: (id: string) => void;
-	updateTask: (id: string, updates: Partial<StudyTask>) => void;
-	completeTask: (id: string) => void;
-	setCurrentTask: (task: StudyTask | null) => void;
-	setView: (view: ScheduleView) => void;
+	totalTime: number;
+	isTimerRunning: boolean;
+	mode: 'focus' | 'short-break' | 'long-break';
+	tasks: StudyTask[];
+	activeTaskId: string | null;
+	currentTask: StudyTask | null;
+	view: 'active' | 'timeline';
+
 	startTimer: () => void;
 	pauseTimer: () => void;
 	resetTimer: () => void;
 	addTime: (seconds: number) => void;
+	setMode: (mode: 'focus' | 'short-break' | 'long-break') => void;
+	setTime: (seconds: number) => void;
+
+	addTask: (task: StudyTask) => void;
+	removeTask: (taskId: string) => void;
 	toggleStep: (taskId: string, stepId: string) => void;
-	reorderTasks: (tasks: StudyTask[]) => void;
+	completeTask: (taskId: string) => void;
+	setActiveTask: (taskId: string | null) => void;
+	setCurrentTask: (task: StudyTask | null) => void;
+	setView: (view: 'active' | 'timeline') => void;
 }
 
-const ScheduleContext = createContext<ScheduleContextType | undefined>(undefined);
+const DEFAULT_TIMES = {
+	focus: 25 * 60,
+	'short-break': 5 * 60,
+	'long-break': 15 * 60,
+};
 
-const generateId = () => Math.random().toString(36).substring(2, 9);
+export const useSchedule = create<ScheduleState>()(
+	persist(
+		(set, get) => ({
+			timeRemaining: DEFAULT_TIMES.focus,
+			totalTime: DEFAULT_TIMES.focus,
+			isTimerRunning: false,
+			mode: 'focus',
+			tasks: [],
+			activeTaskId: null,
+			currentTask: null,
+			view: 'active',
 
-const DEMO_TASKS: StudyTask[] = [
-	{
-		id: '1',
-		title: 'Calculus derivatives practice',
-		subject: 'mathematics',
-		duration: 45,
-		completed: false,
-		steps: [
-			{ id: 's1', title: 'Review differentiation rules', completed: true },
-			{ id: 's2', title: 'Complete practice problems 1-10', completed: false },
-			{ id: 's3', title: 'Check answers', completed: false },
-		],
-	},
-	{
-		id: '2',
-		title: 'Circuit analysis',
-		subject: 'physics',
-		duration: 30,
-		completed: false,
-		steps: [
-			{ id: 's1', title: 'Read chapter on circuits', completed: false },
-			{ id: 's2', title: 'Solve practice problems', completed: false },
-			{ id: 's3', title: 'Review solutions', completed: false },
-		],
-	},
-	{
-		id: '3',
-		title: 'Essay writing practice',
-		subject: 'english',
-		duration: 60,
-		completed: false,
-		steps: [
-			{ id: 's1', title: 'Choose essay topic', completed: false },
-			{ id: 's2', title: 'Outline essay structure', completed: false },
-			{ id: 's3', title: 'Write first draft', completed: false },
-			{ id: 's4', title: 'Edit and revise', completed: false },
-		],
-	},
-];
+			startTimer: () => set({ isTimerRunning: true }),
+			pauseTimer: () => set({ isTimerRunning: false }),
 
-export function ScheduleProvider({ children }: { children: ReactNode }) {
-	const [tasks, setTasks] = useState<StudyTask[]>(DEMO_TASKS);
-	const [currentTask, setCurrentTaskState] = useState<StudyTask | null>(DEMO_TASKS[0]);
-	const [view, setView] = useState<ScheduleView>('active');
-	const [isTimerRunning, setIsTimerRunning] = useState<boolean>(false);
-	const [timeRemaining, setTimeRemaining] = useState<number>(0);
+			resetTimer: () => {
+				const { mode } = get();
+				set({
+					timeRemaining: DEFAULT_TIMES[mode],
+					totalTime: DEFAULT_TIMES[mode],
+					isTimerRunning: false,
+				});
+			},
 
-	const addTask = useCallback((task: StudyTask) => {
-		setTasks((prev) => [...prev, { ...task, id: generateId() }]);
-	}, []);
+			addTime: (seconds) =>
+				set((state) => ({
+					timeRemaining: Math.max(0, state.timeRemaining + seconds),
+				})),
 
-	const removeTask = useCallback((id: string) => {
-		setTasks((prev) => prev.filter((task) => task.id !== id));
-	}, []);
+			setMode: (mode) =>
+				set({
+					mode,
+					timeRemaining: DEFAULT_TIMES[mode],
+					totalTime: DEFAULT_TIMES[mode],
+					isTimerRunning: false,
+				}),
 
-	const updateTask = useCallback((id: string, updates: Partial<StudyTask>) => {
-		setTasks((prev) => prev.map((task) => (task.id === id ? { ...task, ...updates } : task)));
-	}, []);
+			setTime: (seconds) =>
+				set({
+					timeRemaining: seconds,
+					totalTime: seconds,
+				}),
 
-	const completeTask = useCallback((id: string) => {
-		setTasks((prev) => prev.map((task) => (task.id === id ? { ...task, completed: true } : task)));
-	}, []);
+			addTask: (task) =>
+				set((state) => ({
+					tasks: [...state.tasks, task],
+				})),
 
-	const setCurrentTask = useCallback((task: StudyTask | null) => {
-		setCurrentTaskState(task);
-	}, []);
+			removeTask: (taskId) =>
+				set((state) => ({
+					tasks: state.tasks.filter((t) => t.id !== taskId),
+					activeTaskId: state.activeTaskId === taskId ? null : state.activeTaskId,
+					currentTask: state.currentTask?.id === taskId ? null : state.currentTask,
+				})),
 
-	const startTimer = useCallback(() => {
-		setIsTimerRunning(true);
-	}, []);
-
-	const pauseTimer = useCallback(() => {
-		setIsTimerRunning(false);
-	}, []);
-
-	const resetTimer = useCallback(() => {
-		setIsTimerRunning(false);
-		setTimeRemaining(0);
-	}, []);
-
-	const addTime = useCallback((seconds: number) => {
-		setTimeRemaining((prev) => prev + seconds);
-	}, []);
-
-	const toggleStep = useCallback((taskId: string, stepId: string) => {
-		setTasks((prev) =>
-			prev.map((task) => {
-				if (task.id === taskId) {
-					return {
-						...task,
-						steps: task.steps.map((step) =>
+			toggleStep: (taskId, stepId) =>
+				set((state) => ({
+					tasks: state.tasks.map((task) => {
+						if (task.id !== taskId) return task;
+						const updatedSteps = task.steps.map((step) =>
 							step.id === stepId ? { ...step, completed: !step.completed } : step
-						),
-					};
-				}
-				return task;
-			})
-		);
-	}, []);
+						);
+						const updatedTask = { ...task, steps: updatedSteps };
+						return updatedTask;
+					}),
+					// Also update currentTask if it's the one being modified
+					currentTask:
+						state.currentTask?.id === taskId
+							? {
+									...state.currentTask,
+									steps: state.currentTask.steps.map((step) =>
+										step.id === stepId ? { ...step, completed: !step.completed } : step
+									),
+								}
+							: state.currentTask,
+				})),
 
-	const reorderTasks = useCallback((newTasks: StudyTask[]) => {
-		setTasks(newTasks);
-	}, []);
+			completeTask: (taskId) =>
+				set((state) => ({
+					tasks: state.tasks.map((t) => (t.id === taskId ? { ...t, completed: true } : t)),
+					currentTask:
+						state.currentTask?.id === taskId
+							? { ...state.currentTask, completed: true }
+							: state.currentTask,
+				})),
 
-	return (
-		<ScheduleContext.Provider
-			value={{
-				tasks,
-				currentTask,
-				view,
-				isTimerRunning,
-				timeRemaining,
-				addTask,
-				removeTask,
-				updateTask,
-				completeTask,
-				setCurrentTask,
-				setView,
-				startTimer,
-				pauseTimer,
-				resetTimer,
-				addTime,
-				toggleStep,
-				reorderTasks,
-			}}
-		>
-			{children}
-		</ScheduleContext.Provider>
-	);
-}
+			setActiveTask: (taskId) => {
+				const task = get().tasks.find((t) => t.id === taskId) || null;
+				set({ activeTaskId: taskId, currentTask: task });
+			},
 
-export function useSchedule() {
-	const context = useContext(ScheduleContext);
-	if (!context) {
-		throw new Error('useSchedule must be used within a ScheduleProvider');
-	}
-	return context;
+			setCurrentTask: (task) =>
+				set({
+					currentTask: task,
+					activeTaskId: task?.id || null,
+					timeRemaining: task ? task.duration * 60 : get().timeRemaining,
+					totalTime: task ? task.duration * 60 : get().totalTime,
+				}),
+
+			setView: (view) => set({ view }),
+		}),
+		{
+			name: 'schedule-storage',
+		}
+	)
+);
+
+export function ScheduleProvider({ children }: { children: React.ReactNode }) {
+	return <>{children}</>;
 }

@@ -48,7 +48,7 @@ export function CreateDeckModal({ open, onOpenChange, onCreated }: CreateDeckMod
 		try {
 			const response = await fetch('/api/flashcards/decks', {
 				method: 'POST',
-				headers: { 'Content-TextT': 'application/json' },
+				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({ name: name.trim(), description: description.trim() || null }),
 			});
 

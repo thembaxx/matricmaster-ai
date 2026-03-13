@@ -8,6 +8,7 @@ import rehypeKatex from 'rehype-katex';
 import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math';
 import { Button } from '@/components/ui/button';
+import { InteractiveDiagram } from '@/components/ui/InteractiveDiagram';
 import { cn } from '@/lib/utils';
 
 interface MarkdownRendererProps {
@@ -87,69 +88,91 @@ export function MarkdownRenderer({ content, className }: MarkdownRendererProps) 
 		};
 	}, []);
 
+	// Split content by diagram shortcodes: [DIAGRAM:type]
+	const parts = content.split(/(\[DIAGRAM:\w+(?:-\w+)*\])/g);
+
 	return (
 		<div className={cn('prose prose-sm dark:prose-invert max-w-none', className)}>
-			<ReactMarkdown
-				remarkPlugins={[remarkGfm, remarkMath]}
-				rehypePlugins={[rehypeKatex]}
-				components={{
-					code: ({ className, children }) => {
-						const isInline = !className;
-						if (isInline) {
-							return <InlineCode>{children}</InlineCode>;
-						}
-						return <CodeBlock className={className}>{children}</CodeBlock>;
-					},
-					pre: ({ children }) => <>{children}</>,
-					h1: ({ children }) => (
-						<h1 className="text-xl font-bold mt-6 mb-3 text-foreground">{children}</h1>
-					),
-					h2: ({ children }) => (
-						<h2 className="text-lg font-bold mt-5 mb-2 text-foreground">{children}</h2>
-					),
-					h3: ({ children }) => (
-						<h3 className="text-base font-semibold mt-4 mb-2 text-foreground">{children}</h3>
-					),
-					p: ({ children }) => (
-						<p className="mb-4 leading-relaxed text-sm md:text-base font-medium opacity-90">
-							{children}
-						</p>
-					),
-					ul: ({ children }) => <ul className="list-disc pl-6 mb-4 space-y-2">{children}</ul>,
-					ol: ({ children }) => <ol className="list-decimal pl-6 mb-4 space-y-2">{children}</ol>,
-					li: ({ children }) => (
-						<li className="text-sm md:text-[15px] font-medium opacity-90">{children}</li>
-					),
-					blockquote: ({ children }) => (
-						<blockquote className="border-l-4 border-primary/30 pl-6 italic text-muted-foreground/80 my-6 py-1 bg-primary/5 rounded-r-2xl">
-							{children}
-						</blockquote>
-					),
-					a: ({ href, children }) => (
-						<a
-							href={href}
-							target="_blank"
-							rel="noopener noreferrer"
-							className="text-primary hover:underline"
-						>
-							{children}
-						</a>
-					),
-					table: ({ children }) => (
-						<div className="overflow-x-auto my-4">
-							<table className="min-w-full border-collapse border border-border">{children}</table>
+			{parts.map((part, index) => {
+				const diagramMatch = part.match(/\[DIAGRAM:(\w+(?:-\w+)*)\]/);
+				if (diagramMatch) {
+					const type = diagramMatch[1] as 'force-vector' | 'phase-change' | 'wave-motion';
+					return (
+						<div key={index} className="my-8 not-prose">
+							<InteractiveDiagram type={type} />
 						</div>
-					),
-					th: ({ children }) => (
-						<th className="border border-border px-3 py-2 bg-muted font-semibold text-left">
-							{children}
-						</th>
-					),
-					td: ({ children }) => <td className="border border-border px-3 py-2">{children}</td>,
-				}}
-			>
-				{content}
-			</ReactMarkdown>
+					);
+				}
+
+				return (
+					<ReactMarkdown
+						key={index}
+						remarkPlugins={[remarkGfm, remarkMath]}
+						rehypePlugins={[rehypeKatex]}
+						components={{
+							code: ({ className, children }) => {
+								const isInline = !className;
+								if (isInline) {
+									return <InlineCode>{children}</InlineCode>;
+								}
+								return <CodeBlock className={className}>{children}</CodeBlock>;
+							},
+							pre: ({ children }) => <>{children}</>,
+							h1: ({ children }) => (
+								<h1 className="text-xl font-bold mt-6 mb-3 text-foreground">{children}</h1>
+							),
+							h2: ({ children }) => (
+								<h2 className="text-lg font-bold mt-5 mb-2 text-foreground">{children}</h2>
+							),
+							h3: ({ children }) => (
+								<h3 className="text-base font-semibold mt-4 mb-2 text-foreground">{children}</h3>
+							),
+							p: ({ children }) => (
+								<p className="mb-4 leading-relaxed text-sm md:text-base font-medium opacity-90">
+									{children}
+								</p>
+							),
+							ul: ({ children }) => <ul className="list-disc pl-6 mb-4 space-y-2">{children}</ul>,
+							ol: ({ children }) => (
+								<ol className="list-decimal pl-6 mb-4 space-y-2">{children}</ol>
+							),
+							li: ({ children }) => (
+								<li className="text-sm md:text-[15px] font-medium opacity-90">{children}</li>
+							),
+							blockquote: ({ children }) => (
+								<blockquote className="border-l-4 border-primary/30 pl-6 italic text-muted-foreground/80 my-6 py-1 bg-primary/5 rounded-r-2xl">
+									{children}
+								</blockquote>
+							),
+							a: ({ href, children }) => (
+								<a
+									href={href}
+									target="_blank"
+									rel="noopener noreferrer"
+									className="text-primary hover:underline"
+								>
+									{children}
+								</a>
+							),
+							table: ({ children }) => (
+								<div className="overflow-x-auto my-4">
+									<table className="min-w-full border-collapse border border-border">
+										{children}
+									</table>
+								</div>
+							),
+							th: ({ children }) => (
+								<th className="border border-border px-3 py-2 bg-muted font-semibold text-left">
+									{children}
+								</th>
+							),
+							td: ({ children }) => <td className="border border-border px-3 py-2">{children}</td>,
+						}}
+					>
+						{part}
+					</ReactMarkdown>
+				);
+			})}
 		</div>
 	);
 }

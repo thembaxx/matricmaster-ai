@@ -98,7 +98,7 @@ export default function AITutorPage() {
 		try {
 			const response = await fetch('/api/ai-tutor', {
 				method: 'POST',
-				headers: { 'Content-TextT': 'application/json' },
+				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({
 					message: textToSend,
 					subject: selectedSubject,
@@ -183,7 +183,7 @@ export default function AITutorPage() {
 
 			const response = await fetch('/api/ai-tutor/practice', {
 				method: 'POST',
-				headers: { 'Content-TextT': 'application/json' },
+				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({
 					context,
 					subject: selectedSubject,
@@ -218,7 +218,7 @@ export default function AITutorPage() {
 
 			const response = await fetch('/api/ai-tutor/flashcards', {
 				method: 'POST',
-				headers: { 'Content-TextT': 'application/json' },
+				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({
 					context,
 					subject: selectedSubject,
