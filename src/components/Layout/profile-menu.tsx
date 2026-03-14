@@ -28,7 +28,7 @@ export function ProfileMenu({
 	return (
 		<DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
 			<DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>
-			<DropdownMenuContent align="end" className="w-56">
+			<DropdownMenuContent align="end" className="w-56 bg-secondary rounded-lg">
 				<DropdownMenuLabel>My Account</DropdownMenuLabel>
 				<DropdownMenuGroup>
 					<DropdownMenuItem className="p-2">
@@ -44,7 +44,7 @@ export function ProfileMenu({
 									<Icon icon="material-symbols-light:verified" className="text-blue-600 w-5 h-5" />
 								</div>
 							</div>
-							<div className="space-y-0 text-left flex flex-col overflow-hidden">
+							<div className="space-y-0 text-left flex flex-col w-full overflow-hidden">
 								<h2 className="font-black truncate text-base uppercase tracking-tighter">
 									{user.name}
 								</h2>

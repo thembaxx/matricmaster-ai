@@ -104,11 +104,11 @@ export function TimelineSidebar() {
 
 			{/* Stats */}
 			<div className="p-4 border-t border-border">
-				<div className="bg-primary-soft rounded-2xl p-4">
-					<p className="text-xs text-muted-foreground mb-1">Progress today</p>
+				<div className="bg-primary-soft rounded-lg p-4">
+					<p className="text-[10px] text-muted-foreground mb-1">Progress today</p>
 					<div className="flex items-end gap-2">
-						<span className="text-2xl font-display font-bold text-primary">2</span>
-						<span className="text-sm text-muted-foreground mb-1">/ 5 done</span>
+						<span className="text-sm font-display font-bold text-primary">2</span>
+						<span className="text-xs text-muted-foreground mb-px">/ 5 done</span>
 					</div>
 					<div className="mt-2 h-1.5 bg-border rounded-full overflow-hidden">
 						<div className="h-full w-[40%] bg-primary rounded-full" />

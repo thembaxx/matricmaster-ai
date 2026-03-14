@@ -11,7 +11,6 @@ import { WeeklyChallenge } from '@/components/Dashboard/WeeklyChallenge';
 import { XpHeader } from '@/components/Gamification/XpHeader';
 import { FocusContent } from '@/components/Layout/FocusContent';
 import { TimelineSidebar } from '@/components/Layout/TimelineSidebar';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import { ACHIEVEMENTS } from '@/constants/achievements';
 import type { UserAchievement } from '@/lib/db/achievement-actions';
 import type { UserProgressSummary } from '@/lib/db/progress-actions';
@@ -160,7 +159,7 @@ export default function Dashboard({
 		<div className="min-h-screen bg-background flex">
 			<TimelineSidebar />
 			<FocusContent>
-				<div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-8">
+				<div className="mx-auto px-4 sm:px-6 lg:px-8 pb-8">
 					<DashboardHeader
 						today={today}
 						completedCount={completedCount}
@@ -168,7 +167,7 @@ export default function Dashboard({
 						initialXp={progress.totalMarksEarned}
 					/>
 
-					<ScrollArea className="h-[calc(100vh-280px)] no-scrollbar pr-4">
+					<div className="h-[calc(100vh-320px)] sm:h-full no-scrollbar">
 						<div className="space-y-10 pb-32">
 							{/* Welcome & Stats Row */}
 							<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -229,7 +228,7 @@ export default function Dashboard({
 								<ActivityFeed />
 							</section>
 						</div>
-					</ScrollArea>
+					</div>
 				</div>
 			</FocusContent>
 		</div>

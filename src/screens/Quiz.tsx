@@ -14,7 +14,6 @@ import { QuizHeader } from '@/components/Quiz/QuizHeaderV2';
 import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import { QUIZ_DATA } from '@/constants/quiz-data';
 import { useQuizCompletion } from '@/hooks/use-quiz-completion';
 import { cn } from '@/lib/utils';
@@ -111,7 +110,7 @@ export default function Quiz({ quizId = 'math-p1-2023-nov' }: QuizProps) {
 						<Progress value={progressPercent} className="h-2 rounded-full" />
 					</div>
 
-					<ScrollArea className="h-[calc(100vh-320px)] no-scrollbar pr-4">
+					<div className="h-[calc(100vh-320px)] sm:h-full no-scrollbar pr-4">
 						<div className="space-y-8 pb-32">
 							<QuestionCard
 								question={currentQuestion.question}
@@ -164,7 +163,7 @@ export default function Quiz({ quizId = 'math-p1-2023-nov' }: QuizProps) {
 								</m.div>
 							)}
 						</div>
-					</ScrollArea>
+					</div>
 
 					<QuizActions
 						isChecked={isChecked}

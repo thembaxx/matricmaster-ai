@@ -33,7 +33,7 @@ export function DatePicker({
 						<Button variant="outline" id={htmlFor} className="justify-start font-normal relative">
 							{date ? format(date, 'PPP') : <span>Pick a date</span>}
 							{icon && (
-								<div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
+								<div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none opacity-60">
 									{icon}
 								</div>
 							)}

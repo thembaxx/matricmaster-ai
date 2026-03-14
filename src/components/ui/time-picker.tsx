@@ -25,7 +25,7 @@ export function TimePicker({ htmlFor, label, time, icon, setTime }: TimePickerPr
 						onChange={(e) => setTime(e.target.value)}
 						className="appearance-none bg-background [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
 					/>
-					<div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
+					<div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none opacity-60">
 						{icon}
 					</div>
 				</div>

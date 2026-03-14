@@ -5,6 +5,7 @@ import { HugeiconsIcon } from '@hugeicons/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
+import { SubjectsSkeleton } from '@/components/SubjectsSkeleton';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import {
@@ -50,7 +51,7 @@ export default function SubjectsPage() {
 	};
 
 	if (isLoading) {
-		return <div className="p-12 text-center">Loading subjects...</div>;
+		return <SubjectsSkeleton />;
 	}
 
 	return (

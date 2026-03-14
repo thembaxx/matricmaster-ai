@@ -188,25 +188,6 @@ export function AppSidebar({ user, pathname, theme, onToggleTheme }: AppSidebarP
 	return (
 		<Sidebar collapsible="offcanvas" variant="sidebar">
 			<SidebarHeader className="border-b-0 px-4 pt-4 pb-2">
-				<Link href="/dashboard" className="block px-2 py-2">
-					<m.div
-						initial={{ opacity: 0, y: -10 }}
-						animate={{ opacity: 1, y: 0 }}
-						className="flex items-center gap-3"
-					>
-						<div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-sidebar-primary to-purple-400 flex items-center justify-center shadow-lg shadow-sidebar-primary/20">
-							<HugeiconsIcon icon={BookOpen01Icon} className="w-5 h-5 text-white" />
-						</div>
-						<div>
-							<h1 className="text-lg font-semibold text-sidebar-foreground leading-none">
-								{appConfig.name}
-							</h1>
-							<p className="text-[9px] font-medium text-sidebar-foreground/50 mt-0.5">
-								NSC exam prep
-							</p>
-						</div>
-					</m.div>
-				</Link>
 				<div className="relative flex items-center px-2 mt-2">
 					<HugeiconsIcon
 						icon={Search01Icon}
@@ -235,7 +216,7 @@ export function AppSidebar({ user, pathname, theme, onToggleTheme }: AppSidebarP
 								onClick={() => handleSectionToggle(section.title)}
 								className="w-full flex items-center justify-between px-3 py-2 rounded-lg hover:bg-sidebar-accent/50 transition-colors group"
 							>
-								<span className="text-[10px] font-medium text-sidebar-foreground/50">
+								<span className="text-[10px] font-medium text-sidebar-foreground/50 grow truncate text-left">
 									{section.title}
 								</span>
 								<m.div
@@ -290,11 +271,11 @@ export function AppSidebar({ user, pathname, theme, onToggleTheme }: AppSidebarP
 																)}
 															/>
 														</m.div>
-														<span className="font-medium text-sm">{item.label}</span>
+														<span className="font-medium text-[13px] grow truncate">{item.label}</span>
 														{isActive && (
 															<m.div
 																layoutId="sidebar-active"
-																className="ml-auto mr-4 w-1.5 h-1.5 rounded-full bg-sidebar-primary"
+																className="ml-auto mr-3.5 w-1.5 h-1.5 rounded-full bg-sidebar-primary"
 															/>
 														)}
 													</Link>
