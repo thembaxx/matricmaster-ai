@@ -23,19 +23,14 @@ import {
 } from '@/components/ui/drawer';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
 import {
 	createCalendarEventAction,
 	getEnrolledSubjectsAction,
 	updateCalendarEventAction,
 } from '@/lib/db/actions';
+import { DatePicker } from '../ui/date-picker';
+import { TimePicker } from '../ui/time-picker';
 
 interface BlockData {
 	id: string;
@@ -103,7 +98,6 @@ export function AddBlockModal({ open, onOpenChange, onSuccess, editMode }: AddBl
 	const dateId = useId();
 	const startTimeId = useId();
 	const endTimeId = useId();
-	const subjectIdId = useId();
 	const repeatableId = useId();
 
 	const isEditing = !!editMode;
@@ -237,80 +231,71 @@ export function AddBlockModal({ open, onOpenChange, onSuccess, editMode }: AddBl
 			{/* Subject */}
 			<div className="space-y-2.5">
 				<Label
-					htmlFor={subjectIdId}
+					htmlFor={subjectId}
 					className="text-xs font-bold uppercase tracking-wider text-muted-foreground ml-1"
 				>
 					Subject <span className="text-muted-foreground/50 font-normal">(optional)</span>
 				</Label>
-				<Select value={subjectId} onValueChange={setSubjectId}>
-					<SelectTrigger className="h-12 rounded-xl">
-						<SelectValue placeholder="Select a subject" />
-					</SelectTrigger>
-					<SelectContent>
+				{subjects.length > 0 ? (
+					<div className="flex flex-wrap gap-2">
+						<button
+							type="button"
+							onClick={() => setSubjectId('')}
+							className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${
+								subjectId === ''
+									? 'bg-muted text-muted-foreground'
+									: 'bg-muted/50 text-muted-foreground/70 hover:bg-muted'
+							}`}
+						>
+							None
+						</button>
 						{subjects.map((subject) => (
-							<SelectItem key={subject.id} value={String(subject.id)}>
+							<button
+								key={subject.id}
+								type="button"
+								onClick={() => setSubjectId(String(subject.id))}
+								className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${
+									subjectId === String(subject.id)
+										? 'bg-primary text-primary-foreground shadow-md'
+										: 'bg-muted/50 text-muted-foreground/70 hover:bg-muted'
+								}`}
+							>
 								{subject.name}
-							</SelectItem>
+							</button>
 						))}
-					</SelectContent>
-				</Select>
+					</div>
+				) : (
+					<p className="text-sm text-muted-foreground/60 italic">No subjects enrolled</p>
+				)}
 			</div>
 
 			{/* Date */}
 			<div className="space-y-2.5">
-				<Label
+				<DatePicker
+					label="Date"
 					htmlFor={dateId}
-					className="text-xs font-bold uppercase tracking-wider text-muted-foreground ml-1"
-				>
-					<HugeiconsIcon icon={Calendar04Icon} className="w-3 h-3 inline mr-1.5" />
-					Date
-				</Label>
-				<Input
-					id={dateId}
-					type="date"
-					value={date}
-					onChange={(e) => setDate(e.target.value)}
-					className="h-12 rounded-xl"
-					required
+					date={date}
+					setDate={setDate}
+					icon={<HugeiconsIcon icon={Calendar04Icon} className="h-4 w-4" />}
 				/>
 			</div>
 
 			{/* Time */}
 			<div className="grid grid-cols-2 gap-4">
-				<div className="space-y-2.5">
-					<Label
-						htmlFor={startTimeId}
-						className="text-xs font-bold uppercase tracking-wider text-muted-foreground ml-1"
-					>
-						<HugeiconsIcon icon={Clock01Icon} className="w-3 h-3 inline mr-1.5" />
-						Start
-					</Label>
-					<Input
-						id={startTimeId}
-						type="time"
-						value={startTime}
-						onChange={(e) => setStartTime(e.target.value)}
-						className="h-12 rounded-xl"
-						required
-					/>
-				</div>
-				<div className="space-y-2.5">
-					<Label
-						htmlFor={endTimeId}
-						className="text-xs font-bold uppercase tracking-wider text-muted-foreground ml-1"
-					>
-						<HugeiconsIcon icon={Clock01Icon} className="w-3 h-3 inline mr-1.5" />
-						End
-					</Label>
-					<Input
-						id={endTimeId}
-						type="time"
-						value={endTime}
-						onChange={(e) => setEndTime(e.target.value)}
-						className="h-12 rounded-xl"
-						required
-					/>
-				</div>
+				<TimePicker
+					htmlFor={startTimeId}
+					label="Start Time"
+					time={startTime}
+					setTime={setStartTime}
+					icon={<HugeiconsIcon icon={Clock01Icon} className="h-4 w-4" />}
+				/>
+				<TimePicker
+					htmlFor={endTimeId}
+					label="End Time"
+					time={endTime}
+					setTime={setEndTime}
+					icon={<HugeiconsIcon icon={Clock01Icon} className="h-4 w-4" />}
+				/>
 			</div>
 
 			{/* Repeat Toggle */}

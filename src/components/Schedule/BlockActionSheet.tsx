@@ -176,6 +176,14 @@ export function BlockActionSheet({ open, onOpenChange, event, onSuccess }: Block
 
 	const renderActions = () => (
 		<div className="space-y-5">
+			{/* Subject Display */}
+			{event?.subjectId && (
+				<div className="flex items-center gap-2 px-3 py-2 bg-primary/5 rounded-xl border border-primary/10">
+					<div className="w-2 h-2 rounded-full bg-primary" />
+					<span className="text-sm font-medium">{getSubjectName(event.subjectId)}</span>
+				</div>
+			)}
+
 			{/* Quick Actions Grid */}
 			<div className="grid grid-cols-2 gap-3">
 				<Button variant="ghost" onClick={handleStudySession} className={`${actionButtonBase} h-28`}>
