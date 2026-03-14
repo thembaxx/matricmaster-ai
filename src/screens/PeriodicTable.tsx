@@ -1,7 +1,5 @@
 'use client';
 
-import { ArrowLeft01Icon } from '@hugeicons/core-free-icons';
-import { HugeiconsIcon } from '@hugeicons/react';
 import { AnimatePresence, m } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -873,11 +871,8 @@ export default function PeriodicTable() {
 
 	return (
 		<div className="flex flex-col h-full bg-background min-w-0">
-			<header className="px-6 pt-12 pb-6 flex items-center justify-between shrink-0 max-w-6xl mx-auto w-full">
-				<Button variant="ghost" size="icon" onClick={() => router.back()} className="rounded-full">
-					<HugeiconsIcon icon={ArrowLeft01Icon} className="w-6 h-6" />
-				</Button>
-				<h1 className="text-xl font-black uppercase tracking-tight">Interactive Periodic Table</h1>
+			<header className="px-8 pt-12 pb-6 flex items-center justify-between shrink-0 max-w-6xl mx-auto w-full">
+				<h1 className="text-xl font-black tracking-normal">Periodic Table</h1>
 				<div className="w-10" />
 			</header>
 
@@ -895,7 +890,7 @@ export default function PeriodicTable() {
 									whileTap={{ scale: 0.95 }}
 									onClick={() => setSelectedElement(el)}
 									className={cn(
-										'w-12 h-14 sm:w-14 sm:h-16 rounded-lg sm:rounded-xl border flex flex-col items-center justify-center transition-all shadow-md bg-card',
+										'w-12 h-14 sm:w-14 sm:h-16 rounded-sm sm:rounded-md border flex flex-col items-center justify-center transition-all shadow-md bg-card',
 										el.num >= 57 && el.num <= 71 && 'row-start-1 row-end-1',
 										el.num >= 89 && el.num <= 103 && 'row-start-1 row-end-1',
 										selectedElement?.num === el.num
@@ -903,7 +898,7 @@ export default function PeriodicTable() {
 											: GROUP_COLORS[el.group]
 									)}
 								>
-									<span className="text-[8px] sm:text-[9px] font-bold self-start ml-0.5 opacity-60">
+									<span className="text-[8px] sm:text-[9px] font-bold self-start ml-1.5 opacity-60">
 										{el.num}
 									</span>
 									<span className="text-sm sm:text-base font-black">{el.sym}</span>
@@ -934,7 +929,7 @@ export default function PeriodicTable() {
 								exit={{ opacity: 0, y: 20 }}
 								className="w-full"
 							>
-								<Card className="rounded-[3rem] p-10 border-2 border-primary/20 shadow-2xl bg-card overflow-hidden relative">
+								<Card className="rounded-[2rem] p-10 border-2 border-primary/20 shadow-2xl bg-card overflow-hidden relative">
 									<div className="flex flex-col sm:flex-row gap-10 items-center">
 										<div
 											className={cn(
@@ -960,13 +955,13 @@ export default function PeriodicTable() {
 												</p>
 											</div>
 											<div className="grid grid-cols-2 gap-4">
-												<div className="p-4 bg-muted/50 rounded-2xl border border-border/50">
+												<div className="p-4 bg-muted/50 rounded-lg border border-border/50">
 													<p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest mb-1">
 														Atomic Mass
 													</p>
 													<p className="text-xl font-black">{selectedElement.mass} u</p>
 												</div>
-												<div className="p-4 bg-muted/50 rounded-2xl border border-border/50">
+												<div className="p-4 bg-muted/50 rounded-lg border border-border/50">
 													<p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest mb-1">
 														Atomic Number
 													</p>
@@ -974,7 +969,7 @@ export default function PeriodicTable() {
 												</div>
 											</div>
 											{currentQuestion ? (
-												<div className="space-y-4 p-4 bg-muted/30 rounded-2xl border border-border/50">
+												<div className="space-y-4 p-4 bg-muted/30 rounded-lg border border-border/50">
 													<p className="text-sm font-bold text-foreground">
 														{currentQuestion.question}
 													</p>
