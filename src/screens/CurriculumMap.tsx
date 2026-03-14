@@ -28,6 +28,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { SUBJECTS } from '@/constants/subjects';
 import { cn } from '@/lib/utils';
 
 type TopicStatus = 'mastered' | 'in-progress' | 'not-started';
@@ -90,7 +91,7 @@ const CURRICULUM_DATA: Subject[] = [
 		id: 'mathematics',
 		name: 'Mathematics',
 		color: 'bg-subject-math',
-		icon: '🔢',
+		icon: SUBJECTS.mathematics.emoji,
 		topics: [
 			{
 				id: 'm1',
@@ -213,7 +214,7 @@ const CURRICULUM_DATA: Subject[] = [
 		id: 'life-sciences',
 		name: 'Life Sciences',
 		color: 'bg-subject-life',
-		icon: '🧬',
+		icon: SUBJECTS['life-sciences'].emoji,
 		topics: [
 			{
 				id: 'l1',
@@ -262,7 +263,7 @@ const CURRICULUM_DATA: Subject[] = [
 		id: 'english',
 		name: 'English',
 		color: 'bg-subject-english',
-		icon: '📚',
+		icon: SUBJECTS.english.emoji,
 		topics: [
 			{
 				id: 'e1',
@@ -366,7 +367,7 @@ const CURRICULUM_DATA: Subject[] = [
 		id: 'geography',
 		name: 'Geography',
 		color: 'bg-subject-geography',
-		icon: '🌍',
+		icon: SUBJECTS.geography.emoji,
 		topics: [
 			{
 				id: 'g1',
@@ -618,7 +619,7 @@ const CURRICULUM_DATA: Subject[] = [
 		id: 'economics',
 		name: 'Economics',
 		color: 'bg-emerald-600',
-		icon: '💰',
+		icon: SUBJECTS.economics.emoji,
 		topics: [
 			{
 				id: 'eco1',

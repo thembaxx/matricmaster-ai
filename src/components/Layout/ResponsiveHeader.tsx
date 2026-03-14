@@ -62,8 +62,10 @@ export function ResponsiveHeader({
 			)}
 		>
 			<div className="hidden lg:flex items-center gap-8">
-				<Link href="/" className="flex-shrink-0">
-					<p className="font-black text-lg tracking-tight text-foreground">{appConfig.name}</p>
+				<Link href="/" className="shrink-0">
+					<p className="font-black text-xs uppercase tracking-wider text-foreground">
+						{appConfig.name}
+					</p>
 				</Link>
 				<nav className="flex items-center gap-6">
 					{desktopNavItems.map((item) => (

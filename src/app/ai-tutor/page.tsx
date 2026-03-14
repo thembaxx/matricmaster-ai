@@ -23,6 +23,7 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { SUBJECTS } from '@/constants/subjects';
 import { authClient } from '@/lib/auth-client';
 import { saveConversationAction } from '@/lib/db/ai-tutor-actions';
 import type { AiConversation } from '@/lib/db/schema';
@@ -274,10 +275,15 @@ export default function AITutorPage() {
 	};
 
 	const subjects = [
-		{ id: 'mathematics', name: 'Mathematics', color: 'bg-math', icon: 'Σ' },
-		{ id: 'physics', name: 'Physics', color: 'bg-physics', icon: '⚛' },
-		{ id: 'chemistry', name: 'Chemistry', color: 'bg-brand-amber', icon: '🧪' },
-		{ id: 'life sciences', name: 'Life Sciences', color: 'bg-life-sci', icon: '🧬' },
+		{ id: 'mathematics', name: 'Mathematics', color: 'bg-math', icon: SUBJECTS.mathematics.emoji },
+		{ id: 'physics', name: 'Physics', color: 'bg-physics', icon: SUBJECTS.physics.emoji },
+		{ id: 'chemistry', name: 'Chemistry', color: 'bg-brand-amber', icon: SUBJECTS.chemistry.emoji },
+		{
+			id: 'life sciences',
+			name: 'Life Sciences',
+			color: 'bg-life-sci',
+			icon: SUBJECTS['life-sciences'].emoji,
+		},
 	];
 
 	useEffect(() => {
