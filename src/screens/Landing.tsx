@@ -97,7 +97,7 @@ export default function Landing() {
 								transition={{ type: 'spring', stiffness: 300, damping: 28 }}
 								className="space-y-8"
 							>
-								<Badge className="tiimo-glass rounded-full px-4 py-1.5 text-[10px] font-medium text-white">
+								<Badge className="tiimo-glass bg-primary-purple! rounded-full px-4 py-1.5 text-[10px] font-medium text-white">
 									<HugeiconsIcon icon={SparklesIcon} className="w-3 h-3 mr-1.5" />
 									The #1 NSC prep platform
 								</Badge>

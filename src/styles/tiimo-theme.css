@@ -234,6 +234,8 @@
   --color-tiimo-gray-dark: var(--tiimo-gray-dark);
   --color-tiimo-gray-muted: var(--tiimo-gray-muted);
   --color-tiimo-gray-subtle: var(--tiimo-gray-subtle);
+
+  --color-primary-purple: oklch(0.5843 0.2053 295.56);
 }
 
 @layer base {

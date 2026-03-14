@@ -1,11 +1,11 @@
 'use client';
 
 import {
-	ArrowRight01Icon,
 	Cancel01Icon,
 	CheckmarkCircleIcon,
 	SparklesIcon,
 	StarIcon,
+	StartUp01Icon,
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { AnimatePresence, m } from 'framer-motion';
@@ -199,8 +199,8 @@ export function DailyLoginBonus({ onClaimed }: DailyLoginBonusProps) {
 												</m.div>
 											) : (
 												<>
+													<HugeiconsIcon icon={StartUp01Icon} className="w-6 h-6 ml-2" />
 													Claim Reward
-													<HugeiconsIcon icon={ArrowRight01Icon} className="w-4 h-4 ml-2" />
 												</>
 											)}
 										</Button>

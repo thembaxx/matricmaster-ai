@@ -74,19 +74,17 @@ export default function SchedulePage() {
 	};
 
 	return (
-		<div className="container mx-auto max-w-6xl px-4 pt-8 pb-32">
+		<div className="sm:container mx-auto sm:max-w-6xl w-full overflow-hidden sm:overflow-auto px-4 pt-8 pb-32">
 			<div className="flex items-center justify-between mb-8">
 				<div>
-					<h1 className="text-4xl font-black tracking-tight text-foreground uppercase">
-						Study Schedule
-					</h1>
-					<p className="text-muted-foreground font-bold uppercase text-xs tracking-widest mt-1">
+					<h1 className="text-2xl font-bold tracking-tight text-foreground">Study Schedule</h1>
+					<p className="text-muted-foreground font-semibold text-xs tracking-wide mt-1">
 						Your weekly routine
 					</p>
 				</div>
 				<Button
 					onClick={handleAddBlock}
-					className="rounded-full gap-2 font-black uppercase text-xs tracking-widest px-6 h-12 shadow-xl shadow-primary/20"
+					className="rounded-full gap-2 font-semibold text-xs tracking-widest px-6 h-12 shadow-xl shadow-primary/20"
 				>
 					<HugeiconsIcon icon={PlusSignIcon} className="w-4 h-4" />
 					Add Block
@@ -143,7 +141,7 @@ export default function SchedulePage() {
 											initial={{ opacity: 0, scale: 0.9 }}
 											animate={{ opacity: 1, scale: 1 }}
 											className={cn(
-												'absolute left-1 right-1 rounded-xl p-3 shadow-lg border border-white/10 overflow-hidden',
+												'absolute left-1 right-1 rounded-md p-3 shadow-lg border border-white/10 overflow-hidden',
 												event.color
 											)}
 											style={{
@@ -164,8 +162,8 @@ export default function SchedulePage() {
 			</div>
 
 			{/* Mobile List View */}
-			<div className="lg:hidden space-y-6">
-				<div className="flex gap-2 overflow-x-auto no-scrollbar pb-2">
+			<div className="lg:hidden space-y-6 w-full overflow-hidden">
+				<div className="flex gap-2 pb-2 pl-2 w-full overflow-x-auto">
 					{DAYS.map((day) => (
 						<button
 							key={day}
