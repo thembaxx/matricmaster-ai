@@ -252,6 +252,7 @@ export function BlockActionSheet({ open, onOpenChange, event, onSuccess }: Block
 							viewBox="0 0 24 24"
 							stroke="currentColor"
 						>
+							<title>Completion status</title>
 							<path
 								strokeLinecap="round"
 								strokeLinejoin="round"
@@ -324,6 +325,7 @@ export function BlockActionSheet({ open, onOpenChange, event, onSuccess }: Block
 												viewBox="0 0 24 24"
 												stroke="currentColor"
 											>
+												<title>Completed</title>
 												<path
 													strokeLinecap="round"
 													strokeLinejoin="round"
@@ -373,6 +375,7 @@ export function BlockActionSheet({ open, onOpenChange, event, onSuccess }: Block
 											viewBox="0 0 24 24"
 											stroke="currentColor"
 										>
+											<title>Completed</title>
 											<path
 												strokeLinecap="round"
 												strokeLinejoin="round"

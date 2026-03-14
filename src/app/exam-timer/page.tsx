@@ -149,10 +149,10 @@ export default function ExamTimerPage() {
 		<div className="min-h-screen pb-40 pt-8 px-4">
 			<div className="max-w-2xl mx-auto">
 				<div className="text-center mb-8">
-					<h1 className="text-3xl font-bold mb-2 flex items-center justify-center gap-2">
-						<HugeiconsIcon icon={Clock01Icon} className="w-8 h-8" />
-						Exam Timer
-					</h1>
+					<div className="inline-flex items-center justify-center p-3 rounded-full bg-primary/10 mb-4">
+						<HugeiconsIcon icon={Clock01Icon} className="w-8 h-8 text-primary" />
+					</div>
+					<h1 className="text-3xl font-bold mb-2">Exam Timer</h1>
 					<p className="text-muted-foreground">
 						Practice under real exam conditions with our timer
 					</p>
@@ -169,10 +169,10 @@ export default function ExamTimerPage() {
 									type="button"
 									key={preset.name}
 									onClick={() => handlePresetSelect(preset)}
-									className={`p-3 rounded-lg border text-left transition-all ${
+									className={`p-3 rounded-lg border text-left transition-all hover:shadow-sm ${
 										selectedPreset.name === preset.name
-											? 'border-primary bg-primary/10'
-											: 'hover:border-primary/50'
+											? 'border-primary bg-primary/10 shadow-sm'
+											: 'hover:border-primary/50 hover:bg-muted/50'
 									}`}
 								>
 									<div className="font-medium text-sm">{preset.name}</div>
@@ -185,8 +185,9 @@ export default function ExamTimerPage() {
 
 						{selectedPreset.name === 'Custom' && (
 							<div className="mt-4 p-4 rounded-lg border">
-								<Label>Duration: {customDuration} minutes</Label>
+								<Label htmlFor="custom-duration">Duration: {customDuration} minutes</Label>
 								<Slider
+									id="custom-duration"
 									value={[customDuration]}
 									onValueChange={handleCustomDurationChange}
 									min={15}
@@ -207,13 +208,14 @@ export default function ExamTimerPage() {
 								placeholder="Enter exam name (optional)"
 								value={examName}
 								onChange={(e) => setExamName(e.target.value)}
-								className="bg-transparent border-none text-xl font-bold focus:outline-none focus:ring-0 w-full"
+								className="bg-transparent border-none text-xl font-bold focus:outline-none focus:ring-0 w-full placeholder:text-muted-foreground/50"
+								aria-label="Exam name"
 							/>
 						</CardTitle>
 					</CardHeader>
 					<CardContent>
 						<div className="text-center py-8">
-							<div className={`text-7xl font-bold tracking-wider mb-8 ${getTimeColor()}`}>
+							<div className={`text-7xl font-bold tracking-wider mb-8 font-mono ${getTimeColor()}`}>
 								{formatTime(timeRemaining)}
 							</div>
 
@@ -237,7 +239,7 @@ export default function ExamTimerPage() {
 									</Button>
 								)}
 
-								<Button size="lg" variant="ghost" onClick={handleReset}>
+								<Button size="lg" variant="ghost" onClick={handleReset} aria-label="Reset timer">
 									<HugeiconsIcon icon={RefreshIcon} className="w-5 h-5" />
 								</Button>
 							</div>
@@ -262,15 +264,16 @@ export default function ExamTimerPage() {
 					<CardContent className="space-y-4">
 						<div className="flex items-center justify-between">
 							<div>
-								<Label>Warning Alert</Label>
+								<Label htmlFor="warning-alert">Warning Alert</Label>
 								<p className="text-sm text-muted-foreground">
 									Get notified when time is running low
 								</p>
 							</div>
 							<select
+								id="warning-alert"
 								value={warningMinutes}
 								onChange={(e) => setWarningMinutes(Number(e.target.value))}
-								className="h-9 px-3 rounded-lg border bg-background text-sm"
+								className="h-9 px-3 rounded-lg border bg-background text-sm focus:ring-2 focus:ring-primary"
 							>
 								<option value={5}>5 minutes</option>
 								<option value={10}>10 minutes</option>
@@ -281,10 +284,10 @@ export default function ExamTimerPage() {
 
 						<div className="flex items-center justify-between">
 							<div>
-								<Label>Sound Alerts</Label>
+								<Label htmlFor="sound-alerts">Sound Alerts</Label>
 								<p className="text-sm text-muted-foreground">Play sound when time is up</p>
 							</div>
-							<Switch checked={enableSound} onCheckedChange={setEnableSound} />
+							<Switch id="sound-alerts" checked={enableSound} onCheckedChange={setEnableSound} />
 						</div>
 					</CardContent>
 				</Card>

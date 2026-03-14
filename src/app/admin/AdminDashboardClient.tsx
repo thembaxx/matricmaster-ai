@@ -62,7 +62,7 @@ interface SubjectPerformance {
 }
 
 export default function AdminDashboardClient({
-	initialSession,
+	initialSession: _initialSession,
 }: {
 	initialSession: AuthSession | null;
 }) {
@@ -82,8 +82,6 @@ export default function AdminDashboardClient({
 	const [searchQuery, setSearchQuery] = useState('');
 	const [userFilter, _setUserFilter] = useState<'all' | 'active' | 'blocked' | 'deleted'>('all');
 	const [, startTransition] = useTransition();
-
-	console.log(initialSession);
 
 	useEffect(() => {
 		const loadStats = async () => {

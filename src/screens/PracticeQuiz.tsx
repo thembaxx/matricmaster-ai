@@ -40,7 +40,7 @@ const playClickSound = () => {
 		oscillator.start();
 		oscillator.stop(audioCtx.currentTime + 0.1);
 	} catch {
-		console.log('Audio not supported or blocked');
+		// Audio not supported - silently fail
 	}
 };
 
