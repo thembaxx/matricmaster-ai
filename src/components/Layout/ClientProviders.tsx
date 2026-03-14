@@ -5,6 +5,7 @@ import type { ReactNode } from 'react';
 import NotificationListener from '@/components/Notifications/NotificationListener';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { AblyClientProvider } from '@/lib/ably/provider';
+import { PostHogProvider } from '@/lib/posthog-client';
 import { ScheduleProvider } from '@/stores/useScheduleStore';
 import AppLayout from './AppLayout';
 import QueryErrorBoundary from './QueryErrorBoundary';
@@ -22,9 +23,11 @@ export function ClientProviders({ children }: ClientProvidersProps) {
 					<TooltipProvider>
 						<AblyClientProvider>
 							<ScheduleProvider>
-								<NotificationListener>
-									<AppLayout>{children}</AppLayout>
-								</NotificationListener>
+								<PostHogProvider>
+									<NotificationListener>
+										<AppLayout>{children}</AppLayout>
+									</NotificationListener>
+								</PostHogProvider>
 							</ScheduleProvider>
 						</AblyClientProvider>
 					</TooltipProvider>

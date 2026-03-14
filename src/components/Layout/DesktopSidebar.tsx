@@ -11,6 +11,8 @@ import {
 	Calendar01Icon,
 	ChampionIcon,
 	Chat01Icon,
+	ComputerVideoCallIcon,
+	ContentWritingIcon,
 	File01Icon,
 	GlobeIcon,
 	GridIcon,
@@ -20,7 +22,9 @@ import {
 	LayoutLeftIcon,
 	MapsIcon,
 	Medal01Icon,
+	Mic01Icon,
 	MoonIcon,
+	Mortarboard02Icon,
 	Notification03Icon,
 	QuestionIcon,
 	Search01Icon,
@@ -85,6 +89,11 @@ export const sideMenuSections: MenuSection[] = [
 			{ href: '/study-plan', label: 'Study Plan', icon: Calendar01Icon },
 			{ href: '/curriculum-map', label: 'Curriculum Map', icon: GridIcon },
 			{ href: '/periodic-table', label: 'Periodic Table', icon: AtomIcon },
+			{ href: '/tutoring', label: 'AI Tutoring', icon: ComputerVideoCallIcon },
+			{ href: '/voice-tutor', label: 'Voice Tutor', icon: Mic01Icon },
+			{ href: '/essay-grader', label: 'Essay Grader', icon: ContentWritingIcon },
+			{ href: '/aps-calculator', label: 'APS Calculator', icon: CalculatorIcon },
+			{ href: '/exam-timer', label: 'Exam Timer', icon: Timer01Icon },
 		],
 	},
 	{
@@ -102,10 +111,20 @@ export const sideMenuSections: MenuSection[] = [
 		],
 	},
 	{
+		title: 'Results & Planning',
+		items: [
+			{ href: '/results', label: 'NSC Results', icon: Mortarboard02Icon },
+			{ href: '/school', label: 'University Applications', icon: BookOpen01Icon },
+			{ href: '/subscription', label: 'Subscription', icon: SparklesIcon },
+			{ href: '/analytics', label: 'Analytics', icon: CalculatorIcon },
+		],
+	},
+	{
 		title: 'Focus',
 		items: [
 			{ href: '/focus', label: 'Focus Mode', icon: Timer01Icon },
 			{ href: '/focus-rooms', label: 'Focus Rooms', icon: UserGroupIcon },
+			{ href: '/offline', label: 'Offline Mode', icon: File01Icon },
 		],
 	},
 	{
@@ -270,7 +289,9 @@ export function AppSidebar({ user, pathname, theme, onToggleTheme }: AppSidebarP
 																)}
 															/>
 														</m.div>
-														<span className="font-medium text-[13px] grow truncate">{item.label}</span>
+														<span className="font-medium text-[13px] grow truncate">
+															{item.label}
+														</span>
 														{isActive && (
 															<m.div
 																layoutId="sidebar-active"
