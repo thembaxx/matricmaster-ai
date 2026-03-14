@@ -1,6 +1,6 @@
 'use client';
 
-import { CheckCircleIcon as CheckCircle, CircleIcon as Circle, Target02Icon as Target } from 'hugeicons-react';
+import { CheckmarkCircle02Icon as CheckCircle, CircleIcon as Circle, Target02Icon as Target } from 'hugeicons-react';
 import { m } from 'framer-motion';
 import { memo, useEffect, useState } from 'react';
 import { Card } from '@/components/ui/card';

@@ -1,6 +1,6 @@
 'use client';
 
-import { ArrowRight01Icon as CaretRight, Medal01Icon as Medal, Trophy01Icon as Trophy } from 'hugeicons-react';
+import { ArrowRight01Icon as CaretRight, Medal01Icon as Medal, ChampionIcon as Trophy } from 'hugeicons-react';
 import { m } from 'framer-motion';
 import { memo, useEffect, useState } from 'react';
 import { Badge } from '@/components/ui/badge';

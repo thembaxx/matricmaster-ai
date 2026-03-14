@@ -1,6 +1,6 @@
 'use client';
 
-import { FireIcon as Fire, LightningIcon as Lightning, SparklesIcon as Sparkle, Trophy01Icon as Trophy } from 'hugeicons-react';
+import { FireIcon as Fire, ZapIcon as Lightning, SparklesIcon as Sparkle, ChampionIcon as Trophy } from 'hugeicons-react';
 import { memo, useEffect, useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';

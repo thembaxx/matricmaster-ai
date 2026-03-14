@@ -1,6 +1,6 @@
 'use client';
 
-import { FireIcon as Fire, Trophy01Icon as Trophy } from 'hugeicons-react';
+import { FireIcon as Fire, ChampionIcon as Trophy } from 'hugeicons-react';
 import { m } from 'framer-motion';
 import { memo } from 'react';
 import { Card } from '@/components/ui/card';

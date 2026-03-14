@@ -5,11 +5,11 @@ import {
 	ChartBarLineIcon as ChartBar,
 	CheckmarkCircle01Icon as CheckCircle,
 	Loading03Icon as CircleNotch,
-	TimeClockIcon as Clock,
-	ArrowPathIcon as ClockCounterClockwise,
+	Time02Icon as Clock,
+	RotateClockwiseIcon as ClockCounterClockwise,
 	Lightning01Icon as Lightning,
 	SparklesIcon as Sparkle,
-	Trophy01Icon as Trophy,
+	ChampionIcon as Trophy,
 	Cancel01Icon as X,
 } from 'hugeicons-react';
 import confetti from 'canvas-confetti';
@@ -26,6 +26,7 @@ import { getUserAchievements } from '@/lib/db/achievement-actions';
 import { getLevelInfo } from '@/lib/level-utils';
 import { useQuizResultStore } from '@/stores/useQuizResultStore';
 import type { QuizResult } from '@/types/quiz';
+import { cn } from '@/lib/utils';
 
 function formatDuration(seconds: number): string {
 	if (seconds < 60) return `${seconds}s`;

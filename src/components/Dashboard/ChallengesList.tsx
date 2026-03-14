@@ -1,6 +1,6 @@
 'use client';
 
-import { BookOpen01Icon as BookOpen, Clock01Icon as Clock, Chemistry01Icon as Flask, PlayIcon as Play, SigmaIcon as Sigma } from 'hugeicons-react';
+import { BookOpen01Icon as BookOpen, Clock01Icon as Clock, Chemistry01Icon as Flask, PlayIcon as Play, Summation01Icon as Sigma } from 'hugeicons-react';
 import { m } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { memo } from 'react';

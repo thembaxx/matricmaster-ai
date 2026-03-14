@@ -3,20 +3,21 @@
 import {
 	ArrowDown01Icon as CaretDown,
 	CheckmarkCircle01Icon as Check,
-	TimeClockIcon as Clock,
+	Time02Icon as Clock,
 	FireIcon as Fire,
-	FlaskIcon as Flask,
+	TestTube01Icon as Flask,
 	Globe02Icon as Globe,
 	TranslateIcon as LanguagesIcon,
 	Layout01Icon as Layout,
-	Lock01Icon as Lock,
-	MedalIcon as Medal,
+	SquareLock01Icon as Lock,
+	Medal02Icon as Medal,
 	ZapIcon as Zap,
 } from 'hugeicons-react';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { cn } from '@/lib/utils';
 
 const categories = [
 	{ id: 'all', name: 'All Subjects', icon: Layout },

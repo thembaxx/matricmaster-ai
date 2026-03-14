@@ -1,6 +1,6 @@
 'use client';
 
-import { Clock01Icon as Clock, LightningIcon as Lightning, SparklesIcon as Sparkle } from 'hugeicons-react';
+import { Clock01Icon as Clock, ZapIcon as Lightning, SparklesIcon as Sparkle } from 'hugeicons-react';
 import { m } from 'framer-motion';
 import { memo, useEffect, useState } from 'react';
 import { Card } from '@/components/ui/card';

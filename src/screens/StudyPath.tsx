@@ -6,7 +6,7 @@ import {
 	CheckmarkCircle01Icon as Check,
 	Loading03Icon as CircleNotch,
 	Lightning01Icon as Lightning,
-	Lock01Icon as Lock,
+	SquareLock01Icon as Lock,
 	PlayIcon as Play,
 	SparklesIcon as Sparkle,
 	StarIcon as Star,
@@ -18,6 +18,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { useSession } from '@/lib/auth-client';
 import type { StudyPlan } from '@/lib/db/schema';
 import { getActiveStudyPlanAction } from '@/lib/db/study-plan-actions';
+import { cn } from '@/lib/utils';
 
 const defaultPathNodes: PathNode[] = [
 	{

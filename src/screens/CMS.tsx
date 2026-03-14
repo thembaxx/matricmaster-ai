@@ -59,6 +59,7 @@ import {
 import type { User } from '@/lib/db/better-auth-schema';
 import type { PastPaper, Question, Subject } from '@/lib/db/schema';
 import { uploadFiles } from '@/lib/uploadthing';
+import { cn } from '@/lib/utils';
 
 interface QuestionFormData {
 	id?: string;

@@ -2,7 +2,7 @@
 
 import {
 	Chat01Icon as ChatCircle,
-	CheckCircleIcon as CheckCircle,
+	CheckmarkCircle02Icon as CheckCircle,
 	Clock01Icon as Clock,
 	Search01Icon as MagnifyingGlass,
 	Target02Icon as Target,

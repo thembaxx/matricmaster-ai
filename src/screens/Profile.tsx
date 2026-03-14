@@ -1,6 +1,6 @@
 'use client';
 
-import { FireIcon as Fire, GraduationCap01Icon as GraduationCap, MedalIcon as Medal, Target02Icon as Target, CheckmarkCircle01Icon as Verified } from 'hugeicons-react';
+import { FireIcon as Fire, GraduationCap01Icon as GraduationCap, Medal02Icon as Medal, Target02Icon as Target, CheckmarkCircle01Icon as Verified } from 'hugeicons-react';
 import { m } from 'framer-motion';
 import dynamic from 'next/dynamic';
 import { useEffect, useId, useMemo, useState } from 'react';
@@ -30,6 +30,7 @@ import { ACHIEVEMENT_POINTS_MAP } from '@/constants/achievements';
 import { useSession } from '@/lib/auth-client';
 import { getUserAchievements } from '@/lib/db/achievement-actions';
 import { getUserProgressSummary, getUserStreak } from '@/lib/db/progress-actions';
+import { cn } from '@/lib/utils';
 
 interface ChartDataItem {
 	subject: string;

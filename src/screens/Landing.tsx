@@ -5,7 +5,7 @@ import {
 	Calculator01Icon as Calculator,
 	ArrowRight01Icon as CaretRight,
 	File01Icon as FileText,
-	FlaskIcon as Flask,
+	TestTube01Icon as Flask,
 	MicroscopeIcon as Microscope,
 	SparklesIcon as Sparkle,
 	ZapIcon as Zap,
@@ -24,6 +24,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { SUBJECTS } from '@/constants/mock-data';
 import { STAGGER_CONTAINER, STAGGER_ITEM } from '@/lib/animation-presets';
 import { useSession } from '@/lib/auth-client';
+import { cn } from '@/lib/utils';
 
 const ICON_MAP: Record<string, React.ElementType> = {
 	Calculator: Calculator,

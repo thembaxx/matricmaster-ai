@@ -44,7 +44,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 	if (!user || shouldHideNav) {
 		return (
 			<div className="flex min-h-screen bg-background overflow-x-hidden transition-colors duration-500">
-				<ClientOnly>{user && <DailyLoginBonus />}</ClientOnly>
+				{/* <ClientOnly>{user && <DailyLoginBonus />}</ClientOnly> */}
 				<ClientOnly>
 					<MobileLayoutFixes />
 					{/* <MobileViewTest /> */}

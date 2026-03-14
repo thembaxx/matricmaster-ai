@@ -7,7 +7,7 @@ import {
 	Rocket01Icon as Rocket,
 	SparklesIcon as Sparkle,
 	Target02Icon as Target,
-	Trophy01Icon as Trophy,
+	ChampionIcon as Trophy,
 } from 'hugeicons-react';
 import { AnimatePresence, m } from 'framer-motion';
 import Image from 'next/image';

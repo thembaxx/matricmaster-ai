@@ -1,4 +1,4 @@
-import { CheckCircleIcon as CheckCircle, Clock01Icon as Clock, IdeaIcon as Lightbulb } from 'hugeicons-react';
+import { CheckmarkCircle02Icon as CheckCircle, Clock01Icon as Clock, IdeaIcon as Lightbulb } from 'hugeicons-react';
 import { Button } from '@/components/ui/button';
 
 interface PracticeCompleteProps {

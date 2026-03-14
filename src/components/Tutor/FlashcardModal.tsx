@@ -1,7 +1,7 @@
 'use client';
 
 import {
-	ArrowPathIcon as ArrowCounterClockwise,
+	RotateClockwiseIcon as ArrowCounterClockwise,
 	CheckmarkCircle01Icon as Check,
 	ViewIcon as FlipHorizontal,
 	IdeaIcon as Lightbulb,

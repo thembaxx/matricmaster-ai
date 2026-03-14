@@ -6,9 +6,9 @@ import {
 	Book01Icon as Book,
 	Calculator01Icon as Calculator,
 	CheckmarkCircle01Icon as Check,
-	FlaskIcon as Flask,
+	TestTube01Icon as Flask,
 	Settings02Icon as GearSix,
-	Lock01Icon as Lock,
+	SquareLock01Icon as Lock,
 	MicroscopeIcon as Microscope,
 	PlayIcon as Play,
 	SparklesIcon as Sparkle,
@@ -23,6 +23,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Slider } from '@/components/ui/slider';
 import { useSession } from '@/lib/auth-client';
 import { createStudyPlanAction } from '@/lib/db/study-plan-actions';
+import { cn } from '@/lib/utils';
 
 const subjects = [
 	{ id: 'math', name: 'Mathematics', icon: Calculator, color: 'text-tiimo-blue' },

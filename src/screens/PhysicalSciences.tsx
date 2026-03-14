@@ -18,6 +18,7 @@ import { Card } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useTheme } from '@/hooks/use-theme';
+import { cn } from '@/lib/utils';
 
 // import type { Screen } from '@/types'; // Removed unused import
 

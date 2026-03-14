@@ -1,11 +1,12 @@
 'use client';
 
-import { CrownIcon as Crown, MedalIcon as Medal, PlusSignIcon as Plus, StarIcon as Star, PencilEdit01Icon as Pencil, Disk01Icon as FloppyDisk, Cancel01Icon as X } from 'hugeicons-react';
+import { CrownIcon as Crown, Medal02Icon as Medal, PlusSignIcon as Plus, StarIcon as Star, PencilEdit01Icon as Pencil, Disk01Icon as FloppyDisk, Cancel01Icon as X } from 'hugeicons-react';
 import { m } from 'framer-motion';
 import { memo, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { ACHIEVEMENTS, getAchievementById } from '@/constants/achievements';
+import { cn } from '@/lib/utils';
 
 interface BadgeShowcaseProps {
 	unlockedIds: string[];

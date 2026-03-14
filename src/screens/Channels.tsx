@@ -4,7 +4,7 @@ import {
 	BookOpen01Icon as BookOpen,
 	ArrowRight01Icon as CaretRight,
 	ChartBarLineIcon as ChartBar,
-	FlaskIcon as Flask,
+	TestTube01Icon as Flask,
 	TranslateIcon as LanguagesIcon,
 	Leaf01Icon as Leaf,
 	Search01Icon as MagnifyingGlass,
@@ -19,6 +19,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useAblyChannel } from '@/hooks/use-ably-channel';
 import { useSession } from '@/lib/auth-client';
+import { cn } from '@/lib/utils';
 
 const categories = ['All Paths', 'STEM Skills', 'Translate', 'Commerce', 'Humanities'];
 

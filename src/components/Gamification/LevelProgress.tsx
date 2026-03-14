@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { LEVEL_BADGE_ICONS, MAX_LEVEL } from '@/constants/levels';
 import { formatXp, getLevelInfo, getLevelTitle } from '@/lib/level-utils';
+import { cn } from '@/lib/utils';
 
 interface LevelProgressProps {
 	totalXp: number;

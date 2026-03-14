@@ -1,6 +1,6 @@
 'use client';
 
-import { ArrowLeft01Icon as ArrowLeft, ZapIcon as TrendUp, TimeClockIcon as Clock } from 'hugeicons-react';
+import { ArrowLeft01Icon as ArrowLeft, ZapIcon as TrendUp, Time02Icon as Clock } from 'hugeicons-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import { ExpertExplanationCard } from '@/components/Tutor/ExpertExplanationCard';

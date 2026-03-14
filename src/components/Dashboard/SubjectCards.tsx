@@ -6,7 +6,7 @@ import {
 	BookOpen01Icon as BookOpen,
 	Calculator01Icon as Calculator,
 	ChartBarLineIcon as ChartBar,
-	ArrowPathIcon as ClockCounterClockwise,
+	RotateClockwiseIcon as ClockCounterClockwise,
 	Cancel01Icon as X,
 	ZapIcon as Zap,
 } from 'hugeicons-react';
@@ -15,6 +15,7 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
+import { cn } from '@/lib/utils';
 
 interface Subject {
 	id: string;

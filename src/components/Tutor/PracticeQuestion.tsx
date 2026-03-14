@@ -1,4 +1,4 @@
-import { CheckCircleIcon as CheckCircle, CancelCircleIcon as XCircle } from 'hugeicons-react';
+import { CheckmarkCircle02Icon as CheckCircle, CancelCircleIcon as XCircle } from 'hugeicons-react';
 import { useId } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';

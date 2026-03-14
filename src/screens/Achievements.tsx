@@ -1,6 +1,6 @@
 'use client';
 
-import { FireIcon as Fire, Lightning01Icon as Lightning, Lock01Icon as Lock, MedalIcon as Medal, StarIcon as Star, Trophy01Icon as Trophy, ZapIcon as Zap } from 'hugeicons-react';
+import { FireIcon as Fire, Lightning01Icon as Lightning, SquareLock01Icon as Lock, Medal02Icon as Medal, StarIcon as Star, ChampionIcon as Trophy, ZapIcon as Zap } from 'hugeicons-react';
 import { AnimatePresence, m } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { Card } from '@/components/ui/card';
@@ -8,6 +8,7 @@ import { Progress } from '@/components/ui/progress';
 import { ACHIEVEMENTS } from '@/constants/achievements';
 import { STAGGER_CONTAINER, STAGGER_ITEM } from '@/lib/animation-presets';
 import { getUserAchievements } from '@/lib/db/achievement-actions';
+import { cn } from '@/lib/utils';
 
 interface Badge {
 	id: string;

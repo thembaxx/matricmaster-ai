@@ -6,7 +6,7 @@ import {
 	Loading03Icon as CircleNotch,
 	SmartPhone01Icon as DeviceMobile,
 	Key01Icon as Key,
-	Lock01Icon as Lock,
+	SquareLock01Icon as Lock,
 	Shield01Icon as Shield,
 	Delete02Icon as Trash,
 	UserIcon as User,

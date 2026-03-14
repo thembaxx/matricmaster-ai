@@ -6,8 +6,8 @@ import {
 	Loading03Icon as CircleNotch,
 	Clock01Icon as Clock,
 	Target02Icon as Target,
-	TrendDown01Icon as TrendDown,
-	TrendUp01Icon as TrendUp,
+	TradeDownIcon as TrendDown,
+	TradeUpIcon as TrendUp,
 } from 'hugeicons-react';
 import { useRouter } from 'next/navigation';
 import { memo, useEffect, useState } from 'react';

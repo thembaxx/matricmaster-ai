@@ -20,6 +20,7 @@ import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useSession } from '@/lib/auth-client';
 import { deleteBookmarkAction, getBookmarksAction } from '@/lib/db/bookmark-actions';
 import type { Bookmark as BookmarkType } from '@/lib/db/schema';
+import { cn } from '@/lib/utils';
 
 // Icon mapping based on bookmark type
 const getIconForType = (type: string) => {

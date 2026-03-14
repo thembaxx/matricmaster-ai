@@ -1,6 +1,6 @@
 'use client';
 
-import { FireIcon as Fire, MedalIcon as Medal, Trophy01Icon as TrophyIcon, TimeClockIcon as Clock } from 'hugeicons-react';
+import { FireIcon as Fire, Medal02Icon as Medal, ChampionIcon as TrophyIcon, Time02Icon as Clock } from 'hugeicons-react';
 import { m } from 'framer-motion';
 import { memo, useEffect, useMemo, useState } from 'react';
 import { useSession } from '@/lib/auth-client';

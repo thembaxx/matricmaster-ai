@@ -1,9 +1,10 @@
 'use client';
 
-import { CheckmarkCircle01Icon as Check, Lock01Icon as Lock, StarIcon as Star } from 'hugeicons-react';
+import { CheckmarkCircle01Icon as Check, SquareLock01Icon as Lock, StarIcon as Star } from 'hugeicons-react';
 import { m } from 'framer-motion';
 import { memo } from 'react';
 import { ACHIEVEMENTS } from '@/constants/achievements';
+import { cn } from '@/lib/utils';
 
 interface AchievementBadgesProps {
 	unlockedIds: string[];

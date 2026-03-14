@@ -1,6 +1,6 @@
 'use client';
 
-import { Loading03Icon as CircleNotch, TimeClockIcon as Clock, Delete02Icon as Trash, Cancel01Icon as X } from 'hugeicons-react';
+import { Loading03Icon as CircleNotch, Time02Icon as Clock, Delete02Icon as Trash, Cancel01Icon as X } from 'hugeicons-react';
 import { AnimatePresence, m } from 'framer-motion';
 import { memo } from 'react';
 import { Button } from '@/components/ui/button';

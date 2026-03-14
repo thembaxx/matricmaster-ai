@@ -1,6 +1,6 @@
 'use client';
 
-import { CheckCircleIcon as CheckCircle, SquareArrowRight01Icon as SkipForward } from 'hugeicons-react';
+import { CheckmarkCircle02Icon as CheckCircle, SquareArrowRight01Icon as SkipForward } from 'hugeicons-react';
 
 type QuizResultFeedbackProps = {
 	showResult: boolean;
