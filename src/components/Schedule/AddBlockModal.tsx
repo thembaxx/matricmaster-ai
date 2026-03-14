@@ -1,6 +1,6 @@
 'use client';
 
-import { Calendar04Icon, Clock01Icon, TextIcon } from '@hugeicons/core-free-icons';
+import { Calendar04Icon, Clock01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { useEffect, useId, useState } from 'react';
 import { toast } from 'sonner';
@@ -23,14 +23,34 @@ import {
 } from '@/components/ui/drawer';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
-import { Textarea } from '@/components/ui/textarea';
-import { createCalendarEventAction } from '@/lib/db/actions';
+import {
+	createCalendarEventAction,
+	getEnrolledSubjectsAction,
+	updateCalendarEventAction,
+} from '@/lib/db/actions';
+
+interface BlockData {
+	id: string;
+	title: string;
+	startTime: Date;
+	endTime: Date;
+	eventType: string;
+	subjectId?: number;
+}
 
 interface AddBlockModalProps {
 	open: boolean;
 	onOpenChange: (open: boolean) => void;
 	onSuccess?: () => void;
+	editMode?: BlockData | null;
 }
 
 function getCurrentDateString(): string {
@@ -38,6 +58,19 @@ function getCurrentDateString(): string {
 	const year = today.getFullYear();
 	const month = String(today.getMonth() + 1).padStart(2, '0');
 	const day = String(today.getDate()).padStart(2, '0');
+	return `${year}-${month}-${day}`;
+}
+
+function formatTimeFromDate(date: Date): string {
+	const hours = String(date.getHours()).padStart(2, '0');
+	const minutes = String(date.getMinutes()).padStart(2, '0');
+	return `${hours}:${minutes}`;
+}
+
+function formatDateFromDate(date: Date): string {
+	const year = date.getFullYear();
+	const month = String(date.getMonth() + 1).padStart(2, '0');
+	const day = String(date.getDate()).padStart(2, '0');
 	return `${year}-${month}-${day}`;
 }
 
@@ -55,30 +88,63 @@ function useMediaQuery(query: string) {
 	return matches;
 }
 
-export function AddBlockModal({ open, onOpenChange, onSuccess }: AddBlockModalProps) {
-	const isDesktop = useMediaQuery('(min-width: 768px)');
+export function AddBlockModal({ open, onOpenChange, onSuccess, editMode }: AddBlockModalProps) {
+	const isDesktop = useMediaQuery('(min-width: 1024px)');
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [title, setTitle] = useState('');
 	const [date, setDate] = useState(getCurrentDateString());
 	const [startTime, setStartTime] = useState('14:00');
 	const [endTime, setEndTime] = useState('15:30');
-	const [notes, setNotes] = useState('');
 	const [repeatable, setRepeatable] = useState(false);
+	const [subjects, setSubjects] = useState<{ id: number; name: string }[]>([]);
+	const [subjectId, setSubjectId] = useState<string>('');
 
 	const titleId = useId();
 	const dateId = useId();
 	const startTimeId = useId();
 	const endTimeId = useId();
-	const notesId = useId();
+	const subjectIdId = useId();
 	const repeatableId = useId();
+
+	const isEditing = !!editMode;
+
+	useEffect(() => {
+		async function loadSubjects() {
+			const data = await getEnrolledSubjectsAction();
+			setSubjects(data);
+		}
+		loadSubjects();
+	}, []);
+
+	useEffect(() => {
+		if (open) {
+			if (editMode) {
+				setTitle(editMode.title);
+				const start = new Date(editMode.startTime);
+				const end = new Date(editMode.endTime);
+				setDate(formatDateFromDate(start));
+				setStartTime(formatTimeFromDate(start));
+				setEndTime(formatTimeFromDate(end));
+				setRepeatable(editMode.eventType === 'recurring');
+				setSubjectId(editMode.subjectId ? String(editMode.subjectId) : '');
+			} else {
+				setTitle('');
+				setDate(getCurrentDateString());
+				setStartTime('14:00');
+				setEndTime('15:30');
+				setRepeatable(false);
+				setSubjectId('');
+			}
+		}
+	}, [open, editMode]);
 
 	const resetForm = () => {
 		setTitle('');
 		setDate(getCurrentDateString());
 		setStartTime('14:00');
 		setEndTime('15:30');
-		setNotes('');
 		setRepeatable(false);
+		setSubjectId('');
 	};
 
 	const handleSubmit = async (e: React.FormEvent) => {
@@ -103,23 +169,45 @@ export function AddBlockModal({ open, onOpenChange, onSuccess }: AddBlockModalPr
 				return;
 			}
 
-			const result = await createCalendarEventAction({
-				title: title.trim(),
-				startTime: startDateTime,
-				endTime: endDateTime,
-				eventType: repeatable ? 'recurring' : 'study_session',
-			});
+			const subjectIdNum = subjectId ? Number.parseInt(subjectId, 10) : undefined;
 
-			if (result.success) {
-				toast.success('Study block added!');
-				resetForm();
-				onOpenChange(false);
-				onSuccess?.();
+			if (isEditing && editMode) {
+				const result = await updateCalendarEventAction(editMode.id, {
+					title: title.trim(),
+					startTime: startDateTime,
+					endTime: endDateTime,
+					eventType: repeatable ? 'recurring' : 'study_session',
+					subjectId: subjectIdNum,
+				});
+
+				if (result.success) {
+					toast.success('Study block updated!');
+					resetForm();
+					onOpenChange(false);
+					onSuccess?.();
+				} else {
+					toast.error('Failed to update study block');
+				}
 			} else {
-				toast.error('Failed to add study block');
+				const result = await createCalendarEventAction({
+					title: title.trim(),
+					startTime: startDateTime,
+					endTime: endDateTime,
+					eventType: repeatable ? 'recurring' : 'study_session',
+					subjectId: subjectIdNum,
+				});
+
+				if (result.success) {
+					toast.success('Study block added!');
+					resetForm();
+					onOpenChange(false);
+					onSuccess?.();
+				} else {
+					toast.error('Failed to add study block');
+				}
 			}
 		} catch (error) {
-			console.error('Error creating event:', error);
+			console.error('Error saving event:', error);
 			toast.error('Something went wrong');
 		} finally {
 			setIsSubmitting(false);
@@ -127,11 +215,12 @@ export function AddBlockModal({ open, onOpenChange, onSuccess }: AddBlockModalPr
 	};
 
 	const formContent = (
-		<form onSubmit={handleSubmit} className="space-y-6">
-			<div className="space-y-3">
+		<form onSubmit={handleSubmit} className="space-y-5">
+			{/* Title */}
+			<div className="space-y-2.5">
 				<Label
 					htmlFor={titleId}
-					className="text-xs font-semibold uppercase tracking-wider text-muted-foreground"
+					className="text-xs font-bold uppercase tracking-wider text-muted-foreground ml-1"
 				>
 					Title
 				</Label>
@@ -140,17 +229,40 @@ export function AddBlockModal({ open, onOpenChange, onSuccess }: AddBlockModalPr
 					placeholder="e.g., Mathematics Study"
 					value={title}
 					onChange={(e) => setTitle(e.target.value)}
-					className="h-12"
+					className="h-12 rounded-xl"
 					required
 				/>
 			</div>
 
-			<div className="space-y-3">
+			{/* Subject */}
+			<div className="space-y-2.5">
+				<Label
+					htmlFor={subjectIdId}
+					className="text-xs font-bold uppercase tracking-wider text-muted-foreground ml-1"
+				>
+					Subject <span className="text-muted-foreground/50 font-normal">(optional)</span>
+				</Label>
+				<Select value={subjectId} onValueChange={setSubjectId}>
+					<SelectTrigger className="h-12 rounded-xl">
+						<SelectValue placeholder="Select a subject" />
+					</SelectTrigger>
+					<SelectContent>
+						{subjects.map((subject) => (
+							<SelectItem key={subject.id} value={String(subject.id)}>
+								{subject.name}
+							</SelectItem>
+						))}
+					</SelectContent>
+				</Select>
+			</div>
+
+			{/* Date */}
+			<div className="space-y-2.5">
 				<Label
 					htmlFor={dateId}
-					className="text-xs font-semibold uppercase tracking-wider text-muted-foreground"
+					className="text-xs font-bold uppercase tracking-wider text-muted-foreground ml-1"
 				>
-					<HugeiconsIcon icon={Calendar04Icon} className="w-3 h-3 inline mr-1" />
+					<HugeiconsIcon icon={Calendar04Icon} className="w-3 h-3 inline mr-1.5" />
 					Date
 				</Label>
 				<Input
@@ -158,89 +270,84 @@ export function AddBlockModal({ open, onOpenChange, onSuccess }: AddBlockModalPr
 					type="date"
 					value={date}
 					onChange={(e) => setDate(e.target.value)}
-					className="h-12"
+					className="h-12 rounded-xl"
 					required
 				/>
 			</div>
 
+			{/* Time */}
 			<div className="grid grid-cols-2 gap-4">
-				<div className="space-y-3">
+				<div className="space-y-2.5">
 					<Label
 						htmlFor={startTimeId}
-						className="text-xs font-semibold uppercase tracking-wider text-muted-foreground"
+						className="text-xs font-bold uppercase tracking-wider text-muted-foreground ml-1"
 					>
-						<HugeiconsIcon icon={Clock01Icon} className="w-3 h-3 inline mr-1" />
-						Start Time
+						<HugeiconsIcon icon={Clock01Icon} className="w-3 h-3 inline mr-1.5" />
+						Start
 					</Label>
 					<Input
 						id={startTimeId}
 						type="time"
 						value={startTime}
 						onChange={(e) => setStartTime(e.target.value)}
-						className="h-12"
+						className="h-12 rounded-xl"
 						required
 					/>
 				</div>
-				<div className="space-y-3">
+				<div className="space-y-2.5">
 					<Label
 						htmlFor={endTimeId}
-						className="text-xs font-semibold uppercase tracking-wider text-muted-foreground"
+						className="text-xs font-bold uppercase tracking-wider text-muted-foreground ml-1"
 					>
-						<HugeiconsIcon icon={Clock01Icon} className="w-3 h-3 inline mr-1" />
-						End Time
+						<HugeiconsIcon icon={Clock01Icon} className="w-3 h-3 inline mr-1.5" />
+						End
 					</Label>
 					<Input
 						id={endTimeId}
 						type="time"
 						value={endTime}
 						onChange={(e) => setEndTime(e.target.value)}
-						className="h-12"
+						className="h-12 rounded-xl"
 						required
 					/>
 				</div>
 			</div>
 
-			<div className="space-y-3">
-				<Label
-					htmlFor={notesId}
-					className="text-xs font-semibold uppercase tracking-wider text-muted-foreground"
-				>
-					<HugeiconsIcon icon={TextIcon} className="w-3 h-3 inline mr-1" />
-					Notes <span className="text-muted-foreground/50 font-normal">(optional)</span>
-				</Label>
-				<Textarea
-					id={notesId}
-					placeholder="Add any notes for this study block..."
-					value={notes}
-					onChange={(e) => setNotes(e.target.value)}
-					className="min-h-[80px] resize-none"
-					rows={3}
-				/>
-			</div>
-
-			<div className="flex items-center justify-between py-2">
-				<div className="space-y-1">
-					<Label htmlFor={repeatableId} className="text-xs font-semibold uppercase tracking-wider">
+			{/* Repeat Toggle */}
+			<div className="flex items-center justify-between p-4 bg-muted/30 rounded-2xl border border-border/30">
+				<div className="space-y-0.5">
+					<Label htmlFor={repeatableId} className="text-sm font-bold">
 						Repeat Weekly
 					</Label>
-					<p className="text-[10px] text-muted-foreground">
-						Automatically repeat this block every week
-					</p>
+					<p className="text-xs text-muted-foreground">Automatically repeat every week</p>
 				</div>
 				<Switch id={repeatableId} checked={repeatable} onCheckedChange={setRepeatable} />
 			</div>
 
-			<DialogFooter className="gap-3">
+			{/* Actions */}
+			<DialogFooter className="gap-3 py-2 flex flex-col">
 				<Button
 					type="button"
-					variant="outline"
+					size="sm"
+					variant="secondary"
 					onClick={() => onOpenChange(false)}
-					className="flex-1 h-12"
+					className="h-11 shrink-0 rounded-xl border-border/50"
 				>
 					Cancel
 				</Button>
-				<Button type="submit" disabled={isSubmitting} className="flex-1 h-12 font-semibold">
-					{isSubmitting ? 'Adding...' : 'Add Block'}
+				<Button
+					type="submit"
+					size="sm"
+					disabled={isSubmitting}
+					className="h-11 shrink-0 rounded-xl font-semibold"
+				>
+					{isSubmitting
+						? isEditing
+							? 'Updating...'
+							: 'Adding...'
+						: isEditing
+							? 'Update Block'
+							: 'Add Block'}
 				</Button>
 			</DialogFooter>
 		</form>
@@ -249,14 +356,20 @@ export function AddBlockModal({ open, onOpenChange, onSuccess }: AddBlockModalPr
 	if (isDesktop) {
 		return (
 			<Dialog open={open} onOpenChange={onOpenChange}>
-				<DialogContent className="sm:max-w-md rounded-3xl">
-					<DialogHeader>
-						<DialogTitle className="text-xl font-bold">Add Study Block</DialogTitle>
-						<DialogDescription className="text-sm">
-							Create a new study block for your schedule
-						</DialogDescription>
-					</DialogHeader>
-					{formContent}
+				<DialogContent className="sm:max-w-md rounded-3xl p-0 overflow-hidden">
+					<div className="bg-gradient-to-br from-primary/5 via-transparent to-purple-500/5 px-6 pt-6 pb-4">
+						<DialogHeader>
+							<DialogTitle className="text-xl font-bold">
+								{isEditing ? 'Edit Study Block' : 'Add Study Block'}
+							</DialogTitle>
+							<DialogDescription className="text-sm">
+								{isEditing
+									? 'Update your study block details'
+									: 'Create a new study block for your schedule'}
+							</DialogDescription>
+						</DialogHeader>
+					</div>
+					<div className="px-6 pb-6">{formContent}</div>
 				</DialogContent>
 			</Dialog>
 		);
@@ -264,13 +377,19 @@ export function AddBlockModal({ open, onOpenChange, onSuccess }: AddBlockModalPr
 
 	return (
 		<Drawer open={open} onOpenChange={onOpenChange}>
-			<DrawerContent className="rounded-t-[2rem] px-4 pb-6">
-				<DrawerHeader className="text-left pb-2">
-					<DrawerTitle className="text-xl font-bold">Add Study Block</DrawerTitle>
-					<DrawerDescription className="text-sm">
-						Create a new study block for your schedule
-					</DrawerDescription>
-				</DrawerHeader>
+			<DrawerContent className="rounded-t-[2.5rem] px-4 pb-8">
+				<div className="bg-gradient-to-br from-primary/5 via-transparent to-purple-500/5 -mx-4 px-6 pt-3 pb-4 mb-2">
+					<DrawerHeader className="text-left p-0">
+						<DrawerTitle className="text-xl font-bold">
+							{isEditing ? 'Edit Study Block' : 'Add Study Block'}
+						</DrawerTitle>
+						<DrawerDescription className="text-sm">
+							{isEditing
+								? 'Update your study block details'
+								: 'Create a new study block for your schedule'}
+						</DrawerDescription>
+					</DrawerHeader>
+				</div>
 				<div className="px-1 overflow-y-auto max-h-[70vh]">{formContent}</div>
 			</DrawerContent>
 		</Drawer>
