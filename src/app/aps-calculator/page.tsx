@@ -1,12 +1,24 @@
 'use client';
 
-import { CalculatorIcon, Cancel01Icon, HelpCircleIcon, PlusSignIcon } from '@hugeicons/core-free-icons';
+import {
+	CalculatorIcon,
+	Cancel01Icon,
+	HelpCircleIcon,
+	PlusSignIcon,
+} from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { useMemo, useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+	Select,
+	SelectContent,
+	SelectGroup,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from '@/components/ui/select';
 
 interface SubjectGrade {
 	subject: string;
@@ -181,18 +193,21 @@ export default function APSCalculatorPage() {
 				</div>
 
 				<div className="grid md:grid-cols-2 gap-6">
-					<Card className='rounded-xl'>
+					<Card className="rounded-xl">
 						<CardHeader>
 							<CardTitle>Your Subjects & Grades</CardTitle>
-							<CardDescription className='text-pretty'>
+							<CardDescription className="text-pretty">
 								Select your 7 best subjects (including Life Orientation)
 							</CardDescription>
 						</CardHeader>
 						<CardContent className="space-y-4">
 							{subjects.map((subj, index) => (
 								<div key={index} className="flex gap-2 items-center">
-									<Select onValueChange={(value) => updateSubjectName(index, value)} aria-label={`Select subject ${index + 1}`}>
-										<SelectTrigger className='h-10'>
+									<Select
+										onValueChange={(value) => updateSubjectName(index, value)}
+										aria-label={`Select subject ${index + 1}`}
+									>
+										<SelectTrigger className="h-10">
 											<SelectValue placeholder="Select subject" />
 										</SelectTrigger>
 										<SelectContent>
@@ -209,20 +224,21 @@ export default function APSCalculatorPage() {
 											</SelectGroup>
 										</SelectContent>
 									</Select>
-									<Select onValueChange={(value) => updateSubjectGrade(index, value)} aria-label={`Select grade ${index + 1}`}>
-										<SelectTrigger className={`w-20 h-10 shrink-0 px-2 rounded-lg border bg-background text-sm font-medium text-center focus:ring-2 focus:ring-primary transition-colors ${getGradeColor(subj.grade)}`}
+									<Select
+										onValueChange={(value) => updateSubjectGrade(index, value)}
+										aria-label={`Select grade ${index + 1}`}
+									>
+										<SelectTrigger
+											className={`w-20 h-10 shrink-0 px-2 rounded-lg border bg-background text-sm font-medium text-center focus:ring-2 focus:ring-primary transition-colors ${getGradeColor(subj.grade)}`}
 											value={subj.grade}
-											aria-label={`Grade for ${subj.subject}`}>
+											aria-label={`Grade for ${subj.subject}`}
+										>
 											<SelectValue placeholder="—" />
 										</SelectTrigger>
 										<SelectContent>
 											<SelectGroup>
 												{GRADES.map((g) => (
-													<SelectItem
-														id={`grade-${index}`}
-														value={g}
-														aria-label={`Grade for ${g}`}
-													>
+													<SelectItem key={`${g}-${index}`} id={`grade-${index}`} value={g} aria-label={`Grade for ${g}`}>
 														{g}
 													</SelectItem>
 												))}
@@ -251,7 +267,11 @@ export default function APSCalculatorPage() {
 							))}
 
 							{subjects.length < 7 && (
-								<Button variant="outline" onClick={addSubject} className="w-full font-semibold text-[13px]">
+								<Button
+									variant="outline"
+									onClick={addSubject}
+									className="w-full font-semibold text-[13px]"
+								>
 									<HugeiconsIcon icon={PlusSignIcon} className="w-4 h-4" />
 									Add Subject
 								</Button>
@@ -260,13 +280,15 @@ export default function APSCalculatorPage() {
 							<div className="pt-4 border-t">
 								<div className="flex justify-between items-center">
 									<span className="text-lg font-semibold">Total APS</span>
-									<span className={`text-3xl font-bold font-mono ${getApsColor(totalAPS)}`}>{totalAPS}</span>
+									<span className={`text-3xl font-bold font-mono ${getApsColor(totalAPS)}`}>
+										{totalAPS}
+									</span>
 								</div>
 							</div>
 						</CardContent>
 					</Card>
 
-					<Card className='rounded-xl'>
+					<Card className="rounded-xl">
 						<CardHeader>
 							<CardTitle>Eligible Universities</CardTitle>
 							<CardDescription>Based on your APS score of {totalAPS}</CardDescription>
@@ -275,7 +297,9 @@ export default function APSCalculatorPage() {
 							{eligibleUniversities.length === 0 ? (
 								<div className="text-center py-8 text-muted-foreground">
 									<p>Your APS is too low for the listed universities.</p>
-									<p className="text-sm mt-2 text-pretty">Most universities require at least 25-30 APS</p>
+									<p className="text-sm mt-2 text-pretty">
+										Most universities require at least 25-30 APS
+									</p>
 								</div>
 							) : (
 								<div className="space-y-3">
@@ -314,11 +338,11 @@ export default function APSCalculatorPage() {
 						</CardTitle>
 					</CardHeader>
 					<CardContent className="text-sm text-muted-foreground space-y-2">
-						<p className='text-pretty'>
+						<p className="text-pretty">
 							<strong>APS (Admission Point Score)</strong> is used by South African universities to
 							determine your eligibility for degree programmes.
 						</p>
-						<p className='text-pretty leading-5'>
+						<p className="text-pretty leading-5">
 							Each subject grade is converted to points: A (7), B (6), C (5), D (4), E (3), F (2), G
 							(1), U (0). Your total APS is the sum of your best 7 subjects, including Life
 							Orientation.
