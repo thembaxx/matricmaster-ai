@@ -1,7 +1,5 @@
 'use client';
 
-import { ArrowLeft01Icon } from '@hugeicons/core-free-icons';
-import { HugeiconsIcon } from '@hugeicons/react';
 import { AnimatePresence, m } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
