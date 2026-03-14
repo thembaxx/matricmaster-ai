@@ -2,6 +2,7 @@
 
 import { m } from 'framer-motion';
 import { Button } from '@/components/ui/button';
+import { SUBJECTS } from '@/constants/subjects';
 import { cn } from '@/lib/utils';
 
 interface TimelineEvent {
@@ -18,25 +19,25 @@ const DEMO_EVENTS: TimelineEvent[] = [
 	{
 		id: '1',
 		time: '08:00',
-		subject: 'Math',
+		subject: 'mathematics',
 		title: 'Calculus review',
 		duration: '45 min',
 		status: 'completed',
-		emoji: '🧮',
+		emoji: SUBJECTS.mathematics.emoji,
 	},
 	{
 		id: '2',
 		time: '09:00',
-		subject: 'Physics',
+		subject: 'physics',
 		title: 'Circuit problems',
 		duration: '30 min',
 		status: 'current',
-		emoji: '⚛️',
+		emoji: SUBJECTS.physics.emoji,
 	},
 	{
 		id: '3',
 		time: '10:00',
-		subject: 'English',
+		subject: 'english',
 		title: 'Essay planning',
 		duration: '60 min',
 		status: 'upcoming',

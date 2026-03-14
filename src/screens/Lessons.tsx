@@ -22,6 +22,7 @@ import chemistryData from '@/constants/lessons/chemistry.json';
 import lifeSciencesData from '@/constants/lessons/life-sciences.json';
 import mathematicsData from '@/constants/lessons/mathematics.json';
 import physicsData from '@/constants/lessons/physics.json';
+import { getSubjectEmoji, type SUBJECTS } from '@/constants/subjects';
 
 interface Lesson {
 	id: string;
@@ -49,27 +50,18 @@ export default function Lessons() {
 
 	useEffect(() => {
 		const getIconForSubject = (subject: string): string => {
-			switch (subject.toLowerCase()) {
-				case 'mathematics':
-					return '🧮';
-				case 'physical sciences':
-					return '⚛️';
-				case 'life sciences':
-					return '🧬';
-				case 'english':
-					return '📖';
-				default:
-					return '📚';
-			}
+			const subjectKey = subject.toLowerCase().replace(' ', '-') as keyof typeof SUBJECTS;
+			return getSubjectEmoji(subjectKey) ?? '📚';
 		};
 
 		const getColorForSubject = (subject: string): string => {
-			switch (subject.toLowerCase()) {
+			const subjectKey = subject.toLowerCase().replace(' ', '-') as keyof typeof SUBJECTS;
+			switch (subjectKey) {
 				case 'mathematics':
 					return 'bg-brand-amber/10';
-				case 'physical sciences':
+				case 'physics':
 					return 'bg-primary/10';
-				case 'life sciences':
+				case 'life-sciences':
 					return 'bg-brand-green/10';
 				case 'english':
 					return 'bg-brand-red/10';

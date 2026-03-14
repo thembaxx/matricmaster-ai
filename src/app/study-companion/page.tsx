@@ -8,6 +8,7 @@ import { FocusContent } from '@/components/Layout/FocusContent';
 import { TimelineSidebar } from '@/components/Layout/TimelineSidebar';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { SUBJECTS } from '@/constants/subjects';
 import { cn } from '@/lib/utils';
 
 interface SuggestionCard {
@@ -37,10 +38,30 @@ const SUGGESTION_CARDS: SuggestionCard[] = [
 ];
 
 const HELP_CARDS: StudyHelpCard[] = [
-	{ id: '1', emoji: '🧮', title: 'Mathematics', subtitle: 'Algebra, Calculus, Geometry' },
-	{ id: '2', emoji: '⚛️', title: 'Physics', subtitle: 'Mechanics, Waves, Energy' },
-	{ id: '3', emoji: '🧬', title: 'Life Sciences', subtitle: 'Cells, Genetics, Ecology' },
-	{ id: '4', emoji: '📖', title: 'English', subtitle: 'Literature, Language, Writing' },
+	{
+		id: '1',
+		emoji: SUBJECTS.mathematics.emoji,
+		title: 'Mathematics',
+		subtitle: 'Algebra, Calculus, Geometry',
+	},
+	{
+		id: '2',
+		emoji: SUBJECTS.physics.emoji,
+		title: 'Physics',
+		subtitle: 'Mechanics, Waves, Energy',
+	},
+	{
+		id: '3',
+		emoji: SUBJECTS['life-sciences'].emoji,
+		title: 'Life Sciences',
+		subtitle: 'Cells, Genetics, Ecology',
+	},
+	{
+		id: '4',
+		emoji: SUBJECTS.english.emoji,
+		title: 'English',
+		subtitle: 'Literature, Language, Writing',
+	},
 ];
 
 export default function StudyCompanion() {
