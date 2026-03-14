@@ -81,6 +81,16 @@ export default function VoiceTutorPage() {
 		}
 	}, []);
 
+	// Auto-scroll when messages change
+	useEffect(() => {
+		const timer = setTimeout(() => {
+			if (scrollRef.current) {
+				scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+			}
+		}, 100);
+		return () => clearTimeout(timer);
+	}, []);
+
 	const handleStartRecording = useCallback(() => {
 		setCurrentTranscript('');
 
@@ -172,40 +182,31 @@ export default function VoiceTutorPage() {
 		}
 	};
 
-	const _toggleVoice = () => {
-		if (isSpeakingAI) {
-			stopSpeaking();
-			setIsSpeakingAI(false);
-		} else {
-			const lastMessage = messages[messages.length - 1];
-			if (lastMessage?.role === 'assistant') {
-				setIsSpeakingAI(true);
-				speak(
-					lastMessage.content,
-					{ voice: selectedVoice, rate: speechRate, pitch: 1, volume: 1 },
-					() => setIsSpeakingAI(true),
-					() => setIsSpeakingAI(false)
-				);
-			}
-		}
-	};
-
-	console.debug(_toggleVoice);
-
 	const clearChat = () => {
 		setMessages([]);
 		stopSpeaking();
 		setIsSpeakingAI(false);
 	};
 
+	const scrollToBottom = useCallback(() => {
+		if (scrollRef.current) {
+			scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+		}
+	}, []);
+
+	useEffect(() => {
+		const timer = setTimeout(scrollToBottom, 100);
+		return () => clearTimeout(timer);
+	}, [scrollToBottom]);
+
 	return (
 		<div className="min-h-screen pb-40 pt-8 px-4">
 			<div className="max-w-3xl mx-auto">
 				<div className="text-center mb-6">
-					<h1 className="text-3xl font-bold mb-2 flex items-center justify-center gap-2">
+					<div className="inline-flex items-center justify-center p-3 rounded-full bg-primary/10 mb-4">
 						<HugeiconsIcon icon={SparklesIcon} className="w-8 h-8 text-primary" />
-						Voice AI Tutor
-					</h1>
+					</div>
+					<h1 className="text-3xl font-bold mb-2">Voice AI Tutor</h1>
 					<p className="text-muted-foreground">Study hands-free with voice interaction</p>
 				</div>
 
@@ -213,7 +214,16 @@ export default function VoiceTutorPage() {
 					<CardHeader className="pb-3">
 						<div className="flex items-center justify-between">
 							<CardTitle className="text-base">Voice Settings</CardTitle>
-							<Badge variant="outline">
+							<Badge
+								variant="outline"
+								className={
+									isRecording
+										? 'bg-red-500/10 text-red-500'
+										: isSpeakingAI
+											? 'bg-blue-500/10 text-blue-500'
+											: ''
+								}
+							>
 								{isRecording ? 'Recording...' : isSpeakingAI ? 'Speaking...' : 'Ready'}
 							</Badge>
 						</div>
@@ -225,7 +235,7 @@ export default function VoiceTutorPage() {
 									Voice
 								</label>
 								<Select value={selectedVoice} onValueChange={setSelectedVoice}>
-									<SelectTrigger id="voice-select">
+									<SelectTrigger id="voice-select" className="mt-1">
 										<SelectValue placeholder="Select voice" />
 									</SelectTrigger>
 									<SelectContent>
@@ -239,7 +249,7 @@ export default function VoiceTutorPage() {
 							</div>
 							<div className="w-32">
 								<label htmlFor="speed-slider" className="text-sm font-medium">
-									Speed
+									Speed: {speechRate.toFixed(1)}x
 								</label>
 								<Slider
 									id="speed-slider"
@@ -248,23 +258,22 @@ export default function VoiceTutorPage() {
 									min={0.5}
 									max={2}
 									step={0.1}
+									className="mt-2"
 								/>
 							</div>
 						</div>
-						<div className="flex items-center justify-between">
-							<div className="flex items-center gap-2">
-								<Button
-									variant={isVoiceEnabled ? 'default' : 'outline'}
-									size="sm"
-									onClick={() => setIsVoiceEnabled(!isVoiceEnabled)}
-								>
-									<HugeiconsIcon
-										icon={isVoiceEnabled ? VolumeOffIcon : VolumeHighIcon}
-										className="w-4 h-4 mr-1"
-									/>
-									{isVoiceEnabled ? 'Voice On' : 'Voice Off'}
-								</Button>
-							</div>
+						<div className="flex items-center justify-between pt-2">
+							<Button
+								variant={isVoiceEnabled ? 'default' : 'outline'}
+								size="sm"
+								onClick={() => setIsVoiceEnabled(!isVoiceEnabled)}
+							>
+								<HugeiconsIcon
+									icon={isVoiceEnabled ? VolumeOffIcon : VolumeHighIcon}
+									className="w-4 h-4 mr-1"
+								/>
+								{isVoiceEnabled ? 'Voice On' : 'Voice Off'}
+							</Button>
 							<Button variant="ghost" size="sm" onClick={clearChat}>
 								<HugeiconsIcon icon={RotateClockwiseIcon} className="w-4 h-4 mr-1" />
 								Clear Chat
@@ -283,9 +292,12 @@ export default function VoiceTutorPage() {
 					<ScrollArea className="flex-1 p-4" ref={scrollRef}>
 						<div className="space-y-4">
 							{messages.length === 0 && (
-								<div className="text-center py-8 text-muted-foreground">
-									<p>Start a conversation with the AI tutor</p>
-									<p className="text-sm mt-2">Tap the microphone and ask a question!</p>
+								<div className="text-center py-12 text-muted-foreground">
+									<div className="inline-flex items-center justify-center p-4 rounded-full bg-muted mb-4">
+										<HugeiconsIcon icon={SparklesIcon} className="w-8 h-8 opacity-50" />
+									</div>
+									<p className="font-medium">Start a conversation with the AI tutor</p>
+									<p className="text-sm mt-1">Tap the microphone and ask a question!</p>
 								</div>
 							)}
 							{messages.map((message) => (
@@ -294,16 +306,16 @@ export default function VoiceTutorPage() {
 									className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
 								>
 									<div
-										className={`max-w-[80%] rounded-2xl px-4 py-2 ${
+										className={`max-w-[80%] rounded-2xl px-4 py-3 ${
 											message.role === 'user' ? 'bg-primary text-primary-foreground' : 'bg-muted'
 										}`}
 									>
-										<p className="text-sm">{message.content}</p>
+										<p className="text-sm whitespace-pre-wrap">{message.content}</p>
 										{message.role === 'assistant' && isVoiceEnabled && (
 											<Button
 												variant="ghost"
 												size="sm"
-												className="mt-2 h-6 text-xs"
+												className="mt-2 h-7 text-xs opacity-70 hover:opacity-100"
 												onClick={() => {
 													setIsSpeakingAI(true);
 													speak(
@@ -323,7 +335,7 @@ export default function VoiceTutorPage() {
 							))}
 							{isProcessing && (
 								<div className="flex justify-start">
-									<div className="bg-muted rounded-2xl px-4 py-2">
+									<div className="bg-muted rounded-2xl px-4 py-3">
 										<div className="flex items-center gap-2">
 											<LoaderIcon className="w-4 h-4 animate-spin" />
 											<span className="text-sm">Thinking...</span>
@@ -347,6 +359,7 @@ export default function VoiceTutorPage() {
 								size="icon"
 								onClick={isRecording ? handleStopRecording : handleStartRecording}
 								className="shrink-0"
+								aria-label={isRecording ? 'Stop recording' : 'Start recording'}
 							>
 								<HugeiconsIcon icon={isRecording ? StopCircleIcon : MicIcon} className="w-5 h-5" />
 							</Button>
@@ -356,8 +369,9 @@ export default function VoiceTutorPage() {
 								onChange={(e) => setInputText(e.target.value)}
 								onKeyPress={handleKeyPress}
 								placeholder="Type your question or use voice..."
-								className="flex-1 h-10 px-4 rounded-lg border bg-background text-sm"
+								className="flex-1 h-10 px-4 rounded-lg border bg-background text-sm focus:ring-2 focus:ring-primary focus:border-primary transition-colors"
 								disabled={isProcessing}
+								aria-label="Type your message"
 							/>
 							<Button
 								onClick={handleSendMessage}

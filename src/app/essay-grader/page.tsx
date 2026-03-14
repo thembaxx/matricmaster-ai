@@ -126,11 +126,11 @@ export default function EssayGraderPage() {
 		<div className="min-h-screen pb-40 pt-8 px-4">
 			<div className="max-w-4xl mx-auto">
 				<div className="text-center mb-8">
-					<h1 className="text-3xl font-bold mb-2 flex items-center justify-center gap-2">
+					<div className="inline-flex items-center justify-center p-3 rounded-full bg-primary/10 mb-4">
 						<HugeiconsIcon icon={SparklesIcon} className="w-8 h-8 text-primary" />
-						AI Essay Grader
-					</h1>
-					<p className="text-muted-foreground">
+					</div>
+					<h1 className="text-3xl font-bold mb-2">AI Essay Grader</h1>
+					<p className="text-muted-foreground max-w-md mx-auto">
 						Submit your practice essays and get instant AI-powered feedback
 					</p>
 				</div>
@@ -187,7 +187,7 @@ export default function EssayGraderPage() {
 									placeholder="Start writing your essay here..."
 									value={essay}
 									onChange={(e) => setEssay(e.target.value)}
-									className="min-h-[300px] resize-none"
+									className="min-h-[300px] resize-none focus:ring-2 focus:ring-primary"
 								/>
 							</div>
 
@@ -221,8 +221,10 @@ export default function EssayGraderPage() {
 						<CardContent>
 							{!result ? (
 								<div className="text-center py-12 text-muted-foreground">
-									<HugeiconsIcon icon={Idea01Icon} className="w-12 h-12 mx-auto mb-4 opacity-50" />
-									<p>Submit your essay to receive detailed feedback</p>
+									<div className="inline-flex items-center justify-center p-4 rounded-full bg-muted mb-4">
+										<HugeiconsIcon icon={Idea01Icon} className="w-10 h-10 opacity-50" />
+									</div>
+									<p className="font-medium">Submit your essay to receive detailed feedback</p>
 								</div>
 							) : (
 								<div className="space-y-6">
@@ -290,7 +292,7 @@ export default function EssayGraderPage() {
 											<ul className="space-y-1">
 												{result.strengths.map((strength, idx) => (
 													<li key={idx} className="text-sm text-muted-foreground flex gap-2">
-														<span className="text-green-500">•</span>
+														<span className="text-green-500 shrink-0">•</span>
 														{strength}
 													</li>
 												))}
@@ -307,7 +309,7 @@ export default function EssayGraderPage() {
 											<ul className="space-y-1">
 												{result.improvements.map((improvement, idx) => (
 													<li key={idx} className="text-sm text-muted-foreground flex gap-2">
-														<span className="text-yellow-500">•</span>
+														<span className="text-yellow-500 shrink-0">•</span>
 														{improvement}
 													</li>
 												))}
@@ -345,26 +347,26 @@ export default function EssayGraderPage() {
 
 				<Card className="mt-6 bg-muted/50">
 					<CardContent className="p-6">
-						<h3 className="font-semibold mb-2">Tips for Better Essays</h3>
+						<h3 className="font-semibold mb-3">Tips for Better Essays</h3>
 						<div className="grid md:grid-cols-3 gap-4 text-sm text-muted-foreground">
 							<div className="flex gap-2">
 								<HugeiconsIcon
 									icon={CheckmarkCircle02Icon}
-									className="w-4 h-4 text-green-500 shrink-0 mt-1"
+									className="w-4 h-4 text-green-500 shrink-0 mt-0.5"
 								/>
 								<p>Always plan your essay before writing</p>
 							</div>
 							<div className="flex gap-2">
 								<HugeiconsIcon
 									icon={CheckmarkCircle02Icon}
-									className="w-4 h-4 text-green-500 shrink-0 mt-1"
+									className="w-4 h-4 text-green-500 shrink-0 mt-0.5"
 								/>
 								<p>Use the PEEL method (Point, Evidence, Explain, Link)</p>
 							</div>
 							<div className="flex gap-2">
 								<HugeiconsIcon
 									icon={CheckmarkCircle02Icon}
-									className="w-4 h-4 text-green-500 shrink-0 mt-1"
+									className="w-4 h-4 text-green-500 shrink-0 mt-0.5"
 								/>
 								<p>Proofread for grammar and spelling errors</p>
 							</div>

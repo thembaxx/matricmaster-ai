@@ -68,7 +68,6 @@ export function SignInForm() {
 
 	const initializeDatabase = async () => {
 		try {
-			console.log('🔄 Initializing database after login...');
 			const response = await fetch('/api/db/init', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
@@ -89,15 +88,13 @@ export function SignInForm() {
 				result = { success: false, message: text };
 			}
 
-			if (response.ok && result.success) {
-				console.log('✅ Database initialized after login');
-			} else {
+			if (!response.ok || !result.success) {
 				console.warn(
-					`⚠️ Database initialization failed: Status ${response.status}, Message: ${result.message ?? 'Unknown error'}`
+					`Database initialization failed: Status ${response.status}, Message: ${result.message ?? 'Unknown error'}`
 				);
 			}
 		} catch (err) {
-			console.error('❌ Error initializing database:', err);
+			console.error('Error initializing database:', err);
 		}
 	};
 

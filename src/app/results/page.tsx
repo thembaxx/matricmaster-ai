@@ -39,10 +39,10 @@ export default function ResultsPage() {
 		<div className="min-h-screen pb-40 pt-8 px-4">
 			<div className="max-w-3xl mx-auto">
 				<div className="text-center mb-8">
-					<h1 className="text-3xl font-bold mb-2 flex items-center justify-center gap-2">
+					<div className="inline-flex items-center justify-center p-3 rounded-full bg-primary/10 mb-4">
 						<HugeiconsIcon icon={Mortarboard02Icon} className="w-8 h-8 text-primary" />
-						NSC Results
-					</h1>
+					</div>
+					<h1 className="text-3xl font-bold mb-2">NSC Results</h1>
 					<p className="text-muted-foreground">
 						Check your National Senior Certificate (Matric) results
 					</p>
@@ -82,7 +82,7 @@ export default function ResultsPage() {
 								id="exam-year"
 								value={selectedYear}
 								onChange={(e) => setSelectedYear(Number(e.target.value))}
-								className="w-full h-10 mt-1 px-3 rounded-lg border bg-background text-sm"
+								className="w-full h-10 mt-1 px-3 rounded-lg border bg-background text-sm focus:ring-2 focus:ring-primary"
 							>
 								{years.map((y) => (
 									<option key={y} value={y}>
@@ -109,20 +109,20 @@ export default function ResultsPage() {
 								<h3 className="font-semibold mb-2">How to Check Your Results</h3>
 								<ol className="text-sm text-muted-foreground space-y-2">
 									<li className="flex gap-2">
-										<span className="font-medium text-foreground">1.</span>
-										Enter your 12-digit examination number above
+										<span className="font-medium text-foreground shrink-0">1.</span>
+										<span>Enter your 12-digit examination number above</span>
 									</li>
 									<li className="flex gap-2">
-										<span className="font-medium text-foreground">2.</span>
-										Select the year you wrote the exam
+										<span className="font-medium text-foreground shrink-0">2.</span>
+										<span>Select the year you wrote the exam</span>
 									</li>
 									<li className="flex gap-2">
-										<span className="font-medium text-foreground">3.</span>
-										Click "Check Results" to open the official DBE portal
+										<span className="font-medium text-foreground shrink-0">3.</span>
+										<span>Click "Check Results" to open the official DBE portal</span>
 									</li>
 									<li className="flex gap-2">
-										<span className="font-medium text-foreground">4.</span>
-										Results are released in January/February each year
+										<span className="font-medium text-foreground shrink-0">4.</span>
+										<span>Results are released in January/February each year</span>
 									</li>
 								</ol>
 							</div>
@@ -135,9 +135,9 @@ export default function ResultsPage() {
 						<CardTitle>Understanding Your Results</CardTitle>
 					</CardHeader>
 					<CardContent>
-						<div className="space-y-4">
+						<div className="space-y-6">
 							<div>
-								<h4 className="font-medium mb-2">Achievement Levels</h4>
+								<h4 className="font-medium mb-3">Achievement Levels</h4>
 								<div className="grid grid-cols-2 md:grid-cols-4 gap-3">
 									{[
 										{ level: '7', desc: 'Outstanding', color: 'bg-green-500' },
@@ -157,8 +157,8 @@ export default function ResultsPage() {
 							</div>
 
 							<div>
-								<h4 className="font-medium mb-2">Pass Requirements</h4>
-								<ul className="text-sm text-muted-foreground space-y-1">
+								<h4 className="font-medium mb-3">Pass Requirements</h4>
+								<ul className="text-sm text-muted-foreground space-y-2">
 									<li className="flex gap-2">
 										<HugeiconsIcon
 											icon={CheckmarkCircle02Icon}

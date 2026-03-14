@@ -61,7 +61,7 @@ export function BottomNavigation({ pathname }: BottomNavigationProps) {
 			transition={{ type: 'spring', stiffness: 260, damping: 20 }}
 			id="bottom-navigation"
 			aria-label="Bottom navigation"
-			className="lg:hidden fixed bottom-6 left-1/2 -translate-x-1/2 w-[94%] max-w-md z-50 tiimo-glass rounded-[2.5rem] shadow-tiimo-lg grid grid-cols-4 p-1.5"
+			className="lg:hidden fixed bottom-6 left-1/2 -translate-x-1/2 w-[94%] max-w-md z-20 tiimo-glass rounded-[2.5rem] shadow-tiimo-lg grid grid-cols-5 p-1.5"
 		>
 			{navItems.map((item) => {
 				const isActive = pathname === item.href || (item.href === '/schedule' && pathname === '/');

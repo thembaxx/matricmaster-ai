@@ -66,6 +66,8 @@ const nextConfig = {
 			'framer-motion',
 			'@vercel/ai',
 			'@ai-sdk/google',
+			'@hugeicons/core-free-icons',
+			'@hugeicons/react',
 		],
 	},
 	turbopack: {

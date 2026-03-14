@@ -171,11 +171,11 @@ export default function APSCalculatorPage() {
 		<div className="min-h-screen pb-40 pt-8 px-4">
 			<div className="max-w-4xl mx-auto">
 				<div className="text-center mb-8">
-					<h1 className="text-3xl font-bold mb-2 flex items-center justify-center gap-2">
-						<HugeiconsIcon icon={CalculatorIcon} className="w-8 h-8" />
-						University APS Calculator
-					</h1>
-					<p className="text-muted-foreground">
+					<div className="inline-flex items-center justify-center p-3 rounded-full bg-primary/10 mb-4">
+						<HugeiconsIcon icon={CalculatorIcon} className="w-8 h-8 text-primary" />
+					</div>
+					<h1 className="text-3xl font-bold mb-2">University APS Calculator</h1>
+					<p className="text-muted-foreground max-w-md mx-auto">
 						Calculate your Admission Point Score (APS) and see which universities you qualify for
 					</p>
 				</div>
@@ -192,9 +192,11 @@ export default function APSCalculatorPage() {
 							{subjects.map((subj, index) => (
 								<div key={index} className="flex gap-2 items-center">
 									<select
-										className="flex-1 h-10 px-3 rounded-lg border bg-background text-sm"
+										id={`subject-${index}`}
+										className="flex-1 h-10 px-3 rounded-lg border bg-background text-sm focus:ring-2 focus:ring-primary focus:border-primary transition-colors"
 										value={subj.subject}
 										onChange={(e) => updateSubjectName(index, e.target.value)}
+										aria-label={`Select subject ${index + 1}`}
 									>
 										<option value="">Select Subject</option>
 										{SOUTH_AFRICAN_SUBJECTS.map((s) => (
@@ -208,9 +210,11 @@ export default function APSCalculatorPage() {
 										))}
 									</select>
 									<select
-										className={`w-20 h-10 px-2 rounded-lg border bg-background text-sm font-medium text-center ${getGradeColor(subj.grade)}`}
+										id={`grade-${index}`}
+										className={`w-20 h-10 px-2 rounded-lg border bg-background text-sm font-medium text-center focus:ring-2 focus:ring-primary transition-colors ${getGradeColor(subj.grade)}`}
 										value={subj.grade}
 										onChange={(e) => updateSubjectGrade(index, e.target.value)}
+										aria-label={`Grade for ${subj.subject}`}
 									>
 										<option value="">-</option>
 										{GRADES.map((g) => (
@@ -219,11 +223,21 @@ export default function APSCalculatorPage() {
 											</option>
 										))}
 									</select>
-									<span className={`w-8 text-center font-bold ${getGradeColor(subj.grade)}`}>
+									<span
+										className={`w-8 text-center font-bold ${getGradeColor(subj.grade)}`}
+										role="status"
+										aria-label={`${subj.points} points`}
+									>
 										{subj.points}
 									</span>
 									{subjects.length > 3 && (
-										<Button variant="ghost" size="icon" onClick={() => removeSubject(index)}>
+										<Button
+											variant="ghost"
+											size="icon"
+											onClick={() => removeSubject(index)}
+											aria-label={`Remove ${subj.subject || 'subject'}`}
+											className="text-muted-foreground hover:text-destructive"
+										>
 											×
 										</Button>
 									)}
@@ -262,14 +276,16 @@ export default function APSCalculatorPage() {
 										{eligibleUniversities.map((uni, idx) => (
 											<div
 												key={`${uni.name}-${uni.faculty}-${idx}`}
-												className="p-3 rounded-lg border bg-card"
+												className="p-3 rounded-lg border bg-card hover:border-primary/30 transition-colors"
 											>
 												<div className="flex items-start justify-between">
 													<div>
 														<h4 className="font-semibold text-sm">{uni.name}</h4>
 														<p className="text-sm text-muted-foreground">{uni.faculty}</p>
 													</div>
-													<Badge variant="outline">APS: {uni.minAps}</Badge>
+													<Badge variant="outline" className="shrink-0">
+														APS: {uni.minAps}
+													</Badge>
 												</div>
 												{uni.additionalRequirements && (
 													<p className="text-xs text-muted-foreground mt-1">

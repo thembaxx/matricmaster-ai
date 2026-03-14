@@ -12,6 +12,8 @@ import {
 	Cancel01Icon,
 	ChampionIcon,
 	Chat01Icon,
+	ComputerVideoCallIcon,
+	ContentWritingIcon,
 	File01Icon,
 	GameController01Icon,
 	GlobeIcon,
@@ -23,6 +25,8 @@ import {
 	Logout01Icon,
 	MapsIcon,
 	Medal01Icon,
+	Mic01Icon,
+	Mortarboard02Icon,
 	Notification03Icon,
 	QuestionIcon,
 	Search01Icon,
@@ -79,6 +83,11 @@ const MOBILE_NAV_SECTIONS: MobileNavSection[] = [
 			{ href: '/study-plan', label: 'Study Plan', icon: Calendar01Icon },
 			{ href: '/curriculum-map', label: 'Curriculum Map', icon: GridIcon },
 			{ href: '/periodic-table', label: 'Periodic Table', icon: AtomIcon },
+			{ href: '/tutoring', label: 'AI Tutoring', icon: ComputerVideoCallIcon },
+			{ href: '/voice-tutor', label: 'Voice Tutor', icon: Mic01Icon },
+			{ href: '/essay-grader', label: 'Essay Grader', icon: ContentWritingIcon },
+			{ href: '/aps-calculator', label: 'APS Calculator', icon: CalculatorIcon },
+			{ href: '/exam-timer', label: 'Exam Timer', icon: Timer01Icon },
 		],
 	},
 	{
@@ -96,10 +105,20 @@ const MOBILE_NAV_SECTIONS: MobileNavSection[] = [
 		],
 	},
 	{
+		title: 'Results & Planning',
+		items: [
+			{ href: '/results', label: 'NSC Results', icon: Mortarboard02Icon },
+			{ href: '/school', label: 'University Applications', icon: BookOpen01Icon },
+			{ href: '/subscription', label: 'Subscription', icon: SparklesIcon },
+			{ href: '/analytics', label: 'Analytics', icon: CalculatorIcon },
+		],
+	},
+	{
 		title: 'Focus',
 		items: [
 			{ href: '/focus', label: 'Focus Mode', icon: Timer01Icon },
 			{ href: '/focus-rooms', label: 'Focus Rooms', icon: UserGroupIcon },
+			{ href: '/offline', label: 'Offline Mode', icon: File01Icon },
 		],
 	},
 	{

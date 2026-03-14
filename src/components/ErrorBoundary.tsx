@@ -59,7 +59,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
 								}}
 								className="flex-1"
 							>
-								Go House
+								Go Home
 							</Button>
 						</div>
 					</Card>
