@@ -764,6 +764,7 @@ export const userSettings = pgTable(
 			.references(() => users.id, { onDelete: 'cascade' }),
 		emailNotifications: boolean('email_notifications').notNull().default(true),
 		pushNotifications: boolean('push_notifications').notNull().default(true),
+		pushSubscription: text('push_subscription'),
 		studyReminders: boolean('study_reminders').notNull().default(true),
 		achievementAlerts: boolean('achievement_alerts').notNull().default(true),
 		profileVisibility: boolean('profile_visibility').notNull().default(true),
@@ -1092,6 +1093,92 @@ export type NewContentFlag = typeof contentFlags.$inferInsert;
 export type UserSettings = typeof userSettings.$inferSelect;
 export type NewUserSettings = typeof userSettings.$inferInsert;
 
+// ============================================================================
+// SUBSCRIPTION TABLES
+// ============================================================================
+
+export const subscriptionPlans = pgTable('subscription_plans', {
+	id: varchar('id', { length: 50 }).primaryKey(),
+	name: varchar('name', { length: 100 }).notNull(),
+	description: text('description'),
+	priceZar: numeric('price_zar', { precision: 10, scale: 2 }).notNull(),
+	billingInterval: varchar('billing_interval', { length: 20 }).notNull().default('monthly'),
+	features: text('features').array(),
+	isActive: boolean('is_active').notNull().default(true),
+	createdAt: timestamp('created_at').defaultNow(),
+	updatedAt: timestamp('updated_at').defaultNow(),
+});
+
+export const userSubscriptions = pgTable(
+	'user_subscriptions',
+	{
+		id: uuid('id').defaultRandom().primaryKey(),
+		userId: varchar('user_id', { length: 255 }).notNull(),
+		planId: varchar('plan_id', { length: 50 })
+			.notNull()
+			.references(() => subscriptionPlans.id),
+		paystackCustomerCode: varchar('paystack_customer_code', { length: 100 }),
+		paystackSubscriptionCode: varchar('paystack_subscription_code', { length: 100 }),
+		paystackEmailToken: varchar('paystack_email_token', { length: 100 }),
+		status: varchar('status', { length: 20 }).notNull().default('active'),
+		currentPeriodStart: timestamp('current_period_start').notNull(),
+		currentPeriodEnd: timestamp('current_period_end').notNull(),
+		cancelAtPeriodEnd: boolean('cancel_at_period_end').notNull().default(false),
+		isFreeTrial: boolean('is_free_trial').notNull().default(false),
+		trialEndDate: timestamp('trial_end_date'),
+		createdAt: timestamp('created_at').defaultNow(),
+		updatedAt: timestamp('updated_at').defaultNow(),
+	},
+	(table) => ({
+		userIdIdx: index('user_subscriptions_user_id_idx').on(table.userId),
+		statusIdx: index('user_subscriptions_status_idx').on(table.status),
+		planIdIdx: index('user_subscriptions_plan_id_idx').on(table.planId),
+	})
+);
+
+export const payments = pgTable(
+	'payments',
+	{
+		id: uuid('id').defaultRandom().primaryKey(),
+		userId: varchar('user_id', { length: 255 }).notNull(),
+		subscriptionId: uuid('subscription_id').references(() => userSubscriptions.id),
+		amount: numeric('amount', { precision: 10, scale: 2 }).notNull(),
+		currency: varchar('currency', { length: 3 }).notNull().default('ZAR'),
+		paystackReference: varchar('paystack_reference', { length: 100 }).notNull().unique(),
+		paystackTransactionId: varchar('paystack_transaction_id', { length: 100 }),
+		status: varchar('status', { length: 20 }).notNull().default('pending'),
+		paymentMethod: varchar('payment_method', { length: 20 }),
+		metadata: text('metadata'),
+		failureReason: text('failure_reason'),
+		createdAt: timestamp('created_at').defaultNow(),
+		updatedAt: timestamp('updated_at').defaultNow(),
+	},
+	(table) => ({
+		userIdIdx: index('payments_user_id_idx').on(table.userId),
+		statusIdx: index('payments_status_idx').on(table.status),
+		referenceIdx: index('payments_reference_idx').on(table.paystackReference),
+	})
+);
+
+export const subscriptionPlansRelations = relations(subscriptionPlans, ({ many }) => ({
+	userSubscriptions: many(userSubscriptions),
+}));
+
+export const userSubscriptionsRelations = relations(userSubscriptions, ({ one, many }) => ({
+	plan: one(subscriptionPlans, {
+		fields: [userSubscriptions.planId],
+		references: [subscriptionPlans.id],
+	}),
+	payments: many(payments),
+}));
+
+export const paymentsRelations = relations(payments, ({ one }) => ({
+	subscription: one(userSubscriptions, {
+		fields: [payments.subscriptionId],
+		references: [userSubscriptions.id],
+	}),
+}));
+
 // Chat schema exports
 export {
 	chatMessages,
@@ -1107,3 +1194,112 @@ export type Outbox = import('./schema-chat').Outbox;
 export type NewOutbox = import('./schema-chat').NewOutbox;
 export type UserPresence = import('./schema-chat').UserPresence;
 export type NewUserPresence = import('./schema-chat').NewUserPresence;
+
+// Subscription types
+export type SubscriptionPlan = typeof subscriptionPlans.$inferSelect;
+export type NewSubscriptionPlan = typeof subscriptionPlans.$inferInsert;
+export type UserSubscription = typeof userSubscriptions.$inferSelect;
+export type NewUserSubscription = typeof userSubscriptions.$inferInsert;
+export type Payment = typeof payments.$inferSelect;
+export type NewPayment = typeof payments.$inferInsert;
+
+// Subscription plan IDs
+export const PLAN_TIERS = {
+	FREE: 'free',
+	PRO: 'pro',
+	PREMIUM: 'premium',
+} as const;
+
+export type PlanTier = (typeof PLAN_TIERS)[keyof typeof PLAN_TIERS];
+
+// ============================================================================
+// B2B SCHOOL TABLES
+// ============================================================================
+
+export const schools = pgTable(
+	'schools',
+	{
+		id: uuid('id').defaultRandom().primaryKey(),
+		name: varchar('name', { length: 200 }).notNull(),
+		emisNumber: varchar('emis_number', { length: 20 }).unique(),
+		province: varchar('province', { length: 50 }),
+		district: varchar('district', { length: 100 }),
+		address: text('address'),
+		contactName: varchar('contact_name', { length: 100 }),
+		contactEmail: varchar('contact_email', { length: 100 }),
+		contactPhone: varchar('contact_phone', { length: 20 }),
+		website: varchar('website', { length: 200 }),
+		totalLearners: integer('total_learners').default(0),
+		totalTeachers: integer('total_teachers').default(0),
+		subscriptionPlan: varchar('subscription_plan', { length: 50 }).default('free'),
+		licenseCount: integer('license_count').default(0),
+		licenseExpiry: timestamp('license_expiry'),
+		status: varchar('status', { length: 20 }).notNull().default('active'),
+		createdAt: timestamp('created_at').defaultNow(),
+		updatedAt: timestamp('updated_at').defaultNow(),
+	},
+	(table) => ({
+		nameIdx: index('schools_name_idx').on(table.name),
+		emisIdx: index('schools_emis_idx').on(table.emisNumber),
+		statusIdx: index('schools_status_idx').on(table.status),
+	})
+);
+
+export const schoolAdmins = pgTable(
+	'school_admins',
+	{
+		id: uuid('id').defaultRandom().primaryKey(),
+		schoolId: uuid('school_id')
+			.notNull()
+			.references(() => schools.id, { onDelete: 'cascade' }),
+		userId: varchar('user_id', { length: 255 }).notNull(),
+		role: varchar('role', { length: 50 }).notNull().default('admin'),
+		isPrimary: boolean('is_primary').notNull().default(false),
+		createdAt: timestamp('created_at').defaultNow(),
+	},
+	(table) => ({
+		schoolIdIdx: index('school_admins_school_id_idx').on(table.schoolId),
+		userIdIdx: index('school_admins_user_id_idx').on(table.userId),
+	})
+);
+
+export const schoolLicenses = pgTable(
+	'school_licenses',
+	{
+		id: uuid('id').defaultRandom().primaryKey(),
+		schoolId: uuid('school_id')
+			.notNull()
+			.references(() => schools.id, { onDelete: 'cascade' }),
+		licenseType: varchar('license_type', { length: 20 }).notNull().default('student'),
+		licenseKey: varchar('license_key', { length: 100 }).notNull().unique(),
+		assignedTo: varchar('assigned_to', { length: 255 }),
+		assignedAt: timestamp('assigned_at'),
+		status: varchar('status', { length: 20 }).notNull().default('active'),
+		expiresAt: timestamp('expires_at'),
+		createdAt: timestamp('created_at').defaultNow(),
+	},
+	(table) => ({
+		schoolIdIdx: index('school_licenses_school_id_idx').on(table.schoolId),
+		licenseKeyIdx: index('school_licenses_key_idx').on(table.licenseKey),
+		statusIdx: index('school_licenses_status_idx').on(table.status),
+	})
+);
+
+export const schoolsRelations = relations(schools, ({ many }) => ({
+	admins: many(schoolAdmins),
+	licenses: many(schoolLicenses),
+}));
+
+export const schoolAdminsRelations = relations(schoolAdmins, ({ one }) => ({
+	school: one(schools, {
+		fields: [schoolAdmins.schoolId],
+		references: [schools.id],
+	}),
+}));
+
+export const schoolLicensesRelations = relations(schoolLicenses, ({ one }) => ({
+	school: one(schools, {
+		fields: [schoolLicenses.schoolId],
+		references: [schools.id],
+	}),
+}));

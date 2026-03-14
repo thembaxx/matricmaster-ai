@@ -98,3 +98,12 @@ export async function closeConnection() {
 
 // Re-export getDb as a standalone function for backward compatibility
 export const getDb = () => dbManager.getDb();
+
+// Export the database client for direct queries (Drizzle ORM)
+// This is lazy-loaded to avoid build-time errors
+export const db = new Proxy({} as DbType, {
+	get(_target, prop) {
+		const actualDb = dbManager.getDb();
+		return actualDb[prop as keyof DbType];
+	},
+});
