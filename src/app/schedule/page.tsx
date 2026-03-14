@@ -9,18 +9,16 @@ import {
 import { HugeiconsIcon } from '@hugeicons/react';
 import { m } from 'framer-motion';
 import { useEffect, useState } from 'react';
-import { toast } from 'sonner';
+import { AddBlockModal } from '@/components/Schedule/AddBlockModal';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
-
-import { createCalendarEventAction, getCalendarEventsAction } from '@/lib/db/actions';
+import { getCalendarEventsAction } from '@/lib/db/actions';
+import type { CalendarEvent } from '@/lib/db/schema';
 import { cn } from '@/lib/utils';
 
 const DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-const HOURS = Array.from({ length: 14 }, (_, i) => i + 8); // 8 AM to 9 PM
-
-import type { CalendarEvent } from '@/lib/db/schema';
+const HOURS = Array.from({ length: 14 }, (_, i) => i + 8);
 
 interface UIEvent {
 	day: string;
@@ -48,6 +46,7 @@ const mapDbEventToUI = (e: CalendarEvent): UIEvent => {
 export default function SchedulePage() {
 	const [selectedDay, setSelectedDay] = useState('Mon');
 	const [events, setEvents] = useState<UIEvent[]>([]);
+	const [isModalOpen, setIsModalOpen] = useState(false);
 
 	useEffect(() => {
 		async function loadEvents() {
@@ -57,24 +56,15 @@ export default function SchedulePage() {
 		loadEvents();
 	}, []);
 
-	const handleAddBlock = async () => {
-		const now = new Date();
-		const result = await createCalendarEventAction({
-			title: 'New Study Block',
-			startTime: new Date(now.setHours(14, 0, 0, 0)),
-			endTime: new Date(now.setHours(15, 30, 0, 0)),
-			eventType: 'study_session',
-		});
-
-		if (result.success) {
-			toast.success('Study block added!');
-			const data = await getCalendarEventsAction();
-			setEvents(data.map(mapDbEventToUI));
-		}
+	const handleSuccess = async () => {
+		const data = await getCalendarEventsAction();
+		setEvents(data.map(mapDbEventToUI));
 	};
 
 	return (
 		<div className="sm:container mx-auto sm:max-w-6xl w-full overflow-hidden sm:overflow-auto px-4 pt-8 pb-32">
+			<AddBlockModal open={isModalOpen} onOpenChange={setIsModalOpen} onSuccess={handleSuccess} />
+
 			<div className="flex items-center justify-between mb-8">
 				<div>
 					<h1 className="text-2xl font-bold tracking-tight text-foreground">Study Schedule</h1>
@@ -83,7 +73,7 @@ export default function SchedulePage() {
 					</p>
 				</div>
 				<Button
-					onClick={handleAddBlock}
+					onClick={() => setIsModalOpen(true)}
 					className="rounded-full gap-2 font-semibold text-xs tracking-widest px-6 h-12 shadow-xl shadow-primary/20"
 				>
 					<HugeiconsIcon icon={PlusSignIcon} className="w-4 h-4" />
@@ -170,7 +160,7 @@ export default function SchedulePage() {
 							type="button"
 							onClick={() => setSelectedDay(day)}
 							className={cn(
-								'px-6 py-3 rounded-full text-[10px] font-black uppercase tracking-widest transition-all',
+								'px-6 py-3 rounded-full text-[10px] font-black uppercase tracking-widest transition-all shrink-0',
 								selectedDay === day
 									? 'bg-foreground text-background shadow-lg scale-105'
 									: 'bg-muted text-muted-foreground'
@@ -222,6 +212,13 @@ export default function SchedulePage() {
 						</div>
 					)}
 				</div>
+			</div>
+
+			{/* Copyright */}
+			<div className="mt-12 pt-6 border-t border-border/30 text-center">
+				<p className="text-[10px] text-muted-foreground/60 uppercase tracking-widest">
+					&copy; {new Date().getFullYear()} MatricMaster. All rights reserved.
+				</p>
 			</div>
 		</div>
 	);
