@@ -254,6 +254,88 @@ export async function getCalendarEventsAction() {
 	}
 }
 
+export async function getCalendarEventsWithSubjectsAction() {
+	try {
+		const user = await ensureAuthenticated();
+		const db = await getDb();
+		const events = await db
+			.select({
+				id: calendarEvents.id,
+				userId: calendarEvents.userId,
+				title: calendarEvents.title,
+				description: calendarEvents.description,
+				eventType: calendarEvents.eventType,
+				subjectId: calendarEvents.subjectId,
+				startTime: calendarEvents.startTime,
+				endTime: calendarEvents.endTime,
+				isAllDay: calendarEvents.isAllDay,
+				location: calendarEvents.location,
+				reminderMinutes: calendarEvents.reminderMinutes,
+				recurrenceRule: calendarEvents.recurrenceRule,
+				examId: calendarEvents.examId,
+				lessonId: calendarEvents.lessonId,
+				studyPlanId: calendarEvents.studyPlanId,
+				isCompleted: calendarEvents.isCompleted,
+				createdAt: calendarEvents.createdAt,
+				updatedAt: calendarEvents.updatedAt,
+				subjectName: subjects.name,
+			})
+			.from(calendarEvents)
+			.leftJoin(subjects, eq(calendarEvents.subjectId, subjects.id))
+			.where(eq(calendarEvents.userId, user.id));
+		return events;
+	} catch (error) {
+		console.error('Error fetching events with subjects:', error);
+		return [];
+	}
+}
+
+export async function deleteCalendarEventAction(eventId: string) {
+	try {
+		const user = await ensureAuthenticated();
+		const db = await getDb();
+		await db
+			.delete(calendarEvents)
+			.where(and(eq(calendarEvents.id, eventId), eq(calendarEvents.userId, user.id)));
+		return { success: true };
+	} catch (error) {
+		console.error('Error deleting calendar event:', error);
+		return { success: false, error: 'Failed to delete event' };
+	}
+}
+
+export async function updateCalendarEventAction(
+	eventId: string,
+	data: {
+		title?: string;
+		startTime?: Date;
+		endTime?: Date;
+		eventType?: string;
+		subjectId?: number;
+	}
+) {
+	try {
+		const user = await ensureAuthenticated();
+		const db = await getDb();
+		const updateData: Record<string, unknown> = {};
+		if (data.title !== undefined) updateData.title = data.title;
+		if (data.startTime !== undefined) updateData.startTime = data.startTime;
+		if (data.endTime !== undefined) updateData.endTime = data.endTime;
+		if (data.eventType !== undefined) updateData.eventType = data.eventType;
+		if (data.subjectId !== undefined) updateData.subjectId = data.subjectId ?? null;
+
+		const [updated] = await db
+			.update(calendarEvents)
+			.set(updateData)
+			.where(and(eq(calendarEvents.id, eventId), eq(calendarEvents.userId, user.id)))
+			.returning();
+		return { success: true, event: updated };
+	} catch (error) {
+		console.error('Error updating calendar event:', error);
+		return { success: false, error: 'Failed to update event' };
+	}
+}
+
 export async function getRecentActivityAction() {
 	try {
 		const user = await ensureAuthenticated();

@@ -4,6 +4,7 @@ import { Notification03Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { m } from 'framer-motion';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { appConfig } from '@/app.config';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -13,6 +14,7 @@ import { cn } from '@/lib/utils';
 import { ProfileMenu } from './profile-menu';
 
 const desktopNavItems = [
+	{ href: '/dashboard', label: 'Dashboard' },
 	{ href: '/schedule', label: 'Schedule' },
 	{ href: '/planner', label: 'Planner' },
 	{ href: '/focus', label: 'Focus' },
@@ -38,6 +40,7 @@ export function ResponsiveHeader({
 	onSignUp,
 	mobileMenuTrigger,
 }: ResponsiveHeaderProps) {
+	const pathname = usePathname();
 	const [scrolled, setScrolled] = useState(false);
 
 	useEffect(() => {
@@ -67,7 +70,12 @@ export function ResponsiveHeader({
 						<Link
 							key={item.href}
 							href={item.href}
-							className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+							className={cn(
+								'text-sm font-medium text-muted-foreground hover:text-foreground transition-colors',
+								{
+									'text-primary font-semibold': pathname.includes(item.href),
+								}
+							)}
 						>
 							{item.label}
 						</Link>

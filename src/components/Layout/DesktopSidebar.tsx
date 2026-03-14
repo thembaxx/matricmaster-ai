@@ -216,7 +216,7 @@ export function AppSidebar({ user, pathname, theme, onToggleTheme }: AppSidebarP
 						placeholder="Search..."
 						value={searchQuery}
 						onChange={(e) => setSearchQuery(e.target.value)}
-						className="pl-9 h-10 bg-sidebar-accent/40 placeholder:text-xs placeholder:text-sidebar-foreground/40 border-sidebar-border/50 focus-visible:ring-sidebar-ring rounded-xl text-sm"
+						className="pl-9 h-10 bg-sidebar-accent/40 placeholder:text-xs placeholder:text-sidebar-foreground/40 border-sidebar-border/50 focus-visible:ring-sidebar-ring rounded-lg shadow-none bg-white text-sm"
 					/>
 				</div>
 			</SidebarHeader>
@@ -257,7 +257,7 @@ export function AppSidebar({ user, pathname, theme, onToggleTheme }: AppSidebarP
 								transition={{ duration: 0.2 }}
 								className="overflow-hidden"
 							>
-								<SidebarMenu className="pt-1">
+								<SidebarMenu className="pt-1 pr-0!">
 									{section.items.map((item, idx) => {
 										const isActive = pathname === item.href;
 										return (
@@ -266,7 +266,7 @@ export function AppSidebar({ user, pathname, theme, onToggleTheme }: AppSidebarP
 													asChild
 													isActive={isActive}
 													className={cn(
-														'mx-1 rounded-xl h-11 transition-all duration-200',
+														'pl-3.5 rounded-xl h-11 transition-all duration-200',
 														isActive
 															? 'bg-sidebar-primary/10 text-sidebar-primary shadow-sm'
 															: 'text-sidebar-foreground/60 hover:text-sidebar-foreground hover:bg-sidebar-accent/50'
@@ -294,7 +294,7 @@ export function AppSidebar({ user, pathname, theme, onToggleTheme }: AppSidebarP
 														{isActive && (
 															<m.div
 																layoutId="sidebar-active"
-																className="ml-auto w-1.5 h-1.5 rounded-full bg-sidebar-primary"
+																className="ml-auto mr-4 w-1.5 h-1.5 rounded-full bg-sidebar-primary"
 															/>
 														)}
 													</Link>
