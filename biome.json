@@ -45,7 +45,8 @@
 			},
 			"a11y": {
 				"useKeyWithClickEvents": "off",
-				"useButtonType": "error"
+				"useButtonType": "error",
+				"useSemanticElements": "off"
 			}
 		}
 	},

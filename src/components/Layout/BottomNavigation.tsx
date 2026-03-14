@@ -1,11 +1,24 @@
 'use client';
 
-import { Calendar01Icon, MagicWandIcon, Search01Icon, UserIcon } from '@hugeicons/core-free-icons';
+import {
+	Calendar01Icon,
+	DashboardSpeed02Icon,
+	MagicWandIcon,
+	Search01Icon,
+	UserIcon,
+} from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { m } from 'framer-motion';
 import Link from 'next/link';
 
 const navItems = [
+	{
+		href: '/dashboard',
+		label: 'Dashboard',
+		icon: DashboardSpeed02Icon,
+		activeColor: 'text-tiimo-blue',
+		bgColor: 'bg-tiimo-blue/10',
+	},
 	{
 		href: '/schedule',
 		label: 'Daily',

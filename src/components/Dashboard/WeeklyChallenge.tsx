@@ -172,7 +172,7 @@ export const WeeklyChallenge = memo(function WeeklyChallenge({
 				<m.div
 					animate={{ rotate: [0, 360] }}
 					transition={{ duration: 20, repeat: Number.POSITIVE_INFINITY, ease: 'linear' }}
-					className="absolute -right-8 -top-8 w-32 h-32 bg-brand-amber/10 rounded-full blur-2xl"
+					className="absolute -right-8 -top-8 w-32 h-32 bg-primary-purple/10 rounded-full blur-2xl"
 				/>
 			)}
 

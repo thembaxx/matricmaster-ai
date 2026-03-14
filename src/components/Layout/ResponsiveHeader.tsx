@@ -1,6 +1,6 @@
 'use client';
 
-import { Notification03Icon } from '@hugeicons/core-free-icons';
+import { Notification01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { m } from 'framer-motion';
 import Link from 'next/link';
@@ -134,7 +134,7 @@ function NotificationButton({ count, onClick }: NotificationButtonProps) {
 			onClick={onClick}
 			aria-label={`Notifications${count > 0 ? `, ${count} unread` : ''}`}
 		>
-			<HugeiconsIcon icon={Notification03Icon} className="w-5 h-5 text-foreground" />
+			<HugeiconsIcon icon={Notification01Icon} className="w-5 h-5 text-foreground" />
 			{count > 0 && (
 				<m.span
 					initial={{ scale: 0.95, opacity: 0 }}
