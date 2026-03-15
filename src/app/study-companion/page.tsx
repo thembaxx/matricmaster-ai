@@ -256,9 +256,17 @@ export default function StudyCompanion() {
 						</h2>
 						<div className="space-y-2">
 							{[
-								{ emoji: '🧮', title: 'Calculus derivatives', time: '2 hours ago' },
-								{ emoji: '⚛️', title: 'Physics circuits', time: 'Yesterday' },
-								{ emoji: '📖', title: 'English essay planning', time: '2 days ago' },
+								{
+									emoji: SUBJECTS.mathematics.emoji,
+									title: 'Calculus derivatives',
+									time: '2 hours ago',
+								},
+								{ emoji: SUBJECTS.physics.emoji, title: 'Physics circuits', time: 'Yesterday' },
+								{
+									emoji: SUBJECTS.english.emoji,
+									title: 'English essay planning',
+									time: '2 days ago',
+								},
 							].map((item, index) => (
 								<m.div
 									key={index}

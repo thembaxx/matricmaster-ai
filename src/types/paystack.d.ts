@@ -33,22 +33,14 @@ declare module '@paystack/paystack-sdk' {
 			}>;
 		};
 		customer: {
-			create: (data: {
-				email: string;
-				first_name?: string;
-				last_name?: string;
-			}) => Promise<{
+			create: (data: { email: string; first_name?: string; last_name?: string }) => Promise<{
 				status: boolean;
 				message: string;
 				data: { customer_code?: string };
 			}>;
 		};
 		subscription: {
-			create: (data: {
-				customer: string;
-				plan: string;
-				email_token: string;
-			}) => Promise<{
+			create: (data: { customer: string; plan: string; email_token: string }) => Promise<{
 				status: boolean;
 				message: string;
 				data?: { subscription_code?: string };

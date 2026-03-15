@@ -23,8 +23,10 @@
 			"complexity": {
 				"noForEach": "off"
 			},
+
 			"suspicious": {
-				"noArrayIndexKey": "off"
+				"noArrayIndexKey": "off",
+				"noRedeclare": "off"
 			},
 			"correctness": {
 				"useExhaustiveDependencies": "warn",
