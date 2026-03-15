@@ -1,5 +1,6 @@
 'use client';
 
+import { AnimatePresence, m } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { getRecentActivityAction } from '@/lib/db/actions';
@@ -68,35 +69,55 @@ export function ActivityFeed() {
 	}
 
 	return (
-		<div className="space-y-4">
-			{activities.length === 0 ? (
-				<Card className="p-8 text-center bg-secondary/30 border-none rounded-[2rem]">
-					<p className="text-sm text-tiimo-gray-muted">No recent activity</p>
-				</Card>
-			) : (
-				activities.map((activity, index) => (
-					<Card
-						key={activity.id}
-						className="p-5 flex items-center gap-4 bg-card border-border/50 rounded-[2rem] shadow-tiimo transition-all hover:scale-[1.02]"
+		<m.div layout className="space-y-4">
+			<AnimatePresence mode="popLayout">
+				{activities.length === 0 ? (
+					<m.div
+						key="empty"
+						layout
+						initial={{ opacity: 0 }}
+						animate={{ opacity: 1 }}
+						exit={{ opacity: 0 }}
 					>
-						<div
-							className={cn(
-								'w-12 h-12 rounded-2xl flex items-center justify-center font-black text-white',
-								index % 2 === 0 ? 'bg-tiimo-lavender' : 'bg-tiimo-yellow'
-							)}
+						<Card className="p-8 text-center bg-secondary/30 border-none rounded-[2rem]">
+							<p className="text-sm text-tiimo-gray-muted">No recent activity</p>
+						</Card>
+					</m.div>
+				) : (
+					activities.map((activity, index) => (
+						<m.div
+							key={activity.id}
+							layout
+							initial={{ opacity: 0, y: 10 }}
+							animate={{ opacity: 1, y: 0 }}
+							exit={{ opacity: 0, scale: 0.95 }}
+							transition={{ delay: index * 0.05 }}
 						>
-							{activity.marksEarned}
-						</div>
-						<div>
-							<h4 className="font-medium text-sm">{activity.subjectName || 'Practice Session'}</h4>
-							<p className="text-[10px] text-tiimo-gray-muted mt-0.5">
-								{activity.completedAt ? new Date(activity.completedAt).toLocaleDateString() : 'N/A'}{' '}
-								• {activity.sessionType}
-							</p>
-						</div>
-					</Card>
-				))
-			)}
-		</div>
+							<Card className="p-5 flex items-center gap-4 bg-card border-border/50 rounded-[2rem] shadow-tiimo transition-all hover:scale-[1.02]">
+								<div
+									className={cn(
+										'w-12 h-12 rounded-2xl flex items-center justify-center font-black text-white',
+										index % 2 === 0 ? 'bg-tiimo-lavender' : 'bg-tiimo-yellow'
+									)}
+								>
+									{activity.marksEarned}
+								</div>
+								<div>
+									<h4 className="font-medium text-sm">
+										{activity.subjectName || 'Practice Session'}
+									</h4>
+									<p className="text-[10px] text-tiimo-gray-muted mt-0.5">
+										{activity.completedAt
+											? new Date(activity.completedAt).toLocaleDateString()
+											: 'N/A'}{' '}
+										• {activity.sessionType}
+									</p>
+								</div>
+							</Card>
+						</m.div>
+					))
+				)}
+			</AnimatePresence>
+		</m.div>
 	);
 }

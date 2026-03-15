@@ -3,6 +3,7 @@
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 import { toast } from 'sonner';
+import { GlassOrb } from '@/components/AI/GlassOrb';
 import { ClientOnly } from '@/components/ClientOnly';
 import { DailyLoginBonus } from '@/components/Gamification/DailyLoginBonus';
 import { MobileLayoutFixes } from '@/components/Layout/MobileLayoutFixes';
@@ -73,6 +74,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 						<BottomNavigation pathname={pathname} />
 					)}
 				</div>
+				<GlassOrb />
 				<GlobalStyles />
 			</div>
 		);
@@ -148,6 +150,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 					)}
 				</div>
 			</SidebarInset>
+			<GlassOrb />
 			<GlobalStyles />
 		</SidebarProvider>
 	);

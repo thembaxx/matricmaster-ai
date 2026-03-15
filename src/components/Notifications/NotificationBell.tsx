@@ -2,6 +2,7 @@
 
 import { Notification01Icon, Notification03Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
+import { AnimatePresence, m } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import {
@@ -62,37 +63,53 @@ export function NotificationBell() {
 				</DropdownMenuLabel>
 				<DropdownMenuSeparator className="bg-border/50 mb-2" />
 				<div className="max-h-[400px] overflow-y-auto no-scrollbar space-y-2">
-					{notifications.length === 0 ? (
-						<div className="py-8 text-center text-[10px] font-bold text-tiimo-gray-muted uppercase tracking-widest">
-							All caught up!
-						</div>
-					) : (
-						notifications.map((n) => (
-							<DropdownMenuItem
-								key={n.id}
-								className={cn(
-									'rounded-2xl p-4 cursor-pointer transition-all flex flex-col gap-1 items-start focus:bg-secondary/50',
-									!n.isRead && 'bg-primary/5 border border-primary/10'
-								)}
-								onClick={() => handleMarkAsRead(n.id)}
+					<AnimatePresence mode="popLayout">
+						{notifications.length === 0 ? (
+							<m.div
+								key="empty"
+								layout
+								initial={{ opacity: 0 }}
+								animate={{ opacity: 1 }}
+								exit={{ opacity: 0 }}
+								className="py-8 text-center text-[10px] font-bold text-tiimo-gray-muted uppercase tracking-widest"
 							>
-								<div className="flex w-full justify-between items-start gap-2">
-									<span className="font-black text-xs uppercase tracking-tight leading-tight">
-										{n.title}
-									</span>
-									{!n.isRead && (
-										<div className="w-1.5 h-1.5 bg-primary rounded-full mt-1 shrink-0" />
-									)}
-								</div>
-								<p className="text-[10px] font-medium text-tiimo-gray-muted leading-relaxed">
-									{n.message}
-								</p>
-								<span className="text-[9px] font-bold text-tiimo-gray-muted/50 uppercase tracking-tighter mt-1">
-									{new Date(n.createdAt!).toLocaleDateString()}
-								</span>
-							</DropdownMenuItem>
-						))
-					)}
+								All caught up!
+							</m.div>
+						) : (
+							notifications.map((n) => (
+								<m.div
+									key={n.id}
+									layout
+									initial={{ opacity: 0, scale: 0.95 }}
+									animate={{ opacity: 1, scale: 1 }}
+									exit={{ opacity: 0, scale: 0.95 }}
+								>
+									<DropdownMenuItem
+										className={cn(
+											'rounded-2xl p-4 cursor-pointer transition-all flex flex-col gap-1 items-start focus:bg-secondary/50',
+											!n.isRead && 'bg-primary/5 border border-primary/10'
+										)}
+										onClick={() => handleMarkAsRead(n.id)}
+									>
+										<div className="flex w-full justify-between items-start gap-2">
+											<span className="font-black text-xs uppercase tracking-tight leading-tight">
+												{n.title}
+											</span>
+											{!n.isRead && (
+												<div className="w-1.5 h-1.5 bg-primary rounded-full mt-1 shrink-0" />
+											)}
+										</div>
+										<p className="text-[10px] font-medium text-tiimo-gray-muted leading-relaxed">
+											{n.message}
+										</p>
+										<span className="text-[9px] font-bold text-tiimo-gray-muted/50 uppercase tracking-tighter mt-1">
+											{new Date(n.createdAt!).toLocaleDateString()}
+										</span>
+									</DropdownMenuItem>
+								</m.div>
+							))
+						)}
+					</AnimatePresence>
 				</div>
 			</DropdownMenuContent>
 		</DropdownMenu>

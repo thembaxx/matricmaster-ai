@@ -10,13 +10,15 @@ import {
 	SparklesIcon,
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
+import { m } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { ActivityFeed } from '@/components/Dashboard/ActivityFeed';
-import { DashboardHeader } from '@/components/Dashboard/DashboardHeaderV2';
+import { BriefingGreeting } from '@/components/Dashboard/BriefingGreeting';
 import { SubjectGrid } from '@/components/Dashboard/SubjectGridV2';
 import { type StudyTask, TaskCard } from '@/components/Dashboard/TaskCardV2';
 import { TaskSection } from '@/components/Dashboard/TaskSectionV2';
+import { UniversityGoalCard } from '@/components/Dashboard/UniversityGoalCard';
 import { WeeklyChallenge } from '@/components/Dashboard/WeeklyChallenge';
 import { XpHeader } from '@/components/Gamification/XpHeader';
 import { FocusContent } from '@/components/Layout/FocusContent';
@@ -161,41 +163,37 @@ export default function Dashboard({
 		.flat()
 		.filter((t) => t.completed).length;
 	const totalCount = Object.values(tasks).flat().length;
-	const today = new Date().toLocaleDateString('en-US', {
-		weekday: 'long',
-		month: 'long',
-		day: 'numeric',
-	});
+	const suggestedSubject =
+		progress.recentSessions?.[0]?.topic || progress.recentSessions?.[0]?.subjectId?.toString();
 
 	return (
 		<div className="min-h-screen bg-background flex">
 			<TimelineSidebar />
 			<FocusContent>
 				<div className="mx-auto px-4 sm:px-6 lg:px-8 pb-8">
-					<DashboardHeader
-						today={today}
+					<BriefingGreeting
+						userName={session?.user?.name}
 						completedCount={completedCount}
 						totalCount={totalCount}
-						initialXp={progress.totalMarksEarned}
+						streakDays={streak.currentStreak}
+						suggestedSubject={suggestedSubject}
 					/>
 
 					<div className="h-[calc(100vh-320px)] sm:h-full no-scrollbar">
-						<div className="space-y-10 pb-32">
+						<m.div layout className="space-y-10 pb-32">
 							{/* Welcome & Stats Row */}
-							<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-								<div className="space-y-6">
-									<div className="space-y-1">
-										<h2 className="text-base font-semibold tracking-tight">
-											Hello, {session?.user?.name?.split(' ')[0] || 'Scholar'}!
-										</h2>
-										<p className="text-xs text-tiimo-gray-muted">Let's crush your goals today.</p>
-									</div>
-									<XpHeader
-										variant="full"
-										initialAchievements={achievements}
-										initialStreak={{ currentStreak: streak.currentStreak }}
-									/>
-								</div>
+							<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+								<XpHeader
+									variant="full"
+									initialAchievements={achievements}
+									initialStreak={{ currentStreak: streak.currentStreak }}
+								/>
+								<UniversityGoalCard
+									universityName="University of Cape Town"
+									faculty="BSc Computer Science"
+									currentAps={32}
+									targetAps={42}
+								/>
 								<WeeklyChallenge initialProgress={progress} />
 							</div>
 
@@ -361,7 +359,7 @@ export default function Dashboard({
 								<h2 className="text-xl font-semibold text-foreground mb-6">Recent activity</h2>
 								<ActivityFeed />
 							</section>
-						</div>
+						</m.div>
 					</div>
 				</div>
 			</FocusContent>

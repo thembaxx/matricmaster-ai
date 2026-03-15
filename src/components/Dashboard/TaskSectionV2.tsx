@@ -21,7 +21,7 @@ export function TaskSection({ title, priority, expanded, onToggle, children }: T
 	};
 
 	return (
-		<section className="space-y-4">
+		<m.section layout className="space-y-4">
 			<button
 				type="button"
 				onClick={onToggle}
@@ -46,9 +46,10 @@ export function TaskSection({ title, priority, expanded, onToggle, children }: T
 				</m.div>
 			</button>
 
-			<AnimatePresence initial={false}>
+			<AnimatePresence mode="popLayout">
 				{expanded && (
 					<m.div
+						layout
 						initial={{ opacity: 0, height: 0, scale: 0.98 }}
 						animate={{ opacity: 1, height: 'auto', scale: 1 }}
 						exit={{ opacity: 0, height: 0, scale: 0.98 }}
@@ -59,6 +60,6 @@ export function TaskSection({ title, priority, expanded, onToggle, children }: T
 					</m.div>
 				)}
 			</AnimatePresence>
-		</section>
+		</m.section>
 	);
 }
