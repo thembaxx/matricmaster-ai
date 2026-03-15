@@ -20,6 +20,7 @@ import { AIExplanation } from '@/components/Quiz/AIExplanation';
 import { QuestionCard, type QuestionOption } from '@/components/Quiz/QuestionCardV2';
 import { QuizActions } from '@/components/Quiz/QuizActionsV2';
 import { QuizHeader } from '@/components/Quiz/QuizHeaderV2';
+import { StruggleAlert } from '@/components/StudyBuddy/StruggleAlert';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -29,6 +30,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { QUIZ_DATA } from '@/constants/quiz-data';
 import { useQuizCompletion } from '@/hooks/use-quiz-completion';
 import { cn } from '@/lib/utils';
+import {
+	getAdaptiveHint,
+	getStrugglingConcepts,
+	recordStruggle,
+	updateConfidence,
+} from '@/services/buddyActions';
 
 interface QuizProps {
 	quizId?: string;
@@ -110,6 +117,11 @@ export default function Quiz({ quizId: initialQuizId }: QuizProps) {
 	const [mathInput, setMathInput] = useState('');
 	const [cursorPos, setCursorPos] = useState(0);
 
+	// Study Buddy state
+	const [adaptiveHint, setAdaptiveHint] = useState<string | null>(null);
+	const [showStruggleAlert, setShowStruggleAlert] = useState(false);
+	const [currentStruggleCount, setCurrentStruggleCount] = useState(0);
+
 	const { completeQuiz, isCompleting } = useQuizCompletion();
 
 	const quiz = QUIZ_DATA[quizId] || QUIZ_DATA['math-p1-2023-nov'];
@@ -128,6 +140,25 @@ export default function Quiz({ quizId: initialQuizId }: QuizProps) {
 		}, 1000);
 		return () => clearInterval(timer);
 	}, []);
+
+	// Load adaptive hint when question changes
+	useEffect(() => {
+		async function loadHint() {
+			if (!currentQuestion?.topic) return;
+			try {
+				const hint = await getAdaptiveHint(currentQuestion.topic);
+				setAdaptiveHint(hint);
+			} catch (error) {
+				console.error('Failed to load hint:', error);
+			}
+		}
+		loadHint();
+	}, [currentQuestion?.topic]);
+
+	// Reset struggle alert when moving to a new question
+	useEffect(() => {
+		setShowStruggleAlert(false);
+	});
 
 	const formatTime = (s: number) => `${Math.floor(s / 60)}:${(s % 60).toString().padStart(2, '0')}`;
 
@@ -168,6 +199,26 @@ export default function Quiz({ quizId: initialQuizId }: QuizProps) {
 		setIsCorrect(correct);
 		if (correct) setScore((prev) => prev + 1);
 		setIsChecked(true);
+
+		// Track confidence and struggles with Study Buddy
+		if (currentQuestion?.topic) {
+			try {
+				await updateConfidence(currentQuestion.topic, currentSubject, correct);
+
+				if (!correct) {
+					await recordStruggle(currentQuestion.topic);
+					// Check if should show struggle alert (2+ struggles)
+					const struggles = await getStrugglingConcepts();
+					const thisStruggle = struggles.find((s) => s.concept === currentQuestion.topic);
+					if (thisStruggle && thisStruggle.struggleCount >= 2) {
+						setCurrentStruggleCount(thisStruggle.struggleCount);
+						setShowStruggleAlert(true);
+					}
+				}
+			} catch (error) {
+				console.error('Failed to track progress:', error);
+			}
+		}
 	};
 
 	const handleSubjectChange = (subject: string) => {
@@ -293,6 +344,22 @@ export default function Quiz({ quizId: initialQuizId }: QuizProps) {
 									currentQuestion.options.find((o) => o.id === currentQuestion.correctAnswer)?.text
 								}
 							/>
+
+							{adaptiveHint && !isChecked && (
+								<Card className="p-4 rounded-2xl border-amber-500/30 bg-amber-50 dark:bg-amber-950/30">
+									<p className="text-sm text-amber-800 dark:text-amber-200">
+										<strong>Hint:</strong> {adaptiveHint}
+									</p>
+								</Card>
+							)}
+
+							{showStruggleAlert && currentQuestion?.topic && (
+								<StruggleAlert
+									concept={currentQuestion.topic}
+									struggleCount={currentStruggleCount}
+									onGetHelp={() => setShowStruggleAlert(false)}
+								/>
+							)}
 
 							{isChecked && (
 								<m.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>

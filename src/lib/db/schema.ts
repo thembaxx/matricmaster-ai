@@ -702,6 +702,7 @@ export const studyBuddyProfiles = pgTable(
 		lookingFor: text('looking_for'),
 		isVisible: boolean('is_visible').notNull().default(true),
 		matchPreferences: text('match_preferences'),
+		personality: varchar('personality', { length: 20 }).notNull().default('mentor'),
 		createdAt: timestamp('created_at').defaultNow(),
 		updatedAt: timestamp('updated_at').defaultNow(),
 	},
@@ -752,6 +753,76 @@ export const studyBuddies = pgTable(
 		uniqueBuddy: uniqueIndex('study_buddies_unique').on(table.userId1, table.userId2),
 	})
 );
+
+// ============================================================================
+// AI STUDY BUDDY - CONCEPT STRUGGLES (tracks repeated wrong answers)
+// ============================================================================
+
+export const conceptStruggles = pgTable(
+	'concept_struggles',
+	{
+		id: uuid('id').defaultRandom().primaryKey(),
+		userId: text('user_id')
+			.notNull()
+			.references(() => users.id, { onDelete: 'cascade' }),
+		concept: varchar('concept', { length: 200 }).notNull(),
+		struggleCount: integer('struggle_count').notNull().default(1),
+		lastStruggleAt: timestamp('last_struggle_at').defaultNow(),
+		isResolved: boolean('is_resolved').notNull().default(false),
+		createdAt: timestamp('created_at').defaultNow(),
+		updatedAt: timestamp('updated_at').defaultNow(),
+	},
+	(table) => ({
+		userIdConceptIdx: index('concept_struggles_user_concept_idx').on(table.userId, table.concept),
+		userIdIdx: index('concept_struggles_user_id_idx').on(table.userId),
+	})
+);
+
+export const conceptStrugglesRelations = relations(conceptStruggles, ({ one }) => ({
+	user: one(users, {
+		fields: [conceptStruggles.userId],
+		references: [users.id],
+	}),
+}));
+
+// ============================================================================
+// AI STUDY BUDDY - TOPIC CONFIDENCE (tracks confidence per topic)
+// ============================================================================
+
+export const topicConfidence = pgTable(
+	'topic_confidence',
+	{
+		id: uuid('id').defaultRandom().primaryKey(),
+		userId: text('user_id')
+			.notNull()
+			.references(() => users.id, { onDelete: 'cascade' }),
+		topic: varchar('topic', { length: 200 }).notNull(),
+		subject: varchar('subject', { length: 50 }).notNull(),
+		confidenceScore: numeric('confidence_score', { precision: 3, scale: 2 })
+			.notNull()
+			.default('0.5'),
+		timesCorrect: integer('times_correct').notNull().default(0),
+		timesAttempted: integer('times_attempted').notNull().default(0),
+		lastAttemptAt: timestamp('last_attempt_at'),
+		createdAt: timestamp('created_at').defaultNow(),
+		updatedAt: timestamp('updated_at').defaultNow(),
+	},
+	(table) => ({
+		userIdTopicSubjectIdx: index('topic_confidence_uts_idx').on(
+			table.userId,
+			table.topic,
+			table.subject
+		),
+		userIdIdx: index('topic_confidence_user_id_idx').on(table.userId),
+	})
+);
+
+export const topicConfidenceRelations = relations(topicConfidence, ({ one }) => ({
+	user: one(users, {
+		fields: [topicConfidence.userId],
+		references: [users.id],
+	}),
+}));
 
 // ============================================================================
 // USER SETTINGS TABLE
