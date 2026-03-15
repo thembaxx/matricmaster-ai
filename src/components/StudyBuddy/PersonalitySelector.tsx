@@ -4,7 +4,6 @@ import { CheckmarkCircle02Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
 import { PERSONALITIES, type Personality } from '@/lib/study-buddy/personalities';
 import { setBuddyPersonality } from '@/services/buddyActions';
 
@@ -13,6 +12,12 @@ interface PersonalitySelectorProps {
 	onSelect?: (personality: Personality) => void;
 	compact?: boolean;
 }
+
+const personalityColors: Record<Personality, string> = {
+	mentor: 'from-blue-500 to-indigo-500',
+	tutor: 'from-emerald-500 to-teal-500',
+	friend: 'from-pink-500 to-rose-500',
+};
 
 export function PersonalitySelector({
 	currentPersonality,
@@ -37,7 +42,7 @@ export function PersonalitySelector({
 
 	if (compact) {
 		return (
-			<div className="flex gap-2 flex-wrap">
+			<div className="flex flex-wrap gap-2">
 				{(Object.keys(PERSONALITIES) as Personality[]).map((p) => (
 					<Button
 						key={p}
@@ -45,7 +50,9 @@ export function PersonalitySelector({
 						size="sm"
 						onClick={() => handleSelect(p)}
 						disabled={loading}
-						className="rounded-full text-xs"
+						className={`rounded-full text-xs h-8 px-3 transition-all duration-200 ${
+							selected === p ? `bg-gradient-to-r ${personalityColors[p]}` : ''
+						}`}
 					>
 						{PERSONALITIES[p].name}
 					</Button>
@@ -55,8 +62,11 @@ export function PersonalitySelector({
 	}
 
 	return (
-		<Card className="p-6 rounded-2xl">
-			<h3 className="text-lg font-bold mb-4">Choose Your Study Buddy Style</h3>
+		<div className="space-y-4">
+			<div>
+				<h3 className="font-display font-bold text-lg text-foreground">Choose Your Style</h3>
+				<p className="text-sm text-muted-foreground mt-1">How should your buddy help you learn?</p>
+			</div>
 			<div className="grid gap-3">
 				{(Object.keys(PERSONALITIES) as Personality[]).map((p) => (
 					<button
@@ -64,24 +74,33 @@ export function PersonalitySelector({
 						key={p}
 						onClick={() => handleSelect(p)}
 						disabled={loading}
-						className={`p-4 rounded-xl border-2 text-left transition-all ${
+						className={`relative p-4 rounded-2xl border-2 text-left transition-all duration-200 hover:scale-[1.01] active:scale-[0.99] ${
 							selected === p
-								? 'border-primary bg-primary/10'
-								: 'border-border hover:border-primary/50'
+								? 'border-primary/50 bg-primary/5 shadow-tiimo'
+								: 'border-border/50 hover:border-primary/30 hover:bg-secondary/50'
 						}`}
 					>
-						<div className="flex items-center justify-between">
-							<div>
-								<div className="font-semibold">{PERSONALITIES[p].name}</div>
-								<div className="text-sm text-muted-foreground">{PERSONALITIES[p].description}</div>
+						{selected === p && (
+							<div
+								className={`absolute inset-0 rounded-2xl bg-gradient-to-r ${personalityColors[p]} opacity-5`}
+							/>
+						)}
+						<div className="relative flex items-center justify-between">
+							<div className="flex-1">
+								<div className="font-semibold text-foreground">{PERSONALITIES[p].name}</div>
+								<div className="text-sm text-muted-foreground mt-0.5">
+									{PERSONALITIES[p].description}
+								</div>
 							</div>
 							{selected === p && (
-								<HugeiconsIcon icon={CheckmarkCircle02Icon} className="w-5 h-5 text-primary" />
+								<div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center ml-3">
+									<HugeiconsIcon icon={CheckmarkCircle02Icon} className="w-4 h-4 text-white" />
+								</div>
 							)}
 						</div>
 					</button>
 				))}
 			</div>
-		</Card>
+		</div>
 	);
 }

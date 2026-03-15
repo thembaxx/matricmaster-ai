@@ -1,8 +1,9 @@
 'use client';
 
-import { Cancel01Icon, CheckmarkCircle02Icon } from '@hugeicons/core-free-icons';
+import { Cancel01Icon, CheckmarkCircle02Icon, SparklesIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { useEffect, useState } from 'react';
+import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import { getExplanation } from '@/services/geminiService';
@@ -42,58 +43,73 @@ export function AnswerBreakdown({
 	return (
 		<Card
 			className={cn(
-				'p-6 rounded-2xl border-2',
-				isCorrect ? 'bg-success/10 border-success/30' : 'bg-destructive/10 border-destructive/30'
+				'p-6 rounded-[1.5rem] border-0 shadow-tiimo overflow-hidden',
+				isCorrect ? 'bg-success/5' : 'bg-destructive/5'
 			)}
 		>
-			<div className="flex gap-4">
+			{isCorrect && (
+				<div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-success to-emerald-400" />
+			)}
+			{!isCorrect && (
+				<div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-destructive to-red-400" />
+			)}
+
+			<div className="flex gap-5">
 				<div
 					className={cn(
-						'w-12 h-12 rounded-xl flex items-center justify-center shrink-0',
+						'w-14 h-14 rounded-2xl flex items-center justify-center shrink-0 shadow-lg',
 						isCorrect ? 'bg-success text-white' : 'bg-destructive text-white'
 					)}
 				>
 					<HugeiconsIcon
 						icon={isCorrect ? CheckmarkCircle02Icon : Cancel01Icon}
-						className="w-6 h-6"
+						className="w-7 h-7"
 					/>
 				</div>
-				<div className="flex-1 space-y-3">
-					<h4 className="font-bold text-lg">{isCorrect ? 'Correct!' : 'Not quite right'}</h4>
-
-					<div className="space-y-2">
-						{!isCorrect && selectedAnswer && (
-							<p className="text-sm text-muted-foreground">
-								You selected: <span className="font-medium">{selectedAnswer}</span>
-							</p>
-						)}
-						<p className="text-sm">
-							Correct answer: <span className="font-bold text-success">{correctAnswer}</span>
+				<div className="flex-1 space-y-4">
+					<div>
+						<h4 className="font-display font-bold text-xl text-foreground">
+							{isCorrect ? 'Brilliant!' : 'Not quite right'}
+						</h4>
+						<p className="text-sm text-muted-foreground mt-1">
+							{isCorrect ? 'Keep up the great work!' : "Don't worry, practice makes perfect."}
 						</p>
 					</div>
 
+					<div className="space-y-2">
+						{!isCorrect && selectedAnswer && (
+							<div className="flex items-center gap-2 p-3 rounded-xl bg-destructive/10">
+								<span className="text-xs font-medium text-destructive">Your answer:</span>
+								<span className="text-sm font-medium">{selectedAnswer}</span>
+							</div>
+						)}
+						<div className="flex items-center gap-2 p-3 rounded-xl bg-success/10">
+							<span className="text-xs font-medium text-success">Correct answer:</span>
+							<span className="text-sm font-bold">{correctAnswer}</span>
+						</div>
+					</div>
+
 					{!loading && explanation && (
-						<div className="mt-4 p-3 rounded-xl bg-background/50">
-							<p className="text-xs font-medium text-muted-foreground mb-1">Explanation:</p>
-							<p className="text-sm text-foreground/80">{explanation}</p>
+						<div className="p-4 rounded-xl bg-card border border-border/50">
+							<div className="flex items-center gap-2 mb-2">
+								<HugeiconsIcon icon={SparklesIcon} className="w-4 h-4 text-primary" />
+								<p className="text-xs font-semibold text-primary">AI Explanation</p>
+							</div>
+							<p className="text-sm text-foreground/80 leading-relaxed">{explanation}</p>
 						</div>
 					)}
 
 					{loading && (
-						<div className="mt-4 animate-pulse">
-							<div className="h-4 bg-muted rounded w-3/4 mb-2" />
-							<div className="h-4 bg-muted rounded w-1/2" />
+						<div className="space-y-3">
+							<div className="h-4 bg-muted/50 rounded w-3/4 animate-pulse" />
+							<div className="h-4 bg-muted/50 rounded w-1/2 animate-pulse" />
 						</div>
 					)}
 
 					{onContinue && (
-						<button
-							type="button"
-							onClick={onContinue}
-							className="mt-4 text-sm font-medium text-primary hover:underline"
-						>
+						<Button onClick={onContinue} className="rounded-full h-11 px-6 font-medium">
 							Continue
-						</button>
+						</Button>
 					)}
 				</div>
 			</div>

@@ -29,60 +29,79 @@ export function QuizProgressDashboard({
 	const getDifficultyColor = (diff?: string) => {
 		switch (diff) {
 			case 'easy':
-				return 'text-green-500';
+				return 'bg-success text-success';
 			case 'hard':
-				return 'text-red-500';
+				return 'bg-destructive text-destructive';
 			default:
-				return 'text-yellow-500';
+				return 'bg-warning text-warning';
+		}
+	};
+
+	const getDifficultyLabel = (diff?: string) => {
+		switch (diff) {
+			case 'easy':
+				return 'Easy';
+			case 'hard':
+				return 'Hard';
+			default:
+				return 'Medium';
 		}
 	};
 
 	return (
-		<Card className="p-4 rounded-2xl space-y-4">
+		<Card className="p-5 rounded-[1.5rem] space-y-4 border-0 shadow-tiimo">
 			<div className="flex items-center justify-between">
-				<h3 className="font-bold text-sm">Progress</h3>
-				<div className="flex items-center gap-1 text-xs text-muted-foreground">
-					<HugeiconsIcon icon={TimerIcon} className="w-3 h-3" />
-					{elapsedTime}
+				<h3 className="font-display font-bold text-base text-foreground">Progress</h3>
+				<div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-secondary">
+					<HugeiconsIcon icon={TimerIcon} className="w-4 h-4 text-muted-foreground" />
+					<span className="text-sm font-mono font-medium">{elapsedTime}</span>
 				</div>
 			</div>
 
-			<Progress value={progressPercent} className="h-2 rounded-full" />
+			<div className="space-y-2">
+				<Progress
+					value={progressPercent}
+					className="h-2.5 rounded-full bg-secondary"
+					indicatorClassName="rounded-full bg-gradient-to-r from-primary to-purple-400 transition-all duration-500"
+				/>
+				<div className="flex justify-between text-xs text-muted-foreground">
+					<span>Question {currentQuestion}</span>
+					<span>of {totalQuestions}</span>
+				</div>
+			</div>
 
-			<div className="grid grid-cols-3 gap-2 text-center">
-				<div className="p-2 rounded-xl bg-green-50 dark:bg-green-950/30">
-					<div className="flex items-center justify-center gap-1 text-green-600">
-						<HugeiconsIcon icon={CheckmarkCircle02Icon} className="w-4 h-4" />
-						<span className="font-bold">{correctCount}</span>
+			<div className="grid grid-cols-3 gap-3">
+				<div className="p-3 rounded-2xl bg-success/10 text-center">
+					<div className="flex items-center justify-center gap-1.5 mb-1">
+						<HugeiconsIcon icon={CheckmarkCircle02Icon} className="w-5 h-5 text-success" />
+						<span className="text-xl font-bold text-success">{correctCount}</span>
 					</div>
-					<p className="text-xs text-muted-foreground">Correct</p>
+					<p className="text-xs text-muted-foreground font-medium">Correct</p>
 				</div>
-				<div className="p-2 rounded-xl bg-red-50 dark:bg-red-950/30">
-					<div className="flex items-center justify-center gap-1 text-red-600">
-						<HugeiconsIcon icon={Cancel01Icon} className="w-4 h-4" />
-						<span className="font-bold">{incorrectCount}</span>
+				<div className="p-3 rounded-2xl bg-destructive/10 text-center">
+					<div className="flex items-center justify-center gap-1.5 mb-1">
+						<HugeiconsIcon icon={Cancel01Icon} className="w-5 h-5 text-destructive" />
+						<span className="text-xl font-bold text-destructive">{incorrectCount}</span>
 					</div>
-					<p className="text-xs text-muted-foreground">Wrong</p>
+					<p className="text-xs text-muted-foreground font-medium">Wrong</p>
 				</div>
-				<div className="p-2 rounded-xl bg-blue-50 dark:bg-blue-950/30">
-					<div className="flex items-center justify-center gap-1 text-blue-600">
-						<span className="font-bold">{accuracy}%</span>
+				<div className="p-3 rounded-2xl bg-primary/10 text-center">
+					<div className="mb-1">
+						<span className="text-xl font-bold text-primary">{accuracy}%</span>
 					</div>
-					<p className="text-xs text-muted-foreground">Accuracy</p>
+					<p className="text-xs text-muted-foreground font-medium">Accuracy</p>
 				</div>
 			</div>
 
 			{difficulty && (
-				<div className="text-center">
-					<span className={`text-xs font-medium uppercase ${getDifficultyColor(difficulty)}`}>
-						{difficulty} Mode
+				<div className="flex justify-center">
+					<span
+						className={`inline-flex items-center px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider ${getDifficultyColor(difficulty)}`}
+					>
+						{getDifficultyLabel(difficulty)} Mode
 					</span>
 				</div>
 			)}
-
-			<div className="text-center text-xs text-muted-foreground">
-				Question {currentQuestion} of {totalQuestions}
-			</div>
 		</Card>
 	);
 }
