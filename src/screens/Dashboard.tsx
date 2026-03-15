@@ -21,6 +21,7 @@ import { WeeklyChallenge } from '@/components/Dashboard/WeeklyChallenge';
 import { XpHeader } from '@/components/Gamification/XpHeader';
 import { FocusContent } from '@/components/Layout/FocusContent';
 import { TimelineSidebar } from '@/components/Layout/TimelineSidebar';
+import { BuddyPanel } from '@/components/StudyBuddy/BuddyPanel';
 import { ACHIEVEMENTS } from '@/constants/achievements';
 import type { UserAchievement } from '@/lib/db/achievement-actions';
 import type { UserProgressSummary } from '@/lib/db/progress-actions';
@@ -233,6 +234,10 @@ export default function Dashboard({
 							</div>
 
 							<SubjectGrid />
+
+							<section className="space-y-4">
+								<BuddyPanel />
+							</section>
 
 							<section className="space-y-4">
 								<h2 className="text-xl font-semibold text-foreground">Start Studying</h2>
