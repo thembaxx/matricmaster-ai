@@ -103,17 +103,15 @@ export async function recordQuestionAttempt(
 		const nextReview = new Date(now);
 		nextReview.setDate(nextReview.getDate() + intervalDays);
 
-		const values = {
+		await db.insert(questionAttempts).values({
 			userId: user.id,
 			questionId,
 			topic,
 			isCorrect,
 			intervalDays,
-			easeFactor: easeFactor.toFixed(2),
+			easeFactor: easeFactor.toFixed(2) as unknown as string,
 			nextReviewAt: nextReview,
-		};
-
-		await db.insert(questionAttempts).values(values as any);
+		});
 	}
 }
 

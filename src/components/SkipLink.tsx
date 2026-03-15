@@ -1,7 +1,6 @@
 'use client';
 
-import { usePathname } from 'next/navigation';
-import { type ReactNode, useEffect } from 'react';
+import type { ReactNode } from 'react';
 
 interface SkipLinkProps {
 	children: ReactNode;
@@ -9,16 +8,6 @@ interface SkipLinkProps {
 }
 
 export function SkipLink({ children, mainId = 'main-content' }: SkipLinkProps) {
-	const pathname = usePathname();
-
-	useEffect(() => {
-		// Focus management: move focus to main content on route change
-		const main = document.getElementById(mainId);
-		if (main) {
-			main.focus();
-		}
-	}, [pathname, mainId]);
-
 	return (
 		<>
 			<a
