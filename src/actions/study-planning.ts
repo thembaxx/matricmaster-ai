@@ -3,7 +3,12 @@
 import { and, desc, eq } from 'drizzle-orm';
 import { getAuth } from '@/lib/auth';
 import { dbManager } from '@/lib/db';
-import { calendarEvents, studyPlans, studySessions, topicMastery } from '@/lib/db/schema';
+import {
+	calendarEvents,
+	studyPlans,
+	studySessions,
+	topicMastery,
+} from '@/lib/db/schema';
 
 async function getDb() {
 	const connected = await dbManager.waitForConnection(3, 2000);

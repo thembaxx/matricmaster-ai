@@ -150,10 +150,7 @@ export async function checkAndUnlockAchievements(): Promise<Achievement[]> {
 	return newAchievements;
 }
 
-async function unlockAchievement(
-	userId: string,
-	achievement: (typeof ACHIEVEMENTS)[keyof typeof ACHIEVEMENTS]
-) {
+async function unlockAchievement(userId: string, achievement: typeof ACHIEVEMENTS.FIRST_QUIZ) {
 	const db = await getDb();
 
 	await db.insert(userAchievements).values({
@@ -226,6 +223,8 @@ export async function updateStreak(): Promise<{ streakDays: number; bonusPoints:
 				updatedAt: now,
 			},
 		});
+
+	await checkAndUnlockAchievements();
 
 	return { streakDays, bonusPoints };
 }

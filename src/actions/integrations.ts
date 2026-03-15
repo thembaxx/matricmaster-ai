@@ -1,6 +1,5 @@
 'use server';
 
-import { sql } from 'drizzle-orm';
 import { getAuth } from '@/lib/auth';
 import { dbManager } from '@/lib/db';
 import { generateFlashcardsFromWeakTopics, syncMasteryToConfidence } from './adaptive-learning';
@@ -17,7 +16,8 @@ export async function onQuizCompleted(
 	topic: string,
 	durationMinutes: number,
 	questionsAttempted: number,
-	correctAnswers: number
+	correctAnswers: number,
+	_isPerfect: boolean
 ) {
 	const auth = await getAuth();
 	const session = await auth.api.getSession();
@@ -97,3 +97,5 @@ export async function onBuddyMatched(_buddyId: string) {
 		achievementsUnlocked: newAchievements,
 	};
 }
+
+import { sql } from 'drizzle-orm';

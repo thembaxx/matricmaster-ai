@@ -217,16 +217,15 @@ export async function getSchoolLeaderboard(
 			.filter((m) => Number(m.masteryLevel) < 0.5)
 			.map((m) => m.topic);
 
-		const learnerData: LearnerProgress = {
+		return {
 			learnerId: user.id,
 			learnerName: user.name || 'Anonymous',
 			progress: progress ? Number(progress.totalMarksEarned) : 0,
 			accuracy: totalQuestions > 0 ? (totalCorrect / totalQuestions) * 100 : 0,
-			topicsMastered: topicsMastered,
+			topicsMastered,
 			weakTopics: weakTopics.slice(0, 5),
 			studyStreak: progress?.streakDays || 0,
 		};
-		return learnerData;
 	});
 
 	return learnerProgress.sort((a, b) => b.progress - a.progress).slice(0, limit);

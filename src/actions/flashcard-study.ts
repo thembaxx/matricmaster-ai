@@ -1,6 +1,6 @@
 'use server';
 
-import { and, desc, eq, isNull, lte, or, sql } from 'drizzle-orm';
+import { and, desc, eq, lte, or, isNull } from 'drizzle-orm';
 import { getAuth } from '@/lib/auth';
 import { dbManager } from '@/lib/db';
 import { flashcardDecks, flashcardReviews, flashcards } from '@/lib/db/schema';
@@ -30,16 +30,15 @@ export async function getFlashcardsDueForReview(limit = 20): Promise<FlashcardDu
 	const db = await getDb();
 	const now = new Date();
 
-	// Get user's deck IDs
-	const userDecks = await db.query.flashcardDecks.findMany({
+	const decks = await db.query.flashcardDecks.findMany({
 		where: eq(flashcardDecks.userId, session.user.id),
-		columns: { id: true },
 	});
-	const deckIds = userDecks.map((d) => d.id);
+	const deckId = decks[0]?.id;
+	if (!deckId) return [];
 
 	const dueCards = await db.query.flashcards.findMany({
 		where: and(
-			sql`${flashcards.deckId} IN (${deckIds.map(() => '?').join(', ')})`,
+			eq(flashcards.deckId, deckId),
 			or(lte(flashcards.nextReview, now), isNull(flashcards.nextReview))
 		),
 		orderBy: [desc(flashcards.nextReview)],

@@ -3,7 +3,12 @@
 import { and, eq, sql } from 'drizzle-orm';
 import { getAuth } from '@/lib/auth';
 import { dbManager } from '@/lib/db';
-import { conceptStruggles, flashcardDecks, topicConfidence, topicMastery } from '@/lib/db/schema';
+import {
+	conceptStruggles,
+	flashcardDecks,
+	topicConfidence,
+	topicMastery,
+} from '@/lib/db/schema';
 
 async function getDb() {
 	const connected = await dbManager.waitForConnection(3, 2000);
@@ -57,9 +62,7 @@ export async function getWeakTopics(limit = 5): Promise<WeakTopic[]> {
 
 	for (const c of confidences) {
 		const confidenceNum = Number(c.confidenceScore);
-		const mastery = masteries.find(
-			(m) => m.topic === c.topic && m.subjectId.toString() === c.subject
-		);
+		const mastery = masteries.find((m) => m.topic === c.topic && m.subjectId.toString() === c.subject);
 		const struggle = struggles.find((s) => s.concept === c.topic);
 
 		const struggleCount = struggle?.struggleCount || 0;
@@ -100,7 +103,7 @@ export async function getAdaptiveRecommendations(limit = 10): Promise<AdaptiveRe
 			const db = await getDb();
 			const auth = await getAuth();
 			const session = await auth.api.getSession();
-			if (!session?.user) return recommendations;
+			if (!session?.user) throw new Error('Unauthorized');
 
 			const decks = await db.query.flashcardDecks.findMany({
 				where: eq(flashcardDecks.userId, session.user.id),
@@ -181,7 +184,6 @@ export async function syncMasteryToConfidence(userId: string) {
 				confidenceScore: accuracy.toFixed(2),
 				timesCorrect: mastery.questionsCorrect,
 				timesAttempted: mastery.questionsAttempted,
-				lastAttemptAt: mastery.lastPracticed,
 			})
 			.onConflictDoUpdate({
 				target: [topicConfidence.userId, topicConfidence.topic, topicConfidence.subject],
