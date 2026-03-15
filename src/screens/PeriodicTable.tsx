@@ -815,6 +815,191 @@ const CATEGORY_LABELS: Record<string, string> = {
 
 type ElementType = (typeof ELEMENTS)[number];
 
+type QuizQuestion = {
+	question: string;
+	options: string[];
+	correctAnswer: number;
+	explanation: string;
+	elementNum?: number;
+};
+
+function generateQuizQuestions(count = 10): QuizQuestion[] {
+	const questions: QuizQuestion[] = [];
+	const elementsWithDetails = ELEMENTS.filter((el) => ELEMENT_DETAILS[el.num]);
+
+	for (let i = 0; i < count; i++) {
+		const randomEl = elementsWithDetails[Math.floor(Math.random() * elementsWithDetails.length)];
+		const details = ELEMENT_DETAILS[randomEl.num];
+		const questionTypes = ['atomicNumber', 'symbol', 'category', 'properties', 'discovery'];
+		const type = questionTypes[Math.floor(Math.random() * questionTypes.length)];
+
+		switch (type) {
+			case 'atomicNumber': {
+				const wrongAnswers = ELEMENTS.filter((e) => e.num !== randomEl.num)
+					.sort(() => Math.random() - 0.5)
+					.slice(0, 3)
+					.map((e) => e.num);
+				const options = [randomEl.num, ...wrongAnswers].sort(() => Math.random() - 0.5);
+				questions.push({
+					question: `What is the atomic number of ${randomEl.name}?`,
+					options: options.map(String),
+					correctAnswer: options.indexOf(randomEl.num),
+					explanation: `${randomEl.name} has atomic number ${randomEl.num}.`,
+					elementNum: randomEl.num,
+				});
+				break;
+			}
+			case 'symbol': {
+				const wrongSymbols = ELEMENTS.filter(
+					(e) => e.num !== randomEl.num && e.sym.length === randomEl.sym.length
+				)
+					.sort(() => Math.random() - 0.5)
+					.slice(0, 3)
+					.map((e) => e.sym);
+				const options = [randomEl.sym, ...wrongSymbols.slice(0, 3)].sort(() => Math.random() - 0.5);
+				questions.push({
+					question: `Which element has the symbol "${randomEl.sym}"?`,
+					options: options.map((opt) => ELEMENTS.find((e) => e.sym === opt)?.name || opt),
+					correctAnswer: options.indexOf(randomEl.sym),
+					explanation: `${randomEl.name} is represented by the symbol "${randomEl.sym}".`,
+					elementNum: randomEl.num,
+				});
+				break;
+			}
+			case 'category': {
+				const categories = [
+					...new Set(ELEMENTS.map((e) => CATEGORY_LABELS[e.group] || e.category)),
+				];
+				const correctCategory = CATEGORY_LABELS[randomEl.group] || randomEl.category;
+				const wrongCategories = categories
+					.filter((c) => c !== correctCategory)
+					.sort(() => Math.random() - 0.5)
+					.slice(0, 3);
+				const options = [correctCategory, ...wrongCategories].sort(() => Math.random() - 0.5);
+				questions.push({
+					question: `What category does ${randomEl.name} belong to?`,
+					options,
+					correctAnswer: options.indexOf(correctCategory),
+					explanation: `${randomEl.name} is classified as a ${correctCategory.toLowerCase()}.`,
+					elementNum: randomEl.num,
+				});
+				break;
+			}
+			case 'properties': {
+				if (details) {
+					const propTypes = ['electronegativity', 'meltingPoint', 'boilingPoint', 'density'];
+					const validProps = propTypes.filter((p) => {
+						if (p === 'electronegativity') return details.electronegativity !== null;
+						if (p === 'density') return details.density !== 'Unknown';
+						if (p === 'meltingPoint') return details.meltingPoint !== 'Unknown';
+						if (p === 'boilingPoint') return details.boilingPoint !== 'Unknown';
+						return false;
+					});
+
+					if (validProps.length > 0) {
+						const propType = validProps[Math.floor(Math.random() * validProps.length)];
+						let propLabel = '';
+						let propValue = '';
+
+						if (propType === 'electronegativity' && details.electronegativity) {
+							propLabel = 'electronegativity';
+							propValue = details.electronegativity.toString();
+						} else if (propType === 'density' && details.density !== 'Unknown') {
+							propLabel = 'density';
+							propValue = details.density;
+						} else if (propType === 'meltingPoint' && details.meltingPoint !== 'Unknown') {
+							propLabel = 'melting point';
+							propValue = details.meltingPoint;
+						} else if (propType === 'boilingPoint' && details.boilingPoint !== 'Unknown') {
+							propLabel = 'boiling point';
+							propValue = details.boilingPoint;
+						}
+
+						if (propValue) {
+							const allElementsWithProp = elementsWithDetails
+								.filter((e) => {
+									const d = ELEMENT_DETAILS[e.num];
+									if (!d) return false;
+									if (propType === 'electronegativity') return d.electronegativity !== null;
+									if (propType === 'density') return d.density !== 'Unknown';
+									if (propType === 'meltingPoint') return d.meltingPoint !== 'Unknown';
+									if (propType === 'boilingPoint') return d.boilingPoint !== 'Unknown';
+									return false;
+								})
+								.sort(() => Math.random() - 0.5)
+								.slice(0, 4);
+
+							const wrongValues = allElementsWithProp
+								.filter((e) => e.num !== randomEl.num)
+								.slice(0, 3)
+								.map((e) => {
+									const d = ELEMENT_DETAILS[e.num];
+									if (propType === 'electronegativity')
+										return d?.electronegativity?.toString() || '';
+									if (propType === 'density') return d?.density || '';
+									if (propType === 'meltingPoint') return d?.meltingPoint || '';
+									if (propType === 'boilingPoint') return d?.boilingPoint || '';
+									return '';
+								})
+								.filter(Boolean);
+
+							const options = [propValue, ...wrongValues].sort(() => Math.random() - 0.5);
+							questions.push({
+								question: `What is the ${propLabel} of ${randomEl.name}?`,
+								options,
+								correctAnswer: options.indexOf(propValue),
+								explanation: `The ${propLabel} of ${randomEl.name} is ${propValue}.`,
+								elementNum: randomEl.num,
+							});
+							continue;
+						}
+					}
+				}
+				const wrongAnswers = ELEMENTS.filter((e) => e.num !== randomEl.num)
+					.sort(() => Math.random() - 0.5)
+					.slice(0, 3)
+					.map((e) => e.num);
+				const options = [randomEl.num, ...wrongAnswers].sort(() => Math.random() - 0.5);
+				questions.push({
+					question: `What is the atomic number of ${randomEl.name}?`,
+					options: options.map(String),
+					correctAnswer: options.indexOf(randomEl.num),
+					explanation: `${randomEl.name} has atomic number ${randomEl.num}.`,
+					elementNum: randomEl.num,
+				});
+				break;
+			}
+			case 'discovery': {
+				const years = [
+					'1766',
+					'1869',
+					'1808',
+					'1911',
+					'1898',
+					'1789',
+					'1875',
+					'1772',
+					'1669',
+					'1751',
+				];
+				const correctYear = years[Math.floor(Math.random() * years.length)];
+				const wrongYears = years.filter((y) => y !== correctYear).slice(0, 3);
+				const options = [correctYear, ...wrongYears].sort(() => Math.random() - 0.5);
+				questions.push({
+					question: `In what year was ${randomEl.name} discovered?`,
+					options,
+					correctAnswer: options.indexOf(correctYear),
+					explanation: `${randomEl.name} was discovered in ${correctYear}.`,
+					elementNum: randomEl.num,
+				});
+				break;
+			}
+		}
+	}
+
+	return questions;
+}
+
 function ElementDetailContent({
 	element,
 	selectedAnswer,
@@ -1064,6 +1249,74 @@ export default function PeriodicTable() {
 	const [isDesktop, setIsDesktop] = useState(true);
 	const [searchQuery, setSearchQuery] = useState('');
 	const [selectedGroup, setSelectedGroup] = useState<string>('all');
+	const [quizQuestions, setQuizQuestions] = useState<QuizQuestion[]>([]);
+	const [currentQuestion, setCurrentQuestion] = useState(0);
+	const [quizScore, setQuizScore] = useState({ correct: 0, total: 0 });
+	const [quizStarted, setQuizStarted] = useState(false);
+	const [showExplanation, setShowExplanation] = useState(false);
+	const [trendsMode, setTrendsMode] = useState<string | null>(null);
+	const [compareMode, setCompareMode] = useState(false);
+	const [compareElements, setCompareElements] = useState<ElementType[]>([]);
+
+	const handleCompareSelect = (element: ElementType) => {
+		if (compareElements.find((e) => e.num === element.num)) {
+			setCompareElements(compareElements.filter((e) => e.num !== element.num));
+		} else if (compareElements.length < 2) {
+			setCompareElements([...compareElements, element]);
+		}
+	};
+
+	const trendOptions = [
+		{ value: 'electronegativity', label: 'Electronegativity', unit: 'Pauling' },
+		{ value: 'atomicRadius', label: 'Atomic Radius', unit: 'pm' },
+		{ value: 'ionizationEnergy', label: 'Ionization Energy', unit: 'kJ/mol' },
+		{ value: 'density', label: 'Density', unit: 'g/cm³' },
+		{ value: 'meltingPoint', label: 'Melting Point', unit: '°C' },
+	];
+
+	const getTrendColor = (elementNum: number, trend: string): string => {
+		const details = ELEMENT_DETAILS[elementNum];
+		if (!details) return 'bg-muted';
+
+		const getValue = (): number | null => {
+			switch (trend) {
+				case 'electronegativity':
+					return details.electronegativity;
+				case 'atomicRadius':
+					return details.atomicRadius;
+				case 'ionizationEnergy':
+					return details.ionizationEnergy;
+				case 'density':
+					if (details.density === 'Unknown') return null;
+					return Number.parseFloat(details.density);
+				case 'meltingPoint':
+					if (details.meltingPoint === 'Unknown' || details.meltingPoint === 'N/A') return null;
+					return Number.parseFloat(details.meltingPoint.replace(/[^\d.-]/g, ''));
+				default:
+					return null;
+			}
+		};
+
+		const value = getValue();
+		if (value === null) return 'bg-muted';
+
+		const ranges: Record<string, { min: number; max: number }> = {
+			electronegativity: { min: 0.7, max: 4.0 },
+			atomicRadius: { min: 30, max: 300 },
+			ionizationEnergy: { min: 375, max: 2372 },
+			density: { min: 0.09, max: 22.6 },
+			meltingPoint: { min: -272, max: 3823 },
+		};
+
+		const range = ranges[trend];
+		const normalized = (value - range.min) / (range.max - range.min);
+
+		if (normalized < 0.2) return 'bg-blue-300';
+		if (normalized < 0.4) return 'bg-blue-400';
+		if (normalized < 0.6) return 'bg-yellow-400';
+		if (normalized < 0.8) return 'bg-orange-500';
+		return 'bg-red-500';
+	};
 
 	const filteredElements = useMemo(() => {
 		return ELEMENTS.filter((el) => {
@@ -1118,6 +1371,34 @@ export default function PeriodicTable() {
 		setSelectedElement(element);
 		setSelectedAnswer(null);
 		setShowAnswer(false);
+	};
+
+	const startQuiz = () => {
+		const questions = generateQuizQuestions(10);
+		setQuizQuestions(questions);
+		setCurrentQuestion(0);
+		setQuizScore({ correct: 0, total: 0 });
+		setQuizStarted(true);
+		setShowExplanation(false);
+	};
+
+	const handleQuizAnswer = (answerIndex: number) => {
+		setSelectedAnswer(answerIndex);
+		setShowExplanation(true);
+		if (answerIndex === quizQuestions[currentQuestion].correctAnswer) {
+			setQuizScore((prev) => ({ ...prev, correct: prev.correct + 1 }));
+		}
+		setQuizScore((prev) => ({ ...prev, total: prev.total + 1 }));
+	};
+
+	const nextQuestion = () => {
+		if (currentQuestion < quizQuestions.length - 1) {
+			setCurrentQuestion((prev) => prev + 1);
+			setSelectedAnswer(null);
+			setShowExplanation(false);
+		} else {
+			setQuizStarted(false);
+		}
 	};
 
 	const DesktopSheet = (
@@ -1178,174 +1459,428 @@ export default function PeriodicTable() {
 
 	return (
 		<div className="flex flex-col h-full bg-background min-w-0">
-			<header className="px-4 sm:px-6 pt-6 pb-3 shrink-0 max-w-4xl w-full space-y-3">
-				<div className="flex items-center justify-between">
-					<h1 className="text-xl font-black tracking-normal">Periodic Table</h1>
-					<div className="text-xs font-medium text-muted-foreground hidden sm:block">
-						Click any element to learn more
+			{quizStarted ? (
+				<header className="px-4 sm:px-6 pt-6 pb-3 shrink-0 max-w-2xl mx-auto w-full">
+					<div className="flex items-center justify-between mb-4">
+						<div>
+							<h1 className="text-xl font-black tracking-normal">Element Quiz</h1>
+							<p className="text-sm text-muted-foreground">
+								Question {currentQuestion + 1} of {quizQuestions.length}
+							</p>
+						</div>
+						<div className="flex items-center gap-3">
+							<div className="text-right">
+								<p className="text-xs text-muted-foreground">Score</p>
+								<p className="text-lg font-black">
+									{quizScore.correct}/{quizScore.total}
+								</p>
+							</div>
+							<Button
+								variant="outline"
+								size="sm"
+								onClick={() => setQuizStarted(false)}
+								className="rounded-full font-bold"
+							>
+								Exit
+							</Button>
+						</div>
 					</div>
-				</div>
-				<div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
-					<div className="relative flex-1">
-						<HugeiconsIcon
-							icon={SearchIcon}
-							className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground z-2"
+					<div className="w-full bg-muted rounded-full h-2 mb-2">
+						<div
+							className="bg-primary rounded-full h-2 transition-all"
+							style={{ width: `${((currentQuestion + 1) / quizQuestions.length) * 100}%` }}
 						/>
+					</div>
+				</header>
+			) : (
+				<header className="px-4 sm:px-6 pt-6 pb-3 shrink-0 max-w-6xl mx-auto w-full space-y-3">
+					<div className="flex items-center justify-between">
+						<div className="flex items-center gap-3">
+							<h1 className="text-xl font-black tracking-normal">Periodic Table</h1>
+							<Button
+								variant="outline"
+								size="sm"
+								onClick={startQuiz}
+								className="rounded-full font-bold text-xs"
+							>
+								Take Quiz
+							</Button>
+							<Select
+								value={trendsMode || 'none'}
+								onValueChange={(val) => setTrendsMode(val === 'none' ? null : val)}
+							>
+								<SelectTrigger className="w-[140px] h-8 rounded-full text-xs font-bold">
+									<SelectValue placeholder="Trends" />
+								</SelectTrigger>
+								<SelectContent>
+									<SelectItem value="none">View Mode</SelectItem>
+									{trendOptions.map((opt) => (
+										<SelectItem key={opt.value} value={opt.value}>
+											{opt.label}
+										</SelectItem>
+									))}
+								</SelectContent>
+							</Select>
+							<Button
+								variant={compareMode ? 'default' : 'outline'}
+								size="sm"
+								onClick={() => {
+									setCompareMode(!compareMode);
+									if (compareMode) setCompareElements([]);
+								}}
+								className="rounded-full font-bold text-xs"
+							>
+								Compare{compareElements.length > 0 ? ` (${compareElements.length})` : ''}
+							</Button>
+						</div>
+						<div className="text-xs font-medium text-muted-foreground hidden sm:block">
+							{trendsMode
+								? 'View periodic trends'
+								: compareMode
+									? 'Select 2 elements to compare'
+									: 'Click any element to learn more'}
+						</div>
+					</div>
+					<div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
+						<div className="relative flex-1">
+							<HugeiconsIcon
+								icon={SearchIcon}
+								className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground z-2"
+							/>
 
-						<Input
-							placeholder="Search by name, symbol, or number..."
-							value={searchQuery}
-							onChange={(e) => setSearchQuery(e.target.value)}
-							className="pl-9 pr-9 h-10 bg-background/80 backdrop-blur-sm placeholder:text-sm"
-						/>
-						{searchQuery && (
+							<Input
+								placeholder="Search by name, symbol, or number..."
+								value={searchQuery}
+								onChange={(e) => setSearchQuery(e.target.value)}
+								className="pl-9 pr-9 h-10 bg-background/80 backdrop-blur-sm placeholder:text-sm"
+							/>
+							{searchQuery && (
+								<button
+									type="button"
+									onClick={() => setSearchQuery('')}
+									className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground hover:text-foreground transition-colors z-2"
+									aria-label="Clear search"
+								>
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										viewBox="0 0 24 24"
+										fill="none"
+										stroke="currentColor"
+										strokeWidth="2"
+										strokeLinecap="round"
+										strokeLinejoin="round"
+										aria-hidden="true"
+									>
+										<title>Clear search</title>
+										<line x1="18" y1="6" x2="6" y2="18" />
+										<line x1="6" y1="6" x2="18" y2="18" />
+									</svg>
+								</button>
+							)}
+						</div>
+						<Select value={selectedGroup} onValueChange={setSelectedGroup}>
+							<SelectTrigger className="w-full sm:w-[180px] h-10 bg-background/80 backdrop-blur-sm">
+								<SelectValue placeholder="Filter by group" />
+							</SelectTrigger>
+							<SelectContent>
+								<SelectItem value="all">All Groups</SelectItem>
+								<SelectItem value="nonmetal">Nonmetals</SelectItem>
+								<SelectItem value="noble">Noble Gases</SelectItem>
+								<SelectItem value="alkali">Alkali Metals</SelectItem>
+								<SelectItem value="alkaline">Alkaline Earth</SelectItem>
+								<SelectItem value="metalloid">Metalloids</SelectItem>
+								<SelectItem value="halogen">Halogens</SelectItem>
+								<SelectItem value="transition">Transition Metals</SelectItem>
+								<SelectItem value="metal">Post-Transition</SelectItem>
+								<SelectItem value="lanthanide">Lanthanides</SelectItem>
+								<SelectItem value="actinide">Actinides</SelectItem>
+							</SelectContent>
+						</Select>
+					</div>
+					<div className="flex flex-wrap gap-1.5">
+						{[
+							{ value: 'nonmetal', label: 'Nonmetals', color: 'bg-primary-violet' },
+							{ value: 'noble', label: 'Noble Gases', color: 'bg-accent-blue' },
+							{ value: 'alkali', label: 'Alkali', color: 'bg-primary-orange' },
+							{ value: 'halogen', label: 'Halogens', color: 'bg-destructive' },
+							{ value: 'transition', label: 'Transition', color: 'bg-blue-500' },
+						].map((group) => (
 							<button
 								type="button"
-								onClick={() => setSearchQuery('')}
-								className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground hover:text-foreground transition-colors z-2"
-								aria-label="Clear search"
+								key={group.value}
+								onClick={() =>
+									setSelectedGroup(selectedGroup === group.value ? 'all' : group.value)
+								}
+								className={cn(
+									'px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider transition-all border',
+									selectedGroup === group.value
+										? `${group.color}/30 border-current text-foreground ring-1 ring-current`
+										: 'bg-muted/50 border-border text-muted-foreground hover:bg-muted hover:text-foreground'
+								)}
 							>
-								<svg
-									xmlns="http://www.w3.org/2000/svg"
-									viewBox="0 0 24 24"
-									fill="none"
-									stroke="currentColor"
-									strokeWidth="2"
-									strokeLinecap="round"
-									strokeLinejoin="round"
-									aria-hidden="true"
-								>
-									<title>Clear search</title>
-									<line x1="18" y1="6" x2="6" y2="18" />
-									<line x1="6" y1="6" x2="18" y2="18" />
-								</svg>
+								{group.label}
 							</button>
-						)}
+						))}
 					</div>
-					<Select value={selectedGroup} onValueChange={setSelectedGroup}>
-						<SelectTrigger className="w-full sm:w-[180px] h-10 bg-background/80 backdrop-blur-sm">
-							<SelectValue placeholder="Filter by group" />
-						</SelectTrigger>
-						<SelectContent>
-							<SelectItem value="all">All Groups</SelectItem>
-							<SelectItem value="nonmetal">Nonmetals</SelectItem>
-							<SelectItem value="noble">Noble Gases</SelectItem>
-							<SelectItem value="alkali">Alkali Metals</SelectItem>
-							<SelectItem value="alkaline">Alkaline Earth</SelectItem>
-							<SelectItem value="metalloid">Metalloids</SelectItem>
-							<SelectItem value="halogen">Halogens</SelectItem>
-							<SelectItem value="transition">Transition Metals</SelectItem>
-							<SelectItem value="metal">Post-Transition</SelectItem>
-							<SelectItem value="lanthanide">Lanthanides</SelectItem>
-							<SelectItem value="actinide">Actinides</SelectItem>
-						</SelectContent>
-					</Select>
-				</div>
-				<div className="flex flex-wrap gap-1.5">
-					{[
-						{ value: 'nonmetal', label: 'Nonmetals', color: 'bg-primary-violet' },
-						{ value: 'noble', label: 'Noble Gases', color: 'bg-accent-blue' },
-						{ value: 'alkali', label: 'Alkali', color: 'bg-primary-orange' },
-						{ value: 'halogen', label: 'Halogens', color: 'bg-destructive' },
-						{ value: 'transition', label: 'Transition', color: 'bg-blue-500' },
-					].map((group) => (
-						<button
-							type="button"
-							key={group.value}
-							onClick={() => setSelectedGroup(selectedGroup === group.value ? 'all' : group.value)}
-							className={cn(
-								'px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider transition-all border',
-								selectedGroup === group.value
-									? `${group.color}/30 border-current text-foreground ring-1 ring-current`
-									: 'bg-muted/50 border-border text-muted-foreground hover:bg-muted hover:text-foreground'
-							)}
-						>
-							{group.label}
-						</button>
-					))}
-				</div>
-				{(searchQuery !== '' || selectedGroup !== 'all') && (
-					<div className="flex items-center gap-2 flex-wrap">
-						<span className="text-xs text-muted-foreground">
-							Showing {filteredElements.length} of {ELEMENTS.length} elements
-						</span>
-						<button
-							type="button"
-							onClick={() => {
-								setSearchQuery('');
-								setSelectedGroup('all');
-							}}
-							className="text-xs font-medium text-primary hover:text-primary/80 transition-colors"
-						>
-							Clear filters
-						</button>
-					</div>
-				)}
-			</header>
+					{(searchQuery !== '' || selectedGroup !== 'all') && (
+						<div className="flex items-center gap-2 flex-wrap">
+							<span className="text-xs text-muted-foreground">
+								Showing {filteredElements.length} of {ELEMENTS.length} elements
+							</span>
+							<button
+								type="button"
+								onClick={() => {
+									setSearchQuery('');
+									setSelectedGroup('all');
+								}}
+								className="text-xs font-medium text-primary hover:text-primary/80 transition-colors"
+							>
+								Clear filters
+							</button>
+						</div>
+					)}
+				</header>
+			)}
 
-			<ScrollArea className="flex-1">
-				<main className="px-4 py-2 flex flex-col items-start pb-32 max-w-6xl  w-full gap-6">
-					<div className="w-full max-w-5xl">
-						<div className="flex flex-wrap justify-center gap-2">
-							{ELEMENTS.map((el, i) => (
-								<m.button
-									key={el.num}
-									initial={{ opacity: 0, scale: 0.9 }}
-									animate={{
-										opacity: highlightedElements && !highlightedElements.has(el.num) ? 0.15 : 1,
-										scale: 1,
-									}}
-									transition={{ delay: Math.min(i * 0.01, 1) }}
-									whileHover={
-										highlightedElements && !highlightedElements.has(el.num)
-											? {}
-											: { scale: 1.1, zIndex: 10 }
-									}
-									whileTap={
-										highlightedElements && !highlightedElements.has(el.num) ? {} : { scale: 0.95 }
-									}
-									onClick={() =>
-										highlightedElements && !highlightedElements.has(el.num)
-											? null
-											: handleElementClick(el)
-									}
-									className={cn(
-										'w-16 h-20 sm:w-16 sm:h-20 rounded-sm border flex flex-col items-center justify-between py-2 transition-all shadow-sm bg-card cursor-pointer',
-										el.num >= 57 && el.num <= 71 && 'row-start-1 row-end-1',
-										el.num >= 89 && el.num <= 103 && 'row-start-1 row-end-1',
-										selectedElement?.num === el.num
-											? 'ring-2 ring-primary border-primary shadow-primary/30 scale-110 z-10'
-											: highlightedElements && !highlightedElements.has(el.num)
-												? 'opacity-20'
-												: GROUP_COLORS[el.group]
-									)}
+			{quizStarted ? (
+				<ScrollArea className="flex-1">
+					<main className="px-4 py-6 pb-32 max-w-2xl mx-auto w-full">
+						<div className="space-y-6">
+							<div className="p-6 bg-card rounded-2xl border shadow-sm">
+								<h2 className="text-lg font-bold mb-4">
+									{quizQuestions[currentQuestion].question}
+								</h2>
+								<RadioGroup
+									value={selectedAnswer?.toString()}
+									onValueChange={(val) => handleQuizAnswer(Number.parseInt(val, 10))}
+									className="space-y-3"
 								>
-									<span className="text-[10px] sm:text-[10px] font-bold self-start ml-1 opacity-50">
-										{el.num}
-									</span>
-									<span className="text-[13px] sm:text-sm font-black">{el.sym}</span>
-									<span className="text-[7px] sm:text-[7px] font-bold uppercase tracking-wider truncate w-full text-center max-w-full px-0.5">
-										{el.name.length > 6 ? `${el.name.slice(0, 5)}.` : el.name}
-									</span>
-								</m.button>
-							))}
+									{quizQuestions[currentQuestion].options.map((option, idx) => (
+										<div
+											key={idx}
+											className={cn(
+												'flex items-center gap-3 p-4 rounded-xl border-2 transition-all cursor-pointer',
+												showExplanation
+													? idx === quizQuestions[currentQuestion].correctAnswer
+														? 'bg-success/20 border-success'
+														: selectedAnswer === idx
+															? 'bg-destructive/20 border-destructive'
+															: 'border-border bg-muted/30'
+													: selectedAnswer === idx
+														? 'border-primary bg-primary/10'
+														: 'border-border hover:border-primary/50'
+											)}
+										>
+											<RadioGroupItem value={idx.toString()} id={`quiz-opt-${idx}`} />
+											<Label
+												htmlFor={`quiz-opt-${idx}`}
+												className="flex-1 cursor-pointer font-medium"
+											>
+												{option}
+											</Label>
+										</div>
+									))}
+								</RadioGroup>
+								{showExplanation && (
+									<div
+										className={cn(
+											'mt-4 p-4 rounded-xl text-sm',
+											selectedAnswer === quizQuestions[currentQuestion].correctAnswer
+												? 'bg-success/20 text-success'
+												: 'bg-destructive/20 text-destructive'
+										)}
+									>
+										<p className="font-bold mb-1">
+											{selectedAnswer === quizQuestions[currentQuestion].correctAnswer
+												? 'Correct!'
+												: 'Incorrect'}
+										</p>
+										<p>{quizQuestions[currentQuestion].explanation}</p>
+									</div>
+								)}
+								{showExplanation && (
+									<Button onClick={nextQuestion} className="w-full mt-4 rounded-full font-bold">
+										{currentQuestion < quizQuestions.length - 1 ? 'Next Question' : 'See Results'}
+									</Button>
+								)}
+							</div>
 						</div>
+					</main>
+				</ScrollArea>
+			) : (
+				<ScrollArea className="flex-1">
+					<main className="px-4 py-2 flex flex-col items-start pb-32 max-w-6xl mx-auto w-full gap-6">
+						<div className="w-full max-w-5xl mx-auto">
+							<div className="flex flex-wrap justify-center gap-1">
+								{ELEMENTS.map((el, i) => (
+									<m.button
+										key={el.num}
+										initial={{ opacity: 0, scale: 0.9 }}
+										animate={{
+											opacity: highlightedElements && !highlightedElements.has(el.num) ? 0.15 : 1,
+											scale: 1,
+										}}
+										transition={{ delay: Math.min(i * 0.01, 1) }}
+										whileHover={
+											highlightedElements && !highlightedElements.has(el.num)
+												? {}
+												: { scale: 1.1, zIndex: 10 }
+										}
+										whileTap={
+											highlightedElements && !highlightedElements.has(el.num) ? {} : { scale: 0.95 }
+										}
+										onClick={() => {
+											if (highlightedElements && !highlightedElements.has(el.num)) return;
+											if (compareMode) {
+												handleCompareSelect(el);
+											} else {
+												handleElementClick(el);
+											}
+										}}
+										className={cn(
+											'w-16 h-20 sm:w-16 sm:h-20 rounded-sm border flex flex-col items-center justify-between py-2 transition-all shadow-sm bg-card cursor-pointer',
+											trendsMode && getTrendColor(el.num, trendsMode),
+											!trendsMode && el.num >= 57 && el.num <= 71 && 'row-start-1 row-end-1',
+											!trendsMode && el.num >= 89 && el.num <= 103 && 'row-start-1 row-end-1',
+											compareMode &&
+												compareElements.find((e) => e.num === el.num) &&
+												'ring-2 ring-primary border-primary',
+											!compareMode && selectedElement?.num === el.num
+												? 'ring-2 ring-primary border-primary shadow-primary/30 scale-110 z-10'
+												: highlightedElements && !highlightedElements.has(el.num)
+													? 'opacity-20'
+													: !trendsMode && GROUP_COLORS[el.group]
+										)}
+									>
+										<span className="text-[10px] sm:text-[10px] font-bold self-start ml-1 opacity-50">
+											{el.num}
+										</span>
+										<span className="text-[13px] sm:text-sm font-black">{el.sym}</span>
+										<span className="text-[7px] sm:text-[7px] font-bold uppercase tracking-wider truncate w-full text-center max-w-full px-0.5">
+											{el.name.length > 6 ? `${el.name.slice(0, 5)}.` : el.name}
+										</span>
+									</m.button>
+								))}
+							</div>
 
-						<div className="flex flex-wrap justify-center gap-3 sm:gap-4 mt-6 px-2">
-							{Object.entries(GROUP_COLORS).map(([group, color]) => (
-								<div key={group} className="flex items-center gap-2">
-									<div className={cn('w-3 h-3 rounded-sm border', color.split(' ')[0])} />
-									<span className="text-[10px] font-bold uppercase">
-										{CATEGORY_LABELS[group] || group}
-									</span>
+							<div className="flex flex-wrap justify-center gap-3 sm:gap-4 mt-6 px-2">
+								{trendsMode ? (
+									<>
+										<div className="flex items-center gap-2">
+											<div className="w-4 h-4 rounded-sm bg-blue-300" />
+											<span className="text-[10px] font-bold">Low</span>
+										</div>
+										<div className="flex items-center gap-2">
+											<div className="w-4 h-4 rounded-sm bg-blue-400" />
+										</div>
+										<div className="flex items-center gap-2">
+											<div className="w-4 h-4 rounded-sm bg-yellow-400" />
+										</div>
+										<div className="flex items-center gap-2">
+											<div className="w-4 h-4 rounded-sm bg-orange-500" />
+										</div>
+										<div className="flex items-center gap-2">
+											<div className="w-4 h-4 rounded-sm bg-red-500" />
+											<span className="text-[10px] font-bold">High</span>
+										</div>
+									</>
+								) : (
+									Object.entries(GROUP_COLORS).map(([group, color]) => (
+										<div key={group} className="flex items-center gap-2">
+											<div className={cn('w-3 h-3 rounded-sm border', color.split(' ')[0])} />
+											<span className="text-[10px] font-bold uppercase">
+												{CATEGORY_LABELS[group] || group}
+											</span>
+										</div>
+									))
+								)}
+							</div>
+						</div>
+						{compareMode && compareElements.length === 2 && (
+							<div className="w-full max-w-4xl mx-auto mt-8">
+								<h2 className="text-xl font-black mb-4 text-center">Element Comparison</h2>
+								<div className="grid grid-cols-2 gap-4">
+									{compareElements.map((el) => {
+										const details = ELEMENT_DETAILS[el.num];
+										return (
+											<div key={el.num} className="p-4 bg-card rounded-xl border">
+												<div className="flex items-center gap-3 mb-4">
+													<div
+														className={cn(
+															'w-16 h-16 rounded-lg border-2 flex flex-col items-center justify-center',
+															GROUP_COLORS[el.group]
+														)}
+													>
+														<span className="text-xs font-bold opacity-60">{el.num}</span>
+														<span className="text-2xl font-black">{el.sym}</span>
+													</div>
+													<div>
+														<h3 className="font-black">{el.name}</h3>
+														<p className="text-xs text-muted-foreground">{el.mass} u</p>
+													</div>
+												</div>
+												<div className="space-y-2 text-sm">
+													<div className="flex justify-between">
+														<span className="text-muted-foreground">Category</span>
+														<span className="font-bold">
+															{CATEGORY_LABELS[el.group] || el.category}
+														</span>
+													</div>
+													{details && (
+														<>
+															<div className="flex justify-between">
+																<span className="text-muted-foreground">Electronegativity</span>
+																<span className="font-bold">
+																	{details.electronegativity ?? 'N/A'}
+																</span>
+															</div>
+															<div className="flex justify-between">
+																<span className="text-muted-foreground">Atomic Radius</span>
+																<span className="font-bold">
+																	{details.atomicRadius ? `${details.atomicRadius} pm` : 'N/A'}
+																</span>
+															</div>
+															<div className="flex justify-between">
+																<span className="text-muted-foreground">Ionization Energy</span>
+																<span className="font-bold">
+																	{details.ionizationEnergy
+																		? `${details.ionizationEnergy} kJ/mol`
+																		: 'N/A'}
+																</span>
+															</div>
+															<div className="flex justify-between">
+																<span className="text-muted-foreground">Density</span>
+																<span className="font-bold">{details.density}</span>
+															</div>
+															<div className="flex justify-between">
+																<span className="text-muted-foreground">Melting Point</span>
+																<span className="font-bold">{details.meltingPoint}</span>
+															</div>
+															<div className="flex justify-between">
+																<span className="text-muted-foreground">Boiling Point</span>
+																<span className="font-bold">{details.boilingPoint}</span>
+															</div>
+														</>
+													)}
+												</div>
+											</div>
+										);
+									})}
 								</div>
-							))}
-						</div>
-					</div>
-				</main>
-			</ScrollArea>
+								<Button
+									variant="outline"
+									onClick={() => setCompareElements([])}
+									className="w-full mt-4 rounded-full font-bold"
+								>
+									Clear Comparison
+								</Button>
+							</div>
+						)}
+					</main>
+				</ScrollArea>
+			)}
 
-			<AnimatePresence>{isDesktop ? DesktopSheet : MobileDrawer}</AnimatePresence>
+			{!quizStarted && <AnimatePresence>{isDesktop ? DesktopSheet : MobileDrawer}</AnimatePresence>}
 		</div>
 	);
 }
