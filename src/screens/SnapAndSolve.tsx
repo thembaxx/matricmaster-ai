@@ -6,6 +6,7 @@ import {
 	Cancel01Icon,
 	Loading03Icon,
 	SparklesIcon,
+	VolumeHighIcon,
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { m } from 'framer-motion';
@@ -13,6 +14,7 @@ import { useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
 import { toast } from 'sonner';
 import { MarkdownRenderer } from '@/components/AI/MarkdownRenderer';
+import { ResponsiveAudioPlayer } from '@/components/AudioPlayer';
 import { SafeImage } from '@/components/SafeImage';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -35,6 +37,7 @@ export default function SnapAndSolve() {
 	const [subject, setSubject] = useState('General');
 	const [isAnalyzing, setIsAnalyzing] = useState(false);
 	const [solution, setSolution] = useState<string | null>(null);
+	const [showAudioPlayer, setShowAudioPlayer] = useState(false);
 	const fileInputRef = useRef<HTMLInputElement>(null);
 
 	const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -208,6 +211,17 @@ export default function SnapAndSolve() {
 							</div>
 							<Card className="rounded-[2.5rem] p-8 border border-border shadow-tiimo bg-card/50 backdrop-blur-sm overflow-hidden relative">
 								<div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-3xl -mr-16 -mt-16" />
+								<div className="flex justify-end mb-4">
+									<Button
+										variant="outline"
+										size="sm"
+										onClick={() => setShowAudioPlayer(true)}
+										className="rounded-full gap-2"
+									>
+										<HugeiconsIcon icon={VolumeHighIcon} className="w-4 h-4" />
+										Listen
+									</Button>
+								</div>
 								<MarkdownRenderer content={solution} />
 							</Card>
 
@@ -233,6 +247,15 @@ export default function SnapAndSolve() {
 						</m.div>
 					)}
 				</main>
+
+				{solution && (
+					<ResponsiveAudioPlayer
+						text={solution}
+						title="Solution"
+						open={showAudioPlayer}
+						onOpenChange={setShowAudioPlayer}
+					/>
+				)}
 			</ScrollArea>
 		</div>
 	);

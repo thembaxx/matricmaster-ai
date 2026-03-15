@@ -275,6 +275,7 @@ function TimelineEventCard({
 			transition={{ delay: index * 0.08, duration: 0.4 }}
 			className="relative rounded-xl overflow-hidden border mb-2"
 		>
+			<div className="absolute left-0 top-0 h-full w-full bg-white z-0" />
 			<m.button
 				initial={{ opacity: 0, x: -20 }}
 				animate={{ opacity: 1, x: 0 }}
@@ -282,7 +283,7 @@ function TimelineEventCard({
 				onClick={isClickable ? onClick : undefined}
 				disabled={!isClickable}
 				className={cn(
-					'relative flex items-start gap-3 p-3 rounded-xl cursor-pointer tiimo-press relative z-2 w-full text-left transition-all',
+					'relative flex items-start gap-3 p-3 rounded-xl relative cursor-pointer tiimo-press relative z-2 w-full text-left transition-all',
 					statusStyles[event.status],
 					isClickable ? 'cursor-pointer' : 'cursor-default'
 				)}

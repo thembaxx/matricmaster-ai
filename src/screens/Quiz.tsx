@@ -12,6 +12,7 @@ import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 import { AnimatePresence, m } from 'framer-motion';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
+import { getAdaptiveDifficultyServer, recordQuestionAttempt } from '@/actions/spaced-repetition';
 import { FocusContent } from '@/components/Layout/FocusContent';
 import { TimelineSidebar } from '@/components/Layout/TimelineSidebar';
 import { AIExplanation } from '@/components/Quiz/AIExplanation';
@@ -36,7 +37,6 @@ import {
 	recordStruggle,
 	updateConfidence,
 } from '@/services/buddyActions';
-import { getAdaptiveDifficulty, recordQuestionAttempt } from '@/services/spacedRepetition';
 
 interface QuizProps {
 	quizId?: string;
@@ -220,7 +220,7 @@ export default function Quiz({ quizId: initialQuizId }: QuizProps) {
 				await recordQuestionAttempt(currentQuestion.id, currentQuestion.topic, correct);
 
 				// Update difficulty based on performance
-				const newDifficulty = await getAdaptiveDifficulty();
+				const newDifficulty = await getAdaptiveDifficultyServer();
 				setDifficulty(newDifficulty);
 
 				if (!correct) {
