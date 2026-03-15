@@ -4,8 +4,6 @@ import {
 	ArrowLeft01Icon,
 	ArrowLeft02Icon,
 	ArrowRight01Icon,
-	Cancel01Icon,
-	CheckmarkCircle02Icon,
 	Delete01Icon,
 	KeyboardIcon,
 } from '@hugeicons/core-free-icons';
@@ -17,9 +15,11 @@ import { useEffect, useRef, useState } from 'react';
 import { FocusContent } from '@/components/Layout/FocusContent';
 import { TimelineSidebar } from '@/components/Layout/TimelineSidebar';
 import { AIExplanation } from '@/components/Quiz/AIExplanation';
+import { AnswerBreakdown } from '@/components/Quiz/AnswerBreakdown';
 import { QuestionCard, type QuestionOption } from '@/components/Quiz/QuestionCardV2';
 import { QuizActions } from '@/components/Quiz/QuizActionsV2';
 import { QuizHeader } from '@/components/Quiz/QuizHeaderV2';
+import { QuizProgressDashboard } from '@/components/Quiz/QuizProgressDashboard';
 import { StruggleAlert } from '@/components/StudyBuddy/StruggleAlert';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -36,6 +36,7 @@ import {
 	recordStruggle,
 	updateConfidence,
 } from '@/services/buddyActions';
+import { getAdaptiveDifficulty, recordQuestionAttempt } from '@/services/spacedRepetition';
 
 interface QuizProps {
 	quizId?: string;
@@ -122,6 +123,11 @@ export default function Quiz({ quizId: initialQuizId }: QuizProps) {
 	const [showStruggleAlert, setShowStruggleAlert] = useState(false);
 	const [currentStruggleCount, setCurrentStruggleCount] = useState(0);
 
+	// Quiz enhancements state
+	const [difficulty, setDifficulty] = useState<'easy' | 'medium' | 'hard'>('medium');
+	const [correctCount, setCorrectCount] = useState(0);
+	const [incorrectCount, setIncorrectCount] = useState(0);
+
 	const { completeQuiz, isCompleting } = useQuizCompletion();
 
 	const quiz = QUIZ_DATA[quizId] || QUIZ_DATA['math-p1-2023-nov'];
@@ -197,13 +203,25 @@ export default function Quiz({ quizId: initialQuizId }: QuizProps) {
 
 		const correct = options.find((o) => o.id === selectedOption)?.isCorrect || false;
 		setIsCorrect(correct);
-		if (correct) setScore((prev) => prev + 1);
+		if (correct) {
+			setScore((prev) => prev + 1);
+			setCorrectCount((prev) => prev + 1);
+		} else {
+			setIncorrectCount((prev) => prev + 1);
+		}
 		setIsChecked(true);
 
 		// Track confidence and struggles with Study Buddy
 		if (currentQuestion?.topic) {
 			try {
 				await updateConfidence(currentQuestion.topic, currentSubject, correct);
+
+				// Record for spaced repetition
+				await recordQuestionAttempt(currentQuestion.id, currentQuestion.topic, correct);
+
+				// Update difficulty based on performance
+				const newDifficulty = await getAdaptiveDifficulty();
+				setDifficulty(newDifficulty);
 
 				if (!correct) {
 					await recordStruggle(currentQuestion.topic);
@@ -307,6 +325,17 @@ export default function Quiz({ quizId: initialQuizId }: QuizProps) {
 						elapsedTime={formatTime(elapsedSeconds)}
 					/>
 
+					<div className="mb-6">
+						<QuizProgressDashboard
+							totalQuestions={quiz.questions.length}
+							currentQuestion={currentQuestionIndex + 1}
+							correctCount={correctCount}
+							incorrectCount={incorrectCount}
+							elapsedTime={formatTime(elapsedSeconds)}
+							difficulty={difficulty}
+						/>
+					</div>
+
 					<div className="mb-8">
 						<div className="flex justify-between items-center mb-2">
 							<span className="text-[10px] font-medium text-muted-foreground">
@@ -362,38 +391,19 @@ export default function Quiz({ quizId: initialQuizId }: QuizProps) {
 							)}
 
 							{isChecked && (
-								<m.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
-									<Card
-										className={cn(
-											'p-6 rounded-[2rem] border-2',
-											isCorrect
-												? 'bg-success/10 border-success/30'
-												: 'bg-destructive/10 border-destructive/30'
-										)}
-									>
-										<div className="flex gap-4">
-											<div
-												className={cn(
-													'w-10 h-10 rounded-xl flex items-center justify-center shrink-0',
-													isCorrect ? 'bg-success text-white' : 'bg-destructive text-white'
-												)}
-											>
-												<HugeiconsIcon
-													icon={isCorrect ? CheckmarkCircle02Icon : Cancel01Icon}
-													className="w-6 h-6"
-												/>
-											</div>
-											<div>
-												<h4 className="font-semibold text-sm">
-													{isCorrect ? 'Brilliant!' : 'Not quite right'}
-												</h4>
-												<p className="text-sm font-medium opacity-80 mt-1">
-													{currentQuestion.hint}
-												</p>
-											</div>
-										</div>
-									</Card>
-								</m.div>
+								<AnswerBreakdown
+									correctAnswer={
+										currentQuestion.options.find((o) => o.id === currentQuestion.correctAnswer)
+											?.text || ''
+									}
+									selectedAnswer={
+										selectedOption
+											? currentQuestion.options.find((o) => o.id === selectedOption)?.text || null
+											: null
+									}
+									isCorrect={isCorrect ?? false}
+									topic={currentQuestion.topic}
+								/>
 							)}
 						</div>
 					</div>

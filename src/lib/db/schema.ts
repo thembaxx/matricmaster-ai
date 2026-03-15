@@ -825,6 +825,40 @@ export const topicConfidenceRelations = relations(topicConfidence, ({ one }) => 
 }));
 
 // ============================================================================
+// QUESTION ATTEMPTS - For spaced repetition tracking
+// ============================================================================
+
+export const questionAttempts = pgTable(
+	'question_attempts',
+	{
+		id: uuid('id').defaultRandom().primaryKey(),
+		userId: text('user_id')
+			.notNull()
+			.references(() => users.id, { onDelete: 'cascade' }),
+		questionId: varchar('question_id', { length: 100 }).notNull(),
+		topic: varchar('topic', { length: 200 }).notNull(),
+		isCorrect: boolean('is_correct').notNull(),
+		responseTimeMs: integer('response_time_ms'),
+		nextReviewAt: timestamp('next_review_at'),
+		intervalDays: integer('interval_days').notNull().default(1),
+		easeFactor: numeric('ease_factor', { precision: 3, scale: 2 }).notNull().default('2.5'),
+		attemptedAt: timestamp('attempted_at').defaultNow(),
+	},
+	(table) => ({
+		userIdQuestionIdx: index('question_attempts_user_q_idx').on(table.userId, table.questionId),
+		userIdIdx: index('question_attempts_user_id_idx').on(table.userId),
+		nextReviewIdx: index('question_attempts_next_review_idx').on(table.nextReviewAt),
+	})
+);
+
+export const questionAttemptsRelations = relations(questionAttempts, ({ one }) => ({
+	user: one(users, {
+		fields: [questionAttempts.userId],
+		references: [users.id],
+	}),
+}));
+
+// ============================================================================
 // USER SETTINGS TABLE
 // ============================================================================
 
