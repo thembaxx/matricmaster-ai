@@ -233,6 +233,7 @@ export const studySessions = pgTable(
 			.references(() => users.id, { onDelete: 'cascade' }),
 		subjectId: integer('subject_id').references(() => subjects.id, { onDelete: 'set null' }),
 		sessionType: varchar('session_type', { length: 20 }).notNull(),
+		topic: varchar('topic', { length: 200 }),
 		durationMinutes: integer('duration_minutes'),
 		questionsAttempted: integer('questions_attempted').notNull().default(0),
 		correctAnswers: integer('correct_answers').notNull().default(0),

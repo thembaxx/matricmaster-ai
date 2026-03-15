@@ -128,7 +128,7 @@ export default function PastPaperViewer({
 	}, [paperId, extractQuestions, mode]);
 
 	const handleConvertToInteractive = () => {
-		router.push(`/interactive-quiz?id=${paper.id}`);
+		router.push(`/quiz?id=${paper.id}`);
 	};
 
 	const handleExplainQuestion = useCallback(async () => {

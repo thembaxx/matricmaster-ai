@@ -1,8 +1,12 @@
 'use client';
 
 import { m } from 'framer-motion';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { SUBJECTS } from '@/constants/subjects';
+import { authClient } from '@/lib/auth-client';
+import { getTodayTimelineEventsAction } from '@/lib/db/actions';
 import { cn } from '@/lib/utils';
 
 interface TimelineEvent {
@@ -13,6 +17,7 @@ interface TimelineEvent {
 	duration: string;
 	status: 'completed' | 'current' | 'upcoming';
 	emoji: string;
+	navigationHref?: string;
 }
 
 const DEMO_EVENTS: TimelineEvent[] = [
@@ -24,6 +29,7 @@ const DEMO_EVENTS: TimelineEvent[] = [
 		duration: '45 min',
 		status: 'completed',
 		emoji: SUBJECTS.mathematics.emoji,
+		navigationHref: '/focus?subject=mathematics',
 	},
 	{
 		id: '2',
@@ -33,6 +39,7 @@ const DEMO_EVENTS: TimelineEvent[] = [
 		duration: '30 min',
 		status: 'current',
 		emoji: SUBJECTS.physics.emoji,
+		navigationHref: '/quiz?subject=physics',
 	},
 	{
 		id: '3',
@@ -42,6 +49,7 @@ const DEMO_EVENTS: TimelineEvent[] = [
 		duration: '60 min',
 		status: 'upcoming',
 		emoji: SUBJECTS.english.emoji,
+		navigationHref: '/ai-tutor?subject=english',
 	},
 	{
 		id: '4',
@@ -51,6 +59,7 @@ const DEMO_EVENTS: TimelineEvent[] = [
 		duration: '45 min',
 		status: 'upcoming',
 		emoji: SUBJECTS['life-sciences'].emoji,
+		navigationHref: '/flashcards?subject=life-sciences',
 	},
 	{
 		id: '5',
@@ -60,15 +69,73 @@ const DEMO_EVENTS: TimelineEvent[] = [
 		duration: '30 min',
 		status: 'upcoming',
 		emoji: '🥪',
+		navigationHref: undefined,
 	},
 ];
 
 export function TimelineSidebar() {
-	const today = new Date().toLocaleDateString('en-US', {
+	const router = useRouter();
+	const { data: session } = authClient.useSession();
+	const [events, setEvents] = useState<TimelineEvent[]>([]);
+	const [isLoading, setIsLoading] = useState(true);
+	const [selectedDate, setSelectedDate] = useState(new Date());
+
+	const today = selectedDate.toLocaleDateString('en-US', {
 		weekday: 'long',
 		month: 'short',
 		day: 'numeric',
 	});
+
+	useEffect(() => {
+		async function loadEvents() {
+			setIsLoading(true);
+			try {
+				const data = await getTodayTimelineEventsAction();
+				if (data.length > 0) {
+					setEvents(
+						data.map((e) => ({
+							id: e.id,
+							time: e.time,
+							subject: e.subject,
+							title: e.title,
+							duration: e.duration,
+							status: e.status,
+							emoji: e.emoji,
+							navigationHref: e.navigationHref,
+						}))
+					);
+				} else {
+					setEvents(DEMO_EVENTS);
+				}
+			} catch (error) {
+				console.error('Error loading timeline events:', error);
+				setEvents(DEMO_EVENTS);
+			} finally {
+				setIsLoading(false);
+			}
+		}
+		loadEvents();
+	}, []);
+
+	const handlePrevDay = () => {
+		setSelectedDate((prev) => new Date(prev.getTime() - 24 * 60 * 60 * 1000));
+	};
+
+	const handleNextDay = () => {
+		setSelectedDate((prev) => new Date(prev.getTime() + 24 * 60 * 60 * 1000));
+	};
+
+	const handleEventClick = (event: TimelineEvent) => {
+		if (event.navigationHref) {
+			router.push(event.navigationHref);
+		}
+	};
+
+	const completedCount = events.filter((e) => e.status === 'completed').length;
+	const totalCount = events.filter((e) => e.navigationHref).length;
+	const progressPercent = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0;
+
+	const isToday = selectedDate.toDateString() === new Date().toDateString();
 
 	return (
 		<aside className="fixed left-0 top-0 h-screen w-72 bg-background-elevated border-r border-border hidden lg:flex flex-col z-20">
@@ -76,13 +143,26 @@ export function TimelineSidebar() {
 			<div className="p-6 border-b border-border">
 				{/* Date Selector */}
 				<div className="flex items-center gap-2">
-					<Button variant="ghost" size="icon" className="rounded-full h-8 w-8">
+					<Button
+						variant="ghost"
+						size="icon"
+						className="rounded-full h-8 w-8"
+						onClick={handlePrevDay}
+					>
 						<span className="text-lg">‹</span>
 					</Button>
 					<div className="flex-1 text-center">
 						<p className="text-sm font-semibold text-foreground">{today}</p>
+						{isToday && session && (
+							<span className="text-[10px] text-primary font-medium">Today</span>
+						)}
 					</div>
-					<Button variant="ghost" size="icon" className="rounded-full h-8 w-8">
+					<Button
+						variant="ghost"
+						size="icon"
+						className="rounded-full h-8 w-8"
+						onClick={handleNextDay}
+					>
 						<span className="text-lg">›</span>
 					</Button>
 				</div>
@@ -97,22 +177,67 @@ export function TimelineSidebar() {
 					<div className="absolute left-[26px] top-2 bottom-2 w-0.5 bg-border" />
 
 					{/* Events */}
-					{DEMO_EVENTS.map((event, index) => (
-						<TimelineEventCard key={event.id} event={event} index={index} />
-					))}
+					{isLoading ? (
+						<div className="space-y-2">
+							{[1, 2, 3, 4].map((i) => (
+								<div
+									key={i}
+									className="flex items-start gap-3 p-3 rounded-xl bg-card border border-border animate-pulse"
+								>
+									<div className="w-3 h-3 rounded-full bg-muted" />
+									<div className="flex-1 space-y-2">
+										<div className="h-3 w-16 bg-muted rounded" />
+										<div className="h-4 w-full bg-muted rounded" />
+									</div>
+								</div>
+							))}
+						</div>
+					) : events.length === 0 ? (
+						<div className="text-center py-8">
+							<div className="text-4xl mb-2">📅</div>
+							<p className="text-sm text-muted-foreground mb-3">No events scheduled</p>
+							<Button
+								variant="outline"
+								size="sm"
+								className="rounded-full"
+								onClick={() => router.push('/planner')}
+							>
+								Add task
+							</Button>
+						</div>
+					) : (
+						events.map((event, index) => (
+							<TimelineEventCard
+								key={event.id}
+								event={event}
+								index={index}
+								onClick={() => handleEventClick(event)}
+							/>
+						))
+					)}
 				</div>
 			</div>
 
 			{/* Stats */}
 			<div className="p-4 border-t border-border">
 				<div className="bg-primary-soft rounded-lg p-4">
-					<p className="text-[10px] text-muted-foreground mb-1">Progress today</p>
+					<div className="flex items-center justify-between mb-1">
+						<p className="text-[10px] text-muted-foreground">Progress today</p>
+						{session && events.length > 0 && (
+							<span className="text-[10px] text-primary font-medium">Live</span>
+						)}
+					</div>
 					<div className="flex items-end gap-2">
-						<span className="text-sm font-display font-bold text-primary">2</span>
-						<span className="text-xs text-muted-foreground mb-px">/ 5 done</span>
+						<span className="text-sm font-display font-bold text-primary">{completedCount}</span>
+						<span className="text-xs text-muted-foreground mb-px">/ {totalCount} done</span>
 					</div>
 					<div className="mt-2 h-1.5 bg-border rounded-full overflow-hidden">
-						<div className="h-full w-[40%] bg-primary rounded-full" />
+						<m.div
+							className="h-full bg-primary rounded-full"
+							initial={{ width: 0 }}
+							animate={{ width: `${progressPercent}%` }}
+							transition={{ duration: 0.5, ease: 'easeOut' }}
+						/>
 					</div>
 				</div>
 			</div>
@@ -120,11 +245,19 @@ export function TimelineSidebar() {
 	);
 }
 
-function TimelineEventCard({ event, index }: { event: TimelineEvent; index: number }) {
+function TimelineEventCard({
+	event,
+	index,
+	onClick,
+}: {
+	event: TimelineEvent;
+	index: number;
+	onClick: () => void;
+}) {
 	const statusStyles = {
-		completed: 'bg-success-soft border-success/30',
-		current: 'bg-primary-soft border-primary shadow-md',
-		upcoming: 'bg-card border-border',
+		completed: 'bg-success-soft/50 border-success/30 hover:border-success/50',
+		current: 'bg-primary-soft border-primary shadow-md hover:shadow-lg',
+		upcoming: 'bg-card border-border hover:border-primary/50',
 	};
 
 	const dotStyles = {
@@ -133,20 +266,25 @@ function TimelineEventCard({ event, index }: { event: TimelineEvent; index: numb
 		upcoming: 'bg-border',
 	};
 
+	const isClickable = !!event.navigationHref;
+
 	return (
 		<m.div
 			initial={{ opacity: 0, x: -20 }}
 			animate={{ opacity: 1, x: 0 }}
-			transition={{ delay: index * 0.1, duration: 0.4 }}
-			className="relative rounded-xl overflow-hidden border mb-2 "
+			transition={{ delay: index * 0.08, duration: 0.4 }}
+			className="relative rounded-xl overflow-hidden border mb-2"
 		>
-			<m.div
+			<m.button
 				initial={{ opacity: 0, x: -20 }}
 				animate={{ opacity: 1, x: 0 }}
-				transition={{ delay: index * 0.1, duration: 0.4 }}
+				transition={{ delay: index * 0.08, duration: 0.4 }}
+				onClick={isClickable ? onClick : undefined}
+				disabled={!isClickable}
 				className={cn(
-					'relative flex items-start gap-3 p-3 rounded-xl cursor-pointer tiimo-press relative z-2',
-					statusStyles[event.status]
+					'relative flex items-start gap-3 p-3 rounded-xl cursor-pointer tiimo-press relative z-2 w-full text-left transition-all',
+					statusStyles[event.status],
+					isClickable ? 'cursor-pointer' : 'cursor-default'
 				)}
 			>
 				{/* Timeline Dot */}
@@ -168,9 +306,11 @@ function TimelineEventCard({ event, index }: { event: TimelineEvent; index: numb
 				<div className="flex-shrink-0 w-8 h-8 rounded-full bg-background flex items-center justify-center text-lg shadow-sm">
 					{event.emoji}
 				</div>
-			</m.div>
+			</m.button>
 
-			<div className="absolute h-full w-full left-0 top-0 bg-white/90 backdrop-blur-2xl" />
+			{event.status === 'upcoming' && isClickable && (
+				<div className="absolute h-full w-full left-0 top-0 bg-white/40 dark:bg-black/20 backdrop-blur-[1px] pointer-events-none" />
+			)}
 		</m.div>
 	);
 }

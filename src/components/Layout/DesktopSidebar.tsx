@@ -32,11 +32,9 @@ import {
 	Shield01Icon,
 	SparklesIcon,
 	Sun01Icon,
-	Task01Icon,
 	Timer01Icon,
 	UserGroupIcon,
 	User as UserIcon,
-	WorkoutSportIcon,
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { m } from 'framer-motion';
@@ -99,14 +97,11 @@ export const sideMenuSections: MenuSection[] = [
 	{
 		title: 'Practice',
 		items: [
-			{ href: '/common-questions', label: 'Common Questions', icon: QuestionIcon },
-			{ href: '/flashcards', label: 'Flashcards', icon: Layers01Icon },
-			{ href: '/interactive-quiz', label: 'Interactive Quiz', icon: WorkoutSportIcon },
-			{ href: '/math-quiz', label: 'Math Quiz', icon: CalculatorIcon },
-			{ href: '/past-papers', label: 'Past Papers', icon: File01Icon },
-			{ href: '/physics-quiz', label: 'Physics Quiz', icon: AtomIcon },
-			{ href: '/practice-quiz', label: 'Practice Quiz', icon: Task01Icon },
 			{ href: '/quiz', label: 'Quiz', icon: QuestionIcon },
+			{ href: '/flashcards', label: 'Flashcards', icon: Layers01Icon },
+			{ href: '/past-papers', label: 'Past Papers', icon: File01Icon },
+			{ href: '/snap-and-solve', label: 'Snap & Solve', icon: CalculatorIcon },
+			{ href: '/common-questions', label: 'Common Questions', icon: QuestionIcon },
 			{ href: '/review', label: 'Review', icon: AiBrain01Icon },
 		],
 	},

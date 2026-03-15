@@ -8,6 +8,7 @@ import {
 	CheckmarkCircle02Icon,
 	Clock01Icon,
 	FlashIcon,
+	Layers01Icon,
 	Refresh01Icon,
 	SparklesIcon,
 } from '@hugeicons/core-free-icons';
@@ -313,6 +314,22 @@ export default function LessonComplete() {
 						>
 							<HugeiconsIcon icon={Refresh01Icon} className="w-5 h-5" />
 							Try Another Quiz
+						</Button>
+						<Button
+							variant="ghost"
+							className="w-full h-14 rounded-2xl font-black text-sm uppercase tracking-widest text-muted-foreground hover:text-foreground flex items-center justify-center gap-2"
+							onClick={() => router.push('/flashcards')}
+						>
+							<HugeiconsIcon icon={Layers01Icon} className="w-5 h-5" />
+							Review Flashcards
+						</Button>
+						<Button
+							variant="ghost"
+							className="w-full h-14 rounded-2xl font-black text-sm uppercase tracking-widest text-muted-foreground hover:text-foreground flex items-center justify-center gap-2"
+							onClick={() => router.push('/past-papers')}
+						>
+							<HugeiconsIcon icon={SparklesIcon} className="w-5 h-5" />
+							Practice Past Papers
 						</Button>
 					</m.div>
 				</main>

@@ -8,8 +8,6 @@ import { AblyClientProvider } from '@/lib/ably/provider';
 import { PostHogProvider } from '@/lib/posthog-client';
 import { ScheduleProvider } from '@/stores/useScheduleStore';
 import AppLayout from './AppLayout';
-import QueryErrorBoundary from './QueryErrorBoundary';
-import QueryProvider from './QueryProvider';
 
 interface ClientProvidersProps {
 	children: ReactNode;
@@ -17,22 +15,18 @@ interface ClientProvidersProps {
 
 export function ClientProviders({ children }: ClientProvidersProps) {
 	return (
-		<QueryErrorBoundary>
-			<QueryProvider>
-				<LazyMotion features={domAnimation}>
-					<TooltipProvider>
-						<AblyClientProvider>
-							<ScheduleProvider>
-								<PostHogProvider>
-									<NotificationListener>
-										<AppLayout>{children}</AppLayout>
-									</NotificationListener>
-								</PostHogProvider>
-							</ScheduleProvider>
-						</AblyClientProvider>
-					</TooltipProvider>
-				</LazyMotion>
-			</QueryProvider>
-		</QueryErrorBoundary>
+		<LazyMotion features={domAnimation}>
+			<TooltipProvider>
+				<AblyClientProvider>
+					<ScheduleProvider>
+						<PostHogProvider>
+							<NotificationListener>
+								<AppLayout>{children}</AppLayout>
+							</NotificationListener>
+						</PostHogProvider>
+					</ScheduleProvider>
+				</AblyClientProvider>
+			</TooltipProvider>
+		</LazyMotion>
 	);
 }

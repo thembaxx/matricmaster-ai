@@ -1,4 +1,4 @@
-import { GoogleGenerativeAI } from '@google/generative-ai';
+import { GoogleGenAI } from '@google/genai';
 import { generateTextWithAI, generateWithFallback, streamTextWithAI } from '@/lib/ai';
 
 /**
@@ -14,7 +14,7 @@ export function createAIClient() {
 	}
 
 	try {
-		return new GoogleGenerativeAI(apiKey);
+		return new GoogleGenAI({ apiKey });
 	} catch (error) {
 		console.error('Failed to create AI client:', error);
 		return null;

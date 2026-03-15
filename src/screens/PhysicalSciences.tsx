@@ -67,10 +67,10 @@ export default function PhysicalSciences() {
 					<Button
 						variant="gradient"
 						className="w-full rounded-2xl font-black h-12 gap-2 shadow-xl shadow-primary-violet/20"
-						onClick={() => router.push('/physics-quiz')}
+						onClick={() => router.push('/quiz')}
 					>
 						<HugeiconsIcon icon={SparklesIcon} className="w-4 h-4" />
-						Practice Interactive Paper (May/June 2025)
+						Practice Quiz
 					</Button>
 				</div>
 
