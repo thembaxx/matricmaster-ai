@@ -302,7 +302,11 @@ export default function Lessons() {
 												</h3>
 
 												<div className="pt-2">
-													<TTSButton text={`${lesson.title}. ${lesson.content.slice(0, 200)}`} />
+													<TTSButton
+														text={`${lesson.title}. ${lesson.content.slice(0, 200)}`}
+														title={lesson.title}
+														showPlayer={true}
+													/>
 												</div>
 
 												{lesson.progress !== undefined ? (

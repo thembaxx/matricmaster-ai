@@ -1,6 +1,6 @@
 'use server';
 
-import { and, asc, desc, eq, inArray, isNotNull, isNull, sql } from 'drizzle-orm';
+import { and, asc, desc, eq, gte, inArray, isNotNull, isNull, lt, sql } from 'drizzle-orm';
 import { headers } from 'next/headers';
 import { z } from 'zod';
 import { getAuth, type SessionUser } from '@/lib/auth';
@@ -290,6 +290,127 @@ export async function getCalendarEventsWithSubjectsAction() {
 	}
 }
 
+export interface TodayTimelineEvent {
+	id: string;
+	time: string;
+	subject: string;
+	title: string;
+	duration: string;
+	status: 'completed' | 'current' | 'upcoming';
+	emoji: string;
+	eventType: string | null;
+	subjectId: number | null;
+	lessonId: number | null;
+	examId: string | null;
+	studyPlanId: string | null;
+	navigationHref: string;
+}
+
+export async function getTodayTimelineEventsAction(): Promise<TodayTimelineEvent[]> {
+	try {
+		const user = await ensureAuthenticated();
+		const db = await getDb();
+
+		const today = new Date();
+		const startOfDay = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+		const endOfDay = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1);
+
+		const events = await db
+			.select({
+				id: calendarEvents.id,
+				title: calendarEvents.title,
+				description: calendarEvents.description,
+				eventType: calendarEvents.eventType,
+				subjectId: calendarEvents.subjectId,
+				startTime: calendarEvents.startTime,
+				endTime: calendarEvents.endTime,
+				isAllDay: calendarEvents.isAllDay,
+				lessonId: calendarEvents.lessonId,
+				examId: calendarEvents.examId,
+				studyPlanId: calendarEvents.studyPlanId,
+				isCompleted: calendarEvents.isCompleted,
+				subjectName: subjects.name,
+			})
+			.from(calendarEvents)
+			.leftJoin(subjects, eq(calendarEvents.subjectId, subjects.id))
+			.where(
+				and(
+					eq(calendarEvents.userId, user.id),
+					gte(calendarEvents.startTime, startOfDay),
+					lt(calendarEvents.startTime, endOfDay)
+				)
+			)
+			.orderBy(asc(calendarEvents.startTime));
+
+		const { SUBJECTS } = await import('@/constants/subjects');
+
+		const now = new Date();
+		const currentHour = now.getHours();
+
+		return events.map((event) => {
+			const startTime = event.startTime ? new Date(event.startTime) : new Date();
+			const endTime = event.endTime
+				? new Date(event.endTime)
+				: new Date(startTime.getTime() + 45 * 60000);
+			const eventHour = startTime.getHours();
+			const durationMinutes = Math.round((endTime.getTime() - startTime.getTime()) / 60000);
+
+			let status: 'completed' | 'current' | 'upcoming' = 'upcoming';
+			if (event.isCompleted) {
+				status = 'completed';
+			} else if (eventHour < currentHour) {
+				status = 'completed';
+			} else if (
+				eventHour === currentHour ||
+				(eventHour === currentHour + 1 && now.getMinutes() > 30)
+			) {
+				status = 'current';
+			}
+
+			const subjectKey = Object.keys(SUBJECTS).find(
+				(key) => SUBJECTS[key as keyof typeof SUBJECTS].name === event.subjectName
+			);
+			const emoji = subjectKey ? SUBJECTS[subjectKey as keyof typeof SUBJECTS].emoji : '📚';
+
+			const subjectId = event.subjectId ? String(event.subjectId) : '';
+
+			let navigationHref = '/planner';
+			if (event.eventType === 'study') {
+				navigationHref = event.subjectId ? `/focus?subject=${subjectId}` : '/focus';
+			} else if (event.eventType === 'practice') {
+				navigationHref = `/quiz${event.subjectId ? `?subject=${subjectId}` : ''}`;
+			} else if (event.eventType === 'flashcard') {
+				navigationHref = `/flashcards${event.subjectId ? `?subject=${subjectId}` : ''}`;
+			} else if (event.eventType === 'past-paper') {
+				navigationHref = `/past-papers${event.subjectId ? `?subject=${subjectId}` : ''}`;
+			} else if (event.eventType === 'ai-tutor') {
+				navigationHref = `/ai-tutor${event.subjectId ? `?subject=${subjectId}` : ''}`;
+			} else if (event.lessonId) {
+				navigationHref = `/lesson/${event.lessonId}`;
+			}
+
+			return {
+				id: String(event.id),
+				time: startTime.toLocaleTimeString('en-ZA', { hour: '2-digit', minute: '2-digit' }),
+				subject: event.subjectName || event.eventType || 'General',
+				title: event.title,
+				duration: `${durationMinutes} min`,
+				status,
+				emoji,
+				eventType: event.eventType,
+				subjectId: event.subjectId,
+				lessonId: event.lessonId,
+				examId: event.examId,
+				studyPlanId: event.studyPlanId,
+				navigationHref,
+			};
+		});
+	} catch (error) {
+		console.error('Error fetching today timeline events:', error);
+		return [];
+	}
+}
+
 export async function deleteCalendarEventAction(eventId: string) {
 	try {
 		const user = await ensureAuthenticated();
@@ -356,6 +477,62 @@ export async function getRecentActivityAction() {
 			.limit(5);
 	} catch (error) {
 		console.error('Error fetching recent activity:', error);
+		return [];
+	}
+}
+
+export interface RecentSessionWithContext {
+	id: string;
+	sessionType: string;
+	subjectId: number | null;
+	subjectName: string | null;
+	subjectEmoji: string | null;
+	topic: string | null;
+	durationMinutes: number | null;
+	questionsAttempted: number;
+	correctAnswers: number;
+	marksEarned: number;
+	completedAt: Date | null;
+	conversationId?: string;
+}
+
+export async function getRecentSessionsWithContextAction(): Promise<RecentSessionWithContext[]> {
+	try {
+		const user = await ensureAuthenticated();
+		const db = await getDb();
+
+		const sessions = await db
+			.select({
+				id: studySessions.id,
+				sessionType: studySessions.sessionType,
+				subjectId: studySessions.subjectId,
+				subjectName: subjects.name,
+				topic: studySessions.topic,
+				durationMinutes: studySessions.durationMinutes,
+				questionsAttempted: studySessions.questionsAttempted,
+				correctAnswers: studySessions.correctAnswers,
+				marksEarned: studySessions.marksEarned,
+				completedAt: studySessions.completedAt,
+			})
+			.from(studySessions)
+			.leftJoin(subjects, eq(studySessions.subjectId, subjects.id))
+			.where(and(eq(studySessions.userId, user.id), isNotNull(studySessions.completedAt)))
+			.orderBy(desc(studySessions.completedAt))
+			.limit(10);
+
+		const { SUBJECTS } = await import('@/constants/subjects');
+
+		return sessions.map((s) => {
+			const subjectKey = Object.keys(SUBJECTS).find(
+				(key) => SUBJECTS[key as keyof typeof SUBJECTS].name === s.subjectName
+			);
+			return {
+				...s,
+				subjectEmoji: subjectKey ? SUBJECTS[subjectKey as keyof typeof SUBJECTS].emoji : null,
+			};
+		});
+	} catch (error) {
+		console.error('Error fetching recent sessions with context:', error);
 		return [];
 	}
 }

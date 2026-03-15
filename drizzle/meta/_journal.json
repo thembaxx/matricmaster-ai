@@ -92,6 +92,20 @@
 			"when": 1773417647817,
 			"tag": "0012_military_mariko_yashida",
 			"breakpoints": true
+		},
+		{
+			"idx": 13,
+			"version": "7",
+			"when": 1773587088061,
+			"tag": "0013_wealthy_diamondback",
+			"breakpoints": true
+		},
+		{
+			"idx": 14,
+			"version": "7",
+			"when": 1773588134699,
+			"tag": "0014_lowly_lady_vermin",
+			"breakpoints": true
 		}
 	]
 }

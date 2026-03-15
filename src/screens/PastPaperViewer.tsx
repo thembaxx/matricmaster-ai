@@ -8,12 +8,14 @@ import {
 	Loading03Icon,
 	Search01Icon,
 	SparklesIcon,
+	VolumeHighIcon,
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
+import { ResponsiveAudioPlayer } from '@/components/AudioPlayer';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -54,6 +56,9 @@ export default function PastPaperViewer({
 	const [isExplaining, setIsExplaining] = useState(false);
 	const [showPdfFallback, setShowPdfFallback] = useState(mode === 'read');
 	const [viewMode, setViewMode] = useState<'smart' | 'original'>('smart');
+	const [showAudioPlayer, setShowAudioPlayer] = useState(false);
+	const [audioText, setAudioText] = useState('');
+	const [audioTitle, setAudioTitle] = useState('');
 
 	const {
 		extractedPaper,
@@ -128,7 +133,7 @@ export default function PastPaperViewer({
 	}, [paperId, extractQuestions, mode]);
 
 	const handleConvertToInteractive = () => {
-		router.push(`/interactive-quiz?id=${paper.id}`);
+		router.push(`/quiz?id=${paper.id}`);
 	};
 
 	const handleExplainQuestion = useCallback(async () => {
@@ -395,7 +400,22 @@ export default function PastPaperViewer({
 
 							{/* Main Question Text */}
 							<div className="space-y-4 text-zinc-800 dark:text-zinc-200 font-medium relative z-10">
-								<p className="text-lg leading-relaxed">{currentQuestion.questionText}</p>
+								<div className="flex items-start gap-3">
+									<p className="flex-1 text-lg leading-relaxed">{currentQuestion.questionText}</p>
+									<Button
+										variant="ghost"
+										size="icon"
+										onClick={() => {
+											setAudioText(currentQuestion.questionText);
+											setAudioTitle(`Question ${currentQuestion.questionNumber}`);
+											setShowAudioPlayer(true);
+										}}
+										className="shrink-0 rounded-full h-9 w-9"
+										title="Listen to question"
+									>
+										<HugeiconsIcon icon={VolumeHighIcon} className="w-4 h-4" />
+									</Button>
+								</div>
 
 								{/* Sub-questions */}
 								{currentQuestion.subQuestions && currentQuestion.subQuestions.length > 0 && (
@@ -567,6 +587,15 @@ export default function PastPaperViewer({
 					</div>
 				</nav>
 			</div>
+
+			{showAudioPlayer && (
+				<ResponsiveAudioPlayer
+					text={audioText}
+					title={audioTitle}
+					open={showAudioPlayer}
+					onOpenChange={setShowAudioPlayer}
+				/>
+			)}
 		</div>
 	);
 }

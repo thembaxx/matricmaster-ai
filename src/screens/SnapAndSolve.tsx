@@ -4,8 +4,10 @@ import {
 	ArrowLeft01Icon,
 	Camera01Icon,
 	Cancel01Icon,
+	Layers01Icon,
 	Loading03Icon,
 	SparklesIcon,
+	VolumeHighIcon,
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { m } from 'framer-motion';
@@ -13,10 +15,12 @@ import { useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
 import { toast } from 'sonner';
 import { MarkdownRenderer } from '@/components/AI/MarkdownRenderer';
+import { ResponsiveAudioPlayer } from '@/components/AudioPlayer';
 import { SafeImage } from '@/components/SafeImage';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { saveToFlashcardsAction } from '@/lib/db/flashcard-actions';
 import { cn } from '@/lib/utils';
 
 const SUBJECTS = [
@@ -35,6 +39,8 @@ export default function SnapAndSolve() {
 	const [subject, setSubject] = useState('General');
 	const [isAnalyzing, setIsAnalyzing] = useState(false);
 	const [solution, setSolution] = useState<string | null>(null);
+	const [showAudioPlayer, setShowAudioPlayer] = useState(false);
+	const [isSavingFlashcard, setIsSavingFlashcard] = useState(false);
 	const fileInputRef = useRef<HTMLInputElement>(null);
 
 	const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -47,6 +53,37 @@ export default function SnapAndSolve() {
 			};
 			reader.readAsDataURL(file);
 			setSolution(null);
+		}
+	};
+
+	const handleSaveFlashcard = async () => {
+		if (!solution) return;
+
+		setIsSavingFlashcard(true);
+		try {
+			// Extract a brief summary for the front if possible
+			const frontRaw = subject !== 'General' ? `${subject} Problem` : 'Snapped Question';
+			const result = await saveToFlashcardsAction({
+				front: frontRaw,
+				back: solution,
+				subjectName: subject,
+			});
+
+			if (result.success) {
+				toast.success('Added to your Flashcards!', {
+					description: 'You can review this in the Flashcards section.',
+					action: {
+						label: 'View',
+						onClick: () => router.push('/flashcards'),
+					},
+				});
+			} else {
+				toast.error('Failed to save flashcard');
+			}
+		} catch {
+			toast.error('Something went wrong');
+		} finally {
+			setIsSavingFlashcard(false);
 		}
 	};
 
@@ -208,6 +245,27 @@ export default function SnapAndSolve() {
 							</div>
 							<Card className="rounded-[2.5rem] p-8 border border-border shadow-tiimo bg-card/50 backdrop-blur-sm overflow-hidden relative">
 								<div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-3xl -mr-16 -mt-16" />
+								<div className="flex justify-end gap-2 mb-4">
+									<Button
+										variant="outline"
+										size="sm"
+										disabled={isSavingFlashcard}
+										onClick={handleSaveFlashcard}
+										className="rounded-full gap-2 hover:bg-tiimo-lavender/10 hover:text-tiimo-lavender border-dashed"
+									>
+										<HugeiconsIcon icon={Layers01Icon} className="w-4 h-4" />
+										{isSavingFlashcard ? 'Saving...' : 'Add to Flashcards'}
+									</Button>
+									<Button
+										variant="outline"
+										size="sm"
+										onClick={() => setShowAudioPlayer(true)}
+										className="rounded-full gap-2"
+									>
+										<HugeiconsIcon icon={VolumeHighIcon} className="w-4 h-4" />
+										Listen
+									</Button>
+								</div>
 								<MarkdownRenderer content={solution} />
 							</Card>
 
@@ -233,6 +291,15 @@ export default function SnapAndSolve() {
 						</m.div>
 					)}
 				</main>
+
+				{solution && (
+					<ResponsiveAudioPlayer
+						text={solution}
+						title="Solution"
+						open={showAudioPlayer}
+						onOpenChange={setShowAudioPlayer}
+					/>
+				)}
 			</ScrollArea>
 		</div>
 	);

@@ -7,7 +7,7 @@ import {
 	Compass01Icon,
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { m } from 'framer-motion';
+import { AnimatePresence, m } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { getEnrolledSubjectsAction } from '@/lib/db/actions';
@@ -72,35 +72,40 @@ export function SubjectGrid() {
 	}
 
 	return (
-		<div className="grid grid-cols-2 sm:grid-cols-3 gap-6">
-			{subjects.map((subject, index) => {
-				const subjectKey = subject.name.toLowerCase();
-				const Icon = ICON_MAP[subjectKey] || Book01Icon;
-				const color = COLOR_MAP[subjectKey] || 'bg-tiimo-gray-muted';
+		<m.div layout className="grid grid-cols-2 sm:grid-cols-3 gap-6">
+			<AnimatePresence mode="popLayout">
+				{subjects.map((subject, index) => {
+					const subjectKey = subject.name.toLowerCase();
+					const Icon = ICON_MAP[subjectKey] || Book01Icon;
+					const color = COLOR_MAP[subjectKey] || 'bg-tiimo-gray-muted';
 
-				return (
-					<m.button
-						key={subject.id}
-						initial={{ opacity: 0, scale: 0.9 }}
-						animate={{ opacity: 1, scale: 1 }}
-						transition={{ delay: index * 0.05 }}
-						onClick={() => router.push(`/subjects/${subject.id}`)}
-						className="aspect-square bg-card rounded-[2.5rem] p-6 flex flex-col items-center justify-center gap-4 shadow-tiimo border border-border/50 transition-all hover:scale-105 group active:scale-95"
-					>
-						<div
-							className={cn(
-								'w-16 h-16 rounded-[1.5rem] flex items-center justify-center transition-transform group-hover:rotate-12',
-								color
-							)}
+					return (
+						<m.button
+							layout
+							key={subject.id}
+							initial={{ opacity: 0, scale: 0.9 }}
+							animate={{ opacity: 1, scale: 1 }}
+							exit={{ opacity: 0, scale: 0.9 }}
+							transition={{ delay: index * 0.05 }}
+							onClick={() => router.push(`/subjects/${subject.id}`)}
+							className="aspect-square bg-card rounded-[2.5rem] p-6 flex flex-col items-center justify-center gap-4 shadow-tiimo border border-border/50 transition-all hover:scale-105 group active:scale-95"
 						>
-							<HugeiconsIcon icon={Icon} className="w-8 h-8 text-white" />
-						</div>
-						<span className="font-medium text-xs text-center">{subject.name}</span>
-					</m.button>
-				);
-			})}
+							<div
+								className={cn(
+									'w-16 h-16 rounded-[1.5rem] flex items-center justify-center transition-transform group-hover:rotate-12',
+									color
+								)}
+							>
+								<HugeiconsIcon icon={Icon} className="w-8 h-8 text-white" />
+							</div>
+							<span className="font-medium text-xs text-center">{subject.name}</span>
+						</m.button>
+					);
+				})}
+			</AnimatePresence>
 
-			<button
+			<m.button
+				layout
 				type="button"
 				onClick={() => router.push('/subjects')}
 				className="aspect-square bg-secondary/30 rounded-[2.5rem] border-2 border-dashed border-border/50 flex flex-col items-center justify-center gap-3 text-tiimo-gray-muted hover:bg-secondary/50 transition-all active:scale-95"
@@ -109,7 +114,7 @@ export function SubjectGrid() {
 					<span className="text-2xl font-light">+</span>
 				</div>
 				<span className="font-medium text-[10px]">Add more</span>
-			</button>
-		</div>
+			</m.button>
+		</m.div>
 	);
 }
