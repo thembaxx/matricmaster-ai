@@ -3,12 +3,7 @@
 import { and, eq, sql } from 'drizzle-orm';
 import { getAuth } from '@/lib/auth';
 import { dbManager } from '@/lib/db';
-import {
-	conceptStruggles,
-	flashcardDecks,
-	topicConfidence,
-	topicMastery,
-} from '@/lib/db/schema';
+import { conceptStruggles, flashcardDecks, topicConfidence, topicMastery } from '@/lib/db/schema';
 
 async function getDb() {
 	const connected = await dbManager.waitForConnection(3, 2000);
@@ -62,7 +57,9 @@ export async function getWeakTopics(limit = 5): Promise<WeakTopic[]> {
 
 	for (const c of confidences) {
 		const confidenceNum = Number(c.confidenceScore);
-		const mastery = masteries.find((m) => m.topic === c.topic && m.subjectId.toString() === c.subject);
+		const mastery = masteries.find(
+			(m) => m.topic === c.topic && m.subjectId.toString() === c.subject
+		);
 		const struggle = struggles.find((s) => s.concept === c.topic);
 
 		const struggleCount = struggle?.struggleCount || 0;
