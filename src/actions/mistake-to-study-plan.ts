@@ -1,3 +1,6 @@
+'use server';
+
+import { revalidatePath } from 'next/cache';
 import { getAuth } from '@/lib/auth';
 import { dbManager } from '@/lib/db';
 import { calendarEvents } from '@/lib/db/schema';
@@ -6,14 +9,8 @@ function generateId(): string {
 	return crypto.randomUUID();
 }
 
-interface MistakeEntry {
-	topic: string;
-	questionId: string;
-	subject: string;
-}
-
-export async function addMistakeToStudyPlan(
-	mistakes: MistakeEntry[]
+export async function addMistakeToStudyPlanAction(
+	mistakes: Array<{ topic: string; questionId: string; subject: string }>
 ): Promise<{ success: boolean; eventsAdded: number }> {
 	const auth = await getAuth();
 	const session = await auth.api.getSession();
@@ -57,10 +54,11 @@ export async function addMistakeToStudyPlan(
 		eventsAdded++;
 	}
 
+	revalidatePath('/study-plan');
 	return { success: true, eventsAdded };
 }
 
-export async function getRecentMistakes(
+export async function getRecentMistakesAction(
 	limit = 10
 ): Promise<Array<{ topic: string; questionId: string; subject: string }>> {
 	const auth = await getAuth();

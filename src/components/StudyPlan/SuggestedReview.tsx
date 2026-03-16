@@ -3,18 +3,24 @@
 import { SparklesIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { useEffect, useState } from 'react';
+import {
+	addMistakeToStudyPlanAction,
+	getRecentMistakesAction,
+} from '@/actions/mistake-to-study-plan';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { getRecentMistakes } from '@/lib/db/mistake-to-study-plan';
 
 export function SuggestedReview() {
-	const [mistakes, setMistakes] = useState<Array<{ topic: string; questionId: string }>>([]);
+	const [mistakes, setMistakes] = useState<
+		Array<{ topic: string; questionId: string; subject: string }>
+	>([]);
 	const [loading, setLoading] = useState(true);
+	const [isAdding, setIsAdding] = useState(false);
 
 	useEffect(() => {
 		async function loadMistakes() {
 			try {
-				const recent = await getRecentMistakes(5);
+				const recent = await getRecentMistakesAction(5);
 				setMistakes(recent);
 			} catch (error) {
 				console.error('Failed to load mistakes:', error);
@@ -24,6 +30,18 @@ export function SuggestedReview() {
 		}
 		loadMistakes();
 	}, []);
+
+	const handleAddToPlan = async () => {
+		if (mistakes.length === 0) return;
+		setIsAdding(true);
+		try {
+			await addMistakeToStudyPlanAction(mistakes);
+		} catch (error) {
+			console.error('Failed to add to study plan:', error);
+		} finally {
+			setIsAdding(false);
+		}
+	};
 
 	if (loading || mistakes.length === 0) return null;
 
@@ -43,8 +61,8 @@ export function SuggestedReview() {
 					</li>
 				))}
 			</ul>
-			<Button size="sm" className="mt-4 rounded-full">
-				Add to Study Plan
+			<Button size="sm" className="mt-4 rounded-full" onClick={handleAddToPlan} disabled={isAdding}>
+				{isAdding ? 'Adding...' : 'Add to Study Plan'}
 			</Button>
 		</Card>
 	);
