@@ -1,0 +1,143 @@
+export interface UnlockableTheme {
+	id: string;
+	name: string;
+	description: string;
+	preview: string;
+	unlockRequirement: {
+		type: 'streak' | 'points' | 'quizzes' | 'achievements';
+		value: number;
+	};
+	cssVariables: Record<string, string>;
+}
+
+export const UNLOCKABLE_THEMES: UnlockableTheme[] = [
+	{
+		id: 'neon-cyberpunk',
+		name: 'Neon Cyberpunk',
+		description: 'A futuristic cyberpunk aesthetic with neon pink and cyan accents',
+		preview: 'linear-gradient(135deg, #0f0f23 0%, #1a1a3e 100%)',
+		unlockRequirement: { type: 'streak', value: 7 },
+		cssVariables: {
+			'--primary': '#ff00ff',
+			'--primary-foreground': '#ffffff',
+			'--secondary': '#00ffff',
+			'--secondary-foreground': '#0f0f23',
+			'--accent': '#ff00ff',
+			'--accent-foreground': '#ffffff',
+			'--background': '#0a0a1a',
+			'--foreground': '#e0e0e0',
+			'--card': '#1a1a3e',
+			'--card-foreground': '#e0e0e0',
+			'--border': '#3a3a6e',
+			'--tiimo-blue': '#00ffff',
+			'--tiimo-pink': '#ff00ff',
+			'--tiimo-lavender': '#b388ff',
+			'--tiimo-green': '#00ff88',
+		},
+	},
+	{
+		id: 'sunset-orange',
+		name: 'Sunset Orange Glass',
+		description: 'Warm sunset oranges with glassmorphism effects',
+		preview: 'linear-gradient(135deg, #ff6b35 0%, #f7931e 50%, #ffcc00 100%)',
+		unlockRequirement: { type: 'points', value: 5000 },
+		cssVariables: {
+			'--primary': '#ff6b35',
+			'--primary-foreground': '#ffffff',
+			'--secondary': '#f7931e',
+			'--secondary-foreground': '#1a1a1a',
+			'--accent': '#ffcc00',
+			'--accent-foreground': '#1a1a1a',
+			'--background': '#fff5f0',
+			'--foreground': '#1a1a1a',
+			'--card': 'rgba(255, 255, 255, 0.7)',
+			'--card-foreground': '#1a1a1a',
+			'--border': '#ffcc00',
+			'--tiimo-blue': '#4a90d9',
+			'--tiimo-pink': '#ff6b35',
+			'--tiimo-lavender': '#b388ff',
+			'--tiimo-green': '#4caf50',
+		},
+	},
+	{
+		id: 'ocean-deep',
+		name: 'Ocean Deep',
+		description: 'Calming deep ocean blues for focused studying',
+		preview: 'linear-gradient(135deg, #0d1b2a 0%, #1b263b 50%, #415a77 100%)',
+		unlockRequirement: { type: 'quizzes', value: 25 },
+		cssVariables: {
+			'--primary': '#48cae4',
+			'--primary-foreground': '#0d1b2a',
+			'--secondary': '#90e0ef',
+			'--secondary-foreground': '#0d1b2a',
+			'--accent': '#00b4d8',
+			'--accent-foreground': '#ffffff',
+			'--background': '#0d1b2a',
+			'--foreground': '#caf0f8',
+			'--card': '#1b263b',
+			'--card-foreground': '#caf0f8',
+			'--border': '#415a77',
+			'--tiimo-blue': '#48cae4',
+			'--tiimo-pink': '#ff6b9d',
+			'--tiimo-lavender': '#90e0ef',
+			'--tiimo-green': '#52b788',
+		},
+	},
+	{
+		id: 'forest-zen',
+		name: 'Forest Zen',
+		description: 'Peaceful forest greens for calm, focused learning',
+		preview: 'linear-gradient(135deg, #1b4332 0%, #2d6a4f 50%, #40916c 100%)',
+		unlockRequirement: { type: 'achievements', value: 10 },
+		cssVariables: {
+			'--primary': '#40916c',
+			'--primary-foreground': '#ffffff',
+			'--secondary': '#95d5b2',
+			'--secondary-foreground': '#1b4332',
+			'--accent': '#74c69d',
+			'--accent-foreground': '#1b4332',
+			'--background': '#f0f7f4',
+			'--foreground': '#1b4332',
+			'--card': '#ffffff',
+			'--card-foreground': '#1b4332',
+			'--border': '#b7e4c7',
+			'--tiimo-blue': '#48cae4',
+			'--tiimo-pink': '#d8b4a0',
+			'--tiimo-lavender': '#95d5b2',
+			'--tiimo-green': '#40916c',
+		},
+	},
+	{
+		id: 'royal-purple',
+		name: 'Royal Purple',
+		description: 'Majestic purple with gold accents for high achievers',
+		preview: 'linear-gradient(135deg, #240046 0%, #3c096c 50%, #5a189a 100%)',
+		unlockRequirement: { type: 'streak', value: 30 },
+		cssVariables: {
+			'--primary': '#9d4edd',
+			'--primary-foreground': '#ffffff',
+			'--secondary': '#c77dff',
+			'--secondary-foreground': '#240046',
+			'--accent': '#ffd700',
+			'--accent-foreground': '#240046',
+			'--background': '#10002b',
+			'--foreground': '#e0aaff',
+			'--card': '#240046',
+			'--card-foreground': '#e0aaff',
+			'--border': '#5a189a',
+			'--tiimo-blue': '#48cae4',
+			'--tiimo-pink': '#ff006e',
+			'--tiimo-lavender': '#c77dff',
+			'--tiimo-green': '#52b788',
+		},
+	},
+];
+
+export const DEFAULT_THEME: UnlockableTheme = {
+	id: 'default',
+	name: 'Default',
+	description: 'Clean, modern default theme',
+	preview: 'linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)',
+	unlockRequirement: { type: 'streak', value: 0 },
+	cssVariables: {},
+};

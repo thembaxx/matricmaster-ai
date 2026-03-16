@@ -79,6 +79,7 @@ export const sideMenuSections: MenuSection[] = [
 		title: 'Learning',
 		items: [
 			{ href: '/dashboard', label: 'Dashboard', icon: Home01Icon },
+			{ href: '/demo', label: 'Demo', icon: SparklesIcon },
 			{ href: '/lessons', label: 'Lessons', icon: BookOpen01Icon },
 			{ href: '/physics', label: 'Physics', icon: AtomIcon },
 			{ href: '/search', label: 'Search', icon: Search01Icon },

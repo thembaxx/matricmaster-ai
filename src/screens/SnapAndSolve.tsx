@@ -6,6 +6,7 @@ import {
 	Cancel01Icon,
 	Layers01Icon,
 	Loading03Icon,
+	Quiz01Icon,
 	SparklesIcon,
 	VolumeHighIcon,
 } from '@hugeicons/core-free-icons';
@@ -41,6 +42,7 @@ export default function SnapAndSolve() {
 	const [solution, setSolution] = useState<string | null>(null);
 	const [showAudioPlayer, setShowAudioPlayer] = useState(false);
 	const [isSavingFlashcard, setIsSavingFlashcard] = useState(false);
+	const [isGeneratingQuiz, setIsGeneratingQuiz] = useState(false);
 	const fileInputRef = useRef<HTMLInputElement>(null);
 
 	const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -84,6 +86,37 @@ export default function SnapAndSolve() {
 			toast.error('Something went wrong');
 		} finally {
 			setIsSavingFlashcard(false);
+		}
+	};
+
+	const handleGenerateQuiz = async () => {
+		if (!solution) return;
+
+		setIsGeneratingQuiz(true);
+		try {
+			// Generate a quiz based on the solution
+			const response = await fetch('/api/generate-quiz-from-solution', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ solution, subject }),
+			});
+
+			const data = await response.json();
+			if (data.quizId) {
+				toast.success('Quiz generated!', {
+					description: 'Test your understanding with this quiz.',
+					action: {
+						label: 'Take Quiz',
+						onClick: () => router.push(`/quiz?id=${data.quizId}`),
+					},
+				});
+			} else {
+				toast.error('Failed to generate quiz');
+			}
+		} catch {
+			toast.error('Something went wrong');
+		} finally {
+			setIsGeneratingQuiz(false);
 		}
 	};
 
@@ -255,6 +288,16 @@ export default function SnapAndSolve() {
 									>
 										<HugeiconsIcon icon={Layers01Icon} className="w-4 h-4" />
 										{isSavingFlashcard ? 'Saving...' : 'Add to Flashcards'}
+									</Button>
+									<Button
+										variant="outline"
+										size="sm"
+										disabled={isGeneratingQuiz}
+										onClick={handleGenerateQuiz}
+										className="rounded-full gap-2 hover:bg-tiimo-green/10 hover:text-tiimo-green border-dashed"
+									>
+										<HugeiconsIcon icon={Quiz01Icon} className="w-4 h-4" />
+										{isGeneratingQuiz ? 'Generating...' : 'Generate Quiz'}
 									</Button>
 									<Button
 										variant="outline"

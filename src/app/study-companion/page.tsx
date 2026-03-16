@@ -453,11 +453,12 @@ export default function StudyCompanion() {
 											)}
 										</div>
 										<Button
+											asChild
 											variant="ghost"
 											size="sm"
 											className="rounded-full opacity-0 group-hover:opacity-100 transition-opacity shrink-0"
 										>
-											Continue →
+											Continue
 										</Button>
 									</m.button>
 								))}
