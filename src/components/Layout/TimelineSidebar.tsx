@@ -275,7 +275,7 @@ function TimelineEventCard({
 			transition={{ delay: index * 0.08, duration: 0.4 }}
 			className="relative rounded-xl overflow-hidden border mb-2"
 		>
-			<div className="absolute left-0 top-0 h-full w-full bg-white z-0" />
+			<div className="absolute left-0 top-0 h-full w-full bg-background z-0" />
 			<m.button
 				initial={{ opacity: 0, x: -20 }}
 				animate={{ opacity: 1, x: 0 }}
