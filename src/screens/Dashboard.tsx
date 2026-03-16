@@ -5,7 +5,6 @@ import {
 	BookOpen01Icon,
 	CalculatorIcon,
 	File01Icon,
-	GridIcon,
 	Layers01Icon,
 	SparklesIcon,
 } from '@hugeicons/core-free-icons';
@@ -329,90 +328,48 @@ export default function Dashboard({
 								</TaskSection>
 							</div>
 
-							<SubjectGrid />
+							<m.section
+								initial={{ opacity: 0, y: 20 }}
+								animate={{ opacity: 1, y: 0 }}
+								transition={{ delay: 0.5 }}
+								className="space-y-4"
+							>
+								<m.h2
+									initial={{ opacity: 0, x: -20 }}
+									animate={{ opacity: 1, x: 0 }}
+									className="text-xl font-semibold text-foreground"
+								>
+									Your Subjects
+								</m.h2>
+								<SubjectGrid />
+							</m.section>
 
-							<section className="space-y-4">
+							<m.section
+								initial={{ opacity: 0, y: 20 }}
+								animate={{ opacity: 1, y: 0 }}
+								transition={{ delay: 0.55 }}
+								className="space-y-4"
+							>
 								<BuddyPanel />
-							</section>
+							</m.section>
 
-							<section className="space-y-4">
-								<h2 className="text-xl font-semibold text-foreground">Start Studying</h2>
-								<div className="grid grid-cols-2 gap-4">
-									<button
-										type="button"
-										onClick={() => router.push('/quiz')}
-										className="p-5 bg-gradient-to-br from-violet-600 to-indigo-600 rounded-3xl text-left transition-all hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-violet-600/20"
-									>
-										<div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center mb-3">
-											<HugeiconsIcon icon={SparklesIcon} className="w-5 h-5 text-white" />
-										</div>
-										<h3 className="text-white font-bold">Quiz</h3>
-										<p className="text-white/70 text-xs mt-1">Test your knowledge</p>
-									</button>
-									<button
-										type="button"
-										onClick={() => router.push('/snap-and-solve')}
-										className="p-5 bg-card border border-border rounded-3xl text-left transition-all hover:scale-[1.02] active:scale-[0.98]"
-									>
-										<div className="w-10 h-10 bg-amber-100 dark:bg-amber-900/20 rounded-xl flex items-center justify-center mb-3">
-											<HugeiconsIcon icon={CalculatorIcon} className="w-5 h-5 text-amber-600" />
-										</div>
-										<h3 className="text-foreground font-bold">Snap & Solve</h3>
-										<p className="text-muted-foreground text-xs mt-1">Photo math solver</p>
-									</button>
-									<button
-										type="button"
-										onClick={() => router.push('/flashcards')}
-										className="p-5 bg-card border border-border rounded-3xl text-left transition-all hover:scale-[1.02] active:scale-[0.98]"
-									>
-										<div className="w-10 h-10 bg-blue-100 dark:bg-blue-900/20 rounded-xl flex items-center justify-center mb-3">
-											<HugeiconsIcon icon={Layers01Icon} className="w-5 h-5 text-blue-600" />
-										</div>
-										<h3 className="text-foreground font-bold">Flashcards</h3>
-										<p className="text-muted-foreground text-xs mt-1">Quick review</p>
-									</button>
-									<button
-										type="button"
-										onClick={() => router.push('/past-papers')}
-										className="p-5 bg-card border border-border rounded-3xl text-left transition-all hover:scale-[1.02] active:scale-[0.98]"
-									>
-										<div className="w-10 h-10 bg-green-100 dark:bg-green-900/20 rounded-xl flex items-center justify-center mb-3">
-											<HugeiconsIcon icon={File01Icon} className="w-5 h-5 text-green-600" />
-										</div>
-										<h3 className="text-foreground font-bold">Past Papers</h3>
-										<p className="text-muted-foreground text-xs mt-1">Exam practice</p>
-									</button>
-									<button
-										type="button"
-										onClick={() => router.push('/curriculum-map')}
-										className="p-5 bg-card border border-border rounded-3xl text-left transition-all hover:scale-[1.02] active:scale-[0.98]"
-									>
-										<div className="w-10 h-10 bg-purple-100 dark:bg-purple-900/20 rounded-xl flex items-center justify-center mb-3">
-											<HugeiconsIcon icon={GridIcon} className="w-5 h-5 text-purple-600" />
-										</div>
-										<h3 className="text-foreground font-bold">Curriculum</h3>
-										<p className="text-muted-foreground text-xs mt-1">Browse topics</p>
-									</button>
-									<button
-										type="button"
-										onClick={() => router.push('/study-companion')}
-										className="p-5 bg-card border border-border rounded-3xl text-left transition-all hover:scale-[1.02] active:scale-[0.98]"
-									>
-										<div className="w-10 h-10 bg-rose-100 dark:bg-rose-900/20 rounded-xl flex items-center justify-center mb-3">
-											<HugeiconsIcon icon={BookOpen01Icon} className="w-5 h-5 text-rose-600" />
-										</div>
-										<h3 className="text-foreground font-bold">AI Tutor</h3>
-										<p className="text-muted-foreground text-xs mt-1">Ask anything</p>
-									</button>
-								</div>
-							</section>
-
-							<section>
+							<m.section
+								initial={{ opacity: 0, y: 20 }}
+								animate={{ opacity: 1, y: 0 }}
+								transition={{ delay: 0.58 }}
+							>
 								<KnowledgeHeatmap compact />
-							</section>
+							</m.section>
 
 							<section className="space-y-4">
-								<h2 className="text-xl font-semibold text-foreground">Recommended for You</h2>
+								<m.h2
+									initial={{ opacity: 0, x: -20 }}
+									animate={{ opacity: 1, x: 0 }}
+									transition={{ delay: 0.6 }}
+									className="text-xl font-semibold text-foreground"
+								>
+									Recommended for You
+								</m.h2>
 								<div className="space-y-3">
 									{[
 										{
@@ -437,28 +394,55 @@ export default function Dashboard({
 											href: '/flashcards',
 										},
 									].map((item, i) => (
-										<button
+										<m.button
 											key={i}
 											type="button"
+											initial={{ opacity: 0, x: -20 }}
+											animate={{ opacity: 1, x: 0 }}
+											transition={{ delay: 0.65 + i * 0.08 }}
+											whileHover={{ x: 4 }}
+											whileTap={{ scale: 0.99 }}
 											onClick={() => router.push(item.href)}
-											className="w-full p-4 bg-card border border-border rounded-2xl text-left transition-all hover:scale-[1.01] active:scale-[0.99] flex items-center gap-4"
+											className="w-full p-4 bg-card border border-border rounded-2xl text-left transition-all flex items-center gap-4 group"
 										>
 											<div
 												className={`w-10 h-10 ${item.color} rounded-xl flex items-center justify-center shrink-0`}
 											>
 												<HugeiconsIcon icon={item.icon} className="w-5 h-5" />
 											</div>
-											<div>
+											<div className="flex-1">
 												<h3 className="font-bold text-foreground">{item.title}</h3>
 												<p className="text-xs text-muted-foreground">{item.desc}</p>
 											</div>
-										</button>
+											<div className="w-6 h-6 rounded-full bg-muted flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+												<svg
+													width="12"
+													height="12"
+													viewBox="0 0 24 24"
+													fill="none"
+													stroke="currentColor"
+													strokeWidth="2"
+													className="text-muted-foreground"
+													role="img"
+													aria-label="Navigate"
+												>
+													<path d="M5 12h14M12 5l7 7-7 7" />
+												</svg>
+											</div>
+										</m.button>
 									))}
 								</div>
 							</section>
 
 							<section>
-								<h2 className="text-xl font-semibold text-foreground mb-6">Recent activity</h2>
+								<m.h2
+									initial={{ opacity: 0, x: -20 }}
+									animate={{ opacity: 1, x: 0 }}
+									transition={{ delay: 0.75 }}
+									className="text-xl font-semibold text-foreground mb-6"
+								>
+									Recent activity
+								</m.h2>
 								<ActivityFeed />
 							</section>
 						</m.div>
