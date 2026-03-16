@@ -1,23 +1,17 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import {
-	Tick01Icon as Check,
-	Loading03Icon,
-	SparklesIcon,
-	ViewIcon,
-	ViewOffIcon,
-} from '@hugeicons/core-free-icons';
+import { Tick01Icon as Check, Loading03Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { AnimatePresence, m } from 'framer-motion';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
-import { appConfig } from '@/app.config';
+import { PasswordInput } from '@/components/auth/PasswordInput';
+import { SignUpFooter } from '@/components/auth/SignUpFooter';
+import { SignUpHeader } from '@/components/auth/SignUpHeader';
 import { SocialAuthButton } from '@/components/auth/SocialAuthButton';
-import { SmoothWords } from '@/components/Transition/SmoothText';
 import { BackgroundMesh } from '@/components/ui/background-mesh';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -79,7 +73,6 @@ export default function SignUpForm() {
 				setIsLoading(false);
 			} else {
 				setSuccess(true);
-				// Non-blocking initialization
 				initializeDatabase().catch(console.error);
 
 				setTimeout(() => {
@@ -105,7 +98,6 @@ export default function SignUpForm() {
 		<div className="min-h-screen flex items-center justify-center bg-background relative overflow-hidden">
 			<BackgroundMesh />
 
-			{/* Success Toast */}
 			<AnimatePresence>
 				{success && (
 					<m.div
@@ -132,31 +124,7 @@ export default function SignUpForm() {
 					transition={{ type: 'spring', stiffness: 200, damping: 25 }}
 					className="w-full premium-glass border-none rounded-[2.5rem] shadow-2xl overflow-hidden p-8"
 				>
-					<m.div
-						variants={STAGGER_CONTAINER}
-						initial="hidden"
-						animate="visible"
-						className="text-center space-y-3 mb-8"
-					>
-						<m.div
-							variants={STAGGER_ITEM}
-							whileHover={{ rotate: 15, scale: 1.1 }}
-							className="w-14 h-14 bg-primary/10 rounded-3xl flex items-center justify-center mx-auto mb-5 text-primary"
-						>
-							<HugeiconsIcon icon={SparklesIcon} className="w-7 h-7" />
-						</m.div>
-						<SmoothWords
-							as="h1"
-							text="Start Your Prep"
-							className="text-4xl font-black tracking-tight text-foreground"
-						/>
-						<m.p
-							variants={STAGGER_ITEM}
-							className="text-muted-foreground text-balance font-medium text-base"
-						>
-							Crush your NSC exams. Create your free account.
-						</m.p>
-					</m.div>
+					<SignUpHeader />
 
 					{error && (
 						<m.div
@@ -218,41 +186,12 @@ export default function SignUpForm() {
 							)}
 						</m.div>
 
-						<m.div variants={STAGGER_ITEM} className="space-y-2">
-							<Label
-								htmlFor="password"
-								className="text-xs font-bold text-label-primary uppercase tracking-wider ml-1"
-							>
-								Create Password
-							</Label>
-							<div className="relative">
-								<Input
-									{...register('password')}
-									id="password"
-									type={showPassword ? 'text' : 'password'}
-									placeholder="Create a strong password"
-									className="bg-background/50 pr-12"
-									maxLength={128}
-								/>
-								<button
-									type="button"
-									onClick={() => setShowPassword(!showPassword)}
-									className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
-									aria-label={showPassword ? 'Hide password' : 'Show password'}
-								>
-									{showPassword ? (
-										<HugeiconsIcon icon={ViewOffIcon} className="w-5 h-5" />
-									) : (
-										<HugeiconsIcon icon={ViewIcon} className="w-5 h-5" />
-									)}
-								</button>
-							</div>
-							{errors.password && (
-								<p className="text-xs text-destructive font-semibold ml-1">
-									{errors.password.message}
-								</p>
-							)}
-						</m.div>
+						<PasswordInput
+							register={register}
+							errors={errors}
+							showPassword={showPassword}
+							onTogglePassword={() => setShowPassword(!showPassword)}
+						/>
 
 						<m.div variants={STAGGER_ITEM}>
 							<Button
@@ -306,31 +245,8 @@ export default function SignUpForm() {
 						</m.div>
 					</m.div>
 
-					<m.p
-						initial={{ opacity: 0 }}
-						animate={{ opacity: 1 }}
-						transition={{ delay: 1.2 }}
-						className="text-center text-muted-foreground mt-8 text-sm font-semibold"
-					>
-						Already have an account?{' '}
-						<Link
-							href="/sign-in"
-							className="font-black text-primary hover:text-primary/80 underline-offset-4 transition-colors"
-						>
-							Sign In
-						</Link>
-					</m.p>
+					<SignUpFooter />
 				</m.div>
-
-				{/* Footer simple copyright or branding */}
-				<m.p
-					initial={{ opacity: 0 }}
-					animate={{ opacity: 1 }}
-					transition={{ delay: 1.5 }}
-					className="text-center text-muted-foreground/60 text-[10px] font-bold uppercase tracking-widest mt-8"
-				>
-					&copy; {new Date().getFullYear()} {appConfig.name}
-				</m.p>
 			</div>
 		</div>
 	);

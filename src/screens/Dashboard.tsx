@@ -14,6 +14,7 @@ import { m } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { ActivityFeed } from '@/components/Dashboard/ActivityFeed';
+import { AITutorNudge } from '@/components/Dashboard/AITutorNudge';
 import { BriefingGreeting } from '@/components/Dashboard/BriefingGreeting';
 import { DailyMission } from '@/components/Dashboard/DailyMission';
 import { KnowledgeHeatmap } from '@/components/Dashboard/KnowledgeHeatmap';
@@ -89,6 +90,31 @@ interface DashboardProps {
 		available: typeof ACHIEVEMENTS;
 	} | null;
 	session?: { user: { name?: string | null } } | null;
+	learningStats?: {
+		weakTopics: Array<{ topic: string; subjectId: number }>;
+		needsReview: unknown[];
+	} | null;
+	topicsNeedingReview?: unknown[] | null;
+	briefingData?: BriefingData | null;
+}
+
+interface BriefingData {
+	apsProgress: {
+		currentAps: number;
+		targetAps: number;
+		pointsThisMonth: number;
+		universityTarget?: string;
+	};
+	weakTopics: Array<{
+		topic: string;
+		subject: string;
+		confidence: number;
+	}>;
+	streak: {
+		currentStreak: number;
+		hasStudiedToday: boolean;
+	};
+	greeting: string;
 }
 
 const DEMO_TASKS: Record<string, StudyTask[]> = {
@@ -180,6 +206,10 @@ export default function Dashboard({
 						streakDays={streak.currentStreak}
 						suggestedSubject={suggestedSubject}
 					/>
+
+					<div className="mb-4">
+						<AITutorNudge />
+					</div>
 
 					<div className="h-[calc(100vh-320px)] sm:h-full no-scrollbar">
 						<m.div layout className="space-y-10 pb-32">
