@@ -30,6 +30,7 @@ import { BuddyPanel } from '@/components/StudyBuddy/BuddyPanel';
 import { ACHIEVEMENTS } from '@/constants/achievements';
 import type { UserAchievement } from '@/lib/db/achievement-actions';
 import type { UserProgressSummary } from '@/lib/db/progress-actions';
+import type { TimelineTask } from '@/types/timeline';
 
 const MOCK_PROGRESS: UserProgressSummary = {
 	totalQuestionsAttempted: 127,
@@ -164,6 +165,57 @@ const DEMO_TASKS: Record<string, StudyTask[]> = {
 	],
 };
 
+const DEMO_TIMELINE: TimelineTask[] = [
+	{
+		id: 't1',
+		title: 'Calculus',
+		subject: 'Mathematics',
+		subjectEmoji: '🧮',
+		subjectColor: 'bg-tiimo-yellow',
+		startTime: '08:00',
+		endTime: '09:00',
+		duration: 60,
+		completed: true,
+		priority: 'high',
+	},
+	{
+		id: 't2',
+		title: 'Mechanics',
+		subject: 'Physics',
+		subjectEmoji: '⚛️',
+		subjectColor: 'bg-tiimo-blue',
+		startTime: '10:00',
+		endTime: '11:00',
+		duration: 60,
+		completed: false,
+		priority: 'high',
+	},
+	{
+		id: 't3',
+		title: 'Essay Review',
+		subject: 'English',
+		subjectEmoji: '📝',
+		subjectColor: 'bg-tiimo-lavender',
+		startTime: '13:00',
+		endTime: '14:00',
+		duration: 60,
+		completed: false,
+		priority: 'medium',
+	},
+	{
+		id: 't4',
+		title: 'Cell Biology',
+		subject: 'Life Sciences',
+		subjectEmoji: '🧬',
+		subjectColor: 'bg-tiimo-green',
+		startTime: '15:00',
+		endTime: '16:00',
+		duration: 60,
+		completed: false,
+		priority: 'medium',
+	},
+];
+
 export default function Dashboard({
 	initialProgress,
 	initialStreak,
@@ -205,6 +257,7 @@ export default function Dashboard({
 						totalCount={totalCount}
 						streakDays={streak.currentStreak}
 						suggestedSubject={suggestedSubject}
+						timelineTasks={DEMO_TIMELINE}
 					/>
 
 					<div className="mb-4">

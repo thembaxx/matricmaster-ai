@@ -51,7 +51,7 @@ const getEnvSchema = () => {
 export type Env = z.infer<ReturnType<typeof getEnvSchema>>;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-// biome-ignore lint/suspicious/noExplicitAny: na
+
 let validatedEnv: any = null;
 
 export function validateEnv(): Env {

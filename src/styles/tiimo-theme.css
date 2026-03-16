@@ -75,8 +75,8 @@
   --info-soft: var(--subject-physics-soft);
 
   /* --- TYPOGRAPHY --- */
-  --font-display: var(--font-outfit), sans-serif;
-  --font-body: var(--font-sora), sans-serif;
+  --font-display: var(--font-playfair), serif;
+  --font-body: var(--font-inter), sans-serif;
   --font-mono: var(--font-space-grotesk), monospace;
 
   /* --- UNIFIED BORDER RADIUS SYSTEM --- */

@@ -110,7 +110,6 @@ export async function PUT(request: NextRequest) {
 		if (targetExamDate !== undefined && targetExamDate !== null) {
 			// If it's explicitly null, keep it as null so it can be cleared
 			if (targetExamDate === null) {
-				// biome-ignore lint/suspicious/noExplicitAny: unkown type from null check
 				parsedTargetExamDate = null as any;
 			} else {
 				parsedTargetExamDate = new Date(targetExamDate);

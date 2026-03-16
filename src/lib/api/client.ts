@@ -6,7 +6,7 @@ export const queryClient = new QueryClient({
 		queries: {
 			staleTime: 5 * 60 * 1000, // 5 minutes - data is considered fresh for 5 minutes
 			gcTime: 10 * 60 * 1000, // 10 minutes - garbage collection time
-			// biome-ignore lint/suspicious/noExplicitAny:NA
+
 			retry: (failureCount: number, error: any) => {
 				// Don't retry on 401/403 errors (authentication/authorization issues)
 				if (error?.status === 401 || error?.status === 403) return false;

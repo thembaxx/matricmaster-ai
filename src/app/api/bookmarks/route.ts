@@ -14,7 +14,6 @@ const ALLOWED_BOOKMARK_TYPES = ['question', 'past_paper', 'study_note', 'quiz'] 
 type BookmarkType = (typeof ALLOWED_BOOKMARK_TYPES)[number];
 
 function isValidBookmarkType(value: unknown): value is BookmarkType {
-	// biome-ignore lint/suspicious/noExplicitAny: unkown type from array check
 	return typeof value === 'string' && ALLOWED_BOOKMARK_TYPES.includes(value as any);
 }
 

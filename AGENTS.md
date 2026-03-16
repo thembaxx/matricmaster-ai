@@ -8,7 +8,7 @@
 ## Coding Standards
 - Use **Biome** for linting and formatting. Run `bun run lint:fix` to resolve formatting issues.
 - Follow iOS Human Interface Guidelines (HIG) for UI/UX.
-- Use **Lexend** for headings and **Inter/System** font stack for body text.
+- Use **Playfair Display** for headings (font-display) and **Inter** for body text.
 - Use `shadcn/ui` components for building the UI.
 
 ## Navigation

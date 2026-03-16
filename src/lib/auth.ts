@@ -320,7 +320,7 @@ function createAuth(): AuthInstance {
 	};
 
 	// Use type assertion to bypass the type mismatch during build
-	// biome-ignore lint/suspicious/noExplicitAny: Type mismatch between authConfig and betterAuth during build
+
 	return betterAuth(runtimeConfig as any);
 }
 
@@ -397,7 +397,7 @@ export const auth = new Proxy({} as AuthInstance, {
 		// For CLI generate, return authConfig to satisfy the CLI
 		if (isCLIGenerate) {
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
-			// biome-ignore lint/suspicious/noExplicitAny: na
+
 			return Reflect.get(authConfig as any, prop, authConfig);
 		}
 

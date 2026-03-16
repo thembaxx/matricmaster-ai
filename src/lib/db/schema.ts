@@ -839,6 +839,9 @@ export const universityTargets = pgTable(
 		faculty: varchar('faculty', { length: 100 }).notNull(),
 		targetAps: integer('target_aps').notNull(),
 		requiredSubjects: text('required_subjects'),
+		recommendedStudyPath: text('recommended_study_path'),
+		roadMapGeneratedAt: timestamp('roadmap_generated_at'),
+		lastMilestoneId: varchar('last_milestone_id', { length: 50 }),
 		isActive: boolean('is_active').notNull().default(true),
 		createdAt: timestamp('created_at').defaultNow().notNull(),
 		updatedAt: timestamp('updated_at').defaultNow(),
@@ -853,6 +856,77 @@ export const universityTargetsRelations = relations(universityTargets, ({ one })
 	user: one(users, {
 		fields: [universityTargets.userId],
 		references: [users.id],
+	}),
+}));
+
+// ============================================================================
+// USER APS SCORES - Track APS points per subject
+// ============================================================================
+
+export const userApsScores = pgTable(
+	'user_aps_scores',
+	{
+		id: uuid('id').defaultRandom().primaryKey(),
+		userId: text('user_id')
+			.notNull()
+			.references(() => users.id, { onDelete: 'cascade' }),
+		subject: varchar('subject', { length: 50 }).notNull(),
+		currentGrade: varchar('current_grade', { length: 2 }).notNull(),
+		apsPoints: integer('aps_points').notNull(),
+		lastAssessmentType: varchar('last_assessment_type', { length: 20 }),
+		lastAssessmentScore: integer('last_assessment_score'),
+		lastUpdatedAt: timestamp('last_updated_at').defaultNow().notNull(),
+		createdAt: timestamp('created_at').defaultNow().notNull(),
+	},
+	(table) => ({
+		userIdIdx: index('user_aps_scores_user_id_idx').on(table.userId),
+		userSubjectIdx: index('user_aps_scores_user_subject_idx').on(table.userId, table.subject),
+	})
+);
+
+export const userApsScoresRelations = relations(userApsScores, ({ one }) => ({
+	user: one(users, {
+		fields: [userApsScores.userId],
+		references: [users.id],
+	}),
+}));
+
+export type UserApsScore = typeof userApsScores.$inferSelect;
+export type NewUserApsScore = typeof userApsScores.$inferInsert;
+
+// ============================================================================
+// APS MILESTONES - Study milestones tied to university goals
+// ============================================================================
+
+export const apsMilestones = pgTable(
+	'aps_milestones',
+	{
+		id: uuid('id').defaultRandom().primaryKey(),
+		userId: text('user_id')
+			.notNull()
+			.references(() => users.id, { onDelete: 'cascade' }),
+		universityTargetId: uuid('university_target_id'),
+		title: varchar('title', { length: 200 }).notNull(),
+		description: text('description'),
+		subject: varchar('subject', { length: 50 }),
+		topic: varchar('topic', { length: 100 }),
+		apsPotentialPoints: integer('aps_potential_points').notNull().default(1),
+		status: varchar('status', { length: 20 }).notNull().default('pending'),
+		completedAt: timestamp('completed_at'),
+		dueDate: timestamp('due_date'),
+		createdAt: timestamp('created_at').defaultNow().notNull(),
+	},
+	(table) => ({
+		userIdIdx: index('aps_milestones_user_id_idx').on(table.userId),
+		statusIdx: index('aps_milestones_status_idx').on(table.status),
+	})
+);
+
+export const apsMilestonesRelations = relations(apsMilestones, ({ one }) => ({
+	user: one(users, { fields: [apsMilestones.userId], references: [users.id] }),
+	universityTarget: one(universityTargets, {
+		fields: [apsMilestones.universityTargetId],
+		references: [universityTargets.id],
 	}),
 }));
 

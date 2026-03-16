@@ -3,9 +3,10 @@
 import { Calendar01Icon, Clock01Icon, SparklesIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { m } from 'framer-motion';
-import { TrendingUp } from 'lucide-react';
+import { CheckCircle2, TrendingUp } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { NotificationBell } from '@/components/Notifications/NotificationBell';
+import type { TimelineTask } from '@/types/timeline';
 
 interface BriefingGreetingProps {
 	userName?: string | null;
@@ -13,6 +14,7 @@ interface BriefingGreetingProps {
 	totalCount: number;
 	streakDays: number;
 	suggestedSubject?: string | null;
+	timelineTasks?: TimelineTask[];
 }
 
 export function BriefingGreeting({
@@ -21,6 +23,7 @@ export function BriefingGreeting({
 	totalCount,
 	streakDays,
 	suggestedSubject,
+	timelineTasks = [],
 }: BriefingGreetingProps) {
 	const [greeting, setGreeting] = useState('Good day');
 
@@ -52,7 +55,7 @@ export function BriefingGreeting({
 							<div className="w-2 h-2 rounded-full bg-tiimo-lavender animate-pulse" />
 							<span className="label-sm text-tiimo-lavender">{greeting}</span>
 						</div>
-						<h1 className="text-3xl sm:text-4xl font-black tracking-tight text-foreground">
+						<h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-foreground font-display">
 							Hey, {firstName}
 						</h1>
 					</div>
@@ -158,6 +161,89 @@ export function BriefingGreeting({
 						</div>
 					</m.div>
 				</div>
+
+				{timelineTasks.length > 0 && (
+					<m.div
+						initial={{ opacity: 0, y: 10 }}
+						animate={{ opacity: 1, y: 0 }}
+						transition={{ delay: 0.3 }}
+						className="mt-6"
+					>
+						<div className="flex items-center justify-between mb-3">
+							<h3 className="text-sm font-semibold text-tiimo-gray-muted uppercase tracking-widest flex items-center gap-2 font-display">
+								<HugeiconsIcon icon={Clock01Icon} className="w-4 h-4" />
+								Today's Timeline
+							</h3>
+							<span className="text-xs font-medium text-muted-foreground">
+								{timelineTasks.filter((t) => t.completed).length}/{timelineTasks.length} completed
+							</span>
+						</div>
+
+						<div className="relative">
+							<div className="absolute top-5 left-0 right-0 h-0.5 bg-secondary" />
+
+							<div className="flex justify-between relative">
+								{timelineTasks.map((task, index) => (
+									<m.div
+										key={task.id}
+										initial={{ opacity: 0, scale: 0.8 }}
+										animate={{ opacity: 1, scale: 1 }}
+										transition={{ delay: 0.4 + index * 0.1 }}
+										className="flex flex-col items-center cursor-pointer group"
+									>
+										<span className="text-[10px] font-bold text-muted-foreground mb-2">
+											{task.startTime}
+										</span>
+
+										<div
+											className={`relative z-10 w-10 h-10 rounded-full flex items-center justify-center transition-all group-hover:scale-110 ${
+												task.completed
+													? 'bg-tiimo-green text-white'
+													: `${task.subjectColor} text-white`
+											}`}
+										>
+											{task.completed ? (
+												<CheckCircle2 className="w-5 h-5" />
+											) : (
+												<span className="text-lg">{task.subjectEmoji}</span>
+											)}
+										</div>
+
+										<div className="mt-3 text-center max-w-[80px]">
+											<p
+												className={`text-xs font-semibold line-clamp-2 ${
+													task.completed ? 'text-muted-foreground line-through' : 'text-foreground'
+												}`}
+											>
+												{task.title}
+											</p>
+											<p className="text-[10px] text-muted-foreground mt-0.5">
+												{task.duration} min
+											</p>
+										</div>
+									</m.div>
+								))}
+							</div>
+						</div>
+
+						<div className="mt-4">
+							<div className="w-full h-1.5 bg-secondary rounded-full overflow-hidden">
+								<m.div
+									initial={{ width: 0 }}
+									animate={{
+										width: `${
+											timelineTasks.length > 0
+												? (timelineTasks.filter((t) => t.completed).length / timelineTasks.length) *
+													100
+												: 0
+										}%`,
+									}}
+									className="h-full bg-tiimo-green"
+								/>
+							</div>
+						</div>
+					</m.div>
+				)}
 			</div>
 		</m.section>
 	);
