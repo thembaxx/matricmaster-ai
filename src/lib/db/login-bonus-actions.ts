@@ -213,7 +213,7 @@ export async function claimLoginBonus(): Promise<ClaimLoginBonusResult> {
 			};
 		}
 
-		const xpToAdd = Math.floor(reward.xpBonus / 10);
+		const xpToAdd = reward.xpBonus;
 		await db
 			.update(userProgress)
 			.set({
@@ -233,7 +233,7 @@ export async function claimLoginBonus(): Promise<ClaimLoginBonusResult> {
 
 		return {
 			success: true,
-			xpEarned: reward.xpBonus,
+			xpEarned: xpToAdd,
 			totalXp: progress.totalMarksEarned + xpToAdd,
 			streakFreezeAwarded,
 			specialReward: reward.specialReward,

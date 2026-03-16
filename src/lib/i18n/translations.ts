@@ -1,9 +1,10 @@
+import { appConfig } from '@/app.config';
 import type { Language } from '../../stores/useLanguageStore';
 
 export const TRANSLATIONS = {
 	common: {
 		EN: {
-			welcome: 'Welcome to MatricMaster AI',
+			welcome: `Welcome to ${appConfig.name}`,
 			loading: 'Loading...',
 			save: 'Save',
 			cancel: 'Cancel',
@@ -23,7 +24,7 @@ export const TRANSLATIONS = {
 			warning: 'Warning',
 		},
 		AF: {
-			welcome: 'Welkom by MatricMaster AI',
+			welcome: `Welkom by ${appConfig.name}`,
 			loading: 'Laai tans...',
 			save: 'Stoor',
 			cancel: 'Kanselleer',
@@ -43,7 +44,7 @@ export const TRANSLATIONS = {
 			warning: 'Waarskuwing',
 		},
 		ZU: {
-			welcome: 'Siyakwamukela ku-MatricMaster AI',
+			welcome: `Siyakwamukela ku-${appConfig.name}`,
 			loading: 'Iyalayisha...',
 			save: 'Gcina',
 			cancel: 'Khansela',
@@ -63,7 +64,7 @@ export const TRANSLATIONS = {
 			warning: 'Isixwayiso',
 		},
 		XH: {
-			welcome: 'Wamkela ku-MatricMaster AI',
+			welcome: `Wamkela ku-${appConfig.name}`,
 			loading: 'Iyalayisha...',
 			save: 'Gcina',
 			cancel: 'Rhoxisa',

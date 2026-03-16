@@ -671,35 +671,35 @@
 		{
 			"id": "user-1",
 			"name": "Themba M",
-			"avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=Themba",
+			"avatar": "",
 			"points": 1250,
 			"rank": 3
 		},
 		{
 			"id": "user-2",
 			"name": "Sarah K",
-			"avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah",
+			"avatar": "",
 			"points": 1480,
 			"rank": 1
 		},
 		{
 			"id": "user-3",
 			"name": "Michael J",
-			"avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=Michael",
+			"avatar": "",
 			"points": 1320,
 			"rank": 2
 		},
 		{
 			"id": "user-4",
 			"name": "Lisa N",
-			"avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=Lisa",
+			"avatar": "",
 			"points": 980,
 			"rank": 5
 		},
 		{
 			"id": "user-5",
 			"name": "David R",
-			"avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=David",
+			"avatar": "",
 			"points": 1100,
 			"rank": 4
 		}

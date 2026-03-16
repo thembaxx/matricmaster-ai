@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import { appConfig } from '@/app.config';
 
 export type Language = 'EN' | 'AF' | 'ZU' | 'XH' | 'NS' | 'TN' | 'SS' | 'TS' | 'VE' | 'NR' | 'ST';
 
@@ -15,7 +16,7 @@ export const useLanguageStore = create<LanguageState>()(
 			setLanguage: (lang) => set({ language: lang }),
 		}),
 		{
-			name: 'matricmaster-language',
+			name: `${appConfig.name}-language`,
 		}
 	)
 );

@@ -33,10 +33,7 @@ export function DashboardHeader({ userName, userImage, unreadCount }: DashboardH
 					className="relative"
 				>
 					<Avatar className="w-14 h-14 border-2 border-background shadow-xl relative lg:w-16 lg:h-16">
-						<AvatarImage
-							src={userImage ?? 'https://api.dicebear.com/7.x/avataaars/svg?seed=default'}
-							alt={userName ?? 'User'}
-						/>
+						<AvatarImage src={userImage ?? ''} alt={userName ?? 'User'} />
 						<AvatarFallback>{userName?.charAt(0)?.toUpperCase() ?? 'U'}</AvatarFallback>
 					</Avatar>
 					<div className="absolute bottom-0.5 right-0.5 w-4 h-4 bg-emerald-500 border-2 border-background rounded-full lg:w-5 lg:h-5 lg:border-3" />

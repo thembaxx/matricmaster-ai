@@ -2,6 +2,7 @@
 
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import { appConfig } from '@/app.config';
 
 interface OfflineState {
 	isOnline: boolean;
@@ -42,7 +43,7 @@ export const useOfflineStore = create<OfflineState>()(
 			},
 		}),
 		{
-			name: 'matricmaster-offline',
+			name: `${appConfig.name}-offline`,
 		}
 	)
 );

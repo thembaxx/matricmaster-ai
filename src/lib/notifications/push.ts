@@ -1,3 +1,4 @@
+import { appConfig } from '@/app.config';
 import { getEnv } from '@/lib/env';
 
 export interface PushNotification {
@@ -141,7 +142,7 @@ export async function sendTestNotification(): Promise<void> {
 	}
 
 	await showLocalNotification({
-		title: 'MatricMaster AI',
+		title: appConfig.name,
 		body: 'Push notifications are working!',
 		tag: 'test-notification',
 	});

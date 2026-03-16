@@ -40,7 +40,7 @@ export function GlassOrb() {
 				)}
 			</AnimatePresence>
 
-			<div className="fixed bottom-24 right-4 md:bottom-8 md:right-8 z-50 flex flex-col items-end">
+			<div className="fixed bottom-32 right-4 md:bottom-8 md:right-8 z-50 flex flex-col items-end">
 				<AnimatePresence>
 					{isOpen && (
 						<m.div
