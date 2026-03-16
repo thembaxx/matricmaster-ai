@@ -2,6 +2,7 @@
 
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import { appConfig } from '@/app.config';
 import { DEFAULT_THEME, UNLOCKABLE_THEMES, type UnlockableTheme } from '@/constants/themes';
 
 interface ThemeStore {
@@ -77,7 +78,7 @@ export const useUnlockableThemes = create<ThemeStore>()(
 			},
 		}),
 		{
-			name: 'matricmaster-themes',
+			name: `${appConfig.name}-themes`,
 		}
 	)
 );

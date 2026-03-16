@@ -37,7 +37,7 @@ export const authConfig = {
 		updateAge: 60 * 60 * 24,
 		cookieCache: {
 			enabled: true,
-			maxAge: 5 * 60,
+			maxAge: 15 * 60,
 		},
 	},
 	user: {
@@ -80,7 +80,7 @@ export const authConfig = {
 	rateLimit: {
 		enabled: true,
 		window: 60,
-		max: 10,
+		max: 100,
 	},
 	advanced: {
 		useSecureCookies: process.env.NODE_ENV === 'production',

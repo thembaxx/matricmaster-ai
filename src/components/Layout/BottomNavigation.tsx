@@ -5,7 +5,6 @@ import {
 	DashboardSpeed02Icon,
 	MagicWandIcon,
 	Search01Icon,
-	SparklesIcon,
 	UserIcon,
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
@@ -13,20 +12,6 @@ import { m } from 'framer-motion';
 import Link from 'next/link';
 
 const navItems = [
-	{
-		href: '/dashboard',
-		label: 'Dashboard',
-		icon: DashboardSpeed02Icon,
-		activeColor: 'text-tiimo-blue',
-		bgColor: 'bg-tiimo-blue/10',
-	},
-	{
-		href: '/demo',
-		label: 'Demo',
-		icon: SparklesIcon,
-		activeColor: 'text-purple-500',
-		bgColor: 'bg-purple-500/10',
-	},
 	{
 		href: '/dashboard',
 		label: 'Dashboard',

@@ -286,10 +286,7 @@ export default function Leaderboard() {
 							</span>
 							<div className="relative">
 								<Avatar className="w-12 h-12 sm:w-16 sm:h-16 border-4 border-primary-orange/30 p-1 rounded-xl sm:rounded-2xl bg-muted/20">
-									<AvatarImage
-										src="https://api.dicebear.com/7.x/avataaars/svg?seed=user"
-										className="object-cover"
-									/>
+									<AvatarImage src="" className="object-cover" />
 									<AvatarFallback className="font-black text-sm sm:text-base text-foreground">
 										ME
 									</AvatarFallback>

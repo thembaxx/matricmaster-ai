@@ -99,7 +99,7 @@ export function BriefingGreeting({
 					{/* Streak Card */}
 					<m.div
 						whileHover={{ y: -4 }}
-						className="tiimo-card p-6 flex flex-col justify-between h-40 relative group overflow-hidden"
+						className="tiimo-card p-6 flex flex-col justify-between relative group overflow-hidden"
 					>
 						<div className="absolute -right-4 -top-4 w-24 h-24 bg-tiimo-orange/10 rounded-full blur-2xl group-hover:bg-tiimo-orange/20 transition-all" />
 
@@ -128,13 +128,13 @@ export function BriefingGreeting({
 					{/* Next Action Card */}
 					<m.div
 						whileHover={{ y: -4 }}
-						className="p-6 flex flex-col justify-between h-40 relative group overflow-hidden bg-tiimo-lavender rounded-[var(--radius-lg)] shadow-tiimo text-white cursor-pointer transition-all hover:brightness-110"
+						className="p-6 flex flex-col justify-between relative group overflow-hidden bg-tiimo-lavender rounded-[var(--radius-lg)] shadow-tiimo text-white cursor-pointer transition-all hover:brightness-110"
 					>
 						<div className="absolute right-0 bottom-0 opacity-20 transform translate-x-1/4 translate-y-1/4">
 							<HugeiconsIcon icon={SparklesIcon} className="w-32 h-32" />
 						</div>
 
-						<div className="flex items-center justify-between z-10">
+						<div className="flex items-center justify-between z-10 py-2">
 							<div className="p-2 bg-white/20 rounded-xl">
 								<HugeiconsIcon icon={Clock01Icon} className="w-5 h-5" />
 							</div>
@@ -142,7 +142,7 @@ export function BriefingGreeting({
 								Action
 							</span>
 						</div>
-						<div className="z-10 mt-4">
+						<div className="z-10 pt-4">
 							<p className="text-xs font-bold text-white/70 uppercase tracking-widest mb-1">
 								Pick up where you left off
 							</p>

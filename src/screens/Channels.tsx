@@ -121,9 +121,7 @@ export default function Channels() {
 						</div>
 					</div>
 					<Avatar className="w-10 h-10 border-2 border-background shadow-sm ring-1 ring-border">
-						<AvatarImage
-							src={user?.image || `https://api.dicebear.com/7.x/avataaars/svg?seed=${user?.name}`}
-						/>
+						<AvatarImage src={user?.image || ''} />
 						<AvatarFallback className="bg-primary/10 text-primary font-black">
 							{user?.name?.charAt(0) || 'U'}
 						</AvatarFallback>
@@ -336,9 +334,7 @@ export default function Channels() {
 										className="w-7 h-7 rounded-full border-2 border-background bg-secondary overflow-hidden relative shadow-sm"
 									>
 										<Avatar className="w-full h-full">
-											<AvatarImage
-												src={`https://api.dicebear.com/7.x/avataaars/svg?seed=user${i}`}
-											/>
+											<AvatarImage src={''} />
 										</Avatar>
 									</div>
 								))}

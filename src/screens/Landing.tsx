@@ -27,6 +27,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useId, useRef } from 'react';
 import { toast } from 'sonner';
+import { appConfig } from '@/app.config';
 import { Footer } from '@/components/Layout/footer';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -120,8 +121,8 @@ const FEATURES = [
 ];
 
 const STATS = [
-	{ value: '50,000+', label: 'Active Students' },
-	{ value: '10,000+', label: 'Past Papers' },
+	{ value: '50k+', label: 'Active Students' },
+	{ value: '10k	+', label: 'Past Papers' },
 	{ value: '95%', label: 'Pass Rate' },
 	{ value: '4.9', label: 'App Rating' },
 ];
@@ -130,8 +131,7 @@ const TESTIMONIALS = [
 	{
 		name: 'Amahle Nkosi',
 		grade: 'Grade 12, Pretoria',
-		quote:
-			'MatricMaster helped me improve my math marks by 20% in just 3 months. The AI tutor is like having a personal teacher available 24/7.',
+		quote: `${appConfig.name} helped me improve my math marks by 20% in just 3 months. The AI tutor is like having a personal teacher available 24/7.`,
 		image:
 			'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop&crop=face',
 	},
@@ -262,7 +262,7 @@ export default function Landing() {
 											className="w-10 h-10 rounded-full border-3 border-background bg-secondary flex items-center justify-center overflow-hidden relative shadow-sm"
 										>
 											<Image
-												src={`https://api.dicebear.com/7.x/avataaars/svg?seed=user-${i}`}
+												src={''}
 												alt="user"
 												fill
 												sizes="40px"
@@ -274,7 +274,7 @@ export default function Landing() {
 								</div>
 								<div className="text-left">
 									<p className="text-sm font-semibold">50,000+ students</p>
-									<p className="text-xs text-muted-foreground">trust MatricMaster</p>
+									<p className="text-xs text-muted-foreground">trust {appConfig.name}</p>
 								</div>
 							</m.div>
 						</div>
@@ -428,11 +428,11 @@ export default function Landing() {
 							transition={{ duration: 0.6 }}
 							className="text-center mb-16"
 						>
-							<h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
+							<h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 text-pretty">
 								Everything you need to
 								<span className="text-tiimo-lavender"> pass</span>
 							</h2>
-							<p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+							<p className="text-lg text-muted-foreground max-w-2xl mx-auto text-pretty">
 								Study tools built specifically for the NSC Grade 12 exams.
 							</p>
 						</m.div>
@@ -481,10 +481,10 @@ export default function Landing() {
 										transition={{ duration: 0.5, delay: index * 0.1 }}
 										className="text-center"
 									>
-										<p className="text-4xl lg:text-5xl font-bold text-tiimo-lavender mb-2">
+										<p className="text-3xl lg:text-4xl font-bold text-tiimo-lavender mb-2">
 											{stat.value}
 										</p>
-										<p className="text-muted-foreground font-medium">{stat.label}</p>
+										<p className="text-muted-foreground text-xs font-medium">{stat.label}</p>
 									</m.div>
 								))}
 							</div>
@@ -563,7 +563,7 @@ export default function Landing() {
 								<span className="text-tiimo-lavender"> thousands</span>
 							</h2>
 							<p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-								See what South African students are saying about MatricMaster.
+								See what South African students are saying about {appConfig.name}.
 							</p>
 						</m.div>
 
