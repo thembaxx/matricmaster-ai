@@ -61,7 +61,6 @@ export async function getWeakTopicsForUser(): Promise<WeakTopic[]> {
 
 export async function getMistakesFromStore(): Promise<MistakeInfo[]> {
 	try {
-		const user = await ensureAuthenticated();
 		const db = await getConnectedDb();
 
 		const { useQuizResultStore } = await import('@/stores/useQuizResultStore');
