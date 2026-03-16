@@ -81,12 +81,41 @@ export async function seedDatabase() {
 				description: 'CAPS Physical Sciences Grades 9-12 covering Physics topics',
 				curriculumCode: 'CAPS-PHYS',
 			},
+			{
+				name: 'Life Sciences',
+				description: 'CAPS Life Sciences Grades 10-12 covering Biology',
+				curriculumCode: 'CAPS-LIFE',
+			},
+			{
+				name: 'Geography',
+				description: 'CAPS Geography Grades 10-12 covering Physical and Human Geography',
+				curriculumCode: 'CAPS-GEOG',
+			},
+			{
+				name: 'Accounting',
+				description: 'CAPS Accounting Grades 10-12 covering Financial Statements',
+				curriculumCode: 'CAPS-ACCT',
+			},
+			{
+				name: 'Economics',
+				description: 'CAPS Economics Grades 10-12 covering Micro and Macro Economics',
+				curriculumCode: 'CAPS-ECON',
+			},
 		];
 
 		let historySubject = existingSubjects.find((s) => s.name === 'History');
 		let englishSubject = existingSubjects.find((s) => s.name === 'English FAL');
 		let mathematicsSubject = existingSubjects.find((s) => s.name === 'Mathematics');
 		let physicsSubject = existingSubjects.find((s) => s.name === 'Physical Sciences');
+		// Subjects available for future question seeding
+		const _lifeSciencesSubject = existingSubjects.find((s) => s.name === 'Life Sciences');
+		void _lifeSciencesSubject; // Reserved for future question seeding
+		const _geographySubject = existingSubjects.find((s) => s.name === 'Geography');
+		void _geographySubject;
+		const _accountingSubject = existingSubjects.find((s) => s.name === 'Accounting');
+		void _accountingSubject;
+		const _economicsSubject = existingSubjects.find((s) => s.name === 'Economics');
+		void _economicsSubject;
 
 		// Insert missing subjects
 		const subjectsToInsert = requiredSubjects.filter(

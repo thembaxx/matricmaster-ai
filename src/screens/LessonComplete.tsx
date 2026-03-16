@@ -24,6 +24,7 @@ import { Progress } from '@/components/ui/progress';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useQuizCompletion } from '@/hooks/use-quiz-completion';
 import { getUserAchievements } from '@/lib/db/achievement-actions';
+import { generateFlashcardsFromMistakes } from '@/lib/db/learning-loop-actions';
 import { getLevelInfo } from '@/lib/level-utils';
 import { useQuizResultStore } from '@/stores/useQuizResultStore';
 import type { QuizResult } from '@/types/quiz';
@@ -47,6 +48,12 @@ export default function LessonComplete() {
 	const [xpForNextLevel, setXpForNextLevel] = useState(0);
 	const [xpProgress, setXpProgress] = useState(0);
 	const [newAchievement, setNewAchievement] = useState<string | null>(null);
+	const [mistakeCount, setMistakeCount] = useState(0);
+	const [isGenerating, setIsGenerating] = useState(false);
+	const [generationResult, setGenerationResult] = useState<{
+		success: boolean;
+		cardsCreated: number;
+	} | null>(null);
 	const { completeQuiz, isCompleting } = useQuizCompletion();
 
 	useEffect(() => {
@@ -59,6 +66,10 @@ export default function LessonComplete() {
 
 			setResult(quizResult);
 			useQuizResultStore.getState().clear();
+
+			// Load mistake count from store
+			const mistakes = useQuizResultStore.getState().getLastMistakes();
+			setMistakeCount(mistakes.length);
 
 			// Trigger celebratory confetti
 			const duration = 5 * 1000;
@@ -117,6 +128,19 @@ export default function LessonComplete() {
 
 		loadResult();
 	}, [completeQuiz, router]);
+
+	const handleGenerateFlashcards = async () => {
+		setIsGenerating(true);
+		try {
+			const result = await generateFlashcardsFromMistakes();
+			setGenerationResult(result);
+		} catch (error) {
+			console.error('Failed to generate flashcards:', error);
+			setGenerationResult({ success: false, cardsCreated: 0 });
+		} finally {
+			setIsGenerating(false);
+		}
+	};
 
 	if (!result) {
 		return <LessonCompleteSkeleton />;
@@ -254,6 +278,78 @@ export default function LessonComplete() {
 							</m.div>
 						)}
 					</AnimatePresence>
+
+					{mistakeCount > 0 && !generationResult && (
+						<m.div
+							initial={{ opacity: 0, y: 20 }}
+							animate={{ opacity: 1, y: 0 }}
+							transition={{ delay: 0.55 }}
+							className="w-full max-w-md space-y-3 mb-8"
+						>
+							<Button
+								variant="outline"
+								className="w-full h-16 rounded-2xl text-lg font-black shadow-lg border-primary-orange/30 hover:bg-primary-orange/10 flex items-center justify-center gap-3"
+								onClick={handleGenerateFlashcards}
+								disabled={isGenerating}
+							>
+								{isGenerating ? (
+									<>
+										<div className="w-5 h-5 border-2 border-primary-orange border-t-transparent rounded-full animate-spin" />
+										Generating...
+									</>
+								) : (
+									<>
+										<HugeiconsIcon icon={Layers01Icon} className="w-6 h-6 text-primary-orange" />
+										Create Flashcards from Mistakes
+									</>
+								)}
+							</Button>
+							<p className="text-center text-sm text-muted-foreground font-medium">
+								{mistakeCount} {mistakeCount === 1 ? 'mistake' : 'mistakes'} to review
+							</p>
+						</m.div>
+					)}
+
+					{generationResult && (
+						<m.div
+							initial={{ opacity: 0, scale: 0.9 }}
+							animate={{ opacity: 1, scale: 1 }}
+							className="w-full max-w-md space-y-3 mb-8"
+						>
+							<div className="bg-card p-6 rounded-[2rem] flex items-center gap-4 shadow-lg border border-green-500/20">
+								<div className="w-12 h-12 rounded-2xl bg-green-500/10 flex items-center justify-center shrink-0">
+									<HugeiconsIcon icon={CheckmarkCircle02Icon} className="w-6 h-6 text-green-500" />
+								</div>
+								<div>
+									<p className="font-bold text-foreground">
+										{generationResult.cardsCreated > 0
+											? `${generationResult.cardsCreated} Flashcards Created!`
+											: 'No New Cards'}
+									</p>
+									<p className="text-sm text-muted-foreground">
+										{generationResult.cardsCreated > 0
+											? 'Added to your Mistake Master deck'
+											: 'All mistakes already have flashcards'}
+									</p>
+								</div>
+							</div>
+						</m.div>
+					)}
+
+					{result.accuracy === 100 && mistakeCount === 0 && !generationResult && (
+						<m.div
+							initial={{ opacity: 0, y: 20 }}
+							animate={{ opacity: 1, y: 0 }}
+							transition={{ delay: 0.55 }}
+							className="w-full max-w-md mb-8"
+						>
+							<div className="bg-accent-lime/10 p-4 rounded-2xl border border-accent-lime/20">
+								<p className="text-center font-bold text-accent-lime">
+									Perfect Score! No mistakes to review.
+								</p>
+							</div>
+						</m.div>
+					)}
 
 					<m.div
 						initial={{ opacity: 0, y: 20 }}

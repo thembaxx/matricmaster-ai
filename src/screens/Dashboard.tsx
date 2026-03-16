@@ -16,6 +16,7 @@ import { ActivityFeed } from '@/components/Dashboard/ActivityFeed';
 import { AITutorNudge } from '@/components/Dashboard/AITutorNudge';
 import { BriefingGreeting } from '@/components/Dashboard/BriefingGreeting';
 import { DailyMission } from '@/components/Dashboard/DailyMission';
+import { FocusAreasWidget } from '@/components/Dashboard/FocusAreasWidget';
 import { KnowledgeHeatmap } from '@/components/Dashboard/KnowledgeHeatmap';
 import { SubjectGrid } from '@/components/Dashboard/SubjectGridV2';
 import { type StudyTask, TaskCard } from '@/components/Dashboard/TaskCardV2';
@@ -287,6 +288,7 @@ export default function Dashboard({
 								<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 									<UniversityGoalCard />
 									<MistakeBank initialCount={mistakeCount ?? 0} />
+									<FocusAreasWidget />
 								</div>
 							</div>
 

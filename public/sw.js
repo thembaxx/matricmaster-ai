@@ -1,4 +1,4 @@
-const CACHE_NAME = 'matricmaster-v1';
+const CACHE_NAME = 'matricmaster-v2';
 const OFFLINE_URL = '/offline';
 
 const STATIC_ASSETS = [
@@ -6,11 +6,17 @@ const STATIC_ASSETS = [
 	'/dashboard',
 	'/flashcards',
 	'/study-plan',
+	'/past-papers',
+	'/quiz',
+	'/subjects',
 	'/offline',
 	'/manifest.json',
 	'/icon-192.png',
 	'/icon-512.png',
 ];
+
+const DYNAMIC_CACHE = 'matricmaster-dynamic-v1';
+const MAX_DYNAMIC_ENTRIES = 50;
 
 self.addEventListener('install', (event) => {
 	event.waitUntil(
@@ -25,6 +31,13 @@ self.addEventListener('fetch', (event) => {
 	if (event.request.method !== 'GET') return;
 
 	if (event.request.url.includes('/api/')) {
+		event.respondWith(
+			fetch(event.request).catch(() => {
+				return new Response(JSON.stringify({ offline: true }), {
+					headers: { 'Content-Type': 'application/json' },
+				});
+			})
+		);
 		return;
 	}
 
@@ -38,8 +51,14 @@ self.addEventListener('fetch', (event) => {
 				return fetch(event.request).then((networkResponse) => {
 					if (networkResponse.ok) {
 						const responseClone = networkResponse.clone();
-						caches.open(CACHE_NAME).then((cache) => {
-							cache.put(event.request, responseClone);
+						caches.open(DYNAMIC_CACHE).then((cache) => {
+							cache.put(event.request, responseClone).catch(() => {
+								caches.keys().then((keys) => {
+									if (keys.length > MAX_DYNAMIC_ENTRIES) {
+										caches.delete(keys[0]);
+									}
+								});
+							});
 						});
 					}
 					return networkResponse;
