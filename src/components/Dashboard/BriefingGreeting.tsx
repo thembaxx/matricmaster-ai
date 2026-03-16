@@ -18,6 +18,20 @@ interface BriefingGreetingProps {
 	flashcardsDue?: number;
 	weakTopicsCount?: number;
 	recentAccuracy?: number;
+	briefingData?: {
+		greeting: string;
+		motivationalMessage?: string;
+		quickTips?: string[];
+		hasAiGreeting: boolean;
+		apsProgress?: {
+			currentAps: number;
+			targetAps: number;
+			universityTarget?: string;
+		};
+		streak?: {
+			hasStudiedToday: boolean;
+		};
+	};
 }
 
 export function BriefingGreeting({
@@ -30,8 +44,10 @@ export function BriefingGreeting({
 	flashcardsDue = 0,
 	weakTopicsCount = 0,
 	recentAccuracy = 0,
+	briefingData,
 }: BriefingGreetingProps) {
 	const [greeting, setGreeting] = useState('Good day');
+	const firstName = userName?.split(' ')[0] || 'Scholar';
 
 	useEffect(() => {
 		const updateGreeting = () => {
@@ -45,7 +61,10 @@ export function BriefingGreeting({
 	}, []);
 
 	const completionRate = totalCount > 0 ? (completedCount / totalCount) * 100 : 0;
-	const firstName = userName?.split(' ')[0] || 'Scholar';
+
+	const displayGreeting = briefingData?.greeting || `Hey, ${firstName}`;
+	const motivationalMessage = briefingData?.motivationalMessage;
+	const quickTips = briefingData?.quickTips;
 
 	return (
 		<m.section
@@ -62,8 +81,18 @@ export function BriefingGreeting({
 							<span className="label-sm text-tiimo-lavender">{greeting}</span>
 						</div>
 						<h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-foreground font-display">
-							Hey, {firstName}
+							{displayGreeting}
 						</h1>
+						{motivationalMessage && (
+							<m.p
+								initial={{ opacity: 0, y: 5 }}
+								animate={{ opacity: 1, y: 0 }}
+								transition={{ delay: 0.2 }}
+								className="text-sm text-muted-foreground mt-1 max-w-lg"
+							>
+								{motivationalMessage}
+							</m.p>
+						)}
 					</div>
 					<div className="flex items-center gap-3">
 						<NotificationBell />
@@ -167,6 +196,28 @@ export function BriefingGreeting({
 						</div>
 					</m.div>
 				</div>
+
+				{quickTips && quickTips.length > 0 && (
+					<m.div
+						initial={{ opacity: 0, y: 10 }}
+						animate={{ opacity: 1, y: 0 }}
+						transition={{ delay: 0.3 }}
+						className="flex flex-wrap gap-2"
+					>
+						{quickTips.map((tip, index) => (
+							<m.div
+								key={index}
+								initial={{ opacity: 0, scale: 0.9 }}
+								animate={{ opacity: 1, scale: 1 }}
+								transition={{ delay: 0.4 + index * 0.1 }}
+								className="flex items-center gap-2 px-3 py-2 bg-tiimo-lavender/10 border border-tiimo-lavender/20 rounded-full"
+							>
+								<HugeiconsIcon icon={SparklesIcon} className="w-3 h-3 text-tiimo-lavender" />
+								<span className="text-xs font-medium text-tiimo-lavender">{tip}</span>
+							</m.div>
+						))}
+					</m.div>
+				)}
 
 				{timelineTasks.length > 0 && (
 					<m.div

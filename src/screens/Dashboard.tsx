@@ -118,6 +118,9 @@ interface BriefingData {
 		hasStudiedToday: boolean;
 	};
 	greeting: string;
+	motivationalMessage?: string;
+	quickTips?: string[];
+	hasAiGreeting: boolean;
 }
 
 const DEMO_TASKS: Record<string, StudyTask[]> = {
@@ -223,6 +226,7 @@ export default function Dashboard({
 	initialStreak,
 	initialAchievements,
 	session,
+	briefingData,
 	mistakeCount,
 }: DashboardProps) {
 	const router = useRouter();
@@ -264,6 +268,7 @@ export default function Dashboard({
 						flashcardsDue={12}
 						weakTopicsCount={3}
 						recentAccuracy={77}
+						briefingData={briefingData ?? undefined}
 					/>
 
 					<div className="mb-4">

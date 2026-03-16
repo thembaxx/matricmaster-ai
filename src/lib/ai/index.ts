@@ -1,3 +1,4 @@
+export { AI_MODELS, getBestAvailableModel } from '@/lib/ai-config';
 export {
 	type AIConfig,
 	type GenerateOptions,
