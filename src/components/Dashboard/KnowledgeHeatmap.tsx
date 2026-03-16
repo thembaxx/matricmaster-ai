@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { SUBJECTS } from '@/constants/subjects';
+import { getSubjectFont, SUBJECTS } from '@/constants/subjects';
 import { cn } from '@/lib/utils';
 
 type TopicStatus = 'mastered' | 'in-progress' | 'needs-attention' | 'not-started';
@@ -224,7 +224,12 @@ export function KnowledgeHeatmap({
 											<span className="text-lg">
 												{SUBJECTS[subject.id as keyof typeof SUBJECTS]?.emoji || '📚'}
 											</span>
-											<span className="font-bold text-sm">{subject.name}</span>
+											<span
+												className="font-bold text-sm"
+												style={{ fontFamily: getSubjectFont(subject.id) }}
+											>
+												{subject.name}
+											</span>
 										</div>
 										<span className="text-xs font-medium text-muted-foreground">
 											{subjectProgress}%

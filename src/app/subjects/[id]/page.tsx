@@ -12,6 +12,7 @@ import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 import { Card, CardContent } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
+import { getSubjectFont, getSubjectName } from '@/constants/subjects';
 import { getLessonsBySubject } from '@/lib/lessons';
 import { cn } from '@/lib/utils';
 
@@ -20,6 +21,8 @@ export default function SubjectDetailsPage() {
 	const router = useRouter();
 	const subjectId = params.id as string;
 	const lessons = getLessonsBySubject(subjectId);
+	const subjectName = getSubjectName(subjectId);
+	const subjectFont = getSubjectFont(subjectId);
 
 	const completedCount = lessons.filter((l) => l.completed).length;
 	const progress = lessons.length > 0 ? (completedCount / lessons.length) * 100 : 0;
@@ -49,8 +52,11 @@ export default function SubjectDetailsPage() {
 							<HugeiconsIcon icon={BookOpen01Icon} className="w-8 h-8" />
 						</div>
 						<div>
-							<h1 className="text-4xl font-black uppercase tracking-tighter mb-1">
-								{subjectId.charAt(0).toUpperCase() + subjectId.slice(1)}
+							<h1
+								className="text-4xl font-black uppercase tracking-tighter mb-1"
+								style={{ fontFamily: subjectFont }}
+							>
+								{subjectName}
 							</h1>
 							<p className="text-tiimo-gray-muted font-bold uppercase tracking-[0.2em] text-[10px]">
 								NSC CURRICULUM • GRADE 12

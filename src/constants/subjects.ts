@@ -16,6 +16,7 @@ export interface Subject {
 	color: string;
 	bgColor: string;
 	icon: string;
+	fontFamily: string;
 }
 
 export const SUBJECTS: Record<SubjectId, Subject> = {
@@ -26,6 +27,7 @@ export const SUBJECTS: Record<SubjectId, Subject> = {
 		color: 'text-mathematics',
 		bgColor: 'bg-mathematics',
 		icon: 'Calculator',
+		fontFamily: 'var(--font-noto-sans-math)',
 	},
 	physics: {
 		id: 'physics',
@@ -34,6 +36,7 @@ export const SUBJECTS: Record<SubjectId, Subject> = {
 		color: 'text-physics',
 		bgColor: 'bg-physics',
 		icon: 'Atom',
+		fontFamily: 'var(--font-noto-sans-math)',
 	},
 	chemistry: {
 		id: 'chemistry',
@@ -42,6 +45,7 @@ export const SUBJECTS: Record<SubjectId, Subject> = {
 		color: 'text-chemistry',
 		bgColor: 'bg-chemistry',
 		icon: 'FlaskConical',
+		fontFamily: 'var(--font-noto-sans-math)',
 	},
 	'life-sciences': {
 		id: 'life-sciences',
@@ -50,6 +54,7 @@ export const SUBJECTS: Record<SubjectId, Subject> = {
 		color: 'text-life-sciences',
 		bgColor: 'bg-life-sciences',
 		icon: 'Microscope',
+		fontFamily: 'var(--font-source-serif4)',
 	},
 	english: {
 		id: 'english',
@@ -58,6 +63,7 @@ export const SUBJECTS: Record<SubjectId, Subject> = {
 		color: 'text-english',
 		bgColor: 'bg-english',
 		icon: 'BookOpen',
+		fontFamily: 'var(--font-literata)',
 	},
 	geography: {
 		id: 'geography',
@@ -66,6 +72,7 @@ export const SUBJECTS: Record<SubjectId, Subject> = {
 		color: 'text-geography',
 		bgColor: 'bg-geography',
 		icon: 'Globe',
+		fontFamily: 'var(--font-dm-sans)',
 	},
 	history: {
 		id: 'history',
@@ -74,6 +81,7 @@ export const SUBJECTS: Record<SubjectId, Subject> = {
 		color: 'text-history',
 		bgColor: 'bg-history',
 		icon: 'Scroll',
+		fontFamily: 'var(--font-crimson-pro)',
 	},
 	accounting: {
 		id: 'accounting',
@@ -82,6 +90,7 @@ export const SUBJECTS: Record<SubjectId, Subject> = {
 		color: 'text-accounting',
 		bgColor: 'bg-accounting',
 		icon: 'Calculator',
+		fontFamily: 'var(--font-jetbrains-mono)',
 	},
 	economics: {
 		id: 'economics',
@@ -90,6 +99,7 @@ export const SUBJECTS: Record<SubjectId, Subject> = {
 		color: 'text-economics',
 		bgColor: 'bg-economics',
 		icon: 'ChartLine',
+		fontFamily: 'var(--font-dm-sans)',
 	},
 };
 
@@ -113,4 +123,8 @@ export function getSubjectBgColor(subjectId: string): string {
 
 export function getSubjectIcon(subjectId: string): string {
 	return SUBJECTS[subjectId as SubjectId]?.icon ?? 'BookOpen';
+}
+
+export function getSubjectFont(subjectId: string): string {
+	return SUBJECTS[subjectId as SubjectId]?.fontFamily ?? 'var(--font-body)';
 }
