@@ -15,6 +15,7 @@ import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
+import { VoiceExplanation } from '@/components/AI/VoiceExplanation';
 import { ResponsiveAudioPlayer } from '@/components/AudioPlayer';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -462,6 +463,9 @@ export default function PastPaperViewer({
 										<p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-wrap">
 											{aiExplanation}
 										</p>
+										<div className="mt-3">
+											<VoiceExplanation text={aiExplanation} />
+										</div>
 									</div>
 								)}
 							</div>

@@ -17,6 +17,7 @@ import {
 import { HugeiconsIcon } from '@hugeicons/react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { SuggestedReview } from '@/components/StudyPlan/SuggestedReview';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -248,6 +249,7 @@ export default function StudyPlanWizard() {
 							</div>
 						</div>
 					</div>
+					<SuggestedReview />
 				</main>
 			</ScrollArea>
 

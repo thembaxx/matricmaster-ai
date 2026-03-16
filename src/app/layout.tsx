@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import { DeferredAnalytics } from '@/components/DeferredAnalytics';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 import ClientProviders from '@/components/Layout/ClientProvidersDynamic';
+import { ServiceWorkerRegistration } from '@/components/ServiceWorkerRegistration';
 import { Toaster } from '@/components/Toaster';
 import { ThemeProvider } from '@/components/theme-provider';
 import '@/styles/index.css';
@@ -144,6 +145,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 					<ThemeProvider defaultTheme="light" storageKey="matric-master-theme">
 						<ClientProviders>{children}</ClientProviders>
 						<Toaster />
+						<ServiceWorkerRegistration />
 					</ThemeProvider>
 				</ErrorBoundary>
 				<DeferredAnalytics />
