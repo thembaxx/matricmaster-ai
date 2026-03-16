@@ -18,6 +18,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { useSession } from '@/lib/auth-client';
 import { cn } from '@/lib/utils';
+import { useFocusRoomStore } from '@/stores/useFocusRoomStore';
 
 interface FocusSession {
 	clientId: string;
@@ -45,10 +46,16 @@ const MOCK_LEADERBOARD: BuddyLeaderboard[] = [
 export default function FocusRooms() {
 	const router = useRouter();
 	const { data: session } = useSession();
-	const [isActive, setIsActive] = useState(false);
-	const [isGroupMode, setIsGroupMode] = useState(false);
-	const [timeLeft, setTimeLeft] = useState(25 * 60);
-	const [focusMinutes, setFocusMinutes] = useState(0);
+	const {
+		isActive,
+		isGroupMode,
+		timeLeft,
+		focusMinutes,
+		setIsActive,
+		setIsGroupMode,
+		setFocusMinutes,
+		tick,
+	} = useFocusRoomStore();
 	const [leaderboard] = useState<BuddyLeaderboard[]>(MOCK_LEADERBOARD);
 
 	const { updateStatus } = usePresence<{ user: string; status: string; focusMinutes: number }>(
@@ -69,16 +76,16 @@ export default function FocusRooms() {
 		let interval: NodeJS.Timeout | null = null;
 		if (isActive && timeLeft > 0) {
 			interval = setInterval(() => {
-				setTimeLeft((prev) => prev - 1);
+				tick();
 			}, 1000);
 		} else if (timeLeft === 0) {
 			setIsActive(false);
-			setFocusMinutes((prev) => prev + 25);
+			setFocusMinutes(focusMinutes + 25);
 		}
 		return () => {
 			if (interval) clearInterval(interval);
 		};
-	}, [isActive, timeLeft]);
+	}, [isActive, timeLeft, tick, focusMinutes, setFocusMinutes, setIsActive]);
 
 	useEffect(() => {
 		updateStatus({
