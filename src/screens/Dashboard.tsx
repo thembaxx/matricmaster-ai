@@ -15,6 +15,8 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { ActivityFeed } from '@/components/Dashboard/ActivityFeed';
 import { BriefingGreeting } from '@/components/Dashboard/BriefingGreeting';
+import { DailyMission } from '@/components/Dashboard/DailyMission';
+import { KnowledgeHeatmap } from '@/components/Dashboard/KnowledgeHeatmap';
 import { SubjectGrid } from '@/components/Dashboard/SubjectGridV2';
 import { type StudyTask, TaskCard } from '@/components/Dashboard/TaskCardV2';
 import { TaskSection } from '@/components/Dashboard/TaskSectionV2';
@@ -183,6 +185,7 @@ export default function Dashboard({
 						<m.div layout className="space-y-10 pb-32">
 							{/* Welcome & Stats Row */}
 							<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+								<DailyMission />
 								<XpHeader
 									variant="full"
 									initialAchievements={achievements}
@@ -194,6 +197,9 @@ export default function Dashboard({
 									currentAps={32}
 									targetAps={42}
 								/>
+							</div>
+
+							<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 								<WeeklyChallenge initialProgress={progress} />
 							</div>
 
@@ -307,6 +313,10 @@ export default function Dashboard({
 										<p className="text-muted-foreground text-xs mt-1">Ask anything</p>
 									</button>
 								</div>
+							</section>
+
+							<section>
+								<KnowledgeHeatmap compact />
 							</section>
 
 							<section className="space-y-4">

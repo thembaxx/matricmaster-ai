@@ -80,12 +80,12 @@
   --font-mono: var(--font-space-grotesk), monospace;
 
   /* --- UNIFIED BORDER RADIUS SYSTEM --- */
-  --radius-xs: 8px;    /* Small elements, badges */
-  --radius-sm: 12px;   /* Inputs, small cards */
-  --radius-md: 18px;   /* Cards, buttons */
-  --radius-lg: 24px;   /* Large cards, sections */
-  --radius-xl: 32px;   /* Hero sections */
-  --radius-2xl: 48px;  /* Large containers */
+  --radius-xs: 6px;    /* Small elements, badges */
+  --radius-sm: 10px;   /* Inputs, small cards */
+  --radius-md: 16px;   /* Cards, buttons */
+  --radius-lg: 20px;   /* Large cards, sections */
+  --radius-xl: 24px;   /* Hero sections */
+  --radius-2xl: 36px;  /* Large containers */
   --radius-full: 9999px;
   
   /* Legacy aliases for compatibility */

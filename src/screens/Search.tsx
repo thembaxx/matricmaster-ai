@@ -173,6 +173,7 @@ export default function Search() {
 								suggestions={aiResults?.suggestions}
 								tip={aiResults?.tip}
 								onSuggestionClick={setQuery}
+								query={query}
 							/>
 
 							<div className="space-y-8">
