@@ -1,5 +1,7 @@
 'use client';
 
+import { Mic01Icon } from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import { m } from 'framer-motion';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -257,6 +259,15 @@ export default function StudyCompanion() {
 						</m.div>
 						<h1 className="text-3xl font-display font-bold mb-2">Study Companion</h1>
 						<p className="text-muted-foreground text-lg">What would you like help with?</p>
+						<div className="flex justify-center gap-2 mt-4">
+							<Link
+								href="/voice-tutor"
+								className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium hover:bg-primary/20 transition-colors"
+							>
+								<HugeiconsIcon icon={Mic01Icon} className="w-4 h-4" />
+								Voice Tutor
+							</Link>
+						</div>
 					</div>
 
 					{!showInput ? (

@@ -21,8 +21,11 @@ import { AnimatePresence, domAnimation, LazyMotion, m } from 'framer-motion';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Document, Page, pdfjs } from 'react-pdf';
 import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch';
+import { toast } from 'sonner';
+import { FlashcardModal } from '@/components/AI/FlashcardModal';
 import { BackgroundMesh } from '@/components/ui/background-mesh';
 import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
@@ -72,6 +75,12 @@ export default function PdfViewer({ url, onClose, title }: PdfViewerProps) {
 	const [isFullscreen, setIsFullscreen] = useState(false);
 	const [containerWidth, setContainerWidth] = useState(0);
 	const [rotation, setRotation] = useState(0);
+	const [showFlashcardModal, setShowFlashcardModal] = useState(false);
+	const [isExtractingFlashcards, setIsExtractingFlashcards] = useState(false);
+	const [extractedFlashcards, setExtractedFlashcards] = useState<
+		{ id: string; front: string; back: string; tags: string[] }[]
+	>([]);
+	const [extractPrompt, setExtractPrompt] = useState('');
 
 	useEffect(() => {
 		setMounted(true);
@@ -196,6 +205,46 @@ export default function PdfViewer({ url, onClose, title }: PdfViewerProps) {
 
 	const handleRotate = () => {
 		setRotation((r) => (r + 90) % 360);
+	};
+
+	const handleExtractFlashcards = async () => {
+		if (!extractPrompt.trim()) return;
+
+		setIsExtractingFlashcards(true);
+		try {
+			const response = await fetch('/api/ai-tutor/flashcards', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({
+					content: extractPrompt,
+					context: 'Generate flashcards from selected PDF content',
+				}),
+			});
+
+			if (response.ok) {
+				const data = await response.json();
+				if (data.flashcards && data.flashcards.length > 0) {
+					setExtractedFlashcards(
+						data.flashcards.map((card: { front: string; back: string }, i: number) => ({
+							id: `extracted-${Date.now()}-${i}`,
+							front: card.front,
+							back: card.back,
+							tags: ['pdf-extracted'],
+						}))
+					);
+					toast.success(`Generated ${data.flashcards.length} flashcards!`);
+				} else {
+					toast.error('No flashcards could be generated from this content');
+				}
+			} else {
+				toast.error('Failed to generate flashcards');
+			}
+		} catch (error) {
+			console.error('Error extracting flashcards:', error);
+			toast.error('Failed to extract flashcards');
+		} finally {
+			setIsExtractingFlashcards(false);
+		}
 	};
 
 	const handleTextSelection = () => {
@@ -620,6 +669,18 @@ export default function PdfViewer({ url, onClose, title }: PdfViewerProps) {
 											</span>
 										</div>
 										<div className="flex gap-1.5">
+											<Button
+												size="sm"
+												variant="outline"
+												className="h-8 rounded-xl border-primary/20 text-primary hover:bg-primary/10"
+												onClick={() => {
+													setExtractPrompt(selectedText);
+													setShowFlashcardModal(true);
+												}}
+											>
+												<HugeiconsIcon icon={SparklesIcon} className="w-4 h-4 mr-1.5" />
+												Extract Cards
+											</Button>
 											{HIGHLIGHT_COLORS.map((color) => (
 												<button
 													type="button"
@@ -805,6 +866,74 @@ export default function PdfViewer({ url, onClose, title }: PdfViewerProps) {
 				}
 			`}</style>
 			</section>
+
+			<Dialog open={showFlashcardModal} onOpenChange={setShowFlashcardModal}>
+				<DialogContent className="max-w-md">
+					<DialogHeader>
+						<DialogTitle className="flex items-center gap-2">
+							<HugeiconsIcon icon={SparklesIcon} className="w-5 h-5 text-primary" />
+							Extract Flashcards
+						</DialogTitle>
+					</DialogHeader>
+					<div className="space-y-4">
+						<div>
+							<span className="text-sm font-medium mb-2 block">
+								Selected text for flashcard generation
+							</span>
+							<div className="p-3 bg-muted rounded-xl text-sm max-h-32 overflow-y-auto">
+								{extractPrompt || 'No text selected'}
+							</div>
+						</div>
+						<div>
+							<label htmlFor="flashcard-prompt" className="text-sm font-medium mb-2 block">
+								What would you like to memorize?
+							</label>
+							<Input
+								id="flashcard-prompt"
+								placeholder="e.g., key definitions, formulas, dates..."
+								value={extractPrompt}
+								onChange={(e) => setExtractPrompt(e.target.value)}
+								className="rounded-xl"
+							/>
+						</div>
+						<Button
+							className="w-full rounded-xl"
+							onClick={handleExtractFlashcards}
+							disabled={isExtractingFlashcards || !extractPrompt}
+						>
+							{isExtractingFlashcards ? (
+								<>
+									<span className="animate-spin mr-2">⏳</span>
+									Generating...
+								</>
+							) : (
+								<>
+									<HugeiconsIcon icon={SparklesIcon} className="w-4 h-4 mr-2" />
+									Generate Flashcards
+								</>
+							)}
+						</Button>
+						{extractedFlashcards.length > 0 && (
+							<p className="text-sm text-muted-foreground text-center">
+								{extractedFlashcards.length} flashcards ready!
+							</p>
+						)}
+					</div>
+				</DialogContent>
+			</Dialog>
+
+			{extractedFlashcards.length > 0 && (
+				<FlashcardModal
+					flashcards={extractedFlashcards}
+					open={showFlashcardModal && extractedFlashcards.length > 0}
+					onOpenChange={(open) => {
+						if (!open) {
+							setExtractedFlashcards([]);
+							setExtractPrompt('');
+						}
+					}}
+				/>
+			)}
 		</LazyMotion>
 	);
 }

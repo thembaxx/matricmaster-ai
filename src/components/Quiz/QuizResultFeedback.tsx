@@ -1,5 +1,10 @@
-import { CheckmarkCircle02Icon, ForwardIcon } from '@hugeicons/core-free-icons';
+import {
+	CheckmarkCircle02Icon,
+	ForwardIcon,
+	MessageSecure01Icon,
+} from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
+import { useRouter } from 'next/navigation';
 
 ('use client');
 
@@ -9,6 +14,10 @@ type QuizResultFeedbackProps = {
 	correctAnswer?: string;
 	correctMessage?: string;
 	incorrectMessage?: string;
+	questionText?: string;
+	userAnswer?: string;
+	topic?: string;
+	subject?: string;
 };
 
 export function QuizResultFeedback({
@@ -17,8 +26,28 @@ export function QuizResultFeedback({
 	correctAnswer,
 	correctMessage = 'Excellent understanding of the principles involved.',
 	incorrectMessage,
+	questionText,
+	userAnswer,
+	topic,
+	subject,
 }: QuizResultFeedbackProps) {
+	const router = useRouter();
+
 	if (!showResult) return null;
+
+	const handleDiscussWithTutor = () => {
+		const params = new URLSearchParams();
+		if (questionText) params.set('question', questionText);
+		if (topic) params.set('topic', topic);
+		if (subject) params.set('subject', subject);
+		if (userAnswer) {
+			params.set(
+				'context',
+				`I got this question wrong. My answer was: "${userAnswer}". The correct answer is: "${correctAnswer}". Can you help me understand why I was wrong and explain the concept?`
+			);
+		}
+		router.push(`/study-companion?${params.toString()}`);
+	};
 
 	return (
 		<div
@@ -62,6 +91,16 @@ export function QuizResultFeedback({
 									? `The correct answer is ${correctAnswer}. Let's review the hint.`
 									: 'Try again!')}
 					</p>
+					{!isCorrect && (
+						<button
+							type="button"
+							onClick={handleDiscussWithTutor}
+							className="mt-3 inline-flex items-center gap-2 text-sm font-medium text-primary hover:text-primary/80 transition-colors"
+						>
+							<HugeiconsIcon icon={MessageSecure01Icon} className="w-4 h-4" />
+							Discuss with Tutor
+						</button>
+					)}
 				</div>
 			</div>
 		</div>
