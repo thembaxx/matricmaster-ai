@@ -2,9 +2,9 @@
 
 import { ArrowRightIcon, SparklesIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
+import { m } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import {
 	type BuddyPersonality,
@@ -149,14 +149,15 @@ export function BuddyPanel({ onStartChat }: BuddyPanelProps) {
 				</div>
 			)}
 
-			<Button
-				variant="outline"
-				className="w-full rounded-full h-11 font-medium border-primary/20 hover:bg-primary/5"
+			<m.button
+				type="button"
+				className="w-full rounded-full h-11 font-medium border-primary/20 hover:bg-primary/5 transition-colors inline-flex items-center justify-center px-4 py-2"
 				onClick={() => handleStartChat()}
+				whileTap={{ scale: 0.98 }}
 			>
 				Chat with Buddy
 				<HugeiconsIcon icon={ArrowRightIcon} className="w-4 h-4 ml-2" />
-			</Button>
+			</m.button>
 		</Card>
 	);
 }

@@ -32,6 +32,7 @@ export function TaskCard({ task, index, onToggle }: TaskCardProps) {
 			animate={{ opacity: 1, x: 0 }}
 			exit={{ opacity: 0, x: 10 }}
 			transition={{ delay: index * 0.05 }}
+			whileTap={{ scale: 0.98 }}
 			className={cn(
 				'relative pl-8 pr-6 py-5 bg-card rounded-[2rem] shadow-tiimo border border-border/50 flex items-center gap-5 transition-all group overflow-hidden tiimo-press',
 				task.completed && 'opacity-60 grayscale-[0.2]'

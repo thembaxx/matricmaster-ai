@@ -92,6 +92,7 @@ export function ActivityFeed() {
 							animate={{ opacity: 1, y: 0 }}
 							exit={{ opacity: 0, scale: 0.95 }}
 							transition={{ delay: index * 0.05 }}
+							whileTap={{ scale: 0.98 }}
 						>
 							<Card className="p-5 flex items-center gap-4 bg-card border-border/50 rounded-[2rem] shadow-tiimo transition-all hover:scale-[1.02]">
 								<div

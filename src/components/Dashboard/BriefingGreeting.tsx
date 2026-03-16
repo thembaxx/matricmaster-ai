@@ -4,6 +4,7 @@ import { Calendar01Icon, Clock01Icon, SparklesIcon } from '@hugeicons/core-free-
 import { HugeiconsIcon } from '@hugeicons/react';
 import { m } from 'framer-motion';
 import { CheckCircle2, TrendingUp } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { NotificationBell } from '@/components/Notifications/NotificationBell';
 import type { TimelineTask } from '@/types/timeline';
@@ -46,6 +47,7 @@ export function BriefingGreeting({
 	recentAccuracy = 0,
 	briefingData,
 }: BriefingGreetingProps) {
+	const router = useRouter();
 	const [greeting, setGreeting] = useState('Good day');
 	const firstName = userName?.split(' ')[0] || 'Scholar';
 
@@ -104,7 +106,9 @@ export function BriefingGreeting({
 					{/* Goals Card */}
 					<m.div
 						whileHover={{ y: -4 }}
-						className="tiimo-card p-6 flex flex-col justify-between h-40 relative group overflow-hidden"
+						whileTap={{ scale: 0.98 }}
+						onClick={() => router.push('/tasks')}
+						className="tiimo-card p-6 flex flex-col justify-between h-40 relative group overflow-hidden cursor-pointer"
 					>
 						<div className="absolute -right-4 -top-4 w-24 h-24 bg-tiimo-lavender/10 rounded-full blur-2xl group-hover:bg-tiimo-lavender/20 transition-all" />
 
@@ -137,7 +141,9 @@ export function BriefingGreeting({
 					{/* Streak Card */}
 					<m.div
 						whileHover={{ y: -4 }}
-						className="tiimo-card p-6 flex flex-col justify-between relative group overflow-hidden"
+						whileTap={{ scale: 0.98 }}
+						onClick={() => router.push('/streak')}
+						className="tiimo-card p-6 flex flex-col justify-between relative group overflow-hidden cursor-pointer"
 					>
 						<div className="absolute -right-4 -top-4 w-24 h-24 bg-tiimo-orange/10 rounded-full blur-2xl group-hover:bg-tiimo-orange/20 transition-all" />
 
@@ -166,6 +172,8 @@ export function BriefingGreeting({
 					{/* Next Action Card */}
 					<m.div
 						whileHover={{ y: -4 }}
+						whileTap={{ scale: 0.98 }}
+						onClick={() => router.push(`/subjects/${suggestedSubject || ''}`)}
 						className="p-6 flex flex-col justify-between relative group overflow-hidden bg-tiimo-lavender rounded-[var(--radius-lg)] shadow-tiimo text-white cursor-pointer transition-all hover:brightness-110"
 					>
 						<div className="absolute right-0 bottom-0 opacity-20 transform translate-x-1/4 translate-y-1/4">
@@ -246,7 +254,9 @@ export function BriefingGreeting({
 										initial={{ opacity: 0, scale: 0.8 }}
 										animate={{ opacity: 1, scale: 1 }}
 										transition={{ delay: 0.4 + index * 0.1 }}
-										className="flex flex-col items-center cursor-pointer group"
+										whileTap={{ scale: 0.9 }}
+										onClick={() => !task.completed && router.push(`/subjects/${task.subject}`)}
+										className={`flex flex-col items-center cursor-pointer group ${task.completed ? '' : 'active:scale-95'}`}
 									>
 										<span className="text-[10px] font-bold text-muted-foreground mb-2">
 											{task.startTime}
@@ -315,31 +325,46 @@ export function BriefingGreeting({
 						</h3>
 						<div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
 							{flashcardsDue > 0 && (
-								<div className="p-4 rounded-2xl bg-tiimo-blue/5 border border-tiimo-blue/10">
+								<m.div
+									whileHover={{ y: -2 }}
+									whileTap={{ scale: 0.98 }}
+									onClick={() => router.push('/flashcards')}
+									className="p-4 rounded-2xl bg-tiimo-blue/5 border border-tiimo-blue/10 cursor-pointer transition-colors hover:bg-tiimo-blue/10"
+								>
 									<p className="text-[10px] font-bold text-tiimo-blue uppercase tracking-widest mb-1">
 										Flashcards
 									</p>
 									<p className="text-lg font-black text-foreground">{flashcardsDue} due</p>
 									<p className="text-[10px] text-muted-foreground mt-1">Review now</p>
-								</div>
+								</m.div>
 							)}
 							{weakTopicsCount > 0 && (
-								<div className="p-4 rounded-2xl bg-tiimo-orange/5 border border-tiimo-orange/10">
+								<m.div
+									whileHover={{ y: -2 }}
+									whileTap={{ scale: 0.98 }}
+									onClick={() => router.push('/review')}
+									className="p-4 rounded-2xl bg-tiimo-orange/5 border border-tiimo-orange/10 cursor-pointer transition-colors hover:bg-tiimo-orange/10"
+								>
 									<p className="text-[10px] font-bold text-tiimo-orange uppercase tracking-widest mb-1">
 										Weak Topics
 									</p>
 									<p className="text-lg font-black text-foreground">{weakTopicsCount}</p>
 									<p className="text-[10px] text-muted-foreground mt-1">Need practice</p>
-								</div>
+								</m.div>
 							)}
 							{recentAccuracy > 0 && (
-								<div className="p-4 rounded-2xl bg-tiimo-green/5 border border-tiimo-green/10">
+								<m.div
+									whileHover={{ y: -2 }}
+									whileTap={{ scale: 0.98 }}
+									onClick={() => router.push('/progress')}
+									className="p-4 rounded-2xl bg-tiimo-green/5 border border-tiimo-green/10 cursor-pointer transition-colors hover:bg-tiimo-green/10"
+								>
 									<p className="text-[10px] font-bold text-tiimo-green uppercase tracking-widest mb-1">
 										Accuracy
 									</p>
 									<p className="text-lg font-black text-foreground">{recentAccuracy}%</p>
 									<p className="text-[10px] text-muted-foreground mt-1">Recent performance</p>
-								</div>
+								</m.div>
 							)}
 						</div>
 					</m.div>
