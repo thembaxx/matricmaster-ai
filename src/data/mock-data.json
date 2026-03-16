@@ -1,0 +1,1059 @@
+{
+	"subjects": [
+		{
+			"id": 1,
+			"name": "Mathematics",
+			"description": "Core Mathematics including Algebra, Geometry, Calculus and Statistics",
+			"curriculumCode": "MATH",
+			"isActive": true,
+			"createdAt": "2024-01-01T00:00:00Z",
+			"updatedAt": "2024-01-01T00:00:00Z"
+		},
+		{
+			"id": 2,
+			"name": "Physical Sciences",
+			"description": "Physics and Chemistry for Grade 12",
+			"curriculumCode": "PHSC",
+			"isActive": true,
+			"createdAt": "2024-01-01T00:00:00Z",
+			"updatedAt": "2024-01-01T00:00:00Z"
+		},
+		{
+			"id": 3,
+			"name": "Life Sciences",
+			"description": "Biology for Grade 12",
+			"curriculumCode": "LIFE",
+			"isActive": true,
+			"createdAt": "2024-01-01T00:00:00Z",
+			"updatedAt": "2024-01-01T00:00:00Z"
+		},
+		{
+			"id": 4,
+			"name": "Geography",
+			"description": "Human and Physical Geography",
+			"curriculumCode": "GEOG",
+			"isActive": true,
+			"createdAt": "2024-01-01T00:00:00Z",
+			"updatedAt": "2024-01-01T00:00:00Z"
+		},
+		{
+			"id": 5,
+			"name": "History",
+			"description": "South African and World History",
+			"curriculumCode": "HIST",
+			"isActive": true,
+			"createdAt": "2024-01-01T00:00:00Z",
+			"updatedAt": "2024-01-01T00:00:00Z"
+		},
+		{
+			"id": 6,
+			"name": "English Home Language",
+			"description": "English Language and Literature",
+			"curriculumCode": "ENGH",
+			"isActive": true,
+			"createdAt": "2024-01-01T00:00:00Z",
+			"updatedAt": "2024-01-01T00:00:00Z"
+		},
+		{
+			"id": 7,
+			"name": "Accounting",
+			"description": "Financial Accounting and Management",
+			"curriculumCode": "ACCT",
+			"isActive": true,
+			"createdAt": "2024-01-01T00:00:00Z",
+			"updatedAt": "2024-01-01T00:00:00Z"
+		},
+		{
+			"id": 8,
+			"name": "Economics",
+			"description": "Micro and Macroeconomics",
+			"curriculumCode": "ECON",
+			"isActive": true,
+			"createdAt": "2024-01-01T00:00:00Z",
+			"updatedAt": "2024-01-01T00:00:00Z"
+		}
+	],
+	"questions": [
+		{
+			"id": "q1",
+			"subjectId": 1,
+			"questionText": "If x² - 5x + 6 = 0, what are the values of x?",
+			"imageUrl": null,
+			"gradeLevel": 10,
+			"topic": "Algebra",
+			"difficulty": "easy",
+			"marks": 2,
+			"hint": "Factorize the quadratic equation",
+			"isActive": true,
+			"createdAt": "2024-01-01T00:00:00Z",
+			"updatedAt": "2024-01-01T00:00:00Z"
+		},
+		{
+			"id": "q2",
+			"subjectId": 1,
+			"questionText": "Calculate the derivative of f(x) = 3x³ + 2x² - 5x + 1",
+			"imageUrl": null,
+			"gradeLevel": 12,
+			"topic": "Calculus",
+			"difficulty": "medium",
+			"marks": 4,
+			"hint": "Use the power rule: d/dx(x^n) = nx^(n-1)",
+			"isActive": true,
+			"createdAt": "2024-01-01T00:00:00Z",
+			"updatedAt": "2024-01-01T00:00:00Z"
+		},
+		{
+			"id": "q3",
+			"subjectId": 2,
+			"questionText": "What is the atomic number of Carbon?",
+			"imageUrl": null,
+			"gradeLevel": 10,
+			"topic": "Chemistry - Atomic Structure",
+			"difficulty": "easy",
+			"marks": 1,
+			"hint": "Look at the periodic table",
+			"isActive": true,
+			"createdAt": "2024-01-01T00:00:00Z",
+			"updatedAt": "2024-01-01T00:00:00Z"
+		},
+		{
+			"id": "q4",
+			"subjectId": 2,
+			"questionText": "A car accelerates from rest at 2 m/s². What is its velocity after 5 seconds?",
+			"imageUrl": null,
+			"gradeLevel": 11,
+			"topic": "Physics - Kinematics",
+			"difficulty": "medium",
+			"marks": 3,
+			"hint": "Use v = u + at",
+			"isActive": true,
+			"createdAt": "2024-01-01T00:00:00Z",
+			"updatedAt": "2024-01-01T00:00:00Z"
+		},
+		{
+			"id": "q5",
+			"subjectId": 3,
+			"questionText": "Which organelle is known as the 'powerhouse' of the cell?",
+			"imageUrl": null,
+			"gradeLevel": 10,
+			"topic": "Cell Biology",
+			"difficulty": "easy",
+			"marks": 1,
+			"hint": "It produces ATP through cellular respiration",
+			"isActive": true,
+			"createdAt": "2024-01-01T00:00:00Z",
+			"updatedAt": "2024-01-01T00:00:00Z"
+		}
+	],
+	"options": [
+		{
+			"id": "o1",
+			"questionId": "q1",
+			"optionText": "x = 2 or x = 3",
+			"isCorrect": true,
+			"optionLetter": "A",
+			"explanation": "Factorizing: x² - 5x + 6 = (x-2)(x-3) = 0, so x = 2 or x = 3",
+			"isActive": true,
+			"createdAt": "2024-01-01T00:00:00Z"
+		},
+		{
+			"id": "o2",
+			"questionId": "q1",
+			"optionText": "x = 1 or x = 6",
+			"isCorrect": false,
+			"optionLetter": "B",
+			"explanation": "1 × 6 = 6, but 1 + 6 = 7, not 5",
+			"isActive": true,
+			"createdAt": "2024-01-01T00:00:00Z"
+		},
+		{
+			"id": "o3",
+			"questionId": "q1",
+			"optionText": "x = -2 or x = -3",
+			"isCorrect": false,
+			"optionLetter": "C",
+			"explanation": "(-2)(-3) = 6, but -2 + (-3) = -5",
+			"isActive": true,
+			"createdAt": "2024-01-01T00:00:00Z"
+		},
+		{
+			"id": "o4",
+			"questionId": "q1",
+			"optionText": "x = 4 or x = 1",
+			"isCorrect": false,
+			"optionLetter": "D",
+			"explanation": "4 × 1 = 4, not 6",
+			"isActive": true,
+			"createdAt": "2024-01-01T00:00:00Z"
+		},
+		{
+			"id": "o5",
+			"questionId": "q2",
+			"optionText": "f'(x) = 9x² + 4x - 5",
+			"isCorrect": true,
+			"optionLetter": "A",
+			"explanation": "Using power rule: d/dx(3x³) = 9x², d/dx(2x²) = 4x, d/dx(-5x) = -5, d/dx(1) = 0",
+			"isActive": true,
+			"createdAt": "2024-01-01T00:00:00Z"
+		},
+		{
+			"id": "o6",
+			"questionId": "q2",
+			"optionText": "f'(x) = 3x² + 2x - 5",
+			"isCorrect": false,
+			"optionLetter": "B",
+			"explanation": "Missing the coefficient multiplication from power rule",
+			"isActive": true,
+			"createdAt": "2024-01-01T00:00:00Z"
+		},
+		{
+			"id": "o7",
+			"questionId": "q3",
+			"optionText": "6",
+			"isCorrect": true,
+			"optionLetter": "A",
+			"explanation": "Carbon has 6 protons, hence atomic number 6",
+			"isActive": true,
+			"createdAt": "2024-01-01T00:00:00Z"
+		},
+		{
+			"id": "o8",
+			"questionId": "q3",
+			"optionText": "12",
+			"isCorrect": false,
+			"optionLetter": "B",
+			"explanation": "12 is the mass number, not atomic number",
+			"isActive": true,
+			"createdAt": "2024-01-01T00:00:00Z"
+		},
+		{
+			"id": "o9",
+			"questionId": "q4",
+			"optionText": "10 m/s",
+			"isCorrect": true,
+			"optionLetter": "A",
+			"explanation": "v = u + at = 0 + (2)(5) = 10 m/s",
+			"isActive": true,
+			"createdAt": "2024-01-01T00:00:00Z"
+		},
+		{
+			"id": "o10",
+			"questionId": "q4",
+			"optionText": "25 m/s",
+			"isCorrect": false,
+			"optionLetter": "B",
+			"explanation": "That's s = ut + ½at², not velocity",
+			"isActive": true,
+			"createdAt": "2024-01-01T00:00:00Z"
+		},
+		{
+			"id": "o11",
+			"questionId": "q5",
+			"optionText": "Mitochondria",
+			"isCorrect": true,
+			"optionLetter": "A",
+			"explanation": "Mitochondria produce ATP through cellular respiration",
+			"isActive": true,
+			"createdAt": "2024-01-01T00:00:00Z"
+		},
+		{
+			"id": "o12",
+			"questionId": "q5",
+			"optionText": "Nucleus",
+			"isCorrect": false,
+			"optionLetter": "B",
+			"explanation": "Nucleus contains genetic material, not energy production",
+			"isActive": true,
+			"createdAt": "2024-01-01T00:00:00Z"
+		}
+	],
+	"quizResults": [
+		{
+			"id": "qr1",
+			"userId": "user-1",
+			"quizId": "quiz-001",
+			"score": 8,
+			"totalQuestions": 10,
+			"percentage": "80.00",
+			"timeTaken": 600,
+			"completedAt": "2024-01-15T10:30:00Z"
+		},
+		{
+			"id": "qr2",
+			"userId": "user-1",
+			"quizId": "quiz-002",
+			"score": 6,
+			"totalQuestions": 10,
+			"percentage": "60.00",
+			"timeTaken": 720,
+			"completedAt": "2024-01-16T14:20:00Z"
+		},
+		{
+			"id": "qr3",
+			"userId": "user-1",
+			"quizId": "quiz-003",
+			"score": 9,
+			"totalQuestions": 10,
+			"percentage": "90.00",
+			"timeTaken": 540,
+			"completedAt": "2024-01-17T09:15:00Z"
+		}
+	],
+	"userProgress": [
+		{
+			"id": "up1",
+			"userId": "user-1",
+			"subjectId": 1,
+			"topic": "Algebra",
+			"totalQuestionsAttempted": 50,
+			"totalCorrect": 40,
+			"totalMarksEarned": 85,
+			"streakDays": 5,
+			"bestStreak": 12,
+			"streakFreezes": 2,
+			"lastLoginBonusAt": "2024-01-20T08:00:00Z",
+			"consecutiveLoginDays": 5,
+			"totalLoginBonusesClaimed": 15,
+			"lastActivityAt": "2024-01-20T10:30:00Z",
+			"createdAt": "2024-01-01T00:00:00Z",
+			"updatedAt": "2024-01-20T10:30:00Z"
+		},
+		{
+			"id": "up2",
+			"userId": "user-1",
+			"subjectId": 2,
+			"topic": "Physics",
+			"totalQuestionsAttempted": 35,
+			"totalCorrect": 28,
+			"totalMarksEarned": 60,
+			"streakDays": 5,
+			"bestStreak": 12,
+			"streakFreezes": 2,
+			"lastLoginBonusAt": "2024-01-20T08:00:00Z",
+			"consecutiveLoginDays": 5,
+			"totalLoginBonusesClaimed": 15,
+			"lastActivityAt": "2024-01-20T10:30:00Z",
+			"createdAt": "2024-01-01T00:00:00Z",
+			"updatedAt": "2024-01-20T10:30:00Z"
+		},
+		{
+			"id": "up3",
+			"userId": "user-1",
+			"subjectId": 3,
+			"topic": "Cell Biology",
+			"totalQuestionsAttempted": 25,
+			"totalCorrect": 22,
+			"totalMarksEarned": 48,
+			"streakDays": 5,
+			"bestStreak": 12,
+			"streakFreezes": 2,
+			"lastLoginBonusAt": "2024-01-20T08:00:00Z",
+			"consecutiveLoginDays": 5,
+			"totalLoginBonusesClaimed": 15,
+			"lastActivityAt": "2024-01-20T10:30:00Z",
+			"createdAt": "2024-01-01T00:00:00Z",
+			"updatedAt": "2024-01-20T10:30:00Z"
+		}
+	],
+	"achievements": [
+		{
+			"id": "ach1",
+			"achievementId": "first-quiz",
+			"title": "First Steps",
+			"description": "Complete your first quiz",
+			"icon": "trophy"
+		},
+		{
+			"id": "ach2",
+			"achievementId": "streak-7",
+			"title": "Week Warrior",
+			"description": "Maintain a 7-day study streak",
+			"icon": "flame"
+		},
+		{
+			"id": "ach3",
+			"achievementId": "perfect-score",
+			"title": "Perfect Score",
+			"description": "Get 100% on any quiz",
+			"icon": "star"
+		},
+		{
+			"id": "ach4",
+			"achievementId": "speed-demon",
+			"title": "Speed Demon",
+			"description": "Complete a quiz in under 60 seconds",
+			"icon": "lightning"
+		},
+		{
+			"id": "ach5",
+			"achievementId": "subject-master",
+			"title": "Subject Master",
+			"description": "Score above 90% in 5 quizzes",
+			"icon": "crown"
+		}
+	],
+	"userAchievements": [
+		{
+			"id": "ua1",
+			"userId": "user-1",
+			"achievementId": "first-quiz",
+			"title": "First Steps",
+			"description": "Complete your first quiz",
+			"icon": "trophy",
+			"unlockedAt": "2024-01-05T10:00:00Z"
+		},
+		{
+			"id": "ua2",
+			"userId": "user-1",
+			"achievementId": "streak-7",
+			"title": "Week Warrior",
+			"description": "Maintain a 7-day study streak",
+			"icon": "flame",
+			"unlockedAt": "2024-01-12T10:00:00Z"
+		},
+		{
+			"id": "ua3",
+			"userId": "user-1",
+			"achievementId": "perfect-score",
+			"title": "Perfect Score",
+			"description": "Get 100% on any quiz",
+			"icon": "star",
+			"unlockedAt": "2024-01-18T14:30:00Z"
+		}
+	],
+	"studySessions": [
+		{
+			"id": "ss1",
+			"userId": "user-1",
+			"subjectId": 1,
+			"sessionType": "quiz",
+			"topic": "Algebra",
+			"durationMinutes": 15,
+			"questionsAttempted": 10,
+			"correctAnswers": 8,
+			"marksEarned": 16,
+			"startedAt": "2024-01-20T10:00:00Z",
+			"completedAt": "2024-01-20T10:15:00Z"
+		},
+		{
+			"id": "ss2",
+			"userId": "user-1",
+			"subjectId": 2,
+			"sessionType": "practice",
+			"topic": "Newton's Laws",
+			"durationMinutes": 30,
+			"questionsAttempted": 15,
+			"correctAnswers": 12,
+			"marksEarned": 24,
+			"startedAt": "2024-01-20T14:00:00Z",
+			"completedAt": "2024-01-20T14:30:00Z"
+		},
+		{
+			"id": "ss3",
+			"userId": "user-1",
+			"subjectId": 3,
+			"sessionType": "flashcards",
+			"topic": "Cell Structure",
+			"durationMinutes": 20,
+			"questionsAttempted": 20,
+			"correctAnswers": 18,
+			"marksEarned": 36,
+			"startedAt": "2024-01-20T16:00:00Z",
+			"completedAt": "2024-01-20T16:20:00Z"
+		}
+	],
+	"studyPlans": [
+		{
+			"id": "sp1",
+			"userId": "user-1",
+			"title": "Matric 2024 Final Exam Prep",
+			"targetExamDate": "2024-10-15T00:00:00Z",
+			"focusAreas": "Mathematics, Physical Sciences",
+			"weeklyGoals": "Complete 2 topic reviews per week, 3 practice quizzes per week",
+			"isActive": true,
+			"createdAt": "2024-01-01T00:00:00Z",
+			"updatedAt": "2024-01-20T10:00:00Z"
+		}
+	],
+	"flashcardDecks": [
+		{
+			"id": "fd1",
+			"userId": "user-1",
+			"name": "Math Formulas",
+			"description": "Essential Mathematics formulas for Grade 12",
+			"subjectId": 1,
+			"cardCount": 25,
+			"isPublic": true,
+			"createdAt": "2024-01-10T00:00:00Z",
+			"updatedAt": "2024-01-20T10:00:00Z"
+		},
+		{
+			"id": "fd2",
+			"userId": "user-1",
+			"name": "Physics Definitions",
+			"description": "Key Physics terms and definitions",
+			"subjectId": 2,
+			"cardCount": 30,
+			"isPublic": false,
+			"createdAt": "2024-01-12T00:00:00Z",
+			"updatedAt": "2024-01-18T14:00:00Z"
+		},
+		{
+			"id": "fd3",
+			"userId": "user-1",
+			"name": "Chemistry Periodic Table",
+			"description": "Elements, groups and periods",
+			"subjectId": 2,
+			"cardCount": 40,
+			"isPublic": true,
+			"createdAt": "2024-01-15T00:00:00Z",
+			"updatedAt": "2024-01-20T09:00:00Z"
+		}
+	],
+	"flashcards": [
+		{
+			"id": "fc1",
+			"deckId": "fd1",
+			"front": "Quadratic Formula",
+			"back": "x = (-b ± √(b²-4ac)) / 2a",
+			"imageUrl": null,
+			"difficulty": "medium",
+			"timesReviewed": 5,
+			"timesCorrect": 4,
+			"easeFactor": "2.5",
+			"intervalDays": 4,
+			"repetitions": 3,
+			"nextReview": "2024-01-24T00:00:00Z",
+			"lastReview": "2024-01-20T10:00:00Z",
+			"createdAt": "2024-01-10T00:00:00Z",
+			"updatedAt": "2024-01-20T10:00:00Z"
+		},
+		{
+			"id": "fc2",
+			"deckId": "fd1",
+			"front": "Area of a Circle",
+			"back": "A = πr²",
+			"imageUrl": null,
+			"difficulty": "easy",
+			"timesReviewed": 8,
+			"timesCorrect": 8,
+			"easeFactor": "2.8",
+			"intervalDays": 7,
+			"repetitions": 5,
+			"nextReview": "2024-01-27T00:00:00Z",
+			"lastReview": "2024-01-20T10:00:00Z",
+			"createdAt": "2024-01-10T00:00:00Z",
+			"updatedAt": "2024-01-20T10:00:00Z"
+		},
+		{
+			"id": "fc3",
+			"deckId": "fd2",
+			"front": "Newton's First Law",
+			"back": "An object at rest stays at rest and an object in motion stays in motion unless acted upon by an external force",
+			"imageUrl": null,
+			"difficulty": "medium",
+			"timesReviewed": 3,
+			"timesCorrect": 2,
+			"easeFactor": "2.3",
+			"intervalDays": 2,
+			"repetitions": 2,
+			"nextReview": "2024-01-22T00:00:00Z",
+			"lastReview": "2024-01-20T14:00:00Z",
+			"createdAt": "2024-01-12T00:00:00Z",
+			"updatedAt": "2024-01-20T14:00:00Z"
+		}
+	],
+	"topicMastery": [
+		{
+			"id": "tm1",
+			"userId": "user-1",
+			"subjectId": 1,
+			"topic": "Algebra",
+			"masteryLevel": "75.00",
+			"questionsAttempted": 50,
+			"questionsCorrect": 40,
+			"averageTime": 45,
+			"lastPracticed": "2024-01-20T10:00:00Z",
+			"nextReview": "2024-01-22T00:00:00Z",
+			"consecutiveCorrect": 8,
+			"createdAt": "2024-01-01T00:00:00Z",
+			"updatedAt": "2024-01-20T10:00:00Z"
+		},
+		{
+			"id": "tm2",
+			"userId": "user-1",
+			"subjectId": 1,
+			"topic": "Calculus",
+			"masteryLevel": "45.00",
+			"questionsAttempted": 20,
+			"questionsCorrect": 12,
+			"averageTime": 60,
+			"lastPracticed": "2024-01-19T15:00:00Z",
+			"nextReview": "2024-01-21T00:00:00Z",
+			"consecutiveCorrect": 3,
+			"createdAt": "2024-01-05T00:00:00Z",
+			"updatedAt": "2024-01-19T15:00:00Z"
+		},
+		{
+			"id": "tm3",
+			"userId": "user-1",
+			"subjectId": 2,
+			"topic": "Kinematics",
+			"masteryLevel": "65.00",
+			"questionsAttempted": 35,
+			"questionsCorrect": 25,
+			"averageTime": 50,
+			"lastPracticed": "2024-01-20T14:00:00Z",
+			"nextReview": "2024-01-22T00:00:00Z",
+			"consecutiveCorrect": 5,
+			"createdAt": "2024-01-02T00:00:00Z",
+			"updatedAt": "2024-01-20T14:00:00Z"
+		}
+	],
+	"leaderboard": [
+		{
+			"id": "lb1",
+			"userId": "user-1",
+			"periodType": "weekly",
+			"periodStart": "2024-01-15T00:00:00Z",
+			"totalPoints": 1250,
+			"rank": 3,
+			"questionsCompleted": 45,
+			"accuracyPercentage": 82,
+			"updatedAt": "2024-01-20T10:00:00Z"
+		},
+		{
+			"id": "lb2",
+			"userId": "user-2",
+			"periodType": "weekly",
+			"periodStart": "2024-01-15T00:00:00Z",
+			"totalPoints": 1480,
+			"rank": 1,
+			"questionsCompleted": 52,
+			"accuracyPercentage": 88,
+			"updatedAt": "2024-01-20T10:00:00Z"
+		},
+		{
+			"id": "lb3",
+			"userId": "user-3",
+			"periodType": "weekly",
+			"periodStart": "2024-01-15T00:00:00Z",
+			"totalPoints": 1320,
+			"rank": 2,
+			"questionsCompleted": 48,
+			"accuracyPercentage": 85,
+			"updatedAt": "2024-01-20T10:00:00Z"
+		},
+		{
+			"id": "lb4",
+			"userId": "user-4",
+			"periodType": "weekly",
+			"periodStart": "2024-01-15T00:00:00Z",
+			"totalPoints": 980,
+			"rank": 5,
+			"questionsCompleted": 35,
+			"accuracyPercentage": 78,
+			"updatedAt": "2024-01-20T10:00:00Z"
+		},
+		{
+			"id": "lb5",
+			"userId": "user-5",
+			"periodType": "weekly",
+			"periodStart": "2024-01-15T00:00:00Z",
+			"totalPoints": 1100,
+			"rank": 4,
+			"questionsCompleted": 40,
+			"accuracyPercentage": 80,
+			"updatedAt": "2024-01-20T10:00:00Z"
+		}
+	],
+	"leaderboardUsers": [
+		{
+			"id": "user-1",
+			"name": "Themba M",
+			"avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=Themba",
+			"points": 1250,
+			"rank": 3
+		},
+		{
+			"id": "user-2",
+			"name": "Sarah K",
+			"avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah",
+			"points": 1480,
+			"rank": 1
+		},
+		{
+			"id": "user-3",
+			"name": "Michael J",
+			"avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=Michael",
+			"points": 1320,
+			"rank": 2
+		},
+		{
+			"id": "user-4",
+			"name": "Lisa N",
+			"avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=Lisa",
+			"points": 980,
+			"rank": 5
+		},
+		{
+			"id": "user-5",
+			"name": "David R",
+			"avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=David",
+			"points": 1100,
+			"rank": 4
+		}
+	],
+	"channels": [
+		{
+			"id": "ch1",
+			"name": "Mathematics Study Group",
+			"description": "Grade 12 Math learners preparing for finals",
+			"subjectId": 1,
+			"createdBy": "user-2",
+			"isPublic": true,
+			"memberCount": 24,
+			"createdAt": "2024-01-05T00:00:00Z"
+		},
+		{
+			"id": "ch2",
+			"name": "Physics Pals",
+			"description": "Physical Sciences discussion and problem-solving",
+			"subjectId": 2,
+			"createdBy": "user-3",
+			"isPublic": true,
+			"memberCount": 18,
+			"createdAt": "2024-01-08T00:00:00Z"
+		},
+		{
+			"id": "ch3",
+			"name": "Biology Buzz",
+			"description": "Life Sciences study group",
+			"subjectId": 3,
+			"createdBy": "user-4",
+			"isPublic": true,
+			"memberCount": 15,
+			"createdAt": "2024-01-10T00:00:00Z"
+		}
+	],
+	"notifications": [
+		{
+			"id": "n1",
+			"userId": "user-1",
+			"type": "achievement",
+			"title": "Achievement Unlocked!",
+			"message": "You've earned the 'Perfect Score' badge!",
+			"data": "{\"achievementId\": \"perfect-score\"}",
+			"isRead": false,
+			"readAt": null,
+			"createdAt": "2024-01-18T14:30:00Z"
+		},
+		{
+			"id": "n2",
+			"userId": "user-1",
+			"type": "reminder",
+			"title": "Study Reminder",
+			"message": "You haven't studied today. Keep your streak going!",
+			"data": "{\"streakDays\": 5}",
+			"isRead": false,
+			"readAt": null,
+			"createdAt": "2024-01-20T08:00:00Z"
+		},
+		{
+			"id": "n3",
+			"userId": "user-1",
+			"type": "leaderboard",
+			"title": "Leaderboard Update",
+			"message": "You're now #3 on the weekly leaderboard!",
+			"data": "{\"rank\": 3, \"points\": 1250}",
+			"isRead": true,
+			"readAt": "2024-01-20T10:00:00Z",
+			"createdAt": "2024-01-20T09:00:00Z"
+		},
+		{
+			"id": "n4",
+			"userId": "user-1",
+			"type": "study_buddy",
+			"title": "New Study Buddy Request",
+			"message": "Sarah K wants to be your study buddy",
+			"data": "{\"requesterId\": \"user-2\"}",
+			"isRead": false,
+			"readAt": null,
+			"createdAt": "2024-01-19T16:00:00Z"
+		}
+	],
+	"calendarEvents": [
+		{
+			"id": "ce1",
+			"userId": "user-1",
+			"title": "Mathematics Mock Exam",
+			"description": "Full paper 2-hour mock exam",
+			"eventType": "exam",
+			"subjectId": 1,
+			"startTime": "2024-01-25T09:00:00Z",
+			"endTime": "2024-01-25T11:00:00Z",
+			"isAllDay": false,
+			"location": null,
+			"reminderMinutes": "60,15",
+			"recurrenceRule": null,
+			"examId": "exam-001",
+			"lessonId": null,
+			"studyPlanId": "sp1",
+			"isCompleted": false,
+			"createdAt": "2024-01-15T00:00:00Z",
+			"updatedAt": "2024-01-15T00:00:00Z"
+		},
+		{
+			"id": "ce2",
+			"userId": "user-1",
+			"title": "Physics Study Session",
+			"description": "Review Newton's Laws",
+			"eventType": "study",
+			"subjectId": 2,
+			"startTime": "2024-01-21T14:00:00Z",
+			"endTime": "2024-01-21T15:30:00Z",
+			"isAllDay": false,
+			"location": null,
+			"reminderMinutes": "30",
+			"recurrenceRule": null,
+			"examId": null,
+			"lessonId": null,
+			"studyPlanId": "sp1",
+			"isCompleted": false,
+			"createdAt": "2024-01-18T00:00:00Z",
+			"updatedAt": "2024-01-18T00:00:00Z"
+		},
+		{
+			"id": "ce3",
+			"userId": "user-1",
+			"title": "Weekly Review",
+			"description": "Review weekly progress",
+			"eventType": "reminder",
+			"subjectId": null,
+			"startTime": "2024-01-21T18:00:00Z",
+			"endTime": "2024-01-21T18:30:00Z",
+			"isAllDay": false,
+			"location": null,
+			"reminderMinutes": "60",
+			"recurrenceRule": "WEEKLY",
+			"examId": null,
+			"lessonId": null,
+			"studyPlanId": null,
+			"isCompleted": false,
+			"createdAt": "2024-01-01T00:00:00Z",
+			"updatedAt": "2024-01-01T00:00:00Z"
+		}
+	],
+	"pastPapers": [
+		{
+			"id": "pp1",
+			"paperId": "MATHS-P2-2023",
+			"originalPdfUrl": "https://example.com/papers/maths-p2-2023.pdf",
+			"storedPdfUrl": "/papers/maths-p2-2023.pdf",
+			"markdownFileUrl": "/papers/maths-p2-2023.md",
+			"subject": "Mathematics",
+			"paper": "Paper 2",
+			"year": 2023,
+			"month": "November",
+			"isExtracted": true,
+			"extractedQuestions": "[{\"q\":\"If x² - 5x + 6 = 0...\",\"a\":\"x = 2 or x = 3\"}]",
+			"instructions": "Answer ALL questions. Time: 3 hours. Marks: 150.",
+			"totalMarks": 150,
+			"createdAt": "2024-01-01T00:00:00Z",
+			"updatedAt": "2024-01-15T00:00:00Z"
+		},
+		{
+			"id": "pp2",
+			"paperId": "PHSC-P1-2023",
+			"originalPdfUrl": "https://example.com/papers/phsc-p1-2023.pdf",
+			"storedPdfUrl": "/papers/phsc-p1-2023.pdf",
+			"markdownFileUrl": "/papers/phsc-p1-2023.md",
+			"subject": "Physical Sciences",
+			"paper": "Paper 1",
+			"year": 2023,
+			"month": "November",
+			"isExtracted": true,
+			"extractedQuestions": "[{\"q\":\"A car accelerates from rest...\",\"a\":\"10 m/s\"}]",
+			"instructions": "Answer ALL questions in Section A and choose TWO from Section B.",
+			"totalMarks": 150,
+			"createdAt": "2024-01-02T00:00:00Z",
+			"updatedAt": "2024-01-16T00:00:00Z"
+		},
+		{
+			"id": "pp3",
+			"paperId": "LIFE-P1-2022",
+			"originalPdfUrl": "https://example.com/papers/life-p1-2022.pdf",
+			"storedPdfUrl": "/papers/life-p1-2022.pdf",
+			"markdownFileUrl": "/papers/life-p1-2022.md",
+			"subject": "Life Sciences",
+			"paper": "Paper 1",
+			"year": 2022,
+			"month": "November",
+			"isExtracted": true,
+			"extractedQuestions": "[{\"q\":\"Describe the structure...\",\"a\":\"The mitochondria...\"}]",
+			"instructions": "Answer ALL questions.",
+			"totalMarks": 150,
+			"createdAt": "2024-01-03T00:00:00Z",
+			"updatedAt": "2024-01-17T00:00:00Z"
+		}
+	],
+	"userSettings": {
+		"userId": "user-1",
+		"emailNotifications": true,
+		"pushNotifications": true,
+		"pushSubscription": null,
+		"studyReminders": true,
+		"achievementAlerts": true,
+		"profileVisibility": true,
+		"showOnLeaderboard": true,
+		"analyticsTracking": true,
+		"language": "en",
+		"theme": "system",
+		"updatedAt": "2024-01-20T10:00:00Z"
+	},
+	"subscriptionPlans": [
+		{
+			"id": "free",
+			"name": "Free",
+			"description": "Basic features for casual learners",
+			"priceZar": "0.00",
+			"billingInterval": "monthly",
+			"features": ["5 quizzes per day", "Basic progress tracking", "Limited flashcards"],
+			"isActive": true,
+			"createdAt": "2024-01-01T00:00:00Z",
+			"updatedAt": "2024-01-01T00:00:00Z"
+		},
+		{
+			"id": "pro",
+			"name": "Pro",
+			"description": "Enhanced learning experience",
+			"priceZar": "99.00",
+			"billingInterval": "monthly",
+			"features": [
+				"Unlimited quizzes",
+				"AI Study Companion",
+				"All flashcards",
+				"Progress analytics",
+				"No ads"
+			],
+			"isActive": true,
+			"createdAt": "2024-01-01T00:00:00Z",
+			"updatedAt": "2024-01-01T00:00:00Z"
+		},
+		{
+			"id": "premium",
+			"name": "Premium",
+			"description": "Complete exam preparation",
+			"priceZar": "199.00",
+			"billingInterval": "monthly",
+			"features": [
+				"Everything in Pro",
+				"Past papers access",
+				"1-on-1 tutoring sessions",
+				"Priority support",
+				"Custom study plans"
+			],
+			"isActive": true,
+			"createdAt": "2024-01-01T00:00:00Z",
+			"updatedAt": "2024-01-01T00:00:00Z"
+		}
+	],
+	"userSubscription": {
+		"id": "us1",
+		"userId": "user-1",
+		"planId": "pro",
+		"paystackCustomerCode": "CUS_xxxxx",
+		"paystackSubscriptionCode": "SUB_xxxxx",
+		"paystackEmailToken": null,
+		"status": "active",
+		"currentPeriodStart": "2024-01-01T00:00:00Z",
+		"currentPeriodEnd": "2024-02-01T00:00:00Z",
+		"cancelAtPeriodEnd": false,
+		"isFreeTrial": false,
+		"trialEndDate": null,
+		"createdAt": "2024-01-01T00:00:00Z",
+		"updatedAt": "2024-01-01T00:00:00Z"
+	},
+	"studyBuddyProfiles": [
+		{
+			"id": "sbp1",
+			"userId": "user-1",
+			"bio": "Grade 12 student focusing on STEM subjects. Love helping others understand math concepts.",
+			"studyGoals": "Achieve 90%+ in Mathematics and Physical Sciences",
+			"preferredSubjects": "Mathematics, Physical Sciences",
+			"studySchedule": "Weekdays 4pm-7pm, Weekends 10am-2pm",
+			"lookingFor": "Study partners for physics and math practice",
+			"isVisible": true,
+			"matchPreferences": "{\"subjects\": [\"Mathematics\", \"Physical Sciences\"], \"level\": \"Grade 12\"}",
+			"personality": "mentor",
+			"createdAt": "2024-01-05T00:00:00Z",
+			"updatedAt": "2024-01-20T10:00:00Z"
+		},
+		{
+			"id": "sbp2",
+			"userId": "user-2",
+			"bio": "Passionate about life sciences. Want to study medicine.",
+			"studyGoals": "Excel in Life Sciences and Chemistry",
+			"preferredSubjects": "Life Sciences, Chemistry",
+			"studySchedule": "Afternoons after school",
+			"lookingFor": "Biology study partners",
+			"isVisible": true,
+			"matchPreferences": "{\"subjects\": [\"Life Sciences\"], \"level\": \"Grade 12\"}",
+			"personality": "learner",
+			"createdAt": "2024-01-08T00:00:00Z",
+			"updatedAt": "2024-01-18T14:00:00Z"
+		},
+		{
+			"id": "sbp3",
+			"userId": "user-3",
+			"bio": "Accounting enthusiast. Good with numbers and formulas.",
+			"studyGoals": "Master Accounting and Economics",
+			"preferredSubjects": "Accounting, Economics",
+			"studySchedule": "Mornings before school",
+			"lookingFor": "Accounting study group",
+			"isVisible": true,
+			"matchPreferences": "{\"subjects\": [\"Accounting\"], \"level\": \"Grade 12\"}",
+			"personality": "balanced",
+			"createdAt": "2024-01-10T00:00:00Z",
+			"updatedAt": "2024-01-19T09:00:00Z"
+		}
+	],
+	"searchHistory": [
+		{
+			"id": "sh1",
+			"userId": "user-1",
+			"query": "quadratic equations grade 12",
+			"createdAt": "2024-01-20T10:00:00Z"
+		},
+		{
+			"id": "sh2",
+			"userId": "user-1",
+			"query": "newton's laws physics",
+			"createdAt": "2024-01-19T15:30:00Z"
+		},
+		{
+			"id": "sh3",
+			"userId": "user-1",
+			"query": "mitochondria function",
+			"createdAt": "2024-01-18T09:00:00Z"
+		}
+	],
+	"bookmarks": [
+		{
+			"id": "bm1",
+			"userId": "user-1",
+			"bookmarkType": "question",
+			"referenceId": "q1",
+			"note": "Important quadratic formula question",
+			"createdAt": "2024-01-15T10:00:00Z"
+		},
+		{
+			"id": "bm2",
+			"userId": "user-1",
+			"bookmarkType": "pastpaper",
+			"referenceId": "pp1",
+			"note": "2023 Maths Paper 2 - practice this weekend",
+			"createdAt": "2024-01-16T14:00:00Z"
+		}
+	]
+}

@@ -1409,3 +1409,138 @@ export const schoolLicensesRelations = relations(schoolLicenses, ({ one }) => ({
 		references: [schools.id],
 	}),
 }));
+
+// ============================================================================
+// CO-OP FOCUS SESSIONS (Leaderboard Multiplier)
+// ============================================================================
+
+export const coopFocusSessions = pgTable(
+	'coop_focus_sessions',
+	{
+		id: uuid('id').defaultRandom().primaryKey(),
+		roomCode: varchar('room_code', { length: 20 }).notNull(),
+		startedAt: timestamp('started_at').defaultNow().notNull(),
+		endedAt: timestamp('ended_at'),
+		memberCount: integer('member_count').notNull().default(1),
+		totalMinutes: integer('total_minutes').notNull().default(0),
+		multiplier: numeric('multiplier', { precision: 3, scale: 2 }).notNull().default('1.0'),
+	},
+	(table) => ({
+		roomCodeIdx: index('coop_focus_sessions_room_code_idx').on(table.roomCode),
+		startedAtIdx: index('coop_focus_sessions_started_at_idx').on(table.startedAt),
+	})
+);
+
+export const coopSessionMembers = pgTable(
+	'coop_session_members',
+	{
+		id: uuid('id').defaultRandom().primaryKey(),
+		sessionId: uuid('session_id')
+			.notNull()
+			.references(() => coopFocusSessions.id, { onDelete: 'cascade' }),
+		userId: text('user_id')
+			.notNull()
+			.references(() => users.id, { onDelete: 'cascade' }),
+		joinedAt: timestamp('joined_at').defaultNow().notNull(),
+		minutesStudied: integer('minutes_studied').notNull().default(0),
+		pointsEarned: integer('points_earned').notNull().default(0),
+		multiplierApplied: numeric('multiplier_applied', { precision: 3, scale: 2 })
+			.notNull()
+			.default('1.0'),
+	},
+	(table) => ({
+		sessionIdIdx: index('coop_session_members_session_idx').on(table.sessionId),
+		userIdIdx: index('coop_session_members_user_idx').on(table.userId),
+		uniqueMember: uniqueIndex('coop_session_members_unique').on(table.sessionId, table.userId),
+	})
+);
+
+export const coopFocusSessionsRelations = relations(coopFocusSessions, ({ many }) => ({
+	members: many(coopSessionMembers),
+}));
+
+export const coopSessionMembersRelations = relations(coopSessionMembers, ({ one }) => ({
+	session: one(coopFocusSessions, {
+		fields: [coopSessionMembers.sessionId],
+		references: [coopFocusSessions.id],
+	}),
+	user: one(users, {
+		fields: [coopSessionMembers.userId],
+		references: [users.id],
+	}),
+}));
+
+// ============================================================================
+// PARENT-STUDENT REWARD CONTRACTS
+// ============================================================================
+
+export const rewardContracts = pgTable(
+	'reward_contracts',
+	{
+		id: uuid('id').defaultRandom().primaryKey(),
+		parentId: text('parent_id')
+			.notNull()
+			.references(() => users.id, { onDelete: 'cascade' }),
+		studentId: text('student_id')
+			.notNull()
+			.references(() => users.id, { onDelete: 'cascade' }),
+		title: varchar('title', { length: 200 }).notNull(),
+		description: text('description'),
+		reward: varchar('reward', { length: 500 }).notNull(),
+		targetStreakDays: integer('target_streak_days').notNull().default(0),
+		targetQuizCount: integer('target_quiz_count').notNull().default(0),
+		targetQuizPercentage: integer('target_quiz_percentage').notNull().default(0),
+		currentStreakDays: integer('current_streak_days').notNull().default(0),
+		currentQuizCount: integer('current_quiz_count').notNull().default(0),
+		currentQuizPercentage: integer('current_quiz_percentage').notNull().default(0),
+		status: varchar('status', { length: 20 }).notNull().default('active'),
+		completedAt: timestamp('completed_at'),
+		expiresAt: timestamp('expires_at'),
+		createdAt: timestamp('created_at').defaultNow(),
+	},
+	(table) => ({
+		parentIdIdx: index('reward_contracts_parent_idx').on(table.parentId),
+		studentIdIdx: index('reward_contracts_student_idx').on(table.studentId),
+		statusIdx: index('reward_contracts_status_idx').on(table.status),
+	})
+);
+
+export const rewardContractsRelations = relations(rewardContracts, ({ one }) => ({
+	parent: one(users, {
+		fields: [rewardContracts.parentId],
+		references: [users.id],
+	}),
+	student: one(users, {
+		fields: [rewardContracts.studentId],
+		references: [users.id],
+	}),
+}));
+
+// ============================================================================
+// UNLOCKABLE AESTHETIC THEMES
+// ============================================================================
+
+export const userThemes = pgTable(
+	'user_themes',
+	{
+		id: uuid('id').defaultRandom().primaryKey(),
+		userId: text('user_id')
+			.notNull()
+			.references(() => users.id, { onDelete: 'cascade' }),
+		themeId: varchar('theme_id', { length: 50 }).notNull(),
+		themeName: varchar('theme_name', { length: 100 }).notNull(),
+		unlockedAt: timestamp('unlocked_at').defaultNow(),
+		isActive: boolean('is_active').notNull().default(false),
+	},
+	(table) => ({
+		userIdIdx: index('user_themes_user_idx').on(table.userId),
+		uniqueTheme: uniqueIndex('user_themes_unique').on(table.userId, table.themeId),
+	})
+);
+
+export const userThemesRelations = relations(userThemes, ({ one }) => ({
+	user: one(users, {
+		fields: [userThemes.userId],
+		references: [users.id],
+	}),
+}));

@@ -42,6 +42,9 @@ export function ResponsiveAudioPlayer({
 	const isOpen = isControlled ? controlledOpen : internalOpen;
 
 	const handleOpenChange = (newOpen: boolean) => {
+		if (!newOpen && typeof window !== 'undefined' && 'speechSynthesis' in window) {
+			window.speechSynthesis.cancel();
+		}
 		if (!isControlled) {
 			setInternalOpen(newOpen);
 		}
@@ -56,7 +59,12 @@ export function ResponsiveAudioPlayer({
 		checkMobile();
 		window.addEventListener('resize', checkMobile);
 
-		return () => window.removeEventListener('resize', checkMobile);
+		return () => {
+			window.removeEventListener('resize', checkMobile);
+			if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+				window.speechSynthesis.cancel();
+			}
+		};
 	}, []);
 
 	const playerContent = (
