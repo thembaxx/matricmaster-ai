@@ -165,72 +165,74 @@ export const WeeklyChallenge = memo(function WeeklyChallenge({
 	const isComplete = challenge.current >= challenge.target;
 
 	return (
-		<Card
-			className={`p-6 premium-glass border-none rounded-[2.5rem] h-full relative overflow-hidden ${isComplete ? 'bg-brand-amber/5' : ''}`}
-		>
-			{isComplete && (
-				<m.div
-					animate={{ rotate: [0, 360] }}
-					transition={{ duration: 20, repeat: Number.POSITIVE_INFINITY, ease: 'linear' }}
-					className="absolute -right-8 -top-8 w-32 h-32 bg-primary-purple/10 rounded-full blur-2xl"
-				/>
-			)}
-
-			<div className="relative z-10 space-y-4">
-				<div className="flex items-start justify-between">
-					<div className="space-y-1">
-						<div className="flex items-center gap-2">
-							<HugeiconsIcon icon={Calendar02Icon} className="w-4 h-4 text-brand-amber" />
-							<span className="text-[10px] font-medium text-brand-amber">Weekly challenge</span>
-						</div>
-						<h3 className="text-lg font-semibold text-foreground">{challenge.title}</h3>
-						<p className="text-[12.6px] text-pretty text-muted-foreground">
-							{challenge.description}
-						</p>
-					</div>
-					{isComplete ? (
-						<m.div
-							initial={{ scale: 0.95, opacity: 0 }}
-							animate={{ scale: 1 }}
-							className="w-12 h-12 bg-brand-amber rounded-xl flex items-center justify-center"
-						>
-							<span className="text-2xl">🏆</span>
-						</m.div>
-					) : (
-						<div className="text-right">
-							<div className="flex items-center gap-1 text-muted-foreground whitespace-nowrap">
-								<HugeiconsIcon icon={Clock01Icon} className="w-3.5 h-3.5" />
-								<span className="text-[10px] font-semibold">{challenge.daysRemaining}d left</span>
-							</div>
-						</div>
-					)}
-				</div>
-
-				<div className="space-y-2">
-					<div className="flex justify-between items-center">
-						<span className="text-xs font-medium text-muted-foreground">
-							{Math.min(challenge.current, challenge.target)} / {challenge.target}
-						</span>
-						<span className="text-sm font-medium text-foreground">{Math.round(progress)}%</span>
-					</div>
-					<Progress
-						value={progress}
-						className={`h-3 ${isComplete ? '[&>div]:bg-brand-amber' : '[&>div]:bg-primary'}`}
+		<m.div whileTap={{ scale: 0.99 }}>
+			<Card
+				className={`p-6 premium-glass border-none rounded-[2.5rem] h-full relative overflow-hidden ${isComplete ? 'bg-brand-amber/5' : ''}`}
+			>
+				{isComplete && (
+					<m.div
+						animate={{ rotate: [0, 360] }}
+						transition={{ duration: 20, repeat: Number.POSITIVE_INFINITY, ease: 'linear' }}
+						className="absolute -right-8 -top-8 w-32 h-32 bg-primary-purple/10 rounded-full blur-2xl"
 					/>
-				</div>
+				)}
 
-				<div className="flex items-center justify-between pt-2">
-					<div className="flex items-center gap-2">
-						<HugeiconsIcon icon={SparklesIcon} className="w-4 h-4 text-brand-amber" />
-						<span className="text-xs text-muted-foreground">Bonus reward</span>
+				<div className="relative z-10 space-y-4">
+					<div className="flex items-start justify-between">
+						<div className="space-y-1">
+							<div className="flex items-center gap-2">
+								<HugeiconsIcon icon={Calendar02Icon} className="w-4 h-4 text-brand-amber" />
+								<span className="text-[10px] font-medium text-brand-amber">Weekly challenge</span>
+							</div>
+							<h3 className="text-lg font-semibold text-foreground">{challenge.title}</h3>
+							<p className="text-[12.6px] text-pretty text-muted-foreground">
+								{challenge.description}
+							</p>
+						</div>
+						{isComplete ? (
+							<m.div
+								initial={{ scale: 0.95, opacity: 0 }}
+								animate={{ scale: 1 }}
+								className="w-12 h-12 bg-brand-amber rounded-xl flex items-center justify-center"
+							>
+								<span className="text-2xl">🏆</span>
+							</m.div>
+						) : (
+							<div className="text-right">
+								<div className="flex items-center gap-1 text-muted-foreground whitespace-nowrap">
+									<HugeiconsIcon icon={Clock01Icon} className="w-3.5 h-3.5" />
+									<span className="text-[10px] font-semibold">{challenge.daysRemaining}d left</span>
+								</div>
+							</div>
+						)}
 					</div>
-					<span
-						className={`text-lg font-semibold ${isComplete ? 'text-brand-amber' : 'text-foreground'}`}
-					>
-						+{challenge.bonusXp} XP
-					</span>
+
+					<div className="space-y-2">
+						<div className="flex justify-between items-center">
+							<span className="text-xs font-medium text-muted-foreground">
+								{Math.min(challenge.current, challenge.target)} / {challenge.target}
+							</span>
+							<span className="text-sm font-medium text-foreground">{Math.round(progress)}%</span>
+						</div>
+						<Progress
+							value={progress}
+							className={`h-3 ${isComplete ? '[&>div]:bg-brand-amber' : '[&>div]:bg-primary'}`}
+						/>
+					</div>
+
+					<div className="flex items-center justify-between pt-2">
+						<div className="flex items-center gap-2">
+							<HugeiconsIcon icon={SparklesIcon} className="w-4 h-4 text-brand-amber" />
+							<span className="text-xs text-muted-foreground">Bonus reward</span>
+						</div>
+						<span
+							className={`text-lg font-semibold ${isComplete ? 'text-brand-amber' : 'text-foreground'}`}
+						>
+							+{challenge.bonusXp} XP
+						</span>
+					</div>
 				</div>
-			</div>
-		</Card>
+			</Card>
+		</m.div>
 	);
 });

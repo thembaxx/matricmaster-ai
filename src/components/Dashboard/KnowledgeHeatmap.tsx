@@ -135,36 +135,35 @@ export function KnowledgeHeatmap({
 
 	if (compact) {
 		return (
-			<Card
-				className="cursor-pointer hover:border-primary/30 transition-colors"
-				onClick={() => router.push('/curriculum-map')}
-			>
-				<CardHeader className="pb-3">
-					<CardTitle className="flex items-center gap-2 text-sm">
-						<HugeiconsIcon icon={GridIcon} className="w-4 h-4 text-primary" />
-						Knowledge Heatmap
-					</CardTitle>
-				</CardHeader>
-				<CardContent>
-					<div className="space-y-3">
-						<div className="flex items-center justify-between text-xs">
-							<span className="text-muted-foreground">Overall Progress</span>
-							<span className="font-bold">{stats.overallProgress}%</span>
-						</div>
-						<Progress value={stats.overallProgress} className="h-2" />
-						<div className="flex gap-2 flex-wrap">
-							<div className="flex items-center gap-1 text-[10px]">
-								<div className="w-2 h-2 rounded-full bg-tiimo-green" />
-								<span>{stats.mastered} Ready</span>
+			<m.div whileTap={{ scale: 0.98 }} onClick={() => router.push('/curriculum-map')}>
+				<Card className="cursor-pointer hover:border-primary/30 transition-colors">
+					<CardHeader className="pb-3">
+						<CardTitle className="flex items-center gap-2 text-sm">
+							<HugeiconsIcon icon={GridIcon} className="w-4 h-4 text-primary" />
+							Knowledge Heatmap
+						</CardTitle>
+					</CardHeader>
+					<CardContent>
+						<div className="space-y-3">
+							<div className="flex items-center justify-between text-xs">
+								<span className="text-muted-foreground">Overall Progress</span>
+								<span className="font-bold">{stats.overallProgress}%</span>
 							</div>
-							<div className="flex items-center gap-1 text-[10px]">
-								<div className="w-2 h-2 rounded-full bg-tiimo-yellow" />
-								<span>{stats.needsAttention} Need Work</span>
+							<Progress value={stats.overallProgress} className="h-2" />
+							<div className="flex gap-2 flex-wrap">
+								<div className="flex items-center gap-1 text-[10px]">
+									<div className="w-2 h-2 rounded-full bg-tiimo-green" />
+									<span>{stats.mastered} Ready</span>
+								</div>
+								<div className="flex items-center gap-1 text-[10px]">
+									<div className="w-2 h-2 rounded-full bg-tiimo-yellow" />
+									<span>{stats.needsAttention} Need Work</span>
+								</div>
 							</div>
 						</div>
-					</div>
-				</CardContent>
-			</Card>
+					</CardContent>
+				</Card>
+			</m.div>
 		);
 	}
 
@@ -242,6 +241,7 @@ export function KnowledgeHeatmap({
 												initial={{ scale: 0.8, opacity: 0 }}
 												animate={{ scale: 1, opacity: 1 }}
 												whileHover={{ scale: 1.2 }}
+												whileTap={{ scale: 0.9 }}
 												onHoverStart={() => setHoveredTopic(topic.id)}
 												onHoverEnd={() => setHoveredTopic(null)}
 												className={cn(

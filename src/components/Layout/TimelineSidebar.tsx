@@ -143,28 +143,32 @@ export function TimelineSidebar() {
 			<div className="p-6 border-b border-border">
 				{/* Date Selector */}
 				<div className="flex items-center gap-2">
-					<Button
-						variant="ghost"
-						size="icon"
-						className="rounded-full h-8 w-8"
-						onClick={handlePrevDay}
-					>
-						<span className="text-lg">‹</span>
-					</Button>
+					<m.div whileTap={{ scale: 0.9 }}>
+						<Button
+							variant="ghost"
+							size="icon"
+							className="rounded-full h-8 w-8"
+							onClick={handlePrevDay}
+						>
+							<span className="text-lg">‹</span>
+						</Button>
+					</m.div>
 					<div className="flex-1 text-center">
 						<p className="text-sm font-semibold text-foreground">{today}</p>
 						{isToday && session && (
 							<span className="text-[10px] text-primary font-medium">Today</span>
 						)}
 					</div>
-					<Button
-						variant="ghost"
-						size="icon"
-						className="rounded-full h-8 w-8"
-						onClick={handleNextDay}
-					>
-						<span className="text-lg">›</span>
-					</Button>
+					<m.div whileTap={{ scale: 0.9 }}>
+						<Button
+							variant="ghost"
+							size="icon"
+							className="rounded-full h-8 w-8"
+							onClick={handleNextDay}
+						>
+							<span className="text-lg">›</span>
+						</Button>
+					</m.div>
 				</div>
 			</div>
 
@@ -280,6 +284,7 @@ function TimelineEventCard({
 				initial={{ opacity: 0, x: -20 }}
 				animate={{ opacity: 1, x: 0 }}
 				transition={{ delay: index * 0.08, duration: 0.4 }}
+				whileTap={{ scale: 0.98 }}
 				onClick={isClickable ? onClick : undefined}
 				disabled={!isClickable}
 				className={cn(

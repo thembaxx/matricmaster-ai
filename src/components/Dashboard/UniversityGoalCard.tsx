@@ -4,10 +4,12 @@ import { Mortarboard01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { m } from 'framer-motion';
 import { TrendingUp } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { Progress } from '@/components/ui/progress';
 import { useGoalStore } from '@/stores/useGoalStore';
 
 export function UniversityGoalCard() {
+	const router = useRouter();
 	const goal = useGoalStore((state) => state.goal);
 
 	const universityName = goal?.universityName || 'Set a Goal';
@@ -22,7 +24,9 @@ export function UniversityGoalCard() {
 		return (
 			<m.div
 				whileHover={{ scale: 1.01 }}
-				className="tiimo-card p-6 flex flex-col gap-4 relative overflow-hidden"
+				whileTap={{ scale: 0.99 }}
+				onClick={() => router.push('/aps-calculator')}
+				className="tiimo-card p-6 flex flex-col gap-4 relative overflow-hidden cursor-pointer"
 			>
 				<div className="flex items-center justify-between">
 					<div className="flex items-center gap-3">
@@ -49,7 +53,9 @@ export function UniversityGoalCard() {
 	return (
 		<m.div
 			whileHover={{ scale: 1.01 }}
-			className="tiimo-card p-6 flex flex-col gap-4 relative overflow-hidden"
+			whileTap={{ scale: 0.99 }}
+			onClick={() => router.push('/aps-calculator')}
+			className="tiimo-card p-6 flex flex-col gap-4 relative overflow-hidden cursor-pointer"
 		>
 			<div className="flex items-center justify-between">
 				<div className="flex items-center gap-3">

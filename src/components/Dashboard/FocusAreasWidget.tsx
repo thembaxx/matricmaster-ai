@@ -2,6 +2,7 @@
 
 import { ArrowRight01Icon, CheckmarkCircle02Icon, Layers01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
+import { m } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
@@ -107,9 +108,10 @@ export function FocusAreasWidget() {
 
 			<div className="space-y-3 mb-4">
 				{weakTopics.slice(0, 5).map((topic) => (
-					<div
+					<m.div
 						key={topic.topic}
-						className="flex items-center justify-between p-3 rounded-xl bg-muted/30"
+						whileTap={{ scale: 0.98 }}
+						className="flex items-center justify-between p-3 rounded-xl bg-muted/30 cursor-pointer transition-colors hover:bg-muted/50"
 					>
 						<div className="flex-1 min-w-0">
 							<p className="font-medium text-foreground truncate">{topic.topic}</p>
@@ -126,15 +128,16 @@ export function FocusAreasWidget() {
 						>
 							<HugeiconsIcon icon={Layers01Icon} className="w-4 h-4 text-primary-orange" />
 						</Button>
-					</div>
+					</m.div>
 				))}
 			</div>
 
-			<Button
-				variant="outline"
-				className="w-full rounded-xl font-bold"
+			<m.button
+				type="button"
+				className="w-full rounded-xl font-bold h-10 px-4 py-2 border border-input bg-background hover:bg-accent hover:text-accent-foreground disabled:opacity-50 disabled:cursor-not-allowed transition-colors inline-flex items-center justify-center"
 				onClick={handleGenerateAll}
 				disabled={isGenerating}
+				whileTap={{ scale: 0.98 }}
 			>
 				{isGenerating ? (
 					<>
@@ -147,7 +150,7 @@ export function FocusAreasWidget() {
 						Generate All as Flashcards
 					</>
 				)}
-			</Button>
+			</m.button>
 		</Card>
 	);
 }

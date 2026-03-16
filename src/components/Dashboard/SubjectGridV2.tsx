@@ -87,8 +87,9 @@ export function SubjectGrid() {
 							animate={{ opacity: 1, scale: 1 }}
 							exit={{ opacity: 0, scale: 0.9 }}
 							transition={{ delay: index * 0.05 }}
+							whileTap={{ scale: 0.95 }}
 							onClick={() => router.push(`/subjects/${subject.id}`)}
-							className="aspect-square bg-card rounded-[2.5rem] p-6 flex flex-col items-center justify-center gap-4 shadow-tiimo border border-border/50 transition-all hover:scale-105 group active:scale-95"
+							className="aspect-square bg-card rounded-[2.5rem] p-6 flex flex-col items-center justify-center gap-4 shadow-tiimo border border-border/50 transition-all hover:scale-105 group"
 						>
 							<div
 								className={cn(
@@ -107,8 +108,9 @@ export function SubjectGrid() {
 			<m.button
 				layout
 				type="button"
+				whileTap={{ scale: 0.95 }}
 				onClick={() => router.push('/subjects')}
-				className="aspect-square bg-secondary/30 rounded-[2.5rem] border-2 border-dashed border-border/50 flex flex-col items-center justify-center gap-3 text-tiimo-gray-muted hover:bg-secondary/50 transition-all active:scale-95"
+				className="aspect-square bg-secondary/30 rounded-[2.5rem] border-2 border-dashed border-border/50 flex flex-col items-center justify-center gap-3 text-tiimo-gray-muted hover:bg-secondary/50 transition-all"
 			>
 				<div className="w-12 h-12 rounded-full border-2 border-dashed border-tiimo-gray-muted/50 flex items-center justify-center">
 					<span className="text-2xl font-light">+</span>

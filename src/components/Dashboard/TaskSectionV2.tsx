@@ -22,9 +22,10 @@ export function TaskSection({ title, priority, expanded, onToggle, children }: T
 
 	return (
 		<m.section layout className="space-y-4">
-			<button
+			<m.button
 				type="button"
 				onClick={onToggle}
+				whileTap={{ scale: 0.98 }}
 				className="flex items-center justify-between w-full group tiimo-press"
 			>
 				<div className="flex items-center gap-3">
@@ -44,7 +45,7 @@ export function TaskSection({ title, priority, expanded, onToggle, children }: T
 				>
 					<HugeiconsIcon icon={Menu01Icon} className="w-3.5 h-3.5" />
 				</m.div>
-			</button>
+			</m.button>
 
 			<AnimatePresence mode="popLayout">
 				{expanded && (
