@@ -15,6 +15,9 @@ interface BriefingGreetingProps {
 	streakDays: number;
 	suggestedSubject?: string | null;
 	timelineTasks?: TimelineTask[];
+	flashcardsDue?: number;
+	weakTopicsCount?: number;
+	recentAccuracy?: number;
 }
 
 export function BriefingGreeting({
@@ -24,6 +27,9 @@ export function BriefingGreeting({
 	streakDays,
 	suggestedSubject,
 	timelineTasks = [],
+	flashcardsDue = 0,
+	weakTopicsCount = 0,
+	recentAccuracy = 0,
 }: BriefingGreetingProps) {
 	const [greeting, setGreeting] = useState('Good day');
 
@@ -241,6 +247,49 @@ export function BriefingGreeting({
 									className="h-full bg-tiimo-green"
 								/>
 							</div>
+						</div>
+					</m.div>
+				)}
+
+				{(flashcardsDue > 0 || weakTopicsCount > 0 || recentAccuracy > 0) && (
+					<m.div
+						initial={{ opacity: 0, y: 10 }}
+						animate={{ opacity: 1, y: 0 }}
+						transition={{ delay: 0.5 }}
+						className="mt-6"
+					>
+						<h3 className="text-sm font-semibold text-tiimo-gray-muted uppercase tracking-widest flex items-center gap-2 font-display mb-3">
+							<HugeiconsIcon icon={SparklesIcon} className="w-4 h-4" />
+							Smart Nudge
+						</h3>
+						<div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+							{flashcardsDue > 0 && (
+								<div className="p-4 rounded-2xl bg-tiimo-blue/5 border border-tiimo-blue/10">
+									<p className="text-[10px] font-bold text-tiimo-blue uppercase tracking-widest mb-1">
+										Flashcards
+									</p>
+									<p className="text-lg font-black text-foreground">{flashcardsDue} due</p>
+									<p className="text-[10px] text-muted-foreground mt-1">Review now</p>
+								</div>
+							)}
+							{weakTopicsCount > 0 && (
+								<div className="p-4 rounded-2xl bg-tiimo-orange/5 border border-tiimo-orange/10">
+									<p className="text-[10px] font-bold text-tiimo-orange uppercase tracking-widest mb-1">
+										Weak Topics
+									</p>
+									<p className="text-lg font-black text-foreground">{weakTopicsCount}</p>
+									<p className="text-[10px] text-muted-foreground mt-1">Need practice</p>
+								</div>
+							)}
+							{recentAccuracy > 0 && (
+								<div className="p-4 rounded-2xl bg-tiimo-green/5 border border-tiimo-green/10">
+									<p className="text-[10px] font-bold text-tiimo-green uppercase tracking-widest mb-1">
+										Accuracy
+									</p>
+									<p className="text-lg font-black text-foreground">{recentAccuracy}%</p>
+									<p className="text-[10px] text-muted-foreground mt-1">Recent performance</p>
+								</div>
+							)}
 						</div>
 					</m.div>
 				)}

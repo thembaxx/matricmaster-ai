@@ -11,6 +11,14 @@ export type AiContextType =
 	| 'voiceTutor'
 	| 'curriculumMap';
 
+export interface AiContextMetadata {
+	questionText?: string;
+	extractedOcr?: string;
+	solutionPreview?: string;
+	subjectName?: string;
+	topicName?: string;
+}
+
 export interface AiContext {
 	type: AiContextType;
 	subject?: string;
@@ -19,6 +27,8 @@ export interface AiContext {
 	lessonId?: string;
 	questionId?: string;
 	relatedTopics?: string[];
+	metadata?: AiContextMetadata;
+	isProactive?: boolean;
 	lastUpdated: number;
 }
 

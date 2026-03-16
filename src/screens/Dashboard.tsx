@@ -258,6 +258,9 @@ export default function Dashboard({
 						streakDays={streak.currentStreak}
 						suggestedSubject={suggestedSubject}
 						timelineTasks={DEMO_TIMELINE}
+						flashcardsDue={12}
+						weakTopicsCount={3}
+						recentAccuracy={77}
 					/>
 
 					<div className="mb-4">
@@ -274,12 +277,7 @@ export default function Dashboard({
 									initialAchievements={achievements}
 									initialStreak={{ currentStreak: streak.currentStreak }}
 								/>
-								<UniversityGoalCard
-									universityName="University of Cape Town"
-									faculty="BSc Computer Science"
-									currentAps={32}
-									targetAps={42}
-								/>
+								<UniversityGoalCard />
 							</div>
 
 							<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
