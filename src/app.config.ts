@@ -1,5 +1,6 @@
 export const appConfig = {
-	name: 'Lumi', //Vora, Kibo
+	name: 'MatricMaster AI',
+	shortName: 'MatricMaster',
 	description:
 		"Pass your Matric with confidence. Practice NSC past papers, get help when you're stuck, and track your progress.",
 	version: {
@@ -7,5 +8,49 @@ export const appConfig = {
 		build: process.env.NEXT_PUBLIC_BUILD_VERSION || 'dev',
 		commit: process.env.NEXT_PUBLIC_COMMIT_HASH || 'unknown',
 		timestamp: process.env.NEXT_PUBLIC_BUILD_TIMESTAMP || new Date().toISOString(),
+	},
+	links: {
+		website: 'https://matricmaster.ai',
+		support: 'https://matricmaster.ai/support',
+		privacy: 'https://matricmaster.ai/privacy',
+		terms: 'https://matricmaster.ai/terms',
+		feedback: 'https://matricmaster.ai/feedback',
+	},
+	contact: {
+		email: 'hello@matricmaster.ai',
+		supportEmail: 'support@matricmaster.ai',
+		phone: '+27 21 123 4567',
+		whatsapp: '+27 82 123 4567',
+		hours: 'Mon-Fri: 9AM-6PM SAST',
+	},
+	social: {
+		facebook: 'https://facebook.com/matricmaster',
+		twitter: 'https://twitter.com/matricmaster',
+		instagram: 'https://instagram.com/matricmaster',
+		youtube: 'https://youtube.com/@matricmaster',
+	},
+	features: {
+		pastPapers: true,
+		aiTutor: true,
+		flashcards: true,
+		studyPlanner: true,
+		progressTracking: true,
+		spacedRepetition: true,
+	},
+	nsc: {
+		minAps: 20,
+		maxAps: 50,
+		defaultTargetAps: 42,
+	},
+	paths: {
+		dashboard: '/dashboard',
+		quiz: '/quiz',
+		flashcards: '/flashcards',
+		pastPapers: '/past-papers',
+		curriculumMap: '/curriculum-map',
+		aiTutor: '/study-companion',
+		snapAndSolve: '/snap-and-solve',
+		studyPlan: '/study-plan',
+		settings: '/settings',
 	},
 };

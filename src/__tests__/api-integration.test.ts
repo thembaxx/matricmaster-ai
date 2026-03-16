@@ -90,9 +90,9 @@ describe('API Integration Tests', () => {
 		originalLocation = window.location;
 
 		// Mock window.location with proper typing
-		// biome-ignore lint/suspicious/noExplicitAny: Mock/testing utility
+
 		delete (window as any).location;
-		// biome-ignore lint/suspicious/noExplicitAny: Mock/testing utility
+
 		(window as any).location = {
 			href: 'http://localhost:3000/dashboard',
 			pathname: '/dashboard',
@@ -113,7 +113,6 @@ describe('API Integration Tests', () => {
 	afterEach(() => {
 		// Restore original location
 		if (originalLocation) {
-			// biome-ignore lint/suspicious/noExplicitAny: Mock/testing utility
 			(window as any).location = originalLocation;
 		}
 	});
@@ -246,9 +245,9 @@ describe('API Integration Tests', () => {
 					expect(true).toBe(false); // Should not reach here
 				} catch (error) {
 					expect(error).toBeInstanceOf(Error);
-					// biome-ignore lint/suspicious/noExplicitAny: Error object from auth interceptor
+
 					expect((error as any).status).toBe(401);
-					// biome-ignore lint/suspicious/noExplicitAny: Error object from auth interceptor
+
 					expect((error as any).statusText).toBe('Unauthorized');
 					expect((error as Error).message).toBe('HTTP error! status: 401');
 					expect(clearSpy).toHaveBeenCalled();
@@ -260,7 +259,7 @@ describe('API Integration Tests', () => {
 				mockLocalStorage.getItem.mockReturnValue('test-token');
 
 				// Set different pathname for this test
-				// biome-ignore lint/suspicious/noExplicitAny: Mock/testing utility
+
 				(window as any).location.pathname = '/admin';
 
 				mockFetch.mockResolvedValueOnce(createMockError(403, 'Forbidden'));
@@ -272,9 +271,9 @@ describe('API Integration Tests', () => {
 					expect(true).toBe(false); // Should not reach here
 				} catch (error) {
 					expect(error).toBeInstanceOf(Error);
-					// biome-ignore lint/suspicious/noExplicitAny: Error object from auth interceptor
+
 					expect((error as any).status).toBe(403);
-					// biome-ignore lint/suspicious/noExplicitAny: Error object from auth interceptor
+
 					expect((error as any).statusText).toBe('Forbidden');
 					expect((error as Error).message).toBe('HTTP error! status: 403');
 					expect(clearSpy).toHaveBeenCalled();
@@ -292,9 +291,9 @@ describe('API Integration Tests', () => {
 					expect(true).toBe(false); // Should not reach here
 				} catch (error) {
 					expect(error).toBeInstanceOf(Error);
-					// biome-ignore lint/suspicious/noExplicitAny: Error object from auth interceptor
+
 					expect((error as any).status).toBe(500);
-					// biome-ignore lint/suspicious/noExplicitAny: Error object from auth interceptor
+
 					expect((error as any).statusText).toBe('Internal Server Error');
 					expect((error as Error).message).toBe('HTTP error! status: 500');
 				}
@@ -339,9 +338,9 @@ describe('API Integration Tests', () => {
 					expect(true).toBe(false); // Should not reach here
 				} catch (error) {
 					expect(error).toBeInstanceOf(Error);
-					// biome-ignore lint/suspicious/noExplicitAny: Error object from auth interceptor
+
 					expect((error as any).status).toBe(422);
-					// biome-ignore lint/suspicious/noExplicitAny: Error object from auth interceptor
+
 					expect((error as any).statusText).toBe('Validation Error');
 					expect((error as Error).message).toBe('HTTP error! status: 422');
 				}
@@ -472,9 +471,9 @@ describe('API Integration Tests', () => {
 				expect(true).toBe(false); // Should not reach here
 			} catch (error) {
 				expect(error).toBeInstanceOf(Error);
-				// biome-ignore lint/suspicious/noExplicitAny: Error object from auth interceptor
+
 				expect((error as any).status).toBe(500);
-				// biome-ignore lint/suspicious/noExplicitAny: Error object from auth interceptor
+
 				expect((error as any).statusText).toBe('Internal Server Error');
 				expect((error as Error).message).toBe('HTTP error! status: 500');
 				expect(typeof error).toBe('object');
@@ -512,9 +511,9 @@ describe('API Integration Tests', () => {
 				expect(true).toBe(false); // Should not reach here
 			} catch (error) {
 				expect(error).toBeInstanceOf(Error);
-				// biome-ignore lint/suspicious/noExplicitAny: Error object from auth interceptor
+
 				expect((error as any).status).toBe(404);
-				// biome-ignore lint/suspicious/noExplicitAny: Error object from auth interceptor
+
 				expect((error as any).statusText).toBe(''); // The auth interceptor uses response.text(), not response.statusText
 				expect((error as Error).message).toBe('HTTP error! status: 404');
 			}

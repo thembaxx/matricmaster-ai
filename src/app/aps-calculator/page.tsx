@@ -10,6 +10,7 @@ import {
 import { HugeiconsIcon } from '@hugeicons/react';
 import { TrendingUp } from 'lucide-react';
 import { useMemo, useState } from 'react';
+import { toast } from 'sonner';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -21,6 +22,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '@/components/ui/select';
+import { useGoalStore } from '@/stores/useGoalStore';
 
 interface SubjectGrade {
 	subject: string;
@@ -123,6 +125,7 @@ const UNIVERSITY_REQUIREMENTS: UniversityRequirement[] = [
 ];
 
 export default function APSCalculatorPage() {
+	const setGoal = useGoalStore((state) => state.setGoal);
 	const [subjects, setSubjects] = useState<SubjectGrade[]>([
 		{ subject: 'Mathematics', grade: '5', points: 5 },
 		{ subject: 'Physical Sciences', grade: '5', points: 5 },
@@ -373,6 +376,31 @@ export default function APSCalculatorPage() {
 											)}
 										</div>
 									))}
+									{eligibleUniversities.length > 0 && (
+										<Button
+											className="w-full mt-4"
+											onClick={() => {
+												const firstUni = eligibleUniversities[0];
+												setGoal({
+													universityName: firstUni.name,
+													faculty: firstUni.faculty,
+													currentAps: totalAPS,
+													targetAps: firstUni.minAps,
+													setAt: Date.now(),
+												});
+												toast.success('Goal set!', {
+													description: `${firstUni.name} - ${firstUni.faculty} is now your dashboard goal.`,
+													action: {
+														label: 'View',
+														onClick: () => (window.location.href = '/dashboard'),
+													},
+												});
+											}}
+										>
+											<HugeiconsIcon icon={TargetIcon} className="w-4 h-4 mr-2" />
+											Set as Dashboard Goal
+										</Button>
+									)}
 								</div>
 							)}
 						</CardContent>

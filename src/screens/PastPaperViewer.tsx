@@ -50,7 +50,7 @@ export default function PastPaperViewer({
 	const [zoom, setZoom] = useState(100);
 	const [activeTab, setActiveTab] = useState('questions');
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	// biome-ignore lint/suspicious/noExplicitAny: na
+
 	const [paper, setPaper] = useState<any>(PAST_PAPERS[0]);
 	const [showAiExplanation, setShowAiExplanation] = useState(false);
 	const [aiExplanation, setAiExplanation] = useState<string | null>(null);

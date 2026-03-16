@@ -3,9 +3,10 @@
 import { Calendar01Icon, Clock01Icon, SparklesIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { m } from 'framer-motion';
-import { TrendingUp } from 'lucide-react';
+import { CheckCircle2, TrendingUp } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { NotificationBell } from '@/components/Notifications/NotificationBell';
+import type { TimelineTask } from '@/types/timeline';
 
 interface BriefingGreetingProps {
 	userName?: string | null;
@@ -13,6 +14,24 @@ interface BriefingGreetingProps {
 	totalCount: number;
 	streakDays: number;
 	suggestedSubject?: string | null;
+	timelineTasks?: TimelineTask[];
+	flashcardsDue?: number;
+	weakTopicsCount?: number;
+	recentAccuracy?: number;
+	briefingData?: {
+		greeting: string;
+		motivationalMessage?: string;
+		quickTips?: string[];
+		hasAiGreeting: boolean;
+		apsProgress?: {
+			currentAps: number;
+			targetAps: number;
+			universityTarget?: string;
+		};
+		streak?: {
+			hasStudiedToday: boolean;
+		};
+	};
 }
 
 export function BriefingGreeting({
@@ -21,8 +40,14 @@ export function BriefingGreeting({
 	totalCount,
 	streakDays,
 	suggestedSubject,
+	timelineTasks = [],
+	flashcardsDue = 0,
+	weakTopicsCount = 0,
+	recentAccuracy = 0,
+	briefingData,
 }: BriefingGreetingProps) {
 	const [greeting, setGreeting] = useState('Good day');
+	const firstName = userName?.split(' ')[0] || 'Scholar';
 
 	useEffect(() => {
 		const updateGreeting = () => {
@@ -36,7 +61,10 @@ export function BriefingGreeting({
 	}, []);
 
 	const completionRate = totalCount > 0 ? (completedCount / totalCount) * 100 : 0;
-	const firstName = userName?.split(' ')[0] || 'Scholar';
+
+	const displayGreeting = briefingData?.greeting || `Hey, ${firstName}`;
+	const motivationalMessage = briefingData?.motivationalMessage;
+	const quickTips = briefingData?.quickTips;
 
 	return (
 		<m.section
@@ -52,9 +80,19 @@ export function BriefingGreeting({
 							<div className="w-2 h-2 rounded-full bg-tiimo-lavender animate-pulse" />
 							<span className="label-sm text-tiimo-lavender">{greeting}</span>
 						</div>
-						<h1 className="text-3xl sm:text-4xl font-black tracking-tight text-foreground">
-							Hey, {firstName}
+						<h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-foreground font-display">
+							{displayGreeting}
 						</h1>
+						{motivationalMessage && (
+							<m.p
+								initial={{ opacity: 0, y: 5 }}
+								animate={{ opacity: 1, y: 0 }}
+								transition={{ delay: 0.2 }}
+								className="text-sm text-muted-foreground mt-1 max-w-lg"
+							>
+								{motivationalMessage}
+							</m.p>
+						)}
 					</div>
 					<div className="flex items-center gap-3">
 						<NotificationBell />
@@ -158,6 +196,154 @@ export function BriefingGreeting({
 						</div>
 					</m.div>
 				</div>
+
+				{quickTips && quickTips.length > 0 && (
+					<m.div
+						initial={{ opacity: 0, y: 10 }}
+						animate={{ opacity: 1, y: 0 }}
+						transition={{ delay: 0.3 }}
+						className="flex flex-wrap gap-2"
+					>
+						{quickTips.map((tip, index) => (
+							<m.div
+								key={index}
+								initial={{ opacity: 0, scale: 0.9 }}
+								animate={{ opacity: 1, scale: 1 }}
+								transition={{ delay: 0.4 + index * 0.1 }}
+								className="flex items-center gap-2 px-3 py-2 bg-tiimo-lavender/10 border border-tiimo-lavender/20 rounded-full"
+							>
+								<HugeiconsIcon icon={SparklesIcon} className="w-3 h-3 text-tiimo-lavender" />
+								<span className="text-xs font-medium text-tiimo-lavender">{tip}</span>
+							</m.div>
+						))}
+					</m.div>
+				)}
+
+				{timelineTasks.length > 0 && (
+					<m.div
+						initial={{ opacity: 0, y: 10 }}
+						animate={{ opacity: 1, y: 0 }}
+						transition={{ delay: 0.3 }}
+						className="mt-6"
+					>
+						<div className="flex items-center justify-between mb-3">
+							<h3 className="text-sm font-semibold text-tiimo-gray-muted uppercase tracking-widest flex items-center gap-2 font-display">
+								<HugeiconsIcon icon={Clock01Icon} className="w-4 h-4" />
+								Today's Timeline
+							</h3>
+							<span className="text-xs font-medium text-muted-foreground">
+								{timelineTasks.filter((t) => t.completed).length}/{timelineTasks.length} completed
+							</span>
+						</div>
+
+						<div className="relative">
+							<div className="absolute top-5 left-0 right-0 h-0.5 bg-secondary" />
+
+							<div className="flex justify-between relative">
+								{timelineTasks.map((task, index) => (
+									<m.div
+										key={task.id}
+										initial={{ opacity: 0, scale: 0.8 }}
+										animate={{ opacity: 1, scale: 1 }}
+										transition={{ delay: 0.4 + index * 0.1 }}
+										className="flex flex-col items-center cursor-pointer group"
+									>
+										<span className="text-[10px] font-bold text-muted-foreground mb-2">
+											{task.startTime}
+										</span>
+
+										<div
+											className={`relative z-10 w-10 h-10 rounded-full flex items-center justify-center transition-all group-hover:scale-110 ${
+												task.completed
+													? 'bg-tiimo-green text-white'
+													: `${task.subjectColor} text-white`
+											}`}
+										>
+											{task.completed ? (
+												<CheckCircle2 className="w-5 h-5" />
+											) : (
+												<span className="text-lg">{task.subjectEmoji}</span>
+											)}
+										</div>
+
+										<div className="mt-3 text-center max-w-[80px]">
+											<p
+												className={`text-xs font-semibold line-clamp-2 ${
+													task.completed ? 'text-muted-foreground line-through' : 'text-foreground'
+												}`}
+											>
+												{task.title}
+											</p>
+											<p className="text-[10px] text-muted-foreground mt-0.5">
+												{task.duration} min
+											</p>
+										</div>
+									</m.div>
+								))}
+							</div>
+						</div>
+
+						<div className="mt-4">
+							<div className="w-full h-1.5 bg-secondary rounded-full overflow-hidden">
+								<m.div
+									initial={{ width: 0 }}
+									animate={{
+										width: `${
+											timelineTasks.length > 0
+												? (timelineTasks.filter((t) => t.completed).length / timelineTasks.length) *
+													100
+												: 0
+										}%`,
+									}}
+									className="h-full bg-tiimo-green"
+								/>
+							</div>
+						</div>
+					</m.div>
+				)}
+
+				{(flashcardsDue > 0 || weakTopicsCount > 0 || recentAccuracy > 0) && (
+					<m.div
+						initial={{ opacity: 0, y: 10 }}
+						animate={{ opacity: 1, y: 0 }}
+						transition={{ delay: 0.5 }}
+						className="mt-6"
+					>
+						<h3 className="text-sm font-semibold text-tiimo-gray-muted uppercase tracking-widest flex items-center gap-2 font-display mb-3">
+							<HugeiconsIcon icon={SparklesIcon} className="w-4 h-4" />
+							Smart Nudge
+						</h3>
+						<div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+							{flashcardsDue > 0 && (
+								<div className="p-4 rounded-2xl bg-tiimo-blue/5 border border-tiimo-blue/10">
+									<p className="text-[10px] font-bold text-tiimo-blue uppercase tracking-widest mb-1">
+										Flashcards
+									</p>
+									<p className="text-lg font-black text-foreground">{flashcardsDue} due</p>
+									<p className="text-[10px] text-muted-foreground mt-1">Review now</p>
+								</div>
+							)}
+							{weakTopicsCount > 0 && (
+								<div className="p-4 rounded-2xl bg-tiimo-orange/5 border border-tiimo-orange/10">
+									<p className="text-[10px] font-bold text-tiimo-orange uppercase tracking-widest mb-1">
+										Weak Topics
+									</p>
+									<p className="text-lg font-black text-foreground">{weakTopicsCount}</p>
+									<p className="text-[10px] text-muted-foreground mt-1">Need practice</p>
+								</div>
+							)}
+							{recentAccuracy > 0 && (
+								<div className="p-4 rounded-2xl bg-tiimo-green/5 border border-tiimo-green/10">
+									<p className="text-[10px] font-bold text-tiimo-green uppercase tracking-widest mb-1">
+										Accuracy
+									</p>
+									<p className="text-lg font-black text-foreground">{recentAccuracy}%</p>
+									<p className="text-[10px] text-muted-foreground mt-1">Recent performance</p>
+								</div>
+							)}
+						</div>
+					</m.div>
+				)}
 			</div>
 		</m.section>
 	);

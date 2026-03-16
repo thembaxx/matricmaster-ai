@@ -3,6 +3,7 @@ import dynamic from 'next/dynamic';
 import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { generatePersonalizedBriefing } from '@/actions/ai-briefing';
+import { getUnvisitedMistakesCountAction } from '@/actions/mistake-to-study-plan';
 import { appConfig } from '@/app.config';
 import { DashboardSkeleton } from '@/components/DashboardSkeleton';
 import { getAuth } from '@/lib/auth';
@@ -45,6 +46,7 @@ export default async function DashboardPage() {
 		learningStats,
 		topicsNeedingReview,
 		briefingData,
+		mistakeCount,
 	] = await Promise.all([
 		getUserProgressSummary(),
 		getUserStreak(),
@@ -52,6 +54,7 @@ export default async function DashboardPage() {
 		getLearningStats(session.user.id),
 		getTopicsNeedingReview(session.user.id),
 		generatePersonalizedBriefing(),
+		getUnvisitedMistakesCountAction(),
 	]);
 
 	return (
@@ -63,6 +66,7 @@ export default async function DashboardPage() {
 			learningStats={learningStats}
 			topicsNeedingReview={topicsNeedingReview}
 			briefingData={briefingData}
+			mistakeCount={mistakeCount}
 		/>
 	);
 }

@@ -26,7 +26,7 @@ export async function requireAdmin() {
 	const session = await requireAuth();
 
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	// biome-ignore lint/suspicious/noExplicitAny:NA
+
 	const userRole = (session.user as any).role || 'user';
 
 	if (userRole !== 'admin') {

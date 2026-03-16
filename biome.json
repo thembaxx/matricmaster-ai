@@ -26,7 +26,8 @@
 
 			"suspicious": {
 				"noArrayIndexKey": "off",
-				"noRedeclare": "off"
+				"noRedeclare": "off",
+				"noExplicitAny": "off"
 			},
 			"correctness": {
 				"useExhaustiveDependencies": "warn",

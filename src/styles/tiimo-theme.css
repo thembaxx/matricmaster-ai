@@ -75,9 +75,17 @@
   --info-soft: var(--subject-physics-soft);
 
   /* --- TYPOGRAPHY --- */
-  --font-display: var(--font-outfit), sans-serif;
-  --font-body: var(--font-sora), sans-serif;
-  --font-mono: var(--font-space-grotesk), monospace;
+  --font-display: var(--font-playfair), serif;
+  --font-body: var(--font-geist-sans), sans-serif;
+  --font-mono: var(--font-geist-mono), monospace;
+
+  /* --- SUBJECT-SPECIFIC FONTS --- */
+  --font-math: var(--font-noto-sans-math), sans-serif;
+  --font-science: var(--font-noto-sans-math), sans-serif;
+  --font-literary: var(--font-literata), serif;
+  --font-academic: var(--font-crimson-pro), serif;
+  --font-data: var(--font-dm-sans), sans-serif;
+  --font-numeric: var(--font-jetbrains-mono), monospace;
 
   /* --- UNIFIED BORDER RADIUS SYSTEM --- */
   --radius-xs: 6px;    /* Small elements, badges */
@@ -483,4 +491,67 @@
 
 .animate-tiimo-float {
   animation: tiimo-float 4s var(--ease-smooth) infinite;
+}
+
+/* === SUBJECT-SPECIFIC TYPOGRAPHY === */
+
+/* Equation Styling - Makes formulas stand out */
+.equation {
+  font-family: var(--font-math);
+  font-size: 1.125rem;
+  letter-spacing: 0.02em;
+  line-height: 1.8;
+  padding: 0.5rem 1rem;
+  background: linear-gradient(135deg, rgba(159, 133, 255, 0.08) 0%, rgba(72, 167, 222, 0.08) 100%);
+  border-radius: 0.75rem;
+  border-left: 3px solid var(--tiimo-lavender);
+}
+
+.equation-inline {
+  font-family: var(--font-math);
+  background: rgba(159, 133, 255, 0.1);
+  padding: 0.125rem 0.5rem;
+  border-radius: 0.375rem;
+  font-size: 0.95em;
+}
+
+/* Math-specific styling */
+.font-math {
+  font-family: var(--font-math);
+}
+
+/* Physics equation styling */
+.equation-physics {
+  font-family: var(--font-science);
+  background: linear-gradient(135deg, rgba(72, 167, 222, 0.1) 0%, rgba(45, 212, 191, 0.1) 100%);
+  border-left-color: var(--subject-physics);
+}
+
+/* Chemistry formula styling */
+.equation-chemistry {
+  font-family: var(--font-science);
+  background: linear-gradient(135deg, rgba(92, 181, 135, 0.1) 0%, rgba(72, 167, 222, 0.1) 100%);
+  border-left-color: var(--tiimo-green);
+  font-size: 1rem;
+}
+
+/* Numeric data styling for Accounting/Economics */
+.font-numeric {
+  font-family: var(--font-numeric);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+/* Literary text styling for English */
+.font-literary {
+  font-family: var(--font-literary);
+  font-style: italic;
+  line-height: 1.7;
+}
+
+/* Academic styling for History */
+.font-academic {
+  font-family: var(--font-academic);
+  font-size: 1.05rem;
+  line-height: 1.6;
 }

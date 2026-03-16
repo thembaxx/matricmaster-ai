@@ -1032,7 +1032,6 @@ export default function CMS() {
 												</Label>
 												<Select
 													value={editingQuestion.difficulty}
-													// biome-ignore lint/suspicious/noExplicitAny: Select onValueChange gives any for some reason
 													onValueChange={(v: any) =>
 														setEditingQuestion({ ...editingQuestion, difficulty: v })
 													}

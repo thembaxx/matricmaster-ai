@@ -7,19 +7,52 @@ import { Send, X } from 'lucide-react';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { cn } from '@/lib/utils';
+import { useAiContextStore } from '@/stores/useAiContextStore';
+
+const CONTEXT_PROMPTS: Record<string, string[]> = {
+	quiz: ['Explain this question', 'Give me a hint', 'Similar question'],
+	pastPaper: ['Explain this answer', 'Find more like this', 'Mark my answer'],
+	snapAndSolve: ['Show me the steps', 'More practice problems', 'Create a flashcard'],
+	lesson: ['Summarize this', 'Quiz me', 'Add to study plan'],
+	curriculumMap: ['What topics are next?', 'Find practice for this', 'Show related concepts'],
+	idle: ['Help me study', 'Quiz me', 'Explain a concept'],
+};
 
 export function GlassOrb() {
 	const [isOpen, setIsOpen] = useState(false);
 	const [isVisible, setIsVisible] = useState(false);
+	const [suggestedPrompts, setSuggestedPrompts] = useState<string[]>(CONTEXT_PROMPTS.idle);
+
 	const pathname = usePathname();
 	const router = useRouter();
+	const context = useAiContextStore((s) => s.context);
 
-	// Hide on pages that already have intense AI focus to avoid clutter
 	const hideOnPages = ['/study-companion', '/onboarding', '/sign-in', '/sign-up'];
 	const shouldHide = hideOnPages.some((path) => pathname?.startsWith(path));
 
 	useEffect(() => {
-		// Delay visibility slightly to allow page load animations
+		const prompts = CONTEXT_PROMPTS[context.type] || CONTEXT_PROMPTS.idle;
+		setSuggestedPrompts(prompts);
+	}, [context.type]);
+
+	const getContextGreeting = () => {
+		switch (context.type) {
+			case 'quiz':
+				return `Need help with ${context.topic || 'this question'}?`;
+			case 'pastPaper':
+				return `Working on ${context.subject || 'past paper'}`;
+			case 'snapAndSolve':
+				return `Solving ${context.subject || 'math problem'}`;
+			case 'lesson':
+				return `Learning about ${context.topic || context.subject || 'this'}`;
+			case 'curriculumMap':
+				return `Exploring ${context.subject || 'curriculum'}`;
+			default:
+				return 'Hi! How can I help you study?';
+		}
+	};
+
+	useEffect(() => {
 		const timer = setTimeout(() => setIsVisible(true), 1000);
 		return () => clearTimeout(timer);
 	}, []);
@@ -53,6 +86,15 @@ export function GlassOrb() {
 								'bg-background/80 backdrop-blur-xl border-border/50 text-foreground'
 							)}
 						>
+							{context.type !== 'idle' && (
+								<div className="px-4 py-2 bg-violet-50 dark:bg-violet-950/30 border-b border-violet-100 dark:border-violet-900">
+									<p className="text-xs text-violet-700 dark:text-violet-300 flex items-center gap-1">
+										<span className="w-1.5 h-1.5 rounded-full bg-violet-500 animate-pulse" />
+										{getContextGreeting()}
+									</p>
+								</div>
+							)}
+
 							<div className="p-4 border-b border-border/50 bg-secondary/50 flex justify-between items-center">
 								<div className="flex items-center gap-2">
 									<div className="w-8 h-8 rounded-full bg-violet-100 dark:bg-violet-900/30 flex items-center justify-center">
@@ -61,7 +103,7 @@ export function GlassOrb() {
 											className="w-4 h-4 text-violet-600 dark:text-violet-400"
 										/>
 									</div>
-									<h3 className="font-lexend font-bold text-sm">AI Companion</h3>
+									<h3 className="font-bold text-sm font-display">AI Companion</h3>
 								</div>
 								<button
 									type="button"
@@ -72,10 +114,26 @@ export function GlassOrb() {
 								</button>
 							</div>
 
+							<div className="px-4 py-2 border-b border-border/30 flex gap-2 overflow-x-auto">
+								{suggestedPrompts.map((prompt, i) => (
+									<button
+										key={i}
+										type="button"
+										onClick={() => {
+											setIsOpen(false);
+											router.push(`/study-companion?prompt=${encodeURIComponent(prompt)}`);
+										}}
+										className="whitespace-nowrap px-3 py-1 text-xs bg-secondary hover:bg-secondary/80 rounded-full transition-colors"
+									>
+										{prompt}
+									</button>
+								))}
+							</div>
+
 							<div className="p-4 flex-1 min-h-[200px] flex flex-col bg-gradient-to-b from-transparent to-secondary/20">
 								<div className="flex-1 space-y-4">
 									<div className="bg-card border border-border/50 rounded-2xl p-3 shadow-sm inline-block max-w-[90%]">
-										<p className="text-sm">Hi! How can I help you today?</p>
+										<p className="text-sm">{getContextGreeting()}</p>
 									</div>
 								</div>
 							</div>
@@ -85,7 +143,7 @@ export function GlassOrb() {
 									<input
 										type="text"
 										readOnly
-										placeholder="Go to full AI Tutor..."
+										placeholder="Ask anything..."
 										onClick={() => {
 											setIsOpen(false);
 											router.push('/study-companion');
@@ -120,7 +178,6 @@ export function GlassOrb() {
 						isOpen ? 'rotate-90 scale-90' : 'rotate-0'
 					)}
 				>
-					{/* Animated gradient border/glow */}
 					<div className="absolute inset-0 rounded-full bg-gradient-to-tr from-violet-500 via-fuchsia-500 to-cyan-500 opacity-20 group-hover:opacity-40 blur-md transition-opacity duration-500" />
 					<div className="absolute inset-[1px] rounded-full bg-background/90 backdrop-blur-md" />
 

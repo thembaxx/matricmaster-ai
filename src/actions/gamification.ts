@@ -11,6 +11,7 @@ import {
 	userAchievements,
 	userProgress,
 } from '@/lib/db/schema';
+import { getUnifiedApsScore } from '@/services/apsCalculationEngine';
 
 async function getDb() {
 	const connected = await dbManager.waitForConnection(3, 2000);
@@ -409,7 +410,9 @@ export async function getUserApsProgress(): Promise<APSProgress> {
 
 	const monthlyPoints = await getMonthlyApsPoints(session.user.id);
 
-	const currentAps = 32;
+	const { totalAps } = await getUnifiedApsScore(session.user.id);
+
+	const currentAps = totalAps > 0 ? totalAps : 32;
 	const targetAps = target?.targetAps || 42;
 
 	return {

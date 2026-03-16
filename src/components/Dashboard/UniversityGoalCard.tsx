@@ -5,22 +5,46 @@ import { HugeiconsIcon } from '@hugeicons/react';
 import { m } from 'framer-motion';
 import { TrendingUp } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
+import { useGoalStore } from '@/stores/useGoalStore';
 
-interface UniversityGoalCardProps {
-	universityName: string;
-	faculty: string;
-	currentAps: number;
-	targetAps: number;
-}
+export function UniversityGoalCard() {
+	const goal = useGoalStore((state) => state.goal);
 
-export function UniversityGoalCard({
-	universityName,
-	faculty,
-	currentAps,
-	targetAps,
-}: UniversityGoalCardProps) {
+	const universityName = goal?.universityName || 'Set a Goal';
+	const faculty = goal?.faculty || 'Go to APS Calculator';
+	const currentAps = goal?.currentAps || 0;
+	const targetAps = goal?.targetAps || 42;
+
 	const progress = Math.min((currentAps / targetAps) * 100, 100);
 	const pointsNeeded = Math.max(targetAps - currentAps, 0);
+
+	if (!goal) {
+		return (
+			<m.div
+				whileHover={{ scale: 1.01 }}
+				className="tiimo-card p-6 flex flex-col gap-4 relative overflow-hidden"
+			>
+				<div className="flex items-center justify-between">
+					<div className="flex items-center gap-3">
+						<div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
+							<HugeiconsIcon icon={Mortarboard01Icon} className="w-5 h-5" />
+						</div>
+						<div>
+							<h3 className="text-sm font-black text-foreground">University Goal</h3>
+							<p className="text-[10px] text-tiimo-gray-muted font-bold uppercase tracking-widest">
+								Not Set
+							</p>
+						</div>
+					</div>
+				</div>
+				<div className="flex items-center gap-2 mt-2 p-3 bg-secondary/50 rounded-2xl border border-dashed border-border">
+					<p className="text-[11px] font-medium text-muted-foreground">
+						Calculate your APS and set a university goal to see it here.
+					</p>
+				</div>
+			</m.div>
+		);
+	}
 
 	return (
 		<m.div

@@ -6,6 +6,7 @@ import {
 	Cancel01Icon,
 	Layers01Icon,
 	Loading03Icon,
+	Mic02Icon,
 	Quiz01Icon,
 	SparklesIcon,
 	VolumeHighIcon,
@@ -23,6 +24,7 @@ import { Card } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { saveToFlashcardsAction } from '@/lib/db/flashcard-actions';
 import { cn } from '@/lib/utils';
+import { useAiContextStore } from '@/stores/useAiContextStore';
 
 const SUBJECTS = [
 	'Mathematics',
@@ -35,6 +37,7 @@ const SUBJECTS = [
 
 export default function SnapAndSolve() {
 	const router = useRouter();
+	const setContext = useAiContextStore((state) => state.setContext);
 	const [image, setImage] = useState<File | null>(null);
 	const [preview, setPreview] = useState<string | null>(null);
 	const [subject, setSubject] = useState('General');
@@ -140,6 +143,16 @@ export default function SnapAndSolve() {
 			const data = await response.json();
 			if (data.solution) {
 				setSolution(data.solution);
+				setContext({
+					type: 'snapAndSolve',
+					subject: subject,
+					metadata: {
+						subjectName: subject,
+						solutionPreview: data.solution.substring(0, 200),
+						extractedOcr: data.ocrText || '',
+					},
+					isProactive: true,
+				});
 				toast.success('Question analyzed successfully!');
 			} else {
 				toast.error(data.error || 'Failed to analyze question');
@@ -307,6 +320,26 @@ export default function SnapAndSolve() {
 									>
 										<HugeiconsIcon icon={VolumeHighIcon} className="w-4 h-4" />
 										Listen
+									</Button>
+									<Button
+										variant="outline"
+										size="sm"
+										onClick={() => {
+											setContext({
+												type: 'voiceTutor',
+												subject: subject,
+												metadata: {
+													subjectName: subject,
+													questionText: solution || undefined,
+												},
+												isProactive: true,
+											});
+											router.push('/study-companion');
+										}}
+										className="rounded-full gap-2 hover:bg-tiimo-orange/10 hover:text-tiimo-orange border-dashed"
+									>
+										<HugeiconsIcon icon={Mic02Icon} className="w-4 h-4" />
+										Explain with Voice
 									</Button>
 								</div>
 								<MarkdownRenderer content={solution} />
