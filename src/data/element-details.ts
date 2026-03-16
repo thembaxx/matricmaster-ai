@@ -29,7 +29,7 @@ export interface ElementDetail {
 	}[];
 }
 
-const BASE_ELEMENTS: {
+export const BASE_ELEMENTS: {
 	num: number;
 	sym: string;
 	name: string;
@@ -2173,3 +2173,5 @@ for (let i = 1; i <= 118; i++) {
 		}
 	}
 }
+
+export const ELEMENTS = BASE_ELEMENTS;
