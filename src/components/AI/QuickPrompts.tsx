@@ -1,7 +1,8 @@
 'use client';
 
-import { Chat01Icon, Idea01Icon } from '@hugeicons/core-free-icons';
+import { CalculatorIcon, Chat01Icon, GridIcon, Idea01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
+import Link from 'next/link';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
@@ -169,6 +170,50 @@ export function QuickPrompts({ onSelectPrompt, selectedSubject }: QuickPromptsPr
 				</div>
 				<ScrollBar orientation="horizontal" />
 			</ScrollArea>
+
+			{(selectedSubject === 'physics' || selectedSubject === 'chemistry') && (
+				<div className="mt-3 pt-3 border-t border-border/30">
+					<div className="flex items-center gap-2 px-1 mb-2">
+						<HugeiconsIcon
+							icon={CalculatorIcon}
+							className="h-3.5 w-3.5 md:h-4 md:w-4 text-brand-cyan"
+						/>
+						<span className="text-[10px] font-medium text-muted-foreground">Reference Tools</span>
+					</div>
+					<div className="flex gap-1.5 md:gap-2">
+						<Button
+							variant="outline"
+							size="sm"
+							className="h-auto py-2 px-3 md:py-2.5 md:px-4 text-[10px] md:text-xs whitespace-nowrap rounded-xl md:rounded-2xl border-border/50 bg-surface-elevated/30 hover:bg-surface-elevated hover:border-primary/30 transition-all duration-200"
+							asChild
+						>
+							<Link href="/periodic-table">
+								<HugeiconsIcon
+									icon={GridIcon}
+									className="h-3 w-3 md:h-3.5 md:w-3.5 mr-1.5 md:mr-2 text-primary/70 shrink-0"
+								/>
+								<span className="font-medium">Periodic Table</span>
+							</Link>
+						</Button>
+						<Button
+							variant="outline"
+							size="sm"
+							className="h-auto py-2 px-3 md:py-2.5 md:px-4 text-[10px] md:text-xs whitespace-nowrap rounded-xl md:rounded-2xl border-border/50 bg-surface-elevated/30 hover:bg-surface-elevated hover:border-primary/30 transition-all duration-200"
+							onClick={() =>
+								onSelectPrompt(
+									'Use c = 3×10⁸ m/s, g = 9.8 m/s², e = 1.602×10⁻¹⁹ C for calculations'
+								)
+							}
+						>
+							<HugeiconsIcon
+								icon={CalculatorIcon}
+								className="h-3 w-3 md:h-3.5 md:w-3.5 mr-1.5 md:mr-2 text-primary/70 shrink-0"
+							/>
+							<span className="font-medium">Physics Constants</span>
+						</Button>
+					</div>
+				</div>
+			)}
 		</div>
 	);
 }

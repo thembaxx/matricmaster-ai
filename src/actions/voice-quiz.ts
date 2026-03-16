@@ -1,0 +1,235 @@
+'use server';
+
+import { getAuth } from '@/lib/auth';
+import { dbManager } from '@/lib/db';
+import type { topicConfidence } from '@/lib/db/schema';
+
+type TopicConfidenceInsert = typeof topicConfidence.$inferInsert;
+
+async function getDb() {
+	const connected = await dbManager.waitForConnection(3, 2000);
+	if (!connected) throw new Error('Database not available');
+	return dbManager.getDb();
+}
+
+export interface QuizQuestion {
+	question: string;
+	options: string[];
+	correctAnswer: number;
+	topic: string;
+	subject: string;
+	difficulty: 'easy' | 'medium' | 'hard';
+}
+
+export interface VoiceQuizSession {
+	sessionId: string;
+	hostId: string;
+	participantId: string;
+	sharedTopic: string;
+	questions: QuizQuestion[];
+	currentQuestionIndex: number;
+	status: 'waiting' | 'active' | 'completed';
+	scores: Record<string, number>;
+}
+
+export async function startVoiceQuizSession(
+	participantId: string,
+	sharedTopic: string
+): Promise<VoiceQuizSession> {
+	const auth = await getAuth();
+	const session = await auth.api.getSession();
+	if (!session?.user) throw new Error('Unauthorized');
+
+	const db = await getDb();
+
+	const hostConfidences = await db.query.topicConfidence.findMany({
+		where: (tc, { eq }) => eq(tc.userId, session.user.id),
+		orderBy: (tc, { asc }) => [asc(tc.confidenceScore)],
+		limit: 10,
+	});
+
+	const questions = generateQuizQuestions(sharedTopic, hostConfidences);
+
+	return {
+		sessionId: crypto.randomUUID(),
+		hostId: session.user.id,
+		participantId,
+		sharedTopic,
+		questions,
+		currentQuestionIndex: 0,
+		status: 'waiting',
+		scores: { [session.user.id]: 0, [participantId]: 0 },
+	};
+}
+
+function generateQuizQuestions(
+	topic: string,
+	_confidences: TopicConfidenceInsert[]
+): QuizQuestion[] {
+	const baseQuestions: Record<string, QuizQuestion[]> = {
+		Calculus: [
+			{
+				question: 'What is the derivative of x²?',
+				options: ['x', '2x', '2', 'x²'],
+				correctAnswer: 1,
+				topic: 'Calculus',
+				subject: 'Mathematics',
+				difficulty: 'easy',
+			},
+			{
+				question: 'What is ∫2x dx?',
+				options: ['x² + C', '2x² + C', 'x + C', '2 + C'],
+				correctAnswer: 0,
+				topic: 'Calculus',
+				subject: 'Mathematics',
+				difficulty: 'medium',
+			},
+			{
+				question: 'Find d/dx(sin x)',
+				options: ['cos x', '-cos x', '-sin x', 'tan x'],
+				correctAnswer: 0,
+				topic: 'Calculus',
+				subject: 'Mathematics',
+				difficulty: 'medium',
+			},
+		],
+		'Euclidean Geometry': [
+			{
+				question: 'The sum of angles in a triangle equals?',
+				options: ['90°', '180°', '360°', '270°'],
+				correctAnswer: 1,
+				topic: 'Euclidean Geometry',
+				subject: 'Mathematics',
+				difficulty: 'easy',
+			},
+			{
+				question: 'A triangle with all sides equal is called?',
+				options: ['Isosceles', 'Scalene', 'Equilateral', 'Right'],
+				correctAnswer: 2,
+				topic: 'Euclidean Geometry',
+				subject: 'Mathematics',
+				difficulty: 'easy',
+			},
+		],
+		Algebra: [
+			{
+				question: 'Solve: 2x + 5 = 13',
+				options: ['x = 3', 'x = 4', 'x = 5', 'x = 6'],
+				correctAnswer: 1,
+				topic: 'Algebra',
+				subject: 'Mathematics',
+				difficulty: 'easy',
+			},
+			{
+				question: 'Factor: x² - 9',
+				options: ['(x - 3)(x + 3)', '(x - 9)(x + 1)', '(x - 3)²', '(x + 3)²'],
+				correctAnswer: 0,
+				topic: 'Algebra',
+				subject: 'Mathematics',
+				difficulty: 'medium',
+			},
+		],
+		'Chemical Equilibrium': [
+			{
+				question: 'What happens when temperature increases in an exothermic reaction?',
+				options: ['Shift right', 'Shift left', 'No change', 'Equal amounts'],
+				correctAnswer: 1,
+				topic: 'Chemical Equilibrium',
+				subject: 'Physical Sciences',
+				difficulty: 'medium',
+			},
+			{
+				question: "Le Chatelier's principle states that?",
+				options: [
+					'Equilibrium always favors products',
+					'System opposes changes',
+					'Reactions are irreversible',
+					"Temperature doesn't affect equilibrium",
+				],
+				correctAnswer: 1,
+				topic: 'Chemical Equilibrium',
+				subject: 'Physical Sciences',
+				difficulty: 'medium',
+			},
+		],
+		Electrostatics: [
+			{
+				question: 'Like charges?',
+				options: ['Attract', 'Repel', 'Have no effect', 'Combine'],
+				correctAnswer: 1,
+				topic: 'Electrostatics',
+				subject: 'Physical Sciences',
+				difficulty: 'easy',
+			},
+			{
+				question: 'The force between two charges is proportional to?',
+				options: [
+					'The distance',
+					'The distance squared',
+					'The inverse distance',
+					'The inverse distance squared',
+				],
+				correctAnswer: 3,
+				topic: 'Electrostatics',
+				subject: 'Physical Sciences',
+				difficulty: 'medium',
+			},
+		],
+	};
+
+	return (
+		baseQuestions[topic] || [
+			{
+				question: `What is a key concept in ${topic}?`,
+				options: ['Concept A', 'Concept B', 'Concept C', 'Concept D'],
+				correctAnswer: 0,
+				topic,
+				subject: 'General',
+				difficulty: 'easy',
+			},
+		]
+	);
+}
+
+export async function submitQuizAnswer(
+	_sessionId: string,
+	_userId: string,
+	questionIndex: number,
+	answerIndex: number
+): Promise<{ correct: boolean; score: number }> {
+	const auth = await getAuth();
+	const session = await auth.api.getSession();
+	if (!session?.user) throw new Error('Unauthorized');
+
+	return {
+		correct: answerIndex === questionIndex,
+		score: answerIndex === questionIndex ? 10 : 0,
+	};
+}
+
+export async function getSharedWeakTopic(userId1: string, userId2: string): Promise<string | null> {
+	const db = await getDb();
+
+	const confidences1 = await db.query.topicConfidence.findMany({
+		where: (tc, { eq }) => eq(tc.userId, userId1),
+		orderBy: (tc, { asc }) => [asc(tc.confidenceScore)],
+		limit: 5,
+	});
+
+	const confidences2 = await db.query.topicConfidence.findMany({
+		where: (tc, { eq }) => eq(tc.userId, userId2),
+		orderBy: (tc, { asc }) => [asc(tc.confidenceScore)],
+		limit: 5,
+	});
+
+	const topics1 = new Set(confidences1.map((c) => c.topic));
+	const topics2 = new Set(confidences2.map((c) => c.topic));
+
+	for (const topic of topics1) {
+		if (topics2.has(topic)) {
+			return topic;
+		}
+	}
+
+	return confidences1[0]?.topic || confidences2[0]?.topic || null;
+}

@@ -825,6 +825,59 @@ export const topicConfidenceRelations = relations(topicConfidence, ({ one }) => 
 }));
 
 // ============================================================================
+// UNIVERSITY TARGETS - User's university admission goals
+// ============================================================================
+
+export const universityTargets = pgTable(
+	'university_targets',
+	{
+		id: uuid('id').defaultRandom().primaryKey(),
+		userId: text('user_id')
+			.notNull()
+			.references(() => users.id, { onDelete: 'cascade' }),
+		universityName: varchar('university_name', { length: 100 }).notNull(),
+		faculty: varchar('faculty', { length: 100 }).notNull(),
+		targetAps: integer('target_aps').notNull(),
+		requiredSubjects: text('required_subjects'),
+		isActive: boolean('is_active').notNull().default(true),
+		createdAt: timestamp('created_at').defaultNow().notNull(),
+		updatedAt: timestamp('updated_at').defaultNow(),
+	},
+	(table) => ({
+		userIdIdx: index('university_targets_user_id_idx').on(table.userId),
+		userActiveIdx: index('university_targets_active_idx').on(table.userId, table.isActive),
+	})
+);
+
+export const universityTargetsRelations = relations(universityTargets, ({ one }) => ({
+	user: one(users, {
+		fields: [universityTargets.userId],
+		references: [users.id],
+	}),
+}));
+
+// ============================================================================
+// TOPIC WEIGHTAGES - NSC exam weightings for prioritization
+// ============================================================================
+
+export const topicWeightages = pgTable(
+	'topic_weightages',
+	{
+		id: uuid('id').defaultRandom().primaryKey(),
+		subject: varchar('subject', { length: 50 }).notNull(),
+		topic: varchar('topic', { length: 100 }).notNull(),
+		weightagePercent: integer('weightage_percent').notNull(),
+		examPaper: varchar('exam_paper', { length: 20 }),
+		lastUpdated: timestamp('last_updated').defaultNow(),
+	},
+	(table) => ({
+		subjectTopicIdx: index('topic_weightages_subject_topic_idx').on(table.subject, table.topic),
+	})
+);
+
+export const topicWeightagesRelations = relations(topicWeightages, () => ({}));
+
+// ============================================================================
 // QUESTION ATTEMPTS - For spaced repetition tracking
 // ============================================================================
 
