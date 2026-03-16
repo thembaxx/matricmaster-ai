@@ -1,5 +1,5 @@
 import { GeistMono, GeistSans } from 'geist/font';
-import { Inter, Lexend, Outfit, Playfair_Display, Sora, Space_Grotesk } from 'next/font/google';
+import { Lexend, Outfit, Playfair_Display, Sora, Space_Grotesk } from 'next/font/google';
 
 export const geistSans = GeistSans;
 
@@ -9,13 +9,6 @@ export const spaceGrotesk = Space_Grotesk({
 	subsets: ['latin'],
 	display: 'swap',
 	variable: '--font-space-grotesk',
-	preload: true,
-});
-
-export const inter = Inter({
-	subsets: ['latin'],
-	display: 'swap',
-	variable: '--font-inter',
 	preload: true,
 });
 
