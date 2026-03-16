@@ -6,7 +6,7 @@ import {
 	Cancel01Icon,
 	Layers01Icon,
 	Loading03Icon,
-	Microphone01Icon,
+	Mic02Icon,
 	Quiz01Icon,
 	SparklesIcon,
 	VolumeHighIcon,
@@ -338,7 +338,7 @@ export default function SnapAndSolve() {
 										}}
 										className="rounded-full gap-2 hover:bg-tiimo-orange/10 hover:text-tiimo-orange border-dashed"
 									>
-										<HugeiconsIcon icon={Microphone01Icon} className="w-4 h-4" />
+										<HugeiconsIcon icon={Mic02Icon} className="w-4 h-4" />
 										Explain with Voice
 									</Button>
 								</div>
