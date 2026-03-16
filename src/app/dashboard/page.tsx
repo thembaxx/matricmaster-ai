@@ -2,11 +2,12 @@ import type { Metadata } from 'next';
 import dynamic from 'next/dynamic';
 import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
-
+import { generatePersonalizedBriefing } from '@/actions/ai-briefing';
 import { appConfig } from '@/app.config';
 import { DashboardSkeleton } from '@/components/DashboardSkeleton';
 import { getAuth } from '@/lib/auth';
 import { getUserAchievements } from '@/lib/db/achievement-actions';
+import { getLearningStats, getTopicsNeedingReview } from '@/lib/db/adaptive-question-actions';
 import { getUserProgressSummary, getUserStreak } from '@/lib/db/progress-actions';
 
 const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://matricmaster.ai';
@@ -37,10 +38,20 @@ export default async function DashboardPage() {
 		redirect('/sign-in');
 	}
 
-	const [initialProgress, initialStreak, initialAchievements] = await Promise.all([
+	const [
+		initialProgress,
+		initialStreak,
+		initialAchievements,
+		learningStats,
+		topicsNeedingReview,
+		briefingData,
+	] = await Promise.all([
 		getUserProgressSummary(),
 		getUserStreak(),
 		getUserAchievements(),
+		getLearningStats(session.user.id),
+		getTopicsNeedingReview(session.user.id),
+		generatePersonalizedBriefing(),
 	]);
 
 	return (
@@ -49,6 +60,9 @@ export default async function DashboardPage() {
 			initialStreak={initialStreak}
 			initialAchievements={initialAchievements}
 			session={session}
+			learningStats={learningStats}
+			topicsNeedingReview={topicsNeedingReview}
+			briefingData={briefingData}
 		/>
 	);
 }
