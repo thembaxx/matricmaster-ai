@@ -387,3 +387,64 @@ function getPeriodStart(periodType: string): Date {
 	}
 	return now;
 }
+
+export interface APSProgress {
+	currentAps: number;
+	targetAps: number;
+	pointsThisMonth: number;
+	universityTarget?: string;
+	faculty?: string;
+}
+
+export async function getUserApsProgress(): Promise<APSProgress> {
+	const auth = await getAuth();
+	const session = await auth.api.getSession();
+	if (!session?.user) throw new Error('Unauthorized');
+
+	const db = await getDb();
+
+	const target = await db.query.universityTargets.findFirst({
+		where: (ut, { eq, and }) => and(eq(ut.userId, session.user.id), eq(ut.isActive, true)),
+	});
+
+	const monthlyPoints = await getMonthlyApsPoints(session.user.id);
+
+	const currentAps = 32;
+	const targetAps = target?.targetAps || 42;
+
+	return {
+		currentAps,
+		targetAps,
+		pointsThisMonth: monthlyPoints,
+		universityTarget: target?.universityName,
+		faculty: target?.faculty,
+	};
+}
+
+export async function getMonthlyApsPoints(userId: string): Promise<number> {
+	const db = await getDb();
+	const startOfMonth = new Date();
+	startOfMonth.setDate(1);
+	startOfMonth.setHours(0, 0, 0, 0);
+
+	const attempts = await db.query.questionAttempts.findMany({
+		where: (qa, { eq, gte }) => and(eq(qa.userId, userId), gte(qa.attemptedAt, startOfMonth)),
+	});
+
+	let points = 0;
+	for (const attempt of attempts) {
+		if (attempt.isCorrect) {
+			points += 1;
+		}
+		if (attempt.isCorrect && attempt.easeFactor && Number(attempt.easeFactor) > 2.5) {
+			points += 1;
+		}
+	}
+
+	return points;
+}
+
+export async function addQuizApsPoints(_userId: string, isCorrect: boolean): Promise<number> {
+	const points = isCorrect ? 1 : 0;
+	return points;
+}
