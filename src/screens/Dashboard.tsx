@@ -27,6 +27,7 @@ import { XpHeader } from '@/components/Gamification/XpHeader';
 import { FocusContent } from '@/components/Layout/FocusContent';
 import { TimelineSidebar } from '@/components/Layout/TimelineSidebar';
 import { BuddyPanel } from '@/components/StudyBuddy/BuddyPanel';
+import { MistakeBank } from '@/components/Widgets/MistakeBank';
 import { ACHIEVEMENTS } from '@/constants/achievements';
 import type { UserAchievement } from '@/lib/db/achievement-actions';
 import type { UserProgressSummary } from '@/lib/db/progress-actions';
@@ -97,6 +98,7 @@ interface DashboardProps {
 	} | null;
 	topicsNeedingReview?: unknown[] | null;
 	briefingData?: BriefingData | null;
+	mistakeCount?: number;
 }
 
 interface BriefingData {
@@ -221,6 +223,7 @@ export default function Dashboard({
 	initialStreak,
 	initialAchievements,
 	session,
+	mistakeCount,
 }: DashboardProps) {
 	const router = useRouter();
 	const [tasks, setTasks] = useState<Record<string, StudyTask[]>>(DEMO_TASKS);
@@ -270,14 +273,17 @@ export default function Dashboard({
 					<div className="h-[calc(100vh-320px)] sm:h-full no-scrollbar">
 						<m.div layout className="space-y-10 pb-32">
 							{/* Welcome & Stats Row */}
-							<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+							<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 								<DailyMission />
 								<XpHeader
 									variant="full"
 									initialAchievements={achievements}
 									initialStreak={{ currentStreak: streak.currentStreak }}
 								/>
-								<UniversityGoalCard />
+								<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+									<UniversityGoalCard />
+									<MistakeBank initialCount={mistakeCount ?? 0} />
+								</div>
 							</div>
 
 							<div className="grid grid-cols-1 md:grid-cols-2 gap-6">

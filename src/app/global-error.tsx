@@ -109,7 +109,7 @@ export default function GlobalError({ error, reset }: GlobalErrorProps) {
 								}}
 							>
 								<HugeiconsIcon icon={Home01Icon} size={16} />
-								Go House
+								Home
 							</Link>
 						</div>
 					</div>

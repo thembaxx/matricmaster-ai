@@ -44,7 +44,7 @@ export default function Error({ error, reset }: ErrorProps) {
 					<Link href="/">
 						<Button className="gap-2">
 							<HugeiconsIcon icon={Home01Icon} className="w-4 h-4" />
-							Go House
+							Home
 						</Button>
 					</Link>
 				</div>

@@ -1,6 +1,7 @@
 'use server';
 
 import { and, asc, eq } from 'drizzle-orm';
+import { headers } from 'next/headers';
 import { getAuth } from '@/lib/auth';
 import { dbManager } from '@/lib/db';
 import { conceptStruggles, topicConfidence, universityTargets } from '@/lib/db/schema';
@@ -26,7 +27,8 @@ export interface BriefingData {
 
 export async function generatePersonalizedBriefing(): Promise<BriefingData> {
 	const auth = await getAuth();
-	const session = await auth.api.getSession();
+	const headersList = await headers();
+	const session = await auth.api.getSession({ headers: headersList });
 
 	if (!session?.user) {
 		return getDefaultBriefing();

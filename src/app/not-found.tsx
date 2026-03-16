@@ -41,7 +41,7 @@ export default function NotFound() {
 					<Link href="/">
 						<Button size="lg" className="gap-2 rounded-2xl shadow-xl shadow-primary/20">
 							<HugeiconsIcon icon={Home01Icon} className="w-5 h-5" />
-							Go House
+							Home
 						</Button>
 					</Link>
 					<Link href="/search">
