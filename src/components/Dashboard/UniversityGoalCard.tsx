@@ -34,7 +34,7 @@ export function UniversityGoalCard() {
 							<HugeiconsIcon icon={Mortarboard01Icon} className="w-5 h-5" />
 						</div>
 						<div>
-							<h3 className="text-sm font-black text-foreground">University Goal</h3>
+							<h3 className="text-sm font-bold text-foreground">University Goal</h3>
 							<p className="text-[10px] text-tiimo-gray-muted font-bold uppercase tracking-widest">
 								Not Set
 							</p>

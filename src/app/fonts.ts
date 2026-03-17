@@ -2,6 +2,7 @@ import { GeistMono, GeistSans } from 'geist/font';
 import {
 	Crimson_Pro,
 	DM_Sans,
+	Inter,
 	JetBrains_Mono,
 	Lexend,
 	Literata,
@@ -16,6 +17,13 @@ import {
 export const geistSans = GeistSans;
 
 export const geistMono = GeistMono;
+
+export const inter = Inter({
+	subsets: ['latin'],
+	display: 'swap',
+	variable: '--font-inter',
+	preload: true,
+});
 
 export const notoSansMath = Noto_Sans_Math({
 	weight: '400',

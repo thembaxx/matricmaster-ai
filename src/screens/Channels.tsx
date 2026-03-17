@@ -334,7 +334,7 @@ export default function Channels() {
 										className="w-7 h-7 rounded-full border-2 border-background bg-secondary overflow-hidden relative shadow-sm"
 									>
 										<Avatar className="w-full h-full">
-											<AvatarImage src={''} />
+											<AvatarImage src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=faces" />
 										</Avatar>
 									</div>
 								))}

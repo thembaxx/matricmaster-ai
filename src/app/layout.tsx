@@ -12,6 +12,7 @@ import {
 	dmSans,
 	geistMono,
 	geistSans,
+	inter,
 	jetbrainsMono,
 	lexend,
 	literata,
@@ -134,7 +135,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 		<html
 			lang="en"
 			suppressHydrationWarning
-			className={`${geistMono.variable} ${geistSans.variable} ${lexend.variable} ${outfit.variable} ${playfair.variable} ${sora.variable} ${spaceGrotesk.variable} ${notoSansMath.variable} ${sourceSerif4.variable} ${literata.variable} ${dmSans.variable} ${jetbrainsMono.variable} ${crimsonPro.variable}`}
+			className={`${geistMono.variable} ${geistSans.variable} ${inter.variable} ${lexend.variable} ${outfit.variable} ${playfair.variable} ${sora.variable} ${spaceGrotesk.variable} ${notoSansMath.variable} ${sourceSerif4.variable} ${literata.variable} ${dmSans.variable} ${jetbrainsMono.variable} ${crimsonPro.variable}`}
 		>
 			<head>
 				<link rel="preconnect" href="https://fonts.googleapis.com" />

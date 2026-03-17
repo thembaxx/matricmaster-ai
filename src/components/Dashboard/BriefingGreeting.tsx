@@ -82,7 +82,7 @@ export function BriefingGreeting({
 							<div className="w-2 h-2 rounded-full bg-tiimo-lavender animate-pulse" />
 							<span className="label-sm text-tiimo-lavender">{greeting}</span>
 						</div>
-						<h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-foreground font-display">
+						<h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-foreground font-display text-pretty">
 							{displayGreeting}
 						</h1>
 						{motivationalMessage && (
@@ -90,15 +90,13 @@ export function BriefingGreeting({
 								initial={{ opacity: 0, y: 5 }}
 								animate={{ opacity: 1, y: 0 }}
 								transition={{ delay: 0.2 }}
-								className="text-sm text-muted-foreground mt-1 max-w-lg"
+								className="text-sm text-muted-foreground mt-1 max-w-lg text-pretty"
 							>
 								{motivationalMessage}
 							</m.p>
 						)}
 					</div>
-					<div className="flex items-center gap-3">
-						<NotificationBell />
-					</div>
+					<NotificationBell />
 				</div>
 
 				{/* Briefing Cards Row */}

@@ -1,4 +1,3 @@
-import { drizzleAdapter } from '@better-auth/drizzle-adapter';
 import { betterAuth } from 'better-auth';
 import { nextCookies } from 'better-auth/next-js';
 import { twoFactor } from 'better-auth/plugins';
@@ -6,7 +5,9 @@ import { Resend } from 'resend';
 
 import { appConfig } from '../app.config';
 import { dbManager } from './db';
-import * as schema from './db/schema';
+import { getPostgresAuthAdapter } from './db/adapters/postgres-drizzle';
+import { getSQLiteAuthAdapter } from './db/adapters/sqlite-drizzle';
+import { dbManagerV2 } from './db/database-manager-v2';
 
 // Type for the auth instance
 type AuthInstance = ReturnType<typeof betterAuth>;
@@ -123,19 +124,28 @@ interface ExtendedUser {
 }
 
 function createAuth(): AuthInstance {
-	const isConnected = dbManager.isConnectedToDatabase();
-	let db = null;
+	const isPgConnected = dbManagerV2.isPostgreSQLConnected();
+	let adapter = null;
 
-	if (isConnected) {
+	if (isPgConnected) {
 		try {
-			db = dbManager.getDb();
+			adapter = getPostgresAuthAdapter();
 		} catch {
 			if (!isBuildTime) {
-				console.warn('⚠️ Failed to get database connection - Better Auth will not persist sessions');
+				console.warn('⚠️ Failed to get PostgreSQL adapter - Better Auth will not persist sessions');
 			}
 		}
-	} else if (!isBuildTime) {
-		console.warn('⚠️ Database not connected - Better Auth will not persist sessions');
+	} else {
+		try {
+			adapter = getSQLiteAuthAdapter();
+			if (!isBuildTime) {
+				console.warn('⚠️ Using SQLite fallback - Better Auth data will be stored locally');
+			}
+		} catch {
+			if (!isBuildTime) {
+				console.warn('⚠️ Failed to get SQLite adapter - Better Auth will not persist sessions');
+			}
+		}
 	}
 
 	const twitterClientId = process.env.TWITTER_CLIENT_ID;
@@ -284,12 +294,7 @@ function createAuth(): AuthInstance {
 	// Merge static config with dynamic runtime config
 	const runtimeConfig = {
 		...authConfig,
-		database: db
-			? drizzleAdapter(db, {
-					provider: 'pg',
-					schema,
-				})
-			: undefined,
+		database: adapter,
 		emailAndPassword: {
 			...authConfig.emailAndPassword,
 			sendVerificationEmail,

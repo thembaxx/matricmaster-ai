@@ -286,7 +286,10 @@ export default function Leaderboard() {
 							</span>
 							<div className="relative">
 								<Avatar className="w-12 h-12 sm:w-16 sm:h-16 border-4 border-primary-orange/30 p-1 rounded-xl sm:rounded-2xl bg-muted/20">
-									<AvatarImage src="" className="object-cover" />
+									<AvatarImage
+										src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=faces"
+										className="object-cover"
+									/>
 									<AvatarFallback className="font-black text-sm sm:text-base text-foreground">
 										ME
 									</AvatarFallback>

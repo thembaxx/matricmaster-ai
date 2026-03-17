@@ -276,27 +276,30 @@ export default function Dashboard({
 					</div>
 
 					<div className="h-[calc(100vh-320px)] sm:h-full no-scrollbar">
-						<m.div layout className="space-y-10 pb-32">
-							{/* Welcome & Stats Row */}
-							<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+						<m.div layout className="space-y-12 pb-32">
+							{/* Welcome & Stats Row - tighter grouping */}
+							<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
 								<DailyMission />
-								<XpHeader
-									variant="full"
-									initialAchievements={achievements}
-									initialStreak={{ currentStreak: streak.currentStreak }}
-								/>
-								<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+								<div className="grid grid-cols-1 md:grid-cols-3 col-span-3 gap-4">
 									<UniversityGoalCard />
 									<MistakeBank initialCount={mistakeCount ?? 0} />
 									<FocusAreasWidget />
 								</div>
 							</div>
 
-							<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+							{/* Gamification Row */}
+							<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+								<XpHeader
+									variant="full"
+									initialAchievements={achievements}
+									initialStreak={{ currentStreak: streak.currentStreak }}
+								/>
 								<WeeklyChallenge initialProgress={progress} />
 							</div>
 
-							<div className="space-y-6">
+							{/* Task List - compact spacing for related items */}
+							<div className="space-y-8">
 								<TaskSection
 									title="High Priority"
 									priority="high"
@@ -333,8 +336,8 @@ export default function Dashboard({
 							<m.section
 								initial={{ opacity: 0, y: 20 }}
 								animate={{ opacity: 1, y: 0 }}
-								transition={{ delay: 0.5 }}
-								className="space-y-4"
+								transition={{ delay: 0.55 }}
+								className="space-y-6"
 							>
 								<m.h2
 									initial={{ opacity: 0, x: -20 }}
@@ -363,7 +366,7 @@ export default function Dashboard({
 								<KnowledgeHeatmap compact />
 							</m.section>
 
-							<section className="space-y-4">
+							<section className="space-y-6">
 								<m.h2
 									initial={{ opacity: 0, x: -20 }}
 									animate={{ opacity: 1, x: 0 }}
@@ -436,12 +439,12 @@ export default function Dashboard({
 								</div>
 							</section>
 
-							<section>
+							<section className="space-y-6">
 								<m.h2
 									initial={{ opacity: 0, x: -20 }}
 									animate={{ opacity: 1, x: 0 }}
 									transition={{ delay: 0.75 }}
-									className="text-xl font-semibold text-foreground mb-6"
+									className="text-xl font-semibold text-foreground"
 								>
 									Recent activity
 								</m.h2>

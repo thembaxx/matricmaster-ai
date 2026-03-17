@@ -153,7 +153,7 @@ export default function Landing() {
 											className="w-10 h-10 rounded-full border-3 border-background bg-secondary flex items-center justify-center overflow-hidden relative shadow-sm"
 										>
 											<Image
-												src={''}
+												src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=faces"
 												alt="user"
 												fill
 												sizes="40px"
@@ -333,7 +333,7 @@ export default function Landing() {
 							initial="hidden"
 							whileInView="visible"
 							viewport={{ once: true, margin: '-100px' }}
-							className="grid md:grid-cols-3 gap-6 lg:gap-8"
+							className="grid md:grid-cols-3 gap-6"
 						>
 							{FEATURES.map((feature) => (
 								<m.div
@@ -354,7 +354,7 @@ export default function Landing() {
 					</section>
 
 					{/* Stats Section */}
-					<section className="py-16 lg:py-24 bg-muted/30 rounded-[var(--radius-2xl)] mx-4 lg:mx-0">
+					<section className="py-12 lg:py-16 bg-muted/30 rounded-[var(--radius-2xl)] mx-4 lg:mx-0">
 						<m.div
 							initial={{ opacity: 0, y: 40 }}
 							whileInView={{ opacity: 1, y: 0 }}
@@ -463,7 +463,7 @@ export default function Landing() {
 							initial="hidden"
 							whileInView="visible"
 							viewport={{ once: true, margin: '-100px' }}
-							className="grid md:grid-cols-3 gap-6 lg:gap-8"
+							className="grid md:grid-cols-3 gap-6"
 						>
 							{TESTIMONIALS.map((testimonial) => (
 								<m.div
