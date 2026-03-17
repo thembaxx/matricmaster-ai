@@ -4,6 +4,7 @@ import {
 	ArrowLeft01Icon,
 	ArrowLeft02Icon,
 	ArrowRight01Icon,
+	BookOpen01Icon,
 	File01Icon,
 	Loading03Icon,
 	Search01Icon,
@@ -15,6 +16,7 @@ import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
+import { toast } from 'sonner';
 import { VoiceExplanation } from '@/components/AI/VoiceExplanation';
 import { ResponsiveAudioPlayer } from '@/components/AudioPlayer';
 import { Badge } from '@/components/ui/badge';
@@ -25,6 +27,7 @@ import { useGeminiQuotaModal } from '@/contexts/GeminiQuotaModalContext';
 import { useQuestionExtractor } from '@/hooks/useQuestionExtractor';
 import { isQuotaError } from '@/lib/ai/quota-error';
 import { getPastPaperByIdAction } from '@/lib/db/actions';
+import { saveToFlashcardsAction } from '@/lib/db/flashcard-actions';
 import { getExplanation } from '@/services/geminiService';
 
 // Lazy load PdfViewer to avoid SSR issues
@@ -63,6 +66,7 @@ export default function PastPaperViewer({
 	const [showAudioPlayer, setShowAudioPlayer] = useState(false);
 	const [audioText, setAudioText] = useState('');
 	const [audioTitle, setAudioTitle] = useState('');
+	const [isSavingToFlashcards, setIsSavingToFlashcards] = useState(false);
 
 	const {
 		extractedPaper,
@@ -159,6 +163,33 @@ export default function PastPaperViewer({
 			setIsExplaining(false);
 		}
 	}, [currentQuestion, paper.subject, triggerQuotaError]);
+
+	const handleSaveToFlashcards = useCallback(async () => {
+		if (!currentQuestion) return;
+
+		setIsSavingToFlashcards(true);
+		try {
+			const front = currentQuestion.questionText || `Question from ${paper.subject} Paper`;
+			const back = aiExplanation || 'Review this question to understand the concept better.';
+
+			const result = await saveToFlashcardsAction({
+				front,
+				back,
+				subjectName: paper.subject,
+			});
+
+			if (result.success) {
+				toast.success('Question saved to flashcards!');
+			} else {
+				toast.error(result.error || 'Failed to save flashcard');
+			}
+		} catch (err) {
+			console.debug('Failed to save flashcard:', err);
+			toast.error('Failed to save flashcard');
+		} finally {
+			setIsSavingToFlashcards(false);
+		}
+	}, [currentQuestion, paper.subject, aiExplanation]);
 
 	const progress = totalQuestions > 0 ? ((currentQuestionIndex + 1) / totalQuestions) * 100 : 0;
 
@@ -445,19 +476,34 @@ export default function PastPaperViewer({
 
 							{/* AI Explain Button */}
 							<div className="mt-8 pt-6 border-t border-border relative z-10">
-								<Button
-									variant="outline"
-									className="w-full border-brand-blue/20 hover:bg-brand-blue/5 text-sm"
-									onClick={handleExplainQuestion}
-									disabled={isExplaining}
-								>
-									{isExplaining ? (
-										<HugeiconsIcon icon={Loading03Icon} className="w-4 h-4 mr-2 animate-spin" />
-									) : (
-										<HugeiconsIcon icon={SparklesIcon} className="w-4 h-4 mr-2 text-brand-blue" />
-									)}
-									{isExplaining ? 'Getting Explanation...' : 'Explain This Question'}
-								</Button>
+								<div className="grid grid-cols-2 gap-3">
+									<Button
+										variant="outline"
+										className="border-brand-blue/20 hover:bg-brand-blue/5 text-sm"
+										onClick={handleExplainQuestion}
+										disabled={isExplaining}
+									>
+										{isExplaining ? (
+											<HugeiconsIcon icon={Loading03Icon} className="w-4 h-4 mr-2 animate-spin" />
+										) : (
+											<HugeiconsIcon icon={SparklesIcon} className="w-4 h-4 mr-2 text-brand-blue" />
+										)}
+										{isExplaining ? 'Getting...' : 'Explain'}
+									</Button>
+									<Button
+										variant="outline"
+										className="border-success/20 hover:bg-success/5 text-sm"
+										onClick={handleSaveToFlashcards}
+										disabled={isSavingToFlashcards}
+									>
+										{isSavingToFlashcards ? (
+											<HugeiconsIcon icon={Loading03Icon} className="w-4 h-4 mr-2 animate-spin" />
+										) : (
+											<HugeiconsIcon icon={BookOpen01Icon} className="w-4 h-4 mr-2 text-success" />
+										)}
+										{isSavingToFlashcards ? 'Saving...' : 'Save to Flashcards'}
+									</Button>
+								</div>
 
 								{/* AI Explanation Display */}
 								{showAiExplanation && aiExplanation && (

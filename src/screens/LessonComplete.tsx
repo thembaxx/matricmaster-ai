@@ -26,6 +26,7 @@ import { useQuizCompletion } from '@/hooks/use-quiz-completion';
 import { getUserAchievements } from '@/lib/db/achievement-actions';
 import { generateFlashcardsFromMistakes } from '@/lib/db/learning-loop-actions';
 import { getLevelInfo } from '@/lib/level-utils';
+import { useAiContextStore } from '@/stores/useAiContextStore';
 import { useQuizResultStore } from '@/stores/useQuizResultStore';
 import type { QuizResult } from '@/types/quiz';
 
@@ -55,6 +56,7 @@ export default function LessonComplete() {
 		cardsCreated: number;
 	} | null>(null);
 	const { completeQuiz, isCompleting } = useQuizCompletion();
+	const addActivity = useAiContextStore((s) => s.addActivity);
 
 	useEffect(() => {
 		async function loadResult() {
@@ -66,6 +68,22 @@ export default function LessonComplete() {
 
 			setResult(quizResult);
 			useQuizResultStore.getState().clear();
+
+			// Track quiz activity in context store
+			const accuracy =
+				quizResult.totalQuestions > 0
+					? (quizResult.correctAnswers / quizResult.totalQuestions) * 100
+					: 0;
+			const outcome = accuracy >= 60 ? 'passed' : 'failed';
+
+			addActivity({
+				type: 'quiz',
+				subject: quizResult.subjectName,
+				topic: quizResult.topic,
+				outcome,
+				score: accuracy,
+				description: `${outcome === 'passed' ? 'Passed' : 'Failed'} ${quizResult.subjectName} quiz with ${accuracy.toFixed(0)}% (${quizResult.correctAnswers}/${quizResult.totalQuestions})`,
+			});
 
 			// Load mistake count from store
 			const mistakes = useQuizResultStore.getState().getLastMistakes();
@@ -127,7 +145,7 @@ export default function LessonComplete() {
 		}
 
 		loadResult();
-	}, [completeQuiz, router]);
+	}, [completeQuiz, router, addActivity]);
 
 	const handleGenerateFlashcards = async () => {
 		setIsGenerating(true);

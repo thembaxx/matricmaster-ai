@@ -304,14 +304,21 @@ function TopicCard({
 		}
 	};
 
+	const isHighMastery = topic.status === 'mastered' && topic.progress >= 90;
+
 	return (
 		<Card
 			className={cn(
-				'p-4 rounded-2xl border-2 transition-all group hover:scale-[1.01] cursor-pointer',
-				statusColors[topic.status]
+				'p-4 rounded-2xl border-2 transition-all group hover:scale-[1.01] cursor-pointer relative overflow-hidden',
+				statusColors[topic.status],
+				isHighMastery &&
+					'before:absolute before:inset-0 before:rounded-[1.25rem] before:animate-pulse before:bg-success/5 before:border-2 before:border-success/30'
 			)}
 			onClick={handleClick}
 		>
+			{isHighMastery && (
+				<div className="absolute inset-0 bg-gradient-to-r from-success/0 via-success/5 to-success/0 animate-[shimmer_3s_ease-in-out_infinite] rounded-[1.25rem]" />
+			)}
 			<div className="flex items-center justify-between gap-4">
 				<div className="flex items-center gap-4 flex-1 min-w-0">
 					<div
