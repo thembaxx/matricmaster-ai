@@ -40,7 +40,7 @@ export const AiInsights = memo(function AiInsights({
 
 			try {
 				const response = await fetch(
-					`/api/ai-tutor/recommendations?context=${encodeURIComponent(query)}`
+					`/api/tutor/recommendations?context=${encodeURIComponent(query)}`
 				);
 				if (response.ok) {
 					const data = await response.json();

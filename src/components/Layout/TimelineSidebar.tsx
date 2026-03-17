@@ -49,7 +49,7 @@ const DEMO_EVENTS: TimelineEvent[] = [
 		duration: '60 min',
 		status: 'upcoming',
 		emoji: SUBJECTS.english.emoji,
-		navigationHref: '/ai-tutor?subject=english',
+		navigationHref: '/tutor?subject=english',
 	},
 	{
 		id: '4',

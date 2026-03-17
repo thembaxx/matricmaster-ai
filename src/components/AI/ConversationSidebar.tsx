@@ -18,7 +18,7 @@ import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
-import { deleteConversationAction, getConversationsAction } from '@/lib/db/ai-tutor-actions';
+import { deleteConversationAction, getConversationsAction } from '@/lib/db/tutor-actions';
 import type { AiConversation } from '@/lib/db/schema';
 
 function formatConversationDate(date: Date | string | null) {

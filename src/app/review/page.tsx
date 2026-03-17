@@ -62,7 +62,7 @@ export default function ReviewPage() {
 			const [dueCardsRes, statsRes, recsRes] = await Promise.all([
 				fetch('/api/flashcards/due'),
 				fetch('/api/flashcards/stats'),
-				fetch('/api/ai-tutor/recommendations', { method: 'POST' }),
+				fetch('/api/tutor/recommendations', { method: 'POST' }),
 			]);
 
 			if (dueCardsRes.ok) {
@@ -261,7 +261,7 @@ export default function ReviewPage() {
 									</Link>
 								</Button>
 								<Button variant="outline" asChild>
-									<Link href="/ai-tutor">
+									<Link href="/tutor">
 										<HugeiconsIcon icon={Target01Icon} className="mr-2 h-4 w-4" />
 										Study Helper
 									</Link>

@@ -34,7 +34,7 @@ export const ROUTE_CATEGORIES = {
 		'/dashboard',
 		'/profile',
 		'/settings',
-		'/ai-tutor',
+		'/tutor',
 		'/study-plan',
 		'/study-buddies',
 		'/bookmarks',

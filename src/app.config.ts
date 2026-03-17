@@ -1,8 +1,8 @@
 export const appConfig = {
-	name: 'MatricMaster AI',
+	name: 'MatricMaster',
 	shortName: 'MatricMaster',
 	description:
-		"Pass your Matric with confidence. Practice NSC past papers, get help when you're stuck, and track your progress.",
+		"Reach your True Peak. Practice NSC past papers, get expert guidance, and crush your Matric goals.",
 	version: {
 		current: '1.0.0',
 		build: process.env.NEXT_PUBLIC_BUILD_VERSION || 'dev',
@@ -10,15 +10,15 @@ export const appConfig = {
 		timestamp: process.env.NEXT_PUBLIC_BUILD_TIMESTAMP || new Date().toISOString(),
 	},
 	links: {
-		website: 'https://matricmaster.ai',
-		support: 'https://matricmaster.ai/support',
-		privacy: 'https://matricmaster.ai/privacy',
-		terms: 'https://matricmaster.ai/terms',
-		feedback: 'https://matricmaster.ai/feedback',
+		website: 'https://matricmaster.co.za',
+		support: 'https://matricmaster.co.za/support',
+		privacy: 'https://matricmaster.co.za/privacy',
+		terms: 'https://matricmaster.co.za/terms',
+		feedback: 'https://matricmaster.co.za/feedback',
 	},
 	contact: {
-		email: 'hello@matricmaster.ai',
-		supportEmail: 'support@matricmaster.ai',
+		email: 'hello@matricmaster.co.za',
+		supportEmail: 'support@matricmaster.co.za',
 		phone: '+27 21 123 4567',
 		whatsapp: '+27 82 123 4567',
 		hours: 'Mon-Fri: 9AM-6PM SAST',
@@ -31,7 +31,7 @@ export const appConfig = {
 	},
 	features: {
 		pastPapers: true,
-		aiTutor: true,
+		tutor: true,
 		flashcards: true,
 		studyPlanner: true,
 		progressTracking: true,
@@ -48,7 +48,7 @@ export const appConfig = {
 		flashcards: '/flashcards',
 		pastPapers: '/past-papers',
 		curriculumMap: '/curriculum-map',
-		aiTutor: '/study-companion',
+		tutor: '/tutor',
 		snapAndSolve: '/snap-and-solve',
 		studyPlan: '/study-plan',
 		settings: '/settings',

@@ -89,7 +89,7 @@ export function BuddyPanel({ onStartChat }: BuddyPanelProps) {
 				</div>
 				<div>
 					<h3 className="font-display font-bold text-lg text-foreground">Your Study Buddy</h3>
-					<p className="text-xs text-muted-foreground">AI-powered learning companion</p>
+					<p className="text-xs text-muted-foreground">expert-led learning companion</p>
 				</div>
 			</div>
 

@@ -29,8 +29,8 @@ export const LANDING_ICON_MAP: Record<string, IconSvg> = {
 export const LANDING_FEATURES = [
 	{
 		icon: MagicWand01Icon,
-		title: 'AI Study Buddy',
-		description: 'Stuck on a question? Get instant help from your personal AI tutor, anytime.',
+		title: 'Study Buddy',
+		description: 'Stuck on a question? Get instant help from your personal expert tutor, anytime.',
 		color: 'bg-tiimo-lavender/10 text-tiimo-lavender',
 	},
 	{
@@ -60,7 +60,7 @@ export const LANDING_FEATURES = [
 	{
 		icon: SparklesIcon,
 		title: 'Essay Grader',
-		description: 'AI-powered essay analysis with detailed feedback and improvement tips.',
+		description: 'expert-led essay analysis with detailed feedback and improvement tips.',
 		color: 'bg-tiimo-blue/10 text-tiimo-blue',
 	},
 	{
@@ -78,7 +78,7 @@ export const LANDING_FEATURES = [
 	{
 		icon: Calendar01Icon,
 		title: 'Smart Scheduling',
-		description: 'AI-powered study planner that adapts to your rhythm and goals.',
+		description: 'expert-led study planner that adapts to your rhythm and goals.',
 		color: 'bg-tiimo-green/10 text-tiimo-green',
 	},
 	{
@@ -120,7 +120,7 @@ export const LANDING_TESTIMONIALS: LandingTestimonial[] = [
 		name: 'Amahle Nkosi',
 		grade: 'Grade 12, Pretoria',
 		quote:
-			'MatricMaster AI helped me improve my math marks by 20% in just 3 months. The AI tutor is like having a personal teacher available 24/7.',
+			'MatricMaster helped me improve my math marks by 20% in just 3 months. The expert tutor is like having a personal teacher available 24/7.',
 		image:
 			'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop&crop=face',
 	},

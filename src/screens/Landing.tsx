@@ -84,8 +84,8 @@ export default function Landing() {
 								transition={{ type: 'spring', stiffness: 300, damping: 28 }}
 								className="space-y-8"
 							>
-								<Badge className="tiimo-glass bg-primary-purple! rounded-full px-4 py-1.5 text-[10px] font-medium text-white">
-									<HugeiconsIcon icon={SparklesIcon} className="w-3 h-3 mr-1.5" />
+								<Badge variant="glass" className="rounded-full px-4 py-1.5 text-[10px] font-medium text-white bg-primary-purple!">
+									<HugeiconsIcon icon={FlashIcon} className="w-3 h-3 mr-1.5" />
 									The #1 NSC prep platform
 								</Badge>
 
@@ -93,21 +93,20 @@ export default function Landing() {
 									initial={{ opacity: 0, y: 20 }}
 									animate={{ opacity: 1, y: 0 }}
 									transition={{ delay: 0.1 }}
-									className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-bold text-foreground leading-[0.95]"
+									className="text-6xl sm:text-7xl lg:text-8xl xl:text-9xl font-black text-foreground leading-[0.85] tracking-tighter"
 								>
-									Master your
+									REACH THE
 									<br />
-									<span className="text-tiimo-lavender">Matric exams</span>
+									<span className="text-galaxy-gradient uppercase">Stars</span>
 								</m.h1>
 
 								<m.p
 									initial={{ opacity: 0, y: 20 }}
 									animate={{ opacity: 1, y: 0 }}
 									transition={{ delay: 0.2 }}
-									className="text-lg md:text-xl text-muted-foreground max-w-lg text-pretty mx-auto lg:mx-0 leading-relaxed"
+									className="text-xl md:text-2xl text-muted-foreground max-w-lg text-pretty mx-auto lg:mx-0 font-medium"
 								>
-									Practice past papers, get instant help when you're stuck, and track your progress.
-									We help you pass your Matric.
+									Your mission to ace Matric starts here. Expert guidance, 3D labs, and cosmic rewards.
 								</m.p>
 							</m.div>
 
@@ -203,10 +202,10 @@ export default function Landing() {
 										{/* 3D Character Image */}
 										<div className="absolute inset-0 flex items-center justify-center">
 											<Image
-												src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=400&h=400&fit=crop&crop=faces"
-												alt="Students studying together"
+												src="https://cdn3d.iconscout.com/3d/premium/thumb/astronaut-7253396-5912440.png"
+												alt="3D Astronaut"
 												fill
-												className="object-cover rounded-[var(--radius-2xl)]"
+												className="object-contain"
 												priority
 												unoptimized
 											/>
@@ -311,7 +310,8 @@ export default function Landing() {
 					</section>
 
 					{/* Features Section */}
-					<section className="py-20 lg:py-32">
+					<section className="py-20 lg:py-32 relative">
+						<div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-sa-pattern opacity-5 -z-10" />
 						<m.div
 							initial={{ opacity: 0, y: 40 }}
 							whileInView={{ opacity: 1, y: 0 }}
@@ -319,9 +319,9 @@ export default function Landing() {
 							transition={{ duration: 0.6 }}
 							className="text-center mb-16"
 						>
-							<h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 text-pretty">
-								Everything you need to
-								<span className="text-tiimo-lavender"> pass</span>
+							<h2 className="text-4xl md:text-5xl lg:text-6xl font-black mb-4 text-pretty uppercase tracking-tighter">
+								Ready for
+								<span className="text-tiimo-lavender"> Liftoff?</span>
 							</h2>
 							<p className="text-lg text-muted-foreground max-w-2xl mx-auto text-pretty">
 								Study tools built specifically for the NSC Grade 12 exams.
@@ -339,15 +339,15 @@ export default function Landing() {
 								<m.div
 									key={feature.title}
 									variants={STAGGER_ITEM}
-									className="group p-8 rounded-[var(--radius-xl)] bg-card border border-border/50 hover:border-tiimo-lavender/30 hover:shadow-xl hover:shadow-tiimo-lavender/10 transition-all duration-300"
+									className="group p-8 rounded-[var(--radius-2xl)] bg-white dark:bg-slate-900 shadow-clay hover:shadow-tiimo-xl transition-all duration-500 hover:-translate-y-2 border-none"
 								>
 									<div
-										className={`w-14 h-14 rounded-[var(--radius-lg)] ${feature.color} flex items-center justify-center mb-6`}
+										className={`w-16 h-16 rounded-[var(--radius-xl)] ${feature.color} flex items-center justify-center mb-8 shadow-inner`}
 									>
-										<HugeiconsIcon icon={feature.icon} className="w-7 h-7" />
+										<HugeiconsIcon icon={feature.icon} className="w-8 h-8" />
 									</div>
-									<h3 className="text-xl font-bold mb-3">{feature.title}</h3>
-									<p className="text-muted-foreground leading-relaxed">{feature.description}</p>
+									<h3 className="text-2xl font-black mb-3 tracking-tight uppercase">{feature.title}</h3>
+									<p className="text-muted-foreground leading-relaxed font-medium">{feature.description}</p>
 								</m.div>
 							))}
 						</m.div>
@@ -391,12 +391,12 @@ export default function Landing() {
 							transition={{ duration: 0.6 }}
 							className="mb-12"
 						>
-							<h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
-								Your
-								<span className="text-tiimo-lavender"> subjects</span>
+							<h2 className="text-4xl md:text-5xl lg:text-6xl font-black mb-4 uppercase tracking-tighter">
+								Select Your
+								<span className="text-tiimo-lavender"> Planet</span>
 							</h2>
-							<p className="text-lg text-muted-foreground">
-								Pick your subjects and start practicing for the NSC.
+							<p className="text-lg text-muted-foreground font-medium">
+								Pick your subjects and start your journey through the NSC galaxy.
 							</p>
 						</m.div>
 
@@ -405,7 +405,7 @@ export default function Landing() {
 							initial="hidden"
 							whileInView="visible"
 							viewport={{ once: true, margin: '-100px' }}
-							className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4"
+							className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6"
 						>
 							{SUBJECTS.map((subject) => {
 								const icon = ICON_MAP[subject.icon] || CalculatorIcon;
@@ -415,7 +415,7 @@ export default function Landing() {
 										type="button"
 										variants={STAGGER_ITEM}
 										onClick={() => handleAuthRoute(subject.path)}
-										className="group relative p-6 rounded-[var(--radius-xl)] bg-card border border-border/50 hover:border-primary/30 transition-all duration-300 text-left overflow-hidden"
+										className="group relative p-8 rounded-[var(--radius-2xl)] bg-white dark:bg-slate-900 shadow-clay hover:shadow-tiimo-xl transition-all duration-500 text-left overflow-hidden border-none"
 									>
 										<div
 											className={`absolute top-0 right-0 w-32 h-32 ${subject.bg} rounded-full -mr-16 -mt-16 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-3xl`}
@@ -423,16 +423,16 @@ export default function Landing() {
 
 										<div className="relative z-10">
 											<div
-												className={`w-12 h-12 rounded-[var(--radius-lg)] ${subject.bg} flex items-center justify-center mb-4`}
+												className={`w-14 h-14 rounded-[var(--radius-xl)] ${subject.bg} flex items-center justify-center mb-6 shadow-inner`}
 											>
-												<HugeiconsIcon icon={icon} className={`w-6 h-6 ${subject.color}`} />
+												<HugeiconsIcon icon={icon} className={`w-7 h-7 ${subject.color}`} />
 											</div>
-											<h3 className="text-lg font-bold mb-1">{subject.name}</h3>
-											<p className="text-sm text-muted-foreground">{subject.topics}</p>
+											<h3 className="text-2xl font-black mb-2 uppercase tracking-tight">{subject.name}</h3>
+											<p className="text-sm text-muted-foreground font-medium">{subject.topics}</p>
 										</div>
 
-										<div className="absolute bottom-4 right-4 w-8 h-8 rounded-full bg-secondary flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:translate-x-0 -translate-x-2">
-											<HugeiconsIcon icon={ArrowRight01Icon} className="w-4 h-4" />
+										<div className="absolute bottom-6 right-6 w-10 h-10 rounded-full bg-secondary flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:translate-x-0 -translate-x-2">
+											<HugeiconsIcon icon={ArrowRight01Icon} className="w-5 h-5" />
 										</div>
 									</m.button>
 								);
@@ -509,7 +509,7 @@ export default function Landing() {
 							whileInView={{ opacity: 1, scale: 1 }}
 							viewport={{ once: true }}
 							transition={{ duration: 0.6 }}
-							className="relative overflow-hidden rounded-[var(--radius-2xl)] bg-gradient-to-br from-tiimo-lavender via-tiimo-lavender to-subject-physics p-12 lg:p-20"
+							className="relative overflow-hidden rounded-[var(--radius-2xl)] bg-galaxy-gradient p-12 lg:p-20 shadow-tiimo-xl"
 						>
 							{/* Background Pattern */}
 							<div className="absolute inset-0 opacity-10">
@@ -528,10 +528,10 @@ export default function Landing() {
 							</div>
 
 							<div className="relative z-10 text-center space-y-8">
-								<h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white">
-									Ready to ace
+								<h2 className="text-5xl md:text-6xl lg:text-7xl font-black text-white uppercase tracking-tighter">
+									Ready for
 									<br />
-									your exams?
+									Liftoff?
 								</h2>
 								<p className="text-lg md:text-xl text-white/80 max-w-xl mx-auto">
 									Join thousands of South African students who are already mastering their subjects.

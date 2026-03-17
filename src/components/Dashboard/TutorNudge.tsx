@@ -9,11 +9,11 @@ import { checkForNudges, dismissNudge, type Nudge } from '@/actions/nudge-system
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 
-interface AITutorNudgeProps {
+interface TutorNudgeProps {
 	className?: string;
 }
 
-export function AITutorNudge(_props: AITutorNudgeProps) {
+export function TutorNudge(_props: TutorNudgeProps) {
 	const router = useRouter();
 	const [nudge, setNudge] = useState<Nudge | null>(null);
 	const [loading, setLoading] = useState(true);

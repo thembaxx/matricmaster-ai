@@ -47,7 +47,7 @@ export async function checkForNudges(): Promise<Nudge[]> {
 			title: 'Concept Struggle Detected',
 			message: `You've been struggling with "${topStruggle.concept}". Let's work through it together.`,
 			priority: 100 - topStruggle.struggleCount * 10,
-			actionUrl: `/ai-tutor?topic=${encodeURIComponent(topStruggle.concept)}`,
+			actionUrl: `/tutor?topic=${encodeURIComponent(topStruggle.concept)}`,
 			actionLabel: 'Get Help Now',
 			createdAt: topStruggle.lastStruggleAt || new Date(),
 		});

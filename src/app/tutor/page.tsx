@@ -25,7 +25,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { SUBJECTS } from '@/constants/subjects';
 import { authClient } from '@/lib/auth-client';
-import { saveConversationAction } from '@/lib/db/ai-tutor-actions';
+import { saveConversationAction } from '@/lib/db/tutor-actions';
 import type { AiConversation } from '@/lib/db/schema';
 import { cn } from '@/lib/utils';
 
@@ -53,7 +53,7 @@ interface Flashcard {
 	tags: string[];
 }
 
-export default function AITutorPage() {
+export default function TutorPage() {
 	const { data: session } = authClient.useSession();
 	const [messages, setMessages] = useState<Message[]>([
 		{
@@ -97,7 +97,7 @@ export default function AITutorPage() {
 		setIsLoading(true);
 
 		try {
-			const response = await fetch('/api/ai-tutor', {
+			const response = await fetch('/api/tutor', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({
@@ -182,7 +182,7 @@ export default function AITutorPage() {
 			const recentMessages = messages.slice(-6);
 			const context = recentMessages.map((m) => `${m.role}: ${m.content}`).join('\n\n');
 
-			const response = await fetch('/api/ai-tutor/practice', {
+			const response = await fetch('/api/tutor/practice', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({
@@ -217,7 +217,7 @@ export default function AITutorPage() {
 			const recentMessages = messages.slice(-6);
 			const context = recentMessages.map((m) => `${m.role}: ${m.content}`).join('\n\n');
 
-			const response = await fetch('/api/ai-tutor/flashcards', {
+			const response = await fetch('/api/tutor/flashcards', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({
@@ -297,7 +297,7 @@ export default function AITutorPage() {
 			<div className="min-h-screen flex items-center justify-center bg-background p-4">
 				<Card className="w-full max-w-md">
 					<CardHeader>
-						<CardTitle>Study Helper</CardTitle>
+						<CardTitle>Tutor</CardTitle>
 					</CardHeader>
 					<CardContent className="space-y-4">
 						<p className="text-muted-foreground">Sign in to get help with your studies.</p>
@@ -333,7 +333,7 @@ export default function AITutorPage() {
 							</div>
 							<div>
 								<h1 className="text-lg md:text-xl font-black font-lexend tracking-tight">
-									Study Helper
+									Tutor
 								</h1>
 								<div className="flex items-center gap-2">
 									<span className="flex h-2 w-2 rounded-full bg-green-500 animate-pulse" />
@@ -374,7 +374,7 @@ export default function AITutorPage() {
 							</Button>
 							<Button variant="ios" size="sm" className="rounded-xl" onClick={handleSave}>
 								<HugeiconsIcon icon={SaveIcon} className="h-4 w-4" />
-								<span className="hidden md:inline ml-2">FloppyDisk</span>
+								<span className="hidden md:inline ml-2">Save</span>
 							</Button>
 						</div>
 					</div>

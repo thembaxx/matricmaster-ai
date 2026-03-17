@@ -491,7 +491,7 @@ export const channelMembers = pgTable(
 );
 
 // ============================================================================
-// AI CONVERSATIONS TABLE (Saved AI Tutor conversations)
+// AI CONVERSATIONS TABLE (Saved Tutor conversations)
 // ============================================================================
 
 export const aiConversations = pgTable(

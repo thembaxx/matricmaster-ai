@@ -89,7 +89,7 @@ export const TRANSLATIONS = {
 			dashboard: 'Dashboard',
 			flashcards: 'Flashcards',
 			pastPapers: 'Past Papers',
-			aiTutor: 'AI Tutor',
+			tutor: 'Tutor',
 			studyPlan: 'Study Plan',
 			profile: 'Profile',
 			settings: 'Settings',
@@ -104,7 +104,7 @@ export const TRANSLATIONS = {
 			dashboard: 'Dashbord',
 			flashcards: 'Flitskaarte',
 			pastPapers: 'Vraestelle',
-			aiTutor: 'KI Tutor',
+			tutor: 'Tutor',
 			studyPlan: 'Studieplan',
 			profile: 'Profiel',
 			settings: 'Instellings',
@@ -119,7 +119,7 @@ export const TRANSLATIONS = {
 			dashboard: 'Ideshodi',
 			flashcards: 'Amakhadi Okufunda',
 			payPapers: 'Amaphepha Edlule',
-			aiTutor: 'UM-fundisi we-AI',
+			tutor: 'UM-fundisi',
 			studyPlan: 'Inqubo Yofunda',
 			profile: 'Iphrofayela',
 			settings: 'Izilungiselelo',
@@ -131,7 +131,7 @@ export const TRANSLATIONS = {
 			examTimer: 'Isikhathi Sesiheki',
 		},
 	},
-	aiTutor: {
+	tutor: {
 		EN: {
 			placeholder: 'Ask me anything about your studies...',
 			thinking: 'Thinking...',

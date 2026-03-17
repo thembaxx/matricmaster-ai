@@ -13,7 +13,7 @@ import { m } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { ActivityFeed } from '@/components/Dashboard/ActivityFeed';
-import { AITutorNudge } from '@/components/Dashboard/AITutorNudge';
+import { TutorNudge } from '@/components/Dashboard/TutorNudge';
 import { BriefingGreeting } from '@/components/Dashboard/BriefingGreeting';
 import { DailyMission } from '@/components/Dashboard/DailyMission';
 import { FocusAreasWidget } from '@/components/Dashboard/FocusAreasWidget';
@@ -272,7 +272,7 @@ export default function Dashboard({
 					/>
 
 					<div className="mb-4">
-						<AITutorNudge />
+						<TutorNudge />
 					</div>
 
 					<div className="h-[calc(100vh-320px)] sm:h-full no-scrollbar">

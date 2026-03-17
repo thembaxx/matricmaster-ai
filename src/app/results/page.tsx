@@ -206,7 +206,7 @@ export default function ResultsPage() {
 
 				<div className="mt-6 text-center text-sm text-muted-foreground">
 					<p>Results provided by the Department of Basic Education</p>
-					<p className="mt-1">© {currentYear} MatricMaster AI</p>
+					<p className="mt-1">© {currentYear} MatricMaster</p>
 				</div>
 			</div>
 		</div>

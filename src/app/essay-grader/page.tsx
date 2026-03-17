@@ -74,7 +74,7 @@ export default function EssayGraderPage() {
 
 		setIsGrading(true);
 		try {
-			const response = await fetch('/api/ai-tutor/essay-grader', {
+			const response = await fetch('/api/tutor/essay-grader', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({
@@ -131,7 +131,7 @@ export default function EssayGraderPage() {
 					</div>
 					<h1 className="text-3xl font-bold mb-2">AI Essay Grader</h1>
 					<p className="text-muted-foreground max-w-md mx-auto">
-						Submit your practice essays and get instant AI-powered feedback
+						Submit your practice essays and get instant expert-led feedback
 					</p>
 				</div>
 

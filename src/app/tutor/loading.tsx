@@ -1,6 +1,6 @@
 import { Skeleton } from '@/components/ui/skeleton';
 
-export default function AITutorLoading() {
+export default function TutorLoading() {
 	return (
 		<div className="flex flex-col h-full bg-background">
 			<div className="flex-1 flex flex-col gap-4 p-6 max-w-4xl mx-auto w-full">

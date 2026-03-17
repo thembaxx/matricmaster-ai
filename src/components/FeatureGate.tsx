@@ -45,13 +45,13 @@ const featureData: Record<string, { label: string; description: string; iconGrad
 		iconGradient: 'from-yellow-400 to-orange-500',
 	},
 	aiExplanations: {
-		label: 'AI Explanations',
-		description: 'Get instant AI-powered explanations for any question',
+		label: 'Expert Explanations',
+		description: 'Get instant expert-level explanations for any question',
 		iconGradient: 'from-purple-400 to-pink-500',
 	},
 	voiceTutor: {
 		label: 'Voice Tutor',
-		description: 'Talk to your AI tutor using voice',
+		description: 'Talk to your tutor using voice',
 		iconGradient: 'from-blue-400 to-indigo-500',
 	},
 	analytics: {

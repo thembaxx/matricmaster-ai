@@ -30,7 +30,7 @@ export function AIExplanation({ question, correctAnswer, className }: AIExplanat
 		setError(null);
 
 		try {
-			const response = await fetch('/api/ai-tutor', {
+			const response = await fetch('/api/tutor', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({

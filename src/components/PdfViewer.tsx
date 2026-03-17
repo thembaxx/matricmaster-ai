@@ -212,7 +212,7 @@ export default function PdfViewer({ url, onClose, title }: PdfViewerProps) {
 
 		setIsExtractingFlashcards(true);
 		try {
-			const response = await fetch('/api/ai-tutor/flashcards', {
+			const response = await fetch('/api/tutor/flashcards', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({

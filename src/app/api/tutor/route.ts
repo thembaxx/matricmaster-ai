@@ -156,7 +156,7 @@ export async function POST(request: NextRequest) {
 			suggestions: suggestions.slice(0, 3),
 		});
 	} catch (error) {
-		console.error('AI Tutor Error:', error);
+		console.error('Tutor Error:', error);
 		return NextResponse.json(
 			{ error: 'An error occurred while processing your request' },
 			{ status: 500 }

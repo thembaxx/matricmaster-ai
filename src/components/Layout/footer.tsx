@@ -25,7 +25,7 @@ const footerLinks = {
 		{ label: 'Study guides', href: '/resources' },
 		{ label: 'Past papers', href: '/past-papers' },
 		{ label: 'Flashcards', href: '/flashcards' },
-		{ label: 'Study Helper', href: '/ai-tutor' },
+		{ label: 'Tutor', href: '/tutor' },
 	],
 	company: [
 		{ label: 'About us', href: '/about' },
@@ -207,11 +207,11 @@ export function Footer() {
 						</div>
 					</div>
 					<Link
-						href="mailto:hello@matricmaster.ai"
+						href="mailto:hello@matricmaster.co.za"
 						className="flex items-center gap-2 text-xs text-muted-foreground hover:text-foreground transition-colors"
 					>
 						<HugeiconsIcon icon={Mail01Icon} className="h-3.5 w-3.5" />
-						<span>hello@matricmaster.ai</span>
+						<span>hello@matricmaster.co.za</span>
 					</Link>
 				</m.div>
 			</div>

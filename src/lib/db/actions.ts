@@ -384,7 +384,7 @@ export async function getTodayTimelineEventsAction(): Promise<TodayTimelineEvent
 			} else if (event.eventType === 'past-paper') {
 				navigationHref = `/past-papers${event.subjectId ? `?subject=${subjectId}` : ''}`;
 			} else if (event.eventType === 'ai-tutor') {
-				navigationHref = `/ai-tutor${event.subjectId ? `?subject=${subjectId}` : ''}`;
+				navigationHref = `/tutor${event.subjectId ? `?subject=${subjectId}` : ''}`;
 			} else if (event.lessonId) {
 				navigationHref = `/lesson/${event.lessonId}`;
 			}

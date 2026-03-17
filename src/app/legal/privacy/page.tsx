@@ -3,7 +3,7 @@ import { FocusContent } from '@/components/Layout/FocusContent';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
 export const metadata: Metadata = {
-	title: 'Privacy Policy | MatricMaster AI',
+	title: 'Privacy Policy | MatricMaster',
 	description: 'Learn how we collect, use, and protect your personal information.',
 };
 
@@ -18,7 +18,7 @@ export default function PrivacyPolicyPage() {
 						<section>
 							<h2 className="text-xl font-semibold mb-4">1. Introduction</h2>
 							<p className="text-muted-foreground">
-								MatricMaster AI ("we," "our," or "us") is committed to protecting your privacy. This
+								MatricMaster ("we," "our," or "us") is committed to protecting your privacy. This
 								Privacy Policy explains how we collect, use, disclose, and safeguard your
 								information when you use our educational platform.
 							</p>

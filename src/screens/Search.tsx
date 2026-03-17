@@ -23,6 +23,7 @@ import {
 import type { PastPaper, SearchHistory } from '@/lib/db/schema';
 import { getLessonsBySubject, type Lesson } from '@/lib/lessons';
 import { smartSearch } from '@/services/geminiService';
+import { EmptyState } from '@/components/ui/empty-state';
 
 export default function Search() {
 	const { data: session } = useSession();
@@ -215,11 +216,11 @@ export default function Search() {
 								)}
 
 								{filteredResults.lessons.length === 0 && filteredResults.papers.length === 0 && (
-									<div className="py-20 text-center">
-										<p className="text-muted-foreground font-bold uppercase text-xs tracking-[0.2em]">
-											No matches found for "{query}"
-										</p>
-									</div>
+									<EmptyState
+										title="No results found"
+										description={`We couldn't find any papers or lessons matching "${query}". Try searching for a different topic or subject!`}
+										illustration="https://cdn3d.iconscout.com/3d/premium/thumb/empty-folder-5056779-4213898.png"
+									/>
 								)}
 							</div>
 						</div>

@@ -136,12 +136,12 @@ export function BlockActionSheet({ open, onOpenChange, event, onSuccess }: Block
 		router.push(`/past-papers?subject=${event.subjectId}`);
 	};
 
-	const handleAITutor = () => {
+	const handleTutor = () => {
 		if (!event) return;
 		const params = new URLSearchParams();
 		if (event.subjectId) params.set('subject', String(event.subjectId));
 		params.set('topic', event.title);
-		router.push(`/ai-tutor?${params.toString()}`);
+		router.push(`/tutor?${params.toString()}`);
 	};
 
 	const handleToggleComplete = async () => {
@@ -226,12 +226,12 @@ export function BlockActionSheet({ open, onOpenChange, event, onSuccess }: Block
 					</div>
 				</Button>
 
-				<Button variant="ghost" onClick={handleAITutor} className={`${actionButtonBase} h-28`}>
+				<Button variant="ghost" onClick={handleTutor} className={`${actionButtonBase} h-28`}>
 					<div className="p-3.5 rounded-2xl bg-green-500/10 border border-green-500/20 shadow-sm">
 						<HugeiconsIcon icon={Chat01Icon} className="w-6 h-6 text-green-500" />
 					</div>
 					<div className="text-center space-y-0.5">
-						<span className="text-sm font-bold block">AI Tutor</span>
+						<span className="text-sm font-bold block">Tutor</span>
 						<span className="text-[10px] text-muted-foreground">Ask anything</span>
 					</div>
 				</Button>

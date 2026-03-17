@@ -28,6 +28,7 @@ interface Badge {
 }
 
 import { AchievementsSkeleton } from '@/components/AchievementsSkeleton';
+import { EmptyState } from '@/components/ui/empty-state';
 
 export default function Achievements() {
 	const [activeTab, setActiveTab] = useState('all');
@@ -195,19 +196,12 @@ export default function Achievements() {
 				{/* Badges Grid */}
 				<AnimatePresence mode="wait">
 					{filteredBadges.length === 0 ? (
-						<m.div
-							initial={{ opacity: 0 }}
-							animate={{ opacity: 1 }}
-							exit={{ opacity: 0 }}
-							className="text-center py-32 space-y-4 opacity-50"
-						>
-							<HugeiconsIcon
-								icon={LockIcon}
-								aria-hidden="true"
-								className="w-16 h-16 mx-auto text-muted-foreground"
-							/>
-							<p className="text-xl font-bold uppercase tracking-widest">No achievements yet.</p>
-						</m.div>
+						<EmptyState
+							title="No Achievements Yet"
+							description="Start your learning journey to unlock badges and reach new star levels!"
+							illustration="https://cdn3d.iconscout.com/3d/premium/thumb/trophy-6188219-5067253.png"
+							className="py-24"
+						/>
 					) : (
 						<m.div
 							variants={STAGGER_CONTAINER}

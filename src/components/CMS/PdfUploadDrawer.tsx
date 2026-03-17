@@ -155,13 +155,13 @@ export function PdfUploadDrawer({ isOpen, onClose, subjects, onSuccess }: PdfUpl
 
 			setUploadedUrl(uploadResult.url || null);
 			setProcessingProgress(40);
-			setProcessingStatus('PDF uploaded successfully, starting AI analysis...');
+			setProcessingStatus('PDF uploaded successfully, starting expert analysis...');
 
 			// 2. Extract questions using the uploaded URL
 			const subjectObj = subjects.find((s) => s.id === paperDetails.subjectId);
 
 			setProcessingProgress(60);
-			setProcessingStatus('AI is analyzing questions (Superpowered mode)...');
+			setProcessingStatus('System is analyzing questions (Superpowered mode)...');
 
 			const response = await fetch('/api/extract-questions', {
 				method: 'POST',

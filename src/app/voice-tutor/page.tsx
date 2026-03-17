@@ -137,7 +137,7 @@ export default function VoiceTutorPage() {
 		setIsProcessing(true);
 
 		try {
-			const response = await fetch('/api/ai-tutor', {
+			const response = await fetch('/api/tutor', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({
@@ -169,7 +169,7 @@ export default function VoiceTutorPage() {
 				}
 			}
 		} catch (_error) {
-			toast.error('Failed to get response from AI tutor');
+			toast.error('Failed to get response from tutor');
 		} finally {
 			setIsProcessing(false);
 		}
@@ -204,9 +204,9 @@ export default function VoiceTutorPage() {
 			<div className="max-w-3xl mx-auto">
 				<div className="text-center mb-6">
 					<div className="inline-flex items-center justify-center p-3 rounded-full bg-primary/10 mb-4">
-						<HugeiconsIcon icon={SparklesIcon} className="w-8 h-8 text-primary" />
+						<HugeiconsIcon icon={MicIcon} className="w-8 h-8 text-primary" />
 					</div>
-					<h1 className="text-3xl font-bold mb-2">Voice AI Tutor</h1>
+					<h1 className="text-3xl font-bold mb-2">Voice Tutor</h1>
 					<p className="text-muted-foreground">Study hands-free with voice interaction</p>
 				</div>
 
@@ -294,9 +294,9 @@ export default function VoiceTutorPage() {
 							{messages.length === 0 && (
 								<div className="text-center py-12 text-muted-foreground">
 									<div className="inline-flex items-center justify-center p-4 rounded-full bg-muted mb-4">
-										<HugeiconsIcon icon={SparklesIcon} className="w-8 h-8 opacity-50" />
+										<HugeiconsIcon icon={MicIcon} className="w-8 h-8 opacity-50" />
 									</div>
-									<p className="font-medium">Start a conversation with the AI tutor</p>
+									<p className="font-medium">Start a conversation with your tutor</p>
 									<p className="text-sm mt-1">Tap the microphone and ask a question!</p>
 								</div>
 							)}
