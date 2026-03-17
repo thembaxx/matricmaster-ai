@@ -16,7 +16,7 @@ const FALLBACK = `That's a great question! For detailed answers and practice, ch
 
 Need more help? Ask me another question!`;
 
-export async function handleWhatsAppMessage(from: string, message: string): Promise<string> {
+export async function handleWhatsAppMessage(_from: string, message: string): Promise<string> {
 	const normalized = message.toLowerCase().trim();
 
 	if (normalized.match(/^(hi|hello|hey|start|help)/)) {

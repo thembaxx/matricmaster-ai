@@ -35,8 +35,6 @@ export function useShouldReduceMotion() {
 }
 
 export function getMotionTransition(reducedMotion: boolean) {
-
-export function getMotionTransition(reducedMotion: boolean) {
 	if (reducedMotion) {
 		return { duration: 0.1 };
 	}

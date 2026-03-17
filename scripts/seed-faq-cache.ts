@@ -1,3 +1,9 @@
+import path from 'node:path';
+import dotenv from 'dotenv';
+
+dotenv.config({ path: path.resolve(process.cwd(), '.env.local') });
+dotenv.config();
+
 import { kv } from '@vercel/kv';
 
 const CACHE_PREFIX = 'matricmaster:faq:';

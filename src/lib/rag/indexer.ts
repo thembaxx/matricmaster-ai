@@ -48,13 +48,13 @@ export function parseQuestionsFromText(text: string): ExtractedQuestion[] {
 				questions.push(currentQuestion);
 			}
 			currentQuestion = {
-				questionNumber: Number.parseInt(questionMatch[1]),
+				questionNumber: Number.parseInt(questionMatch[1], 10),
 				questionText: questionMatch[2].trim(),
 			};
 		} else if (currentQuestion && line.match(/^\s*\(?\d+\s*marks?\)?/i)) {
 			const marksMatch = line.match(/(\d+)\s*marks?/i);
 			if (marksMatch) {
-				currentQuestion.marks = Number.parseInt(marksMatch[1]);
+				currentQuestion.marks = Number.parseInt(marksMatch[1], 10);
 			}
 		}
 	}

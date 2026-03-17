@@ -1,6 +1,6 @@
 import { and, asc, eq, gte, like, lte, sql } from 'drizzle-orm';
 import { db } from '@/lib/db';
-import { pastPaperQuestions, pastPapers } from '@/lib/db/schema';
+import { pastPaperQuestions } from '@/lib/db/schema';
 
 interface SearchOptions {
 	query: string;
