@@ -1,4 +1,5 @@
 import { type NextRequest, NextResponse } from 'next/server';
+import { isStaticFAQ, routeAIQuestionServer } from '@/lib/ai/router';
 import { AI_MODELS, generateAI, streamAI } from '@/lib/ai-config';
 import { getAuth } from '@/lib/auth';
 import { checkRateLimit, getRateLimitHeaders } from '@/lib/rate-limit';
@@ -98,6 +99,19 @@ export async function POST(request: NextRequest) {
 
 		if (!message || message.trim().length === 0) {
 			return NextResponse.json({ error: 'Message is required' }, { status: 400 });
+		}
+
+		if (isStaticFAQ(message)) {
+			try {
+				const cachedResponse = await routeAIQuestionServer(message);
+				return NextResponse.json({
+					response: cachedResponse,
+					suggestions: [],
+					cached: true,
+				});
+			} catch {
+				console.debug('Cache failed, continuing with AI generation');
+			}
 		}
 
 		let conversationContext = `${systemPrompt}\n\n`;

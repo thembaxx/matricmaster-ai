@@ -8,6 +8,11 @@ const STATIC_FAQS = new Set([
 	'how do i apply to university',
 	'what is nsc',
 	'how to calculate admission point score',
+	'university application',
+	'aps calculation',
+	'south african universities',
+	'nsc certificate',
+	'grade 12 requirements',
 ]);
 
 function normalizeQuestion(question: string): string {
@@ -47,6 +52,32 @@ export async function routeAIQuestion(question: string): Promise<string> {
 	}
 
 	return webllmEngine.generate(question);
+}
+
+export async function routeAIQuestionServer(question: string): Promise<string> {
+	const normalized = normalizeQuestion(question);
+
+	const cached = await getCachedResponse(normalized);
+	if (cached) {
+		console.debug('Cache hit (server):', normalized);
+		return cached;
+	}
+
+	try {
+		const response = await generateAI({
+			prompt: question,
+			model: AI_MODELS.PRIMARY,
+		});
+
+		if (STATIC_FAQS.has(normalized)) {
+			await setCachedResponse(normalized, response);
+		}
+
+		return response;
+	} catch (error) {
+		console.debug('AI generation failed:', error);
+		throw error;
+	}
 }
 
 export function isStaticFAQ(question: string): boolean {
