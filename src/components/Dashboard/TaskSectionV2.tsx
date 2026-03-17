@@ -21,7 +21,7 @@ export function TaskSection({ title, priority, expanded, onToggle, children }: T
 	};
 
 	return (
-		<m.section layout className="space-y-4">
+		<m.section layout className="space-y-3">
 			<m.button
 				type="button"
 				onClick={onToggle}
@@ -55,7 +55,7 @@ export function TaskSection({ title, priority, expanded, onToggle, children }: T
 						animate={{ opacity: 1, height: 'auto', scale: 1 }}
 						exit={{ opacity: 0, height: 0, scale: 0.98 }}
 						transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-						className="space-y-4 overflow-hidden"
+						className="space-y-3 overflow-hidden"
 					>
 						{children}
 					</m.div>

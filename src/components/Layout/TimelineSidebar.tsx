@@ -175,8 +175,8 @@ export function TimelineSidebar() {
 			</div>
 
 			{/* Timeline */}
-			<div className="flex-1 overflow-y-auto p-4 space-y-1">
-				<p className="text-xs font-medium text-muted-foreground mb-4 px-2">Your day</p>
+			<div className="flex-1 overflow-y-auto p-4 space-y-3">
+				<p className="text-xs font-medium text-muted-foreground mb-2 px-2">Your day</p>
 
 				<div className="relative">
 					{/* Timeline Line */}
@@ -279,7 +279,7 @@ function TimelineEventCard({
 			initial={{ opacity: 0, x: -20 }}
 			animate={{ opacity: 1, x: 0 }}
 			transition={{ delay: index * 0.08, duration: 0.4 }}
-			className="relative rounded-xl overflow-hidden border mb-2"
+			className="relative rounded-xl overflow-hidden border"
 		>
 			<div className="absolute left-0 top-0 h-full w-full bg-background z-0" />
 			<m.button
