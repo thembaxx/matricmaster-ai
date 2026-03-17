@@ -28,13 +28,15 @@ export function isGeminiQuotaError(error: unknown): QuotaErrorInfo {
 		'insufficient quota',
 		'RESOURCE_EXHAUSTED',
 		'429',
+		'500',
+		'503',
 	];
 
 	const isQuotaMessage = quotaErrorMessages.some((quotaKeyword) =>
 		errorMessage.toLowerCase().includes(quotaKeyword.toLowerCase())
 	);
 
-	const isQuotaStatus = status === 429 || status === 403;
+	const isQuotaStatus = status === 429 || status === 403 || status === 500 || status === 503;
 	const isQuotaCode = errorCode === 'RESOURCE_EXHAUSTED' || errorCode === 'QUOTA_EXCEEDED';
 
 	const isGeminiError =
@@ -43,7 +45,15 @@ export function isGeminiQuotaError(error: unknown): QuotaErrorInfo {
 		errorMessage.includes('generative language') ||
 		errorMessage.includes('aistudio');
 
-	const isQuota = (isQuotaMessage && isGeminiError) || isQuotaStatus || isQuotaCode;
+	const isGroqError = errorMessage.includes('groq') || errorMessage.includes('GPU');
+
+	const isOpenRouterError = errorMessage.includes('openrouter');
+
+	const isCohereError = errorMessage.includes('cohere');
+
+	const isMistralError = errorMessage.includes('mistral');
+
+	const isQuota = isQuotaMessage || isQuotaStatus || isQuotaCode;
 
 	let userMessage = errorMessage;
 
@@ -53,9 +63,11 @@ export function isGeminiQuotaError(error: unknown): QuotaErrorInfo {
 		userMessage = responseData.message as string;
 	}
 
-	if (isQuota) {
-		userMessage =
-			'You exceeded your current quota, please check your plan and billing details. For more information on this error, visit Google AI Studio.';
+	if (
+		isQuota &&
+		(isGeminiError || isGroqError || isOpenRouterError || isCohereError || isMistralError)
+	) {
+		userMessage = 'AI service temporarily unavailable. Trying alternative provider...';
 	}
 
 	return {
