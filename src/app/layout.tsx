@@ -1,4 +1,6 @@
 import type { Metadata, Viewport } from 'next';
+import { OfflineIndicator } from '@/components/AI/OfflineIndicator';
+import { WebLLMDownloader } from '@/components/AI/WebLLMDownloader';
 import { DeferredAnalytics } from '@/components/DeferredAnalytics';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 import ClientProviders from '@/components/Layout/ClientProvidersDynamic';
@@ -160,6 +162,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 						<ClientProviders>{children}</ClientProviders>
 						<Toaster />
 						<ServiceWorkerRegistration />
+						<OfflineIndicator />
+						<WebLLMDownloader />
 					</ThemeProvider>
 				</ErrorBoundary>
 				<DeferredAnalytics />
