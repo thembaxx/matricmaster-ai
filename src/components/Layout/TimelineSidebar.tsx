@@ -178,7 +178,7 @@ export function TimelineSidebar() {
 			<div className="flex-1 overflow-y-auto p-4 space-y-3">
 				<p className="text-xs font-medium text-muted-foreground mb-2 px-2">Your day</p>
 
-				<div className="relative">
+				<div className="relative space-y-4">
 					{/* Timeline Line */}
 					<div className="absolute left-[26px] top-2 bottom-2 w-0.5 bg-border" />
 

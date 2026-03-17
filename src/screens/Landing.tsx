@@ -153,7 +153,7 @@ export default function Landing() {
 											className="w-10 h-10 rounded-full border-3 border-background bg-secondary flex items-center justify-center overflow-hidden relative shadow-sm"
 										>
 											<Image
-												src={''}
+												src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=faces"
 												alt="user"
 												fill
 												sizes="40px"
