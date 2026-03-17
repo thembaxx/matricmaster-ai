@@ -2,17 +2,20 @@
 
 import { Home01Icon, Refresh01Icon, Warning } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
+import * as Sentry from '@sentry/nextjs';
+import type NextError from 'next/error';
 import Link from 'next/link';
 import { useEffect } from 'react';
 
 interface GlobalErrorProps {
-	error: Error & { digest?: string };
+	error: NextError & Error & { digest?: string };
 	reset: () => void;
 }
 
 export default function GlobalError({ error, reset }: GlobalErrorProps) {
 	useEffect(() => {
 		console.debug('Application error:', error);
+		Sentry.captureException(error);
 	}, [error]);
 
 	return (

@@ -257,7 +257,7 @@ export default function Dashboard({
 		<div className="min-h-screen bg-background flex">
 			<TimelineSidebar />
 			<FocusContent>
-				<div className="mx-auto px-4 sm:px-6 lg:px-8 pb-8">
+				<div className="mx-auto px-4 sm:px-6 lg:px-8 pb-40">
 					<BriefingGreeting
 						userName={session?.user?.name}
 						completedCount={completedCount}
@@ -271,17 +271,17 @@ export default function Dashboard({
 						briefingData={briefingData ?? undefined}
 					/>
 
-					<div className="mb-4">
+					<div className="mb-6">
 						<AITutorNudge />
 					</div>
 
-					<div className="h-[calc(100vh-320px)] sm:h-full no-scrollbar">
-						<m.div layout className="space-y-12 pb-32">
-							{/* Welcome & Stats Row - tighter grouping */}
-							<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+					<div className="h-full no-scrollbar">
+						<m.div layout className="space-y-8 pb-36">
+							{/* Welcome & Stats Row */}
+							<div className="grid grid-cols-1 md:grid-cols-3 gap-6">
 								<DailyMission />
 
-								<div className="grid grid-cols-1 md:grid-cols-3 col-span-full gap-4">
+								<div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
 									<UniversityGoalCard />
 									<MistakeBank initialCount={mistakeCount ?? 0} />
 									<FocusAreasWidget />
@@ -289,7 +289,7 @@ export default function Dashboard({
 							</div>
 
 							{/* Gamification Row */}
-							<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+							<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 								<XpHeader
 									variant="full"
 									initialAchievements={achievements}
@@ -298,8 +298,8 @@ export default function Dashboard({
 								<WeeklyChallenge initialProgress={progress} />
 							</div>
 
-							{/* Task List - compact spacing for related items */}
-							<div className="space-y-8">
+							{/* Task List */}
+							<div className="space-y-6">
 								<TaskSection
 									title="High Priority"
 									priority="high"
@@ -353,7 +353,7 @@ export default function Dashboard({
 								initial={{ opacity: 0, y: 20 }}
 								animate={{ opacity: 1, y: 0 }}
 								transition={{ delay: 0.55 }}
-								className="space-y-4"
+								className="space-y-6"
 							>
 								<BuddyPanel />
 							</m.section>
@@ -362,6 +362,7 @@ export default function Dashboard({
 								initial={{ opacity: 0, y: 20 }}
 								animate={{ opacity: 1, y: 0 }}
 								transition={{ delay: 0.58 }}
+								className="space-y-6"
 							>
 								<KnowledgeHeatmap compact />
 							</m.section>
@@ -408,7 +409,7 @@ export default function Dashboard({
 											whileHover={{ x: 4 }}
 											whileTap={{ scale: 0.99 }}
 											onClick={() => router.push(item.href)}
-											className="w-full p-4 bg-card border border-border rounded-2xl text-left transition-all flex items-center gap-4 group"
+											className="w-full p-4 bg-card border border-border rounded-2xl text-left transition-all flex items-center gap-4 group hover:border-primary/30 hover:shadow-md"
 										>
 											<div
 												className={`w-10 h-10 ${item.color} rounded-xl flex items-center justify-center shrink-0`}
