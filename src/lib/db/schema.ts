@@ -165,6 +165,36 @@ export const pastPapers = pgTable(
 );
 
 // ============================================================================
+// PAST PAPER QUESTIONS TABLE (Individual questions from past papers)
+// ============================================================================
+
+export const pastPaperQuestions = pgTable(
+	'past_paper_questions',
+	{
+		id: uuid('id').defaultRandom().primaryKey(),
+		paperId: uuid('paper_id').references(() => pastPapers.id),
+		questionText: text('question_text').notNull(),
+		answerText: text('answer_text'),
+		year: integer('year').notNull(),
+		subject: varchar('subject', { length: 100 }).notNull(),
+		paper: varchar('paper', { length: 20 }),
+		month: varchar('month', { length: 20 }),
+		topic: varchar('topic', { length: 200 }),
+		marks: integer('marks'),
+		questionNumber: integer('question_number'),
+		createdAt: timestamp('created_at').defaultNow(),
+	},
+	(table) => ({
+		topicIdx: index('past_paper_questions_topic_idx').on(table.topic),
+		subjectIdx: index('past_paper_questions_subject_idx').on(table.subject),
+		yearIdx: index('past_paper_questions_year_idx').on(table.year),
+	})
+);
+
+export type PastPaperQuestion = typeof pastPaperQuestions.$inferSelect;
+export type NewPastPaperQuestion = typeof pastPaperQuestions.$inferInsert;
+
+// ============================================================================
 // USER PROGRESS TABLE (Track learning progress)
 // ============================================================================
 
