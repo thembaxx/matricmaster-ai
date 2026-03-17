@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useZModeStore } from '@/stores/useZModeStore';
 
 export function useReducedMotion() {
 	const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
@@ -21,6 +22,19 @@ export function useReducedMotion() {
 
 	return prefersReducedMotion;
 }
+
+export function useZMode() {
+	const isZMode = useZModeStore((state) => state.isZMode);
+	return isZMode;
+}
+
+export function useShouldReduceMotion() {
+	const reduceMotion = useReducedMotion();
+	const zMode = useZMode();
+	return reduceMotion || zMode;
+}
+
+export function getMotionTransition(reducedMotion: boolean) {
 
 export function getMotionTransition(reducedMotion: boolean) {
 	if (reducedMotion) {

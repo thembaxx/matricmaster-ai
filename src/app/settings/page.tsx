@@ -16,6 +16,7 @@ import { HugeiconsIcon } from '@hugeicons/react';
 import Link from 'next/link';
 import { useEffect, useState, useTransition } from 'react';
 import { toast } from 'sonner';
+import { ZModeToggle } from '@/components/Settings/ZModeToggle';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import {
@@ -33,7 +34,6 @@ import { Separator } from '@/components/ui/separator';
 import { Switch } from '@/components/ui/switch';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { authClient } from '@/lib/auth-client';
-
 import {
 	changePasswordAction,
 	deleteAccountAction,
@@ -709,6 +709,8 @@ export default function SettingsPage() {
 										onCheckedChange={(v) => handlePrivacyChange('analyticsTracking', v)}
 									/>
 								</div>
+								<Separator />
+								<ZModeToggle />
 							</CardContent>
 						</Card>
 
