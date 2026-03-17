@@ -21,7 +21,16 @@ function getUserApiKey(): string | undefined {
 function getApiKey(): string | undefined {
 	const userKey = getUserApiKey();
 	if (userKey) return userKey;
-	return process.env.GEMINI_API_KEY;
+	const envKey = process.env.GEMINI_API_KEY;
+	if (!envKey) {
+		console.warn('GEMINI_API_KEY environment variable is not set');
+		return undefined;
+	}
+	if (envKey.length < 20) {
+		console.warn('GEMINI_API_KEY appears to be invalid (too short)');
+		return undefined;
+	}
+	return envKey;
 }
 
 function getModel(): string {
@@ -53,14 +62,18 @@ interface ProviderConfig {
 function getGoogleProvider(): ProviderConfig {
 	const apiKey = getApiKey();
 	if (!apiKey) {
-		throw new Error('GEMINI_API_KEY is not configured');
+		throw new Error(
+			'GEMINI_API_KEY is not configured. Please set GEMINI_API_KEY environment variable.'
+		);
 	}
 	return {
 		name: 'google',
 		apiKey,
 		createModel: () => {
+			const modelName = getModel();
+			console.debug(`Creating Google AI model: ${modelName}`);
 			const google = createGoogleGenerativeAI({ apiKey: apiKey! });
-			return google(getModel());
+			return google(modelName);
 		},
 	};
 }
@@ -161,6 +174,11 @@ export async function generateTextWithAI(options: GenerateOptions): Promise<stri
 			const isQuota = isQuotaError(error);
 			const providerName = getProvider().name;
 			console.warn(`Provider ${providerName} failed (quota: ${isQuota}): ${lastError.message}`);
+
+			// Re-throw immediately with clear message for debugging
+			if (lastError.message.includes('Headers') || lastError.message.includes('required')) {
+				throw new Error(`AI Provider ${providerName} configuration error: ${lastError.message}`);
+			}
 		}
 	}
 

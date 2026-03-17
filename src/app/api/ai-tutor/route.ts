@@ -4,8 +4,6 @@ import { AI_MODELS, generateAI, streamAI } from '@/lib/ai-config';
 import { getAuth } from '@/lib/auth';
 import { checkRateLimit, getRateLimitHeaders } from '@/lib/rate-limit';
 
-const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
-
 interface ChatMessage {
 	role: 'user' | 'assistant';
 	content: string;
@@ -73,6 +71,7 @@ export async function POST(request: NextRequest) {
 			return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 		}
 
+		const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 		const rateLimitResult = checkRateLimit(session.user.id, 'ai-tutor');
 		if (!rateLimitResult.success) {
 			return NextResponse.json(

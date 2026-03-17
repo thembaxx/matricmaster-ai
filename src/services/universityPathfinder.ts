@@ -5,8 +5,14 @@ import { z } from 'zod';
 import { getDb } from '@/lib/db';
 import { apsMilestones, universityTargets } from '@/lib/db/schema';
 
-const google = createGoogleGenerativeAI({ apiKey: process.env.GEMINI_API_KEY || '' });
-const geminiModel = google('gemini-2.5-flash');
+function getGeminiModel() {
+	const apiKey = process.env.GEMINI_API_KEY;
+	if (!apiKey) {
+		throw new Error('GEMINI_API_KEY is not configured');
+	}
+	const google = createGoogleGenerativeAI({ apiKey });
+	return google('gemini-2.5-flash');
+}
 
 interface StudyMilestone {
 	title: string;
@@ -149,7 +155,7 @@ Return as JSON with this structure:
 `;
 
 	const { object } = await generateObject({
-		model: geminiModel,
+		model: getGeminiModel(),
 		schema: z.object({
 			prioritizedSubjects: z.array(z.string()),
 			milestones: z.array(

@@ -5,6 +5,7 @@ export const revalidate = 0;
 
 import { type NextRequest, NextResponse } from 'next/server';
 import { getExtractedQuestionsAction, saveExtractedQuestionsAction } from '@/lib/db/actions';
+import { UnsupportedSubjectError } from '@/services/markdownExtractor';
 import { extractQuestionsFromPDF, getCachedQuestions } from '@/services/pdfExtractor';
 
 export const runtime = 'nodejs';
@@ -143,6 +144,18 @@ export async function POST(request: NextRequest) {
 		});
 	} catch (error) {
 		console.debug('[API] Error extracting questions:', error);
+
+		if (error instanceof UnsupportedSubjectError) {
+			return NextResponse.json(
+				{
+					error: 'Unsupported document',
+					reason: error.reason,
+					suggestion: error.suggestion,
+					isUnsupported: true,
+				},
+				{ status: 422 }
+			);
+		}
 
 		const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
 

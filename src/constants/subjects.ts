@@ -19,6 +19,29 @@ export interface Subject {
 	fontFamily: string;
 }
 
+export const NSC_SUPPORTED_SUBJECTS: SubjectId[] = [
+	'mathematics',
+	'physics',
+	'chemistry',
+	'life-sciences',
+	'english',
+	'geography',
+	'history',
+	'accounting',
+	'economics',
+];
+
+export function isNSCSupportedSubject(subjectIdOrName: string): boolean {
+	const normalizedInput = subjectIdOrName.toLowerCase().trim();
+	const supportedNames = NSC_SUPPORTED_SUBJECTS.map((id) =>
+		SUBJECTS[id]?.name.toLowerCase()
+	).filter(Boolean);
+	return (
+		NSC_SUPPORTED_SUBJECTS.includes(normalizedInput as SubjectId) ||
+		supportedNames.includes(normalizedInput)
+	);
+}
+
 export const SUBJECTS: Record<SubjectId, Subject> = {
 	mathematics: {
 		id: 'mathematics',

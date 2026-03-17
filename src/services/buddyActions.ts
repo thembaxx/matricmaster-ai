@@ -74,7 +74,8 @@ export async function getBuddyProfile(): Promise<BuddyProfile | null> {
 			personality: (profile.personality || 'mentor') as BuddyPersonality,
 		};
 	} catch (error) {
-		console.debug('Error in getBuddyProfile:', error);
+		console.error('Error in getBuddyProfile:', error);
+		console.debug('Stack trace:', error instanceof Error ? error.stack : 'No stack');
 		return null;
 	}
 }
@@ -233,7 +234,8 @@ export async function getStrugglingConcepts(): Promise<ConceptStruggleInfo[]> {
 
 		return results as ConceptStruggleInfo[];
 	} catch (error) {
-		console.debug('Error in getStrugglingConcepts:', error);
+		console.error('Error in getStrugglingConcepts:', error);
+		console.debug('Stack trace:', error instanceof Error ? error.stack : 'No stack');
 		return [];
 	}
 }

@@ -2,7 +2,7 @@ import { GoogleGenAI } from '@google/genai';
 import { z } from 'zod';
 import { logError, logInfo, logWarn, performance } from '@/lib/monitoring';
 import { convertPdfToMarkdown, uploadMarkdownToUploadThing } from './markdownConverter';
-import { extractQuestionsFromMarkdown } from './markdownExtractor';
+import { extractQuestionsFromMarkdown, UnsupportedSubjectError } from './markdownExtractor';
 
 // Types for extracted questions
 export interface ExtractedOption {
@@ -266,10 +266,16 @@ export async function extractQuestionsFromPDF(
 						extractedData.markdownFileUrl = markdownUpload.url;
 					}
 				} catch (error) {
+					if (error instanceof UnsupportedSubjectError) {
+						logWarn('pdf-extraction', `Unsupported subject for ${paperId}`, {
+							reason: error.reason,
+							suggestion: error.suggestion,
+						});
+						throw error;
+					}
 					logWarn('pdf-extraction', `Markdown extraction failed for ${paperId}`, {
 						error: error instanceof Error ? error.message : 'Unknown error',
 					});
-					// Fallback to PDF extraction
 				}
 			} else {
 				logWarn('pdf-extraction', `Markdown conversion failed for ${paperId}`, {

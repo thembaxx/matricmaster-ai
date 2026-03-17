@@ -2,8 +2,6 @@ import { type NextRequest, NextResponse } from 'next/server';
 import { generateAI } from '@/lib/ai-config';
 import { getAuth } from '@/lib/auth';
 
-const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
-
 interface Flashcard {
 	id: string;
 	front: string;
@@ -46,6 +44,7 @@ export async function POST(request: NextRequest) {
 			return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 		}
 
+		const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 		if (!GEMINI_API_KEY) {
 			return NextResponse.json(
 				{ error: 'AI service not configured. Please set GEMINI_API_KEY.' },
