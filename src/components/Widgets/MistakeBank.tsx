@@ -23,7 +23,7 @@ export function MistakeBank({ initialCount = 0 }: MistakeBankProps) {
 		return (
 			<Card className="rounded-[2rem] border-border/50 shadow-tiimo overflow-hidden bg-gradient-to-br from-emerald-500/10 to-emerald-600/5">
 				<CardHeader className="p-6 pb-0">
-					<CardTitle className="text-xs font-black uppercase tracking-widest text-emerald-600 flex items-center gap-2">
+					<CardTitle className="text-xs font-bold text-emerald-600 flex items-center gap-2">
 						<HugeiconsIcon icon={RefreshIcon} className="w-4 h-4" />
 						Mistake Bank
 					</CardTitle>

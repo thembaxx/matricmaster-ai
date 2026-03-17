@@ -281,7 +281,7 @@ export default function Dashboard({
 							<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
 								<DailyMission />
 
-								<div className="grid grid-cols-1 md:grid-cols-3 col-span-3 gap-4">
+								<div className="grid grid-cols-1 md:grid-cols-3 col-span-full gap-4">
 									<UniversityGoalCard />
 									<MistakeBank initialCount={mistakeCount ?? 0} />
 									<FocusAreasWidget />

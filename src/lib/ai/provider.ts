@@ -1,9 +1,23 @@
 import { createGoogleGenerativeAI } from '@ai-sdk/google';
 import { generateText, streamText } from 'ai';
+import { GeminiQuotaError, isGeminiQuotaError } from './quota-error';
 
 const DEFAULT_MODEL = 'gemini-2.5-flash';
 
+const STORAGE_KEY = 'matricmaster_user_gemini_api_key';
+
+function getUserApiKey(): string | undefined {
+	if (typeof window === 'undefined') return undefined;
+	try {
+		return localStorage.getItem(STORAGE_KEY) || undefined;
+	} catch {
+		return undefined;
+	}
+}
+
 function getApiKey(): string | undefined {
+	const userKey = getUserApiKey();
+	if (userKey) return userKey;
 	return process.env.GEMINI_API_KEY;
 }
 
@@ -39,15 +53,22 @@ export async function generateTextWithAI(options: GenerateOptions): Promise<stri
 
 	const google = createGoogleProvider();
 
-	const result = await generateText({
-		model: google(model),
-		prompt,
-		system,
-		temperature,
-		topP,
-	});
+	try {
+		const result = await generateText({
+			model: google(model),
+			prompt,
+			system,
+			temperature,
+			topP,
+		});
 
-	return result.text;
+		return result.text;
+	} catch (error) {
+		if (isGeminiQuotaError(error).isQuotaError) {
+			throw new GeminiQuotaError();
+		}
+		throw error;
+	}
 }
 
 export function streamTextWithAI(options: StreamOptions) {

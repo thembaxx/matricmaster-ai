@@ -5,6 +5,8 @@ import { HugeiconsIcon } from '@hugeicons/react';
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { useGeminiQuotaModal } from '@/contexts/GeminiQuotaModalContext';
+import { isQuotaError } from '@/lib/ai/quota-error';
 import { cn } from '@/lib/utils';
 import { getExplanation } from '@/services/geminiService';
 
@@ -23,6 +25,7 @@ export function AnswerBreakdown({
 	topic,
 	onContinue,
 }: AnswerBreakdownProps) {
+	const { triggerQuotaError } = useGeminiQuotaModal();
 	const [explanation, setExplanation] = useState<string | null>(null);
 	const [loading, setLoading] = useState(true);
 
@@ -32,13 +35,16 @@ export function AnswerBreakdown({
 				const result = await getExplanation('General', topic);
 				setExplanation(result);
 			} catch (error) {
+				if (isQuotaError(error)) {
+					triggerQuotaError();
+				}
 				console.error('Failed to fetch explanation:', error);
 			} finally {
 				setLoading(false);
 			}
 		}
 		fetchExplanation();
-	}, [topic]);
+	}, [topic, triggerQuotaError]);
 
 	return (
 		<Card

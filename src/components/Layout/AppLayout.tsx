@@ -3,11 +3,13 @@
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 import { toast } from 'sonner';
+import { GeminiQuotaErrorModal } from '@/components/AI/GeminiQuotaErrorModal';
 import { GlassOrb } from '@/components/AI/GlassOrb';
 import { ClientOnly } from '@/components/ClientOnly';
 import { DailyLoginBonus } from '@/components/Gamification/DailyLoginBonus';
 import { MobileLayoutFixes } from '@/components/Layout/MobileLayoutFixes';
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
+import { useGeminiQuotaModal } from '@/contexts/GeminiQuotaModalContext';
 import { useTheme } from '@/hooks/use-theme';
 import { authClient } from '@/lib/auth-client';
 import { useNotificationStore } from '@/stores/useNotificationStore';
@@ -16,6 +18,11 @@ import { BottomNavigation } from './BottomNavigation';
 import { AppSidebar } from './DesktopSidebar';
 import { MobileNavDrawer } from './MobileNavDrawer';
 import { ResponsiveHeader } from './ResponsiveHeader';
+
+function QuotaErrorModal() {
+	const { showQuotaModal, hideQuotaModal } = useGeminiQuotaModal();
+	return <GeminiQuotaErrorModal open={showQuotaModal} onOpenChange={hideQuotaModal} />;
+}
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
 	const pathname = usePathname();
@@ -41,7 +48,6 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 				<ClientOnly>{user && <DailyLoginBonus />}</ClientOnly>
 				<ClientOnly>
 					<MobileLayoutFixes />
-					{/* <MobileViewTest /> */}
 				</ClientOnly>
 				<div className="flex-1 flex flex-col min-h-screen relative max-w-full">
 					<div className="flex-1 flex flex-col w-full mx-auto max-w-full">
@@ -85,7 +91,6 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 			<ClientOnly>
 				<DailyLoginBonus />
 				<MobileLayoutFixes />
-				{/* <MobileViewTest /> */}
 			</ClientOnly>
 			<AppSidebar
 				user={user}
@@ -149,6 +154,10 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 						<BottomNavigation pathname={pathname} />
 					)}
 				</div>
+				<ClientOnly>
+					<QuotaErrorModal />
+				</ClientOnly>
+				<GlobalStyles />
 			</SidebarInset>
 			<GlassOrb />
 			<GlobalStyles />
