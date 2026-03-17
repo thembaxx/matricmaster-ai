@@ -29,7 +29,7 @@ export function FocusAreasWidget() {
 				const topics = await getWeakTopicsForUser();
 				setWeakTopics(topics);
 			} catch (error) {
-				console.error('Failed to load weak topics:', error);
+				console.debug('Failed to load weak topics:', error);
 			} finally {
 				setIsLoading(false);
 			}
@@ -43,7 +43,7 @@ export function FocusAreasWidget() {
 			const result = await generateFlashcardsFromWeakTopics();
 			setGenerationResult(result);
 		} catch (error) {
-			console.error('Failed to generate flashcards:', error);
+			console.debug('Failed to generate flashcards:', error);
 		} finally {
 			setIsGenerating(false);
 		}

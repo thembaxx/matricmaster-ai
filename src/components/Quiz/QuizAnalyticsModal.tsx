@@ -50,7 +50,7 @@ export function QuizAnalyticsModal({ open, onOpenChange }: QuizAnalyticsModalPro
 				setStats(data);
 			}
 		} catch (error) {
-			console.error('Failed to load analytics:', error);
+			console.debug('Failed to load analytics:', error);
 		} finally {
 			setIsLoading(false);
 		}

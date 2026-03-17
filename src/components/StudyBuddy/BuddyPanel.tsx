@@ -41,7 +41,7 @@ export function BuddyPanel({ onStartChat }: BuddyPanelProps) {
 				setStruggles(struggling);
 				setConfidence(conf);
 			} catch (error) {
-				console.error('Failed to load buddy data:', error);
+				console.debug('Failed to load buddy data:', error);
 			} finally {
 				setLoading(false);
 			}

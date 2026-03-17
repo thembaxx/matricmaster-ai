@@ -54,7 +54,7 @@ export default function SignUpForm() {
 				console.warn('Database initialization failed:', result.message);
 			}
 		} catch (err) {
-			console.error('Error initializing database:', err);
+			console.debug('Error initializing database:', err);
 		}
 	};
 
@@ -73,7 +73,7 @@ export default function SignUpForm() {
 				setIsLoading(false);
 			} else {
 				setSuccess(true);
-				initializeDatabase().catch(console.error);
+				initializeDatabase().catch(console.debug);
 
 				setTimeout(() => {
 					router.push('/onboarding');

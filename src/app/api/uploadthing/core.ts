@@ -26,7 +26,7 @@ export const ourFileRouter = {
 				// Return user ID to be available in onUploadComplete
 				return { userId: session.user.id };
 			} catch (error) {
-				console.error('[UploadThing] Middleware error:', error);
+				console.debug('[UploadThing] Middleware error:', error);
 				throw new UploadThingError(
 					error instanceof Error ? error.message : 'Internal Server Error'
 				);
@@ -54,7 +54,7 @@ export const ourFileRouter = {
 				console.log('[UploadThing] Past paper PDF uploaded:', file.ufsUrl);
 				return { url: file.ufsUrl };
 			} catch (error) {
-				console.error('[UploadThing] Error in pastPaperPDF onUploadComplete:', error);
+				console.debug('[UploadThing] Error in pastPaperPDF onUploadComplete:', error);
 				throw error;
 			}
 		}),
@@ -72,7 +72,7 @@ export const ourFileRouter = {
 				console.log('[UploadThing] Past paper markdown uploaded:', file.ufsUrl);
 				return { url: file.ufsUrl };
 			} catch (error) {
-				console.error('[UploadThing] Error in pastPaperMarkdown onUploadComplete:', error);
+				console.debug('[UploadThing] Error in pastPaperMarkdown onUploadComplete:', error);
 				throw error;
 			}
 		}),
@@ -89,7 +89,7 @@ export const ourFileRouter = {
 				console.log('[UploadThing] Paper image uploaded:', file.ufsUrl);
 				return { url: file.ufsUrl };
 			} catch (error) {
-				console.error('[UploadThing] Error in paperImage onUploadComplete:', error);
+				console.debug('[UploadThing] Error in paperImage onUploadComplete:', error);
 				throw error;
 			}
 		}),

@@ -41,7 +41,7 @@ export async function getExplanationAction(subject: string, topic: string): Prom
 		if (error instanceof z.ZodError) {
 			return 'Invalid input provided.';
 		}
-		console.error('AI API Error:', error);
+		console.debug('AI API Error:', error);
 		return "Sorry, I couldn't generate an explanation right now. Please try again later.";
 	}
 }
@@ -62,7 +62,7 @@ export async function generateStudyPlanAction(subjects: string[], hours: number)
 		if (error instanceof z.ZodError) {
 			return 'Invalid input provided.';
 		}
-		console.error('Study Plan Generation Error:', error);
+		console.debug('Study Plan Generation Error:', error);
 		return "I'll help you create a plan soon!";
 	}
 }
@@ -99,7 +99,7 @@ export async function smartSearchAction(
 		if (error instanceof z.ZodError) {
 			return null;
 		}
-		console.error('Smart Search Error:', error);
+		console.debug('Smart Search Error:', error);
 		return null;
 	}
 }

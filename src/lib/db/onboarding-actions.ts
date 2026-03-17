@@ -20,7 +20,7 @@ export async function completeOnboardingAction() {
 
 		return { success: true };
 	} catch (error) {
-		console.error('Error completing onboarding:', error);
+		console.debug('Error completing onboarding:', error);
 		return {
 			success: false,
 			error: error instanceof Error ? error.message : 'Failed to complete onboarding',

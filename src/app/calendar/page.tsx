@@ -174,7 +174,7 @@ export default function CalendarPage() {
 				setEvents(mappedEvents);
 			}
 		} catch (error) {
-			console.error('Error loading events:', error);
+			console.debug('Error loading events:', error);
 		} finally {
 			setIsLoading(false);
 		}
@@ -272,7 +272,7 @@ export default function CalendarPage() {
 				toast.error(result.error || 'Failed to create event');
 			}
 		} catch (error) {
-			console.error('Error creating event:', error);
+			console.debug('Error creating event:', error);
 			toast.error('Failed to create event');
 		}
 
@@ -311,7 +311,7 @@ export default function CalendarPage() {
 				toast.error(result.error || 'Failed to delete event');
 			}
 		} catch (error) {
-			console.error('Error deleting event:', error);
+			console.debug('Error deleting event:', error);
 			toast.error('Failed to delete event');
 		}
 	};

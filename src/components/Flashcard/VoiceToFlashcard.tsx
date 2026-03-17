@@ -7,6 +7,8 @@ import { useRef, useState } from 'react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { useGeminiQuotaModal } from '@/contexts/GeminiQuotaModalContext';
+import { isQuotaError } from '@/lib/ai/quota-error';
 import {
 	generateFlashcardsFromVoice,
 	generateNotesFromConversation,
@@ -18,6 +20,7 @@ interface VoiceToFlashcardProps {
 }
 
 export function VoiceToFlashcard({ subject, onFlashcardsGenerated }: VoiceToFlashcardProps) {
+	const { triggerQuotaError } = useGeminiQuotaModal();
 	const [isRecording, setIsRecording] = useState(false);
 	const [transcript, setTranscript] = useState('');
 	const [processing, setProcessing] = useState(false);
@@ -45,7 +48,7 @@ export function VoiceToFlashcard({ subject, onFlashcardsGenerated }: VoiceToFlas
 		};
 
 		recognition.onerror = (event: any) => {
-			console.error('Speech recognition error:', event.error);
+			console.debug('Speech recognition error:', event.error);
 			setIsRecording(false);
 		};
 
@@ -85,7 +88,10 @@ export function VoiceToFlashcard({ subject, onFlashcardsGenerated }: VoiceToFlas
 
 			setTranscript('');
 		} catch (error) {
-			console.error('Processing error:', error);
+			if (isQuotaError(error)) {
+				triggerQuotaError();
+			}
+			console.debug('Processing error:', error);
 			toast.error('Failed to process voice');
 		} finally {
 			setProcessing(false);

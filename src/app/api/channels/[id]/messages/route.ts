@@ -38,7 +38,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
 
 		return NextResponse.json(messages);
 	} catch (error) {
-		console.error('[API] Error fetching messages:', error);
+		console.debug('[API] Error fetching messages:', error);
 		return NextResponse.json({ error: 'Failed to fetch messages' }, { status: 500 });
 	}
 }

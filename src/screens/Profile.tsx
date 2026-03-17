@@ -154,7 +154,7 @@ export default function Profile() {
 					),
 				});
 			} catch (error) {
-				console.error('Error fetching profile data:', error);
+				console.debug('Error fetching profile data:', error);
 			} finally {
 				setIsLoading(false);
 			}

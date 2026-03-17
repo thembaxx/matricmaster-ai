@@ -87,7 +87,7 @@ export const RecentAchievements = memo(function RecentAchievements({
 
 				setAchievements(unlocked);
 			} catch (error) {
-				console.error('[RecentAchievements] Error fetching:', error);
+				console.debug('[RecentAchievements] Error fetching:', error);
 			} finally {
 				setIsLoading(false);
 			}

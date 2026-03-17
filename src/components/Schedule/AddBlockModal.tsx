@@ -201,7 +201,7 @@ export function AddBlockModal({ open, onOpenChange, onSuccess, editMode }: AddBl
 				}
 			}
 		} catch (error) {
-			console.error('Error saving event:', error);
+			console.debug('Error saving event:', error);
 			toast.error('Something went wrong');
 		} finally {
 			setIsSubmitting(false);

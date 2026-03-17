@@ -157,7 +157,7 @@ test.describe('Session Persistence', () => {
 				console.log('✅ Cookie expiry matches ~7 days configuration.');
 			}
 		} else {
-			console.error('❌ Session cookie not found!');
+			console.debug('❌ Session cookie not found!');
 		}
 	});
 });

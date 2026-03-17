@@ -240,7 +240,7 @@ export default function PdfViewer({ url, onClose, title }: PdfViewerProps) {
 				toast.error('Failed to generate flashcards');
 			}
 		} catch (error) {
-			console.error('Error extracting flashcards:', error);
+			console.debug('Error extracting flashcards:', error);
 			toast.error('Failed to extract flashcards');
 		} finally {
 			setIsExtractingFlashcards(false);

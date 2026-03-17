@@ -74,7 +74,7 @@ export default function ModerationDashboard() {
 				setFlags(result.data);
 			}
 		} catch (error) {
-			console.error('Error loading flags:', error);
+			console.debug('Error loading flags:', error);
 		} finally {
 			setIsLoading(false);
 		}
@@ -186,7 +186,7 @@ export default function ModerationDashboard() {
 				toast.error(result.error || 'Failed to process flag');
 			}
 		} catch (error) {
-			console.error('Error processing flag:', error);
+			console.debug('Error processing flag:', error);
 			toast.error('Failed to process flag');
 		}
 	};

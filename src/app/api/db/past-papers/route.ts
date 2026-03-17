@@ -32,14 +32,14 @@ export async function GET(request: NextRequest) {
 		);
 
 		if (!response.ok) {
-			console.error('[API] Database query failed:', response.status);
+			console.debug('[API] Database query failed:', response.status);
 			return NextResponse.json({ paper: null });
 		}
 
 		const data = await response.json();
 		return NextResponse.json({ paper: data[0] || null });
 	} catch (error) {
-		console.error('[API] Error fetching past paper:', error);
+		console.debug('[API] Error fetching past paper:', error);
 		return NextResponse.json({ error: 'Failed to fetch past paper' }, { status: 500 });
 	}
 }
@@ -96,7 +96,7 @@ export async function POST(request: NextRequest) {
 
 		if (!upsertResponse.ok) {
 			const errorText = await upsertResponse.text();
-			console.error('[API] Database insert failed:', upsertResponse.status, errorText);
+			console.debug('[API] Database insert failed:', upsertResponse.status, errorText);
 			return NextResponse.json(
 				{ error: 'Failed to save past paper', details: errorText },
 				{ status: 500 }
@@ -105,7 +105,7 @@ export async function POST(request: NextRequest) {
 
 		return NextResponse.json({ success: true });
 	} catch (error) {
-		console.error('[API] Error saving past paper:', error);
+		console.debug('[API] Error saving past paper:', error);
 		return NextResponse.json({ error: 'Failed to save past paper' }, { status: 500 });
 	}
 }

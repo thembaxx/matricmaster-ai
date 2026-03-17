@@ -130,7 +130,7 @@ export default function TutoringSessionPage() {
 						audioStart: true,
 					});
 				} catch (error) {
-					console.error('Failed to join:', error);
+					console.debug('Failed to join:', error);
 					toast.error('Failed to join the video call');
 					setIsLoading(false);
 				}

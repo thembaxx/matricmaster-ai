@@ -100,7 +100,7 @@ export async function POST(request: NextRequest) {
 			message: `Webhook '${webhookId}' created/updated`,
 		});
 	} catch (error) {
-		console.error('Webhook configuration error:', error);
+		console.debug('Webhook configuration error:', error);
 		return NextResponse.json({ error: 'Invalid request body' }, { status: 400 });
 	}
 }

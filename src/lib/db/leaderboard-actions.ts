@@ -92,7 +92,7 @@ export async function getLeaderboard(
 
 		return entriesWithUsers;
 	} catch (error) {
-		console.error('[Leaderboard] Error fetching leaderboard:', error);
+		console.debug('[Leaderboard] Error fetching leaderboard:', error);
 		return [];
 	}
 }
@@ -169,7 +169,7 @@ export async function getUserRank(
 			percentile,
 		};
 	} catch (error) {
-		console.error('[Leaderboard] Error fetching user rank:', error);
+		console.debug('[Leaderboard] Error fetching user rank:', error);
 		return null;
 	}
 }
@@ -298,7 +298,7 @@ export async function updateUserScore(params: {
 			newTotal: newEntry[0]?.totalPoints || 0,
 		};
 	} catch (error) {
-		console.error('[Leaderboard] Error updating score:', error);
+		console.debug('[Leaderboard] Error updating score:', error);
 		return { pointsEarned: 0, newTotal: 0 };
 	}
 }
@@ -376,7 +376,7 @@ export async function getSubjectLeaderboard(
 
 		return entries;
 	} catch (error) {
-		console.error('[Leaderboard] Error fetching subject leaderboard:', error);
+		console.debug('[Leaderboard] Error fetching subject leaderboard:', error);
 		return [];
 	}
 }

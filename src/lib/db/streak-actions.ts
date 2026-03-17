@@ -78,7 +78,7 @@ export async function getStreakInfo(): Promise<StreakInfo | null> {
 			daysUntilNextMultiplier: daysUntilNext,
 		};
 	} catch (error) {
-		console.error('[StreakActions] Error getting streak info:', error);
+		console.debug('[StreakActions] Error getting streak info:', error);
 		return null;
 	}
 }
@@ -121,7 +121,7 @@ export async function useStreakFreeze(): Promise<{ success: boolean; message: st
 
 		return { success: true, message: 'Streak freeze used successfully' };
 	} catch (error) {
-		console.error('[StreakActions] Error using streak freeze:', error);
+		console.debug('[StreakActions] Error using streak freeze:', error);
 		return { success: false, message: 'Failed to use streak freeze' };
 	}
 }
@@ -152,7 +152,7 @@ export async function addStreakFreeze(userId: string, count = 1): Promise<boolea
 
 		return true;
 	} catch (error) {
-		console.error('[StreakActions] Error adding streak freeze:', error);
+		console.debug('[StreakActions] Error adding streak freeze:', error);
 		return false;
 	}
 }
@@ -203,7 +203,7 @@ export async function purchaseStreakFreeze(): Promise<{ success: boolean; messag
 
 		return { success: true, message: 'Streak freeze purchased successfully' };
 	} catch (error) {
-		console.error('[StreakActions] Error purchasing streak freeze:', error);
+		console.debug('[StreakActions] Error purchasing streak freeze:', error);
 		return { success: false, message: 'Failed to purchase streak freeze' };
 	}
 }

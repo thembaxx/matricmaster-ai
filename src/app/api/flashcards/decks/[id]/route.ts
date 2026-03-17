@@ -12,7 +12,7 @@ export async function GET(_request: NextRequest, { params }: { params: Promise<{
 		const flashcards = await getDeckFlashcards(id);
 		return NextResponse.json({ flashcards });
 	} catch (error) {
-		console.error('[Deck API] Error:', error);
+		console.debug('[Deck API] Error:', error);
 		return NextResponse.json({ error: 'Failed to fetch deck' }, { status: 500 });
 	}
 }
@@ -39,7 +39,7 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
 
 		return NextResponse.json({ deck: result.deck });
 	} catch (error) {
-		console.error('[Deck API] Error:', error);
+		console.debug('[Deck API] Error:', error);
 		return NextResponse.json({ error: 'Failed to update deck' }, { status: 500 });
 	}
 }
@@ -67,7 +67,7 @@ export async function DELETE(
 
 		return NextResponse.json({ success: true });
 	} catch (error) {
-		console.error('[Deck API] Error:', error);
+		console.debug('[Deck API] Error:', error);
 		return NextResponse.json({ error: 'Failed to delete deck' }, { status: 500 });
 	}
 }

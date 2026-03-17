@@ -91,7 +91,7 @@ Generate ${count} practice problems now. Return only valid JSON.`;
 		try {
 			problems = JSON.parse(jsonStr);
 		} catch {
-			console.error('Failed to parse practice problems JSON:', jsonStr);
+			console.debug('Failed to parse practice problems JSON:', jsonStr);
 			return NextResponse.json({ error: 'Failed to parse generated problems' }, { status: 500 });
 		}
 
@@ -108,7 +108,7 @@ Generate ${count} practice problems now. Return only valid JSON.`;
 			subject,
 		});
 	} catch (error) {
-		console.error('Practice Problem Generation Error:', error);
+		console.debug('Practice Problem Generation Error:', error);
 		return NextResponse.json(
 			{ error: 'An error occurred while generating practice problems' },
 			{ status: 500 }

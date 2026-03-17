@@ -11,6 +11,8 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '@/components/ui/select';
+import { useGeminiQuotaModal } from '@/contexts/GeminiQuotaModalContext';
+import { isQuotaError } from '@/lib/ai/quota-error';
 import { generateUniversityPath } from '@/services/universityPathfinder';
 
 interface UniversityPathfinderDialogProps {
@@ -49,6 +51,7 @@ export function UniversityPathfinderDialog({
 	initialFaculty,
 }: UniversityPathfinderDialogProps) {
 	const router = useRouter();
+	const { triggerQuotaError } = useGeminiQuotaModal();
 	const [university, setUniversity] = useState(initialUniversity || '');
 	const [faculty, setFaculty] = useState(initialFaculty || '');
 	const [loading, setLoading] = useState(false);
@@ -65,7 +68,10 @@ export function UniversityPathfinderDialog({
 			onOpenChange(false);
 			router.push('/study-plan?view=roadmap');
 		} catch (error) {
-			console.error('Failed to generate roadmap:', error);
+			if (isQuotaError(error)) {
+				triggerQuotaError();
+			}
+			console.debug('Failed to generate roadmap:', error);
 		} finally {
 			setLoading(false);
 		}

@@ -79,7 +79,7 @@ function CommentsContent() {
 				setNewComment('');
 			}
 		} catch (error) {
-			console.error('Failed to post comment:', error);
+			console.debug('Failed to post comment:', error);
 		} finally {
 			setIsLoading(false);
 		}
@@ -95,7 +95,7 @@ function CommentsContent() {
 				body: JSON.stringify({ voteType }),
 			});
 		} catch (error) {
-			console.error('Failed to vote:', error);
+			console.debug('Failed to vote:', error);
 		}
 	};
 
@@ -109,7 +109,7 @@ function CommentsContent() {
 				body: JSON.stringify({ reason }),
 			});
 		} catch (error) {
-			console.error('Failed to flag comment:', error);
+			console.debug('Failed to flag comment:', error);
 		}
 	};
 
@@ -139,7 +139,7 @@ function CommentsContent() {
 				setReplyingTo(null);
 			}
 		} catch (error) {
-			console.error('Failed to post reply:', error);
+			console.debug('Failed to post reply:', error);
 		}
 	};
 

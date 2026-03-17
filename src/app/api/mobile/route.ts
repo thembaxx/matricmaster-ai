@@ -113,7 +113,7 @@ export async function GET(request: NextRequest) {
 			},
 		});
 	} catch (error) {
-		console.error('Mobile API Error:', error);
+		console.debug('Mobile API Error:', error);
 		return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
 	}
 }
@@ -158,7 +158,7 @@ export async function POST(request: NextRequest) {
 				return NextResponse.json({ error: 'Unknown action' }, { status: 400 });
 		}
 	} catch (error) {
-		console.error('Mobile API Error:', error);
+		console.debug('Mobile API Error:', error);
 		return NextResponse.json({ error: 'Invalid request body' }, { status: 400 });
 	}
 }

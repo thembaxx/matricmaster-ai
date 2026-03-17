@@ -82,7 +82,7 @@ export function Comments({
 				setComments(threaded);
 			}
 		} catch (error) {
-			console.error('Failed to fetch comments:', error);
+			console.debug('Failed to fetch comments:', error);
 		} finally {
 			setIsFetching(false);
 		}
@@ -165,7 +165,7 @@ export function Comments({
 				fetchComments();
 			}
 		} catch (error) {
-			console.error('Failed to vote:', error);
+			console.debug('Failed to vote:', error);
 		}
 	};
 

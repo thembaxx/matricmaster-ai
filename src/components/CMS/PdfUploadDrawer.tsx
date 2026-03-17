@@ -196,7 +196,7 @@ export function PdfUploadDrawer({ isOpen, onClose, subjects, onSuccess }: PdfUpl
 				`AI successfully analyzed ${extractionResult.questions.length} questions from the paper!`
 			);
 		} catch (error) {
-			console.error('Processing error:', error);
+			console.debug('Processing error:', error);
 
 			// Provide specific error messages
 			if (error instanceof Error) {
@@ -320,7 +320,7 @@ export function PdfUploadDrawer({ isOpen, onClose, subjects, onSuccess }: PdfUpl
 			onClose();
 			reset();
 		} catch (error) {
-			console.error('FloppyDisk error:', error);
+			console.debug('FloppyDisk error:', error);
 			toast.error('Failed to save paper');
 		} finally {
 			setIsSaving(false);

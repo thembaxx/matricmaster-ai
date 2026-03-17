@@ -117,7 +117,7 @@ export async function getNotificationsAction() {
 			.orderBy(desc(notifications.createdAt))
 			.limit(20);
 	} catch (error) {
-		console.error('Error fetching notifications:', error);
+		console.debug('Error fetching notifications:', error);
 		return [];
 	}
 }
@@ -137,7 +137,7 @@ export async function markNotificationAsReadAction(notificationId: string) {
 
 		return { success: true };
 	} catch (error) {
-		console.error('Error marking notification as read:', error);
+		console.debug('Error marking notification as read:', error);
 		return { success: false };
 	}
 }
@@ -169,7 +169,7 @@ export async function enrollInSubjectAction(subjectId: number) {
 
 		return { success: true };
 	} catch (error) {
-		console.error('Error enrolling in subject:', error);
+		console.debug('Error enrolling in subject:', error);
 		return { success: false, error: 'Failed to enroll' };
 	}
 }
@@ -194,7 +194,7 @@ export async function createStudyPlanAction(data: { title: string; focusAreas?: 
 
 		return { success: true, plan: newPlan };
 	} catch (error) {
-		console.error('Error creating study plan:', error);
+		console.debug('Error creating study plan:', error);
 		return { success: false, error: 'Failed to create plan' };
 	}
 }
@@ -205,7 +205,7 @@ export async function getStudyPlansAction() {
 		const db = await getDb();
 		return await db.select().from(studyPlans).where(eq(studyPlans.userId, user.id));
 	} catch (error) {
-		console.error('Error fetching study plans:', error);
+		console.debug('Error fetching study plans:', error);
 		return [];
 	}
 }
@@ -238,7 +238,7 @@ export async function createCalendarEventAction(data: {
 
 		return { success: true, event: newEvent };
 	} catch (error) {
-		console.error('Error creating calendar event:', error);
+		console.debug('Error creating calendar event:', error);
 		return { success: false, error: 'Failed to create event' };
 	}
 }
@@ -249,7 +249,7 @@ export async function getCalendarEventsAction() {
 		const db = await getDb();
 		return await db.select().from(calendarEvents).where(eq(calendarEvents.userId, user.id));
 	} catch (error) {
-		console.error('Error fetching events:', error);
+		console.debug('Error fetching events:', error);
 		return [];
 	}
 }
@@ -285,7 +285,7 @@ export async function getCalendarEventsWithSubjectsAction() {
 			.where(eq(calendarEvents.userId, user.id));
 		return events;
 	} catch (error) {
-		console.error('Error fetching events with subjects:', error);
+		console.debug('Error fetching events with subjects:', error);
 		return [];
 	}
 }
@@ -406,7 +406,7 @@ export async function getTodayTimelineEventsAction(): Promise<TodayTimelineEvent
 			};
 		});
 	} catch (error) {
-		console.error('Error fetching today timeline events:', error);
+		console.debug('Error fetching today timeline events:', error);
 		return [];
 	}
 }
@@ -420,7 +420,7 @@ export async function deleteCalendarEventAction(eventId: string) {
 			.where(and(eq(calendarEvents.id, eventId), eq(calendarEvents.userId, user.id)));
 		return { success: true };
 	} catch (error) {
-		console.error('Error deleting calendar event:', error);
+		console.debug('Error deleting calendar event:', error);
 		return { success: false, error: 'Failed to delete event' };
 	}
 }
@@ -452,7 +452,7 @@ export async function updateCalendarEventAction(
 			.returning();
 		return { success: true, event: updated };
 	} catch (error) {
-		console.error('Error updating calendar event:', error);
+		console.debug('Error updating calendar event:', error);
 		return { success: false, error: 'Failed to update event' };
 	}
 }
@@ -476,7 +476,7 @@ export async function getRecentActivityAction() {
 			.orderBy(desc(studySessions.completedAt))
 			.limit(5);
 	} catch (error) {
-		console.error('Error fetching recent activity:', error);
+		console.debug('Error fetching recent activity:', error);
 		return [];
 	}
 }
@@ -532,7 +532,7 @@ export async function getRecentSessionsWithContextAction(): Promise<RecentSessio
 			};
 		});
 	} catch (error) {
-		console.error('Error fetching recent sessions with context:', error);
+		console.debug('Error fetching recent sessions with context:', error);
 		return [];
 	}
 }
@@ -554,7 +554,7 @@ export async function getEnrolledSubjectsAction() {
 
 		return enrolled;
 	} catch (error) {
-		console.error('Error fetching enrolled subjects:', error);
+		console.debug('Error fetching enrolled subjects:', error);
 		return [];
 	}
 }
@@ -1023,7 +1023,7 @@ export async function seedDatabaseAction(): Promise<{ success: boolean; message:
 		await seedDatabase();
 		return { success: true, message: 'Database seeded successfully!' };
 	} catch (error) {
-		console.error('Seed action error:', error);
+		console.debug('Seed action error:', error);
 		return { success: false, message: error instanceof Error ? error.message : 'Seeding failed' };
 	}
 }
@@ -1136,7 +1136,7 @@ export async function updateUserProfileAction(data: {
 
 		return { success: true, user: updated };
 	} catch (error) {
-		console.error('Error updating profile:', error);
+		console.debug('Error updating profile:', error);
 		return { success: false, error: 'Failed to update profile' };
 	}
 }
@@ -1265,7 +1265,7 @@ export async function getPastPapersAction(filters: PastPaperFilters = {}): Promi
 			.where(and(...conditions))
 			.orderBy(desc(pastPapers.year), asc(pastPapers.month), asc(pastPapers.paper));
 	} catch (error) {
-		console.error('[DB] Error in getPastPapersAction:', error);
+		console.debug('[DB] Error in getPastPapersAction:', error);
 		return [];
 	}
 }
@@ -1459,7 +1459,7 @@ export async function saveProcessedExtractedPaperAction(
 							console.log(`[DB] Created new question: ${newQuestion.id}`);
 						}
 					} catch (questionError) {
-						console.error(`[DB] Error processing question ${index}:`, questionError);
+						console.debug(`[DB] Error processing question ${index}:`, questionError);
 					}
 				}
 			}
@@ -1470,7 +1470,7 @@ export async function saveProcessedExtractedPaperAction(
 			return paper;
 		});
 	} catch (error) {
-		console.error('[DB] Error in saveProcessedExtractedPaperAction:', error);
+		console.debug('[DB] Error in saveProcessedExtractedPaperAction:', error);
 		throw error;
 	}
 }
@@ -1662,7 +1662,7 @@ export async function sendBuddyRequestAction(
 		console.log(`[Buddy Request] ${user.id} -> ${toUserId}: ${message || 'No message'}`);
 		return { success: true, requestId: request.id };
 	} catch (error) {
-		console.error('[Buddy Request] Error:', error);
+		console.debug('[Buddy Request] Error:', error);
 		return { success: false, error: 'Failed to send buddy request' };
 	}
 }
@@ -1773,7 +1773,7 @@ export async function getAdminStatsAction(): Promise<AdminStats> {
 			subjectsCount: Number(subjectsResult?.count || 0),
 		};
 	} catch (error) {
-		console.error('Error getting admin stats:', error);
+		console.debug('Error getting admin stats:', error);
 		return {
 			totalUsers: 0,
 			activeUsers: 0,
@@ -1822,7 +1822,7 @@ export async function getSubjectPerformanceAction(): Promise<SubjectPerformance[
 			};
 		});
 	} catch (error) {
-		console.error('Error getting subject performance:', error);
+		console.debug('Error getting subject performance:', error);
 		return [];
 	}
 }

@@ -90,7 +90,7 @@ export async function POST(request: NextRequest) {
 			reference,
 		});
 	} catch (error) {
-		console.error('Payment initialization error:', error);
+		console.debug('Payment initialization error:', error);
 		return NextResponse.json({ error: 'Payment initialization failed' }, { status: 500 });
 	}
 }
@@ -176,7 +176,7 @@ export async function GET(request: NextRequest) {
 
 		return NextResponse.redirect(new URL('/subscription?success=true', request.url));
 	} catch (error) {
-		console.error('Payment verification error:', error);
+		console.debug('Payment verification error:', error);
 		return NextResponse.redirect(new URL('/subscription?error=verification_error', request.url));
 	}
 }

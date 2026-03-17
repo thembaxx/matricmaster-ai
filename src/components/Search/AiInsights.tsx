@@ -47,7 +47,7 @@ export const AiInsights = memo(function AiInsights({
 					setStudyContext(data.relatedTopics || []);
 				}
 			} catch (error) {
-				console.error('Failed to load study context:', error);
+				console.debug('Failed to load study context:', error);
 			}
 		}
 

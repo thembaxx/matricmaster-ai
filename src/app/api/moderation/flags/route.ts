@@ -48,7 +48,7 @@ export async function GET(request: NextRequest) {
 		const flags = await getContentFlagsAction((status as FlagStatus | undefined) ?? undefined);
 		return NextResponse.json({ success: true, data: flags });
 	} catch (error) {
-		console.error('[API] Error fetching flags:', error);
+		console.debug('[API] Error fetching flags:', error);
 		return NextResponse.json({ error: 'Failed to fetch flags' }, { status: 500 });
 	}
 }
@@ -83,7 +83,7 @@ export async function POST(request: NextRequest) {
 
 		return NextResponse.json({ success: true, data: flag });
 	} catch (error) {
-		console.error('[API] Error creating flag:', error);
+		console.debug('[API] Error creating flag:', error);
 		return NextResponse.json({ error: 'Failed to create flag' }, { status: 500 });
 	}
 }
@@ -129,7 +129,7 @@ export async function PUT(request: NextRequest) {
 
 		return NextResponse.json(result);
 	} catch (error) {
-		console.error('[API] Error updating flag:', error);
+		console.debug('[API] Error updating flag:', error);
 		return NextResponse.json({ error: 'Failed to update flag' }, { status: 500 });
 	}
 }

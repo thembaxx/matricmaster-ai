@@ -42,7 +42,7 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
 
 		return NextResponse.json(result);
 	} catch (error) {
-		console.error('[API] Error sending message:', error);
+		console.debug('[API] Error sending message:', error);
 		return NextResponse.json(
 			{ success: false, error: { message: 'Failed to send message', code: 'SERVER_ERROR' } },
 			{ status: 500 }

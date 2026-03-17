@@ -29,7 +29,9 @@ import { Progress } from '@/components/ui/progress';
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { QUIZ_DATA } from '@/constants/quiz-data';
+import { useGeminiQuotaModal } from '@/contexts/GeminiQuotaModalContext';
 import { useQuizCompletion } from '@/hooks/use-quiz-completion';
+import { isQuotaError } from '@/lib/ai/quota-error';
 import { cn } from '@/lib/utils';
 import {
 	getAdaptiveHint,
@@ -98,6 +100,7 @@ const playClickSound = () => {
 export default function Quiz({ quizId: initialQuizId }: QuizProps) {
 	const router = useRouter();
 	const searchParams = useSearchParams();
+	const { triggerQuotaError } = useGeminiQuotaModal();
 	const urlQuizId = searchParams.get('id');
 	const quizId = initialQuizId || urlQuizId || 'math-p1-2023-nov';
 
@@ -155,11 +158,14 @@ export default function Quiz({ quizId: initialQuizId }: QuizProps) {
 				const hint = await getAdaptiveHint(currentQuestion.topic);
 				setAdaptiveHint(hint);
 			} catch (error) {
-				console.error('Failed to load hint:', error);
+				if (isQuotaError(error)) {
+					triggerQuotaError();
+				}
+				console.debug('Failed to load hint:', error);
 			}
 		}
 		loadHint();
-	}, [currentQuestion?.topic]);
+	}, [currentQuestion?.topic, triggerQuotaError]);
 
 	// Reset struggle alert when moving to a new question
 	useEffect(() => {
@@ -234,7 +240,7 @@ export default function Quiz({ quizId: initialQuizId }: QuizProps) {
 					}
 				}
 			} catch (error) {
-				console.error('Failed to track progress:', error);
+				console.debug('Failed to track progress:', error);
 			}
 		}
 	};

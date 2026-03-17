@@ -70,7 +70,7 @@ export default function SubscriptionPage() {
 					setSubscription(data.subscription);
 				}
 			} catch (err) {
-				console.error('Failed to fetch plans:', err);
+				console.debug('Failed to fetch plans:', err);
 			} finally {
 				setLoading(false);
 			}

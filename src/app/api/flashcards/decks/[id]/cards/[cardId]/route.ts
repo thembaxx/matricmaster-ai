@@ -16,7 +16,7 @@ export async function DELETE(
 
 		return NextResponse.json({ success: true });
 	} catch (error) {
-		console.error('[Card API] Error:', error);
+		console.debug('[Card API] Error:', error);
 		return NextResponse.json({ error: 'Failed to delete card' }, { status: 500 });
 	}
 }

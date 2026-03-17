@@ -21,7 +21,9 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { PAST_PAPERS } from '@/constants/mock-data';
+import { useGeminiQuotaModal } from '@/contexts/GeminiQuotaModalContext';
 import { useQuestionExtractor } from '@/hooks/useQuestionExtractor';
+import { isQuotaError } from '@/lib/ai/quota-error';
 import { getPastPaperByIdAction } from '@/lib/db/actions';
 import { getExplanation } from '@/services/geminiService';
 
@@ -44,6 +46,7 @@ export default function PastPaperViewer({
 }) {
 	const router = useRouter();
 	const searchParams = useSearchParams();
+	const { triggerQuotaError } = useGeminiQuotaModal();
 	const paperId = initialId || searchParams.get('id');
 	const mode = initialMode || searchParams.get('mode');
 
@@ -110,7 +113,7 @@ export default function PastPaperViewer({
 					return;
 				}
 			} catch (err) {
-				console.error('Failed to load paper from DB:', err);
+				console.debug('Failed to load paper from DB:', err);
 			}
 
 			// Fallback to mock data
@@ -147,12 +150,15 @@ export default function PastPaperViewer({
 				explanation ?? "I'm sorry, I couldn't generate an explanation for this question."
 			);
 		} catch (err) {
-			console.error('Failed to get AI explanation:', err);
+			if (isQuotaError(err)) {
+				triggerQuotaError();
+			}
+			console.debug('Failed to get AI explanation:', err);
 			setAiExplanation('Sorry, I could not generate an explanation right now.');
 		} finally {
 			setIsExplaining(false);
 		}
-	}, [currentQuestion, paper.subject]);
+	}, [currentQuestion, paper.subject, triggerQuotaError]);
 
 	const progress = totalQuestions > 0 ? ((currentQuestionIndex + 1) / totalQuestions) * 100 : 0;
 

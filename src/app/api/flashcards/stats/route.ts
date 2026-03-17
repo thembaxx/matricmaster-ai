@@ -17,7 +17,7 @@ export async function GET(request: NextRequest) {
 
 		return NextResponse.json(stats);
 	} catch (error) {
-		console.error('[Review Stats API] Error:', error);
+		console.debug('[Review Stats API] Error:', error);
 		return NextResponse.json({ error: 'Failed to fetch review stats' }, { status: 500 });
 	}
 }

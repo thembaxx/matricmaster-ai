@@ -65,7 +65,7 @@ export async function verifyPayment(reference: string): Promise<PaymentVerificat
 			message: response.message,
 		};
 	} catch (error) {
-		console.error('Paystack verification error:', error);
+		console.debug('Paystack verification error:', error);
 		return {
 			verified: false,
 			message: error instanceof Error ? error.message : 'Verification failed',
@@ -92,7 +92,7 @@ export async function createCustomer(
 		}
 		return null;
 	} catch (error) {
-		console.error('Paystack customer creation error:', error);
+		console.debug('Paystack customer creation error:', error);
 		return null;
 	}
 }
@@ -117,7 +117,7 @@ export async function createSubscription(
 			message: response.message,
 		};
 	} catch (error) {
-		console.error('Paystack subscription creation error:', error);
+		console.debug('Paystack subscription creation error:', error);
 		return {
 			success: false,
 			message: error instanceof Error ? error.message : 'Subscription creation failed',
@@ -135,7 +135,7 @@ export async function disableSubscription(subscriptionCode: string): Promise<boo
 		});
 		return response.status;
 	} catch (error) {
-		console.error('Paystack subscription disable error:', error);
+		console.debug('Paystack subscription disable error:', error);
 		return false;
 	}
 }
@@ -162,7 +162,7 @@ export async function getSubscription(subscriptionCode: string): Promise<{
 		}
 		return null;
 	} catch (error) {
-		console.error('Paystack subscription get error:', error);
+		console.debug('Paystack subscription get error:', error);
 		return null;
 	}
 }

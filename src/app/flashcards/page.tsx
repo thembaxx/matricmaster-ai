@@ -75,7 +75,7 @@ export default function FlashcardsPage() {
 				setDecks(data.decks || []);
 			}
 		} catch (error) {
-			console.error('Failed to load decks:', error);
+			console.debug('Failed to load decks:', error);
 			toast.error('Failed to load flashcard decks');
 		} finally {
 			setIsLoading(false);
@@ -92,7 +92,7 @@ export default function FlashcardsPage() {
 				setShowDeckModal(true);
 			}
 		} catch (error) {
-			console.error('Failed to load deck:', error);
+			console.debug('Failed to load deck:', error);
 			toast.error('Failed to load deck');
 		}
 	};
@@ -111,7 +111,7 @@ export default function FlashcardsPage() {
 				setShowReviewModal(true);
 			}
 		} catch (error) {
-			console.error('Failed to start review:', error);
+			console.debug('Failed to start review:', error);
 			toast.error('Failed to start review');
 		}
 	};
@@ -133,7 +133,7 @@ export default function FlashcardsPage() {
 				toast.error('Failed to delete deck');
 			}
 		} catch (error) {
-			console.error('Failed to delete deck:', error);
+			console.debug('Failed to delete deck:', error);
 			toast.error('Failed to delete deck');
 		}
 	};

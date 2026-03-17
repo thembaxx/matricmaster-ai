@@ -46,7 +46,7 @@ export const TopicMasteryCard = memo(function TopicMasteryCard({
 			const data = await response.json();
 			setStats(data);
 		} catch (err) {
-			console.error('Failed to load analytics:', err);
+			console.debug('Failed to load analytics:', err);
 			setError('Unable to load topic progress');
 		} finally {
 			setIsLoading(false);

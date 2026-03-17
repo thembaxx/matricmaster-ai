@@ -24,7 +24,7 @@ export async function POST(request: Request) {
 
 		return NextResponse.json({ success: true }, { status: 200 });
 	} catch (error) {
-		console.error('[CSP Report Error]', error);
+		console.debug('[CSP Report Error]', error);
 		return NextResponse.json(
 			{ error: 'Failed to process CSP report' },
 			{ status: 200 } // Still return 200 to prevent browser loops

@@ -60,7 +60,7 @@ export function useQuizCompletion() {
 					newAchievements: newAchievements.map((a) => a.id),
 				};
 			} catch (error) {
-				console.error('[useQuizCompletion] Error completing quiz:', error);
+				console.debug('[useQuizCompletion] Error completing quiz:', error);
 				return {
 					success: false,
 					pointsEarned: 0,

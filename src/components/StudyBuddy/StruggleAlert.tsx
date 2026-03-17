@@ -4,6 +4,8 @@ import { AlertIcon, ArrowRightIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { useGeminiQuotaModal } from '@/contexts/GeminiQuotaModalContext';
+import { isQuotaError } from '@/lib/ai/quota-error';
 import { resolveConcept } from '@/services/buddyActions';
 
 interface StruggleAlertProps {
@@ -13,11 +15,16 @@ interface StruggleAlertProps {
 }
 
 export function StruggleAlert({ concept, struggleCount, onGetHelp }: StruggleAlertProps) {
+	const { triggerQuotaError } = useGeminiQuotaModal();
+
 	const handleResolve = async () => {
 		try {
 			await resolveConcept(concept);
 		} catch (error) {
-			console.error('Failed to resolve concept:', error);
+			if (isQuotaError(error)) {
+				triggerQuotaError();
+			}
+			console.debug('Failed to resolve concept:', error);
 		}
 	};
 

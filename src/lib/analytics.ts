@@ -40,7 +40,7 @@ export async function trackEvent(event: AnalyticsEvent): Promise<void> {
 			sendFeatureFlags: true,
 		});
 	} catch (error) {
-		console.error('❌ Failed to track event:', error);
+		console.debug('❌ Failed to track event:', error);
 	}
 }
 
@@ -57,7 +57,7 @@ export async function identifyUser(
 			properties: properties,
 		});
 	} catch (error) {
-		console.error('❌ Failed to identify user:', error);
+		console.debug('❌ Failed to identify user:', error);
 	}
 }
 
@@ -68,7 +68,7 @@ export async function flushAnalytics(): Promise<void> {
 	try {
 		await client.flush();
 	} catch (error) {
-		console.error('❌ Failed to flush analytics:', error);
+		console.debug('❌ Failed to flush analytics:', error);
 	}
 }
 

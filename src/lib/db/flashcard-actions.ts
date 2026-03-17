@@ -51,7 +51,7 @@ export async function saveToFlashcardsAction(data: {
 
 		return { success: true };
 	} catch (error) {
-		console.error('Error saving flashcard:', error);
+		console.debug('Error saving flashcard:', error);
 		return { success: false, error: 'Failed to save flashcard' };
 	}
 }

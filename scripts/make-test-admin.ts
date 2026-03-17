@@ -18,6 +18,6 @@ async function makeAdmin() {
 }
 
 makeAdmin().catch((err) => {
-	console.error(err);
+	console.debug(err);
 	process.exit(1);
 });

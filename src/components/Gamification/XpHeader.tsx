@@ -102,7 +102,7 @@ export const XpHeader = memo(function XpHeader({
 					streak: streakData.currentStreak,
 				});
 			} catch (error) {
-				console.error('[XpHeader] Error fetching data:', error);
+				console.debug('[XpHeader] Error fetching data:', error);
 			} finally {
 				setIsLoading(false);
 			}

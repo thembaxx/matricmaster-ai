@@ -52,7 +52,7 @@ export async function POST(request: NextRequest) {
 			try {
 				await initAuth();
 			} catch (authError) {
-				console.error('❌ API: Error initializing auth after DB init:', authError);
+				console.debug('❌ API: Error initializing auth after DB init:', authError);
 				// DB is initialized but auth failed - still return success but log clearly
 				return NextResponse.json({
 					success: true,
@@ -79,7 +79,7 @@ export async function POST(request: NextRequest) {
 		);
 	} catch (error) {
 		// Log full error server-side
-		console.error('❌ API: Error initializing database:', error);
+		console.debug('❌ API: Error initializing database:', error);
 		return NextResponse.json(
 			{
 				success: false,

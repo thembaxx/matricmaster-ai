@@ -11,6 +11,8 @@ import { SuggestedCards } from '@/components/Search/SuggestedCards';
 import { TrendingTopics } from '@/components/Search/TrendingTopics';
 import { Card } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { useGeminiQuotaModal } from '@/contexts/GeminiQuotaModalContext';
+import { isQuotaError } from '@/lib/ai/quota-error';
 import { STAGGER_CONTAINER } from '@/lib/animation-presets';
 import { useSession } from '@/lib/auth-client';
 import {
@@ -26,6 +28,7 @@ import { smartSearch } from '@/services/geminiService';
 
 export default function Search() {
 	const { data: session } = useSession();
+	const { triggerQuotaError } = useGeminiQuotaModal();
 	const [query, setQuery] = useState('');
 	const [aiResults, setAiResults] = useState<{ suggestions: string[]; tip: string } | null>(null);
 	const [isAiLoading, setIsAiLoading] = useState(false);
@@ -68,7 +71,7 @@ export default function Search() {
 				const lessons = subjects.flatMap((s) => getLessonsBySubject(s));
 				setAllLessons(lessons);
 			} catch (error) {
-				console.error('Failed to load data:', error);
+				console.debug('Failed to load data:', error);
 			}
 		};
 		loadData();
@@ -78,14 +81,22 @@ export default function Search() {
 		const timer = setTimeout(async () => {
 			if (query.length > 3) {
 				setIsAiLoading(true);
-				const results = await smartSearch(query);
-				setAiResults(results);
-				setIsAiLoading(false);
+				try {
+					const results = await smartSearch(query);
+					setAiResults(results);
 
-				if (session?.user?.id) {
-					await addSearchHistoryAction(query);
-					const history = await getSearchHistoryAction();
-					setRecentSearches(history);
+					if (session?.user?.id) {
+						await addSearchHistoryAction(query);
+						const history = await getSearchHistoryAction();
+						setRecentSearches(history);
+					}
+				} catch (error) {
+					if (isQuotaError(error)) {
+						triggerQuotaError();
+					}
+					console.debug('Smart search error:', error);
+				} finally {
+					setIsAiLoading(false);
 				}
 			} else {
 				setAiResults(null);
@@ -93,7 +104,7 @@ export default function Search() {
 		}, 800);
 
 		return () => clearTimeout(timer);
-	}, [query, session?.user?.id]);
+	}, [query, session?.user?.id, triggerQuotaError]);
 
 	const filteredResults = useMemo(() => {
 		if (!query) return { papers: [], lessons: [] };

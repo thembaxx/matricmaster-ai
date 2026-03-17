@@ -12,7 +12,7 @@ interface GlobalErrorProps {
 
 export default function GlobalError({ error, reset }: GlobalErrorProps) {
 	useEffect(() => {
-		console.error('Application error:', error);
+		console.debug('Application error:', error);
 	}, [error]);
 
 	return (

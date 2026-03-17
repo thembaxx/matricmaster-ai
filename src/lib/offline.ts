@@ -20,7 +20,7 @@ export async function cacheStaticAssets(): Promise<void> {
 		await cache.addAll(STATIC_ASSETS);
 		console.log('Static assets cached');
 	} catch (error) {
-		console.error('Failed to cache static assets:', error);
+		console.debug('Failed to cache static assets:', error);
 	}
 }
 
@@ -32,7 +32,7 @@ export async function cacheApiResponse(url: string, response: Response): Promise
 		const clonedResponse = response.clone();
 		await cache.put(url, clonedResponse);
 	} catch (error) {
-		console.error('Failed to cache API response:', error);
+		console.debug('Failed to cache API response:', error);
 	}
 }
 
@@ -83,7 +83,7 @@ export async function clearOldCaches(): Promise<void> {
 		await Promise.all(oldKeys.map((key) => caches.delete(key)));
 		console.log('Old caches cleared');
 	} catch (error) {
-		console.error('Failed to clear old caches:', error);
+		console.debug('Failed to clear old caches:', error);
 	}
 }
 

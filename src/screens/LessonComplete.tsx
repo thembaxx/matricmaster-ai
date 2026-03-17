@@ -135,7 +135,7 @@ export default function LessonComplete() {
 			const result = await generateFlashcardsFromMistakes();
 			setGenerationResult(result);
 		} catch (error) {
-			console.error('Failed to generate flashcards:', error);
+			console.debug('Failed to generate flashcards:', error);
 			setGenerationResult({ success: false, cardsCreated: 0 });
 		} finally {
 			setIsGenerating(false);

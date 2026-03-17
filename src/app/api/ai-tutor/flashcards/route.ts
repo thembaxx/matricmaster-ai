@@ -86,7 +86,7 @@ Generate ${count} flashcards now. Return only valid JSON.`;
 		try {
 			flashcards = JSON.parse(jsonStr);
 		} catch {
-			console.error('Failed to parse flashcards JSON:', jsonStr);
+			console.debug('Failed to parse flashcards JSON:', jsonStr);
 			return NextResponse.json({ error: 'Failed to parse generated flashcards' }, { status: 500 });
 		}
 
@@ -102,7 +102,7 @@ Generate ${count} flashcards now. Return only valid JSON.`;
 			subject,
 		});
 	} catch (error) {
-		console.error('Flashcard Generation Error:', error);
+		console.debug('Flashcard Generation Error:', error);
 		return NextResponse.json(
 			{ error: 'An error occurred while generating flashcards' },
 			{ status: 500 }

@@ -48,7 +48,7 @@ export async function getTopicMasteryByUser(
 			.where(eq(topicMastery.userId, userId))
 			.orderBy(desc(topicMastery.masteryLevel));
 	} catch (error) {
-		console.error('[Adaptive] Error fetching topic mastery:', error);
+		console.debug('[Adaptive] Error fetching topic mastery:', error);
 		return [];
 	}
 }
@@ -138,7 +138,7 @@ export async function updateTopicMastery(
 
 		return { success: true, mastery: created };
 	} catch (error) {
-		console.error('[Adaptive] Error updating topic mastery:', error);
+		console.debug('[Adaptive] Error updating topic mastery:', error);
 		return { success: false };
 	}
 }
@@ -225,7 +225,7 @@ export async function getAdaptiveQuestions(
 			weakTopics,
 		};
 	} catch (error) {
-		console.error('[Adaptive] Error selecting adaptive questions:', error);
+		console.debug('[Adaptive] Error selecting adaptive questions:', error);
 		return { questions: [], recommendations: [], weakTopics: [] };
 	}
 }
@@ -304,7 +304,7 @@ export async function getLearningStats(userId: string): Promise<LearningStats> {
 			}),
 		};
 	} catch (error) {
-		console.error('[Adaptive] Error getting learning stats:', error);
+		console.debug('[Adaptive] Error getting learning stats:', error);
 		return {
 			totalQuestions: 0,
 			totalCorrect: 0,
@@ -333,7 +333,7 @@ export async function getTopicsNeedingReview(userId: string): Promise<NewTopicMa
 			.where(and(eq(topicMastery.userId, userId), lte(topicMastery.nextReview, now)))
 			.orderBy(topicMastery.nextReview);
 	} catch (error) {
-		console.error('[Adaptive] Error getting topics needing review:', error);
+		console.debug('[Adaptive] Error getting topics needing review:', error);
 		return [];
 	}
 }

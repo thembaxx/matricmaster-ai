@@ -41,7 +41,7 @@ class SQLiteManager {
 			console.log('✅ SQLite connected successfully');
 			return true;
 		} catch (error) {
-			console.error('❌ SQLite connection failed:', error);
+			console.debug('❌ SQLite connection failed:', error);
 			return false;
 		}
 	}

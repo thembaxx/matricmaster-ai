@@ -153,7 +153,7 @@ export async function generatePersonalizedBriefing(): Promise<BriefingData> {
 			hasAiGreeting: true,
 		};
 	} catch (error) {
-		console.error('Error generating personalized briefing:', error);
+		console.debug('Error generating personalized briefing:', error);
 		return getDefaultBriefing();
 	}
 }
@@ -235,7 +235,7 @@ Guidelines:
 			quickTips: parsed.quickTips || [],
 		};
 	} catch (error) {
-		console.error('Gemini greeting generation failed, using fallback:', error);
+		console.debug('Gemini greeting generation failed, using fallback:', error);
 		return {
 			greeting: generateFallbackGreeting(data),
 			motivationalMessage: generateFallbackMessage(data),

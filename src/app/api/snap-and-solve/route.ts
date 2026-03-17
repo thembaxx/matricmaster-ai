@@ -61,7 +61,7 @@ export async function POST(req: NextRequest) {
 
 		return NextResponse.json({ solution: text });
 	} catch (error) {
-		console.error('[Snap & Solve API Error]:', error);
+		console.debug('[Snap & Solve API Error]:', error);
 		return NextResponse.json({ error: 'Failed to analyze image' }, { status: 500 });
 	}
 }

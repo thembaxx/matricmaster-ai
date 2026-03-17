@@ -4,6 +4,7 @@ import { domAnimation, LazyMotion } from 'framer-motion';
 import type { ReactNode } from 'react';
 import NotificationListener from '@/components/Notifications/NotificationListener';
 import { TooltipProvider } from '@/components/ui/tooltip';
+import { GeminiQuotaModalProvider } from '@/contexts/GeminiQuotaModalContext';
 import { AblyClientProvider } from '@/lib/ably/provider';
 import { PostHogProvider } from '@/lib/posthog-client';
 import { ScheduleProvider } from '@/stores/useScheduleStore';
@@ -21,7 +22,9 @@ export function ClientProviders({ children }: ClientProvidersProps) {
 					<ScheduleProvider>
 						<PostHogProvider>
 							<NotificationListener>
-								<AppLayout>{children}</AppLayout>
+								<GeminiQuotaModalProvider>
+									<AppLayout>{children}</AppLayout>
+								</GeminiQuotaModalProvider>
 							</NotificationListener>
 						</PostHogProvider>
 					</ScheduleProvider>

@@ -110,7 +110,7 @@ export function TimelineSidebar() {
 					setEvents(DEMO_EVENTS);
 				}
 			} catch (error) {
-				console.error('Error loading timeline events:', error);
+				console.debug('Error loading timeline events:', error);
 				setEvents(DEMO_EVENTS);
 			} finally {
 				setIsLoading(false);

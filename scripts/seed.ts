@@ -8,7 +8,7 @@ const envPath = resolve(process.cwd(), '.env.local');
 const result = config({ path: envPath });
 
 if (result.error) {
-	console.error('❌ Failed to load .env.local:', result.error);
+	console.debug('❌ Failed to load .env.local:', result.error);
 	process.exit(1);
 }
 
@@ -30,8 +30,8 @@ async function main() {
 		console.log('\n🎉 Seeding completed successfully!');
 		process.exit(0);
 	} catch (error) {
-		console.error('\n💥 Seeding failed with error:');
-		console.error(error instanceof Error ? error.message : error);
+		console.debug('\n💥 Seeding failed with error:');
+		console.debug(error instanceof Error ? error.message : error);
 		console.log('\n💡 Troubleshooting tips:');
 		console.log('1. Ensure your DATABASE_URL environment variable is set correctly');
 		console.log('2. Make sure PostgreSQL is running and accessible');
@@ -43,13 +43,13 @@ async function main() {
 
 // Handle unhandled promise rejections
 process.on('unhandledRejection', (error) => {
-	console.error('❌ Unhandled promise rejection:', error);
+	console.debug('❌ Unhandled promise rejection:', error);
 	process.exit(1);
 });
 
 // Handle uncaught exceptions
 process.on('uncaughtException', (error) => {
-	console.error('❌ Uncaught exception:', error);
+	console.debug('❌ Uncaught exception:', error);
 	process.exit(1);
 });
 

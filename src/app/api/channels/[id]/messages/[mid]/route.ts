@@ -44,7 +44,7 @@ export async function PATCH(
 
 		return NextResponse.json(result);
 	} catch (error) {
-		console.error('[API] Error editing message:', error);
+		console.debug('[API] Error editing message:', error);
 		return NextResponse.json(
 			{ success: false, error: { message: 'Failed to edit message', code: 'SERVER_ERROR' } },
 			{ status: 500 }
@@ -88,7 +88,7 @@ export async function DELETE(
 
 		return NextResponse.json(result);
 	} catch (error) {
-		console.error('[API] Error deleting message:', error);
+		console.debug('[API] Error deleting message:', error);
 		return NextResponse.json(
 			{ success: false, error: { message: 'Failed to delete message', code: 'SERVER_ERROR' } },
 			{ status: 500 }

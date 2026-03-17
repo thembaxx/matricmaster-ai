@@ -22,7 +22,7 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
 		// For now, return success
 		return NextResponse.json({ success: true, commentId: id, voteType });
 	} catch (error) {
-		console.error('Error voting on comment:', error);
+		console.debug('Error voting on comment:', error);
 		return NextResponse.json({ error: 'Failed to vote' }, { status: 500 });
 	}
 }

@@ -19,7 +19,7 @@ export async function GET(request: NextRequest) {
 		const buddies = await getUserBuddies(session.user.id);
 		return NextResponse.json({ success: true, data: buddies });
 	} catch (error) {
-		console.error('Error fetching buddies:', error);
+		console.debug('Error fetching buddies:', error);
 		return NextResponse.json({ error: 'Failed to fetch buddies' }, { status: 500 });
 	}
 }
@@ -72,7 +72,7 @@ export async function POST(request: NextRequest) {
 
 		return NextResponse.json({ success: true, data: result.request }, { status: 201 });
 	} catch (error) {
-		console.error('Error creating buddy request:', error);
+		console.debug('Error creating buddy request:', error);
 		return NextResponse.json({ error: 'Failed to create buddy request' }, { status: 500 });
 	}
 }

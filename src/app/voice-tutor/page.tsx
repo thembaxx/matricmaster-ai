@@ -102,7 +102,7 @@ export default function VoiceTutorPage() {
 				}
 			},
 			(error) => {
-				console.error('Speech recognition error:', error);
+				console.debug('Speech recognition error:', error);
 				setIsRecording(false);
 				toast.error('Voice recognition failed');
 			}

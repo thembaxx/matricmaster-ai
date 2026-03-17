@@ -183,7 +183,7 @@ export default function Leaderboard() {
 				const streak = await getUserStreak();
 				setUserStreak(streak);
 			} catch (error) {
-				console.error('Error fetching user streak:', error);
+				console.debug('Error fetching user streak:', error);
 			}
 		}
 		fetchStreak();
@@ -200,7 +200,7 @@ export default function Leaderboard() {
 				setLeaderboardData(data);
 				setUserRank(rank);
 			} catch (error) {
-				console.error('Error fetching leaderboard:', error);
+				console.debug('Error fetching leaderboard:', error);
 			} finally {
 				setIsLoading(false);
 			}

@@ -22,6 +22,8 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Slider } from '@/components/ui/slider';
+import { useGeminiQuotaModal } from '@/contexts/GeminiQuotaModalContext';
+import { isQuotaError } from '@/lib/ai/quota-error';
 import { useSession } from '@/lib/auth-client';
 import { createStudyPlanAction } from '@/lib/db/study-plan-actions';
 
@@ -37,6 +39,7 @@ const subjects = [
 export default function StudyPlanWizard() {
 	const router = useRouter();
 	const { data: session } = useSession();
+	const { triggerQuotaError } = useGeminiQuotaModal();
 	const [selectedSubjects, setSelectedSubjects] = useState<string[]>(['math', 'physics']);
 	const [weeklyHours, setWeeklyHours] = useState([12]);
 	const [isGenerating, setIsGenerating] = useState(false);
@@ -71,7 +74,10 @@ export default function StudyPlanWizard() {
 
 			router.push('/study-path');
 		} catch (error) {
-			console.error('Failed to generate study plan:', error);
+			if (isQuotaError(error)) {
+				triggerQuotaError();
+			}
+			console.debug('Failed to generate study plan:', error);
 			router.push('/study-path');
 		} finally {
 			setIsGenerating(false);

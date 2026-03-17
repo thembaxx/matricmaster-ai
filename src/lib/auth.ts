@@ -234,7 +234,7 @@ function createAuth(): AuthInstance {
 			});
 			console.log(`✅ Verification email sent for user: ${user.id}`);
 		} catch (error) {
-			console.error('❌ Failed to send verification email:', error);
+			console.debug('❌ Failed to send verification email:', error);
 		}
 	};
 
@@ -287,7 +287,7 @@ function createAuth(): AuthInstance {
 			});
 			console.log('✅ Password reset email sent');
 		} catch (error) {
-			console.error('❌ Failed to send password reset email:', error);
+			console.debug('❌ Failed to send password reset email:', error);
 		}
 	};
 
@@ -359,7 +359,7 @@ export async function getAuth(): Promise<AuthInstance> {
 		try {
 			await dbManager.initialize();
 		} catch (err) {
-			console.error('❌ Failed to initialize database for auth:', err);
+			console.debug('❌ Failed to initialize database for auth:', err);
 		}
 
 		if (!authInstance) {
@@ -423,7 +423,7 @@ export const auth = new Proxy({} as AuthInstance, {
 					console.warn('⚠️ Auth accessed without await getAuth(). Auto-initializing...');
 					// Trigger async initialization but don't wait - this is fire-and-forget
 					// The next call should have auth ready (or fail gracefully)
-					getAuth().catch((err) => console.error('❌ Failed to auto-initialize auth:', err));
+					getAuth().catch((err) => console.debug('❌ Failed to auto-initialize auth:', err));
 					// Return a placeholder that will throw a more helpful error
 					throw new Error(
 						`Auth is being initialized. Please use 'await getAuth()' instead of 'auth' directly.`

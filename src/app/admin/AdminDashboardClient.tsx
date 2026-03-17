@@ -93,7 +93,7 @@ export default function AdminDashboardClient({
 				setStats(statsData);
 				setSubjectPerformance(performanceData);
 			} catch (error) {
-				console.error('Failed to load admin stats:', error);
+				console.debug('Failed to load admin stats:', error);
 			} finally {
 				setIsLoadingStats(false);
 			}
@@ -107,7 +107,7 @@ export default function AdminDashboardClient({
 			const usersList = await getUsersAction({ search: searchQuery, filter: userFilter });
 			setUsers(usersList);
 		} catch (error) {
-			console.error('Failed to load users:', error);
+			console.debug('Failed to load users:', error);
 			toast.error('Failed to load users');
 		} finally {
 			setIsLoadingUsers(false);

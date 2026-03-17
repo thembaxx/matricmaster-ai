@@ -107,7 +107,7 @@ export const DailyGoals = memo(function DailyGoals({
 				setGoals(dailyGoals);
 				setAllComplete(dailyGoals.every((g) => g.isComplete));
 			} catch (error) {
-				console.error('[DailyGoals] Error fetching:', error);
+				console.debug('[DailyGoals] Error fetching:', error);
 			} finally {
 				setIsLoading(false);
 			}

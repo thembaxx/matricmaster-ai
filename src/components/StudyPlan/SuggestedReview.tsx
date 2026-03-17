@@ -23,7 +23,7 @@ export function SuggestedReview() {
 				const recent = await getRecentMistakesAction(5);
 				setMistakes(recent);
 			} catch (error) {
-				console.error('Failed to load mistakes:', error);
+				console.debug('Failed to load mistakes:', error);
 			} finally {
 				setLoading(false);
 			}
@@ -37,7 +37,7 @@ export function SuggestedReview() {
 		try {
 			await addMistakeToStudyPlanAction(mistakes);
 		} catch (error) {
-			console.error('Failed to add to study plan:', error);
+			console.debug('Failed to add to study plan:', error);
 		} finally {
 			setIsAdding(false);
 		}

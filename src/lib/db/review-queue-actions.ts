@@ -79,7 +79,7 @@ export async function getDueFlashcards(userId: string): Promise<DueFlashcard[]> 
 
 		return dueCards as DueFlashcard[];
 	} catch (error) {
-		console.error('[Review Queue] Error fetching due flashcards:', error);
+		console.debug('[Review Queue] Error fetching due flashcards:', error);
 		return [];
 	}
 }
@@ -126,7 +126,7 @@ export async function getFlashcardsDueToday(userId: string): Promise<DueFlashcar
 
 		return dueCards as DueFlashcard[];
 	} catch (error) {
-		console.error('[Review Queue] Error fetching flashcards due today:', error);
+		console.debug('[Review Queue] Error fetching flashcards due today:', error);
 		return [];
 	}
 }
@@ -199,7 +199,7 @@ export async function recordFlashcardReview(
 
 		return { success: true, review };
 	} catch (error) {
-		console.error('[Review Queue] Error recording review:', error);
+		console.debug('[Review Queue] Error recording review:', error);
 		return {
 			success: false,
 			error: error instanceof Error ? error.message : 'Failed to record review',
@@ -292,7 +292,7 @@ export async function getReviewStats(userId: string): Promise<ReviewStats> {
 			newCards,
 		};
 	} catch (error) {
-		console.error('[Review Queue] Error fetching stats:', error);
+		console.debug('[Review Queue] Error fetching stats:', error);
 		return {
 			totalReviews: 0,
 			todayReviews: 0,
@@ -379,7 +379,7 @@ export async function createFlashcardDeck(
 
 		return { success: true, deck };
 	} catch (error) {
-		console.error('[Review Queue] Error creating deck:', error);
+		console.debug('[Review Queue] Error creating deck:', error);
 		return {
 			success: false,
 			error: error instanceof Error ? error.message : 'Failed to create deck',
@@ -402,7 +402,7 @@ export async function getUserDecks(userId: string): Promise<NewFlashcardDeck[]> 
 			.where(eq(flashcardDecks.userId, userId))
 			.orderBy(desc(flashcardDecks.updatedAt));
 	} catch (error) {
-		console.error('[Review Queue] Error fetching decks:', error);
+		console.debug('[Review Queue] Error fetching decks:', error);
 		return [];
 	}
 }
@@ -447,7 +447,7 @@ export async function addFlashcardToDeck(
 
 		return { success: true, flashcard };
 	} catch (error) {
-		console.error('[Review Queue] Error adding flashcard:', error);
+		console.debug('[Review Queue] Error adding flashcard:', error);
 		return {
 			success: false,
 			error: error instanceof Error ? error.message : 'Failed to add flashcard',
@@ -466,7 +466,7 @@ export async function getDeckFlashcards(deckId: string): Promise<Flashcard[]> {
 	try {
 		return db.select().from(flashcards).where(eq(flashcards.deckId, deckId));
 	} catch (error) {
-		console.error('[Review Queue] Error fetching deck flashcards:', error);
+		console.debug('[Review Queue] Error fetching deck flashcards:', error);
 		return [];
 	}
 }
@@ -505,7 +505,7 @@ export async function updateFlashcardDeck(
 
 		return { success: true, deck: updated };
 	} catch (error) {
-		console.error('[Review Queue] Error updating deck:', error);
+		console.debug('[Review Queue] Error updating deck:', error);
 		return {
 			success: false,
 			error: error instanceof Error ? error.message : 'Failed to update deck',
@@ -539,7 +539,7 @@ export async function deleteFlashcardDeck(
 
 		return { success: true };
 	} catch (error) {
-		console.error('[Review Queue] Error deleting deck:', error);
+		console.debug('[Review Queue] Error deleting deck:', error);
 		return {
 			success: false,
 			error: error instanceof Error ? error.message : 'Failed to delete deck',
@@ -581,7 +581,7 @@ export async function updateFlashcard(
 
 		return { success: true, flashcard: updated };
 	} catch (error) {
-		console.error('[Review Queue] Error updating flashcard:', error);
+		console.debug('[Review Queue] Error updating flashcard:', error);
 		return {
 			success: false,
 			error: error instanceof Error ? error.message : 'Failed to update flashcard',
@@ -613,7 +613,7 @@ export async function deleteFlashcard(
 
 		return { success: true };
 	} catch (error) {
-		console.error('[Review Queue] Error deleting flashcard:', error);
+		console.debug('[Review Queue] Error deleting flashcard:', error);
 		return {
 			success: false,
 			error: error instanceof Error ? error.message : 'Failed to delete flashcard',

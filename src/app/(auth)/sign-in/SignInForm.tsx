@@ -94,7 +94,7 @@ export function SignInForm() {
 				);
 			}
 		} catch (err) {
-			console.error('Error initializing database:', err);
+			console.debug('Error initializing database:', err);
 		}
 	};
 
@@ -112,7 +112,7 @@ export function SignInForm() {
 				setIsLoading(false);
 			} else {
 				// We don't await this to avoid blocking navigation if better-auth redirects
-				initializeDatabase().catch(console.error);
+				initializeDatabase().catch(console.debug);
 
 				setSuccessEmail(data.email);
 				// If better-auth doesn't redirect automatically (e.g. if it's purely client-side handle)

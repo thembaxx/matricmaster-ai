@@ -29,7 +29,7 @@ export async function GET(request: NextRequest) {
 
 		return NextResponse.json({ success: true, data: events });
 	} catch (error) {
-		console.error('Error fetching events:', error);
+		console.debug('Error fetching events:', error);
 		return NextResponse.json({ error: 'Failed to fetch events' }, { status: 500 });
 	}
 }
@@ -98,7 +98,7 @@ export async function POST(request: NextRequest) {
 
 		return NextResponse.json({ success: true, data: result.event }, { status: 201 });
 	} catch (error) {
-		console.error('Error creating event:', error);
+		console.debug('Error creating event:', error);
 		return NextResponse.json({ error: 'Failed to create event' }, { status: 500 });
 	}
 }
@@ -140,7 +140,7 @@ export async function PATCH(request: NextRequest) {
 
 		return NextResponse.json({ success: true, data: result.event });
 	} catch (error) {
-		console.error('Error updating event:', error);
+		console.debug('Error updating event:', error);
 		return NextResponse.json({ error: 'Failed to update event' }, { status: 500 });
 	}
 }
@@ -172,7 +172,7 @@ export async function DELETE(request: NextRequest) {
 
 		return NextResponse.json({ success: true });
 	} catch (error) {
-		console.error('Error deleting event:', error);
+		console.debug('Error deleting event:', error);
 		return NextResponse.json({ error: 'Failed to delete event' }, { status: 500 });
 	}
 }

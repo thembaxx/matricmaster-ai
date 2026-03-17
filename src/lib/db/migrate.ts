@@ -12,7 +12,7 @@ async function runMigrations() {
 		const isConnected = await dbManager.waitForConnection(5, 3000);
 
 		if (!isConnected) {
-			console.error('❌ Could not establish database connection after retries');
+			console.debug('❌ Could not establish database connection after retries');
 			console.log('💡 Please check your DATABASE_URL environment variable');
 			console.log('💡 Ensure your database is accessible and credentials are correct');
 			process.exit(1);
@@ -22,7 +22,7 @@ async function runMigrations() {
 		await migrate(db, { migrationsFolder: './drizzle' });
 		console.log('✅ Migrations complete!');
 	} catch (error) {
-		console.error('❌ Migration failed:', error);
+		console.debug('❌ Migration failed:', error);
 		const dbError = error as { code?: string };
 		if (dbError.code === 'ETIMEDOUT') {
 			console.log('💡 Database connection timed out. Please check:');

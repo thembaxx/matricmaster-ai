@@ -220,7 +220,7 @@ export default function PastPapers() {
 				const data = await getPastPapersAction();
 				setPapers(data);
 			} catch (error) {
-				console.error('Failed to load past papers:', error);
+				console.debug('Failed to load past papers:', error);
 			} finally {
 				setIsLoading(false);
 			}
