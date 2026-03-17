@@ -3,8 +3,6 @@ import { type NextRequest, NextResponse } from 'next/server';
 import { getAuth } from '@/lib/auth';
 import { getLearningStats, getTopicsNeedingReview } from '@/lib/db/adaptive-question-actions';
 
-const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
-
 interface RecommendationRequest {
 	subjectId?: number;
 	includeFlashcards?: boolean;
@@ -72,6 +70,7 @@ export async function POST(request: NextRequest) {
 			return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 		}
 
+		const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 		if (!GEMINI_API_KEY) {
 			return NextResponse.json({ error: 'AI service not configured' }, { status: 500 });
 		}

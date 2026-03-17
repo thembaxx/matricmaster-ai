@@ -1,7 +1,11 @@
 'use client';
 
+import { SparklesIcon } from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import { AnimatePresence, m } from 'framer-motion';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { getRecentActivityAction } from '@/lib/db/actions';
 import { cn } from '@/lib/utils';
@@ -46,6 +50,7 @@ const MOCK_ACTIVITIES: RecentActivity[] = [
 ];
 
 export function ActivityFeed() {
+	const router = useRouter();
 	const [activities, setActivities] = useState<RecentActivity[]>([]);
 	const [isLoading, setIsLoading] = useState(true);
 
@@ -80,7 +85,16 @@ export function ActivityFeed() {
 						exit={{ opacity: 0 }}
 					>
 						<Card className="p-8 text-center bg-secondary/30 border-none rounded-[2rem]">
-							<p className="text-sm text-tiimo-gray-muted">No recent activity</p>
+							<div className="w-16 h-16 bg-tiimo-lavender/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
+								<HugeiconsIcon icon={SparklesIcon} className="w-8 h-8 text-tiimo-lavender" />
+							</div>
+							<p className="text-base font-bold text-foreground mb-2">
+								Your learning journey starts here
+							</p>
+							<p className="text-sm text-tiimo-gray-muted mb-4">Take your first quiz!</p>
+							<Button onClick={() => router.push('/subjects')} variant="outline">
+								Browse Subjects
+							</Button>
 						</Card>
 					</m.div>
 				) : (

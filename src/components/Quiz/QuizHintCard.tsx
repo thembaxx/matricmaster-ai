@@ -4,12 +4,17 @@ import { Idea01Icon, SparklesIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { AnimatePresence, m } from 'framer-motion';
 import { MarkdownRenderer } from '@/components/AI/MarkdownRenderer';
+import { Button } from '@/components/ui/button';
 
 type QuizHintCardProps = {
-	hint: string;
+	hint?: string;
 	title?: string;
 	showWhen?: boolean;
 	variant?: 'hint' | 'smart';
+	isLoading?: boolean;
+	error?: string;
+	onRetry?: () => void;
+	onUseAITutor?: () => void;
 };
 
 export function QuizHintCard({
@@ -17,8 +22,56 @@ export function QuizHintCard({
 	title = "Teacher's Hint",
 	showWhen = true,
 	variant = 'hint',
+	isLoading = false,
+	error,
+	onRetry,
+	onUseAITutor,
 }: QuizHintCardProps) {
 	if (!showWhen) return null;
+
+	if (isLoading) {
+		return (
+			<div className="p-6 bg-primary/5 rounded-[2rem] border border-primary/10 flex gap-5 items-start">
+				<div className="w-12 h-12 bg-card rounded-2xl flex items-center justify-center shrink-0">
+					<div className="w-6 h-6 border-2 border-primary/20 border-t-primary rounded-full animate-spin" />
+				</div>
+				<div className="space-y-2 flex-1">
+					<div className="h-3 bg-muted rounded w-1/3 animate-pulse" />
+					<div className="h-4 bg-muted rounded w-2/3 animate-pulse" />
+				</div>
+			</div>
+		);
+	}
+
+	if (error) {
+		return (
+			<div className="p-6 bg-amber-50 dark:bg-amber-900/10 border border-amber-100 dark:border-amber-900/30 rounded-[2rem] flex items-start gap-4">
+				<div className="w-10 h-10 rounded-full bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center shrink-0">
+					<HugeiconsIcon icon={Idea01Icon} className="w-5 h-5 text-amber-600" />
+				</div>
+				<div className="flex-1">
+					<h4 className="font-black text-amber-900 dark:text-amber-100 text-xs uppercase tracking-widest mb-2">
+						Hint Unavailable
+					</h4>
+					<p className="text-sm text-amber-800/80 dark:text-amber-200/80 mb-3">{error}</p>
+					<div className="flex gap-2">
+						{onRetry && (
+							<Button size="sm" variant="outline" onClick={onRetry}>
+								Try Again
+							</Button>
+						)}
+						{onUseAITutor && (
+							<Button size="sm" onClick={onUseAITutor}>
+								Try AI Tutor
+							</Button>
+						)}
+					</div>
+				</div>
+			</div>
+		);
+	}
+
+	if (!hint) return null;
 
 	if (variant === 'smart') {
 		return (

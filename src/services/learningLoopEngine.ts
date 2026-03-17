@@ -2,8 +2,14 @@ import { createGoogleGenerativeAI } from '@ai-sdk/google';
 import { generateObject } from 'ai';
 import { z } from 'zod';
 
-const google = createGoogleGenerativeAI({ apiKey: process.env.GEMINI_API_KEY || '' });
-const geminiModel = google('gemini-2.5-flash');
+function getGeminiModel() {
+	const apiKey = process.env.GEMINI_API_KEY;
+	if (!apiKey) {
+		throw new Error('GEMINI_API_KEY is not configured');
+	}
+	const google = createGoogleGenerativeAI({ apiKey });
+	return google('gemini-2.5-flash');
+}
 
 export interface LearningLoopAction {
 	type: 'generateFlashcard' | 'addToStudyPlan' | 'findSimilarQuestions' | 'generateNotes';
@@ -51,8 +57,9 @@ Return as JSON array:
 `;
 
 	try {
+		const model = getGeminiModel();
 		const { object } = await generateObject({
-			model: geminiModel,
+			model,
 			schema: z.array(
 				z.object({
 					type: z.enum([
@@ -106,7 +113,7 @@ Return as JSON:
 `;
 
 	const { object } = await generateObject({
-		model: geminiModel,
+		model: getGeminiModel(),
 		schema: z.object({
 			title: z.string(),
 			summary: z.string(),
@@ -139,7 +146,7 @@ Return as JSON array (3-6 flashcards):
 `;
 
 	const { object } = await generateObject({
-		model: geminiModel,
+		model: getGeminiModel(),
 		schema: z.array(
 			z.object({
 				front: z.string(),

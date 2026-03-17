@@ -3,8 +3,10 @@
 import { ArrowRight01Icon, ChampionIcon, Medal01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { m } from 'framer-motion';
+import { useRouter } from 'next/navigation';
 import { memo, useEffect, useState } from 'react';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { type ACHIEVEMENTS, getAchievementById } from '@/constants/achievements';
 import { getUserAchievements, type UserAchievement } from '@/lib/db/achievement-actions';
@@ -30,6 +32,7 @@ interface RecentAchievementsProps {
 export const RecentAchievements = memo(function RecentAchievements({
 	initialAchievements,
 }: RecentAchievementsProps) {
+	const router = useRouter();
 	const [achievements, setAchievements] = useState<UnlockedAchievement[]>(() => {
 		if (initialAchievements) {
 			const now = new Date();
@@ -135,11 +138,21 @@ export const RecentAchievements = memo(function RecentAchievements({
 					<h3 className="text-lg font-black text-foreground tracking-tight">Recent Achievements</h3>
 				</div>
 				<div className="flex flex-col items-center justify-center py-8 text-center">
-					<div className="w-16 h-16 bg-muted/50 rounded-2xl flex items-center justify-center mb-4">
-						<HugeiconsIcon icon={Medal01Icon} className="w-8 h-8 text-muted-foreground/50" />
+					<div className="relative mb-4">
+						<div className="w-20 h-20 bg-muted/50 rounded-2xl flex items-center justify-center">
+							<HugeiconsIcon icon={Medal01Icon} className="w-10 h-10 text-muted-foreground/50" />
+						</div>
+						<div className="absolute -bottom-1 -right-1 w-8 h-8 bg-brand-amber rounded-full flex items-center justify-center">
+							<span className="text-xs">🔒</span>
+						</div>
 					</div>
-					<p className="text-sm text-muted-foreground font-medium">No achievements yet</p>
-					<p className="text-xs text-muted-foreground/70 mt-1">Complete quizzes to earn badges!</p>
+					<p className="text-base font-bold text-foreground mb-1">First Milestone</p>
+					<p className="text-sm text-muted-foreground mb-4">
+						Complete quizzes to earn your first badge!
+					</p>
+					<Button variant="outline" size="sm" onClick={() => router.push('/subjects')}>
+						Start Learning
+					</Button>
 				</div>
 			</Card>
 		);

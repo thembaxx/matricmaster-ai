@@ -7,6 +7,7 @@ import { CheckCircle2, TrendingUp } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { NotificationBell } from '@/components/Notifications/NotificationBell';
+import { Button } from '@/components/ui/button';
 import type { TimelineTask } from '@/types/timeline';
 
 interface BriefingGreetingProps {
@@ -19,6 +20,9 @@ interface BriefingGreetingProps {
 	flashcardsDue?: number;
 	weakTopicsCount?: number;
 	recentAccuracy?: number;
+	isNewUser?: boolean;
+	hasError?: boolean;
+	onRetry?: () => void;
 	briefingData?: {
 		greeting: string;
 		motivationalMessage?: string;
@@ -45,6 +49,9 @@ export function BriefingGreeting({
 	flashcardsDue = 0,
 	weakTopicsCount = 0,
 	recentAccuracy = 0,
+	isNewUser = false,
+	hasError = false,
+	onRetry,
 	briefingData,
 }: BriefingGreetingProps) {
 	const router = useRouter();
@@ -64,9 +71,12 @@ export function BriefingGreeting({
 
 	const completionRate = totalCount > 0 ? (completedCount / totalCount) * 100 : 0;
 
-	const displayGreeting = briefingData?.greeting || `Hey, ${firstName}`;
+	const displayGreeting =
+		briefingData?.greeting || (isNewUser ? `Welcome aboard, ${firstName}!` : `Hey, ${firstName}`);
 	const motivationalMessage = briefingData?.motivationalMessage;
 	const quickTips = briefingData?.quickTips;
+
+	const displayStreakDays = Math.max(0, streakDays);
 
 	return (
 		<m.section
@@ -82,7 +92,7 @@ export function BriefingGreeting({
 							<div className="w-2 h-2 rounded-full bg-tiimo-lavender animate-pulse" />
 							<span className="label-sm text-tiimo-lavender">{greeting}</span>
 						</div>
-						<h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-foreground font-display text-pretty">
+						<h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-foreground font-display text-pretty truncate max-w-[280px] sm:max-w-none">
 							{displayGreeting}
 						</h1>
 						{motivationalMessage && (
@@ -136,36 +146,68 @@ export function BriefingGreeting({
 						</div>
 					</m.div>
 
-					{/* Streak Card */}
-					<m.div
-						whileHover={{ y: -4 }}
-						whileTap={{ scale: 0.98 }}
-						onClick={() => router.push('/streak')}
-						className="tiimo-card p-6 flex flex-col justify-between relative group overflow-hidden cursor-pointer"
-					>
-						<div className="absolute -right-4 -top-4 w-24 h-24 bg-tiimo-orange/10 rounded-full blur-2xl group-hover:bg-tiimo-orange/20 transition-all" />
+					{/* Streak Card - Show welcome for new users */}
+					{isNewUser ? (
+						<m.div
+							whileHover={{ y: -4 }}
+							whileTap={{ scale: 0.98 }}
+							onClick={() => router.push('/onboarding')}
+							className="tiimo-card p-6 flex flex-col justify-between relative group overflow-hidden cursor-pointer"
+						>
+							<div className="absolute -right-4 -top-4 w-24 h-24 bg-tiimo-green/10 rounded-full blur-2xl group-hover:bg-tiimo-green/20 transition-all" />
 
-						<div className="flex items-center justify-between z-10">
-							<div className="p-2 bg-tiimo-orange/10 rounded-xl text-tiimo-orange">
-								<TrendingUp className="w-5 h-5" />
+							<div className="flex items-center justify-between z-10">
+								<div className="p-2 bg-tiimo-green/10 rounded-xl text-tiimo-green">
+									<HugeiconsIcon icon={SparklesIcon} className="w-5 h-5" />
+								</div>
+								<span className="text-xs font-bold text-tiimo-green bg-tiimo-green/10 px-2 py-1 rounded-lg">
+									Welcome!
+								</span>
 							</div>
-							<span className="text-xs font-bold text-tiimo-orange bg-tiimo-orange/10 px-2 py-1 rounded-lg">
-								🔥 Fire
-							</span>
-						</div>
-						<div className="z-10 mt-4">
-							<p className="text-xs font-bold text-tiimo-gray-muted uppercase tracking-widest mb-1">
-								Streak
+							<div className="z-10 mt-4">
+								<p className="text-xs font-bold text-tiimo-gray-muted uppercase tracking-widest mb-1">
+									Welcome Aboard!
+								</p>
+								<div className="flex items-baseline gap-2">
+									<span className="text-3xl font-black">Start</span>
+									<span className="text-lg font-bold text-tiimo-gray-muted">Journey</span>
+								</div>
+							</div>
+							<p className="text-[10px] text-tiimo-gray-muted mt-4 z-10">
+								Complete your profile to get personalized recommendations
 							</p>
-							<div className="flex items-baseline gap-2">
-								<span className="text-3xl font-black">{streakDays}</span>
-								<span className="text-lg font-bold text-tiimo-gray-muted">days</span>
+						</m.div>
+					) : (
+						<m.div
+							whileHover={{ y: -4 }}
+							whileTap={{ scale: 0.98 }}
+							onClick={() => router.push('/streak')}
+							className="tiimo-card p-6 flex flex-col justify-between relative group overflow-hidden cursor-pointer"
+						>
+							<div className="absolute -right-4 -top-4 w-24 h-24 bg-tiimo-orange/10 rounded-full blur-2xl group-hover:bg-tiimo-orange/20 transition-all" />
+
+							<div className="flex items-center justify-between z-10">
+								<div className="p-2 bg-tiimo-orange/10 rounded-xl text-tiimo-orange">
+									<TrendingUp className="w-5 h-5" />
+								</div>
+								<span className="text-xs font-bold text-tiimo-orange bg-tiimo-orange/10 px-2 py-1 rounded-lg">
+									🔥 Fire
+								</span>
 							</div>
-						</div>
-						<p className="text-[10px] text-tiimo-gray-muted mt-4 z-10">
-							Keep it up! You're on a roll.
-						</p>
-					</m.div>
+							<div className="z-10 mt-4">
+								<p className="text-xs font-bold text-tiimo-gray-muted uppercase tracking-widest mb-1">
+									Streak
+								</p>
+								<div className="flex items-baseline gap-2">
+									<span className="text-3xl font-black">{displayStreakDays}</span>
+									<span className="text-lg font-bold text-tiimo-gray-muted">days</span>
+								</div>
+							</div>
+							<p className="text-[10px] text-tiimo-gray-muted mt-4 z-10">
+								Keep it up! You&apos;re on a roll.
+							</p>
+						</m.div>
+					)}
 
 					{/* Next Action Card */}
 					<m.div
@@ -365,6 +407,20 @@ export function BriefingGreeting({
 								</m.div>
 							)}
 						</div>
+					</m.div>
+				)}
+				{hasError && (
+					<m.div
+						initial={{ opacity: 0 }}
+						animate={{ opacity: 1 }}
+						className="mt-4 p-4 rounded-xl bg-red-50 dark:bg-red-950/20 border border-red-100 dark:border-red-900"
+					>
+						<p className="text-sm text-red-600 dark:text-red-400 mb-2">
+							Failed to load your briefing
+						</p>
+						<Button variant="outline" size="sm" onClick={onRetry}>
+							Retry
+						</Button>
 					</m.div>
 				)}
 			</div>

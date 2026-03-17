@@ -77,3 +77,13 @@ html {
 .dark ::-webkit-scrollbar-thumb:hover {
   background: #777;
 }
+
+/* Shimmer animation for mastery glow */
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}

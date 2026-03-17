@@ -180,6 +180,15 @@ export function PdfUploadDrawer({ isOpen, onClose, subjects, onSuccess }: PdfUpl
 
 			if (!response.ok) {
 				const errorData = await response.json();
+
+				if (errorData.isUnsupported) {
+					setStep('upload');
+					toast.info(
+						errorData.suggestion || 'This document is not a supported NSC Grade 12 exam paper.'
+					);
+					return;
+				}
+
 				throw new Error(errorData.details || errorData.error || 'Failed to extract questions');
 			}
 

@@ -74,8 +74,8 @@ export function FocusAreasWidget() {
 					<div className="w-16 h-16 bg-green-500/10 rounded-full flex items-center justify-center mx-auto mb-4">
 						<HugeiconsIcon icon={CheckmarkCircle02Icon} className="w-8 h-8 text-green-500" />
 					</div>
-					<p className="font-bold text-foreground">Great job!</p>
-					<p className="text-sm text-muted-foreground">No weak topics identified</p>
+					<p className="font-bold text-foreground">You&apos;re doing great!</p>
+					<p className="text-sm text-muted-foreground">Keep practicing to identify focus areas</p>
 				</div>
 			</Card>
 		);

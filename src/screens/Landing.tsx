@@ -158,7 +158,7 @@ export default function Landing() {
 												fill
 												sizes="40px"
 												className="object-cover"
-												unoptimized
+												loading="lazy"
 											/>
 										</div>
 									))}
@@ -208,7 +208,6 @@ export default function Landing() {
 												fill
 												className="object-cover rounded-[var(--radius-2xl)]"
 												priority
-												unoptimized
 											/>
 										</div>
 
@@ -490,7 +489,7 @@ export default function Landing() {
 											width={48}
 											height={48}
 											className="rounded-full object-cover"
-											unoptimized
+											loading="lazy"
 										/>
 										<div>
 											<p className="font-bold">{testimonial.name}</p>

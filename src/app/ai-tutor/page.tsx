@@ -9,7 +9,7 @@ import {
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import Link from 'next/link';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { toast } from 'sonner';
 import { AIPrompt } from '@/components/AI/AIPrompt';
 import { BookmarkButton } from '@/components/AI/BookmarkButton';
@@ -28,6 +28,7 @@ import { authClient } from '@/lib/auth-client';
 import { saveConversationAction } from '@/lib/db/ai-tutor-actions';
 import type { AiConversation } from '@/lib/db/schema';
 import { cn } from '@/lib/utils';
+import { useAiContextStore } from '@/stores/useAiContextStore';
 
 interface Message {
 	id: string;
@@ -55,12 +56,32 @@ interface Flashcard {
 
 export default function AITutorPage() {
 	const { data: session } = authClient.useSession();
+	const getRecentStruggles = useAiContextStore((s) => s.getRecentStruggles);
+	const struggles = getRecentStruggles();
+
+	const generateProactiveGreeting = useMemo(() => {
+		if (struggles.length === 0) {
+			return "Hey! I'm your Study Buddy. I can help you understand any NSC topic, answer exam questions, or explain tricky concepts. What do you need help with today?";
+		}
+
+		const recentStruggle = struggles[0];
+		const subjectName = recentStruggle.subject || 'this topic';
+		const topicName = recentStruggle.topic || 'the concept';
+
+		const greetings = [
+			`I noticed you struggled with ${topicName} in your recent ${recentStruggle.type}. Want to do a quick 3-minute drill on that before we move on?`,
+			`I saw you had some trouble with ${topicName} (${subjectName}). Want to tackle this together?`,
+			`Let's work on ${topicName} - I know that one can be tricky! Shall we start with a quick review?`,
+		];
+
+		return greetings[Math.floor(Math.random() * greetings.length)];
+	}, [struggles]);
+
 	const [messages, setMessages] = useState<Message[]>([
 		{
 			id: '1',
 			role: 'assistant',
-			content:
-				"Hey! I'm your Study Buddy. I can help you understand any NSC topic, answer exam questions, or explain tricky concepts. What do you need help with today?",
+			content: generateProactiveGreeting,
 			timestamp: new Date(),
 		},
 	]);
@@ -260,11 +281,12 @@ export default function AITutorPage() {
 	};
 
 	const handleNewConversation = () => {
+		const newGreeting = generateProactiveGreeting;
 		setMessages([
 			{
 				id: '1',
 				role: 'assistant',
-				content: "Hey! I'm your Study Buddy. What do you need help with today?",
+				content: newGreeting,
 				timestamp: new Date(),
 			},
 		]);
