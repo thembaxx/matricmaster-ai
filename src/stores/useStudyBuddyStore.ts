@@ -207,7 +207,7 @@ export const useStudyBuddyStore = create<StudyBuddyState>((set, _get) => ({
 			);
 			set({ buddyRequests: requestsWithUsers });
 		} catch (error) {
-			console.error('Error loading study buddies data:', error);
+			console.debug('Error loading study buddies data:', error);
 		} finally {
 			set({ isLoading: false });
 		}
@@ -237,7 +237,7 @@ export const useStudyBuddyStore = create<StudyBuddyState>((set, _get) => ({
 				toast.error(result.error || 'Failed to send request');
 			}
 		} catch (error) {
-			console.error('Error sending buddy request:', error);
+			console.debug('Error sending buddy request:', error);
 			toast.error('Failed to send buddy request');
 		}
 	},
@@ -261,7 +261,7 @@ export const useStudyBuddyStore = create<StudyBuddyState>((set, _get) => ({
 				toast.error(result.error || 'Failed to accept request');
 			}
 		} catch (error) {
-			console.error('Error accepting buddy request:', error);
+			console.debug('Error accepting buddy request:', error);
 			toast.error('Failed to accept buddy request');
 		}
 	},
@@ -285,7 +285,7 @@ export const useStudyBuddyStore = create<StudyBuddyState>((set, _get) => ({
 				toast.error(result.error || 'Failed to reject request');
 			}
 		} catch (error) {
-			console.error('Error rejecting buddy request:', error);
+			console.debug('Error rejecting buddy request:', error);
 			toast.error('Failed to reject buddy request');
 		}
 	},

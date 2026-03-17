@@ -138,7 +138,7 @@ export const WeeklyChallenge = memo(function WeeklyChallenge({
 					daysRemaining: getDaysUntilMonday(),
 				});
 			} catch (error) {
-				console.error('[WeeklyChallenge] Error fetching:', error);
+				console.debug('[WeeklyChallenge] Error fetching:', error);
 			} finally {
 				setIsLoading(false);
 			}

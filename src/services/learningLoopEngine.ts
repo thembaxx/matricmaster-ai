@@ -74,7 +74,7 @@ Return as JSON array:
 			metadata: { subject, topic },
 		}));
 	} catch (error) {
-		console.error('Failed to analyze problem:', error);
+		console.debug('Failed to analyze problem:', error);
 		return [];
 	}
 }

@@ -16,7 +16,7 @@ export function createAIClient() {
 	try {
 		return new GoogleGenAI({ apiKey });
 	} catch (error) {
-		console.error('Failed to create AI client:', error);
+		console.debug('Failed to create AI client:', error);
 		return null;
 	}
 }

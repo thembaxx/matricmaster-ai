@@ -80,7 +80,7 @@ export default function ReviewPage() {
 				setRecommendations(data);
 			}
 		} catch (error) {
-			console.error('Failed to load review data:', error);
+			console.debug('Failed to load review data:', error);
 			toast.error('Failed to load review data');
 		} finally {
 			setIsLoading(false);
@@ -109,7 +109,7 @@ export default function ReviewPage() {
 				toast.error('Failed to save review');
 			}
 		} catch (error) {
-			console.error('Failed to rate card:', error);
+			console.debug('Failed to rate card:', error);
 			toast.error('Failed to save review');
 		}
 	};

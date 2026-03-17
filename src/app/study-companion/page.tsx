@@ -174,7 +174,7 @@ export default function StudyCompanion() {
 				const data = await getRecentSessionsWithContextAction();
 				setRecentSessions(data);
 			} catch (error) {
-				console.error('Error loading recent sessions:', error);
+				console.debug('Error loading recent sessions:', error);
 			} finally {
 				setIsLoadingSessions(false);
 			}
@@ -205,7 +205,7 @@ export default function StudyCompanion() {
 			const prompt = selectedCard ? getPromptForCard(selectedCard) + inputValue : inputValue;
 			router.push(`/ai-tutor?new=true&prompt=${encodeURIComponent(prompt)}`);
 		} catch (error) {
-			console.error('Error starting chat:', error);
+			console.debug('Error starting chat:', error);
 			setIsLoading(false);
 			toast.error('Failed to start chat. Please try again.');
 		}

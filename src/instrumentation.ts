@@ -9,7 +9,7 @@ export async function register() {
 			await initAuth();
 			console.log('✅ Background: Database and Auth pre-initialized');
 		} catch (error) {
-			console.error('❌ Background: Failed to pre-initialize:', error);
+			console.debug('❌ Background: Failed to pre-initialize:', error);
 		}
 	}
 }

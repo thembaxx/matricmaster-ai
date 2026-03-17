@@ -253,7 +253,7 @@ export default function SettingsPage() {
 				toast.error(result.error.message);
 			}
 		} catch (error) {
-			console.error(error);
+			console.debug(error);
 			toast.error('Failed to enable 2FA');
 		} finally {
 			setIsLoading2FA(false);
@@ -278,7 +278,7 @@ export default function SettingsPage() {
 				toast.error(result.error.message);
 			}
 		} catch (error) {
-			console.error(error);
+			console.debug(error);
 			toast.error('Failed to disable 2FA');
 		} finally {
 			setIsLoading2FA(false);
@@ -304,7 +304,7 @@ export default function SettingsPage() {
 				toast.error(result.error.message);
 			}
 		} catch (error) {
-			console.error(error);
+			console.debug(error);
 			toast.error('Failed to regenerate backup codes');
 		} finally {
 			setIsLoading2FA(false);

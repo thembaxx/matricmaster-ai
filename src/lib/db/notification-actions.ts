@@ -22,7 +22,7 @@ async function publishNotificationToAbly(
 		await publishNotification(userId, notification);
 		console.log('[Notifications] Published to Ably:', notification.id);
 	} catch (error) {
-		console.error('[Notifications] Failed to publish to Ably:', error);
+		console.debug('[Notifications] Failed to publish to Ably:', error);
 	}
 }
 
@@ -61,7 +61,7 @@ export async function createNotification(
 
 		return { success: true, notification };
 	} catch (error) {
-		console.error('[Notifications] Error creating notification:', error);
+		console.debug('[Notifications] Error creating notification:', error);
 		return { success: false, error: String(error) };
 	}
 }
@@ -103,7 +103,7 @@ export async function getNotifications(
 		const limit = options?.limit || 20;
 		return filtered.slice(offset, offset + limit);
 	} catch (error) {
-		console.error('[Notifications] Error getting notifications:', error);
+		console.debug('[Notifications] Error getting notifications:', error);
 		return [];
 	}
 }
@@ -123,7 +123,7 @@ export async function getUnreadCount(_userId: string) {
 
 		return result.length;
 	} catch (error) {
-		console.error('[Notifications] Error getting unread count:', error);
+		console.debug('[Notifications] Error getting unread count:', error);
 		return 0;
 	}
 }
@@ -142,7 +142,7 @@ export async function markAsRead(notificationId: string, _userId: string) {
 			.where(and(eq(notifications.id, notificationId), eq(notifications.userId, userId)));
 		return { success: true };
 	} catch (error) {
-		console.error('[Notifications] Error marking as read:', error);
+		console.debug('[Notifications] Error marking as read:', error);
 		return { success: false, error: String(error) };
 	}
 }
@@ -161,7 +161,7 @@ export async function markAllAsRead(_userId: string) {
 			.where(and(eq(notifications.userId, userId), eq(notifications.isRead, false)));
 		return { success: true };
 	} catch (error) {
-		console.error('[Notifications] Error marking all as read:', error);
+		console.debug('[Notifications] Error marking all as read:', error);
 		return { success: false, error: String(error) };
 	}
 }
@@ -179,7 +179,7 @@ export async function deleteNotification(notificationId: string, _userId: string
 			.where(and(eq(notifications.id, notificationId), eq(notifications.userId, userId)));
 		return { success: true };
 	} catch (error) {
-		console.error('[Notifications] Error deleting notification:', error);
+		console.debug('[Notifications] Error deleting notification:', error);
 		return { success: false, error: String(error) };
 	}
 }
@@ -195,7 +195,7 @@ export async function deleteAllNotifications(_userId: string) {
 		await db.delete(notifications).where(eq(notifications.userId, userId));
 		return { success: true };
 	} catch (error) {
-		console.error('[Notifications] Error deleting all notifications:', error);
+		console.debug('[Notifications] Error deleting all notifications:', error);
 		return { success: false, error: String(error) };
 	}
 }
@@ -215,7 +215,7 @@ export async function getNotification(notificationId: string, _userId: string) {
 			.limit(1);
 		return notification || null;
 	} catch (error) {
-		console.error('[Notifications] Error getting notification:', error);
+		console.debug('[Notifications] Error getting notification:', error);
 		return null;
 	}
 }

@@ -24,7 +24,7 @@ export function StruggleAlert({ concept, struggleCount, onGetHelp }: StruggleAle
 			if (isQuotaError(error)) {
 				triggerQuotaError();
 			}
-			console.error('Failed to resolve concept:', error);
+			console.debug('Failed to resolve concept:', error);
 		}
 	};
 

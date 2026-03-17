@@ -25,7 +25,7 @@ export async function hasAccessToChannel(userId: string, channelId: string): Pro
 
 		return !!membership;
 	} catch (error) {
-		console.error('[Chat] Error checking channel access:', error);
+		console.debug('[Chat] Error checking channel access:', error);
 		return false;
 	}
 }
@@ -71,7 +71,7 @@ export async function sendMessage(
 
 		return { success: true, message };
 	} catch (error) {
-		console.error('[Chat] Error sending message:', error);
+		console.debug('[Chat] Error sending message:', error);
 		return {
 			success: false,
 			error: { message: String(error), code: 'SERVER_ERROR' },
@@ -107,7 +107,7 @@ export async function getChannelMessages(
 				return dateB - dateA;
 			});
 	} catch (error) {
-		console.error('[Chat] Error getting messages:', error);
+		console.debug('[Chat] Error getting messages:', error);
 		return [];
 	}
 }
@@ -155,7 +155,7 @@ export async function editMessage(
 
 		return { success: true, message: updated };
 	} catch (error) {
-		console.error('[Chat] Error editing message:', error);
+		console.debug('[Chat] Error editing message:', error);
 		return {
 			success: false,
 			error: { message: String(error), code: 'SERVER_ERROR' },
@@ -204,7 +204,7 @@ export async function deleteMessage(
 
 		return { success: true, message: undefined };
 	} catch (error) {
-		console.error('[Chat] Error deleting message:', error);
+		console.debug('[Chat] Error deleting message:', error);
 		return {
 			success: false,
 			error: { message: String(error), code: 'SERVER_ERROR' },
@@ -250,7 +250,7 @@ export async function updateUserPresence(
 
 		return { success: true, message: presence };
 	} catch (error) {
-		console.error('[Chat] Error updating presence:', error);
+		console.debug('[Chat] Error updating presence:', error);
 		return {
 			success: false,
 			error: { message: String(error), code: 'SERVER_ERROR' },
@@ -269,7 +269,7 @@ export async function getChannelPresence(channelId: string) {
 
 		return members;
 	} catch (error) {
-		console.error('[Chat] Error getting presence:', error);
+		console.debug('[Chat] Error getting presence:', error);
 		return [];
 	}
 }

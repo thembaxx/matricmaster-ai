@@ -142,7 +142,7 @@ export async function POST(request: NextRequest) {
 			cached: false,
 		});
 	} catch (error) {
-		console.error('[API] Error extracting questions:', error);
+		console.debug('[API] Error extracting questions:', error);
 
 		const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
 

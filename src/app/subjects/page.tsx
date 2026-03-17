@@ -32,7 +32,7 @@ export default function SubjectsPage() {
 				setAllSubjects(subs);
 				setEnrolledIds(enrolled.map((e) => e.id));
 			} catch (error) {
-				console.error('Failed to load subjects:', error);
+				console.debug('Failed to load subjects:', error);
 			} finally {
 				setIsLoading(false);
 			}

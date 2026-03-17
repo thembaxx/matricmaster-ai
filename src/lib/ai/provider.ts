@@ -6,7 +6,7 @@ import { createOpenAI } from '@ai-sdk/openai';
 import { generateText, type LanguageModel, streamText } from 'ai';
 import { isQuotaError } from './quota-error';
 
-const DEFAULT_MODEL = 'gemini-2.5-flash';
+const DEFAULT_MODEL = 'gemini-3.1-flash-lite';
 const STORAGE_KEY = 'matricmaster_user_gemini_api_key';
 
 function getUserApiKey(): string | undefined {

@@ -48,7 +48,7 @@ export function VoiceToFlashcard({ subject, onFlashcardsGenerated }: VoiceToFlas
 		};
 
 		recognition.onerror = (event: any) => {
-			console.error('Speech recognition error:', event.error);
+			console.debug('Speech recognition error:', event.error);
 			setIsRecording(false);
 		};
 
@@ -91,7 +91,7 @@ export function VoiceToFlashcard({ subject, onFlashcardsGenerated }: VoiceToFlas
 			if (isQuotaError(error)) {
 				triggerQuotaError();
 			}
-			console.error('Processing error:', error);
+			console.debug('Processing error:', error);
 			toast.error('Failed to process voice');
 		} finally {
 			setProcessing(false);

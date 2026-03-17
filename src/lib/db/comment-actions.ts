@@ -38,7 +38,7 @@ export async function createComment(
 			.returning();
 		return { success: true, comment };
 	} catch (error) {
-		console.error('[Comments] Error creating comment:', error);
+		console.debug('[Comments] Error creating comment:', error);
 		return { success: false, error: String(error) };
 	}
 }
@@ -72,7 +72,7 @@ export async function getComments(resourceType: string, resourceId: string) {
 
 		return commentsList;
 	} catch (error) {
-		console.error('[Comments] Error getting comments:', error);
+		console.debug('[Comments] Error getting comments:', error);
 		return [];
 	}
 }
@@ -102,7 +102,7 @@ export async function getComment(commentId: string) {
 			.limit(1);
 		return comment || null;
 	} catch (error) {
-		console.error('[Comments] Error getting comment:', error);
+		console.debug('[Comments] Error getting comment:', error);
 		return null;
 	}
 }
@@ -129,7 +129,7 @@ export async function updateComment(commentId: string, _userId: string, content:
 			.returning();
 		return { success: true, comment: updated };
 	} catch (error) {
-		console.error('[Comments] Error updating comment:', error);
+		console.debug('[Comments] Error updating comment:', error);
 		return { success: false, error: String(error) };
 	}
 }
@@ -150,7 +150,7 @@ export async function deleteComment(commentId: string, _userId: string) {
 			.where(and(eq(comments.id, commentId), eq(comments.userId, activeUserId)));
 		return { success: true };
 	} catch (error) {
-		console.error('[Comments] Error deleting comment:', error);
+		console.debug('[Comments] Error deleting comment:', error);
 		return { success: false, error: String(error) };
 	}
 }
@@ -239,7 +239,7 @@ export async function voteOnComment(_userId: string, commentId: string, voteType
 
 		return { success: true };
 	} catch (error) {
-		console.error('[Comments] Error voting on comment:', error);
+		console.debug('[Comments] Error voting on comment:', error);
 		return { success: false, error: String(error) };
 	}
 }
@@ -261,7 +261,7 @@ export async function getUserVote(_userId: string, commentId: string) {
 			.limit(1);
 		return vote?.voteType || null;
 	} catch (error) {
-		console.error('[Comments] Error getting user vote:', error);
+		console.debug('[Comments] Error getting user vote:', error);
 		return null;
 	}
 }
@@ -280,7 +280,7 @@ export async function flagComment(commentId: string, reason: string) {
 			.where(eq(comments.id, commentId));
 		return { success: true };
 	} catch (error) {
-		console.error('[Comments] Error flagging comment:', error);
+		console.debug('[Comments] Error flagging comment:', error);
 		return { success: false, error: String(error) };
 	}
 }

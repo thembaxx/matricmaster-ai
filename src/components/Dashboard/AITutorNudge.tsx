@@ -29,7 +29,7 @@ export function AITutorNudge(_props: AITutorNudgeProps) {
 					setTimeout(() => setIsVisible(true), 100);
 				}
 			} catch {
-				console.error('Failed to load nudge');
+				console.debug('Failed to load nudge');
 			} finally {
 				if (mounted) setLoading(false);
 			}

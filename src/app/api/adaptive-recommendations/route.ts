@@ -13,7 +13,7 @@ export async function GET(request: NextRequest) {
 			count: recommendations.length,
 		});
 	} catch (error) {
-		console.error('Failed to get adaptive recommendations:', error);
+		console.debug('Failed to get adaptive recommendations:', error);
 		return NextResponse.json({ error: 'Failed to get recommendations' }, { status: 500 });
 	}
 }

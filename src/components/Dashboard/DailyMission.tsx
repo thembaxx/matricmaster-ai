@@ -30,7 +30,7 @@ export function DailyMission() {
 					setMissions(data.recommendations || []);
 				}
 			} catch (error) {
-				console.error('Failed to load missions:', error);
+				console.debug('Failed to load missions:', error);
 			} finally {
 				setIsLoading(false);
 			}

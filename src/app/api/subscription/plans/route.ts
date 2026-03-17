@@ -40,7 +40,7 @@ export async function GET(request: NextRequest) {
 				: null,
 		});
 	} catch (error) {
-		console.error('Subscription fetch error:', error);
+		console.debug('Subscription fetch error:', error);
 		return NextResponse.json({ error: 'Failed to fetch subscription' }, { status: 500 });
 	}
 }

@@ -78,7 +78,7 @@ export function DeckDetailModal({
 				toast.error('Failed to add card');
 			}
 		} catch (error) {
-			console.error('Failed to add card:', error);
+			console.debug('Failed to add card:', error);
 			toast.error('Failed to add card');
 		} finally {
 			setIsAdding(false);
@@ -101,7 +101,7 @@ export function DeckDetailModal({
 				toast.error('Failed to delete card');
 			}
 		} catch (error) {
-			console.error('Failed to delete card:', error);
+			console.debug('Failed to delete card:', error);
 			toast.error('Failed to delete card');
 		} finally {
 			setDeletingId(null);

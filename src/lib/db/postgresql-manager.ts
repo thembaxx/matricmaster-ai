@@ -42,7 +42,7 @@ class PostgreSQLManager {
 		}
 
 		if (!this.config.connectionString) {
-			console.error('❌ DATABASE_URL is not configured');
+			console.debug('❌ DATABASE_URL is not configured');
 			return false;
 		}
 
@@ -77,7 +77,7 @@ class PostgreSQLManager {
 				return true;
 			}
 		} catch (error) {
-			console.error('❌ PostgreSQL connection failed:', error);
+			console.debug('❌ PostgreSQL connection failed:', error);
 			this.isConnected = false;
 			this.cleanup();
 			return false;
@@ -92,7 +92,7 @@ class PostgreSQLManager {
 				await this.client.end();
 				console.log('🔌 PostgreSQL disconnected');
 			} catch (error) {
-				console.error('Error disconnecting:', error);
+				console.debug('Error disconnecting:', error);
 			}
 		}
 		this.cleanup();

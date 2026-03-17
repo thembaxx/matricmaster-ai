@@ -103,7 +103,7 @@ async function sendWebhook(
 		clearTimeout(timeoutId);
 		return response.ok;
 	} catch (error) {
-		console.error('Webhook delivery failed:', error);
+		console.debug('Webhook delivery failed:', error);
 		return false;
 	}
 }
@@ -126,7 +126,7 @@ export async function triggerWebhook(
 
 		const success = await sendWebhook(config.url, payload, config.secret);
 		if (!success) {
-			console.error(`Webhook delivery failed for ${id}, event: ${event}`);
+			console.debug(`Webhook delivery failed for ${id}, event: ${event}`);
 			// In production, implement retry logic here
 		}
 	}

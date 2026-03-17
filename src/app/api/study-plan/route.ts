@@ -31,7 +31,7 @@ export async function GET(request: NextRequest) {
 		const plans = await getStudyPlansAction(session.user.id);
 		return NextResponse.json({ success: true, data: plans });
 	} catch (error) {
-		console.error('[API] Error fetching study plans:', error);
+		console.debug('[API] Error fetching study plans:', error);
 		return NextResponse.json({ error: 'Failed to fetch study plans' }, { status: 500 });
 	}
 }
@@ -81,7 +81,7 @@ export async function POST(request: NextRequest) {
 
 		return NextResponse.json({ success: true, data: result.plan });
 	} catch (error) {
-		console.error('[API] Error creating study plan:', error);
+		console.debug('[API] Error creating study plan:', error);
 		return NextResponse.json({ error: 'Failed to create study plan' }, { status: 500 });
 	}
 }
@@ -136,7 +136,7 @@ export async function PUT(request: NextRequest) {
 
 		return NextResponse.json({ success: true, data: result.plan });
 	} catch (error) {
-		console.error('[API] Error updating study plan:', error);
+		console.debug('[API] Error updating study plan:', error);
 		return NextResponse.json({ error: 'Failed to update study plan' }, { status: 500 });
 	}
 }
@@ -165,7 +165,7 @@ export async function DELETE(request: NextRequest) {
 
 		return NextResponse.json({ success: true });
 	} catch (error) {
-		console.error('[API] Error deleting study plan:', error);
+		console.debug('[API] Error deleting study plan:', error);
 		return NextResponse.json({ error: 'Failed to delete study plan' }, { status: 500 });
 	}
 }

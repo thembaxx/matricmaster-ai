@@ -38,7 +38,7 @@ export async function GET(request: NextRequest) {
 
 		return NextResponse.json({ success: true, data: bookmarks });
 	} catch (error) {
-		console.error('[API] Error fetching bookmarks:', error);
+		console.debug('[API] Error fetching bookmarks:', error);
 		return NextResponse.json({ error: 'Failed to fetch bookmarks' }, { status: 500 });
 	}
 }
@@ -87,7 +87,7 @@ export async function POST(request: NextRequest) {
 
 		return NextResponse.json({ success: true, data: result.bookmark });
 	} catch (error) {
-		console.error('[API] Error creating bookmark:', error);
+		console.debug('[API] Error creating bookmark:', error);
 		return NextResponse.json({ error: 'Failed to create bookmark' }, { status: 500 });
 	}
 }
@@ -116,7 +116,7 @@ export async function DELETE(request: NextRequest) {
 
 		return NextResponse.json({ success: true });
 	} catch (error) {
-		console.error('[API] Error deleting bookmark:', error);
+		console.debug('[API] Error deleting bookmark:', error);
 		return NextResponse.json({ error: 'Failed to delete bookmark' }, { status: 500 });
 	}
 }

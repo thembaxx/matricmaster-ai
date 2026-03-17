@@ -16,7 +16,7 @@ export async function GET(request: NextRequest) {
 		const decks = await getUserDecks(session.user.id);
 		return NextResponse.json({ decks });
 	} catch (error) {
-		console.error('[Decks API] Error:', error);
+		console.debug('[Decks API] Error:', error);
 		return NextResponse.json({ error: 'Failed to fetch decks' }, { status: 500 });
 	}
 }
@@ -47,7 +47,7 @@ export async function POST(request: NextRequest) {
 
 		return NextResponse.json({ deck: result.deck });
 	} catch (error) {
-		console.error('[Decks API] Error:', error);
+		console.debug('[Decks API] Error:', error);
 		return NextResponse.json({ error: 'Failed to create deck' }, { status: 500 });
 	}
 }

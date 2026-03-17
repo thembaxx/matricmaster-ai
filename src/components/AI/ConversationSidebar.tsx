@@ -197,7 +197,7 @@ export function ConversationSidebar({
 				const result = await getConversationsAction(userId);
 				setConversations(result);
 			} catch (error) {
-				console.error('Failed to load conversations:', error);
+				console.debug('Failed to load conversations:', error);
 			} finally {
 				setIsLoading(false);
 			}

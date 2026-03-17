@@ -71,7 +71,7 @@ export function UniversityPathfinderDialog({
 			if (isQuotaError(error)) {
 				triggerQuotaError();
 			}
-			console.error('Failed to generate roadmap:', error);
+			console.debug('Failed to generate roadmap:', error);
 		} finally {
 			setLoading(false);
 		}

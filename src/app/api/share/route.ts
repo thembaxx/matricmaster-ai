@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
 
 		return NextResponse.json(share, { status: 201 });
 	} catch (error) {
-		console.error('Error tracking share:', error);
+		console.debug('Error tracking share:', error);
 		return NextResponse.json({ error: 'Failed to track share' }, { status: 500 });
 	}
 }

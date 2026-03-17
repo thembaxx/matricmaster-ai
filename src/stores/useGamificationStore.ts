@@ -75,7 +75,7 @@ export const useGamificationStore = create<GamificationState>()(
 
 					return unlocked;
 				} catch (error) {
-					console.error('Failed to check achievements:', error);
+					console.debug('Failed to check achievements:', error);
 					set({ isChecking: false });
 					return [];
 				}

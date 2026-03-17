@@ -69,7 +69,7 @@ export function useQuestionExtractor(): UseQuestionExtractorReturn {
 			} catch (err) {
 				const errorMessage = err instanceof Error ? err.message : 'An unexpected error occurred';
 				setError(errorMessage);
-				console.error('Error extracting questions:', err);
+				console.debug('Error extracting questions:', err);
 			} finally {
 				setIsLoading(false);
 			}

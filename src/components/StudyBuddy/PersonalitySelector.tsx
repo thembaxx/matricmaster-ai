@@ -34,7 +34,7 @@ export function PersonalitySelector({
 			await setBuddyPersonality(personality);
 			onSelect?.(personality);
 		} catch (error) {
-			console.error('Failed to set personality:', error);
+			console.debug('Failed to set personality:', error);
 		} finally {
 			setLoading(false);
 		}

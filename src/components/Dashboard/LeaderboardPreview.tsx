@@ -66,7 +66,7 @@ export const LeaderboardPreview = memo(function LeaderboardPreview() {
 			setEntries(topEntries);
 			setUserRank(rankData?.rank || null);
 		} catch (err) {
-			console.error('[LeaderboardPreview] Error fetching:', err);
+			console.debug('[LeaderboardPreview] Error fetching:', err);
 			setError('Unable to load leaderboard');
 		} finally {
 			setIsLoading(false);

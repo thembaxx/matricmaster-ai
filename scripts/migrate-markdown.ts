@@ -45,23 +45,23 @@ async function migrate() {
 
 						console.log(`✨ Updated: ${paper.paperId} with markdown URL: ${upload.url}`);
 					} else {
-						console.error(`❌ Failed to upload markdown for ${paper.paperId}:`, upload.error);
+						console.debug(`❌ Failed to upload markdown for ${paper.paperId}:`, upload.error);
 					}
 				} else {
-					console.error(`❌ Failed to convert ${paper.paperId}:`, result.error);
+					console.debug(`❌ Failed to convert ${paper.paperId}:`, result.error);
 				}
 
 				// Rate limit - 2 seconds between papers to avoid hitting markdown.new limits
 				console.log('Waiting 2 seconds...');
 				await new Promise((r) => setTimeout(r, 2000));
 			} catch (error) {
-				console.error(`💥 Failed: ${paper.paperId}`, error);
+				console.debug(`💥 Failed: ${paper.paperId}`, error);
 			}
 		}
 
 		console.log('✅ Migration complete!');
 	} catch (error) {
-		console.error('❌ Migration failed:', error);
+		console.debug('❌ Migration failed:', error);
 	} finally {
 		await closeConnection();
 		process.exit(0);

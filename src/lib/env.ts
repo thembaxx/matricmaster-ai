@@ -61,9 +61,9 @@ export function validateEnv(): Env {
 	const result = schema.safeParse(process.env);
 
 	if (!result.success) {
-		console.error('❌ Invalid environment variables:');
+		console.debug('❌ Invalid environment variables:');
 		result.error.issues.forEach((issue) => {
-			console.error(`  - ${issue.path.join('.')}: ${issue.message}`);
+			console.debug(`  - ${issue.path.join('.')}: ${issue.message}`);
 		});
 
 		// if (process.env.NODE_ENV === 'production') {

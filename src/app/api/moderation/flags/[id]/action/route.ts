@@ -26,7 +26,7 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
 			reviewedBy: session.user.id,
 		});
 	} catch (error) {
-		console.error('Error reviewing flag:', error);
+		console.debug('Error reviewing flag:', error);
 		return NextResponse.json({ error: 'Failed to review flag' }, { status: 500 });
 	}
 }

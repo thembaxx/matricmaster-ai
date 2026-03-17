@@ -58,7 +58,7 @@ IMPORTANT: correctAnswer should be the index (0-3) of the correct option.`;
 		if (error instanceof z.ZodError) {
 			return NextResponse.json({ error: 'Invalid input' }, { status: 400 });
 		}
-		console.error('Quiz generation error:', error);
+		console.debug('Quiz generation error:', error);
 		return NextResponse.json({ error: 'Failed to generate quiz' }, { status: 500 });
 	}
 }

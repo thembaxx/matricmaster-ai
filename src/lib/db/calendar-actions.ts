@@ -76,7 +76,7 @@ export async function createCalendarEvent(
 			.returning();
 		return { success: true, event };
 	} catch (error) {
-		console.error('[Calendar] Error creating event:', error);
+		console.debug('[Calendar] Error creating event:', error);
 		return { success: false, error: String(error) };
 	}
 }
@@ -127,7 +127,7 @@ export async function getCalendarEvents(
 				reminderMinutes: parseJsonField<number[]>(e.reminderMinutes, []),
 			}));
 	} catch (error) {
-		console.error('[Calendar] Error getting events:', error);
+		console.debug('[Calendar] Error getting events:', error);
 		return [];
 	}
 }
@@ -155,7 +155,7 @@ export async function getCalendarEvent(eventId: string, _userId: string) {
 			reminderMinutes: parseJsonField<number[]>(event.reminderMinutes, []),
 		};
 	} catch (error) {
-		console.error('[Calendar] Error getting event:', error);
+		console.debug('[Calendar] Error getting event:', error);
 		return null;
 	}
 }
@@ -206,7 +206,7 @@ export async function updateCalendarEvent(
 			.returning();
 		return { success: true, event: updated };
 	} catch (error) {
-		console.error('[Calendar] Error updating event:', error);
+		console.debug('[Calendar] Error updating event:', error);
 		return { success: false, error: String(error) };
 	}
 }
@@ -226,7 +226,7 @@ export async function deleteCalendarEvent(eventId: string, _userId: string) {
 			.where(and(eq(calendarEvents.id, eventId), eq(calendarEvents.userId, activeUserId)));
 		return { success: true };
 	} catch (error) {
-		console.error('[Calendar] Error deleting event:', error);
+		console.debug('[Calendar] Error deleting event:', error);
 		return { success: false, error: String(error) };
 	}
 }

@@ -158,7 +158,7 @@ export default function SnapAndSolve() {
 				toast.error(data.error || 'Failed to analyze question');
 			}
 		} catch (error) {
-			console.error('Analysis failed:', error);
+			console.debug('Analysis failed:', error);
 			toast.error('Something went wrong. Please try again.');
 		} finally {
 			setIsAnalyzing(false);

@@ -38,7 +38,7 @@ export async function GET(request: NextRequest) {
 			unreadCount,
 		});
 	} catch (error) {
-		console.error('Error fetching notifications:', error);
+		console.debug('Error fetching notifications:', error);
 		return NextResponse.json({ error: 'Failed to fetch notifications' }, { status: 500 });
 	}
 }
@@ -78,7 +78,7 @@ export async function POST(request: NextRequest) {
 
 		return NextResponse.json({ success: true, data: result.notification }, { status: 201 });
 	} catch (error) {
-		console.error('Error creating notification:', error);
+		console.debug('Error creating notification:', error);
 		return NextResponse.json({ error: 'Failed to create notification' }, { status: 500 });
 	}
 }
@@ -103,7 +103,7 @@ export async function PATCH(request: NextRequest) {
 
 		return NextResponse.json({ success: true });
 	} catch (error) {
-		console.error('Error marking all as read:', error);
+		console.debug('Error marking all as read:', error);
 		return NextResponse.json({ error: 'Failed to mark all as read' }, { status: 500 });
 	}
 }
@@ -128,7 +128,7 @@ export async function DELETE(request: NextRequest) {
 
 		return NextResponse.json({ success: true });
 	} catch (error) {
-		console.error('Error deleting notifications:', error);
+		console.debug('Error deleting notifications:', error);
 		return NextResponse.json({ error: 'Failed to delete notifications' }, { status: 500 });
 	}
 }

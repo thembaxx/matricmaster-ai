@@ -147,7 +147,7 @@ export default function Lessons() {
 				setLessonsData(allLessons);
 				setLoading(false);
 			} catch (error) {
-				console.error('Error loading lessons:', error);
+				console.debug('Error loading lessons:', error);
 				setLoading(false);
 			}
 		};

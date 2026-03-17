@@ -161,7 +161,7 @@ export default function Quiz({ quizId: initialQuizId }: QuizProps) {
 				if (isQuotaError(error)) {
 					triggerQuotaError();
 				}
-				console.error('Failed to load hint:', error);
+				console.debug('Failed to load hint:', error);
 			}
 		}
 		loadHint();
@@ -240,7 +240,7 @@ export default function Quiz({ quizId: initialQuizId }: QuizProps) {
 					}
 				}
 			} catch (error) {
-				console.error('Failed to track progress:', error);
+				console.debug('Failed to track progress:', error);
 			}
 		}
 	};

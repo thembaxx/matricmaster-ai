@@ -57,7 +57,7 @@ export async function getUserProgressSummary(): Promise<UserProgressSummary | nu
 			recentSessions: recent,
 		};
 	} catch (error) {
-		console.error('Error getting progress summary:', error);
+		console.debug('Error getting progress summary:', error);
 		return null;
 	}
 }
@@ -80,7 +80,7 @@ export async function getUserStreak() {
 			lastActivityDate: progress?.lastActivityAt?.toISOString() || null,
 		};
 	} catch (error) {
-		console.error('Error getting user streak:', error);
+		console.debug('Error getting user streak:', error);
 		return { currentStreak: 0, bestStreak: 0, lastActivityDate: null };
 	}
 }
@@ -178,7 +178,7 @@ export async function completeActivityAction(result: ActivityResult) {
 
 		return { success: true, xpGained: result.marksEarned };
 	} catch (error) {
-		console.error('Error in completeActivityAction:', error);
+		console.debug('Error in completeActivityAction:', error);
 		return { success: false, error: 'Failed to update progress' };
 	}
 }

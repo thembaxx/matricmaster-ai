@@ -67,7 +67,7 @@ export async function createDailyRoom(params: CreateRoomParams): Promise<DailyRo
 		const data = await response.json();
 		return data;
 	} catch (error) {
-		console.error('Error creating Daily.co room:', error);
+		console.debug('Error creating Daily.co room:', error);
 		return null;
 	}
 }
@@ -94,7 +94,7 @@ export async function getDailyRoom(roomName: string): Promise<DailyRoom | null> 
 		const data = await response.json();
 		return data;
 	} catch (error) {
-		console.error('Error getting Daily.co room:', error);
+		console.debug('Error getting Daily.co room:', error);
 		return null;
 	}
 }
@@ -116,7 +116,7 @@ export async function deleteDailyRoom(roomName: string): Promise<boolean> {
 
 		return response.ok;
 	} catch (error) {
-		console.error('Error deleting Daily.co room:', error);
+		console.debug('Error deleting Daily.co room:', error);
 		return false;
 	}
 }
@@ -157,7 +157,7 @@ export async function createDailyMeetingToken(
 		const data = await response.json();
 		return data.token;
 	} catch (error) {
-		console.error('Error creating Daily.co token:', error);
+		console.debug('Error creating Daily.co token:', error);
 		return null;
 	}
 }

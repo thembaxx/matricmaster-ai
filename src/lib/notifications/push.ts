@@ -47,7 +47,7 @@ export async function subscribeToPush(): Promise<PushSubscription | null> {
 
 		return subscription;
 	} catch (error) {
-		console.error('Failed to subscribe to push:', error);
+		console.debug('Failed to subscribe to push:', error);
 		return null;
 	}
 }
@@ -60,7 +60,7 @@ export async function unsubscribeFromPush(): Promise<boolean> {
 		}
 		return true;
 	} catch (error) {
-		console.error('Failed to unsubscribe from push:', error);
+		console.debug('Failed to unsubscribe from push:', error);
 		return false;
 	}
 }
@@ -101,7 +101,7 @@ async function saveSubscriptionToServer(subscription: PushSubscription): Promise
 			body: JSON.stringify(subscription),
 		});
 	} catch (error) {
-		console.error('Failed to save subscription:', error);
+		console.debug('Failed to save subscription:', error);
 	}
 }
 

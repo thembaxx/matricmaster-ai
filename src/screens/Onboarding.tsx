@@ -108,7 +108,7 @@ export default function OnboardingScreen({ user }: OnboardingScreenProps) {
 				router.push('/dashboard');
 			}
 		} catch (error) {
-			console.error('An unexpected error occurred:', error);
+			console.debug('An unexpected error occurred:', error);
 			router.push('/dashboard');
 		} finally {
 			setIsLoading(false);

@@ -42,7 +42,7 @@ export async function seedDatabase() {
 			await dbManager.initialize();
 		}
 	} catch (dbError) {
-		console.error(
+		console.debug(
 			'❌ Failed to connect to database:',
 			dbError instanceof Error ? dbError.message : dbError
 		);
@@ -145,7 +145,7 @@ export async function seedDatabase() {
 
 				console.log(`✓ Successfully inserted ${insertedSubjects.length} subjects`);
 			} catch (insertError) {
-				console.error(
+				console.debug(
 					'❌ Failed to insert subjects:',
 					insertError instanceof Error ? insertError.message : insertError
 				);
@@ -381,7 +381,7 @@ export async function seedDatabase() {
 						'✓ Test user seeded directly to database: student@matricmaster.ai / password123'
 					);
 				} catch (dbError) {
-					console.error(
+					console.debug(
 						'❌ Failed to seed user via database:',
 						dbError instanceof Error ? dbError.message : dbError
 					);
@@ -396,7 +396,7 @@ export async function seedDatabase() {
 
 		console.log('\n✅ Database seeding completed successfully!');
 	} catch (error) {
-		console.error('❌ Seeding failed:', error);
+		console.debug('❌ Seeding failed:', error);
 		throw error;
 	}
 }

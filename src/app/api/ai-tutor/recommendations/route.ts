@@ -146,7 +146,7 @@ export async function POST(request: NextRequest) {
 
 		return generateFallbackRecommendations(learningStats, overdueReviews);
 	} catch (error) {
-		console.error('[Recommendations] Error:', error);
+		console.debug('[Recommendations] Error:', error);
 		return NextResponse.json({ error: 'Failed to generate recommendations' }, { status: 500 });
 	}
 }

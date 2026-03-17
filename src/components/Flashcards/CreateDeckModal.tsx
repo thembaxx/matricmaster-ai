@@ -63,7 +63,7 @@ export function CreateDeckModal({ open, onOpenChange, onCreated }: CreateDeckMod
 				toast.error(error.error || 'Failed to create deck');
 			}
 		} catch (error) {
-			console.error('Failed to create deck:', error);
+			console.debug('Failed to create deck:', error);
 			toast.error('Failed to create deck');
 		} finally {
 			setIsCreating(false);

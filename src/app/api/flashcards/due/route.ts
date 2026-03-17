@@ -17,7 +17,7 @@ export async function GET(request: NextRequest) {
 
 		return NextResponse.json({ cards });
 	} catch (error) {
-		console.error('[Due Cards API] Error:', error);
+		console.debug('[Due Cards API] Error:', error);
 		return NextResponse.json({ error: 'Failed to fetch due cards' }, { status: 500 });
 	}
 }

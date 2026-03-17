@@ -113,7 +113,7 @@ export default function PastPaperViewer({
 					return;
 				}
 			} catch (err) {
-				console.error('Failed to load paper from DB:', err);
+				console.debug('Failed to load paper from DB:', err);
 			}
 
 			// Fallback to mock data
@@ -153,7 +153,7 @@ export default function PastPaperViewer({
 			if (isQuotaError(err)) {
 				triggerQuotaError();
 			}
-			console.error('Failed to get AI explanation:', err);
+			console.debug('Failed to get AI explanation:', err);
 			setAiExplanation('Sorry, I could not generate an explanation right now.');
 		} finally {
 			setIsExplaining(false);

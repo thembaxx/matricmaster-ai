@@ -71,7 +71,7 @@ export default function Search() {
 				const lessons = subjects.flatMap((s) => getLessonsBySubject(s));
 				setAllLessons(lessons);
 			} catch (error) {
-				console.error('Failed to load data:', error);
+				console.debug('Failed to load data:', error);
 			}
 		};
 		loadData();
@@ -94,7 +94,7 @@ export default function Search() {
 					if (isQuotaError(error)) {
 						triggerQuotaError();
 					}
-					console.error('Smart search error:', error);
+					console.debug('Smart search error:', error);
 				} finally {
 					setIsAiLoading(false);
 				}

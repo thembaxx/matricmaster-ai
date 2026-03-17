@@ -64,7 +64,7 @@ export async function getUserAchievements(): Promise<{
 
 		return { unlocked, available };
 	} catch (error) {
-		console.error('[Achievements] Error fetching achievements:', error);
+		console.debug('[Achievements] Error fetching achievements:', error);
 		return { unlocked: [], available: ACHIEVEMENTS };
 	}
 }
@@ -119,7 +119,7 @@ export async function checkAndUnlockAchievements(): Promise<AchievementCheckResu
 						achievementId: achievement.id,
 					},
 				}).catch((err) => {
-					console.error('[Achievements] Failed to create notification:', err);
+					console.debug('[Achievements] Failed to create notification:', err);
 				});
 			}
 		}
@@ -134,7 +134,7 @@ export async function checkAndUnlockAchievements(): Promise<AchievementCheckResu
 			existing: Array.from(existingIds),
 		};
 	} catch (error) {
-		console.error('[Achievements] Error checking achievements:', error);
+		console.debug('[Achievements] Error checking achievements:', error);
 		return { unlocked: [], existing: [] };
 	}
 }
@@ -170,7 +170,7 @@ export async function getAchievementStatus(achievementId: string): Promise<{
 
 		return { unlocked: false };
 	} catch (error) {
-		console.error('[Achievements] Error getting status:', error);
+		console.debug('[Achievements] Error getting status:', error);
 		return { unlocked: false };
 	}
 }
@@ -219,7 +219,7 @@ export async function unlockAchievement(achievementId: string): Promise<boolean>
 
 		return true;
 	} catch (error) {
-		console.error('[Achievements] Error unlocking achievement:', error);
+		console.debug('[Achievements] Error unlocking achievement:', error);
 		return false;
 	}
 }

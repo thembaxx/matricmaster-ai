@@ -55,7 +55,7 @@ export async function createBookmarkAction(
 
 		return { success: true, bookmark };
 	} catch (error) {
-		console.error('[Bookmarks] Error creating bookmark:', error);
+		console.debug('[Bookmarks] Error creating bookmark:', error);
 		return {
 			success: false,
 			error: error instanceof Error ? error.message : 'Failed to create bookmark',
@@ -91,7 +91,7 @@ export async function getBookmarksAction(
 			.where(eq(bookmarks.userId, userId))
 			.orderBy(desc(bookmarks.createdAt));
 	} catch (error) {
-		console.error('[Bookmarks] Error getting bookmarks:', error);
+		console.debug('[Bookmarks] Error getting bookmarks:', error);
 		return [];
 	}
 }
@@ -116,7 +116,7 @@ export async function deleteBookmarkAction(bookmarkId: string): Promise<{ succes
 
 		return { success: result.length > 0 };
 	} catch (error) {
-		console.error('[Bookmarks] Error deleting bookmark:', error);
+		console.debug('[Bookmarks] Error deleting bookmark:', error);
 		return { success: false };
 	}
 }
@@ -170,7 +170,7 @@ export async function updateBookmarkNoteAction(
 
 		return { success: result.length > 0 };
 	} catch (error) {
-		console.error('[Bookmarks] Error updating note:', error);
+		console.debug('[Bookmarks] Error updating note:', error);
 		return { success: false };
 	}
 }

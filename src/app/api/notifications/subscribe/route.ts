@@ -52,7 +52,7 @@ export async function POST(request: NextRequest) {
 
 		return NextResponse.json({ success: true });
 	} catch (error) {
-		console.error('Push subscription error:', error);
+		console.debug('Push subscription error:', error);
 		return NextResponse.json({ error: 'Failed to save subscription' }, { status: 500 });
 	}
 }
@@ -85,7 +85,7 @@ export async function DELETE(request: NextRequest) {
 
 		return NextResponse.json({ success: true });
 	} catch (error) {
-		console.error('Push unsubscription error:', error);
+		console.debug('Push unsubscription error:', error);
 		return NextResponse.json({ error: 'Failed to remove subscription' }, { status: 500 });
 	}
 }

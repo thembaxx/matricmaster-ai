@@ -40,7 +40,7 @@ function saveBookmarks(bookmarks: BookmarkedMessage[]) {
 	try {
 		localStorage.setItem(STORAGE_KEY, JSON.stringify(bookmarks));
 	} catch (error) {
-		console.error('Failed to save bookmarks:', error);
+		console.debug('Failed to save bookmarks:', error);
 	}
 }
 

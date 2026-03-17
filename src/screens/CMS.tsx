@@ -133,7 +133,7 @@ export default function CMS() {
 			setUsers(usersData);
 			setAllPastPapers(pastPapersData);
 		} catch (error) {
-			console.error('Failed to load data:', error);
+			console.debug('Failed to load data:', error);
 		} finally {
 			setLoading(false);
 		}
@@ -157,7 +157,7 @@ export default function CMS() {
 				toast.error(`Seeding failed: ${result.message}`);
 			}
 		} catch (error) {
-			console.error('Seeding error:', error);
+			console.debug('Seeding error:', error);
 			toast.error('An error occurred while seeding.');
 		} finally {
 			setSeeding(false);
@@ -240,7 +240,7 @@ export default function CMS() {
 				toast.success('Question deleted');
 				await loadData();
 			} catch (error) {
-				console.error('Failed to delete question:', error);
+				console.debug('Failed to delete question:', error);
 				toast.error('Failed to delete question');
 			}
 		}
@@ -332,7 +332,7 @@ export default function CMS() {
 			setDrawerTab('basic');
 			await loadData();
 		} catch (error) {
-			console.error('Failed to save question:', error);
+			console.debug('Failed to save question:', error);
 			toast.error('Failed to save question. Please try again.');
 		} finally {
 			setIsSaving(false);

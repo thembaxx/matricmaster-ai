@@ -35,7 +35,7 @@ export async function createStudyPlanAction(
 
 		return { success: true, plan };
 	} catch (error) {
-		console.error('[Study Plan] Error creating plan:', error);
+		console.debug('[Study Plan] Error creating plan:', error);
 		return {
 			success: false,
 			error: error instanceof Error ? error.message : 'Failed to create study plan',
@@ -60,7 +60,7 @@ export async function getStudyPlansAction(userId: string): Promise<StudyPlan[]> 
 			.where(eq(studyPlans.userId, userId))
 			.orderBy(desc(studyPlans.createdAt));
 	} catch (error) {
-		console.error('[Study Plan] Error getting plans:', error);
+		console.debug('[Study Plan] Error getting plans:', error);
 		return [];
 	}
 }
@@ -84,7 +84,7 @@ export async function getActiveStudyPlanAction(userId: string): Promise<StudyPla
 
 		return plan ?? null;
 	} catch (error) {
-		console.error('[Study Plan] Error getting active plan:', error);
+		console.debug('[Study Plan] Error getting active plan:', error);
 		return null;
 	}
 }
@@ -121,7 +121,7 @@ export async function updateStudyPlanAction(
 
 		return { success: !!plan, plan };
 	} catch (error) {
-		console.error('[Study Plan] Error updating plan:', error);
+		console.debug('[Study Plan] Error updating plan:', error);
 		return { success: false };
 	}
 }
@@ -147,7 +147,7 @@ export async function deleteStudyPlanAction(
 
 		return { success: result.length > 0 };
 	} catch (error) {
-		console.error('[Study Plan] Error deleting plan:', error);
+		console.debug('[Study Plan] Error deleting plan:', error);
 		return { success: false };
 	}
 }
@@ -174,7 +174,7 @@ export async function deactivateStudyPlanAction(
 
 		return { success: result.length > 0 };
 	} catch (error) {
-		console.error('[Study Plan] Error deactivating plan:', error);
+		console.debug('[Study Plan] Error deactivating plan:', error);
 		return { success: false };
 	}
 }

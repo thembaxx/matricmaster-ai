@@ -26,7 +26,7 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
 			reporterId: session.user.id,
 		});
 	} catch (error) {
-		console.error('Error flagging comment:', error);
+		console.debug('Error flagging comment:', error);
 		return NextResponse.json({ error: 'Failed to flag comment' }, { status: 500 });
 	}
 }

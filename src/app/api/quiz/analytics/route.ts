@@ -17,7 +17,7 @@ export async function GET(request: NextRequest) {
 
 		return NextResponse.json(stats);
 	} catch (error) {
-		console.error('[Quiz Analytics API] Error:', error);
+		console.debug('[Quiz Analytics API] Error:', error);
 		return NextResponse.json({ error: 'Failed to fetch analytics' }, { status: 500 });
 	}
 }

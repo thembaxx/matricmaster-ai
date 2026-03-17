@@ -74,7 +74,7 @@ export async function uploadPdfFromUrl(pdfUrl: string): Promise<UploadResult> {
 			error: 'Upload failed - no URL returned',
 		};
 	} catch (error) {
-		console.error('[PDF Upload] Error:', error);
+		console.debug('[PDF Upload] Error:', error);
 		return {
 			success: false,
 			error: error instanceof Error ? error.message : 'Unknown error during upload',
@@ -136,7 +136,7 @@ export async function uploadPdfFile(file: File): Promise<UploadResult> {
 			error: 'Upload failed - no URL returned',
 		};
 	} catch (error) {
-		console.error('[PDF Upload] Error:', error);
+		console.debug('[PDF Upload] Error:', error);
 		return {
 			success: false,
 			error: error instanceof Error ? error.message : 'Unknown error during upload',

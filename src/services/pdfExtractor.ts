@@ -183,7 +183,7 @@ async function checkDbForPaper(paperId: string): Promise<PastPaperRecord | null>
 		const data = await response.json();
 		return data.paper || null;
 	} catch (error) {
-		console.error('[PDF Extractor] DB check error:', error);
+		console.debug('[PDF Extractor] DB check error:', error);
 		return null;
 	}
 }
@@ -438,7 +438,7 @@ SPECIAL INSTRUCTIONS:
 		const cleaned = cleanJson(result.text);
 		return extractedPaperSchema.parse(JSON.parse(cleaned));
 	} catch (error) {
-		console.error(`[PDF Extractor] Full extraction failed with model ${model}:`, error);
+		console.debug(`[PDF Extractor] Full extraction failed with model ${model}:`, error);
 		throw error;
 	}
 }
@@ -491,7 +491,7 @@ Combine them into a single JSON structure for ${subject} ${paper} ${year} (${mon
 		const cleaned = cleanJson(result.text);
 		return extractedPaperSchema.parse(JSON.parse(cleaned));
 	} catch (error) {
-		console.error(`[PDF Extractor] Section extraction failed with model ${model}:`, error);
+		console.debug(`[PDF Extractor] Section extraction failed with model ${model}:`, error);
 		throw error;
 	}
 }

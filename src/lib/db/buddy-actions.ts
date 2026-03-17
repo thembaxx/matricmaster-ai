@@ -51,7 +51,7 @@ export async function getStudyBuddyProfile(_userId: string) {
 			lookingFor: parseJsonField<string[]>(profile.lookingFor, []),
 		};
 	} catch (error) {
-		console.error('[Buddy] Error getting profile:', error);
+		console.debug('[Buddy] Error getting profile:', error);
 		return null;
 	}
 }
@@ -105,7 +105,7 @@ export async function upsertStudyBuddyProfile(
 			.returning();
 		return { success: true, profile: created };
 	} catch (error) {
-		console.error('[Buddy] Error upserting profile:', error);
+		console.debug('[Buddy] Error upserting profile:', error);
 		return { success: false, error: String(error) };
 	}
 }
@@ -134,7 +134,7 @@ export async function getDiscoverableBuddies(_userId: string, limit = 20) {
 				lookingFor: parseJsonField<string[]>(b.lookingFor, []),
 			}));
 	} catch (error) {
-		console.error('[Buddy] Error getting discoverable buddies:', error);
+		console.debug('[Buddy] Error getting discoverable buddies:', error);
 		return [];
 	}
 }
@@ -175,7 +175,7 @@ export async function sendBuddyRequest(
 
 		return { success: true, request };
 	} catch (error) {
-		console.error('[Buddy] Error sending request:', error);
+		console.debug('[Buddy] Error sending request:', error);
 		return { success: false, error: String(error) };
 	}
 }
@@ -199,7 +199,7 @@ export async function getPendingRequests(_userId: string) {
 
 		return requests;
 	} catch (error) {
-		console.error('[Buddy] Error getting pending requests:', error);
+		console.debug('[Buddy] Error getting pending requests:', error);
 		return [];
 	}
 }
@@ -241,7 +241,7 @@ export async function acceptBuddyRequest(requestId: string, _recipientId: string
 
 		return { success: true };
 	} catch (error) {
-		console.error('[Buddy] Error accepting request:', error);
+		console.debug('[Buddy] Error accepting request:', error);
 		return { success: false, error: String(error) };
 	}
 }
@@ -265,7 +265,7 @@ export async function rejectBuddyRequest(requestId: string) {
 
 		return { success: true };
 	} catch (error) {
-		console.error('[Buddy] Error rejecting request:', error);
+		console.debug('[Buddy] Error rejecting request:', error);
 		return { success: false, error: String(error) };
 	}
 }
@@ -305,7 +305,7 @@ export async function getUserBuddies(_userId: string) {
 				lookingFor: parseJsonField<string[]>(b.lookingFor, []),
 			}));
 	} catch (error) {
-		console.error('[Buddy] Error getting user buddies:', error);
+		console.debug('[Buddy] Error getting user buddies:', error);
 		return [];
 	}
 }
@@ -331,7 +331,7 @@ export async function removeBuddy(_userId: string, buddyId: string) {
 
 		return { success: true };
 	} catch (error) {
-		console.error('[Buddy] Error removing buddy:', error);
+		console.debug('[Buddy] Error removing buddy:', error);
 		return { success: false, error: String(error) };
 	}
 }
@@ -362,7 +362,7 @@ export async function getUserInfo(userId: string): Promise<UserInfo | null> {
 			image: user.image,
 		};
 	} catch (error) {
-		console.error('[Buddy] Error getting user info:', error);
+		console.debug('[Buddy] Error getting user info:', error);
 		return null;
 	}
 }
@@ -390,7 +390,7 @@ export async function getBatchUserInfo(userIds: string[]): Promise<Map<string, U
 			});
 		}
 	} catch (error) {
-		console.error('[Buddy] Error getting batch user info:', error);
+		console.debug('[Buddy] Error getting batch user info:', error);
 	}
 
 	return result;

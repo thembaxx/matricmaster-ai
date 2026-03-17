@@ -55,7 +55,7 @@ function saveCustomTopics(topics: Record<string, Topic[]>) {
 	try {
 		localStorage.setItem(STORAGE_KEY, JSON.stringify(topics));
 	} catch {
-		console.error('Failed to save custom topics');
+		console.debug('Failed to save custom topics');
 	}
 }
 

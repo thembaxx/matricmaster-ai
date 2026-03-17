@@ -54,7 +54,7 @@ export async function getWeakTopicsForUser(): Promise<WeakTopic[]> {
 
 		return weakTopics.sort((a, b) => a.masteryLevel - b.masteryLevel).slice(0, 10);
 	} catch (error) {
-		console.error('[Learning Loop] Error getting weak topics:', error);
+		console.debug('[Learning Loop] Error getting weak topics:', error);
 		return [];
 	}
 }
@@ -103,7 +103,7 @@ export async function getMistakesFromStore(): Promise<MistakeInfo[]> {
 
 		return mistakeInfos;
 	} catch (error) {
-		console.error('[Learning Loop] Error getting mistakes from store:', error);
+		console.debug('[Learning Loop] Error getting mistakes from store:', error);
 		return [];
 	}
 }
@@ -184,7 +184,7 @@ export async function generateFlashcardsFromMistakes(): Promise<{
 
 		return { success: true, cardsCreated };
 	} catch (error) {
-		console.error('[Learning Loop] Error generating flashcards:', error);
+		console.debug('[Learning Loop] Error generating flashcards:', error);
 		return { success: false, cardsCreated: 0, error: 'Generation failed' };
 	}
 }
@@ -279,7 +279,7 @@ export async function generateFlashcardsFromWeakTopics(): Promise<{
 
 		return { success: true, cardsCreated };
 	} catch (error) {
-		console.error('[Learning Loop] Error generating flashcards from weak topics:', error);
+		console.debug('[Learning Loop] Error generating flashcards from weak topics:', error);
 		return { success: false, cardsCreated: 0, error: 'Generation failed' };
 	}
 }

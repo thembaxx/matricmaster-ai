@@ -54,7 +54,7 @@ export async function updateProfileAction(userId: string, data: { name?: string 
 
 		return { success: true, data: updatedUser };
 	} catch (error) {
-		console.error('Error updating profile:', error);
+		console.debug('Error updating profile:', error);
 		return {
 			success: false,
 			error: error instanceof Error ? error.message : 'Failed to update profile',
@@ -88,7 +88,7 @@ export async function changePasswordAction(
 
 		return { success: true };
 	} catch (error) {
-		console.error('Error changing password:', error);
+		console.debug('Error changing password:', error);
 		return {
 			success: false,
 			error: error instanceof Error ? error.message : 'Failed to change password',
@@ -150,7 +150,7 @@ export async function deleteAccountAction(userId: string, password: string) {
 
 		return { success: true, data: deletedUser };
 	} catch (error) {
-		console.error('Error deleting account:', error);
+		console.debug('Error deleting account:', error);
 		return {
 			success: false,
 			error: error instanceof Error ? error.message : 'Failed to delete account',
@@ -182,7 +182,7 @@ export async function getActiveSessionsAction(_userId: string) {
 			})),
 		};
 	} catch (error) {
-		console.error('Error getting sessions:', error);
+		console.debug('Error getting sessions:', error);
 		return { success: false, error: 'Failed to get active sessions' };
 	}
 }
@@ -205,7 +205,7 @@ export async function revokeSessionAction(
 
 		return { success: true };
 	} catch (error) {
-		console.error('Error revoking session:', error);
+		console.debug('Error revoking session:', error);
 		return { success: false, error: 'Failed to revoke session' };
 	}
 }
@@ -270,7 +270,7 @@ export async function getUserSettingsAction(
 			data: settings as CombinedSettings,
 		};
 	} catch (error) {
-		console.error('Error getting user settings:', error);
+		console.debug('Error getting user settings:', error);
 		return { success: true, data: defaultSettings };
 	}
 }
@@ -306,7 +306,7 @@ export async function updateUserSettingsAction(
 			data: updatedSettings as CombinedSettings,
 		};
 	} catch (error) {
-		console.error('Error updating user settings:', error);
+		console.debug('Error updating user settings:', error);
 		return {
 			success: false,
 			error: error instanceof Error ? error.message : 'Failed to update settings',

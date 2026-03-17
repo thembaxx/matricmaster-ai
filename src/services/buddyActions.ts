@@ -74,7 +74,7 @@ export async function getBuddyProfile(): Promise<BuddyProfile | null> {
 			personality: (profile.personality || 'mentor') as BuddyPersonality,
 		};
 	} catch (error) {
-		console.error('Error in getBuddyProfile:', error);
+		console.debug('Error in getBuddyProfile:', error);
 		return null;
 	}
 }
@@ -97,7 +97,7 @@ export async function setBuddyPersonality(personality: BuddyPersonality): Promis
 			await db.insert(studyBuddyProfiles).values({ userId: user.id, personality });
 		}
 	} catch (error) {
-		console.error('Error in setBuddyPersonality:', error);
+		console.debug('Error in setBuddyPersonality:', error);
 		throw error;
 	}
 }
@@ -129,7 +129,7 @@ export async function recordStruggle(concept: string): Promise<void> {
 			});
 		}
 	} catch (error) {
-		console.error('Error in recordStruggle:', error);
+		console.debug('Error in recordStruggle:', error);
 		throw error;
 	}
 }
@@ -144,7 +144,7 @@ export async function resolveConcept(concept: string): Promise<void> {
 			.set({ isResolved: true, updatedAt: new Date() })
 			.where(and(eq(conceptStruggles.userId, user.id), eq(conceptStruggles.concept, concept)));
 	} catch (error) {
-		console.error('Error in resolveConcept:', error);
+		console.debug('Error in resolveConcept:', error);
 		throw error;
 	}
 }
@@ -193,7 +193,7 @@ export async function updateConfidence(
 			});
 		}
 	} catch (error) {
-		console.error('Error in updateConfidence:', error);
+		console.debug('Error in updateConfidence:', error);
 		throw error;
 	}
 }
@@ -215,7 +215,7 @@ export async function getAdaptiveHint(topic: string): Promise<string | null> {
 
 		return null;
 	} catch (error) {
-		console.error('Error in getAdaptiveHint:', error);
+		console.debug('Error in getAdaptiveHint:', error);
 		return null;
 	}
 }
@@ -233,7 +233,7 @@ export async function getStrugglingConcepts(): Promise<ConceptStruggleInfo[]> {
 
 		return results as ConceptStruggleInfo[];
 	} catch (error) {
-		console.error('Error in getStrugglingConcepts:', error);
+		console.debug('Error in getStrugglingConcepts:', error);
 		return [];
 	}
 }
@@ -258,7 +258,7 @@ export async function getTopicConfidence(): Promise<TopicConfidenceInfo[]> {
 			timesAttempted: r.timesAttempted,
 		}));
 	} catch (error) {
-		console.error('Error in getTopicConfidence:', error);
+		console.debug('Error in getTopicConfidence:', error);
 		return [];
 	}
 }

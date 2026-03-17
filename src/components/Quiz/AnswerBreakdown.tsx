@@ -38,7 +38,7 @@ export function AnswerBreakdown({
 				if (isQuotaError(error)) {
 					triggerQuotaError();
 				}
-				console.error('Failed to fetch explanation:', error);
+				console.debug('Failed to fetch explanation:', error);
 			} finally {
 				setLoading(false);
 			}

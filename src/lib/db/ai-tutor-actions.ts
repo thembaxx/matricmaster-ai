@@ -69,7 +69,7 @@ export async function saveConversationAction(
 
 		return { success: true, conversationId: conversation.id };
 	} catch (error) {
-		console.error('[AI Tutor] Error saving conversation:', error);
+		console.debug('[AI Tutor] Error saving conversation:', error);
 		return {
 			success: false,
 			error: error instanceof Error ? error.message : 'Failed to save conversation',
@@ -98,7 +98,7 @@ export async function getConversationsAction(_userId: string): Promise<AiConvers
 			.where(eq(aiConversations.userId, activeUserId))
 			.orderBy(desc(aiConversations.updatedAt));
 	} catch (error) {
-		console.error('[AI Tutor] Error getting conversations:', error);
+		console.debug('[AI Tutor] Error getting conversations:', error);
 		return [];
 	}
 }
@@ -129,7 +129,7 @@ export async function getConversationByIdAction(
 
 		return conversation ?? null;
 	} catch (error) {
-		console.error('[AI Tutor] Error getting conversation:', error);
+		console.debug('[AI Tutor] Error getting conversation:', error);
 		return null;
 	}
 }
@@ -159,7 +159,7 @@ export async function deleteConversationAction(
 
 		return { success: result.length > 0 };
 	} catch (error) {
-		console.error('[AI Tutor] Error deleting conversation:', error);
+		console.debug('[AI Tutor] Error deleting conversation:', error);
 		return {
 			success: false,
 			error: error instanceof Error ? error.message : 'Failed to delete conversation',

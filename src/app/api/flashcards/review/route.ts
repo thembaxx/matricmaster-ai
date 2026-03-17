@@ -37,7 +37,7 @@ export async function POST(request: NextRequest) {
 			review: result.review,
 		});
 	} catch (error) {
-		console.error('[Review API] Error:', error);
+		console.debug('[Review API] Error:', error);
 		return NextResponse.json({ error: 'Failed to process review' }, { status: 500 });
 	}
 }

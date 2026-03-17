@@ -19,7 +19,7 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
 
 		return NextResponse.json({ flashcard: result.flashcard });
 	} catch (error) {
-		console.error('[Cards API] Error:', error);
+		console.debug('[Cards API] Error:', error);
 		return NextResponse.json({ error: 'Failed to add card' }, { status: 500 });
 	}
 }

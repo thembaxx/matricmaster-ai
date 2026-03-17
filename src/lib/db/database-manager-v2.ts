@@ -39,7 +39,7 @@ class DatabaseManagerV2 {
 					this.activeDatabase = sqliteConnected ? 'sqlite' : 'none';
 				}
 			} catch (error) {
-				console.error('❌ Database initialization failed:', error);
+				console.debug('❌ Database initialization failed:', error);
 				const sqliteConnected = await sqliteManager.connect();
 				this.activeDatabase = sqliteConnected ? 'sqlite' : 'none';
 			}

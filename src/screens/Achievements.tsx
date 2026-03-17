@@ -57,7 +57,7 @@ export default function Achievements() {
 
 				setBadges(mappedBadges);
 			} catch (error) {
-				console.error('Error fetching achievements:', error);
+				console.debug('Error fetching achievements:', error);
 				setBadges(
 					ACHIEVEMENTS.map((a) => ({
 						id: a.id,

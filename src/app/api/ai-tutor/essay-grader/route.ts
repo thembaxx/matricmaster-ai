@@ -75,7 +75,7 @@ Now grade this essay and return the JSON feedback.`;
 			const jsonStr = jsonMatch ? jsonMatch[1].trim() : responseText;
 			gradingResult = JSON.parse(jsonStr);
 		} catch {
-			console.error('Failed to parse grading JSON:', responseText);
+			console.debug('Failed to parse grading JSON:', responseText);
 			return NextResponse.json({ error: 'Failed to parse grading result' }, { status: 500 });
 		}
 
@@ -87,7 +87,7 @@ Now grade this essay and return the JSON feedback.`;
 			evaluatedAt: new Date().toISOString(),
 		});
 	} catch (error) {
-		console.error('Essay grading error:', error);
+		console.debug('Essay grading error:', error);
 		return NextResponse.json(
 			{ error: 'An error occurred while grading your essay' },
 			{ status: 500 }

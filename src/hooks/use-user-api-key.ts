@@ -25,7 +25,7 @@ export function useUserApiKey(): UseUserApiKeyReturn {
 				setApiKeyState(stored);
 			}
 		} catch (error) {
-			console.error('Failed to load API key from localStorage:', error);
+			console.debug('Failed to load API key from localStorage:', error);
 		} finally {
 			setIsLoading(false);
 		}
@@ -38,7 +38,7 @@ export function useUserApiKey(): UseUserApiKeyReturn {
 			localStorage.setItem(STORAGE_KEY, key);
 			setApiKeyState(key);
 		} catch (error) {
-			console.error('Failed to save API key to localStorage:', error);
+			console.debug('Failed to save API key to localStorage:', error);
 		}
 	}, []);
 
@@ -49,7 +49,7 @@ export function useUserApiKey(): UseUserApiKeyReturn {
 			localStorage.removeItem(STORAGE_KEY);
 			setApiKeyState(null);
 		} catch (error) {
-			console.error('Failed to clear API key from localStorage:', error);
+			console.debug('Failed to clear API key from localStorage:', error);
 		}
 	}, []);
 

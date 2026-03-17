@@ -77,7 +77,7 @@ export default function StudyPlanWizard() {
 			if (isQuotaError(error)) {
 				triggerQuotaError();
 			}
-			console.error('Failed to generate study plan:', error);
+			console.debug('Failed to generate study plan:', error);
 			router.push('/study-path');
 		} finally {
 			setIsGenerating(false);

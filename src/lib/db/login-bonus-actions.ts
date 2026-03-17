@@ -129,7 +129,7 @@ export async function getLoginBonusStatus(): Promise<LoginBonusStatus> {
 			timeUntilNextClaim: canClaim ? 0 : getMillisecondsUntilMidnight(),
 		};
 	} catch (error) {
-		console.error('[LoginBonus] Error getting status:', error);
+		console.debug('[LoginBonus] Error getting status:', error);
 		return {
 			canClaim: false,
 			consecutiveDays: 0,
@@ -241,7 +241,7 @@ export async function claimLoginBonus(): Promise<ClaimLoginBonusResult> {
 			message: reward.specialReward || `Day ${newConsecutiveDays} bonus claimed!`,
 		};
 	} catch (error) {
-		console.error('[LoginBonus] Error claiming bonus:', error);
+		console.debug('[LoginBonus] Error claiming bonus:', error);
 		return {
 			success: false,
 			xpEarned: 0,

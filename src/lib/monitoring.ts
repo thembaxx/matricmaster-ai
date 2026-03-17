@@ -60,7 +60,7 @@ export class MonitoringService {
 		const formatted = this.formatLog(entry);
 		switch (level) {
 			case 'error':
-				console.error(formatted);
+				console.debug(formatted);
 				break;
 			case 'warn':
 				console.warn(formatted);
@@ -90,7 +90,7 @@ export class MonitoringService {
 		// try {
 		//     // Example: await fetch('/api/logs', { method: 'POST', body: JSON.stringify(entry) });
 		// } catch (error) {
-		//     console.error('Failed to send log to external service:', error);
+		//     console.debug('Failed to send log to external service:', error);
 		// }
 	}
 
