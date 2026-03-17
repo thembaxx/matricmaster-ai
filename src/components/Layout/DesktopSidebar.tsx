@@ -211,7 +211,7 @@ export function AppSidebar({ user, pathname, theme, onToggleTheme }: AppSidebarP
 						placeholder="Search..."
 						value={searchQuery}
 						onChange={(e) => setSearchQuery(e.target.value)}
-						className="pl-9 h-10 bg-sidebar-accent/40 placeholder:text-xs placeholder:text-sidebar-foreground/40 border-sidebar-border/50 focus-visible:ring-sidebar-ring rounded-lg shadow-none bg-white text-sm"
+						className="pl-9 h-10 dark:bg-sidebar-accent/60 placeholder:text-xs placeholder:text-sidebar-foreground/40 border-sidebar-border/50 focus-visible:ring-sidebar-ring rounded-lg shadow-none text-sm"
 					/>
 				</div>
 			</SidebarHeader>
@@ -325,7 +325,7 @@ function ThemeToggle({ theme, onToggle }: ThemeToggleProps) {
 		<button
 			type="button"
 			onClick={onToggle}
-			className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl bg-sidebar-accent/40 hover:bg-sidebar-accent transition-colors group"
+			className="w-full flex items-center justify-between px-4 py-2.5 rounded-xl bg-sidebar-accent/40 hover:bg-sidebar-accent transition-colors group"
 		>
 			<span className="text-xs font-medium text-sidebar-foreground/60">Appearance</span>
 			<m.div
@@ -334,9 +334,9 @@ function ThemeToggle({ theme, onToggle }: ThemeToggleProps) {
 				className="w-7 h-7 rounded-lg bg-sidebar flex items-center justify-center shadow-sm"
 			>
 				{theme === 'dark' ? (
-					<HugeiconsIcon icon={Sun01Icon} className="w-3.5 h-3.5 text-amber-500" />
+					<HugeiconsIcon icon={Sun01Icon} className="w-4 h-4 text-amber-500" />
 				) : (
-					<HugeiconsIcon icon={MoonIcon} className="w-3.5 h-3.5 text-sidebar-foreground/60" />
+					<HugeiconsIcon icon={MoonIcon} className="w-4 h-4 text-sidebar-foreground/60" />
 				)}
 			</m.div>
 		</button>

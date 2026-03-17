@@ -278,14 +278,10 @@ export default function Dashboard({
 					<div className="h-[calc(100vh-320px)] sm:h-full no-scrollbar">
 						<m.div layout className="space-y-10 pb-32">
 							{/* Welcome & Stats Row */}
-							<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+							<div className="grid grid-cols-1 md:grid-cols-3 gap-6">
 								<DailyMission />
-								<XpHeader
-									variant="full"
-									initialAchievements={achievements}
-									initialStreak={{ currentStreak: streak.currentStreak }}
-								/>
-								<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+								<div className="grid grid-cols-1 md:grid-cols-3 col-span-3 gap-6">
 									<UniversityGoalCard />
 									<MistakeBank initialCount={mistakeCount ?? 0} />
 									<FocusAreasWidget />
@@ -293,6 +289,11 @@ export default function Dashboard({
 							</div>
 
 							<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+								<XpHeader
+									variant="full"
+									initialAchievements={achievements}
+									initialStreak={{ currentStreak: streak.currentStreak }}
+								/>
 								<WeeklyChallenge initialProgress={progress} />
 							</div>
 

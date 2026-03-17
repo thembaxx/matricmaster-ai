@@ -1,5 +1,7 @@
 'use client';
 
+import { ArrowLeft01Icon, ArrowRight01Icon } from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import { m } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -140,7 +142,7 @@ export function TimelineSidebar() {
 	return (
 		<aside className="fixed left-0 top-0 h-screen w-72 bg-background-elevated border-r border-border hidden lg:flex flex-col z-20">
 			{/* Header */}
-			<div className="p-6 border-b border-border">
+			<div className="p-3 rounded-l-lg bg-card">
 				{/* Date Selector */}
 				<div className="flex items-center gap-2">
 					<m.div whileTap={{ scale: 0.9 }}>
@@ -150,11 +152,11 @@ export function TimelineSidebar() {
 							className="rounded-full h-8 w-8"
 							onClick={handlePrevDay}
 						>
-							<span className="text-lg">‹</span>
+							<HugeiconsIcon icon={ArrowLeft01Icon} className="h-5 w-5" />
 						</Button>
 					</m.div>
-					<div className="flex-1 text-center">
-						<p className="text-sm font-semibold text-foreground">{today}</p>
+					<div className="flex-1 text-center flex items-center gap-2 justify-center">
+						<p className="text-xs font-semibold text-foreground">{today}</p>
 						{isToday && session && (
 							<span className="text-[10px] text-primary font-medium">Today</span>
 						)}
@@ -166,7 +168,7 @@ export function TimelineSidebar() {
 							className="rounded-full h-8 w-8"
 							onClick={handleNextDay}
 						>
-							<span className="text-lg">›</span>
+							<HugeiconsIcon icon={ArrowRight01Icon} className="h-5 w-5" />
 						</Button>
 					</m.div>
 				</div>
