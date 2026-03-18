@@ -125,4 +125,86 @@ export const useSmartSchedulerStore = create<SmartSchedulerState>((set, get) => 
 			set({ isGenerating: false });
 		}
 	},
+
+	moveBlock: (blockId: string, newDate: Date, newStartTime?: string) => {
+		const { blocks } = get();
+		const block = blocks.find((b) => b.id === blockId);
+		if (!block) return;
+
+		let newStartHour = block.startTime;
+		if (newStartTime) {
+			newStartHour = newStartTime;
+		}
+
+		const [hour, min] = newStartHour.split(':').map(Number);
+		const endHour = hour + Math.floor((hour * 60 + min + block.duration) / 60);
+		const endMin = String((hour * 60 + min + block.duration) % 60).padStart(2, '0');
+		const newEndTime = `${endHour.toString().padStart(2, '0')}:${endMin}`;
+
+		get().updateBlock(blockId, {
+			date: newDate,
+			startTime: newStartHour,
+			endTime: newEndTime,
+		});
+	},
+
+	checkAdaptiveSchedule: async () => {
+		set({ isLoading: true });
+		try {
+			const response = await fetch('/api/smart-scheduler/adaptive', {
+				method: 'POST',
+			});
+			const data = await response.json();
+			if (data.rescheduled && data.rescheduled.length > 0) {
+				set((state) => ({
+					blocks: state.blocks.map((b) => {
+						const rescheduled = data.rescheduled.find((r: { id: string }) => r.id === b.id);
+						return rescheduled || b;
+					}),
+					suggestions: [...state.suggestions, ...(data.newSuggestions || [])],
+				}));
+			}
+			return data;
+		} catch (error) {
+			console.error('Failed to check adaptive schedule:', error);
+			return null;
+		} finally {
+			set({ isLoading: false });
+		}
+	},
+
+	saveBlock: async (block: Partial<StudyBlock>) => {
+		const { addBlock, updateBlock } = get();
+		try {
+			if (block.id) {
+				updateBlock(block.id, block);
+				await fetch(`/api/smart-scheduler/blocks/${block.id}`, {
+					method: 'PUT',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify(block),
+				});
+			} else {
+				const newBlock: StudyBlock = {
+					id: crypto.randomUUID(),
+					subject: block.subject || 'General',
+					topic: block.topic,
+					date: block.date || new Date(),
+					startTime: block.startTime || '09:00',
+					endTime: block.endTime || '10:00',
+					duration: block.duration || 60,
+					type: block.type || 'study',
+					isCompleted: false,
+					isAISuggested: false,
+				};
+				addBlock(newBlock);
+				await fetch('/api/smart-scheduler/blocks', {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify(newBlock),
+				});
+			}
+		} catch (error) {
+			console.error('Failed to save block:', error);
+		}
+	},
 }));

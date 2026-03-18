@@ -1,10 +1,10 @@
 'use server';
 
-import { addDays, format, startOfWeek } from 'date-fns';
-import { asc, eq } from 'drizzle-orm';
+import { addDays, differenceInDays, format, startOfWeek } from 'date-fns';
+import { asc, desc, eq } from 'drizzle-orm';
 import { getAuth } from '@/lib/auth';
 import { dbManager } from '@/lib/db';
-import { topicConfidence } from '@/lib/db/schema';
+import { studyPlans, topicConfidence } from '@/lib/db/schema';
 import type { AISuggestion, ExamCountdown, StudyBlock } from '@/types/smart-scheduler';
 
 export async function getWeakAreas(): Promise<{ topic: string; score: number }[]> {
@@ -32,7 +32,44 @@ export async function getWeakAreas(): Promise<{ topic: string; score: number }[]
 }
 
 export async function getExamCountdowns(): Promise<ExamCountdown[]> {
-	return [];
+	const auth = await getAuth();
+	const session = await auth.api.getSession();
+	if (!session?.user) return [];
+
+	try {
+		await dbManager.initialize();
+		const db = dbManager.getDb();
+
+		const plans = await db.query.studyPlans.findMany({
+			where: eq(studyPlans.userId, session.user.id),
+			orderBy: [desc(studyPlans.targetExamDate)],
+		});
+
+		const now = new Date();
+		const exams: ExamCountdown[] = [];
+
+		for (const plan of plans) {
+			if (plan.targetExamDate) {
+				const examDate = new Date(plan.targetExamDate);
+				const daysRemaining = differenceInDays(examDate, now);
+
+				if (daysRemaining > 0 && daysRemaining <= 180) {
+					exams.push({
+						id: plan.id,
+						subject: plan.title || 'General',
+						date: examDate,
+						daysRemaining,
+						priority: daysRemaining <= 14 ? 'high' : daysRemaining <= 60 ? 'medium' : 'low',
+					});
+				}
+			}
+		}
+
+		return exams.sort((a, b) => a.daysRemaining - b.daysRemaining).slice(0, 5);
+	} catch (error) {
+		console.error('Error fetching exam countdowns:', error);
+		return [];
+	}
 }
 
 export function generateStudyBlocks(

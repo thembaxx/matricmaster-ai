@@ -56,4 +56,10 @@ export interface SmartSchedulerState {
 	loadSchedule: () => Promise<void>;
 	generateSchedule: () => Promise<void>;
 	optimizeSchedule: () => Promise<void>;
+	moveBlock: (blockId: string, newDate: Date, newStartTime?: string) => void;
+	checkAdaptiveSchedule: () => Promise<{
+		rescheduled?: StudyBlock[];
+		newSuggestions?: AISuggestion[];
+	} | null>;
+	saveBlock: (block: Partial<StudyBlock>) => Promise<void>;
 }

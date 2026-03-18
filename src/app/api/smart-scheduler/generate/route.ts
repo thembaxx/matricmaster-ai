@@ -18,6 +18,7 @@ export async function POST(_request: NextRequest) {
 		return NextResponse.json({
 			blocks,
 			suggestions: [],
+			exams: examCountdowns,
 		});
 	} catch (error) {
 		console.error('Error generating schedule:', error);

@@ -4,6 +4,7 @@ import { type NextRequest, NextResponse } from 'next/server';
 import { getAuth } from '@/lib/auth';
 import { dbManager } from '@/lib/db';
 import { calendarEvents } from '@/lib/db/schema';
+import { getExamCountdowns } from '@/services/scheduleAIService';
 
 export async function GET(request: NextRequest) {
 	try {
@@ -56,9 +57,51 @@ export async function GET(request: NextRequest) {
 			calendarEventId: e.id,
 		}));
 
-		return NextResponse.json({ blocks, exams: [] });
+		const exams = await getExamCountdowns();
+
+		return NextResponse.json({ blocks, exams });
 	} catch (error) {
 		console.error('Error fetching blocks:', error);
 		return NextResponse.json({ error: 'Failed to fetch blocks' }, { status: 500 });
+	}
+}
+
+export async function POST(request: NextRequest) {
+	try {
+		const auth = await getAuth();
+		const session = await auth.api.getSession();
+		if (!session?.user) {
+			return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+		}
+
+		const body = await request.json();
+
+		await dbManager.initialize();
+		const db = dbManager.getDb();
+
+		const [startH, startM] = (body.startTime || '09:00').split(':').map(Number);
+		const duration = body.duration || 60;
+		const startDate = new Date(body.date);
+		startDate.setHours(startH, startM, 0, 0);
+
+		const endDate = new Date(startDate.getTime() + duration * 60 * 1000);
+
+		const [event] = await db
+			.insert(calendarEvents)
+			.values({
+				userId: session.user.id,
+				title: body.subject + (body.topic ? `: ${body.topic}` : ''),
+				description: body.topic || '',
+				startTime: startDate,
+				endTime: endDate,
+				eventType: body.type || 'study',
+				isCompleted: body.isCompleted || false,
+			})
+			.returning();
+
+		return NextResponse.json({ success: true, block: event });
+	} catch (error) {
+		console.error('Error creating block:', error);
+		return NextResponse.json({ error: 'Failed to create block' }, { status: 500 });
 	}
 }

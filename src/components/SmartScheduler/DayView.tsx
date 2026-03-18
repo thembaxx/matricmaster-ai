@@ -3,13 +3,18 @@
 import { ChevronLeft, ChevronRight } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { addDays, format, isSameDay } from 'date-fns';
+import { useState } from 'react';
+import { cn } from '@/lib/utils';
+import { useDragStore } from '@/stores/useDragStore';
 import { useSmartSchedulerStore } from '@/stores/useSmartSchedulerStore';
 import { StudyBlockCard } from './StudyBlockCard';
 
 const HOURS = Array.from({ length: 14 }, (_, i) => i + 7);
 
 export function DayView() {
-	const { selectedDate, setSelectedDate, blocks } = useSmartSchedulerStore();
+	const { selectedDate, setSelectedDate, blocks, moveBlock } = useSmartSchedulerStore();
+	const { isDragging, endDrag } = useDragStore();
+	const [dragOverHour, setDragOverHour] = useState<number | null>(null);
 
 	const dayBlocks = blocks.filter((b) => isSameDay(new Date(b.date), selectedDate));
 
@@ -21,6 +26,27 @@ export function DayView() {
 			const blockHour = Number.parseInt(b.startTime.split(':')[0], 10);
 			return blockHour === hour;
 		});
+	};
+
+	const handleDragOver = (e: React.DragEvent, hour: number) => {
+		e.preventDefault();
+		e.dataTransfer.dropEffect = 'move';
+		setDragOverHour(hour);
+	};
+
+	const handleDragLeave = () => {
+		setDragOverHour(null);
+	};
+
+	const handleDrop = (e: React.DragEvent, hour: number) => {
+		e.preventDefault();
+		const blockId = e.dataTransfer.getData('blockId');
+		if (blockId) {
+			const startTime = `${hour.toString().padStart(2, '0')}:00`;
+			moveBlock(blockId, selectedDate, startTime);
+		}
+		setDragOverHour(null);
+		endDrag();
 	};
 
 	return (
@@ -45,7 +71,17 @@ export function DayView() {
 					const hourBlocks = getBlocksForHour(hour);
 
 					return (
-						<div key={hour} className="flex border-b min-h-[80px]">
+						<div
+							key={hour}
+							className={cn(
+								'flex border-b min-h-[80px] transition-colors',
+								isDragging && dragOverHour === hour && 'bg-primary/5'
+							)}
+							onDragOver={(e) => handleDragOver(e, hour)}
+							onDragLeave={handleDragLeave}
+							onDrop={(e) => handleDrop(e, hour)}
+							role="list"
+						>
 							<div className="w-16 p-2 text-xs text-muted-foreground border-r flex-shrink-0">
 								{hour}:00
 							</div>
@@ -53,6 +89,11 @@ export function DayView() {
 								{hourBlocks.map((block) => (
 									<StudyBlockCard key={block.id} block={block} />
 								))}
+								{isDragging && dragOverHour === hour && (
+									<div className="h-12 border-2 border-dashed border-primary/50 rounded-lg flex items-center justify-center text-xs text-muted-foreground">
+										Drop here
+									</div>
+								)}
 							</div>
 						</div>
 					);
