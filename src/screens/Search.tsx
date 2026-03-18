@@ -1,5 +1,6 @@
 'use client';
 
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { m } from 'framer-motion';
 import Link from 'next/link';
 import { useCallback, useEffect, useMemo, useState } from 'react';
@@ -22,59 +23,46 @@ import {
 	getPastPapersAction,
 	getSearchHistoryAction,
 } from '@/lib/db/actions';
-import type { PastPaper, SearchHistory } from '@/lib/db/schema';
-import { getLessonsBySubject, type Lesson } from '@/lib/lessons';
+import type { PastPaper } from '@/lib/db/schema';
+import { getLessonsBySubject } from '@/lib/lessons';
 import { smartSearch } from '@/services/geminiService';
 
 export default function Search() {
 	const { data: session } = useSession();
 	const { triggerQuotaError } = useGeminiQuotaModal();
+	const queryClient = useQueryClient();
 	const [query, setQuery] = useState('');
 	const [aiResults, setAiResults] = useState<{ suggestions: string[]; tip: string } | null>(null);
 	const [isAiLoading, setIsAiLoading] = useState(false);
-	const [recentSearches, setRecentSearches] = useState<SearchHistory[]>([]);
-	const [isLoadingHistory, setIsLoadingHistory] = useState(true);
-	const [papers, setPapers] = useState<PastPaper[]>([]);
-	const [allLessons, setAllLessons] = useState<Lesson[]>([]);
 
-	useEffect(() => {
-		const loadSearchHistory = async () => {
-			if (session?.user?.id) {
-				setIsLoadingHistory(true);
-				const history = await getSearchHistoryAction();
-				setRecentSearches(history);
-				setIsLoadingHistory(false);
-			}
-		};
-		loadSearchHistory();
-	}, [session?.user?.id]);
+	// Search history with useQuery
+	const { data: recentSearches = [], isLoading: isLoadingHistory } = useQuery({
+		queryKey: ['searchHistory', session?.user?.id],
+		queryFn: () => getSearchHistoryAction(),
+		enabled: !!session?.user?.id,
+	});
 
-	useEffect(() => {
-		const loadData = async () => {
-			try {
-				const [papersData] = await Promise.all([getPastPapersAction()]);
-				setPapers(papersData);
+	// Papers and lessons with useQuery
+	const { data: papers = [] } = useQuery({
+		queryKey: ['pastPapers'],
+		queryFn: () => getPastPapersAction(),
+	});
 
-				// Collect all lessons from all subjects
-				const subjects = [
-					'math',
-					'physics',
-					'life',
-					'accounting',
-					'geography',
-					'business',
-					'history',
-					'chemistry',
-					'economics',
-					'lo',
-				];
-				const lessons = subjects.flatMap((s) => getLessonsBySubject(s));
-				setAllLessons(lessons);
-			} catch (error) {
-				console.debug('Failed to load data:', error);
-			}
-		};
-		loadData();
+	// Static lessons data - useMemo since it's from static JSON
+	const allLessons = useMemo(() => {
+		const subjects = [
+			'math',
+			'physics',
+			'life',
+			'accounting',
+			'geography',
+			'business',
+			'history',
+			'chemistry',
+			'economics',
+			'lo',
+		];
+		return subjects.flatMap((s) => getLessonsBySubject(s));
 	}, []);
 
 	useEffect(() => {
@@ -87,8 +75,7 @@ export default function Search() {
 
 					if (session?.user?.id) {
 						await addSearchHistoryAction(query);
-						const history = await getSearchHistoryAction();
-						setRecentSearches(history);
+						queryClient.invalidateQueries({ queryKey: ['searchHistory'] });
 					}
 				} catch (error) {
 					if (isQuotaError(error)) {
@@ -104,7 +91,7 @@ export default function Search() {
 		}, 800);
 
 		return () => clearTimeout(timer);
-	}, [query, session?.user?.id, triggerQuotaError]);
+	}, [query, session?.user?.id, triggerQuotaError, queryClient]);
 
 	const filteredResults = useMemo(() => {
 		if (!query) return { papers: [], lessons: [] };
@@ -127,18 +114,18 @@ export default function Search() {
 			e.stopPropagation();
 			if (session?.user?.id) {
 				await deleteSearchHistoryItemAction(id);
-				setRecentSearches((prev) => prev.filter((s) => s.id !== id));
+				queryClient.invalidateQueries({ queryKey: ['searchHistory'] });
 			}
 		},
-		[session?.user?.id]
+		[session?.user?.id, queryClient]
 	);
 
 	const handleClearAllSearches = useCallback(async () => {
 		if (session?.user?.id) {
 			await clearSearchHistoryAction();
-			setRecentSearches([]);
+			queryClient.invalidateQueries({ queryKey: ['searchHistory'] });
 		}
-	}, [session?.user?.id]);
+	}, [session?.user?.id, queryClient]);
 
 	return (
 		<div className="flex flex-col h-full bg-background lg:px-12 relative overflow-hidden">

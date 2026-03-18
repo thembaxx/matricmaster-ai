@@ -2,10 +2,11 @@
 
 import { SparklesIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { AnimatePresence, m } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { checkForNudges, dismissNudge, type Nudge } from '@/actions/nudge-system';
+import { checkForNudges, dismissNudge } from '@/actions/nudge-system';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 
@@ -15,36 +16,31 @@ interface AITutorNudgeProps {
 
 export function AITutorNudge(_props: AITutorNudgeProps) {
 	const router = useRouter();
-	const [nudge, setNudge] = useState<Nudge | null>(null);
-	const [loading, setLoading] = useState(true);
 	const [isVisible, setIsVisible] = useState(false);
 
+	const { data: nudges = [], isPending } = useQuery({
+		queryKey: ['nudges'],
+		queryFn: checkForNudges,
+		staleTime: 5 * 60 * 1000,
+	});
+
+	const nudge = nudges[0] ?? null;
+
+	const dismissMutation = useMutation({
+		mutationFn: (id: string) => dismissNudge(id),
+	});
+
 	useEffect(() => {
-		let mounted = true;
-		async function loadNudge() {
-			try {
-				const nudges = await checkForNudges();
-				if (mounted && nudges.length > 0) {
-					setNudge(nudges[0]);
-					setTimeout(() => setIsVisible(true), 100);
-				}
-			} catch {
-				console.debug('Failed to load nudge');
-			} finally {
-				if (mounted) setLoading(false);
-			}
+		if (!isPending && nudge) {
+			const timer = setTimeout(() => setIsVisible(true), 100);
+			return () => clearTimeout(timer);
 		}
-		loadNudge();
-		return () => {
-			mounted = false;
-		};
-	}, []);
+	}, [isPending, nudge]);
 
 	const handleDismiss = () => {
 		setIsVisible(false);
 		setTimeout(() => {
-			if (nudge) dismissNudge(nudge.id);
-			setNudge(null);
+			if (nudge) dismissMutation.mutate(nudge.id);
 		}, 200);
 	};
 
@@ -52,13 +48,13 @@ export function AITutorNudge(_props: AITutorNudgeProps) {
 		if (nudge?.actionUrl) {
 			setIsVisible(false);
 			setTimeout(() => {
-				dismissNudge(nudge.id);
+				dismissMutation.mutate(nudge.id);
 				router.push(nudge.actionUrl!);
 			}, 200);
 		}
 	};
 
-	if (loading || !nudge) return null;
+	if (isPending || !nudge) return null;
 
 	return (
 		<AnimatePresence mode="wait">

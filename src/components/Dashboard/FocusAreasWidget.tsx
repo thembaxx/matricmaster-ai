@@ -2,54 +2,44 @@
 
 import { ArrowRight01Icon, CheckmarkCircle02Icon, Layers01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { m } from 'framer-motion';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import {
 	generateFlashcardsFromWeakTopics,
 	getWeakTopicsForUser,
-	type WeakTopic,
 } from '@/lib/db/learning-loop-actions';
 
 export function FocusAreasWidget() {
 	const router = useRouter();
-	const [weakTopics, setWeakTopics] = useState<WeakTopic[]>([]);
-	const [isLoading, setIsLoading] = useState(true);
-	const [isGenerating, setIsGenerating] = useState(false);
+	const queryClient = useQueryClient();
 	const [generationResult, setGenerationResult] = useState<{
 		success: boolean;
 		cardsCreated: number;
 	} | null>(null);
 
-	useEffect(() => {
-		async function loadWeakTopics() {
-			try {
-				const topics = await getWeakTopicsForUser();
-				setWeakTopics(topics);
-			} catch (error) {
-				console.debug('Failed to load weak topics:', error);
-			} finally {
-				setIsLoading(false);
-			}
-		}
-		loadWeakTopics();
-	}, []);
+	const { data: weakTopics = [], isPending } = useQuery({
+		queryKey: ['weak-topics'],
+		queryFn: getWeakTopicsForUser,
+		staleTime: 60 * 1000,
+	});
 
-	const handleGenerateAll = async () => {
-		setIsGenerating(true);
-		try {
-			const result = await generateFlashcardsFromWeakTopics();
+	const generateMutation = useMutation({
+		mutationFn: generateFlashcardsFromWeakTopics,
+		onSuccess: (result) => {
 			setGenerationResult(result);
-		} catch (error) {
-			console.debug('Failed to generate flashcards:', error);
-		} finally {
-			setIsGenerating(false);
-		}
+			queryClient.invalidateQueries({ queryKey: ['weak-topics'] });
+		},
+	});
+
+	const handleGenerateAll = () => {
+		generateMutation.mutate();
 	};
 
-	if (isLoading) {
+	if (isPending) {
 		return (
 			<Card className="p-6 rounded-3xl bg-card border border-border/50">
 				<div className="animate-pulse space-y-4">
@@ -123,7 +113,7 @@ export function FocusAreasWidget() {
 							variant="ghost"
 							size="sm"
 							onClick={handleGenerateAll}
-							disabled={isGenerating}
+							disabled={generateMutation.isPending}
 							className="shrink-0 ml-2"
 						>
 							<HugeiconsIcon icon={Layers01Icon} className="w-4 h-4 text-primary-orange" />
@@ -136,10 +126,10 @@ export function FocusAreasWidget() {
 				type="button"
 				className="w-full rounded-xl font-bold h-10 px-4 py-2 border border-input bg-background hover:bg-accent hover:text-accent-foreground disabled:opacity-50 disabled:cursor-not-allowed transition-colors inline-flex items-center justify-center"
 				onClick={handleGenerateAll}
-				disabled={isGenerating}
+				disabled={generateMutation.isPending}
 				whileTap={{ scale: 0.98 }}
 			>
-				{isGenerating ? (
+				{generateMutation.isPending ? (
 					<>
 						<div className="w-4 h-4 border-2 border-primary-orange border-t-transparent rounded-full animate-spin mr-2" />
 						Generating...

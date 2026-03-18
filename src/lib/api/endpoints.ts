@@ -31,6 +31,9 @@ export const API_ENDPOINTS = {
 	comments: '/api/comments',
 	channels: '/api/channels',
 
+	// Calendar
+	calendarEvents: '/api/calendar/events',
+
 	// Admin/Management
 	admin: '/api/admin',
 	cms: '/api/cms',
@@ -63,6 +66,7 @@ export const API_ROUTE_PATTERNS = {
 		API_ENDPOINTS.notifications,
 		API_ENDPOINTS.comments,
 		API_ENDPOINTS.channels,
+		API_ENDPOINTS.calendarEvents,
 	],
 
 	// Routes that require admin privileges
@@ -104,6 +108,10 @@ export const QUERY_KEYS = {
 	notifications: ['notifications'],
 	comments: ['comments'],
 	channels: ['channels'],
+
+	// Calendar
+	calendarEvents: ['calendar-events'],
+	pastPaper: ['past-paper'],
 
 	// Admin features
 	admin: ['admin'],

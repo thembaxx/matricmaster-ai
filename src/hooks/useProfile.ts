@@ -1,8 +1,10 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { useMemo, useState } from 'react';
 import { toast } from 'sonner';
 import { ACHIEVEMENT_POINTS_MAP } from '@/constants/achievements';
+import { QUERY_KEYS } from '@/lib/api/endpoints';
 import { authClient, useSession } from '@/lib/auth-client';
 import { getUserAchievements } from '@/lib/db/achievement-actions';
 import { updateUserProfileAction } from '@/lib/db/actions';
@@ -33,29 +35,69 @@ export interface UserStats {
 	unlockedAchievementIds: string[];
 }
 
+interface EditFormState {
+	name: string;
+	school: string;
+	avatarId: string;
+}
+
 export function useProfile() {
 	const { data: session } = useSession();
 	const [viewMode, setViewMode] = useState<'my_stats' | 'provincial'>('my_stats');
 	const [isEditing, setIsEditing] = useState(false);
-	const [userStats, setUserStats] = useState<UserStats | null>(null);
-	const [isLoading, setIsLoading] = useState(true);
 
-	const [editForm, setEditForm] = useState({
-		name: '',
-		school: '',
-		avatarId: '',
+	const defaultEditForm = useMemo((): EditFormState => {
+		const u = session?.user as any;
+		return {
+			name: u?.name || '',
+			school: u?.school || '',
+			avatarId: u?.avatarId || '',
+		};
+	}, [session?.user]);
+
+	const [editForm, setEditForm] = useState<EditFormState>(defaultEditForm);
+
+	const { data: progressData, isLoading: isProgressLoading } = useQuery({
+		queryKey: QUERY_KEYS.progress,
+		queryFn: getUserProgressSummary,
+		staleTime: 5 * 60 * 1000,
 	});
 
-	useEffect(() => {
-		if (session?.user) {
-			const u = session.user as any;
-			setEditForm({
-				name: u.name || '',
-				school: u.school || '',
-				avatarId: u.avatarId || '',
-			});
-		}
-	}, [session]);
+	const { data: streakData, isLoading: isStreakLoading } = useQuery({
+		queryKey: QUERY_KEYS.streak,
+		queryFn: getUserStreak,
+		staleTime: 10 * 60 * 1000,
+	});
+
+	const { data: achievementsData, isLoading: isAchievementsLoading } = useQuery({
+		queryKey: QUERY_KEYS.achievements,
+		queryFn: getUserAchievements,
+		staleTime: 5 * 60 * 1000,
+	});
+
+	const userStats = useMemo(() => {
+		if (!progressData || !streakData || !achievementsData) return null;
+
+		const totalXp = achievementsData.unlocked.reduce(
+			(sum: number, a: { achievementId: string }) => {
+				return sum + (ACHIEVEMENT_POINTS_MAP.get(a.achievementId) || 0);
+			},
+			0
+		);
+
+		return {
+			totalQuestions: progressData?.totalQuestionsAttempted || 0,
+			accuracy: progressData?.accuracy || 0,
+			streak: streakData?.currentStreak || 0,
+			achievementsUnlocked: achievementsData?.unlocked?.length || 0,
+			totalXp,
+			unlockedAchievementIds: achievementsData.unlocked.map(
+				(a: { achievementId: string }) => a.achievementId
+			),
+		};
+	}, [progressData, streakData, achievementsData]);
+
+	const isLoading = isProgressLoading || isStreakLoading || isAchievementsLoading;
 
 	const handleSaveProfile = async () => {
 		const result = await updateUserProfileAction(editForm);
@@ -67,41 +109,6 @@ export function useProfile() {
 			toast.error('Failed to update profile');
 		}
 	};
-
-	useEffect(() => {
-		async function fetchData() {
-			try {
-				const [progress, streak, achievements] = await Promise.all([
-					getUserProgressSummary(),
-					getUserStreak(),
-					getUserAchievements(),
-				]);
-
-				const totalXp = achievements.unlocked.reduce(
-					(sum: number, a: { achievementId: string }) => {
-						return sum + (ACHIEVEMENT_POINTS_MAP.get(a.achievementId) || 0);
-					},
-					0
-				);
-
-				setUserStats({
-					totalQuestions: progress?.totalQuestionsAttempted || 0,
-					accuracy: progress?.accuracy || 0,
-					streak: streak?.currentStreak || 0,
-					achievementsUnlocked: achievements?.unlocked?.length || 0,
-					totalXp,
-					unlockedAchievementIds: achievements.unlocked.map(
-						(a: { achievementId: string }) => a.achievementId
-					),
-				});
-			} catch (error) {
-				console.debug('Error fetching profile data:', error);
-			} finally {
-				setIsLoading(false);
-			}
-		}
-		fetchData();
-	}, []);
 
 	const chartData: ChartDataItem[] = useMemo(
 		() =>

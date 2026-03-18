@@ -13,8 +13,9 @@ import {
 	Target01Icon,
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
+import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { toast } from 'sonner';
 import { FlashcardModal } from '@/components/AI/FlashcardModal';
 import { Badge } from '@/components/ui/badge';
@@ -41,51 +42,37 @@ interface RecommendationsResponse {
 	totalWeakTopics: number;
 }
 
+interface ReviewData {
+	dueCards: DueFlashcard[];
+	reviewStats: ReviewStats | null;
+	recommendations: RecommendationsResponse | null;
+}
+
 export default function ReviewPage() {
 	const { data: session } = authClient.useSession();
-	const [isLoading, setIsLoading] = useState(true);
-	const [dueCards, setDueCards] = useState<DueFlashcard[]>([]);
-	const [reviewStats, setReviewStats] = useState<ReviewStats | null>(null);
-	const [recommendations, setRecommendations] = useState<RecommendationsResponse | null>(null);
 	const [showReviewModal, setShowReviewModal] = useState(false);
 
-	// biome-ignore lint/correctness/useExhaustiveDependencies: loadReviewData is stable
-	useEffect(() => {
-		if (session?.user) {
-			loadReviewData();
-		}
-	}, [session]);
-
-	const loadReviewData = async () => {
-		setIsLoading(true);
-		try {
+	const { data: reviewData, isLoading } = useQuery<ReviewData>({
+		queryKey: ['review-data'],
+		queryFn: async () => {
 			const [dueCardsRes, statsRes, recsRes] = await Promise.all([
 				fetch('/api/flashcards/due'),
 				fetch('/api/flashcards/stats'),
 				fetch('/api/ai-tutor/recommendations', { method: 'POST' }),
 			]);
 
-			if (dueCardsRes.ok) {
-				const data = await dueCardsRes.json();
-				setDueCards(data.cards || []);
-			}
+			const dueCards = dueCardsRes.ok ? (await dueCardsRes.json()).cards || [] : [];
+			const reviewStats = statsRes.ok ? await statsRes.json() : null;
+			const recommendations = recsRes.ok ? await recsRes.json() : null;
 
-			if (statsRes.ok) {
-				const data = await statsRes.json();
-				setReviewStats(data);
-			}
+			return { dueCards, reviewStats, recommendations };
+		},
+		enabled: !!session?.user,
+	});
 
-			if (recsRes.ok) {
-				const data = await recsRes.json();
-				setRecommendations(data);
-			}
-		} catch (error) {
-			console.debug('Failed to load review data:', error);
-			toast.error('Failed to load review data');
-		} finally {
-			setIsLoading(false);
-		}
-	};
+	const dueCards = reviewData?.dueCards ?? [];
+	const reviewStats = reviewData?.reviewStats ?? null;
+	const recommendations = reviewData?.recommendations ?? null;
 
 	const handleRateCard = async (flashcardId: string, rating: 1 | 2 | 3 | 4 | 5) => {
 		try {
@@ -99,10 +86,8 @@ export default function ReviewPage() {
 			});
 
 			if (response.ok) {
-				setDueCards((prev) => prev.filter((c) => c.id !== flashcardId));
 				if (dueCards.length <= 1) {
 					setShowReviewModal(false);
-					loadReviewData();
 					toast.success('Review session complete!');
 				}
 			} else {

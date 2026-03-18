@@ -5,6 +5,17 @@ import * as RechartsPrimitive from 'recharts';
 
 import { cn } from '@/lib/utils';
 
+function useIsMounted() {
+	const mounted = React.useRef(false);
+	React.useEffect(() => {
+		mounted.current = true;
+		return () => {
+			mounted.current = false;
+		};
+	}, []);
+	return mounted;
+}
+
 // Format: { [key: string]: { label: string; color?: string; icon?: React.ComponentType } }
 export type ChartConfig = {
 	[k in string]: {
@@ -41,12 +52,7 @@ const ChartContainer = React.forwardRef<
 >(({ id, className, config, children, ...props }, ref) => {
 	const uniqueId = React.useId();
 	const chartId = `chart-${id || uniqueId.replace(/:/g, '')}`;
-	const [isClient, setIsClient] = React.useState(false);
-
-	// Only render chart content on client to avoid SSR issues with Recharts
-	React.useEffect(() => {
-		setIsClient(true);
-	}, []);
+	const isMounted = useIsMounted();
 
 	return (
 		<ChartContext.Provider value={{ config }}>
@@ -70,7 +76,7 @@ const ChartContainer = React.forwardRef<
 				{...props}
 			>
 				<ChartStyle id={chartId} config={config} />
-				{isClient ? (
+				{isMounted.current ? (
 					<RechartsPrimitive.ResponsiveContainer width="100%" height="100%">
 						{children}
 					</RechartsPrimitive.ResponsiveContainer>

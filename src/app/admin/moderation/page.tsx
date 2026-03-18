@@ -14,7 +14,8 @@ import {
 	Warning,
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { useCallback, useEffect, useState } from 'react';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useState } from 'react';
 import { toast } from 'sonner';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -53,15 +54,14 @@ export default function ModerationDashboard() {
 	const [activeTab, setActiveTab] = useState('flags');
 	const [searchQuery, setSearchQuery] = useState('');
 	const [statusFilter, setStatusFilter] = useState<string>('all');
-	const [isLoading, setIsLoading] = useState(true);
-
-	const [flags, setFlags] = useState<ContentFlag[]>([]);
 	const [patterns] = useState<ModerationPattern[]>([]);
+	const queryClient = useQueryClient();
 
-	const loadFlags = useCallback(async () => {
-		if (!session?.user?.id) return;
+	const { data: flagsData, isLoading } = useQuery<ContentFlag[] | null>({
+		queryKey: ['moderation-flags', statusFilter],
+		queryFn: async () => {
+			if (!session?.user?.id) return null;
 
-		try {
 			const url = new URL('/api/moderation/flags', window.location.origin);
 			if (statusFilter !== 'all') {
 				url.searchParams.set('status', statusFilter);
@@ -71,18 +71,14 @@ export default function ModerationDashboard() {
 			const result = await response.json();
 
 			if (result.success && result.data) {
-				setFlags(result.data);
+				return result.data as ContentFlag[];
 			}
-		} catch (error) {
-			console.debug('Error loading flags:', error);
-		} finally {
-			setIsLoading(false);
-		}
-	}, [session?.user?.id, statusFilter]);
+			return null;
+		},
+		enabled: !!session?.user?.id,
+	});
 
-	useEffect(() => {
-		loadFlags();
-	}, [loadFlags]);
+	const flags: ContentFlag[] = flagsData ?? [];
 
 	// Session check - in production, add proper admin authorization
 	if (!session) {
@@ -104,25 +100,31 @@ export default function ModerationDashboard() {
 	}
 
 	// Calculate stats from real data
-	const flagReasons = flags.reduce((acc: { name: string; count: number }[], flag) => {
-		const existing = acc.find((r) => r.name === flag.flagReason);
-		if (existing) {
-			existing.count++;
-		} else {
-			acc.push({ name: flag.flagReason, count: 1 });
-		}
-		return acc;
-	}, []);
+	const flagReasons = flags.reduce(
+		(acc: { name: string; count: number }[], flag: { flagReason: string }) => {
+			const existing = acc.find((r) => r.name === flag.flagReason);
+			if (existing) {
+				existing.count++;
+			} else {
+				acc.push({ name: flag.flagReason, count: 1 });
+			}
+			return acc;
+		},
+		[]
+	);
 
-	const contentTypes = flags.reduce((acc: { type: string; count: number }[], flag) => {
-		const existing = acc.find((r) => r.type === flag.contentType);
-		if (existing) {
-			existing.count++;
-		} else {
-			acc.push({ type: flag.contentType, count: 1 });
-		}
-		return acc;
-	}, []);
+	const contentTypes = flags.reduce(
+		(acc: { type: string; count: number }[], flag: { contentType: string }) => {
+			const existing = acc.find((r) => r.type === flag.contentType);
+			if (existing) {
+				existing.count++;
+			} else {
+				acc.push({ type: flag.contentType, count: 1 });
+			}
+			return acc;
+		},
+		[]
+	);
 
 	if (isLoading) {
 		return (
@@ -175,7 +177,7 @@ export default function ModerationDashboard() {
 			const result = await response.json();
 
 			if (result.success) {
-				setFlags((prevFlags) => prevFlags.filter((flag) => flag.id !== flagId));
+				queryClient.invalidateQueries({ queryKey: ['moderation-flags'] });
 
 				if (action === 'dismiss') {
 					toast.success(`Flag ${flagId} dismissed`);

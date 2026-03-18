@@ -2,7 +2,7 @@
 
 import { AnimatePresence, motion } from 'framer-motion';
 import { usePathname } from 'next/navigation';
-import { createContext, type ReactNode, useContext, useEffect, useState } from 'react';
+import { createContext, type ReactNode, useContext, useMemo, useState } from 'react';
 import { getSubjectGradient } from '@/constants/subjects';
 import { useReducedMotion } from '@/hooks/use-reduced-motion';
 
@@ -35,36 +35,25 @@ export function SubjectBackgroundProvider({
 	const prefersReducedMotion = useReducedMotion();
 	const [subjectId, setSubjectId] = useState<string | null>(null);
 	const [intensity] = useState(defaultIntensity);
-	const [gradient, setGradient] = useState({
-		primary: '#667eea',
-		secondary: '#764ba2',
-		accent: '#a855f7',
-	});
 
-	// Detect subject from pathname
-	useEffect(() => {
+	const detectedSubjectId = useMemo(() => {
 		const match = pathname.match(/\/subjects\/([^/]+)/);
-		if (match?.[1]) {
-			setSubjectId(match[1]);
-		} else {
-			setSubjectId(null);
-		}
+		return match?.[1] ?? null;
 	}, [pathname]);
 
-	// Update gradient when subject changes
-	useEffect(() => {
-		const newGradient = subjectId
-			? getSubjectGradient(subjectId)
+	const gradient = useMemo(() => {
+		const id = detectedSubjectId;
+		return id
+			? getSubjectGradient(id)
 			: {
 					primary: '#667eea',
 					secondary: '#764ba2',
 					accent: '#a855f7',
 				};
-		setGradient(newGradient);
-	}, [subjectId]);
+	}, [detectedSubjectId]);
 
 	const value: SubjectBackgroundContextValue = {
-		subjectId,
+		subjectId: detectedSubjectId,
 		setSubjectId,
 		gradient,
 	};
@@ -73,7 +62,7 @@ export function SubjectBackgroundProvider({
 		<SubjectBackgroundContext.Provider value={value}>
 			{/* Background gradient layer */}
 			<AnimatePresence>
-				{subjectId && (
+				{subjectId && detectedSubjectId && (
 					<motion.div
 						initial={{ opacity: 0 }}
 						animate={{ opacity: 1 }}

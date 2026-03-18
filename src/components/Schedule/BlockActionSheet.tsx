@@ -9,6 +9,7 @@ import {
 	Timer01Icon,
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
+import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
@@ -82,15 +83,13 @@ export function BlockActionSheet({ open, onOpenChange, event, onSuccess }: Block
 	const router = useRouter();
 	const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 	const [isDeleting, setIsDeleting] = useState(false);
-	const [subjects, setSubjects] = useState<{ id: number; name: string }[]>([]);
 
-	useEffect(() => {
-		async function loadSubjects() {
-			const data = await getEnrolledSubjectsAction();
-			setSubjects(data);
-		}
-		loadSubjects();
-	}, []);
+	const { data: subjectsData } = useQuery({
+		queryKey: ['enrolled-subjects'],
+		queryFn: () => getEnrolledSubjectsAction(),
+	});
+
+	const subjects = subjectsData ?? [];
 
 	const getSubjectName = (subjectId?: number): string => {
 		if (!subjectId) return '';

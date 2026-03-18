@@ -2,9 +2,10 @@
 
 import { ArrowLeft01Icon, ArrowRight01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
+import { useQuery } from '@tanstack/react-query';
 import { m } from 'framer-motion';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { SUBJECTS } from '@/constants/subjects';
 import { authClient } from '@/lib/auth-client';
@@ -78,8 +79,24 @@ const DEMO_EVENTS: TimelineEvent[] = [
 export function TimelineSidebar() {
 	const router = useRouter();
 	const { data: session } = authClient.useSession();
-	const [events, setEvents] = useState<TimelineEvent[]>([]);
-	const [isLoading, setIsLoading] = useState(true);
+	const { data: eventsData, isLoading } = useQuery({
+		queryKey: ['timelineEvents'],
+		queryFn: () => getTodayTimelineEventsAction(),
+	});
+
+	const events = useMemo(() => {
+		if (!eventsData || eventsData.length === 0) return DEMO_EVENTS;
+		return eventsData.map((e) => ({
+			id: e.id,
+			time: e.time,
+			subject: e.subject,
+			title: e.title,
+			duration: e.duration,
+			status: e.status,
+			emoji: e.emoji,
+			navigationHref: e.navigationHref,
+		}));
+	}, [eventsData]);
 	const [selectedDate, setSelectedDate] = useState(new Date());
 
 	const today = selectedDate.toLocaleDateString('en-US', {
@@ -87,37 +104,6 @@ export function TimelineSidebar() {
 		month: 'short',
 		day: 'numeric',
 	});
-
-	useEffect(() => {
-		async function loadEvents() {
-			setIsLoading(true);
-			try {
-				const data = await getTodayTimelineEventsAction();
-				if (data.length > 0) {
-					setEvents(
-						data.map((e) => ({
-							id: e.id,
-							time: e.time,
-							subject: e.subject,
-							title: e.title,
-							duration: e.duration,
-							status: e.status,
-							emoji: e.emoji,
-							navigationHref: e.navigationHref,
-						}))
-					);
-				} else {
-					setEvents(DEMO_EVENTS);
-				}
-			} catch (error) {
-				console.debug('Error loading timeline events:', error);
-				setEvents(DEMO_EVENTS);
-			} finally {
-				setIsLoading(false);
-			}
-		}
-		loadEvents();
-	}, []);
 
 	const handlePrevDay = () => {
 		setSelectedDate((prev) => new Date(prev.getTime() - 24 * 60 * 60 * 1000));

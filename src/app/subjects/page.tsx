@@ -2,8 +2,8 @@
 
 import { ArrowLeft01Icon, CheckmarkCircle02Icon, PlusSignIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
+import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { SubjectsSkeleton } from '@/components/SubjectsSkeleton';
 import { Button } from '@/components/ui/button';
@@ -15,35 +15,30 @@ import {
 } from '@/lib/db/actions';
 import type { Subject } from '@/lib/db/schema';
 
+interface SubjectsData {
+	subjects: Subject[];
+	enrolledIds: number[];
+}
+
 export default function SubjectsPage() {
 	const router = useRouter();
-	const [allSubjects, setAllSubjects] = useState<Subject[]>([]);
-	const [enrolledIds, setEnrolledIds] = useState<number[]>([]);
-	const [isLoading, setIsLoading] = useState(true);
+	const { data: enrolledData, isLoading } = useQuery<SubjectsData>({
+		queryKey: ['subjects-and-enrollments'],
+		queryFn: async () => {
+			const [subs, enrolled] = await Promise.all([
+				getSubjectsAction(),
+				getEnrolledSubjectsAction(),
+			]);
+			return { subjects: subs, enrolledIds: enrolled.map((e) => e.id) };
+		},
+	});
 
-	useEffect(() => {
-		async function loadData() {
-			setIsLoading(true);
-			try {
-				const [subs, enrolled] = await Promise.all([
-					getSubjectsAction(),
-					getEnrolledSubjectsAction(),
-				]);
-				setAllSubjects(subs);
-				setEnrolledIds(enrolled.map((e) => e.id));
-			} catch (error) {
-				console.debug('Failed to load subjects:', error);
-			} finally {
-				setIsLoading(false);
-			}
-		}
-		loadData();
-	}, []);
+	const allSubjects = enrolledData?.subjects ?? [];
+	const enrolledIds = enrolledData?.enrolledIds ?? [];
 
 	const handleEnroll = async (subjectId: number) => {
 		const result = await enrollInSubjectAction(subjectId);
 		if (result.success) {
-			setEnrolledIds((prev) => [...prev, subjectId]);
 			toast.success('Enrolled successfully!');
 		} else {
 			toast.error('Failed to enroll');

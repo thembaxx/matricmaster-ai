@@ -54,41 +54,26 @@ export default function VoiceTutorPage() {
 	const [isVoiceEnabled, setIsVoiceEnabled] = useState(true);
 	const [currentTranscript, setCurrentTranscript] = useState('');
 	const scrollRef = useRef<HTMLDivElement>(null);
+	const hasInitializedVoice = useRef(false);
 
 	useEffect(() => {
 		const loadVoices = () => {
 			const availableVoices = getSouthAfricanVoices();
 			setVoices(availableVoices);
-			if (availableVoices.length > 0 && !selectedVoice) {
+			if (availableVoices.length > 0 && !hasInitializedVoice.current) {
+				hasInitializedVoice.current = true;
 				setSelectedVoice(availableVoices[0].name);
 			}
 		};
 
 		loadVoices();
 		window.speechSynthesis.onvoiceschanged = loadVoices;
-
 		initSpeechRecognition();
 
 		return () => {
 			stopListening();
 			stopSpeaking();
 		};
-	}, [selectedVoice]);
-
-	useEffect(() => {
-		if (scrollRef.current) {
-			scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
-		}
-	}, []);
-
-	// Auto-scroll when messages change
-	useEffect(() => {
-		const timer = setTimeout(() => {
-			if (scrollRef.current) {
-				scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
-			}
-		}, 100);
-		return () => clearTimeout(timer);
 	}, []);
 
 	const handleStartRecording = useCallback(() => {
@@ -187,17 +172,6 @@ export default function VoiceTutorPage() {
 		stopSpeaking();
 		setIsSpeakingAI(false);
 	};
-
-	const scrollToBottom = useCallback(() => {
-		if (scrollRef.current) {
-			scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
-		}
-	}, []);
-
-	useEffect(() => {
-		const timer = setTimeout(scrollToBottom, 100);
-		return () => clearTimeout(timer);
-	}, [scrollToBottom]);
 
 	return (
 		<div className="min-h-screen pb-40 pt-8 px-4">

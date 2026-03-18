@@ -1,6 +1,7 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { useChatStore } from '@/stores/useChatStore';
 import { ChatHistory } from './ChatHistory';
@@ -18,27 +19,23 @@ const SUBJECTS = [
 	{ value: 'afrikaans', label: 'Afrikaans' },
 ];
 
+async function fetchSessions() {
+	const data = await fetch('/api/chat/messages').then((r) => r.json());
+	if (!data.sessions) throw new Error('Failed to load sessions');
+	return data.sessions;
+}
+
 export function ChatPage() {
 	const { currentSessionId, setCurrentSession, messages, setMessages, isLoading, setLoading } =
 		useChatStore();
 	const [subject, setSubject] = useState('general');
-	const [sessions, setSessions] = useState<
-		{ id: string; title: string; subject: string; updatedAt: Date }[]
-	>([]);
 	const [showHistory, setShowHistory] = useState(false);
 
-	const loadSessions = useCallback(async function loadSessions() {
-		try {
-			const data = await fetch('/api/chat/messages').then((r) => r.json());
-			if (data.sessions) setSessions(data.sessions);
-		} catch (error) {
-			console.error('Failed to load sessions:', error);
-		}
-	}, []);
-
-	useEffect(() => {
-		loadSessions();
-	}, [loadSessions]);
+	const { data: sessions = [] } = useQuery({
+		queryKey: ['chat-sessions'],
+		queryFn: fetchSessions,
+		staleTime: 30 * 1000,
+	});
 
 	async function startNewChat() {
 		setLoading(true);
@@ -108,7 +105,7 @@ export function ChatPage() {
 
 				<ChatWindow messages={messages} isLoading={isLoading} />
 
-				<ChatInput sessionId={currentSessionId} subject={subject} onMessageSent={loadSessions} />
+				<ChatInput sessionId={currentSessionId} subject={subject} onMessageSent={() => {}} />
 			</Card>
 		</div>
 	);

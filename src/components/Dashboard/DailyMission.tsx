@@ -9,34 +9,27 @@ import {
 	Target01Icon,
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
+import { useQuery } from '@tanstack/react-query';
 import { m } from 'framer-motion';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
 import type { AdaptiveRecommendation } from '@/actions/adaptive-learning';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 export function DailyMission() {
 	const router = useRouter();
-	const [missions, setMissions] = useState<AdaptiveRecommendation[]>([]);
-	const [isLoading, setIsLoading] = useState(true);
 
-	useEffect(() => {
-		async function loadMissions() {
-			try {
-				const response = await fetch('/api/adaptive-recommendations?limit=3');
-				if (response.ok) {
-					const data = await response.json();
-					setMissions(data.recommendations || []);
-				}
-			} catch (error) {
-				console.debug('Failed to load missions:', error);
-			} finally {
-				setIsLoading(false);
-			}
-		}
-		loadMissions();
-	}, []);
+	const { data, isPending } = useQuery<{ recommendations: AdaptiveRecommendation[] }>({
+		queryKey: ['adaptive-recommendations'],
+		queryFn: async () => {
+			const response = await fetch('/api/adaptive-recommendations?limit=3');
+			if (!response.ok) throw new Error('Failed to load missions');
+			return response.json();
+		},
+		staleTime: 60 * 1000,
+	});
+
+	const missions = data?.recommendations ?? [];
 
 	const getTypeIcon = (type: string) => {
 		switch (type) {
@@ -102,7 +95,7 @@ export function DailyMission() {
 		}
 	};
 
-	if (isLoading) {
+	if (isPending) {
 		return (
 			<Card className="border-primary/20 bg-linear-to-br from-primary/5 to-transparent">
 				<CardHeader>

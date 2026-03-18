@@ -2,6 +2,7 @@
 
 import { Mic01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
+import { useQuery } from '@tanstack/react-query';
 import { m } from 'framer-motion';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -156,8 +157,6 @@ export default function StudyCompanion() {
 	const [inputValue, setInputValue] = useState('');
 	const [selectedCard, setSelectedCard] = useState<string | null>(null);
 	const [isLoading, setIsLoading] = useState(false);
-	const [recentSessions, setRecentSessions] = useState<RecentSessionWithContext[]>([]);
-	const [isLoadingSessions, setIsLoadingSessions] = useState(true);
 
 	useEffect(() => {
 		const question = searchParams.get('question');
@@ -167,20 +166,12 @@ export default function StudyCompanion() {
 		}
 	}, [searchParams]);
 
-	useEffect(() => {
-		async function loadSessions() {
-			setIsLoadingSessions(true);
-			try {
-				const data = await getRecentSessionsWithContextAction();
-				setRecentSessions(data);
-			} catch (error) {
-				console.debug('Error loading recent sessions:', error);
-			} finally {
-				setIsLoadingSessions(false);
-			}
-		}
-		loadSessions();
-	}, []);
+	const { data: sessionsData, isLoading: isLoadingSessions } = useQuery({
+		queryKey: ['recent-sessions'],
+		queryFn: () => getRecentSessionsWithContextAction(),
+	});
+
+	const recentSessions = sessionsData ?? [];
 
 	const getPromptForCard = (cardId: string): string => {
 		switch (cardId) {

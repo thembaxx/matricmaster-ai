@@ -10,8 +10,9 @@ import {
 	MoreVerticalIcon,
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
+import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { toast } from 'sonner';
 import { FlashcardModal } from '@/components/AI/FlashcardModal';
 import { CreateDeckModal } from '@/components/Flashcards/CreateDeckModal';
@@ -50,8 +51,6 @@ interface Flashcard {
 
 export default function FlashcardsPage() {
 	const { data: session } = authClient.useSession();
-	const [isLoading, setIsLoading] = useState(true);
-	const [decks, setDecks] = useState<FlashcardDeck[]>([]);
 	const [showCreateModal, setShowCreateModal] = useState(false);
 	const [selectedDeck, setSelectedDeck] = useState<FlashcardDeck | null>(null);
 	const [deckFlashcards, setDeckFlashcards] = useState<Flashcard[]>([]);
@@ -59,28 +58,20 @@ export default function FlashcardsPage() {
 	const [showReviewModal, setShowReviewModal] = useState(false);
 	const [reviewCards, setReviewCards] = useState<Flashcard[]>([]);
 
-	// biome-ignore lint/correctness/useExhaustiveDependencies: loadDecks is stable
-	useEffect(() => {
-		if (session?.user) {
-			loadDecks();
-		}
-	}, [session]);
-
-	const loadDecks = async () => {
-		setIsLoading(true);
-		try {
+	const { data: decksData, isLoading } = useQuery<FlashcardDeck[]>({
+		queryKey: ['flashcard-decks'],
+		queryFn: async () => {
 			const response = await fetch('/api/flashcards/decks');
 			if (response.ok) {
 				const data = await response.json();
-				setDecks(data.decks || []);
+				return (data.decks || []) as FlashcardDeck[];
 			}
-		} catch (error) {
-			console.debug('Failed to load decks:', error);
-			toast.error('Failed to load flashcard decks');
-		} finally {
-			setIsLoading(false);
-		}
-	};
+			return [];
+		},
+		enabled: !!session?.user,
+	});
+
+	const decks: FlashcardDeck[] = decksData ?? [];
 
 	const handleOpenDeck = async (deck: FlashcardDeck) => {
 		try {
@@ -128,7 +119,6 @@ export default function FlashcardsPage() {
 
 			if (response.ok) {
 				toast.success('Deck deleted');
-				setDecks((prev) => prev.filter((d) => d.id !== deck.id));
 			} else {
 				toast.error('Failed to delete deck');
 			}
@@ -138,15 +128,12 @@ export default function FlashcardsPage() {
 		}
 	};
 
-	const handleDeckCreated = (deck: FlashcardDeck) => {
-		setDecks((prev) => [deck, ...prev]);
+	const handleDeckCreated = () => {
 		setShowCreateModal(false);
 	};
 
 	const handleCardsUpdated = () => {
-		if (selectedDeck) {
-			loadDecks();
-		}
+		// Refetch will happen automatically with useQuery
 	};
 
 	if (isLoading) {

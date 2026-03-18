@@ -2,8 +2,9 @@
 
 import { CheckmarkCircle02Icon, Target01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
+import { useQuery } from '@tanstack/react-query';
 import { m } from 'framer-motion';
-import { memo, useEffect, useState } from 'react';
+import { memo, useMemo } from 'react';
 import {
 	getUserProgressSummary,
 	getUserStreak,
@@ -23,100 +24,68 @@ interface DailyGoalsProps {
 	initialProgress?: UserProgressSummary;
 	initialStreak?: {
 		currentStreak: number;
+		bestStreak?: number;
+		lastActivityDate?: string | null;
 	};
+}
+
+interface StreakData {
+	currentStreak: number;
+	bestStreak?: number;
+	lastActivityDate?: string | null;
 }
 
 export const DailyGoals = memo(function DailyGoals({
 	initialProgress,
 	initialStreak,
 }: DailyGoalsProps) {
-	const [goals, setGoals] = useState<DailyGoal[]>(() => {
-		if (initialProgress && initialStreak) {
-			const dailyGoals: DailyGoal[] = [
-				{
-					id: 'questions',
-					title: 'Answer 10 Questions',
-					description: 'Complete practice questions today',
-					current: Math.min(initialProgress.totalQuestionsAttempted || 0, 10),
-					target: 10,
-					isComplete: (initialProgress.totalQuestionsAttempted || 0) >= 10,
-				},
-				{
-					id: 'accuracy',
-					title: 'Hit 70% Accuracy',
-					description: 'Maintain good accuracy in your answers',
-					current: initialProgress.accuracy || 0,
-					target: 70,
-					isComplete: (initialProgress.accuracy || 0) >= 70,
-				},
-				{
-					id: 'streak',
-					title: 'Keep Your Streak',
-					description: 'Stay active to maintain your streak',
-					current: initialStreak.currentStreak > 0 ? 1 : 0,
-					target: 1,
-					isComplete: initialStreak.currentStreak > 0,
-				},
-			];
-			return dailyGoals;
-		}
-		return [];
+	const { data: fetchedData } = useQuery({
+		queryKey: ['user-progress-and-streak'],
+		queryFn: async () => {
+			const [progress, streakData] = await Promise.all([getUserProgressSummary(), getUserStreak()]);
+			return { progress, streak: streakData as StreakData };
+		},
+		enabled: !initialProgress || !initialStreak,
+		staleTime: 60 * 1000,
 	});
-	const [isLoading, setIsLoading] = useState(goals.length === 0);
-	const [allComplete, setAllComplete] = useState(() =>
-		goals.length > 0 ? goals.every((g) => g.isComplete) : false
-	);
 
-	useEffect(() => {
-		if (goals.length > 0) return; // Skip fetch if initialized with initial data
+	const progress = initialProgress ?? fetchedData?.progress;
+	const streak = initialStreak ?? (fetchedData?.streak as StreakData);
 
-		async function fetchGoals() {
-			try {
-				const [progress, streakData] = await Promise.all([
-					getUserProgressSummary(),
-					getUserStreak(),
-				]);
+	const goals = useMemo<DailyGoal[]>(() => {
+		if (!progress || !streak) return [];
+		return [
+			{
+				id: 'questions',
+				title: 'Answer 10 Questions',
+				description: 'Complete practice questions today',
+				current: Math.min(progress.totalQuestionsAttempted || 0, 10),
+				target: 10,
+				isComplete: (progress.totalQuestionsAttempted || 0) >= 10,
+			},
+			{
+				id: 'accuracy',
+				title: 'Hit 70% Accuracy',
+				description: 'Maintain good accuracy in your answers',
+				current: progress.accuracy || 0,
+				target: 70,
+				isComplete: (progress.accuracy || 0) >= 70,
+			},
+			{
+				id: 'streak',
+				title: 'Keep Your Streak',
+				description: 'Stay active to maintain your streak',
+				current: streak.currentStreak > 0 ? 1 : 0,
+				target: 1,
+				isComplete: streak.currentStreak > 0,
+			},
+		];
+	}, [progress, streak]);
 
-				const dailyGoals: DailyGoal[] = [
-					{
-						id: 'questions',
-						title: 'Answer 10 Questions',
-						description: 'Complete practice questions today',
-						current: Math.min(progress?.totalQuestionsAttempted || 0, 10),
-						target: 10,
-						isComplete: (progress?.totalQuestionsAttempted || 0) >= 10,
-					},
-					{
-						id: 'accuracy',
-						title: 'Hit 70% Accuracy',
-						description: 'Maintain good accuracy in your answers',
-						current: progress?.accuracy || 0,
-						target: 70,
-						isComplete: (progress?.accuracy || 0) >= 70,
-					},
-					{
-						id: 'streak',
-						title: 'Keep Your Streak',
-						description: 'Stay active to maintain your streak',
-						current: streakData.currentStreak > 0 ? 1 : 0,
-						target: 1,
-						isComplete: streakData.currentStreak > 0,
-					},
-				];
+	const isPending = !progress && !fetchedData;
+	const allComplete = goals.every((g) => g.isComplete);
 
-				setGoals(dailyGoals);
-				setAllComplete(dailyGoals.every((g) => g.isComplete));
-			} catch (error) {
-				console.debug('[DailyGoals] Error fetching:', error);
-			} finally {
-				setIsLoading(false);
-			}
-		}
-
-		fetchGoals();
-	}, [goals.length]);
-
-	if (isLoading) {
+	if (isPending) {
 		return (
 			<div className="p-8 bg-card rounded-[2.5rem] shadow-tiimo border border-border/50 h-full">
 				<div className="animate-pulse space-y-6">

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useLayoutEffect, useRef } from 'react';
 import { cn } from '@/lib/utils';
 import type { ChatMessage } from '@/stores/useChatStore';
 
@@ -36,9 +36,10 @@ export function ChatWindow({
 }) {
 	const bottomRef = useRef<HTMLDivElement>(null);
 
-	useEffect(() => {
+	useLayoutEffect(() => {
 		bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
-	});
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	if (!messages.length && !isLoading) {
 		return (

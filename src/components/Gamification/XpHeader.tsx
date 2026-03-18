@@ -2,7 +2,8 @@
 
 import { ChampionIcon, FireIcon, FlashIcon, SparklesIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { memo, useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { memo, useMemo } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { ACHIEVEMENT_POINTS_MAP, type ACHIEVEMENTS } from '@/constants/achievements';
@@ -22,31 +23,50 @@ interface XpHeaderProps {
 	};
 }
 
-interface XpData {
-	level: number;
-	title: string;
-	color: string;
-	currentXp: number;
-	xpInCurrentLevel: number;
-	xpToNextLevel: number;
-	progress: number;
-	totalAchievements: number;
-	unlockedAchievements: number;
-	streak: number;
-}
-
 export const XpHeader = memo(function XpHeader({
 	variant = 'full',
 	className = '',
 	initialAchievements,
 	initialStreak,
 }: XpHeaderProps) {
-	const [data, setData] = useState<XpData | null>(() => {
-		if (initialAchievements && initialStreak) {
-			const unlocked = initialAchievements.unlocked.length;
-			const total = unlocked + initialAchievements.available.length;
+	const computedData = useMemo(() => {
+		if (!initialAchievements || !initialStreak) return null;
 
-			const totalXp = initialAchievements.unlocked.reduce((sum, a) => {
+		const unlocked = initialAchievements.unlocked.length;
+		const total = unlocked + initialAchievements.available.length;
+
+		const totalXp = initialAchievements.unlocked.reduce((sum, a) => {
+			return sum + (ACHIEVEMENT_POINTS_MAP.get(a.achievementId) || 0);
+		}, 0);
+
+		const levelInfo = getLevelInfo(totalXp);
+
+		return {
+			level: levelInfo.level,
+			title: levelInfo.title,
+			color: levelInfo.color,
+			currentXp: totalXp,
+			xpInCurrentLevel: levelInfo.xpInCurrentLevel,
+			xpToNextLevel: levelInfo.xpForNextLevel,
+			progress: levelInfo.progressPercent,
+			totalAchievements: total,
+			unlockedAchievements: unlocked,
+			streak: initialStreak.currentStreak,
+		};
+	}, [initialAchievements, initialStreak]);
+
+	const { data: fetchedData, isLoading } = useQuery({
+		queryKey: ['xpHeaderData'],
+		queryFn: async () => {
+			const [achievements, streakData] = await Promise.all([
+				getUserAchievements(),
+				getUserStreak(),
+			]);
+
+			const unlocked = achievements.unlocked.length;
+			const total = unlocked + achievements.available.length;
+
+			const totalXp = achievements.unlocked.reduce((sum, a) => {
 				return sum + (ACHIEVEMENT_POINTS_MAP.get(a.achievementId) || 0);
 			}, 0);
 
@@ -62,54 +82,13 @@ export const XpHeader = memo(function XpHeader({
 				progress: levelInfo.progressPercent,
 				totalAchievements: total,
 				unlockedAchievements: unlocked,
-				streak: initialStreak.currentStreak,
+				streak: streakData.currentStreak,
 			};
-		}
-		return null;
+		},
+		enabled: !computedData,
 	});
-	const [isLoading, setIsLoading] = useState(!data);
 
-	useEffect(() => {
-		if (data) return; // Skip fetch if initialized with initial data
-
-		async function fetchData() {
-			try {
-				const [achievements, streakData] = await Promise.all([
-					getUserAchievements(),
-					getUserStreak(),
-				]);
-
-				const unlocked = achievements.unlocked.length;
-				const total = unlocked + achievements.available.length;
-
-				// Bolt: Fix logic bug (was searching available instead of all) and optimize with O(1) MapTrifold lookup
-				const totalXp = achievements.unlocked.reduce((sum, a) => {
-					return sum + (ACHIEVEMENT_POINTS_MAP.get(a.achievementId) || 0);
-				}, 0);
-
-				const levelInfo = getLevelInfo(totalXp);
-
-				setData({
-					level: levelInfo.level,
-					title: levelInfo.title,
-					color: levelInfo.color,
-					currentXp: totalXp,
-					xpInCurrentLevel: levelInfo.xpInCurrentLevel,
-					xpToNextLevel: levelInfo.xpForNextLevel,
-					progress: levelInfo.progressPercent,
-					totalAchievements: total,
-					unlockedAchievements: unlocked,
-					streak: streakData.currentStreak,
-				});
-			} catch (error) {
-				console.debug('[XpHeader] Error fetching data:', error);
-			} finally {
-				setIsLoading(false);
-			}
-		}
-
-		fetchData();
-	}, [data]);
+	const data = computedData ?? fetchedData ?? null;
 
 	if (isLoading) {
 		return (

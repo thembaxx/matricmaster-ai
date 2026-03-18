@@ -7,6 +7,7 @@ import {
 	StarIcon,
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
+import { useQuery } from '@tanstack/react-query';
 import { AnimatePresence, m } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
@@ -18,27 +19,22 @@ interface DailyLoginBonusProps {
 }
 
 export function DailyLoginBonus({ onClaimed }: DailyLoginBonusProps) {
-	const [status, setStatus] = useState<Awaited<ReturnType<typeof getLoginBonusStatus>> | null>(
-		null
-	);
-	const [isLoading, setIsLoading] = useState(true);
 	const [isClaiming, setIsClaiming] = useState(false);
 	const [showModal, setShowModal] = useState(false);
 	const [claimResult, setClaimResult] = useState<Awaited<
 		ReturnType<typeof claimLoginBonus>
 	> | null>(null);
 
+	const { data: status, isLoading } = useQuery({
+		queryKey: ['login-bonus-status'],
+		queryFn: () => getLoginBonusStatus(),
+	});
+
 	useEffect(() => {
-		async function checkStatus() {
-			const result = await getLoginBonusStatus();
-			setStatus(result);
-			setIsLoading(false);
-			if (result.canClaim) {
-				setShowModal(true);
-			}
+		if (status?.canClaim) {
+			setShowModal(true);
 		}
-		checkStatus();
-	}, []);
+	}, [status]);
 
 	const handleClaim = async () => {
 		setIsClaiming(true);
@@ -46,8 +42,6 @@ export function DailyLoginBonus({ onClaimed }: DailyLoginBonusProps) {
 			const result = await claimLoginBonus();
 			setClaimResult(result);
 			if (result.success) {
-				const newStatus = await getLoginBonusStatus();
-				setStatus(newStatus);
 				onClaimed?.();
 			}
 		} finally {
@@ -64,8 +58,8 @@ export function DailyLoginBonus({ onClaimed }: DailyLoginBonusProps) {
 		return null;
 	}
 
-	const currentDay = status.consecutiveDays + 1;
-	const nextReward = status.nextReward;
+	const currentDay = (status?.consecutiveDays ?? 0) + 1;
+	const nextReward = status?.nextReward;
 
 	return (
 		<AnimatePresence>
@@ -252,13 +246,10 @@ export function DailyLoginBonus({ onClaimed }: DailyLoginBonusProps) {
 }
 
 export function DailyLoginBonusTrigger({ onClick }: { onClick: () => void }) {
-	const [status, setStatus] = useState<Awaited<ReturnType<typeof getLoginBonusStatus>> | null>(
-		null
-	);
-
-	useEffect(() => {
-		getLoginBonusStatus().then(setStatus);
-	}, []);
+	const { data: status } = useQuery({
+		queryKey: ['login-bonus-status-trigger'],
+		queryFn: () => getLoginBonusStatus(),
+	});
 
 	if (!status?.canClaim) {
 		return null;

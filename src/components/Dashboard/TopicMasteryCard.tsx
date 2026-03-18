@@ -10,8 +10,9 @@ import {
 	Target01Icon,
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
+import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
-import { memo, useEffect, useState } from 'react';
+import { memo } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
@@ -26,32 +27,23 @@ export const TopicMasteryCard = memo(function TopicMasteryCard({
 	className,
 }: TopicMasteryCardProps) {
 	const router = useRouter();
-	const [isLoading, setIsLoading] = useState(true);
-	const [error, setError] = useState<string | null>(null);
-	const [stats, setStats] = useState<LearningStats | null>(null);
 
-	// biome-ignore lint/correctness/useExhaustiveDependencies: loadStats runs once on mount
-	useEffect(() => {
-		loadStats();
-	}, []);
-
-	const loadStats = async () => {
-		setIsLoading(true);
-		setError(null);
-		try {
+	const {
+		data: stats,
+		isPending,
+		error,
+		refetch,
+	} = useQuery<LearningStats>({
+		queryKey: ['quiz-analytics'],
+		queryFn: async () => {
 			const response = await fetch('/api/quiz/analytics');
-			if (!response.ok) {
-				throw new Error('Failed to load analytics');
-			}
-			const data = await response.json();
-			setStats(data);
-		} catch (err) {
-			console.debug('Failed to load analytics:', err);
-			setError('Unable to load topic progress');
-		} finally {
-			setIsLoading(false);
-		}
-	};
+			if (!response.ok) throw new Error('Failed to load analytics');
+			return response.json();
+		},
+		staleTime: 5 * 60 * 1000,
+	});
+
+	const hasError = !!error;
 
 	const getMasteryColor = (accuracy: number) => {
 		if (accuracy >= 80) return 'text-green-600';
@@ -59,7 +51,7 @@ export const TopicMasteryCard = memo(function TopicMasteryCard({
 		return 'text-red-500';
 	};
 
-	if (isLoading) {
+	if (isPending) {
 		return (
 			<Card className={className}>
 				<CardHeader>
@@ -78,7 +70,7 @@ export const TopicMasteryCard = memo(function TopicMasteryCard({
 		);
 	}
 
-	if (error) {
+	if (hasError || !stats) {
 		return (
 			<Card className={className}>
 				<CardHeader>
@@ -88,34 +80,9 @@ export const TopicMasteryCard = memo(function TopicMasteryCard({
 					</CardTitle>
 				</CardHeader>
 				<CardContent className="text-center py-6">
-					<p className="text-sm text-destructive mb-3">{error}</p>
-					<Button variant="outline" size="sm" onClick={loadStats}>
+					<p className="text-sm text-destructive mb-3">Unable to load topic progress</p>
+					<Button variant="outline" size="sm" onClick={() => refetch()}>
 						Try Again
-					</Button>
-				</CardContent>
-			</Card>
-		);
-	}
-
-	if (!stats) {
-		return (
-			<Card className={className}>
-				<CardHeader>
-					<CardTitle className="flex items-center gap-2">
-						<HugeiconsIcon icon={AiBrain01Icon} className="h-5 w-5" />
-						Topic Progress
-					</CardTitle>
-				</CardHeader>
-				<CardContent className="text-center py-6">
-					<HugeiconsIcon
-						icon={Target01Icon}
-						className="h-12 w-12 text-muted-foreground/50 mx-auto mb-3"
-					/>
-					<p className="text-sm text-muted-foreground">
-						Complete more quizzes to see your topic progress
-					</p>
-					<Button variant="outline" size="sm" className="mt-4" onClick={() => router.push('/quiz')}>
-						Take a Quiz
 					</Button>
 				</CardContent>
 			</Card>
@@ -175,7 +142,7 @@ export const TopicMasteryCard = memo(function TopicMasteryCard({
 									<HugeiconsIcon icon={AnalyticsDownIcon} className="h-4 w-4 text-red-500" />
 									<span className="text-red-600">Needs Focus</span>
 								</div>
-								{stats.weakTopics.slice(0, 3).map((topic) => (
+								{stats.weakTopics.slice(0, 3).map((topic: TopicPerformance) => (
 									<TopicItem
 										key={topic.topic}
 										topic={topic}
@@ -192,7 +159,7 @@ export const TopicMasteryCard = memo(function TopicMasteryCard({
 									<HugeiconsIcon icon={AnalyticsUpIcon} className="h-4 w-4 text-yellow-500" />
 									<span className="text-yellow-600">Improving</span>
 								</div>
-								{stats.improvingTopics.slice(0, 2).map((topic) => (
+								{stats.improvingTopics.slice(0, 2).map((topic: TopicPerformance) => (
 									<TopicItem
 										key={topic.topic}
 										topic={topic}
@@ -209,7 +176,7 @@ export const TopicMasteryCard = memo(function TopicMasteryCard({
 									<HugeiconsIcon icon={Target01Icon} className="h-4 w-4 text-green-500" />
 									<span className="text-green-600">Mastered</span>
 								</div>
-								{stats.strongTopics.slice(0, 2).map((topic) => (
+								{stats.strongTopics.slice(0, 2).map((topic: TopicPerformance) => (
 									<TopicItem
 										key={topic.topic}
 										topic={topic}

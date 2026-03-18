@@ -8,6 +8,7 @@ import {
 	Wifi01Icon,
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
+import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
@@ -20,16 +21,20 @@ import {
 	getTipsBySubject,
 	isOffline,
 } from '@/lib/offline';
-import type { QuickTip } from '@/lib/offline/quick-tips';
 
 export default function OfflinePage() {
 	const [isOfflineState, setIsOfflineState] = useState(false);
 	const [cacheSize, setCacheSize] = useState(0);
 	const [isReloading, setIsReloading] = useState(false);
-	const [tips, setTips] = useState<QuickTip[]>([]);
 	const [selectedSubject, setSelectedSubject] = useState<string>('Mathematics');
 
 	const subjects = ['Mathematics', 'Physical Sciences', 'English', 'Afrikaans', 'History'];
+
+	const { data: tips = [] } = useQuery({
+		queryKey: ['quick-tips', selectedSubject],
+		queryFn: () => getTipsBySubject(selectedSubject).then((t) => t.slice(0, 5)),
+		staleTime: 5 * 60 * 1000,
+	});
 
 	useEffect(() => {
 		setIsOfflineState(isOffline());
@@ -51,14 +56,6 @@ export default function OfflinePage() {
 			window.removeEventListener('offline', handleOffline);
 		};
 	}, []);
-
-	useEffect(() => {
-		async function loadTips() {
-			const subjectTips = await getTipsBySubject(selectedSubject);
-			setTips(subjectTips.slice(0, 5));
-		}
-		loadTips();
-	}, [selectedSubject]);
 
 	const handleRetry = async () => {
 		setIsReloading(true);

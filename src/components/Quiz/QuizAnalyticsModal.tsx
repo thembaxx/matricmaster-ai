@@ -11,7 +11,7 @@ import {
 	Target01Icon,
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -31,30 +31,19 @@ interface QuizAnalyticsModalProps {
 }
 
 export function QuizAnalyticsModal({ open, onOpenChange }: QuizAnalyticsModalProps) {
-	const [isLoading, setIsLoading] = useState(true);
-	const [stats, setStats] = useState<LearningStats | null>(null);
-
-	// biome-ignore lint/correctness/useExhaustiveDependencies: loadStats is stable
-	useEffect(() => {
-		if (open) {
-			loadStats();
-		}
-	}, [open]);
-
-	const loadStats = async () => {
-		setIsLoading(true);
-		try {
+	const {
+		data: stats,
+		isLoading,
+		refetch,
+	} = useQuery({
+		queryKey: ['quiz-analytics'],
+		queryFn: async () => {
 			const response = await fetch('/api/quiz/analytics');
-			if (response.ok) {
-				const data = await response.json();
-				setStats(data);
-			}
-		} catch (error) {
-			console.debug('Failed to load analytics:', error);
-		} finally {
-			setIsLoading(false);
-		}
-	};
+			if (!response.ok) throw new Error('Failed to load analytics');
+			return response.json() as Promise<LearningStats>;
+		},
+		enabled: open,
+	});
 
 	const getAccuracyColor = (accuracy: number) => {
 		if (accuracy >= 80) return 'text-green-600';
@@ -229,7 +218,7 @@ export function QuizAnalyticsModal({ open, onOpenChange }: QuizAnalyticsModalPro
 				) : (
 					<div className="py-8 text-center text-muted-foreground">
 						<p>Unable to load analytics. Please try again.</p>
-						<Button variant="outline" className="mt-4" onClick={loadStats}>
+						<Button variant="outline" className="mt-4" onClick={() => refetch()}>
 							Retry
 						</Button>
 					</div>

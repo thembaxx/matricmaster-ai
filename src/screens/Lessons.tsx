@@ -13,7 +13,7 @@ import {
 	TranslateIcon,
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { useEffect, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { TTSButton } from '@/components/Lessons/TTSButton';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -44,11 +44,10 @@ interface Lesson {
 }
 
 export default function Lessons() {
-	const [lessonsData, setLessonsData] = useState<Lesson[]>([]);
-	const [loading, setLoading] = useState(true);
 	const [activeCategory, setActiveCategory] = useState('all');
 
-	useEffect(() => {
+	// Load and process lesson data from JSON files using useMemo
+	const { lessonsData, loading } = useMemo(() => {
 		const getIconForSubject = (subject: string): string => {
 			const subjectKey = subject.toLowerCase().replace(' ', '-') as keyof typeof SUBJECTS;
 			return getSubjectEmoji(subjectKey) ?? '📚';
@@ -85,75 +84,65 @@ export default function Lessons() {
 			}
 		};
 
-		// Load lesson data from JSON files
-		const loadLessons = async () => {
-			try {
-				// Convert JSON objects to flat arrays of lessons
-				const mathArray = mathematicsData.mathematics || [];
-				const mechanicsArray = physicsData.mechanics || [];
-				const wavesArray = physicsData.waves || [];
-				const electricityArray = physicsData.electricity || [];
-				const chemistryArray = chemistryData.chemistry || [];
-				const lifeArray = lifeSciencesData.life_sciences || [];
-
-				const getRandomStatus = (): 'completed' | 'active' | 'locked' => {
-					const rand = Math.random();
-					return (rand > 0.7 ? 'completed' : rand > 0.3 ? 'active' : 'locked') as
-						| 'completed'
-						| 'active'
-						| 'locked';
-				};
-
-				// Map to Lesson type with UI-specific fields
-				type LessonWithStatus = Lesson & {
-					progress: number;
-					status: 'completed' | 'active' | 'locked';
-					icon: string;
-					color: string;
-					iconColor: string;
-					isContinue: boolean;
-				};
-
-				const mapLesson = (lesson: Lesson): LessonWithStatus => {
-					const status = getRandomStatus();
-					return {
-						id: lesson.id,
-						subject: lesson.subject,
-						topic: lesson.topic,
-						title: lesson.title,
-						content: lesson.content,
-						duration: lesson.duration,
-						difficulty: lesson.difficulty,
-						prerequisites: lesson.prerequisites,
-						learning_objectives: lesson.learning_objectives,
-						progress: Math.floor(Math.random() * 101),
-						status,
-						icon: getIconForSubject(lesson.subject),
-						color: getColorForSubject(lesson.subject),
-						iconColor: getIconColorForSubject(lesson.subject),
-						isContinue: false,
-					};
-				};
-
-				const allLessons: Lesson[] = [
-					...mathArray.map(mapLesson),
-					...mechanicsArray.map(mapLesson),
-					...wavesArray.map(mapLesson),
-					...electricityArray.map(mapLesson),
-					...chemistryArray.map(mapLesson),
-					...lifeArray.map(mapLesson),
-				];
-
-				setLessonsData(allLessons);
-				setLoading(false);
-			} catch (error) {
-				console.debug('Error loading lessons:', error);
-				setLoading(false);
-			}
+		const getRandomStatus = (): 'completed' | 'active' | 'locked' => {
+			const rand = Math.random();
+			return (rand > 0.7 ? 'completed' : rand > 0.3 ? 'active' : 'locked') as
+				| 'completed'
+				| 'active'
+				| 'locked';
 		};
 
-		loadLessons();
+		type LessonWithStatus = Lesson & {
+			progress: number;
+			status: 'completed' | 'active' | 'locked';
+			icon: string;
+			color: string;
+			iconColor: string;
+			isContinue: boolean;
+		};
+
+		const mapLesson = (lesson: Lesson): LessonWithStatus => {
+			const status = getRandomStatus();
+			return {
+				id: lesson.id,
+				subject: lesson.subject,
+				topic: lesson.topic,
+				title: lesson.title,
+				content: lesson.content,
+				duration: lesson.duration,
+				difficulty: lesson.difficulty,
+				prerequisites: lesson.prerequisites,
+				learning_objectives: lesson.learning_objectives,
+				progress: Math.floor(Math.random() * 101),
+				status,
+				icon: getIconForSubject(lesson.subject),
+				color: getColorForSubject(lesson.subject),
+				iconColor: getIconColorForSubject(lesson.subject),
+				isContinue: false,
+			};
+		};
+
+		// Convert JSON objects to flat arrays of lessons
+		const mathArray = mathematicsData.mathematics || [];
+		const mechanicsArray = physicsData.mechanics || [];
+		const wavesArray = physicsData.waves || [];
+		const electricityArray = physicsData.electricity || [];
+		const chemistryArray = chemistryData.chemistry || [];
+		const lifeArray = lifeSciencesData.life_sciences || [];
+
+		const allLessons: Lesson[] = [
+			...mathArray.map(mapLesson),
+			...mechanicsArray.map(mapLesson),
+			...wavesArray.map(mapLesson),
+			...electricityArray.map(mapLesson),
+			...chemistryArray.map(mapLesson),
+			...lifeArray.map(mapLesson),
+		];
+
+		return { lessonsData: allLessons, loading: false };
 	}, []);
+
+	// Category filter
 
 	if (loading) {
 		return (

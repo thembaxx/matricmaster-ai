@@ -2,7 +2,6 @@
 
 import { SparklesIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { useSmartSchedulerStore } from '@/stores/useSmartSchedulerStore';
 import { AISuggestionsPanel } from './AISuggestionsPanel';
@@ -59,12 +58,7 @@ function CalendarSkeleton() {
 }
 
 export function CalendarView() {
-	const { viewMode, isLoading, loadSchedule, generateSchedule, isGenerating } =
-		useSmartSchedulerStore();
-
-	useEffect(() => {
-		loadSchedule();
-	}, [loadSchedule]);
+	const { viewMode, isLoading, generateSchedule, isGenerating } = useSmartSchedulerStore();
 
 	if (isLoading) {
 		return <CalendarSkeleton />;

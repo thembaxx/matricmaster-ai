@@ -68,6 +68,9 @@ export default function TutoringSessionPage() {
 		}
 	}, []);
 
+	const updateParticipantsRef = useRef(updateParticipants);
+	updateParticipantsRef.current = updateParticipants;
+
 	useEffect(() => {
 		if (!roomName || !token) {
 			toast.error('Invalid session. Please create a new tutoring session.');
@@ -105,7 +108,7 @@ export default function TutoringSessionPage() {
 
 				callFrameRef.current.on('joinedMeeting', () => {
 					setIsLoading(false);
-					updateParticipants();
+					updateParticipantsRef.current();
 				});
 
 				callFrameRef.current.on('leftMeeting', () => {
@@ -114,12 +117,12 @@ export default function TutoringSessionPage() {
 				});
 
 				callFrameRef.current.on('participantJoined', () => {
-					updateParticipants();
+					updateParticipantsRef.current();
 					toast.success('A participant joined');
 				});
 
 				callFrameRef.current.on('participantLeft', () => {
-					updateParticipants();
+					updateParticipantsRef.current();
 				});
 
 				try {
@@ -145,7 +148,7 @@ export default function TutoringSessionPage() {
 				callFrameRef.current.destroy();
 			}
 		};
-	}, [roomName, token, router, updateParticipants]);
+	}, [roomName, token, router]);
 
 	const toggleVideo = () => {
 		if (callFrameRef.current) {
