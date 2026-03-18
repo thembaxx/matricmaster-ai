@@ -1,37 +1,21 @@
 'use client';
 
 import {
-	CancelCircleIcon,
-	CheckmarkCircle02Icon,
-	Delete02Icon,
-	Key01Icon,
-	Loading03Icon,
 	LockIcon,
 	Notification03Icon,
 	Shield01Icon,
-	SmartPhone01Icon,
 	UserIcon as User,
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import Link from 'next/link';
 import { useEffect, useState, useTransition } from 'react';
 import { toast } from 'sonner';
-import { ZModeToggle } from '@/components/Settings/ZModeToggle';
+import { AccountTab } from '@/components/Settings/AccountTab';
+import { NotificationsTab } from '@/components/Settings/NotificationsTab';
+import { PrivacyTab } from '@/components/Settings/PrivacyTab';
+import { SecurityTab } from '@/components/Settings/SecurityTab';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import {
-	Dialog,
-	DialogContent,
-	DialogDescription,
-	DialogFooter,
-	DialogHeader,
-	DialogTitle,
-	DialogTrigger,
-} from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Separator } from '@/components/ui/separator';
-import { Switch } from '@/components/ui/switch';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useHaptics } from '@/hooks/useHaptics';
 import { authClient } from '@/lib/auth-client';
@@ -363,448 +347,66 @@ export default function SettingsPage() {
 						</TabsTrigger>
 					</TabsList>
 
-					{/* Account Tab */}
-					<TabsContent value="account" className="space-y-6">
-						<Card>
-							<CardHeader>
-								<CardTitle>Profile Information</CardTitle>
-								<CardDescription>Update your account details</CardDescription>
-							</CardHeader>
-							<CardContent className="space-y-4">
-								<div className="grid gap-2">
-									<Label htmlFor="displayName">Display Name</Label>
-									<Input
-										id="displayName"
-										value={displayName}
-										onChange={(e) => setDisplayName(e.target.value)}
-										placeholder="Your name"
-										maxLength={100}
-									/>
-								</div>
-								<div className="grid gap-2">
-									<Label htmlFor="email">Email</Label>
-									<Input
-										id="email"
-										type="email"
-										value={email}
-										placeholder="your@email.com"
-										disabled
-									/>
-									<p className="text-xs text-muted-foreground">
-										Email cannot be changed. Contact support if you need to update it.
-									</p>
-								</div>
-								<Button onClick={handleSaveProfile} disabled={isPendingProfile}>
-									{isPendingProfile ? (
-										<>
-											<HugeiconsIcon icon={Loading03Icon} className="mr-2 h-4 w-4 animate-spin" />
-											Saving...
-										</>
-									) : (
-										'Save Changes'
-									)}
-								</Button>
-							</CardContent>
-						</Card>
-
-						<Card>
-							<CardHeader>
-								<CardTitle>Connected Accounts</CardTitle>
-								<CardDescription>Manage your connected OAuth providers</CardDescription>
-							</CardHeader>
-							<CardContent className="space-y-4">
-								<div className="flex items-center justify-between">
-									<div className="flex items-center gap-3">
-										<div className="h-10 w-10 rounded-full bg-red-500/10 flex items-center justify-center">
-											<span className="text-red-500 font-bold">G</span>
-										</div>
-										<div>
-											<p className="font-medium">Google</p>
-											<p className="text-sm text-muted-foreground">
-												{session.user?.email ? 'Connected' : 'Not connected'}
-											</p>
-										</div>
-									</div>
-									<Button variant="outline" size="sm" disabled>
-										{session.user?.email ? 'Connected' : 'Connect'}
-									</Button>
-								</div>
-							</CardContent>
-						</Card>
+					<TabsContent value="account">
+						<AccountTab
+							session={session}
+							displayName={displayName}
+							setDisplayName={setDisplayName}
+							email={email}
+							isPendingProfile={isPendingProfile}
+							handleSaveProfile={handleSaveProfile}
+						/>
 					</TabsContent>
 
-					{/* Security Tab */}
-					<TabsContent value="security" className="space-y-6">
-						<Card>
-							<CardHeader>
-								<CardTitle className="flex items-center gap-2">
-									<HugeiconsIcon icon={SmartPhone01Icon} className="h-5 w-5" />
-									Two-Factor Authentication
-								</CardTitle>
-								<CardDescription>Add an extra layer of security to your account</CardDescription>
-							</CardHeader>
-							<CardContent className="space-y-4">
-								<div className="flex items-center justify-between">
-									<div className="flex items-center gap-2">
-										{is2FAEnabled ? (
-											<HugeiconsIcon
-												icon={CheckmarkCircle02Icon}
-												className="h-5 w-5 text-green-500"
-											/>
-										) : (
-											<HugeiconsIcon
-												icon={CancelCircleIcon}
-												className="h-5 w-5 text-muted-foreground"
-											/>
-										)}
-										<div>
-											<p className="font-medium">2FA Status</p>
-											<p className="text-sm text-muted-foreground">
-												{is2FAEnabled ? 'Enabled' : 'Disabled'}
-											</p>
-										</div>
-									</div>
-								</div>
-
-								{!showBackupCodes ? (
-									<>
-										<Separator />
-										<div className="space-y-4">
-											<div className="grid gap-2">
-												<Label htmlFor="password">Enter Password to Enable 2FA</Label>
-												<Input
-													id="password"
-													type="password"
-													value={password}
-													onChange={(e) => setPassword(e.target.value)}
-													placeholder="Your password"
-												/>
-											</div>
-											<div className="flex gap-2">
-												{is2FAEnabled ? (
-													<Button
-														variant="destructive"
-														onClick={handleDisable2FA}
-														disabled={isLoading2FA}
-													>
-														{isLoading2FA && (
-															<HugeiconsIcon
-																icon={Loading03Icon}
-																className="mr-2 h-4 w-4 animate-spin"
-															/>
-														)}
-														Disable 2FA
-													</Button>
-												) : (
-													<>
-														<Button onClick={handleEnable2FA} disabled={isLoading2FA}>
-															{isLoading2FA && (
-																<HugeiconsIcon
-																	icon={Loading03Icon}
-																	className="mr-2 h-4 w-4 animate-spin"
-																/>
-															)}
-															Enable 2FA
-														</Button>
-														<Button
-															variant="outline"
-															onClick={handleRegenerateBackupCodes}
-															disabled={isLoading2FA || !is2FAEnabled}
-														>
-															<HugeiconsIcon icon={Key01Icon} className="mr-2 h-4 w-4" />
-															Regenerate Backup Codes
-														</Button>
-													</>
-												)}
-											</div>
-										</div>
-									</>
-								) : (
-									<>
-										<Separator />
-										<div className="rounded-lg bg-amber-50 border border-amber-200 p-4">
-											<h4 className="font-semibold text-amber-800 mb-2">
-												⚠️ Save Your Backup Codes
-											</h4>
-											<p className="text-sm text-amber-700 mb-4">
-												Store these codes somewhere safe. You can use them to access your account if
-												you lose your authenticator device.
-											</p>
-											<div className="grid grid-cols-2 gap-2">
-												{backupCodes.map((code, index) => (
-													<code
-														key={index}
-														className="bg-white px-2 py-1 rounded text-sm font-mono"
-													>
-														{code}
-													</code>
-												))}
-											</div>
-										</div>
-										<Button variant="outline" onClick={() => setShowBackupCodes(false)}>
-											I've Saved My Codes
-										</Button>
-									</>
-								)}
-							</CardContent>
-						</Card>
-
-						<Card>
-							<CardHeader>
-								<CardTitle>Password</CardTitle>
-								<CardDescription>Change your account password</CardDescription>
-							</CardHeader>
-							<CardContent className="space-y-4">
-								<div className="grid gap-2">
-									<Label htmlFor="currentPassword">Current Password</Label>
-									<Input
-										id="currentPassword"
-										type="password"
-										value={currentPassword}
-										onChange={(e) => setCurrentPassword(e.target.value)}
-										placeholder="••••••••"
-									/>
-								</div>
-								<div className="grid gap-2">
-									<Label htmlFor="newPassword">New Password</Label>
-									<Input
-										id="newPassword"
-										type="password"
-										value={newPassword}
-										onChange={(e) => setNewPassword(e.target.value)}
-										placeholder="••••••••"
-									/>
-								</div>
-								<div className="grid gap-2">
-									<Label htmlFor="confirmPassword">Confirm New Password</Label>
-									<Input
-										id="confirmPassword"
-										type="password"
-										value={confirmPassword}
-										onChange={(e) => setConfirmPassword(e.target.value)}
-										placeholder="••••••••"
-									/>
-								</div>
-								<Button onClick={handlePasswordChange} disabled={isPendingPassword}>
-									{isPendingPassword ? (
-										<>
-											<HugeiconsIcon icon={Loading03Icon} className="mr-2 h-4 w-4 animate-spin" />
-											Updating...
-										</>
-									) : (
-										'Update Password'
-									)}
-								</Button>
-							</CardContent>
-						</Card>
-
-						<Card>
-							<CardHeader>
-								<CardTitle>Active Sessions</CardTitle>
-								<CardDescription>Manage your active login sessions</CardDescription>
-							</CardHeader>
-							<CardContent>
-								<div className="text-sm text-muted-foreground">
-									<p>View and manage your active sessions across devices.</p>
-									<Button variant="outline" className="mt-4">
-										View Sessions
-									</Button>
-								</div>
-							</CardContent>
-						</Card>
+					<TabsContent value="security">
+						<SecurityTab
+							is2FAEnabled={is2FAEnabled}
+							isLoading2FA={isLoading2FA}
+							showBackupCodes={showBackupCodes}
+							setShowBackupCodes={setShowBackupCodes}
+							backupCodes={backupCodes}
+							password={password}
+							setPassword={setPassword}
+							currentPassword={currentPassword}
+							setCurrentPassword={setCurrentPassword}
+							newPassword={newPassword}
+							setNewPassword={setNewPassword}
+							confirmPassword={confirmPassword}
+							setConfirmPassword={setConfirmPassword}
+							isPendingPassword={isPendingPassword}
+							handleEnable2FA={handleEnable2FA}
+							handleDisable2FA={handleDisable2FA}
+							handleRegenerateBackupCodes={handleRegenerateBackupCodes}
+							handlePasswordChange={handlePasswordChange}
+						/>
 					</TabsContent>
 
-					{/* Notifications Tab */}
-					<TabsContent value="notifications" className="space-y-6">
-						<Card>
-							<CardHeader>
-								<CardTitle>Notification Preferences</CardTitle>
-								<CardDescription>Choose how you want to be notified</CardDescription>
-							</CardHeader>
-							<CardContent className="space-y-6">
-								<div className="flex items-center justify-between">
-									<div>
-										<p className="font-medium">Email Notifications</p>
-										<p className="text-sm text-muted-foreground">Receive updates via email</p>
-									</div>
-									<Switch
-										checked={emailNotifications}
-										onCheckedChange={(v) => handleNotificationChange('emailNotifications', v)}
-									/>
-								</div>
-								<Separator />
-								<div className="flex items-center justify-between">
-									<div>
-										<p className="font-medium">Push Notifications</p>
-										<p className="text-sm text-muted-foreground">Receive browser notifications</p>
-									</div>
-									<Switch
-										checked={pushNotifications}
-										onCheckedChange={(v) => handleNotificationChange('pushNotifications', v)}
-									/>
-								</div>
-								<Separator />
-								<div className="flex items-center justify-between">
-									<div>
-										<p className="font-medium">Study Reminders</p>
-										<p className="text-sm text-muted-foreground">Daily reminders to study</p>
-									</div>
-									<Switch
-										checked={studyReminders}
-										onCheckedChange={(v) => handleNotificationChange('studyReminders', v)}
-									/>
-								</div>
-								<Separator />
-								<div className="flex items-center justify-between">
-									<div>
-										<p className="font-medium">Achievement Alerts</p>
-										<p className="text-sm text-muted-foreground">
-											Get notified when you earn achievements
-										</p>
-									</div>
-									<Switch
-										checked={achievementAlerts}
-										onCheckedChange={(v) => handleNotificationChange('achievementAlerts', v)}
-									/>
-								</div>
-							</CardContent>
-						</Card>
+					<TabsContent value="notifications">
+						<NotificationsTab
+							emailNotifications={emailNotifications}
+							pushNotifications={pushNotifications}
+							studyReminders={studyReminders}
+							achievementAlerts={achievementAlerts}
+							handleNotificationChange={handleNotificationChange}
+						/>
 					</TabsContent>
 
-					{/* Privacy Tab */}
-					<TabsContent value="privacy" className="space-y-6">
-						<Card>
-							<CardHeader>
-								<CardTitle>Privacy Settings</CardTitle>
-								<CardDescription>Control your privacy preferences</CardDescription>
-							</CardHeader>
-							<CardContent className="space-y-6">
-								<div className="flex items-center justify-between">
-									<div>
-										<p className="font-medium">Profile Visibility</p>
-										<p className="text-sm text-muted-foreground">
-											Allow others to see your profile
-										</p>
-									</div>
-									<Switch
-										checked={profileVisibility}
-										onCheckedChange={(v) => handlePrivacyChange('profileVisibility', v)}
-									/>
-								</div>
-								<Separator />
-								<div className="flex items-center justify-between">
-									<div>
-										<p className="font-medium">Show on Leaderboard</p>
-										<p className="text-sm text-muted-foreground">
-											Appear on the public leaderboard
-										</p>
-									</div>
-									<Switch
-										checked={showOnLeaderboard}
-										onCheckedChange={(v) => handlePrivacyChange('showOnLeaderboard', v)}
-									/>
-								</div>
-								<Separator />
-								<div className="flex items-center justify-between">
-									<div>
-										<p className="font-medium">Analytics Tracking</p>
-										<p className="text-sm text-muted-foreground">
-											Help us improve by sharing usage data
-										</p>
-									</div>
-									<Switch
-										checked={analyticsTracking}
-										onCheckedChange={(v) => handlePrivacyChange('analyticsTracking', v)}
-									/>
-								</div>
-								<Separator />
-								<div className="flex items-center justify-between">
-									<div>
-										<p className="font-medium">Haptic Feedback</p>
-										<p className="text-sm text-muted-foreground">
-											{hapticSupported
-												? 'Vibration on interactions and achievements'
-												: 'Not supported on this device'}
-										</p>
-									</div>
-									<Switch
-										checked={hapticEnabled}
-										onCheckedChange={setHapticEnabled}
-										disabled={!hapticSupported}
-									/>
-								</div>
-								<Separator />
-								<ZModeToggle />
-							</CardContent>
-						</Card>
-
-						<Card>
-							<CardHeader>
-								<CardTitle>Danger Zone</CardTitle>
-								<CardDescription>Irreversible account actions</CardDescription>
-							</CardHeader>
-							<CardContent className="space-y-4">
-								<div className="flex items-center justify-between">
-									<div>
-										<p className="font-medium">Delete Account</p>
-										<p className="text-sm text-muted-foreground">
-											Permanently delete your account and all data
-										</p>
-									</div>
-									<Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
-										<DialogTrigger asChild>
-											<Button variant="destructive" size="sm">
-												<HugeiconsIcon icon={Delete02Icon} className="mr-2 h-4 w-4" />
-												Delete Account
-											</Button>
-										</DialogTrigger>
-										<DialogContent>
-											<DialogHeader>
-												<DialogTitle>Delete Account</DialogTitle>
-												<DialogDescription>
-													Are you sure you want to delete your account? This action cannot be
-													undone. All your data, progress, and achievements will be permanently
-													deleted.
-												</DialogDescription>
-											</DialogHeader>
-											<div className="py-4">
-												<Label htmlFor="deletePassword">Enter your password to confirm</Label>
-												<Input
-													id="deletePassword"
-													type="password"
-													value={deletePassword}
-													onChange={(e) => setDeletePassword(e.target.value)}
-													placeholder="Your password"
-													className="mt-2"
-												/>
-											</div>
-											<DialogFooter>
-												<Button variant="outline" onClick={() => setIsDeleteDialogOpen(false)}>
-													Cancel
-												</Button>
-												<Button
-													variant="destructive"
-													onClick={handleDeleteAccount}
-													disabled={isDeletingAccount}
-												>
-													{isDeletingAccount ? (
-														<>
-															<HugeiconsIcon
-																icon={Loading03Icon}
-																className="mr-2 h-4 w-4 animate-spin"
-															/>
-															Deleting...
-														</>
-													) : (
-														'Delete My Account'
-													)}
-												</Button>
-											</DialogFooter>
-										</DialogContent>
-									</Dialog>
-								</div>
-							</CardContent>
-						</Card>
+					<TabsContent value="privacy">
+						<PrivacyTab
+							profileVisibility={profileVisibility}
+							showOnLeaderboard={showOnLeaderboard}
+							analyticsTracking={analyticsTracking}
+							hapticSupported={hapticSupported}
+							hapticEnabled={hapticEnabled}
+							setHapticEnabled={setHapticEnabled}
+							handlePrivacyChange={handlePrivacyChange}
+							isDeleteDialogOpen={isDeleteDialogOpen}
+							setIsDeleteDialogOpen={setIsDeleteDialogOpen}
+							deletePassword={deletePassword}
+							setDeletePassword={setDeletePassword}
+							handleDeleteAccount={handleDeleteAccount}
+							isDeletingAccount={isDeletingAccount}
+						/>
 					</TabsContent>
 				</Tabs>
 			</div>

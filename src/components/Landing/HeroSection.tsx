@@ -13,7 +13,6 @@ import { HugeiconsIcon } from '@hugeicons/react';
 import { m, useScroll, useTransform } from 'framer-motion';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { useRef } from 'react';
 import { appConfig } from '@/app.config';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -24,11 +23,7 @@ interface HeroSectionProps {
 
 export function HeroSection({ onAuthRequired }: HeroSectionProps) {
 	const router = useRouter();
-	const containerRef = useRef<HTMLDivElement>(null);
-	const { scrollYProgress } = useScroll({
-		target: containerRef,
-		offset: ['start start', 'end start'],
-	});
+	const { scrollYProgress } = useScroll();
 
 	const y = useTransform(scrollYProgress, [0, 1], [0, -100]);
 	const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);

@@ -18,25 +18,26 @@ interface AblyClientProviderProps {
 }
 
 export function AblyClientProvider({ children }: AblyClientProviderProps) {
-	const { data: session } = useSession();
+	const { data: session, isPending } = useSession();
 	const user = session?.user;
 	const { setIsReady } = useAblyStore();
 
 	const client = useMemo(() => {
 		if (typeof window === 'undefined') return null;
 
-		const clientId = user?.id || `anonymous-${Date.now()}`;
+		// Only create client when user is authenticated
+		if (!user?.id || isPending) return null;
+
 		const authUrl = process.env.NEXT_PUBLIC_ABLY_AUTH_URL || '/api/ably/auth';
 
 		return new Ably.Realtime({
 			authUrl,
 			authMethod: 'POST',
-			authParams: {
-				clientId,
-				userId: user?.id || '',
+			authHeaders: {
+				'Content-Type': 'application/json',
 			},
 		});
-	}, [user?.id]);
+	}, [user?.id, isPending]);
 
 	const chatClient = useMemo(() => {
 		if (!client) return null;
