@@ -33,29 +33,37 @@ function SmartSchedulerContent() {
 	};
 
 	return (
-		<div className="container max-w-7xl mx-auto px-4 py-6">
-			<header className="mb-6 flex items-center justify-between">
-				<div>
-					<h1 className="text-3xl font-display font-bold">Smart Scheduler</h1>
-					<p className="text-muted-foreground mt-1">
+		<div className="container max-w-7xl mx-auto px-4 py-8">
+			<header className="mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+				<div className="space-y-1">
+					<div className="flex items-center gap-2">
+						<div className="w-1 h-6 bg-gradient-to-b from-primary to-primary/50 rounded-full" />
+						<h1 className="text-3xl font-display font-bold tracking-tight">Smart Scheduler</h1>
+					</div>
+					<p className="text-muted-foreground ml-3">
 						AI-powered study planning with exam countdown
 					</p>
 				</div>
-				<div className="flex gap-2">
+				<div className="flex items-center gap-3">
 					<Button
 						variant="outline"
 						size="sm"
 						onClick={() => checkAdaptiveSchedule()}
 						disabled={isLoading}
+						className="gap-2"
 					>
-						<HugeiconsIcon icon={SparklesIcon} className="h-4 w-4 mr-1" />
-						{isLoading ? 'Checking...' : 'Check Schedule'}
+						{isLoading ? (
+							<div className="w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+						) : (
+							<HugeiconsIcon icon={SparklesIcon} className="h-4 w-4 text-primary" />
+						)}
+						<span>{isLoading ? 'Checking...' : 'Optimize'}</span>
 					</Button>
 					<Popover open={editorOpen} onOpenChange={setEditorOpen}>
 						<PopoverTrigger asChild>
-							<Button size="sm">
-								<HugeiconsIcon icon={Add01Icon} className="h-4 w-4 mr-1" />
-								Add Block
+							<Button size="sm" className="gap-2">
+								<HugeiconsIcon icon={Add01Icon} className="h-4 w-4" />
+								<span>Add Block</span>
 							</Button>
 						</PopoverTrigger>
 						<PopoverContent align="end" className="w-auto p-0">

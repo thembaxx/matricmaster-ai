@@ -50,23 +50,31 @@ export function DayView() {
 	};
 
 	return (
-		<div className="bg-card rounded-xl border overflow-hidden">
-			<div className="flex items-center justify-between p-4 border-b">
-				<button type="button" onClick={goToPrevDay} className="p-2 hover:bg-muted rounded-lg">
+		<div className="bg-card rounded-xl border overflow-hidden shadow-sm">
+			<div className="flex items-center justify-between p-4 border-b bg-muted/30">
+				<button
+					type="button"
+					onClick={goToPrevDay}
+					className="p-2 hover:bg-muted rounded-lg transition-colors"
+				>
 					<HugeiconsIcon icon={ChevronLeft} className="w-5 h-5" />
 				</button>
 				<div className="text-center">
-					<div className="font-semibold">{format(selectedDate, 'EEEE')}</div>
+					<div className="font-semibold text-lg">{format(selectedDate, 'EEEE')}</div>
 					<div className="text-sm text-muted-foreground">
 						{format(selectedDate, 'MMMM d, yyyy')}
 					</div>
 				</div>
-				<button type="button" onClick={goToNextDay} className="p-2 hover:bg-muted rounded-lg">
+				<button
+					type="button"
+					onClick={goToNextDay}
+					className="p-2 hover:bg-muted rounded-lg transition-colors"
+				>
 					<HugeiconsIcon icon={ChevronRight} className="w-5 h-5" />
 				</button>
 			</div>
 
-			<div className="max-h-[500px] overflow-y-auto">
+			<div className="max-h-[520px] overflow-y-auto">
 				{HOURS.map((hour) => {
 					const hourBlocks = getBlocksForHour(hour);
 
@@ -74,7 +82,7 @@ export function DayView() {
 						<div
 							key={hour}
 							className={cn(
-								'flex border-b min-h-[80px] transition-colors',
+								'flex border-b last:border-b-0 min-h-[80px] transition-colors duration-150',
 								isDragging && dragOverHour === hour && 'bg-primary/5'
 							)}
 							onDragOver={(e) => handleDragOver(e, hour)}
@@ -82,7 +90,7 @@ export function DayView() {
 							onDrop={(e) => handleDrop(e, hour)}
 							role="list"
 						>
-							<div className="w-16 p-2 text-xs text-muted-foreground border-r flex-shrink-0">
+							<div className="w-16 p-2 text-xs text-muted-foreground border-r flex-shrink-0 font-medium">
 								{hour}:00
 							</div>
 							<div className="flex-1 p-2 space-y-2">
@@ -90,7 +98,7 @@ export function DayView() {
 									<StudyBlockCard key={block.id} block={block} />
 								))}
 								{isDragging && dragOverHour === hour && (
-									<div className="h-12 border-2 border-dashed border-primary/50 rounded-lg flex items-center justify-center text-xs text-muted-foreground">
+									<div className="h-14 border-2 border-dashed border-primary/40 rounded-lg flex items-center justify-center text-xs text-muted-foreground/70 bg-primary/5">
 										Drop here
 									</div>
 								)}

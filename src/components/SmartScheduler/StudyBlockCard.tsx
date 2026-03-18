@@ -1,6 +1,6 @@
 'use client';
 
-import { CheckmarkCircle02Icon } from '@hugeicons/core-free-icons';
+import { CheckmarkCircle02Icon, Drag04Icon as GripVerticalIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { useState } from 'react';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
@@ -15,21 +15,63 @@ interface StudyBlockCardProps {
 	compact?: boolean;
 }
 
-const SUBJECT_STYLES: Record<string, { bg: string; border: string; text: string }> = {
-	Mathematics: { bg: 'bg-blue-500/10', border: 'border-blue-500', text: 'text-blue-600' },
-	'Physical Sciences': {
-		bg: 'bg-emerald-500/10',
-		border: 'border-emerald-500',
-		text: 'text-emerald-600',
-	},
-	'Life Sciences': { bg: 'bg-purple-500/10', border: 'border-purple-500', text: 'text-purple-600' },
-	Geography: { bg: 'bg-amber-500/10', border: 'border-amber-500', text: 'text-amber-600' },
-	History: { bg: 'bg-red-500/10', border: 'border-red-500', text: 'text-red-600' },
-	English: { bg: 'bg-indigo-500/10', border: 'border-indigo-500', text: 'text-indigo-600' },
-	Accounting: { bg: 'bg-teal-500/10', border: 'border-teal-500', text: 'text-teal-600' },
-	Economics: { bg: 'bg-orange-500/10', border: 'border-orange-500', text: 'text-orange-600' },
-	Chemistry: { bg: 'bg-pink-500/10', border: 'border-pink-500', text: 'text-pink-600' },
-};
+const SUBJECT_STYLES: Record<string, { bg: string; border: string; text: string; accent: string }> =
+	{
+		Mathematics: {
+			bg: 'bg-blue-50 dark:bg-blue-950/30',
+			border: 'border-blue-200 dark:border-blue-800',
+			text: 'text-blue-700 dark:text-blue-300',
+			accent: 'bg-blue-500',
+		},
+		'Physical Sciences': {
+			bg: 'bg-emerald-50 dark:bg-emerald-950/30',
+			border: 'border-emerald-200 dark:border-emerald-800',
+			text: 'text-emerald-700 dark:text-emerald-300',
+			accent: 'bg-emerald-500',
+		},
+		'Life Sciences': {
+			bg: 'bg-purple-50 dark:bg-purple-950/30',
+			border: 'border-purple-200 dark:border-purple-800',
+			text: 'text-purple-700 dark:text-purple-300',
+			accent: 'bg-purple-500',
+		},
+		Geography: {
+			bg: 'bg-amber-50 dark:bg-amber-950/30',
+			border: 'border-amber-200 dark:border-amber-800',
+			text: 'text-amber-700 dark:text-amber-300',
+			accent: 'bg-amber-500',
+		},
+		History: {
+			bg: 'bg-red-50 dark:bg-red-950/30',
+			border: 'border-red-200 dark:border-red-800',
+			text: 'text-red-700 dark:text-red-300',
+			accent: 'bg-red-500',
+		},
+		English: {
+			bg: 'bg-indigo-50 dark:bg-indigo-950/30',
+			border: 'border-indigo-200 dark:border-indigo-800',
+			text: 'text-indigo-700 dark:text-indigo-300',
+			accent: 'bg-indigo-500',
+		},
+		Accounting: {
+			bg: 'bg-teal-50 dark:bg-teal-950/30',
+			border: 'border-teal-200 dark:border-teal-800',
+			text: 'text-teal-700 dark:text-teal-300',
+			accent: 'bg-teal-500',
+		},
+		Economics: {
+			bg: 'bg-orange-50 dark:bg-orange-950/30',
+			border: 'border-orange-200 dark:border-orange-800',
+			text: 'text-orange-700 dark:text-orange-300',
+			accent: 'bg-orange-500',
+		},
+		Chemistry: {
+			bg: 'bg-pink-50 dark:bg-pink-950/30',
+			border: 'border-pink-200 dark:border-pink-800',
+			text: 'text-pink-700 dark:text-pink-300',
+			accent: 'bg-pink-500',
+		},
+	};
 
 export function StudyBlockCard({ block, compact = false }: StudyBlockCardProps) {
 	const { saveBlock, removeBlock } = useSmartSchedulerStore();
@@ -60,32 +102,39 @@ export function StudyBlockCard({ block, compact = false }: StudyBlockCardProps) 
 
 	const cardContent = (
 		<>
-			<div className="flex items-start justify-between">
-				<div>
-					<h4 className={cn('font-medium', style.text)}>{block.subject}</h4>
-					{block.topic && <p className="text-sm text-muted-foreground mt-0.5">{block.topic}</p>}
+			<div className="flex items-start justify-between gap-2">
+				<div className="flex items-center gap-2 min-w-0">
+					<div className={cn('w-1.5 h-6 rounded-full flex-shrink-0', style.accent)} />
+					<div className="min-w-0">
+						<h4 className={cn('font-semibold text-sm', style.text)}>{block.subject}</h4>
+						{block.topic && (
+							<p className="text-xs text-muted-foreground truncate mt-0.5">{block.topic}</p>
+						)}
+					</div>
 				</div>
 				<div
 					className={cn(
-						'w-6 h-6 rounded-full border-2 flex items-center justify-center',
-						block.isCompleted ? 'bg-green-500 border-green-500' : 'border-muted-foreground/30'
+						'w-6 h-6 rounded-full border-2 flex items-center justify-center flex-shrink-0 transition-colors',
+						block.isCompleted
+							? 'bg-green-500 border-green-500'
+							: 'border-muted-foreground/30 hover:border-muted-foreground/50'
 					)}
 				>
 					{block.isCompleted && (
-						<HugeiconsIcon icon={CheckmarkCircle02Icon} className="w-4 h-4 text-white" />
+						<HugeiconsIcon icon={CheckmarkCircle02Icon} className="w-3.5 h-3.5 text-white" />
 					)}
 				</div>
 			</div>
 			<div className="flex items-center gap-2 mt-2 text-xs text-muted-foreground">
-				<span>
-					{block.startTime} - {block.endTime}
-				</span>
-				<span>·</span>
-				<span>{block.duration} min</span>
+				<span className="font-medium">{block.startTime}</span>
+				<span>—</span>
+				<span>{block.endTime}</span>
+				<span className="text-muted-foreground/60">·</span>
+				<span>{block.duration}m</span>
 				{block.isAISuggested && (
 					<>
-						<span>·</span>
-						<span className="text-primary">AI</span>
+						<span className="text-muted-foreground/60">·</span>
+						<span className="text-primary font-medium">AI</span>
 					</>
 				)}
 			</div>
@@ -108,14 +157,26 @@ export function StudyBlockCard({ block, compact = false }: StudyBlockCardProps) 
 							}
 						}}
 						className={cn(
-							'rounded px-2 py-1 text-xs cursor-pointer hover:opacity-80 transition-opacity border text-left w-full',
+							'group rounded-lg border p-1.5 cursor-pointer transition-all hover:shadow-sm active:scale-[0.98]',
+							'border-l-2',
 							style.bg,
-							block.isCompleted && 'opacity-50 line-through',
-							isDragging && 'opacity-50'
+							style.border,
+							block.isCompleted && 'opacity-60',
+							isDragging && 'opacity-50 scale-95'
 						)}
 					>
-						<div className={cn('font-medium truncate', style.text)}>{block.subject}</div>
-						<div className="text-[10px] text-muted-foreground">{block.startTime}</div>
+						<div className="flex items-center gap-1.5">
+							<HugeiconsIcon
+								icon={GripVerticalIcon}
+								className="w-3 h-3 text-muted-foreground/40 group-hover:text-muted-foreground/60 transition-colors"
+							/>
+							<span className={cn('font-semibold text-xs truncate flex-1', style.text)}>
+								{block.subject}
+							</span>
+							<span className="text-[10px] text-muted-foreground font-medium">
+								{block.startTime}
+							</span>
+						</div>
 					</div>
 				</PopoverTrigger>
 				<PopoverContent align="end" className="w-auto p-0">
@@ -145,11 +206,12 @@ export function StudyBlockCard({ block, compact = false }: StudyBlockCardProps) 
 						}
 					}}
 					className={cn(
-						'rounded-lg border p-3 cursor-pointer hover:shadow-md transition-shadow text-left w-full',
+						'group rounded-lg border p-3 cursor-pointer transition-all hover:shadow-md active:scale-[0.99]',
+						'border-l-[3px]',
 						style.bg,
 						style.border,
-						block.isCompleted && 'opacity-60',
-						isDragging && 'opacity-50'
+						block.isCompleted && 'opacity-70',
+						isDragging && 'opacity-50 scale-95 shadow-lg'
 					)}
 				>
 					{cardContent}

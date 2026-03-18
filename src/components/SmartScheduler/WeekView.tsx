@@ -56,30 +56,38 @@ export function WeekView() {
 	};
 
 	return (
-		<div className="bg-card rounded-xl border overflow-hidden">
-			<div className="flex items-center justify-between p-4 border-b">
+		<div className="bg-card rounded-xl border overflow-hidden shadow-sm">
+			<div className="flex items-center justify-between p-4 border-b bg-muted/30">
 				<button
 					type="button"
 					onClick={() => setViewMode('day')}
-					className="text-sm px-3 py-1 rounded-lg bg-muted hover:bg-muted/80"
+					className="text-sm px-3 py-1.5 rounded-lg bg-background hover:bg-muted transition-colors border"
 				>
 					Day View
 				</button>
-				<div className="flex items-center gap-2">
-					<button type="button" onClick={goToPrevWeek} className="p-1 hover:bg-muted rounded-lg">
+				<div className="flex items-center gap-1">
+					<button
+						type="button"
+						onClick={goToPrevWeek}
+						className="p-1.5 hover:bg-muted rounded-lg transition-colors"
+					>
 						<HugeiconsIcon icon={ChevronLeft} className="w-5 h-5" />
 					</button>
-					<span className="font-medium min-w-[180px] text-center">
+					<span className="font-medium min-w-[180px] text-center text-sm">
 						{format(weekDays[0], 'MMM d')} - {format(weekDays[6], 'MMM d, yyyy')}
 					</span>
-					<button type="button" onClick={goToNextWeek} className="p-1 hover:bg-muted rounded-lg">
+					<button
+						type="button"
+						onClick={goToNextWeek}
+						className="p-1.5 hover:bg-muted rounded-lg transition-colors"
+					>
 						<HugeiconsIcon icon={ChevronRight} className="w-5 h-5" />
 					</button>
 				</div>
 				<div className="w-20" />
 			</div>
 
-			<div className="grid grid-cols-7 min-h-[300px]">
+			<div className="grid grid-cols-7 min-h-[320px]">
 				{weekDays.map((day) => {
 					const dayBlocks = getBlocksForDay(day);
 					const isSelected = isSameDay(selectedDate, day);
@@ -90,9 +98,9 @@ export function WeekView() {
 						<div
 							key={day.toISOString()}
 							className={cn(
-								'border-r transition-colors',
-								isSelected ? 'bg-primary/5' : '',
-								isDragOver && 'bg-primary/10'
+								'border-r last:border-r-0 transition-colors duration-200',
+								isSelected && 'ring-1 ring-inset ring-primary/20',
+								isDragOver && 'bg-primary/5'
 							)}
 							onDragOver={(e) => handleDragOver(e, day)}
 							onDragLeave={handleDragLeave}
@@ -101,28 +109,36 @@ export function WeekView() {
 						>
 							<button
 								type="button"
-								className="h-16 p-2 text-center cursor-pointer hover:bg-muted/50 border-b w-full"
+								className={cn(
+									'h-16 p-2 text-center hover:bg-muted/50 border-b w-full transition-colors',
+									isToday && 'bg-primary/5'
+								)}
 								onClick={() => {
 									setSelectedDate(day);
 									setViewMode('day');
 								}}
 							>
-								<div className="text-xs text-muted-foreground">{format(day, 'EEE')}</div>
-								<div className={`text-lg font-semibold ${isToday ? 'text-primary' : ''}`}>
+								<div className="text-xs text-muted-foreground font-medium">
+									{format(day, 'EEE')}
+								</div>
+								<div
+									className={cn(
+										'text-lg font-semibold transition-colors',
+										isToday ? 'text-primary' : 'text-foreground'
+									)}
+								>
 									{format(day, 'd')}
 								</div>
 							</button>
 
-							<div className="p-1 space-y-1 max-h-[280px] overflow-y-auto">
+							<div className="p-1.5 space-y-1 max-h-[260px] overflow-y-auto">
 								{dayBlocks.length === 0 ? (
 									isDragOver ? (
-										<div className="text-xs text-primary text-center py-4 border-2 border-dashed border-primary/50 rounded mx-1">
+										<div className="text-xs text-primary font-medium text-center py-4 border-2 border-dashed border-primary/30 rounded-lg mx-0.5">
 											Drop here
 										</div>
 									) : (
-										<div className="text-xs text-muted-foreground text-center py-4">
-											No sessions
-										</div>
+										<div className="text-xs text-muted-foreground/60 text-center py-4">—</div>
 									)
 								) : (
 									dayBlocks
@@ -130,12 +146,12 @@ export function WeekView() {
 										.map((block) => <StudyBlockCard key={block.id} block={block} compact />)
 								)}
 								{dayBlocks.length > 4 && (
-									<div className="text-xs text-muted-foreground text-center">
+									<div className="text-xs text-muted-foreground text-center font-medium py-1">
 										+{dayBlocks.length - 4} more
 									</div>
 								)}
 								{isDragOver && dayBlocks.length > 0 && (
-									<div className="text-xs text-primary text-center py-2 border-2 border-dashed border-primary/50 rounded">
+									<div className="text-xs text-primary font-medium text-center py-2 border-2 border-dashed border-primary/30 rounded">
 										Drop here
 									</div>
 								)}
