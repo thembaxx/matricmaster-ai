@@ -1,156 +1,95 @@
 'use client';
 
-import { QuestionIcon } from '@hugeicons/core-free-icons';
+import { ArrowRight01Icon, Home01Icon, Idea01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { m } from 'framer-motion';
 import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 
-type QuizFooterProps = {
-	selectedOption: string | null;
+interface QuizFooterProps {
 	isChecked: boolean;
-	isCorrect: boolean;
-	hasMoreQuestions: boolean;
+	isCorrect: boolean | null;
+	selectedOption: string | null;
+	showHint: boolean;
+	onToggleHint: () => void;
 	onCheck: () => void;
-	onNext: () => void;
-	onReport?: () => void;
-	onShowSolution?: () => void;
-};
-
-export function QuizFooter({
-	selectedOption,
-	isChecked,
-	isCorrect,
-	hasMoreQuestions,
-	onCheck,
-	onNext,
-	onReport,
-	onShowSolution,
-}: QuizFooterProps) {
-	const getButtonState = () => {
-		if (!selectedOption) {
-			return {
-				text: 'Check Answer',
-				className: 'bg-muted text-muted-foreground cursor-not-allowed',
-				disabled: true,
-			};
-		}
-		if (!isChecked) {
-			return {
-				text: 'Check Answer',
-				className: 'bg-primary text-primary-foreground hover:opacity-90 shadow-primary/20',
-				disabled: false,
-			};
-		}
-		if (isCorrect) {
-			return {
-				text: hasMoreQuestions ? 'Continue' : 'Finish',
-				className: 'bg-brand-green hover:bg-brand-green/80 text-white shadow-brand-green/20',
-				disabled: false,
-			};
-		}
-		return {
-			text: 'Try Again',
-			className: 'bg-brand-red hover:bg-red-600 text-white shadow-brand-red/20',
-			disabled: false,
-		};
-	};
-
-	const buttonState = getButtonState();
-
-	return (
-		<m.footer
-			initial={{ y: 100 }}
-			animate={{ y: 0 }}
-			transition={{ type: 'spring', stiffness: 200, damping: 30 }}
-			className="absolute bottom-0 left-0 right-0 bg-card/80 backdrop-blur-xl p-8 z-30 border-t border-border"
-		>
-			<div className="max-w-2xl mx-auto w-full space-y-6">
-				{(onReport || onShowSolution) && (
-					<div className="flex justify-between items-center px-2">
-						{onReport && (
-							<button
-								type="button"
-								onClick={onReport}
-								className="flex items-center gap-2.5 text-muted-foreground font-black text-[10px] uppercase tracking-widest hover:text-foreground transition-colors min-h-[44px]"
-								aria-label="Report issue with this question"
-							>
-								<span className="w-5 h-5 bg-muted rounded-lg flex items-center justify-center">
-									?
-								</span>
-								Report Issue
-							</button>
-						)}
-						{onShowSolution && (
-							<button
-								type="button"
-								onClick={onShowSolution}
-								className="flex items-center gap-2 text-primary font-black text-[10px] uppercase tracking-widest hover:text-primary/80 transition-colors min-h-[44px]"
-								aria-label="Show solution"
-							>
-								<HugeiconsIcon icon={QuestionIcon} className="w-4 h-4" />
-								Show Solution
-							</button>
-						)}
-					</div>
-				)}
-
-				<m.div
-					whileHover={selectedOption ? { scale: 1.02 } : {}}
-					whileTap={selectedOption ? { scale: 0.98 } : {}}
-				>
-					<Button
-						size="lg"
-						onClick={isChecked ? onNext : onCheck}
-						className={`w-full h-16 rounded-[2rem] text-lg font-black shadow-2xl transition-all ${buttonState.className}`}
-						disabled={buttonState.disabled}
-					>
-						{buttonState.text}
-					</Button>
-				</m.div>
-			</div>
-		</m.footer>
-	);
+	onExit: () => void;
+	disabled?: boolean;
 }
 
-type SimpleQuizFooterProps = {
-	showCheckButton: boolean;
-	selectedAnswer: string | null;
-	hasMoreQuestions: boolean;
-	primaryColor?: string;
-	shadowColor?: string;
-	onCheck: () => void;
-	onNext: () => void;
-};
-
-export function SimpleQuizFooter({
-	showCheckButton,
-	selectedAnswer,
-	hasMoreQuestions,
-	primaryColor = 'bg-foreground dark:bg-background text-background dark:text-foreground',
-	shadowColor = 'shadow-zinc-900/10',
+export function QuizFooter({
+	isChecked,
+	isCorrect,
+	selectedOption,
+	showHint,
+	onToggleHint,
 	onCheck,
-	onNext,
-}: SimpleQuizFooterProps) {
+	onExit,
+	disabled,
+}: QuizFooterProps) {
 	return (
-		<footer className="fixed bottom-0 left-0 right-0 bg-card/80 backdrop-blur-xl border-t border-border z-30">
-			<div className="max-w-2xl mx-auto w-full p-4 sm:p-6 flex gap-4">
-				{showCheckButton ? (
+		<m.div
+			initial={{ opacity: 0, y: 20 }}
+			animate={{ opacity: 1, y: 0 }}
+			transition={{ delay: 0.3 }}
+			className="fixed bottom-32 left-1/2 -translate-x-1/2 w-[90%] max-w-xl z-50 flex flex-col gap-3"
+		>
+			{!isChecked ? (
+				<div className="flex gap-3">
+					<button
+						type="button"
+						onClick={onToggleHint}
+						disabled={disabled}
+						className={cn(
+							'p-4 rounded-3xl bg-secondary text-muted-foreground transition-all hover:bg-secondary/80 active:scale-95',
+							showHint && 'bg-tiimo-yellow text-white shadow-lg'
+						)}
+					>
+						<HugeiconsIcon icon={Idea01Icon} className="w-6 h-6" />
+					</button>
 					<Button
-						className={`flex-1 h-16 rounded-[2rem] font-bold text-lg shadow-xl ${primaryColor} ${shadowColor} disabled:opacity-50 transition-all active:scale-95`}
-						disabled={!selectedAnswer}
+						size="lg"
+						className={cn(
+							'flex-1 rounded-[2rem] h-16 text-lg font-black shadow-lg bg-tiimo-lavender hover:bg-tiimo-lavender/90 text-white',
+							!selectedOption && 'opacity-50 cursor-not-allowed'
+						)}
+						disabled={!selectedOption || disabled}
 						onClick={onCheck}
 					>
 						Check Answer
+						<HugeiconsIcon icon={ArrowRight01Icon} className="w-6 h-6 ml-2" />
 					</Button>
-				) : (
+				</div>
+			) : (
+				<div className="flex gap-4">
 					<Button
-						className={`flex-1 h-16 text-white rounded-[2rem] font-bold text-lg shadow-xl transition-all active:scale-95 ${primaryColor} ${shadowColor}`}
-						onClick={onNext}
+						variant="outline"
+						size="lg"
+						disabled={disabled}
+						className={cn(
+							'flex-1 rounded-[2rem] h-16 font-black uppercase tracking-widest text-[10px] bg-secondary border-none text-muted-foreground'
+						)}
+						onClick={onExit}
 					>
-						{hasMoreQuestions ? 'Next Question' : 'Finish Quiz'}
+						<HugeiconsIcon icon={Home01Icon} className="w-5 h-5 mr-2" />
+						Exit
 					</Button>
-				)}
-			</div>
-		</footer>
+					<Button
+						size="lg"
+						disabled={disabled}
+						className={cn(
+							'flex-[2] rounded-[2rem] h-16 text-lg font-black shadow-lg text-white',
+							isCorrect
+								? 'bg-tiimo-green hover:bg-tiimo-green/90'
+								: 'bg-tiimo-lavender hover:bg-tiimo-lavender/90'
+						)}
+						onClick={onCheck}
+					>
+						{isCorrect ? 'Continue' : 'Try Again'}
+						<HugeiconsIcon icon={ArrowRight01Icon} className="w-6 h-6 ml-2" />
+					</Button>
+				</div>
+			)}
+		</m.div>
 	);
 }
