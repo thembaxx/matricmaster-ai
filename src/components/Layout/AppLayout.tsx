@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { toast } from 'sonner';
 import { GeminiQuotaErrorModal } from '@/components/AI/GeminiQuotaErrorModal';
 import { GlassOrb } from '@/components/AI/GlassOrb';
+import { FloatingWidget } from '@/components/Chat/FloatingWidget';
 import { ClientOnly } from '@/components/ClientOnly';
 import { DailyLoginBonus } from '@/components/Gamification/DailyLoginBonus';
 import { MobileLayoutFixes } from '@/components/Layout/MobileLayoutFixes';
@@ -160,6 +161,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 				<GlobalStyles />
 			</SidebarInset>
 			<GlassOrb />
+			<FloatingWidget />
 			<GlobalStyles />
 		</SidebarProvider>
 	);

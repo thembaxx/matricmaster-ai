@@ -1458,6 +1458,19 @@ export type NewOutbox = import('./schema-chat').NewOutbox;
 export type UserPresence = import('./schema-chat').UserPresence;
 export type NewUserPresence = import('./schema-chat').NewUserPresence;
 
+// AI Chat schema exports
+export {
+	aiChatMessages,
+	aiChatMessagesRelations,
+	aiChatSessions,
+	aiChatSessionsRelations,
+} from './schema-ai-chat';
+
+export type AiChatSession = import('./schema-ai-chat').AiChatSession;
+export type NewAiChatSession = import('./schema-ai-chat').NewAiChatSession;
+export type AiChatMessage = import('./schema-ai-chat').AiChatMessage;
+export type NewAiChatMessage = import('./schema-ai-chat').NewAiChatMessage;
+
 // Subscription types
 export type SubscriptionPlan = typeof subscriptionPlans.$inferSelect;
 export type NewSubscriptionPlan = typeof subscriptionPlans.$inferInsert;
