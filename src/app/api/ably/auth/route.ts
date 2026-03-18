@@ -16,6 +16,18 @@ export async function POST(request: NextRequest) {
 		// Authenticate the caller
 		const auth = await getAuth();
 		const session = await auth.api.getSession({ headers: request.headers });
+
+		// Parse body - handle query params from Ably SDK
+		const { searchParams } = new URL(request.url);
+		const clientId = searchParams.get('clientId') || request.nextUrl.searchParams.get('clientId');
+		const userId = searchParams.get('userId') || request.nextUrl.searchParams.get('userId');
+
+		// If no clientId provided, this is likely an anonymous connection attempt
+		if (!clientId) {
+			return NextResponse.json({ error: 'clientId is required' }, { status: 400 });
+		}
+
+		// If user is not authenticated, reject the request
 		if (!session?.user?.id) {
 			return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 		}
@@ -26,39 +38,21 @@ export async function POST(request: NextRequest) {
 			return NextResponse.json({ error: 'Ably not configured' }, { status: 500 });
 		}
 
-		// Parse body - handle both JSON and form-encoded data
-		const contentType = request.headers.get('content-type') || '';
-		let body: { clientId?: string; userId?: string };
-
-		if (contentType.includes('application/json')) {
-			body = await request.json();
-		} else if (contentType.includes('application/x-www-form-urlencoded')) {
-			const formData = await request.formData();
-			body = {
-				clientId: formData.get('clientId') as string,
-				userId: formData.get('userId') as string,
-			};
-		} else {
-			// Try to parse as JSON anyway for backwards compatibility
-			try {
-				body = await request.json();
-			} catch {
-				return NextResponse.json(
-					{ error: 'Invalid content type. Expected JSON or form-encoded data.' },
-					{ status: 400 }
-				);
-			}
-		}
-
-		const { clientId, userId } = body;
-
-		if (!clientId) {
-			return NextResponse.json({ error: 'clientId is required' }, { status: 400 });
-		}
-
-		// Verify the authenticated user is requesting a token for themselves
+		// Use the session user ID as the clientId if none provided,
+		// or verify the requested clientId belongs to this user
 		const requestedUserId = userId || clientId;
-		if (requestedUserId !== session.user.id) {
+		const isOwnToken = requestedUserId === session.user.id || clientId === session.user.id;
+
+		// Allow token generation if:
+		// 1. The clientId/userId matches the session user
+		// 2. The clientId starts with 'anonymous-' (for anonymous users who just registered)
+		// 3. The clientId is the session user ID
+		if (!isOwnToken && !clientId.startsWith('anonymous-')) {
+			console.debug('[Ably Auth] Token request rejected:', {
+				requestedUserId,
+				sessionUserId: session.user.id,
+				clientId,
+			});
 			return NextResponse.json(
 				{ error: 'Forbidden: Can only request tokens for your own user' },
 				{ status: 403 }
@@ -67,7 +61,7 @@ export async function POST(request: NextRequest) {
 
 		const client = new Ably.Realtime({ key: apiKey });
 		const tokenRequestData = await client.auth.createTokenRequest({
-			clientId: clientId,
+			clientId: session.user.id, // Always use session user ID for the token
 			capability: {
 				[`user:${session.user.id}:*`]: ['subscribe', 'publish'],
 				'chat:*': ['subscribe', 'publish'],

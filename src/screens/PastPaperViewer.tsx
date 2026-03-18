@@ -1,34 +1,16 @@
 'use client';
 
-import {
-	ArrowLeft01Icon,
-	ArrowLeft02Icon,
-	ArrowRight01Icon,
-	BookOpen01Icon,
-	File01Icon,
-	Loading03Icon,
-	Search01Icon,
-	SparklesIcon,
-	VolumeHighIcon,
-} from '@hugeicons/core-free-icons';
+import { File01Icon, Loading03Icon, SparklesIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import dynamic from 'next/dynamic';
-import Image from 'next/image';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { useCallback, useEffect, useState } from 'react';
-import { toast } from 'sonner';
-import { VoiceExplanation } from '@/components/AI/VoiceExplanation';
 import { ResponsiveAudioPlayer } from '@/components/AudioPlayer';
-import { Badge } from '@/components/ui/badge';
+import { PastPaperHeader } from '@/components/PastPaper/PastPaperHeader';
+import { PastPaperNavigation } from '@/components/PastPaper/PastPaperNavigation';
+import { PastPaperPagination } from '@/components/PastPaper/PastPaperPagination';
+import { PastPaperQuestion } from '@/components/PastPaper/PastPaperQuestion';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { PAST_PAPERS } from '@/constants/mock-data';
-import { useGeminiQuotaModal } from '@/contexts/GeminiQuotaModalContext';
-import { useQuestionExtractor } from '@/hooks/useQuestionExtractor';
-import { isQuotaError } from '@/lib/ai/quota-error';
-import { getPastPaperByIdAction } from '@/lib/db/actions';
-import { saveToFlashcardsAction } from '@/lib/db/flashcard-actions';
-import { getExplanation } from '@/services/geminiService';
+import { usePastPaperViewer } from '@/hooks/usePastPaperViewer';
 
 // Lazy load PdfViewer to avoid SSR issues
 const PdfViewer = dynamic(() => import('@/components/PdfViewer'), {
@@ -47,26 +29,33 @@ export default function PastPaperViewer({
 	initialId?: string;
 	initialMode?: string;
 }) {
-	const router = useRouter();
-	const searchParams = useSearchParams();
-	const { triggerQuotaError } = useGeminiQuotaModal();
-	const paperId = initialId || searchParams.get('id');
-	const mode = initialMode || searchParams.get('mode');
-
-	const [zoom, setZoom] = useState(100);
-	const [activeTab, setActiveTab] = useState('questions');
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-
-	const [paper, setPaper] = useState<any>(PAST_PAPERS[0]);
-	const [showAiExplanation, setShowAiExplanation] = useState(false);
-	const [aiExplanation, setAiExplanation] = useState<string | null>(null);
-	const [isExplaining, setIsExplaining] = useState(false);
-	const [showPdfFallback, setShowPdfFallback] = useState(mode === 'read');
-	const [viewMode, setViewMode] = useState<'smart' | 'original'>('smart');
-	const [showAudioPlayer, setShowAudioPlayer] = useState(false);
-	const [audioText, setAudioText] = useState('');
-	const [audioTitle, setAudioTitle] = useState('');
-	const [isSavingToFlashcards, setIsSavingToFlashcards] = useState(false);
+	const {
+		router,
+		zoom,
+		setZoom,
+		activeTab,
+		setActiveTab,
+		paper,
+		showAiExplanation,
+		aiExplanation,
+		isExplaining,
+		showPdfFallback,
+		setShowPdfFallback,
+		viewMode,
+		setViewMode,
+		showAudioPlayer,
+		setShowAudioPlayer,
+		audioText,
+		setAudioText,
+		audioTitle,
+		setAudioTitle,
+		isSavingToFlashcards,
+		questionExtractor,
+		handleExplainQuestion,
+		handleSaveToFlashcards,
+		handleConvertToInteractive,
+		progress,
+	} = usePastPaperViewer(initialId, initialMode);
 
 	const {
 		extractedPaper,
@@ -81,117 +70,7 @@ export default function PastPaperViewer({
 		nextQuestion,
 		previousQuestion,
 		goToQuestion,
-	} = useQuestionExtractor();
-
-	// Find paper data
-	useEffect(() => {
-		const loadPaper = async () => {
-			if (!paperId) return;
-
-			// Try DB first
-			try {
-				const dbPaper = await getPastPaperByIdAction(paperId);
-				if (dbPaper) {
-					const paperData = {
-						id: dbPaper.id,
-						paperId: dbPaper.paperId,
-						subject: dbPaper.subject,
-						paper: dbPaper.paper,
-						year: dbPaper.year,
-						month: dbPaper.month,
-						marks: dbPaper.totalMarks || 0,
-						downloadUrl: dbPaper.storedPdfUrl || dbPaper.originalPdfUrl,
-						markdownUrl: dbPaper.markdownFileUrl,
-					};
-					setPaper(paperData);
-					if (mode !== 'read') {
-						extractQuestions(
-							paperData.paperId,
-							paperData.downloadUrl,
-							paperData.subject,
-							paperData.paper,
-							paperData.year,
-							paperData.month
-						);
-					}
-					return;
-				}
-			} catch (err) {
-				console.debug('Failed to load paper from DB:', err);
-			}
-
-			// Fallback to mock data
-			const found = PAST_PAPERS.find((p) => p.id === paperId);
-			if (found) {
-				setPaper(found);
-				if (mode !== 'read') {
-					extractQuestions(
-						found.id,
-						found.downloadUrl,
-						found.subject,
-						found.paper,
-						found.year,
-						found.month
-					);
-				}
-			}
-		};
-
-		loadPaper();
-	}, [paperId, extractQuestions, mode]);
-
-	const handleConvertToInteractive = () => {
-		router.push(`/quiz?id=${paper.id}`);
-	};
-
-	const handleExplainQuestion = useCallback(async () => {
-		if (!currentQuestion) return;
-		setIsExplaining(true);
-		setShowAiExplanation(true);
-		try {
-			const explanation = await getExplanation(paper.subject, currentQuestion.questionText);
-			setAiExplanation(
-				explanation ?? "I'm sorry, I couldn't generate an explanation for this question."
-			);
-		} catch (err) {
-			if (isQuotaError(err)) {
-				triggerQuotaError();
-			}
-			console.debug('Failed to get AI explanation:', err);
-			setAiExplanation('Sorry, I could not generate an explanation right now.');
-		} finally {
-			setIsExplaining(false);
-		}
-	}, [currentQuestion, paper.subject, triggerQuotaError]);
-
-	const handleSaveToFlashcards = useCallback(async () => {
-		if (!currentQuestion) return;
-
-		setIsSavingToFlashcards(true);
-		try {
-			const front = currentQuestion.questionText || `Question from ${paper.subject} Paper`;
-			const back = aiExplanation || 'Review this question to understand the concept better.';
-
-			const result = await saveToFlashcardsAction({
-				front,
-				back,
-				subjectName: paper.subject,
-			});
-
-			if (result.success) {
-				toast.success('Question saved to flashcards!');
-			} else {
-				toast.error(result.error || 'Failed to save flashcard');
-			}
-		} catch (err) {
-			console.debug('Failed to save flashcard:', err);
-			toast.error('Failed to save flashcard');
-		} finally {
-			setIsSavingToFlashcards(false);
-		}
-	}, [currentQuestion, paper.subject, aiExplanation]);
-
-	const progress = totalQuestions > 0 ? ((currentQuestionIndex + 1) / totalQuestions) * 100 : 0;
+	} = questionExtractor;
 
 	// Render loading state
 	if (isLoading && !extractedPaper) {
@@ -234,7 +113,7 @@ export default function PastPaperViewer({
 					<div className="flex items-center justify-between mb-4">
 						<div className="flex items-center gap-4">
 							<Button variant="ghost" size="icon" onClick={() => router.back()}>
-								<HugeiconsIcon icon={ArrowLeft02Icon} className="w-5 h-5" />
+								<HugeiconsIcon icon={File01Icon} className="w-5 h-5" />
 							</Button>
 							<h1 className="text-lg font-bold text-foreground">
 								{paper.subject} {paper.paper}
@@ -280,84 +159,17 @@ export default function PastPaperViewer({
 
 	return (
 		<div className="flex flex-col h-full bg-background relative">
-			{/* Header */}
-			<header className="px-6 pt-8 pb-4 bg-card sticky top-0 z-20 border-b border-border shrink-0">
-				<div className="flex flex-col  justify-between mb-4 gap-3">
-					<div className="flex items-center gap-4">
-						<Button variant="ghost" size="icon" onClick={() => router.back()}>
-							<HugeiconsIcon icon={ArrowLeft02Icon} className="w-5 h-5" />
-						</Button>
-						<div>
-							<h1 className="text-lg font-bold text-foreground">
-								{paper.subject} {paper.paper}
-							</h1>
-							<p className="text-xs text-muted-foreground">
-								{paper.month} {paper.year} • {paper.marks} marks
-							</p>
-						</div>
-					</div>
-					<div className="flex items-center gap-2">
-						<Button
-							variant="ghost"
-							size="sm"
-							onClick={() => setViewMode((v) => (v === 'smart' ? 'original' : 'smart'))}
-							className="gap-2 h-8 px-3 text-xs font-bold uppercase tracking-wider text-brand-blue bg-brand-blue/5 rounded-xl border border-brand-blue/10"
-						>
-							{viewMode === 'smart' ? (
-								<>
-									<HugeiconsIcon icon={File01Icon} className="w-3.5 h-3.5" />
-									Smart View
-								</>
-							) : (
-								<>
-									<HugeiconsIcon icon={File01Icon} className="w-3.5 h-3.5" />
-									Original PDF
-								</>
-							)}
-						</Button>
-
-						<div className="flex gap-1 border-l border-border pl-2">
-							<Button
-								variant="ghost"
-								size="icon"
-								className="h-8 w-8"
-								onClick={() => setZoom((z) => Math.max(50, z - 10))}
-							>
-								<HugeiconsIcon icon={Search01Icon} className="w-4 h-4" />
-							</Button>
-							<span className="text-sm font-medium w-12 text-center flex items-center justify-center">
-								{zoom}%
-							</span>
-							<Button
-								variant="ghost"
-								size="icon"
-								className="h-8 w-8"
-								onClick={() => setZoom((z) => Math.min(200, z + 10))}
-							>
-								<HugeiconsIcon icon={Search01Icon} className="w-4 h-4" />
-							</Button>
-						</div>
-					</div>
-				</div>
-
-				{/* Progress Bar */}
-				{totalQuestions > 0 && (
-					<div className="space-y-2">
-						<div className="flex items-center justify-between text-xs text-muted-foreground">
-							<span>
-								Question {currentQuestionIndex + 1} of {totalQuestions}
-							</span>
-							<span>{Math.round(progress)}%</span>
-						</div>
-						<div className="relative h-2 w-full overflow-hidden rounded-full bg-muted">
-							<div
-								className="h-full bg-brand-blue transition-all duration-500"
-								style={{ width: `${progress}%` }}
-							/>
-						</div>
-					</div>
-				)}
-			</header>
+			<PastPaperHeader
+				paper={paper}
+				viewMode={viewMode}
+				setViewMode={setViewMode}
+				zoom={zoom}
+				setZoom={setZoom}
+				onBack={() => router.back()}
+				progress={progress}
+				currentQuestionIndex={currentQuestionIndex}
+				totalQuestions={totalQuestions}
+			/>
 
 			<div className="grow overflow-hidden pb-16">
 				<main
@@ -365,7 +177,6 @@ export default function PastPaperViewer({
 					style={{
 						transform: `scale(${zoom / 100})`,
 						transformOrigin: 'top center',
-						// minHeight: '100vh',
 					}}
 				>
 					{/* Instructions */}
@@ -405,124 +216,20 @@ export default function PastPaperViewer({
 						</div>
 					)}
 
-					{/* Current Question Display */}
-					{currentQuestion && (
-						<Card className="p-6 rounded-[2rem] border-none shadow-sm bg-card relative overflow-hidden">
-							<div className="absolute inset-0 opacity-[0.03] pointer-events-none grayscale">
-								<Image
-									src="https://images.unsplash.com/photo-1588072432836-e10032774350?auto=format&fit=crop&q=80&w=800"
-									alt="Paper texture"
-									fill
-									sizes="(max-width: 768px) 100vw, 800px"
-									className="object-cover"
-								/>
-							</div>
-
-							{/* Question Header */}
-							<div className="flex flex-col gap-3 items-start mb-6 relative z-10">
-								<div className="flex items-center gap-4">
-									<Badge className="bg-brand-blue text-white rounded-lg px-3 py-1.5 text-[10px]">
-										QUESTION {currentQuestion.questionNumber}
-									</Badge>
-									<p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
-										({currentQuestion.marks} marks)
-									</p>
-								</div>
-
-								{currentQuestion.topic && (
-									<Badge variant="outline" className="rounded-full text-xs dark:bg-zinc-900">
-										<span className="line-clamp-1">{currentQuestion.topic}</span>
-									</Badge>
-								)}
-							</div>
-
-							{/* Main Question Text */}
-							<div className="space-y-4 text-zinc-800 dark:text-zinc-200 font-medium relative z-10">
-								<div className="flex items-start gap-3">
-									<p className="flex-1 text-lg leading-relaxed">{currentQuestion.questionText}</p>
-									<Button
-										variant="ghost"
-										size="icon"
-										onClick={() => {
-											setAudioText(currentQuestion.questionText);
-											setAudioTitle(`Question ${currentQuestion.questionNumber}`);
-											setShowAudioPlayer(true);
-										}}
-										className="shrink-0 rounded-full h-9 w-9"
-										title="Listen to question"
-									>
-										<HugeiconsIcon icon={VolumeHighIcon} className="w-4 h-4" />
-									</Button>
-								</div>
-
-								{/* Sub-questions */}
-								{currentQuestion.subQuestions && currentQuestion.subQuestions.length > 0 && (
-									<div className="space-y-4 ml-2 mt-6 pt-4 border-t border-border">
-										{currentQuestion.subQuestions.map((sq) => (
-											<div key={sq.id} className="space-y-2">
-												<p className="font-semibold text-sm dark:text-zinc-300 text-pretty">
-													{sq.id}. {sq.text}
-													{sq.marks && (
-														<span className="text-xs text-muted-foreground ml-2">
-															({sq.marks} marks)
-														</span>
-													)}
-												</p>
-											</div>
-										))}
-									</div>
-								)}
-							</div>
-
-							{/* AI Explain Button */}
-							<div className="mt-8 pt-6 border-t border-border relative z-10">
-								<div className="grid grid-cols-2 gap-3">
-									<Button
-										variant="outline"
-										className="border-brand-blue/20 hover:bg-brand-blue/5 text-sm"
-										onClick={handleExplainQuestion}
-										disabled={isExplaining}
-									>
-										{isExplaining ? (
-											<HugeiconsIcon icon={Loading03Icon} className="w-4 h-4 mr-2 animate-spin" />
-										) : (
-											<HugeiconsIcon icon={SparklesIcon} className="w-4 h-4 mr-2 text-brand-blue" />
-										)}
-										{isExplaining ? 'Getting...' : 'Explain'}
-									</Button>
-									<Button
-										variant="outline"
-										className="border-success/20 hover:bg-success/5 text-sm"
-										onClick={handleSaveToFlashcards}
-										disabled={isSavingToFlashcards}
-									>
-										{isSavingToFlashcards ? (
-											<HugeiconsIcon icon={Loading03Icon} className="w-4 h-4 mr-2 animate-spin" />
-										) : (
-											<HugeiconsIcon icon={BookOpen01Icon} className="w-4 h-4 mr-2 text-success" />
-										)}
-										{isSavingToFlashcards ? 'Saving...' : 'Save to Flashcards'}
-									</Button>
-								</div>
-
-								{/* AI Explanation Display */}
-								{showAiExplanation && aiExplanation && (
-									<div className="mt-4 p-4 bg-brand-blue/5 border border-brand-blue/20 rounded-xl">
-										<div className="flex items-center gap-2 mb-2">
-											<HugeiconsIcon icon={SparklesIcon} className="w-4 h-4 text-brand-blue" />
-											<span className="text-sm font-bold text-brand-blue">AI Explanation</span>
-										</div>
-										<p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-wrap">
-											{aiExplanation}
-										</p>
-										<div className="mt-3">
-											<VoiceExplanation text={aiExplanation} />
-										</div>
-									</div>
-								)}
-							</div>
-						</Card>
-					)}
+					<PastPaperQuestion
+						currentQuestion={currentQuestion}
+						handleExplainQuestion={handleExplainQuestion}
+						isExplaining={isExplaining}
+						handleSaveToFlashcards={handleSaveToFlashcards}
+						isSavingToFlashcards={isSavingToFlashcards}
+						showAiExplanation={showAiExplanation}
+						aiExplanation={aiExplanation}
+						onListen={(text, title) => {
+							setAudioText(text);
+							setAudioTitle(title);
+							setShowAudioPlayer(true);
+						}}
+					/>
 
 					{/* Conversion Banner */}
 					<Card
@@ -550,99 +257,17 @@ export default function PastPaperViewer({
 				</main>
 			</div>
 
-			{/* Pagination Footer */}
-			{extractedPaper && totalQuestions > 0 && (
-				<footer className="absolute bottom-0 left-0 ios-glass border-t border-border px-6 py-4 pb-8 z-30 w-full">
-					<div className="max-w-full mx-auto flex items-center gap-4">
-						<Button
-							variant="outline"
-							size="sm"
-							disabled={!hasPreviousQuestions}
-							onClick={previousQuestion}
-							className="gap-2"
-						>
-							<HugeiconsIcon icon={ArrowLeft01Icon} className="w-4 h-4" />
-						</Button>
+			<PastPaperPagination
+				totalQuestions={totalQuestions}
+				currentQuestionIndex={currentQuestionIndex}
+				hasPreviousQuestions={hasPreviousQuestions}
+				hasMoreQuestions={hasMoreQuestions}
+				previousQuestion={previousQuestion}
+				nextQuestion={nextQuestion}
+				goToQuestion={goToQuestion}
+			/>
 
-						<div className="flex items-center gap-2 grow">
-							{/* Show first few and last few pages with ellipsis */}
-							{Array.from({ length: totalQuestions }, (_, i) => i)
-								.filter((i) => {
-									// Show first 3, last 3, and around current
-									if (i < 3 || i >= totalQuestions - 3) return true;
-									if (Math.abs(i - currentQuestionIndex) <= 1) return true;
-									return false;
-								})
-								.map((i, _, arr) => {
-									const showEllipsis =
-										i > 0 && !arr.includes(i - 1) && !(Math.abs(i - currentQuestionIndex) <= 1);
-									return (
-										<>
-											{showEllipsis && (
-												<span key={`ellipsis-${i}`} className="text-muted-foreground">
-													...
-												</span>
-											)}
-											<button
-												type="button"
-												key={i}
-												onClick={() => goToQuestion(i)}
-												className={`w-8 h-8 rounded-lg font-bold text-xs transition-all ${
-													currentQuestionIndex === i
-														? 'bg-brand-blue text-white'
-														: 'bg-muted text-muted-foreground hover:bg-brand-blue/10'
-												}`}
-											>
-												{i + 1}
-											</button>
-										</>
-									);
-								})}
-						</div>
-
-						<Button
-							variant="outline"
-							size="sm"
-							disabled={!hasMoreQuestions}
-							onClick={nextQuestion}
-							className="gap-2"
-						>
-							<HugeiconsIcon icon={ArrowRight01Icon} className="w-4 h-4" />
-						</Button>
-					</div>
-				</footer>
-			)}
-
-			{/* Bottom Toolbar (for tabs) */}
-			<div className="px-6 rounded-2xl absolute bottom-0 mb-24 left-0 right-0">
-				<nav className="rounded-2xl ios-glass border-t border-border px-4 py-4">
-					<div className="flex justify-around items-center">
-						{[
-							{ id: 'questions', label: 'Questions' },
-							{ id: 'formulae', label: 'Formulae' },
-							{ id: 'saved', label: 'Saved' },
-							{ id: 'profile', label: 'Profile' },
-						].map((item) => (
-							<button
-								type="button"
-								key={item.id}
-								onClick={() => setActiveTab(item.id)}
-								className={`flex flex-col items-center gap-1 transition-all duration-300 ${
-									activeTab === item.id ? 'text-brand-blue scale-110' : 'text-muted-foreground'
-								}`}
-							>
-								<span
-									className={`text-[10px] font-black uppercase tracking-wider ${
-										activeTab === item.id ? 'text-brand-blue' : ''
-									}`}
-								>
-									{item.label}
-								</span>
-							</button>
-						))}
-					</div>
-				</nav>
-			</div>
+			<PastPaperNavigation activeTab={activeTab} setActiveTab={setActiveTab} />
 
 			{showAudioPlayer && (
 				<ResponsiveAudioPlayer
