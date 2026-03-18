@@ -33,6 +33,7 @@ import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { Switch } from '@/components/ui/switch';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useHaptics } from '@/hooks/useHaptics';
 import { authClient } from '@/lib/auth-client';
 import {
 	changePasswordAction,
@@ -113,6 +114,13 @@ export default function SettingsPage() {
 	const [profileVisibility, setProfileVisibility] = useState(true);
 	const [showOnLeaderboard, setShowOnLeaderboard] = useState(true);
 	const [analyticsTracking, setAnalyticsTracking] = useState(true);
+
+	// Haptic feedback settings
+	const {
+		enabled: hapticEnabled,
+		setEnabled: setHapticEnabled,
+		isSupported: hapticSupported,
+	} = useHaptics();
 
 	// Profile save handler
 	const handleSaveProfile = async () => {
@@ -707,6 +715,22 @@ export default function SettingsPage() {
 									<Switch
 										checked={analyticsTracking}
 										onCheckedChange={(v) => handlePrivacyChange('analyticsTracking', v)}
+									/>
+								</div>
+								<Separator />
+								<div className="flex items-center justify-between">
+									<div>
+										<p className="font-medium">Haptic Feedback</p>
+										<p className="text-sm text-muted-foreground">
+											{hapticSupported
+												? 'Vibration on interactions and achievements'
+												: 'Not supported on this device'}
+										</p>
+									</div>
+									<Switch
+										checked={hapticEnabled}
+										onCheckedChange={setHapticEnabled}
+										disabled={!hapticSupported}
 									/>
 								</div>
 								<Separator />

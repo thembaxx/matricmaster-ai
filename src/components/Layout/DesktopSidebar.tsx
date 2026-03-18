@@ -88,6 +88,8 @@ export const sideMenuSections: MenuSection[] = [
 			{ href: '/study-plan', label: 'Study Plan', icon: Calendar01Icon },
 			{ href: '/curriculum-map', label: 'Curriculum Map', icon: GridIcon },
 			{ href: '/periodic-table', label: 'Periodic Table', icon: AtomIcon },
+			{ href: '/chat', label: 'Study Buddy', icon: Chat01Icon },
+			{ href: '/smart-scheduler', label: 'Smart Scheduler', icon: Calendar01Icon },
 			{ href: '/tutoring', label: 'AI Tutoring', icon: ComputerVideoCallIcon },
 			{ href: '/voice-tutor', label: 'Voice Tutor', icon: Mic01Icon },
 			{ href: '/essay-grader', label: 'Essay Grader', icon: ContentWritingIcon },

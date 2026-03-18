@@ -23,7 +23,6 @@
 			"complexity": {
 				"noForEach": "off"
 			},
-
 			"suspicious": {
 				"noArrayIndexKey": "off",
 				"noRedeclare": "off",
@@ -50,6 +49,9 @@
 				"useKeyWithClickEvents": "off",
 				"useButtonType": "error",
 				"useSemanticElements": "off"
+			},
+			"security": {
+				"noDangerouslySetInnerHtml": "off"
 			}
 		}
 	},

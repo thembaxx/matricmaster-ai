@@ -1,0 +1,112 @@
+<h2>Animation & Feedback System Design</h2>
+<p class="subtitle">Choose your preferred approach for dynamic backgrounds, micro-interactions, and haptic feedback</p>
+
+<div class="cards">
+  <div class="card" data-choice="ambient" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div style="height: 140px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden;">
+        <div style="position: absolute; width: 60px; height: 60px; border: 2px solid rgba(255,255,255,0.3); border-radius: 50%; animation: float 3s ease-in-out infinite;"></div>
+        <div style="position: absolute; width: 40px; height: 40px; border: 2px solid rgba(255,255,255,0.4); border-radius: 50%; animation: float 4s ease-in-out infinite 0.5s; left: 30px; top: 20px;"></div>
+        <div style="position: absolute; width: 30px; height: 30px; background: rgba(255,255,255,0.2); border-radius: 50%; animation: float 5s ease-in-out infinite 1s; right: 40px; bottom: 30px;"></div>
+        <span style="color: white; font-size: 24px;">⚛️</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>Ambient Particle System</h3>
+      <p>Subtle floating particles that react to subject. Atoms for Chemistry, floating equations for Math, cells for Biology.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="gradient" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div style="height: 140px; background: linear-gradient(135deg, #f093fb 0%, #f5576c 50%, #4facfe 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden;">
+        <div style="position: absolute; inset: -50%; background: linear-gradient(45deg, transparent 40%, rgba(255,255,255,0.1) 50%, transparent 60%); animation: shimmer 3s linear infinite;"></div>
+        <span style="color: white; font-size: 24px;">✨</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>Animated Gradients</h3>
+      <p>Subject-colored gradient backgrounds with subtle movement. Simpler, more performant, battery-friendly.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="minimal" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div style="height: 140px; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; position: relative;">
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>Minimal Static</h3>
+      <p>No background animations. Subject color accent only in UI elements. Best for accessibility and focus.</p>
+    </div>
+  </div>
+</div>
+
+<div class="section" style="margin-top: 32px;">
+  <h3>Micro-interactions</h3>
+  <p class="subtitle">Rewarding animations for achievements</p>
+  
+  <div class="options">
+    <div class="option" data-choice="confetti" onclick="toggleSelect(this)">
+      <div class="letter">A</div>
+      <div class="content">
+        <h3>Confetti Burst</h3>
+        <p>Colorful particle explosion when completing lessons or maintaining streaks</p>
+      </div>
+    </div>
+    <div class="option" data-choice="stars" onclick="toggleSelect(this)">
+      <div class="letter">B</div>
+      <div class="content">
+        <h3>Star Burst</h3>
+        <p>Glowing star particles with scale animation for achievements</p>
+      </div>
+    </div>
+    <div class="option" data-choice="streak" onclick="toggleSelect(this)">
+      <div class="letter">C</div>
+      <div class="content">
+        <h3>Streak Fire</h3>
+        <p>Flame icon that grows with streak count, with ember particles</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section" style="margin-top: 24px;">
+  <h3>Haptic Feedback</h3>
+  <p class="subtitle">Mobile device vibration patterns</p>
+  
+  <div class="options">
+    <div class="option" data-choice="haptic-light" onclick="toggleSelect(this)">
+      <div class="letter">1</div>
+      <div class="content">
+        <h3>Light Haptics</h3>
+        <p>Subtle tap feedback on button presses and selections</p>
+      </div>
+    </div>
+    <div class="option" data-choice="haptic-medium" onclick="toggleSelect(this)">
+      <div class="letter">2</div>
+      <div class="content">
+        <h3>Medium Haptics</h3>
+        <p>Medium vibration on interactions, strong for achievements</p>
+      </div>
+    </div>
+    <div class="option" data-choice="haptic-off" onclick="toggleSelect(this)">
+      <div class="letter">3</div>
+      <div class="content">
+        <h3>Off by Default</h3>
+        <p>Haptics disabled, user can enable in settings</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+@keyframes float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-20px) rotate(180deg); }
+}
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(200%); }
+}
+</style>

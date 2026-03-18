@@ -7,16 +7,20 @@ import {
 	PlayIcon,
 	RefreshIcon,
 	Settings01Icon,
+	ViewIcon,
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
+import { ExamCompleteModal } from '@/components/FocusMode/ExamCompleteModal';
+import { FocusLayout } from '@/components/FocusMode/FocusLayout';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Slider } from '@/components/ui/slider';
 import { Switch } from '@/components/ui/switch';
+import { useFocusMode } from '@/contexts/FocusModeContext';
 
 interface ExamPreset {
 	name: string;
@@ -45,6 +49,8 @@ export default function ExamTimerPage() {
 	const [warningMinutes, setWarningMinutes] = useState(10);
 	const [enableSound, setEnableSound] = useState(true);
 	const [examName, setExamName] = useState('');
+
+	const { startFocusMode, isFocusMode, state, completeExam } = useFocusMode();
 
 	const totalSeconds =
 		selectedPreset.name === 'Custom' ? customDuration * 60 : selectedPreset.duration * 60;
@@ -123,6 +129,9 @@ export default function ExamTimerPage() {
 						if (enableSound) {
 							toast.error("Time's up! Submit your answers now.");
 						}
+						if (isFocusMode) {
+							completeExam();
+						}
 					}
 
 					return newTime;
@@ -131,7 +140,15 @@ export default function ExamTimerPage() {
 		}
 
 		return () => clearInterval(interval);
-	}, [isRunning, timeRemaining, warningMinutes, showWarning, enableSound]);
+	}, [
+		isRunning,
+		timeRemaining,
+		warningMinutes,
+		showWarning,
+		enableSound,
+		isFocusMode,
+		completeExam,
+	]);
 
 	const getTimeColor = () => {
 		if (showWarning) return 'text-red-500';
@@ -228,10 +245,24 @@ export default function ExamTimerPage() {
 
 							<div className="flex items-center justify-center gap-4">
 								{!isRunning ? (
-									<Button size="lg" onClick={handleStart} className="px-8">
-										<HugeiconsIcon icon={PlayIcon} className="w-5 h-5 mr-2" />
-										Start
-									</Button>
+									<>
+										<Button size="lg" onClick={handleStart} className="px-8">
+											<HugeiconsIcon icon={PlayIcon} className="w-5 h-5 mr-2" />
+											Start
+										</Button>
+										<Button
+											size="lg"
+											variant="secondary"
+											onClick={() => {
+												handleStart();
+												startFocusMode();
+											}}
+											className="px-8"
+										>
+											<HugeiconsIcon icon={ViewIcon} className="w-5 h-5 mr-2" />
+											Focus Mode
+										</Button>
+									</>
 								) : (
 									<Button size="lg" variant="outline" onClick={handlePause} className="px-8">
 										<HugeiconsIcon icon={PauseIcon} className="w-5 h-5 mr-2" />
@@ -298,6 +329,26 @@ export default function ExamTimerPage() {
 					</p>
 				</div>
 			</div>
+
+			{isFocusMode && (
+				<FocusLayout timeRemaining={timeRemaining} totalTime={totalSeconds}>
+					<div className="max-w-2xl mx-auto p-6">
+						<Card>
+							<CardHeader>
+								<CardTitle>{examName || selectedPreset.name}</CardTitle>
+							</CardHeader>
+							<CardContent>
+								<p className="text-muted-foreground">
+									This is a focus mode session. Answer your questions here. AI features are
+									temporarily disabled.
+								</p>
+							</CardContent>
+						</Card>
+					</div>
+				</FocusLayout>
+			)}
+
+			{state === 'completed' && <ExamCompleteModal />}
 		</div>
 	);
 }
