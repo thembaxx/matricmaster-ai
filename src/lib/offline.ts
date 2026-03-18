@@ -134,3 +134,36 @@ export const OFFLINE_PAGES = [
 export function shouldCachePage(pathname: string): boolean {
 	return OFFLINE_PAGES.some((page) => pathname.startsWith(page));
 }
+
+import quickTipsData from '@/data/quick-tips.json';
+import { getAllTips, getTipsBySubject, initQuickTips, type QuickTip } from './offline/quick-tips';
+import {
+	type CachedTask,
+	cacheTasks,
+	getCachedTaskCount,
+	getCachedTasks,
+} from './offline/task-cache';
+
+export async function initializeOfflineData(): Promise<void> {
+	if (typeof window === 'undefined') return;
+
+	try {
+		const tips = await getAllTips();
+		if (tips.length === 0) {
+			await initQuickTips(quickTipsData.tips as QuickTip[]);
+		}
+	} catch (error) {
+		console.debug('Failed to initialize offline data:', error);
+	}
+}
+
+export async function prefetchNextTasks(tasks: CachedTask[]): Promise<void> {
+	try {
+		await cacheTasks(tasks.slice(0, 3));
+	} catch (error) {
+		console.debug('Failed to prefetch tasks:', error);
+	}
+}
+
+export type { CachedTask, QuickTip };
+export { getAllTips, getCachedTaskCount, getCachedTasks, getTipsBySubject };

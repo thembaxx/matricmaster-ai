@@ -17,13 +17,19 @@ import {
 	clearOldCaches,
 	formatBytes,
 	getCacheSize,
+	getTipsBySubject,
 	isOffline,
 } from '@/lib/offline';
+import type { QuickTip } from '@/lib/offline/quick-tips';
 
 export default function OfflinePage() {
 	const [isOfflineState, setIsOfflineState] = useState(false);
 	const [cacheSize, setCacheSize] = useState(0);
 	const [isReloading, setIsReloading] = useState(false);
+	const [tips, setTips] = useState<QuickTip[]>([]);
+	const [selectedSubject, setSelectedSubject] = useState<string>('Mathematics');
+
+	const subjects = ['Mathematics', 'Physical Sciences', 'English', 'Afrikaans', 'History'];
 
 	useEffect(() => {
 		setIsOfflineState(isOffline());
@@ -45,6 +51,14 @@ export default function OfflinePage() {
 			window.removeEventListener('offline', handleOffline);
 		};
 	}, []);
+
+	useEffect(() => {
+		async function loadTips() {
+			const subjectTips = await getTipsBySubject(selectedSubject);
+			setTips(subjectTips.slice(0, 5));
+		}
+		loadTips();
+	}, [selectedSubject]);
 
 	const handleRetry = async () => {
 		setIsReloading(true);
@@ -68,7 +82,7 @@ export default function OfflinePage() {
 
 	return (
 		<div className="min-h-screen pb-40 pt-8 px-4 flex items-center justify-center">
-			<div className="max-w-md w-full">
+			<div className="max-w-md w-full space-y-4">
 				<Card>
 					<CardHeader className="text-center">
 						<div className="mx-auto mb-4 p-4 rounded-full bg-muted">
@@ -151,12 +165,45 @@ export default function OfflinePage() {
 						<Button
 							variant="ghost"
 							className="w-full"
-							onClick={() => (window.location.href = '/dashboard')}
+							onClick={() => {
+								window.location.href = '/dashboard';
+							}}
 						>
 							Go to Dashboard
 						</Button>
 					</CardContent>
 				</Card>
+
+				{isOfflineState && tips.length > 0 && (
+					<Card>
+						<CardHeader>
+							<CardTitle className="text-lg">Quick Tips</CardTitle>
+							<CardDescription>Study tips available offline</CardDescription>
+						</CardHeader>
+						<CardContent className="space-y-3">
+							<div className="flex gap-2 flex-wrap">
+								{subjects.map((subject) => (
+									<Button
+										key={subject}
+										variant={selectedSubject === subject ? 'default' : 'outline'}
+										size="sm"
+										onClick={() => setSelectedSubject(subject)}
+									>
+										{subject}
+									</Button>
+								))}
+							</div>
+							<div className="space-y-2 mt-4">
+								{tips.map((tip) => (
+									<div key={tip.id} className="p-3 bg-muted rounded-lg">
+										<p className="font-medium text-sm">{tip.title}</p>
+										<p className="text-xs text-muted-foreground mt-1">{tip.content}</p>
+									</div>
+								))}
+							</div>
+						</CardContent>
+					</Card>
+				)}
 			</div>
 		</div>
 	);

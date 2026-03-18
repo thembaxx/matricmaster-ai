@@ -1,0 +1,184 @@
+{
+	"tips": [
+		{
+			"id": "math-grade11-algebra-1",
+			"subject": "Mathematics",
+			"topic": "Algebra",
+			"grade": 11,
+			"title": "Factorising Quadratics",
+			"content": "When factorising ax² + bx + c = 0, find two numbers that multiply to ac and add to b.",
+			"priority": 1
+		},
+		{
+			"id": "math-grade11-algebra-2",
+			"subject": "Mathematics",
+			"topic": "Algebra",
+			"grade": 11,
+			"title": "Exponential Equations",
+			"content": "For equations with same base, you can equate exponents. If 2ˣ = 2ʸ, then x = y.",
+			"priority": 2
+		},
+		{
+			"id": "math-grade12-calculus-1",
+			"subject": "Mathematics",
+			"topic": "Calculus",
+			"grade": 12,
+			"title": "Differentiation Rules",
+			"content": "Power rule: d/dx(xⁿ) = nxⁿ⁻¹. Product rule: (fg)' = f'g + fg'. Chain rule: dy/dx = dy/du × du/dx.",
+			"priority": 1
+		},
+		{
+			"id": "math-grade12-calculus-2",
+			"subject": "Mathematics",
+			"topic": "Calculus",
+			"grade": 12,
+			"title": "Integration Basics",
+			"content": "∫xⁿdx = xⁿ⁺¹/(n+1) + C (n≠-1). ∫eˣdx = eˣ + C. ∫1/x dx = ln|x| + C.",
+			"priority": 2
+		},
+		{
+			"id": "math-grade12-trig-1",
+			"subject": "Mathematics",
+			"topic": "Trigonometry",
+			"grade": 12,
+			"title": "Double Angle Formulas",
+			"content": "sin2θ = 2sinθcosθ. cos2θ = cos²θ - sin²θ = 2cos²θ - 1 = 1 - 2sin²θ.",
+			"priority": 1
+		},
+		{
+			"id": "phys-grade11-mechanics-1",
+			"subject": "Physical Sciences",
+			"topic": "Mechanics",
+			"grade": 11,
+			"title": "Newton's Second Law",
+			"content": "F = ma. Force equals mass times acceleration. Units: Newton (N) = kg·m/s²",
+			"priority": 1
+		},
+		{
+			"id": "phys-grade11-mechanics-2",
+			"subject": "Physical Sciences",
+			"topic": "Mechanics",
+			"grade": 11,
+			"title": "Kinetic Energy",
+			"content": "KE = ½mv². Kinetic energy depends on mass and velocity squared.",
+			"priority": 2
+		},
+		{
+			"id": "phys-grade11-mechanics-3",
+			"subject": "Physical Sciences",
+			"topic": "Mechanics",
+			"grade": 11,
+			"title": "Potential Energy",
+			"content": "PE = mgh. Gravitational potential energy depends on mass, gravity, and height.",
+			"priority": 2
+		},
+		{
+			"id": "phys-grade12-electrostatics-1",
+			"subject": "Physical Sciences",
+			"topic": "Electrostatics",
+			"grade": 12,
+			"title": "Coulomb's Law",
+			"content": "F = kq₁q₂/r². Force between two charges is proportional to product of charges and inversely proportional to square of distance.",
+			"priority": 1
+		},
+		{
+			"id": "phys-grade12-electromagnetism-1",
+			"subject": "Physical Sciences",
+			"topic": "Electromagnetism",
+			"grade": 12,
+			"title": "Right-Hand Rule",
+			"content": "Point thumb in current direction, fingers curl in magnetic field direction. Used for wires and solenoids.",
+			"priority": 1
+		},
+		{
+			"id": "chem-grade11-matter-1",
+			"subject": "Physical Sciences",
+			"topic": "Matter",
+			"grade": 11,
+			"title": "Atomic Structure",
+			"content": "Protons determine element identity, neutrons add mass, electrons determine reactivity. Atomic number = protons.",
+			"priority": 1
+		},
+		{
+			"id": "chem-grade11-matter-2",
+			"subject": "Physical Sciences",
+			"topic": "Matter",
+			"grade": 11,
+			"title": "Periodic Trends",
+			"content": "Across period: atomic size decreases, electronegativity increases. Down group: atomic size increases.",
+			"priority": 2
+		},
+		{
+			"id": "chem-grade12-chemical-reactions-1",
+			"subject": "Physical Sciences",
+			"topic": "Chemical Reactions",
+			"grade": 12,
+			"title": "Oxidation Numbers",
+			"content": "O is usually -2, H is +1 (except metal hydrides). Sum of oxidation numbers = 0 for compounds.",
+			"priority": 1
+		},
+		{
+			"id": "chem-grade12-organic-1",
+			"subject": "Physical Sciences",
+			"topic": "Organic Chemistry",
+			"grade": 12,
+			"title": "Functional Groups",
+			"content": "Alkanes: C-C single. Alkenes: C=C double. Alcohols: -OH. Carboxylic acids: -COOH. Esters: -COO-.",
+			"priority": 1
+		},
+		{
+			"id": "eng-grade12-literature-1",
+			"subject": "English",
+			"topic": "Literature",
+			"grade": 12,
+			"title": "Essay Structure",
+			"content": "PQE: Point, Quote, Explanation. State your point, support with evidence, explain how it answers the question.",
+			"priority": 1
+		},
+		{
+			"id": "eng-grade12-literature-2",
+			"subject": "English",
+			"topic": "Literature",
+			"grade": 12,
+			"title": "Poetry Analysis",
+			"content": "TPCASTT: Title, Paraphrase, Connotation, Attitude, Shift, Title, Theme. Use this framework for poetry analysis.",
+			"priority": 2
+		},
+		{
+			"id": "eng-grade12-comprehension-1",
+			"subject": "English",
+			"topic": "Comprehension",
+			"grade": 12,
+			"title": "Reading Strategy",
+			"content": "Read questions first, then scan text for keywords. Focus on first and last sentences of paragraphs.",
+			"priority": 1
+		},
+		{
+			"id": "afrikaans-grade12-skrif-1",
+			"subject": "Afrikaans",
+			"topic": "Skryfwerk",
+			"grade": 12,
+			"title": "Opstel Struktuur",
+			"content": "Inleiding (hook + thesis), Liggaam (3 paragrawe), Slotsom (opsomming + verband met thesis).",
+			"priority": 1
+		},
+		{
+			"id": "history-grade12-essay-1",
+			"subject": "History",
+			"topic": "Essay Writing",
+			"grade": 12,
+			"title": "Essay Structure",
+			"content": "Introduction (context + argument), Body (topic sentences + evidence), Conclusion (restate argument + significance).",
+			"priority": 1
+		},
+		{
+			"id": "history-grade12-soweto-1",
+			"subject": "History",
+			"topic": "South Africa",
+			"grade": 12,
+			"title": "Soweto 1976",
+			"content": "June 16, 1976 - Student protests against Afrikaans medium policy. Hector Pieterson killed. Sparked international awareness.",
+			"priority": 1
+		}
+	]
+}

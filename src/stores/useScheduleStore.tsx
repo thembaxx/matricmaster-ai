@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import { type CachedTask, cacheTasks } from '@/lib/offline/task-cache';
 import type { StudyTask } from '@/types/schedule';
 
 interface ScheduleState {
@@ -111,14 +112,37 @@ export const useSchedule = create<ScheduleState>()(
 							: state.currentTask,
 				})),
 
-			completeTask: (taskId) =>
+			completeTask: async (taskId) => {
+				const { tasks } = get();
+				const completedTask = tasks.find((t) => t.id === taskId);
+
 				set((state) => ({
 					tasks: state.tasks.map((t) => (t.id === taskId ? { ...t, completed: true } : t)),
 					currentTask:
 						state.currentTask?.id === taskId
 							? { ...state.currentTask, completed: true }
 							: state.currentTask,
-				})),
+				}));
+
+				if (completedTask) {
+					const upcomingTasks = tasks.filter((t) => !t.completed && t.id !== taskId).slice(0, 3);
+
+					const tasksToCache: CachedTask[] = upcomingTasks.map((t) => ({
+						id: t.id,
+						title: t.title,
+						description: t.notes || '',
+						subject: t.subject,
+						topic: '',
+						type: 'lesson' as const,
+						completed: false,
+						cachedAt: Date.now(),
+					}));
+
+					if (tasksToCache.length > 0) {
+						await cacheTasks(tasksToCache);
+					}
+				}
+			},
 
 			setActiveTask: (taskId) => {
 				const task = get().tasks.find((t) => t.id === taskId) || null;

@@ -5,18 +5,22 @@ import {
 	BookOpen01Icon,
 	CalculatorIcon,
 	File01Icon,
+	FunctionIcon,
 	Layers01Icon,
 	SparklesIcon,
+	TestTube01Icon,
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { m } from 'framer-motion';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ActivityFeed } from '@/components/Dashboard/ActivityFeed';
+import { AdaptiveScheduleBanner } from '@/components/Dashboard/AdaptiveScheduleBanner';
 import { AITutorNudge } from '@/components/Dashboard/AITutorNudge';
 import { BriefingGreeting } from '@/components/Dashboard/BriefingGreeting';
 import { DailyMission } from '@/components/Dashboard/DailyMission';
 import { FocusAreasWidget } from '@/components/Dashboard/FocusAreasWidget';
+import { GrowthMap } from '@/components/Dashboard/GrowthMap';
 import { KnowledgeHeatmap } from '@/components/Dashboard/KnowledgeHeatmap';
 import { SubjectGrid } from '@/components/Dashboard/SubjectGridV2';
 import { type StudyTask, TaskCard } from '@/components/Dashboard/TaskCardV2';
@@ -232,6 +236,35 @@ export default function Dashboard({
 	const router = useRouter();
 	const [tasks, setTasks] = useState<Record<string, StudyTask[]>>(DEMO_TASKS);
 	const [expanded, setExpanded] = useState<Record<string, boolean>>({ high: true, medium: true });
+	const [weaknessData, setWeaknessData] = useState<
+		{ topic: string; mistakeCount: number; subject: string }[]
+	>([]);
+	const [scheduleChanges, setScheduleChanges] = useState<{
+		rescheduledGoals: number;
+		extraPracticeAdded: number;
+	} | null>(null);
+
+	useEffect(() => {
+		fetch('/api/growth-map')
+			.then((res) => res.json())
+			.then((data) => {
+				if (Array.isArray(data)) {
+					setWeaknessData(data);
+				}
+			})
+			.catch(console.error);
+	}, []);
+
+	useEffect(() => {
+		fetch('/api/adaptive-schedule', { method: 'POST' })
+			.then((res) => res.json())
+			.then((data) => {
+				if (data.rescheduledGoals > 0 || data.extraPracticeAdded > 0) {
+					setScheduleChanges(data);
+				}
+			})
+			.catch(console.error);
+	}, []);
 
 	const progress = initialProgress ?? MOCK_PROGRESS;
 	const streak = initialStreak ?? MOCK_STREAK;
@@ -275,6 +308,12 @@ export default function Dashboard({
 						<AITutorNudge />
 					</div>
 
+					{scheduleChanges && (
+						<div className="mb-6">
+							<AdaptiveScheduleBanner changes={scheduleChanges} />
+						</div>
+					)}
+
 					<div className="h-full no-scrollbar">
 						<m.div layout className="space-y-8 pb-36">
 							{/* Welcome & Stats Row */}
@@ -287,6 +326,16 @@ export default function Dashboard({
 									<FocusAreasWidget />
 								</div>
 							</div>
+
+							{weaknessData.length > 0 && (
+								<div className="bg-card rounded-xl p-6 border">
+									<h3 className="text-lg font-semibold mb-4">Growth Map</h3>
+									<p className="text-sm text-muted-foreground mb-4">
+										Topics where you need the most practice
+									</p>
+									<GrowthMap data={weaknessData} />
+								</div>
+							)}
 
 							{/* Gamification Row */}
 							<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -398,6 +447,27 @@ export default function Dashboard({
 											icon: Layers01Icon,
 											color: 'bg-blue-100 dark:bg-blue-900/20 text-blue-600',
 											href: '/flashcards',
+										},
+										{
+											title: 'Science Lab',
+											desc: 'Interactive physics simulations',
+											icon: TestTube01Icon,
+											color: 'bg-purple-100 dark:bg-purple-900/20 text-purple-600',
+											href: '/science-lab/circuits',
+										},
+										{
+											title: 'Math Graphing',
+											desc: 'Plot functions & explore graphs',
+											icon: FunctionIcon,
+											color: 'bg-orange-100 dark:bg-orange-900/20 text-orange-600',
+											href: '/math/graph',
+										},
+										{
+											title: 'Setwork Library',
+											desc: 'Literature study guides & quizzes',
+											icon: BookOpen01Icon,
+											color: 'bg-blue-100 dark:bg-blue-900/20 text-blue-600',
+											href: '/setwork-library',
 										},
 									].map((item, i) => (
 										<m.button
