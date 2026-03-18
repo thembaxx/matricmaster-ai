@@ -178,6 +178,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 }
 
 function GlobalStyles() {
+	// eslint-disable-next-line react/no-danger
 	return (
 		<style
 			dangerouslySetInnerHTML={{

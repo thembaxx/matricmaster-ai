@@ -44,7 +44,7 @@ export function SubjectBackgroundProvider({
 	// Detect subject from pathname
 	useEffect(() => {
 		const match = pathname.match(/\/subjects\/([^/]+)/);
-		if (match && match[1]) {
+		if (match?.[1]) {
 			setSubjectId(match[1]);
 		} else {
 			setSubjectId(null);

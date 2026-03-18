@@ -150,7 +150,7 @@ export default function LessonComplete() {
 		}
 
 		loadResult();
-	}, [completeQuiz, router, addActivity]);
+	}, [completeQuiz, router, addActivity, triggerHaptic]);
 
 	const handleGenerateFlashcards = async () => {
 		setIsGenerating(true);
