@@ -23,6 +23,7 @@ import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useQuizCompletion } from '@/hooks/use-quiz-completion';
+import { useHaptics } from '@/hooks/useHaptics';
 import { getUserAchievements } from '@/lib/db/achievement-actions';
 import { generateFlashcardsFromMistakes } from '@/lib/db/learning-loop-actions';
 import { getLevelInfo } from '@/lib/level-utils';
@@ -57,6 +58,7 @@ export default function LessonComplete() {
 	} | null>(null);
 	const { completeQuiz, isCompleting } = useQuizCompletion();
 	const addActivity = useAiContextStore((s) => s.addActivity);
+	const { trigger: triggerHaptic } = useHaptics();
 
 	useEffect(() => {
 		async function loadResult() {
@@ -88,6 +90,9 @@ export default function LessonComplete() {
 			// Load mistake count from store
 			const mistakes = useQuizResultStore.getState().getLastMistakes();
 			setMistakeCount(mistakes.length);
+
+			// Trigger haptic feedback for completion
+			triggerHaptic('achievement');
 
 			// Trigger celebratory confetti
 			const duration = 5 * 1000;
