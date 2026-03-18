@@ -12,7 +12,8 @@ import {
 	Warning,
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { useCallback, useEffect, useState, useTransition } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { useCallback, useState, useTransition } from 'react';
 import { toast } from 'sonner';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -67,58 +68,43 @@ export default function AdminDashboardClient({
 	initialSession: AuthSession | null;
 }) {
 	const [activeTab, setActiveTab] = useState('overview');
-	const [stats, setStats] = useState({
+	const [users, setUsers] = useState<User[]>([]);
+	const [searchQuery, setSearchQuery] = useState('');
+	const [userFilter, _setUserFilter] = useState<'all' | 'active' | 'blocked' | 'deleted'>('all');
+	const [, startTransition] = useTransition();
+
+	const { data: statsData, isLoading: isLoadingStats } = useQuery({
+		queryKey: ['admin-stats'],
+		queryFn: async () => {
+			const [statsData, performanceData] = await Promise.all([
+				getAdminStatsAction(),
+				getSubjectPerformanceAction(),
+			]);
+			return { stats: statsData, performance: performanceData };
+		},
+	});
+
+	const stats = statsData?.stats ?? {
 		totalUsers: 0,
 		activeUsers: 0,
 		questionsAttempted: 0,
 		averageScore: 0,
 		questionsCount: 0,
 		subjectsCount: 0,
+	};
+	const subjectPerformance: SubjectPerformance[] = statsData?.performance ?? [];
+
+	const { data: usersData, isLoading: isLoadingUsers } = useQuery({
+		queryKey: ['admin-users', searchQuery, userFilter],
+		queryFn: () => getUsersAction({ search: searchQuery, filter: userFilter }),
+		enabled: activeTab === 'users',
 	});
-	const [subjectPerformance, setSubjectPerformance] = useState<SubjectPerformance[]>([]);
-	const [isLoadingStats, setIsLoadingStats] = useState(true);
-	const [users, setUsers] = useState<User[]>([]);
-	const [isLoadingUsers, setIsLoadingUsers] = useState(false);
-	const [searchQuery, setSearchQuery] = useState('');
-	const [userFilter, _setUserFilter] = useState<'all' | 'active' | 'blocked' | 'deleted'>('all');
-	const [, startTransition] = useTransition();
 
-	useEffect(() => {
-		const loadStats = async () => {
-			try {
-				const [statsData, performanceData] = await Promise.all([
-					getAdminStatsAction(),
-					getSubjectPerformanceAction(),
-				]);
-				setStats(statsData);
-				setSubjectPerformance(performanceData);
-			} catch (error) {
-				console.debug('Failed to load admin stats:', error);
-			} finally {
-				setIsLoadingStats(false);
-			}
-		};
-		loadStats();
-	}, []);
-
-	const loadUsers = useCallback(async () => {
-		setIsLoadingUsers(true);
-		try {
-			const usersList = await getUsersAction({ search: searchQuery, filter: userFilter });
-			setUsers(usersList);
-		} catch (error) {
-			console.debug('Failed to load users:', error);
-			toast.error('Failed to load users');
-		} finally {
-			setIsLoadingUsers(false);
+	const loadUsers = useCallback(() => {
+		if (usersData) {
+			setUsers(usersData);
 		}
-	}, [searchQuery, userFilter]);
-
-	useEffect(() => {
-		if (activeTab === 'users') {
-			loadUsers();
-		}
-	}, [activeTab, loadUsers]);
+	}, [usersData]);
 
 	const handleSearch = () => {
 		loadUsers();

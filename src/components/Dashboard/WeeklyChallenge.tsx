@@ -2,8 +2,9 @@
 
 import { Calendar02Icon, Clock01Icon, SparklesIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
+import { useQuery } from '@tanstack/react-query';
 import { m } from 'framer-motion';
-import { memo, useEffect, useState } from 'react';
+import { memo, useMemo } from 'react';
 import { Card } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { getUserProgressSummary, type UserProgressSummary } from '@/lib/db/progress-actions';
@@ -68,86 +69,49 @@ function getDaysUntilMonday(): number {
 export const WeeklyChallenge = memo(function WeeklyChallenge({
 	initialProgress,
 }: WeeklyChallengeProps) {
-	const [challenge, setChallenge] = useState<WeeklyChallengeData | null>(() => {
-		if (initialProgress) {
-			const weekNumber = getWeekNumber(new Date());
-			const challengeIndex = weekNumber % WEEKLY_CHALLENGES.length;
-			const challengeDef = WEEKLY_CHALLENGES[challengeIndex];
-
-			let current = 0;
-			switch (challengeDef.type) {
-				case 'questions':
-					current = initialProgress.totalQuestionsAttempted || 0;
-					break;
-				case 'correct':
-					current = initialProgress.totalCorrect || 0;
-					break;
-				case 'quizzes':
-					current = initialProgress.recentSessions?.length || 0;
-					break;
-				case 'accuracy':
-					current = initialProgress.accuracy || 0;
-					break;
-			}
-
-			return {
-				title: challengeDef.title,
-				description: challengeDef.description,
-				target: challengeDef.target,
-				bonusXp: challengeDef.bonusXp,
-				current,
-				daysRemaining: getDaysUntilMonday(),
-			};
-		}
-		return null;
+	const { data: fetchedProgress } = useQuery({
+		queryKey: ['user-progress-summary'],
+		queryFn: getUserProgressSummary,
+		enabled: !initialProgress,
+		staleTime: 5 * 60 * 1000,
 	});
-	const [isLoading, setIsLoading] = useState(!challenge);
 
-	useEffect(() => {
-		if (challenge) return; // Skip fetch if initialized with initial data
+	const progressSummary = initialProgress ?? fetchedProgress;
 
-		async function fetchChallenge() {
-			try {
-				const progress = await getUserProgressSummary();
-				const weekNumber = getWeekNumber(new Date());
-				const challengeIndex = weekNumber % WEEKLY_CHALLENGES.length;
-				const challengeDef = WEEKLY_CHALLENGES[challengeIndex];
+	const challenge = useMemo<WeeklyChallengeData | null>(() => {
+		if (!progressSummary) return null;
 
-				let current = 0;
-				switch (challengeDef.type) {
-					case 'questions':
-						current = progress?.totalQuestionsAttempted || 0;
-						break;
-					case 'correct':
-						current = progress?.totalCorrect || 0;
-						break;
-					case 'quizzes':
-						current = progress?.recentSessions?.length || 0;
-						break;
-					case 'accuracy':
-						current = progress?.accuracy || 0;
-						break;
-				}
+		const weekNumber = getWeekNumber(new Date());
+		const challengeIndex = weekNumber % WEEKLY_CHALLENGES.length;
+		const challengeDef = WEEKLY_CHALLENGES[challengeIndex];
 
-				setChallenge({
-					title: challengeDef.title,
-					description: challengeDef.description,
-					target: challengeDef.target,
-					bonusXp: challengeDef.bonusXp,
-					current,
-					daysRemaining: getDaysUntilMonday(),
-				});
-			} catch (error) {
-				console.debug('[WeeklyChallenge] Error fetching:', error);
-			} finally {
-				setIsLoading(false);
-			}
+		let current = 0;
+		switch (challengeDef.type) {
+			case 'questions':
+				current = progressSummary.totalQuestionsAttempted || 0;
+				break;
+			case 'correct':
+				current = progressSummary.totalCorrect || 0;
+				break;
+			case 'quizzes':
+				current = progressSummary.recentSessions?.length || 0;
+				break;
+			case 'accuracy':
+				current = progressSummary.accuracy || 0;
+				break;
 		}
 
-		fetchChallenge();
-	}, [challenge]);
+		return {
+			title: challengeDef.title,
+			description: challengeDef.description,
+			target: challengeDef.target,
+			bonusXp: challengeDef.bonusXp,
+			current,
+			daysRemaining: getDaysUntilMonday(),
+		};
+	}, [progressSummary]);
 
-	if (isLoading) {
+	if (!progressSummary && !fetchedProgress) {
 		return (
 			<Card className="p-6 premium-glass border-none rounded-[2.5rem] h-full">
 				<div className="animate-pulse space-y-4">
@@ -161,7 +125,7 @@ export const WeeklyChallenge = memo(function WeeklyChallenge({
 
 	if (!challenge) return null;
 
-	const progress = Math.min((challenge.current / challenge.target) * 100, 100);
+	const progressPercent = Math.min((challenge.current / challenge.target) * 100, 100);
 	const isComplete = challenge.current >= challenge.target;
 
 	return (
@@ -212,10 +176,12 @@ export const WeeklyChallenge = memo(function WeeklyChallenge({
 							<span className="text-xs font-medium text-muted-foreground">
 								{Math.min(challenge.current, challenge.target)} / {challenge.target}
 							</span>
-							<span className="text-sm font-medium text-foreground">{Math.round(progress)}%</span>
+							<span className="text-sm font-medium text-foreground">
+								{Math.round(progressPercent)}%
+							</span>
 						</div>
 						<Progress
-							value={progress}
+							value={progressPercent}
 							className={`h-3 ${isComplete ? '[&>div]:bg-brand-amber' : '[&>div]:bg-primary'}`}
 						/>
 					</div>

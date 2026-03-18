@@ -10,8 +10,9 @@ import {
 	Search01Icon,
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { AnimatePresence, m } from 'framer-motion';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -184,26 +185,15 @@ export function ConversationSidebar({
 	onSelectConversation,
 	onNewConversation,
 }: ConversationSidebarProps) {
-	const [conversations, setConversations] = useState<AiConversation[]>([]);
-	const [isLoading, setIsLoading] = useState(true);
+	const queryClient = useQueryClient();
 	const [searchQuery, setSearchQuery] = useState('');
 	const [deletingId, setDeletingId] = useState<string | null>(null);
 	const [isOpen, setIsOpen] = useState(false);
 
-	useEffect(() => {
-		const loadConversations = async () => {
-			setIsLoading(true);
-			try {
-				const result = await getConversationsAction(userId);
-				setConversations(result);
-			} catch (error) {
-				console.debug('Failed to load conversations:', error);
-			} finally {
-				setIsLoading(false);
-			}
-		};
-		loadConversations();
-	}, [userId]);
+	const { data: conversations = [], isLoading } = useQuery({
+		queryKey: ['conversations', userId],
+		queryFn: () => getConversationsAction(userId),
+	});
 
 	const handleDelete = async (e: React.MouseEvent, conversationId: string) => {
 		e.stopPropagation();
@@ -211,7 +201,7 @@ export function ConversationSidebar({
 		try {
 			const result = await deleteConversationAction(conversationId, userId);
 			if (result.success) {
-				setConversations((prev) => prev.filter((c) => c.id !== conversationId));
+				await queryClient.invalidateQueries({ queryKey: ['conversations', userId] });
 				toast.success('Conversation deleted');
 				if (currentConversationId === conversationId) {
 					onNewConversation();

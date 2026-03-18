@@ -2,8 +2,9 @@
 
 import { ArrowRight01Icon, Medal01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
+import { useQuery } from '@tanstack/react-query';
 import { m } from 'framer-motion';
-import { memo, useCallback, useEffect, useState } from 'react';
+import { memo } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -22,25 +23,22 @@ interface LeaderboardEntry {
 
 export const LeaderboardPreview = memo(function LeaderboardPreview() {
 	const { data: session } = useSession();
-	const [entries, setEntries] = useState<LeaderboardEntry[]>([]);
-	const [userRank, setUserRank] = useState<number | null>(null);
-	const [isLoading, setIsLoading] = useState(true);
-	const [error, setError] = useState<string | null>(null);
 
-	const fetchLeaderboard = useCallback(async () => {
-		if (!session?.user?.id) {
-			setIsLoading(false);
-			return;
-		}
-
-		try {
-			setError(null);
-			const [leaderboardData, rankData] = await Promise.all([
+	const {
+		data: leaderboardData,
+		isPending,
+		error,
+		refetch,
+	} = useQuery({
+		queryKey: ['leaderboard', 'weekly'],
+		queryFn: async () => {
+			if (!session?.user?.id) return { entries: [], userRank: null };
+			const [leaderboard, rankData] = await Promise.all([
 				getLeaderboard('weekly', 10),
 				getUserRank('weekly'),
 			]);
 
-			const topEntries: LeaderboardEntry[] = leaderboardData.slice(0, 3).map((entry) => ({
+			const topEntries: LeaderboardEntry[] = leaderboard.slice(0, 3).map((entry) => ({
 				userId: entry.userId,
 				rank: entry.rank,
 				name: entry.userName,
@@ -50,7 +48,7 @@ export const LeaderboardPreview = memo(function LeaderboardPreview() {
 			}));
 
 			if (rankData && rankData.rank > 3) {
-				const userEntry = leaderboardData.find((e) => e.userId === session.user.id);
+				const userEntry = leaderboard.find((e) => e.userId === session.user.id);
 				if (userEntry) {
 					topEntries.push({
 						userId: userEntry.userId,
@@ -63,21 +61,20 @@ export const LeaderboardPreview = memo(function LeaderboardPreview() {
 				}
 			}
 
-			setEntries(topEntries);
-			setUserRank(rankData?.rank || null);
-		} catch (err) {
-			console.debug('[LeaderboardPreview] Error fetching:', err);
-			setError('Unable to load leaderboard');
-		} finally {
-			setIsLoading(false);
-		}
-	}, [session?.user?.id]);
+			return { entries: topEntries, userRank: rankData?.rank || null };
+		},
+		enabled: !!session?.user?.id,
+		staleTime: 60 * 1000,
+	});
 
-	useEffect(() => {
-		fetchLeaderboard();
-	}, [fetchLeaderboard]);
+	const entries = leaderboardData?.entries ?? [];
+	const userRank = leaderboardData?.userRank ?? null;
 
-	if (isLoading) {
+	const handleRetry = () => {
+		refetch();
+	};
+
+	if (isPending) {
 		return (
 			<Card className="p-6 premium-glass border-none rounded-[2.5rem] h-full">
 				<div className="animate-pulse space-y-4">
@@ -107,8 +104,10 @@ export const LeaderboardPreview = memo(function LeaderboardPreview() {
 					</div>
 				</div>
 				<div className="flex flex-col items-center justify-center py-8 text-center">
-					<p className="text-sm text-destructive mb-3">{error}</p>
-					<Button variant="outline" size="sm" onClick={fetchLeaderboard}>
+					<p className="text-sm text-destructive mb-3">
+						{error ? 'Unable to load leaderboard' : 'An error occurred'}
+					</p>
+					<Button variant="outline" size="sm" onClick={handleRetry}>
 						Try Again
 					</Button>
 				</div>

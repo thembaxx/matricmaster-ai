@@ -2,8 +2,9 @@
 
 import { ChampionIcon, FireIcon, Medal01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
+import { useQuery } from '@tanstack/react-query';
 import { m } from 'framer-motion';
-import { memo, useEffect, useMemo, useState } from 'react';
+import { memo, useMemo, useState } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -20,14 +21,6 @@ interface LeaderboardEntry {
 	totalPoints: number;
 	questionsCompleted: number;
 	accuracyPercentage: number;
-}
-
-interface UserRankData {
-	rank: number;
-	totalPoints: number;
-	questionsCompleted: number;
-	accuracyPercentage: number;
-	percentile: number;
 }
 
 const Podium = memo(function Podium({ data }: { data: LeaderboardEntry[] }) {
@@ -171,42 +164,27 @@ import { LeaderboardSkeleton } from '@/components/LeaderboardSkeleton';
 
 export default function Leaderboard() {
 	const [activeTab, setActiveTab] = useState('weekly');
-	const [leaderboardData, setLeaderboardData] = useState<LeaderboardEntry[]>([]);
-	const [userRank, setUserRank] = useState<UserRankData | null>(null);
-	const [userStreak, setUserStreak] = useState<{ currentStreak: number } | null>(null);
-	const [isLoading, setIsLoading] = useState(true);
 
-	// Bolt: Separate streak fetching into its own effect to avoid redundant database calls on every tab switch
-	useEffect(() => {
-		async function fetchStreak() {
-			try {
-				const streak = await getUserStreak();
-				setUserStreak(streak);
-			} catch (error) {
-				console.debug('Error fetching user streak:', error);
-			}
-		}
-		fetchStreak();
-	}, []);
+	// User streak with useQuery
+	const { data: userStreak } = useQuery({
+		queryKey: ['userStreak'],
+		queryFn: () => getUserStreak(),
+	});
 
-	useEffect(() => {
-		async function fetchData() {
-			try {
-				setIsLoading(true);
-				const [data, rank] = await Promise.all([
-					getLeaderboard(activeTab as 'weekly' | 'monthly' | 'all_time', 50),
-					getUserRank(activeTab as 'weekly' | 'monthly' | 'all_time'),
-				]);
-				setLeaderboardData(data);
-				setUserRank(rank);
-			} catch (error) {
-				console.debug('Error fetching leaderboard:', error);
-			} finally {
-				setIsLoading(false);
-			}
-		}
-		fetchData();
-	}, [activeTab]);
+	// Leaderboard data with useQuery - depends on activeTab
+	const { data: leaderboardResult, isLoading } = useQuery({
+		queryKey: ['leaderboard', activeTab],
+		queryFn: async () => {
+			const [data, rank] = await Promise.all([
+				getLeaderboard(activeTab as 'weekly' | 'monthly' | 'all_time', 50),
+				getUserRank(activeTab as 'weekly' | 'monthly' | 'all_time'),
+			]);
+			return { data, rank };
+		},
+	});
+
+	const leaderboardData = leaderboardResult?.data ?? [];
+	const userRank = leaderboardResult?.rank ?? null;
 
 	// Bolt: Memoize filtered results to avoid O(N) recalculation on every render
 	const topThree = useMemo(() => leaderboardData.filter((e) => e.rank <= 3), [leaderboardData]);

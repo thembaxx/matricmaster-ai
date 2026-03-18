@@ -2,13 +2,20 @@
 
 import { Add01Icon, SparklesIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { useState } from 'react';
 import { BlockEditor } from '@/components/SmartScheduler/BlockEditor';
 import { CalendarView } from '@/components/SmartScheduler/CalendarView';
 import { SmartSchedulerProvider } from '@/components/SmartScheduler/ScheduleProvider';
 import { Button } from '@/components/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { useSmartSchedulerStore } from '@/stores/useSmartSchedulerStore';
+
+async function fetchAdaptiveSchedule() {
+	const response = await fetch('/api/smart-scheduler/adaptive', { method: 'POST' });
+	if (!response.ok) throw new Error('Failed to check adaptive schedule');
+	return response.json();
+}
 
 export default function SmartSchedulerPage() {
 	return (
@@ -22,10 +29,10 @@ function SmartSchedulerContent() {
 	const { saveBlock, checkAdaptiveSchedule, isLoading } = useSmartSchedulerStore();
 	const [editorOpen, setEditorOpen] = useState(false);
 
-	// biome-ignore lint/correctness/useExhaustiveDependencies: only run once on mount
-	useEffect(() => {
-		checkAdaptiveSchedule();
-	}, []);
+	useQuery({
+		queryKey: ['adaptive-schedule'],
+		queryFn: fetchAdaptiveSchedule,
+	});
 
 	const handleSaveBlock = async (block: Parameters<typeof saveBlock>[0]) => {
 		await saveBlock(block);

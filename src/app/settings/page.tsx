@@ -7,8 +7,9 @@ import {
 	UserIcon as User,
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
+import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
-import { useEffect, useState, useTransition } from 'react';
+import { useState, useTransition } from 'react';
 import { toast } from 'sonner';
 import { AccountTab } from '@/components/Settings/AccountTab';
 import { NotificationsTab } from '@/components/Settings/NotificationsTab';
@@ -35,42 +36,49 @@ export default function SettingsPage() {
 	const [isDeletingAccount, startDeleteTransition] = useTransition();
 	const [_isPendingSettings, startSettingsTransition] = useTransition();
 
-	// Account settings state
-	const [displayName, setDisplayName] = useState(session?.user?.name || '');
-	const [email, setEmail] = useState(session?.user?.email || '');
+	// Account settings state - derive from session directly
+	const [displayName, setDisplayName] = useState(session?.user?.name ?? '');
+	const [email] = useState(session?.user?.email ?? '');
 
-	// Sync state when session changes
-	useEffect(() => {
-		if (session?.user) {
-			setDisplayName(session.user.name || '');
-			setEmail(session.user.email || '');
-		}
-	}, [session]);
+	// Load settings with useQuery
+	const { data: notificationSettings } = useQuery({
+		queryKey: ['notificationSettings', session?.user?.id],
+		queryFn: () => getNotificationSettingsAction(session!.user.id),
+		enabled: !!session?.user?.id,
+		staleTime: Number.POSITIVE_INFINITY,
+	});
 
-	// Load settings on mount
-	useEffect(() => {
-		const loadSettings = async () => {
-			if (session?.user?.id) {
-				// Load notification settings
-				const notifResult = await getNotificationSettingsAction(session.user.id);
-				if (notifResult.success && notifResult.data) {
-					setEmailNotifications(notifResult.data.emailNotifications);
-					setPushNotifications(notifResult.data.pushNotifications);
-					setStudyReminders(notifResult.data.studyReminders);
-					setAchievementAlerts(notifResult.data.achievementAlerts);
-				}
+	const { data: privacySettings } = useQuery({
+		queryKey: ['privacySettings', session?.user?.id],
+		queryFn: () => getPrivacySettingsAction(session!.user.id),
+		enabled: !!session?.user?.id,
+		staleTime: Number.POSITIVE_INFINITY,
+	});
 
-				// Load privacy settings
-				const privacyResult = await getPrivacySettingsAction(session.user.id);
-				if (privacyResult.success && privacyResult.data) {
-					setProfileVisibility(privacyResult.data.profileVisibility);
-					setShowOnLeaderboard(privacyResult.data.showOnLeaderboard);
-					setAnalyticsTracking(privacyResult.data.analyticsTracking);
-				}
-			}
-		};
-		loadSettings();
-	}, [session?.user?.id]);
+	// Notification settings - initialized from query data
+	const [emailNotifications, setEmailNotifications] = useState(
+		notificationSettings?.data?.emailNotifications ?? true
+	);
+	const [pushNotifications, setPushNotifications] = useState(
+		notificationSettings?.data?.pushNotifications ?? true
+	);
+	const [studyReminders, setStudyReminders] = useState(
+		notificationSettings?.data?.studyReminders ?? true
+	);
+	const [achievementAlerts, setAchievementAlerts] = useState(
+		notificationSettings?.data?.achievementAlerts ?? true
+	);
+
+	// Privacy settings - initialized from query data
+	const [profileVisibility, setProfileVisibility] = useState(
+		privacySettings?.data?.profileVisibility ?? true
+	);
+	const [showOnLeaderboard, setShowOnLeaderboard] = useState(
+		privacySettings?.data?.showOnLeaderboard ?? true
+	);
+	const [analyticsTracking, setAnalyticsTracking] = useState(
+		privacySettings?.data?.analyticsTracking ?? true
+	);
 
 	// Security settings state
 	const [is2FAEnabled, setIs2FAEnabled] = useState(false);
@@ -87,17 +95,6 @@ export default function SettingsPage() {
 	// Account deletion state
 	const [deletePassword, setDeletePassword] = useState('');
 	const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-
-	// Notification settings
-	const [emailNotifications, setEmailNotifications] = useState(true);
-	const [pushNotifications, setPushNotifications] = useState(true);
-	const [studyReminders, setStudyReminders] = useState(true);
-	const [achievementAlerts, setAchievementAlerts] = useState(true);
-
-	// Privacy settings
-	const [profileVisibility, setProfileVisibility] = useState(true);
-	const [showOnLeaderboard, setShowOnLeaderboard] = useState(true);
-	const [analyticsTracking, setAnalyticsTracking] = useState(true);
 
 	// Haptic feedback settings
 	const {
@@ -190,8 +187,14 @@ export default function SettingsPage() {
 		});
 	};
 
-	// Notification settings handlers
+	// Handler for notification changes - update state directly
 	const handleNotificationChange = async (key: string, value: boolean) => {
+		// Optimistic update
+		if (key === 'emailNotifications') setEmailNotifications(value);
+		if (key === 'pushNotifications') setPushNotifications(value);
+		if (key === 'studyReminders') setStudyReminders(value);
+		if (key === 'achievementAlerts') setAchievementAlerts(value);
+
 		if (!session?.user?.id) return;
 
 		startSettingsTransition(async () => {
@@ -202,25 +205,20 @@ export default function SettingsPage() {
 				...(key === 'achievementAlerts' && { achievementAlerts: value }),
 			};
 
-			const result = await updateNotificationSettingsAction(session.user.id, updates);
-			if (result.success) {
-				if (key === 'emailNotifications') setEmailNotifications(value);
-				if (key === 'pushNotifications') setPushNotifications(value);
-				if (key === 'studyReminders') setStudyReminders(value);
-				if (key === 'achievementAlerts') setAchievementAlerts(value);
-			}
+			await updateNotificationSettingsAction(session.user.id, updates);
 		});
 	};
 
-	// Privacy settings handlers
+	// Handler for privacy changes - update state directly
 	const handlePrivacyChange = async (key: string, value: boolean) => {
+		// Optimistic update
+		if (key === 'profileVisibility') setProfileVisibility(value);
+		if (key === 'showOnLeaderboard') setShowOnLeaderboard(value);
+		if (key === 'analyticsTracking') setAnalyticsTracking(value);
+
 		if (!session?.user?.id) return;
 
 		startSettingsTransition(async () => {
-			if (key === 'profileVisibility') setProfileVisibility(value);
-			if (key === 'showOnLeaderboard') setShowOnLeaderboard(value);
-			if (key === 'analyticsTracking') setAnalyticsTracking(value);
-
 			toast.success('Privacy settings updated');
 		});
 	};

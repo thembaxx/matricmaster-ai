@@ -2,17 +2,14 @@
 
 import { ArrowRightIcon, SparklesIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
+import { useQuery } from '@tanstack/react-query';
 import { m } from 'framer-motion';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
 import { Card } from '@/components/ui/card';
 import {
-	type BuddyPersonality,
-	type ConceptStruggleInfo,
 	getBuddyProfile,
 	getStrugglingConcepts,
 	getTopicConfidence,
-	type TopicConfidenceInfo,
 } from '@/services/buddyActions';
 import { ConfidenceMeter } from './ConfidenceMeter';
 import { PersonalitySelector } from './PersonalitySelector';
@@ -24,30 +21,26 @@ interface BuddyPanelProps {
 
 export function BuddyPanel({ onStartChat }: BuddyPanelProps) {
 	const router = useRouter();
-	const [profile, setProfile] = useState<BuddyPersonality | null>(null);
-	const [struggles, setStruggles] = useState<ConceptStruggleInfo[]>([]);
-	const [confidence, setConfidence] = useState<TopicConfidenceInfo[]>([]);
-	const [loading, setLoading] = useState(true);
 
-	useEffect(() => {
-		async function loadData() {
-			try {
-				const [buddyProfile, struggling, conf] = await Promise.all([
-					getBuddyProfile(),
-					getStrugglingConcepts(),
-					getTopicConfidence(),
-				]);
-				setProfile(buddyProfile?.personality || null);
-				setStruggles(struggling);
-				setConfidence(conf);
-			} catch (error) {
-				console.debug('Failed to load buddy data:', error);
-			} finally {
-				setLoading(false);
-			}
-		}
-		loadData();
-	}, []);
+	const { data: buddyData, isLoading } = useQuery({
+		queryKey: ['buddyData'],
+		queryFn: async () => {
+			const [buddyProfile, _struggling, conf] = await Promise.all([
+				getBuddyProfile(),
+				getStrugglingConcepts(),
+				getTopicConfidence(),
+			]);
+			return {
+				profile: buddyProfile?.personality || null,
+				struggles: _struggling,
+				confidence: conf,
+			};
+		},
+	});
+
+	const profile = buddyData?.profile ?? null;
+	const struggles = buddyData?.struggles ?? [];
+	const confidence = buddyData?.confidence ?? [];
 
 	const handleStartChat = (topic?: string) => {
 		if (onStartChat) {
@@ -57,7 +50,7 @@ export function BuddyPanel({ onStartChat }: BuddyPanelProps) {
 		}
 	};
 
-	if (loading) {
+	if (isLoading) {
 		return (
 			<Card className="p-6 rounded-[2rem] animate-pulse border-0 shadow-tiimo">
 				<div className="space-y-4">

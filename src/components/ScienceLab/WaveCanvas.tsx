@@ -1,21 +1,35 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { generateWavePoints } from '@/lib/physics/waves';
 import { useScienceLab } from '@/stores/useScienceLab';
 
 export function WaveCanvas() {
 	const { wave } = useScienceLab();
-	const [phase, setPhase] = useState(0);
+	const phaseRef = useRef(0);
+	const frameRef = useRef<number | null>(null);
+	const [, setTick] = useState(0);
 
 	useEffect(() => {
-		const interval = setInterval(() => {
-			setPhase((p) => p + wave.frequency * 0.1);
-		}, 50);
-		return () => clearInterval(interval);
+		let lastTime = 0;
+		const animate = (time: number) => {
+			if (time - lastTime >= 50) {
+				phaseRef.current += wave.frequency * 0.1;
+				setTick((t) => t + 1);
+				lastTime = time;
+			}
+			frameRef.current = requestAnimationFrame(animate);
+		};
+		frameRef.current = requestAnimationFrame(animate);
+		return () => {
+			if (frameRef.current) cancelAnimationFrame(frameRef.current);
+		};
 	}, [wave.frequency]);
 
-	const points = generateWavePoints(wave.amplitude, wave.frequency, phase);
+	const points = useMemo(
+		() => generateWavePoints(wave.amplitude, wave.frequency, phaseRef.current),
+		[wave.amplitude, wave.frequency]
+	);
 
 	const pathD = points
 		.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p.x * 80 + 40} ${100 - p.y * 40}`)
@@ -52,7 +66,7 @@ export function WaveCanvas() {
 
 			{/* Equation */}
 			<div className="absolute top-4 right-4 bg-background/90 backdrop-blur px-4 py-2 rounded-xl border font-mono text-sm">
-				y = {wave.amplitude} sin({wave.frequency}x - {phase.toFixed(2)})
+				y = {wave.amplitude} sin({wave.frequency}x - {phaseRef.current.toFixed(2)})
 			</div>
 		</div>
 	);

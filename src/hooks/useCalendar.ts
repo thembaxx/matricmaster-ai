@@ -1,7 +1,9 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useCallback, useState } from 'react';
 import { toast } from 'sonner';
+import { API_ENDPOINTS, QUERY_KEYS } from '@/lib/api/endpoints';
 import { useSession } from '@/lib/auth-client';
 
 export interface CalendarEvent {
@@ -27,10 +29,9 @@ export const EVENT_TYPES: { value: EventType; label: string; color: string }[] =
 
 export function useCalendar() {
 	const { data: session } = useSession();
+	const queryClient = useQueryClient();
 	const [currentDate, setCurrentDate] = useState(new Date());
 	const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-	const [events, setEvents] = useState<CalendarEvent[]>([]);
-	const [isLoading, setIsLoading] = useState(true);
 	const [showEventForm, setShowEventForm] = useState(false);
 	const [newEvent, setNewEvent] = useState<{
 		title: string;
@@ -50,55 +51,52 @@ export function useCalendar() {
 		reminder: '30',
 	});
 
-	const loadEvents = useCallback(async () => {
+	const fetchEvents = useCallback(async () => {
 		if (!session?.user?.id) {
-			setIsLoading(false);
-			return;
+			return [];
 		}
 
-		try {
-			const startDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
-			const endDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+		const startDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+		const endDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
 
-			const url = new URL('/api/calendar/events', window.location.origin);
-			url.searchParams.set('startDate', startDate.toISOString());
-			url.searchParams.set('endDate', endDate.toISOString());
+		const url = new URL(API_ENDPOINTS.calendarEvents, window.location.origin);
+		url.searchParams.set('startDate', startDate.toISOString());
+		url.searchParams.set('endDate', endDate.toISOString());
 
-			const response = await fetch(url.toString());
-			const result = await response.json();
+		const response = await fetch(url.toString());
+		const result = await response.json();
 
-			if (result.success && result.data) {
-				const mappedEvents: CalendarEvent[] = result.data.map(
-					(event: {
-						id: string;
-						title: string;
-						description?: string;
-						startTime: Date;
-						endTime: Date;
-						eventType: string;
-						subject?: string;
-					}) => ({
-						id: event.id,
-						title: event.title,
-						description: event.description,
-						startTime: new Date(event.startTime),
-						endTime: new Date(event.endTime),
-						eventType: event.eventType as CalendarEvent['eventType'],
-						subject: event.subject,
-					})
-				);
-				setEvents(mappedEvents);
-			}
-		} catch (error) {
-			console.debug('Error loading events:', error);
-		} finally {
-			setIsLoading(false);
+		if (result.success && result.data) {
+			const mappedEvents: CalendarEvent[] = result.data.map(
+				(event: {
+					id: string;
+					title: string;
+					description?: string;
+					startTime: Date;
+					endTime: Date;
+					eventType: string;
+					subject?: string;
+				}) => ({
+					id: event.id,
+					title: event.title,
+					description: event.description,
+					startTime: new Date(event.startTime),
+					endTime: new Date(event.endTime),
+					eventType: event.eventType as CalendarEvent['eventType'],
+					subject: event.subject,
+				})
+			);
+			return mappedEvents;
 		}
+		return [];
 	}, [session?.user?.id, currentDate]);
 
-	useEffect(() => {
-		loadEvents();
-	}, [loadEvents]);
+	const { data: events = [], isLoading } = useQuery({
+		queryKey: [QUERY_KEYS.calendarEvents, currentDate.getFullYear(), currentDate.getMonth()],
+		queryFn: fetchEvents,
+		enabled: !!session?.user?.id,
+		staleTime: 60 * 1000,
+	});
 
 	const year = currentDate.getFullYear();
 	const month = currentDate.getMonth();
@@ -131,40 +129,26 @@ export function useCalendar() {
 		});
 	};
 
-	const handleAddEvent = async () => {
-		if (!newEvent.title || !newEvent.startTime || !newEvent.endTime) return;
-
-		if (!session?.user?.id) {
-			toast.error('Please sign in to create events');
-			return;
-		}
-
-		try {
-			const response = await fetch('/api/calendar/events', {
+	const addEventMutation = useMutation({
+		mutationFn: async (data: {
+			title: string;
+			description: string;
+			startTime: string;
+			endTime: string;
+			eventType: EventType;
+		}) => {
+			const response = await fetch(API_ENDPOINTS.calendarEvents, {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({
-					title: newEvent.title,
-					description: newEvent.description,
-					startTime: newEvent.startTime,
-					endTime: newEvent.endTime,
-					eventType: newEvent.eventType,
-				}),
+				body: JSON.stringify(data),
 			});
-
-			const result = await response.json();
-
+			return response.json();
+		},
+		onSuccess: (result) => {
 			if (result.success) {
-				const createdEvent: CalendarEvent = {
-					id: result.data.id,
-					title: result.data.title,
-					description: result.data.description,
-					startTime: new Date(result.data.startTime),
-					endTime: new Date(result.data.endTime),
-					eventType: result.data.eventType,
-					subject: result.data.subject,
-				};
-				setEvents([...events, createdEvent]);
+				queryClient.invalidateQueries({
+					queryKey: [QUERY_KEYS.calendarEvents, currentDate.getFullYear(), currentDate.getMonth()],
+				});
 				toast.success('Event created successfully');
 				setShowEventForm(false);
 				setNewEvent({
@@ -179,10 +163,52 @@ export function useCalendar() {
 			} else {
 				toast.error(result.error || 'Failed to create event');
 			}
-		} catch (error) {
-			console.debug('Error creating event:', error);
+		},
+		onError: () => {
 			toast.error('Failed to create event');
+		},
+	});
+
+	const deleteEventMutation = useMutation({
+		mutationFn: async (eventId: string) => {
+			const url = new URL(API_ENDPOINTS.calendarEvents, window.location.origin);
+			url.searchParams.set('id', eventId);
+
+			const response = await fetch(url.toString(), {
+				method: 'DELETE',
+			});
+			return response.json();
+		},
+		onSuccess: (result) => {
+			if (result.success) {
+				queryClient.invalidateQueries({
+					queryKey: [QUERY_KEYS.calendarEvents, currentDate.getFullYear(), currentDate.getMonth()],
+				});
+				toast.success('Event deleted successfully');
+			} else {
+				toast.error(result.error || 'Failed to delete event');
+			}
+		},
+		onError: () => {
+			toast.error('Failed to delete event');
+		},
+	});
+
+	const handleAddEvent = async () => {
+		if (!newEvent.title || !newEvent.startTime || !newEvent.endTime) return;
+
+		if (!session?.user?.id) {
+			toast.error('Please sign in to create events');
+			return;
 		}
+
+		addEventMutation.mutate({
+			title: newEvent.title,
+			description: newEvent.description,
+			startTime: newEvent.startTime,
+			endTime: newEvent.endTime,
+			eventType: newEvent.eventType,
+		});
 	};
 
 	const handleDeleteEvent = async (eventId: string) => {
@@ -191,26 +217,7 @@ export function useCalendar() {
 			return;
 		}
 
-		try {
-			const url = new URL('/api/calendar/events', window.location.origin);
-			url.searchParams.set('id', eventId);
-
-			const response = await fetch(url.toString(), {
-				method: 'DELETE',
-			});
-
-			const result = await response.json();
-
-			if (result.success) {
-				setEvents(events.filter((e) => e.id !== eventId));
-				toast.success('Event deleted successfully');
-			} else {
-				toast.error(result.error || 'Failed to delete event');
-			}
-		} catch (error) {
-			console.debug('Error deleting event:', error);
-			toast.error('Failed to delete event');
-		}
+		deleteEventMutation.mutate(eventId);
 	};
 
 	const selectedDateEvents = selectedDate

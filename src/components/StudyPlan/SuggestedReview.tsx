@@ -2,7 +2,8 @@
 
 import { SparklesIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { useState } from 'react';
 import {
 	addMistakeToStudyPlanAction,
 	getRecentMistakesAction,
@@ -11,25 +12,12 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 
 export function SuggestedReview() {
-	const [mistakes, setMistakes] = useState<
-		Array<{ topic: string; questionId: string; subject: string }>
-	>([]);
-	const [loading, setLoading] = useState(true);
 	const [isAdding, setIsAdding] = useState(false);
 
-	useEffect(() => {
-		async function loadMistakes() {
-			try {
-				const recent = await getRecentMistakesAction(5);
-				setMistakes(recent);
-			} catch (error) {
-				console.debug('Failed to load mistakes:', error);
-			} finally {
-				setLoading(false);
-			}
-		}
-		loadMistakes();
-	}, []);
+	const { data: mistakes = [], isLoading } = useQuery({
+		queryKey: ['recentMistakes'],
+		queryFn: () => getRecentMistakesAction(5),
+	});
 
 	const handleAddToPlan = async () => {
 		if (mistakes.length === 0) return;
@@ -43,7 +31,7 @@ export function SuggestedReview() {
 		}
 	};
 
-	if (loading || mistakes.length === 0) return null;
+	if (isLoading || mistakes.length === 0) return null;
 
 	return (
 		<Card className="p-4 rounded-2xl border-amber-500/30 bg-amber-50 dark:bg-amber-950/30">

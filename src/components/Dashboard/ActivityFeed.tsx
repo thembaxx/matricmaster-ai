@@ -2,9 +2,9 @@
 
 import { SparklesIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
+import { useQuery } from '@tanstack/react-query';
 import { AnimatePresence, m } from 'framer-motion';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { getRecentActivityAction } from '@/lib/db/actions';
@@ -51,19 +51,15 @@ const MOCK_ACTIVITIES: RecentActivity[] = [
 
 export function ActivityFeed() {
 	const router = useRouter();
-	const [activities, setActivities] = useState<RecentActivity[]>([]);
-	const [isLoading, setIsLoading] = useState(true);
 
-	useEffect(() => {
-		async function load() {
-			const data = await getRecentActivityAction();
-			setActivities(data.length > 0 ? data : MOCK_ACTIVITIES);
-			setIsLoading(false);
-		}
-		load();
-	}, []);
+	const { data: activities = [], isPending } = useQuery({
+		queryKey: ['activity-feed'],
+		queryFn: () => getRecentActivityAction(),
+		select: (data) => (data.length > 0 ? data : MOCK_ACTIVITIES),
+		staleTime: 30 * 1000,
+	});
 
-	if (isLoading) {
+	if (isPending) {
 		return (
 			<div className="space-y-4">
 				{[1, 2, 3].map((i) => (

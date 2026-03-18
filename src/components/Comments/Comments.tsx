@@ -11,8 +11,9 @@ import {
 	ThumbsUpIcon,
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
+import { useQuery } from '@tanstack/react-query';
 import { AnimatePresence, m } from 'framer-motion';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { toast } from 'sonner';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -55,42 +56,37 @@ export function Comments({
 	className,
 }: CommentsProps) {
 	const { data: session } = useSession();
-	const [comments, setComments] = useState<Comment[]>([]);
 	const [newComment, setNewComment] = useState('');
 	const [isLoading, setIsLoading] = useState(false);
-	const [isFetching, setIsFetching] = useState(true);
 	const [replyingTo, setReplyingTo] = useState<string | null>(null);
 	const [replyContent, setReplyContent] = useState('');
 
-	const fetchComments = useCallback(async () => {
-		try {
-			const response = await fetch(
-				`/api/comments?resourceType=${resourceType}&resourceId=${resourceId}`
-			);
-			const result = await response.json();
-			if (result.success) {
-				// Organize comments into threads
-				const allComments = result.data as Comment[];
-				const rootComments = allComments.filter((c) => !c.parentId);
-				const replies = allComments.filter((c) => c.parentId);
+	const fetchCommentsFn = useCallback(async () => {
+		const response = await fetch(
+			`/api/comments?resourceType=${resourceType}&resourceId=${resourceId}`
+		);
+		const result = await response.json();
+		if (result.success) {
+			const allComments = result.data as Comment[];
+			const rootComments = allComments.filter((c) => !c.parentId);
+			const replies = allComments.filter((c) => c.parentId);
 
-				const threaded = rootComments.map((root) => ({
-					...root,
-					replies: replies.filter((r) => r.parentId === root.id).reverse(),
-				}));
-
-				setComments(threaded);
-			}
-		} catch (error) {
-			console.debug('Failed to fetch comments:', error);
-		} finally {
-			setIsFetching(false);
+			return rootComments.map((root) => ({
+				...root,
+				replies: replies.filter((r) => r.parentId === root.id).reverse(),
+			}));
 		}
+		return [];
 	}, [resourceType, resourceId]);
 
-	useEffect(() => {
-		fetchComments();
-	}, [fetchComments]);
+	const { data: comments = [], refetch: refetchComments } = useQuery({
+		queryKey: ['comments', resourceType, resourceId],
+		queryFn: fetchCommentsFn,
+	});
+
+	const fetchComments = useCallback(() => {
+		refetchComments();
+	}, [refetchComments]);
 
 	const handleSubmitComment = async () => {
 		if (!newComment.trim() || !session?.user) return;
@@ -220,7 +216,7 @@ export function Comments({
 					{/* Comments List */}
 					<div className="space-y-6">
 						<AnimatePresence mode="popLayout">
-							{isFetching ? (
+							{isLoading ? (
 								<div className="space-y-4">
 									{[1, 2].map((i) => (
 										<div key={i} className="h-32 bg-muted/50 animate-pulse rounded-[2rem]" />

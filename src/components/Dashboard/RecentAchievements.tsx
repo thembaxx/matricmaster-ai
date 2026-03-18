@@ -2,25 +2,15 @@
 
 import { ArrowRight01Icon, ChampionIcon, Medal01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
+import { useQuery } from '@tanstack/react-query';
 import { m } from 'framer-motion';
 import { useRouter } from 'next/navigation';
-import { memo, useEffect, useState } from 'react';
+import { memo, useMemo } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { type ACHIEVEMENTS, getAchievementById } from '@/constants/achievements';
 import { getUserAchievements, type UserAchievement } from '@/lib/db/achievement-actions';
-
-interface UnlockedAchievement {
-	id: string;
-	name: string;
-	description: string;
-	icon: string;
-	iconBg: string;
-	points: number;
-	unlockedAt: Date;
-	isNew: boolean;
-}
 
 interface RecentAchievementsProps {
 	initialAchievements?: {
@@ -33,71 +23,39 @@ export const RecentAchievements = memo(function RecentAchievements({
 	initialAchievements,
 }: RecentAchievementsProps) {
 	const router = useRouter();
-	const [achievements, setAchievements] = useState<UnlockedAchievement[]>(() => {
-		if (initialAchievements) {
-			const now = new Date();
-			const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
-			const unlocked = initialAchievements.unlocked
-				.map((ua) => {
-					const def = getAchievementById(ua.achievementId);
-					const unlockedAt = new Date(ua.unlockedAt || now);
-					return {
-						id: ua.achievementId,
-						name: def?.name || 'Achievement',
-						description: def?.description || '',
-						icon: def?.icon || '🏆',
-						iconBg: def?.iconBg || '#fef3c7',
-						points: def?.points || 0,
-						unlockedAt,
-						isNew: unlockedAt >= today,
-					};
-				})
-				.sort((a, b) => b.unlockedAt.getTime() - a.unlockedAt.getTime())
-				.slice(0, 3);
-			return unlocked;
-		}
-		return [];
+	const { data: fetchedAchievements, isPending } = useQuery({
+		queryKey: ['user-achievements'],
+		queryFn: getUserAchievements,
+		enabled: !initialAchievements,
+		staleTime: 5 * 60 * 1000,
 	});
-	const [isLoading, setIsLoading] = useState(achievements.length === 0 && !initialAchievements);
 
-	useEffect(() => {
-		if (achievements.length > 0 || initialAchievements) return; // Skip fetch if initialized with initial data
+	const achievements = useMemo(() => {
+		const source = initialAchievements ?? fetchedAchievements;
+		if (!source) return [];
 
-		async function fetchAchievements() {
-			try {
-				const result = await getUserAchievements();
-				const now = new Date();
-				const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+		const now = new Date();
+		const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
-				const unlocked = result.unlocked
-					.map((ua) => {
-						const def = getAchievementById(ua.achievementId);
-						const unlockedAt = new Date(ua.unlockedAt || now);
-						return {
-							id: ua.achievementId,
-							name: def?.name || 'Achievement',
-							description: def?.description || '',
-							icon: def?.icon || '🏆',
-							iconBg: def?.iconBg || '#fef3c7',
-							points: def?.points || 0,
-							unlockedAt,
-							isNew: unlockedAt >= today,
-						};
-					})
-					.sort((a, b) => b.unlockedAt.getTime() - a.unlockedAt.getTime())
-					.slice(0, 3);
-
-				setAchievements(unlocked);
-			} catch (error) {
-				console.debug('[RecentAchievements] Error fetching:', error);
-			} finally {
-				setIsLoading(false);
-			}
-		}
-
-		fetchAchievements();
-	}, [achievements.length, initialAchievements]);
+		return source.unlocked
+			.map((ua) => {
+				const def = getAchievementById(ua.achievementId);
+				const unlockedAt = new Date(ua.unlockedAt || now);
+				return {
+					id: ua.achievementId,
+					name: def?.name || 'Achievement',
+					description: def?.description || '',
+					icon: def?.icon || '🏆',
+					iconBg: def?.iconBg || '#fef3c7',
+					points: def?.points || 0,
+					unlockedAt,
+					isNew: unlockedAt >= today,
+				};
+			})
+			.sort((a, b) => b.unlockedAt.getTime() - a.unlockedAt.getTime())
+			.slice(0, 3);
+	}, [initialAchievements, fetchedAchievements]);
 
 	const formatTimeAgo = (date: Date) => {
 		const now = new Date();
@@ -111,7 +69,7 @@ export const RecentAchievements = memo(function RecentAchievements({
 		return `${Math.floor(days / 30)} months ago`;
 	};
 
-	if (isLoading) {
+	if (isPending) {
 		return (
 			<Card className="p-6 premium-glass border-none rounded-[2.5rem] h-full">
 				<div className="animate-pulse space-y-4">

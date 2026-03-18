@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 
 const HAPTIC_PATTERNS = {
 	light: [10],
@@ -11,23 +11,19 @@ const HAPTIC_PATTERNS = {
 
 export type HapticType = keyof typeof HAPTIC_PATTERNS;
 
+const isHapticsSupported = typeof window !== 'undefined' && 'vibrate' in navigator;
+
+function getStoredHapticsState(): boolean {
+	if (typeof window === 'undefined') return true;
+	const stored = localStorage.getItem('haptics-enabled');
+	if (stored !== null) {
+		return stored === 'true';
+	}
+	return isHapticsSupported;
+}
+
 export function useHaptics() {
-	const [enabled, setEnabledState] = useState(true);
-	const [isSupported, setIsSupported] = useState(false);
-
-	useEffect(() => {
-		if (typeof window === 'undefined') return;
-
-		const supported = 'vibrate' in navigator;
-		setIsSupported(supported);
-
-		const stored = localStorage.getItem('haptics-enabled');
-		if (stored !== null) {
-			setEnabledState(stored === 'true');
-		} else {
-			setEnabledState(supported);
-		}
-	}, []);
+	const [enabled, setEnabledState] = useState(getStoredHapticsState);
 
 	const setEnabled = useCallback((value: boolean) => {
 		setEnabledState(value);
@@ -36,20 +32,20 @@ export function useHaptics() {
 
 	const trigger = useCallback(
 		(type: HapticType) => {
-			if (!enabled || !isSupported) return;
+			if (!enabled || !isHapticsSupported) return;
 			try {
 				navigator.vibrate(HAPTIC_PATTERNS[type]);
 			} catch {
 				// Silently fail if vibration not available
 			}
 		},
-		[enabled, isSupported]
+		[enabled]
 	);
 
 	return {
 		trigger,
 		enabled,
 		setEnabled,
-		isSupported,
+		isSupported: isHapticsSupported,
 	};
 }

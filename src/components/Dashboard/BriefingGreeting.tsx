@@ -5,7 +5,7 @@ import { HugeiconsIcon } from '@hugeicons/react';
 import { m } from 'framer-motion';
 import { CheckCircle2, TrendingUp } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useMemo } from 'react';
 import { NotificationBell } from '@/components/Notifications/NotificationBell';
 import { Button } from '@/components/ui/button';
 import type { TimelineTask } from '@/types/timeline';
@@ -55,18 +55,13 @@ export function BriefingGreeting({
 	briefingData,
 }: BriefingGreetingProps) {
 	const router = useRouter();
-	const [greeting, setGreeting] = useState('Good day');
 	const firstName = userName?.split(' ')[0] || 'Scholar';
 
-	useEffect(() => {
-		const updateGreeting = () => {
-			const hour = new Date().getHours();
-			if (hour < 12) setGreeting('Good morning');
-			else if (hour < 18) setGreeting('Good afternoon');
-			else setGreeting('Good evening');
-		};
-
-		updateGreeting();
+	const greeting = useMemo(() => {
+		const hour = new Date().getHours();
+		if (hour < 12) return 'Good morning';
+		if (hour < 18) return 'Good afternoon';
+		return 'Good evening';
 	}, []);
 
 	const completionRate = totalCount > 0 ? (completedCount / totalCount) * 100 : 0;

@@ -3,8 +3,9 @@
 import { Cancel01Icon, Settings02Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { Icon } from '@iconify/react';
+import { useQuery } from '@tanstack/react-query';
 import { AnimatePresence, m } from 'framer-motion';
-import { memo, useCallback, useEffect, useMemo, useState } from 'react';
+import { memo, useCallback, useMemo, useState } from 'react';
 import { PastPaperCard, PastPapersEmptyState } from '@/components/PastPapers/PastPapersList';
 import { BackgroundMesh } from '@/components/ui/background-mesh';
 import { Badge } from '@/components/ui/badge';
@@ -24,7 +25,6 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sh
 import { Switch } from '@/components/ui/switch';
 import { STAGGER_CONTAINER, STAGGER_ITEM } from '@/lib/animation-presets';
 import { getPastPapersAction } from '@/lib/db/actions';
-import type { PastPaper } from '@/lib/db/schema';
 import { cn } from '@/lib/utils';
 
 interface FilterContentProps {
@@ -147,8 +147,6 @@ import { PastPapersSkeleton } from '@/components/PastPapersSkeleton';
 export default function PastPapers() {
 	const [searchQuery, setSearchQuery] = useState('');
 	const [selectedYear, setSelectedYear] = useState<number | 'All'>('All');
-	const [papers, setPapers] = useState<PastPaper[]>([]);
-	const [isLoading, setIsLoading] = useState(true);
 	const [isAdvancedFilterOpen, setIsAdvancedFilterOpen] = useState(false);
 	const [selectedSubjects, setSelectedSubjects] = useState<string[]>([]);
 	const [selectedPapers, setSelectedPapers] = useState<string[]>([]);
@@ -157,7 +155,11 @@ export default function PastPapers() {
 
 	const years = useMemo(() => ['All', 2024, 2023, 2022, 2021, 2020], []);
 
-	// Performance: Memoize extracted fields to avoid O(N) recalculation on every render
+	const { data: papers = [], isLoading } = useQuery({
+		queryKey: ['past-papers'],
+		queryFn: async () => getPastPapersAction(),
+	});
+
 	const availableSubjects = useMemo(
 		() => [...new Set(papers.map((p) => p.subject))].sort(),
 		[papers]
@@ -206,20 +208,6 @@ export default function PastPapers() {
 	);
 
 	const handleToggleExtracted = useCallback((value: boolean) => setExtractedOnly(value), []);
-
-	useEffect(() => {
-		const fetchPapers = async () => {
-			try {
-				const data = await getPastPapersAction();
-				setPapers(data);
-			} catch (error) {
-				console.debug('Failed to load past papers:', error);
-			} finally {
-				setIsLoading(false);
-			}
-		};
-		fetchPapers();
-	}, []);
 
 	// Performance: Memoize filtered results to avoid re-filtering on every render
 	// (e.g. when opening drawers or clicking unrelated UI elements)

@@ -9,8 +9,9 @@ import {
 	StarIcon,
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
+import { useQuery } from '@tanstack/react-query';
 import { AnimatePresence, m } from 'framer-motion';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { ACHIEVEMENTS } from '@/constants/achievements';
@@ -31,51 +32,30 @@ import { AchievementsSkeleton } from '@/components/AchievementsSkeleton';
 
 export default function Achievements() {
 	const [activeTab, setActiveTab] = useState('all');
-	const [badges, setBadges] = useState<Badge[]>([]);
-	const [isLoading, setIsLoading] = useState(true);
 
-	useEffect(() => {
-		async function fetchAchievements() {
-			try {
-				const result = await getUserAchievements();
-				const unlockedIds = new Set(result.unlocked.map((a) => a.achievementId));
+	// Fetch achievements with useQuery
+	const { data: achievementsData, isLoading } = useQuery({
+		queryKey: ['userAchievements'],
+		queryFn: () => getUserAchievements(),
+	});
 
-				const mappedBadges: Badge[] = ACHIEVEMENTS.map((achievement) => {
-					const unlocked = unlockedIds.has(achievement.id);
-					const unlockedRecord = result.unlocked.find((a) => a.achievementId === achievement.id);
+	// Compute badges from achievements data
+	const badges: Badge[] = ACHIEVEMENTS.map((achievement) => {
+		const unlockedRecord = achievementsData?.unlocked.find(
+			(a) => a.achievementId === achievement.id
+		);
+		const unlocked = !!unlockedRecord;
 
-					return {
-						id: achievement.id,
-						name: unlocked ? unlockedRecord?.title || achievement.name : achievement.name,
-						icon: unlocked ? achievement.icon : null,
-						iconBg: unlocked ? achievement.iconBg : 'transparent',
-						unlocked,
-						category: achievement.category,
-						description: achievement.description,
-					};
-				});
-
-				setBadges(mappedBadges);
-			} catch (error) {
-				console.debug('Error fetching achievements:', error);
-				setBadges(
-					ACHIEVEMENTS.map((a) => ({
-						id: a.id,
-						name: a.name,
-						icon: null,
-						iconBg: 'transparent',
-						unlocked: false,
-						category: a.category,
-						description: a.description,
-					}))
-				);
-			} finally {
-				setIsLoading(false);
-			}
-		}
-
-		fetchAchievements();
-	}, []);
+		return {
+			id: achievement.id,
+			name: unlocked ? unlockedRecord?.title || achievement.name : achievement.name,
+			icon: unlocked ? achievement.icon : null,
+			iconBg: unlocked ? achievement.iconBg : 'transparent',
+			unlocked,
+			category: achievement.category,
+			description: achievement.description,
+		};
+	});
 
 	const filteredBadges =
 		activeTab === 'all'

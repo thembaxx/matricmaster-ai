@@ -7,6 +7,7 @@ import {
 	SparklesIcon,
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
+import { useQuery } from '@tanstack/react-query';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
@@ -29,12 +30,14 @@ interface Subscription {
 	currentPeriodEnd: Date;
 }
 
+interface SubscriptionData {
+	plans: Plan[];
+	subscription: Subscription | null;
+}
+
 export default function SubscriptionPage() {
 	const router = useRouter();
 	const searchParams = useSearchParams();
-	const [plans, setPlans] = useState<Plan[]>([]);
-	const [subscription, setSubscription] = useState<Subscription | null>(null);
-	const [loading, setLoading] = useState(true);
 	const [processing, setProcessing] = useState<string | null>(null);
 
 	const success = searchParams.get('success');
@@ -54,29 +57,19 @@ export default function SubscriptionPage() {
 		}
 	}, [success, cancelled, error, router]);
 
-	useEffect(() => {
-		async function fetchData() {
-			try {
-				const response = await fetch('/api/subscription/plans', {
-					headers: {
-						'Content-Type': 'application/json',
-					},
-				});
-				const data = await response.json();
-				if (data.plans) {
-					setPlans(data.plans);
-				}
-				if (data.subscription) {
-					setSubscription(data.subscription);
-				}
-			} catch (err) {
-				console.debug('Failed to fetch plans:', err);
-			} finally {
-				setLoading(false);
-			}
-		}
-		fetchData();
-	}, []);
+	const { data: subscriptionData, isLoading } = useQuery<SubscriptionData>({
+		queryKey: ['subscription-plans'],
+		queryFn: async () => {
+			const response = await fetch('/api/subscription/plans', {
+				headers: { 'Content-Type': 'application/json' },
+			});
+			const data = await response.json();
+			return data as SubscriptionData;
+		},
+	});
+
+	const plans = subscriptionData?.plans ?? [];
+	const subscription = subscriptionData?.subscription ?? null;
 
 	const handleSubscribe = async (planId: string) => {
 		setProcessing(planId);
@@ -112,7 +105,7 @@ export default function SubscriptionPage() {
 
 	const isCurrentPlan = (planId: string) => subscription?.planId === planId;
 
-	if (loading) {
+	if (isLoading) {
 		return (
 			<div className="min-h-screen flex items-center justify-center">
 				<div className="flex flex-col items-center gap-4">

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 
 export interface QuizOption {
 	id: string;
@@ -69,11 +69,8 @@ export function useQuizState({
 	quiz,
 	startImmediately = true,
 }: UseQuizStateOptions): QuizStateReturn {
-	const startTimeRef = useRef<number | null>(null);
+	const startTimeRef = useRef<number | null>(startImmediately ? Date.now() : null);
 	const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-	const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
-	const [isChecked, setIsChecked] = useState(false);
-	const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
 	const [elapsedSeconds, setElapsedSeconds] = useState(0);
 	const [score, setScore] = useState(0);
 	const [mode, setMode] = useState<'test' | 'practice'>('test');
@@ -81,21 +78,23 @@ export function useQuizState({
 
 	const currentQuestion = quiz.questions[currentQuestionIndex] ?? null;
 
-	useEffect(() => {
-		if (startImmediately && !startTimeRef.current) {
+	const existingAnswer = currentQuestion ? answers.get(currentQuestion.id) : undefined;
+	const currentSelectedAnswer = existingAnswer?.selectedOption ?? null;
+	const currentIsChecked = existingAnswer?.selectedOption !== null;
+	const currentIsCorrect = existingAnswer?.isCorrect ?? null;
+
+	const timerRef = useRef<NodeJS.Timeout | null>(null);
+	const initializedRef = useRef(false);
+
+	if (typeof window !== 'undefined' && startImmediately && !initializedRef.current) {
+		initializedRef.current = true;
+		if (!startTimeRef.current) {
 			startTimeRef.current = Date.now();
 		}
-	}, [startImmediately]);
-
-	useEffect(() => {
-		if (!startTimeRef.current) return;
-
-		const timer = setInterval(() => {
+		timerRef.current = setInterval(() => {
 			setElapsedSeconds(Math.floor((Date.now() - startTimeRef.current!) / 1000));
 		}, 1000);
-
-		return () => clearInterval(timer);
-	}, []);
+	}
 
 	const formatTime = useCallback((seconds: number): string => {
 		return `${Math.floor(seconds / 60)}:${(seconds % 60).toString().padStart(2, '0')}`;
@@ -106,77 +105,73 @@ export function useQuizState({
 	const unansweredCount = quiz.questions.length - answers.size;
 	const progress = ((currentQuestionIndex + 1) / quiz.questions.length) * 100;
 
-	const resetQuestionState = useCallback(() => {
-		const existingAnswer = currentQuestion ? answers.get(currentQuestion.id) : undefined;
-		if (existingAnswer) {
-			setSelectedAnswer(existingAnswer.selectedOption);
-			setIsChecked(existingAnswer.selectedOption !== null);
-			setIsCorrect(existingAnswer.isCorrect);
-		} else {
-			setSelectedAnswer(null);
-			setIsChecked(false);
-			setIsCorrect(null);
-		}
-	}, [currentQuestion, answers]);
-
 	const nextQuestion = useCallback(() => {
 		if (currentQuestionIndex < quiz.questions.length - 1) {
 			setCurrentQuestionIndex((prev) => prev + 1);
-			resetQuestionState();
 		}
-	}, [currentQuestionIndex, quiz.questions.length, resetQuestionState]);
+	}, [currentQuestionIndex, quiz.questions.length]);
 
 	const prevQuestion = useCallback(() => {
 		if (currentQuestionIndex > 0) {
 			setCurrentQuestionIndex((prev) => prev - 1);
-			resetQuestionState();
 		}
-	}, [currentQuestionIndex, resetQuestionState]);
+	}, [currentQuestionIndex]);
 
 	const goToQuestion = useCallback(
 		(index: number) => {
 			if (index >= 0 && index < quiz.questions.length) {
 				setCurrentQuestionIndex(index);
-				resetQuestionState();
 			}
 		},
-		[quiz.questions.length, resetQuestionState]
+		[quiz.questions.length]
 	);
 
-	const selectAnswer = useCallback((optionId: string) => {
-		setSelectedAnswer(optionId);
-	}, []);
+	const selectAnswer = useCallback(
+		(optionId: string) => {
+			if (!currentQuestion) return;
+			setAnswers((prev) => {
+				const updated = new Map(prev);
+				updated.set(currentQuestion.id, {
+					questionId: currentQuestion.id,
+					selectedOption: optionId,
+					isCorrect: null,
+				});
+				return updated;
+			});
+		},
+		[currentQuestion]
+	);
 
 	const checkAnswer = useCallback((): boolean => {
-		if (!currentQuestion || selectedAnswer === null) return false;
+		if (!currentQuestion || currentSelectedAnswer === null) return false;
 
-		const correct = selectedAnswer === currentQuestion.correctAnswer;
-
-		setIsCorrect(correct);
-		setIsChecked(true);
-
-		if (correct) {
-			setScore((prev) => prev + 1);
-		}
+		const correct = currentSelectedAnswer === currentQuestion.correctAnswer;
 
 		setAnswers((prev) => {
 			const updated = new Map(prev);
 			updated.set(currentQuestion.id, {
 				questionId: currentQuestion.id,
-				selectedOption: selectedAnswer,
+				selectedOption: currentSelectedAnswer,
 				isCorrect: correct,
 			});
 			return updated;
 		});
 
+		if (correct) {
+			setScore((prev) => prev + 1);
+		}
+
 		return correct;
-	}, [currentQuestion, selectedAnswer]);
+	}, [currentQuestion, currentSelectedAnswer]);
 
 	const resetQuestion = useCallback(() => {
-		setSelectedAnswer(null);
-		setIsChecked(false);
-		setIsCorrect(null);
-	}, []);
+		if (!currentQuestion) return;
+		setAnswers((prev) => {
+			const updated = new Map(prev);
+			updated.delete(currentQuestion.id);
+			return updated;
+		});
+	}, [currentQuestion]);
 
 	const getQuestionStatus = useCallback(
 		(index: number): 'correct' | 'incorrect' | 'unanswered' | 'current' => {
@@ -197,16 +192,12 @@ export function useQuizState({
 		[answers]
 	);
 
-	useEffect(() => {
-		resetQuestionState();
-	}, [resetQuestionState]);
-
 	return {
 		currentQuestionIndex,
 		currentQuestion,
-		selectedAnswer,
-		isChecked,
-		isCorrect,
+		selectedAnswer: currentSelectedAnswer,
+		isChecked: currentIsChecked,
+		isCorrect: currentIsCorrect,
 		elapsedSeconds,
 		elapsedFormatted: formatTime(elapsedSeconds),
 		score,

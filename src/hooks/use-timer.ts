@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 
 export type TimerMode = 'focus' | 'short-break' | 'long-break';
 
@@ -66,11 +66,14 @@ export function useTimer(config: TimerConfig = {}): UseTimerReturn {
 	const [cycles, setCycles] = useState(0);
 
 	const intervalRef = useRef<NodeJS.Timeout | null>(null);
-	const onCompleteRef = useRef(fullConfig.onComplete);
-
-	useEffect(() => {
-		onCompleteRef.current = fullConfig.onComplete;
-	}, [fullConfig.onComplete]);
+	const modeRef = useRef(mode);
+	const cyclesRef = useRef(cycles);
+	const fullConfigRef = useRef(fullConfig);
+	const isRunningRef = useRef(isRunning);
+	modeRef.current = mode;
+	cyclesRef.current = cycles;
+	fullConfigRef.current = fullConfig;
+	isRunningRef.current = isRunning;
 
 	const clearTimer = useCallback(() => {
 		if (intervalRef.current) {
@@ -79,61 +82,7 @@ export function useTimer(config: TimerConfig = {}): UseTimerReturn {
 		}
 	}, []);
 
-	const handleComplete = useCallback(() => {
-		clearTimer();
-		setIsRunning(false);
-
-		const completedCycles = mode === 'focus' ? cycles + 1 : cycles;
-		if (mode === 'focus') {
-			setCycles((c) => c + 1);
-		}
-
-		onCompleteRef.current?.(mode, completedCycles);
-
-		if (mode === 'focus') {
-			const isLongBreak = (cycles + 1) % fullConfig.longBreakInterval === 0;
-			const nextMode: TimerMode = isLongBreak ? 'long-break' : 'short-break';
-			const nextDuration = getDuration(nextMode);
-
-			setModeState(nextMode);
-			setTimeRemaining(nextDuration);
-			setTotalTime(nextDuration);
-
-			if (fullConfig.autoStartBreaks) {
-				setTimeout(() => setIsRunning(true), 100);
-			}
-		} else {
-			setModeState('focus');
-			const focusDuration = getDuration('focus');
-			setTimeRemaining(focusDuration);
-			setTotalTime(focusDuration);
-
-			if (fullConfig.autoStartFocus) {
-				setTimeout(() => setIsRunning(true), 100);
-			}
-		}
-	}, [mode, cycles, clearTimer, fullConfig, getDuration]);
-
-	useEffect(() => {
-		if (isRunning && timeRemaining > 0) {
-			intervalRef.current = setInterval(() => {
-				setTimeRemaining((prev) => {
-					if (prev <= 1) {
-						return 0;
-					}
-					return prev - 1;
-				});
-			}, 1000);
-		}
-
-		return clearTimer;
-	}, [isRunning, clearTimer, timeRemaining]);
-
-	useEffect(() => {
-		if (isRunning && timeRemaining === 0) {
-			handleComplete();
-		}
-	}, [timeRemaining, isRunning, handleComplete]);
+	const handleCompleteRef = useRef<() => void>(() => {});
 
 	const start = useCallback(() => {
 		setIsRunning(true);
@@ -157,8 +106,8 @@ export function useTimer(config: TimerConfig = {}): UseTimerReturn {
 	const skip = useCallback(() => {
 		clearTimer();
 		setIsRunning(false);
-		handleComplete();
-	}, [clearTimer, handleComplete]);
+		handleCompleteRef.current();
+	}, [clearTimer]);
 
 	const setMode = useCallback(
 		(newMode: TimerMode) => {
@@ -191,7 +140,64 @@ export function useTimer(config: TimerConfig = {}): UseTimerReturn {
 		[timeRemaining]
 	);
 
+	const handleComplete = useCallback(() => {
+		clearTimer();
+		setIsRunning(false);
+
+		const currentMode = modeRef.current;
+		const completedCycles = currentMode === 'focus' ? cyclesRef.current + 1 : cyclesRef.current;
+		if (currentMode === 'focus') {
+			setCycles((c) => c + 1);
+		}
+
+		fullConfigRef.current.onComplete?.(currentMode, completedCycles);
+
+		const localGetDuration = getDuration;
+		const localFullConfig = fullConfigRef.current;
+
+		if (currentMode === 'focus') {
+			const isLongBreak = (cyclesRef.current + 1) % localFullConfig.longBreakInterval === 0;
+			const nextMode: TimerMode = isLongBreak ? 'long-break' : 'short-break';
+			const nextDuration = localGetDuration(nextMode);
+
+			setModeState(nextMode);
+			setTimeRemaining(nextDuration);
+			setTotalTime(nextDuration);
+
+			if (localFullConfig.autoStartBreaks) {
+				setTimeout(() => setIsRunning(true), 100);
+			}
+		} else {
+			setModeState('focus');
+			const focusDuration = localGetDuration('focus');
+			setTimeRemaining(focusDuration);
+			setTotalTime(focusDuration);
+
+			if (localFullConfig.autoStartFocus) {
+				setTimeout(() => setIsRunning(true), 100);
+			}
+		}
+	}, [clearTimer, getDuration]);
+
+	handleCompleteRef.current = handleComplete;
+
 	const progress = totalTime > 0 ? ((totalTime - timeRemaining) / totalTime) * 100 : 0;
+
+	if (isRunning && !intervalRef.current) {
+		intervalRef.current = setInterval(() => {
+			setTimeRemaining((prev) => {
+				if (prev <= 1) {
+					clearTimer();
+					setIsRunning(false);
+					handleCompleteRef.current();
+					return 0;
+				}
+				return prev - 1;
+			});
+		}, 1000);
+	} else if (!isRunning && intervalRef.current) {
+		clearTimer();
+	}
 
 	return {
 		timeRemaining,

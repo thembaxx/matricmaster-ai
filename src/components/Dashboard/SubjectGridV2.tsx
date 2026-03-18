@@ -7,9 +7,9 @@ import {
 	Compass01Icon,
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
+import { useQuery } from '@tanstack/react-query';
 import { AnimatePresence, m } from 'framer-motion';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
 import { getEnrolledSubjectsAction } from '@/lib/db/actions';
 import { cn } from '@/lib/utils';
 
@@ -49,17 +49,12 @@ const MOCK_SUBJECTS: EnrolledSubject[] = [
 
 export function SubjectGrid() {
 	const router = useRouter();
-	const [subjects, setSubjects] = useState<EnrolledSubject[]>([]);
-	const [isLoading, setIsLoading] = useState(true);
+	const { data: subjectsData, isLoading } = useQuery({
+		queryKey: ['enrolled-subjects'],
+		queryFn: () => getEnrolledSubjectsAction(),
+	});
 
-	useEffect(() => {
-		async function load() {
-			const data = await getEnrolledSubjectsAction();
-			setSubjects(data.length > 0 ? data : MOCK_SUBJECTS);
-			setIsLoading(false);
-		}
-		load();
-	}, []);
+	const subjects = (subjectsData?.length ?? 0) > 0 ? (subjectsData ?? []) : MOCK_SUBJECTS;
 
 	if (isLoading) {
 		return (

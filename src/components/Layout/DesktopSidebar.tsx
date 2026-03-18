@@ -39,7 +39,7 @@ import {
 import { HugeiconsIcon } from '@hugeicons/react';
 import { m } from 'framer-motion';
 import Link from 'next/link';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -184,14 +184,11 @@ export function AppSidebar({ user, pathname, theme, onToggleTheme }: AppSidebarP
 			.filter((section) => section.items.length > 0);
 	}, [searchQuery]);
 
-	useEffect(() => {
-		if (searchQuery.trim() && filteredSections.length > 0) {
-			const hasOpenSection = filteredSections.some((s) => s.title === openSection);
-			if (!hasOpenSection) {
-				setOpenSection(filteredSections[0].title);
-			}
-		}
-	}, [searchQuery, filteredSections, openSection]);
+	const hasOpenSection = filteredSections.some((s) => s.title === openSection);
+	const shouldAutoOpen = searchQuery.trim() && filteredSections.length > 0 && !hasOpenSection;
+	const initialSection = filteredSections[0]?.title ?? openSection;
+
+	const computedOpenSection = shouldAutoOpen ? initialSection : openSection;
 
 	const handleSectionToggle = (sectionTitle: string) => {
 		setOpenSection((current) => (current === sectionTitle ? null : sectionTitle));
@@ -236,7 +233,7 @@ export function AppSidebar({ user, pathname, theme, onToggleTheme }: AppSidebarP
 									{section.title}
 								</span>
 								<m.div
-									animate={{ rotate: openSection === section.title ? 180 : 0 }}
+									animate={{ rotate: computedOpenSection === section.title ? 180 : 0 }}
 									transition={{ duration: 0.2 }}
 								>
 									<HugeiconsIcon
@@ -248,8 +245,8 @@ export function AppSidebar({ user, pathname, theme, onToggleTheme }: AppSidebarP
 							<m.div
 								initial={false}
 								animate={{
-									height: openSection === section.title ? 'auto' : 0,
-									opacity: openSection === section.title ? 1 : 0,
+									height: computedOpenSection === section.title ? 'auto' : 0,
+									opacity: computedOpenSection === section.title ? 1 : 0,
 								}}
 								transition={{ duration: 0.2 }}
 								className="overflow-hidden"

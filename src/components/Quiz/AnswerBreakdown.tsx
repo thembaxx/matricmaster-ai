@@ -2,7 +2,7 @@
 
 import { Cancel01Icon, CheckmarkCircle02Icon, SparklesIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { useGeminiQuotaModal } from '@/contexts/GeminiQuotaModalContext';
@@ -26,25 +26,22 @@ export function AnswerBreakdown({
 	onContinue,
 }: AnswerBreakdownProps) {
 	const { triggerQuotaError } = useGeminiQuotaModal();
-	const [explanation, setExplanation] = useState<string | null>(null);
-	const [loading, setLoading] = useState(true);
 
-	useEffect(() => {
-		async function fetchExplanation() {
+	const { data: explanation, isLoading: loading } = useQuery({
+		queryKey: ['explanation', topic],
+		queryFn: async () => {
 			try {
 				const result = await getExplanation('General', topic);
-				setExplanation(result);
-			} catch (error) {
-				if (isQuotaError(error)) {
+				return result;
+			} catch (err) {
+				if (isQuotaError(err)) {
 					triggerQuotaError();
 				}
-				console.debug('Failed to fetch explanation:', error);
-			} finally {
-				setLoading(false);
+				console.debug('Failed to fetch explanation:', err);
+				return null;
 			}
-		}
-		fetchExplanation();
-	}, [topic, triggerQuotaError]);
+		},
+	});
 
 	return (
 		<Card

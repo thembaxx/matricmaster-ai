@@ -1,5 +1,6 @@
 'use client';
 
+import { useQuery } from '@tanstack/react-query';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { getAdaptiveDifficultyServer, recordQuestionAttempt } from '@/actions/spaced-repetition';
@@ -39,7 +40,6 @@ export default function Quiz({ quizId: initialQuizId }: QuizProps) {
 	const [mode, setMode] = useState<'test' | 'practice'>('test');
 	const [showSubjectSelector, setShowSubjectSelector] = useState(false);
 	const [currentSubject, setCurrentSubject] = useState('');
-	const [adaptiveHint, setAdaptiveHint] = useState<string | null>(null);
 	const [showStruggleAlert, setShowStruggleAlert] = useState(false);
 	const [currentStruggleCount, setCurrentStruggleCount] = useState(0);
 	const [difficulty, setDifficulty] = useState<'easy' | 'medium' | 'hard'>('medium');
@@ -50,33 +50,31 @@ export default function Quiz({ quizId: initialQuizId }: QuizProps) {
 	const quiz = QUIZ_DATA[quizId] || QUIZ_DATA['math-p1-2023-nov'];
 	const currentQuestion = quiz.questions[currentQuestionIndex];
 
-	useEffect(() => {
-		if (quiz?.subject && !currentSubject) setCurrentSubject(quiz.subject);
-	}, [quiz, currentSubject]);
+	// Adaptive hint query - use query data directly
+	const { data: hintData } = useQuery({
+		queryKey: ['adaptive-hint', currentQuestion?.topic],
+		queryFn: async () => {
+			if (!currentQuestion?.topic) return null;
+			try {
+				return await getAdaptiveHint(currentQuestion.topic);
+			} catch (error) {
+				if (isQuotaError(error)) triggerQuotaError();
+				return null;
+			}
+		},
+		enabled: !!currentQuestion?.topic,
+		retry: false,
+	});
 
+	// Use query data directly for adaptive hint
+	const adaptiveHint = hintData ?? null;
+
+	// Timer - KEEP: This is a legitimate timer effect
 	useEffect(() => {
 		const timer = setInterval(() => {
 			setElapsedSeconds(Math.floor((Date.now() - startTimeRef.current) / 1000));
 		}, 1000);
 		return () => clearInterval(timer);
-	}, []);
-
-	useEffect(() => {
-		async function loadHint() {
-			if (!currentQuestion?.topic) return;
-			try {
-				const hint = await getAdaptiveHint(currentQuestion.topic);
-				setAdaptiveHint(hint);
-			} catch (error) {
-				if (isQuotaError(error)) triggerQuotaError();
-			}
-		}
-		loadHint();
-	}, [currentQuestion?.topic, triggerQuotaError]);
-
-	// eslint-disable-next-line react-hooks/exhaustive-deps
-	useEffect(() => {
-		setShowStruggleAlert(false);
 	}, []);
 
 	const options = currentQuestion.options.map((o) => ({

@@ -11,8 +11,9 @@ import {
 	UserIcon,
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
+import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -76,8 +77,6 @@ const GOAL_TYPES: { type: GoalType; label: string; icon: string; xpPerUnit: numb
 
 export default function ParentDashboard({ userName = 'Student' }: ParentDashboardProps) {
 	const router = useRouter();
-	const [isLoading, setIsLoading] = useState(true);
-	const [data, setData] = useState<InsightData | null>(null);
 	const [showAddGoal, setShowAddGoal] = useState(false);
 	const [newGoalType, setNewGoalType] = useState<GoalType>('past_papers');
 	const [newGoalTarget, setNewGoalTarget] = useState(2);
@@ -85,6 +84,23 @@ export default function ParentDashboard({ userName = 'Student' }: ParentDashboar
 	const { addGoal, getActiveGoals, getCompletedGoals } = useFocusGoalStore();
 	const activeGoals = getActiveGoals();
 	const completedGoals = getCompletedGoals();
+
+	// Fetch parent insights - refactored to useQuery pattern
+	const fetchInsights = async ({ studentName }: { studentName: string }) => {
+		const response = await fetch('/api/parent-insights', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ studentName }),
+		});
+		if (!response.ok) return null;
+		return response.json() as Promise<InsightData>;
+	};
+
+	const { data, isLoading } = useQuery({
+		queryKey: ['parent-insights', userName],
+		queryFn: () => fetchInsights({ studentName: userName }),
+		staleTime: 5 * 60 * 1000,
+	});
 
 	const handleAddGoal = () => {
 		const goalType = GOAL_TYPES.find((g) => g.type === newGoalType);
@@ -100,31 +116,6 @@ export default function ParentDashboard({ userName = 'Student' }: ParentDashboar
 		setShowAddGoal(false);
 		setNewGoalTarget(2);
 	};
-
-	useEffect(() => {
-		const fetchInsights = async () => {
-			try {
-				const response = await fetch('/api/parent-insights', {
-					method: 'POST',
-					headers: { 'Content-Type': 'application/json' },
-					body: JSON.stringify({ studentName: userName }),
-				});
-
-				if (!response.ok) {
-					return;
-				}
-
-				const result = await response.json();
-				setData(result);
-			} catch (err) {
-				console.error('Error fetching parent insights:', err);
-			} finally {
-				setIsLoading(false);
-			}
-		};
-
-		fetchInsights();
-	}, [userName]);
 
 	const displayData = data?.stats
 		? {

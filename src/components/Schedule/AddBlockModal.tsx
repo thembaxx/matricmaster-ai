@@ -2,7 +2,8 @@
 
 import { Calendar04Icon, Clock01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { useEffect, useId, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { useEffect, useId, useMemo, useState } from 'react';
 import { toast } from 'sonner';
 
 import { Button } from '@/components/ui/button';
@@ -86,13 +87,6 @@ function useMediaQuery(query: string) {
 export function AddBlockModal({ open, onOpenChange, onSuccess, editMode }: AddBlockModalProps) {
 	const isDesktop = useMediaQuery('(min-width: 1024px)');
 	const [isSubmitting, setIsSubmitting] = useState(false);
-	const [title, setTitle] = useState('');
-	const [date, setDate] = useState(getCurrentDateString());
-	const [startTime, setStartTime] = useState('14:00');
-	const [endTime, setEndTime] = useState('15:30');
-	const [repeatable, setRepeatable] = useState(false);
-	const [subjects, setSubjects] = useState<{ id: number; name: string }[]>([]);
-	const [subjectId, setSubjectId] = useState<string>('');
 
 	const titleId = useId();
 	const dateId = useId();
@@ -102,35 +96,51 @@ export function AddBlockModal({ open, onOpenChange, onSuccess, editMode }: AddBl
 
 	const isEditing = !!editMode;
 
-	useEffect(() => {
-		async function loadSubjects() {
-			const data = await getEnrolledSubjectsAction();
-			setSubjects(data);
+	const { data: subjectsData } = useQuery({
+		queryKey: ['enrolledSubjects'],
+		queryFn: () => getEnrolledSubjectsAction(),
+	});
+
+	const subjects = subjectsData ?? [];
+
+	const formState = useMemo(() => {
+		if (editMode) {
+			const start = new Date(editMode.startTime);
+			const end = new Date(editMode.endTime);
+			return {
+				title: editMode.title,
+				date: formatDateFromDate(start),
+				startTime: formatTimeFromDate(start),
+				endTime: formatTimeFromDate(end),
+				repeatable: editMode.eventType === 'recurring',
+				subjectId: editMode.subjectId ? String(editMode.subjectId) : '',
+			};
 		}
-		loadSubjects();
-	}, []);
+		return {
+			title: '',
+			date: getCurrentDateString(),
+			startTime: '14:00',
+			endTime: '15:30',
+			repeatable: false,
+			subjectId: '',
+		};
+	}, [editMode]);
+
+	const [title, setTitle] = useState(formState.title);
+	const [date, setDate] = useState(formState.date);
+	const [startTime, setStartTime] = useState(formState.startTime);
+	const [endTime, setEndTime] = useState(formState.endTime);
+	const [repeatable, setRepeatable] = useState(formState.repeatable);
+	const [subjectId, setSubjectId] = useState(formState.subjectId);
 
 	useEffect(() => {
-		if (open) {
-			if (editMode) {
-				setTitle(editMode.title);
-				const start = new Date(editMode.startTime);
-				const end = new Date(editMode.endTime);
-				setDate(formatDateFromDate(start));
-				setStartTime(formatTimeFromDate(start));
-				setEndTime(formatTimeFromDate(end));
-				setRepeatable(editMode.eventType === 'recurring');
-				setSubjectId(editMode.subjectId ? String(editMode.subjectId) : '');
-			} else {
-				setTitle('');
-				setDate(getCurrentDateString());
-				setStartTime('14:00');
-				setEndTime('15:30');
-				setRepeatable(false);
-				setSubjectId('');
-			}
-		}
-	}, [open, editMode]);
+		setTitle(formState.title);
+		setDate(formState.date);
+		setStartTime(formState.startTime);
+		setEndTime(formState.endTime);
+		setRepeatable(formState.repeatable);
+		setSubjectId(formState.subjectId);
+	}, [formState]);
 
 	const resetForm = () => {
 		setTitle('');

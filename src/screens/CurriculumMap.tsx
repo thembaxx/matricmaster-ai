@@ -4,7 +4,7 @@ import { ArrowLeft01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { AIRecommendations } from '@/components/Curriculum/AIRecommendations';
 import { CurriculumHeader } from '@/components/Curriculum/CurriculumHeader';
 import { TopicDetailsModal } from '@/components/Curriculum/TopicDetailsModal';
@@ -28,7 +28,6 @@ export default function CurriculumMap() {
 	const router = useRouter();
 	const [searchQuery, setSearchQuery] = useState('');
 	const [statusFilter, setStatusFilter] = useState<FilterType>('all');
-	const [customTopics, setCustomTopics] = useState<Record<string, Topic[]>>({});
 	const [newTopicName, setNewTopicName] = useState('');
 	const [userXP] = useState(2450);
 	const [userStreak] = useState(12);
@@ -46,12 +45,13 @@ export default function CurriculumMap() {
 		setShowAddTopic,
 	} = useTopicNavigation(CURRICULUM_DATA.slice(0, 2).map((s) => s.id));
 
-	useEffect(() => {
-		const loaded = loadCustomTopics();
-		setCustomTopics(loaded);
-	}, []);
+	// Initialize custom topics from localStorage
+	const [customTopics, setCustomTopics] = useState<Record<string, Topic[]>>(() =>
+		loadCustomTopics()
+	);
 
-	useEffect(() => {
+	// Persist custom topics to localStorage when they change
+	useMemo(() => {
 		saveCustomTopics(customTopics);
 	}, [customTopics]);
 

@@ -2,7 +2,8 @@
 
 import { Add01Icon, DatabaseIcon, Upload01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useCallback, useMemo, useState } from 'react';
 import { toast } from 'sonner';
 import { FilterBar } from '@/components/CMS/FilterBar';
 import { PaperManager } from '@/components/CMS/PaperManager';
@@ -29,7 +30,6 @@ export default function CMS() {
 	const [questions, setQuestions] = useState<Question[]>([]);
 	const [users, setUsers] = useState<User[]>([]);
 	const [allPastPapers, setAllPastPapers] = useState<PastPaper[]>([]);
-	const [loading, setLoading] = useState(true);
 	const [seeding, setSeeding] = useState(false);
 	const [activeTab, setActiveTab] = useState('questions');
 	const [isPdfDrawerOpen, setIsPdfDrawerOpen] = useState(false);
@@ -43,9 +43,11 @@ export default function CMS() {
 
 	const subjectMap = useSubjectMap(subjects);
 
-	const loadData = useCallback(async () => {
-		try {
-			setLoading(true);
+	const queryClient = useQueryClient();
+
+	const { isLoading } = useQuery({
+		queryKey: ['cms-data'],
+		queryFn: async () => {
 			const [subjectsData, questionsData, usersData, pastPapersData] = await Promise.all([
 				getSubjectsAction(),
 				getQuestionsAction({}),
@@ -56,16 +58,13 @@ export default function CMS() {
 			setQuestions(questionsData);
 			setUsers(usersData);
 			setAllPastPapers(pastPapersData);
-		} catch (error) {
-			console.debug('Failed to load data:', error);
-		} finally {
-			setLoading(false);
-		}
-	}, []);
+			return { subjectsData, questionsData, usersData, pastPapersData };
+		},
+	});
 
-	useEffect(() => {
-		loadData();
-	}, [loadData]);
+	const refetchData = useCallback(async () => {
+		await queryClient.refetchQueries({ queryKey: ['cms-data'] });
+	}, [queryClient]);
 
 	const handleSeedDatabase = async () => {
 		if (!confirm('This will seed the database with sample data. Continue?')) return;
@@ -75,7 +74,7 @@ export default function CMS() {
 			const result = await seedDatabaseAction();
 			if (result.success) {
 				toast.success(result.message);
-				await loadData();
+				await refetchData();
 			} else {
 				toast.error(`Seeding failed: ${result.message}`);
 			}
@@ -121,7 +120,7 @@ export default function CMS() {
 				isOpen={isPdfDrawerOpen}
 				onClose={() => setIsPdfDrawerOpen(false)}
 				subjects={subjects}
-				onSuccess={loadData}
+				onSuccess={refetchData}
 			/>
 
 			<header className="px-4 sm:px-8 pt-6 sm:pt-8 pb-6 bg-background shrink-0 space-y-6 sm:space-y-8">
@@ -211,7 +210,7 @@ export default function CMS() {
 
 			<main className="flex-1 overflow-hidden px-4 sm:px-8">
 				<div className="h-full no-scrollbar overflow-y-auto">
-					{loading ? (
+					{isLoading ? (
 						<div className="flex items-center justify-center py-40">
 							<div className="animate-spin rounded-full h-12 w-12 border-4 border-primary border-t-transparent" />
 						</div>
@@ -222,7 +221,7 @@ export default function CMS() {
 									questions={filteredQuestions}
 									subjects={subjects}
 									subjectMap={subjectMap}
-									onRefresh={loadData}
+									onRefresh={refetchData}
 									openCreateTrigger={createQuestionTrigger}
 								/>
 							)}

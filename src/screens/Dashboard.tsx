@@ -1,7 +1,8 @@
 'use client';
 
+import { useQuery } from '@tanstack/react-query';
 import { m } from 'framer-motion';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { ActivityFeed } from '@/components/Dashboard/ActivityFeed';
 import { AdaptiveScheduleBanner } from '@/components/Dashboard/AdaptiveScheduleBanner';
 import { AITutorNudge } from '@/components/Dashboard/AITutorNudge';
@@ -61,35 +62,30 @@ export default function Dashboard({
 }: DashboardProps) {
 	const [tasks, setTasks] = useState<Record<string, StudyTask[]>>(DEMO_TASKS);
 	const [expanded, setExpanded] = useState<Record<string, boolean>>({ high: true, medium: true });
-	const [weaknessData, setWeaknessData] = useState<
-		{ topic: string; mistakeCount: number; subject: string }[]
-	>([]);
-	const [scheduleChanges, setScheduleChanges] = useState<{
-		rescheduledGoals: number;
-		extraPracticeAdded: number;
-	} | null>(null);
+	const { data: weaknessData = [] } = useQuery({
+		queryKey: ['growth-map'],
+		queryFn: async () => {
+			const res = await fetch('/api/growth-map');
+			return res.json();
+		},
+		select: (data) =>
+			(Array.isArray(data) ? data : []) as {
+				topic: string;
+				mistakeCount: number;
+				subject: string;
+			}[],
+	});
 
-	useEffect(() => {
-		fetch('/api/growth-map')
-			.then((res) => res.json())
-			.then((data) => {
-				if (Array.isArray(data)) {
-					setWeaknessData(data);
-				}
-			})
-			.catch(console.error);
-	}, []);
+	const { data: scheduleData } = useQuery({
+		queryKey: ['adaptive-schedule'],
+		queryFn: async () => {
+			const res = await fetch('/api/adaptive-schedule', { method: 'POST' });
+			return res.json();
+		},
+		select: (data) => (data.rescheduledGoals > 0 || data.extraPracticeAdded > 0 ? data : null),
+	});
 
-	useEffect(() => {
-		fetch('/api/adaptive-schedule', { method: 'POST' })
-			.then((res) => res.json())
-			.then((data) => {
-				if (data.rescheduledGoals > 0 || data.extraPracticeAdded > 0) {
-					setScheduleChanges(data);
-				}
-			})
-			.catch(console.error);
-	}, []);
+	const scheduleChanges = scheduleData ?? null;
 
 	const progress = initialProgress ?? MOCK_PROGRESS;
 	const streak = initialStreak ?? MOCK_STREAK;
