@@ -1,5 +1,3 @@
-'use server';
-
 import { addDays, differenceInDays, format, startOfWeek } from 'date-fns';
 import { asc, desc, eq } from 'drizzle-orm';
 import { getAuth } from '@/lib/auth';

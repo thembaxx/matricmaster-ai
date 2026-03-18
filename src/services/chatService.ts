@@ -1,5 +1,3 @@
-'use server';
-
 import { desc, eq } from 'drizzle-orm';
 import { getAuth } from '@/lib/auth';
 import { dbManager } from '@/lib/db';
