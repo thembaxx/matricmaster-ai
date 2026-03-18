@@ -502,6 +502,48 @@
   animation: tiimo-shimmer 1.5s ease-in-out infinite;
 }
 
+/* Gradient shimmer for subject backgrounds */
+@keyframes gradient-shimmer {
+  0% { transform: translateX(-100%) rotate(45deg); }
+  100% { transform: translateX(200%) rotate(45deg); }
+}
+
+.animate-gradient-shimmer {
+  animation: gradient-shimmer 4s linear infinite;
+}
+
+/* Confetti fall animation */
+@keyframes confetti-fall {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+.animate-confetti {
+  animation: confetti-fall 2s ease-out forwards;
+}
+
+/* Fire/ember animation for streak */
+@keyframes ember-rise {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-30px) scale(0);
+    opacity: 0;
+  }
+}
+
+.animate-ember {
+  animation: ember-rise 1s ease-out forwards;
+}
+
 /* === SIDEBAR & DRAWER STYLING === */
 
 :root {

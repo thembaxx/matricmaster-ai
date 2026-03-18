@@ -17,6 +17,11 @@ export interface Subject {
 	bgColor: string;
 	icon: string;
 	fontFamily: string;
+	gradient?: {
+		primary: string;
+		secondary: string;
+		accent: string;
+	};
 }
 
 export const NSC_SUPPORTED_SUBJECTS: SubjectId[] = [
@@ -51,6 +56,7 @@ export const SUBJECTS: Record<SubjectId, Subject> = {
 		bgColor: 'bg-mathematics',
 		icon: 'Calculator',
 		fontFamily: 'var(--font-noto-sans-math)',
+		gradient: { primary: '#667eea', secondary: '#764ba2', accent: '#a855f7' },
 	},
 	physics: {
 		id: 'physics',
@@ -60,6 +66,7 @@ export const SUBJECTS: Record<SubjectId, Subject> = {
 		bgColor: 'bg-physics',
 		icon: 'Atom',
 		fontFamily: 'var(--font-noto-sans-math)',
+		gradient: { primary: '#11998e', secondary: '#38ef7d', accent: '#34d399' },
 	},
 	chemistry: {
 		id: 'chemistry',
@@ -69,6 +76,7 @@ export const SUBJECTS: Record<SubjectId, Subject> = {
 		bgColor: 'bg-chemistry',
 		icon: 'FlaskConical',
 		fontFamily: 'var(--font-noto-sans-math)',
+		gradient: { primary: '#fc4a1a', secondary: '#f7b733', accent: '#fb923c' },
 	},
 	'life-sciences': {
 		id: 'life-sciences',
@@ -78,6 +86,7 @@ export const SUBJECTS: Record<SubjectId, Subject> = {
 		bgColor: 'bg-life-sciences',
 		icon: 'Microscope',
 		fontFamily: 'var(--font-source-serif4)',
+		gradient: { primary: '#56ab2f', secondary: '#a8e063', accent: '#84cc16' },
 	},
 	english: {
 		id: 'english',
@@ -87,6 +96,7 @@ export const SUBJECTS: Record<SubjectId, Subject> = {
 		bgColor: 'bg-english',
 		icon: 'BookOpen',
 		fontFamily: 'var(--font-literata)',
+		gradient: { primary: '#c9d6ff', secondary: '#e2e2e2', accent: '#94a3b8' },
 	},
 	geography: {
 		id: 'geography',
@@ -96,6 +106,7 @@ export const SUBJECTS: Record<SubjectId, Subject> = {
 		bgColor: 'bg-geography',
 		icon: 'Globe',
 		fontFamily: 'var(--font-dm-sans)',
+		gradient: { primary: '#8e2de2', secondary: '#4a00e0', accent: '#a855f7' },
 	},
 	history: {
 		id: 'history',
@@ -105,6 +116,7 @@ export const SUBJECTS: Record<SubjectId, Subject> = {
 		bgColor: 'bg-history',
 		icon: 'Scroll',
 		fontFamily: 'var(--font-crimson-pro)',
+		gradient: { primary: '#cb2d3e', secondary: '#ef473a', accent: '#f87171' },
 	},
 	accounting: {
 		id: 'accounting',
@@ -114,6 +126,7 @@ export const SUBJECTS: Record<SubjectId, Subject> = {
 		bgColor: 'bg-accounting',
 		icon: 'Calculator',
 		fontFamily: 'var(--font-jetbrains-mono)',
+		gradient: { primary: '#0f4c75', secondary: '#3282b8', accent: '#60a5fa' },
 	},
 	economics: {
 		id: 'economics',
@@ -123,6 +136,7 @@ export const SUBJECTS: Record<SubjectId, Subject> = {
 		bgColor: 'bg-economics',
 		icon: 'ChartLine',
 		fontFamily: 'var(--font-dm-sans)',
+		gradient: { primary: '#f59e0b', secondary: '#d97706', accent: '#fbbf24' },
 	},
 };
 
@@ -150,4 +164,23 @@ export function getSubjectIcon(subjectId: string): string {
 
 export function getSubjectFont(subjectId: string): string {
 	return SUBJECTS[subjectId as SubjectId]?.fontFamily ?? 'var(--font-body)';
+}
+
+export function getSubjectGradient(subjectId: string): {
+	primary: string;
+	secondary: string;
+	accent: string;
+} {
+	return (
+		SUBJECTS[subjectId as SubjectId]?.gradient ?? {
+			primary: '#667eea',
+			secondary: '#764ba2',
+			accent: '#a855f7',
+		}
+	);
+}
+
+export function getSubjectGradientArray(subjectId: string): string[] {
+	const gradient = getSubjectGradient(subjectId);
+	return [gradient.primary, gradient.secondary, gradient.accent];
 }
