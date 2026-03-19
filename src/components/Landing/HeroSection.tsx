@@ -117,7 +117,9 @@ export function HeroSection({ onAuthRequired }: HeroSectionProps) {
 						))}
 					</div>
 					<div className="text-left">
-						<p className="text-sm font-semibold font-[family-name:var(--font-geist-mono)]">50,000+ students</p>
+						<p className="text-sm font-semibold font-[family-name:var(--font-geist-mono)]">
+							50,000+ students
+						</p>
 						<p className="text-xs text-muted-foreground text-lowercase">trust {appConfig.name}</p>
 					</div>
 				</m.div>
@@ -170,7 +172,9 @@ export function HeroSection({ onAuthRequired }: HeroSectionProps) {
 								<div className="h-1 w-12 bg-secondary rounded-full overflow-hidden">
 									<div className="h-full w-3/4 bg-subject-math rounded-full" />
 								</div>
-								<span className="text-[8px] font-medium mt-1 font-[family-name:var(--font-geist-mono)]">math 92%</span>
+								<span className="text-[8px] font-medium mt-1 font-[family-name:var(--font-geist-mono)]">
+									math 92%
+								</span>
 							</m.div>
 
 							<m.div
@@ -189,7 +193,9 @@ export function HeroSection({ onAuthRequired }: HeroSectionProps) {
 								<div className="h-1 w-12 bg-secondary rounded-full overflow-hidden">
 									<div className="h-full w-1/2 bg-subject-life rounded-full" />
 								</div>
-								<span className="text-[8px] font-medium mt-1 font-[family-name:var(--font-geist-mono)]">physics 78%</span>
+								<span className="text-[8px] font-medium mt-1 font-[family-name:var(--font-geist-mono)]">
+									physics 78%
+								</span>
 							</m.div>
 						</div>
 					</div>
@@ -222,7 +228,9 @@ export function HeroSection({ onAuthRequired }: HeroSectionProps) {
 								<span className="text-lg">🔥</span>
 							</div>
 							<div>
-								<p className="text-lg font-bold font-[family-name:var(--font-geist-mono)]">12 day</p>
+								<p className="text-lg font-bold font-[family-name:var(--font-geist-mono)]">
+									12 day
+								</p>
 								<p className="text-xs text-muted-foreground">study streak</p>
 							</div>
 						</div>

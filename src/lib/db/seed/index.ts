@@ -11,6 +11,7 @@ import { auth } from '@/lib/auth';
 import { users } from '../better-auth-schema';
 import { dbManager } from '../index';
 import { options, pastPapers, questions, subjects } from '../schema';
+import { seedCurriculumData } from './curriculum-data';
 import { englishQuestions } from './english-questions';
 import { historyQuestions } from './history-questions';
 import { mathematicsQuestions } from './mathematics-questions';
@@ -393,6 +394,9 @@ export async function seedDatabase() {
 		} else {
 			console.log('✓ Test user already exists.');
 		}
+
+		console.log('\n🔄 Seeding curriculum data...');
+		await seedCurriculumData();
 
 		console.log('\n✅ Database seeding completed successfully!');
 	} catch (error) {
