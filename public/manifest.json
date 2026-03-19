@@ -1,19 +1,21 @@
 {
-	"name": "MatricMaster AI",
-	"short_name": "MatricMaster",
-	"description": "Master your Matric exams through interactive practice. Access past papers, step-by-step guides, and AI-powered explanations for South African Grade 12 students.",
+	"name": "Lumi - NSC Grade 12 Study App",
+	"short_name": "Lumi",
+	"description": "Pass your Matric with confidence. Practice NSC past papers, get AI-powered explanations, and track your progress offline.",
 	"start_url": "/",
 	"display": "standalone",
-	"background_color": "#ffffff",
+	"background_color": "#09090b",
 	"theme_color": "#2563eb",
 	"orientation": "portrait-primary",
 	"scope": "/",
+	"lang": "en",
+	"categories": ["education", "productivity"],
 	"icons": [
 		{
 			"src": "/icon-192.png",
 			"sizes": "192x192",
 			"type": "image/png",
-			"purpose": "any maskable"
+			"purpose": "any"
 		},
 		{
 			"src": "/icon-512.png",
@@ -22,7 +24,6 @@
 			"purpose": "any maskable"
 		}
 	],
-	"categories": ["education", "productivity"],
 	"shortcuts": [
 		{
 			"name": "Dashboard",
@@ -35,17 +36,10 @@
 			"description": "Access past exam papers"
 		},
 		{
-			"name": "AI Tutor",
-			"url": "/ai-tutor",
-			"description": "Chat with your AI tutor"
+			"name": "Offline Storage",
+			"url": "/offline",
+			"description": "Manage offline content"
 		}
 	],
-	"screenshots": [
-		{
-			"src": "/screenshot-mobile.png",
-			"sizes": "750x1334",
-			"type": "image/png",
-			"form_factor": "narrow"
-		}
-	]
+	"prefer_related_applications": false
 }

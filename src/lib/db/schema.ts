@@ -1035,6 +1035,9 @@ export const userSettings = pgTable(
 		analyticsTracking: boolean('analytics_tracking').notNull().default(true),
 		language: varchar('language', { length: 10 }).notNull().default('en'),
 		theme: varchar('theme', { length: 20 }).notNull().default('system'),
+		curriculum: varchar('curriculum', { length: 10 }).notNull().default('NSC'),
+		homeLanguage: varchar('home_language', { length: 20 }),
+		preferredLanguage: varchar('preferred_language', { length: 20 }).notNull().default('en'),
 		updatedAt: timestamp('updated_at').defaultNow(),
 	},
 	(table) => ({

@@ -224,6 +224,9 @@ export interface CombinedSettings {
 	analyticsTracking: boolean;
 	language: string;
 	theme: string;
+	curriculum: string;
+	homeLanguage: string | null;
+	preferredLanguage: string;
 }
 
 const defaultSettings: CombinedSettings = {
@@ -236,6 +239,9 @@ const defaultSettings: CombinedSettings = {
 	analyticsTracking: true,
 	language: 'en',
 	theme: 'system',
+	curriculum: 'NSC',
+	homeLanguage: null,
+	preferredLanguage: 'en',
 };
 
 /**

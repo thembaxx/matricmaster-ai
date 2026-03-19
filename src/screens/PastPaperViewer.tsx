@@ -3,6 +3,8 @@
 import { File01Icon, Loading03Icon, SparklesIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import dynamic from 'next/dynamic';
+import { useCallback, useEffect, useState } from 'react';
+import { ContextualAIBubble } from '@/components/AI/ContextualAIBubble';
 import { ResponsiveAudioPlayer } from '@/components/AudioPlayer';
 import { PastPaperHeader } from '@/components/PastPaper/PastPaperHeader';
 import { PastPaperNavigation } from '@/components/PastPaper/PastPaperNavigation';
@@ -10,7 +12,14 @@ import { PastPaperPagination } from '@/components/PastPaper/PastPaperPagination'
 import { PastPaperQuestion } from '@/components/PastPaper/PastPaperQuestion';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { useAiContext } from '@/hooks/useAiContext';
 import { usePastPaperViewer } from '@/hooks/usePastPaperViewer';
+import {
+	downloadPastPaper,
+	getCachedPastPaper,
+	isStorageAvailable,
+} from '@/lib/offline/offline-cache';
+import { useOfflineStore } from '@/stores/useOfflineStore';
 
 // Lazy load PdfViewer to avoid SSR issues
 const PdfViewer = dynamic(() => import('@/components/PdfViewer'), {
@@ -71,6 +80,53 @@ export default function PastPaperViewer({
 		previousQuestion,
 		goToQuestion,
 	} = questionExtractor;
+
+	const { isOnline, downloadPaper } = useOfflineStore();
+	const { setContext, clearContext } = useAiContext();
+	const [isDownloading, setIsDownloading] = useState(false);
+	const [isOfflineAvailable, setIsOfflineAvailable] = useState(false);
+
+	useEffect(() => {
+		if (paper) {
+			setContext({
+				type: 'pastPaper',
+				subject: paper.subject,
+				paperId: `${paper.year} ${paper.month} ${paper.paper}`,
+				lastUpdated: Date.now(),
+			});
+		}
+		return () => clearContext();
+	}, [paper, setContext, clearContext]);
+
+	const checkOfflineAvailability = useCallback(async () => {
+		if (!paper?.id) return;
+		const cached = await getCachedPastPaper(paper.id);
+		setIsOfflineAvailable(!!cached);
+	}, [paper?.id]);
+
+	const handleDownloadForOffline = useCallback(async () => {
+		if (!paper?.id || !isOnline) return;
+
+		const available = await isStorageAvailable();
+		if (!available) {
+			console.warn('Not enough storage available');
+			return;
+		}
+
+		setIsDownloading(true);
+		try {
+			await downloadPastPaper(paper.id);
+			downloadPaper(paper.id);
+			setIsOfflineAvailable(true);
+		} catch (err) {
+			console.error('Failed to download paper for offline:', err);
+		}
+		setIsDownloading(false);
+	}, [paper?.id, isOnline, downloadPaper]);
+
+	useEffect(() => {
+		checkOfflineAvailability();
+	}, [checkOfflineAvailability]);
 
 	// Render loading state
 	if (isLoading && !extractedPaper) {
@@ -169,6 +225,9 @@ export default function PastPaperViewer({
 				progress={progress}
 				currentQuestionIndex={currentQuestionIndex}
 				totalQuestions={totalQuestions}
+				isOfflineAvailable={isOfflineAvailable}
+				isDownloading={isDownloading}
+				onDownloadOffline={handleDownloadForOffline}
 			/>
 
 			<div className="grow overflow-hidden pb-16">
@@ -277,6 +336,7 @@ export default function PastPaperViewer({
 					onOpenChange={setShowAudioPlayer}
 				/>
 			)}
+			<ContextualAIBubble />
 		</div>
 	);
 }

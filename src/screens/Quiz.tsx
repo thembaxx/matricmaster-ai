@@ -4,12 +4,15 @@ import { useQuery } from '@tanstack/react-query';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { getAdaptiveDifficultyServer, recordQuestionAttempt } from '@/actions/spaced-repetition';
+import { ContextualAIBubble } from '@/components/AI/ContextualAIBubble';
 import { FocusContent } from '@/components/Layout/FocusContent';
 import { TimelineSidebar } from '@/components/Layout/TimelineSidebar';
 import { QuizContent } from '@/components/Quiz/QuizContent';
+import { WeakTopicAlert } from '@/components/Quiz/WeakTopicAlert';
 import { QUIZ_DATA } from '@/constants/quiz-data';
 import { useGeminiQuotaModal } from '@/contexts/GeminiQuotaModalContext';
 import { useQuizCompletion } from '@/hooks/use-quiz-completion';
+import { useAiContext } from '@/hooks/useAiContext';
 import { isQuotaError } from '@/lib/ai/quota-error';
 import {
 	getAdaptiveHint,
@@ -17,9 +20,16 @@ import {
 	recordStruggle,
 	updateConfidence,
 } from '@/services/buddyActions';
+import type { WeakTopicAlert as WeakTopicAlertType } from '@/types/adaptive-learning';
 
 interface QuizProps {
 	quizId?: string;
+}
+
+interface TopicStats {
+	topic: string;
+	correct: number;
+	total: number;
 }
 
 export default function Quiz({ quizId: initialQuizId }: QuizProps) {
@@ -45,10 +55,25 @@ export default function Quiz({ quizId: initialQuizId }: QuizProps) {
 	const [difficulty, setDifficulty] = useState<'easy' | 'medium' | 'hard'>('medium');
 	const [correctCount, setCorrectCount] = useState(0);
 	const [incorrectCount, setIncorrectCount] = useState(0);
+	const [topicStats, setTopicStats] = useState<Map<string, TopicStats>>(new Map());
+	const [weakTopicAlert, setWeakTopicAlert] = useState<WeakTopicAlertType | null>(null);
+	const [showWeakAlert, setShowWeakAlert] = useState(false);
 
 	const { completeQuiz, isCompleting } = useQuizCompletion();
+	const { setContext, clearContext } = useAiContext();
 	const quiz = QUIZ_DATA[quizId] || QUIZ_DATA['math-p1-2023-nov'];
 	const currentQuestion = quiz.questions[currentQuestionIndex];
+
+	useEffect(() => {
+		setContext({
+			type: 'quiz',
+			subject: currentSubject || quiz.subject,
+			topic: currentQuestion?.topic,
+			questionId: currentQuestion?.id,
+			lastUpdated: Date.now(),
+		});
+		return () => clearContext();
+	}, [currentSubject, currentQuestion, quiz.subject, setContext, clearContext]);
 
 	// Adaptive hint query - use query data directly
 	const { data: hintData } = useQuery({
@@ -93,6 +118,53 @@ export default function Quiz({ quizId: initialQuizId }: QuizProps) {
 				setShowHint(false);
 			} else {
 				const finalScore = score + (isCorrect ? 1 : 0);
+
+				const results = Array.from(topicStats.values()).map((stat) => ({
+					topic: stat.topic,
+					subject: currentSubject || quiz.subject,
+					subjectId: 1,
+					score: stat.total > 0 ? stat.correct / stat.total : 0,
+					totalQuestions: stat.total,
+					correctAnswers: stat.correct,
+				}));
+
+				if (isCorrect !== null) {
+					const lastTopic = currentQuestion?.topic;
+					if (lastTopic) {
+						const existing = topicStats.get(lastTopic) || {
+							topic: lastTopic,
+							correct: 0,
+							total: 0,
+						};
+						results.push({
+							topic: lastTopic,
+							subject: currentSubject || quiz.subject,
+							subjectId: 1,
+							score: (existing.correct + (isCorrect ? 1 : 0)) / (existing.total + 1),
+							totalQuestions: existing.total + 1,
+							correctAnswers: existing.correct + (isCorrect ? 1 : 0),
+						});
+					}
+				}
+
+				try {
+					const response = await fetch('/api/adaptive-learning/process', {
+						method: 'POST',
+						headers: { 'Content-Type': 'application/json' },
+						body: JSON.stringify({ quizId, results }),
+					});
+
+					if (response.ok) {
+						const data = await response.json();
+						if (data.alerts && data.alerts.length > 0) {
+							setWeakTopicAlert(data.alerts[0]);
+							setShowWeakAlert(true);
+						}
+					}
+				} catch (error) {
+					console.debug('Failed to process adaptive learning:', error);
+				}
+
 				await completeQuiz({
 					subjectId: 1,
 					topic: quiz.title,
@@ -119,6 +191,21 @@ export default function Quiz({ quizId: initialQuizId }: QuizProps) {
 		setIsChecked(true);
 
 		if (currentQuestion?.topic) {
+			setTopicStats((prev) => {
+				const updated = new Map(prev);
+				const existing = updated.get(currentQuestion.topic) || {
+					topic: currentQuestion.topic,
+					correct: 0,
+					total: 0,
+				};
+				updated.set(currentQuestion.topic, {
+					topic: currentQuestion.topic,
+					correct: existing.correct + (correct ? 1 : 0),
+					total: existing.total + 1,
+				});
+				return updated;
+			});
+
 			try {
 				await updateConfidence(currentQuestion.topic, currentSubject, correct);
 				await recordQuestionAttempt(currentQuestion.id, currentQuestion.topic, correct);
@@ -150,6 +237,8 @@ export default function Quiz({ quizId: initialQuizId }: QuizProps) {
 		currentSubject,
 		completeQuiz,
 		router,
+		topicStats,
+		quizId,
 	]);
 
 	const handleSubjectChange = (subject: string) => {
@@ -164,6 +253,16 @@ export default function Quiz({ quizId: initialQuizId }: QuizProps) {
 			<TimelineSidebar />
 			<FocusContent>
 				<div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+					{showWeakAlert && weakTopicAlert && (
+						<div className="mb-6">
+							<WeakTopicAlert
+								topic={weakTopicAlert.topic}
+								subject={weakTopicAlert.subject}
+								score={weakTopicAlert.score}
+								onDismiss={() => setShowWeakAlert(false)}
+							/>
+						</div>
+					)}
 					<QuizContent
 						quiz={quiz}
 						currentQuestionIndex={currentQuestionIndex}
@@ -195,6 +294,7 @@ export default function Quiz({ quizId: initialQuizId }: QuizProps) {
 					/>
 				</div>
 			</FocusContent>
+			<ContextualAIBubble />
 		</div>
 	);
 }

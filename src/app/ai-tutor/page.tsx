@@ -2,6 +2,8 @@
 
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
+import { useEffect } from 'react';
 import { AIPrompt } from '@/components/AI/AIPrompt';
 import { ConversationSidebar } from '@/components/AI/ConversationSidebar';
 import { QuickPrompts } from '@/components/AI/QuickPrompts';
@@ -22,6 +24,9 @@ const PracticeModal = dynamic(
 );
 
 export default function AITutorPage() {
+	const searchParams = useSearchParams();
+	const contextParam = searchParams.get('context');
+
 	const {
 		session,
 		messages,
@@ -45,6 +50,14 @@ export default function AITutorPage() {
 		handleLoadConversation,
 		handleNewConversation,
 	} = useAiTutor();
+
+	useEffect(() => {
+		if (contextParam) {
+			const decodedContext = decodeURIComponent(contextParam);
+			handleSend(undefined, decodedContext);
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [contextParam, handleSend]);
 
 	if (!session) {
 		return (
