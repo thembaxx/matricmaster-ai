@@ -130,8 +130,25 @@ const withPWA = withPWAInit({
 
 const nextConfig = {
 	reactStrictMode: true,
+	experimental: {
+		viewTransition: true,
+		optimizePackageImports: [
+			'lucide-react',
+			'@radix-ui/react-icons',
+			'@iconify/react',
+			'recharts',
+			'framer-motion',
+			'@vercel/ai',
+			'@ai-sdk/google',
+			'@hugeicons/core-free-icons',
+			'@hugeicons/react',
+		],
+	},
 	compiler: {
 		removeConsole: process.env.NODE_ENV === 'production' ? { exclude: ['error', 'warn'] } : false,
+	},
+	logging: {
+		browserToTerminal: true,
 	},
 	async headers() {
 		return [
@@ -181,19 +198,6 @@ const nextConfig = {
 		formats: ['image/avif', 'image/webp'],
 		deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048],
 		imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-	},
-	experimental: {
-		optimizePackageImports: [
-			'lucide-react',
-			'@radix-ui/react-icons',
-			'@iconify/react',
-			'recharts',
-			'framer-motion',
-			'@vercel/ai',
-			'@ai-sdk/google',
-			'@hugeicons/core-free-icons',
-			'@hugeicons/react',
-		],
 	},
 	turbopack: {
 		resolveAlias: {

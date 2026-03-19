@@ -69,6 +69,7 @@ export function BottomNavigation({ pathname }: BottomNavigationProps) {
 					<Link
 						key={item.href}
 						href={item.href}
+						transitionTypes={['fade']}
 						aria-current={isActive ? 'page' : undefined}
 						className="relative flex flex-col items-center justify-center py-1.5 min-h-[76px] transition-all duration-300 group"
 					>
