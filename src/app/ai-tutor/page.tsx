@@ -1,10 +1,9 @@
 'use client';
 
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { AIPrompt } from '@/components/AI/AIPrompt';
 import { ConversationSidebar } from '@/components/AI/ConversationSidebar';
-import { FlashcardModal } from '@/components/AI/FlashcardModal';
-import { PracticeModal } from '@/components/AI/PracticeModal';
 import { QuickPrompts } from '@/components/AI/QuickPrompts';
 import { AiTutorChat } from '@/components/AiTutor/AiTutorChat';
 import { AiTutorHeader } from '@/components/AiTutor/AiTutorHeader';
@@ -12,6 +11,15 @@ import { AiTutorSubjects } from '@/components/AiTutor/AiTutorSubjects';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useAiTutor } from '@/hooks/useAiTutor';
+
+const FlashcardModal = dynamic(
+	() => import('@/components/AI/FlashcardModal').then((mod) => ({ default: mod.FlashcardModal })),
+	{ ssr: false, loading: () => null }
+);
+const PracticeModal = dynamic(
+	() => import('@/components/AI/PracticeModal').then((mod) => ({ default: mod.PracticeModal })),
+	{ ssr: false, loading: () => null }
+);
 
 export default function AITutorPage() {
 	const {

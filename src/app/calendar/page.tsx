@@ -2,13 +2,19 @@
 
 import { Add01Icon, Calendar01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { AddEventDialog } from '@/components/Calendar/AddEventDialog';
+import dynamic from 'next/dynamic';
 import { CalendarEventSidebar } from '@/components/Calendar/CalendarEventSidebar';
 import { CalendarGrid } from '@/components/Calendar/CalendarGrid';
 import { CalendarHeader } from '@/components/Calendar/CalendarHeader';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { EVENT_TYPES, useCalendar } from '@/hooks/useCalendar';
+
+const AddEventDialog = dynamic(
+	() =>
+		import('@/components/Calendar/AddEventDialog').then((mod) => ({ default: mod.AddEventDialog })),
+	{ ssr: false, loading: () => null }
+);
 
 const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const MONTHS = [

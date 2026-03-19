@@ -1,10 +1,15 @@
 import type { Metadata } from 'next';
+import dynamic from 'next/dynamic';
 import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { appConfig } from '@/app.config';
 import { getAuth } from '@/lib/auth';
 import { dbManager } from '@/lib/db';
-import ParentDashboardScreen from '@/screens/ParentDashboard';
+
+const ParentDashboardScreen = dynamic(() => import('@/screens/ParentDashboard'), {
+	ssr: true,
+	loading: () => <div className="min-h-[60vh]" />,
+});
 
 export const metadata: Metadata = {
 	title: `Parent Portal | ${appConfig.name} AI`,

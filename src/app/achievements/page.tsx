@@ -1,7 +1,12 @@
 import type { Metadata } from 'next';
+import dynamic from 'next/dynamic';
 
 import { appConfig } from '@/app.config';
-import AchievementsScreen from '@/screens/Achievements';
+
+const AchievementsScreen = dynamic(() => import('@/screens/Achievements'), {
+	ssr: true,
+	loading: () => <div className="min-h-[60vh]" />,
+});
 
 const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://matricmaster.ai';
 

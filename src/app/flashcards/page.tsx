@@ -11,12 +11,10 @@ import {
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { useQuery } from '@tanstack/react-query';
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useState } from 'react';
 import { toast } from 'sonner';
-import { FlashcardModal } from '@/components/AI/FlashcardModal';
-import { CreateDeckModal } from '@/components/Flashcards/CreateDeckModal';
-import { DeckDetailModal } from '@/components/Flashcards/DeckDetailModal';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -28,6 +26,25 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { authClient } from '@/lib/auth-client';
+
+const FlashcardModal = dynamic(
+	() => import('@/components/AI/FlashcardModal').then((mod) => ({ default: mod.FlashcardModal })),
+	{ ssr: false, loading: () => null }
+);
+const CreateDeckModal = dynamic(
+	() =>
+		import('@/components/Flashcards/CreateDeckModal').then((mod) => ({
+			default: mod.CreateDeckModal,
+		})),
+	{ ssr: false, loading: () => null }
+);
+const DeckDetailModal = dynamic(
+	() =>
+		import('@/components/Flashcards/DeckDetailModal').then((mod) => ({
+			default: mod.DeckDetailModal,
+		})),
+	{ ssr: false, loading: () => null }
+);
 
 interface FlashcardDeck {
 	id: string;

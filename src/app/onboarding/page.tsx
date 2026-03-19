@@ -1,7 +1,12 @@
+import dynamicImport from 'next/dynamic';
 import { headers } from 'next/headers';
 import type { SessionUser } from '@/lib/auth';
 import { getAuth } from '@/lib/auth';
-import OnboardingScreen from '@/screens/Onboarding';
+
+const OnboardingScreen = dynamicImport(() => import('@/screens/Onboarding'), {
+	ssr: true,
+	loading: () => <div className="min-h-[60vh]" />,
+});
 
 export const dynamic = 'force-dynamic';
 
