@@ -1,38 +1,16 @@
 'use client';
 
-import {
-	CancelCircleIcon,
-	Chat01Icon,
-	CheckmarkCircle02Icon,
-	Clock01Icon,
-	Search01Icon,
-	Target01Icon,
-	UserGroupIcon,
-	UserPlus,
-} from '@hugeicons/core-free-icons';
+import { UserGroupIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { useEffect } from 'react';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { DiscoverTab } from '@/components/StudyBuddies/DiscoverTab';
+import { ProfileTab } from '@/components/StudyBuddies/ProfileTab';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
+import { Card, CardContent } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Textarea } from '@/components/ui/textarea';
 import { useSession } from '@/lib/auth-client';
 import { useStudyBuddyStore } from '@/stores/useStudyBuddyStore';
-
-const SUBJECTS = [
-	'Mathematics',
-	'Physical Sciences',
-	'Life Sciences',
-	'Geography',
-	'ClockCounterClockwise',
-	'English',
-	'Afrikaans',
-	'Accounting',
-	'Economics',
-];
 
 export default function StudyBuddiesPage() {
 	const { data: session } = useSession();
@@ -54,7 +32,6 @@ export default function StudyBuddiesPage() {
 	const handleAcceptRequest = useStudyBuddyStore((s) => s.handleAcceptRequest);
 	const handleRejectRequest = useStudyBuddyStore((s) => s.handleRejectRequest);
 
-	// Load data on mount
 	useEffect(() => {
 		if (session?.user?.id) {
 			loadData(session.user.id);
@@ -98,114 +75,26 @@ export default function StudyBuddiesPage() {
 					<TabsTrigger value="profile">My Profile</TabsTrigger>
 				</TabsList>
 
-				{/* Discover Tab */}
 				<TabsContent value="discover" className="space-y-4">
-					{/* MagnifyingGlass & Filters */}
-					<Card>
-						<CardContent className="pt-6">
-							<div className="flex gap-4 flex-wrap">
-								<div className="flex-1 min-w-50">
-									<div className="relative">
-										<HugeiconsIcon
-											icon={Search01Icon}
-											className="absolute left-3 top-3 h-4 w-4 text-muted-foreground"
-										/>
-										<Input
-											placeholder="MagnifyingGlass by name or bio..."
-											value={searchQuery}
-											onChange={(e) => setSearchQuery(e.target.value)}
-											className="pl-10"
-										/>
-									</div>
-								</div>
-								<div className="flex gap-2 flex-wrap">
-									{SUBJECTS.slice(0, 5).map((subject) => (
-										<Badge
-											key={subject}
-											variant={selectedSubjects.includes(subject) ? 'default' : 'outline'}
-											className="cursor-pointer"
-											onClick={() => handleSubjectToggle(subject)}
-										>
-											{subject}
-										</Badge>
-									))}
-								</div>
-							</div>
-						</CardContent>
-					</Card>
-
-					{/* Buddy Cards */}
-					<div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-						{filteredBuddies.map((buddy) => (
-							<Card key={buddy.id} className="hover:shadow-lg transition-shadow">
-								<CardHeader className="pb-2">
-									<div className="flex items-start gap-3">
-										<Avatar className="h-12 w-12">
-											<AvatarImage src={buddy.avatar} />
-											<AvatarFallback>{buddy.name[0]}</AvatarFallback>
-										</Avatar>
-										<div className="flex-1">
-											<CardTitle className="text-lg">{buddy.name}</CardTitle>
-											<div className="flex gap-1 mt-1">
-												{buddy.subjects.slice(0, 2).map((subject) => (
-													<Badge key={subject} variant="secondary" className="text-xs">
-														{subject}
-													</Badge>
-												))}
-											</div>
-										</div>
-									</div>
-								</CardHeader>
-								<CardContent>
-									<p className="text-sm text-muted-foreground mb-4">{buddy.bio}</p>
-									<p className="text-xs text-muted-foreground mb-4">
-										<HugeiconsIcon icon={Target01Icon} className="h-3 w-3 inline mr-1" />
-										{buddy.studyGoals}
-									</p>
-									<div className="flex gap-2">
-										<Button
-											size="sm"
-											className="flex-1"
-											onClick={() => handleSendRequest(buddy.id)}
-										>
-											<HugeiconsIcon icon={UserPlus} className="h-4 w-4 mr-2" />
-											Connect
-										</Button>
-										<Button size="sm" variant="outline">
-											<HugeiconsIcon icon={Chat01Icon} className="h-4 w-4" />
-										</Button>
-									</div>
-								</CardContent>
-							</Card>
-						))}
-					</div>
-
-					{filteredBuddies.length === 0 && (
-						<Card>
-							<CardContent className="py-12 text-center">
-								<HugeiconsIcon
-									icon={UserGroupIcon}
-									className="h-12 w-12 mx-auto mb-4 text-muted-foreground"
-								/>
-								<p className="text-muted-foreground">
-									No study buddies found matching your criteria
-								</p>
-							</CardContent>
-						</Card>
-					)}
+					<DiscoverTab
+						searchQuery={searchQuery}
+						selectedSubjects={selectedSubjects}
+						filteredBuddies={filteredBuddies}
+						onSearchChange={setSearchQuery}
+						onSubjectToggle={handleSubjectToggle}
+						onSendRequest={handleSendRequest}
+					/>
 				</TabsContent>
 
-				{/* Requests Tab */}
 				<TabsContent value="requests" className="space-y-4">
 					{buddyRequests.length > 0 ? (
 						buddyRequests.map((request) => (
 							<Card key={request.id}>
 								<CardContent className="pt-6">
 									<div className="flex items-center gap-4">
-										<Avatar>
-											<AvatarImage src={request.fromUser.avatar} />
-											<AvatarFallback>{request.fromUser.name[0]}</AvatarFallback>
-										</Avatar>
+										<div className="h-10 w-10 rounded-full bg-muted flex items-center justify-center text-sm font-medium">
+											{request.fromUser.name[0]}
+										</div>
 										<div className="flex-1">
 											<p className="font-medium">{request.fromUser.name}</p>
 											<p className="text-sm text-muted-foreground">Wants to be your study buddy</p>
@@ -215,7 +104,6 @@ export default function StudyBuddiesPage() {
 										</div>
 										<div className="flex gap-2">
 											<Button size="sm" onClick={() => handleAcceptRequest(request.id)}>
-												<HugeiconsIcon icon={CheckmarkCircle02Icon} className="h-4 w-4 mr-1" />
 												Accept
 											</Button>
 											<Button
@@ -223,7 +111,6 @@ export default function StudyBuddiesPage() {
 												variant="outline"
 												onClick={() => handleRejectRequest(request.id)}
 											>
-												<HugeiconsIcon icon={CancelCircleIcon} className="h-4 w-4 mr-1" />
 												Decline
 											</Button>
 										</div>
@@ -235,7 +122,7 @@ export default function StudyBuddiesPage() {
 						<Card>
 							<CardContent className="py-12 text-center">
 								<HugeiconsIcon
-									icon={Clock01Icon}
+									icon={UserGroupIcon}
 									className="h-12 w-12 mx-auto mb-4 text-muted-foreground"
 								/>
 								<p className="text-muted-foreground">No pending buddy requests</p>
@@ -244,7 +131,6 @@ export default function StudyBuddiesPage() {
 					)}
 				</TabsContent>
 
-				{/* My Buddies Tab */}
 				<TabsContent value="my-buddies" className="space-y-4">
 					{myBuddies.length > 0 ? (
 						<div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -252,10 +138,9 @@ export default function StudyBuddiesPage() {
 								<Card key={buddy.id}>
 									<CardContent className="pt-6">
 										<div className="flex items-center gap-3 mb-4">
-											<Avatar>
-												<AvatarImage src={buddy.avatar} />
-												<AvatarFallback>{buddy.name[0]}</AvatarFallback>
-											</Avatar>
+											<div className="h-10 w-10 rounded-full bg-muted flex items-center justify-center text-sm font-medium">
+												{buddy.name[0]}
+											</div>
 											<div>
 												<p className="font-medium">{buddy.name}</p>
 												<div className="flex gap-1">
@@ -268,7 +153,6 @@ export default function StudyBuddiesPage() {
 											</div>
 										</div>
 										<Button size="sm" className="w-full">
-											<HugeiconsIcon icon={Chat01Icon} className="h-4 w-4 mr-2" />
 											Message
 										</Button>
 									</CardContent>
@@ -291,79 +175,8 @@ export default function StudyBuddiesPage() {
 					)}
 				</TabsContent>
 
-				{/* Profile Tab */}
 				<TabsContent value="profile">
-					<Card>
-						<CardHeader>
-							<CardTitle>My Study Buddy Profile</CardTitle>
-							<CardDescription>Set up your profile to help others find you</CardDescription>
-						</CardHeader>
-						<CardContent className="space-y-6">
-							<div>
-								<label htmlFor="profile_input" className="text-sm font-medium mb-2 block">
-									Bio
-								</label>
-								<Textarea
-									id="profile_input"
-									placeholder="Tell others about yourself and your study goals..."
-									value={profile.bio}
-									onChange={(e) => setProfile((prev) => ({ ...prev, bio: e.target.value }))}
-									className="min-h-25"
-								/>
-							</div>
-
-							<div>
-								<label htmlFor="goal_input" className="text-sm font-medium mb-2 block">
-									Study Goals
-								</label>
-								<Textarea
-									id="goal_input"
-									placeholder="What do you want to achieve?"
-									value={profile.studyGoals}
-									onChange={(e) => setProfile((prev) => ({ ...prev, studyGoals: e.target.value }))}
-								/>
-							</div>
-
-							<div>
-								<p className="text-sm font-medium mb-2 block">Subjects You Need Help With</p>
-								<div className="flex gap-2 flex-wrap">
-									{SUBJECTS.map((subject) => (
-										<Badge
-											key={subject}
-											variant={profile.selectedSubjects.includes(subject) ? 'default' : 'outline'}
-											className="cursor-pointer"
-											onClick={() => {
-												setProfile((prev) => ({
-													...prev,
-													selectedSubjects: prev.selectedSubjects.includes(subject)
-														? prev.selectedSubjects.filter((s) => s !== subject)
-														: [...prev.selectedSubjects, subject],
-												}));
-											}}
-										>
-											{subject}
-										</Badge>
-									))}
-								</div>
-							</div>
-
-							<div>
-								<p className="text-sm font-medium mb-2 block">Looking For</p>
-								<div className="flex gap-2 flex-wrap">
-									{['Study partner', 'Tutor', 'Accountability buddy', 'Group study'].map((item) => (
-										<Badge key={item} variant="outline" className="cursor-pointer">
-											{item}
-										</Badge>
-									))}
-								</div>
-							</div>
-
-							<div className="flex items-center gap-4">
-								<Button>FloppyDisk Profile</Button>
-								<Button variant="outline">Make Profile Visible</Button>
-							</div>
-						</CardContent>
-					</Card>
+					<ProfileTab profile={profile} onProfileChange={setProfile} />
 				</TabsContent>
 			</Tabs>
 		</div>

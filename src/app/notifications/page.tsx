@@ -1,70 +1,15 @@
 'use client';
 
-import {
-	ArrowRight01Icon,
-	BookOpen01Icon,
-	Calendar02Icon,
-	Delete02Icon,
-	FireIcon,
-	Medal01Icon,
-	Message01Icon,
-	Notification03Icon,
-	SparklesIcon,
-	Tick01Icon,
-	TickDouble02Icon,
-	Timer02Icon,
-	UserIcon,
-} from '@hugeicons/core-free-icons';
+import { Notification03Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { AnimatePresence, m } from 'framer-motion';
+import { AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { toast } from 'sonner';
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
+import { NotificationHeader } from '@/components/Notifications/NotificationHeader';
+import { NotificationItem } from '@/components/Notifications/NotificationItem';
+import type { Notification, NotificationAction } from '@/components/Notifications/types';
 import { ScrollArea } from '@/components/ui/scroll-area';
-
-interface NotificationAction {
-	label: string;
-	href?: string;
-	onClick?: () => void;
-	variant?: 'default' | 'outline' | 'ghost';
-}
-
-type NotificationIcon =
-	| 'trophy'
-	| 'fire'
-	| 'calendar'
-	| 'user'
-	| 'chart'
-	| 'rank'
-	| 'timer'
-	| 'book'
-	| 'sparkles'
-	| 'message';
-
-interface Notification {
-	id: string;
-	type:
-		| 'achievement'
-		| 'streak'
-		| 'exam'
-		| 'buddy'
-		| 'progress'
-		| 'leaderboard'
-		| 'study_reminder'
-		| 'past_paper'
-		| 'weekly_summary';
-	title: string;
-	message: string;
-	detail?: string;
-	icon: NotificationIcon;
-	iconColor: string;
-	iconBg: string;
-	actions?: NotificationAction[];
-	isRead: boolean;
-	createdAt: Date;
-}
 
 const generateMockNotifications = (): Notification[] => {
 	const now = new Date();
@@ -214,19 +159,6 @@ const generateMockNotifications = (): Notification[] => {
 	];
 };
 
-const iconMap = {
-	trophy: Medal01Icon,
-	fire: FireIcon,
-	calendar: Calendar02Icon,
-	user: UserIcon,
-	chart: SparklesIcon,
-	rank: Medal01Icon,
-	timer: Timer02Icon,
-	book: BookOpen01Icon,
-	sparkles: SparklesIcon,
-	message: Message01Icon,
-};
-
 export default function NotificationsPage() {
 	const router = useRouter();
 	const [notifications, setNotifications] = useState<Notification[]>(generateMockNotifications());
@@ -289,195 +221,15 @@ export default function NotificationsPage() {
 		}
 	};
 
-	const NotificationItem = ({
-		notification,
-		index,
-	}: {
-		notification: Notification;
-		index: number;
-	}) => {
-		const IconComponent = iconMap[notification.icon];
-
-		return (
-			<m.div
-				initial={{ opacity: 0, y: 20 }}
-				animate={{ opacity: 1, y: 0 }}
-				exit={{ opacity: 0, x: -20 }}
-				transition={{ duration: 0.3, delay: index * 0.05 }}
-			>
-				<Card
-					className={`
-						group relative overflow-hidden transition-all duration-300
-						${notification.isRead ? 'bg-muted/30 border-transparent' : 'bg-card border-border/50'}
-						${isDeleting === notification.id ? 'opacity-0 scale-95' : 'hover:shadow-lg hover:shadow-primary/5'}
-					`}
-				>
-					{!notification.isRead && (
-						<div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-primary to-violet-500" />
-					)}
-
-					<div className="p-4 flex gap-4">
-						<div
-							className={`shrink-0 w-12 h-12 rounded-2xl ${notification.iconBg} flex items-center justify-center`}
-						>
-							<HugeiconsIcon icon={IconComponent} className={`w-5 h-5 ${notification.iconColor}`} />
-						</div>
-
-						<div className="flex-1 min-w-0">
-							<div className="flex items-start justify-between gap-2">
-								<div className="flex-1 min-w-0">
-									<div className="flex items-center gap-2">
-										<h3
-											className={`font-semibold text-sm truncate ${!notification.isRead ? 'text-foreground' : 'text-foreground/80'}`}
-										>
-											{notification.title}
-										</h3>
-										{!notification.isRead && (
-											<span className="shrink-0 w-2 h-2 rounded-full bg-primary" />
-										)}
-									</div>
-									<p className="text-sm text-muted-foreground mt-0.5 line-clamp-2">
-										{notification.message}
-									</p>
-									{notification.detail && (
-										<p className="text-xs text-muted-foreground/70 mt-1.5 line-clamp-1">
-											{notification.detail}
-										</p>
-									)}
-								</div>
-
-								<span className="shrink-0 text-[11px] text-muted-foreground/60 font-medium">
-									{formatTime(notification.createdAt)}
-								</span>
-							</div>
-
-							{notification.actions && (
-								<div className="flex gap-2 mt-3">
-									{notification.actions.map((action, i) => (
-										<Button
-											key={i}
-											variant={
-												action.variant === 'outline'
-													? 'outline'
-													: action.variant === 'ghost'
-														? 'ghost'
-														: 'default'
-											}
-											size="sm"
-											className="h-8 text-xs font-medium rounded-full px-4"
-											onClick={() => handleAction(action)}
-										>
-											{action.label}
-											{action.href && (
-												<HugeiconsIcon icon={ArrowRight01Icon} className="w-3 h-3 ml-1" />
-											)}
-										</Button>
-									))}
-								</div>
-							)}
-
-							<div className="flex items-center justify-between mt-3 pt-3 border-t border-border/30">
-								<span className="text-[10px] text-muted-foreground/50 font-medium">
-									{formatFullDate(notification.createdAt)}
-								</span>
-								<div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-									{!notification.isRead && (
-										<Button
-											variant="ghost"
-											size="icon"
-											className="h-7 w-7 rounded-full hover:bg-primary/10"
-											onClick={() => markAsRead(notification.id)}
-										>
-											<HugeiconsIcon
-												icon={Tick01Icon}
-												className="w-3.5 h-3.5 text-muted-foreground"
-											/>
-										</Button>
-									)}
-									<Button
-										variant="ghost"
-										size="icon"
-										className="h-7 w-7 rounded-full hover:bg-destructive/10 text-destructive/60 hover:text-destructive"
-										onClick={() => deleteNotification(notification.id)}
-									>
-										<HugeiconsIcon icon={Delete02Icon} className="w-3.5 h-3.5" />
-									</Button>
-								</div>
-							</div>
-						</div>
-					</div>
-				</Card>
-			</m.div>
-		);
-	};
-
 	return (
 		<div className="min-h-screen bg-background">
-			<div className="sticky top-0 z-10 bg-background/80 backdrop-blur-xl border-b border-border/50">
-				<div className="max-w-2xl mx-auto px-4 py-4">
-					<div className="flex items-center justify-between">
-						<div className="flex items-center gap-3">
-							<div className="w-10 h-10 rounded-2xl bg-primary/10 flex items-center justify-center">
-								<HugeiconsIcon icon={Notification03Icon} className="w-5 h-5 text-primary" />
-							</div>
-							<div>
-								<h1 className="text-lg font-bold text-foreground">Notifications</h1>
-								<p className="text-xs text-muted-foreground">
-									{unreadCount > 0 ? `${unreadCount} unread` : 'All caught up'}
-								</p>
-							</div>
-						</div>
-						{unreadCount > 0 && (
-							<Button
-								variant="ghost"
-								size="sm"
-								className="text-xs font-medium text-muted-foreground hover:text-primary"
-								onClick={markAllAsRead}
-							>
-								<HugeiconsIcon icon={TickDouble02Icon} className="w-4 h-4 mr-1.5" />
-								Mark all read
-							</Button>
-						)}
-					</div>
-
-					<div className="flex gap-2 mt-4">
-						<button
-							type="button"
-							onClick={() => setActiveTab('all')}
-							className={`
-								relative px-3 py-1.5 text-xs font-semibold rounded-full transition-all
-								${
-									activeTab === 'all'
-										? 'bg-primary text-primary-foreground'
-										: 'text-muted-foreground hover:text-foreground hover:bg-muted'
-								}
-							`}
-						>
-							All
-							<span className="ml-1.5 opacity-60">({notifications.length})</span>
-						</button>
-						<button
-							type="button"
-							onClick={() => setActiveTab('unread')}
-							className={`
-								relative px-3 py-1.5 text-xs font-semibold rounded-full transition-all
-								${
-									activeTab === 'unread'
-										? 'bg-primary text-primary-foreground'
-										: 'text-muted-foreground hover:text-foreground hover:bg-muted'
-								}
-							`}
-						>
-							Unread
-							{unreadCount > 0 && (
-								<span className="ml-1.5 px-1.5 py-0.5 bg-rose-500 text-white text-[10px] rounded-full">
-									{unreadCount}
-								</span>
-							)}
-						</button>
-					</div>
-				</div>
-			</div>
+			<NotificationHeader
+				unreadCount={unreadCount}
+				totalCount={notifications.length}
+				activeTab={activeTab}
+				onTabChange={setActiveTab}
+				onMarkAllRead={markAllAsRead}
+			/>
 
 			<div className="max-w-2xl mx-auto px-4 py-6 pb-32">
 				{filteredNotifications.length === 0 ? (
@@ -502,6 +254,12 @@ export default function NotificationsPage() {
 										key={notification.id}
 										notification={notification}
 										index={index}
+										isDeleting={isDeleting === notification.id}
+										formatTime={formatTime}
+										formatFullDate={formatFullDate}
+										onMarkAsRead={markAsRead}
+										onDelete={deleteNotification}
+										onAction={handleAction}
 									/>
 								))}
 							</AnimatePresence>

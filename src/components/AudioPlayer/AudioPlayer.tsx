@@ -1,22 +1,11 @@
 'use client';
 
-import {
-	AlertCircleIcon,
-	ArrowLeft02Icon,
-	ArrowRight02Icon,
-	CheckmarkCircle02Icon,
-	Copy01Icon,
-	InformationCircleIcon,
-	PauseIcon,
-	PlayIcon,
-	Settings01Icon,
-	VolumeHighIcon,
-	VolumeMute01Icon,
-} from '@hugeicons/core-free-icons';
-import { HugeiconsIcon } from '@hugeicons/react';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
+import { AudioVisualizer } from './AudioVisualizer';
+import { ErrorBanners } from './ErrorBanners';
+import { PlaybackControls } from './PlaybackControls';
+import { TTSSettings } from './TTSSettings';
+import { WordTranscription } from './WordTranscription';
 
 interface AudioPlayerProps {
 	audioSrc?: string;
@@ -444,262 +433,55 @@ export function AudioPlayer({
 					</div>
 				)}
 
-				{isAudioAvailable && !audioError && (
-					<div className="py-5 space-y-3">
-						<div className="flex items-center justify-center gap-1.5 py-2 h-12">
-							{Array.from({ length: 24 }).map((_, i) => (
-								<div
-									key={i}
-									className={cn(
-										'w-1 rounded-full transition-all duration-300 ease-out',
-										isPlaying ? 'bg-primary animate-pulse' : 'bg-muted-foreground/25'
-									)}
-									style={{
-										height: isPlaying ? `${28 + Math.random() * 60}%` : '28%',
-										animationDelay: isPlaying ? `${i * 60}ms` : '0ms',
-									}}
-								/>
-							))}
-						</div>
+				<AudioVisualizer
+					isAudioAvailable={!!isAudioAvailable}
+					audioError={audioError}
+					isPlaying={isPlaying}
+					currentTime={currentTime}
+					duration={duration}
+					handleSeek={handleSeek}
+					formatTime={formatTime}
+					isAudioLoaded={isAudioLoaded}
+				/>
 
-						<div className="relative">
-							<input
-								type="range"
-								min={0}
-								max={duration || 100}
-								value={currentTime}
-								onChange={handleSeek}
-								className={cn(
-									'w-full h-2 bg-secondary/60 rounded-full appearance-none cursor-pointer',
-									'transition-all duration-150',
-									'[&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4',
-									'[&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full',
-									'[&::-webkit-slider-thumb]:bg-primary [&::-webkit-slider-thumb]:cursor-pointer',
-									'[&::-webkit-slider-thumb]:shadow-lg [&::-webkit-slider-thumb]:shadow-primary/40',
-									'[&::-webkit-slider-thumb]:transition-transform [&::-webkit-slider-thumb]:hover:scale-110',
-									'[&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:h-4',
-									'[&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-primary',
-									'[&::-moz-range-thumb]:border-0 [&::-moz-range-thumb]:cursor-pointer'
-								)}
-								disabled={!isAudioLoaded}
-							/>
-						</div>
-						<div className="flex justify-between text-xs text-muted-foreground font-medium">
-							<span className="tabular-nums">{formatTime(currentTime)}</span>
-							<span className="tabular-nums">{formatTime(duration)}</span>
-						</div>
-					</div>
-				)}
+				<TTSSettings
+					audioSrc={audioSrc}
+					voices={voices}
+					selectedVoice={selectedVoice}
+					handleVoiceChange={handleVoiceChange}
+					showSettings={showSettings}
+					setShowSettings={setShowSettings}
+					playbackSpeed={playbackSpeed}
+					handleSpeedChange={handleSpeedChange}
+				/>
 
-				{!audioSrc && (
-					<div className="py-4 space-y-3">
-						<div className="flex items-center gap-3">
-							<select
-								value={selectedVoice}
-								onChange={(e) => handleVoiceChange(e.target.value)}
-								className={cn(
-									'flex-1 text-sm bg-muted/60 rounded-xl px-3 py-2.5 border border-border/60',
-									'focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary/40',
-									'transition-all duration-200 cursor-pointer'
-								)}
-								disabled={voices.length === 0}
-							>
-								{voices.length === 0 ? (
-									<option>Loading voices...</option>
-								) : (
-									voices.map((voice) => (
-										<option key={voice.name} value={voice.name}>
-											{voice.name.length > 32 ? `${voice.name.slice(0, 32)}...` : voice.name} (
-											{voice.lang.split('-')[0]})
-										</option>
-									))
-								)}
-							</select>
+				<ErrorBanners
+					audioError={audioError}
+					switchToTTS={switchToTTS}
+					error={error}
+					audioSrc={audioSrc}
+					retryAudio={retryAudio}
+					retryTTS={retryTTS}
+				/>
 
-							<Button
-								variant="ghost"
-								size="icon"
-								onClick={() => setShowSettings(!showSettings)}
-								className={cn(
-									'rounded-full h-10 w-10 transition-all duration-200',
-									showSettings && 'bg-muted'
-								)}
-							>
-								<HugeiconsIcon icon={Settings01Icon} className="w-5 h-5" />
-							</Button>
-						</div>
+				<PlaybackControls
+					toggleMute={toggleMute}
+					isMuted={isMuted}
+					skipBackward={skipBackward}
+					togglePlay={togglePlay}
+					isLoading={isLoading}
+					isPlaying={isPlaying}
+					skipForward={skipForward}
+				/>
 
-						{showSettings && (
-							<div className="animate-in slide-in-from-top-2 duration-200">
-								<div className="flex items-center gap-4 p-4 bg-muted/40 rounded-xl border border-border/40">
-									<div className="flex items-center gap-3 flex-1">
-										<span className="text-xs text-muted-foreground whitespace-nowrap font-medium">
-											Speed: {playbackSpeed.toFixed(1)}x
-										</span>
-										<input
-											type="range"
-											min="0.5"
-											max="2"
-											step="0.1"
-											value={playbackSpeed}
-											onChange={(e) => handleSpeedChange(Number.parseFloat(e.target.value))}
-											className={cn(
-												'flex-1 h-2 bg-secondary/60 rounded-full appearance-none cursor-pointer',
-												'[&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3.5',
-												'[&::-webkit-slider-thumb]:h-3.5 [&::-webkit-slider-thumb]:rounded-full',
-												'[&::-webkit-slider-thumb]:bg-primary [&::-webkit-slider-thumb]:cursor-pointer'
-											)}
-										/>
-									</div>
-								</div>
-							</div>
-						)}
-					</div>
-				)}
-
-				{audioError && (
-					<div className="py-3 px-4 mx-1 mb-2 bg-amber-500/10 border border-amber-500/20 rounded-xl">
-						<div className="flex items-center gap-2 text-amber-600 dark:text-amber-400">
-							<HugeiconsIcon icon={InformationCircleIcon} className="w-4 h-4 flex-shrink-0" />
-							<p className="text-sm">
-								Audio file unavailable.{' '}
-								<button
-									type="button"
-									onClick={switchToTTS}
-									className="underline underline-offset-2 font-medium hover:text-amber-700 dark:hover:text-amber-300"
-								>
-									Use text-to-speech
-								</button>
-							</p>
-						</div>
-					</div>
-				)}
-
-				{error && (
-					<div className="mx-1 mb-3 p-3.5 bg-destructive/8 border border-destructive/15 rounded-xl animate-in fade-in slide-in-from-top-1 duration-200">
-						<div className="flex items-start gap-2.5">
-							<HugeiconsIcon
-								icon={AlertCircleIcon}
-								className="w-4 h-4 text-destructive flex-shrink-0 mt-0.5"
-							/>
-							<div className="flex-1 min-w-0">
-								<p className="text-sm text-destructive font-medium">{error.message}</p>
-								{error.recoverable && (
-									<button
-										type="button"
-										onClick={error.type === 'network' && audioSrc ? retryAudio : retryTTS}
-										className="text-xs text-destructive/80 underline underline-offset-2 mt-1.5 hover:text-destructive font-medium"
-									>
-										Try again
-									</button>
-								)}
-							</div>
-						</div>
-					</div>
-				)}
-
-				<div className="flex items-center justify-center gap-2 sm:gap-3 py-5">
-					<Button
-						variant="ghost"
-						size="icon"
-						onClick={toggleMute}
-						className="rounded-full h-10 w-10 hover:bg-muted/60 transition-all duration-200"
-					>
-						<HugeiconsIcon icon={isMuted ? VolumeMute01Icon : VolumeHighIcon} className="w-5 h-5" />
-					</Button>
-
-					<Button
-						variant="outline"
-						size="icon"
-						onClick={skipBackward}
-						className="rounded-full h-11 w-11 relative hover:bg-muted/60 transition-all duration-200"
-					>
-						<HugeiconsIcon icon={ArrowLeft02Icon} className="w-5 h-5" />
-						<span className="text-[9px] font-bold absolute -bottom-0.5 tracking-wide">10</span>
-					</Button>
-
-					<Button
-						size="icon"
-						onClick={togglePlay}
-						className={cn(
-							'rounded-full h-14 w-14 relative overflow-hidden transition-all duration-200',
-							'hover:scale-105 active:scale-95 shadow-lg shadow-primary/25',
-							isLoading && 'opacity-80'
-						)}
-						disabled={isLoading}
-					>
-						{isLoading ? (
-							<div className="absolute inset-0 flex items-center justify-center bg-primary/90">
-								<div className="w-5 h-5 border-2 border-white/80 border-t-transparent rounded-full animate-spin" />
-							</div>
-						) : (
-							<HugeiconsIcon
-								icon={isPlaying ? PauseIcon : PlayIcon}
-								className="w-7 h-7 transition-transform"
-							/>
-						)}
-					</Button>
-
-					<Button
-						variant="outline"
-						size="icon"
-						onClick={skipForward}
-						className="rounded-full h-11 w-11 relative hover:bg-muted/60 transition-all duration-200"
-					>
-						<HugeiconsIcon icon={ArrowRight02Icon} className="w-5 h-5" />
-						<span className="text-[9px] font-bold absolute -bottom-0.5 tracking-wide">30</span>
-					</Button>
-
-					<div className="w-10" />
-				</div>
-
-				<div
-					ref={transcriptionRef}
-					className="flex-1 min-h-0 overflow-y-auto py-3 mt-1 bg-gradient-to-br from-muted/25 via-muted/15 to-muted/30 rounded-xl p-4"
-				>
-					<div className="flex justify-end mb-3">
-						<Button
-							variant="ghost"
-							size="sm"
-							onClick={handleCopyText}
-							className={cn(
-								'text-xs gap-1.5 transition-all duration-200 hover:bg-muted/60',
-								copied && 'text-green-600 dark:text-green-400'
-							)}
-						>
-							<HugeiconsIcon
-								icon={copied ? CheckmarkCircle02Icon : Copy01Icon}
-								className="w-3.5 h-3.5"
-							/>
-							{copied ? 'Copied!' : 'Copy'}
-						</Button>
-					</div>
-					<p className="text-sm leading-7 text-foreground/90">
-						{words.map((word, index) => (
-							<span
-								key={word.id}
-								data-word-index={index}
-								role="button"
-								tabIndex={0}
-								onClick={() => handleWordClick(index)}
-								onKeyDown={(e) => {
-									if (e.key === 'Enter' || e.key === ' ') {
-										handleWordClick(index);
-									}
-								}}
-								className={cn(
-									'transition-all duration-200 cursor-pointer inline-block rounded-md px-0.5 -mx-0.5',
-									'hover:text-primary hover:bg-primary/8',
-									activeWordIndex === index
-										? 'bg-primary/20 text-primary font-semibold scale-[1.02] shadow-sm'
-										: 'text-foreground/90'
-								)}
-							>
-								{word.text}{' '}
-							</span>
-						))}
-					</p>
-				</div>
+				<WordTranscription
+					transcriptionRef={transcriptionRef}
+					handleCopyText={handleCopyText}
+					copied={copied}
+					words={words}
+					handleWordClick={handleWordClick}
+					activeWordIndex={activeWordIndex}
+				/>
 			</div>
 		</>
 	);

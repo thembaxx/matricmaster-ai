@@ -7,7 +7,6 @@ import { AnimatePresence, m } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import * as z from 'zod';
 import { PasswordInput } from '@/components/auth/PasswordInput';
 import { SignUpFooter } from '@/components/auth/SignUpFooter';
 import { SignUpHeader } from '@/components/auth/SignUpHeader';
@@ -19,14 +18,7 @@ import { Label } from '@/components/ui/label';
 import { STAGGER_CONTAINER, STAGGER_ITEM } from '@/lib/animation-presets';
 import { authClient } from '@/lib/auth-client';
 import { cn } from '@/lib/utils';
-
-const signUpSchema = z.object({
-	name: z.string().min(2, 'Name must be at least 2 characters'),
-	email: z.string().email('Invalid email address'),
-	password: z.string().min(8, 'Password must be at least 8 characters'),
-});
-
-type SignUpValues = z.infer<typeof signUpSchema>;
+import { type SignUpValues, signUpSchema } from './constants';
 
 export default function SignUpForm() {
 	const router = useRouter();

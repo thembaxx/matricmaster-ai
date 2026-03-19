@@ -1,28 +1,13 @@
 'use client';
 
-import {
-	CalculatorIcon,
-	Cancel01Icon,
-	HelpCircleIcon,
-	PlusSignIcon,
-	TargetIcon,
-} from '@hugeicons/core-free-icons';
+import { CalculatorIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { TrendingUp } from 'lucide-react';
 import { useMemo, useState } from 'react';
-import { toast } from 'sonner';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import {
-	Select,
-	SelectContent,
-	SelectGroup,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from '@/components/ui/select';
-import { useGoalStore } from '@/stores/useGoalStore';
+import { AboutAPS } from '@/components/APSCalculator/AboutAPS';
+import { GRADE_POINTS, UNIVERSITY_REQUIREMENTS } from '@/components/APSCalculator/constants';
+import { EligibleUniversities } from '@/components/APSCalculator/EligibleUniversities';
+import { PathToUniversity } from '@/components/APSCalculator/PathToUniversity';
+import { SubjectsEditor } from '@/components/APSCalculator/SubjectsEditor';
 
 interface SubjectGrade {
 	subject: string;
@@ -37,95 +22,7 @@ interface UniversityRequirement {
 	additionalRequirements?: string;
 }
 
-const SOUTH_AFRICAN_SUBJECTS = [
-	'Mathematics',
-	'Physical Sciences',
-	'Life Sciences',
-	'Geography',
-	'History',
-	'English Home Language',
-	'English First Additional Language',
-	'Afrikaans Home Language',
-	'Afrikaans First Additional Language',
-	'Accounting',
-	'Business Studies',
-	'Economics',
-	'Information Technology',
-	'Computer Applications Technology',
-	'Mathematics Literacy',
-	'Life Orientation',
-	'Art',
-	'Music',
-	'Drama',
-	'Design',
-];
-
-const GRADE_POINTS: Record<string, number> = {
-	'7': 7,
-	'6': 6,
-	'5': 5,
-	'4': 4,
-	'3': 3,
-	'2': 2,
-	'1': 1,
-	U: 0,
-};
-
-const GRADES = ['7', '6', '5', '4', '3', '2', '1', 'U'];
-
-const UNIVERSITY_REQUIREMENTS: UniversityRequirement[] = [
-	{
-		name: 'University of Cape Town',
-		faculty: 'Engineering',
-		minAps: 42,
-		additionalRequirements: 'Mathematics + Physical Sciences (5+)',
-	},
-	{
-		name: 'University of Cape Town',
-		faculty: 'Health Sciences',
-		minAps: 45,
-		additionalRequirements: 'Mathematics + Physical Sciences (6+)',
-	},
-	{ name: 'University of Cape Town', faculty: 'Commerce', minAps: 38 },
-	{
-		name: 'University of the Witwatersrand',
-		faculty: 'Engineering',
-		minAps: 42,
-		additionalRequirements: 'Mathematics + Physical Sciences (5+)',
-	},
-	{
-		name: 'University of the Witwatersrand',
-		faculty: 'Health Sciences',
-		minAps: 44,
-		additionalRequirements: 'Mathematics + Physical Sciences (6+)',
-	},
-	{
-		name: 'University of Pretoria',
-		faculty: 'Engineering',
-		minAps: 40,
-		additionalRequirements: 'Mathematics + Physical Sciences (5+)',
-	},
-	{
-		name: 'Stellenbosch University',
-		faculty: 'Engineering',
-		minAps: 38,
-		additionalRequirements: 'Mathematics + Physical Sciences (5+)',
-	},
-	{
-		name: 'Stellenbosch University',
-		faculty: 'Medicine',
-		minAps: 42,
-		additionalRequirements: 'Mathematics + Physical Sciences (6+)',
-	},
-	{ name: 'University of Johannesburg', faculty: 'Engineering', minAps: 26 },
-	{ name: 'University of Johannesburg', faculty: 'Health Sciences', minAps: 30 },
-	{ name: 'University of KwaZulu-Natal', faculty: 'Engineering', minAps: 30 },
-	{ name: 'University of the Free State', faculty: 'Health Sciences', minAps: 32 },
-	{ name: 'University of the Western Cape', faculty: 'Dentistry', minAps: 35 },
-];
-
 export default function APSCalculatorPage() {
-	const setGoal = useGoalStore((state) => state.setGoal);
 	const [subjects, setSubjects] = useState<SubjectGrade[]>([
 		{ subject: 'Mathematics', grade: '5', points: 5 },
 		{ subject: 'Physical Sciences', grade: '5', points: 5 },
@@ -202,22 +99,6 @@ export default function APSCalculatorPage() {
 		};
 	};
 
-	const getApsColor = (aps: number) => {
-		if (aps >= 45) return 'text-green-500';
-		if (aps >= 35) return 'text-blue-500';
-		if (aps >= 25) return 'text-yellow-500';
-		return 'text-red-500';
-	};
-
-	const getGradeColor = (grade: string) => {
-		if (!grade || grade === 'U') return '';
-		const num = Number.parseInt(grade, 10);
-		if (num >= 6) return 'text-green-500';
-		if (num >= 4) return 'text-blue-500';
-		if (num >= 3) return 'text-yellow-500';
-		return 'text-red-500';
-	};
-
 	return (
 		<div className="min-h-screen pb-40 pt-8 px-4">
 			<div className="sm:max-w-4xl mx-auto">
@@ -232,267 +113,29 @@ export default function APSCalculatorPage() {
 				</div>
 
 				<div className="grid md:grid-cols-2 gap-6">
-					<Card className="rounded-xl">
-						<CardHeader>
-							<CardTitle>Your Subjects & Grades</CardTitle>
-							<CardDescription className="text-pretty">
-								Select your 7 best subjects (including Life Orientation)
-							</CardDescription>
-						</CardHeader>
-						<CardContent className="space-y-4">
-							{subjects.map((subj, index) => (
-								<div key={index} className="flex gap-2 items-center">
-									<Select
-										onValueChange={(value) => updateSubjectName(index, value)}
-										aria-label={`Select subject ${index + 1}`}
-									>
-										<SelectTrigger className="h-10">
-											<SelectValue placeholder="Select subject" />
-										</SelectTrigger>
-										<SelectContent>
-											<SelectGroup>
-												{SOUTH_AFRICAN_SUBJECTS.map((s) => (
-													<SelectItem
-														key={s}
-														value={s}
-														disabled={subjects.some((sub, i) => i !== index && sub.subject === s)}
-													>
-														{s}
-													</SelectItem>
-												))}
-											</SelectGroup>
-										</SelectContent>
-									</Select>
-									<Select
-										onValueChange={(value) => updateSubjectGrade(index, value)}
-										aria-label={`Select grade ${index + 1}`}
-									>
-										<SelectTrigger
-											className={`w-20 h-10 shrink-0 px-2 rounded-lg border bg-background text-sm font-medium text-center focus:ring-2 focus:ring-primary transition-colors ${getGradeColor(subj.grade)}`}
-											value={subj.grade}
-											aria-label={`Grade for ${subj.subject}`}
-										>
-											<SelectValue placeholder="—" />
-										</SelectTrigger>
-										<SelectContent>
-											<SelectGroup>
-												{GRADES.map((g) => (
-													<SelectItem
-														key={`${g}-${index}`}
-														id={`grade-${index}`}
-														value={g}
-														aria-label={`Grade for ${g}`}
-													>
-														{g}
-													</SelectItem>
-												))}
-											</SelectGroup>
-										</SelectContent>
-									</Select>
-									<span
-										className={`w-8 text-center text-xs text-muted-foreground font-mono font-semibold ${getGradeColor(subj.grade)}`}
-										role="status"
-										aria-label={`${subj.points} points`}
-									>
-										{subj.points}
-									</span>
-									{subjects.length > 3 && (
-										<Button
-											variant="ghost"
-											size="icon"
-											onClick={() => removeSubject(index)}
-											aria-label={`Remove ${subj.subject || 'subject'}`}
-											className="text-muted-foreground hover:text-destructive"
-										>
-											<HugeiconsIcon icon={Cancel01Icon} className="w-4 h-4" />
-										</Button>
-									)}
-								</div>
-							))}
+					<SubjectsEditor
+						subjects={subjects}
+						totalAPS={totalAPS}
+						onNameChange={updateSubjectName}
+						onGradeChange={updateSubjectGrade}
+						onRemove={removeSubject}
+						onAdd={addSubject}
+					/>
 
-							{subjects.length < 7 && (
-								<Button
-									variant="outline"
-									onClick={addSubject}
-									className="w-full font-semibold text-[13px]"
-								>
-									<HugeiconsIcon icon={PlusSignIcon} className="w-4 h-4" />
-									Add Subject
-								</Button>
-							)}
+					<EligibleUniversities
+						eligibleUniversities={eligibleUniversities}
+						totalAPS={totalAPS}
+						onSelect={setSelectedTarget}
+					/>
 
-							<div className="pt-4 border-t">
-								<div className="flex justify-between items-center">
-									<span className="text-lg font-semibold">Total APS</span>
-									<span className={`text-3xl font-bold font-mono ${getApsColor(totalAPS)}`}>
-										{totalAPS}
-									</span>
-								</div>
-							</div>
-						</CardContent>
-					</Card>
-
-					<Card className="rounded-xl">
-						<CardHeader>
-							<CardTitle>Eligible Universities</CardTitle>
-							<CardDescription>Based on your APS score of {totalAPS}</CardDescription>
-						</CardHeader>
-						<CardContent>
-							{eligibleUniversities.length === 0 ? (
-								<div className="text-center py-8 text-muted-foreground">
-									<p>Your APS is too low for the listed universities.</p>
-									<p className="text-sm mt-2 text-pretty">
-										Most universities require at least 25-30 APS
-									</p>
-								</div>
-							) : (
-								<div className="space-y-3">
-									{eligibleUniversities.slice(0, 5).map((uni, idx) => (
-										<div
-											key={`${uni.name}-${uni.faculty}-${idx}`}
-											role="button"
-											tabIndex={0}
-											className="p-3 rounded-lg border bg-card hover:border-primary/30 transition-colors cursor-pointer"
-											onClick={() => setSelectedTarget(uni)}
-											onKeyDown={(e) => {
-												if (e.key === 'Enter' || e.key === ' ') {
-													setSelectedTarget(uni);
-												}
-											}}
-										>
-											<div className="flex items-start justify-between">
-												<div>
-													<h4 className="font-semibold text-sm">{uni.name}</h4>
-													<p className="text-sm text-muted-foreground">{uni.faculty}</p>
-												</div>
-												<Badge variant="outline" className="shrink-0">
-													APS: {uni.minAps}
-												</Badge>
-											</div>
-											{uni.additionalRequirements && (
-												<p className="text-xs text-muted-foreground mt-1">
-													{uni.additionalRequirements}
-												</p>
-											)}
-										</div>
-									))}
-									{eligibleUniversities.length > 0 && (
-										<Button
-											className="w-full mt-4"
-											onClick={() => {
-												const firstUni = eligibleUniversities[0];
-												setGoal({
-													universityName: firstUni.name,
-													faculty: firstUni.faculty,
-													currentAps: totalAPS,
-													targetAps: firstUni.minAps,
-													setAt: Date.now(),
-												});
-												toast.success('Goal set!', {
-													description: `${firstUni.name} - ${firstUni.faculty} is now your dashboard goal.`,
-													action: {
-														label: 'View',
-														onClick: () => (window.location.href = '/dashboard'),
-													},
-												});
-											}}
-										>
-											<HugeiconsIcon icon={TargetIcon} className="w-4 h-4 mr-2" />
-											Set as Dashboard Goal
-										</Button>
-									)}
-								</div>
-							)}
-						</CardContent>
-					</Card>
-
-					{closestUniversities.length > 0 && (
-						<Card className="mt-6 rounded-xl border-t-4 border-t-primary">
-							<CardHeader>
-								<CardTitle className="flex items-center gap-2">
-									<HugeiconsIcon icon={TargetIcon} className="w-5 h-5 text-primary" />
-									Your Path to University
-								</CardTitle>
-								<CardDescription>Almost there! Here's how to reach your goal</CardDescription>
-							</CardHeader>
-							<CardContent className="space-y-4">
-								{closestUniversities.map((uni, idx) => {
-									const goal = getGoalPath(uni);
-									if (!goal) return null;
-									return (
-										<div
-											key={`${uni.name}-${uni.faculty}-${idx}`}
-											className="p-4 rounded-xl bg-gradient-to-r from-primary/5 to-primary/10 border border-primary/20"
-										>
-											<div className="flex items-start justify-between mb-3">
-												<div>
-													<h4 className="font-bold text-sm">{uni.name}</h4>
-													<p className="text-xs text-muted-foreground">{uni.faculty}</p>
-												</div>
-												<div className="text-right">
-													<div className="text-2xl font-black text-primary">+{goal.apsNeeded}</div>
-													<div className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
-														APS needed
-													</div>
-												</div>
-											</div>
-
-											<div className="flex items-center gap-2 mb-3">
-												<div className="flex-1 h-2 bg-secondary rounded-full overflow-hidden">
-													<div
-														className="h-full bg-primary rounded-full"
-														style={{ width: `${Math.min((totalAPS / uni.minAps) * 100, 100)}%` }}
-													/>
-												</div>
-												<span className="text-xs font-mono font-bold">
-													{totalAPS}/{uni.minAps}
-												</span>
-											</div>
-
-											<div className="space-y-1">
-												{goal.improvements.map((imp, i) => (
-													<p
-														key={i}
-														className="text-xs text-muted-foreground flex items-center gap-2"
-													>
-														<TrendingUp className="w-3 h-3 text-green-500" />
-														{imp}
-													</p>
-												))}
-											</div>
-										</div>
-									);
-								})}
-							</CardContent>
-						</Card>
-					)}
+					<PathToUniversity
+						closestUniversities={closestUniversities}
+						totalAPS={totalAPS}
+						getGoalPath={getGoalPath}
+					/>
 				</div>
 
-				<Card className="mt-6 rounded-xl">
-					<CardHeader>
-						<CardTitle className="flex items-center gap-2">
-							<HugeiconsIcon icon={HelpCircleIcon} className="w-5 h-5" />
-							About APS
-						</CardTitle>
-					</CardHeader>
-					<CardContent className="text-sm text-muted-foreground space-y-2">
-						<p className="text-pretty">
-							<strong>APS (Admission Point Score)</strong> is used by South African universities to
-							determine your eligibility for degree programmes.
-						</p>
-						<p className="text-pretty leading-5">
-							Each subject grade is converted to points: A (7), B (6), C (5), D (4), E (3), F (2), G
-							(1), U (0). Your total APS is the sum of your best 7 subjects, including Life
-							Orientation.
-						</p>
-						<p className="text-xs text-pretty">
-							<em>
-								Note: Requirements may change annually. Always verify with the university's official
-								admissions office.
-							</em>
-						</p>
-					</CardContent>
-				</Card>
+				<AboutAPS />
 			</div>
 		</div>
 	);

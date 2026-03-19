@@ -1,9 +1,10 @@
 'use client';
 
-import { Clock01Icon, LockIcon, Tick01Icon } from '@hugeicons/core-free-icons';
+import { Clock01Icon, LockIcon, Medal01Icon, Tick01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { memo } from 'react';
 import { TTSButton } from '@/components/Lessons/TTSButton';
+import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 
 interface Lesson {
@@ -165,6 +166,3 @@ export const PremiumUpsellCard = memo(function PremiumUpsellCard({
 		</div>
 	);
 });
-
-import { Medal01Icon } from '@hugeicons/core-free-icons';
-import { Button } from '@/components/ui/button';

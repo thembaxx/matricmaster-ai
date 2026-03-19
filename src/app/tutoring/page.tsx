@@ -19,40 +19,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-
-interface TutoringSession {
-	id: string;
-	roomName: string;
-	hostName: string;
-	subject: string;
-	startTime: Date;
-	maxParticipants: number;
-	currentParticipants: number;
-	status: 'scheduled' | 'live' | 'ended';
-}
-
-const MOCK_SESSIONS: TutoringSession[] = [
-	{
-		id: '1',
-		roomName: 'math-papers',
-		hostName: 'Mr. Johnson',
-		subject: 'Mathematics',
-		startTime: new Date(),
-		maxParticipants: 4,
-		currentParticipants: 2,
-		status: 'live',
-	},
-	{
-		id: '2',
-		roomName: 'physics-101',
-		hostName: 'Ms. Williams',
-		subject: 'Physical Sciences',
-		startTime: new Date(Date.now() + 3600000),
-		maxParticipants: 6,
-		currentParticipants: 0,
-		status: 'scheduled',
-	},
-];
+import { MOCK_SESSIONS, type TutoringSession } from './constants';
 
 export default function TutoringPage() {
 	const router = useRouter();

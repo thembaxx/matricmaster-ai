@@ -1,7 +1,8 @@
 'use client';
 
-import { Layers01Icon } from '@hugeicons/core-free-icons';
+import { CheckmarkCircle02Icon, Layers01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
+import { m } from 'framer-motion';
 import { memo, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { generateFlashcardsFromMistakes } from '@/lib/db/learning-loop-actions';
@@ -92,6 +93,3 @@ export const FlashcardGenerator = memo(function FlashcardGenerator({
 		</m.div>
 	);
 });
-
-import { CheckmarkCircle02Icon } from '@hugeicons/core-free-icons';
-import { m } from 'framer-motion';

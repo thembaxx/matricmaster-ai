@@ -1,102 +1,33 @@
-'use client';
-
-import {
-	ArrowRight01Icon,
-	BookOpen01Icon,
-	Calendar02Icon,
-	Delete02Icon,
-	FireIcon,
-	Medal01Icon,
-	Message01Icon,
-	SparklesIcon,
-	Tick01Icon,
-	Timer02Icon,
-	UserIcon,
-} from '@hugeicons/core-free-icons';
+import { ArrowRight01Icon, Delete02Icon, Tick01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { m } from 'framer-motion';
-import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-
-export interface NotificationAction {
-	label: string;
-	href?: string;
-	onClick?: () => void;
-	variant?: 'default' | 'outline' | 'ghost';
-}
-
-export type NotificationIcon =
-	| 'trophy'
-	| 'fire'
-	| 'calendar'
-	| 'user'
-	| 'chart'
-	| 'rank'
-	| 'timer'
-	| 'book'
-	| 'sparkles'
-	| 'message';
-
-export interface Notification {
-	id: string;
-	type: 'achievement' | 'streak' | 'reminder' | 'social' | 'system' | 'promotion';
-	title: string;
-	message: string;
-	icon: NotificationIcon;
-	iconBg: string;
-	iconColor: string;
-	detail?: string;
-	actions?: NotificationAction[];
-	isRead: boolean;
-	createdAt: Date;
-}
-
-const iconMap: Record<string, typeof Medal01Icon> = {
-	trophy: Medal01Icon,
-	fire: FireIcon,
-	calendar: Calendar02Icon,
-	user: UserIcon,
-	chart: SparklesIcon,
-	rank: Medal01Icon,
-	timer: Timer02Icon,
-	book: BookOpen01Icon,
-	sparkles: SparklesIcon,
-	message: Message01Icon,
-};
+import type { Notification, NotificationAction } from './types';
+import { iconMap } from './types';
 
 interface NotificationItemProps {
 	notification: Notification;
 	index: number;
+	isDeleting: boolean;
 	formatTime: (date: Date) => string;
 	formatFullDate: (date: Date) => string;
-	markAsRead: (id: string) => void;
-	deleteNotification: (id: string) => void;
-	handleAction: (action: NotificationAction) => void;
-	isDeleting: string | null;
+	onMarkAsRead: (id: string) => void;
+	onDelete: (id: string) => void;
+	onAction: (action: NotificationAction) => void;
 }
 
 export function NotificationItem({
 	notification,
 	index,
+	isDeleting,
 	formatTime,
 	formatFullDate,
-	markAsRead,
-	deleteNotification,
-	handleAction,
-	isDeleting,
+	onMarkAsRead,
+	onDelete,
+	onAction,
 }: NotificationItemProps) {
-	const router = useRouter();
 	const IconComponent = iconMap[notification.icon];
-
-	const localHandleAction = (action: NotificationAction) => {
-		if (action.onClick) {
-			action.onClick();
-		} else if (action.href) {
-			router.push(action.href);
-		}
-		handleAction(action);
-	};
 
 	return (
 		<m.div
@@ -109,7 +40,7 @@ export function NotificationItem({
 				className={`
 					group relative overflow-hidden transition-all duration-300
 					${notification.isRead ? 'bg-muted/30 border-transparent' : 'bg-card border-border/50'}
-					${isDeleting === notification.id ? 'opacity-0 scale-95' : 'hover:shadow-lg hover:shadow-primary/5'}
+					${isDeleting ? 'opacity-0 scale-95' : 'hover:shadow-lg hover:shadow-primary/5'}
 				`}
 			>
 				{!notification.isRead && (
@@ -153,7 +84,7 @@ export function NotificationItem({
 
 						{notification.actions && (
 							<div className="flex gap-2 mt-3">
-								{notification.actions.map((action: NotificationAction, i: number) => (
+								{notification.actions.map((action, i) => (
 									<Button
 										key={i}
 										variant={
@@ -165,7 +96,7 @@ export function NotificationItem({
 										}
 										size="sm"
 										className="h-8 text-xs font-medium rounded-full px-4"
-										onClick={() => localHandleAction(action)}
+										onClick={() => onAction(action)}
 									>
 										{action.label}
 										{action.href && (
@@ -186,7 +117,7 @@ export function NotificationItem({
 										variant="ghost"
 										size="icon"
 										className="h-7 w-7 rounded-full hover:bg-primary/10"
-										onClick={() => markAsRead(notification.id)}
+										onClick={() => onMarkAsRead(notification.id)}
 									>
 										<HugeiconsIcon
 											icon={Tick01Icon}
@@ -198,7 +129,7 @@ export function NotificationItem({
 									variant="ghost"
 									size="icon"
 									className="h-7 w-7 rounded-full hover:bg-destructive/10 text-destructive/60 hover:text-destructive"
-									onClick={() => deleteNotification(notification.id)}
+									onClick={() => onDelete(notification.id)}
 								>
 									<HugeiconsIcon icon={Delete02Icon} className="w-3.5 h-3.5" />
 								</Button>
