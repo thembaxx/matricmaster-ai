@@ -268,6 +268,7 @@ export function AppSidebar({ user, pathname, theme, onToggleTheme }: AppSidebarP
 												>
 													<Link
 														href={item.href}
+														transitionTypes={['fade']}
 														onClick={handleLinkClick}
 														className="flex items-center gap-3"
 													>
