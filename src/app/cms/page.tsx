@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import dynamic from 'next/dynamic';
 import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { Suspense } from 'react';
@@ -7,7 +8,11 @@ import { appConfig } from '@/app.config';
 import { ClientOnly } from '@/components/ClientOnly';
 import { getAuth, type SessionUser } from '@/lib/auth';
 import { dbManager } from '@/lib/db';
-import CMSScreen from '@/screens/CMS';
+
+const CMSScreen = dynamic(() => import('@/screens/CMS'), {
+	ssr: true,
+	loading: () => <div className="min-h-[60vh]" />,
+});
 
 export const metadata: Metadata = {
 	title: `CMS | ${appConfig.name} AI`,

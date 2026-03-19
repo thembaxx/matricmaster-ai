@@ -3,13 +3,19 @@
 import { Add01Icon, SparklesIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { useQuery } from '@tanstack/react-query';
+import dynamic from 'next/dynamic';
 import { useState } from 'react';
-import { BlockEditor } from '@/components/SmartScheduler/BlockEditor';
 import { CalendarView } from '@/components/SmartScheduler/CalendarView';
 import { SmartSchedulerProvider } from '@/components/SmartScheduler/ScheduleProvider';
 import { Button } from '@/components/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { useSmartSchedulerStore } from '@/stores/useSmartSchedulerStore';
+
+const BlockEditor = dynamic(
+	() =>
+		import('@/components/SmartScheduler/BlockEditor').then((mod) => ({ default: mod.BlockEditor })),
+	{ ssr: false, loading: () => null }
+);
 
 async function fetchAdaptiveSchedule() {
 	const response = await fetch('/api/smart-scheduler/adaptive', { method: 'POST' });

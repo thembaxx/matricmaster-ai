@@ -2,26 +2,22 @@
 
 import { useQuery } from '@tanstack/react-query';
 import { m } from 'framer-motion';
+import dynamic from 'next/dynamic';
 import { useState } from 'react';
-import { ActivityFeed } from '@/components/Dashboard/ActivityFeed';
 import { AdaptiveScheduleBanner } from '@/components/Dashboard/AdaptiveScheduleBanner';
 import { AITutorNudge } from '@/components/Dashboard/AITutorNudge';
 import { BriefingGreeting } from '@/components/Dashboard/BriefingGreeting';
 import { DailyMission } from '@/components/Dashboard/DailyMission';
 import { FocusAreasWidget } from '@/components/Dashboard/FocusAreasWidget';
-import { GrowthMap } from '@/components/Dashboard/GrowthMap';
-import { KnowledgeHeatmap } from '@/components/Dashboard/KnowledgeHeatmap';
 import { RecommendedSection } from '@/components/Dashboard/RecommendedSection';
 import { DEMO_TASKS } from '@/components/Dashboard/StatsGrid';
 import { SubjectGrid } from '@/components/Dashboard/SubjectGridV2';
 import { type StudyTask, TaskCard } from '@/components/Dashboard/TaskCardV2';
 import { TaskSection } from '@/components/Dashboard/TaskSectionV2';
 import { UniversityGoalCard } from '@/components/Dashboard/UniversityGoalCard';
-import { WeeklyChallenge } from '@/components/Dashboard/WeeklyChallenge';
 import { XpHeader } from '@/components/Gamification/XpHeader';
 import { FocusContent } from '@/components/Layout/FocusContent';
 import { TimelineSidebar } from '@/components/Layout/TimelineSidebar';
-import { BuddyPanel } from '@/components/StudyBuddy/BuddyPanel';
 import { MistakeBank } from '@/components/Widgets/MistakeBank';
 import type { ACHIEVEMENTS } from '@/constants/achievements';
 import {
@@ -34,6 +30,40 @@ import {
 } from '@/constants/mock-dashboard';
 import type { UserAchievement } from '@/lib/db/achievement-actions';
 import type { UserProgressSummary } from '@/lib/db/progress-actions';
+
+const GrowthMap = dynamic(
+	() => import('@/components/Dashboard/GrowthMap').then((mod) => ({ default: mod.GrowthMap })),
+	{ ssr: false, loading: () => <div className="h-64 animate-pulse bg-muted rounded-lg" /> }
+);
+
+const BuddyPanel = dynamic(
+	() => import('@/components/StudyBuddy/BuddyPanel').then((mod) => ({ default: mod.BuddyPanel })),
+	{ ssr: false, loading: () => <div className="h-48 animate-pulse bg-muted rounded-lg" /> }
+);
+
+const KnowledgeHeatmap = dynamic(
+	() =>
+		import('@/components/Dashboard/KnowledgeHeatmap').then((mod) => ({
+			default: mod.KnowledgeHeatmap,
+		})),
+	{ ssr: false, loading: () => <div className="h-64 animate-pulse bg-muted rounded-lg" /> }
+);
+
+const ActivityFeed = dynamic(
+	() =>
+		import('@/components/Dashboard/ActivityFeed').then((mod) => ({
+			default: mod.ActivityFeed,
+		})),
+	{ ssr: false, loading: () => <div className="h-48 animate-pulse bg-muted rounded-lg" /> }
+);
+
+const WeeklyChallenge = dynamic(
+	() =>
+		import('@/components/Dashboard/WeeklyChallenge').then((mod) => ({
+			default: mod.WeeklyChallenge,
+		})),
+	{ ssr: false, loading: () => <div className="h-48 animate-pulse bg-muted rounded-lg" /> }
+);
 
 interface DashboardProps {
 	initialProgress?: UserProgressSummary | null;

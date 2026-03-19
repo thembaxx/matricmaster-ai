@@ -1,7 +1,12 @@
 import type { Metadata } from 'next';
+import dynamic from 'next/dynamic';
 
 import { appConfig } from '@/app.config';
-import PhysicalSciencesScreen from '@/screens/PhysicalSciences';
+
+const PhysicalSciencesScreen = dynamic(() => import('@/screens/PhysicalSciences'), {
+	ssr: true,
+	loading: () => <div className="min-h-[60vh]" />,
+});
 
 export const metadata: Metadata = {
 	title: `Physical Sciences | ${appConfig.name} AI`,

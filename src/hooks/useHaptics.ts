@@ -11,7 +11,11 @@ const HAPTIC_PATTERNS = {
 
 export type HapticType = keyof typeof HAPTIC_PATTERNS;
 
-const isHapticsSupported = typeof window !== 'undefined' && 'vibrate' in navigator;
+// Re-evaluated on each call rather than at module load time,
+// so test mocks that add navigator.vibrate after import are picked up.
+function checkHapticsSupported(): boolean {
+	return typeof window !== 'undefined' && 'vibrate' in navigator;
+}
 
 function getStoredHapticsState(): boolean {
 	if (typeof window === 'undefined') return true;
@@ -19,7 +23,7 @@ function getStoredHapticsState(): boolean {
 	if (stored !== null) {
 		return stored === 'true';
 	}
-	return isHapticsSupported;
+	return checkHapticsSupported();
 }
 
 export function useHaptics() {
@@ -32,7 +36,7 @@ export function useHaptics() {
 
 	const trigger = useCallback(
 		(type: HapticType) => {
-			if (!enabled || !isHapticsSupported) return;
+			if (!enabled || !checkHapticsSupported()) return;
 			try {
 				navigator.vibrate(HAPTIC_PATTERNS[type]);
 			} catch {
@@ -46,6 +50,6 @@ export function useHaptics() {
 		trigger,
 		enabled,
 		setEnabled,
-		isSupported: isHapticsSupported,
+		isSupported: checkHapticsSupported(),
 	};
 }

@@ -8,13 +8,11 @@ import {
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { useQuery } from '@tanstack/react-query';
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useState, useTransition } from 'react';
 import { toast } from 'sonner';
 import { AccountTab } from '@/components/Settings/AccountTab';
-import { NotificationsTab } from '@/components/Settings/NotificationsTab';
-import { PrivacyTab } from '@/components/Settings/PrivacyTab';
-import { SecurityTab } from '@/components/Settings/SecurityTab';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -28,6 +26,22 @@ import {
 	updateNotificationSettingsAction,
 	updateProfileAction,
 } from '@/lib/db/settings-actions';
+
+const NotificationsTab = dynamic(
+	() =>
+		import('@/components/Settings/NotificationsTab').then((mod) => ({
+			default: mod.NotificationsTab,
+		})),
+	{ ssr: false }
+);
+const PrivacyTab = dynamic(
+	() => import('@/components/Settings/PrivacyTab').then((mod) => ({ default: mod.PrivacyTab })),
+	{ ssr: false }
+);
+const SecurityTab = dynamic(
+	() => import('@/components/Settings/SecurityTab').then((mod) => ({ default: mod.SecurityTab })),
+	{ ssr: false }
+);
 
 export default function SettingsPage() {
 	const { data: session, refetch } = authClient.useSession();

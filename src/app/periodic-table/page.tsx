@@ -1,6 +1,11 @@
 import type { Metadata } from 'next';
+import dynamic from 'next/dynamic';
 import { appConfig } from '@/app.config';
-import PeriodicTableScreen from '@/screens/PeriodicTable';
+
+const PeriodicTableScreen = dynamic(() => import('@/screens/PeriodicTable'), {
+	ssr: true,
+	loading: () => <div className="min-h-[60vh]" />,
+});
 
 export const metadata: Metadata = {
 	title: `Periodic Table | ${appConfig.name} AI`,

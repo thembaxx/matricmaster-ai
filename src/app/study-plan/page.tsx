@@ -1,7 +1,12 @@
 import type { Metadata } from 'next';
+import dynamic from 'next/dynamic';
 
 import { appConfig } from '@/app.config';
-import StudyPlanWizardScreen from '@/screens/StudyPlanWizard';
+
+const StudyPlanWizardScreen = dynamic(() => import('@/screens/StudyPlanWizard'), {
+	ssr: true,
+	loading: () => <div className="min-h-[60vh]" />,
+});
 
 export const metadata: Metadata = {
 	title: `Study Plan | ${appConfig.name}`,
