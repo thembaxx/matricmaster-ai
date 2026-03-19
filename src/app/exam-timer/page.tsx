@@ -1,44 +1,17 @@
 'use client';
 
-import {
-	Clock01Icon,
-	Notification01Icon,
-	PauseIcon,
-	PlayIcon,
-	RefreshIcon,
-	Settings01Icon,
-	ViewIcon,
-} from '@hugeicons/core-free-icons';
+import { Clock01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
+import type { ExamPreset } from '@/components/ExamTimer/constants';
+import { EXAM_PRESETS, formatTime } from '@/components/ExamTimer/constants';
+import { PresetSelector } from '@/components/ExamTimer/PresetSelector';
+import { SettingsCard } from '@/components/ExamTimer/SettingsCard';
+import { TimerDisplay } from '@/components/ExamTimer/TimerDisplay';
 import { ExamCompleteModal } from '@/components/FocusMode/ExamCompleteModal';
 import { FocusLayout } from '@/components/FocusMode/FocusLayout';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Label } from '@/components/ui/label';
-import { Slider } from '@/components/ui/slider';
-import { Switch } from '@/components/ui/switch';
 import { useFocusMode } from '@/contexts/FocusModeContext';
-
-interface ExamPreset {
-	name: string;
-	duration: number;
-	description: string;
-}
-
-const EXAM_PRESETS: ExamPreset[] = [
-	{ name: 'Mathematics Paper 1', duration: 180, description: '3 hours - Pure Mathematics' },
-	{ name: 'Mathematics Paper 2', duration: 180, description: '3 hours - Geometry & Trigonometry' },
-	{ name: 'Physical Sciences', duration: 180, description: '3 hours - Physics & Chemistry' },
-	{ name: 'Life Sciences', duration: 150, description: '2.5 hours - Biology' },
-	{ name: 'Geography', duration: 180, description: '3 hours - Theory & Mapwork' },
-	{ name: 'History', duration: 120, description: '2 hours - South Africa & World' },
-	{ name: 'Accounting', duration: 180, description: '3 hours - Financial Statements' },
-	{ name: 'English Home Language', duration: 180, description: '3 hours - Comprehension & Essay' },
-	{ name: 'Custom', duration: 60, description: 'Set your own time' },
-];
 
 export default function ExamTimerPage() {
 	const [selectedPreset, setSelectedPreset] = useState<ExamPreset>(EXAM_PRESETS[0]);
@@ -56,24 +29,6 @@ export default function ExamTimerPage() {
 		selectedPreset.name === 'Custom' ? customDuration * 60 : selectedPreset.duration * 60;
 	const elapsedSeconds = totalSeconds - timeRemaining;
 	const progress = ((totalSeconds - timeRemaining) / totalSeconds) * 100;
-
-	const formatTime = (seconds: number) => {
-		const hrs = Math.floor(seconds / 3600);
-		const mins = Math.floor((seconds % 3600) / 60);
-		const secs = seconds % 60;
-		if (hrs > 0) {
-			return `${hrs}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-		}
-		return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-	};
-
-	const formatDuration = (minutes: number) => {
-		const hrs = Math.floor(minutes / 60);
-		const mins = minutes % 60;
-		if (hrs > 0 && mins > 0) return `${hrs}h ${mins}m`;
-		if (hrs > 0) return `${hrs} hour${hrs > 1 ? 's' : ''}`;
-		return `${mins} min`;
-	};
 
 	const handleStart = () => {
 		setIsRunning(true);
@@ -175,153 +130,34 @@ export default function ExamTimerPage() {
 					</p>
 				</div>
 
-				<Card className="mb-6">
-					<CardHeader>
-						<CardTitle>Select Exam Type</CardTitle>
-					</CardHeader>
-					<CardContent>
-						<div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-							{EXAM_PRESETS.map((preset) => (
-								<button
-									type="button"
-									key={preset.name}
-									onClick={() => handlePresetSelect(preset)}
-									className={`p-3 rounded-lg border text-left transition-all hover:shadow-sm ${
-										selectedPreset.name === preset.name
-											? 'border-primary bg-primary/10 shadow-sm'
-											: 'hover:border-primary/50 hover:bg-muted/50'
-									}`}
-								>
-									<div className="font-medium text-sm">{preset.name}</div>
-									<div className="text-xs text-muted-foreground">
-										{formatDuration(preset.duration)}
-									</div>
-								</button>
-							))}
-						</div>
+				<PresetSelector
+					selectedPreset={selectedPreset}
+					customDuration={customDuration}
+					onPresetSelect={handlePresetSelect}
+					onCustomDurationChange={handleCustomDurationChange}
+				/>
 
-						{selectedPreset.name === 'Custom' && (
-							<div className="mt-4 p-4 rounded-lg border">
-								<Label htmlFor="custom-duration">Duration: {customDuration} minutes</Label>
-								<Slider
-									id="custom-duration"
-									value={[customDuration]}
-									onValueChange={handleCustomDurationChange}
-									min={15}
-									max={240}
-									step={15}
-									className="mt-2"
-								/>
-							</div>
-						)}
-					</CardContent>
-				</Card>
+				<TimerDisplay
+					examName={examName}
+					timeRemaining={timeRemaining}
+					progress={progress}
+					isRunning={isRunning}
+					showWarning={showWarning}
+					timeColor={getTimeColor()}
+					progressColor={getProgressColor()}
+					onExamNameChange={setExamName}
+					onStart={handleStart}
+					onPause={handlePause}
+					onReset={handleReset}
+					onStartFocusMode={startFocusMode}
+				/>
 
-				<Card className="mb-6">
-					<CardHeader>
-						<CardTitle className="flex items-center justify-between">
-							<input
-								type="text"
-								placeholder="Enter exam name (optional)"
-								value={examName}
-								onChange={(e) => setExamName(e.target.value)}
-								className="bg-transparent border-none text-xl font-bold focus:outline-none focus:ring-0 w-full placeholder:text-muted-foreground/50"
-								aria-label="Exam name"
-							/>
-						</CardTitle>
-					</CardHeader>
-					<CardContent>
-						<div className="text-center py-8">
-							<div className={`text-7xl font-bold tracking-wider mb-8 font-mono ${getTimeColor()}`}>
-								{formatTime(timeRemaining)}
-							</div>
-
-							<div className="w-full h-3 rounded-full bg-secondary overflow-hidden mb-8">
-								<div
-									className={`h-full transition-all duration-1000 ${getProgressColor()}`}
-									style={{ width: `${progress}%` }}
-								/>
-							</div>
-
-							<div className="flex items-center justify-center gap-4">
-								{!isRunning ? (
-									<>
-										<Button size="lg" onClick={handleStart} className="px-8">
-											<HugeiconsIcon icon={PlayIcon} className="w-5 h-5 mr-2" />
-											Start
-										</Button>
-										<Button
-											size="lg"
-											variant="secondary"
-											onClick={() => {
-												handleStart();
-												startFocusMode();
-											}}
-											className="px-8"
-										>
-											<HugeiconsIcon icon={ViewIcon} className="w-5 h-5 mr-2" />
-											Focus Mode
-										</Button>
-									</>
-								) : (
-									<Button size="lg" variant="outline" onClick={handlePause} className="px-8">
-										<HugeiconsIcon icon={PauseIcon} className="w-5 h-5 mr-2" />
-										Pause
-									</Button>
-								)}
-
-								<Button size="lg" variant="ghost" onClick={handleReset} aria-label="Reset timer">
-									<HugeiconsIcon icon={RefreshIcon} className="w-5 h-5" />
-								</Button>
-							</div>
-
-							{showWarning && (
-								<Badge variant="destructive" className="mt-6 animate-pulse">
-									<HugeiconsIcon icon={Notification01Icon} className="w-4 h-4 mr-1" />
-									Time is running out!
-								</Badge>
-							)}
-						</div>
-					</CardContent>
-				</Card>
-
-				<Card>
-					<CardHeader>
-						<CardTitle className="flex items-center gap-2">
-							<HugeiconsIcon icon={Settings01Icon} className="w-5 h-5" />
-							Timer Settings
-						</CardTitle>
-					</CardHeader>
-					<CardContent className="space-y-4">
-						<div className="flex items-center justify-between">
-							<div>
-								<Label htmlFor="warning-alert">Warning Alert</Label>
-								<p className="text-sm text-muted-foreground">
-									Get notified when time is running low
-								</p>
-							</div>
-							<select
-								id="warning-alert"
-								value={warningMinutes}
-								onChange={(e) => setWarningMinutes(Number(e.target.value))}
-								className="h-9 px-3 rounded-lg border bg-background text-sm focus:ring-2 focus:ring-primary"
-							>
-								<option value={5}>5 minutes</option>
-								<option value={10}>10 minutes</option>
-								<option value={15}>15 minutes</option>
-								<option value={30}>30 minutes</option>
-							</select>
-						</div>
-
-						<div className="flex items-center justify-between">
-							<div>
-								<Label htmlFor="sound-alerts">Sound Alerts</Label>
-								<p className="text-sm text-muted-foreground">Play sound when time is up</p>
-							</div>
-							<Switch id="sound-alerts" checked={enableSound} onCheckedChange={setEnableSound} />
-						</div>
-					</CardContent>
-				</Card>
+				<SettingsCard
+					warningMinutes={warningMinutes}
+					enableSound={enableSound}
+					onWarningMinutesChange={setWarningMinutes}
+					onEnableSoundChange={setEnableSound}
+				/>
 
 				<div className="mt-6 text-center text-sm text-muted-foreground">
 					<p>
@@ -333,17 +169,19 @@ export default function ExamTimerPage() {
 			{isFocusMode && (
 				<FocusLayout timeRemaining={timeRemaining} totalTime={totalSeconds}>
 					<div className="max-w-2xl mx-auto p-6">
-						<Card>
-							<CardHeader>
-								<CardTitle>{examName || selectedPreset.name}</CardTitle>
-							</CardHeader>
-							<CardContent>
+						<div className="rounded-lg border bg-card text-card-foreground shadow-sm">
+							<div className="flex flex-col space-y-1.5 p-6">
+								<h3 className="text-2xl font-semibold leading-none tracking-tight">
+									{examName || selectedPreset.name}
+								</h3>
+							</div>
+							<div className="p-6 pt-0">
 								<p className="text-muted-foreground">
 									This is a focus mode session. Answer your questions here. AI features are
 									temporarily disabled.
 								</p>
-							</CardContent>
-						</Card>
+							</div>
+						</div>
 					</div>
 				</FocusLayout>
 			)}

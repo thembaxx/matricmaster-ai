@@ -1,29 +1,16 @@
 'use client';
 
-import {
-	Add01Icon,
-	AiBrain01Icon,
-	BookOpen01Icon,
-	Clock01Icon,
-	Delete02Icon,
-	Loading03Icon,
-	MoreVerticalIcon,
-} from '@hugeicons/core-free-icons';
+import { Add01Icon, BookOpen01Icon, Loading03Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { useQuery } from '@tanstack/react-query';
 import dynamic from 'next/dynamic';
-import Link from 'next/link';
 import { useState } from 'react';
 import { toast } from 'sonner';
-import { Badge } from '@/components/ui/badge';
+import type { Flashcard, FlashcardDeck } from '@/components/Flashcards/constants';
+import { DeckGrid } from '@/components/Flashcards/DeckGrid';
+import { DeckStatsCards } from '@/components/Flashcards/DeckStatsCards';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+import { Card, CardContent } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { authClient } from '@/lib/auth-client';
 
@@ -45,26 +32,6 @@ const DeckDetailModal = dynamic(
 		})),
 	{ ssr: false, loading: () => null }
 );
-
-interface FlashcardDeck {
-	id: string;
-	name: string;
-	description: string | null;
-	subjectId: number | null;
-	cardCount: number;
-	isPublic: boolean;
-	createdAt: Date;
-	updatedAt: Date;
-}
-
-interface Flashcard {
-	id: string;
-	front: string;
-	back: string;
-	timesReviewed: number;
-	timesCorrect: number;
-	nextReview: Date | null;
-}
 
 export default function FlashcardsPage() {
 	const { data: session } = authClient.useSession();
@@ -179,59 +146,7 @@ export default function FlashcardsPage() {
 				</Button>
 			</div>
 
-			<div className="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-				<Card>
-					<CardContent className="pt-6">
-						<div className="flex items-center gap-4">
-							<div className="rounded-full bg-primary/10 p-3">
-								<HugeiconsIcon icon={BookOpen01Icon} className="h-6 w-6 text-primary" />
-							</div>
-							<div>
-								<div className="text-2xl font-bold">{decks.length}</div>
-								<div className="text-sm text-muted-foreground">Total Decks</div>
-							</div>
-						</div>
-					</CardContent>
-				</Card>
-				<Card>
-					<CardContent className="pt-6">
-						<div className="flex items-center gap-4">
-							<div className="rounded-full bg-green-500/10 p-3">
-								<HugeiconsIcon icon={AiBrain01Icon} className="h-6 w-6 text-green-500" />
-							</div>
-							<div>
-								<div className="text-2xl font-bold">
-									{decks.reduce((sum, d) => sum + d.cardCount, 0)}
-								</div>
-								<div className="text-sm text-muted-foreground">Total Cards</div>
-							</div>
-						</div>
-					</CardContent>
-				</Card>
-				<Card>
-					<CardContent className="pt-6">
-						<div className="flex items-center gap-4">
-							<div className="rounded-full bg-orange-500/10 p-3">
-								<HugeiconsIcon icon={Clock01Icon} className="h-6 w-6 text-orange-500" />
-							</div>
-							<div>
-								<div className="text-2xl font-bold">
-									{decks.filter((d) => d.cardCount > 0).length}
-								</div>
-								<div className="text-sm text-muted-foreground">Due Today</div>
-							</div>
-						</div>
-					</CardContent>
-				</Card>
-				<Card className="flex items-center justify-center">
-					<Button variant="outline" asChild className="w-full h-full">
-						<Link href="/review">
-							<HugeiconsIcon icon={AiBrain01Icon} className="mr-2 h-4 w-4" />
-							Start Review
-						</Link>
-					</Button>
-				</Card>
-			</div>
+			<DeckStatsCards decks={decks} />
 
 			{decks.length === 0 ? (
 				<Card className="border-dashed">
@@ -253,63 +168,12 @@ export default function FlashcardsPage() {
 				</Card>
 			) : (
 				<ScrollArea className="h-[calc(100vh-400px)]">
-					<div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-						{decks.map((deck) => (
-							<Card
-								key={deck.id}
-								className="group relative overflow-hidden transition-all hover:shadow-md"
-							>
-								<CardHeader className="pb-2">
-									<div className="flex items-start justify-between">
-										<CardTitle className="text-lg line-clamp-1">{deck.name}</CardTitle>
-										<DropdownMenu>
-											<DropdownMenuTrigger asChild>
-												<Button
-													variant="ghost"
-													size="icon"
-													className="h-9 w-9 md:h-8 md:w-8 md:opacity-0 md:group-hover:opacity-100 opacity-100 transition-opacity touch-manipulation"
-												>
-													<HugeiconsIcon icon={MoreVerticalIcon} className="h-4 w-4" />
-												</Button>
-											</DropdownMenuTrigger>
-											<DropdownMenuContent align="end">
-												<DropdownMenuItem onClick={() => handleOpenDeck(deck)}>
-													<HugeiconsIcon icon={BookOpen01Icon} className="mr-2 h-4 w-4" />
-													View Cards
-												</DropdownMenuItem>
-												<DropdownMenuItem onClick={() => handleStartReview(deck)}>
-													<HugeiconsIcon icon={AiBrain01Icon} className="mr-2 h-4 w-4" />
-													Study Deck
-												</DropdownMenuItem>
-												<DropdownMenuItem
-													onClick={() => handleDeleteDeck(deck)}
-													className="text-destructive"
-												>
-													<HugeiconsIcon icon={Delete02Icon} className="mr-2 h-4 w-4" />
-													Backspace
-												</DropdownMenuItem>
-											</DropdownMenuContent>
-										</DropdownMenu>
-									</div>
-									<CardDescription className="line-clamp-2">
-										{deck.description || 'No description'}
-									</CardDescription>
-								</CardHeader>
-								<CardContent>
-									<div className="flex items-center justify-between">
-										<Badge variant="secondary">{deck.cardCount} cards</Badge>
-										<Button
-											size="sm"
-											onClick={() => handleStartReview(deck)}
-											disabled={deck.cardCount === 0}
-										>
-											Study
-										</Button>
-									</div>
-								</CardContent>
-							</Card>
-						))}
-					</div>
+					<DeckGrid
+						decks={decks}
+						onOpenDeck={handleOpenDeck}
+						onStartReview={handleStartReview}
+						onDeleteDeck={handleDeleteDeck}
+					/>
 				</ScrollArea>
 			)}
 

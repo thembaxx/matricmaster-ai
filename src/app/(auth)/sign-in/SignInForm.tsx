@@ -1,13 +1,7 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import {
-	Tick01Icon as Check,
-	Loading03Icon,
-	SparklesIcon,
-	ViewIcon,
-	ViewOffIcon,
-} from '@hugeicons/core-free-icons';
+import { Tick01Icon as Check, SparklesIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { AnimatePresence, m } from 'framer-motion';
 import Link from 'next/link';
@@ -19,12 +13,9 @@ import { appConfig } from '@/app.config';
 import { SocialAuthButton } from '@/components/auth/SocialAuthButton';
 import { SmoothWords } from '@/components/Transition/SmoothText';
 import { BackgroundMesh } from '@/components/ui/background-mesh';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { STAGGER_CONTAINER, STAGGER_ITEM } from '@/lib/animation-presets';
 import { authClient } from '@/lib/auth-client';
-import { cn } from '@/lib/utils';
+import { FormFields } from './FormFields';
 
 const signInSchema = z.object({
 	email: z.string().email('Invalid email address'),
@@ -38,7 +29,6 @@ export function SignInForm() {
 	const searchParams = useSearchParams();
 	const rawCallbackUrl = searchParams.get('callbackUrl') || '/dashboard';
 
-	// Validate callbackUrl to prevent open redirects
 	let safeCallbackUrl = '/dashboard';
 	if (rawCallbackUrl.startsWith('/') && !rawCallbackUrl.startsWith('//')) {
 		safeCallbackUrl = rawCallbackUrl;
@@ -79,7 +69,6 @@ export function SignInForm() {
 				try {
 					result = await response.json();
 				} catch {
-					// Failed to parse JSON, get text instead
 					const text = await response.text();
 					result = { success: false, message: text };
 				}
@@ -111,12 +100,9 @@ export function SignInForm() {
 				setError(authError.message || 'Invalid email or password');
 				setIsLoading(false);
 			} else {
-				// We don't await this to avoid blocking navigation if better-auth redirects
 				initializeDatabase().catch(console.debug);
 
 				setSuccessEmail(data.email);
-				// If better-auth doesn't redirect automatically (e.g. if it's purely client-side handle)
-				// we still have our fallback navigation
 				setTimeout(() => {
 					router.push(safeCallbackUrl);
 					router.refresh();
@@ -140,7 +126,6 @@ export function SignInForm() {
 		<div className="min-h-screen flex items-center justify-center bg-background relative overflow-hidden">
 			<BackgroundMesh />
 
-			{/* Success Toast */}
 			<AnimatePresence>
 				{successEmail && (
 					<m.div
@@ -211,84 +196,14 @@ export function SignInForm() {
 						onSubmit={handleSubmit(onSubmit)}
 						className="space-y-6"
 					>
-						<m.div variants={STAGGER_ITEM} className="space-y-2">
-							<Label htmlFor="email" className="label-xs ml-1">
-								Email Address
-							</Label>
-							<Input
-								{...register('email')}
-								id="email"
-								type="email"
-								placeholder="name@school.edu.za"
-								className="bg-background/50 rounded-[var(--radius-md)]"
-							/>
-							{errors.email && (
-								<p className="text-xs text-destructive font-semibold ml-1">
-									{errors.email.message}
-								</p>
-							)}
-						</m.div>
-
-						<m.div variants={STAGGER_ITEM} className="space-y-2">
-							<div className="flex items-center justify-between">
-								<Label htmlFor="password" className="label-xs ml-1">
-									Password
-								</Label>
-								<Link
-									href="/forgot-password"
-									className="label-xs text-primary hover:text-primary/80"
-								>
-									Forgot?
-								</Link>
-							</div>
-							<div className="relative">
-								<Input
-									{...register('password')}
-									id="password"
-									type={showPassword ? 'text' : 'password'}
-									placeholder="Enter your password"
-									className="bg-background/50 pr-12 rounded-[var(--radius-md)]"
-								/>
-								<button
-									type="button"
-									onClick={() => setShowPassword(!showPassword)}
-									className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
-									aria-label={showPassword ? 'Hide password' : 'Show password'}
-								>
-									{showPassword ? (
-										<HugeiconsIcon icon={ViewOffIcon} className="w-5 h-5" />
-									) : (
-										<HugeiconsIcon icon={ViewIcon} className="w-5 h-5" />
-									)}
-								</button>
-							</div>
-							{errors.password && (
-								<p className="text-xs text-destructive font-semibold ml-1">
-									{errors.password.message}
-								</p>
-							)}
-						</m.div>
-
-						<m.div variants={STAGGER_ITEM}>
-							<Button
-								type="submit"
-								disabled={isLoading || !!successEmail}
-								className={cn(
-									'w-full h-14 rounded-[var(--radius-lg)] font-black text-base shadow-xl transition-all active:scale-[0.98]',
-									successEmail
-										? 'bg-success text-white shadow-success/30'
-										: 'bg-primary text-primary-foreground shadow-primary/20'
-								)}
-							>
-								{isLoading ? (
-									<HugeiconsIcon icon={Loading03Icon} className="w-5 h-5 animate-spin" />
-								) : successEmail ? (
-									'Success!'
-								) : (
-									'Sign In'
-								)}
-							</Button>
-						</m.div>
+						<FormFields
+							register={register}
+							errors={errors}
+							isLoading={isLoading}
+							successEmail={successEmail}
+							showPassword={showPassword}
+							onTogglePassword={() => setShowPassword(!showPassword)}
+						/>
 					</m.form>
 
 					<m.div
@@ -337,7 +252,6 @@ export function SignInForm() {
 					</m.p>
 				</m.div>
 
-				{/* Footer simple copyright or branding */}
 				<m.p
 					initial={{ opacity: 0 }}
 					animate={{ opacity: 1 }}

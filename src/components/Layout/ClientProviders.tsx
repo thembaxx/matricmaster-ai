@@ -1,5 +1,6 @@
 'use client';
 
+import { QueryClientProvider } from '@tanstack/react-query';
 import { domAnimation, LazyMotion } from 'framer-motion';
 import type { ReactNode } from 'react';
 import NotificationListener from '@/components/Notifications/NotificationListener';
@@ -8,6 +9,7 @@ import { FocusModeProvider } from '@/contexts/FocusModeContext';
 import { GeminiQuotaModalProvider } from '@/contexts/GeminiQuotaModalContext';
 import { OfflineProvider } from '@/contexts/OfflineContext';
 import { AblyClientProvider } from '@/lib/ably/provider';
+import { queryClient } from '@/lib/api/client';
 import { PostHogProvider } from '@/lib/posthog-client';
 import { ScheduleProvider } from '@/stores/useScheduleStore';
 import AppLayout from './AppLayout';
@@ -18,24 +20,26 @@ interface ClientProvidersProps {
 
 export function ClientProviders({ children }: ClientProvidersProps) {
 	return (
-		<LazyMotion features={domAnimation}>
-			<TooltipProvider>
-				<AblyClientProvider>
-					<ScheduleProvider>
-						<PostHogProvider>
-							<NotificationListener>
-								<GeminiQuotaModalProvider>
-									<OfflineProvider>
-										<FocusModeProvider>
-											<AppLayout>{children}</AppLayout>
-										</FocusModeProvider>
-									</OfflineProvider>
-								</GeminiQuotaModalProvider>
-							</NotificationListener>
-						</PostHogProvider>
-					</ScheduleProvider>
-				</AblyClientProvider>
-			</TooltipProvider>
-		</LazyMotion>
+		<QueryClientProvider client={queryClient}>
+			<LazyMotion features={domAnimation}>
+				<TooltipProvider>
+					<AblyClientProvider>
+						<ScheduleProvider>
+							<PostHogProvider>
+								<NotificationListener>
+									<GeminiQuotaModalProvider>
+										<OfflineProvider>
+											<FocusModeProvider>
+												<AppLayout>{children}</AppLayout>
+											</FocusModeProvider>
+										</OfflineProvider>
+									</GeminiQuotaModalProvider>
+								</NotificationListener>
+							</PostHogProvider>
+						</ScheduleProvider>
+					</AblyClientProvider>
+				</TooltipProvider>
+			</LazyMotion>
+		</QueryClientProvider>
 	);
 }

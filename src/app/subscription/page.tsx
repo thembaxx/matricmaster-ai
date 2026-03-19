@@ -1,39 +1,13 @@
 'use client';
 
-import {
-	CheckmarkCircle02Icon,
-	CrownIcon,
-	Loading03Icon,
-	SparklesIcon,
-} from '@hugeicons/core-free-icons';
+import { Loading03Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-
-interface Plan {
-	id: string;
-	name: string;
-	description: string;
-	priceZar: string;
-	billingInterval: string;
-	features: string[];
-}
-
-interface Subscription {
-	planId: string;
-	planName: string;
-	status: string;
-	currentPeriodEnd: Date;
-}
-
-interface SubscriptionData {
-	plans: Plan[];
-	subscription: Subscription | null;
-}
+import type { SubscriptionData } from './constants';
+import { PlanCard } from './PlanCard';
 
 export default function SubscriptionPage() {
 	const router = useRouter();
@@ -94,17 +68,6 @@ export default function SubscriptionPage() {
 		}
 	};
 
-	const getButtonText = (planId: string, currentPlanId: string | undefined) => {
-		if (processing === planId) return 'Processing...';
-		if (currentPlanId === planId) return 'Current Plan';
-		if (!subscription && planId === 'free') return 'Get Started';
-		if (!subscription) return 'Subscribe';
-		if (subscription.planId === planId) return 'Current Plan';
-		return 'Upgrade';
-	};
-
-	const isCurrentPlan = (planId: string) => subscription?.planId === planId;
-
 	if (isLoading) {
 		return (
 			<div className="min-h-screen flex items-center justify-center">
@@ -128,87 +91,15 @@ export default function SubscriptionPage() {
 				</div>
 
 				<div className="grid md:grid-cols-3 gap-6">
-					{plans.map((plan) => {
-						const isPro = plan.id === 'pro';
-						const isPremium = plan.id === 'premium';
-						const isCurrent = isCurrentPlan(plan.id);
-
-						return (
-							<Card
-								key={plan.id}
-								className={`relative overflow-hidden transition-all duration-300 ${
-									isPro
-										? 'border-primary shadow-lg scale-105 z-10'
-										: isPremium
-											? 'border-amber-500 shadow-lg'
-											: ''
-								} ${isCurrent ? 'ring-2 ring-primary' : ''}`}
-							>
-								{isPro && (
-									<div className="absolute top-0 left-0 right-0 bg-primary text-white text-center py-1 text-sm font-medium">
-										Most Popular
-									</div>
-								)}
-								{isPremium && (
-									<div className="absolute top-0 left-0 right-0 bg-amber-500 text-white text-center py-1 text-sm font-medium">
-										Best Value
-									</div>
-								)}
-
-								<CardHeader className={`pb-4 ${isPro ? 'pt-8' : ''}`}>
-									<CardTitle className="flex items-center gap-2">
-										{isPro && (
-											<HugeiconsIcon icon={SparklesIcon} className="w-5 h-5 text-primary" />
-										)}
-										{isPremium && (
-											<HugeiconsIcon icon={CrownIcon} className="w-5 h-5 text-amber-500" />
-										)}
-										{plan.name}
-									</CardTitle>
-									<CardDescription>{plan.description}</CardDescription>
-								</CardHeader>
-
-								<CardContent>
-									<div className="mb-6">
-										<span className="text-4xl font-bold">R{plan.priceZar}</span>
-										<span className="text-muted-foreground">/{plan.billingInterval}</span>
-									</div>
-
-									<ul className="space-y-3 mb-6">
-										{plan.features?.map((feature, idx) => (
-											<li key={idx} className="flex items-start gap-2">
-												<HugeiconsIcon
-													icon={CheckmarkCircle02Icon}
-													className={`w-5 h-5 shrink-0 mt-0.5 ${
-														isPro ? 'text-primary' : isPremium ? 'text-amber-500' : 'text-green-500'
-													}`}
-												/>
-												<span className="text-sm">{feature}</span>
-											</li>
-										))}
-									</ul>
-
-									<Button
-										className={`w-full ${
-											isPro
-												? 'bg-primary hover:bg-primary/90'
-												: isPremium
-													? 'bg-amber-500 hover:bg-amber-600 text-white'
-													: ''
-										}`}
-										variant={isCurrent ? 'outline' : isPro || isPremium ? 'default' : 'outline'}
-										disabled={isCurrent || processing !== null}
-										onClick={() => !isCurrent && handleSubscribe(plan.id)}
-									>
-										{processing === plan.id ? (
-											<HugeiconsIcon icon={Loading03Icon} className="w-4 h-4 mr-2 animate-spin" />
-										) : null}
-										{getButtonText(plan.id, subscription?.planId)}
-									</Button>
-								</CardContent>
-							</Card>
-						);
-					})}
+					{plans.map((plan) => (
+						<PlanCard
+							key={plan.id}
+							plan={plan}
+							subscription={subscription}
+							processing={processing}
+							onSubscribe={handleSubscribe}
+						/>
+					))}
 				</div>
 
 				<div className="text-center mt-8 text-sm text-muted-foreground">

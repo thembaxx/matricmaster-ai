@@ -10,22 +10,17 @@ import { HugeiconsIcon } from '@hugeicons/react';
 import { useQuery } from '@tanstack/react-query';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
-import { useState, useTransition } from 'react';
-import { toast } from 'sonner';
 import { AccountTab } from '@/components/Settings/AccountTab';
+import { QUERY_STALE_TIME } from '@/components/Settings/constants';
+import { useNotificationSettings } from '@/components/Settings/useNotificationSettings';
+import { usePrivacySettings } from '@/components/Settings/usePrivacySettings';
+import { useProfileSettings } from '@/components/Settings/useProfileSettings';
+import { useSecuritySettings } from '@/components/Settings/useSecuritySettings';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useHaptics } from '@/hooks/useHaptics';
-import { authClient } from '@/lib/auth-client';
-import {
-	changePasswordAction,
-	deleteAccountAction,
-	getNotificationSettingsAction,
-	getPrivacySettingsAction,
-	updateNotificationSettingsAction,
-	updateProfileAction,
-} from '@/lib/db/settings-actions';
+import { getNotificationSettingsAction, getPrivacySettingsAction } from '@/lib/db/settings-actions';
 
 const NotificationsTab = dynamic(
 	() =>
@@ -44,276 +39,31 @@ const SecurityTab = dynamic(
 );
 
 export default function SettingsPage() {
-	const { data: session, refetch } = authClient.useSession();
-	const [isPendingProfile, startProfileTransition] = useTransition();
-	const [isPendingPassword, startPasswordTransition] = useTransition();
-	const [isDeletingAccount, startDeleteTransition] = useTransition();
-	const [_isPendingSettings, startSettingsTransition] = useTransition();
-
-	// Account settings state - derive from session directly
-	const [displayName, setDisplayName] = useState(session?.user?.name ?? '');
-	const [email] = useState(session?.user?.email ?? '');
-
-	// Load settings with useQuery
-	const { data: notificationSettings } = useQuery({
-		queryKey: ['notificationSettings', session?.user?.id],
-		queryFn: () => getNotificationSettingsAction(session!.user.id),
-		enabled: !!session?.user?.id,
-		staleTime: Number.POSITIVE_INFINITY,
-	});
-
-	const { data: privacySettings } = useQuery({
-		queryKey: ['privacySettings', session?.user?.id],
-		queryFn: () => getPrivacySettingsAction(session!.user.id),
-		enabled: !!session?.user?.id,
-		staleTime: Number.POSITIVE_INFINITY,
-	});
-
-	// Notification settings - initialized from query data
-	const [emailNotifications, setEmailNotifications] = useState(
-		notificationSettings?.data?.emailNotifications ?? true
-	);
-	const [pushNotifications, setPushNotifications] = useState(
-		notificationSettings?.data?.pushNotifications ?? true
-	);
-	const [studyReminders, setStudyReminders] = useState(
-		notificationSettings?.data?.studyReminders ?? true
-	);
-	const [achievementAlerts, setAchievementAlerts] = useState(
-		notificationSettings?.data?.achievementAlerts ?? true
-	);
-
-	// Privacy settings - initialized from query data
-	const [profileVisibility, setProfileVisibility] = useState(
-		privacySettings?.data?.profileVisibility ?? true
-	);
-	const [showOnLeaderboard, setShowOnLeaderboard] = useState(
-		privacySettings?.data?.showOnLeaderboard ?? true
-	);
-	const [analyticsTracking, setAnalyticsTracking] = useState(
-		privacySettings?.data?.analyticsTracking ?? true
-	);
-
-	// Security settings state
-	const [is2FAEnabled, setIs2FAEnabled] = useState(false);
-	const [isLoading2FA, setIsLoading2FA] = useState(false);
-	const [showBackupCodes, setShowBackupCodes] = useState(false);
-	const [backupCodes, setBackupCodes] = useState<string[]>([]);
-	const [password, setPassword] = useState('');
-
-	// Password change state
-	const [currentPassword, setCurrentPassword] = useState('');
-	const [newPassword, setNewPassword] = useState('');
-	const [confirmPassword, setConfirmPassword] = useState('');
-
-	// Account deletion state
-	const [deletePassword, setDeletePassword] = useState('');
-	const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-
-	// Haptic feedback settings
+	const { session } = useProfileSettings();
+	const security = useSecuritySettings();
 	const {
 		enabled: hapticEnabled,
 		setEnabled: setHapticEnabled,
 		isSupported: hapticSupported,
 	} = useHaptics();
 
-	// Profile save handler
-	const handleSaveProfile = async () => {
-		if (!session?.user?.id) return;
+	const { data: notificationSettings } = useQuery({
+		queryKey: ['notificationSettings', session?.user?.id],
+		queryFn: () => getNotificationSettingsAction(session!.user.id),
+		enabled: !!session?.user?.id,
+		staleTime: QUERY_STALE_TIME,
+	});
 
-		startProfileTransition(async () => {
-			const result = await updateProfileAction(session.user.id, { name: displayName });
+	const { data: privacySettings } = useQuery({
+		queryKey: ['privacySettings', session?.user?.id],
+		queryFn: () => getPrivacySettingsAction(session!.user.id),
+		enabled: !!session?.user?.id,
+		staleTime: QUERY_STALE_TIME,
+	});
 
-			if (result.success) {
-				toast.success('Profile updated successfully!', {
-					description: 'Your display name has been saved.',
-				});
-				refetch();
-			} else {
-				toast.error('Failed to update profile', {
-					description: result.error || 'Please try again.',
-				});
-			}
-		});
-	};
-
-	// Password change handler
-	const handlePasswordChange = async () => {
-		if (!session?.user?.id) return;
-
-		if (!currentPassword || !newPassword || !confirmPassword) {
-			toast.error('Please fill in all password fields');
-			return;
-		}
-
-		if (newPassword !== confirmPassword) {
-			toast.error('Passwords do not match');
-			return;
-		}
-
-		if (newPassword.length < 8) {
-			toast.error('Password must be at least 8 characters');
-			return;
-		}
-
-		startPasswordTransition(async () => {
-			const result = await changePasswordAction(session.user.id, {
-				currentPassword,
-				newPassword,
-			});
-
-			if (result.success) {
-				toast.success('Password changed successfully!');
-				setCurrentPassword('');
-				setNewPassword('');
-				setConfirmPassword('');
-			} else {
-				toast.error('Failed to change password', {
-					description: result.error || 'Please try again.',
-				});
-			}
-		});
-	};
-
-	// Account deletion handler
-	const handleDeleteAccount = async () => {
-		if (!session?.user?.id) return;
-
-		if (!deletePassword) {
-			toast.error('Please enter your password to delete your account');
-			return;
-		}
-
-		startDeleteTransition(async () => {
-			const result = await deleteAccountAction(session.user.id, deletePassword);
-
-			if (result.success) {
-				toast.success('Account deleted', {
-					description: 'Your account has been permanently deleted.',
-				});
-				// Redirect to home after deletion
-				window.location.href = '/';
-			} else {
-				toast.error('Failed to delete account', {
-					description: result.error || 'Please try again.',
-				});
-			}
-		});
-	};
-
-	// Handler for notification changes - update state directly
-	const handleNotificationChange = async (key: string, value: boolean) => {
-		// Optimistic update
-		if (key === 'emailNotifications') setEmailNotifications(value);
-		if (key === 'pushNotifications') setPushNotifications(value);
-		if (key === 'studyReminders') setStudyReminders(value);
-		if (key === 'achievementAlerts') setAchievementAlerts(value);
-
-		if (!session?.user?.id) return;
-
-		startSettingsTransition(async () => {
-			const updates = {
-				...(key === 'emailNotifications' && { emailNotifications: value }),
-				...(key === 'pushNotifications' && { pushNotifications: value }),
-				...(key === 'studyReminders' && { studyReminders: value }),
-				...(key === 'achievementAlerts' && { achievementAlerts: value }),
-			};
-
-			await updateNotificationSettingsAction(session.user.id, updates);
-		});
-	};
-
-	// Handler for privacy changes - update state directly
-	const handlePrivacyChange = async (key: string, value: boolean) => {
-		// Optimistic update
-		if (key === 'profileVisibility') setProfileVisibility(value);
-		if (key === 'showOnLeaderboard') setShowOnLeaderboard(value);
-		if (key === 'analyticsTracking') setAnalyticsTracking(value);
-
-		if (!session?.user?.id) return;
-
-		startSettingsTransition(async () => {
-			toast.success('Privacy settings updated');
-		});
-	};
-
-	const handleEnable2FA = async () => {
-		if (!password) {
-			toast.error('Please enter your password');
-			return;
-		}
-
-		setIsLoading2FA(true);
-		try {
-			const result = await authClient.twoFactor.enable({ password });
-			if (result.data) {
-				setBackupCodes(result.data.backupCodes);
-				setShowBackupCodes(true);
-				setIs2FAEnabled(true);
-				toast.success('2FA enabled successfully!', {
-					description: 'Save your backup codes in a safe place.',
-				});
-			} else if (result.error) {
-				toast.error(result.error.message);
-			}
-		} catch (error) {
-			console.debug(error);
-			toast.error('Failed to enable 2FA');
-		} finally {
-			setIsLoading2FA(false);
-		}
-	};
-
-	const handleDisable2FA = async () => {
-		if (!password) {
-			toast.error('Please enter your password');
-			return;
-		}
-
-		setIsLoading2FA(true);
-		try {
-			const result = await authClient.twoFactor.disable({ password });
-			if (result.data) {
-				setIs2FAEnabled(false);
-				setShowBackupCodes(false);
-				setBackupCodes([]);
-				toast.success('2FA disabled');
-			} else if (result.error) {
-				toast.error(result.error.message);
-			}
-		} catch (error) {
-			console.debug(error);
-			toast.error('Failed to disable 2FA');
-		} finally {
-			setIsLoading2FA(false);
-		}
-	};
-
-	const handleRegenerateBackupCodes = async () => {
-		if (!password) {
-			toast.error('Please enter your password');
-			return;
-		}
-
-		setIsLoading2FA(true);
-		try {
-			const result = await authClient.twoFactor.generateBackupCodes({ password });
-			if (result.data) {
-				setBackupCodes(result.data.backupCodes);
-				setShowBackupCodes(true);
-				toast.success('Backup codes regenerated', {
-					description: 'Save your new backup codes.',
-				});
-			} else if (result.error) {
-				toast.error(result.error.message);
-			}
-		} catch (error) {
-			console.debug(error);
-			toast.error('Failed to regenerate backup codes');
-		} finally {
-			setIsLoading2FA(false);
-		}
-	};
+	const profile = useProfileSettings();
+	const notifications = useNotificationSettings(session, notificationSettings?.data);
+	const privacy = usePrivacySettings(session, privacySettings?.data);
 
 	if (!session) {
 		return (
@@ -362,62 +112,62 @@ export default function SettingsPage() {
 					<TabsContent value="account">
 						<AccountTab
 							session={session}
-							displayName={displayName}
-							setDisplayName={setDisplayName}
-							email={email}
-							isPendingProfile={isPendingProfile}
-							handleSaveProfile={handleSaveProfile}
+							displayName={profile.displayName}
+							setDisplayName={profile.setDisplayName}
+							email={profile.email}
+							isPendingProfile={profile.isPendingProfile}
+							handleSaveProfile={profile.handleSaveProfile}
 						/>
 					</TabsContent>
 
 					<TabsContent value="security">
 						<SecurityTab
-							is2FAEnabled={is2FAEnabled}
-							isLoading2FA={isLoading2FA}
-							showBackupCodes={showBackupCodes}
-							setShowBackupCodes={setShowBackupCodes}
-							backupCodes={backupCodes}
-							password={password}
-							setPassword={setPassword}
-							currentPassword={currentPassword}
-							setCurrentPassword={setCurrentPassword}
-							newPassword={newPassword}
-							setNewPassword={setNewPassword}
-							confirmPassword={confirmPassword}
-							setConfirmPassword={setConfirmPassword}
-							isPendingPassword={isPendingPassword}
-							handleEnable2FA={handleEnable2FA}
-							handleDisable2FA={handleDisable2FA}
-							handleRegenerateBackupCodes={handleRegenerateBackupCodes}
-							handlePasswordChange={handlePasswordChange}
+							is2FAEnabled={security.is2FAEnabled}
+							isLoading2FA={security.isLoading2FA}
+							showBackupCodes={security.showBackupCodes}
+							setShowBackupCodes={security.setShowBackupCodes}
+							backupCodes={security.backupCodes}
+							password={security.password}
+							setPassword={security.setPassword}
+							currentPassword={security.currentPassword}
+							setCurrentPassword={security.setCurrentPassword}
+							newPassword={security.newPassword}
+							setNewPassword={security.setNewPassword}
+							confirmPassword={security.confirmPassword}
+							setConfirmPassword={security.setConfirmPassword}
+							isPendingPassword={security.isPendingPassword}
+							handleEnable2FA={security.handleEnable2FA}
+							handleDisable2FA={security.handleDisable2FA}
+							handleRegenerateBackupCodes={security.handleRegenerateBackupCodes}
+							handlePasswordChange={security.handlePasswordChange}
 						/>
 					</TabsContent>
 
 					<TabsContent value="notifications">
 						<NotificationsTab
-							emailNotifications={emailNotifications}
-							pushNotifications={pushNotifications}
-							studyReminders={studyReminders}
-							achievementAlerts={achievementAlerts}
-							handleNotificationChange={handleNotificationChange}
+							emailNotifications={notifications.emailNotifications}
+							pushNotifications={notifications.pushNotifications}
+							studyReminders={notifications.studyReminders}
+							achievementAlerts={notifications.achievementAlerts}
+							handleNotificationChange={notifications.handleNotificationChange}
 						/>
 					</TabsContent>
 
 					<TabsContent value="privacy">
 						<PrivacyTab
-							profileVisibility={profileVisibility}
-							showOnLeaderboard={showOnLeaderboard}
-							analyticsTracking={analyticsTracking}
+							profileVisibility={privacy.profileVisibility}
+							showOnLeaderboard={privacy.showOnLeaderboard}
+							analyticsTracking={privacy.analyticsTracking}
 							hapticSupported={hapticSupported}
 							hapticEnabled={hapticEnabled}
 							setHapticEnabled={setHapticEnabled}
-							handlePrivacyChange={handlePrivacyChange}
-							isDeleteDialogOpen={isDeleteDialogOpen}
-							setIsDeleteDialogOpen={setIsDeleteDialogOpen}
-							deletePassword={deletePassword}
-							setDeletePassword={setDeletePassword}
-							handleDeleteAccount={handleDeleteAccount}
-							isDeletingAccount={isDeletingAccount}
+							handlePrivacyChange={privacy.handlePrivacyChange}
+							isDeleteDialogOpen={privacy.isDeleteDialogOpen}
+							setIsDeleteDialogOpen={privacy.setIsDeleteDialogOpen}
+							deletePassword={privacy.deletePassword}
+							setDeletePassword={privacy.setDeletePassword}
+							handleDeleteAccount={privacy.handleDeleteAccount}
+							isDeletingAccount={privacy.isDeletingAccount}
 						/>
 					</TabsContent>
 				</Tabs>

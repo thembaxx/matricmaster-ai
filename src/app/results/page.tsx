@@ -2,7 +2,6 @@
 
 import {
 	BookOpen01Icon,
-	CheckmarkCircle02Icon,
 	InformationCircleIcon,
 	Mortarboard02Icon,
 	Search01Icon,
@@ -11,12 +10,11 @@ import {
 import { HugeiconsIcon } from '@hugeicons/react';
 import { useState } from 'react';
 import { toast } from 'sonner';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-
-const DBE_RESULTS_URL = 'https://www.education.gov.za/Results';
+import { DBE_RESULTS_URL } from './constants';
+import { UnderstandingResultsCard } from './understanding-results-card';
 
 export default function ResultsPage() {
 	const [examNumber, setExamNumber] = useState('');
@@ -130,61 +128,7 @@ export default function ResultsPage() {
 					</CardContent>
 				</Card>
 
-				<Card className="mb-6">
-					<CardHeader>
-						<CardTitle>Understanding Your Results</CardTitle>
-					</CardHeader>
-					<CardContent>
-						<div className="space-y-6">
-							<div>
-								<h4 className="font-medium mb-3">Achievement Levels</h4>
-								<div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-									{[
-										{ level: '7', desc: 'Outstanding', color: 'bg-green-500' },
-										{ level: '6', desc: 'Meritorious', color: 'bg-green-400' },
-										{ level: '5', desc: 'Substantial', color: 'bg-blue-500' },
-										{ level: '4', desc: 'Adequate', color: 'bg-blue-400' },
-										{ level: '3', desc: 'Moderate', color: 'bg-yellow-500' },
-										{ level: '2', desc: 'Elementary', color: 'bg-orange-500' },
-										{ level: '1', desc: 'Not Achieved', color: 'bg-red-500' },
-									].map((item) => (
-										<div key={item.level} className="flex items-center gap-2">
-											<Badge className={item.color}>{item.level}</Badge>
-											<span className="text-xs text-muted-foreground">{item.desc}</span>
-										</div>
-									))}
-								</div>
-							</div>
-
-							<div>
-								<h4 className="font-medium mb-3">Pass Requirements</h4>
-								<ul className="text-sm text-muted-foreground space-y-2">
-									<li className="flex gap-2">
-										<HugeiconsIcon
-											icon={CheckmarkCircle02Icon}
-											className="w-4 h-4 text-green-500 shrink-0 mt-0.5"
-										/>
-										<span>National Certificate: Pass 6 subjects (including Home Language)</span>
-									</li>
-									<li className="flex gap-2">
-										<HugeiconsIcon
-											icon={CheckmarkCircle02Icon}
-											className="w-4 h-4 text-green-500 shrink-0 mt-0.5"
-										/>
-										<span>Admission to Bachelor: Pass 4 subjects (including Language)</span>
-									</li>
-									<li className="flex gap-2">
-										<HugeiconsIcon
-											icon={CheckmarkCircle02Icon}
-											className="w-4 h-4 text-green-500 shrink-0 mt-0.5"
-										/>
-										<span>Minimum 30% in Home Language for certificate endorsement</span>
-									</li>
-								</ul>
-							</div>
-						</div>
-					</CardContent>
-				</Card>
+				<UnderstandingResultsCard />
 
 				<Card>
 					<CardHeader>

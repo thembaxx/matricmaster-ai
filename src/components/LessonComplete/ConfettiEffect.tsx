@@ -44,4 +44,6 @@ export function ConfettiEffect({ enabled }: ConfettiEffectProps) {
 
 		return () => clearInterval(interval);
 	}, [enabled, trigger]);
+
+	return null;
 }
