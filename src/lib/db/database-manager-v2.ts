@@ -21,7 +21,7 @@ class DatabaseManagerV2 {
 		return DatabaseManagerV2.instance;
 	}
 
-	public async initialize(): Promise<void> {
+	public async initialize(options?: { forceSQLite?: boolean }): Promise<void> {
 		if (this.isInitializing && this.initPromise) {
 			return this.initPromise;
 		}
@@ -29,6 +29,13 @@ class DatabaseManagerV2 {
 		this.isInitializing = true;
 		this.initPromise = (async () => {
 			try {
+				if (options?.forceSQLite) {
+					console.warn('⚠️ Force initializing with SQLite...');
+					const sqliteConnected = await sqliteManager.connect();
+					this.activeDatabase = sqliteConnected ? 'sqlite' : 'none';
+					return;
+				}
+
 				const pgConnected = await pgManager.waitForConnection(5, 3000);
 				if (pgConnected) {
 					this.activeDatabase = 'postgresql';

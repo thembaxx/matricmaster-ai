@@ -64,6 +64,14 @@ const WeeklyChallenge = dynamic(
 	{ ssr: false, loading: () => <div className="h-48 animate-pulse bg-muted rounded-lg" /> }
 );
 
+const NSCCountdownCard = dynamic(
+	() =>
+		import('@/components/ExamTimer/NSCCountdownCard').then((mod) => ({
+			default: mod.NSCCountdownCard,
+		})),
+	{ ssr: false, loading: () => <div className="h-32 animate-pulse bg-muted rounded-lg" /> }
+);
+
 interface DashboardProps {
 	initialStreak?: DashboardInitialStreak | null;
 	initialAchievements?: {
@@ -193,6 +201,7 @@ export default function Dashboard({
 								<DailyMission />
 								<div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
 									<UniversityGoalCard />
+									<NSCCountdownCard />
 									<MistakeBank initialCount={mistakeCount ?? 0} />
 									<FocusAreasWidget />
 								</div>

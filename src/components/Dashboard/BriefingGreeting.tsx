@@ -124,9 +124,7 @@ export function BriefingGreeting({
 							</span>
 						</div>
 						<div className="z-10 mt-4">
-							<p className="text-xs font-bold text-tiimo-gray-muted uppercase tracking-widest mb-1">
-								Goals
-							</p>
+							<p className="text-xs font-bold text-tiimo-gray-muted tracking-wide mb-1">Goals</p>
 							<div className="flex items-baseline gap-2">
 								<span className="text-3xl font-black">{completedCount}</span>
 								<span className="text-lg font-bold text-tiimo-gray-muted">/ {totalCount}</span>
@@ -160,7 +158,7 @@ export function BriefingGreeting({
 								</span>
 							</div>
 							<div className="z-10 mt-4">
-								<p className="text-xs font-bold text-tiimo-gray-muted uppercase tracking-widest mb-1">
+								<p className="text-xs font-bold text-tiimo-gray-muted tracking-wide mb-1">
 									Welcome Aboard!
 								</p>
 								<div className="flex items-baseline gap-2">
@@ -190,9 +188,7 @@ export function BriefingGreeting({
 								</span>
 							</div>
 							<div className="z-10 mt-4">
-								<p className="text-xs font-bold text-tiimo-gray-muted uppercase tracking-widest mb-1">
-									Streak
-								</p>
+								<p className="text-xs font-bold text-tiimo-gray-muted tracking-wide mb-1">Streak</p>
 								<div className="flex items-baseline gap-2">
 									<span className="text-3xl font-black">{displayStreakDays}</span>
 									<span className="text-lg font-bold text-tiimo-gray-muted">days</span>
@@ -219,12 +215,12 @@ export function BriefingGreeting({
 							<div className="p-2 bg-white/20 rounded-xl">
 								<HugeiconsIcon icon={Clock01Icon} className="w-5 h-5" />
 							</div>
-							<span className="text-[10px] font-black uppercase tracking-widest bg-white/20 px-2 py-1 rounded-lg">
+							<span className="text-[10px] font-black tracking-wide bg-white/20 px-2 py-1 rounded-lg">
 								Action
 							</span>
 						</div>
 						<div className="z-10 pt-4">
-							<p className="text-xs font-bold text-white/70 uppercase tracking-widest mb-1">
+							<p className="text-xs font-bold text-white/70 tracking-wide mb-1">
 								Pick up where you left off
 							</p>
 							<h3 className="text-xl font-black leading-tight">
@@ -233,7 +229,7 @@ export function BriefingGreeting({
 						</div>
 						<div className="flex items-center gap-2 mt-4 z-10">
 							<span className="text-[10px] font-bold bg-white text-tiimo-lavender px-2 py-0.5 rounded-md">
-								PROMPT
+								prompt
 							</span>
 							<span className="text-[10px] font-medium text-white/80 italic">Ready to finish?</span>
 						</div>
@@ -270,7 +266,7 @@ export function BriefingGreeting({
 						className="mt-6"
 					>
 						<div className="flex items-center justify-between mb-3">
-							<h3 className="text-sm font-semibold text-tiimo-gray-muted uppercase tracking-widest flex items-center gap-2 font-display">
+							<h3 className="text-sm font-semibold text-tiimo-gray-muted tracking-wide flex items-center gap-2 font-display">
 								<HugeiconsIcon icon={Clock01Icon} className="w-4 h-4" />
 								Today's Timeline
 							</h3>
@@ -354,7 +350,7 @@ export function BriefingGreeting({
 						transition={{ delay: 0.5 }}
 						className="mt-6"
 					>
-						<h3 className="text-sm font-semibold text-tiimo-gray-muted uppercase tracking-widest flex items-center gap-2 font-display mb-3">
+						<h3 className="text-sm font-semibold text-tiimo-gray-muted tracking-wide flex items-center gap-2 font-display mb-3">
 							<HugeiconsIcon icon={SparklesIcon} className="w-4 h-4" />
 							Smart Nudge
 						</h3>
@@ -366,7 +362,7 @@ export function BriefingGreeting({
 									onClick={() => router.push('/flashcards')}
 									className="p-4 rounded-2xl bg-tiimo-blue/5 border border-tiimo-blue/10 cursor-pointer transition-colors hover:bg-tiimo-blue/10"
 								>
-									<p className="text-[10px] font-bold text-tiimo-blue uppercase tracking-widest mb-1">
+									<p className="text-[10px] font-bold text-tiimo-blue tracking-wide mb-1">
 										Flashcards
 									</p>
 									<p className="text-lg font-black text-foreground">{flashcardsDue} due</p>
@@ -380,8 +376,8 @@ export function BriefingGreeting({
 									onClick={() => router.push('/review')}
 									className="p-4 rounded-2xl bg-tiimo-orange/5 border border-tiimo-orange/10 cursor-pointer transition-colors hover:bg-tiimo-orange/10"
 								>
-									<p className="text-[10px] font-bold text-tiimo-orange uppercase tracking-widest mb-1">
-										Weak Topics
+									<p className="text-[10px] font-bold text-tiimo-orange tracking-wide mb-1">
+										Weak topics
 									</p>
 									<p className="text-lg font-black text-foreground">{weakTopicsCount}</p>
 									<p className="text-[10px] text-muted-foreground mt-1">Need practice</p>
@@ -394,7 +390,7 @@ export function BriefingGreeting({
 									onClick={() => router.push('/progress')}
 									className="p-4 rounded-2xl bg-tiimo-green/5 border border-tiimo-green/10 cursor-pointer transition-colors hover:bg-tiimo-green/10"
 								>
-									<p className="text-[10px] font-bold text-tiimo-green uppercase tracking-widest mb-1">
+									<p className="text-[10px] font-bold text-tiimo-green tracking-wide mb-1">
 										Accuracy
 									</p>
 									<p className="text-lg font-black text-foreground">{recentAccuracy}%</p>
