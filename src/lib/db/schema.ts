@@ -1717,3 +1717,56 @@ export const userThemesRelations = relations(userThemes, ({ one }) => ({
 		references: [users.id],
 	}),
 }));
+
+// ============================================================================
+// CURRICULUM DATA TABLES (Data Consolidation Phase 1)
+// ============================================================================
+
+export const subjectMetadata = pgTable('subject_metadata', {
+	subjectId: varchar('subject_id', { length: 50 }).primaryKey(),
+	displayName: varchar('display_name', { length: 100 }).notNull(),
+	emoji: varchar('emoji', { length: 10 }),
+	color: varchar('color', { length: 50 }),
+	bgColor: varchar('bg_color', { length: 50 }),
+	icon: varchar('icon', { length: 50 }),
+	fluentEmoji: varchar('fluent_emoji', { length: 50 }),
+	fontFamily: varchar('font_family', { length: 100 }),
+	gradientPrimary: varchar('gradient_primary', { length: 20 }),
+	gradientSecondary: varchar('gradient_secondary', { length: 20 }),
+	gradientAccent: varchar('gradient_accent', { length: 20 }),
+	isSupported: boolean('is_supported').notNull().default(true),
+	displayOrder: integer('display_order').notNull().default(0),
+	createdAt: timestamp('created_at').defaultNow(),
+	updatedAt: timestamp('updated_at').defaultNow(),
+});
+
+export const gamificationConfig = pgTable('gamification_config', {
+	key: varchar('key', { length: 50 }).primaryKey(),
+	value: text('value').notNull(),
+	description: text('description'),
+	updatedAt: timestamp('updated_at').defaultNow(),
+});
+
+export const achievementDefinitions = pgTable('achievement_definitions', {
+	id: varchar('id', { length: 50 }).primaryKey(),
+	name: varchar('name', { length: 100 }).notNull(),
+	description: text('description'),
+	icon: varchar('icon', { length: 50 }),
+	iconBg: varchar('icon_bg', { length: 20 }),
+	category: varchar('category', { length: 20 }).notNull(),
+	requirementType: varchar('requirement_type', { length: 30 }).notNull(),
+	requirementValue: integer('requirement_value').notNull(),
+	requirementSubjectId: bigint('requirement_subject_id', { mode: 'number' }),
+	points: integer('points').notNull(),
+	displayOrder: integer('display_order').notNull().default(0),
+	isActive: boolean('is_active').notNull().default(true),
+	createdAt: timestamp('created_at').defaultNow(),
+});
+
+// Type exports for curriculum tables
+export type SubjectMetadata = typeof subjectMetadata.$inferSelect;
+export type NewSubjectMetadata = typeof subjectMetadata.$inferInsert;
+export type GamificationConfig = typeof gamificationConfig.$inferSelect;
+export type NewGamificationConfig = typeof gamificationConfig.$inferInsert;
+export type AchievementDefinition = typeof achievementDefinitions.$inferSelect;
+export type NewAchievementDefinition = typeof achievementDefinitions.$inferInsert;
