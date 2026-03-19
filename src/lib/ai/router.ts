@@ -48,6 +48,9 @@ export async function routeAIQuestion(question: string): Promise<string> {
 	}
 
 	if (!webllmEngine.isReady()) {
+		if (!webllmEngine.isSupported()) {
+			throw new Error('Offline AI not available - WebGPU not supported');
+		}
 		await webllmEngine.initialize();
 	}
 

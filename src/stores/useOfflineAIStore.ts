@@ -8,6 +8,7 @@ interface OfflineAIState {
 	isModelReady: boolean;
 	downloadProgress: number;
 	isOffline: boolean;
+	isSupported: boolean;
 	initialize: () => Promise<void>;
 	setOnlineStatus: (isOnline: boolean) => void;
 }
@@ -18,8 +19,14 @@ export const useOfflineAIStore = create<OfflineAIState>()(
 			isModelReady: false,
 			downloadProgress: 0,
 			isOffline: false,
+			isSupported: true,
 
 			initialize: async () => {
+				if (!webllmEngine.isSupported()) {
+					set({ isSupported: false, downloadProgress: 0 });
+					return;
+				}
+
 				try {
 					await webllmEngine.initialize((progress) => {
 						set({ downloadProgress: progress });
@@ -27,7 +34,7 @@ export const useOfflineAIStore = create<OfflineAIState>()(
 					set({ isModelReady: true, downloadProgress: 100 });
 				} catch (error) {
 					console.debug('WebLLM init failed:', error);
-					set({ downloadProgress: 0 });
+					set({ isSupported: false, downloadProgress: 0 });
 				}
 			},
 
