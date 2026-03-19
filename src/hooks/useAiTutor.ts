@@ -78,14 +78,16 @@ export function useAiTutor() {
 		messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
 	}, []);
 
-	const handleSend = async (messageText?: string) => {
+	const handleSend = async (messageText?: string, contextOverride?: string) => {
 		const textToSend = messageText || input;
 		if (!textToSend.trim() || isLoading) return;
+
+		const finalMessage = contextOverride ? `${contextOverride}\n\n${textToSend}` : textToSend;
 
 		const userMessage: Message = {
 			id: Date.now().toString(),
 			role: 'user',
-			content: textToSend,
+			content: finalMessage,
 			timestamp: new Date(),
 		};
 
@@ -99,7 +101,7 @@ export function useAiTutor() {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({
-					message: textToSend,
+					message: finalMessage,
 					subject: selectedSubject,
 					history: messages.map((m) => ({ role: m.role, content: m.content })),
 					includeSuggestions: true,

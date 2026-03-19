@@ -62,4 +62,6 @@ export interface SmartSchedulerState {
 		newSuggestions?: AISuggestion[];
 	} | null>;
 	saveBlock: (block: Partial<StudyBlock>) => Promise<void>;
+	importStudyPathBlocks: (pathBlocks: StudyBlock[]) => void;
+	saveImportedBlocks: (pathBlocks: StudyBlock[]) => Promise<void>;
 }

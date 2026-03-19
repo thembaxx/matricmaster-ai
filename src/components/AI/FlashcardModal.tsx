@@ -3,6 +3,7 @@
 import {
 	Cancel01Icon,
 	Idea01Icon,
+	PlusSignIcon,
 	Refresh01Icon,
 	ShuffleIcon,
 	Tag01Icon,
@@ -43,6 +44,8 @@ interface FlashcardModalProps {
 	subject?: string;
 	reviewMode?: boolean;
 	onRate?: (flashcardId: string, rating: Rating) => Promise<void>;
+	onAddToMasterDeck?: (flashcard: Flashcard) => Promise<void>;
+	showAddToMasterDeck?: boolean;
 }
 
 export function FlashcardModal({
@@ -52,6 +55,8 @@ export function FlashcardModal({
 	subject,
 	reviewMode = false,
 	onRate,
+	onAddToMasterDeck,
+	showAddToMasterDeck = false,
 }: FlashcardModalProps) {
 	const [currentIndex, setCurrentIndex] = useState(0);
 	const [isFlipped, setIsFlipped] = useState(false);
@@ -59,6 +64,7 @@ export function FlashcardModal({
 	const [reviewedCards, setReviewedCards] = useState<Set<string>>(new Set());
 	const [isRating, setIsRating] = useState(false);
 	const [showRatingButtons, setShowRatingButtons] = useState(false);
+	const [isAddingToMaster, setIsAddingToMaster] = useState(false);
 
 	const shuffledCards = useMemo(
 		() => [...flashcards].sort(() => Math.random() - 0.5),
@@ -133,6 +139,20 @@ export function FlashcardModal({
 		setIsShuffled(false);
 		setReviewedCards(new Set());
 		setShowRatingButtons(false);
+	};
+
+	const handleAddToMasterDeck = async () => {
+		if (!currentCard || !onAddToMasterDeck || isAddingToMaster) return;
+
+		setIsAddingToMaster(true);
+		try {
+			await onAddToMasterDeck(currentCard);
+			toast.success('Added to Master Deck');
+		} catch {
+			toast.error('Failed to add to Master Deck');
+		} finally {
+			setIsAddingToMaster(false);
+		}
 	};
 
 	if (!currentCard) return null;
@@ -253,11 +273,23 @@ export function FlashcardModal({
 									</div>
 								</div>
 							) : (
-								<div className="flex justify-center gap-2">
+								<div className="flex flex-wrap justify-center gap-2">
 									<Button variant="outline" size="sm" onClick={handleFlip}>
 										<HugeiconsIcon icon={Refresh01Icon} className="h-4 w-4 mr-1" />
 										Flip
 									</Button>
+									{showAddToMasterDeck && onAddToMasterDeck && (
+										<Button
+											variant="outline"
+											size="sm"
+											onClick={handleAddToMasterDeck}
+											disabled={isAddingToMaster}
+											className="bg-blue-50 dark:bg-blue-950/20 border-blue-200 dark:border-blue-800 hover:bg-blue-100 dark:hover:bg-blue-950/30"
+										>
+											<HugeiconsIcon icon={PlusSignIcon} className="h-4 w-4 mr-1" />
+											{isAddingToMaster ? 'Adding...' : 'Add to Master Deck'}
+										</Button>
+									)}
 									{!reviewMode && (
 										<>
 											<Button

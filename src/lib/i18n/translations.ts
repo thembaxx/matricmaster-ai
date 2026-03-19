@@ -1,9 +1,17 @@
 import { appConfig } from '@/app.config';
 import type { Language } from '../../stores/useLanguageStore';
 
-export const TRANSLATIONS = {
+type SALang = 'en' | 'zu' | 'xh' | 'af' | 'tn' | 'ss';
+
+type PartialTranslationSet = Partial<Record<SALang, TranslationSet>>;
+
+interface TranslationSet {
+	[key: string]: string | TranslationSet;
+}
+
+export const TRANSLATIONS: Record<string, PartialTranslationSet> = {
 	common: {
-		EN: {
+		en: {
 			welcome: `Welcome to ${appConfig.name}`,
 			loading: 'Loading...',
 			save: 'Save',
@@ -23,7 +31,7 @@ export const TRANSLATIONS = {
 			error: 'Error',
 			warning: 'Warning',
 		},
-		AF: {
+		af: {
 			welcome: `Welkom by ${appConfig.name}`,
 			loading: 'Laai tans...',
 			save: 'Stoor',
@@ -43,7 +51,7 @@ export const TRANSLATIONS = {
 			error: 'Fout',
 			warning: 'Waarskuwing',
 		},
-		ZU: {
+		zu: {
 			welcome: `Siyakwamukela ku-${appConfig.name}`,
 			loading: 'Iyalayisha...',
 			save: 'Gcina',
@@ -63,7 +71,7 @@ export const TRANSLATIONS = {
 			error: 'Iphutha',
 			warning: 'Isixwayiso',
 		},
-		XH: {
+		xh: {
 			welcome: `Wamkela ku-${appConfig.name}`,
 			loading: 'Iyalayisha...',
 			save: 'Gcina',
@@ -85,7 +93,7 @@ export const TRANSLATIONS = {
 		},
 	},
 	navigation: {
-		EN: {
+		en: {
 			dashboard: 'Dashboard',
 			flashcards: 'Flashcards',
 			pastPapers: 'Past Papers',
@@ -100,7 +108,7 @@ export const TRANSLATIONS = {
 			apsCalculator: 'APS Calculator',
 			examTimer: 'Exam Timer',
 		},
-		AF: {
+		af: {
 			dashboard: 'Dashbord',
 			flashcards: 'Flitskaarte',
 			pastPapers: 'Vraestelle',
@@ -115,7 +123,7 @@ export const TRANSLATIONS = {
 			apsCalculator: 'APS Sakrekenaar',
 			examTimer: 'Eksamen Tydhouer',
 		},
-		ZU: {
+		zu: {
 			dashboard: 'Ideshodi',
 			flashcards: 'Amakhadi Okufunda',
 			payPapers: 'Amaphepha Edlule',
@@ -132,7 +140,7 @@ export const TRANSLATIONS = {
 		},
 	},
 	aiTutor: {
-		EN: {
+		en: {
 			placeholder: 'Ask me anything about your studies...',
 			thinking: 'Thinking...',
 			suggestions: 'Try asking about:',
@@ -140,7 +148,7 @@ export const TRANSLATIONS = {
 			practice: 'Practice questions for {topic}',
 			summary: 'Summarize this: {content}',
 		},
-		AF: {
+		af: {
 			placeholder: 'Vra my enige iets oor jou studies...',
 			thinking: 'Dink...',
 			suggestions: 'Probeer vra oor:',
@@ -148,7 +156,7 @@ export const TRANSLATIONS = {
 			practice: 'Oefenvrae vir {topic}',
 			summary: 'Vat dit saam: {content}',
 		},
-		ZU: {
+		zu: {
 			placeholder: 'Ngibuze noma yini ngokufunda kwakho...',
 			thinking: 'Ngacabanga...',
 			suggestions: 'Zama ukubuza nge:',
@@ -158,7 +166,7 @@ export const TRANSLATIONS = {
 		},
 	},
 	subjects: {
-		EN: {
+		en: {
 			mathematics: 'Mathematics',
 			physicalSciences: 'Physical Sciences',
 			lifeSciences: 'Life Sciences',
@@ -170,7 +178,7 @@ export const TRANSLATIONS = {
 			english: 'English',
 			afrikaans: 'Afrikaans',
 		},
-		AF: {
+		af: {
 			mathematics: 'Wiskunde',
 			physicalSciences: 'Fisiese Wetenskappe',
 			lifeSciences: 'Lewenswetenskappe',
@@ -182,7 +190,7 @@ export const TRANSLATIONS = {
 			english: 'Engels',
 			afrikaans: 'Afrikaans',
 		},
-		ZU: {
+		zu: {
 			mathematics: 'Imathemathiki',
 			physicalSciences: 'Izinsimbakwama',
 			lifeSciences: 'Izinsimbazululwazi',

@@ -17,3 +17,17 @@ export interface Flashcard {
 	timesCorrect: number;
 	nextReview: Date | null;
 }
+
+export interface DeckStats {
+	totalCards: number;
+	newCards: number;
+	learningCards: number;
+	reviewCards: number;
+	averageEase: number;
+	dueToday: number;
+}
+
+export interface DeckWithStats extends FlashcardDeck {
+	stats: DeckStats;
+	dueCards: number;
+}

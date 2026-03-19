@@ -1,9 +1,131 @@
 /** @type {import('next').NextConfig} */
+
+import withPWAInit from '@ducanh2912/next-pwa';
 import bundleAnalyzer from '@next/bundle-analyzer';
 import { withSentryConfig } from '@sentry/nextjs';
 
 const withBundleAnalyzer = bundleAnalyzer({
 	enabled: process.env.ANALYZE === 'true',
+});
+
+const withPWA = withPWAInit({
+	dest: 'public',
+	register: true,
+	skipWaiting: true,
+	disable: process.env.NODE_ENV === 'development',
+	workboxOptions: {
+		disableDevLogs: true,
+		globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}'],
+		runtimeCaching: [
+			{
+				urlPattern: /^https:\/\/fonts\.(?:gstatic|googleapis)\.com\/.*/i,
+				handler: 'CacheFirst',
+				options: {
+					cacheName: 'google-fonts',
+					expiration: {
+						maxEntries: 20,
+						maxAgeSeconds: 365 * 24 * 60 * 60,
+					},
+				},
+			},
+			{
+				urlPattern: /\.(?:eot|otf|ttc|ttf|woff|woff2|font.css)$/i,
+				handler: 'StaleWhileRevalidate',
+				options: {
+					cacheName: 'static-font-assets',
+					expiration: {
+						maxEntries: 20,
+						maxAgeSeconds: 7 * 24 * 60 * 60,
+					},
+				},
+			},
+			{
+				urlPattern: /\.(?:jpg|jpeg|gif|png|svg|ico|webp)$/i,
+				handler: 'StaleWhileRevalidate',
+				options: {
+					cacheName: 'static-image-assets',
+					expiration: {
+						maxEntries: 64,
+						maxAgeSeconds: 30 * 24 * 60 * 60,
+					},
+				},
+			},
+			{
+				urlPattern: /\/_next\/static.+\.js$/i,
+				handler: 'CacheFirst',
+				options: {
+					cacheName: 'next-static-js-assets',
+					expiration: {
+						maxEntries: 64,
+						maxAgeSeconds: 24 * 60 * 60,
+					},
+				},
+			},
+			{
+				urlPattern: /\.(?:json|xml|csv)$/i,
+				handler: 'NetworkFirst',
+				options: {
+					cacheName: 'static-data-assets',
+					expiration: {
+						maxEntries: 32,
+						maxAgeSeconds: 24 * 60 * 60,
+					},
+					networkTimeoutSeconds: 10,
+				},
+			},
+			{
+				urlPattern: ({ url }) => {
+					const isSameOrigin = self.origin === url.origin;
+					return isSameOrigin && url.pathname.startsWith('/api/');
+				},
+				handler: 'NetworkFirst',
+				options: {
+					cacheName: 'apis',
+					expiration: {
+						maxEntries: 32,
+						maxAgeSeconds: 60 * 60,
+					},
+					networkTimeoutSeconds: 10,
+				},
+			},
+			{
+				urlPattern: ({ url }) => {
+					const isSameOrigin = self.origin === url.origin;
+					return isSameOrigin && url.pathname.startsWith('/past-papers/');
+				},
+				handler: 'CacheFirst',
+				options: {
+					cacheName: 'past-papers',
+					expiration: {
+						maxEntries: 50,
+						maxAgeSeconds: 30 * 24 * 60 * 60,
+					},
+				},
+			},
+			{
+				urlPattern: /\.(?:mp3|wav|ogg|mp4)$/i,
+				handler: 'CacheFirst',
+				options: {
+					cacheName: 'static-media-assets',
+					expiration: {
+						maxEntries: 32,
+						maxAgeSeconds: 24 * 60 * 60,
+					},
+				},
+			},
+			{
+				urlPattern: /\.(?:pdf)$/i,
+				handler: 'CacheFirst',
+				options: {
+					cacheName: 'pdf-documents',
+					expiration: {
+						maxEntries: 20,
+						maxAgeSeconds: 7 * 24 * 60 * 60,
+					},
+				},
+			},
+		],
+	},
 });
 
 const nextConfig = {
@@ -87,40 +209,20 @@ const nextConfig = {
 	},
 };
 
-export default withSentryConfig(withBundleAnalyzer(nextConfig), {
-	// For all available options, see:
-	// https://www.npmjs.com/package/@sentry/webpack-plugin#options
-
-	org: 'org1128',
-
-	project: 'javascript-nextjs',
-
-	// Only print logs for uploading source maps in CI
-	silent: !process.env.CI,
-
-	// For all available options, see:
-	// https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/
-
-	// Upload a larger set of source maps for prettier stack traces (increases build time)
-	widenClientFileUpload: true,
-
-	// Route browser requests to Sentry through a Next.js rewrite to circumvent ad-blockers.
-	// This can increase your server load as well as your hosting bill.
-	// Note: Check that the configured route will not match with your Next.js middleware, otherwise reporting of client-
-	// side errors will fail.
-	tunnelRoute: '/monitoring',
-
-	webpack: {
-		// Enables automatic instrumentation of Vercel Cron Monitors. (Does not yet work with App Router route handlers.)
-		// See the following for more information:
-		// https://docs.sentry.io/product/crons/
-		// https://vercel.com/docs/cron-jobs
-		automaticVercelMonitors: true,
-
-		// Tree-shaking options for reducing bundle size
-		treeshake: {
-			// Automatically tree-shake Sentry logger statements to reduce bundle size
-			removeDebugLogging: true,
+const config = withPWA(
+	withSentryConfig(withBundleAnalyzer(nextConfig), {
+		org: 'org1128',
+		project: 'javascript-nextjs',
+		silent: !process.env.CI,
+		widenClientFileUpload: true,
+		tunnelRoute: '/monitoring',
+		webpack: {
+			automaticVercelMonitors: true,
+			treeshake: {
+				removeDebugLogging: true,
+			},
 		},
-	},
-});
+	})
+);
+
+export default config;

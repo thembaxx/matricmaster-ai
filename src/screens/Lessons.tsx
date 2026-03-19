@@ -13,7 +13,8 @@ import {
 	TranslateIcon,
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { ContextualAIBubble } from '@/components/AI/ContextualAIBubble';
 import { TTSButton } from '@/components/Lessons/TTSButton';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -23,6 +24,7 @@ import lifeSciencesData from '@/constants/lessons/life-sciences.json';
 import mathematicsData from '@/constants/lessons/mathematics.json';
 import physicsData from '@/constants/lessons/physics.json';
 import { getSubjectEmoji, type SUBJECTS } from '@/constants/subjects';
+import { useAiContext } from '@/hooks/useAiContext';
 
 interface Lesson {
 	id: string;
@@ -45,6 +47,12 @@ interface Lesson {
 
 export default function Lessons() {
 	const [activeCategory, setActiveCategory] = useState('all');
+	const { setContext, clearContext } = useAiContext();
+
+	useEffect(() => {
+		setContext({ type: 'lesson', lastUpdated: Date.now() });
+		return () => clearContext();
+	}, [setContext, clearContext]);
 
 	// Load and process lesson data from JSON files using useMemo
 	const { lessonsData, loading } = useMemo(() => {
@@ -367,6 +375,7 @@ export default function Lessons() {
 					<div className="h-32" />
 				</main>
 			</ScrollArea>
+			<ContextualAIBubble />
 		</div>
 	);
 }

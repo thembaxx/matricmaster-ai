@@ -207,4 +207,66 @@ export const useSmartSchedulerStore = create<SmartSchedulerState>((set, get) => 
 			console.error('Failed to save block:', error);
 		}
 	},
+
+	importStudyPathBlocks: (pathBlocks: StudyBlock[]) => {
+		const { blocks } = get();
+		const mergedBlocks = [...blocks];
+
+		for (const pathBlock of pathBlocks) {
+			const existingIndex = mergedBlocks.findIndex(
+				(b) =>
+					new Date(b.date).toDateString() === new Date(pathBlock.date).toDateString() &&
+					b.startTime === pathBlock.startTime
+			);
+
+			if (existingIndex === -1) {
+				mergedBlocks.push(pathBlock);
+			} else {
+				const existing = mergedBlocks[existingIndex];
+				if (existing.isCompleted) {
+					const conflictBlock: StudyBlock = {
+						...pathBlock,
+						id: `${pathBlock.id}-conflict`,
+						topic: `${pathBlock.topic} (Path - moved)`,
+					};
+					mergedBlocks.push(conflictBlock);
+				} else {
+					mergedBlocks[existingIndex] = {
+						...existing,
+						subject: pathBlock.subject,
+						topic: pathBlock.topic,
+						duration: Math.max(existing.duration, pathBlock.duration),
+						isAISuggested: true,
+					};
+				}
+			}
+		}
+
+		mergedBlocks.sort((a, b) => {
+			const dateCompare = new Date(a.date).getTime() - new Date(b.date).getTime();
+			if (dateCompare !== 0) return dateCompare;
+			return a.startTime.localeCompare(b.startTime);
+		});
+
+		set({ blocks: mergedBlocks });
+	},
+
+	saveImportedBlocks: async (pathBlocks: StudyBlock[]) => {
+		const { importStudyPathBlocks } = get();
+		importStudyPathBlocks(pathBlocks);
+
+		try {
+			await Promise.all(
+				pathBlocks.map((block) =>
+					fetch('/api/smart-scheduler/blocks', {
+						method: 'POST',
+						headers: { 'Content-Type': 'application/json' },
+						body: JSON.stringify(block),
+					})
+				)
+			);
+		} catch (error) {
+			console.error('Failed to save imported blocks:', error);
+		}
+	},
 }));

@@ -18,6 +18,8 @@ export interface FlashcardModalProps {
 	subject?: string;
 	reviewMode?: boolean;
 	onRate?: (flashcardId: string, rating: Rating) => Promise<void>;
+	onAddToMasterDeck?: (flashcard: Flashcard) => Promise<void>;
+	showAddToMasterDeck?: boolean;
 }
 
 export const RATING_BUTTONS: {

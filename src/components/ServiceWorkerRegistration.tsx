@@ -3,16 +3,16 @@
 import { useEffect } from 'react';
 import { useOfflineStore } from '@/stores/useOfflineStore';
 
+declare global {
+	interface Window {
+		workbox: unknown;
+	}
+}
+
 export function ServiceWorkerRegistration() {
 	const setOnlineStatus = useOfflineStore((state) => state.setOnlineStatus);
 
 	useEffect(() => {
-		if ('serviceWorker' in navigator) {
-			navigator.serviceWorker.register('/sw.js').catch((error) => {
-				console.debug('Service worker registration failed:', error);
-			});
-		}
-
 		const handleOnline = () => setOnlineStatus(true);
 		const handleOffline = () => setOnlineStatus(false);
 
@@ -20,6 +20,16 @@ export function ServiceWorkerRegistration() {
 
 		window.addEventListener('online', handleOnline);
 		window.addEventListener('offline', handleOffline);
+
+		if ('serviceWorker' in navigator) {
+			navigator.serviceWorker.ready
+				.then((registration) => {
+					console.debug('Service worker ready:', registration);
+				})
+				.catch((error) => {
+					console.debug('Service worker not ready:', error);
+				});
+		}
 
 		return () => {
 			window.removeEventListener('online', handleOnline);

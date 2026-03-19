@@ -8,8 +8,7 @@ import { appConfig } from '@/app.config';
 import { DashboardSkeleton } from '@/components/DashboardSkeleton';
 import { getAuth } from '@/lib/auth';
 import { getUserAchievements } from '@/lib/db/achievement-actions';
-import { getLearningStats, getTopicsNeedingReview } from '@/lib/db/adaptive-question-actions';
-import { getUserProgressSummary, getUserStreak } from '@/lib/db/progress-actions';
+import { getUserStreak } from '@/lib/db/progress-actions';
 
 const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://matricmaster.ai';
 
@@ -39,32 +38,18 @@ export default async function DashboardPage() {
 		redirect('/sign-in');
 	}
 
-	const [
-		initialProgress,
-		initialStreak,
-		initialAchievements,
-		learningStats,
-		topicsNeedingReview,
-		briefingData,
-		mistakeCount,
-	] = await Promise.all([
-		getUserProgressSummary(),
+	const [initialStreak, initialAchievements, briefingData, mistakeCount] = await Promise.all([
 		getUserStreak(),
 		getUserAchievements(),
-		getLearningStats(session.user.id),
-		getTopicsNeedingReview(session.user.id),
 		generatePersonalizedBriefing(),
 		getUnvisitedMistakesCountAction(),
 	]);
 
 	return (
 		<Dashboard
-			initialProgress={initialProgress}
 			initialStreak={initialStreak}
 			initialAchievements={initialAchievements}
 			session={session}
-			learningStats={learningStats}
-			topicsNeedingReview={topicsNeedingReview}
 			briefingData={briefingData}
 			mistakeCount={mistakeCount}
 		/>

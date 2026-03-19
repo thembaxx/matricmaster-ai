@@ -3,7 +3,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { m } from 'framer-motion';
 import dynamic from 'next/dynamic';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { AdaptiveScheduleBanner } from '@/components/Dashboard/AdaptiveScheduleBanner';
 import { AITutorNudge } from '@/components/Dashboard/AITutorNudge';
 import { BriefingGreeting } from '@/components/Dashboard/BriefingGreeting';
@@ -25,11 +25,10 @@ import {
 	type DashboardInitialStreak,
 	DEMO_TIMELINE,
 	MOCK_ACHIEVEMENTS,
-	MOCK_PROGRESS,
 	MOCK_STREAK,
 } from '@/constants/mock-dashboard';
 import type { UserAchievement } from '@/lib/db/achievement-actions';
-import type { UserProgressSummary } from '@/lib/db/progress-actions';
+import { useDashboardProgress } from '@/stores/useProgressStore';
 
 const GrowthMap = dynamic(
 	() => import('@/components/Dashboard/GrowthMap').then((mod) => ({ default: mod.GrowthMap })),
@@ -66,24 +65,17 @@ const WeeklyChallenge = dynamic(
 );
 
 interface DashboardProps {
-	initialProgress?: UserProgressSummary | null;
 	initialStreak?: DashboardInitialStreak | null;
 	initialAchievements?: {
 		unlocked: UserAchievement[];
 		available: typeof ACHIEVEMENTS;
 	} | null;
 	session?: { user: { name?: string | null } } | null;
-	learningStats?: {
-		weakTopics: Array<{ topic: string; subjectId: number }>;
-		needsReview: unknown[];
-	} | null;
-	topicsNeedingReview?: unknown[] | null;
 	briefingData?: BriefingData | null;
 	mistakeCount?: number;
 }
 
 export default function Dashboard({
-	initialProgress,
 	initialStreak,
 	initialAchievements,
 	session,
@@ -92,6 +84,16 @@ export default function Dashboard({
 }: DashboardProps) {
 	const [tasks, setTasks] = useState<Record<string, StudyTask[]>>(DEMO_TASKS);
 	const [expanded, setExpanded] = useState<Record<string, boolean>>({ high: true, medium: true });
+
+	const {
+		progress,
+		flashcardsDue: storeFlashcardsDue,
+		weakTopicsCount: storeWeakTopicsCount,
+		accuracy: storeAccuracy,
+		streakDays: storeStreakDays,
+		refetch,
+	} = useDashboardProgress();
+
 	const { data: weaknessData = [] } = useQuery({
 		queryKey: ['growth-map'],
 		queryFn: async () => {
@@ -115,11 +117,29 @@ export default function Dashboard({
 		select: (data) => (data.rescheduledGoals > 0 || data.extraPracticeAdded > 0 ? data : null),
 	});
 
-	const scheduleChanges = scheduleData ?? null;
+	const { data: flashcardsDueData } = useQuery({
+		queryKey: ['flashcards-due'],
+		queryFn: async () => {
+			const res = await fetch('/api/flashcards/due');
+			if (!res.ok) return [];
+			return res.json();
+		},
+		select: (data) => (Array.isArray(data) ? data.length : 0),
+	});
 
-	const progress = initialProgress ?? MOCK_PROGRESS;
+	const scheduleChanges = scheduleData ?? null;
 	const streak = initialStreak ?? MOCK_STREAK;
 	const achievements = initialAchievements ?? MOCK_ACHIEVEMENTS;
+
+	const flashcardsDue = flashcardsDueData ?? storeFlashcardsDue;
+	const weakTopicsCount = storeWeakTopicsCount;
+	const recentAccuracy = storeAccuracy || 0;
+
+	useEffect(() => {
+		if (!progress) {
+			refetch();
+		}
+	}, [progress, refetch]);
 
 	const toggleTask = (taskId: string, priority: string) => {
 		setTasks((prev) => ({
@@ -135,7 +155,9 @@ export default function Dashboard({
 		.filter((t) => t.completed).length;
 	const totalCount = Object.values(tasks).flat().length;
 	const suggestedSubject =
-		progress.recentSessions?.[0]?.topic || progress.recentSessions?.[0]?.subjectId?.toString();
+		progress?.recentSessions?.[0]?.topic ||
+		progress?.recentSessions?.[0]?.subjectId?.toString() ||
+		progress?.subjectProgress?.[0]?.subjectName?.toLowerCase();
 
 	return (
 		<div className="min-h-screen bg-background flex">
@@ -146,12 +168,12 @@ export default function Dashboard({
 						userName={session?.user?.name}
 						completedCount={completedCount}
 						totalCount={totalCount}
-						streakDays={streak.currentStreak}
+						streakDays={progress?.streakDays ?? streak.currentStreak ?? storeStreakDays}
 						suggestedSubject={suggestedSubject}
 						timelineTasks={DEMO_TIMELINE}
-						flashcardsDue={12}
-						weakTopicsCount={3}
-						recentAccuracy={77}
+						flashcardsDue={flashcardsDue}
+						weakTopicsCount={weakTopicsCount}
+						recentAccuracy={recentAccuracy}
 						briefingData={briefingData ?? undefined}
 					/>
 
@@ -192,7 +214,20 @@ export default function Dashboard({
 									initialAchievements={achievements}
 									initialStreak={{ currentStreak: streak.currentStreak }}
 								/>
-								<WeeklyChallenge initialProgress={progress} />
+								<WeeklyChallenge
+									initialProgress={
+										progress
+											? {
+													totalQuestionsAttempted: progress.totalQuestionsAttempted,
+													totalCorrect: progress.totalCorrect,
+													totalMarksEarned: progress.totalMarksEarned,
+													accuracy: progress.accuracy,
+													streakDays: progress.streakDays,
+													recentSessions: progress.recentSessions,
+												}
+											: undefined
+									}
+								/>
 							</div>
 
 							<div className="space-y-6">

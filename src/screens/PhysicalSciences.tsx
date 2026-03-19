@@ -13,6 +13,10 @@ import {
 import { HugeiconsIcon } from '@hugeicons/react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { CircuitDiagram } from '@/components/Science/CircuitDiagram';
+import { FreeBodyDiagram } from '@/components/Science/FreeBodyDiagram';
+import { ProjectileMotion } from '@/components/Science/ProjectileMotion';
+import { WaveInterference } from '@/components/Science/WaveInterference';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -25,8 +29,11 @@ import { useTheme } from '@/hooks/use-theme';
 export default function PhysicalSciences() {
 	const router = useRouter();
 	const { theme, setTheme } = useTheme();
-	const [viewMode, setViewMode] = useState<'question' | 'split'>('split');
+	const [viewMode, setViewMode] = useState<'question' | 'split' | 'simulations'>('split');
 	const [showAnnotations, setShowAnnotations] = useState(true);
+	const [activeSimulation, setActiveSimulation] = useState<
+		'projectile' | 'forces' | 'waves' | 'circuit'
+	>('projectile');
 
 	return (
 		<div className="flex flex-col h-full bg-background">
@@ -77,17 +84,21 @@ export default function PhysicalSciences() {
 				{/* View Toggle */}
 				<Tabs
 					value={viewMode}
-					onValueChange={(v) => setViewMode(v as 'question' | 'split')}
+					onValueChange={(v) => setViewMode(v as 'question' | 'split' | 'simulations')}
 					className="w-full"
 				>
-					<TabsList className="grid grid-cols-2 w-full">
+					<TabsList className="grid grid-cols-3 w-full">
 						<TabsTrigger value="question" className="flex items-center gap-2">
 							<HugeiconsIcon icon={ViewIcon} className="w-4 h-4" />
-							Question Only
+							Questions
 						</TabsTrigger>
 						<TabsTrigger value="split" className="flex items-center gap-2">
 							<HugeiconsIcon icon={LayoutLeftIcon} className="w-4 h-4" />
-							SplitVertical View
+							Split
+						</TabsTrigger>
+						<TabsTrigger value="simulations" className="flex items-center gap-2">
+							<HugeiconsIcon icon={SparklesIcon} className="w-4 h-4" />
+							Lab Sims
 						</TabsTrigger>
 					</TabsList>
 				</Tabs>
@@ -284,6 +295,91 @@ export default function PhysicalSciences() {
 							</div>
 						</Card>
 					</div>
+
+					{/* Lab Simulations Section */}
+					{viewMode === 'simulations' && (
+						<div className="space-y-6">
+							<div className="flex gap-2 overflow-x-auto pb-2">
+								<Button
+									variant={activeSimulation === 'projectile' ? 'default' : 'outline'}
+									size="sm"
+									onClick={() => setActiveSimulation('projectile')}
+									className="whitespace-nowrap"
+								>
+									Projectile Motion
+								</Button>
+								<Button
+									variant={activeSimulation === 'forces' ? 'default' : 'outline'}
+									size="sm"
+									onClick={() => setActiveSimulation('forces')}
+									className="whitespace-nowrap"
+								>
+									Forces (FBD)
+								</Button>
+								<Button
+									variant={activeSimulation === 'waves' ? 'default' : 'outline'}
+									size="sm"
+									onClick={() => setActiveSimulation('waves')}
+									className="whitespace-nowrap"
+								>
+									Wave Interference
+								</Button>
+								<Button
+									variant={activeSimulation === 'circuit' ? 'default' : 'outline'}
+									size="sm"
+									onClick={() => setActiveSimulation('circuit')}
+									className="whitespace-nowrap"
+								>
+									Circuit Builder
+								</Button>
+							</div>
+
+							{activeSimulation === 'projectile' && <ProjectileMotion />}
+
+							{activeSimulation === 'forces' && <FreeBodyDiagram />}
+
+							{activeSimulation === 'waves' && <WaveInterference />}
+
+							{activeSimulation === 'circuit' && (
+								<CircuitDiagram
+									elements={[
+										{ id: 'b1', type: 'battery', value: 12, position: { x: 50, y: 125 } },
+										{
+											id: 'r1',
+											type: 'resistor',
+											value: 4,
+											label: 'R1',
+											position: { x: 150, y: 80 },
+										},
+										{
+											id: 'r2',
+											type: 'resistor',
+											value: 6,
+											label: 'R2',
+											position: { x: 280, y: 125 },
+										},
+										{
+											id: 'r3',
+											type: 'resistor',
+											value: 3,
+											label: 'R3',
+											position: { x: 260, y: 200 },
+										},
+									]}
+								/>
+							)}
+
+							<div className="p-4 bg-muted rounded-xl">
+								<h4 className="font-semibold text-sm mb-2">How to use these simulations:</h4>
+								<ul className="text-xs text-muted-foreground space-y-1">
+									<li>• Click Play/Pause to start/stop animations</li>
+									<li>• Adjust sliders to change parameters</li>
+									<li>• Click elements to see values</li>
+									<li>• Use Reset to start over</li>
+								</ul>
+							</div>
+						</div>
+					)}
 				</main>
 			</ScrollArea>
 		</div>
