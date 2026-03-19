@@ -8,6 +8,7 @@ import { dbManager } from './db';
 import { getPostgresAuthAdapter } from './db/adapters/postgres-drizzle';
 import { getSQLiteAuthAdapter } from './db/adapters/sqlite-drizzle';
 import { dbManagerV2 } from './db/database-manager-v2';
+import { sqliteManager } from './db/sqlite-manager';
 
 // Type for the auth instance
 type AuthInstance = ReturnType<typeof betterAuth>;
@@ -123,7 +124,7 @@ interface ExtendedUser {
 	hasCompletedOnboarding: boolean;
 }
 
-function createAuth(): AuthInstance {
+async function createAuth(): Promise<AuthInstance> {
 	const isPgConnected = dbManagerV2.isPostgreSQLConnected();
 	let adapter = null;
 
@@ -135,8 +136,13 @@ function createAuth(): AuthInstance {
 				console.warn('⚠️ Failed to get PostgreSQL adapter - Better Auth will not persist sessions');
 			}
 		}
-	} else {
+	}
+
+	// If no PostgreSQL adapter, try SQLite
+	if (!adapter) {
 		try {
+			// Ensure SQLite is connected first
+			await sqliteManager.connect();
 			adapter = getSQLiteAuthAdapter();
 			if (!isBuildTime) {
 				console.warn('⚠️ Using SQLite fallback - Better Auth data will be stored locally');
@@ -333,7 +339,7 @@ export async function initAuth(): Promise<AuthInstance> {
 	await dbManager.waitForConnection(5, 3000);
 
 	if (!authInstance) {
-		authInstance = createAuth();
+		authInstance = await createAuth();
 	}
 
 	return authInstance;
@@ -363,7 +369,7 @@ export async function getAuth(): Promise<AuthInstance> {
 		}
 
 		if (!authInstance) {
-			authInstance = createAuth();
+			authInstance = await createAuth();
 		}
 		return authInstance;
 	})();
@@ -379,19 +385,14 @@ export function getAuthSync(): AuthInstance | undefined {
 	}
 	// Try to create synchronously if DB is already connected
 	if (dbManager.isConnectedToDatabase()) {
-		authInstance = createAuth();
-		return authInstance;
+		// Can't await in sync function, return undefined to force async usage
+		return undefined;
 	}
 	return undefined;
 }
 
-try {
-	if (dbManager.isConnectedToDatabase()) {
-		authInstance = createAuth();
-	}
-} catch {
-	console.warn('⚠️ Could not initialize auth at startup - will initialize on first request');
-}
+// Top-level initialization is now handled lazily via getAuth()
+// This ensures proper database fallback when PostgreSQL is unavailable
 
 export const auth = new Proxy({} as AuthInstance, {
 	get(_target, prop) {

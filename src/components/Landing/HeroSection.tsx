@@ -46,7 +46,7 @@ export function HeroSection({ onAuthRequired }: HeroSectionProps) {
 						initial={{ opacity: 0, y: 20 }}
 						animate={{ opacity: 1, y: 0 }}
 						transition={{ delay: 0.1 }}
-						className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-bold text-foreground leading-[0.95]"
+						className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground leading-[0.95] font-[family-name:var(--font-playfair)]"
 					>
 						Master your
 						<br />

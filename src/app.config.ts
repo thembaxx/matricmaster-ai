@@ -1,6 +1,6 @@
 export const appConfig = {
-	name: 'MatricMaster AI',
-	shortName: 'MatricMaster',
+	name: 'Lumi',
+	shortName: 'Lumi',
 	description:
 		"Pass your Matric with confidence. Practice NSC past papers, get help when you're stuck, and track your progress.",
 	version: {
@@ -10,24 +10,24 @@ export const appConfig = {
 		timestamp: process.env.NEXT_PUBLIC_BUILD_TIMESTAMP || new Date().toISOString(),
 	},
 	links: {
-		website: 'https://matricmaster.ai',
-		support: 'https://matricmaster.ai/support',
-		privacy: 'https://matricmaster.ai/privacy',
-		terms: 'https://matricmaster.ai/terms',
-		feedback: 'https://matricmaster.ai/feedback',
+		website: 'https://lumi.ai',
+		support: 'https://lumi.ai/support',
+		privacy: 'https://lumi.ai/privacy',
+		terms: 'https://lumi.ai/terms',
+		feedback: 'https://lumi.ai/feedback',
 	},
 	contact: {
-		email: 'hello@matricmaster.ai',
-		supportEmail: 'support@matricmaster.ai',
+		email: 'hello@lumi.ai',
+		supportEmail: 'support@lumi.ai',
 		phone: '+27 21 123 4567',
 		whatsapp: '+27 82 123 4567',
 		hours: 'Mon-Fri: 9AM-6PM SAST',
 	},
 	social: {
-		facebook: 'https://facebook.com/matricmaster',
-		twitter: 'https://twitter.com/matricmaster',
-		instagram: 'https://instagram.com/matricmaster',
-		youtube: 'https://youtube.com/@matricmaster',
+		facebook: 'https://facebook.com/lumi',
+		twitter: 'https://twitter.com/lumi',
+		instagram: 'https://instagram.com/lumi',
+		youtube: 'https://youtube.com/@lumi',
 	},
 	features: {
 		pastPapers: true,

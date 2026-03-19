@@ -74,16 +74,16 @@
 
   /* --- TYPOGRAPHY --- */
   --font-display: var(--font-playfair), serif;
-  --font-body: var(--font-inter), sans-serif;
+  --font-body: var(--font-geist-sans), sans-serif;
   --font-mono: var(--font-geist-mono), monospace;
 
   /* --- SUBJECT-SPECIFIC FONTS --- */
   --font-math: var(--font-noto-sans-math), sans-serif;
   --font-science: var(--font-noto-sans-math), sans-serif;
-  --font-literary: var(--font-literata), serif;
-  --font-academic: var(--font-crimson-pro), serif;
-  --font-data: var(--font-dm-sans), sans-serif;
-  --font-numeric: var(--font-jetbrains-mono), monospace;
+  --font-literary: var(--font-playfair), serif;
+  --font-academic: var(--font-playfair), serif;
+  --font-data: var(--font-geist-sans), sans-serif;
+  --font-numeric: var(--font-geist-mono), monospace;
 
   /* --- UNIFIED BORDER RADIUS SYSTEM --- */
   --radius-xs: 6px;    /* Small elements, badges */
@@ -297,48 +297,48 @@
   
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-display);
-    @apply font-semibold tracking-tight;
+    @apply font-bold tracking-tight;
     line-height: 1.2;
   }
 
-  h1 { @apply text-4xl sm:text-5xl lg:text-6xl; }
-  h2 { @apply text-3xl sm:text-4xl lg:text-5xl; }
-  h3 { @apply text-2xl sm:text-3xl lg:text-4xl; }
-  h4 { @apply text-xl sm:text-2xl; }
-  h5 { @apply text-lg sm:text-xl; }
-  h6 { @apply text-base sm:text-lg; }
+  h1 { @apply text-3xl sm:text-4xl lg:text-5xl; }
+  h2 { @apply text-2xl sm:text-3xl lg:text-4xl; }
+  h3 { @apply text-xl sm:text-2xl lg:text-3xl; }
+  h4 { @apply text-lg sm:text-xl; }
+  h5 { @apply text-base sm:text-lg; }
+  h6 { @apply text-sm sm:text-base; }
 }
 
 @layer utilities {
   /* === TYPOGRAPHY UTILITIES === */
   
-  /* Label Style - Standardized small uppercase labels */
+  /* Label Style - Standardized small labels */
   .label-sm {
-    @apply text-[10px] font-bold uppercase tracking-[0.2em];
+    @apply text-[10px] font-medium tracking-wide;
   }
   .label-xs {
-    @apply text-[10px] font-semibold uppercase tracking-widest;
+    @apply text-[10px] font-medium tracking-wide;
   }
   
   /* Heading Styles - Fluid typography with proper hierarchy */
   .heading-1 {
-    @apply text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight;
+    @apply text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold tracking-tight;
     line-height: 1.1;
   }
   .heading-2 {
-    @apply text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight;
+    @apply text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight;
     line-height: 1.15;
   }
   .heading-3 {
-    @apply text-2xl sm:text-3xl lg:text-4xl font-semibold tracking-tight;
+    @apply text-xl sm:text-2xl lg:text-3xl font-bold tracking-tight;
     line-height: 1.2;
   }
   .heading-4 {
-    @apply text-xl sm:text-2xl font-medium;
+    @apply text-lg sm:text-xl font-medium;
     line-height: 1.25;
   }
   .heading-5 {
-    @apply text-lg sm:text-xl font-medium;
+    @apply text-base sm:text-lg font-medium;
     line-height: 1.3;
   }
   

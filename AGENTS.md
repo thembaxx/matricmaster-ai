@@ -5,10 +5,17 @@
 - `npm`, `yarn`, and `pnpm` must **not** be used for installation, scripts, or any other package-related operations.
 - Always use `bun install` to add packages and `bun run <script>` to execute scripts.
 
+## Typography
+- Use **Geist** for body text.
+- Use **Playfair Display** exclusively for: landing page hero heading, section headings, and page headings.
+- Use **Geist Mono** for numerical content (stats, data, codes). Exclude from quizzes and questions in math, physics, or any subject requiring its own font.
+- Font weights: Only **bold**, **medium**, and **normal** (400, 500, 700).
+- Avoid large font sizes; keep text compact and readable.
+- No uppercase text anywhere in the UI.
+
 ## Coding Standards
 - Use **Biome** for linting and formatting. Run `bun run lint:fix` to resolve formatting issues.
 - Follow iOS Human Interface Guidelines (HIG) for UI/UX.
-- Use **Playfair Display** for headings (font-display) and **Inter** for body text.
 - Use `shadcn/ui` components for building the UI.
 
 ## Navigation

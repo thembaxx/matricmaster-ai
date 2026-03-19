@@ -25,7 +25,7 @@ export function StatsSection() {
 							transition={{ duration: 0.5, delay: index * 0.1 }}
 							className="text-center"
 						>
-							<p className="text-3xl lg:text-4xl font-bold text-tiimo-lavender mb-2">
+							<p className="text-3xl lg:text-4xl font-bold text-tiimo-lavender mb-2 font-[family-name:var(--font-geist-mono)]">
 								{stat.value}
 							</p>
 							<p className="text-muted-foreground text-xs font-medium">{stat.label}</p>
