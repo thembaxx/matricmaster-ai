@@ -5,17 +5,21 @@ import * as sqliteSchema from './src/lib/db/sqlite-schema';
 async function verify() {
 	console.log('--- Starting SQLite Verification ---');
 
-	// 1. Initialize
-	await dbManagerV2.initialize();
+	// 1. Initialize with SQLite forced to avoid PostgreSQL connection delays
+	await dbManagerV2.initialize({ forceSQLite: true });
 	console.log('Initial active database:', dbManagerV2.getActiveDatabase());
 
-	// 2. Force failover to SQLite
+	// 2. Ensure we are indeed in SQLite mode
 	dbManagerV2.forceFailover();
-	console.log('Forced failover. Active database:', dbManagerV2.getActiveDatabase());
+	console.log('Active database mode:', dbManagerV2.getActiveDatabase());
 
-	// Explicitly connect to SQLite
+	// Explicitly ensure connection if initialize didn't (though it should have)
 	const { sqliteManager } = await import('./src/lib/db/sqlite-manager');
-	await sqliteManager.connect();
+	const connected = await sqliteManager.connect();
+	if (!connected) {
+		console.error('❌ Failed to connect to SQLite');
+		return;
+	}
 
 	const sqliteDb = dbManagerV2.getSqliteDb();
 	const testId = `test-user-${Date.now()}`;

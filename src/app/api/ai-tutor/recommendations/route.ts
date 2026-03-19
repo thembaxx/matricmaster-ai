@@ -1,5 +1,5 @@
-import { GoogleGenAI } from '@google/genai';
 import { type NextRequest, NextResponse } from 'next/server';
+import { generateTextWithAI } from '@/lib/ai/provider';
 import { getAuth } from '@/lib/auth';
 import { getLearningStats, getTopicsNeedingReview } from '@/lib/db/adaptive-question-actions';
 
@@ -70,11 +70,6 @@ export async function POST(request: NextRequest) {
 			return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 		}
 
-		const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
-		if (!GEMINI_API_KEY) {
-			return NextResponse.json({ error: 'AI service not configured' }, { status: 500 });
-		}
-
 		const body: RecommendationRequest = await request.json();
 		const { subjectId } = body;
 
@@ -82,8 +77,6 @@ export async function POST(request: NextRequest) {
 			getLearningStats(session.user.id),
 			getTopicsNeedingReview(session.user.id),
 		]);
-
-		const genAI = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
 
 		const studentData = {
 			totalQuestions: learningStats.totalQuestions,
@@ -109,21 +102,9 @@ export async function POST(request: NextRequest) {
 			overdueReviewsCount: overdueReviews.length,
 		};
 
-		const result = await genAI.models.generateContent({
-			model: 'gemini-2.5-flash',
-			contents: [
-				{
-					role: 'user',
-					parts: [
-						{
-							text: `${recommendationsPrompt}\n\nStudent Learning Data:\n${JSON.stringify(studentData, null, 2)}${subjectId ? `\n\nFocus on subject ID: ${subjectId}` : ''}`,
-						},
-					],
-				},
-			],
-		});
+		const fullPrompt = `${recommendationsPrompt}\n\nStudent Learning Data:\n${JSON.stringify(studentData, null, 2)}${subjectId ? `\n\nFocus on subject ID: ${subjectId}` : ''}`;
 
-		const responseText = result.text;
+		const responseText = await generateTextWithAI({ prompt: fullPrompt });
 
 		if (!responseText) {
 			return generateFallbackRecommendations(learningStats, overdueReviews);

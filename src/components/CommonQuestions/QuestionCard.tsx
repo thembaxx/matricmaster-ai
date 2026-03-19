@@ -1,6 +1,6 @@
 'use client';
 
-import { HugeiconsIcon } from '@hugeicons/react';
+import { FluentEmoji } from '@lobehub/fluent-emoji';
 import { m } from 'framer-motion';
 import { Card } from '@/components/ui/card';
 import type { CommonQuestion } from '@/constants/common-questions';
@@ -31,7 +31,7 @@ export function QuestionCard({ question, index, onClick }: QuestionCardProps) {
 							question.bgColor
 						)}
 					>
-						<HugeiconsIcon icon={question.icon} className="w-6 h-6 text-white" />
+						<FluentEmoji emoji={question.fluentEmoji} size={24} className="w-6 h-6" />
 					</div>
 					<div className="flex-1 min-w-0">
 						<div className="flex items-center gap-2 mb-1">

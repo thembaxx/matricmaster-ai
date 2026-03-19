@@ -1,3 +1,5 @@
+import { SUBJECTS as CENTRAL_SUBJECTS } from '@/constants/subjects';
+
 export type SubjectId =
 	| 'mathematics'
 	| 'physics'
@@ -7,7 +9,10 @@ export type SubjectId =
 	| 'history'
 	| 'accounting'
 	| 'economics'
-	| 'chemistry';
+	| 'chemistry'
+	| 'afrikaans'
+	| 'lo'
+	| 'business-studies';
 
 export interface Subject {
 	id: SubjectId;
@@ -17,71 +22,19 @@ export interface Subject {
 	bgColor: string;
 }
 
-export const SUBJECTS: Record<SubjectId, Subject> = {
-	mathematics: {
-		id: 'mathematics',
-		name: 'Mathematics',
-		emoji: '🧮',
-		color: 'text-mathematics',
-		bgColor: 'bg-mathematics',
-	},
-	physics: {
-		id: 'physics',
-		name: 'Physics',
-		emoji: '⚛️',
-		color: 'text-physics',
-		bgColor: 'bg-physics',
-	},
-	'life-sciences': {
-		id: 'life-sciences',
-		name: 'Life Sciences',
-		emoji: '🧬',
-		color: 'text-life-sciences',
-		bgColor: 'bg-life-sciences',
-	},
-	english: {
-		id: 'english',
-		name: 'English',
-		emoji: '📚',
-		color: 'text-english',
-		bgColor: 'bg-english',
-	},
-	geography: {
-		id: 'geography',
-		name: 'Geography',
-		emoji: '🌍',
-		color: 'text-geography',
-		bgColor: 'bg-geography',
-	},
-	history: {
-		id: 'history',
-		name: 'History',
-		emoji: '📜',
-		color: 'text-history',
-		bgColor: 'bg-history',
-	},
-	accounting: {
-		id: 'accounting',
-		name: 'Accounting',
-		emoji: '📊',
-		color: 'text-accounting',
-		bgColor: 'bg-accounting',
-	},
-	economics: {
-		id: 'economics',
-		name: 'Economics',
-		emoji: '💰',
-		color: 'text-economics',
-		bgColor: 'bg-economics',
-	},
-	chemistry: {
-		id: 'chemistry',
-		name: 'Chemistry',
-		emoji: '🧪',
-		color: 'text-chemistry',
-		bgColor: 'bg-chemistry',
-	},
-};
+export const SUBJECTS: Record<SubjectId, Subject> = (() => {
+	const entries = Object.values(CENTRAL_SUBJECTS).map((s) => [
+		s.id,
+		{
+			id: s.id,
+			name: s.name,
+			emoji: s.emoji,
+			color: s.color,
+			bgColor: s.bgColor,
+		},
+	]);
+	return Object.fromEntries(entries);
+})();
 
 export interface TaskStep {
 	id: string;

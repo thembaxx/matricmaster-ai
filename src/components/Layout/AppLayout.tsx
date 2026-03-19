@@ -62,8 +62,8 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 										unreadCount={unreadCount}
 										onNotificationClick={() => {
 											if (!user) {
-												toast.info('Login Required', {
-													description: 'Please sign in to view your notifications.',
+												toast.info('login required', {
+													description: 'please sign in to view your notifications.',
 												});
 												router.push('/sign-in');
 												return;
@@ -116,8 +116,8 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 										unreadCount={unreadCount}
 										onNotificationClick={() => {
 											if (!user) {
-												toast.info('Login Required', {
-													description: 'Please sign in to view your notifications.',
+												toast.info('login required', {
+													description: 'please sign in to view your notifications.',
 												});
 												router.push('/sign-in');
 												return;
@@ -131,7 +131,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 												<button
 													type="button"
 													className="w-11 h-11 rounded-2xl bg-card/80 backdrop-blur-md border border-border/50 shadow-tiimo hover:bg-card active:scale-95 transition-all flex items-center justify-center"
-													aria-label="Open navigation menu"
+													aria-label="open navigation menu"
 												>
 													<svg
 														xmlns="http://www.w3.org/2000/svg"
@@ -145,7 +145,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 														strokeLinejoin="round"
 														aria-hidden="true"
 													>
-														<title>Menu</title>
+														<title>menu</title>
 														<line x1="4" x2="20" y1="12" y2="12" />
 														<line x1="4" x2="20" y1="6" y2="6" />
 														<line x1="4" x2="20" y1="18" y2="18" />

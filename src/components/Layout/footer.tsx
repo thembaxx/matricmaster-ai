@@ -63,7 +63,7 @@ export function Footer() {
 							<div className="w-8 h-8 rounded-lg bg-gradient-to-br from-tiimo-lavender to-purple-600 flex items-center justify-center">
 								<span className="text-white font-bold text-sm">M</span>
 							</div>
-							<span className="text-xl font-semibold">MatricMaster</span>
+							<span className="text-xl font-semibold">matricmaster</span>
 						</Link>
 						<p className="text-sm text-muted-foreground mb-6 max-w-sm leading-relaxed">
 							Your study companion for South African Matric students. Pass your NSC exams with
@@ -192,7 +192,7 @@ export function Footer() {
 					className="flex flex-col md:flex-row justify-between items-center gap-4"
 				>
 					<div className="flex flex-col md:flex-row items-center gap-2 text-xs text-muted-foreground">
-						<span>© {new Date().getFullYear()} MatricMaster. All rights reserved.</span>
+						<span>© {new Date().getFullYear()} matricmaster. all rights reserved.</span>
 						<span className="hidden md:inline">•</span>
 						<div className="flex gap-4">
 							{footerLinks.legal.map((link) => (

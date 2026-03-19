@@ -4,10 +4,13 @@ export type SubjectId =
 	| 'chemistry'
 	| 'life-sciences'
 	| 'english'
+	| 'afrikaans'
 	| 'geography'
 	| 'history'
 	| 'accounting'
-	| 'economics';
+	| 'economics'
+	| 'lo'
+	| 'business-studies';
 
 export interface Subject {
 	id: SubjectId;
@@ -16,6 +19,7 @@ export interface Subject {
 	color: string;
 	bgColor: string;
 	icon: string;
+	fluentEmoji: string;
 	fontFamily: string;
 	gradient?: {
 		primary: string;
@@ -30,6 +34,7 @@ export const NSC_SUPPORTED_SUBJECTS: SubjectId[] = [
 	'chemistry',
 	'life-sciences',
 	'english',
+	'afrikaans',
 	'geography',
 	'history',
 	'accounting',
@@ -52,6 +57,7 @@ export const SUBJECTS: Record<SubjectId, Subject> = {
 		id: 'mathematics',
 		name: 'Mathematics',
 		emoji: '🧮',
+		fluentEmoji: 'Abacus',
 		color: 'text-mathematics',
 		bgColor: 'bg-mathematics',
 		icon: 'Calculator',
@@ -62,6 +68,7 @@ export const SUBJECTS: Record<SubjectId, Subject> = {
 		id: 'physics',
 		name: 'Physics',
 		emoji: '⚛️',
+		fluentEmoji: 'Atom',
 		color: 'text-physics',
 		bgColor: 'bg-physics',
 		icon: 'Atom',
@@ -72,6 +79,7 @@ export const SUBJECTS: Record<SubjectId, Subject> = {
 		id: 'chemistry',
 		name: 'Chemistry',
 		emoji: '🧪',
+		fluentEmoji: 'TestTube',
 		color: 'text-chemistry',
 		bgColor: 'bg-chemistry',
 		icon: 'FlaskConical',
@@ -82,6 +90,7 @@ export const SUBJECTS: Record<SubjectId, Subject> = {
 		id: 'life-sciences',
 		name: 'Life Sciences',
 		emoji: '🧬',
+		fluentEmoji: 'Dna',
 		color: 'text-life-sciences',
 		bgColor: 'bg-life-sciences',
 		icon: 'Microscope',
@@ -92,6 +101,7 @@ export const SUBJECTS: Record<SubjectId, Subject> = {
 		id: 'english',
 		name: 'English',
 		emoji: '📚',
+		fluentEmoji: 'Books',
 		color: 'text-english',
 		bgColor: 'bg-english',
 		icon: 'BookOpen',
@@ -102,6 +112,7 @@ export const SUBJECTS: Record<SubjectId, Subject> = {
 		id: 'geography',
 		name: 'Geography',
 		emoji: '🌍',
+		fluentEmoji: 'Globe',
 		color: 'text-geography',
 		bgColor: 'bg-geography',
 		icon: 'Globe',
@@ -112,6 +123,7 @@ export const SUBJECTS: Record<SubjectId, Subject> = {
 		id: 'history',
 		name: 'History',
 		emoji: '📜',
+		fluentEmoji: 'Scroll',
 		color: 'text-history',
 		bgColor: 'bg-history',
 		icon: 'Scroll',
@@ -122,6 +134,7 @@ export const SUBJECTS: Record<SubjectId, Subject> = {
 		id: 'accounting',
 		name: 'Accounting',
 		emoji: '💰',
+		fluentEmoji: 'ChartIncreasing',
 		color: 'text-accounting',
 		bgColor: 'bg-accounting',
 		icon: 'Calculator',
@@ -132,11 +145,45 @@ export const SUBJECTS: Record<SubjectId, Subject> = {
 		id: 'economics',
 		name: 'Economics',
 		emoji: '📈',
+		fluentEmoji: 'ChartIncreasing',
 		color: 'text-economics',
 		bgColor: 'bg-economics',
 		icon: 'ChartLine',
 		fontFamily: 'var(--font-dm-sans)',
 		gradient: { primary: '#f59e0b', secondary: '#d97706', accent: '#fbbf24' },
+	},
+	afrikaans: {
+		id: 'afrikaans',
+		name: 'Afrikaans',
+		emoji: '🌍',
+		fluentEmoji: 'Globe',
+		color: 'text-afrikaans',
+		bgColor: 'bg-afrikaans',
+		icon: 'BookOpen',
+		fontFamily: 'var(--font-literata)',
+		gradient: { primary: '#22c55e', secondary: '#16a34a', accent: '#4ade80' },
+	},
+	lo: {
+		id: 'lo',
+		name: 'Life Orientation',
+		emoji: '💚',
+		fluentEmoji: 'Heart',
+		color: 'text-lo',
+		bgColor: 'bg-lo',
+		icon: 'Heart',
+		fontFamily: 'var(--font-dm-sans)',
+		gradient: { primary: '#10b981', secondary: '#059669', accent: '#34d399' },
+	},
+	'business-studies': {
+		id: 'business-studies',
+		name: 'Business Studies',
+		emoji: '💼',
+		fluentEmoji: 'Briefcase',
+		color: 'text-business-studies',
+		bgColor: 'bg-business-studies',
+		icon: 'Briefcase',
+		fontFamily: 'var(--font-dm-sans)',
+		gradient: { primary: '#6366f1', secondary: '#4f46e5', accent: '#818cf8' },
 	},
 };
 
@@ -162,6 +209,10 @@ export function getSubjectIcon(subjectId: string): string {
 	return SUBJECTS[subjectId as SubjectId]?.icon ?? 'BookOpen';
 }
 
+export function getSubjectFluentEmoji(subjectId: string): string {
+	return SUBJECTS[subjectId as SubjectId]?.fluentEmoji ?? 'Books';
+}
+
 export function getSubjectFont(subjectId: string): string {
 	return SUBJECTS[subjectId as SubjectId]?.fontFamily ?? 'var(--font-body)';
 }
@@ -184,3 +235,5 @@ export function getSubjectGradientArray(subjectId: string): string[] {
 	const gradient = getSubjectGradient(subjectId);
 	return [gradient.primary, gradient.secondary, gradient.accent];
 }
+
+export const SUBJECT_NAMES = NSC_SUPPORTED_SUBJECTS.map((id) => SUBJECTS[id].name);

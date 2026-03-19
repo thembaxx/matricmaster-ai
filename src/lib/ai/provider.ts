@@ -9,6 +9,21 @@ import { isQuotaError } from './quota-error';
 const DEFAULT_MODEL = 'gemini-2.5-flash';
 const STORAGE_KEY = 'matricmaster_user_gemini_api_key';
 
+export interface ImagePart {
+	type: 'image';
+	image: string;
+	mimeType?: string;
+}
+
+export interface TextPart {
+	type: 'text';
+	text: string;
+}
+
+export type ContentPart = ImagePart | TextPart;
+
+export type UserMessageContent = Array<ContentPart>;
+
 function getUserApiKey(): string | undefined {
 	if (typeof window === 'undefined') return undefined;
 	try {
@@ -263,4 +278,134 @@ export async function generateWithMultiProviderFallback(
 
 	const allFailedMessage = `All AI providers failed. Last error: ${lastError?.message}`;
 	throw new Error(allFailedMessage);
+}
+
+export interface GenerateStructuredOptions {
+	model?: string;
+	system?: string;
+	temperature?: number;
+}
+
+export async function generateStructuredText<T>(
+	prompt: string,
+	options: GenerateStructuredOptions = {}
+): Promise<T> {
+	const { system, temperature } = options;
+	const apiKey = getApiKey();
+
+	if (!apiKey) {
+		throw new Error('GEMINI_API_KEY is not configured');
+	}
+
+	const google = createGoogleGenerativeAI({ apiKey });
+	const modelName = options.model || getModel();
+	const model = google(modelName);
+
+	const result = await generateText({
+		model,
+		prompt,
+		system,
+		temperature,
+	});
+
+	let text = result.text;
+	const jsonMatch = text.match(/\{[\s\S]*\}/);
+	if (jsonMatch) {
+		text = jsonMatch[0];
+	}
+
+	return JSON.parse(text) as T;
+}
+
+export interface GenerateMultimodalOptions {
+	model?: string;
+	system?: string;
+	temperature?: number;
+}
+
+export async function generateWithMultimodal(
+	prompt: string,
+	images: { base64: string; mimeType?: string }[],
+	options: GenerateMultimodalOptions = {}
+): Promise<string> {
+	const { system, temperature } = options;
+	const apiKey = getApiKey();
+
+	if (!apiKey) {
+		throw new Error('GEMINI_API_KEY is not configured');
+	}
+
+	const google = createGoogleGenerativeAI({ apiKey });
+	const modelName = options.model || 'gemini-2.0-flash';
+	const model = google(modelName);
+
+	const content: UserMessageContent = [
+		{ type: 'text' as const, text: prompt },
+		...images.map((img) => ({ type: 'image' as const, image: img.base64, mimeType: img.mimeType })),
+	];
+
+	const result = await generateText({
+		model,
+		messages: [{ role: 'user', content }],
+		system,
+		temperature,
+	});
+
+	return result.text;
+}
+
+export interface GeneratePDFOptions {
+	model?: string;
+	system?: string;
+	temperature?: number;
+}
+
+export async function generateTextFromPDF(
+	prompt: string,
+	pdfBase64: string,
+	options: GeneratePDFOptions = {}
+): Promise<string> {
+	const { system, temperature } = options;
+	const apiKey = getApiKey();
+
+	if (!apiKey) {
+		throw new Error('GEMINI_API_KEY is not configured');
+	}
+
+	const google = createGoogleGenerativeAI({ apiKey });
+	const modelName = options.model || getModel();
+	const model = google(modelName);
+
+	const result = await generateText({
+		model,
+		messages: [
+			{
+				role: 'user',
+				content: [
+					{ type: 'text' as const, text: prompt },
+					{ type: 'image' as const, image: pdfBase64, mimeType: 'application/pdf' },
+				] as UserMessageContent,
+			},
+		],
+		system,
+		temperature,
+	});
+
+	return result.text;
+}
+
+export async function generateStructuredTextFromPDF<T>(
+	prompt: string,
+	pdfBase64: string,
+	options: GeneratePDFOptions = {}
+): Promise<T> {
+	const text = await generateTextFromPDF(prompt, pdfBase64, options);
+
+	let cleanedText = text;
+	const jsonMatch = text.match(/\{[\s\S]*\}/);
+	if (jsonMatch) {
+		cleanedText = jsonMatch[0];
+	}
+
+	return JSON.parse(cleanedText) as T;
 }

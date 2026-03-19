@@ -1,3 +1,5 @@
+import { SUBJECTS } from '@/constants/subjects';
+
 interface UniversityRequirement {
 	name: string;
 	faculty: string;
@@ -5,28 +7,30 @@ interface UniversityRequirement {
 	additionalRequirements?: string;
 }
 
-export const SOUTH_AFRICAN_SUBJECTS = [
-	'Mathematics',
+const CORE_SUBJECTS = [
+	SUBJECTS.mathematics.name,
 	'Physical Sciences',
-	'Life Sciences',
-	'Geography',
-	'History',
+	SUBJECTS['life-sciences'].name,
+	SUBJECTS.geography.name,
+	SUBJECTS.history.name,
 	'English Home Language',
 	'English First Additional Language',
 	'Afrikaans Home Language',
 	'Afrikaans First Additional Language',
-	'Accounting',
-	'Business Studies',
-	'Economics',
+	SUBJECTS.accounting.name,
+	SUBJECTS['business-studies'].name,
+	SUBJECTS.economics.name,
 	'Information Technology',
 	'Computer Applications Technology',
 	'Mathematics Literacy',
-	'Life Orientation',
+	SUBJECTS.lo.name,
 	'Art',
 	'Music',
 	'Drama',
 	'Design',
 ];
+
+export const SOUTH_AFRICAN_SUBJECTS = CORE_SUBJECTS;
 
 export const GRADE_POINTS: Record<string, number> = {
 	'7': 7,

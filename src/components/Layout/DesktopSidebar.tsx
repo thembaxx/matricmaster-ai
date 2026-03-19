@@ -4,7 +4,6 @@ import {
 	AiBrain01Icon,
 	AlertCircleIcon,
 	ArrowDown01Icon,
-	AtomIcon,
 	BookmarkIcon,
 	BookOpen01Icon,
 	CalculatorIcon,
@@ -37,6 +36,7 @@ import {
 	User as UserIcon,
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
+import { FluentEmoji } from '@lobehub/fluent-emoji';
 import { m } from 'framer-motion';
 import Link from 'next/link';
 import { useMemo, useState } from 'react';
@@ -66,7 +66,8 @@ type IconSvg = typeof Home01Icon;
 type MenuItem = {
 	href: string;
 	label: string;
-	icon: IconSvg;
+	icon?: IconSvg;
+	fluentEmoji?: string;
 };
 
 type MenuSection = {
@@ -81,13 +82,13 @@ export const sideMenuSections: MenuSection[] = [
 			{ href: '/dashboard', label: 'Dashboard', icon: Home01Icon },
 			{ href: '/demo', label: 'Demo', icon: SparklesIcon },
 			{ href: '/lessons', label: 'Lessons', icon: BookOpen01Icon },
-			{ href: '/physics', label: 'Physics', icon: AtomIcon },
+			{ href: '/physics', label: 'Physics', fluentEmoji: 'Atom' },
 			{ href: '/search', label: 'Search', icon: Search01Icon },
 			{ href: '/study-companion', label: 'Study Companion', icon: SparklesIcon },
 			{ href: '/study-path', label: 'Study Path', icon: MapsIcon },
 			{ href: '/study-plan', label: 'Study Plan', icon: Calendar01Icon },
 			{ href: '/curriculum-map', label: 'Curriculum Map', icon: GridIcon },
-			{ href: '/periodic-table', label: 'Periodic Table', icon: AtomIcon },
+			{ href: '/periodic-table', label: 'Periodic Table', fluentEmoji: 'Atom' },
 			{ href: '/chat', label: 'Study Buddy', icon: Chat01Icon },
 			{ href: '/smart-scheduler', label: 'Smart Scheduler', icon: Calendar01Icon },
 			{ href: '/tutoring', label: 'AI Tutoring', icon: ComputerVideoCallIcon },
@@ -277,13 +278,24 @@ export function AppSidebar({ user, pathname, theme, onToggleTheme }: AppSidebarP
 															animate={{ opacity: 1, x: 0 }}
 															transition={{ delay: idx * 0.02 }}
 														>
-															<HugeiconsIcon
-																icon={item.icon}
-																className={cn(
-																	'w-[18px] h-[18px]',
-																	isActive ? 'text-sidebar-primary' : 'text-sidebar-foreground/50'
-																)}
-															/>
+															{item.fluentEmoji ? (
+																<FluentEmoji
+																	emoji={item.fluentEmoji}
+																	size={18}
+																	className={cn(
+																		'w-[18px] h-[18px]',
+																		isActive ? 'text-sidebar-primary' : 'text-sidebar-foreground/50'
+																	)}
+																/>
+															) : item.icon ? (
+																<HugeiconsIcon
+																	icon={item.icon}
+																	className={cn(
+																		'w-[18px] h-[18px]',
+																		isActive ? 'text-sidebar-primary' : 'text-sidebar-foreground/50'
+																	)}
+																/>
+															) : null}
 														</m.div>
 														<span className="font-medium text-[13px] grow truncate">
 															{item.label}

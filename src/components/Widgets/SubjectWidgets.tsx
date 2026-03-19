@@ -1,7 +1,6 @@
 'use client';
 
-import { CalculatorIcon, Chemistry01Icon } from '@hugeicons/core-free-icons';
-import { HugeiconsIcon } from '@hugeicons/react';
+import { FluentEmoji } from '@lobehub/fluent-emoji';
 import { m } from 'framer-motion';
 import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -12,7 +11,7 @@ export function MathWidget() {
 		<Card className="rounded-[2rem] border-border/50 shadow-tiimo overflow-hidden bg-tiimo-lavender/5 group">
 			<CardHeader className="p-6 pb-0">
 				<CardTitle className="text-xs font-black uppercase tracking-widest text-tiimo-gray-muted flex items-center gap-2">
-					<HugeiconsIcon icon={CalculatorIcon} className="w-4 h-4 text-tiimo-lavender" />
+					<FluentEmoji emoji="Abacus" size={16} className="w-4 h-4 text-tiimo-lavender" />
 					Quick Solve
 				</CardTitle>
 			</CardHeader>
@@ -38,7 +37,7 @@ export function ScienceWidget() {
 		<Card className="rounded-[2rem] border-border/50 shadow-tiimo overflow-hidden bg-tiimo-blue/5">
 			<CardHeader className="p-6 pb-0">
 				<CardTitle className="text-xs font-black uppercase tracking-widest text-tiimo-gray-muted flex items-center gap-2">
-					<HugeiconsIcon icon={Chemistry01Icon} className="w-4 h-4 text-tiimo-blue" />
+					<FluentEmoji emoji="Atom" size={16} className="w-4 h-4 text-tiimo-blue" />
 					Element Facts
 				</CardTitle>
 			</CardHeader>

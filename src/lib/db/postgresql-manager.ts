@@ -123,6 +123,11 @@ class PostgreSQLManager {
 	}
 
 	public async waitForConnection(maxRetries = 5, delay = 5000): Promise<boolean> {
+		if (!this.config.connectionString) {
+			console.debug('❌ DATABASE_URL is not configured, skipping retries');
+			return false;
+		}
+
 		for (let i = 0; i < maxRetries; i++) {
 			const connected = await this.connect();
 			if (connected) {

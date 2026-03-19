@@ -2,6 +2,7 @@ import { type NextRequest, NextResponse } from 'next/server';
 import { isStaticFAQ, routeAIQuestionServer } from '@/lib/ai/router';
 import { AI_MODELS, generateAI, streamAI } from '@/lib/ai-config';
 import { getAuth } from '@/lib/auth';
+import { getCachedAIResponse, hashString } from '@/lib/cache/ai-cache';
 import { checkRateLimit, getRateLimitHeaders } from '@/lib/rate-limit';
 
 interface ChatMessage {
@@ -137,10 +138,41 @@ export async function POST(request: NextRequest) {
 			return result.toTextStreamResponse();
 		}
 
-		const response = await generateAI({
-			prompt: conversationContext,
-			model: AI_MODELS.PRIMARY,
-		});
+		const cacheKey = await hashString(message);
+		const isCacheable =
+			!history || (history.length === 0 && message.length < 200 && !includeSuggestions);
+
+		let response: string;
+
+		if (isCacheable) {
+			try {
+				response = await getCachedAIResponse(
+					`${systemPrompt}\n\n${contextualMessage}`,
+					async () => {
+						const result = await generateAI({
+							prompt: conversationContext,
+							model: AI_MODELS.PRIMARY,
+						});
+						if (!result) throw new Error('AI generation failed');
+						return result;
+					},
+					{
+						revalidate: 3600,
+						tags: [`query-${cacheKey.slice(0, 8)}`],
+					}
+				);
+			} catch {
+				response = await generateAI({
+					prompt: conversationContext,
+					model: AI_MODELS.PRIMARY,
+				});
+			}
+		} else {
+			response = await generateAI({
+				prompt: conversationContext,
+				model: AI_MODELS.PRIMARY,
+			});
+		}
 
 		if (!response) {
 			return NextResponse.json({ error: 'Failed to generate response' }, { status: 500 });

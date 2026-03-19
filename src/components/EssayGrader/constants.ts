@@ -1,15 +1,17 @@
-export const SUBJECTS = [
-	'English Home Language',
-	'English First Additional Language',
-	'Afrikaans Home Language',
-	'Afrikaans First Additional Language',
-	'History',
-	'Geography',
-	'Life Sciences',
-	'Business Studies',
-	'Accounting',
-	'Other',
-];
+import { SUBJECTS } from '@/constants/subjects';
+
+export { SUBJECTS };
+
+const ESSAY_SUBJECTS = [
+	SUBJECTS.english,
+	SUBJECTS.afrikaans,
+	SUBJECTS.history,
+	SUBJECTS['life-sciences'],
+	SUBJECTS['business-studies'],
+	SUBJECTS.accounting,
+] as const;
+
+export const ESSAY_GRADING_SUBJECTS = ESSAY_SUBJECTS.map((s) => s.name);
 
 export const getGradeColor = (score: number) => {
 	if (score >= 80) return 'text-green-500';

@@ -39,7 +39,7 @@ export function HeroSection({ onAuthRequired }: HeroSectionProps) {
 				>
 					<Badge className="tiimo-glass bg-primary-purple! rounded-full px-4 py-1.5 text-[10px] font-medium text-white">
 						<HugeiconsIcon icon={SparklesIcon} className="w-3 h-3 mr-1.5" />
-						The #1 NSC prep platform
+						the #1 nsc prep platform
 					</Badge>
 
 					<m.h1
@@ -48,9 +48,9 @@ export function HeroSection({ onAuthRequired }: HeroSectionProps) {
 						transition={{ delay: 0.1 }}
 						className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground leading-[0.95] font-[family-name:var(--font-playfair)]"
 					>
-						Master your
+						master your
 						<br />
-						<span className="text-tiimo-lavender">Matric exams</span>
+						<span className="text-tiimo-lavender">matric exams</span>
 					</m.h1>
 
 					<m.p
@@ -59,8 +59,8 @@ export function HeroSection({ onAuthRequired }: HeroSectionProps) {
 						transition={{ delay: 0.2 }}
 						className="text-lg md:text-xl text-muted-foreground max-w-lg text-pretty mx-auto lg:mx-0 leading-relaxed"
 					>
-						Practice past papers, get instant help when you're stuck, and track your progress. We
-						help you pass your Matric.
+						practice past papers, get instant help when you're stuck, and track your progress. we
+						help you pass your matric.
 					</m.p>
 				</m.div>
 
@@ -76,7 +76,7 @@ export function HeroSection({ onAuthRequired }: HeroSectionProps) {
 						onClick={() => onAuthRequired('/dashboard')}
 					>
 						<span className="flex items-center gap-2">
-							Start Learning
+							start learning
 							<HugeiconsIcon icon={ArrowRight01Icon} className="w-5 h-5" />
 						</span>
 					</Button>
@@ -87,7 +87,7 @@ export function HeroSection({ onAuthRequired }: HeroSectionProps) {
 						onClick={() => router.push('/past-papers')}
 					>
 						<span className="flex items-center gap-2">
-							Browse Papers
+							browse papers
 							<HugeiconsIcon icon={BookOpen01Icon} className="w-5 h-5" />
 						</span>
 					</Button>
@@ -117,8 +117,8 @@ export function HeroSection({ onAuthRequired }: HeroSectionProps) {
 						))}
 					</div>
 					<div className="text-left">
-						<p className="text-sm font-semibold">50,000+ students</p>
-						<p className="text-xs text-muted-foreground">trust {appConfig.name}</p>
+						<p className="text-sm font-semibold font-[family-name:var(--font-geist-mono)]">50,000+ students</p>
+						<p className="text-xs text-muted-foreground text-lowercase">trust {appConfig.name}</p>
 					</div>
 				</m.div>
 			</div>
@@ -170,7 +170,7 @@ export function HeroSection({ onAuthRequired }: HeroSectionProps) {
 								<div className="h-1 w-12 bg-secondary rounded-full overflow-hidden">
 									<div className="h-full w-3/4 bg-subject-math rounded-full" />
 								</div>
-								<span className="text-[8px] font-medium mt-1">Math 92%</span>
+								<span className="text-[8px] font-medium mt-1 font-[family-name:var(--font-geist-mono)]">math 92%</span>
 							</m.div>
 
 							<m.div
@@ -189,7 +189,7 @@ export function HeroSection({ onAuthRequired }: HeroSectionProps) {
 								<div className="h-1 w-12 bg-secondary rounded-full overflow-hidden">
 									<div className="h-full w-1/2 bg-subject-life rounded-full" />
 								</div>
-								<span className="text-[8px] font-medium mt-1">Physics 78%</span>
+								<span className="text-[8px] font-medium mt-1 font-[family-name:var(--font-geist-mono)]">physics 78%</span>
 							</m.div>
 						</div>
 					</div>
@@ -205,8 +205,8 @@ export function HeroSection({ onAuthRequired }: HeroSectionProps) {
 								<HugeiconsIcon icon={FlashIcon} className="w-5 h-5 text-success" />
 							</div>
 							<div>
-								<p className="text-lg font-bold">2,450</p>
-								<p className="text-xs text-muted-foreground">XP Earned</p>
+								<p className="text-lg font-bold font-[family-name:var(--font-geist-mono)]">2,450</p>
+								<p className="text-xs text-muted-foreground">xp earned</p>
 							</div>
 						</div>
 					</m.div>
@@ -222,8 +222,8 @@ export function HeroSection({ onAuthRequired }: HeroSectionProps) {
 								<span className="text-lg">🔥</span>
 							</div>
 							<div>
-								<p className="text-lg font-bold">12 day</p>
-								<p className="text-xs text-muted-foreground">Study Streak</p>
+								<p className="text-lg font-bold font-[family-name:var(--font-geist-mono)]">12 day</p>
+								<p className="text-xs text-muted-foreground">study streak</p>
 							</div>
 						</div>
 					</m.div>
@@ -238,8 +238,8 @@ export function HeroSection({ onAuthRequired }: HeroSectionProps) {
 							<HugeiconsIcon icon={StarIcon} className="w-4 h-4 text-tiimo-yellow" />
 						</div>
 						<div>
-							<p className="text-sm font-bold">Top 5%</p>
-							<p className="text-[10px] text-muted-foreground">Math Challenge</p>
+							<p className="text-sm font-bold font-[family-name:var(--font-geist-mono)]">top 5%</p>
+							<p className="text-[10px] text-muted-foreground">math challenge</p>
 						</div>
 					</m.div>
 				</m.div>
