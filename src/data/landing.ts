@@ -1,30 +1,17 @@
 import {
-	AtomIcon,
 	BookOpen01Icon,
 	BrainIcon,
-	CalculatorIcon,
 	Calendar01Icon,
 	Camera01Icon,
 	ChartIcon,
-	Chemistry01Icon,
 	GroupIcon,
 	Idea01Icon,
 	MagicWand01Icon,
-	MicroscopeIcon,
 	SparklesIcon,
 	Task02Icon,
 	Timer02Icon,
 	VoiceIcon,
 } from '@hugeicons/core-free-icons';
-
-export type IconSvg = typeof CalculatorIcon;
-
-export const LANDING_ICON_MAP: Record<string, IconSvg> = {
-	Calculator: CalculatorIcon,
-	Atom: AtomIcon,
-	FlaskConical: Chemistry01Icon,
-	Microscope: MicroscopeIcon,
-};
 
 export const LANDING_FEATURES = [
 	{

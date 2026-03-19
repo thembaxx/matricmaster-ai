@@ -14,7 +14,7 @@ import {
 	SelectValue,
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
-import { SUBJECTS } from './constants';
+import { ESSAY_GRADING_SUBJECTS } from './constants';
 
 interface EssayInputFormProps {
 	topic: string;
@@ -68,7 +68,7 @@ export function EssayInputForm({
 							<SelectValue placeholder="Select subject" />
 						</SelectTrigger>
 						<SelectContent>
-							{SUBJECTS.map((s) => (
+							{ESSAY_GRADING_SUBJECTS.map((s) => (
 								<SelectItem key={s} value={s}>
 									{s}
 								</SelectItem>

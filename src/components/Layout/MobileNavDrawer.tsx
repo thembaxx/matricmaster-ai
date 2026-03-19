@@ -4,7 +4,6 @@ import {
 	AiBrain01Icon,
 	AlertCircleIcon,
 	ArrowRight01Icon,
-	AtomIcon,
 	BookmarkIcon,
 	BookOpen01Icon,
 	CalculatorIcon,
@@ -38,6 +37,7 @@ import {
 	User as UserIcon,
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
+import { FluentEmoji } from '@lobehub/fluent-emoji';
 import { m } from 'framer-motion';
 import { usePathname, useRouter } from 'next/navigation';
 import { useMemo, useState } from 'react';
@@ -60,7 +60,8 @@ type IconSvg = typeof Home01Icon;
 type MobileNavItem = {
 	href: string;
 	label: string;
-	icon: IconSvg;
+	icon?: IconSvg;
+	fluentEmoji?: string;
 };
 
 type MobileNavSection = {
@@ -74,13 +75,13 @@ const MOBILE_NAV_SECTIONS: MobileNavSection[] = [
 		items: [
 			{ href: '/dashboard', label: 'Dashboard', icon: Home01Icon },
 			{ href: '/lessons', label: 'Lessons', icon: BookOpen01Icon },
-			{ href: '/physics', label: 'Physics', icon: AtomIcon },
+			{ href: '/physics', label: 'Physics', fluentEmoji: 'Atom' },
 			{ href: '/search', label: 'Search', icon: Search01Icon },
 			{ href: '/study-companion', label: 'Study Companion', icon: SparklesIcon },
 			{ href: '/study-path', label: 'Study Path', icon: MapsIcon },
 			{ href: '/study-plan', label: 'Study Plan', icon: Calendar01Icon },
 			{ href: '/curriculum-map', label: 'Curriculum Map', icon: GridIcon },
-			{ href: '/periodic-table', label: 'Periodic Table', icon: AtomIcon },
+			{ href: '/periodic-table', label: 'Periodic Table', fluentEmoji: 'Atom' },
 			{ href: '/tutoring', label: 'AI Tutoring', icon: ComputerVideoCallIcon },
 			{ href: '/voice-tutor', label: 'Voice Tutor', icon: Mic01Icon },
 			{ href: '/essay-grader', label: 'Essay Grader', icon: ContentWritingIcon },
@@ -313,7 +314,11 @@ function MobileNavLink({
 					: 'text-sidebar-foreground/60 hover:text-sidebar-foreground hover:bg-sidebar-accent/50'
 			)}
 		>
-			<HugeiconsIcon icon={item.icon} className="w-5 h-5" />
+			{item.fluentEmoji ? (
+				<FluentEmoji emoji={item.fluentEmoji} size={24} className="w-6 h-6" />
+			) : item.icon ? (
+				<HugeiconsIcon icon={item.icon} className="w-5 h-5" />
+			) : null}
 			<span className="font-medium">{item.label}</span>
 			{isActive && <div className="ml-auto w-1.5 h-1.5 rounded-full bg-sidebar-primary" />}
 		</button>

@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { SUBJECTS } from './constants';
+import { OFFLINE_SUBJECTS } from './constants';
 
 interface QuickTipsCardProps {
 	selectedSubject: string;
@@ -19,7 +19,7 @@ export function QuickTipsCard({ selectedSubject, onSubjectChange, tips }: QuickT
 			</CardHeader>
 			<CardContent className="space-y-3">
 				<div className="flex gap-2 flex-wrap">
-					{SUBJECTS.map((subject) => (
+					{OFFLINE_SUBJECTS.map((subject) => (
 						<Button
 							key={subject}
 							variant={selectedSubject === subject ? 'default' : 'outline'}

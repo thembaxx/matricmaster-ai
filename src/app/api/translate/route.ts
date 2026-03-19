@@ -1,5 +1,5 @@
-import { GoogleGenerativeAI } from '@google/generative-ai';
 import { type NextRequest, NextResponse } from 'next/server';
+import { generateTextWithAI } from '@/lib/ai/provider';
 
 export async function POST(request: NextRequest) {
 	try {
@@ -12,18 +12,9 @@ export async function POST(request: NextRequest) {
 			);
 		}
 
-		const apiKey = process.env.GEMINI_API_KEY;
-		if (!apiKey) {
-			return NextResponse.json({ error: 'Translation service not configured' }, { status: 503 });
-		}
-
-		const genAI = new GoogleGenerativeAI(apiKey);
-		const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
-
 		const fullPrompt = `${prompt || 'Translate to'}: ${targetLanguage}\n\nText to translate: ${text}`;
 
-		const result = await model.generateContent(fullPrompt);
-		const translation = result.response.text();
+		const translation = await generateTextWithAI({ prompt: fullPrompt });
 
 		return NextResponse.json({ translation });
 	} catch (error) {

@@ -1,6 +1,6 @@
 'use client';
 
-import { HugeiconsIcon } from '@hugeicons/react';
+import { FluentEmoji } from '@lobehub/fluent-emoji';
 import { useState } from 'react';
 import { QuestionCard } from '@/components/CommonQuestions/QuestionCard';
 import { QuestionDialog } from '@/components/CommonQuestions/QuestionDialog';
@@ -69,7 +69,7 @@ export default function CommonQuestionsPage() {
 								onClick={() => setSelectedSubject(subject.id)}
 								className="rounded-full gap-2"
 							>
-								<HugeiconsIcon icon={subject.icon} className="w-4 h-4" />
+								<FluentEmoji emoji={subject.fluentEmoji} size={16} className="w-4 h-4" />
 								{subject.label}
 							</Button>
 						))}

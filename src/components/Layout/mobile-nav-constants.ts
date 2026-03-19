@@ -1,7 +1,6 @@
 import {
 	AiBrain01Icon,
 	AlertCircleIcon,
-	AtomIcon,
 	BookmarkIcon,
 	BookOpen01Icon,
 	CalculatorIcon,
@@ -38,7 +37,8 @@ export type IconSvg = typeof Home01Icon;
 export type MobileNavItem = {
 	href: string;
 	label: string;
-	icon: IconSvg;
+	icon?: IconSvg;
+	fluentEmoji?: string;
 };
 
 export type MobileNavSection = {
@@ -52,13 +52,13 @@ export const MOBILE_NAV_SECTIONS: MobileNavSection[] = [
 		items: [
 			{ href: '/dashboard', label: 'Dashboard', icon: Home01Icon },
 			{ href: '/lessons', label: 'Lessons', icon: BookOpen01Icon },
-			{ href: '/physics', label: 'Physics', icon: AtomIcon },
+			{ href: '/physics', label: 'Physics', fluentEmoji: 'Atom' },
 			{ href: '/search', label: 'Search', icon: Search01Icon },
 			{ href: '/study-companion', label: 'Study Companion', icon: SparklesIcon },
 			{ href: '/study-path', label: 'Study Path', icon: MapsIcon },
 			{ href: '/study-plan', label: 'Study Plan', icon: Calendar01Icon },
 			{ href: '/curriculum-map', label: 'Curriculum Map', icon: GridIcon },
-			{ href: '/periodic-table', label: 'Periodic Table', icon: AtomIcon },
+			{ href: '/periodic-table', label: 'Periodic Table', fluentEmoji: 'Atom' },
 			{ href: '/tutoring', label: 'AI Tutoring', icon: ComputerVideoCallIcon },
 			{ href: '/voice-tutor', label: 'Voice Tutor', icon: Mic01Icon },
 			{ href: '/essay-grader', label: 'Essay Grader', icon: ContentWritingIcon },

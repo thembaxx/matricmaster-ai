@@ -1,23 +1,11 @@
 'use client';
 
-import {
-	ArrowRight01Icon,
-	AtomIcon,
-	CalculatorIcon,
-	Chemistry01Icon,
-	MicroscopeIcon,
-} from '@hugeicons/core-free-icons';
-import { HugeiconsIcon, type IconSvgElement } from '@hugeicons/react';
+import { ArrowRight01Icon } from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
+import { FluentEmoji } from '@lobehub/fluent-emoji';
 import { m } from 'framer-motion';
 import { SUBJECTS } from '@/constants/mock-data';
 import { STAGGER_CONTAINER, STAGGER_ITEM } from '@/lib/animation-presets';
-
-const ICON_MAP: Record<string, IconSvgElement> = {
-	Calculator: CalculatorIcon,
-	Atom: AtomIcon,
-	FlaskConical: Chemistry01Icon,
-	Microscope: MicroscopeIcon,
-};
 
 interface SubjectsSectionProps {
 	onAuthRequired: (path: string) => void;
@@ -50,7 +38,7 @@ export function SubjectsSection({ onAuthRequired }: SubjectsSectionProps) {
 				className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4"
 			>
 				{SUBJECTS.map((subject) => {
-					const icon = ICON_MAP[subject.icon as keyof typeof ICON_MAP] || CalculatorIcon;
+					const fluentEmoji = subject.fluentEmoji ?? 'Books';
 					return (
 						<m.button
 							key={subject.id}
@@ -67,7 +55,11 @@ export function SubjectsSection({ onAuthRequired }: SubjectsSectionProps) {
 								<div
 									className={`w-12 h-12 rounded-[var(--radius-lg)] ${subject.bg} flex items-center justify-center mb-4`}
 								>
-									<HugeiconsIcon icon={icon} className={`w-6 h-6 ${subject.color}`} />
+									<FluentEmoji
+										emoji={fluentEmoji}
+										size={24}
+										className={`w-6 h-6 ${subject.color}`}
+									/>
 								</div>
 								<h3 className="text-lg font-bold mb-1">{subject.name}</h3>
 								<p className="text-sm text-muted-foreground">{subject.topics}</p>

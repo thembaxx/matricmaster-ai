@@ -1,27 +1,12 @@
 'use client';
 
-import {
-	Book01Icon,
-	CalculatorIcon,
-	Chemistry01Icon,
-	Compass01Icon,
-} from '@hugeicons/core-free-icons';
-import { HugeiconsIcon } from '@hugeicons/react';
+import { FluentEmoji } from '@lobehub/fluent-emoji';
 import { useQuery } from '@tanstack/react-query';
 import { AnimatePresence, m } from 'framer-motion';
 import { useRouter } from 'next/navigation';
+import { SUBJECTS, type SubjectId } from '@/constants/subjects';
 import { getEnrolledSubjectsAction } from '@/lib/db/actions';
 import { cn } from '@/lib/utils';
-
-const ICON_MAP: Record<string, typeof CalculatorIcon> = {
-	math: CalculatorIcon,
-	mathematics: CalculatorIcon,
-	physics: Chemistry01Icon,
-	science: Chemistry01Icon,
-	'physical sciences': Chemistry01Icon,
-	english: Book01Icon,
-	geography: Compass01Icon,
-};
 
 const COLOR_MAP: Record<string, string> = {
 	math: 'bg-tiimo-lavender',
@@ -30,6 +15,8 @@ const COLOR_MAP: Record<string, string> = {
 	'physical sciences': 'bg-tiimo-blue',
 	english: 'bg-tiimo-orange',
 	geography: 'bg-tiimo-green',
+	'life sciences': 'bg-tiimo-green',
+	history: 'bg-tiimo-orange',
 };
 
 interface EnrolledSubject {
@@ -76,8 +63,9 @@ export function SubjectGrid() {
 		<m.div layout className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4">
 			<AnimatePresence mode="popLayout">
 				{subjects.map((subject, index) => {
-					const subjectKey = subject.name.toLowerCase();
-					const Icon = ICON_MAP[subjectKey] || Book01Icon;
+					const subjectKey = subject.name.toLowerCase() as SubjectId;
+					const subjectData = SUBJECTS[subjectKey];
+					const fluentEmoji = subjectData?.fluentEmoji ?? 'Books';
 					const color = COLOR_MAP[subjectKey] || 'bg-tiimo-gray-muted';
 					const isLarge = index === 0;
 
@@ -103,8 +91,9 @@ export function SubjectGrid() {
 									isLarge ? 'w-14 h-14' : 'w-12 h-12'
 								)}
 							>
-								<HugeiconsIcon
-									icon={Icon}
+								<FluentEmoji
+									emoji={fluentEmoji}
+									size={isLarge ? 28 : 24}
 									className={cn(isLarge ? 'w-7 h-7' : 'w-6 h-6', 'text-white')}
 								/>
 							</div>

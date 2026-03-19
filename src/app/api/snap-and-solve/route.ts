@@ -1,6 +1,6 @@
-import { GoogleGenAI } from '@google/genai';
 import { headers } from 'next/headers';
 import { type NextRequest, NextResponse } from 'next/server';
+import { generateWithMultimodal } from '@/lib/ai/provider';
 import { getAuth } from '@/lib/auth';
 
 export async function POST(req: NextRequest) {
@@ -22,13 +22,6 @@ export async function POST(req: NextRequest) {
 			return NextResponse.json({ error: 'No image provided' }, { status: 400 });
 		}
 
-		const apiKey = process.env.GEMINI_API_KEY;
-		if (!apiKey) {
-			return NextResponse.json({ error: 'AI not configured' }, { status: 500 });
-		}
-
-		const genAI = new GoogleGenAI({ apiKey });
-
 		const buffer = await image.arrayBuffer();
 		const base64 = Buffer.from(buffer).toString('base64');
 
@@ -39,27 +32,9 @@ export async function POST(req: NextRequest) {
         4. If it's a multiple choice question, explain why the correct option is right and others are wrong.
         Format the response in clear Markdown.`;
 
-		const result = await genAI.models.generateContent({
-			model: 'gemini-2.0-flash',
-			contents: [
-				{
-					role: 'user',
-					parts: [
-						{ text: prompt },
-						{
-							inlineData: {
-								data: base64,
-								mimeType: image.type,
-							},
-						},
-					],
-				},
-			],
-		});
+		const solution = await generateWithMultimodal(prompt, [{ base64, mimeType: image.type }]);
 
-		const text = result.candidates?.[0]?.content?.parts?.[0]?.text;
-
-		return NextResponse.json({ solution: text });
+		return NextResponse.json({ solution });
 	} catch (error) {
 		console.debug('[Snap & Solve API Error]:', error);
 		return NextResponse.json({ error: 'Failed to analyze image' }, { status: 500 });

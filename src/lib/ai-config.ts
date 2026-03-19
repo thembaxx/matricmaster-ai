@@ -1,25 +1,4 @@
-import { GoogleGenAI } from '@google/genai';
 import { generateTextWithAI, generateWithFallback, streamTextWithAI } from '@/lib/ai';
-
-/**
- * Create a Google Generative AI client (legacy)
- * This provides a unified interface for all AI operations
- */
-export function createAIClient() {
-	const apiKey = process.env.GEMINI_API_KEY;
-
-	if (!apiKey) {
-		console.warn('GEMINI_API_KEY not configured. AI features will be disabled.');
-		return null;
-	}
-
-	try {
-		return new GoogleGenAI({ apiKey });
-	} catch (error) {
-		console.debug('Failed to create AI client:', error);
-		return null;
-	}
-}
 
 /**
  * Available Gemini models with fallback hierarchy

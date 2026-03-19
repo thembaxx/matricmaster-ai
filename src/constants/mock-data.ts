@@ -1,45 +1,40 @@
+import { SUBJECTS as CENTRAL_SUBJECTS } from './subjects';
+
 export const SUBJECTS = [
 	{
+		...CENTRAL_SUBJECTS.mathematics,
 		id: 'math',
-		name: 'Mathematics',
 		topics: 'Calculus, Euclidean Geometry, Trig',
-		icon: 'Calculator',
-		color: 'text-brand-blue',
-		bg: 'bg-subject-math',
 		path: '/quiz',
+		bg: 'bg-subject-math',
 		image:
 			'https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&q=80&w=400',
 	},
 	{
+		...CENTRAL_SUBJECTS.physics,
 		id: 'physics',
 		name: 'Physical Sciences',
 		topics: 'Newtonian Laws, Electrodynamics, Organic',
-		icon: 'Atom',
-		color: 'text-brand-purple',
-		bg: 'bg-subject-physics',
 		path: '/physics',
+		bg: 'bg-subject-physics',
 		image:
 			'https://images.unsplash.com/photo-1636466497217-26a8cbeaf0aa?auto=format&fit=crop&q=80&w=400',
 	},
 	{
+		...CENTRAL_SUBJECTS.chemistry,
 		id: 'chemistry',
-		name: 'Chemistry',
 		topics: 'Rate of Reaction, Organic Molecules',
-		icon: 'FlaskConical',
-		color: 'text-brand-amber',
-		bg: 'bg-subject-physics-soft',
 		path: '/quiz',
+		bg: 'bg-subject-physics-soft',
 		image:
 			'https://images.unsplash.com/photo-1532187875605-1ef6c237f142?auto=format&fit=crop&q=80&w=400',
 	},
 	{
+		...CENTRAL_SUBJECTS['life-sciences'],
 		id: 'life',
-		name: 'Life Sciences',
 		topics: 'Genetics, Evolution, DNA',
-		icon: 'Microscope',
-		color: 'text-brand-green',
-		bg: 'bg-subject-life',
 		path: '/quiz',
+		bg: 'bg-subject-life',
 		image:
 			'https://images.unsplash.com/photo-1530026405186-ed1f139313f8?auto=format&fit=crop&q=80&w=400',
 	},

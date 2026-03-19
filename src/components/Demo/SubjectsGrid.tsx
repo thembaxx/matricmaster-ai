@@ -1,11 +1,10 @@
 'use client';
 
-import { BookOpenIcon } from '@hugeicons/core-free-icons';
-import { HugeiconsIcon } from '@hugeicons/react';
+import { FluentEmoji } from '@lobehub/fluent-emoji';
 import { Card, CardContent } from '@/components/ui/card';
 import { DataSection } from '@/components/ui/data-loader';
 import type { Subject } from '@/data';
-import { subjectIcons } from './constants';
+import { subjectEmojiMap } from './constants';
 
 interface SubjectsGridProps {
 	subjects: Subject[];
@@ -20,7 +19,7 @@ export function SubjectsGrid({ subjects }: SubjectsGridProps) {
 		>
 			<div className="grid grid-cols-2 md:grid-cols-4 gap-4">
 				{subjects.map((subject) => {
-					const IconComponent = subjectIcons[subject.name] || BookOpenIcon;
+					const emoji = subjectEmojiMap[subject.name] || 'Books';
 					return (
 						<Card
 							key={subject.id}
@@ -29,7 +28,7 @@ export function SubjectsGrid({ subjects }: SubjectsGridProps) {
 							<CardContent className="pt-6">
 								<div className="flex flex-col items-center text-center gap-3">
 									<div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center">
-										<HugeiconsIcon icon={IconComponent} className="w-7 h-7 text-primary" />
+										<FluentEmoji emoji={emoji} size={28} className="w-7 h-7" />
 									</div>
 									<div>
 										<h3 className="font-semibold">{subject.name}</h3>

@@ -8,6 +8,7 @@ import {
 	Idea01Icon,
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
+import { FluentEmoji } from '@lobehub/fluent-emoji';
 import * as Dialog from '@radix-ui/react-dialog';
 import { AnimatePresence, m } from 'framer-motion';
 import { AIExplanation } from '@/components/Quiz/AIExplanation';
@@ -52,7 +53,7 @@ export function QuestionDialog({
 									question.bgColor
 								)}
 							>
-								<HugeiconsIcon icon={question.icon} className="w-5 h-5 text-white" />
+								<FluentEmoji emoji={question.fluentEmoji} size={20} className="w-5 h-5" />
 							</div>
 							<div className="flex-1 min-w-0">
 								<div className="flex flex-wrap items-center gap-2 mb-1">

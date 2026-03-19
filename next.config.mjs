@@ -130,6 +130,7 @@ const withPWA = withPWAInit({
 
 const nextConfig = {
 	reactStrictMode: true,
+	transpilePackages: ['@lobehub/fluent-emoji'],
 	experimental: {
 		viewTransition: true,
 		optimizePackageImports: [
@@ -142,6 +143,7 @@ const nextConfig = {
 			'@ai-sdk/google',
 			'@hugeicons/core-free-icons',
 			'@hugeicons/react',
+			'@lobehub/fluent-emoji',
 		],
 	},
 	compiler: {

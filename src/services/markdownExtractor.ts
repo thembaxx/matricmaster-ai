@@ -1,5 +1,5 @@
-import { GoogleGenAI } from '@google/genai';
 import { isNSCSupportedSubject } from '@/constants/subjects';
+import { generateTextWithAI } from '@/lib/ai/provider';
 import { logInfo, logWarn } from '@/lib/monitoring';
 import { type ExtractedPaper, extractedPaperSchema } from './pdfExtractor';
 
@@ -88,6 +88,16 @@ export class UnsupportedSubjectError extends Error {
 	}
 }
 
+function extractJsonFromText(text: string): string {
+	let cleaned = text.replace(/```json\n?|```/g, '').trim();
+	const startIdx = cleaned.indexOf('{');
+	const endIdx = cleaned.lastIndexOf('}');
+	if (startIdx !== -1 && endIdx !== -1) {
+		cleaned = cleaned.substring(startIdx, endIdx + 1);
+	}
+	return cleaned;
+}
+
 export async function extractQuestionsFromMarkdown(
 	markdown: string,
 	paperId: string,
@@ -99,8 +109,6 @@ export async function extractQuestionsFromMarkdown(
 	if (!process.env.GEMINI_API_KEY) {
 		throw new Error('AI service not configured');
 	}
-
-	const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
 	logInfo('markdown-extractor', `Extracting questions from markdown for ${paperId}`, { subject });
 
@@ -115,22 +123,11 @@ export async function extractQuestionsFromMarkdown(
 		.replace(/{paperId}/g, paperId);
 
 	try {
-		const result = await ai.models.generateContent({
-			model: 'gemini-2.5-flash',
-			contents: [
-				{
-					role: 'user',
-					parts: [{ text: prompt }, { text: `\n\n---\n\nMARKDOWN CONTENT:\n\n${markdown}` }],
-				},
-			],
-			config: { responseMimeType: 'application/json' },
+		const result = await generateTextWithAI({
+			prompt: `${prompt}\n\n---\n\nMARKDOWN CONTENT:\n\n${markdown}`,
 		});
 
-		if (!result.text) {
-			throw new Error('No response from AI');
-		}
-
-		const cleaned = result.text.replace(/```json\n?|```/g, '').trim();
+		const cleaned = extractJsonFromText(result);
 		const parsed = JSON.parse(cleaned);
 
 		if (parsed.isUnsupported === true) {
@@ -170,26 +167,22 @@ Markdown content:
 ${markdown}`;
 
 			try {
-				const fallbackResult = await ai.models.generateContent({
-					model: 'gemini-2.5-flash',
-					contents: [{ role: 'user', parts: [{ text: fallbackPrompt }] }],
-					config: { responseMimeType: 'application/json' },
+				const fallbackResult = await generateTextWithAI({
+					prompt: fallbackPrompt,
 				});
 
-				if (fallbackResult.text) {
-					const cleaned = fallbackResult.text.replace(/```json\n?|```/g, '').trim();
-					const parsed = JSON.parse(cleaned);
+				const cleaned = extractJsonFromText(fallbackResult);
+				const parsed = JSON.parse(cleaned);
 
-					if (parsed.isUnsupported === true) {
-						throw new UnsupportedSubjectError(
-							parsed.reason || 'This document does not appear to be a valid exam paper',
-							parsed.suggestion ||
-								'MatricMaster AI specializes in South African NSC Grade 12 curriculum. Please upload an NSC past paper for the best experience.'
-						);
-					}
-
-					return extractedPaperSchema.parse(parsed);
+				if (parsed.isUnsupported === true) {
+					throw new UnsupportedSubjectError(
+						parsed.reason || 'This document does not appear to be a valid exam paper',
+						parsed.suggestion ||
+							'MatricMaster AI specializes in South African NSC Grade 12 curriculum. Please upload an NSC past paper for the best experience.'
+					);
 				}
+
+				return extractedPaperSchema.parse(parsed);
 			} catch (fallbackError) {
 				if (fallbackError instanceof UnsupportedSubjectError) {
 					throw fallbackError;
