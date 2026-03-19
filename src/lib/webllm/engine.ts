@@ -10,8 +10,14 @@ const MODEL_NAME = 'Llama-3.1-8B-Instruct-q4f32_1-MLC-1k';
 export class WebLLMEngine {
 	private progress = 0;
 	private _isReady = false;
+	private _isSupported = true;
 
 	async initialize(onProgress?: (progress: number) => void): Promise<void> {
+		if (!this._isSupported) {
+			console.debug('WebGPU not supported, skipping WebLLM initialization');
+			return;
+		}
+
 		if (this._isReady) return;
 		if (isInitializing && initPromise) {
 			return initPromise;
@@ -24,6 +30,21 @@ export class WebLLMEngine {
 
 	private async _doInitialize(onProgress?: (progress: number) => void): Promise<void> {
 		try {
+			const gpu = (navigator as unknown as { gpu?: { requestAdapter: () => Promise<unknown> } })
+				.gpu;
+			if (!gpu) {
+				this._isSupported = false;
+				console.debug('WebGPU not available in browser');
+				return;
+			}
+
+			const adapter = await gpu.requestAdapter();
+			if (!adapter) {
+				this._isSupported = false;
+				console.debug('No WebGPU adapter available');
+				return;
+			}
+
 			engine = await CreateMLCEngine(MODEL_NAME, {
 				initProgressCallback: (info: InitProgressReport) => {
 					this.progress = Math.round(info.progress * 100);
@@ -32,13 +53,17 @@ export class WebLLMEngine {
 			});
 			this._isReady = true;
 		} catch (error) {
-			console.error('WebLLM init failed:', error);
-			throw error;
+			this._isSupported = false;
+			console.debug('WebLLM init skipped:', error);
 		}
 	}
 
 	isReady(): boolean {
 		return this._isReady;
+	}
+
+	isSupported(): boolean {
+		return this._isSupported;
 	}
 
 	getDownloadProgress(): number {
