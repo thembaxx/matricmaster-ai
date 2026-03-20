@@ -229,7 +229,7 @@ export default function OnboardingScreen({ user }: OnboardingScreenProps) {
 						}}
 						className="w-full max-w-md"
 					>
-						<Card className="premium-glass border-none shadow-2xl overflow-hidden rounded-[2.5rem] p-8 flex flex-col items-center text-center space-y-8">
+						<Card className="premium-glass border-none shadow-2xl overflow-hidden rounded-[2.5rem] p-8 flex flex-col items-center text-center gap-8">
 							<m.div
 								variants={STAGGER_CONTAINER}
 								initial="hidden"

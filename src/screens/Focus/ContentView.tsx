@@ -2,6 +2,7 @@ import { m } from 'framer-motion';
 import { MarkdownRenderer } from '@/components/AI/MarkdownRenderer';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { Separator } from '@/components/ui/separator';
 
 interface ContentViewProps {
 	content: string;
@@ -20,7 +21,8 @@ export function ContentView({ content, onBackToTimer }: ContentViewProps) {
 			<ScrollArea className="h-[60vh] p-8 sm:p-12">
 				<MarkdownRenderer content={content} />
 			</ScrollArea>
-			<div className="p-8 bg-muted/30 border-t border-border/50 flex justify-center">
+			<div className="p-8 bg-muted/30 flex justify-center">
+				<Separator className="mb-6 -mx-8 max-w-[calc(100%+4rem)]" />
 				<Button
 					onClick={onBackToTimer}
 					className="rounded-full font-black uppercase text-xs px-8 h-12"

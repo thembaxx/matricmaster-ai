@@ -5,6 +5,7 @@ import { HugeiconsIcon } from '@hugeicons/react';
 import { useQuery } from '@tanstack/react-query';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
 import { useGeminiQuotaModal } from '@/contexts/GeminiQuotaModalContext';
 import { isQuotaError } from '@/lib/ai/quota-error';
 import { cn } from '@/lib/utils';
@@ -104,8 +105,8 @@ export function AnswerBreakdown({
 
 					{loading && (
 						<div className="space-y-3">
-							<div className="h-4 bg-muted/50 rounded w-3/4 animate-pulse" />
-							<div className="h-4 bg-muted/50 rounded w-1/2 animate-pulse" />
+							<Skeleton className="h-4 w-3/4" />
+							<Skeleton className="h-4 w-1/2" />
 						</div>
 					)}
 

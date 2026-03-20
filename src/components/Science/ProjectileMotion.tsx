@@ -19,10 +19,12 @@ export function ProjectileMotion({
 	const [isPlaying, setIsPlaying] = useState(false);
 	const [time, setTime] = useState(0);
 	const [position, setPosition] = useState({ x: 0, y: 0 });
+	const [velocity, setVelocity] = useState(initialVelocity);
+	const [theta, setTheta] = useState(angle);
 
-	const angleRad = (angle * Math.PI) / 180;
-	const vx = initialVelocity * Math.cos(angleRad);
-	const vy = initialVelocity * Math.sin(angleRad);
+	const angleRad = (theta * Math.PI) / 180;
+	const vx = velocity * Math.cos(angleRad);
+	const vy = velocity * Math.sin(angleRad);
 	const flightTime = (2 * vy) / gravity;
 	const maxHeight = (vy * vy) / (2 * gravity);
 
@@ -154,24 +156,24 @@ export function ProjectileMotion({
 				<Slider
 					min={5}
 					max={50}
-					value={[initialVelocity]}
+					value={[velocity]}
 					className="flex-1"
 					disabled={isPlaying}
-					onValueChange={([v]) => setInitialVelocity(v)}
+					onValueChange={([v]) => setVelocity(v)}
 				/>
-				<span className="font-mono text-sm w-12">{initialVelocity}m/s</span>
+				<span className="font-mono text-sm w-12">{velocity}m/s</span>
 			</div>
 			<div className="mt-2 flex gap-4 items-center">
 				<span className="text-sm text-muted-foreground">Angle:</span>
 				<Slider
 					min={10}
 					max={80}
-					value={[angle]}
+					value={[theta]}
 					className="flex-1"
 					disabled={isPlaying}
-					onValueChange={([v]) => setAngle(v)}
+					onValueChange={([v]) => setTheta(v)}
 				/>
-				<span className="font-mono text-sm w-12">{angle}°</span>
+				<span className="font-mono text-sm w-12">{theta}°</span>
 			</div>
 		</div>
 	);

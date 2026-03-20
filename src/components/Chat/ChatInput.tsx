@@ -4,6 +4,7 @@ import { SentIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
+import { Separator } from '@/components/ui/separator';
 import { Textarea } from '@/components/ui/textarea';
 import { useChatStore } from '@/stores/useChatStore';
 
@@ -77,7 +78,8 @@ export function ChatInput({
 	const showSuggestions = messages.length === 0;
 
 	return (
-		<div className="p-4 border-t space-y-3">
+		<div className="p-4 space-y-3">
+			<Separator />
 			{showSuggestions && (
 				<div className="flex flex-wrap gap-2">
 					{suggestedQuestions.map((q, i) => (

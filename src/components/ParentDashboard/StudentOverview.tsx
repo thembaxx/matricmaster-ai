@@ -16,6 +16,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
+import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
 import { SendEncouragement } from './SendEncouragement';
 
@@ -115,8 +116,8 @@ export function StudentOverview({
 						<div className="grid grid-cols-2 md:grid-cols-4 gap-4">
 							{Array.from({ length: 4 }).map((_, i) => (
 								<div key={`skeleton-${i}`} className="space-y-2">
-									<div className="h-4 bg-muted animate-pulse rounded w-20" />
-									<div className="h-8 bg-muted animate-pulse rounded w-16" />
+									<Skeleton className="h-4 w-20" />
+									<Skeleton className="h-8 w-16" />
 								</div>
 							))}
 						</div>

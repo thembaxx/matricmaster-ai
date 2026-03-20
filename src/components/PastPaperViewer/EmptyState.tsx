@@ -17,7 +17,7 @@ export function EmptyState({
 	showHome = false,
 }: EmptyStateProps) {
 	return (
-		<div className="flex flex-col items-center justify-center py-16 text-center space-y-6">
+		<div className="flex flex-col items-center justify-center py-16 text-center gap-6">
 			<div className="w-20 h-20 rounded-full bg-muted flex items-center justify-center">
 				<HugeiconsIcon icon={FolderOpenIcon} className="w-10 h-10 text-muted-foreground" />
 			</div>

@@ -16,6 +16,8 @@ export function WaveInterference({
 	wavelength = 2,
 	showSources = true,
 }: WaveInterferenceProps) {
+	const [freq, setFreq] = useState(frequency);
+	const [amp, setAmp] = useState(amplitude);
 	const [phaseShift, setPhaseShift] = useState(0);
 	const gradientId = useId();
 
@@ -28,21 +30,21 @@ export function WaveInterference({
 	const waves = useMemo(() => {
 		const points: { x: number; y: number; intensity: number }[] = [];
 		const k = (2 * Math.PI) / wavelength;
-		const omega = 2 * Math.PI * frequency;
+		const omega = 2 * Math.PI * freq;
 
 		for (let x = 0; x <= width; x += 2) {
 			const d1 = Math.sqrt((x - source1X) ** 2 + centerY ** 2);
 			const d2 = Math.sqrt((x - source2X) ** 2 + centerY ** 2);
 
-			const r1 = amplitude * Math.sin(k * d1 - omega * (phaseShift / 100));
-			const r2 = amplitude * Math.sin(k * d2 - omega * (phaseShift / 100));
+			const r1 = amp * Math.sin(k * d1 - omega * (phaseShift / 100));
+			const r2 = amp * Math.sin(k * d2 - omega * (phaseShift / 100));
 			const y = r1 + r2;
 			const intensity = Math.sqrt(r1 ** 2 + r2 ** 2);
 
 			points.push({ x, y, intensity });
 		}
 		return points;
-	}, [frequency, amplitude, wavelength, phaseShift, source2X, centerY]);
+	}, [freq, amp, wavelength, phaseShift, source2X, centerY]);
 
 	const wavePath = waves
 		.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p.x},${centerY - p.y * 30}`)
@@ -113,24 +115,24 @@ export function WaveInterference({
 
 			<div className="mt-4 space-y-3">
 				<div>
-					<span className="text-sm text-muted-foreground block mb-1">Frequency: {frequency}Hz</span>
+					<span className="text-sm text-muted-foreground block mb-1">Frequency: {freq}Hz</span>
 					<Slider
 						min={0.5}
 						max={3}
 						step={0.1}
-						value={[frequency]}
-						onValueChange={([v]) => setFrequency(v)}
+						value={[freq]}
+						onValueChange={([v]) => setFreq(v)}
 						className="w-full"
 					/>
 				</div>
 				<div>
-					<span className="text-sm text-muted-foreground block mb-1">Amplitude: {amplitude}</span>
+					<span className="text-sm text-muted-foreground block mb-1">Amplitude: {amp}</span>
 					<Slider
 						min={0.5}
 						max={2}
 						step={0.1}
-						value={[amplitude]}
-						onValueChange={([v]) => setAmplitude(v)}
+						value={[amp]}
+						onValueChange={([v]) => setAmp(v)}
 						className="w-full"
 					/>
 				</div>

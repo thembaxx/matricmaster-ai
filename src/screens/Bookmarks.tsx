@@ -101,7 +101,7 @@ export default function Bookmarks() {
 				</header>
 				<ScrollArea className="flex-1">
 					<main className="px-6 py-6 pb-40">
-						<div className="flex flex-col items-center justify-center py-24 text-center space-y-6">
+						<div className="flex flex-col items-center justify-center py-24 text-center gap-6">
 							<div className="w-32 h-32 bg-muted rounded-[2.5rem] flex items-center justify-center">
 								<HugeiconsIcon icon={BookmarkIcon} className="w-16 h-16 text-muted-foreground" />
 							</div>
@@ -226,7 +226,7 @@ export default function Bookmarks() {
 							})}
 						</div>
 					) : (
-						<div className="flex flex-col items-center justify-center py-24 text-center space-y-6">
+						<div className="flex flex-col items-center justify-center py-24 text-center gap-6">
 							<div className="w-32 h-32 bg-muted rounded-[2.5rem] flex items-center justify-center">
 								<HugeiconsIcon icon={BookmarkIcon} className="w-16 h-16 text-muted-foreground" />
 							</div>

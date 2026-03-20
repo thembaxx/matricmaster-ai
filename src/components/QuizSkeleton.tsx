@@ -3,7 +3,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 export function QuizSkeleton() {
 	return (
-		<div className="flex flex-col h-full bg-background p-6 space-y-6">
+		<div className="flex flex-col h-full bg-background p-6 gap-6">
 			<div className="flex items-center justify-between">
 				<Skeleton className="h-8 w-48" />
 				<Skeleton className="h-10 w-24 rounded-xl" />

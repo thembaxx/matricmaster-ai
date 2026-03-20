@@ -78,7 +78,7 @@ export function AiTutorHeader({
 						)}
 						<span className="hidden md:inline ml-2">Practice</span>
 					</Button>
-					<Button variant="ios" size="sm" className="rounded-xl" onClick={handleSave}>
+					<Button variant="default" size="sm" className="rounded-xl" onClick={handleSave}>
 						<HugeiconsIcon icon={SaveIcon} className="h-4 w-4" />
 						<span className="hidden md:inline ml-2">FloppyDisk</span>
 					</Button>

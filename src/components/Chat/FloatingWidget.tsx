@@ -25,13 +25,13 @@ export function FloatingWidget() {
 
 	if (!isWidgetOpen) {
 		return (
-			<button
+			<Button
 				type="button"
 				onClick={toggleWidget}
-				className="fixed bottom-20 right-4 w-14 h-14 bg-primary text-primary-foreground rounded-full shadow-lg flex items-center justify-center hover:bg-primary/90 transition-colors z-50"
+				className="fixed bottom-20 right-4 w-14 h-14 rounded-full shadow-lg flex items-center justify-center z-50"
 			>
 				<HugeiconsIcon icon={MessageIcon} className="w-6 h-6" />
-			</button>
+			</Button>
 		);
 	}
 
@@ -39,9 +39,9 @@ export function FloatingWidget() {
 		<Card className="fixed bottom-20 right-4 w-80 h-96 flex flex-col shadow-xl z-50 overflow-hidden">
 			<div className="flex items-center justify-between p-3 border-b">
 				<h3 className="font-medium">Study Buddy</h3>
-				<button type="button" onClick={toggleWidget} className="p-1 hover:bg-muted rounded">
+				<Button type="button" variant="ghost" size="icon" onClick={toggleWidget}>
 					<HugeiconsIcon icon={CloseIcon} className="w-4 h-4" />
-				</button>
+				</Button>
 			</div>
 
 			{!sessionId ? (

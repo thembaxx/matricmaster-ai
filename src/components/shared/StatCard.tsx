@@ -3,6 +3,7 @@
 import { HugeiconsIcon, type IconSvgElement } from '@hugeicons/react';
 import { m } from 'framer-motion';
 import { memo } from 'react';
+import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 
 interface TrendIndicatorProps {
@@ -158,9 +159,14 @@ export const StatCard = memo(function StatCard({
 
 	if (onClick) {
 		return (
-			<button type="button" onClick={onClick} className="w-full text-left">
+			<Button
+				type="button"
+				variant="ghost"
+				onClick={onClick}
+				className="w-full text-left p-0 h-auto"
+			>
 				{content}
-			</button>
+			</Button>
 		);
 	}
 

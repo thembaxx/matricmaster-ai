@@ -4,6 +4,7 @@ import { CrownIcon, StarIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { m } from 'framer-motion';
 import { memo } from 'react';
+import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
 interface Achievement {
@@ -128,9 +129,14 @@ export const AchievementBadge = memo(function AchievementBadge({
 	if (onClick) {
 		return (
 			<div className={cn('', className)}>
-				<button type="button" onClick={onClick} className="flex flex-col items-center">
+				<Button
+					type="button"
+					variant="ghost"
+					onClick={onClick}
+					className="flex flex-col items-center p-0 h-auto"
+				>
 					{content}
-				</button>
+				</Button>
 			</div>
 		);
 	}

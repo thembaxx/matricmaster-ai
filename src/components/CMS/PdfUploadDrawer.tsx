@@ -538,7 +538,7 @@ export function PdfUploadDrawer({ isOpen, onClose, subjects, onSuccess }: PdfUpl
 					)}
 
 					{step === 'processing' && (
-						<div className="flex flex-col items-center justify-center py-24 px-8 space-y-8">
+						<div className="flex flex-col items-center justify-center py-24 px-8 gap-8">
 							<div className="relative">
 								<div className="absolute inset-0 bg-brand-blue/20 blur-3xl rounded-full animate-pulse" />
 								<HugeiconsIcon

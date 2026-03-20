@@ -10,6 +10,7 @@ import { LoaderIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { Separator } from '@/components/ui/separator';
 import type { Message } from './constants';
 
 interface ChatPanelProps {
@@ -103,7 +104,8 @@ export function ChatPanel({
 				</div>
 			</ScrollArea>
 
-			<div className="p-4 border-t space-y-3">
+			<div className="p-4 space-y-3">
+				<Separator />
 				{isRecording && (
 					<div className="flex items-center gap-2 text-sm text-red-500 animate-pulse">
 						<HugeiconsIcon icon={MicIcon} className="w-4 h-4" />

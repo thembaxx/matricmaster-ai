@@ -170,7 +170,7 @@ export default function ExamTimerPage() {
 				<FocusLayout timeRemaining={timeRemaining} totalTime={totalSeconds}>
 					<div className="max-w-2xl mx-auto p-6">
 						<div className="rounded-lg border bg-card text-card-foreground shadow-sm">
-							<div className="flex flex-col space-y-1.5 p-6">
+							<div className="flex flex-col gap-1.5 p-6">
 								<h3 className="text-2xl font-semibold leading-none tracking-tight">
 									{examName || selectedPreset.name}
 								</h3>

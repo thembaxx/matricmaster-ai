@@ -12,6 +12,7 @@ import { useState } from 'react';
 import { appConfig } from '@/app.config';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
 import { MarkdownRenderer } from './MarkdownRenderer';
 
@@ -78,7 +79,7 @@ export function AIExplanationCard({
 					) : (
 						<Button
 							size="sm"
-							variant="ios"
+							variant="default"
 							onClick={onExplain}
 							disabled={isLoading}
 							className="rounded-xl h-9 px-4 font-black text-xs uppercase tracking-wider"
@@ -101,7 +102,8 @@ export function AIExplanationCard({
 							exit={{ opacity: 0, height: 0 }}
 							transition={{ duration: 0.3, ease: 'easeInOut' }}
 						>
-							<div className="pt-4 border-t border-primary/10">
+							<div className="pt-4">
+								<Separator className="mb-4" />
 								<MarkdownRenderer content={explanation} className="prose-sm" />
 								<div className="mt-4 flex items-center justify-between">
 									<p className="text-[9px] font-bold text-muted-foreground uppercase tracking-[0.2em]">

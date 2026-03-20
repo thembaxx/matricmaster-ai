@@ -2,6 +2,7 @@ import { Message01Icon, PlayIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import { Separator } from '@/components/ui/separator';
 
 export function StudyChat({ isGroupMode }: { isGroupMode: boolean }) {
 	return (
@@ -22,7 +23,8 @@ export function StudyChat({ isGroupMode }: { isGroupMode: boolean }) {
 					</div>
 				</div>
 			</CardContent>
-			<div className="p-4 bg-muted/30 border-t border-border/50">
+			<div className="p-4 bg-muted/30">
+				<Separator className="mb-4" />
 				<div className="flex gap-2">
 					<input
 						type="text"

@@ -20,6 +20,7 @@ import {
 	DialogTitle,
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
+import { Separator } from '@/components/ui/separator';
 import { useUserApiKey } from '@/hooks/use-user-api-key';
 
 interface GeminiQuotaErrorModalProps {
@@ -286,11 +287,13 @@ export function GeminiQuotaErrorModal({
 									</m.div>
 								</div>
 
+								<Separator />
+
 								<m.div
 									initial={{ opacity: 0 }}
 									animate={{ opacity: 1 }}
 									transition={{ delay: 0.35 }}
-									className="border-t bg-muted/30 px-6 py-3 flex items-center justify-between"
+									className="bg-muted/30 px-6 py-3 flex items-center justify-between"
 								>
 									<span className="text-xs text-muted-foreground">© 2026 MatricMaster AI</span>
 									<span className="text-xs text-muted-foreground">Powered by Google Gemini</span>

@@ -19,17 +19,17 @@ export function LeaderboardSkeleton() {
 			<div className="max-w-6xl mx-auto w-full pb-32">
 				{/* Podium Skeleton */}
 				<div className="flex items-end justify-center gap-4 md:gap-12 pt-16 pb-12 lg:pt-24 lg:pb-20">
-					<div className="flex flex-col items-center space-y-4">
+					<div className="flex flex-col items-center gap-4">
 						<Skeleton className="w-16 h-16 sm:w-28 sm:h-28 rounded-full" />
 						<Skeleton className="h-4 w-20 rounded-full" />
 						<div className="w-20 h-24 md:w-28 md:h-32 bg-muted/20 rounded-t-3xl" />
 					</div>
-					<div className="flex flex-col items-center space-y-4">
+					<div className="flex flex-col items-center gap-4">
 						<Skeleton className="w-24 h-24 sm:w-40 sm:h-40 rounded-full" />
 						<Skeleton className="h-6 w-32 rounded-full" />
 						<div className="w-32 h-40 md:w-44 md:h-56 bg-muted/30 rounded-t-[3rem]" />
 					</div>
-					<div className="flex flex-col items-center space-y-4">
+					<div className="flex flex-col items-center gap-4">
 						<Skeleton className="w-16 h-16 sm:w-28 sm:h-28 rounded-full" />
 						<Skeleton className="h-4 w-20 rounded-full" />
 						<div className="w-20 h-16 md:w-28 md:h-24 bg-muted/20 rounded-t-3xl" />

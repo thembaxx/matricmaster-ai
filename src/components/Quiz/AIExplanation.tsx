@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { ResponsiveAudioPlayer } from '@/components/AudioPlayer';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
 
 interface AIExplanationProps {
@@ -124,14 +125,14 @@ export function AIExplanation({ question, correctAnswer, className }: AIExplanat
 											/>
 										</div>
 										<div className="flex-1 space-y-2">
-											<div className="h-3 bg-muted rounded animate-pulse w-3/4" />
-											<div className="h-3 bg-muted rounded animate-pulse w-1/2" />
+											<Skeleton className="h-3 w-3/4" />
+											<Skeleton className="h-3 w-1/2" />
 										</div>
 									</div>
 									<div className="space-y-2 px-3">
-										<div className="h-2 bg-muted rounded animate-pulse" />
-										<div className="h-2 bg-muted rounded animate-pulse w-5/6" />
-										<div className="h-2 bg-muted rounded animate-pulse w-4/6" />
+										<Skeleton className="h-2" />
+										<Skeleton className="h-2 w-5/6" />
+										<Skeleton className="h-2 w-4/6" />
 									</div>
 								</div>
 							)}

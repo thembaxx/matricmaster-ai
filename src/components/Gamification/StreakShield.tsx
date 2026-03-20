@@ -8,6 +8,7 @@ import { toast } from 'sonner';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
 import { getStreakInfo, useStreakFreeze as streakFreezeAction } from '@/lib/db/streak-actions';
 import { cn } from '@/lib/utils';
 
@@ -39,7 +40,7 @@ export function StreakShield({ className }: { className?: string }) {
 		return (
 			<Card className={cn('rounded-2xl', className)}>
 				<CardContent className="p-6">
-					<div className="h-20 bg-muted animate-pulse rounded-xl" />
+					<Skeleton className="h-20 rounded-xl" />
 				</CardContent>
 			</Card>
 		);

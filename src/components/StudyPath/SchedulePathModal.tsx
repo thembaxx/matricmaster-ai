@@ -21,6 +21,7 @@ import {
 	DialogTitle,
 } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
+import { Separator } from '@/components/ui/separator';
 import { Switch } from '@/components/ui/switch';
 import { cn } from '@/lib/utils';
 import type {
@@ -464,7 +465,8 @@ export function SchedulePathModal({
 					</DialogHeader>
 				</div>
 				<div className="px-6 overflow-y-auto flex-1">{modalContent}</div>
-				<DialogFooter className="px-6 pb-6 pt-4 gap-3 shrink-0 border-t bg-muted/30">
+				<DialogFooter className="px-6 pb-6 pt-4 gap-3 shrink-0 bg-muted/30">
+					<Separator className="mb-4" />
 					{showPreview ? (
 						<>
 							<Button

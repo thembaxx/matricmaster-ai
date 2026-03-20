@@ -5,6 +5,7 @@ import { HugeiconsIcon } from '@hugeicons/react';
 import { AnimatePresence, m } from 'framer-motion';
 import { MarkdownRenderer } from '@/components/AI/MarkdownRenderer';
 import { Button } from '@/components/ui/button';
+import { Skeleton } from '@/components/ui/skeleton';
 
 type QuizHintCardProps = {
 	hint?: string;
@@ -36,8 +37,8 @@ export function QuizHintCard({
 					<div className="w-6 h-6 border-2 border-primary/20 border-t-primary rounded-full animate-spin" />
 				</div>
 				<div className="space-y-2 flex-1">
-					<div className="h-3 bg-muted rounded w-1/3 animate-pulse" />
-					<div className="h-4 bg-muted rounded w-2/3 animate-pulse" />
+					<Skeleton className="h-3 w-1/3" />
+					<Skeleton className="h-4 w-2/3" />
 				</div>
 			</div>
 		);
