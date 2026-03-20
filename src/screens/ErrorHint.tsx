@@ -7,8 +7,6 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
-// import type { Screen } from '@/types'; // Removed unused import
-
 export default function ErrorHint() {
 	const router = useRouter();
 	return (
@@ -39,17 +37,17 @@ export default function ErrorHint() {
 					{/* Original Question */}
 					<div className="mb-8">
 						<div className="flex justify-between items-start mb-1">
-							<span className="text-xs font-bold text-muted-foreground uppercase tracking-widest">
-								ORIGINAL QUESTION
+							<span className="text-xs font-bold text-muted-foreground tracking-widest">
+								original question
 							</span>
 							<div className="w-12 h-12 bg-zinc-800 rounded-xl" />{' '}
 							{/* Placeholder for question thumbnail */}
 						</div>
-						<h2 className="text-lg font-bold text-foreground mb-1">Q4: Circuit Analysis</h2>
-						<p className="text-sm text-muted-foreground">Calculate the total resistance...</p>
+						<h2 className="text-lg font-bold text-foreground mb-1">q4: circuit analysis</h2>
+						<p className="text-sm text-muted-foreground">calculate the total resistance...</p>
 					</div>
 
-					<h1 className="text-3xl font-bold text-foreground mb-6">Let's break it down</h1>
+					<h1 className="text-3xl font-bold text-foreground mb-6">let's break it down</h1>
 
 					{/* Diagram Card */}
 					<Card className="p-8 mb-8 bg-card rounded-3xl shadow-sm border-border relative overflow-hidden">
@@ -70,7 +68,7 @@ export default function ErrorHint() {
 						{/* Focus Badge */}
 						<div className="absolute bottom-4 right-4 bg-card shadow-md border border-border rounded-full px-3 py-1.5 flex items-center gap-2">
 							<HugeiconsIcon icon={ViewIcon} className="w-4 h-4 text-amber-500" />
-							<span className="text-xs font-bold text-foreground">Focus: Series Path</span>
+							<span className="text-xs font-bold text-foreground">focus: series path</span>
 						</div>
 					</Card>
 
@@ -78,23 +76,23 @@ export default function ErrorHint() {
 					<div className="mb-8">
 						<div className="flex items-center gap-2 mb-3">
 							<HugeiconsIcon icon={Idea01Icon} className="w-5 h-5 text-amber-500 fill-current" />
-							<span className="font-bold text-amber-500 text-sm tracking-widest">HINT</span>
+							<span className="font-bold text-amber-500 text-sm tracking-widest">hint</span>
 						</div>
 						<h3 className="text-xl font-bold text-foreground mb-4 leading-tight">
-							Think about how the resistance changes if we add another resistor in series.
+							think about how the resistance changes if we add another resistor in series.
 						</h3>
 						<p className="text-muted-foreground text-sm leading-relaxed mb-6">
-							When components are lined up one after another, the current must flow through{' '}
+							when components are lined up one after another, the current must flow through{' '}
 							<strong className="text-foreground">all of them</strong>.
 						</p>
 
 						{/* Formula Box */}
 						<div className="bg-amber-50 dark:bg-amber-900/10 p-4 rounded-xl border border-amber-100 dark:border-amber-800">
 							<p className="text-xs font-bold text-amber-800 dark:text-amber-200 mb-2 uppercase opacity-70">
-								Recall the formula:
+								recall the formula:
 							</p>
 							<p className="font-mono text-lg font-bold text-amber-900 dark:text-amber-100">
-								R_total = R1 + R2 + ...
+								r_total = r1 + r2 + ...
 							</p>
 						</div>
 					</div>
@@ -106,14 +104,14 @@ export default function ErrorHint() {
 							className="w-full bg-amber-500 hover:bg-amber-600 text-white rounded-full h-14 text-base font-bold shadow-lg shadow-amber-500/20"
 							onClick={() => router.push('/quiz')}
 						>
-							Try Again
+							try again
 						</Button>
 						<button
 							type="button"
 							className="text-muted-foreground hover:text-zinc-900 font-bold text-sm"
 							onClick={() => router.push('/quiz')} // Or show solution
 						>
-							See Solution
+							see solution
 						</button>
 					</div>
 				</main>

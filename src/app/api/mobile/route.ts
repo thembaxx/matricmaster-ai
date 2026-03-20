@@ -33,13 +33,6 @@ function getClientApiKey(request: NextRequest): string | null {
 	const apiKey = request.headers.get('x-api-key');
 	if (apiKey) return apiKey;
 
-	// Query parameter is deprecated - warn but don't use
-	const queryKey = request.nextUrl.searchParams.get('api_key');
-	if (queryKey) {
-		console.warn('⚠️ API key passed via query parameter - use X-API-Key header instead');
-		return null; // Don't accept query param anymore
-	}
-
 	return null;
 }
 
@@ -72,25 +65,26 @@ export async function GET(request: NextRequest) {
 
 	if (!apiKey) {
 		return NextResponse.json(
-			{ error: 'API key required. Provide it in X-API-Key header or api_key query parameter.' },
+			{ error: 'api key required. provide it in x-api-key header.' },
 			{ status: 401 }
 		);
 	}
 
 	// Validate API key
 	if (!isValidApiKey(apiKey)) {
-		return NextResponse.json({ error: 'Invalid API key' }, { status: 401 });
+		return NextResponse.json({ error: 'invalid api key' }, { status: 401 });
 	}
 
 	// Rate limiting
 	if (!checkRateLimit(apiKey)) {
 		return NextResponse.json(
-			{ error: 'Rate limit exceeded. Please try again later.' },
+			{ error: 'rate limit exceeded. please try again later.' },
 			{ status: 429 }
 		);
 	}
 
 	try {
+		await dbManager.initialize();
 		const db = dbManager.getDb();
 		const { subjects } = await import('@/lib/db/schema');
 
@@ -113,8 +107,14 @@ export async function GET(request: NextRequest) {
 			},
 		});
 	} catch (error) {
-		console.debug('Mobile API Error:', error);
-		return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+		console.debug('mobile api error:', error);
+		if (!apiKey) {
+			return NextResponse.json(
+				{ error: 'api key required. provide it in x-api-key header.' },
+				{ status: 401 }
+			);
+		}
+		return NextResponse.json({ error: 'internal server error' }, { status: 500 });
 	}
 }
 
@@ -122,19 +122,20 @@ export async function POST(request: NextRequest) {
 	const apiKey = getClientApiKey(request);
 
 	if (!apiKey) {
-		return NextResponse.json({ error: 'API key required' }, { status: 401 });
+		return NextResponse.json({ error: 'api key required' }, { status: 401 });
 	}
 
 	// Validate API key
 	if (!isValidApiKey(apiKey)) {
-		return NextResponse.json({ error: 'Invalid API key' }, { status: 401 });
+		return NextResponse.json({ error: 'invalid api key' }, { status: 401 });
 	}
 
 	if (!checkRateLimit(apiKey)) {
-		return NextResponse.json({ error: 'Rate limit exceeded' }, { status: 429 });
+		return NextResponse.json({ error: 'rate limit exceeded' }, { status: 429 });
 	}
 
 	try {
+		await dbManager.initialize();
 		const body = await request.json();
 		const { action } = body;
 
@@ -144,7 +145,7 @@ export async function POST(request: NextRequest) {
 				// Sync user progress from mobile app
 				return NextResponse.json({
 					success: true,
-					message: 'Progress synced',
+					message: 'progress synced',
 				});
 
 			case 'get_questions':
@@ -155,10 +156,10 @@ export async function POST(request: NextRequest) {
 				});
 
 			default:
-				return NextResponse.json({ error: 'Unknown action' }, { status: 400 });
+				return NextResponse.json({ error: 'unknown action' }, { status: 400 });
 		}
 	} catch (error) {
-		console.debug('Mobile API Error:', error);
-		return NextResponse.json({ error: 'Invalid request body' }, { status: 400 });
+		console.debug('mobile api error:', error);
+		return NextResponse.json({ error: 'invalid request body' }, { status: 400 });
 	}
 }

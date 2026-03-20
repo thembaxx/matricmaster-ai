@@ -55,6 +55,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 							<MobileLayoutFixes />
 						</ClientOnly>
 						<div className="flex-1 flex flex-col min-h-screen relative max-w-full">
+							<GlobalStyles />
 							<div className="flex-1 flex flex-col w-full mx-auto max-w-full">
 								{!shouldHideNav && (
 									<ResponsiveHeader
@@ -86,7 +87,6 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 							)}
 						</div>
 						<GlassOrb />
-						<GlobalStyles />
 					</div>
 				</SubjectBackgroundProvider>
 			</ConfettiProvider>
@@ -155,7 +155,10 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 										}
 									/>
 								)}
-								<main id="main-content" className={'flex-1 relative flex flex-col pt-16 lg:pt-8'}>
+								<main
+									id="main-content"
+									className={`flex-1 relative flex flex-col pt-16 lg:pt-8 ${!shouldHideBottomNav && !isFullScreen ? 'pb-40' : ''}`}
+								>
 									<PageTransition>{children}</PageTransition>
 								</main>
 							</div>
@@ -166,13 +169,11 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 						<ClientOnly>
 							<QuotaErrorModal />
 						</ClientOnly>
-						<GlobalStyles />
 					</SidebarInset>
 					<GlassOrb />
 					<FloatingWidget />
 				</SubjectBackgroundProvider>
 			</ConfettiProvider>
-			<GlobalStyles />
 		</SidebarProvider>
 	);
 }

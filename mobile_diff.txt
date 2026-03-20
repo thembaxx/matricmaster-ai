@@ -1,0 +1,19 @@
+warning: in the working copy of 'src/app/api/mobile/route.ts', LF will be replaced by CRLF the next time Git touches it
+diff --git a/src/app/api/mobile/route.ts b/src/app/api/mobile/route.ts
+index c94b82f..6bd038d 100644
+--- a/src/app/api/mobile/route.ts
++++ b/src/app/api/mobile/route.ts
+@@ -33,13 +33,6 @@ function getClientApiKey(request: NextRequest): string | null {
+ 	const apiKey = request.headers.get('x-api-key');
+ 	if (apiKey) return apiKey;
+ 
+-	// Query parameter is deprecated - warn but don't use
+-	const queryKey = request.nextUrl.searchParams.get('api_key');
+-	if (queryKey) {
+-		console.warn('ΓÜá∩╕Å API key passed via query parameter - use X-API-Key header instead');
+-		return null; // Don't accept query param anymore
+-	}
+-
+ 	return null;
+ }
+ 
