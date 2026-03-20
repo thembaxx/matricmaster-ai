@@ -82,3 +82,37 @@ self.addEventListener('activate', (event) => {
 	);
 	self.clients.claim();
 });
+
+self.addEventListener('push', (event) => {
+	const data = event.data?.json() || {};
+	const title = data.title || 'MatricMaster AI';
+	const options = {
+		body: data.body || 'You have a new notification',
+		icon: '/icon-192.png',
+		badge: '/icon-192.png',
+		data: data.url || '/',
+		tag: data.tag || 'default',
+		requireInteraction: data.requireInteraction || false,
+		vibrate: [200, 100, 200],
+	};
+
+	event.waitUntil(self.registration.showNotification(title, options));
+});
+
+self.addEventListener('notificationclick', (event) => {
+	event.notification.close();
+
+	const urlToOpen = event.notification.data || '/';
+
+	event.waitUntil(
+		clients.matchAll({ type: 'window', includeUncontrolled: true }).then((clientList) => {
+			for (const client of clientList) {
+				if (client.url.includes(self.location.origin) && 'focus' in client) {
+					client.navigate(urlToOpen);
+					return client.focus();
+				}
+			}
+			return clients.openWindow(urlToOpen);
+		})
+	);
+});

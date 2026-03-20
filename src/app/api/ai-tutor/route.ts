@@ -142,58 +142,62 @@ export async function POST(request: NextRequest) {
 		const isCacheable =
 			!history || (history.length === 0 && message.length < 200 && !includeSuggestions);
 
-		let response: string;
-
-		if (isCacheable) {
-			try {
-				response = await getCachedAIResponse(
-					`${systemPrompt}\n\n${contextualMessage}`,
-					async () => {
-						const result = await generateAI({
-							prompt: conversationContext,
-							model: AI_MODELS.PRIMARY,
-						});
-						if (!result) throw new Error('AI generation failed');
-						return result;
-					},
-					{
-						revalidate: 3600,
-						tags: [`query-${cacheKey.slice(0, 8)}`],
-					}
-				);
-			} catch {
-				response = await generateAI({
-					prompt: conversationContext,
-					model: AI_MODELS.PRIMARY,
-				});
+		const generateMainResponse = async (): Promise<string> => {
+			if (isCacheable) {
+				try {
+					return await getCachedAIResponse(
+						`${systemPrompt}\n\n${contextualMessage}`,
+						async () => {
+							const result = await generateAI({
+								prompt: conversationContext,
+								model: AI_MODELS.PRIMARY,
+							});
+							if (!result) throw new Error('AI generation failed');
+							return result;
+						},
+						{
+							revalidate: 3600,
+							tags: [`query-${cacheKey.slice(0, 8)}`],
+						}
+					);
+				} catch {
+					return await generateAI({
+						prompt: conversationContext,
+						model: AI_MODELS.PRIMARY,
+					});
+				}
 			}
-		} else {
-			response = await generateAI({
+			return await generateAI({
 				prompt: conversationContext,
 				model: AI_MODELS.PRIMARY,
 			});
-		}
+		};
 
-		if (!response) {
-			return NextResponse.json({ error: 'Failed to generate response' }, { status: 500 });
-		}
-
-		let suggestions: string[] = [];
-
-		if (includeSuggestions) {
+		const generateSuggestions = async (responseText: string): Promise<string[]> => {
+			if (!includeSuggestions) return [];
 			try {
 				const suggestionsResult = await generateAI({
-					prompt: `${suggestionsPrompt}\n\nStudent asked: "${message}"\nTutor responded: "${response.slice(0, 500)}..."`,
+					prompt: `${suggestionsPrompt}\n\nStudent asked: "${message}"\nTutor responded: "${responseText.slice(0, 500)}..."`,
 					model: AI_MODELS.PRIMARY,
 				});
 
 				const jsonMatch = suggestionsResult.match(/\[[\s\S]*\]/);
 				if (jsonMatch) {
-					suggestions = JSON.parse(jsonMatch[0]);
+					return JSON.parse(jsonMatch[0]);
 				}
 			} catch (error) {
 				console.warn('Failed to generate suggestions:', error);
 			}
+			return [];
+		};
+
+		const [response, suggestions] = await Promise.all([
+			generateMainResponse(),
+			generateSuggestions(''),
+		]);
+
+		if (!response) {
+			return NextResponse.json({ error: 'Failed to generate response' }, { status: 500 });
 		}
 
 		return NextResponse.json({

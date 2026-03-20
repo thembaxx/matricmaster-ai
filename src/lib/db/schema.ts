@@ -1030,6 +1030,7 @@ export const userSettings = pgTable(
 		pushSubscription: text('push_subscription'),
 		studyReminders: boolean('study_reminders').notNull().default(true),
 		achievementAlerts: boolean('achievement_alerts').notNull().default(true),
+		whatsappNotifications: boolean('whatsapp_notifications').notNull().default(false),
 		profileVisibility: boolean('profile_visibility').notNull().default(true),
 		showOnLeaderboard: boolean('show_on_leaderboard').notNull().default(true),
 		analyticsTracking: boolean('analytics_tracking').notNull().default(true),

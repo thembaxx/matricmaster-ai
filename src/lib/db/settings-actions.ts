@@ -219,6 +219,7 @@ export interface CombinedSettings {
 	pushNotifications: boolean;
 	studyReminders: boolean;
 	achievementAlerts: boolean;
+	whatsappNotifications: boolean;
 	profileVisibility: boolean;
 	showOnLeaderboard: boolean;
 	analyticsTracking: boolean;
@@ -234,6 +235,7 @@ const defaultSettings: CombinedSettings = {
 	pushNotifications: true,
 	studyReminders: true,
 	achievementAlerts: true,
+	whatsappNotifications: false,
 	profileVisibility: true,
 	showOnLeaderboard: true,
 	analyticsTracking: true,

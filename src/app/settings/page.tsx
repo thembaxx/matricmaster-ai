@@ -149,6 +149,7 @@ export default function SettingsPage() {
 							pushNotifications={notifications.pushNotifications}
 							studyReminders={notifications.studyReminders}
 							achievementAlerts={notifications.achievementAlerts}
+							whatsappNotifications={notifications.whatsappNotifications}
 							handleNotificationChange={notifications.handleNotificationChange}
 						/>
 					</TabsContent>

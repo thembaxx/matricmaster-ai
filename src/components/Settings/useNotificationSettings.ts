@@ -6,6 +6,7 @@ interface NotificationData {
 	pushNotifications?: boolean;
 	studyReminders?: boolean;
 	achievementAlerts?: boolean;
+	whatsappNotifications?: boolean;
 }
 
 export function useNotificationSettings(
@@ -24,12 +25,16 @@ export function useNotificationSettings(
 	const [achievementAlerts, setAchievementAlerts] = useState(
 		initialData?.achievementAlerts ?? true
 	);
+	const [whatsappNotifications, setWhatsappNotifications] = useState(
+		initialData?.whatsappNotifications ?? false
+	);
 
 	const handleNotificationChange = async (key: string, value: boolean) => {
 		if (key === 'emailNotifications') setEmailNotifications(value);
 		if (key === 'pushNotifications') setPushNotifications(value);
 		if (key === 'studyReminders') setStudyReminders(value);
 		if (key === 'achievementAlerts') setAchievementAlerts(value);
+		if (key === 'whatsappNotifications') setWhatsappNotifications(value);
 
 		if (!session?.user?.id) return;
 
@@ -39,6 +44,7 @@ export function useNotificationSettings(
 				...(key === 'pushNotifications' && { pushNotifications: value }),
 				...(key === 'studyReminders' && { studyReminders: value }),
 				...(key === 'achievementAlerts' && { achievementAlerts: value }),
+				...(key === 'whatsappNotifications' && { whatsappNotifications: value }),
 			};
 
 			await updateNotificationSettingsAction(session.user.id, updates);
@@ -50,6 +56,7 @@ export function useNotificationSettings(
 		pushNotifications,
 		studyReminders,
 		achievementAlerts,
+		whatsappNotifications,
 		handleNotificationChange,
 	};
 }
