@@ -14,6 +14,7 @@ export function useSnapAndSolve() {
 	const [subject, setSubject] = useState('General');
 	const [isAnalyzing, setIsAnalyzing] = useState(false);
 	const [solution, setSolution] = useState<string | null>(null);
+	const [extractedQuestions, setExtractedQuestions] = useState<string[] | null>(null);
 	const [showAudioPlayer, setShowAudioPlayer] = useState(false);
 	const [isSavingFlashcard, setIsSavingFlashcard] = useState(false);
 	const [isGeneratingQuiz, setIsGeneratingQuiz] = useState(false);
@@ -112,6 +113,7 @@ export function useSnapAndSolve() {
 			const data = await response.json();
 			if (data.solution) {
 				setSolution(data.solution);
+				setExtractedQuestions(data.questions || null);
 				setContext({
 					type: 'snapAndSolve',
 					subject: subject,
@@ -119,6 +121,7 @@ export function useSnapAndSolve() {
 						subjectName: subject,
 						solutionPreview: data.solution.substring(0, 200),
 						extractedOcr: data.ocrText || '',
+						extractedQuestions: data.questions || [],
 					},
 					isProactive: true,
 				});
@@ -138,6 +141,7 @@ export function useSnapAndSolve() {
 		setPreview(null);
 		setImage(null);
 		setSolution(null);
+		setExtractedQuestions(null);
 	};
 
 	return {
@@ -151,6 +155,7 @@ export function useSnapAndSolve() {
 		isAnalyzing,
 		solution,
 		setSolution,
+		extractedQuestions,
 		showAudioPlayer,
 		setShowAudioPlayer,
 		isSavingFlashcard,

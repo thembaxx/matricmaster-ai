@@ -3,7 +3,8 @@ import { createGoogleGenerativeAI } from '@ai-sdk/google';
 import { createGroq } from '@ai-sdk/groq';
 import { createMistral } from '@ai-sdk/mistral';
 import { createOpenAI } from '@ai-sdk/openai';
-import { generateText, type LanguageModel, streamText } from 'ai';
+import { generateObject, generateText, type LanguageModel, streamText } from 'ai';
+import { z } from 'zod';
 import { isQuotaError } from './quota-error';
 
 const DEFAULT_MODEL = 'gemini-2.5-flash';
@@ -408,4 +409,88 @@ export async function generateStructuredTextFromPDF<T>(
 	}
 
 	return JSON.parse(cleanedText) as T;
+}
+
+const questionSchema = z.object({
+	questions: z.array(
+		z.object({
+			id: z.string().describe('Original number or ID of the question'),
+			type: z.enum(['MCQ', 'Short Answer', 'True/False', 'Essay']),
+			text: z.string().describe('The main body of the question'),
+			options: z.array(z.string()).optional().describe('For MCQ: List of available answers'),
+			subject: z.string().optional().describe('E.g., Math, Physics, History'),
+		})
+	),
+});
+
+export interface GenerateOCRImage {
+	base64: string;
+	mimeType?: string;
+}
+
+export interface GenerateOCROptions {
+	system?: string;
+	temperature?: number;
+}
+
+export async function generateWithOCR(
+	prompt: string,
+	images: GenerateOCRImage[],
+	options: GenerateOCROptions = {}
+): Promise<z.infer<typeof questionSchema>> {
+	const { system, temperature } = options;
+
+	const content: UserMessageContent = [
+		{ type: 'text' as const, text: prompt },
+		...images.map((img) => ({
+			type: 'image' as const,
+			image: img.base64,
+			mimeType: img.mimeType,
+		})),
+	];
+
+	const apiKey = getApiKey();
+	if (!apiKey) {
+		throw new Error('GEMINI_API_KEY is not configured');
+	}
+
+	const google = createGoogleGenerativeAI({ apiKey });
+
+	try {
+		const model = google('gemini-1.5-flash');
+
+		const result = await generateObject({
+			model,
+			messages: [{ role: 'user', content }],
+			schema: questionSchema,
+			system,
+			temperature,
+		});
+
+		return result.object;
+	} catch (googleError) {
+		console.warn('Google Gemini 1.5 Flash OCR failed, trying fallback providers:', googleError);
+
+		for (const getProvider of PROVIDERS) {
+			try {
+				const provider = getProvider();
+				const model = provider.createModel();
+
+				const result = await generateObject({
+					model,
+					messages: [{ role: 'user', content }],
+					schema: questionSchema,
+					system,
+					temperature,
+				});
+
+				return result.object;
+			} catch (providerError) {
+				const providerName = getProvider().name;
+				console.warn(`Provider ${providerName} OCR failed:`, providerError);
+			}
+		}
+
+		throw new Error('All OCR providers failed');
+	}
 }
