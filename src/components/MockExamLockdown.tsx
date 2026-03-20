@@ -181,12 +181,18 @@ export function MockExamLockdown({ defaultDuration = 180, onComplete }: MockExam
 							<div className="grid grid-cols-4 gap-2">
 								{photos.map((photo, idx) => (
 									<m.div
-										key={idx}
+										key={photo}
 										initial={{ opacity: 0, scale: 0.9 }}
 										animate={{ opacity: 1, scale: 1 }}
 										className="aspect-square rounded-lg overflow-hidden bg-secondary"
 									>
-										<Image src={photo} alt={`Answer ${idx + 1}`} fill className="object-cover" />
+										<Image
+											src={photo}
+											alt={`Answer ${idx + 1}`}
+											fill
+											sizes="(max-width: 640px) 25vw, 128px"
+											className="object-cover"
+										/>
 									</m.div>
 								))}
 							</div>

@@ -1,6 +1,6 @@
 'use client';
 
-import { AnimatePresence, motion, type Variants } from 'framer-motion';
+import { AnimatePresence, domAnimation, LazyMotion, m, type Variants } from 'framer-motion';
 import { usePathname } from 'next/navigation';
 import type { ReactNode } from 'react';
 
@@ -18,18 +18,20 @@ export function PageTransition({ children }: PageTransitionProps) {
 	const pathname = usePathname();
 
 	return (
-		<AnimatePresence mode="wait">
-			<motion.div
-				key={pathname}
-				initial="initial"
-				animate="animate"
-				exit="exit"
-				variants={pageVariants}
-				transition={{ duration: 0.3 }}
-				className="w-full"
-			>
-				{children}
-			</motion.div>
-		</AnimatePresence>
+		<LazyMotion features={domAnimation}>
+			<AnimatePresence mode="wait">
+				<m.div
+					key={pathname}
+					initial="initial"
+					animate="animate"
+					exit="exit"
+					variants={pageVariants}
+					transition={{ duration: 0.3 }}
+					className="w-full"
+				>
+					{children}
+				</m.div>
+			</AnimatePresence>
+		</LazyMotion>
 	);
 }

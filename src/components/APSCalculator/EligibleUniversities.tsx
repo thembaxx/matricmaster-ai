@@ -40,9 +40,9 @@ export function EligibleUniversities({
 					</div>
 				) : (
 					<div className="space-y-3">
-						{eligibleUniversities.slice(0, 5).map((uni, idx) => (
+						{eligibleUniversities.slice(0, 5).map((uni) => (
 							<div
-								key={`${uni.name}-${uni.faculty}-${idx}`}
+								key={`${uni.name}-${uni.faculty}`}
 								role="button"
 								tabIndex={0}
 								className="p-3 rounded-lg border bg-card hover:border-primary/30 transition-colors cursor-pointer"

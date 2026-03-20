@@ -333,6 +333,7 @@ export default function Channels() {
 								</div>
 							</div>
 							<div className="flex items-center -space-x-2">
+								{/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
 								{[1, 2, 3].map((i) => (
 									<div
 										key={`avatar-${i}`}

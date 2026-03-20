@@ -31,9 +31,9 @@ export function PriorityList({
 			<CardContent>
 				<div className="space-y-3">
 					{plans.length > 0 ? (
-						plans.map((item, i) => (
+						plans.map((item) => (
 							<div
-								key={`plan-${i}`}
+								key={item.id ?? item.title}
 								className="flex items-center justify-between p-4 bg-muted/30 rounded-2xl border border-border/50"
 							>
 								<div className="flex items-center gap-4">

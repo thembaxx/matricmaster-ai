@@ -31,8 +31,8 @@ export function CharacterList({ characters }: CharacterListProps) {
 					<p className="text-sm text-muted-foreground mt-2">{char.description}</p>
 					{char.relationships.length > 0 && (
 						<div className="mt-2 flex flex-wrap gap-2">
-							{char.relationships.map((rel, i) => (
-								<span key={`rel-${i}`} className="text-xs bg-secondary px-2 py-1 rounded">
+							{char.relationships.map((rel) => (
+								<span key={rel.relationship} className="text-xs bg-secondary px-2 py-1 rounded">
 									{rel.relationship}
 								</span>
 							))}

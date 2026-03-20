@@ -73,7 +73,9 @@ function AchievementBadge({ badge }: { badge: BadgeData }) {
 			: `Working towards "${badge.name}" on MatricMaster AI!`;
 
 		if (navigator.share) {
-			navigator.share({ title: badge.name, text }).catch(() => {});
+			navigator.share({ title: badge.name, text }).catch((err) => {
+				console.warn('Failed to share achievement:', err);
+			});
 		} else {
 			navigator.clipboard.writeText(text);
 			toast.success('Copied to clipboard!');

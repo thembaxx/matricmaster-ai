@@ -27,9 +27,9 @@ export function SuggestedFollowUps({ suggestions, onSelectSuggestion }: Suggeste
 				</span>
 			</div>
 			<div className="flex flex-wrap gap-2">
-				{suggestions.slice(0, 3).map((suggestion, index) => (
+				{suggestions.slice(0, 3).map((suggestion) => (
 					<Button
-						key={`${suggestion}-${index}`}
+						key={suggestion}
 						variant="outline"
 						size="sm"
 						className="h-auto py-2 px-4 text-xs bg-surface-elevated/20 hover:bg-surface-elevated border-border/50 rounded-2xl text-primary font-medium transition-all duration-200 ios-active-scale group"

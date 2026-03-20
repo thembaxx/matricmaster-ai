@@ -75,6 +75,7 @@ export const RecentAchievements = memo(function RecentAchievements({
 			<Card className="p-6 premium-glass border-none rounded-[2.5rem] h-full">
 				<div className="space-y-4">
 					<Skeleton className="h-5 w-32" />
+					{/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
 					{[1, 2, 3].map((i) => (
 						<div key={`skeleton-${i}`} className="flex items-center gap-3">
 							<Skeleton className="w-10 h-10 rounded-xl" />

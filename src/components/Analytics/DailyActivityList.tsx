@@ -17,8 +17,8 @@ export function DailyActivityList({ activity }: { activity: DailyActivity[] }) {
 			</CardHeader>
 			<CardContent>
 				<div className="space-y-4">
-					{activity.map((day, idx) => (
-						<div key={idx} className="flex items-center justify-between p-3 rounded-lg border">
+					{activity.map((day) => (
+						<div key={day.date} className="flex items-center justify-between p-3 rounded-lg border">
 							<div className="flex items-center gap-3">
 								<div className="w-16 text-sm font-medium">{day.date}</div>
 								<div className="text-sm text-muted-foreground">

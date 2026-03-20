@@ -2,12 +2,13 @@
 
 import { Building02Icon, Chart02Icon, SparklesIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
+import dynamic from 'next/dynamic';
 import { useState } from 'react';
-import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts';
 import { toast } from 'sonner';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
 import {
 	type License,
 	MOCK_LICENSES,
@@ -18,24 +19,14 @@ import {
 import { LicenseManagementCard } from './LicenseManagementCard';
 import { StatsCards } from './StatsCards';
 
-interface CustomTooltipProps {
-	active?: boolean;
-	payload?: Array<{ name: string; value: number; payload: { fill: string } }>;
-}
-
-function CustomTooltip({ active, payload }: CustomTooltipProps) {
-	if (active && payload?.length) {
-		return (
-			<div className="bg-background border border-border/50 rounded-lg px-3 py-2 shadow-xl">
-				<p className="text-xs font-bold">{payload[0].name}</p>
-				<p className="text-sm font-black" style={{ color: payload[0].payload.fill }}>
-					{payload[0].value} licenses
-				</p>
-			</div>
-		);
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const LicenseUsageChart: any = dynamic(
+	() => import('./LicenseUsageChart').then((mod) => mod.LicenseUsageChart),
+	{
+		ssr: false,
+		loading: () => <Skeleton className="h-48 w-full" />,
 	}
-	return null;
-}
+);
 
 export default function SchoolDashboardPage() {
 	const [school, _setSchool] = useState<School>(MOCK_SCHOOL);
@@ -135,26 +126,7 @@ export default function SchoolDashboardPage() {
 									</span>
 									<span className="font-medium">{stats.usagePercent}%</span>
 								</div>
-								<div className="h-48">
-									<ResponsiveContainer width="100%" height="100%">
-										<PieChart>
-											<Pie
-												data={pieData}
-												cx="50%"
-												cy="50%"
-												innerRadius={50}
-												outerRadius={80}
-												paddingAngle={4}
-												dataKey="value"
-											>
-												{pieData.map((entry, index) => (
-													<Cell key={`cell-${index}`} fill={entry.color} />
-												))}
-											</Pie>
-											<Tooltip content={<CustomTooltip />} />
-										</PieChart>
-									</ResponsiveContainer>
-								</div>
+								<LicenseUsageChart pieData={pieData} />
 								<div className="flex justify-center gap-4">
 									{pieData.map((item) => (
 										<div key={item.name} className="flex items-center gap-2">

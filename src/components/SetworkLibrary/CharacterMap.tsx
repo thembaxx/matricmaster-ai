@@ -64,7 +64,7 @@ export function CharacterMap({ characters }: CharacterMapProps) {
 					role="img"
 					aria-label="Character relationship diagram"
 				>
-					{connections.map((conn, i) => {
+					{connections.map((conn) => {
 						const from = getPos(conn.from);
 						const to = getPos(conn.to);
 						if (!from || !to) return null;
@@ -76,7 +76,7 @@ export function CharacterMap({ characters }: CharacterMapProps) {
 							selectedId === conn.to;
 
 						return (
-							<g key={`connection-${i}`}>
+							<g key={`connection-${conn.from}-${conn.to}`}>
 								<line
 									x1={from.x}
 									y1={from.y}
@@ -163,10 +163,13 @@ export function CharacterMap({ characters }: CharacterMapProps) {
 					<p className="text-sm text-muted-foreground">{selectedChar.description}</p>
 					{selectedChar.relationships.length > 0 && (
 						<div className="mt-3 flex flex-wrap gap-1.5">
-							{selectedChar.relationships.map((rel, i) => {
+							{selectedChar.relationships.map((rel) => {
 								const relatedChar = characters.find((c) => c.id === rel.characterId);
 								return (
-									<span key={`rel-${i}`} className="text-xs bg-secondary px-2 py-1 rounded-full">
+									<span
+										key={`rel-${rel.characterId}`}
+										className="text-xs bg-secondary px-2 py-1 rounded-full"
+									>
 										{rel.relationship}: {relatedChar?.name || rel.characterId}
 									</span>
 								);

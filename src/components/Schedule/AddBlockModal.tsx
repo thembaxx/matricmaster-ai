@@ -3,7 +3,7 @@
 import { Calendar04Icon, Clock01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { useQuery } from '@tanstack/react-query';
-import { useEffect, useId, useMemo, useState } from 'react';
+import { useEffect, useId, useReducer, useState } from 'react';
 import { toast } from 'sonner';
 
 import { Button } from '@/components/ui/button';
@@ -70,7 +70,79 @@ function formatDateFromDate(date: Date): string {
 	return `${year}-${month}-${day}`;
 }
 
-function useMediaQuery(query: string) {
+type FormState = {
+	title: string;
+	date: string;
+	startTime: string;
+	endTime: string;
+	repeatable: boolean;
+	subjectId: string;
+};
+
+type FormAction =
+	| { type: 'SET_TITLE'; payload: string }
+	| { type: 'SET_DATE'; payload: string }
+	| { type: 'SET_START_TIME'; payload: string }
+	| { type: 'SET_END_TIME'; payload: string }
+	| { type: 'SET_REPEATABLE'; payload: boolean }
+	| { type: 'SET_SUBJECT_ID'; payload: string }
+	| { type: 'RESET_FORM' }
+	| { type: 'INIT_FROM_BLOCK'; payload: BlockData };
+
+function getInitialFormState(editMode: BlockData | null | undefined): FormState {
+	if (editMode) {
+		const start = new Date(editMode.startTime);
+		const end = new Date(editMode.endTime);
+		return {
+			title: editMode.title,
+			date: formatDateFromDate(start),
+			startTime: formatTimeFromDate(start),
+			endTime: formatTimeFromDate(end),
+			repeatable: editMode.eventType === 'recurring',
+			subjectId: editMode.subjectId ? String(editMode.subjectId) : '',
+		};
+	}
+	return {
+		title: '',
+		date: getCurrentDateString(),
+		startTime: '14:00',
+		endTime: '15:30',
+		repeatable: false,
+		subjectId: '',
+	};
+}
+
+function formReducer(state: FormState, action: FormAction): FormState {
+	switch (action.type) {
+		case 'SET_TITLE':
+			return { ...state, title: action.payload };
+		case 'SET_DATE':
+			return { ...state, date: action.payload };
+		case 'SET_START_TIME':
+			return { ...state, startTime: action.payload };
+		case 'SET_END_TIME':
+			return { ...state, endTime: action.payload };
+		case 'SET_REPEATABLE':
+			return { ...state, repeatable: action.payload };
+		case 'SET_SUBJECT_ID':
+			return { ...state, subjectId: action.payload };
+		case 'RESET_FORM':
+			return {
+				title: '',
+				date: getCurrentDateString(),
+				startTime: '14:00',
+				endTime: '15:30',
+				repeatable: false,
+				subjectId: '',
+			};
+		case 'INIT_FROM_BLOCK':
+			return getInitialFormState(action.payload);
+		default:
+			return state;
+	}
+}
+
+function useMediaQuery(query: string): boolean {
 	const [matches, setMatches] = useState(true);
 
 	useEffect(() => {
@@ -86,14 +158,6 @@ function useMediaQuery(query: string) {
 
 export function AddBlockModal({ open, onOpenChange, onSuccess, editMode }: AddBlockModalProps) {
 	const isDesktop = useMediaQuery('(min-width: 1024px)');
-	const [isSubmitting, setIsSubmitting] = useState(false);
-
-	const titleId = useId();
-	const dateId = useId();
-	const startTimeId = useId();
-	const endTimeId = useId();
-	const repeatableId = useId();
-
 	const isEditing = !!editMode;
 
 	const { data: subjectsData } = useQuery({
@@ -103,66 +167,31 @@ export function AddBlockModal({ open, onOpenChange, onSuccess, editMode }: AddBl
 
 	const subjects = subjectsData ?? [];
 
-	const formState = useMemo(() => {
-		if (editMode) {
-			const start = new Date(editMode.startTime);
-			const end = new Date(editMode.endTime);
-			return {
-				title: editMode.title,
-				date: formatDateFromDate(start),
-				startTime: formatTimeFromDate(start),
-				endTime: formatTimeFromDate(end),
-				repeatable: editMode.eventType === 'recurring',
-				subjectId: editMode.subjectId ? String(editMode.subjectId) : '',
-			};
-		}
-		return {
-			title: '',
-			date: getCurrentDateString(),
-			startTime: '14:00',
-			endTime: '15:30',
-			repeatable: false,
-			subjectId: '',
-		};
-	}, [editMode]);
+	const [formState, formDispatch] = useReducer(formReducer, editMode, getInitialFormState);
+	const [isSubmitting, setIsSubmitting] = useReducer((_, payload: boolean) => payload, false);
 
-	const [title, setTitle] = useState(formState.title);
-	const [date, setDate] = useState(formState.date);
-	const [startTime, setStartTime] = useState(formState.startTime);
-	const [endTime, setEndTime] = useState(formState.endTime);
-	const [repeatable, setRepeatable] = useState(formState.repeatable);
-	const [subjectId, setSubjectId] = useState(formState.subjectId);
+	const titleId = useId();
+	const dateId = useId();
+	const startTimeId = useId();
+	const endTimeId = useId();
+	const repeatableId = useId();
 
 	useEffect(() => {
-		setTitle(formState.title);
-		setDate(formState.date);
-		setStartTime(formState.startTime);
-		setEndTime(formState.endTime);
-		setRepeatable(formState.repeatable);
-		setSubjectId(formState.subjectId);
-	}, [formState]);
-
-	const resetForm = () => {
-		setTitle('');
-		setDate(getCurrentDateString());
-		setStartTime('14:00');
-		setEndTime('15:30');
-		setRepeatable(false);
-		setSubjectId('');
-	};
+		formDispatch({ type: 'INIT_FROM_BLOCK', payload: editMode! });
+	}, [editMode]);
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
-		if (!title.trim()) {
+		if (!formState.title.trim()) {
 			toast.error('Please enter a title');
 			return;
 		}
 
 		setIsSubmitting(true);
 		try {
-			const [year, month, day] = date.split('-').map(Number);
-			const [startHour, startMin] = startTime.split(':').map(Number);
-			const [endHour, endMin] = endTime.split(':').map(Number);
+			const [year, month, day] = formState.date.split('-').map(Number);
+			const [startHour, startMin] = formState.startTime.split(':').map(Number);
+			const [endHour, endMin] = formState.endTime.split(':').map(Number);
 
 			const startDateTime = new Date(year, month - 1, day, startHour, startMin, 0, 0);
 			const endDateTime = new Date(year, month - 1, day, endHour, endMin, 0, 0);
@@ -173,20 +202,22 @@ export function AddBlockModal({ open, onOpenChange, onSuccess, editMode }: AddBl
 				return;
 			}
 
-			const subjectIdNum = subjectId ? Number.parseInt(subjectId, 10) : undefined;
+			const subjectIdNum = formState.subjectId
+				? Number.parseInt(formState.subjectId, 10)
+				: undefined;
 
 			if (isEditing && editMode) {
 				const result = await updateCalendarEventAction(editMode.id, {
-					title: title.trim(),
+					title: formState.title.trim(),
 					startTime: startDateTime,
 					endTime: endDateTime,
-					eventType: repeatable ? 'recurring' : 'study_session',
+					eventType: formState.repeatable ? 'recurring' : 'study_session',
 					subjectId: subjectIdNum,
 				});
 
 				if (result.success) {
 					toast.success('Study block updated!');
-					resetForm();
+					formDispatch({ type: 'RESET_FORM' });
 					onOpenChange(false);
 					onSuccess?.();
 				} else {
@@ -194,16 +225,16 @@ export function AddBlockModal({ open, onOpenChange, onSuccess, editMode }: AddBl
 				}
 			} else {
 				const result = await createCalendarEventAction({
-					title: title.trim(),
+					title: formState.title.trim(),
 					startTime: startDateTime,
 					endTime: endDateTime,
-					eventType: repeatable ? 'recurring' : 'study_session',
+					eventType: formState.repeatable ? 'recurring' : 'study_session',
 					subjectId: subjectIdNum,
 				});
 
 				if (result.success) {
 					toast.success('Study block added!');
-					resetForm();
+					formDispatch({ type: 'RESET_FORM' });
 					onOpenChange(false);
 					onSuccess?.();
 				} else {
@@ -220,7 +251,6 @@ export function AddBlockModal({ open, onOpenChange, onSuccess, editMode }: AddBl
 
 	const formContent = (
 		<form onSubmit={handleSubmit} className="space-y-5">
-			{/* Title */}
 			<div className="space-y-2.5">
 				<Label
 					htmlFor={titleId}
@@ -231,17 +261,16 @@ export function AddBlockModal({ open, onOpenChange, onSuccess, editMode }: AddBl
 				<Input
 					id={titleId}
 					placeholder="e.g., Mathematics Study"
-					value={title}
-					onChange={(e) => setTitle(e.target.value)}
+					value={formState.title}
+					onChange={(e) => formDispatch({ type: 'SET_TITLE', payload: e.target.value })}
 					className="h-12 rounded-xl"
 					required
 				/>
 			</div>
 
-			{/* Subject */}
 			<div className="space-y-2.5">
 				<Label
-					htmlFor={subjectId}
+					htmlFor={titleId}
 					className="text-xs font-bold uppercase tracking-wider text-muted-foreground ml-1"
 				>
 					Subject <span className="text-muted-foreground/50 font-normal">(optional)</span>
@@ -250,9 +279,9 @@ export function AddBlockModal({ open, onOpenChange, onSuccess, editMode }: AddBl
 					<div className="flex flex-wrap gap-2">
 						<button
 							type="button"
-							onClick={() => setSubjectId('')}
+							onClick={() => formDispatch({ type: 'SET_SUBJECT_ID', payload: '' })}
 							className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${
-								subjectId === ''
+								formState.subjectId === ''
 									? 'bg-muted text-muted-foreground'
 									: 'bg-muted/50 text-muted-foreground/70 hover:bg-muted'
 							}`}
@@ -263,9 +292,11 @@ export function AddBlockModal({ open, onOpenChange, onSuccess, editMode }: AddBl
 							<button
 								key={subject.id}
 								type="button"
-								onClick={() => setSubjectId(String(subject.id))}
+								onClick={() =>
+									formDispatch({ type: 'SET_SUBJECT_ID', payload: String(subject.id) })
+								}
 								className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${
-									subjectId === String(subject.id)
+									formState.subjectId === String(subject.id)
 										? 'bg-primary text-primary-foreground shadow-md'
 										: 'bg-muted/50 text-muted-foreground/70 hover:bg-muted'
 								}`}
@@ -279,36 +310,33 @@ export function AddBlockModal({ open, onOpenChange, onSuccess, editMode }: AddBl
 				)}
 			</div>
 
-			{/* Date */}
 			<div className="space-y-2.5">
 				<DatePicker
 					label="Date"
 					htmlFor={dateId}
-					date={date}
-					setDate={setDate}
+					date={formState.date}
+					setDate={(d) => formDispatch({ type: 'SET_DATE', payload: d })}
 					icon={<HugeiconsIcon icon={Calendar04Icon} className="h-4 w-4" />}
 				/>
 			</div>
 
-			{/* Time */}
 			<div className="grid grid-cols-2 gap-4">
 				<TimePicker
 					htmlFor={startTimeId}
 					label="Start Time"
-					time={startTime}
-					setTime={setStartTime}
+					time={formState.startTime}
+					setTime={(t) => formDispatch({ type: 'SET_START_TIME', payload: t })}
 					icon={<HugeiconsIcon icon={Clock01Icon} className="h-4 w-4" />}
 				/>
 				<TimePicker
 					htmlFor={endTimeId}
 					label="End Time"
-					time={endTime}
-					setTime={setEndTime}
+					time={formState.endTime}
+					setTime={(t) => formDispatch({ type: 'SET_END_TIME', payload: t })}
 					icon={<HugeiconsIcon icon={Clock01Icon} className="h-4 w-4" />}
 				/>
 			</div>
 
-			{/* Repeat Toggle */}
 			<div className="flex items-center justify-between p-4 bg-muted/30 rounded-2xl border border-border/30">
 				<div className="space-y-0.5">
 					<Label htmlFor={repeatableId} className="text-sm font-bold">
@@ -316,10 +344,13 @@ export function AddBlockModal({ open, onOpenChange, onSuccess, editMode }: AddBl
 					</Label>
 					<p className="text-xs text-muted-foreground">Automatically repeat every week</p>
 				</div>
-				<Switch id={repeatableId} checked={repeatable} onCheckedChange={setRepeatable} />
+				<Switch
+					id={repeatableId}
+					checked={formState.repeatable}
+					onCheckedChange={(v) => formDispatch({ type: 'SET_REPEATABLE', payload: v })}
+				/>
 			</div>
 
-			{/* Actions */}
 			<DialogFooter className="gap-3 py-2 flex flex-col">
 				<Button
 					type="button"

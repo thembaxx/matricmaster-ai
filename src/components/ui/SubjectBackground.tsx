@@ -1,6 +1,6 @@
 'use client';
 
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, domAnimation, LazyMotion, m } from 'framer-motion';
 import { usePathname } from 'next/navigation';
 import { createContext, type ReactNode, useContext, useMemo, useState } from 'react';
 import { getSubjectGradient } from '@/constants/subjects';
@@ -60,32 +60,34 @@ export function SubjectBackgroundProvider({
 
 	return (
 		<SubjectBackgroundContext.Provider value={value}>
-			{/* Background gradient layer */}
-			<AnimatePresence>
-				{subjectId && detectedSubjectId && (
-					<motion.div
-						initial={{ opacity: 0 }}
-						animate={{ opacity: 1 }}
-						exit={{ opacity: 0 }}
-						transition={{ duration: 0.5 }}
-						className="fixed inset-0 -z-10 pointer-events-none"
-						style={{
-							background: `linear-gradient(135deg, ${gradient.primary}, ${gradient.secondary})`,
-							opacity: prefersReducedMotion ? 0 : intensity,
-						}}
-					>
-						{!prefersReducedMotion && (
-							<div
-								className="absolute inset-0 animate-gradient-shimmer"
-								style={{
-									background:
-										'linear-gradient(45deg, transparent 40%, rgba(255,255,255,0.12) 50%, transparent 60%)',
-								}}
-							/>
-						)}
-					</motion.div>
-				)}
-			</AnimatePresence>
+			<LazyMotion features={domAnimation}>
+				{/* Background gradient layer */}
+				<AnimatePresence>
+					{subjectId && detectedSubjectId && (
+						<m.div
+							initial={{ opacity: 0 }}
+							animate={{ opacity: 1 }}
+							exit={{ opacity: 0 }}
+							transition={{ duration: 0.5 }}
+							className="fixed inset-0 -z-10 pointer-events-none"
+							style={{
+								background: `linear-gradient(135deg, ${gradient.primary}, ${gradient.secondary})`,
+								opacity: prefersReducedMotion ? 0 : intensity,
+							}}
+						>
+							{!prefersReducedMotion && (
+								<div
+									className="absolute inset-0 animate-gradient-shimmer"
+									style={{
+										background:
+											'linear-gradient(45deg, transparent 40%, rgba(255,255,255,0.12) 50%, transparent 60%)',
+									}}
+								/>
+							)}
+						</m.div>
+					)}
+				</AnimatePresence>
+			</LazyMotion>
 			{children}
 		</SubjectBackgroundContext.Provider>
 	);

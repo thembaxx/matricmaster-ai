@@ -161,7 +161,9 @@ const generateMockNotifications = (): Notification[] => {
 
 export default function NotificationsPage() {
 	const router = useRouter();
-	const [notifications, setNotifications] = useState<Notification[]>(generateMockNotifications());
+	const [notifications, setNotifications] = useState<Notification[]>(() =>
+		generateMockNotifications()
+	);
 	const [activeTab, setActiveTab] = useState<'all' | 'unread'>('all');
 	const [isDeleting, setIsDeleting] = useState<string | null>(null);
 

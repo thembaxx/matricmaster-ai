@@ -15,14 +15,26 @@ export function useFeatureTooltip(featureId: string) {
 	useEffect(() => {
 		const stored = localStorage.getItem(STORAGE_KEY);
 		if (stored) {
-			const seen: SeenTooltips = JSON.parse(stored);
-			setHasSeen(seen[featureId] ?? false);
+			try {
+				const seen: SeenTooltips = JSON.parse(stored);
+				setHasSeen(seen[featureId] ?? false);
+			} catch (error) {
+				console.warn('Failed to parse feature tooltips:', error);
+				setHasSeen(false);
+			}
 		}
 	}, [featureId]);
 
 	const markAsSeen = useCallback(() => {
 		const stored = localStorage.getItem(STORAGE_KEY);
-		const seen: SeenTooltips = stored ? JSON.parse(stored) : {};
+		let seen: SeenTooltips = {};
+		if (stored) {
+			try {
+				seen = JSON.parse(stored);
+			} catch (error) {
+				console.warn('Failed to parse feature tooltips:', error);
+			}
+		}
 		seen[featureId] = true;
 		localStorage.setItem(STORAGE_KEY, JSON.stringify(seen));
 		setHasSeen(true);

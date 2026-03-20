@@ -4,6 +4,7 @@ import { WebLLMDownloader } from '@/components/AI/WebLLMDownloader';
 import { DeferredAnalytics } from '@/components/DeferredAnalytics';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 import ClientProviders from '@/components/Layout/ClientProvidersDynamic';
+import { NavigationProgress } from '@/components/NavigationProgress';
 import { ServiceWorkerRegistration } from '@/components/ServiceWorkerRegistration';
 import { Toaster } from '@/components/Toaster';
 import { ThemeProvider } from '@/components/theme-provider';
@@ -125,8 +126,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 			className={`${geistMono.variable} ${geistSans.variable} ${playfair.variable} ${notoSansMath.variable}`}
 		>
 			<head>
-				<link rel="preconnect" href="https://fonts.googleapis.com" />
-				<link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
 				<link rel="dns-prefetch" href="https://images.unsplash.com" />
 				<link rel="dns-prefetch" href="https://lh3.googleusercontent.com" />
 				<script
@@ -143,6 +142,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 				</a>
 				<ErrorBoundary>
 					<ThemeProvider defaultTheme="system" storageKey="matric-master-theme">
+						<NavigationProgress />
 						<ClientProviders>{children}</ClientProviders>
 						<Toaster />
 						<ServiceWorkerRegistration />

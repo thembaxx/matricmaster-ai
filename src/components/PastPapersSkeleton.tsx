@@ -24,6 +24,7 @@ export function PastPapersSkeleton() {
 							<Skeleton className="h-12 sm:h-16 w-full rounded-xl sm:rounded-2xl" />
 						</div>
 						<div className="lg:col-span-4 flex gap-2 overflow-x-auto no-scrollbar py-1">
+							{/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
 							{[1, 2, 3, 4, 5].map((i) => (
 								<Skeleton
 									key={`skeleton-${i}`}
@@ -41,6 +42,7 @@ export function PastPapersSkeleton() {
 				</div>
 
 				<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
+					{/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
 					{[1, 2, 3, 4, 5, 6].map((i) => (
 						<Card
 							key={`skeleton-${i}`}

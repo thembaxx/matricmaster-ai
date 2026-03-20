@@ -80,12 +80,12 @@ export default function FocusRooms() {
 			}, 1000);
 		} else if (timeLeft === 0) {
 			setIsActive(false);
-			setFocusMinutes(focusMinutes + 25);
+			setFocusMinutes((prev) => prev + 25);
 		}
 		return () => {
 			if (interval) clearInterval(interval);
 		};
-	}, [isActive, timeLeft, tick, focusMinutes, setFocusMinutes, setIsActive]);
+	}, [isActive, timeLeft, tick, setFocusMinutes, setIsActive]);
 
 	useEffect(() => {
 		updateStatus({

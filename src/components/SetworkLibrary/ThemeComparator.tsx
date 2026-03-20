@@ -69,8 +69,8 @@ export function ThemeComparator({ setworks }: ThemeComparatorProps) {
 				<Card className="p-4 border-primary/30 bg-primary/5">
 					<h4 className="font-bold text-sm mb-2 text-primary">Similar themes found</h4>
 					<div className="space-y-2">
-						{similarThemes.map((pair, i) => (
-							<div key={`pair-${i}`} className="text-sm">
+						{similarThemes.map((pair) => (
+							<div key={`${pair.left}-${pair.right}`} className="text-sm">
 								<span className="font-medium">{pair.left}</span>
 								<span className="text-muted-foreground"> ~ </span>
 								<span className="font-medium">{pair.right}</span>

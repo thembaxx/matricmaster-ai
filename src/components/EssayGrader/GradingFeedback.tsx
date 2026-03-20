@@ -101,8 +101,8 @@ export function GradingFeedback({ result, onReset }: GradingFeedbackProps) {
 									Strengths
 								</h4>
 								<ul className="space-y-1">
-									{result.strengths.map((strength, idx) => (
-										<li key={idx} className="text-sm text-muted-foreground flex gap-2">
+									{result.strengths.map((strength) => (
+										<li key={strength} className="text-sm text-muted-foreground flex gap-2">
 											<span className="text-green-500 shrink-0">•</span>
 											{strength}
 										</li>
@@ -118,8 +118,8 @@ export function GradingFeedback({ result, onReset }: GradingFeedbackProps) {
 									Areas for Improvement
 								</h4>
 								<ul className="space-y-1">
-									{result.improvements.map((improvement, idx) => (
-										<li key={idx} className="text-sm text-muted-foreground flex gap-2">
+									{result.improvements.map((improvement) => (
+										<li key={improvement} className="text-sm text-muted-foreground flex gap-2">
 											<span className="text-yellow-500 shrink-0">•</span>
 											{improvement}
 										</li>

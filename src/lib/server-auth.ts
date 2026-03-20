@@ -2,6 +2,7 @@ import 'server-only';
 import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { getAuth } from '@/lib/auth';
+import type { SessionUser } from './auth';
 
 export async function requireAuth() {
 	const auth = await getAuth();
@@ -25,9 +26,7 @@ export async function optionalAuth() {
 export async function requireAdmin() {
 	const session = await requireAuth();
 
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-
-	const userRole = (session.user as any).role || 'user';
+	const userRole = (session.user as SessionUser).role || 'user';
 
 	if (userRole !== 'admin') {
 		redirect('/dashboard');

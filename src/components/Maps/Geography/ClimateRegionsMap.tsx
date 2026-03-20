@@ -90,8 +90,8 @@ export function ClimateRegionsMap({ className = '' }: ClimateRegionsMapProps) {
 								<h3 className="font-semibold">{region.name}</h3>
 								<p className="text-sm text-muted-foreground mt-1">{region.description}</p>
 								<ul className="mt-2 text-sm space-y-1">
-									{region.characteristics.map((char, i) => (
-										<li key={i} className="flex items-center gap-2">
+									{region.characteristics.map((char) => (
+										<li key={char} className="flex items-center gap-2">
 											<span
 												className="w-2 h-2 rounded-full"
 												style={{ backgroundColor: region.color }}

@@ -54,6 +54,7 @@ export function TeamGoals({ className }: { className?: string }) {
 					<div className="h-6 w-32 bg-muted animate-pulse rounded-lg" />
 				</CardHeader>
 				<CardContent className="space-y-4">
+					{/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
 					{[1, 2].map((i) => (
 						<div key={`skeleton-${i}`} className="h-32 bg-muted animate-pulse rounded-xl" />
 					))}

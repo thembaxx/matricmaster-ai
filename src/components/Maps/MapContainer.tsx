@@ -18,11 +18,12 @@ interface MapContainerProps {
 
 const SOUTH_AFRICA_CENTER: [number, number] = [-30.5595, 22.9375];
 const DEFAULT_ZOOM = 6;
+const DEFAULT_MARKERS: MapMarker[] = [];
 
 export function MapContainer({
 	center = SOUTH_AFRICA_CENTER,
 	zoom = DEFAULT_ZOOM,
-	markers = [],
+	markers = DEFAULT_MARKERS,
 	className = '',
 	onMarkerClick,
 }: MapContainerProps) {

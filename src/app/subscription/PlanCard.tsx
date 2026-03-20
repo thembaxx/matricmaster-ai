@@ -69,8 +69,8 @@ export function PlanCard({
 				</div>
 
 				<ul className="space-y-3 mb-6">
-					{plan.features?.map((feature, idx) => (
-						<li key={idx} className="flex items-start gap-2">
+					{plan.features?.map((feature) => (
+						<li key={feature} className="flex items-start gap-2">
 							<HugeiconsIcon
 								icon={CheckmarkCircle02Icon}
 								className={`w-5 h-5 shrink-0 mt-0.5 ${

@@ -10,6 +10,8 @@ import { NotificationBell } from '@/components/Notifications/NotificationBell';
 import { Button } from '@/components/ui/button';
 import type { TimelineTask } from '@/types/timeline';
 
+const DEFAULT_TIMELINE_TASKS: TimelineTask[] = [];
+
 interface BriefingGreetingProps {
 	userName?: string | null;
 	completedCount: number;
@@ -45,7 +47,7 @@ export function BriefingGreeting({
 	totalCount,
 	streakDays,
 	suggestedSubject,
-	timelineTasks = [],
+	timelineTasks = DEFAULT_TIMELINE_TASKS,
 	flashcardsDue = 0,
 	weakTopicsCount = 0,
 	recentAccuracy = 0,
@@ -243,12 +245,12 @@ export function BriefingGreeting({
 						transition={{ delay: 0.3 }}
 						className="flex flex-wrap gap-2"
 					>
-						{quickTips.map((tip, index) => (
+						{quickTips.map((tip, tipIndex) => (
 							<m.div
-								key={`tip-${index}`}
+								key={tip}
 								initial={{ opacity: 0, scale: 0.9 }}
 								animate={{ opacity: 1, scale: 1 }}
-								transition={{ delay: 0.4 + index * 0.1 }}
+								transition={{ delay: 0.4 + tipIndex * 0.1 }}
 								className="flex items-center gap-2 px-3 py-2 bg-tiimo-lavender/10 border border-tiimo-lavender/20 rounded-full"
 							>
 								<HugeiconsIcon icon={SparklesIcon} className="w-3 h-3 text-tiimo-lavender" />
@@ -279,12 +281,12 @@ export function BriefingGreeting({
 							<div className="absolute top-5 left-0 right-0 h-0.5 bg-secondary" />
 
 							<div className="flex justify-between relative">
-								{timelineTasks.map((task, index) => (
+								{timelineTasks.map((task) => (
 									<m.div
 										key={task.id}
 										initial={{ opacity: 0, scale: 0.8 }}
 										animate={{ opacity: 1, scale: 1 }}
-										transition={{ delay: 0.4 + index * 0.1 }}
+										transition={{ delay: 0.4 }}
 										whileTap={{ scale: 0.9 }}
 										onClick={() => !task.completed && router.push(`/subjects/${task.subject}`)}
 										className={`flex flex-col items-center cursor-pointer group ${task.completed ? '' : 'active:scale-95'}`}

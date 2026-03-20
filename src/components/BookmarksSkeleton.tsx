@@ -11,6 +11,7 @@ export function BookmarksSkeleton() {
 				<Skeleton className="h-8 w-40 rounded-full" />
 				<Skeleton className="h-4 w-60 rounded-full" />
 				<div className="flex gap-2 pt-2">
+					{/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
 					{[1, 2, 3, 4].map((i) => (
 						<Skeleton key={`skeleton-${i}`} className="h-10 w-24 rounded-full" />
 					))}
@@ -19,6 +20,7 @@ export function BookmarksSkeleton() {
 
 			<div className="flex-1 px-6 py-6 pb-40">
 				<div className="grid grid-cols-2 gap-4">
+					{/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
 					{[1, 2, 3, 4, 5, 6].map((i) => (
 						<Card
 							key={`skeleton-${i}`}

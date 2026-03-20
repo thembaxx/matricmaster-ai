@@ -1,6 +1,7 @@
 import { type NextRequest, NextResponse } from 'next/server';
 import { getAuth } from '@/lib/auth';
 import { createComment, getComments } from '@/lib/db/comment-actions';
+import { requireAuth } from '@/lib/server-auth';
 
 export async function POST(request: NextRequest) {
 	try {
@@ -43,6 +44,7 @@ export async function POST(request: NextRequest) {
 }
 
 export async function GET(request: NextRequest) {
+	await requireAuth();
 	try {
 		const { searchParams } = new URL(request.url);
 		const resourceType = searchParams.get('resourceType');

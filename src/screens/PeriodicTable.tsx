@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useReducer } from 'react';
 import {
 	CategoryLegend,
 	ElementCard,
@@ -30,23 +30,170 @@ import type { ElementType, QuizQuestion, TrendMode } from '@/constants/periodic-
 import { ELEMENT_DETAILS, ELEMENTS } from '@/data/elements';
 import { generateQuizQuestions } from '@/utils/periodic-table';
 
-function ElementGrid({
-	elements,
-	trendsMode,
-	compareMode,
-	compareElements,
-	selectedElement,
-	highlightedElements,
-	onElementClick,
-}: {
-	elements: ElementType[];
+type ElementDetailState = {
+	selectedElement: ElementType | null;
+	selectedAnswer: number | null;
+	showAnswer: boolean;
+};
+
+type ElementDetailAction =
+	| { type: 'SELECT_ELEMENT'; payload: ElementType }
+	| { type: 'SET_ANSWER'; payload: number | null }
+	| { type: 'SET_SHOW_ANSWER'; payload: boolean }
+	| { type: 'CLOSE' };
+
+function elementDetailReducer(
+	state: ElementDetailState,
+	action: ElementDetailAction
+): ElementDetailState {
+	switch (action.type) {
+		case 'SELECT_ELEMENT':
+			return { selectedElement: action.payload, selectedAnswer: null, showAnswer: false };
+		case 'SET_ANSWER':
+			return { ...state, selectedAnswer: action.payload };
+		case 'SET_SHOW_ANSWER':
+			return { ...state, showAnswer: action.payload };
+		case 'CLOSE':
+			return { selectedElement: null, selectedAnswer: null, showAnswer: false };
+		default:
+			return state;
+	}
+}
+
+type ViewState = {
+	searchQuery: string;
+	selectedGroup: string;
+	isDesktop: boolean;
 	trendsMode: TrendMode;
 	compareMode: boolean;
 	compareElements: ElementType[];
-	selectedElement: ElementType | null;
-	highlightedElements: Set<number> | null;
+};
+
+type ViewAction =
+	| { type: 'SET_SEARCH_QUERY'; payload: string }
+	| { type: 'SET_GROUP'; payload: string }
+	| { type: 'SET_DESKTOP'; payload: boolean }
+	| { type: 'SET_TRENDS_MODE'; payload: TrendMode }
+	| { type: 'SET_COMPARE_MODE'; payload: boolean }
+	| { type: 'ADD_COMPARE_ELEMENT'; payload: ElementType }
+	| { type: 'REMOVE_COMPARE_ELEMENT'; payload: ElementType }
+	| { type: 'CLEAR_COMPARE' };
+
+function viewReducer(state: ViewState, action: ViewAction): ViewState {
+	switch (action.type) {
+		case 'SET_SEARCH_QUERY':
+			return { ...state, searchQuery: action.payload };
+		case 'SET_GROUP':
+			return { ...state, selectedGroup: action.payload };
+		case 'SET_DESKTOP':
+			return { ...state, isDesktop: action.payload };
+		case 'SET_TRENDS_MODE':
+			return { ...state, trendsMode: action.payload };
+		case 'SET_COMPARE_MODE':
+			return {
+				...state,
+				compareMode: action.payload,
+				compareElements: action.payload ? state.compareElements : [],
+			};
+		case 'ADD_COMPARE_ELEMENT':
+			if (state.compareElements.length >= 2) return state;
+			if (state.compareElements.find((e) => e.num === action.payload.num)) return state;
+			return { ...state, compareElements: [...state.compareElements, action.payload] };
+		case 'REMOVE_COMPARE_ELEMENT':
+			return {
+				...state,
+				compareElements: state.compareElements.filter((e) => e.num !== action.payload.num),
+			};
+		case 'CLEAR_COMPARE':
+			return { ...state, compareElements: [] };
+		default:
+			return state;
+	}
+}
+
+type QuizState = {
+	questions: QuizQuestion[];
+	currentQuestion: number;
+	score: { correct: number; total: number };
+	started: boolean;
+	selectedAnswer: number | null;
+	showExplanation: boolean;
+};
+
+type QuizAction =
+	| { type: 'START_QUIZ'; payload: QuizQuestion[] }
+	| { type: 'SELECT_ANSWER'; payload: number }
+	| { type: 'NEXT_QUESTION' }
+	| { type: 'EXIT_QUIZ' }
+	| { type: 'RESET' };
+
+function quizReducer(state: QuizState, action: QuizAction): QuizState {
+	switch (action.type) {
+		case 'START_QUIZ':
+			return {
+				questions: action.payload,
+				currentQuestion: 0,
+				score: { correct: 0, total: 0 },
+				started: true,
+				selectedAnswer: null,
+				showExplanation: false,
+			};
+		case 'SELECT_ANSWER': {
+			const isCorrect = action.payload === state.questions[state.currentQuestion]?.correctAnswer;
+			return {
+				...state,
+				selectedAnswer: action.payload,
+				showExplanation: true,
+				score: {
+					correct: state.score.correct + (isCorrect ? 1 : 0),
+					total: state.score.total + 1,
+				},
+			};
+		}
+		case 'NEXT_QUESTION':
+			if (state.currentQuestion < state.questions.length - 1) {
+				return {
+					...state,
+					currentQuestion: state.currentQuestion + 1,
+					selectedAnswer: null,
+					showExplanation: false,
+				};
+			}
+			return { ...state, started: false };
+		case 'EXIT_QUIZ':
+			return { ...state, started: false };
+		case 'RESET':
+			return {
+				questions: [],
+				currentQuestion: 0,
+				score: { correct: 0, total: 0 },
+				started: false,
+				selectedAnswer: null,
+				showExplanation: false,
+			};
+		default:
+			return state;
+	}
+}
+
+function ElementGrid({
+	elements,
+	viewState,
+	elementDetailState,
+	onElementClick,
+	onCompareSelect,
+}: {
+	elements: ElementType[];
+	viewState: ViewState;
+	elementDetailState: ElementDetailState;
 	onElementClick: (element: ElementType) => void;
+	onCompareSelect: (element: ElementType) => void;
 }) {
+	const highlightedElements = useMemo(() => {
+		if (viewState.searchQuery === '' && viewState.selectedGroup === 'all') return null;
+		return new Set(elements.map((el) => el.num));
+	}, [elements, viewState.searchQuery, viewState.selectedGroup]);
+
 	return (
 		<div className="flex flex-wrap justify-center gap-1">
 			{elements.map((el, i) => (
@@ -54,12 +201,12 @@ function ElementGrid({
 					key={el.num}
 					element={el}
 					index={i}
-					trendsMode={trendsMode}
-					compareMode={compareMode}
-					compareElements={compareElements}
-					selectedElement={selectedElement}
+					trendsMode={viewState.trendsMode}
+					compareMode={viewState.compareMode}
+					compareElements={viewState.compareElements}
+					selectedElement={elementDetailState.selectedElement}
 					highlightedElements={highlightedElements}
-					onClick={onElementClick}
+					onClick={viewState.compareMode ? onCompareSelect : onElementClick}
 				/>
 			))}
 		</div>
@@ -67,151 +214,144 @@ function ElementGrid({
 }
 
 export default function PeriodicTable() {
-	const [selectedElement, setSelectedElement] = useState<ElementType | null>(null);
-	const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
-	const [showAnswer, setShowAnswer] = useState(false);
-	const [isDesktop, setIsDesktop] = useState(true);
-	const [searchQuery, setSearchQuery] = useState('');
-	const [selectedGroup, setSelectedGroup] = useState<string>('all');
-	const [quizQuestions, setQuizQuestions] = useState<QuizQuestion[]>([]);
-	const [currentQuestion, setCurrentQuestion] = useState(0);
-	const [quizScore, setQuizScore] = useState({ correct: 0, total: 0 });
-	const [quizStarted, setQuizStarted] = useState(false);
-	const [showExplanation, setShowExplanation] = useState(false);
-	const [trendsMode, setTrendsMode] = useState<TrendMode>(null);
-	const [compareMode, setCompareMode] = useState(false);
-	const [compareElements, setCompareElements] = useState<ElementType[]>([]);
+	const [elementDetailState, elementDetailDispatch] = useReducer(elementDetailReducer, {
+		selectedElement: null,
+		selectedAnswer: null,
+		showAnswer: false,
+	});
 
-	const handleCompareSelect = (element: ElementType) => {
-		if (compareElements.find((e) => e.num === element.num)) {
-			setCompareElements(compareElements.filter((e) => e.num !== element.num));
-		} else if (compareElements.length < 2) {
-			setCompareElements([...compareElements, element]);
-		}
-	};
+	const [viewState, viewDispatch] = useReducer(viewReducer, {
+		searchQuery: '',
+		selectedGroup: 'all',
+		isDesktop: true,
+		trendsMode: null,
+		compareMode: false,
+		compareElements: [],
+	});
+
+	const [quizState, quizDispatch] = useReducer(quizReducer, {
+		questions: [],
+		currentQuestion: 0,
+		score: { correct: 0, total: 0 },
+		started: false,
+		selectedAnswer: null,
+		showExplanation: false,
+	});
 
 	const filteredElements = useMemo(() => {
 		return ELEMENTS.filter((el) => {
 			const matchesSearch =
-				searchQuery === '' ||
-				el.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-				el.sym.toLowerCase().includes(searchQuery.toLowerCase()) ||
-				el.num.toString().includes(searchQuery);
-			const matchesGroup = selectedGroup === 'all' || el.group === selectedGroup;
+				viewState.searchQuery === '' ||
+				el.name.toLowerCase().includes(viewState.searchQuery.toLowerCase()) ||
+				el.sym.toLowerCase().includes(viewState.searchQuery.toLowerCase()) ||
+				el.num.toString().includes(viewState.searchQuery);
+			const matchesGroup =
+				viewState.selectedGroup === 'all' || el.group === viewState.selectedGroup;
 			return matchesSearch && matchesGroup;
 		});
-	}, [searchQuery, selectedGroup]);
-
-	const highlightedElements = useMemo(() => {
-		if (searchQuery === '' && selectedGroup === 'all') return null;
-		return new Set(filteredElements.map((el) => el.num));
-	}, [filteredElements, searchQuery, selectedGroup]);
+	}, [viewState.searchQuery, viewState.selectedGroup]);
 
 	useEffect(() => {
-		const checkDesktop = () => setIsDesktop(window.innerWidth >= 768);
+		const checkDesktop = () =>
+			viewDispatch({ type: 'SET_DESKTOP', payload: window.innerWidth >= 768 });
 		checkDesktop();
 		window.addEventListener('resize', checkDesktop);
 		return () => window.removeEventListener('resize', checkDesktop);
 	}, []);
 
 	const handleCheckAnswer = () => {
-		const details = selectedElement ? ELEMENT_DETAILS[selectedElement.num] : null;
+		const details = elementDetailState.selectedElement
+			? ELEMENT_DETAILS[elementDetailState.selectedElement.num]
+			: null;
 		const practiceQuestions = details?.practiceQuestions || [
 			{
-				question: `What is the atomic number of ${selectedElement?.name}?`,
+				question: `What is the atomic number of ${elementDetailState.selectedElement?.name}?`,
 				options: [
-					((selectedElement?.num || 1) - 1).toString(),
-					(selectedElement?.num || 1).toString(),
-					((selectedElement?.num || 1) + 1).toString(),
-					((selectedElement?.num || 1) + 2).toString(),
+					((elementDetailState.selectedElement?.num || 1) - 1).toString(),
+					(elementDetailState.selectedElement?.num || 1).toString(),
+					((elementDetailState.selectedElement?.num || 1) + 1).toString(),
+					((elementDetailState.selectedElement?.num || 1) + 2).toString(),
 				],
 				answer: 1,
 			},
 		];
-		if (selectedAnswer === practiceQuestions[0].answer) {
-			setShowAnswer(true);
+		if (elementDetailState.selectedAnswer === practiceQuestions[0].answer) {
+			elementDetailDispatch({ type: 'SET_SHOW_ANSWER', payload: true });
 		}
 	};
 
-	const handleClose = () => {
-		setSelectedElement(null);
-		setSelectedAnswer(null);
-		setShowAnswer(false);
-	};
-
-	const handleElementClick = (element: ElementType) => {
-		setSelectedElement(element);
-		setSelectedAnswer(null);
-		setShowAnswer(false);
+	const handleCompareSelect = (element: ElementType) => {
+		if (viewState.compareElements.find((e) => e.num === element.num)) {
+			viewDispatch({ type: 'REMOVE_COMPARE_ELEMENT', payload: element });
+		} else if (viewState.compareElements.length < 2) {
+			viewDispatch({ type: 'ADD_COMPARE_ELEMENT', payload: element });
+		}
 	};
 
 	const startQuiz = () => {
 		const questions = generateQuizQuestions(10);
-		setQuizQuestions(questions);
-		setCurrentQuestion(0);
-		setQuizScore({ correct: 0, total: 0 });
-		setQuizStarted(true);
-		setShowExplanation(false);
+		quizDispatch({ type: 'START_QUIZ', payload: questions });
 	};
 
 	const handleQuizAnswer = (answerIndex: number) => {
-		setSelectedAnswer(answerIndex);
-		setShowExplanation(true);
-		if (answerIndex === quizQuestions[currentQuestion].correctAnswer) {
-			setQuizScore((prev) => ({ ...prev, correct: prev.correct + 1 }));
-		}
-		setQuizScore((prev) => ({ ...prev, total: prev.total + 1 }));
+		quizDispatch({ type: 'SELECT_ANSWER', payload: answerIndex });
 	};
 
 	const nextQuestion = () => {
-		if (currentQuestion < quizQuestions.length - 1) {
-			setCurrentQuestion((prev) => prev + 1);
-			setSelectedAnswer(null);
-			setShowExplanation(false);
-		} else {
-			setQuizStarted(false);
-		}
+		quizDispatch({ type: 'NEXT_QUESTION' });
 	};
 
-	const restartQuiz = () => {
-		startQuiz();
-	};
+	const showQuizResults =
+		!quizState.started &&
+		quizState.score.total > 0 &&
+		quizState.currentQuestion >= quizState.questions.length - 1 &&
+		!quizState.showExplanation;
 
-	const DesktopSheet = selectedElement ? (
-		<Sheet open={!!selectedElement} onOpenChange={(open) => !open && handleClose()}>
+	const DesktopSheet = elementDetailState.selectedElement ? (
+		<Sheet
+			open={!!elementDetailState.selectedElement}
+			onOpenChange={(open) => !open && elementDetailDispatch({ type: 'CLOSE' })}
+		>
 			<SheetContent side="right" className="w-full sm:max-w-xl overflow-y-auto">
 				<SheetHeader className="mb-6">
 					<SheetTitle className="text-xl font-black tracking-tight">
-						{selectedElement.name}
+						{elementDetailState.selectedElement.name}
 					</SheetTitle>
-					<SheetDescription className="text-sm">{selectedElement.category}</SheetDescription>
+					<SheetDescription className="text-sm">
+						{elementDetailState.selectedElement.category}
+					</SheetDescription>
 				</SheetHeader>
 				<ElementDetailContent
-					element={selectedElement}
-					selectedAnswer={selectedAnswer}
-					setSelectedAnswer={setSelectedAnswer}
-					showAnswer={showAnswer}
+					element={elementDetailState.selectedElement}
+					selectedAnswer={elementDetailState.selectedAnswer}
+					setSelectedAnswer={(a) => elementDetailDispatch({ type: 'SET_ANSWER', payload: a })}
+					showAnswer={elementDetailState.showAnswer}
 					handleCheckAnswer={handleCheckAnswer}
 				/>
 			</SheetContent>
 		</Sheet>
 	) : null;
 
-	const MobileDrawer = selectedElement ? (
-		<Drawer open={!!selectedElement} onClose={handleClose}>
+	const MobileDrawer = elementDetailState.selectedElement ? (
+		<Drawer
+			open={!!elementDetailState.selectedElement}
+			onClose={() => elementDetailDispatch({ type: 'CLOSE' })}
+		>
 			<DrawerContent className="max-h-[85vh]">
 				<DrawerHeader className="text-left">
 					<DrawerTitle className="text-xl font-black tracking-tight">
-						{selectedElement.name}
+						{elementDetailState.selectedElement.name}
 					</DrawerTitle>
-					<DrawerDescription className="text-sm">{selectedElement.category}</DrawerDescription>
+					<DrawerDescription className="text-sm">
+						{elementDetailState.selectedElement.category}
+					</DrawerDescription>
 				</DrawerHeader>
 				<div className="px-4 pb-6 overflow-y-auto max-h-[calc(85vh-120px)]">
 					<ElementDetailContent
-						element={selectedElement}
-						selectedAnswer={selectedAnswer}
-						setSelectedAnswer={setSelectedAnswer}
-						showAnswer={showAnswer}
+						element={elementDetailState.selectedElement}
+						selectedAnswer={elementDetailState.selectedAnswer}
+						setSelectedAnswer={(a) => elementDetailDispatch({ type: 'SET_ANSWER', payload: a })}
+						showAnswer={elementDetailState.showAnswer}
 						handleCheckAnswer={handleCheckAnswer}
 					/>
 				</div>
@@ -219,51 +359,41 @@ export default function PeriodicTable() {
 		</Drawer>
 	) : null;
 
-	const showQuizResults =
-		!quizStarted &&
-		quizScore.total > 0 &&
-		currentQuestion >= quizQuestions.length - 1 &&
-		!showExplanation;
-
 	return (
 		<div className="flex flex-col h-full bg-background min-w-0">
-			{quizStarted ? (
+			{quizState.started ? (
 				showQuizResults ? (
 					<QuizResults
-						score={quizScore}
-						onRestart={restartQuiz}
-						onExit={() => {
-							setQuizScore({ correct: 0, total: 0 });
-							setQuizQuestions([]);
-						}}
+						score={quizState.score}
+						onRestart={startQuiz}
+						onExit={() => quizDispatch({ type: 'RESET' })}
 					/>
 				) : (
 					<ElementQuiz
-						quizQuestions={quizQuestions}
-						currentQuestion={currentQuestion}
-						selectedAnswer={selectedAnswer}
-						showExplanation={showExplanation}
-						quizScore={quizScore}
+						quizQuestions={quizState.questions}
+						currentQuestion={quizState.currentQuestion}
+						selectedAnswer={quizState.selectedAnswer}
+						showExplanation={quizState.showExplanation}
+						quizScore={quizState.score}
 						onSelectAnswer={handleQuizAnswer}
 						onNextQuestion={nextQuestion}
-						onExit={() => setQuizStarted(false)}
+						onExit={() => quizDispatch({ type: 'EXIT_QUIZ' })}
 					/>
 				)
 			) : (
 				<>
 					<PeriodicTableHeader
-						searchQuery={searchQuery}
-						onSearchChange={setSearchQuery}
-						selectedGroup={selectedGroup}
-						onGroupChange={setSelectedGroup}
-						trendsMode={trendsMode}
-						onTrendsModeChange={setTrendsMode}
-						compareMode={compareMode}
-						onCompareModeChange={(enabled) => {
-							setCompareMode(enabled);
-							if (!enabled) setCompareElements([]);
-						}}
-						compareElementsCount={compareElements.length}
+						searchQuery={viewState.searchQuery}
+						onSearchChange={(q) => viewDispatch({ type: 'SET_SEARCH_QUERY', payload: q })}
+						selectedGroup={viewState.selectedGroup}
+						onGroupChange={(g) => viewDispatch({ type: 'SET_GROUP', payload: g })}
+						trendsMode={viewState.trendsMode}
+						onTrendsModeChange={(m) => viewDispatch({ type: 'SET_TRENDS_MODE', payload: m })}
+						compareMode={viewState.compareMode}
+						onCompareModeChange={(enabled) =>
+							viewDispatch({ type: 'SET_COMPARE_MODE', payload: enabled })
+						}
+						compareElementsCount={viewState.compareElements.length}
 						onStartQuiz={startQuiz}
 						filteredCount={filteredElements.length}
 						totalCount={ELEMENTS.length}
@@ -274,31 +404,31 @@ export default function PeriodicTable() {
 							<div className="w-full max-w-5xl mx-auto">
 								<ElementGrid
 									elements={ELEMENTS}
-									trendsMode={trendsMode}
-									compareMode={compareMode}
-									compareElements={compareElements}
-									selectedElement={selectedElement}
-									highlightedElements={highlightedElements}
-									onElementClick={compareMode ? handleCompareSelect : handleElementClick}
+									viewState={viewState}
+									elementDetailState={elementDetailState}
+									onElementClick={(el) =>
+										elementDetailDispatch({ type: 'SELECT_ELEMENT', payload: el })
+									}
+									onCompareSelect={handleCompareSelect}
 								/>
 
-								{trendsMode ? (
-									<TrendLegend trendsMode={!!trendsMode} />
+								{viewState.trendsMode ? (
+									<TrendLegend trendsMode={!!viewState.trendsMode} />
 								) : (
-									<CategoryLegend trendsMode={!!trendsMode} />
+									<CategoryLegend trendsMode={!!viewState.trendsMode} />
 								)}
 
-								{compareMode && compareElements.length === 2 && (
+								{viewState.compareMode && viewState.compareElements.length === 2 && (
 									<ElementComparison
-										elements={compareElements}
-										onClear={() => setCompareElements([])}
+										elements={viewState.compareElements}
+										onClear={() => viewDispatch({ type: 'CLEAR_COMPARE' })}
 									/>
 								)}
 							</div>
 						</main>
 					</ScrollArea>
 
-					{isDesktop ? DesktopSheet : MobileDrawer}
+					{viewState.isDesktop ? DesktopSheet : MobileDrawer}
 				</>
 			)}
 		</div>

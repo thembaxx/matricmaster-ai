@@ -79,7 +79,7 @@ export default function OfflinePage() {
 		quizCount: number;
 		aiResponseCount: number;
 	} | null>(null);
-	const [subjectStatuses, setSubjectStatuses] = useState<SubjectStatus[]>(
+	const [subjectStatuses, setSubjectStatuses] = useState<SubjectStatus[]>(() =>
 		SUBJECTS.map((s) => ({ ...s, isCached: false, isDownloading: false, downloadProgress: 0 }))
 	);
 	const [isClearing, setIsClearing] = useState(false);
@@ -196,20 +196,20 @@ export default function OfflinePage() {
 
 	const handleDeletePaper = async (paperId: string) => {
 		await deleteCachedPaper(paperId);
-		await loadCachedPapers();
-		await loadStorageUsage();
-		await loadCacheStats();
+		await Promise.all([loadCachedPapers(), loadStorageUsage(), loadCacheStats()]);
 	};
 
 	const handleClearOldCache = async () => {
 		setIsClearing(true);
 		try {
 			await clearOldCache();
-			await loadCachedPapers();
-			await loadCachedTasks();
-			await loadStorageUsage();
-			await loadCacheStats();
-			await loadSubjectStatuses();
+			await Promise.all([
+				loadCachedPapers(),
+				loadCachedTasks(),
+				loadStorageUsage(),
+				loadCacheStats(),
+				loadSubjectStatuses(),
+			]);
 		} catch (error) {
 			console.error('Failed to clear cache:', error);
 		}

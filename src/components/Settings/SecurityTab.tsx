@@ -142,9 +142,9 @@ export function SecurityTab({
 									lose your authenticator device.
 								</p>
 								<div className="grid grid-cols-2 gap-2">
-									{backupCodes.map((code, index) => (
+									{backupCodes.map((code) => (
 										<code
-											key={`code-${index}`}
+											key={`backup-${code}`}
 											className="bg-white px-2 py-1 rounded text-sm font-mono"
 										>
 											{code}

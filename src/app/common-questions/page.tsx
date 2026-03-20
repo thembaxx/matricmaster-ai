@@ -1,7 +1,7 @@
 'use client';
 
 import { FluentEmoji } from '@lobehub/fluent-emoji';
-import { useState } from 'react';
+import { useReducer } from 'react';
 import { QuestionCard } from '@/components/CommonQuestions/QuestionCard';
 import { QuestionDialog } from '@/components/CommonQuestions/QuestionDialog';
 import { Button } from '@/components/ui/button';
@@ -12,36 +12,65 @@ import {
 	type SubjectId,
 } from '@/constants/common-questions';
 
+type State = {
+	selectedSubject: SubjectId | 'all';
+	selectedQuestion: CommonQuestion | null;
+	dialogOpen: boolean;
+	selectedAnswer: string | null;
+	showAnswer: boolean;
+	showHint: boolean;
+};
+
+type Action =
+	| { type: 'SET_SUBJECT'; payload: SubjectId | 'all' }
+	| { type: 'OPEN_QUESTION'; payload: CommonQuestion }
+	| { type: 'CLOSE_DIALOG' }
+	| { type: 'SELECT_ANSWER'; payload: string }
+	| { type: 'CHECK_ANSWER' }
+	| { type: 'TOGGLE_HINT' };
+
+const initialState: State = {
+	selectedSubject: 'all',
+	selectedQuestion: null,
+	dialogOpen: false,
+	selectedAnswer: null,
+	showAnswer: false,
+	showHint: false,
+};
+
+function reducer(state: State, action: Action): State {
+	switch (action.type) {
+		case 'SET_SUBJECT':
+			return { ...state, selectedSubject: action.payload };
+		case 'OPEN_QUESTION':
+			return {
+				...state,
+				selectedQuestion: action.payload,
+				selectedAnswer: null,
+				showAnswer: false,
+				showHint: false,
+				dialogOpen: true,
+			};
+		case 'CLOSE_DIALOG':
+			return { ...state, dialogOpen: false };
+		case 'SELECT_ANSWER':
+			return state.showAnswer ? state : { ...state, selectedAnswer: action.payload };
+		case 'CHECK_ANSWER':
+			return { ...state, showAnswer: true };
+		case 'TOGGLE_HINT':
+			return { ...state, showHint: !state.showHint };
+		default:
+			return state;
+	}
+}
+
 export default function CommonQuestionsPage() {
-	const [selectedSubject, setSelectedSubject] = useState<SubjectId | 'all'>('all');
-	const [selectedQuestion, setSelectedQuestion] = useState<CommonQuestion | null>(null);
-	const [dialogOpen, setDialogOpen] = useState(false);
-	const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
-	const [showAnswer, setShowAnswer] = useState(false);
-	const [showHint, setShowHint] = useState(false);
+	const [state, dispatch] = useReducer(reducer, initialState);
 
 	const filteredQuestions =
-		selectedSubject === 'all'
+		state.selectedSubject === 'all'
 			? COMMON_QUESTIONS
-			: COMMON_QUESTIONS.filter((q) => q.subject === selectedSubject);
-
-	const handleQuestionClick = (question: CommonQuestion) => {
-		setSelectedQuestion(question);
-		setSelectedAnswer(null);
-		setShowAnswer(false);
-		setShowHint(false);
-		setDialogOpen(true);
-	};
-
-	const handleSelectAnswer = (answerId: string) => {
-		if (!showAnswer) {
-			setSelectedAnswer(answerId);
-		}
-	};
-
-	const handleCheckAnswer = () => {
-		setShowAnswer(true);
-	};
+			: COMMON_QUESTIONS.filter((q) => q.subject === state.selectedSubject);
 
 	return (
 		<div className="min-h-screen bg-background pb-40">
@@ -54,9 +83,9 @@ export default function CommonQuestionsPage() {
 
 					<div className="flex flex-wrap gap-2">
 						<Button
-							variant={selectedSubject === 'all' ? 'default' : 'outline'}
+							variant={state.selectedSubject === 'all' ? 'default' : 'outline'}
 							size="sm"
-							onClick={() => setSelectedSubject('all')}
+							onClick={() => dispatch({ type: 'SET_SUBJECT', payload: 'all' })}
 							className="rounded-full"
 						>
 							All subjects
@@ -64,9 +93,9 @@ export default function CommonQuestionsPage() {
 						{SUBJECTS.map((subject) => (
 							<Button
 								key={subject.id}
-								variant={selectedSubject === subject.id ? 'default' : 'outline'}
+								variant={state.selectedSubject === subject.id ? 'default' : 'outline'}
 								size="sm"
-								onClick={() => setSelectedSubject(subject.id)}
+								onClick={() => dispatch({ type: 'SET_SUBJECT', payload: subject.id })}
 								className="rounded-full gap-2"
 							>
 								<FluentEmoji emoji={subject.fluentEmoji} size={16} className="w-4 h-4" />
@@ -86,23 +115,23 @@ export default function CommonQuestionsPage() {
 							key={question.id}
 							question={question}
 							index={index}
-							onClick={handleQuestionClick}
+							onClick={(q) => dispatch({ type: 'OPEN_QUESTION', payload: q })}
 						/>
 					))}
 				</div>
 			</main>
 
-			{selectedQuestion && (
+			{state.selectedQuestion && (
 				<QuestionDialog
-					question={selectedQuestion}
-					dialogOpen={dialogOpen}
-					setDialogOpen={setDialogOpen}
-					selectedAnswer={selectedAnswer}
-					onSelectAnswer={handleSelectAnswer}
-					showAnswer={showAnswer}
-					onCheckAnswer={handleCheckAnswer}
-					showHint={showHint}
-					onToggleHint={() => setShowHint(!showHint)}
+					question={state.selectedQuestion}
+					dialogOpen={state.dialogOpen}
+					setDialogOpen={(open) => !open && dispatch({ type: 'CLOSE_DIALOG' })}
+					selectedAnswer={state.selectedAnswer}
+					onSelectAnswer={(answer) => dispatch({ type: 'SELECT_ANSWER', payload: answer })}
+					showAnswer={state.showAnswer}
+					onCheckAnswer={() => dispatch({ type: 'CHECK_ANSWER' })}
+					showHint={state.showHint}
+					onToggleHint={() => dispatch({ type: 'TOGGLE_HINT' })}
 				/>
 			)}
 		</div>

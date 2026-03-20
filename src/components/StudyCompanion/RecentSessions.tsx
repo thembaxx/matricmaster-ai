@@ -39,6 +39,7 @@ export function RecentSessions({
 
 			{isLoading ? (
 				<div className="space-y-2">
+					{/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
 					{[1, 2, 3].map((i) => (
 						<div
 							key={`skeleton-${i}`}

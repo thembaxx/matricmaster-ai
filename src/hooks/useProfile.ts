@@ -10,6 +10,12 @@ import { getUserAchievements } from '@/lib/db/achievement-actions';
 import { updateUserProfileAction } from '@/lib/db/actions';
 import { getUserProgressSummary, getUserStreak } from '@/lib/db/progress-actions';
 
+interface UserProfile {
+	name?: string;
+	school?: string;
+	avatarId?: string;
+}
+
 export interface ChartDataItem {
 	subject: string;
 	you: number;
@@ -47,7 +53,7 @@ export function useProfile() {
 	const [isEditing, setIsEditing] = useState(false);
 
 	const defaultEditForm = useMemo((): EditFormState => {
-		const u = session?.user as any;
+		const u = session?.user as UserProfile | undefined;
 		return {
 			name: u?.name || '',
 			school: u?.school || '',

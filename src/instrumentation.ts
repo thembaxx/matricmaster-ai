@@ -17,7 +17,7 @@ export async function register() {
 				await import('../sentry.edge.config');
 			}
 		} catch (error) {
-			console.debug('❌ Background: Failed to pre-initialize:', error);
+			console.warn('❌ Background: Failed to pre-initialize:', error);
 		}
 	}
 }

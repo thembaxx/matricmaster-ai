@@ -71,13 +71,13 @@ export function RecommendedSection() {
 				Recommended for You
 			</m.h2>
 			<div className="space-y-3">
-				{RECOMMENDED_ITEMS.map((item, i) => (
+				{RECOMMENDED_ITEMS.map((item, idx) => (
 					<m.button
-						key={`item-${i}`}
+						key={item.href}
 						type="button"
 						initial={{ opacity: 0, x: -20 }}
 						animate={{ opacity: 1, x: 0 }}
-						transition={{ delay: 0.65 + i * 0.08 }}
+						transition={{ delay: 0.65 + idx * 0.08 }}
 						whileHover={{ x: 4 }}
 						whileTap={{ scale: 0.99 }}
 						onClick={() => router.push(item.href)}

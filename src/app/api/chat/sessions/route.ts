@@ -1,7 +1,9 @@
 import { type NextRequest, NextResponse } from 'next/server';
+import { requireAuth } from '@/lib/server-auth';
 import { createSession, deleteSession, getSessions } from '@/services/chatService';
 
 export async function GET(_request: NextRequest) {
+	await requireAuth();
 	try {
 		const sessions = await getSessions();
 		return NextResponse.json(sessions);
@@ -12,6 +14,7 @@ export async function GET(_request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
+	await requireAuth();
 	try {
 		const body = await request.json();
 		const subject = body.subject || 'general';
@@ -24,6 +27,7 @@ export async function POST(request: NextRequest) {
 }
 
 export async function DELETE(request: NextRequest) {
+	await requireAuth();
 	try {
 		const { searchParams } = new URL(request.url);
 		const sessionId = searchParams.get('id');

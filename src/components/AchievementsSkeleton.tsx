@@ -31,6 +31,7 @@ export function AchievementsSkeleton() {
 
 				{/* Category Nav Skeleton */}
 				<div className="flex gap-4 overflow-x-auto no-scrollbar">
+					{/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
 					{[1, 2, 3, 4].map((i) => (
 						<Skeleton key={`skeleton-${i}`} className="h-12 w-32 sm:w-40 rounded-full shrink-0" />
 					))}
@@ -38,6 +39,7 @@ export function AchievementsSkeleton() {
 
 				{/* Grid Skeleton */}
 				<div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 lg:gap-8">
+					{/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
 					{[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i) => (
 						<Card
 							key={`skeleton-${i}`}

@@ -13,14 +13,15 @@ import {
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { useQuery } from '@tanstack/react-query';
+import dynamic from 'next/dynamic';
 import { useCallback, useState, useTransition } from 'react';
-import { Bar, BarChart, Cell, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { toast } from 'sonner';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { Skeleton } from '@/components/ui/skeleton';
 import {
 	Table,
 	TableBody,
@@ -38,6 +39,14 @@ import {
 	toggleUserBlockAction,
 } from '@/lib/db/actions';
 import type { User } from '@/lib/db/better-auth-schema';
+
+const SubjectPerformanceChart = dynamic(
+	() => import('./SubjectPerformanceChart').then((mod) => mod.SubjectPerformanceChart),
+	{
+		ssr: false,
+		loading: () => <Skeleton className="h-80 w-full" />,
+	}
+);
 
 // Recent activity mock
 const mockRecentActivity = [
@@ -420,56 +429,7 @@ export default function AdminDashboardClient({
 									</div>
 								) : subjectPerformance.length > 0 ? (
 									<div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-										<div className="h-80">
-											<ResponsiveContainer width="100%" height="100%">
-												<BarChart
-													data={subjectPerformance}
-													layout="vertical"
-													margin={{ left: 100, right: 20 }}
-												>
-													<XAxis type="number" domain={[0, 100]} hide />
-													<YAxis
-														dataKey="subjectName"
-														type="category"
-														tick={{ fontSize: 12, fontWeight: 500 }}
-														width={100}
-													/>
-													<Tooltip
-														content={({ active, payload }) => {
-															if (active && payload?.length) {
-																const data = payload[0].payload;
-																return (
-																	<div className="bg-background border border-border/50 rounded-lg px-3 py-2 shadow-xl">
-																		<p className="font-bold">{data.subjectName}</p>
-																		<p className="text-sm text-primary">
-																			Average: {data.averageScore}%
-																		</p>
-																		<p className="text-xs text-muted-foreground">
-																			{data.questionsAttempted.toLocaleString()} attempts
-																		</p>
-																	</div>
-																);
-															}
-															return null;
-														}}
-													/>
-													<Bar dataKey="averageScore" radius={[0, 4, 4, 0]} maxBarSize={24}>
-														{subjectPerformance.map((entry, index) => (
-															<Cell
-																key={`cell-${index}`}
-																fill={
-																	entry.averageScore >= 80
-																		? 'var(--color-success)'
-																		: entry.averageScore >= 60
-																			? 'var(--color-primary)'
-																			: 'var(--color-warning)'
-																}
-															/>
-														))}
-													</Bar>
-												</BarChart>
-											</ResponsiveContainer>
-										</div>
+										<SubjectPerformanceChart subjectPerformance={subjectPerformance} />
 										<div className="space-y-3">
 											<h4 className="text-sm font-bold text-muted-foreground uppercase tracking-wider">
 												Score Distribution

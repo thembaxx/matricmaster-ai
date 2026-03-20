@@ -43,6 +43,7 @@ export function TestimonialsSection() {
 						className="p-8 rounded-[var(--radius-xl)] bg-card border border-border/50 hover:border-tiimo-lavender/30 transition-all duration-300"
 					>
 						<div className="flex items-center gap-1 mb-4">
+							{/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
 							{[1, 2, 3, 4, 5].map((i) => (
 								<HugeiconsIcon
 									key={`star-${i}`}

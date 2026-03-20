@@ -81,7 +81,7 @@ export function HistoryScrubber() {
 					<div className="absolute inset-0 flex justify-between px-2 -top-2">
 						{events.map((_, i) => (
 							<Button
-								key={`event-${i}`}
+								key={events[i].year}
 								type="button"
 								variant="ghost"
 								size="icon"

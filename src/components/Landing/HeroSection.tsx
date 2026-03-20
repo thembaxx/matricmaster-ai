@@ -100,6 +100,7 @@ export function HeroSection({ onAuthRequired }: HeroSectionProps) {
 					className="flex items-center gap-4 pt-4"
 				>
 					<div className="flex -space-x-3">
+						{/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
 						{[1, 2, 3, 4, 5].map((i) => (
 							<div
 								key={`avatar-${i}`}
@@ -156,6 +157,7 @@ export function HeroSection({ onAuthRequired }: HeroSectionProps) {
 									src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=400&h=400&fit=crop&crop=faces"
 									alt="Students studying together"
 									fill
+									sizes="(max-width: 768px) 100vw, 50vw"
 									className="object-cover rounded-[var(--radius-2xl)]"
 									priority
 								/>

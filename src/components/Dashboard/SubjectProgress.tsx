@@ -218,6 +218,7 @@ export function SubjectProgress() {
 								>
 									<h4 className="text-lg font-bold">Recommended for You</h4>
 									<div className="space-y-2">
+										{/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
 										{[1, 2, 3].map((i) => (
 											<div
 												key={`active-topic-${i}`}

@@ -35,31 +35,39 @@ export interface VoiceQuizSession {
 export async function startVoiceQuizSession(
 	participantId: string,
 	sharedTopic: string
-): Promise<VoiceQuizSession> {
-	const auth = await getAuth();
-	const session = await auth.api.getSession();
-	if (!session?.user) throw new Error('Unauthorized');
+): Promise<{ success: boolean; error?: string; data?: VoiceQuizSession }> {
+	try {
+		const auth = await getAuth();
+		const session = await auth.api.getSession();
+		if (!session?.user) throw new Error('Unauthorized');
 
-	const db = await getDb();
+		const db = await getDb();
 
-	const hostConfidences = await db.query.topicConfidence.findMany({
-		where: (tc, { eq }) => eq(tc.userId, session.user.id),
-		orderBy: (tc, { asc }) => [asc(tc.confidenceScore)],
-		limit: 10,
-	});
+		const hostConfidences = await db.query.topicConfidence.findMany({
+			where: (tc, { eq }) => eq(tc.userId, session.user.id),
+			orderBy: (tc, { asc }) => [asc(tc.confidenceScore)],
+			limit: 10,
+		});
 
-	const questions = generateQuizQuestions(sharedTopic, hostConfidences);
+		const questions = generateQuizQuestions(sharedTopic, hostConfidences);
 
-	return {
-		sessionId: crypto.randomUUID(),
-		hostId: session.user.id,
-		participantId,
-		sharedTopic,
-		questions,
-		currentQuestionIndex: 0,
-		status: 'waiting',
-		scores: { [session.user.id]: 0, [participantId]: 0 },
-	};
+		return {
+			success: true,
+			data: {
+				sessionId: crypto.randomUUID(),
+				hostId: session.user.id,
+				participantId,
+				sharedTopic,
+				questions,
+				currentQuestionIndex: 0,
+				status: 'waiting',
+				scores: { [session.user.id]: 0, [participantId]: 0 },
+			},
+		};
+	} catch (error) {
+		console.error('startVoiceQuizSession failed:', error);
+		return { success: false, error: 'Failed to start voice quiz session' };
+	}
 }
 
 function generateQuizQuestions(
@@ -196,40 +204,57 @@ export async function submitQuizAnswer(
 	_userId: string,
 	questionIndex: number,
 	answerIndex: number
-): Promise<{ correct: boolean; score: number }> {
-	const auth = await getAuth();
-	const session = await auth.api.getSession();
-	if (!session?.user) throw new Error('Unauthorized');
+): Promise<{ success: boolean; error?: string; data?: { correct: boolean; score: number } }> {
+	try {
+		const auth = await getAuth();
+		const session = await auth.api.getSession();
+		if (!session?.user) throw new Error('Unauthorized');
 
-	return {
-		correct: answerIndex === questionIndex,
-		score: answerIndex === questionIndex ? 10 : 0,
-	};
+		const correct = answerIndex === questionIndex;
+		return {
+			success: true,
+			data: {
+				correct,
+				score: correct ? 10 : 0,
+			},
+		};
+	} catch (error) {
+		console.error('submitQuizAnswer failed:', error);
+		return { success: false, error: 'Failed to submit quiz answer' };
+	}
 }
 
-export async function getSharedWeakTopic(userId1: string, userId2: string): Promise<string | null> {
-	const db = await getDb();
+export async function getSharedWeakTopic(
+	userId1: string,
+	userId2: string
+): Promise<{ success: boolean; error?: string; data?: string | null }> {
+	try {
+		const db = await getDb();
 
-	const confidences1 = await db.query.topicConfidence.findMany({
-		where: (tc, { eq }) => eq(tc.userId, userId1),
-		orderBy: (tc, { asc }) => [asc(tc.confidenceScore)],
-		limit: 5,
-	});
+		const confidences1 = await db.query.topicConfidence.findMany({
+			where: (tc, { eq }) => eq(tc.userId, userId1),
+			orderBy: (tc, { asc }) => [asc(tc.confidenceScore)],
+			limit: 5,
+		});
 
-	const confidences2 = await db.query.topicConfidence.findMany({
-		where: (tc, { eq }) => eq(tc.userId, userId2),
-		orderBy: (tc, { asc }) => [asc(tc.confidenceScore)],
-		limit: 5,
-	});
+		const confidences2 = await db.query.topicConfidence.findMany({
+			where: (tc, { eq }) => eq(tc.userId, userId2),
+			orderBy: (tc, { asc }) => [asc(tc.confidenceScore)],
+			limit: 5,
+		});
 
-	const topics1 = new Set(confidences1.map((c) => c.topic));
-	const topics2 = new Set(confidences2.map((c) => c.topic));
+		const topics1 = new Set(confidences1.map((c) => c.topic));
+		const topics2 = new Set(confidences2.map((c) => c.topic));
 
-	for (const topic of topics1) {
-		if (topics2.has(topic)) {
-			return topic;
+		for (const topic of topics1) {
+			if (topics2.has(topic)) {
+				return { success: true, data: topic };
+			}
 		}
-	}
 
-	return confidences1[0]?.topic || confidences2[0]?.topic || null;
+		return { success: true, data: confidences1[0]?.topic || confidences2[0]?.topic || null };
+	} catch (error) {
+		console.error('getSharedWeakTopic failed:', error);
+		return { success: false, error: 'Failed to get shared weak topic' };
+	}
 }

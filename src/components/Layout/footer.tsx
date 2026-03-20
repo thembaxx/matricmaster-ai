@@ -73,7 +73,7 @@ export function Footer() {
 							{socialLinks.map((social, index) => (
 								<m.div
 									key={social.label}
-									initial={{ opacity: 0, scale: 0 }}
+									initial={{ opacity: 0, scale: 0.95 }}
 									whileInView={{ opacity: 1, scale: 1 }}
 									viewport={{ once: true }}
 									transition={{ duration: 0.3, delay: index * 0.05 }}

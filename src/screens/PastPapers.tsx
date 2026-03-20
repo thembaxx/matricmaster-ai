@@ -5,7 +5,7 @@ import { HugeiconsIcon } from '@hugeicons/react';
 import { Icon } from '@iconify/react';
 import { useQuery } from '@tanstack/react-query';
 import { AnimatePresence, m } from 'framer-motion';
-import { memo, useCallback, useMemo, useState } from 'react';
+import { memo, useCallback, useMemo, useReducer } from 'react';
 import { PastPaperCard, PastPapersEmptyState } from '@/components/PastPapers/PastPapersList';
 import { BackgroundMesh } from '@/components/ui/background-mesh';
 import { Badge } from '@/components/ui/badge';
@@ -27,32 +27,90 @@ import { STAGGER_CONTAINER, STAGGER_ITEM } from '@/lib/animation-presets';
 import { getPastPapersAction } from '@/lib/db/actions';
 import { cn } from '@/lib/utils';
 
-interface FilterContentProps {
-	availableSubjects: string[];
-	availablePapers: string[];
-	availableMonths: string[];
+type FilterState = {
 	selectedSubjects: string[];
 	selectedPapers: string[];
 	selectedMonths: string[];
 	extractedOnly: boolean;
-	onToggleSubject: (subject: string) => void;
-	onTogglePaper: (paper: string) => void;
-	onToggleMonth: (month: string) => void;
-	onToggleExtracted: (value: boolean) => void;
+};
+
+type FilterAction =
+	| { type: 'TOGGLE_SUBJECT'; payload: string }
+	| { type: 'TOGGLE_PAPER'; payload: string }
+	| { type: 'TOGGLE_MONTH'; payload: string }
+	| { type: 'TOGGLE_EXTRACTED'; payload: boolean }
+	| { type: 'CLEAR_ALL' };
+
+function filterReducer(state: FilterState, action: FilterAction): FilterState {
+	switch (action.type) {
+		case 'TOGGLE_SUBJECT':
+			return {
+				...state,
+				selectedSubjects: state.selectedSubjects.includes(action.payload)
+					? state.selectedSubjects.filter((s) => s !== action.payload)
+					: [...state.selectedSubjects, action.payload],
+			};
+		case 'TOGGLE_PAPER':
+			return {
+				...state,
+				selectedPapers: state.selectedPapers.includes(action.payload)
+					? state.selectedPapers.filter((p) => p !== action.payload)
+					: [...state.selectedPapers, action.payload],
+			};
+		case 'TOGGLE_MONTH':
+			return {
+				...state,
+				selectedMonths: state.selectedMonths.includes(action.payload)
+					? state.selectedMonths.filter((m) => m !== action.payload)
+					: [...state.selectedMonths, action.payload],
+			};
+		case 'TOGGLE_EXTRACTED':
+			return { ...state, extractedOnly: action.payload };
+		case 'CLEAR_ALL':
+			return { selectedSubjects: [], selectedPapers: [], selectedMonths: [], extractedOnly: false };
+		default:
+			return state;
+	}
+}
+
+type UIState = {
+	searchQuery: string;
+	selectedYear: number | 'All';
+	isAdvancedFilterOpen: boolean;
+};
+
+type UIAction =
+	| { type: 'SET_SEARCH_QUERY'; payload: string }
+	| { type: 'SET_YEAR'; payload: number | 'All' }
+	| { type: 'TOGGLE_FILTER_PANEL'; payload: boolean };
+
+function uiReducer(state: UIState, action: UIAction): UIState {
+	switch (action.type) {
+		case 'SET_SEARCH_QUERY':
+			return { ...state, searchQuery: action.payload };
+		case 'SET_YEAR':
+			return { ...state, selectedYear: action.payload };
+		case 'TOGGLE_FILTER_PANEL':
+			return { ...state, isAdvancedFilterOpen: action.payload };
+		default:
+			return state;
+	}
+}
+
+interface FilterContentProps {
+	availableSubjects: string[];
+	availablePapers: string[];
+	availableMonths: string[];
+	filterState: FilterState;
+	dispatch: React.Dispatch<FilterAction>;
 }
 
 const FilterContent = memo(function FilterContent({
 	availableSubjects,
 	availablePapers,
 	availableMonths,
-	selectedSubjects,
-	selectedPapers,
-	selectedMonths,
-	extractedOnly,
-	onToggleSubject,
-	onTogglePaper,
-	onToggleMonth,
-	onToggleExtracted,
+	filterState,
+	dispatch,
 }: FilterContentProps) {
 	return (
 		<div className="space-y-8">
@@ -65,8 +123,8 @@ const FilterContent = memo(function FilterContent({
 						<div key={subject} className="flex items-center gap-3 cursor-pointer ios-active-scale">
 							<Checkbox
 								id={`subject-${subject}`}
-								checked={selectedSubjects.includes(subject)}
-								onCheckedChange={() => onToggleSubject(subject)}
+								checked={filterState.selectedSubjects.includes(subject)}
+								onCheckedChange={() => dispatch({ type: 'TOGGLE_SUBJECT', payload: subject })}
 							/>
 							<label
 								htmlFor={`subject-${subject}`}
@@ -88,8 +146,8 @@ const FilterContent = memo(function FilterContent({
 						<div key={paper} className="flex items-center gap-3 cursor-pointer ios-active-scale">
 							<Checkbox
 								id={`paper-${paper}`}
-								checked={selectedPapers.includes(paper)}
-								onCheckedChange={() => onTogglePaper(paper)}
+								checked={filterState.selectedPapers.includes(paper)}
+								onCheckedChange={() => dispatch({ type: 'TOGGLE_PAPER', payload: paper })}
 							/>
 							<label
 								htmlFor={`paper-${paper}`}
@@ -111,8 +169,8 @@ const FilterContent = memo(function FilterContent({
 						<div key={month} className="flex items-center gap-3 cursor-pointer ios-active-scale">
 							<Checkbox
 								id={`month-${month}`}
-								checked={selectedMonths.includes(month)}
-								onCheckedChange={() => onToggleMonth(month)}
+								checked={filterState.selectedMonths.includes(month)}
+								onCheckedChange={() => dispatch({ type: 'TOGGLE_MONTH', payload: month })}
 							/>
 							<label
 								htmlFor={`month-${month}`}
@@ -135,7 +193,10 @@ const FilterContent = memo(function FilterContent({
 							Show papers with AI-extracted questions
 						</p>
 					</div>
-					<Switch checked={extractedOnly} onCheckedChange={onToggleExtracted} />
+					<Switch
+						checked={filterState.extractedOnly}
+						onCheckedChange={(v) => dispatch({ type: 'TOGGLE_EXTRACTED', payload: v })}
+					/>
 				</div>
 			</div>
 		</div>
@@ -145,13 +206,18 @@ const FilterContent = memo(function FilterContent({
 import { PastPapersSkeleton } from '@/components/PastPapersSkeleton';
 
 export default function PastPapers() {
-	const [searchQuery, setSearchQuery] = useState('');
-	const [selectedYear, setSelectedYear] = useState<number | 'All'>('All');
-	const [isAdvancedFilterOpen, setIsAdvancedFilterOpen] = useState(false);
-	const [selectedSubjects, setSelectedSubjects] = useState<string[]>([]);
-	const [selectedPapers, setSelectedPapers] = useState<string[]>([]);
-	const [selectedMonths, setSelectedMonths] = useState<string[]>([]);
-	const [extractedOnly, setExtractedOnly] = useState(false);
+	const [uiState, uiDispatch] = useReducer(uiReducer, {
+		searchQuery: '',
+		selectedYear: 'All',
+		isAdvancedFilterOpen: false,
+	});
+
+	const [filterState, filterDispatch] = useReducer(filterReducer, {
+		selectedSubjects: [],
+		selectedPapers: [],
+		selectedMonths: [],
+		extractedOnly: false,
+	});
 
 	const years = useMemo(() => ['All', 2024, 2023, 2022, 2021, 2020], []);
 
@@ -168,60 +234,29 @@ export default function PastPapers() {
 	const availableMonths = useMemo(() => [...new Set(papers.map((p) => p.month))].sort(), [papers]);
 
 	const activeFilterCount =
-		selectedSubjects.length +
-		selectedPapers.length +
-		selectedMonths.length +
-		(extractedOnly ? 1 : 0);
+		filterState.selectedSubjects.length +
+		filterState.selectedPapers.length +
+		filterState.selectedMonths.length +
+		(filterState.extractedOnly ? 1 : 0);
 
 	const clearAllFilters = useCallback(() => {
-		setSelectedSubjects([]);
-		setSelectedPapers([]);
-		setSelectedMonths([]);
-		setExtractedOnly(false);
+		filterDispatch({ type: 'CLEAR_ALL' });
 	}, []);
 
-	const toggleArrayItem = useCallback(
-		(setArr: (v: string[] | ((prev: string[]) => string[])) => void, item: string) => {
-			setArr((prev) => {
-				if (prev.includes(item)) {
-					return prev.filter((i) => i !== item);
-				}
-				return [...prev, item];
-			});
-		},
-		[]
-	);
-
-	const handleToggleSubject = useCallback(
-		(subject: string) => toggleArrayItem(setSelectedSubjects, subject),
-		[toggleArrayItem]
-	);
-
-	const handleTogglePaper = useCallback(
-		(paper: string) => toggleArrayItem(setSelectedPapers, paper),
-		[toggleArrayItem]
-	);
-
-	const handleToggleMonth = useCallback(
-		(month: string) => toggleArrayItem(setSelectedMonths, month),
-		[toggleArrayItem]
-	);
-
-	const handleToggleExtracted = useCallback((value: boolean) => setExtractedOnly(value), []);
-
-	// Performance: Memoize filtered results to avoid re-filtering on every render
-	// (e.g. when opening drawers or clicking unrelated UI elements)
 	const filteredPapers = useMemo(() => {
 		return papers.filter((paper) => {
 			const matchesSearch =
-				paper.subject.toLowerCase().includes(searchQuery.toLowerCase()) ||
-				paper.paper.toLowerCase().includes(searchQuery.toLowerCase());
-			const matchesYear = selectedYear === 'All' || paper.year === selectedYear;
+				paper.subject.toLowerCase().includes(uiState.searchQuery.toLowerCase()) ||
+				paper.paper.toLowerCase().includes(uiState.searchQuery.toLowerCase());
+			const matchesYear = uiState.selectedYear === 'All' || paper.year === uiState.selectedYear;
 			const matchesSubjects =
-				selectedSubjects.length === 0 || selectedSubjects.includes(paper.subject);
-			const matchesPapers = selectedPapers.length === 0 || selectedPapers.includes(paper.paper);
-			const matchesMonths = selectedMonths.length === 0 || selectedMonths.includes(paper.month);
-			const matchesExtracted = !extractedOnly || paper.isExtracted;
+				filterState.selectedSubjects.length === 0 ||
+				filterState.selectedSubjects.includes(paper.subject);
+			const matchesPapers =
+				filterState.selectedPapers.length === 0 || filterState.selectedPapers.includes(paper.paper);
+			const matchesMonths =
+				filterState.selectedMonths.length === 0 || filterState.selectedMonths.includes(paper.month);
+			const matchesExtracted = !filterState.extractedOnly || paper.isExtracted;
 			return (
 				matchesSearch &&
 				matchesYear &&
@@ -233,19 +268,18 @@ export default function PastPapers() {
 		});
 	}, [
 		papers,
-		searchQuery,
-		selectedYear,
-		selectedSubjects,
-		selectedPapers,
-		selectedMonths,
-		extractedOnly,
+		uiState.searchQuery,
+		uiState.selectedYear,
+		filterState.selectedSubjects,
+		filterState.selectedPapers,
+		filterState.selectedMonths,
+		filterState.extractedOnly,
 	]);
 
 	return (
 		<div className="flex flex-col h-full min-w-0 bg-background relative overflow-x-hidden lg:px-8">
 			<BackgroundMesh variant="subtle" />
 
-			{/* Header */}
 			<header className="px-4 sm:px-6 pb-6 sm:py-12 pt-24 bg-background shrink-0 lg:px-0">
 				<div className="max-w-7xl mx-auto w-full space-y-6 sm:space-y-12">
 					<div className="flex flex-col md:flex-row md:items-center justify-between gap-4 sm:gap-6">
@@ -271,7 +305,7 @@ export default function PastPapers() {
 							)}
 							<Button
 								variant="outline"
-								onClick={() => setIsAdvancedFilterOpen(true)}
+								onClick={() => uiDispatch({ type: 'TOGGLE_FILTER_PANEL', payload: true })}
 								aria-label={`Advanced Faders${activeFilterCount > 0 ? `, ${activeFilterCount} active` : ''}`}
 								className={cn(
 									'rounded-2xl border-2 font-black text-[10px] uppercase tracking-widest px-4 sm:px-6 h-10 sm:h-12 ios-active-scale',
@@ -296,14 +330,14 @@ export default function PastPapers() {
 								className="w-5 sm:w-6 h-5 absolute left-4 z-1 sm:h-6 text-label-tertiary"
 							/>
 							<Input
-								value={searchQuery}
-								onChange={(e) => setSearchQuery(e.target.value)}
+								value={uiState.searchQuery}
+								onChange={(e) => uiDispatch({ type: 'SET_SEARCH_QUERY', payload: e.target.value })}
 								placeholder="Search"
 								className="pl-12 sm:pl-16 placeholder:font-medium placeholder:capitalize pr-12 sm:pr-16 bg-card backdrop-blur-md border-border border-2 h-12 sm:h-16 rounded-xl sm:rounded-2xl text-base sm:text-lg font-black uppercase tracking-tight shadow-inner"
 								aria-label="Search past papers"
 							/>
 							<AnimatePresence>
-								{searchQuery && (
+								{uiState.searchQuery && (
 									<m.button
 										initial={{ scale: 0.95, opacity: 0 }}
 										animate={{ scale: 1, opacity: 1 }}
@@ -311,7 +345,7 @@ export default function PastPapers() {
 										title="Clear search"
 										aria-label="Clear search"
 										type="button"
-										onClick={() => setSearchQuery('')}
+										onClick={() => uiDispatch({ type: 'SET_SEARCH_QUERY', payload: '' })}
 										className="absolute right-4 sm:right-6 top-1/2 -translate-y-1/2 text-label-tertiary hover:text-foreground transition-colors ios-active-scale"
 									>
 										<HugeiconsIcon icon={Cancel01Icon} className="w-5 sm:w-6 h-5 sm:h-6" />
@@ -325,10 +359,10 @@ export default function PastPapers() {
 									key={year}
 									type="button"
 									variant="ghost"
-									onClick={() => setSelectedYear(year as any)}
-									aria-pressed={selectedYear === year}
+									onClick={() => uiDispatch({ type: 'SET_YEAR', payload: year as number | 'All' })}
+									aria-pressed={uiState.selectedYear === year}
 									className={`rounded-xl sm:rounded-2xl px-4 sm:px-8 py-2 sm:py-3 text-[11px] font-black uppercase tracking-widest transition-all h-10 sm:h-16 whitespace-nowrap ios-active-scale ${
-										selectedYear === year
+										uiState.selectedYear === year
 											? 'bg-primary text-primary-foreground shadow-2xl shadow-primary/30'
 											: 'bg-secondary text-label-secondary border-2 border-transparent hover:border-border backdrop-blur-sm'
 									}`}
@@ -372,7 +406,10 @@ export default function PastPapers() {
 				</main>
 			</ScrollArea>
 
-			<Sheet open={isAdvancedFilterOpen} onOpenChange={setIsAdvancedFilterOpen}>
+			<Sheet
+				open={uiState.isAdvancedFilterOpen}
+				onOpenChange={(open) => uiDispatch({ type: 'TOGGLE_FILTER_PANEL', payload: open })}
+			>
 				<SheetContent className="w-full sm:max-w-lg hidden lg:block">
 					<SheetHeader>
 						<SheetTitle className="text-xl font-black uppercase tracking-tight">
@@ -384,14 +421,8 @@ export default function PastPapers() {
 							availableSubjects={availableSubjects}
 							availablePapers={availablePapers}
 							availableMonths={availableMonths}
-							selectedSubjects={selectedSubjects}
-							selectedPapers={selectedPapers}
-							selectedMonths={selectedMonths}
-							extractedOnly={extractedOnly}
-							onToggleSubject={handleToggleSubject}
-							onTogglePaper={handleTogglePaper}
-							onToggleMonth={handleToggleMonth}
-							onToggleExtracted={handleToggleExtracted}
+							filterState={filterState}
+							dispatch={filterDispatch}
 						/>
 					</div>
 					<div className="border-t pt-4 flex gap-3">
@@ -403,7 +434,7 @@ export default function PastPapers() {
 							Reset
 						</Button>
 						<Button
-							onClick={() => setIsAdvancedFilterOpen(false)}
+							onClick={() => uiDispatch({ type: 'TOGGLE_FILTER_PANEL', payload: false })}
 							className="flex-1 rounded-2xl font-black text-[10px] uppercase tracking-widest ios-active-scale"
 						>
 							Apply Filters
@@ -412,7 +443,10 @@ export default function PastPapers() {
 				</SheetContent>
 			</Sheet>
 
-			<Drawer open={isAdvancedFilterOpen} onOpenChange={setIsAdvancedFilterOpen}>
+			<Drawer
+				open={uiState.isAdvancedFilterOpen}
+				onOpenChange={(open) => uiDispatch({ type: 'TOGGLE_FILTER_PANEL', payload: open })}
+			>
 				<DrawerContent className="lg:hidden">
 					<DrawerHeader>
 						<DrawerTitle className="text-xl font-black uppercase tracking-tight text-left">
@@ -424,19 +458,13 @@ export default function PastPapers() {
 							availableSubjects={availableSubjects}
 							availablePapers={availablePapers}
 							availableMonths={availableMonths}
-							selectedSubjects={selectedSubjects}
-							selectedPapers={selectedPapers}
-							selectedMonths={selectedMonths}
-							extractedOnly={extractedOnly}
-							onToggleSubject={handleToggleSubject}
-							onTogglePaper={handleTogglePaper}
-							onToggleMonth={handleToggleMonth}
-							onToggleExtracted={handleToggleExtracted}
+							filterState={filterState}
+							dispatch={filterDispatch}
 						/>
 					</div>
 					<DrawerFooter>
 						<Button
-							onClick={() => setIsAdvancedFilterOpen(false)}
+							onClick={() => uiDispatch({ type: 'TOGGLE_FILTER_PANEL', payload: false })}
 							className="w-full rounded-2xl font-black text-[10px] uppercase tracking-widest ios-active-scale"
 						>
 							Apply Filters

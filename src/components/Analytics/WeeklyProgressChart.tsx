@@ -21,8 +21,8 @@ export function WeeklyProgressChart({ activity }: { activity: DailyActivity[] })
 			</CardHeader>
 			<CardContent>
 				<div className="h-[200px] flex items-end gap-2">
-					{activity.map((day, idx) => (
-						<div key={idx} className="flex-1 flex flex-col items-center gap-2">
+					{activity.map((day) => (
+						<div key={day.date} className="flex-1 flex flex-col items-center gap-2">
 							<div
 								className="w-full bg-primary rounded-t"
 								style={{ height: `${(day.studyMinutes / 150) * 100}%`, minHeight: '20px' }}

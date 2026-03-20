@@ -107,6 +107,7 @@ export function DailyMission() {
 				</CardHeader>
 				<CardContent>
 					<div className="space-y-3">
+						{/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
 						{[1, 2, 3].map((i) => (
 							<Skeleton key={`skeleton-${i}`} className="h-16 rounded-xl" />
 						))}
@@ -137,7 +138,7 @@ export function DailyMission() {
 			<CardContent className="space-y-3">
 				{missions.slice(0, 3).map((mission, index) => (
 					<m.button
-						key={`${mission.topic}-${mission.subject}-${index}`}
+						key={`${mission.topic}-${mission.subject}`}
 						type="button"
 						initial={{ opacity: 0, x: -20 }}
 						animate={{ opacity: 1, x: 0 }}

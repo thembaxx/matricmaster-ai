@@ -79,6 +79,7 @@ export function CommentEmptyState() {
 export function CommentLoadingSkeleton() {
 	return (
 		<div className="space-y-4">
+			{/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
 			{[1, 2].map((i) => (
 				<Skeleton key={`skeleton-${i}`} className="h-32 rounded-[2rem]" />
 			))}

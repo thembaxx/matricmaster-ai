@@ -44,7 +44,7 @@ export function SuggestedReview() {
 			</p>
 			<ul className="space-y-2">
 				{mistakes.map((m, i) => (
-					<li key={`mistake-${i}`} className="text-sm font-medium">
+					<li key={m.id ?? `mistake-${i}`} className="text-sm font-medium">
 						• {m.topic}
 					</li>
 				))}

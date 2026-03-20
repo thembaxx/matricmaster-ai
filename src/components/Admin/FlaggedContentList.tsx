@@ -3,13 +3,14 @@ import {
 	Chat01Icon,
 	File01Icon,
 	Search01Icon,
-	Shield01Icon,
 	Tick01Icon,
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
+import { SearchX } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import { EmptyState } from '@/components/ui/EmptyState';
 import { Input } from '@/components/ui/input';
 import type { ContentFlag } from './moderation-types';
 import { getSeverityColor, getStatusColor } from './moderation-types';
@@ -127,15 +128,11 @@ export function FlaggedContentList({
 			</div>
 
 			{filteredFlags.length === 0 && (
-				<Card>
-					<CardContent className="py-12 text-center">
-						<HugeiconsIcon
-							icon={Shield01Icon}
-							className="h-12 w-12 mx-auto mb-4 text-muted-foreground"
-						/>
-						<p className="text-muted-foreground">No flagged content to review</p>
-					</CardContent>
-				</Card>
+				<EmptyState
+					icon={SearchX}
+					title="No matching content"
+					description="No flagged content matches your current search or filter criteria."
+				/>
 			)}
 		</>
 	);

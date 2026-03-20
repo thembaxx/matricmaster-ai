@@ -119,9 +119,9 @@ export function GlassOrb() {
 							</div>
 
 							<div className="px-4 py-2 border-b border-border/30 flex gap-2 overflow-x-auto">
-								{suggestedPrompts.map((prompt, i) => (
+								{suggestedPrompts.map((prompt) => (
 									<Button
-										key={`prompt-${i}`}
+										key={prompt}
 										type="button"
 										variant="ghost"
 										onClick={() => {
@@ -174,7 +174,7 @@ export function GlassOrb() {
 
 				<m.button
 					onClick={() => setIsOpen(!isOpen)}
-					initial={{ scale: 0 }}
+					initial={{ scale: 0.95, opacity: 0 }}
 					animate={{ scale: 1 }}
 					whileHover={{ scale: 1.05 }}
 					whileTap={{ scale: 0.95 }}

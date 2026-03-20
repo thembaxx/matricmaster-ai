@@ -93,6 +93,7 @@ export function ProjectileMotion({
 						y
 					</text>
 
+					{/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
 					{[...Array(6)].map((_, i) => (
 						<line
 							key={`grid-${i}`}
