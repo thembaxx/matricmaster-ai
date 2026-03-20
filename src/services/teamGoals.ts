@@ -197,21 +197,37 @@ export async function getTeamGoals(currentUserId?: string): Promise<TeamGoalData
 		limit: 20,
 	});
 
+	const goalIds = activeGoals.map((g) => g.id);
+
+	const allMembers =
+		goalIds.length > 0
+			? await db.query.teamGoalMembers.findMany({
+					where: inArray(teamGoalMembers.goalId, goalIds),
+				})
+			: [];
+
+	const membersByGoal = new Map<string, typeof allMembers>();
+	for (const member of allMembers) {
+		const existing = membersByGoal.get(member.goalId) || [];
+		existing.push(member);
+		membersByGoal.set(member.goalId, existing);
+	}
+
+	const allUserIds = [...new Set(allMembers.map((m) => m.userId))];
+	const creatorIds = activeGoals.map((g) => g.creatorId);
+	const uniqueUserIds = [...new Set([...allUserIds, ...creatorIds])];
+
+	const allUsers =
+		uniqueUserIds.length > 0
+			? await db.select().from(user).where(inArray(user.id, uniqueUserIds))
+			: [];
+
+	const userMap = new Map(allUsers.map((u) => [u.id, u]));
+
 	const result: TeamGoalData[] = [];
 
 	for (const goal of activeGoals) {
-		const members = await db.query.teamGoalMembers.findMany({
-			where: eq(teamGoalMembers.goalId, goal.id),
-		});
-
-		const memberUserIds = members.map((m) => m.userId);
-		const memberUsers =
-			memberUserIds.length > 0
-				? await db.select().from(user).where(inArray(user.id, memberUserIds))
-				: [];
-
-		const userMap = new Map(memberUsers.map((u) => [u.id, u]));
-
+		const members = membersByGoal.get(goal.id) || [];
 		const creatorUser = userMap.get(goal.creatorId);
 		const currentUserMember = userId ? members.find((m) => m.userId === userId) : undefined;
 

@@ -9,6 +9,7 @@ interface NotificationsTabProps {
 	pushNotifications: boolean;
 	studyReminders: boolean;
 	achievementAlerts: boolean;
+	whatsappNotifications: boolean;
 	handleNotificationChange: (key: string, value: boolean) => void;
 }
 
@@ -17,6 +18,7 @@ export function NotificationsTab({
 	pushNotifications,
 	studyReminders,
 	achievementAlerts,
+	whatsappNotifications,
 	handleNotificationChange,
 }: NotificationsTabProps) {
 	return (
@@ -45,6 +47,17 @@ export function NotificationsTab({
 					<Switch
 						checked={pushNotifications}
 						onCheckedChange={(v) => handleNotificationChange('pushNotifications', v)}
+					/>
+				</div>
+				<Separator />
+				<div className="flex items-center justify-between">
+					<div>
+						<p className="font-medium">WhatsApp Notifications</p>
+						<p className="text-sm text-muted-foreground">Receive updates via WhatsApp</p>
+					</div>
+					<Switch
+						checked={whatsappNotifications}
+						onCheckedChange={(v) => handleNotificationChange('whatsappNotifications', v)}
 					/>
 				</div>
 				<Separator />
