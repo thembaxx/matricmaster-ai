@@ -10,4 +10,6 @@ export default defineConfig({
 	dbCredentials: {
 		url: process.env.SQLITE_DB_PATH || './data/sqlite.db',
 	},
+	verbose: true,
+	forceConsistentCasing: true,
 });
