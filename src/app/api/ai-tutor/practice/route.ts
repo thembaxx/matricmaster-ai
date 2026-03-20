@@ -89,8 +89,8 @@ Generate ${count} practice problems now. Return only valid JSON.`;
 		let problems: PracticeProblem[];
 		try {
 			problems = JSON.parse(jsonStr);
-		} catch {
-			console.debug('Failed to parse practice problems JSON:', jsonStr);
+		} catch (error) {
+			console.debug('Failed to parse practice problems JSON:', error);
 			return NextResponse.json({ error: 'Failed to parse generated problems' }, { status: 500 });
 		}
 

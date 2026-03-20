@@ -5,7 +5,7 @@ export default function FocusRoomsLoading() {
 				<div className="h-8 w-48 bg-muted rounded mx-auto" />
 				<div className="grid gap-4 md:grid-cols-2">
 					{[1, 2, 3, 4].map((i) => (
-						<div key={i} className="h-48 bg-muted rounded-2xl" />
+						<div key={`skeleton-${i}`} className="h-48 bg-muted rounded-2xl" />
 					))}
 				</div>
 			</div>

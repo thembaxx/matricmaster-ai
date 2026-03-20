@@ -13,7 +13,8 @@ function parseJsonField<T>(value: unknown, defaultValue: T): T {
 	if (typeof value === 'string') {
 		try {
 			return JSON.parse(value) as T;
-		} catch {
+		} catch (error) {
+			console.warn('Failed to parse JSON field:', error);
 			return defaultValue;
 		}
 	}

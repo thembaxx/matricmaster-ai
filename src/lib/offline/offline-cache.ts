@@ -271,7 +271,8 @@ export async function isStorageAvailable(): Promise<boolean> {
 		const estimate = await navigator.storage.estimate();
 		const percentage = (estimate.usage ?? 0) / (estimate.quota ?? 1);
 		return percentage < MAX_STORAGE_PERCENT;
-	} catch {
+	} catch (error) {
+		console.warn('Failed to check storage estimate:', error);
 		return false;
 	}
 }

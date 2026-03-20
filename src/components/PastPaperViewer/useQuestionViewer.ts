@@ -108,7 +108,8 @@ export function useQuestionViewer(paper: PastPaperData): QuestionViewerState {
 			} else {
 				toast.error(result.error || 'Failed to save flashcard');
 			}
-		} catch {
+		} catch (error) {
+			console.error('Failed to save flashcard:', error);
 			toast.error('Failed to save flashcard');
 		} finally {
 			setIsSavingToFlashcards(false);

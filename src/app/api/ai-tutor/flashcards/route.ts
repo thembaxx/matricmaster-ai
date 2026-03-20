@@ -84,8 +84,8 @@ Generate ${count} flashcards now. Return only valid JSON.`;
 		let flashcards: Flashcard[];
 		try {
 			flashcards = JSON.parse(jsonStr);
-		} catch {
-			console.debug('Failed to parse flashcards JSON:', jsonStr);
+		} catch (error) {
+			console.debug('Failed to parse flashcards JSON:', error);
 			return NextResponse.json({ error: 'Failed to parse generated flashcards' }, { status: 500 });
 		}
 

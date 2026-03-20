@@ -44,7 +44,8 @@ function isValidPdfUrl(urlString: string): boolean {
 		}
 
 		return true;
-	} catch {
+	} catch (error) {
+		console.warn('Failed to validate origin:', error);
 		return false;
 	}
 }

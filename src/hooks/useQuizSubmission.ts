@@ -22,7 +22,8 @@ export function useQuizSubmission() {
 			try {
 				await submitFn();
 				setState({ isSubmitting: false, error: null, localSaveSuccessful: true });
-			} catch {
+			} catch (error) {
+				console.warn('Cloud submission failed, trying local fallback:', error);
 				try {
 					localSaveFn();
 					setState({
@@ -30,7 +31,8 @@ export function useQuizSubmission() {
 						error: 'Cloud sync failed. Your progress will be saved locally.',
 						localSaveSuccessful: true,
 					});
-				} catch {
+				} catch (localError) {
+					console.error('Local save also failed:', localError);
 					setState({
 						isSubmitting: false,
 						error: 'Failed to save progress. Please try again.',

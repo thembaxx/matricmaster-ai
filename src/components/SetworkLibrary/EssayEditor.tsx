@@ -63,7 +63,8 @@ export function EssayEditor({ topic, prompt }: EssayEditorProps) {
 			} else {
 				throw new Error('Invalid response');
 			}
-		} catch {
+		} catch (error) {
+			console.error('Failed to get AI feedback:', error);
 			toast.error('Could not get AI feedback. Please try again.');
 		} finally {
 			setIsLoading(false);
@@ -147,7 +148,7 @@ export function EssayEditor({ topic, prompt }: EssayEditorProps) {
 							<ul className="space-y-1">
 								{feedback.strengths.map((s, i) => (
 									<li
-										key={i}
+										key={`strength-${i}`}
 										className="text-sm text-muted-foreground pl-3 border-l-2 border-green-500/30"
 									>
 										{s}
@@ -165,7 +166,7 @@ export function EssayEditor({ topic, prompt }: EssayEditorProps) {
 							<ul className="space-y-1">
 								{feedback.improvements.map((s, i) => (
 									<li
-										key={i}
+										key={`improvement-${i}`}
 										className="text-sm text-muted-foreground pl-3 border-l-2 border-amber-500/30"
 									>
 										{s}

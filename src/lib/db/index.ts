@@ -37,7 +37,8 @@ class DatabaseManager {
 			this.isConnected = connected;
 			this.initialized = true;
 			return connected;
-		} catch {
+		} catch (error) {
+			console.warn('PostgreSQL connection failed:', error);
 			this.initialized = true;
 			this.isConnected = false;
 			return false;
@@ -52,7 +53,8 @@ class DatabaseManager {
 		try {
 			this._db = pgManagerInstance.getDb();
 			return this._db;
-		} catch {
+		} catch (error) {
+			console.warn('Failed to get database:', error);
 			throw new Error('Database not connected. Call ensureConnected() first.');
 		}
 	}
@@ -60,7 +62,8 @@ class DatabaseManager {
 	public getClient() {
 		try {
 			return pgManagerInstance.getClient();
-		} catch {
+		} catch (error) {
+			console.warn('Failed to get PostgreSQL client:', error);
 			return null;
 		}
 	}

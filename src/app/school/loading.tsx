@@ -5,7 +5,7 @@ export default function SchoolLoading() {
 				<div className="h-10 w-32 bg-muted rounded mx-auto" />
 				<div className="space-y-4">
 					{[1, 2, 3].map((i) => (
-						<div key={i} className="h-24 bg-muted rounded-xl" />
+						<div key={`skeleton-${i}`} className="h-24 bg-muted rounded-xl" />
 					))}
 				</div>
 			</div>

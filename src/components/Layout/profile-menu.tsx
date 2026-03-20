@@ -86,7 +86,8 @@ export function ProfileMenu({
 									window.location.href = '/sign-in';
 								}
 							}, 500);
-						} catch {
+						} catch (error) {
+							console.error('Sign out failed:', error);
 							// Force navigation on error
 							window.location.href = '/sign-in';
 						}

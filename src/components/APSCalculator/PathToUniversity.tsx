@@ -74,7 +74,10 @@ export function PathToUniversity({
 
 							<div className="space-y-1">
 								{goal.improvements.map((imp, i) => (
-									<p key={i} className="text-xs text-muted-foreground flex items-center gap-2">
+									<p
+										key={`improvement-${i}`}
+										className="text-xs text-muted-foreground flex items-center gap-2"
+									>
 										<TrendingUp className="w-3 h-3 text-green-500" />
 										{imp}
 									</p>

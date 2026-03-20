@@ -209,9 +209,10 @@ export default function Lessons() {
 						{ id: 'life_sciences', name: 'Life Sciences', icon: LayoutLeftIcon },
 						{ id: 'languages', name: 'Languages', icon: TranslateIcon },
 					].map((cat) => (
-						<button
+						<Button
 							key={cat.id}
 							type="button"
+							variant="ghost"
 							onClick={() => setActiveCategory(cat.id)}
 							aria-pressed={activeCategory === cat.id ? 'true' : 'false'}
 							className={`flex items-center gap-1.5 sm:gap-2 px-4 sm:px-5 py-2.5 sm:py-3 rounded-full text-xs sm:text-sm font-bold whitespace-nowrap transition-all border shadow-sm ${
@@ -225,7 +226,7 @@ export default function Lessons() {
 								className={`w-4 h-4 ${activeCategory === cat.id ? 'text-primary' : 'text-muted-foreground'}`}
 							/>
 							{cat.name}
-						</button>
+						</Button>
 					))}
 				</nav>
 			</header>

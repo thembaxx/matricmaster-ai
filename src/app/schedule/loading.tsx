@@ -9,12 +9,12 @@ export default function ScheduleLoading() {
 			</div>
 			<div className="grid grid-cols-7 gap-2">
 				{Array.from({ length: 7 }).map((_, i) => (
-					<Skeleton key={i} className="h-12 rounded-lg" />
+					<Skeleton key={`skeleton-${i}`} className="h-12 rounded-lg" />
 				))}
 			</div>
 			<div className="space-y-3">
 				{Array.from({ length: 5 }).map((_, i) => (
-					<Skeleton key={i} className="h-20 rounded-xl" />
+					<Skeleton key={`skeleton-${i}`} className="h-20 rounded-xl" />
 				))}
 			</div>
 		</div>

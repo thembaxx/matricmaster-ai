@@ -273,7 +273,8 @@ class SyncEngine {
 	private async ensurePostgresConnected(): Promise<boolean> {
 		try {
 			return await pgManager.waitForConnection(3, 2000);
-		} catch {
+		} catch (error) {
+			console.error('Failed to connect to PostgreSQL:', error);
 			return false;
 		}
 	}
@@ -281,7 +282,8 @@ class SyncEngine {
 	private async ensureSQLiteConnected(): Promise<boolean> {
 		try {
 			return await sqliteManager.connect();
-		} catch {
+		} catch (error) {
+			console.error('Failed to connect to SQLite:', error);
 			return false;
 		}
 	}

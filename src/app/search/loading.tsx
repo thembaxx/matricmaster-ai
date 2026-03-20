@@ -6,7 +6,7 @@ export default function SearchLoading() {
 			<Skeleton className="h-14 w-full rounded-xl" />
 			<div className="space-y-3">
 				{Array.from({ length: 8 }).map((_, i) => (
-					<div key={i} className="flex gap-3">
+					<div key={`skeleton-${i}`} className="flex gap-3">
 						<Skeleton className="h-12 w-12 rounded-lg shrink-0" />
 						<div className="flex-1 space-y-2">
 							<Skeleton className="h-5 w-3/4" />

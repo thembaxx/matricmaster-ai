@@ -82,7 +82,7 @@ export function ElementQuiz({
 								>
 									{quizQuestions[currentQuestion].options.map((option, idx) => (
 										<div
-											key={idx}
+											key={`option-${idx}`}
 											className={cn(
 												'flex items-center gap-3 p-4 rounded-xl border-2 transition-all cursor-pointer',
 												showExplanation

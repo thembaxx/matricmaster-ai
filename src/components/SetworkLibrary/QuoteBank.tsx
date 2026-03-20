@@ -4,6 +4,7 @@ import { BookOpenIcon, CopyIcon, Search01Icon } from '@hugeicons/core-free-icons
 import { HugeiconsIcon } from '@hugeicons/react';
 import { useState } from 'react';
 import { toast } from 'sonner';
+import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import {
@@ -112,14 +113,16 @@ export function QuoteBank({ setworks }: QuoteBankProps) {
 							<p className="flex-1">
 								<span className="font-medium italic">"{quote.text}"</span>
 							</p>
-							<button
+							<Button
 								type="button"
+								variant="ghost"
+								size="icon"
 								onClick={() => handleCopy(quote.text)}
-								className="shrink-0 p-1.5 rounded-md hover:bg-secondary transition-colors"
+								className="shrink-0 p-1.5 rounded-md hover:bg-secondary"
 								title="Copy quote"
 							>
 								<HugeiconsIcon icon={CopyIcon} className="w-4 h-4" />
-							</button>
+							</Button>
 						</div>
 						<div className="mt-3 flex flex-wrap items-center gap-2 text-xs">
 							<span className="text-muted-foreground">— {quote.speaker}</span>

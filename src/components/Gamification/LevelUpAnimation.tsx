@@ -88,7 +88,7 @@ export function LevelUpAnimation({
 						>
 							{Array.from({ length: 5 }).map((_, i) => (
 								<m.div
-									key={i}
+									key={`star-${i}`}
 									animate={{
 										rotate: [0, -15, 15, 0],
 										y: [0, -5, 0],

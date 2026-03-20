@@ -125,7 +125,7 @@ export const ProgressBarWithSegments = memo(function ProgressBarWithSegments({
 			<div className="flex gap-1">
 				{Array.from({ length: segments }).map((_, i) => (
 					<div
-						key={i}
+						key={`segment-${i}`}
 						className={cn(
 							'flex-1 rounded-full transition-all duration-300',
 							sizeStyles[size],

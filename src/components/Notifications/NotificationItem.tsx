@@ -86,7 +86,7 @@ export function NotificationItem({
 							<div className="flex gap-2 mt-3">
 								{notification.actions.map((action, i) => (
 									<Button
-										key={i}
+										key={`action-${i}`}
 										variant={
 											action.variant === 'outline'
 												? 'outline'

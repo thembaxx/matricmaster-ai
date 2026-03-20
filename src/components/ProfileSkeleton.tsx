@@ -47,7 +47,10 @@ export function ProfileSkeleton() {
 
 						<div className="grid grid-cols-1 gap-6">
 							{[1, 2, 3].map((i) => (
-								<Card key={i} className="p-8 rounded-[2rem] border border-border bg-card/50">
+								<Card
+									key={`skeleton-${i}`}
+									className="p-8 rounded-[2rem] border border-border bg-card/50"
+								>
 									<div className="flex items-center gap-8">
 										<Skeleton className="w-20 h-20 rounded-[1.5rem]" />
 										<div className="space-y-2">

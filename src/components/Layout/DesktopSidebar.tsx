@@ -17,6 +17,7 @@ import {
 	GridIcon,
 	Home01Icon,
 	Key01Icon,
+	LaptopSettingsIcon,
 	Layers01Icon,
 	LayoutLeftIcon,
 	MapsIcon,
@@ -57,6 +58,7 @@ import {
 } from '@/components/ui/sidebar';
 import { authClient } from '@/lib/auth-client';
 import { cn } from '@/lib/utils';
+import type { Theme } from '@/stores/useThemeStore';
 import { ProfileMenu } from './profile-menu';
 
 type AuthUser = typeof authClient.$Infer.Session.user;
@@ -165,10 +167,10 @@ type AppSidebarProps = {
 	user: AuthUser;
 	pathname: string;
 	theme: string;
-	onToggleTheme: () => void;
+	onSetTheme: (theme: Theme) => void;
 };
 
-export function AppSidebar({ user, pathname, theme, onToggleTheme }: AppSidebarProps) {
+export function AppSidebar({ user, pathname, theme, onSetTheme }: AppSidebarProps) {
 	const { setOpenMobile } = useSidebar();
 	const [searchQuery, setSearchQuery] = useState('');
 	const [openSection, setOpenSection] = useState<string | null>('Learning');
@@ -319,7 +321,7 @@ export function AppSidebar({ user, pathname, theme, onToggleTheme }: AppSidebarP
 			</SidebarContent>
 
 			<SidebarFooter className="border-t border-sidebar-border/50 p-3 space-y-2">
-				<ThemeToggle theme={theme} onToggle={onToggleTheme} />
+				<ThemeToggle theme={theme} onSetTheme={onSetTheme} />
 				<SidebarSeparator className="bg-sidebar-border/50" />
 				<UserProfileSection user={user} />
 			</SidebarFooter>
@@ -329,29 +331,45 @@ export function AppSidebar({ user, pathname, theme, onToggleTheme }: AppSidebarP
 
 type ThemeToggleProps = {
 	theme: string;
-	onToggle: () => void;
+	onSetTheme: (theme: Theme) => void;
 };
 
-function ThemeToggle({ theme, onToggle }: ThemeToggleProps) {
+const THEME_OPTIONS: { value: Theme; label: string; icon: typeof Sun01Icon; color: string }[] = [
+	{ value: 'system', label: 'System', icon: LaptopSettingsIcon, color: 'text-violet-500' },
+	{ value: 'light', label: 'Light', icon: Sun01Icon, color: 'text-amber-500' },
+	{ value: 'dark', label: 'Dark', icon: MoonIcon, color: 'text-blue-400' },
+];
+
+function ThemeToggle({ theme, onSetTheme }: ThemeToggleProps) {
+	const currentIndex = THEME_OPTIONS.findIndex((opt) => opt.value === theme);
+	const current = THEME_OPTIONS[currentIndex >= 0 ? currentIndex : 0];
+
+	const handleCycle = () => {
+		const nextIndex = (currentIndex + 1) % THEME_OPTIONS.length;
+		onSetTheme(THEME_OPTIONS[nextIndex].value);
+	};
+
 	return (
-		<button
+		<Button
 			type="button"
-			onClick={onToggle}
-			className="w-full flex items-center justify-between px-4 py-2.5 rounded-xl bg-sidebar-accent/40 hover:bg-sidebar-accent transition-colors group"
+			variant="ghost"
+			onClick={handleCycle}
+			className="w-full flex items-center justify-between px-4 py-2.5 h-auto rounded-xl bg-sidebar-accent/40 hover:bg-sidebar-accent transition-colors group"
 		>
-			<span className="text-xs font-medium text-sidebar-foreground/60">Appearance</span>
+			<span className="text-xs font-medium text-sidebar-foreground/60">{current.label}</span>
 			<m.div
+				key={current.value}
+				initial={{ rotate: -90, opacity: 0, scale: 0.5 }}
+				animate={{ rotate: 0, opacity: 1, scale: 1 }}
+				exit={{ rotate: 90, opacity: 0, scale: 0.5 }}
+				transition={{ type: 'spring', stiffness: 300, damping: 20 }}
 				whileHover={{ scale: 1.1 }}
-				whileTap={{ scale: 0.95 }}
+				whileTap={{ scale: 0.9 }}
 				className="w-7 h-7 rounded-lg bg-sidebar flex items-center justify-center shadow-sm"
 			>
-				{theme === 'dark' ? (
-					<HugeiconsIcon icon={Sun01Icon} className="w-4 h-4 text-amber-500" />
-				) : (
-					<HugeiconsIcon icon={MoonIcon} className="w-4 h-4 text-sidebar-foreground/60" />
-				)}
+				<HugeiconsIcon icon={current.icon} className={cn('w-4 h-4', current.color)} />
 			</m.div>
-		</button>
+		</Button>
 	);
 }
 
@@ -362,9 +380,10 @@ type UserProfileSectionProps = {
 function UserProfileSection({ user }: UserProfileSectionProps) {
 	return (
 		<ProfileMenu user={user}>
-			<button
+			<Button
 				type="button"
-				className="w-full flex items-center gap-3 p-2 rounded-xl hover:bg-sidebar-accent transition-colors text-left"
+				variant="ghost"
+				className="w-full flex items-center gap-3 p-2 h-auto rounded-xl hover:bg-sidebar-accent transition-colors text-left"
 			>
 				<Avatar className="h-10 w-10 border-2 border-sidebar-primary/30 shadow-sm">
 					<AvatarImage src={user.image || undefined} alt={user.name} />
@@ -376,7 +395,7 @@ function UserProfileSection({ user }: UserProfileSectionProps) {
 					<p className="text-sm font-semibold text-sidebar-foreground truncate">{user.name}</p>
 					<p className="text-[10px] text-sidebar-foreground/40 truncate">{user.email}</p>
 				</div>
-			</button>
+			</Button>
 		</ProfileMenu>
 	);
 }

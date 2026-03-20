@@ -70,7 +70,7 @@ export function ThemeComparator({ setworks }: ThemeComparatorProps) {
 					<h4 className="font-bold text-sm mb-2 text-primary">Similar themes found</h4>
 					<div className="space-y-2">
 						{similarThemes.map((pair, i) => (
-							<div key={i} className="text-sm">
+							<div key={`pair-${i}`} className="text-sm">
 								<span className="font-medium">{pair.left}</span>
 								<span className="text-muted-foreground"> ~ </span>
 								<span className="font-medium">{pair.right}</span>

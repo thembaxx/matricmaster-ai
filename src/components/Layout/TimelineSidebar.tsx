@@ -173,7 +173,7 @@ export function TimelineSidebar() {
 						<div className="space-y-2">
 							{[1, 2, 3, 4].map((i) => (
 								<div
-									key={i}
+									key={`skeleton-${i}`}
 									className="flex items-start gap-3 p-3 rounded-xl bg-card border border-border animate-pulse"
 								>
 									<div className="w-3 h-3 rounded-full bg-muted" />

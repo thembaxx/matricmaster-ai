@@ -1,4 +1,5 @@
 import { HugeiconsIcon } from '@hugeicons/react';
+import { Button } from '@/components/ui/button';
 
 interface Category {
 	id: string;
@@ -21,13 +22,14 @@ export function CategoryNav({
 				const Icon = category.icon;
 				const isActive = activeTab === category.id;
 				return (
-					<button
+					<Button
 						key={category.id}
 						type="button"
+						variant="ghost"
 						onClick={() => onTabChange(category.id)}
 						aria-pressed={isActive}
 						aria-label={`Faders by ${category.label}`}
-						className={`flex items-center gap-2 sm:gap-3 px-4 sm:px-8 py-2.5 sm:py-4 rounded-xl sm:rounded-3xl text-xs sm:text-sm font-black uppercase tracking-widest transition-all duration-300 whitespace-nowrap ${
+						className={`flex items-center gap-2 sm:gap-3 px-4 sm:px-8 py-2.5 sm:py-4 h-auto rounded-xl sm:rounded-3xl text-xs sm:text-sm font-black uppercase tracking-widest whitespace-nowrap ${
 							isActive
 								? 'bg-primary text-primary-foreground shadow-2xl shadow-primary/20 scale-105'
 								: 'text-muted-foreground hover:bg-muted hover:text-foreground'
@@ -39,7 +41,7 @@ export function CategoryNav({
 							className={`w-4 h-4 sm:w-5 sm:h-5 ${isActive ? 'scale-110' : ''}`}
 						/>
 						<span className="hidden xs:inline">{category.label}</span>
-					</button>
+					</Button>
 				);
 			})}
 		</div>

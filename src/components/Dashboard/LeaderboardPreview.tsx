@@ -80,7 +80,7 @@ export const LeaderboardPreview = memo(function LeaderboardPreview() {
 				<div className="animate-pulse space-y-4">
 					<div className="h-5 w-32 bg-muted rounded-lg" />
 					{[1, 2, 3].map((i) => (
-						<div key={i} className="flex items-center gap-3">
+						<div key={`skeleton-${i}`} className="flex items-center gap-3">
 							<div className="w-8 h-8 bg-muted rounded-full" />
 							<div className="w-10 h-10 bg-muted rounded-full" />
 							<div className="flex-1 space-y-2">

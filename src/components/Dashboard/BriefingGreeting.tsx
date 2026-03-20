@@ -245,7 +245,7 @@ export function BriefingGreeting({
 					>
 						{quickTips.map((tip, index) => (
 							<m.div
-								key={index}
+								key={`tip-${index}`}
 								initial={{ opacity: 0, scale: 0.9 }}
 								animate={{ opacity: 1, scale: 1 }}
 								transition={{ delay: 0.4 + index * 0.1 }}

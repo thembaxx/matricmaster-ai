@@ -46,8 +46,8 @@ async function translateWithGemini(
 
 		const data = await response.json();
 		return data.translation || text;
-	} catch {
-		console.error('Translation error, falling back to original text');
+	} catch (error) {
+		console.error('Translation error, falling back to original text:', error);
 		return text;
 	}
 }

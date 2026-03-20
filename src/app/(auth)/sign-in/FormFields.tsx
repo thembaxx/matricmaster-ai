@@ -64,7 +64,9 @@ export function FormFields({
 						placeholder="Enter your password"
 						className="bg-background/50 pr-12 rounded-[var(--radius-md)]"
 					/>
-					<button
+					<Button
+						variant="ghost"
+						size="icon"
 						type="button"
 						onClick={onTogglePassword}
 						className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
@@ -75,7 +77,7 @@ export function FormFields({
 						) : (
 							<HugeiconsIcon icon={ViewIcon} className="w-5 h-5" />
 						)}
-					</button>
+					</Button>
 				</div>
 				{errors.password && (
 					<p className="text-xs text-destructive font-semibold ml-1">{errors.password.message}</p>

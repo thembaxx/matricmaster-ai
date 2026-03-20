@@ -91,7 +91,8 @@ class WebLLMEngineClass {
 			this.worker.postMessage({ type: 'init', payload: { modelName: MODEL_NAME }, id: '' });
 
 			await this._waitForReady();
-		} catch {
+		} catch (error) {
+			console.error('WebLLM initialization failed:', error);
 			this._isSupported = false;
 			await this._initLegacy(onProgress);
 		}

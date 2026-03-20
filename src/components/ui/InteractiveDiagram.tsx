@@ -2,6 +2,7 @@
 
 import { m } from 'framer-motion';
 import { useState } from 'react';
+import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 
 interface InteractiveDiagramProps {
@@ -50,7 +51,7 @@ function ForceVectorDiagram({ className }: { className?: string }) {
 				>
 					Applied Force
 				</label>
-				<input
+				<Input
 					id="applied-force"
 					type="range"
 					min="0"
@@ -97,7 +98,7 @@ function PhaseChangeDiagram({ className }: { className?: string }) {
 				<div className="absolute inset-0 flex items-center justify-center flex-wrap gap-2 p-8 transition-all duration-500">
 					{Array.from({ length: 12 }).map((_, i) => (
 						<m.div
-							key={i}
+							key={`particle-${i}`}
 							className="w-6 h-6 rounded-full bg-blue-400/80 shadow-sm backdrop-blur-sm"
 							animate={
 								particles === 'grid'
@@ -124,7 +125,7 @@ function PhaseChangeDiagram({ className }: { className?: string }) {
 				<span className="text-sm font-bold">{state}</span>
 			</div>
 
-			<input
+			<Input
 				type="range"
 				min="-20"
 				max="120"
@@ -165,7 +166,7 @@ function WaveMotionDiagram({ className }: { className?: string }) {
 					<div className="flex gap-1">
 						{Array.from({ length: 20 }).map((_, i) => (
 							<m.div
-								key={i}
+								key={`wave-${i}`}
 								className="w-2 h-2 rounded-full bg-primary"
 								animate={{ y: [-amplitude, amplitude, -amplitude] }}
 								transition={{
@@ -188,7 +189,7 @@ function WaveMotionDiagram({ className }: { className?: string }) {
 					>
 						Amplitude
 					</label>
-					<input
+					<Input
 						id="amplitude"
 						type="range"
 						min="0"
@@ -205,7 +206,7 @@ function WaveMotionDiagram({ className }: { className?: string }) {
 					>
 						Frequency
 					</label>
-					<input
+					<Input
 						id="frequency"
 						type="range"
 						min="0.5"

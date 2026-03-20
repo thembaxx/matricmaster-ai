@@ -18,8 +18,8 @@ const playClickSound = () => {
 		gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
 		oscillator.start();
 		oscillator.stop(audioCtx.currentTime + 0.1);
-	} catch {
-		// Audio not supported
+	} catch (error) {
+		console.warn('Audio feedback not supported:', error);
 	}
 };
 

@@ -221,7 +221,7 @@ export function SubjectCards() {
 									<div className="space-y-2">
 										{[1, 2, 3].map((i) => (
 											<div
-												key={i}
+												key={`active-topic-${i}`}
 												className="flex items-center justify-between p-4 rounded-2xl bg-white/5 hover:bg-white/10 cursor-pointer transition-colors group"
 											>
 												<div className="flex items-center gap-3">

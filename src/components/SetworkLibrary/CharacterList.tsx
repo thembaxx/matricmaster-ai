@@ -32,7 +32,7 @@ export function CharacterList({ characters }: CharacterListProps) {
 					{char.relationships.length > 0 && (
 						<div className="mt-2 flex flex-wrap gap-2">
 							{char.relationships.map((rel, i) => (
-								<span key={i} className="text-xs bg-secondary px-2 py-1 rounded">
+								<span key={`rel-${i}`} className="text-xs bg-secondary px-2 py-1 rounded">
 									{rel.relationship}
 								</span>
 							))}

@@ -50,7 +50,8 @@ export async function getCachedApiResponse(url: string): Promise<Response | null
 			}
 		}
 		return null;
-	} catch {
+	} catch (error) {
+		console.warn('Failed to get cached response:', error);
 		return null;
 	}
 }
@@ -110,7 +111,8 @@ export async function getCacheSize(): Promise<number> {
 		}
 
 		return totalSize;
-	} catch {
+	} catch (error) {
+		console.warn('Failed to calculate cache size:', error);
 		return 0;
 	}
 }

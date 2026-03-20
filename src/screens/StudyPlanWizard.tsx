@@ -155,8 +155,9 @@ export default function StudyPlanWizard() {
 						{subjects.map((subject) => {
 							const isSelected = selectedSubjects.includes(subject.id);
 							return (
-								<button
+								<Button
 									type="button"
+									variant="ghost"
 									key={subject.id}
 									onClick={() => toggleSubject(subject.id)}
 									className={`relative p-6 rounded-2xl border-2 transition-all cursor-pointer flex flex-col items-center gap-4 ios-active-scale ${
@@ -185,7 +186,7 @@ export default function StudyPlanWizard() {
 									>
 										{subject.name}
 									</span>
-								</button>
+								</Button>
 							);
 						})}
 					</div>

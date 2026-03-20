@@ -321,9 +321,10 @@ export default function PastPapers() {
 						</div>
 						<div className="lg:col-span-4 flex gap-2 sm:gap-3 overflow-x-auto no-scrollbar py-1">
 							{years.map((year) => (
-								<button
+								<Button
 									key={year}
 									type="button"
+									variant="ghost"
 									onClick={() => setSelectedYear(year as any)}
 									aria-pressed={selectedYear === year}
 									className={`rounded-xl sm:rounded-2xl px-4 sm:px-8 py-2 sm:py-3 text-[11px] font-black uppercase tracking-widest transition-all h-10 sm:h-16 whitespace-nowrap ios-active-scale ${
@@ -333,7 +334,7 @@ export default function PastPapers() {
 									}`}
 								>
 									{year}
-								</button>
+								</Button>
 							))}
 						</div>
 					</div>

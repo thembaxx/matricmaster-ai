@@ -10,6 +10,7 @@ import { GeminiQuotaModalProvider } from '@/contexts/GeminiQuotaModalContext';
 import { OfflineProvider } from '@/contexts/OfflineContext';
 import { AblyClientProvider } from '@/lib/ably/provider';
 import { queryClient } from '@/lib/api/client';
+import { MapProvider } from '@/lib/map-provider';
 import { PostHogProvider } from '@/lib/posthog-client';
 import { ScheduleProvider } from '@/stores/useScheduleStore';
 import AppLayout from './AppLayout';
@@ -30,7 +31,9 @@ export function ClientProviders({ children }: ClientProvidersProps) {
 									<GeminiQuotaModalProvider>
 										<OfflineProvider>
 											<FocusModeProvider>
-												<AppLayout>{children}</AppLayout>
+												<MapProvider>
+													<AppLayout>{children}</AppLayout>
+												</MapProvider>
 											</FocusModeProvider>
 										</OfflineProvider>
 									</GeminiQuotaModalProvider>

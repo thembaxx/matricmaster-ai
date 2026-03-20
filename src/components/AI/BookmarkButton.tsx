@@ -30,7 +30,8 @@ function getBookmarks(): BookmarkedMessage[] {
 	try {
 		const stored = localStorage.getItem(STORAGE_KEY);
 		return stored ? JSON.parse(stored) : [];
-	} catch {
+	} catch (error) {
+		console.warn('Failed to get bookmarks:', error);
 		return [];
 	}
 }

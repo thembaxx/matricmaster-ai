@@ -50,7 +50,7 @@ export const SearchHistoryList = memo(function SearchHistoryList({
 					{isLoading ? (
 						[1, 2, 3, 4].map((i) => (
 							<m.div
-								key={i}
+								key={`skeleton-${i}`}
 								className="h-[68px] rounded-[1.5rem] overflow-hidden border-2 border-border/50"
 							>
 								<Skeleton className="w-full h-full" />

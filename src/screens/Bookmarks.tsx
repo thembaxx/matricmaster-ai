@@ -170,7 +170,9 @@ export default function Bookmarks() {
 											)
 										}
 									>
-										<button
+										<Button
+											variant="ghost"
+											size="icon"
 											type="button"
 											onClick={(e) => handleDelete(e, bookmark.id)}
 											className="absolute top-4 right-4 md:opacity-0 opacity-100 md:group-hover:opacity-100 transition-opacity p-2 hover:bg-destructive hover:text-destructive-foreground rounded-full min-w-[44px] min-h-[44px] flex items-center justify-center touch-manipulation"
@@ -178,7 +180,7 @@ export default function Bookmarks() {
 											aria-label="Remove bookmark"
 										>
 											<HugeiconsIcon icon={BookmarkIcon} className="w-5 h-5 fill-current" />
-										</button>
+										</Button>
 										<div className="flex justify-between items-start mb-4">
 											<div
 												className={`w-10 h-10 rounded-xl ${colors.bg} flex items-center justify-center`}

@@ -101,34 +101,39 @@ export function CommentItemAnimated({
 
 					<div className="flex items-center gap-4 pt-1">
 						<div className="flex items-center bg-muted/50 rounded-full px-2 py-1">
-							<button
+							<Button
 								type="button"
+								variant="ghost"
+								size="icon"
 								onClick={() => onVote(comment.id, 'up')}
-								className="p-1.5 hover:text-primary transition-colors"
+								className="p-1.5 h-auto w-auto hover:text-primary"
 							>
 								<HugeiconsIcon icon={ThumbsUpIcon} className="h-3.5 w-3.5" />
-							</button>
+							</Button>
 							<span className="text-[10px] font-black min-w-[1.5rem] text-center">
 								{comment.upvotes - comment.downvotes}
 							</span>
-							<button
+							<Button
 								type="button"
+								variant="ghost"
+								size="icon"
 								onClick={() => onVote(comment.id, 'down')}
-								className="p-1.5 hover:text-destructive transition-colors"
+								className="p-1.5 h-auto w-auto hover:text-destructive"
 							>
 								<HugeiconsIcon icon={ThumbsDownIcon} className="h-3.5 w-3.5" />
-							</button>
+							</Button>
 						</div>
 
 						{!isReply && (
-							<button
+							<Button
 								type="button"
+								variant="ghost"
 								onClick={() => onReply(comment.id)}
-								className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-muted-foreground hover:text-primary transition-colors"
+								className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-muted-foreground hover:text-primary h-auto p-0"
 							>
 								<HugeiconsIcon icon={ArrowLeft02Icon} className="h-3 w-3" />
 								Reply
-							</button>
+							</Button>
 						)}
 					</div>
 

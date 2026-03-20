@@ -1,3 +1,4 @@
+import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 
 interface AudioVisualizerProps {
@@ -28,7 +29,7 @@ export function AudioVisualizer({
 			<div className="flex items-center justify-center gap-1.5 py-2 h-12">
 				{Array.from({ length: 24 }).map((_, i) => (
 					<div
-						key={i}
+						key={`bar-${i}`}
 						className={cn(
 							'w-1 rounded-full transition-all duration-300 ease-out',
 							isPlaying ? 'bg-primary animate-pulse' : 'bg-muted-foreground/25'
@@ -42,7 +43,7 @@ export function AudioVisualizer({
 			</div>
 
 			<div className="relative">
-				<input
+				<Input
 					type="range"
 					min={0}
 					max={duration || 100}

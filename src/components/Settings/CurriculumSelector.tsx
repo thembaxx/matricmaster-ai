@@ -1,6 +1,7 @@
 'use client';
 
 import { AlertCircle } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import {
 	Select,
@@ -81,10 +82,11 @@ export function CurriculumCard({
 	const info = CURRICULUM_TYPES[curriculum];
 
 	return (
-		<button
+		<Button
 			type="button"
+			variant="ghost"
 			onClick={() => onSelect(curriculum)}
-			className={`w-full p-4 text-left border rounded-lg transition-all ${
+			className={`w-full p-4 h-auto text-left border rounded-lg ${
 				isSelected
 					? 'border-primary bg-primary/5 ring-1 ring-primary'
 					: 'border-gray-200 hover:border-gray-300 dark:border-gray-700 dark:hover:border-gray-600'
@@ -102,6 +104,6 @@ export function CurriculumCard({
 				)}
 			</div>
 			<p className="mt-2 text-xs text-gray-400 dark:text-gray-500">{info.examsBody}</p>
-		</button>
+		</Button>
 	);
 }

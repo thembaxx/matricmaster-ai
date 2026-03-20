@@ -81,14 +81,15 @@ export function ChatInput({
 			{showSuggestions && (
 				<div className="flex flex-wrap gap-2">
 					{suggestedQuestions.map((q, i) => (
-						<button
+						<Button
 							type="button"
-							key={i}
+							variant="ghost"
+							key={`question-${i}`}
 							onClick={() => handleSend(q)}
-							className="text-xs px-3 py-1.5 rounded-full bg-muted hover:bg-muted/80 transition-colors"
+							className="text-xs px-3 py-1.5 h-auto rounded-full bg-muted hover:bg-muted/80"
 						>
 							{q}
-						</button>
+						</Button>
 					))}
 				</div>
 			)}

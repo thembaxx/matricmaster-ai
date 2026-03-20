@@ -74,8 +74,8 @@ Now grade this essay and return the JSON feedback.`;
 		try {
 			const jsonStr = jsonMatch ? jsonMatch[1].trim() : responseText;
 			gradingResult = JSON.parse(jsonStr);
-		} catch {
-			console.debug('Failed to parse grading JSON:', responseText);
+		} catch (error) {
+			console.debug('Failed to parse grading JSON:', error);
 			return NextResponse.json({ error: 'Failed to parse grading result' }, { status: 500 });
 		}
 

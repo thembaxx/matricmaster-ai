@@ -2,7 +2,7 @@
 
 import { useQuery } from '@tanstack/react-query';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { Suspense, useCallback, useEffect, useRef, useState } from 'react';
 import { getAdaptiveDifficultyServer, recordQuestionAttempt } from '@/actions/spaced-repetition';
 import { ContextualAIBubble } from '@/components/AI/ContextualAIBubble';
 import { FocusContent } from '@/components/Layout/FocusContent';
@@ -32,7 +32,7 @@ interface TopicStats {
 	total: number;
 }
 
-export default function Quiz({ quizId: initialQuizId }: QuizProps) {
+function QuizInner({ quizId: initialQuizId }: QuizProps) {
 	const router = useRouter();
 	const searchParams = useSearchParams();
 	const { triggerQuotaError } = useGeminiQuotaModal();
@@ -296,5 +296,32 @@ export default function Quiz({ quizId: initialQuizId }: QuizProps) {
 			</FocusContent>
 			<ContextualAIBubble />
 		</div>
+	);
+}
+
+function QuizSkeleton() {
+	return (
+		<div className="min-h-screen bg-background flex">
+			<div className="flex-1 p-8">
+				<div className="max-w-3xl mx-auto space-y-6 animate-pulse">
+					<div className="h-8 bg-muted rounded w-1/4" />
+					<div className="h-64 bg-muted rounded-lg" />
+					<div className="space-y-3">
+						<div className="h-12 bg-muted rounded" />
+						<div className="h-12 bg-muted rounded" />
+						<div className="h-12 bg-muted rounded" />
+						<div className="h-12 bg-muted rounded" />
+					</div>
+				</div>
+			</div>
+		</div>
+	);
+}
+
+export default function Quiz(props: QuizProps) {
+	return (
+		<Suspense fallback={<QuizSkeleton />}>
+			<QuizInner {...props} />
+		</Suspense>
 	);
 }

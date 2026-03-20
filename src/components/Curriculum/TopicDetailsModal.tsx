@@ -43,9 +43,10 @@ export function TopicDetailsModal({
 
 	return (
 		<div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-			<button
+			<Button
 				type="button"
-				className="absolute inset-0 bg-black/50 backdrop-blur-sm cursor-default"
+				variant="ghost"
+				className="absolute inset-0 bg-black/50 backdrop-blur-sm cursor-default rounded-none"
 				onClick={onClose}
 				aria-label="Close modal"
 			/>
@@ -58,13 +59,15 @@ export function TopicDetailsModal({
 				<div
 					className={cn('h-24 relative', subject.color.replace('bg-', 'bg-gradient-to-br from-'))}
 				>
-					<button
+					<Button
 						type="button"
+						variant="ghost"
+						size="icon"
 						onClick={onClose}
-						className="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/20 backdrop-blur flex items-center justify-center text-white hover:bg-white/30 transition-colors"
+						className="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/20 backdrop-blur text-white hover:bg-white/30"
 					>
 						<HugeiconsIcon icon={CloseIcon} className="w-4 h-4" />
-					</button>
+					</Button>
 					<div className="absolute bottom-4 left-6 flex items-center gap-3">
 						<span className="text-3xl">{subject.icon}</span>
 						<div>
@@ -159,7 +162,7 @@ export function TopicDetailsModal({
 							<div className="flex flex-wrap gap-2">
 								{topic.weaknesses.map((w, i) => (
 									<span
-										key={i}
+										key={`weakness-${i}`}
 										className="px-3 py-1 bg-destructive/10 text-destructive rounded-full text-xs font-medium"
 									>
 										{w}

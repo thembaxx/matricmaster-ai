@@ -32,7 +32,7 @@ export function AchievementsSkeleton() {
 				{/* Category Nav Skeleton */}
 				<div className="flex gap-4 overflow-x-auto no-scrollbar">
 					{[1, 2, 3, 4].map((i) => (
-						<Skeleton key={i} className="h-12 w-32 sm:w-40 rounded-full shrink-0" />
+						<Skeleton key={`skeleton-${i}`} className="h-12 w-32 sm:w-40 rounded-full shrink-0" />
 					))}
 				</div>
 
@@ -40,7 +40,7 @@ export function AchievementsSkeleton() {
 				<div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 lg:gap-8">
 					{[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i) => (
 						<Card
-							key={i}
+							key={`skeleton-${i}`}
 							className="h-64 sm:h-80 rounded-[2.5rem] p-8 border-2 border-border bg-card/50 flex flex-col items-center gap-6"
 						>
 							<Skeleton className="w-24 h-24 lg:w-32 lg:h-32 rounded-[2rem]" />

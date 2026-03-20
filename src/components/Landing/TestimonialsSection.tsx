@@ -45,7 +45,7 @@ export function TestimonialsSection() {
 						<div className="flex items-center gap-1 mb-4">
 							{[1, 2, 3, 4, 5].map((i) => (
 								<HugeiconsIcon
-									key={i}
+									key={`star-${i}`}
 									icon={StarIcon}
 									className="w-5 h-5 text-tiimo-yellow fill-tiimo-yellow"
 								/>

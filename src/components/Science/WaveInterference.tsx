@@ -1,6 +1,7 @@
 'use client';
 
 import { useId, useMemo, useState } from 'react';
+import { Slider } from '@/components/ui/slider';
 
 interface WaveInterferenceProps {
 	frequency?: number;
@@ -98,7 +99,7 @@ export function WaveInterference({
 					.filter((_, i) => i % 40 === 0)
 					.map((p, i) => (
 						<line
-							key={i}
+							key={`wave-${i}`}
 							x1={p.x}
 							y1={centerY - p.y * 30 - 5}
 							x2={p.x}
@@ -112,45 +113,36 @@ export function WaveInterference({
 
 			<div className="mt-4 space-y-3">
 				<div>
-					<label className="text-sm text-muted-foreground block mb-1">
-						Frequency: {frequency}Hz
-						<input
-							type="range"
-							min="0.5"
-							max="3"
-							step="0.1"
-							value={frequency}
-							onChange={() => {}}
-							className="w-full"
-						/>
-					</label>
+					<span className="text-sm text-muted-foreground block mb-1">Frequency: {frequency}Hz</span>
+					<Slider
+						min={0.5}
+						max={3}
+						step={0.1}
+						value={[frequency]}
+						onValueChange={([v]) => setFrequency(v)}
+						className="w-full"
+					/>
 				</div>
 				<div>
-					<label className="text-sm text-muted-foreground block mb-1">
-						Amplitude: {amplitude}
-						<input
-							type="range"
-							min="0.5"
-							max="2"
-							step="0.1"
-							value={amplitude}
-							onChange={() => {}}
-							className="w-full"
-						/>
-					</label>
+					<span className="text-sm text-muted-foreground block mb-1">Amplitude: {amplitude}</span>
+					<Slider
+						min={0.5}
+						max={2}
+						step={0.1}
+						value={[amplitude]}
+						onValueChange={([v]) => setAmplitude(v)}
+						className="w-full"
+					/>
 				</div>
 				<div>
-					<label className="text-sm text-muted-foreground block mb-1">
-						Phase: {phaseShift}°
-						<input
-							type="range"
-							min="0"
-							max="100"
-							value={phaseShift}
-							onChange={(e) => setPhaseShift(Number(e.target.value))}
-							className="w-full"
-						/>
-					</label>
+					<span className="text-sm text-muted-foreground block mb-1">Phase: {phaseShift}°</span>
+					<Slider
+						min={0}
+						max={100}
+						value={[phaseShift]}
+						onValueChange={([v]) => setPhaseShift(v)}
+						className="w-full"
+					/>
 				</div>
 			</div>
 

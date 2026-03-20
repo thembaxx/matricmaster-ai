@@ -27,7 +27,7 @@ function CalendarSkeleton() {
 					<div className="p-4">
 						<div className="grid grid-cols-7 gap-2">
 							{Array.from({ length: 7 }).map((_, i) => (
-								<div key={i} className="space-y-2">
+								<div key={`skeleton-${i}`} className="space-y-2">
 									<div className="h-16 bg-muted rounded animate-pulse" />
 									<div className="space-y-1">
 										<div className="h-8 bg-muted rounded animate-pulse" />
@@ -79,30 +79,34 @@ export function CalendarView() {
 							{viewMode === 'week' ? 'Weekly Schedule' : 'Daily Schedule'}
 						</h2>
 						<div className="flex items-center gap-1 bg-muted rounded-lg p-0.5">
-							<button
+							<Button
 								type="button"
+								variant="ghost"
+								size="sm"
 								onClick={() => setViewMode('week')}
 								className={cn(
-									'px-3 py-1.5 text-xs font-medium rounded-md transition-all',
+									'px-3 py-1.5 text-xs font-medium rounded-md',
 									viewMode === 'week'
 										? 'bg-background shadow-sm text-foreground'
 										: 'text-muted-foreground hover:text-foreground'
 								)}
 							>
 								Week
-							</button>
-							<button
+							</Button>
+							<Button
 								type="button"
+								variant="ghost"
+								size="sm"
 								onClick={() => setViewMode('day')}
 								className={cn(
-									'px-3 py-1.5 text-xs font-medium rounded-md transition-all',
+									'px-3 py-1.5 text-xs font-medium rounded-md',
 									viewMode === 'day'
 										? 'bg-background shadow-sm text-foreground'
 										: 'text-muted-foreground hover:text-foreground'
 								)}
 							>
 								Day
-							</button>
+							</Button>
 						</div>
 					</div>
 

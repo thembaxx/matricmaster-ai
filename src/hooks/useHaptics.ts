@@ -39,8 +39,8 @@ export function useHaptics() {
 			if (!enabled || !checkHapticsSupported()) return;
 			try {
 				navigator.vibrate(HAPTIC_PATTERNS[type]);
-			} catch {
-				// Silently fail if vibration not available
+			} catch (error) {
+				console.warn('Haptic feedback not available:', error);
 			}
 		},
 		[enabled]

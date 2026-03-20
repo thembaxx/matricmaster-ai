@@ -22,7 +22,7 @@ export function LessonCompleteSkeleton() {
 				<div className="grid grid-cols-3 gap-3 w-full max-w-md mb-8">
 					{[1, 2, 3].map((i) => (
 						<div
-							key={i}
+							key={`skeleton-${i}`}
 							className="bg-card p-4 rounded-3xl flex flex-col items-center border border-border/50"
 						>
 							<Skeleton className="w-10 h-10 rounded-2xl mb-3" />

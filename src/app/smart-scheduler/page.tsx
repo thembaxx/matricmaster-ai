@@ -49,7 +49,8 @@ function SmartSchedulerContent() {
 			await saveBlock(block);
 			setEditorOpen(false);
 			toast.success(block.id ? 'Block updated' : 'Block added');
-		} catch {
+		} catch (error) {
+			console.error('Failed to save block:', error);
 			toast.error('Failed to save block');
 		} finally {
 			setIsSaving(false);

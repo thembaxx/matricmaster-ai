@@ -18,6 +18,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { Switch } from '@/components/ui/switch';
+import { useMapContext } from '@/lib/map-provider';
 
 interface PrivacyTabProps {
 	profileVisibility: boolean;
@@ -50,6 +51,8 @@ export function PrivacyTab({
 	handleDeleteAccount,
 	isDeletingAccount,
 }: PrivacyTabProps) {
+	const { provider, setProvider, isGoogleMapsAvailable } = useMapContext();
+
 	return (
 		<div className="space-y-6">
 			<Card>
@@ -110,6 +113,32 @@ export function PrivacyTab({
 					<ZModeToggle />
 				</CardContent>
 			</Card>
+
+			{isGoogleMapsAvailable && (
+				<Card>
+					<CardHeader>
+						<CardTitle>Map Settings</CardTitle>
+						<CardDescription>Configure map provider preferences</CardDescription>
+					</CardHeader>
+					<CardContent className="space-y-4">
+						<div className="flex items-center justify-between">
+							<div>
+								<p className="font-medium">Use Google Maps</p>
+								<p className="text-sm text-muted-foreground">
+									Switch from OpenStreetMap to Google Maps
+								</p>
+							</div>
+							<Switch
+								checked={provider === 'google'}
+								onCheckedChange={(checked) => setProvider(checked ? 'google' : 'leaflet')}
+							/>
+						</div>
+						<p className="text-xs text-muted-foreground">
+							OpenStreetMap is free and unlimited. Google Maps requires an API key.
+						</p>
+					</CardContent>
+				</Card>
+			)}
 
 			<Card>
 				<CardHeader>

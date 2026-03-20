@@ -114,7 +114,7 @@ export function StudentOverview({
 					{isLoading ? (
 						<div className="grid grid-cols-2 md:grid-cols-4 gap-4">
 							{Array.from({ length: 4 }).map((_, i) => (
-								<div key={i} className="space-y-2">
+								<div key={`skeleton-${i}`} className="space-y-2">
 									<div className="h-4 bg-muted animate-pulse rounded w-20" />
 									<div className="h-8 bg-muted animate-pulse rounded w-16" />
 								</div>

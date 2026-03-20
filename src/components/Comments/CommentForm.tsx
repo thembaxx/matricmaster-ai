@@ -79,7 +79,7 @@ export function CommentLoadingSkeleton() {
 	return (
 		<div className="space-y-4">
 			{[1, 2].map((i) => (
-				<div key={i} className="h-32 bg-muted/50 animate-pulse rounded-[2rem]" />
+				<div key={`skeleton-${i}`} className="h-32 bg-muted/50 animate-pulse rounded-[2rem]" />
 			))}
 		</div>
 	);

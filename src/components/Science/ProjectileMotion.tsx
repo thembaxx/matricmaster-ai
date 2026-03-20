@@ -2,6 +2,9 @@
 
 import { useEffect, useState } from 'react';
 
+import { Button } from '@/components/ui/button';
+import { Slider } from '@/components/ui/slider';
+
 interface ProjectileMotionProps {
 	initialVelocity?: number;
 	angle?: number;
@@ -60,20 +63,12 @@ export function ProjectileMotion({
 			<div className="flex items-center justify-between mb-4">
 				<h3 className="font-semibold text-foreground">Projectile Motion</h3>
 				<div className="flex gap-2">
-					<button
-						type="button"
-						onClick={() => setIsPlaying(!isPlaying)}
-						className="px-4 py-2 rounded-lg bg-primary text-white text-sm font-medium"
-					>
+					<Button type="button" onClick={() => setIsPlaying(!isPlaying)}>
 						{isPlaying ? 'Pause' : 'Play'}
-					</button>
-					<button
-						type="button"
-						onClick={reset}
-						className="px-4 py-2 rounded-lg bg-muted text-sm font-medium"
-					>
+					</Button>
+					<Button type="button" variant="outline" onClick={reset}>
 						Reset
-					</button>
+					</Button>
 				</div>
 			</div>
 
@@ -98,7 +93,7 @@ export function ProjectileMotion({
 
 					{[...Array(6)].map((_, i) => (
 						<line
-							key={i}
+							key={`grid-${i}`}
 							x1={30 + i * 60}
 							y1={groundY - 5}
 							x2={30 + i * 60}
@@ -155,31 +150,27 @@ export function ProjectileMotion({
 			</div>
 
 			<div className="mt-4 flex gap-4 items-center">
-				<label className="text-sm text-muted-foreground">
-					Velocity:
-					<input
-						type="range"
-						min="5"
-						max="50"
-						value={initialVelocity}
-						className="flex-1"
-						disabled={isPlaying}
-					/>
-				</label>
+				<span className="text-sm text-muted-foreground">Velocity:</span>
+				<Slider
+					min={5}
+					max={50}
+					value={[initialVelocity]}
+					className="flex-1"
+					disabled={isPlaying}
+					onValueChange={([v]) => setInitialVelocity(v)}
+				/>
 				<span className="font-mono text-sm w-12">{initialVelocity}m/s</span>
 			</div>
 			<div className="mt-2 flex gap-4 items-center">
-				<label className="text-sm text-muted-foreground">
-					Angle:
-					<input
-						type="range"
-						min="10"
-						max="80"
-						value={angle}
-						className="flex-1"
-						disabled={isPlaying}
-					/>
-				</label>
+				<span className="text-sm text-muted-foreground">Angle:</span>
+				<Slider
+					min={10}
+					max={80}
+					value={[angle]}
+					className="flex-1"
+					disabled={isPlaying}
+					onValueChange={([v]) => setAngle(v)}
+				/>
 				<span className="font-mono text-sm w-12">{angle}°</span>
 			</div>
 		</div>

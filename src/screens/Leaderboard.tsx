@@ -6,6 +6,7 @@ import { useQuery } from '@tanstack/react-query';
 import { m } from 'framer-motion';
 import { memo, useMemo, useState } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -274,9 +275,10 @@ export default function Leaderboard() {
 									<h2 className="text-xl font-black tracking-tight">Subject Rankings</h2>
 									<div className="flex gap-2 p-1 bg-muted/50 rounded-xl border border-border/50 overflow-x-auto no-scrollbar">
 										{SUBJECTS.map((sub) => (
-											<button
+											<Button
 												key={sub.id}
 												type="button"
+												variant="ghost"
 												onClick={() => setSubjectTab(sub.id)}
 												className={`px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider whitespace-nowrap transition-all ${
 													subjectTab === sub.id
@@ -285,7 +287,7 @@ export default function Leaderboard() {
 												}`}
 											>
 												{sub.label}
-											</button>
+											</Button>
 										))}
 									</div>
 								</div>

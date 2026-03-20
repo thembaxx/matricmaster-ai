@@ -120,7 +120,8 @@ export function useAiTutor() {
 
 			setMessages((prev) => [...prev, assistantMessage]);
 			scrollToBottom();
-		} catch {
+		} catch (error) {
+			console.error('AI tutor error:', error);
 			const errorMessage: Message = {
 				id: (Date.now() + 1).toString(),
 				role: 'assistant',
@@ -199,7 +200,8 @@ export function useAiTutor() {
 				setShowPracticeModal(true);
 				toast.success(`Generated ${data.problems.length} practice problems!`);
 			}
-		} catch {
+		} catch (error) {
+			console.error('Failed to generate practice problems:', error);
 			toast.error('Failed to generate practice problems');
 		} finally {
 			setIsGeneratingPractice(false);
@@ -233,7 +235,8 @@ export function useAiTutor() {
 				setShowFlashcardModal(true);
 				toast.success(`Generated ${data.flashcards.length} flashcards!`);
 			}
-		} catch {
+		} catch (error) {
+			console.error('Failed to generate flashcards:', error);
 			toast.error('Failed to generate flashcards');
 		} finally {
 			setIsGeneratingFlashcards(false);
@@ -254,7 +257,8 @@ export function useAiTutor() {
 			setMessages(loadedMessages);
 			setCurrentConversationId(conversation.id);
 			setSelectedSubject(conversation.subject || null);
-		} catch {
+		} catch (error) {
+			console.error('Failed to load conversation:', error);
 			toast.error('Failed to load conversation');
 		}
 	};

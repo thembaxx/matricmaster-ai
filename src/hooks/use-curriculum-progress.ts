@@ -32,7 +32,8 @@ export function loadCustomTopics(): Record<string, Topic[]> {
 	try {
 		const stored = localStorage.getItem(STORAGE_KEY);
 		return stored ? JSON.parse(stored) : {};
-	} catch {
+	} catch (error) {
+		console.warn('Failed to load custom topics:', error);
 		return {};
 	}
 }
@@ -41,8 +42,8 @@ export function saveCustomTopics(topics: Record<string, Topic[]>) {
 	if (typeof window === 'undefined') return;
 	try {
 		localStorage.setItem(STORAGE_KEY, JSON.stringify(topics));
-	} catch {
-		console.debug('Failed to save custom topics');
+	} catch (error) {
+		console.debug('Failed to save custom topics:', error);
 	}
 }
 

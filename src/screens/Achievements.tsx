@@ -12,6 +12,7 @@ import { HugeiconsIcon } from '@hugeicons/react';
 import { useQuery } from '@tanstack/react-query';
 import { AnimatePresence, m } from 'framer-motion';
 import { useState } from 'react';
+import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { ACHIEVEMENTS } from '@/constants/achievements';
@@ -153,9 +154,10 @@ export default function Achievements() {
 						const Icon = category.icon;
 						const isActive = activeTab === category.id;
 						return (
-							<button
+							<Button
 								key={category.id}
 								type="button"
+								variant="ghost"
 								onClick={() => setActiveTab(category.id)}
 								aria-pressed={isActive}
 								aria-label={`Faders by ${category.label}`}
@@ -171,7 +173,7 @@ export default function Achievements() {
 									className={`w-4 h-4 sm:w-5 sm:h-5 ${isActive ? 'scale-110' : ''}`}
 								/>
 								<span className="hidden xs:inline">{category.label}</span>
-							</button>
+							</Button>
 						);
 					})}
 				</div>

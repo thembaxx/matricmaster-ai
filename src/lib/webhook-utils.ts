@@ -60,7 +60,8 @@ export function isValidWebhookUrl(urlString: string): { valid: boolean; error?: 
 		}
 
 		return { valid: true };
-	} catch {
+	} catch (error) {
+		console.warn('URL validation error:', error);
 		return { valid: false, error: 'Invalid URL format' };
 	}
 }

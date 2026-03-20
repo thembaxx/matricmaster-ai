@@ -16,7 +16,7 @@ export function QuizSkeleton() {
 
 				<div className="space-y-4 pt-4">
 					{[1, 2, 3, 4].map((i) => (
-						<div key={i} className="flex items-center gap-4">
+						<div key={`skeleton-${i}`} className="flex items-center gap-4">
 							<Skeleton className="h-6 w-6 rounded-full" />
 							<Skeleton className="h-12 flex-1 rounded-xl" />
 						</div>

@@ -40,7 +40,7 @@ export function LeaderboardSkeleton() {
 				<div className="bg-card/20 rounded-[2.5rem] border-2 border-border/50 p-2 mx-4 lg:mx-0">
 					{[1, 2, 3, 4, 5].map((i) => (
 						<div
-							key={i}
+							key={`skeleton-${i}`}
 							className="flex items-center gap-4 sm:gap-6 px-4 sm:px-8 py-4 sm:py-5 border-b border-border last:border-0"
 						>
 							<Skeleton className="w-8 h-4 rounded-full" />

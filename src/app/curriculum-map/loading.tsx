@@ -5,7 +5,7 @@ export default function CurriculumMapLoading() {
 				<div className="h-10 w-64 bg-muted rounded mx-auto" />
 				<div className="grid gap-3">
 					{[1, 2, 3, 4, 5].map((i) => (
-						<div key={i} className="h-24 bg-muted rounded-xl" />
+						<div key={`skeleton-${i}`} className="h-24 bg-muted rounded-xl" />
 					))}
 				</div>
 			</div>

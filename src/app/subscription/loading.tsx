@@ -5,7 +5,7 @@ export default function SubscriptionLoading() {
 				<div className="h-10 w-40 bg-muted rounded mx-auto" />
 				<div className="grid gap-4 md:grid-cols-3">
 					{[1, 2, 3].map((i) => (
-						<div key={i} className="h-64 bg-muted rounded-2xl" />
+						<div key={`skeleton-${i}`} className="h-64 bg-muted rounded-2xl" />
 					))}
 				</div>
 			</div>

@@ -4,12 +4,12 @@ import { Loading03Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import type { SubscriptionData } from './constants';
 import { PlanCard } from './PlanCard';
 
-export default function SubscriptionPage() {
+function SubscriptionPageContent() {
 	const router = useRouter();
 	const searchParams = useSearchParams();
 	const [processing, setProcessing] = useState<string | null>(null);
@@ -108,5 +108,31 @@ export default function SubscriptionPage() {
 				</div>
 			</div>
 		</div>
+	);
+}
+
+function SubscriptionPageSkeleton() {
+	return (
+		<div className="min-h-screen pb-40 pt-8 px-4">
+			<div className="max-w-5xl mx-auto">
+				<div className="text-center mb-12 space-y-4">
+					<div className="h-10 bg-muted rounded w-1/3 mx-auto animate-pulse" />
+					<div className="h-6 bg-muted rounded w-2/3 mx-auto animate-pulse" />
+				</div>
+				<div className="grid md:grid-cols-3 gap-6">
+					{[1, 2, 3].map((i) => (
+						<div key={`skeleton-${i}`} className="h-80 bg-muted rounded-lg animate-pulse" />
+					))}
+				</div>
+			</div>
+		</div>
+	);
+}
+
+export default function SubscriptionPage() {
+	return (
+		<Suspense fallback={<SubscriptionPageSkeleton />}>
+			<SubscriptionPageContent />
+		</Suspense>
 	);
 }

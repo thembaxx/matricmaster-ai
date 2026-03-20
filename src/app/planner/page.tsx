@@ -135,7 +135,7 @@ export default function PlannerPage() {
 					<CardContent>
 						<div className="grid grid-cols-7 gap-2">
 							{DAY_LABELS.map((day, i) => (
-								<div key={i} className="flex flex-col items-center gap-2">
+								<div key={day} className="flex flex-col items-center gap-2">
 									<span className="text-[10px] font-black text-muted-foreground">{day}</span>
 									<div
 										className={`w-8 h-8 rounded-lg flex items-center justify-center ${

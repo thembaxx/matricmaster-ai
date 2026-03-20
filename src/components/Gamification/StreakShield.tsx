@@ -123,7 +123,7 @@ export function StreakShield({ className }: { className?: string }) {
 					<div className="flex items-center gap-2">
 						{Array.from({ length: 2 }).map((_, i) => (
 							<div
-								key={i}
+								key={`shield-${i}`}
 								className={cn(
 									'flex-1 h-10 rounded-xl flex items-center justify-center gap-2 border-2 transition-all',
 									i < shieldCount

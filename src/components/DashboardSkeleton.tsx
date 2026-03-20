@@ -27,7 +27,7 @@ export function DashboardSkeleton() {
 					<Skeleton className="h-6 w-32" />
 					<div className="grid grid-cols-7 gap-2 p-5 rounded-[2.5rem] bg-card/50">
 						{Array.from({ length: 7 }).map((_, i) => (
-							<Skeleton key={i} className="aspect-square w-full rounded-2xl" />
+							<Skeleton key={`skeleton-${i}`} className="aspect-square w-full rounded-2xl" />
 						))}
 					</div>
 				</div>
@@ -36,7 +36,7 @@ export function DashboardSkeleton() {
 					<Skeleton className="h-6 w-48" />
 					<div className="space-y-3">
 						{Array.from({ length: 3 }).map((_, i) => (
-							<Skeleton key={i} className="h-24 w-full rounded-[2rem]" />
+							<Skeleton key={`skeleton-${i}`} className="h-24 w-full rounded-[2rem]" />
 						))}
 					</div>
 				</div>

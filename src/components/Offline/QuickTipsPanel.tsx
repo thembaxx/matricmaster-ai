@@ -120,7 +120,8 @@ export function QuickTipsPanel() {
 				setTips(allTips);
 				const uniqueSubjects = [...new Set(allTips.map((t) => t.subject))];
 				setSubjects(uniqueSubjects);
-			} catch {
+			} catch (error) {
+				console.error('Failed to load quick tips:', error);
 				toast.error('Failed to load quick tips');
 			} finally {
 				setIsLoading(false);
@@ -176,7 +177,7 @@ export function QuickTipsPanel() {
 				{isLoading ? (
 					<div className="space-y-2">
 						{Array.from({ length: 3 }).map((_, i) => (
-							<div key={i} className="h-14 rounded-lg bg-muted animate-pulse" />
+							<div key={`skeleton-${i}`} className="h-14 rounded-lg bg-muted animate-pulse" />
 						))}
 					</div>
 				) : (

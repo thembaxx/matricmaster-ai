@@ -700,7 +700,8 @@ export async function getSubjectsAction(): Promise<Subject[]> {
 			.from(subjects)
 			.where(eq(subjects.isActive, true))
 			.orderBy(asc(subjects.name));
-	} catch {
+	} catch (error) {
+		console.error('Failed to get subjects:', error);
 		return mockSubjects;
 	}
 }
@@ -714,7 +715,8 @@ export async function getSubjectByIdAction(id: number): Promise<Subject | null> 
 			.where(and(eq(subjects.id, id), eq(subjects.isActive, true)))
 			.limit(1);
 		return subject ?? null;
-	} catch {
+	} catch (error) {
+		console.error('Failed to get subject by id:', error);
 		return mockSubjects.find((s) => s.id === id) ?? null;
 	}
 }
@@ -813,7 +815,8 @@ export async function getQuestionsAction(filters: QuestionFilters = {}): Promise
 			.from(questions)
 			.where(and(...conditions))
 			.orderBy(desc(questions.createdAt));
-	} catch {
+	} catch (error) {
+		console.error('Failed to get questions:', error);
 		return [];
 	}
 }
@@ -838,7 +841,8 @@ export async function getQuestionWithOptionsAction(
 			.orderBy(asc(options.optionLetter));
 
 		return { ...question, options: opts };
-	} catch {
+	} catch (error) {
+		console.error('Failed to get question with options:', error);
 		const mockQuestion = mockQuestions.find((q) => q.id === id);
 		if (!mockQuestion) return null;
 		return { ...mockQuestion, options: mockOptions.filter((o) => o.questionId === id) };
@@ -861,7 +865,8 @@ export async function getRandomQuestionsAction(
 			.where(and(...conditions))
 			.orderBy(sql`random()`)
 			.limit(count);
-	} catch {
+	} catch (error) {
+		console.error('Failed to get random questions:', error);
 		let filtered = mockQuestions.filter((q) => q.subjectId === subjectId);
 		if (difficulty) filtered = filtered.filter((q) => q.difficulty === difficulty);
 		return filtered.slice(0, count);
@@ -887,7 +892,8 @@ export async function getRandomQuestionsFromMultipleSubjectsAction(
 			.where(and(...conditions))
 			.orderBy(sql`random()`)
 			.limit(count);
-	} catch {
+	} catch (error) {
+		console.error('Failed to get random questions from multiple subjects:', error);
 		let filtered = mockQuestions.filter((q) => subjectIds.includes(q.subjectId));
 		if (difficulty) filtered = filtered.filter((q) => q.difficulty === difficulty);
 		return filtered.slice(0, count);
@@ -936,7 +942,8 @@ export async function getOptionsByQuestionIdAction(questionId: string): Promise<
 			.from(options)
 			.where(and(eq(options.questionId, questionId), eq(options.isActive, true)))
 			.orderBy(asc(options.optionLetter));
-	} catch {
+	} catch (error) {
+		console.error('Failed to get options by question id:', error);
 		return mockOptions.filter((o) => o.questionId === questionId);
 	}
 }
@@ -991,7 +998,8 @@ export async function getSearchHistoryAction(): Promise<SearchHistory[]> {
 			.where(eq(searchHistory.userId, user.id))
 			.orderBy(desc(searchHistory.createdAt))
 			.limit(5);
-	} catch {
+	} catch (error) {
+		console.error('Failed to get search history:', error);
 		return [];
 	}
 }
@@ -1081,7 +1089,8 @@ export async function getUsersAction(filters: UserFilters = {}): Promise<User[]>
 		}
 
 		return usersList;
-	} catch {
+	} catch (error) {
+		console.error('Failed to get users:', error);
 		return [];
 	}
 }
@@ -1275,7 +1284,8 @@ export async function getPastPaperByIdAction(id: string): Promise<PastPaper | nu
 		const db = await getDb();
 		const [pastPaper] = await db.select().from(pastPapers).where(eq(pastPapers.id, id)).limit(1);
 		return pastPaper ?? null;
-	} catch {
+	} catch (error) {
+		console.error('Failed to get past paper by id:', error);
 		return null;
 	}
 }
@@ -1289,7 +1299,8 @@ export async function getPastPaperByPaperIdAction(paperId: string): Promise<Past
 			.where(eq(pastPapers.paperId, paperId))
 			.limit(1);
 		return pastPaper ?? null;
-	} catch {
+	} catch (error) {
+		console.error('Failed to get past paper by paper id:', error);
 		return null;
 	}
 }

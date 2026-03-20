@@ -61,7 +61,8 @@ export function GeminiQuotaErrorModal({
 			setInputValue('');
 			onApiKeySaved?.();
 			onOpenChange(false);
-		} catch {
+		} catch (error) {
+			console.error('Failed to save API key:', error);
 			setError('Failed to save API key. Please try again.');
 		} finally {
 			setIsLoading(false);
@@ -178,16 +179,18 @@ export function GeminiQuotaErrorModal({
 													className="pr-12 h-12"
 													onKeyDown={(e) => e.key === 'Enter' && handleSaveKey()}
 												/>
-												<button
+												<Button
 													type="button"
+													variant="ghost"
+													size="icon"
 													onClick={() => setShowKey(!showKey)}
-													className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors p-1"
+													className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground p-1"
 												>
 													<HugeiconsIcon
 														icon={showKey ? ViewOffIcon : ViewIcon}
 														className="w-5 h-5"
 													/>
-												</button>
+												</Button>
 											</div>
 											{error && (
 												<m.p

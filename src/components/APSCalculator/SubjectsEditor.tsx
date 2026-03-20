@@ -45,7 +45,7 @@ export function SubjectsEditor({
 			<CardContent className="space-y-4">
 				{subjects.map((subj, index) => (
 					<SubjectGradeRow
-						key={index}
+						key={`subject-${index}`}
 						subject={subj.subject}
 						grade={subj.grade}
 						points={subj.points}

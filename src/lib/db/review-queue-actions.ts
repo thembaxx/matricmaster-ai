@@ -340,7 +340,8 @@ export async function getReviewForecast(userId: string, days = 7): Promise<Daily
 				date: date.toISOString().split('T')[0],
 				count: Number(result?.count ?? 0),
 			});
-		} catch {
+		} catch (error) {
+			console.warn('Failed to get flashcard count for forecast:', error);
 			forecast.push({
 				date: date.toISOString().split('T')[0],
 				count: 0,

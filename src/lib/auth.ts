@@ -131,9 +131,12 @@ async function createAuth(): Promise<AuthInstance> {
 	if (isPgConnected) {
 		try {
 			adapter = getPostgresAuthAdapter();
-		} catch {
+		} catch (error) {
 			if (!isBuildTime) {
-				console.warn('⚠️ Failed to get PostgreSQL adapter - Better Auth will not persist sessions');
+				console.warn(
+					'⚠️ Failed to get PostgreSQL adapter - Better Auth will not persist sessions:',
+					error
+				);
 			}
 		}
 	}
@@ -147,9 +150,12 @@ async function createAuth(): Promise<AuthInstance> {
 			if (!isBuildTime) {
 				console.warn('⚠️ Using SQLite fallback - Better Auth data will be stored locally');
 			}
-		} catch {
+		} catch (error) {
 			if (!isBuildTime) {
-				console.warn('⚠️ Failed to get SQLite adapter - Better Auth will not persist sessions');
+				console.warn(
+					'⚠️ Failed to get SQLite adapter - Better Auth will not persist sessions:',
+					error
+				);
 			}
 		}
 	}

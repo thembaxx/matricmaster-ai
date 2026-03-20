@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useCallback, useEffect, useState } from 'react';
+import { Suspense, useCallback, useEffect, useState } from 'react';
 import { VideoCall } from '@/components/StudyBuddies/VideoCall';
 import { useSession } from '@/lib/auth-client';
 
@@ -13,7 +13,7 @@ interface Participant {
 	hasVideo: boolean;
 }
 
-export default function VideoCallPage() {
+function VideoCallPageContent() {
 	const router = useRouter();
 	const searchParams = useSearchParams();
 	const { data: session } = useSession();
@@ -37,7 +37,8 @@ export default function VideoCallPage() {
 						}))
 					: []
 			);
-		} catch {
+		} catch (error) {
+			console.error('Failed to parse participants:', error);
 			setParticipants([]);
 		}
 	}, [participantsParam]);
@@ -66,5 +67,24 @@ export default function VideoCallPage() {
 			participants={participants}
 			onLeave={handleLeave}
 		/>
+	);
+}
+
+function VideoCallPageSkeleton() {
+	return (
+		<div className="min-h-screen bg-background flex items-center justify-center">
+			<div className="animate-pulse space-y-4">
+				<div className="h-8 w-32 bg-muted rounded" />
+				<div className="h-64 w-96 bg-muted rounded-lg" />
+			</div>
+		</div>
+	);
+}
+
+export default function VideoCallPage() {
+	return (
+		<Suspense fallback={<VideoCallPageSkeleton />}>
+			<VideoCallPageContent />
+		</Suspense>
 	);
 }

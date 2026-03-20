@@ -214,7 +214,7 @@ export default function TeamGoalsScreen() {
 				{isLoading ? (
 					<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 						{[1, 2, 3].map((i) => (
-							<div key={i} className="h-48 bg-muted animate-pulse rounded-2xl" />
+							<div key={`skeleton-${i}`} className="h-48 bg-muted animate-pulse rounded-2xl" />
 						))}
 					</div>
 				) : (

@@ -48,7 +48,8 @@ export function AIExplanation({ question, correctAnswer, className }: AIExplanat
 			} else {
 				setError('Failed to get explanation. Please try again.');
 			}
-		} catch {
+		} catch (error) {
+			console.error('Failed to get AI explanation:', error);
 			setError('Failed to get explanation. Please try again.');
 		} finally {
 			setIsLoading(false);

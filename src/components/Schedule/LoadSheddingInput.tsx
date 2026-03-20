@@ -28,7 +28,7 @@ const SA_ZONES = [
 
 function renderHourOptions() {
 	return Array.from({ length: 24 }, (_, i) => (
-		<option key={i} value={i}>
+		<option key={`hour-${i}`} value={i}>
 			{i.toString().padStart(2, '0')}:00
 		</option>
 	));
@@ -99,12 +99,13 @@ export function LoadSheddingInput({ slots, onChange }: LoadSheddingInputProps) {
 				</Label>
 				<div className="grid grid-cols-2 gap-2">
 					{SA_ZONES.map((zone) => (
-						<button
+						<Button
 							key={zone.id}
 							type="button"
+							variant="ghost"
 							onClick={() => applyPreset(zone.id)}
 							className={cn(
-								'p-3 rounded-xl text-left transition-all border',
+								'p-3 h-auto rounded-xl text-left transition-all border',
 								selectedZone === zone.id
 									? 'bg-amber-500/10 border-amber-500/30 text-amber-700'
 									: 'bg-muted/50 border-transparent hover:border-border'
@@ -112,7 +113,7 @@ export function LoadSheddingInput({ slots, onChange }: LoadSheddingInputProps) {
 						>
 							<span className="text-sm font-medium block">{zone.name}</span>
 							<span className="text-xs text-muted-foreground">{zone.areas[0]}</span>
-						</button>
+						</Button>
 					))}
 				</div>
 			</div>
@@ -148,7 +149,10 @@ export function LoadSheddingInput({ slots, onChange }: LoadSheddingInputProps) {
 
 				<div className="space-y-2 max-h-48 overflow-y-auto">
 					{slots.map((slot, index) => (
-						<div key={index} className="flex items-center gap-2 bg-muted/50 rounded-xl p-3">
+						<div
+							key={`slot-${index}`}
+							className="flex items-center gap-2 bg-muted/50 rounded-xl p-3"
+						>
 							<select
 								value={slot.day}
 								onChange={(e) => updateSlot(index, 'day', e.target.value)}
@@ -186,13 +190,15 @@ export function LoadSheddingInput({ slots, onChange }: LoadSheddingInputProps) {
 									</option>
 								))}
 							</select>
-							<button
+							<Button
 								type="button"
+								variant="ghost"
+								size="icon"
 								onClick={() => removeSlot(index)}
-								className="h-9 w-9 flex items-center justify-center rounded-lg hover:bg-destructive/10 text-destructive/60 hover:text-destructive transition-colors"
+								className="h-9 w-9 rounded-lg hover:bg-destructive/10 text-destructive/60 hover:text-destructive"
 							>
 								×
-							</button>
+							</Button>
 						</div>
 					))}
 				</div>

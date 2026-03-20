@@ -16,7 +16,10 @@ export function SubjectsSkeleton() {
 
 			<div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
 				{[1, 2, 3, 4, 5, 6].map((i) => (
-					<Card key={i} className="shadow-tiimo border-border/50 overflow-hidden flex flex-col">
+					<Card
+						key={`skeleton-${i}`}
+						className="shadow-tiimo border-border/50 overflow-hidden flex flex-col"
+					>
 						<CardHeader className="bg-muted/30">
 							<CardTitle className="text-xl font-black uppercase tracking-tight">
 								<Skeleton className="h-6 w-40 rounded-full" />
