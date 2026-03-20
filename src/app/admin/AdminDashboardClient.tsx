@@ -20,6 +20,14 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import {
+	Table,
+	TableBody,
+	TableCell,
+	TableHead,
+	TableHeader,
+	TableRow,
+} from '@/components/ui/table';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import type { AuthSession } from '@/lib/auth';
 import {
@@ -332,18 +340,18 @@ export default function AdminDashboardClient({
 									</div>
 								) : (
 									<div className="border rounded-lg overflow-hidden">
-										<table className="w-full">
-											<thead className="bg-muted/50">
-												<tr>
-													<th className="text-left p-3 text-sm font-medium">User</th>
-													<th className="text-left p-3 text-sm font-medium">Email</th>
-													<th className="text-right p-3 text-sm font-medium">Actions</th>
-												</tr>
-											</thead>
-											<tbody>
+										<Table>
+											<TableHeader>
+												<TableRow>
+													<TableHead>User</TableHead>
+													<TableHead>Email</TableHead>
+													<TableHead className="text-right">Actions</TableHead>
+												</TableRow>
+											</TableHeader>
+											<TableBody>
 												{users.map((user) => (
-													<tr key={user.id} className="border-t hover:bg-muted/30">
-														<td className="p-3">
+													<TableRow key={user.id}>
+														<TableCell>
 															<div className="flex items-center gap-2">
 																<Avatar className="h-8 w-8">
 																	<AvatarFallback className="text-xs">
@@ -352,9 +360,11 @@ export default function AdminDashboardClient({
 																</Avatar>
 																<span className="font-medium">{user.name}</span>
 															</div>
-														</td>
-														<td className="p-3 text-sm text-muted-foreground">{user.email}</td>
-														<td className="p-3 text-right">
+														</TableCell>
+														<TableCell className="text-sm text-muted-foreground">
+															{user.email}
+														</TableCell>
+														<TableCell className="text-right">
 															<Button
 																variant="ghost"
 																size="sm"
@@ -362,11 +372,11 @@ export default function AdminDashboardClient({
 															>
 																{user.isBlocked ? 'Unblock' : 'Block'}
 															</Button>
-														</td>
-													</tr>
+														</TableCell>
+													</TableRow>
 												))}
-											</tbody>
-										</table>
+											</TableBody>
+										</Table>
 									</div>
 								)}
 							</CardContent>

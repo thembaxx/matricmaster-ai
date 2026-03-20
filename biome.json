@@ -9,6 +9,18 @@
 		"ignoreUnknown": true,
 		"includes": ["**", "!src/styles", "!next-env.d.ts"]
 	},
+	"overrides": [
+		{
+			"includes": ["**/ui/input-otp.tsx"],
+			"linter": {
+				"rules": {
+					"a11y": {
+						"useAriaPropsForRole": "off"
+					}
+				}
+			}
+		}
+	],
 	"formatter": {
 		"enabled": true,
 		"indentStyle": "tab",

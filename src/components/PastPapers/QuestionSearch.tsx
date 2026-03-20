@@ -3,6 +3,12 @@
 import { SearchIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { useState } from 'react';
+import {
+	Accordion,
+	AccordionContent,
+	AccordionItem,
+	AccordionTrigger,
+} from '@/components/ui/accordion';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -76,10 +82,14 @@ export function QuestionSearch() {
 							</div>
 							<p className="font-medium text-sm">{result.questionText}</p>
 							{result.answerText && (
-								<details className="mt-2">
-									<summary className="text-xs cursor-pointer text-primary">Show answer</summary>
-									<p className="text-xs text-muted-foreground mt-1">{result.answerText}</p>
-								</details>
+								<Accordion type="single" collapsible className="mt-2">
+									<AccordionItem value={`answer-${result.id}`}>
+										<AccordionTrigger className="text-xs py-1">Show answer</AccordionTrigger>
+										<AccordionContent>
+											<p className="text-xs text-muted-foreground">{result.answerText}</p>
+										</AccordionContent>
+									</AccordionItem>
+								</Accordion>
 							)}
 						</Card>
 					))}
