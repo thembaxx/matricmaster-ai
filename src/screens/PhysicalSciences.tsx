@@ -24,8 +24,6 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useTheme } from '@/hooks/use-theme';
 
-// import type { Screen } from '@/types'; // Removed unused import
-
 export default function PhysicalSciences() {
 	const router = useRouter();
 	const { theme, setTheme } = useTheme();
@@ -44,9 +42,7 @@ export default function PhysicalSciences() {
 						<Button variant="ghost" size="icon" onClick={() => router.push('/dashboard')}>
 							<HugeiconsIcon icon={ArrowLeft02Icon} className="w-5 h-5" />
 						</Button>
-						<h1 className="text-lg font-black text-foreground tracking-tight uppercase">
-							Physics P1
-						</h1>
+						<h1 className="text-2xl font-bold text-foreground tracking-tight">physics p1</h1>
 					</div>
 					<div className="flex gap-2">
 						<Button variant="ghost" size="icon">
@@ -73,11 +69,11 @@ export default function PhysicalSciences() {
 				<div className="mb-4">
 					<Button
 						variant="gradient"
-						className="w-full rounded-2xl font-black h-12 gap-2 shadow-xl shadow-primary-violet/20"
+						className="w-full rounded-2xl font-bold h-12 gap-2 shadow-xl shadow-primary/20"
 						onClick={() => router.push('/quiz')}
 					>
 						<HugeiconsIcon icon={SparklesIcon} className="w-4 h-4" />
-						Practice Quiz
+						practice quiz
 					</Button>
 				</div>
 
@@ -90,15 +86,15 @@ export default function PhysicalSciences() {
 					<TabsList className="grid grid-cols-3 w-full">
 						<TabsTrigger value="question" className="flex items-center gap-2">
 							<HugeiconsIcon icon={ViewIcon} className="w-4 h-4" />
-							Questions
+							questions
 						</TabsTrigger>
 						<TabsTrigger value="split" className="flex items-center gap-2">
 							<HugeiconsIcon icon={LayoutLeftIcon} className="w-4 h-4" />
-							Split
+							split
 						</TabsTrigger>
 						<TabsTrigger value="simulations" className="flex items-center gap-2">
 							<HugeiconsIcon icon={SparklesIcon} className="w-4 h-4" />
-							Lab Sims
+							lab sims
 						</TabsTrigger>
 					</TabsList>
 				</Tabs>
@@ -112,13 +108,13 @@ export default function PhysicalSciences() {
 						{/* Circuit Diagram */}
 						<Card className="p-6">
 							<div className="flex justify-between items-center mb-4">
-								<h3 className="font-semibold text-foreground">Figure 1</h3>
+								<h3 className="font-semibold text-foreground">figure 1</h3>
 								<Button
 									variant="ghost"
 									size="sm"
 									onClick={() => setShowAnnotations(!showAnnotations)}
 								>
-									{showAnnotations ? 'Hide' : 'Show'} Labels
+									{showAnnotations ? 'hide' : 'show'} labels
 								</Button>
 							</div>
 
@@ -128,9 +124,9 @@ export default function PhysicalSciences() {
 									viewBox="0 0 400 300"
 									className="w-full h-full"
 									role="img"
-									aria-label="Circuit diagram"
+									aria-label="circuit diagram"
 								>
-									<title>Circuit Diagram</title>
+									<title>circuit diagram</title>
 									{/* Battery */}
 									<rect
 										x="20"
@@ -142,7 +138,7 @@ export default function PhysicalSciences() {
 										strokeWidth="2"
 									/>
 									<text x="40" y="155" textAnchor="middle" className="text-xs fill-current">
-										12V
+										12v
 									</text>
 
 									{/* Wires */}
@@ -163,7 +159,7 @@ export default function PhysicalSciences() {
 										y="70"
 										width="40"
 										height="20"
-										fill="var(--primary-orange)"
+										fill="var(--tiimo-orange)"
 										stroke="currentColor"
 										strokeWidth="2"
 									/>
@@ -173,7 +169,7 @@ export default function PhysicalSciences() {
 										textAnchor="middle"
 										className="text-xs fill-current font-bold"
 									>
-										R₁ = 4Ω
+										r₁ = 4Ω
 									</text>
 
 									{/* Resistor R2 */}
@@ -182,7 +178,7 @@ export default function PhysicalSciences() {
 										y="140"
 										width="20"
 										height="40"
-										fill="var(--primary-orange)"
+										fill="var(--tiimo-orange)"
 										stroke="currentColor"
 										strokeWidth="2"
 									/>
@@ -192,7 +188,7 @@ export default function PhysicalSciences() {
 										textAnchor="start"
 										className="text-xs fill-current font-bold"
 									>
-										R₂ = 6Ω
+										r₂ = 6Ω
 									</text>
 
 									{/* Resistor R3 */}
@@ -201,7 +197,7 @@ export default function PhysicalSciences() {
 										y="210"
 										width="40"
 										height="20"
-										fill="var(--primary-orange)"
+										fill="var(--tiimo-orange)"
 										stroke="currentColor"
 										strokeWidth="2"
 									/>
@@ -211,7 +207,7 @@ export default function PhysicalSciences() {
 										textAnchor="middle"
 										className="text-xs fill-current font-bold"
 									>
-										R₃ = 3Ω
+										r₃ = 3Ω
 									</text>
 
 									{/* Annotations */}
@@ -225,8 +221,8 @@ export default function PhysicalSciences() {
 												stroke="var(--color-destructive)"
 												strokeWidth="2"
 											/>
-											<text x="160" y="45" textAnchor="middle" className="text-xs fill-red-500">
-												Series
+											<text x="160" y="45" textAnchor="middle" className="text-xs fill-destructive">
+												series
 											</text>
 
 											<circle
@@ -237,8 +233,8 @@ export default function PhysicalSciences() {
 												stroke="var(--color-success)"
 												strokeWidth="2"
 											/>
-											<text x="320" y="130" textAnchor="middle" className="text-xs fill-green-500">
-												Parallel
+											<text x="320" y="130" textAnchor="middle" className="text-xs fill-success">
+												parallel
 											</text>
 										</>
 									)}
@@ -249,48 +245,46 @@ export default function PhysicalSciences() {
 						{/* Question Text */}
 						<Card className="p-6">
 							<div className="flex items-center gap-2 mb-4">
-								<Badge>QUESTION 2.1</Badge>
+								<Badge>question 2.1</Badge>
 								<span className="text-sm text-muted-foreground">(5 marks)</span>
 							</div>
 
 							<div className="space-y-4 text-zinc-800 dark:text-zinc-200">
 								<p>
-									Consider the circuit diagram shown in <strong>FIGURE 1</strong> above.
+									consider the circuit diagram shown in <strong>figure 1</strong> above.
 								</p>
 
 								<p>
-									The battery has an emf of{' '}
-									<span className="bg-yellow-100 dark:bg-yellow-900/30 px-1 rounded font-mono">
-										12 V
-									</span>{' '}
-									and negligible internal resistance. Resistors{' '}
-									<span className="font-mono">R₁</span>, <span className="font-mono">R₂</span>, and{' '}
-									<span className="font-mono">R₃</span> are connected as shown.
+									the battery has an emf of{' '}
+									<span className="bg-yellow-100 dark:bg-yellow-900/30 px-1 rounded">12 v</span> and
+									negligible internal resistance. resistors <span className="">r₁</span>,{' '}
+									<span className="">r₂</span>, and <span className="">r₃</span> are connected as
+									shown.
 								</p>
 
-								<p className="font-medium">Calculate:</p>
+								<p className="font-medium">calculate:</p>
 
 								<div className="pl-4 space-y-2">
-									<p>2.1.1 The equivalent resistance of the circuit.</p>
+									<p>2.1.1 the equivalent resistance of the circuit.</p>
 									<p>
-										2.1.2 The current through resistor <span className="font-mono">R₁</span>.
+										2.1.2 the current through resistor <span className="">r₁</span>.
 									</p>
 									<p>
-										2.1.3 The power dissipated by resistor <span className="font-mono">R₃</span>.
+										2.1.3 the power dissipated by resistor <span className="">r₃</span>.
 									</p>
 								</div>
 							</div>
 
 							{/* Given Data */}
-							<div className="mt-6 p-4 bg-primary-cyan/10 rounded-2xl border border-primary-cyan/20 shadow-sm">
-								<h4 className="font-black text-xs text-primary-cyan uppercase tracking-widest mb-2">
-									Given:
+							<div className="mt-6 p-4 bg-subject-physics-soft rounded-2xl border border-subject-physics/20 shadow-sm">
+								<h4 className="font-bold text-xs text-subject-physics tracking-widest mb-2">
+									given:
 								</h4>
 								<ul className="space-y-1 text-sm font-bold text-foreground/80">
-									<li>• V = 12 V</li>
-									<li>• R₁ = 4 Ω</li>
-									<li>• R₂ = 6 Ω</li>
-									<li>• R₃ = 3 Ω</li>
+									<li>· v = 12 v</li>
+									<li>· r₁ = 4 Ω</li>
+									<li>· r₂ = 6 Ω</li>
+									<li>· r₃ = 3 Ω</li>
 								</ul>
 							</div>
 						</Card>
@@ -306,7 +300,7 @@ export default function PhysicalSciences() {
 									onClick={() => setActiveSimulation('projectile')}
 									className="whitespace-nowrap"
 								>
-									Projectile Motion
+									projectile motion
 								</Button>
 								<Button
 									variant={activeSimulation === 'forces' ? 'default' : 'outline'}
@@ -314,7 +308,7 @@ export default function PhysicalSciences() {
 									onClick={() => setActiveSimulation('forces')}
 									className="whitespace-nowrap"
 								>
-									Forces (FBD)
+									forces (fbd)
 								</Button>
 								<Button
 									variant={activeSimulation === 'waves' ? 'default' : 'outline'}
@@ -322,7 +316,7 @@ export default function PhysicalSciences() {
 									onClick={() => setActiveSimulation('waves')}
 									className="whitespace-nowrap"
 								>
-									Wave Interference
+									wave interference
 								</Button>
 								<Button
 									variant={activeSimulation === 'circuit' ? 'default' : 'outline'}
@@ -330,7 +324,7 @@ export default function PhysicalSciences() {
 									onClick={() => setActiveSimulation('circuit')}
 									className="whitespace-nowrap"
 								>
-									Circuit Builder
+									circuit builder
 								</Button>
 							</div>
 

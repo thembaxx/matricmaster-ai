@@ -1,0 +1,175 @@
+$ next build
+Γû▓ Next.js 16.2.0 (Turbopack)
+- Environments: .env.local
+- Experiments (use with caution):
+  ┬╖ clientTraceMetadata
+  ┬╖ optimizePackageImports
+  Γ£ô viewTransition
+
+  Creating an optimized production build ...
+Γ£ô Compiled successfully in 30.7s
+  Running next.config.js provided runAfterProductionCompile ...
+Γ£ô Completed runAfterProductionCompile in 32.7s
+  Running TypeScript ...
+  Finished TypeScript in 34.6s ...
+  Collecting page data using 11 workers ...
+ΓÜá Using edge runtime on a page currently disables static generation for that page
+  Generating static pages using 11 workers (0/130) ...
+  Generating static pages using 11 workers (32/130) 
+  Generating static pages using 11 workers (64/130) 
+  Generating static pages using 11 workers (97/130) 
+Γ£ô Generating static pages using 11 workers (130/130) in 10.2s
+  Finalizing page optimization ...
+
+Route (app)
+Γöî Γùï /
+Γö£ Γùï /_not-found
+Γö£ Γùï /2fa
+Γö£ Γùï /achievements
+Γö£ ╞Æ /admin
+Γö£ Γùï /admin/moderation
+Γö£ Γùï /ai-tutor
+Γö£ Γùï /analytics
+Γö£ ╞Æ /api/ably/auth
+Γö£ ╞Æ /api/adaptive-learning/process
+Γö£ ╞Æ /api/adaptive-recommendations
+Γö£ ╞Æ /api/adaptive-schedule
+Γö£ ╞Æ /api/ai-chat
+Γö£ ╞Æ /api/ai-tutor
+Γö£ ╞Æ /api/ai-tutor/essay-grader
+Γö£ ╞Æ /api/ai-tutor/flashcards
+Γö£ ╞Æ /api/ai-tutor/practice
+Γö£ ╞Æ /api/ai-tutor/recommendations
+Γö£ ╞Æ /api/auth/[...better-auth]
+Γö£ ╞Æ /api/bookmarks
+Γö£ ╞Æ /api/buddies
+Γö£ ╞Æ /api/calendar/events
+Γö£ ╞Æ /api/channels/[id]/messages
+Γö£ ╞Æ /api/channels/[id]/messages/[mid]
+Γö£ ╞Æ /api/channels/[id]/messages/send
+Γö£ ╞Æ /api/chat/messages
+Γö£ ╞Æ /api/chat/sessions
+Γö£ ╞Æ /api/comments
+Γö£ ╞Æ /api/comments/[id]/flag
+Γö£ ╞Æ /api/comments/[id]/vote
+Γö£ ╞Æ /api/csp-report
+Γö£ ╞Æ /api/db/init
+Γö£ ╞Æ /api/db/past-papers
+Γö£ ╞Æ /api/extract-questions
+Γö£ ╞Æ /api/flashcards/decks
+Γö£ ╞Æ /api/flashcards/decks/[id]
+Γö£ ╞Æ /api/flashcards/decks/[id]/cards
+Γö£ ╞Æ /api/flashcards/decks/[id]/cards/[cardId]
+Γö£ ╞Æ /api/flashcards/due
+Γö£ ╞Æ /api/flashcards/review
+Γö£ ╞Æ /api/flashcards/stats
+Γö£ ╞Æ /api/growth-map
+Γö£ ╞Æ /api/health
+Γö£ ╞Æ /api/mobile
+Γö£ ╞Æ /api/moderation/flags
+Γö£ ╞Æ /api/moderation/flags/[id]/action
+Γö£ ╞Æ /api/notifications
+Γö£ ╞Æ /api/notifications/[id]/read
+Γö£ ╞Æ /api/notifications/subscribe
+Γö£ ╞Æ /api/og
+Γö£ ╞Æ /api/parent-insights
+Γö£ ╞Æ /api/past-paper/search
+Γö£ ╞Æ /api/progress
+Γö£ ╞Æ /api/progress/stats
+Γö£ ╞Æ /api/progress/weak-topics
+Γö£ ╞Æ /api/quiz/analytics
+Γö£ ╞Æ /api/quiz/generate-from-solution
+Γö£ ╞Æ /api/search
+Γö£ ╞Æ /api/share
+Γö£ ╞Æ /api/smart-scheduler/adaptive
+Γö£ ╞Æ /api/smart-scheduler/blocks
+Γö£ ╞Æ /api/smart-scheduler/generate
+Γö£ ╞Æ /api/smart-scheduler/optimize
+Γö£ ╞Æ /api/snap-and-solve
+Γö£ ╞Æ /api/study-path/schedule
+Γö£ ╞Æ /api/study-plan
+Γö£ ╞Æ /api/subscription/payment
+Γö£ ╞Æ /api/subscription/plans
+Γö£ ╞Æ /api/translate
+Γö£ ╞Æ /api/uploadthing
+Γö£ ╞Æ /api/webhooks
+Γö£ ╞Æ /api/webhooks/whatsapp
+Γö£ Γùï /aps-calculator
+Γö£ Γùï /bookmarks
+Γö£ Γùï /calendar
+Γö£ Γùï /channels
+Γö£ ╞Æ /channels/[id]
+Γö£ Γùï /chat
+Γö£ ╞Æ /cms
+Γö£ Γùï /comments
+Γö£ Γùï /common-questions
+Γö£ Γùï /curriculum-map
+Γö£ ╞Æ /dashboard
+Γö£ Γùï /demo
+Γö£ Γùï /error-hint
+Γö£ Γùï /essay-grader
+Γö£ Γùï /exam-timer
+Γö£ Γùï /flashcards
+Γö£ Γùï /focus
+Γö£ Γùï /focus-rooms
+Γö£ Γùï /forgot-password
+Γö£ Γùï /language
+Γö£ Γùï /leaderboard
+Γö£ Γùï /legal/privacy
+Γö£ Γùï /legal/terms
+Γö£ Γùï /lesson-complete
+Γö£ Γùï /lessons
+Γö£ Γùï /math/graph
+Γö£ Γùï /notifications
+Γö£ Γùï /offline
+Γö£ ╞Æ /onboarding
+Γö£ ╞Æ /parent-dashboard
+Γö£ ╞Æ /past-paper
+Γö£ Γùï /past-papers
+Γö£ Γùï /periodic-table
+Γö£ Γùï /physics
+Γö£ Γùï /planner
+Γö£ Γùï /profile
+Γö£ Γùï /quiz
+Γö£ ΓùÅ /quiz/[id]
+Γöé Γö£ /quiz/math-p1-2023-nov
+Γöé Γö£ /quiz/math-p2-2023-nov
+Γöé Γö£ /quiz/phys-p1-2023-nov
+Γöé Γöö [+11 more paths]
+Γö£ Γùï /results
+Γö£ Γùï /review
+Γö£ Γùï /robots.txt
+Γö£ Γùï /schedule
+Γö£ Γùï /school
+Γö£ Γùï /science-lab
+Γö£ Γùï /science-lab/circuits
+Γö£ Γùï /science-lab/momentum
+Γö£ Γùï /science-lab/waves
+Γö£ Γùï /search
+Γö£ Γùï /settings
+Γö£ Γùï /setwork-library
+Γö£ ╞Æ /setwork-library/[id]
+Γö£ Γùï /setwork-library/quiz
+Γö£ Γùï /sign-in
+Γö£ Γùï /sign-up
+Γö£ Γùï /sitemap.xml
+Γö£ Γùï /smart-scheduler
+Γö£ Γùï /snap-and-solve
+Γö£ Γùï /study-buddies
+Γö£ Γùï /study-companion
+Γö£ Γùï /study-path
+Γö£ Γùï /study-plan
+Γö£ Γùï /subjects
+Γö£ ╞Æ /subjects/[id]
+Γö£ Γùï /subscription
+Γö£ Γùï /tutoring
+Γö£ Γùï /tutoring/session
+Γöö Γùï /voice-tutor
+
+
+╞Æ Proxy (Middleware)
+
+Γùï  (Static)   prerendered as static content
+ΓùÅ  (SSG)      prerendered as static HTML (uses generateStaticParams)
+╞Æ  (Dynamic)  server-rendered on demand
+

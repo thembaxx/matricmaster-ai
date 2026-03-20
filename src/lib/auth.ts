@@ -403,7 +403,6 @@ export const auth = new Proxy({} as AuthInstance, {
 		// For CLI generate, return authConfig to satisfy the CLI
 		if (isCLIGenerate) {
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
-
 			return Reflect.get(authConfig as any, prop, authConfig);
 		}
 

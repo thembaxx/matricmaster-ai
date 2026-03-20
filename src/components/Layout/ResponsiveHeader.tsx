@@ -14,11 +14,11 @@ import { cn } from '@/lib/utils';
 import { ProfileMenu } from './profile-menu';
 
 const desktopNavItems = [
-	{ href: '/dashboard', label: 'Dashboard' },
-	{ href: '/schedule', label: 'Schedule' },
-	{ href: '/planner', label: 'Planner' },
-	{ href: '/focus', label: 'Focus' },
-	{ href: '/profile', label: 'Profile' },
+	{ href: '/dashboard', label: 'dashboard' },
+	{ href: '/schedule', label: 'schedule' },
+	{ href: '/planner', label: 'planner' },
+	{ href: '/focus', label: 'focus' },
+	{ href: '/profile', label: 'profile' },
 ];
 
 type AuthUser = typeof authClient.$Infer.Session.user;
@@ -63,8 +63,8 @@ export function ResponsiveHeader({
 		>
 			<div className="hidden lg:flex items-center gap-8">
 				<Link href="/" className="shrink-0">
-					<p className="font-black text-xs uppercase tracking-wider text-foreground">
-						{appConfig.name}
+					<p className="font-bold text-xs tracking-wider text-foreground">
+						{appConfig.name.toLowerCase()}
 					</p>
 				</Link>
 				<nav className="flex items-center gap-6">
@@ -88,8 +88,8 @@ export function ResponsiveHeader({
 			{user && <div className="lg:hidden mr-4">{mobileMenuTrigger}</div>}
 
 			<Link href="/" className="lg:hidden">
-				<p className="font-black text-lg tracking-tighter text-foreground uppercase">
-					{appConfig.name}
+				<p className="font-bold text-lg tracking-tighter text-foreground">
+					{appConfig.name.toLowerCase()}
 				</p>
 			</Link>
 
@@ -141,7 +141,7 @@ function NotificationButton({ count, onClick }: NotificationButtonProps) {
 				<m.span
 					initial={{ scale: 0.95, opacity: 0 }}
 					animate={{ scale: 1 }}
-					className="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 bg-rose-500 text-white text-[10px] font-black rounded-full flex items-center justify-center shadow-sm"
+					className="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 bg-rose-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center shadow-sm"
 				>
 					{count > 99 ? '99+' : count}
 				</m.span>
@@ -163,13 +163,13 @@ function AuthButtons({ onSignIn, onSignUp }: AuthButtonsProps) {
 				className="font-bold text-sm h-10 px-4 hidden sm:flex"
 				onClick={onSignIn}
 			>
-				Sign in
+				sign in
 			</Button>
 			<Button
-				className="bg-primary hover:bg-primary/90 text-primary-foreground font-black shadow-lg shadow-primary/20 px-6 h-10 rounded-xl text-sm"
+				className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold shadow-lg shadow-primary/20 px-6 h-10 rounded-xl text-sm"
 				onClick={onSignUp}
 			>
-				Join Free
+				join free
 			</Button>
 		</div>
 	);
