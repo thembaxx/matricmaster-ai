@@ -1584,6 +1584,95 @@ export const schoolLicensesRelations = relations(schoolLicenses, ({ one }) => ({
 }));
 
 // ============================================================================
+// DAILY CHALLENGES TABLE
+// ============================================================================
+
+export const dailyChallenges = pgTable(
+	'daily_challenges',
+	{
+		id: uuid('id').defaultRandom().primaryKey(),
+		userId: text('user_id')
+			.notNull()
+			.references(() => users.id, { onDelete: 'cascade' }),
+		title: varchar('title', { length: 200 }).notNull(),
+		description: text('description').notNull(),
+		challengeType: varchar('challenge_type', { length: 20 }).notNull(),
+		target: integer('target').notNull(),
+		currentProgress: integer('current_progress').notNull().default(0),
+		xpReward: integer('xp_reward').notNull().default(50),
+		badgeId: varchar('badge_id', { length: 50 }),
+		expiresAt: timestamp('expires_at').notNull(),
+		isCompleted: boolean('is_completed').notNull().default(false),
+		isClaimed: boolean('is_claimed').notNull().default(false),
+		completedAt: timestamp('completed_at'),
+		claimedAt: timestamp('claimed_at'),
+		createdAt: timestamp('created_at').defaultNow(),
+	},
+	(table) => ({
+		userIdIdx: index('daily_challenges_user_id_idx').on(table.userId),
+		expiresAtIdx: index('daily_challenges_expires_at_idx').on(table.expiresAt),
+		userExpiresIdx: index('daily_challenges_user_expires_idx').on(table.userId, table.expiresAt),
+	})
+);
+
+// ============================================================================
+// TEAM GOALS TABLE
+// ============================================================================
+
+export const teamGoals = pgTable(
+	'team_goals',
+	{
+		id: uuid('id').defaultRandom().primaryKey(),
+		creatorId: text('creator_id')
+			.notNull()
+			.references(() => users.id, { onDelete: 'cascade' }),
+		title: varchar('title', { length: 200 }).notNull(),
+		description: text('description'),
+		goalType: varchar('goal_type', { length: 20 }).notNull(),
+		target: integer('target').notNull(),
+		currentProgress: integer('current_progress').notNull().default(0),
+		xpReward: integer('xp_reward').notNull().default(100),
+		maxMembers: integer('max_members').notNull().default(10),
+		memberCount: integer('member_count').notNull().default(1),
+		isActive: boolean('is_active').notNull().default(true),
+		endDate: timestamp('end_date').notNull(),
+		completedAt: timestamp('completed_at'),
+		createdAt: timestamp('created_at').defaultNow(),
+		updatedAt: timestamp('updated_at').defaultNow(),
+	},
+	(table) => ({
+		creatorIdIdx: index('team_goals_creator_id_idx').on(table.creatorId),
+		isActiveIdx: index('team_goals_is_active_idx').on(table.isActive),
+		endDateIdx: index('team_goals_end_date_idx').on(table.endDate),
+	})
+);
+
+// ============================================================================
+// TEAM GOAL MEMBERS TABLE
+// ============================================================================
+
+export const teamGoalMembers = pgTable(
+	'team_goal_members',
+	{
+		id: uuid('id').defaultRandom().primaryKey(),
+		goalId: uuid('goal_id')
+			.notNull()
+			.references(() => teamGoals.id, { onDelete: 'cascade' }),
+		userId: text('user_id')
+			.notNull()
+			.references(() => users.id, { onDelete: 'cascade' }),
+		contribution: integer('contribution').notNull().default(0),
+		hasClaimedReward: boolean('has_claimed_reward').notNull().default(false),
+		joinedAt: timestamp('joined_at').defaultNow(),
+	},
+	(table) => ({
+		goalIdIdx: index('team_goal_members_goal_id_idx').on(table.goalId),
+		userIdIdx: index('team_goal_members_user_id_idx').on(table.userId),
+		uniqueMember: uniqueIndex('team_goal_members_unique').on(table.goalId, table.userId),
+	})
+);
+
+// ============================================================================
 // CO-OP FOCUS SESSIONS (Leaderboard Multiplier)
 // ============================================================================
 
@@ -1770,3 +1859,41 @@ export type GamificationConfig = typeof gamificationConfig.$inferSelect;
 export type NewGamificationConfig = typeof gamificationConfig.$inferInsert;
 export type AchievementDefinition = typeof achievementDefinitions.$inferSelect;
 export type NewAchievementDefinition = typeof achievementDefinitions.$inferInsert;
+
+// ============================================================================
+// DAILY CHALLENGES & TEAM GOALS RELATIONS
+// ============================================================================
+
+export const dailyChallengesRelations = relations(dailyChallenges, ({ one }) => ({
+	user: one(users, {
+		fields: [dailyChallenges.userId],
+		references: [users.id],
+	}),
+}));
+
+export const teamGoalsRelations = relations(teamGoals, ({ one, many }) => ({
+	creator: one(users, {
+		fields: [teamGoals.creatorId],
+		references: [users.id],
+	}),
+	members: many(teamGoalMembers),
+}));
+
+export const teamGoalMembersRelations = relations(teamGoalMembers, ({ one }) => ({
+	goal: one(teamGoals, {
+		fields: [teamGoalMembers.goalId],
+		references: [teamGoals.id],
+	}),
+	user: one(users, {
+		fields: [teamGoalMembers.userId],
+		references: [users.id],
+	}),
+}));
+
+// Daily challenges & team goals type exports
+export type DailyChallenge = typeof dailyChallenges.$inferSelect;
+export type NewDailyChallenge = typeof dailyChallenges.$inferInsert;
+export type TeamGoal = typeof teamGoals.$inferSelect;
+export type NewTeamGoal = typeof teamGoals.$inferInsert;
+export type TeamGoalMember = typeof teamGoalMembers.$inferSelect;
+export type NewTeamGoalMember = typeof teamGoalMembers.$inferInsert;

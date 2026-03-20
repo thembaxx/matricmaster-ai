@@ -1,10 +1,13 @@
 'use client';
 
-import { UserGroupIcon } from '@hugeicons/core-free-icons';
+import { UserGroupIcon, VideoReplayIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { useCallback, useEffect, useState } from 'react';
+import { toast } from 'sonner';
 import { DiscoverTab } from '@/components/StudyBuddies/DiscoverTab';
 import { ProfileTab } from '@/components/StudyBuddies/ProfileTab';
+import { VideoCallInvite } from '@/components/StudyBuddies/VideoCallInvite';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -13,6 +16,7 @@ import { useSession } from '@/lib/auth-client';
 import { useStudyBuddyStore } from '@/stores/useStudyBuddyStore';
 
 export default function StudyBuddiesPage() {
+	const router = useRouter();
 	const { data: session } = useSession();
 
 	const searchQuery = useStudyBuddyStore((s) => s.searchQuery);
@@ -32,6 +36,17 @@ export default function StudyBuddiesPage() {
 	const handleAcceptRequest = useStudyBuddyStore((s) => s.handleAcceptRequest);
 	const handleRejectRequest = useStudyBuddyStore((s) => s.handleRejectRequest);
 
+	const [videoInvites, setVideoInvites] = useState<
+		Array<{
+			id: string;
+			callerName: string;
+			callerInitials: string;
+			subject: string;
+			roomName: string;
+			roomUrl: string;
+		}>
+	>([]);
+
 	useEffect(() => {
 		if (session?.user?.id) {
 			loadData(session.user.id);
@@ -46,6 +61,66 @@ export default function StudyBuddiesPage() {
 			selectedSubjects.length === 0 || buddy.subjects.some((s) => selectedSubjects.includes(s));
 		return matchesSearch && matchesSubjects;
 	});
+
+	const handleStartVideoCall = useCallback(
+		async (buddy: { id: string; name: string; subjects: string[] }) => {
+			if (!session?.user?.id) return;
+
+			const subject = buddy.subjects[0] || 'Study Session';
+
+			try {
+				toast.loading('Creating video call room...');
+				const response = await fetch('/api/video-calls', {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify({
+						participantIds: [buddy.id],
+						subject,
+					}),
+				});
+
+				const result = await response.json();
+				toast.dismiss();
+
+				if (result.success && result.data) {
+					toast.success('Video call room created!');
+					const params = new URLSearchParams({
+						room: result.data.roomName,
+						url: result.data.roomUrl,
+						subject,
+						participants: JSON.stringify([
+							{ id: buddy.id, name: buddy.name, isMuted: false, hasVideo: true },
+						]),
+					});
+					router.push(`/video-call?${params.toString()}`);
+				} else {
+					toast.error(result.error || 'Failed to create video call');
+				}
+			} catch (error) {
+				toast.dismiss();
+				toast.error('Failed to start video call');
+				console.debug('Error starting video call:', error);
+			}
+		},
+		[session?.user?.id, router]
+	);
+
+	const handleAcceptVideoInvite = useCallback(
+		(roomName: string, roomUrl: string) => {
+			const params = new URLSearchParams({
+				room: roomName,
+				url: roomUrl,
+				subject: 'Study Session',
+			});
+			router.push(`/video-call?${params.toString()}`);
+		},
+		[router]
+	);
+
+	const handleDeclineVideoInvite = useCallback((inviteId: string) => {
+		setVideoInvites((prev) => prev.filter((i) => i.id !== inviteId));
+		toast.info('Video call declined');
+	}, []);
 
 	return (
 		<div className="container mx-auto py-8 max-w-6xl px-6">
@@ -138,8 +213,13 @@ export default function StudyBuddiesPage() {
 								<Card key={buddy.id}>
 									<CardContent className="pt-6">
 										<div className="flex items-center gap-3 mb-4">
-											<div className="h-10 w-10 rounded-full bg-muted flex items-center justify-center text-sm font-medium">
-												{buddy.name[0]}
+											<div className="relative">
+												<div className="h-10 w-10 rounded-full bg-muted flex items-center justify-center text-sm font-medium">
+													{buddy.name[0]}
+												</div>
+												{buddy.isOnline && (
+													<div className="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full bg-green-500 border-2 border-card" />
+												)}
 											</div>
 											<div>
 												<p className="font-medium">{buddy.name}</p>
@@ -152,9 +232,26 @@ export default function StudyBuddiesPage() {
 												</div>
 											</div>
 										</div>
-										<Button size="sm" className="w-full">
-											Message
-										</Button>
+										<div className="flex gap-2">
+											<Button size="sm" className="flex-1">
+												Message
+											</Button>
+											<Button
+												size="sm"
+												variant="outline"
+												className="gap-1.5"
+												onClick={() =>
+													handleStartVideoCall({
+														id: buddy.id,
+														name: buddy.name,
+														subjects: buddy.subjects,
+													})
+												}
+											>
+												<HugeiconsIcon icon={VideoReplayIcon} className="h-4 w-4" />
+												Call
+											</Button>
+										</div>
 									</CardContent>
 								</Card>
 							))}
@@ -179,6 +276,25 @@ export default function StudyBuddiesPage() {
 					<ProfileTab profile={profile} onProfileChange={setProfile} />
 				</TabsContent>
 			</Tabs>
+
+			{/* Video call invite overlays */}
+			{videoInvites.length > 0 && (
+				<div className="fixed bottom-24 right-6 z-50 space-y-3">
+					{videoInvites.map((invite) => (
+						<VideoCallInvite
+							key={invite.id}
+							inviteId={invite.id}
+							callerName={invite.callerName}
+							callerInitials={invite.callerInitials}
+							subject={invite.subject}
+							roomName={invite.roomName}
+							roomUrl={invite.roomUrl}
+							onAccept={handleAcceptVideoInvite}
+							onDecline={handleDeclineVideoInvite}
+						/>
+					))}
+				</div>
+			)}
 		</div>
 	);
 }

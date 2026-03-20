@@ -29,10 +29,29 @@ export const useSmartSchedulerStore = create<SmartSchedulerState>((set, get) => 
 			blocks: state.blocks.filter((b) => b.id !== id),
 		})),
 
-	toggleBlockComplete: (id) =>
+	toggleBlockComplete: async (id) => {
+		const { blocks } = get();
+		const block = blocks.find((b) => b.id === id);
+		if (!block) return;
+
+		const newCompleted = !block.isCompleted;
 		set((state) => ({
-			blocks: state.blocks.map((b) => (b.id === id ? { ...b, isCompleted: !b.isCompleted } : b)),
-		})),
+			blocks: state.blocks.map((b) => (b.id === id ? { ...b, isCompleted: newCompleted } : b)),
+		}));
+
+		try {
+			await fetch('/api/smart-scheduler/blocks', {
+				method: 'PATCH',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ id, isCompleted: newCompleted }),
+			});
+		} catch (error) {
+			console.error('Failed to toggle block completion:', error);
+			set((state) => ({
+				blocks: state.blocks.map((b) => (b.id === id ? { ...b, isCompleted: !newCompleted } : b)),
+			}));
+		}
+	},
 
 	setSuggestions: (suggestions) => set({ suggestions }),
 
@@ -93,6 +112,7 @@ export const useSmartSchedulerStore = create<SmartSchedulerState>((set, get) => 
 			set({
 				blocks: data.blocks || [],
 				suggestions: data.suggestions || [],
+				exams: data.exams || [],
 			});
 		} catch (error) {
 			console.error('Failed to generate schedule:', error);
@@ -109,7 +129,7 @@ export const useSmartSchedulerStore = create<SmartSchedulerState>((set, get) => 
 			const response = await fetch('/api/smart-scheduler/optimize', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ completedBlocks }),
+				body: JSON.stringify({ completedBlocks, blocks }),
 			});
 			const data = await response.json();
 			set((state) => ({
@@ -131,15 +151,12 @@ export const useSmartSchedulerStore = create<SmartSchedulerState>((set, get) => 
 		const block = blocks.find((b) => b.id === blockId);
 		if (!block) return;
 
-		let newStartHour = block.startTime;
-		if (newStartTime) {
-			newStartHour = newStartTime;
-		}
-
+		const newStartHour = newStartTime || block.startTime;
 		const [hour, min] = newStartHour.split(':').map(Number);
-		const endHour = hour + Math.floor((hour * 60 + min + block.duration) / 60);
-		const endMin = String((hour * 60 + min + block.duration) % 60).padStart(2, '0');
-		const newEndTime = `${endHour.toString().padStart(2, '0')}:${endMin}`;
+		const endMin = hour * 60 + min + block.duration;
+		const endH = Math.floor(endMin / 60);
+		const endM = String(endMin % 60).padStart(2, '0');
+		const newEndTime = `${endH.toString().padStart(2, '0')}:${endM}`;
 
 		get().updateBlock(blockId, {
 			date: newDate,
@@ -174,15 +191,18 @@ export const useSmartSchedulerStore = create<SmartSchedulerState>((set, get) => 
 	},
 
 	saveBlock: async (block: Partial<StudyBlock>) => {
-		const { addBlock, updateBlock } = get();
+		const { addBlock, updateBlock, removeBlock } = get();
 		try {
 			if (block.id) {
 				updateBlock(block.id, block);
-				await fetch(`/api/smart-scheduler/blocks/${block.id}`, {
-					method: 'PUT',
+				const response = await fetch('/api/smart-scheduler/blocks', {
+					method: 'PATCH',
 					headers: { 'Content-Type': 'application/json' },
 					body: JSON.stringify(block),
 				});
+				if (!response.ok) {
+					throw new Error('Failed to update block');
+				}
 			} else {
 				const newBlock: StudyBlock = {
 					id: crypto.randomUUID(),
@@ -197,14 +217,49 @@ export const useSmartSchedulerStore = create<SmartSchedulerState>((set, get) => 
 					isAISuggested: false,
 				};
 				addBlock(newBlock);
-				await fetch('/api/smart-scheduler/blocks', {
+				const response = await fetch('/api/smart-scheduler/blocks', {
 					method: 'POST',
 					headers: { 'Content-Type': 'application/json' },
 					body: JSON.stringify(newBlock),
 				});
+				if (!response.ok) {
+					removeBlock(newBlock.id);
+					throw new Error('Failed to create block');
+				}
 			}
 		} catch (error) {
 			console.error('Failed to save block:', error);
+			throw error;
+		}
+	},
+
+	deleteBlock: async (blockId: string) => {
+		const { blocks } = get();
+		const removed = blocks.find((b) => b.id === blockId);
+
+		set((state) => ({
+			blocks: state.blocks.filter((b) => b.id !== blockId),
+		}));
+
+		try {
+			const response = await fetch(`/api/smart-scheduler/blocks?id=${blockId}`, {
+				method: 'DELETE',
+			});
+			if (!response.ok) {
+				throw new Error('Failed to delete block');
+			}
+		} catch (error) {
+			console.error('Failed to delete block:', error);
+			if (removed) {
+				set((state) => ({
+					blocks: [...state.blocks, removed].sort((a, b) => {
+						const dateCompare = new Date(a.date).getTime() - new Date(b.date).getTime();
+						if (dateCompare !== 0) return dateCompare;
+						return a.startTime.localeCompare(b.startTime);
+					}),
+				}));
+			}
+			throw error;
 		}
 	},
 

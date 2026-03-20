@@ -1,11 +1,23 @@
-import { addDays, differenceInDays, format, startOfWeek } from 'date-fns';
-import { asc, desc, eq } from 'drizzle-orm';
+import { createGoogleGenerativeAI } from '@ai-sdk/google';
+import { generateText } from 'ai';
+import { differenceInDays } from 'date-fns';
+import { asc, eq } from 'drizzle-orm';
+import { NSC_EXAM_DATES } from '@/data/exam-dates';
 import { getAuth } from '@/lib/auth';
 import { dbManager } from '@/lib/db';
-import { studyPlans, topicConfidence } from '@/lib/db/schema';
+import { topicConfidence } from '@/lib/db/schema';
 import type { AISuggestion, ExamCountdown, StudyBlock } from '@/types/smart-scheduler';
 
-export async function getWeakAreas(): Promise<{ topic: string; score: number }[]> {
+function getGeminiModel() {
+	const apiKey = process.env.GEMINI_API_KEY;
+	if (!apiKey) {
+		throw new Error('GEMINI_API_KEY is not configured');
+	}
+	const google = createGoogleGenerativeAI({ apiKey });
+	return google('gemini-2.5-flash');
+}
+
+export async function getWeakAreas(): Promise<{ topic: string; subject: string; score: number }[]> {
 	const auth = await getAuth();
 	const session = await auth.api.getSession();
 	if (!session?.user) return [];
@@ -21,6 +33,7 @@ export async function getWeakAreas(): Promise<{ topic: string; score: number }[]
 
 		return confidence.map((c) => ({
 			topic: c.topic,
+			subject: c.subject,
 			score: Number.parseFloat(String(c.confidenceScore)),
 		}));
 	} catch (error) {
@@ -30,97 +43,193 @@ export async function getWeakAreas(): Promise<{ topic: string; score: number }[]
 }
 
 export async function getExamCountdowns(): Promise<ExamCountdown[]> {
-	const auth = await getAuth();
-	const session = await auth.api.getSession();
-	if (!session?.user) return [];
-
 	try {
-		await dbManager.initialize();
-		const db = dbManager.getDb();
-
-		const plans = await db.query.studyPlans.findMany({
-			where: eq(studyPlans.userId, session.user.id),
-			orderBy: [desc(studyPlans.targetExamDate)],
-		});
-
 		const now = new Date();
-		const exams: ExamCountdown[] = [];
 
-		for (const plan of plans) {
-			if (plan.targetExamDate) {
-				const examDate = new Date(plan.targetExamDate);
-				const daysRemaining = differenceInDays(examDate, now);
+		return NSC_EXAM_DATES.map((exam) => {
+			const examDate = new Date(exam.date);
+			const daysRemaining = differenceInDays(examDate, now);
 
-				if (daysRemaining > 0 && daysRemaining <= 180) {
-					exams.push({
-						id: plan.id,
-						subject: plan.title || 'General',
-						date: examDate,
-						daysRemaining,
-						priority: daysRemaining <= 14 ? 'high' : daysRemaining <= 60 ? 'medium' : 'low',
-					});
-				}
-			}
-		}
-
-		return exams.sort((a, b) => a.daysRemaining - b.daysRemaining).slice(0, 5);
+			return {
+				id: `${exam.subjectKey}-${exam.paper}`,
+				subject: exam.subject,
+				date: examDate,
+				daysRemaining,
+				priority:
+					daysRemaining <= 14
+						? ('high' as const)
+						: daysRemaining <= 60
+							? ('medium' as const)
+							: ('low' as const),
+			};
+		})
+			.filter((e) => e.daysRemaining > 0)
+			.sort((a, b) => a.daysRemaining - b.daysRemaining);
 	} catch (error) {
-		console.error('Error fetching exam countdowns:', error);
+		console.error('Error computing exam countdowns:', error);
 		return [];
 	}
 }
 
-export function generateStudyBlocks(
-	weakAreas: { topic: string; score: number }[],
-	_examCountdowns: ExamCountdown[],
-	weeklyHours = 20
-): StudyBlock[] {
-	const blocks: StudyBlock[] = [];
-	const weekStart = startOfWeek(new Date(), { weekStartsOn: 1 });
-
-	if (weakAreas.length === 0) {
-		return [];
+export async function generateSmartSchedule(
+	weakAreas: { topic: string; subject: string; score: number }[],
+	examCountdowns: ExamCountdown[]
+): Promise<{ blocks: StudyBlock[]; suggestions: AISuggestion[] }> {
+	const apiKey = process.env.GEMINI_API_KEY;
+	if (!apiKey) {
+		return { blocks: generateFallbackBlocks(weakAreas, examCountdowns), suggestions: [] };
 	}
 
-	const totalScore = weakAreas.reduce((sum, w) => sum + (1 - w.score), 0);
+	try {
+		const model = getGeminiModel();
+
+		const weakTopicsStr = weakAreas
+			.map((w) => `- ${w.subject}: ${w.topic} (confidence: ${Math.round(w.score * 100)}%)`)
+			.join('\n');
+
+		const examsStr = examCountdowns
+			.filter((e) => e.daysRemaining > 0)
+			.slice(0, 5)
+			.map((e) => `- ${e.subject}: ${e.daysRemaining} days away (${e.priority} priority)`)
+			.join('\n');
+
+		const prompt = `You are a South African NSC Grade 12 study scheduler. Generate a weekly study schedule with 45-minute blocks.
+
+Student's weak areas:
+${weakTopicsStr || 'No weak areas detected yet.'}
+
+Upcoming exams:
+${examsStr || 'No upcoming exams found.'}
+
+Rules:
+- Each block is exactly 45 minutes
+- Study hours: 7:00 to 20:00 (Mon-Fri), 8:00 to 14:00 (Sat)
+- Prioritize weak topics and subjects with nearer exam dates
+- Include 15-min break blocks every 2 sessions
+- Mix study, review, and practice types
+- Return ONLY valid JSON, no markdown
+
+Output format:
+{
+  "blocks": [
+    {
+      "subject": "Mathematics",
+      "topic": "Calculus",
+      "dayOffset": 0,
+      "startTime": "09:00",
+      "endTime": "09:45",
+      "type": "study"
+    }
+  ],
+  "suggestions": [
+    {
+      "type": "add",
+      "reason": "Suggestion reason",
+      "subject": "Subject",
+      "topic": "Topic",
+      "confidence": 0.85
+    }
+  ]
+}
+
+Generate exactly 15-20 blocks for the week. dayOffset 0 = Monday.`;
+
+		const { text } = await generateText({ model, prompt });
+
+		const jsonMatch = text.match(/\{[\s\S]*\}/);
+		if (!jsonMatch) {
+			return { blocks: generateFallbackBlocks(weakAreas, examCountdowns), suggestions: [] };
+		}
+
+		const parsed = JSON.parse(jsonMatch[0]);
+		const weekStart = new Date();
+		weekStart.setDate(weekStart.getDate() - weekStart.getDay() + 1); // Monday
+
+		const blocks: StudyBlock[] = (parsed.blocks || []).map((b: Record<string, unknown>) => {
+			const date = new Date(weekStart);
+			date.setDate(date.getDate() + ((b.dayOffset as number) || 0));
+			const startStr = (b.startTime as string) || '09:00';
+			const [sh, sm] = startStr.split(':').map(Number);
+			const duration = 45;
+			const endMin = sm + duration;
+			const endH = sh + Math.floor(endMin / 60);
+			const endM = endMin % 60;
+			const endStr = `${endH.toString().padStart(2, '0')}:${endM.toString().padStart(2, '0')}`;
+
+			return {
+				id: crypto.randomUUID(),
+				subject: (b.subject as string) || 'General',
+				topic: b.topic as string | undefined,
+				date,
+				startTime: startStr,
+				endTime: endStr,
+				duration,
+				type: (b.type as 'study' | 'review' | 'practice' | 'break') || 'study',
+				isCompleted: false,
+				isAISuggested: true,
+			};
+		});
+
+		const suggestions: AISuggestion[] = (parsed.suggestions || []).map(
+			(s: Record<string, unknown>) => ({
+				id: crypto.randomUUID(),
+				type: (s.type as 'add' | 'reschedule' | 'remove') || 'add',
+				block: {
+					subject: s.subject as string | undefined,
+					topic: s.topic as string | undefined,
+				},
+				reason: (s.reason as string) || 'AI recommendation',
+				confidence: (s.confidence as number) || 0.7,
+			})
+		);
+
+		return { blocks, suggestions };
+	} catch (error) {
+		console.error('Gemini generation failed, using fallback:', error);
+		return { blocks: generateFallbackBlocks(weakAreas, examCountdowns), suggestions: [] };
+	}
+}
+
+function generateFallbackBlocks(
+	weakAreas: { topic: string; subject: string; score: number }[],
+	_examCountdowns: ExamCountdown[]
+): StudyBlock[] {
+	const blocks: StudyBlock[] = [];
+	const weekStart = new Date();
+	weekStart.setDate(weekStart.getDate() - weekStart.getDay() + 1);
+
+	const subjects =
+		weakAreas.length > 0
+			? weakAreas
+			: [{ topic: 'General revision', subject: 'Mathematics', score: 0.5 }];
+
+	const timeSlots = ['08:00', '09:00', '10:00', '11:30', '13:30', '15:00'];
 
 	for (let day = 0; day < 5; day++) {
-		const date = addDays(weekStart, day);
-		let dayMinutes = (weeklyHours * 60) / 5;
+		for (let i = 0; i < 2 && blocks.length < 15; i++) {
+			const subject = subjects[Math.floor((day + i) % subjects.length)];
+			const startTime = timeSlots[i] || '09:00';
+			const [sh, sm] = startTime.split(':').map(Number);
+			const endMin = sm + 45;
+			const endH = sh + Math.floor(endMin / 60);
+			const endM = endMin % 60;
 
-		const dayBlocks: StudyBlock[] = [];
+			const date = new Date(weekStart);
+			date.setDate(date.getDate() + day);
 
-		for (const weakArea of weakAreas.slice(0, 3)) {
-			if (dayMinutes <= 0) break;
-
-			const sessionDuration = Math.min(
-				90,
-				Math.max(25, Math.round((dayMinutes * (1 - weakArea.score)) / totalScore))
-			);
-			const startHour = 9 + dayBlocks.length * 2;
-
-			if (startHour >= 21) continue;
-
-			const endHour = startHour + Math.floor(sessionDuration / 60);
-			const endMin = sessionDuration % 60;
-
-			dayBlocks.push({
+			blocks.push({
 				id: crypto.randomUUID(),
-				subject: weakArea.topic.split(' ')[0] || 'General',
-				topic: weakArea.topic,
+				subject: subject.subject,
+				topic: subject.topic,
 				date,
-				startTime: `${startHour.toString().padStart(2, '0')}:00`,
-				endTime: `${endHour.toString().padStart(2, '0')}:${endMin.toString().padStart(2, '0')}`,
-				duration: sessionDuration,
-				type: weakArea.score < 0.5 ? 'study' : 'practice',
+				startTime,
+				endTime: `${endH.toString().padStart(2, '0')}:${endM.toString().padStart(2, '0')}`,
+				duration: 45,
+				type: subject.score < 0.5 ? 'study' : 'practice',
 				isCompleted: false,
 				isAISuggested: true,
 			});
-
-			dayMinutes -= sessionDuration;
 		}
-
-		blocks.push(...dayBlocks);
 	}
 
 	return blocks;
@@ -139,7 +248,7 @@ export function detectConflicts(blocks: StudyBlock[]): AISuggestion[] {
 		const next = sorted[i + 1];
 
 		if (
-			format(new Date(current.date), 'yyyy-MM-dd') === format(new Date(next.date), 'yyyy-MM-dd') &&
+			current.date.toDateString() === next.date.toDateString() &&
 			current.startTime < next.endTime &&
 			current.endTime > next.startTime
 		) {

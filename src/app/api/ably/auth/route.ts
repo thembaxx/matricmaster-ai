@@ -66,6 +66,7 @@ export async function POST(request: NextRequest) {
 				[`user:${session.user.id}:*`]: ['subscribe', 'publish'],
 				'chat:*': ['subscribe', 'publish'],
 				'presence:*': ['subscribe', 'publish'],
+				'video-presence:*': ['subscribe', 'publish'],
 				'global:announcements': ['subscribe'],
 			},
 			ttl: 3600000,

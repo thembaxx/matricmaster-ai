@@ -1,0 +1,145 @@
+{
+	"id": "things-fall-apart",
+	"title": "Things Fall Apart",
+	"author": "Chinua Achebe",
+	"genre": "novel",
+	"year": 1958,
+	"targetLevel": "HL",
+	"synopsis": "The story follows Okonkwo, a respected warrior in the Igbo community of Umuofia, whose tragic flaw leads to his downfall. Set in pre-colonial Nigeria, the novel explores themes of masculinity, tradition, and the clash between Igbo and Western cultures.",
+	"context": "Achebe wrote this novel as a response to Western portrayals of African societies as primitive. It is widely regarded as one of the most important works of African literature.",
+	"characters": [
+		{
+			"id": "okonkwo",
+			"name": "Okonkwo",
+			"role": "protagonist",
+			"description": "A proud, ambitious warrior who fears failure. Strong but inflexible, he measures himself against his father's weaknesses.",
+			"relationships": [
+				{ "characterId": "ezinma", "relationship": "daughter" },
+				{ "characterId": "ikemefuna", "relationship": "adopted son" },
+				{ "characterId": "nwoye", "relationship": "son" },
+				{ "characterId": "obierika", "relationship": "best friend" }
+			]
+		},
+		{
+			"id": "ezinma",
+			"name": "Ezinma",
+			"role": "supporting",
+			"description": "Okonkwo's favourite daughter, strong-willed and intelligent. She is the only child who truly understands her father.",
+			"relationships": [{ "characterId": "okonkwo", "relationship": "father" }]
+		},
+		{
+			"id": "ikemefuna",
+			"name": "Ikemefuna",
+			"role": "supporting",
+			"description": "A young boy taken as a peace offering from another clan, raised by Okonkwo for three years.",
+			"relationships": [{ "characterId": "okonkwo", "relationship": "father figure" }]
+		},
+		{
+			"id": "nwoye",
+			"name": "Nwoye",
+			"role": "supporting",
+			"description": "Okonkwo's son, gentle and sensitive. His interests clash with his father's expectations of masculinity.",
+			"relationships": [{ "characterId": "okonkwo", "relationship": "father" }]
+		},
+		{
+			"id": "obierika",
+			"name": "Obierika",
+			"role": "supporting",
+			"description": "Okonkwo's best friend, wise and moderate. He provides counsel and questions the traditions that Okonkwo blindly follows.",
+			"relationships": [{ "characterId": "okonkwo", "relationship": "friend" }]
+		},
+		{
+			"id": "mr-brown",
+			"name": "Mr. Brown",
+			"role": "supporting",
+			"description": "The first missionary who converts many villagers through patience and education rather than force.",
+			"relationships": []
+		}
+	],
+	"themes": [
+		{
+			"id": "masculinity",
+			"name": "Masculinity",
+			"description": "The novel examines what it means to be a man in Igbo society, and the dangers of toxic masculinity.",
+			"examples": [
+				"Okonkwo's fear of being seen as weak like his father",
+				"The banishment of Ikemefuna despite his love for the boy",
+				"The tension between Okonkwo and Nwoye over what it means to be a man"
+			]
+		},
+		{
+			"id": "tradition",
+			"name": "Tradition vs Change",
+			"description": "Clash between traditional Igbo values and Christian missionary influence.",
+			"examples": [
+				"The introduction of the missionaries and their religion",
+				"The breaking of the Week of Peace by Okonkwo",
+				"The conversion of Nwoye and other villagers"
+			]
+		},
+		{
+			"id": "fate",
+			"name": "Fate vs Free Will",
+			"description": "Whether characters control their destinies or are bound by fate.",
+			"examples": [
+				"Okonkwo's belief in chi (personal spirit)",
+				"The village seer's predictions about Ikemefuna",
+				"The oracle's decree that leads to Okonkwo's exile"
+			]
+		},
+		{
+			"id": "language",
+			"name": "The Power of Language",
+			"description": "The novel demonstrates the sophistication of Igbo language and oral traditions.",
+			"examples": [
+				"The use of proverbs throughout the narrative",
+				"The Village Crier's announcements",
+				"The significance of naming ceremonies"
+			]
+		}
+	],
+	"quotes": [
+		{
+			"id": "q1",
+			"text": "Among the Ibo the art of conversation is regarded very highly, and proverbs are the palm-oil with which words are eaten.",
+			"speaker": "Narrator",
+			"context": "Opening line, establishing the importance of language in Igbo culture",
+			"themeIds": ["language"]
+		},
+		{
+			"id": "q2",
+			"text": "Okonkwo's whole life was dominated by fear, the fear of failure and of weakness.",
+			"speaker": "Narrator",
+			"context": "Describing Okonkwo's inner turmoil and driving motivation",
+			"themeIds": ["masculinity"]
+		},
+		{
+			"id": "q3",
+			"text": "When he walked, he walked jauntily; his head was held high like a fighting cock's.",
+			"speaker": "Narrator",
+			"context": "Describing how Okonkwo presents himself to the world",
+			"themeIds": ["masculinity"]
+		},
+		{
+			"id": "q4",
+			"text": "He had already chosen the color of his cloth, a color of the sky, and he had sent to the chief medicine man for medicine.",
+			"speaker": "Narrator",
+			"context": "About Ikemefuna's impending sacrifice, foreshadowing tragedy",
+			"themeIds": ["tradition"]
+		},
+		{
+			"id": "q5",
+			"text": "The white man is very clever. He came quietly and peaceably with his religion. We were amused at his foolishness and allowed him to stay. Now he has won our brothers, and our clan can no longer act like one.",
+			"speaker": "Obierika",
+			"context": "Reflecting on the impact of colonization on Umuofia",
+			"themeIds": ["tradition"]
+		},
+		{
+			"id": "q6",
+			"text": "Does the white man understand our custom about land?",
+			"speaker": "Obierika",
+			"context": "Questioning whether colonizers can truly understand Igbo culture",
+			"themeIds": ["tradition", "language"]
+		}
+	]
+}

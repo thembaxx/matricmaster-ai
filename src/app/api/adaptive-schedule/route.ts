@@ -1,10 +1,6 @@
 import { type NextRequest, NextResponse } from 'next/server';
-import {
-	addExtraPracticeForStruggling,
-	detectStrugglingTopics,
-	rescheduleMissedGoals,
-} from '@/lib/adaptive-schedule';
 import { getAuth } from '@/lib/auth';
+import { analyzeAndAdjust } from '@/services/adaptiveScheduler';
 
 export async function POST(request: NextRequest) {
 	try {
@@ -17,17 +13,25 @@ export async function POST(request: NextRequest) {
 			return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 		}
 
-		const rescheduleChanges = await rescheduleMissedGoals(session.user.id);
-		const strugglingTopics = await detectStrugglingTopics(session.user.id);
-		const extraPracticeAdded = await addExtraPracticeForStruggling(
-			session.user.id,
-			strugglingTopics
-		);
+		const adjustments = await analyzeAndAdjust(session.user.id);
+
+		const rescheduledGoals = adjustments.filter((a) => a.type === 'reschedule').length;
+		const extraPracticeAdded = adjustments.filter((a) => a.type === 'extra_practice').length;
+
+		const messageParts: string[] = [];
+		if (rescheduledGoals > 0) {
+			messageParts.push(`${rescheduledGoals} missed goal(s) rescheduled`);
+		}
+		if (extraPracticeAdded > 0) {
+			messageParts.push(`${extraPracticeAdded} extra practice session(s) added`);
+		}
 
 		return NextResponse.json({
-			rescheduledGoals: rescheduleChanges.length,
+			adjustments,
+			rescheduledGoals,
 			extraPracticeAdded,
-			strugglingTopics,
+			message:
+				messageParts.length > 0 ? `${messageParts.join('. ')}.` : 'Your schedule is up to date',
 		});
 	} catch (error) {
 		console.debug('[Adaptive Schedule API] Error:', error);

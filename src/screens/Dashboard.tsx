@@ -5,15 +5,18 @@ import { m } from 'framer-motion';
 import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
 import { AdaptiveScheduleBanner } from '@/components/Dashboard/AdaptiveScheduleBanner';
+import { AdaptiveScheduleCard } from '@/components/Dashboard/AdaptiveScheduleCard';
 import { AITutorNudge } from '@/components/Dashboard/AITutorNudge';
 import { BriefingGreeting } from '@/components/Dashboard/BriefingGreeting';
 import { DailyMission } from '@/components/Dashboard/DailyMission';
 import { FocusAreasWidget } from '@/components/Dashboard/FocusAreasWidget';
+import { GrowthInsights } from '@/components/Dashboard/GrowthInsights';
 import { RecommendedSection } from '@/components/Dashboard/RecommendedSection';
 import { DEMO_TASKS } from '@/components/Dashboard/StatsGrid';
 import { SubjectGrid } from '@/components/Dashboard/SubjectGridV2';
 import { type StudyTask, TaskCard } from '@/components/Dashboard/TaskCardV2';
 import { TaskSection } from '@/components/Dashboard/TaskSectionV2';
+import { TipOfTheDay } from '@/components/Dashboard/TipOfTheDay';
 import { UniversityGoalCard } from '@/components/Dashboard/UniversityGoalCard';
 import { XpHeader } from '@/components/Gamification/XpHeader';
 import { FocusContent } from '@/components/Layout/FocusContent';
@@ -102,18 +105,24 @@ export default function Dashboard({
 		refetch,
 	} = useDashboardProgress();
 
-	const { data: weaknessData = [] } = useQuery({
+	const { data: growthMapData } = useQuery({
 		queryKey: ['growth-map'],
 		queryFn: async () => {
 			const res = await fetch('/api/growth-map');
 			return res.json();
 		},
 		select: (data) =>
-			(Array.isArray(data) ? data : []) as {
-				topic: string;
-				mistakeCount: number;
-				subject: string;
-			}[],
+			(data ?? {}) as {
+				topics: {
+					topic: string;
+					mistakes: number;
+					subject: string;
+					confidence: number | null;
+					trend: 'up' | 'down' | 'stable';
+					struggleCount: number;
+				}[];
+				insights: string[];
+			},
 	});
 
 	const { data: scheduleData } = useQuery({
@@ -122,7 +131,22 @@ export default function Dashboard({
 			const res = await fetch('/api/adaptive-schedule', { method: 'POST' });
 			return res.json();
 		},
-		select: (data) => (data.rescheduledGoals > 0 || data.extraPracticeAdded > 0 ? data : null),
+		select: (data) =>
+			data?.adjustments?.length > 0
+				? (data as {
+						adjustments: {
+							type: 'reschedule' | 'extra_practice' | 'reminder';
+							originalEventId?: string;
+							newDate?: string;
+							topic?: string;
+							subject?: string;
+							reason: string;
+						}[];
+						rescheduledGoals: number;
+						extraPracticeAdded: number;
+						message: string;
+					})
+				: null,
 	});
 
 	const { data: flashcardsDueData } = useQuery({
@@ -135,6 +159,8 @@ export default function Dashboard({
 		select: (data) => (Array.isArray(data) ? data.length : 0),
 	});
 
+	const weaknessData = growthMapData?.topics ?? [];
+	const growthInsights = growthMapData?.insights ?? [];
 	const scheduleChanges = scheduleData ?? null;
 	const streak = initialStreak ?? MOCK_STREAK;
 	const achievements = initialAchievements ?? MOCK_ACHIEVEMENTS;
@@ -167,6 +193,8 @@ export default function Dashboard({
 		progress?.recentSessions?.[0]?.subjectId?.toString() ||
 		progress?.subjectProgress?.[0]?.subjectName?.toLowerCase();
 
+	const weakTopicNames = weaknessData.map((w) => w.topic);
+
 	return (
 		<div className="min-h-screen bg-background flex">
 			<TimelineSidebar />
@@ -189,9 +217,14 @@ export default function Dashboard({
 						<AITutorNudge />
 					</div>
 
-					{scheduleChanges && (
+					{scheduleChanges && scheduleChanges.adjustments?.length > 0 && (
 						<div className="mb-6">
-							<AdaptiveScheduleBanner changes={scheduleChanges} />
+							<AdaptiveScheduleBanner
+								changes={{
+									rescheduledGoals: scheduleChanges.rescheduledGoals,
+									extraPracticeAdded: scheduleChanges.extraPracticeAdded,
+								}}
+							/>
 						</div>
 					)}
 
@@ -208,13 +241,27 @@ export default function Dashboard({
 							</div>
 
 							{weaknessData.length > 0 && (
-								<div className="bg-card rounded-xl p-6 border">
-									<h3 className="text-lg font-semibold mb-4">Growth Map</h3>
-									<p className="text-sm text-muted-foreground mb-4">
-										Topics where you need the most practice
-									</p>
-									<GrowthMap data={weaknessData} />
+								<div className="space-y-6">
+									<div className="bg-card rounded-xl p-6 border">
+										<h3 className="text-lg font-semibold mb-1">Growth Map</h3>
+										<p className="text-sm text-muted-foreground mb-4">
+											Topics where you need the most practice
+										</p>
+										<GrowthMap data={weaknessData} />
+									</div>
+
+									<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+										<GrowthInsights
+											insights={growthInsights}
+											weakTopics={weaknessData.slice(0, 3)}
+										/>
+										<TipOfTheDay weakTopics={weakTopicNames} />
+									</div>
 								</div>
+							)}
+
+							{scheduleChanges && scheduleChanges.adjustments?.length > 0 && (
+								<AdaptiveScheduleCard adjustments={scheduleChanges.adjustments} />
 							)}
 
 							<div className="grid grid-cols-1 md:grid-cols-2 gap-6">

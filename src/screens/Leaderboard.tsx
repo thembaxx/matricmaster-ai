@@ -9,7 +9,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { getLeaderboard, getUserRank } from '@/lib/db/leaderboard-actions';
+import { getLeaderboard, getSubjectLeaderboard, getUserRank } from '@/lib/db/leaderboard-actions';
 import { getUserStreak } from '@/lib/db/progress-actions';
 import { formatPoints } from '@/lib/leaderboard-utils';
 
@@ -164,6 +164,7 @@ import { LeaderboardSkeleton } from '@/components/LeaderboardSkeleton';
 
 export default function Leaderboard() {
 	const [activeTab, setActiveTab] = useState('weekly');
+	const [subjectTab, setSubjectTab] = useState<string>('mathematics');
 
 	// User streak with useQuery
 	const { data: userStreak } = useQuery({
@@ -185,6 +186,23 @@ export default function Leaderboard() {
 
 	const leaderboardData = leaderboardResult?.data ?? [];
 	const userRank = leaderboardResult?.rank ?? null;
+
+	// Subject leaderboard
+	const SUBJECTS: { id: string; label: string; subjectId: number }[] = [
+		{ id: 'mathematics', label: 'Mathematics', subjectId: 2 },
+		{ id: 'physics', label: 'Physical Sciences', subjectId: 1 },
+		{ id: 'life-sciences', label: 'Life Sciences', subjectId: 3 },
+		{ id: 'english', label: 'English', subjectId: 4 },
+	];
+
+	const { data: subjectData } = useQuery({
+		queryKey: ['subject-leaderboard', subjectTab],
+		queryFn: () => {
+			const sub = SUBJECTS.find((s) => s.id === subjectTab);
+			return sub ? getSubjectLeaderboard(sub.subjectId, 10) : Promise.resolve([]);
+		},
+		enabled: activeTab === 'subjects',
+	});
 
 	// Bolt: Memoize filtered results to avoid O(N) recalculation on every render
 	const topThree = useMemo(() => leaderboardData.filter((e) => e.rank <= 3), [leaderboardData]);
@@ -248,6 +266,39 @@ export default function Leaderboard() {
 								<div className="bg-card/20 backdrop-blur-sm rounded-[2.5rem] border-2 border-border/50 shadow-sm p-2 overflow-hidden mx-4 lg:mx-0">
 									<RankingList data={others} />
 								</div>
+							</div>
+
+							{/* Subject Leaderboards */}
+							<div className="mx-4 lg:mx-0 space-y-6">
+								<div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+									<h2 className="text-xl font-black tracking-tight">Subject Rankings</h2>
+									<div className="flex gap-2 p-1 bg-muted/50 rounded-xl border border-border/50 overflow-x-auto no-scrollbar">
+										{SUBJECTS.map((sub) => (
+											<button
+												key={sub.id}
+												type="button"
+												onClick={() => setSubjectTab(sub.id)}
+												className={`px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider whitespace-nowrap transition-all ${
+													subjectTab === sub.id
+														? 'bg-primary text-primary-foreground shadow-md'
+														: 'text-muted-foreground hover:text-foreground'
+												}`}
+											>
+												{sub.label}
+											</button>
+										))}
+									</div>
+								</div>
+
+								{subjectData && subjectData.length > 0 ? (
+									<div className="bg-card/20 backdrop-blur-sm rounded-[2.5rem] border-2 border-border/50 shadow-sm p-2 overflow-hidden">
+										<RankingList data={subjectData} />
+									</div>
+								) : (
+									<div className="text-center py-16 space-y-2 opacity-50">
+										<p className="text-sm font-bold">No subject data available yet</p>
+									</div>
+								)}
 							</div>
 						</div>
 					)}

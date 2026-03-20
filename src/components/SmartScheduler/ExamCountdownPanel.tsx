@@ -1,33 +1,76 @@
 'use client';
 
+import { differenceInDays } from 'date-fns';
+import { useEffect, useState } from 'react';
 import { Card } from '@/components/ui/card';
+import { NSC_EXAM_DATES, SUBJECT_COLORS } from '@/data/exam-dates';
+import { cn } from '@/lib/utils';
 import { useSmartSchedulerStore } from '@/stores/useSmartSchedulerStore';
+import type { ExamCountdown } from '@/types/smart-scheduler';
 
 const PRIORITY_CONFIG = {
 	high: {
 		bg: 'bg-gradient-to-br from-red-50 to-orange-50 dark:from-red-950/30 dark:to-orange-950/20',
 		border: 'border-red-200 dark:border-red-800',
-		accent: 'text-red-600 dark:text-red-400',
+		accent: 'bg-red-500',
+		textAccent: 'text-red-600 dark:text-red-400',
 		badge: 'bg-red-100 text-red-700 dark:bg-red-900/50 dark:text-red-300',
 	},
 	medium: {
 		bg: 'bg-gradient-to-br from-amber-50 to-yellow-50 dark:from-amber-950/30 dark:to-yellow-950/20',
 		border: 'border-amber-200 dark:border-amber-800',
-		accent: 'text-amber-600 dark:text-amber-400',
+		accent: 'bg-amber-500',
+		textAccent: 'text-amber-600 dark:text-amber-400',
 		badge: 'bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-300',
 	},
 	low: {
 		bg: 'bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/30 dark:to-emerald-950/20',
 		border: 'border-green-200 dark:border-green-800',
-		accent: 'text-green-600 dark:text-green-400',
+		accent: 'bg-green-500',
+		textAccent: 'text-green-600 dark:text-green-400',
 		badge: 'bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-300',
 	},
 };
 
-export function ExamCountdownPanel() {
-	const { exams } = useSmartSchedulerStore();
+function computeExamsFromStatic(): ExamCountdown[] {
+	const now = new Date();
+	return NSC_EXAM_DATES.map((exam) => {
+		const examDate = new Date(exam.date);
+		const daysRemaining = differenceInDays(examDate, now);
+		return {
+			id: `${exam.subjectKey}-${exam.paper}`,
+			subject: exam.subject,
+			date: examDate,
+			daysRemaining,
+			priority:
+				daysRemaining <= 14
+					? ('high' as const)
+					: daysRemaining <= 60
+						? ('medium' as const)
+						: ('low' as const),
+		};
+	})
+		.filter((e) => e.daysRemaining > 0)
+		.sort((a, b) => a.daysRemaining - b.daysRemaining);
+}
 
-	if (exams.length === 0) {
+export function ExamCountdownPanel() {
+	const { exams, setExams } = useSmartSchedulerStore();
+	const [hasSetExams, setHasSetExams] = useState(false);
+
+	useEffect(() => {
+		if (!hasSetExams) {
+			const staticExams = computeExamsFromStatic();
+			if (exams.length === 0 || staticExams.length > exams.length) {
+				setExams(staticExams);
+			}
+			setHasSetExams(true);
+		}
+	}, [hasSetExams, exams.length, setExams]);
+
+	const displayExams = exams.length > 0 ? exams : computeExamsFromStatic();
+
+	if (displayExams.length === 0) {
 		return (
 			<Card className="p-5 shadow-sm">
 				<div className="flex items-center gap-2 mb-3">
@@ -69,22 +112,34 @@ export function ExamCountdownPanel() {
 				<h3 className="font-semibold text-sm tracking-tight">Exam Countdown</h3>
 			</div>
 			<div className="space-y-3">
-				{exams.map((exam) => {
+				{displayExams.slice(0, 6).map((exam) => {
 					const config = PRIORITY_CONFIG[exam.priority];
+					const subjectColor = SUBJECT_COLORS[exam.subject] || '#9F85FF';
+
 					return (
 						<div
 							key={exam.id}
 							className={cn(
-								'p-4 rounded-xl border transition-all hover:shadow-md',
+								'p-3 rounded-xl border transition-all hover:shadow-md',
 								config.bg,
 								config.border
 							)}
 						>
 							<div className="flex items-start justify-between gap-2">
 								<div className="flex-1 min-w-0">
-									<div className="font-medium text-sm truncate">{exam.subject}</div>
-									<div className="text-xs text-muted-foreground/70 mt-0.5">
-										{exam.daysRemaining} days left
+									<div className="flex items-center gap-2">
+										<div
+											className="w-2 h-2 rounded-full flex-shrink-0"
+											style={{ backgroundColor: subjectColor }}
+										/>
+										<span className="font-medium text-sm truncate">{exam.subject}</span>
+									</div>
+									<div className="text-xs text-muted-foreground/70 mt-0.5 ml-4">
+										{exam.daysRemaining <= 7
+											? `${exam.daysRemaining} days left`
+											: exam.daysRemaining <= 30
+												? `${Math.ceil(exam.daysRemaining / 7)} weeks left`
+												: `${exam.daysRemaining} days left`}
 									</div>
 								</div>
 								<div
@@ -97,7 +152,7 @@ export function ExamCountdownPanel() {
 									<span className="text-[10px] font-medium uppercase tracking-wide">days</span>
 								</div>
 							</div>
-							<div className="mt-2 h-1 rounded-full bg-muted overflow-hidden">
+							<div className="mt-2 h-1.5 rounded-full bg-muted overflow-hidden">
 								<div
 									className={cn('h-full rounded-full transition-all', config.accent)}
 									style={{
@@ -111,8 +166,4 @@ export function ExamCountdownPanel() {
 			</div>
 		</Card>
 	);
-}
-
-function cn(...classes: (string | boolean | undefined | null)[]) {
-	return classes.filter(Boolean).join(' ');
 }

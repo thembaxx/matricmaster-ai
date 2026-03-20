@@ -1,0 +1,156 @@
+{
+	"id": "merchant-venice",
+	"title": "The Merchant of Venice",
+	"author": "William Shakespeare",
+	"genre": "drama",
+	"year": 1598,
+	"targetLevel": "FAL",
+	"synopsis": "A comedy exploring themes of mercy, justice, and prejudice through the story of Antonio, a merchant who borrows money from Shylock, a Jewish moneylender.",
+	"context": "Written in Elizabethan England, the play reflects antisemitic attitudes of the time while also challenging them through its complex portrayal of Shylock.",
+	"characters": [
+		{
+			"id": "shylock",
+			"name": "Shylock",
+			"role": "antagonist",
+			"description": "A Jewish moneylender seeking revenge for Antonio's insults. Complex character who is both villain and victim.",
+			"relationships": [
+				{ "characterId": "jessica", "relationship": "daughter" },
+				{ "characterId": "antonio", "relationship": "creditor" },
+				{ "characterId": "portia", "relationship": "legal opponent" }
+			]
+		},
+		{
+			"id": "portia",
+			"name": "Portia",
+			"role": "protagonist",
+			"description": "A wealthy heiress who tests her suitors with the casket test, then disguises herself as a lawyer.",
+			"relationships": [
+				{ "characterId": "bassanio", "relationship": "husband" },
+				{ "characterId": "shylock", "relationship": "legal opponent" }
+			]
+		},
+		{
+			"id": "antonio",
+			"name": "Antonio",
+			"role": "supporting",
+			"description": "The merchant who borrows from Shylock, risking a pound of flesh.",
+			"relationships": [
+				{ "characterId": "bassanio", "relationship": "best friend" },
+				{ "characterId": "shylock", "relationship": "debtor" }
+			]
+		},
+		{
+			"id": "bassanio",
+			"name": "Bassanio",
+			"role": "supporting",
+			"description": "Antonio's friend who courts Portia to pay off his debts.",
+			"relationships": [
+				{ "characterId": "portia", "relationship": "wife" },
+				{ "characterId": "antonio", "relationship": "best friend" }
+			]
+		},
+		{
+			"id": "jessica",
+			"name": "Jessica",
+			"role": "supporting",
+			"description": "Shylock's daughter who elopes with Lorenzo, taking her father's wealth.",
+			"relationships": [
+				{ "characterId": "shylock", "relationship": "father" },
+				{ "characterId": "lorenzo", "relationship": "husband" }
+			]
+		},
+		{
+			"id": "lorenzo",
+			"name": "Lorenzo",
+			"role": "supporting",
+			"description": "A Christian who elopes with Jessica, Shylock's daughter.",
+			"relationships": [{ "characterId": "jessica", "relationship": "wife" }]
+		}
+	],
+	"themes": [
+		{
+			"id": "prejudice",
+			"name": "Prejudice and Antisemitism",
+			"description": "The treatment of Jews in Christian society.",
+			"examples": [
+				"Antonio's abuse and spitting on Shylock",
+				"The way Christians speak about Jews",
+				"The 'payment' scene where Shylock demands his bond"
+			]
+		},
+		{
+			"id": "mercy",
+			"name": "Mercy",
+			"description": "The virtue of forgiveness and compassion.",
+			"examples": [
+				"Portia's famous 'quality of mercy' speech",
+				"Antonio asking Shylock to show mercy",
+				"The mercy shown to Shylock at the end of the trial"
+			]
+		},
+		{
+			"id": "justice",
+			"name": "Justice",
+			"description": "The law and its application, including poetic justice.",
+			"examples": [
+				"The strict interpretation of Shylock's bond",
+				"Portia arguing that mercy supersedes law",
+				"Shylock's punishment fitting his crime"
+			]
+		},
+		{
+			"id": "appearance",
+			"name": "Appearance vs Reality",
+			"description": "Things are not always what they seem.",
+			"examples": [
+				"Portia disguising herself as a lawyer",
+				"The casket test revealing true character",
+				"Bassanio choosing the correct casket based on love"
+			]
+		}
+	],
+	"quotes": [
+		{
+			"id": "q1",
+			"text": "The quality of mercy is not strain'd, it droppeth as the gentle rain from heaven upon the place beneath.",
+			"speaker": "Portia",
+			"context": "Her famous speech on mercy delivered in the courtroom",
+			"themeIds": ["mercy"]
+		},
+		{
+			"id": "q2",
+			"text": "If you prick us, do we not bleed? If you tickle us, do we not laugh? If you poison us, do we not die?",
+			"speaker": "Shylock",
+			"context": "Shylock's powerful speech demanding equal treatment",
+			"themeIds": ["prejudice"]
+		},
+		{
+			"id": "q3",
+			"text": "All that glitters is not gold; often have you heard that told.",
+			"speaker": "Arragon",
+			"context": "The inscription on the silver casket that saves Portia from unworthy suitors",
+			"themeIds": ["appearance"]
+		},
+		{
+			"id": "q4",
+			"text": "I am a Jew. Hath not a Jew eyes?",
+			"speaker": "Shylock",
+			"context": "Shylock's plea for humanity and recognition of shared human experience",
+			"themeIds": ["prejudice", "justice"]
+		},
+		{
+			"id": "q5",
+			"text": "So may the outward shows be least themselves; the world is still deceived with ornament.",
+			"speaker": "Bassanio",
+			"context": "Reflecting on the casket test and the nature of appearances",
+			"themeIds": ["appearance"]
+		},
+		{
+			"id": "q6",
+			"text": "It is a wise father that knows his own child.",
+			"speaker": "Launcelot",
+			"context": "Commenting on the relationship between Shylock and Jessica",
+			"themeIds": ["appearance"]
+		}
+	]
+}
