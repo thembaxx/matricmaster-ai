@@ -5,7 +5,6 @@ import { HugeiconsIcon } from '@hugeicons/react';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
-import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
@@ -38,6 +37,15 @@ const BLOCK_TYPES = [
 	{ value: 'break', label: 'Break' },
 ];
 
+const DURATIONS = [
+	{ value: '15', label: '15 min' },
+	{ value: '30', label: '30 min' },
+	{ value: '45', label: '45 min' },
+	{ value: '60', label: '1 hour' },
+	{ value: '90', label: '1.5 hours' },
+	{ value: '120', label: '2 hours' },
+];
+
 const HOURS = Array.from({ length: 14 }, (_, i) => i + 7);
 const MINUTES = ['00', '15', '30', '45'];
 
@@ -47,9 +55,17 @@ interface BlockEditorProps {
 	onSave: (block: Partial<StudyBlock>) => void;
 	onDelete?: (blockId: string) => void;
 	onClose: () => void;
+	isSaving?: boolean;
 }
 
-export function BlockEditor({ block, defaultDate, onSave, onDelete, onClose }: BlockEditorProps) {
+export function BlockEditor({
+	block,
+	defaultDate,
+	onSave,
+	onDelete,
+	onClose,
+	isSaving = false,
+}: BlockEditorProps) {
 	const [subject, setSubject] = useState(block?.subject || 'Mathematics');
 	const [topic, setTopic] = useState(block?.topic || '');
 	const [date, setDate] = useState<Date>(block?.date || defaultDate || new Date());
@@ -57,22 +73,17 @@ export function BlockEditor({ block, defaultDate, onSave, onDelete, onClose }: B
 		block?.startTime ? Number.parseInt(block.startTime.split(':')[0], 10) : 9
 	);
 	const [startMin, setStartMin] = useState(block?.startTime ? block.startTime.split(':')[1] : '00');
-	const [duration, setDuration] = useState(block?.duration || 60);
+	const [duration, setDuration] = useState(block?.duration || 45);
 	const [type, setType] = useState(block?.type || 'study');
 
-	const endHour =
-		startHour + Math.floor((startHour * 60 + Number.parseInt(startMin, 10) + duration) / 60);
-	const endMin = String((startHour * 60 + Number.parseInt(startMin, 10) + duration) % 60).padStart(
-		2,
-		'0'
-	);
+	const endMin = startHour * 60 + Number.parseInt(startMin, 10) + duration;
+	const endHourCalc = Math.floor(endMin / 60);
+	const endMinCalc = String(endMin % 60).padStart(2, '0');
 
 	const handleSave = () => {
-		const endHourCalc =
-			startHour + Math.floor((startHour * 60 + Number.parseInt(startMin, 10) + duration) / 60);
-		const endMinCalc = String(
-			(startHour * 60 + Number.parseInt(startMin, 10) + duration) % 60
-		).padStart(2, '0');
+		const saveEndMin = startHour * 60 + Number.parseInt(startMin, 10) + duration;
+		const saveEndHour = Math.floor(saveEndMin / 60);
+		const saveEndMinStr = String(saveEndMin % 60).padStart(2, '0');
 
 		onSave({
 			id: block?.id,
@@ -80,7 +91,7 @@ export function BlockEditor({ block, defaultDate, onSave, onDelete, onClose }: B
 			topic: topic || undefined,
 			date,
 			startTime: `${startHour.toString().padStart(2, '0')}:${startMin}`,
-			endTime: `${endHourCalc.toString().padStart(2, '0')}:${endMinCalc}`,
+			endTime: `${saveEndHour.toString().padStart(2, '0')}:${saveEndMinStr}`,
 			duration,
 			type: type as StudyBlock['type'],
 			isCompleted: block?.isCompleted || false,
@@ -90,7 +101,7 @@ export function BlockEditor({ block, defaultDate, onSave, onDelete, onClose }: B
 	};
 
 	return (
-		<Card className="p-4 w-80">
+		<div className="p-4 w-80">
 			<h3 className="font-semibold mb-4">{block ? 'Edit Block' : 'Add Study Block'}</h3>
 
 			<div className="space-y-4">
@@ -188,12 +199,11 @@ export function BlockEditor({ block, defaultDate, onSave, onDelete, onClose }: B
 								<SelectValue />
 							</SelectTrigger>
 							<SelectContent>
-								<SelectItem value="15">15 min</SelectItem>
-								<SelectItem value="30">30 min</SelectItem>
-								<SelectItem value="45">45 min</SelectItem>
-								<SelectItem value="60">1 hour</SelectItem>
-								<SelectItem value="90">1.5 hours</SelectItem>
-								<SelectItem value="120">2 hours</SelectItem>
+								{DURATIONS.map((d) => (
+									<SelectItem key={d.value} value={d.value}>
+										{d.label}
+									</SelectItem>
+								))}
 							</SelectContent>
 						</Select>
 					</div>
@@ -221,9 +231,9 @@ export function BlockEditor({ block, defaultDate, onSave, onDelete, onClose }: B
 				<div className="flex items-center gap-2 text-sm text-muted-foreground">
 					<HugeiconsIcon icon={ClockIcon} className="h-4 w-4" />
 					<span>
-						{`${startHour.toString().padStart(2, '0')}:${startMin} - ${endHour
+						{`${startHour.toString().padStart(2, '0')}:${startMin} - ${endHourCalc
 							.toString()
-							.padStart(2, '0')}:${endMin}`}
+							.padStart(2, '0')}:${endMinCalc}`}
 					</span>
 				</div>
 
@@ -234,21 +244,29 @@ export function BlockEditor({ block, defaultDate, onSave, onDelete, onClose }: B
 							variant="destructive"
 							size="sm"
 							className="flex-1"
-							onClick={() => {
-								onDelete(block.id);
-								onClose();
-							}}
+							disabled={isSaving}
+							onClick={() => onDelete(block.id)}
 						>
 							<HugeiconsIcon icon={Delete02Icon} className="h-4 w-4 mr-1" />
 							Delete
 						</Button>
 					)}
-					<Button type="button" size="sm" className="flex-1" onClick={handleSave}>
-						<HugeiconsIcon icon={SaveIcon} className="h-4 w-4 mr-1" />
+					<Button
+						type="button"
+						size="sm"
+						className="flex-1"
+						disabled={isSaving}
+						onClick={handleSave}
+					>
+						{isSaving ? (
+							<div className="w-4 h-4 border-2 border-primary-foreground border-t-transparent rounded-full animate-spin mr-1" />
+						) : (
+							<HugeiconsIcon icon={SaveIcon} className="h-4 w-4 mr-1" />
+						)}
 						Save
 					</Button>
 				</div>
 			</div>
-		</Card>
+		</div>
 	);
 }

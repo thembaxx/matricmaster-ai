@@ -3,6 +3,7 @@
 import { SparklesIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 import { useSmartSchedulerStore } from '@/stores/useSmartSchedulerStore';
 import { AISuggestionsPanel } from './AISuggestionsPanel';
 import { DayView } from './DayView';
@@ -58,7 +59,12 @@ function CalendarSkeleton() {
 }
 
 export function CalendarView() {
-	const { viewMode, isLoading, generateSchedule, isGenerating } = useSmartSchedulerStore();
+	const { viewMode, setViewMode, isLoading, generateSchedule, isGenerating, exams } =
+		useSmartSchedulerStore();
+
+	const nextExam = exams
+		.filter((e) => e.daysRemaining > 0)
+		.sort((a, b) => a.daysRemaining - b.daysRemaining)[0];
 
 	if (isLoading) {
 		return <CalendarSkeleton />;
@@ -67,24 +73,68 @@ export function CalendarView() {
 	return (
 		<div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
 			<div className="lg:col-span-3 space-y-4">
-				<div className="flex items-center justify-between">
-					<h2 className="text-lg font-semibold">
-						{viewMode === 'week' ? 'Weekly Schedule' : 'Daily Schedule'}
-					</h2>
-					<Button
-						type="button"
-						onClick={() => generateSchedule()}
-						disabled={isGenerating}
-						size="sm"
-						className="gap-2"
-					>
-						{isGenerating ? (
-							<div className="w-4 h-4 border-2 border-primary-foreground border-t-transparent rounded-full animate-spin" />
-						) : (
-							<HugeiconsIcon icon={SparklesIcon} className="h-4 w-4" />
+				<div className="flex items-center justify-between flex-wrap gap-3">
+					<div className="flex items-center gap-4">
+						<h2 className="text-lg font-semibold">
+							{viewMode === 'week' ? 'Weekly Schedule' : 'Daily Schedule'}
+						</h2>
+						<div className="flex items-center gap-1 bg-muted rounded-lg p-0.5">
+							<button
+								type="button"
+								onClick={() => setViewMode('week')}
+								className={cn(
+									'px-3 py-1.5 text-xs font-medium rounded-md transition-all',
+									viewMode === 'week'
+										? 'bg-background shadow-sm text-foreground'
+										: 'text-muted-foreground hover:text-foreground'
+								)}
+							>
+								Week
+							</button>
+							<button
+								type="button"
+								onClick={() => setViewMode('day')}
+								className={cn(
+									'px-3 py-1.5 text-xs font-medium rounded-md transition-all',
+									viewMode === 'day'
+										? 'bg-background shadow-sm text-foreground'
+										: 'text-muted-foreground hover:text-foreground'
+								)}
+							>
+								Day
+							</button>
+						</div>
+					</div>
+
+					<div className="flex items-center gap-2">
+						{nextExam && (
+							<div className="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 rounded-lg text-xs">
+								<span className="text-amber-600 dark:text-amber-400 font-medium">
+									{nextExam.subject}
+								</span>
+								<span className="text-muted-foreground">in</span>
+								<span className="font-bold text-amber-700 dark:text-amber-300">
+									{nextExam.daysRemaining}d
+								</span>
+							</div>
 						)}
-						<span>{isGenerating ? 'Generating...' : 'Generate with AI'}</span>
-					</Button>
+						<Button
+							type="button"
+							onClick={() => generateSchedule()}
+							disabled={isGenerating}
+							size="sm"
+							className="gap-2"
+						>
+							{isGenerating ? (
+								<div className="w-4 h-4 border-2 border-primary-foreground border-t-transparent rounded-full animate-spin" />
+							) : (
+								<HugeiconsIcon icon={SparklesIcon} className="h-4 w-4" />
+							)}
+							<span className="hidden sm:inline">
+								{isGenerating ? 'Generating...' : 'Generate with AI'}
+							</span>
+						</Button>
+					</div>
 				</div>
 
 				{viewMode === 'week' ? <WeekView /> : <DayView />}

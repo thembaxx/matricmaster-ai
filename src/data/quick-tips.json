@@ -1,124 +1,98 @@
 {
 	"tips": [
 		{
-			"id": "math-grade11-algebra-1",
+			"id": "math-quadratics-1",
 			"subject": "Mathematics",
 			"topic": "Algebra",
-			"grade": 11,
+			"grade": 12,
 			"title": "Factorising Quadratics",
-			"content": "When factorising ax² + bx + c = 0, find two numbers that multiply to ac and add to b.",
+			"content": "For ax² + bx + c = 0: Find two numbers that multiply to ac and add to b. Then split the middle term and group.",
+			"formula": "ax² + bx + c = (px + q)(rx + s)",
+			"example": "x² + 5x + 6 = (x + 2)(x + 3) because 2×3=6 and 2+3=5",
 			"priority": 1
 		},
 		{
-			"id": "math-grade11-algebra-2",
-			"subject": "Mathematics",
-			"topic": "Algebra",
-			"grade": 11,
-			"title": "Exponential Equations",
-			"content": "For equations with same base, you can equate exponents. If 2ˣ = 2ʸ, then x = y.",
-			"priority": 2
-		},
-		{
-			"id": "math-grade12-calculus-1",
+			"id": "math-differentiation-1",
 			"subject": "Mathematics",
 			"topic": "Calculus",
 			"grade": 12,
 			"title": "Differentiation Rules",
-			"content": "Power rule: d/dx(xⁿ) = nxⁿ⁻¹. Product rule: (fg)' = f'g + fg'. Chain rule: dy/dx = dy/du × du/dx.",
+			"content": "Power rule: d/dx(xⁿ) = nxⁿ⁻¹. Product rule: (fg)' = f'g + fg'. Quotient rule: (f/g)' = (f'g - fg')/g²",
+			"formula": "d/dx(xⁿ) = nxⁿ⁻¹",
 			"priority": 1
 		},
 		{
-			"id": "math-grade12-calculus-2",
+			"id": "math-integration-1",
 			"subject": "Mathematics",
 			"topic": "Calculus",
 			"grade": 12,
-			"title": "Integration Basics",
-			"content": "∫xⁿdx = xⁿ⁺¹/(n+1) + C (n≠-1). ∫eˣdx = eˣ + C. ∫1/x dx = ln|x| + C.",
-			"priority": 2
+			"title": "Integration Rules",
+			"content": "Power rule: ∫xⁿ dx = xⁿ⁺¹/(n+1) + C. Always add +C for indefinite integrals.",
+			"formula": "∫xⁿ dx = xⁿ⁺¹/(n+1) + C",
+			"priority": 1
 		},
 		{
-			"id": "math-grade12-trig-1",
+			"id": "math-sequences-1",
+			"subject": "Mathematics",
+			"topic": "Sequences & Series",
+			"grade": 12,
+			"title": "Arithmetic vs Geometric",
+			"content": "Arithmetic: constant difference (d). Geometric: constant ratio (r). Tₙ = a + (n-1)d or Tₙ = arⁿ⁻¹",
+			"formula": "Tₙ = a + (n-1)d",
+			"priority": 1
+		},
+		{
+			"id": "math-trig-double-1",
 			"subject": "Mathematics",
 			"topic": "Trigonometry",
 			"grade": 12,
 			"title": "Double Angle Formulas",
 			"content": "sin2θ = 2sinθcosθ. cos2θ = cos²θ - sin²θ = 2cos²θ - 1 = 1 - 2sin²θ.",
+			"formula": "sin2θ = 2sinθcosθ",
 			"priority": 1
 		},
 		{
-			"id": "phys-grade11-mechanics-1",
+			"id": "phys-newton-1",
 			"subject": "Physical Sciences",
 			"topic": "Mechanics",
-			"grade": 11,
+			"grade": 12,
 			"title": "Newton's Second Law",
-			"content": "F = ma. Force equals mass times acceleration. Units: Newton (N) = kg·m/s²",
+			"content": "F = ma. Force equals mass times acceleration. Units: N = kg·m/s². Always draw a free body diagram!",
+			"formula": "F = ma",
 			"priority": 1
 		},
 		{
-			"id": "phys-grade11-mechanics-2",
-			"subject": "Physical Sciences",
-			"topic": "Mechanics",
-			"grade": 11,
-			"title": "Kinetic Energy",
-			"content": "KE = ½mv². Kinetic energy depends on mass and velocity squared.",
-			"priority": 2
-		},
-		{
-			"id": "phys-grade11-mechanics-3",
-			"subject": "Physical Sciences",
-			"topic": "Mechanics",
-			"grade": 11,
-			"title": "Potential Energy",
-			"content": "PE = mgh. Gravitational potential energy depends on mass, gravity, and height.",
-			"priority": 2
-		},
-		{
-			"id": "phys-grade12-electrostatics-1",
+			"id": "phys-electrostatics-1",
 			"subject": "Physical Sciences",
 			"topic": "Electrostatics",
 			"grade": 12,
 			"title": "Coulomb's Law",
-			"content": "F = kq₁q₂/r². Force between two charges is proportional to product of charges and inversely proportional to square of distance.",
+			"content": "Force between two charges: proportional to product of charges, inversely proportional to square of distance.",
+			"formula": "F = kQ₁Q₂/r²",
 			"priority": 1
 		},
 		{
-			"id": "phys-grade12-electromagnetism-1",
+			"id": "phys-circuits-1",
 			"subject": "Physical Sciences",
-			"topic": "Electromagnetism",
+			"topic": "Electric Circuits",
 			"grade": 12,
-			"title": "Right-Hand Rule",
-			"content": "Point thumb in current direction, fingers curl in magnetic field direction. Used for wires and solenoids.",
+			"title": "Ohm's Law & Kirchhoff's",
+			"content": "V = IR (Ohm's Law). Series: I same, V adds. Parallel: V same, I adds. KCL: ΣI_in = ΣI_out",
+			"formula": "V = IR",
 			"priority": 1
 		},
 		{
-			"id": "chem-grade11-matter-1",
+			"id": "phys-waves-1",
 			"subject": "Physical Sciences",
-			"topic": "Matter",
-			"grade": 11,
-			"title": "Atomic Structure",
-			"content": "Protons determine element identity, neutrons add mass, electrons determine reactivity. Atomic number = protons.",
-			"priority": 1
-		},
-		{
-			"id": "chem-grade11-matter-2",
-			"subject": "Physical Sciences",
-			"topic": "Matter",
-			"grade": 11,
-			"title": "Periodic Trends",
-			"content": "Across period: atomic size decreases, electronegativity increases. Down group: atomic size increases.",
-			"priority": 2
-		},
-		{
-			"id": "chem-grade12-chemical-reactions-1",
-			"subject": "Physical Sciences",
-			"topic": "Chemical Reactions",
+			"topic": "Waves",
 			"grade": 12,
-			"title": "Oxidation Numbers",
-			"content": "O is usually -2, H is +1 (except metal hydrides). Sum of oxidation numbers = 0 for compounds.",
+			"title": "Wave Equation",
+			"content": "v = fλ. Speed = frequency × wavelength. For sound: v = 340 m/s in air. For light: c = 3×10⁸ m/s",
+			"formula": "v = fλ",
 			"priority": 1
 		},
 		{
-			"id": "chem-grade12-organic-1",
+			"id": "phys-organic-1",
 			"subject": "Physical Sciences",
 			"topic": "Organic Chemistry",
 			"grade": 12,
@@ -127,25 +101,52 @@
 			"priority": 1
 		},
 		{
-			"id": "eng-grade12-literature-1",
-			"subject": "English",
-			"topic": "Literature",
+			"id": "bio-mitosis-1",
+			"subject": "Life Sciences",
+			"topic": "Cell Division",
 			"grade": 12,
-			"title": "Essay Structure",
-			"content": "PQE: Point, Quote, Explanation. State your point, support with evidence, explain how it answers the question.",
+			"title": "Mitosis vs Meiosis",
+			"content": "Mitosis: 2 identical cells, same chromosome number. Meiosis: 4 different cells, half chromosome number.",
 			"priority": 1
 		},
 		{
-			"id": "eng-grade12-literature-2",
+			"id": "bio-genetics-1",
+			"subject": "Life Sciences",
+			"topic": "Genetics",
+			"grade": 12,
+			"title": "Punnett Squares",
+			"content": "Cross parents' alleles to find offspring ratios. Dominant always masks recessive. Use letter pairs (Tt × Tt → 3:1)",
+			"priority": 1
+		},
+		{
+			"id": "bio-evolution-1",
+			"subject": "Life Sciences",
+			"topic": "Evolution",
+			"grade": 12,
+			"title": "Natural Selection",
+			"content": "Variation exists in populations. Individuals with advantageous traits survive and reproduce more (survival of the fittest).",
+			"priority": 1
+		},
+		{
+			"id": "eng-essay-1",
+			"subject": "English",
+			"topic": "Essay Writing",
+			"grade": 12,
+			"title": "PQE Method",
+			"content": "Point: State your argument. Quote: Provide evidence from text. Explanation: Explain how it supports your point.",
+			"priority": 1
+		},
+		{
+			"id": "eng-lit-1",
 			"subject": "English",
 			"topic": "Literature",
 			"grade": 12,
-			"title": "Poetry Analysis",
-			"content": "TPCASTT: Title, Paraphrase, Connotation, Attitude, Shift, Title, Theme. Use this framework for poetry analysis.",
-			"priority": 2
+			"title": "Literary Devices",
+			"content": "Metaphor: direct comparison. Simile: comparison using like/as. Foreshadowing: hints about future events. Irony: when reality contradicts expectations.",
+			"priority": 1
 		},
 		{
-			"id": "eng-grade12-comprehension-1",
+			"id": "eng-comprehension-1",
 			"subject": "English",
 			"topic": "Comprehension",
 			"grade": 12,
@@ -154,16 +155,7 @@
 			"priority": 1
 		},
 		{
-			"id": "afrikaans-grade12-skrif-1",
-			"subject": "Afrikaans",
-			"topic": "Skryfwerk",
-			"grade": 12,
-			"title": "Opstel Struktuur",
-			"content": "Inleiding (hook + thesis), Liggaam (3 paragrawe), Slotsom (opsomming + verband met thesis).",
-			"priority": 1
-		},
-		{
-			"id": "history-grade12-essay-1",
+			"id": "history-essay-1",
 			"subject": "History",
 			"topic": "Essay Writing",
 			"grade": 12,
@@ -172,7 +164,7 @@
 			"priority": 1
 		},
 		{
-			"id": "history-grade12-soweto-1",
+			"id": "history-soweto-1",
 			"subject": "History",
 			"topic": "South Africa",
 			"grade": 12,

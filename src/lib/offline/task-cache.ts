@@ -21,7 +21,7 @@ interface TaskCacheDB extends DBSchema {
 	};
 	syncQueue: {
 		key: string;
-		value: { action: string; data: unknown; timestamp: number };
+		value: { id: string; action: string; data: unknown; timestamp: number };
 	};
 }
 
@@ -34,7 +34,7 @@ async function getTaskDB() {
 				const taskStore = db.createObjectStore('tasks', { keyPath: 'id' });
 				taskStore.createIndex('by-subject', 'subject');
 				taskStore.createIndex('by-completed', 'completed');
-				db.createObjectStore('syncQueue', { keyPath: 'action' });
+				db.createObjectStore('syncQueue', { keyPath: 'id' });
 			},
 		});
 	}
@@ -89,11 +89,12 @@ export async function getCachedTaskCount(): Promise<number> {
 
 export async function addToSyncQueue(action: string, data: unknown): Promise<void> {
 	const db = await getTaskDB();
-	await db.put('syncQueue', { action, data, timestamp: Date.now() });
+	const id = crypto.randomUUID();
+	await db.put('syncQueue', { id, action, data, timestamp: Date.now() });
 }
 
 export async function getSyncQueue(): Promise<
-	{ action: string; data: unknown; timestamp: number }[]
+	{ id: string; action: string; data: unknown; timestamp: number }[]
 > {
 	const db = await getTaskDB();
 	return db.getAll('syncQueue');

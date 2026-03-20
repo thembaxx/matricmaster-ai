@@ -46,7 +46,7 @@ export interface SmartSchedulerState {
 	addBlock: (block: StudyBlock) => void;
 	updateBlock: (id: string, updates: Partial<StudyBlock>) => void;
 	removeBlock: (id: string) => void;
-	toggleBlockComplete: (id: string) => void;
+	toggleBlockComplete: (id: string) => Promise<void>;
 	setSuggestions: (suggestions: AISuggestion[]) => void;
 	acceptSuggestion: (id: string) => void;
 	dismissSuggestion: (id: string) => void;
@@ -62,6 +62,7 @@ export interface SmartSchedulerState {
 		newSuggestions?: AISuggestion[];
 	} | null>;
 	saveBlock: (block: Partial<StudyBlock>) => Promise<void>;
+	deleteBlock: (blockId: string) => Promise<void>;
 	importStudyPathBlocks: (pathBlocks: StudyBlock[]) => void;
 	saveImportedBlocks: (pathBlocks: StudyBlock[]) => Promise<void>;
 }

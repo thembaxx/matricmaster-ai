@@ -1,0 +1,144 @@
+{
+	"id": "cry-beloved-country",
+	"title": "Cry, the Beloved Country",
+	"author": "Alan Paton",
+	"genre": "novel",
+	"year": 1948,
+	"targetLevel": "HL",
+	"synopsis": "The story of Reverend Stephen Kumalo, a Zulu priest who travels from his rural village to Johannesburg to find his sister and son, only to discover the harsh realities of apartheid South Africa.",
+	"context": "Written during apartheid, the novel is a plea for reconciliation and understanding between South Africa's divided communities.",
+	"characters": [
+		{
+			"id": "kumalo",
+			"name": "Stephen Kumalo",
+			"role": "protagonist",
+			"description": "A dedicated parish priest from Ndotsheni who journeys to Johannesburg seeking his family.",
+			"relationships": [
+				{ "characterId": "absalom", "relationship": "son" },
+				{ "characterId": "gertrude", "relationship": "sister" },
+				{ "characterId": "mapiere", "relationship": "wife" }
+			]
+		},
+		{
+			"id": "absalom",
+			"name": "Absalom Kumalo",
+			"role": "supporting",
+			"description": "Stephen's son who moves to Johannesburg seeking work and becomes entangled in crime.",
+			"relationships": [{ "characterId": "kumalo", "relationship": "father" }]
+		},
+		{
+			"id": "gertrude",
+			"name": "Gertrude Kumalo",
+			"role": "supporting",
+			"description": "Stephen's sister who moves to Johannesburg and becomes a prostitute.",
+			"relationships": [{ "characterId": "kumalo", "relationship": "brother" }]
+		},
+		{
+			"id": "jarvis",
+			"name": "James Jarvis",
+			"role": "supporting",
+			"description": "A white South African farmer whose murdered son's writings inspire him to help the black community.",
+			"relationships": [{ "characterId": "arthur-jarvis", "relationship": "son" }]
+		},
+		{
+			"id": "arthur-jarvis",
+			"name": "Arthur Jarvis",
+			"role": "supporting",
+			"description": "A white South African activist working for reform and racial justice, murdered by Absalom.",
+			"relationships": [{ "characterId": "jarvis", "relationship": "father" }]
+		},
+		{
+			"id": "mapiere",
+			"name": "Mapiere Kumalo",
+			"role": "supporting",
+			"description": "Stephen's wife who remains in Ndotsheni tending to their home.",
+			"relationships": [{ "characterId": "kumalo", "relationship": "husband" }]
+		}
+	],
+	"themes": [
+		{
+			"id": "apartheid",
+			"name": "Apartheid and Segregation",
+			"description": "The destructive effects of racial division and discrimination.",
+			"examples": [
+				"Johannesburg's contrast to the poverty of Ndotsheni",
+				"The racial tension throughout the novel",
+				"The separate and unequal treatment of black South Africans"
+			]
+		},
+		{
+			"id": "reconciliation",
+			"name": "Reconciliation",
+			"description": "The possibility of healing through understanding and forgiveness.",
+			"examples": [
+				"James Jarvis's forgiveness of Absalom despite his son's death",
+				"Kumalo's dignified speech at the trial",
+				"The meeting between Kumalo and James Jarvis"
+			]
+		},
+		{
+			"id": "fear",
+			"name": "Fear",
+			"description": "How fear drives both black and white communities.",
+			"examples": [
+				"Fear in Ndotsheni about the failing crops",
+				"Fear in Johannesburg about crime",
+				"The white farmers' fear of the black population"
+			]
+		},
+		{
+			"id": "nature",
+			"name": "Nature and the Land",
+			"description": "The relationship between people and the land they live on.",
+			"examples": [
+				"The contrast between the red soil of Ndotsheni and Johannesburg",
+				"The drought affecting the village",
+				"The symbol of the broken dam representing societal breakdown"
+			]
+		}
+	],
+	"quotes": [
+		{
+			"id": "q1",
+			"text": "Cry, the beloved country, for the unborn child that is drawn to the yonder passed.",
+			"speaker": "Poem/Song",
+			"context": "The opening poem that frames the novel and establishes its themes",
+			"themeIds": ["apartheid"]
+		},
+		{
+			"id": "q2",
+			"text": "I have one great fear in my heart, that one day when they are turned to loving, they will find that we are turned to hating.",
+			"speaker": "Stephen Kumalo",
+			"context": "Expressing his fear about the consequences of oppression",
+			"themeIds": ["fear", "apartheid"]
+		},
+		{
+			"id": "q3",
+			"text": "There is no love in the world like this love, this love that has no price and no demand.",
+			"speaker": "Stephen Kumalo",
+			"context": "About the unconditional love of a parent for a child",
+			"themeIds": ["reconciliation"]
+		},
+		{
+			"id": "q4",
+			"text": "The tragedy is not that things are broken. The tragedy is that things are not mended again.",
+			"speaker": "Narrator",
+			"context": "Reflecting on the broken state of South African society",
+			"themeIds": ["apartheid", "reconciliation"]
+		},
+		{
+			"id": "q5",
+			"text": "It was the man who walked the road in the darkness that came upon the great rock of stumbling.",
+			"speaker": "Narrator",
+			"context": "Describing Kumalo's journey and the obstacles he faces",
+			"themeIds": ["fear", "nature"]
+		},
+		{
+			"id": "q6",
+			"text": "It suited the white man to break the tribe, but it has not suited him to build something in the place of what is broken.",
+			"speaker": "James Jarvis",
+			"context": "Jarvis reflecting on colonial responsibility",
+			"themeIds": ["apartheid", "reconciliation"]
+		}
+	]
+}

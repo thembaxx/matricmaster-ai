@@ -99,9 +99,123 @@ export async function POST(request: NextRequest) {
 			})
 			.returning();
 
-		return NextResponse.json({ success: true, block: event });
+		return NextResponse.json({
+			success: true,
+			block: {
+				id: event.id,
+				subject: event.title.split(':')[0] || 'General',
+				topic: event.title.includes(':') ? event.title.split(':')[1]?.trim() : undefined,
+				date: event.startTime,
+				startTime: `${event.startTime.getHours().toString().padStart(2, '0')}:${event.startTime.getMinutes().toString().padStart(2, '0')}`,
+				endTime: `${event.endTime.getHours().toString().padStart(2, '0')}:${event.endTime.getMinutes().toString().padStart(2, '0')}`,
+				duration,
+				type: event.eventType,
+				isCompleted: event.isCompleted,
+				isAISuggested: false,
+				calendarEventId: event.id,
+			},
+		});
 	} catch (error) {
 		console.error('Error creating block:', error);
 		return NextResponse.json({ error: 'Failed to create block' }, { status: 500 });
+	}
+}
+
+export async function PATCH(request: NextRequest) {
+	try {
+		const auth = await getAuth();
+		const session = await auth.api.getSession();
+		if (!session?.user) {
+			return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+		}
+
+		const body = await request.json();
+		const { id, isCompleted, date, startTime, duration, subject, topic, type } = body;
+
+		if (!id) {
+			return NextResponse.json({ error: 'Block ID is required' }, { status: 400 });
+		}
+
+		await dbManager.initialize();
+		const db = dbManager.getDb();
+
+		const existing = await db.query.calendarEvents.findFirst({
+			where: and(eq(calendarEvents.id, id), eq(calendarEvents.userId, session.user.id)),
+		});
+
+		if (!existing) {
+			return NextResponse.json({ error: 'Block not found' }, { status: 404 });
+		}
+
+		const updateData: Record<string, unknown> = { updatedAt: new Date() };
+
+		if (typeof isCompleted === 'boolean') {
+			updateData.isCompleted = isCompleted;
+		}
+
+		if (date || startTime || duration) {
+			const baseDate = date ? new Date(date) : existing.startTime;
+			const [sh, sm] = (startTime || '09:00').split(':').map(Number);
+			baseDate.setHours(sh, sm, 0, 0);
+			updateData.startTime = baseDate;
+
+			const dur =
+				duration || Math.round((existing.endTime.getTime() - existing.startTime.getTime()) / 60000);
+			updateData.endTime = new Date(baseDate.getTime() + dur * 60 * 1000);
+		}
+
+		if (subject) {
+			updateData.title = subject + (topic ? `: ${topic}` : '');
+		}
+
+		if (topic) {
+			updateData.description = topic;
+		}
+
+		if (type) {
+			updateData.eventType = type;
+		}
+
+		await db.update(calendarEvents).set(updateData).where(eq(calendarEvents.id, id));
+
+		return NextResponse.json({ success: true });
+	} catch (error) {
+		console.error('Error updating block:', error);
+		return NextResponse.json({ error: 'Failed to update block' }, { status: 500 });
+	}
+}
+
+export async function DELETE(request: NextRequest) {
+	try {
+		const auth = await getAuth();
+		const session = await auth.api.getSession();
+		if (!session?.user) {
+			return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+		}
+
+		const { searchParams } = new URL(request.url);
+		const id = searchParams.get('id');
+
+		if (!id) {
+			return NextResponse.json({ error: 'Block ID is required' }, { status: 400 });
+		}
+
+		await dbManager.initialize();
+		const db = dbManager.getDb();
+
+		const existing = await db.query.calendarEvents.findFirst({
+			where: and(eq(calendarEvents.id, id), eq(calendarEvents.userId, session.user.id)),
+		});
+
+		if (!existing) {
+			return NextResponse.json({ error: 'Block not found' }, { status: 404 });
+		}
+
+		await db.delete(calendarEvents).where(eq(calendarEvents.id, id));
+
+		return NextResponse.json({ success: true });
+	} catch (error) {
+		console.error('Error deleting block:', error);
+		return NextResponse.json({ error: 'Failed to delete block' }, { status: 500 });
 	}
 }

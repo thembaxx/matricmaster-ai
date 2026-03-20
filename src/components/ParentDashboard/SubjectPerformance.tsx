@@ -1,0 +1,160 @@
+'use client';
+
+import {
+	AlertCircleIcon,
+	ArrowDown01Icon,
+	ArrowUp01Icon,
+	Target01Icon,
+} from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
+import { useQuery } from '@tanstack/react-query';
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Progress } from '@/components/ui/progress';
+import { cn } from '@/lib/utils';
+
+interface SubjectData {
+	name: string;
+	overallScore: number;
+	recentScore: number | null;
+	questionsAttempted: number;
+	confidenceScore: number;
+	mistakesCount: number;
+	timeMinutes: number;
+	needsAttention: boolean;
+}
+
+function formatTime(minutes: number) {
+	const hours = Math.floor(minutes / 60);
+	const mins = Math.round(minutes % 60);
+	if (hours > 0) return `${hours}h ${mins}m`;
+	return `${mins}m`;
+}
+
+export function SubjectPerformance() {
+	const { data, isLoading } = useQuery({
+		queryKey: ['parent-subject-performance'],
+		queryFn: async () => {
+			const res = await fetch('/api/parent-dashboard');
+			if (!res.ok) throw new Error('Failed to fetch');
+			const json = await res.json();
+			return json.subjectPerformance;
+		},
+		staleTime: 5 * 60 * 1000,
+	});
+
+	const subjects: SubjectData[] = data?.subjects ?? [];
+
+	return (
+		<Card className="rounded-[2.5rem] border border-border/50 shadow-tiimo overflow-hidden">
+			<CardHeader className="bg-muted/30 px-8 py-6">
+				<div className="flex items-center gap-3">
+					<div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+						<HugeiconsIcon icon={Target01Icon} className="w-5 h-5 text-primary" />
+					</div>
+					<CardTitle className="text-lg font-black tracking-tight">Subject Performance</CardTitle>
+				</div>
+			</CardHeader>
+			<CardContent className="p-6 space-y-4">
+				{isLoading ? (
+					Array.from({ length: 3 }).map((_, i) => (
+						<div key={i} className="h-28 bg-muted animate-pulse rounded-2xl" />
+					))
+				) : subjects.length === 0 ? (
+					<div className="text-center py-8 text-muted-foreground">
+						<p className="text-sm font-medium">No subject data yet</p>
+						<p className="text-xs mt-1">Study activity will appear here</p>
+					</div>
+				) : (
+					subjects.map((subject) => (
+						<div
+							key={subject.name}
+							className={cn(
+								'p-5 rounded-2xl border transition-colors',
+								subject.needsAttention
+									? 'border-warning/30 bg-warning-soft'
+									: 'border-border/30 bg-muted/20'
+							)}
+						>
+							<div className="flex items-center justify-between mb-3">
+								<div className="flex items-center gap-3">
+									<h3 className="font-bold text-sm">{subject.name}</h3>
+									{subject.needsAttention && (
+										<Badge
+											variant="outline"
+											className="text-[10px] font-bold bg-warning/10 text-warning border-warning/20"
+										>
+											<HugeiconsIcon icon={AlertCircleIcon} className="w-3 h-3 mr-1" />
+											Needs attention
+										</Badge>
+									)}
+								</div>
+								<div className="flex items-center gap-1">
+									{subject.recentScore !== null && (
+										<>
+											<HugeiconsIcon
+												icon={
+													subject.recentScore >= subject.overallScore
+														? ArrowUp01Icon
+														: ArrowDown01Icon
+												}
+												className={cn(
+													'w-4 h-4',
+													subject.recentScore >= subject.overallScore
+														? 'text-success'
+														: 'text-warning'
+												)}
+											/>
+											<span
+												className={cn(
+													'text-xs font-bold',
+													subject.recentScore >= subject.overallScore
+														? 'text-success'
+														: 'text-warning'
+												)}
+											>
+												{subject.recentScore}%
+											</span>
+										</>
+									)}
+								</div>
+							</div>
+
+							<div className="mb-3">
+								<div className="flex justify-between text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-1.5">
+									<span>Overall Mastery</span>
+									<span>{subject.overallScore}%</span>
+								</div>
+								<Progress
+									value={subject.overallScore}
+									className={cn('h-2', subject.needsAttention && '[&>div]:bg-warning')}
+								/>
+							</div>
+
+							<div className="grid grid-cols-3 gap-3">
+								<div className="text-center">
+									<p className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest">
+										Confidence
+									</p>
+									<p className="text-sm font-black">{Math.round(subject.confidenceScore * 100)}%</p>
+								</div>
+								<div className="text-center">
+									<p className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest">
+										Mistakes
+									</p>
+									<p className="text-sm font-black">{subject.mistakesCount}</p>
+								</div>
+								<div className="text-center">
+									<p className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest">
+										Time Spent
+									</p>
+									<p className="text-sm font-black">{formatTime(subject.timeMinutes)}</p>
+								</div>
+							</div>
+						</div>
+					))
+				)}
+			</CardContent>
+		</Card>
+	);
+}

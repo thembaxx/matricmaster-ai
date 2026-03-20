@@ -1,6 +1,10 @@
 import { type NextRequest, NextResponse } from 'next/server';
 import { getAuth } from '@/lib/auth';
-import { generateStudyBlocks, getExamCountdowns, getWeakAreas } from '@/services/scheduleAIService';
+import {
+	generateSmartSchedule,
+	getExamCountdowns,
+	getWeakAreas,
+} from '@/services/scheduleAIService';
 
 export async function POST(_request: NextRequest) {
 	try {
@@ -10,14 +14,13 @@ export async function POST(_request: NextRequest) {
 			return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 		}
 
-		const weakAreas = await getWeakAreas();
-		const examCountdowns = await getExamCountdowns();
+		const [weakAreas, examCountdowns] = await Promise.all([getWeakAreas(), getExamCountdowns()]);
 
-		const blocks = generateStudyBlocks(weakAreas, examCountdowns);
+		const { blocks, suggestions } = await generateSmartSchedule(weakAreas, examCountdowns);
 
 		return NextResponse.json({
 			blocks,
-			suggestions: [],
+			suggestions,
 			exams: examCountdowns,
 		});
 	} catch (error) {

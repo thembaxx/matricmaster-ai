@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 
 import { appConfig } from '@/app.config';
-import { QuizEngine } from '@/components/SetworkLibrary/QuizEngine';
-import { quizQuestions } from '@/data/setworks';
+import { quizQuestions, setworks } from '@/data/setworks';
+import { QuizContent } from './quiz-content';
 
 export const metadata: Metadata = {
 	title: `Setwork Quiz | ${appConfig.name} AI`,
@@ -20,7 +20,7 @@ export default function QuizPage() {
 			</header>
 
 			<main className="flex-1 p-6">
-				<QuizEngine questions={quizQuestions} />
+				<QuizContent setworks={setworks} quizQuestions={quizQuestions} />
 			</main>
 		</div>
 	);

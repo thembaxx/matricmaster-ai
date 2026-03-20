@@ -3,6 +3,7 @@
 import { CheckmarkCircle02Icon, Drag04Icon as GripVerticalIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { useState } from 'react';
+import { toast } from 'sonner';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { cn } from '@/lib/utils';
 import { useDragStore } from '@/stores/useDragStore';
@@ -74,9 +75,10 @@ const SUBJECT_STYLES: Record<string, { bg: string; border: string; text: string;
 	};
 
 export function StudyBlockCard({ block, compact = false }: StudyBlockCardProps) {
-	const { saveBlock, removeBlock } = useSmartSchedulerStore();
+	const { saveBlock, deleteBlock, toggleBlockComplete } = useSmartSchedulerStore();
 	const { startDrag, endDrag, isDragging } = useDragStore();
 	const [editorOpen, setEditorOpen] = useState(false);
+	const [isSaving, setIsSaving] = useState(false);
 
 	const style = SUBJECT_STYLES[block.subject] || SUBJECT_STYLES.Mathematics;
 
@@ -91,13 +93,26 @@ export function StudyBlockCard({ block, compact = false }: StudyBlockCardProps) 
 	};
 
 	const handleSave = async (updates: Partial<StudyBlock>) => {
-		await saveBlock({ ...updates, id: block.id });
-		setEditorOpen(false);
+		setIsSaving(true);
+		try {
+			await saveBlock({ ...updates, id: block.id });
+			setEditorOpen(false);
+			toast.success('Block updated');
+		} catch {
+			toast.error('Failed to update block');
+		} finally {
+			setIsSaving(false);
+		}
 	};
 
-	const handleDelete = () => {
-		removeBlock(block.id);
-		setEditorOpen(false);
+	const handleDelete = async () => {
+		try {
+			await deleteBlock(block.id);
+			setEditorOpen(false);
+			toast.success('Block removed');
+		} catch {
+			toast.error('Failed to remove block');
+		}
 	};
 
 	const cardContent = (
@@ -112,18 +127,23 @@ export function StudyBlockCard({ block, compact = false }: StudyBlockCardProps) 
 						)}
 					</div>
 				</div>
-				<div
+				<button
+					type="button"
+					onClick={(e) => {
+						e.stopPropagation();
+						toggleBlockComplete(block.id);
+					}}
 					className={cn(
 						'w-6 h-6 rounded-full border-2 flex items-center justify-center flex-shrink-0 transition-colors',
 						block.isCompleted
 							? 'bg-green-500 border-green-500'
-							: 'border-muted-foreground/30 hover:border-muted-foreground/50'
+							: 'border-muted-foreground/30 hover:border-green-400'
 					)}
 				>
 					{block.isCompleted && (
 						<HugeiconsIcon icon={CheckmarkCircle02Icon} className="w-3.5 h-3.5 text-white" />
 					)}
-				</div>
+				</button>
 			</div>
 			<div className="flex items-center gap-2 mt-2 text-xs text-muted-foreground">
 				<span className="font-medium">{block.startTime}</span>
@@ -154,6 +174,7 @@ export function StudyBlockCard({ block, compact = false }: StudyBlockCardProps) 
 						onKeyDown={(e) => {
 							if (e.key === 'Enter' || e.key === ' ') {
 								e.preventDefault();
+								setEditorOpen(true);
 							}
 						}}
 						className={cn(
@@ -185,6 +206,7 @@ export function StudyBlockCard({ block, compact = false }: StudyBlockCardProps) 
 						onSave={handleSave}
 						onDelete={handleDelete}
 						onClose={() => setEditorOpen(false)}
+						isSaving={isSaving}
 					/>
 				</PopoverContent>
 			</Popover>
@@ -203,6 +225,7 @@ export function StudyBlockCard({ block, compact = false }: StudyBlockCardProps) 
 					onKeyDown={(e) => {
 						if (e.key === 'Enter' || e.key === ' ') {
 							e.preventDefault();
+							setEditorOpen(true);
 						}
 					}}
 					className={cn(
@@ -223,6 +246,7 @@ export function StudyBlockCard({ block, compact = false }: StudyBlockCardProps) 
 					onSave={handleSave}
 					onDelete={handleDelete}
 					onClose={() => setEditorOpen(false)}
+					isSaving={isSaving}
 				/>
 			</PopoverContent>
 		</Popover>

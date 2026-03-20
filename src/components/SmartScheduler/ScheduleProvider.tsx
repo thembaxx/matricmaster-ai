@@ -7,12 +7,6 @@ interface SmartSchedulerProviderProps {
 	children: React.ReactNode;
 }
 
-async function fetchSchedule() {
-	const response = await fetch('/api/smart-scheduler/blocks');
-	if (!response.ok) throw new Error('Failed to fetch schedule');
-	return response.json();
-}
-
 export function SmartSchedulerProvider({ children }: SmartSchedulerProviderProps) {
 	const setBlocks = useSmartSchedulerStore((s) => s.setBlocks);
 	const setExams = useSmartSchedulerStore((s) => s.setExams);
@@ -22,12 +16,19 @@ export function SmartSchedulerProvider({ children }: SmartSchedulerProviderProps
 		queryKey: ['smart-scheduler-blocks'],
 		queryFn: async () => {
 			setLoading(true);
-			const data = await fetchSchedule();
-			setBlocks(data.blocks || []);
-			setExams(data.exams || []);
-			setLoading(false);
-			return data;
+			try {
+				const response = await fetch('/api/smart-scheduler/blocks');
+				if (!response.ok) throw new Error('Failed to fetch schedule');
+				const data = await response.json();
+				setBlocks(data.blocks || []);
+				setExams(data.exams || []);
+				return data;
+			} finally {
+				setLoading(false);
+			}
 		},
+		staleTime: 30_000,
+		refetchOnWindowFocus: false,
 	});
 
 	return <>{children}</>;

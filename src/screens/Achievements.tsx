@@ -26,6 +26,8 @@ interface Badge {
 	unlocked: boolean;
 	category: 'all' | 'science' | 'math' | 'history' | 'streak';
 	description?: string;
+	points?: number;
+	unlockedAt?: Date;
 }
 
 import { AchievementsSkeleton } from '@/components/AchievementsSkeleton';
@@ -54,6 +56,8 @@ export default function Achievements() {
 			unlocked,
 			category: achievement.category,
 			description: achievement.description,
+			points: achievement.points,
+			unlockedAt: unlockedRecord?.unlockedAt,
 		};
 	});
 
