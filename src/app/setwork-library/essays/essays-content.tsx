@@ -112,13 +112,13 @@ export function EssaysContent({ setworks }: EssaysContentProps) {
 			<Tabs defaultValue={prompts[0] || ''} className="w-full">
 				<TabsList className="flex-wrap h-auto gap-1">
 					{prompts.map((prompt, i) => (
-						<TabsTrigger key={i} value={prompt} className="text-xs max-w-none">
+						<TabsTrigger key={prompt} value={prompt} className="text-xs max-w-none">
 							Prompt {i + 1}
 						</TabsTrigger>
 					))}
 				</TabsList>
-				{prompts.map((prompt, i) => (
-					<TabsContent key={i} value={prompt}>
+				{prompts.map((prompt, _i) => (
+					<TabsContent key={`content-${prompt}`} value={prompt}>
 						<EssayEditor topic={topicLabel} prompt={prompt} />
 					</TabsContent>
 				))}

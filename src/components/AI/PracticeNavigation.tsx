@@ -1,6 +1,7 @@
 import { ArrowLeft01Icon, ArrowRight01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { Button } from '@/components/ui/button';
+import { Separator } from '@/components/ui/separator';
 
 interface PracticeNavigationProps {
 	currentIndex: number;
@@ -22,7 +23,8 @@ export function PracticeNavigation({
 	onCheckAnswer,
 }: PracticeNavigationProps) {
 	return (
-		<div className="flex justify-between items-center pt-4 border-t">
+		<div className="flex justify-between items-center pt-4">
+			<Separator className="mb-4" />
 			<Button variant="outline" onClick={onPrevious} disabled={currentIndex === 0}>
 				<HugeiconsIcon icon={ArrowLeft01Icon} className="h-4 w-4 mr-1" />
 				Previous

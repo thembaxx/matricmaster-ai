@@ -209,7 +209,8 @@ export function ConversationSidebar({
 			} else {
 				toast.error(result.error || 'Failed to delete');
 			}
-		} catch {
+		} catch (error) {
+			console.error('Failed to delete conversation:', error);
 			toast.error('Failed to delete conversation');
 		} finally {
 			setDeletingId(null);

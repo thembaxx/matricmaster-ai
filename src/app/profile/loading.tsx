@@ -12,7 +12,7 @@ export default function ProfileLoading() {
 			</div>
 			<div className="grid grid-cols-3 gap-4 mb-8">
 				{Array.from({ length: 3 }).map((_, i) => (
-					<div key={i} className="p-4 rounded-2xl bg-card/50 text-center space-y-2">
+					<div key={`skeleton-${i}`} className="p-4 rounded-2xl bg-card/50 text-center space-y-2">
 						<Skeleton className="h-8 w-12 mx-auto rounded-lg" />
 						<Skeleton className="h-3 w-20 mx-auto rounded-lg" />
 					</div>
@@ -20,7 +20,10 @@ export default function ProfileLoading() {
 			</div>
 			<div className="space-y-4">
 				{Array.from({ length: 4 }).map((_, i) => (
-					<div key={i} className="p-4 rounded-2xl bg-card/50 flex items-center justify-between">
+					<div
+						key={`skeleton-${i}`}
+						className="p-4 rounded-2xl bg-card/50 flex items-center justify-between"
+					>
 						<div className="space-y-2">
 							<Skeleton className="h-4 w-32 rounded-lg" />
 							<Skeleton className="h-3 w-24 rounded-lg" />

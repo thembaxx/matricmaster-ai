@@ -59,7 +59,7 @@ export function RecommendationsCard({
 					<div className="space-y-3">
 						{recommendations.recommendations.map((rec, index) => (
 							<div
-								key={index}
+								key={`rec-${index}`}
 								className="flex items-start gap-3 rounded-lg border p-3 transition-colors hover:bg-muted/50"
 							>
 								<div className="mt-0.5 text-muted-foreground">

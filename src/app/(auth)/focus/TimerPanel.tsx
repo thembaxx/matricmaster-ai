@@ -2,6 +2,7 @@
 
 import { ProgressRing } from '@/components/Timer/ProgressRing';
 import { TimerControls } from '@/components/Timer/TimerControls';
+import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
 type TimerMode = 'focus' | 'short-break' | 'long-break';
@@ -24,7 +25,7 @@ export function TimerPanel({
 	formatTime,
 }: TimerPanelProps) {
 	return (
-		<div className="lg:col-span-7 flex flex-col items-center space-y-8 bg-card border border-border/50 p-8 md:p-12 rounded-[3rem] shadow-tiimo relative overflow-hidden min-h-[500px] justify-center">
+		<div className="lg:col-span-7 flex flex-col items-center gap-8 bg-card border border-border/50 p-8 md:p-12 rounded-[3rem] shadow-tiimo relative overflow-hidden min-h-[500px] justify-center">
 			<div
 				className={cn(
 					'absolute inset-0 opacity-5 pointer-events-none transition-colors duration-500',
@@ -34,8 +35,9 @@ export function TimerPanel({
 
 			<div className="flex items-center gap-2 bg-muted/50 p-1 rounded-full relative z-10">
 				{(['focus', 'short-break', 'long-break'] as const).map((m) => (
-					<button
+					<Button
 						type="button"
+						variant="ghost"
 						key={m}
 						onClick={() => setMode(m)}
 						className={cn(
@@ -46,7 +48,7 @@ export function TimerPanel({
 						)}
 					>
 						{m.replace('-', ' ')}
-					</button>
+					</Button>
 				))}
 			</div>
 

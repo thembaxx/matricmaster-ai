@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { Button } from '@/components/ui/button';
 import { VectorArrow } from './VectorArrow';
 
 interface Force {
@@ -125,10 +126,13 @@ export function FreeBodyDiagram({
 
 			<div className="mt-4 grid grid-cols-2 gap-2">
 				{forces.map((force) => (
-					<button
+					<Button
 						type="button"
+						variant="ghost"
 						key={force.id}
-						className={`p-2 rounded-lg border text-left ${selectedForce === force.id ? 'border-primary bg-primary/10' : 'border-border bg-muted'}`}
+						className={`p-2 h-auto rounded-lg border text-left ${
+							selectedForce === force.id ? 'border-primary bg-primary/10' : 'border-border bg-muted'
+						}`}
 						onClick={() => setSelectedForce(selectedForce === force.id ? null : force.id)}
 					>
 						<div className="flex items-center gap-2">
@@ -138,7 +142,7 @@ export function FreeBodyDiagram({
 						<div className="text-xs font-mono text-muted-foreground mt-1">
 							{force.magnitude}N @ {force.angle}°
 						</div>
-					</button>
+					</Button>
 				))}
 			</div>
 

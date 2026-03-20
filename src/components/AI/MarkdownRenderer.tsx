@@ -98,7 +98,7 @@ export function MarkdownRenderer({ content, className }: MarkdownRendererProps) 
 				if (diagramMatch) {
 					const type = diagramMatch[1] as 'force-vector' | 'phase-change' | 'wave-motion';
 					return (
-						<div key={index} className="my-8 not-prose">
+						<div key={`diagram-${index}`} className="my-8 not-prose">
 							<InteractiveDiagram type={type} />
 						</div>
 					);
@@ -106,7 +106,7 @@ export function MarkdownRenderer({ content, className }: MarkdownRendererProps) 
 
 				return (
 					<ReactMarkdown
-						key={index}
+						key={`md-${index}`}
 						remarkPlugins={[remarkGfm, remarkMath]}
 						rehypePlugins={[rehypeKatex]}
 						components={{

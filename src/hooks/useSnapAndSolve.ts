@@ -56,7 +56,8 @@ export function useSnapAndSolve() {
 			} else {
 				toast.error('Failed to save flashcard');
 			}
-		} catch {
+		} catch (error) {
+			console.error('Failed to save flashcard:', error);
 			toast.error('Something went wrong');
 		} finally {
 			setIsSavingFlashcard(false);
@@ -86,7 +87,8 @@ export function useSnapAndSolve() {
 			} else {
 				toast.error('Failed to generate quiz');
 			}
-		} catch {
+		} catch (error) {
+			console.error('Failed to generate quiz:', error);
 			toast.error('Something went wrong');
 		} finally {
 			setIsGeneratingQuiz(false);

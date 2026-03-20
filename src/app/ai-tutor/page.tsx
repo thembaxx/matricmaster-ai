@@ -3,7 +3,7 @@
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import { useEffect } from 'react';
+import { Suspense, useEffect } from 'react';
 import { AIPrompt } from '@/components/AI/AIPrompt';
 import { ConversationSidebar } from '@/components/AI/ConversationSidebar';
 import { QuickPrompts } from '@/components/AI/QuickPrompts';
@@ -23,7 +23,7 @@ const PracticeModal = dynamic(
 	{ ssr: false, loading: () => null }
 );
 
-export default function AITutorPage() {
+function AITutorPageContent() {
 	const searchParams = useSearchParams();
 	const contextParam = searchParams.get('context');
 
@@ -143,5 +143,27 @@ export default function AITutorPage() {
 				subject={selectedSubject || undefined}
 			/>
 		</div>
+	);
+}
+
+function AITutorPageSkeleton() {
+	return (
+		<div className="min-h-screen bg-background flex pb-40">
+			<div className="flex-1 flex flex-col min-w-0 bg-zinc-50 dark:bg-zinc-950">
+				<div className="flex-1 p-8 animate-pulse space-y-6">
+					<div className="h-12 bg-muted rounded w-1/3" />
+					<div className="h-8 bg-muted rounded w-1/4" />
+					<div className="h-64 bg-muted rounded-lg" />
+				</div>
+			</div>
+		</div>
+	);
+}
+
+export default function AITutorPage() {
+	return (
+		<Suspense fallback={<AITutorPageSkeleton />}>
+			<AITutorPageContent />
+		</Suspense>
 	);
 }

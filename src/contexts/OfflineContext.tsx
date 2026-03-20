@@ -32,8 +32,8 @@ export function OfflineProvider({ children }: { children: ReactNode }) {
 			const tasks = await getCachedTasks();
 			setCachedCount(count);
 			setCachedTasks(tasks);
-		} catch {
-			// ignore
+		} catch (error) {
+			console.warn('Failed to refresh task count:', error);
 		}
 	}, []);
 

@@ -9,7 +9,7 @@ import {
 import { HugeiconsIcon } from '@hugeicons/react';
 import { AnimatePresence, m } from 'framer-motion';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useMemo, useState } from 'react';
+import { Suspense, useEffect, useMemo, useState } from 'react';
 import { MarkdownRenderer } from '@/components/AI/MarkdownRenderer';
 import { Comments } from '@/components/Comments/Comments';
 import { Button } from '@/components/ui/button';
@@ -21,7 +21,7 @@ import type { StudyTask, SubjectId } from '@/types/schedule';
 import { TasksPanel } from './TasksPanel';
 import { TimerPanel } from './TimerPanel';
 
-export default function FocusPage() {
+function FocusPageContent() {
 	const router = useRouter();
 	const searchParams = useSearchParams();
 	const lessonId = searchParams.get('lessonId');
@@ -218,5 +218,28 @@ export default function FocusPage() {
 				</m.div>
 			</AnimatePresence>
 		</div>
+	);
+}
+
+function FocusPageSkeleton() {
+	return (
+		<div className="min-h-screen p-4 md:p-8 space-y-8 max-w-6xl mx-auto pb-32">
+			<div className="flex flex-col md:flex-row md:items-center justify-between gap-4 animate-pulse">
+				<div className="h-20 w-48 bg-muted rounded" />
+				<div className="h-12 w-64 bg-muted rounded-full" />
+			</div>
+			<div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+				<div className="lg:col-span-8 h-96 bg-muted rounded-lg" />
+				<div className="lg:col-span-4 h-64 bg-muted rounded-lg" />
+			</div>
+		</div>
+	);
+}
+
+export default function FocusPage() {
+	return (
+		<Suspense fallback={<FocusPageSkeleton />}>
+			<FocusPageContent />
+		</Suspense>
 	);
 }

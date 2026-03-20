@@ -229,8 +229,9 @@ function JourneyStepCard({
 			)}
 		>
 			{/* Main Row */}
-			<button
+			<Button
 				type="button"
+				variant="ghost"
 				onClick={onToggle}
 				disabled={step.status === 'locked'}
 				className="w-full flex items-center gap-4 p-4"
@@ -294,7 +295,7 @@ function JourneyStepCard({
 				{step.status !== 'locked' && (
 					<span className="text-muted-foreground">{isExpanded ? '▲' : '▼'}</span>
 				)}
-			</button>
+			</Button>
 
 			{/* Expanded Details */}
 			{isExpanded && step.status !== 'locked' && (

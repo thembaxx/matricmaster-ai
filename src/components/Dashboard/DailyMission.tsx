@@ -15,6 +15,7 @@ import { useRouter } from 'next/navigation';
 import type { AdaptiveRecommendation } from '@/actions/adaptive-learning';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export function DailyMission() {
 	const router = useRouter();
@@ -107,7 +108,7 @@ export function DailyMission() {
 				<CardContent>
 					<div className="space-y-3">
 						{[1, 2, 3].map((i) => (
-							<div key={i} className="h-16 bg-muted/50 rounded-xl animate-pulse" />
+							<Skeleton key={`skeleton-${i}`} className="h-16 rounded-xl" />
 						))}
 					</div>
 				</CardContent>

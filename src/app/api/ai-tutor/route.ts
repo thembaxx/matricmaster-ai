@@ -109,8 +109,8 @@ export async function POST(request: NextRequest) {
 					suggestions: [],
 					cached: true,
 				});
-			} catch {
-				console.debug('Cache failed, continuing with AI generation');
+			} catch (error) {
+				console.debug('Cache failed, continuing with AI generation:', error);
 			}
 		}
 
@@ -160,7 +160,8 @@ export async function POST(request: NextRequest) {
 							tags: [`query-${cacheKey.slice(0, 8)}`],
 						}
 					);
-				} catch {
+				} catch (error) {
+					console.warn('Cache retrieval failed, generating new response:', error);
 					return await generateAI({
 						prompt: conversationContext,
 						model: AI_MODELS.PRIMARY,

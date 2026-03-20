@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
+import { Separator } from '@/components/ui/separator';
 
 interface QuickPromptsProps {
 	onSelectPrompt: (prompt: string) => void;
@@ -172,7 +173,8 @@ export function QuickPrompts({ onSelectPrompt, selectedSubject }: QuickPromptsPr
 			</ScrollArea>
 
 			{(selectedSubject === 'physics' || selectedSubject === 'chemistry') && (
-				<div className="mt-3 pt-3 border-t border-border/30">
+				<div className="mt-3 pt-3">
+					<Separator className="mb-3" />
 					<div className="flex items-center gap-2 px-1 mb-2">
 						<HugeiconsIcon
 							icon={CalculatorIcon}

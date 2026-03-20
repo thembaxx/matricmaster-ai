@@ -29,7 +29,8 @@ function getUserApiKey(): string | undefined {
 	if (typeof window === 'undefined') return undefined;
 	try {
 		return localStorage.getItem(STORAGE_KEY) || undefined;
-	} catch {
+	} catch (error) {
+		console.warn('Failed to read API key from localStorage:', error);
 		return undefined;
 	}
 }

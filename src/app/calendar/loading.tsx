@@ -12,7 +12,7 @@ export default function CalendarLoading() {
 			</div>
 			<div className="grid grid-cols-7 gap-1">
 				{Array.from({ length: 35 }).map((_, i) => (
-					<Skeleton key={i} className="h-12 rounded-lg" />
+					<Skeleton key={`skeleton-${i}`} className="h-12 rounded-lg" />
 				))}
 			</div>
 		</div>

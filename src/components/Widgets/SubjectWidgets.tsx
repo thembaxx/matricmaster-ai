@@ -3,6 +3,7 @@
 import { FluentEmoji } from '@lobehub/fluent-emoji';
 import { m } from 'framer-motion';
 import { useState } from 'react';
+import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 
@@ -20,12 +21,12 @@ export function MathWidget() {
 					<div className="h-12 bg-card rounded-xl border border-border/50 flex items-center px-4 font-mono text-sm text-tiimo-gray-muted">
 						2x + 5 = 15
 					</div>
-					<button
+					<Button
 						type="button"
-						className="w-full h-12 bg-tiimo-lavender text-white rounded-xl font-black uppercase tracking-widest text-[10px] shadow-lg shadow-tiimo-lavender/20 transition-transform active:scale-95"
+						className="w-full h-12 bg-tiimo-lavender text-white rounded-xl font-black uppercase tracking-widest text-[10px] shadow-lg shadow-tiimo-lavender/20"
 					>
 						Show Steps
-					</button>
+					</Button>
 				</div>
 			</CardContent>
 		</Card>
@@ -79,9 +80,11 @@ export function HistoryScrubber() {
 				<div className="relative h-2 bg-muted rounded-full mb-8 mt-4">
 					<div className="absolute inset-0 flex justify-between px-2 -top-2">
 						{events.map((_, i) => (
-							<button
-								key={i}
+							<Button
+								key={`event-${i}`}
 								type="button"
+								variant="ghost"
+								size="icon"
 								onClick={() => setActiveIndex(i)}
 								className={cn(
 									'w-6 h-6 rounded-full border-4 border-card transition-all',

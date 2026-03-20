@@ -15,6 +15,7 @@ import { BackgroundMesh } from '@/components/ui/background-mesh';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Separator } from '@/components/ui/separator';
 import { STAGGER_CONTAINER, STAGGER_ITEM } from '@/lib/animation-presets';
 import { authClient } from '@/lib/auth-client';
 import { cn } from '@/lib/utils';
@@ -214,7 +215,7 @@ export default function SignUpForm() {
 						className="relative my-8"
 					>
 						<div className="absolute inset-0 flex items-center">
-							<div className="w-full border-t border-border/60" />
+							<Separator />
 						</div>
 						<div className="relative flex justify-center text-[10px] uppercase tracking-[0.2em]">
 							<span className="px-4 text-muted-foreground font-black bg-card/80 backdrop-blur-xl rounded-full">

@@ -109,11 +109,12 @@ export function SendEncouragement({ studentName, open, onClose }: SendEncouragem
 						</Label>
 						<div className="grid grid-cols-2 gap-3">
 							{PRESET_MESSAGES.map((preset, idx) => (
-								<button
+								<Button
 									key={preset.label}
 									type="button"
+									variant="ghost"
 									className={cn(
-										'p-4 rounded-2xl border text-left transition-all',
+										'p-4 h-auto rounded-2xl border text-left',
 										selectedPreset === idx
 											? 'border-primary bg-primary/5 shadow-sm'
 											: 'border-border/50 hover:border-border'
@@ -135,7 +136,7 @@ export function SendEncouragement({ studentName, open, onClose }: SendEncouragem
 									<p className="text-[10px] text-muted-foreground mt-1 line-clamp-2">
 										{preset.message}
 									</p>
-								</button>
+								</Button>
 							))}
 						</div>
 					</div>

@@ -32,7 +32,8 @@ export function evaluateExpression(
 	const normalized = expression.toLowerCase().replace(/y\s*=\s*/i, '');
 	try {
 		return evaluate(normalized, { x, ...params }) as number;
-	} catch {
+	} catch (error) {
+		console.warn('Failed to evaluate expression:', error);
 		return Number.NaN;
 	}
 }

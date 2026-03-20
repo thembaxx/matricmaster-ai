@@ -1,3 +1,5 @@
+import { Button } from '@/components/ui/button';
+
 export function QuestionJumpNav({
 	questions,
 	currentQuestionIndex,
@@ -16,18 +18,20 @@ export function QuestionJumpNav({
 			</h3>
 			<div className="flex flex-wrap gap-2">
 				{questions.map((q, idx) => (
-					<button
+					<Button
 						type="button"
+						variant="ghost"
+						size="icon"
 						key={q.id}
 						onClick={() => onGoToQuestion(idx)}
-						className={`w-10 h-10 p-0 rounded-xl font-bold border-2 transition-all ${
+						className={`w-10 h-10 p-0 rounded-xl font-bold border-2 ${
 							currentQuestionIndex === idx
 								? 'border-brand-blue bg-brand-blue text-white'
 								: 'border-zinc-200 dark:border-zinc-700 text-muted-foreground hover:border-brand-blue'
 						}`}
 					>
 						{q.questionNumber}
-					</button>
+					</Button>
 				))}
 			</div>
 		</div>

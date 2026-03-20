@@ -6,7 +6,7 @@ import { useQuery } from '@tanstack/react-query';
 import { m } from 'framer-motion';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { FocusContent } from '@/components/Layout/FocusContent';
 import { TimelineSidebar } from '@/components/Layout/TimelineSidebar';
@@ -26,7 +26,7 @@ import {
 	type RecentSessionWithContext,
 } from '@/lib/db/actions';
 
-export default function StudyCompanion() {
+function StudyCompanionContent() {
 	const router = useRouter();
 	const searchParams = useSearchParams();
 	const { data: session } = authClient.useSession();
@@ -170,5 +170,35 @@ export default function StudyCompanion() {
 				</m.div>
 			</FocusContent>
 		</div>
+	);
+}
+
+function StudyCompanionSkeleton() {
+	return (
+		<div className="min-h-screen bg-background">
+			<TimelineSidebar />
+			<FocusContent>
+				<div className="space-y-10 animate-pulse">
+					<div className="text-center space-y-4">
+						<div className="text-6xl mb-4">💡</div>
+						<div className="h-8 bg-muted rounded w-1/3 mx-auto" />
+						<div className="h-6 bg-muted rounded w-1/2 mx-auto" />
+					</div>
+					<div className="grid grid-cols-2 gap-4">
+						{[1, 2, 3, 4].map((i) => (
+							<div key={`skeleton-${i}`} className="h-24 bg-muted rounded-lg" />
+						))}
+					</div>
+				</div>
+			</FocusContent>
+		</div>
+	);
+}
+
+export default function StudyCompanion() {
+	return (
+		<Suspense fallback={<StudyCompanionSkeleton />}>
+			<StudyCompanionContent />
+		</Suspense>
 	);
 }

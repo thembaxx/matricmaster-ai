@@ -2,6 +2,7 @@
 
 import { m } from 'framer-motion';
 import { useState } from 'react';
+import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
 interface InteractiveDiagramProps {
@@ -588,19 +589,20 @@ export function InteractiveDiagram({ type, className }: InteractiveDiagramProps)
 					<div className="flex items-center justify-center font-black text-primary">t</div>
 					<div className="flex items-center justify-center font-black text-primary py-4">T</div>
 					{cells.map((cell) => (
-						<button
+						<Button
 							key={cell}
 							type="button"
+							variant="ghost"
 							onClick={() =>
 								setPunnett((prev) => ({
 									...prev,
 									[cell]: prev[cell] === 'TT' ? 'Tt' : prev[cell] === 'Tt' ? 'tt' : 'TT',
 								}))
 							}
-							className="aspect-square bg-card border-2 border-border rounded-xl flex items-center justify-center font-black text-lg hover:border-primary transition-all active:scale-95"
+							className="aspect-square bg-card border-2 border-border rounded-xl flex items-center justify-center font-black text-lg hover:border-primary active:scale-95"
 						>
 							{punnett[cell] || '?'}
-						</button>
+						</Button>
 					))}
 					<div className="flex items-center justify-center font-black text-primary py-4">t</div>
 				</div>
@@ -725,7 +727,7 @@ export function InteractiveDiagram({ type, className }: InteractiveDiagramProps)
 					/>
 					{[1, 2, 3].map((i) => (
 						<m.path
-							key={i}
+							key={`atom-${i}`}
 							initial={{ scale: 0 }}
 							animate={{ scale: 1 }}
 							transition={{ delay: 0.5 + i * 0.1 }}

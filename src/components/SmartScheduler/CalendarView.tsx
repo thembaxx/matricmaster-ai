@@ -3,6 +3,7 @@
 import { SparklesIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { Button } from '@/components/ui/button';
+import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
 import { useSmartSchedulerStore } from '@/stores/useSmartSchedulerStore';
 import { AISuggestionsPanel } from './AISuggestionsPanel';
@@ -18,20 +19,20 @@ function CalendarSkeleton() {
 					<div className="p-4 border-b">
 						<div className="flex items-center justify-between">
 							<div className="flex items-center gap-3">
-								<div className="h-6 w-32 bg-muted rounded animate-pulse" />
-								<div className="h-6 w-24 bg-muted rounded animate-pulse" />
+								<Skeleton className="h-6 w-32" />
+								<Skeleton className="h-6 w-24" />
 							</div>
-							<div className="h-9 w-36 bg-muted rounded-lg animate-pulse" />
+							<Skeleton className="h-9 w-36" />
 						</div>
 					</div>
 					<div className="p-4">
 						<div className="grid grid-cols-7 gap-2">
 							{Array.from({ length: 7 }).map((_, i) => (
-								<div key={i} className="space-y-2">
-									<div className="h-16 bg-muted rounded animate-pulse" />
+								<div key={`skeleton-${i}`} className="space-y-2">
+									<Skeleton className="h-16" />
 									<div className="space-y-1">
-										<div className="h-8 bg-muted rounded animate-pulse" />
-										<div className="h-8 bg-muted rounded animate-pulse" />
+										<Skeleton className="h-8" />
+										<Skeleton className="h-8" />
 									</div>
 								</div>
 							))}
@@ -41,16 +42,16 @@ function CalendarSkeleton() {
 			</div>
 			<div className="space-y-4">
 				<div className="bg-card rounded-xl border p-4">
-					<div className="h-5 w-32 bg-muted rounded animate-pulse mb-3" />
+					<Skeleton className="h-5 w-32 mb-3" />
 					<div className="space-y-2">
-						<div className="h-20 bg-muted rounded animate-pulse" />
-						<div className="h-20 bg-muted rounded animate-pulse" />
+						<Skeleton className="h-20" />
+						<Skeleton className="h-20" />
 					</div>
 				</div>
 				<div className="bg-card rounded-xl border p-4">
-					<div className="h-5 w-32 bg-muted rounded animate-pulse mb-3" />
+					<Skeleton className="h-5 w-32 mb-3" />
 					<div className="space-y-2">
-						<div className="h-16 bg-muted rounded animate-pulse" />
+						<Skeleton className="h-16" />
 					</div>
 				</div>
 			</div>
@@ -79,30 +80,34 @@ export function CalendarView() {
 							{viewMode === 'week' ? 'Weekly Schedule' : 'Daily Schedule'}
 						</h2>
 						<div className="flex items-center gap-1 bg-muted rounded-lg p-0.5">
-							<button
+							<Button
 								type="button"
+								variant="ghost"
+								size="sm"
 								onClick={() => setViewMode('week')}
 								className={cn(
-									'px-3 py-1.5 text-xs font-medium rounded-md transition-all',
+									'px-3 py-1.5 text-xs font-medium rounded-md',
 									viewMode === 'week'
 										? 'bg-background shadow-sm text-foreground'
 										: 'text-muted-foreground hover:text-foreground'
 								)}
 							>
 								Week
-							</button>
-							<button
+							</Button>
+							<Button
 								type="button"
+								variant="ghost"
+								size="sm"
 								onClick={() => setViewMode('day')}
 								className={cn(
-									'px-3 py-1.5 text-xs font-medium rounded-md transition-all',
+									'px-3 py-1.5 text-xs font-medium rounded-md',
 									viewMode === 'day'
 										? 'bg-background shadow-sm text-foreground'
 										: 'text-muted-foreground hover:text-foreground'
 								)}
 							>
 								Day
-							</button>
+							</Button>
 						</div>
 					</div>
 

@@ -3,7 +3,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 export function QuizSkeleton() {
 	return (
-		<div className="flex flex-col h-full bg-background p-6 space-y-6">
+		<div className="flex flex-col h-full bg-background p-6 gap-6">
 			<div className="flex items-center justify-between">
 				<Skeleton className="h-8 w-48" />
 				<Skeleton className="h-10 w-24 rounded-xl" />
@@ -16,7 +16,7 @@ export function QuizSkeleton() {
 
 				<div className="space-y-4 pt-4">
 					{[1, 2, 3, 4].map((i) => (
-						<div key={i} className="flex items-center gap-4">
+						<div key={`skeleton-${i}`} className="flex items-center gap-4">
 							<Skeleton className="h-6 w-6 rounded-full" />
 							<Skeleton className="h-12 flex-1 rounded-xl" />
 						</div>

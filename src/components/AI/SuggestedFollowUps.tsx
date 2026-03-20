@@ -3,6 +3,7 @@
 import { ArrowRight02Icon, SparklesIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { Button } from '@/components/ui/button';
+import { Separator } from '@/components/ui/separator';
 
 interface SuggestedFollowUpsProps {
 	suggestions: string[];
@@ -15,7 +16,8 @@ export function SuggestedFollowUps({ suggestions, onSelectSuggestion }: Suggeste
 	}
 
 	return (
-		<div className="mt-4 pt-4 border-t border-border/30">
+		<div className="mt-4 pt-4">
+			<Separator className="mb-4" />
 			<div className="flex items-center gap-2 mb-3">
 				<div className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center">
 					<HugeiconsIcon icon={SparklesIcon} className="h-3 w-3 text-primary" />

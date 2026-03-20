@@ -20,6 +20,7 @@ import {
 	DialogTitle,
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
+import { Separator } from '@/components/ui/separator';
 import { useUserApiKey } from '@/hooks/use-user-api-key';
 
 interface GeminiQuotaErrorModalProps {
@@ -61,7 +62,8 @@ export function GeminiQuotaErrorModal({
 			setInputValue('');
 			onApiKeySaved?.();
 			onOpenChange(false);
-		} catch {
+		} catch (error) {
+			console.error('Failed to save API key:', error);
 			setError('Failed to save API key. Please try again.');
 		} finally {
 			setIsLoading(false);
@@ -178,16 +180,18 @@ export function GeminiQuotaErrorModal({
 													className="pr-12 h-12"
 													onKeyDown={(e) => e.key === 'Enter' && handleSaveKey()}
 												/>
-												<button
+												<Button
 													type="button"
+													variant="ghost"
+													size="icon"
 													onClick={() => setShowKey(!showKey)}
-													className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors p-1"
+													className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground p-1"
 												>
 													<HugeiconsIcon
 														icon={showKey ? ViewOffIcon : ViewIcon}
 														className="w-5 h-5"
 													/>
-												</button>
+												</Button>
 											</div>
 											{error && (
 												<m.p
@@ -283,11 +287,13 @@ export function GeminiQuotaErrorModal({
 									</m.div>
 								</div>
 
+								<Separator />
+
 								<m.div
 									initial={{ opacity: 0 }}
 									animate={{ opacity: 1 }}
 									transition={{ delay: 0.35 }}
-									className="border-t bg-muted/30 px-6 py-3 flex items-center justify-between"
+									className="bg-muted/30 px-6 py-3 flex items-center justify-between"
 								>
 									<span className="text-xs text-muted-foreground">© 2026 MatricMaster AI</span>
 									<span className="text-xs text-muted-foreground">Powered by Google Gemini</span>

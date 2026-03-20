@@ -49,19 +49,21 @@ export function PastPaperPagination({
 							const showEllipsis =
 								i > 0 && !arr.includes(i - 1) && !(Math.abs(i - currentQuestionIndex) <= 1);
 							return (
-								<div key={i} className="flex items-center gap-2">
+								<div key={`page-${i}`} className="flex items-center gap-2">
 									{showEllipsis && <span className="text-muted-foreground">...</span>}
-									<button
+									<Button
 										type="button"
+										variant="ghost"
+										size="icon"
 										onClick={() => goToQuestion(i)}
-										className={`w-8 h-8 rounded-lg font-bold text-xs transition-all ${
+										className={`w-8 h-8 rounded-lg font-bold text-xs ${
 											currentQuestionIndex === i
 												? 'bg-brand-blue text-white'
 												: 'bg-muted text-muted-foreground hover:bg-brand-blue/10'
 										}`}
 									>
 										{i + 1}
-									</button>
+									</Button>
 								</div>
 							);
 						})}

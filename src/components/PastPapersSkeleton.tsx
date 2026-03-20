@@ -26,7 +26,7 @@ export function PastPapersSkeleton() {
 						<div className="lg:col-span-4 flex gap-2 overflow-x-auto no-scrollbar py-1">
 							{[1, 2, 3, 4, 5].map((i) => (
 								<Skeleton
-									key={i}
+									key={`skeleton-${i}`}
 									className="h-10 sm:h-16 w-24 sm:w-32 rounded-xl sm:rounded-2xl shrink-0"
 								/>
 							))}
@@ -43,7 +43,7 @@ export function PastPapersSkeleton() {
 				<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
 					{[1, 2, 3, 4, 5, 6].map((i) => (
 						<Card
-							key={i}
+							key={`skeleton-${i}`}
 							className="p-8 rounded-3xl border border-border bg-card/50 flex flex-col gap-6"
 						>
 							<div className="flex items-start justify-between">

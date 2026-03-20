@@ -2,6 +2,7 @@
 
 import { m } from 'framer-motion';
 import { useState } from 'react';
+import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { useSchedule } from '@/stores/useScheduleStore';
 
@@ -43,11 +44,7 @@ export function DailyReviewModal({ isOpen = false, onClose }: DailyReviewProps) 
 			>
 				<div className="flex items-center justify-between mb-6">
 					<h2 className="text-xl font-bold">Review Your Day</h2>
-					<button
-						type="button"
-						onClick={onClose}
-						className="p-2 hover:bg-muted rounded-full transition-colors"
-					>
+					<Button type="button" variant="ghost" size="icon" onClick={onClose}>
 						<svg
 							className="w-5 h-5"
 							fill="none"
@@ -62,25 +59,26 @@ export function DailyReviewModal({ isOpen = false, onClose }: DailyReviewProps) 
 								d="M6 18L18 6M6 6l12 12"
 							/>
 						</svg>
-					</button>
+					</Button>
 				</div>
 
 				<div className="mb-6">
 					<h3 className="font-medium mb-3">How are you feeling?</h3>
 					<div className="grid grid-cols-4 gap-2">
 						{MOODS.map((mood, index) => (
-							<button
+							<Button
 								type="button"
 								key={mood.label}
+								variant={selectedMood === index ? 'default' : 'ghost'}
 								onClick={() => setSelectedMood(index)}
 								className={cn(
-									'flex flex-col items-center p-3 rounded-xl transition-all',
-									selectedMood === index ? 'ring-2 ring-primary bg-muted' : 'hover:bg-muted'
+									'flex flex-col items-center p-3 rounded-xl transition-all h-auto',
+									selectedMood === index ? 'ring-2 ring-primary' : ''
 								)}
 							>
 								<span className="text-3xl mb-1">{mood.emoji}</span>
 								<span className="text-xs text-muted-foreground">{mood.label}</span>
-							</button>
+							</Button>
 						))}
 					</div>
 				</div>
@@ -116,9 +114,9 @@ export function DailyReviewModal({ isOpen = false, onClose }: DailyReviewProps) 
 					</div>
 				)}
 
-				<button type="button" className="w-full py-3 rounded-xl bg-primary text-white font-medium">
+				<Button type="button" className="w-full py-3 rounded-xl font-medium">
 					Save & Finish Day
-				</button>
+				</Button>
 			</m.div>
 		</m.div>
 	);

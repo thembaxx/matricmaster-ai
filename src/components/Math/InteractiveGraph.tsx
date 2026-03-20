@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useMemo, useState } from 'react';
+import { Button } from '@/components/ui/button';
 import { useGraphingEngine } from '@/stores/useGraphingEngine';
 
 interface InteractiveGraphProps {
@@ -23,7 +24,8 @@ export function InteractiveGraph({
 	const points = useMemo(() => {
 		try {
 			return getPoints(equation, [viewport.xMin, viewport.xMax]);
-		} catch {
+		} catch (error) {
+			console.warn('Failed to get points for graph:', error);
 			return [];
 		}
 	}, [equation, viewport, getPoints]);
@@ -68,20 +70,22 @@ export function InteractiveGraph({
 					className="flex-1 px-4 py-2 rounded-xl bg-background border border-border focus:border-primary focus:outline-none font-mono"
 				/>
 				<div className="flex gap-2">
-					<button
+					<Button
 						type="button"
+						variant="outline"
+						size="icon"
 						onClick={() => setZoom((z) => z * 1.5)}
-						className="px-3 py-2 rounded-lg bg-muted hover:bg-muted/80 text-sm font-medium"
 					>
 						+
-					</button>
-					<button
+					</Button>
+					<Button
 						type="button"
+						variant="outline"
+						size="icon"
 						onClick={() => setZoom((z) => Math.max(0.5, z / 1.5))}
-						className="px-3 py-2 rounded-lg bg-muted hover:bg-muted/80 text-sm font-medium"
 					>
 						-
-					</button>
+					</Button>
 				</div>
 			</div>
 

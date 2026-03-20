@@ -50,12 +50,13 @@ export function QuizEngine({ questions }: QuizEngineProps) {
 
 				<div className="space-y-2">
 					{question.options.map((option, i) => (
-						<button
-							key={i}
+						<Button
+							key={`option-${i}`}
 							type="button"
+							variant="ghost"
 							onClick={() => handleSelect(i)}
 							disabled={showResult}
-							className={`w-full p-3 text-left rounded-lg border transition-colors ${
+							className={`w-full p-3 h-auto text-left rounded-lg border transition-colors ${
 								selected === i
 									? 'border-primary bg-primary/10'
 									: 'border-border hover:border-primary/50'
@@ -71,7 +72,7 @@ export function QuizEngine({ questions }: QuizEngineProps) {
 							`}
 						>
 							{option}
-						</button>
+						</Button>
 					))}
 				</div>
 

@@ -18,7 +18,9 @@ export default function ErrorHint() {
 						<HugeiconsIcon icon={Warning} className="w-5 h-5 fill-amber-500 text-amber-500" />
 						<span className="font-bold text-sm">Not quite right yet</span>
 					</div>
-					<button
+					<Button
+						variant="ghost"
+						size="icon"
 						type="button"
 						onClick={() => router.push('/quiz')}
 						className="min-w-[44px] min-h-[44px] flex items-center justify-center -mr-2"
@@ -28,7 +30,7 @@ export default function ErrorHint() {
 							icon={Cancel01Icon}
 							className="w-5 h-5 opacity-50 hover:opacity-100 transition-opacity"
 						/>
-					</button>
+					</Button>
 				</div>
 			</div>
 
@@ -106,13 +108,14 @@ export default function ErrorHint() {
 						>
 							try again
 						</Button>
-						<button
+						<Button
+							variant="ghost"
 							type="button"
 							className="text-muted-foreground hover:text-zinc-900 font-bold text-sm"
-							onClick={() => router.push('/quiz')} // Or show solution
+							onClick={() => router.push('/quiz')}
 						>
 							see solution
-						</button>
+						</Button>
 					</div>
 				</main>
 			</ScrollArea>

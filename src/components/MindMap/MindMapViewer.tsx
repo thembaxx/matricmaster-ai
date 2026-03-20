@@ -2,6 +2,7 @@
 
 import type React from 'react';
 import { useState } from 'react';
+import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
@@ -335,21 +336,22 @@ export function MindMapViewer() {
 		<div className="space-y-4">
 			<div className="flex gap-2">
 				{Object.entries(subjectLabels).map(([key, label]) => (
-					<button
+					<Button
 						type="button"
+						variant="ghost"
 						key={key}
 						onClick={() => {
 							setSelectedSubject(key);
 							setSelectedNode(null);
 						}}
-						className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+						className={`px-3 py-1.5 h-auto rounded-lg text-sm font-medium ${
 							selectedSubject === key
 								? 'bg-primary text-primary-foreground'
 								: 'bg-muted hover:bg-muted/80'
 						}`}
 					>
 						{label}
-					</button>
+					</Button>
 				))}
 			</div>
 

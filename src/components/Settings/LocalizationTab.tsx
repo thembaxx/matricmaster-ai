@@ -40,7 +40,8 @@ export function LocalizationTab() {
 			} else {
 				toast.error(result.error || 'Failed to save settings');
 			}
-		} catch {
+		} catch (error) {
+			console.error('Failed to save settings:', error);
 			toast.error('Failed to save settings');
 		}
 	}, [session?.user?.id, language, curriculum, homeLanguage]);

@@ -258,8 +258,10 @@ export default function PastPaperViewer({
 							</h3>
 							<div className="flex flex-wrap gap-2">
 								{extractedPaper?.questions.map((q, idx) => (
-									<button
+									<Button
 										type="button"
+										variant="ghost"
+										size="icon"
 										key={q.id}
 										onClick={() => goToQuestion(idx)}
 										className={`w-10 h-10 p-0 rounded-xl font-bold border-2 transition-all ${
@@ -269,7 +271,7 @@ export default function PastPaperViewer({
 										}`}
 									>
 										{q.questionNumber}
-									</button>
+									</Button>
 								))}
 							</div>
 						</div>

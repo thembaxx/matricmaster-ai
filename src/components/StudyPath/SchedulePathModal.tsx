@@ -21,6 +21,7 @@ import {
 	DialogTitle,
 } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
+import { Separator } from '@/components/ui/separator';
 import { Switch } from '@/components/ui/switch';
 import { cn } from '@/lib/utils';
 import type {
@@ -154,7 +155,7 @@ export function SchedulePathModal({
 
 	const renderHourOptions = () => {
 		return Array.from({ length: 24 }, (_, i) => (
-			<option key={i} value={i}>
+			<option key={`hour-${i}`} value={i}>
 				{i.toString().padStart(2, '0')}:00
 			</option>
 		));
@@ -189,19 +190,20 @@ export function SchedulePathModal({
 						</Label>
 						<div className="flex flex-wrap gap-2">
 							{DAYS.map((day) => (
-								<button
+								<Button
 									key={day}
 									type="button"
+									variant="ghost"
 									onClick={() => toggleDay(day)}
 									className={cn(
-										'px-3 py-2 rounded-xl text-sm font-medium transition-all',
+										'px-3 py-2 h-auto rounded-xl text-sm font-medium',
 										selectedDays.includes(day)
 											? 'bg-primary text-primary-foreground shadow-md'
 											: 'bg-muted text-muted-foreground hover:bg-muted/80'
 									)}
 								>
 									{day.slice(0, 3)}
-								</button>
+								</Button>
 							))}
 						</div>
 					</div>
@@ -273,7 +275,10 @@ export function SchedulePathModal({
 								</Button>
 							</div>
 							{loadSheddingSlots.map((slot, index) => (
-								<div key={index} className="flex items-center gap-2 bg-muted/50 rounded-xl p-3">
+								<div
+									key={`slot-${index}`}
+									className="flex items-center gap-2 bg-muted/50 rounded-xl p-3"
+								>
 									<select
 										value={slot.day}
 										onChange={(e) => updateLoadSheddingSlot(index, 'day', e.target.value)}
@@ -311,13 +316,15 @@ export function SchedulePathModal({
 											</option>
 										))}
 									</select>
-									<button
+									<Button
 										type="button"
+										variant="ghost"
+										size="icon"
 										onClick={() => removeLoadSheddingSlot(index)}
-										className="h-9 w-9 flex items-center justify-center rounded-lg hover:bg-destructive/10 text-destructive"
+										className="h-9 w-9 rounded-lg hover:bg-destructive/10 text-destructive"
 									>
 										×
-									</button>
+									</Button>
 								</div>
 							))}
 						</div>
@@ -373,7 +380,7 @@ export function SchedulePathModal({
 								</span>
 							</div>
 							{scheduleResult.conflicts.slice(0, 2).map((conflict, i) => (
-								<p key={i} className="text-xs text-amber-700">
+								<p key={`conflict-${i}`} className="text-xs text-amber-700">
 									{conflict.suggestion}
 								</p>
 							))}
@@ -458,7 +465,8 @@ export function SchedulePathModal({
 					</DialogHeader>
 				</div>
 				<div className="px-6 overflow-y-auto flex-1">{modalContent}</div>
-				<DialogFooter className="px-6 pb-6 pt-4 gap-3 shrink-0 border-t bg-muted/30">
+				<DialogFooter className="px-6 pb-6 pt-4 gap-3 shrink-0 bg-muted/30">
+					<Separator className="mb-4" />
 					{showPreview ? (
 						<>
 							<Button

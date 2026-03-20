@@ -98,7 +98,7 @@ export function AlertsPanel() {
 			<CardContent className="p-6 space-y-3">
 				{isLoading ? (
 					Array.from({ length: 2 }).map((_, i) => (
-						<div key={i} className="h-16 bg-muted animate-pulse rounded-2xl" />
+						<div key={`skeleton-${i}`} className="h-16 bg-muted animate-pulse rounded-2xl" />
 					))
 				) : alerts.length === 0 ? (
 					<div className="text-center py-8 text-muted-foreground">

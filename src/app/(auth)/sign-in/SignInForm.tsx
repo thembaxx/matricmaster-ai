@@ -6,13 +6,14 @@ import { HugeiconsIcon } from '@hugeicons/react';
 import { AnimatePresence, m } from 'framer-motion';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { appConfig } from '@/app.config';
 import { SocialAuthButton } from '@/components/auth/SocialAuthButton';
 import { SmoothWords } from '@/components/Transition/SmoothText';
 import { BackgroundMesh } from '@/components/ui/background-mesh';
+import { Separator } from '@/components/ui/separator';
 import { STAGGER_CONTAINER, STAGGER_ITEM } from '@/lib/animation-presets';
 import { authClient } from '@/lib/auth-client';
 import { FormFields } from './FormFields';
@@ -24,7 +25,7 @@ const signInSchema = z.object({
 
 type SignInValues = z.infer<typeof signInSchema>;
 
-export function SignInForm() {
+function SignInFormContent() {
 	const router = useRouter();
 	const searchParams = useSearchParams();
 	const rawCallbackUrl = searchParams.get('callbackUrl') || '/dashboard';
@@ -38,7 +39,8 @@ export function SignInForm() {
 			if (url.origin === (typeof window !== 'undefined' ? window.location.origin : '')) {
 				safeCallbackUrl = url.pathname + url.search;
 			}
-		} catch {
+		} catch (error) {
+			console.warn('Invalid callback URL, using default:', error);
 			safeCallbackUrl = '/dashboard';
 		}
 	}
@@ -68,7 +70,8 @@ export function SignInForm() {
 			if (contentType?.includes('application/json')) {
 				try {
 					result = await response.json();
-				} catch {
+				} catch (error) {
+					console.warn('Failed to parse JSON response:', error);
 					const text = await response.text();
 					result = { success: false, message: text };
 				}
@@ -213,7 +216,7 @@ export function SignInForm() {
 						className="relative my-8"
 					>
 						<div className="absolute inset-0 flex items-center">
-							<div className="w-full border-t border-border/60" />
+							<Separator />
 						</div>
 						<div className="relative flex justify-center">
 							<span className="px-4 text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-black bg-card/80 backdrop-blur-xl rounded-full">
@@ -262,5 +265,34 @@ export function SignInForm() {
 				</m.p>
 			</div>
 		</div>
+	);
+}
+
+function SignInFormSkeleton() {
+	return (
+		<div className="min-h-screen flex items-center justify-center bg-background relative overflow-hidden">
+			<BackgroundMesh />
+			<div className="w-full max-w-md p-4 relative z-10">
+				<div className="w-full tiimo-glass border-none rounded-[var(--radius-2xl)] shadow-2xl overflow-hidden p-8 space-y-6">
+					<div className="text-center space-y-3">
+						<div className="w-14 h-14 bg-muted rounded-[var(--radius-xl)] mx-auto animate-pulse" />
+						<div className="h-8 bg-muted rounded w-1/2 mx-auto animate-pulse" />
+						<div className="h-4 bg-muted rounded w-3/4 mx-auto animate-pulse" />
+					</div>
+					<div className="space-y-4">
+						<div className="h-12 bg-muted rounded animate-pulse" />
+						<div className="h-12 bg-muted rounded animate-pulse" />
+					</div>
+				</div>
+			</div>
+		</div>
+	);
+}
+
+export function SignInForm() {
+	return (
+		<Suspense fallback={<SignInFormSkeleton />}>
+			<SignInFormContent />
+		</Suspense>
 	);
 }

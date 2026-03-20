@@ -107,7 +107,10 @@ export function PastPapersSkeleton() {
 	return (
 		<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
 			{Array.from({ length: 6 }).map((_, i) => (
-				<div key={i} className="p-8 rounded-3xl border border-border bg-card/50 animate-pulse">
+				<div
+					key={`skeleton-${i}`}
+					className="p-8 rounded-3xl border border-border bg-card/50 animate-pulse"
+				>
 					<div className="space-y-6">
 						<div className="flex items-start justify-between">
 							<div className="w-16 h-16 rounded-2xl bg-muted" />

@@ -99,7 +99,8 @@ export const useGraphingEngine = create<GraphState>((set, get) => ({
 		try {
 			const deriv = derivative(equation, 'x');
 			return deriv.toString();
-		} catch {
+		} catch (error) {
+			console.warn('Failed to calculate derivative:', error);
 			return 'Unable to calculate derivative';
 		}
 	},
@@ -117,7 +118,8 @@ export const useGraphingEngine = create<GraphState>((set, get) => ({
 				}
 			}
 			return sum;
-		} catch {
+		} catch (error) {
+			console.warn('Failed to calculate integral:', error);
 			return 0;
 		}
 	},
@@ -126,7 +128,8 @@ export const useGraphingEngine = create<GraphState>((set, get) => ({
 		try {
 			const result = evaluate(equation, { x });
 			return typeof result === 'number' ? result : Number.NaN;
-		} catch {
+		} catch (error) {
+			console.warn('Failed to evaluate at point:', error);
 			return Number.NaN;
 		}
 	},

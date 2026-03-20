@@ -58,7 +58,7 @@ export function SubjectPerformance() {
 			<CardContent className="p-6 space-y-4">
 				{isLoading ? (
 					Array.from({ length: 3 }).map((_, i) => (
-						<div key={i} className="h-28 bg-muted animate-pulse rounded-2xl" />
+						<div key={`skeleton-${i}`} className="h-28 bg-muted animate-pulse rounded-2xl" />
 					))
 				) : subjects.length === 0 ? (
 					<div className="text-center py-8 text-muted-foreground">

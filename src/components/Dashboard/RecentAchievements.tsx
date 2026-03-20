@@ -9,6 +9,7 @@ import { memo, useMemo } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
 import { type ACHIEVEMENTS, getAchievementById } from '@/constants/achievements';
 import { getUserAchievements, type UserAchievement } from '@/lib/db/achievement-actions';
 
@@ -72,14 +73,14 @@ export const RecentAchievements = memo(function RecentAchievements({
 	if (isPending) {
 		return (
 			<Card className="p-6 premium-glass border-none rounded-[2.5rem] h-full">
-				<div className="animate-pulse space-y-4">
-					<div className="h-5 w-32 bg-muted rounded-lg" />
+				<div className="space-y-4">
+					<Skeleton className="h-5 w-32" />
 					{[1, 2, 3].map((i) => (
-						<div key={i} className="flex items-center gap-3">
-							<div className="w-10 h-10 bg-muted rounded-xl" />
+						<div key={`skeleton-${i}`} className="flex items-center gap-3">
+							<Skeleton className="w-10 h-10 rounded-xl" />
 							<div className="flex-1 space-y-2">
-								<div className="h-4 w-24 bg-muted rounded" />
-								<div className="h-3 w-16 bg-muted rounded" />
+								<Skeleton className="h-4 w-24" />
+								<Skeleton className="h-3 w-16" />
 							</div>
 						</div>
 					))}

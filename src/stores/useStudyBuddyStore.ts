@@ -97,7 +97,8 @@ export const useStudyBuddyStore = create<StudyBuddyState>((set, _get) => ({
 							typeof profileData.preferredSubjects === 'string'
 								? JSON.parse(profileData.preferredSubjects)
 								: profileData.preferredSubjects;
-					} catch {
+					} catch (error) {
+						console.warn('Failed to parse preferred subjects:', error);
 						subjects = [];
 					}
 				}
@@ -125,7 +126,8 @@ export const useStudyBuddyStore = create<StudyBuddyState>((set, _get) => ({
 							subjects: buddy.preferredSubjects || [],
 							studyGoals: buddy.studyGoals || '',
 						} as StudyBuddy;
-					} catch {
+					} catch (error) {
+						console.warn('Failed to get user info for discoverable buddy:', error);
 						return {
 							id: buddy.userId,
 							userId: buddy.userId,
@@ -154,7 +156,8 @@ export const useStudyBuddyStore = create<StudyBuddyState>((set, _get) => ({
 							subjects: buddy.preferredSubjects || [],
 							studyGoals: buddy.studyGoals || '',
 						} as StudyBuddy;
-					} catch {
+					} catch (error) {
+						console.warn('Failed to get user info for buddy:', error);
 						return {
 							id: buddy.userId,
 							userId: buddy.userId,
@@ -188,7 +191,8 @@ export const useStudyBuddyStore = create<StudyBuddyState>((set, _get) => ({
 							message: req.message || undefined,
 							createdAt: req.createdAt?.toISOString() ?? new Date().toISOString(),
 						} as BuddyRequest;
-					} catch {
+					} catch (error) {
+						console.warn('Failed to get user info for request:', error);
 						return {
 							id: req.id,
 							fromUser: {

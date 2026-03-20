@@ -108,8 +108,9 @@ export default function FocusRooms() {
 	return (
 		<div className="min-h-screen bg-background p-4 sm:p-8 pb-32">
 			<div className="max-w-6xl mx-auto space-y-8">
-				<button
+				<Button
 					type="button"
+					variant="ghost"
 					onClick={() => router.back()}
 					className="flex items-center gap-2 text-tiimo-gray-muted hover:text-foreground transition-colors group"
 				>
@@ -118,7 +119,7 @@ export default function FocusRooms() {
 						className="w-5 h-5 transition-transform group-hover:-translate-x-1"
 					/>
 					<span className="font-black uppercase tracking-widest text-[10px]">Leave Room</span>
-				</button>
+				</Button>
 
 				<div className="flex items-center justify-between">
 					<h1 className="text-2xl font-black tracking-tight">Focus Rooms</h1>

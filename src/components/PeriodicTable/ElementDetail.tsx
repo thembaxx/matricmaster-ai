@@ -118,7 +118,7 @@ export function ElementDetailContent({
 				>
 					{currentQuestion.options.map((option, idx) => (
 						<div
-							key={idx}
+							key={`option-${idx}`}
 							className={cn(
 								'flex items-center gap-3 p-3 rounded-lg border-2 transition-all cursor-pointer',
 								showAnswer

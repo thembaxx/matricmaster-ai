@@ -2,6 +2,7 @@ import { Flag01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
 import type { StudyPlan } from '@/lib/db/schema';
 
 export function PriorityList({
@@ -32,7 +33,7 @@ export function PriorityList({
 					{plans.length > 0 ? (
 						plans.map((item, i) => (
 							<div
-								key={i}
+								key={`plan-${i}`}
 								className="flex items-center justify-between p-4 bg-muted/30 rounded-2xl border border-border/50"
 							>
 								<div className="flex items-center gap-4">
@@ -58,7 +59,7 @@ export function PriorityList({
 
 				{isAdding ? (
 					<div className="mt-4 flex gap-2">
-						<input
+						<Input
 							type="text"
 							value={newTitle}
 							onChange={(e) => onTitleChange(e.target.value)}

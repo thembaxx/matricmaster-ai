@@ -161,7 +161,7 @@ export function MathInputField({ input, cursorPos, onDelete }: MathInputFieldPro
 			<div className="flex-1 min-h-[40px] flex items-center px-2 overflow-x-auto">
 				<div className="text-lg font-serif text-foreground flex items-center flex-nowrap relative">
 					{input.split('').map((char, i) => (
-						<span key={i} className="relative whitespace-pre">
+						<span key={`char-${i}`} className="relative whitespace-pre">
 							{i === cursorPos && (
 								<m.div
 									initial={{ opacity: 0 }}

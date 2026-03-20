@@ -3,6 +3,7 @@
 import { CodeIcon, SearchIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { useState } from 'react';
+import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -39,13 +40,14 @@ function FormulaCard({ formula }: { formula: Formula }) {
 						<span className="text-xs text-muted-foreground">Unit: {formula.unit}</span>
 					)}
 				</div>
-				<button
+				<Button
 					type="button"
+					variant="ghost"
 					onClick={copyFormula}
-					className="text-xs text-primary hover:underline flex-shrink-0"
+					className="text-xs text-primary hover:underline flex-shrink-0 h-auto p-0"
 				>
 					{copied ? 'Copied!' : 'Copy'}
-				</button>
+				</Button>
 			</div>
 		</div>
 	);

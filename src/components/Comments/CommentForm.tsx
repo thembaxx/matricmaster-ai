@@ -4,6 +4,7 @@ import { Chat01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
+import { Skeleton } from '@/components/ui/skeleton';
 import { Textarea } from '@/components/ui/textarea';
 
 interface CommentFormProps {
@@ -79,7 +80,7 @@ export function CommentLoadingSkeleton() {
 	return (
 		<div className="space-y-4">
 			{[1, 2].map((i) => (
-				<div key={i} className="h-32 bg-muted/50 animate-pulse rounded-[2rem]" />
+				<Skeleton key={`skeleton-${i}`} className="h-32 rounded-[2rem]" />
 			))}
 		</div>
 	);

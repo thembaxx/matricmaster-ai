@@ -58,7 +58,8 @@ class DatabaseManagerV2 {
 	public isPostgreSQLConnected(): boolean {
 		try {
 			return pgManager.isConnectedToDatabase();
-		} catch {
+		} catch (error) {
+			console.warn('Failed to check PostgreSQL connection:', error);
 			return false;
 		}
 	}
@@ -97,7 +98,8 @@ class DatabaseManagerV2 {
 			const client = pgManager.getClient();
 			await client`SELECT 1`;
 			return true;
-		} catch {
+		} catch (error) {
+			console.warn('PostgreSQL health check failed:', error);
 			return false;
 		}
 	}

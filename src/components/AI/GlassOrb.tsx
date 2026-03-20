@@ -6,6 +6,8 @@ import { AnimatePresence, m } from 'framer-motion';
 import { Send, X } from 'lucide-react';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 import { useAiContextStore } from '@/stores/useAiContextStore';
 
@@ -105,28 +107,31 @@ export function GlassOrb() {
 									</div>
 									<h3 className="font-bold text-sm font-display">AI Companion</h3>
 								</div>
-								<button
+								<Button
 									type="button"
+									variant="ghost"
+									size="icon"
 									onClick={() => setIsOpen(false)}
-									className="p-2 -mr-2 text-tiimo-gray-muted hover:text-foreground transition-colors"
+									className="p-2 -mr-2 text-tiimo-gray-muted hover:text-foreground"
 								>
 									<X className="w-5 h-5" />
-								</button>
+								</Button>
 							</div>
 
 							<div className="px-4 py-2 border-b border-border/30 flex gap-2 overflow-x-auto">
 								{suggestedPrompts.map((prompt, i) => (
-									<button
-										key={i}
+									<Button
+										key={`prompt-${i}`}
 										type="button"
+										variant="ghost"
 										onClick={() => {
 											setIsOpen(false);
 											router.push(`/study-companion?prompt=${encodeURIComponent(prompt)}`);
 										}}
-										className="whitespace-nowrap px-3 py-1 text-xs bg-secondary hover:bg-secondary/80 rounded-full transition-colors"
+										className="whitespace-nowrap px-3 py-1 h-auto text-xs bg-secondary hover:bg-secondary/80 rounded-full"
 									>
 										{prompt}
-									</button>
+									</Button>
 								))}
 							</div>
 
@@ -140,7 +145,7 @@ export function GlassOrb() {
 
 							<div className="p-3 border-t border-border/50 bg-card">
 								<div className="relative">
-									<input
+									<Input
 										type="text"
 										readOnly
 										placeholder="Ask anything..."
@@ -150,16 +155,17 @@ export function GlassOrb() {
 										}}
 										className="w-full bg-secondary/50 border border-border/50 focus:border-violet-500 rounded-full py-2.5 pl-4 pr-10 text-sm outline-none transition-all cursor-pointer"
 									/>
-									<button
+									<Button
 										type="button"
-										className="absolute right-1 top-1 w-8 h-8 rounded-full bg-violet-600 text-white flex items-center justify-center shadow-md hover:bg-violet-700 transition"
+										size="icon"
+										className="absolute right-1 top-1 w-8 h-8 rounded-full bg-violet-600 text-white shadow-md hover:bg-violet-700"
 										onClick={() => {
 											setIsOpen(false);
 											router.push('/study-companion');
 										}}
 									>
 										<Send className="w-4 h-4" />
-									</button>
+									</Button>
 								</div>
 							</div>
 						</m.div>

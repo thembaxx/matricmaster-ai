@@ -143,7 +143,10 @@ export function SecurityTab({
 								</p>
 								<div className="grid grid-cols-2 gap-2">
 									{backupCodes.map((code, index) => (
-										<code key={index} className="bg-white px-2 py-1 rounded text-sm font-mono">
+										<code
+											key={`code-${index}`}
+											className="bg-white px-2 py-1 rounded text-sm font-mono"
+										>
 											{code}
 										</code>
 									))}

@@ -25,7 +25,8 @@ export const FlashcardGenerator = memo(function FlashcardGenerator({
 		try {
 			const result = await generateFlashcardsFromMistakes();
 			setGenerationResult(result);
-		} catch {
+		} catch (error) {
+			console.error('Failed to generate flashcards:', error);
 			setGenerationResult({ success: false, cardsCreated: 0 });
 		} finally {
 			setIsGenerating(false);

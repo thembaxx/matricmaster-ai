@@ -9,7 +9,7 @@ export default function NotificationsLoading() {
 			</div>
 			<div className="space-y-3">
 				{Array.from({ length: 8 }).map((_, i) => (
-					<div key={i} className="flex gap-3 p-3 rounded-xl border">
+					<div key={`skeleton-${i}`} className="flex gap-3 p-3 rounded-xl border">
 						<Skeleton className="h-10 w-10 rounded-full" />
 						<div className="flex-1 space-y-2">
 							<Skeleton className="h-5 w-3/4" />

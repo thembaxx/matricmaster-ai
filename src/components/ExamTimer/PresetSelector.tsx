@@ -1,3 +1,4 @@
+import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Slider } from '@/components/ui/slider';
@@ -25,11 +26,12 @@ export function PresetSelector({
 			<CardContent>
 				<div className="grid grid-cols-2 md:grid-cols-3 gap-3">
 					{EXAM_PRESETS.map((preset) => (
-						<button
+						<Button
 							type="button"
+							variant="ghost"
 							key={preset.name}
 							onClick={() => onPresetSelect(preset)}
-							className={`p-3 rounded-lg border text-left transition-all hover:shadow-sm ${
+							className={`p-3 h-auto rounded-lg border text-left ${
 								selectedPreset.name === preset.name
 									? 'border-primary bg-primary/10 shadow-sm'
 									: 'hover:border-primary/50 hover:bg-muted/50'
@@ -37,7 +39,7 @@ export function PresetSelector({
 						>
 							<div className="font-medium text-sm">{preset.name}</div>
 							<div className="text-xs text-muted-foreground">{formatDuration(preset.duration)}</div>
-						</button>
+						</Button>
 					))}
 				</div>
 

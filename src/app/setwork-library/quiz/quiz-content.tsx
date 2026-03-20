@@ -3,7 +3,7 @@
 import { FlashIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { useSearchParams } from 'next/navigation';
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import { QuizEngine } from '@/components/SetworkLibrary/QuizEngine';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -21,7 +21,7 @@ interface QuizContentProps {
 	quizQuestions: QuizQuestion[];
 }
 
-export function QuizContent({ setworks, quizQuestions }: QuizContentProps) {
+function QuizContentInner({ setworks, quizQuestions }: QuizContentProps) {
 	const searchParams = useSearchParams();
 	const initialSetwork = searchParams.get('setwork') || 'all';
 
@@ -109,5 +109,31 @@ export function QuizContent({ setworks, quizQuestions }: QuizContentProps) {
 				</div>
 			</Card>
 		</div>
+	);
+}
+
+function QuizContentSkeleton() {
+	return (
+		<div className="space-y-6 max-w-lg mx-auto">
+			<div className="p-6 space-y-6">
+				<div className="text-center space-y-2">
+					<div className="w-10 h-10 bg-muted rounded mx-auto animate-pulse" />
+					<div className="h-6 bg-muted rounded w-1/3 mx-auto animate-pulse" />
+					<div className="h-4 bg-muted rounded w-2/3 mx-auto animate-pulse" />
+				</div>
+				<div className="space-y-4">
+					<div className="h-16 bg-muted rounded animate-pulse" />
+					<div className="h-16 bg-muted rounded animate-pulse" />
+				</div>
+			</div>
+		</div>
+	);
+}
+
+export function QuizContent({ setworks, quizQuestions }: QuizContentProps) {
+	return (
+		<Suspense fallback={<QuizContentSkeleton />}>
+			<QuizContentInner setworks={setworks} quizQuestions={quizQuestions} />
+		</Suspense>
 	);
 }

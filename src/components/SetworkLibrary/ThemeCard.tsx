@@ -15,7 +15,10 @@ export function ThemeCard({ theme }: ThemeCardProps) {
 			<div className="space-y-2">
 				<p className="text-xs font-semibold uppercase text-muted-foreground">Examples:</p>
 				{theme.examples.map((example, i) => (
-					<p key={i} className="text-sm bg-secondary/50 p-2 rounded dark:bg-secondary/20">
+					<p
+						key={`example-${i}`}
+						className="text-sm bg-secondary/50 p-2 rounded dark:bg-secondary/20"
+					>
 						• {example}
 					</p>
 				))}

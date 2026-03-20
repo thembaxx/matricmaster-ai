@@ -15,13 +15,14 @@ import {
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { Suspense } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { useDailyCall } from './useDailyCall';
 
-export default function TutoringSessionPage() {
+function TutoringSessionPageContent() {
 	const searchParams = useSearchParams();
 	const router = useRouter();
 
@@ -150,5 +151,35 @@ export default function TutoringSessionPage() {
 				</div>
 			</div>
 		</div>
+	);
+}
+
+function TutoringSessionPageSkeleton() {
+	return (
+		<div className="min-h-screen bg-background flex flex-col">
+			<header className="border-b px-4 py-3 flex items-center justify-between animate-pulse">
+				<div className="flex items-center gap-3">
+					<div className="w-10 h-10 bg-muted rounded-full" />
+					<div className="space-y-2">
+						<div className="h-5 w-32 bg-muted rounded" />
+						<div className="h-4 w-24 bg-muted rounded" />
+					</div>
+				</div>
+			</header>
+			<main className="flex-1 flex items-center justify-center">
+				<div className="flex flex-col items-center gap-4">
+					<div className="w-8 h-8 bg-muted rounded-full animate-spin" />
+					<p className="text-muted-foreground">Joining session...</p>
+				</div>
+			</main>
+		</div>
+	);
+}
+
+export default function TutoringSessionPage() {
+	return (
+		<Suspense fallback={<TutoringSessionPageSkeleton />}>
+			<TutoringSessionPageContent />
+		</Suspense>
 	);
 }

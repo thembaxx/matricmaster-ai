@@ -73,7 +73,7 @@ export function RecommendedSection() {
 			<div className="space-y-3">
 				{RECOMMENDED_ITEMS.map((item, i) => (
 					<m.button
-						key={i}
+						key={`item-${i}`}
 						type="button"
 						initial={{ opacity: 0, x: -20 }}
 						animate={{ opacity: 1, x: 0 }}

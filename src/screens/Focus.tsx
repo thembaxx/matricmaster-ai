@@ -4,14 +4,14 @@ import { ArrowLeft01Icon, BookOpen01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { AnimatePresence } from 'framer-motion';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useMemo, useState } from 'react';
+import { Suspense, useEffect, useMemo, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { getLessonsBySubject, type Lesson } from '@/lib/lessons';
 import { CompleteView } from './Focus/CompleteView';
 import { ContentView } from './Focus/ContentView';
 import { TimerView } from './Focus/TimerView';
 
-export default function FocusScreen() {
+function FocusScreenContent() {
 	const router = useRouter();
 	const searchParams = useSearchParams();
 	const lessonId = searchParams.get('lessonId');
@@ -95,5 +95,24 @@ export default function FocusScreen() {
 				)}
 			</AnimatePresence>
 		</div>
+	);
+}
+
+function FocusScreenSkeleton() {
+	return (
+		<div className="min-h-screen bg-background flex flex-col items-center p-6">
+			<div className="w-full max-w-4xl space-y-6 animate-pulse">
+				<div className="h-16 bg-muted rounded" />
+				<div className="h-64 bg-muted rounded-full" />
+			</div>
+		</div>
+	);
+}
+
+export default function FocusScreen() {
+	return (
+		<Suspense fallback={<FocusScreenSkeleton />}>
+			<FocusScreenContent />
+		</Suspense>
 	);
 }

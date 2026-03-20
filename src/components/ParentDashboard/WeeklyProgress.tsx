@@ -131,7 +131,7 @@ export function WeeklyProgress() {
 									{quizTrend.length > 0 ? (
 										quizTrend.map((score: number, i: number) => (
 											<div
-												key={i}
+												key={`score-${i}`}
 												className="flex-1 rounded-sm bg-primary/60"
 												style={{
 													height: `${Math.max((score / 100) * 100, 10)}%`,

@@ -31,7 +31,7 @@ export function GrowthInsights({ insights, weakTopics = [] }: GrowthInsightsProp
 			<CardContent className="p-6 space-y-3">
 				{insights.map((insight, i) => (
 					<m.div
-						key={i}
+						key={`insight-${i}`}
 						initial={{ opacity: 0, x: -10 }}
 						animate={{ opacity: 1, x: 0 }}
 						transition={{ delay: i * 0.1 }}

@@ -17,6 +17,8 @@ import { HugeiconsIcon } from '@hugeicons/react';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useAblyChannel } from '@/hooks/use-ably-channel';
 import { useSession } from '@/lib/auth-client';
@@ -134,7 +136,7 @@ export default function Channels() {
 						icon={Search01Icon}
 						className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-label-tertiary"
 					/>
-					<input
+					<Input
 						type="text"
 						placeholder="Find subjects, papers, or topics..."
 						className="w-full pl-12 pr-6 py-4 bg-card rounded-2xl text-sm border border-border shadow-sm focus:ring-2 focus:ring-primary/20 text-foreground placeholder-label-tertiary"
@@ -144,10 +146,11 @@ export default function Channels() {
 				{/* Categories Scroller */}
 				<div className="mt-6 flex gap-3 overflow-x-auto no-scrollbar pb-2">
 					{categories.map((cat) => (
-						<button
+						<Button
 							key={cat}
 							type="button"
 							onClick={() => setActiveCategory(cat)}
+							variant="ghost"
 							className={`px-6 py-2.5 rounded-full text-[11px] font-black uppercase tracking-widest whitespace-nowrap transition-all ios-active-scale ${
 								activeCategory === cat
 									? 'bg-foreground text-background shadow-md'
@@ -155,7 +158,7 @@ export default function Channels() {
 							}`}
 						>
 							{cat}
-						</button>
+						</Button>
 					))}
 				</div>
 			</header>
@@ -199,7 +202,7 @@ export default function Channels() {
 						</h3>
 						<div className="space-y-3">
 							{channels.map((item) => (
-								<button
+								<Button
 									key={item.id}
 									onClick={() => handleChannelClick(item.id)}
 									onKeyDown={(e) => {
@@ -208,6 +211,7 @@ export default function Channels() {
 										}
 									}}
 									type="button"
+									variant="ghost"
 									tabIndex={0}
 									aria-label={`Open ${item.title} channel`}
 									className="bg-card p-4 rounded-3xl flex items-center justify-between shadow-sm border border-border hover:shadow-md transition-all cursor-pointer group ios-active-scale w-full"
@@ -250,7 +254,7 @@ export default function Channels() {
 											className="w-5 h-5 text-label-tertiary group-hover:text-foreground transition-colors"
 										/>
 									</div>
-								</button>
+								</Button>
 							))}
 						</div>
 					</section>
@@ -261,12 +265,13 @@ export default function Channels() {
 							<h3 className="text-xl font-black text-foreground uppercase tracking-tight">
 								Language Arts
 							</h3>
-							<button
+							<Button
 								type="button"
+								variant="ghost"
 								className="text-[11px] font-black text-primary uppercase tracking-[0.2em] hover:underline ios-active-scale"
 							>
 								View All
-							</button>
+							</Button>
 						</div>{' '}
 						<div className="grid grid-cols-2 gap-4">
 							{[
@@ -330,7 +335,7 @@ export default function Channels() {
 							<div className="flex items-center -space-x-2">
 								{[1, 2, 3].map((i) => (
 									<div
-										key={i}
+										key={`avatar-${i}`}
 										className="w-7 h-7 rounded-full border-2 border-background bg-secondary overflow-hidden relative shadow-sm"
 									>
 										<Avatar className="w-full h-full">
@@ -348,13 +353,15 @@ export default function Channels() {
 			</ScrollArea>
 
 			{/* Floating Play Button */}
-			<button
+			<Button
 				aria-label="Play"
 				type="button"
+				variant="ghost"
+				size="icon"
 				className="absolute bottom-24 right-6 w-16 h-16 bg-foreground text-background rounded-full shadow-2xl flex items-center justify-center transform hover:scale-110 active:scale-95 transition-all z-30"
 			>
 				<HugeiconsIcon icon={PlayIcon} className="w-8 h-8 fill-current translate-x-0.5" />
-			</button>
+			</Button>
 		</div>
 	);
 }

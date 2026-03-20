@@ -52,8 +52,8 @@ export default function SchedulePage() {
 			if (result.success) {
 				refreshEvents();
 			}
-		} catch {
-			// Silent fail
+		} catch (error) {
+			console.error('Failed to delete event:', error);
 		} finally {
 			setIsDeleting(null);
 		}

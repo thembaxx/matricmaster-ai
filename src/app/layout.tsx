@@ -142,7 +142,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 					skip to main content
 				</a>
 				<ErrorBoundary>
-					<ThemeProvider defaultTheme="light" storageKey="matric-master-theme">
+					<ThemeProvider defaultTheme="system" storageKey="matric-master-theme">
 						<ClientProviders>{children}</ClientProviders>
 						<Toaster />
 						<ServiceWorkerRegistration />

@@ -1,7 +1,7 @@
 'use client';
 
 import { usePathname, useSearchParams } from 'next/navigation';
-import { useCallback, useEffect } from 'react';
+import { Suspense, useCallback, useEffect } from 'react';
 import { getEnv } from '@/lib/env';
 
 declare global {
@@ -45,7 +45,7 @@ function initPostHog() {
 	document.body.appendChild(script);
 }
 
-export function usePostHog() {
+function usePostHogInner() {
 	const pathname = usePathname();
 	const searchParams = useSearchParams();
 
@@ -81,6 +81,34 @@ export function usePostHog() {
 	}, []);
 
 	return { capture, identify, reset };
+}
+
+function PostHogInner({
+	children,
+}: {
+	children: (props: ReturnType<typeof usePostHogInner>) => React.ReactNode;
+}) {
+	const hookResult = usePostHogInner();
+	return <>{children(hookResult)}</>;
+}
+
+function PostHogFallback() {
+	useEffect(() => {
+		initPostHog();
+	}, []);
+	return null;
+}
+
+export function PostHogWithSuspense({
+	children,
+}: {
+	children: (props: ReturnType<typeof usePostHogInner>) => React.ReactNode;
+}) {
+	return (
+		<Suspense fallback={<PostHogFallback />}>
+			<PostHogInner>{children}</PostHogInner>
+		</Suspense>
+	);
 }
 
 export function PostHogProvider({ children }: { children: React.ReactNode }) {

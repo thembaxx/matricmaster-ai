@@ -7,6 +7,7 @@ import {
 import { HugeiconsIcon } from '@hugeicons/react';
 import { AnimatePresence, m } from 'framer-motion';
 import { TaskChecklist } from '@/components/Timer/TaskChecklist';
+import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import type { StudyTask } from '@/types/schedule';
 
@@ -43,12 +44,13 @@ export function TasksPanel({
 						placeholder="What are you working on?"
 						className="flex-1 bg-muted/50 border-none rounded-2xl px-5 py-4 focus:ring-2 focus:ring-primary/20 outline-none font-bold text-sm"
 					/>
-					<button
+					<Button
 						type="submit"
+						size="icon"
 						className="bg-primary text-primary-foreground p-4 rounded-2xl hover:opacity-90 transition-all shadow-lg shadow-primary/20"
 					>
 						<HugeiconsIcon icon={PlusIcon} className="w-6 h-6" />
-					</button>
+					</Button>
 				</form>
 
 				<div className="space-y-4">

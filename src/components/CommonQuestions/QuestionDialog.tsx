@@ -84,13 +84,14 @@ export function QuestionDialog({
 								const isCorrectOption = option.id === question.correctAnswer;
 
 								return (
-									<button
+									<Button
 										key={option.id}
 										type="button"
+										variant="ghost"
 										disabled={showAnswer}
 										onClick={() => onSelectAnswer(option.id)}
 										className={cn(
-											'w-full flex items-center gap-4 p-4 rounded-xl border-2 transition-all text-left',
+											'w-full flex items-center gap-4 p-4 h-auto rounded-xl border-2 text-left',
 											showAnswer
 												? isCorrectOption
 													? 'bg-tiimo-green/10 border-tiimo-green'
@@ -136,7 +137,7 @@ export function QuestionDialog({
 										>
 											{option.text}
 										</span>
-									</button>
+									</Button>
 								);
 							})}
 						</div>

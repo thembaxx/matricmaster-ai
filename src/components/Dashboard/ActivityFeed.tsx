@@ -7,6 +7,7 @@ import { AnimatePresence, m } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
 import { getRecentActivityAction } from '@/lib/db/actions';
 import { cn } from '@/lib/utils';
 
@@ -63,7 +64,7 @@ export function ActivityFeed() {
 		return (
 			<div className="space-y-4">
 				{[1, 2, 3].map((i) => (
-					<div key={i} className="h-20 bg-secondary/50 animate-pulse rounded-[2rem]" />
+					<Skeleton key={`skeleton-${i}`} className="h-20 rounded-[2rem]" />
 				))}
 			</div>
 		);

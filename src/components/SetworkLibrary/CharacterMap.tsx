@@ -76,7 +76,7 @@ export function CharacterMap({ characters }: CharacterMapProps) {
 							selectedId === conn.to;
 
 						return (
-							<g key={i}>
+							<g key={`connection-${i}`}>
 								<line
 									x1={from.x}
 									y1={from.y}
@@ -166,7 +166,7 @@ export function CharacterMap({ characters }: CharacterMapProps) {
 							{selectedChar.relationships.map((rel, i) => {
 								const relatedChar = characters.find((c) => c.id === rel.characterId);
 								return (
-									<span key={i} className="text-xs bg-secondary px-2 py-1 rounded-full">
+									<span key={`rel-${i}`} className="text-xs bg-secondary px-2 py-1 rounded-full">
 										{rel.relationship}: {relatedChar?.name || rel.characterId}
 									</span>
 								);

@@ -1,6 +1,7 @@
 'use client';
 
 import { useId, useMemo, useState } from 'react';
+import { Slider } from '@/components/ui/slider';
 
 interface WaveInterferenceProps {
 	frequency?: number;
@@ -15,6 +16,8 @@ export function WaveInterference({
 	wavelength = 2,
 	showSources = true,
 }: WaveInterferenceProps) {
+	const [freq, setFreq] = useState(frequency);
+	const [amp, setAmp] = useState(amplitude);
 	const [phaseShift, setPhaseShift] = useState(0);
 	const gradientId = useId();
 
@@ -27,21 +30,21 @@ export function WaveInterference({
 	const waves = useMemo(() => {
 		const points: { x: number; y: number; intensity: number }[] = [];
 		const k = (2 * Math.PI) / wavelength;
-		const omega = 2 * Math.PI * frequency;
+		const omega = 2 * Math.PI * freq;
 
 		for (let x = 0; x <= width; x += 2) {
 			const d1 = Math.sqrt((x - source1X) ** 2 + centerY ** 2);
 			const d2 = Math.sqrt((x - source2X) ** 2 + centerY ** 2);
 
-			const r1 = amplitude * Math.sin(k * d1 - omega * (phaseShift / 100));
-			const r2 = amplitude * Math.sin(k * d2 - omega * (phaseShift / 100));
+			const r1 = amp * Math.sin(k * d1 - omega * (phaseShift / 100));
+			const r2 = amp * Math.sin(k * d2 - omega * (phaseShift / 100));
 			const y = r1 + r2;
 			const intensity = Math.sqrt(r1 ** 2 + r2 ** 2);
 
 			points.push({ x, y, intensity });
 		}
 		return points;
-	}, [frequency, amplitude, wavelength, phaseShift, source2X, centerY]);
+	}, [freq, amp, wavelength, phaseShift, source2X, centerY]);
 
 	const wavePath = waves
 		.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p.x},${centerY - p.y * 30}`)
@@ -98,7 +101,7 @@ export function WaveInterference({
 					.filter((_, i) => i % 40 === 0)
 					.map((p, i) => (
 						<line
-							key={i}
+							key={`wave-${i}`}
 							x1={p.x}
 							y1={centerY - p.y * 30 - 5}
 							x2={p.x}
@@ -112,45 +115,36 @@ export function WaveInterference({
 
 			<div className="mt-4 space-y-3">
 				<div>
-					<label className="text-sm text-muted-foreground block mb-1">
-						Frequency: {frequency}Hz
-						<input
-							type="range"
-							min="0.5"
-							max="3"
-							step="0.1"
-							value={frequency}
-							onChange={() => {}}
-							className="w-full"
-						/>
-					</label>
+					<span className="text-sm text-muted-foreground block mb-1">Frequency: {freq}Hz</span>
+					<Slider
+						min={0.5}
+						max={3}
+						step={0.1}
+						value={[freq]}
+						onValueChange={([v]) => setFreq(v)}
+						className="w-full"
+					/>
 				</div>
 				<div>
-					<label className="text-sm text-muted-foreground block mb-1">
-						Amplitude: {amplitude}
-						<input
-							type="range"
-							min="0.5"
-							max="2"
-							step="0.1"
-							value={amplitude}
-							onChange={() => {}}
-							className="w-full"
-						/>
-					</label>
+					<span className="text-sm text-muted-foreground block mb-1">Amplitude: {amp}</span>
+					<Slider
+						min={0.5}
+						max={2}
+						step={0.1}
+						value={[amp]}
+						onValueChange={([v]) => setAmp(v)}
+						className="w-full"
+					/>
 				</div>
 				<div>
-					<label className="text-sm text-muted-foreground block mb-1">
-						Phase: {phaseShift}°
-						<input
-							type="range"
-							min="0"
-							max="100"
-							value={phaseShift}
-							onChange={(e) => setPhaseShift(Number(e.target.value))}
-							className="w-full"
-						/>
-					</label>
+					<span className="text-sm text-muted-foreground block mb-1">Phase: {phaseShift}°</span>
+					<Slider
+						min={0}
+						max={100}
+						value={[phaseShift]}
+						onValueChange={([v]) => setPhaseShift(v)}
+						className="w-full"
+					/>
 				</div>
 			</div>
 

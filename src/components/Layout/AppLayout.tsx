@@ -1,7 +1,7 @@
 'use client';
 
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import { toast } from 'sonner';
 import { GeminiQuotaErrorModal } from '@/components/AI/GeminiQuotaErrorModal';
 import { GlassOrb } from '@/components/AI/GlassOrb';
@@ -9,6 +9,7 @@ import { FloatingWidget } from '@/components/Chat/FloatingWidget';
 import { ClientOnly } from '@/components/ClientOnly';
 import { DailyLoginBonus } from '@/components/Gamification/DailyLoginBonus';
 import { MobileLayoutFixes } from '@/components/Layout/MobileLayoutFixes';
+import { Button } from '@/components/ui/button';
 import { ConfettiProvider } from '@/components/ui/ConfettiProvider';
 import { SubjectBackgroundProvider } from '@/components/ui/SubjectBackground';
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
@@ -16,6 +17,7 @@ import { useGeminiQuotaModal } from '@/contexts/GeminiQuotaModalContext';
 import { useTheme } from '@/hooks/use-theme';
 import { authClient } from '@/lib/auth-client';
 import { useNotificationStore } from '@/stores/useNotificationStore';
+import type { Theme } from '@/stores/useThemeStore';
 import PageTransition from '../Transition/PageTransition';
 import { BottomNavigation } from './BottomNavigation';
 import { AppSidebar } from './DesktopSidebar';
@@ -27,7 +29,7 @@ function QuotaErrorModal() {
 	return <GeminiQuotaErrorModal open={showQuotaModal} onOpenChange={hideQuotaModal} />;
 }
 
-export default function AppLayout({ children }: { children: React.ReactNode }) {
+function AppLayoutContent({ children }: { children: React.ReactNode }) {
 	const pathname = usePathname();
 	const searchParams = useSearchParams();
 	const router = useRouter();
@@ -105,7 +107,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 						user={user}
 						pathname={pathname}
 						theme={theme}
-						onToggleTheme={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+						onSetTheme={(t: Theme) => setTheme(t)}
 					/>
 					<SidebarInset>
 						<div className="flex-1 flex flex-col min-h-screen relative max-w-full">
@@ -128,9 +130,11 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 										onSignUp={() => router.push('/sign-up')}
 										mobileMenuTrigger={
 											<MobileNavDrawer user={user}>
-												<button
+												<Button
 													type="button"
-													className="w-11 h-11 rounded-2xl bg-card/80 backdrop-blur-md border border-border/50 shadow-tiimo hover:bg-card active:scale-95 transition-all flex items-center justify-center"
+													variant="outline"
+													size="icon"
+													className="w-11 h-11 rounded-2xl bg-card/80 backdrop-blur-md border border-border/50 shadow-tiimo hover:bg-card active:scale-95"
 													aria-label="open navigation menu"
 												>
 													<svg
@@ -150,7 +154,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 														<line x1="4" x2="20" y1="6" y2="6" />
 														<line x1="4" x2="20" y1="18" y2="18" />
 													</svg>
-												</button>
+												</Button>
 											</MobileNavDrawer>
 										}
 									/>
@@ -175,6 +179,29 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 				</SubjectBackgroundProvider>
 			</ConfettiProvider>
 		</SidebarProvider>
+	);
+}
+
+function AppLayoutSkeleton() {
+	return (
+		<div className="flex min-h-screen bg-background overflow-x-hidden">
+			<div className="flex-1 flex flex-col min-h-screen relative max-w-full">
+				<div className="flex-1 flex flex-col w-full mx-auto max-w-full pt-20 pb-40">
+					<div className="animate-pulse space-y-4 p-4">
+						<div className="h-8 bg-muted rounded w-1/4" />
+						<div className="h-64 bg-muted rounded-lg" />
+					</div>
+				</div>
+			</div>
+		</div>
+	);
+}
+
+export default function AppLayout({ children }: { children: React.ReactNode }) {
+	return (
+		<Suspense fallback={<AppLayoutSkeleton />}>
+			<AppLayoutContent>{children}</AppLayoutContent>
+		</Suspense>
 	);
 }
 

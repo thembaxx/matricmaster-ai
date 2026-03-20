@@ -198,10 +198,11 @@ export function MobileNavDrawer({
 					<div className="px-6 pb-4 border-b border-sidebar-border/50">
 						<div className="flex items-center justify-between mb-4">
 							{user ? (
-								<button
+								<Button
 									type="button"
+									variant="ghost"
 									onClick={() => handleNavigation('/profile')}
-									className="flex items-center gap-3 p-2 -m-2 w-full rounded-xl hover:bg-sidebar-accent transition-colors text-left"
+									className="flex items-center gap-3 p-2 -m-2 w-full h-auto rounded-xl hover:bg-sidebar-accent transition-colors text-left"
 								>
 									<Avatar className="h-11 w-11 border-2 border-sidebar-primary/30">
 										<AvatarImage src={user.image || undefined} alt={user.name || 'User'} />
@@ -217,12 +218,13 @@ export function MobileNavDrawer({
 										icon={ArrowRight01Icon}
 										className="w-4 h-4 text-sidebar-foreground/30"
 									/>
-								</button>
+								</Button>
 							) : (
-								<button
+								<Button
 									type="button"
+									variant="ghost"
 									onClick={() => handleNavigation('/dashboard')}
-									className="flex items-center gap-3"
+									className="flex items-center gap-3 h-auto"
 								>
 									<div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-sidebar-primary to-purple-400 flex items-center justify-center shadow-lg">
 										<HugeiconsIcon icon={BookOpen01Icon} className="w-5 h-5 text-white" />
@@ -230,7 +232,7 @@ export function MobileNavDrawer({
 									<h1 className="text-lg font-semibold text-sidebar-foreground">
 										{appConfig.name}
 									</h1>
-								</button>
+								</Button>
 							)}
 							<Button
 								variant="ghost"
@@ -304,11 +306,12 @@ function MobileNavLink({
 	const isActive = pathname === item.href;
 
 	return (
-		<button
+		<Button
 			type="button"
+			variant="ghost"
 			onClick={() => onNavigate(item.href)}
 			className={cn(
-				'w-full flex items-center gap-3 px-3 py-3 rounded-xl transition-all duration-200 text-left',
+				'w-full flex items-center gap-3 px-3 py-3 h-auto rounded-xl text-left',
 				isActive
 					? 'bg-sidebar-primary/10 text-sidebar-primary'
 					: 'text-sidebar-foreground/60 hover:text-sidebar-foreground hover:bg-sidebar-accent/50'
@@ -321,7 +324,7 @@ function MobileNavLink({
 			) : null}
 			<span className="font-medium">{item.label}</span>
 			{isActive && <div className="ml-auto w-1.5 h-1.5 rounded-full bg-sidebar-primary" />}
-		</button>
+		</Button>
 	);
 }
 
@@ -331,9 +334,11 @@ export function MobileMenuButton() {
 
 	return (
 		<MobileNavDrawer user={user}>
-			<button
+			<Button
 				type="button"
-				className="w-11 h-11 rounded-2xl bg-card/80 backdrop-blur-md border border-border/50 shadow-tiimo hover:bg-card active:scale-95 transition-all flex items-center justify-center"
+				variant="outline"
+				size="icon"
+				className="w-11 h-11 rounded-2xl bg-card/80 backdrop-blur-md border border-border/50 shadow-tiimo hover:bg-card active:scale-95"
 				aria-label="Open navigation menu"
 			>
 				<svg
@@ -353,7 +358,7 @@ export function MobileMenuButton() {
 					<line x1="4" x2="20" y1="6" y2="6" />
 					<line x1="4" x2="20" y1="18" y2="18" />
 				</svg>
-			</button>
+			</Button>
 		</MobileNavDrawer>
 	);
 }

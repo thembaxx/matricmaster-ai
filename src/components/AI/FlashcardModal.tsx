@@ -103,7 +103,8 @@ export function FlashcardModal({
 				setIsFlipped(false);
 				setShowRatingButtons(false);
 			}
-		} catch {
+		} catch (error) {
+			console.error('Failed to save rating:', error);
 			toast.error('Failed to save rating');
 		} finally {
 			setIsRating(false);
@@ -148,7 +149,8 @@ export function FlashcardModal({
 		try {
 			await onAddToMasterDeck(currentCard);
 			toast.success('Added to Master Deck');
-		} catch {
+		} catch (error) {
+			console.error('Failed to add to Master Deck:', error);
 			toast.error('Failed to add to Master Deck');
 		} finally {
 			setIsAddingToMaster(false);
