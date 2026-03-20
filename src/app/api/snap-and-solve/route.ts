@@ -36,9 +36,7 @@ export async function POST(req: NextRequest) {
 
 Analyze the image and extract all questions.`;
 
-		const ocrResult = await generateWithOCR(ocrPrompt, [{ base64, mimeType: image.type }], {
-			subject,
-		});
+		const ocrResult = await generateWithOCR(ocrPrompt, [{ base64, mimeType: image.type }]);
 
 		const solutionPrompt = `You are an expert Grade 12 tutor in South Africa. Analyze the image of this ${subject} question. 
         1. OCR the question text.
