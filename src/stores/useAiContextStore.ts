@@ -22,6 +22,7 @@ export interface AiContextMetadata {
 	score?: number;
 	totalQuestions?: number;
 	correctAnswers?: number;
+	extractedQuestions?: string[];
 }
 
 export interface Activity {
