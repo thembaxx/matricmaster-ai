@@ -4,6 +4,8 @@ config({ path: '.env.local' });
 
 import { migrate } from 'drizzle-orm/postgres-js/migrator';
 import { closeConnection, dbManager } from './index';
+import { sqliteManager } from './sqlite-manager';
+import { syncEngine } from './sync/engine';
 
 async function runMigrations() {
 	console.log('Running migrations...');
@@ -21,8 +23,30 @@ async function runMigrations() {
 		const db = dbManager.getDb();
 		await migrate(db, { migrationsFolder: './drizzle' });
 		console.log('✅ Migrations complete!');
+
+		console.log('🔄 Syncing to local SQLite database...');
+
+		await sqliteManager.connect();
+
+		console.log('🔄 Running bidirectional sync...');
+		const syncResult = await syncEngine.fullSync();
+
+		console.log('\n📊 Sync Results:');
+		console.log(`   Tables processed: ${syncResult.tablesProcessed}`);
+		console.log(`   Records pushed (local → remote): ${syncResult.recordsPushed}`);
+		console.log(`   Records pulled (remote → local): ${syncResult.recordsPulled}`);
+		console.log(`   Duration: ${syncResult.duration}ms`);
+
+		if (syncResult.errors.length > 0) {
+			console.warn('\n⚠️ Sync warnings:');
+			for (const e of syncResult.errors) {
+				console.log(`   - ${e}`);
+			}
+		}
+
+		console.log('\n✅ Migration and sync complete!');
 	} catch (error) {
-		console.debug('❌ Migration failed:', error);
+		console.debug('❌ Migration/sync failed:', error);
 		const dbError = error as { code?: string };
 		if (dbError.code === 'ETIMEDOUT') {
 			console.log('💡 Database connection timed out. Please check:');
@@ -39,7 +63,6 @@ async function runMigrations() {
 	}
 }
 
-// Handle graceful shutdown
 process.on('SIGINT', async () => {
 	console.log('\n🛑 Migration interrupted');
 	await closeConnection();
