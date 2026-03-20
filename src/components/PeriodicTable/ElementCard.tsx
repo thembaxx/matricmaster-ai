@@ -1,7 +1,14 @@
 'use client';
 
 import { m } from 'framer-motion';
-import { type ElementType, GROUP_COLORS, type TrendMode } from '@/constants/periodic-table';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import {
+	CATEGORY_LABELS,
+	type ElementType,
+	GROUP_COLORS,
+	type TrendMode,
+} from '@/constants/periodic-table';
+import { ELEMENT_DETAILS } from '@/data/elements';
 import { cn } from '@/lib/utils';
 
 interface ElementCardProps {
@@ -78,48 +85,80 @@ export function ElementCard({
 	highlightedElements,
 	onClick,
 }: ElementCardProps) {
+	const details = ELEMENT_DETAILS[element.num];
+	const category = CATEGORY_LABELS[element.group] || element.category;
+
 	return (
-		<m.button
-			key={element.num}
-			initial={{ opacity: 0, scale: 0.9 }}
-			animate={{
-				opacity: highlightedElements && !highlightedElements.has(element.num) ? 0.15 : 1,
-				scale: 1,
-			}}
-			transition={{ delay: Math.min(index * 0.01, 1) }}
-			whileHover={
-				highlightedElements && !highlightedElements.has(element.num)
-					? {}
-					: { scale: 1.1, zIndex: 10 }
-			}
-			whileTap={highlightedElements && !highlightedElements.has(element.num) ? {} : { scale: 0.95 }}
-			onClick={() => {
-				if (highlightedElements && !highlightedElements.has(element.num)) return;
-				onClick(element);
-			}}
-			className={cn(
-				'w-16 h-20 sm:w-16 sm:h-20 rounded-sm border flex flex-col items-center justify-between py-2 transition-all shadow-sm bg-card cursor-pointer',
-				trendsMode && getTrendColor(element.num, trendsMode),
-				!trendsMode && element.num >= 57 && element.num <= 71 && 'row-start-1 row-end-1',
-				!trendsMode && element.num >= 89 && element.num <= 103 && 'row-start-1 row-end-1',
-				compareMode &&
-					compareElements.find((e) => e.num === element.num) &&
-					'ring-2 ring-primary border-primary',
-				!compareMode && selectedElement?.num === element.num
-					? 'ring-2 ring-primary border-primary shadow-primary/30 scale-110 z-10'
-					: highlightedElements && !highlightedElements.has(element.num)
-						? 'opacity-20'
-						: !trendsMode && GROUP_COLORS[element.group]
-			)}
-		>
-			<span className="text-[10px] sm:text-[10px] font-bold self-start ml-1 opacity-50">
-				{element.num}
-			</span>
-			<span className="text-[13px] sm:text-sm font-black">{element.sym}</span>
-			<span className="text-[7px] sm:text-[7px] font-bold uppercase tracking-wider truncate w-full text-center max-w-full px-0.5">
-				{element.name.length > 6 ? `${element.name.slice(0, 5)}.` : element.name}
-			</span>
-		</m.button>
+		<Tooltip>
+			<TooltipTrigger asChild>
+				<m.button
+					key={element.num}
+					initial={{ opacity: 0, scale: 0.9 }}
+					animate={{
+						opacity: highlightedElements && !highlightedElements.has(element.num) ? 0.15 : 1,
+						scale: 1,
+					}}
+					transition={{ delay: Math.min(index * 0.01, 1) }}
+					whileHover={
+						highlightedElements && !highlightedElements.has(element.num)
+							? {}
+							: { scale: 1.1, zIndex: 10 }
+					}
+					whileTap={
+						highlightedElements && !highlightedElements.has(element.num) ? {} : { scale: 0.95 }
+					}
+					onClick={() => {
+						if (highlightedElements && !highlightedElements.has(element.num)) return;
+						onClick(element);
+					}}
+					className={cn(
+						'w-16 h-20 sm:w-16 sm:h-20 rounded-sm border flex flex-col items-center justify-between py-2 transition-all shadow-sm bg-card cursor-pointer',
+						trendsMode && getTrendColor(element.num, trendsMode),
+						!trendsMode && element.num >= 57 && element.num <= 71 && 'row-start-1 row-end-1',
+						!trendsMode && element.num >= 89 && element.num <= 103 && 'row-start-1 row-end-1',
+						compareMode &&
+							compareElements.find((e) => e.num === element.num) &&
+							'ring-2 ring-primary border-primary',
+						!compareMode && selectedElement?.num === element.num
+							? 'ring-2 ring-primary border-primary shadow-primary/30 scale-110 z-10'
+							: highlightedElements && !highlightedElements.has(element.num)
+								? 'opacity-20'
+								: !trendsMode && GROUP_COLORS[element.group]
+					)}
+				>
+					<span className="text-[10px] sm:text-[10px] font-bold self-start ml-1 opacity-50">
+						{element.num}
+					</span>
+					<span className="text-[13px] sm:text-sm font-black">{element.sym}</span>
+					<span className="text-[7px] sm:text-[7px] font-bold uppercase tracking-wider truncate w-full text-center max-w-full px-0.5">
+						{element.name.length > 6 ? `${element.name.slice(0, 5)}.` : element.name}
+					</span>
+				</m.button>
+			</TooltipTrigger>
+			<TooltipContent
+				side="top"
+				sideOffset={6}
+				className="bg-card border border-border text-foreground p-3 shadow-lg min-w-[160px]"
+			>
+				<div className="space-y-1.5">
+					<p className="font-bold text-sm">{details?.name || element.name}</p>
+					<div className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-0.5 text-xs">
+						<span className="text-muted-foreground">Atomic #:</span>
+						<span className="font-mono font-medium">{element.num}</span>
+						<span className="text-muted-foreground">Symbol:</span>
+						<span className="font-mono font-medium">{element.sym}</span>
+						<span className="text-muted-foreground">Mass:</span>
+						<span className="font-mono font-medium">{details?.mass || '—'}</span>
+						<span className="text-muted-foreground">Category:</span>
+						<span className="font-medium">{category}</span>
+						<span className="text-muted-foreground">Electron Config:</span>
+						<span className="font-mono font-medium">{details?.electronConfig || '—'}</span>
+						<span className="text-muted-foreground">Electronegativity:</span>
+						<span className="font-mono font-medium">{details?.electronegativity ?? '—'}</span>
+					</div>
+				</div>
+			</TooltipContent>
+		</Tooltip>
 	);
 }
 

@@ -8,9 +8,9 @@ import {
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { useQuery } from '@tanstack/react-query';
+import { Bar, BarChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
-import { cn } from '@/lib/utils';
 
 const DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
@@ -34,13 +34,35 @@ export function WeeklyProgress() {
 	});
 
 	const dailyMinutes = data?.dailyMinutes ?? Array.from({ length: 7 }, () => 0);
-	const maxMinutes = Math.max(...dailyMinutes, 60);
 	const totalMinutes = dailyMinutes.reduce((a: number, b: number) => a + b, 0);
 
 	const tasksCompleted = data?.tasksCompleted ?? 0;
 	const tasksPlanned = data?.tasksPlanned ?? 0;
 	const quizTrend = data?.quizTrend ?? [];
 	const flashcardStreak = data?.flashcardStreak ?? 0;
+
+	const chartData = DAYS.map((day, idx) => ({
+		day,
+		minutes: dailyMinutes[idx] || 0,
+	}));
+
+	const CustomTooltip = ({
+		active,
+		payload,
+	}: {
+		active?: boolean;
+		payload?: Array<{ value: number; payload: { day: string } }>;
+	}) => {
+		if (active && payload?.length) {
+			return (
+				<div className="bg-background border border-border/50 rounded-lg px-3 py-2 shadow-xl">
+					<p className="text-xs font-bold">{payload[0].payload.day}</p>
+					<p className="text-sm font-black text-primary">{formatTime(payload[0].value)}</p>
+				</div>
+			);
+		}
+		return null;
+	};
 
 	return (
 		<Card className="rounded-[2.5rem] border border-border/50 shadow-tiimo overflow-hidden">
@@ -69,37 +91,29 @@ export function WeeklyProgress() {
 									Total: {formatTime(totalMinutes)}
 								</p>
 							</div>
-							<div className="flex items-end gap-2 h-28">
-								{dailyMinutes.map((mins: number, idx: number) => {
-									const heightPct = maxMinutes > 0 ? (mins / maxMinutes) * 100 : 0;
-									const isToday = idx === dailyMinutes.length - 1;
-									return (
-										<div key={DAYS[idx]} className="flex-1 flex flex-col items-center gap-1">
-											<span className="text-[9px] font-bold text-muted-foreground tabular-nums">
-												{mins > 0 ? formatTime(mins) : '—'}
-											</span>
-											<div className="w-full relative flex-1 flex items-end">
-												<div
-													className={cn(
-														'w-full rounded-t-lg transition-all duration-500',
-														isToday ? 'bg-primary' : mins > 0 ? 'bg-primary/30' : 'bg-muted'
-													)}
-													style={{
-														height: `${Math.max(heightPct, mins > 0 ? 15 : 5)}%`,
-													}}
-												/>
-											</div>
-											<span
-												className={cn(
-													'text-[10px] font-bold',
-													isToday ? 'text-primary' : 'text-muted-foreground'
-												)}
-											>
-												{DAYS[idx]}
-											</span>
-										</div>
-									);
-								})}
+							<div className="h-32">
+								<ResponsiveContainer width="100%" height="100%">
+									<BarChart data={chartData} barCategoryGap="20%">
+										<XAxis
+											dataKey="day"
+											tickLine={false}
+											axisLine={false}
+											tick={{ fontSize: 10, fontWeight: 600, fill: 'var(--muted-foreground)' }}
+											dy={8}
+										/>
+										<YAxis hide />
+										<Tooltip
+											content={<CustomTooltip />}
+											cursor={{ fill: 'var(--muted)', opacity: 0.2 }}
+										/>
+										<Bar
+											dataKey="minutes"
+											fill="var(--color-primary)"
+											radius={[4, 4, 0, 0]}
+											maxBarSize={40}
+										/>
+									</BarChart>
+								</ResponsiveContainer>
 							</div>
 						</div>
 

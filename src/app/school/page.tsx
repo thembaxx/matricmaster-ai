@@ -3,11 +3,11 @@
 import { Building02Icon, Chart02Icon, SparklesIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { useState } from 'react';
+import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts';
 import { toast } from 'sonner';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Progress } from '@/components/ui/progress';
 import {
 	type License,
 	MOCK_LICENSES,
@@ -32,6 +32,15 @@ export default function SchoolDashboardPage() {
 		).length,
 		usagePercent: Math.round((450 / school.licenseCount) * 100),
 	};
+
+	const availableLicenses = school.licenseCount - stats.totalLearners;
+	const expiredLicenses = stats.totalLearners - stats.activeLicenses;
+
+	const pieData = [
+		{ name: 'Active', value: stats.activeLicenses, color: 'var(--color-primary)' },
+		{ name: 'Available', value: availableLicenses, color: 'var(--color-success)' },
+		{ name: 'Expired', value: expiredLicenses, color: 'var(--color-warning)' },
+	];
 
 	const generateLicenseKeys = async (count: number) => {
 		setIsLoading(true);
@@ -69,6 +78,26 @@ export default function SchoolDashboardPage() {
 		? Math.ceil((school.licenseExpiry.getTime() - Date.now()) / (1000 * 60 * 60 * 24))
 		: 0;
 
+	const CustomTooltip = ({
+		active,
+		payload,
+	}: {
+		active?: boolean;
+		payload?: Array<{ name: string; value: number; payload: { fill: string } }>;
+	}) => {
+		if (active && payload?.length) {
+			return (
+				<div className="bg-background border border-border/50 rounded-lg px-3 py-2 shadow-xl">
+					<p className="text-xs font-bold">{payload[0].name}</p>
+					<p className="text-sm font-black" style={{ color: payload[0].payload.fill }}>
+						{payload[0].value} licenses
+					</p>
+				</div>
+			);
+		}
+		return null;
+	};
+
 	return (
 		<div className="min-h-screen pb-40 pt-8 px-4">
 			<div className="max-w-6xl mx-auto">
@@ -89,7 +118,7 @@ export default function SchoolDashboardPage() {
 					</Badge>
 				</div>
 
-				<StatsCards stats={stats} availableLicenses={school.licenseCount - stats.activeLicenses} />
+				<StatsCards stats={stats} availableLicenses={availableLicenses} />
 
 				<Card className="mb-8">
 					<CardHeader>
@@ -99,24 +128,86 @@ export default function SchoolDashboardPage() {
 						</CardTitle>
 					</CardHeader>
 					<CardContent>
-						<div className="space-y-4">
-							<div className="flex justify-between text-sm">
-								<span>
-									{stats.totalLearners} of {school.licenseCount} licenses used
-								</span>
-								<span className="font-medium">{stats.usagePercent}%</span>
+						<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+							<div className="space-y-4">
+								<div className="flex justify-between text-sm">
+									<span>
+										{stats.totalLearners} of {school.licenseCount} licenses used
+									</span>
+									<span className="font-medium">{stats.usagePercent}%</span>
+								</div>
+								<div className="h-48">
+									<ResponsiveContainer width="100%" height="100%">
+										<PieChart>
+											<Pie
+												data={pieData}
+												cx="50%"
+												cy="50%"
+												innerRadius={50}
+												outerRadius={80}
+												paddingAngle={4}
+												dataKey="value"
+											>
+												{pieData.map((entry, index) => (
+													<Cell key={`cell-${index}`} fill={entry.color} />
+												))}
+											</Pie>
+											<Tooltip content={<CustomTooltip />} />
+										</PieChart>
+									</ResponsiveContainer>
+								</div>
+								<div className="flex justify-center gap-4">
+									{pieData.map((item) => (
+										<div key={item.name} className="flex items-center gap-2">
+											<div
+												className="w-3 h-3 rounded-full"
+												style={{ backgroundColor: item.color }}
+											/>
+											<span className="text-xs font-medium">{item.name}</span>
+										</div>
+									))}
+								</div>
 							</div>
-							<Progress value={stats.usagePercent} className="h-3" />
-							<p className="text-sm text-muted-foreground">
-								{school.licenseCount - stats.totalLearners} licenses remaining
-							</p>
-						</div>
-						<div className="mt-4 p-4 rounded-lg bg-muted/50 flex items-center justify-between">
-							<div>
-								<p className="font-medium">License expires in {daysUntilExpiry} days</p>
-								<p className="text-sm text-muted-foreground">{formatDate(school.licenseExpiry)}</p>
+							<div className="space-y-4">
+								<p className="text-sm text-muted-foreground">
+									{school.licenseCount - stats.totalLearners} licenses remaining
+								</p>
+								<div className="p-4 rounded-lg bg-muted/50 flex items-center justify-between">
+									<div>
+										<p className="font-medium">License expires in {daysUntilExpiry} days</p>
+										<p className="text-sm text-muted-foreground">
+											{formatDate(school.licenseExpiry)}
+										</p>
+									</div>
+									<Button>Renew License</Button>
+								</div>
+								<div className="grid grid-cols-2 gap-3 mt-4">
+									<div className="p-3 rounded-xl bg-primary/10 space-y-1">
+										<p className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest">
+											Active
+										</p>
+										<p className="text-xl font-black text-primary">{stats.activeLicenses}</p>
+									</div>
+									<div className="p-3 rounded-xl bg-success/10 space-y-1">
+										<p className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest">
+											Available
+										</p>
+										<p className="text-xl font-black text-success">{availableLicenses}</p>
+									</div>
+									<div className="p-3 rounded-xl bg-warning/10 space-y-1">
+										<p className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest">
+											Expiring Soon
+										</p>
+										<p className="text-xl font-black text-warning">{stats.expiringSoon}</p>
+									</div>
+									<div className="p-3 rounded-xl bg-muted/50 space-y-1">
+										<p className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest">
+											Total
+										</p>
+										<p className="text-xl font-black">{school.licenseCount}</p>
+									</div>
+								</div>
 							</div>
-							<Button>Renew License</Button>
 						</div>
 					</CardContent>
 				</Card>
