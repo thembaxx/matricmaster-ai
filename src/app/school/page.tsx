@@ -18,6 +18,25 @@ import {
 import { LicenseManagementCard } from './LicenseManagementCard';
 import { StatsCards } from './StatsCards';
 
+interface CustomTooltipProps {
+	active?: boolean;
+	payload?: Array<{ name: string; value: number; payload: { fill: string } }>;
+}
+
+function CustomTooltip({ active, payload }: CustomTooltipProps) {
+	if (active && payload?.length) {
+		return (
+			<div className="bg-background border border-border/50 rounded-lg px-3 py-2 shadow-xl">
+				<p className="text-xs font-bold">{payload[0].name}</p>
+				<p className="text-sm font-black" style={{ color: payload[0].payload.fill }}>
+					{payload[0].value} licenses
+				</p>
+			</div>
+		);
+	}
+	return null;
+}
+
 export default function SchoolDashboardPage() {
 	const [school, _setSchool] = useState<School>(MOCK_SCHOOL);
 	const [licenses, setLicenses] = useState<License[]>(MOCK_LICENSES);
@@ -77,26 +96,6 @@ export default function SchoolDashboardPage() {
 	const daysUntilExpiry = school.licenseExpiry
 		? Math.ceil((school.licenseExpiry.getTime() - Date.now()) / (1000 * 60 * 60 * 24))
 		: 0;
-
-	const CustomTooltip = ({
-		active,
-		payload,
-	}: {
-		active?: boolean;
-		payload?: Array<{ name: string; value: number; payload: { fill: string } }>;
-	}) => {
-		if (active && payload?.length) {
-			return (
-				<div className="bg-background border border-border/50 rounded-lg px-3 py-2 shadow-xl">
-					<p className="text-xs font-bold">{payload[0].name}</p>
-					<p className="text-sm font-black" style={{ color: payload[0].payload.fill }}>
-						{payload[0].value} licenses
-					</p>
-				</div>
-			);
-		}
-		return null;
-	};
 
 	return (
 		<div className="min-h-screen pb-40 pt-8 px-4">
@@ -183,25 +182,25 @@ export default function SchoolDashboardPage() {
 								</div>
 								<div className="grid grid-cols-2 gap-3 mt-4">
 									<div className="p-3 rounded-xl bg-primary/10 space-y-1">
-										<p className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest">
+										<p className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
 											Active
 										</p>
 										<p className="text-xl font-black text-primary">{stats.activeLicenses}</p>
 									</div>
 									<div className="p-3 rounded-xl bg-success/10 space-y-1">
-										<p className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest">
+										<p className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
 											Available
 										</p>
 										<p className="text-xl font-black text-success">{availableLicenses}</p>
 									</div>
 									<div className="p-3 rounded-xl bg-warning/10 space-y-1">
-										<p className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest">
+										<p className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
 											Expiring Soon
 										</p>
 										<p className="text-xl font-black text-warning">{stats.expiringSoon}</p>
 									</div>
 									<div className="p-3 rounded-xl bg-muted/50 space-y-1">
-										<p className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest">
+										<p className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
 											Total
 										</p>
 										<p className="text-xl font-black">{school.licenseCount}</p>

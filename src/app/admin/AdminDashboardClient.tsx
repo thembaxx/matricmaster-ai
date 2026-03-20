@@ -261,7 +261,7 @@ export default function AdminDashboardClient({
 									</CardTitle>
 								</CardHeader>
 								<CardContent>
-									<ScrollArea className="h-75">
+									<ScrollArea className="h-80">
 										<div className="space-y-4">
 											{mockRecentActivity.map((activity) => (
 												<div key={activity.id} className="flex items-center gap-3">
@@ -292,14 +292,20 @@ export default function AdminDashboardClient({
 								<CardContent>
 									<ScrollArea className="h-80">
 										<div className="space-y-3">
-											{mockFlaggedContent.map((item) => (
-												<div key={item.id} className="p-3 border rounded-lg">
-													<p className="text-sm">{item.content}</p>
-													<p className="text-xs text-muted-foreground mt-1">
-														Reported by {item.reportedBy}
-													</p>
-												</div>
-											))}
+											{mockFlaggedContent.length === 0 ? (
+												<p className="text-sm text-muted-foreground text-center py-8">
+													No flagged content
+												</p>
+											) : (
+												mockFlaggedContent.map((item) => (
+													<div key={item.id} className="p-3 border rounded-lg">
+														<p className="text-sm">{item.content}</p>
+														<p className="text-xs text-muted-foreground mt-1">
+															Reported by {item.reportedBy}
+														</p>
+													</div>
+												))
+											)}
 										</div>
 									</ScrollArea>
 								</CardContent>
@@ -328,7 +334,12 @@ export default function AdminDashboardClient({
 										/>
 									</div>
 									<Button onClick={handleSearch} disabled={isLoadingUsers}>
-										Search
+										{isLoadingUsers ? (
+											<HugeiconsIcon icon={Loading03Icon} className="h-4 w-4 animate-spin" />
+										) : (
+											<HugeiconsIcon icon={Search01Icon} className="h-4 w-4" />
+										)}
+										<span className="hidden sm:inline">Search</span>
 									</Button>
 								</div>
 
@@ -338,6 +349,15 @@ export default function AdminDashboardClient({
 											icon={Loading03Icon}
 											className="h-8 w-8 animate-spin text-muted-foreground"
 										/>
+									</div>
+								) : users.length === 0 ? (
+									<div className="text-center py-12 text-muted-foreground">
+										<HugeiconsIcon
+											icon={UserGroupIcon}
+											className="h-12 w-12 mx-auto mb-4 opacity-50"
+										/>
+										<p className="font-medium">No users found</p>
+										<p className="text-sm mt-1">Try adjusting your search criteria</p>
 									</div>
 								) : (
 									<div className="border rounded-lg overflow-hidden">
@@ -351,7 +371,7 @@ export default function AdminDashboardClient({
 											</TableHeader>
 											<TableBody>
 												{users.map((user) => (
-													<TableRow key={user.id}>
+													<TableRow key={user.id} className="transition-colors hover:bg-muted/50">
 														<TableCell>
 															<div className="flex items-center gap-2">
 																<Avatar className="h-8 w-8">
@@ -367,9 +387,10 @@ export default function AdminDashboardClient({
 														</TableCell>
 														<TableCell className="text-right">
 															<Button
-																variant="ghost"
+																variant={user.isBlocked ? 'outline' : 'destructive'}
 																size="sm"
 																onClick={() => handleToggleBlock(user.id)}
+																className="transition-all"
 															>
 																{user.isBlocked ? 'Unblock' : 'Block'}
 															</Button>

@@ -14,6 +14,23 @@ import { Progress } from '@/components/ui/progress';
 
 const DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
+interface CustomTooltipProps {
+	active?: boolean;
+	payload?: Array<{ value: number; payload: { day: string } }>;
+}
+
+function CustomTooltip({ active, payload }: CustomTooltipProps) {
+	if (active && payload?.length) {
+		return (
+			<div className="bg-background border border-border/50 rounded-lg px-3 py-2 shadow-xl">
+				<p className="text-xs font-bold">{payload[0].payload.day}</p>
+				<p className="text-sm font-black text-primary">{formatTime(payload[0].value)}</p>
+			</div>
+		);
+	}
+	return null;
+}
+
 function formatTime(minutes: number) {
 	const hours = Math.floor(minutes / 60);
 	const mins = Math.round(minutes % 60);
@@ -46,24 +63,6 @@ export function WeeklyProgress() {
 		minutes: dailyMinutes[idx] || 0,
 	}));
 
-	const CustomTooltip = ({
-		active,
-		payload,
-	}: {
-		active?: boolean;
-		payload?: Array<{ value: number; payload: { day: string } }>;
-	}) => {
-		if (active && payload?.length) {
-			return (
-				<div className="bg-background border border-border/50 rounded-lg px-3 py-2 shadow-xl">
-					<p className="text-xs font-bold">{payload[0].payload.day}</p>
-					<p className="text-sm font-black text-primary">{formatTime(payload[0].value)}</p>
-				</div>
-			);
-		}
-		return null;
-	};
-
 	return (
 		<Card className="rounded-[2.5rem] border border-border/50 shadow-tiimo overflow-hidden">
 			<CardHeader className="bg-muted/30 px-8 py-6">
@@ -84,7 +83,7 @@ export function WeeklyProgress() {
 					<>
 						<div>
 							<div className="flex justify-between items-end mb-3">
-								<p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
+								<p className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
 									Study Time (daily)
 								</p>
 								<p className="text-xs font-bold text-muted-foreground">
@@ -98,7 +97,7 @@ export function WeeklyProgress() {
 											dataKey="day"
 											tickLine={false}
 											axisLine={false}
-											tick={{ fontSize: 10, fontWeight: 600, fill: 'var(--muted-foreground)' }}
+											tick={{ fontSize: 11, fontWeight: 600, fill: 'var(--muted-foreground)' }}
 											dy={8}
 										/>
 										<YAxis hide />
@@ -121,7 +120,7 @@ export function WeeklyProgress() {
 							<div className="p-4 bg-muted/30 rounded-2xl space-y-2">
 								<div className="flex items-center gap-2">
 									<HugeiconsIcon icon={CheckmarkCircle01Icon} className="w-4 h-4 text-success" />
-									<span className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest">
+									<span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
 										Tasks
 									</span>
 								</div>
@@ -137,7 +136,7 @@ export function WeeklyProgress() {
 							<div className="p-4 bg-muted/30 rounded-2xl space-y-2">
 								<div className="flex items-center gap-2">
 									<HugeiconsIcon icon={Target01Icon} className="w-4 h-4 text-primary" />
-									<span className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest">
+									<span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
 										Quiz Trend
 									</span>
 								</div>
@@ -161,12 +160,12 @@ export function WeeklyProgress() {
 							<div className="p-4 bg-muted/30 rounded-2xl space-y-2">
 								<div className="flex items-center gap-2">
 									<HugeiconsIcon icon={Layers01Icon} className="w-4 h-4 text-warning" />
-									<span className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest">
+									<span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
 										Flashcards
 									</span>
 								</div>
 								<p className="text-lg font-black">{flashcardStreak}d</p>
-								<p className="text-[9px] font-bold text-muted-foreground">review streak</p>
+								<p className="text-xs font-bold text-muted-foreground">review streak</p>
 							</div>
 						</div>
 					</>

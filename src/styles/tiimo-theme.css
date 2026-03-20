@@ -650,3 +650,10 @@
   font-size: 1.05rem;
   line-height: 1.6;
 }
+
+/* === TREND COLORS FOR PERIODIC TABLE === */
+.trend-low { background-color: var(--tiimo-blue); opacity: 0.7; }
+.trend-medium-low { background-color: var(--tiimo-blue); opacity: 0.85; }
+.trend-medium { background-color: var(--tiimo-yellow); }
+.trend-medium-high { background-color: var(--tiimo-orange); }
+.trend-high { background-color: var(--destructive); }

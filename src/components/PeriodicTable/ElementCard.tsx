@@ -9,6 +9,7 @@ import {
 	type TrendMode,
 } from '@/constants/periodic-table';
 import { ELEMENT_DETAILS } from '@/data/elements';
+import { useReducedMotion } from '@/hooks/use-reduced-motion';
 import { cn } from '@/lib/utils';
 
 interface ElementCardProps {
@@ -68,11 +69,11 @@ function getTrendColor(elementNum: number, mode: TrendMode): string {
 
 	const normalized = (value - range.min) / (range.max - range.min);
 
-	if (normalized < 0.25) return 'bg-blue-300';
-	if (normalized < 0.5) return 'bg-blue-400';
-	if (normalized < 0.75) return 'bg-yellow-400';
-	if (normalized < 0.9) return 'bg-orange-500';
-	return 'bg-red-500';
+	if (normalized < 0.25) return 'trend-low';
+	if (normalized < 0.5) return 'trend-medium-low';
+	if (normalized < 0.75) return 'trend-medium';
+	if (normalized < 0.9) return 'trend-medium-high';
+	return 'trend-high';
 }
 
 export function ElementCard({
@@ -87,20 +88,21 @@ export function ElementCard({
 }: ElementCardProps) {
 	const details = ELEMENT_DETAILS[element.num];
 	const category = CATEGORY_LABELS[element.group] || element.category;
+	const prefersReducedMotion = useReducedMotion();
 
 	return (
 		<Tooltip>
 			<TooltipTrigger asChild>
 				<m.button
 					key={element.num}
-					initial={{ opacity: 0, scale: 0.9 }}
+					initial={prefersReducedMotion ? { opacity: 1 } : { opacity: 0, scale: 0.9 }}
 					animate={{
 						opacity: highlightedElements && !highlightedElements.has(element.num) ? 0.15 : 1,
 						scale: 1,
 					}}
-					transition={{ delay: Math.min(index * 0.01, 1) }}
+					transition={prefersReducedMotion ? { duration: 0 } : { delay: Math.min(index * 0.01, 1) }}
 					whileHover={
-						highlightedElements && !highlightedElements.has(element.num)
+						prefersReducedMotion || (highlightedElements && !highlightedElements.has(element.num))
 							? {}
 							: { scale: 1.1, zIndex: 10 }
 					}
@@ -112,7 +114,7 @@ export function ElementCard({
 						onClick(element);
 					}}
 					className={cn(
-						'w-16 h-20 sm:w-16 sm:h-20 rounded-sm border flex flex-col items-center justify-between py-2 transition-all shadow-sm bg-card cursor-pointer',
+						'w-16 h-20 sm:w-16 sm:h-20 rounded-sm border flex flex-col items-center justify-between py-2 transition-all shadow-sm bg-card cursor-pointer focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:outline-none',
 						trendsMode && getTrendColor(element.num, trendsMode),
 						!trendsMode && element.num >= 57 && element.num <= 71 && 'row-start-1 row-end-1',
 						!trendsMode && element.num >= 89 && element.num <= 103 && 'row-start-1 row-end-1',
