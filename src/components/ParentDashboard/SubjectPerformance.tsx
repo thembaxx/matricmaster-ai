@@ -8,6 +8,7 @@ import {
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { useQuery } from '@tanstack/react-query';
+import { PolarAngleAxis, PolarGrid, Radar, RadarChart, ResponsiveContainer } from 'recharts';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
@@ -29,6 +30,39 @@ function formatTime(minutes: number) {
 	const mins = Math.round(minutes % 60);
 	if (hours > 0) return `${hours}h ${mins}m`;
 	return `${mins}m`;
+}
+
+function SubjectRadarChart({ subject }: { subject: SubjectData }) {
+	const data = [
+		{ metric: 'Mastery', value: subject.overallScore, fullMark: 100 },
+		{ metric: 'Confidence', value: Math.round(subject.confidenceScore * 100), fullMark: 100 },
+		{ metric: 'Attempts', value: Math.min(subject.questionsAttempted / 2, 100), fullMark: 100 },
+		{ metric: 'Time', value: Math.min((subject.timeMinutes / 30) * 100, 100), fullMark: 100 },
+		{ metric: 'Accuracy', value: Math.max(100 - subject.mistakesCount * 5, 0), fullMark: 100 },
+	];
+
+	const subjectColor = subject.needsAttention ? 'var(--color-warning)' : 'var(--color-primary)';
+
+	return (
+		<div className="h-24 w-full">
+			<ResponsiveContainer width="100%" height="100%">
+				<RadarChart data={data} cx="50%" cy="50%" outerRadius="80%">
+					<PolarGrid stroke="var(--border)" />
+					<PolarAngleAxis
+						dataKey="metric"
+						tick={{ fontSize: 8, fontWeight: 600, fill: 'var(--muted-foreground)' }}
+					/>
+					<Radar
+						dataKey="value"
+						stroke={subjectColor}
+						fill={subjectColor}
+						fillOpacity={0.3}
+						strokeWidth={2}
+					/>
+				</RadarChart>
+			</ResponsiveContainer>
+		</div>
+	);
 }
 
 export function SubjectPerformance() {
@@ -120,36 +154,40 @@ export function SubjectPerformance() {
 								</div>
 							</div>
 
-							<div className="mb-3">
-								<div className="flex justify-between text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-1.5">
-									<span>Overall Mastery</span>
-									<span>{subject.overallScore}%</span>
+							<div className="grid grid-cols-2 gap-4">
+								<div>
+									<div className="flex justify-between text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-1.5">
+										<span>Overall Mastery</span>
+										<span>{subject.overallScore}%</span>
+									</div>
+									<Progress
+										value={subject.overallScore}
+										className={cn('h-2', subject.needsAttention && '[&>div]:bg-warning')}
+									/>
+									<div className="grid grid-cols-3 gap-2 mt-3">
+										<div className="text-center">
+											<p className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest">
+												Confidence
+											</p>
+											<p className="text-sm font-black">
+												{Math.round(subject.confidenceScore * 100)}%
+											</p>
+										</div>
+										<div className="text-center">
+											<p className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest">
+												Mistakes
+											</p>
+											<p className="text-sm font-black">{subject.mistakesCount}</p>
+										</div>
+										<div className="text-center">
+											<p className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest">
+												Time Spent
+											</p>
+											<p className="text-sm font-black">{formatTime(subject.timeMinutes)}</p>
+										</div>
+									</div>
 								</div>
-								<Progress
-									value={subject.overallScore}
-									className={cn('h-2', subject.needsAttention && '[&>div]:bg-warning')}
-								/>
-							</div>
-
-							<div className="grid grid-cols-3 gap-3">
-								<div className="text-center">
-									<p className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest">
-										Confidence
-									</p>
-									<p className="text-sm font-black">{Math.round(subject.confidenceScore * 100)}%</p>
-								</div>
-								<div className="text-center">
-									<p className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest">
-										Mistakes
-									</p>
-									<p className="text-sm font-black">{subject.mistakesCount}</p>
-								</div>
-								<div className="text-center">
-									<p className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest">
-										Time Spent
-									</p>
-									<p className="text-sm font-black">{formatTime(subject.timeMinutes)}</p>
-								</div>
+								<SubjectRadarChart subject={subject} />
 							</div>
 						</div>
 					))

@@ -8,6 +8,14 @@ import { memo, useMemo, useState } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import {
+	Pagination,
+	PaginationContent,
+	PaginationItem,
+	PaginationLink,
+	PaginationNext,
+	PaginationPrevious,
+} from '@/components/ui/pagination';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { getLeaderboard, getSubjectLeaderboard, getUserRank } from '@/lib/db/leaderboard-actions';
@@ -166,6 +174,8 @@ import { LeaderboardSkeleton } from '@/components/LeaderboardSkeleton';
 export default function Leaderboard() {
 	const [activeTab, setActiveTab] = useState('weekly');
 	const [subjectTab, setSubjectTab] = useState<string>('mathematics');
+	const [currentPage, setCurrentPage] = useState(1);
+	const itemsPerPage = 10;
 
 	// User streak with useQuery
 	const { data: userStreak } = useQuery({
@@ -208,6 +218,11 @@ export default function Leaderboard() {
 	// Bolt: Memoize filtered results to avoid O(N) recalculation on every render
 	const topThree = useMemo(() => leaderboardData.filter((e) => e.rank <= 3), [leaderboardData]);
 	const others = useMemo(() => leaderboardData.filter((e) => e.rank > 3), [leaderboardData]);
+	const paginatedOthers = useMemo(() => {
+		const start = (currentPage - 1) * itemsPerPage;
+		return others.slice(start, start + itemsPerPage);
+	}, [others, currentPage]);
+	const totalPages = Math.ceil(others.length / itemsPerPage);
 
 	if (isLoading) {
 		return <LeaderboardSkeleton />;
@@ -265,9 +280,47 @@ export default function Leaderboard() {
 
 							<div className="grid grid-cols-1 gap-8">
 								<div className="bg-card/20 backdrop-blur-sm rounded-[2.5rem] border-2 border-border/50 shadow-sm p-2 overflow-hidden mx-4 lg:mx-0">
-									<RankingList data={others} />
+									<RankingList data={paginatedOthers} />
 								</div>
 							</div>
+
+							{totalPages > 1 && (
+								<div className="flex justify-center py-8 mx-4 lg:mx-0">
+									<Pagination>
+										<PaginationContent>
+											<PaginationItem>
+												<PaginationPrevious
+													onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+													className={
+														currentPage === 1 ? 'pointer-events-none opacity-50' : 'cursor-pointer'
+													}
+												/>
+											</PaginationItem>
+											{Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+												<PaginationItem key={page}>
+													<PaginationLink
+														onClick={() => setCurrentPage(page)}
+														isActive={currentPage === page}
+														className="cursor-pointer"
+													>
+														{page}
+													</PaginationLink>
+												</PaginationItem>
+											))}
+											<PaginationItem>
+												<PaginationNext
+													onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+													className={
+														currentPage === totalPages
+															? 'pointer-events-none opacity-50'
+															: 'cursor-pointer'
+													}
+												/>
+											</PaginationItem>
+										</PaginationContent>
+									</Pagination>
+								</div>
+							)}
 
 							{/* Subject Leaderboards */}
 							<div className="mx-4 lg:mx-0 space-y-6">

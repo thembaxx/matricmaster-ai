@@ -12,9 +12,9 @@ import { HugeiconsIcon } from '@hugeicons/react';
 import { useQuery } from '@tanstack/react-query';
 import { AnimatePresence, m } from 'framer-motion';
 import { useState } from 'react';
+import { RadialBar, RadialBarChart, ResponsiveContainer } from 'recharts';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { Progress } from '@/components/ui/progress';
 import { ACHIEVEMENTS } from '@/constants/achievements';
 import { STAGGER_CONTAINER, STAGGER_ITEM } from '@/lib/animation-presets';
 import { getUserAchievements } from '@/lib/db/achievement-actions';
@@ -85,6 +85,8 @@ export default function Achievements() {
 		return <AchievementsSkeleton />;
 	}
 
+	const radialData = [{ name: 'Progress', value: progress, fill: 'var(--color-primary)' }];
+
 	return (
 		<div className="flex flex-col h-full min-w-0 bg-background p-4 sm:pb-32 lg:px-8 overflow-x-hidden">
 			<main className="max-w-6xl mx-auto w-full pt-8 sm:pt-12 space-y-8 sm:space-y-12">
@@ -114,7 +116,19 @@ export default function Achievements() {
 										<span>Mastery Progress</span>
 										<span>{Math.round(progress)}%</span>
 									</div>
-									<Progress value={progress} className="h-4 bg-white/20" />
+									<div className="h-8 w-32">
+										<ResponsiveContainer width="100%" height="100%">
+											<RadialBarChart
+												innerRadius="80%"
+												outerRadius="100%"
+												data={radialData}
+												startAngle={90}
+												endAngle={-270}
+											>
+												<RadialBar background dataKey="value" cornerRadius={10} fill="white" />
+											</RadialBarChart>
+										</ResponsiveContainer>
+									</div>
 									<p className="text-sm font-bold opacity-80">
 										{badgesToNext > 0
 											? `Unlock ${badgesToNext} more badges to reach Level ${masteryLevel + 1}!`

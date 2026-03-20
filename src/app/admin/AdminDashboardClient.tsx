@@ -14,12 +14,21 @@ import {
 import { HugeiconsIcon } from '@hugeicons/react';
 import { useQuery } from '@tanstack/react-query';
 import { useCallback, useState, useTransition } from 'react';
+import { Bar, BarChart, Cell, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { toast } from 'sonner';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import {
+	Table,
+	TableBody,
+	TableCell,
+	TableHead,
+	TableHeader,
+	TableRow,
+} from '@/components/ui/table';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import type { AuthSession } from '@/lib/auth';
 import {
@@ -332,18 +341,18 @@ export default function AdminDashboardClient({
 									</div>
 								) : (
 									<div className="border rounded-lg overflow-hidden">
-										<table className="w-full">
-											<thead className="bg-muted/50">
-												<tr>
-													<th className="text-left p-3 text-sm font-medium">User</th>
-													<th className="text-left p-3 text-sm font-medium">Email</th>
-													<th className="text-right p-3 text-sm font-medium">Actions</th>
-												</tr>
-											</thead>
-											<tbody>
+										<Table>
+											<TableHeader>
+												<TableRow>
+													<TableHead>User</TableHead>
+													<TableHead>Email</TableHead>
+													<TableHead className="text-right">Actions</TableHead>
+												</TableRow>
+											</TableHeader>
+											<TableBody>
 												{users.map((user) => (
-													<tr key={user.id} className="border-t hover:bg-muted/30">
-														<td className="p-3">
+													<TableRow key={user.id}>
+														<TableCell>
 															<div className="flex items-center gap-2">
 																<Avatar className="h-8 w-8">
 																	<AvatarFallback className="text-xs">
@@ -352,9 +361,11 @@ export default function AdminDashboardClient({
 																</Avatar>
 																<span className="font-medium">{user.name}</span>
 															</div>
-														</td>
-														<td className="p-3 text-sm text-muted-foreground">{user.email}</td>
-														<td className="p-3 text-right">
+														</TableCell>
+														<TableCell className="text-sm text-muted-foreground">
+															{user.email}
+														</TableCell>
+														<TableCell className="text-right">
 															<Button
 																variant="ghost"
 																size="sm"
@@ -362,11 +373,11 @@ export default function AdminDashboardClient({
 															>
 																{user.isBlocked ? 'Unblock' : 'Block'}
 															</Button>
-														</td>
-													</tr>
+														</TableCell>
+													</TableRow>
 												))}
-											</tbody>
-										</table>
+											</TableBody>
+										</Table>
 									</div>
 								)}
 							</CardContent>
@@ -387,22 +398,87 @@ export default function AdminDashboardClient({
 										/>
 									</div>
 								) : subjectPerformance.length > 0 ? (
-									<div className="space-y-4">
-										{subjectPerformance.map((subject) => (
-											<div key={subject.subjectId} className="flex items-center gap-4">
-												<div className="w-32 font-medium">{subject.subjectName}</div>
-												<div className="flex-1 h-2 bg-muted rounded-full overflow-hidden">
-													<div
-														className="h-full bg-primary rounded-full"
-														style={{ width: `${subject.averageScore}%` }}
+									<div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+										<div className="h-80">
+											<ResponsiveContainer width="100%" height="100%">
+												<BarChart
+													data={subjectPerformance}
+													layout="vertical"
+													margin={{ left: 100, right: 20 }}
+												>
+													<XAxis type="number" domain={[0, 100]} hide />
+													<YAxis
+														dataKey="subjectName"
+														type="category"
+														tick={{ fontSize: 12, fontWeight: 500 }}
+														width={100}
 													/>
+													<Tooltip
+														content={({ active, payload }) => {
+															if (active && payload?.length) {
+																const data = payload[0].payload;
+																return (
+																	<div className="bg-background border border-border/50 rounded-lg px-3 py-2 shadow-xl">
+																		<p className="font-bold">{data.subjectName}</p>
+																		<p className="text-sm text-primary">
+																			Average: {data.averageScore}%
+																		</p>
+																		<p className="text-xs text-muted-foreground">
+																			{data.questionsAttempted.toLocaleString()} attempts
+																		</p>
+																	</div>
+																);
+															}
+															return null;
+														}}
+													/>
+													<Bar dataKey="averageScore" radius={[0, 4, 4, 0]} maxBarSize={24}>
+														{subjectPerformance.map((entry, index) => (
+															<Cell
+																key={`cell-${index}`}
+																fill={
+																	entry.averageScore >= 80
+																		? 'var(--color-success)'
+																		: entry.averageScore >= 60
+																			? 'var(--color-primary)'
+																			: 'var(--color-warning)'
+																}
+															/>
+														))}
+													</Bar>
+												</BarChart>
+											</ResponsiveContainer>
+										</div>
+										<div className="space-y-3">
+											<h4 className="text-sm font-bold text-muted-foreground uppercase tracking-wider">
+												Score Distribution
+											</h4>
+											{subjectPerformance.map((subject) => (
+												<div
+													key={subject.subjectId}
+													className="flex items-center gap-3 p-3 rounded-xl bg-muted/30"
+												>
+													<div
+														className="w-2 h-8 rounded-full"
+														style={{
+															backgroundColor:
+																subject.averageScore >= 80
+																	? 'var(--color-success)'
+																	: subject.averageScore >= 60
+																		? 'var(--color-primary)'
+																		: 'var(--color-warning)',
+														}}
+													/>
+													<div className="flex-1 min-w-0">
+														<p className="font-medium text-sm truncate">{subject.subjectName}</p>
+														<p className="text-xs text-muted-foreground">
+															{subject.questionsAttempted.toLocaleString()} attempts
+														</p>
+													</div>
+													<p className="text-lg font-black">{subject.averageScore}%</p>
 												</div>
-												<div className="w-20 text-right text-sm">
-													{subject.questionsAttempted.toLocaleString()} attempts
-												</div>
-												<div className="w-12 text-right font-medium">{subject.averageScore}%</div>
-											</div>
-										))}
+											))}
+										</div>
 									</div>
 								) : (
 									<div className="text-center py-8 text-muted-foreground">
