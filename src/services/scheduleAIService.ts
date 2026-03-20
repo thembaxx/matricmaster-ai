@@ -1,4 +1,5 @@
-import { GoogleGenerativeAI } from '@google/generative-ai';
+import { createGoogleGenerativeAI } from '@ai-sdk/google';
+import { generateText } from 'ai';
 import { differenceInDays } from 'date-fns';
 import { asc, eq } from 'drizzle-orm';
 import { NSC_EXAM_DATES } from '@/data/exam-dates';
@@ -6,6 +7,15 @@ import { getAuth } from '@/lib/auth';
 import { dbManager } from '@/lib/db';
 import { topicConfidence } from '@/lib/db/schema';
 import type { AISuggestion, ExamCountdown, StudyBlock } from '@/types/smart-scheduler';
+
+function getGeminiModel() {
+	const apiKey = process.env.GEMINI_API_KEY;
+	if (!apiKey) {
+		throw new Error('GEMINI_API_KEY is not configured');
+	}
+	const google = createGoogleGenerativeAI({ apiKey });
+	return google('gemini-2.5-flash');
+}
 
 export async function getWeakAreas(): Promise<{ topic: string; subject: string; score: number }[]> {
 	const auth = await getAuth();
@@ -71,8 +81,7 @@ export async function generateSmartSchedule(
 	}
 
 	try {
-		const genAI = new GoogleGenerativeAI(apiKey);
-		const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
+		const model = getGeminiModel();
 
 		const weakTopicsStr = weakAreas
 			.map((w) => `- ${w.subject}: ${w.topic} (confidence: ${Math.round(w.score * 100)}%)`)
@@ -125,8 +134,7 @@ Output format:
 
 Generate exactly 15-20 blocks for the week. dayOffset 0 = Monday.`;
 
-		const result = await model.generateContent(prompt);
-		const text = result.response.text();
+		const { text } = await generateText({ model, prompt });
 
 		const jsonMatch = text.match(/\{[\s\S]*\}/);
 		if (!jsonMatch) {
