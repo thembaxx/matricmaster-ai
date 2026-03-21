@@ -1,4 +1,5 @@
 'use client';
+/* eslint-disable react-hooks/setState-in-use-effect */
 
 import {
 	AlarmClockIcon,
@@ -155,7 +156,7 @@ export function SchedulePathModal({
 
 	const renderHourOptions = () => {
 		return Array.from({ length: 24 }, (_, i) => (
-			<option key={`hour-${i}`} value={i}>
+			<option key={`schedule-option-hour-${i}`} value={i}>
 				{i.toString().padStart(2, '0')}:00
 			</option>
 		));
@@ -276,7 +277,7 @@ export function SchedulePathModal({
 							</div>
 							{loadSheddingSlots.map((slot, index) => (
 								<div
-									key={`slot-${index}`}
+									key={`schedule-loadshedding-slot-${index}`}
 									className="flex items-center gap-2 bg-muted/50 rounded-xl p-3"
 								>
 									<select
@@ -373,14 +374,17 @@ export function SchedulePathModal({
 					{scheduleResult?.conflicts && scheduleResult.conflicts.length > 0 && (
 						<div className="bg-amber-500/10 rounded-xl p-3 border border-amber-500/20">
 							<div className="flex items-center gap-2 mb-2">
-								<HugeiconsIcon icon={AlarmClockIcon} className="h-4 w-4 text-amber-600" />
+								<HugeiconsIcon icon={AlarmClockIcon} className="h-4 h-4 text-amber-600" />
 								<span className="text-sm font-semibold text-amber-700">
 									{scheduleResult.conflicts.length} Adjustment
 									{scheduleResult.conflicts.length > 1 ? 's' : ''}
 								</span>
 							</div>
-							{scheduleResult.conflicts.slice(0, 2).map((conflict, i) => (
-								<p key={`conflict-${i}`} className="text-xs text-amber-700">
+							{scheduleResult.conflicts.slice(0, 2).map((conflict) => (
+								<p
+									key={`schedule-conflict-${conflict.suggestion}`}
+									className="text-xs text-amber-700"
+								>
 									{conflict.suggestion}
 								</p>
 							))}

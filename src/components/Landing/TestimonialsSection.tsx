@@ -43,10 +43,9 @@ export function TestimonialsSection() {
 						className="tiimo-card p-8 will-change-transform"
 					>
 						<div className="flex items-center gap-1 mb-4">
-							{/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
-							{[1, 2, 3, 4, 5].map((i) => (
+							{[1, 2, 3, 4, 5].map((item) => (
 								<HugeiconsIcon
-									key={`star-${i}`}
+									key={`testimonial-star-${item}`}
 									icon={StarIcon}
 									className="w-5 h-5 text-tiimo-yellow fill-tiimo-yellow"
 								/>

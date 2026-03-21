@@ -46,13 +46,12 @@ export function SubjectGrid() {
 	if (isLoading) {
 		return (
 			<div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4">
-				{/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
-				{[1, 2, 3, 4, 5, 6].map((i) => (
+				{[1, 2, 3, 4, 5, 6].map((item) => (
 					<div
-						key={`skeleton-${i}`}
+						key={`subject-grid-skeleton-${item}`}
 						className={cn(
 							'bg-secondary/50 animate-pulse rounded-2xl',
-							i === 1 ? 'md:col-span-2 aspect-[2/1]' : 'aspect-square'
+							item === 1 ? 'md:col-span-2 aspect-[2/1]' : 'aspect-square'
 						)}
 					/>
 				))}

@@ -69,8 +69,11 @@ export const AiInsights = memo(function AiInsights({
 							<div className="space-y-6 relative z-10">
 								<Skeleton className="h-8 w-3/4 rounded-full bg-white/5" />
 								<div className="flex flex-wrap gap-3">
-									{[1, 2, 3].map((i) => (
-										<Skeleton key={`skeleton-${i}`} className="h-10 w-32 rounded-xl bg-white/5" />
+									{[1, 2, 3].map((item) => (
+										<Skeleton
+											key={`ai-insights-skeleton-${item}`}
+											className="h-10 w-32 rounded-xl bg-white/5"
+										/>
 									))}
 								</div>
 							</div>
@@ -107,9 +110,9 @@ export const AiInsights = memo(function AiInsights({
 								</h3>
 							</div>
 							<div className="space-y-3">
-								{studyContext.slice(0, 3).map((ctx, index) => (
+								{studyContext.slice(0, 3).map((ctx) => (
 									<Link
-										key={`ctx-${index}`}
+										key={`ai-insights-ctx-${ctx.topic}`}
 										href={`/review?topic=${encodeURIComponent(ctx.topic)}`}
 										className="flex items-center justify-between p-3 rounded-xl bg-white/60 dark:bg-black/20 hover:bg-white transition-colors"
 									>

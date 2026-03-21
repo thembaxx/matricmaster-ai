@@ -1,7 +1,7 @@
 'use client';
 
 import { AnimatePresence, domAnimation, LazyMotion, m } from 'framer-motion';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 
 interface ConfettiProps {
 	active: boolean;
@@ -32,6 +32,8 @@ export function Confetti({
 	onComplete,
 }: ConfettiProps) {
 	const [particles, setParticles] = useState<Particle[]>([]);
+	const prevActive = useRef(active);
+	const hasTriggered = useRef(false);
 
 	const particleData = useMemo(() => {
 		if (!active) return [];
@@ -47,16 +49,17 @@ export function Confetti({
 		}));
 	}, [active, colors, particleCount]);
 
-	useEffect(() => {
-		if (active) {
-			setParticles(particleData);
-			const timer = setTimeout(() => {
-				setParticles([]);
-				onComplete?.();
-			}, duration);
-			return () => clearTimeout(timer);
-		}
-	}, [active, particleData, duration, onComplete]);
+	if (active && !prevActive.current && !hasTriggered.current) {
+		hasTriggered.current = true;
+		setParticles(particleData);
+		setTimeout(() => {
+			setParticles([]);
+			onComplete?.();
+			hasTriggered.current = false;
+		}, duration);
+	}
+
+	prevActive.current = active;
 
 	return (
 		<LazyMotion features={domAnimation}>

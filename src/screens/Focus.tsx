@@ -25,19 +25,18 @@ function FocusScreenContent() {
 
 	const [timeRemaining, setTimeRemaining] = useState((lesson?.duration || 25) * 60);
 	const [isPaused, setIsPaused] = useState(true);
-	const [showComplete, setShowComplete] = useState(false);
 	const [viewMode, setViewMode] = useState<'timer' | 'content'>('timer');
 
 	const totalTime = (lesson?.duration || 25) * 60;
 	const progress = ((totalTime - timeRemaining) / totalTime) * 100;
+	const showComplete = timeRemaining === 0 && !isPaused;
 
 	useEffect(() => {
-		if (isPaused || showComplete) return;
+		if (isPaused) return;
 
 		const timer = setInterval(() => {
 			setTimeRemaining((prev) => {
 				if (prev <= 1) {
-					setShowComplete(true);
 					return 0;
 				}
 				return prev - 1;
@@ -45,7 +44,7 @@ function FocusScreenContent() {
 		}, 1000);
 
 		return () => clearInterval(timer);
-	}, [isPaused, showComplete]);
+	}, [isPaused]);
 
 	if (!lesson)
 		return (

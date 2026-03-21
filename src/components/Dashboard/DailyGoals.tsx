@@ -91,9 +91,8 @@ export const DailyGoals = memo(function DailyGoals({
 			<div className="p-8 bg-card rounded-[2.5rem] shadow-tiimo border border-border/50 h-full">
 				<div className="space-y-6">
 					<Skeleton className="h-6 w-32 rounded-full" />
-					{/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
-					{[1, 2, 3].map((i) => (
-						<div key={`skeleton-${i}`} className="flex gap-4 items-center">
+					{[1, 2, 3].map((item) => (
+						<div key={`daily-goals-skeleton-${item}`} className="flex gap-4 items-center">
 							<Skeleton className="w-10 h-10 rounded-full" />
 							<div className="flex-1 space-y-2">
 								<Skeleton className="h-4 w-3/4 rounded-full" />

@@ -20,10 +20,9 @@ export function LessonCompleteSkeleton() {
 				</div>
 
 				<div className="grid grid-cols-3 gap-3 w-full max-w-md mb-8">
-					{/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
-					{[1, 2, 3].map((i) => (
+					{[1, 2, 3].map((item) => (
 						<div
-							key={`skeleton-${i}`}
+							key={`lesson-complete-skeleton-${item}`}
 							className="bg-card p-4 rounded-3xl flex flex-col items-center border border-border/50"
 						>
 							<Skeleton className="w-10 h-10 rounded-2xl mb-3" />

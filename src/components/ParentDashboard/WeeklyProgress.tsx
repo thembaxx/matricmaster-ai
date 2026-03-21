@@ -8,7 +8,18 @@ import {
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { useQuery } from '@tanstack/react-query';
-import { Bar, BarChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
+import dynamic from 'next/dynamic';
+
+const Bar = dynamic(() => import('recharts').then((mod) => mod.Bar), { ssr: false });
+const BarChart = dynamic(() => import('recharts').then((mod) => mod.BarChart), { ssr: false });
+const ResponsiveContainer = dynamic(
+	() => import('recharts').then((mod) => mod.ResponsiveContainer),
+	{ ssr: false }
+);
+const Tooltip = dynamic(() => import('recharts').then((mod) => mod.Tooltip), { ssr: false });
+const XAxis = dynamic(() => import('recharts').then((mod) => mod.XAxis), { ssr: false });
+const YAxis = dynamic(() => import('recharts').then((mod) => mod.YAxis), { ssr: false });
+
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 
@@ -144,7 +155,7 @@ export function WeeklyProgress() {
 									{quizTrend.length > 0 ? (
 										quizTrend.map((score: number, i: number) => (
 											<div
-												key={`score-${score}-${i}`}
+												key={`weekly-progress-trend-${score}-${i}`}
 												className="flex-1 rounded-sm bg-primary/60"
 												style={{
 													height: `${Math.max((score / 100) * 100, 10)}%`,

@@ -48,10 +48,9 @@ export const SearchHistoryList = memo(function SearchHistoryList({
 			<div className="grid grid-cols-1 md:grid-cols-2 gap-3">
 				<AnimatePresence mode="popLayout">
 					{isLoading ? (
-						// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-						[1, 2, 3, 4].map((i) => (
+						[1, 2, 3, 4].map((item) => (
 							<m.div
-								key={`skeleton-${i}`}
+								key={`search-history-skeleton-${item}`}
 								className="h-[68px] rounded-[1.5rem] overflow-hidden border-2 border-border/50"
 							>
 								<Skeleton className="w-full h-full" />

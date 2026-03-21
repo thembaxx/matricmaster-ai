@@ -15,11 +15,11 @@ interface MockExamLockdownProps {
 }
 
 export function MockExamLockdown({ defaultDuration = 180, onComplete }: MockExamLockdownProps) {
-	const [isActive, setIsActive] = useState(false);
 	const [timeLeft, setTimeLeft] = useState(defaultDuration * 60);
 	const [photos, setPhotos] = useState<string[]>([]);
 	const [showCamera, setShowCamera] = useState(false);
 	const [cameraError, setCameraError] = useState<string | null>(null);
+	const isActive = showCamera && timeLeft > 0;
 	const videoRef = useRef<HTMLVideoElement>(null);
 	const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -77,7 +77,6 @@ export function MockExamLockdown({ defaultDuration = 180, onComplete }: MockExam
 			interval = setInterval(() => {
 				setTimeLeft((prev) => {
 					if (prev <= 1) {
-						setIsActive(false);
 						stopCamera();
 						toast.info('Exam time is up! Please submit your answers.');
 						if (onComplete) {
@@ -97,13 +96,11 @@ export function MockExamLockdown({ defaultDuration = 180, onComplete }: MockExam
 	const handleStart = async () => {
 		await startCamera();
 		setShowCamera(true);
-		setIsActive(true);
 		setTimeLeft(defaultDuration * 60);
 		toast.info('Mock exam started! Stay focused - the camera will capture periodic photos.');
 	};
 
 	const handleStop = () => {
-		setIsActive(false);
 		stopCamera();
 		setShowCamera(false);
 		toast.info('Mock exam paused. Your progress has been saved.');

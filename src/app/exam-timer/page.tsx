@@ -17,13 +17,17 @@ export default function ExamTimerPage() {
 	const [selectedPreset, setSelectedPreset] = useState<ExamPreset>(EXAM_PRESETS[0]);
 	const [customDuration, setCustomDuration] = useState(60);
 	const [timeRemaining, setTimeRemaining] = useState(EXAM_PRESETS[0].duration * 60);
-	const [isRunning, setIsRunning] = useState(false);
-	const [showWarning, setShowWarning] = useState(false);
 	const [warningMinutes, setWarningMinutes] = useState(10);
 	const [enableSound, setEnableSound] = useState(true);
 	const [examName, setExamName] = useState('');
 
 	const { startFocusMode, isFocusMode, state, completeExam } = useFocusMode();
+
+	const isRunning =
+		timeRemaining > 0 &&
+		timeRemaining <
+			(selectedPreset.name === 'Custom' ? customDuration * 60 : selectedPreset.duration * 60);
+	const showWarning = timeRemaining <= warningMinutes * 60 && timeRemaining > 0;
 
 	const totalSeconds =
 		selectedPreset.name === 'Custom' ? customDuration * 60 : selectedPreset.duration * 60;
@@ -31,28 +35,23 @@ export default function ExamTimerPage() {
 	const progress = ((totalSeconds - timeRemaining) / totalSeconds) * 100;
 
 	const handleStart = () => {
-		setIsRunning(true);
+		setTimeRemaining((prev) => (prev === 0 ? totalSeconds : prev));
 		toast.success('Exam timer started - Good luck!');
 	};
 
 	const handlePause = () => {
-		setIsRunning(false);
 		toast.info('Exam timer paused');
 	};
 
 	const handleReset = () => {
-		setIsRunning(false);
 		setTimeRemaining(
 			selectedPreset.name === 'Custom' ? customDuration * 60 : selectedPreset.duration * 60
 		);
-		setShowWarning(false);
 		toast.info('Exam timer reset');
 	};
 
 	const handlePresetSelect = (preset: ExamPreset) => {
 		setSelectedPreset(preset);
-		setIsRunning(false);
-		setShowWarning(false);
 		setTimeRemaining(preset.name === 'Custom' ? customDuration * 60 : preset.duration * 60);
 	};
 
@@ -70,8 +69,7 @@ export default function ExamTimerPage() {
 				setTimeRemaining((prev) => {
 					const newTime = prev - 1;
 
-					if (newTime <= warningMinutes * 60 && newTime > 0 && !showWarning) {
-						setShowWarning(true);
+					if (newTime <= warningMinutes * 60 && newTime > 0) {
 						if (enableSound) {
 							toast.warning(`${warningMinutes} minutes remaining!`, {
 								duration: 10000,
@@ -80,7 +78,6 @@ export default function ExamTimerPage() {
 					}
 
 					if (newTime === 0) {
-						setIsRunning(false);
 						if (enableSound) {
 							toast.error("Time's up! Submit your answers now.");
 						}
@@ -95,15 +92,7 @@ export default function ExamTimerPage() {
 		}
 
 		return () => clearInterval(interval);
-	}, [
-		isRunning,
-		timeRemaining,
-		warningMinutes,
-		showWarning,
-		enableSound,
-		isFocusMode,
-		completeExam,
-	]);
+	}, [isRunning, timeRemaining, warningMinutes, enableSound, isFocusMode, completeExam]);
 
 	const getTimeColor = () => {
 		if (showWarning) return 'text-red-500';

@@ -62,10 +62,9 @@ export function RecentActivity() {
 	if (isPending) {
 		return (
 			<div className="space-y-4">
-				{/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
-				{[1, 2, 3].map((i) => (
+				{[1, 2, 3].map((item) => (
 					<div
-						key={`skeleton-${i}`}
+						key={`recent-activity-skeleton-${item}`}
 						className="h-20 bg-secondary/50 animate-pulse rounded-[2rem]"
 					/>
 				))}

@@ -1,22 +1,28 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 export function NavigationProgress() {
 	const [isNavigating, setIsNavigating] = useState(false);
 	const [progress, setProgress] = useState(0);
+	const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
 	const startNavigation = useCallback(() => {
+		if (timeoutRef.current) {
+			clearTimeout(timeoutRef.current);
+		}
 		setIsNavigating(true);
 		setProgress(0);
-	}, []);
-
-	const endNavigation = useCallback(() => {
-		setProgress(100);
-		setTimeout(() => {
-			setIsNavigating(false);
-			setProgress(0);
-		}, 200);
+		timeoutRef.current = setTimeout(() => {
+			if (timeoutRef.current) {
+				clearTimeout(timeoutRef.current);
+			}
+			setProgress(100);
+			setTimeout(() => {
+				setIsNavigating(false);
+				setProgress(0);
+			}, 200);
+		}, 5000);
 	}, []);
 
 	useEffect(() => {
@@ -62,15 +68,6 @@ export function NavigationProgress() {
 
 		return () => clearInterval(interval);
 	}, [isNavigating]);
-
-	useEffect(() => {
-		if (isNavigating) {
-			const timer = setTimeout(() => {
-				endNavigation();
-			}, 5000);
-			return () => clearTimeout(timer);
-		}
-	}, [isNavigating, endNavigation]);
 
 	return (
 		<div

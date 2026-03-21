@@ -185,9 +185,8 @@ function StudyCompanionSkeleton() {
 						<div className="h-6 bg-muted rounded w-1/2 mx-auto" />
 					</div>
 					<div className="grid grid-cols-2 gap-4">
-						{/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
-						{[1, 2, 3, 4].map((i) => (
-							<div key={`skeleton-${i}`} className="h-24 bg-muted rounded-lg" />
+						{[1, 2, 3, 4].map((item) => (
+							<div key={`study-companion-skeleton-${item}`} className="h-24 bg-muted rounded-lg" />
 						))}
 					</div>
 				</div>

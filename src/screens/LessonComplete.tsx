@@ -1,7 +1,7 @@
 'use client';
 
 import { AnimatePresence, m } from 'framer-motion';
-import { useRouter } from 'next/navigation';
+import { redirect } from 'next/navigation';
 import { useEffect, useReducer } from 'react';
 import { AchievementUnlocked } from '@/components/LessonComplete/AchievementUnlocked';
 import { ActionButtons } from '@/components/LessonComplete/ActionButtons';
@@ -86,7 +86,6 @@ function reducer(state: State, action: Action): State {
 }
 
 export default function LessonComplete() {
-	const router = useRouter();
 	const [state, dispatch] = useReducer(reducer, initialState);
 	const { completeQuiz, isCompleting } = useQuizCompletion();
 	const addActivity = useAiContextStore((s) => s.addActivity);
@@ -95,7 +94,7 @@ export default function LessonComplete() {
 		async function loadResult() {
 			const quizResult = useQuizResultStore.getState().get();
 			if (!quizResult) {
-				router.push('/dashboard');
+				redirect('/dashboard');
 				return;
 			}
 
@@ -155,7 +154,7 @@ export default function LessonComplete() {
 		}
 
 		loadResult();
-	}, [completeQuiz, router, addActivity]);
+	}, [completeQuiz, addActivity]);
 
 	if (!state.result) {
 		return <LessonCompleteSkeleton />;

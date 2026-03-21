@@ -13,7 +13,7 @@ import {
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { toast } from 'sonner';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -23,14 +23,10 @@ import { MOCK_SESSIONS, type TutoringSession } from './constants';
 
 export default function TutoringPage() {
 	const router = useRouter();
-	const [sessions, setSessions] = useState<TutoringSession[]>([]);
+	const [sessions] = useState<TutoringSession[]>(MOCK_SESSIONS);
 	const [roomCode, setRoomCode] = useState('');
 	const [_userName, _setUserName] = useState('');
 	const [isCreating, setIsCreating] = useState(false);
-
-	useEffect(() => {
-		setSessions(MOCK_SESSIONS);
-	}, []);
 
 	const handleCreateSession = async () => {
 		setIsCreating(true);

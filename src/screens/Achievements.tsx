@@ -11,8 +11,18 @@ import {
 import { HugeiconsIcon } from '@hugeicons/react';
 import { useQuery } from '@tanstack/react-query';
 import { AnimatePresence, m } from 'framer-motion';
+import dynamic from 'next/dynamic';
 import { useState } from 'react';
-import { RadialBar, RadialBarChart, ResponsiveContainer } from 'recharts';
+
+const RadialBar = dynamic(() => import('recharts').then((mod) => mod.RadialBar), { ssr: false });
+const RadialBarChart = dynamic(() => import('recharts').then((mod) => mod.RadialBarChart), {
+	ssr: false,
+});
+const ResponsiveContainer = dynamic(
+	() => import('recharts').then((mod) => mod.ResponsiveContainer),
+	{ ssr: false }
+);
+
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { ACHIEVEMENTS } from '@/constants/achievements';

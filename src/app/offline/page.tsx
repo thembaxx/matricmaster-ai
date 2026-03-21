@@ -130,13 +130,17 @@ export default function OfflinePage() {
 		setSubjectStatuses(updated);
 	}, []);
 
+	// eslint-disable-next-line react-hooks/setState-in-use-effect
 	useEffect(() => {
 		const handleOnline = () => setOnlineStatus(true);
 		const handleOffline = () => setOnlineStatus(false);
 
 		window.addEventListener('online', handleOnline);
 		window.addEventListener('offline', handleOffline);
-		setOnlineStatus(navigator.onLine);
+
+		if (navigator.onLine !== isOnline) {
+			setOnlineStatus(navigator.onLine);
+		}
 
 		loadCachedPapers();
 		loadCachedTasks();
@@ -157,6 +161,7 @@ export default function OfflinePage() {
 		};
 	}, [
 		setOnlineStatus,
+		isOnline,
 		loadCachedPapers,
 		loadCachedTasks,
 		loadStorageUsage,

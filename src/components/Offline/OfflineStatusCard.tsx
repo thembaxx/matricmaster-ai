@@ -82,13 +82,17 @@ export function OfflineStatusCard() {
 		}
 	}, []);
 
+	// eslint-disable-next-line react-hooks/setState-in-use-effect
 	useEffect(() => {
 		const handleOnline = () => setOnlineStatus(true);
 		const handleOffline = () => setOnlineStatus(false);
 
 		window.addEventListener('online', handleOnline);
 		window.addEventListener('offline', handleOffline);
-		setOnlineStatus(navigator.onLine);
+
+		if (navigator.onLine !== isOnline) {
+			setOnlineStatus(navigator.onLine);
+		}
 
 		refreshStorageInfo();
 
@@ -98,7 +102,7 @@ export function OfflineStatusCard() {
 			window.removeEventListener('offline', handleOffline);
 			clearInterval(interval);
 		};
-	}, [setOnlineStatus, refreshStorageInfo]);
+	}, [setOnlineStatus, refreshStorageInfo, isOnline]);
 
 	const handleDownloadSubject = async (subjectId: number) => {
 		setSubjectStatuses((prev) =>

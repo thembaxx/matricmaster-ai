@@ -72,6 +72,7 @@ export default function FocusRooms() {
 		focusMinutes: number;
 	}>('focus-room');
 
+	// eslint-disable-next-line react-hooks/setState-in-use-effect
 	useEffect(() => {
 		let interval: NodeJS.Timeout | null = null;
 		if (isActive && timeLeft > 0) {

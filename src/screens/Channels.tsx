@@ -333,10 +333,9 @@ export default function Channels() {
 								</div>
 							</div>
 							<div className="flex items-center -space-x-2">
-								{/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
-								{[1, 2, 3].map((i) => (
+								{[1, 2, 3].map((item) => (
 									<div
-										key={`avatar-${i}`}
+										key={`channels-avatar-${item}`}
 										className="w-7 h-7 rounded-full border-2 border-background bg-secondary overflow-hidden relative shadow-sm"
 									>
 										<Avatar className="w-full h-full">

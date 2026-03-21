@@ -18,7 +18,6 @@ export function ProjectileMotion({
 }: ProjectileMotionProps) {
 	const [isPlaying, setIsPlaying] = useState(false);
 	const [time, setTime] = useState(0);
-	const [position, setPosition] = useState({ x: 0, y: 0 });
 	const [velocity, setVelocity] = useState(() => initialVelocity);
 	const [theta, setTheta] = useState(() => angle);
 
@@ -33,6 +32,9 @@ export function ProjectileMotion({
 	const height = 250;
 	const groundY = height - 30;
 
+	const position = { x: vx * time, y: Math.max(0, vy * time - 0.5 * gravity * time * time) };
+
+	// eslint-disable-next-line react-hooks/setState-in-use-effect
 	useEffect(() => {
 		if (!isPlaying) return;
 		const interval = setInterval(() => {
@@ -42,19 +44,15 @@ export function ProjectileMotion({
 					setIsPlaying(false);
 					return flightTime;
 				}
-				const newX = vx * newTime;
-				const newY = vy * newTime - 0.5 * gravity * newTime * newTime;
-				setPosition({ x: newX, y: Math.max(0, newY) });
 				return newTime;
 			});
 		}, 50);
 		return () => clearInterval(interval);
-	}, [isPlaying, flightTime, vx, vy, gravity]);
+	}, [isPlaying, flightTime]);
 
 	const reset = () => {
 		setIsPlaying(false);
 		setTime(0);
-		setPosition({ x: 0, y: 0 });
 	};
 
 	const projectileX = 30 + position.x * scale;
@@ -93,10 +91,9 @@ export function ProjectileMotion({
 						y
 					</text>
 
-					{/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
 					{[...Array(6)].map((_, i) => (
 						<line
-							key={`grid-${i}`}
+							key={`projectile-motion-grid-${i}`}
 							x1={30 + i * 60}
 							y1={groundY - 5}
 							x2={30 + i * 60}

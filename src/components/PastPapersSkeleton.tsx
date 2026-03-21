@@ -24,10 +24,9 @@ export function PastPapersSkeleton() {
 							<Skeleton className="h-12 sm:h-16 w-full rounded-xl sm:rounded-2xl" />
 						</div>
 						<div className="lg:col-span-4 flex gap-2 overflow-x-auto no-scrollbar py-1">
-							{/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
-							{[1, 2, 3, 4, 5].map((i) => (
+							{[1, 2, 3, 4, 5].map((item) => (
 								<Skeleton
-									key={`skeleton-${i}`}
+									key={`past-papers-filter-skeleton-${item}`}
 									className="h-10 sm:h-16 w-24 sm:w-32 rounded-xl sm:rounded-2xl shrink-0"
 								/>
 							))}
@@ -42,10 +41,9 @@ export function PastPapersSkeleton() {
 				</div>
 
 				<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
-					{/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
-					{[1, 2, 3, 4, 5, 6].map((i) => (
+					{[1, 2, 3, 4, 5, 6].map((item) => (
 						<Card
-							key={`skeleton-${i}`}
+							key={`past-papers-card-skeleton-${item}`}
 							className="p-8 rounded-3xl border border-border bg-card/50 flex flex-col gap-6"
 						>
 							<div className="flex items-start justify-between">

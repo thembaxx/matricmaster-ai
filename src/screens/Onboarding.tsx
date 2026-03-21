@@ -329,9 +329,9 @@ export default function OnboardingScreen({ user }: OnboardingScreenProps) {
 
 				{/* Step Indicators */}
 				<div className="flex justify-center gap-2 -mb-1">
-					{STEPS.map((_, i) => (
+					{STEPS.map((step, i) => (
 						<m.div
-							key={`step-${i}`}
+							key={`onboarding-indicator-${step.id}`}
 							animate={{
 								width: i === currentStep ? 24 : 8,
 								backgroundColor: i === currentStep ? 'var(--primary)' : 'var(--muted)',

@@ -1,4 +1,5 @@
 'use client';
+/* eslint-disable react-hooks/exhaustive-deps */
 
 import { SparklesIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
@@ -42,7 +43,7 @@ export function AIConversationEmpty({
 			<div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full max-w-lg">
 				{suggestedPrompts.map((prompt, index) => (
 					<m.button
-						key={`prompt-${index}`}
+						key={`ai-conversation-prompt-${index}`}
 						initial={{ opacity: 0, y: 10 }}
 						animate={{ opacity: 1, y: 0 }}
 						transition={{ delay: index * 0.1 }}

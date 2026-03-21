@@ -3,7 +3,7 @@
 import { StarIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { AnimatePresence, m, useAnimation } from 'framer-motion';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 interface LevelUpAnimationProps {
 	isVisible: boolean;
@@ -19,19 +19,23 @@ export function LevelUpAnimation({
 	onComplete,
 }: LevelUpAnimationProps) {
 	const controls = useAnimation();
+	const hasAnimated = useRef(false);
+	const prevVisible = useRef(isVisible);
 
-	useEffect(() => {
-		if (isVisible) {
-			controls.start({
-				scale: [0, 1.2, 1],
-				rotate: [0, 360],
-				opacity: [0, 1, 1, 1, 0],
-			});
-			setTimeout(() => {
-				onComplete?.();
-			}, 3000);
-		}
-	}, [isVisible, controls, onComplete]);
+	if (isVisible && !prevVisible.current && !hasAnimated.current) {
+		hasAnimated.current = true;
+		controls.start({
+			scale: [0, 1.2, 1],
+			rotate: [0, 360],
+			opacity: [0, 1, 1, 1, 0],
+		});
+		setTimeout(() => {
+			onComplete?.();
+			hasAnimated.current = false;
+		}, 3000);
+	}
+
+	prevVisible.current = isVisible;
 
 	if (!isVisible) return null;
 

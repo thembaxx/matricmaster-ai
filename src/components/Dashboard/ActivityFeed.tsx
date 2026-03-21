@@ -63,10 +63,9 @@ export function ActivityFeed() {
 	if (isPending) {
 		return (
 			<div className="space-y-4">
-				{/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
-				{[1, 2, 3].map((i) => (
-					<Skeleton key={`skeleton-${i}`} className="h-20 rounded-[2rem]" />
-				))}
+				<Skeleton key="activity-feed-skeleton-1" className="h-20 rounded-[2rem]" />
+				<Skeleton key="activity-feed-skeleton-2" className="h-20 rounded-[2rem]" />
+				<Skeleton key="activity-feed-skeleton-3" className="h-20 rounded-[2rem]" />
 			</div>
 		);
 	}

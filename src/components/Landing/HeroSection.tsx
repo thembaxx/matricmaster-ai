@@ -100,10 +100,9 @@ export function HeroSection({ onAuthRequired }: HeroSectionProps) {
 					className="flex items-center gap-4 pt-4"
 				>
 					<div className="flex -space-x-3">
-						{/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
-						{[1, 2, 3, 4, 5].map((i) => (
+						{[1, 2, 3, 4, 5].map((item) => (
 							<div
-								key={`avatar-${i}`}
+								key={`hero-avatar-${item}`}
 								className="w-10 h-10 rounded-full border-3 border-background bg-secondary flex items-center justify-center overflow-hidden relative shadow-sm img-outline"
 							>
 								<Image

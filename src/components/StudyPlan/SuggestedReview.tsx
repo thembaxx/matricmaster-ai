@@ -43,8 +43,8 @@ export function SuggestedReview() {
 				Based on your recent quiz mistakes, we recommend reviewing:
 			</p>
 			<ul className="space-y-2">
-				{mistakes.map((m, i) => (
-					<li key={`mistake-${i}`} className="text-sm font-medium">
+				{mistakes.map((m) => (
+					<li key={`suggested-review-${m.topic}`} className="text-sm font-medium">
 						• {m.topic}
 					</li>
 				))}

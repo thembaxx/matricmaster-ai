@@ -7,8 +7,20 @@ import {
 	CheckmarkCircle01Icon,
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
-import { Bar, BarChart, Cell, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
+
+const Bar = dynamic(() => import('recharts').then((mod) => mod.Bar), { ssr: false });
+const BarChart = dynamic(() => import('recharts').then((mod) => mod.BarChart), { ssr: false });
+const Cell = dynamic(() => import('recharts').then((mod) => mod.Cell), { ssr: false });
+const ResponsiveContainer = dynamic(
+	() => import('recharts').then((mod) => mod.ResponsiveContainer),
+	{ ssr: false }
+);
+const Tooltip = dynamic(() => import('recharts').then((mod) => mod.Tooltip), { ssr: false });
+const XAxis = dynamic(() => import('recharts').then((mod) => mod.XAxis), { ssr: false });
+const YAxis = dynamic(() => import('recharts').then((mod) => mod.YAxis), { ssr: false });
+
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 

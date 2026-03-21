@@ -55,9 +55,13 @@ function ChallengeConfetti({ show }: { show: boolean }) {
 			delay: Math.random() * 0.3,
 		}));
 		setPieces(newPieces);
+	}, [show]);
+
+	useEffect(() => {
+		if (pieces.length === 0) return;
 		const timer = setTimeout(() => setPieces([]), 3000);
 		return () => clearTimeout(timer);
-	}, [show]);
+	}, [pieces.length]);
 
 	if (!show || pieces.length === 0) return null;
 
@@ -149,9 +153,11 @@ export function DailyChallenges({ className }: { className?: string }) {
 					<div className="h-6 w-40 bg-muted animate-pulse rounded-lg" />
 				</CardHeader>
 				<CardContent className="space-y-4">
-					{/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
-					{[1, 2, 3].map((i) => (
-						<div key={`skeleton-${i}`} className="h-24 bg-muted animate-pulse rounded-xl" />
+					{[1, 2, 3].map((item) => (
+						<div
+							key={`daily-challenges-skeleton-${item}`}
+							className="h-24 bg-muted animate-pulse rounded-xl"
+						/>
 					))}
 				</CardContent>
 			</Card>

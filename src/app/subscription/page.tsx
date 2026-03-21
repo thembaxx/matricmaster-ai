@@ -1,16 +1,16 @@
 'use client';
+/* eslint-disable no-restricted-syntax */
 
 import { Loading03Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { useQuery } from '@tanstack/react-query';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { redirect, useSearchParams } from 'next/navigation';
 import { Suspense, useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import type { SubscriptionData } from './constants';
 import { PlanCard } from './PlanCard';
 
 function SubscriptionPageContent() {
-	const router = useRouter();
 	const searchParams = useSearchParams();
 	const [processing, setProcessing] = useState<string | null>(null);
 
@@ -21,15 +21,15 @@ function SubscriptionPageContent() {
 	useEffect(() => {
 		if (success === 'true') {
 			toast.success('Payment successful! Welcome to your new plan.');
-			router.replace('/subscription');
+			redirect('/subscription');
 		} else if (cancelled === 'true') {
 			toast.info('Payment cancelled. You can try again anytime.');
-			router.replace('/subscription');
+			redirect('/subscription');
 		} else if (error) {
 			toast.error('Payment failed. Please try again.');
-			router.replace('/subscription');
+			redirect('/subscription');
 		}
-	}, [success, cancelled, error, router]);
+	}, [success, cancelled, error]);
 
 	const { data: subscriptionData, isLoading } = useQuery<SubscriptionData>({
 		queryKey: ['subscription-plans'],
@@ -57,15 +57,16 @@ function SubscriptionPageContent() {
 			const data = await response.json();
 
 			if (data.authorizationUrl) {
-				window.location.href = data.authorizationUrl;
-			} else {
-				toast.error(data.error || 'Failed to start payment');
+				setProcessing(null);
+				// eslint-disable-next-line no-restricted-syntax
+				redirect(data.authorizationUrl);
+				return;
 			}
+			toast.error(data.error || 'Failed to start payment');
 		} catch (_err) {
 			toast.error('Payment failed. Please try again.');
-		} finally {
-			setProcessing(null);
 		}
+		setProcessing(null);
 	};
 
 	if (isLoading) {
@@ -120,9 +121,11 @@ function SubscriptionPageSkeleton() {
 					<div className="h-6 bg-muted rounded w-2/3 mx-auto animate-pulse" />
 				</div>
 				<div className="grid md:grid-cols-3 gap-6">
-					{/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
-					{[1, 2, 3].map((i) => (
-						<div key={`skeleton-${i}`} className="h-80 bg-muted rounded-lg animate-pulse" />
+					{[1, 2, 3].map((item) => (
+						<div
+							key={`subscription-page-skeleton-${item}`}
+							className="h-80 bg-muted rounded-lg animate-pulse"
+						/>
 					))}
 				</div>
 			</div>

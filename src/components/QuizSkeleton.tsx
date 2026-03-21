@@ -15,9 +15,8 @@ export function QuizSkeleton() {
 				<Skeleton className="h-4 w-3/4" />
 
 				<div className="space-y-4 pt-4">
-					{/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
-					{[1, 2, 3, 4].map((i) => (
-						<div key={`skeleton-${i}`} className="flex items-center gap-4">
+					{[1, 2, 3, 4].map((item) => (
+						<div key={`quiz-skeleton-${item}`} className="flex items-center gap-4">
 							<Skeleton className="h-6 w-6 rounded-full" />
 							<Skeleton className="h-12 flex-1 rounded-xl" />
 						</div>

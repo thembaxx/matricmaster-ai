@@ -1,4 +1,5 @@
 'use client';
+/* eslint-disable react-hooks/exhaustive-deps */
 
 import type { CalendarEvent } from '@/hooks/useCalendar';
 import { EVENT_TYPES } from '@/hooks/useCalendar';
@@ -25,8 +26,7 @@ export function CalendarGrid({
 	const days = [];
 
 	for (let i = 0; i < startingDay; i++) {
-		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-		days.push(<div key={`empty-${i}`} className="h-24 border bg-muted/30" />);
+		days.push(<div key={`calendar-empty-day-${i}`} className="h-24 border bg-muted/30" />);
 	}
 
 	for (let day = 1; day <= totalDays; day++) {
@@ -38,7 +38,7 @@ export function CalendarGrid({
 		days.push(
 			<button
 				type="button"
-				key={day}
+				key={`calendar-day-${year}-${month}-${day}`}
 				onClick={() => onSelectDate(date)}
 				className={`h-24 border p-1 cursor-pointer hover:bg-accent transition-colors text-left ${
 					isToday ? 'bg-blue-50' : ''

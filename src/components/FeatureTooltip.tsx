@@ -3,7 +3,7 @@
 import { Cancel01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { AnimatePresence, m } from 'framer-motion';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { useFeatureTooltip } from '@/hooks/use-feature-tooltip';
 
@@ -30,17 +30,20 @@ export function FeatureTooltip({
 	children,
 	position = 'bottom',
 }: FeatureTooltipProps) {
+	const onDismissRef = useRef(onDismiss);
+	onDismissRef.current = onDismiss;
+
 	useEffect(() => {
-		if (isVisible) {
-			const handleEscape = (e: KeyboardEvent) => {
-				if (e.key === 'Escape') {
-					onDismiss();
-				}
-			};
-			document.addEventListener('keydown', handleEscape);
-			return () => document.removeEventListener('keydown', handleEscape);
-		}
-	}, [isVisible, onDismiss]);
+		if (!isVisible) return;
+
+		const handleEscape = (e: KeyboardEvent) => {
+			if (e.key === 'Escape') {
+				onDismissRef.current();
+			}
+		};
+		document.addEventListener('keydown', handleEscape);
+		return () => document.removeEventListener('keydown', handleEscape);
+	}, [isVisible]);
 
 	const positionClasses = {
 		top: 'bottom-full left-1/2 -translate-x-1/2 mb-3',

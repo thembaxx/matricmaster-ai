@@ -171,10 +171,9 @@ export function TimelineSidebar() {
 					{/* Events */}
 					{isLoading ? (
 						<div className="space-y-2">
-							{/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
-							{[1, 2, 3, 4].map((i) => (
+							{[1, 2, 3, 4].map((item) => (
 								<div
-									key={`skeleton-${i}`}
+									key={`timeline-skeleton-${item}`}
 									className="flex items-start gap-3 p-3 rounded-xl bg-card border border-border animate-pulse"
 								>
 									<div className="w-3 h-3 rounded-full bg-muted" />

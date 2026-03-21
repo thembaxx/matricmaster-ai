@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useId, useReducer, useRef } from 'react';
+import { useCallback, useId, useReducer, useRef } from 'react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import {
@@ -148,16 +148,16 @@ export function QuestionManager({
 	const [state, dispatch] = useReducer(reducer, initialState);
 	const fileInputRef = useRef<HTMLInputElement>(null);
 	const fileInputId = useId();
+	const prevOpenCreateTrigger = useRef(openCreateTrigger);
 
 	const handleCreateQuestion = useCallback(() => {
 		dispatch({ type: 'OPEN_MODAL', payload: { ...EMPTY_QUESTION } });
 	}, []);
 
-	useEffect(() => {
-		if (openCreateTrigger) {
-			handleCreateQuestion();
-		}
-	}, [openCreateTrigger, handleCreateQuestion]);
+	if (openCreateTrigger && openCreateTrigger !== prevOpenCreateTrigger.current) {
+		prevOpenCreateTrigger.current = openCreateTrigger;
+		handleCreateQuestion();
+	}
 
 	const handleEditQuestion = async (question: Question) => {
 		const questionWithOptions = await getQuestionWithOptionsAction(question.id);
