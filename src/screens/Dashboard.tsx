@@ -5,7 +5,6 @@ import { m } from 'framer-motion';
 import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
 import { AdaptiveScheduleBanner } from '@/components/Dashboard/AdaptiveScheduleBanner';
-import { AdaptiveScheduleCard } from '@/components/Dashboard/AdaptiveScheduleCard';
 import { AITutorNudge } from '@/components/Dashboard/AITutorNudge';
 import { BriefingGreeting } from '@/components/Dashboard/BriefingGreeting';
 import { DailyMission } from '@/components/Dashboard/DailyMission';
@@ -21,6 +20,7 @@ import { UniversityGoalCard } from '@/components/Dashboard/UniversityGoalCard';
 import { XpHeader } from '@/components/Gamification/XpHeader';
 import { FocusContent } from '@/components/Layout/FocusContent';
 import { TimelineSidebar } from '@/components/Layout/TimelineSidebar';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { MistakeBank } from '@/components/Widgets/MistakeBank';
 import type { ACHIEVEMENTS } from '@/constants/achievements';
 import {
@@ -228,48 +228,71 @@ export default function Dashboard({
 						</div>
 					)}
 
-					<div className="h-full no-scrollbar">
-						<m.div layout className="space-y-8 pb-36">
-							<div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-								<DailyMission />
-								<div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
-									<UniversityGoalCard />
-									<NSCCountdownCard />
-									<MistakeBank initialCount={mistakeCount ?? 0} />
-									<FocusAreasWidget />
-								</div>
-							</div>
+					<Tabs defaultValue="today" className="w-full">
+						<TabsList className="w-full justify-start mb-8 bg-transparent border-b border-border h-auto p-0 rounded-none">
+							<TabsTrigger
+								value="today"
+								className="rounded-none border-b-2 border-transparent data-[state=active]:border-tiimo-lavender data-[state=active]:bg-transparent px-4 py-3 text-base font-medium"
+							>
+								Today
+							</TabsTrigger>
+							<TabsTrigger
+								value="progress"
+								className="rounded-none border-b-2 border-transparent data-[state=active]:border-tiimo-lavender data-[state=active]:bg-transparent px-4 py-3 text-base font-medium"
+							>
+								Progress
+							</TabsTrigger>
+							<TabsTrigger
+								value="tasks"
+								className="rounded-none border-b-2 border-transparent data-[state=active]:border-tiimo-lavender data-[state=active]:bg-transparent px-4 py-3 text-base font-medium"
+							>
+								Tasks
+							</TabsTrigger>
+							<TabsTrigger
+								value="more"
+								className="rounded-none border-b-2 border-transparent data-[state=active]:border-tiimo-lavender data-[state=active]:bg-transparent px-4 py-3 text-base font-medium"
+							>
+								More
+							</TabsTrigger>
+						</TabsList>
 
-							{weaknessData.length > 0 && (
-								<div className="space-y-6">
-									<div className="tiimo-card p-6">
-										<h3 className="heading-4 mb-1 text-balance">Growth Map</h3>
-										<p className="text-sm text-muted-foreground mb-4">
-											Topics where you need the most practice
-										</p>
-										<GrowthMap data={weaknessData} />
+						<TabsContent value="today" className="mt-0">
+							<m.div layout className="space-y-6 pb-36">
+								<div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+									<DailyMission />
+									<div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
+										<UniversityGoalCard />
+										<NSCCountdownCard />
 									</div>
-
-									<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-										<GrowthInsights
-											insights={growthInsights}
-											weakTopics={weaknessData.slice(0, 3)}
-										/>
-										<TipOfTheDay weakTopics={weakTopicNames} />
-									</div>
 								</div>
-							)}
-
-							{scheduleChanges && scheduleChanges.adjustments?.length > 0 && (
-								<AdaptiveScheduleCard adjustments={scheduleChanges.adjustments} />
-							)}
-
-							<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 								<XpHeader
 									variant="full"
 									initialAchievements={achievements}
 									initialStreak={{ currentStreak: streak.currentStreak }}
 								/>
+							</m.div>
+						</TabsContent>
+
+						<TabsContent value="progress" className="mt-0">
+							<m.div layout className="space-y-6 pb-36">
+								{weaknessData.length > 0 && (
+									<div className="space-y-6">
+										<div className="tiimo-card p-6">
+											<h3 className="heading-4 mb-1 text-balance">Growth Map</h3>
+											<p className="text-sm text-muted-foreground mb-4">
+												Topics where you need the most practice
+											</p>
+											<GrowthMap data={weaknessData} />
+										</div>
+										<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+											<GrowthInsights
+												insights={growthInsights}
+												weakTopics={weaknessData.slice(0, 3)}
+											/>
+											<TipOfTheDay weakTopics={weakTopicNames} />
+										</div>
+									</div>
+								)}
 								<WeeklyChallenge
 									initialProgress={
 										progress
@@ -284,91 +307,102 @@ export default function Dashboard({
 											: undefined
 									}
 								/>
-							</div>
+							</m.div>
+						</TabsContent>
 
-							<div className="space-y-6">
-								<TaskSection
-									title="High Priority"
-									priority="high"
-									expanded={expanded.high}
-									onToggle={() => setExpanded((p) => ({ ...p, high: !p.high }))}
+						<TabsContent value="tasks" className="mt-0">
+							<m.div layout className="space-y-6 pb-36">
+								<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+									<MistakeBank initialCount={mistakeCount ?? 0} />
+									<FocusAreasWidget />
+								</div>
+								<div className="space-y-6">
+									<TaskSection
+										title="High Priority"
+										priority="high"
+										expanded={expanded.high}
+										onToggle={() => setExpanded((p) => ({ ...p, high: !p.high }))}
+									>
+										{tasks.high.map((task, index) => (
+											<TaskCard
+												key={task.id}
+												task={task}
+												index={index}
+												onToggle={() => toggleTask(task.id, 'high')}
+											/>
+										))}
+									</TaskSection>
+									<TaskSection
+										title="Quick Tasks"
+										priority="medium"
+										expanded={expanded.medium}
+										onToggle={() => setExpanded((p) => ({ ...p, medium: !p.medium }))}
+									>
+										{tasks.medium.map((task, index) => (
+											<TaskCard
+												key={task.id}
+												task={task}
+												index={index}
+												onToggle={() => toggleTask(task.id, 'medium')}
+											/>
+										))}
+									</TaskSection>
+								</div>
+							</m.div>
+						</TabsContent>
+
+						<TabsContent value="more" className="mt-0">
+							<m.div layout className="space-y-6 pb-36">
+								<m.section
+									initial={{ opacity: 0, y: 20 }}
+									animate={{ opacity: 1, y: 0 }}
+									transition={{ delay: 0.55 }}
+									className="space-y-6"
 								>
-									{tasks.high.map((task, index) => (
-										<TaskCard
-											key={task.id}
-											task={task}
-											index={index}
-											onToggle={() => toggleTask(task.id, 'high')}
-										/>
-									))}
-								</TaskSection>
+									<m.h2
+										initial={{ opacity: 0, x: -20 }}
+										animate={{ opacity: 1, x: 0 }}
+										className="text-xl font-semibold text-foreground"
+									>
+										Your Subjects
+									</m.h2>
+									<SubjectGrid />
+								</m.section>
 
-								<TaskSection
-									title="Quick Tasks"
-									priority="medium"
-									expanded={expanded.medium}
-									onToggle={() => setExpanded((p) => ({ ...p, medium: !p.medium }))}
+								<m.section
+									initial={{ opacity: 0, y: 20 }}
+									animate={{ opacity: 1, y: 0 }}
+									transition={{ delay: 0.55 }}
+									className="space-y-6"
 								>
-									{tasks.medium.map((task, index) => (
-										<TaskCard
-											key={task.id}
-											task={task}
-											index={index}
-											onToggle={() => toggleTask(task.id, 'medium')}
-										/>
-									))}
-								</TaskSection>
-							</div>
+									<BuddyPanel />
+								</m.section>
 
-							<m.section
-								initial={{ opacity: 0, y: 20 }}
-								animate={{ opacity: 1, y: 0 }}
-								transition={{ delay: 0.55 }}
-								className="space-y-6"
-							>
-								<m.h2
-									initial={{ opacity: 0, x: -20 }}
-									animate={{ opacity: 1, x: 0 }}
-									className="text-xl font-semibold text-foreground"
+								<m.section
+									initial={{ opacity: 0, y: 20 }}
+									animate={{ opacity: 1, y: 0 }}
+									transition={{ delay: 0.58 }}
+									className="space-y-6"
 								>
-									Your Subjects
-								</m.h2>
-								<SubjectGrid />
-							</m.section>
+									<KnowledgeHeatmap compact />
+								</m.section>
 
-							<m.section
-								initial={{ opacity: 0, y: 20 }}
-								animate={{ opacity: 1, y: 0 }}
-								transition={{ delay: 0.55 }}
-								className="space-y-6"
-							>
-								<BuddyPanel />
-							</m.section>
+								<RecommendedSection />
 
-							<m.section
-								initial={{ opacity: 0, y: 20 }}
-								animate={{ opacity: 1, y: 0 }}
-								transition={{ delay: 0.58 }}
-								className="space-y-6"
-							>
-								<KnowledgeHeatmap compact />
-							</m.section>
-
-							<RecommendedSection />
-
-							<section className="space-y-6">
-								<m.h2
-									initial={{ opacity: 0, x: -20 }}
-									animate={{ opacity: 1, x: 0 }}
-									transition={{ delay: 0.75 }}
-									className="text-xl font-semibold text-foreground"
-								>
-									Recent activity
-								</m.h2>
-								<ActivityFeed />
-							</section>
-						</m.div>
-					</div>
+								<section className="space-y-6">
+									<m.h2
+										initial={{ opacity: 0, x: -20 }}
+										animate={{ opacity: 1, x: 0 }}
+										transition={{ delay: 0.75 }}
+										className="text-xl font-semibold text-foreground"
+									>
+										Recent activity
+									</m.h2>
+									<ActivityFeed />
+								</section>
+							</m.div>
+						</TabsContent>
+					</Tabs>
 				</div>
 			</FocusContent>
 		</div>
