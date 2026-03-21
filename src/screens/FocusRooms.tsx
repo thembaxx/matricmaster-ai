@@ -85,7 +85,7 @@ export default function FocusRooms() {
 		return () => {
 			if (interval) clearInterval(interval);
 		};
-	}, [isActive, timeLeft, tick, focusMinutes, setFocusMinutes, setIsActive]);
+	}, [isActive, timeLeft, tick, setFocusMinutes, setIsActive, focusMinutes]);
 
 	useEffect(() => {
 		updateStatus({

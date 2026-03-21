@@ -429,7 +429,7 @@ export const auth = new Proxy({} as AuthInstance, {
 					console.warn('⚠️ Auth accessed without await getAuth(). Auto-initializing...');
 					// Trigger async initialization but don't wait - this is fire-and-forget
 					// The next call should have auth ready (or fail gracefully)
-					getAuth().catch((err) => console.debug('❌ Failed to auto-initialize auth:', err));
+					getAuth().catch((err) => console.warn('❌ Failed to auto-initialize auth:', err));
 					// Return a placeholder that will throw a more helpful error
 					throw new Error(
 						`Auth is being initialized. Please use 'await getAuth()' instead of 'auth' directly.`

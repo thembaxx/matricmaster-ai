@@ -20,6 +20,7 @@ export function LessonCompleteSkeleton() {
 				</div>
 
 				<div className="grid grid-cols-3 gap-3 w-full max-w-md mb-8">
+					{/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
 					{[1, 2, 3].map((i) => (
 						<div
 							key={`skeleton-${i}`}

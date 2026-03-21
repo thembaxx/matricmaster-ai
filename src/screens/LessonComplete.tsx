@@ -2,7 +2,7 @@
 
 import { AnimatePresence, m } from 'framer-motion';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useReducer } from 'react';
 import { AchievementUnlocked } from '@/components/LessonComplete/AchievementUnlocked';
 import { ActionButtons } from '@/components/LessonComplete/ActionButtons';
 import { ConfettiEffect } from '@/components/LessonComplete/ConfettiEffect';
@@ -21,18 +21,73 @@ import { useAiContextStore } from '@/stores/useAiContextStore';
 import { useQuizResultStore } from '@/stores/useQuizResultStore';
 import type { QuizResult } from '@/types/quiz';
 
+type State = {
+	showAnalytics: boolean;
+	result: QuizResult | null;
+	pointsEarned: number;
+	level: number;
+	xpInCurrentLevel: number;
+	xpForNextLevel: number;
+	xpProgress: number;
+	newAchievement: string | null;
+	mistakeCount: number;
+	confettiEnabled: boolean;
+};
+
+type Action =
+	| { type: 'SET_RESULT'; payload: QuizResult }
+	| { type: 'SET_POINTS_EARNED'; payload: number }
+	| {
+			type: 'SET_LEVEL_INFO';
+			payload: {
+				level: number;
+				xpInCurrentLevel: number;
+				xpForNextLevel: number;
+				xpProgress: number;
+			};
+	  }
+	| { type: 'SET_NEW_ACHIEVEMENT'; payload: string | null }
+	| { type: 'SET_MISTAKE_COUNT'; payload: number }
+	| { type: 'ENABLE_CONFETTI' }
+	| { type: 'SET_SHOW_ANALYTICS'; payload: boolean };
+
+const initialState: State = {
+	showAnalytics: false,
+	result: null,
+	pointsEarned: 0,
+	level: 1,
+	xpInCurrentLevel: 0,
+	xpForNextLevel: 0,
+	xpProgress: 0,
+	newAchievement: null,
+	mistakeCount: 0,
+	confettiEnabled: false,
+};
+
+function reducer(state: State, action: Action): State {
+	switch (action.type) {
+		case 'SET_RESULT':
+			return { ...state, result: action.payload };
+		case 'SET_POINTS_EARNED':
+			return { ...state, pointsEarned: action.payload };
+		case 'SET_LEVEL_INFO':
+			return { ...state, ...action.payload };
+		case 'SET_NEW_ACHIEVEMENT':
+			return { ...state, newAchievement: action.payload };
+		case 'SET_MISTAKE_COUNT':
+			return { ...state, mistakeCount: action.payload };
+		case 'ENABLE_CONFETTI':
+			return { ...state, confettiEnabled: true };
+		case 'SET_SHOW_ANALYTICS':
+			return { ...state, showAnalytics: action.payload };
+		default:
+			return state;
+	}
+}
+
 export default function LessonComplete() {
 	const router = useRouter();
-	const [showAnalytics, setShowAnalytics] = useState(false);
-	const [result, setResult] = useState<QuizResult | null>(null);
-	const [pointsEarned, setPointsEarned] = useState(0);
-	const [level, setLevel] = useState(1);
-	const [xpInCurrentLevel, setXpInCurrentLevel] = useState(0);
-	const [xpForNextLevel, setXpForNextLevel] = useState(0);
-	const [xpProgress, setXpProgress] = useState(0);
-	const [newAchievement, setNewAchievement] = useState<string | null>(null);
-	const [mistakeCount, setMistakeCount] = useState(0);
-	const [confettiEnabled, setConfettiEnabled] = useState(false);
+	const [state, dispatch] = useReducer(reducer, initialState);
 	const { completeQuiz, isCompleting } = useQuizCompletion();
 	const addActivity = useAiContextStore((s) => s.addActivity);
 
@@ -44,7 +99,7 @@ export default function LessonComplete() {
 				return;
 			}
 
-			setResult(quizResult);
+			dispatch({ type: 'SET_RESULT', payload: quizResult });
 			useQuizResultStore.getState().clear();
 
 			const accuracy =
@@ -63,9 +118,8 @@ export default function LessonComplete() {
 			});
 
 			const mistakes = useQuizResultStore.getState().getLastMistakes();
-			setMistakeCount(mistakes.length);
-
-			setConfettiEnabled(true);
+			dispatch({ type: 'SET_MISTAKE_COUNT', payload: mistakes.length });
+			dispatch({ type: 'ENABLE_CONFETTI' });
 
 			const completionResult = await completeQuiz({
 				correctAnswers: quizResult.correctAnswers,
@@ -75,10 +129,10 @@ export default function LessonComplete() {
 				subjectId: quizResult.subjectId,
 			});
 
-			setPointsEarned(completionResult.pointsEarned);
+			dispatch({ type: 'SET_POINTS_EARNED', payload: completionResult.pointsEarned });
 
 			if (completionResult.newAchievements.length > 0) {
-				setNewAchievement(completionResult.newAchievements[0]);
+				dispatch({ type: 'SET_NEW_ACHIEVEMENT', payload: completionResult.newAchievements[0] });
 			}
 
 			const achievements = await getUserAchievements();
@@ -89,59 +143,68 @@ export default function LessonComplete() {
 				}, 0) + completionResult.pointsEarned;
 
 			const levelInfo = getLevelInfo(totalXp);
-			setLevel(levelInfo.level);
-			setXpInCurrentLevel(levelInfo.xpInCurrentLevel);
-			setXpForNextLevel(levelInfo.xpForNextLevel);
-			setXpProgress(levelInfo.progressPercent);
+			dispatch({
+				type: 'SET_LEVEL_INFO',
+				payload: {
+					level: levelInfo.level,
+					xpInCurrentLevel: levelInfo.xpInCurrentLevel,
+					xpForNextLevel: levelInfo.xpForNextLevel,
+					xpProgress: levelInfo.progressPercent,
+				},
+			});
 		}
 
 		loadResult();
 	}, [completeQuiz, router, addActivity]);
 
-	if (!result) {
+	if (!state.result) {
 		return <LessonCompleteSkeleton />;
 	}
 
 	return (
 		<div className="flex flex-col h-full bg-background">
-			<ConfettiEffect enabled={confettiEnabled} />
+			<ConfettiEffect enabled={state.confettiEnabled} />
 			<SuccessHeader />
 
 			<ScrollArea className="flex-1">
 				<main className="px-6 py-4 flex flex-col items-center pb-32 max-w-2xl mx-auto w-full">
-					<TrophySection accuracy={result.accuracy} />
+					<TrophySection accuracy={state.result.accuracy} />
 
 					<m.div
 						initial={{ opacity: 0, y: 20 }}
 						animate={{ opacity: 1, y: 0 }}
 						transition={{ delay: 0.4 }}
 					>
-						<StatsGrid result={result} pointsEarned={pointsEarned} isCompleting={isCompleting} />
+						<StatsGrid
+							result={state.result}
+							pointsEarned={state.pointsEarned}
+							isCompleting={isCompleting}
+						/>
 					</m.div>
 
 					<AnimatePresence>
-						{newAchievement && (
+						{state.newAchievement && (
 							<m.div
 								initial={{ opacity: 0, y: 20 }}
 								animate={{ opacity: 1, y: 0 }}
 								transition={{ delay: 0.5 }}
 							>
-								<AchievementUnlocked achievement={newAchievement} />
+								<AchievementUnlocked achievement={state.newAchievement} />
 							</m.div>
 						)}
 					</AnimatePresence>
 
-					{mistakeCount > 0 && (
+					{state.mistakeCount > 0 && (
 						<m.div
 							initial={{ opacity: 0, y: 20 }}
 							animate={{ opacity: 1, y: 0 }}
 							transition={{ delay: 0.55 }}
 						>
-							<FlashcardGenerator mistakeCount={mistakeCount} />
+							<FlashcardGenerator mistakeCount={state.mistakeCount} />
 						</m.div>
 					)}
 
-					{result.accuracy === 100 && mistakeCount === 0 && (
+					{state.result.accuracy === 100 && state.mistakeCount === 0 && (
 						<m.div
 							initial={{ opacity: 0, y: 20 }}
 							animate={{ opacity: 1, y: 0 }}
@@ -162,10 +225,10 @@ export default function LessonComplete() {
 						transition={{ delay: 0.6 }}
 					>
 						<XpProgress
-							level={level}
-							xpInCurrentLevel={xpInCurrentLevel}
-							xpForNextLevel={xpForNextLevel}
-							xpProgress={xpProgress}
+							level={state.level}
+							xpInCurrentLevel={state.xpInCurrentLevel}
+							xpForNextLevel={state.xpForNextLevel}
+							xpProgress={state.xpProgress}
 						/>
 					</m.div>
 
@@ -174,12 +237,17 @@ export default function LessonComplete() {
 						animate={{ opacity: 1, y: 0 }}
 						transition={{ delay: 0.7 }}
 					>
-						<ActionButtons onShowAnalytics={() => setShowAnalytics(true)} />
+						<ActionButtons
+							onShowAnalytics={() => dispatch({ type: 'SET_SHOW_ANALYTICS', payload: true })}
+						/>
 					</m.div>
 				</main>
 			</ScrollArea>
 
-			<QuizAnalyticsModal open={showAnalytics} onOpenChange={setShowAnalytics} />
+			<QuizAnalyticsModal
+				open={state.showAnalytics}
+				onOpenChange={(open) => dispatch({ type: 'SET_SHOW_ANALYTICS', payload: open })}
+			/>
 		</div>
 	);
 }

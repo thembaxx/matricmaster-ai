@@ -196,13 +196,8 @@ export function useCircuitCalculation(voltage: number, resistors: { resistance: 
 		return resistors.reduce((sum, r) => sum + r.resistance, 0);
 	}, [resistors]);
 
-	const current = useMemo(() => {
-		return voltage / totalResistance;
-	}, [voltage, totalResistance]);
-
-	const power = useMemo(() => {
-		return current * voltage;
-	}, [current, voltage]);
+	const current = voltage / totalResistance;
+	const power = current * voltage;
 
 	return { totalResistance, current, power };
 }

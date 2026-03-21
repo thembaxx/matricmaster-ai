@@ -58,7 +58,7 @@ export function OfflineStatusCard() {
 		quizCount: number;
 		aiResponseCount: number;
 	} | null>(null);
-	const [subjectStatuses, setSubjectStatuses] = useState<SubjectDownloadStatus[]>(
+	const [subjectStatuses, setSubjectStatuses] = useState<SubjectDownloadStatus[]>(() =>
 		SUBJECTS.map((s) => ({ ...s, isCached: false, isDownloading: false, downloadProgress: 0 }))
 	);
 	const [isClearing, setIsClearing] = useState(false);

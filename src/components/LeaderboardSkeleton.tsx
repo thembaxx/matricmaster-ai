@@ -38,6 +38,7 @@ export function LeaderboardSkeleton() {
 
 				{/* List Skeleton */}
 				<div className="bg-card/20 rounded-[2.5rem] border-2 border-border/50 p-2 mx-4 lg:mx-0">
+					{/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
 					{[1, 2, 3, 4, 5].map((i) => (
 						<div
 							key={`skeleton-${i}`}

@@ -13,14 +13,15 @@ import {
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { useQuery } from '@tanstack/react-query';
+import dynamic from 'next/dynamic';
 import { useCallback, useState, useTransition } from 'react';
-import { Bar, BarChart, Cell, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { toast } from 'sonner';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { Skeleton } from '@/components/ui/skeleton';
 import {
 	Table,
 	TableBody,
@@ -38,6 +39,14 @@ import {
 	toggleUserBlockAction,
 } from '@/lib/db/actions';
 import type { User } from '@/lib/db/better-auth-schema';
+
+const SubjectPerformanceChart = dynamic(
+	() => import('./SubjectPerformanceChart').then((mod) => mod.SubjectPerformanceChart),
+	{
+		ssr: false,
+		loading: () => <Skeleton className="h-80 w-full" />,
+	}
+);
 
 // Recent activity mock
 const mockRecentActivity = [
@@ -261,7 +270,7 @@ export default function AdminDashboardClient({
 									</CardTitle>
 								</CardHeader>
 								<CardContent>
-									<ScrollArea className="h-75">
+									<ScrollArea className="h-80">
 										<div className="space-y-4">
 											{mockRecentActivity.map((activity) => (
 												<div key={activity.id} className="flex items-center gap-3">
@@ -292,14 +301,20 @@ export default function AdminDashboardClient({
 								<CardContent>
 									<ScrollArea className="h-80">
 										<div className="space-y-3">
-											{mockFlaggedContent.map((item) => (
-												<div key={item.id} className="p-3 border rounded-lg">
-													<p className="text-sm">{item.content}</p>
-													<p className="text-xs text-muted-foreground mt-1">
-														Reported by {item.reportedBy}
-													</p>
-												</div>
-											))}
+											{mockFlaggedContent.length === 0 ? (
+												<p className="text-sm text-muted-foreground text-center py-8">
+													No flagged content
+												</p>
+											) : (
+												mockFlaggedContent.map((item) => (
+													<div key={item.id} className="p-3 border rounded-lg">
+														<p className="text-sm">{item.content}</p>
+														<p className="text-xs text-muted-foreground mt-1">
+															Reported by {item.reportedBy}
+														</p>
+													</div>
+												))
+											)}
 										</div>
 									</ScrollArea>
 								</CardContent>
@@ -328,7 +343,12 @@ export default function AdminDashboardClient({
 										/>
 									</div>
 									<Button onClick={handleSearch} disabled={isLoadingUsers}>
-										Search
+										{isLoadingUsers ? (
+											<HugeiconsIcon icon={Loading03Icon} className="h-4 w-4 animate-spin" />
+										) : (
+											<HugeiconsIcon icon={Search01Icon} className="h-4 w-4" />
+										)}
+										<span className="hidden sm:inline">Search</span>
 									</Button>
 								</div>
 
@@ -338,6 +358,15 @@ export default function AdminDashboardClient({
 											icon={Loading03Icon}
 											className="h-8 w-8 animate-spin text-muted-foreground"
 										/>
+									</div>
+								) : users.length === 0 ? (
+									<div className="text-center py-12 text-muted-foreground">
+										<HugeiconsIcon
+											icon={UserGroupIcon}
+											className="h-12 w-12 mx-auto mb-4 opacity-50"
+										/>
+										<p className="font-medium">No users found</p>
+										<p className="text-sm mt-1">Try adjusting your search criteria</p>
 									</div>
 								) : (
 									<div className="border rounded-lg overflow-hidden">
@@ -351,7 +380,7 @@ export default function AdminDashboardClient({
 											</TableHeader>
 											<TableBody>
 												{users.map((user) => (
-													<TableRow key={user.id}>
+													<TableRow key={user.id} className="transition-colors hover:bg-muted/50">
 														<TableCell>
 															<div className="flex items-center gap-2">
 																<Avatar className="h-8 w-8">
@@ -367,9 +396,10 @@ export default function AdminDashboardClient({
 														</TableCell>
 														<TableCell className="text-right">
 															<Button
-																variant="ghost"
+																variant={user.isBlocked ? 'outline' : 'destructive'}
 																size="sm"
 																onClick={() => handleToggleBlock(user.id)}
+																className="transition-all"
 															>
 																{user.isBlocked ? 'Unblock' : 'Block'}
 															</Button>
@@ -399,56 +429,7 @@ export default function AdminDashboardClient({
 									</div>
 								) : subjectPerformance.length > 0 ? (
 									<div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-										<div className="h-80">
-											<ResponsiveContainer width="100%" height="100%">
-												<BarChart
-													data={subjectPerformance}
-													layout="vertical"
-													margin={{ left: 100, right: 20 }}
-												>
-													<XAxis type="number" domain={[0, 100]} hide />
-													<YAxis
-														dataKey="subjectName"
-														type="category"
-														tick={{ fontSize: 12, fontWeight: 500 }}
-														width={100}
-													/>
-													<Tooltip
-														content={({ active, payload }) => {
-															if (active && payload?.length) {
-																const data = payload[0].payload;
-																return (
-																	<div className="bg-background border border-border/50 rounded-lg px-3 py-2 shadow-xl">
-																		<p className="font-bold">{data.subjectName}</p>
-																		<p className="text-sm text-primary">
-																			Average: {data.averageScore}%
-																		</p>
-																		<p className="text-xs text-muted-foreground">
-																			{data.questionsAttempted.toLocaleString()} attempts
-																		</p>
-																	</div>
-																);
-															}
-															return null;
-														}}
-													/>
-													<Bar dataKey="averageScore" radius={[0, 4, 4, 0]} maxBarSize={24}>
-														{subjectPerformance.map((entry, index) => (
-															<Cell
-																key={`cell-${index}`}
-																fill={
-																	entry.averageScore >= 80
-																		? 'var(--color-success)'
-																		: entry.averageScore >= 60
-																			? 'var(--color-primary)'
-																			: 'var(--color-warning)'
-																}
-															/>
-														))}
-													</Bar>
-												</BarChart>
-											</ResponsiveContainer>
-										</div>
+										<SubjectPerformanceChart subjectPerformance={subjectPerformance} />
 										<div className="space-y-3">
 											<h4 className="text-sm font-bold text-muted-foreground uppercase tracking-wider">
 												Score Distribution

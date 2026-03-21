@@ -36,7 +36,7 @@ export function FinalCTASection() {
 				</div>
 
 				<div className="relative z-10 text-center space-y-8">
-					<h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white">
+					<h2 className="heading-1 text-white">
 						Ready to ace
 						<br />
 						your exams?

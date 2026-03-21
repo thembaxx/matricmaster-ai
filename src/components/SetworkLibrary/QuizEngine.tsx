@@ -51,7 +51,7 @@ export function QuizEngine({ questions }: QuizEngineProps) {
 				<div className="space-y-2">
 					{question.options.map((option, i) => (
 						<Button
-							key={`option-${i}`}
+							key={option}
 							type="button"
 							variant="ghost"
 							onClick={() => handleSelect(i)}

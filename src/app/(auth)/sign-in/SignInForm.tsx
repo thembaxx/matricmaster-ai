@@ -103,7 +103,7 @@ function SignInFormContent() {
 				setError(authError.message || 'Invalid email or password');
 				setIsLoading(false);
 			} else {
-				initializeDatabase().catch(console.debug);
+				initializeDatabase().catch(console.error);
 
 				setSuccessEmail(data.email);
 				setTimeout(() => {

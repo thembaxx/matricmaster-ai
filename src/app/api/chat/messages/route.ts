@@ -1,7 +1,9 @@
 import { type NextRequest, NextResponse } from 'next/server';
+import { requireAuth } from '@/lib/server-auth';
 import { getSessionMessages, getSessions } from '@/services/chatService';
 
 export async function GET(request: NextRequest) {
+	await requireAuth();
 	try {
 		const { searchParams } = new URL(request.url);
 		const sessionId = searchParams.get('sessionId');

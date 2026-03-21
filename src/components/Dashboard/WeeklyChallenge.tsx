@@ -165,7 +165,9 @@ export const WeeklyChallenge = memo(function WeeklyChallenge({
 							<div className="text-right">
 								<div className="flex items-center gap-1 text-muted-foreground whitespace-nowrap">
 									<HugeiconsIcon icon={Clock01Icon} className="w-3.5 h-3.5" />
-									<span className="text-[10px] font-semibold">{challenge.daysRemaining}d left</span>
+									<span className="text-[10px] font-semibold tabular-nums">
+										{challenge.daysRemaining}d left
+									</span>
 								</div>
 							</div>
 						)}
@@ -173,10 +175,10 @@ export const WeeklyChallenge = memo(function WeeklyChallenge({
 
 					<div className="space-y-2">
 						<div className="flex justify-between items-center">
-							<span className="text-xs font-medium text-muted-foreground">
+							<span className="text-xs font-medium text-muted-foreground tabular-nums">
 								{Math.min(challenge.current, challenge.target)} / {challenge.target}
 							</span>
-							<span className="text-sm font-medium text-foreground">
+							<span className="text-sm font-medium text-foreground tabular-nums">
 								{Math.round(progressPercent)}%
 							</span>
 						</div>
@@ -192,7 +194,7 @@ export const WeeklyChallenge = memo(function WeeklyChallenge({
 							<span className="text-xs text-muted-foreground">Bonus reward</span>
 						</div>
 						<span
-							className={`text-lg font-semibold ${isComplete ? 'text-brand-amber' : 'text-foreground'}`}
+							className={`text-lg font-semibold tabular-nums ${isComplete ? 'text-brand-amber' : 'text-foreground'}`}
 						>
 							+{challenge.bonusXp} XP
 						</span>

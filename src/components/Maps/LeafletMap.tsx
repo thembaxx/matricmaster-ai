@@ -5,6 +5,8 @@ import { useEffect, useRef } from 'react';
 import 'leaflet/dist/leaflet.css';
 import type { MapMarker } from '@/types/map';
 
+const DEFAULT_MARKERS: MapMarker[] = [];
+
 interface LeafletMapProps {
 	center: [number, number];
 	zoom: number;
@@ -33,7 +35,7 @@ const createCustomIcon = (color = '#6366f1') => {
 export function LeafletMap({
 	center,
 	zoom,
-	markers = [],
+	markers = DEFAULT_MARKERS,
 	className = '',
 	onMarkerClick,
 }: LeafletMapProps) {

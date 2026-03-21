@@ -27,7 +27,7 @@ export function ServiceWorkerRegistration() {
 					console.debug('Service worker ready:', registration);
 				})
 				.catch((error) => {
-					console.debug('Service worker not ready:', error);
+					console.warn('Service worker not ready:', error);
 				});
 		}
 

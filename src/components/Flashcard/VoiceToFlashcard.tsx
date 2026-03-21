@@ -1,7 +1,5 @@
 'use client';
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 import { FileText, Mic, MicOff, Wand2 } from 'lucide-react';
 import { useRef, useState } from 'react';
 import { toast } from 'sonner';
@@ -19,6 +17,50 @@ interface VoiceToFlashcardProps {
 	onFlashcardsGenerated?: (cards: Array<{ front: string; back: string }>) => void;
 }
 
+interface SpeechRecognitionEvent extends Event {
+	results: SpeechRecognitionResultList;
+}
+
+interface SpeechRecognitionResultList {
+	length: number;
+	item(index: number): SpeechRecognitionResult;
+	[index: number]: SpeechRecognitionResult;
+}
+
+interface SpeechRecognitionResult {
+	length: number;
+	item(index: number): SpeechRecognitionAlternative;
+	[index: number]: SpeechRecognitionAlternative;
+	isFinal: boolean;
+}
+
+interface SpeechRecognitionAlternative {
+	transcript: string;
+	confidence: number;
+}
+
+interface SpeechRecognitionErrorEvent extends Event {
+	error: string;
+}
+
+interface SpeechRecognition extends EventTarget {
+	continuous: boolean;
+	interimResults: boolean;
+	onresult: ((event: SpeechRecognitionEvent) => void) | null;
+	onerror: ((event: SpeechRecognitionErrorEvent) => void) | null;
+	onend: (() => void) | null;
+	start(): void;
+	stop(): void;
+	abort(): void;
+}
+
+declare global {
+	// eslint-disable-next-line no-var
+	var SpeechRecognition: new () => SpeechRecognition;
+	// eslint-disable-next-line no-var
+	var webkitSpeechRecognition: new () => SpeechRecognition;
+}
+
 export function VoiceToFlashcard({ subject, onFlashcardsGenerated }: VoiceToFlashcardProps) {
 	const { triggerQuotaError } = useGeminiQuotaModal();
 	const [isRecording, setIsRecording] = useState(false);
@@ -26,28 +68,27 @@ export function VoiceToFlashcard({ subject, onFlashcardsGenerated }: VoiceToFlas
 	const [processing, setProcessing] = useState(false);
 	const [mode, setMode] = useState<'flashcard' | 'notes'>('flashcard');
 
-	const recognitionRef = useRef<any>(null);
+	const recognitionRef = useRef<SpeechRecognition | null>(null);
 
 	const startRecording = () => {
-		const SpeechRecognition =
-			(window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
-		if (!SpeechRecognition) {
+		const SpeechRecognitionCtor = window.SpeechRecognition || window.webkitSpeechRecognition;
+		if (!SpeechRecognitionCtor) {
 			toast.error('Speech recognition not supported');
 			return;
 		}
 
-		const recognition = new SpeechRecognition();
+		const recognition = new SpeechRecognitionCtor();
 		recognition.continuous = true;
 		recognition.interimResults = true;
 
-		recognition.onresult = (event: any) => {
+		recognition.onresult = (event: SpeechRecognitionEvent) => {
 			const transcriptText = Array.from(event.results)
-				.map((result: any) => result[0].transcript)
+				.map((result: SpeechRecognitionResult) => result[0].transcript)
 				.join('');
 			setTranscript(transcriptText);
 		};
 
-		recognition.onerror = (event: any) => {
+		recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
 			console.debug('Speech recognition error:', event.error);
 			setIsRecording(false);
 		};

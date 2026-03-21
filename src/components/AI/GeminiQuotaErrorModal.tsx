@@ -10,6 +10,7 @@ import {
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { AnimatePresence, m } from 'framer-motion';
+import Link from 'next/link';
 import { useCallback, useId, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import {
@@ -273,14 +274,12 @@ export function GeminiQuotaErrorModal({
 												<span className="font-medium">Your key stays on your device.</span> We never
 												upload or store your API key on our servers. It remains local to your
 												browser. See our{' '}
-												<a
+												<Link
 													href="/privacy"
-													target="_blank"
 													className="underline hover:text-foreground transition-colors"
-													rel="noopener"
 												>
 													Privacy Policy
-												</a>
+												</Link>
 												.
 											</p>
 										</m.div>

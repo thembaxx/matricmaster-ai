@@ -25,6 +25,8 @@ interface FilterBarProps {
 	subjects?: Subject[];
 }
 
+const DEFAULT_SUBJECTS: Subject[] = [];
+
 export function FilterBar({
 	activeTab,
 	searchQuery,
@@ -35,7 +37,7 @@ export function FilterBar({
 	onDifficultyChange,
 	userFilter,
 	onUserFilterChange,
-	subjects = [],
+	subjects = DEFAULT_SUBJECTS,
 }: FilterBarProps) {
 	const getPlaceholder = () => {
 		if (activeTab === 'users') return 'Search users...';

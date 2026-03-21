@@ -20,7 +20,7 @@ export function TestimonialsSection() {
 				transition={{ duration: 0.6 }}
 				className="text-center mb-16"
 			>
-				<h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
+				<h2 className="heading-2 mb-4">
 					Loved by
 					<span className="text-tiimo-lavender"> thousands</span>
 				</h2>
@@ -40,9 +40,10 @@ export function TestimonialsSection() {
 					<m.div
 						key={testimonial.name}
 						variants={STAGGER_ITEM}
-						className="p-8 rounded-[var(--radius-xl)] bg-card border border-border/50 hover:border-tiimo-lavender/30 transition-all duration-300"
+						className="tiimo-card p-8 will-change-transform"
 					>
 						<div className="flex items-center gap-1 mb-4">
+							{/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
 							{[1, 2, 3, 4, 5].map((i) => (
 								<HugeiconsIcon
 									key={`star-${i}`}
@@ -60,7 +61,7 @@ export function TestimonialsSection() {
 								alt={testimonial.name}
 								width={48}
 								height={48}
-								className="rounded-full object-cover"
+								className="rounded-full object-cover img-outline"
 								loading="lazy"
 							/>
 							<div>

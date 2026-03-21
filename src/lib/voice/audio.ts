@@ -11,13 +11,32 @@ export interface SpeechRecognitionResult {
 	isFinal: boolean;
 }
 
-let speechRecognition: typeof window.SpeechRecognition | null = null;
+type SpeechRecognitionType = {
+	continuous: boolean;
+	interimResults: boolean;
+	lang: string;
+	onresult: ((event: unknown) => void) | null;
+	onerror: ((event: unknown) => void) | null;
+	start: () => void;
+	stop: () => void;
+	state: string;
+};
+
+let speechRecognition: SpeechRecognitionType | null = null;
 let synthesis: SpeechSynthesis | null = null;
 
 export function initSpeechRecognition(): boolean {
 	if (typeof window === 'undefined') return false;
 
-	const SpeechRecognitionAPI = window.SpeechRecognition || window.webkitSpeechRecognition;
+	const SpeechRecognitionAPI =
+		(
+			window as unknown as {
+				SpeechRecognition?: { new (): SpeechRecognitionType };
+				webkitSpeechRecognition?: { new (): SpeechRecognitionType };
+			}
+		).SpeechRecognition ||
+		(window as unknown as { webkitSpeechRecognition?: { new (): SpeechRecognitionType } })
+			.webkitSpeechRecognition;
 	if (!SpeechRecognitionAPI) {
 		console.warn('Speech recognition not supported');
 		return false;

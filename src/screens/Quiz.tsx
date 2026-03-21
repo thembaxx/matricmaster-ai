@@ -2,7 +2,7 @@
 
 import { useQuery } from '@tanstack/react-query';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { Suspense, useCallback, useEffect, useRef, useState } from 'react';
+import { Suspense, useCallback, useEffect, useReducer, useRef } from 'react';
 import { getAdaptiveDifficultyServer, recordQuestionAttempt } from '@/actions/spaced-repetition';
 import { ContextualAIBubble } from '@/components/AI/ContextualAIBubble';
 import { FocusContent } from '@/components/Layout/FocusContent';
@@ -32,6 +32,127 @@ interface TopicStats {
 	total: number;
 }
 
+type QuizState = {
+	currentQuestionIndex: number;
+	selectedOption: string | null;
+	isChecked: boolean;
+	isCorrect: boolean | null;
+	elapsedSeconds: number;
+	showHint: boolean;
+	score: number;
+	mode: 'test' | 'practice';
+	showSubjectSelector: boolean;
+	currentSubject: string;
+	showStruggleAlert: boolean;
+	currentStruggleCount: number;
+	difficulty: 'easy' | 'medium' | 'hard';
+	correctCount: number;
+	incorrectCount: number;
+	topicStats: Map<string, TopicStats>;
+	weakTopicAlert: WeakTopicAlertType | null;
+	showWeakAlert: boolean;
+};
+
+type QuizAction =
+	| { type: 'SET_QUESTION_INDEX'; payload: number }
+	| { type: 'SET_OPTION'; payload: string | null }
+	| { type: 'CHECK_ANSWER'; payload: boolean }
+	| { type: 'RESET_ANSWER_STATE' }
+	| { type: 'SET_ELAPSED'; payload: number }
+	| { type: 'TOGGLE_HINT' }
+	| { type: 'SET_MODE'; payload: 'test' | 'practice' }
+	| { type: 'TOGGLE_SUBJECT_SELECTOR'; payload: boolean }
+	| { type: 'SET_SUBJECT'; payload: string }
+	| { type: 'SET_STRUGGLE_ALERT'; payload: { show: boolean; count: number } }
+	| { type: 'SET_DIFFICULTY'; payload: 'easy' | 'medium' | 'hard' }
+	| { type: 'UPDATE_CORRECT_COUNT'; payload: number }
+	| { type: 'UPDATE_INCORRECT_COUNT'; payload: number }
+	| { type: 'UPDATE_TOPIC_STATS'; payload: { topic: string; correct: number } }
+	| { type: 'SET_WEAK_TOPIC_ALERT'; payload: WeakTopicAlertType | null }
+	| { type: 'TOGGLE_WEAK_ALERT'; payload: boolean }
+	| { type: 'INCREMENT_CORRECT' }
+	| { type: 'INCREMENT_INCORRECT' };
+
+const initialState: QuizState = {
+	currentQuestionIndex: 0,
+	selectedOption: null,
+	isChecked: false,
+	isCorrect: null,
+	elapsedSeconds: 0,
+	showHint: false,
+	score: 0,
+	mode: 'test',
+	showSubjectSelector: false,
+	currentSubject: '',
+	showStruggleAlert: false,
+	currentStruggleCount: 0,
+	difficulty: 'medium',
+	correctCount: 0,
+	incorrectCount: 0,
+	topicStats: new Map(),
+	weakTopicAlert: null,
+	showWeakAlert: false,
+};
+
+function quizReducer(state: QuizState, action: QuizAction): QuizState {
+	switch (action.type) {
+		case 'SET_QUESTION_INDEX':
+			return { ...state, currentQuestionIndex: action.payload };
+		case 'SET_OPTION':
+			return { ...state, selectedOption: action.payload };
+		case 'CHECK_ANSWER':
+			return { ...state, isChecked: true, isCorrect: action.payload };
+		case 'RESET_ANSWER_STATE':
+			return { ...state, selectedOption: null, isChecked: false, isCorrect: null, showHint: false };
+		case 'SET_ELAPSED':
+			return { ...state, elapsedSeconds: action.payload };
+		case 'TOGGLE_HINT':
+			return { ...state, showHint: !state.showHint };
+		case 'SET_MODE':
+			return { ...state, mode: action.payload };
+		case 'TOGGLE_SUBJECT_SELECTOR':
+			return { ...state, showSubjectSelector: action.payload };
+		case 'SET_SUBJECT':
+			return { ...state, currentSubject: action.payload };
+		case 'SET_STRUGGLE_ALERT':
+			return {
+				...state,
+				showStruggleAlert: action.payload.show,
+				currentStruggleCount: action.payload.count,
+			};
+		case 'SET_DIFFICULTY':
+			return { ...state, difficulty: action.payload };
+		case 'UPDATE_CORRECT_COUNT':
+			return { ...state, correctCount: action.payload };
+		case 'UPDATE_INCORRECT_COUNT':
+			return { ...state, incorrectCount: action.payload };
+		case 'UPDATE_TOPIC_STATS': {
+			const newTopicStats = new Map(state.topicStats);
+			const existing = newTopicStats.get(action.payload.topic) || {
+				topic: action.payload.topic,
+				correct: 0,
+				total: 0,
+			};
+			newTopicStats.set(action.payload.topic, {
+				topic: action.payload.topic,
+				correct: existing.correct + action.payload.correct,
+				total: existing.total + 1,
+			});
+			return { ...state, topicStats: newTopicStats };
+		}
+		case 'SET_WEAK_TOPIC_ALERT':
+			return { ...state, weakTopicAlert: action.payload };
+		case 'TOGGLE_WEAK_ALERT':
+			return { ...state, showWeakAlert: action.payload };
+		case 'INCREMENT_CORRECT':
+			return { ...state, score: state.score + 1, correctCount: state.correctCount + 1 };
+		case 'INCREMENT_INCORRECT':
+			return { ...state, incorrectCount: state.incorrectCount + 1 };
+		default:
+			return state;
+	}
+}
+
 function QuizInner({ quizId: initialQuizId }: QuizProps) {
 	const router = useRouter();
 	const searchParams = useSearchParams();
@@ -40,42 +161,24 @@ function QuizInner({ quizId: initialQuizId }: QuizProps) {
 	const quizId = initialQuizId || urlQuizId || 'math-p1-2023-nov';
 
 	const startTimeRef = useRef<number>(Date.now());
-	const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-	const [selectedOption, setSelectedOption] = useState<string | null>(null);
-	const [isChecked, setIsChecked] = useState(false);
-	const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
-	const [elapsedSeconds, setElapsedSeconds] = useState(0);
-	const [showHint, setShowHint] = useState(false);
-	const [score, setScore] = useState(0);
-	const [mode, setMode] = useState<'test' | 'practice'>('test');
-	const [showSubjectSelector, setShowSubjectSelector] = useState(false);
-	const [currentSubject, setCurrentSubject] = useState('');
-	const [showStruggleAlert, setShowStruggleAlert] = useState(false);
-	const [currentStruggleCount, setCurrentStruggleCount] = useState(0);
-	const [difficulty, setDifficulty] = useState<'easy' | 'medium' | 'hard'>('medium');
-	const [correctCount, setCorrectCount] = useState(0);
-	const [incorrectCount, setIncorrectCount] = useState(0);
-	const [topicStats, setTopicStats] = useState<Map<string, TopicStats>>(new Map());
-	const [weakTopicAlert, setWeakTopicAlert] = useState<WeakTopicAlertType | null>(null);
-	const [showWeakAlert, setShowWeakAlert] = useState(false);
+	const [state, dispatch] = useReducer(quizReducer, initialState);
 
 	const { completeQuiz, isCompleting } = useQuizCompletion();
 	const { setContext, clearContext } = useAiContext();
 	const quiz = QUIZ_DATA[quizId] || QUIZ_DATA['math-p1-2023-nov'];
-	const currentQuestion = quiz.questions[currentQuestionIndex];
+	const currentQuestion = quiz.questions[state.currentQuestionIndex];
 
 	useEffect(() => {
 		setContext({
 			type: 'quiz',
-			subject: currentSubject || quiz.subject,
+			subject: state.currentSubject || quiz.subject,
 			topic: currentQuestion?.topic,
 			questionId: currentQuestion?.id,
 			lastUpdated: Date.now(),
 		});
 		return () => clearContext();
-	}, [currentSubject, currentQuestion, quiz.subject, setContext, clearContext]);
+	}, [state.currentSubject, currentQuestion, quiz.subject, setContext, clearContext]);
 
-	// Adaptive hint query - use query data directly
 	const { data: hintData } = useQuery({
 		queryKey: ['adaptive-hint', currentQuestion?.topic],
 		queryFn: async () => {
@@ -91,13 +194,14 @@ function QuizInner({ quizId: initialQuizId }: QuizProps) {
 		retry: false,
 	});
 
-	// Use query data directly for adaptive hint
 	const adaptiveHint = hintData ?? null;
 
-	// Timer - KEEP: This is a legitimate timer effect
 	useEffect(() => {
 		const timer = setInterval(() => {
-			setElapsedSeconds(Math.floor((Date.now() - startTimeRef.current) / 1000));
+			dispatch({
+				type: 'SET_ELAPSED',
+				payload: Math.floor((Date.now() - startTimeRef.current) / 1000),
+			});
 		}, 1000);
 		return () => clearInterval(timer);
 	}, []);
@@ -109,40 +213,37 @@ function QuizInner({ quizId: initialQuizId }: QuizProps) {
 	}));
 
 	const handleCheck = useCallback(async () => {
-		if (isChecked) {
-			if (currentQuestionIndex < quiz.questions.length - 1) {
-				setCurrentQuestionIndex((prev) => prev + 1);
-				setSelectedOption(null);
-				setIsChecked(false);
-				setIsCorrect(null);
-				setShowHint(false);
+		if (state.isChecked) {
+			if (state.currentQuestionIndex < quiz.questions.length - 1) {
+				dispatch({ type: 'SET_QUESTION_INDEX', payload: state.currentQuestionIndex + 1 });
+				dispatch({ type: 'RESET_ANSWER_STATE' });
 			} else {
-				const finalScore = score + (isCorrect ? 1 : 0);
+				const finalScore = state.score + (state.isCorrect ? 1 : 0);
 
-				const results = Array.from(topicStats.values()).map((stat) => ({
+				const results = Array.from(state.topicStats.values()).map((stat) => ({
 					topic: stat.topic,
-					subject: currentSubject || quiz.subject,
+					subject: state.currentSubject || quiz.subject,
 					subjectId: 1,
 					score: stat.total > 0 ? stat.correct / stat.total : 0,
 					totalQuestions: stat.total,
 					correctAnswers: stat.correct,
 				}));
 
-				if (isCorrect !== null) {
+				if (state.isCorrect !== null) {
 					const lastTopic = currentQuestion?.topic;
 					if (lastTopic) {
-						const existing = topicStats.get(lastTopic) || {
+						const existing = state.topicStats.get(lastTopic) || {
 							topic: lastTopic,
 							correct: 0,
 							total: 0,
 						};
 						results.push({
 							topic: lastTopic,
-							subject: currentSubject || quiz.subject,
+							subject: state.currentSubject || quiz.subject,
 							subjectId: 1,
-							score: (existing.correct + (isCorrect ? 1 : 0)) / (existing.total + 1),
+							score: (existing.correct + (state.isCorrect ? 1 : 0)) / (existing.total + 1),
 							totalQuestions: existing.total + 1,
-							correctAnswers: existing.correct + (isCorrect ? 1 : 0),
+							correctAnswers: existing.correct + (state.isCorrect ? 1 : 0),
 						});
 					}
 				}
@@ -157,8 +258,8 @@ function QuizInner({ quizId: initialQuizId }: QuizProps) {
 					if (response.ok) {
 						const data = await response.json();
 						if (data.alerts && data.alerts.length > 0) {
-							setWeakTopicAlert(data.alerts[0]);
-							setShowWeakAlert(true);
+							dispatch({ type: 'SET_WEAK_TOPIC_ALERT', payload: data.alerts[0] });
+							dispatch({ type: 'TOGGLE_WEAK_ALERT', payload: true });
 						}
 					}
 				} catch (error) {
@@ -171,52 +272,45 @@ function QuizInner({ quizId: initialQuizId }: QuizProps) {
 					totalQuestions: quiz.questions.length,
 					correctAnswers: finalScore,
 					marksEarned: finalScore * 10,
-					durationMinutes: Math.ceil(elapsedSeconds / 60),
+					durationMinutes: Math.ceil(state.elapsedSeconds / 60),
 					difficulty: 'medium',
-					sessionType: mode,
+					sessionType: state.mode,
 				});
 				router.push('/lesson-complete');
 			}
 			return;
 		}
 
-		const correct = options.find((o) => o.id === selectedOption)?.isCorrect || false;
-		setIsCorrect(correct);
+		const correct = options.find((o) => o.id === state.selectedOption)?.isCorrect || false;
+		dispatch({ type: 'CHECK_ANSWER', payload: correct });
 		if (correct) {
-			setScore((prev) => prev + 1);
-			setCorrectCount((prev) => prev + 1);
+			dispatch({ type: 'INCREMENT_CORRECT' });
 		} else {
-			setIncorrectCount((prev) => prev + 1);
+			dispatch({ type: 'INCREMENT_INCORRECT' });
 		}
-		setIsChecked(true);
 
 		if (currentQuestion?.topic) {
-			setTopicStats((prev) => {
-				const updated = new Map(prev);
-				const existing = updated.get(currentQuestion.topic) || {
-					topic: currentQuestion.topic,
-					correct: 0,
-					total: 0,
-				};
-				updated.set(currentQuestion.topic, {
-					topic: currentQuestion.topic,
-					correct: existing.correct + (correct ? 1 : 0),
-					total: existing.total + 1,
-				});
-				return updated;
+			dispatch({
+				type: 'UPDATE_TOPIC_STATS',
+				payload: { topic: currentQuestion.topic, correct: correct ? 1 : 0 },
 			});
 
 			try {
-				await updateConfidence(currentQuestion.topic, currentSubject, correct);
-				await recordQuestionAttempt(currentQuestion.id, currentQuestion.topic, correct);
-				setDifficulty(await getAdaptiveDifficultyServer());
+				await Promise.all([
+					updateConfidence(currentQuestion.topic, state.currentSubject, correct),
+					recordQuestionAttempt(currentQuestion.id, currentQuestion.topic, correct),
+				]);
+				const newDifficulty = await getAdaptiveDifficultyServer();
+				dispatch({ type: 'SET_DIFFICULTY', payload: newDifficulty });
 				if (!correct) {
 					await recordStruggle(currentQuestion.topic);
 					const struggles = await getStrugglingConcepts();
 					const thisStruggle = struggles.find((s) => s.concept === currentQuestion.topic);
 					if (thisStruggle && thisStruggle.struggleCount >= 2) {
-						setCurrentStruggleCount(thisStruggle.struggleCount);
-						setShowStruggleAlert(true);
+						dispatch({
+							type: 'SET_STRUGGLE_ALERT',
+							payload: { show: true, count: thisStruggle.struggleCount },
+						});
 					}
 				}
 			} catch (error) {
@@ -224,28 +318,28 @@ function QuizInner({ quizId: initialQuizId }: QuizProps) {
 			}
 		}
 	}, [
-		isChecked,
-		currentQuestionIndex,
+		state.isChecked,
+		state.currentQuestionIndex,
 		quiz,
-		selectedOption,
-		isCorrect,
-		score,
-		elapsedSeconds,
-		mode,
-		options,
+		state.selectedOption,
+		state.isCorrect,
+		state.score,
+		state.elapsedSeconds,
+		state.mode,
 		currentQuestion,
-		currentSubject,
+		state.currentSubject,
 		completeQuiz,
 		router,
-		topicStats,
+		state.topicStats,
 		quizId,
+		options,
 	]);
 
 	const handleSubjectChange = (subject: string) => {
-		setCurrentSubject(subject);
+		dispatch({ type: 'SET_SUBJECT', payload: subject });
 		const firstQuiz = Object.entries(QUIZ_DATA).find(([, q]) => q.subject === subject);
 		if (firstQuiz) router.push(`/quiz?id=${firstQuiz[0]}`);
-		setShowSubjectSelector(false);
+		dispatch({ type: 'TOGGLE_SUBJECT_SELECTOR', payload: false });
 	};
 
 	return (
@@ -253,43 +347,49 @@ function QuizInner({ quizId: initialQuizId }: QuizProps) {
 			<TimelineSidebar />
 			<FocusContent>
 				<div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-					{showWeakAlert && weakTopicAlert && (
+					{state.showWeakAlert && state.weakTopicAlert && (
 						<div className="mb-6">
 							<WeakTopicAlert
-								topic={weakTopicAlert.topic}
-								subject={weakTopicAlert.subject}
-								score={weakTopicAlert.score}
-								onDismiss={() => setShowWeakAlert(false)}
+								topic={state.weakTopicAlert.topic}
+								subject={state.weakTopicAlert.subject}
+								score={state.weakTopicAlert.score}
+								onDismiss={() => dispatch({ type: 'TOGGLE_WEAK_ALERT', payload: false })}
 							/>
 						</div>
 					)}
 					<QuizContent
 						quiz={quiz}
-						currentQuestionIndex={currentQuestionIndex}
-						selectedOption={selectedOption}
-						isChecked={isChecked}
-						isCorrect={isCorrect}
-						elapsedSeconds={elapsedSeconds}
-						showHint={showHint}
-						score={score}
-						mode={mode}
-						currentSubject={currentSubject}
-						showSubjectSelector={showSubjectSelector}
+						currentQuestionIndex={state.currentQuestionIndex}
+						selectedOption={state.selectedOption}
+						isChecked={state.isChecked}
+						isCorrect={state.isCorrect}
+						elapsedSeconds={state.elapsedSeconds}
+						showHint={state.showHint}
+						score={state.score}
+						mode={state.mode}
+						currentSubject={state.currentSubject}
+						showSubjectSelector={state.showSubjectSelector}
 						adaptiveHint={adaptiveHint}
-						showStruggleAlert={showStruggleAlert}
-						currentStruggleCount={currentStruggleCount}
-						difficulty={difficulty}
-						correctCount={correctCount}
-						incorrectCount={incorrectCount}
+						showStruggleAlert={state.showStruggleAlert}
+						currentStruggleCount={state.currentStruggleCount}
+						difficulty={state.difficulty}
+						correctCount={state.correctCount}
+						incorrectCount={state.incorrectCount}
 						isCompleting={isCompleting}
-						onSelectOption={setSelectedOption}
-						onToggleHint={() => setShowHint(!showHint)}
+						onSelectOption={(opt) => dispatch({ type: 'SET_OPTION', payload: opt })}
+						onToggleHint={() => dispatch({ type: 'TOGGLE_HINT' })}
 						onCheck={handleCheck}
-						onModeChange={setMode}
-						onShowSubjectSelector={() => setShowSubjectSelector(true)}
+						onModeChange={(m) => dispatch({ type: 'SET_MODE', payload: m })}
+						onShowSubjectSelector={() =>
+							dispatch({ type: 'TOGGLE_SUBJECT_SELECTOR', payload: true })
+						}
 						onSubjectChange={handleSubjectChange}
-						onCloseSubjectSelector={() => setShowSubjectSelector(false)}
-						onDismissStruggle={() => setShowStruggleAlert(false)}
+						onCloseSubjectSelector={() =>
+							dispatch({ type: 'TOGGLE_SUBJECT_SELECTOR', payload: false })
+						}
+						onDismissStruggle={() =>
+							dispatch({ type: 'SET_STRUGGLE_ALERT', payload: { show: false, count: 0 } })
+						}
 						onExit={() => router.push('/dashboard')}
 					/>
 				</div>

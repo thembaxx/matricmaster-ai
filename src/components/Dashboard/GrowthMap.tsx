@@ -77,8 +77,8 @@ export function GrowthMap({ data }: GrowthMapProps) {
 							}}
 						/>
 						<Bar dataKey="mistakes" radius={[0, 4, 4, 0]}>
-							{sortedData.map((entry, index) => (
-								<Cell fill={getBarColor(entry.mistakes)} key={`cell-${index}`} />
+							{sortedData.map((entry) => (
+								<Cell fill={getBarColor(entry.mistakes)} key={`cell-${entry.topic}`} />
 							))}
 						</Bar>
 					</BarChart>

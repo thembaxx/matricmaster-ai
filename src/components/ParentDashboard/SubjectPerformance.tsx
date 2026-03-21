@@ -50,7 +50,7 @@ function SubjectRadarChart({ subject }: { subject: SubjectData }) {
 					<PolarGrid stroke="var(--border)" />
 					<PolarAngleAxis
 						dataKey="metric"
-						tick={{ fontSize: 8, fontWeight: 600, fill: 'var(--muted-foreground)' }}
+						tick={{ fontSize: 11, fontWeight: 600, fill: 'var(--muted-foreground)' }}
 					/>
 					<Radar
 						dataKey="value"
@@ -116,7 +116,7 @@ export function SubjectPerformance() {
 									{subject.needsAttention && (
 										<Badge
 											variant="outline"
-											className="text-[10px] font-bold bg-warning/10 text-warning border-warning/20"
+											className="text-xs font-bold bg-warning/10 text-warning border-warning/20"
 										>
 											<HugeiconsIcon icon={AlertCircleIcon} className="w-3 h-3 mr-1" />
 											Needs attention
@@ -156,7 +156,7 @@ export function SubjectPerformance() {
 
 							<div className="grid grid-cols-2 gap-4">
 								<div>
-									<div className="flex justify-between text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-1.5">
+									<div className="flex justify-between text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1.5">
 										<span>Overall Mastery</span>
 										<span>{subject.overallScore}%</span>
 									</div>
@@ -166,7 +166,7 @@ export function SubjectPerformance() {
 									/>
 									<div className="grid grid-cols-3 gap-2 mt-3">
 										<div className="text-center">
-											<p className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest">
+											<p className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
 												Confidence
 											</p>
 											<p className="text-sm font-black">
@@ -174,13 +174,13 @@ export function SubjectPerformance() {
 											</p>
 										</div>
 										<div className="text-center">
-											<p className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest">
+											<p className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
 												Mistakes
 											</p>
 											<p className="text-sm font-black">{subject.mistakesCount}</p>
 										</div>
 										<div className="text-center">
-											<p className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest">
+											<p className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
 												Time Spent
 											</p>
 											<p className="text-sm font-black">{formatTime(subject.timeMinutes)}</p>

@@ -1,6 +1,7 @@
 import { headers } from 'next/headers';
 import { type NextRequest, NextResponse } from 'next/server';
 import { getAuth } from '@/lib/auth';
+import { requireAuth } from '@/lib/server-auth';
 import {
 	claimChallengeReward,
 	getTodayChallenges,
@@ -8,6 +9,7 @@ import {
 } from '@/services/dailyChallenges';
 
 export async function GET() {
+	await requireAuth();
 	try {
 		const challenges = await getTodayChallenges();
 		return NextResponse.json({ challenges });

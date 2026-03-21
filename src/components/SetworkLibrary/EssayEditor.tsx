@@ -146,9 +146,9 @@ export function EssayEditor({ topic, prompt }: EssayEditorProps) {
 								Strengths
 							</h5>
 							<ul className="space-y-1">
-								{feedback.strengths.map((s, i) => (
+								{feedback.strengths.map((s) => (
 									<li
-										key={`strength-${i}`}
+										key={`strength-${s}`}
 										className="text-sm text-muted-foreground pl-3 border-l-2 border-green-500/30"
 									>
 										{s}
@@ -164,9 +164,9 @@ export function EssayEditor({ topic, prompt }: EssayEditorProps) {
 								Areas for Improvement
 							</h5>
 							<ul className="space-y-1">
-								{feedback.improvements.map((s, i) => (
+								{feedback.improvements.map((s) => (
 									<li
-										key={`improvement-${i}`}
+										key={`improvement-${s}`}
 										className="text-sm text-muted-foreground pl-3 border-l-2 border-amber-500/30"
 									>
 										{s}

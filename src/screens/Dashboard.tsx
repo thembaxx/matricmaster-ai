@@ -242,8 +242,8 @@ export default function Dashboard({
 
 							{weaknessData.length > 0 && (
 								<div className="space-y-6">
-									<div className="bg-card rounded-xl p-6 border">
-										<h3 className="text-lg font-semibold mb-1">Growth Map</h3>
+									<div className="tiimo-card p-6">
+										<h3 className="heading-4 mb-1 text-balance">Growth Map</h3>
 										<p className="text-sm text-muted-foreground mb-4">
 											Topics where you need the most practice
 										</p>

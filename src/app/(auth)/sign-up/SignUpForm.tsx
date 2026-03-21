@@ -66,7 +66,7 @@ export default function SignUpForm() {
 				setIsLoading(false);
 			} else {
 				setSuccess(true);
-				initializeDatabase().catch(console.debug);
+				initializeDatabase().catch(console.error);
 
 				setTimeout(() => {
 					router.push('/onboarding');

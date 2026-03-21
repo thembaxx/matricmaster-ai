@@ -91,6 +91,7 @@ export const DailyGoals = memo(function DailyGoals({
 			<div className="p-8 bg-card rounded-[2.5rem] shadow-tiimo border border-border/50 h-full">
 				<div className="space-y-6">
 					<Skeleton className="h-6 w-32 rounded-full" />
+					{/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
 					{[1, 2, 3].map((i) => (
 						<div key={`skeleton-${i}`} className="flex gap-4 items-center">
 							<Skeleton className="w-10 h-10 rounded-full" />
@@ -116,7 +117,7 @@ export const DailyGoals = memo(function DailyGoals({
 				</div>
 				{allComplete && (
 					<m.div
-						initial={{ scale: 0, rotate: -20 }}
+						initial={{ scale: 0.95, opacity: 0, rotate: -20 }}
 						animate={{ scale: 1, rotate: 0 }}
 						className="bg-tiimo-green text-white px-4 py-1.5 rounded-full text-xs font-bold shadow-sm"
 					>

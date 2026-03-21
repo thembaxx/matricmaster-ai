@@ -84,7 +84,7 @@ export function StreakShield({ className }: { className?: string }) {
 							</m.div>
 							{shieldCount > 0 && (
 								<m.div
-									initial={{ scale: 0 }}
+									initial={{ scale: 0.95, opacity: 0 }}
 									animate={{ scale: 1 }}
 									className="absolute -top-2 -right-2"
 								>

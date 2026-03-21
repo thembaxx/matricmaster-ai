@@ -160,6 +160,7 @@ export function MathInputField({ input, cursorPos, onDelete }: MathInputFieldPro
 		<Card className="p-4 bg-card border-none shadow-md rounded-2xl flex items-center gap-2">
 			<div className="flex-1 min-h-[40px] flex items-center px-2 overflow-x-auto">
 				<div className="text-lg font-serif text-foreground flex items-center flex-nowrap relative">
+					{/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
 					{input.split('').map((char, i) => (
 						<span key={`char-${i}`} className="relative whitespace-pre">
 							{i === cursorPos && (

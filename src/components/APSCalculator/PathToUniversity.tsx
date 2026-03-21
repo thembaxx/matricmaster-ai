@@ -39,12 +39,12 @@ export function PathToUniversity({
 				<CardDescription>Almost there! Here's how to reach your goal</CardDescription>
 			</CardHeader>
 			<CardContent className="space-y-4">
-				{closestUniversities.map((uni, idx) => {
+				{closestUniversities.map((uni) => {
 					const goal = getGoalPath(uni);
 					if (!goal) return null;
 					return (
 						<div
-							key={`${uni.name}-${uni.faculty}-${idx}`}
+							key={`${uni.name}-${uni.faculty}`}
 							className="p-4 rounded-xl bg-gradient-to-r from-primary/5 to-primary/10 border border-primary/20"
 						>
 							<div className="flex items-start justify-between mb-3">
@@ -73,9 +73,9 @@ export function PathToUniversity({
 							</div>
 
 							<div className="space-y-1">
-								{goal.improvements.map((imp, i) => (
+								{goal.improvements.map((imp) => (
 									<p
-										key={`improvement-${i}`}
+										key={`improvement-${imp}`}
 										className="text-xs text-muted-foreground flex items-center gap-2"
 									>
 										<TrendingUp className="w-3 h-3 text-green-500" />

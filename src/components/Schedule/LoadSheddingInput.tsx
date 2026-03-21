@@ -27,6 +27,7 @@ const SA_ZONES = [
 ];
 
 function renderHourOptions() {
+	// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 	return Array.from({ length: 24 }, (_, i) => (
 		<option key={`hour-${i}`} value={i}>
 			{i.toString().padStart(2, '0')}:00
@@ -148,14 +149,14 @@ export function LoadSheddingInput({ slots, onChange }: LoadSheddingInputProps) {
 				)}
 
 				<div className="space-y-2 max-h-48 overflow-y-auto">
-					{slots.map((slot, index) => (
+					{slots.map((slot) => (
 						<div
-							key={`slot-${index}`}
+							key={`slot-${slot.day}-${slot.startHour}-${slot.endHour}-${slot.stage}`}
 							className="flex items-center gap-2 bg-muted/50 rounded-xl p-3"
 						>
 							<select
 								value={slot.day}
-								onChange={(e) => updateSlot(index, 'day', e.target.value)}
+								onChange={(e) => updateSlot(slots.indexOf(slot), 'day', e.target.value)}
 								className="flex-1 h-9 px-3 rounded-lg bg-background text-sm border-0"
 							>
 								{DAYS.map((d) => (
@@ -166,7 +167,7 @@ export function LoadSheddingInput({ slots, onChange }: LoadSheddingInputProps) {
 							</select>
 							<select
 								value={slot.startHour}
-								onChange={(e) => updateSlot(index, 'startHour', e.target.value)}
+								onChange={(e) => updateSlot(slots.indexOf(slot), 'startHour', e.target.value)}
 								className="w-20 h-9 px-2 rounded-lg bg-background text-sm font-mono border-0"
 							>
 								{renderHourOptions()}
@@ -174,14 +175,14 @@ export function LoadSheddingInput({ slots, onChange }: LoadSheddingInputProps) {
 							<span className="text-xs text-muted-foreground">-</span>
 							<select
 								value={slot.endHour}
-								onChange={(e) => updateSlot(index, 'endHour', e.target.value)}
+								onChange={(e) => updateSlot(slots.indexOf(slot), 'endHour', e.target.value)}
 								className="w-20 h-9 px-2 rounded-lg bg-background text-sm font-mono border-0"
 							>
 								{renderHourOptions()}
 							</select>
 							<select
 								value={slot.stage}
-								onChange={(e) => updateSlot(index, 'stage', e.target.value)}
+								onChange={(e) => updateSlot(slots.indexOf(slot), 'stage', e.target.value)}
 								className="w-16 h-9 px-2 rounded-lg bg-amber-500/10 text-sm text-amber-600 border-0 font-mono"
 							>
 								{LOAD_SHEDDING_STAGES.map((s) => (
@@ -194,7 +195,7 @@ export function LoadSheddingInput({ slots, onChange }: LoadSheddingInputProps) {
 								type="button"
 								variant="ghost"
 								size="icon"
-								onClick={() => removeSlot(index)}
+								onClick={() => removeSlot(slots.indexOf(slot))}
 								className="h-9 w-9 rounded-lg hover:bg-destructive/10 text-destructive/60 hover:text-destructive"
 							>
 								×

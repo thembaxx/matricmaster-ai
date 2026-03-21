@@ -2,12 +2,13 @@
 
 import { Building02Icon, Chart02Icon, SparklesIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
+import dynamic from 'next/dynamic';
 import { useState } from 'react';
-import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts';
 import { toast } from 'sonner';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
 import {
 	type License,
 	MOCK_LICENSES,
@@ -17,6 +18,15 @@ import {
 } from './constants';
 import { LicenseManagementCard } from './LicenseManagementCard';
 import { StatsCards } from './StatsCards';
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const LicenseUsageChart: any = dynamic(
+	() => import('./LicenseUsageChart').then((mod) => mod.LicenseUsageChart),
+	{
+		ssr: false,
+		loading: () => <Skeleton className="h-48 w-full" />,
+	}
+);
 
 export default function SchoolDashboardPage() {
 	const [school, _setSchool] = useState<School>(MOCK_SCHOOL);
@@ -78,26 +88,6 @@ export default function SchoolDashboardPage() {
 		? Math.ceil((school.licenseExpiry.getTime() - Date.now()) / (1000 * 60 * 60 * 24))
 		: 0;
 
-	const CustomTooltip = ({
-		active,
-		payload,
-	}: {
-		active?: boolean;
-		payload?: Array<{ name: string; value: number; payload: { fill: string } }>;
-	}) => {
-		if (active && payload?.length) {
-			return (
-				<div className="bg-background border border-border/50 rounded-lg px-3 py-2 shadow-xl">
-					<p className="text-xs font-bold">{payload[0].name}</p>
-					<p className="text-sm font-black" style={{ color: payload[0].payload.fill }}>
-						{payload[0].value} licenses
-					</p>
-				</div>
-			);
-		}
-		return null;
-	};
-
 	return (
 		<div className="min-h-screen pb-40 pt-8 px-4">
 			<div className="max-w-6xl mx-auto">
@@ -136,26 +126,7 @@ export default function SchoolDashboardPage() {
 									</span>
 									<span className="font-medium">{stats.usagePercent}%</span>
 								</div>
-								<div className="h-48">
-									<ResponsiveContainer width="100%" height="100%">
-										<PieChart>
-											<Pie
-												data={pieData}
-												cx="50%"
-												cy="50%"
-												innerRadius={50}
-												outerRadius={80}
-												paddingAngle={4}
-												dataKey="value"
-											>
-												{pieData.map((entry, index) => (
-													<Cell key={`cell-${index}`} fill={entry.color} />
-												))}
-											</Pie>
-											<Tooltip content={<CustomTooltip />} />
-										</PieChart>
-									</ResponsiveContainer>
-								</div>
+								<LicenseUsageChart pieData={pieData} />
 								<div className="flex justify-center gap-4">
 									{pieData.map((item) => (
 										<div key={item.name} className="flex items-center gap-2">
@@ -183,25 +154,25 @@ export default function SchoolDashboardPage() {
 								</div>
 								<div className="grid grid-cols-2 gap-3 mt-4">
 									<div className="p-3 rounded-xl bg-primary/10 space-y-1">
-										<p className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest">
+										<p className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
 											Active
 										</p>
 										<p className="text-xl font-black text-primary">{stats.activeLicenses}</p>
 									</div>
 									<div className="p-3 rounded-xl bg-success/10 space-y-1">
-										<p className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest">
+										<p className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
 											Available
 										</p>
 										<p className="text-xl font-black text-success">{availableLicenses}</p>
 									</div>
 									<div className="p-3 rounded-xl bg-warning/10 space-y-1">
-										<p className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest">
+										<p className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
 											Expiring Soon
 										</p>
 										<p className="text-xl font-black text-warning">{stats.expiringSoon}</p>
 									</div>
 									<div className="p-3 rounded-xl bg-muted/50 space-y-1">
-										<p className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest">
+										<p className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
 											Total
 										</p>
 										<p className="text-xl font-black">{school.licenseCount}</p>

@@ -14,7 +14,7 @@ import { Button } from '@/components/ui/button';
 import { deleteCalendarEventAction, getCalendarEventsWithSubjectsAction } from '@/lib/db/actions';
 
 export default function SchedulePage() {
-	const [selectedDay, setSelectedDay] = useState(getCurrentDayName());
+	const [selectedDay, setSelectedDay] = useState(() => getCurrentDayName());
 	const [events, setEvents] = useState<UIEvent[]>([]);
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [isActionSheetOpen, setIsActionSheetOpen] = useState(false);

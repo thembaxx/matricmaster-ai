@@ -99,9 +99,9 @@ export function WaveInterference({
 
 				{waves
 					.filter((_, i) => i % 40 === 0)
-					.map((p, i) => (
+					.map((p) => (
 						<line
-							key={`wave-${i}`}
+							key={`wave-${p.x}-${p.y}`}
 							x1={p.x}
 							y1={centerY - p.y * 30 - 5}
 							x2={p.x}

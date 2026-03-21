@@ -1,6 +1,6 @@
 'use client';
 
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, domAnimation, LazyMotion, m } from 'framer-motion';
 import { useEffect, useMemo, useState } from 'react';
 
 interface ConfettiProps {
@@ -59,53 +59,55 @@ export function Confetti({
 	}, [active, particleData, duration, onComplete]);
 
 	return (
-		<AnimatePresence>
-			{active && (
-				<motion.div
-					className="fixed inset-0 pointer-events-none z-[9999]"
-					exit={{ opacity: 0 }}
-					transition={{ duration: 0.3 }}
-				>
-					{particles.map((particle) => (
-						<motion.div
-							key={particle.id}
-							className="absolute"
-							style={{
-								left: `${particle.x}%`,
-								top: '30%',
-							}}
-							initial={{
-								y: 0,
-								x: 0,
-								rotate: 0,
-								opacity: 1,
-								scale: 1,
-							}}
-							animate={{
-								y: 600,
-								x: particle.velocityX * 20,
-								rotate: particle.rotation,
-								opacity: [1, 1, 0],
-								scale: [1, 1, 0.5],
-							}}
-							transition={{
-								duration: duration / 1000,
-								ease: [0.25, 0.46, 0.45, 0.94],
-							}}
-						>
-							<div
-								className={particle.shape === 'circle' ? 'rounded-full' : 'rounded-sm'}
+		<LazyMotion features={domAnimation}>
+			<AnimatePresence>
+				{active && (
+					<m.div
+						className="fixed inset-0 pointer-events-none z-[9999]"
+						exit={{ opacity: 0 }}
+						transition={{ duration: 0.3 }}
+					>
+						{particles.map((particle) => (
+							<m.div
+								key={particle.id}
+								className="absolute"
 								style={{
-									width: particle.size,
-									height: particle.shape === 'circle' ? particle.size : particle.size * 0.6,
-									backgroundColor: particle.color,
-									boxShadow: `0 0 ${particle.size}px ${particle.color}40`,
+									left: `${particle.x}%`,
+									top: '30%',
 								}}
-							/>
-						</motion.div>
-					))}
-				</motion.div>
-			)}
-		</AnimatePresence>
+								initial={{
+									y: 0,
+									x: 0,
+									rotate: 0,
+									opacity: 1,
+									scale: 1,
+								}}
+								animate={{
+									y: 600,
+									x: particle.velocityX * 20,
+									rotate: particle.rotation,
+									opacity: [1, 1, 0],
+									scale: [1, 1, 0.5],
+								}}
+								transition={{
+									duration: duration / 1000,
+									ease: [0.25, 0.46, 0.45, 0.94],
+								}}
+							>
+								<div
+									className={particle.shape === 'circle' ? 'rounded-full' : 'rounded-sm'}
+									style={{
+										width: particle.size,
+										height: particle.shape === 'circle' ? particle.size : particle.size * 0.6,
+										backgroundColor: particle.color,
+										boxShadow: `0 0 ${particle.size}px ${particle.color}40`,
+									}}
+								/>
+							</m.div>
+						))}
+					</m.div>
+				)}
+			</AnimatePresence>
+		</LazyMotion>
 	);
 }

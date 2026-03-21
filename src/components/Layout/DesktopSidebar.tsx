@@ -38,7 +38,6 @@ import {
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { FluentEmoji } from '@lobehub/fluent-emoji';
-import { m } from 'framer-motion';
 import Link from 'next/link';
 import { useMemo, useState } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -84,13 +83,13 @@ export const sideMenuSections: MenuSection[] = [
 			{ href: '/dashboard', label: 'Dashboard', icon: Home01Icon },
 			{ href: '/demo', label: 'Demo', icon: SparklesIcon },
 			{ href: '/lessons', label: 'Lessons', icon: BookOpen01Icon },
-			{ href: '/physics', label: 'Physics', fluentEmoji: 'Atom' },
+			{ href: '/physics', label: 'Physics', fluentEmoji: '⚛️' },
 			{ href: '/search', label: 'Search', icon: Search01Icon },
 			{ href: '/study-companion', label: 'Study Companion', icon: SparklesIcon },
 			{ href: '/study-path', label: 'Study Path', icon: MapsIcon },
 			{ href: '/study-plan', label: 'Study Plan', icon: Calendar01Icon },
 			{ href: '/curriculum-map', label: 'Curriculum Map', icon: GridIcon },
-			{ href: '/periodic-table', label: 'Periodic Table', fluentEmoji: 'Atom' },
+			{ href: '/periodic-table', label: 'Periodic Table', fluentEmoji: '⚛️' },
 			{ href: '/chat', label: 'Study Buddy', icon: Chat01Icon },
 			{ href: '/smart-scheduler', label: 'Smart Scheduler', icon: Calendar01Icon },
 			{ href: '/tutoring', label: 'AI Tutoring', icon: ComputerVideoCallIcon },
@@ -207,13 +206,13 @@ export function AppSidebar({ user, pathname, theme, onSetTheme }: AppSidebarProp
 				<div className="relative flex items-center px-2 mt-2">
 					<HugeiconsIcon
 						icon={Search01Icon}
-						className="absolute left-5 w-4 h-4 text-sidebar-foreground/30"
+						className="absolute left-5 w-4 h-4 text-sidebar-foreground/50"
 					/>
 					<Input
 						placeholder="Search..."
 						value={searchQuery}
 						onChange={(e) => setSearchQuery(e.target.value)}
-						className="pl-9 h-10 dark:bg-sidebar-accent/60 placeholder:text-xs placeholder:text-sidebar-foreground/40 border-sidebar-border/50 focus-visible:ring-sidebar-ring rounded-lg shadow-none text-sm"
+						className="pl-9 h-9 dark:bg-sidebar-accent/60 placeholder:text-sidebar-foreground/40 border-sidebar-border/50 focus-visible:ring-sidebar-ring rounded-lg shadow-none text-sm"
 					/>
 				</div>
 			</SidebarHeader>
@@ -227,35 +226,34 @@ export function AppSidebar({ user, pathname, theme, onSetTheme }: AppSidebarProp
 				) : (
 					filteredSections.map((section) => (
 						<SidebarGroup key={section.title} className="py-1">
-							<m.button
+							<button
 								type="button"
 								onClick={() => handleSectionToggle(section.title)}
 								className="w-full flex items-center justify-between px-3 py-2 rounded-lg hover:bg-sidebar-accent/50 transition-colors group"
 							>
-								<span className="text-[10px] font-medium text-sidebar-foreground/50 grow truncate text-left">
+								<span className="text-[9px] font-medium uppercase tracking-wider text-sidebar-foreground/35 grow truncate text-left">
 									{section.title}
 								</span>
-								<m.div
-									animate={{ rotate: computedOpenSection === section.title ? 180 : 0 }}
-									transition={{ duration: 0.2 }}
-								>
-									<HugeiconsIcon
-										icon={ArrowDown01Icon}
-										className="w-3 h-3 text-sidebar-foreground/30 group-hover:text-sidebar-foreground/70"
-									/>
-								</m.div>
-							</m.button>
-							<m.div
-								initial={false}
-								animate={{
-									height: computedOpenSection === section.title ? 'auto' : 0,
-									opacity: computedOpenSection === section.title ? 1 : 0,
-								}}
-								transition={{ duration: 0.2 }}
-								className="overflow-hidden"
+								<HugeiconsIcon
+									icon={ArrowDown01Icon}
+									className={cn(
+										'w-3 h-3 transition-transform duration-200',
+										computedOpenSection === section.title
+											? 'rotate-180 text-sidebar-foreground/70'
+											: 'text-sidebar-foreground/30'
+									)}
+								/>
+							</button>
+							<div
+								className={cn(
+									'overflow-hidden transition-all duration-200',
+									computedOpenSection === section.title
+										? 'max-h-[1000px] opacity-100'
+										: 'max-h-0 opacity-0'
+								)}
 							>
 								<SidebarMenu className="pt-1 pr-0!">
-									{section.items.map((item, idx) => {
+									{section.items.map((item) => {
 										const isActive = pathname === item.href;
 										return (
 											<SidebarMenuItem key={item.href}>
@@ -263,10 +261,10 @@ export function AppSidebar({ user, pathname, theme, onSetTheme }: AppSidebarProp
 													asChild
 													isActive={isActive}
 													className={cn(
-														'pl-3.5 rounded-xl h-11 transition-all duration-200',
+														'pl-3 rounded-xl h-10 transition-colors',
 														isActive
-															? 'bg-sidebar-primary/10 text-sidebar-primary shadow-sm'
-															: 'text-sidebar-foreground/60 hover:text-sidebar-foreground hover:bg-sidebar-accent/50'
+															? 'bg-sidebar-primary/10 text-sidebar-primary'
+															: 'text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent/50'
 													)}
 												>
 													<Link
@@ -275,38 +273,29 @@ export function AppSidebar({ user, pathname, theme, onSetTheme }: AppSidebarProp
 														onClick={handleLinkClick}
 														className="flex items-center gap-3"
 													>
-														<m.div
-															initial={{ opacity: 0, x: -10 }}
-															animate={{ opacity: 1, x: 0 }}
-															transition={{ delay: idx * 0.02 }}
-														>
-															{item.fluentEmoji ? (
-																<FluentEmoji
-																	emoji={item.fluentEmoji}
-																	size={18}
-																	className={cn(
-																		'w-[18px] h-[18px]',
-																		isActive ? 'text-sidebar-primary' : 'text-sidebar-foreground/50'
-																	)}
-																/>
-															) : item.icon ? (
-																<HugeiconsIcon
-																	icon={item.icon}
-																	className={cn(
-																		'w-[18px] h-[18px]',
-																		isActive ? 'text-sidebar-primary' : 'text-sidebar-foreground/50'
-																	)}
-																/>
-															) : null}
-														</m.div>
+														{item.fluentEmoji ? (
+															<FluentEmoji
+																emoji={item.fluentEmoji}
+																size={20}
+																className={cn(
+																	'w-5 h-5',
+																	isActive ? 'text-sidebar-primary' : 'text-sidebar-foreground/70'
+																)}
+															/>
+														) : item.icon ? (
+															<HugeiconsIcon
+																icon={item.icon}
+																className={cn(
+																	'w-5 h-5',
+																	isActive ? 'text-sidebar-primary' : 'text-sidebar-foreground/70'
+																)}
+															/>
+														) : null}
 														<span className="font-medium text-[13px] grow truncate">
 															{item.label}
 														</span>
 														{isActive && (
-															<m.div
-																layoutId="sidebar-active"
-																className="ml-auto mr-3.5 w-1.5 h-1.5 rounded-full bg-sidebar-primary"
-															/>
+															<div className="ml-auto mr-3.5 w-1.5 h-1.5 rounded-full bg-sidebar-primary" />
 														)}
 													</Link>
 												</SidebarMenuButton>
@@ -314,7 +303,7 @@ export function AppSidebar({ user, pathname, theme, onSetTheme }: AppSidebarProp
 										);
 									})}
 								</SidebarMenu>
-							</m.div>
+							</div>
 						</SidebarGroup>
 					))
 				)}
@@ -356,19 +345,10 @@ function ThemeToggle({ theme, onSetTheme }: ThemeToggleProps) {
 			onClick={handleCycle}
 			className="w-full flex items-center justify-between px-4 py-2.5 h-auto rounded-xl bg-sidebar-accent/40 hover:bg-sidebar-accent transition-colors group"
 		>
-			<span className="text-xs font-medium text-sidebar-foreground/60">{current.label}</span>
-			<m.div
-				key={current.value}
-				initial={{ rotate: -90, opacity: 0, scale: 0.5 }}
-				animate={{ rotate: 0, opacity: 1, scale: 1 }}
-				exit={{ rotate: 90, opacity: 0, scale: 0.5 }}
-				transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-				whileHover={{ scale: 1.1 }}
-				whileTap={{ scale: 0.9 }}
-				className="w-7 h-7 rounded-lg bg-sidebar flex items-center justify-center shadow-sm"
-			>
+			<span className="text-xs font-medium text-sidebar-foreground/70">{current.label}</span>
+			<div className="w-7 h-7 rounded-lg bg-sidebar flex items-center justify-center shadow-sm">
 				<HugeiconsIcon icon={current.icon} className={cn('w-4 h-4', current.color)} />
-			</m.div>
+			</div>
 		</Button>
 	);
 }
@@ -393,7 +373,7 @@ function UserProfileSection({ user }: UserProfileSectionProps) {
 				</Avatar>
 				<div className="flex-1 min-w-0">
 					<p className="text-sm font-semibold text-sidebar-foreground truncate">{user.name}</p>
-					<p className="text-[10px] text-sidebar-foreground/40 truncate">{user.email}</p>
+					<p className="text-[10px] text-sidebar-foreground/50 truncate">{user.email}</p>
 				</div>
 			</Button>
 		</ProfileMenu>

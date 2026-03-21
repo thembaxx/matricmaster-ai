@@ -57,9 +57,9 @@ export function RecommendationsCard({
 			<CardContent>
 				<ScrollArea className="h-75 pr-4">
 					<div className="space-y-3">
-						{recommendations.recommendations.map((rec, index) => (
+						{recommendations.recommendations.map((rec) => (
 							<div
-								key={`rec-${index}`}
+								key={`${rec.type}-${rec.topic}`}
 								className="flex items-start gap-3 rounded-lg border p-3 transition-colors hover:bg-muted/50"
 							>
 								<div className="mt-0.5 text-muted-foreground">

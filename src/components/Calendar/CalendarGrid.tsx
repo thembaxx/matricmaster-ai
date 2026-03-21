@@ -25,6 +25,7 @@ export function CalendarGrid({
 	const days = [];
 
 	for (let i = 0; i < startingDay; i++) {
+		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		days.push(<div key={`empty-${i}`} className="h-24 border bg-muted/30" />);
 	}
 

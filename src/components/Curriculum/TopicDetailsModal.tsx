@@ -160,9 +160,9 @@ export function TopicDetailsModal({
 								Areas to Improve
 							</h4>
 							<div className="flex flex-wrap gap-2">
-								{topic.weaknesses.map((w, i) => (
+								{topic.weaknesses.map((w) => (
 									<span
-										key={`weakness-${i}`}
+										key={w}
 										className="px-3 py-1 bg-destructive/10 text-destructive rounded-full text-xs font-medium"
 									>
 										{w}

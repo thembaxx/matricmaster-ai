@@ -80,25 +80,25 @@ export function ElementQuiz({
 									onValueChange={(val) => onSelectAnswer(Number.parseInt(val, 10))}
 									className="space-y-3"
 								>
-									{quizQuestions[currentQuestion].options.map((option, idx) => (
+									{quizQuestions[currentQuestion].options.map((option, optIdx) => (
 										<div
-											key={`option-${idx}`}
+											key={`option-${option}-${optIdx}`}
 											className={cn(
 												'flex items-center gap-3 p-4 rounded-xl border-2 transition-all cursor-pointer',
 												showExplanation
-													? idx === quizQuestions[currentQuestion].correctAnswer
+													? optIdx === quizQuestions[currentQuestion].correctAnswer
 														? 'bg-success/20 border-success'
-														: selectedAnswer === idx
+														: selectedAnswer === optIdx
 															? 'bg-destructive/20 border-destructive'
 															: 'border-border bg-muted/30'
-													: selectedAnswer === idx
+													: selectedAnswer === optIdx
 														? 'border-primary bg-primary/10'
 														: 'border-border hover:border-primary/50'
 											)}
 										>
-											<RadioGroupItem value={idx.toString()} id={`quiz-opt-${idx}`} />
+											<RadioGroupItem value={optIdx.toString()} id={`quiz-opt-${optIdx}`} />
 											<Label
-												htmlFor={`quiz-opt-${idx}`}
+												htmlFor={`quiz-opt-${optIdx}`}
 												className="flex-1 cursor-pointer font-medium"
 											>
 												{option}

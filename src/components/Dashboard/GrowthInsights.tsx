@@ -13,7 +13,12 @@ interface GrowthInsightsProps {
 	weakTopics?: { topic: string; subject?: string }[];
 }
 
-export function GrowthInsights({ insights, weakTopics = [] }: GrowthInsightsProps) {
+const DEFAULT_WEAK_TOPICS: { topic: string; subject?: string }[] = [];
+
+export function GrowthInsights({
+	insights,
+	weakTopics = DEFAULT_WEAK_TOPICS,
+}: GrowthInsightsProps) {
 	const router = useRouter();
 
 	if (insights.length === 0) {
@@ -31,7 +36,7 @@ export function GrowthInsights({ insights, weakTopics = [] }: GrowthInsightsProp
 			<CardContent className="p-6 space-y-3">
 				{insights.map((insight, i) => (
 					<m.div
-						key={`insight-${i}`}
+						key={insight}
 						initial={{ opacity: 0, x: -10 }}
 						animate={{ opacity: 1, x: 0 }}
 						transition={{ delay: i * 0.1 }}

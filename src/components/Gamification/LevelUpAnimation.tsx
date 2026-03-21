@@ -39,9 +39,9 @@ export function LevelUpAnimation({
 		<AnimatePresence>
 			{isVisible && (
 				<m.div
-					initial={{ scale: 0, opacity: 0 }}
+					initial={{ scale: 0.95, opacity: 0 }}
 					animate={controls}
-					exit={{ scale: 0, opacity: 0 }}
+					exit={{ scale: 0.95, opacity: 0 }}
 					className="fixed inset-0 z-50 flex items-center justify-center pointer-events-none"
 				>
 					<div className="text-center">
@@ -81,8 +81,8 @@ export function LevelUpAnimation({
 							{level}
 						</m.p>
 						<m.div
-							initial={{ scale: 0 }}
-							animate={{ scale: [0, 1.5, 1] }}
+							initial={{ scale: 0.95, opacity: 0 }}
+							animate={{ scale: [0.95, 1.5, 1], opacity: [0, 1, 1] }}
 							transition={{ delay: 0.9, type: 'spring' }}
 							className="flex justify-center gap-1 mt-2"
 						>

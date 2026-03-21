@@ -32,9 +32,12 @@ const DEFAULT_CONFIG: SyncConfig = {
 	retryAttempts: 3,
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type AnyTable = any;
+
 interface TableMapping {
-	pgTable: any;
-	sqliteTable: any;
+	pgTable: AnyTable;
+	sqliteTable: AnyTable;
 	idColumn: string;
 }
 
@@ -139,7 +142,8 @@ class SyncEngine {
 	private async pushTableChanges(mapping: TableMapping): Promise<number> {
 		const sqliteDb = sqliteManager.getDb();
 
-		const pendingColumn = mapping.sqliteTable.syncStatus as any;
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		const pendingColumn = (mapping.sqliteTable as any).syncStatus;
 		const pendingRecords = await sqliteDb
 			.select()
 			.from(mapping.sqliteTable)
@@ -149,6 +153,7 @@ class SyncEngine {
 
 		for (const record of pendingRecords) {
 			try {
+				// eslint-disable-next-line @typescript-eslint/no-explicit-any
 				const id = (record as any)[mapping.idColumn];
 				const remoteRecord = await this.getRemoteRecord(mapping, id);
 
@@ -165,6 +170,7 @@ class SyncEngine {
 				await this.markAsSynced(mapping, id);
 				pushedCount++;
 			} catch (_error) {
+				// eslint-disable-next-line @typescript-eslint/no-explicit-any
 				const id = (record as any)[mapping.idColumn];
 				await this.markAsFailed(mapping, id);
 			}
@@ -176,7 +182,8 @@ class SyncEngine {
 	private async pullTableChanges(mapping: TableMapping): Promise<number> {
 		const pgDb = pgManager.getDb();
 
-		const lastModifiedColumn = mapping.pgTable.lastModifiedAt as any;
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		const lastModifiedColumn = (mapping.pgTable as any).lastModifiedAt;
 
 		const remoteRecords = await pgDb
 			.select()
@@ -187,6 +194,7 @@ class SyncEngine {
 
 		for (const record of remoteRecords) {
 			try {
+				// eslint-disable-next-line @typescript-eslint/no-explicit-any
 				const id = (record as any)[mapping.idColumn];
 				const localRecord = await this.getLocalRecord(mapping, id);
 

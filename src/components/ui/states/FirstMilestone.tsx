@@ -17,7 +17,11 @@ interface FirstMilestoneProps {
 	lockedAchievements?: LockedAchievement[];
 }
 
-export function FirstMilestone({ lockedAchievements = [] }: FirstMilestoneProps) {
+const DEFAULT_LOCKED_ACHIEVEMENTS: LockedAchievement[] = [];
+
+export function FirstMilestone({
+	lockedAchievements = DEFAULT_LOCKED_ACHIEVEMENTS,
+}: FirstMilestoneProps) {
 	const router = useRouter();
 
 	const defaultLocked = [

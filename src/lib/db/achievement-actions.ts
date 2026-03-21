@@ -119,7 +119,7 @@ export async function checkAndUnlockAchievements(): Promise<AchievementCheckResu
 						achievementId: achievement.id,
 					},
 				}).catch((err) => {
-					console.debug('[Achievements] Failed to create notification:', err);
+					console.error('[Achievements] Failed to create notification:', err);
 				});
 			}
 		}
@@ -134,7 +134,7 @@ export async function checkAndUnlockAchievements(): Promise<AchievementCheckResu
 			existing: Array.from(existingIds),
 		};
 	} catch (error) {
-		console.debug('[Achievements] Error checking achievements:', error);
+		console.error('[Achievements] Error checking achievements:', error);
 		return { unlocked: [], existing: [] };
 	}
 }

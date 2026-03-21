@@ -12,7 +12,7 @@ export function MathWidget() {
 		<Card className="rounded-[2rem] border-border/50 shadow-tiimo overflow-hidden bg-tiimo-lavender/5 group">
 			<CardHeader className="p-6 pb-0">
 				<CardTitle className="text-xs font-black uppercase tracking-widest text-tiimo-gray-muted flex items-center gap-2">
-					<FluentEmoji emoji="Abacus" size={16} className="w-4 h-4 text-tiimo-lavender" />
+					<FluentEmoji emoji="🧮" size={16} className="w-4 h-4 text-tiimo-lavender" />
 					Quick Solve
 				</CardTitle>
 			</CardHeader>
@@ -38,7 +38,7 @@ export function ScienceWidget() {
 		<Card className="rounded-[2rem] border-border/50 shadow-tiimo overflow-hidden bg-tiimo-blue/5">
 			<CardHeader className="p-6 pb-0">
 				<CardTitle className="text-xs font-black uppercase tracking-widest text-tiimo-gray-muted flex items-center gap-2">
-					<FluentEmoji emoji="Atom" size={16} className="w-4 h-4 text-tiimo-blue" />
+					<FluentEmoji emoji="⚛️" size={16} className="w-4 h-4 text-tiimo-blue" />
 					Element Facts
 				</CardTitle>
 			</CardHeader>
@@ -81,7 +81,7 @@ export function HistoryScrubber() {
 					<div className="absolute inset-0 flex justify-between px-2 -top-2">
 						{events.map((_, i) => (
 							<Button
-								key={`event-${i}`}
+								key={events[i].year}
 								type="button"
 								variant="ghost"
 								size="icon"

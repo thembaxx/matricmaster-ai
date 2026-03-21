@@ -93,7 +93,7 @@ export function DailyLoginBonus({ onClaimed }: DailyLoginBonusProps) {
 										</Button>
 
 										<m.div
-											initial={{ scale: 0 }}
+											initial={{ scale: 0.95, opacity: 0 }}
 											animate={{ scale: 1 }}
 											transition={{ delay: 0.1, type: 'spring', damping: 15 }}
 											className="w-20 h-20 mx-auto mb-4 rounded-full bg-primary/10 flex items-center justify-center"
@@ -202,7 +202,7 @@ export function DailyLoginBonus({ onClaimed }: DailyLoginBonusProps) {
 							) : (
 								<CardContent className="px-6 py-8 text-center">
 									<m.div
-										initial={{ scale: 0 }}
+										initial={{ scale: 0.95, opacity: 0 }}
 										animate={{ scale: 1 }}
 										transition={{ delay: 0.1, type: 'spring', damping: 15 }}
 										className="w-20 h-20 mx-auto mb-4 rounded-full bg-success/10 flex items-center justify-center"

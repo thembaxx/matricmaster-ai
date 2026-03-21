@@ -3,6 +3,7 @@
 import { Flag, Shield01Icon, ViewIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { AlertCircle, ShieldCheck } from 'lucide-react';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { AutoModerationTab } from '@/components/Admin/AutoModerationTab';
@@ -10,6 +11,7 @@ import { FlaggedContentList } from '@/components/Admin/FlaggedContentList';
 import { ModerationOverview } from '@/components/Admin/ModerationOverview';
 import { ModerationStatsCards } from '@/components/Admin/ModerationStatsCards';
 import type { ContentFlag, ModerationPattern } from '@/components/Admin/moderation-types';
+import { EmptyState } from '@/components/ui/EmptyState';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import type { SessionUser } from '@/lib/auth';
 import { useSession } from '@/lib/auth-client';
@@ -22,7 +24,12 @@ export default function ModerationDashboard() {
 	const [patterns] = useState<ModerationPattern[]>([]);
 	const queryClient = useQueryClient();
 
-	const { data: flagsData, isLoading } = useQuery<ContentFlag[] | null>({
+	const {
+		data: flagsData,
+		isLoading,
+		isError,
+		refetch,
+	} = useQuery<ContentFlag[] | null>({
 		queryKey: ['moderation-flags', statusFilter],
 		queryFn: async () => {
 			if (!session?.user?.id) return null;
@@ -96,6 +103,30 @@ export default function ModerationDashboard() {
 			<div className="container mx-auto py-8 text-center">
 				<div className="animate-spin rounded-full h-12 w-12 border-4 border-primary border-t-transparent mx-auto" />
 			</div>
+		);
+	}
+
+	if (isError) {
+		return (
+			<EmptyState
+				icon={AlertCircle}
+				title="Failed to load moderation data"
+				description="There was an error loading the flagged content. Please try again."
+				action={{
+					label: 'Retry',
+					onClick: () => void refetch(),
+				}}
+			/>
+		);
+	}
+
+	if (flags.length === 0) {
+		return (
+			<EmptyState
+				icon={ShieldCheck}
+				title="No flagged content"
+				description="All clear! There are no flagged items to review at the moment."
+			/>
 		);
 	}
 

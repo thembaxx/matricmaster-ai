@@ -21,7 +21,7 @@ export function SubjectsSection({ onAuthRequired }: SubjectsSectionProps) {
 				transition={{ duration: 0.6 }}
 				className="mb-12"
 			>
-				<h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
+				<h2 className="heading-2 mb-4">
 					Your
 					<span className="text-tiimo-lavender"> subjects</span>
 				</h2>
@@ -45,7 +45,7 @@ export function SubjectsSection({ onAuthRequired }: SubjectsSectionProps) {
 							type="button"
 							variants={STAGGER_ITEM}
 							onClick={() => onAuthRequired(subject.path)}
-							className="group relative p-6 rounded-[var(--radius-xl)] bg-card border border-border/50 hover:border-primary/30 transition-all duration-300 text-left overflow-hidden"
+							className="tiimo-card group relative p-6 text-left overflow-hidden will-change-transform"
 						>
 							<div
 								className={`absolute top-0 right-0 w-32 h-32 ${subject.bg} rounded-full -mr-16 -mt-16 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-3xl`}

@@ -725,10 +725,11 @@ export function InteractiveDiagram({ type, className }: InteractiveDiagramProps)
 						stroke="var(--tiimo-blue)"
 						strokeWidth="3"
 					/>
+					{/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
 					{[1, 2, 3].map((i) => (
 						<m.path
 							key={`atom-${i}`}
-							initial={{ scale: 0 }}
+							initial={{ scale: 0.95, opacity: 0 }}
 							animate={{ scale: 1 }}
 							transition={{ delay: 0.5 + i * 0.1 }}
 							d="M 0 -5 L 5 5 L -5 5 Z"

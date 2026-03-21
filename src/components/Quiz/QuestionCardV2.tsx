@@ -106,7 +106,7 @@ export function QuestionCard({
 
 								{isChecked && (isSelected || option.isCorrect) && (
 									<m.div
-										initial={{ scale: 0 }}
+										initial={{ scale: 0.95, opacity: 0 }}
 										animate={{ scale: 1 }}
 										className={cn(
 											'w-6 h-6 rounded-full flex items-center justify-center text-white',

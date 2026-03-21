@@ -141,11 +141,17 @@ Generate exactly 15-20 blocks for the week. dayOffset 0 = Monday.`;
 			return { blocks: generateFallbackBlocks(weakAreas, examCountdowns), suggestions: [] };
 		}
 
-		const parsed = JSON.parse(jsonMatch[0]);
+		let parsed: { blocks?: Record<string, unknown>[]; suggestions?: Record<string, unknown>[] };
+		try {
+			parsed = JSON.parse(jsonMatch[0]);
+		} catch (error) {
+			console.warn('Failed to parse schedule AI response:', error);
+			return { blocks: generateFallbackBlocks(weakAreas, examCountdowns), suggestions: [] };
+		}
 		const weekStart = new Date();
 		weekStart.setDate(weekStart.getDate() - weekStart.getDay() + 1); // Monday
 
-		const blocks: StudyBlock[] = (parsed.blocks || []).map((b: Record<string, unknown>) => {
+		const blocks: StudyBlock[] = ((parsed.blocks || []) as Record<string, unknown>[]).map((b) => {
 			const date = new Date(weekStart);
 			date.setDate(date.getDate() + ((b.dayOffset as number) || 0));
 			const startStr = (b.startTime as string) || '09:00';
@@ -170,18 +176,18 @@ Generate exactly 15-20 blocks for the week. dayOffset 0 = Monday.`;
 			};
 		});
 
-		const suggestions: AISuggestion[] = (parsed.suggestions || []).map(
-			(s: Record<string, unknown>) => ({
-				id: crypto.randomUUID(),
-				type: (s.type as 'add' | 'reschedule' | 'remove') || 'add',
-				block: {
-					subject: s.subject as string | undefined,
-					topic: s.topic as string | undefined,
-				},
-				reason: (s.reason as string) || 'AI recommendation',
-				confidence: (s.confidence as number) || 0.7,
-			})
-		);
+		const suggestions: AISuggestion[] = (
+			(parsed.suggestions || []) as Record<string, unknown>[]
+		).map((s) => ({
+			id: crypto.randomUUID(),
+			type: (s.type as 'add' | 'reschedule' | 'remove') || 'add',
+			block: {
+				subject: s.subject as string | undefined,
+				topic: s.topic as string | undefined,
+			},
+			reason: (s.reason as string) || 'AI recommendation',
+			confidence: (s.confidence as number) || 0.7,
+		}));
 
 		return { blocks, suggestions };
 	} catch (error) {

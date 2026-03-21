@@ -316,7 +316,12 @@ export async function generateStructuredText<T>(
 		text = jsonMatch[0];
 	}
 
-	return JSON.parse(text) as T;
+	try {
+		return JSON.parse(text) as T;
+	} catch (error) {
+		console.error('Failed to parse AI response:', error);
+		throw new Error('Invalid JSON response from AI');
+	}
 }
 
 export interface GenerateMultimodalOptions {
@@ -409,7 +414,12 @@ export async function generateStructuredTextFromPDF<T>(
 		cleanedText = jsonMatch[0];
 	}
 
-	return JSON.parse(cleanedText) as T;
+	try {
+		return JSON.parse(cleanedText) as T;
+	} catch (error) {
+		console.error('Failed to parse AI response from PDF:', error);
+		throw new Error('Invalid JSON response from AI');
+	}
 }
 
 const questionSchema = z.object({

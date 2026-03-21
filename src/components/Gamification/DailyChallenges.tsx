@@ -103,7 +103,7 @@ function getTimeUntilReset(): string {
 export function DailyChallenges({ className }: { className?: string }) {
 	const queryClient = useQueryClient();
 	const [showConfetti, setShowConfetti] = useState(false);
-	const [countdown, setCountdown] = useState(getTimeUntilReset());
+	const [countdown, setCountdown] = useState(() => getTimeUntilReset());
 
 	const { data: challenges, isLoading } = useQuery({
 		queryKey: ['daily-challenges'],
@@ -149,6 +149,7 @@ export function DailyChallenges({ className }: { className?: string }) {
 					<div className="h-6 w-40 bg-muted animate-pulse rounded-lg" />
 				</CardHeader>
 				<CardContent className="space-y-4">
+					{/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
 					{[1, 2, 3].map((i) => (
 						<div key={`skeleton-${i}`} className="h-24 bg-muted animate-pulse rounded-xl" />
 					))}

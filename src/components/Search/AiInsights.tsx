@@ -2,9 +2,10 @@
 
 import { AlertCircleIcon, SparklesIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
+import { useQuery } from '@tanstack/react-query';
 import { AnimatePresence, m } from 'framer-motion';
 import Link from 'next/link';
-import { memo, useEffect, useState } from 'react';
+import { memo } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -32,28 +33,20 @@ export const AiInsights = memo(function AiInsights({
 	onSuggestionClick,
 	query = '',
 }: AiInsightsProps) {
-	const [studyContext, setStudyContext] = useState<StudyContext[]>([]);
-
-	useEffect(() => {
-		async function loadStudyContext() {
-			if (!query || query.length < 3) return;
-
-			try {
-				const response = await fetch(
-					`/api/ai-tutor/recommendations?context=${encodeURIComponent(query)}`
-				);
-				if (response.ok) {
-					const data = await response.json();
-					setStudyContext(data.relatedTopics || []);
-				}
-			} catch (error) {
-				console.debug('Failed to load study context:', error);
-			}
-		}
-
-		const timer = setTimeout(loadStudyContext, 500);
-		return () => clearTimeout(timer);
-	}, [query]);
+	const { data: studyContext = [] } = useQuery<StudyContext[]>({
+		queryKey: ['study-context', query],
+		queryFn: async () => {
+			if (!query || query.length < 3) return [];
+			const response = await fetch(
+				`/api/ai-tutor/recommendations?context=${encodeURIComponent(query)}`
+			);
+			if (!response.ok) throw new Error('Failed to load study context');
+			const data = await response.json();
+			return data.relatedTopics || [];
+		},
+		enabled: query.length >= 3,
+		staleTime: 5 * 60 * 1000,
+	});
 
 	return (
 		<AnimatePresence mode="wait">

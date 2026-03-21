@@ -120,6 +120,7 @@ function SubscriptionPageSkeleton() {
 					<div className="h-6 bg-muted rounded w-2/3 mx-auto animate-pulse" />
 				</div>
 				<div className="grid md:grid-cols-3 gap-6">
+					{/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
 					{[1, 2, 3].map((i) => (
 						<div key={`skeleton-${i}`} className="h-80 bg-muted rounded-lg animate-pulse" />
 					))}

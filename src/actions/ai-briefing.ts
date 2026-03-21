@@ -153,7 +153,7 @@ export async function generatePersonalizedBriefing(): Promise<BriefingData> {
 			hasAiGreeting: true,
 		};
 	} catch (error) {
-		console.debug('Error generating personalized briefing:', error);
+		console.error('Error generating personalized briefing:', error);
 		return getDefaultBriefing();
 	}
 }

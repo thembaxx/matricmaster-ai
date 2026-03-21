@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useId, useRef, useState } from 'react';
+import { useCallback, useEffect, useId, useReducer, useRef } from 'react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import {
@@ -70,6 +70,74 @@ interface QuestionManagerProps {
 	openCreateTrigger?: number;
 }
 
+type State = {
+	isModalOpen: boolean;
+	editingQuestion: QuestionFormData | null;
+	originalImageUrl: string | null;
+	drawerTab: 'basic' | 'question' | 'options';
+	localImageFile: File | null;
+	localImagePreview: string | null;
+	isSaving: boolean;
+};
+
+type Action =
+	| { type: 'OPEN_MODAL'; payload: QuestionFormData | null }
+	| { type: 'CLOSE_MODAL' }
+	| { type: 'SET_EDITING_QUESTION'; payload: QuestionFormData }
+	| { type: 'SET_ORIGINAL_IMAGE_URL'; payload: string | null }
+	| { type: 'SET_DRAWER_TAB'; payload: 'basic' | 'question' | 'options' }
+	| { type: 'SET_IMAGE_FILE'; payload: File | null }
+	| { type: 'SET_IMAGE_PREVIEW'; payload: string | null }
+	| { type: 'SET_SAVING'; payload: boolean }
+	| { type: 'UPDATE_QUESTION_FIELD'; payload: Partial<QuestionFormData> }
+	| { type: 'CLEAR_IMAGE_STATE' };
+
+const initialState: State = {
+	isModalOpen: false,
+	editingQuestion: null,
+	originalImageUrl: null,
+	drawerTab: 'basic',
+	localImageFile: null,
+	localImagePreview: null,
+	isSaving: false,
+};
+
+function reducer(state: State, action: Action): State {
+	switch (action.type) {
+		case 'OPEN_MODAL':
+			return {
+				...state,
+				isModalOpen: true,
+				editingQuestion: action.payload,
+				localImageFile: null,
+				localImagePreview: null,
+				drawerTab: 'basic',
+			};
+		case 'CLOSE_MODAL':
+			return { ...state, isModalOpen: false, drawerTab: 'basic' };
+		case 'SET_EDITING_QUESTION':
+			return { ...state, editingQuestion: action.payload };
+		case 'SET_ORIGINAL_IMAGE_URL':
+			return { ...state, originalImageUrl: action.payload };
+		case 'SET_DRAWER_TAB':
+			return { ...state, drawerTab: action.payload };
+		case 'SET_IMAGE_FILE':
+			return { ...state, localImageFile: action.payload };
+		case 'SET_IMAGE_PREVIEW':
+			return { ...state, localImagePreview: action.payload };
+		case 'SET_SAVING':
+			return { ...state, isSaving: action.payload };
+		case 'UPDATE_QUESTION_FIELD':
+			return state.editingQuestion
+				? { ...state, editingQuestion: { ...state.editingQuestion, ...action.payload } }
+				: state;
+		case 'CLEAR_IMAGE_STATE':
+			return { ...state, localImageFile: null, localImagePreview: null, originalImageUrl: null };
+		default:
+			return state;
+	}
+}
+
 export function QuestionManager({
 	questions,
 	subjects,
@@ -77,22 +145,12 @@ export function QuestionManager({
 	onRefresh,
 	openCreateTrigger,
 }: QuestionManagerProps) {
-	const [isModalOpen, setIsModalOpen] = useState(false);
-	const [editingQuestion, setEditingQuestion] = useState<QuestionFormData | null>(null);
-	const [originalImageUrl, setOriginalImageUrl] = useState<string | null>(null);
-	const [drawerTab, setDrawerTab] = useState<'basic' | 'question' | 'options'>('basic');
-	const [localImageFile, setLocalImageFile] = useState<File | null>(null);
-	const [localImagePreview, setLocalImagePreview] = useState<string | null>(null);
-	const [isSaving, setIsSaving] = useState(false);
+	const [state, dispatch] = useReducer(reducer, initialState);
 	const fileInputRef = useRef<HTMLInputElement>(null);
 	const fileInputId = useId();
 
 	const handleCreateQuestion = useCallback(() => {
-		setEditingQuestion({ ...EMPTY_QUESTION });
-		setLocalImageFile(null);
-		setLocalImagePreview(null);
-		setDrawerTab('basic');
-		setIsModalOpen(true);
+		dispatch({ type: 'OPEN_MODAL', payload: { ...EMPTY_QUESTION } });
 	}, []);
 
 	useEffect(() => {
@@ -104,7 +162,7 @@ export function QuestionManager({
 	const handleEditQuestion = async (question: Question) => {
 		const questionWithOptions = await getQuestionWithOptionsAction(question.id);
 		if (questionWithOptions) {
-			setEditingQuestion({
+			const formData: QuestionFormData = {
 				id: questionWithOptions.id,
 				questionText: questionWithOptions.questionText,
 				imageUrl: questionWithOptions.imageUrl || null,
@@ -120,12 +178,9 @@ export function QuestionManager({
 					isCorrect: opt.isCorrect,
 					explanation: opt.explanation || '',
 				})),
-			});
-			setOriginalImageUrl(questionWithOptions.imageUrl || null);
-			setLocalImageFile(null);
-			setLocalImagePreview(null);
-			setDrawerTab('basic');
-			setIsModalOpen(true);
+			};
+			dispatch({ type: 'OPEN_MODAL', payload: formData });
+			dispatch({ type: 'SET_ORIGINAL_IMAGE_URL', payload: questionWithOptions.imageUrl || null });
 		}
 	};
 
@@ -143,41 +198,41 @@ export function QuestionManager({
 	};
 
 	const handleSaveQuestion = async () => {
-		if (!editingQuestion) return;
+		if (!state.editingQuestion) return;
 
-		if (!editingQuestion.questionText.trim()) {
+		if (!state.editingQuestion.questionText.trim()) {
 			toast.error('Please enter a question');
-			setDrawerTab('question');
+			dispatch({ type: 'SET_DRAWER_TAB', payload: 'question' });
 			return;
 		}
-		if (editingQuestion.subjectId === 0) {
+		if (state.editingQuestion.subjectId === 0) {
 			toast.error('Please select a subject');
-			setDrawerTab('basic');
+			dispatch({ type: 'SET_DRAWER_TAB', payload: 'basic' });
 			return;
 		}
-		if (!editingQuestion.topic.trim()) {
+		if (!state.editingQuestion.topic.trim()) {
 			toast.error('Please enter a topic');
-			setDrawerTab('basic');
+			dispatch({ type: 'SET_DRAWER_TAB', payload: 'basic' });
 			return;
 		}
-		if (editingQuestion.options.some((opt) => !opt.optionText.trim())) {
+		if (state.editingQuestion.options.some((opt) => !opt.optionText.trim())) {
 			toast.error('Please fill in all option texts');
-			setDrawerTab('options');
+			dispatch({ type: 'SET_DRAWER_TAB', payload: 'options' });
 			return;
 		}
-		if (!editingQuestion.options.some((opt) => opt.isCorrect)) {
+		if (!state.editingQuestion.options.some((opt) => opt.isCorrect)) {
 			toast.error('Please select at least one correct answer');
-			setDrawerTab('options');
+			dispatch({ type: 'SET_DRAWER_TAB', payload: 'options' });
 			return;
 		}
 
 		try {
-			setIsSaving(true);
-			let imageUrlToSave = editingQuestion.imageUrl;
+			dispatch({ type: 'SET_SAVING', payload: true });
+			let imageUrlToSave = state.editingQuestion.imageUrl;
 
-			if (localImageFile) {
+			if (state.localImageFile) {
 				const uploadResult = await uploadFiles('questionImage', {
-					files: [localImageFile],
+					files: [state.localImageFile],
 				});
 				if (uploadResult?.[0]?.ufsUrl) {
 					imageUrlToSave = uploadResult[0].ufsUrl;
@@ -185,50 +240,50 @@ export function QuestionManager({
 					toast.error('Failed to upload image. Please try again.');
 					return;
 				}
-			} else if (editingQuestion.id && originalImageUrl && !editingQuestion.imageUrl) {
+			} else if (
+				state.editingQuestion.id &&
+				state.originalImageUrl &&
+				!state.editingQuestion.imageUrl
+			) {
 				imageUrlToSave = null;
 			}
 
 			const questionData = {
-				subjectId: editingQuestion.subjectId,
-				questionText: editingQuestion.questionText,
+				subjectId: state.editingQuestion.subjectId,
+				questionText: state.editingQuestion.questionText,
 				imageUrl: imageUrlToSave,
-				gradeLevel: editingQuestion.gradeLevel,
-				topic: editingQuestion.topic,
-				difficulty: editingQuestion.difficulty,
-				marks: editingQuestion.marks,
+				gradeLevel: state.editingQuestion.gradeLevel,
+				topic: state.editingQuestion.topic,
+				difficulty: state.editingQuestion.difficulty,
+				marks: state.editingQuestion.marks,
 			};
 
-			const optionsData = editingQuestion.options.map((opt) => ({
+			const optionsData = state.editingQuestion.options.map((opt) => ({
 				optionLetter: opt.optionLetter,
 				optionText: opt.optionText,
 				isCorrect: opt.isCorrect,
 				explanation: opt.explanation || null,
 			}));
 
-			if (editingQuestion.id) {
-				await updateQuestionAction(editingQuestion.id, questionData);
+			if (state.editingQuestion.id) {
+				await updateQuestionAction(state.editingQuestion.id, questionData);
 				toast.success('Question updated successfully');
 			} else {
 				await createQuestionAction(questionData, optionsData);
 				toast.success('Question created successfully');
 			}
 
-			if (localImagePreview) {
-				URL.revokeObjectURL(localImagePreview);
+			if (state.localImagePreview) {
+				URL.revokeObjectURL(state.localImagePreview);
 			}
-			setLocalImageFile(null);
-			setLocalImagePreview(null);
-			setOriginalImageUrl(null);
-			setIsModalOpen(false);
-			setEditingQuestion(null);
-			setDrawerTab('basic');
+			dispatch({ type: 'CLEAR_IMAGE_STATE' });
+			dispatch({ type: 'CLOSE_MODAL' });
 			onRefresh();
 		} catch (error) {
 			console.debug('Failed to save question:', error);
 			toast.error('Failed to save question. Please try again.');
 		} finally {
-			setIsSaving(false);
+			dispatch({ type: 'SET_SAVING', payload: false });
 		}
 	};
 
@@ -239,29 +294,26 @@ export function QuestionManager({
 				toast.error('Image must be less than 4MB');
 				return;
 			}
-			setLocalImageFile(file);
+			dispatch({ type: 'SET_IMAGE_FILE', payload: file });
 			const previewUrl = URL.createObjectURL(file);
-			setLocalImagePreview(previewUrl);
-			if (editingQuestion) {
-				setEditingQuestion({
-					...editingQuestion,
-					imageUrl: previewUrl,
+			dispatch({ type: 'SET_IMAGE_PREVIEW', payload: previewUrl });
+			if (state.editingQuestion) {
+				dispatch({
+					type: 'UPDATE_QUESTION_FIELD',
+					payload: { imageUrl: previewUrl },
 				});
 			}
 		}
 	};
 
 	const handleRemoveImage = () => {
-		if (localImagePreview) {
-			URL.revokeObjectURL(localImagePreview);
+		if (state.localImagePreview) {
+			URL.revokeObjectURL(state.localImagePreview);
 		}
-		setLocalImageFile(null);
-		setLocalImagePreview(null);
-		if (editingQuestion) {
-			setEditingQuestion({
-				...editingQuestion,
-				imageUrl: null,
-			});
+		dispatch({ type: 'SET_IMAGE_FILE', payload: null });
+		dispatch({ type: 'SET_IMAGE_PREVIEW', payload: null });
+		if (state.editingQuestion) {
+			dispatch({ type: 'UPDATE_QUESTION_FIELD', payload: { imageUrl: null } });
 		}
 	};
 
@@ -270,49 +322,58 @@ export function QuestionManager({
 	};
 
 	const isFormValid = () => {
-		if (!editingQuestion) return false;
+		if (!state.editingQuestion) return false;
 		return (
-			editingQuestion.questionText.trim() !== '' &&
-			editingQuestion.subjectId !== 0 &&
-			editingQuestion.topic.trim() !== '' &&
-			editingQuestion.options.every((opt) => opt.optionText.trim() !== '') &&
-			editingQuestion.options.some((opt) => opt.isCorrect)
+			state.editingQuestion.questionText.trim() !== '' &&
+			state.editingQuestion.subjectId !== 0 &&
+			state.editingQuestion.topic.trim() !== '' &&
+			state.editingQuestion.options.every((opt) => opt.optionText.trim() !== '') &&
+			state.editingQuestion.options.some((opt) => opt.isCorrect)
 		);
 	};
 
 	const addOption = () => {
-		if (!editingQuestion) return;
+		if (!state.editingQuestion) return;
 		const letters = ['A', 'B', 'C', 'D', 'E', 'F'];
-		const nextLetter = letters[editingQuestion.options.length];
+		const nextLetter = letters[state.editingQuestion.options.length];
 		if (nextLetter) {
-			setEditingQuestion({
-				...editingQuestion,
-				options: [
-					...editingQuestion.options,
-					{ optionLetter: nextLetter, optionText: '', isCorrect: false, explanation: '' },
-				],
+			dispatch({
+				type: 'UPDATE_QUESTION_FIELD',
+				payload: {
+					options: [
+						...state.editingQuestion.options,
+						{ optionLetter: nextLetter, optionText: '', isCorrect: false, explanation: '' },
+					],
+				},
 			});
 		}
 	};
 
 	const removeOption = (index: number) => {
-		if (!editingQuestion || editingQuestion.options.length <= 2) return;
-		const newOptions = editingQuestion.options.filter((_, i) => i !== index);
+		if (!state.editingQuestion || state.editingQuestion.options.length <= 2) return;
+		const newOptions = state.editingQuestion.options.filter((_, i) => i !== index);
 		const letters = ['A', 'B', 'C', 'D', 'E', 'F'];
 		newOptions.forEach((opt, i) => {
 			opt.optionLetter = letters[i];
 		});
-		setEditingQuestion({
-			...editingQuestion,
-			options: newOptions,
+		dispatch({
+			type: 'UPDATE_QUESTION_FIELD',
+			payload: { options: newOptions },
 		});
 	};
 
 	const updateOption = (index: number, field: keyof OptionFormData, value: string | boolean) => {
-		if (!editingQuestion) return;
-		const newOptions = [...editingQuestion.options];
+		if (!state.editingQuestion) return;
+		const newOptions = [...state.editingQuestion.options];
 		newOptions[index] = { ...newOptions[index], [field]: value };
-		setEditingQuestion({ ...editingQuestion, options: newOptions });
+		dispatch({
+			type: 'UPDATE_QUESTION_FIELD',
+			payload: { options: newOptions },
+		});
+	};
+
+	const setEditingQuestion = (question: QuestionFormData | null) => {
+		dispatch({ type: 'SET_EDITING_QUESTION', payload: question! });
 	};
 
 	return (
@@ -330,24 +391,25 @@ export function QuestionManager({
 			</div>
 
 			<Drawer
-				open={isModalOpen}
+				open={state.isModalOpen}
 				onOpenChange={(open) => {
-					setIsModalOpen(open);
-					if (!open) setDrawerTab('basic');
+					if (!open) dispatch({ type: 'CLOSE_MODAL' });
 				}}
 			>
 				<DrawerContent className="max-h-[90vh] flex flex-col z-50 rounded-t-[3rem] pb-8 lg:max-w-4xl lg:mx-auto">
 					<DrawerHeader className="text-left border-b pb-8 px-8">
 						<DrawerTitle className="text-3xl font-black tracking-tighter uppercase">
-							{editingQuestion?.id ? 'Edit Question' : 'New Question'}
+							{state.editingQuestion?.id ? 'Edit Question' : 'New Question'}
 						</DrawerTitle>
 						<DrawerDescription className="font-bold">
 							Manage educational content for students
 						</DrawerDescription>
 
 						<Tabs
-							value={drawerTab}
-							onValueChange={(v) => setDrawerTab(v as typeof drawerTab)}
+							value={state.drawerTab}
+							onValueChange={(v) =>
+								dispatch({ type: 'SET_DRAWER_TAB', payload: v as typeof state.drawerTab })
+							}
 							className="w-full mt-8"
 						>
 							<TabsList className="grid w-full grid-cols-3 h-12 bg-muted/50 p-1 rounded-xl">
@@ -373,12 +435,12 @@ export function QuestionManager({
 						</Tabs>
 					</DrawerHeader>
 
-					{editingQuestion && (
+					{state.editingQuestion && (
 						<ScrollArea className="flex-1 px-8 py-8 no-scrollbar">
 							<div className="space-y-8">
-								{drawerTab === 'basic' && (
+								{state.drawerTab === 'basic' && (
 									<QuestionBasicTab
-										editingQuestion={editingQuestion}
+										editingQuestion={state.editingQuestion}
 										setEditingQuestion={setEditingQuestion}
 										subjects={subjects}
 										fileInputId={fileInputId}
@@ -389,16 +451,16 @@ export function QuestionManager({
 									/>
 								)}
 
-								{drawerTab === 'question' && (
+								{state.drawerTab === 'question' && (
 									<QuestionContentTab
-										editingQuestion={editingQuestion}
+										editingQuestion={state.editingQuestion}
 										setEditingQuestion={setEditingQuestion}
 									/>
 								)}
 
-								{drawerTab === 'options' && (
+								{state.drawerTab === 'options' && (
 									<QuestionOptionsTab
-										editingQuestion={editingQuestion}
+										editingQuestion={state.editingQuestion}
 										addOption={addOption}
 										removeOption={removeOption}
 										updateOption={updateOption}
@@ -412,7 +474,7 @@ export function QuestionManager({
 						<DrawerClose asChild>
 							<Button
 								variant="outline"
-								disabled={isSaving}
+								disabled={state.isSaving}
 								className="flex-1 h-14 rounded-2xl border-2 font-black uppercase tracking-widest text-xs"
 							>
 								Discard
@@ -420,12 +482,12 @@ export function QuestionManager({
 						</DrawerClose>
 						<Button
 							onClick={handleSaveQuestion}
-							disabled={!isFormValid() || isSaving}
+							disabled={!isFormValid() || state.isSaving}
 							className="flex-1 h-14 bg-primary hover:bg-primary/90 rounded-2xl font-black uppercase tracking-widest text-xs shadow-2xl shadow-primary/20"
 						>
-							{isSaving ? (
+							{state.isSaving ? (
 								<Spinner className="h-5 w-5 text-primary-foreground" />
-							) : editingQuestion?.id ? (
+							) : state.editingQuestion?.id ? (
 								'Update Content'
 							) : (
 								'Save Content'

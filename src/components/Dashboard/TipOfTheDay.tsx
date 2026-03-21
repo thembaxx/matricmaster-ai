@@ -24,6 +24,8 @@ interface TipOfTheDayProps {
 	weakTopics?: string[];
 }
 
+const DEFAULT_WEAK_TOPICS: string[] = [];
+
 function getDayOfYear(): number {
 	const now = new Date();
 	const start = new Date(now.getFullYear(), 0, 0);
@@ -31,7 +33,7 @@ function getDayOfYear(): number {
 	return Math.floor(diff / (1000 * 60 * 60 * 24));
 }
 
-export function TipOfTheDay({ weakTopics = [] }: TipOfTheDayProps) {
+export function TipOfTheDay({ weakTopics = DEFAULT_WEAK_TOPICS }: TipOfTheDayProps) {
 	const router = useRouter();
 	const [tip, setTip] = useState<Tip | null>(null);
 

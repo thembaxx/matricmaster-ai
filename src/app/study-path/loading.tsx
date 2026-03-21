@@ -1,5 +1,6 @@
 import { Skeleton } from '@/components/ui/skeleton';
 
+// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 export default function StudyPathLoading() {
 	return (
 		<div className="min-h-screen pb-40 pt-8 px-4">

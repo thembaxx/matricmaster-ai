@@ -80,12 +80,7 @@ export function SubjectGradeRow({
 				<SelectContent>
 					<SelectGroup>
 						{GRADES.map((g) => (
-							<SelectItem
-								key={`${g}-${index}`}
-								id={`grade-${index}`}
-								value={g}
-								aria-label={`Grade for ${g}`}
-							>
+							<SelectItem key={g} id={`grade-${index}`} value={g} aria-label={`Grade for ${g}`}>
 								{g}
 							</SelectItem>
 						))}
