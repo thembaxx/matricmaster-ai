@@ -1,7 +1,19 @@
 'use client';
 
+import dynamic from 'next/dynamic';
 import * as React from 'react';
-import * as RechartsPrimitive from 'recharts';
+
+const RechartsPrimitive = {
+	ResponsiveContainer: dynamic(() => import('recharts').then((mod) => mod.ResponsiveContainer), {
+		ssr: false,
+	}),
+	Tooltip: dynamic(() => import('recharts').then((mod) => mod.Tooltip), {
+		ssr: false,
+	}),
+	Legend: dynamic(() => import('recharts').then((mod) => mod.Legend), {
+		ssr: false,
+	}),
+};
 
 import { cn } from '@/lib/utils';
 

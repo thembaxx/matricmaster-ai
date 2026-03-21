@@ -1,6 +1,6 @@
 export const appConfig = {
-	name: 'lumi',
-	shortName: 'lumi',
+	name: 'Lumni',
+	shortName: 'Lumni',
 	description:
 		"Pass your Matric with confidence. Practice NSC past papers, get help when you're stuck, and track your progress.",
 	version: {
@@ -10,24 +10,24 @@ export const appConfig = {
 		timestamp: process.env.NEXT_PUBLIC_BUILD_TIMESTAMP || new Date().toISOString(),
 	},
 	links: {
-		website: 'https://lumi.ai',
-		support: 'https://lumi.ai/support',
-		privacy: 'https://lumi.ai/privacy',
-		terms: 'https://lumi.ai/terms',
-		feedback: 'https://lumi.ai/feedback',
+		website: 'https://lumni.ai',
+		support: 'https://lumni.ai/support',
+		privacy: 'https://lumni.ai/privacy',
+		terms: 'https://lumni.ai/terms',
+		feedback: 'https://lumni.ai/feedback',
 	},
 	contact: {
-		email: 'hello@lumi.ai',
-		supportEmail: 'support@lumi.ai',
+		email: 'hello@lumni.ai',
+		supportEmail: 'support@lumni.ai',
 		phone: '+27 21 123 4567',
 		whatsapp: '+27 82 123 4567',
 		hours: 'Mon-Fri: 9AM-6PM SAST',
 	},
 	social: {
-		facebook: 'https://facebook.com/lumi',
-		twitter: 'https://twitter.com/lumi',
-		instagram: 'https://instagram.com/lumi',
-		youtube: 'https://youtube.com/@lumi',
+		facebook: 'https://facebook.com/lumni',
+		twitter: 'https://twitter.com/lumni',
+		instagram: 'https://instagram.com/lumni',
+		youtube: 'https://youtube.com/@lumni',
 	},
 	features: {
 		pastPapers: true,

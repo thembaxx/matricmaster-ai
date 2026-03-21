@@ -12,7 +12,7 @@ import {
 	Tick01Icon,
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { toast } from 'sonner';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -74,14 +74,15 @@ export function FlashcardModal({
 	const progress = ((currentIndex + 1) / flashcards.length) * 100;
 	const isComplete = reviewedCards.size === flashcards.length;
 
-	useEffect(() => {
-		if (open) {
+	const handleOpenChange = (isOpen: boolean) => {
+		if (isOpen) {
 			setCurrentIndex(0);
 			setIsFlipped(false);
 			setReviewedCards(new Set());
 			setShowRatingButtons(false);
 		}
-	}, [open]);
+		onOpenChange(isOpen);
+	};
 
 	const handleFlip = () => {
 		setIsFlipped(!isFlipped);
@@ -167,7 +168,7 @@ export function FlashcardModal({
 	];
 
 	return (
-		<Dialog open={open} onOpenChange={onOpenChange}>
+		<Dialog open={open} onOpenChange={handleOpenChange}>
 			<DialogContent className="max-w-lg">
 				<DialogHeader>
 					<DialogTitle className="flex items-center gap-2">

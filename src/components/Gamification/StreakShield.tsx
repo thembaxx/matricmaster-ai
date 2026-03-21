@@ -97,11 +97,13 @@ export function StreakShield({ className }: { className?: string }) {
 
 						<div>
 							<div className="flex items-baseline gap-1">
-								<span className="text-3xl font-black text-orange-500">{currentStreak}</span>
+								<span className="text-3xl font-black text-orange-500 tabular-nums">
+									{currentStreak}
+								</span>
 								<span className="text-sm font-bold text-muted-foreground">day streak</span>
 							</div>
 							<p className="text-xs text-muted-foreground">
-								Best: <span className="font-bold">{bestStreak}</span> days
+								Best: <span className="font-bold tabular-nums">{bestStreak}</span> days
 							</p>
 						</div>
 					</div>

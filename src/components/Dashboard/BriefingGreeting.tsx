@@ -128,7 +128,7 @@ export function BriefingGreeting({
 						<div className="z-10 mt-4">
 							<p className="text-xs font-bold text-tiimo-gray-muted tracking-wide mb-1">Goals</p>
 							<div className="flex items-baseline gap-2">
-								<span className="text-3xl font-black">{completedCount}</span>
+								<span className="text-3xl font-black tabular-nums">{completedCount}</span>
 								<span className="text-lg font-bold text-tiimo-gray-muted">/ {totalCount}</span>
 							</div>
 						</div>
@@ -192,7 +192,7 @@ export function BriefingGreeting({
 							<div className="z-10 mt-4">
 								<p className="text-xs font-bold text-tiimo-gray-muted tracking-wide mb-1">Streak</p>
 								<div className="flex items-baseline gap-2">
-									<span className="text-3xl font-black">{displayStreakDays}</span>
+									<span className="text-3xl font-black tabular-nums">{displayStreakDays}</span>
 									<span className="text-lg font-bold text-tiimo-gray-muted">days</span>
 								</div>
 							</div>

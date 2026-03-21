@@ -154,18 +154,20 @@ export function QuizResults({ score, onRestart, onExit }: QuizResultsProps) {
 				<div className="p-6 bg-card rounded-2xl border space-y-4">
 					<div>
 						<p className="text-muted-foreground text-sm">Your Score</p>
-						<p className="text-5xl font-black">
+						<p className="text-5xl font-black tabular-nums">
 							{score.correct}/{score.total}
 						</p>
-						<p className="text-2xl font-bold text-primary">{percentage}%</p>
+						<p className="text-2xl font-bold text-primary tabular-nums">{percentage}%</p>
 					</div>
 					<div className="grid grid-cols-2 gap-4 pt-4 border-t">
 						<div className="text-center">
-							<p className="text-success font-bold text-xl">{score.correct}</p>
+							<p className="text-success font-bold text-xl tabular-nums">{score.correct}</p>
 							<p className="text-muted-foreground text-xs">Correct</p>
 						</div>
 						<div className="text-center">
-							<p className="text-destructive font-bold text-xl">{score.total - score.correct}</p>
+							<p className="text-destructive font-bold text-xl tabular-nums">
+								{score.total - score.correct}
+							</p>
 							<p className="text-muted-foreground text-xs">Incorrect</p>
 						</div>
 					</div>

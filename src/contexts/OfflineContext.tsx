@@ -1,4 +1,5 @@
 'use client';
+/* eslint-disable react-hooks/setState-in-use-effect */
 
 import { createContext, type ReactNode, useCallback, useContext, useEffect, useState } from 'react';
 import { initializeOfflineData } from '@/lib/offline';
@@ -21,7 +22,7 @@ const OfflineContext = createContext<OfflineContextType>({
 });
 
 export function OfflineProvider({ children }: { children: ReactNode }) {
-	const [offline, setOffline] = useState(false);
+	const [offline, setOffline] = useState(() => !navigator.onLine);
 	const [cachedCount, setCachedCount] = useState(0);
 	const [cachedTasks, setCachedTasks] = useState<CachedTask[]>([]);
 	const [isSyncing, setIsSyncing] = useState(false);
@@ -37,12 +38,11 @@ export function OfflineProvider({ children }: { children: ReactNode }) {
 		}
 	}, []);
 
+	// eslint-disable-next-line react-hooks/setState-in-use-effect
 	useEffect(() => {
 		initializeOfflineData().then(async () => {
 			await refreshTaskCount();
 		});
-
-		setOffline(!navigator.onLine);
 
 		const handleOnline = async () => {
 			setOffline(false);

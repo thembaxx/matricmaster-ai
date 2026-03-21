@@ -15,10 +15,9 @@ export function SubjectsSkeleton() {
 			</div>
 
 			<div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-				{/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
-				{[1, 2, 3, 4, 5, 6].map((i) => (
+				{[1, 2, 3, 4, 5, 6].map((item) => (
 					<Card
-						key={`skeleton-${i}`}
+						key={`subjects-skeleton-${item}`}
 						className="shadow-tiimo border-border/50 overflow-hidden flex flex-col"
 					>
 						<CardHeader className="bg-muted/30">

@@ -14,143 +14,17 @@ import { useGeminiQuotaModal } from '@/contexts/GeminiQuotaModalContext';
 import { useQuizCompletion } from '@/hooks/use-quiz-completion';
 import { useAiContext } from '@/hooks/useAiContext';
 import { isQuotaError } from '@/lib/ai/quota-error';
+import { quizReducer } from '@/lib/quiz-reducer';
 import {
 	getAdaptiveHint,
 	getStrugglingConcepts,
 	recordStruggle,
 	updateConfidence,
 } from '@/services/buddyActions';
-import type { WeakTopicAlert as WeakTopicAlertType } from '@/types/adaptive-learning';
+import { initialQuizState } from '@/types/quiz';
 
 interface QuizProps {
 	quizId?: string;
-}
-
-interface TopicStats {
-	topic: string;
-	correct: number;
-	total: number;
-}
-
-type QuizState = {
-	currentQuestionIndex: number;
-	selectedOption: string | null;
-	isChecked: boolean;
-	isCorrect: boolean | null;
-	elapsedSeconds: number;
-	showHint: boolean;
-	score: number;
-	mode: 'test' | 'practice';
-	showSubjectSelector: boolean;
-	currentSubject: string;
-	showStruggleAlert: boolean;
-	currentStruggleCount: number;
-	difficulty: 'easy' | 'medium' | 'hard';
-	correctCount: number;
-	incorrectCount: number;
-	topicStats: Map<string, TopicStats>;
-	weakTopicAlert: WeakTopicAlertType | null;
-	showWeakAlert: boolean;
-};
-
-type QuizAction =
-	| { type: 'SET_QUESTION_INDEX'; payload: number }
-	| { type: 'SET_OPTION'; payload: string | null }
-	| { type: 'CHECK_ANSWER'; payload: boolean }
-	| { type: 'RESET_ANSWER_STATE' }
-	| { type: 'SET_ELAPSED'; payload: number }
-	| { type: 'TOGGLE_HINT' }
-	| { type: 'SET_MODE'; payload: 'test' | 'practice' }
-	| { type: 'TOGGLE_SUBJECT_SELECTOR'; payload: boolean }
-	| { type: 'SET_SUBJECT'; payload: string }
-	| { type: 'SET_STRUGGLE_ALERT'; payload: { show: boolean; count: number } }
-	| { type: 'SET_DIFFICULTY'; payload: 'easy' | 'medium' | 'hard' }
-	| { type: 'UPDATE_CORRECT_COUNT'; payload: number }
-	| { type: 'UPDATE_INCORRECT_COUNT'; payload: number }
-	| { type: 'UPDATE_TOPIC_STATS'; payload: { topic: string; correct: number } }
-	| { type: 'SET_WEAK_TOPIC_ALERT'; payload: WeakTopicAlertType | null }
-	| { type: 'TOGGLE_WEAK_ALERT'; payload: boolean }
-	| { type: 'INCREMENT_CORRECT' }
-	| { type: 'INCREMENT_INCORRECT' };
-
-const initialState: QuizState = {
-	currentQuestionIndex: 0,
-	selectedOption: null,
-	isChecked: false,
-	isCorrect: null,
-	elapsedSeconds: 0,
-	showHint: false,
-	score: 0,
-	mode: 'test',
-	showSubjectSelector: false,
-	currentSubject: '',
-	showStruggleAlert: false,
-	currentStruggleCount: 0,
-	difficulty: 'medium',
-	correctCount: 0,
-	incorrectCount: 0,
-	topicStats: new Map(),
-	weakTopicAlert: null,
-	showWeakAlert: false,
-};
-
-function quizReducer(state: QuizState, action: QuizAction): QuizState {
-	switch (action.type) {
-		case 'SET_QUESTION_INDEX':
-			return { ...state, currentQuestionIndex: action.payload };
-		case 'SET_OPTION':
-			return { ...state, selectedOption: action.payload };
-		case 'CHECK_ANSWER':
-			return { ...state, isChecked: true, isCorrect: action.payload };
-		case 'RESET_ANSWER_STATE':
-			return { ...state, selectedOption: null, isChecked: false, isCorrect: null, showHint: false };
-		case 'SET_ELAPSED':
-			return { ...state, elapsedSeconds: action.payload };
-		case 'TOGGLE_HINT':
-			return { ...state, showHint: !state.showHint };
-		case 'SET_MODE':
-			return { ...state, mode: action.payload };
-		case 'TOGGLE_SUBJECT_SELECTOR':
-			return { ...state, showSubjectSelector: action.payload };
-		case 'SET_SUBJECT':
-			return { ...state, currentSubject: action.payload };
-		case 'SET_STRUGGLE_ALERT':
-			return {
-				...state,
-				showStruggleAlert: action.payload.show,
-				currentStruggleCount: action.payload.count,
-			};
-		case 'SET_DIFFICULTY':
-			return { ...state, difficulty: action.payload };
-		case 'UPDATE_CORRECT_COUNT':
-			return { ...state, correctCount: action.payload };
-		case 'UPDATE_INCORRECT_COUNT':
-			return { ...state, incorrectCount: action.payload };
-		case 'UPDATE_TOPIC_STATS': {
-			const newTopicStats = new Map(state.topicStats);
-			const existing = newTopicStats.get(action.payload.topic) || {
-				topic: action.payload.topic,
-				correct: 0,
-				total: 0,
-			};
-			newTopicStats.set(action.payload.topic, {
-				topic: action.payload.topic,
-				correct: existing.correct + action.payload.correct,
-				total: existing.total + 1,
-			});
-			return { ...state, topicStats: newTopicStats };
-		}
-		case 'SET_WEAK_TOPIC_ALERT':
-			return { ...state, weakTopicAlert: action.payload };
-		case 'TOGGLE_WEAK_ALERT':
-			return { ...state, showWeakAlert: action.payload };
-		case 'INCREMENT_CORRECT':
-			return { ...state, score: state.score + 1, correctCount: state.correctCount + 1 };
-		case 'INCREMENT_INCORRECT':
-			return { ...state, incorrectCount: state.incorrectCount + 1 };
-		default:
-			return state;
-	}
 }
 
 function QuizInner({ quizId: initialQuizId }: QuizProps) {
@@ -161,7 +35,7 @@ function QuizInner({ quizId: initialQuizId }: QuizProps) {
 	const quizId = initialQuizId || urlQuizId || 'math-p1-2023-nov';
 
 	const startTimeRef = useRef<number>(Date.now());
-	const [state, dispatch] = useReducer(quizReducer, initialState);
+	const [state, dispatch] = useReducer(quizReducer, initialQuizState);
 
 	const { completeQuiz, isCompleting } = useQuizCompletion();
 	const { setContext, clearContext } = useAiContext();

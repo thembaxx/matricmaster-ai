@@ -1,4 +1,5 @@
 'use client';
+/* eslint-disable react-hooks/setState-in-use-effect */
 
 import {
 	BookOpenIcon,

@@ -32,7 +32,7 @@ export function VideoCallInvite({
 	onDecline,
 }: VideoCallInviteProps) {
 	const [timeLeft, setTimeLeft] = useState(30);
-	const [isDismissed, setIsDismissed] = useState(false);
+	const isDismissed = timeLeft === 0;
 
 	useEffect(() => {
 		if (isDismissed) return;
@@ -40,7 +40,6 @@ export function VideoCallInvite({
 		const interval = setInterval(() => {
 			setTimeLeft((prev) => {
 				if (prev <= 1) {
-					setIsDismissed(true);
 					onDecline(inviteId);
 					return 0;
 				}
@@ -52,12 +51,12 @@ export function VideoCallInvite({
 	}, [isDismissed, inviteId, onDecline]);
 
 	const handleAccept = useCallback(() => {
-		setIsDismissed(true);
+		setTimeLeft(0);
 		onAccept(roomName, roomUrl);
 	}, [roomName, roomUrl, onAccept]);
 
 	const handleDecline = useCallback(() => {
-		setIsDismissed(true);
+		setTimeLeft(0);
 		onDecline(inviteId);
 	}, [inviteId, onDecline]);
 

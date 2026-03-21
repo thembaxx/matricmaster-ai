@@ -7,8 +7,8 @@ export default function CommonQuestionsLoading() {
 			<div className="max-w-3xl mx-auto space-y-6">
 				<Skeleton className="h-10 w-48 mx-auto" />
 				<div className="space-y-3">
-					{[1, 2, 3, 4, 5].map((i) => (
-						<Skeleton key={`skeleton-${i}`} className="h-20 rounded-xl" />
+					{[1, 2, 3, 4, 5].map((item) => (
+						<Skeleton key={`common-questions-skeleton-${item}`} className="h-20 rounded-xl" />
 					))}
 				</div>
 			</div>

@@ -8,7 +8,19 @@ import {
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { useQuery } from '@tanstack/react-query';
-import { PolarAngleAxis, PolarGrid, Radar, RadarChart, ResponsiveContainer } from 'recharts';
+import dynamic from 'next/dynamic';
+
+const PolarAngleAxis = dynamic(() => import('recharts').then((mod) => mod.PolarAngleAxis), {
+	ssr: false,
+});
+const PolarGrid = dynamic(() => import('recharts').then((mod) => mod.PolarGrid), { ssr: false });
+const Radar = dynamic(() => import('recharts').then((mod) => mod.Radar), { ssr: false });
+const RadarChart = dynamic(() => import('recharts').then((mod) => mod.RadarChart), { ssr: false });
+const ResponsiveContainer = dynamic(
+	() => import('recharts').then((mod) => mod.ResponsiveContainer),
+	{ ssr: false }
+);
+
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';

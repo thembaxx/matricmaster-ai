@@ -80,9 +80,8 @@ export const LeaderboardPreview = memo(function LeaderboardPreview() {
 			<Card className="p-6 premium-glass border-none rounded-[2.5rem] h-full">
 				<div className="space-y-4">
 					<Skeleton className="h-5 w-32" />
-					{/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
-					{[1, 2, 3].map((i) => (
-						<div key={`skeleton-${i}`} className="flex items-center gap-3">
+					{[1, 2, 3].map((item) => (
+						<div key={`leaderboard-preview-skeleton-${item}`} className="flex items-center gap-3">
 							<Skeleton className="w-8 h-8 rounded-full" />
 							<Skeleton className="w-10 h-10 rounded-full" />
 							<div className="flex-1 space-y-2">

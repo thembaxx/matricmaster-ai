@@ -11,19 +11,20 @@ export function BookmarksSkeleton() {
 				<Skeleton className="h-8 w-40 rounded-full" />
 				<Skeleton className="h-4 w-60 rounded-full" />
 				<div className="flex gap-2 pt-2">
-					{/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
-					{[1, 2, 3, 4].map((i) => (
-						<Skeleton key={`skeleton-${i}`} className="h-10 w-24 rounded-full" />
+					{[1, 2, 3, 4].map((item) => (
+						<Skeleton
+							key={`bookmarks-filter-skeleton-${item}`}
+							className="h-10 w-24 rounded-full"
+						/>
 					))}
 				</div>
 			</header>
 
 			<div className="flex-1 px-6 py-6 pb-40">
 				<div className="grid grid-cols-2 gap-4">
-					{/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
-					{[1, 2, 3, 4, 5, 6].map((i) => (
+					{[1, 2, 3, 4, 5, 6].map((item) => (
 						<Card
-							key={`skeleton-${i}`}
+							key={`bookmarks-card-skeleton-${item}`}
 							className="p-5 rounded-[2.5rem] border bg-card flex flex-col h-64"
 						>
 							<div className="flex justify-between items-start mb-4">

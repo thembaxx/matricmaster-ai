@@ -7,8 +7,8 @@ export default function ChannelsLoading() {
 			<div className="max-w-4xl mx-auto space-y-6">
 				<Skeleton className="h-8 w-32" />
 				<div className="space-y-3">
-					{[1, 2, 3].map((i) => (
-						<Skeleton key={`skeleton-${i}`} className="h-20 rounded-xl" />
+					{[1, 2, 3].map((item) => (
+						<Skeleton key={`channels-skeleton-${item}`} className="h-20 rounded-xl" />
 					))}
 				</div>
 			</div>

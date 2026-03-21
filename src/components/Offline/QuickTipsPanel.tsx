@@ -108,18 +108,17 @@ function TipCard({ tip }: TipCardProps) {
 
 export function QuickTipsPanel() {
 	const [tips, setTips] = useState<QuickTip[]>([]);
-	const [subjects, setSubjects] = useState<string[]>([]);
 	const [activeSubject, setActiveSubject] = useState<string>('all');
 	const [searchQuery, setSearchQuery] = useState('');
 	const [isLoading, setIsLoading] = useState(true);
+
+	const subjects = useMemo(() => [...new Set(tips.map((t) => t.subject))], [tips]);
 
 	useEffect(() => {
 		async function loadTips() {
 			try {
 				const allTips = await getAllTips();
 				setTips(allTips);
-				const uniqueSubjects = [...new Set(allTips.map((t) => t.subject))];
-				setSubjects(uniqueSubjects);
 			} catch (error) {
 				console.error('Failed to load quick tips:', error);
 				toast.error('Failed to load quick tips');

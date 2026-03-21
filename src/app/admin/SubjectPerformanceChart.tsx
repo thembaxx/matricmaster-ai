@@ -1,6 +1,17 @@
 'use client';
 
-import { Bar, BarChart, Cell, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
+import dynamic from 'next/dynamic';
+
+const Bar = dynamic(() => import('recharts').then((mod) => mod.Bar), { ssr: false });
+const BarChart = dynamic(() => import('recharts').then((mod) => mod.BarChart), { ssr: false });
+const Cell = dynamic(() => import('recharts').then((mod) => mod.Cell), { ssr: false });
+const ResponsiveContainer = dynamic(
+	() => import('recharts').then((mod) => mod.ResponsiveContainer),
+	{ ssr: false }
+);
+const Tooltip = dynamic(() => import('recharts').then((mod) => mod.Tooltip), { ssr: false });
+const XAxis = dynamic(() => import('recharts').then((mod) => mod.XAxis), { ssr: false });
+const YAxis = dynamic(() => import('recharts').then((mod) => mod.YAxis), { ssr: false });
 
 interface SubjectPerformance {
 	subjectId: number;
@@ -43,9 +54,9 @@ export function SubjectPerformanceChart({ subjectPerformance }: SubjectPerforman
 						}}
 					/>
 					<Bar dataKey="averageScore" radius={[0, 4, 4, 0]} maxBarSize={24}>
-						{subjectPerformance.map((entry, index) => (
+						{subjectPerformance.map((entry) => (
 							<Cell
-								key={`cell-${index}`}
+								key={`subject-performance-cell-${entry.subjectId}`}
 								fill={
 									entry.averageScore >= 80
 										? 'var(--color-success)'

@@ -46,10 +46,9 @@ export function ProfileSkeleton() {
 						</Card>
 
 						<div className="grid grid-cols-1 gap-6">
-							{/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
-							{[1, 2, 3].map((i) => (
+							{[1, 2, 3].map((item) => (
 								<Card
-									key={`skeleton-${i}`}
+									key={`profile-card-skeleton-${item}`}
 									className="p-8 rounded-[2rem] border border-border bg-card/50"
 								>
 									<div className="flex items-center gap-8">

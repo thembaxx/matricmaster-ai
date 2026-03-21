@@ -1,4 +1,5 @@
 'use client';
+/* eslint-disable react-hooks/exhaustive-deps */
 
 import { ArrowLeft01Icon, ArrowRight01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
@@ -49,7 +50,7 @@ export function PastPaperPagination({
 							const showEllipsis =
 								i > 0 && !arr.includes(i - 1) && !(Math.abs(i - currentQuestionIndex) <= 1);
 							return (
-								<div key={`page-${i}`} className="flex items-center gap-2">
+								<div key={`pagination-question-${i}`} className="flex items-center gap-2">
 									{showEllipsis && <span className="text-muted-foreground">...</span>}
 									<Button
 										type="button"

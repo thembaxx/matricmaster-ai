@@ -4,6 +4,7 @@ import { AnimatePresence, m } from 'framer-motion';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { useReducedMotion } from '@/hooks/use-reduced-motion';
 import { STAGGER_CONTAINER, STAGGER_ITEM } from '@/lib/animation-presets';
 import { cn } from '@/lib/utils';
 
@@ -66,6 +67,7 @@ export function BadgesGridSection({ filteredBadges }: { filteredBadges: BadgeDat
 
 function AchievementBadge({ badge }: { badge: BadgeData }) {
 	const rarity = getRarity(badge.points);
+	const prefersReducedMotion = useReducedMotion();
 
 	const handleShare = () => {
 		const text = badge.unlocked
@@ -85,7 +87,7 @@ function AchievementBadge({ badge }: { badge: BadgeData }) {
 	return (
 		<Card
 			className={cn(
-				'group relative h-full flex flex-col items-center gap-6 p-8 rounded-[2.5rem] border-2 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl',
+				'group relative h-full flex flex-col items-center gap-6 p-8 rounded-[2.5rem] border-2 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl',
 				badge.unlocked
 					? 'bg-card border-border hover:border-primary/20 hover:shadow-primary/5'
 					: 'bg-muted/30 border-dashed border-muted-foreground/20 opacity-60'
@@ -106,7 +108,7 @@ function AchievementBadge({ badge }: { badge: BadgeData }) {
 
 			<div
 				className={cn(
-					'w-24 h-24 lg:w-32 lg:h-32 rounded-[2rem] flex items-center justify-center relative transition-all duration-500 group-hover:scale-110 group-hover:rotate-6',
+					'w-24 h-24 lg:w-32 lg:h-32 rounded-[2rem] flex items-center justify-center relative transition-all duration-300 group-hover:scale-110 group-hover:rotate-6',
 					badge.unlocked ? 'shadow-xl' : 'grayscale'
 				)}
 				style={{
@@ -133,16 +135,19 @@ function AchievementBadge({ badge }: { badge: BadgeData }) {
 					/>
 				)}
 
-				{badge.unlocked && badge.points && badge.points >= RARE_THRESHOLD && (
-					<m.div
-						animate={{ scale: [1, 1.2, 1], opacity: [0.5, 1, 0.5] }}
-						transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
-						className="absolute inset-0 rounded-[2rem]"
-						style={{
-							boxShadow: `0 0 20px ${rarity?.color}40`,
-						}}
-					/>
-				)}
+				{badge.unlocked &&
+					badge.points &&
+					badge.points >= RARE_THRESHOLD &&
+					!prefersReducedMotion && (
+						<m.div
+							animate={{ scale: [1, 1.2, 1], opacity: [0.5, 1, 0.5] }}
+							transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
+							className="absolute inset-0 rounded-[2rem]"
+							style={{
+								boxShadow: `0 0 20px ${rarity?.color}40`,
+							}}
+						/>
+					)}
 			</div>
 
 			<div className="text-center space-y-2">

@@ -6,7 +6,7 @@ test.describe('Critical User Flows', () => {
 	});
 
 	test('1. Landing page loads and displays hero section', async ({ page }) => {
-		await expect(page).toHaveTitle(/Lumi/i);
+		await expect(page).toHaveTitle(/lumni/i);
 
 		await expect(page.locator('#main-content')).toBeVisible();
 

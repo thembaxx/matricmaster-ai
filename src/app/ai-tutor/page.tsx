@@ -3,7 +3,7 @@
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import { Suspense, useEffect } from 'react';
+import { Suspense, useRef } from 'react';
 import { AIPrompt } from '@/components/AI/AIPrompt';
 import { ConversationSidebar } from '@/components/AI/ConversationSidebar';
 import { QuickPrompts } from '@/components/AI/QuickPrompts';
@@ -51,13 +51,13 @@ function AITutorPageContent() {
 		handleNewConversation,
 	} = useAiTutor();
 
-	useEffect(() => {
-		if (contextParam) {
-			const decodedContext = decodeURIComponent(contextParam);
-			handleSend(undefined, decodedContext);
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [contextParam, handleSend]);
+	const prevContextParam = useRef(contextParam);
+
+	if (contextParam && contextParam !== prevContextParam.current) {
+		prevContextParam.current = contextParam;
+		const decodedContext = decodeURIComponent(contextParam);
+		handleSend(undefined, decodedContext);
+	}
 
 	if (!session) {
 		return (

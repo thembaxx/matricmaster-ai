@@ -726,15 +726,15 @@ export function InteractiveDiagram({ type, className }: InteractiveDiagramProps)
 						strokeWidth="3"
 					/>
 					{/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
-					{[1, 2, 3].map((i) => (
+					{[1, 2, 3].map((item) => (
 						<m.path
-							key={`atom-${i}`}
+							key={`synoptic-front-${item}`}
 							initial={{ scale: 0.95, opacity: 0 }}
 							animate={{ scale: 1 }}
-							transition={{ delay: 0.5 + i * 0.1 }}
+							transition={{ delay: 0.5 + item * 0.1 }}
 							d="M 0 -5 L 5 5 L -5 5 Z"
 							fill="var(--tiimo-blue)"
-							transform={`translate(${145 + i * 10}, ${55 + i * 15}) rotate(${45})`}
+							transform={`translate(${145 + item * 10}, ${55 + item * 15}) rotate(${45})`}
 						/>
 					))}
 				</svg>

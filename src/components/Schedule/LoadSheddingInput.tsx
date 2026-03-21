@@ -27,9 +27,8 @@ const SA_ZONES = [
 ];
 
 function renderHourOptions() {
-	// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 	return Array.from({ length: 24 }, (_, i) => (
-		<option key={`hour-${i}`} value={i}>
+		<option key={`loadshedding-option-hour-${i}`} value={i}>
 			{i.toString().padStart(2, '0')}:00
 		</option>
 	));

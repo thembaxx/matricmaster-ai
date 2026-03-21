@@ -6,7 +6,6 @@ import { useQuery } from '@tanstack/react-query';
 import { m } from 'framer-motion';
 import { memo, useMemo, useState } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import {
 	Pagination,
@@ -169,7 +168,15 @@ const RankingList = memo(function RankingList({ data }: { data: LeaderboardEntry
 	);
 });
 
+import { SubjectTabs } from '@/components/Leaderboard/SubjectTabs';
 import { LeaderboardSkeleton } from '@/components/LeaderboardSkeleton';
+
+const SUBJECTS = [
+	{ id: 'mathematics', label: 'Mathematics', subjectId: 2 },
+	{ id: 'physics', label: 'Physical Sciences', subjectId: 1 },
+	{ id: 'life-sciences', label: 'Life Sciences', subjectId: 3 },
+	{ id: 'english', label: 'English', subjectId: 4 },
+] as const;
 
 export default function Leaderboard() {
 	const [activeTab, setActiveTab] = useState('weekly');
@@ -197,14 +204,6 @@ export default function Leaderboard() {
 
 	const leaderboardData = leaderboardResult?.data ?? [];
 	const userRank = leaderboardResult?.rank ?? null;
-
-	// Subject leaderboard
-	const SUBJECTS: { id: string; label: string; subjectId: number }[] = [
-		{ id: 'mathematics', label: 'Mathematics', subjectId: 2 },
-		{ id: 'physics', label: 'Physical Sciences', subjectId: 1 },
-		{ id: 'life-sciences', label: 'Life Sciences', subjectId: 3 },
-		{ id: 'english', label: 'English', subjectId: 4 },
-	];
 
 	const { data: subjectData } = useQuery({
 		queryKey: ['subject-leaderboard', subjectTab],
@@ -326,23 +325,11 @@ export default function Leaderboard() {
 							<div className="mx-4 lg:mx-0 space-y-6">
 								<div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
 									<h2 className="text-xl font-black tracking-tight">Subject Rankings</h2>
-									<div className="flex gap-2 p-1 bg-muted/50 rounded-xl border border-border/50 overflow-x-auto no-scrollbar">
-										{SUBJECTS.map((sub) => (
-											<Button
-												key={sub.id}
-												type="button"
-												variant="ghost"
-												onClick={() => setSubjectTab(sub.id)}
-												className={`px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider whitespace-nowrap transition-all ${
-													subjectTab === sub.id
-														? 'bg-primary text-primary-foreground shadow-md'
-														: 'text-muted-foreground hover:text-foreground'
-												}`}
-											>
-												{sub.label}
-											</Button>
-										))}
-									</div>
+									<SubjectTabs
+										subjects={SUBJECTS}
+										activeSubject={subjectTab}
+										onSubjectChange={setSubjectTab}
+									/>
 								</div>
 
 								{subjectData && subjectData.length > 0 ? (

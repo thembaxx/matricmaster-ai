@@ -206,7 +206,9 @@ export function SubjectProgress() {
 												Mastery
 											</span>
 										</div>
-										<p className="text-xl font-bold text-foreground">{selectedSubject.progress}%</p>
+										<p className="text-xl font-bold text-foreground tabular-nums">
+											{selectedSubject.progress}%
+										</p>
 									</Card>
 								</m.div>
 
@@ -218,15 +220,14 @@ export function SubjectProgress() {
 								>
 									<h4 className="text-lg font-bold">Recommended for You</h4>
 									<div className="space-y-2">
-										{/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
-										{[1, 2, 3].map((i) => (
+										{[1, 2, 3].map((item) => (
 											<div
-												key={`active-topic-${i}`}
+												key={`active-topic-${item}`}
 												className="flex items-center justify-between p-4 rounded-2xl bg-white/5 hover:bg-white/10 cursor-pointer transition-colors group"
 											>
 												<div className="flex items-center gap-3">
 													<div className="h-2 w-2 rounded-full bg-primary" />
-													<span className="font-medium">Active Topic {i}</span>
+													<span className="font-medium">Active Topic {item}</span>
 												</div>
 												<HugeiconsIcon
 													icon={ArrowUpRight}

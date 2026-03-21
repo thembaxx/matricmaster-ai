@@ -54,24 +54,21 @@ export default function Bookmarks() {
 	const { data: session, isPending } = useSession();
 	const [activeTab, setActiveTab] = useState('all');
 	const [bookmarks, setBookmarks] = useState<BookmarkType[]>([]);
-	const [isLoading, setIsLoading] = useState(true);
 
 	// Load bookmarks on mount
 	useEffect(() => {
 		const loadBookmarks = async () => {
 			if (session?.user?.id) {
-				setIsLoading(true);
 				const data = await getBookmarksAction();
 				setBookmarks(data);
-				setIsLoading(false);
-			} else {
-				setIsLoading(false);
 			}
 		};
 		if (!isPending) {
 			loadBookmarks();
 		}
 	}, [session?.user?.id, isPending]);
+
+	const isLoading = isPending;
 
 	const handleDelete = async (e: React.MouseEvent, bookmarkId: string) => {
 		e.stopPropagation();

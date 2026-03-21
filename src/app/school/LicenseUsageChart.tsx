@@ -1,6 +1,15 @@
 'use client';
 
-import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts';
+import dynamic from 'next/dynamic';
+
+const Cell = dynamic(() => import('recharts').then((mod) => mod.Cell), { ssr: false });
+const Pie = dynamic(() => import('recharts').then((mod) => mod.Pie), { ssr: false });
+const PieChart = dynamic(() => import('recharts').then((mod) => mod.PieChart), { ssr: false });
+const ResponsiveContainer = dynamic(
+	() => import('recharts').then((mod) => mod.ResponsiveContainer),
+	{ ssr: false }
+);
+const Tooltip = dynamic(() => import('recharts').then((mod) => mod.Tooltip), { ssr: false });
 
 interface CustomTooltipProps {
 	active?: boolean;
@@ -39,8 +48,8 @@ export function LicenseUsageChart({ pieData }: LicenseUsageChartProps) {
 						paddingAngle={4}
 						dataKey="value"
 					>
-						{pieData.map((entry, index) => (
-							<Cell key={`cell-${index}`} fill={entry.color} />
+						{pieData.map((entry) => (
+							<Cell key={`license-usage-cell-${entry.name}`} fill={entry.color} />
 						))}
 					</Pie>
 					<Tooltip content={<CustomTooltip />} />

@@ -1,6 +1,6 @@
 'use client';
 
-import { useRouter, useSearchParams } from 'next/navigation';
+import { redirect, useRouter, useSearchParams } from 'next/navigation';
 import { Suspense, useCallback, useEffect, useState } from 'react';
 import { VideoCall } from '@/components/StudyBuddies/VideoCall';
 import { useSession } from '@/lib/auth-client';
@@ -45,9 +45,9 @@ function VideoCallPageContent() {
 
 	useEffect(() => {
 		if (!roomName || !roomUrl) {
-			router.push('/study-buddies');
+			redirect('/study-buddies');
 		}
-	}, [roomName, roomUrl, router]);
+	}, [roomName, roomUrl]);
 
 	const handleLeave = useCallback(() => {
 		router.push('/study-buddies');

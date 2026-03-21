@@ -107,9 +107,8 @@ export function DailyMission() {
 				</CardHeader>
 				<CardContent>
 					<div className="space-y-3">
-						{/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
-						{[1, 2, 3].map((i) => (
-							<Skeleton key={`skeleton-${i}`} className="h-16 rounded-xl" />
+						{[1, 2, 3].map((item) => (
+							<Skeleton key={`daily-mission-skeleton-${item}`} className="h-16 rounded-xl" />
 						))}
 					</div>
 				</CardContent>

@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+
 import { Skeleton } from '@/components/ui/skeleton';
 
 // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
@@ -8,7 +10,7 @@ export default function CurriculumMapLoading() {
 				<Skeleton className="h-10 w-64 mx-auto" />
 				<div className="grid gap-3">
 					{[1, 2, 3, 4, 5].map((i) => (
-						<Skeleton key={`skeleton-${i}`} className="h-24 rounded-xl" />
+						<Skeleton key={`curriculum-skeleton-${i}`} className="h-24 rounded-xl" />
 					))}
 				</div>
 			</div>

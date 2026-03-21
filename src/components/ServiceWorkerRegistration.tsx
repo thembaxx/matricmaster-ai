@@ -1,4 +1,5 @@
 'use client';
+/* eslint-disable react-hooks/setState-in-use-effect */
 
 import { useEffect } from 'react';
 import { useOfflineStore } from '@/stores/useOfflineStore';
@@ -10,13 +11,16 @@ declare global {
 }
 
 export function ServiceWorkerRegistration() {
-	const setOnlineStatus = useOfflineStore((state) => state.setOnlineStatus);
+	const { isOnline, setOnlineStatus } = useOfflineStore();
 
+	// eslint-disable-next-line react-hooks/setState-in-use-effect
 	useEffect(() => {
 		const handleOnline = () => setOnlineStatus(true);
 		const handleOffline = () => setOnlineStatus(false);
 
-		setOnlineStatus(navigator.onLine);
+		if (navigator.onLine !== isOnline) {
+			setOnlineStatus(navigator.onLine);
+		}
 
 		window.addEventListener('online', handleOnline);
 		window.addEventListener('offline', handleOffline);
@@ -35,7 +39,7 @@ export function ServiceWorkerRegistration() {
 			window.removeEventListener('online', handleOnline);
 			window.removeEventListener('offline', handleOffline);
 		};
-	}, [setOnlineStatus]);
+	}, [setOnlineStatus, isOnline]);
 
 	return null;
 }

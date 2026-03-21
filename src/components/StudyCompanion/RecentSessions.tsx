@@ -39,10 +39,9 @@ export function RecentSessions({
 
 			{isLoading ? (
 				<div className="space-y-2">
-					{/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
-					{[1, 2, 3].map((i) => (
+					{[1, 2, 3].map((item) => (
 						<div
-							key={`skeleton-${i}`}
+							key={`recent-sessions-skeleton-${item}`}
 							className="flex items-center gap-3 p-3 rounded-xl bg-card border border-border animate-pulse"
 						>
 							<div className="w-10 h-10 rounded-full bg-muted" />

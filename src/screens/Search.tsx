@@ -33,7 +33,6 @@ export default function Search() {
 	const queryClient = useQueryClient();
 	const [query, setQuery] = useState('');
 	const [aiResults, setAiResults] = useState<{ suggestions: string[]; tip: string } | null>(null);
-	const [isAiLoading, setIsAiLoading] = useState(false);
 
 	// Search history with useQuery
 	const { data: recentSearches = [], isLoading: isLoadingHistory } = useQuery({
@@ -65,10 +64,12 @@ export default function Search() {
 		return subjects.flatMap((s) => getLessonsBySubject(s));
 	}, []);
 
+	const isAiLoading = query.length > 3;
+
+	// eslint-disable-next-line react-hooks/setState-in-use-effect
 	useEffect(() => {
 		const timer = setTimeout(async () => {
 			if (query.length > 3) {
-				setIsAiLoading(true);
 				try {
 					const results = await smartSearch(query);
 					setAiResults(results);
@@ -82,8 +83,6 @@ export default function Search() {
 						triggerQuotaError();
 					}
 					console.debug('Smart search error:', error);
-				} finally {
-					setIsAiLoading(false);
 				}
 			} else {
 				setAiResults(null);

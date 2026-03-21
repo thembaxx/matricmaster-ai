@@ -240,84 +240,144 @@ export async function syncMasteryToConfidence(
 	}
 }
 
+function determineRecommendedAction(
+	confidenceNum: number,
+	masteryLevel: number,
+	struggleCount: number
+): 'flashcard' | 'quiz' | 'review' {
+	if (masteryLevel > 0.7 && confidenceNum < 0.5) {
+		return 'review';
+	}
+	if (confidenceNum < 0.3 || struggleCount >= 2) {
+		return 'flashcard';
+	}
+	return 'quiz';
+}
+
+function calculateTopicRelevance(
+	subject: string,
+	requiredSubjects: string[],
+	target: typeof universityTargets.$inferSelect | undefined,
+	weightage: number
+): { hasTargetRelevance: boolean; targetMultiplier: number; weightedScore: number } {
+	const hasTargetRelevance = target
+		? requiredSubjects.some((s) => s.toLowerCase() === subject.toLowerCase())
+		: false;
+
+	const targetMultiplier = hasTargetRelevance ? 1 + weightage / 100 : 1.0;
+
+	return { hasTargetRelevance, targetMultiplier, weightedScore: 0 };
+}
+
+function calculateWeightedScore(
+	confidenceNum: number,
+	masteryLevel: number,
+	struggleCount: number,
+	targetMultiplier: number
+): number {
+	const baseScore = (1 - confidenceNum) * 0.4 + struggleCount * 0.3 + (1 - masteryLevel) * 0.3;
+	return baseScore * targetMultiplier;
+}
+
+async function fetchTopicData(userId: string, limit: number) {
+	const db = await getDb();
+
+	const target = await db.query.universityTargets.findFirst({
+		where: (targets, { eq, and }) => and(eq(targets.userId, userId), eq(targets.isActive, true)),
+	});
+
+	const confidences = await db.query.topicConfidence.findMany({
+		where: eq(topicConfidence.userId, userId),
+		orderBy: [sql`${topicConfidence.confidenceScore} ASC`],
+		limit: limit * 3,
+	});
+
+	const struggles = await db.query.conceptStruggles.findMany({
+		where: and(eq(conceptStruggles.userId, userId), eq(conceptStruggles.isResolved, false)),
+	});
+
+	const masteries = await db.query.topicMastery.findMany({
+		where: eq(topicMastery.userId, userId),
+	});
+
+	const requiredSubjects = target
+		? getSubjectsForTarget(target.universityName, target.faculty)
+		: [];
+
+	return { target, confidences, struggles, masteries, requiredSubjects };
+}
+
+function processTopicWithRelevance(
+	c: typeof topicConfidence.$inferSelect,
+	mastery: typeof topicMastery.$inferSelect | undefined,
+	struggle: typeof conceptStruggles.$inferSelect | undefined,
+	requiredSubjects: string[],
+	target: typeof universityTargets.$inferSelect | undefined,
+	weightage: number
+): WeakTopic {
+	const confidenceNum = Number(c.confidenceScore);
+	const struggleCount = struggle?.struggleCount || 0;
+	const masteryLevel = mastery ? Number(mastery.masteryLevel) : 0;
+
+	const { hasTargetRelevance, targetMultiplier } = calculateTopicRelevance(
+		c.subject,
+		requiredSubjects,
+		target,
+		weightage
+	);
+
+	const weightedScore = calculateWeightedScore(
+		confidenceNum,
+		masteryLevel,
+		struggleCount,
+		targetMultiplier
+	);
+
+	const recommendedAction = determineRecommendedAction(confidenceNum, masteryLevel, struggleCount);
+
+	return {
+		topic: c.topic,
+		subject: c.subject,
+		confidence: confidenceNum,
+		struggleCount,
+		masteryLevel,
+		recommendedAction,
+		weightagePercent: weightage,
+		hasTargetRelevance,
+		weightedScore,
+	};
+}
+
 export async function getWeightedWeakTopics(limit = 5): Promise<WeakTopic[]> {
 	try {
 		const auth = await getAuth();
 		const session = await auth.api.getSession();
 		if (!session?.user) throw new Error('Unauthorized');
 
-		const db = await getDb();
-
-		const target = await db.query.universityTargets.findFirst({
-			where: (targets, { eq, and }) =>
-				and(eq(targets.userId, session.user.id), eq(targets.isActive, true)),
-		});
-
-		const confidences = await db.query.topicConfidence.findMany({
-			where: eq(topicConfidence.userId, session.user.id),
-			orderBy: [sql`${topicConfidence.confidenceScore} ASC`],
-			limit: limit * 3,
-		});
-
-		const struggles = await db.query.conceptStruggles.findMany({
-			where: and(
-				eq(conceptStruggles.userId, session.user.id),
-				eq(conceptStruggles.isResolved, false)
-			),
-		});
-
-		const masteries = await db.query.topicMastery.findMany({
-			where: eq(topicMastery.userId, session.user.id),
-		});
-
-		const requiredSubjects = target
-			? getSubjectsForTarget(target.universityName, target.faculty)
-			: [];
+		const { target, confidences, struggles, masteries, requiredSubjects } = await fetchTopicData(
+			session.user.id,
+			limit
+		);
 
 		const topicMap = new Map<string, WeakTopic>();
 
 		for (const c of confidences) {
-			const confidenceNum = Number(c.confidenceScore);
 			const mastery = masteries.find(
 				(m) => m.topic === c.topic && m.subjectId.toString() === c.subject
 			);
 			const struggle = struggles.find((s) => s.concept === c.topic);
-
-			const struggleCount = struggle?.struggleCount || 0;
-			const masteryLevel = mastery ? Number(mastery.masteryLevel) : 0;
 			const weightage = getWeightageForTopic(c.subject, c.topic);
 
-			const baseScore = (1 - confidenceNum) * 0.4 + struggleCount * 0.3 + (1 - masteryLevel) * 0.3;
+			const weakTopic = processTopicWithRelevance(
+				c,
+				mastery,
+				struggle,
+				requiredSubjects,
+				target,
+				weightage
+			);
 
-			let targetMultiplier = 1.0;
-			const hasTargetRelevance = target
-				? requiredSubjects.some((s) => s.toLowerCase() === c.subject.toLowerCase())
-				: false;
-
-			if (target && hasTargetRelevance) {
-				targetMultiplier = 1 + weightage / 100;
-			}
-
-			const weightedScore = baseScore * targetMultiplier;
-
-			let recommendedAction: 'flashcard' | 'quiz' | 'review' = 'quiz';
-			if (masteryLevel > 0.7 && confidenceNum < 0.5) {
-				recommendedAction = 'review';
-			} else if (confidenceNum < 0.3 || struggleCount >= 2) {
-				recommendedAction = 'flashcard';
-			}
-
-			topicMap.set(c.topic, {
-				topic: c.topic,
-				subject: c.subject,
-				confidence: confidenceNum,
-				struggleCount,
-				masteryLevel,
-				recommendedAction,
-				weightagePercent: weightage,
-				hasTargetRelevance,
-				weightedScore,
-			});
+			topicMap.set(c.topic, weakTopic);
 		}
 
 		return Array.from(topicMap.values())

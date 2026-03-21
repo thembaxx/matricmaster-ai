@@ -1,21 +1,17 @@
 'use client';
 
-import type { SparklesIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { m } from 'framer-motion';
 import { LANDING_FEATURES } from '@/data/landing';
 import { STAGGER_CONTAINER, STAGGER_ITEM } from '@/lib/animation-presets';
 
-type IconSvg = typeof SparklesIcon;
-
 const FEATURES = LANDING_FEATURES;
 
-interface Feature {
-	title: string;
-	description: string;
-	icon: IconSvg;
-	color: string;
-}
+const FEATURE_VARIANTS = {
+	hero: 'md:col-span-2 lg:col-span-2 p-8 lg:p-10',
+	wide: 'md:col-span-2 p-6 lg:p-8',
+	standard: 'p-6 lg:p-8',
+};
 
 export function FeaturesSection() {
 	return (
@@ -41,25 +37,125 @@ export function FeaturesSection() {
 				initial="hidden"
 				whileInView="visible"
 				viewport={{ once: true, margin: '-100px' }}
-				className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
+				className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
 			>
-				{FEATURES.map((feature: Feature) => (
-					<m.div
-						key={feature.title}
-						variants={STAGGER_ITEM}
-						className="tiimo-card group p-6 lg:p-8 min-h-[180px] will-change-transform"
-					>
+				<m.div
+					key={FEATURES[0].title}
+					variants={STAGGER_ITEM}
+					className={`tiimo-card group ${FEATURE_VARIANTS.hero} will-change-transform`}
+				>
+					<div className="flex flex-col h-full">
 						<div
-							className={`w-12 h-12 lg:w-14 lg:h-14 rounded-[var(--radius-lg)] ${feature.color} flex items-center justify-center mb-4 lg:mb-6`}
+							className={`w-14 h-14 lg:w-16 lg:h-16 rounded-[var(--radius-xl)] ${FEATURES[0].color} flex items-center justify-center mb-6`}
 						>
-							<HugeiconsIcon icon={feature.icon} className="w-6 h-6 lg:w-7 lg:h-7" />
+							<HugeiconsIcon icon={FEATURES[0].icon} className="w-8 h-8" />
 						</div>
-						<h3 className="text-lg lg:text-xl font-bold mb-2 lg:mb-3">{feature.title}</h3>
-						<p className="text-sm lg:text-base text-muted-foreground leading-relaxed line-clamp-2 lg:line-clamp-3">
-							{feature.description}
+						<h3 className="text-2xl lg:text-3xl font-bold mb-3">{FEATURES[0].title}</h3>
+						<p className="text-base lg:text-lg text-muted-foreground leading-relaxed max-w-md">
+							{FEATURES[0].description}
 						</p>
-					</m.div>
-				))}
+					</div>
+				</m.div>
+
+				<m.div
+					key={FEATURES[1].title}
+					variants={STAGGER_ITEM}
+					className={`tiimo-card group ${FEATURE_VARIANTS.standard} will-change-transform`}
+				>
+					<div className="flex flex-col h-full">
+						<div
+							className={`w-12 h-12 rounded-[var(--radius-lg)] ${FEATURES[1].color} flex items-center justify-center mb-4`}
+						>
+							<HugeiconsIcon icon={FEATURES[1].icon} className="w-6 h-6" />
+						</div>
+						<h3 className="text-lg font-bold mb-2">{FEATURES[1].title}</h3>
+						<p className="text-sm text-muted-foreground leading-relaxed">
+							{FEATURES[1].description}
+						</p>
+					</div>
+				</m.div>
+
+				<m.div
+					key={FEATURES[2].title}
+					variants={STAGGER_ITEM}
+					className={`tiimo-card group ${FEATURE_VARIANTS.standard} will-change-transform`}
+				>
+					<div className="flex flex-col h-full">
+						<div
+							className={`w-12 h-12 rounded-[var(--radius-lg)] ${FEATURES[2].color} flex items-center justify-center mb-4`}
+						>
+							<HugeiconsIcon icon={FEATURES[2].icon} className="w-6 h-6" />
+						</div>
+						<h3 className="text-lg font-bold mb-2">{FEATURES[2].title}</h3>
+						<p className="text-sm text-muted-foreground leading-relaxed">
+							{FEATURES[2].description}
+						</p>
+					</div>
+				</m.div>
+
+				<m.div
+					key={FEATURES[3].title}
+					variants={STAGGER_ITEM}
+					className={`tiimo-card group ${FEATURE_VARIANTS.standard} will-change-transform`}
+				>
+					<div className="flex flex-col h-full">
+						<div
+							className={`w-12 h-12 rounded-[var(--radius-lg)] ${FEATURES[3].color} flex items-center justify-center mb-4`}
+						>
+							<HugeiconsIcon icon={FEATURES[3].icon} className="w-6 h-6" />
+						</div>
+						<h3 className="text-lg font-bold mb-2">{FEATURES[3].title}</h3>
+						<p className="text-sm text-muted-foreground leading-relaxed">
+							{FEATURES[3].description}
+						</p>
+					</div>
+				</m.div>
+
+				<m.div
+					key={FEATURES[4].title}
+					variants={STAGGER_ITEM}
+					className={`tiimo-card group ${FEATURE_VARIANTS.wide} will-change-transform`}
+				>
+					<div className="flex flex-col h-full">
+						<div
+							className={`w-12 h-12 rounded-[var(--radius-lg)] ${FEATURES[4].color} flex items-center justify-center mb-4`}
+						>
+							<HugeiconsIcon icon={FEATURES[4].icon} className="w-6 h-6" />
+						</div>
+						<h3 className="text-lg font-bold mb-2">{FEATURES[4].title}</h3>
+						<p className="text-sm text-muted-foreground leading-relaxed">
+							{FEATURES[4].description}
+						</p>
+					</div>
+				</m.div>
+
+				<m.div
+					key={FEATURES[5].title}
+					variants={STAGGER_ITEM}
+					className={`tiimo-card group ${FEATURE_VARIANTS.standard} will-change-transform`}
+				>
+					<div className="flex flex-col h-full">
+						<div
+							className={`w-12 h-12 rounded-[var(--radius-lg)] ${FEATURES[5].color} flex items-center justify-center mb-4`}
+						>
+							<HugeiconsIcon icon={FEATURES[5].icon} className="w-6 h-6" />
+						</div>
+						<h3 className="text-lg font-bold mb-2">{FEATURES[5].title}</h3>
+						<p className="text-sm text-muted-foreground leading-relaxed">
+							{FEATURES[5].description}
+						</p>
+					</div>
+				</m.div>
+			</m.div>
+
+			<m.div
+				initial={{ opacity: 0, y: 20 }}
+				whileInView={{ opacity: 1, y: 0 }}
+				viewport={{ once: true }}
+				transition={{ delay: 0.3 }}
+				className="mt-12 text-center"
+			>
+				<p className="text-muted-foreground">+ {FEATURES.length - 6} more features</p>
 			</m.div>
 		</section>
 	);

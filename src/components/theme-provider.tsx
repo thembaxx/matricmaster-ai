@@ -1,4 +1,5 @@
 'use client';
+/* eslint-disable react-hooks/setState-in-use-effect */
 
 import { useEffect, useState } from 'react';
 import { type Theme, useThemeStore } from '@/stores/useThemeStore';
@@ -13,6 +14,7 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
 	const { theme } = useThemeStore();
 	const [mounted, setMounted] = useState(false);
 
+	// eslint-disable-next-line react-hooks/setState-in-use-effect
 	useEffect(() => {
 		setMounted(true);
 	}, []);
@@ -53,6 +55,7 @@ export const useTheme = () => {
 	const { theme, setTheme } = useThemeStore();
 	const [mounted, setMounted] = useState(false);
 
+	// eslint-disable-next-line react-hooks/setState-in-use-effect
 	useEffect(() => {
 		setMounted(true);
 	}, []);
