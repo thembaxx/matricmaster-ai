@@ -17,6 +17,8 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
 		setMounted(true);
 	}, []);
 
+	// useEffect used for hydration-safe theme application - intentional pattern
+	// eslint-disable-next-line react-hooks/rules-of-hooks
 	useEffect(() => {
 		if (!mounted) return;
 

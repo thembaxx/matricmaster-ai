@@ -53,10 +53,9 @@ const jsonLd = {
 export default function PastPapersPage() {
 	return (
 		<>
-			<script
-				type="application/ld+json"
-				dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-			/>
+			<script type="application/ld+json" suppressHydrationWarning>
+				{JSON.stringify(jsonLd)}
+			</script>
 			<PastPapersScreen />
 		</>
 	);

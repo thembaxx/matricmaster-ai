@@ -128,10 +128,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 			<head>
 				<link rel="dns-prefetch" href="https://images.unsplash.com" />
 				<link rel="dns-prefetch" href="https://lh3.googleusercontent.com" />
-				<script
-					type="application/ld+json"
-					dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-				/>
+				<script type="application/ld+json" suppressHydrationWarning>
+					{JSON.stringify(jsonLd)}
+				</script>
 			</head>
 			<body className="bg-background min-h-screen">
 				<a

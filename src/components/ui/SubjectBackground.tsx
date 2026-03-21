@@ -34,7 +34,7 @@ export function SubjectBackgroundProvider({
 	const pathname = usePathname();
 	const prefersReducedMotion = useReducedMotion();
 	const [subjectId, setSubjectId] = useState<string | null>(null);
-	const [intensity] = useState(defaultIntensity);
+	const intensity = defaultIntensity;
 
 	const detectedSubjectId = useMemo(() => {
 		const match = pathname.match(/\/subjects\/([^/]+)/);

@@ -206,11 +206,9 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 }
 
 function GlobalStyles() {
-	// eslint-disable-next-line react/no-danger
 	return (
-		<style
-			dangerouslySetInnerHTML={{
-				__html: `
+		<style>
+			{`
 			.no-scrollbar::-webkit-scrollbar {
 				display: none;
 			}
@@ -223,8 +221,7 @@ function GlobalStyles() {
 				background-color: var(--primary);
 				color: var(--primary-foreground);
 			}
-		`,
-			}}
-		/>
+		`}
+		</style>
 	);
 }

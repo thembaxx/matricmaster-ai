@@ -31,6 +31,8 @@
   --subject-physics-soft: rgba(72, 167, 222, 0.12);
   --subject-life: #5CB587;
   --subject-life-soft: rgba(92, 181, 135, 0.12);
+  --subject-chemistry: #14B8A6;
+  --subject-chemistry-soft: rgba(20, 184, 166, 0.12);
   --subject-accounting: #F472B6;
   --subject-accounting-soft: rgba(244, 114, 182, 0.12);
   --subject-english: #818CF8;
@@ -170,6 +172,7 @@
   --subject-math-soft: rgba(242, 201, 69, 0.18);
   --subject-physics-soft: rgba(72, 167, 222, 0.18);
   --subject-life-soft: rgba(92, 181, 135, 0.18);
+  --subject-chemistry-soft: rgba(20, 184, 166, 0.18);
   --subject-accounting-soft: rgba(244, 114, 182, 0.18);
   --subject-english-soft: rgba(129, 140, 248, 0.18);
   --subject-geography-soft: rgba(45, 212, 191, 0.18);
@@ -257,6 +260,8 @@
   --color-subject-physics-soft: var(--subject-physics-soft);
   --color-subject-life: var(--subject-life);
   --color-subject-life-soft: var(--subject-life-soft);
+  --color-subject-chemistry: var(--subject-chemistry);
+  --color-subject-chemistry-soft: var(--subject-chemistry-soft);
   --color-subject-accounting: var(--subject-accounting);
   --color-subject-accounting-soft: var(--subject-accounting-soft);
   --color-subject-english: var(--subject-english);
@@ -494,6 +499,7 @@
   .bg-math { @apply bg-subject-math-soft text-subject-math; }
   .bg-physics { @apply bg-subject-physics-soft text-subject-physics; }
   .bg-life { @apply bg-subject-life-soft text-subject-life; }
+  .bg-chemistry { @apply bg-subject-chemistry-soft text-subject-chemistry; }
   
   /* === VERTICAL TIMELINE === */
   .tiimo-timeline-strip {

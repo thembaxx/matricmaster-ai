@@ -1,0 +1,716 @@
+{
+	"aiChatSessions": [
+		{
+			"id": "sess-001",
+			"userId": "user-1",
+			"title": "Quadratic Equations Help",
+			"subject": "Mathematics",
+			"messageCount": 6,
+			"createdAt": "2026-01-15T14:00:00Z",
+			"updatedAt": "2026-01-15T14:30:00Z"
+		},
+		{
+			"id": "sess-002",
+			"userId": "user-2",
+			"title": "Calculus Derivatives",
+			"subject": "Mathematics",
+			"messageCount": 8,
+			"createdAt": "2026-01-16T09:00:00Z",
+			"updatedAt": "2026-01-16T09:45:00Z"
+		},
+		{
+			"id": "sess-003",
+			"userId": "user-3",
+			"title": "Newton's Laws of Motion",
+			"subject": "Physics",
+			"messageCount": 5,
+			"createdAt": "2026-01-17T11:00:00Z",
+			"updatedAt": "2026-01-17T11:25:00Z"
+		},
+		{
+			"id": "sess-004",
+			"userId": "user-1",
+			"title": "Trigonometry Basics",
+			"subject": "Mathematics",
+			"messageCount": 7,
+			"createdAt": "2026-01-18T15:00:00Z",
+			"updatedAt": "2026-01-18T15:40:00Z"
+		},
+		{
+			"id": "sess-005",
+			"userId": "user-4",
+			"title": "Balancing Chemical Equations",
+			"subject": "Chemistry",
+			"messageCount": 6,
+			"createdAt": "2026-01-19T10:00:00Z",
+			"updatedAt": "2026-01-19T10:30:00Z"
+		},
+		{
+			"id": "sess-006",
+			"userId": "user-5",
+			"title": "Kinematics Problem Solving",
+			"subject": "Physics",
+			"messageCount": 9,
+			"createdAt": "2026-01-20T08:00:00Z",
+			"updatedAt": "2026-01-20T08:50:00Z"
+		},
+		{
+			"id": "sess-007",
+			"userId": "user-2",
+			"title": "Cell Biology - Mitosis",
+			"subject": "Life Sciences",
+			"messageCount": 5,
+			"createdAt": "2026-01-21T13:00:00Z",
+			"updatedAt": "2026-01-21T13:25:00Z"
+		},
+		{
+			"id": "sess-008",
+			"userId": "user-6",
+			"title": "Periodic Table Trends",
+			"subject": "Chemistry",
+			"messageCount": 4,
+			"createdAt": "2026-01-22T16:00:00Z",
+			"updatedAt": "2026-01-22T16:20:00Z"
+		},
+		{
+			"id": "sess-009",
+			"userId": "user-3",
+			"title": "Genetics and Mendel's Laws",
+			"subject": "Life Sciences",
+			"messageCount": 7,
+			"createdAt": "2026-01-23T09:00:00Z",
+			"updatedAt": "2026-01-23T09:35:00Z"
+		},
+		{
+			"id": "sess-010",
+			"userId": "user-4",
+			"title": "Integration Techniques",
+			"subject": "Mathematics",
+			"messageCount": 8,
+			"createdAt": "2026-01-24T11:00:00Z",
+			"updatedAt": "2026-01-24T11:45:00Z"
+		},
+		{
+			"id": "sess-011",
+			"userId": "user-7",
+			"title": "Electrostatics",
+			"subject": "Physics",
+			"messageCount": 6,
+			"createdAt": "2026-01-25T14:00:00Z",
+			"updatedAt": "2026-01-25T14:30:00Z"
+		},
+		{
+			"id": "sess-012",
+			"userId": "user-5",
+			"title": "Organic Chemistry - Functional Groups",
+			"subject": "Chemistry",
+			"messageCount": 5,
+			"createdAt": "2026-01-26T10:00:00Z",
+			"updatedAt": "2026-01-26T10:25:00Z"
+		}
+	],
+	"aiChatMessages": [
+		{
+			"id": "msg-001",
+			"sessionId": "sess-001",
+			"role": "user",
+			"content": "I'm struggling with solving quadratic equations using the quadratic formula. Can you help me understand how to apply it to x² - 5x + 6 = 0?",
+			"createdAt": "2026-01-15T14:00:00Z"
+		},
+		{
+			"id": "msg-002",
+			"sessionId": "sess-001",
+			"role": "assistant",
+			"content": "Great question, Thabo! The quadratic formula is x = (-b ± √(b² - 4ac)) / 2a. For your equation x² - 5x + 6 = 0, we identify: a = 1, b = -5, and c = 6. First, calculate the discriminant: b² - 4ac = (-5)² - 4(1)(6) = 25 - 24 = 1. Since it's positive, we have two real roots. Now apply the formula: x = (5 ± √1) / 2 = (5 ± 1) / 2, giving us x = 3 or x = 2.",
+			"createdAt": "2026-01-15T14:05:00Z"
+		},
+		{
+			"id": "msg-003",
+			"sessionId": "sess-001",
+			"role": "user",
+			"content": "That makes sense! What happens when the discriminant is negative?",
+			"createdAt": "2026-01-15T14:10:00Z"
+		},
+		{
+			"id": "msg-004",
+			"sessionId": "sess-001",
+			"role": "assistant",
+			"content": "When the discriminant (b² - 4ac) is negative, the square root of a negative number gives us complex roots. For example, with x² + 4x + 5 = 0: b² - 4ac = 16 - 20 = -4. The solutions are x = (-4 ± √(-4)) / 2 = (-4 ± 2i) / 2 = -2 ± i. These are called complex conjugate pairs and won't cross the x-axis on a graph.",
+			"createdAt": "2026-01-15T14:18:00Z"
+		},
+		{
+			"id": "msg-005",
+			"sessionId": "sess-001",
+			"role": "user",
+			"content": "Thanks! Can you show me how to factor x² + 2x - 15 = 0 instead?",
+			"createdAt": "2026-01-15T14:22:00Z"
+		},
+		{
+			"id": "msg-006",
+			"sessionId": "sess-001",
+			"role": "assistant",
+			"content": "Sure! For x² + 2x - 15, we need two numbers that multiply to -15 and add to 2. Those numbers are 5 and -3. So x² + 2x - 15 = (x + 5)(x - 3). Setting each factor to zero: x + 5 = 0 gives x = -5, and x - 3 = 0 gives x = 3. Verify by expanding: (x + 5)(x - 3) = x² - 3x + 5x - 15 = x² + 2x - 15 ✓",
+			"createdAt": "2026-01-15T14:30:00Z"
+		},
+		{
+			"id": "msg-007",
+			"sessionId": "sess-002",
+			"role": "user",
+			"content": "How do I find the derivative of f(x) = 3x⁴ + 2x² - 5x?",
+			"createdAt": "2026-01-16T09:00:00Z"
+		},
+		{
+			"id": "msg-008",
+			"sessionId": "sess-002",
+			"role": "assistant",
+			"content": "Lerato, to differentiate this polynomial, apply the power rule: d/dx(xⁿ) = nxⁿ⁻¹. For each term: d/dx(3x⁴) = 12x³, d/dx(2x²) = 4x, d/dx(-5x) = -5, and the derivative of a constant is 0. So f'(x) = 12x³ + 4x - 5.",
+			"createdAt": "2022026-01-16T09:08:00Z"
+		},
+		{
+			"id": "msg-009",
+			"sessionId": "sess-002",
+			"role": "user",
+			"content": "What about the product rule? I have f(x) = x² sin(x)",
+			"createdAt": "2026-01-16T09:15:00Z"
+		},
+		{
+			"id": "msg-010",
+			"sessionId": "sess-002",
+			"role": "assistant",
+			"content": "The product rule states: d/dx[f(x)g(x)] = f'(x)g(x) + f(x)g'(x). For f(x) = x² sin(x), let u = x² and v = sin(x). Then u' = 2x and v' = cos(x). Applying the rule: f'(x) = 2x·sin(x) + x²·cos(x). You can factor this as x(2sin(x) + x·cos(x)) if needed.",
+			"createdAt": "2026-01-16T09:25:00Z"
+		},
+		{
+			"id": "msg-011",
+			"sessionId": "sess-002",
+			"role": "user",
+			"content": "Can you explain the chain rule too?",
+			"createdAt": "2026-01-16T09:30:00Z"
+		},
+		{
+			"id": "msg-012",
+			"sessionId": "sess-002",
+			"role": "assistant",
+			"content": "The chain rule is for composite functions: d/dx[f(g(x))] = f'(g(x)) · g'(x). For example, if y = (3x + 1)⁵, let u = 3x + 1, so y = u⁵. Then dy/du = 5u⁴ and du/dx = 3. So dy/dx = 5u⁴ · 3 = 15(3x + 1)⁴. Think of it as 'outer derivative times inner derivative'.",
+			"createdAt": "2026-01-16T09:40:00Z"
+		},
+		{
+			"id": "msg-013",
+			"sessionId": "sess-002",
+			"role": "user",
+			"content": "What's the derivative of tan(x)?",
+			"createdAt": "2026-01-16T09:42:00Z"
+		},
+		{
+			"id": "msg-014",
+			"sessionId": "sess-002",
+			"role": "assistant",
+			"content": "Since tan(x) = sin(x)/cos(x), use the quotient rule: d/dx[f/g] = (f'g - fg')/g². Here f = sin(x), f' = cos(x), g = cos(x), g' = -sin(x). So d/dx[tan(x)] = (cos(x)·cos(x) - sin(x)·(-sin(x))) / cos²(x) = (cos²x + sin²x) / cos²x = 1/cos²x = sec²x.",
+			"createdAt": "2026-01-16T09:45:00Z"
+		},
+		{
+			"id": "msg-015",
+			"sessionId": "sess-003",
+			"role": "user",
+			"content": "Explain Newton's First Law to me please",
+			"createdAt": "2026-01-17T11:00:00Z"
+		},
+		{
+			"id": "msg-016",
+			"sessionId": "sess-003",
+			"role": "assistant",
+			"content": "Miriam, Newton's First Law states that an object at rest stays at rest, and an object in motion stays in motion with the same velocity, unless acted upon by a net external force. This is also called the Law of Inertia. Inertia is the resistance of any object to a change in its state of motion. A heavier object has more inertia than a lighter one.",
+			"createdAt": "2026-01-17T11:08:00Z"
+		},
+		{
+			"id": "msg-017",
+			"sessionId": "sess-003",
+			"role": "user",
+			"content": "How does this apply to a car stopping suddenly?",
+			"createdAt": "2026-01-17T11:12:00Z"
+		},
+		{
+			"id": "msg-018",
+			"sessionId": "sess-003",
+			"role": "assistant",
+			"content": "When a car stops suddenly, your body continues moving forward because of inertia. The seatbelt provides the external force to change your motion. Without it, you'd keep moving at the car's original velocity until something else (like the windshield) provides that force. This is why wearing a seatbelt is crucial - it provides controlled deceleration.",
+			"createdAt": "2026-01-17T11:20:00Z"
+		},
+		{
+			"id": "msg-019",
+			"sessionId": "sess-003",
+			"role": "user",
+			"content": "What about Newton's Second Law?",
+			"createdAt": "2026-01-17T11:22:00Z"
+		},
+		{
+			"id": "msg-020",
+			"sessionId": "sess-003",
+			"role": "assistant",
+			"content": "Newton's Second Law states that F = ma, where F is the net force applied to an object, m is the mass, and a is the acceleration produced. Force is measured in Newtons (N), where 1N = 1kg·m/s². This means if you apply more force, you get more acceleration, but more mass means less acceleration for the same force.",
+			"createdAt": "2026-01-17T11:25:00Z"
+		},
+		{
+			"id": "msg-021",
+			"sessionId": "sess-004",
+			"role": "user",
+			"content": "I need help understanding SOH CAH TOA",
+			"createdAt": "2026-01-18T15:00:00Z"
+		},
+		{
+			"id": "msg-022",
+			"sessionId": "sess-004",
+			"role": "assistant",
+			"content": "Sipho, SOH CAH TOA helps you remember the three trigonometric ratios for right-angled triangles: SOH = sin(θ) = Opposite/Hypotenuse, CAH = cos(θ) = Adjacent/Hypotenuse, TOA = tan(θ) = Opposite/Adjacent. The hypotenuse is always opposite the right angle, the opposite side is across from angle θ, and the adjacent side is next to angle θ (but not the hypotenuse).",
+			"createdAt": "2026-01-18T15:10:00Z"
+		},
+		{
+			"id": "msg-023",
+			"sessionId": "sess-004",
+			"role": "user",
+			"content": "If I have a right triangle with opposite = 5, adjacent = 12, what's tan(θ)?",
+			"createdAt": "2026-01-18T15:15:00Z"
+		},
+		{
+			"id": "msg-024",
+			"sessionId": "sess-004",
+			"role": "assistant",
+			"content": "Using TOA: tan(θ) = Opposite/Adjacent = 5/12 ≈ 0.4167. You can also find the angle using tan⁻¹(5/12). Using a calculator: θ ≈ 22.62°. You can verify: hypotenuse = √(5² + 12²) = √169 = 13, sin(θ) = 5/13, cos(θ) = 12/13.",
+			"createdAt": "2026-01-18T15:22:00Z"
+		},
+		{
+			"id": "msg-025",
+			"sessionId": "sess-004",
+			"role": "user",
+			"content": "What are the values of sin(30°), cos(60°), and tan(45°)?",
+			"createdAt": "2026-01-18T15:28:00Z"
+		},
+		{
+			"id": "msg-026",
+			"sessionId": "sess-004",
+			"role": "assistant",
+			"content": "These are standard angles you should memorize: sin(30°) = 1/2, cos(60°) = 1/2, and tan(45°) = 1. Interestingly, sin(30°) = cos(60°) because these angles are complementary (they add to 90°). For any angle θ: sin(θ) = cos(90° - θ) and vice versa.",
+			"createdAt": "2026-01-18T15:35:00Z"
+		},
+		{
+			"id": "msg-027",
+			"sessionId": "sess-004",
+			"role": "user",
+			"content": "Can you help with a 3D trigonometry problem?",
+			"createdAt": "2026-01-18T15:37:00Z"
+		},
+		{
+			"id": "msg-028",
+			"sessionId": "sess-004",
+			"role": "assistant",
+			"content": "For 3D trigonometry, we often use the angle between lines in 3D space. The angle between two vectors a and b can be found using the dot product: cos(θ) = (a·b) / (|a||b|). If you have a specific problem, share the coordinates and I can walk you through the steps. Remember to identify which plane you're working in first.",
+			"createdAt": "2026-01-18T15:40:00Z"
+		},
+		{
+			"id": "msg-029",
+			"sessionId": "sess-005",
+			"role": "user",
+			"content": "How do I balance the equation: Fe + O₂ → Fe₂O₃?",
+			"createdAt": "2026-01-19T10:00:00Z"
+		},
+		{
+			"id": "msg-030",
+			"sessionId": "sess-005",
+			"role": "assistant",
+			"content": "Naledi, let's balance this step by step. We have Fe₂O₃ on the right (iron III oxide/rust). Count atoms: Left: Fe=1, O=2; Right: Fe=2, O=3. Start by balancing Fe: multiply Fe by 2. Now: Left: Fe=2, O=2; Right: Fe=2, O=3. Next, balance O: LCM of 2 and 3 is 6. Multiply O₂ by 3 and Fe₂O₃ by 2. Final: 4Fe + 3O₂ → 2Fe₂O₃. Check: Fe=4=4, O=6=6 ✓",
+			"createdAt": "2026-01-19T10:12:00Z"
+		},
+		{
+			"id": "msg-031",
+			"sessionId": "sess-005",
+			"role": "user",
+			"content": "What about balancing: CH₄ + O₂ → CO₂ + H₂O?",
+			"createdAt": "2026-01-19T10:15:00Z"
+		},
+		{
+			"id": "msg-032",
+			"sessionId": "sess-005",
+			"role": "assistant",
+			"content": "For methane combustion: CH₄ + O₂ → CO₂ + H₂O. Count: Left: C=1, H=4, O=2; Right: C=1, H=2, O=3. Balance C first (already 1:1). Balance H: multiply H₂O by 2. Now Right: H=4. Balance O: Right has CO₂(2) + 2H₂O(2×1) = 4 O atoms. Multiply O₂ by 2. Final: CH₄ + 2O₂ → CO₂ + 2H₂O. Check: C=1, H=4, O=4=4 ✓",
+			"createdAt": "2026-01-19T10:22:00Z"
+		},
+		{
+			"id": "msg-033",
+			"sessionId": "sess-005",
+			"role": "user",
+			"content": "What's the difference between exothermic and endothermic reactions?",
+			"createdAt": "2026-01-19T10:25:00Z"
+		},
+		{
+			"id": "msg-034",
+			"sessionId": "sess-005",
+			"role": "assistant",
+			"content": "Exothermic reactions release heat energy to the surroundings - the products have less energy than reactants, so ΔH is negative. Examples: combustion, respiration. Endothermic reactions absorb heat from surroundings - products have more energy than reactants, so ΔH is positive. Examples: photosynthesis, melting ice. You can tell by feeling the container: warm = exothermic, cold = endothermic.",
+			"createdAt": "2026-01-19T10:30:00Z"
+		},
+		{
+			"id": "msg-035",
+			"sessionId": "sess-006",
+			"role": "user",
+			"content": "A car accelerates from rest at 2m/s² for 5 seconds. What's its final velocity?",
+			"createdAt": "2026-01-20T08:00:00Z"
+		},
+		{
+			"id": "msg-036",
+			"sessionId": "sess-006",
+			"role": "assistant",
+			"content": "Kabelo, use the first kinematic equation: v = u + at. Initial velocity u = 0 (at rest), acceleration a = 2m/s², time t = 5s. So v = 0 + (2)(5) = 10 m/s. The car reaches 10 meters per second after 5 seconds.",
+			"createdAt": "2026-01-20T08:08:00Z"
+		},
+		{
+			"id": "msg-037",
+			"sessionId": "sess-006",
+			"role": "user",
+			"content": "What's the displacement during this time?",
+			"createdAt": "2026-01-20T08:12:00Z"
+		},
+		{
+			"id": "msg-038",
+			"sessionId": "sess-006",
+			"role": "assistant",
+			"content": "Use s = ut + ½at². With u = 0, a = 2m/s², t = 5s: s = 0 + ½(2)(25) = 25m. Or use the average velocity method: v_avg = (u + v)/2 = (0 + 10)/2 = 5m/s, so s = v_avg × t = 5 × 5 = 25m. The car travels 25 meters.",
+			"createdAt": "2026-01-20T08:18:00Z"
+		},
+		{
+			"id": "msg-039",
+			"sessionId": "sess-006",
+			"role": "user",
+			"content": "A ball is thrown vertically upwards at 20m/s. What's maximum height?",
+			"createdAt": "2026-01-20T08:22:00Z"
+		},
+		{
+			"id": "msg-040",
+			"sessionId": "sess-006",
+			"role": "assistant",
+			"content": "At maximum height, velocity v = 0. Using v² = u² + 2as with u = 20m/s, v = 0, a = -9.8m/s² (gravity): 0 = 400 + 2(-9.8)s. So s = 400/(19.6) ≈ 20.4m. Alternatively, find time to max height (v = u + at → t = 2.04s), then s = ut + ½at² = 20(2.04) + ½(-9.8)(4.17) ≈ 20.4m.",
+			"createdAt": "2026-01-20T08:32:00Z"
+		},
+		{
+			"id": "msg-041",
+			"sessionId": "sess-006",
+			"role": "user",
+			"content": "What's the total time of flight?",
+			"createdAt": "2026-01-20T08:35:00Z"
+		},
+		{
+			"id": "msg-042",
+			"sessionId": "sess-006",
+			"role": "assistant",
+			"content": "Total time of flight is twice the time to maximum height (symmetric motion). Time to max height: v = u + at → 0 = 20 - 9.8t → t = 2.04s. So total time = 2 × 2.04 = 4.08s. The ball takes 2.04s going up and 2.04s coming down.",
+			"createdAt": "2026-01-20T08:42:00Z"
+		},
+		{
+			"id": "msg-043",
+			"sessionId": "sess-006",
+			"role": "user",
+			"content": "What about projectile motion launched at an angle?",
+			"createdAt": "2026-01-20T08:44:00Z"
+		},
+		{
+			"id": "msg-044",
+			"sessionId": "sess-006",
+			"role": "assistant",
+			"content": "For angled launch, resolve into components: horizontal vₓ = v cos(θ), vertical vᵧ = v sin(θ). Horizontal motion is uniform (no acceleration), vertical uses a = -g. Range: R = (v² sin(2θ))/g. Max height: H = (v² sin²θ)/(2g). Time of flight: T = (2v sinθ)/g. For maximum range, launch at 45°.",
+			"createdAt": "2026-01-20T08:50:00Z"
+		},
+		{
+			"id": "msg-045",
+			"sessionId": "sess-007",
+			"role": "user",
+			"content": "What are the phases of mitosis in order?",
+			"createdAt": "2026-01-21T13:00:00Z"
+		},
+		{
+			"id": "msg-046",
+			"sessionId": "sess-007",
+			"role": "assistant",
+			"content": "Precious, the phases of mitosis are: 1) Prophase - chromosomes condense, nuclear envelope breaks down; 2) Metaphase - chromosomes line up at the cell equator; 3) Anaphase - sister chromatids separate to opposite poles; 4) Telophase - nuclear envelopes reform, chromosomes decondense. Then cytokinesis follows to divide the cytoplasm. Remember: PMAT + C (Prophase, Metaphase, Anaphase, Telophase, Cytokinesis).",
+			"createdAt": "2026-01-21T13:10:00Z"
+		},
+		{
+			"id": "msg-047",
+			"sessionId": "sess-007",
+			"role": "user",
+			"content": "What happens during each phase?",
+			"createdAt": "2026-01-21T13:12:00Z"
+		},
+		{
+			"id": "msg-048",
+			"sessionId": "sess-007",
+			"role": "assistant",
+			"content": "During prophase, chromatin condenses into visible chromosomes, each with two sister chromatids joined at the centromere. The mitotic spindle forms from centrioles. In metaphase, spindle fibers attach to centromeres and chromosomes align at the metaphase plate. Anaphase sees sister chromatids pulled to opposite poles by shortening spindle fibers. Telophase has nuclear envelopes reforming around each set of chromosomes, which begin decondensing.",
+			"createdAt": "2026-01-21T13:20:00Z"
+		},
+		{
+			"id": "msg-049",
+			"sessionId": "sess-007",
+			"role": "user",
+			"content": "What's the difference between plant and animal cell mitosis?",
+			"createdAt": "2026-01-21T13:22:00Z"
+		},
+		{
+			"id": "msg-050",
+			"sessionId": "sess-007",
+			"role": "assistant",
+			"content": "Key differences: Animal cells have centrioles (form spindle apparatus), while plant cells don't but still form spindles. Animal cells undergo cytokinesis by forming a cleavage furrow (pinching), plant cells form a cell plate (new cell wall between daughter cells). Plant cells have a cell wall so they can undergo mitosis without centrioles. Both follow the same chromosome stages.",
+			"createdAt": "2026-01-21T13:25:00Z"
+		},
+		{
+			"id": "msg-051",
+			"sessionId": "sess-008",
+			"role": "user",
+			"content": "Explain electronegativity trends in the periodic table",
+			"createdAt": "2026-01-22T16:00:00Z"
+		},
+		{
+			"id": "msg-052",
+			"sessionId": "sess-008",
+			"role": "assistant",
+			"content": "Andile, electronegativity increases across a period (left to right) and decreases down a group (top to bottom). Fluorine is the most electronegative element (4.0), caesium the least (0.79). This is because across a period, more protons in the nucleus pull electrons closer; down a group, outer electrons are farther from the nucleus and shielded by inner electrons. Electronegativity drives bond polarity - the greater the difference, the more polar the bond.",
+			"createdAt": "2026-01-22T16:10:00Z"
+		},
+		{
+			"id": "msg-053",
+			"sessionId": "sess-008",
+			"role": "user",
+			"content": "What about atomic radius trends?",
+			"createdAt": "2026-01-22T16:12:00Z"
+		},
+		{
+			"id": "msg-054",
+			"sessionId": "sess-008",
+			"role": "assistant",
+			"content": "Atomic radius increases down a group (more electron shells) and decreases across a period (more protons pulling electrons closer). Atomic size is tricky to measure precisely, so we use atomic radius as half the distance between two identical bonded atoms. Van der Waals radius is for non-bonded atoms. Covalent radius is for bonded atoms. The noble gases are measured differently since they don't form bonds easily.",
+			"createdAt": "2026-01-22T16:18:00Z"
+		},
+		{
+			"id": "msg-055",
+			"sessionId": "sess-008",
+			"role": "user",
+			"content": "Why does ionization energy decrease down a group?",
+			"createdAt": "2026-01-22T16:19:00Z"
+		},
+		{
+			"id": "msg-056",
+			"sessionId": "sess-008",
+			"role": "assistant",
+			"content": "Ionization energy decreases down a group because: 1) Outer electrons are farther from the nucleus, 2) More inner electron shells shield the outer electrons from nuclear pull, 3) The increased distance and shielding outweigh the increased nuclear charge. So it's easier to remove an outer electron from francium than from lithium, even though francium has more protons.",
+			"createdAt": "2026-01-22T16:20:00Z"
+		},
+		{
+			"id": "msg-057",
+			"sessionId": "sess-009",
+			"role": "user",
+			"content": "Explain Mendel's First Law",
+			"createdAt": "2026-01-23T09:00:00Z"
+		},
+		{
+			"id": "msg-058",
+			"sessionId": "sess-009",
+			"role": "assistant",
+			"content": "Bandile, Mendel's First Law (Law of Segregation) states that each organism has two alleles for each trait, and these alleles separate during gamete formation. Each gamete receives only one allele from each pair. When gametes fuse during fertilization, the offspring receives one allele from each parent, restoring the diploid number. This explains why traits can skip generations.",
+			"createdAt": "2026-01-23T09:08:00Z"
+		},
+		{
+			"id": "msg-059",
+			"sessionId": "sess-009",
+			"role": "user",
+			"content": "What's the difference between genotype and phenotype?",
+			"createdAt": "2026-01-23T09:12:00Z"
+		},
+		{
+			"id": "msg-060",
+			"sessionId": "sess-009",
+			"role": "assistant",
+			"content": "Genotype is the genetic makeup - the actual alleles an organism has (e.g., TT, Tt, or tt). Phenotype is the physical expression - what you can observe (e.g., tall or short). A genotype Tt has phenotype 'tall' if T is dominant. The same phenotype (tall) can come from TT or Tt genotypes. Phenotype is influenced by both genotype and environment.",
+			"createdAt": "2026-01-23T09:18:00Z"
+		},
+		{
+			"id": "msg-061",
+			"sessionId": "sess-009",
+			"role": "user",
+			"content": "What about Mendel's Second Law?",
+			"createdAt": "2026-01-23T09:22:00Z"
+		},
+		{
+			"id": "msg-062",
+			"sessionId": "sess-009",
+			"role": "assistant",
+			"content": "Mendel's Second Law (Law of Independent Assortment) states that alleles for different traits segregate independently during gamete formation. This occurs because genes on different chromosomes assort independently. However, genes on the same chromosome can be linked - they tend to inherit together unless crossing over occurs. Linked genes don't follow independent assortment.",
+			"createdAt": "2026-01-23T09:28:00Z"
+		},
+		{
+			"id": "msg-063",
+			"sessionId": "sess-009",
+			"role": "user",
+			"content": "If I cross TtRr × TtRr, what fraction will be tall and round?",
+			"createdAt": "2026-01-23T09:30:00Z"
+		},
+		{
+			"id": "msg-064",
+			"sessionId": "sess-009",
+			"role": "assistant",
+			"content": "For each trait independently: T × T gives ¾ tall (T_) and ¼ short (tt). R × R gives ¾ round (R_) and ¼ wrinkled (rr). For both tall AND round: (¾)(¾) = 9/16. Using a Punnett square for dihybrid cross gives 9 tall-round, 3 tall-wrinkled, 3 short-round, 1 short-wrinkled. The phenotypic ratio is 9:3:3:1.",
+			"createdAt": "2026-01-23T09:35:00Z"
+		},
+		{
+			"id": "msg-065",
+			"sessionId": "sess-010",
+			"role": "user",
+			"content": "How do I integrate x³?",
+			"createdAt": "2026-01-24T11:00:00Z"
+		},
+		{
+			"id": "msg-066",
+			"sessionId": "sess-010",
+			"role": "assistant",
+			"content": "Kwanda, use the power rule for integration: ∫xⁿ dx = xⁿ⁺¹/(n+1) + C, for n ≠ -1. For x³: ∫x³ dx = x⁴/4 + C. Differentiate to verify: d/dx(x⁴/4) = (4x³)/4 = x³ ✓. Don't forget the constant of integration C!",
+			"createdAt": "2026-01-24T11:08:00Z"
+		},
+		{
+			"id": "msg-067",
+			"sessionId": "sess-010",
+			"role": "user",
+			"content": "What about ∫(2x + 1)² dx?",
+			"createdAt": "2026-01-24T11:12:00Z"
+		},
+		{
+			"id": "msg-068",
+			"sessionId": "sess-010",
+			"role": "assistant",
+			"content": "First expand: (2x + 1)² = 4x² + 4x + 1. Now integrate term by term: ∫4x² dx = (4x³)/3, ∫4x dx = 2x², ∫1 dx = x. So ∫(2x + 1)² dx = (4x³)/3 + 2x² + x + C. Alternatively, use substitution: let u = 2x + 1, then du = 2dx, dx = du/2, giving (1/2)∫u² du = u³/6 + C = (2x+1)³/6 + C. These are equivalent up to the constant.",
+			"createdAt": "2026-01-24T11:22:00Z"
+		},
+		{
+			"id": "msg-069",
+			"sessionId": "sess-010",
+			"role": "user",
+			"content": "How do I integrate sin(x)?",
+			"createdAt": "2026-01-24T11:25:00Z"
+		},
+		{
+			"id": "msg-070",
+			"sessionId": "sess-010",
+			"role": "assistant",
+			"content": "Since d/dx(cos(x)) = -sin(x), we have d/dx(-cos(x)) = sin(x). So ∫sin(x) dx = -cos(x) + C. Check: d/dx(-cos(x)) = sin(x) ✓. For ∫cos(x) dx = sin(x) + C. For ∫sec²(x) dx = tan(x) + C (since d/dx(tan(x)) = sec²(x)).",
+			"createdAt": "2026-01-24T11:32:00Z"
+		},
+		{
+			"id": "msg-071",
+			"sessionId": "sess-010",
+			"role": "user",
+			"content": "What's integration by parts?",
+			"createdAt": "2026-01-24T11:35:00Z"
+		},
+		{
+			"id": "msg-072",
+			"sessionId": "sess-010",
+			"role": "assistant",
+			"content": "Integration by parts: ∫u dv = uv - ∫v du. Choose u using LIATE (Logarithmic, Inverse trig, Algebraic, Trigonometric, Exponential) - pick first type you see. Example: ∫x·eˣ dx. Let u = x (algebraic), dv = eˣ dx. Then du = dx, v = eˣ. So ∫x·eˣ dx = x·eˣ - ∫eˣ dx = x·eˣ - eˣ + C = eˣ(x - 1) + C.",
+			"createdAt": "2026-01-24T11:45:00Z"
+		},
+		{
+			"id": "msg-073",
+			"sessionId": "sess-011",
+			"role": "user",
+			"content": "What's Coulomb's Law?",
+			"createdAt": "2026-01-25T14:00:00Z"
+		},
+		{
+			"id": "msg-074",
+			"sessionId": "sess-011",
+			"role": "assistant",
+			"content": "Thandiwe, Coulomb's Law describes the electrostatic force between charged particles: F = k·q₁·q₂/r², where k = 8.99 × 10⁹ N·m²/C², q₁ and q₂ are charges in Coulombs, and r is distance in meters. Like charges repel (F > 0), opposite charges attract (F < 0). This is an inverse square law - doubling the distance reduces force to ¼.",
+			"createdAt": "2026-01-25T14:08:00Z"
+		},
+		{
+			"id": "msg-075",
+			"sessionId": "sess-011",
+			"role": "user",
+			"content": "Two charges of 2μC and -3μC are 0.05m apart. Find the force.",
+			"createdAt": "2026-01-25T14:12:00Z"
+		},
+		{
+			"id": "msg-076",
+			"sessionId": "sess-011",
+			"role": "assistant",
+			"content": "Convert to Coulombs: q₁ = 2 × 10⁻⁶ C, q₂ = -3 × 10⁻⁶ C, r = 0.05m. F = (8.99 × 10⁹)(2 × 10⁻⁶)(-3 × 10⁻⁶)/(0.05)² = (-53.94 × 10⁻³)/(0.0025) = -21.6 N. The negative sign indicates attraction. So the force magnitude is 21.6N, attractive.",
+			"createdAt": "2026-01-25T14:20:00Z"
+		},
+		{
+			"id": "msg-077",
+			"sessionId": "sess-011",
+			"role": "user",
+			"content": "What's the difference between electric field and electric potential?",
+			"createdAt": "2026-01-25T14:22:00Z"
+		},
+		{
+			"id": "msg-078",
+			"sessionId": "sess-011",
+			"role": "assistant",
+			"content": "Electric field (E = F/q) is force per unit charge - a vector showing direction and magnitude of force on a positive test charge. Electric potential (V = kq/r) is potential energy per unit charge - a scalar. Field points away from positive charges, toward negative charges. Potential decreases in the field direction. E = -dV/dr (field is negative gradient of potential).",
+			"createdAt": "2026-01-25T14:28:00Z"
+		},
+		{
+			"id": "msg-079",
+			"sessionId": "sess-011",
+			"role": "user",
+			"content": "What is capacitance?",
+			"createdAt": "2026-01-25T14:29:00Z"
+		},
+		{
+			"id": "msg-080",
+			"sessionId": "sess-011",
+			"role": "assistant",
+			"content": "Capacitance is C = Q/V, where Q is charge stored and V is voltage. It measures a capacitor's ability to store charge. Unit: Farad (F). For a parallel plate capacitor: C = ε₀·A/d, where A is plate area, d is separation, and ε₀ is permittivity of free space (8.85 × 10⁻¹² F/m). Energy stored: U = ½CV² = ½QV.",
+			"createdAt": "2026-01-25T14:30:00Z"
+		},
+		{
+			"id": "msg-081",
+			"sessionId": "sess-012",
+			"role": "user",
+			"content": "What are the main functional groups in organic chemistry?",
+			"createdAt": "2026-01-26T10:00:00Z"
+		},
+		{
+			"id": "msg-082",
+			"sessionId": "sess-012",
+			"role": "assistant",
+			"content": "Lerothi, key functional groups: Alkanes (C-C single bonds, suffix -ane), Alkenes (C=C double bond, suffix -ene), Alkynes (C≡C triple bond, suffix -yne), Alcohols (-OH group, suffix -ol), Aldehydes (-CHO at end), Ketones (C=O in middle, suffix -one), Carboxylic acids (-COOH, suffix -oic acid), Esters (-COO-), Amines (-NH₂). Each gives distinct chemical properties.",
+			"createdAt": "2026-01-26T10:10:00Z"
+		},
+		{
+			"id": "msg-083",
+			"sessionId": "sess-012",
+			"role": "user",
+			"content": "How do I name aldehydes and ketones differently?",
+			"createdAt": "2026-01-26T10:12:00Z"
+		},
+		{
+			"id": "msg-084",
+			"sessionId": "sess-012",
+			"role": "assistant",
+			"content": "Aldehydes have -CHO at the end of the chain (C=O on terminal carbon). Name by changing -e to -al (ethanal, propanal). They can be oxidized to carboxylic acids. Ketones have C=O on an internal carbon. Name by changing -e to -one (propanone, butanone). Ketones are harder to oxidize - only by strong oxidizing agents. Tollens test distinguishes them: aldehydes give silver mirror.",
+			"createdAt": "2026-01-26T10:20:00Z"
+		},
+		{
+			"id": "msg-085",
+			"sessionId": "sess-012",
+			"role": "user",
+			"content": "What's the difference between substitution and addition reactions?",
+			"createdAt": "2026-01-26T10:22:00Z"
+		},
+		{
+			"id": "msg-086",
+			"sessionId": "sess-012",
+			"role": "assistant",
+			"content": "Substitution: one atom/group replaces another. Typical of saturated compounds (alkanes, aromatic benzene). Example: CH₄ + Cl₂ → CH₃Cl + HCl (UV light required). Addition: atoms add across a multiple bond, reducing bond order. Typical of unsaturated compounds (alkenes, alkynes). Example: CH₂=CH₂ + H₂ → CH₃-CH₃ (with catalyst). Addition reactions are more energetically favorable for unsaturated compounds.",
+			"createdAt": "2026-01-26T10:25:00Z"
+		}
+	]
+}
