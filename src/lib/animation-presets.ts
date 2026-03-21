@@ -13,7 +13,7 @@ export const DURATION = {
 	quick: 0.15,
 	normal: 0.25,
 	slow: 0.35,
-	slower: 0.5,
+	slower: 0.3,
 };
 
 export const EASING = {
@@ -36,7 +36,7 @@ export const MATERIALIZATION: Variants = {
 		opacity: 0,
 		scale: 0.98,
 		filter: 'blur(4px)',
-		transition: { duration: 0.3, ease: EASING.accelerate },
+		transition: { duration: 0.25, ease: EASING.accelerate },
 	},
 };
 
@@ -101,7 +101,7 @@ export const BLUR_REVEAL: Variants = {
 	animate: {
 		opacity: 1,
 		filter: 'blur(0px)',
-		transition: { duration: 0.5, ease: EASING.decelerate },
+		transition: { duration: 0.3, ease: EASING.decelerate },
 	},
 };
 

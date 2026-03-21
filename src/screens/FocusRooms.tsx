@@ -170,14 +170,14 @@ export default function FocusRooms() {
 								</div>
 								<div className="flex items-center justify-center gap-8 text-sm">
 									<div className="text-center">
-										<p className="text-2xl font-black text-primary">{focusMinutes}</p>
+										<p className="text-2xl font-black text-primary tabular-nums">{focusMinutes}</p>
 										<p className="text-xs text-muted-foreground">Minutes Today</p>
 									</div>
 									{isGroupMode && (
 										<>
 											<div className="w-px h-8 bg-border" />
 											<div className="text-center">
-												<p className="text-2xl font-black text-tiimo-green">
+												<p className="text-2xl font-black text-tiimo-green tabular-nums">
 													{activeMembers.length}
 												</p>
 												<p className="text-xs text-muted-foreground">Studying Now</p>

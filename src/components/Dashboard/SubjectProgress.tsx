@@ -206,7 +206,9 @@ export function SubjectProgress() {
 												Mastery
 											</span>
 										</div>
-										<p className="text-xl font-bold text-foreground">{selectedSubject.progress}%</p>
+										<p className="text-xl font-bold text-foreground tabular-nums">
+											{selectedSubject.progress}%
+										</p>
 									</Card>
 								</m.div>
 

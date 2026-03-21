@@ -54,7 +54,7 @@ export function QuizProgressDashboard({
 				<h3 className="font-display font-bold text-base text-foreground">Progress</h3>
 				<div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-secondary">
 					<HugeiconsIcon icon={TimerIcon} className="w-4 h-4 text-muted-foreground" />
-					<span className="text-sm font-mono font-medium">{elapsedTime}</span>
+					<span className="text-sm font-mono font-medium tabular-nums">{elapsedTime}</span>
 				</div>
 			</div>
 
@@ -74,20 +74,22 @@ export function QuizProgressDashboard({
 				<div className="p-3 rounded-2xl bg-success/10 text-center">
 					<div className="flex items-center justify-center gap-1.5 mb-1">
 						<HugeiconsIcon icon={CheckmarkCircle02Icon} className="w-5 h-5 text-success" />
-						<span className="text-xl font-bold text-success">{correctCount}</span>
+						<span className="text-xl font-bold text-success tabular-nums">{correctCount}</span>
 					</div>
 					<p className="text-xs text-muted-foreground font-medium">Correct</p>
 				</div>
 				<div className="p-3 rounded-2xl bg-destructive/10 text-center">
 					<div className="flex items-center justify-center gap-1.5 mb-1">
 						<HugeiconsIcon icon={Cancel01Icon} className="w-5 h-5 text-destructive" />
-						<span className="text-xl font-bold text-destructive">{incorrectCount}</span>
+						<span className="text-xl font-bold text-destructive tabular-nums">
+							{incorrectCount}
+						</span>
 					</div>
 					<p className="text-xs text-muted-foreground font-medium">Wrong</p>
 				</div>
 				<div className="p-3 rounded-2xl bg-primary/10 text-center">
 					<div className="mb-1">
-						<span className="text-xl font-bold text-primary">{accuracy}%</span>
+						<span className="text-xl font-bold text-primary tabular-nums">{accuracy}%</span>
 					</div>
 					<p className="text-xs text-muted-foreground font-medium">Accuracy</p>
 				</div>

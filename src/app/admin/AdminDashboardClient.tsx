@@ -171,7 +171,9 @@ export default function AdminDashboardClient({
 										<HugeiconsIcon icon={UserGroupIcon} className="h-6 w-6 text-primary" />
 									</div>
 									<div>
-										<p className="text-2xl font-bold">{stats.totalUsers.toLocaleString()}</p>
+										<p className="text-2xl font-bold tabular-nums">
+											{stats.totalUsers.toLocaleString()}
+										</p>
 										<p className="text-sm text-muted-foreground">Total Users</p>
 									</div>
 								</div>
@@ -193,7 +195,9 @@ export default function AdminDashboardClient({
 										<HugeiconsIcon icon={ActivityIcon} className="h-6 w-6 text-green-500" />
 									</div>
 									<div>
-										<p className="text-2xl font-bold">{stats.activeUsers.toLocaleString()}</p>
+										<p className="text-2xl font-bold tabular-nums">
+											{stats.activeUsers.toLocaleString()}
+										</p>
 										<p className="text-sm text-muted-foreground">Active</p>
 									</div>
 								</div>
@@ -215,7 +219,7 @@ export default function AdminDashboardClient({
 										<HugeiconsIcon icon={BookOpen01Icon} className="h-6 w-6 text-blue-500" />
 									</div>
 									<div>
-										<p className="text-2xl font-bold">
+										<p className="text-2xl font-bold tabular-nums">
 											{stats.questionsAttempted.toLocaleString()}
 										</p>
 										<p className="text-sm text-muted-foreground">Attempts</p>
@@ -239,7 +243,7 @@ export default function AdminDashboardClient({
 										<HugeiconsIcon icon={AnalyticsUpIcon} className="h-6 w-6 text-amber-500" />
 									</div>
 									<div>
-										<p className="text-2xl font-bold">{stats.averageScore}%</p>
+										<p className="text-2xl font-bold tabular-nums">{stats.averageScore}%</p>
 										<p className="text-sm text-muted-foreground">Avg Score</p>
 									</div>
 								</div>

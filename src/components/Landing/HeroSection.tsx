@@ -14,6 +14,7 @@ import { useRouter } from 'next/navigation';
 import { appConfig } from '@/app.config';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { useReducedMotion } from '@/hooks/use-reduced-motion';
 
 interface HeroSectionProps {
 	onAuthRequired: (path: string) => void;
@@ -21,10 +22,11 @@ interface HeroSectionProps {
 
 export function HeroSection({ onAuthRequired }: HeroSectionProps) {
 	const router = useRouter();
+	const prefersReducedMotion = useReducedMotion();
 	const { scrollYProgress } = useScroll();
 
-	const y = useTransform(scrollYProgress, [0, 1], [0, -100]);
-	const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+	const y = useTransform(scrollYProgress, [0, 1], [0, prefersReducedMotion ? 0 : -100]);
+	const opacity = useTransform(scrollYProgress, [0, 0.5], [1, prefersReducedMotion ? 1 : 0]);
 
 	return (
 		<section className="pt-8 pb-20 lg:pt-8 lg:pb-32 flex flex-col lg:flex-row items-center gap-12 lg:gap-16">

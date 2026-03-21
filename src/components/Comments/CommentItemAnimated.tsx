@@ -40,6 +40,7 @@ export function CommentItemAnimated({
 			layout
 			initial={{ opacity: 0, y: 10 }}
 			animate={{ opacity: 1, y: 0 }}
+			exit={{ opacity: 0, y: -10 }}
 			className={cn('group', !isReply && 'pb-6 border-b border-border/30 last:border-0')}
 		>
 			<div className="flex gap-4">
