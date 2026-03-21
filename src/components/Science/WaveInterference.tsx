@@ -16,8 +16,8 @@ export function WaveInterference({
 	wavelength = 2,
 	showSources = true,
 }: WaveInterferenceProps) {
-	const [freq, setFreq] = useState(frequency);
-	const [amp, setAmp] = useState(amplitude);
+	const [freq, setFreq] = useState(() => frequency);
+	const [amp, setAmp] = useState(() => amplitude);
 	const [phaseShift, setPhaseShift] = useState(0);
 	const gradientId = useId();
 

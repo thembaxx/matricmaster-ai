@@ -19,8 +19,8 @@ export function ProjectileMotion({
 	const [isPlaying, setIsPlaying] = useState(false);
 	const [time, setTime] = useState(0);
 	const [position, setPosition] = useState({ x: 0, y: 0 });
-	const [velocity, setVelocity] = useState(initialVelocity);
-	const [theta, setTheta] = useState(angle);
+	const [velocity, setVelocity] = useState(() => initialVelocity);
+	const [theta, setTheta] = useState(() => angle);
 
 	const angleRad = (theta * Math.PI) / 180;
 	const vx = velocity * Math.cos(angleRad);

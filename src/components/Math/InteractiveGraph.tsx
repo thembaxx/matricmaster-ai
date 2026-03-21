@@ -15,7 +15,7 @@ export function InteractiveGraph({
 	height = 400,
 	initialEquation = 'x^2',
 }: InteractiveGraphProps) {
-	const [equation, setEquation] = useState(initialEquation);
+	const [equation, setEquation] = useState(() => initialEquation);
 	const [hoverPoint, setHoverPoint] = useState<{ x: number; y: number } | null>(null);
 	const [zoom, setZoom] = useState(1);
 

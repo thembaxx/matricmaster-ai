@@ -23,10 +23,13 @@ export function LoadingState({
 	showAnalyzingVariants = false,
 	className,
 }: LoadingStateProps) {
-	const [displayMessage, setDisplayMessage] = useState(message);
+	const [displayMessage, setDisplayMessage] = useState(() => message);
 
 	useEffect(() => {
-		if (!showAnalyzingVariants) return;
+		if (!showAnalyzingVariants) {
+			setDisplayMessage(message);
+			return;
+		}
 
 		const interval = setInterval(() => {
 			const randomIndex = Math.floor(Math.random() * ANALYZING_MESSAGES.length);
@@ -34,7 +37,7 @@ export function LoadingState({
 		}, 3000);
 
 		return () => clearInterval(interval);
-	}, [showAnalyzingVariants]);
+	}, [showAnalyzingVariants, message]);
 
 	return (
 		<m.div

@@ -25,7 +25,7 @@ export const SUBJECTS = [
 		id: 'chemistry',
 		topics: 'Rate of Reaction, Organic Molecules',
 		path: '/quiz',
-		bg: 'bg-subject-physics-soft',
+		bg: 'bg-chemistry',
 		image:
 			'https://images.unsplash.com/photo-1532187875605-1ef6c237f142?auto=format&fit=crop&q=80&w=400',
 	},
