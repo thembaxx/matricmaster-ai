@@ -34,7 +34,7 @@ export function GrowthInsights({
 				</CardTitle>
 			</CardHeader>
 			<CardContent className="p-6 space-y-3">
-				{insights.map((insight) => (
+				{insights.map((insight, i) => (
 					<m.div
 						key={insight}
 						initial={{ opacity: 0, x: -10 }}

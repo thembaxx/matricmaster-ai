@@ -173,7 +173,7 @@ export const XpHeader = memo(function XpHeader({
 								{data.title}
 							</Badge>
 						</div>
-						<p className="text-xs text-muted-foreground mt-0.5">
+						<p className="text-xs text-muted-foreground mt-0.5 tabular-nums">
 							{formatXp(data.xpInCurrentLevel)} / {formatXp(data.xpToNextLevel)} XP to next level
 						</p>
 					</div>
@@ -183,7 +183,9 @@ export const XpHeader = memo(function XpHeader({
 					<div className="flex items-center gap-2 px-4 py-2 bg-linear-to-r from-orange-100 to-amber-100 dark:from-orange-900/20 dark:to-amber-900/20 rounded-2xl">
 						<HugeiconsIcon icon={FireIcon} className="w-5 h-5 text-orange-500" />
 						<div>
-							<span className="text-xl font-semibold text-orange-500">{data.streak}</span>
+							<span className="text-xl font-semibold text-orange-500 tabular-nums">
+								{data.streak}
+							</span>
 							<span className="text-xs text-orange-500/70 ml-1">day streak</span>
 						</div>
 					</div>

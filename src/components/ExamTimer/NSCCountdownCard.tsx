@@ -83,7 +83,7 @@ export function NSCCountdownCard() {
 									className={`w-4 h-4 ${daysLeft <= 30 ? 'text-red-500' : 'text-primary'}`}
 								/>
 								<span
-									className={`text-2xl font-bold ${daysLeft <= 30 ? 'text-red-500' : 'text-primary'}`}
+									className={`text-2xl font-bold tabular-nums ${daysLeft <= 30 ? 'text-red-500' : 'text-primary'}`}
 								>
 									{daysLeft}
 								</span>
@@ -92,7 +92,7 @@ export function NSCCountdownCard() {
 						</div>
 
 						<div className="flex-1 border-l pl-4">
-							<p className="text-2xl font-bold text-muted-foreground">{weeksLeft}</p>
+							<p className="text-2xl font-bold text-muted-foreground tabular-nums">{weeksLeft}</p>
 							<p className="text-xs text-muted-foreground">weeks remaining</p>
 						</div>
 					</div>

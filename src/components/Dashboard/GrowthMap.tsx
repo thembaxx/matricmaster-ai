@@ -7,19 +7,10 @@ import {
 	CheckmarkCircle01Icon,
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
-import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
+import { Bar, BarChart, Cell, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { Button } from '@/components/ui/button';
-import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
-
-const _GrowthMapChart = dynamic(
-	() => import('./GrowthMapChart').then((mod) => mod.GrowthMapChart),
-	{
-		ssr: false,
-		loading: () => <Skeleton className="h-64 w-full" />,
-	}
-);
 
 interface GrowthTopic {
 	topic: string;

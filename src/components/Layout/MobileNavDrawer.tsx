@@ -75,13 +75,13 @@ const MOBILE_NAV_SECTIONS: MobileNavSection[] = [
 		items: [
 			{ href: '/dashboard', label: 'Dashboard', icon: Home01Icon },
 			{ href: '/lessons', label: 'Lessons', icon: BookOpen01Icon },
-			{ href: '/physics', label: 'Physics', fluentEmoji: 'Atom' },
+			{ href: '/physics', label: 'Physics', fluentEmoji: '⚛️' },
 			{ href: '/search', label: 'Search', icon: Search01Icon },
 			{ href: '/study-companion', label: 'Study Companion', icon: SparklesIcon },
 			{ href: '/study-path', label: 'Study Path', icon: MapsIcon },
 			{ href: '/study-plan', label: 'Study Plan', icon: Calendar01Icon },
 			{ href: '/curriculum-map', label: 'Curriculum Map', icon: GridIcon },
-			{ href: '/periodic-table', label: 'Periodic Table', fluentEmoji: 'Atom' },
+			{ href: '/periodic-table', label: 'Periodic Table', fluentEmoji: '⚛️' },
 			{ href: '/tutoring', label: 'AI Tutoring', icon: ComputerVideoCallIcon },
 			{ href: '/voice-tutor', label: 'Voice Tutor', icon: Mic01Icon },
 			{ href: '/essay-grader', label: 'Essay Grader', icon: ContentWritingIcon },
@@ -195,28 +195,30 @@ export function MobileNavDrawer({
 					className="flex flex-col"
 					style={{ maxHeight: '85vh' }}
 				>
-					<div className="px-6 pb-4 border-b border-sidebar-border/50">
-						<div className="flex items-center justify-between mb-4">
+					<div className="px-4 pb-4 border-b border-sidebar-border/50">
+						<div className="flex items-center justify-between mb-3">
 							{user ? (
 								<Button
 									type="button"
 									variant="ghost"
 									onClick={() => handleNavigation('/profile')}
-									className="flex items-center gap-3 p-2 -m-2 w-full h-auto rounded-xl hover:bg-sidebar-accent transition-colors text-left"
+									className="flex items-center gap-3 p-1.5 -ml-1.5 w-full h-auto rounded-lg hover:bg-sidebar-accent transition-colors text-left"
 								>
-									<Avatar className="h-11 w-11 border-2 border-sidebar-primary/30">
+									<Avatar className="h-9 w-9">
 										<AvatarImage src={user.image || undefined} alt={user.name || 'User'} />
-										<AvatarFallback className="bg-sidebar-primary text-sidebar-primary-foreground font-bold">
+										<AvatarFallback className="bg-sidebar-primary text-sidebar-primary-foreground text-sm font-medium">
 											{user.name?.charAt(0)?.toUpperCase() || 'U'}
 										</AvatarFallback>
 									</Avatar>
 									<div className="flex-1 min-w-0">
-										<p className="font-semibold text-sidebar-foreground truncate">{user.name}</p>
+										<p className="font-medium text-sidebar-foreground text-sm truncate">
+											{user.name}
+										</p>
 										<p className="text-xs text-sidebar-foreground/50 truncate">{user.email}</p>
 									</div>
 									<HugeiconsIcon
 										icon={ArrowRight01Icon}
-										className="w-4 h-4 text-sidebar-foreground/30"
+										className="w-4 h-4 text-sidebar-foreground/40"
 									/>
 								</Button>
 							) : (
@@ -226,10 +228,10 @@ export function MobileNavDrawer({
 									onClick={() => handleNavigation('/dashboard')}
 									className="flex items-center gap-3 h-auto"
 								>
-									<div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-sidebar-primary to-purple-400 flex items-center justify-center shadow-lg">
-										<HugeiconsIcon icon={BookOpen01Icon} className="w-5 h-5 text-white" />
+									<div className="w-9 h-9 rounded-lg bg-gradient-to-br from-sidebar-primary to-purple-400 flex items-center justify-center">
+										<HugeiconsIcon icon={BookOpen01Icon} className="w-4 h-4 text-white" />
 									</div>
-									<h1 className="text-lg font-semibold text-sidebar-foreground">
+									<h1 className="text-base font-semibold text-sidebar-foreground">
 										{appConfig.name}
 									</h1>
 								</Button>
@@ -237,32 +239,32 @@ export function MobileNavDrawer({
 							<Button
 								variant="ghost"
 								size="icon"
-								className="rounded-full"
+								className="rounded-lg h-9 w-9 -mr-1"
 								onClick={() => setOpen(false)}
 							>
-								<HugeiconsIcon icon={Cancel01Icon} className="w-5 h-5" />
+								<HugeiconsIcon icon={Cancel01Icon} className="w-4 h-4" />
 							</Button>
 						</div>
 
 						<div className="relative">
 							<HugeiconsIcon
 								icon={Search01Icon}
-								className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-sidebar-foreground/40"
+								className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-sidebar-foreground/50"
 							/>
 							<Input
 								type="text"
 								placeholder="Search pages..."
 								value={searchQuery}
 								onChange={(e) => setSearchQuery(e.target.value)}
-								className="pl-10 bg-sidebar-accent/50 border-sidebar-border/50 rounded-xl h-11"
+								className="pl-9 bg-sidebar-accent/40 border-transparent rounded-lg h-10 text-sm"
 							/>
 						</div>
 					</div>
 
-					<div className="flex-1 overflow-y-auto px-4 py-4">
+					<div className="flex-1 overflow-y-auto px-3 py-3">
 						{filteredSections.map((section) => (
-							<div key={section.title} className="mb-5">
-								<p className="px-3 mb-2 text-[10px] font-medium text-sidebar-foreground/40">
+							<div key={section.title} className="mb-4">
+								<p className="px-2 mb-1.5 text-[10px] font-medium tracking-wider text-sidebar-foreground/40 uppercase">
 									{section.title}
 								</p>
 								<div className="space-y-0.5">
@@ -273,20 +275,20 @@ export function MobileNavDrawer({
 							</div>
 						))}
 						{filteredSections.length === 0 && (
-							<div className="text-center py-8 text-sidebar-foreground/40">
+							<div className="text-center py-6 text-sidebar-foreground/50">
 								<p className="text-sm">No results found</p>
 							</div>
 						)}
 					</div>
 
-					<div className="px-4 py-4 border-t border-sidebar-border/50 bg-sidebar-accent/10">
+					<div className="px-3 py-3 border-t border-sidebar-border/50">
 						<Button
 							variant="ghost"
-							className="w-full justify-start gap-3 text-sidebar-foreground/60 hover:text-sidebar-foreground hover:bg-sidebar-accent rounded-xl h-12 font-medium"
+							className="w-full justify-start gap-3 text-sidebar-foreground/80 hover:text-sidebar-foreground hover:bg-sidebar-accent/60 rounded-lg h-11"
 							onClick={handleSignOut}
 						>
 							<HugeiconsIcon icon={Logout01Icon} className="w-5 h-5" />
-							<span>Sign Out</span>
+							<span className="text-sm">Sign Out</span>
 						</Button>
 					</div>
 				</m.div>
@@ -311,19 +313,18 @@ function MobileNavLink({
 			variant="ghost"
 			onClick={() => onNavigate(item.href)}
 			className={cn(
-				'w-full flex items-center gap-3 px-3 py-3 h-auto rounded-xl text-left',
+				'w-full flex items-center gap-3 px-3 h-11 rounded-lg text-left',
 				isActive
-					? 'bg-sidebar-primary/10 text-sidebar-primary'
-					: 'text-sidebar-foreground/60 hover:text-sidebar-foreground hover:bg-sidebar-accent/50'
+					? 'bg-sidebar-primary/15 text-sidebar-primary font-medium'
+					: 'text-sidebar-foreground/80 hover:text-sidebar-foreground hover:bg-sidebar-accent/60'
 			)}
 		>
 			{item.fluentEmoji ? (
-				<FluentEmoji emoji={item.fluentEmoji} size={24} className="w-6 h-6" />
+				<FluentEmoji emoji={item.fluentEmoji} size={20} className="w-5 h-5" />
 			) : item.icon ? (
 				<HugeiconsIcon icon={item.icon} className="w-5 h-5" />
 			) : null}
-			<span className="font-medium">{item.label}</span>
-			{isActive && <div className="ml-auto w-1.5 h-1.5 rounded-full bg-sidebar-primary" />}
+			<span className="text-sm">{item.label}</span>
 		</Button>
 	);
 }

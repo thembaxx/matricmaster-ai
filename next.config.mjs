@@ -124,6 +124,39 @@ const withPWA = withPWAInit({
 					},
 				},
 			},
+			{
+				urlPattern: /^https:\/\/registry\.npmmirror\.com\/@lobehub\/.*/i,
+				handler: 'CacheFirst',
+				options: {
+					cacheName: 'fluent-emoji-cache',
+					expiration: {
+						maxEntries: 100,
+						maxAgeSeconds: 30 * 24 * 60 * 60,
+					},
+				},
+			},
+			{
+				urlPattern: /^https:\/\/unpkg\.com\/@lobehub\/.*/i,
+				handler: 'CacheFirst',
+				options: {
+					cacheName: 'fluent-emoji-cache',
+					expiration: {
+						maxEntries: 100,
+						maxAgeSeconds: 30 * 24 * 60 * 60,
+					},
+				},
+			},
+			{
+				urlPattern: /\.(?:webp)$/i,
+				handler: 'CacheFirst',
+				options: {
+					cacheName: 'webp-images-cache',
+					expiration: {
+						maxEntries: 100,
+						maxAgeSeconds: 30 * 24 * 60 * 60,
+					},
+				},
+			},
 		],
 	},
 });
@@ -164,7 +197,7 @@ const nextConfig = {
 					{
 						key: 'Content-Security-Policy-Report-Only',
 						value:
-							"default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://va.vercel-scripts.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; connect-src 'self' wss://*.ably.com wss://main.realtime.ably.net https://*.ably.com https://main.realtime.ably.net https://api.iconify.design; frame-ancestors 'none'; report-uri /api/csp-report;",
+							"default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://va.vercel-scripts.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; connect-src 'self' wss://*.ably.com wss://main.realtime.ably.net https://*.ably.com https://main.realtime.ably.net https://api.iconify.design https://unpkg.com; frame-ancestors 'none'; report-uri /api/csp-report;",
 					},
 					{
 						key: 'Strict-Transport-Security',
@@ -195,6 +228,14 @@ const nextConfig = {
 			{
 				protocol: 'https',
 				hostname: '*.supabase.co',
+			},
+			{
+				protocol: 'https',
+				hostname: 'registry.npmmirror.com',
+			},
+			{
+				protocol: 'https',
+				hostname: 'unpkg.com',
 			},
 		],
 		formats: ['image/avif', 'image/webp'],
