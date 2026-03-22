@@ -28,7 +28,7 @@ interface LoadSheddingStore {
 	schedule: LoadSheddingSchedule[];
 	fetchSchedule: (areaId?: string) => Promise<void>;
 	getAffectedBlocks: (
-		blocks: { date: string; startTime: string; endTime: string; type: string }[]
+		blocks: { id?: string; date: string; startTime: string; endTime: string; type: string }[]
 	) => string[];
 	rescheduleForLoadShedding: (
 		blocks: { id: string; date: string; startTime: string; endTime: string; type: string }[]
@@ -121,7 +121,7 @@ export const useLoadSheddingStore = create<LoadSheddingStore>()(
 							const endHour = Number.parseInt(period.end.split(':')[0], 10);
 
 							if (blockHour >= startHour && blockHour < endHour) {
-								if (impact.online.includes(block.type)) {
+								if (impact.online.includes(block.type) && block.id) {
 									affected.push(block.id);
 								}
 							}

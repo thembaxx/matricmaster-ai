@@ -33,7 +33,7 @@ export const useDevicePerformance = create<DevicePerformanceState>()(
 				const canvas = document.createElement('canvas');
 				const gl = canvas.getContext('webgl2') || canvas.getContext('webgl');
 				const supportsWebGL = !!gl;
-				const supportsWebGPU = navigator.gpu !== undefined;
+				const supportsWebGPU = (navigator as { gpu?: unknown }).gpu !== undefined;
 
 				const hardwareConcurrency = navigator.hardwareConcurrency || 4;
 				const deviceMemory = (navigator as { deviceMemory?: number }).deviceMemory;
