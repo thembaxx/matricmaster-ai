@@ -3,13 +3,32 @@ import type { QuizAction, QuizState } from '@/types/quiz';
 export function quizReducer(state: QuizState, action: QuizAction): QuizState {
 	switch (action.type) {
 		case 'SET_QUESTION_INDEX':
-			return { ...state, currentQuestionIndex: action.payload };
-		case 'SET_OPTION':
-			return { ...state, selectedOption: action.payload };
+			return {
+				...state,
+				currentQuestionIndex: action.payload,
+				questionStartTime: Date.now(),
+				answerChanges: 0,
+			};
+		case 'SET_OPTION': {
+			const wasNull = state.selectedOption === null;
+			return {
+				...state,
+				selectedOption: action.payload,
+				answerChanges: wasNull ? state.answerChanges : state.answerChanges + 1,
+			};
+		}
 		case 'CHECK_ANSWER':
 			return { ...state, isChecked: true, isCorrect: action.payload };
 		case 'RESET_ANSWER_STATE':
-			return { ...state, selectedOption: null, isChecked: false, isCorrect: null, showHint: false };
+			return {
+				...state,
+				selectedOption: null,
+				isChecked: false,
+				isCorrect: null,
+				showHint: false,
+				questionStartTime: Date.now(),
+				answerChanges: 0,
+			};
 		case 'SET_ELAPSED':
 			return { ...state, elapsedSeconds: action.payload };
 		case 'TOGGLE_HINT':
@@ -54,6 +73,40 @@ export function quizReducer(state: QuizState, action: QuizAction): QuizState {
 			return { ...state, score: state.score + 1, correctCount: state.correctCount + 1 };
 		case 'INCREMENT_INCORRECT':
 			return { ...state, incorrectCount: state.incorrectCount + 1 };
+		case 'RECORD_ANSWER_CHANGE':
+			return { ...state, answerChanges: state.answerChanges + 1 };
+		case 'SET_QUESTION_START_TIME':
+			return { ...state, questionStartTime: action.payload };
+		case 'SET_ANTI_GAMING_RISK':
+			return {
+				...state,
+				antiGamingRiskScore: action.payload.score,
+				antiGamingRiskLevel: action.payload.level,
+			};
+		case 'RESET_ANSWER_CHANGES':
+			return { ...state, answerChanges: 0 };
+		case 'SET_ANSWER_TEXT':
+			return { ...state, answerText: action.payload };
+		case 'SET_GRADING':
+			return { ...state, isGrading: action.payload };
+		case 'SET_SHORT_ANSWER_RESULT':
+			return {
+				...state,
+				shortAnswerScore: action.payload.score,
+				shortAnswerMaxScore: action.payload.maxScore,
+				shortAnswerFeedback: action.payload.feedback,
+				isChecked: true,
+				isCorrect: action.payload.isCorrect,
+				isGrading: false,
+			};
+		case 'RESET_SHORT_ANSWER_STATE':
+			return {
+				...state,
+				answerText: '',
+				shortAnswerScore: 0,
+				shortAnswerMaxScore: 0,
+				shortAnswerFeedback: '',
+			};
 		default:
 			return state;
 	}

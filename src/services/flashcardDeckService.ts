@@ -316,6 +316,8 @@ export async function getCardsDue(
 			repetitions: flashcards.repetitions,
 			nextReview: flashcards.nextReview,
 			lastReview: flashcards.lastReview,
+			sourceType: flashcards.sourceType,
+			sourceQuestionId: flashcards.sourceQuestionId,
 			createdAt: flashcards.createdAt,
 			updatedAt: flashcards.updatedAt,
 			deck: {
@@ -346,6 +348,8 @@ export async function getCardsDue(
 				repetitions: flashcards.repetitions,
 				nextReview: flashcards.nextReview,
 				lastReview: flashcards.lastReview,
+				sourceType: flashcards.sourceType,
+				sourceQuestionId: flashcards.sourceQuestionId,
 				createdAt: flashcards.createdAt,
 				updatedAt: flashcards.updatedAt,
 				deck: {

@@ -9,8 +9,10 @@ import { QuestionExtras } from '@/components/Quiz/QuestionExtras';
 import { QuizFooter } from '@/components/Quiz/QuizFooter';
 import { QuizProgress } from '@/components/Quiz/QuizProgress';
 import { QuizProgressDashboard } from '@/components/Quiz/QuizProgressDashboard';
+import { ShortAnswerInput } from '@/components/Quiz/ShortAnswerInput';
 import { SubjectSelector } from '@/components/Quiz/SubjectSelector';
 import { Button } from '@/components/ui/button';
+import type { AnyQuizQuestion, ShortAnswerQuestion } from '@/constants/quiz/types';
 import { useMathKeyboard } from '@/hooks/use-math-keyboard';
 
 interface QuestionOption {
@@ -25,17 +27,11 @@ interface QuizContentProps {
 		subject: string;
 		session: string;
 		year: number;
-		questions: Array<{
-			question: string;
-			options: Array<{ id: string; text: string }>;
-			correctAnswer: string;
-			difficulty: string;
-			topic: string;
-			diagram?: string;
-		}>;
+		questions: AnyQuizQuestion[];
 	};
 	currentQuestionIndex: number;
 	selectedOption: string | null;
+	answerText: string;
 	isChecked: boolean;
 	isCorrect: boolean | null;
 	elapsedSeconds: number;
@@ -51,7 +47,10 @@ interface QuizContentProps {
 	correctCount: number;
 	incorrectCount: number;
 	isCompleting: boolean;
+	isGrading: boolean;
+	shortAnswerFeedback: string;
 	onSelectOption: (id: string | null) => void;
+	onAnswerTextChange: (text: string) => void;
 	onToggleHint: () => void;
 	onCheck: () => void;
 	onModeChange: (mode: 'test' | 'practice') => void;
@@ -62,10 +61,15 @@ interface QuizContentProps {
 	onExit: () => void;
 }
 
+function isShortAnswer(q: AnyQuizQuestion): q is ShortAnswerQuestion {
+	return q.type === 'shortAnswer';
+}
+
 export function QuizContent({
 	quiz,
 	currentQuestionIndex,
 	selectedOption,
+	answerText,
 	isChecked,
 	isCorrect,
 	elapsedSeconds,
@@ -80,7 +84,10 @@ export function QuizContent({
 	correctCount,
 	incorrectCount,
 	isCompleting,
+	isGrading,
+	shortAnswerFeedback,
 	onSelectOption,
+	onAnswerTextChange,
 	onToggleHint,
 	onCheck,
 	onModeChange,
@@ -101,11 +108,16 @@ export function QuizContent({
 	} = useMathKeyboard();
 
 	const currentQuestion = quiz.questions[currentQuestionIndex];
-	const options: QuestionOption[] = currentQuestion.options.map((o) => ({
-		id: o.id,
-		label: o.text,
-		isCorrect: o.id === currentQuestion.correctAnswer,
-	}));
+	const isMCQ = !currentQuestion.type || currentQuestion.type === 'mcq';
+
+	const options: QuestionOption[] =
+		isMCQ && 'options' in currentQuestion
+			? currentQuestion.options.map((o) => ({
+					id: o.id,
+					label: o.text,
+					isCorrect: o.id === currentQuestion.correctAnswer,
+				}))
+			: [];
 
 	const formatTime = (s: number) => `${Math.floor(s / 60)}:${(s % 60).toString().padStart(2, '0')}`;
 	const progressPercent = ((currentQuestionIndex + 1) / quiz.questions.length) * 100;
@@ -113,10 +125,17 @@ export function QuizContent({
 		currentSubject
 	);
 	const correctAnswerText =
-		currentQuestion.options.find((o) => o.id === currentQuestion.correctAnswer)?.text || '';
-	const selectedAnswerText = selectedOption
-		? currentQuestion.options.find((o) => o.id === selectedOption)?.text || null
-		: null;
+		isMCQ && 'options' in currentQuestion
+			? currentQuestion.options.find((o) => o.id === currentQuestion.correctAnswer)?.text || ''
+			: isShortAnswer(currentQuestion)
+				? currentQuestion.correctAnswer
+				: '';
+	const selectedAnswerText =
+		selectedOption && isMCQ && 'options' in currentQuestion
+			? currentQuestion.options.find((o) => o.id === selectedOption)?.text || null
+			: null;
+
+	const hasAnswer = answerText.trim().length > 0;
 
 	return (
 		<>
@@ -208,14 +227,31 @@ export function QuizContent({
 
 			<div className="h-[calc(100vh-380px)] sm:h-full no-scrollbar pr-4">
 				<div className="space-y-8 pb-40">
-					<QuestionCard
-						question={currentQuestion.question}
-						options={options}
-						selectedOption={selectedOption}
-						isChecked={isChecked}
-						onSelect={onSelectOption}
-						diagram={currentQuestion.diagram}
-					/>
+					{isMCQ ? (
+						<QuestionCard
+							question={currentQuestion.question}
+							options={options}
+							selectedOption={selectedOption}
+							isChecked={isChecked}
+							onSelect={onSelectOption}
+							diagram={'diagram' in currentQuestion ? currentQuestion.diagram : undefined}
+						/>
+					) : isShortAnswer(currentQuestion) ? (
+						<div className="bg-card rounded-[2.5rem] shadow-lg border border-border/50 p-8 sm:p-10">
+							<div className="mb-6">
+								<h2 className="text-xl font-semibold leading-tight text-foreground">
+									{currentQuestion.question}
+								</h2>
+							</div>
+							<ShortAnswerInput
+								value={answerText}
+								onChange={onAnswerTextChange}
+								isChecked={isChecked}
+								isCorrect={isCorrect}
+								disabled={isCompleting}
+							/>
+						</div>
+					) : null}
 
 					{mode === 'practice' && showMathKeyboardForSubject && (
 						<MathInputField input={mathInput} cursorPos={cursorPos} onDelete={handleMathDelete} />
@@ -232,13 +268,61 @@ export function QuizContent({
 						onDismissStruggle={onDismissStruggle}
 					/>
 
-					{isChecked && (
+					{isChecked && isMCQ && (
 						<AnswerBreakdown
 							correctAnswer={correctAnswerText}
 							selectedAnswer={selectedAnswerText}
 							isCorrect={isCorrect ?? false}
 							topic={currentQuestion.topic}
 						/>
+					)}
+
+					{isChecked && isShortAnswer(currentQuestion) && (
+						<div className="bg-card rounded-[2.5rem] shadow-lg border border-border/50 p-6 sm:p-8">
+							<div className="flex items-start gap-3">
+								<div
+									className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${
+										isCorrect
+											? 'bg-tiimo-green/10 text-tiimo-green'
+											: 'bg-destructive/10 text-destructive'
+									}`}
+								>
+									<svg
+										className="w-5 h-5"
+										fill="none"
+										viewBox="0 0 24 24"
+										stroke="currentColor"
+										aria-hidden="true"
+									>
+										{isCorrect ? (
+											<path
+												strokeLinecap="round"
+												strokeLinejoin="round"
+												strokeWidth={2}
+												d="M5 13l4 4L19 7"
+											/>
+										) : (
+											<path
+												strokeLinecap="round"
+												strokeLinejoin="round"
+												strokeWidth={2}
+												d="M6 18L18 6M6 6l12 12"
+											/>
+										)}
+									</svg>
+								</div>
+								<div className="flex-1">
+									<p className="font-semibold text-foreground mb-1">
+										{isCorrect ? 'Correct!' : 'Not quite right'}
+									</p>
+									<p className="text-sm text-muted-foreground">{shortAnswerFeedback}</p>
+									<p className="text-xs text-muted-foreground mt-2">
+										Correct answer:{' '}
+										<span className="font-semibold text-foreground">{correctAnswerText}</span>
+									</p>
+								</div>
+							</div>
+						</div>
 					)}
 				</div>
 			</div>
@@ -264,6 +348,8 @@ export function QuizContent({
 				onCheck={onCheck}
 				onExit={onExit}
 				disabled={isCompleting}
+				isGrading={isGrading}
+				hasAnswer={isMCQ ? selectedOption !== null : hasAnswer}
 			/>
 
 			{showSubjectSelector && (

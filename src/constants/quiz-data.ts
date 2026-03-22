@@ -5,6 +5,7 @@ import { LIFE_SCIENCES_QUIZ } from './quiz/life-sciences';
 import { MATHEMATICS_QUIZ } from './quiz/mathematics';
 import { PHYSICS_QUIZ } from './quiz/physics';
 import { PRACTICE_QUIZ } from './quiz/practice';
+import { SHORT_ANSWER_QUIZ } from './quiz/sample-short-answer';
 import type { QuizData } from './quiz/types';
 
 export * from './quiz/types';
@@ -17,4 +18,5 @@ export const QUIZ_DATA: QuizData = {
 	...GEOGRAPHY_QUIZ,
 	...ACCOUNTING_QUIZ,
 	...PRACTICE_QUIZ,
+	...SHORT_ANSWER_QUIZ,
 };

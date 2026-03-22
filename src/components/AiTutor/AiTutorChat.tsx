@@ -1,6 +1,7 @@
 'use client';
 
 import { BookmarkButton } from '@/components/AI/BookmarkButton';
+import { CitationDisplay } from '@/components/AI/CitationDisplay';
 import { MarkdownRenderer } from '@/components/AI/MarkdownRenderer';
 import { SuggestedFollowUps } from '@/components/AI/SuggestedFollowUps';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
@@ -12,6 +13,7 @@ interface AiTutorChatProps {
 	messages: Message[];
 	isLoading: boolean;
 	selectedSubject: string | null;
+	showSources?: boolean;
 	handleSend: (message: string) => void;
 	messagesEndRef: React.RefObject<HTMLDivElement | null>;
 }
@@ -20,6 +22,7 @@ export function AiTutorChat({
 	messages,
 	isLoading,
 	selectedSubject,
+	showSources = true,
 	handleSend,
 	messagesEndRef,
 }: AiTutorChatProps) {
@@ -116,6 +119,11 @@ export function AiTutorChat({
 									onSelectSuggestion={(suggestion) => handleSend(suggestion)}
 								/>
 							)}
+							{message.role === 'assistant' &&
+								message.citations &&
+								message.citations.length > 0 && (
+									<CitationDisplay citations={message.citations} showSources={showSources} />
+								)}
 						</div>
 					</div>
 				))}

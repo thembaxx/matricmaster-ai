@@ -352,12 +352,16 @@ export const flashcards = pgTable(
 		repetitions: integer('repetitions').notNull().default(0),
 		nextReview: timestamp('next_review'),
 		lastReview: timestamp('last_review'),
+		sourceType: varchar('source_type', { length: 20 }).notNull().default('manual'),
+		sourceQuestionId: varchar('source_question_id', { length: 100 }),
 		createdAt: timestamp('created_at').defaultNow(),
 		updatedAt: timestamp('updated_at').defaultNow(),
 	},
 	(table) => ({
 		deckIdIdx: index('flashcards_deck_id_idx').on(table.deckId),
 		nextReviewIdx: index('flashcards_next_review_idx').on(table.nextReview),
+		sourceTypeIdx: index('flashcards_source_type_idx').on(table.sourceType),
+		sourceQuestionIdIdx: index('flashcards_source_question_id_idx').on(table.sourceQuestionId),
 	})
 );
 
@@ -1047,6 +1051,38 @@ export const userSettings = pgTable(
 );
 
 // ============================================================================
+// ACCESSIBILITY PREFERENCES TABLE
+// ============================================================================
+
+export const accessibilityPreferences = pgTable(
+	'accessibility_preferences',
+	{
+		userId: text('user_id')
+			.primaryKey()
+			.references(() => users.id, { onDelete: 'cascade' }),
+		highContrast: boolean('high_contrast').notNull().default(false),
+		textSize: numeric('text_size', { precision: 3, scale: 2 }).notNull().default('1'),
+		reducedMotion: boolean('reduced_motion').notNull().default(false),
+		colorBlindMode: varchar('color_blind_mode', { length: 20 }).notNull().default('none'),
+		simplifiedLanguage: boolean('simplified_language').notNull().default(false),
+		ttsEnabled: boolean('tts_enabled').notNull().default(false),
+		largerTargets: boolean('larger_targets').notNull().default(false),
+		keyboardNavigation: boolean('keyboard_navigation').notNull().default(false),
+		chunkedContent: boolean('chunked_content').notNull().default(false),
+		progressBreadcrumbs: boolean('progress_breadcrumbs').notNull().default(true),
+		oneThingAtATime: boolean('one_thing_at_a_time').notNull().default(false),
+		skipLinks: boolean('skip_links').notNull().default(true),
+		holdToClick: boolean('hold_to_click').notNull().default(false),
+		focusIndicators: boolean('focus_indicators').notNull().default(true),
+		visualSoundIndicators: boolean('visual_sound_indicators').notNull().default(true),
+		updatedAt: timestamp('updated_at').defaultNow(),
+	},
+	(table) => ({
+		userIdIdx: index('accessibility_preferences_user_id_idx').on(table.userId),
+	})
+);
+
+// ============================================================================
 // RELATIONS
 // ============================================================================
 
@@ -1285,6 +1321,52 @@ export const userSettingsRelations = relations(userSettings, ({ one }) => ({
 	}),
 }));
 
+export const accessibilityPreferencesRelations = relations(accessibilityPreferences, ({ one }) => ({
+	user: one(users, {
+		fields: [accessibilityPreferences.userId],
+		references: [users.id],
+	}),
+}));
+
+// ============================================================================
+// WHATSAPP PREFERENCES TABLE
+// ============================================================================
+
+export const whatsappPreferences = pgTable(
+	'whatsapp_preferences',
+	{
+		userId: text('user_id')
+			.primaryKey()
+			.references(() => users.id, { onDelete: 'cascade' }),
+		phoneNumber: varchar('phone_number', { length: 20 }).notNull(),
+		isVerified: boolean('is_verified').notNull().default(false),
+		isOptedIn: boolean('is_opted_in').notNull().default(true),
+		verificationCode: varchar('verification_code', { length: 10 }),
+		verificationExpires: timestamp('verification_expires'),
+		notificationTypes: text('notification_types').array().notNull().default([]),
+		quietHoursStart: varchar('quiet_hours_start', { length: 5 }),
+		quietHoursEnd: varchar('quiet_hours_end', { length: 5 }),
+		reminderFrequency: varchar('reminder_frequency', { length: 20 }).notNull().default('daily'),
+		reminderTime: varchar('reminder_time', { length: 5 }).notNull().default('09:00'),
+		reminderDays: varchar('reminder_days', { length: 20 }),
+		lastMessageAt: timestamp('last_message_at'),
+		lastError: text('last_error'),
+		createdAt: timestamp('created_at').defaultNow(),
+		updatedAt: timestamp('updated_at').defaultNow(),
+	},
+	(table) => ({
+		phoneIdx: index('whatsapp_prefs_phone_idx').on(table.phoneNumber),
+		verifiedIdx: index('whatsapp_prefs_verified_idx').on(table.isVerified),
+	})
+);
+
+export const whatsappPreferencesRelations = relations(whatsappPreferences, ({ one }) => ({
+	user: one(users, {
+		fields: [whatsappPreferences.userId],
+		references: [users.id],
+	}),
+}));
+
 // ============================================================================
 // TYPE EXPORTS
 // ============================================================================
@@ -1359,6 +1441,90 @@ export type NewContentFlag = typeof contentFlags.$inferInsert;
 
 export type UserSettings = typeof userSettings.$inferSelect;
 export type NewUserSettings = typeof userSettings.$inferInsert;
+
+export type AccessibilityPreferences = typeof accessibilityPreferences.$inferSelect;
+export type NewAccessibilityPreferences = typeof accessibilityPreferences.$inferInsert;
+
+// ============================================================================
+// OFFLINE BUNDLES TABLE
+// ============================================================================
+
+export const downloadedBundles = pgTable(
+	'downloaded_bundles',
+	{
+		id: uuid('id').defaultRandom().primaryKey(),
+		userId: text('user_id')
+			.notNull()
+			.references(() => users.id, { onDelete: 'cascade' }),
+		bundleId: varchar('bundle_id', { length: 100 }).notNull(),
+		subject: varchar('subject', { length: 50 }).notNull(),
+		version: varchar('version', { length: 20 }).notNull(),
+		bundleType: varchar('bundle_type', { length: 30 }).notNull().default('questions_only'),
+		questionCount: integer('question_count').notNull().default(0),
+		sizeBytes: bigint('size_bytes', { mode: 'number' }).notNull().default(0),
+		topics: text('topics').array(),
+		downloadedAt: timestamp('downloaded_at').defaultNow().notNull(),
+	},
+	(table) => ({
+		userIdIdx: index('downloaded_bundles_user_id_idx').on(table.userId),
+		bundleIdIdx: index('downloaded_bundles_bundle_id_idx').on(table.bundleId),
+		uniqueBundle: uniqueIndex('downloaded_bundles_unique').on(table.userId, table.bundleId),
+	})
+);
+
+export type DownloadedBundle = typeof downloadedBundles.$inferSelect;
+export type NewDownloadedBundle = typeof downloadedBundles.$inferInsert;
+
+export type EnergySession = typeof energySessions.$inferSelect;
+export type NewEnergySession = typeof energySessions.$inferInsert;
+
+export type EnergyPattern = typeof energyPatterns.$inferSelect;
+export type NewEnergyPattern = typeof energyPatterns.$inferInsert;
+
+// ============================================================================
+// ENERGY TRACKING TABLES
+// ============================================================================
+
+export const energySessions = pgTable(
+	'energy_sessions',
+	{
+		id: uuid('id').defaultRandom().primaryKey(),
+		userId: text('user_id')
+			.notNull()
+			.references(() => users.id, { onDelete: 'cascade' }),
+		date: timestamp('date').notNull(),
+		startTime: varchar('start_time', { length: 5 }).notNull(),
+		endTime: varchar('end_time', { length: 5 }).notNull(),
+		energyLevel: integer('energy_level').notNull(),
+		correctAnswers: integer('correct_answers').notNull().default(0),
+		totalQuestions: integer('total_questions').notNull().default(0),
+		durationMinutes: integer('duration_minutes').notNull().default(0),
+		createdAt: timestamp('created_at').defaultNow(),
+	},
+	(table) => ({
+		userIdIdx: index('energy_sessions_user_id_idx').on(table.userId),
+		dateIdx: index('energy_sessions_date_idx').on(table.date),
+	})
+);
+
+export const energyPatterns = pgTable(
+	'energy_patterns',
+	{
+		id: uuid('id').defaultRandom().primaryKey(),
+		userId: text('user_id')
+			.notNull()
+			.references(() => users.id, { onDelete: 'cascade' }),
+		hour: integer('hour').notNull(),
+		averageEnergy: numeric('average_energy', { precision: 5, scale: 2 }).notNull(),
+		sampleSize: integer('sample_size').notNull().default(0),
+		createdAt: timestamp('created_at').defaultNow(),
+		updatedAt: timestamp('updated_at').defaultNow(),
+	},
+	(table) => ({
+		userIdHourIdx: index('energy_patterns_user_hour_idx').on(table.userId, table.hour),
+		uniqueUserHour: uniqueIndex('energy_patterns_unique').on(table.userId, table.hour),
+	})
+);
 
 // ============================================================================
 // SUBSCRIPTION TABLES
@@ -1898,3 +2064,396 @@ export type TeamGoal = typeof teamGoals.$inferSelect;
 export type NewTeamGoal = typeof teamGoals.$inferInsert;
 export type TeamGoalMember = typeof teamGoalMembers.$inferSelect;
 export type NewTeamGoalMember = typeof teamGoalMembers.$inferInsert;
+
+// ============================================================================
+// WELLNESS CHECK-INS TABLE
+// ============================================================================
+
+export const wellnessCheckIns = pgTable(
+	'wellness_check_ins',
+	{
+		id: uuid('id').defaultRandom().primaryKey(),
+		userId: text('user_id')
+			.notNull()
+			.references(() => users.id, { onDelete: 'cascade' }),
+		moodBefore: integer('mood_before').notNull(),
+		moodAfter: integer('mood_after'),
+		sessionDuration: integer('session_duration').notNull(),
+		suggestions: text('suggestions'),
+		createdAt: timestamp('created_at').defaultNow(),
+	},
+	(table) => ({
+		userIdIdx: index('wellness_check_ins_user_id_idx').on(table.userId),
+		createdAtIdx: index('wellness_check_ins_created_at_idx').on(table.createdAt),
+	})
+);
+
+export const wellnessCheckInsRelations = relations(wellnessCheckIns, ({ one }) => ({
+	user: one(users, {
+		fields: [wellnessCheckIns.userId],
+		references: [users.id],
+	}),
+}));
+
+export type WellnessCheckIn = typeof wellnessCheckIns.$inferSelect;
+export type NewWellnessCheckIn = typeof wellnessCheckIns.$inferInsert;
+
+// ============================================================================
+// TUTORING MARKETPLACE TABLES
+// ============================================================================
+
+export const tutorProfiles = pgTable(
+	'tutor_profiles',
+	{
+		id: uuid('id').defaultRandom().primaryKey(),
+		userId: text('user_id')
+			.notNull()
+			.references(() => users.id, { onDelete: 'cascade' })
+			.unique(),
+		bio: text('bio'),
+		teachingStyle: text('teaching_style'),
+		subjects: text('subjects').array().notNull().default([]),
+		hourlyRateXP: integer('hourly_rate_xp').notNull().default(100),
+		isAvailable: boolean('is_available').notNull().default(true),
+		totalSessions: integer('total_sessions').notNull().default(0),
+		rating: numeric('rating', { precision: 3, scale: 2 }).notNull().default('0.00'),
+		totalRatings: integer('total_ratings').notNull().default(0),
+		availabilitySchedule: text('availability_schedule'),
+		createdAt: timestamp('created_at').defaultNow(),
+		updatedAt: timestamp('updated_at').defaultNow(),
+	},
+	(table) => ({
+		userIdIdx: index('tutor_profiles_user_id_idx').on(table.userId),
+		isAvailableIdx: index('tutor_profiles_available_idx').on(table.isAvailable),
+		ratingIdx: index('tutor_profiles_rating_idx').on(table.rating),
+	})
+);
+
+export const tutoringSessions = pgTable(
+	'tutoring_sessions',
+	{
+		id: uuid('id').defaultRandom().primaryKey(),
+		tutorId: text('tutor_id')
+			.notNull()
+			.references(() => users.id, { onDelete: 'cascade' }),
+		studentId: text('student_id')
+			.notNull()
+			.references(() => users.id, { onDelete: 'cascade' }),
+		subject: varchar('subject', { length: 100 }).notNull(),
+		scheduledAt: timestamp('scheduled_at').notNull(),
+		durationMinutes: integer('duration_minutes').notNull().default(60),
+		status: varchar('status', { length: 20 }).notNull().default('pending'),
+		xpPaid: integer('xp_paid').notNull().default(0),
+		xpEarned: integer('xp_earned').notNull().default(0),
+		roomUrl: text('room_url'),
+		studentConfirmed: boolean('student_confirmed').notNull().default(false),
+		tutorConfirmed: boolean('tutor_confirmed').notNull().default(false),
+		completedAt: timestamp('completed_at'),
+		cancelledAt: timestamp('cancelled_at'),
+		cancellationReason: text('cancellation_reason'),
+		notes: text('notes'),
+		createdAt: timestamp('created_at').defaultNow(),
+		updatedAt: timestamp('updated_at').defaultNow(),
+	},
+	(table) => ({
+		tutorIdIdx: index('tutoring_sessions_tutor_idx').on(table.tutorId),
+		studentIdIdx: index('tutoring_sessions_student_idx').on(table.studentId),
+		scheduledAtIdx: index('tutoring_sessions_scheduled_idx').on(table.scheduledAt),
+		statusIdx: index('tutoring_sessions_status_idx').on(table.status),
+	})
+);
+
+export const tutorReviews = pgTable(
+	'tutor_reviews',
+	{
+		id: uuid('id').defaultRandom().primaryKey(),
+		sessionId: uuid('session_id')
+			.notNull()
+			.references(() => tutoringSessions.id, { onDelete: 'cascade' }),
+		tutorId: text('tutor_id')
+			.notNull()
+			.references(() => users.id, { onDelete: 'cascade' }),
+		studentId: text('student_id')
+			.notNull()
+			.references(() => users.id, { onDelete: 'cascade' }),
+		rating: integer('rating').notNull(),
+		comment: text('comment'),
+		createdAt: timestamp('created_at').defaultNow(),
+	},
+	(table) => ({
+		sessionIdIdx: index('tutor_reviews_session_idx').on(table.sessionId),
+		tutorIdIdx: index('tutor_reviews_tutor_idx').on(table.tutorId),
+		studentIdIdx: index('tutor_reviews_student_idx').on(table.studentId),
+	})
+);
+
+export const sessionReports = pgTable(
+	'session_reports',
+	{
+		id: uuid('id').defaultRandom().primaryKey(),
+		sessionId: uuid('session_id')
+			.notNull()
+			.references(() => tutoringSessions.id, { onDelete: 'cascade' }),
+		reporterId: text('reporter_id')
+			.notNull()
+			.references(() => users.id, { onDelete: 'cascade' }),
+		reason: varchar('reason', { length: 50 }).notNull(),
+		details: text('details'),
+		status: varchar('status', { length: 20 }).notNull().default('pending'),
+		resolvedAt: timestamp('resolved_at'),
+		resolvedBy: text('resolved_by').references(() => users.id, { onDelete: 'set null' }),
+		createdAt: timestamp('created_at').defaultNow(),
+	},
+	(table) => ({
+		sessionIdIdx: index('session_reports_session_idx').on(table.sessionId),
+		reporterIdIdx: index('session_reports_reporter_idx').on(table.reporterId),
+		statusIdx: index('session_reports_status_idx').on(table.status),
+	})
+);
+
+// ============================================================================
+// RELATIONS FOR TUTORING MARKETPLACE
+// ============================================================================
+
+export const tutorProfilesRelations = relations(tutorProfiles, ({ one }) => ({
+	user: one(users, {
+		fields: [tutorProfiles.userId],
+		references: [users.id],
+	}),
+}));
+
+export const tutoringSessionsRelations = relations(tutoringSessions, ({ one }) => ({
+	tutor: one(users, {
+		fields: [tutoringSessions.tutorId],
+		references: [users.id],
+		relationName: 'tutor',
+	}),
+	student: one(users, {
+		fields: [tutoringSessions.studentId],
+		references: [users.id],
+		relationName: 'student',
+	}),
+}));
+
+export const tutorReviewsRelations = relations(tutorReviews, ({ one }) => ({
+	session: one(tutoringSessions, {
+		fields: [tutorReviews.sessionId],
+		references: [tutoringSessions.id],
+	}),
+	tutor: one(users, {
+		fields: [tutorReviews.tutorId],
+		references: [users.id],
+		relationName: 'tutor',
+	}),
+	student: one(users, {
+		fields: [tutorReviews.studentId],
+		references: [users.id],
+		relationName: 'student',
+	}),
+}));
+
+export const sessionReportsRelations = relations(sessionReports, ({ one }) => ({
+	session: one(tutoringSessions, {
+		fields: [sessionReports.sessionId],
+		references: [tutoringSessions.id],
+	}),
+	reporter: one(users, {
+		fields: [sessionReports.reporterId],
+		references: [users.id],
+		relationName: 'reporter',
+	}),
+	resolver: one(users, {
+		fields: [sessionReports.resolvedBy],
+		references: [users.id],
+		relationName: 'resolver',
+	}),
+}));
+
+// Type exports for tutoring marketplace
+export type TutorProfile = typeof tutorProfiles.$inferSelect;
+export type NewTutorProfile = typeof tutorProfiles.$inferInsert;
+export type TutoringSession = typeof tutoringSessions.$inferSelect;
+export type NewTutoringSession = typeof tutoringSessions.$inferInsert;
+export type TutorReview = typeof tutorReviews.$inferSelect;
+export type NewTutorReview = typeof tutorReviews.$inferInsert;
+export type SessionReport = typeof sessionReports.$inferSelect;
+export type NewSessionReport = typeof sessionReports.$inferInsert;
+
+// WhatsApp type exports
+export type WhatsAppPreference = typeof whatsappPreferences.$inferSelect;
+export type NewWhatsAppPreference = typeof whatsappPreferences.$inferInsert;
+
+// ============================================================================
+// EDGE CASE EVENTS TABLE (Analytics & Support)
+// ============================================================================
+
+export const edgeCaseEvents = pgTable(
+	'edge_case_events',
+	{
+		id: uuid('id').defaultRandom().primaryKey(),
+		userId: text('user_id')
+			.notNull()
+			.references(() => users.id, { onDelete: 'cascade' }),
+		edgeCaseType: varchar('edge_case_type', { length: 50 }).notNull(),
+		severity: varchar('severity', { length: 20 }).notNull(),
+		metadata: text('metadata'),
+		context: text('context'),
+		triggeredAt: timestamp('triggered_at').defaultNow().notNull(),
+		resolvedAt: timestamp('resolved_at'),
+		resolution: text('resolution'),
+		resolvedBy: text('resolved_by').references(() => users.id, { onDelete: 'set null' }),
+		actionTaken: varchar('action_taken', { length: 100 }),
+	},
+	(table) => ({
+		userIdIdx: index('edge_case_events_user_id_idx').on(table.userId),
+		edgeCaseTypeIdx: index('edge_case_events_type_idx').on(table.edgeCaseType),
+		severityIdx: index('edge_case_events_severity_idx').on(table.severity),
+		triggeredAtIdx: index('edge_case_events_triggered_at_idx').on(table.triggeredAt),
+		userTypeIdx: index('edge_case_events_user_type_idx').on(table.userId, table.edgeCaseType),
+	})
+);
+
+export const edgeCaseEventsRelations = relations(edgeCaseEvents, ({ one }) => ({
+	user: one(users, {
+		fields: [edgeCaseEvents.userId],
+		references: [users.id],
+	}),
+	resolvedByUser: one(users, {
+		fields: [edgeCaseEvents.resolvedBy],
+		references: [users.id],
+	}),
+}));
+
+export type EdgeCaseEvent = typeof edgeCaseEvents.$inferSelect;
+export type NewEdgeCaseEvent = typeof edgeCaseEvents.$inferInsert;
+
+// ============================================================================
+// EXAM PREDICTION TABLES
+// ============================================================================
+
+export const examPredictions = pgTable(
+	'exam_predictions',
+	{
+		id: uuid('id').defaultRandom().primaryKey(),
+		subject: varchar('subject', { length: 100 }).notNull(),
+		topic: varchar('topic', { length: 200 }).notNull(),
+		subtopic: varchar('subtopic', { length: 200 }),
+		probability: numeric('probability', { precision: 5, scale: 2 }).notNull(),
+		academicYear: integer('academic_year').notNull(),
+		frequency: numeric('frequency', { precision: 5, scale: 2 }).notNull().default('0'),
+		recency: numeric('recency', { precision: 5, scale: 2 }).notNull().default('0'),
+		difficultyAlignment: numeric('difficulty_alignment', { precision: 5, scale: 2 })
+			.notNull()
+			.default('0'),
+		markerBias: numeric('marker_bias', { precision: 5, scale: 2 }).notNull().default('0'),
+		confidence: varchar('confidence', { length: 20 }).notNull().default('medium'),
+		predictedQuestions: text('predicted_questions'),
+		historicalAppearances: integer('historical_appearances').notNull().default(0),
+		marksWeight: integer('marks_weight').notNull().default(0),
+		isHotTopic: boolean('is_hot_topic').notNull().default(false),
+		curriculumChangeWarning: boolean('curriculum_change_warning').notNull().default(false),
+		lastUpdated: timestamp('last_updated').defaultNow(),
+		createdAt: timestamp('created_at').defaultNow(),
+	},
+	(table) => ({
+		subjectAcademicIdx: index('exam_predictions_subject_year_idx').on(
+			table.subject,
+			table.academicYear
+		),
+		probabilityIdx: index('exam_predictions_probability_idx').on(table.probability),
+		hotTopicIdx: index('exam_predictions_hot_topic_idx').on(table.isHotTopic),
+	})
+);
+
+export const predictionAccuracy = pgTable(
+	'prediction_accuracy',
+	{
+		id: uuid('id').defaultRandom().primaryKey(),
+		userId: text('user_id').references(() => users.id, { onDelete: 'cascade' }),
+		subject: varchar('subject', { length: 100 }).notNull(),
+		academicYear: integer('academic_year').notNull(),
+		predictedTopics: text('predicted_topics').notNull(),
+		actualTopics: text('actual_topics').notNull(),
+		correctPredictions: integer('correct_predictions').notNull().default(0),
+		totalPredictions: integer('total_predictions').notNull().default(0),
+		accuracy: numeric('accuracy', { precision: 5, scale: 2 }).notNull().default('0'),
+		predictedQuestionsCount: integer('predicted_questions_count').notNull().default(0),
+		actualQuestionsCount: integer('actual_questions_count').notNull().default(0),
+		feedback: text('feedback'),
+		isVerified: boolean('is_verified').notNull().default(false),
+		verifiedAt: timestamp('verified_at'),
+		createdAt: timestamp('created_at').defaultNow(),
+	},
+	(table) => ({
+		userIdIdx: index('prediction_accuracy_user_id_idx').on(table.userId),
+		subjectYearIdx: index('prediction_accuracy_subject_year_idx').on(
+			table.subject,
+			table.academicYear
+		),
+	})
+);
+
+export const topicFrequency = pgTable(
+	'topic_frequency',
+	{
+		id: uuid('id').defaultRandom().primaryKey(),
+		subject: varchar('subject', { length: 100 }).notNull(),
+		topic: varchar('topic', { length: 200 }).notNull(),
+		year: integer('year').notNull(),
+		appearanceCount: integer('appearance_count').notNull().default(1),
+		totalMarks: integer('total_marks').notNull().default(0),
+		difficultyDistribution: text('difficulty_distribution'),
+		questionTypes: text('question_types'),
+		questionPatterns: text('question_patterns'),
+		lastUpdated: timestamp('last_updated').defaultNow(),
+	},
+	(table) => ({
+		subjectTopicYearIdx: index('topic_frequency_subject_topic_year_idx').on(
+			table.subject,
+			table.topic,
+			table.year
+		),
+		subjectYearIdx: index('topic_frequency_subject_year_idx').on(table.subject, table.year),
+	})
+);
+
+export const classicQuestions = pgTable(
+	'classic_questions',
+	{
+		id: uuid('id').defaultRandom().primaryKey(),
+		subject: varchar('subject', { length: 100 }).notNull(),
+		topic: varchar('topic', { length: 200 }).notNull(),
+		questionPattern: text('question_pattern').notNull(),
+		similarityScore: numeric('similarity_score', { precision: 5, scale: 2 }).notNull(),
+		appearanceYears: text('appearance_years').notNull(),
+		averageMarks: integer('average_marks').notNull().default(0),
+		typicalDifficulty: varchar('typical_difficulty', { length: 20 }).notNull().default('medium'),
+		variations: text('variations'),
+		isCAPSValid: boolean('is_caps_valid').notNull().default(true),
+		lastUpdated: timestamp('last_updated').defaultNow(),
+		createdAt: timestamp('created_at').defaultNow(),
+	},
+	(table) => ({
+		subjectTopicIdx: index('classic_questions_subject_topic_idx').on(table.subject, table.topic),
+		similarityIdx: index('classic_questions_similarity_idx').on(table.similarityScore),
+	})
+);
+
+export type ExamPrediction = typeof examPredictions.$inferSelect;
+export type NewExamPrediction = typeof examPredictions.$inferInsert;
+export type PredictionAccuracyRecord = typeof predictionAccuracy.$inferSelect;
+export type NewPredictionAccuracy = typeof predictionAccuracy.$inferInsert;
+export type TopicFrequencyRecord = typeof topicFrequency.$inferSelect;
+export type NewTopicFrequency = typeof topicFrequency.$inferInsert;
+export type ClassicQuestion = typeof classicQuestions.$inferSelect;
+export type NewClassicQuestion = typeof classicQuestions.$inferInsert;
+
+export const examPredictionsRelations = relations(examPredictions, () => ({}));
+export const predictionAccuracyRelations = relations(predictionAccuracy, ({ one }) => ({
+	user: one(users, {
+		fields: [predictionAccuracy.userId],
+		references: [users.id],
+	}),
+}));
+export const topicFrequencyRelations = relations(topicFrequency, () => ({}));
+export const classicQuestionsRelations = relations(classicQuestions, () => ({}));
