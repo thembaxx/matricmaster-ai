@@ -215,7 +215,7 @@ export default function Dashboard({
 							<ProgressTab
 								weaknessData={weaknessData}
 								growthInsights={growthInsights}
-								progress={progress ?? null}
+								progress={progress ?? undefined}
 								weakTopicNames={weakTopicNames}
 							/>
 						</TabsContent>

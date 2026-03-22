@@ -14,7 +14,7 @@ interface TodayTabProps {
 	streak: DashboardInitialStreak;
 }
 
-export function TodayTab() {
+export function TodayTab(_props: TodayTabProps) {
 	return (
 		<div className="grid grid-cols-1 md:grid-cols-3 gap-6">
 			<DailyMission />

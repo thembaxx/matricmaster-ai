@@ -14,6 +14,15 @@ import { Progress } from '@/components/ui/progress';
 import { cn } from '@/lib/utils';
 import { claimTeamGoalReward, getTeamGoals, joinTeamGoal } from '@/services/teamGoals';
 
+function getTimeRemaining(endDate: Date): string {
+	const diff = endDate.getTime() - Date.now();
+	if (diff <= 0) return 'Ended';
+	const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+	const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+	if (days > 0) return `${days}d ${hours}h`;
+	return `${hours}h`;
+}
+
 export default function TeamGoalsScreen() {
 	const queryClient = useQueryClient();
 

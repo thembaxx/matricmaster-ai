@@ -4,6 +4,7 @@ import { m } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { useMemo } from 'react';
 import { NotificationBell } from '@/components/Notifications/NotificationBell';
+import type { TimelineTask } from '@/types/timeline';
 import { GoalsCard, NextActionCard, StreakCard } from './BriefingGreeting/index';
 
 interface BriefingGreetingProps {
@@ -12,6 +13,10 @@ interface BriefingGreetingProps {
 	totalCount: number;
 	streakDays: number;
 	suggestedSubject?: string | null;
+	timelineTasks?: TimelineTask[];
+	flashcardsDue?: number;
+	weakTopicsCount?: number;
+	recentAccuracy?: number;
 	isNewUser?: boolean;
 	briefingData?: {
 		greeting: string;
@@ -35,9 +40,17 @@ export function BriefingGreeting({
 	totalCount,
 	streakDays,
 	suggestedSubject,
+	timelineTasks: _timelineTasks,
+	flashcardsDue = 0,
+	weakTopicsCount = 0,
+	recentAccuracy = 0,
 	isNewUser = false,
 	briefingData,
 }: BriefingGreetingProps) {
+	void _timelineTasks;
+	void flashcardsDue;
+	void weakTopicsCount;
+	void recentAccuracy;
 	const router = useRouter();
 	const firstName = userName?.split(' ')[0] || 'Scholar';
 
