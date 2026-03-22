@@ -1,129 +1,36 @@
 'use client';
 
-import { zodResolver } from '@hookform/resolvers/zod';
 import { Tick01Icon as Check, SparklesIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { AnimatePresence, m } from 'framer-motion';
 import Link from 'next/link';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { Suspense, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import * as z from 'zod';
+import { Suspense } from 'react';
 import { appConfig } from '@/app.config';
 import { SocialAuthButton } from '@/components/auth/SocialAuthButton';
 import { SmoothWords } from '@/components/Transition/SmoothText';
 import { BackgroundMesh } from '@/components/ui/background-mesh';
 import { Separator } from '@/components/ui/separator';
+import { useSignIn } from '@/hooks/useSignIn';
 import { STAGGER_CONTAINER, STAGGER_ITEM } from '@/lib/animation-presets';
-import { authClient } from '@/lib/auth-client';
 import { FormFields } from './FormFields';
 
-const signInSchema = z.object({
-	email: z.string().email('Invalid email address'),
-	password: z.string().min(8, 'Password must be at least 8 characters'),
-});
-
-type SignInValues = z.infer<typeof signInSchema>;
-
 function SignInFormContent() {
-	const router = useRouter();
-	const searchParams = useSearchParams();
-	const rawCallbackUrl = searchParams.get('callbackUrl') || '/dashboard';
-
-	let safeCallbackUrl = '/dashboard';
-	if (rawCallbackUrl.startsWith('/') && !rawCallbackUrl.startsWith('//')) {
-		safeCallbackUrl = rawCallbackUrl;
-	} else {
-		try {
-			const url = new URL(rawCallbackUrl);
-			if (url.origin === (typeof window !== 'undefined' ? window.location.origin : '')) {
-				safeCallbackUrl = url.pathname + url.search;
-			}
-		} catch (error) {
-			console.warn('Invalid callback URL, using default:', error);
-			safeCallbackUrl = '/dashboard';
-		}
-	}
-
-	const [isLoading, setIsLoading] = useState(false);
-	const [error, setError] = useState<string | null>(null);
-	const [showPassword, setShowPassword] = useState(false);
-	const [successEmail, setSuccessEmail] = useState<string | null>(null);
+	const {
+		form,
+		isLoading,
+		error,
+		showPassword,
+		setShowPassword,
+		successEmail,
+		onSubmit,
+		handleSocialSignIn,
+	} = useSignIn();
 
 	const {
 		register,
 		handleSubmit,
 		formState: { errors },
-	} = useForm<SignInValues>({
-		resolver: zodResolver(signInSchema),
-	});
-
-	const initializeDatabase = async () => {
-		try {
-			const response = await fetch('/api/db/init', {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-			});
-
-			let result: { success?: boolean; message?: string };
-			const contentType = response.headers.get('content-type');
-			if (contentType?.includes('application/json')) {
-				try {
-					result = await response.json();
-				} catch (error) {
-					console.warn('Failed to parse JSON response:', error);
-					const text = await response.text();
-					result = { success: false, message: text };
-				}
-			} else {
-				const text = await response.text();
-				result = { success: false, message: text };
-			}
-
-			if (!response.ok || !result.success) {
-				console.warn(
-					`Database initialization failed: Status ${response.status}, Message: ${result.message ?? 'Unknown error'}`
-				);
-			}
-		} catch (err) {
-			console.debug('Error initializing database:', err);
-		}
-	};
-
-	const onSubmit = async (data: SignInValues) => {
-		setIsLoading(true);
-		setError(null);
-		try {
-			const { error: authError } = await authClient.signIn.email({
-				email: data.email,
-				password: data.password,
-			});
-
-			if (authError) {
-				setError(authError.message || 'Invalid email or password');
-				setIsLoading(false);
-			} else {
-				initializeDatabase().catch(console.error);
-
-				setSuccessEmail(data.email);
-				setTimeout(() => {
-					router.push(safeCallbackUrl);
-					router.refresh();
-				}, 2000);
-			}
-		} catch (err) {
-			setError(err instanceof Error ? err.message : 'An unexpected error occurred');
-			setIsLoading(false);
-		}
-	};
-
-	const handleSocialSignIn = async (provider: 'google' | 'twitter') => {
-		const callbackURL = new URL(safeCallbackUrl, window.location.origin).toString();
-		await authClient.signIn.social({
-			provider,
-			callbackURL,
-		});
-	};
+	} = form;
 
 	return (
 		<div className="min-h-screen flex items-center justify-center bg-background relative overflow-hidden">
@@ -142,7 +49,7 @@ function SignInFormContent() {
 							<div className="bg-white/20 p-1 rounded-full">
 								<HugeiconsIcon icon={Check} className="w-4 h-4 text-white" />
 							</div>
-							<span className="font-semibold text-sm">Welcome back, {successEmail}!</span>
+							<span className="font-semibold text-sm">welcome back, {successEmail}!</span>
 						</div>
 					</m.div>
 				)}
@@ -170,14 +77,14 @@ function SignInFormContent() {
 						</m.div>
 						<SmoothWords
 							as="h1"
-							text="Welcome Back"
+							text="welcome back"
 							className="text-4xl font-black tracking-tight text-foreground"
 						/>
 						<m.p
 							variants={STAGGER_ITEM}
 							className="text-muted-foreground text-balance font-medium text-base"
 						>
-							Sign in to continue your matric prep.
+							sign in to continue your matric prep.
 						</m.p>
 					</m.div>
 
@@ -220,7 +127,7 @@ function SignInFormContent() {
 						</div>
 						<div className="relative flex justify-center">
 							<span className="px-4 text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-black bg-card/80 backdrop-blur-xl rounded-full">
-								Or
+								or
 							</span>
 						</div>
 					</m.div>
@@ -245,12 +152,12 @@ function SignInFormContent() {
 						transition={{ delay: 1.2 }}
 						className="text-center text-muted-foreground mt-8 text-sm font-semibold"
 					>
-						Don't have an account?{' '}
+						don't have an account?{' '}
 						<Link
 							href="/sign-up"
 							className="font-black text-primary hover:text-primary/80 underline-offset-4 transition-colors"
 						>
-							Sign Up
+							sign up
 						</Link>
 					</m.p>
 				</m.div>

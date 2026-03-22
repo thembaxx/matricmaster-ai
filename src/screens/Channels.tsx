@@ -1,39 +1,30 @@
 'use client';
 
 import {
-	ArrowRight01Icon,
-	BookOpen01Icon,
-	ChartBar,
 	Chemistry01Icon,
 	ComputerTerminal01Icon,
 	Leaf01Icon,
 	PlayIcon,
 	Search01Icon,
-	TranslateIcon,
-	UserGroupIcon,
 	Wifi01Icon,
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
+import { ChannelCategoryButton } from '@/components/Channels/ChannelCategoryButton';
+import { CommerceSection } from '@/components/Channels/CommerceSection';
+import { ContinueLearningCard } from '@/components/Channels/ContinueLearningCard';
+import { LanguageArtsSection } from '@/components/Channels/LanguageArtsSection';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useAblyChannel } from '@/hooks/use-ably-channel';
 import { useSession } from '@/lib/auth-client';
+import type { Channel } from '@/screens/ChannelList';
+import { ChannelList } from '@/screens/ChannelList';
 
 const categories = ['All Paths', 'STEM Skills', 'Translate', 'Commerce', 'Humanities'];
-
-interface Channel {
-	id: string;
-	title: string;
-	info: string;
-	tag?: string;
-	icon: React.ReactNode;
-	bg: string;
-	onlineCount: number;
-}
 
 const stemChannels: Channel[] = [
 	{
@@ -105,7 +96,6 @@ export default function Channels() {
 
 	return (
 		<div className="flex flex-col h-full bg-background">
-			{/* Header */}
 			<header className="px-6 pt-12 pb-6 shrink-0 bg-background">
 				<div className="flex items-center justify-between">
 					<div>
@@ -130,7 +120,6 @@ export default function Channels() {
 					</Avatar>
 				</div>
 
-				{/* MagnifyingGlass Bar */}
 				<div className="mt-6 relative">
 					<HugeiconsIcon
 						icon={Search01Icon}
@@ -143,216 +132,44 @@ export default function Channels() {
 					/>
 				</div>
 
-				{/* Categories Scroller */}
 				<div className="mt-6 flex gap-3 overflow-x-auto no-scrollbar pb-2">
 					{categories.map((cat) => (
-						<Button
+						<ChannelCategoryButton
 							key={cat}
-							type="button"
+							category={cat}
+							isActive={activeCategory === cat}
 							onClick={() => setActiveCategory(cat)}
-							variant="ghost"
-							className={`px-6 py-2.5 rounded-full text-[11px] font-black uppercase tracking-widest whitespace-nowrap transition-all ios-active-scale ${
-								activeCategory === cat
-									? 'bg-foreground text-background shadow-md'
-									: 'bg-card text-label-secondary border border-border shadow-sm'
-							}`}
-						>
-							{cat}
-						</Button>
+						/>
 					))}
 				</div>
 			</header>
 
 			<ScrollArea className="flex-1">
 				<main className="px-6 pb-32 space-y-8">
-					{/* Continue Learning */}
 					<section className="space-y-4">
 						<h3 className="text-[10px] font-black text-label-tertiary uppercase tracking-[0.2em]">
 							Continue Learning
 						</h3>
-						<div className="bg-card p-5 rounded-3xl shadow-sm border border-border relative overflow-hidden group cursor-pointer hover:shadow-md transition-all ios-active-scale">
-							<div className="flex items-center gap-5">
-								<div className="w-16 h-16 rounded-2xl bg-warning flex items-center justify-center shadow-lg shadow-warning/20 transform group-hover:scale-105 transition-transform">
-									<div className="text-warning-foreground text-3xl font-black italic">Σ</div>
-								</div>
-								<div className="flex-1">
-									<h4 className="text-lg font-black text-foreground">Mathematics P1</h4>
-									<p className="text-xs text-label-secondary font-black uppercase tracking-wider leading-tight">
-										Functions & Graphs • 65% Complete
-									</p>
-								</div>
-								<div className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center">
-									<HugeiconsIcon
-										icon={PlayIcon}
-										className="w-4 h-4 text-label-tertiary fill-label-tertiary"
-									/>
-								</div>
-							</div>
-							{/* Progress Bar Line */}
-							<div className="absolute bottom-0 left-0 right-0 h-1 bg-muted">
-								<div className="h-full bg-primary w-[65%]" />
-							</div>
-						</div>
+						<ContinueLearningCard
+							title="Mathematics P1"
+							subject="Functions & Graphs"
+							progress={65}
+						/>
 					</section>
 
-					{/* STEM Skills */}
 					<section className="space-y-4">
 						<h3 className="text-xl font-black text-foreground uppercase tracking-tight">
 							STEM Skills
 						</h3>
-						<div className="space-y-3">
-							{channels.map((item) => (
-								<Button
-									key={item.id}
-									onClick={() => handleChannelClick(item.id)}
-									onKeyDown={(e) => {
-										if (e.key === 'Enter' || e.key === ' ') {
-											handleChannelClick(item.id);
-										}
-									}}
-									type="button"
-									variant="ghost"
-									tabIndex={0}
-									aria-label={`Open ${item.title} channel`}
-									className="bg-card p-4 rounded-3xl flex items-center justify-between shadow-sm border border-border hover:shadow-md transition-all cursor-pointer group ios-active-scale w-full"
-								>
-									<div className="flex items-center gap-4">
-										<div
-											className={`w-12 h-12 rounded-2xl flex items-center justify-center ${item.bg}`}
-										>
-											{item.icon}
-										</div>
-										<div className="text-left">
-											<h4 className="font-black text-foreground uppercase tracking-tight">
-												{item.title}
-											</h4>
-											<div className="flex items-center gap-2">
-												<div className="flex items-center gap-1 text-[10px] font-black text-label-tertiary uppercase tracking-widest">
-													<HugeiconsIcon icon={UserGroupIcon} className="w-3 h-3" />
-													{item.info}
-												</div>
-												{item.tag && (
-													<>
-														<span className="w-1 h-1 rounded-full bg-border-strong" />
-														<span className="text-[10px] font-black text-success uppercase tracking-widest">
-															{item.tag}
-														</span>
-													</>
-												)}
-											</div>
-										</div>
-									</div>
-									<div className="flex items-center gap-3">
-										{item.onlineCount > 0 && (
-											<span className="text-[10px] font-black text-success uppercase tracking-widest flex items-center gap-1">
-												<span className="w-1.5 h-1.5 rounded-full bg-success animate-pulse" />
-												{item.onlineCount} online
-											</span>
-										)}
-										<HugeiconsIcon
-											icon={ArrowRight01Icon}
-											className="w-5 h-5 text-label-tertiary group-hover:text-foreground transition-colors"
-										/>
-									</div>
-								</Button>
-							))}
-						</div>
+						<ChannelList channels={channels} onChannelClick={handleChannelClick} />
 					</section>
 
-					{/* Language Arts */}
-					<section className="space-y-4">
-						<div className="flex items-center justify-between px-1">
-							<h3 className="text-xl font-black text-foreground uppercase tracking-tight">
-								Language Arts
-							</h3>
-							<Button
-								type="button"
-								variant="ghost"
-								className="text-[11px] font-black text-primary uppercase tracking-[0.2em] hover:underline ios-active-scale"
-							>
-								View All
-							</Button>
-						</div>{' '}
-						<div className="grid grid-cols-2 gap-4">
-							{[
-								{
-									title: 'English House Language',
-									students: '18k Students',
-									icon: <HugeiconsIcon icon={BookOpen01Icon} className="w-6 h-6 text-english" />,
-									bg: 'bg-english/10',
-								},
-								{
-									title: 'Afrikaans FAL',
-									students: '10.5k Students',
-									icon: <HugeiconsIcon icon={TranslateIcon} className="w-6 h-6 text-warning" />,
-									bg: 'bg-warning/10',
-								},
-							].map((item) => (
-								<div
-									key={item.title}
-									className="bg-card p-5 rounded-3xl flex flex-col gap-4 shadow-sm border border-border hover:shadow-md transition-all cursor-pointer ios-active-scale"
-								>
-									<div
-										className={`w-12 h-12 rounded-2xl flex items-center justify-center ${item.bg}`}
-									>
-										{item.icon}
-									</div>
-									<div>
-										<h4 className="font-black text-foreground uppercase tracking-tight leading-tight">
-											{item.title}
-										</h4>
-										<div className="mt-3 inline-block px-3 py-1 bg-secondary rounded-lg">
-											<span className="text-[10px] font-black text-label-tertiary uppercase tracking-widest">
-												{item.students}
-											</span>
-										</div>
-									</div>
-								</div>
-							))}
-						</div>
-					</section>
+					<LanguageArtsSection />
 
-					{/* Commerce */}
-					<section className="space-y-4">
-						<h3 className="text-xl font-black text-foreground uppercase tracking-tight">
-							Commerce
-						</h3>
-						<div className="bg-card p-4 rounded-3xl flex items-center justify-between shadow-sm border border-border hover:shadow-md transition-all cursor-pointer group ios-active-scale">
-							<div className="flex items-center gap-4">
-								<div className="w-12 h-12 rounded-2xl flex items-center justify-center bg-accounting/10">
-									<HugeiconsIcon icon={ChartBar} className="w-6 h-6 text-accounting" />
-								</div>
-								<div className="text-left">
-									<h4 className="font-black text-foreground uppercase tracking-tight">
-										Accounting
-									</h4>
-									<div className="flex items-center gap-1 text-[10px] font-black text-label-tertiary uppercase tracking-widest">
-										<HugeiconsIcon icon={UserGroupIcon} className="w-3 h-3" />
-										8.2k
-									</div>
-								</div>
-							</div>
-							<div className="flex items-center -space-x-2">
-								{[1, 2, 3].map((item) => (
-									<div
-										key={`channels-avatar-${item}`}
-										className="w-7 h-7 rounded-full border-2 border-background bg-secondary overflow-hidden relative shadow-sm"
-									>
-										<Avatar className="w-full h-full">
-											<AvatarImage src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=faces" />
-										</Avatar>
-									</div>
-								))}
-								<div className="w-7 h-7 rounded-full border-2 border-background bg-muted flex items-center justify-center text-[8px] font-black text-label-tertiary">
-									+4
-								</div>
-							</div>
-						</div>
-					</section>
+					<CommerceSection />
 				</main>
 			</ScrollArea>
 
-			{/* Floating Play Button */}
 			<Button
 				aria-label="Play"
 				type="button"

@@ -55,6 +55,12 @@ const SOUTH_AFRICAN_UNIVERSITIES: Record<
 			recommended: ['Chemistry', 'Biology'],
 		},
 		Commerce: { minAps: 38, required: ['Mathematics'], recommended: ['Accounting', 'Economics'] },
+		Science: {
+			minAps: 40,
+			required: ['Mathematics', 'Physical Sciences'],
+			recommended: ['Chemistry'],
+		},
+		Law: { minAps: 38, required: ['English'], recommended: ['History'] },
 	},
 	'University of Pretoria': {
 		Engineering: {
@@ -67,6 +73,9 @@ const SOUTH_AFRICAN_UNIVERSITIES: Record<
 			required: ['Mathematics', 'Physical Sciences', 'Life Sciences'],
 			recommended: ['Biochemistry'],
 		},
+		Commerce: { minAps: 36, required: ['Mathematics'], recommended: ['Accounting', 'Economics'] },
+		Law: { minAps: 35, required: ['English'], recommended: ['History', 'Life Sciences'] },
+		Agriculture: { minAps: 30, required: ['Life Sciences'], recommended: ['Physical Sciences'] },
 	},
 	'University of the Witwatersrand': {
 		Engineering: {
@@ -79,6 +88,12 @@ const SOUTH_AFRICAN_UNIVERSITIES: Record<
 			required: ['Mathematics', 'Physical Sciences', 'Life Sciences'],
 			recommended: [],
 		},
+		Commerce: { minAps: 38, required: ['Mathematics'], recommended: ['Accounting'] },
+		Science: {
+			minAps: 39,
+			required: ['Mathematics', 'Physical Sciences'],
+			recommended: ['Life Sciences'],
+		},
 	},
 	'Stellenbosch University': {
 		Engineering: {
@@ -86,6 +101,104 @@ const SOUTH_AFRICAN_UNIVERSITIES: Record<
 			required: ['Mathematics', 'Physical Sciences'],
 			recommended: ['Math', 'Physics'],
 		},
+		Medicine: {
+			minAps: 42,
+			required: ['Mathematics', 'Physical Sciences', 'Life Sciences'],
+			recommended: [],
+		},
+		Commerce: { minAps: 35, required: ['Mathematics'], recommended: ['Accounting', 'Economics'] },
+		Science: { minAps: 36, required: ['Mathematics'], recommended: ['Physical Sciences'] },
+		Education: { minAps: 28, required: ['Mathematics'], recommended: ['Life Sciences'] },
+	},
+	'University of Johannesburg': {
+		Engineering: { minAps: 36, required: ['Mathematics', 'Physical Sciences'], recommended: [] },
+		Commerce: { minAps: 32, required: ['Mathematics'], recommended: ['Accounting'] },
+		'Health Sciences': {
+			minAps: 38,
+			required: ['Mathematics', 'Life Sciences'],
+			recommended: ['Physical Sciences'],
+		},
+		Humanities: { minAps: 28, required: ['English'], recommended: ['History'] },
+	},
+	'University of KwaZulu-Natal': {
+		Engineering: { minAps: 36, required: ['Mathematics', 'Physical Sciences'], recommended: [] },
+		Medicine: {
+			minAps: 40,
+			required: ['Mathematics', 'Physical Sciences', 'Life Sciences'],
+			recommended: [],
+		},
+		Commerce: { minAps: 30, required: ['Mathematics'], recommended: ['Accounting'] },
+		Agriculture: { minAps: 28, required: ['Life Sciences'], recommended: ['Physical Sciences'] },
+	},
+	'University of the Free State': {
+		Engineering: { minAps: 34, required: ['Mathematics', 'Physical Sciences'], recommended: [] },
+		Medicine: {
+			minAps: 38,
+			required: ['Mathematics', 'Physical Sciences', 'Life Sciences'],
+			recommended: [],
+		},
+		Commerce: { minAps: 28, required: ['Mathematics'], recommended: ['Accounting'] },
+		Education: { minAps: 24, required: ['Mathematics'], recommended: ['Life Sciences'] },
+	},
+	'University of the Western Cape': {
+		Science: {
+			minAps: 34,
+			required: ['Mathematics', 'Physical Sciences'],
+			recommended: ['Life Sciences'],
+		},
+		Commerce: { minAps: 30, required: ['Mathematics'], recommended: ['Accounting'] },
+		Education: { minAps: 24, required: ['Mathematics'], recommended: [] },
+		'Health Sciences': {
+			minAps: 38,
+			required: ['Mathematics', 'Life Sciences', 'Physical Sciences'],
+			recommended: [],
+		},
+	},
+	'Nelson Mandela University': {
+		Engineering: { minAps: 32, required: ['Mathematics', 'Physical Sciences'], recommended: [] },
+		Commerce: { minAps: 26, required: ['Mathematics'], recommended: ['Accounting'] },
+		'Marine Sciences': {
+			minAps: 30,
+			required: ['Life Sciences', 'Physical Sciences'],
+			recommended: [],
+		},
+	},
+	'University of Limpopo': {
+		Medicine: {
+			minAps: 36,
+			required: ['Mathematics', 'Physical Sciences', 'Life Sciences'],
+			recommended: [],
+		},
+		Commerce: { minAps: 26, required: ['Mathematics'], recommended: ['Accounting'] },
+		Agriculture: { minAps: 24, required: ['Life Sciences'], recommended: [] },
+	},
+	'Durban University of Technology': {
+		Engineering: { minAps: 28, required: ['Mathematics', 'Physical Sciences'], recommended: [] },
+		Commerce: { minAps: 22, required: ['Mathematics'], recommended: ['Accounting'] },
+		'Health Sciences': {
+			minAps: 30,
+			required: ['Life Sciences'],
+			recommended: ['Physical Sciences'],
+		},
+	},
+	'University of South Africa (UNISA)': {
+		Commerce: { minAps: 20, required: ['Mathematics'], recommended: ['Accounting'] },
+		Science: { minAps: 24, required: ['Mathematics'], recommended: ['Physical Sciences'] },
+		Education: { minAps: 18, required: ['Mathematics'], recommended: [] },
+	},
+	'University of Fort Hare': {
+		Commerce: { minAps: 24, required: ['Mathematics'], recommended: ['Accounting'] },
+		Science: { minAps: 26, required: ['Mathematics', 'Physical Sciences'], recommended: [] },
+		Agriculture: { minAps: 22, required: ['Life Sciences'], recommended: [] },
+	},
+	'Rhodes University': {
+		Science: {
+			minAps: 38,
+			required: ['Mathematics', 'Physical Sciences'],
+			recommended: ['Chemistry'],
+		},
+		Humanities: { minAps: 32, required: ['English'], recommended: ['History'] },
+		Commerce: { minAps: 34, required: ['Mathematics'], recommended: ['Accounting'] },
 	},
 };
 

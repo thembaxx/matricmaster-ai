@@ -5,67 +5,7 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
-
-export interface MindMapNode {
-	id: string;
-	label: string;
-	children?: MindMapNode[];
-}
-
-const mathMindMap: MindMapNode = {
-	id: 'math',
-	label: 'Mathematics',
-	children: [
-		{
-			id: 'algebra',
-			label: 'Algebra',
-			children: [
-				{ id: 'eq', label: 'Equations' },
-				{ id: 'ineq', label: 'Inequalities' },
-				{ id: 'expo', label: 'Exponents' },
-				{ id: 'logs', label: 'Logarithms' },
-			],
-		},
-		{
-			id: 'geometry',
-			label: 'Geometry',
-			children: [
-				{ id: 'triangles', label: 'Triangles' },
-				{ id: 'circles', label: 'Circles' },
-				{ id: 'quads', label: 'Quadrilaterals' },
-				{ id: '3d', label: '3D Shapes' },
-			],
-		},
-		{
-			id: 'trig',
-			label: 'Trigonometry',
-			children: [
-				{ id: 'ratios', label: 'Ratios' },
-				{ id: 'identities', label: 'Identities' },
-				{ id: 'laws', label: 'Laws' },
-				{ id: 'graphs', label: 'Graphs' },
-			],
-		},
-		{
-			id: 'calculus',
-			label: 'Calculus',
-			children: [
-				{ id: 'limits', label: 'Limits' },
-				{ id: 'diff', label: 'Differentiation' },
-				{ id: 'int', label: 'Integration' },
-			],
-		},
-		{
-			id: 'stats',
-			label: 'Statistics',
-			children: [
-				{ id: 'data', label: 'Data Handling' },
-				{ id: 'prob', label: 'Probability' },
-				{ id: 'dist', label: 'Distributions' },
-			],
-		},
-	],
-};
+import type { MindMapNode } from '@/data/mindmaps';
 
 const physicsMindMap: MindMapNode = {
 	id: 'physics',
@@ -107,7 +47,50 @@ const physicsMindMap: MindMapNode = {
 			children: [
 				{ id: 'particles', label: 'Particles' },
 				{ id: 'thermal', label: 'Thermal' },
-				{ id: ' gases', label: 'Gases' },
+				{ id: 'gases', label: 'Gases' },
+			],
+		},
+	],
+};
+
+const mathMindMap: MindMapNode = {
+	id: 'math',
+	label: 'Mathematics',
+	children: [
+		{
+			id: 'algebra',
+			label: 'Algebra',
+			children: [
+				{ id: 'expressions', label: 'Expressions' },
+				{ id: 'equations', label: 'Equations' },
+				{ id: 'inequalities', label: 'Inequalities' },
+			],
+		},
+		{
+			id: 'functions',
+			label: 'Functions',
+			children: [
+				{ id: 'linear', label: 'Linear' },
+				{ id: 'quadratic', label: 'Quadratic' },
+				{ id: 'exponential', label: 'Exponential' },
+			],
+		},
+		{
+			id: 'geometry',
+			label: 'Geometry',
+			children: [
+				{ id: 'triangles', label: 'Triangles' },
+				{ id: 'circles', label: 'Circles' },
+				{ id: 'quadrilaterals', label: 'Quadrilaterals' },
+			],
+		},
+		{
+			id: 'trig',
+			label: 'Trigonometry',
+			children: [
+				{ id: 'ratios', label: 'Ratios' },
+				{ id: 'identities', label: 'Identities' },
+				{ id: 'equations', label: 'Equations' },
 			],
 		},
 	],
