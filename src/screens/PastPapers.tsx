@@ -3,278 +3,34 @@
 import { Cancel01Icon, Settings02Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { Icon } from '@iconify/react';
-import { useQuery } from '@tanstack/react-query';
 import { AnimatePresence, m } from 'framer-motion';
-import { memo, useCallback, useMemo, useReducer } from 'react';
+import { FilterPanel } from '@/components/PastPapers/FilterPanel';
 import { PastPaperCard, PastPapersEmptyState } from '@/components/PastPapers/PastPapersList';
+import { PastPapersSkeleton } from '@/components/PastPapersSkeleton';
 import { BackgroundMesh } from '@/components/ui/background-mesh';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
-import {
-	Drawer,
-	DrawerClose,
-	DrawerContent,
-	DrawerFooter,
-	DrawerHeader,
-	DrawerTitle,
-} from '@/components/ui/drawer';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
-import { Switch } from '@/components/ui/switch';
+import { usePastPapers } from '@/hooks/usePastPapers';
 import { STAGGER_CONTAINER, STAGGER_ITEM } from '@/lib/animation-presets';
-import { getPastPapersAction } from '@/lib/db/actions';
 import { cn } from '@/lib/utils';
 
-type FilterState = {
-	selectedSubjects: string[];
-	selectedPapers: string[];
-	selectedMonths: string[];
-	extractedOnly: boolean;
-};
-
-type FilterAction =
-	| { type: 'TOGGLE_SUBJECT'; payload: string }
-	| { type: 'TOGGLE_PAPER'; payload: string }
-	| { type: 'TOGGLE_MONTH'; payload: string }
-	| { type: 'TOGGLE_EXTRACTED'; payload: boolean }
-	| { type: 'CLEAR_ALL' };
-
-function filterReducer(state: FilterState, action: FilterAction): FilterState {
-	switch (action.type) {
-		case 'TOGGLE_SUBJECT':
-			return {
-				...state,
-				selectedSubjects: state.selectedSubjects.includes(action.payload)
-					? state.selectedSubjects.filter((s) => s !== action.payload)
-					: [...state.selectedSubjects, action.payload],
-			};
-		case 'TOGGLE_PAPER':
-			return {
-				...state,
-				selectedPapers: state.selectedPapers.includes(action.payload)
-					? state.selectedPapers.filter((p) => p !== action.payload)
-					: [...state.selectedPapers, action.payload],
-			};
-		case 'TOGGLE_MONTH':
-			return {
-				...state,
-				selectedMonths: state.selectedMonths.includes(action.payload)
-					? state.selectedMonths.filter((m) => m !== action.payload)
-					: [...state.selectedMonths, action.payload],
-			};
-		case 'TOGGLE_EXTRACTED':
-			return { ...state, extractedOnly: action.payload };
-		case 'CLEAR_ALL':
-			return { selectedSubjects: [], selectedPapers: [], selectedMonths: [], extractedOnly: false };
-		default:
-			return state;
-	}
-}
-
-type UIState = {
-	searchQuery: string;
-	selectedYear: number | 'All';
-	isAdvancedFilterOpen: boolean;
-};
-
-type UIAction =
-	| { type: 'SET_SEARCH_QUERY'; payload: string }
-	| { type: 'SET_YEAR'; payload: number | 'All' }
-	| { type: 'TOGGLE_FILTER_PANEL'; payload: boolean };
-
-function uiReducer(state: UIState, action: UIAction): UIState {
-	switch (action.type) {
-		case 'SET_SEARCH_QUERY':
-			return { ...state, searchQuery: action.payload };
-		case 'SET_YEAR':
-			return { ...state, selectedYear: action.payload };
-		case 'TOGGLE_FILTER_PANEL':
-			return { ...state, isAdvancedFilterOpen: action.payload };
-		default:
-			return state;
-	}
-}
-
-interface FilterContentProps {
-	availableSubjects: string[];
-	availablePapers: string[];
-	availableMonths: string[];
-	filterState: FilterState;
-	dispatch: React.Dispatch<FilterAction>;
-}
-
-const FilterContent = memo(function FilterContent({
-	availableSubjects,
-	availablePapers,
-	availableMonths,
-	filterState,
-	dispatch,
-}: FilterContentProps) {
-	return (
-		<div className="space-y-8">
-			<div className="space-y-4">
-				<h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-label-tertiary">
-					Subjects
-				</h4>
-				<div className="grid grid-cols-2 gap-3">
-					{availableSubjects.map((subject) => (
-						<div key={subject} className="flex items-center gap-3 cursor-pointer ios-active-scale">
-							<Checkbox
-								id={`subject-${subject}`}
-								checked={filterState.selectedSubjects.includes(subject)}
-								onCheckedChange={() => dispatch({ type: 'TOGGLE_SUBJECT', payload: subject })}
-							/>
-							<label
-								htmlFor={`subject-${subject}`}
-								className="text-sm font-black uppercase tracking-tight cursor-pointer text-label-secondary"
-							>
-								{subject}
-							</label>
-						</div>
-					))}
-				</div>
-			</div>
-
-			<div className="space-y-4">
-				<h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-label-tertiary">
-					Paper TextT
-				</h4>
-				<div className="grid grid-cols-2 gap-3">
-					{availablePapers.map((paper) => (
-						<div key={paper} className="flex items-center gap-3 cursor-pointer ios-active-scale">
-							<Checkbox
-								id={`paper-${paper}`}
-								checked={filterState.selectedPapers.includes(paper)}
-								onCheckedChange={() => dispatch({ type: 'TOGGLE_PAPER', payload: paper })}
-							/>
-							<label
-								htmlFor={`paper-${paper}`}
-								className="text-sm font-black uppercase tracking-tight cursor-pointer text-label-secondary"
-							>
-								{paper}
-							</label>
-						</div>
-					))}
-				</div>
-			</div>
-
-			<div className="space-y-4">
-				<h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-label-tertiary">
-					Month
-				</h4>
-				<div className="grid grid-cols-2 gap-3">
-					{availableMonths.map((month) => (
-						<div key={month} className="flex items-center gap-3 cursor-pointer ios-active-scale">
-							<Checkbox
-								id={`month-${month}`}
-								checked={filterState.selectedMonths.includes(month)}
-								onCheckedChange={() => dispatch({ type: 'TOGGLE_MONTH', payload: month })}
-							/>
-							<label
-								htmlFor={`month-${month}`}
-								className="text-sm font-black uppercase tracking-tight cursor-pointer text-label-secondary"
-							>
-								{month}
-							</label>
-						</div>
-					))}
-				</div>
-			</div>
-
-			<div className="space-y-4">
-				<div className="flex items-center justify-between">
-					<div>
-						<h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-label-tertiary">
-							Extracted Only
-						</h4>
-						<p className="text-[10px] text-label-tertiary mt-1 uppercase tracking-wider">
-							Show papers with AI-extracted questions
-						</p>
-					</div>
-					<Switch
-						checked={filterState.extractedOnly}
-						onCheckedChange={(v) => dispatch({ type: 'TOGGLE_EXTRACTED', payload: v })}
-					/>
-				</div>
-			</div>
-		</div>
-	);
-});
-
-import { PastPapersSkeleton } from '@/components/PastPapersSkeleton';
-
 export default function PastPapers() {
-	const [uiState, uiDispatch] = useReducer(uiReducer, {
-		searchQuery: '',
-		selectedYear: 'All',
-		isAdvancedFilterOpen: false,
-	});
-
-	const [filterState, filterDispatch] = useReducer(filterReducer, {
-		selectedSubjects: [],
-		selectedPapers: [],
-		selectedMonths: [],
-		extractedOnly: false,
-	});
-
-	const years = useMemo(() => ['All', 2024, 2023, 2022, 2021, 2020], []);
-
-	const { data: papers = [], isLoading } = useQuery({
-		queryKey: ['past-papers'],
-		queryFn: async () => getPastPapersAction(),
-	});
-
-	const availableSubjects = useMemo(
-		() => [...new Set(papers.map((p) => p.subject))].sort(),
-		[papers]
-	);
-	const availablePapers = useMemo(() => [...new Set(papers.map((p) => p.paper))].sort(), [papers]);
-	const availableMonths = useMemo(() => [...new Set(papers.map((p) => p.month))].sort(), [papers]);
-
-	const activeFilterCount =
-		filterState.selectedSubjects.length +
-		filterState.selectedPapers.length +
-		filterState.selectedMonths.length +
-		(filterState.extractedOnly ? 1 : 0);
-
-	const clearAllFilters = useCallback(() => {
-		filterDispatch({ type: 'CLEAR_ALL' });
-	}, []);
-
-	const filteredPapers = useMemo(() => {
-		return papers.filter((paper) => {
-			const matchesSearch =
-				paper.subject.toLowerCase().includes(uiState.searchQuery.toLowerCase()) ||
-				paper.paper.toLowerCase().includes(uiState.searchQuery.toLowerCase());
-			const matchesYear = uiState.selectedYear === 'All' || paper.year === uiState.selectedYear;
-			const matchesSubjects =
-				filterState.selectedSubjects.length === 0 ||
-				filterState.selectedSubjects.includes(paper.subject);
-			const matchesPapers =
-				filterState.selectedPapers.length === 0 || filterState.selectedPapers.includes(paper.paper);
-			const matchesMonths =
-				filterState.selectedMonths.length === 0 || filterState.selectedMonths.includes(paper.month);
-			const matchesExtracted = !filterState.extractedOnly || paper.isExtracted;
-			return (
-				matchesSearch &&
-				matchesYear &&
-				matchesSubjects &&
-				matchesPapers &&
-				matchesMonths &&
-				matchesExtracted
-			);
-		});
-	}, [
-		papers,
-		uiState.searchQuery,
-		uiState.selectedYear,
-		filterState.selectedSubjects,
-		filterState.selectedPapers,
-		filterState.selectedMonths,
-		filterState.extractedOnly,
-	]);
+	const {
+		uiState,
+		uiDispatch,
+		filterState,
+		filterDispatch,
+		years,
+		availableSubjects,
+		availablePapers,
+		availableMonths,
+		activeFilterCount,
+		clearAllFilters,
+		filteredPapers,
+		isLoading,
+	} = usePastPapers();
 
 	return (
 		<div className="flex flex-col h-full min-w-0 bg-background relative overflow-x-hidden lg:px-8">
@@ -285,10 +41,10 @@ export default function PastPapers() {
 					<div className="flex flex-col md:flex-row md:items-center justify-between gap-4 sm:gap-6">
 						<div className="space-y-2">
 							<h1 className="text-2xl sm:text-4xl lg:text-7xl font-black text-foreground tracking-tighter uppercase">
-								Past Paper Vault
+								past paper vault
 							</h1>
 							<p className="text-label-secondary font-black text-[11px] sm:text-lg uppercase tracking-widest">
-								Access thousands of Grade 12 exam papers
+								access thousands of Grade 12 exam papers
 							</p>
 						</div>
 						<div className="flex items-center gap-2">
@@ -296,24 +52,24 @@ export default function PastPapers() {
 								<Button
 									variant="ghost"
 									onClick={clearAllFilters}
-									aria-label="Clear all filters"
+									aria-label="clear all filters"
 									className="rounded-2xl font-black text-[10px] uppercase tracking-widest px-3 sm:px-4 h-10 sm:h-12 text-label-tertiary hover:text-foreground ios-active-scale"
 								>
 									<HugeiconsIcon icon={Cancel01Icon} className="w-4 h-4 mr-1 sm:mr-2" />
-									<span className="hidden sm:inline">Clear</span>
+									<span className="hidden sm:inline">clear</span>
 								</Button>
 							)}
 							<Button
 								variant="outline"
 								onClick={() => uiDispatch({ type: 'TOGGLE_FILTER_PANEL', payload: true })}
-								aria-label={`Advanced Faders${activeFilterCount > 0 ? `, ${activeFilterCount} active` : ''}`}
+								aria-label={`advanced faders${activeFilterCount > 0 ? `, ${activeFilterCount} active` : ''}`}
 								className={cn(
 									'rounded-2xl border-2 font-black text-[10px] uppercase tracking-widest px-4 sm:px-6 h-10 sm:h-12 ios-active-scale',
 									activeFilterCount > 0 && 'border-primary bg-primary/10 text-primary'
 								)}
 							>
 								<HugeiconsIcon icon={Settings02Icon} className="w-4 h-4 mr-2" />
-								<span className="hidden sm:inline">Advanced Faders</span>
+								<span className="hidden sm:inline">advanced faders</span>
 								{activeFilterCount > 0 && (
 									<Badge className="ml-2 rounded-full px-2 py-0.5 text-[9px] bg-primary text-primary-foreground">
 										{activeFilterCount}
@@ -332,9 +88,9 @@ export default function PastPapers() {
 							<Input
 								value={uiState.searchQuery}
 								onChange={(e) => uiDispatch({ type: 'SET_SEARCH_QUERY', payload: e.target.value })}
-								placeholder="Search"
+								placeholder="search"
 								className="pl-12 sm:pl-16 placeholder:font-medium placeholder:capitalize pr-12 sm:pr-16 bg-card backdrop-blur-md border-border border-2 h-12 sm:h-16 rounded-xl sm:rounded-2xl text-base sm:text-lg font-black uppercase tracking-tight shadow-inner"
-								aria-label="Search past papers"
+								aria-label="search past papers"
 							/>
 							<AnimatePresence>
 								{uiState.searchQuery && (
@@ -342,8 +98,8 @@ export default function PastPapers() {
 										initial={{ scale: 0.95, opacity: 0 }}
 										animate={{ scale: 1, opacity: 1 }}
 										exit={{ scale: 0.95, opacity: 0 }}
-										title="Clear search"
-										aria-label="Clear search"
+										title="clear search"
+										aria-label="clear search"
 										type="button"
 										onClick={() => uiDispatch({ type: 'SET_SEARCH_QUERY', payload: '' })}
 										className="absolute right-4 sm:right-6 top-1/2 -translate-y-1/2 text-label-tertiary hover:text-foreground transition-colors ios-active-scale"
@@ -379,7 +135,7 @@ export default function PastPapers() {
 				<main className="px-4 sm:px-6 py-6 sm:py-8 max-w-7xl mx-auto w-full space-y-8 sm:space-y-12 pb-32 lg:px-0">
 					<div className="flex items-center justify-between border-b border-border pb-4">
 						<h2 className="text-[10px] font-black text-label-tertiary uppercase tracking-[0.4em]">
-							Archive Results ({filteredPapers.length})
+							archive results ({filteredPapers.length})
 						</h2>
 					</div>
 
@@ -406,84 +162,16 @@ export default function PastPapers() {
 				</main>
 			</ScrollArea>
 
-			<Sheet
-				open={uiState.isAdvancedFilterOpen}
+			<FilterPanel
+				isOpen={uiState.isAdvancedFilterOpen}
 				onOpenChange={(open) => uiDispatch({ type: 'TOGGLE_FILTER_PANEL', payload: open })}
-			>
-				<SheetContent className="w-full sm:max-w-lg hidden lg:block">
-					<SheetHeader>
-						<SheetTitle className="text-xl font-black uppercase tracking-tight">
-							Advanced Filters
-						</SheetTitle>
-					</SheetHeader>
-					<div className="py-6 overflow-y-auto">
-						<FilterContent
-							availableSubjects={availableSubjects}
-							availablePapers={availablePapers}
-							availableMonths={availableMonths}
-							filterState={filterState}
-							dispatch={filterDispatch}
-						/>
-					</div>
-					<div className="border-t pt-4 flex gap-3">
-						<Button
-							variant="outline"
-							onClick={clearAllFilters}
-							className="flex-1 rounded-2xl font-black text-[10px] uppercase tracking-widest ios-active-scale"
-						>
-							Reset
-						</Button>
-						<Button
-							onClick={() => uiDispatch({ type: 'TOGGLE_FILTER_PANEL', payload: false })}
-							className="flex-1 rounded-2xl font-black text-[10px] uppercase tracking-widest ios-active-scale"
-						>
-							Apply Filters
-						</Button>
-					</div>
-				</SheetContent>
-			</Sheet>
-
-			<Drawer
-				open={uiState.isAdvancedFilterOpen}
-				onOpenChange={(open) => uiDispatch({ type: 'TOGGLE_FILTER_PANEL', payload: open })}
-			>
-				<DrawerContent className="lg:hidden">
-					<DrawerHeader>
-						<DrawerTitle className="text-xl font-black uppercase tracking-tight text-left">
-							Advanced Filters
-						</DrawerTitle>
-					</DrawerHeader>
-					<div className="px-4 py-4 overflow-y-auto max-h-[60vh]">
-						<FilterContent
-							availableSubjects={availableSubjects}
-							availablePapers={availablePapers}
-							availableMonths={availableMonths}
-							filterState={filterState}
-							dispatch={filterDispatch}
-						/>
-					</div>
-					<DrawerFooter>
-						<Button
-							onClick={() => uiDispatch({ type: 'TOGGLE_FILTER_PANEL', payload: false })}
-							className="w-full rounded-2xl font-black text-[10px] uppercase tracking-widest ios-active-scale"
-						>
-							Apply Filters
-						</Button>
-						<Button
-							variant="outline"
-							onClick={clearAllFilters}
-							className="w-full rounded-2xl font-black text-[10px] uppercase tracking-widest ios-active-scale"
-						>
-							Reset
-						</Button>
-						<DrawerClose asChild>
-							<Button variant="ghost" className="w-full ios-active-scale">
-								Cancel
-							</Button>
-						</DrawerClose>
-					</DrawerFooter>
-				</DrawerContent>
-			</Drawer>
+				availableSubjects={availableSubjects}
+				availablePapers={availablePapers}
+				availableMonths={availableMonths}
+				filterState={filterState}
+				dispatch={filterDispatch}
+				onReset={clearAllFilters}
+			/>
 		</div>
 	);
 }

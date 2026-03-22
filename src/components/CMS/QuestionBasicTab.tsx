@@ -11,8 +11,8 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '@/components/ui/select';
+import type { QuestionFormData } from '@/hooks/useQuestionManager';
 import type { Subject } from '@/lib/db/schema';
-import type { QuestionFormData } from './QuestionManager';
 
 interface QuestionBasicTabProps {
 	editingQuestion: QuestionFormData;

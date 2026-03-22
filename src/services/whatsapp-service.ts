@@ -53,3 +53,75 @@ Visit matricmaster.ai to continue learning.`;
 
 	await whatsappClient.sendMessage(to, reminder);
 }
+
+export async function sendWeeklyProgressReport(
+	to: string,
+	stats: {
+		weekXp: number;
+		totalXp: number;
+		quizzesCompleted: number;
+		streakDays: number;
+		topicsImproved: string[];
+	}
+): Promise<void> {
+	const report = `📊 Weekly Progress Report
+
+XP Earned: +${stats.weekXp} (Total: ${stats.totalXp})
+Quizzes: ${stats.quizzesCompleted} completed
+Streak: ${stats.streakDays} days 🔥
+Topics Improved: ${stats.topicsImproved.slice(0, 3).join(', ') || 'None yet'}
+
+Keep it up! Visit matricmaster.ai`;
+
+	await whatsappClient.sendMessage(to, report);
+}
+
+export async function sendRevisionDueNotification(
+	to: string,
+	topic: string,
+	subject: string
+): Promise<void> {
+	const notification = `📚 Time to Review!
+
+${subject}: ${topic} needs review.
+Don't lose your progress - practice now!
+
+matricmaster.ai/review`;
+
+	await whatsappClient.sendMessage(to, notification);
+}
+
+export async function sendStruggleAlert(
+	to: string,
+	parentNumber: string,
+	topic: string,
+	subject: string,
+	score: number
+): Promise<void> {
+	const alert = `⚠️ Study Alert for Parent
+
+${subject}: ${topic}
+Current understanding: ${Math.round(score * 100)}%
+
+Your child may need extra help with this topic.
+matricmaster.ai/ai-tutor`;
+
+	await whatsappClient.sendMessage(to, alert);
+	await whatsappClient.sendMessage(parentNumber, alert);
+}
+
+export async function sendExamCountdown(
+	to: string,
+	exam: { subject: string; date: string; daysUntil: number }
+): Promise<void> {
+	const message =
+		exam.daysUntil <= 7
+			? `⏰ ${exam.subject} exam in ${exam.daysUntil} days!
+Focus on this subject now.`
+			: `📅 ${exam.subject} exam: ${exam.daysUntil} days away
+Start preparing early!
+
+matricmaster.ai/planner`;
+
+	await whatsappClient.sendMessage(to, message);
+}
