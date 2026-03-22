@@ -1,6 +1,7 @@
 'use client';
 
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import type React from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 
 export interface SettingsState {
 	dataSaverMode: boolean;
@@ -25,7 +26,9 @@ const SettingsContext = createContext<SettingsContextType | undefined>(undefined
 export function SettingsProvider({ children }: { children: React.ReactNode }) {
 	const [dataSaverMode, setDataSaverMode] = useState(defaultState.dataSaverMode);
 	const [targetAPS, setTargetAPS] = useState(defaultState.targetAPS);
-	const [aiLanguage, setAiLanguage] = useState<SettingsState['aiLanguage']>(defaultState.aiLanguage);
+	const [aiLanguage, setAiLanguage] = useState<SettingsState['aiLanguage']>(
+		defaultState.aiLanguage
+	);
 
 	useEffect(() => {
 		try {

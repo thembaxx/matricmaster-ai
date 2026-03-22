@@ -3,9 +3,9 @@
 import { useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
 import { toast } from 'sonner';
+import { useSettings } from '@/contexts/SettingsContext';
 import { saveToFlashcardsAction } from '@/lib/db/flashcard-actions';
 import { useAiContextStore } from '@/stores/useAiContextStore';
-import { useSettings } from '@/contexts/SettingsContext';
 
 export function useSnapAndSolve() {
 	const router = useRouter();

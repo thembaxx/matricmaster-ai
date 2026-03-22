@@ -39,9 +39,9 @@ export default function ExamTimerPage() {
 					if (parsed.warningMinutes !== undefined) setWarningMinutes(parsed.warningMinutes);
 					if (parsed.enableSound !== undefined) setEnableSound(parsed.enableSound);
 					if (parsed.isTimerRunning !== undefined) setIsTimerRunning(parsed.isTimerRunning);
-					
+
 					if (parsed.selectedPresetName) {
-						const foundPreset = EXAM_PRESETS.find(p => p.name === parsed.selectedPresetName);
+						const foundPreset = EXAM_PRESETS.find((p) => p.name === parsed.selectedPresetName);
 						if (foundPreset) setSelectedPreset(foundPreset);
 					}
 					toast.info('Timer session restored', { duration: 3000 });
@@ -56,21 +56,33 @@ export default function ExamTimerPage() {
 
 	useEffect(() => {
 		if (!isRestored) return;
-		localStorage.setItem(STORAGE_KEY, JSON.stringify({
-			timeRemaining,
-			examName,
-			customDuration,
-			warningMinutes,
-			enableSound,
-			isTimerRunning,
-			selectedPresetName: selectedPreset.name,
-			lastUpdated: Date.now()
-		}));
-	}, [timeRemaining, isTimerRunning, examName, customDuration, warningMinutes, enableSound, selectedPreset.name, isRestored]);
+		localStorage.setItem(
+			STORAGE_KEY,
+			JSON.stringify({
+				timeRemaining,
+				examName,
+				customDuration,
+				warningMinutes,
+				enableSound,
+				isTimerRunning,
+				selectedPresetName: selectedPreset.name,
+				lastUpdated: Date.now(),
+			})
+		);
+	}, [
+		timeRemaining,
+		isTimerRunning,
+		examName,
+		customDuration,
+		warningMinutes,
+		enableSound,
+		selectedPreset.name,
+		isRestored,
+	]);
 
 	const totalSeconds =
 		selectedPreset.name === 'Custom' ? customDuration * 60 : selectedPreset.duration * 60;
-	
+
 	const isRunning = isTimerRunning && timeRemaining > 0;
 	const showWarning = timeRemaining <= warningMinutes * 60 && timeRemaining > 0;
 	const elapsedSeconds = totalSeconds - timeRemaining;

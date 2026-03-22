@@ -2,11 +2,11 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { toast } from 'sonner';
+import { useSettings } from '@/contexts/SettingsContext';
 import { authClient } from '@/lib/auth-client';
 import { saveConversationAction } from '@/lib/db/ai-tutor-actions';
 import type { AiConversation } from '@/lib/db/schema';
 import { useAiContextStore } from '@/stores/useAiContextStore';
-import { useSettings } from '@/contexts/SettingsContext';
 
 export interface Message {
 	id: string;

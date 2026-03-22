@@ -15,8 +15,8 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
 import { useSettings } from '@/contexts/SettingsContext';
+import { cn } from '@/lib/utils';
 
 interface Participant {
 	id: string;

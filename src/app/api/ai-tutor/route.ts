@@ -96,7 +96,14 @@ export async function POST(request: NextRequest) {
 		}
 
 		const body: RequestBody = await request.json();
-		const { message, subject, history, includeSuggestions = true, stream = false, language = 'en' } = body;
+		const {
+			message,
+			subject,
+			history,
+			includeSuggestions = true,
+			stream = false,
+			language = 'en',
+		} = body;
 
 		if (!message || message.trim().length === 0) {
 			return NextResponse.json({ error: 'Message is required' }, { status: 400 });
@@ -117,7 +124,8 @@ export async function POST(request: NextRequest) {
 
 		let conversationContext = `${systemPrompt}\n\n`;
 		if (language === 'af') {
-			conversationContext += `IMPORTANT DIRECTIVE: You MUST provide all explanations and answers entirely in Afrikaans. Do not use English unless directly quoting a provided English text.\n\n`;
+			conversationContext +=
+				'IMPORTANT DIRECTIVE: You MUST provide all explanations and answers entirely in Afrikaans. Do not use English unless directly quoting a provided English text.\n\n';
 		}
 
 		if (history && history.length > 0) {

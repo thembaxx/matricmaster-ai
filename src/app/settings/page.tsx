@@ -38,7 +38,10 @@ const SecurityTab = dynamic(
 	{ ssr: false }
 );
 const AppPreferencesTab = dynamic(
-	() => import('@/components/Settings/AppPreferencesTab').then((mod) => ({ default: mod.AppPreferencesTab })),
+	() =>
+		import('@/components/Settings/AppPreferencesTab').then((mod) => ({
+			default: mod.AppPreferencesTab,
+		})),
 	{ ssr: false }
 );
 

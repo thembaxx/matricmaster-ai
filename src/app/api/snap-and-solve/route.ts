@@ -3,6 +3,8 @@ import { type NextRequest, NextResponse } from 'next/server';
 import { generateWithMultimodal, generateWithOCR } from '@/lib/ai/provider';
 import { getAuth } from '@/lib/auth';
 
+type SnapMode = 'full' | 'socratic' | 'hint';
+
 export async function POST(req: NextRequest) {
 	try {
 		const auth = await getAuth();
@@ -18,6 +20,8 @@ export async function POST(req: NextRequest) {
 		const image = formData.get('image') as File;
 		const subject = (formData.get('subject') as string) || 'General';
 		const languageContext = (formData.get('language') as string) || 'en';
+		const mode = (formData.get('mode') as SnapMode) || 'full';
+		const hintLevel = Number.parseInt(formData.get('hintLevel') as string, 10) || 1;
 
 		if (!image) {
 			return NextResponse.json({ error: 'No image provided' }, { status: 400 });
@@ -39,23 +43,60 @@ Analyze the image and extract all questions.`;
 
 		const ocrResult = await generateWithOCR(ocrPrompt, [{ base64, mimeType: image.type }]);
 
-		const solutionPrompt = `You are an expert Grade 12 tutor in South Africa. Analyze the image of this ${subject} question. 
+		let solutionPrompt: string;
+
+		if (mode === 'socratic') {
+			solutionPrompt = `You are a Socratic tutor helping a Grade 12 South African student. Instead of giving the answer, guide them to discover it themselves.
+
+### Instructions:
+1. Start with a gentle hint that helps them identify what they already know.
+2. Ask a probing question that leads them closer to the solution.
+3. If hintLevel=1: Give a broad conceptual hint.
+4. If hintLevel=2: Give a more specific hint pointing toward the approach.
+5. If hintLevel=3: Give a near-complete hint that almost reveals the answer.
+6. NEVER give the final answer - always guide them to figure it out themselves.
+7. Encourage critical thinking about ${subject} concepts from the NSC curriculum.
+
+Use a supportive, encouraging tone.`;
+		} else if (mode === 'hint') {
+			const hintDepth =
+				[
+					'Start by identifying what the question is asking',
+					'Think about the key formula or concept needed',
+					'Consider breaking this into smaller steps',
+				][hintLevel - 1] || 'Start by identifying what the question is asking';
+
+			solutionPrompt = `You are a Grade 12 ${subject} tutor in South Africa. Provide a brief hint to guide the student without giving the full answer.
+
+### Instructions:
+1. Give a single ${hintDepth.toLowerCase()}.
+2. Do NOT solve the problem - just guide them on how to start.
+3. Keep it to 2-3 sentences maximum.
+4. Align with NSC ${subject} curriculum.`;
+		} else {
+			solutionPrompt = `You are an expert Grade 12 tutor in South Africa. Analyze the image of this ${subject} question. 
         1. OCR the question text.
         2. Identify the core concepts involved.
         3. Provide a detailed, step-by-step solution aligned with the National Senior Certificate (NSC) curriculum.
         4. If it's a multiple choice question, explain why the correct option is right and others are wrong.
         Format the response in clear Markdown.`;
+		}
 
-		// Enforce language if Afrikaans is selected
-		const languageBoundPrompt = languageContext === 'af' 
-			? solutionPrompt + '\n\nIMPORTANT: You MUST provide the final step-by-step solution entirely in Afrikaans. Disregard if the original image is in English; the explanation must be Afrikaans.' 
-			: solutionPrompt;
+		const languageBoundPrompt =
+			languageContext === 'af'
+				? solutionPrompt +
+					'\n\nIMPORTANT: Provide your response entirely in Afrikaans if the student selected Afrikaans.'
+				: solutionPrompt;
 
 		const solution = await generateWithMultimodal(languageBoundPrompt, [
 			{ base64, mimeType: image.type },
 		]);
 
-		return NextResponse.json({ questions: ocrResult.questions, solution });
+		return NextResponse.json({
+			questions: ocrResult.questions,
+			solution,
+			mode,
+		});
 	} catch (error) {
 		console.debug('[Snap & Solve API Error]:', error);
 		return NextResponse.json({ error: 'Failed to analyze image' }, { status: 500 });
