@@ -18,8 +18,15 @@ export function ContinueLearningCard({
 }: ContinueLearningCardProps) {
 	return (
 		<div
+			role="button"
+			tabIndex={0}
 			className="bg-card p-5 rounded-3xl shadow-sm border border-border relative overflow-hidden group cursor-pointer hover:shadow-md transition-all ios-active-scale"
 			onClick={onClick}
+			onKeyDown={(e) => {
+				if (e.key === 'Enter' || e.key === ' ') {
+					onClick?.();
+				}
+			}}
 		>
 			<div className="flex items-center gap-5">
 				<div className="w-16 h-16 rounded-2xl bg-warning flex items-center justify-center shadow-lg shadow-warning/20 transform group-hover:scale-105 transition-transform">

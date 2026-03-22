@@ -1,6 +1,6 @@
 'use client';
 
-import { ChartBarIcon, UserGroupIcon } from '@hugeicons/core-free-icons';
+import { ChartBar, UserGroupIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { Avatar, AvatarImage } from '@/components/ui/avatar';
 
@@ -15,7 +15,7 @@ export function CommerceCard({ title, studentCount }: CommerceCardProps) {
 		<div className="bg-card p-4 rounded-3xl flex items-center justify-between shadow-sm border border-border hover:shadow-md transition-all cursor-pointer group ios-active-scale">
 			<div className="flex items-center gap-4">
 				<div className="w-12 h-12 rounded-2xl flex items-center justify-center bg-accounting/10">
-					<HugeiconsIcon icon={ChartBarIcon} className="w-6 h-6 text-accounting" />
+					<HugeiconsIcon icon={ChartBar} className="w-6 h-6 text-accounting" />
 				</div>
 				<div className="text-left">
 					<h4 className="font-black text-foreground uppercase tracking-tight">{title}</h4>
@@ -44,9 +44,7 @@ export function CommerceCard({ title, studentCount }: CommerceCardProps) {
 	);
 }
 
-type CommerceSectionProps = {};
-
-export function CommerceSection(_props: CommerceSectionProps) {
+export function CommerceSection() {
 	return (
 		<section className="space-y-4">
 			<h3 className="text-xl font-black text-foreground uppercase tracking-tight">Commerce</h3>
