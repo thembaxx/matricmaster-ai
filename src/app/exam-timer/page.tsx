@@ -20,45 +20,103 @@ export default function ExamTimerPage() {
 	const [warningMinutes, setWarningMinutes] = useState(10);
 	const [enableSound, setEnableSound] = useState(true);
 	const [examName, setExamName] = useState('');
+	const [isTimerRunning, setIsTimerRunning] = useState(false);
+	const [isRestored, setIsRestored] = useState(false);
 
 	const { startFocusMode, isFocusMode, state, completeExam } = useFocusMode();
 
-	const isRunning =
-		timeRemaining > 0 &&
-		timeRemaining <
-			(selectedPreset.name === 'Custom' ? customDuration * 60 : selectedPreset.duration * 60);
-	const showWarning = timeRemaining <= warningMinutes * 60 && timeRemaining > 0;
+	const STORAGE_KEY = 'matricmaster_exam_timer_state';
+
+	useEffect(() => {
+		try {
+			const saved = localStorage.getItem(STORAGE_KEY);
+			if (saved) {
+				const parsed = JSON.parse(saved);
+				if (Date.now() - parsed.lastUpdated < 24 * 60 * 60 * 1000) {
+					if (parsed.timeRemaining !== undefined) setTimeRemaining(parsed.timeRemaining);
+					if (parsed.examName !== undefined) setExamName(parsed.examName);
+					if (parsed.customDuration !== undefined) setCustomDuration(parsed.customDuration);
+					if (parsed.warningMinutes !== undefined) setWarningMinutes(parsed.warningMinutes);
+					if (parsed.enableSound !== undefined) setEnableSound(parsed.enableSound);
+					if (parsed.isTimerRunning !== undefined) setIsTimerRunning(parsed.isTimerRunning);
+
+					if (parsed.selectedPresetName) {
+						const foundPreset = EXAM_PRESETS.find((p) => p.name === parsed.selectedPresetName);
+						if (foundPreset) setSelectedPreset(foundPreset);
+					}
+					toast.info('Timer session restored', { duration: 3000 });
+				}
+			}
+		} catch (e) {
+			console.error('Failed to parse saved exam timer state', e);
+		} finally {
+			setIsRestored(true);
+		}
+	}, []);
+
+	useEffect(() => {
+		if (!isRestored) return;
+		localStorage.setItem(
+			STORAGE_KEY,
+			JSON.stringify({
+				timeRemaining,
+				examName,
+				customDuration,
+				warningMinutes,
+				enableSound,
+				isTimerRunning,
+				selectedPresetName: selectedPreset.name,
+				lastUpdated: Date.now(),
+			})
+		);
+	}, [
+		timeRemaining,
+		isTimerRunning,
+		examName,
+		customDuration,
+		warningMinutes,
+		enableSound,
+		selectedPreset.name,
+		isRestored,
+	]);
 
 	const totalSeconds =
 		selectedPreset.name === 'Custom' ? customDuration * 60 : selectedPreset.duration * 60;
+
+	const isRunning = isTimerRunning && timeRemaining > 0;
+	const showWarning = timeRemaining <= warningMinutes * 60 && timeRemaining > 0;
 	const elapsedSeconds = totalSeconds - timeRemaining;
 	const progress = ((totalSeconds - timeRemaining) / totalSeconds) * 100;
 
 	const handleStart = () => {
+		setIsTimerRunning(true);
 		setTimeRemaining((prev) => (prev === 0 ? totalSeconds : prev));
 		toast.success('Exam timer started - Good luck!');
 	};
 
 	const handlePause = () => {
+		setIsTimerRunning(false);
 		toast.info('Exam timer paused');
 	};
 
 	const handleReset = () => {
-		setTimeRemaining(
-			selectedPreset.name === 'Custom' ? customDuration * 60 : selectedPreset.duration * 60
-		);
+		setIsTimerRunning(false);
+		setTimeRemaining(totalSeconds);
+		localStorage.removeItem(STORAGE_KEY);
 		toast.info('Exam timer reset');
 	};
 
 	const handlePresetSelect = (preset: ExamPreset) => {
 		setSelectedPreset(preset);
 		setTimeRemaining(preset.name === 'Custom' ? customDuration * 60 : preset.duration * 60);
+		setIsTimerRunning(false);
 	};
 
 	const handleCustomDurationChange = (value: number[]) => {
 		const mins = value[0];
 		setCustomDuration(mins);
 		setTimeRemaining(mins * 60);
+		setIsTimerRunning(false);
 	};
 
 	useEffect(() => {

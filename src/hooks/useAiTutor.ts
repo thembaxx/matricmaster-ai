@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { toast } from 'sonner';
+import { useSettings } from '@/contexts/SettingsContext';
 import { authClient } from '@/lib/auth-client';
 import { saveConversationAction } from '@/lib/db/ai-tutor-actions';
 import type { AiConversation } from '@/lib/db/schema';
@@ -33,6 +34,7 @@ export interface Flashcard {
 
 export function useAiTutor() {
 	const { data: session } = authClient.useSession();
+	const { aiLanguage } = useSettings();
 	const getRecentStruggles = useAiContextStore((s) => s.getRecentStruggles);
 	const struggles = getRecentStruggles();
 
@@ -105,6 +107,7 @@ export function useAiTutor() {
 					subject: selectedSubject,
 					history: messages.map((m) => ({ role: m.role, content: m.content })),
 					includeSuggestions: true,
+					language: aiLanguage,
 				}),
 			});
 

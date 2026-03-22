@@ -28,10 +28,10 @@ Return a JSON object with:
 - breakdown: object with scores for each criterion
 - strengths: array of strings (what was done well)
 - improvements: array of strings (specific suggestions)
-- detailedFeedback: string (overall comments)
+- detailedFeedback: string (overall comments. IMPORTANT: If the student misquotes or misunderstands a prescribed setwork, e.g. Hamlet, Macbeth, Tsotsi, Life of Pi, you MUST include a deep link in this feedback formatted exactly as standard markdown: [Review Setwork](/setwork-library?book=BookName))
 - suggestedGrade: string (A+, A, B+, B, C+, C, D, E, F)
 
-Return ONLY valid JSON, no markdown.`;
+Return ONLY valid JSON, no markdown outside of the JSON block.`;
 
 export async function POST(request: NextRequest) {
 	try {

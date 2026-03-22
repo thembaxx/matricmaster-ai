@@ -16,6 +16,7 @@ interface RequestBody {
 	history?: ChatMessage[];
 	includeSuggestions?: boolean;
 	stream?: boolean;
+	language?: 'en' | 'af';
 }
 
 const systemPrompt = `You are an expert South African Matriculation (Grade 12) study tutor. Your role is to help students master their subjects through clear explanations, step-by-step guidance, and practice problems.
@@ -95,7 +96,14 @@ export async function POST(request: NextRequest) {
 		}
 
 		const body: RequestBody = await request.json();
-		const { message, subject, history, includeSuggestions = true, stream = false } = body;
+		const {
+			message,
+			subject,
+			history,
+			includeSuggestions = true,
+			stream = false,
+			language = 'en',
+		} = body;
 
 		if (!message || message.trim().length === 0) {
 			return NextResponse.json({ error: 'Message is required' }, { status: 400 });
@@ -115,6 +123,10 @@ export async function POST(request: NextRequest) {
 		}
 
 		let conversationContext = `${systemPrompt}\n\n`;
+		if (language === 'af') {
+			conversationContext +=
+				'IMPORTANT DIRECTIVE: You MUST provide all explanations and answers entirely in Afrikaans. Do not use English unless directly quoting a provided English text.\n\n';
+		}
 
 		if (history && history.length > 0) {
 			const recentHistory = history.slice(-10);

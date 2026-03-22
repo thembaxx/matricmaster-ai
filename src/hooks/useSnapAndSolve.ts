@@ -3,11 +3,13 @@
 import { useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
 import { toast } from 'sonner';
+import { useSettings } from '@/contexts/SettingsContext';
 import { saveToFlashcardsAction } from '@/lib/db/flashcard-actions';
 import { useAiContextStore } from '@/stores/useAiContextStore';
 
 export function useSnapAndSolve() {
 	const router = useRouter();
+	const { aiLanguage } = useSettings();
 	const setContext = useAiContextStore((state) => state.setContext);
 	const [image, setImage] = useState<File | null>(null);
 	const [preview, setPreview] = useState<string | null>(null);
@@ -105,6 +107,7 @@ export function useSnapAndSolve() {
 		const formData = new FormData();
 		formData.append('image', image);
 		formData.append('subject', subject);
+		formData.append('language', aiLanguage);
 
 		try {
 			const response = await fetch('/api/snap-and-solve', {
