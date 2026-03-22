@@ -51,6 +51,7 @@ export const MOBILE_NAV_SECTIONS: MobileNavSection[] = [
 		title: 'Learning',
 		items: [
 			{ href: '/dashboard', label: 'Dashboard', icon: Home01Icon },
+			{ href: '/demo', label: 'Demo', icon: SparklesIcon },
 			{ href: '/lessons', label: 'Lessons', icon: BookOpen01Icon },
 			{ href: '/physics', label: 'Physics', fluentEmoji: '⚛️' },
 			{ href: '/search', label: 'Search', icon: Search01Icon },
@@ -59,6 +60,8 @@ export const MOBILE_NAV_SECTIONS: MobileNavSection[] = [
 			{ href: '/study-plan', label: 'Study Plan', icon: Calendar01Icon },
 			{ href: '/curriculum-map', label: 'Curriculum Map', icon: GridIcon },
 			{ href: '/periodic-table', label: 'Periodic Table', fluentEmoji: '⚛️' },
+			{ href: '/chat', label: 'Study Buddy', icon: Chat01Icon },
+			{ href: '/smart-scheduler', label: 'Smart Scheduler', icon: Calendar01Icon },
 			{ href: '/tutoring', label: 'AI Tutoring', icon: ComputerVideoCallIcon },
 			{ href: '/voice-tutor', label: 'Voice Tutor', icon: Mic01Icon },
 			{ href: '/essay-grader', label: 'Essay Grader', icon: ContentWritingIcon },

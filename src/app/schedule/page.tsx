@@ -3,7 +3,7 @@
 import { PlusSignIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { useCallback, useEffect, useState } from 'react';
-
+import { appConfig } from '@/app.config';
 import { AddBlockModal } from '@/components/Schedule/AddBlockModal';
 import { BlockActionSheet } from '@/components/Schedule/BlockActionSheet';
 import type { UIEvent } from '@/components/Schedule/constants';
@@ -119,7 +119,7 @@ export default function SchedulePage() {
 			{/* Copyright */}
 			<div className="mt-12 pt-6 border-t border-border/20 text-center">
 				<p className="text-[10px] text-muted-foreground/50 uppercase tracking-widest">
-					&copy; {new Date().getFullYear()} MatricMaster. All rights reserved.
+					&copy; {new Date().getFullYear()} {appConfig.name}. All rights reserved.
 				</p>
 			</div>
 		</div>

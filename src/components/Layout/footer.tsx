@@ -40,10 +40,10 @@ const footerLinks = {
 };
 
 const socialLinks = [
-	{ icon: Facebook01Icon, href: 'https://facebook.com/matricmaster', label: 'Facebook' },
-	{ icon: NewTwitterIcon, href: 'https://twitter.com/matricmaster', label: 'Twitter' },
-	{ icon: InstagramIcon, href: 'https://instagram.com/matricmaster', label: 'Instagram' },
-	{ icon: Linkedin01Icon, href: 'https://linkedin.com/company/matricmaster', label: 'LinkedIn' },
+	{ icon: Facebook01Icon, href: 'https://facebook.com/lumni', label: 'Facebook' },
+	{ icon: NewTwitterIcon, href: 'https://twitter.com/lumni', label: 'Twitter' },
+	{ icon: InstagramIcon, href: 'https://instagram.com/lumni', label: 'Instagram' },
+	{ icon: Linkedin01Icon, href: 'https://linkedin.com/company/lumni', label: 'LinkedIn' },
 ];
 
 export function Footer() {
@@ -63,7 +63,7 @@ export function Footer() {
 							<div className="w-8 h-8 rounded-lg bg-gradient-to-br from-tiimo-lavender to-purple-600 flex items-center justify-center">
 								<span className="text-white font-bold text-sm">M</span>
 							</div>
-							<span className="text-xl font-semibold">matricmaster</span>
+							<span className="text-xl font-semibold">Lumni</span>
 						</Link>
 						<p className="text-sm text-muted-foreground mb-6 max-w-sm leading-relaxed">
 							Your study companion for South African Matric students. Pass your NSC exams with
@@ -192,7 +192,7 @@ export function Footer() {
 					className="flex flex-col md:flex-row justify-between items-center gap-4"
 				>
 					<div className="flex flex-col md:flex-row items-center gap-2 text-xs text-muted-foreground">
-						<span>© {new Date().getFullYear()} matricmaster. all rights reserved.</span>
+						<span>© {new Date().getFullYear()} Lumni AI</span>
 						<span className="hidden md:inline">•</span>
 						<div className="flex gap-4">
 							{footerLinks.legal.map((link) => (
@@ -207,11 +207,11 @@ export function Footer() {
 						</div>
 					</div>
 					<Link
-						href="mailto:hello@matricmaster.ai"
+						href="mailto:hello@lumni.ai"
 						className="flex items-center gap-2 text-xs text-muted-foreground hover:text-foreground transition-colors"
 					>
 						<HugeiconsIcon icon={Mail01Icon} className="h-3.5 w-3.5" />
-						<span>hello@matricmaster.ai</span>
+						<span>hello@lumni.ai</span>
 					</Link>
 				</m.div>
 			</div>

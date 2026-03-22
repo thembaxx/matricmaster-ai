@@ -87,7 +87,7 @@ export const useAccessibilityStore = create<AccessibilityState>()(
 			reset: () => set({ ...defaultSettings, ...getSystemPreferences() }),
 		}),
 		{
-			name: 'matricmaster-accessibility',
+			name: 'lumni-accessibility',
 		}
 	)
 );

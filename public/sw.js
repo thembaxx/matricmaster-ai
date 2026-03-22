@@ -1,4 +1,4 @@
-const CACHE_NAME = 'matricmaster-v2';
+const CACHE_NAME = 'lumni-v2';
 const OFFLINE_URL = '/offline';
 
 const STATIC_ASSETS = [
@@ -15,7 +15,7 @@ const STATIC_ASSETS = [
 	'/icon-512.png',
 ];
 
-const DYNAMIC_CACHE = 'matricmaster-dynamic-v1';
+const DYNAMIC_CACHE = 'lumni-dynamic-v1';
 const MAX_DYNAMIC_ENTRIES = 50;
 
 self.addEventListener('install', (event) => {

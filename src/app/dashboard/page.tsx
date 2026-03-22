@@ -10,7 +10,7 @@ import { getAuth } from '@/lib/auth';
 import { getUserAchievements } from '@/lib/db/achievement-actions';
 import { getUserStreak } from '@/lib/db/progress-actions';
 
-const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://matricmaster.ai';
+const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://lumni.ai';
 
 export const metadata: Metadata = {
 	title: `Dashboard | ${appConfig.name} AI`,

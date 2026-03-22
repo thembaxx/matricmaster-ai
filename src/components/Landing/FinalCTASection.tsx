@@ -37,12 +37,13 @@ export function FinalCTASection() {
 
 				<div className="relative z-10 text-center space-y-8">
 					<h2 className="heading-1 text-white">
-						Ready to ace
+						Start your
 						<br />
-						your exams?
+						matric journey now
 					</h2>
 					<p className="text-lg md:text-xl text-white/80 max-w-xl mx-auto">
-						Join thousands of South African students who are already mastering their subjects.
+						Get access to AI-powered study tools, past exam papers, and instant explanations
+						designed specifically for NSC Grade 12 success.
 					</p>
 					<div className="flex flex-col sm:flex-row gap-4 justify-center">
 						<Button
@@ -51,12 +52,12 @@ export function FinalCTASection() {
 							onClick={() => router.push('/sign-up')}
 						>
 							<span className="flex items-center gap-2">
-								Get Started Free
+								Start Your Free Trial
 								<HugeiconsIcon icon={ArrowRight01Icon} className="w-5 h-5" />
 							</span>
 						</Button>
 					</div>
-					<p className="text-sm text-white/60">No credit card required · Cancel anytime</p>
+					<p className="text-sm text-white/60">No credit card needed</p>
 				</div>
 			</m.div>
 		</section>

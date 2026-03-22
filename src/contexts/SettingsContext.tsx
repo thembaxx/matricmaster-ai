@@ -32,7 +32,7 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
 
 	useEffect(() => {
 		try {
-			const saved = localStorage.getItem('matricmaster_settings');
+			const saved = localStorage.getItem('lumni_settings');
 			if (saved) {
 				const parsed = JSON.parse(saved);
 				if (typeof parsed.dataSaverMode === 'boolean') setDataSaverMode(parsed.dataSaverMode);
@@ -47,7 +47,7 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
 
 	useEffect(() => {
 		localStorage.setItem(
-			'matricmaster_settings',
+			'lumni_settings',
 			JSON.stringify({
 				dataSaverMode,
 				targetAPS,

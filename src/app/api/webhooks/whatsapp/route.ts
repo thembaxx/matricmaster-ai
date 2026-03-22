@@ -120,7 +120,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 						if (code) {
 							const isValid = await verifyPhoneNumberWithPhone(from, code);
 							response = isValid
-								? '✅ Your phone number has been verified! Welcome to MatricMaster WhatsApp.'
+								? '✅ Your phone number has been verified! Welcome to Lumni WhatsApp.'
 								: '❌ Invalid verification code. Please check the code and try again.';
 						} else {
 							response = 'Please use the format: verify:123456';
@@ -131,7 +131,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 							.set({ isOptedIn: false, updatedAt: new Date() })
 							.where(eq(whatsappPreferences.phoneNumber, from));
 						response =
-							"You've been unsubscribed from MatricMaster WhatsApp notifications.\n\nTo resubscribe, visit matricmaster.ai/settings";
+							"You've been unsubscribed from Lumni WhatsApp notifications.\n\nTo resubscribe, visit lumni.ai/settings";
 					} else if (normalizedMsg === 'start' || normalizedMsg === 'subscribe') {
 						const prefs = await getUserPreferencesByPhone(from);
 						if (prefs?.isVerified) {
@@ -139,20 +139,20 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 								.update(whatsappPreferences)
 								.set({ isOptedIn: true, updatedAt: new Date() })
 								.where(eq(whatsappPreferences.phoneNumber, from));
-							response = "✅ You've been resubscribed to MatricMaster WhatsApp notifications!";
+							response = "✅ You've been resubscribed to Lumni WhatsApp notifications!";
 						} else {
 							const code = await generateVerificationCodeByPhone(from);
 							if (code) {
 								await sendVerificationCode(from, code);
-								response = `Welcome to MatricMaster! Please verify your number.\n\nYour verification code: ${code}\n\nOr reply with: verify:123456`;
+								response = `Welcome to Lumni! Please verify your number.\n\nYour verification code: ${code}\n\nOr reply with: verify:123456`;
 							} else {
-								response = 'Please register your number first at matricmaster.ai/settings';
+								response = 'Please register your number first at lumni.ai/settings';
 							}
 						}
 					} else if (normalizedMsg === 'settings' || normalizedMsg === 'preferences') {
 						const prefs = await getUserPreferencesByPhone(from);
 						const types = prefs?.notificationTypes || [];
-						response = `📱 Your WhatsApp Settings:\n\nNotifications: ${prefs?.isOptedIn ? 'ON' : 'OFF'}\nVerified: ${prefs?.isVerified ? 'Yes' : 'No'}\n\nEnabled:\n${types.includes('study_reminder') ? '✓' : '✗'} Study reminders\n${types.includes('achievement_share') ? '✓' : '✗'} Achievement updates\n${types.includes('buddy_update') ? '✓' : '✗'} Buddy score updates\n${types.includes('daily_tip') ? '✓' : '✗'} Daily tips\n\nManage at: matricmaster.ai/settings`;
+						response = `📱 Your WhatsApp Settings:\n\nNotifications: ${prefs?.isOptedIn ? 'ON' : 'OFF'}\nVerified: ${prefs?.isVerified ? 'Yes' : 'No'}\n\nEnabled:\n${types.includes('study_reminder') ? '✓' : '✗'} Study reminders\n${types.includes('achievement_share') ? '✓' : '✗'} Achievement updates\n${types.includes('buddy_update') ? '✓' : '✗'} Buddy score updates\n${types.includes('daily_tip') ? '✓' : '✗'} Daily tips\n\nManage at: lumni.ai/settings`;
 					} else if (normalizedMsg.startsWith('tip')) {
 						const tipResponse = await generateStudyTip(messageContent);
 						response = tipResponse;
@@ -226,7 +226,7 @@ Provide a brief study tip or motivation (under 200 characters) related to matric
 			model: AI_MODELS.PRIMARY,
 		});
 
-		return `💡 Study Tip:\n\n${response}\n\nLearn more at matricmaster.ai`;
+		return `💡 Study Tip:\n\n${response}\n\nLearn more at lumni.ai`;
 	} catch {
 		return '💡 Tip: Break your study sessions into 25-minute focused chunks with 5-minute breaks!';
 	}

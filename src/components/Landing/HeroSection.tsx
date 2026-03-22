@@ -11,7 +11,6 @@ import { HugeiconsIcon } from '@hugeicons/react';
 import { m, useScroll, useTransform } from 'framer-motion';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { appConfig } from '@/app.config';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { useReducedMotion } from '@/hooks/use-reduced-motion';
@@ -37,30 +36,29 @@ export function HeroSection({ onAuthRequired }: HeroSectionProps) {
 					transition={{ type: 'spring', stiffness: 300, damping: 28 }}
 					className="space-y-8"
 				>
-					<Badge className="bg-tiimo-lavender/15 text-tiimo-lavender rounded-full px-4 py-1.5 text-[10px] font-medium">
+					<Badge className="bg-tiimo-lavender/15 text-tiimo-lavender rounded-full px-4 py-1.5 label-xs">
 						<HugeiconsIcon icon={SparklesIcon} className="w-3 h-3 mr-1.5" />
-						the #1 nsc prep platform
+						50,000+ students scored higher
 					</Badge>
 
 					<m.h1
 						initial={{ opacity: 0, y: 20 }}
 						animate={{ opacity: 1, y: 0 }}
 						transition={{ delay: 0.1 }}
-						className="heading-1 text-foreground leading-[0.95] text-balance"
+						className="text-display text-foreground leading-[0.95] text-balance"
 					>
-						master your
+						stop guessing.
 						<br />
-						<span className="text-tiimo-lavender">matric exams</span>
+						<span className="text-tiimo-lavender">start passing.</span>
 					</m.h1>
 
 					<m.p
 						initial={{ opacity: 0, y: 20 }}
 						animate={{ opacity: 1, y: 0 }}
 						transition={{ delay: 0.2 }}
-						className="text-lg md:text-xl text-muted-foreground max-w-lg text-pretty mx-auto lg:mx-0 leading-relaxed"
+						className="body-lg text-muted-foreground max-w-lg text-pretty mx-auto lg:mx-0"
 					>
-						practice past papers, get instant help when you're stuck, and track your progress. we
-						help you pass your matric.
+						AI answers to any past paper question. Find your weak spots. Pass matric the first time.
 					</m.p>
 				</m.div>
 
@@ -76,7 +74,7 @@ export function HeroSection({ onAuthRequired }: HeroSectionProps) {
 						onClick={() => onAuthRequired('/dashboard')}
 					>
 						<span className="flex items-center gap-2">
-							start learning
+							try free
 							<HugeiconsIcon icon={ArrowRight01Icon} className="w-5 h-5" />
 						</span>
 					</Button>
@@ -87,7 +85,7 @@ export function HeroSection({ onAuthRequired }: HeroSectionProps) {
 						onClick={() => router.push('/past-papers')}
 					>
 						<span className="flex items-center gap-2">
-							browse papers
+							find your papers
 							<HugeiconsIcon icon={BookOpen01Icon} className="w-5 h-5" />
 						</span>
 					</Button>
@@ -107,7 +105,7 @@ export function HeroSection({ onAuthRequired }: HeroSectionProps) {
 							>
 								<Image
 									src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=faces"
-									alt="user"
+									alt="student"
 									fill
 									sizes="40px"
 									className="object-cover"
@@ -117,8 +115,8 @@ export function HeroSection({ onAuthRequired }: HeroSectionProps) {
 						))}
 					</div>
 					<div className="text-left">
-						<p className="text-sm font-semibold font-numeric">50,000+ students</p>
-						<p className="text-xs text-muted-foreground text-lowercase">trust {appConfig.name}</p>
+						<p className="body-sm font-semibold font-numeric tabular-nums">50,000+ passed</p>
+						<p className="body-xs text-muted-foreground">join them today</p>
 					</div>
 				</m.div>
 			</div>
@@ -167,9 +165,7 @@ export function HeroSection({ onAuthRequired }: HeroSectionProps) {
 								<div className="h-1 w-12 bg-secondary rounded-full overflow-hidden">
 									<div className="h-full w-3/4 bg-subject-math rounded-full" />
 								</div>
-								<span className="text-[8px] font-medium mt-1 font-numeric tabular-nums">
-									math 92%
-								</span>
+								<span className="label-xs font-numeric tabular-nums">Math 92%</span>
 							</m.div>
 
 							<m.div
@@ -189,9 +185,7 @@ export function HeroSection({ onAuthRequired }: HeroSectionProps) {
 								<div className="h-1 w-12 bg-secondary rounded-full overflow-hidden">
 									<div className="h-full w-1/2 bg-subject-life rounded-full" />
 								</div>
-								<span className="text-[8px] font-medium mt-1 font-numeric tabular-nums">
-									physics 78%
-								</span>
+								<span className="label-xs font-numeric tabular-nums">Physics 78%</span>
 							</m.div>
 						</div>
 					</div>

@@ -8,7 +8,7 @@ import { z } from 'zod';
 import { isQuotaError } from './quota-error';
 
 const DEFAULT_MODEL = 'gemini-2.5-flash';
-const STORAGE_KEY = 'matricmaster_user_gemini_api_key';
+const STORAGE_KEY = 'lumni_user_gemini_api_key';
 
 export interface ImagePart {
 	type: 'image';

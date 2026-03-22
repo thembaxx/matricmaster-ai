@@ -29,7 +29,7 @@ let dbPromise: Promise<IDBPDatabase<TaskCacheDB>> | null = null;
 
 async function getTaskDB() {
 	if (!dbPromise) {
-		dbPromise = openDB<TaskCacheDB>('matricmaster-tasks', 1, {
+		dbPromise = openDB<TaskCacheDB>('lumni-tasks', 1, {
 			upgrade(db) {
 				const taskStore = db.createObjectStore('tasks', { keyPath: 'id' });
 				taskStore.createIndex('by-subject', 'subject');

@@ -25,7 +25,7 @@ export default function ExamTimerPage() {
 
 	const { startFocusMode, isFocusMode, state, completeExam } = useFocusMode();
 
-	const STORAGE_KEY = 'matricmaster_exam_timer_state';
+	const STORAGE_KEY = 'lumni_exam_timer_state';
 
 	useEffect(() => {
 		try {

@@ -6,7 +6,7 @@ dotenv.config();
 
 import { kv } from '@vercel/kv';
 
-const CACHE_PREFIX = 'matricmaster:faq:';
+const CACHE_PREFIX = 'lumni:faq:';
 
 const FAQ_SEEDS: Array<{ question: string; answer: string }> = [
 	{

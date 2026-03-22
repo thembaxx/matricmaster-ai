@@ -3,7 +3,7 @@ import { FocusContent } from '@/components/Layout/FocusContent';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
 export const metadata: Metadata = {
-	title: 'Privacy Policy | MatricMaster AI',
+	title: 'Privacy Policy | Lumni AI',
 	description: 'Learn how we collect, use, and protect your personal information.',
 };
 
@@ -18,7 +18,7 @@ export default function PrivacyPolicyPage() {
 						<section>
 							<h2 className="text-xl font-semibold mb-4">1. Introduction</h2>
 							<p className="text-muted-foreground">
-								MatricMaster AI ("we," "our," or "us") is committed to protecting your privacy. This
+								Lumni AI ("we," "our," or "us") is committed to protecting your privacy. This
 								Privacy Policy explains how we collect, use, disclose, and safeguard your
 								information when you use our educational platform.
 							</p>
@@ -112,8 +112,8 @@ export default function PrivacyPolicyPage() {
 							<h2 className="text-xl font-semibold mb-4">9. Contact us</h2>
 							<p className="text-muted-foreground">
 								If you have any questions about this Privacy Policy, please contact us at:{' '}
-								<a href="mailto:privacy@matricmaster.ai" className="text-primary hover:underline">
-									privacy@matricmaster.ai
+								<a href="mailto:privacy@lumni.ai" className="text-primary hover:underline">
+									privacy@lumni.ai
 								</a>
 							</p>
 						</section>

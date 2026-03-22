@@ -123,7 +123,7 @@ export function MobileNavDrawer({
 						</div>
 					</div>
 
-					<div className="flex-1 overflow-y-auto px-3 py-3">
+					<div className="flex-1 flex flex-col items-start overflow-y-auto px-3 py-3">
 						{filteredSections.map((section) => (
 							<div key={section.title} className="mb-4">
 								<p className="px-2 mb-1.5 text-[10px] font-medium tracking-wider text-sidebar-foreground/40 uppercase">
@@ -175,7 +175,7 @@ function MobileNavLink({
 			variant="ghost"
 			onClick={() => onNavigate(item.href)}
 			className={cn(
-				'w-full flex items-center gap-3 px-3 h-11 rounded-lg text-left',
+				'w-full flex items-center justify-start gap-3 px-3 h-11 rounded-lg text-left',
 				isActive
 					? 'bg-sidebar-primary/15 text-sidebar-primary font-medium'
 					: 'text-sidebar-foreground/80 hover:text-sidebar-foreground hover:bg-sidebar-accent/60'

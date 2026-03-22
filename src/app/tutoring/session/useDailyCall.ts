@@ -33,7 +33,7 @@ export function useDailyCall(roomName: string | null, token: string | null) {
 			return;
 		}
 
-		const domain = process.env.NEXT_PUBLIC_DAILY_DOMAIN || 'matricmaster.daily.co';
+		const domain = process.env.NEXT_PUBLIC_DAILY_DOMAIN || 'lumni.daily.co';
 		const url = `https://${domain}/${roomName}`;
 		setRoomUrl(url);
 

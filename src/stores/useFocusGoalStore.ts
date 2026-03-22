@@ -103,7 +103,7 @@ export const useFocusGoalStore = create<FocusGoalStore>()(
 			},
 		}),
 		{
-			name: 'matricmaster-focus-goals',
+			name: 'lumni-focus-goals',
 		}
 	)
 );

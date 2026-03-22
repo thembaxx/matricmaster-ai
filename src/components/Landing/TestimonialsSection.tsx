@@ -4,7 +4,6 @@ import { StarIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { m } from 'framer-motion';
 import Image from 'next/image';
-import { appConfig } from '@/app.config';
 import { LANDING_TESTIMONIALS } from '@/data/landing';
 import { STAGGER_CONTAINER, STAGGER_ITEM } from '@/lib/animation-presets';
 
@@ -21,11 +20,12 @@ export function TestimonialsSection() {
 				className="text-center mb-16"
 			>
 				<h2 className="heading-2 mb-4">
-					Loved by
-					<span className="text-tiimo-lavender"> thousands</span>
+					Proven by
+					<span className="text-tiimo-lavender"> thousands</span> of NSC learners
 				</h2>
 				<p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-					See what South African students are saying about {appConfig.name}.
+					See how Lumni helped South African students achieve their matric goals — and how you can
+					too.
 				</p>
 			</m.div>
 

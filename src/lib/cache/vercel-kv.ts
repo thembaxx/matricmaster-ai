@@ -1,6 +1,6 @@
 import { kv } from '@vercel/kv';
 
-const CACHE_PREFIX = 'matricmaster:faq:';
+const CACHE_PREFIX = 'lumni:faq:';
 
 export async function getCachedResponse(key: string): Promise<string | null> {
 	try {

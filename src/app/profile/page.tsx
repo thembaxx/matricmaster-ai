@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic';
 import { appConfig } from '@/app.config';
 import { ProfileSkeleton } from '@/components/ProfileSkeleton';
 
-const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://matricmaster.ai';
+const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://lumni.ai';
 
 export const metadata: Metadata = {
 	title: `Profile | ${appConfig.name}`,

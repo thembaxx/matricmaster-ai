@@ -45,7 +45,7 @@ export async function createStudyRoom(
 		};
 	}
 
-	const domain = process.env.NEXT_PUBLIC_DAILY_DOMAIN || 'matricmaster';
+	const domain = process.env.NEXT_PUBLIC_DAILY_DOMAIN || 'lumni';
 	return {
 		roomName,
 		roomUrl: `https://${domain}.daily.co/${roomName}`,
@@ -70,7 +70,7 @@ export async function getStudyRoom(roomName: string): Promise<StudyRoomInfo> {
 		};
 	}
 
-	const domain = process.env.NEXT_PUBLIC_DAILY_DOMAIN || 'matricmaster';
+	const domain = process.env.NEXT_PUBLIC_DAILY_DOMAIN || 'lumni';
 	return {
 		roomName,
 		roomUrl: `https://${domain}.daily.co/${roomName}`,

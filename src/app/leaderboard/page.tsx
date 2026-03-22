@@ -8,7 +8,7 @@ const LeaderboardScreen = dynamic(() => import('@/screens/Leaderboard'), {
 	loading: () => <div className="min-h-[60vh]" />,
 });
 
-const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://matricmaster.ai';
+const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://lumni.ai';
 
 export const metadata: Metadata = {
 	title: `Leaderboard | ${appConfig.name}`,

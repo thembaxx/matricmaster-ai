@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from 'react';
 
-const STORAGE_KEY = 'matricmaster_user_gemini_api_key';
+const STORAGE_KEY = 'lumni_user_gemini_api_key';
 
 export interface UseUserApiKeyReturn {
 	apiKey: string | null;

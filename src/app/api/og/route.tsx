@@ -94,7 +94,7 @@ export async function GET(request: NextRequest) {
 						fontFamily: 'Inter',
 					}}
 				>
-					<span>matricmaster.ai</span>
+					<span>lumni.ai</span>
 					<span>•</span>
 					<span>Grade 12 NSC</span>
 					<span>•</span>

@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 
 import { appConfig } from '@/app.config';
 
-const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://matricmaster.ai';
+const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://lumni.ai';
 
 export const metadata: Metadata = {
 	title: `Study Helper | ${appConfig.name}`,
