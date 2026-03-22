@@ -1,27 +1,19 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import { m } from 'framer-motion';
-import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
 import { AdaptiveScheduleBanner } from '@/components/Dashboard/AdaptiveScheduleBanner';
 import { AITutorNudge } from '@/components/Dashboard/AITutorNudge';
 import { BriefingGreeting } from '@/components/Dashboard/BriefingGreeting';
-import { DailyMission } from '@/components/Dashboard/DailyMission';
-import { FocusAreasWidget } from '@/components/Dashboard/FocusAreasWidget';
-import { GrowthInsights } from '@/components/Dashboard/GrowthInsights';
-import { RecommendedSection } from '@/components/Dashboard/RecommendedSection';
+import { MoreTab } from '@/components/Dashboard/MoreTab';
+import { ProgressTab } from '@/components/Dashboard/ProgressTab';
 import { DEMO_TASKS } from '@/components/Dashboard/StatsGrid';
-import { SubjectGrid } from '@/components/Dashboard/SubjectGridV2';
-import { type StudyTask, TaskCard } from '@/components/Dashboard/TaskCardV2';
-import { TaskSection } from '@/components/Dashboard/TaskSectionV2';
-import { TipOfTheDay } from '@/components/Dashboard/TipOfTheDay';
-import { UniversityGoalCard } from '@/components/Dashboard/UniversityGoalCard';
-import { XpHeader } from '@/components/Gamification/XpHeader';
+import type { StudyTask } from '@/components/Dashboard/TaskCardV2';
+import { TasksTab } from '@/components/Dashboard/TasksTab';
+import { TodayTab, TodayTabHeader } from '@/components/Dashboard/TodayTab';
 import { FocusContent } from '@/components/Layout/FocusContent';
 import { TimelineSidebar } from '@/components/Layout/TimelineSidebar';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { MistakeBank } from '@/components/Widgets/MistakeBank';
 import type { ACHIEVEMENTS } from '@/constants/achievements';
 import {
 	type BriefingData,
@@ -32,48 +24,6 @@ import {
 } from '@/constants/mock-dashboard';
 import type { UserAchievement } from '@/lib/db/achievement-actions';
 import { useDashboardProgress } from '@/stores/useProgressStore';
-
-const GrowthMap = dynamic(
-	() => import('@/components/Dashboard/GrowthMap').then((mod) => ({ default: mod.GrowthMap })),
-	{ ssr: false, loading: () => <div className="h-64 animate-pulse bg-muted rounded-lg" /> }
-);
-
-const BuddyPanel = dynamic(
-	() => import('@/components/StudyBuddy/BuddyPanel').then((mod) => ({ default: mod.BuddyPanel })),
-	{ ssr: false, loading: () => <div className="h-48 animate-pulse bg-muted rounded-lg" /> }
-);
-
-const KnowledgeHeatmap = dynamic(
-	() =>
-		import('@/components/Dashboard/KnowledgeHeatmap').then((mod) => ({
-			default: mod.KnowledgeHeatmap,
-		})),
-	{ ssr: false, loading: () => <div className="h-64 animate-pulse bg-muted rounded-lg" /> }
-);
-
-const ActivityFeed = dynamic(
-	() =>
-		import('@/components/Dashboard/ActivityFeed').then((mod) => ({
-			default: mod.ActivityFeed,
-		})),
-	{ ssr: false, loading: () => <div className="h-48 animate-pulse bg-muted rounded-lg" /> }
-);
-
-const WeeklyChallenge = dynamic(
-	() =>
-		import('@/components/Dashboard/WeeklyChallenge').then((mod) => ({
-			default: mod.WeeklyChallenge,
-		})),
-	{ ssr: false, loading: () => <div className="h-48 animate-pulse bg-muted rounded-lg" /> }
-);
-
-const NSCCountdownCard = dynamic(
-	() =>
-		import('@/components/ExamTimer/NSCCountdownCard').then((mod) => ({
-			default: mod.NSCCountdownCard,
-		})),
-	{ ssr: false, loading: () => <div className="h-32 animate-pulse bg-muted rounded-lg" /> }
-);
 
 interface DashboardProps {
 	initialStreak?: DashboardInitialStreak | null;
@@ -257,150 +207,33 @@ export default function Dashboard({
 						</TabsList>
 
 						<TabsContent value="today" className="mt-0">
-							<m.div layout className="space-y-6 pb-36">
-								<div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-									<DailyMission />
-									<div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
-										<UniversityGoalCard />
-										<NSCCountdownCard />
-									</div>
-								</div>
-								<XpHeader
-									variant="full"
-									initialAchievements={achievements}
-									initialStreak={{ currentStreak: streak.currentStreak }}
-								/>
-							</m.div>
+							<TodayTabHeader achievements={achievements} streak={streak} />
+							<TodayTab achievements={achievements} streak={streak} />
 						</TabsContent>
 
 						<TabsContent value="progress" className="mt-0">
-							<m.div layout className="space-y-6 pb-36">
-								{weaknessData.length > 0 && (
-									<div className="space-y-6">
-										<div className="tiimo-card p-6">
-											<h3 className="heading-4 mb-1 text-balance">Growth Map</h3>
-											<p className="text-sm text-muted-foreground mb-4">
-												Topics where you need the most practice
-											</p>
-											<GrowthMap data={weaknessData} />
-										</div>
-										<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-											<GrowthInsights
-												insights={growthInsights}
-												weakTopics={weaknessData.slice(0, 3)}
-											/>
-											<TipOfTheDay weakTopics={weakTopicNames} />
-										</div>
-									</div>
-								)}
-								<WeeklyChallenge
-									initialProgress={
-										progress
-											? {
-													totalQuestionsAttempted: progress.totalQuestionsAttempted,
-													totalCorrect: progress.totalCorrect,
-													totalMarksEarned: progress.totalMarksEarned,
-													accuracy: progress.accuracy,
-													streakDays: progress.streakDays,
-													recentSessions: progress.recentSessions,
-												}
-											: undefined
-									}
-								/>
-							</m.div>
+							<ProgressTab
+								weaknessData={weaknessData}
+								growthInsights={growthInsights}
+								progress={progress ?? null}
+								weakTopicNames={weakTopicNames}
+							/>
 						</TabsContent>
 
 						<TabsContent value="tasks" className="mt-0">
-							<m.div layout className="space-y-6 pb-36">
-								<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-									<MistakeBank initialCount={mistakeCount ?? 0} />
-									<FocusAreasWidget />
-								</div>
-								<div className="space-y-6">
-									<TaskSection
-										title="High Priority"
-										priority="high"
-										expanded={expanded.high}
-										onToggle={() => setExpanded((p) => ({ ...p, high: !p.high }))}
-									>
-										{tasks.high.map((task, index) => (
-											<TaskCard
-												key={task.id}
-												task={task}
-												index={index}
-												onToggle={() => toggleTask(task.id, 'high')}
-											/>
-										))}
-									</TaskSection>
-									<TaskSection
-										title="Quick Tasks"
-										priority="medium"
-										expanded={expanded.medium}
-										onToggle={() => setExpanded((p) => ({ ...p, medium: !p.medium }))}
-									>
-										{tasks.medium.map((task, index) => (
-											<TaskCard
-												key={task.id}
-												task={task}
-												index={index}
-												onToggle={() => toggleTask(task.id, 'medium')}
-											/>
-										))}
-									</TaskSection>
-								</div>
-							</m.div>
+							<TasksTab
+								tasks={tasks}
+								expanded={expanded}
+								onToggleTask={toggleTask}
+								onToggleSection={(p) =>
+									setExpanded((prev) => ({ ...prev, [p]: !prev[p as keyof typeof prev] }))
+								}
+								mistakeCount={mistakeCount ?? 0}
+							/>
 						</TabsContent>
 
 						<TabsContent value="more" className="mt-0">
-							<m.div layout className="space-y-6 pb-36">
-								<m.section
-									initial={{ opacity: 0, y: 20 }}
-									animate={{ opacity: 1, y: 0 }}
-									transition={{ delay: 0.55 }}
-									className="space-y-6"
-								>
-									<m.h2
-										initial={{ opacity: 0, x: -20 }}
-										animate={{ opacity: 1, x: 0 }}
-										className="text-xl font-semibold text-foreground"
-									>
-										Your Subjects
-									</m.h2>
-									<SubjectGrid />
-								</m.section>
-
-								<m.section
-									initial={{ opacity: 0, y: 20 }}
-									animate={{ opacity: 1, y: 0 }}
-									transition={{ delay: 0.55 }}
-									className="space-y-6"
-								>
-									<BuddyPanel />
-								</m.section>
-
-								<m.section
-									initial={{ opacity: 0, y: 20 }}
-									animate={{ opacity: 1, y: 0 }}
-									transition={{ delay: 0.58 }}
-									className="space-y-6"
-								>
-									<KnowledgeHeatmap compact />
-								</m.section>
-
-								<RecommendedSection />
-
-								<section className="space-y-6">
-									<m.h2
-										initial={{ opacity: 0, x: -20 }}
-										animate={{ opacity: 1, x: 0 }}
-										transition={{ delay: 0.75 }}
-										className="text-xl font-semibold text-foreground"
-									>
-										Recent activity
-									</m.h2>
-									<ActivityFeed />
-								</section>
-							</m.div>
+							<MoreTab />
 						</TabsContent>
 					</Tabs>
 				</div>

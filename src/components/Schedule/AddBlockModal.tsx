@@ -25,6 +25,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
+import { formReducer, getInitialFormState } from '@/hooks/useAddBlockForm';
 import {
 	createCalendarEventAction,
 	getEnrolledSubjectsAction,
@@ -47,99 +48,6 @@ interface AddBlockModalProps {
 	onOpenChange: (open: boolean) => void;
 	onSuccess?: () => void;
 	editMode?: BlockData | null;
-}
-
-function getCurrentDateString(): string {
-	const today = new Date();
-	const year = today.getFullYear();
-	const month = String(today.getMonth() + 1).padStart(2, '0');
-	const day = String(today.getDate()).padStart(2, '0');
-	return `${year}-${month}-${day}`;
-}
-
-function formatTimeFromDate(date: Date): string {
-	const hours = String(date.getHours()).padStart(2, '0');
-	const minutes = String(date.getMinutes()).padStart(2, '0');
-	return `${hours}:${minutes}`;
-}
-
-function formatDateFromDate(date: Date): string {
-	const year = date.getFullYear();
-	const month = String(date.getMonth() + 1).padStart(2, '0');
-	const day = String(date.getDate()).padStart(2, '0');
-	return `${year}-${month}-${day}`;
-}
-
-type FormState = {
-	title: string;
-	date: string;
-	startTime: string;
-	endTime: string;
-	repeatable: boolean;
-	subjectId: string;
-};
-
-type FormAction =
-	| { type: 'SET_TITLE'; payload: string }
-	| { type: 'SET_DATE'; payload: string }
-	| { type: 'SET_START_TIME'; payload: string }
-	| { type: 'SET_END_TIME'; payload: string }
-	| { type: 'SET_REPEATABLE'; payload: boolean }
-	| { type: 'SET_SUBJECT_ID'; payload: string }
-	| { type: 'RESET_FORM' }
-	| { type: 'INIT_FROM_BLOCK'; payload: BlockData };
-
-function getInitialFormState(editMode: BlockData | null | undefined): FormState {
-	if (editMode) {
-		const start = new Date(editMode.startTime);
-		const end = new Date(editMode.endTime);
-		return {
-			title: editMode.title,
-			date: formatDateFromDate(start),
-			startTime: formatTimeFromDate(start),
-			endTime: formatTimeFromDate(end),
-			repeatable: editMode.eventType === 'recurring',
-			subjectId: editMode.subjectId ? String(editMode.subjectId) : '',
-		};
-	}
-	return {
-		title: '',
-		date: getCurrentDateString(),
-		startTime: '14:00',
-		endTime: '15:30',
-		repeatable: false,
-		subjectId: '',
-	};
-}
-
-function formReducer(state: FormState, action: FormAction): FormState {
-	switch (action.type) {
-		case 'SET_TITLE':
-			return { ...state, title: action.payload };
-		case 'SET_DATE':
-			return { ...state, date: action.payload };
-		case 'SET_START_TIME':
-			return { ...state, startTime: action.payload };
-		case 'SET_END_TIME':
-			return { ...state, endTime: action.payload };
-		case 'SET_REPEATABLE':
-			return { ...state, repeatable: action.payload };
-		case 'SET_SUBJECT_ID':
-			return { ...state, subjectId: action.payload };
-		case 'RESET_FORM':
-			return {
-				title: '',
-				date: getCurrentDateString(),
-				startTime: '14:00',
-				endTime: '15:30',
-				repeatable: false,
-				subjectId: '',
-			};
-		case 'INIT_FROM_BLOCK':
-			return getInitialFormState(action.payload);
-		default:
-			return state;
-	}
 }
 
 function useMediaQuery(query: string): boolean {
