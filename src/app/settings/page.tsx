@@ -37,6 +37,10 @@ const SecurityTab = dynamic(
 	() => import('@/components/Settings/SecurityTab').then((mod) => ({ default: mod.SecurityTab })),
 	{ ssr: false }
 );
+const AppPreferencesTab = dynamic(
+	() => import('@/components/Settings/AppPreferencesTab').then((mod) => ({ default: mod.AppPreferencesTab })),
+	{ ssr: false }
+);
 
 export default function SettingsPage() {
 	const { session } = useProfileSettings();
@@ -90,7 +94,7 @@ export default function SettingsPage() {
 				<p className="text-muted-foreground mb-8">Manage your account settings and preferences</p>
 
 				<Tabs defaultValue="account" className="space-y-6">
-					<TabsList className="grid w-full grid-cols-4">
+					<TabsList className="grid w-full grid-cols-5">
 						<TabsTrigger value="account">
 							<HugeiconsIcon icon={User} className="h-4 w-4 mr-2" />
 							Account
@@ -106,6 +110,10 @@ export default function SettingsPage() {
 						<TabsTrigger value="privacy">
 							<HugeiconsIcon icon={LockIcon} className="h-4 w-4 mr-2" />
 							Privacy
+						</TabsTrigger>
+						<TabsTrigger value="app-preferences">
+							<HugeiconsIcon icon={Shield01Icon} className="h-4 w-4 mr-2" />
+							Preferences
 						</TabsTrigger>
 					</TabsList>
 
@@ -170,6 +178,10 @@ export default function SettingsPage() {
 							handleDeleteAccount={privacy.handleDeleteAccount}
 							isDeletingAccount={privacy.isDeletingAccount}
 						/>
+					</TabsContent>
+
+					<TabsContent value="app-preferences">
+						<AppPreferencesTab />
 					</TabsContent>
 				</Tabs>
 			</div>

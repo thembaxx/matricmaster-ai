@@ -41,6 +41,8 @@ function useMediaQuery(query: string) {
 	return matches;
 }
 
+import { useSettings } from '@/contexts/SettingsContext';
+
 export function SchedulePathModal({
 	open,
 	onOpenChange,
@@ -49,6 +51,7 @@ export function SchedulePathModal({
 	onScheduleGenerated,
 }: SchedulePathModalProps) {
 	const isDesktop = useMediaQuery('(min-width: 1024px)');
+	const { targetAPS } = useSettings();
 
 	const [selectedDays, setSelectedDays] = useState<string[]>(['Monday', 'Wednesday', 'Friday']);
 	const [startHour, setStartHour] = useState(16);
@@ -111,6 +114,7 @@ export function SchedulePathModal({
 					steps,
 					availableHours,
 					loadSheddingSchedule: includeLoadShedding ? loadSheddingSlots : undefined,
+					targetAPS,
 				}),
 			});
 

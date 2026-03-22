@@ -11,6 +11,7 @@ export interface ScheduleRequest {
 		endHour: number;
 	}[];
 	loadSheddingSchedule?: LoadSheddingSlot[];
+	targetAPS?: number;
 }
 
 export async function POST(request: NextRequest) {
@@ -35,7 +36,12 @@ export async function POST(request: NextRequest) {
 			);
 		}
 
-		const result = generatePathSchedule(body.steps, body.availableHours, body.loadSheddingSchedule);
+		const result = generatePathSchedule(
+			body.steps,
+			body.availableHours,
+			body.loadSheddingSchedule,
+			body.targetAPS
+		);
 
 		return NextResponse.json({
 			success: true,

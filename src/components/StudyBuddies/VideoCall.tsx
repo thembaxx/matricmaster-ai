@@ -16,6 +16,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { useSettings } from '@/contexts/SettingsContext';
 
 interface Participant {
 	id: string;
@@ -51,8 +52,9 @@ export function VideoCall({
 	onLeave,
 }: VideoCallProps) {
 	const router = useRouter();
+	const { dataSaverMode } = useSettings();
 	const [isMuted, setIsMuted] = useState(false);
-	const [isVideoOn, setIsVideoOn] = useState(true);
+	const [isVideoOn, setIsVideoOn] = useState(!dataSaverMode);
 	const [isScreenSharing, setIsScreenSharing] = useState(false);
 	const [elapsed, setElapsed] = useState(0);
 	const [showSidebar, setShowSidebar] = useState(true);

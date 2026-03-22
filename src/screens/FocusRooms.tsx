@@ -105,6 +105,22 @@ export default function FocusRooms() {
 							<HugeiconsIcon icon={UserGroupIcon} className="w-4 h-4 mr-2" />
 							Group Sprint
 						</Button>
+						<Button
+							variant="outline"
+							size="sm"
+							onClick={() => router.push('/video-call')}
+							className="rounded-full"
+						>
+							Join Video Call
+						</Button>
+						<Button
+							variant="outline"
+							size="sm"
+							onClick={() => router.push('/exam-timer')}
+							className="rounded-full border-dashed hover:bg-tiimo-orange/10 hover:text-tiimo-orange"
+						>
+							Start Exam Timer
+						</Button>
 					</div>
 				</div>
 

@@ -17,6 +17,7 @@ export async function POST(req: NextRequest) {
 		const formData = await req.formData();
 		const image = formData.get('image') as File;
 		const subject = (formData.get('subject') as string) || 'General';
+		const languageContext = (formData.get('language') as string) || 'en';
 
 		if (!image) {
 			return NextResponse.json({ error: 'No image provided' }, { status: 400 });
@@ -45,7 +46,12 @@ Analyze the image and extract all questions.`;
         4. If it's a multiple choice question, explain why the correct option is right and others are wrong.
         Format the response in clear Markdown.`;
 
-		const solution = await generateWithMultimodal(solutionPrompt, [
+		// Enforce language if Afrikaans is selected
+		const languageBoundPrompt = languageContext === 'af' 
+			? solutionPrompt + '\n\nIMPORTANT: You MUST provide the final step-by-step solution entirely in Afrikaans. Disregard if the original image is in English; the explanation must be Afrikaans.' 
+			: solutionPrompt;
+
+		const solution = await generateWithMultimodal(languageBoundPrompt, [
 			{ base64, mimeType: image.type },
 		]);
 

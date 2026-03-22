@@ -56,7 +56,8 @@ const BLOCK_TYPE_MAP: Record<StudyStep['type'], StudyBlock['type']> = {
 export function generatePathSchedule(
 	pathSteps: StudyStep[],
 	availableHours: AvailableHours[],
-	userLoadSheddingSchedule?: LoadSheddingSlot[]
+	userLoadSheddingSchedule?: LoadSheddingSlot[],
+	targetAPS?: number
 ): PathScheduleResult {
 	const blocks: StudyBlock[] = [];
 	const conflicts: ScheduleConflict[] = [];
@@ -68,7 +69,16 @@ export function generatePathSchedule(
 	let currentDayIndex = 0;
 	let currentStartHour = availableHours[0]?.startHour ?? 16;
 
-	for (const step of pathSteps) {
+	// Scale practice duration if target APS is extremely high (e.g. Med/Engineering)
+	const adjustedSteps = pathSteps.map((step) => {
+		let duration = step.durationMinutes;
+		if (targetAPS && targetAPS >= 35 && step.type === 'practice') {
+			duration = Math.ceil(duration * 1.25);
+		}
+		return { ...step, durationMinutes: duration };
+	});
+
+	for (const step of adjustedSteps) {
 		let scheduled = false;
 		let attempts = 0;
 		const maxAttempts = availableHours.length * 7;

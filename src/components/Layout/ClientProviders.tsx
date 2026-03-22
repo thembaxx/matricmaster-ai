@@ -8,6 +8,7 @@ import { TooltipProvider } from '@/components/ui/tooltip';
 import { FocusModeProvider } from '@/contexts/FocusModeContext';
 import { GeminiQuotaModalProvider } from '@/contexts/GeminiQuotaModalContext';
 import { OfflineProvider } from '@/contexts/OfflineContext';
+import { SettingsProvider } from '@/contexts/SettingsContext';
 import { AblyClientProvider } from '@/lib/ably/provider';
 import { queryClient } from '@/lib/api/client';
 import { MapProvider } from '@/lib/map-provider';
@@ -32,7 +33,9 @@ export function ClientProviders({ children }: ClientProvidersProps) {
 										<OfflineProvider>
 											<FocusModeProvider>
 												<MapProvider>
-													<AppLayout>{children}</AppLayout>
+													<SettingsProvider>
+														<AppLayout>{children}</AppLayout>
+													</SettingsProvider>
 												</MapProvider>
 											</FocusModeProvider>
 										</OfflineProvider>
