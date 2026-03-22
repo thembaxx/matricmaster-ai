@@ -27,7 +27,7 @@ interface TeamGoalCardProps {
 export function TeamGoalCard({ goal }: TeamGoalCardProps) {
 	const progress = Math.min(100, (goal.current / goal.target) * 100);
 	const isCompleted = goal.current >= goal.target;
-	const isActive = goal.status === 'active';
+	const isActive = goal.isActive;
 
 	return (
 		<m.div key={goal.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
