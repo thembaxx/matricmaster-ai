@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from 'react';
 
-const STORAGE_KEY = 'matricmaster-feature-tooltips-seen';
+const STORAGE_KEY = 'lumni-feature-tooltips-seen';
 
 interface SeenTooltips {
 	[key: string]: boolean;

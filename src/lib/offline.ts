@@ -6,7 +6,7 @@ export interface CachedResource {
 }
 
 const CACHE_VERSION = 'v1';
-const CACHE_NAME = `matricmaster-${CACHE_VERSION}`;
+const CACHE_NAME = `lumni-${CACHE_VERSION}`;
 
 const STATIC_ASSETS = ['/', '/dashboard', '/flashcards', '/study-plan', '/offline'];
 
@@ -79,7 +79,7 @@ export async function clearOldCaches(): Promise<void> {
 
 	try {
 		const keys = await caches.keys();
-		const oldKeys = keys.filter((key) => !key.startsWith(`matricmaster-${CACHE_VERSION}`));
+		const oldKeys = keys.filter((key) => !key.startsWith(`lumni-${CACHE_VERSION}`));
 
 		await Promise.all(oldKeys.map((key) => caches.delete(key)));
 		console.log('Old caches cleared');
@@ -96,7 +96,7 @@ export async function getCacheSize(): Promise<number> {
 		let totalSize = 0;
 
 		for (const key of keys) {
-			if (key.startsWith('matricmaster-')) {
+			if (key.startsWith('lumni-')) {
 				const cache = await caches.open(key);
 				const requests = await cache.keys();
 

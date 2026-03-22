@@ -8,7 +8,7 @@ const TeamGoalsScreen = dynamic(() => import('@/screens/TeamGoals'), {
 	loading: () => <div className="min-h-[60vh]" />,
 });
 
-const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://matricmaster.ai';
+const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://lumni.ai';
 
 export const metadata: Metadata = {
 	title: `Team Goals | ${appConfig.name}`,

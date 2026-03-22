@@ -9,7 +9,7 @@ import {
 	type Topic,
 } from '@/data/curriculum';
 
-const STORAGE_KEY = 'matricmaster-custom-topics';
+const STORAGE_KEY = 'lumni-custom-topics';
 
 export interface CurriculumStats {
 	totalTopics: number;

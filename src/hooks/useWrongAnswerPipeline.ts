@@ -36,7 +36,7 @@ export interface UseWrongAnswerPipelineReturn {
 	enableAutoGeneration: () => void;
 }
 
-const STORAGE_KEY = 'matricmaster_auto_flashcard_generation';
+const STORAGE_KEY = 'lumni_auto_flashcard_generation';
 
 export function useWrongAnswerPipeline(
 	options: UseWrongAnswerPipelineOptions = {}

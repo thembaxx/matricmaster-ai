@@ -23,7 +23,7 @@ export interface WhatsAppMessageContext {
 	score?: number;
 }
 
-const GREETING = `Hi! I'm your MatricMaster Study Buddy.
+const GREETING = `Hi! I'm your Lumni Study Buddy.
 
 I can help you with:
 - Study questions
@@ -33,7 +33,7 @@ I can help you with:
 
 Just ask me anything!`;
 
-const FALLBACK = `That's a great question! For detailed answers and practice, check the MatricMaster app at https://matricmaster.ai
+const FALLBACK = `That's a great question! For detailed answers and practice, check the Lumni app at https://lumni.ai
 
 Need more help? Ask me another question!`;
 
@@ -88,7 +88,7 @@ export async function handleWhatsAppMessage(
 	if (normalized.includes('unsubscribe') || normalized.includes('stop')) {
 		return `You've been unsubscribed from WhatsApp notifications.
 
-To re-subscribe, visit your settings at matricmaster.ai/settings`;
+To re-subscribe, visit your settings at lumni.ai/settings`;
 	}
 
 	const cached = await getCachedResponse(normalized);
@@ -151,12 +151,12 @@ export async function sendStudyReminder(
 		if (!prefs?.notificationTypes?.includes('study_reminder')) return false;
 	}
 
-	const reminder = `Study Reminder from MatricMaster!
+	const reminder = `Study Reminder from Lumni!
 
 Time to practice some questions today.
 ${ctx?.topic ? `${ctx.topic} needs attention!` : 'Keep your streak going!'}
 
-Visit matricmaster.ai to continue learning.`;
+Visit lumni.ai to continue learning.`;
 
 	return rateLimitedSend(to, reminder);
 }
@@ -178,7 +178,7 @@ Quizzes: ${stats.quizzesCompleted} completed
 Streak: ${stats.streakDays} days 🔥
 Topics Improved: ${stats.topicsImproved.slice(0, 3).join(', ') || 'None yet'}
 
-Keep it up! Visit matricmaster.ai`;
+Keep it up! Visit lumni.ai`;
 
 	return rateLimitedSend(to, report);
 }
@@ -193,7 +193,7 @@ export async function sendRevisionDueNotification(
 ${subject}: ${topic} needs review.
 Don't lose your progress - practice now!
 
-matricmaster.ai/review`;
+lumni.ai/review`;
 
 	return rateLimitedSend(to, notification);
 }
@@ -211,7 +211,7 @@ ${subject}: ${topic}
 Current understanding: ${Math.round(score * 100)}%
 
 Your child may need extra help with this topic.
-matricmaster.ai/ai-tutor`;
+lumni.ai/ai-tutor`;
 
 	await Promise.all([rateLimitedSend(to, alert), rateLimitedSend(parentNumber, alert)]);
 }
@@ -227,7 +227,7 @@ Focus on this subject now.`
 			: `📅 ${exam.subject} exam: ${exam.daysUntil} days away
 Start preparing early!
 
-matricmaster.ai/planner`;
+lumni.ai/planner`;
 
 	return rateLimitedSend(to, message);
 }
@@ -242,7 +242,7 @@ export async function sendAchievementNotification(
 ${achievement.title}
 ${achievement.description}
 
-View all achievements at matricmaster.ai/achievements`;
+View all achievements at lumni.ai/achievements`;
 
 	return rateLimitedSend(to, notification);
 }
@@ -258,7 +258,7 @@ export async function sendBuddyScoreNotification(
 
 They scored ${Math.round(score * 100)}%
 
-Can you catch up? Head to matricmaster.ai to try again!`;
+Can you catch up? Head to lumni.ai to try again!`;
 
 	return rateLimitedSend(to, notification);
 }
@@ -268,14 +268,14 @@ export async function sendDailyTip(to: string, tip: string): Promise<boolean> {
 
 ${tip}
 
-Learn more at matricmaster.ai`;
+Learn more at lumni.ai`;
 
 	return rateLimitedSend(to, message);
 }
 
 export async function sendWelcomeMessage(to: string, userName?: string): Promise<boolean> {
 	const name = userName ? `, ${userName}` : '';
-	const message = `Welcome to MatricMaster AI${name}! 🎓
+	const message = `Welcome to Lumni AI${name}! 🎓
 
 You're now connected to WhatsApp notifications.
 
@@ -291,7 +291,7 @@ Reply "HELP" for assistance or "STOP" to unsubscribe.`;
 }
 
 export async function sendVerificationCode(to: string, code: string): Promise<boolean> {
-	const message = `Your MatricMaster verification code is: ${code}
+	const message = `Your Lumni verification code is: ${code}
 
 This code expires in 10 minutes.
 

@@ -342,7 +342,7 @@ export async function seedDatabase() {
 		console.log(`✓ ${papersCount} new Past Papers seeded`);
 
 		// Seed Test User
-		const testEmail = 'student@matricmaster.ai';
+		const testEmail = 'student@lumni.ai';
 		console.log('Checking for test user...');
 
 		const existingUser = await useDb
@@ -362,7 +362,7 @@ export async function seedDatabase() {
 						name: 'Test Student',
 					},
 				});
-				console.log('✓ Test user seeded via Auth API: student@matricmaster.ai / password123');
+				console.log('✓ Test user seeded via Auth API: student@lumni.ai / password123');
 			} catch (_authError) {
 				console.warn('⚠️ Auth API failed, attempting direct database insertion...');
 				try {
@@ -378,9 +378,7 @@ export async function seedDatabase() {
 						createdAt: new Date(),
 						updatedAt: new Date(),
 					});
-					console.log(
-						'✓ Test user seeded directly to database: student@matricmaster.ai / password123'
-					);
+					console.log('✓ Test user seeded directly to database: student@lumni.ai / password123');
 				} catch (dbError) {
 					console.debug(
 						'❌ Failed to seed user via database:',

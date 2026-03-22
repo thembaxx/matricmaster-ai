@@ -8,7 +8,7 @@ const LessonsScreen = dynamic(() => import('@/screens/Lessons'), {
 	loading: () => <div className="min-h-[60vh]" />,
 });
 
-const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://matricmaster.ai';
+const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://lumni.ai';
 
 export const metadata: Metadata = {
 	title: `Lessons | ${appConfig.name} AI`,

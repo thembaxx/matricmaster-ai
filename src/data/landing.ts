@@ -16,83 +16,89 @@ import {
 export const LANDING_FEATURES = [
 	{
 		icon: MagicWand01Icon,
-		title: 'AI Study Buddy',
-		description: 'Stuck on a question? Get instant help from your personal AI tutor, anytime.',
+		title: 'Homework Helper',
+		description:
+			'Get help the moment you get stuck. Ask questions and see clear explanations instantly.',
 		color: 'bg-tiimo-lavender/10 text-tiimo-lavender',
 	},
 	{
 		icon: Task02Icon,
-		title: 'Past Papers',
-		description: 'Practice with real NSC exam questions. Full solutions included.',
+		title: 'Real Exam Practice',
+		description:
+			'Master past NSC papers with full step-by-step solutions. Know exactly where you went wrong.',
 		color: 'bg-subject-math/10 text-subject-math',
 	},
 	{
 		icon: Timer02Icon,
-		title: 'Track Progress',
-		description: "Study streaks, XP, and achievements. See how far you've come.",
+		title: 'See Your Growth',
+		description: 'Watch your streak grow and earn rewards. Track the progress you make every day.',
 		color: 'bg-subject-life/10 text-subject-life',
 	},
 	{
 		icon: VoiceIcon,
-		title: 'Voice Tutor',
-		description: 'Learn hands-free with voice-powered explanations and study sessions.',
+		title: 'Listen & Learn',
+		description: 'Hear explanations out loud. Perfect for revision while you commute or do chores.',
 		color: 'bg-subject-physics/10 text-subject-physics',
 	},
 	{
 		icon: Camera01Icon,
-		title: 'Snap & Solve',
-		description: 'Take a photo of any question and get instant step-by-step solutions.',
+		title: 'Photo Question Solve',
+		description: 'Snap a pic of any exam question. Get clear step-by-step solutions in seconds.',
 		color: 'bg-tiimo-teal/10 text-tiimo-teal',
 	},
 	{
 		icon: SparklesIcon,
-		title: 'Essay Grader',
-		description: 'AI-powered essay analysis with detailed feedback and improvement tips.',
+		title: 'Essay Feedback',
+		description:
+			'Submit your essays and get specific feedback. Learn exactly how to write better answers.',
 		color: 'bg-tiimo-blue/10 text-tiimo-blue',
 	},
 	{
 		icon: GroupIcon,
-		title: 'Study Buddies',
-		description: 'Connect with fellow students, form study groups, and learn together.',
+		title: 'Study Partners',
+		description: 'Find other Grade 12 students prepping for the same exams. Learn better together.',
 		color: 'bg-tiimo-pink/10 text-tiimo-pink',
 	},
 	{
 		icon: ChartIcon,
-		title: 'Analytics',
-		description: 'Track your learning progress with detailed insights and performance metrics.',
+		title: 'Know Your Weak Spots',
+		description: 'See which topics need more work. Stop wasting time on what you already know.',
 		color: 'bg-tiimo-orange/10 text-tiimo-orange',
 	},
 	{
 		icon: Calendar01Icon,
-		title: 'Smart Scheduling',
-		description: 'AI-powered study planner that adapts to your rhythm and goals.',
+		title: 'Study Plan',
+		description:
+			'Let Lumni build your revision timetable. Focus on what matters most for your exams.',
 		color: 'bg-tiimo-green/10 text-tiimo-green',
 	},
 	{
 		icon: BookOpen01Icon,
-		title: 'Curriculum Map',
-		description: 'Visual progress tracker for your entire NSC syllabus.',
+		title: 'Syllabus Tracker',
+		description: 'Never miss a topic. See exactly what you have left to cover for each subject.',
 		color: 'bg-tiimo-purple/10 text-tiimo-purple',
 	},
 	{
 		icon: BrainIcon,
-		title: 'Smart Quiz',
-		description: 'Adaptive quizzes that focus on your weak areas.',
+		title: 'Targeted Practice',
+		description:
+			'Quizzes that adapt to what you need. Focus your energy on the topics that will lift your marks.',
 		color: 'bg-tiimo-rose/10 text-tiimo-rose',
 	},
 	{
 		icon: Idea01Icon,
-		title: 'Hint System',
-		description: 'Get intelligent hints when you make mistakes, without giving away the answer.',
+		title: 'Clue First, Answer Later',
+		description:
+			'Stuck? Get a gentle nudge in the right direction without spoiling the full answer.',
 		color: 'bg-tiimo-yellow/10 text-tiimo-yellow',
 	},
 ];
 
 export const LANDING_STATS = [
-	{ value: '50k+', label: 'Active Students' },
-	{ value: '10k+', label: 'Past Papers' },
-	{ value: '95%', label: 'Pass Rate' },
-	{ value: '4.9', label: 'App Rating' },
+	{ value: '50k+', label: 'Matric Students Using Lumni' },
+	{ value: '10k+', label: 'Real NSC Exam Questions' },
+	{ value: '95%', label: 'Passed Matric' },
+	{ value: '4.9', label: 'Stars From Peers' },
 ];
 
 export interface LandingTestimonial {

@@ -24,7 +24,7 @@ let dbPromise: Promise<IDBPDatabase<QuickTipsDB>> | null = null;
 
 async function getDB() {
 	if (!dbPromise) {
-		dbPromise = openDB<QuickTipsDB>('matricmaster-tips', 1, {
+		dbPromise = openDB<QuickTipsDB>('lumni-tips', 1, {
 			upgrade(db) {
 				const store = db.createObjectStore('tips', { keyPath: 'id' });
 				store.createIndex('by-subject', 'subject');

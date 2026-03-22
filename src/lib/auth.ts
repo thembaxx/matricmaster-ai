@@ -186,7 +186,7 @@ async function createAuth(): Promise<AuthInstance> {
 
 	// Initialize Resend for transactional emails
 	const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
-	const fromEmail = process.env.FROM_EMAIL || `${appConfig.name} AI <noreply@matricmaster.ai>`;
+	const fromEmail = process.env.FROM_EMAIL || `${appConfig.name} AI <noreply@lumni.ai>`;
 
 	// Email templates using Resend
 	const sendVerificationEmail = async ({

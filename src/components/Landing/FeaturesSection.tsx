@@ -24,11 +24,11 @@ export function FeaturesSection() {
 				className="text-center mb-16"
 			>
 				<h2 className="heading-2 mb-4 text-pretty">
-					Everything you need to
-					<span className="text-tiimo-lavender"> pass</span>
+					Your ticket to
+					<span className="text-tiimo-lavender"> matric success</span>
 				</h2>
 				<p className="text-lg text-muted-foreground max-w-2xl mx-auto text-pretty">
-					Study tools built specifically for the NSC Grade 12 exams.
+					Every tool you need to pass your NSC exams in one place.
 				</p>
 			</m.div>
 

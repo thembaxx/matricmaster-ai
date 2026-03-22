@@ -3,7 +3,7 @@ import { FocusContent } from '@/components/Layout/FocusContent';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
 export const metadata: Metadata = {
-	title: 'Terms of Service | MatricMaster AI',
+	title: 'Terms of Service | Lumni AI',
 	description: 'Read our terms of service and acceptable use policy.',
 };
 
@@ -18,17 +18,17 @@ export default function TermsOfServicePage() {
 						<section>
 							<h2 className="text-xl font-semibold mb-4">1. Acceptance of terms</h2>
 							<p className="text-muted-foreground">
-								By accessing and using MatricMaster AI ("the Service"), you accept and agree to be
-								bound by the terms and provision of this agreement. If you are using the Service on
-								behalf of a minor, you represent that you are their parent or legal guardian and
-								agree to these terms on their behalf.
+								By accessing and using Lumni AI ("the Service"), you accept and agree to be bound by
+								the terms and provision of this agreement. If you are using the Service on behalf of
+								a minor, you represent that you are their parent or legal guardian and agree to
+								these terms on their behalf.
 							</p>
 						</section>
 
 						<section>
 							<h2 className="text-xl font-semibold mb-4">2. Description of service</h2>
 							<p className="text-muted-foreground mb-4">
-								MatricMaster AI is an educational platform providing:
+								Lumni AI is an educational platform providing:
 							</p>
 							<ul className="list-disc pl-6 space-y-2 text-muted-foreground">
 								<li>AI-powered tutoring and study assistance</li>
@@ -67,18 +67,18 @@ export default function TermsOfServicePage() {
 						<section>
 							<h2 className="text-xl font-semibold mb-4">5. Academic integrity</h2>
 							<p className="text-muted-foreground">
-								MatricMaster AI is designed to support learning, not replace it. While our AI can
-								explain concepts and provide guidance, you are responsible for understanding the
-								material. Using the Service to cheat on assignments or exams violates both our terms
-								and academic integrity policies.
+								Lumni AI is designed to support learning, not replace it. While our AI can explain
+								concepts and provide guidance, you are responsible for understanding the material.
+								Using the Service to cheat on assignments or exams violates both our terms and
+								academic integrity policies.
 							</p>
 						</section>
 
 						<section>
 							<h2 className="text-xl font-semibold mb-4">6. Intellectual property</h2>
 							<p className="text-muted-foreground mb-4">
-								The Service and its original content are owned by MatricMaster AI and are protected
-								by copyright, trademark, and other laws. You may:
+								The Service and its original content are owned by Lumni AI and are protected by
+								copyright, trademark, and other laws. You may:
 							</p>
 							<ul className="list-disc pl-6 space-y-2 text-muted-foreground">
 								<li>Use the Service for personal, educational purposes</li>
@@ -139,8 +139,8 @@ export default function TermsOfServicePage() {
 							<h2 className="text-xl font-semibold mb-4">12. Contact</h2>
 							<p className="text-muted-foreground">
 								For questions about these terms, contact us at:{' '}
-								<a href="mailto:legal@matricmaster.ai" className="text-primary hover:underline">
-									legal@matricmaster.ai
+								<a href="mailto:legal@lumni.ai" className="text-primary hover:underline">
+									legal@lumni.ai
 								</a>
 							</p>
 						</section>

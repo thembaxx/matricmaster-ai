@@ -12,7 +12,7 @@ import '@/styles/index.css';
 import { appConfig } from '../app.config';
 import { geistMono, geistSans, notoSansMath, playfair } from './fonts';
 
-const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://matricmaster.ai';
+const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://lumni.ai';
 
 export const metadata: Metadata = {
 	title: {
@@ -71,7 +71,7 @@ export const metadata: Metadata = {
 		images: [
 			`/api/og?title=${appConfig.name.toLowerCase().replace(' ', '+')}&description=master+your+matric+exams`,
 		],
-		creator: '@matricmaster',
+		creator: '@lumni',
 	},
 	robots: {
 		index: true,

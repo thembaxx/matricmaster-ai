@@ -108,7 +108,7 @@ interface OfflineCacheDB extends DBSchema {
 	};
 }
 
-const DB_NAME = 'matricmaster-offline-cache';
+const DB_NAME = 'lumni-offline-cache';
 const DB_VERSION = 2;
 const MAX_STORAGE_PERCENT = 50;
 const AI_RESPONSE_EXPIRY_DAYS = 7;

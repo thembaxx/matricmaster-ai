@@ -59,8 +59,8 @@ export interface EdgeCaseOption {
 	icon?: string;
 }
 
-const EDGE_CASE_STORAGE_KEY = 'matricmaster_edge_case_state';
-const SESSION_SAVE_KEY = 'matricmaster_quiz_session';
+const EDGE_CASE_STORAGE_KEY = 'lumni_edge_case_state';
+const SESSION_SAVE_KEY = 'lumni_quiz_session';
 const AUTOSAVE_INTERVAL = 30000;
 
 interface LearnerMetrics {

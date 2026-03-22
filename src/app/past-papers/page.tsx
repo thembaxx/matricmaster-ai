@@ -8,7 +8,7 @@ const PastPapersScreen = dynamic(() => import('@/screens/PastPapers'), {
 	loading: () => <div className="min-h-[60vh]" />,
 });
 
-const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://matricmaster.ai';
+const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://lumni.ai';
 
 export const metadata: Metadata = {
 	title: `Past Papers | ${appConfig.name}`,
