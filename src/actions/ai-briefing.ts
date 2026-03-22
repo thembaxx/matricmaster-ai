@@ -13,6 +13,7 @@ import {
 	topicMastery,
 	universityTargets,
 	userProgress,
+	wellnessCheckIns,
 } from '@/lib/db/schema';
 
 export interface BriefingData {
@@ -31,10 +32,13 @@ export interface BriefingData {
 		currentStreak: number;
 		hasStudiedToday: boolean;
 	};
+	wellnessScore: number;
+	isBurnedOut: boolean;
 	greeting: string;
 	motivationalMessage?: string;
 	quickTips?: string[];
 	hasAiGreeting: boolean;
+	suggestBreak: boolean;
 }
 
 export async function generatePersonalizedBriefing(): Promise<BriefingData> {
@@ -90,6 +94,23 @@ export async function generatePersonalizedBriefing(): Promise<BriefingData> {
 			limit: 5,
 		});
 
+		const wellnessCheckInsData = await db.query.wellnessCheckIns.findMany({
+			where: eq(wellnessCheckIns.userId, session.user.id),
+			orderBy: [desc(wellnessCheckIns.createdAt)],
+			limit: 5,
+		});
+
+		const recentMoods = wellnessCheckInsData.map((w) => w.moodBefore);
+		const averageMood =
+			recentMoods.length > 0 ? recentMoods.reduce((a, b) => a + b, 0) / recentMoods.length : 3.5;
+
+		const isBurnedOut =
+			averageMood < 2.5 ||
+			(recentMoods.length >= 3 &&
+				recentMoods.slice(0, 3).filter((m, i) => i > 0 && m < recentMoods[i - 1]).length >= 2);
+
+		const wellnessScore = Math.round(Math.max(0, Math.min(100, averageMood * 20)));
+
 		const totalQuestions = progress.reduce((sum, p) => sum + (p.totalQuestionsAttempted || 0), 0);
 		const totalCorrect = progress.reduce((sum, p) => sum + (p.totalCorrect || 0), 0);
 		const accuracy = totalQuestions > 0 ? Math.round((totalCorrect / totalQuestions) * 100) : 0;
@@ -131,6 +152,8 @@ export async function generatePersonalizedBriefing(): Promise<BriefingData> {
 			totalQuestions,
 			strongTopics,
 			recentSessionCount: recentSessions.length,
+			wellnessScore,
+			isBurnedOut,
 		};
 
 		const { greeting, motivationalMessage, quickTips } = await generateGeminiGreeting(greetingData);
@@ -147,10 +170,13 @@ export async function generatePersonalizedBriefing(): Promise<BriefingData> {
 				currentStreak,
 				hasStudiedToday,
 			},
+			wellnessScore,
+			isBurnedOut,
 			greeting,
 			motivationalMessage,
 			quickTips,
 			hasAiGreeting: true,
+			suggestBreak: isBurnedOut,
 		};
 	} catch (error) {
 		console.error('Error generating personalized briefing:', error);
@@ -171,6 +197,8 @@ interface GreetingData {
 	totalQuestions: number;
 	strongTopics: string[];
 	recentSessionCount: number;
+	wellnessScore: number;
+	isBurnedOut: boolean;
 }
 
 async function generateGeminiGreeting(data: GreetingData): Promise<{
@@ -318,9 +346,12 @@ function getDefaultBriefing(): BriefingData {
 			currentStreak: 0,
 			hasStudiedToday: false,
 		},
+		wellnessScore: 75,
+		isBurnedOut: false,
 		greeting: `Welcome to ${appConfig.name}! Let's start your journey to university success!`,
 		motivationalMessage: "Your path to success starts with a single step. Let's take it together!",
 		quickTips: ['Complete your first quiz', 'Set your university goal', 'Review your first topic'],
 		hasAiGreeting: false,
+		suggestBreak: false,
 	};
 }

@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { toast } from 'sonner';
 import { useSettings } from '@/contexts/SettingsContext';
+import type { Citation } from '@/lib/ai/citations';
 import { authClient } from '@/lib/auth-client';
 import { saveConversationAction } from '@/lib/db/ai-tutor-actions';
 import type { AiConversation } from '@/lib/db/schema';
@@ -14,6 +15,7 @@ export interface Message {
 	content: string;
 	timestamp: Date;
 	suggestions?: string[];
+	citations?: Citation[];
 }
 
 export interface PracticeProblem {
@@ -74,7 +76,12 @@ export function useAiTutor() {
 	const [flashcards, setFlashcards] = useState<Flashcard[]>([]);
 	const [showPracticeModal, setShowPracticeModal] = useState(false);
 	const [showFlashcardModal, setShowFlashcardModal] = useState(false);
+	const [showSources, setShowSources] = useState(true);
 	const messagesEndRef = useRef<HTMLDivElement>(null);
+
+	const handleToggleSources = useCallback(() => {
+		setShowSources((prev) => !prev);
+	}, []);
 
 	const scrollToBottom = useCallback(() => {
 		messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -119,6 +126,7 @@ export function useAiTutor() {
 				content: data.response || 'I apologize, but I encountered an error. Please try again.',
 				timestamp: new Date(),
 				suggestions: data.suggestions || [],
+				citations: data.citations || [],
 			};
 
 			setMessages((prev) => [...prev, assistantMessage]);
@@ -304,6 +312,7 @@ export function useAiTutor() {
 		setShowPracticeModal,
 		showFlashcardModal,
 		setShowFlashcardModal,
+		showSources,
 		messagesEndRef,
 		handleSend,
 		handleSave,
@@ -311,5 +320,6 @@ export function useAiTutor() {
 		handleGenerateFlashcards,
 		handleLoadConversation,
 		handleNewConversation,
+		handleToggleSources,
 	};
 }

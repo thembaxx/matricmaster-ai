@@ -5,6 +5,8 @@ import {
 	Loading03Icon,
 	SaveIcon,
 	SparklesIcon,
+	ViewIcon,
+	ViewOffIcon,
 	WorkoutSportIcon,
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
@@ -14,18 +16,22 @@ interface AiTutorHeaderProps {
 	isGeneratingFlashcards: boolean;
 	isGeneratingPractice: boolean;
 	messagesLength: number;
+	showSources: boolean;
 	handleGenerateFlashcards: () => void;
 	handleGeneratePractice: () => void;
 	handleSave: () => void;
+	handleToggleSources: () => void;
 }
 
 export function AiTutorHeader({
 	isGeneratingFlashcards,
 	isGeneratingPractice,
 	messagesLength,
+	showSources,
 	handleGenerateFlashcards,
 	handleGeneratePractice,
 	handleSave,
+	handleToggleSources,
 }: AiTutorHeaderProps) {
 	return (
 		<header className="border-b bg-card/50 backdrop-blur-xl sticky top-0 z-10 px-4 py-3 md:px-6 md:py-4">
@@ -50,6 +56,15 @@ export function AiTutorHeader({
 					</div>
 				</div>
 				<div className="flex items-center gap-1 md:gap-2">
+					<Button
+						variant={showSources ? 'default' : 'outline'}
+						size="sm"
+						className="rounded-xl border-border/50 bg-surface-elevated/50 px-2 md:px-3"
+						onClick={handleToggleSources}
+					>
+						<HugeiconsIcon icon={showSources ? ViewOffIcon : ViewIcon} className="h-4 w-4" />
+						<span className="hidden md:inline ml-2">Sources</span>
+					</Button>
 					<Button
 						variant="outline"
 						size="sm"
@@ -80,7 +95,7 @@ export function AiTutorHeader({
 					</Button>
 					<Button variant="default" size="sm" className="rounded-xl" onClick={handleSave}>
 						<HugeiconsIcon icon={SaveIcon} className="h-4 w-4" />
-						<span className="hidden md:inline ml-2">FloppyDisk</span>
+						<span className="hidden md:inline ml-2">Save</span>
 					</Button>
 				</div>
 			</div>

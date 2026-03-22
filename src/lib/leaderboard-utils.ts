@@ -4,6 +4,7 @@
  */
 
 import { getStreakMultiplier } from '@/constants/rewards';
+import { type AntiGamingAnalysis, calculateAntiGamingXP } from '@/services/antiGamingService';
 
 export const POINTS = {
 	QUIZ_COMPLETE: 10,
@@ -24,6 +25,16 @@ export interface QuizPointsResult {
 	streakBonus: number;
 	totalPoints: number;
 	multiplierLabel: string;
+	isVerified: boolean;
+	antiGamingApplied: boolean;
+	xpReductionReason?: string;
+}
+
+export interface LeaderboardEntryData {
+	userId: string;
+	totalPoints: number;
+	questionsCompleted: number;
+	isVerified: boolean;
 }
 
 export function calculateQuizPoints(params: {
@@ -34,6 +45,7 @@ export function calculateQuizPoints(params: {
 	difficulty: 'easy' | 'medium' | 'hard';
 	hasStreak: boolean;
 	streakDays: number;
+	antiGamingAnalysis?: AntiGamingAnalysis;
 }): number {
 	let points = 0;
 	points += POINTS.QUIZ_COMPLETE;
@@ -53,7 +65,15 @@ export function calculateQuizPoints(params: {
 	}
 
 	const streakMultiplierInfo = getStreakMultiplier(params.streakDays);
-	const totalPoints = Math.round(points * streakMultiplierInfo.multiplier);
+	let totalPoints = Math.round(points * streakMultiplierInfo.multiplier);
+
+	if (params.antiGamingAnalysis) {
+		const antiGamingResult = calculateAntiGamingXP({
+			analysis: params.antiGamingAnalysis,
+			baseXP: totalPoints,
+		});
+		totalPoints = Math.round(totalPoints * antiGamingResult.xpMultiplier);
+	}
 
 	return totalPoints;
 }
@@ -66,6 +86,7 @@ export function calculateQuizPointsWithBreakdown(params: {
 	difficulty: 'easy' | 'medium' | 'hard';
 	hasStreak: boolean;
 	streakDays: number;
+	antiGamingAnalysis?: AntiGamingAnalysis;
 }): QuizPointsResult {
 	let basePoints = 0;
 	basePoints += POINTS.QUIZ_COMPLETE;
@@ -85,8 +106,27 @@ export function calculateQuizPointsWithBreakdown(params: {
 	}
 
 	const streakMultiplierInfo = getStreakMultiplier(params.streakDays);
-	const totalPoints = Math.round(basePoints * streakMultiplierInfo.multiplier);
+	let totalPoints = Math.round(basePoints * streakMultiplierInfo.multiplier);
 	const streakBonus = totalPoints - basePoints;
+
+	let isVerified = true;
+	let antiGamingApplied = false;
+	let xpReductionReason: string | undefined;
+
+	if (params.antiGamingAnalysis) {
+		const antiGamingResult = calculateAntiGamingXP({
+			analysis: params.antiGamingAnalysis,
+			baseXP: totalPoints,
+		});
+
+		if (antiGamingResult.shouldReduceXP || antiGamingResult.shouldBlockXP) {
+			antiGamingApplied = true;
+			xpReductionReason = antiGamingResult.reason;
+			totalPoints = Math.round(totalPoints * antiGamingResult.xpMultiplier);
+		}
+
+		isVerified = antiGamingResult.isVerified;
+	}
 
 	return {
 		basePoints,
@@ -94,6 +134,9 @@ export function calculateQuizPointsWithBreakdown(params: {
 		streakBonus,
 		totalPoints,
 		multiplierLabel: streakMultiplierInfo.label,
+		isVerified,
+		antiGamingApplied,
+		xpReductionReason,
 	};
 }
 

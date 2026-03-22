@@ -19,7 +19,6 @@ import {
 	clearOldCache,
 	deleteCachedPaper,
 	getCachedPastPapers,
-	getCacheStats,
 	getStorageUsage,
 	isLessonCached,
 } from '@/lib/offline/offline-cache';
@@ -56,12 +55,6 @@ export default function OfflinePage() {
 		total: number;
 		percentage: number;
 	} | null>(null);
-	const [cacheStats, setCacheStats] = useState<{
-		lessonCount: number;
-		paperCount: number;
-		quizCount: number;
-		aiResponseCount: number;
-	} | null>(null);
 	const [subjectStatuses, setSubjectStatuses] = useState<SubjectStatus[]>(() =>
 		SUBJECTS.map((s) => ({ ...s, isCached: false, isDownloading: false, downloadProgress: 0 }))
 	);
@@ -94,15 +87,6 @@ export default function OfflinePage() {
 		}
 	}, []);
 
-	const loadCacheStats = useCallback(async () => {
-		try {
-			const stats = await getCacheStats();
-			setCacheStats(stats);
-		} catch (error) {
-			console.debug('Failed to load cache stats:', error);
-		}
-	}, []);
-
 	const loadSubjectStatuses = useCallback(async () => {
 		const updated = await Promise.all(
 			SUBJECTS.map(async (s) => {
@@ -127,12 +111,10 @@ export default function OfflinePage() {
 		loadCachedPapers();
 		loadCachedTasks();
 		loadStorageUsage();
-		loadCacheStats();
 		loadSubjectStatuses();
 
 		const interval = setInterval(() => {
 			loadStorageUsage();
-			loadCacheStats();
 			loadCachedTasks();
 		}, 30000);
 
@@ -147,7 +129,6 @@ export default function OfflinePage() {
 		loadCachedPapers,
 		loadCachedTasks,
 		loadStorageUsage,
-		loadCacheStats,
 		loadSubjectStatuses,
 	]);
 
@@ -170,7 +151,6 @@ export default function OfflinePage() {
 				prev.map((s) => (s.id === subjectId ? { ...s, isCached: true, isDownloading: false } : s))
 			);
 			loadStorageUsage();
-			loadCacheStats();
 		} catch (error) {
 			console.error('Failed to download lessons:', error);
 			setSubjectStatuses((prev) =>
@@ -183,7 +163,7 @@ export default function OfflinePage() {
 
 	const handleDeletePaper = async (paperId: string) => {
 		await deleteCachedPaper(paperId);
-		await Promise.all([loadCachedPapers(), loadStorageUsage(), loadCacheStats()]);
+		await Promise.all([loadCachedPapers(), loadStorageUsage()]);
 	};
 
 	const handleClearOldCache = async () => {
@@ -194,7 +174,6 @@ export default function OfflinePage() {
 				loadCachedPapers(),
 				loadCachedTasks(),
 				loadStorageUsage(),
-				loadCacheStats(),
 				loadSubjectStatuses(),
 			]);
 		} catch (error) {
@@ -231,18 +210,13 @@ export default function OfflinePage() {
 			</header>
 
 			<main className="p-6 space-y-6 max-w-2xl mx-auto">
-				<StorageStatusCard
-					isOnline={isOnline}
-					storageUsage={storageUsage}
-					cacheStats={cacheStats}
-				/>
+				<StorageStatusCard isOnline={isOnline} storageUsage={storageUsage} />
 
 				<QuickTipsPanel />
 
 				<CachedTasksList tasks={cachedTasks} />
 
 				<SubjectDownloadList
-					subjects={SUBJECTS}
 					subjectStatuses={subjectStatuses}
 					isOnline={isOnline}
 					onDownload={handleDownloadSubject}

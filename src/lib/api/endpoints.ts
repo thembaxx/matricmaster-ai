@@ -38,6 +38,9 @@ export const API_ENDPOINTS = {
 	admin: '/api/admin',
 	cms: '/api/cms',
 	users: '/api/users',
+
+	// Edge Cases
+	edgeCaseEvents: '/api/edge-case-events',
 };
 
 // API route patterns for categorization
@@ -67,6 +70,7 @@ export const API_ROUTE_PATTERNS = {
 		API_ENDPOINTS.comments,
 		API_ENDPOINTS.channels,
 		API_ENDPOINTS.calendarEvents,
+		API_ENDPOINTS.edgeCaseEvents,
 	],
 
 	// Routes that require admin privileges
@@ -117,6 +121,9 @@ export const QUERY_KEYS = {
 	admin: ['admin'],
 	cms: ['cms'],
 	users: ['users'],
+
+	// Edge case events
+	edgeCaseEvents: ['edge-case-events'],
 };
 
 // Mutation keys for React Query

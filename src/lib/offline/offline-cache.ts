@@ -1,7 +1,9 @@
 'use client';
 
 import { type DBSchema, type IDBPDatabase, openDB } from 'idb';
-import { getLessonsBySubject, type Lesson } from '@/lib/lessons';
+import { compressToUTF16, decompressFromUTF16 } from 'lz-string';
+import type { Lesson } from '@/lib/lessons';
+import { getLessonsBySubject } from '@/lib/lessons';
 
 export interface CachedPaper {
 	id: string;
@@ -43,6 +45,25 @@ export interface StorageUsage {
 	percentage: number;
 }
 
+export interface DownloadedBundle {
+	bundleId: string;
+	subject: string;
+	version: string;
+	downloadedAt: number;
+	sizeBytes: number;
+	questionCount: number;
+	topics: string[];
+	bundleType: 'questions_only' | 'questions_with_answers' | 'full_content';
+}
+
+export interface BundleMetadata {
+	bundleId: string;
+	version: string;
+	questionCount: number;
+	sizeBytes: number;
+	lastUpdated: string;
+}
+
 interface OfflineCacheDB extends DBSchema {
 	lessons: {
 		key: string;
@@ -72,10 +93,23 @@ interface OfflineCacheDB extends DBSchema {
 		key: string;
 		value: { key: string; value: unknown };
 	};
+	bundles: {
+		key: string;
+		value: DownloadedBundle;
+		indexes: { 'by-subject': string; 'by-date': number };
+	};
+	bundleData: {
+		key: string;
+		value: {
+			bundleId: string;
+			compressedData: string;
+			downloadedAt: number;
+		};
+	};
 }
 
 const DB_NAME = 'matricmaster-offline-cache';
-const DB_VERSION = 1;
+const DB_VERSION = 2;
 const MAX_STORAGE_PERCENT = 50;
 const AI_RESPONSE_EXPIRY_DAYS = 7;
 const PAPER_EXPIRY_DAYS = 30;
@@ -85,21 +119,30 @@ let dbPromise: Promise<IDBPDatabase<OfflineCacheDB>> | null = null;
 async function getDB(): Promise<IDBPDatabase<OfflineCacheDB>> {
 	if (!dbPromise) {
 		dbPromise = openDB<OfflineCacheDB>(DB_NAME, DB_VERSION, {
-			upgrade(db) {
-				const lessonStore = db.createObjectStore('lessons', { keyPath: 'subjectId' });
-				lessonStore.createIndex('by-date', 'cachedAt');
+			upgrade(db, oldVersion) {
+				if (oldVersion < 1) {
+					const lessonStore = db.createObjectStore('lessons', { keyPath: 'subjectId' });
+					lessonStore.createIndex('by-date', 'cachedAt');
 
-				const paperStore = db.createObjectStore('papers', { keyPath: 'id' });
-				paperStore.createIndex('by-subject', 'subject');
-				paperStore.createIndex('by-date', 'cachedAt');
+					const paperStore = db.createObjectStore('papers', { keyPath: 'id' });
+					paperStore.createIndex('by-subject', 'subject');
+					paperStore.createIndex('by-date', 'cachedAt');
 
-				const quizStore = db.createObjectStore('quizzes', { keyPath: 'id' });
-				quizStore.createIndex('by-subject', 'subject');
+					const quizStore = db.createObjectStore('quizzes', { keyPath: 'id' });
+					quizStore.createIndex('by-subject', 'subject');
 
-				const aiStore = db.createObjectStore('aiResponses', { keyPath: 'prompt' });
-				aiStore.createIndex('by-date', 'cachedAt');
+					const aiStore = db.createObjectStore('aiResponses', { keyPath: 'prompt' });
+					aiStore.createIndex('by-date', 'cachedAt');
 
-				db.createObjectStore('metadata', { keyPath: 'key' });
+					db.createObjectStore('metadata', { keyPath: 'key' });
+				}
+				if (oldVersion < 2) {
+					const bundleStore = db.createObjectStore('bundles', { keyPath: 'bundleId' });
+					bundleStore.createIndex('by-subject', 'subject');
+					bundleStore.createIndex('by-date', 'downloadedAt');
+
+					db.createObjectStore('bundleData', { keyPath: 'bundleId' });
+				}
 			},
 		});
 	}
@@ -284,6 +327,8 @@ export async function clearAllOfflineCache(): Promise<void> {
 		db.clear('papers'),
 		db.clear('quizzes'),
 		db.clear('aiResponses'),
+		db.clear('bundles'),
+		db.clear('bundleData'),
 	]);
 }
 
@@ -292,20 +337,28 @@ export async function getCacheStats(): Promise<{
 	paperCount: number;
 	quizCount: number;
 	aiResponseCount: number;
+	bundleCount: number;
+	bundleStorageBytes: number;
 }> {
 	const db = await getDB();
-	const [lessons, papers, quizzes, aiResponses] = await Promise.all([
+	const [lessons, papers, quizzes, aiResponses, bundles] = await Promise.all([
 		db.count('lessons'),
 		db.count('papers'),
 		db.count('quizzes'),
 		db.count('aiResponses'),
+		db.count('bundles'),
 	]);
+
+	const bundleData = await db.getAll('bundles');
+	const bundleStorageBytes = bundleData.reduce((acc, b) => acc + b.sizeBytes, 0);
 
 	return {
 		lessonCount: lessons,
 		paperCount: papers,
 		quizCount: quizzes,
 		aiResponseCount: aiResponses,
+		bundleCount: bundles,
+		bundleStorageBytes,
 	};
 }
 
@@ -315,4 +368,128 @@ export function formatBytes(bytes: number): string {
 	const sizes = ['B', 'KB', 'MB', 'GB'];
 	const i = Math.floor(Math.log(bytes) / Math.log(k));
 	return `${Number.parseFloat((bytes / k ** i).toFixed(1))} ${sizes[i]}`;
+}
+
+export async function saveBundle(
+	bundle: DownloadedBundle,
+	data: unknown
+): Promise<{ success: boolean; error?: string }> {
+	try {
+		const db = await getDB();
+		const compressedData = compressToUTF16(JSON.stringify(data));
+
+		await db.put('bundles', bundle);
+		await db.put('bundleData', {
+			bundleId: bundle.bundleId,
+			compressedData,
+			downloadedAt: Date.now(),
+		});
+
+		return { success: true };
+	} catch (error) {
+		console.error('Error saving bundle:', error);
+		return {
+			success: false,
+			error: error instanceof Error ? error.message : 'Failed to save bundle',
+		};
+	}
+}
+
+export async function getBundleData<T>(bundleId: string): Promise<T | null> {
+	try {
+		const db = await getDB();
+		const bundleData = await db.get('bundleData', bundleId);
+
+		if (!bundleData) return null;
+
+		const decompressed = decompressFromUTF16(bundleData.compressedData);
+		if (!decompressed) return null;
+
+		return JSON.parse(decompressed) as T;
+	} catch (error) {
+		console.error('Error getting bundle data:', error);
+		return null;
+	}
+}
+
+export async function getDownloadedBundles(): Promise<DownloadedBundle[]> {
+	const db = await getDB();
+	return db.getAll('bundles');
+}
+
+export async function isBundleDownloaded(bundleId: string): Promise<boolean> {
+	const db = await getDB();
+	const bundle = await db.get('bundles', bundleId);
+	return !!bundle;
+}
+
+export async function deleteBundle(bundleId: string): Promise<void> {
+	const db = await getDB();
+	await Promise.all([db.delete('bundles', bundleId), db.delete('bundleData', bundleId)]);
+}
+
+export async function getBundleVersion(bundleId: string): Promise<string | null> {
+	const db = await getDB();
+	const bundle = await db.get('bundles', bundleId);
+	return bundle?.version ?? null;
+}
+
+export async function updateBundleVersion(bundleId: string, newVersion: string): Promise<boolean> {
+	try {
+		const db = await getDB();
+		const bundle = await db.get('bundles', bundleId);
+
+		if (!bundle) return false;
+
+		await db.put('bundles', {
+			...bundle,
+			version: newVersion,
+			downloadedAt: Date.now(),
+		});
+
+		return true;
+	} catch (error) {
+		console.error('Error updating bundle version:', error);
+		return false;
+	}
+}
+
+export async function getBundleSizeBySubject(subject: string): Promise<number> {
+	const db = await getDB();
+	const bundles = await db.getAllFromIndex('bundles', 'by-subject', subject);
+	return bundles.reduce((acc, b) => acc + b.sizeBytes, 0);
+}
+
+export async function checkStorageQuota(
+	requiredBytes: number
+): Promise<{ sufficient: boolean; available: number; required: number }> {
+	const { used, total } = await getStorageUsage();
+	const available = total - used;
+	const sufficient = available >= requiredBytes;
+
+	return { sufficient, available, required: requiredBytes };
+}
+
+export async function estimateBundleSize(
+	questionCount: number,
+	bundleType: 'questions_only' | 'questions_with_answers' | 'full_content',
+	includeTips: boolean
+): Promise<number> {
+	const AVG_QUESTION_SIZE = 500;
+	const AVG_TIP_SIZE = 300;
+
+	let size = questionCount * AVG_QUESTION_SIZE;
+
+	if (bundleType === 'questions_with_answers') {
+		size = Math.round(size * 1.5);
+	} else if (bundleType === 'full_content') {
+		size = Math.round(size * 2.5);
+	}
+
+	if (includeTips) {
+		size += AVG_TIP_SIZE * 10;
+	}
+
+	const compressionRatio = 0.4;
+	return Math.round(size * compressionRatio);
 }

@@ -49,6 +49,8 @@ function AITutorPageContent() {
 		handleGenerateFlashcards,
 		handleLoadConversation,
 		handleNewConversation,
+		showSources,
+		handleToggleSources,
 	} = useAiTutor();
 
 	const prevContextParam = useRef(contextParam);
@@ -93,9 +95,11 @@ function AITutorPageContent() {
 					isGeneratingFlashcards={isGeneratingFlashcards}
 					isGeneratingPractice={isGeneratingPractice}
 					messagesLength={messages.length}
+					showSources={showSources}
 					handleGenerateFlashcards={handleGenerateFlashcards}
 					handleGeneratePractice={handleGeneratePractice}
 					handleSave={handleSave}
+					handleToggleSources={handleToggleSources}
 				/>
 
 				<AiTutorSubjects
@@ -107,6 +111,7 @@ function AITutorPageContent() {
 					messages={messages}
 					isLoading={isLoading}
 					selectedSubject={selectedSubject}
+					showSources={showSources}
 					handleSend={handleSend}
 					messagesEndRef={messagesEndRef}
 				/>

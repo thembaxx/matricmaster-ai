@@ -41,6 +41,10 @@ export interface WeakTopicAlertData {
 export interface QuizState {
 	currentQuestionIndex: number;
 	selectedOption: string | null;
+	answerText: string;
+	shortAnswerScore: number;
+	shortAnswerMaxScore: number;
+	shortAnswerFeedback: string;
 	isChecked: boolean;
 	isCorrect: boolean | null;
 	elapsedSeconds: number;
@@ -57,6 +61,11 @@ export interface QuizState {
 	topicStats: Map<string, TopicStats>;
 	weakTopicAlert: WeakTopicAlertData | null;
 	showWeakAlert: boolean;
+	questionStartTime: number;
+	answerChanges: number;
+	antiGamingRiskScore: number;
+	antiGamingRiskLevel: 'low' | 'medium' | 'high' | 'critical';
+	isGrading: boolean;
 }
 
 export type QuizAction =
@@ -77,11 +86,29 @@ export type QuizAction =
 	| { type: 'SET_WEAK_TOPIC_ALERT'; payload: WeakTopicAlertData | null }
 	| { type: 'TOGGLE_WEAK_ALERT'; payload: boolean }
 	| { type: 'INCREMENT_CORRECT' }
-	| { type: 'INCREMENT_INCORRECT' };
+	| { type: 'INCREMENT_INCORRECT' }
+	| { type: 'RECORD_ANSWER_CHANGE' }
+	| { type: 'SET_QUESTION_START_TIME'; payload: number }
+	| {
+			type: 'SET_ANTI_GAMING_RISK';
+			payload: { score: number; level: 'low' | 'medium' | 'high' | 'critical' };
+	  }
+	| { type: 'RESET_ANSWER_CHANGES' }
+	| { type: 'SET_ANSWER_TEXT'; payload: string }
+	| { type: 'SET_GRADING'; payload: boolean }
+	| {
+			type: 'SET_SHORT_ANSWER_RESULT';
+			payload: { score: number; maxScore: number; feedback: string; isCorrect: boolean };
+	  }
+	| { type: 'RESET_SHORT_ANSWER_STATE' };
 
 export const initialQuizState: QuizState = {
 	currentQuestionIndex: 0,
 	selectedOption: null,
+	answerText: '',
+	shortAnswerScore: 0,
+	shortAnswerMaxScore: 0,
+	shortAnswerFeedback: '',
 	isChecked: false,
 	isCorrect: null,
 	elapsedSeconds: 0,
@@ -98,4 +125,9 @@ export const initialQuizState: QuizState = {
 	topicStats: new Map(),
 	weakTopicAlert: null,
 	showWeakAlert: false,
+	questionStartTime: 0,
+	answerChanges: 0,
+	antiGamingRiskScore: 0,
+	antiGamingRiskLevel: 'low',
+	isGrading: false,
 };
