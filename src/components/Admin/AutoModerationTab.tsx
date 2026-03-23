@@ -14,10 +14,10 @@ export function AutoModerationTab({ patterns }: AutoModerationTabProps) {
 	return (
 		<>
 			<div className="flex justify-between items-center">
-				<h2 className="text-lg font-semibold">Moderation Patterns</h2>
+				<h2 className="text-xl font-bold font-serif">moderation patterns</h2>
 				<Button>
 					<HugeiconsIcon icon={Settings02Icon} className="h-4 w-4 mr-2" />
-					Add Pattern
+					add pattern
 				</Button>
 			</div>
 
@@ -38,12 +38,14 @@ export function AutoModerationTab({ patterns }: AutoModerationTabProps) {
 												{pattern.severity}
 											</Badge>
 										</div>
-										<p className="text-xs text-muted-foreground">Action: {pattern.action}</p>
+										<p className="text-xs text-muted-foreground font-mono">
+											action: {pattern.action.toLowerCase()}
+										</p>
 									</div>
 								</div>
 								<div className="flex items-center gap-2">
 									<Badge variant={pattern.isActive ? 'default' : 'secondary'}>
-										{pattern.isActive ? 'Active' : 'Inactive'}
+										{pattern.isActive ? 'active' : 'inactive'}
 									</Badge>
 									<Button size="sm" variant="outline">
 										Pencil

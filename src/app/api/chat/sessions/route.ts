@@ -1,6 +1,11 @@
 import { type NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
 import { requireAuth } from '@/lib/server-auth';
 import { createSession, deleteSession, getSessions } from '@/services/chatService';
+
+const createSessionSchema = z.object({
+	subject: z.string().optional().default('general'),
+});
 
 export async function GET(_request: NextRequest) {
 	await requireAuth();
@@ -17,7 +22,16 @@ export async function POST(request: NextRequest) {
 	await requireAuth();
 	try {
 		const body = await request.json();
-		const subject = body.subject || 'general';
+
+		const validation = createSessionSchema.safeParse(body);
+		if (!validation.success) {
+			return NextResponse.json(
+				{ error: 'Validation failed', details: validation.error.flatten().fieldErrors },
+				{ status: 400 }
+			);
+		}
+
+		const { subject } = validation.data;
 		const session = await createSession(subject);
 		return NextResponse.json(session);
 	} catch (error) {

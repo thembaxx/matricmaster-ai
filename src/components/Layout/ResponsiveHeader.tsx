@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { appConfig } from '@/app.config';
+import { ConnectionStatus } from '@/components/ConnectionStatus';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import type { authClient } from '@/lib/auth-client';
@@ -96,6 +97,7 @@ export function ResponsiveHeader({
 			<div className="flex-1" />
 
 			<div className="flex items-center gap-3">
+				<ConnectionStatus />
 				<NotificationButton count={unreadCount} onClick={onNotificationClick} />
 
 				{!user ? (

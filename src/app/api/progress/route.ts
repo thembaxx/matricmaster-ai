@@ -1,4 +1,5 @@
 import { type NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
 import { getAuth } from '@/lib/auth';
 import {
 	getGlobalProgress,
@@ -7,6 +8,46 @@ import {
 	trackPastPaperAttempt,
 	trackQuizAttempt,
 } from '@/services/progressService';
+
+const trackLessonSchema = z.object({
+	action: z.literal('trackLesson'),
+	lessonId: z.string(),
+	subjectId: z.coerce.number(),
+	topic: z.string().optional(),
+});
+
+const trackQuizSchema = z.object({
+	action: z.literal('trackQuiz'),
+	quizId: z.string(),
+	subjectId: z.coerce.number(),
+	topic: z.string().optional(),
+	score: z.number().min(0),
+	totalQuestions: z.number().positive(),
+	marksEarned: z.number().min(0),
+	durationMinutes: z.number().optional().default(0),
+});
+
+const trackPastPaperSchema = z.object({
+	action: z.literal('trackPastPaper'),
+	paperId: z.string(),
+	subjectId: z.coerce.number(),
+	questionsAttempted: z.number().positive(),
+	score: z.number().min(0),
+	durationMinutes: z.number().optional().default(0),
+});
+
+const trackFlashcardSchema = z.object({
+	action: z.literal('trackFlashcard'),
+	flashcardId: z.string(),
+	rating: z.number().min(1).max(5),
+});
+
+const progressActionSchema = z.discriminatedUnion('action', [
+	trackLessonSchema,
+	trackQuizSchema,
+	trackPastPaperSchema,
+	trackFlashcardSchema,
+]);
 
 export async function GET(request: NextRequest) {
 	try {
@@ -54,40 +95,54 @@ export async function POST(request: NextRequest) {
 		}
 
 		const body = await request.json();
-		const { action, ...data } = body;
 
-		switch (action) {
+		const validation = progressActionSchema.safeParse(body);
+		if (!validation.success) {
+			return NextResponse.json(
+				{ error: 'Validation failed', details: validation.error.flatten().fieldErrors },
+				{ status: 400 }
+			);
+		}
+
+		switch (validation.data.action) {
 			case 'trackLesson': {
-				const result = await trackLessonCompletion(data.lessonId, data.subjectId, data.topic);
+				const result = await trackLessonCompletion(
+					validation.data.lessonId,
+					validation.data.subjectId,
+					validation.data.topic || 'general'
+				);
 				return NextResponse.json(result);
 			}
 
 			case 'trackQuiz': {
 				const result = await trackQuizAttempt(
-					data.quizId,
-					data.subjectId,
-					data.topic,
-					data.score,
-					data.totalQuestions,
-					data.marksEarned,
-					data.durationMinutes
+					validation.data.quizId,
+					validation.data.subjectId,
+					validation.data.topic || 'general',
+					validation.data.score,
+					validation.data.totalQuestions,
+					validation.data.marksEarned,
+					validation.data.durationMinutes
 				);
 				return NextResponse.json(result);
 			}
 
 			case 'trackPastPaper': {
 				const result = await trackPastPaperAttempt(
-					data.paperId,
-					data.subjectId,
-					data.questionsAttempted,
-					data.score,
-					data.durationMinutes
+					validation.data.paperId,
+					validation.data.subjectId,
+					validation.data.questionsAttempted,
+					validation.data.score,
+					validation.data.durationMinutes
 				);
 				return NextResponse.json(result);
 			}
 
 			case 'trackFlashcard': {
-				const result = await trackFlashcardReview(data.flashcardId, data.rating);
+				const result = await trackFlashcardReview(
+					validation.data.flashcardId,
+					validation.data.rating
+				);
 				return NextResponse.json(result);
 			}
 

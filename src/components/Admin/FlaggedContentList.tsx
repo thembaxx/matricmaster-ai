@@ -44,23 +44,23 @@ export function FlaggedContentList({
 								className="absolute left-3 top-3 h-4 w-4 text-muted-foreground"
 							/>
 							<Input
-								placeholder="MagnifyingGlass flagged content..."
+								placeholder="search flagged content..."
 								value={searchQuery}
 								onChange={(e) => setSearchQuery(e.target.value)}
 								className="pl-10"
 							/>
 						</div>
 						<select
-							title="Status filter"
+							title="status filter"
 							className="px-3 py-2 border rounded-md"
 							value={statusFilter}
 							onChange={(e) => setStatusFilter(e.target.value)}
 						>
-							<option value="all">All Status</option>
-							<option value="pending">Pending</option>
-							<option value="reviewed">Reviewed</option>
-							<option value="actioned">Actioned</option>
-							<option value="dismissed">Dismissed</option>
+							<option value="all">all status</option>
+							<option value="pending">pending</option>
+							<option value="reviewed">reviewed</option>
+							<option value="actioned">actioned</option>
+							<option value="dismissed">dismissed</option>
 						</select>
 					</div>
 				</CardContent>
@@ -82,21 +82,24 @@ export function FlaggedContentList({
 									</div>
 									<div>
 										<div className="flex items-center gap-2 mb-1">
-											<Badge variant="outline">{flag.contentType}</Badge>
-											<Badge className={getStatusColor(flag.status)}>{flag.status}</Badge>
+											<Badge variant="outline">{flag.contentType.toLowerCase()}</Badge>
+											<Badge className={getStatusColor(flag.status)}>
+												{flag.status.toLowerCase()}
+											</Badge>
 											<Badge
 												className={getSeverityColor(flag.flagReason === 'Spam' ? 'medium' : 'high')}
 											>
-												{flag.flagReason}
+												{flag.flagReason.toLowerCase()}
 											</Badge>
 										</div>
 										<p className="text-sm mb-2">&quot;{flag.contentPreview}&quot;</p>
 										<p className="text-xs text-muted-foreground">
-											Reported by {flag.reporterName} • {new Date(flag.createdAt).toLocaleString()}
+											reported by {flag.reporterName.toLowerCase()} •{' '}
+											{new Date(flag.createdAt).toLocaleString()}
 										</p>
 										{flag.flagDetails && (
-											<p className="text-xs text-muted-foreground mt-1">
-												Details: {flag.flagDetails}
+											<p className="text-xs text-muted-foreground mt-1 lowercase">
+												details: {flag.flagDetails}
 											</p>
 										)}
 									</div>
@@ -109,7 +112,7 @@ export function FlaggedContentList({
 											onClick={() => handleAction(flag.id, 'remove')}
 										>
 											<HugeiconsIcon icon={Cancel01Icon} className="h-4 w-4 mr-1" />
-											Remove
+											remove
 										</Button>
 										<Button
 											size="sm"
@@ -117,7 +120,7 @@ export function FlaggedContentList({
 											onClick={() => handleAction(flag.id, 'dismiss')}
 										>
 											<HugeiconsIcon icon={Tick01Icon} className="h-4 w-4 mr-1" />
-											Dismiss
+											dismiss
 										</Button>
 									</div>
 								)}
@@ -130,8 +133,8 @@ export function FlaggedContentList({
 			{filteredFlags.length === 0 && (
 				<EmptyState
 					icon={SearchX}
-					title="No matching content"
-					description="No flagged content matches your current search or filter criteria."
+					title="no matching content"
+					description="no flagged content matches your current search or filter criteria."
 				/>
 			)}
 		</>

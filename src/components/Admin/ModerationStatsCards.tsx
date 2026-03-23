@@ -18,10 +18,10 @@ export function ModerationStatsCards({ flags, patterns }: ModerationStatsCardsPr
 							<HugeiconsIcon icon={Warning} className="h-6 w-6 text-yellow-600" />
 						</div>
 						<div>
-							<p className="text-2xl font-bold">
+							<p className="text-2xl font-bold font-mono">
 								{flags.filter((f) => f.status === 'pending').length}
 							</p>
-							<p className="text-sm text-muted-foreground">Pending Reviews</p>
+							<p className="text-sm text-muted-foreground">pending reviews</p>
 						</div>
 					</div>
 				</CardContent>
@@ -33,10 +33,10 @@ export function ModerationStatsCards({ flags, patterns }: ModerationStatsCardsPr
 							<HugeiconsIcon icon={ViewIcon} className="h-6 w-6 text-blue-600" />
 						</div>
 						<div>
-							<p className="text-2xl font-bold">
+							<p className="text-2xl font-bold font-mono">
 								{flags.filter((f) => f.status === 'reviewed').length}
 							</p>
-							<p className="text-sm text-muted-foreground">Under Review</p>
+							<p className="text-sm text-muted-foreground">under review</p>
 						</div>
 					</div>
 				</CardContent>
@@ -48,10 +48,10 @@ export function ModerationStatsCards({ flags, patterns }: ModerationStatsCardsPr
 							<HugeiconsIcon icon={Tick01Icon} className="h-6 w-6 text-green-600" />
 						</div>
 						<div>
-							<p className="text-2xl font-bold">
+							<p className="text-2xl font-bold font-mono">
 								{flags.filter((f) => f.status === 'actioned').length}
 							</p>
-							<p className="text-sm text-muted-foreground">Action Taken</p>
+							<p className="text-sm text-muted-foreground">action taken</p>
 						</div>
 					</div>
 				</CardContent>
@@ -63,8 +63,10 @@ export function ModerationStatsCards({ flags, patterns }: ModerationStatsCardsPr
 							<HugeiconsIcon icon={Settings02Icon} className="h-6 w-6 text-purple-600" />
 						</div>
 						<div>
-							<p className="text-2xl font-bold">{patterns.filter((p) => p.isActive).length}</p>
-							<p className="text-sm text-muted-foreground">Active Filters</p>
+							<p className="text-2xl font-bold font-mono">
+								{patterns.filter((p) => p.isActive).length}
+							</p>
+							<p className="text-sm text-muted-foreground">active filters</p>
 						</div>
 					</div>
 				</CardContent>
