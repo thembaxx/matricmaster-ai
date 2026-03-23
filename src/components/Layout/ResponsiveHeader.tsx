@@ -54,7 +54,7 @@ export function ResponsiveHeader({
 	return (
 		<header
 			className={cn(
-				'flex items-center pr-6 py-4 fixed top-0 z-30 transition-all duration-300 w-full left-0 lg:relative lg:px-0 lg:py-8',
+				'flex items-center pr-6 py-4 fixed top-0 z-30 transition-all duration-300 w-full left-0 lg:relative lg:px-6 lg:py-8',
 				user ? 'pl-6' : 'pl-6',
 				scrolled
 					? 'ios-glass py-3 shadow-lg lg:shadow-none lg:bg-transparent lg:border-none'
@@ -158,19 +158,23 @@ type AuthButtonsProps = {
 function AuthButtons({ onSignIn, onSignUp }: AuthButtonsProps) {
 	return (
 		<div className="flex items-center gap-2">
-			<Button
-				variant="ghost"
-				className="font-bold text-sm h-10 px-4 hidden sm:flex"
-				onClick={onSignIn}
-			>
-				sign in
-			</Button>
-			<Button
-				className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold shadow-lg shadow-primary/20 px-6 h-10 rounded-xl text-sm"
-				onClick={onSignUp}
-			>
-				join free
-			</Button>
+			<m.div whileTap={{ scale: 0.95 }}>
+				<Button
+					variant="ghost"
+					className="font-bold text-sm h-10 px-4 hidden sm:flex"
+					onClick={onSignIn}
+				>
+					Sign in
+				</Button>
+			</m.div>
+			<m.div whileTap={{ scale: 0.95 }}>
+				<Button
+					className="bg-primary hover:bg-primary/90 text-white/90 font-bold shadow-lg shadow-primary/20 px-6 h-10 rounded-xl text-sm"
+					onClick={onSignUp}
+				>
+					Join free
+				</Button>
+			</m.div>
 		</div>
 	);
 }

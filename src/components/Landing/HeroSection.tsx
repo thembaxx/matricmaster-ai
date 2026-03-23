@@ -5,7 +5,9 @@ import {
 	BookOpen01Icon,
 	BrainIcon,
 	CalculatorIcon,
+	FlashIcon,
 	SparklesIcon,
+	StarIcon,
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { m, useScroll, useTransform } from 'framer-motion';
@@ -28,7 +30,7 @@ export function HeroSection({ onAuthRequired }: HeroSectionProps) {
 	const opacity = useTransform(scrollYProgress, [0, 0.5], [1, prefersReducedMotion ? 1 : 0]);
 
 	return (
-		<section className="pt-8 pb-20 lg:pt-8 lg:pb-32 flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
+		<section className="pt-8 pb-20 lg:pt-8 lg:pb-32 lg:px-6 flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
 			<div className="flex-1 flex flex-col items-center lg:items-start text-center lg:text-left gap-8">
 				<m.div
 					initial={{ opacity: 0, scale: 0.95 }}
@@ -47,9 +49,9 @@ export function HeroSection({ onAuthRequired }: HeroSectionProps) {
 						transition={{ delay: 0.1 }}
 						className="text-display text-foreground leading-[0.95] text-balance"
 					>
-						stop guessing.
+						Stop guessing.
 						<br />
-						<span className="text-tiimo-lavender">start passing.</span>
+						<span className="text-tiimo-lavender">Start passing.</span>
 					</m.h1>
 
 					<m.p
@@ -150,11 +152,11 @@ export function HeroSection({ onAuthRequired }: HeroSectionProps) {
 
 							<m.div
 								initial={{ opacity: 0, scale: 0.8, y: 10 }}
-								animate={{ opacity: 1, scale: 1, y: [0, -8, 0] }}
+								animate={{ opacity: 1, scale: 1, y: 0 }}
 								transition={{
 									delay: 0.4,
 									duration: 3.5,
-									repeat: Number.POSITIVE_INFINITY,
+									// repeat: Number.POSITIVE_INFINITY,
 									ease: 'easeInOut',
 								}}
 								className="absolute -top-2 -left-4 w-20 h-24 bg-card rounded-[var(--radius-lg)] shadow-xl border border-border/50 flex flex-col items-center justify-center p-2 z-10 will-change-transform"
@@ -170,12 +172,12 @@ export function HeroSection({ onAuthRequired }: HeroSectionProps) {
 
 							<m.div
 								initial={{ opacity: 0, scale: 0.8, y: 10 }}
-								animate={{ opacity: 1, scale: 1, y: [0, 8, 0] }}
+								animate={{ opacity: 1, scale: 1, y: 0 }}
 								transition={{
 									delay: 0.5,
-									duration: 4,
-									repeat: Number.POSITIVE_INFINITY,
-									ease: 'easeInOut',
+									// duration: 4,
+									// repeat: Number.POSITIVE_INFINITY,
+									// ease: 'easeInOut',
 								}}
 								className="absolute -bottom-2 -right-4 w-20 h-24 bg-card rounded-[var(--radius-lg)] shadow-xl border border-border/50 flex flex-col items-center justify-center p-2 z-20 will-change-transform"
 							>
@@ -186,6 +188,55 @@ export function HeroSection({ onAuthRequired }: HeroSectionProps) {
 									<div className="h-full w-1/2 bg-subject-life rounded-full" />
 								</div>
 								<span className="label-xs font-numeric tabular-nums">Physics 78%</span>
+							</m.div>
+
+							<m.div
+								initial={{ opacity: 0, x: 20 }}
+								animate={{ opacity: 1, x: 0 }}
+								transition={{ delay: 0.6 }}
+								className="absolute -right-4 -top-6 bg-card rounded-[var(--radius-lg)] p-2 shadow-xl border border-border/50"
+							>
+								<div className="flex items-center gap-3">
+									<div className="w-10 h-10 rounded-[var(--radius-md)] bg-success/10 flex items-center justify-center">
+										<HugeiconsIcon icon={FlashIcon} className="w-5 h-5 text-success" />
+									</div>
+									<div>
+										<p className="text-xs font-bold font-numeric tabular-nums">2,450</p>
+										<p className="text-xs text-muted-foreground">xp earned</p>
+									</div>
+								</div>
+							</m.div>
+
+							<m.div
+								initial={{ opacity: 0, x: -20 }}
+								animate={{ opacity: 1, x: 0 }}
+								transition={{ delay: 0.7 }}
+								className="absolute -left-12 bottom-1/4 bg-card rounded-[var(--radius-lg)] p-2 shadow-xl border border-border/50"
+							>
+								<div className="flex items-center gap-3">
+									<div className="w-10 h-10 rounded-[var(--radius-md)] bg-orange-100 flex items-center justify-center">
+										<span className="text-lg">🔥</span>
+									</div>
+									<div>
+										<p className="text-xs font-bold font-numeric tabular-nums">12 day</p>
+										<p className="text-xs text-muted-foreground">study streak</p>
+									</div>
+								</div>
+							</m.div>
+
+							<m.div
+								initial={{ opacity: 0, y: 20 }}
+								animate={{ opacity: 1, y: 0 }}
+								transition={{ delay: 1.2 }}
+								className="absolute -bottom-8 -left-1/4 bg-card rounded-[var(--radius-lg)] p-3 shadow-xl border border-border/50 flex items-center gap-2"
+							>
+								<div className="w-8 h-8 rounded-full bg-tiimo-yellow/20 flex items-center justify-center">
+									<HugeiconsIcon icon={StarIcon} className="w-4 h-4 text-tiimo-yellow" />
+								</div>
+								<div>
+									<p className="text-sm font-bold font-numeric">top 5%</p>
+									<p className="text-[10px] text-muted-foreground">math challenge</p>
+								</div>
 							</m.div>
 						</div>
 					</div>

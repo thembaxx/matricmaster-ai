@@ -89,7 +89,7 @@ export function FormFields({
 					type="submit"
 					disabled={isLoading || !!successEmail}
 					className={cn(
-						'w-full h-14 rounded-[var(--radius-lg)] font-black text-base shadow-xl transition-all active:scale-[0.98]',
+						'w-full h-14 rounded-[var(--radius-lg)] font-bold text-white/90 text-base shadow-xl transition-all active:scale-[0.98]',
 						successEmail
 							? 'bg-success text-white shadow-success/30'
 							: 'bg-primary text-primary-foreground shadow-primary/20'
