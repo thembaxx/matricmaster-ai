@@ -36,7 +36,7 @@ export function TimerView({
 				</p>
 			</div>
 
-			<div className="relative w-72 h-72 mx-auto mb-12">
+			<div className="relative w-64 sm:w-72 h-64 sm:h-72 mx-auto mb-12">
 				<svg
 					className="w-full h-full -rotate-90"
 					viewBox="0 0 100 100"

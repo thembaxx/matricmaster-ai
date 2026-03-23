@@ -58,7 +58,9 @@ function CodeBlock({ children, className }: { children: React.ReactNode; classNa
 				</Button>
 			</div>
 			<pre className="bg-zinc-950 p-5 overflow-x-auto">
-				<code className={cn('text-[13px] leading-relaxed font-mono text-zinc-300', className)}>
+				<code
+					className={cn('text-[13px] leading-relaxed font-mono text-muted-foreground', className)}
+				>
 					{children}
 				</code>
 			</pre>

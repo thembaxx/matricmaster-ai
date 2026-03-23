@@ -34,7 +34,7 @@ export function QuizSkeleton() {
 
 export function PdfViewerSkeleton() {
 	return (
-		<div className="flex flex-col h-full bg-zinc-100 dark:bg-zinc-900">
+		<div className="flex flex-col h-full bg-muted dark:bg-background">
 			<header className="shrink-0 flex items-center justify-between px-6 py-3 border-b bg-card/80 backdrop-blur-md">
 				<div className="flex items-center gap-4">
 					<Skeleton className="h-8 w-40" />

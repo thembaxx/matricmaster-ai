@@ -90,7 +90,7 @@ function AITutorPageContent() {
 				/>
 			)}
 
-			<div className="flex-1 flex flex-col min-w-0 bg-zinc-50 dark:bg-zinc-950">
+			<div className="flex-1 flex flex-col min-w-0 bg-muted dark:bg-background">
 				<AiTutorHeader
 					isGeneratingFlashcards={isGeneratingFlashcards}
 					isGeneratingPractice={isGeneratingPractice}
@@ -154,7 +154,7 @@ function AITutorPageContent() {
 function AITutorPageSkeleton() {
 	return (
 		<div className="min-h-screen bg-background flex pb-40">
-			<div className="flex-1 flex flex-col min-w-0 bg-zinc-50 dark:bg-zinc-950">
+			<div className="flex-1 flex flex-col min-w-0 bg-muted dark:bg-background">
 				<div className="flex-1 p-8 animate-pulse space-y-6">
 					<div className="h-12 bg-muted rounded w-1/3" />
 					<div className="h-8 bg-muted rounded w-1/4" />

@@ -86,7 +86,7 @@ function TutoringSessionPageContent() {
 				</div>
 
 				{isChatOpen && (
-					<Card className="w-80 border-l-0 rounded-none">
+					<Card className="w-full sm:w-80 border-l-0 rounded-none">
 						<CardHeader className="border-b py-3">
 							<CardTitle className="text-sm">Chat</CardTitle>
 						</CardHeader>

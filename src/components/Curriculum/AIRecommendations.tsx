@@ -46,7 +46,7 @@ export function AIRecommendations({
 							key={rec.topicId}
 							type="button"
 							onClick={() => onSelect(rec.subjectId, rec.topicId)}
-							className="w-full flex items-center gap-3 p-3 bg-white rounded-xl text-left hover:shadow-md transition-shadow"
+							className="w-full flex items-center gap-3 p-3 bg-white dark:bg-zinc-900 rounded-xl text-left hover:shadow-md transition-shadow"
 						>
 							<span className="text-xl">{subject.icon}</span>
 							<div className="flex-1 min-w-0">

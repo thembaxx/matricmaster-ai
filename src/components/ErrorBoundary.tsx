@@ -37,7 +37,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
 			}
 
 			return (
-				<div className="flex flex-col items-center justify-center min-h-screen p-6 bg-zinc-50 dark:bg-zinc-950">
+				<div className="flex flex-col items-center justify-center min-h-screen p-6 bg-muted dark:bg-background">
 					<Card className="p-8 max-w-md w-full text-center space-y-6">
 						<div className="w-16 h-16 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center mx-auto">
 							<HugeiconsIcon icon={Warning} className="w-8 h-8 text-red-600 dark:text-red-400" />

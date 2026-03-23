@@ -53,7 +53,7 @@ export function TopicTree({
 			<button
 				type="button"
 				onClick={onToggle}
-				className="w-full flex items-center justify-between p-5 bg-white/80 backdrop-blur-sm rounded-2xl border border-border/40 shadow-tiimo hover:shadow-tiimo-lg transition-all group"
+				className="w-full flex items-center justify-between p-5 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-sm rounded-2xl border border-border/40 shadow-tiimo hover:shadow-tiimo-lg transition-all group"
 			>
 				<div className="flex items-center gap-4">
 					<div
@@ -148,7 +148,7 @@ function AddTopicForm({
 				placeholder="Enter topic name..."
 				value={newTopicName || ''}
 				onChange={(e) => onNewTopicNameChange?.(e.target.value)}
-				className="w-full px-3 py-2 bg-white border border-border rounded-xl text-sm font-medium placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary mb-3"
+				className="w-full px-3 py-2 bg-white dark:bg-zinc-900 border border-border rounded-xl text-sm font-medium placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary mb-3"
 				onKeyDown={(e) => {
 					if (e.key === 'Enter') onConfirmAddTopic?.();
 					if (e.key === 'Escape') onCancelAddTopic?.();

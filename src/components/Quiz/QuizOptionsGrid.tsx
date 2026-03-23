@@ -54,9 +54,7 @@ export const QuizOptionsGrid = memo(function QuizOptionsGrid({
 							>
 								{option.id}
 							</span>
-							<span className="font-bold text-zinc-700 dark:text-zinc-300 text-left">
-								{option.text}
-							</span>
+							<span className="font-bold text-foreground text-left">{option.text}</span>
 						</button>
 					);
 				})}

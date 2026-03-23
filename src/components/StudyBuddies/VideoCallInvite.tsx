@@ -63,7 +63,7 @@ export function VideoCallInvite({
 	if (isDismissed) return null;
 
 	return (
-		<Card className="w-80 overflow-hidden animate-in slide-in-from-right-8 duration-300 border-primary/30 shadow-lg shadow-primary/10">
+		<Card className="w-full sm:max-w-80 overflow-hidden animate-in slide-in-from-right-8 duration-300 border-primary/30 shadow-lg shadow-primary/10">
 			<div className="relative">
 				{/* Gradient header */}
 				<div className="absolute inset-0 h-16 bg-gradient-to-r from-primary/20 to-primary/10" />

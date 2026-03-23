@@ -31,6 +31,7 @@ export const SUBJECTS: {
 	id: SubjectId;
 	label: string;
 	fluentEmoji: string;
+	imgSrc?: string;
 	color: string;
 	bgColor: string;
 }[] = [
@@ -38,6 +39,7 @@ export const SUBJECTS: {
 		id: 'mathematics',
 		label: 'Mathematics',
 		fluentEmoji: '🧮',
+		imgSrc: '/subject/mathematics.png',
 		color: 'text-blue-500',
 		bgColor: 'bg-blue-500',
 	},
@@ -45,6 +47,7 @@ export const SUBJECTS: {
 		id: 'physics',
 		label: 'Physics',
 		fluentEmoji: '⚛️',
+		imgSrc: '/subject/physics.png',
 		color: 'text-purple-500',
 		bgColor: 'bg-purple-500',
 	},
@@ -52,6 +55,7 @@ export const SUBJECTS: {
 		id: 'chemistry',
 		label: 'Chemistry',
 		fluentEmoji: '🧪',
+		imgSrc: '/subject/chemistry.png',
 		color: 'text-green-500',
 		bgColor: 'bg-green-500',
 	},
@@ -59,6 +63,7 @@ export const SUBJECTS: {
 		id: 'life-sciences',
 		label: 'Life Sciences',
 		fluentEmoji: '🧬',
+		imgSrc: '/subject/life-sciences.png',
 		color: 'text-emerald-500',
 		bgColor: 'bg-emerald-500',
 	},
@@ -66,6 +71,7 @@ export const SUBJECTS: {
 		id: 'geography',
 		label: 'Geography',
 		fluentEmoji: '🌍',
+		imgSrc: '/subject/geography.png',
 		color: 'text-amber-500',
 		bgColor: 'bg-amber-500',
 	},
@@ -73,6 +79,7 @@ export const SUBJECTS: {
 		id: 'history',
 		label: 'History',
 		fluentEmoji: '📜',
+		imgSrc: '/subject/history.png',
 		color: 'text-red-500',
 		bgColor: 'bg-red-500',
 	},
@@ -80,6 +87,7 @@ export const SUBJECTS: {
 		id: 'english',
 		label: 'English',
 		fluentEmoji: '📚',
+		imgSrc: '/subject/english.png',
 		color: 'text-indigo-500',
 		bgColor: 'bg-indigo-500',
 	},
@@ -87,6 +95,7 @@ export const SUBJECTS: {
 		id: 'accounting',
 		label: 'Accounting',
 		fluentEmoji: '💰',
+		imgSrc: '/subject/accounting.png',
 		color: 'text-teal-500',
 		bgColor: 'bg-teal-500',
 	},

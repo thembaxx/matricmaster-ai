@@ -65,7 +65,7 @@ export function TopicFilters({
 					placeholder="Search subjects or topics..."
 					value={searchQuery}
 					onChange={(e) => onSearchChange(e.target.value)}
-					className="w-full pl-10 pr-4 py-3 bg-white border border-border rounded-xl text-sm font-medium placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+					className="w-full pl-10 pr-4 py-3 bg-white dark:bg-zinc-900 border border-border rounded-xl text-sm font-medium placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
 				/>
 				{searchQuery && (
 					<button
@@ -168,7 +168,7 @@ function FilterButton({
 				'px-3 py-1.5 rounded-full text-xs font-bold transition-all flex items-center gap-1.5',
 				active
 					? variantStyles[variant || 'default']
-					: 'bg-white border border-border text-muted-foreground hover:border-primary/50'
+					: 'bg-white dark:bg-zinc-900 border border-border text-muted-foreground hover:border-primary/50'
 			)}
 		>
 			{Icon && <HugeiconsIcon icon={Icon} className={cn('w-3 h-3', iconClassName)} />}

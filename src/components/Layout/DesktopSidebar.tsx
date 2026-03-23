@@ -229,7 +229,7 @@ export function AppSidebar({ user, pathname, theme, onSetTheme }: AppSidebarProp
 							<button
 								type="button"
 								onClick={() => handleSectionToggle(section.title)}
-								className="w-full flex items-center justify-between px-3 py-2 rounded-lg hover:bg-sidebar-accent/50 transition-colors group"
+								className="w-full flex items-center justify-between px-3 py-2 rounded-lg hover:bg-sidebar-accent/50 transition-colors group focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-inset"
 							>
 								<span className="text-[9px] font-medium uppercase tracking-wider text-sidebar-foreground/35 grow truncate text-left">
 									{section.title}
@@ -343,7 +343,7 @@ function ThemeToggle({ theme, onSetTheme }: ThemeToggleProps) {
 			type="button"
 			variant="ghost"
 			onClick={handleCycle}
-			className="w-full flex items-center justify-between px-4 py-2.5 h-auto rounded-xl bg-sidebar-accent/40 hover:bg-sidebar-accent transition-colors group"
+			className="w-full flex items-center justify-between px-4 py-2.5 h-auto rounded-xl bg-sidebar-accent/40 hover:bg-sidebar-accent transition-colors group focus-visible:ring-2 focus-visible:ring-primary"
 		>
 			<span className="text-xs font-medium text-sidebar-foreground/70">{current.label}</span>
 			<div className="w-7 h-7 rounded-lg bg-sidebar flex items-center justify-center shadow-sm">
@@ -363,7 +363,7 @@ function UserProfileSection({ user }: UserProfileSectionProps) {
 			<Button
 				type="button"
 				variant="ghost"
-				className="w-full flex items-center gap-3 p-2 h-auto rounded-xl hover:bg-sidebar-accent transition-colors text-left"
+				className="w-full flex items-center gap-3 p-2 h-auto rounded-xl hover:bg-sidebar-accent transition-colors text-left focus-visible:ring-2 focus-visible:ring-primary"
 			>
 				<Avatar className="h-10 w-10 border-2 border-sidebar-primary/30 shadow-sm">
 					<AvatarImage src={user.image || undefined} alt={user.name} />
@@ -389,7 +389,7 @@ export function LogoutButton() {
 	return (
 		<Button
 			variant="ghost"
-			className="w-full justify-start gap-3 text-sidebar-foreground/60 hover:text-sidebar-foreground hover:bg-sidebar-accent"
+			className="w-full justify-start gap-3 text-sidebar-foreground/60 hover:text-sidebar-foreground hover:bg-sidebar-accent focus-visible:ring-2 focus-visible:ring-primary"
 			onClick={handleLogout}
 		>
 			<HugeiconsIcon icon={Settings01Icon} className="w-4 h-4" />

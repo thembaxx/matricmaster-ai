@@ -69,7 +69,7 @@ export function FeatureTooltip({
 						animate={{ opacity: 1, scale: 1, y: 0 }}
 						exit={{ opacity: 0, scale: 0.95, y: 8 }}
 						transition={{ duration: 0.2, ease: 'easeOut' }}
-						className={`absolute z-50 w-72 ${positionClasses[position]} pointer-events-none`}
+						className={`absolute z-50 w-full max-w-72 ${positionClasses[position]} pointer-events-none`}
 					>
 						<div className="bg-background rounded-2xl shadow-2xl border border-border/50 p-4 pointer-events-auto">
 							<div className="flex items-start justify-between gap-2 mb-2">

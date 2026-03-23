@@ -26,9 +26,7 @@ export function LanguageSelector({
 
 	return (
 		<div className={className}>
-			{label && (
-				<Label className="text-sm font-medium text-gray-700 dark:text-gray-300">{label}</Label>
-			)}
+			{label && <Label className="text-sm font-medium text-foreground">{label}</Label>}
 			<Select value={language} onValueChange={(value) => setLanguage(value as SALanguage)}>
 				<SelectTrigger className="w-full mt-1">
 					<SelectValue placeholder="Select language" />

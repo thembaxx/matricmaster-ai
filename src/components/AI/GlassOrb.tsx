@@ -84,7 +84,7 @@ export function GlassOrb() {
 							exit={{ opacity: 0, y: 20, scale: 0.9 }}
 							transition={{ type: 'spring', damping: 25, stiffness: 300 }}
 							className={cn(
-								'mb-4 w-[calc(100vw-2rem)] md:w-80 shadow-2xl rounded-3xl overflow-hidden border flex flex-col',
+								'mb-4 w-full sm:max-w-sm md:w-80 shadow-2xl rounded-3xl overflow-hidden border flex flex-col',
 								'bg-background/80 backdrop-blur-xl border-border/50 text-foreground'
 							)}
 						>

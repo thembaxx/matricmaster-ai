@@ -42,7 +42,7 @@ export default function ErrorHint() {
 							<span className="text-xs font-bold text-muted-foreground tracking-widest">
 								original question
 							</span>
-							<div className="w-12 h-12 bg-zinc-800 rounded-xl" />{' '}
+							<div className="w-12 h-12 bg-muted rounded-xl" />{' '}
 							{/* Placeholder for question thumbnail */}
 						</div>
 						<h2 className="text-lg font-bold text-foreground mb-1">q4: circuit analysis</h2>
@@ -111,7 +111,7 @@ export default function ErrorHint() {
 						<Button
 							variant="ghost"
 							type="button"
-							className="text-muted-foreground hover:text-zinc-900 font-bold text-sm"
+							className="text-muted-foreground hover:text-foreground font-bold text-sm"
 							onClick={() => router.push('/quiz')}
 						>
 							see solution

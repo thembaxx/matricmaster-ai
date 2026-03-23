@@ -68,7 +68,7 @@ function StatBadge({
 	colorClass: string;
 }) {
 	return (
-		<div className="flex items-center gap-2 px-3 py-1.5 bg-white rounded-xl shadow-sm">
+		<div className="flex items-center gap-2 px-3 py-1.5 bg-white dark:bg-zinc-900 rounded-xl shadow-sm">
 			<HugeiconsIcon icon={Icon} className={cn('w-4 h-4', colorClass)} />
 			<span className="text-sm font-black">{value}</span>
 			{label && <span className="text-[10px] text-muted-foreground">{label}</span>}
@@ -121,7 +121,7 @@ export function ProgressStats({ stats }: ProgressStatsProps) {
 					initial={{ opacity: 0, y: 20 }}
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ delay: idx * 0.1 }}
-					className="bg-white/60 backdrop-blur-sm rounded-2xl p-4 border border-border/30 shadow-tiimo"
+					className="bg-white/60 dark:bg-zinc-900/60 backdrop-blur-sm rounded-2xl p-4 border border-border/30 shadow-tiimo"
 				>
 					<div className="flex items-center gap-2 mb-1">
 						<HugeiconsIcon icon={stat.icon} className={cn('w-4 h-4', stat.color)} />

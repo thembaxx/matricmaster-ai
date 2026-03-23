@@ -99,7 +99,7 @@ export function MathKeyboard({
 	return (
 		<Sheet open={isOpen} onOpenChange={onOpenChange}>
 			<SheetTrigger asChild>
-				<Button className="bg-card text-foreground shadow-2xl rounded-2xl h-12 px-6 border pointer-events-auto hover:bg-zinc-50 transition-all gap-2">
+				<Button className="bg-card text-foreground shadow-2xl rounded-2xl h-12 px-6 border pointer-events-auto hover:bg-secondary transition-all gap-2">
 					<HugeiconsIcon icon={KeyboardIcon} className="w-4 h-4" />
 					<span className="font-bold text-sm">Calculator</span>
 				</Button>

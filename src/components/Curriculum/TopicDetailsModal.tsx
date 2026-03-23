@@ -54,7 +54,7 @@ export function TopicDetailsModal({
 				initial={{ opacity: 0, scale: 0.95, y: 20 }}
 				animate={{ opacity: 1, scale: 1, y: 0 }}
 				exit={{ opacity: 0, scale: 0.95, y: 20 }}
-				className="relative bg-white rounded-3xl shadow-tiimo-xl w-full max-w-md max-h-[90vh] overflow-hidden"
+				className="relative bg-white dark:bg-zinc-900 rounded-3xl shadow-tiimo-xl w-full max-w-md max-h-[90vh] overflow-hidden"
 			>
 				<div
 					className={cn('h-24 relative', subject.color.replace('bg-', 'bg-gradient-to-br from-'))}

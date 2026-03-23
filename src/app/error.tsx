@@ -30,9 +30,7 @@ export default function Error({ error, reset }: ErrorProps) {
 						{error.message || 'An unexpected error occurred. Please try again.'}
 					</p>
 					{error.digest && (
-						<p className="text-xs text-muted-foreground dark:text-zinc-600">
-							Error ID: {error.digest}
-						</p>
+						<p className="text-xs text-muted-foreground">Error ID: {error.digest}</p>
 					)}
 				</div>
 

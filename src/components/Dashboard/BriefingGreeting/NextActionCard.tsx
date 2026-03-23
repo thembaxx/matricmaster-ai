@@ -38,7 +38,7 @@ export function NextActionCard({ suggestedSubject, onClick }: NextActionCardProp
 				</h3>
 			</div>
 			<div className="flex items-center gap-2 mt-4 z-10">
-				<span className="text-[10px] font-bold bg-white text-tiimo-lavender px-2 py-0.5 rounded-md">
+				<span className="text-[10px] font-bold bg-white dark:bg-zinc-900 text-tiimo-lavender px-2 py-0.5 rounded-md">
 					prompt
 				</span>
 				<span className="text-[10px] font-medium text-white/80 italic">Ready to finish?</span>

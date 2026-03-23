@@ -141,7 +141,7 @@ export function CircuitQuestion({
 					<span className="text-sm text-muted-foreground">(5 marks)</span>
 				</div>
 
-				<div className="space-y-4 text-zinc-800 dark:text-zinc-200">
+				<div className="space-y-4 text-foreground">
 					<p>
 						consider the circuit diagram shown in <strong>figure 1</strong> above.
 					</p>

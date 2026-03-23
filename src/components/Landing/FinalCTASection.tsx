@@ -48,7 +48,7 @@ export function FinalCTASection() {
 					<div className="flex flex-col sm:flex-row gap-4 justify-center">
 						<Button
 							size="lg"
-							className="w-full sm:w-auto h-14 rounded-[var(--radius-lg)] text-base font-semibold bg-white text-tiimo-lavender hover:bg-white/90 shadow-xl"
+							className="w-full sm:w-auto h-14 rounded-[var(--radius-lg)] text-base font-semibold bg-white dark:bg-zinc-900 text-tiimo-lavender hover:bg-white/90 dark:hover:bg-zinc-800 shadow-xl"
 							onClick={() => router.push('/sign-up')}
 						>
 							<span className="flex items-center gap-2">

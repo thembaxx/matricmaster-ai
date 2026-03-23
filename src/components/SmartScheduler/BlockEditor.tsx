@@ -101,7 +101,7 @@ export function BlockEditor({
 	};
 
 	return (
-		<div className="p-4 w-80">
+		<div className="p-4 w-full max-w-80">
 			<h3 className="font-semibold mb-4">{block ? 'Edit Block' : 'Add Study Block'}</h3>
 
 			<div className="space-y-4">

@@ -155,7 +155,7 @@ export const LeaderboardPreview = memo(function LeaderboardPreview() {
 									entry.rank === 1
 										? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400'
 										: entry.rank === 2
-											? 'bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-muted-foreground'
+											? 'bg-muted text-foreground dark:bg-secondary dark:text-muted-foreground'
 											: entry.rank === 3
 												? 'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400'
 												: 'bg-muted text-muted-foreground'

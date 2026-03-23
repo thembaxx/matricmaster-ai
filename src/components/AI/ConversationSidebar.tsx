@@ -239,7 +239,7 @@ export function ConversationSidebar({
 	return (
 		<>
 			{/* Desktop Sidebar */}
-			<aside className="hidden lg:block w-80 border-r bg-card/30 shrink-0">
+			<aside className="hidden lg:block w-full max-w-80 border-r bg-card/30 shrink-0">
 				<ConversationList {...listProps} />
 			</aside>
 
@@ -255,7 +255,7 @@ export function ConversationSidebar({
 						<HugeiconsIcon icon={ArchiveIcon} className="h-4 w-4" />
 					</Button>
 				</SheetTrigger>
-				<SheetContent side="left" className="w-80 p-0">
+				<SheetContent side="left" className="w-full max-w-80 p-0">
 					<SheetHeader className="sr-only">
 						<SheetTitle>Conversation ClockCounterClockwise</SheetTitle>
 					</SheetHeader>

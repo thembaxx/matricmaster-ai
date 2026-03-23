@@ -756,6 +756,13 @@
   --sidebar-accent-foreground: var(--tiimo-lavender);
   --sidebar-border: var(--border);
   --sidebar-ring: var(--tiimo-lavender);
+
+  /* Z-Index Scale */
+  --z-dropdown: 50;
+  --z-sticky: 100;
+  --z-modal: 200;
+  --z-toast: 300;
+  --z-tooltip: 400;
 }
 
 .dark {
