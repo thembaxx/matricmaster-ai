@@ -99,6 +99,7 @@ export async function checkAndUnlockAchievements(): Promise<AchievementCheckResu
 
 			if (shouldUnlock) {
 				await db.insert(userAchievements).values({
+					id: crypto.randomUUID(),
 					userId,
 					achievementId: achievement.id,
 					title: achievement.name,
@@ -207,6 +208,7 @@ export async function unlockAchievement(achievementId: string): Promise<boolean>
 		}
 
 		await db.insert(userAchievements).values({
+			id: crypto.randomUUID(),
 			userId: session.user.id,
 			achievementId: achievement.id,
 			title: achievement.name,

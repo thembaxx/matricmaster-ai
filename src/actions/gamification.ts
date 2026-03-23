@@ -1,7 +1,7 @@
 'use server';
 
 import { and, desc, eq, gte } from 'drizzle-orm';
-import { ACHIEVEMENTS, type Achievement, type APSProgress } from '@/constants/gamification';
+import { ACHIEVEMENT_DEFS, type Achievement, type APSProgress } from '@/constants/gamification';
 import { getAuth } from '@/lib/auth';
 import { dbManager } from '@/lib/db';
 import {
@@ -48,8 +48,8 @@ export async function checkAndUnlockAchievements(): Promise<{
 		});
 
 		if (quizCount.length >= 1 && !existingIds.has('first_quiz')) {
-			await unlockAchievement(userId, ACHIEVEMENTS.FIRST_QUIZ);
-			newAchievements.push({ ...ACHIEVEMENTS.FIRST_QUIZ, unlockedAt: new Date() });
+			await unlockAchievement(userId, ACHIEVEMENT_DEFS.FIRST_QUIZ);
+			newAchievements.push({ ...ACHIEVEMENT_DEFS.FIRST_QUIZ, unlockedAt: new Date() });
 		}
 
 		const progress = await db.query.userProgress.findFirst({
@@ -57,21 +57,21 @@ export async function checkAndUnlockAchievements(): Promise<{
 		});
 
 		if (progress && progress.streakDays >= 7 && !existingIds.has('streak_7')) {
-			await unlockAchievement(userId, ACHIEVEMENTS.STREAK_7);
-			newAchievements.push({ ...ACHIEVEMENTS.STREAK_7, unlockedAt: new Date() });
+			await unlockAchievement(userId, ACHIEVEMENT_DEFS.STREAK_7);
+			newAchievements.push({ ...ACHIEVEMENT_DEFS.STREAK_7, unlockedAt: new Date() });
 		}
 
 		if (progress && progress.streakDays >= 30 && !existingIds.has('streak_30')) {
-			await unlockAchievement(userId, ACHIEVEMENTS.STREAK_30);
-			newAchievements.push({ ...ACHIEVEMENTS.STREAK_30, unlockedAt: new Date() });
+			await unlockAchievement(userId, ACHIEVEMENT_DEFS.STREAK_30);
+			newAchievements.push({ ...ACHIEVEMENT_DEFS.STREAK_30, unlockedAt: new Date() });
 		}
 
 		const perfectQuizzes = quizCount.filter(
 			(q: (typeof quizCount)[number]) => Number(q.percentage) === 100
 		);
 		if (perfectQuizzes.length >= 1 && !existingIds.has('perfect_quiz')) {
-			await unlockAchievement(userId, ACHIEVEMENTS.PERFECT_QUIZ);
-			newAchievements.push({ ...ACHIEVEMENTS.PERFECT_QUIZ, unlockedAt: new Date() });
+			await unlockAchievement(userId, ACHIEVEMENT_DEFS.PERFECT_QUIZ);
+			newAchievements.push({ ...ACHIEVEMENT_DEFS.PERFECT_QUIZ, unlockedAt: new Date() });
 		}
 
 		const flashcardCount = await db.query.flashcardReviews.findMany({
@@ -79,19 +79,19 @@ export async function checkAndUnlockAchievements(): Promise<{
 		});
 
 		if (flashcardCount.length >= 100 && !existingIds.has('flashcard_100')) {
-			await unlockAchievement(userId, ACHIEVEMENTS.FLASHCARD_100);
-			newAchievements.push({ ...ACHIEVEMENTS.FLASHCARD_100, unlockedAt: new Date() });
+			await unlockAchievement(userId, ACHIEVEMENT_DEFS.FLASHCARD_100);
+			newAchievements.push({ ...ACHIEVEMENT_DEFS.FLASHCARD_100, unlockedAt: new Date() });
 		}
 
 		const hour = new Date().getHours();
 		if (hour < 7 && !existingIds.has('early_bird')) {
-			await unlockAchievement(userId, ACHIEVEMENTS.EARLY_BIRD);
-			newAchievements.push({ ...ACHIEVEMENTS.EARLY_BIRD, unlockedAt: new Date() });
+			await unlockAchievement(userId, ACHIEVEMENT_DEFS.EARLY_BIRD);
+			newAchievements.push({ ...ACHIEVEMENT_DEFS.EARLY_BIRD, unlockedAt: new Date() });
 		}
 
 		if (hour >= 22 && !existingIds.has('night_owl')) {
-			await unlockAchievement(userId, ACHIEVEMENTS.NIGHT_OWL);
-			newAchievements.push({ ...ACHIEVEMENTS.NIGHT_OWL, unlockedAt: new Date() });
+			await unlockAchievement(userId, ACHIEVEMENT_DEFS.NIGHT_OWL);
+			newAchievements.push({ ...ACHIEVEMENT_DEFS.NIGHT_OWL, unlockedAt: new Date() });
 		}
 
 		return { success: true, achievements: newAchievements };
@@ -101,7 +101,7 @@ export async function checkAndUnlockAchievements(): Promise<{
 	}
 }
 
-async function unlockAchievement(userId: string, achievement: typeof ACHIEVEMENTS.FIRST_QUIZ) {
+async function unlockAchievement(userId: string, achievement: typeof ACHIEVEMENT_DEFS.FIRST_QUIZ) {
 	const db = await getDb();
 
 	await db.insert(userAchievements).values({

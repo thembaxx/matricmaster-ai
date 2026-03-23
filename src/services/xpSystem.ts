@@ -128,6 +128,7 @@ export async function awardXP(userId: string, amount: number, _reason: string): 
 	await db
 		.insert(userProgress)
 		.values({
+			id: crypto.randomUUID(),
 			userId,
 			totalMarksEarned: newXp,
 			lastActivityAt: new Date(),

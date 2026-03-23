@@ -1,0 +1,365 @@
+[1A[2K[WebServer] $ next dev
+
+[1A[2K[2m[WebServer] [22m[1m[38;2;173;127;168mΓû▓ Next.js 16.2.1[39m[22m (Turbopack)
+
+[1A[2K[2m[WebServer] [22m- Local:         http://localhost:3000
+[2m[WebServer] [22m- Network:       http://192.168.0.21:3000
+[2m[WebServer] [22m- Environments: .env.local
+[2m[WebServer] [22m[32m[1mΓ£ô[22m[39m Ready in 3.0s
+
+[1A[2K[2m[WebServer] [22m≡ƒöä Attempting to connect to PostgreSQL...
+
+[1A[2K[2m[WebServer] [22mΓ¥î PostgreSQL connection failed: Error [PostgresError]: Your account or project has exceeded the compute time quota. Upgrade your plan to increase limits.
+[2m[WebServer] [22m    at PostgreSQLManager.connect (src\lib\db\postgresql-manager.ts:68:16)
+[2m[WebServer] [22m  [90m66 |[0m 			[90m// Test connection with timeout[0m
+[2m[WebServer] [22m  [90m67 |[0m 			[36mconst[0m testResult = [36mawait[0m [33mPromise[0m.race([
+[2m[WebServer] [22m[31m[1m>[0m [90m68 |[0m 				[36mthis[0m.client[32m`SELECT 1 as test`[0m,
+[2m[WebServer] [22m  [90m   |[0m            [31m[1m^[0m
+[2m[WebServer] [22m  [90m69 |[0m 				[36mnew[0m [33mPromise[0m((_, reject) =>
+[2m[WebServer] [22m  [90m70 |[0m 					setTimeout(() => reject([36mnew[0m [33mError[0m([32m'Connection timeout'[0m)), [35m15000[0m)
+[2m[WebServer] [22m  [90m71 |[0m 				), {
+[2m[WebServer] [22m  severity_local: [32m'ERROR'[39m,
+[2m[WebServer] [22m  code: [32m'XX000'[39m
+[2m[WebServer] [22m}
+
+[1A[2K[2m[WebServer] [22mΓÅ│ Retry attempt 1/5 in 3000ms...
+
+[1A[2K[2m[WebServer] [22m≡ƒöä Attempting to connect to PostgreSQL...
+
+[1A[2K[2m[WebServer] [22mΓ¥î PostgreSQL connection failed: Error [PostgresError]: Your account or project has exceeded the compute time quota. Upgrade your plan to increase limits.
+[2m[WebServer] [22m    at PostgreSQLManager.connect (src\lib\db\postgresql-manager.ts:68:16)
+[2m[WebServer] [22m  [90m66 |[0m 			[90m// Test connection with timeout[0m
+[2m[WebServer] [22m  [90m67 |[0m 			[36mconst[0m testResult = [36mawait[0m [33mPromise[0m.race([
+[2m[WebServer] [22m[31m[1m>[0m [90m68 |[0m 				[36mthis[0m.client[32m`SELECT 1 as test`[0m,
+[2m[WebServer] [22m  [90m   |[0m            [31m[1m^[0m
+[2m[WebServer] [22m  [90m69 |[0m 				[36mnew[0m [33mPromise[0m((_, reject) =>
+[2m[WebServer] [22m  [90m70 |[0m 					setTimeout(() => reject([36mnew[0m [33mError[0m([32m'Connection timeout'[0m)), [35m15000[0m)
+[2m[WebServer] [22m  [90m71 |[0m 				), {
+[2m[WebServer] [22m  severity_local: [32m'ERROR'[39m,
+[2m[WebServer] [22m  code: [32m'XX000'[39m
+[2m[WebServer] [22m}
+
+[1A[2K[2m[WebServer] [22mΓÅ│ Retry attempt 2/5 in 3000ms...
+
+[1A[2K[2m[WebServer] [22m≡ƒöä Attempting to connect to PostgreSQL...
+
+[1A[2K[2m[WebServer] [22mΓ¥î PostgreSQL connection failed: Error [PostgresError]: Your account or project has exceeded the compute time quota. Upgrade your plan to increase limits.
+[2m[WebServer] [22m    at PostgreSQLManager.connect (src\lib\db\postgresql-manager.ts:68:16)
+[2m[WebServer] [22m  [90m66 |[0m 			[90m// Test connection with timeout[0m
+[2m[WebServer] [22m  [90m67 |[0m 			[36mconst[0m testResult = [36mawait[0m [33mPromise[0m.race([
+[2m[WebServer] [22m[31m[1m>[0m [90m68 |[0m 				[36mthis[0m.client[32m`SELECT 1 as test`[0m,
+[2m[WebServer] [22m  [90m   |[0m            [31m[1m^[0m
+[2m[WebServer] [22m  [90m69 |[0m 				[36mnew[0m [33mPromise[0m((_, reject) =>
+[2m[WebServer] [22m  [90m70 |[0m 					setTimeout(() => reject([36mnew[0m [33mError[0m([32m'Connection timeout'[0m)), [35m15000[0m)
+[2m[WebServer] [22m  [90m71 |[0m 				), {
+[2m[WebServer] [22m  severity_local: [32m'ERROR'[39m,
+[2m[WebServer] [22m  code: [32m'XX000'[39m
+[2m[WebServer] [22m}
+
+[1A[2K[2m[WebServer] [22mΓÅ│ Retry attempt 3/5 in 3000ms...
+
+[1A[2K[2m[WebServer] [22m≡ƒöä Attempting to connect to PostgreSQL...
+
+[1A[2K[2m[WebServer] [22mΓ¥î PostgreSQL connection failed: Error [PostgresError]: Your account or project has exceeded the compute time quota. Upgrade your plan to increase limits.
+[2m[WebServer] [22m    at PostgreSQLManager.connect (src\lib\db\postgresql-manager.ts:68:16)
+[2m[WebServer] [22m  [90m66 |[0m 			[90m// Test connection with timeout[0m
+[2m[WebServer] [22m  [90m67 |[0m 			[36mconst[0m testResult = [36mawait[0m [33mPromise[0m.race([
+[2m[WebServer] [22m[31m[1m>[0m [90m68 |[0m 				[36mthis[0m.client[32m`SELECT 1 as test`[0m,
+[2m[WebServer] [22m  [90m   |[0m            [31m[1m^[0m
+[2m[WebServer] [22m  [90m69 |[0m 				[36mnew[0m [33mPromise[0m((_, reject) =>
+[2m[WebServer] [22m  [90m70 |[0m 					setTimeout(() => reject([36mnew[0m [33mError[0m([32m'Connection timeout'[0m)), [35m15000[0m)
+[2m[WebServer] [22m  [90m71 |[0m 				), {
+[2m[WebServer] [22m  severity_local: [32m'ERROR'[39m,
+[2m[WebServer] [22m  code: [32m'XX000'[39m
+[2m[WebServer] [22m}
+
+[1A[2K[2m[WebServer] [22mΓÅ│ Retry attempt 4/5 in 3000ms...
+
+[1A[2K[2m[WebServer] [22m≡ƒöä Attempting to connect to PostgreSQL...
+
+[1A[2K[2m[WebServer] [22mΓ¥î PostgreSQL connection failed: Error [PostgresError]: Your account or project has exceeded the compute time quota. Upgrade your plan to increase limits.
+[2m[WebServer] [22m    at PostgreSQLManager.connect (src\lib\db\postgresql-manager.ts:68:16)
+[2m[WebServer] [22m  [90m66 |[0m 			[90m// Test connection with timeout[0m
+[2m[WebServer] [22m  [90m67 |[0m 			[36mconst[0m testResult = [36mawait[0m [33mPromise[0m.race([
+[2m[WebServer] [22m[31m[1m>[0m [90m68 |[0m 				[36mthis[0m.client[32m`SELECT 1 as test`[0m,
+[2m[WebServer] [22m  [90m   |[0m            [31m[1m^[0m
+[2m[WebServer] [22m  [90m69 |[0m 				[36mnew[0m [33mPromise[0m((_, reject) =>
+[2m[WebServer] [22m  [90m70 |[0m 					setTimeout(() => reject([36mnew[0m [33mError[0m([32m'Connection timeout'[0m)), [35m15000[0m)
+[2m[WebServer] [22m  [90m71 |[0m 				), {
+[2m[WebServer] [22m  severity_local: [32m'ERROR'[39m,
+[2m[WebServer] [22m  code: [32m'XX000'[39m
+[2m[WebServer] [22m}
+
+[1A[2K[WebServer] ΓÜá∩╕Å PostgreSQL unavailable, initializing SQLite...
+
+[1A[2K[2m[WebServer] [22mΓ£à SQLite connected successfully
+
+
+[1A[2K[WebServer] ΓÜá∩╕Å Using SQLite fallback - Better Auth data will be stored locally
+[1A[2K[2m[WebServer] [22mΓ£à Background: Database and Auth pre-initialized
+
+[1A[2K[2m[WebServer] [22m- Experiments (use with caution):
+
+[1A[2K[2m[WebServer] [22m  ┬╖ clientTraceMetadata
+[2m[WebServer] [22m  ┬╖ optimizePackageImports
+
+[1A[2K[2m[WebServer] [22m  [1mΓ£ô[22m viewTransition
+[2m[WebServer] [22m
+
+[1A[2K[2m[WebServer] [22m[Proxy] Public route: / (Authenticated: false)
+
+[1A[2K[2m[WebServer] [22m GET / [32m200[39m in 1738ms[2m (next.js: 519ms, proxy.ts: 324ms, application-code: 895ms)[22m
+
+
+Running 1 test using 1 worker
+
+[1A[2K[1/1] [chromium] ΓÇ║ e2e\critical-flows.spec.ts:24:2 ΓÇ║ Critical User Flows ΓÇ║ 3. Subjects page loads and displays subjects
+[1A[2K[2m[WebServer] [22m[Proxy] Public route: / (Authenticated: false)
+
+[1A[2K[2m[WebServer] [22m GET / [32m200[39m in 313ms[2m (next.js: 6ms, proxy.ts: 8ms, application-code: 298ms)[22m
+
+[1A[2K[2m[WebServer] [22m[Proxy] Default route: /monitoring (Authenticated: false)
+
+[1A[2K[2m[WebServer] [22m[Proxy] Public route: /api/csp-report (Authenticated: false)
+
+[1A[2K[2m[WebServer] [22m[CSP Report] {
+[2m[WebServer] [22m  "csp-report": {
+[2m[WebServer] [22m    "document-uri": "http://localhost:3000/",
+[2m[WebServer] [22m    "referrer": "",
+[2m[WebServer] [22m    "violated-directive": "worker-src",
+[2m[WebServer] [22m    "effective-directive": "worker-src",
+[2m[WebServer] [22m    "original-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://va.vercel-scripts.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; connect-src 'self' wss://*.ably.com wss://main.realtime.ably.net https://*.ably.com https://main.realtime.ably.net https://api.iconify.design https://unpkg.com; frame-ancestors 'none'; report-uri /api/csp-report;",
+[2m[WebServer] [22m    "disposition": "report",
+[2m[WebServer] [22m    "blocked-uri": "blob",
+[2m[WebServer] [22m    "line-number": 5099,
+[2m[WebServer] [22m    "column-number": 24,
+[2m[WebServer] [22m    "source-file": "http://localhost:3000/_next/static/chunks/0kta_%40sentry-internal_replay_build_npm_esm_index_00gbf.0.js",
+[2m[WebServer] [22m    "status-code": 200,
+[2m[WebServer] [22m    "script-sample": ""
+[2m[WebServer] [22m  }
+[2m[WebServer] [22m}
+
+[1A[2K[2m[WebServer] [22m POST /api/csp-report [32m200[39m in 250ms[2m (next.js: 201ms, proxy.ts: 15ms, application-code: 34ms)[22m
+
+[1A[2K[2m[WebServer] [22m[36m[browser][39m Download the React DevTools for a better development experience: https://react.dev/link/react-devtools
+
+[1A[2K[2m[WebServer] [22m[Proxy] Default route: /subjects (Authenticated: false)
+
+[1A[2K[2m[WebServer] [22m[36m[browser][39m No WebGPU adapter available [2m(src/lib/webllm/engine.ts:43:13)[22m
+
+[1A[2K[2m[WebServer] [22m[Proxy] Default route: /monitoring (Authenticated: false)
+
+[1A[2K[2m[WebServer] [22m[Proxy] Default route: /monitoring (Authenticated: false)
+
+[1A[2K[2m[WebServer] [22m[Proxy] Default route: /monitoring (Authenticated: false)
+
+[1A[2K[2m[WebServer] [22m GET /subjects [32m200[39m in 419ms[2m (next.js: 144ms, proxy.ts: 9ms, application-code: 266ms)[22m
+
+[1A[2K[2m[WebServer] [22m[Proxy] Default route: /monitoring (Authenticated: false)
+
+[1A[2K[2m[WebServer] [22m[Proxy] Public route: /api/csp-report (Authenticated: false)
+
+[1A[2K[2m[WebServer] [22m[CSP Report] {
+[2m[WebServer] [22m  "csp-report": {
+[2m[WebServer] [22m    "document-uri": "http://localhost:3000/subjects",
+[2m[WebServer] [22m    "referrer": "",
+[2m[WebServer] [22m    "violated-directive": "worker-src",
+[2m[WebServer] [22m    "effective-directive": "worker-src",
+[2m[WebServer] [22m    "original-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://va.vercel-scripts.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; connect-src 'self' wss://*.ably.com wss://main.realtime.ably.net https://*.ably.com https://main.realtime.ably.net https://api.iconify.design https://unpkg.com; frame-ancestors 'none'; report-uri /api/csp-report;",
+[2m[WebServer] [22m    "disposition": "report",
+[2m[WebServer] [22m    "blocked-uri": "blob",
+[2m[WebServer] [22m    "line-number": 5099,
+[2m[WebServer] [22m    "column-number": 24,
+[2m[WebServer] [22m    "source-file": "http://localhost:3000/_next/static/chunks/0kta_%40sentry-internal_replay_build_npm_esm_index_00gbf.0.js",
+[2m[WebServer] [22m    "status-code": 200,
+[2m[WebServer] [22m    "script-sample": ""
+[2m[WebServer] [22m  }
+[2m[WebServer] [22m}
+
+[1A[2K[2m[WebServer] [22m POST /api/csp-report [32m200[39m in 29ms[2m (next.js: 6ms, proxy.ts: 11ms, application-code: 12ms)[22m
+
+[1A[2K[2m[WebServer] [22m[36m[browser][39m Download the React DevTools for a better development experience: https://react.dev/link/react-devtools
+
+[1A[2K[2m[WebServer] [22m[Proxy] Default route: /monitoring (Authenticated: false)
+
+[1A[2K[2m[WebServer] [22m[Proxy] Default route: /monitoring (Authenticated: false)
+
+[1A[2K[2m[WebServer] [22m[36m[browser][39m No WebGPU adapter available [2m(src/lib/webllm/engine.ts:43:13)[22m
+
+[1A[2K[2m[WebServer] [22m[Proxy] Public route: /api/auth/get-session (Authenticated: false)
+
+[1A[2K[2m[WebServer] [22m≡ƒöä Attempting to connect to PostgreSQL...
+
+[1A[2K[2m[WebServer] [22m[36m[browser][39m [Vercel Web Analytics] Debug mode is enabled by default in development. No requests will be sent to the server. [2m(https://va.vercel-scripts.com/v1/script.debug.js:1:615)[22m
+
+[1A[2K[2m[WebServer] [22m[36m[browser][39m [Vercel Web Analytics] [view] http://localhost:3000/subjects {
+[2m[WebServer] [22m  f: undefined,
+[2m[WebServer] [22m  o: 'http://localhost:3000/subjects',
+[2m[WebServer] [22m  r: '',
+[2m[WebServer] [22m  sdkn: '@vercel/analytics/react',
+[2m[WebServer] [22m  sdkv: '2.0.1',
+[2m[WebServer] [22m  sv: '0.1.3',
+[2m[WebServer] [22m  ts: 1774299689558
+[2m[WebServer] [22m} /_vercel/insights/view [2m(https://va.vercel-scripts.com/v1/script.debug.js:1:615)[22m
+
+[1A[2K[2m[WebServer] [22m[36m[browser][39m [Vercel Speed Insights] Debug mode is enabled by default in development. No requests will be sent to the server. [2m(https://va.vercel-scripts.com/v1/speed-insights/script.debug.js:1:11264)[22m
+
+[1A[2K[2m[WebServer] [22m[Proxy] Default route: /subjects (Authenticated: false)
+
+[1A[2K[2m[WebServer] [22m≡ƒöä Attempting to connect to PostgreSQL...
+
+[1A[2K[2m[WebServer] [22mΓ¥î PostgreSQL connection failed: Error [PostgresError]: Your account or project has exceeded the compute time quota. Upgrade your plan to increase limits.
+[2m[WebServer] [22m    at PostgreSQLManager.connect (src\lib\db\postgresql-manager.ts:68:16)
+[2m[WebServer] [22m  [90m66 |[0m 			[90m// Test connection with timeout[0m
+[2m[WebServer] [22m  [90m67 |[0m 			[36mconst[0m testResult = [36mawait[0m [33mPromise[0m.race([
+[2m[WebServer] [22m[31m[1m>[0m [90m68 |[0m 				[36mthis[0m.client[32m`SELECT 1 as test`[0m,
+[2m[WebServer] [22m  [90m   |[0m            [31m[1m^[0m
+[2m[WebServer] [22m  [90m69 |[0m 				[36mnew[0m [33mPromise[0m((_, reject) =>
+[2m[WebServer] [22m  [90m70 |[0m 					setTimeout(() => reject([36mnew[0m [33mError[0m([32m'Connection timeout'[0m)), [35m15000[0m)
+[2m[WebServer] [22m  [90m71 |[0m 				), {
+[2m[WebServer] [22m  severity_local: [32m'ERROR'[39m,
+[2m[WebServer] [22m  code: [32m'XX000'[39m
+[2m[WebServer] [22m}
+
+[1A[2K[2m[WebServer] [22mΓÅ│ Retry attempt 1/5 in 3000ms...
+
+[1A[2K[2m[WebServer] [22mΓ¥î PostgreSQL connection failed: Error [PostgresError]: Your account or project has exceeded the compute time quota. Upgrade your plan to increase limits.
+[2m[WebServer] [22m    at PostgreSQLManager.connect (src\lib\db\postgresql-manager.ts:68:16)
+[2m[WebServer] [22m  [90m66 |[0m 			[90m// Test connection with timeout[0m
+[2m[WebServer] [22m  [90m67 |[0m 			[36mconst[0m testResult = [36mawait[0m [33mPromise[0m.race([
+[2m[WebServer] [22m[31m[1m>[0m [90m68 |[0m 				[36mthis[0m.client[32m`SELECT 1 as test`[0m,
+[2m[WebServer] [22m  [90m   |[0m            [31m[1m^[0m
+[2m[WebServer] [22m  [90m69 |[0m 				[36mnew[0m [33mPromise[0m((_, reject) =>
+[2m[WebServer] [22m  [90m70 |[0m 					setTimeout(() => reject([36mnew[0m [33mError[0m([32m'Connection timeout'[0m)), [35m15000[0m)
+[2m[WebServer] [22m  [90m71 |[0m 				), {
+[2m[WebServer] [22m  severity_local: [32m'ERROR'[39m,
+[2m[WebServer] [22m  code: [32m'XX000'[39m
+[2m[WebServer] [22m}
+
+[1A[2K[2m[WebServer] [22mΓÅ│ Retry attempt 1/5 in 3000ms...
+
+[1A[2K[2m[WebServer] [22m≡ƒöä Attempting to connect to PostgreSQL...
+
+[1A[2K[2m[WebServer] [22m≡ƒöä Attempting to connect to PostgreSQL...
+
+[1A[2K[2m[WebServer] [22mΓ¥î PostgreSQL connection failed: Error [PostgresError]: Your account or project has exceeded the compute time quota. Upgrade your plan to increase limits.
+[2m[WebServer] [22m    at PostgreSQLManager.connect (src\lib\db\postgresql-manager.ts:68:16)
+[2m[WebServer] [22m  [90m66 |[0m 			[90m// Test connection with timeout[0m
+[2m[WebServer] [22m  [90m67 |[0m 			[36mconst[0m testResult = [36mawait[0m [33mPromise[0m.race([
+[2m[WebServer] [22m[31m[1m>[0m [90m68 |[0m 				[36mthis[0m.client[32m`SELECT 1 as test`[0m,
+[2m[WebServer] [22m  [90m   |[0m            [31m[1m^[0m
+[2m[WebServer] [22m  [90m69 |[0m 				[36mnew[0m [33mPromise[0m((_, reject) =>
+[2m[WebServer] [22m  [90m70 |[0m 					setTimeout(() => reject([36mnew[0m [33mError[0m([32m'Connection timeout'[0m)), [35m15000[0m)
+[2m[WebServer] [22m  [90m71 |[0m 				), {
+[2m[WebServer] [22m  severity_local: [32m'ERROR'[39m,
+[2m[WebServer] [22m  code: [32m'XX000'[39m
+[2m[WebServer] [22m}
+
+[1A[2K[2m[WebServer] [22mΓÅ│ Retry attempt 2/5 in 3000ms...
+
+[1A[2K[2m[WebServer] [22mΓ¥î PostgreSQL connection failed: Error [PostgresError]: Your account or project has exceeded the compute time quota. Upgrade your plan to increase limits.
+[2m[WebServer] [22m    at PostgreSQLManager.connect (src\lib\db\postgresql-manager.ts:68:16)
+[2m[WebServer] [22m  [90m66 |[0m 			[90m// Test connection with timeout[0m
+[2m[WebServer] [22m  [90m67 |[0m 			[36mconst[0m testResult = [36mawait[0m [33mPromise[0m.race([
+[2m[WebServer] [22m[31m[1m>[0m [90m68 |[0m 				[36mthis[0m.client[32m`SELECT 1 as test`[0m,
+[2m[WebServer] [22m  [90m   |[0m            [31m[1m^[0m
+[2m[WebServer] [22m  [90m69 |[0m 				[36mnew[0m [33mPromise[0m((_, reject) =>
+[2m[WebServer] [22m  [90m70 |[0m 					setTimeout(() => reject([36mnew[0m [33mError[0m([32m'Connection timeout'[0m)), [35m15000[0m)
+[2m[WebServer] [22m  [90m71 |[0m 				), {
+[2m[WebServer] [22m  severity_local: [32m'ERROR'[39m,
+[2m[WebServer] [22m  code: [32m'XX000'[39m
+[2m[WebServer] [22m}
+
+[1A[2K[2m[WebServer] [22mΓÅ│ Retry attempt 2/5 in 3000ms...
+
+[1A[2K[2m[WebServer] [22m≡ƒöä Attempting to connect to PostgreSQL...
+
+[1A[2K[2m[WebServer] [22m≡ƒöä Attempting to connect to PostgreSQL...
+
+[1A[2K[2m[WebServer] [22mΓ¥î PostgreSQL connection failed: Error [PostgresError]: Your account or project has exceeded the compute time quota. Upgrade your plan to increase limits.
+[2m[WebServer] [22m    at PostgreSQLManager.connect (src\lib\db\postgresql-manager.ts:68:16)
+[2m[WebServer] [22m  [90m66 |[0m 			[90m// Test connection with timeout[0m
+[2m[WebServer] [22m  [90m67 |[0m 			[36mconst[0m testResult = [36mawait[0m [33mPromise[0m.race([
+[2m[WebServer] [22m[31m[1m>[0m [90m68 |[0m 				[36mthis[0m.client[32m`SELECT 1 as test`[0m,
+[2m[WebServer] [22m  [90m   |[0m            [31m[1m^[0m
+[2m[WebServer] [22m  [90m69 |[0m 				[36mnew[0m [33mPromise[0m((_, reject) =>
+[2m[WebServer] [22m  [90m70 |[0m 					setTimeout(() => reject([36mnew[0m [33mError[0m([32m'Connection timeout'[0m)), [35m15000[0m)
+[2m[WebServer] [22m  [90m71 |[0m 				), {
+[2m[WebServer] [22m  severity_local: [32m'ERROR'[39m,
+[2m[WebServer] [22m  code: [32m'XX000'[39m
+[2m[WebServer] [22m}
+
+[1A[2K[2m[WebServer] [22mΓÅ│ Retry attempt 3/5 in 3000ms...
+
+[1A[2K[2m[WebServer] [22mΓ¥î PostgreSQL connection failed: Error [PostgresError]: Your account or project has exceeded the compute time quota. Upgrade your plan to increase limits.
+[2m[WebServer] [22m    at PostgreSQLManager.connect (src\lib\db\postgresql-manager.ts:68:16)
+[2m[WebServer] [22m  [90m66 |[0m 			[90m// Test connection with timeout[0m
+[2m[WebServer] [22m  [90m67 |[0m 			[36mconst[0m testResult = [36mawait[0m [33mPromise[0m.race([
+[2m[WebServer] [22m[31m[1m>[0m [90m68 |[0m 				[36mthis[0m.client[32m`SELECT 1 as test`[0m,
+[2m[WebServer] [22m  [90m   |[0m            [31m[1m^[0m
+[2m[WebServer] [22m  [90m69 |[0m 				[36mnew[0m [33mPromise[0m((_, reject) =>
+[2m[WebServer] [22m  [90m70 |[0m 					setTimeout(() => reject([36mnew[0m [33mError[0m([32m'Connection timeout'[0m)), [35m15000[0m)
+[2m[WebServer] [22m  [90m71 |[0m 				), {
+[2m[WebServer] [22m  severity_local: [32m'ERROR'[39m,
+[2m[WebServer] [22m  code: [32m'XX000'[39m
+[2m[WebServer] [22m}
+
+[1A[2K[2m[WebServer] [22mΓÅ│ Retry attempt 3/5 in 3000ms...
+
+[1A[2K[2m[WebServer] [22m≡ƒöä Attempting to connect to PostgreSQL...
+
+[1A[2K[2m[WebServer] [22m≡ƒöä Attempting to connect to PostgreSQL...
+
+[1A[2K[2m[WebServer] [22mΓ¥î PostgreSQL connection failed: Error [PostgresError]: Your account or project has exceeded the compute time quota. Upgrade your plan to increase limits.
+[2m[WebServer] [22m    at PostgreSQLManager.connect (src\lib\db\postgresql-manager.ts:68:16)
+[2m[WebServer] [22m  [90m66 |[0m 			[90m// Test connection with timeout[0m
+[2m[WebServer] [22m  [90m67 |[0m 			[36mconst[0m testResult = [36mawait[0m [33mPromise[0m.race([
+[2m[WebServer] [22m[31m[1m>[0m [90m68 |[0m 				[36mthis[0m.client[32m`SELECT 1 as test`[0m,
+[2m[WebServer] [22m  [90m   |[0m            [31m[1m^[0m
+[2m[WebServer] [22m  [90m69 |[0m 				[36mnew[0m [33mPromise[0m((_, reject) =>
+[2m[WebServer] [22m  [90m70 |[0m 					setTimeout(() => reject([36mnew[0m [33mError[0m([32m'Connection timeout'[0m)), [35m15000[0m)
+[2m[WebServer] [22m  [90m71 |[0m 				), {
+[2m[WebServer] [22m  severity_local: [32m'ERROR'[39m,
+[2m[WebServer] [22m  code: [32m'XX000'[39m
+[2m[WebServer] [22m}
+
+[1A[2K[2m[WebServer] [22mΓÅ│ Retry attempt 4/5 in 3000ms...
+
+[1A[2K[2m[WebServer] [22m GET /api/auth/get-session [32m200[39m in 15.2s[2m (proxy.ts: 10ms)[22m
+
+[1A[2K[2m[WebServer] [22m POST /subjects [32m200[39m in 14.6s[2m (next.js: 7ms, proxy.ts: 28ms, application-code: 14.5s)[22m
+
+[1A[2K  1) [chromium] ΓÇ║ e2e\critical-flows.spec.ts:24:2 ΓÇ║ Critical User Flows ΓÇ║ 3. Subjects page loads and displays subjects 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: locator('h1, h2').first()
+    Expected: visible
+    Timeout: 15000ms
+    Error: element(s) not found
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 15000ms[22m
+    [2m  - waiting for locator('h1, h2').first()[22m
+
+
+      26 |
+      27 | 		await expect(page.locator('#main-content')).toBeVisible();
+    > 28 | 		await expect(page.locator('h1, h2').first()).toBeVisible({ timeout: 15000 });
+         | 		                                             ^
+      29 | 	});
+      30 | });
+      31 |
+        at C:\Users\Themba\Documents\org1128\projects\matricmaster-ai\e2e\critical-flows.spec.ts:28:48
+
+    attachment #1: screenshot (image/png) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\critical-flows-Critical-Us-57f04-loads-and-displays-subjects-chromium\test-failed-1.png
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    Error Context: test-results\critical-flows-Critical-Us-57f04-loads-and-displays-subjects-chromium\error-context.md
+
+
+[1A[2K  1 failed
+    [chromium] ΓÇ║ e2e\critical-flows.spec.ts:24:2 ΓÇ║ Critical User Flows ΓÇ║ 3. Subjects page loads and displays subjects 
+
+[36m  Serving HTML report at http://localhost:62628. Press Ctrl+C to quit.[39m

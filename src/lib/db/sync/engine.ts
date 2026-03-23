@@ -295,14 +295,16 @@ class SyncEngine {
 	private async getRemoteRecord(mapping: TableMapping, id: string): Promise<any> {
 		const pgDb = dbManagerV2.getPgDb();
 		if (!pgDb) return null;
-		const idColumn = mapping.pgTable.id as any;
+		const idColumnName = mapping.idColumn;
+		const idColumn = (mapping.pgTable as any)[idColumnName];
 		const result = await pgDb.select().from(mapping.pgTable).where(eq(idColumn, id));
 		return result[0];
 	}
 
 	private async getLocalRecord(mapping: TableMapping, id: string): Promise<any> {
 		const sqliteDb = dbManagerV2.getSqliteDb();
-		const idColumn = mapping.sqliteTable.id as any;
+		const idColumnName = mapping.idColumn;
+		const idColumn = (mapping.sqliteTable as any)[idColumnName];
 		const result = await sqliteDb.select().from(mapping.sqliteTable).where(eq(idColumn, id));
 		return result[0];
 	}
@@ -318,7 +320,7 @@ class SyncEngine {
 				updatedAt: new Date(),
 			} as any)
 			.onConflictDoUpdate({
-				target: mapping.pgTable.id as any,
+				target: (mapping.pgTable as any)[mapping.idColumn],
 				set: {
 					...record,
 					updatedAt: new Date(),
@@ -340,7 +342,7 @@ class SyncEngine {
 				syncVersion: 1,
 			} as any)
 			.onConflictDoUpdate({
-				target: mapping.sqliteTable.id as any,
+				target: (mapping.sqliteTable as any)[mapping.idColumn],
 				set: {
 					...record,
 					syncStatus: 'synced',
@@ -352,7 +354,8 @@ class SyncEngine {
 
 	private async markAsSynced(mapping: TableMapping, id: string): Promise<void> {
 		const sqliteDb = dbManagerV2.getSqliteDb();
-		const idColumn = mapping.sqliteTable.id as any;
+		const idColumnName = mapping.idColumn;
+		const idColumn = (mapping.sqliteTable as any)[idColumnName];
 
 		await sqliteDb
 			.update(mapping.sqliteTable)
@@ -362,7 +365,8 @@ class SyncEngine {
 
 	private async markAsFailed(mapping: TableMapping, id: string): Promise<void> {
 		const sqliteDb = dbManagerV2.getSqliteDb();
-		const idColumn = mapping.sqliteTable.id as any;
+		const idColumnName = mapping.idColumn;
+		const idColumn = (mapping.sqliteTable as any)[idColumnName];
 
 		await sqliteDb
 			.update(mapping.sqliteTable)

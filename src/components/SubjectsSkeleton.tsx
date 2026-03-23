@@ -9,8 +9,12 @@ export function SubjectsSkeleton() {
 			<div className="flex items-center gap-4 mb-8">
 				<Skeleton className="h-10 w-10 rounded-full" />
 				<div>
-					<Skeleton className="h-10 w-64 rounded-full mb-2" />
-					<Skeleton className="h-3 w-48 rounded-full" />
+					<h1 className="text-4xl font-black tracking-tight text-foreground uppercase">
+						<Skeleton className="h-10 w-64 rounded-xl" />
+					</h1>
+					<div className="text-muted-foreground font-bold uppercase text-xs tracking-widest mt-1">
+						<Skeleton className="h-3 w-48 rounded-full" />
+					</div>
 				</div>
 			</div>
 
