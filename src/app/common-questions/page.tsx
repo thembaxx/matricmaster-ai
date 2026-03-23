@@ -98,7 +98,7 @@ export default function CommonQuestionsPage() {
 								onClick={() => dispatch({ type: 'SET_SUBJECT', payload: subject.id })}
 								className="rounded-full gap-2"
 							>
-								<FluentEmoji emoji={subject.fluentEmoji} size={16} className="w-4 h-4" />
+								<FluentEmoji type="3d" emoji={subject.fluentEmoji} size={16} className="w-4 h-4" />
 								{subject.label}
 							</Button>
 						))}

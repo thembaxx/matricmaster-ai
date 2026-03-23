@@ -53,7 +53,7 @@ export function QuestionDialog({
 									question.bgColor
 								)}
 							>
-								<FluentEmoji emoji={question.fluentEmoji} size={20} className="w-5 h-5" />
+								<FluentEmoji type='3d' emoji={question.fluentEmoji} size={20} className="w-5 h-5" />
 							</div>
 							<div className="flex-1 min-w-0">
 								<div className="flex flex-wrap items-center gap-2 mb-1">
