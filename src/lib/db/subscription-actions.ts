@@ -1,5 +1,6 @@
+import { and, asc, eq } from 'drizzle-orm';
 import { db } from './index';
-import { PLAN_TIERS, type SubscriptionPlan, subscriptionPlans } from './schema';
+import { PLAN_TIERS, type SubscriptionPlan, subscriptionPlans, userSubscriptions } from './schema';
 
 const DEFAULT_PLANS: Omit<SubscriptionPlan, 'createdAt' | 'updatedAt'>[] = [
 	{
@@ -59,11 +60,13 @@ export async function seedSubscriptionPlans(): Promise<void> {
 	console.log('Seeding subscription plans...');
 
 	for (const plan of DEFAULT_PLANS) {
-		const existing = await db.query.subscriptionPlans.findFirst({
-			where: (plans, { eq }) => eq(plans.id, plan.id),
-		});
+		const existing = await db
+			.select()
+			.from(subscriptionPlans)
+			.where(eq(subscriptionPlans.id, plan.id))
+			.limit(1);
 
-		if (!existing) {
+		if (existing.length === 0) {
 			await db.insert(subscriptionPlans).values(plan);
 			console.log(`✅ Created plan: ${plan.name}`);
 		} else {
@@ -73,26 +76,38 @@ export async function seedSubscriptionPlans(): Promise<void> {
 }
 
 export async function getPlanById(planId: string): Promise<SubscriptionPlan | undefined> {
-	return db.query.subscriptionPlans.findFirst({
-		where: (plans, { eq }) => eq(plans.id, planId),
-	});
+	const result = await db
+		.select()
+		.from(subscriptionPlans)
+		.where(eq(subscriptionPlans.id, planId))
+		.limit(1);
+
+	return result[0];
 }
 
 export async function getAllActivePlans(): Promise<SubscriptionPlan[]> {
-	return db.query.subscriptionPlans.findMany({
-		where: (plans, { eq }) => eq(plans.isActive, true),
-		orderBy: (plans, { asc }) => [asc(plans.priceZar)],
-	});
+	return db
+		.select()
+		.from(subscriptionPlans)
+		.where(eq(subscriptionPlans.isActive, true))
+		.orderBy(asc(subscriptionPlans.priceZar));
 }
 
 export async function getUserPlan(userId: string): Promise<SubscriptionPlan | null> {
-	const subscription = await db.query.userSubscriptions.findFirst({
-		where: (subs, { eq, and }) => and(eq(subs.userId, userId), eq(subs.status, 'active')),
-		// @ts-expect-error - drizzle relations
-		relations: { plan: true },
-	});
+	const subscriptions = await db
+		.select()
+		.from(userSubscriptions)
+		.where(and(eq(userSubscriptions.userId, userId), eq(userSubscriptions.status, 'active')))
+		.limit(1);
 
-	if (!subscription) return null;
-	// @ts-expect-error - drizzle relations
-	return subscription.plan;
+	if (subscriptions.length === 0) return null;
+
+	const sub = subscriptions[0];
+	const plans = await db
+		.select()
+		.from(subscriptionPlans)
+		.where(eq(subscriptionPlans.id, sub.planId))
+		.limit(1);
+
+	return plans[0] || null;
 }

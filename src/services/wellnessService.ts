@@ -93,8 +93,8 @@ export async function getWellnessStats(userId?: string): Promise<WellnessStats> 
 		return getDefaultWellnessStats();
 	}
 
-	const recentMoods = recentCheckIns.map((c) => c.moodBefore);
-	const averageMood = recentMoods.reduce((a, b) => a + b, 0) / recentMoods.length;
+	const recentMoods = recentCheckIns.map((c: (typeof recentCheckIns)[number]) => c.moodBefore);
+	const averageMood = recentMoods.reduce((a: number, b: number) => a + b, 0) / recentMoods.length;
 
 	const moodTrend = calculateMoodTrend(recentMoods);
 	const burnoutRisk = detectBurnoutRisk(recentCheckIns);

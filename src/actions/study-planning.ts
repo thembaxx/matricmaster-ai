@@ -243,9 +243,18 @@ export async function getStudyStats(): Promise<{
 			limit: 30,
 		});
 
-		const totalMinutes = recentSessions.reduce((sum, s) => sum + (s.durationMinutes || 0), 0);
-		const totalQuestions = recentSessions.reduce((sum, s) => sum + s.questionsAttempted, 0);
-		const totalCorrect = recentSessions.reduce((sum, s) => sum + s.correctAnswers, 0);
+		const totalMinutes = recentSessions.reduce(
+			(sum: number, s: typeof studySessions.$inferSelect) => sum + (s.durationMinutes || 0),
+			0
+		);
+		const totalQuestions = recentSessions.reduce(
+			(sum: number, s: typeof studySessions.$inferSelect) => sum + s.questionsAttempted,
+			0
+		);
+		const totalCorrect = recentSessions.reduce(
+			(sum: number, s: typeof studySessions.$inferSelect) => sum + s.correctAnswers,
+			0
+		);
 
 		return {
 			success: true,

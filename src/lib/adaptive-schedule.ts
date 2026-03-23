@@ -28,7 +28,7 @@ export async function detectMissedGoals(userId: string): Promise<string[]> {
 			)
 		);
 
-	return missedEvents.map((e) => e.id);
+	return missedEvents.map((e: { id: string }) => e.id);
 }
 
 export async function detectStrugglingTopics(userId: string): Promise<string[]> {
@@ -52,8 +52,11 @@ export async function detectStrugglingTopics(userId: string): Promise<string[]> 
 		.groupBy(questions.topic);
 
 	const strugglingTopics = topicScores
-		.filter((t) => t.totalAttempts >= 3 && t.correctAttempts / t.totalAttempts < STRUGGLE_THRESHOLD)
-		.map((t) => t.topic);
+		.filter(
+			(t: { totalAttempts: number; correctAttempts: number; topic: string }) =>
+				t.totalAttempts >= 3 && t.correctAttempts / t.totalAttempts < STRUGGLE_THRESHOLD
+		)
+		.map((t: { topic: string }) => t.topic);
 
 	return strugglingTopics;
 }

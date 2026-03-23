@@ -128,8 +128,8 @@ export async function getDiscoverableBuddies(_userId: string, limit = 20) {
 
 		// Filter out current user and parse JSON fields
 		return buddies
-			.filter((b) => b.userId !== userId)
-			.map((b) => ({
+			.filter((b: (typeof buddies)[number]) => b.userId !== userId)
+			.map((b: (typeof buddies)[number]) => ({
 				...b,
 				preferredSubjects: parseJsonField<string[]>(b.preferredSubjects, []),
 				lookingFor: parseJsonField<string[]>(b.lookingFor, []),
@@ -299,8 +299,8 @@ export async function getUserBuddies(_userId: string) {
 
 		// Filter to only include buddy IDs and parse JSON fields
 		return buddies
-			.filter((b) => buddyIds.has(b.userId))
-			.map((b) => ({
+			.filter((b: (typeof buddies)[number]) => buddyIds.has(b.userId))
+			.map((b: (typeof buddies)[number]) => ({
 				...b,
 				preferredSubjects: parseJsonField<string[]>(b.preferredSubjects, []),
 				lookingFor: parseJsonField<string[]>(b.lookingFor, []),

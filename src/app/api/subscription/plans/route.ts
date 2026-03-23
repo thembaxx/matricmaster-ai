@@ -1,6 +1,8 @@
+import { and, asc, eq } from 'drizzle-orm';
 import { type NextRequest, NextResponse } from 'next/server';
 import { getAuth } from '@/lib/auth';
 import { db } from '@/lib/db';
+import { subscriptionPlans, userSubscriptions } from '@/lib/db/schema';
 
 export async function GET(request: NextRequest) {
 	try {
@@ -14,13 +16,15 @@ export async function GET(request: NextRequest) {
 		}
 
 		const plans = await db.query.subscriptionPlans.findMany({
-			where: (p, { eq }) => eq(p.isActive, true),
-			orderBy: (p, { asc }) => [asc(p.priceZar)],
+			where: eq(subscriptionPlans.isActive, true),
+			orderBy: asc(subscriptionPlans.priceZar),
 		});
 
 		const subscription = await db.query.userSubscriptions.findFirst({
-			where: (subs, { eq, and }) =>
-				and(eq(subs.userId, session.user.id), eq(subs.status, 'active')),
+			where: and(
+				eq(userSubscriptions.userId, session.user.id),
+				eq(userSubscriptions.status, 'active')
+			),
 			with: {
 				plan: true,
 			},

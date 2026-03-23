@@ -41,7 +41,7 @@ export async function sendMessage(
 	const id = crypto.randomUUID();
 
 	try {
-		const [message] = await db.transaction(async (tx) => {
+		const [message] = await db.transaction(async (tx: typeof db) => {
 			const [inserted] = await tx
 				.insert(chatMessages)
 				.values({
@@ -100,8 +100,8 @@ export async function getChannelMessages(
 		const messages = await query;
 
 		return messages
-			.filter((m) => !m.isDeleted)
-			.sort((a, b) => {
+			.filter((m: (typeof messages)[number]) => !m.isDeleted)
+			.sort((a: (typeof messages)[number], b: (typeof messages)[number]) => {
 				const dateA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
 				const dateB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
 				return dateB - dateA;

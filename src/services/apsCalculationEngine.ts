@@ -18,7 +18,7 @@ export async function calculateApsFromQuizResults(
 ): Promise<{ grade: string; confidence: number }> {
 	const quizResults = await getQuizResultsByUser(userId);
 
-	const subjectQuizzes = quizResults.filter((q) =>
+	const subjectQuizzes = quizResults.filter((q: { quizId: string; percentage: string }) =>
 		q.quizId.toLowerCase().includes(subject.toLowerCase())
 	);
 
@@ -27,8 +27,10 @@ export async function calculateApsFromQuizResults(
 	}
 
 	const avgPercentage =
-		subjectQuizzes.reduce((sum, q) => sum + Number.parseFloat(q.percentage), 0) /
-		subjectQuizzes.length;
+		subjectQuizzes.reduce(
+			(sum: number, q: { percentage: string }) => sum + Number.parseFloat(q.percentage),
+			0
+		) / subjectQuizzes.length;
 
 	const grade = percentageToGrade(avgPercentage);
 	const confidence = Math.min(subjectQuizzes.length / 10, 1);

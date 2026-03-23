@@ -55,12 +55,21 @@ export async function generateWeeklyDigest(userId: string): Promise<ParentDigest
 		.innerJoin(subjects, eq(userProgress.subjectId, subjects.id))
 		.where(eq(userProgress.userId, userId));
 
-	const studyHours = sessions.reduce((sum, s) => sum + (s.durationMinutes || 0), 0) / 60;
-	const tasksCompleted = sessions.filter((s) => s.completedAt).length;
+	const studyHours =
+		sessions.reduce(
+			(sum: number, s: (typeof sessions)[number]) => sum + (s.durationMinutes || 0),
+			0
+		) / 60;
+	const tasksCompleted = sessions.filter((s: (typeof sessions)[number]) => s.completedAt).length;
 	const quizzesTaken = quizzes.length;
 	const averageScore =
 		quizzes.length > 0
-			? Math.round(quizzes.reduce((sum, q) => sum + Number(q.percentage || 0), 0) / quizzes.length)
+			? Math.round(
+					quizzes.reduce(
+						(sum: number, q: (typeof quizzes)[number]) => sum + Number(q.percentage || 0),
+						0
+					) / quizzes.length
+				)
 			: 0;
 
 	let strongestSubject = 'N/A';

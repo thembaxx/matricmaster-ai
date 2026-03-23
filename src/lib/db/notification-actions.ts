@@ -88,11 +88,11 @@ export async function getNotifications(
 		// Filter unread only
 		let filtered = notificationsList;
 		if (options?.unreadOnly) {
-			filtered = filtered.filter((n) => !n.isRead);
+			filtered = filtered.filter((n: (typeof filtered)[number]) => !n.isRead);
 		}
 
 		// Sort by created date (newest first)
-		filtered.sort((a, b) => {
+		filtered.sort((a: (typeof filtered)[number], b: (typeof filtered)[number]) => {
 			const dateA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
 			const dateB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
 			return dateB - dateA;

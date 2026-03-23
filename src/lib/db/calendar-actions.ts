@@ -109,21 +109,30 @@ export async function getCalendarEvents(
 
 		// Filter by date range
 		if (options?.startDate) {
-			filtered = filtered.filter((e) => new Date(e.startTime) >= options.startDate!);
+			filtered = filtered.filter(
+				(e: (typeof filtered)[number]) => new Date(e.startTime) >= options.startDate!
+			);
 		}
 		if (options?.endDate) {
-			filtered = filtered.filter((e) => new Date(e.startTime) <= options.endDate!);
+			filtered = filtered.filter(
+				(e: (typeof filtered)[number]) => new Date(e.startTime) <= options.endDate!
+			);
 		}
 
 		// Filter by event type
 		if (options?.eventType) {
-			filtered = filtered.filter((e) => e.eventType === options.eventType);
+			filtered = filtered.filter(
+				(e: (typeof filtered)[number]) => e.eventType === options.eventType
+			);
 		}
 
 		// Parse JSON fields
 		return filtered
-			.sort((a, b) => new Date(a.startTime).getTime() - new Date(b.startTime).getTime())
-			.map((e) => ({
+			.sort(
+				(a: (typeof filtered)[number], b: (typeof filtered)[number]) =>
+					new Date(a.startTime).getTime() - new Date(b.startTime).getTime()
+			)
+			.map((e: (typeof filtered)[number]) => ({
 				...e,
 				reminderMinutes: parseJsonField<number[]>(e.reminderMinutes, []),
 			}));

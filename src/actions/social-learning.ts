@@ -53,7 +53,9 @@ export async function findBuddyMatches(limit = 10): Promise<BuddyMatch[]> {
 		where: sql`${studyBuddies.userId1} = ${session.user.id} OR ${studyBuddies.userId2} = ${session.user.id}`,
 	});
 
-	const existingBuddyIds = new Set(myBuddies.flatMap((b) => [b.userId1, b.userId2]));
+	const existingBuddyIds = new Set(
+		myBuddies.flatMap((b: typeof studyBuddies.$inferSelect) => [b.userId1, b.userId2])
+	);
 
 	const matches: BuddyMatch[] = [];
 
@@ -196,7 +198,9 @@ export async function respondToBuddyRequest(requestId: string, accept: boolean) 
       )`,
 		});
 
-		const mutualChannels = myChannels.filter((c) => theirChannels.some((tc) => tc.id === c.id));
+		const mutualChannels = myChannels.filter((c: typeof channels.$inferSelect) =>
+			theirChannels.some((tc: typeof channels.$inferSelect) => tc.id === c.id)
+		);
 
 		if (mutualChannels.length === 0) {
 			const [channel] = await db
@@ -233,7 +237,7 @@ export async function getStudyGroupLeaderboard(groupId: string, periodType = 'we
 		where: eq(channelMembers.channelId, groupId),
 	});
 
-	const memberIds = members.map((m) => m.userId);
+	const memberIds = members.map((m: typeof channelMembers.$inferSelect) => m.userId);
 	const periodStart = getPeriodStart(periodType);
 
 	const leaderboard = await db.query.leaderboardEntries.findMany({

@@ -1,10 +1,11 @@
 'use server';
 
+import { asc, eq } from 'drizzle-orm';
 import { getAuth } from '@/lib/auth';
 import { dbManager } from '@/lib/db';
-import type { topicConfidence } from '@/lib/db/schema';
+import { topicConfidence } from '@/lib/db/schema';
 
-type TopicConfidenceInsert = typeof topicConfidence.$inferInsert;
+type TopicConfidenceRow = typeof topicConfidence.$inferSelect;
 
 async function getDb() {
 	const connected = await dbManager.waitForConnection(3, 2000);
@@ -44,8 +45,8 @@ export async function startVoiceQuizSession(
 		const db = await getDb();
 
 		const hostConfidences = await db.query.topicConfidence.findMany({
-			where: (tc, { eq }) => eq(tc.userId, session.user.id),
-			orderBy: (tc, { asc }) => [asc(tc.confidenceScore)],
+			where: eq(topicConfidence.userId, session.user.id),
+			orderBy: [asc(topicConfidence.confidenceScore)],
 			limit: 10,
 		});
 
@@ -72,7 +73,7 @@ export async function startVoiceQuizSession(
 
 function generateQuizQuestions(
 	topic: string,
-	_confidences: TopicConfidenceInsert[]
+	_confidences: (typeof topicConfidence.$inferSelect)[]
 ): QuizQuestion[] {
 	const baseQuestions: Record<string, QuizQuestion[]> = {
 		Calculus: [
@@ -232,27 +233,30 @@ export async function getSharedWeakTopic(
 		const db = await getDb();
 
 		const confidences1 = await db.query.topicConfidence.findMany({
-			where: (tc, { eq }) => eq(tc.userId, userId1),
-			orderBy: (tc, { asc }) => [asc(tc.confidenceScore)],
+			where: eq(topicConfidence.userId, userId1),
+			orderBy: [asc(topicConfidence.confidenceScore)],
 			limit: 5,
 		});
 
 		const confidences2 = await db.query.topicConfidence.findMany({
-			where: (tc, { eq }) => eq(tc.userId, userId2),
-			orderBy: (tc, { asc }) => [asc(tc.confidenceScore)],
+			where: eq(topicConfidence.userId, userId2),
+			orderBy: [asc(topicConfidence.confidenceScore)],
 			limit: 5,
 		});
 
-		const topics1 = new Set(confidences1.map((c) => c.topic));
-		const topics2 = new Set(confidences2.map((c) => c.topic));
+		const topics1: string[] = confidences1.map((c: TopicConfidenceRow) => c.topic);
+		const topics2: string[] = confidences2.map((c: TopicConfidenceRow) => c.topic);
+		const topicSet1 = new Set(topics1);
+		const topicSet2 = new Set(topics2);
 
-		for (const topic of topics1) {
-			if (topics2.has(topic)) {
+		for (const topic of topicSet1) {
+			if (topicSet2.has(topic)) {
 				return { success: true, data: topic };
 			}
 		}
 
-		return { success: true, data: confidences1[0]?.topic || confidences2[0]?.topic || null };
+		const firstTopic = confidences1[0]?.topic ?? confidences2[0]?.topic ?? null;
+		return { success: true, data: firstTopic };
 	} catch (error) {
 		console.error('getSharedWeakTopic failed:', error);
 		return { success: false, error: 'Failed to get shared weak topic' };

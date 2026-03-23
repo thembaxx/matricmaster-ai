@@ -58,13 +58,23 @@ export function SubjectsSection({ onAuthRequired }: SubjectsSectionProps) {
 								<div
 									className={`w-12 h-12 rounded-[var(--radius-lg)] ${subject.bg} flex items-center justify-center mb-4`}
 								>
-									{imgSrc && <SafeImage alt={subject.name} src={imgSrc} height={24} width={24} className='w-10 h-10'/>}
-									{!imgSrc && <FluentEmoji
-										type='3d'
-										emoji={fluentEmoji}
-										size={24}
-										className={`w-6 h-6 ${subject.color}`}
-									/>}
+									{imgSrc && (
+										<SafeImage
+											alt={subject.name}
+											src={imgSrc}
+											height={24}
+											width={24}
+											className="w-10 h-10"
+										/>
+									)}
+									{!imgSrc && (
+										<FluentEmoji
+											type="3d"
+											emoji={fluentEmoji}
+											size={24}
+											className={`w-6 h-6 ${subject.color}`}
+										/>
+									)}
 								</div>
 								<h3 className="text-lg font-bold mb-1">{subject.name}</h3>
 								<p className="text-sm text-muted-foreground">{subject.topics}</p>

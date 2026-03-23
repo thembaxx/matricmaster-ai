@@ -202,7 +202,7 @@ export const XpHeader = memo(function XpHeader({
 						} as React.CSSProperties
 					}
 				/>
-				<div className="absolute top-1/2 -translate-y-1/2 right-0 flex items-center gap-1 px-2 py-0.5 bg-background rounded-full border border-border shadow-sm">
+				<div className="absolute top-1/2 -translate-y-1/2 right-0 flex items-center gap-1 px-2 py-0.5 pb-3 bg-background rounded-full border border-border shadow-sm">
 					<HugeiconsIcon icon={FlashIcon} className="w-3 h-3" style={{ color: data.color }} />
 					<span className="text-[10px] font-medium text-muted-foreground">
 						{Math.round(data.progress)}%

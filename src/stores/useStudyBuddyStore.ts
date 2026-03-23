@@ -7,6 +7,9 @@ import {
 	getUserBuddies,
 	getUserInfo,
 } from '@/lib/db/buddy-actions';
+import type { studyBuddyRequests } from '@/lib/db/schema';
+
+type PendingRequest = typeof studyBuddyRequests.$inferSelect;
 
 export interface StudyBuddy {
 	id: string;
@@ -114,37 +117,40 @@ export const useStudyBuddyStore = create<StudyBuddyState>((set, _get) => ({
 			// Load discoverable buddies
 			const discoverable = await getDiscoverableBuddies(userId, 20);
 			const buddiesWithNames = await Promise.all(
-				discoverable.map(async (buddy) => {
-					try {
-						const user = await getUserInfo(buddy.userId);
-						return {
-							id: buddy.userId,
-							userId: buddy.userId,
-							name: user?.name || 'Unknown User',
-							avatar: user?.image || undefined,
-							bio: buddy.bio || '',
-							subjects: buddy.preferredSubjects || [],
-							studyGoals: buddy.studyGoals || '',
-						} as StudyBuddy;
-					} catch (error) {
-						console.warn('Failed to get user info for discoverable buddy:', error);
-						return {
-							id: buddy.userId,
-							userId: buddy.userId,
-							name: 'Unknown User',
-							bio: buddy.bio || '',
-							subjects: buddy.preferredSubjects || [],
-							studyGoals: buddy.studyGoals || '',
-						} as StudyBuddy;
+				discoverable.map(
+					async (buddy: Awaited<ReturnType<typeof getDiscoverableBuddies>>[number]) => {
+						try {
+							const user = await getUserInfo(buddy.userId);
+							return {
+								id: buddy.userId,
+								userId: buddy.userId,
+								name: user?.name || 'Unknown User',
+								avatar: user?.image || undefined,
+								bio: buddy.bio || '',
+								subjects: buddy.preferredSubjects || [],
+								studyGoals: buddy.studyGoals || '',
+							} as StudyBuddy;
+						} catch (error) {
+							console.warn('Failed to get user info for discoverable buddy:', error);
+							return {
+								id: buddy.userId,
+								userId: buddy.userId,
+								name: 'Unknown User',
+								bio: buddy.bio || '',
+								subjects: buddy.preferredSubjects || [],
+								studyGoals: buddy.studyGoals || '',
+							} as StudyBuddy;
+						}
 					}
-				})
+				)
 			);
 			set({ discoverableBuddies: buddiesWithNames });
 
 			// Load user's buddies
 			const buddies = await getUserBuddies(userId);
+			type BuddyProfile = Awaited<ReturnType<typeof getUserBuddies>>[number];
 			const buddiesList = await Promise.all(
-				buddies.map(async (buddy) => {
+				buddies.map(async (buddy: BuddyProfile) => {
 					try {
 						const user = await getUserInfo(buddy.userId);
 						return {
@@ -174,7 +180,7 @@ export const useStudyBuddyStore = create<StudyBuddyState>((set, _get) => ({
 			// Load pending requests
 			const requests = await getPendingRequests(userId);
 			const requestsWithUsers = await Promise.all(
-				requests.map(async (req) => {
+				requests.map(async (req: PendingRequest) => {
 					try {
 						const user = await getUserInfo(req.requesterId);
 						return {

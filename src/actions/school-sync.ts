@@ -68,7 +68,7 @@ export async function getSchoolAnalytics(schoolId: string): Promise<SchoolAnalyt
     )`,
 	});
 
-	const userIds = schoolUsers.map((u) => u.id);
+	const userIds = schoolUsers.map((u: typeof users.$inferSelect) => u.id);
 
 	if (userIds.length === 0) {
 		return {
@@ -97,8 +97,14 @@ export async function getSchoolAnalytics(schoolId: string): Promise<SchoolAnalyt
 		),
 	});
 
-	const totalQuestions = recentQuizzes.reduce((sum, q) => sum + q.totalQuestions, 0);
-	const totalCorrect = recentQuizzes.reduce((sum, q) => sum + q.score, 0);
+	const totalQuestions = recentQuizzes.reduce(
+		(sum: number, q: typeof quizResults.$inferSelect) => sum + q.totalQuestions,
+		0
+	);
+	const totalCorrect = recentQuizzes.reduce(
+		(sum: number, q: typeof quizResults.$inferSelect) => sum + q.score,
+		0
+	);
 	const averageAccuracy = totalQuestions > 0 ? (totalCorrect / totalQuestions) * 100 : 0;
 
 	const masteries = await db.query.topicMastery.findMany({
@@ -129,8 +135,13 @@ export async function getSchoolAnalytics(schoolId: string): Promise<SchoolAnalyt
 		.sort((a, b) => b.averageMastery - a.averageMastery)
 		.slice(0, 5);
 
-	const uniqueActiveUsers = new Set(recentSessions.map((s) => s.userId)).size;
-	const totalStudyMinutes = recentSessions.reduce((sum, s) => sum + (s.durationMinutes || 0), 0);
+	const uniqueActiveUsers = new Set(
+		recentSessions.map((s: typeof studySessions.$inferSelect) => s.userId)
+	).size;
+	const totalStudyMinutes = recentSessions.reduce(
+		(sum: number, s: typeof studySessions.$inferSelect) => sum + (s.durationMinutes || 0),
+		0
+	);
 
 	return {
 		schoolId,
@@ -190,7 +201,7 @@ export async function getSchoolLeaderboard(
     )`,
 	});
 
-	const userIds = schoolUsers.map((u) => u.id);
+	const userIds = schoolUsers.map((u: typeof users.$inferSelect) => u.id);
 
 	const progressList = await db.query.userProgress.findMany({
 		where: sql`${userProgress.userId} IN ${userIds}`,
@@ -204,18 +215,30 @@ export async function getSchoolLeaderboard(
 		where: sql`${topicMastery.userId} IN ${userIds}`,
 	});
 
-	const learnerProgress: LearnerProgress[] = schoolUsers.map((user) => {
-		const progress = progressList.find((p) => p.userId === user.id);
-		const quizzes = quizList.filter((q) => q.userId === user.id);
-		const userMasteries = masteries.filter((m) => m.userId === user.id);
+	const learnerProgress: LearnerProgress[] = schoolUsers.map((user: typeof users.$inferSelect) => {
+		const progress = progressList.find(
+			(p: typeof userProgress.$inferSelect) => p.userId === user.id
+		);
+		const quizzes = quizList.filter((q: typeof quizResults.$inferSelect) => q.userId === user.id);
+		const userMasteries = masteries.filter(
+			(m: typeof topicMastery.$inferSelect) => m.userId === user.id
+		);
 
-		const totalQuestions = quizzes.reduce((sum, q) => sum + q.totalQuestions, 0);
-		const totalCorrect = quizzes.reduce((sum, q) => sum + q.score, 0);
+		const totalQuestions = quizzes.reduce(
+			(sum: number, q: typeof quizResults.$inferSelect) => sum + q.totalQuestions,
+			0
+		);
+		const totalCorrect = quizzes.reduce(
+			(sum: number, q: typeof quizResults.$inferSelect) => sum + q.score,
+			0
+		);
 
-		const topicsMastered = userMasteries.filter((m) => Number(m.masteryLevel) >= 0.8).length;
+		const topicsMastered = userMasteries.filter(
+			(m: typeof topicMastery.$inferSelect) => Number(m.masteryLevel) >= 0.8
+		).length;
 		const weakTopics = userMasteries
-			.filter((m) => Number(m.masteryLevel) < 0.5)
-			.map((m) => m.topic);
+			.filter((m: typeof topicMastery.$inferSelect) => Number(m.masteryLevel) < 0.5)
+			.map((m: typeof topicMastery.$inferSelect) => m.topic);
 
 		return {
 			learnerId: user.id,

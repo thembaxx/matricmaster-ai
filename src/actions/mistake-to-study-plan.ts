@@ -1,6 +1,6 @@
 'use server';
 
-import { and, eq, sql } from 'drizzle-orm';
+import { and, desc, eq, sql } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
 import { headers } from 'next/headers';
 import { getAuth } from '@/lib/auth';
@@ -11,6 +11,7 @@ import {
 	pastPapers,
 	questionAttempts,
 	questions,
+	studyPlans,
 	subjects,
 	topicMastery,
 } from '@/lib/db/schema';
@@ -53,7 +54,7 @@ export async function addMistakeToStudyPlanAction(
 	const db = dbManager.getDb();
 
 	const activePlan = await db.query.studyPlans.findFirst({
-		where: (plans, { eq, and }) => and(eq(plans.userId, session.user.id), eq(plans.isActive, true)),
+		where: and(eq(studyPlans.userId, session.user.id), eq(studyPlans.isActive, true)),
 	});
 
 	if (!activePlan) {
@@ -104,7 +105,7 @@ export async function getMistakeContentRecommendations(
 		});
 
 		const relevantPaper = papers.find(
-			(p) => p.subject.toLowerCase() === mistake.subject.toLowerCase()
+			(p: (typeof papers)[number]) => p.subject.toLowerCase() === mistake.subject.toLowerCase()
 		);
 
 		const easierQuestions = await db.query.questions.findMany({
@@ -149,13 +150,12 @@ export async function getRecentMistakesAction(
 	const db = dbManager.getDb();
 
 	const attempts = await db.query.questionAttempts.findMany({
-		where: (attempts, { eq, and }) =>
-			and(eq(attempts.userId, session.user.id), eq(attempts.isCorrect, false)),
-		orderBy: (attempts, { desc }) => [desc(attempts.attemptedAt)],
+		where: and(eq(questionAttempts.userId, session.user.id), eq(questionAttempts.isCorrect, false)),
+		orderBy: [desc(questionAttempts.attemptedAt)],
 		limit,
 	});
 
-	return attempts.map((a) => ({
+	return attempts.map((a: (typeof attempts)[number]) => ({
 		topic: a.topic,
 		questionId: a.questionId,
 		subject: a.topic.split(' ')[0] || 'General',
@@ -175,12 +175,11 @@ export async function getUnvisitedMistakesCountAction(): Promise<number> {
 	const now = new Date();
 
 	const unvisitedAttempts = await db.query.questionAttempts.findMany({
-		where: (attempts, { eq, and }) =>
-			and(
-				eq(attempts.userId, session.user.id),
-				eq(attempts.isCorrect, false),
-				sql`${attempts.nextReviewAt} <= ${now.toISOString()} OR ${attempts.nextReviewAt} IS NULL`
-			),
+		where: and(
+			eq(questionAttempts.userId, session.user.id),
+			eq(questionAttempts.isCorrect, false),
+			sql`${questionAttempts.nextReviewAt} <= ${now.toISOString()} OR ${questionAttempts.nextReviewAt} IS NULL`
+		),
 	});
 
 	const unresolvedStruggles = await db.query.conceptStruggles.findMany({
@@ -190,7 +189,9 @@ export async function getUnvisitedMistakesCountAction(): Promise<number> {
 		),
 	});
 
-	const uniqueMistakeTopics = new Set(unvisitedAttempts.map((a) => `${a.topic}-${a.questionId}`));
+	const uniqueMistakeTopics = new Set(
+		unvisitedAttempts.map((a: (typeof unvisitedAttempts)[number]) => `${a.topic}-${a.questionId}`)
+	);
 
 	return Math.max(uniqueMistakeTopics.size, unresolvedStruggles.length);
 }
@@ -216,17 +217,16 @@ export async function getMistakesForPracticeAction(limit = 10): Promise<MistakeF
 	const now = new Date();
 
 	const attempts = await db.query.questionAttempts.findMany({
-		where: (attempts, { eq, and }) =>
-			and(
-				eq(attempts.userId, session.user.id),
-				eq(attempts.isCorrect, false),
-				sql`${attempts.nextReviewAt} <= ${now.toISOString()} OR ${attempts.nextReviewAt} IS NULL`
-			),
-		orderBy: (attempts, { desc }) => [desc(attempts.attemptedAt)],
+		where: and(
+			eq(questionAttempts.userId, session.user.id),
+			eq(questionAttempts.isCorrect, false),
+			sql`${questionAttempts.nextReviewAt} <= ${now.toISOString()} OR ${questionAttempts.nextReviewAt} IS NULL`
+		),
+		orderBy: [desc(questionAttempts.attemptedAt)],
 		limit,
 	});
 
-	const topicSet = new Set(attempts.map((a) => a.topic));
+	const topicSet = new Set<string>(attempts.map((a: (typeof attempts)[number]) => a.topic));
 	const topicSubjectMap = new Map<string, { subject: string; subjectId: number }>();
 
 	for (const topic of topicSet) {
@@ -251,7 +251,7 @@ export async function getMistakesForPracticeAction(limit = 10): Promise<MistakeF
 		}
 	}
 
-	return attempts.map((a) => {
+	return attempts.map((a: (typeof attempts)[number]) => {
 		const subjectInfo = topicSubjectMap.get(a.topic) || {
 			subject: a.topic.split(' ')[0] || 'General',
 			subjectId: 1,

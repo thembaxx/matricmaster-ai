@@ -144,7 +144,10 @@ export async function updateUserApsScore(
 		.from(userApsScores)
 		.where(eq(userApsScores.userId, user.id));
 
-	const newTotalAps = allScores.reduce((sum, s) => sum + (s.apsPoints || 0), 0);
+	const newTotalAps = allScores.reduce(
+		(sum: number, s: { apsPoints: number | null }) => sum + (s.apsPoints || 0),
+		0
+	);
 	const change = newTotalAps - (existing?.apsPoints || 0);
 
 	return { newTotalAps, change };
@@ -164,7 +167,10 @@ export async function getUserApsBreakdown(userId?: string): Promise<{
 		where: eq(userApsScores.userId, user.id),
 	});
 
-	const totalAps = scores.reduce((sum, s) => sum + (s.apsPoints || 0), 0);
+	const totalAps = scores.reduce(
+		(sum: number, s: { apsPoints: number | null }) => sum + (s.apsPoints || 0),
+		0
+	);
 
 	const targets = await db.query.universityTargets.findFirst({
 		where: and(eq(universityTargets.userId, user.id), eq(universityTargets.isActive, true)),
@@ -175,7 +181,7 @@ export async function getUserApsBreakdown(userId?: string): Promise<{
 
 	return {
 		totalAps,
-		subjects: scores.map((s) => ({
+		subjects: scores.map((s: (typeof scores)[number]) => ({
 			subject: s.subject,
 			grade: s.currentGrade,
 			points: s.apsPoints || 0,

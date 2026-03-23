@@ -43,7 +43,7 @@ export async function GET(request: NextRequest) {
 			orderBy: [calendarEvents.startTime],
 		});
 
-		const blocks = events.map((e) => ({
+		const blocks = events.map((e: (typeof events)[number]) => ({
 			id: e.id,
 			subject: e.title.split(':')[0] || 'General',
 			topic: e.title.includes(':') ? e.title.split(':')[1]?.trim() : undefined,

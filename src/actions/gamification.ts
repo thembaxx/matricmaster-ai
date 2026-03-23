@@ -1,13 +1,16 @@
 'use server';
 
 import { and, desc, eq, gte } from 'drizzle-orm';
+import { ACHIEVEMENT_DEFS, type Achievement, type APSProgress } from '@/constants/gamification';
 import { getAuth } from '@/lib/auth';
 import { dbManager } from '@/lib/db';
 import {
 	flashcardReviews,
 	leaderboardEntries,
+	questionAttempts,
 	quizResults,
 	studySessions,
+	universityTargets,
 	userAchievements,
 	userProgress,
 } from '@/lib/db/schema';
@@ -18,72 +21,6 @@ async function getDb() {
 	if (!connected) throw new Error('Database not available');
 	return dbManager.getDb();
 }
-
-export interface Achievement {
-	id: string;
-	title: string;
-	description: string;
-	icon: string;
-	unlockedAt?: Date;
-}
-
-export const ACHIEVEMENTS = {
-	FIRST_QUIZ: {
-		id: 'first_quiz',
-		title: 'First Steps',
-		description: 'Complete your first quiz',
-		icon: '🎯',
-	},
-	STREAK_7: {
-		id: 'streak_7',
-		title: 'Week Warrior',
-		description: 'Maintain a 7-day streak',
-		icon: '🔥',
-	},
-	STREAK_30: {
-		id: 'streak_30',
-		title: 'Monthly Master',
-		description: 'Maintain a 30-day streak',
-		icon: '💎',
-	},
-	PERFECT_QUIZ: {
-		id: 'perfect_quiz',
-		title: 'Perfect Score',
-		description: 'Get 100% on a quiz',
-		icon: '⭐',
-	},
-	FLASHCARD_100: {
-		id: 'flashcard_100',
-		title: 'Flashcard Pro',
-		description: 'Review 100 flashcards',
-		icon: '📚',
-	},
-	TOPIC_MASTER: {
-		id: 'topic_master',
-		title: 'Topic Master',
-		description: 'Achieve 90%+ mastery on 5 topics',
-		icon: '🏆',
-	},
-	STUDY_BUDDY: {
-		id: 'study_buddy',
-		title: 'Social Learner',
-		description: 'Connect with a study buddy',
-		icon: '🤝',
-	},
-	EARLY_BIRD: {
-		id: 'early_bird',
-		title: 'Early Bird',
-		description: 'Study before 7am',
-		icon: '🌅',
-	},
-	NIGHT_OWL: { id: 'night_owl', title: 'Night Owl', description: 'Study after 10pm', icon: '🦉' },
-	CONSISTENT: {
-		id: 'consistent',
-		title: 'Consistent',
-		description: 'Study for 7 days in a row',
-		icon: '📈',
-	},
-};
 
 export async function checkAndUnlockAchievements(): Promise<{
 	success: boolean;
@@ -102,15 +39,17 @@ export async function checkAndUnlockAchievements(): Promise<{
 		const existingAchievements = await db.query.userAchievements.findMany({
 			where: eq(userAchievements.userId, userId),
 		});
-		const existingIds = new Set(existingAchievements.map((a) => a.achievementId));
+		const existingIds = new Set(
+			existingAchievements.map((a: (typeof existingAchievements)[number]) => a.achievementId)
+		);
 
 		const quizCount = await db.query.quizResults.findMany({
 			where: eq(quizResults.userId, userId),
 		});
 
 		if (quizCount.length >= 1 && !existingIds.has('first_quiz')) {
-			await unlockAchievement(userId, ACHIEVEMENTS.FIRST_QUIZ);
-			newAchievements.push({ ...ACHIEVEMENTS.FIRST_QUIZ, unlockedAt: new Date() });
+			await unlockAchievement(userId, ACHIEVEMENT_DEFS.FIRST_QUIZ);
+			newAchievements.push({ ...ACHIEVEMENT_DEFS.FIRST_QUIZ, unlockedAt: new Date() });
 		}
 
 		const progress = await db.query.userProgress.findFirst({
@@ -118,19 +57,21 @@ export async function checkAndUnlockAchievements(): Promise<{
 		});
 
 		if (progress && progress.streakDays >= 7 && !existingIds.has('streak_7')) {
-			await unlockAchievement(userId, ACHIEVEMENTS.STREAK_7);
-			newAchievements.push({ ...ACHIEVEMENTS.STREAK_7, unlockedAt: new Date() });
+			await unlockAchievement(userId, ACHIEVEMENT_DEFS.STREAK_7);
+			newAchievements.push({ ...ACHIEVEMENT_DEFS.STREAK_7, unlockedAt: new Date() });
 		}
 
 		if (progress && progress.streakDays >= 30 && !existingIds.has('streak_30')) {
-			await unlockAchievement(userId, ACHIEVEMENTS.STREAK_30);
-			newAchievements.push({ ...ACHIEVEMENTS.STREAK_30, unlockedAt: new Date() });
+			await unlockAchievement(userId, ACHIEVEMENT_DEFS.STREAK_30);
+			newAchievements.push({ ...ACHIEVEMENT_DEFS.STREAK_30, unlockedAt: new Date() });
 		}
 
-		const perfectQuizzes = quizCount.filter((q) => Number(q.percentage) === 100);
+		const perfectQuizzes = quizCount.filter(
+			(q: (typeof quizCount)[number]) => Number(q.percentage) === 100
+		);
 		if (perfectQuizzes.length >= 1 && !existingIds.has('perfect_quiz')) {
-			await unlockAchievement(userId, ACHIEVEMENTS.PERFECT_QUIZ);
-			newAchievements.push({ ...ACHIEVEMENTS.PERFECT_QUIZ, unlockedAt: new Date() });
+			await unlockAchievement(userId, ACHIEVEMENT_DEFS.PERFECT_QUIZ);
+			newAchievements.push({ ...ACHIEVEMENT_DEFS.PERFECT_QUIZ, unlockedAt: new Date() });
 		}
 
 		const flashcardCount = await db.query.flashcardReviews.findMany({
@@ -138,19 +79,19 @@ export async function checkAndUnlockAchievements(): Promise<{
 		});
 
 		if (flashcardCount.length >= 100 && !existingIds.has('flashcard_100')) {
-			await unlockAchievement(userId, ACHIEVEMENTS.FLASHCARD_100);
-			newAchievements.push({ ...ACHIEVEMENTS.FLASHCARD_100, unlockedAt: new Date() });
+			await unlockAchievement(userId, ACHIEVEMENT_DEFS.FLASHCARD_100);
+			newAchievements.push({ ...ACHIEVEMENT_DEFS.FLASHCARD_100, unlockedAt: new Date() });
 		}
 
 		const hour = new Date().getHours();
 		if (hour < 7 && !existingIds.has('early_bird')) {
-			await unlockAchievement(userId, ACHIEVEMENTS.EARLY_BIRD);
-			newAchievements.push({ ...ACHIEVEMENTS.EARLY_BIRD, unlockedAt: new Date() });
+			await unlockAchievement(userId, ACHIEVEMENT_DEFS.EARLY_BIRD);
+			newAchievements.push({ ...ACHIEVEMENT_DEFS.EARLY_BIRD, unlockedAt: new Date() });
 		}
 
 		if (hour >= 22 && !existingIds.has('night_owl')) {
-			await unlockAchievement(userId, ACHIEVEMENTS.NIGHT_OWL);
-			newAchievements.push({ ...ACHIEVEMENTS.NIGHT_OWL, unlockedAt: new Date() });
+			await unlockAchievement(userId, ACHIEVEMENT_DEFS.NIGHT_OWL);
+			newAchievements.push({ ...ACHIEVEMENT_DEFS.NIGHT_OWL, unlockedAt: new Date() });
 		}
 
 		return { success: true, achievements: newAchievements };
@@ -160,7 +101,7 @@ export async function checkAndUnlockAchievements(): Promise<{
 	}
 }
 
-async function unlockAchievement(userId: string, achievement: typeof ACHIEVEMENTS.FIRST_QUIZ) {
+async function unlockAchievement(userId: string, achievement: typeof ACHIEVEMENT_DEFS.FIRST_QUIZ) {
 	const db = await getDb();
 
 	await db.insert(userAchievements).values({
@@ -439,14 +380,6 @@ function getPeriodStart(periodType: string): Date {
 	return now;
 }
 
-export interface APSProgress {
-	currentAps: number;
-	targetAps: number;
-	pointsThisMonth: number;
-	universityTarget?: string;
-	faculty?: string;
-}
-
 export async function getUserApsProgress(): Promise<{
 	success: boolean;
 	error?: string;
@@ -460,7 +393,10 @@ export async function getUserApsProgress(): Promise<{
 		const db = await getDb();
 
 		const target = await db.query.universityTargets.findFirst({
-			where: (ut, { eq, and }) => and(eq(ut.userId, session.user.id), eq(ut.isActive, true)),
+			where: and(
+				eq(universityTargets.userId, session.user.id),
+				eq(universityTargets.isActive, true)
+			),
 		});
 
 		const monthlyPoints = await getMonthlyApsPoints(session.user.id);
@@ -493,7 +429,10 @@ export async function getMonthlyApsPoints(userId: string): Promise<number> {
 	startOfMonth.setHours(0, 0, 0, 0);
 
 	const attempts = await db.query.questionAttempts.findMany({
-		where: (qa, { eq, gte }) => and(eq(qa.userId, userId), gte(qa.attemptedAt, startOfMonth)),
+		where: and(
+			eq(questionAttempts.userId, userId),
+			gte(questionAttempts.attemptedAt, startOfMonth)
+		),
 	});
 
 	let points = 0;

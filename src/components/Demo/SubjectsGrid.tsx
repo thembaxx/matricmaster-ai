@@ -28,7 +28,7 @@ export function SubjectsGrid({ subjects }: SubjectsGridProps) {
 							<CardContent className="pt-6">
 								<div className="flex flex-col items-center text-center gap-3">
 									<div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center">
-										<FluentEmoji type='3d' emoji={emoji} size={28} className="w-7 h-7" />
+										<FluentEmoji type="3d" emoji={emoji} size={28} className="w-7 h-7" />
 									</div>
 									<div>
 										<h3 className="font-semibold">{subject.name}</h3>

@@ -190,7 +190,8 @@ export async function getAdaptiveQuestions(
 
 			for (const rec of recommendations) {
 				const topicQuestions = availableQuestions.filter(
-					(q) => q.topic === rec.topic && q.difficulty === rec.recommendedDifficulty
+					(q: (typeof availableQuestions)[number]) =>
+						q.topic === rec.topic && q.difficulty === rec.recommendedDifficulty
 				);
 
 				if (topicQuestions.length > 0) {
@@ -253,10 +254,13 @@ export async function getLearningStats(userId: string): Promise<LearningStats> {
 			.where(eq(userProgress.userId, userId));
 
 		const totalQuestions = progressRecords.reduce(
-			(sum, p) => sum + (p.totalQuestionsAttempted ?? 0),
+			(sum: number, p: (typeof progressRecords)[number]) => sum + (p.totalQuestionsAttempted ?? 0),
 			0
 		);
-		const totalCorrect = progressRecords.reduce((sum, p) => sum + (p.totalCorrect ?? 0), 0);
+		const totalCorrect = progressRecords.reduce(
+			(sum: number, p: (typeof progressRecords)[number]) => sum + (p.totalCorrect ?? 0),
+			0
+		);
 		const overallAccuracy = totalQuestions > 0 ? (totalCorrect / totalQuestions) * 100 : 0;
 
 		const masteryData = await getTopicMasteryByUser(userId);

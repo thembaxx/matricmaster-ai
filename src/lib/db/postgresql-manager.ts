@@ -17,6 +17,7 @@ class PostgreSQLManager {
 	private client: ReturnType<typeof postgres> | null = null;
 	private db: DbType | null = null;
 	private isConnected = false;
+	private quotaExceeded = false;
 	private config: DatabaseConfig;
 
 	private constructor(config: DatabaseConfig) {
@@ -47,6 +48,11 @@ class PostgreSQLManager {
 		}
 
 		try {
+			if (this.quotaExceeded) {
+				console.debug('⚠️ Skipping PostgreSQL connection due to previous quota exceeded error');
+				return false;
+			}
+
 			console.log('🔄 Attempting to connect to PostgreSQL...');
 
 			// Check if connection string is for Neon (contains neon.tech) to enable SSL
@@ -76,8 +82,19 @@ class PostgreSQLManager {
 				console.log('✅ PostgreSQL connected successfully');
 				return true;
 			}
-		} catch (error) {
-			console.debug('❌ PostgreSQL connection failed:', error);
+		} catch (error: any) {
+			const errorMsg = error?.message || String(error);
+			console.debug('❌ PostgreSQL connection failed:', errorMsg);
+
+			// If it's a quota error, we don't need to keep trying - it won't resolve in seconds
+			if (errorMsg.includes('quota') || errorMsg.includes('exceeded')) {
+				console.warn('⚠️ PostgreSQL quota exceeded, should skip retries');
+				this.quotaExceeded = true;
+				this.isConnected = false;
+				this.cleanup();
+				return false;
+			}
+
 			this.isConnected = false;
 			this.cleanup();
 			return false;
@@ -133,6 +150,12 @@ class PostgreSQLManager {
 			if (connected) {
 				return true;
 			}
+
+			if (this.quotaExceeded) {
+				console.debug('⚠️ Breaking retry loop due to PostgreSQL quota exceeded');
+				break;
+			}
+
 			if (i < maxRetries - 1) {
 				console.log(`⏳ Retry attempt ${i + 1}/${maxRetries} in ${delay}ms...`);
 				await new Promise((resolve) => setTimeout(resolve, delay));

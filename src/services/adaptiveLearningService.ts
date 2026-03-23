@@ -365,8 +365,10 @@ export async function getAdaptiveInsights(): Promise<{
 	});
 
 	const weakTopics = confidences
-		.filter((c) => Number(c.confidenceScore) < THRESHOLDS.POOR_PERFORMANCE)
-		.map((c) => ({
+		.filter(
+			(c: (typeof confidences)[number]) => Number(c.confidenceScore) < THRESHOLDS.POOR_PERFORMANCE
+		)
+		.map((c: (typeof confidences)[number]) => ({
 			topic: c.topic,
 			confidence: Number(c.confidenceScore),
 			trend: 'declining' as const,
@@ -376,7 +378,7 @@ export async function getAdaptiveInsights(): Promise<{
 		where: and(eq(conceptStruggles.userId, user.id), eq(conceptStruggles.isResolved, false)),
 	});
 
-	const recommendedActions = struggles.map((s) => ({
+	const recommendedActions = struggles.map((s: (typeof struggles)[number]) => ({
 		type: s.struggleCount >= 3 ? 'flashcard' : 'review',
 		topic: s.concept,
 		priority: (s.struggleCount >= 3 ? 'high' : 'medium') as 'high' | 'medium' | 'low',

@@ -1,8 +1,6 @@
 import { eq, gt, sql } from 'drizzle-orm';
-import { pgManager } from '../postgresql-manager';
-import * as schema from '../schema';
-import { sqliteManager } from '../sqlite-manager';
-import * as sqliteSchema from '../sqlite-schema';
+import { dbManagerV2 } from '../database-manager-v2';
+import { syncTableRegistry, type TableMapping } from './registry';
 
 export type SyncDirection = 'push' | 'pull' | 'bidirectional';
 export type ConflictResolution = 'last_write_wins' | 'server_wins' | 'client_wins';
@@ -31,15 +29,6 @@ const DEFAULT_CONFIG: SyncConfig = {
 	batchSize: 100,
 	retryAttempts: 3,
 };
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type AnyTable = any;
-
-interface TableMapping {
-	pgTable: AnyTable;
-	sqliteTable: AnyTable;
-	idColumn: string;
-}
 
 class SyncEngine {
 	private static instance: SyncEngine;
@@ -104,22 +93,22 @@ class SyncEngine {
 			const tables = this.getAllTableMappings();
 
 			if (pgConnected && sqliteConnected) {
-				for (const [tableName, mapping] of tables) {
+				for (const mapping of tables) {
 					try {
 						const pushed = await this.pushTableChanges(mapping);
 						stats.recordsPushed += pushed;
 						stats.tablesProcessed++;
 					} catch (error) {
-						stats.errors.push(`Error pushing ${tableName}: ${error}`);
+						stats.errors.push(`Error pushing ${mapping.tableName}: ${error}`);
 					}
 				}
 
-				for (const [tableName, mapping] of tables) {
+				for (const mapping of tables) {
 					try {
 						const pulled = await this.pullTableChanges(mapping);
 						stats.recordsPulled += pulled;
 					} catch (error) {
-						stats.errors.push(`Error pulling ${tableName}: ${error}`);
+						stats.errors.push(`Error pulling ${mapping.tableName}: ${error}`);
 					}
 				}
 
@@ -140,7 +129,7 @@ class SyncEngine {
 	}
 
 	private async pushTableChanges(mapping: TableMapping): Promise<number> {
-		const sqliteDb = sqliteManager.getDb();
+		const sqliteDb = dbManagerV2.getSqliteDb();
 
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		const pendingColumn = (mapping.sqliteTable as any).syncStatus;
@@ -180,7 +169,8 @@ class SyncEngine {
 	}
 
 	private async pullTableChanges(mapping: TableMapping): Promise<number> {
-		const pgDb = pgManager.getDb();
+		const pgDb = dbManagerV2.getPgDb();
+		if (!pgDb) return 0;
 
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		const lastModifiedColumn = (mapping.pgTable as any).lastModifiedAt;
@@ -231,11 +221,12 @@ class SyncEngine {
 		return localTime >= remoteTime ? 'local' : 'remote';
 	}
 
-	private async handleEmptyDatabase(tables: Map<string, TableMapping>): Promise<void> {
-		const sqliteDb = sqliteManager.getDb();
-		const pgDb = pgManager.getDb();
+	private async handleEmptyDatabase(tables: TableMapping[]): Promise<void> {
+		const sqliteDb = dbManagerV2.getSqliteDb();
+		const pgDb = dbManagerV2.getPgDb();
+		if (!pgDb) return;
 
-		for (const [tableName, mapping] of tables) {
+		for (const mapping of tables) {
 			try {
 				const pgCountResult = await pgDb
 					.select({ count: sql<number>`count(*)` })
@@ -248,21 +239,22 @@ class SyncEngine {
 				const sqliteHasData = (sqliteCountResult[0]?.count || 0) > 0;
 
 				if (pgHasData && !sqliteHasData) {
-					console.log(`📥 Populating SQLite with ${tableName} from PostgreSQL...`);
+					console.log(`📥 Populating SQLite with ${mapping.tableName} from PostgreSQL...`);
 					await this.seedTableFromRemote(mapping);
 				} else if (!pgHasData && sqliteHasData) {
-					console.log(`📤 Pushing ${tableName} from SQLite to PostgreSQL...`);
+					console.log(`📤 Pushing ${mapping.tableName} from SQLite to PostgreSQL...`);
 					await this.pushTableChanges(mapping);
 				}
 			} catch (error) {
-				console.error(`Error handling empty database for ${tableName}:`, error);
+				console.error(`Error handling empty database for ${mapping.tableName}:`, error);
 			}
 		}
 	}
 
 	private async seedTableFromRemote(mapping: TableMapping): Promise<void> {
-		const sqliteDb = sqliteManager.getDb();
-		const pgDb = pgManager.getDb();
+		const sqliteDb = dbManagerV2.getSqliteDb();
+		const pgDb = dbManagerV2.getPgDb();
+		if (!pgDb) return;
 
 		const records = await pgDb.select().from(mapping.pgTable);
 		const now = new Date().toISOString();
@@ -280,7 +272,7 @@ class SyncEngine {
 
 	private async ensurePostgresConnected(): Promise<boolean> {
 		try {
-			return await pgManager.waitForConnection(3, 2000);
+			return await dbManagerV2.checkPostgreSQLHealth();
 		} catch (error) {
 			console.error('Failed to connect to PostgreSQL:', error);
 			return false;
@@ -289,299 +281,37 @@ class SyncEngine {
 
 	private async ensureSQLiteConnected(): Promise<boolean> {
 		try {
-			return await sqliteManager.connect();
+			return dbManagerV2.isSQLiteConnected();
 		} catch (error) {
-			console.error('Failed to connect to SQLite:', error);
+			console.error('Failed to check SQLite connection:', error);
 			return false;
 		}
 	}
 
-	private getAllTableMappings(): Map<string, TableMapping> {
-		const tables = new Map<string, TableMapping>();
-
-		tables.set('users', {
-			pgTable: schema.users,
-			sqliteTable: sqliteSchema.sqliteUsers,
-			idColumn: 'id',
-		});
-
-		tables.set('sessions', {
-			pgTable: schema.session,
-			sqliteTable: sqliteSchema.sqliteSessions,
-			idColumn: 'id',
-		});
-
-		tables.set('accounts', {
-			pgTable: schema.account,
-			sqliteTable: sqliteSchema.sqliteAccounts,
-			idColumn: 'id',
-		});
-
-		tables.set('verifications', {
-			pgTable: schema.verification,
-			sqliteTable: sqliteSchema.sqliteVerifications,
-			idColumn: 'id',
-		});
-
-		tables.set('subjects', {
-			pgTable: schema.subjects,
-			sqliteTable: sqliteSchema.sqliteSubjects,
-			idColumn: 'id',
-		});
-
-		tables.set('questions', {
-			pgTable: schema.questions,
-			sqliteTable: sqliteSchema.sqliteQuestions,
-			idColumn: 'id',
-		});
-
-		tables.set('options', {
-			pgTable: schema.options,
-			sqliteTable: sqliteSchema.sqliteOptions,
-			idColumn: 'id',
-		});
-
-		tables.set('quiz_results', {
-			pgTable: schema.quizResults,
-			sqliteTable: sqliteSchema.sqliteQuizResults,
-			idColumn: 'id',
-		});
-
-		tables.set('search_history', {
-			pgTable: schema.searchHistory,
-			sqliteTable: sqliteSchema.sqliteSearchHistory,
-			idColumn: 'id',
-		});
-
-		tables.set('past_papers', {
-			pgTable: schema.pastPapers,
-			sqliteTable: sqliteSchema.sqlitePastPapers,
-			idColumn: 'id',
-		});
-
-		tables.set('past_paper_questions', {
-			pgTable: schema.pastPaperQuestions,
-			sqliteTable: sqliteSchema.sqlitePastPaperQuestions,
-			idColumn: 'id',
-		});
-
-		tables.set('user_progress', {
-			pgTable: schema.userProgress,
-			sqliteTable: sqliteSchema.sqliteUserProgress,
-			idColumn: 'id',
-		});
-
-		tables.set('user_achievements', {
-			pgTable: schema.userAchievements,
-			sqliteTable: sqliteSchema.sqliteUserAchievements,
-			idColumn: 'id',
-		});
-
-		tables.set('user_settings', {
-			pgTable: schema.userSettings,
-			sqliteTable: sqliteSchema.sqliteUserSettings,
-			idColumn: 'userId',
-		});
-
-		tables.set('study_sessions', {
-			pgTable: schema.studySessions,
-			sqliteTable: sqliteSchema.sqliteStudySessions,
-			idColumn: 'id',
-		});
-
-		tables.set('study_plans', {
-			pgTable: schema.studyPlans,
-			sqliteTable: sqliteSchema.sqliteStudyPlans,
-			idColumn: 'id',
-		});
-
-		tables.set('flashcard_decks', {
-			pgTable: schema.flashcardDecks,
-			sqliteTable: sqliteSchema.sqliteFlashcardDecks,
-			idColumn: 'id',
-		});
-
-		tables.set('flashcards', {
-			pgTable: schema.flashcards,
-			sqliteTable: sqliteSchema.sqliteFlashcards,
-			idColumn: 'id',
-		});
-
-		tables.set('flashcard_reviews', {
-			pgTable: schema.flashcardReviews,
-			sqliteTable: sqliteSchema.sqliteFlashcardReviews,
-			idColumn: 'id',
-		});
-
-		tables.set('topic_mastery', {
-			pgTable: schema.topicMastery,
-			sqliteTable: sqliteSchema.sqliteTopicMastery,
-			idColumn: 'id',
-		});
-
-		tables.set('question_attempts', {
-			pgTable: schema.questionAttempts,
-			sqliteTable: sqliteSchema.sqliteQuestionAttempts,
-			idColumn: 'id',
-		});
-
-		tables.set('bookmarks', {
-			pgTable: schema.bookmarks,
-			sqliteTable: sqliteSchema.sqliteBookmarks,
-			idColumn: 'id',
-		});
-
-		tables.set('leaderboard_entries', {
-			pgTable: schema.leaderboardEntries,
-			sqliteTable: sqliteSchema.sqliteLeaderboardEntries,
-			idColumn: 'id',
-		});
-
-		tables.set('channels', {
-			pgTable: schema.channels,
-			sqliteTable: sqliteSchema.sqliteChannels,
-			idColumn: 'id',
-		});
-
-		tables.set('channel_members', {
-			pgTable: schema.channelMembers,
-			sqliteTable: sqliteSchema.sqliteChannelMembers,
-			idColumn: 'channelId',
-		});
-
-		tables.set('comments', {
-			pgTable: schema.comments,
-			sqliteTable: sqliteSchema.sqliteComments,
-			idColumn: 'id',
-		});
-
-		tables.set('comment_votes', {
-			pgTable: schema.commentVotes,
-			sqliteTable: sqliteSchema.sqliteCommentVotes,
-			idColumn: 'id',
-		});
-
-		tables.set('notifications', {
-			pgTable: schema.notifications,
-			sqliteTable: sqliteSchema.sqliteNotifications,
-			idColumn: 'id',
-		});
-
-		tables.set('calendar_events', {
-			pgTable: schema.calendarEvents,
-			sqliteTable: sqliteSchema.sqliteCalendarEvents,
-			idColumn: 'id',
-		});
-
-		tables.set('ai_conversations', {
-			pgTable: schema.aiConversations,
-			sqliteTable: sqliteSchema.sqliteAiConversations,
-			idColumn: 'id',
-		});
-
-		tables.set('buddy_requests', {
-			pgTable: schema.buddyRequests,
-			sqliteTable: sqliteSchema.sqliteBuddyRequests,
-			idColumn: 'id',
-		});
-
-		tables.set('study_buddy_profiles', {
-			pgTable: schema.studyBuddyProfiles,
-			sqliteTable: sqliteSchema.sqliteStudyBuddyProfiles,
-			idColumn: 'id',
-		});
-
-		tables.set('study_buddy_requests', {
-			pgTable: schema.studyBuddyRequests,
-			sqliteTable: sqliteSchema.sqliteStudyBuddyRequests,
-			idColumn: 'id',
-		});
-
-		tables.set('study_buddies', {
-			pgTable: schema.studyBuddies,
-			sqliteTable: sqliteSchema.sqliteStudyBuddies,
-			idColumn: 'id',
-		});
-
-		tables.set('concept_struggles', {
-			pgTable: schema.conceptStruggles,
-			sqliteTable: sqliteSchema.sqliteConceptStruggles,
-			idColumn: 'id',
-		});
-
-		tables.set('topic_confidence', {
-			pgTable: schema.topicConfidence,
-			sqliteTable: sqliteSchema.sqliteTopicConfidence,
-			idColumn: 'id',
-		});
-
-		tables.set('university_targets', {
-			pgTable: schema.universityTargets,
-			sqliteTable: sqliteSchema.sqliteUniversityTargets,
-			idColumn: 'id',
-		});
-
-		tables.set('user_aps_scores', {
-			pgTable: schema.userApsScores,
-			sqliteTable: sqliteSchema.sqliteUserApsScores,
-			idColumn: 'id',
-		});
-
-		tables.set('aps_milestones', {
-			pgTable: schema.apsMilestones,
-			sqliteTable: sqliteSchema.sqliteApsMilestones,
-			idColumn: 'id',
-		});
-
-		tables.set('topic_weightages', {
-			pgTable: schema.topicWeightages,
-			sqliteTable: sqliteSchema.sqliteTopicWeightages,
-			idColumn: 'id',
-		});
-
-		tables.set('subscription_plans', {
-			pgTable: schema.subscriptionPlans,
-			sqliteTable: sqliteSchema.sqliteSubscriptionPlans,
-			idColumn: 'id',
-		});
-
-		tables.set('user_subscriptions', {
-			pgTable: schema.userSubscriptions,
-			sqliteTable: sqliteSchema.sqliteUserSubscriptions,
-			idColumn: 'id',
-		});
-
-		tables.set('payments', {
-			pgTable: schema.payments as any,
-			sqliteTable: sqliteSchema.sqlitePayments,
-			idColumn: 'id',
-		});
-
-		tables.set('content_flags', {
-			pgTable: schema.contentFlags,
-			sqliteTable: sqliteSchema.sqliteContentFlags,
-			idColumn: 'id',
-		});
-
-		return tables;
+	private getAllTableMappings(): TableMapping[] {
+		return syncTableRegistry;
 	}
 
 	private async getRemoteRecord(mapping: TableMapping, id: string): Promise<any> {
-		const pgDb = pgManager.getDb();
-		const idColumn = mapping.pgTable.id as any;
+		const pgDb = dbManagerV2.getPgDb();
+		if (!pgDb) return null;
+		const idColumnName = mapping.idColumn;
+		const idColumn = (mapping.pgTable as any)[idColumnName];
 		const result = await pgDb.select().from(mapping.pgTable).where(eq(idColumn, id));
 		return result[0];
 	}
 
 	private async getLocalRecord(mapping: TableMapping, id: string): Promise<any> {
-		const sqliteDb = sqliteManager.getDb();
-		const idColumn = mapping.sqliteTable.id as any;
+		const sqliteDb = dbManagerV2.getSqliteDb();
+		const idColumnName = mapping.idColumn;
+		const idColumn = (mapping.sqliteTable as any)[idColumnName];
 		const result = await sqliteDb.select().from(mapping.sqliteTable).where(eq(idColumn, id));
 		return result[0];
 	}
 
 	private async upsertRemote(mapping: TableMapping, record: any): Promise<void> {
-		const pgDb = pgManager.getDb();
+		const pgDb = dbManagerV2.getPgDb();
+		if (!pgDb) return;
 
 		await pgDb
 			.insert(mapping.pgTable)
@@ -590,7 +320,7 @@ class SyncEngine {
 				updatedAt: new Date(),
 			} as any)
 			.onConflictDoUpdate({
-				target: mapping.pgTable.id as any,
+				target: (mapping.pgTable as any)[mapping.idColumn],
 				set: {
 					...record,
 					updatedAt: new Date(),
@@ -599,7 +329,7 @@ class SyncEngine {
 	}
 
 	private async upsertLocal(mapping: TableMapping, record: any): Promise<void> {
-		const sqliteDb = sqliteManager.getDb();
+		const sqliteDb = dbManagerV2.getSqliteDb();
 		const now = new Date().toISOString();
 
 		await sqliteDb
@@ -612,7 +342,7 @@ class SyncEngine {
 				syncVersion: 1,
 			} as any)
 			.onConflictDoUpdate({
-				target: mapping.sqliteTable.id as any,
+				target: (mapping.sqliteTable as any)[mapping.idColumn],
 				set: {
 					...record,
 					syncStatus: 'synced',
@@ -623,8 +353,9 @@ class SyncEngine {
 	}
 
 	private async markAsSynced(mapping: TableMapping, id: string): Promise<void> {
-		const sqliteDb = sqliteManager.getDb();
-		const idColumn = mapping.sqliteTable.id as any;
+		const sqliteDb = dbManagerV2.getSqliteDb();
+		const idColumnName = mapping.idColumn;
+		const idColumn = (mapping.sqliteTable as any)[idColumnName];
 
 		await sqliteDb
 			.update(mapping.sqliteTable)
@@ -633,8 +364,9 @@ class SyncEngine {
 	}
 
 	private async markAsFailed(mapping: TableMapping, id: string): Promise<void> {
-		const sqliteDb = sqliteManager.getDb();
-		const idColumn = mapping.sqliteTable.id as any;
+		const sqliteDb = dbManagerV2.getSqliteDb();
+		const idColumnName = mapping.idColumn;
+		const idColumn = (mapping.sqliteTable as any)[idColumnName];
 
 		await sqliteDb
 			.update(mapping.sqliteTable)

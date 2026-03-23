@@ -94,7 +94,7 @@ export async function GET(request: NextRequest) {
 		return NextResponse.json({
 			success: true,
 			data: {
-				subjects: allSubjects.map((s) => ({
+				subjects: allSubjects.map((s: (typeof allSubjects)[number]) => ({
 					id: s.id,
 					name: s.name,
 					description: s.description,

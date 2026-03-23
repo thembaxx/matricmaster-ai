@@ -60,7 +60,7 @@ export function NSCCountdownCard() {
 	return (
 		<Card className="bg-gradient-to-br from-primary/10 to-primary/5 border-primary/20">
 			<CardHeader className="pb-2">
-				<CardTitle className="text-lg flex items-center gap-2">
+				<CardTitle className="text-lg flex items-center gap-2 font-serif">
 					<HugeiconsIcon icon={CalendarIcon} className="w-5 h-5 text-primary" />
 					NSC Exam Countdown
 				</CardTitle>
