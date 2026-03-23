@@ -1,4 +1,5 @@
 import { type NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
 import {
 	getAIResponse,
 	getSessionMessages,
@@ -7,14 +8,25 @@ import {
 	updateSessionTitle,
 } from '@/services/chatService';
 
+const chatMessageSchema = z.object({
+	sessionId: z.string().uuid({ message: 'Session ID must be a valid UUID' }),
+	message: z.string().min(1, 'Message is required'),
+	subject: z.string().optional().default('general'),
+});
+
 export async function POST(request: NextRequest) {
 	try {
 		const body = await request.json();
-		const { sessionId, message, subject } = body;
 
-		if (!sessionId || !message) {
-			return NextResponse.json({ error: 'Session ID and message required' }, { status: 400 });
+		const validation = chatMessageSchema.safeParse(body);
+		if (!validation.success) {
+			return NextResponse.json(
+				{ error: 'Validation failed', details: validation.error.flatten().fieldErrors },
+				{ status: 400 }
+			);
 		}
+
+		const { sessionId, message, subject } = validation.data;
 
 		await saveMessage(sessionId, 'user', message);
 

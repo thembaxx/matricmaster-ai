@@ -1,4 +1,5 @@
 import { type NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
 import { getAuth } from '@/lib/auth';
 import {
 	getGlobalProgress,
@@ -7,6 +8,46 @@ import {
 	trackPastPaperAttempt,
 	trackQuizAttempt,
 } from '@/services/progressService';
+
+const trackLessonSchema = z.object({
+	action: z.literal('trackLesson'),
+	lessonId: z.string(),
+	subjectId: z.string(),
+	topic: z.string().optional(),
+});
+
+const trackQuizSchema = z.object({
+	action: z.literal('trackQuiz'),
+	quizId: z.string(),
+	subjectId: z.string(),
+	topic: z.string().optional(),
+	score: z.number().min(0),
+	totalQuestions: z.number().positive(),
+	marksEarned: z.number().min(0),
+	durationMinutes: z.number().optional(),
+});
+
+const trackPastPaperSchema = z.object({
+	action: z.literal('trackPastPaper'),
+	paperId: z.string(),
+	subjectId: z.string(),
+	questionsAttempted: z.number().positive(),
+	score: z.number().min(0),
+	durationMinutes: z.number().optional(),
+});
+
+const trackFlashcardSchema = z.object({
+	action: z.literal('trackFlashcard'),
+	flashcardId: z.string(),
+	rating: z.number().min(1).max(5),
+});
+
+const progressActionSchema = z.discriminatedUnion('action', [
+	trackLessonSchema,
+	trackQuizSchema,
+	trackPastPaperSchema,
+	trackFlashcardSchema,
+]);
 
 export async function GET(request: NextRequest) {
 	try {
@@ -54,7 +95,16 @@ export async function POST(request: NextRequest) {
 		}
 
 		const body = await request.json();
-		const { action, ...data } = body;
+
+		const validation = progressActionSchema.safeParse(body);
+		if (!validation.success) {
+			return NextResponse.json(
+				{ error: 'Validation failed', details: validation.error.flatten().fieldErrors },
+				{ status: 400 }
+			);
+		}
+
+		const { action, ...data } = validation.data;
 
 		switch (action) {
 			case 'trackLesson': {
