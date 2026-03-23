@@ -50,7 +50,7 @@ export default function Landing() {
 	return (
 		<div className="flex flex-col h-full min-w-0 w-full bg-background overflow-x-hidden relative">
 			<ScrollArea className="flex-1 no-scrollbar relative">
-				<main className="pb-4 px-6 sm:px-6 max-w-7xl mx-auto w-full lg:px-0 lg:pb-24">
+				<main className="pb-4 px-6 sm:px-6 max-w-7xl mx-auto w-full lg:px-6 lg:pb-24">
 					<HeroSection onAuthRequired={handleAuthRoute} />
 					<FeaturesSection />
 					<StatsSection />

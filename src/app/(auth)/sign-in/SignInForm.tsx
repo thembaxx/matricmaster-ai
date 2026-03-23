@@ -1,7 +1,5 @@
 'use client';
 
-import { Tick01Icon as Check, SparklesIcon } from '@hugeicons/core-free-icons';
-import { HugeiconsIcon } from '@hugeicons/react';
 import { AnimatePresence, m } from 'framer-motion';
 import Link from 'next/link';
 import { Suspense } from 'react';
@@ -13,6 +11,7 @@ import { Separator } from '@/components/ui/separator';
 import { useSignIn } from '@/hooks/useSignIn';
 import { STAGGER_CONTAINER, STAGGER_ITEM } from '@/lib/animation-presets';
 import { FormFields } from './FormFields';
+import { Logo } from '@/components/Logo';
 
 function SignInFormContent() {
 	const {
@@ -47,7 +46,7 @@ function SignInFormContent() {
 					>
 						<div className="bg-success/90 text-white px-6 py-3 rounded-full shadow-lg shadow-success/30 flex items-center gap-3 pointer-events-auto backdrop-blur-md">
 							<div className="bg-white/20 p-1 rounded-full">
-								<HugeiconsIcon icon={Check} className="w-4 h-4 text-white" />
+								<Logo className='w-10 h-10 text-white/80' />
 							</div>
 							<span className="font-semibold text-sm">welcome back, {successEmail}!</span>
 						</div>
@@ -73,18 +72,18 @@ function SignInFormContent() {
 							whileHover={{ rotate: 15, scale: 1.1 }}
 							className="w-14 h-14 bg-primary/10 rounded-[var(--radius-xl)] flex items-center justify-center mx-auto mb-5 text-primary"
 						>
-							<HugeiconsIcon icon={SparklesIcon} className="w-7 h-7" />
+							<Logo className='w-10 h-10 text-white/80' />
 						</m.div>
 						<SmoothWords
 							as="h1"
-							text="welcome back"
+							text="Welcome back"
 							className="text-4xl font-black tracking-tight text-foreground"
 						/>
 						<m.p
 							variants={STAGGER_ITEM}
 							className="text-muted-foreground text-balance font-medium text-base"
 						>
-							sign in to continue your matric prep.
+							Sign in to continue your matric prep.
 						</m.p>
 					</m.div>
 
@@ -155,9 +154,9 @@ function SignInFormContent() {
 						don't have an account?{' '}
 						<Link
 							href="/sign-up"
-							className="font-black text-primary hover:text-primary/80 underline-offset-4 transition-colors"
+							className="font-bold text-primary hover:text-primary/80 underline-offset-4 transition-colors"
 						>
-							sign up
+							Sign up
 						</Link>
 					</m.p>
 				</m.div>
