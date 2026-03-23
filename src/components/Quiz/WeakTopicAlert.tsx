@@ -144,7 +144,7 @@ export const WeakTopicAlert = memo(function WeakTopicAlert({
 						disabled={isProcessing}
 					>
 						<HugeiconsIcon icon={SparklesIcon} className="w-5 h-5 text-primary" />
-						<span className="text-xs font-medium">Ask AI Tutor</span>
+						<span className="text-xs font-medium">Get Help</span>
 					</Button>
 
 					<Button

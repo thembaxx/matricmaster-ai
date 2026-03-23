@@ -65,7 +65,7 @@ export function GrowthInsights({
 								)
 							}
 						>
-							Ask AI Tutor for help
+							Get Help
 							<HugeiconsIcon icon={ArrowRight02Icon} className="w-3.5 h-3.5 ml-1" />
 						</Button>
 					</div>

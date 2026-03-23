@@ -105,7 +105,7 @@ export async function generateCrossFeatureRecommendations(): Promise<FlowRecomme
 			recommendations.push({
 				type: 'ai_tutor_session',
 				priority: 'high',
-				title: `Get AI help with "${weak.topic}"`,
+				title: `Get help with "${weak.topic}"`,
 				description: `Struggling with ${weak.topic}? The AI tutor can explain this topic in a personalized way.`,
 				actionUrl: `/ai-tutor?topic=${encodeURIComponent(weak.topic)}&context=help`,
 				estimatedImpact: '+15-20% confidence',
