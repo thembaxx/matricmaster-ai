@@ -129,19 +129,29 @@ export function ServiceWorkerRegistration() {
 	return (
 		<>
 			{isIOS ? null : showInstallButton ? (
-				<div className="fixed bottom-20 left-4 right-4 z-50 md:left-auto md:right-4 md:w-auto">
-					<div className="bg-card border border-border rounded-lg shadow-lg p-4 flex items-center gap-3">
+				<div className="fixed top-4 left-4 right-4 z-50 md:left-auto md:right-auto md:w-auto animate-in slide-in-from-top duration-300">
+					<div className="bg-card/95 backdrop-blur-sm border border-border/60 rounded-lg shadow-md px-3 py-2 flex items-center gap-3">
 						<div className="flex-1 min-w-0">
-							<p className="text-sm font-medium">Install Lumi</p>
-							<p className="text-xs text-muted-foreground">Add to home screen for offline access</p>
+							<p className="text-xs font-medium">Install Lumi</p>
+							<p className="text-xs text-muted-foreground hidden sm:block">Add to home screen</p>
 						</div>
-						<div className="flex items-center gap-2">
-							<Button size="sm" onClick={handleInstallClick} className="shrink-0">
-								<Download className="h-4 w-4 mr-1" />
+						<div className="flex items-center gap-1.5">
+							<Button
+								size="sm"
+								variant="default"
+								onClick={handleInstallClick}
+								className="shrink-0 text-xs h-7 px-2"
+							>
+								<Download className="h-3 w-3 mr-1" />
 								Install
 							</Button>
-							<Button size="sm" variant="ghost" onClick={handleDismiss} className="shrink-0">
-								<X className="h-4 w-4" />
+							<Button
+								size="sm"
+								variant="ghost"
+								onClick={handleDismiss}
+								className="shrink-0 h-7 w-7 p-0"
+							>
+								<X className="h-3 w-3" />
 							</Button>
 						</div>
 					</div>
