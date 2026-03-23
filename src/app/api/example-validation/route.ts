@@ -11,12 +11,12 @@ export async function GET(request: Request) {
 
 	const pagination = paginationSchema.safeParse({ limit, offset });
 	if (!pagination.success) {
-		return NextResponse.json({ error: pagination.error.errors }, { status: 400 });
+		return NextResponse.json({ error: pagination.error.issues }, { status: 400 });
 	}
 
 	const dateRange = dateRangeSchema.safeParse({ startDate, endDate });
 	if (!dateRange.success) {
-		return NextResponse.json({ error: dateRange.error.errors }, { status: 400 });
+		return NextResponse.json({ error: dateRange.error.issues }, { status: 400 });
 	}
 
 	return NextResponse.json({
@@ -31,7 +31,7 @@ export async function POST(request: Request) {
 
 	const idValidation = uuidSchema.safeParse(body.id);
 	if (!idValidation.success) {
-		return NextResponse.json({ error: idValidation.error.errors }, { status: 400 });
+		return NextResponse.json({ error: idValidation.error.issues }, { status: 400 });
 	}
 
 	return NextResponse.json({ id: idValidation.data });

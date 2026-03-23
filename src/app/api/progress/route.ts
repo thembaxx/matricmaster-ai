@@ -12,28 +12,28 @@ import {
 const trackLessonSchema = z.object({
 	action: z.literal('trackLesson'),
 	lessonId: z.string(),
-	subjectId: z.string(),
+	subjectId: z.coerce.number(),
 	topic: z.string().optional(),
 });
 
 const trackQuizSchema = z.object({
 	action: z.literal('trackQuiz'),
 	quizId: z.string(),
-	subjectId: z.string(),
+	subjectId: z.coerce.number(),
 	topic: z.string().optional(),
 	score: z.number().min(0),
 	totalQuestions: z.number().positive(),
 	marksEarned: z.number().min(0),
-	durationMinutes: z.number().optional(),
+	durationMinutes: z.number().optional().default(0),
 });
 
 const trackPastPaperSchema = z.object({
 	action: z.literal('trackPastPaper'),
 	paperId: z.string(),
-	subjectId: z.string(),
+	subjectId: z.coerce.number(),
 	questionsAttempted: z.number().positive(),
 	score: z.number().min(0),
-	durationMinutes: z.number().optional(),
+	durationMinutes: z.number().optional().default(0),
 });
 
 const trackFlashcardSchema = z.object({
@@ -104,40 +104,45 @@ export async function POST(request: NextRequest) {
 			);
 		}
 
-		const { action, ...data } = validation.data;
-
-		switch (action) {
+		switch (validation.data.action) {
 			case 'trackLesson': {
-				const result = await trackLessonCompletion(data.lessonId, data.subjectId, data.topic);
+				const result = await trackLessonCompletion(
+					validation.data.lessonId,
+					validation.data.subjectId,
+					validation.data.topic || 'general'
+				);
 				return NextResponse.json(result);
 			}
 
 			case 'trackQuiz': {
 				const result = await trackQuizAttempt(
-					data.quizId,
-					data.subjectId,
-					data.topic,
-					data.score,
-					data.totalQuestions,
-					data.marksEarned,
-					data.durationMinutes
+					validation.data.quizId,
+					validation.data.subjectId,
+					validation.data.topic || 'general',
+					validation.data.score,
+					validation.data.totalQuestions,
+					validation.data.marksEarned,
+					validation.data.durationMinutes
 				);
 				return NextResponse.json(result);
 			}
 
 			case 'trackPastPaper': {
 				const result = await trackPastPaperAttempt(
-					data.paperId,
-					data.subjectId,
-					data.questionsAttempted,
-					data.score,
-					data.durationMinutes
+					validation.data.paperId,
+					validation.data.subjectId,
+					validation.data.questionsAttempted,
+					validation.data.score,
+					validation.data.durationMinutes
 				);
 				return NextResponse.json(result);
 			}
 
 			case 'trackFlashcard': {
-				const result = await trackFlashcardReview(data.flashcardId, data.rating);
+				const result = await trackFlashcardReview(
+					validation.data.flashcardId,
+					validation.data.rating
+				);
 				return NextResponse.json(result);
 			}
 
