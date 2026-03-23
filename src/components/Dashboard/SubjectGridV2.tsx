@@ -92,7 +92,7 @@ export function SubjectGrid() {
 								)}
 							>
 								<FluentEmoji
-									type='3d'
+									type="3d"
 									emoji={fluentEmoji}
 									size={isLarge ? 28 : 24}
 									className={cn(isLarge ? 'w-7 h-7' : 'w-6 h-6', 'text-white')}

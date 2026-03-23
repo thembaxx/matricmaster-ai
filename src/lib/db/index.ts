@@ -1,112 +1,76 @@
-// Database exports - loaded synchronously but lazily initialized
-import { type DbType, pgManager } from './postgresql-manager';
+import { dbManagerV2 } from './database-manager-v2';
+import { pgManager } from './postgresql-manager';
 
 export type { DbType } from './postgresql-manager';
 
-// Create singleton instance
-const pgManagerInstance = pgManager;
-
-// Export the managers
-export { pgManagerInstance as pgManager };
-
-// Database manager class for connection management
-class DatabaseManager {
-	private static instance: DatabaseManager;
-	private _db: DbType | null = null;
-	private isConnected = false;
-	private initialized = false;
+/**
+ * Legacy DatabaseManager shim that uses DatabaseManagerV2 under the hood.
+ * This ensures all existing code gets the benefits of SmartDb and local-first sync.
+ */
+class LegacyDatabaseManagerShim {
+	private static instance: LegacyDatabaseManagerShim;
 
 	private constructor() {}
 
-	public static getInstance(): DatabaseManager {
-		if (!DatabaseManager.instance) {
-			DatabaseManager.instance = new DatabaseManager();
+	public static getInstance(): LegacyDatabaseManagerShim {
+		if (!LegacyDatabaseManagerShim.instance) {
+			LegacyDatabaseManagerShim.instance = new LegacyDatabaseManagerShim();
 		}
-		return DatabaseManager.instance;
+		return LegacyDatabaseManagerShim.instance;
 	}
 
 	public async initialize(): Promise<void> {
-		await this.ensureConnected();
+		await dbManagerV2.initialize();
 	}
 
 	public async ensureConnected(): Promise<boolean> {
-		if (this.initialized) return this.isConnected;
-
-		try {
-			const connected = await pgManagerInstance.waitForConnection(3, 2000);
-			this.isConnected = connected;
-			this.initialized = true;
-			return connected;
-		} catch (error) {
-			console.warn('PostgreSQL connection failed:', error);
-			this.initialized = true;
-			this.isConnected = false;
-			return false;
-		}
+		return await dbManagerV2.ensureConnected();
 	}
 
-	public getDb(): DbType {
-		if (this.isConnected && this._db) {
-			return this._db;
-		}
-		// Try to get from pgManager directly
-		try {
-			this._db = pgManagerInstance.getDb();
-			return this._db;
-		} catch (error) {
-			console.warn('Failed to get database:', error);
-			throw new Error('Database not connected. Call ensureConnected() first.');
-		}
+	public getDb(): any {
+		return dbManagerV2.getSmartDb();
 	}
 
 	public getClient() {
-		try {
-			return pgManagerInstance.getClient();
-		} catch (error) {
-			console.warn('Failed to get PostgreSQL client:', error);
-			return null;
-		}
+		return pgManager.getClient();
 	}
 
 	public async waitForConnection(_maxRetries = 3, _delay = 2000): Promise<boolean> {
-		return this.ensureConnected();
+		await dbManagerV2.initialize();
+		return dbManagerV2.getActiveDatabase() !== 'none';
 	}
 
 	public isConnectedToDatabase(): boolean {
-		return this.isConnected;
+		return dbManagerV2.getActiveDatabase() !== 'none';
 	}
 
 	public isPostgreSQLAvailable(): boolean {
-		return this.isConnected;
+		return dbManagerV2.getActiveDatabase() === 'postgresql';
 	}
 
 	public getPreferredDatabase(): string {
-		return this.isConnected ? 'postgresql' : 'none';
+		return dbManagerV2.getActiveDatabase();
 	}
 
 	public async close(): Promise<void> {
-		await pgManagerInstance.disconnect();
-		this._db = null;
-		this.isConnected = false;
-		this.initialized = false;
+		// No-op or call disconnect on individual managers if needed
 	}
 }
 
-export const dbManager = DatabaseManager.getInstance();
+export const dbManager = LegacyDatabaseManagerShim.getInstance();
 
-// Export closeConnection for migrations
 export async function closeConnection() {
 	await dbManager.close();
 }
 
-// Re-export getDb as a standalone function for backward compatibility
 export const getDb = () => dbManager.getDb();
 
-// Export the database client for direct queries (Drizzle ORM)
-// This is lazy-loaded to avoid build-time errors
-export const db = new Proxy({} as DbType, {
+/**
+ * Global db export - now proxied through SmartDb to handle sync-ready writes automatically.
+ */
+export const db = new Proxy({} as any, {
 	get(_target, prop) {
 		const actualDb = dbManager.getDb();
-		return actualDb[prop as keyof DbType];
+		return actualDb[prop];
 	},
 });

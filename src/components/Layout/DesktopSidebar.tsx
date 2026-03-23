@@ -275,7 +275,7 @@ export function AppSidebar({ user, pathname, theme, onSetTheme }: AppSidebarProp
 													>
 														{item.fluentEmoji ? (
 															<FluentEmoji
-																type='3d'
+																type="3d"
 																emoji={item.fluentEmoji}
 																size={20}
 																className={cn(

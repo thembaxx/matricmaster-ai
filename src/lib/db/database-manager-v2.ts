@@ -79,6 +79,71 @@ class DatabaseManagerV2 {
 		return sqliteManager.getDb();
 	}
 
+	/**
+	 * Returns a database instance that automatically handles sync metadata when using SQLite.
+	 */
+	public getSmartDb(): DbType | SqliteDbType {
+		const db = this.getDb();
+		const activeDb = this.activeDatabase;
+
+		if (activeDb !== 'sqlite') {
+			return db;
+		}
+
+		return new Proxy(db, {
+			get(target, prop, receiver) {
+				const value = Reflect.get(target, prop, receiver);
+
+				if (prop === 'insert' || prop === 'update') {
+					return (table: any) => {
+						const queryBuilder = value.apply(target, [table]);
+
+						if (prop === 'insert') {
+							const originalValues = queryBuilder.values;
+							queryBuilder.values = (data: any) => {
+								const now = new Date().toISOString();
+								const enhancedData = Array.isArray(data)
+									? data.map((item) => ({
+											...item,
+											syncStatus: item.syncStatus ?? 'pending',
+											lastModifiedAt: item.lastModifiedAt ?? now,
+											localUpdatedAt: item.localUpdatedAt ?? now,
+											syncVersion: (item.syncVersion ?? 0) + 1,
+										}))
+									: {
+											...data,
+											syncStatus: data.syncStatus ?? 'pending',
+											lastModifiedAt: data.lastModifiedAt ?? now,
+											localUpdatedAt: data.localUpdatedAt ?? now,
+											syncVersion: (data.syncVersion ?? 0) + 1,
+										};
+								return originalValues.apply(queryBuilder, [enhancedData]);
+							};
+						}
+
+						if (prop === 'update') {
+							const originalSet = queryBuilder.set;
+							queryBuilder.set = (data: any) => {
+								const now = new Date().toISOString();
+								const enhancedData = {
+									...data,
+									syncStatus: data.syncStatus ?? 'pending',
+									lastModifiedAt: data.lastModifiedAt ?? now,
+									localUpdatedAt: data.localUpdatedAt ?? now,
+								};
+								return originalSet.apply(queryBuilder, [enhancedData]);
+							};
+						}
+
+						return queryBuilder;
+					};
+				}
+
+				return typeof value === 'function' ? value.bind(target) : value;
+			},
+		}) as any;
+	}
+
 	public getPgDb(): DbType | null {
 		if (this.isPostgreSQLConnected()) {
 			return pgManager.getDb();

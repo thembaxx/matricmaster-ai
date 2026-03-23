@@ -2,15 +2,12 @@
 
 import { and, eq } from 'drizzle-orm';
 import { ensureAuthenticated } from './actions';
-import { db, dbManager } from './index';
+import { dbManagerV2 } from './database-manager-v2';
 import { flashcardDecks, flashcards } from './schema';
 
 async function getConnectedDb() {
-	const connected = await dbManager.waitForConnection(3, 2000);
-	if (!connected) {
-		throw new Error('Database not available');
-	}
-	return db;
+	await dbManagerV2.initialize();
+	return dbManagerV2.getSmartDb();
 }
 
 export async function saveToFlashcardsAction(data: {
