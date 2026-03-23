@@ -253,7 +253,7 @@ export async function generateFlashcardsForWeakTopic(
 				.values({
 					userId: user.id,
 					name: 'Weak Topics Review',
-					description: 'Auto-generated flashcards from weak topics',
+					description: 'Your flashcards from weak topics',
 				})
 				.returning();
 			deck = newDeck;

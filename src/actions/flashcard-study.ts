@@ -160,7 +160,7 @@ export async function createAdaptiveFlashcardDeck(): Promise<{
 			.values({
 				userId: session.user.id,
 				name: 'Adaptive Review',
-				description: 'Auto-generated from your weak topics',
+				description: 'From your weak topics',
 				cardCount: 0,
 			})
 			.returning();

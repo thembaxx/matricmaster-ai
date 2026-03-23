@@ -73,7 +73,7 @@ export async function addMistakeToStudyPlanAction(
 			userId: session.user.id,
 			studyPlanId: activePlan.id,
 			title: `Review: ${mistake.topic}`,
-			description: 'Auto-generated from quiz mistakes. Review this topic to improve.',
+			description: 'From quiz mistakes. Review this topic to improve.',
 			eventType: 'study',
 			startTime: eventDate,
 			endTime: new Date(eventDate.getTime() + 30 * 60 * 1000),
