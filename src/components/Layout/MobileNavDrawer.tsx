@@ -182,7 +182,7 @@ function MobileNavLink({
 			)}
 		>
 			{item.fluentEmoji ? (
-				<FluentEmoji emoji={item.fluentEmoji} size={20} className="w-5 h-5" />
+				<FluentEmoji type='3d' emoji={item.fluentEmoji} size={20} className="w-5 h-5" />
 			) : item.icon ? (
 				<HugeiconsIcon icon={item.icon} className="w-5 h-5" />
 			) : null}
