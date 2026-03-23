@@ -141,7 +141,7 @@ export const TRANSLATIONS: Record<string, PartialTranslationSet> = {
 	},
 	aiTutor: {
 		en: {
-			placeholder: 'Ask me anything about your studies...',
+			placeholder: 'What are you stuck on?',
 			thinking: 'Looking up...',
 			suggestions: 'Try asking about:',
 			explainTopic: 'Explain {topic}',
@@ -149,7 +149,7 @@ export const TRANSLATIONS: Record<string, PartialTranslationSet> = {
 			summary: 'Summarize this: {content}',
 		},
 		af: {
-			placeholder: 'Vra my enige iets oor jou studies...',
+			placeholder: 'Waarmee sukkel jy?',
 			thinking: 'Soek...',
 			suggestions: 'Probeer vra oor:',
 			explainTopic: 'Verduidelik {topic}',
@@ -157,7 +157,7 @@ export const TRANSLATIONS: Record<string, PartialTranslationSet> = {
 			summary: 'Vat dit saam: {content}',
 		},
 		zu: {
-			placeholder: 'Ngibuze noma yini ngokufunda kwakho...',
+			placeholder: 'Yini eyikukusitshelile?',
 			thinking: 'Ngakha...',
 			suggestions: 'Zama ukubuza nge:',
 			explainTopic: 'Chaza {topic}',
