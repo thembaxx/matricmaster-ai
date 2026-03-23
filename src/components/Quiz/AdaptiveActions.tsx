@@ -32,7 +32,7 @@ const ACTION_ICONS: Record<ActionKey, typeof SparklesIcon> = {
 };
 
 const ACTION_LABELS: Record<ActionKey, string> = {
-	ai_tutor: 'Ask AI Tutor',
+	ai_tutor: 'Ask Tutor',
 	schedule_review: 'Schedule Review',
 	generate_flashcards: 'Generate Flashcards',
 	update_path: 'Update Study Path',

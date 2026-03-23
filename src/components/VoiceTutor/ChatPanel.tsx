@@ -96,7 +96,7 @@ export function ChatPanel({
 							<div className="bg-muted rounded-2xl px-4 py-3">
 								<div className="flex items-center gap-2">
 									<LoaderIcon className="w-4 h-4 animate-spin" />
-									<span className="text-sm">Thinking...</span>
+									<span className="text-sm">Finding info...</span>
 								</div>
 							</div>
 						</div>
