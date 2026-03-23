@@ -101,20 +101,23 @@ export function VideoCall({
 				<div className="flex items-center gap-3">
 					<div className="flex items-center gap-2">
 						<div className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
-						<span className="text-sm text-zinc-400">Live</span>
+						<span className="text-sm text-muted-foreground">Live</span>
 					</div>
-					<Badge variant="secondary" className="bg-zinc-800 text-zinc-200 border-zinc-700">
+					<Badge
+						variant="secondary"
+						className="bg-secondary text-secondary-foreground border-border"
+					>
 						{subject}
 					</Badge>
-					<span className="text-sm font-mono text-zinc-400">{roomName}</span>
+					<span className="text-sm font-mono text-muted-foreground">{roomName}</span>
 				</div>
 
 				<div className="flex items-center gap-4">
-					<span className="font-mono text-sm text-zinc-400">
+					<span className="font-mono text-sm text-muted-foreground">
 						<HugeiconsIcon icon={CctvCameraIcon} className="h-4 w-4 inline mr-1.5" />
 						{formatDuration(elapsed)}
 					</span>
-					<span className="text-sm text-zinc-400">
+					<span className="text-sm text-muted-foreground">
 						{allParticipants.length} participant{allParticipants.length !== 1 ? 's' : ''}
 					</span>
 				</div>
@@ -124,7 +127,7 @@ export function VideoCall({
 				{/* Main video area */}
 				<div className="flex-1 flex flex-col">
 					<div className="flex-1 flex items-center justify-center p-6">
-						<div className="relative w-full max-w-5xl aspect-video rounded-2xl overflow-hidden bg-zinc-900 border border-zinc-800/50">
+						<div className="relative w-full max-w-5xl aspect-video rounded-2xl overflow-hidden bg-zinc-900 border border-border/50">
 							{/* Video iframe (Daily.co) */}
 							<iframe
 								ref={iframeRef}
@@ -136,12 +139,12 @@ export function VideoCall({
 
 							{/* Fallback overlay when no real room */}
 							<div className="absolute inset-0 flex flex-col items-center justify-center bg-zinc-900/90 pointer-events-none opacity-0 transition-opacity">
-								<div className="w-24 h-24 rounded-full bg-zinc-800 flex items-center justify-center mb-4">
-									<span className="text-3xl font-semibold text-zinc-300">
+								<div className="w-24 h-24 rounded-full bg-secondary flex items-center justify-center mb-4">
+									<span className="text-3xl font-semibold text-foreground">
 										{currentUserName[0]?.toUpperCase()}
 									</span>
 								</div>
-								<p className="text-zinc-400 text-sm">Connecting to video...</p>
+								<p className="text-muted-foreground text-sm">Connecting to video...</p>
 							</div>
 						</div>
 					</div>
@@ -156,7 +159,7 @@ export function VideoCall({
 								'h-12 w-12 rounded-full transition-all',
 								isMuted
 									? 'bg-red-500/20 text-red-400 hover:bg-red-500/30'
-									: 'bg-zinc-800 text-zinc-200 hover:bg-zinc-700'
+									: 'bg-secondary text-foreground hover:bg-secondary/80'
 							)}
 						>
 							<HugeiconsIcon icon={isMuted ? MicOff01Icon : Mic01Icon} className="h-5 w-5" />
@@ -170,7 +173,7 @@ export function VideoCall({
 								'h-12 w-12 rounded-full transition-all',
 								!isVideoOn
 									? 'bg-red-500/20 text-red-400 hover:bg-red-500/30'
-									: 'bg-zinc-800 text-zinc-200 hover:bg-zinc-700'
+									: 'bg-secondary text-foreground hover:bg-secondary/80'
 							)}
 						>
 							<HugeiconsIcon
@@ -188,7 +191,7 @@ export function VideoCall({
 								'h-12 w-12 rounded-full transition-all',
 								isScreenSharing
 									? 'bg-blue-500/20 text-blue-400'
-									: 'bg-zinc-800 text-zinc-200 hover:bg-zinc-700'
+									: 'bg-secondary text-foreground hover:bg-secondary/80'
 							)}
 						>
 							<HugeiconsIcon icon={CctvCameraIcon} className="h-5 w-5" />
@@ -198,7 +201,7 @@ export function VideoCall({
 							variant="ghost"
 							size="icon"
 							onClick={() => setShowSidebar((prev) => !prev)}
-							className="h-12 w-12 rounded-full bg-zinc-800 text-zinc-200 hover:bg-zinc-700"
+							className="h-12 w-12 rounded-full bg-secondary text-foreground hover:bg-secondary/80"
 						>
 							<HugeiconsIcon icon={CircleIcon} className="h-5 w-5" />
 						</Button>
@@ -216,9 +219,9 @@ export function VideoCall({
 
 				{/* Participants sidebar */}
 				{showSidebar && (
-					<div className="w-72 bg-zinc-950/80 backdrop-blur-xl border-l border-zinc-800/50 overflow-y-auto">
+					<div className="w-full max-w-72 bg-zinc-950/80 backdrop-blur-xl border-l border-border/50 overflow-y-auto">
 						<div className="p-4">
-							<h3 className="text-sm font-medium text-zinc-400 mb-4">
+							<h3 className="text-sm font-medium text-muted-foreground mb-4">
 								Participants ({allParticipants.length})
 							</h3>
 
@@ -226,19 +229,19 @@ export function VideoCall({
 								{allParticipants.map((participant) => (
 									<div
 										key={participant.id}
-										className="flex items-center gap-3 p-3 rounded-xl bg-zinc-900/50 hover:bg-zinc-800/50 transition-colors"
+										className="flex items-center gap-3 p-3 rounded-xl bg-zinc-900/50 hover:bg-secondary/50 transition-colors"
 									>
 										<Avatar className="h-9 w-9">
 											<AvatarImage src={participant.avatar} />
-											<AvatarFallback className="text-xs bg-zinc-700 text-zinc-200">
+											<AvatarFallback className="text-xs bg-muted text-foreground">
 												{participant.name[0]?.toUpperCase()}
 											</AvatarFallback>
 										</Avatar>
 										<div className="flex-1 min-w-0">
-											<p className="text-sm font-medium text-zinc-200 truncate">
+											<p className="text-sm font-medium text-foreground truncate">
 												{participant.name}
 												{participant.id === currentUserId && (
-													<span className="text-zinc-500 ml-1">(you)</span>
+													<span className="text-muted-foreground ml-1">(you)</span>
 												)}
 											</p>
 										</div>
@@ -249,8 +252,11 @@ export function VideoCall({
 												</div>
 											)}
 											{!participant.hasVideo && (
-												<div className="h-6 w-6 rounded-full bg-zinc-700 flex items-center justify-center">
-													<HugeiconsIcon icon={VideoOffIcon} className="h-3 w-3 text-zinc-400" />
+												<div className="h-6 w-6 rounded-full bg-muted flex items-center justify-center">
+													<HugeiconsIcon
+														icon={VideoOffIcon}
+														className="h-3 w-3 text-muted-foreground"
+													/>
 												</div>
 											)}
 										</div>

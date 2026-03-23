@@ -64,7 +64,7 @@ export function PdfSidebar({
 									style={{ borderLeftWidth: '8px', borderLeftColor: highlight.color }}
 								>
 									<div className="flex items-start justify-between gap-4 mb-4">
-										<span className="px-3 py-1 rounded-full bg-muted text-[10px] font-black uppercase tracking-[0.15em] text-muted-foreground border border-zinc-200 dark:border-zinc-700">
+										<span className="px-3 py-1 rounded-full bg-muted text-[10px] font-black uppercase tracking-[0.15em] text-muted-foreground border border-border">
 											Page {highlight.pageNumber}
 										</span>
 										<button
@@ -77,17 +77,17 @@ export function PdfSidebar({
 										</button>
 									</div>
 
-									<p className="text-sm font-medium leading-relaxed mb-4 text-zinc-700 dark:text-zinc-300 italic pl-2 border-l-2 border-border">
+									<p className="text-sm font-medium leading-relaxed mb-4 text-foreground dark:text-muted-foreground italic pl-2 border-l-2 border-border">
 										"{highlight.text}"
 									</p>
 
 									<div className="space-y-4">
 										{highlight.note ? (
-											<div className="p-4 rounded-2xl bg-zinc-50 dark:bg-zinc-900 border border-border text-sm shadow-inner relative overflow-hidden">
+											<div className="p-4 rounded-2xl bg-muted dark:bg-background border border-border text-sm shadow-inner relative overflow-hidden">
 												<div className="absolute top-0 right-0 p-1">
 													<HugeiconsIcon
 														icon={PencilEdit01Icon}
-														className="w-3 h-3 text-zinc-300 opacity-50"
+														className="w-3 h-3 text-muted-foreground opacity-50"
 													/>
 												</div>
 												<p className="text-muted-foreground leading-relaxed">{highlight.note}</p>

@@ -20,6 +20,7 @@ export interface Subject {
 	bgColor: string;
 	icon: string;
 	fluentEmoji: string;
+	imgSrc?: string;
 	fontFamily: string;
 	gradient?: {
 		primary: string;
@@ -58,6 +59,7 @@ export const SUBJECTS: Record<SubjectId, Subject> = {
 		name: 'Mathematics',
 		emoji: '🧮',
 		fluentEmoji: '🧮',
+		imgSrc: '/subject/mathematics.png',
 		color: 'text-mathematics',
 		bgColor: 'bg-mathematics',
 		icon: 'Calculator',
@@ -69,6 +71,7 @@ export const SUBJECTS: Record<SubjectId, Subject> = {
 		name: 'Physics',
 		emoji: '⚛️',
 		fluentEmoji: '⚛️',
+		imgSrc: '/subject/physics.png',
 		color: 'text-physics',
 		bgColor: 'bg-physics',
 		icon: 'Atom',
@@ -80,6 +83,7 @@ export const SUBJECTS: Record<SubjectId, Subject> = {
 		name: 'Chemistry',
 		emoji: '🧪',
 		fluentEmoji: '🧪',
+		imgSrc: '/subject/chemistry.png',
 		color: 'text-chemistry',
 		bgColor: 'bg-chemistry',
 		icon: 'FlaskConical',
@@ -91,6 +95,7 @@ export const SUBJECTS: Record<SubjectId, Subject> = {
 		name: 'Life Sciences',
 		emoji: '🧬',
 		fluentEmoji: '🧬',
+		imgSrc: '/subject/life-sciences.png',
 		color: 'text-life-sciences',
 		bgColor: 'bg-life-sciences',
 		icon: 'Microscope',
@@ -102,6 +107,7 @@ export const SUBJECTS: Record<SubjectId, Subject> = {
 		name: 'English',
 		emoji: '📚',
 		fluentEmoji: '📚',
+		imgSrc: '/subject/english.png',
 		color: 'text-english',
 		bgColor: 'bg-english',
 		icon: 'BookOpen',
@@ -113,6 +119,7 @@ export const SUBJECTS: Record<SubjectId, Subject> = {
 		name: 'Geography',
 		emoji: '🌍',
 		fluentEmoji: '🌍',
+		imgSrc: '/subject/geography.png',
 		color: 'text-geography',
 		bgColor: 'bg-geography',
 		icon: 'Globe',
@@ -124,6 +131,7 @@ export const SUBJECTS: Record<SubjectId, Subject> = {
 		name: 'History',
 		emoji: '📜',
 		fluentEmoji: '📜',
+		imgSrc: '/subject/history.png',
 		color: 'text-history',
 		bgColor: 'bg-history',
 		icon: 'Scroll',
@@ -135,6 +143,7 @@ export const SUBJECTS: Record<SubjectId, Subject> = {
 		name: 'Accounting',
 		emoji: '💰',
 		fluentEmoji: '💰',
+		imgSrc: '/subject/accounting.png',
 		color: 'text-accounting',
 		bgColor: 'bg-accounting',
 		icon: 'Calculator',
@@ -146,6 +155,7 @@ export const SUBJECTS: Record<SubjectId, Subject> = {
 		name: 'Economics',
 		emoji: '📈',
 		fluentEmoji: '📈',
+		imgSrc: '/subject/economics.png',
 		color: 'text-economics',
 		bgColor: 'bg-economics',
 		icon: 'ChartLine',
@@ -157,6 +167,7 @@ export const SUBJECTS: Record<SubjectId, Subject> = {
 		name: 'Afrikaans',
 		emoji: '🌍',
 		fluentEmoji: '🌍',
+		imgSrc: '/subject/afrikaans.png',
 		color: 'text-afrikaans',
 		bgColor: 'bg-afrikaans',
 		icon: 'BookOpen',

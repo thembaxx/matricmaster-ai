@@ -27,7 +27,7 @@ export function QuestionJumpNav({
 						className={`w-10 h-10 p-0 rounded-xl font-bold border-2 ${
 							currentQuestionIndex === idx
 								? 'border-brand-blue bg-brand-blue text-white'
-								: 'border-zinc-200 dark:border-zinc-700 text-muted-foreground hover:border-brand-blue'
+								: 'border-border text-muted-foreground hover:border-brand-blue'
 						}`}
 					>
 						{q.questionNumber}

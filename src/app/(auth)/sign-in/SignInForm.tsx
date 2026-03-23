@@ -5,13 +5,13 @@ import Link from 'next/link';
 import { Suspense } from 'react';
 import { appConfig } from '@/app.config';
 import { SocialAuthButton } from '@/components/auth/SocialAuthButton';
+import { Logo } from '@/components/Logo';
 import { SmoothWords } from '@/components/Transition/SmoothText';
 import { BackgroundMesh } from '@/components/ui/background-mesh';
 import { Separator } from '@/components/ui/separator';
 import { useSignIn } from '@/hooks/useSignIn';
 import { STAGGER_CONTAINER, STAGGER_ITEM } from '@/lib/animation-presets';
 import { FormFields } from './FormFields';
-import { Logo } from '@/components/Logo';
 
 function SignInFormContent() {
 	const {
@@ -46,7 +46,7 @@ function SignInFormContent() {
 					>
 						<div className="bg-success/90 text-white px-6 py-3 rounded-full shadow-lg shadow-success/30 flex items-center gap-3 pointer-events-auto backdrop-blur-md">
 							<div className="bg-white/20 p-1 rounded-full">
-								<Logo className='w-10 h-10 text-white/80' />
+								<Logo className="w-10 h-10 text-white/80" />
 							</div>
 							<span className="font-semibold text-sm">welcome back, {successEmail}!</span>
 						</div>
@@ -72,7 +72,7 @@ function SignInFormContent() {
 							whileHover={{ rotate: 15, scale: 1.1 }}
 							className="w-14 h-14 bg-primary/10 rounded-[var(--radius-xl)] flex items-center justify-center mx-auto mb-5 text-primary"
 						>
-							<Logo className='w-10 h-10 text-white/80' />
+							<Logo className="w-10 h-10 text-white/80" />
 						</m.div>
 						<SmoothWords
 							as="h1"

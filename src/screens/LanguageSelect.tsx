@@ -38,7 +38,7 @@ export default function LanguageSelect() {
 	const { language, setLanguage } = useLanguageStore();
 
 	return (
-		<div className="flex flex-col min-h-screen bg-zinc-50 dark:bg-zinc-950 font-lexend">
+		<div className="flex flex-col min-h-screen bg-muted dark:bg-background font-lexend">
 			<div className="flex-1 flex flex-col max-w-2xl mx-auto w-full">
 				<div className="px-6 pt-12 pb-6 border-b border-border bg-card">
 					<div className="flex justify-between items-center">
@@ -79,7 +79,7 @@ export default function LanguageSelect() {
 								<RadioGroupItem value={lang.code} id={lang.code} className="peer sr-only" />
 								<Label
 									htmlFor={lang.code}
-									className="flex items-center gap-5 p-5 rounded-[2rem] border-2 border-transparent bg-card cursor-pointer transition-all peer-data-[state=checked]:border-brand-blue peer-data-[state=checked]:shadow-xl shadow-sm hover:border-zinc-200 dark:hover:border-zinc-700"
+									className="flex items-center gap-5 p-5 rounded-[2rem] border-2 border-transparent bg-card cursor-pointer transition-all peer-data-[state=checked]:border-brand-blue peer-data-[state=checked]:shadow-xl shadow-sm hover:border-border"
 								>
 									<div
 										className={`w-14 h-14 rounded-2xl ${lang.color} flex items-center justify-center text-white font-black text-lg shadow-inner shadow-black/10`}

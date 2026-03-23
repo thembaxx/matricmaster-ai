@@ -53,7 +53,7 @@ export function QuizHeader({
 						)}
 						<Badge
 							variant="outline"
-							className="text-[10px] font-bold text-muted-foreground border-zinc-200 bg-zinc-50 dark:bg-zinc-800 dark:border-zinc-700"
+							className="text-[10px] font-bold text-muted-foreground bg-muted border-border"
 						>
 							<HugeiconsIcon icon={Clock01Icon} className="w-3 h-3 mr-1" />
 							{formatTime(elapsedSeconds)}
@@ -126,7 +126,7 @@ export function SimpleQuizHeader({
 					</div>
 					<Badge
 						variant="outline"
-						className="text-[10px] font-bold text-muted-foreground border-zinc-200 bg-zinc-50 dark:bg-zinc-800 dark:border-zinc-700"
+						className="text-[10px] font-bold text-muted-foreground bg-muted border-border"
 					>
 						<HugeiconsIcon icon={Clock01Icon} className="w-3 h-3 mr-1" />
 						{formatTime(elapsedSeconds)}

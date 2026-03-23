@@ -18,14 +18,12 @@ export function SocialAuthButton({
 		google: {
 			icon: 'logos:google-icon',
 			label: 'Google',
-			style:
-				'hover:bg-zinc-50 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-200 border-border',
+			style: 'hover:bg-secondary text-foreground border-border',
 		},
 		twitter: {
-			icon: 'logos:twitter', // Or a custom path if preferred, sticking to standard logos for now
+			icon: 'logos:twitter',
 			label: 'Twitter',
-			style:
-				'hover:bg-blue-50 dark:hover:bg-blue-900/20 text-zinc-700 dark:text-zinc-200 border-border',
+			style: 'hover:bg-blue-50 dark:hover:bg-blue-900/20 text-foreground border-border',
 		},
 	};
 

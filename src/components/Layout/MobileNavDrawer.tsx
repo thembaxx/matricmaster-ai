@@ -64,7 +64,7 @@ export function MobileNavDrawer({
 									type="button"
 									variant="ghost"
 									onClick={() => handleNavigation('/profile')}
-									className="flex items-center gap-3 p-1.5 -ml-1.5 w-full h-auto rounded-lg hover:bg-sidebar-accent transition-colors text-left"
+									className="flex items-center gap-3 p-1.5 -ml-1.5 w-full h-auto rounded-lg hover:bg-sidebar-accent transition-colors text-left focus-visible:ring-2 focus-visible:ring-primary"
 								>
 									<Avatar className="h-9 w-9">
 										<AvatarImage src={user.image || undefined} alt={user.name || 'user'} />
@@ -88,7 +88,7 @@ export function MobileNavDrawer({
 									type="button"
 									variant="ghost"
 									onClick={() => handleNavigation('/dashboard')}
-									className="flex items-center gap-3 h-auto"
+									className="flex items-center gap-3 h-auto focus-visible:ring-2 focus-visible:ring-primary"
 								>
 									<div className="w-9 h-9 rounded-lg bg-gradient-to-br from-sidebar-primary to-purple-400 flex items-center justify-center">
 										<HugeiconsIcon icon={BookOpen01Icon} className="w-4 h-4 text-white" />
@@ -101,7 +101,7 @@ export function MobileNavDrawer({
 							<Button
 								variant="ghost"
 								size="icon"
-								className="rounded-lg h-9 w-9 -mr-1"
+								className="rounded-lg h-9 w-9 -mr-1 focus-visible:ring-2 focus-visible:ring-primary"
 								onClick={() => setOpen(false)}
 							>
 								<HugeiconsIcon icon={Cancel01Icon} className="w-4 h-4" />
@@ -146,7 +146,7 @@ export function MobileNavDrawer({
 					<div className="px-3 py-3 border-t border-sidebar-border/50">
 						<Button
 							variant="ghost"
-							className="w-full justify-start gap-3 text-sidebar-foreground/80 hover:text-sidebar-foreground hover:bg-sidebar-accent/60 rounded-lg h-11"
+							className="w-full justify-start gap-3 text-sidebar-foreground/80 hover:text-sidebar-foreground hover:bg-sidebar-accent/60 rounded-lg h-11 focus-visible:ring-2 focus-visible:ring-primary"
 							onClick={handleSignOut}
 						>
 							<HugeiconsIcon icon={Logout01Icon} className="w-5 h-5" />
@@ -175,7 +175,7 @@ function MobileNavLink({
 			variant="ghost"
 			onClick={() => onNavigate(item.href)}
 			className={cn(
-				'w-full flex items-center justify-start gap-3 px-3 h-11 rounded-lg text-left',
+				'w-full flex items-center justify-start gap-3 px-3 h-11 rounded-lg text-left focus-visible:ring-2 focus-visible:ring-primary',
 				isActive
 					? 'bg-sidebar-primary/15 text-sidebar-primary font-medium'
 					: 'text-sidebar-foreground/80 hover:text-sidebar-foreground hover:bg-sidebar-accent/60'

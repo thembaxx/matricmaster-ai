@@ -59,19 +59,19 @@ export default function Leaderboard() {
 					<TabsList className="w-full h-12 sm:h-16 p-1.5 sm:p-2 bg-muted/30 backdrop-blur-md rounded-xl sm:rounded-2xl border-2 border-border/50 shadow-inner">
 						<TabsTrigger
 							value="weekly"
-							className="flex-1 rounded-lg sm:rounded-xl font-black text-[10px] sm:text-xs uppercase tracking-[0.2em] data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-xl transition-all"
+							className="flex-1 rounded-lg sm:rounded-xl font-medium text-[10px] sm:text-xs tracking-wide data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-xl transition-all"
 						>
 							weekly
 						</TabsTrigger>
 						<TabsTrigger
 							value="monthly"
-							className="flex-1 rounded-lg sm:rounded-xl font-black text-[10px] sm:text-xs uppercase tracking-[0.2em] data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-xl transition-all"
+							className="flex-1 rounded-lg sm:rounded-xl font-medium text-[10px] sm:text-xs tracking-wide data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-xl transition-all"
 						>
 							monthly
 						</TabsTrigger>
 						<TabsTrigger
 							value="all_time"
-							className="flex-1 rounded-lg sm:rounded-xl font-black text-[10px] sm:text-xs uppercase tracking-[0.2em] data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-xl transition-all"
+							className="flex-1 rounded-lg sm:rounded-xl font-medium text-[10px] sm:text-xs tracking-wide data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-xl transition-all"
 						>
 							all time
 						</TabsTrigger>
@@ -189,7 +189,7 @@ export default function Leaderboard() {
 								<h3 className="font-black text-sm sm:text-lg text-white truncate tracking-tight">
 									your global rank
 								</h3>
-								<p className="text-[10px] sm:text-[11px] font-black text-white/60 uppercase tracking-widest flex items-center gap-1 sm:gap-2">
+								<p className="text-[10px] sm:text-[11px] font-medium text-white/60 tracking-wide flex items-center gap-1 sm:gap-2">
 									<HugeiconsIcon
 										icon={FireIcon}
 										className="w-3 h-3 sm:w-4 sm:h-4 text-primary-orange fill-primary-orange"
@@ -201,7 +201,7 @@ export default function Leaderboard() {
 								<p className="text-xl sm:text-2xl font-black text-primary-orange tracking-tighter flex items-center justify-end gap-1">
 									{formatPoints(userRank.totalPoints)} <span className="text-xs uppercase">KP</span>
 								</p>
-								<p className="text-[9px] sm:text-[10px] font-black text-white/60 uppercase tracking-widest">
+								<p className="text-[9px] sm:text-[10px] font-medium text-white/60 tracking-wide">
 									top {100 - userRank.percentile}% of students
 								</p>
 							</div>

@@ -94,7 +94,7 @@ export function PdfToolbar({
 					</div>
 				)}
 
-				<div className="flex items-center bg-muted rounded-full p-1 border border-zinc-200 dark:border-zinc-700 shadow-inner">
+				<div className="flex items-center bg-muted rounded-full p-1 border border-border shadow-inner">
 					<Button
 						variant="ghost"
 						size="icon"
@@ -132,7 +132,7 @@ export function PdfToolbar({
 			</div>
 
 			{/* Middle: Zoom Controls */}
-			<div className="hidden md:flex items-center gap-2 bg-muted rounded-full p-1 border border-zinc-200 dark:border-zinc-700 shadow-inner">
+			<div className="hidden md:flex items-center gap-2 bg-muted rounded-full p-1 border border-border shadow-inner">
 				<Button
 					variant="ghost"
 					size="icon"
@@ -182,7 +182,7 @@ export function PdfToolbar({
 
 			{/* Right: Actions */}
 			<div className="flex items-center gap-2">
-				<div className="flex items-center gap-1 bg-muted rounded-full p-1 border border-zinc-200 dark:border-zinc-700 shadow-inner">
+				<div className="flex items-center gap-1 bg-muted rounded-full p-1 border border-border shadow-inner">
 					<Button
 						variant="ghost"
 						size="icon"
@@ -233,7 +233,7 @@ export function PdfToolbar({
 					</Button>
 				</div>
 
-				<div className="hidden sm:flex items-center gap-1 bg-muted rounded-full p-1 border border-zinc-200 dark:border-zinc-700 shadow-inner">
+				<div className="hidden sm:flex items-center gap-1 bg-muted rounded-full p-1 border border-border shadow-inner">
 					<Button
 						variant="ghost"
 						size="icon"

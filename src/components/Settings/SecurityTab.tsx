@@ -145,7 +145,7 @@ export function SecurityTab({
 									{backupCodes.map((code) => (
 										<code
 											key={`backup-${code}`}
-											className="bg-white px-2 py-1 rounded text-sm font-mono"
+											className="bg-white dark:bg-zinc-900 px-2 py-1 rounded text-sm font-mono"
 										>
 											{code}
 										</code>

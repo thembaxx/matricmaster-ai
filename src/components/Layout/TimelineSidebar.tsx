@@ -126,7 +126,7 @@ export function TimelineSidebar() {
 	const isToday = selectedDate.toDateString() === new Date().toDateString();
 
 	return (
-		<aside className="fixed left-0 top-0 h-screen w-72 bg-background-elevated border-r border-border hidden lg:flex flex-col z-20">
+		<aside className="fixed left-0 top-0 h-screen w-full max-w-72 bg-background-elevated border-r border-border hidden lg:flex flex-col z-20">
 			{/* Header */}
 			<div className="p-3 rounded-l-lg bg-card">
 				{/* Date Selector */}

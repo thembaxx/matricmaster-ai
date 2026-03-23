@@ -28,9 +28,7 @@ export function CurriculumSelector({
 
 	return (
 		<div className={className}>
-			{label && (
-				<Label className="text-sm font-medium text-gray-700 dark:text-gray-300">{label}</Label>
-			)}
+			{label && <Label className="text-sm font-medium text-foreground">{label}</Label>}
 			<Select value={curriculum} onValueChange={(value) => setCurriculum(value as CurriculumType)}>
 				<SelectTrigger className="w-full mt-1">
 					<SelectValue placeholder="Select curriculum" />
@@ -89,13 +87,13 @@ export function CurriculumCard({
 			className={`w-full p-4 h-auto text-left border rounded-lg ${
 				isSelected
 					? 'border-primary bg-primary/5 ring-1 ring-primary'
-					: 'border-gray-200 hover:border-gray-300 dark:border-gray-700 dark:hover:border-gray-600'
+					: 'border-border hover:border-primary/50'
 			}`}
 		>
 			<div className="flex items-start justify-between">
 				<div>
-					<h3 className="font-semibold text-gray-900 dark:text-gray-100">{info.name}</h3>
-					<p className="mt-1 text-sm text-gray-500 dark:text-gray-400">{info.fullName}</p>
+					<h3 className="font-semibold text-foreground">{info.name}</h3>
+					<p className="mt-1 text-sm text-muted-foreground">{info.fullName}</p>
 				</div>
 				{isSelected && (
 					<span className="flex items-center justify-center w-5 h-5 rounded-full bg-primary text-primary-foreground text-xs">
@@ -103,7 +101,7 @@ export function CurriculumCard({
 					</span>
 				)}
 			</div>
-			<p className="mt-2 text-xs text-gray-400 dark:text-gray-500">{info.examsBody}</p>
+			<p className="mt-2 text-xs text-muted-foreground">{info.examsBody}</p>
 		</Button>
 	);
 }

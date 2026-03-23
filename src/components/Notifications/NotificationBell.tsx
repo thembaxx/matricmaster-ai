@@ -56,7 +56,7 @@ export function NotificationBell() {
 			</DropdownMenuTrigger>
 			<DropdownMenuContent
 				align="end"
-				className="w-80 rounded-[2rem] p-4 shadow-tiimo border-border/50 bg-card/95 backdrop-blur-xl"
+				className="w-[320px] sm:w-80 rounded-[2rem] p-4 shadow-tiimo border-border/50 bg-card/95 backdrop-blur-xl"
 			>
 				<DropdownMenuLabel className="font-black uppercase tracking-widest text-[10px] text-tiimo-gray-muted mb-2 px-2">
 					Notifications

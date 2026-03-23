@@ -17,7 +17,9 @@ export function ConversionBanner({ onConvert }: ConversionBannerProps) {
 		>
 			<div className="flex flex-col gap-4">
 				<div>
-					<h4 className="font-bold text-zinc-900 dark:text-zinc-300">Convert to Interactive</h4>
+					<h4 className="font-bold text-foreground dark:text-muted-foreground">
+						Convert to Interactive
+					</h4>
 					<p className="text-xs font-semibold text-muted-foreground">
 						Practice this paper with step-by-step feedback
 					</p>

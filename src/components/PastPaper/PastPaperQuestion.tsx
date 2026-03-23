@@ -60,14 +60,14 @@ export function PastPaperQuestion({
 				</div>
 
 				{currentQuestion.topic && (
-					<Badge variant="outline" className="rounded-full text-xs dark:bg-zinc-900">
+					<Badge variant="outline" className="rounded-full text-xs bg-card">
 						<span className="line-clamp-1">{currentQuestion.topic}</span>
 					</Badge>
 				)}
 			</div>
 
 			{/* Main Question Text */}
-			<div className="space-y-4 text-zinc-800 dark:text-zinc-200 font-medium relative z-10">
+			<div className="space-y-4 text-foreground font-medium relative z-10">
 				<div className="flex items-start gap-3">
 					<p className="flex-1 text-lg leading-relaxed">{currentQuestion.questionText}</p>
 					<Button
@@ -88,7 +88,7 @@ export function PastPaperQuestion({
 					<div className="space-y-4 ml-2 mt-6 pt-4 border-t border-border">
 						{currentQuestion.subQuestions.map((sq: any) => (
 							<div key={sq.id} className="space-y-2">
-								<p className="font-semibold text-sm dark:text-zinc-300 text-pretty">
+								<p className="font-semibold text-sm text-foreground text-pretty">
 									{sq.id}. {sq.text}
 									{sq.marks && (
 										<span className="text-xs text-muted-foreground ml-2">({sq.marks} marks)</span>
