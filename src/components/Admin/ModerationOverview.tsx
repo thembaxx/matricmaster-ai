@@ -11,17 +11,17 @@ export function ModerationOverview({ flagReasons, contentTypes }: ModerationOver
 	return (
 		<Card>
 			<CardHeader>
-				<CardTitle>Moderation Overview</CardTitle>
-				<CardDescription>Summary of content moderation activities</CardDescription>
+				<CardTitle className="font-serif">moderation overview</CardTitle>
+				<CardDescription>summary of content moderation activities</CardDescription>
 			</CardHeader>
 			<CardContent>
 				<div className="grid md:grid-cols-2 gap-6">
 					<div>
-						<h3 className="font-medium mb-4">Flag Reasons</h3>
+						<h3 className="font-bold mb-4 font-serif">flag reasons</h3>
 						<div className="space-y-2">
 							{flagReasons.map((reason) => (
 								<div key={reason.name} className="flex items-center justify-between">
-									<span className="text-sm">{reason.name}</span>
+									<span className="text-sm">{reason.name.toLowerCase()}</span>
 									<div className="flex items-center gap-2">
 										<div className="w-32 h-2 bg-muted rounded-full overflow-hidden">
 											<div
@@ -29,7 +29,7 @@ export function ModerationOverview({ flagReasons, contentTypes }: ModerationOver
 												style={{ width: `${Math.min(reason.count * 5 + 10, 100)}%` }}
 											/>
 										</div>
-										<span className="text-xs text-muted-foreground w-8 text-right">
+										<span className="text-xs text-muted-foreground w-8 text-right font-mono">
 											{reason.count}
 										</span>
 									</div>
@@ -38,13 +38,13 @@ export function ModerationOverview({ flagReasons, contentTypes }: ModerationOver
 						</div>
 					</div>
 					<div>
-						<h3 className="font-medium mb-4">Content Types Flagged</h3>
+						<h3 className="font-bold mb-4 font-serif">content types flagged</h3>
 						<div className="space-y-2">
 							{contentTypes.map((item) => (
 								<div key={item.type} className="flex items-center justify-between">
 									<span className="text-sm flex items-center gap-2">
 										<HugeiconsIcon icon={Chat01Icon} className="h-4 w-4" />
-										{item.type}
+										{item.type.toLowerCase()}
 									</span>
 									<div className="flex items-center gap-2">
 										<div className="w-32 h-2 bg-muted rounded-full overflow-hidden">
@@ -53,7 +53,7 @@ export function ModerationOverview({ flagReasons, contentTypes }: ModerationOver
 												style={{ width: `${Math.min(item.count * 5 + 10, 100)}%` }}
 											/>
 										</div>
-										<span className="text-xs text-muted-foreground w-8 text-right">
+										<span className="text-xs text-muted-foreground w-8 text-right font-mono">
 											{item.count}
 										</span>
 									</div>

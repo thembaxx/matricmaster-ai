@@ -56,7 +56,7 @@ export default function ModerationDashboard() {
 	if (!session) {
 		return (
 			<div className="container mx-auto py-8 text-center">
-				<p className="text-muted-foreground">Please sign in to access moderation.</p>
+				<p className="text-muted-foreground">please sign in to access moderation.</p>
 			</div>
 		);
 	}
@@ -66,7 +66,7 @@ export default function ModerationDashboard() {
 	if (!isAdmin) {
 		return (
 			<div className="container mx-auto py-8 text-center">
-				<p className="text-muted-foreground">You don't have permission to access this page.</p>
+				<p className="text-muted-foreground">you don't have permission to access this page.</p>
 			</div>
 		);
 	}
@@ -110,11 +110,11 @@ export default function ModerationDashboard() {
 		return (
 			<EmptyState
 				icon={AlertCircle}
-				title="Failed to load moderation data"
-				description="There was an error loading the flagged content. Please try again."
-				action={{
-					label: 'Retry',
-					onClick: () => void refetch(),
+				title="failed to load moderation data"
+				description="there was an error loading the flagged content. please try again."
+				actionLabel="retry"
+				onAction={() => {
+					void refetch();
 				}}
 			/>
 		);
@@ -124,8 +124,8 @@ export default function ModerationDashboard() {
 		return (
 			<EmptyState
 				icon={ShieldCheck}
-				title="No flagged content"
-				description="All clear! There are no flagged items to review at the moment."
+				title="no flagged content"
+				description="all clear! there are no flagged items to review at the moment."
 			/>
 		);
 	}
@@ -172,8 +172,8 @@ export default function ModerationDashboard() {
 			<div className="flex items-center gap-3 mb-6">
 				<HugeiconsIcon icon={Shield01Icon} className="h-8 w-8 text-primary" />
 				<div>
-					<h1 className="text-3xl font-bold">Content Moderation</h1>
-					<p className="text-muted-foreground">Review flagged content and manage auto-moderation</p>
+					<h1 className="text-3xl font-bold font-serif">content moderation</h1>
+					<p className="text-muted-foreground">review flagged content and manage auto-moderation</p>
 				</div>
 			</div>
 
@@ -183,15 +183,15 @@ export default function ModerationDashboard() {
 				<TabsList className="grid w-full grid-cols-3">
 					<TabsTrigger value="flags">
 						<HugeiconsIcon icon={Flag} className="h-4 w-4 mr-2" />
-						Flagged Content
+						flagged content
 					</TabsTrigger>
 					<TabsTrigger value="patterns">
 						<HugeiconsIcon icon={Shield01Icon} className="h-4 w-4 mr-2" />
-						Auto-Moderation
+						auto-moderation
 					</TabsTrigger>
 					<TabsTrigger value="stats">
 						<HugeiconsIcon icon={ViewIcon} className="h-4 w-4 mr-2" />
-						Overview
+						overview
 					</TabsTrigger>
 				</TabsList>
 
