@@ -62,7 +62,7 @@ export const MOBILE_NAV_SECTIONS: MobileNavSection[] = [
 			{ href: '/periodic-table', label: 'Periodic Table', fluentEmoji: '⚛️' },
 			{ href: '/chat', label: 'Study Buddy', icon: Chat01Icon },
 			{ href: '/smart-scheduler', label: 'Smart Scheduler', icon: Calendar01Icon },
-			{ href: '/tutoring', label: 'AI Tutoring', icon: ComputerVideoCallIcon },
+			{ href: '/tutoring', label: 'Matric Tutor', icon: ComputerVideoCallIcon },
 			{ href: '/voice-tutor', label: 'Voice Tutor', icon: Mic01Icon },
 			{ href: '/essay-grader', label: 'Essay Grader', icon: ContentWritingIcon },
 			{ href: '/aps-calculator', label: 'APS Calculator', icon: CalculatorIcon },
