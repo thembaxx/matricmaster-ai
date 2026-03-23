@@ -10,6 +10,7 @@ import {
 	flashcards,
 	topicConfidence,
 	topicMastery,
+	topicWeightages,
 } from '@/lib/db/schema';
 
 export interface AdaptiveTrigger {
@@ -351,10 +352,217 @@ export async function updateTopicConfidence(
 	}
 }
 
-export async function getAdaptiveInsights(): Promise<{
+export interface AdaptiveInsights {
 	weakTopics: { topic: string; confidence: number; trend: 'improving' | 'declining' | 'stable' }[];
 	recommendedActions: { type: string; topic: string; priority: 'high' | 'medium' | 'low' }[];
-}> {
+}
+
+export interface DifficultyRecommendation {
+	recommendedDifficulty: 'easy' | 'medium' | 'hard';
+	confidence: number;
+	reasoning: string;
+	recentAccuracy: number;
+	streakFactor: number;
+}
+
+export async function calculateOptimalDifficulty(
+	subjectId: number,
+	topic?: string
+): Promise<DifficultyRecommendation> {
+	const user = await ensureAuthenticated();
+	const db = await getDb();
+
+	const whereClause = topic
+		? and(
+				eq(topicConfidence.userId, user.id),
+				eq(topicConfidence.subject, subjectId.toString()),
+				eq(topicConfidence.topic, topic)
+			)
+		: and(eq(topicConfidence.userId, user.id), eq(topicConfidence.subject, subjectId.toString()));
+
+	const recentAttempts = await db
+		.select()
+		.from(topicConfidence)
+		.where(whereClause)
+		.orderBy(sql`${topicConfidence.lastAttemptAt} DESC`)
+		.limit(20);
+
+	if (recentAttempts.length === 0) {
+		return {
+			recommendedDifficulty: 'medium',
+			confidence: 0.5,
+			reasoning: 'No prior performance data available, defaulting to medium difficulty',
+			recentAccuracy: 0,
+			streakFactor: 1,
+		};
+	}
+
+	const totalAttempts = recentAttempts.reduce(
+		(sum: number, a: typeof topicConfidence.$inferSelect) => sum + (a.timesAttempted || 0),
+		0
+	);
+	const totalCorrect = recentAttempts.reduce(
+		(sum: number, a: typeof topicConfidence.$inferSelect) => sum + (a.timesCorrect || 0),
+		0
+	);
+	const recentAccuracy = totalAttempts > 0 ? totalCorrect / totalAttempts : 0;
+
+	const masteryRecords = await db.query.topicMastery.findMany({
+		where: and(
+			eq(topicMastery.userId, user.id),
+			topic ? eq(topicMastery.topic, topic) : undefined,
+			eq(topicMastery.subjectId, Number(subjectId))
+		),
+		orderBy: [sql`${topicMastery.lastPracticed} DESC`],
+		limit: 10,
+	});
+
+	let consecutiveCorrect = 0;
+	let streakFactor = 1;
+	if (masteryRecords.length > 0) {
+		consecutiveCorrect = masteryRecords[0].consecutiveCorrect || 0;
+		if (consecutiveCorrect >= 5) {
+			streakFactor = 1.5;
+		} else if (consecutiveCorrect >= 3) {
+			streakFactor = 1.2;
+		} else if (consecutiveCorrect < 0) {
+			streakFactor = 0.7;
+		}
+	}
+
+	const adjustedAccuracy = Math.min(recentAccuracy * streakFactor, 1);
+
+	let recommendedDifficulty: 'easy' | 'medium' | 'hard';
+	if (adjustedAccuracy >= 0.85 && recentAccuracy >= 0.8) {
+		recommendedDifficulty = 'hard';
+	} else if (adjustedAccuracy >= 0.6) {
+		recommendedDifficulty = 'medium';
+	} else if (adjustedAccuracy >= 0.4) {
+		recommendedDifficulty = 'easy';
+	} else {
+		recommendedDifficulty = 'easy';
+	}
+
+	let reasoning: string;
+	if (recommendedDifficulty === 'hard') {
+		reasoning = `Strong performance detected (${Math.round(recentAccuracy * 100)}% accuracy with ${consecutiveCorrect} correct streak). Ready for challenging questions.`;
+	} else if (recommendedDifficulty === 'medium') {
+		reasoning = `Moderate performance (${Math.round(recentAccuracy * 100)}% accuracy). Recommended for steady progress.`;
+	} else {
+		reasoning = `Current accuracy is ${Math.round(recentAccuracy * 100)}%. Starting with easier questions to build confidence.`;
+	}
+
+	return {
+		recommendedDifficulty,
+		confidence: adjustedAccuracy,
+		reasoning,
+		recentAccuracy,
+		streakFactor,
+	};
+}
+
+export interface AdaptiveInsights {
+	weakTopics: { topic: string; confidence: number; trend: 'improving' | 'declining' | 'stable' }[];
+	recommendedActions: { type: string; topic: string; priority: 'high' | 'medium' | 'low' }[];
+}
+
+export interface TopicWeightage {
+	subject: string;
+	topic: string;
+	weightagePercent: number;
+	examPaper: string;
+}
+
+export async function getTopicWeightages(subject: string): Promise<TopicWeightage[]> {
+	const db = await getDb();
+
+	const weightages = await db.query.topicWeightages.findMany({
+		where: eq(topicWeightages.subject, subject),
+	});
+
+	return weightages.map((w: typeof topicWeightages.$inferSelect) => ({
+		subject: w.subject,
+		topic: w.topic,
+		weightagePercent: w.weightagePercent,
+		examPaper: w.examPaper || 'Paper 1',
+	}));
+}
+
+export interface PrioritizedTopic {
+	topic: string;
+	priorityScore: number;
+	weightagePercent: number;
+	currentMastery: number;
+	recommendedAction: 'practice' | 'review' | 'master' | 'skip';
+	reasoning: string;
+}
+
+export async function getPrioritizedStudyTopics(
+	subject: string,
+	limit = 5
+): Promise<PrioritizedTopic[]> {
+	const db = await getDb();
+	const user = await ensureAuthenticated();
+
+	const weightages = await getTopicWeightages(subject);
+
+	const topicMasteries = await db.query.topicMastery.findMany({
+		where: and(
+			eq(topicMastery.userId, user.id),
+			subject ? sql`${topicMastery.subjectId} = ${BigInt(subject)}` : undefined
+		),
+	});
+
+	const masteryMap = new Map<string, (typeof topicMasteries)[number]>();
+	for (const m of topicMasteries) {
+		masteryMap.set(m.topic, m);
+	}
+
+	const prioritizedTopics: PrioritizedTopic[] = [];
+
+	for (const weightage of weightages) {
+		const mastery = masteryMap.get(weightage.topic);
+		const masteryLevel = mastery ? Number(mastery.masteryLevel) : 0;
+		const questionsAttempted = mastery?.questionsAttempted || 0;
+
+		const importanceScore = weightage.weightagePercent / 100;
+		const weaknessScore = Math.max(0, 1 - masteryLevel);
+		const practiceScore = questionsAttempted === 0 ? 0.5 : Math.min(questionsAttempted / 50, 1);
+
+		const priorityScore = importanceScore * 0.5 + weaknessScore * 0.3 + practiceScore * 0.2;
+
+		let recommendedAction: 'practice' | 'review' | 'master' | 'skip';
+		let reasoning: string;
+
+		if (masteryLevel >= 0.8) {
+			recommendedAction = 'skip';
+			reasoning = `Already mastered (${Math.round(masteryLevel * 100)}% mastery)`;
+		} else if (masteryLevel >= 0.5) {
+			recommendedAction = 'practice';
+			reasoning = `Good foundation, needs more practice (${Math.round(masteryLevel * 100)}% mastery)`;
+		} else if (questionsAttempted > 0) {
+			recommendedAction = 'review';
+			reasoning = `Struggling with this important topic (${weightage.weightagePercent}% exam weight)`;
+		} else {
+			recommendedAction = 'master';
+			reasoning = `High-priority topic not yet studied (${weightage.weightagePercent}% exam weight)`;
+		}
+
+		prioritizedTopics.push({
+			topic: weightage.topic,
+			priorityScore,
+			weightagePercent: weightage.weightagePercent,
+			currentMastery: masteryLevel,
+			recommendedAction,
+			reasoning,
+		});
+	}
+
+	prioritizedTopics.sort((a, b) => b.priorityScore - a.priorityScore);
+	return prioritizedTopics.slice(0, limit);
+}
+
+export async function getAdaptiveInsights(): Promise<AdaptiveInsights> {
 	const user = await ensureAuthenticated();
 	const db = await getDb();
 

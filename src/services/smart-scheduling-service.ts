@@ -3,6 +3,11 @@ import {
 	getOptimalStudyWindows,
 	getWeeklyEnergyHistory,
 } from './energy-tracking-service';
+import {
+	checkExamConflicts,
+	getUpcomingExams,
+	suggestOptimalStudySchedule,
+} from './examConflictDetector';
 
 export interface StudyTask {
 	id: string;
@@ -167,4 +172,67 @@ export function getDifficultyLabel(difficulty: string): string {
 
 export function formatTaskForRecommendation(task: StudyTask): string {
 	return `${task.subject} - ${task.topic}`;
+}
+
+export interface ExamAwareScheduleInput {
+	tasks: StudyTask[];
+	existingEvents?: Array<{
+		id: string;
+		title: string;
+		startTime: Date;
+		endTime: Date;
+		eventType: string;
+	}>;
+	availableHoursPerWeek?: number;
+}
+
+export interface ExamAwareScheduleResult {
+	schedule: ScheduleRecommendation[];
+	examConflicts: {
+		hasConflict: boolean;
+		conflicts: string[];
+		warnings: string[];
+	};
+	studyPlan: Array<{
+		subject: string;
+		hoursPerWeek: number;
+		priority: 'high' | 'medium' | 'low';
+		reason: string;
+	}>;
+}
+
+export async function generateExamAwareSchedule(
+	input: ExamAwareScheduleInput
+): Promise<ExamAwareScheduleResult> {
+	const { tasks, existingEvents = [], availableHoursPerWeek = 20 } = input;
+
+	const upcomingExams = getUpcomingExams(60);
+
+	const eventsWithExamInfo = existingEvents.map((event) => ({
+		...event,
+		conflictsWithExam: false,
+	}));
+
+	const conflictResult = checkExamConflicts(eventsWithExamInfo);
+
+	const studyPlan = suggestOptimalStudySchedule(upcomingExams, availableHoursPerWeek);
+
+	const schedule = await generateSmartSchedule(tasks);
+
+	const examWarnings: string[] = [];
+	for (const warning of conflictResult.warnings) {
+		if (warning.includes('prep period')) {
+			examWarnings.push(warning);
+		}
+	}
+
+	return {
+		schedule,
+		examConflicts: {
+			hasConflict: conflictResult.hasConflict,
+			conflicts: conflictResult.conflicts.map((c) => c.message),
+			warnings: examWarnings,
+		},
+		studyPlan,
+	};
 }

@@ -4,6 +4,7 @@ import { and, desc, eq, gte } from 'drizzle-orm';
 import { getAuth } from '@/lib/auth';
 import { dbManager } from '@/lib/db';
 import { wellnessCheckIns } from '@/lib/db/schema';
+import { type BurnoutRiskLevel, checkBurnoutRisk, getStudySessionStats } from './burnoutDetection';
 
 export interface WellnessCheckInRecord {
 	id: string;
@@ -209,4 +210,75 @@ function getDefaultWellnessStats(): WellnessStats {
 
 export async function getWellnessConfig() {
 	return WELLNESS_THRESHOLDS;
+}
+
+export interface IntegratedWellnessReport {
+	wellnessScore: number;
+	wellnessLevel: 'excellent' | 'good' | 'fair' | 'needs attention';
+	burnoutRisk: BurnoutRiskLevel;
+	studyStats: {
+		todayMinutes: number;
+		weekMinutes: number;
+		streak: number;
+	};
+	combinedRecommendations: string[];
+	alerts: string[];
+	shouldPromptCheckIn: boolean;
+}
+
+export async function getIntegratedWellnessReport(): Promise<IntegratedWellnessReport> {
+	const user = await ensureAuthenticated();
+
+	const wellnessStats = await getWellnessStats(user.id);
+	const burnoutRisk = await checkBurnoutRisk();
+	const studyStats = await getStudySessionStats(user.id);
+
+	const alerts: string[] = [];
+	const combinedRecommendations: string[] = [...burnoutRisk.recommendations];
+
+	if (burnoutRisk.level === 'high' || burnoutRisk.level === 'severe') {
+		alerts.push(`⚠️ Burnout risk detected: ${burnoutRisk.level} level`);
+		combinedRecommendations.push('Consider taking a break or reducing study intensity');
+	}
+
+	if (wellnessStats.burnoutRisk) {
+		alerts.push('📉 Declining mood trend detected');
+		combinedRecommendations.push('Your mood has been declining - consider a wellness check-in');
+	}
+
+	if (studyStats.consecutiveDaysStudied > 7) {
+		alerts.push(`🔥 ${studyStats.consecutiveDaysStudied} days straight - schedule a rest day`);
+	}
+
+	const shouldPromptCheckIn =
+		burnoutRisk.level !== 'low' || wellnessStats.burnoutRisk || studyStats.totalMinutesToday > 120;
+
+	let wellnessLevel: 'excellent' | 'good' | 'fair' | 'needs attention';
+	if (wellnessStats.wellnessScore >= 80 && burnoutRisk.level === 'low') {
+		wellnessLevel = 'excellent';
+	} else if (
+		wellnessStats.wellnessScore >= 60 &&
+		burnoutRisk.level !== 'high' &&
+		burnoutRisk.level !== 'severe'
+	) {
+		wellnessLevel = 'good';
+	} else if (wellnessStats.wellnessScore >= 40 || burnoutRisk.level === 'moderate') {
+		wellnessLevel = 'fair';
+	} else {
+		wellnessLevel = 'needs attention';
+	}
+
+	return {
+		wellnessScore: wellnessStats.wellnessScore,
+		wellnessLevel,
+		burnoutRisk,
+		studyStats: {
+			todayMinutes: studyStats.totalMinutesToday,
+			weekMinutes: studyStats.totalMinutesThisWeek,
+			streak: studyStats.consecutiveDaysStudied,
+		},
+		combinedRecommendations: [...new Set(combinedRecommendations)],
+		alerts,
+		shouldPromptCheckIn,
+	};
 }
