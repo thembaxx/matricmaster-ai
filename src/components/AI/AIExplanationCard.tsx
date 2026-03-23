@@ -163,7 +163,7 @@ export function AIExplanationCard({
 							/>
 						</div>
 						<p className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground animate-pulse">
-							Analyzing question
+							Understanding the question...
 						</p>
 					</m.div>
 				)}
