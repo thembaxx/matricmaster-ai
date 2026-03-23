@@ -266,3 +266,55 @@ export async function syncAllPendingData(): Promise<{
 
 	return { synced, failed };
 }
+
+const ANSWERED_QUESTIONS_KEY = 'matricmaster_answered_questions';
+
+export function getAnsweredQuestionIds(quizId: string): string[] {
+	try {
+		const stored = localStorage.getItem(`${ANSWERED_QUESTIONS_KEY}_${quizId}`);
+		return stored ? JSON.parse(stored) : [];
+	} catch {
+		return [];
+	}
+}
+
+export function markQuestionAnswered(quizId: string, questionId: string): void {
+	try {
+		const answered = getAnsweredQuestionIds(quizId);
+		if (!answered.includes(questionId)) {
+			answered.push(questionId);
+			localStorage.setItem(`${ANSWERED_QUESTIONS_KEY}_${quizId}`, JSON.stringify(answered));
+		}
+	} catch (error) {
+		console.error('Failed to mark question as answered:', error);
+	}
+}
+
+export function isQuestionAnswered(quizId: string, questionId: string): boolean {
+	return getAnsweredQuestionIds(quizId).includes(questionId);
+}
+
+export function clearAnsweredQuestions(quizId: string): void {
+	try {
+		localStorage.removeItem(ANSWERED_QUESTIONS_KEY + '_' + quizId);
+	} catch (error) {
+		console.error('Failed to clear answered questions:', error);
+	}
+}
+
+export function getAllAnsweredQuestions(): Record<string, string[]> {
+	const result: Record<string, string[]> = {};
+	try {
+		const keys = Object.keys(localStorage).filter((k) => k.startsWith(ANSWERED_QUESTIONS_KEY));
+		for (const key of keys) {
+			const quizId = key.replace(ANSWERED_QUESTIONS_KEY + '_', '');
+			const stored = localStorage.getItem(key);
+			if (stored) {
+				result[quizId] = JSON.parse(stored);
+			}
+		}
+	} catch (error) {
+		console.error('Failed to get all answered questions:', error);
+	}
+	return result;
+}
