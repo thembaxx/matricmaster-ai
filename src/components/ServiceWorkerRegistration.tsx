@@ -76,9 +76,10 @@ export function ServiceWorkerRegistration() {
 	}, []);
 
 	useEffect(() => {
-		const handleBeforeInstallPrompt = (e: Window['DeferredPrompt']) => {
+		const handleBeforeInstallPrompt = (e: Event) => {
 			e.preventDefault();
-			setDeferredPrompt(e);
+			const deferredPrompt = e as unknown as Window['DeferredPrompt'];
+			setDeferredPrompt(deferredPrompt);
 			setShowInstallButton(true);
 		};
 

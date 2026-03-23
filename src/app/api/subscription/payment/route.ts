@@ -1,9 +1,9 @@
-import { eq } from 'drizzle-orm';
+import { and, eq } from 'drizzle-orm';
 import { type NextRequest, NextResponse } from 'next/server';
 import { AnalyticsEvents, trackEvent } from '@/lib/analytics';
 import { getAuth } from '@/lib/auth';
 import { db } from '@/lib/db';
-import { PLAN_TIERS, payments, userSubscriptions } from '@/lib/db/schema';
+import { PLAN_TIERS, payments, subscriptionPlans, userSubscriptions } from '@/lib/db/schema';
 import { getEnv } from '@/lib/env';
 import { initializePayment, verifyPayment } from '@/lib/payments/paystack';
 
@@ -24,7 +24,7 @@ export async function POST(request: NextRequest) {
 		const appUrl = getEnv('NEXT_PUBLIC_APP_URL');
 
 		const plan = await db.query.subscriptionPlans.findFirst({
-			where: (plans, { eq }) => eq(plans.id, planId),
+			where: eq(subscriptionPlans.id, planId),
 		});
 
 		if (!plan) {
@@ -41,8 +41,10 @@ export async function POST(request: NextRequest) {
 		}
 
 		const existingSubscription = await db.query.userSubscriptions.findFirst({
-			where: (subs, { eq, and }) =>
-				and(eq(subs.userId, session.user.id), eq(subs.status, 'active')),
+			where: and(
+				eq(userSubscriptions.userId, session.user.id),
+				eq(userSubscriptions.status, 'active')
+			),
 		});
 
 		if (existingSubscription && existingSubscription.planId === planId) {
@@ -106,7 +108,7 @@ export async function GET(request: NextRequest) {
 
 	try {
 		const payment = await db.query.payments.findFirst({
-			where: (p, { eq }) => eq(p.paystackReference, reference),
+			where: eq(payments.paystackReference, reference),
 		});
 
 		if (!payment) {
@@ -141,7 +143,7 @@ export async function GET(request: NextRequest) {
 
 		if (userId) {
 			const existingSubscription = await db.query.userSubscriptions.findFirst({
-				where: (subs, { eq, and }) => and(eq(subs.userId, userId), eq(subs.status, 'active')),
+				where: and(eq(userSubscriptions.userId, userId), eq(userSubscriptions.status, 'active')),
 			});
 
 			if (existingSubscription) {

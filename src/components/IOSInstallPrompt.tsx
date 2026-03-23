@@ -19,7 +19,7 @@ export function IOSInstallPrompt() {
 		const isIOS =
 			typeof navigator !== 'undefined' &&
 			/iPhone|iPad|iPod/.test(navigator.userAgent) &&
-			!window.navigator.standalone;
+			!(window.navigator as unknown as { standalone?: boolean }).standalone;
 
 		const wasDismissed = localStorage.getItem('ios-install-dismissed');
 

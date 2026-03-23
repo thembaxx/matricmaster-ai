@@ -53,8 +53,11 @@ export async function GET(request: NextRequest) {
 			.from(topicConfidence)
 			.where(eq(topicConfidence.userId, session.user.id));
 
-		const confidenceMap = new Map(
-			confidences.map((c) => [c.topic, { score: Number(c.confidenceScore), subject: c.subject }])
+		const confidenceMap = new Map<string, { score: number; subject: string }>(
+			confidences.map((c: (typeof confidences)[number]) => [
+				c.topic,
+				{ score: Number(c.confidenceScore), subject: c.subject },
+			])
 		);
 
 		// Get struggle counts
@@ -68,7 +71,9 @@ export async function GET(request: NextRequest) {
 				and(eq(conceptStruggles.userId, session.user.id), eq(conceptStruggles.isResolved, false))
 			);
 
-		const struggleMap = new Map(struggles.map((s) => [s.concept, s.struggleCount]));
+		const struggleMap = new Map<string, number>(
+			struggles.map((s: { concept: string; struggleCount: number }) => [s.concept, s.struggleCount])
+		);
 
 		// Get recent accuracy per topic (last 7 days vs previous 7 days for trend)
 		const recentScores = await db
@@ -87,8 +92,11 @@ export async function GET(request: NextRequest) {
 			)
 			.groupBy(questions.topic);
 
-		const recentMap = new Map(
-			recentScores.map((s) => [s.topic, s.total > 0 ? s.correct / s.total : 0])
+		const recentMap = new Map<string, number>(
+			recentScores.map((s: { topic: string; correct: number; total: number }) => [
+				s.topic,
+				s.total > 0 ? s.correct / s.total : 0,
+			])
 		);
 
 		const fourteenDaysAgo = new Date();
@@ -111,12 +119,15 @@ export async function GET(request: NextRequest) {
 			)
 			.groupBy(questions.topic);
 
-		const previousMap = new Map(
-			previousScores.map((s) => [s.topic, s.total > 0 ? s.correct / s.total : 0])
+		const previousMap = new Map<string, number>(
+			previousScores.map((s: { topic: string; correct: number; total: number }) => [
+				s.topic,
+				s.total > 0 ? s.correct / s.total : 0,
+			])
 		);
 
 		// Build enriched topic data
-		const topics = mistakeCounts.map((m) => {
+		const topics = mistakeCounts.map((m: { topic: string; mistakeCount: number }) => {
 			const confidence = confidenceMap.get(m.topic);
 			const recent = recentMap.get(m.topic) ?? 0;
 			const previous = previousMap.get(m.topic) ?? recent;
@@ -135,9 +146,9 @@ export async function GET(request: NextRequest) {
 
 		// Generate insights
 		const insights: string[] = [];
-		const highMistakeTopics = topics.filter((t) => t.mistakes > 10);
-		const improvingTopics = topics.filter((t) => t.trend === 'up');
-		const decliningTopics = topics.filter((t) => t.trend === 'down');
+		const highMistakeTopics = topics.filter((t: (typeof topics)[number]) => t.mistakes > 10);
+		const improvingTopics = topics.filter((t: (typeof topics)[number]) => t.trend === 'up');
+		const decliningTopics = topics.filter((t: (typeof topics)[number]) => t.trend === 'down');
 
 		if (highMistakeTopics.length > 0) {
 			insights.push(

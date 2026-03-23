@@ -60,9 +60,15 @@ export async function getStudySessionStats(userId?: string): Promise<StudySessio
 		where: and(eq(studySessions.userId, user.id), gte(studySessions.startedAt, weekStart)),
 	});
 
-	const totalMinutesToday = todaySessions.reduce((sum, s) => sum + (s.durationMinutes || 0), 0);
+	const totalMinutesToday = todaySessions.reduce(
+		(sum: number, s: { durationMinutes: number | null }) => sum + (s.durationMinutes || 0),
+		0
+	);
 
-	const totalMinutesThisWeek = weekSessions.reduce((sum, s) => sum + (s.durationMinutes || 0), 0);
+	const totalMinutesThisWeek = weekSessions.reduce(
+		(sum: number, s: { durationMinutes: number | null }) => sum + (s.durationMinutes || 0),
+		0
+	);
 
 	const allSessions = await db.query.studySessions.findMany({
 		where: eq(studySessions.userId, user.id),
@@ -71,12 +77,12 @@ export async function getStudySessionStats(userId?: string): Promise<StudySessio
 	});
 
 	const sessionLengths = allSessions
-		.filter((s) => s.durationMinutes)
-		.map((s) => s.durationMinutes!);
+		.filter((s: (typeof allSessions)[number]) => s.durationMinutes)
+		.map((s: (typeof allSessions)[number]) => s.durationMinutes!);
 
 	const averageSessionLength =
 		sessionLengths.length > 0
-			? sessionLengths.reduce((a, b) => a + b, 0) / sessionLengths.length
+			? sessionLengths.reduce((a: number, b: number) => a + b, 0) / sessionLengths.length
 			: 0;
 
 	let consecutiveDays = 0;
@@ -107,7 +113,7 @@ export async function getStudySessionStats(userId?: string): Promise<StudySessio
 	}
 
 	const uniqueDays = new Set(
-		allSessions.map((s) => {
+		allSessions.map((s: (typeof allSessions)[number]) => {
 			const d = new Date(s.startedAt!);
 			return `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
 		})

@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
 		}
 
 		const existingSettings = await db.query.userSettings.findFirst({
-			where: (settings, { eq }) => eq(settings.userId, session.user.id),
+			where: eq(userSettings.userId, session.user.id),
 		});
 
 		if (existingSettings) {
@@ -69,7 +69,7 @@ export async function DELETE(request: NextRequest) {
 		}
 
 		const existingSettings = await db.query.userSettings.findFirst({
-			where: (settings, { eq }) => eq(settings.userId, session.user.id),
+			where: eq(userSettings.userId, session.user.id),
 		});
 
 		if (existingSettings) {

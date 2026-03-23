@@ -46,7 +46,7 @@ export async function getFlashcardsDueForReview(limit = 20): Promise<FlashcardDu
 			limit,
 		});
 
-		return dueCards.map((card) => ({
+		return dueCards.map((card: (typeof dueCards)[number]) => ({
 			id: card.id,
 			deckId: card.deckId,
 			front: card.front,

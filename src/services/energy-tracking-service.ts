@@ -84,7 +84,8 @@ export async function getEnergyPatterns(
 		.groupBy(energySessions.startTime)
 		.limit(24);
 
-	return results.map((r) => ({
+	type EnergyPatternRow = { hour: unknown; avgEnergy: unknown; sampleSize: unknown };
+	return results.map((r: EnergyPatternRow) => ({
 		hour: typeof r.hour === 'string' ? Number.parseInt(r.hour.split(':')[0], 10) : 9,
 		avgEnergy: Number(r.avgEnergy) || 50,
 		sampleSize: Number(r.sampleSize) || 1,
@@ -142,7 +143,8 @@ export async function getWeeklyEnergyHistory(
 		)
 		.groupBy(sql`cast(${energySessions.date} as text)`);
 
-	return results.map((r) => ({
+	type EnergyHistoryRow = { date: unknown; avgEnergy: unknown };
+	return results.map((r: EnergyHistoryRow) => ({
 		date: String(r.date),
 		avgEnergy: Number(r.avgEnergy) || 50,
 	}));

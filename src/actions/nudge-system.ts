@@ -80,7 +80,9 @@ export async function checkForNudges(): Promise<Nudge[]> {
 	});
 
 	for (const mastery of masteries) {
-		const confidence = weakTopics.find((c) => c.topic === mastery.topic);
+		const confidence = weakTopics.find(
+			(c: (typeof weakTopics)[number]) => c.topic === mastery.topic
+		);
 		if (confidence && Number(confidence.confidenceScore) > Number(mastery.masteryLevel)) {
 			nudges.push({
 				id: `regression-${mastery.id}`,

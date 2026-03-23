@@ -1,3 +1,77 @@
+export interface Achievement {
+	id: string;
+	title: string;
+	description: string;
+	icon: string;
+	unlockedAt?: Date;
+}
+
+export const ACHIEVEMENT_DEFS = {
+	FIRST_QUIZ: {
+		id: 'first_quiz',
+		title: 'First Steps',
+		description: 'Complete your first quiz',
+		icon: '🎯',
+	},
+	STREAK_7: {
+		id: 'streak_7',
+		title: 'Week Warrior',
+		description: 'Maintain a 7-day streak',
+		icon: '🔥',
+	},
+	STREAK_30: {
+		id: 'streak_30',
+		title: 'Monthly Master',
+		description: 'Maintain a 30-day streak',
+		icon: '💎',
+	},
+	PERFECT_QUIZ: {
+		id: 'perfect_quiz',
+		title: 'Perfect Score',
+		description: 'Get 100% on a quiz',
+		icon: '⭐',
+	},
+	FLASHCARD_100: {
+		id: 'flashcard_100',
+		title: 'Flashcard Pro',
+		description: 'Review 100 flashcards',
+		icon: '📚',
+	},
+	TOPIC_MASTER: {
+		id: 'topic_master',
+		title: 'Topic Master',
+		description: 'Achieve 90%+ mastery on 5 topics',
+		icon: '🏆',
+	},
+	STUDY_BUDDY: {
+		id: 'study_buddy',
+		title: 'Social Learner',
+		description: 'Connect with a study buddy',
+		icon: '🤝',
+	},
+	EARLY_BIRD: {
+		id: 'early_bird',
+		title: 'Early Bird',
+		description: 'Study before 7am',
+		icon: '🌅',
+	},
+	NIGHT_OWL: { id: 'night_owl', title: 'Night Owl', description: 'Study after 10pm', icon: '🦉' },
+	CONSISTENT: {
+		id: 'consistent',
+		title: 'Consistent',
+		description: 'Study for 7 days in a row',
+		icon: '📈',
+	},
+};
+
+export interface APSProgress {
+	currentAps: number;
+	targetAps: number;
+	pointsThisMonth: number;
+	universityTarget?: string;
+	faculty?: string;
+}
+
 export const MAX_LEVEL = 100;
 
 export const LEVEL_TITLES: Record<number, string> = {

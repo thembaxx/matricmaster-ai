@@ -347,11 +347,12 @@ export async function getUserRoadmap(userId: string) {
 	return {
 		target: activeTarget,
 		milestones,
-		completedCount: milestones.filter((m) => m.status === 'completed').length,
+		completedCount: milestones.filter((m: (typeof milestones)[number]) => m.status === 'completed')
+			.length,
 		totalMilestones: milestones.length,
 		potentialApsGain: milestones
-			.filter((m) => m.status !== 'completed')
-			.reduce((sum, m) => sum + m.apsPotentialPoints, 0),
+			.filter((m: (typeof milestones)[number]) => m.status !== 'completed')
+			.reduce((sum: number, m: (typeof milestones)[number]) => sum + m.apsPotentialPoints, 0),
 	};
 }
 

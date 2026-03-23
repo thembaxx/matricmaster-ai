@@ -37,8 +37,8 @@ export async function getUserContext(): Promise<UserContext> {
 	const buddyProfile = await getBuddyProfile();
 
 	return {
-		weakAreas: struggles.map((s) => s.concept),
-		confidenceScores: confidence.map((c) => ({
+		weakAreas: struggles.map((s: (typeof struggles)[number]) => s.concept),
+		confidenceScores: confidence.map((c: (typeof confidence)[number]) => ({
 			topic: c.topic,
 			subject: c.subject,
 			score: Number.parseFloat(String(c.confidenceScore)),
@@ -119,7 +119,7 @@ export async function getSessions() {
 		limit: 20,
 	});
 
-	return results.map((r) => ({
+	return results.map((r: (typeof results)[number]) => ({
 		id: r.id,
 		title: r.title,
 		subject: r.subject,
@@ -138,7 +138,7 @@ export async function getSessionMessages(sessionId: string) {
 		orderBy: [aiChatMessages.createdAt],
 	});
 
-	return messages.map((m) => ({
+	return messages.map((m: (typeof messages)[number]) => ({
 		id: m.id,
 		role: m.role,
 		content: m.content,

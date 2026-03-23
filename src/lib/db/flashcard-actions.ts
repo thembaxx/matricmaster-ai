@@ -7,7 +7,7 @@ import { flashcardDecks, flashcards } from './schema';
 
 async function getConnectedDb() {
 	await dbManagerV2.initialize();
-	return dbManagerV2.getSmartDb();
+	return dbManagerV2.getSmartDb() as any;
 }
 
 export async function saveToFlashcardsAction(data: {
@@ -24,9 +24,12 @@ export async function saveToFlashcardsAction(data: {
 		const back = data.back.trim().substring(0, 2000);
 
 		// Find or create a default deck for this user
-		let deck = await database.query.flashcardDecks.findFirst({
-			where: and(eq(flashcardDecks.userId, user.id), eq(flashcardDecks.name, 'Snap Solutions')),
-		});
+		let deck = await database
+			.select()
+			.from(flashcardDecks)
+			.where(and(eq(flashcardDecks.userId, user.id), eq(flashcardDecks.name, 'Snap Solutions')))
+			.limit(1)
+			.then((rows: any[]) => rows[0]);
 
 		if (!deck) {
 			const [newDeck] = await database

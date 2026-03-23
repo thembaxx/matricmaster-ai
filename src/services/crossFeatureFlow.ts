@@ -143,7 +143,7 @@ export async function generateCrossFeatureRecommendations(): Promise<FlowRecomme
 
 		if (pendingMilestones.length > 0) {
 			const totalPotential = pendingMilestones.reduce(
-				(sum, m) => sum + (m.apsPotentialPoints || 0),
+				(sum: number, m: (typeof pendingMilestones)[number]) => sum + (m.apsPotentialPoints || 0),
 				0
 			);
 

@@ -9,6 +9,7 @@ config({ path: envPath });
 import { and, eq } from 'drizzle-orm';
 import { auth } from '@/lib/auth';
 import { users } from '../better-auth-schema';
+import type { DbType } from '../index';
 import { dbManager } from '../index';
 import { options, pastPapers, questions, subjects } from '../schema';
 import { seedCurriculumData } from './curriculum-data';
@@ -17,6 +18,8 @@ import { historyQuestions } from './history-questions';
 import { mathematicsQuestions } from './mathematics-questions';
 import { pastPapersData } from './past-papers';
 import { physicsQuestions } from './physics-questions';
+
+type TransactionType = Parameters<Parameters<DbType['transaction']>[0]>[0];
 
 function getDb() {
 	if (!dbManager.isConnectedToDatabase()) {
@@ -58,7 +61,7 @@ export async function seedDatabase() {
 		console.log('📊 Checking existing data...');
 
 		// Check existing subjects
-		const existingSubjects = await useDb.select().from(subjects);
+		const existingSubjects: (typeof subjects.$inferSelect)[] = await useDb.select().from(subjects);
 		console.log(
 			'Existing subjects found:',
 			existingSubjects.map((s) => s.name)
@@ -137,7 +140,7 @@ export async function seedDatabase() {
 					.returning();
 
 				// Update references
-				insertedSubjects.forEach((subject) => {
+				insertedSubjects.forEach((subject: typeof subjects.$inferSelect) => {
 					if (subject.name === 'History') historySubject = subject;
 					if (subject.name === 'English FAL') englishSubject = subject;
 					if (subject.name === 'Mathematics') mathematicsSubject = subject;
@@ -188,7 +191,7 @@ export async function seedDatabase() {
 		for (const q of historyQuestions) {
 			if (await questionExists(q.questionText, historySubject.id)) continue;
 
-			await useDb.transaction(async (tx) => {
+			await useDb.transaction(async (tx: TransactionType) => {
 				const [question] = await tx
 					.insert(questions)
 					.values({
@@ -223,7 +226,7 @@ export async function seedDatabase() {
 		for (const q of englishQuestions) {
 			if (await questionExists(q.questionText, englishSubject.id)) continue;
 
-			await useDb.transaction(async (tx) => {
+			await useDb.transaction(async (tx: TransactionType) => {
 				const [question] = await tx
 					.insert(questions)
 					.values({
@@ -258,7 +261,7 @@ export async function seedDatabase() {
 		for (const q of mathematicsQuestions) {
 			if (await questionExists(q.questionText, mathematicsSubject!.id)) continue;
 
-			await useDb.transaction(async (tx) => {
+			await useDb.transaction(async (tx: TransactionType) => {
 				const [question] = await tx
 					.insert(questions)
 					.values({
@@ -294,7 +297,7 @@ export async function seedDatabase() {
 		for (const q of physicsQuestions) {
 			if (await questionExists(q.questionText, physicsSubject.id)) continue;
 
-			await useDb.transaction(async (tx) => {
+			await useDb.transaction(async (tx: TransactionType) => {
 				const [question] = await tx
 					.insert(questions)
 					.values({

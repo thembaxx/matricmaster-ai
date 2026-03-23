@@ -83,13 +83,17 @@ export async function getSearchInsights(): Promise<{
 			.slice(0, 10)
 			.map(([topic, count]) => ({ topic, count }));
 
-		const mySearches = recentSearches.filter((s) => s.userId === session.user.id);
-		const myTopics = new Set(mySearches.flatMap((s) => s.query.toLowerCase().split(' ')));
+		const mySearches = recentSearches.filter(
+			(s: (typeof recentSearches)[number]) => s.userId === session.user.id
+		);
+		const myTopics = new Set<string>(
+			mySearches.flatMap((s: (typeof mySearches)[number]) => s.query.toLowerCase().split(' '))
+		);
 
 		const trendingSubjects: { subject: string; growth: number }[] = [];
 
-		const relatedQueries = Array.from(myTopics)
-			.filter((topic) => topicCounts.has(topic) && topicCounts.get(topic)! > 3)
+		const relatedQueries: string[] = Array.from(myTopics)
+			.filter((topic: string) => topicCounts.has(topic) && (topicCounts.get(topic) ?? 0) > 3)
 			.slice(0, 5);
 
 		return {
@@ -122,15 +126,19 @@ export async function getPersonalizedRecommendations(
 			limit: 20,
 		});
 
-		const searchTopics = new Set(
-			recentSearches.flatMap((s) => s.query.toLowerCase().split(' ')).filter((t) => t.length > 2)
+		const searchTopics = new Set<string>(
+			recentSearches
+				.flatMap((s: (typeof recentSearches)[number]) => s.query.toLowerCase().split(' '))
+				.filter((t: string) => t.length > 2)
 		);
 
 		const bookmarksList = await db.query.bookmarks.findMany({
 			where: eq(bookmarks.userId, session.user.id),
 		});
 
-		const bookmarkedTypes = new Set(bookmarksList.map((b) => b.bookmarkType));
+		const bookmarkedTypes = new Set(
+			bookmarksList.map((b: (typeof bookmarksList)[number]) => b.bookmarkType)
+		);
 
 		const recommendations: ContentRecommendation[] = [];
 

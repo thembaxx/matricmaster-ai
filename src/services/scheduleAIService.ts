@@ -31,7 +31,7 @@ export async function getWeakAreas(): Promise<{ topic: string; subject: string; 
 			limit: 10,
 		});
 
-		return confidence.map((c) => ({
+		return confidence.map((c: (typeof confidence)[number]) => ({
 			topic: c.topic,
 			subject: c.subject,
 			score: Number.parseFloat(String(c.confidenceScore)),

@@ -117,33 +117,33 @@ export async function getAvailableTutors(
 			.where(eq(tutorProfiles.isAvailable, filters?.availableOnly ?? true))
 			.orderBy(desc(tutorProfiles.rating));
 
-		let tutors = results.map((t) => ({
+		let tutors = results.map((t: TutorProfileResponse) => ({
 			...t,
 			subjects: parseJsonField<string[]>(t.subjects, []),
 			rating: Number(t.rating) || 0,
 		}));
 
 		if (filters?.subject) {
-			tutors = tutors.filter((t) =>
-				t.subjects.some((s) => s.toLowerCase().includes(filters.subject!.toLowerCase()))
+			tutors = tutors.filter((t: TutorProfileResponse) =>
+				t.subjects.some((s: string) => s.toLowerCase().includes(filters.subject!.toLowerCase()))
 			);
 		}
 
 		if (filters?.maxPriceXP !== undefined) {
-			tutors = tutors.filter((t) => t.hourlyRateXP <= filters.maxPriceXP!);
+			tutors = tutors.filter((t: TutorProfileResponse) => t.hourlyRateXP <= filters.maxPriceXP!);
 		}
 
 		if (filters?.minRating !== undefined) {
-			tutors = tutors.filter((t) => t.rating >= filters.minRating!);
+			tutors = tutors.filter((t: TutorProfileResponse) => t.rating >= filters.minRating!);
 		}
 
 		if (filters?.searchQuery) {
 			const query = filters.searchQuery.toLowerCase();
 			tutors = tutors.filter(
-				(t) =>
+				(t: TutorProfileResponse) =>
 					t.userName?.toLowerCase().includes(query) ||
 					t.bio?.toLowerCase().includes(query) ||
-					t.subjects.some((s) => s.toLowerCase().includes(query))
+					t.subjects.some((s: string) => s.toLowerCase().includes(query))
 			);
 		}
 
@@ -395,7 +395,9 @@ export async function getMySessions(
 			.from(users)
 			.where(inArray(users.id, allUserIds));
 
-		const userMap = new Map(userInfos.map((u) => [u.id, u]));
+		const userMap = new Map<string, { id: string; name: string | null; image: string | null }>(
+			userInfos.map((u: { id: string; name: string | null; image: string | null }) => [u.id, u])
+		);
 
 		return uniqueSessions.map((session) => ({
 			id: session.id,

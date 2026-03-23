@@ -53,7 +53,7 @@ export async function onFlashcardReviewed(_rating: number, topic: string, _subje
 	await syncMasteryToConfidence(session.user.id);
 
 	const weakTopics = await getWeakTopicsFromDb();
-	if (weakTopics.some((w) => w.topic === topic)) {
+	if (weakTopics.some((w: (typeof weakTopics)[number]) => w.topic === topic)) {
 		await generateFlashcardsFromWeakTopics(session.user.id, [topic]);
 	}
 

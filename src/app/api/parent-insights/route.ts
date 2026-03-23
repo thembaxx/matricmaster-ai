@@ -65,21 +65,29 @@ export async function POST(request: NextRequest) {
 
 		const totalHoursThisWeek =
 			recentSessionsData
-				.filter((s) => new Date(s.startedAt || 0) >= sevenDaysAgo)
-				.reduce((sum, s) => sum + (s.durationMinutes || 0), 0) / 60;
+				.filter(
+					(s: (typeof recentSessionsData)[number]) => new Date(s.startedAt || 0) >= sevenDaysAgo
+				)
+				.reduce(
+					(sum: number, s: (typeof recentSessionsData)[number]) => sum + (s.durationMinutes || 0),
+					0
+				) / 60;
 
 		const totalHoursLastWeek =
 			recentSessionsData
 				.filter(
-					(s) =>
+					(s: (typeof recentSessionsData)[number]) =>
 						new Date(s.startedAt || 0) >= new Date(Date.now() - 14 * 24 * 60 * 60 * 1000) &&
 						new Date(s.startedAt || 0) < sevenDaysAgo
 				)
-				.reduce((sum, s) => sum + (s.durationMinutes || 0), 0) / 60;
+				.reduce(
+					(sum: number, s: (typeof recentSessionsData)[number]) => sum + (s.durationMinutes || 0),
+					0
+				) / 60;
 
 		const weeklyChange = totalHoursThisWeek - totalHoursLastWeek;
 
-		const subjectScores = progressData.map((p) => {
+		const subjectScores = progressData.map((p: (typeof progressData)[number]) => {
 			const progress = p.user_progress;
 			const subject = p.subjects;
 			const totalAttempted = progress.totalQuestionsAttempted || 0;
@@ -90,8 +98,11 @@ export async function POST(request: NextRequest) {
 			const avgRecentScore =
 				recentSubjectQuizzes.length > 0
 					? Math.round(
-							recentSubjectQuizzes.reduce((sum, q) => sum + Number(q.score || 0), 0) /
-								recentSubjectQuizzes.length
+							recentSubjectQuizzes.reduce(
+								(sum: number, q: (typeof recentSubjectQuizzes)[number]) =>
+									sum + Number(q.score || 0),
+								0
+							) / recentSubjectQuizzes.length
 						)
 					: null;
 
@@ -106,17 +117,26 @@ export async function POST(request: NextRequest) {
 		const overallAvg =
 			subjectScores.length > 0
 				? Math.round(
-						subjectScores.reduce((sum, s) => sum + (s.overallScore || 0), 0) / subjectScores.length
+						subjectScores.reduce(
+							(sum: number, s: (typeof subjectScores)[number]) => sum + (s.overallScore || 0),
+							0
+						) / subjectScores.length
 					)
 				: 0;
 
 		const weakSubjects = subjectScores
-			.filter((s) => s.recentScore !== null && s.recentScore < 60)
-			.sort((a, b) => (a.recentScore || 0) - (b.recentScore || 0));
+			.filter((s: (typeof subjectScores)[number]) => s.recentScore !== null && s.recentScore < 60)
+			.sort(
+				(a: (typeof subjectScores)[number], b: (typeof subjectScores)[number]) =>
+					(a.recentScore || 0) - (b.recentScore || 0)
+			);
 
 		const strongSubjects = subjectScores
-			.filter((s) => s.recentScore !== null && s.recentScore >= 80)
-			.sort((a, b) => (b.recentScore || 0) - (a.recentScore || 0));
+			.filter((s: (typeof subjectScores)[number]) => s.recentScore !== null && s.recentScore >= 80)
+			.sort(
+				(a: (typeof subjectScores)[number], b: (typeof subjectScores)[number]) =>
+					(b.recentScore || 0) - (a.recentScore || 0)
+			);
 
 		const insight = generateInsight(studentName, {
 			totalHoursThisWeek,
@@ -216,8 +236,13 @@ export async function GET(request: NextRequest) {
 
 		const totalHoursThisWeek =
 			recentSessionsData
-				.filter((s) => new Date(s.startedAt || 0) >= sevenDaysAgo)
-				.reduce((sum, s) => sum + (s.durationMinutes || 0), 0) / 60;
+				.filter(
+					(s: (typeof recentSessionsData)[number]) => new Date(s.startedAt || 0) >= sevenDaysAgo
+				)
+				.reduce(
+					(sum: number, s: (typeof recentSessionsData)[number]) => sum + (s.durationMinutes || 0),
+					0
+				) / 60;
 
 		const progress = await db.query.userProgress.findFirst({
 			where: eq(userProgress.userId, userId),
@@ -226,8 +251,10 @@ export async function GET(request: NextRequest) {
 		const avgQuizScore =
 			recentQuizzes.length > 0
 				? Math.round(
-						recentQuizzes.reduce((sum, q) => sum + Number(q.percentage || 0), 0) /
-							recentQuizzes.length
+						recentQuizzes.reduce(
+							(sum: number, q: (typeof recentQuizzes)[number]) => sum + Number(q.percentage || 0),
+							0
+						) / recentQuizzes.length
 					)
 				: 0;
 
@@ -238,9 +265,13 @@ export async function GET(request: NextRequest) {
 			dayEnd.setDate(dayEnd.getDate() + 1);
 			return recentSessionsData
 				.filter(
-					(s) => s.startedAt && new Date(s.startedAt) >= dayStart && new Date(s.startedAt) < dayEnd
+					(s: (typeof recentSessionsData)[number]) =>
+						s.startedAt && new Date(s.startedAt) >= dayStart && new Date(s.startedAt) < dayEnd
 				)
-				.reduce((sum, s) => sum + (s.durationMinutes || 0), 0);
+				.reduce(
+					(sum: number, s: (typeof recentSessionsData)[number]) => sum + (s.durationMinutes || 0),
+					0
+				);
 		});
 
 		const flashcardStreak = (() => {
@@ -252,7 +283,7 @@ export async function GET(request: NextRequest) {
 				const dayEnd = new Date(dayStart);
 				dayEnd.setDate(dayEnd.getDate() + 1);
 				const hasReviews = flashcardReviewsData.some(
-					(r) =>
+					(r: (typeof flashcardReviewsData)[number]) =>
 						r.reviewedAt && new Date(r.reviewedAt) >= dayStart && new Date(r.reviewedAt) < dayEnd
 				);
 				if (hasReviews) {
@@ -264,19 +295,26 @@ export async function GET(request: NextRequest) {
 			return streak;
 		})();
 
-		const quizScores = recentQuizzes.map((q) => Number(q.percentage || 0));
+		const quizScores = recentQuizzes.map((q: (typeof recentQuizzes)[number]) =>
+			Number(q.percentage || 0)
+		);
 
-		const subjectPerformance = progressData.map((p) => {
+		const subjectPerformance = progressData.map((p: (typeof progressData)[number]) => {
 			const progress = p.user_progress;
 			const subject = p.subjects;
 			const totalAttempted = progress.totalQuestionsAttempted || 0;
 			const totalCorrect = progress.totalCorrect || 0;
 			const score = totalAttempted > 0 ? Math.round((totalCorrect / totalAttempted) * 100) : 0;
 
-			const subjectMastery = masteryData.filter((m) => Number(m.subjectId) === subject.id);
+			const subjectMastery = masteryData.filter(
+				(m: (typeof masteryData)[number]) => Number(m.subjectId) === subject.id
+			);
 			const avgConfidence =
 				subjectMastery.length > 0
-					? subjectMastery.reduce((sum, m) => sum + Number(m.masteryLevel), 0) /
+					? subjectMastery.reduce(
+							(sum: number, m: (typeof masteryData)[number]) => sum + Number(m.masteryLevel),
+							0
+						) /
 						subjectMastery.length /
 						100
 					: 0;
@@ -284,8 +322,11 @@ export async function GET(request: NextRequest) {
 			const mistakesCount = totalAttempted - totalCorrect;
 
 			const subjectMinutes = recentSessionsData
-				.filter((s) => s.subjectId === subject.id)
-				.reduce((sum, s) => sum + (s.durationMinutes || 0), 0);
+				.filter((s: (typeof recentSessionsData)[number]) => s.subjectId === subject.id)
+				.reduce(
+					(sum: number, s: (typeof recentSessionsData)[number]) => sum + (s.durationMinutes || 0),
+					0
+				);
 
 			return {
 				name: subject.name,
@@ -299,14 +340,15 @@ export async function GET(request: NextRequest) {
 			};
 		});
 
-		const exams = calendarData.map((event) => {
+		const exams = calendarData.map((event: (typeof calendarData)[number]) => {
 			const daysLeft = Math.ceil(
 				(new Date(event.startTime).getTime() - Date.now()) / (24 * 60 * 60 * 1000)
 			);
 			const subjectName = event.title || 'Exam';
 			const readiness =
-				subjectPerformance.find((s) => subjectName.toLowerCase().includes(s.name.toLowerCase()))
-					?.overallScore ?? 50;
+				subjectPerformance.find((s: (typeof subjectPerformance)[number]) =>
+					subjectName.toLowerCase().includes(s.name.toLowerCase())
+				)?.overallScore ?? 50;
 
 			return {
 				subject: subjectName,
@@ -330,12 +372,16 @@ export async function GET(request: NextRequest) {
 				streakDays: progress?.streakDays || 0,
 				totalHoursThisWeek: Math.round(totalHoursThisWeek * 10) / 10,
 				averageQuizScore: avgQuizScore,
-				tasksCompleted: recentSessionsData.filter((s) => s.completedAt).length,
+				tasksCompleted: recentSessionsData.filter(
+					(s: (typeof recentSessionsData)[number]) => s.completedAt
+				).length,
 				totalTasks: Math.max(recentSessionsData.length, 1),
 			},
 			weeklyProgress: {
 				dailyMinutes,
-				tasksCompleted: recentSessionsData.filter((s) => s.completedAt).length,
+				tasksCompleted: recentSessionsData.filter(
+					(s: (typeof recentSessionsData)[number]) => s.completedAt
+				).length,
 				tasksPlanned: Math.max(recentSessionsData.length, 7),
 				quizTrend: quizScores.slice(0, 7),
 				flashcardStreak,

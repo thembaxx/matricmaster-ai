@@ -239,7 +239,7 @@ async function updateLeaderboard(userId: string): Promise<void> {
 	});
 
 	const questionsCompleted = weeklySessions.reduce(
-		(sum, s) => sum + (s.questionsAttempted || 0),
+		(sum: number, s: (typeof weeklySessions)[number]) => sum + (s.questionsAttempted || 0),
 		0
 	);
 
