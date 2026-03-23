@@ -3,6 +3,7 @@ import { OfflineIndicator } from '@/components/AI/OfflineIndicator';
 import { WebLLMDownloader } from '@/components/AI/WebLLMDownloader';
 import { DeferredAnalytics } from '@/components/DeferredAnalytics';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
+import { IOSInstallPrompt } from '@/components/IOSInstallPrompt';
 import ClientProviders from '@/components/Layout/ClientProvidersDynamic';
 import { NavigationProgress } from '@/components/NavigationProgress';
 import { ServiceWorkerRegistration } from '@/components/ServiceWorkerRegistration';
@@ -147,6 +148,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 						<ClientProviders>{children}</ClientProviders>
 						<Toaster />
 						<ServiceWorkerRegistration />
+						<IOSInstallPrompt />
 						<OfflineIndicator />
 						<WebLLMDownloader />
 					</ThemeProvider>

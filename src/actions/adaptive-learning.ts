@@ -12,6 +12,10 @@ import {
 	universityTargets,
 } from '@/lib/db/schema';
 
+type TopicMasteryRow = typeof topicMastery.$inferSelect;
+type ConceptStruggleRow = typeof conceptStruggles.$inferSelect;
+type FlashcardDeckRow = typeof flashcardDecks.$inferSelect;
+
 async function getDb() {
 	const connected = await dbManager.waitForConnection(3, 2000);
 	if (!connected) throw new Error('Database not available');
@@ -69,9 +73,9 @@ export async function getWeakTopics(limit = 5): Promise<WeakTopic[]> {
 		for (const c of confidences) {
 			const confidenceNum = Number(c.confidenceScore);
 			const mastery = masteries.find(
-				(m) => m.topic === c.topic && m.subjectId.toString() === c.subject
+				(m: TopicMasteryRow) => m.topic === c.topic && m.subjectId.toString() === c.subject
 			);
-			const struggle = struggles.find((s) => s.concept === c.topic);
+			const struggle = struggles.find((s: ConceptStruggleRow) => s.concept === c.topic);
 
 			const struggleCount = struggle?.struggleCount || 0;
 			const masteryLevel = mastery ? Number(mastery.masteryLevel) : 0;
@@ -168,7 +172,7 @@ export async function generateFlashcardsFromWeakTopics(
 			where: eq(flashcardDecks.userId, userId),
 		});
 
-		let adaptiveDeck = existingDecks.find((d) => d.name === 'Adaptive Review');
+		let adaptiveDeck = existingDecks.find((d: FlashcardDeckRow) => d.name === 'Adaptive Review');
 
 		if (!adaptiveDeck) {
 			const [created] = await db
@@ -283,7 +287,7 @@ async function fetchTopicData(userId: string, limit: number) {
 	const db = await getDb();
 
 	const target = await db.query.universityTargets.findFirst({
-		where: (targets, { eq, and }) => and(eq(targets.userId, userId), eq(targets.isActive, true)),
+		where: and(eq(universityTargets.userId, userId), eq(universityTargets.isActive, true)),
 	});
 
 	const confidences = await db.query.topicConfidence.findMany({
@@ -363,9 +367,9 @@ export async function getWeightedWeakTopics(limit = 5): Promise<WeakTopic[]> {
 
 		for (const c of confidences) {
 			const mastery = masteries.find(
-				(m) => m.topic === c.topic && m.subjectId.toString() === c.subject
+				(m: TopicMasteryRow) => m.topic === c.topic && m.subjectId.toString() === c.subject
 			);
-			const struggle = struggles.find((s) => s.concept === c.topic);
+			const struggle = struggles.find((s: ConceptStruggleRow) => s.concept === c.topic);
 			const weightage = getWeightageForTopic(c.subject, c.topic);
 
 			const weakTopic = processTopicWithRelevance(

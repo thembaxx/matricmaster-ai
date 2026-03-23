@@ -8,11 +8,15 @@ import { getAuth } from '@/lib/auth';
 import { dbManager } from '@/lib/db';
 import {
 	conceptStruggles,
+	type StudySession,
 	studySessions,
+	type TopicMastery,
 	topicConfidence,
 	topicMastery,
+	type UserProgress,
 	universityTargets,
 	userProgress,
+	type WellnessCheckIn,
 	wellnessCheckIns,
 } from '@/lib/db/schema';
 
@@ -100,19 +104,28 @@ export async function generatePersonalizedBriefing(): Promise<BriefingData> {
 			limit: 5,
 		});
 
-		const recentMoods = wellnessCheckInsData.map((w) => w.moodBefore);
+		const recentMoods = wellnessCheckInsData.map((w: WellnessCheckIn) => w.moodBefore);
 		const averageMood =
-			recentMoods.length > 0 ? recentMoods.reduce((a, b) => a + b, 0) / recentMoods.length : 3.5;
+			recentMoods.length > 0
+				? recentMoods.reduce((a: number, b: number) => a + b, 0) / recentMoods.length
+				: 3.5;
 
 		const isBurnedOut =
 			averageMood < 2.5 ||
 			(recentMoods.length >= 3 &&
-				recentMoods.slice(0, 3).filter((m, i) => i > 0 && m < recentMoods[i - 1]).length >= 2);
+				recentMoods.slice(0, 3).filter((m: number, i: number) => i > 0 && m < recentMoods[i - 1])
+					.length >= 2);
 
 		const wellnessScore = Math.round(Math.max(0, Math.min(100, averageMood * 20)));
 
-		const totalQuestions = progress.reduce((sum, p) => sum + (p.totalQuestionsAttempted || 0), 0);
-		const totalCorrect = progress.reduce((sum, p) => sum + (p.totalCorrect || 0), 0);
+		const totalQuestions = progress.reduce(
+			(sum: number, p: UserProgress) => sum + (p.totalQuestionsAttempted || 0),
+			0
+		);
+		const totalCorrect = progress.reduce(
+			(sum: number, p: UserProgress) => sum + (p.totalCorrect || 0),
+			0
+		);
 		const accuracy = totalQuestions > 0 ? Math.round((totalCorrect / totalQuestions) * 100) : 0;
 		const currentStreak = progress[0]?.streakDays || 0;
 
@@ -120,15 +133,17 @@ export async function generatePersonalizedBriefing(): Promise<BriefingData> {
 		const targetAps = target?.targetAps || appConfig.nsc.defaultTargetAps;
 		const universityTarget = target?.universityName;
 
-		const weakTopics = confidences.map((c) => ({
+		const weakTopics = confidences.map((c: typeof topicConfidence.$inferSelect) => ({
 			topic: c.topic,
 			subject: c.subject,
 			confidence: Number(c.confidenceScore),
 		}));
 
-		const strongTopics = masteries.filter((m) => Number(m.masteryLevel) >= 0.7).map((m) => m.topic);
+		const strongTopics = masteries
+			.filter((m: TopicMastery) => Number(m.masteryLevel) >= 0.7)
+			.map((m: TopicMastery) => m.topic);
 
-		const hasStudiedToday = recentSessions.some((s) => {
+		const hasStudiedToday = recentSessions.some((s: StudySession) => {
 			if (!s.completedAt) return false;
 			const today = new Date();
 			const sessionDate = new Date(s.completedAt);
