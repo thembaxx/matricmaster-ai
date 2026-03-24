@@ -180,7 +180,7 @@ export async function generateFlashcardsFromWeakTopics(
 				.values({
 					userId,
 					name: 'Adaptive Review',
-					description: 'Auto-generated flashcards from weak topics',
+					description: 'Your flashcards from weak topics',
 					cardCount: 0,
 				})
 				.returning();

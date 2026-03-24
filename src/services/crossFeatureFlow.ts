@@ -97,7 +97,7 @@ export async function generateCrossFeatureRecommendations(): Promise<FlowRecomme
 				type: 'flashcard_generation',
 				priority: 'high',
 				title: `Generate flashcards for "${weak.topic}"`,
-				description: `Your confidence is ${Math.round(weak.confidence * 100)}%. Auto-generated flashcards from your mistakes can help improve.`,
+				description: `Your confidence is ${Math.round(weak.confidence * 100)}%. Your flashcards from your mistakes can help improve.`,
 				actionUrl: `/flashcards?generate=${encodeURIComponent(weak.topic)}`,
 				estimatedImpact: '+10-15% confidence',
 			});

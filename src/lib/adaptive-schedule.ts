@@ -122,7 +122,7 @@ export async function addExtraPracticeForStruggling(
 		await db.insert(calendarEvents).values({
 			userId,
 			title: `Extra Practice: ${topic}`,
-			description: 'Auto-generated: You struggled with this topic recently',
+			description: 'You struggled with this topic recently',
 			startTime: tomorrow,
 			endTime: new Date(tomorrow.getTime() + 30 * 60 * 1000),
 			eventType: 'practice',
