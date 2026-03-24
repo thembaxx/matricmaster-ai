@@ -2,6 +2,7 @@ import { Loading03Icon, ViewIcon, ViewOffIcon } from '@hugeicons/core-free-icons
 import { HugeiconsIcon } from '@hugeicons/react';
 import { m } from 'framer-motion';
 import Link from 'next/link';
+import { memo } from 'react';
 import type { FieldErrors, UseFormRegister } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -14,7 +15,7 @@ interface SignInValues {
 	password: string;
 }
 
-export function FormFields({
+export const FormFields = memo(function FormFields({
 	register,
 	errors,
 	isLoading,
@@ -106,4 +107,4 @@ export function FormFields({
 			</m.div>
 		</>
 	);
-}
+});

@@ -1,6 +1,7 @@
 import { Loading03Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { m } from 'framer-motion';
+import { memo } from 'react';
 import type { UseFormReturn } from 'react-hook-form';
 import { PasswordInput } from '@/components/auth/PasswordInput';
 import { Button } from '@/components/ui/button';
@@ -19,7 +20,7 @@ interface SignUpFormFieldsProps {
 	onSubmit: (data: SignUpValues) => void;
 }
 
-export function SignUpFormFields({
+export const SignUpFormFields = memo(function SignUpFormFields({
 	form,
 	isLoading,
 	success,
@@ -107,4 +108,4 @@ export function SignUpFormFields({
 			</m.div>
 		</m.form>
 	);
-}
+});
