@@ -126,37 +126,35 @@ export function ServiceWorkerRegistration() {
 
 	if (installed) return null;
 
+	if (isIOS || !showInstallButton) return null;
+
 	return (
-		<>
-			{isIOS ? null : showInstallButton ? (
-				<div className="fixed top-4 left-4 right-4 z-50 md:left-auto md:right-auto md:w-auto animate-in slide-in-from-top duration-300">
-					<div className="bg-card/95 backdrop-blur-sm border border-border/60 rounded-lg shadow-md px-3 py-2 flex items-center gap-3">
-						<div className="flex-1 min-w-0">
-							<p className="text-xs font-medium">Install Lumi</p>
-							<p className="text-xs text-muted-foreground hidden sm:block">Add to home screen</p>
-						</div>
-						<div className="flex items-center gap-1.5">
-							<Button
-								size="sm"
-								variant="default"
-								onClick={handleInstallClick}
-								className="shrink-0 text-xs h-7 px-2"
-							>
-								<Download className="h-3 w-3 mr-1" />
-								Install
-							</Button>
-							<Button
-								size="sm"
-								variant="ghost"
-								onClick={handleDismiss}
-								className="shrink-0 h-7 w-7 p-0"
-							>
-								<X className="h-3 w-3" />
-							</Button>
-						</div>
-					</div>
+		<div className="fixed top-0 left-0 right-0 z-50 animate-in slide-in-from-top duration-300">
+			<div className="bg-primary/5 backdrop-blur-sm border-b border-border/50 px-4 py-2 flex items-center justify-between gap-3">
+				<div className="flex items-center gap-2 min-w-0">
+					<Download className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
+					<p className="text-xs text-muted-foreground truncate">install lumi for offline access</p>
 				</div>
-			) : null}
-		</>
+				<div className="flex items-center gap-1.5 shrink-0">
+					<Button
+						size="sm"
+						variant="outline"
+						onClick={handleInstallClick}
+						className="h-7 text-xs px-3 rounded-full"
+					>
+						install
+					</Button>
+					<Button
+						size="sm"
+						variant="ghost"
+						onClick={handleDismiss}
+						className="h-7 w-7 p-0 rounded-full"
+					>
+						<X className="h-3.5 w-3.5" />
+						<span className="sr-only">dismiss</span>
+					</Button>
+				</div>
+			</div>
+		</div>
 	);
 }

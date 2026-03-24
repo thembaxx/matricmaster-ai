@@ -32,7 +32,7 @@ export function AISuggestionsPanel() {
 					</div>
 					<p className="text-sm text-muted-foreground">No suggestions right now.</p>
 					<p className="text-xs text-muted-foreground/70 mt-1">
-						AI suggestions will appear here to help optimize your schedule.
+						Study tips will appear here to help optimize your schedule.
 					</p>
 				</div>
 			</Card>

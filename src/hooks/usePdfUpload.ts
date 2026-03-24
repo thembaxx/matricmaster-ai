@@ -132,11 +132,11 @@ export function usePdfUpload({ subjects, onSuccess, onClose }: UsePdfUploadProps
 
 			setUploadedUrl(uploadResult.url || null);
 			setProcessingProgress(40);
-			setProcessingStatus('PDF uploaded successfully, starting AI analysis...');
+			setProcessingStatus('Processing your PDF...');
 
 			const subjectObj = subjects.find((s) => s.id === paperDetails.subjectId);
 			setProcessingProgress(60);
-			setProcessingStatus('AI is analyzing questions (Superpowered mode)...');
+			setProcessingStatus('Extracting questions from your PDF...');
 
 			const response = await fetch('/api/extract-questions', {
 				method: 'POST',

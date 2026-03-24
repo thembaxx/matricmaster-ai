@@ -60,7 +60,7 @@ export function PastPaperViewerHeader({
 						className="gap-2 h-8 px-3 text-xs font-bold uppercase tracking-wider text-brand-blue bg-brand-blue/5 rounded-xl border border-brand-blue/10"
 					>
 						<HugeiconsIcon icon={File01Icon} className="w-3.5 h-3.5" />
-						{viewMode === 'smart' ? 'Smart View' : 'Original PDF'}
+						{viewMode === 'smart' ? 'Marked View' : 'Original PDF'}
 					</Button>
 
 					<div className="flex gap-1 border-l border-border pl-2">

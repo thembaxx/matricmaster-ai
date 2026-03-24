@@ -94,7 +94,7 @@ export default function StudyPlanWizard() {
 					Generating Your Path...
 				</h2>
 				<p className="text-sm text-muted-foreground text-center max-w-xs leading-relaxed">
-					Analyzing the curriculum and your goals to create the perfect study path for you.
+					Building your study path...
 				</p>
 			</div>
 		);
