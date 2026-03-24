@@ -1,7 +1,10 @@
 // Don't load dotenv here - it should be loaded at the app entry point
 import { drizzle, type PostgresJsDatabase } from 'drizzle-orm/postgres-js';
 import postgres from 'postgres';
+import { logger } from '@/lib/logger';
 import * as schema from './schema';
+
+const log = logger.createLogger('PostgreSQL');
 
 type DbType = PostgresJsDatabase<typeof schema>;
 
@@ -43,17 +46,17 @@ class PostgreSQLManager {
 		}
 
 		if (!this.config.connectionString) {
-			console.debug('❌ DATABASE_URL is not configured');
+			log.warn('DATABASE_URL is not configured');
 			return false;
 		}
 
 		try {
 			if (this.quotaExceeded) {
-				console.debug('⚠️ Skipping PostgreSQL connection due to previous quota exceeded error');
+				log.debug('Skipping PostgreSQL connection due to previous quota exceeded error');
 				return false;
 			}
 
-			console.log('🔄 Attempting to connect to PostgreSQL...');
+			log.debug('Attempting to connect to PostgreSQL');
 
 			// Check if connection string is for Neon (contains neon.tech) to enable SSL
 			const isNeon = this.config.connectionString.includes('neon.tech');
@@ -80,13 +83,13 @@ class PostgreSQLManager {
 				console.log('✅ PostgreSQL connected successfully');
 				return true;
 			}
-		} catch (error: any) {
-			const errorMsg = error?.message || String(error);
-			console.debug('❌ PostgreSQL connection failed:', errorMsg);
+		} catch (err: any) {
+			const errorMsg = err?.message || String(err);
+			log.error('PostgreSQL connection failed', { error: errorMsg });
 
 			// If it's a quota error, we don't need to keep trying - it won't resolve in seconds
 			if (errorMsg.includes('quota') || errorMsg.includes('exceeded')) {
-				console.debug('PostgreSQL quota exceeded, should skip retries');
+				log.warn('PostgreSQL quota exceeded, should skip retries');
 				this.quotaExceeded = true;
 				this.isConnected = false;
 				this.cleanup();
@@ -105,9 +108,9 @@ class PostgreSQLManager {
 		if (this.client) {
 			try {
 				await this.client.end();
-				console.log('🔌 PostgreSQL disconnected');
-			} catch (error) {
-				console.debug('Error disconnecting:', error);
+				log.info('PostgreSQL disconnected');
+			} catch (err) {
+				log.debug('Error disconnecting', { error: err });
 			}
 		}
 		this.cleanup();
@@ -139,7 +142,7 @@ class PostgreSQLManager {
 
 	public async waitForConnection(maxRetries = 5, delay = 5000): Promise<boolean> {
 		if (!this.config.connectionString) {
-			console.debug('❌ DATABASE_URL is not configured, skipping retries');
+			log.warn('DATABASE_URL is not configured, skipping retries');
 			return false;
 		}
 
@@ -150,12 +153,12 @@ class PostgreSQLManager {
 			}
 
 			if (this.quotaExceeded) {
-				console.debug('Breaking retry loop due to PostgreSQL quota exceeded');
+				log.debug('Breaking retry loop due to PostgreSQL quota exceeded');
 				break;
 			}
 
 			if (i < maxRetries - 1) {
-				console.log(`⏳ Retry attempt ${i + 1}/${maxRetries} in ${delay}ms...`);
+				log.debug(`Retry attempt ${i + 1}/${maxRetries} in ${delay}ms`);
 				await new Promise((resolve) => setTimeout(resolve, delay));
 			}
 		}
@@ -168,13 +171,13 @@ const pgManager = PostgreSQLManager.getInstance();
 
 // Graceful shutdown
 process.on('SIGTERM', async () => {
-	console.log('🛑 SIGTERM received, closing database connection...');
+	log.info('SIGTERM received, closing database connection');
 	await pgManager.disconnect();
 	process.exit(0);
 });
 
 process.on('SIGINT', async () => {
-	console.log('🛑 SIGINT received, closing database connection...');
+	log.info('SIGINT received, closing database connection');
 	await pgManager.disconnect();
 	process.exit(0);
 });

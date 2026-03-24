@@ -2,7 +2,7 @@
 
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
-import { useCallback, useEffect, useReducer, useRef } from 'react';
+import { useCallback, useEffect, useReducer, useRef, useState } from 'react';
 import { getAdaptiveDifficultyServer, recordQuestionAttempt } from '@/actions/spaced-repetition';
 import type { ShortAnswerQuestion } from '@/constants/quiz/types';
 import { QUIZ_DATA } from '@/constants/quiz-data';
@@ -12,7 +12,7 @@ import { useAiContext } from '@/hooks/useAiContext';
 import { useEdgeCaseDetection } from '@/hooks/useEdgeCaseDetection';
 import { useWrongAnswerPipeline } from '@/hooks/useWrongAnswerPipeline';
 import { isQuotaError } from '@/lib/ai/quota-error';
-import { gradeShortAnswer } from '@/lib/quiz-grader';
+import { gradeShortAnswer, type WeakTopic } from '@/lib/quiz-grader';
 import { quizReducer } from '@/lib/quiz-reducer';
 import {
 	getAdaptiveHint,
@@ -39,6 +39,21 @@ export function useQuizState({ quizId }: UseQuizStateProps) {
 	const { processWrongAnswer, autoGenerationEnabled } = useWrongAnswerPipeline();
 	const quiz = QUIZ_DATA[quizId] || QUIZ_DATA['math-p1-2023-nov'];
 	const currentQuestion = quiz.questions[state.currentQuestionIndex];
+
+	// Study plan update state
+	const [studyPlanUpdate, setStudyPlanUpdate] = useState<{
+		weakTopics: WeakTopic[];
+		adjustment: {
+			topicsPrioritized: string[];
+			difficultyAdjustments: Array<{
+				topic: string;
+				newDifficulty: 'easier' | 'harder' | 'same';
+				reason: string;
+			}>;
+			focusAreasUpdated: boolean;
+			sessionsReordered: boolean;
+		};
+	} | null>(null);
 
 	const {
 		isModalOpen,
@@ -168,6 +183,43 @@ export function useQuizState({ quizId }: UseQuizStateProps) {
 					}
 				} catch (error) {
 					console.debug('Failed to process adaptive learning:', error);
+				}
+
+				// Process quiz result for study plan adjustment
+				try {
+					const topicStatsArray = Array.from(state.topicStats.values());
+					const quizResultForAnalysis = {
+						quizId,
+						subject: state.currentSubject || quiz.subject,
+						topics: topicStatsArray.map((stat) => ({
+							topic: stat.topic,
+							correct: stat.correct,
+							total: stat.total,
+						})),
+						totalTimeSeconds: state.elapsedSeconds,
+					};
+
+					const studyPlanResponse = await fetch('/api/study-plan/adjust', {
+						method: 'POST',
+						headers: { 'Content-Type': 'application/json' },
+						body: JSON.stringify({
+							weakTopics: [], // Will be detected server-side
+							quizId,
+							quizResultForAnalysis,
+						}),
+					});
+
+					if (studyPlanResponse.ok) {
+						const studyPlanData = await studyPlanResponse.json();
+						if (studyPlanData.success && studyPlanData.adjustment) {
+							setStudyPlanUpdate({
+								weakTopics: studyPlanData.weakTopics || [],
+								adjustment: studyPlanData.adjustment,
+							});
+						}
+					}
+				} catch (error) {
+					console.debug('Failed to process study plan adjustment:', error);
 				}
 
 				await completeQuiz({
@@ -338,6 +390,16 @@ export function useQuizState({ quizId }: UseQuizStateProps) {
 		recordQuestionAnswer,
 	]);
 
+	// Dismiss study plan update notification
+	const dismissStudyPlanUpdate = useCallback(() => {
+		setStudyPlanUpdate(null);
+	}, []);
+
+	// Navigate to study plan page
+	const viewStudyPlan = useCallback(() => {
+		router.push('/study-plan');
+	}, [router]);
+
 	return {
 		state,
 		dispatch,
@@ -354,5 +416,9 @@ export function useQuizState({ quizId }: UseQuizStateProps) {
 		handleSubjectChange,
 		handleToggleHint,
 		handleCheck,
+		// Study plan integration
+		studyPlanUpdate,
+		dismissStudyPlanUpdate,
+		viewStudyPlan,
 	};
 }

@@ -1,5 +1,7 @@
 'use client';
 
+import DOMPurify from 'dompurify';
+
 interface ShortAnswerFeedbackProps {
 	isCorrect: boolean;
 	feedback: string;
@@ -11,6 +13,16 @@ export function ShortAnswerFeedback({
 	feedback,
 	correctAnswer,
 }: ShortAnswerFeedbackProps) {
+	// Sanitize user-generated content to prevent XSS attacks
+	const sanitizedFeedback = DOMPurify.sanitize(feedback, {
+		ALLOWED_TAGS: [], // Strip all HTML tags - plain text only
+		ALLOWED_ATTR: [],
+	});
+	const sanitizedCorrectAnswer = DOMPurify.sanitize(correctAnswer, {
+		ALLOWED_TAGS: [],
+		ALLOWED_ATTR: [],
+	});
+
 	return (
 		<div className="bg-card rounded-[2.5rem] shadow-lg border border-border/50 p-6 sm:p-8">
 			<div className="flex items-start gap-3">
@@ -47,9 +59,10 @@ export function ShortAnswerFeedback({
 					<p className="font-semibold text-foreground mb-1">
 						{isCorrect ? 'correct!' : 'not quite right'}
 					</p>
-					<p className="text-sm text-muted-foreground">{feedback}</p>
+					<p className="text-sm text-muted-foreground">{sanitizedFeedback}</p>
 					<p className="text-xs text-muted-foreground mt-2">
-						correct answer: <span className="font-semibold text-foreground">{correctAnswer}</span>
+						correct answer:{' '}
+						<span className="font-semibold text-foreground">{sanitizedCorrectAnswer}</span>
 					</p>
 				</div>
 			</div>

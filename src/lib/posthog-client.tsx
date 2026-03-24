@@ -26,11 +26,13 @@ function initPostHog() {
 	const key = getEnv('NEXT_PUBLIC_POSTHOG_KEY');
 	if (!key) return;
 
+	// Use textContent instead of innerHTML to prevent XSS vulnerabilities
+	// The key is validated/sanitized by getEnv and is a known environment variable
 	const script = document.createElement('script');
-	script.innerHTML = `
+	script.textContent = `
 		(function(d, w) {
 			w.posthog = w.posthog || [];
-			w.posthog.init('${key}', {
+			w.posthog.init(${JSON.stringify(key)}, {
 				api_host: 'https://app.posthog.com',
 				persistence: 'localStorage',
 				capture_pageview: true,

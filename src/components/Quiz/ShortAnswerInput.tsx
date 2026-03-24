@@ -25,6 +25,7 @@ export function ShortAnswerInput({
 	disabled = false,
 }: ShortAnswerInputProps) {
 	const id = useId();
+	const counterId = `${id}-counter`;
 	const charCount = value.length;
 	const isOverLimit = charCount > MAX_CHARS;
 	const displayCharCount = Math.min(charCount, MAX_CHARS);
@@ -54,8 +55,9 @@ export function ShortAnswerInput({
 					disabled={disabled || isChecked}
 					maxLength={MAX_CHARS + 100}
 					className={inputClasses}
-					aria-describedby={`${id}-counter`}
+					aria-describedby={counterId}
 					aria-invalid={isOverLimit}
+					aria-required="true"
 				/>
 				{isChecked && value.trim().length > 0 && (
 					<m.div
@@ -76,7 +78,7 @@ export function ShortAnswerInput({
 			</div>
 
 			<div
-				id={`${id}-counter`}
+				id={counterId}
 				className={cn(
 					'flex justify-end text-xs font-mono tabular-nums transition-colors',
 					isOverLimit
@@ -86,6 +88,7 @@ export function ShortAnswerInput({
 							: 'text-muted-foreground'
 				)}
 				aria-live="polite"
+				aria-atomic="true"
 			>
 				{displayCharCount}/{MAX_CHARS}
 			</div>

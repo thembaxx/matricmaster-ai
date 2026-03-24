@@ -1,6 +1,7 @@
 import { ViewIcon, ViewOffIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { m } from 'framer-motion';
+import { useId } from 'react';
 import type { FieldErrors, UseFormRegister } from 'react-hook-form';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -27,11 +28,13 @@ export function PasswordInput({
 	showPassword,
 	onTogglePassword,
 }: PasswordInputProps) {
+	const passwordErrorId = useId();
+
 	return (
 		<m.div variants={STAGGER_ITEM} className="space-y-2">
 			<Label
 				htmlFor="password"
-				className="text-xs font-bold text-label-primary  tracking-wider ml-1"
+				className="text-xs font-bold text-label-primary tracking-wider ml-1"
 			>
 				Create Password
 			</Label>
@@ -43,6 +46,10 @@ export function PasswordInput({
 					placeholder="Create a strong password"
 					className="bg-background/50 pr-12"
 					maxLength={128}
+					aria-required="true"
+					aria-invalid={!!errors.password}
+					aria-describedby={errors.password ? passwordErrorId : undefined}
+					autoComplete="new-password"
 				/>
 				<button
 					type="button"
@@ -58,7 +65,13 @@ export function PasswordInput({
 				</button>
 			</div>
 			{errors.password && (
-				<p className="text-xs text-destructive font-semibold ml-1">{errors.password.message}</p>
+				<p
+					id={passwordErrorId}
+					className="text-xs text-destructive font-semibold ml-1"
+					role="alert"
+				>
+					{errors.password.message}
+				</p>
 			)}
 		</m.div>
 	);

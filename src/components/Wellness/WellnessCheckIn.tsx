@@ -10,6 +10,7 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from '@/components/ui/dialog';
+import { logger } from '@/lib/logger';
 import { BreakNeedsSelector } from './BreakNeedsSelector';
 import { CrisisResourcesModal } from './CrisisResourcesModal';
 import { FrustrationToggle } from './FrustrationToggle';
@@ -59,11 +60,10 @@ export function WellnessCheckIn({
 		setNeedsBreak,
 		setShowCrisisResources,
 		resetForm,
-		getFormData,
 	} = useWellnessForm();
 
 	const handleAction = (action: 'continue' | 'break' | 'switch' | 'end') => {
-		console.log('Wellness check-in submitted:', getFormData());
+		logger.debug('Wellness check-in submitted', { action });
 
 		switch (action) {
 			case 'continue':

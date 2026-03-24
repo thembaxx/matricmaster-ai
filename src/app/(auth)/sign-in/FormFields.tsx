@@ -2,7 +2,7 @@ import { Loading03Icon, ViewIcon, ViewOffIcon } from '@hugeicons/core-free-icons
 import { HugeiconsIcon } from '@hugeicons/react';
 import { m } from 'framer-motion';
 import Link from 'next/link';
-import { memo } from 'react';
+import { memo, useId } from 'react';
 import type { FieldErrors, UseFormRegister } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -30,8 +30,13 @@ export const FormFields = memo(function FormFields({
 	showPassword: boolean;
 	onTogglePassword: () => void;
 }) {
+	const emailErrorId = useId();
+	const passwordErrorId = useId();
+
 	return (
-		<>
+		<fieldset className="space-y-6 border-0 p-0 m-0">
+			<legend className="sr-only">sign in credentials</legend>
+
 			<m.div variants={STAGGER_ITEM} className="space-y-2">
 				<Label htmlFor="email" className="label-xs ml-1">
 					Email Address
@@ -42,9 +47,15 @@ export const FormFields = memo(function FormFields({
 					type="email"
 					placeholder="name@school.edu.za"
 					className="bg-background/50 rounded-[var(--radius-md)]"
+					aria-required="true"
+					aria-invalid={!!errors.email}
+					aria-describedby={errors.email ? emailErrorId : undefined}
+					autoComplete="email"
 				/>
 				{errors.email && (
-					<p className="text-xs text-destructive font-semibold ml-1">{errors.email.message}</p>
+					<p id={emailErrorId} className="text-xs text-destructive font-semibold ml-1" role="alert">
+						{errors.email.message}
+					</p>
 				)}
 			</m.div>
 
@@ -64,6 +75,10 @@ export const FormFields = memo(function FormFields({
 						type={showPassword ? 'text' : 'password'}
 						placeholder="Enter your password"
 						className="bg-background/50 pr-12 rounded-[var(--radius-md)]"
+						aria-required="true"
+						aria-invalid={!!errors.password}
+						aria-describedby={errors.password ? passwordErrorId : undefined}
+						autoComplete="current-password"
 					/>
 					<Button
 						variant="ghost"
@@ -81,7 +96,13 @@ export const FormFields = memo(function FormFields({
 					</Button>
 				</div>
 				{errors.password && (
-					<p className="text-xs text-destructive font-semibold ml-1">{errors.password.message}</p>
+					<p
+						id={passwordErrorId}
+						className="text-xs text-destructive font-semibold ml-1"
+						role="alert"
+					>
+						{errors.password.message}
+					</p>
 				)}
 			</m.div>
 
@@ -95,9 +116,13 @@ export const FormFields = memo(function FormFields({
 							? 'bg-success text-white shadow-success/30'
 							: 'bg-primary text-primary-foreground shadow-primary/20'
 					)}
+					aria-busy={isLoading}
 				>
 					{isLoading ? (
-						<HugeiconsIcon icon={Loading03Icon} className="w-5 h-5 animate-spin" />
+						<>
+							<HugeiconsIcon icon={Loading03Icon} className="w-5 h-5 animate-spin" />
+							<span className="sr-only">Signing in...</span>
+						</>
 					) : successEmail ? (
 						'Success!'
 					) : (
@@ -105,6 +130,6 @@ export const FormFields = memo(function FormFields({
 					)}
 				</Button>
 			</m.div>
-		</>
+		</fieldset>
 	);
 });

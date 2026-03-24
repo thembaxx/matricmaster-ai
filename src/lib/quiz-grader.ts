@@ -10,6 +10,106 @@ export interface GradingResult {
 	gradingType: 'exact' | 'keywords' | 'aiGraded';
 }
 
+// ============================================================================
+// WEAK TOPIC DETECTION TYPES
+// ============================================================================
+
+export type StruggleLevel = 'high' | 'medium' | 'low';
+
+export interface WeakTopic {
+	topic: string;
+	subject: string;
+	accuracy: number;
+	questionsAttempted: number;
+	correctAnswers: number;
+	struggleLevel: StruggleLevel;
+	averageTimeSeconds?: number;
+	timePerQuestionMs?: number[];
+	isTimeStruggle: boolean;
+}
+
+export interface TopicStats {
+	topic: string;
+	correct: number;
+	total: number;
+	timeMs?: number[];
+}
+
+export interface QuizResultForAnalysis {
+	quizId: string;
+	subject: string;
+	topics: TopicStats[];
+	totalTimeSeconds: number;
+}
+
+/**
+ * Determines struggle level based on accuracy
+ */
+function getStruggleLevel(accuracy: number): StruggleLevel {
+	if (accuracy < 0.4) return 'high';
+	if (accuracy < 0.6) return 'medium';
+	return 'low';
+}
+
+/**
+ * Analyzes if a question took too long (more than 2x average)
+ */
+function isSlowQuestion(timeMs: number, averageTimeMs: number): boolean {
+	return timeMs > averageTimeMs * 2;
+}
+
+/**
+ * Detects weak topics from quiz results
+ * Returns topics where accuracy is below 60%
+ */
+export function detectWeakTopics(quizResult: QuizResultForAnalysis): WeakTopic[] {
+	const weakTopics: WeakTopic[] = [];
+	const averageTimePerQuestion =
+		quizResult.topics.reduce((sum, t) => {
+			if (t.timeMs && t.timeMs.length > 0) {
+				return sum + t.timeMs.reduce((a, b) => a + b, 0) / t.timeMs.length;
+			}
+			return sum;
+		}, 0) / (quizResult.topics.length || 1);
+
+	for (const topicStat of quizResult.topics) {
+		if (topicStat.total === 0) continue;
+
+		const accuracy = topicStat.correct / topicStat.total;
+
+		// Only include topics with accuracy below 60%
+		if (accuracy < 0.6) {
+			const avgTimeMs =
+				topicStat.timeMs && topicStat.timeMs.length > 0
+					? topicStat.timeMs.reduce((a, b) => a + b, 0) / topicStat.timeMs.length
+					: undefined;
+
+			const isTimeStruggle =
+				avgTimeMs !== undefined && isSlowQuestion(avgTimeMs, averageTimePerQuestion);
+
+			weakTopics.push({
+				topic: topicStat.topic,
+				subject: quizResult.subject,
+				accuracy,
+				questionsAttempted: topicStat.total,
+				correctAnswers: topicStat.correct,
+				struggleLevel: getStruggleLevel(accuracy),
+				averageTimeSeconds: avgTimeMs ? Math.round(avgTimeMs / 1000) : undefined,
+				timePerQuestionMs: topicStat.timeMs,
+				isTimeStruggle,
+			});
+		}
+	}
+
+	// Sort by struggle level (high first) and then by accuracy (lowest first)
+	return weakTopics.sort((a, b) => {
+		const levelOrder = { high: 0, medium: 1, low: 2 };
+		const levelDiff = levelOrder[a.struggleLevel] - levelOrder[b.struggleLevel];
+		if (levelDiff !== 0) return levelDiff;
+		return a.accuracy - b.accuracy;
+	});
+}
+
 function normalize(str: string): string {
 	return str
 		.toLowerCase()
@@ -192,4 +292,26 @@ export function gradeMatching(
 				: `${correct} out of ${total} pairs matched correctly.`,
 		gradingType: 'exact',
 	};
+}
+
+/**
+ * Analyzes time spent per question and returns topics that took too long
+ */
+export function analyzeTimeStruggle(topics: TopicStats[], thresholdMultiplier = 1.5): string[] {
+	const allTimes = topics.flatMap((t) => t.timeMs || []);
+	if (allTimes.length === 0) return [];
+
+	const avgTime = allTimes.reduce((a, b) => a + b, 0) / allTimes.length;
+	const slowTopics: string[] = [];
+
+	for (const topic of topics) {
+		if (topic.timeMs && topic.timeMs.length > 0) {
+			const topicAvg = topic.timeMs.reduce((a, b) => a + b, 0) / topic.timeMs.length;
+			if (topicAvg > avgTime * thresholdMultiplier) {
+				slowTopics.push(topic.topic);
+			}
+		}
+	}
+
+	return slowTopics;
 }

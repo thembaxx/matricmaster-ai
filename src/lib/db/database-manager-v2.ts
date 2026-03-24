@@ -1,9 +1,12 @@
 import { eq } from 'drizzle-orm';
+import { logger } from '@/lib/logger';
 import { type DbType, pgManager } from './postgresql-manager';
 import { type SqliteDbType, sqliteManager } from './sqlite-manager';
 import * as sqliteSchema from './sqlite-schema';
 import { syncTableRegistry } from './sync/registry';
 import type { ActiveDatabase, SyncQueueItem, SyncResult } from './sync/types';
+
+const log = logger.createLogger('DatabaseManager');
 
 class DatabaseManagerV2 {
 	private static instance: DatabaseManagerV2;
@@ -30,7 +33,7 @@ class DatabaseManagerV2 {
 		this.initPromise = (async () => {
 			try {
 				if (options?.forceSQLite) {
-					console.debug('force initializing with sqlite...');
+					log.debug('force initializing with sqlite');
 					const sqliteConnected = await sqliteManager.connect();
 					this.activeDatabase = sqliteConnected ? 'sqlite' : 'none';
 					return;
@@ -39,14 +42,14 @@ class DatabaseManagerV2 {
 				const pgConnected = await pgManager.waitForConnection(2, 1000);
 				if (pgConnected) {
 					this.activeDatabase = 'postgresql';
-					console.log('📀 postgresql is primary database');
+					log.info('postgresql is primary database');
 				} else {
-					console.debug('postgresql unavailable, initializing sqlite...');
+					log.debug('postgresql unavailable, initializing sqlite');
 					const sqliteConnected = await sqliteManager.connect();
 					this.activeDatabase = sqliteConnected ? 'sqlite' : 'none';
 				}
-			} catch (error) {
-				console.debug('❌ database initialization failed:', error);
+			} catch (err) {
+				log.error('database initialization failed', { error: err });
 				const sqliteConnected = await sqliteManager.connect();
 				this.activeDatabase = sqliteConnected ? 'sqlite' : 'none';
 			}
@@ -58,8 +61,8 @@ class DatabaseManagerV2 {
 	public isPostgreSQLConnected(): boolean {
 		try {
 			return pgManager.isConnectedToDatabase();
-		} catch (error) {
-			console.warn('failed to check postgresql connection:', error);
+		} catch (err) {
+			log.warn('failed to check postgresql connection', { error: err });
 			return false;
 		}
 	}
@@ -170,8 +173,8 @@ class DatabaseManagerV2 {
 			const client = pgManager.getClient();
 			await client`SELECT 1`;
 			return true;
-		} catch (error) {
-			console.warn('postgresql health check failed:', error);
+		} catch (err) {
+			log.warn('postgresql health check failed', { error: err });
 			return false;
 		}
 	}
@@ -180,12 +183,12 @@ class DatabaseManagerV2 {
 		const pgHealthy = await this.checkPostgreSQLHealth();
 
 		if (pgHealthy && this.activeDatabase !== 'postgresql') {
-			console.log('postgresql recovered, switching from sqlite...');
+			log.info('postgresql recovered, switching from sqlite');
 			await this.syncFromSQLite();
 			this.activeDatabase = 'postgresql';
-			console.log('✅ switched back to postgresql');
+			log.info('switched back to postgresql');
 		} else if (!pgHealthy && this.activeDatabase === 'postgresql') {
-			console.debug('postgresql connection lost, failing over to sqlite...');
+			log.warn('postgresql connection lost, failing over to sqlite');
 			await sqliteManager.connect();
 			this.activeDatabase = 'sqlite';
 		}
@@ -285,7 +288,7 @@ class DatabaseManagerV2 {
 				.delete(sqliteSchema.sqliteSyncQueue)
 				.where(eq(sqliteSchema.sqliteSyncQueue.status, 'synced'));
 
-			console.log(`🔄 sync complete: ${result.syncedCount} synced, ${result.failedCount} failed`);
+			log.info(`sync complete: ${result.syncedCount} synced, ${result.failedCount} failed`);
 		} catch (error) {
 			result.success = false;
 			result.errors.push(`sync error: ${error}`);
@@ -304,7 +307,7 @@ class DatabaseManagerV2 {
 	): Promise<void> {
 		const mapping = syncTableRegistry.find((m) => m.tableName === tableName);
 		if (!mapping) {
-			console.warn(`⚠️ no sync mapping found for table: ${tableName}`);
+			log.warn(`no sync mapping found for table: ${tableName}`);
 			return;
 		}
 
@@ -349,7 +352,7 @@ class DatabaseManagerV2 {
 
 	public forceFailover(): void {
 		this.activeDatabase = 'sqlite';
-		console.debug('force failover to sqlite');
+		log.debug('force failover to sqlite');
 	}
 
 	public async forceFailback(): Promise<void> {
@@ -357,9 +360,9 @@ class DatabaseManagerV2 {
 		if (pgHealthy) {
 			await this.syncFromSQLite();
 			this.activeDatabase = 'postgresql';
-			console.log('force failback to postgresql');
+			log.info('force failback to postgresql');
 		} else {
-			console.debug('cannot failback - postgresql not healthy');
+			log.debug('cannot failback - postgresql not healthy');
 		}
 	}
 }
