@@ -11,9 +11,11 @@ import { QuizProgress } from '@/components/Quiz/QuizProgress';
 import { QuizProgressDashboard } from '@/components/Quiz/QuizProgressDashboard';
 import { ShortAnswerInput } from '@/components/Quiz/ShortAnswerInput';
 import { SubjectSelector } from '@/components/Quiz/SubjectSelector';
-import { Button } from '@/components/ui/button';
 import type { AnyQuizQuestion, ShortAnswerQuestion } from '@/constants/quiz/types';
 import { useMathKeyboard } from '@/hooks/use-math-keyboard';
+import { QuizTimer } from './QuizTimer';
+import { QuizToolbar } from './QuizToolbar';
+import { ShortAnswerFeedback } from './ShortAnswerFeedback';
 
 interface QuestionOption {
 	id: string;
@@ -139,75 +141,15 @@ export function QuizContent({
 
 	return (
 		<>
-			<div className="flex items-center justify-between mb-6">
-				<Button
-					variant="ghost"
-					size="icon"
-					className="rounded-full"
-					onClick={onExit}
-					aria-label="Exit quiz"
-				>
-					<svg
-						className="w-6 h-6"
-						fill="none"
-						viewBox="0 0 24 24"
-						stroke="currentColor"
-						aria-hidden="true"
-					>
-						<path
-							strokeLinecap="round"
-							strokeLinejoin="round"
-							strokeWidth={2}
-							d="M15 19l-7-7 7-7"
-						/>
-					</svg>
-				</Button>
-				<div className="flex gap-2">
-					<Button
-						variant={mode === 'test' ? 'default' : 'outline'}
-						size="sm"
-						className="rounded-full"
-						onClick={() => onModeChange('test')}
-					>
-						test
-					</Button>
-					<Button
-						variant={mode === 'practice' ? 'default' : 'outline'}
-						size="sm"
-						className="rounded-full"
-						onClick={() => onModeChange('practice')}
-					>
-						practice
-					</Button>
-				</div>
-				<Button variant="ghost" size="sm" className="rounded-full" onClick={onShowSubjectSelector}>
-					{currentSubject.toLowerCase()}
-				</Button>
-			</div>
+			<QuizToolbar
+				mode={mode}
+				currentSubject={currentSubject}
+				onExit={onExit}
+				onModeChange={onModeChange}
+				onShowSubjectSelector={onShowSubjectSelector}
+			/>
 
-			<div className="flex items-center justify-between mb-8">
-				<div className="w-14 h-14 bg-subject-math-soft rounded-[1.5rem] flex items-center justify-center">
-					<svg
-						className="w-8 h-8 text-subject-math"
-						fill="none"
-						viewBox="0 0 24 24"
-						stroke="currentColor"
-						aria-hidden="true"
-					>
-						<path
-							strokeLinecap="round"
-							strokeLinejoin="round"
-							strokeWidth={2}
-							d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"
-						/>
-					</svg>
-				</div>
-				<div className="px-4 py-2 bg-secondary rounded-full shadow-sm">
-					<span className="font-mono font-black text-foreground tabular-nums">
-						{formatTime(elapsedSeconds)}
-					</span>
-				</div>
-			</div>
+			<QuizTimer elapsedSeconds={elapsedSeconds} />
 
 			<QuizProgressDashboard
 				totalQuestions={quiz.questions.length}
@@ -278,51 +220,11 @@ export function QuizContent({
 					)}
 
 					{isChecked && isShortAnswer(currentQuestion) && (
-						<div className="bg-card rounded-[2.5rem] shadow-lg border border-border/50 p-6 sm:p-8">
-							<div className="flex items-start gap-3">
-								<div
-									className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${
-										isCorrect
-											? 'bg-tiimo-green/10 text-tiimo-green'
-											: 'bg-destructive/10 text-destructive'
-									}`}
-								>
-									<svg
-										className="w-5 h-5"
-										fill="none"
-										viewBox="0 0 24 24"
-										stroke="currentColor"
-										aria-hidden="true"
-									>
-										{isCorrect ? (
-											<path
-												strokeLinecap="round"
-												strokeLinejoin="round"
-												strokeWidth={2}
-												d="M5 13l4 4L19 7"
-											/>
-										) : (
-											<path
-												strokeLinecap="round"
-												strokeLinejoin="round"
-												strokeWidth={2}
-												d="M6 18L18 6M6 6l12 12"
-											/>
-										)}
-									</svg>
-								</div>
-								<div className="flex-1">
-									<p className="font-semibold text-foreground mb-1">
-										{isCorrect ? 'correct!' : 'not quite right'}
-									</p>
-									<p className="text-sm text-muted-foreground">{shortAnswerFeedback}</p>
-									<p className="text-xs text-muted-foreground mt-2">
-										correct answer:{' '}
-										<span className="font-semibold text-foreground">{correctAnswerText}</span>
-									</p>
-								</div>
-							</div>
-						</div>
+						<ShortAnswerFeedback
+							isCorrect={isCorrect ?? false}
+							feedback={shortAnswerFeedback}
+							correctAnswer={correctAnswerText}
+						/>
 					)}
 				</div>
 			</div>

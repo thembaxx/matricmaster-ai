@@ -3,7 +3,6 @@ import Image from 'next/image';
 import { SmoothWords } from '@/components/Transition/SmoothText';
 import { Card } from '@/components/ui/card';
 import { STAGGER_CONTAINER } from '@/lib/animation-presets';
-import type { SessionUser } from '@/lib/auth';
 import { cn } from '@/lib/utils';
 
 interface OnboardingStepContentProps {
@@ -16,10 +15,12 @@ interface OnboardingStepContentProps {
 		icon: unknown;
 	};
 	currentStep: number;
-	user?: SessionUser | null;
+	title?: string;
 }
 
-export function OnboardingStepContent({ step, currentStep, user }: OnboardingStepContentProps) {
+export function OnboardingStepContent({ step, currentStep, title }: OnboardingStepContentProps) {
+	const displayTitle = title || step.title;
+
 	return (
 		<m.div drag="x" dragConstraints={{ left: 0, right: 0 }} className="w-full max-w-md">
 			<Card className="premium-glass border-none shadow-2xl overflow-hidden rounded-[2.5rem] p-8 flex flex-col items-center text-center gap-8">
@@ -57,9 +58,7 @@ export function OnboardingStepContent({ step, currentStep, user }: OnboardingSte
 				<div className="space-y-4">
 					<SmoothWords
 						as="h1"
-						text={
-							currentStep === 0 && user?.name ? `Welcome, ${user.name.split(' ')[0]}!` : step.title
-						}
+						text={displayTitle}
 						className="text-2xl font-bold text-foreground text-pretty"
 					/>
 					<m.p
