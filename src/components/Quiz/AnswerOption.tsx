@@ -2,7 +2,8 @@
 
 import { CancelCircleIcon, CheckmarkCircle02Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { m } from 'framer-motion';
+import { m, useMotionValue, useSpring, useTransform } from 'framer-motion';
+import { useEffect, useRef, useState } from 'react';
 import { cn } from '@/lib/utils';
 
 export interface AnswerOptionProps {
@@ -15,6 +16,18 @@ export interface AnswerOptionProps {
 	disabled?: boolean;
 }
 
+const prefersReducedMotion = () =>
+	typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+interface Particle {
+	id: number;
+	tx: number;
+	ty: number;
+	color: string;
+}
+
+const PARTICLE_COLORS = ['#a78bfa', '#6ee7b7', '#fbbf24', '#60a5fa', '#f472b6', '#34d399'];
+
 export function AnswerOption({
 	id,
 	label,
@@ -24,6 +37,56 @@ export function AnswerOption({
 	onSelect,
 	disabled = false,
 }: AnswerOptionProps) {
+	const reduced = useRef(prefersReducedMotion());
+	const [particles, setParticles] = useState<Particle[]>([]);
+
+	const scaleMotion = useMotionValue(isSelected ? 1 : 1);
+	const translateYMotion = useMotionValue(isSelected ? -2 : 0);
+	const shadowMotion = useMotionValue(0);
+
+	const scaleSpring = useSpring(scaleMotion, { stiffness: 300, damping: 20 });
+	const translateYSpring = useSpring(translateYMotion, { stiffness: 300, damping: 20 });
+	const shadowSpring = useSpring(shadowMotion, { stiffness: 300, damping: 20 });
+
+	const boxShadow = useTransform(shadowSpring, (v) =>
+		v > 0 ? `0 8px 25px rgba(0,0,0,${v * 0.12})` : '0 1px 3px rgba(0,0,0,0.06)'
+	);
+
+	const iconScaleSpring = useSpring(0, { stiffness: 300, damping: 20 });
+
+	useEffect(() => {
+		if (reduced.current) return;
+		if (isSelected) {
+			scaleMotion.set(1.015);
+			translateYMotion.set(-2);
+			shadowMotion.set(1);
+		} else {
+			scaleMotion.set(1);
+			translateYMotion.set(0);
+			shadowMotion.set(0);
+		}
+	}, [isSelected, scaleMotion, translateYMotion, shadowMotion]);
+
+	useEffect(() => {
+		if (isChecked) {
+			iconScaleSpring.set(1);
+		}
+	}, [isChecked, iconScaleSpring]);
+
+	useEffect(() => {
+		if (isChecked && isCorrect && particles.length === 0) {
+			const newParticles: Particle[] = Array.from({ length: 6 }, (_, i) => ({
+				id: i,
+				tx: Math.cos((i / 6) * Math.PI * 2) * 30,
+				ty: Math.sin((i / 6) * Math.PI * 2) * 30,
+				color: PARTICLE_COLORS[i],
+			}));
+			setParticles(newParticles);
+			const timeout = setTimeout(() => setParticles([]), 700);
+			return () => clearTimeout(timeout);
+		}
+	}, [isChecked, isCorrect, particles.length]);
+
 	const getContainerClasses = () => {
 		if (isSelected) {
 			if (isChecked) {
@@ -59,16 +122,26 @@ export function AnswerOption({
 		return 'text-foreground';
 	};
 
+	const getResultClass = () => {
+		if (!reduced.current) {
+			if (isChecked && isSelected && !isCorrect) return 'quiz-wrong-shake';
+			if (isChecked && (isSelected || isCorrect) && isCorrect) return 'quiz-correct-pulse';
+		}
+		return '';
+	};
+
 	return (
 		<m.button
 			initial={{ opacity: 0, x: -10 }}
 			animate={{ opacity: 1, x: 0 }}
 			onClick={() => !disabled && onSelect()}
 			disabled={disabled}
+			style={reduced.current ? undefined : { scale: scaleSpring, y: translateYSpring, boxShadow }}
 			className={cn(
-				'w-full flex items-center gap-4 p-4 rounded-[1.5rem] border-2 transition-all',
+				'w-full flex items-center gap-4 p-4 rounded-[1.5rem] border-2 transition-colors',
 				'hover:border-tiimo-lavender/30 active:scale-[0.98]',
-				getContainerClasses()
+				getContainerClasses(),
+				getResultClass()
 			)}
 		>
 			<div
@@ -83,10 +156,29 @@ export function AnswerOption({
 				{label}
 			</span>
 
+			{particles.length > 0 && (
+				<div className="absolute inset-0 pointer-events-none overflow-hidden rounded-[1.5rem]">
+					{particles.map((p) => (
+						<span
+							key={p.id}
+							className="quiz-particle absolute w-2 h-2 rounded-full"
+							style={
+								{
+									left: '90%',
+									top: '50%',
+									backgroundColor: p.color,
+									'--tx': `${p.tx}px`,
+									'--ty': `${p.ty}px`,
+								} as React.CSSProperties
+							}
+						/>
+					))}
+				</div>
+			)}
+
 			{isChecked && (isSelected || isCorrect) && (
 				<m.div
-					initial={{ scale: 0.95, opacity: 0 }}
-					animate={{ scale: 1 }}
+					style={reduced.current ? undefined : { scale: iconScaleSpring }}
 					className={cn(
 						'w-6 h-6 rounded-full flex items-center justify-center text-white',
 						isCorrect ? 'bg-tiimo-green' : 'bg-destructive'

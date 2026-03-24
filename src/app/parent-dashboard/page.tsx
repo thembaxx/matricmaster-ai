@@ -16,6 +16,8 @@ export const metadata: Metadata = {
 	description: 'monitor student progress, study time, and academic performance.',
 };
 
+export const revalidate = 0;
+
 export default async function ParentDashboardPage() {
 	await dbManager.initialize();
 

@@ -1,5 +1,6 @@
 'use client';
 
+import { AnimatePresence, m } from 'framer-motion';
 import { MathInputField } from '@/components/MathKeyboard';
 import { AIExplanation } from '@/components/Quiz/AIExplanation';
 import { AnswerBreakdown } from '@/components/Quiz/AnswerBreakdown';
@@ -67,6 +68,17 @@ function isShortAnswer(q: AnyQuizQuestion): q is ShortAnswerQuestion {
 	return q.type === 'shortAnswer';
 }
 
+const questionVariants = {
+	initial: { opacity: 0, y: 12, filter: 'blur(4px)' },
+	animate: { opacity: 1, y: 0, filter: 'blur(0px)' },
+	exit: { opacity: 0, y: -10, filter: 'blur(3px)' },
+};
+
+const questionTransition = {
+	duration: 0.35,
+	ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
+};
+
 export function QuizContent({
 	quiz,
 	currentQuestionIndex,
@@ -111,6 +123,7 @@ export function QuizContent({
 
 	const currentQuestion = quiz.questions[currentQuestionIndex];
 	const isMCQ = !currentQuestion.type || currentQuestion.type === 'mcq';
+	const questionKey = currentQuestion.id;
 
 	const options: QuestionOption[] =
 		isMCQ && 'options' in currentQuestion
@@ -169,63 +182,114 @@ export function QuizContent({
 
 			<div className="h-[calc(100vh-380px)] sm:h-full no-scrollbar pr-4">
 				<div className="space-y-8 pb-40">
-					{isMCQ ? (
-						<QuestionCard
-							question={currentQuestion.question}
-							options={options}
-							selectedOption={selectedOption}
-							isChecked={isChecked}
-							onSelect={onSelectOption}
-							diagram={'diagram' in currentQuestion ? currentQuestion.diagram : undefined}
-						/>
-					) : isShortAnswer(currentQuestion) ? (
-						<div className="bg-card rounded-[2.5rem] shadow-lg border border-border/50 p-8 sm:p-10">
-							<div className="mb-6">
-								<h2 className="text-xl font-semibold leading-tight text-foreground">
-									{currentQuestion.question}
-								</h2>
-							</div>
-							<ShortAnswerInput
-								value={answerText}
-								onChange={onAnswerTextChange}
-								isChecked={isChecked}
-								isCorrect={isCorrect}
-								disabled={isCompleting}
-							/>
-						</div>
-					) : null}
+					<AnimatePresence mode="wait">
+						{isMCQ ? (
+							<m.div
+								key={`mcq-${questionKey}`}
+								variants={questionVariants}
+								initial="initial"
+								animate="animate"
+								exit="exit"
+								transition={questionTransition}
+							>
+								<QuestionCard
+									question={currentQuestion.question}
+									questionKey={questionKey}
+									options={options}
+									selectedOption={selectedOption}
+									isChecked={isChecked}
+									onSelect={onSelectOption}
+									diagram={'diagram' in currentQuestion ? currentQuestion.diagram : undefined}
+								/>
+							</m.div>
+						) : isShortAnswer(currentQuestion) ? (
+							<m.div
+								key={`sa-${questionKey}`}
+								variants={questionVariants}
+								initial="initial"
+								animate="animate"
+								exit="exit"
+								transition={questionTransition}
+								className="bg-card rounded-[2.5rem] shadow-lg border border-border/50 p-8 sm:p-10"
+							>
+								<div className="mb-6">
+									<h2 className="text-xl font-semibold leading-tight text-foreground">
+										{currentQuestion.question}
+									</h2>
+								</div>
+								<ShortAnswerInput
+									value={answerText}
+									onChange={onAnswerTextChange}
+									isChecked={isChecked}
+									isCorrect={isCorrect}
+									disabled={isCompleting}
+								/>
+							</m.div>
+						) : null}
+					</AnimatePresence>
 
 					{mode === 'practice' && showMathKeyboardForSubject && (
 						<MathInputField input={mathInput} cursorPos={cursorPos} onDelete={handleMathDelete} />
 					)}
 
-					<AIExplanation question={currentQuestion.question} correctAnswer={correctAnswerText} />
+					<AnimatePresence mode="wait">
+						<m.div
+							key={`extras-${questionKey}`}
+							initial={{ opacity: 0 }}
+							animate={{ opacity: 1 }}
+							exit={{ opacity: 0 }}
+							transition={{ duration: 0.2 }}
+						>
+							<AIExplanation
+								question={currentQuestion.question}
+								correctAnswer={correctAnswerText}
+							/>
 
-					<QuestionExtras
-						adaptiveHint={adaptiveHint}
-						showStruggleAlert={showStruggleAlert}
-						currentStruggleCount={currentStruggleCount}
-						currentTopic={currentQuestion.topic}
-						isChecked={isChecked}
-						onDismissStruggle={onDismissStruggle}
-					/>
+							<QuestionExtras
+								adaptiveHint={adaptiveHint}
+								showStruggleAlert={showStruggleAlert}
+								currentStruggleCount={currentStruggleCount}
+								currentTopic={currentQuestion.topic}
+								isChecked={isChecked}
+								onDismissStruggle={onDismissStruggle}
+							/>
+						</m.div>
+					</AnimatePresence>
 
-					{isChecked && isMCQ && (
-						<AnswerBreakdown
-							correctAnswer={correctAnswerText}
-							selectedAnswer={selectedAnswerText}
-							isCorrect={isCorrect ?? false}
-							topic={currentQuestion.topic}
-						/>
-					)}
+					<AnimatePresence mode="wait">
+						{isChecked && isMCQ && (
+							<m.div
+								key={`breakdown-${questionKey}`}
+								initial={{ opacity: 0, y: 12, scale: 0.97 }}
+								animate={{ opacity: 1, y: 0, scale: 1 }}
+								exit={{ opacity: 0, y: -8, scale: 0.98 }}
+								transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+							>
+								<AnswerBreakdown
+									correctAnswer={correctAnswerText}
+									selectedAnswer={selectedAnswerText}
+									isCorrect={isCorrect ?? false}
+									topic={currentQuestion.topic}
+								/>
+							</m.div>
+						)}
 
-					{isChecked && isShortAnswer(currentQuestion) && (
-						<ShortAnswerFeedback
-							isCorrect={isCorrect ?? false}
-							feedback={shortAnswerFeedback}
-							correctAnswer={correctAnswerText}
-						/>
-					)}
+						{isChecked && isShortAnswer(currentQuestion) && (
+							<m.div
+								key={`sa-feedback-${questionKey}`}
+								initial={{ opacity: 0, y: 12, scale: 0.97 }}
+								animate={{ opacity: 1, y: 0, scale: 1 }}
+								exit={{ opacity: 0, y: -8, scale: 0.98 }}
+								transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+							>
+								<ShortAnswerFeedback
+									isCorrect={isCorrect ?? false}
+									feedback={shortAnswerFeedback}
+									correctAnswer={correctAnswerText}
+								/>
+							</m.div>
+						)}
+					</AnimatePresence>
 				</div>
 			</div>
 
