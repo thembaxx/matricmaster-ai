@@ -185,7 +185,7 @@ Generate exactly 15-20 blocks for the week. dayOffset 0 = Monday.`;
 				subject: s.subject as string | undefined,
 				topic: s.topic as string | undefined,
 			},
-			reason: (s.reason as string) || 'AI recommendation',
+			reason: (s.reason as string) || 'Recommended for you',
 			confidence: (s.confidence as number) || 0.7,
 		}));
 

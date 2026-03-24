@@ -1,15 +1,8 @@
 'use client';
 
-import { Download } from 'lucide-react';
+import { Download, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
-import {
-	Dialog,
-	DialogContent,
-	DialogDescription,
-	DialogHeader,
-	DialogTitle,
-} from '@/components/ui/dialog';
 
 export function IOSInstallPrompt() {
 	const [showPrompt, setShowPrompt] = useState(false);
@@ -38,46 +31,32 @@ export function IOSInstallPrompt() {
 	if (!showPrompt || dismissed) return null;
 
 	return (
-		<Dialog open={showPrompt} onOpenChange={setShowPrompt}>
-			<DialogContent className="sm:max-w-md">
-				<DialogHeader>
-					<DialogTitle className="flex items-center gap-2">
-						<Download className="h-5 w-5" />
-						Add Lumi to Your Home Screen
-					</DialogTitle>
-					<DialogDescription className="pt-2">
-						For the best experience, add Lumi to your home screen to use it like a native app.
-					</DialogDescription>
-				</DialogHeader>
-
-				<div className="space-y-4 py-4">
-					<div className="rounded-lg bg-muted p-4 space-y-3">
-						<p className="text-sm font-medium">Follow these steps:</p>
-						<ol className="text-sm text-muted-foreground space-y-2 list-decimal list-inside">
-							<li>
-								Tap the <span className="font-medium text-foreground">Share</span> button in the
-								Safari toolbar
-							</li>
-							<li>
-								Scroll down and tap{' '}
-								<span className="font-medium text-foreground">Add to Home Screen</span>
-							</li>
-							<li>
-								Tap <span className="font-medium text-foreground">Add</span> to confirm
-							</li>
-						</ol>
-					</div>
-
-					<div className="flex gap-2">
-						<Button variant="outline" className="flex-1" onClick={handleDismiss}>
-							Not now
-						</Button>
-						<Button className="flex-1" onClick={handleDismiss}>
-							Got it
-						</Button>
-					</div>
+		<div className="fixed top-4 left-4 right-4 z-50 md:left-auto md:right-auto md:w-auto animate-in slide-in-from-top duration-300">
+			<div className="bg-card/95 backdrop-blur-sm border border-border/60 rounded-lg shadow-md px-3 py-2 flex items-center gap-3">
+				<div className="flex-1 min-w-0">
+					<p className="text-xs font-medium">Add to Home Screen</p>
+					<p className="text-xs text-muted-foreground hidden sm:block">Tap Share in Safari</p>
 				</div>
-			</DialogContent>
-		</Dialog>
+				<div className="flex items-center gap-1.5">
+					<Button
+						size="sm"
+						variant="default"
+						onClick={handleDismiss}
+						className="shrink-0 text-xs h-7 px-2"
+					>
+						<Download className="h-3 w-3 mr-1" />
+						Got it
+					</Button>
+					<Button
+						size="sm"
+						variant="ghost"
+						onClick={handleDismiss}
+						className="shrink-0 h-7 w-7 p-0"
+					>
+						<X className="h-3 w-3" />
+					</Button>
+				</div>
+			</div>
+		</div>
 	);
 }
