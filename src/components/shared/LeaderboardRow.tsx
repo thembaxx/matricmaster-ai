@@ -102,7 +102,7 @@ export const LeaderboardRow = memo(function LeaderboardRow({
 				>
 					{entry.userName}
 					{isCurrentUser && (
-						<span className="ml-2 text-[9px] sm:text-[10px] font-black uppercase bg-primary-orange text-white px-2 py-0.5 rounded-full">
+						<span className="ml-2 text-[9px] sm:text-[10px] font-black  bg-primary-orange text-white px-2 py-0.5 rounded-full">
 							You
 						</span>
 					)}
@@ -110,7 +110,7 @@ export const LeaderboardRow = memo(function LeaderboardRow({
 				{showDetails && (
 					<p
 						className={cn(
-							'font-black uppercase tracking-widest flex items-center gap-1 sm:gap-2',
+							'font-black  tracking-widest flex items-center gap-1 sm:gap-2',
 							compact ? 'text-[9px] sm:text-[10px]' : 'text-[10px] sm:text-[11px]',
 							'text-muted-foreground'
 						)}
@@ -154,7 +154,7 @@ export const LeaderboardRow = memo(function LeaderboardRow({
 						<div className="w-1 h-1 rounded-full bg-accent-lime" />
 						<p
 							className={cn(
-								'text-[8px] sm:text-[9px] font-black text-accent-lime uppercase tracking-widest'
+								'text-[8px] sm:text-[9px] font-black text-accent-lime  tracking-widest'
 							)}
 						>
 							{entry.accuracyPercentage}% accuracy

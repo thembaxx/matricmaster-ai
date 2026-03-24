@@ -28,16 +28,14 @@ export function HeroStatisticsCard({
 				<div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center relative z-10">
 					<div className="space-y-6">
 						<div className="space-y-1">
-							<p className="text-xs font-black uppercase tracking-[0.4em] opacity-80">
-								Matric Master
-							</p>
-							<h2 className="text-4xl sm:text-5xl lg:text-8xl font-black tracking-tighter uppercase leading-none">
+							<p className="text-xs font-black  tracking-[0.4em] opacity-80">Matric Master</p>
+							<h2 className="text-4xl sm:text-5xl lg:text-8xl font-black tracking-tighter  leading-none">
 								Level {masteryLevel}
 							</h2>
 						</div>
 
 						<div className="space-y-4">
-							<div className="flex items-center justify-between text-sm font-black uppercase tracking-widest">
+							<div className="flex items-center justify-between text-sm font-black  tracking-widest">
 								<span>Mastery Progress</span>
 								<span>{Math.round(progress)}%</span>
 							</div>

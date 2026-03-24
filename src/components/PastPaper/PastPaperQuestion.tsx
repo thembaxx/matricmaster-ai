@@ -54,7 +54,7 @@ export function PastPaperQuestion({
 					<Badge className="bg-brand-blue text-white rounded-lg px-3 py-1.5 text-[10px]">
 						QUESTION {currentQuestion.questionNumber}
 					</Badge>
-					<p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
+					<p className="text-[10px] font-bold text-muted-foreground  tracking-wider">
 						({currentQuestion.marks} marks)
 					</p>
 				</div>

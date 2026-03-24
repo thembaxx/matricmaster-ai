@@ -124,7 +124,7 @@ export const RecentAchievements = memo(function RecentAchievements({
 					<HugeiconsIcon icon={ChampionIcon} className="w-5 h-5 text-brand-amber" />
 					<h3 className="text-lg font-black text-foreground tracking-tight">Recent Achievements</h3>
 				</div>
-				<Badge variant="secondary" className="text-[10px] font-black uppercase tracking-wider">
+				<Badge variant="secondary" className="text-[10px] font-black  tracking-wider">
 					View All
 				</Badge>
 			</div>
@@ -150,7 +150,7 @@ export const RecentAchievements = memo(function RecentAchievements({
 									{achievement.name}
 								</span>
 								{achievement.isNew && (
-									<Badge className="text-[8px] font-black uppercase tracking-wider bg-brand-amber text-zinc-900 h-4 px-1.5">
+									<Badge className="text-[8px] font-black  tracking-wider bg-brand-amber text-zinc-900 h-4 px-1.5">
 										New
 									</Badge>
 								)}

@@ -24,7 +24,7 @@ export function SnapAndSolveImageUploader({
 				<HugeiconsIcon icon={Camera01Icon} className="w-12 h-12" />
 			</div>
 			<div className="space-y-2">
-				<h3 className="text-xl font-black uppercase tracking-tight">Snap your question</h3>
+				<h3 className="text-xl font-black  tracking-tight">Snap your question</h3>
 				<p className="text-sm text-muted-foreground font-medium">
 					Take a clear photo of any textbook or handwritten question.
 				</p>
@@ -39,7 +39,7 @@ export function SnapAndSolveImageUploader({
 			/>
 			<Button
 				onClick={() => fileInputRef.current?.click()}
-				className="rounded-full px-8 h-14 font-black uppercase text-xs tracking-widest shadow-xl shadow-primary/20"
+				className="rounded-full px-8 h-14 font-black  text-xs tracking-widest shadow-xl shadow-primary/20"
 			>
 				Open Camera
 			</Button>

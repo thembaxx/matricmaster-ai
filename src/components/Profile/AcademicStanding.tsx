@@ -16,9 +16,7 @@ export function AcademicStanding({ userStats }: AcademicStandingProps) {
 
 	return (
 		<div className="space-y-8">
-			<h3 className="text-xl font-black text-foreground tracking-tighter uppercase">
-				Academic Standing
-			</h3>
+			<h3 className="text-xl font-black text-foreground tracking-tighter">academic standing</h3>
 
 			<Card className="p-8 rounded-3xl border border-border bg-card/50 backdrop-blur-sm">
 				<LevelProgress totalXp={userStats.totalXp} variant="full" showTitle />
@@ -31,11 +29,11 @@ export function AcademicStanding({ userStats }: AcademicStandingProps) {
 							<HugeiconsIcon icon={GraduationCap} className="w-10 h-10 text-primary-violet" />
 						</div>
 						<div className="space-y-1">
-							<p className="text-[10px] font-black text-label-tertiary uppercase tracking-[0.3em]">
-								Total Knowledge
+							<p className="text-[10px] font-black text-label-tertiary tracking-[0.3em]">
+								total knowledge
 							</p>
 							<h4 className="text-4xl font-black text-foreground tracking-tighter">
-								{userStats.totalQuestions} Questions
+								{userStats.totalQuestions} questions
 							</h4>
 						</div>
 					</div>
@@ -47,11 +45,11 @@ export function AcademicStanding({ userStats }: AcademicStandingProps) {
 							<HugeiconsIcon icon={Target01Icon} className="w-10 h-10 text-accent-lime" />
 						</div>
 						<div className="space-y-1">
-							<p className="text-[10px] font-black text-label-tertiary uppercase tracking-[0.3em]">
-								Precision Rate
+							<p className="text-[10px] font-black text-label-tertiary tracking-[0.3em]">
+								precision rate
 							</p>
 							<h4 className="text-4xl font-black text-foreground tracking-tighter">
-								{userStats.accuracy}% Accuracy
+								{userStats.accuracy}% accuracy
 							</h4>
 						</div>
 					</div>
@@ -66,11 +64,11 @@ export function AcademicStanding({ userStats }: AcademicStandingProps) {
 							/>
 						</div>
 						<div className="space-y-1">
-							<p className="text-[10px] font-black text-label-tertiary uppercase tracking-[0.3em]">
-								Active Momentum
+							<p className="text-[10px] font-black text-label-tertiary tracking-[0.3em]">
+								active momentum
 							</p>
 							<h4 className="text-4xl font-black text-foreground tracking-tighter">
-								{userStats.streak} Day Streak
+								{userStats.streak} day streak
 							</h4>
 						</div>
 					</div>
@@ -82,11 +80,11 @@ export function AcademicStanding({ userStats }: AcademicStandingProps) {
 							<HugeiconsIcon icon={Medal01Icon} className="w-10 h-10 text-primary-violet" />
 						</div>
 						<div className="space-y-1">
-							<p className="text-[10px] font-black text-label-tertiary uppercase tracking-[0.3em]">
-								Mastery Unlocked
+							<p className="text-[10px] font-black text-label-tertiary tracking-[0.3em]">
+								mastery unlocked
 							</p>
-							<h4 className="text-2xl font-black text-foreground tracking-tighter uppercase">
-								{userStats.achievementsUnlocked} Master Badges
+							<h4 className="text-2xl font-black text-foreground tracking-tighter">
+								{userStats.achievementsUnlocked} master badges
 							</h4>
 						</div>
 					</div>

@@ -184,21 +184,19 @@ export function KnowledgeHeatmap({
 				<div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
 					<div className="bg-tiimo-green/10 p-3 rounded-xl text-center">
 						<p className="text-2xl font-black text-tiimo-green">{stats.mastered}</p>
-						<p className="text-[10px] uppercase tracking-wider text-muted-foreground">Exam Ready</p>
+						<p className="text-[10px]  tracking-wider text-muted-foreground">Exam Ready</p>
 					</div>
 					<div className="bg-tiimo-lavender/10 p-3 rounded-xl text-center">
 						<p className="text-2xl font-black text-tiimo-lavender">{stats.inProgress}</p>
-						<p className="text-[10px] uppercase tracking-wider text-muted-foreground">Learning</p>
+						<p className="text-[10px]  tracking-wider text-muted-foreground">Learning</p>
 					</div>
 					<div className="bg-tiimo-yellow/10 p-3 rounded-xl text-center">
 						<p className="text-2xl font-black text-tiimo-yellow">{stats.needsAttention}</p>
-						<p className="text-[10px] uppercase tracking-wider text-muted-foreground">Need Work</p>
+						<p className="text-[10px]  tracking-wider text-muted-foreground">Need Work</p>
 					</div>
 					<div className="bg-muted/50 p-3 rounded-xl text-center">
 						<p className="text-2xl font-black text-muted-foreground">{stats.notStarted}</p>
-						<p className="text-[10px] uppercase tracking-wider text-muted-foreground">
-							Not Started
-						</p>
+						<p className="text-[10px]  tracking-wider text-muted-foreground">Not Started</p>
 					</div>
 				</div>
 

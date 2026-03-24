@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { QUIZ_DATA } from '@/constants/quiz-data';
+import { handleApiError } from '@/lib/api-error-handler';
 import type { PastPaper } from '@/lib/db/schema';
 
 // Helper to convert Quiz Data to PastPaper format for search results
@@ -23,7 +24,7 @@ function mapQuizDataToPastPapers(query: string): PastPaper[] {
 				id: key,
 				paperId: key,
 				subject: data.subject,
-				paper: `Paper ${data.paper}`,
+				paper: `paper ${data.paper}`,
 				year: data.year,
 				month: data.session,
 				originalPdfUrl: '#', // Placeholder
@@ -43,14 +44,18 @@ function mapQuizDataToPastPapers(query: string): PastPaper[] {
 }
 
 export async function GET(request: Request) {
-	const { searchParams } = new URL(request.url);
-	const query = searchParams.get('q');
+	try {
+		const { searchParams } = new URL(request.url);
+		const query = searchParams.get('q');
 
-	if (!query) {
-		return NextResponse.json({ results: [] });
+		if (!query) {
+			return NextResponse.json({ results: [] });
+		}
+
+		const results = mapQuizDataToPastPapers(query);
+
+		return NextResponse.json({ results });
+	} catch (error) {
+		return handleApiError(error);
 	}
-
-	const results = mapQuizDataToPastPapers(query);
-
-	return NextResponse.json({ results });
 }

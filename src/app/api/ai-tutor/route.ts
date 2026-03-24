@@ -8,6 +8,7 @@ import {
 } from '@/lib/ai/citations';
 import { isStaticFAQ, routeAIQuestionServer } from '@/lib/ai/router';
 import { AI_MODELS, generateAI, streamAI } from '@/lib/ai-config';
+import { handleApiError } from '@/lib/api-error-handler';
 import { getAuth } from '@/lib/auth';
 import { getCachedAIResponse, hashString } from '@/lib/cache/ai-cache';
 import { checkRateLimit, getRateLimitHeaders } from '@/lib/rate-limit';
@@ -77,7 +78,7 @@ Remember: Your goal is to help students succeed in their Matric exams!`;
 
 const suggestionsPrompt = `Based on the student's question and the tutor's response, suggest 2-3 relevant follow-up questions the student might want to ask next. 
 Return ONLY a JSON array of 2-3 short, specific questions as strings. No explanation, no markdown, just the JSON array.
-Examples: ["Can you explain the chain rule?", "Show me a practice problem", "What are common mistakes here?"]`;
+Examples: ["can you explain the chain rule?", "show me a practice problem", "what are common mistakes here?"]`;
 
 export async function POST(request: NextRequest) {
 	try {
@@ -87,7 +88,7 @@ export async function POST(request: NextRequest) {
 		});
 
 		if (!session?.user?.id) {
-			return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+			return NextResponse.json({ error: 'unauthorized' }, { status: 401 });
 		}
 
 		const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
@@ -95,7 +96,7 @@ export async function POST(request: NextRequest) {
 		if (!rateLimitResult.success) {
 			return NextResponse.json(
 				{
-					error: `Rate limit exceeded. Please try again in ${rateLimitResult.resetIn} seconds.`,
+					error: `rate limit exceeded. please try again in ${rateLimitResult.resetIn} seconds.`,
 					retryAfter: rateLimitResult.resetIn,
 				},
 				{
@@ -106,10 +107,7 @@ export async function POST(request: NextRequest) {
 		}
 
 		if (!GEMINI_API_KEY) {
-			return NextResponse.json(
-				{ error: 'AI service not configured. Please set GEMINI_API_KEY.' },
-				{ status: 500 }
-			);
+			return NextResponse.json({ error: 'ai service not configured' }, { status: 500 });
 		}
 
 		const body: RequestBody = await request.json();
@@ -124,7 +122,7 @@ export async function POST(request: NextRequest) {
 		} = body;
 
 		if (!message || message.trim().length === 0) {
-			return NextResponse.json({ error: 'Message is required' }, { status: 400 });
+			return NextResponse.json({ error: 'message is required' }, { status: 400 });
 		}
 
 		if (isStaticFAQ(message)) {
@@ -136,7 +134,7 @@ export async function POST(request: NextRequest) {
 					cached: true,
 				});
 			} catch (error) {
-				console.debug('Cache failed, continuing with AI generation:', error);
+				console.debug('cache failed, continuing with ai generation', error);
 			}
 		}
 
@@ -149,13 +147,13 @@ export async function POST(request: NextRequest) {
 		if (history && history.length > 0) {
 			const recentHistory = history.slice(-10);
 			for (const msg of recentHistory) {
-				conversationContext += `${msg.role === 'assistant' ? 'Assistant' : 'Student'}: ${msg.content}\n`;
+				conversationContext += `${msg.role === 'assistant' ? 'assistant' : 'student'}: ${msg.content}\n`;
 			}
 		}
 
 		const contextualMessage = subject
-			? `[Subject: ${subject}] Student asks: ${message}`
-			: `Student asks: ${message}`;
+			? `[subject: ${subject}] student asks: ${message}`
+			: `student asks: ${message}`;
 
 		conversationContext += `\n${contextualMessage}`;
 
@@ -182,7 +180,7 @@ export async function POST(request: NextRequest) {
 								prompt: conversationContext,
 								model: AI_MODELS.PRIMARY,
 							});
-							if (!result) throw new Error('AI generation failed');
+							if (!result) throw new Error('ai generation failed');
 							return result;
 						},
 						{
@@ -191,7 +189,7 @@ export async function POST(request: NextRequest) {
 						}
 					);
 				} catch (error) {
-					console.warn('Cache retrieval failed, generating new response:', error);
+					console.warn('cache retrieval failed, generating new response', error);
 					return await generateAI({
 						prompt: conversationContext,
 						model: AI_MODELS.PRIMARY,
@@ -208,7 +206,7 @@ export async function POST(request: NextRequest) {
 			if (!includeSuggestions) return [];
 			try {
 				const suggestionsResult = await generateAI({
-					prompt: `${suggestionsPrompt}\n\nStudent asked: "${message}"\nTutor responded: "${responseText.slice(0, 500)}..."`,
+					prompt: `${suggestionsPrompt}\n\nstudent asked: "${message}"\ntutor responded: "${responseText.slice(0, 500)}..."`,
 					model: AI_MODELS.PRIMARY,
 				});
 
@@ -217,7 +215,7 @@ export async function POST(request: NextRequest) {
 					return JSON.parse(jsonMatch[0]);
 				}
 			} catch (error) {
-				console.warn('Failed to generate suggestions:', error);
+				console.warn('failed to generate suggestions', error);
 			}
 			return [];
 		};
@@ -271,9 +269,9 @@ export async function POST(request: NextRequest) {
 				id: 'ai-tutor',
 				source: {
 					id: 'ai-generated',
-					name: 'AI-Generated Explanation',
+					name: 'ai-generated explanation',
 					type: 'ai-generated',
-					description: 'Generated by AI tutor based on curriculum knowledge',
+					description: 'generated by ai tutor based on curriculum knowledge',
 				},
 				confidence: 0.75,
 				confidenceLevel: 'medium',
@@ -289,7 +287,7 @@ export async function POST(request: NextRequest) {
 		]);
 
 		if (!response) {
-			return NextResponse.json({ error: 'Failed to generate response' }, { status: 500 });
+			throw new Error('failed to generate response');
 		}
 
 		const citations = await generateCitations(response, subject ?? null);
@@ -300,10 +298,6 @@ export async function POST(request: NextRequest) {
 			citations,
 		});
 	} catch (error) {
-		console.debug('AI Tutor Error:', error);
-		return NextResponse.json(
-			{ error: 'An error occurred while processing your request' },
-			{ status: 500 }
-		);
+		return handleApiError(error);
 	}
 }

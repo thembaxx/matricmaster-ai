@@ -48,8 +48,8 @@ function FocusScreenContent() {
 
 	if (!lesson)
 		return (
-			<div className="flex items-center justify-center h-screen uppercase font-black tracking-widest animate-pulse">
-				Loading Lesson...
+			<div className="flex items-center justify-center h-screen font-black tracking-widest animate-pulse">
+				loading lesson...
 			</div>
 		);
 
@@ -61,18 +61,18 @@ function FocusScreenContent() {
 				</Button>
 				<div className="flex items-center gap-2 bg-muted/50 px-4 py-2 rounded-full border border-border/50">
 					<div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-					<span className="text-[10px] font-black uppercase tracking-widest">
-						Focusing: {lesson.topic}
+					<span className="text-[10px] font-black tracking-widest">
+						focusing: {lesson.topic.toLowerCase()}
 					</span>
 				</div>
 				<Button
 					variant="outline"
 					size="sm"
 					onClick={() => setViewMode(viewMode === 'timer' ? 'content' : 'timer')}
-					className="rounded-full font-black uppercase text-[10px] gap-2 h-10 px-4"
+					className="rounded-full font-black text-[10px] gap-2 h-10 px-4"
 				>
 					<HugeiconsIcon icon={BookOpen01Icon} className="w-4 h-4" />
-					{viewMode === 'timer' ? 'Show Lesson' : 'Show Timer'}
+					{viewMode === 'timer' ? 'show lesson' : 'show timer'}
 				</Button>
 			</header>
 

@@ -23,7 +23,7 @@ export function QuestionOptionsTab({
 	return (
 		<div className="space-y-6">
 			<div className="flex items-center justify-between mb-4">
-				<Label className="font-black text-xs uppercase tracking-widest text-muted-foreground">
+				<Label className="font-black text-xs  tracking-widest text-muted-foreground">
 					Answer Possibilities
 				</Label>
 				<Button
@@ -31,7 +31,7 @@ export function QuestionOptionsTab({
 					variant="outline"
 					size="sm"
 					onClick={addOption}
-					className="rounded-xl h-10 px-4 font-black text-[10px] uppercase tracking-widest border-2"
+					className="rounded-xl h-10 px-4 font-black text-[10px]  tracking-widest border-2"
 				>
 					<HugeiconsIcon icon={Add01Icon} className="h-4 w-4 mr-2" /> Add
 				</Button>
@@ -56,7 +56,7 @@ export function QuestionOptionsTab({
 								/>
 								<Label
 									htmlFor={`correct-${idx}`}
-									className="text-[10px] font-black uppercase tracking-widest text-muted-foreground cursor-pointer"
+									className="text-[10px] font-black  tracking-widest text-muted-foreground cursor-pointer"
 								>
 									Correct
 								</Label>

@@ -23,7 +23,7 @@ export function SubjectTabs({ subjects, activeSubject, onSubjectChange }: Subjec
 					type="button"
 					variant="ghost"
 					onClick={() => onSubjectChange(sub.id)}
-					className={`px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider whitespace-nowrap transition-all ${
+					className={`px-3 py-1.5 rounded-lg text-[10px] font-bold  tracking-wider whitespace-nowrap transition-all ${
 						activeSubject === sub.id
 							? 'bg-primary text-primary-foreground shadow-md'
 							: 'text-muted-foreground hover:text-foreground'

@@ -1,8 +1,16 @@
 import { and, eq, gte, sql } from 'drizzle-orm';
 import { type NextRequest, NextResponse } from 'next/server';
 import { getAuth } from '@/lib/auth';
-import { dbManager } from '@/lib/db';
+import { type DbType, dbManager } from '@/lib/db';
 import { conceptStruggles, questionAttempts, questions, topicConfidence } from '@/lib/db/schema';
+
+async function getDb(): Promise<DbType> {
+	const connected = await dbManager.waitForConnection(3, 2000);
+	if (!connected) {
+		throw new Error('Database not available');
+	}
+	return (await dbManager.getDb()) as DbType;
+}
 
 export async function GET(request: NextRequest) {
 	try {
@@ -15,8 +23,7 @@ export async function GET(request: NextRequest) {
 			return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 		}
 
-		await dbManager.initialize();
-		const db = dbManager.getDb();
+		const db = await getDb();
 
 		const thirtyDaysAgo = new Date();
 		thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);

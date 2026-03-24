@@ -23,7 +23,7 @@ export function PriorityList({
 	return (
 		<Card className="md:col-span-2 shadow-tiimo border-border/50">
 			<CardHeader>
-				<CardTitle className="text-lg font-black uppercase tracking-tight flex items-center gap-2">
+				<CardTitle className="text-lg font-black  tracking-tight flex items-center gap-2">
 					<HugeiconsIcon icon={Flag01Icon} className="w-5 h-5 text-destructive" />
 					Priority Focus (Big Rocks)
 				</CardTitle>
@@ -40,9 +40,7 @@ export function PriorityList({
 									<div className="w-2 h-2 rounded-full bg-primary" />
 									<div>
 										<p className="font-bold text-sm">{item.title}</p>
-										<p className="text-[10px] font-black text-muted-foreground uppercase">
-											General Focus
-										</p>
+										<p className="text-[10px] font-black text-muted-foreground ">General Focus</p>
 									</div>
 								</div>
 								<span className="text-[10px] font-black px-2 py-1 rounded-full bg-destructive/10 text-destructive">
@@ -51,7 +49,7 @@ export function PriorityList({
 							</div>
 						))
 					) : (
-						<p className="py-8 text-center text-muted-foreground text-sm font-bold uppercase tracking-widest">
+						<p className="py-8 text-center text-muted-foreground text-sm font-bold  tracking-widest">
 							No priority tasks yet.
 						</p>
 					)}
@@ -74,7 +72,7 @@ export function PriorityList({
 					<Button
 						onClick={onStartAdding}
 						variant="ghost"
-						className="w-full mt-4 font-black uppercase text-[10px] tracking-widest"
+						className="w-full mt-4 font-black  text-[10px] tracking-widest"
 					>
 						Add Priority Task
 					</Button>

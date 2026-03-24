@@ -204,9 +204,7 @@ export default function Bookmarks() {
 										</div>
 
 										<div>
-											<p
-												className={`text-[10px] font-bold mb-1 uppercase tracking-wide ${colors.color}`}
-											>
+											<p className={`text-[10px] font-bold mb-1  tracking-wide ${colors.color}`}>
 												{bookmark.bookmarkType}
 											</p>
 											<h3 className="text-sm font-bold leading-tight mb-1">

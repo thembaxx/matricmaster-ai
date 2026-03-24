@@ -1,8 +1,8 @@
 import { eq } from 'drizzle-orm';
 import { type DbType, pgManager } from './postgresql-manager';
-import * as schema from './schema';
 import { type SqliteDbType, sqliteManager } from './sqlite-manager';
 import * as sqliteSchema from './sqlite-schema';
+import { syncTableRegistry } from './sync/registry';
 import type { ActiveDatabase, SyncQueueItem, SyncResult } from './sync/types';
 
 class DatabaseManagerV2 {
@@ -30,7 +30,7 @@ class DatabaseManagerV2 {
 		this.initPromise = (async () => {
 			try {
 				if (options?.forceSQLite) {
-					console.warn('⚠️ Force initializing with SQLite...');
+					console.warn('⚠️ force initializing with sqlite...');
 					const sqliteConnected = await sqliteManager.connect();
 					this.activeDatabase = sqliteConnected ? 'sqlite' : 'none';
 					return;
@@ -39,14 +39,14 @@ class DatabaseManagerV2 {
 				const pgConnected = await pgManager.waitForConnection(5, 3000);
 				if (pgConnected) {
 					this.activeDatabase = 'postgresql';
-					console.log('📀 PostgreSQL is primary database');
+					console.log('📀 postgresql is primary database');
 				} else {
-					console.warn('⚠️ PostgreSQL unavailable, initializing SQLite...');
+					console.warn('⚠️ postgresql unavailable, initializing sqlite...');
 					const sqliteConnected = await sqliteManager.connect();
 					this.activeDatabase = sqliteConnected ? 'sqlite' : 'none';
 				}
 			} catch (error) {
-				console.debug('❌ Database initialization failed:', error);
+				console.debug('❌ database initialization failed:', error);
 				const sqliteConnected = await sqliteManager.connect();
 				this.activeDatabase = sqliteConnected ? 'sqlite' : 'none';
 			}
@@ -59,7 +59,7 @@ class DatabaseManagerV2 {
 		try {
 			return pgManager.isConnectedToDatabase();
 		} catch (error) {
-			console.warn('Failed to check PostgreSQL connection:', error);
+			console.warn('failed to check postgresql connection:', error);
 			return false;
 		}
 	}
@@ -72,22 +72,29 @@ class DatabaseManagerV2 {
 		return this.activeDatabase;
 	}
 
-	public getDb(): DbType | SqliteDbType {
+	public getDb(): DbType {
 		if (this.activeDatabase === 'postgresql' && this.isPostgreSQLConnected()) {
 			return pgManager.getDb();
 		}
-		return sqliteManager.getDb();
+		return pgManager.getDb();
+	}
+
+	public async getDbRaw(): Promise<DbType | SqliteDbType> {
+		if (this.activeDatabase === 'postgresql' && this.isPostgreSQLConnected()) {
+			return pgManager.getDb();
+		}
+		return await sqliteManager.getDb();
 	}
 
 	/**
 	 * Returns a database instance that automatically handles sync metadata when using SQLite.
 	 */
-	public getSmartDb(): DbType | SqliteDbType {
-		const db = this.getDb();
+	public async getSmartDb(): Promise<DbType> {
+		const db = await this.getDbRaw();
 		const activeDb = this.activeDatabase;
 
 		if (activeDb !== 'sqlite') {
-			return db;
+			return db as DbType;
 		}
 
 		return new Proxy(db, {
@@ -141,7 +148,7 @@ class DatabaseManagerV2 {
 
 				return typeof value === 'function' ? value.bind(target) : value;
 			},
-		}) as any;
+		}) as unknown as DbType;
 	}
 
 	public getPgDb(): DbType | null {
@@ -151,8 +158,8 @@ class DatabaseManagerV2 {
 		return null;
 	}
 
-	public getSqliteDb(): SqliteDbType {
-		return sqliteManager.getDb();
+	public async getSqliteDb(): Promise<SqliteDbType> {
+		return await sqliteManager.getDb();
 	}
 
 	public async checkPostgreSQLHealth(): Promise<boolean> {
@@ -164,7 +171,7 @@ class DatabaseManagerV2 {
 			await client`SELECT 1`;
 			return true;
 		} catch (error) {
-			console.warn('PostgreSQL health check failed:', error);
+			console.warn('postgresql health check failed:', error);
 			return false;
 		}
 	}
@@ -173,12 +180,12 @@ class DatabaseManagerV2 {
 		const pgHealthy = await this.checkPostgreSQLHealth();
 
 		if (pgHealthy && this.activeDatabase !== 'postgresql') {
-			console.log('🔄 PostgreSQL recovered, switching from SQLite...');
+			console.log('🔄 postgresql recovered, switching from sqlite...');
 			await this.syncFromSQLite();
 			this.activeDatabase = 'postgresql';
-			console.log('✅ Switched back to PostgreSQL');
+			console.log('✅ switched back to postgresql');
 		} else if (!pgHealthy && this.activeDatabase === 'postgresql') {
-			console.warn('⚠️ PostgreSQL connection lost, failing over to SQLite...');
+			console.warn('⚠️ postgresql connection lost, failing over to sqlite...');
 			await sqliteManager.connect();
 			this.activeDatabase = 'sqlite';
 		}
@@ -189,7 +196,7 @@ class DatabaseManagerV2 {
 	public async addToSyncQueue(
 		item: Omit<SyncQueueItem, 'id' | 'timestamp' | 'retryCount' | 'status'>
 	): Promise<void> {
-		const sqliteDb = sqliteManager.getDb();
+		const sqliteDb = await sqliteManager.getDb();
 		const id = crypto.randomUUID();
 		const timestamp = Date.now();
 
@@ -206,7 +213,7 @@ class DatabaseManagerV2 {
 	}
 
 	public async getSyncQueueSize(): Promise<number> {
-		const sqliteDb = sqliteManager.getDb();
+		const sqliteDb = await sqliteManager.getDb();
 		const result = await sqliteDb
 			.select()
 			.from(sqliteSchema.sqliteSyncQueue)
@@ -220,7 +227,7 @@ class DatabaseManagerV2 {
 				success: false,
 				syncedCount: 0,
 				failedCount: 0,
-				errors: ['Sync already in progress'],
+				errors: ['sync already in progress'],
 			};
 		}
 
@@ -228,7 +235,7 @@ class DatabaseManagerV2 {
 		const result: SyncResult = { success: true, syncedCount: 0, failedCount: 0, errors: [] };
 
 		try {
-			const sqliteDb = sqliteManager.getDb();
+			const sqliteDb = await sqliteManager.getDb();
 			const pgDb = pgManager.getDb();
 
 			const pendingItems = await sqliteDb
@@ -258,7 +265,7 @@ class DatabaseManagerV2 {
 					result.syncedCount++;
 				} catch (error) {
 					result.failedCount++;
-					result.errors.push(`Failed to sync ${item.tableName}/${item.recordId}: ${error}`);
+					result.errors.push(`failed to sync ${item.tableName}/${item.recordId}: ${error}`);
 
 					if (item.retryCount >= 3) {
 						await sqliteDb
@@ -278,10 +285,10 @@ class DatabaseManagerV2 {
 				.delete(sqliteSchema.sqliteSyncQueue)
 				.where(eq(sqliteSchema.sqliteSyncQueue.status, 'synced'));
 
-			console.log(`🔄 Sync complete: ${result.syncedCount} synced, ${result.failedCount} failed`);
+			console.log(`🔄 sync complete: ${result.syncedCount} synced, ${result.failedCount} failed`);
 		} catch (error) {
 			result.success = false;
-			result.errors.push(`Sync error: ${error}`);
+			result.errors.push(`sync error: ${error}`);
 		} finally {
 			this.syncInProgress = false;
 		}
@@ -295,147 +302,54 @@ class DatabaseManagerV2 {
 		data: Record<string, unknown>,
 		pgDb: DbType
 	): Promise<void> {
-		const timestamp = new Date().toISOString();
-
-		switch (tableName) {
-			case 'users':
-				await pgDb
-					.insert(schema.user)
-					.values({
-						id: recordId,
-						name: data.name as string,
-						email: data.email as string,
-						emailVerified: data.emailVerified as boolean,
-						image: data.image as string | null,
-						role: data.role as string,
-						isBlocked: data.isBlocked as boolean,
-						twoFactorEnabled: data.twoFactorEnabled as boolean,
-						hasCompletedOnboarding: data.hasCompletedOnboarding as boolean,
-						school: (data as { school?: string }).school as string | null,
-						avatarId: (data as { avatarId?: string }).avatarId as string | null,
-						deletedAt: data.deletedAt ? new Date(data.deletedAt as string) : null,
-						createdAt: new Date(data.createdAt as string),
-						updatedAt: new Date(timestamp),
-					})
-					.onConflictDoUpdate({
-						target: schema.user.id,
-						set: {
-							name: data.name as string,
-							email: data.email as string,
-							emailVerified: data.emailVerified as boolean,
-							image: data.image as string | null,
-							role: data.role as string,
-							isBlocked: data.isBlocked as boolean,
-							twoFactorEnabled: data.twoFactorEnabled as boolean,
-							hasCompletedOnboarding: data.hasCompletedOnboarding as boolean,
-							school: (data as { school?: string }).school as string | null,
-							avatarId: (data as { avatarId?: string }).avatarId as string | null,
-							deletedAt: data.deletedAt ? new Date(data.deletedAt as string) : null,
-							updatedAt: new Date(timestamp),
-						},
-					});
-				break;
-
-			case 'sessions':
-				await pgDb
-					.insert(schema.session)
-					.values({
-						id: recordId,
-						expiresAt: new Date(data.expiresAt as string),
-						token: data.token as string,
-						createdAt: new Date(data.createdAt as string),
-						updatedAt: new Date(timestamp),
-						ipAddress: (data as { ipAddress?: string }).ipAddress as string | null,
-						userAgent: (data as { userAgent?: string }).userAgent as string | null,
-						userId: data.userId as string,
-					})
-					.onConflictDoUpdate({
-						target: schema.session.id,
-						set: {
-							expiresAt: new Date(data.expiresAt as string),
-							token: data.token as string,
-							updatedAt: new Date(timestamp),
-							ipAddress: (data as { ipAddress?: string }).ipAddress as string | null,
-							userAgent: (data as { userAgent?: string }).userAgent as string | null,
-						},
-					});
-				break;
-
-			case 'accounts':
-				await pgDb
-					.insert(schema.account)
-					.values({
-						id: recordId,
-						accountId: data.accountId as string,
-						providerId: data.providerId as string,
-						userId: data.userId as string,
-						accessToken: (data as { accessToken?: string }).accessToken as string | null,
-						refreshToken: (data as { refreshToken?: string }).refreshToken as string | null,
-						idToken: (data as { idToken?: string }).idToken as string | null,
-						accessTokenExpiresAt: data.accessTokenExpiresAt
-							? new Date(data.accessTokenExpiresAt as string)
-							: null,
-						refreshTokenExpiresAt: data.refreshTokenExpiresAt
-							? new Date(data.refreshTokenExpiresAt as string)
-							: null,
-						scope: (data as { scope?: string }).scope as string | null,
-						password: (data as { password?: string }).password as string | null,
-						createdAt: new Date(data.createdAt as string),
-						updatedAt: new Date(timestamp),
-					})
-					.onConflictDoUpdate({
-						target: schema.account.id,
-						set: {
-							accessToken: (data as { accessToken?: string }).accessToken as string | null,
-							refreshToken: (data as { refreshToken?: string }).refreshToken as string | null,
-							idToken: (data as { idToken?: string }).idToken as string | null,
-							accessTokenExpiresAt: data.accessTokenExpiresAt
-								? new Date(data.accessTokenExpiresAt as string)
-								: null,
-							refreshTokenExpiresAt: data.refreshTokenExpiresAt
-								? new Date(data.refreshTokenExpiresAt as string)
-								: null,
-							scope: (data as { scope?: string }).scope as string | null,
-							updatedAt: new Date(timestamp),
-						},
-					});
-				break;
-
-			case 'verifications':
-				await pgDb
-					.insert(schema.verification)
-					.values({
-						id: recordId,
-						identifier: data.identifier as string,
-						value: data.value as string,
-						expiresAt: new Date(data.expiresAt as string),
-						createdAt: data.createdAt ? new Date(data.createdAt as string) : new Date(),
-					})
-					.onConflictDoNothing();
-				break;
+		const mapping = syncTableRegistry.find((m) => m.tableName === tableName);
+		if (!mapping) {
+			console.warn(`⚠️ no sync mapping found for table: ${tableName}`);
+			return;
 		}
+
+		const timestamp = new Date();
+
+		// Normalize data for Drizzle (e.g. string dates to Date objects)
+		const normalizedData: any = { ...data };
+
+		// Ensure the ID is set correctly
+		normalizedData[mapping.idColumn] = recordId;
+
+		for (const key in normalizedData) {
+			if (
+				key.endsWith('At') ||
+				key.endsWith('Time') ||
+				key === 'expiresAt' ||
+				key === 'periodStart'
+			) {
+				if (normalizedData[key] && typeof normalizedData[key] === 'string') {
+					normalizedData[key] = new Date(normalizedData[key]);
+				}
+			}
+		}
+
+		// Ensure updatedAt reflects the sync time
+		if (mapping.pgTable.updatedAt) {
+			normalizedData.updatedAt = timestamp;
+		}
+
+		await pgDb.insert(mapping.pgTable).values(normalizedData).onConflictDoUpdate({
+			target: mapping.pgTable[mapping.idColumn],
+			set: normalizedData,
+		});
 	}
 
 	private async syncDelete(tableName: string, recordId: string, pgDb: DbType): Promise<void> {
-		switch (tableName) {
-			case 'users':
-				await pgDb.delete(schema.user).where(eq(schema.user.id, recordId));
-				break;
-			case 'sessions':
-				await pgDb.delete(schema.session).where(eq(schema.session.id, recordId));
-				break;
-			case 'accounts':
-				await pgDb.delete(schema.account).where(eq(schema.account.id, recordId));
-				break;
-			case 'verifications':
-				await pgDb.delete(schema.verification).where(eq(schema.verification.id, recordId));
-				break;
-		}
+		const mapping = syncTableRegistry.find((m) => m.tableName === tableName);
+		if (!mapping) return;
+
+		await pgDb.delete(mapping.pgTable).where(eq(mapping.pgTable[mapping.idColumn], recordId));
 	}
 
 	public forceFailover(): void {
 		this.activeDatabase = 'sqlite';
-		console.warn('⚠️ Force failover to SQLite');
+		console.warn('⚠️ force failover to sqlite');
 	}
 
 	public async forceFailback(): Promise<void> {
@@ -443,9 +357,9 @@ class DatabaseManagerV2 {
 		if (pgHealthy) {
 			await this.syncFromSQLite();
 			this.activeDatabase = 'postgresql';
-			console.log('✅ Force failback to PostgreSQL');
+			console.log('✅ force failback to postgresql');
 		} else {
-			console.warn('⚠️ Cannot failback - PostgreSQL not healthy');
+			console.warn('⚠️ cannot failback - postgresql not healthy');
 		}
 	}
 }

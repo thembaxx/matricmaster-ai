@@ -34,7 +34,7 @@ export const DailyQuestCard = memo(function DailyQuestCard({
 							animate={{ x: 0, opacity: 1 }}
 							className="inline-flex items-center px-3 py-1 bg-primary/10 rounded-full"
 						>
-							<span className="text-[10px] font-black text-primary uppercase tracking-wider lg:text-xs">
+							<span className="text-[10px] font-black text-primary  tracking-wider lg:text-xs">
 								Daily Quest
 							</span>
 						</m.div>
@@ -56,7 +56,7 @@ export const DailyQuestCard = memo(function DailyQuestCard({
 
 				<div className="space-y-4 relative z-10">
 					<div className="flex justify-between items-end">
-						<span className="text-xs font-black text-foreground opacity-60 uppercase tracking-widest">
+						<span className="text-xs font-black text-foreground opacity-60  tracking-widest">
 							{totalQuestions} / 100 QUESTIONS
 						</span>
 						<span className="text-sm font-black text-primary">{dailyProgress}%</span>

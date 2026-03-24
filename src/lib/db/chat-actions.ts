@@ -4,11 +4,9 @@
 import { and, desc, eq } from 'drizzle-orm';
 import { AblyChannels } from '../ably/channel-names';
 import { publishToChannel } from '../ably/client';
-import { dbManager } from './index';
+import { getDb } from './index';
 import { channelMembers } from './schema';
 import { chatMessages, outbox, userPresence } from './schema-chat';
-
-const getDb = () => dbManager.getDb();
 
 export type ChatActionResult<T = void> =
 	| { success: true; message: T }
@@ -16,7 +14,7 @@ export type ChatActionResult<T = void> =
 
 export async function hasAccessToChannel(userId: string, channelId: string): Promise<boolean> {
 	try {
-		const db = getDb();
+		const db = await getDb();
 		const [membership] = await db
 			.select()
 			.from(channelMembers)
@@ -37,7 +35,7 @@ export async function sendMessage(
 	messageType: 'text' | 'image' | 'file' = 'text',
 	replyToId?: string
 ): Promise<ChatActionResult<any>> {
-	const db = getDb();
+	const db = await getDb();
 	const id = crypto.randomUUID();
 
 	try {
@@ -86,7 +84,7 @@ export async function getChannelMessages(
 		beforeId?: string;
 	}
 ) {
-	const db = getDb();
+	const db = await getDb();
 	const limit = options?.limit || 50;
 
 	try {
@@ -117,7 +115,7 @@ export async function editMessage(
 	userId: string,
 	content: string
 ): Promise<ChatActionResult<any>> {
-	const db = getDb();
+	const db = await getDb();
 
 	try {
 		const [existing] = await db
@@ -167,7 +165,7 @@ export async function deleteMessage(
 	messageId: string,
 	userId: string
 ): Promise<ChatActionResult<any>> {
-	const db = getDb();
+	const db = await getDb();
 
 	try {
 		const [existing] = await db
@@ -217,7 +215,7 @@ export async function updateUserPresence(
 	userId: string,
 	status: 'online' | 'away' | 'offline'
 ): Promise<ChatActionResult<any>> {
-	const db = getDb();
+	const db = await getDb();
 
 	try {
 		const [presence] = await db
@@ -259,7 +257,7 @@ export async function updateUserPresence(
 }
 
 export async function getChannelPresence(channelId: string) {
-	const db = getDb();
+	const db = await getDb();
 
 	try {
 		const members = await db

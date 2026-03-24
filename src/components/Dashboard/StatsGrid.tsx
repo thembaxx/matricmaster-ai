@@ -68,7 +68,7 @@ export function StatsGrid({ streak, accuracy, totalMarks, questionsAttempted }: 
 				className="p-6 bg-card rounded-2xl border border-border/50 shadow-tiimo"
 			>
 				<div className="text-3xl font-black text-tiimo-yellow">{streak}</div>
-				<div className="text-xs font-bold text-muted-foreground uppercase tracking-wider mt-1">
+				<div className="text-xs font-bold text-muted-foreground  tracking-wider mt-1">
 					Day Streak
 				</div>
 			</m.div>
@@ -80,9 +80,7 @@ export function StatsGrid({ streak, accuracy, totalMarks, questionsAttempted }: 
 				className="p-6 bg-card rounded-2xl border border-border/50 shadow-tiimo"
 			>
 				<div className="text-3xl font-black text-tiimo-lavender">{accuracy}%</div>
-				<div className="text-xs font-bold text-muted-foreground uppercase tracking-wider mt-1">
-					Accuracy
-				</div>
+				<div className="text-xs font-bold text-muted-foreground  tracking-wider mt-1">Accuracy</div>
 			</m.div>
 
 			<m.div
@@ -92,7 +90,7 @@ export function StatsGrid({ streak, accuracy, totalMarks, questionsAttempted }: 
 				className="p-6 bg-card rounded-2xl border border-border/50 shadow-tiimo"
 			>
 				<div className="text-3xl font-black text-tiimo-green">{totalMarks}</div>
-				<div className="text-xs font-bold text-muted-foreground uppercase tracking-wider mt-1">
+				<div className="text-xs font-bold text-muted-foreground  tracking-wider mt-1">
 					Total Marks
 				</div>
 			</m.div>
@@ -104,7 +102,7 @@ export function StatsGrid({ streak, accuracy, totalMarks, questionsAttempted }: 
 				className="p-6 bg-card rounded-2xl border border-border/50 shadow-tiimo"
 			>
 				<div className="text-3xl font-black text-tiimo-blue">{questionsAttempted}</div>
-				<div className="text-xs font-bold text-muted-foreground uppercase tracking-wider mt-1">
+				<div className="text-xs font-bold text-muted-foreground  tracking-wider mt-1">
 					Questions
 				</div>
 			</m.div>

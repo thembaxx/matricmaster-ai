@@ -11,7 +11,7 @@ interface SubjectCardsProps {
 export function SubjectCards({ cards }: SubjectCardsProps) {
 	return (
 		<section>
-			<h2 className="text-sm font-semibold text-muted-foreground mb-4 uppercase tracking-wider">
+			<h2 className="text-sm font-semibold text-muted-foreground mb-4  tracking-wider">
 				Or choose a subject
 			</h2>
 			<div className="grid grid-cols-2 gap-3">

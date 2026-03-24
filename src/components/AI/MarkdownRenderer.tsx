@@ -37,7 +37,7 @@ function CodeBlock({ children, className }: { children: React.ReactNode; classNa
 						<div className="w-2 h-2 rounded-full bg-amber-400/50" />
 						<div className="w-2 h-2 rounded-full bg-green-400/50" />
 					</div>
-					<span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/70 font-mono ml-2">
+					<span className="text-[10px] font-black  tracking-widest text-muted-foreground/70 font-mono ml-2">
 						{language || 'code'}
 					</span>
 				</div>
@@ -52,7 +52,7 @@ function CodeBlock({ children, className }: { children: React.ReactNode; classNa
 					) : (
 						<HugeiconsIcon icon={CopyIcon} className="h-3.5 w-3.5" />
 					)}
-					<span className="ml-2 text-[10px] font-black uppercase tracking-widest">
+					<span className="ml-2 text-[10px] font-black  tracking-widest">
 						{copied ? 'Copied!' : 'Copy'}
 					</span>
 				</Button>

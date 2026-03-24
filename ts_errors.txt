@@ -1,1 +1,6 @@
 $ tsc --noEmit
+.next/dev/types/routes.d.ts(238,1): error TS1434: Unexpected keyword or identifier.
+.next/dev/types/routes.d.ts(238,39): error TS1005: ';' expected.
+.next/dev/types/routes.d.ts(241,1): error TS1128: Declaration or statement expected.
+.next/dev/types/validator.ts(1556,3): error TS1002: Unterminated string literal.
+.next/dev/types/validator.ts(1560,1): error TS1128: Declaration or statement expected.

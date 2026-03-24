@@ -1,5 +1,5 @@
 import { desc, eq } from 'drizzle-orm';
-import { dbManager } from './index';
+import { dbManager, getDb } from './index';
 import { type UserApsScore, userApsScores } from './schema';
 
 const GRADE_POINTS: Record<string, number> = {
@@ -17,7 +17,7 @@ export async function getUserApsScores(userId: string): Promise<UserApsScore[]> 
 	const connected = await dbManager.waitForConnection();
 	if (!connected) throw new Error('Database connection failed');
 
-	const db = await dbManager.getDb();
+	const db = await getDb();
 	return db
 		.select()
 		.from(userApsScores)
@@ -50,7 +50,7 @@ export async function upsertApsScore(
 	const connected = await dbManager.waitForConnection();
 	if (!connected) throw new Error('Database connection failed');
 
-	const db = await dbManager.getDb();
+	const db = await getDb();
 	const points = GRADE_POINTS[grade] ?? 0;
 
 	const [score] = await db

@@ -169,7 +169,7 @@ export function QuizContent({
 						className="rounded-full"
 						onClick={() => onModeChange('test')}
 					>
-						Test
+						test
 					</Button>
 					<Button
 						variant={mode === 'practice' ? 'default' : 'outline'}
@@ -177,11 +177,11 @@ export function QuizContent({
 						className="rounded-full"
 						onClick={() => onModeChange('practice')}
 					>
-						Practice
+						practice
 					</Button>
 				</div>
 				<Button variant="ghost" size="sm" className="rounded-full" onClick={onShowSubjectSelector}>
-					{currentSubject}
+					{currentSubject.toLowerCase()}
 				</Button>
 			</div>
 
@@ -313,11 +313,11 @@ export function QuizContent({
 								</div>
 								<div className="flex-1">
 									<p className="font-semibold text-foreground mb-1">
-										{isCorrect ? 'Correct!' : 'Not quite right'}
+										{isCorrect ? 'correct!' : 'not quite right'}
 									</p>
 									<p className="text-sm text-muted-foreground">{shortAnswerFeedback}</p>
 									<p className="text-xs text-muted-foreground mt-2">
-										Correct answer:{' '}
+										correct answer:{' '}
 										<span className="font-semibold text-foreground">{correctAnswerText}</span>
 									</p>
 								</div>

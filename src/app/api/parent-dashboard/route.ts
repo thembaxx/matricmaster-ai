@@ -1,7 +1,7 @@
 import { and, desc, eq, gte } from 'drizzle-orm';
 import { type NextRequest, NextResponse } from 'next/server';
 import { getAuth } from '@/lib/auth';
-import { dbManager } from '@/lib/db';
+import { type DbType, dbManager } from '@/lib/db';
 import {
 	calendarEvents,
 	flashcardReviews,
@@ -11,6 +11,14 @@ import {
 	topicMastery,
 	userProgress,
 } from '@/lib/db/schema';
+
+async function getDb(): Promise<DbType> {
+	const connected = await dbManager.waitForConnection(3, 2000);
+	if (!connected) {
+		throw new Error('Database not available');
+	}
+	return (await dbManager.getDb()) as DbType;
+}
 
 export async function GET(request: NextRequest) {
 	try {
@@ -24,12 +32,7 @@ export async function GET(request: NextRequest) {
 
 		const userId = session.user.id;
 
-		const connected = await dbManager.waitForConnection(3, 2000);
-		if (!connected) {
-			return NextResponse.json({ error: 'Database unavailable' }, { status: 503 });
-		}
-
-		const db = dbManager.getDb();
+		const db = await getDb();
 
 		const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
 		const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
@@ -92,9 +95,12 @@ export async function GET(request: NextRequest) {
 					0
 				) / 60;
 
-		const progress = await db.query.userProgress.findFirst({
-			where: eq(userProgress.userId, userId),
-		});
+		const progress = await db
+			.select()
+			.from(userProgress)
+			.where(eq(userProgress.userId, userId))
+			.limit(1)
+			.then((rows) => rows[0]);
 
 		const avgQuizScore =
 			recentQuizzes.length > 0

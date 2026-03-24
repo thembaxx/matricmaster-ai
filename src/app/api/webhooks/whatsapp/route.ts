@@ -1,9 +1,17 @@
 import { eq } from 'drizzle-orm';
 import { type NextRequest, NextResponse } from 'next/server';
 import { AI_MODELS, generateAI } from '@/lib/ai-config';
-import { db } from '@/lib/db';
+import { type DbType, dbManager } from '@/lib/db';
 import { whatsappPreferences } from '@/lib/db/schema';
 import { handleWhatsAppMessage, sendVerificationCode } from '@/services/whatsapp-service';
+
+async function getDb(): Promise<DbType> {
+	const connected = await dbManager.waitForConnection(3, 2000);
+	if (!connected) {
+		throw new Error('Database not available');
+	}
+	return (await dbManager.getDb()) as DbType;
+}
 
 const VERIFY_TOKEN = process.env.WHATSAPP_VERIFY_TOKEN;
 
@@ -64,6 +72,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
 export async function POST(request: NextRequest): Promise<NextResponse> {
 	try {
 		const body: WhatsAppWebhookBody = await request.json();
+		const db = await getDb();
 
 		for (const entry of body.entry) {
 			for (const change of entry.changes) {
@@ -233,9 +242,13 @@ Provide a brief study tip or motivation (under 200 characters) related to matric
 }
 
 async function verifyPhoneNumberWithPhone(phone: string, code: string): Promise<boolean> {
-	const prefs = await db.query.whatsappPreferences.findFirst({
-		where: eq(whatsappPreferences.phoneNumber, phone),
-	});
+	const db = await getDb();
+	const prefs = await db
+		.select()
+		.from(whatsappPreferences)
+		.where(eq(whatsappPreferences.phoneNumber, phone))
+		.limit(1)
+		.then((rows) => rows[0]);
 
 	if (!prefs) return false;
 
@@ -258,6 +271,7 @@ async function verifyPhoneNumberWithPhone(phone: string, code: string): Promise<
 }
 
 async function generateVerificationCodeByPhone(phone: string): Promise<string | null> {
+	const db = await getDb();
 	const code = Math.floor(100000 + Math.random() * 900000).toString();
 	const expires = new Date(Date.now() + 10 * 60 * 1000);
 
@@ -274,9 +288,13 @@ async function generateVerificationCodeByPhone(phone: string): Promise<string | 
 }
 
 async function getUserPreferencesByPhone(phone: string) {
-	return db.query.whatsappPreferences.findFirst({
-		where: eq(whatsappPreferences.phoneNumber, phone),
-	});
+	const db = await getDb();
+	return db
+		.select()
+		.from(whatsappPreferences)
+		.where(eq(whatsappPreferences.phoneNumber, phone))
+		.limit(1)
+		.then((rows) => rows[0]);
 }
 
 async function sendWhatsAppReply(to: string, message: string): Promise<void> {

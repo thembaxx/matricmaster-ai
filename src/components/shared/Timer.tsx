@@ -89,7 +89,7 @@ export function Timer({
 							type="button"
 							onClick={() => timer.setMode(m)}
 							className={cn(
-								'px-4 py-2 rounded-full text-xs font-black uppercase tracking-widest transition-all',
+								'px-4 py-2 rounded-full text-xs font-black  tracking-widest transition-all',
 								timer.mode === m
 									? `${MODE_BG_COLORS[m]} text-white`
 									: 'bg-muted text-muted-foreground hover:bg-muted/80'
@@ -137,7 +137,7 @@ export function Timer({
 					<span className={cn('font-black tracking-tighter tabular-nums', config.text, modeColor)}>
 						{timer.formatTime()}
 					</span>
-					<span className="text-xs font-black uppercase tracking-widest text-muted-foreground mt-1">
+					<span className="text-xs font-black  tracking-widest text-muted-foreground mt-1">
 						{MODE_LABELS[timer.mode]}
 					</span>
 				</div>
@@ -147,16 +147,14 @@ export function Timer({
 				<div className="flex items-center gap-6 text-center">
 					<div>
 						<p className="text-2xl font-black text-primary">{timer.cycles}</p>
-						<p className="text-[10px] uppercase tracking-widest text-muted-foreground">
-							Complete Cycles
-						</p>
+						<p className="text-[10px]  tracking-widest text-muted-foreground">Complete Cycles</p>
 					</div>
 					<div className="w-px h-8 bg-border" />
 					<div>
 						<p className="text-2xl font-black text-primary">
 							{Math.floor((timer.totalTime - timer.timeRemaining) / 60)}
 						</p>
-						<p className="text-[10px] uppercase tracking-widest text-muted-foreground">Minutes</p>
+						<p className="text-[10px]  tracking-widest text-muted-foreground">Minutes</p>
 					</div>
 				</div>
 			)}
@@ -181,7 +179,7 @@ export function Timer({
 							size="lg"
 							onClick={timer.isRunning ? timer.pause : timer.start}
 							className={cn(
-								'rounded-full px-8 font-black uppercase tracking-widest shadow-xl transition-all',
+								'rounded-full px-8 font-black  tracking-widest shadow-xl transition-all',
 								config.button,
 								timer.isRunning ? 'bg-tiimo-yellow text-white' : modeBgColor
 							)}

@@ -61,9 +61,9 @@ export function ProfileHeader({
 						<div className="space-y-2">
 							<label
 								htmlFor="displayName"
-								className="text-[10px] font-black uppercase text-muted-foreground tracking-widest ml-1"
+								className="text-[10px] font-black text-muted-foreground tracking-widest ml-1"
 							>
-								Display Name
+								display name
 							</label>
 							<input
 								id="displayName"
@@ -76,9 +76,9 @@ export function ProfileHeader({
 						<div className="space-y-2">
 							<label
 								htmlFor="school"
-								className="text-[10px] font-black uppercase text-muted-foreground tracking-widest ml-1"
+								className="text-[10px] font-black text-muted-foreground tracking-widest ml-1"
 							>
-								Current School
+								current school
 							</label>
 							<input
 								id="school"
@@ -90,8 +90,8 @@ export function ProfileHeader({
 							/>
 						</div>
 						<div className="pt-4">
-							<p className="text-[10px] font-black uppercase text-muted-foreground tracking-widest mb-4 ml-1">
-								Choose Mascot
+							<p className="text-[10px] font-black text-muted-foreground tracking-widest mb-4 ml-1">
+								choose mascot
 							</p>
 							<AvatarPicker
 								selectedId={editForm.avatarId}
@@ -104,32 +104,32 @@ export function ProfileHeader({
 								className="rounded-full flex-1 gap-2 h-12 shadow-xl shadow-primary/20"
 							>
 								<HugeiconsIcon icon={SaveIcon} className="w-4 h-4" />
-								Save Changes
+								save changes
 							</Button>
 							<Button
 								variant="ghost"
 								onClick={() => setIsEditing(false)}
 								className="rounded-full h-12"
 							>
-								Cancel
+								cancel
 							</Button>
 						</div>
 					</div>
 				) : (
 					<div className="space-y-2">
-						<h2 className="text-4xl font-black text-foreground tracking-tighter uppercase leading-none">
-							{user?.name || 'Matric Scholar'}
+						<h2 className="text-4xl font-black text-foreground tracking-tighter leading-none">
+							{user?.name?.toLowerCase() || 'matric scholar'}
 						</h2>
 						<div className="flex flex-wrap justify-center sm:justify-start gap-4">
 							<div className="flex items-center gap-2 text-muted-foreground font-bold">
 								<HugeiconsIcon icon={SchoolReportCardIcon} className="w-4 h-4" />
-								<span className="text-sm uppercase tracking-widest">
-									{user?.school || 'High School Student'}
+								<span className="text-sm tracking-widest">
+									{user?.school?.toLowerCase() || 'high school student'}
 								</span>
 							</div>
 							<div className="flex items-center gap-2 text-muted-foreground font-bold">
 								<HugeiconsIcon icon={Target01Icon} className="w-4 h-4" />
-								<span className="text-sm uppercase tracking-widest">Class of 2026</span>
+								<span className="text-sm tracking-widest">class of 2026</span>
 							</div>
 						</div>
 					</div>

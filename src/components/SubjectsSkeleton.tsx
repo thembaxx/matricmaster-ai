@@ -9,10 +9,10 @@ export function SubjectsSkeleton() {
 			<div className="flex items-center gap-4 mb-8">
 				<Skeleton className="h-10 w-10 rounded-full" />
 				<div>
-					<h1 className="text-4xl font-black tracking-tight text-foreground uppercase">
+					<h1 className="text-4xl font-black tracking-tight text-foreground ">
 						<Skeleton className="h-10 w-64 rounded-xl" />
 					</h1>
-					<div className="text-muted-foreground font-bold uppercase text-xs tracking-widest mt-1">
+					<div className="text-muted-foreground font-bold  text-xs tracking-widest mt-1">
 						<Skeleton className="h-3 w-48 rounded-full" />
 					</div>
 				</div>
@@ -25,10 +25,10 @@ export function SubjectsSkeleton() {
 						className="shadow-tiimo border-border/50 overflow-hidden flex flex-col"
 					>
 						<CardHeader className="bg-muted/30">
-							<CardTitle className="text-xl font-black uppercase tracking-tight">
+							<CardTitle className="text-xl font-black  tracking-tight">
 								<Skeleton className="h-6 w-40 rounded-full" />
 							</CardTitle>
-							<CardDescription className="text-xs font-bold uppercase tracking-wider">
+							<CardDescription className="text-xs font-bold  tracking-wider">
 								<Skeleton className="h-3 w-24 rounded-full" />
 							</CardDescription>
 						</CardHeader>

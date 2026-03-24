@@ -71,13 +71,13 @@ export const DoneButtons = memo(function DoneButtons({ onSnapAnother, onDone }: 
 		<div className="flex gap-3">
 			<Button
 				variant="outline"
-				className="flex-1 rounded-full h-14 font-black uppercase text-[10px] tracking-widest"
+				className="flex-1 rounded-full h-14 font-black  text-[10px] tracking-widest"
 				onClick={onSnapAnother}
 			>
 				Snap Another
 			</Button>
 			<Button
-				className="flex-1 rounded-full h-14 font-black uppercase text-[10px] tracking-widest shadow-xl shadow-primary/20"
+				className="flex-1 rounded-full h-14 font-black  text-[10px] tracking-widest shadow-xl shadow-primary/20"
 				onClick={onDone}
 			>
 				Done

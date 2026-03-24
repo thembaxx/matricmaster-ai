@@ -85,9 +85,7 @@ export const QuestionMeta = memo(function QuestionMeta({ icon, label }: Question
 	return (
 		<div className="flex items-center gap-3">
 			{icon}
-			<h3 className="text-[10px] font-black uppercase text-muted-foreground tracking-[0.2em]">
-				{label}
-			</h3>
+			<h3 className="text-[10px] font-black  text-muted-foreground tracking-[0.2em]">{label}</h3>
 		</div>
 	);
 });

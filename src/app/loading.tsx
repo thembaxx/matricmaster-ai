@@ -17,9 +17,7 @@ export default function Loading() {
 						style={{ animationDuration: '1.5s' }}
 					/>
 					<div className="flex flex-col items-center gap-2">
-						<p className="text-sm font-black uppercase tracking-[0.2em] text-foreground">
-							{appConfig.name}
-						</p>
+						<p className="text-sm font-black  tracking-[0.2em] text-foreground">{appConfig.name}</p>
 						<div className="flex gap-1">
 							<span
 								className="w-1 h-1 rounded-full bg-primary animate-pulse"

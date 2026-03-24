@@ -72,7 +72,7 @@ export function TipOfTheDay({ weakTopics = DEFAULT_WEAK_TOPICS }: TipOfTheDayPro
 	return (
 		<Card className="rounded-[2rem] border-border/50 shadow-tiimo overflow-hidden bg-gradient-to-br from-amber-500/10 to-orange-600/5">
 			<CardHeader className="p-6 pb-0">
-				<CardTitle className="text-xs font-semibold uppercase tracking-wider text-amber-600 flex items-center gap-2">
+				<CardTitle className="text-xs font-semibold  tracking-wider text-amber-600 flex items-center gap-2">
 					<HugeiconsIcon icon={Idea01Icon} className="w-4 h-4" />
 					Tip of the Day
 				</CardTitle>

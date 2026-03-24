@@ -34,7 +34,7 @@ export function ContinueLearningCard({
 				</div>
 				<div className="flex-1">
 					<h4 className="text-lg font-black text-foreground">{title}</h4>
-					<p className="text-xs text-label-secondary font-black uppercase tracking-wider leading-tight">
+					<p className="text-xs text-label-secondary font-black  tracking-wider leading-tight">
 						{subject} • {progress}% Complete
 					</p>
 				</div>

@@ -117,7 +117,8 @@ Student asks: ${message}`,
 }
 
 export async function isInQuietHours(userId: string): Promise<boolean> {
-	const prefs = await db.query.whatsappPreferences.findFirst({
+	const dbClient = await db();
+	const prefs = await dbClient.query.whatsappPreferences.findFirst({
 		where: eq(whatsappPreferences.userId, userId),
 	});
 
@@ -145,7 +146,8 @@ export async function sendStudyReminder(
 		const inQuiet = await isInQuietHours(userId);
 		if (inQuiet) return false;
 
-		const prefs = await db.query.whatsappPreferences.findFirst({
+		const dbClient = await db();
+		const prefs = await dbClient.query.whatsappPreferences.findFirst({
 			where: eq(whatsappPreferences.userId, userId),
 		});
 		if (!prefs?.notificationTypes?.includes('study_reminder')) return false;

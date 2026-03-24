@@ -75,8 +75,9 @@ export async function scheduleStudyReminder(
 	dayOfWeek?: number
 ): Promise<void> {
 	getNextScheduledTime(frequency, hour, minute, dayOfWeek);
+	const dbClient = await db();
 
-	await db
+	await dbClient
 		.insert(whatsappPreferences)
 		.values({
 			userId,
@@ -98,7 +99,8 @@ export async function scheduleStudyReminder(
 }
 
 export async function cancelReminder(userId: string): Promise<void> {
-	await db
+	const dbClient = await db();
+	await dbClient
 		.update(whatsappPreferences)
 		.set({
 			notificationTypes: [],
@@ -140,7 +142,11 @@ export async function updateReminderPreferences(
 		updates.quietHoursEnd = preferences.quietHoursEnd;
 	}
 
-	await db.update(whatsappPreferences).set(updates).where(eq(whatsappPreferences.userId, userId));
+	const dbClient = await db();
+	await dbClient
+		.update(whatsappPreferences)
+		.set(updates)
+		.where(eq(whatsappPreferences.userId, userId));
 }
 
 export async function processStudyReminders(): Promise<{
@@ -153,8 +159,9 @@ export async function processStudyReminders(): Promise<{
 	const currentMinute = now.getMinutes().toString().padStart(2, '0');
 	const currentTime = `${currentHour}:${currentMinute}`;
 	const currentDay = now.getDay().toString();
+	const dbClient = await db();
 
-	const usersToNotify = await db
+	const usersToNotify = await dbClient
 		.select()
 		.from(whatsappPreferences)
 		.where(
@@ -187,8 +194,9 @@ export async function processDailyTips(): Promise<{ sent: number; failed: number
 	const dayOfWeek = new Date().getDay();
 
 	if (dayOfWeek !== 0) return { sent: 0, failed: 0 };
+	const dbClient = await db();
 
-	const usersToNotify = await db
+	const usersToNotify = await dbClient
 		.select()
 		.from(whatsappPreferences)
 		.where(
@@ -219,7 +227,8 @@ export async function sendAchievementToBuddies(
 	achieverId: string,
 	achievement: { title: string; description: string; icon?: string }
 ): Promise<void> {
-	const buddies = await db
+	const dbClient = await db();
+	const buddies = await dbClient
 		.select({
 			buddyId: whatsappPreferences.userId,
 			phoneNumber: whatsappPreferences.phoneNumber,
@@ -247,7 +256,8 @@ export async function sendBuddyScoreUpdate(
 	score: number,
 	topic?: string
 ): Promise<void> {
-	const loserPrefs = await db.query.whatsappPreferences.findFirst({
+	const dbClient = await db();
+	const loserPrefs = await dbClient.query.whatsappPreferences.findFirst({
 		where: eq(whatsappPreferences.userId, loserId),
 	});
 
@@ -261,7 +271,8 @@ export async function sendBuddyScoreUpdate(
 }
 
 export async function getUserPreferences(userId: string): Promise<UserWithPhone | null> {
-	const prefs = await db.query.whatsappPreferences.findFirst({
+	const dbClient = await db();
+	const prefs = await dbClient.query.whatsappPreferences.findFirst({
 		where: eq(whatsappPreferences.userId, userId),
 	});
 
@@ -277,7 +288,8 @@ export async function getUserPreferences(userId: string): Promise<UserWithPhone 
 }
 
 export async function verifyPhoneNumber(userId: string, code: string): Promise<boolean> {
-	const prefs = await db.query.whatsappPreferences.findFirst({
+	const dbClient = await db();
+	const prefs = await dbClient.query.whatsappPreferences.findFirst({
 		where: and(
 			eq(whatsappPreferences.userId, userId),
 			eq(whatsappPreferences.verificationCode, code)
@@ -289,7 +301,7 @@ export async function verifyPhoneNumber(userId: string, code: string): Promise<b
 	const isExpired = prefs.verificationExpires && new Date(prefs.verificationExpires) < new Date();
 	if (isExpired) return false;
 
-	await db
+	await dbClient
 		.update(whatsappPreferences)
 		.set({
 			isVerified: true,
@@ -303,7 +315,8 @@ export async function verifyPhoneNumber(userId: string, code: string): Promise<b
 }
 
 export async function generateVerificationCode(userId: string): Promise<string | null> {
-	const prefs = await db.query.whatsappPreferences.findFirst({
+	const dbClient = await db();
+	const prefs = await dbClient.query.whatsappPreferences.findFirst({
 		where: eq(whatsappPreferences.userId, userId),
 	});
 
@@ -312,7 +325,7 @@ export async function generateVerificationCode(userId: string): Promise<string |
 	const code = Math.floor(100000 + Math.random() * 900000).toString();
 	const expires = new Date(Date.now() + 10 * 60 * 1000);
 
-	await db
+	await dbClient
 		.update(whatsappPreferences)
 		.set({
 			verificationCode: code,

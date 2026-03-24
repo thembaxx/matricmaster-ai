@@ -2,10 +2,18 @@ import { and, eq } from 'drizzle-orm';
 import { type NextRequest, NextResponse } from 'next/server';
 import { AnalyticsEvents, trackEvent } from '@/lib/analytics';
 import { getAuth } from '@/lib/auth';
-import { db } from '@/lib/db';
+import { type DbType, dbManager } from '@/lib/db';
 import { PLAN_TIERS, payments, subscriptionPlans, userSubscriptions } from '@/lib/db/schema';
 import { getEnv } from '@/lib/env';
 import { initializePayment, verifyPayment } from '@/lib/payments/paystack';
+
+async function getDb(): Promise<DbType> {
+	const connected = await dbManager.waitForConnection(3, 2000);
+	if (!connected) {
+		throw new Error('Database not available');
+	}
+	return (await dbManager.getDb()) as DbType;
+}
 
 export async function POST(request: NextRequest) {
 	try {
@@ -23,9 +31,14 @@ export async function POST(request: NextRequest) {
 
 		const appUrl = getEnv('NEXT_PUBLIC_APP_URL');
 
-		const plan = await db.query.subscriptionPlans.findFirst({
-			where: eq(subscriptionPlans.id, planId),
-		});
+		const db = await getDb();
+
+		const plan = await db
+			.select()
+			.from(subscriptionPlans)
+			.where(eq(subscriptionPlans.id, planId))
+			.limit(1)
+			.then((rows) => rows[0]);
 
 		if (!plan) {
 			return NextResponse.json({ error: 'Invalid plan' }, { status: 400 });
@@ -107,9 +120,14 @@ export async function GET(request: NextRequest) {
 	}
 
 	try {
-		const payment = await db.query.payments.findFirst({
-			where: eq(payments.paystackReference, reference),
-		});
+		const db = await getDb();
+
+		const payment = await db
+			.select()
+			.from(payments)
+			.where(eq(payments.paystackReference, reference))
+			.limit(1)
+			.then((rows) => rows[0]);
 
 		if (!payment) {
 			return NextResponse.redirect(new URL('/subscription?error=payment_not_found', request.url));

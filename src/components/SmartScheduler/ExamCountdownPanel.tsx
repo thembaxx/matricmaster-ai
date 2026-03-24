@@ -149,7 +149,7 @@ export function ExamCountdownPanel() {
 									)}
 								>
 									<span className="text-2xl font-bold leading-none">{exam.daysRemaining}</span>
-									<span className="text-[10px] font-medium uppercase tracking-wide">days</span>
+									<span className="text-[10px] font-medium  tracking-wide">days</span>
 								</div>
 							</div>
 							<div className="mt-2 h-1.5 rounded-full bg-muted overflow-hidden">

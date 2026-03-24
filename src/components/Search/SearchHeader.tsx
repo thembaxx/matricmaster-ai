@@ -64,7 +64,7 @@ export const SearchHeader = memo(function SearchHeader({
 							exit={{ opacity: 0, x: 10 }}
 							className="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none hidden sm:flex items-center gap-1.5"
 						>
-							<span className="text-[10px] font-black text-muted-foreground/50 uppercase tracking-widest">
+							<span className="text-[10px] font-black text-muted-foreground/50  tracking-widest">
 								Press
 							</span>
 							<kbd className="h-6 min-w-[24px] px-1.5 rounded-md border-2 border-muted-foreground/20 flex items-center justify-center bg-muted/50 text-[10px] font-black text-muted-foreground shadow-sm">

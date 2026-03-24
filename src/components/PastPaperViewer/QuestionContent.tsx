@@ -50,7 +50,7 @@ export function QuestionContent({
 					<Badge className="bg-brand-blue text-white rounded-lg px-3 py-1.5 text-[10px]">
 						QUESTION {question.questionNumber}
 					</Badge>
-					<p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
+					<p className="text-[10px] font-bold text-muted-foreground  tracking-wider">
 						({question.marks} marks)
 					</p>
 				</div>

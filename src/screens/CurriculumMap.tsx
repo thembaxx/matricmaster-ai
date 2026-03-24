@@ -109,14 +109,14 @@ export default function CurriculumMap() {
 					<HugeiconsIcon icon={ArrowLeft01Icon} className="w-5 h-5" />
 				</Button>
 				<h1 className="text-lg sm:text-xl font-black tracking-tight truncate px-2">
-					Curriculum Map
+					curriculum map
 				</h1>
 				<div className="flex gap-1 shrink-0">
 					<Button variant="ghost" size="sm" onClick={handleExpandAll} className="text-xs font-bold">
-						Expand
+						expand
 					</Button>
 					<Button variant="ghost" size="sm" onClick={collapseAll} className="text-xs font-bold">
-						Collapse
+						collapse
 					</Button>
 				</div>
 			</header>
@@ -142,10 +142,10 @@ export default function CurriculumMap() {
 			<ScrollArea className="flex-1">
 				<main className="px-4 sm:px-6 py-4 pb-40 max-w-4xl mx-auto w-full">
 					<div className="mb-2">
-						<h2 className="text-sm font-bold text-muted-foreground uppercase tracking-widest mb-1">
-							CAPS Grade 12
+						<h2 className="text-sm font-bold text-muted-foreground tracking-widest mb-1">
+							caps grade 12
 						</h2>
-						<p className="text-xs text-muted-foreground/70">Track your NSC syllabus progress</p>
+						<p className="text-xs text-muted-foreground/70">track your nsc syllabus progress</p>
 					</div>
 
 					<TopicFilters
@@ -159,8 +159,8 @@ export default function CurriculumMap() {
 					{filteredSubjects.length === 0 ? (
 						<div className="text-center py-12">
 							<div className="text-4xl mb-3">🔍</div>
-							<h3 className="font-bold text-lg mb-1">No topics found</h3>
-							<p className="text-sm text-muted-foreground">Try adjusting your search or filters</p>
+							<h3 className="font-bold text-lg mb-1">no topics found</h3>
+							<p className="text-sm text-muted-foreground">try adjusting your search or filters</p>
 						</div>
 					) : (
 						<div className="space-y-4">

@@ -37,9 +37,7 @@ export const StatsCards = memo(function StatsCards({ streak, accuracy }: StatsCa
 							>
 								{streak}
 							</m.span>
-							<span className="text-sm font-bold text-tiimo-gray-muted uppercase tracking-widest">
-								Days
-							</span>
+							<span className="text-sm font-bold text-tiimo-gray-muted  tracking-widest">Days</span>
 						</div>
 					</div>
 				</div>
@@ -68,7 +66,7 @@ export const StatsCards = memo(function StatsCards({ streak, accuracy }: StatsCa
 							>
 								{accuracy}
 							</m.span>
-							<span className="text-sm font-bold text-tiimo-gray-muted uppercase tracking-widest">
+							<span className="text-sm font-bold text-tiimo-gray-muted  tracking-widest">
 								Average
 							</span>
 						</div>

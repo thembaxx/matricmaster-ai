@@ -52,11 +52,11 @@ export const ChallengesList = memo(function ChallengesList() {
 	return (
 		<m.div variants={STAGGER_ITEM} className="space-y-6">
 			<div className="flex justify-between items-center">
-				<h3 className="text-xl font-black text-foreground tracking-tighter uppercase">Deep Work</h3>
+				<h3 className="text-xl font-black text-foreground tracking-tighter ">Deep Work</h3>
 				<Button
 					variant="ghost"
 					size="sm"
-					className="font-black text-[10px] uppercase tracking-widest text-primary"
+					className="font-black text-[10px]  tracking-widest text-primary"
 				>
 					View All
 				</Button>
@@ -80,7 +80,7 @@ export const ChallengesList = memo(function ChallengesList() {
 							</m.div>
 							<div className="space-y-1">
 								<h4 className="font-black text-sm text-foreground">{challenge.title}</h4>
-								<div className="flex items-center gap-2 text-[10px] font-black text-muted-foreground uppercase tracking-widest opacity-60">
+								<div className="flex items-center gap-2 text-[10px] font-black text-muted-foreground  tracking-widest opacity-60">
 									<div className="flex items-center gap-1">
 										<HugeiconsIcon icon={Clock01Icon} className="w-3 h-3" />
 										{challenge.time}

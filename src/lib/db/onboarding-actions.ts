@@ -3,12 +3,12 @@
 import { eq } from 'drizzle-orm';
 import { ensureAuthenticated } from './actions';
 import { users } from './better-auth-schema';
-import { dbManager } from './index';
+import { getDb } from './index';
 
 export async function completeOnboardingAction() {
 	try {
 		const user = await ensureAuthenticated();
-		const db = dbManager.getDb();
+		const db = await getDb();
 
 		await db
 			.update(users)

@@ -49,9 +49,7 @@ export function AiTutorHeader({
 						</h1>
 						<div className="flex items-center gap-2">
 							<span className="flex h-2 w-2 rounded-full bg-green-500 animate-pulse" />
-							<p className="text-xs font-bold text-muted-foreground uppercase tracking-widest">
-								Online
-							</p>
+							<p className="text-xs font-bold text-muted-foreground  tracking-widest">Online</p>
 						</div>
 					</div>
 				</div>

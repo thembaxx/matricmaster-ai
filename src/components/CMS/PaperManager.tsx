@@ -19,12 +19,12 @@ export function PaperManager({ papers }: PaperManagerProps) {
 					<CardContent className="p-6 space-y-6">
 						<div className="flex items-start justify-between">
 							<div className="flex flex-wrap gap-2">
-								<Badge className="rounded-lg uppercase tracking-widest text-[9px] font-black bg-primary/10 text-primary border-primary/20">
+								<Badge className="rounded-lg  tracking-widest text-[9px] font-black bg-primary/10 text-primary border-primary/20">
 									{p.year}
 								</Badge>
 								<Badge
 									variant="outline"
-									className="rounded-lg uppercase tracking-widest text-[9px] font-black"
+									className="rounded-lg  tracking-widest text-[9px] font-black"
 								>
 									{p.paper}
 								</Badge>
@@ -32,7 +32,7 @@ export function PaperManager({ papers }: PaperManagerProps) {
 						</div>
 
 						<div>
-							<h3 className="text-lg font-black text-foreground tracking-tighter uppercase line-clamp-1">
+							<h3 className="text-lg font-black text-foreground tracking-tighter  line-clamp-1">
 								{p.paperId}
 							</h3>
 							<p className="text-xs font-bold text-muted-foreground">{p.subject}</p>
@@ -40,20 +40,20 @@ export function PaperManager({ papers }: PaperManagerProps) {
 
 						<div className="pt-4 border-t border-border/50 flex items-center justify-between">
 							<div className="space-y-1">
-								<p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">
+								<p className="text-[10px] font-black text-muted-foreground  tracking-widest">
 									Status
 								</p>
 								<Badge
-									className={`rounded-lg uppercase tracking-widest text-[9px] font-black ${p.isExtracted ? 'bg-emerald-500/10 text-emerald-500' : 'bg-brand-amber/10 text-brand-amber'}`}
+									className={`rounded-lg  tracking-widest text-[9px] font-black ${p.isExtracted ? 'bg-emerald-500/10 text-emerald-500' : 'bg-brand-amber/10 text-brand-amber'}`}
 								>
 									{p.isExtracted ? 'Extracted' : 'Pending'}
 								</Badge>
 							</div>
 							<div className="text-right">
-								<p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">
+								<p className="text-[10px] font-black text-muted-foreground  tracking-widest">
 									Month
 								</p>
-								<p className="text-xs font-black text-foreground uppercase">{p.month}</p>
+								<p className="text-xs font-black text-foreground ">{p.month}</p>
 							</div>
 						</div>
 					</CardContent>

@@ -39,7 +39,7 @@ export default function ParentDashboard({ userName = 'Student' }: ParentDashboar
 				<Button variant="ghost" size="icon" onClick={() => router.back()} className="rounded-full">
 					<HugeiconsIcon icon={ArrowLeft01Icon} className="w-6 h-6" />
 				</Button>
-				<h1 className="text-xl font-black tracking-tight">Parent Portal</h1>
+				<h1 className="text-xl font-black tracking-tight">parent portal</h1>
 				<Button
 					variant="ghost"
 					size="icon"
@@ -58,8 +58,8 @@ export default function ParentDashboard({ userName = 'Student' }: ParentDashboar
 								<div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
 									<HugeiconsIcon icon={SparklesIcon} className="w-5 h-5 text-primary" />
 								</div>
-								<p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
-									AI Insight
+								<p className="text-[10px] font-bold text-muted-foreground tracking-widest">
+									ai insight
 								</p>
 							</div>
 							<p className="text-sm font-medium leading-relaxed">{data.insight}</p>

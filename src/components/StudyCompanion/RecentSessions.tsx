@@ -31,7 +31,7 @@ export function RecentSessions({
 	return (
 		<section>
 			<div className="flex items-center justify-between mb-4">
-				<h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
+				<h2 className="text-sm font-semibold text-muted-foreground  tracking-wider">
 					Recent sessions
 				</h2>
 				{isLive && <span className="text-xs text-primary font-medium">Live data</span>}

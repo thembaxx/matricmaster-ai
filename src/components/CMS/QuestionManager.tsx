@@ -76,7 +76,7 @@ export function QuestionManager({
 			>
 				<DrawerContent className="max-h-[90vh] flex flex-col z-50 rounded-t-[3rem] pb-8 lg:max-w-4xl lg:mx-auto">
 					<DrawerHeader className="text-left border-b pb-8 px-8">
-						<DrawerTitle className="text-3xl font-black tracking-tighter uppercase">
+						<DrawerTitle className="text-3xl font-black tracking-tighter ">
 							{state.editingQuestion?.id ? 'Edit Question' : 'New Question'}
 						</DrawerTitle>
 						<DrawerDescription className="font-bold">
@@ -91,19 +91,19 @@ export function QuestionManager({
 							<TabsList className="grid w-full grid-cols-3 h-12 bg-muted/50 p-1 rounded-xl">
 								<TabsTrigger
 									value="basic"
-									className="rounded-lg font-black text-[10px] uppercase tracking-widest"
+									className="rounded-lg font-black text-[10px]  tracking-widest"
 								>
 									Basic
 								</TabsTrigger>
 								<TabsTrigger
 									value="question"
-									className="rounded-lg font-black text-[10px] uppercase tracking-widest"
+									className="rounded-lg font-black text-[10px]  tracking-widest"
 								>
 									Content
 								</TabsTrigger>
 								<TabsTrigger
 									value="options"
-									className="rounded-lg font-black text-[10px] uppercase tracking-widest"
+									className="rounded-lg font-black text-[10px]  tracking-widest"
 								>
 									Options
 								</TabsTrigger>
@@ -151,7 +151,7 @@ export function QuestionManager({
 							<Button
 								variant="outline"
 								disabled={state.isSaving}
-								className="flex-1 h-14 rounded-2xl border-2 font-black uppercase tracking-widest text-xs"
+								className="flex-1 h-14 rounded-2xl border-2 font-black  tracking-widest text-xs"
 							>
 								Discard
 							</Button>
@@ -159,7 +159,7 @@ export function QuestionManager({
 						<Button
 							onClick={handleSaveQuestion}
 							disabled={!isFormValid() || state.isSaving}
-							className="flex-1 h-14 bg-primary hover:bg-primary/90 rounded-2xl font-black uppercase tracking-widest text-xs shadow-2xl shadow-primary/20"
+							className="flex-1 h-14 bg-primary hover:bg-primary/90 rounded-2xl font-black  tracking-widest text-xs shadow-2xl shadow-primary/20"
 						>
 							{state.isSaving ? (
 								<Spinner className="h-5 w-5 text-primary-foreground" />

@@ -88,7 +88,7 @@ export default function LanguageSelect() {
 									</div>
 									<div className="flex-1">
 										<p className="font-black text-foreground text-lg">{lang.name}</p>
-										<p className="text-xs font-bold text-muted-foreground uppercase tracking-widest">
+										<p className="text-xs font-bold text-muted-foreground  tracking-widest">
 											{lang.native}
 										</p>
 									</div>

@@ -63,7 +63,7 @@ export function QuizActions({
 						variant="outline"
 						size="lg"
 						disabled={disabled}
-						className="flex-1 rounded-[2rem] h-16 font-black uppercase tracking-widest text-[10px] bg-secondary border-none tiimo-press text-tiimo-gray-muted"
+						className="flex-1 rounded-[2rem] h-16 font-black  tracking-widest text-[10px] bg-secondary border-none tiimo-press text-tiimo-gray-muted"
 						onClick={onExit}
 					>
 						<HugeiconsIcon icon={Home01Icon} className="w-5 h-5 mr-2" />

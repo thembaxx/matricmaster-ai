@@ -31,7 +31,7 @@ export function PasswordInput({
 		<m.div variants={STAGGER_ITEM} className="space-y-2">
 			<Label
 				htmlFor="password"
-				className="text-xs font-bold text-label-primary uppercase tracking-wider ml-1"
+				className="text-xs font-bold text-label-primary  tracking-wider ml-1"
 			>
 				Create Password
 			</Label>

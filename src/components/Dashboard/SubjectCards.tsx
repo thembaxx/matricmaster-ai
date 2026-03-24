@@ -110,7 +110,7 @@ export function SubjectCards() {
 
 							<div className="mt-auto space-y-3">
 								<div className="flex justify-between items-center text-xs font-bold">
-									<span className="text-tiimo-gray-muted uppercase tracking-widest">
+									<span className="text-tiimo-gray-muted  tracking-widest">
 										{subject.topics} Topics
 									</span>
 									<span className="text-foreground">{subject.progress}%</span>
@@ -194,7 +194,7 @@ export function SubjectCards() {
 									<Card className="p-6 rounded-md bg-secondary/50 border-none shadow-none">
 										<div className="flex items-center gap-3 mb-2">
 											<HugeiconsIcon icon={Refresh01Icon} className="h-5 w-5 text-tiimo-lavender" />
-											<span className="text-[10px] font-black uppercase tracking-widest text-tiimo-gray-muted">
+											<span className="text-[10px] font-black  tracking-widest text-tiimo-gray-muted">
 												Last Study
 											</span>
 										</div>
@@ -203,7 +203,7 @@ export function SubjectCards() {
 									<Card className="p-6 rounded-md bg-secondary/50 border-none shadow-none">
 										<div className="flex items-center gap-3 mb-2">
 											<HugeiconsIcon icon={ChartBar} className="h-5 w-5 text-tiimo-green" />
-											<span className="text-[10px] font-black uppercase tracking-widest text-tiimo-gray-muted">
+											<span className="text-[10px] font-black  tracking-widest text-tiimo-gray-muted">
 												Mastery
 											</span>
 										</div>

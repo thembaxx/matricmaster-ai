@@ -24,7 +24,7 @@ export async function getWeakAreas(): Promise<{ topic: string; subject: string; 
 
 	try {
 		await dbManager.initialize();
-		const db = dbManager.getDb();
+		const db = await dbManager.getDb();
 		const confidence = await db.query.topicConfidence.findMany({
 			where: eq(topicConfidence.userId, session.user.id),
 			orderBy: [asc(topicConfidence.confidenceScore)],

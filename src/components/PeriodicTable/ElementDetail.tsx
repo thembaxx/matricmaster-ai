@@ -49,12 +49,12 @@ export function ElementDetailContent({
 				>
 					<span className="text-lg font-bold self-start ml-2 opacity-60">{element.num}</span>
 					<span className="text-4xl sm:text-5xl font-black">{element.sym}</span>
-					<span className="text-[8px] font-bold uppercase tracking-wider">{element.name}</span>
+					<span className="text-[8px] font-bold  tracking-wider">{element.name}</span>
 				</div>
 				<div className="flex-1 space-y-3">
 					<div>
 						<h2 className="text-2xl sm:text-3xl font-black tracking-tight">{element.name}</h2>
-						<p className="text-sm font-medium text-muted-foreground uppercase tracking-wider">
+						<p className="text-sm font-medium text-muted-foreground  tracking-wider">
 							{CATEGORY_LABELS[element.group] || element.category}
 						</p>
 					</div>

@@ -126,7 +126,7 @@ export const LevelProgress = memo(function LevelProgress({
 							<span className="text-xl font-black text-foreground">Level {info.level}</span>
 							{showTitle && (
 								<Badge
-									className="text-[9px] font-black uppercase tracking-wider"
+									className="text-[9px] font-black  tracking-wider"
 									style={{
 										backgroundColor: `${info.color}15`,
 										color: info.color,

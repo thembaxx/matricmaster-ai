@@ -42,17 +42,19 @@ export function ChannelList({ channels, onChannelClick }: ChannelListProps) {
 							{item.icon}
 						</div>
 						<div className="text-left">
-							<h4 className="font-black text-foreground uppercase tracking-tight">{item.title}</h4>
+							<h4 className="font-black text-foreground tracking-tight">
+								{item.title.toLowerCase()}
+							</h4>
 							<div className="flex items-center gap-2">
-								<div className="flex items-center gap-1 text-[10px] font-black text-label-tertiary uppercase tracking-widest">
+								<div className="flex items-center gap-1 text-[10px] font-black text-label-tertiary tracking-widest">
 									<HugeiconsIcon icon={UserGroupIcon} className="w-3 h-3" />
 									{item.info}
 								</div>
 								{item.tag && (
 									<>
 										<span className="w-1 h-1 rounded-full bg-border-strong" />
-										<span className="text-[10px] font-black text-success uppercase tracking-widest">
-											{item.tag}
+										<span className="text-[10px] font-black text-success tracking-widest">
+											{item.tag.toLowerCase()}
 										</span>
 									</>
 								)}
@@ -61,7 +63,7 @@ export function ChannelList({ channels, onChannelClick }: ChannelListProps) {
 					</div>
 					<div className="flex items-center gap-3">
 						{item.onlineCount > 0 && (
-							<span className="text-[10px] font-black text-success uppercase tracking-widest flex items-center gap-1">
+							<span className="text-[10px] font-black text-success tracking-widest flex items-center gap-1">
 								<span className="w-1.5 h-1.5 rounded-full bg-success animate-pulse" />
 								{item.onlineCount} online
 							</span>

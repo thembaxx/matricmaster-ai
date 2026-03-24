@@ -1,4 +1,5 @@
 import { type NextRequest, NextResponse } from 'next/server';
+import { handleApiError } from '@/lib/api-error-handler';
 import { getAuth } from '@/lib/auth';
 import {
 	createStudyPlanAction,
@@ -17,7 +18,7 @@ export async function GET(request: NextRequest) {
 		const auth = await getAuth();
 		const session = await auth.api.getSession({ headers: request.headers });
 		if (!session?.user?.id) {
-			return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+			return NextResponse.json({ error: 'unauthorized' }, { status: 401 });
 		}
 
 		const searchParams = request.nextUrl.searchParams;
@@ -31,8 +32,7 @@ export async function GET(request: NextRequest) {
 		const plans = await getStudyPlansAction(session.user.id);
 		return NextResponse.json({ success: true, data: plans });
 	} catch (error) {
-		console.debug('[API] Error fetching study plans:', error);
-		return NextResponse.json({ error: 'Failed to fetch study plans' }, { status: 500 });
+		return handleApiError(error);
 	}
 }
 
@@ -42,14 +42,14 @@ export async function POST(request: NextRequest) {
 		const auth = await getAuth();
 		const session = await auth.api.getSession({ headers: request.headers });
 		if (!session?.user?.id) {
-			return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+			return NextResponse.json({ error: 'unauthorized' }, { status: 401 });
 		}
 
 		const body = await request.json();
 		const { title, targetExamDate, focusAreas, weeklyGoals } = body;
 
 		if (!title) {
-			return NextResponse.json({ error: 'Missing required field: title' }, { status: 400 });
+			return NextResponse.json({ error: 'missing required field: title' }, { status: 400 });
 		}
 
 		// Validate and parse targetExamDate if provided
@@ -57,10 +57,7 @@ export async function POST(request: NextRequest) {
 		if (targetExamDate) {
 			parsedTargetExamDate = new Date(targetExamDate);
 			if (Number.isNaN(parsedTargetExamDate.getTime())) {
-				return NextResponse.json(
-					{ error: 'Invalid date format for targetExamDate' },
-					{ status: 400 }
-				);
+				return NextResponse.json({ error: 'invalid date format' }, { status: 400 });
 			}
 		}
 
@@ -73,16 +70,12 @@ export async function POST(request: NextRequest) {
 		);
 
 		if (!result.success) {
-			return NextResponse.json(
-				{ error: result.error || 'Failed to create study plan' },
-				{ status: 500 }
-			);
+			throw new Error(result.error || 'failed to create study plan');
 		}
 
 		return NextResponse.json({ success: true, data: result.plan });
 	} catch (error) {
-		console.debug('[API] Error creating study plan:', error);
-		return NextResponse.json({ error: 'Failed to create study plan' }, { status: 500 });
+		return handleApiError(error);
 	}
 }
 
@@ -92,14 +85,14 @@ export async function PUT(request: NextRequest) {
 		const auth = await getAuth();
 		const session = await auth.api.getSession({ headers: request.headers });
 		if (!session?.user?.id) {
-			return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+			return NextResponse.json({ error: 'unauthorized' }, { status: 401 });
 		}
 
 		const searchParams = request.nextUrl.searchParams;
 		const planId = searchParams.get('id');
 
 		if (!planId) {
-			return NextResponse.json({ error: 'Missing required parameter: id' }, { status: 400 });
+			return NextResponse.json({ error: 'missing required parameter: id' }, { status: 400 });
 		}
 
 		const body = await request.json();
@@ -114,10 +107,7 @@ export async function PUT(request: NextRequest) {
 			} else {
 				parsedTargetExamDate = new Date(targetExamDate);
 				if (Number.isNaN(parsedTargetExamDate.getTime())) {
-					return NextResponse.json(
-						{ error: 'Invalid date format for targetExamDate' },
-						{ status: 400 }
-					);
+					return NextResponse.json({ error: 'invalid date format' }, { status: 400 });
 				}
 			}
 		}
@@ -131,13 +121,12 @@ export async function PUT(request: NextRequest) {
 		});
 
 		if (!result.success) {
-			return NextResponse.json({ error: 'Failed to update study plan' }, { status: 500 });
+			throw new Error('failed to update study plan');
 		}
 
 		return NextResponse.json({ success: true, data: result.plan });
 	} catch (error) {
-		console.debug('[API] Error updating study plan:', error);
-		return NextResponse.json({ error: 'Failed to update study plan' }, { status: 500 });
+		return handleApiError(error);
 	}
 }
 
@@ -147,25 +136,24 @@ export async function DELETE(request: NextRequest) {
 		const auth = await getAuth();
 		const session = await auth.api.getSession({ headers: request.headers });
 		if (!session?.user?.id) {
-			return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+			return NextResponse.json({ error: 'unauthorized' }, { status: 401 });
 		}
 
 		const searchParams = request.nextUrl.searchParams;
 		const planId = searchParams.get('id');
 
 		if (!planId) {
-			return NextResponse.json({ error: 'Missing required parameter: id' }, { status: 400 });
+			return NextResponse.json({ error: 'missing required parameter: id' }, { status: 400 });
 		}
 
 		const result = await deleteStudyPlanAction(planId, session.user.id);
 
 		if (!result.success) {
-			return NextResponse.json({ error: 'Failed to delete study plan' }, { status: 500 });
+			throw new Error('failed to delete study plan');
 		}
 
 		return NextResponse.json({ success: true });
 	} catch (error) {
-		console.debug('[API] Error deleting study plan:', error);
-		return NextResponse.json({ error: 'Failed to delete study plan' }, { status: 500 });
+		return handleApiError(error);
 	}
 }

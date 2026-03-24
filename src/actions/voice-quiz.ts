@@ -2,15 +2,15 @@
 
 import { asc, eq } from 'drizzle-orm';
 import { getAuth } from '@/lib/auth';
-import { dbManager } from '@/lib/db';
+import { type DbType, dbManager } from '@/lib/db';
 import { topicConfidence } from '@/lib/db/schema';
 
 type TopicConfidenceRow = typeof topicConfidence.$inferSelect;
 
-async function getDb() {
+async function getDb(): Promise<DbType> {
 	const connected = await dbManager.waitForConnection(3, 2000);
 	if (!connected) throw new Error('Database not available');
-	return dbManager.getDb();
+	return await dbManager.getDb();
 }
 
 export interface QuizQuestion {

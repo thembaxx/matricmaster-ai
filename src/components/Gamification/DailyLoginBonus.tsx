@@ -104,7 +104,7 @@ export function DailyLoginBonus({ onClaimed }: DailyLoginBonusProps) {
 										</m.div>
 
 										<div className="text-center">
-											<p className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-1">
+											<p className="text-xs font-medium text-muted-foreground  tracking-wider mb-1">
 												Day {currentDay}
 											</p>
 											<h2 className="text-2xl font-bold tracking-tight">

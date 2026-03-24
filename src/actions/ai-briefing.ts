@@ -59,7 +59,7 @@ export async function generatePersonalizedBriefing(): Promise<BriefingData> {
 		return getDefaultBriefing();
 	}
 
-	const db = dbManager.getDb();
+	const db = await dbManager.getDb();
 
 	try {
 		const target = await db.query.universityTargets.findFirst({

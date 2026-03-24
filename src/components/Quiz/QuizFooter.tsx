@@ -100,7 +100,7 @@ export function QuizFooter({
 						size="lg"
 						disabled={disabled}
 						className={cn(
-							'flex-1 rounded-[2rem] h-16 font-black uppercase tracking-widest text-[10px] bg-secondary border-none text-muted-foreground'
+							'flex-1 rounded-[2rem] h-16 font-black  tracking-widest text-[10px] bg-secondary border-none text-muted-foreground'
 						)}
 						onClick={onExit}
 					>

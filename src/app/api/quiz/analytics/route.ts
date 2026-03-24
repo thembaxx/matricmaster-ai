@@ -1,4 +1,5 @@
 import { type NextRequest, NextResponse } from 'next/server';
+import { handleApiError } from '@/lib/api-error-handler';
 import { getAuth } from '@/lib/auth';
 import { getLearningStats } from '@/lib/db/adaptive-question-actions';
 
@@ -10,14 +11,13 @@ export async function GET(request: NextRequest) {
 		});
 
 		if (!session?.user?.id) {
-			return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+			return NextResponse.json({ error: 'unauthorized' }, { status: 401 });
 		}
 
 		const stats = await getLearningStats(session.user.id);
 
 		return NextResponse.json(stats);
 	} catch (error) {
-		console.debug('[Quiz Analytics API] Error:', error);
-		return NextResponse.json({ error: 'Failed to fetch analytics' }, { status: 500 });
+		return handleApiError(error);
 	}
 }

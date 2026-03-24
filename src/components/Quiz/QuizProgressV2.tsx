@@ -41,7 +41,7 @@ export function QuizProgress({ steps, progressPercent }: QuizProgressProps) {
 							)}
 						>
 							<HugeiconsIcon icon={step.icon} className="w-6 h-6" />
-							<span className="text-[9px] font-black uppercase tracking-widest">{step.title}</span>
+							<span className="text-[9px] font-black  tracking-widest">{step.title}</span>
 						</m.div>
 					);
 				})}

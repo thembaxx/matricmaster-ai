@@ -12,8 +12,8 @@ const ParentDashboardScreen = dynamic(() => import('@/screens/ParentDashboard'),
 });
 
 export const metadata: Metadata = {
-	title: `Parent Portal | ${appConfig.name} AI`,
-	description: 'Monitor student progress, study time, and academic performance.',
+	title: `parent portal | ${appConfig.name} ai`,
+	description: 'monitor student progress, study time, and academic performance.',
 };
 
 export default async function ParentDashboardPage() {
@@ -27,5 +27,5 @@ export default async function ParentDashboardPage() {
 		redirect('/sign-in?callbackUrl=/parent-dashboard');
 	}
 
-	return <ParentDashboardScreen userName={session.user.name || 'Student'} />;
+	return <ParentDashboardScreen userName={session.user.name || 'student'} />;
 }

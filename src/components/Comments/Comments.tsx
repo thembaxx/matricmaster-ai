@@ -138,7 +138,7 @@ export function Comments({
 		<div className={cn('w-full max-w-4xl mx-auto space-y-6', className)}>
 			<Card className="rounded-[2.5rem] border-border/50 shadow-tiimo overflow-hidden">
 				<CardHeader className="border-b border-border/50 bg-muted/20 px-8 py-6">
-					<CardTitle className="flex items-center gap-3 text-xl font-black uppercase tracking-tight">
+					<CardTitle className="flex items-center gap-3 text-xl font-black  tracking-tight">
 						<HugeiconsIcon icon={Chat01Icon} className="h-6 w-6 text-primary" />
 						{title}
 						<span className="text-xs font-bold text-muted-foreground bg-muted px-2 py-1 rounded-lg ml-2">

@@ -124,7 +124,7 @@ export const LeaderboardPreview = memo(function LeaderboardPreview() {
 					<h3 className="text-lg font-black text-foreground tracking-tight">Leaderboard</h3>
 				</div>
 				{userRank && (
-					<Badge variant="outline" className="text-[10px] font-black uppercase tracking-wider">
+					<Badge variant="outline" className="text-[10px] font-black  tracking-wider">
 						#{userRank}
 					</Badge>
 				)}

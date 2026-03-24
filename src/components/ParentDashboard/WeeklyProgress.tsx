@@ -94,7 +94,7 @@ export function WeeklyProgress() {
 					<>
 						<div>
 							<div className="flex justify-between items-end mb-3">
-								<p className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
+								<p className="text-xs font-bold text-muted-foreground  tracking-wider">
 									Study Time (daily)
 								</p>
 								<p className="text-xs font-bold text-muted-foreground">
@@ -131,7 +131,7 @@ export function WeeklyProgress() {
 							<div className="p-4 bg-muted/30 rounded-2xl space-y-2">
 								<div className="flex items-center gap-2">
 									<HugeiconsIcon icon={CheckmarkCircle01Icon} className="w-4 h-4 text-success" />
-									<span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
+									<span className="text-xs font-bold text-muted-foreground  tracking-wider">
 										Tasks
 									</span>
 								</div>
@@ -147,7 +147,7 @@ export function WeeklyProgress() {
 							<div className="p-4 bg-muted/30 rounded-2xl space-y-2">
 								<div className="flex items-center gap-2">
 									<HugeiconsIcon icon={Target01Icon} className="w-4 h-4 text-primary" />
-									<span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
+									<span className="text-xs font-bold text-muted-foreground  tracking-wider">
 										Quiz Trend
 									</span>
 								</div>
@@ -171,7 +171,7 @@ export function WeeklyProgress() {
 							<div className="p-4 bg-muted/30 rounded-2xl space-y-2">
 								<div className="flex items-center gap-2">
 									<HugeiconsIcon icon={Layers01Icon} className="w-4 h-4 text-warning" />
-									<span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
+									<span className="text-xs font-bold text-muted-foreground  tracking-wider">
 										Flashcards
 									</span>
 								</div>

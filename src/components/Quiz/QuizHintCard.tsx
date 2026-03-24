@@ -51,7 +51,7 @@ export function QuizHintCard({
 					<HugeiconsIcon icon={Idea01Icon} className="w-5 h-5 text-amber-600" />
 				</div>
 				<div className="flex-1">
-					<h4 className="font-black text-amber-900 dark:text-amber-100 text-xs uppercase tracking-widest mb-2">
+					<h4 className="font-black text-amber-900 dark:text-amber-100 text-xs  tracking-widest mb-2">
 						Hint Unavailable
 					</h4>
 					<p className="text-sm text-amber-800/80 dark:text-amber-200/80 mb-3">{error}</p>
@@ -87,9 +87,7 @@ export function QuizHintCard({
 						<HugeiconsIcon icon={SparklesIcon} className="w-6 h-6 text-primary" />
 					</div>
 					<div className="space-y-1 flex-1">
-						<h4 className="font-black text-primary text-xs uppercase tracking-widest">
-							Smart Hint
-						</h4>
+						<h4 className="font-black text-primary text-xs  tracking-widest">Smart Hint</h4>
 						<MarkdownRenderer content={hint} className="text-sm text-muted-foreground" />
 					</div>
 				</m.div>
@@ -103,7 +101,7 @@ export function QuizHintCard({
 				<HugeiconsIcon icon={Idea01Icon} className="w-5 h-5 text-amber-600" />
 			</div>
 			<div className="flex-1">
-				<h4 className="font-black text-amber-900 dark:text-amber-100 text-xs uppercase tracking-widest mb-1">
+				<h4 className="font-black text-amber-900 dark:text-amber-100 text-xs  tracking-widest mb-1">
 					{title}
 				</h4>
 				<MarkdownRenderer

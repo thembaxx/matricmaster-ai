@@ -57,7 +57,7 @@ export function PdfUploadDrawer({ isOpen, onClose, subjects, onSuccess }: PdfUpl
 			<DrawerContent className="max-h-[95vh] flex flex-col rounded-t-[3rem] pb-8 lg:max-w-5xl lg:mx-auto">
 				<DrawerHeader className="text-left border-b pb-6 px-8">
 					<div className="flex items-center gap-3">
-						<DrawerTitle className="text-3xl font-black tracking-tighter uppercase">
+						<DrawerTitle className="text-3xl font-black tracking-tighter ">
 							{step === 'review' ? 'Review AI Results' : 'AI Paper Extraction'}
 						</DrawerTitle>
 						{step === 'review' && (
@@ -113,7 +113,7 @@ export function PdfUploadDrawer({ isOpen, onClose, subjects, onSuccess }: PdfUpl
 					<DrawerClose asChild>
 						<Button
 							variant="outline"
-							className="flex-1 h-14 rounded-2xl border-2 font-black uppercase tracking-widest text-xs"
+							className="flex-1 h-14 rounded-2xl border-2 font-black  tracking-widest text-xs"
 						>
 							Cancel
 						</Button>
@@ -122,7 +122,7 @@ export function PdfUploadDrawer({ isOpen, onClose, subjects, onSuccess }: PdfUpl
 						<Button
 							onClick={handleStartExtraction}
 							disabled={!file || !paperDetails.paperId || !paperDetails.subjectId}
-							className="flex-1 h-14 bg-brand-blue hover:bg-brand-blue/90 rounded-2xl font-black uppercase tracking-widest text-xs shadow-2xl shadow-brand-blue/20"
+							className="flex-1 h-14 bg-brand-blue hover:bg-brand-blue/90 rounded-2xl font-black  tracking-widest text-xs shadow-2xl shadow-brand-blue/20"
 						>
 							<HugeiconsIcon icon={SparklesIcon} className="h-4 w-4 mr-2" /> Start
 						</Button>
@@ -131,7 +131,7 @@ export function PdfUploadDrawer({ isOpen, onClose, subjects, onSuccess }: PdfUpl
 						<Button
 							onClick={handleSaveResult}
 							disabled={isSaving}
-							className="flex-1 h-14 bg-brand-blue hover:bg-brand-blue/90 rounded-2xl font-black uppercase tracking-widest text-xs shadow-2xl shadow-brand-blue/20"
+							className="flex-1 h-14 bg-brand-blue hover:bg-brand-blue/90 rounded-2xl font-black  tracking-widest text-xs shadow-2xl shadow-brand-blue/20"
 						>
 							{isSaving ? (
 								<div className="h-5 w-5 animate-spin border-2 border-white border-t-transparent rounded-full" />

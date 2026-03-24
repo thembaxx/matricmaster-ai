@@ -79,7 +79,7 @@ export function ForgotPasswordForm() {
 				>
 					<Link
 						href="/sign-in"
-						className="inline-flex items-center text-xs font-bold text-muted-foreground hover:text-foreground transition-colors mb-6 uppercase tracking-wider"
+						className="inline-flex items-center text-xs font-bold text-muted-foreground hover:text-foreground transition-colors mb-6  tracking-wider"
 					>
 						<HugeiconsIcon icon={ArrowLeft} className="w-4 h-4 mr-2" /> Back to Sign In
 					</Link>
@@ -134,7 +134,7 @@ export function ForgotPasswordForm() {
 							<m.div variants={STAGGER_ITEM} className="space-y-2">
 								<Label
 									htmlFor="email"
-									className="text-xs font-bold text-label-primary uppercase tracking-wider ml-1"
+									className="text-xs font-bold text-label-primary  tracking-wider ml-1"
 								>
 									Email Address
 								</Label>
@@ -189,7 +189,7 @@ export function ForgotPasswordForm() {
 					initial={{ opacity: 0 }}
 					animate={{ opacity: 1 }}
 					transition={{ delay: 0.5 }}
-					className="text-center text-muted-foreground/60 text-[10px] font-bold uppercase tracking-widest mt-8"
+					className="text-center text-muted-foreground/60 text-[10px] font-bold  tracking-widest mt-8"
 				>
 					&copy; {new Date().getFullYear()} {appConfig.name} AI
 				</m.p>

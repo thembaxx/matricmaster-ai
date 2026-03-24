@@ -23,10 +23,7 @@ export function ContentView({ content, onBackToTimer }: ContentViewProps) {
 			</ScrollArea>
 			<div className="p-8 bg-muted/30 flex justify-center">
 				<Separator className="mb-6 -mx-8 max-w-[calc(100%+4rem)]" />
-				<Button
-					onClick={onBackToTimer}
-					className="rounded-full font-black uppercase text-xs px-8 h-12"
-				>
+				<Button onClick={onBackToTimer} className="rounded-full font-black  text-xs px-8 h-12">
 					Back to Timer
 				</Button>
 			</div>

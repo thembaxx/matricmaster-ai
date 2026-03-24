@@ -451,7 +451,7 @@ const ACHIEVEMENTS_DATA = [
 ];
 
 export async function seedCurriculumData() {
-	const db = dbManager.getDb();
+	const db = await dbManager.getDb();
 
 	console.log('Seeding subject metadata...');
 	for (const subject of SUBJECTS_DATA) {

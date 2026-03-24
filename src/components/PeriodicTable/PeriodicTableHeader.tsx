@@ -20,10 +20,10 @@ interface TrendOption {
 }
 
 const TREND_OPTIONS: TrendOption[] = [
-	{ value: 'electronegativity', label: 'Electronegativity' },
-	{ value: 'atomicRadius', label: 'Atomic Radius' },
-	{ value: 'ionizationEnergy', label: 'Ionization Energy' },
-	{ value: 'density', label: 'Density' },
+	{ value: 'electronegativity', label: 'electronegativity' },
+	{ value: 'atomicRadius', label: 'atomic radius' },
+	{ value: 'ionizationEnergy', label: 'ionization energy' },
+	{ value: 'density', label: 'density' },
 ];
 
 interface PeriodicTableHeaderProps {
@@ -61,24 +61,24 @@ export function PeriodicTableHeader({
 		<header className="px-4 sm:px-6 pt-6 pb-3 shrink-0 max-w-6xl mx-auto w-full space-y-3">
 			<div className="flex items-center justify-between">
 				<div className="flex items-center gap-3">
-					<h1 className="text-xl font-black tracking-normal">Periodic Table</h1>
+					<h1 className="text-xl font-black tracking-normal">periodic table</h1>
 					<Button
 						variant="outline"
 						size="sm"
 						onClick={onStartQuiz}
 						className="rounded-full font-bold text-xs"
 					>
-						Take Quiz
+						take quiz
 					</Button>
 					<Select
 						value={trendsMode || 'none'}
 						onValueChange={(val) => onTrendsModeChange(val === 'none' ? null : (val as TrendMode))}
 					>
 						<SelectTrigger className="w-[140px] h-8 rounded-full text-xs font-bold">
-							<SelectValue placeholder="Trends" />
+							<SelectValue placeholder="trends" />
 						</SelectTrigger>
 						<SelectContent>
-							<SelectItem value="none">View Mode</SelectItem>
+							<SelectItem value="none">view mode</SelectItem>
 							{TREND_OPTIONS.map((opt) => (
 								<SelectItem key={opt.value} value={opt.value}>
 									{opt.label}
@@ -97,15 +97,15 @@ export function PeriodicTableHeader({
 						}}
 						className="rounded-full font-bold text-xs"
 					>
-						Compare{compareElementsCount > 0 ? ` (${compareElementsCount})` : ''}
+						compare{compareElementsCount > 0 ? ` (${compareElementsCount})` : ''}
 					</Button>
 				</div>
 				<div className="text-xs font-medium text-muted-foreground hidden sm:block">
 					{trendsMode
-						? 'View periodic trends'
+						? 'view periodic trends'
 						: compareMode
-							? 'Select 2 elements to compare'
-							: 'Click any element to learn more'}
+							? 'select 2 elements to compare'
+							: 'click any element to learn more'}
 				</div>
 			</div>
 			<div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
@@ -116,7 +116,7 @@ export function PeriodicTableHeader({
 					/>
 
 					<Input
-						placeholder="Search by name, symbol, or number..."
+						placeholder="search by name, symbol, or number..."
 						value={searchQuery}
 						onChange={(e) => onSearchChange(e.target.value)}
 						className="pl-9 pr-9 h-10 bg-background/80 backdrop-blur-sm placeholder:text-sm"
@@ -147,20 +147,20 @@ export function PeriodicTableHeader({
 				</div>
 				<Select value={selectedGroup} onValueChange={onGroupChange}>
 					<SelectTrigger className="w-full sm:w-[180px] h-10 bg-background/80 backdrop-blur-sm">
-						<SelectValue placeholder="Filter by group" />
+						<SelectValue placeholder="filter by group" />
 					</SelectTrigger>
 					<SelectContent>
-						<SelectItem value="all">All Groups</SelectItem>
-						<SelectItem value="nonmetal">Nonmetals</SelectItem>
-						<SelectItem value="noble">Noble Gases</SelectItem>
-						<SelectItem value="alkali">Alkali Metals</SelectItem>
-						<SelectItem value="alkaline">Alkaline Earth</SelectItem>
-						<SelectItem value="metalloid">Metalloids</SelectItem>
-						<SelectItem value="halogen">Halogens</SelectItem>
-						<SelectItem value="transition">Transition Metals</SelectItem>
-						<SelectItem value="metal">Post-Transition</SelectItem>
-						<SelectItem value="lanthanide">Lanthanides</SelectItem>
-						<SelectItem value="actinide">Actinides</SelectItem>
+						<SelectItem value="all">all groups</SelectItem>
+						<SelectItem value="nonmetal">nonmetals</SelectItem>
+						<SelectItem value="noble">noble gases</SelectItem>
+						<SelectItem value="alkali">alkali metals</SelectItem>
+						<SelectItem value="alkaline">alkaline earth</SelectItem>
+						<SelectItem value="metalloid">metalloids</SelectItem>
+						<SelectItem value="halogen">halogens</SelectItem>
+						<SelectItem value="transition">transition metals</SelectItem>
+						<SelectItem value="metal">post-transition</SelectItem>
+						<SelectItem value="lanthanide">lanthanides</SelectItem>
+						<SelectItem value="actinide">actinides</SelectItem>
 					</SelectContent>
 				</Select>
 			</div>
@@ -177,20 +177,20 @@ export function PeriodicTableHeader({
 						key={group.value}
 						onClick={() => onGroupChange(selectedGroup === group.value ? 'all' : group.value)}
 						className={cn(
-							'px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider transition-all border',
+							'px-2.5 py-1 rounded-full text-[10px] font-bold tracking-wider transition-all border',
 							selectedGroup === group.value
 								? `${group.color}/30 border-current text-foreground ring-1 ring-current`
 								: 'bg-muted/50 border-border text-muted-foreground hover:bg-muted hover:text-foreground'
 						)}
 					>
-						{group.label}
+						{group.label.toLowerCase()}
 					</button>
 				))}
 			</div>
 			{showFilters && (
 				<div className="flex items-center gap-2 flex-wrap">
 					<span className="text-xs text-muted-foreground">
-						Showing {filteredCount} of {totalCount} elements
+						showing {filteredCount} of {totalCount} elements
 					</span>
 					<button
 						type="button"
@@ -200,7 +200,7 @@ export function PeriodicTableHeader({
 						}}
 						className="text-xs font-medium text-primary hover:text-primary/80 transition-colors"
 					>
-						Clear filters
+						clear filters
 					</button>
 				</div>
 			)}

@@ -149,7 +149,7 @@ export function CategoryLegend({ trendsMode }: CategoryLegendProps) {
 			{groups.map((group) => (
 				<div key={group.value} className="flex items-center gap-2">
 					<div className={cn('w-3 h-3 rounded-sm border', group.color)} />
-					<span className="text-[10px] font-bold uppercase">{group.label}</span>
+					<span className="text-[10px] font-bold ">{group.label}</span>
 				</div>
 			))}
 		</div>

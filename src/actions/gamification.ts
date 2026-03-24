@@ -3,7 +3,7 @@
 import { and, desc, eq, gte } from 'drizzle-orm';
 import { ACHIEVEMENT_DEFS, type Achievement, type APSProgress } from '@/constants/gamification';
 import { getAuth } from '@/lib/auth';
-import { dbManager } from '@/lib/db';
+import { type DbType, dbManager } from '@/lib/db';
 import {
 	flashcardReviews,
 	leaderboardEntries,
@@ -16,10 +16,10 @@ import {
 } from '@/lib/db/schema';
 import { getUnifiedApsScore } from '@/services/apsCalculationEngine';
 
-async function getDb() {
+async function getDb(): Promise<DbType> {
 	const connected = await dbManager.waitForConnection(3, 2000);
 	if (!connected) throw new Error('Database not available');
-	return dbManager.getDb();
+	return await dbManager.getDb();
 }
 
 export async function checkAndUnlockAchievements(): Promise<{

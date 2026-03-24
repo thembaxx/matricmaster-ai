@@ -47,7 +47,7 @@ function ForceVectorDiagram({ className }: { className?: string }) {
 			<div className="mt-4">
 				<label
 					htmlFor="applied-force"
-					className="text-xs font-bold uppercase text-muted-foreground block mb-2"
+					className="text-xs font-bold  text-muted-foreground block mb-2"
 				>
 					Applied Force
 				</label>
@@ -185,7 +185,7 @@ function WaveMotionDiagram({ className }: { className?: string }) {
 				<div>
 					<label
 						htmlFor="amplitude"
-						className="text-xs font-bold uppercase text-muted-foreground block mb-2"
+						className="text-xs font-bold  text-muted-foreground block mb-2"
 					>
 						Amplitude
 					</label>
@@ -202,7 +202,7 @@ function WaveMotionDiagram({ className }: { className?: string }) {
 				<div>
 					<label
 						htmlFor="frequency"
-						className="text-xs font-bold uppercase text-muted-foreground block mb-2"
+						className="text-xs font-bold  text-muted-foreground block mb-2"
 					>
 						Frequency
 					</label>

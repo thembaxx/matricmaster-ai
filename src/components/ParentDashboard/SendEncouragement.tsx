@@ -104,7 +104,7 @@ export function SendEncouragement({ studentName, open, onClose }: SendEncouragem
 
 				<div className="space-y-5 py-2">
 					<div>
-						<Label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-3 block">
+						<Label className="text-[10px] font-bold text-muted-foreground  tracking-widest mb-3 block">
 							Quick Messages
 						</Label>
 						<div className="grid grid-cols-2 gap-3">
@@ -142,7 +142,7 @@ export function SendEncouragement({ studentName, open, onClose }: SendEncouragem
 					</div>
 
 					<div>
-						<Label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-2 block">
+						<Label className="text-[10px] font-bold text-muted-foreground  tracking-widest mb-2 block">
 							Or write your own
 						</Label>
 						<Input

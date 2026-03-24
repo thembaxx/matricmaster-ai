@@ -59,7 +59,7 @@ export const AiInsights = memo(function AiInsights({
 				>
 					<div className="flex items-center gap-2">
 						<HugeiconsIcon icon={SparklesIcon} className="w-5 h-5 text-primary" />
-						<h2 className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.3em]">
+						<h2 className="text-[10px] font-black text-muted-foreground  tracking-[0.3em]">
 							AI Insights
 						</h2>
 					</div>
@@ -89,7 +89,7 @@ export const AiInsights = memo(function AiInsights({
 										<m.div key={suggestion} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
 											<Badge
 												variant="secondary"
-												className="px-5 py-2.5 rounded-xl bg-white/10 border border-white/10 text-white text-xs font-black uppercase tracking-widest hover:bg-white hover:text-zinc-900 transition-all cursor-pointer"
+												className="px-5 py-2.5 rounded-xl bg-white/10 border border-white/10 text-white text-xs font-black  tracking-widest hover:bg-white hover:text-zinc-900 transition-all cursor-pointer"
 												onClick={() => onSuggestionClick(suggestion)}
 											>
 												{suggestion}

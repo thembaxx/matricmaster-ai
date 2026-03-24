@@ -14,7 +14,7 @@ export function SnapAndSolveHeader({ onBack }: SnapAndSolveHeaderProps) {
 			<Button variant="ghost" size="icon" onClick={onBack} className="rounded-full">
 				<HugeiconsIcon icon={ArrowLeft01Icon} className="w-6 h-6" />
 			</Button>
-			<h1 className="text-xl font-black uppercase tracking-tight">Snap & Solve</h1>
+			<h1 className="text-xl font-black  tracking-tight">Snap & Solve</h1>
 			<div className="w-10" />
 		</header>
 	);

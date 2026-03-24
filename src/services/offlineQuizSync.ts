@@ -296,7 +296,7 @@ export function isQuestionAnswered(quizId: string, questionId: string): boolean 
 
 export function clearAnsweredQuestions(quizId: string): void {
 	try {
-		localStorage.removeItem(ANSWERED_QUESTIONS_KEY + '_' + quizId);
+		localStorage.removeItem(`${ANSWERED_QUESTIONS_KEY}_${quizId}`);
 	} catch (error) {
 		console.error('Failed to clear answered questions:', error);
 	}
@@ -307,7 +307,7 @@ export function getAllAnsweredQuestions(): Record<string, string[]> {
 	try {
 		const keys = Object.keys(localStorage).filter((k) => k.startsWith(ANSWERED_QUESTIONS_KEY));
 		for (const key of keys) {
-			const quizId = key.replace(ANSWERED_QUESTIONS_KEY + '_', '');
+			const quizId = key.replace(`${ANSWERED_QUESTIONS_KEY}_`, '');
 			const stored = localStorage.getItem(key);
 			if (stored) {
 				result[quizId] = JSON.parse(stored);

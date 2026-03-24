@@ -23,13 +23,11 @@ export function LanguageArtsSection() {
 	return (
 		<section className="space-y-4">
 			<div className="flex items-center justify-between px-1">
-				<h3 className="text-xl font-black text-foreground uppercase tracking-tight">
-					Language Arts
-				</h3>
+				<h3 className="text-xl font-black text-foreground  tracking-tight">Language Arts</h3>
 				<Button
 					type="button"
 					variant="ghost"
-					className="text-[11px] font-black text-primary uppercase tracking-[0.2em] hover:underline ios-active-scale"
+					className="text-[11px] font-black text-primary  tracking-[0.2em] hover:underline ios-active-scale"
 				>
 					View All
 				</Button>
@@ -44,11 +42,11 @@ export function LanguageArtsSection() {
 							{item.icon}
 						</div>
 						<div>
-							<h4 className="font-black text-foreground uppercase tracking-tight leading-tight">
+							<h4 className="font-black text-foreground  tracking-tight leading-tight">
 								{item.title}
 							</h4>
 							<div className="mt-3 inline-block px-3 py-1 bg-secondary rounded-lg">
-								<span className="text-[10px] font-black text-label-tertiary uppercase tracking-widest">
+								<span className="text-[10px] font-black text-label-tertiary  tracking-widest">
 									{item.students}
 								</span>
 							</div>

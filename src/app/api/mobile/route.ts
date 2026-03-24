@@ -1,5 +1,13 @@
 import { type NextRequest, NextResponse } from 'next/server';
-import { dbManager } from '@/lib/db';
+import { type DbType, dbManager } from '@/lib/db';
+
+async function getDb(): Promise<DbType> {
+	const connected = await dbManager.waitForConnection(3, 2000);
+	if (!connected) {
+		throw new Error('Database not available');
+	}
+	return (await dbManager.getDb()) as DbType;
+}
 
 // Rate limiting map (in production, use Redis)
 const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
@@ -84,8 +92,7 @@ export async function GET(request: NextRequest) {
 	}
 
 	try {
-		await dbManager.initialize();
-		const db = dbManager.getDb();
+		const db = await getDb();
 		const { subjects } = await import('@/lib/db/schema');
 
 		// Get subjects

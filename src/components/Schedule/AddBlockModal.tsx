@@ -162,7 +162,7 @@ export function AddBlockModal({ open, onOpenChange, onSuccess, editMode }: AddBl
 			<div className="space-y-2.5">
 				<Label
 					htmlFor={titleId}
-					className="text-xs font-bold uppercase tracking-wider text-muted-foreground ml-1"
+					className="text-xs font-bold  tracking-wider text-muted-foreground ml-1"
 				>
 					Title
 				</Label>
@@ -179,7 +179,7 @@ export function AddBlockModal({ open, onOpenChange, onSuccess, editMode }: AddBl
 			<div className="space-y-2.5">
 				<Label
 					htmlFor={titleId}
-					className="text-xs font-bold uppercase tracking-wider text-muted-foreground ml-1"
+					className="text-xs font-bold  tracking-wider text-muted-foreground ml-1"
 				>
 					Subject <span className="text-muted-foreground/50 font-normal">(optional)</span>
 				</Label>

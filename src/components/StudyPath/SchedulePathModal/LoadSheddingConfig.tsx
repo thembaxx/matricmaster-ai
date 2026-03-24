@@ -54,7 +54,7 @@ export function LoadSheddingSlots({
 	return (
 		<div className="space-y-3 pl-2 border-l-2 border-amber-500/30">
 			<div className="flex items-center justify-between">
-				<Label className="text-xs font-bold uppercase tracking-wider text-muted-foreground ml-1">
+				<Label className="text-xs font-bold  tracking-wider text-muted-foreground ml-1">
 					Outage Slots
 				</Label>
 				<Button

@@ -132,7 +132,7 @@ export function ElementCard({
 						{element.num}
 					</span>
 					<span className="text-[13px] sm:text-sm font-black">{element.sym}</span>
-					<span className="text-[7px] sm:text-[7px] font-bold uppercase tracking-wider truncate w-full text-center max-w-full px-0.5">
+					<span className="text-[7px] sm:text-[7px] font-bold  tracking-wider truncate w-full text-center max-w-full px-0.5">
 						{element.name.length > 6 ? `${element.name.slice(0, 5)}.` : element.name}
 					</span>
 				</m.button>

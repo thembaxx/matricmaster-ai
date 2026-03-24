@@ -97,8 +97,8 @@ export default function ChannelPage() {
 							<HugeiconsIcon icon={Wifi01Icon} className="w-5 h-5 text-primary" />
 						</div>
 						<div>
-							<h1 className="text-sm font-black uppercase tracking-tight">{channelTitle}</h1>
-							<p className="text-[10px] font-bold text-success uppercase tracking-widest flex items-center gap-1">
+							<h1 className="text-sm font-black  tracking-tight">{channelTitle}</h1>
+							<p className="text-[10px] font-bold text-success  tracking-widest flex items-center gap-1">
 								<span className="w-1.5 h-1.5 rounded-full bg-success animate-pulse" />
 								{presenceMembers.length} active now
 							</p>
@@ -127,10 +127,8 @@ export default function ChannelPage() {
 									className="w-10 h-10 text-muted-foreground opacity-20"
 								/>
 							</div>
-							<h2 className="text-xl font-black uppercase tracking-tighter">
-								Welcome to {channelTitle}
-							</h2>
-							<p className="text-xs font-bold text-muted-foreground uppercase tracking-widest max-w-xs mx-auto">
+							<h2 className="text-xl font-black  tracking-tighter">Welcome to {channelTitle}</h2>
+							<p className="text-xs font-bold text-muted-foreground  tracking-widest max-w-xs mx-auto">
 								This is the beginning of the chat. Be respectful and help each other out!
 							</p>
 						</div>
@@ -152,7 +150,7 @@ export default function ChannelPage() {
 												{showAvatar && (
 													<Avatar className="w-8 h-8 border border-border/50 shadow-sm">
 														<AvatarImage src={msg.userImage} />
-														<AvatarFallback className="text-[10px] font-black uppercase bg-primary/5 text-primary">
+														<AvatarFallback className="text-[10px] font-black  bg-primary/5 text-primary">
 															{msg.userName[0]}
 														</AvatarFallback>
 													</Avatar>
@@ -163,7 +161,7 @@ export default function ChannelPage() {
 											className={cn('max-w-[75%] space-y-1', isMe ? 'items-end' : 'items-start')}
 										>
 											{showAvatar && !isMe && (
-												<span className="text-[9px] font-black uppercase tracking-widest text-muted-foreground ml-1">
+												<span className="text-[9px] font-black  tracking-widest text-muted-foreground ml-1">
 													{msg.userName}
 												</span>
 											)}

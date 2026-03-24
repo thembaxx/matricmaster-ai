@@ -118,7 +118,7 @@ export default function SchedulePage() {
 
 			{/* Copyright */}
 			<div className="mt-12 pt-6 border-t border-border/20 text-center">
-				<p className="text-[10px] text-muted-foreground/50 uppercase tracking-widest">
+				<p className="text-[10px] text-muted-foreground/50  tracking-widest">
 					&copy; {new Date().getFullYear()} {appConfig.name}. All rights reserved.
 				</p>
 			</div>

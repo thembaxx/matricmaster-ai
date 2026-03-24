@@ -22,7 +22,7 @@ export const TrendingTopics = memo(function TrendingTopics({ onTopicClick }: Tre
 	return (
 		<m.div variants={STAGGER_ITEM} className="space-y-4">
 			<div className="flex items-center justify-between">
-				<h2 className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.3em] flex items-center gap-2">
+				<h2 className="text-[10px] font-black text-muted-foreground  tracking-[0.3em] flex items-center gap-2">
 					<Icon icon="fluent-emoji-flat:fire" className="w-5 h-5" />
 					Trending Topics
 				</h2>

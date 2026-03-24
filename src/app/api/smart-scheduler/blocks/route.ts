@@ -2,9 +2,17 @@ import { endOfWeek, startOfWeek } from 'date-fns';
 import { and, eq, gte, lte } from 'drizzle-orm';
 import { type NextRequest, NextResponse } from 'next/server';
 import { getAuth } from '@/lib/auth';
-import { dbManager } from '@/lib/db';
+import { type DbType, dbManager } from '@/lib/db';
 import { calendarEvents } from '@/lib/db/schema';
 import { getExamCountdowns } from '@/services/scheduleAIService';
+
+async function getDb(): Promise<DbType> {
+	const connected = await dbManager.waitForConnection(3, 2000);
+	if (!connected) {
+		throw new Error('Database not available');
+	}
+	return (await dbManager.getDb()) as DbType;
+}
 
 export async function GET(request: NextRequest) {
 	try {
@@ -32,16 +40,18 @@ export async function GET(request: NextRequest) {
 		const weekStart = startOfWeek(targetDate, { weekStartsOn: 1 });
 		const weekEnd = endOfWeek(targetDate, { weekStartsOn: 1 });
 
-		await dbManager.initialize();
-		const db = dbManager.getDb();
-		const events = await db.query.calendarEvents.findMany({
-			where: and(
-				eq(calendarEvents.userId, session.user.id),
-				gte(calendarEvents.startTime, weekStart),
-				lte(calendarEvents.endTime, weekEnd)
-			),
-			orderBy: [calendarEvents.startTime],
-		});
+		const db = await getDb();
+		const events = await db
+			.select()
+			.from(calendarEvents)
+			.where(
+				and(
+					eq(calendarEvents.userId, session.user.id),
+					gte(calendarEvents.startTime, weekStart),
+					lte(calendarEvents.endTime, weekEnd)
+				)
+			)
+			.orderBy(calendarEvents.startTime);
 
 		const blocks = events.map((e: (typeof events)[number]) => ({
 			id: e.id,
@@ -76,8 +86,7 @@ export async function POST(request: NextRequest) {
 
 		const body = await request.json();
 
-		await dbManager.initialize();
-		const db = dbManager.getDb();
+		const db = await getDb();
 
 		const [startH, startM] = (body.startTime || '09:00').split(':').map(Number);
 		const duration = body.duration || 60;
@@ -136,12 +145,14 @@ export async function PATCH(request: NextRequest) {
 			return NextResponse.json({ error: 'Block ID is required' }, { status: 400 });
 		}
 
-		await dbManager.initialize();
-		const db = dbManager.getDb();
+		const db = await getDb();
 
-		const existing = await db.query.calendarEvents.findFirst({
-			where: and(eq(calendarEvents.id, id), eq(calendarEvents.userId, session.user.id)),
-		});
+		const existing = await db
+			.select()
+			.from(calendarEvents)
+			.where(and(eq(calendarEvents.id, id), eq(calendarEvents.userId, session.user.id)))
+			.limit(1)
+			.then((rows) => rows[0]);
 
 		if (!existing) {
 			return NextResponse.json({ error: 'Block not found' }, { status: 404 });
@@ -200,12 +211,14 @@ export async function DELETE(request: NextRequest) {
 			return NextResponse.json({ error: 'Block ID is required' }, { status: 400 });
 		}
 
-		await dbManager.initialize();
-		const db = dbManager.getDb();
+		const db = await getDb();
 
-		const existing = await db.query.calendarEvents.findFirst({
-			where: and(eq(calendarEvents.id, id), eq(calendarEvents.userId, session.user.id)),
-		});
+		const existing = await db
+			.select()
+			.from(calendarEvents)
+			.where(and(eq(calendarEvents.id, id), eq(calendarEvents.userId, session.user.id)))
+			.limit(1)
+			.then((rows) => rows[0]);
 
 		if (!existing) {
 			return NextResponse.json({ error: 'Block not found' }, { status: 404 });

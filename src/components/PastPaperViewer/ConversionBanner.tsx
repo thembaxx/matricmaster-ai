@@ -27,7 +27,7 @@ export function ConversionBanner({ onConvert }: ConversionBannerProps) {
 			</div>
 			<Button
 				size="sm"
-				className="bg-brand-blue text-white rounded-xl font-black text-[11px] uppercase tracking-wider"
+				className="bg-brand-blue text-white rounded-xl font-black text-[11px]  tracking-wider"
 			>
 				<HugeiconsIcon icon={SparklesIcon} className="w-6 h-6" />
 				Start Quiz

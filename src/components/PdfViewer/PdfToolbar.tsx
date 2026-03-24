@@ -79,7 +79,7 @@ export function PdfToolbar({
 						<m.span
 							initial={{ opacity: 0, x: -10 }}
 							animate={{ opacity: 1, x: 0 }}
-							className="text-[10px] font-black uppercase tracking-widest text-brand-blue"
+							className="text-[10px] font-black  tracking-widest text-brand-blue"
 						>
 							Document
 						</m.span>

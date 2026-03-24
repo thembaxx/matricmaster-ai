@@ -78,84 +78,84 @@ type MenuSection = {
 
 export const sideMenuSections: MenuSection[] = [
 	{
-		title: 'Learning',
+		title: 'learning',
 		items: [
-			{ href: '/dashboard', label: 'Dashboard', icon: Home01Icon },
-			{ href: '/demo', label: 'Demo', icon: SparklesIcon },
-			{ href: '/lessons', label: 'Lessons', icon: BookOpen01Icon },
-			{ href: '/physics', label: 'Physics', fluentEmoji: '⚛️' },
-			{ href: '/search', label: 'Search', icon: Search01Icon },
-			{ href: '/study-companion', label: 'Study Companion', icon: SparklesIcon },
-			{ href: '/study-path', label: 'Study Path', icon: MapsIcon },
-			{ href: '/study-plan', label: 'Study Plan', icon: Calendar01Icon },
-			{ href: '/curriculum-map', label: 'Curriculum Map', icon: GridIcon },
-			{ href: '/periodic-table', label: 'Periodic Table', fluentEmoji: '⚛️' },
-			{ href: '/chat', label: 'Study Buddy', icon: Chat01Icon },
-			{ href: '/smart-scheduler', label: 'Study Planner', icon: Calendar01Icon },
-			{ href: '/tutoring', label: 'Matric Tutor', icon: ComputerVideoCallIcon },
-			{ href: '/voice-tutor', label: 'Voice Tutor', icon: Mic01Icon },
-			{ href: '/essay-grader', label: 'Essay Grader', icon: ContentWritingIcon },
-			{ href: '/aps-calculator', label: 'APS Calculator', icon: CalculatorIcon },
-			{ href: '/exam-timer', label: 'Exam Timer', icon: Timer01Icon },
+			{ href: '/dashboard', label: 'dashboard', icon: Home01Icon },
+			{ href: '/demo', label: 'demo', icon: SparklesIcon },
+			{ href: '/lessons', label: 'lessons', icon: BookOpen01Icon },
+			{ href: '/physics', label: 'physics', fluentEmoji: '⚛️' },
+			{ href: '/search', label: 'search', icon: Search01Icon },
+			{ href: '/study-companion', label: 'study companion', icon: SparklesIcon },
+			{ href: '/study-path', label: 'study path', icon: MapsIcon },
+			{ href: '/study-plan', label: 'study plan', icon: Calendar01Icon },
+			{ href: '/curriculum-map', label: 'curriculum map', icon: GridIcon },
+			{ href: '/periodic-table', label: 'periodic table', fluentEmoji: '⚛️' },
+			{ href: '/chat', label: 'study buddy', icon: Chat01Icon },
+			{ href: '/smart-scheduler', label: 'study planner', icon: Calendar01Icon },
+			{ href: '/tutoring', label: 'matric tutor', icon: ComputerVideoCallIcon },
+			{ href: '/voice-tutor', label: 'voice tutor', icon: Mic01Icon },
+			{ href: '/essay-grader', label: 'essay grader', icon: ContentWritingIcon },
+			{ href: '/aps-calculator', label: 'aps calculator', icon: CalculatorIcon },
+			{ href: '/exam-timer', label: 'exam timer', icon: Timer01Icon },
 		],
 	},
 	{
-		title: 'Practice',
+		title: 'practice',
 		items: [
-			{ href: '/quiz', label: 'Quiz', icon: QuestionIcon },
-			{ href: '/flashcards', label: 'Flashcards', icon: Layers01Icon },
-			{ href: '/past-papers', label: 'Past Papers', icon: File01Icon },
-			{ href: '/snap-and-solve', label: 'Snap & Solve', icon: CalculatorIcon },
-			{ href: '/common-questions', label: 'Common Questions', icon: QuestionIcon },
-			{ href: '/review', label: 'Review', icon: AiBrain01Icon },
+			{ href: '/quiz', label: 'quiz', icon: QuestionIcon },
+			{ href: '/flashcards', label: 'flashcards', icon: Layers01Icon },
+			{ href: '/past-papers', label: 'past papers', icon: File01Icon },
+			{ href: '/snap-and-solve', label: 'snap & solve', icon: CalculatorIcon },
+			{ href: '/common-questions', label: 'common questions', icon: QuestionIcon },
+			{ href: '/review', label: 'review', icon: AiBrain01Icon },
 		],
 	},
 	{
-		title: 'Results & Planning',
+		title: 'results & planning',
 		items: [
-			{ href: '/results', label: 'NSC Results', icon: Mortarboard02Icon },
-			{ href: '/school', label: 'University Applications', icon: BookOpen01Icon },
-			{ href: '/subscription', label: 'Subscription', icon: SparklesIcon },
-			{ href: '/analytics', label: 'Analytics', icon: CalculatorIcon },
+			{ href: '/results', label: 'nsc results', icon: Mortarboard02Icon },
+			{ href: '/school', label: 'university applications', icon: BookOpen01Icon },
+			{ href: '/subscription', label: 'subscription', icon: SparklesIcon },
+			{ href: '/analytics', label: 'analytics', icon: CalculatorIcon },
 		],
 	},
 	{
-		title: 'Focus',
+		title: 'focus',
 		items: [
-			{ href: '/focus', label: 'Focus Mode', icon: Timer01Icon },
-			{ href: '/focus-rooms', label: 'Focus Rooms', icon: UserGroupIcon },
-			{ href: '/offline', label: 'Offline Mode', icon: File01Icon },
+			{ href: '/focus', label: 'focus mode', icon: Timer01Icon },
+			{ href: '/focus-rooms', label: 'focus rooms', icon: UserGroupIcon },
+			{ href: '/offline', label: 'offline mode', icon: File01Icon },
 		],
 	},
 	{
-		title: 'Social',
+		title: 'social',
 		items: [
-			{ href: '/achievements', label: 'Achievements', icon: Medal01Icon },
-			{ href: '/channels', label: 'Study Channels', icon: UserGroupIcon },
-			{ href: '/comments', label: 'Comments', icon: Chat01Icon },
-			{ href: '/leaderboard', label: 'Leaderboard', icon: ChampionIcon },
-			{ href: '/study-buddies', label: 'Study Buddies', icon: UserGroupIcon },
+			{ href: '/achievements', label: 'achievements', icon: Medal01Icon },
+			{ href: '/channels', label: 'study channels', icon: UserGroupIcon },
+			{ href: '/comments', label: 'comments', icon: Chat01Icon },
+			{ href: '/leaderboard', label: 'leaderboard', icon: ChampionIcon },
+			{ href: '/study-buddies', label: 'study buddies', icon: UserGroupIcon },
 		],
 	},
 	{
-		title: 'Account',
+		title: 'account',
 		items: [
-			{ href: '/2fa', label: 'Two-Factor Auth', icon: Key01Icon },
-			{ href: '/bookmarks', label: 'Bookmarks', icon: BookmarkIcon },
-			{ href: '/calendar', label: 'Calendar', icon: Calendar01Icon },
-			{ href: '/language', label: 'Language', icon: GlobeIcon },
-			{ href: '/notifications', label: 'Notifications', icon: Notification03Icon },
-			{ href: '/parent-dashboard', label: 'Parent Portal', icon: UserGroupIcon },
-			{ href: '/profile', label: 'Profile', icon: UserIcon },
-			{ href: '/settings', label: 'Settings', icon: Settings01Icon },
+			{ href: '/2fa', label: 'two-factor auth', icon: Key01Icon },
+			{ href: '/bookmarks', label: 'bookmarks', icon: BookmarkIcon },
+			{ href: '/calendar', label: 'calendar', icon: Calendar01Icon },
+			{ href: '/language', label: 'language', icon: GlobeIcon },
+			{ href: '/notifications', label: 'notifications', icon: Notification03Icon },
+			{ href: '/parent-dashboard', label: 'parent portal', icon: UserGroupIcon },
+			{ href: '/profile', label: 'profile', icon: UserIcon },
+			{ href: '/settings', label: 'settings', icon: Settings01Icon },
 		],
 	},
 	{
-		title: 'Admin',
+		title: 'admin',
 		items: [
-			{ href: '/admin', label: 'Admin Panel', icon: Shield01Icon },
-			{ href: '/admin/moderation', label: 'Moderation', icon: AlertCircleIcon },
-			{ href: '/cms', label: 'Content Management', icon: LayoutLeftIcon },
+			{ href: '/admin', label: 'admin panel', icon: Shield01Icon },
+			{ href: '/admin/moderation', label: 'moderation', icon: AlertCircleIcon },
+			{ href: '/cms', label: 'content management', icon: LayoutLeftIcon },
 		],
 	},
 ];
@@ -172,7 +172,7 @@ type AppSidebarProps = {
 export function AppSidebar({ user, pathname, theme, onSetTheme }: AppSidebarProps) {
 	const { setOpenMobile } = useSidebar();
 	const [searchQuery, setSearchQuery] = useState('');
-	const [openSection, setOpenSection] = useState<string | null>('Learning');
+	const [openSection, setOpenSection] = useState<string | null>('learning');
 
 	const filteredSections = useMemo(() => {
 		if (!searchQuery.trim()) return sideMenuSections;
@@ -209,7 +209,7 @@ export function AppSidebar({ user, pathname, theme, onSetTheme }: AppSidebarProp
 						className="absolute left-5 w-4 h-4 text-sidebar-foreground/50"
 					/>
 					<Input
-						placeholder="Search..."
+						placeholder="search..."
 						value={searchQuery}
 						onChange={(e) => setSearchQuery(e.target.value)}
 						className="pl-9 h-9 dark:bg-sidebar-accent/60 placeholder:text-sidebar-foreground/40 border-sidebar-border/50 focus-visible:ring-sidebar-ring rounded-lg shadow-none text-sm"
@@ -221,7 +221,7 @@ export function AppSidebar({ user, pathname, theme, onSetTheme }: AppSidebarProp
 				{filteredSections.length === 0 ? (
 					<div className="flex flex-col items-center justify-center py-8 text-sidebar-foreground/40">
 						<HugeiconsIcon icon={Search01Icon} className="w-8 h-8 mb-2" />
-						<p className="text-sm">No results found</p>
+						<p className="text-sm">no results found</p>
 					</div>
 				) : (
 					filteredSections.map((section) => (
@@ -231,7 +231,7 @@ export function AppSidebar({ user, pathname, theme, onSetTheme }: AppSidebarProp
 								onClick={() => handleSectionToggle(section.title)}
 								className="w-full flex items-center justify-between px-3 py-2 rounded-lg hover:bg-sidebar-accent/50 transition-colors group focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-inset"
 							>
-								<span className="text-[9px] font-medium uppercase tracking-wider text-sidebar-foreground/35 grow truncate text-left">
+								<span className="text-[9px] font-medium tracking-wider text-sidebar-foreground/35 grow truncate text-left">
 									{section.title}
 								</span>
 								<HugeiconsIcon
@@ -325,9 +325,9 @@ type ThemeToggleProps = {
 };
 
 const THEME_OPTIONS: { value: Theme; label: string; icon: typeof Sun01Icon; color: string }[] = [
-	{ value: 'system', label: 'System', icon: LaptopSettingsIcon, color: 'text-violet-500' },
-	{ value: 'light', label: 'Light', icon: Sun01Icon, color: 'text-amber-500' },
-	{ value: 'dark', label: 'Dark', icon: MoonIcon, color: 'text-blue-400' },
+	{ value: 'system', label: 'system', icon: LaptopSettingsIcon, color: 'text-violet-500' },
+	{ value: 'light', label: 'light', icon: Sun01Icon, color: 'text-amber-500' },
+	{ value: 'dark', label: 'dark', icon: MoonIcon, color: 'text-blue-400' },
 ];
 
 function ThemeToggle({ theme, onSetTheme }: ThemeToggleProps) {
@@ -369,7 +369,7 @@ function UserProfileSection({ user }: UserProfileSectionProps) {
 				<Avatar className="h-10 w-10 border-2 border-sidebar-primary/30 shadow-sm">
 					<AvatarImage src={user.image || undefined} alt={user.name} />
 					<AvatarFallback className="bg-sidebar-primary text-sidebar-primary-foreground font-bold text-sm">
-						{user.name?.charAt(0)?.toUpperCase() || 'U'}
+						{user.name?.charAt(0)?.toLowerCase() || 'u'}
 					</AvatarFallback>
 				</Avatar>
 				<div className="flex-1 min-w-0">
@@ -394,7 +394,7 @@ export function LogoutButton() {
 			onClick={handleLogout}
 		>
 			<HugeiconsIcon icon={Settings01Icon} className="w-4 h-4" />
-			<span>Logout</span>
+			<span>logout</span>
 		</Button>
 	);
 }

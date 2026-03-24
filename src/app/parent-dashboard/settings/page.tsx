@@ -110,7 +110,7 @@ export default function ParentSettingsPage() {
 
 							{settings.emailDigest && (
 								<div>
-									<Label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
+									<Label className="text-[10px] font-bold text-muted-foreground  tracking-widest">
 										Digest Frequency
 									</Label>
 									<Select
@@ -168,7 +168,7 @@ export default function ParentSettingsPage() {
 						</CardHeader>
 						<CardContent className="p-6 space-y-6">
 							<div>
-								<Label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
+								<Label className="text-[10px] font-bold text-muted-foreground  tracking-widest">
 									Quiz Score Alert (%)
 								</Label>
 								<p className="text-xs text-muted-foreground mb-2">
@@ -190,7 +190,7 @@ export default function ParentSettingsPage() {
 							</div>
 
 							<div>
-								<Label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
+								<Label className="text-[10px] font-bold text-muted-foreground  tracking-widest">
 									Inactivity Alert (days)
 								</Label>
 								<p className="text-xs text-muted-foreground mb-2">

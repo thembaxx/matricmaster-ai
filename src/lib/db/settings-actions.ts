@@ -21,7 +21,7 @@ async function getDb(): Promise<DbType> {
 	if (!connected) {
 		throw new Error('Database not available');
 	}
-	return dbManager.getDb();
+	return (await dbManager.getDb()) as unknown as DbType;
 }
 
 export interface ActionResult<T = void> {

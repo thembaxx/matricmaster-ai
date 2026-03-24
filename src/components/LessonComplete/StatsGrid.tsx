@@ -32,7 +32,7 @@ export const StatsGrid = memo(function StatsGrid({
 				<span className="text-xl font-black text-foreground tracking-tight">
 					{result.accuracy}%
 				</span>
-				<span className="text-[10px] uppercase font-black text-muted-foreground tracking-wider">
+				<span className="text-[10px]  font-black text-muted-foreground tracking-wider">
 					Accuracy
 				</span>
 			</div>
@@ -44,9 +44,7 @@ export const StatsGrid = memo(function StatsGrid({
 				<span className="text-xl font-black text-foreground tracking-tight">
 					{formatDuration(result.durationSeconds)}
 				</span>
-				<span className="text-[10px] uppercase font-black text-muted-foreground tracking-wider">
-					Time
-				</span>
+				<span className="text-[10px]  font-black text-muted-foreground tracking-wider">Time</span>
 			</div>
 
 			<div className="bg-card p-4 rounded-3xl flex flex-col items-center shadow-xl border border-border/50">
@@ -56,7 +54,7 @@ export const StatsGrid = memo(function StatsGrid({
 				<span className="text-xl font-black text-primary-orange tracking-tight">
 					{isCompleting ? '...' : `+${pointsEarned}`}
 				</span>
-				<span className="text-[10px] uppercase font-black text-muted-foreground tracking-wider">
+				<span className="text-[10px]  font-black text-muted-foreground tracking-wider">
 					XP Gained
 				</span>
 			</div>

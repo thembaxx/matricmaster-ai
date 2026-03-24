@@ -198,7 +198,7 @@ export function TeamGoals({ className }: { className?: string }) {
 										exit={{ height: 0, opacity: 0 }}
 										className="mt-3 pt-3 border-t border-border"
 									>
-										<p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider mb-2">
+										<p className="text-[10px] font-bold text-muted-foreground  tracking-wider mb-2">
 											Leaderboard
 										</p>
 										<div className="space-y-2">

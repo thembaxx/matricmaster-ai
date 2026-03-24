@@ -71,7 +71,7 @@ export function QuizResultFeedback({
 				</div>
 				<div>
 					<h4
-						className={`font-black text-xs uppercase tracking-widest mb-1 ${
+						className={`font-black text-xs  tracking-widest mb-1 ${
 							isCorrect ? 'text-green-900 dark:text-green-100' : 'text-red-900 dark:text-red-100'
 						}`}
 					>

@@ -33,7 +33,7 @@ export function AnalyticsTab({ subjectPerformance, isLoading }: AnalyticsTabProp
 					<div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
 						<SubjectPerformanceChart subjectPerformance={subjectPerformance} />
 						<div className="space-y-3">
-							<h4 className="text-sm font-bold text-muted-foreground uppercase tracking-wider">
+							<h4 className="text-sm font-bold text-muted-foreground  tracking-wider">
 								score distribution
 							</h4>
 							{subjectPerformance.map((subject) => (

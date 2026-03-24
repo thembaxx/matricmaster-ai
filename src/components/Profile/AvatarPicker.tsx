@@ -50,7 +50,7 @@ export function AvatarPicker({ selectedId, onSelect }: AvatarPickerProps) {
 							<HugeiconsIcon icon={Tick01Icon} className="w-3 h-3 text-white" />
 						</div>
 					)}
-					<span className="text-[8px] font-black uppercase tracking-widest">{avatar.label}</span>
+					<span className="text-[8px] font-black  tracking-widest">{avatar.label}</span>
 				</button>
 			))}
 		</div>

@@ -31,9 +31,7 @@ const FilterContent = memo(function FilterContent({
 	return (
 		<div className="space-y-8">
 			<div className="space-y-4">
-				<h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-label-tertiary">
-					subjects
-				</h4>
+				<h4 className="text-[10px] font-black  tracking-[0.2em] text-label-tertiary">subjects</h4>
 				<div className="grid grid-cols-2 gap-3">
 					{availableSubjects.map((subject) => (
 						<div key={subject} className="flex items-center gap-3 cursor-pointer ios-active-scale">
@@ -44,7 +42,7 @@ const FilterContent = memo(function FilterContent({
 							/>
 							<label
 								htmlFor={`subject-${subject}`}
-								className="text-sm font-black uppercase tracking-tight cursor-pointer text-label-secondary"
+								className="text-sm font-black  tracking-tight cursor-pointer text-label-secondary"
 							>
 								{subject}
 							</label>
@@ -54,9 +52,7 @@ const FilterContent = memo(function FilterContent({
 			</div>
 
 			<div className="space-y-4">
-				<h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-label-tertiary">
-					papers
-				</h4>
+				<h4 className="text-[10px] font-black  tracking-[0.2em] text-label-tertiary">papers</h4>
 				<div className="grid grid-cols-2 gap-3">
 					{availablePapers.map((paper) => (
 						<div key={paper} className="flex items-center gap-3 cursor-pointer ios-active-scale">
@@ -67,7 +63,7 @@ const FilterContent = memo(function FilterContent({
 							/>
 							<label
 								htmlFor={`paper-${paper}`}
-								className="text-sm font-black uppercase tracking-tight cursor-pointer text-label-secondary"
+								className="text-sm font-black  tracking-tight cursor-pointer text-label-secondary"
 							>
 								{paper}
 							</label>
@@ -77,9 +73,7 @@ const FilterContent = memo(function FilterContent({
 			</div>
 
 			<div className="space-y-4">
-				<h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-label-tertiary">
-					months
-				</h4>
+				<h4 className="text-[10px] font-black  tracking-[0.2em] text-label-tertiary">months</h4>
 				<div className="grid grid-cols-2 gap-3">
 					{availableMonths.map((month) => (
 						<div key={month} className="flex items-center gap-3 cursor-pointer ios-active-scale">
@@ -90,7 +84,7 @@ const FilterContent = memo(function FilterContent({
 							/>
 							<label
 								htmlFor={`month-${month}`}
-								className="text-sm font-black uppercase tracking-tight cursor-pointer text-label-secondary"
+								className="text-sm font-black  tracking-tight cursor-pointer text-label-secondary"
 							>
 								{month}
 							</label>
@@ -102,10 +96,10 @@ const FilterContent = memo(function FilterContent({
 			<div className="space-y-4">
 				<div className="flex items-center justify-between">
 					<div>
-						<h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-label-tertiary">
+						<h4 className="text-[10px] font-black  tracking-[0.2em] text-label-tertiary">
 							extracted only
 						</h4>
-						<p className="text-[10px] text-label-tertiary mt-1 uppercase tracking-wider">
+						<p className="text-[10px] text-label-tertiary mt-1  tracking-wider">
 							show papers with AI-extracted questions
 						</p>
 					</div>
@@ -155,22 +149,20 @@ export function FilterPanel({
 			<Sheet open={isOpen} onOpenChange={onOpenChange}>
 				<SheetContent className="w-full sm:max-w-lg hidden lg:block">
 					<SheetHeader>
-						<SheetTitle className="text-xl font-black uppercase tracking-tight">
-							advanced filters
-						</SheetTitle>
+						<SheetTitle className="text-xl font-black  tracking-tight">advanced filters</SheetTitle>
 					</SheetHeader>
 					<div className="py-6 overflow-y-auto">{content}</div>
 					<div className="border-t pt-4 flex gap-3">
 						<Button
 							variant="outline"
 							onClick={onReset}
-							className="flex-1 rounded-2xl font-black text-[10px] uppercase tracking-widest ios-active-scale"
+							className="flex-1 rounded-2xl font-black text-[10px]  tracking-widest ios-active-scale"
 						>
 							reset
 						</Button>
 						<Button
 							onClick={() => onOpenChange(false)}
-							className="flex-1 rounded-2xl font-black text-[10px] uppercase tracking-widest ios-active-scale"
+							className="flex-1 rounded-2xl font-black text-[10px]  tracking-widest ios-active-scale"
 						>
 							apply filters
 						</Button>
@@ -181,7 +173,7 @@ export function FilterPanel({
 			<Drawer open={isOpen} onOpenChange={onOpenChange}>
 				<DrawerContent className="lg:hidden">
 					<DrawerHeader>
-						<DrawerTitle className="text-xl font-black uppercase tracking-tight text-left">
+						<DrawerTitle className="text-xl font-black  tracking-tight text-left">
 							advanced filters
 						</DrawerTitle>
 					</DrawerHeader>
@@ -189,14 +181,14 @@ export function FilterPanel({
 					<DrawerFooter>
 						<Button
 							onClick={() => onOpenChange(false)}
-							className="w-full rounded-2xl font-black text-[10px] uppercase tracking-widest ios-active-scale"
+							className="w-full rounded-2xl font-black text-[10px]  tracking-widest ios-active-scale"
 						>
 							apply filters
 						</Button>
 						<Button
 							variant="outline"
 							onClick={onReset}
-							className="w-full rounded-2xl font-black text-[10px] uppercase tracking-widest ios-active-scale"
+							className="w-full rounded-2xl font-black text-[10px]  tracking-widest ios-active-scale"
 						>
 							reset
 						</Button>
