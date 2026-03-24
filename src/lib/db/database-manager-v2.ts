@@ -30,7 +30,7 @@ class DatabaseManagerV2 {
 		this.initPromise = (async () => {
 			try {
 				if (options?.forceSQLite) {
-					console.warn('⚠️ force initializing with sqlite...');
+					console.debug('force initializing with sqlite...');
 					const sqliteConnected = await sqliteManager.connect();
 					this.activeDatabase = sqliteConnected ? 'sqlite' : 'none';
 					return;
@@ -41,7 +41,7 @@ class DatabaseManagerV2 {
 					this.activeDatabase = 'postgresql';
 					console.log('📀 postgresql is primary database');
 				} else {
-					console.warn('⚠️ postgresql unavailable, initializing sqlite...');
+					console.debug('postgresql unavailable, initializing sqlite...');
 					const sqliteConnected = await sqliteManager.connect();
 					this.activeDatabase = sqliteConnected ? 'sqlite' : 'none';
 				}
@@ -180,12 +180,12 @@ class DatabaseManagerV2 {
 		const pgHealthy = await this.checkPostgreSQLHealth();
 
 		if (pgHealthy && this.activeDatabase !== 'postgresql') {
-			console.log('🔄 postgresql recovered, switching from sqlite...');
+			console.log('postgresql recovered, switching from sqlite...');
 			await this.syncFromSQLite();
 			this.activeDatabase = 'postgresql';
 			console.log('✅ switched back to postgresql');
 		} else if (!pgHealthy && this.activeDatabase === 'postgresql') {
-			console.warn('⚠️ postgresql connection lost, failing over to sqlite...');
+			console.debug('postgresql connection lost, failing over to sqlite...');
 			await sqliteManager.connect();
 			this.activeDatabase = 'sqlite';
 		}
@@ -349,7 +349,7 @@ class DatabaseManagerV2 {
 
 	public forceFailover(): void {
 		this.activeDatabase = 'sqlite';
-		console.warn('⚠️ force failover to sqlite');
+		console.debug('force failover to sqlite');
 	}
 
 	public async forceFailback(): Promise<void> {
@@ -357,9 +357,9 @@ class DatabaseManagerV2 {
 		if (pgHealthy) {
 			await this.syncFromSQLite();
 			this.activeDatabase = 'postgresql';
-			console.log('✅ force failback to postgresql');
+			console.log('force failback to postgresql');
 		} else {
-			console.warn('⚠️ cannot failback - postgresql not healthy');
+			console.debug('cannot failback - postgresql not healthy');
 		}
 	}
 }

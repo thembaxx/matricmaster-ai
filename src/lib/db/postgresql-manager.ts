@@ -86,7 +86,7 @@ class PostgreSQLManager {
 
 			// If it's a quota error, we don't need to keep trying - it won't resolve in seconds
 			if (errorMsg.includes('quota') || errorMsg.includes('exceeded')) {
-				console.warn('⚠️ PostgreSQL quota exceeded, should skip retries');
+				console.debug('PostgreSQL quota exceeded, should skip retries');
 				this.quotaExceeded = true;
 				this.isConnected = false;
 				this.cleanup();
@@ -150,7 +150,7 @@ class PostgreSQLManager {
 			}
 
 			if (this.quotaExceeded) {
-				console.debug('⚠️ Breaking retry loop due to PostgreSQL quota exceeded');
+				console.debug('Breaking retry loop due to PostgreSQL quota exceeded');
 				break;
 			}
 
