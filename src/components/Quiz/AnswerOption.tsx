@@ -39,6 +39,7 @@ export function AnswerOption({
 }: AnswerOptionProps) {
 	const reduced = useRef(prefersReducedMotion());
 	const [particles, setParticles] = useState<Particle[]>([]);
+	const optionRef = useRef<HTMLButtonElement>(null);
 
 	const scaleMotion = useMotionValue(isSelected ? 1 : 1);
 	const translateYMotion = useMotionValue(isSelected ? -2 : 0);
@@ -87,6 +88,12 @@ export function AnswerOption({
 		}
 	}, [isChecked, isCorrect, particles.length]);
 
+	useEffect(() => {
+		if (isSelected && optionRef.current) {
+			optionRef.current.focus();
+		}
+	}, [isSelected]);
+
 	const getContainerClasses = () => {
 		if (isSelected) {
 			if (isChecked) {
@@ -130,13 +137,21 @@ export function AnswerOption({
 		return '';
 	};
 
+	const optionLabel = `option ${id}: ${label}`;
+
 	return (
 		<m.button
+			ref={optionRef}
 			initial={{ opacity: 0, x: -10 }}
 			animate={{ opacity: 1, x: 0 }}
 			onClick={() => !disabled && onSelect()}
 			disabled={disabled}
 			style={reduced.current ? undefined : { scale: scaleSpring, y: translateYSpring, boxShadow }}
+			role="radio"
+			aria-checked={isSelected}
+			aria-label={optionLabel}
+			aria-disabled={disabled}
+			tabIndex={isSelected ? 0 : -1}
 			className={cn(
 				'w-full flex items-center gap-4 p-4 rounded-[1.5rem] border-2 transition-colors',
 				'hover:border-tiimo-lavender/30 active:scale-[0.98]',

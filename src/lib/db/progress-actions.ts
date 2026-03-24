@@ -1,9 +1,12 @@
 'use server';
 
 import { and, desc, eq } from 'drizzle-orm';
+import type { WeakTopic } from '@/lib/quiz-grader';
+import { detectWeakTopics, type QuizResultForAnalysis } from '@/lib/quiz-grader';
 import { ensureAuthenticated } from './actions';
 import { dbManager } from './index';
 import { leaderboardEntries, type StudySession, studySessions, userProgress } from './schema';
+import { adjustStudyPlanForWeakTopics } from './study-plan-actions';
 
 export interface ActivityResult {
 	subjectId?: number;
@@ -180,5 +183,83 @@ export async function completeActivityAction(result: ActivityResult) {
 	} catch (error) {
 		console.debug('Error in completeActivityAction:', error);
 		return { success: false, error: 'Failed to update progress' };
+	}
+}
+
+// ============================================================================
+// QUIZ RESULT PROCESSING FOR STUDY PLAN INTEGRATION
+// ============================================================================
+
+interface QuizResultProcessingResult {
+	success: boolean;
+	weakTopicsDetected: number;
+	weakTopics: WeakTopic[];
+	studyPlanAdjusted: boolean;
+	studyPlanAdjustment?: {
+		topicsPrioritized: string[];
+		difficultyAdjustments: Array<{
+			topic: string;
+			newDifficulty: 'easier' | 'harder' | 'same';
+			reason: string;
+		}>;
+		focusAreasUpdated: boolean;
+		sessionsReordered: boolean;
+	};
+	error?: string;
+}
+
+/**
+ * Processes quiz results to detect weak topics and adjust the user's study plan
+ * This is the main integration point between quiz completion and study plan adjustment
+ */
+export async function processQuizResultForStudyPlan(
+	quizResult: QuizResultForAnalysis
+): Promise<QuizResultProcessingResult> {
+	try {
+		const user = await ensureAuthenticated();
+
+		// Detect weak topics from quiz results
+		const weakTopics = detectWeakTopics(quizResult);
+
+		// If no weak topics detected, return early
+		if (weakTopics.length === 0) {
+			return {
+				success: true,
+				weakTopicsDetected: 0,
+				weakTopics: [],
+				studyPlanAdjusted: false,
+			};
+		}
+
+		// Adjust study plan based on weak topics
+		const adjustmentResult = await adjustStudyPlanForWeakTopics(user.id, weakTopics);
+
+		if (!adjustmentResult.success) {
+			console.warn('[Quiz Processing] Study plan adjustment failed:', adjustmentResult.error);
+			return {
+				success: true,
+				weakTopicsDetected: weakTopics.length,
+				weakTopics,
+				studyPlanAdjusted: false,
+				error: adjustmentResult.error,
+			};
+		}
+
+		return {
+			success: true,
+			weakTopicsDetected: weakTopics.length,
+			weakTopics,
+			studyPlanAdjusted: true,
+			studyPlanAdjustment: adjustmentResult.adjustment,
+		};
+	} catch (error) {
+		console.error('[Quiz Processing] Error processing quiz result:', error);
+		return {
+			success: false,
+			weakTopicsDetected: 0,
+			weakTopics: [],
+			studyPlanAdjusted: false,
+			error: error instanceof Error ? error.message : 'Failed to process quiz result',
+		};
 	}
 }

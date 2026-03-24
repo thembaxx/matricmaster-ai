@@ -186,24 +186,39 @@ const nextConfig = {
 		browserToTerminal: true,
 	},
 	async headers() {
+		const securityHeaders = [
+			{ key: 'X-Frame-Options', value: 'DENY' },
+			{ key: 'X-Content-Type-Options', value: 'nosniff' },
+			{ key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+			{ key: 'X-DNS-Prefetch-Control', value: 'on' },
+			{
+				key: 'Strict-Transport-Security',
+				value: 'max-age=63072000; includeSubDomains; preload',
+			},
+			{
+				key: 'Permissions-Policy',
+				value: 'camera=(), microphone=(https://customer-eu.daily.co), geolocation=()',
+			},
+			{
+				key: 'Content-Security-Policy',
+				value: [
+					"default-src 'self'",
+					"script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://apis.google.com https://js.hcaptcha.com https://www.gstatic.com",
+					"style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+					"font-src 'self' https://fonts.gstatic.com",
+					"img-src 'self' data: https: blob:",
+					"media-src 'self' https://daily.co https://customer-eu.daily.co",
+					"connect-src 'self' https://*.ably.com https://*.googleapis.com https://*.upstash.io https://*.sentry.io https://api.uploadthing.com https://api.resend.com https://api.paystack.co",
+					'frame-src https://www.google.com https://js.hcaptcha.com https://customer-eu.daily.co',
+					'report-uri /api/csp-report',
+				].join('; '),
+			},
+		];
+
 		return [
 			{
 				source: '/(.*)',
-				headers: [
-					{ key: 'X-Frame-Options', value: 'DENY' },
-					{ key: 'X-Content-Type-Options', value: 'nosniff' },
-					{ key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
-					{ key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=()' },
-					{
-						key: 'Content-Security-Policy-Report-Only',
-						value:
-							"default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://va.vercel-scripts.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; connect-src 'self' wss://*.ably.com wss://main.realtime.ably.net https://*.ably.com https://main.realtime.ably.net https://api.iconify.design https://unpkg.com; frame-ancestors 'none'; report-uri /api/csp-report;",
-					},
-					{
-						key: 'Strict-Transport-Security',
-						value: 'max-age=31536000; includeSubDomains; preload',
-					},
-				],
+				headers: securityHeaders,
 			},
 		];
 	},

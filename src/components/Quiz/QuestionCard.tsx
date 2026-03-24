@@ -3,6 +3,7 @@
 import { Mortarboard01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { AnimatePresence, m } from 'framer-motion';
+import { useCallback } from 'react';
 import { AnswerOption, type AnswerOptionProps } from './AnswerOption';
 import { InteractiveDiagram } from './InteractiveDiagram';
 
@@ -42,6 +43,42 @@ export function QuestionCard({
 	onSelect,
 	diagram,
 }: QuestionCardProps) {
+	const handleKeyDown = useCallback(
+		(e: React.KeyboardEvent) => {
+			if (isChecked) return;
+
+			const currentIndex = options.findIndex((o) => o.id === selectedOption);
+			let nextIndex = currentIndex;
+
+			switch (e.key) {
+				case 'ArrowDown':
+				case 'ArrowRight':
+					e.preventDefault();
+					nextIndex = currentIndex < options.length - 1 ? currentIndex + 1 : 0;
+					break;
+				case 'ArrowUp':
+				case 'ArrowLeft':
+					e.preventDefault();
+					nextIndex = currentIndex > 0 ? currentIndex - 1 : options.length - 1;
+					break;
+				case 'Enter':
+				case ' ':
+					if (selectedOption) {
+						e.preventDefault();
+						onSelect(selectedOption);
+					}
+					return;
+				default:
+					return;
+			}
+
+			if (nextIndex >= 0 && nextIndex < options.length) {
+				onSelect(options[nextIndex].id);
+			}
+		},
+		[options, selectedOption, isChecked, onSelect]
+	);
+
 	return (
 		<m.div
 			layout
@@ -83,7 +120,12 @@ export function QuestionCard({
 						exit={{ opacity: 0 }}
 						transition={{ duration: 0.2 }}
 					>
-						<div className="grid grid-cols-1 gap-3">
+						<div
+							role="radiogroup"
+							aria-label="answer options"
+							className="grid grid-cols-1 gap-3"
+							onKeyDown={handleKeyDown}
+						>
 							{options.map((option, index) => {
 								const optionProps: AnswerOptionProps = {
 									id: option.id,
