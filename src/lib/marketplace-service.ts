@@ -117,7 +117,7 @@ export async function getAvailableTutors(
 			.where(eq(tutorProfiles.isAvailable, filters?.availableOnly ?? true))
 			.orderBy(desc(tutorProfiles.rating));
 
-		let tutors = results.map((t: TutorProfileResponse) => ({
+		let tutors = results.map((t: any) => ({
 			...t,
 			subjects: parseJsonField<string[]>(t.subjects, []),
 			rating: Number(t.rating) || 0,

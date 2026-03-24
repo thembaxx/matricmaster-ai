@@ -4,7 +4,7 @@ import { and, desc, eq, sql } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
 import { headers } from 'next/headers';
 import { getAuth } from '@/lib/auth';
-import { dbManager } from '@/lib/db';
+import { type DbType, dbManager } from '@/lib/db';
 import {
 	calendarEvents,
 	conceptStruggles,
@@ -51,7 +51,7 @@ export async function addMistakeToStudyPlanAction(
 		return { success: false, eventsAdded: 0, recommendations: [] };
 	}
 
-	const db = dbManager.getDb();
+	const db = dbManager.getDb() as DbType;
 
 	const activePlan = await db.query.studyPlans.findFirst({
 		where: and(eq(studyPlans.userId, session.user.id), eq(studyPlans.isActive, true)),
@@ -95,7 +95,7 @@ export async function getMistakeContentRecommendations(
 	const connected = await dbManager.waitForConnection(3, 2000);
 	if (!connected) return [];
 
-	const db = dbManager.getDb();
+	const db = dbManager.getDb() as DbType;
 	const results: MistakeWithContent[] = [];
 
 	for (const mistake of mistakes) {
@@ -147,7 +147,7 @@ export async function getRecentMistakesAction(
 	const connected = await dbManager.waitForConnection(3, 2000);
 	if (!connected) return [];
 
-	const db = dbManager.getDb();
+	const db = dbManager.getDb() as DbType;
 
 	const attempts = await db.query.questionAttempts.findMany({
 		where: and(eq(questionAttempts.userId, session.user.id), eq(questionAttempts.isCorrect, false)),
@@ -171,7 +171,7 @@ export async function getUnvisitedMistakesCountAction(): Promise<number> {
 	const connected = await dbManager.waitForConnection(3, 2000);
 	if (!connected) return 0;
 
-	const db = dbManager.getDb();
+	const db = dbManager.getDb() as DbType;
 	const now = new Date();
 
 	const unvisitedAttempts = await db.query.questionAttempts.findMany({
@@ -213,7 +213,7 @@ export async function getMistakesForPracticeAction(limit = 10): Promise<MistakeF
 	const connected = await dbManager.waitForConnection(3, 2000);
 	if (!connected) return [];
 
-	const db = dbManager.getDb();
+	const db = dbManager.getDb() as DbType;
 	const now = new Date();
 
 	const attempts = await db.query.questionAttempts.findMany({
@@ -282,7 +282,7 @@ export async function resolveMistakeAction(mistake: {
 		return { success: false, masteryImproved: false };
 	}
 
-	const db = dbManager.getDb();
+	const db = dbManager.getDb() as DbType;
 	let masteryImproved = false;
 
 	if (mistake.wasCorrect) {

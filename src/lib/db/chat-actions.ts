@@ -4,11 +4,9 @@
 import { and, desc, eq } from 'drizzle-orm';
 import { AblyChannels } from '../ably/channel-names';
 import { publishToChannel } from '../ably/client';
-import { dbManager } from './index';
+import { getDb } from './index';
 import { channelMembers } from './schema';
 import { chatMessages, outbox, userPresence } from './schema-chat';
-
-const getDb = () => dbManager.getDb();
 
 export type ChatActionResult<T = void> =
 	| { success: true; message: T }

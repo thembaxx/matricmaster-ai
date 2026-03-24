@@ -1,6 +1,14 @@
 import { and, eq, gte, lt, sql } from 'drizzle-orm';
-import { dbManager } from '@/lib/db';
+import { type DbType, dbManager } from '@/lib/db';
 import { calendarEvents, questionAttempts, questions } from '@/lib/db/schema';
+
+async function getDb(): Promise<DbType> {
+	const connected = await dbManager.waitForConnection(3, 2000);
+	if (!connected) {
+		throw new Error('Database not available');
+	}
+	return dbManager.getDb() as DbType;
+}
 
 const STRUGGLE_THRESHOLD = 0.6;
 
@@ -11,8 +19,7 @@ export interface ScheduleChange {
 }
 
 export async function detectMissedGoals(userId: string): Promise<string[]> {
-	await dbManager.initialize();
-	const db = dbManager.getDb();
+	const db = await getDb();
 
 	const today = new Date();
 	today.setHours(0, 0, 0, 0);
@@ -32,8 +39,7 @@ export async function detectMissedGoals(userId: string): Promise<string[]> {
 }
 
 export async function detectStrugglingTopics(userId: string): Promise<string[]> {
-	await dbManager.initialize();
-	const db = dbManager.getDb();
+	const db = await getDb();
 
 	const sevenDaysAgo = new Date();
 	sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
@@ -66,8 +72,7 @@ export async function rescheduleMissedGoals(userId: string): Promise<ScheduleCha
 
 	if (missedGoalIds.length === 0) return [];
 
-	await dbManager.initialize();
-	const db = dbManager.getDb();
+	const db = await getDb();
 
 	const tomorrow = new Date();
 	tomorrow.setDate(tomorrow.getDate() + 1);
@@ -76,9 +81,12 @@ export async function rescheduleMissedGoals(userId: string): Promise<ScheduleCha
 	const changes: ScheduleChange[] = [];
 
 	for (const eventId of missedGoalIds) {
-		const event = await db.query.calendarEvents.findFirst({
-			where: eq(calendarEvents.id, eventId),
-		});
+		const event = await db
+			.select()
+			.from(calendarEvents)
+			.where(eq(calendarEvents.id, eventId))
+			.limit(1)
+			.then((rows) => rows[0]);
 
 		if (event) {
 			const originalDuration = event.endTime.getTime() - event.startTime.getTime();
@@ -110,8 +118,7 @@ export async function addExtraPracticeForStruggling(
 ): Promise<number> {
 	if (topics.length === 0) return 0;
 
-	await dbManager.initialize();
-	const db = dbManager.getDb();
+	const db = await getDb();
 
 	const tomorrow = new Date();
 	tomorrow.setDate(tomorrow.getDate() + 1);

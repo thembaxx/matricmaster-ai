@@ -2,10 +2,8 @@
 
 import { and, desc, eq, sql } from 'drizzle-orm';
 import { ensureAuthenticated } from './auth-utils';
-import { dbManager } from './index';
+import { getDb } from './index';
 import { comments, commentVotes, users } from './schema';
-
-const getDb = () => dbManager.getDb();
 
 /**
  * Create a comment

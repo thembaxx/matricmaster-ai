@@ -1,7 +1,15 @@
 import { type NextRequest, NextResponse } from 'next/server';
 import { getAuth } from '@/lib/auth';
-import { dbManager } from '@/lib/db';
+import { type DbType, dbManager } from '@/lib/db';
 import { notifications } from '@/lib/db/schema';
+
+async function getDb(): Promise<DbType> {
+	const connected = await dbManager.waitForConnection(3, 2000);
+	if (!connected) {
+		throw new Error('Database not available');
+	}
+	return dbManager.getDb() as DbType;
+}
 
 export async function POST(request: NextRequest) {
 	try {
@@ -20,12 +28,7 @@ export async function POST(request: NextRequest) {
 			return NextResponse.json({ error: 'Message is required' }, { status: 400 });
 		}
 
-		const connected = await dbManager.waitForConnection(3, 2000);
-		if (!connected) {
-			return NextResponse.json({ error: 'Database unavailable' }, { status: 503 });
-		}
-
-		const db = dbManager.getDb();
+		const db = await getDb();
 
 		await db.insert(notifications).values({
 			userId: session.user.id,

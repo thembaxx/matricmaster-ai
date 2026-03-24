@@ -2,10 +2,8 @@
 
 import { eq, inArray } from 'drizzle-orm';
 import { ensureAuthenticated } from './auth-utils';
-import { dbManager } from './index';
+import { getDb } from './index';
 import { studyBuddies, studyBuddyProfiles, studyBuddyRequests, users } from './schema';
-
-const getDb = () => dbManager.getDb();
 
 // Helper to parse JSON string to array
 function parseJsonField<T>(value: unknown, defaultValue: T): T {

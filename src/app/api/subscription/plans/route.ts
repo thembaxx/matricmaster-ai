@@ -1,8 +1,16 @@
 import { and, asc, eq } from 'drizzle-orm';
 import { type NextRequest, NextResponse } from 'next/server';
 import { getAuth } from '@/lib/auth';
-import { db } from '@/lib/db';
+import { type DbType, dbManager } from '@/lib/db';
 import { subscriptionPlans, userSubscriptions } from '@/lib/db/schema';
+
+async function getDb(): Promise<DbType> {
+	const connected = await dbManager.waitForConnection(3, 2000);
+	if (!connected) {
+		throw new Error('Database not available');
+	}
+	return dbManager.getDb() as DbType;
+}
 
 export async function GET(request: NextRequest) {
 	try {
@@ -15,20 +23,22 @@ export async function GET(request: NextRequest) {
 			return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 		}
 
-		const plans = await db.query.subscriptionPlans.findMany({
-			where: eq(subscriptionPlans.isActive, true),
-			orderBy: asc(subscriptionPlans.priceZar),
-		});
+		const db = await getDb();
 
-		const subscription = await db.query.userSubscriptions.findFirst({
-			where: and(
-				eq(userSubscriptions.userId, session.user.id),
-				eq(userSubscriptions.status, 'active')
-			),
-			with: {
-				plan: true,
-			},
-		});
+		const plans = await db
+			.select()
+			.from(subscriptionPlans)
+			.where(eq(subscriptionPlans.isActive, true))
+			.orderBy(asc(subscriptionPlans.priceZar));
+
+		const subscription = await db
+			.select()
+			.from(userSubscriptions)
+			.where(
+				and(eq(userSubscriptions.userId, session.user.id), eq(userSubscriptions.status, 'active'))
+			)
+			.limit(1)
+			.then((rows) => rows[0]);
 
 		return NextResponse.json({
 			plans,
@@ -36,7 +46,7 @@ export async function GET(request: NextRequest) {
 				? {
 						id: subscription.id,
 						planId: subscription.planId,
-						planName: subscription.plan?.name,
+						planName: null,
 						status: subscription.status,
 						currentPeriodEnd: subscription.currentPeriodEnd,
 						cancelAtPeriodEnd: subscription.cancelAtPeriodEnd,

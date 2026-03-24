@@ -17,7 +17,7 @@ async function getDb(): Promise<DbType> {
 	if (!connected) {
 		throw new Error('Database not available');
 	}
-	return dbManager.getDb();
+	return dbManager.getDb() as DbType;
 }
 
 export interface StreakInfo {

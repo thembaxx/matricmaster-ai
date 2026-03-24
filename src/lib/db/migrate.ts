@@ -3,7 +3,7 @@ import { config } from 'dotenv';
 config({ path: '.env.local' });
 
 import { migrate } from 'drizzle-orm/postgres-js/migrator';
-import { closeConnection, dbManager } from './index';
+import { closeConnection, type DbType, dbManager } from './index';
 import { sqliteManager } from './sqlite-manager';
 import { syncEngine } from './sync/engine';
 
@@ -20,7 +20,7 @@ async function runMigrations() {
 			process.exit(1);
 		}
 
-		const db = dbManager.getDb();
+		const db = dbManager.getDb() as unknown as DbType;
 		await migrate(db, { migrationsFolder: './drizzle' });
 		console.log('✅ Migrations complete!');
 

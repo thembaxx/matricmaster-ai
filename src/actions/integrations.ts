@@ -1,7 +1,7 @@
 'use server';
 
 import { getAuth } from '@/lib/auth';
-import { dbManager } from '@/lib/db';
+import { type DbType, dbManager } from '@/lib/db';
 import { generateFlashcardsFromWeakTopics, syncMasteryToConfidence } from './adaptive-learning';
 import {
 	checkAndUnlockAchievements,
@@ -63,7 +63,7 @@ export async function onFlashcardReviewed(_rating: number, topic: string, _subje
 }
 
 async function getWeakTopicsFromDb() {
-	const db = await dbManager.getDb();
+	const db = (await dbManager.getDb()) as DbType;
 	const auth = await getAuth();
 	const session = await auth.api.getSession();
 	if (!session?.user) return [];

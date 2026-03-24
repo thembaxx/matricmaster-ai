@@ -1,4 +1,5 @@
 import { dbManagerV2 } from './database-manager-v2';
+import type { DbType } from './postgresql-manager';
 import { pgManager } from './postgresql-manager';
 
 export type { DbType } from './postgresql-manager';
@@ -68,7 +69,10 @@ export async function closeConnection() {
 	await dbManager.close();
 }
 
-export const getDb = () => dbManager.getDb();
+export const getDb = (): DbType => {
+	const db = dbManager.getDb() as DbType;
+	return db;
+};
 
 /**
  * Global db export - now properly typed through SmartDb to handle sync-ready writes automatically.

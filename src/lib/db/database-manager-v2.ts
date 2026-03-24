@@ -72,7 +72,14 @@ class DatabaseManagerV2 {
 		return this.activeDatabase;
 	}
 
-	public getDb(): DbType | SqliteDbType {
+	public getDb(): DbType {
+		if (this.activeDatabase === 'postgresql' && this.isPostgreSQLConnected()) {
+			return pgManager.getDb();
+		}
+		return pgManager.getDb();
+	}
+
+	public getDbRaw(): DbType | SqliteDbType {
 		if (this.activeDatabase === 'postgresql' && this.isPostgreSQLConnected()) {
 			return pgManager.getDb();
 		}
@@ -82,12 +89,12 @@ class DatabaseManagerV2 {
 	/**
 	 * Returns a database instance that automatically handles sync metadata when using SQLite.
 	 */
-	public getSmartDb(): DbType | SqliteDbType {
-		const db = this.getDb();
+	public getSmartDb(): DbType {
+		const db = this.getDbRaw();
 		const activeDb = this.activeDatabase;
 
 		if (activeDb !== 'sqlite') {
-			return db;
+			return db as DbType;
 		}
 
 		return new Proxy(db, {
@@ -141,7 +148,7 @@ class DatabaseManagerV2 {
 
 				return typeof value === 'function' ? value.bind(target) : value;
 			},
-		}) as any;
+		}) as unknown as DbType;
 	}
 
 	public getPgDb(): DbType | null {

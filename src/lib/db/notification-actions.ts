@@ -2,10 +2,8 @@
 
 import { and, eq } from 'drizzle-orm';
 import { ensureAuthenticated } from './auth-utils';
-import { dbManager } from './index';
+import { getDb } from './index';
 import { notifications } from './schema';
-
-const getDb = () => dbManager.getDb();
 
 async function publishNotificationToAbly(
 	userId: string,

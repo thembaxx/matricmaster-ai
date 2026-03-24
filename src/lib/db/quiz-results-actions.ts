@@ -3,7 +3,7 @@ import {
 	createFlashcardFromWrongAnswer,
 	type WrongAnswerData,
 } from '@/services/wrongAnswerPipeline';
-import { dbManager } from './index';
+import { getDb } from './index';
 import { quizResults } from './schema';
 
 export interface QuizResultInput {
@@ -37,12 +37,7 @@ export interface QuizResultWithMistakes {
 export async function saveQuizResultWithMistakes(
 	result: QuizResultInput
 ): Promise<QuizResultWithMistakes> {
-	const connected = await dbManager.waitForConnection();
-	if (!connected) {
-		throw new Error('Database connection failed');
-	}
-
-	const db = await dbManager.getDb();
+	const db = await getDb();
 
 	const [savedResult] = await db
 		.insert(quizResults)
@@ -97,12 +92,7 @@ export async function saveQuizResultWithMistakes(
 }
 
 export async function saveQuizResult(result: QuizResultInput) {
-	const connected = await dbManager.waitForConnection();
-	if (!connected) {
-		throw new Error('Database connection failed');
-	}
-
-	const db = await dbManager.getDb();
+	const db = await getDb();
 
 	const [savedResult] = await db
 		.insert(quizResults)
@@ -121,33 +111,18 @@ export async function saveQuizResult(result: QuizResultInput) {
 }
 
 export async function getQuizResultsByUser(userId: string) {
-	const connected = await dbManager.waitForConnection();
-	if (!connected) {
-		throw new Error('Database connection failed');
-	}
-
-	const db = await dbManager.getDb();
+	const db = await getDb();
 	return db.select().from(quizResults).where(eq(quizResults.userId, userId));
 }
 
 export async function getQuizResultById(id: string) {
-	const connected = await dbManager.waitForConnection();
-	if (!connected) {
-		throw new Error('Database connection failed');
-	}
-
-	const db = await dbManager.getDb();
+	const db = await getDb();
 	const results = await db.select().from(quizResults).where(eq(quizResults.id, id));
 	return results[0] || null;
 }
 
 export async function getQuizStatsByUser(userId: string) {
-	const connected = await dbManager.waitForConnection();
-	if (!connected) {
-		throw new Error('Database connection failed');
-	}
-
-	const db = await dbManager.getDb();
+	const db = await getDb();
 	const results = await db.select().from(quizResults).where(eq(quizResults.userId, userId));
 
 	type QuizResultRow = typeof quizResults.$inferSelect;
@@ -174,12 +149,7 @@ export async function getQuizStatsByUser(userId: string) {
 }
 
 export async function getRecentQuizResults(userId: string, limit = 10) {
-	const connected = await dbManager.waitForConnection();
-	if (!connected) {
-		throw new Error('Database connection failed');
-	}
-
-	const db = await dbManager.getDb();
+	const db = await getDb();
 	return db
 		.select()
 		.from(quizResults)
