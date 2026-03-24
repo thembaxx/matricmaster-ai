@@ -40,11 +40,11 @@ export default function PastPapers() {
 				<div className="max-w-7xl mx-auto w-full space-y-6 sm:space-y-12">
 					<div className="flex flex-col md:flex-row md:items-center justify-between gap-4 sm:gap-6">
 						<div className="space-y-2">
-							<h1 className="text-2xl sm:text-4xl lg:text-7xl font-black text-foreground tracking-tighter uppercase">
+							<h1 className="text-2xl sm:text-4xl lg:text-7xl font-black text-foreground tracking-tighter">
 								past paper vault
 							</h1>
-							<p className="text-label-secondary font-black text-[11px] sm:text-lg uppercase tracking-widest">
-								access thousands of Grade 12 exam papers
+							<p className="text-label-secondary font-black text-[11px] sm:text-lg tracking-widest">
+								access thousands of grade 12 exam papers
 							</p>
 						</div>
 						<div className="flex items-center gap-2">
@@ -53,7 +53,7 @@ export default function PastPapers() {
 									variant="ghost"
 									onClick={clearAllFilters}
 									aria-label="clear all filters"
-									className="rounded-2xl font-black text-[10px] uppercase tracking-widest px-3 sm:px-4 h-10 sm:h-12 text-label-tertiary hover:text-foreground ios-active-scale"
+									className="rounded-2xl font-black text-[10px] tracking-widest px-3 sm:px-4 h-10 sm:h-12 text-label-tertiary hover:text-foreground ios-active-scale"
 								>
 									<HugeiconsIcon icon={Cancel01Icon} className="w-4 h-4 mr-1 sm:mr-2" />
 									<span className="hidden sm:inline">clear</span>
@@ -64,7 +64,7 @@ export default function PastPapers() {
 								onClick={() => uiDispatch({ type: 'TOGGLE_FILTER_PANEL', payload: true })}
 								aria-label={`advanced faders${activeFilterCount > 0 ? `, ${activeFilterCount} active` : ''}`}
 								className={cn(
-									'rounded-2xl border-2 font-black text-[10px] uppercase tracking-widest px-4 sm:px-6 h-10 sm:h-12 ios-active-scale',
+									'rounded-2xl border-2 font-black text-[10px] tracking-widest px-4 sm:px-6 h-10 sm:h-12 ios-active-scale',
 									activeFilterCount > 0 && 'border-primary bg-primary/10 text-primary'
 								)}
 							>
@@ -89,7 +89,7 @@ export default function PastPapers() {
 								value={uiState.searchQuery}
 								onChange={(e) => uiDispatch({ type: 'SET_SEARCH_QUERY', payload: e.target.value })}
 								placeholder="search"
-								className="pl-12 sm:pl-16 placeholder:font-medium placeholder:capitalize pr-12 sm:pr-16 bg-card backdrop-blur-md border-border border-2 h-12 sm:h-16 rounded-xl sm:rounded-2xl text-base sm:text-lg font-black uppercase tracking-tight shadow-inner"
+								className="pl-12 sm:pl-16 placeholder:font-medium pr-12 sm:pr-16 bg-card backdrop-blur-md border-border border-2 h-12 sm:h-16 rounded-xl sm:rounded-2xl text-base sm:text-lg font-black tracking-tight shadow-inner"
 								aria-label="search past papers"
 							/>
 							<AnimatePresence>
@@ -117,7 +117,7 @@ export default function PastPapers() {
 									variant="ghost"
 									onClick={() => uiDispatch({ type: 'SET_YEAR', payload: year as number | 'All' })}
 									aria-pressed={uiState.selectedYear === year}
-									className={`rounded-xl sm:rounded-2xl px-4 sm:px-8 py-2 sm:py-3 text-[11px] font-black uppercase tracking-widest transition-all h-10 sm:h-16 whitespace-nowrap ios-active-scale ${
+									className={`rounded-xl sm:rounded-2xl px-4 sm:px-8 py-2 sm:py-3 text-[11px] font-black tracking-widest transition-all h-10 sm:h-16 whitespace-nowrap ios-active-scale ${
 										uiState.selectedYear === year
 											? 'bg-primary text-primary-foreground shadow-2xl shadow-primary/30'
 											: 'bg-secondary text-label-secondary border-2 border-transparent hover:border-border backdrop-blur-sm'
@@ -134,7 +134,7 @@ export default function PastPapers() {
 			<ScrollArea className="flex-1 no-scrollbar">
 				<main className="px-4 sm:px-6 py-6 sm:py-8 max-w-7xl mx-auto w-full space-y-8 sm:space-y-12 pb-32 lg:px-0">
 					<div className="flex items-center justify-between border-b border-border pb-4">
-						<h2 className="text-[10px] font-black text-label-tertiary uppercase tracking-[0.4em]">
+						<h2 className="text-[10px] font-black text-label-tertiary tracking-[0.4em]">
 							archive results ({filteredPapers.length})
 						</h2>
 					</div>

@@ -71,7 +71,7 @@ export function TopicDetailsModal({
 					<div className="absolute bottom-4 left-6 flex items-center gap-3">
 						<span className="text-3xl">{subject.icon}</span>
 						<div>
-							<h2 className="text-xl font-black text-white uppercase">{subject.name}</h2>
+							<h2 className="text-xl font-black text-white ">{subject.name}</h2>
 							<p className="text-xs text-white/70">CAPS Grade 12</p>
 						</div>
 					</div>

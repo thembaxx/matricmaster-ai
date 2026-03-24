@@ -39,36 +39,36 @@ interface OnboardingStep {
 const STEPS: OnboardingStep[] = [
 	{
 		id: 0,
-		title: 'Your Study Companion',
+		title: 'your study companion',
 		description:
-			'We help you pass your Matric. Practice past papers, get instant help, and track your progress.',
+			'we help you pass your matric. practice past papers, get instant help, and track your progress.',
 		image: '/onboarding/welcome.png',
 		color: 'from-blue-500 to-indigo-600',
 		icon: Rocket01Icon,
 	},
 	{
 		id: 1,
-		title: 'Pick Your Subjects',
+		title: 'pick your subjects',
 		description:
-			"Choose the subjects you're writing. We'll show you past papers and study materials for each one.",
+			"choose the subjects you're writing. we'll show you past papers and study materials for each one.",
 		image: '/onboarding/focus.png',
 		color: 'from-green-500 to-emerald-600',
 		icon: Target01Icon,
 	},
 	{
 		id: 2,
-		title: 'Master Every Topic',
+		title: 'master every topic',
 		description:
-			'Practice with real NSC questions. Get clear explanations so you actually understand.',
+			'practice with real nsc questions. get clear explanations so you actually understand.',
 		image: '/onboarding/quiz.png',
 		color: 'from-purple-500 to-pink-600',
 		icon: CalculatorIcon,
 	},
 	{
 		id: 3,
-		title: 'Level Up Your Grade',
+		title: 'level up your grade',
 		description:
-			'Track your progress. Earn XP, unlock achievements, and stay motivated until exam day.',
+			'track your progress. earn xp, unlock achievements, and stay motivated until exam day.',
 		image: '/onboarding/progress.png',
 		color: 'from-amber-400 to-orange-500',
 		icon: ChampionIcon,
@@ -100,7 +100,7 @@ export default function OnboardingScreen({ user }: OnboardingScreenProps) {
 		try {
 			const result = await completeOnboardingAction();
 			if (result.success) {
-				toast.success('Onboarding complete!');
+				toast.success('onboarding complete!');
 				router.push('/dashboard');
 			} else {
 				// If it fails (likely due to no real session in test), just redirect
@@ -190,7 +190,7 @@ export default function OnboardingScreen({ user }: OnboardingScreenProps) {
 							<HugeiconsIcon icon={SparklesIcon} className="w-4 h-4 text-primary" />
 						</div>
 						<span className="text-sm font-medium text-muted-foreground">
-							Step {currentStep + 1} of {STEPS.length}
+							step {currentStep + 1} of {STEPS.length}
 						</span>
 					</div>
 					<Button
@@ -199,7 +199,7 @@ export default function OnboardingScreen({ user }: OnboardingScreenProps) {
 						className="text-xs font-medium text-muted-foreground"
 						onClick={handleComplete}
 					>
-						Skip
+						skip
 					</Button>
 				</div>
 				<Progress value={((currentStep + 1) / STEPS.length) * 100} className="h-2 rounded-full" />
@@ -267,8 +267,8 @@ export default function OnboardingScreen({ user }: OnboardingScreenProps) {
 									as="h1"
 									text={
 										currentStep === 0 && user?.name
-											? `Welcome, ${user.name.split(' ')[0]}!`
-											: step.title
+											? `welcome, ${user.name.split(' ')[0].toLowerCase()}!`
+											: step.title.toLowerCase()
 									}
 									className="text-2xl font-bold text-foreground text-pretty"
 								/>
@@ -313,7 +313,7 @@ export default function OnboardingScreen({ user }: OnboardingScreenProps) {
 									<HugeiconsIcon icon={SparklesIcon} className="w-6 h-6" />
 								</m.div>
 							) : (
-								"Let's Go!"
+								"let's go!"
 							)}
 						</Button>
 					) : (
@@ -321,7 +321,7 @@ export default function OnboardingScreen({ user }: OnboardingScreenProps) {
 							className="flex-1 h-14 rounded-2xl font-bold text-lg bg-foreground text-background shadow-xl transition-all active:scale-[0.98]"
 							onClick={() => paginate(1)}
 						>
-							Next
+							next
 							<HugeiconsIcon icon={ArrowRight01Icon} className="ml-2 w-5 h-5" />
 						</Button>
 					)}

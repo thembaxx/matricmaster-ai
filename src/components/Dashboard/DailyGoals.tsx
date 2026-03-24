@@ -160,7 +160,7 @@ export const DailyGoals = memo(function DailyGoals({
 									>
 										{goal.title}
 									</p>
-									<span className="text-[10px] font-black text-tiimo-gray-muted/60 uppercase tracking-widest bg-secondary px-2 py-0.5 rounded-full">
+									<span className="text-[10px] font-black text-tiimo-gray-muted/60  tracking-widest bg-secondary px-2 py-0.5 rounded-full">
 										{Math.min(goal.current, goal.target)}/{goal.target}
 									</span>
 								</div>

@@ -54,7 +54,7 @@ export function UploadStep({
 		<div className="p-8 space-y-8">
 			<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 				<div className="space-y-3">
-					<Label className="font-black text-[10px] uppercase tracking-widest text-muted-foreground">
+					<Label className="font-black text-[10px]  tracking-widest text-muted-foreground">
 						Paper Identity
 					</Label>
 					<Input
@@ -65,7 +65,7 @@ export function UploadStep({
 					/>
 				</div>
 				<div className="space-y-3">
-					<Label className="font-black text-[10px] uppercase tracking-widest text-muted-foreground">
+					<Label className="font-black text-[10px]  tracking-widest text-muted-foreground">
 						Subject Area
 					</Label>
 					{isCreatingSubject ? (
@@ -117,7 +117,7 @@ export function UploadStep({
 					)}
 				</div>
 				<div className="space-y-3">
-					<Label className="font-black text-[10px] uppercase tracking-widest text-muted-foreground">
+					<Label className="font-black text-[10px]  tracking-widest text-muted-foreground">
 						Grade & Session
 					</Label>
 					<div className="flex gap-2">
@@ -152,7 +152,7 @@ export function UploadStep({
 			</div>
 
 			<div className="space-y-3">
-				<Label className="font-black text-[10px] uppercase tracking-widest text-muted-foreground">
+				<Label className="font-black text-[10px]  tracking-widest text-muted-foreground">
 					PDF Document
 				</Label>
 				<section
@@ -186,7 +186,7 @@ export function UploadStep({
 							<HugeiconsIcon icon={Upload01Icon} className="h-8 w-8" />
 						</div>
 						<div className="text-center">
-							<p className="font-black uppercase tracking-widest text-xs">
+							<p className="font-black  tracking-widest text-xs">
 								{isDragging ? 'Drop PDF Here' : file ? file.name : 'Drop PDF or Click to Browse'}
 							</p>
 							{file && !isDragging && (

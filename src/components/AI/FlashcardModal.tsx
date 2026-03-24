@@ -217,7 +217,7 @@ export function FlashcardModal({
 										className="absolute inset-0 flex flex-col items-center justify-center p-6 bg-gradient-to-br from-primary to-primary/80 text-primary-foreground rounded-2xl shadow-lg backface-hidden"
 										style={{ backfaceVisibility: 'hidden' }}
 									>
-										<p className="text-sm uppercase tracking-widest opacity-70 mb-4">Question</p>
+										<p className="text-sm  tracking-widest opacity-70 mb-4">Question</p>
 										<p className="text-xl font-bold text-center">{currentCard.front}</p>
 										{currentCard.timesReviewed !== undefined && currentCard.timesReviewed > 0 && (
 											<p className="text-xs opacity-60 mt-4">
@@ -232,7 +232,7 @@ export function FlashcardModal({
 											transform: 'rotateY(180deg)',
 										}}
 									>
-										<p className="text-sm uppercase tracking-widest opacity-70 mb-4">Answer</p>
+										<p className="text-sm  tracking-widest opacity-70 mb-4">Answer</p>
 										<p className="text-lg font-medium text-center">{currentCard.back}</p>
 										{currentCard.tags && currentCard.tags.length > 0 && (
 											<div className="flex flex-wrap gap-1 mt-4">

@@ -65,7 +65,7 @@ export function TopicTree({
 						{subject.icon}
 					</div>
 					<div className="text-left">
-						<h2 className="text-lg font-black uppercase tracking-tight">{subject.name}</h2>
+						<h2 className="text-lg font-black  tracking-tight">{subject.name}</h2>
 						<p className="text-xs font-semibold text-muted-foreground">
 							{masteredCount} mastered · {inProgressCount} in progress ·{' '}
 							{subject.topics.length - masteredCount - inProgressCount} locked

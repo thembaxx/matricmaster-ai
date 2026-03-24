@@ -55,7 +55,7 @@ export function AIExplanationCard({
 						</div>
 						<div>
 							<h4 className="text-sm font-black font-lexend tracking-tight">{appConfig.name} AI</h4>
-							<p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
+							<p className="text-[10px] font-bold text-muted-foreground  tracking-widest">
 								Personal Tutor {subject ? `• ${subject}` : ''}
 							</p>
 						</div>
@@ -82,7 +82,7 @@ export function AIExplanationCard({
 							variant="default"
 							onClick={onExplain}
 							disabled={isLoading}
-							className="rounded-xl h-9 px-4 font-black text-xs uppercase tracking-wider"
+							className="rounded-xl h-9 px-4 font-black text-xs  tracking-wider"
 						>
 							{isLoading ? (
 								<HugeiconsIcon icon={Loading03Icon} className="h-3.5 w-3.5 mr-2 animate-spin" />
@@ -106,13 +106,13 @@ export function AIExplanationCard({
 								<Separator className="mb-4" />
 								<MarkdownRenderer content={explanation} className="prose-sm" />
 								<div className="mt-4 flex items-center justify-between">
-									<p className="text-[9px] font-bold text-muted-foreground uppercase tracking-[0.2em]">
+									<p className="text-[9px] font-bold text-muted-foreground  tracking-[0.2em]">
 										AI-generated explanation
 									</p>
 									<Button
 										variant="link"
 										size="sm"
-										className="h-auto p-0 text-[10px] font-black uppercase tracking-widest text-primary/60 hover:text-primary"
+										className="h-auto p-0 text-[10px] font-black  tracking-widest text-primary/60 hover:text-primary"
 										onClick={onExplain}
 										disabled={isLoading}
 									>
@@ -162,7 +162,7 @@ export function AIExplanationCard({
 								className="w-2 h-2 bg-primary/80 rounded-full"
 							/>
 						</div>
-						<p className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground animate-pulse">
+						<p className="text-[10px] font-black  tracking-[0.2em] text-muted-foreground animate-pulse">
 							Understanding the question...
 						</p>
 					</m.div>

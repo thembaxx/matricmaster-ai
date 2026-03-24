@@ -43,7 +43,7 @@ export default function SubjectDetailsPage() {
 						icon={ArrowLeft01Icon}
 						className="w-5 h-5 transition-transform group-hover:-translate-x-1"
 					/>
-					<span className="font-black uppercase tracking-widest text-[10px]">Back</span>
+					<span className="font-black  tracking-widest text-[10px]">Back</span>
 				</button>
 
 				<div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 bg-card rounded-[2.5rem] p-8 shadow-tiimo border border-border/50">
@@ -53,12 +53,12 @@ export default function SubjectDetailsPage() {
 						</div>
 						<div>
 							<h1
-								className="text-4xl font-black uppercase tracking-tighter mb-1"
+								className="text-4xl font-black  tracking-tighter mb-1"
 								style={{ fontFamily: subjectFont }}
 							>
 								{subjectName}
 							</h1>
-							<p className="text-tiimo-gray-muted font-bold uppercase tracking-[0.2em] text-[10px]">
+							<p className="text-tiimo-gray-muted font-bold  tracking-[0.2em] text-[10px]">
 								NSC CURRICULUM • GRADE 12
 							</p>
 						</div>
@@ -66,7 +66,7 @@ export default function SubjectDetailsPage() {
 
 					<div className="w-full sm:w-64 space-y-3">
 						<div className="flex justify-between items-end">
-							<span className="text-[10px] font-black uppercase tracking-widest text-tiimo-gray-muted">
+							<span className="text-[10px] font-black  tracking-widest text-tiimo-gray-muted">
 								Overall Progress
 							</span>
 							<span className="text-sm font-black text-primary">{Math.round(progress)}%</span>
@@ -76,7 +76,7 @@ export default function SubjectDetailsPage() {
 				</div>
 
 				<div className="grid gap-4">
-					<h2 className="text-xs font-black uppercase tracking-[0.2em] text-tiimo-gray-muted ml-4">
+					<h2 className="text-xs font-black  tracking-[0.2em] text-tiimo-gray-muted ml-4">
 						Learning Path
 					</h2>
 					{lessons.map((lesson, index) => (
@@ -109,15 +109,15 @@ export default function SubjectDetailsPage() {
 												/>
 											</div>
 											<div className="flex-1 min-w-0">
-												<h3 className="text-lg font-black uppercase tracking-tight truncate">
+												<h3 className="text-lg font-black  tracking-tight truncate">
 													{lesson.title}
 												</h3>
-												<p className="text-[10px] font-bold text-tiimo-gray-muted uppercase tracking-widest mt-0.5">
+												<p className="text-[10px] font-bold text-tiimo-gray-muted  tracking-widest mt-0.5">
 													{lesson.topic} • 15-20 MINS
 												</p>
 											</div>
 											{lesson.completed && (
-												<div className="hidden sm:block px-4 py-2 rounded-full bg-tiimo-green/10 text-tiimo-green text-[10px] font-black uppercase tracking-widest">
+												<div className="hidden sm:block px-4 py-2 rounded-full bg-tiimo-green/10 text-tiimo-green text-[10px] font-black  tracking-widest">
 													Mastered
 												</div>
 											)}

@@ -24,10 +24,7 @@ export function QuestionCard({ question, subjectMap, onEdit, onDelete }: Questio
 				<div className="flex items-start justify-between">
 					<div className="flex flex-wrap gap-2">
 						<DifficultyBadge difficulty={question.difficulty as 'easy' | 'medium' | 'hard'} />
-						<Badge
-							variant="outline"
-							className="rounded-lg uppercase tracking-widest text-[9px] font-black"
-						>
+						<Badge variant="outline" className="rounded-lg  tracking-widest text-[9px] font-black">
 							Grade {question.gradeLevel}
 						</Badge>
 					</div>
@@ -69,7 +66,7 @@ export function QuestionCard({ question, subjectMap, onEdit, onDelete }: Questio
 
 				<div className="pt-4 border-t border-border/50 flex items-center justify-between">
 					<div className="space-y-1">
-						<p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">
+						<p className="text-[10px] font-black text-muted-foreground  tracking-widest">
 							{subjectMap.get(question.subjectId) || 'Unknown'}
 						</p>
 						<p className="text-xs font-bold text-foreground truncate max-w-37.5">
@@ -77,9 +74,7 @@ export function QuestionCard({ question, subjectMap, onEdit, onDelete }: Questio
 						</p>
 					</div>
 					<div className="text-right">
-						<p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">
-							Points
-						</p>
+						<p className="text-[10px] font-black text-muted-foreground  tracking-widest">Points</p>
 						<p className="text-lg font-black text-primary">{question.marks}</p>
 					</div>
 				</div>

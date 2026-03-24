@@ -115,7 +115,7 @@ export function EdgeCaseHandler({
 					<Icon className="h-5 w-5 shrink-0" />
 					<span
 						className={cn(
-							'text-xs font-medium uppercase tracking-wide',
+							'text-xs font-medium  tracking-wide',
 							edgeCase.severity === 'low' && 'text-muted-foreground',
 							edgeCase.severity === 'medium' && 'text-yellow-700 dark:text-yellow-300',
 							edgeCase.severity === 'high' && 'text-orange-700 dark:text-orange-300',

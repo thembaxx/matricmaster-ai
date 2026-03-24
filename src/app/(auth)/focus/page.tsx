@@ -114,10 +114,10 @@ function FocusPageContent() {
 						<HugeiconsIcon icon={ArrowLeft01Icon} className="w-6 h-6" />
 					</Button>
 					<div>
-						<h1 className="text-3xl font-black tracking-tight text-foreground uppercase">
+						<h1 className="text-3xl font-black tracking-tight text-foreground ">
 							{lesson ? lesson.title : 'Focus Mode'}
 						</h1>
-						<p className="text-muted-foreground font-bold uppercase tracking-widest text-[10px]">
+						<p className="text-muted-foreground font-bold  tracking-widest text-[10px]">
 							{lesson ? `${lesson.topic} • ${lesson.duration} MINS` : 'Crush your study goals'}
 						</p>
 					</div>
@@ -131,7 +131,7 @@ function FocusPageContent() {
 					<TabsList className="bg-muted/50 p-1 rounded-full h-12 border border-border/50">
 						<TabsTrigger
 							value="timer"
-							className="rounded-full px-6 data-[state=active]:bg-background data-[state=active]:shadow-tiimo font-black uppercase text-[10px] tracking-widest"
+							className="rounded-full px-6 data-[state=active]:bg-background data-[state=active]:shadow-tiimo font-black  text-[10px] tracking-widest"
 						>
 							<HugeiconsIcon icon={Clock01Icon} className="w-4 h-4 mr-2" />
 							Timer
@@ -139,7 +139,7 @@ function FocusPageContent() {
 						{lesson && (
 							<TabsTrigger
 								value="lesson"
-								className="rounded-full px-6 data-[state=active]:bg-background data-[state=active]:shadow-tiimo font-black uppercase text-[10px] tracking-widest"
+								className="rounded-full px-6 data-[state=active]:bg-background data-[state=active]:shadow-tiimo font-black  text-[10px] tracking-widest"
 							>
 								<HugeiconsIcon icon={BookOpen01Icon} className="w-4 h-4 mr-2" />
 								Lesson
@@ -147,7 +147,7 @@ function FocusPageContent() {
 						)}
 						<TabsTrigger
 							value="discussion"
-							className="rounded-full px-6 data-[state=active]:bg-background data-[state=active]:shadow-tiimo font-black uppercase text-[10px] tracking-widest"
+							className="rounded-full px-6 data-[state=active]:bg-background data-[state=active]:shadow-tiimo font-black  text-[10px] tracking-widest"
 						>
 							<HugeiconsIcon icon={Chat01Icon} className="w-4 h-4 mr-2" />
 							Chat
@@ -195,12 +195,12 @@ function FocusPageContent() {
 								<MarkdownRenderer content={lesson.content} />
 							</ScrollArea>
 							<div className="p-8 bg-muted/30 border-t border-border/50 flex justify-between items-center">
-								<p className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground">
+								<p className="text-[10px] font-black  tracking-[0.2em] text-muted-foreground">
 									Keep going, you're doing great!
 								</p>
 								<Button
 									onClick={() => setActiveTab('timer')}
-									className="rounded-full font-black uppercase text-[10px] px-8 h-12 tracking-widest shadow-xl shadow-primary/10"
+									className="rounded-full font-black  text-[10px] px-8 h-12 tracking-widest shadow-xl shadow-primary/10"
 								>
 									Back to Timer
 								</Button>

@@ -168,7 +168,7 @@ export function SubjectPerformance() {
 
 							<div className="grid grid-cols-2 gap-4">
 								<div>
-									<div className="flex justify-between text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1.5">
+									<div className="flex justify-between text-xs font-bold text-muted-foreground  tracking-wider mb-1.5">
 										<span>Overall Mastery</span>
 										<span>{subject.overallScore}%</span>
 									</div>
@@ -178,7 +178,7 @@ export function SubjectPerformance() {
 									/>
 									<div className="grid grid-cols-3 gap-2 mt-3">
 										<div className="text-center">
-											<p className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
+											<p className="text-xs font-bold text-muted-foreground  tracking-wider">
 												Confidence
 											</p>
 											<p className="text-sm font-black">
@@ -186,13 +186,13 @@ export function SubjectPerformance() {
 											</p>
 										</div>
 										<div className="text-center">
-											<p className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
+											<p className="text-xs font-bold text-muted-foreground  tracking-wider">
 												Mistakes
 											</p>
 											<p className="text-sm font-black">{subject.mistakesCount}</p>
 										</div>
 										<div className="text-center">
-											<p className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
+											<p className="text-xs font-bold text-muted-foreground  tracking-wider">
 												Time Spent
 											</p>
 											<p className="text-sm font-black">{formatTime(subject.timeMinutes)}</p>

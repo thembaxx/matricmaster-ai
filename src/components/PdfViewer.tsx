@@ -225,7 +225,7 @@ export default function PdfViewer({ url, onClose, title }: PdfViewerProps) {
 																	<div className="h-8 w-8 bg-brand-blue/20 rounded-full animate-pulse" />
 																</div>
 															</div>
-															<p className="text-sm font-black text-muted-foreground animate-pulse uppercase tracking-[0.2em]">
+															<p className="text-sm font-black text-muted-foreground animate-pulse  tracking-[0.2em]">
 																Preparing View...
 															</p>
 														</div>

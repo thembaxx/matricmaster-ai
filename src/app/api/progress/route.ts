@@ -1,5 +1,6 @@
 import { type NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
+import { handleApiError } from '@/lib/api-error-handler';
 import { getAuth } from '@/lib/auth';
 import {
 	getGlobalProgress,
@@ -57,7 +58,7 @@ export async function GET(request: NextRequest) {
 		});
 
 		if (!session?.user?.id) {
-			return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+			return NextResponse.json({ error: 'unauthorized', success: false }, { status: 401 });
 		}
 
 		const progress = await getGlobalProgress(session.user.id);
@@ -73,13 +74,13 @@ export async function GET(request: NextRequest) {
 				weeklyPoints: 0,
 				monthlyRank: null,
 				subjectProgress: [],
+				success: true,
 			});
 		}
 
-		return NextResponse.json(progress);
+		return NextResponse.json({ ...progress, success: true });
 	} catch (error) {
-		console.error('Error in GET /api/progress:', error);
-		return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+		return handleApiError(error);
 	}
 }
 
@@ -91,66 +92,55 @@ export async function POST(request: NextRequest) {
 		});
 
 		if (!session?.user?.id) {
-			return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+			return NextResponse.json({ error: 'unauthorized', success: false }, { status: 401 });
 		}
 
 		const body = await request.json();
+		const validation = progressActionSchema.parse(body);
 
-		const validation = progressActionSchema.safeParse(body);
-		if (!validation.success) {
-			return NextResponse.json(
-				{ error: 'Validation failed', details: validation.error.flatten().fieldErrors },
-				{ status: 400 }
-			);
-		}
-
-		switch (validation.data.action) {
+		switch (validation.action) {
 			case 'trackLesson': {
 				const result = await trackLessonCompletion(
-					validation.data.lessonId,
-					validation.data.subjectId,
-					validation.data.topic || 'general'
+					validation.lessonId,
+					validation.subjectId,
+					validation.topic || 'general'
 				);
-				return NextResponse.json(result);
+				return NextResponse.json({ ...result, success: true });
 			}
 
 			case 'trackQuiz': {
 				const result = await trackQuizAttempt(
-					validation.data.quizId,
-					validation.data.subjectId,
-					validation.data.topic || 'general',
-					validation.data.score,
-					validation.data.totalQuestions,
-					validation.data.marksEarned,
-					validation.data.durationMinutes
+					validation.quizId,
+					validation.subjectId,
+					validation.topic || 'general',
+					validation.score,
+					validation.totalQuestions,
+					validation.marksEarned,
+					validation.durationMinutes
 				);
-				return NextResponse.json(result);
+				return NextResponse.json({ ...result, success: true });
 			}
 
 			case 'trackPastPaper': {
 				const result = await trackPastPaperAttempt(
-					validation.data.paperId,
-					validation.data.subjectId,
-					validation.data.questionsAttempted,
-					validation.data.score,
-					validation.data.durationMinutes
+					validation.paperId,
+					validation.subjectId,
+					validation.questionsAttempted,
+					validation.score,
+					validation.durationMinutes
 				);
-				return NextResponse.json(result);
+				return NextResponse.json({ ...result, success: true });
 			}
 
 			case 'trackFlashcard': {
-				const result = await trackFlashcardReview(
-					validation.data.flashcardId,
-					validation.data.rating
-				);
-				return NextResponse.json(result);
+				const result = await trackFlashcardReview(validation.flashcardId, validation.rating);
+				return NextResponse.json({ ...result, success: true });
 			}
 
 			default:
-				return NextResponse.json({ error: 'Invalid action' }, { status: 400 });
+				return NextResponse.json({ error: 'invalid action', success: false }, { status: 400 });
 		}
 	} catch (error) {
-		console.error('Error in POST /api/progress:', error);
-		return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+		return handleApiError(error);
 	}
 }

@@ -64,13 +64,13 @@ export default function VoiceTutorPage() {
 			(error) => {
 				console.debug('Speech recognition error:', error);
 				setIsRecording(false);
-				toast.error('Voice recognition failed');
+				toast.error('voice recognition failed');
 			}
 		);
 
 		if (started) {
 			setIsRecording(true);
-			toast.success('Listening...');
+			toast.success('listening...');
 		}
 	}, []);
 
@@ -129,7 +129,7 @@ export default function VoiceTutorPage() {
 				}
 			}
 		} catch (_error) {
-			toast.error('Failed to get response from AI tutor');
+			toast.error('failed to get response from ai tutor');
 		} finally {
 			setIsProcessing(false);
 		}
@@ -158,8 +158,8 @@ export default function VoiceTutorPage() {
 					<div className="inline-flex items-center justify-center p-3 rounded-full bg-primary/10 mb-4">
 						<HugeiconsIcon icon={SparklesIcon} className="w-8 h-8 text-primary" />
 					</div>
-					<h1 className="text-3xl font-bold mb-2">Voice AI Tutor</h1>
-					<p className="text-muted-foreground">Study hands-free with voice interaction</p>
+					<h1 className="text-3xl font-bold mb-2">voice ai tutor</h1>
+					<p className="text-muted-foreground">study hands-free with voice interaction</p>
 				</div>
 
 				<VoiceSettings

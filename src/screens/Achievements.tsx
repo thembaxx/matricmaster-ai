@@ -85,10 +85,10 @@ export default function Achievements() {
 	const badgesToNext = nextMilestone - unlockedCount;
 
 	const categories = [
-		{ id: 'all', label: 'All Badges', icon: StarIcon },
-		{ id: 'science', label: 'Science', icon: FlashIcon },
-		{ id: 'math', label: 'Math', icon: Medal01Icon },
-		{ id: 'streak', label: 'Streaks', icon: FireIcon },
+		{ id: 'all', label: 'all badges', icon: StarIcon },
+		{ id: 'science', label: 'science', icon: FlashIcon },
+		{ id: 'math', label: 'math', icon: Medal01Icon },
+		{ id: 'streak', label: 'streaks', icon: FireIcon },
 	];
 
 	if (isLoading) {
@@ -113,17 +113,15 @@ export default function Achievements() {
 						<div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center relative z-10">
 							<div className="space-y-6">
 								<div className="space-y-1">
-									<p className="text-xs font-black uppercase tracking-[0.4em] opacity-80">
-										Matric Master
-									</p>
-									<h2 className="text-4xl sm:text-5xl lg:text-8xl font-black tracking-tighter uppercase leading-none">
-										Level {masteryLevel}
+									<p className="text-xs font-black tracking-[0.4em] opacity-80">matric master</p>
+									<h2 className="text-4xl sm:text-5xl lg:text-8xl font-black tracking-tighter leading-none">
+										level {masteryLevel}
 									</h2>
 								</div>
 
 								<div className="space-y-4">
-									<div className="flex items-center justify-between text-sm font-black uppercase tracking-widest">
-										<span>Mastery Progress</span>
+									<div className="flex items-center justify-between text-sm font-black tracking-widest">
+										<span>mastery progress</span>
 										<span>{Math.round(progress)}%</span>
 									</div>
 									<div className="h-8 w-32">
@@ -185,7 +183,7 @@ export default function Achievements() {
 								onClick={() => setActiveTab(category.id)}
 								aria-pressed={isActive}
 								aria-label={`Faders by ${category.label}`}
-								className={`flex items-center gap-2 sm:gap-3 px-4 sm:px-8 py-2.5 sm:py-4 rounded-xl sm:rounded-3xl text-xs sm:text-sm font-black uppercase tracking-widest transition-all duration-300 whitespace-nowrap ${
+								className={`flex items-center gap-2 sm:gap-3 px-4 sm:px-8 py-2.5 sm:py-4 rounded-xl sm:rounded-3xl text-xs sm:text-sm font-black tracking-widest transition-all duration-300 whitespace-nowrap ${
 									isActive
 										? 'bg-primary text-primary-foreground shadow-2xl shadow-primary/20 scale-105'
 										: 'text-muted-foreground hover:bg-muted hover:text-foreground'
@@ -216,7 +214,7 @@ export default function Achievements() {
 								aria-hidden="true"
 								className="w-16 h-16 mx-auto text-muted-foreground"
 							/>
-							<p className="text-xl font-bold uppercase tracking-widest">No achievements yet.</p>
+							<p className="text-xl font-bold tracking-widest">no achievements yet.</p>
 						</m.div>
 					) : (
 						<m.div
@@ -269,23 +267,23 @@ export default function Achievements() {
 													badge.unlocked ? 'text-foreground' : 'text-muted-foreground'
 												}`}
 											>
-												{badge.name}
+												{badge.name.toLowerCase()}
 											</h3>
 											<p
-												className={`text-[9px] font-black uppercase tracking-[0.2em] px-3 py-1 rounded-full border-2 inline-block ${
+												className={`text-[9px] font-black tracking-[0.2em] px-3 py-1 rounded-full border-2 inline-block ${
 													badge.unlocked
 														? 'text-primary border-primary/20 bg-primary/5'
 														: 'text-muted-foreground/50 border-muted-foreground/10'
 												}`}
 											>
-												{badge.unlocked ? 'Mastered' : 'Locked'}
+												{badge.unlocked ? 'mastered' : 'locked'}
 											</p>
 										</div>
 
 										{/* Tooltip-like Description on Hover */}
 										<div className="absolute inset-0 bg-primary rounded-[2.5rem] p-6 flex flex-col items-center justify-center text-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-20">
-											<p className="text-primary-foreground font-black text-sm uppercase tracking-widest mb-2">
-												{badge.name}
+											<p className="text-primary-foreground font-black text-sm tracking-widest mb-2">
+												{badge.name.toLowerCase()}
 											</p>
 											<p className="text-primary-foreground/80 text-xs font-bold leading-relaxed">
 												{badge.description || 'Complete challenges to unlock this achievement!'}

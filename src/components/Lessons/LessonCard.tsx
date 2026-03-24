@@ -42,7 +42,7 @@ export function LessonCard({ lesson }: LessonCardProps) {
 				>
 					{lesson.isContinue && (
 						<div className="absolute top-0 right-0">
-							<div className="bg-primary text-primary-foreground text-[10px] font-black px-4 py-1.5 rounded-bl-2xl uppercase tracking-widest shadow-sm">
+							<div className="bg-primary text-primary-foreground text-[10px] font-black px-4 py-1.5 rounded-bl-2xl  tracking-widest shadow-sm">
 								continue
 							</div>
 						</div>
@@ -50,7 +50,7 @@ export function LessonCard({ lesson }: LessonCardProps) {
 					<div className="flex items-center justify-between">
 						<div className="space-y-1.5 pr-4">
 							<p
-								className={`text-[10px] font-black uppercase tracking-widest ${
+								className={`text-[10px] font-black  tracking-widest ${
 									lesson.status === 'active'
 										? 'text-primary'
 										: lesson.status === 'completed'

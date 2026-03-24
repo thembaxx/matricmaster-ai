@@ -85,7 +85,7 @@ export default function SignUpForm() {
 						<div className="absolute inset-0 flex items-center">
 							<Separator />
 						</div>
-						<div className="relative flex justify-center text-[10px] uppercase tracking-[0.2em]">
+						<div className="relative flex justify-center text-[10px] tracking-[0.2em]">
 							<span className="px-4 text-muted-foreground font-black bg-card/80 backdrop-blur-xl rounded-full">
 								or
 							</span>

@@ -17,7 +17,7 @@ export const SearchResults = memo(function SearchResults({ results }: SearchResu
 
 	return (
 		<m.div variants={STAGGER_CONTAINER} initial="hidden" animate="visible" className="space-y-6">
-			<h2 className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.3em]">
+			<h2 className="text-[10px] font-black text-muted-foreground  tracking-[0.3em]">
 				Database Findings ({results.length})
 			</h2>
 			<AnimatePresence mode="popLayout">
@@ -43,10 +43,10 @@ export const SearchResults = memo(function SearchResults({ results }: SearchResu
 											<HugeiconsIcon icon={File01Icon} className="w-6 h-6 text-primary" />
 										</div>
 										<div>
-											<h4 className="font-black text-foreground text-base tracking-tight uppercase">
+											<h4 className="font-black text-foreground text-base tracking-tight ">
 												{paper.subject} {paper.paper}
 											</h4>
-											<p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">
+											<p className="text-[10px] font-black text-muted-foreground  tracking-widest">
 												{paper.month} {paper.year}
 											</p>
 										</div>
@@ -69,7 +69,7 @@ export const SearchResults = memo(function SearchResults({ results }: SearchResu
 							<HugeiconsIcon icon={Search01Icon} className="w-16 h-16 text-muted-foreground" />
 						</div>
 						<div className="space-y-2">
-							<h3 className="font-black text-muted-foreground uppercase tracking-widest text-sm">
+							<h3 className="font-black text-muted-foreground  tracking-widest text-sm">
 								Nothing here
 							</h3>
 							<p className="text-muted-foreground font-bold">Try a different search term</p>

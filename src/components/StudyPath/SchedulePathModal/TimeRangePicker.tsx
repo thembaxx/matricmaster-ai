@@ -28,7 +28,7 @@ export function TimeRangePicker({
 	return (
 		<div className="grid grid-cols-2 gap-4">
 			<div className="space-y-2">
-				<Label className="text-xs font-bold uppercase tracking-wider text-muted-foreground ml-1">
+				<Label className="text-xs font-bold  tracking-wider text-muted-foreground ml-1">
 					Start Time
 				</Label>
 				<div className="relative">
@@ -46,7 +46,7 @@ export function TimeRangePicker({
 				</div>
 			</div>
 			<div className="space-y-2">
-				<Label className="text-xs font-bold uppercase tracking-wider text-muted-foreground ml-1">
+				<Label className="text-xs font-bold  tracking-wider text-muted-foreground ml-1">
 					End Time
 				</Label>
 				<div className="relative">

@@ -13,7 +13,7 @@ interface DaySelectorProps {
 export function DaySelector({ selectedDays, onToggle }: DaySelectorProps) {
 	return (
 		<div className="space-y-3">
-			<span className="text-xs font-bold uppercase tracking-wider text-muted-foreground ml-1">
+			<span className="text-xs font-bold  tracking-wider text-muted-foreground ml-1">
 				Study Days
 			</span>
 			<div className="flex flex-wrap gap-2">

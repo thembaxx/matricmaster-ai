@@ -69,7 +69,7 @@ export function MobileNavDrawer({
 									<Avatar className="h-9 w-9">
 										<AvatarImage src={user.image || undefined} alt={user.name || 'user'} />
 										<AvatarFallback className="bg-sidebar-primary text-sidebar-primary-foreground text-sm font-medium">
-											{user.name?.charAt(0)?.toUpperCase() || 'u'}
+											{user.name?.charAt(0)?.toLowerCase() || 'u'}
 										</AvatarFallback>
 									</Avatar>
 									<div className="flex-1 min-w-0">
@@ -126,7 +126,7 @@ export function MobileNavDrawer({
 					<div className="flex-1 flex flex-col items-start overflow-y-auto px-3 py-3">
 						{filteredSections.map((section) => (
 							<div key={section.title} className="mb-4">
-								<p className="px-2 mb-1.5 text-[10px] font-medium tracking-wider text-sidebar-foreground/40 uppercase">
+								<p className="px-2 mb-1.5 text-[10px] font-medium tracking-wider text-sidebar-foreground/40">
 									{section.title}
 								</p>
 								<div className="space-y-0.5">

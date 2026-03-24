@@ -18,8 +18,8 @@ export function CommerceCard({ title, studentCount }: CommerceCardProps) {
 					<HugeiconsIcon icon={ChartBar} className="w-6 h-6 text-accounting" />
 				</div>
 				<div className="text-left">
-					<h4 className="font-black text-foreground uppercase tracking-tight">{title}</h4>
-					<div className="flex items-center gap-1 text-[10px] font-black text-label-tertiary uppercase tracking-widest">
+					<h4 className="font-black text-foreground  tracking-tight">{title}</h4>
+					<div className="flex items-center gap-1 text-[10px] font-black text-label-tertiary  tracking-widest">
 						<HugeiconsIcon icon={UserGroupIcon} className="w-3 h-3" />
 						{studentCount}
 					</div>
@@ -47,7 +47,7 @@ export function CommerceCard({ title, studentCount }: CommerceCardProps) {
 export function CommerceSection() {
 	return (
 		<section className="space-y-4">
-			<h3 className="text-xl font-black text-foreground uppercase tracking-tight">Commerce</h3>
+			<h3 className="text-xl font-black text-foreground  tracking-tight">Commerce</h3>
 			<CommerceCard title="Accounting" studentCount="8.2k" />
 		</section>
 	);

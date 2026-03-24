@@ -24,11 +24,11 @@ export function FeaturesSection() {
 				className="text-center mb-16"
 			>
 				<h2 className="heading-2 mb-4 text-pretty">
-					Your ticket to
+					your ticket to
 					<span className="text-tiimo-lavender"> matric success</span>
 				</h2>
 				<p className="text-lg text-muted-foreground max-w-2xl mx-auto text-pretty">
-					Every tool you need to pass your NSC exams in one place.
+					every tool you need to pass your nsc exams in one place.
 				</p>
 			</m.div>
 
@@ -50,9 +50,11 @@ export function FeaturesSection() {
 						>
 							<HugeiconsIcon icon={FEATURES[0].icon} className="w-8 h-8" />
 						</div>
-						<h3 className="text-2xl lg:text-3xl font-bold mb-3">{FEATURES[0].title}</h3>
+						<h3 className="text-2xl lg:text-3xl font-bold mb-3">
+							{FEATURES[0].title.toLowerCase()}
+						</h3>
 						<p className="text-base lg:text-lg text-muted-foreground leading-relaxed max-w-md">
-							{FEATURES[0].description}
+							{FEATURES[0].description.toLowerCase()}
 						</p>
 					</div>
 				</m.div>
@@ -68,9 +70,9 @@ export function FeaturesSection() {
 						>
 							<HugeiconsIcon icon={FEATURES[1].icon} className="w-6 h-6" />
 						</div>
-						<h3 className="text-lg font-bold mb-2">{FEATURES[1].title}</h3>
+						<h3 className="text-lg font-bold mb-2">{FEATURES[1].title.toLowerCase()}</h3>
 						<p className="text-sm text-muted-foreground leading-relaxed">
-							{FEATURES[1].description}
+							{FEATURES[1].description.toLowerCase()}
 						</p>
 					</div>
 				</m.div>
@@ -86,9 +88,9 @@ export function FeaturesSection() {
 						>
 							<HugeiconsIcon icon={FEATURES[2].icon} className="w-6 h-6" />
 						</div>
-						<h3 className="text-lg font-bold mb-2">{FEATURES[2].title}</h3>
+						<h3 className="text-lg font-bold mb-2">{FEATURES[2].title.toLowerCase()}</h3>
 						<p className="text-sm text-muted-foreground leading-relaxed">
-							{FEATURES[2].description}
+							{FEATURES[2].description.toLowerCase()}
 						</p>
 					</div>
 				</m.div>
@@ -104,9 +106,9 @@ export function FeaturesSection() {
 						>
 							<HugeiconsIcon icon={FEATURES[3].icon} className="w-6 h-6" />
 						</div>
-						<h3 className="text-lg font-bold mb-2">{FEATURES[3].title}</h3>
+						<h3 className="text-lg font-bold mb-2">{FEATURES[3].title.toLowerCase()}</h3>
 						<p className="text-sm text-muted-foreground leading-relaxed">
-							{FEATURES[3].description}
+							{FEATURES[3].description.toLowerCase()}
 						</p>
 					</div>
 				</m.div>
@@ -122,9 +124,9 @@ export function FeaturesSection() {
 						>
 							<HugeiconsIcon icon={FEATURES[4].icon} className="w-6 h-6" />
 						</div>
-						<h3 className="text-lg font-bold mb-2">{FEATURES[4].title}</h3>
+						<h3 className="text-lg font-bold mb-2">{FEATURES[4].title.toLowerCase()}</h3>
 						<p className="text-sm text-muted-foreground leading-relaxed">
-							{FEATURES[4].description}
+							{FEATURES[4].description.toLowerCase()}
 						</p>
 					</div>
 				</m.div>
@@ -140,9 +142,9 @@ export function FeaturesSection() {
 						>
 							<HugeiconsIcon icon={FEATURES[5].icon} className="w-6 h-6" />
 						</div>
-						<h3 className="text-lg font-bold mb-2">{FEATURES[5].title}</h3>
+						<h3 className="text-lg font-bold mb-2">{FEATURES[5].title.toLowerCase()}</h3>
 						<p className="text-sm text-muted-foreground leading-relaxed">
-							{FEATURES[5].description}
+							{FEATURES[5].description.toLowerCase()}
 						</p>
 					</div>
 				</m.div>

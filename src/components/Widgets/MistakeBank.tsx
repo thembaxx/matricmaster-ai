@@ -44,7 +44,7 @@ export function MistakeBank({ initialCount = 0 }: MistakeBankProps) {
 	return (
 		<Card className="rounded-[2rem] border-border/50 shadow-tiimo overflow-hidden bg-gradient-to-br from-rose-500/10 to-rose-600/5">
 			<CardHeader className="p-6 pb-0">
-				<CardTitle className="text-xs font-semibold uppercase tracking-wider text-rose-600 flex items-center gap-2">
+				<CardTitle className="text-xs font-semibold  tracking-wider text-rose-600 flex items-center gap-2">
 					<HugeiconsIcon icon={RefreshIcon} className="w-4 h-4" />
 					Mistake Bank
 				</CardTitle>
@@ -70,7 +70,7 @@ export function MistakeBank({ initialCount = 0 }: MistakeBankProps) {
 
 				<Button
 					onClick={handleRevisit}
-					className="w-full bg-rose-500 hover:bg-rose-600 text-white font-semibold uppercase tracking-wider text-xs h-11 rounded-xl shadow-lg shadow-rose-500/20 transition-all hover:scale-[1.02] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-rose-400 focus-visible:ring-offset-2"
+					className="w-full bg-rose-500 hover:bg-rose-600 text-white font-semibold  tracking-wider text-xs h-11 rounded-xl shadow-lg shadow-rose-500/20 transition-all hover:scale-[1.02] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-rose-400 focus-visible:ring-offset-2"
 				>
 					<HugeiconsIcon icon={RefreshIcon} className="w-4 h-4 mr-2" />
 					Revisit Mistakes

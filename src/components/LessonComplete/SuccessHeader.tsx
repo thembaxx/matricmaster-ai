@@ -25,7 +25,7 @@ export const SuccessHeader = memo(function SuccessHeader({
 			>
 				<HugeiconsIcon icon={Cancel01Icon} className="w-6 h-6" />
 			</Button>
-			<h1 className="text-xl font-black text-foreground tracking-tight uppercase">{title}</h1>
+			<h1 className="text-xl font-black text-foreground tracking-tight ">{title}</h1>
 			<div className="w-10" />
 		</header>
 	);

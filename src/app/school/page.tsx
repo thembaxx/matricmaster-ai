@@ -154,27 +154,25 @@ export default function SchoolDashboardPage() {
 								</div>
 								<div className="grid grid-cols-2 gap-3 mt-4">
 									<div className="p-3 rounded-xl bg-primary/10 space-y-1">
-										<p className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
+										<p className="text-xs font-bold text-muted-foreground  tracking-wider">
 											Active
 										</p>
 										<p className="text-xl font-black text-primary">{stats.activeLicenses}</p>
 									</div>
 									<div className="p-3 rounded-xl bg-success/10 space-y-1">
-										<p className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
+										<p className="text-xs font-bold text-muted-foreground  tracking-wider">
 											Available
 										</p>
 										<p className="text-xl font-black text-success">{availableLicenses}</p>
 									</div>
 									<div className="p-3 rounded-xl bg-warning/10 space-y-1">
-										<p className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
+										<p className="text-xs font-bold text-muted-foreground  tracking-wider">
 											Expiring Soon
 										</p>
 										<p className="text-xl font-black text-warning">{stats.expiringSoon}</p>
 									</div>
 									<div className="p-3 rounded-xl bg-muted/50 space-y-1">
-										<p className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
-											Total
-										</p>
+										<p className="text-xs font-bold text-muted-foreground  tracking-wider">Total</p>
 										<p className="text-xl font-black">{school.licenseCount}</p>
 									</div>
 								</div>

@@ -14,7 +14,7 @@ export const SolutionDisplay = memo(function SolutionDisplay(_props: SolutionDis
 			<div className="p-1.5 bg-success/10 rounded-lg">
 				<HugeiconsIcon icon={SparklesIcon} className="w-4 h-4 text-success" />
 			</div>
-			<span className="text-[10px] font-black text-success uppercase tracking-widest">
+			<span className="text-[10px] font-black text-success  tracking-widest">
 				Step-by-Step Solution
 			</span>
 		</div>

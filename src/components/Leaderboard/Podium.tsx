@@ -40,7 +40,7 @@ export const Podium = memo(function Podium({ data }: { data: LeaderboardEntry[] 
 					<p className="text-sm md:text-base font-black text-foreground tracking-tight">
 						{r2?.userName || 'TBD'}
 					</p>
-					<p className="text-[11px] md:text-xs font-black text-muted-foreground uppercase tracking-widest">
+					<p className="text-[11px] md:text-xs font-black text-muted-foreground  tracking-widest">
 						{r2 ? formatPoints(r2.totalPoints) : '0'} KP
 					</p>
 				</div>
@@ -75,7 +75,7 @@ export const Podium = memo(function Podium({ data }: { data: LeaderboardEntry[] 
 					<p className="text-xl md:text-3xl font-black text-foreground tracking-tighter">
 						{r1?.userName || 'TBD'}
 					</p>
-					<p className="text-sm md:text-base font-black text-primary-orange uppercase tracking-widest flex items-center justify-center gap-2">
+					<p className="text-sm md:text-base font-black text-primary-orange  tracking-widest flex items-center justify-center gap-2">
 						<HugeiconsIcon icon={FireIcon} className="w-4 h-4 fill-primary-orange" />
 						{r1 ? formatPoints(r1.totalPoints) : '0'} KP
 					</p>
@@ -101,7 +101,7 @@ export const Podium = memo(function Podium({ data }: { data: LeaderboardEntry[] 
 					<p className="text-sm md:text-base font-black text-foreground tracking-tight">
 						{r3?.userName || 'TBD'}
 					</p>
-					<p className="text-[11px] md:text-xs font-black text-primary-cyan uppercase tracking-widest">
+					<p className="text-[11px] md:text-xs font-black text-primary-cyan  tracking-widest">
 						{r3 ? formatPoints(r3.totalPoints) : '0'} KP
 					</p>
 				</div>

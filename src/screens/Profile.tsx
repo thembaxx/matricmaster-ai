@@ -14,11 +14,11 @@ import { useProfile } from '@/hooks/useProfile';
 
 const chartConfig = {
 	you: {
-		label: 'You',
+		label: 'you',
 		color: 'var(--primary)',
 	},
 	average: {
-		label: 'Average',
+		label: 'average',
 		color: 'var(--muted-foreground)',
 	},
 } satisfies ChartConfig;
@@ -84,8 +84,8 @@ export default function Profile() {
 						className="mt-8 sm:mt-12"
 					>
 						<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 mb-8">
-							<h3 className="text-xl font-black text-foreground tracking-tighter uppercase">
-								Achievement Collection
+							<h3 className="text-xl font-black text-foreground tracking-tighter">
+								achievement collection
 							</h3>
 							<div className="w-full sm:w-72">
 								<AchievementProgress unlockedIds={userStats.unlockedAchievementIds} />

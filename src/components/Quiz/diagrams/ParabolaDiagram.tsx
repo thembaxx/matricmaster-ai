@@ -52,9 +52,7 @@ export function ParabolaDiagram({ className }: ParabolaDiagramProps) {
 				/>
 			</svg>
 			<div className="absolute top-4 right-6 bg-primary/10 px-3 py-1 rounded-full border border-primary/20">
-				<span className="text-[10px] font-black font-mono text-primary uppercase">
-					y = x² + {parabolaC}
-				</span>
+				<span className="text-[10px] font-black font-mono text-primary ">y = x² + {parabolaC}</span>
 			</div>
 		</DiagramContainer>
 	);

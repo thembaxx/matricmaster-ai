@@ -49,9 +49,9 @@ export function HeroSection({ onAuthRequired }: HeroSectionProps) {
 						transition={{ delay: 0.1 }}
 						className="text-display text-foreground leading-[0.95] text-balance"
 					>
-						Stop guessing.
+						stop guessing.
 						<br />
-						<span className="text-tiimo-lavender">Start passing.</span>
+						<span className="text-tiimo-lavender">start passing.</span>
 					</m.h1>
 
 					<m.p
@@ -60,7 +60,7 @@ export function HeroSection({ onAuthRequired }: HeroSectionProps) {
 						transition={{ delay: 0.2 }}
 						className="body-lg text-muted-foreground max-w-lg text-pretty mx-auto lg:mx-0"
 					>
-						AI answers to any past paper question. Find your weak spots. Pass matric the first time.
+						ai answers to any past paper question. find your weak spots. pass matric the first time.
 					</m.p>
 				</m.div>
 
@@ -167,7 +167,7 @@ export function HeroSection({ onAuthRequired }: HeroSectionProps) {
 								<div className="h-1 w-12 bg-secondary rounded-full overflow-hidden">
 									<div className="h-full w-3/4 bg-subject-math rounded-full" />
 								</div>
-								<span className="label-xs font-numeric tabular-nums">Math 92%</span>
+								<span className="label-xs font-numeric tabular-nums">math 92%</span>
 							</m.div>
 
 							<m.div
@@ -187,7 +187,7 @@ export function HeroSection({ onAuthRequired }: HeroSectionProps) {
 								<div className="h-1 w-12 bg-secondary rounded-full overflow-hidden">
 									<div className="h-full w-1/2 bg-subject-life rounded-full" />
 								</div>
-								<span className="label-xs font-numeric tabular-nums">Physics 78%</span>
+								<span className="label-xs font-numeric tabular-nums">physics 78%</span>
 							</m.div>
 
 							<m.div

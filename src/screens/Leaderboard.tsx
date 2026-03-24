@@ -47,7 +47,7 @@ export default function Leaderboard() {
 		<div className="flex flex-col h-full min-w-0 bg-background pb-24 overflow-x-hidden lg:px-8">
 			<header className="pt-8 sm:pt-12 pb-6 sm:pb-8 flex flex-col items-center gap-8 sm:gap-12 shrink-0">
 				<div className="text-center space-y-2 px-4">
-					<h1 className="text-3xl sm:text-4xl lg:text-7xl font-black text-foreground tracking-tighter uppercase">
+					<h1 className="text-3xl sm:text-4xl lg:text-7xl font-black text-foreground tracking-tighter">
 						global rankings
 					</h1>
 					<p className="text-muted-foreground font-bold text-sm sm:text-lg lg:text-lg">
@@ -178,10 +178,10 @@ export default function Leaderboard() {
 										className="object-cover"
 									/>
 									<AvatarFallback className="font-black text-sm sm:text-base text-foreground">
-										ME
+										me
 									</AvatarFallback>
 								</Avatar>
-								<div className="absolute -bottom-1.5 sm:-bottom-2 -right-1.5 sm:-right-2 bg-primary-orange text-white text-[8px] sm:text-[9px] font-black px-2 sm:px-3 py-0.5 sm:py-1 rounded-full border-2 sm:border-4 border-background uppercase tracking-tighter shadow-lg">
+								<div className="absolute -bottom-1.5 sm:-bottom-2 -right-1.5 sm:-right-2 bg-primary-orange text-white text-[8px] sm:text-[9px] font-black px-2 sm:px-3 py-0.5 sm:py-1 rounded-full border-2 sm:border-4 border-background tracking-tighter shadow-lg">
 									you
 								</div>
 							</div>
@@ -199,7 +199,7 @@ export default function Leaderboard() {
 							</div>
 							<div className="text-right">
 								<p className="text-xl sm:text-2xl font-black text-primary-orange tracking-tighter flex items-center justify-end gap-1">
-									{formatPoints(userRank.totalPoints)} <span className="text-xs uppercase">KP</span>
+									{formatPoints(userRank.totalPoints)} <span className="text-xs">kp</span>
 								</p>
 								<p className="text-[9px] sm:text-[10px] font-medium text-white/60 tracking-wide">
 									top {100 - userRank.percentile}% of students

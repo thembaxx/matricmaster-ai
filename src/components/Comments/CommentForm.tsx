@@ -43,7 +43,7 @@ export function CommentForm({
 					<Button
 						onClick={onSubmit}
 						disabled={!value.trim() || isLoading}
-						className="rounded-full px-8 font-black uppercase text-xs tracking-widest h-11"
+						className="rounded-full px-8 font-black  text-xs tracking-widest h-11"
 					>
 						{isLoading ? 'Posting...' : 'Post Comment'}
 					</Button>
@@ -56,7 +56,7 @@ export function CommentForm({
 export function CommentSignInPrompt() {
 	return (
 		<div className="text-center py-6 bg-muted/30 rounded-[2rem] border border-dashed border-border/50">
-			<p className="text-sm font-bold text-muted-foreground uppercase tracking-widest">
+			<p className="text-sm font-bold text-muted-foreground  tracking-widest">
 				Please sign in to join the discussion
 			</p>
 		</div>
@@ -69,7 +69,7 @@ export function CommentEmptyState() {
 			<div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mx-auto mb-4 opacity-50">
 				<HugeiconsIcon icon={Chat01Icon} className="h-8 w-8" />
 			</div>
-			<p className="text-muted-foreground font-bold uppercase text-[10px] tracking-widest">
+			<p className="text-muted-foreground font-bold  text-[10px] tracking-widest">
 				No comments yet. Be the first to share!
 			</p>
 		</div>

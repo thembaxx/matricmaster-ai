@@ -54,7 +54,7 @@ export function PathToUniversity({
 								</div>
 								<div className="text-right">
 									<div className="text-2xl font-black text-primary">+{goal.apsNeeded}</div>
-									<div className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
+									<div className="text-[10px] font-bold text-muted-foreground  tracking-wider">
 										APS needed
 									</div>
 								</div>

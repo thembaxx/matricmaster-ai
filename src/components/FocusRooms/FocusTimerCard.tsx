@@ -26,13 +26,13 @@ export function FocusTimerCard({
 			<div className="absolute inset-0 bg-primary/5 -z-10" />
 			{isGroupMode && (
 				<div className="absolute top-4 right-4 px-3 py-1 bg-tiimo-green/10 rounded-full">
-					<span className="text-xs font-black uppercase tracking-widest text-tiimo-green">
+					<span className="text-xs font-black  tracking-widest text-tiimo-green">
 						Group Mode Active
 					</span>
 				</div>
 			)}
 			<div className="space-y-6">
-				<h2 className="text-xl font-black uppercase tracking-widest text-primary">
+				<h2 className="text-xl font-black  tracking-widest text-primary">
 					{isGroupMode ? 'Group Focus Session' : 'Solo Focus Session'}
 				</h2>
 				<div className="text-8xl font-black tracking-tighter tabular-nums text-foreground">
@@ -43,7 +43,7 @@ export function FocusTimerCard({
 						size="lg"
 						onClick={onToggleActive}
 						className={cn(
-							'rounded-full px-8 h-16 text-lg font-black uppercase tracking-widest transition-all shadow-xl',
+							'rounded-full px-8 h-16 text-lg font-black  tracking-widest transition-all shadow-xl',
 							isActive ? 'bg-tiimo-yellow text-white' : 'bg-primary text-white'
 						)}
 					>

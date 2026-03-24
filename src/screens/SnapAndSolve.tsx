@@ -11,12 +11,12 @@ import { useSnapAndSolve } from '@/hooks/useSnapAndSolve';
 import { useAiContextStore } from '@/stores/useAiContextStore';
 
 const SUBJECTS = [
-	'Mathematics',
-	'Physical Sciences',
-	'Life Sciences',
-	'Accounting',
-	'Economics',
-	'General',
+	'mathematics',
+	'physical sciences',
+	'life sciences',
+	'accounting',
+	'economics',
+	'general',
 ];
 
 export default function SnapAndSolve() {
@@ -96,7 +96,7 @@ export default function SnapAndSolve() {
 				{solution && (
 					<ResponsiveAudioPlayer
 						text={solution}
-						title="Solution"
+						title="solution"
 						open={showAudioPlayer}
 						onOpenChange={setShowAudioPlayer}
 					/>

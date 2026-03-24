@@ -100,7 +100,7 @@ export function AiTutorChat({
 								>
 									<p
 										className={cn(
-											'text-[10px] font-bold uppercase tracking-widest',
+											'text-[10px] font-bold  tracking-widest',
 											message.role === 'user'
 												? 'text-primary-foreground/60'
 												: 'text-muted-foreground/60'

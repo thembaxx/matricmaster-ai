@@ -38,7 +38,7 @@ export function QuestionBasicTab({
 	return (
 		<div className="space-y-8">
 			<div className="space-y-3">
-				<Label className="font-black text-xs uppercase tracking-widest text-muted-foreground">
+				<Label className="font-black text-xs  tracking-widest text-muted-foreground">
 					Illustration
 				</Label>
 				{editingQuestion.imageUrl ? (
@@ -82,7 +82,7 @@ export function QuestionBasicTab({
 							<div className="h-16 w-16 rounded-2xl bg-muted flex items-center justify-center">
 								<HugeiconsIcon icon={ImageIcon} className="h-8 w-8 text-muted-foreground" />
 							</div>
-							<span className="text-xs font-black uppercase tracking-widest text-muted-foreground">
+							<span className="text-xs font-black  tracking-widest text-muted-foreground">
 								Upload Image (Max 4MB)
 							</span>
 						</label>
@@ -92,7 +92,7 @@ export function QuestionBasicTab({
 
 			<div className="grid grid-cols-2 gap-8">
 				<div className="space-y-3">
-					<Label className="font-black text-xs uppercase tracking-widest text-muted-foreground">
+					<Label className="font-black text-xs  tracking-widest text-muted-foreground">
 						Subject
 					</Label>
 					<Select
@@ -117,9 +117,7 @@ export function QuestionBasicTab({
 					</Select>
 				</div>
 				<div className="space-y-3">
-					<Label className="font-black text-xs uppercase tracking-widest text-muted-foreground">
-						Grade
-					</Label>
+					<Label className="font-black text-xs  tracking-widest text-muted-foreground">Grade</Label>
 					<Select
 						value={editingQuestion.gradeLevel.toString()}
 						onValueChange={(v) =>
@@ -143,9 +141,7 @@ export function QuestionBasicTab({
 
 			<div className="grid grid-cols-2 gap-8">
 				<div className="space-y-3">
-					<Label className="font-black text-xs uppercase tracking-widest text-muted-foreground">
-						Topic
-					</Label>
+					<Label className="font-black text-xs  tracking-widest text-muted-foreground">Topic</Label>
 					<Input
 						value={editingQuestion.topic}
 						onChange={(e) => setEditingQuestion({ ...editingQuestion, topic: e.target.value })}
@@ -153,7 +149,7 @@ export function QuestionBasicTab({
 					/>
 				</div>
 				<div className="space-y-3">
-					<Label className="font-black text-xs uppercase tracking-widest text-muted-foreground">
+					<Label className="font-black text-xs  tracking-widest text-muted-foreground">
 						Difficulty
 					</Label>
 					<Select

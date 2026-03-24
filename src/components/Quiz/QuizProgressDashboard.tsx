@@ -98,7 +98,7 @@ export function QuizProgressDashboard({
 			{difficulty && (
 				<div className="flex justify-center">
 					<span
-						className={`inline-flex items-center px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider ${getDifficultyColor(difficulty)}`}
+						className={`inline-flex items-center px-4 py-1.5 rounded-full text-xs font-semibold  tracking-wider ${getDifficultyColor(difficulty)}`}
 					>
 						{getDifficultyLabel(difficulty)} Mode
 					</span>

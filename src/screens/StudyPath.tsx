@@ -48,7 +48,7 @@ export default function StudyPath({ pathId = 'math-p1-mastery' }: StudyPathScree
 		id: `${module.id}-${idx}`,
 		emoji: step.type === 'lesson' ? '📖' : step.type === 'quiz' ? '✅' : '✍️',
 		title: step.title,
-		description: step.type === 'lesson' ? 'Learn core concepts' : 'Apply your knowledge',
+		description: step.type === 'lesson' ? 'learn core concepts' : 'apply your knowledge',
 		duration: `${step.duration} min`,
 		durationMinutes: step.duration,
 		status: idx === 0 ? 'current' : 'locked',
@@ -102,14 +102,14 @@ export default function StudyPath({ pathId = 'math-p1-mastery' }: StudyPathScree
 								className="rounded-full whitespace-nowrap"
 								onClick={() => setActiveModuleIndex(idx)}
 							>
-								Module {idx + 1}
+								module {idx + 1}
 							</Button>
 						))}
 					</div>
 
 					<div className="bg-card rounded-2xl p-4 border border-border">
 						<div className="flex items-center justify-between mb-2">
-							<span className="text-sm font-medium">Module Progress</span>
+							<span className="text-sm font-medium">module progress</span>
 							<span className="text-sm font-bold text-primary">{Math.round(progressPercent)}%</span>
 						</div>
 						<div className="h-3 bg-muted rounded-full overflow-hidden">
@@ -152,7 +152,7 @@ export default function StudyPath({ pathId = 'math-p1-mastery' }: StudyPathScree
 						className="w-full rounded-2xl h-14 text-lg"
 						onClick={() => router.push('/focus')}
 					>
-						{steps.find((s) => s.status === 'current') ? 'Continue learning →' : 'Start journey →'}
+						{steps.find((s) => s.status === 'current') ? 'continue learning →' : 'start journey →'}
 					</Button>
 					<Button
 						size="lg"
@@ -160,7 +160,7 @@ export default function StudyPath({ pathId = 'math-p1-mastery' }: StudyPathScree
 						className="w-full rounded-2xl h-12 text-base"
 						onClick={() => setShowScheduleModal(true)}
 					>
-						📅 Schedule My Path
+						📅 schedule my path
 					</Button>
 				</m.div>
 			</FocusContent>

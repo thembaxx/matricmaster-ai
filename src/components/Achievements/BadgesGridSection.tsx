@@ -45,7 +45,7 @@ export function BadgesGridSection({ filteredBadges }: { filteredBadges: BadgeDat
 						aria-hidden="true"
 						className="w-16 h-16 mx-auto text-muted-foreground"
 					/>
-					<p className="text-xl font-bold uppercase tracking-widest">No achievements yet.</p>
+					<p className="text-xl font-bold  tracking-widest">No achievements yet.</p>
 				</m.div>
 			) : (
 				<m.div
@@ -95,7 +95,7 @@ function AchievementBadge({ badge }: { badge: BadgeData }) {
 		>
 			{rarity && badge.unlocked && (
 				<div
-					className="absolute top-3 right-3 px-2 py-0.5 rounded-full text-[8px] font-black uppercase tracking-wider z-10"
+					className="absolute top-3 right-3 px-2 py-0.5 rounded-full text-[8px] font-black  tracking-wider z-10"
 					style={{
 						backgroundColor: `${rarity.color}15`,
 						color: rarity.color,
@@ -161,7 +161,7 @@ function AchievementBadge({ badge }: { badge: BadgeData }) {
 				</h3>
 				<p
 					className={cn(
-						'text-[9px] font-black uppercase tracking-[0.2em] px-3 py-1 rounded-full border-2 inline-block',
+						'text-[9px] font-black  tracking-[0.2em] px-3 py-1 rounded-full border-2 inline-block',
 						badge.unlocked
 							? 'text-primary border-primary/20 bg-primary/5'
 							: 'text-muted-foreground/50 border-muted-foreground/10'
@@ -175,7 +175,7 @@ function AchievementBadge({ badge }: { badge: BadgeData }) {
 			</div>
 
 			<div className="absolute inset-0 bg-primary rounded-[2.5rem] p-6 flex flex-col items-center justify-center text-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20">
-				<p className="text-primary-foreground font-black text-sm uppercase tracking-widest mb-2">
+				<p className="text-primary-foreground font-black text-sm  tracking-widest mb-2">
 					{badge.name}
 				</p>
 				<p className="text-primary-foreground/80 text-xs font-bold leading-relaxed mb-4">

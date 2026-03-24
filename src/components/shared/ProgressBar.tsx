@@ -55,7 +55,7 @@ export const ProgressBar = memo(function ProgressBar({
 			{(label || showLabel) && (
 				<div className="flex justify-between items-center mb-2">
 					{label && (
-						<span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">
+						<span className="text-[10px] font-black  tracking-widest text-muted-foreground">
 							{label}
 						</span>
 					)}
@@ -116,7 +116,7 @@ export const ProgressBarWithSegments = memo(function ProgressBarWithSegments({
 		<div className={cn('w-full', className)}>
 			{label && (
 				<div className="flex justify-between items-center mb-2">
-					<span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">
+					<span className="text-[10px] font-black  tracking-widest text-muted-foreground">
 						{label}
 					</span>
 					<span className="text-xs font-black text-primary">{Math.round(percentage)}%</span>

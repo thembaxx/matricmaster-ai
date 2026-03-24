@@ -14,7 +14,7 @@ export function ChannelCategoryButton({ category, isActive, onClick }: ChannelCa
 			type="button"
 			onClick={onClick}
 			variant="ghost"
-			className={`px-6 py-2.5 rounded-full text-[11px] font-black uppercase tracking-widest whitespace-nowrap transition-all ios-active-scale ${
+			className={`px-6 py-2.5 rounded-full text-[11px] font-black  tracking-widest whitespace-nowrap transition-all ios-active-scale ${
 				isActive
 					? 'bg-foreground text-background shadow-md'
 					: 'bg-card text-label-secondary border border-border shadow-sm'

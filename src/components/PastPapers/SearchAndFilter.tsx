@@ -25,7 +25,7 @@ export const SearchBar = memo(function SearchBar({ value, onChange }: SearchBarP
 				value={value}
 				onChange={(e) => onChange(e.target.value)}
 				placeholder="Search"
-				className="pl-12 sm:pl-16 placeholder:font-medium placeholder:capitalize pr-12 sm:pr-16 bg-card backdrop-blur-md border-border border-2 h-12 sm:h-16 rounded-xl sm:rounded-2xl text-base sm:text-lg font-black uppercase tracking-tight shadow-inner"
+				className="pl-12 sm:pl-16 placeholder:font-medium placeholder:capitalize pr-12 sm:pr-16 bg-card backdrop-blur-md border-border border-2 h-12 sm:h-16 rounded-xl sm:rounded-2xl text-base sm:text-lg font-black  tracking-tight shadow-inner"
 				aria-label="Search past papers"
 			/>
 		</div>
@@ -52,7 +52,7 @@ export const YearFilter = memo(function YearFilter({
 					onClick={() => onYearChange(year)}
 					aria-pressed={selectedYear === year}
 					className={cn(
-						'rounded-xl sm:rounded-2xl px-4 sm:px-8 py-2 sm:py-3 text-[11px] font-black uppercase tracking-widest transition-all h-10 sm:h-16 whitespace-nowrap ios-active-scale',
+						'rounded-xl sm:rounded-2xl px-4 sm:px-8 py-2 sm:py-3 text-[11px] font-black  tracking-widest transition-all h-10 sm:h-16 whitespace-nowrap ios-active-scale',
 						selectedYear === year
 							? 'bg-primary text-primary-foreground shadow-2xl shadow-primary/30'
 							: 'bg-secondary text-label-secondary border-2 border-transparent hover:border-border backdrop-blur-sm'
@@ -80,7 +80,7 @@ export const FilterButton = memo(function FilterButton({
 			onClick={onClick}
 			aria-label={`Advanced Faders${activeFilterCount > 0 ? `, ${activeFilterCount} active` : ''}`}
 			className={cn(
-				'rounded-2xl border-2 font-black text-[10px] uppercase tracking-widest px-4 sm:px-6 h-10 sm:h-12 ios-active-scale',
+				'rounded-2xl border-2 font-black text-[10px]  tracking-widest px-4 sm:px-6 h-10 sm:h-12 ios-active-scale',
 				activeFilterCount > 0 && 'border-primary bg-primary/10 text-primary'
 			)}
 		>
@@ -107,7 +107,7 @@ export const ClearFiltersButton = memo(function ClearFiltersButton({
 			variant="ghost"
 			onClick={onClick}
 			aria-label="Clear all filters"
-			className="rounded-2xl font-black text-[10px] uppercase tracking-widest px-3 sm:px-4 h-10 sm:h-12 text-label-tertiary hover:text-foreground ios-active-scale"
+			className="rounded-2xl font-black text-[10px]  tracking-widest px-3 sm:px-4 h-10 sm:h-12 text-label-tertiary hover:text-foreground ios-active-scale"
 		>
 			<HugeiconsIcon icon={Cancel01Icon} className="w-4 h-4 mr-1 sm:mr-2" />
 			<span className="hidden sm:inline">Clear</span>

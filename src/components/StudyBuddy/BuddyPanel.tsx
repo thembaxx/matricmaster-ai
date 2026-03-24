@@ -92,7 +92,7 @@ export function BuddyPanel({ onStartChat }: BuddyPanelProps) {
 
 			{topStruggles.length > 0 && (
 				<div className="space-y-3">
-					<h4 className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
+					<h4 className="text-xs font-medium text-muted-foreground  tracking-wider">
 						Keep Practicing
 					</h4>
 					<div className="space-y-2">
@@ -110,7 +110,7 @@ export function BuddyPanel({ onStartChat }: BuddyPanelProps) {
 
 			{weakTopics.length > 0 && (
 				<div className="space-y-3">
-					<h4 className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
+					<h4 className="text-xs font-medium text-muted-foreground  tracking-wider">
 						Building Confidence
 					</h4>
 					<div className="space-y-3">

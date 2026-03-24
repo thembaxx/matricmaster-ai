@@ -24,7 +24,7 @@ export const RankingList = memo(function RankingList({ data }: { data: Leaderboa
 						<h4 className="font-black text-sm sm:text-base text-foreground truncate tracking-tight">
 							{student.userName}
 						</h4>
-						<p className="text-[10px] sm:text-[11px] font-black text-muted-foreground uppercase tracking-widest flex items-center gap-1 sm:gap-2">
+						<p className="text-[10px] sm:text-[11px] font-black text-muted-foreground  tracking-widest flex items-center gap-1 sm:gap-2">
 							<HugeiconsIcon icon={Medal01Icon} className="w-3 h-3.5 sm:w-3.5 sm:h-3.5" />
 							{student.questionsCompleted} questions
 						</p>
@@ -35,7 +35,7 @@ export const RankingList = memo(function RankingList({ data }: { data: Leaderboa
 						</p>
 						<div className="flex items-center justify-end gap-1 mt-0.5">
 							<div className="w-1 h-1 rounded-full bg-accent-lime" />
-							<p className="text-[8px] sm:text-[9px] font-black text-accent-lime uppercase tracking-widest">
+							<p className="text-[8px] sm:text-[9px] font-black text-accent-lime  tracking-widest">
 								{student.accuracyPercentage}% accuracy
 							</p>
 						</div>

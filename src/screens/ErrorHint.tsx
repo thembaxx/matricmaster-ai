@@ -90,7 +90,7 @@ export default function ErrorHint() {
 
 						{/* Formula Box */}
 						<div className="bg-amber-50 dark:bg-amber-900/10 p-4 rounded-xl border border-amber-100 dark:border-amber-800">
-							<p className="text-xs font-bold text-amber-800 dark:text-amber-200 mb-2 uppercase opacity-70">
+							<p className="text-xs font-bold text-amber-800 dark:text-amber-200 mb-2  opacity-70">
 								recall the formula:
 							</p>
 							<p className="font-mono text-lg font-bold text-amber-900 dark:text-amber-100">

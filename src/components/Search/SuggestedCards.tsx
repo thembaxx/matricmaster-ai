@@ -11,7 +11,7 @@ import { STAGGER_ITEM } from '@/lib/animation-presets';
 export const SuggestedCards = memo(function SuggestedCards() {
 	return (
 		<m.div variants={STAGGER_ITEM} className="space-y-6">
-			<h2 className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.3em]">
+			<h2 className="text-[10px] font-black text-muted-foreground  tracking-[0.3em]">
 				Suggested for You
 			</h2>
 			<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -23,10 +23,10 @@ export const SuggestedCards = memo(function SuggestedCards() {
 								<HugeiconsIcon icon={SparklesIcon} className="w-10 h-10 text-brand-amber" />
 							</div>
 							<div className="space-y-1">
-								<h3 className="text-xl font-black text-foreground tracking-tighter uppercase">
+								<h3 className="text-xl font-black text-foreground tracking-tighter ">
 									Physics Mastery
 								</h3>
-								<p className="text-xs font-bold text-muted-foreground uppercase tracking-widest">
+								<p className="text-xs font-bold text-muted-foreground  tracking-widest">
 									Personalized Challenges
 								</p>
 							</div>
@@ -44,10 +44,10 @@ export const SuggestedCards = memo(function SuggestedCards() {
 								/>
 							</div>
 							<div className="space-y-1">
-								<h3 className="text-xl font-black text-foreground tracking-tighter uppercase">
+								<h3 className="text-xl font-black text-foreground tracking-tighter ">
 									Past Paper Vault
 								</h3>
-								<p className="text-xs font-bold text-muted-foreground uppercase tracking-widest">
+								<p className="text-xs font-bold text-muted-foreground  tracking-widest">
 									Over 10,000 resources
 								</p>
 							</div>

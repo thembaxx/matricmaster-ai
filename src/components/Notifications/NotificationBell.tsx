@@ -58,7 +58,7 @@ export function NotificationBell() {
 				align="end"
 				className="w-[320px] sm:w-80 rounded-[2rem] p-4 shadow-tiimo border-border/50 bg-card/95 backdrop-blur-xl"
 			>
-				<DropdownMenuLabel className="font-black uppercase tracking-widest text-[10px] text-tiimo-gray-muted mb-2 px-2">
+				<DropdownMenuLabel className="font-black  tracking-widest text-[10px] text-tiimo-gray-muted mb-2 px-2">
 					Notifications
 				</DropdownMenuLabel>
 				<DropdownMenuSeparator className="bg-border/50 mb-2" />
@@ -71,7 +71,7 @@ export function NotificationBell() {
 								initial={{ opacity: 0 }}
 								animate={{ opacity: 1 }}
 								exit={{ opacity: 0 }}
-								className="py-8 text-center text-[10px] font-bold text-tiimo-gray-muted uppercase tracking-widest"
+								className="py-8 text-center text-[10px] font-bold text-tiimo-gray-muted  tracking-widest"
 							>
 								All caught up!
 							</m.div>
@@ -92,7 +92,7 @@ export function NotificationBell() {
 										onClick={() => handleMarkAsRead(n.id)}
 									>
 										<div className="flex w-full justify-between items-start gap-2">
-											<span className="font-black text-xs uppercase tracking-tight leading-tight">
+											<span className="font-black text-xs  tracking-tight leading-tight">
 												{n.title}
 											</span>
 											{!n.isRead && (
@@ -102,7 +102,7 @@ export function NotificationBell() {
 										<p className="text-[10px] font-medium text-tiimo-gray-muted leading-relaxed">
 											{n.message}
 										</p>
-										<span className="text-[9px] font-bold text-tiimo-gray-muted/50 uppercase tracking-tighter mt-1">
+										<span className="text-[9px] font-bold text-tiimo-gray-muted/50  tracking-tighter mt-1">
 											{new Date(n.createdAt!).toLocaleDateString()}
 										</span>
 									</DropdownMenuItem>

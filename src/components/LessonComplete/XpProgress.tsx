@@ -19,9 +19,7 @@ export const XpProgress = memo(function XpProgress({
 	return (
 		<div className="w-full max-w-md space-y-3 mb-10 px-1">
 			<div className="flex justify-between items-end">
-				<span className="text-base font-black text-foreground uppercase tracking-tight">
-					Level {level}
-				</span>
+				<span className="text-base font-black text-foreground  tracking-tight">Level {level}</span>
 				<span className="text-xs font-black text-muted-foreground opacity-60">
 					{xpInCurrentLevel} / {xpForNextLevel} XP
 				</span>

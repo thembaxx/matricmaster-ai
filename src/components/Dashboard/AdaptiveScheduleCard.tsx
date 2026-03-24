@@ -85,7 +85,7 @@ export function AdaptiveScheduleCard({ adjustments, onDismiss }: AdaptiveSchedul
 		<Card className="rounded-[2rem] border-border/50 shadow-tiimo overflow-hidden bg-gradient-to-br from-blue-500/10 to-blue-600/5">
 			<CardHeader className="p-6 pb-3">
 				<div className="flex items-center justify-between">
-					<CardTitle className="text-xs font-semibold uppercase tracking-wider text-blue-600 flex items-center gap-2">
+					<CardTitle className="text-xs font-semibold  tracking-wider text-blue-600 flex items-center gap-2">
 						<HugeiconsIcon icon={Calendar01Icon} className="w-4 h-4" />
 						Schedule Adjustments
 					</CardTitle>

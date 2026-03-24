@@ -48,7 +48,7 @@ function ConfidenceIndicator({ level }: { level: ConfidenceLevel }) {
 				<TooltipTrigger asChild>
 					<span
 						className={cn(
-							'inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded border',
+							'inline-flex items-center gap-1 text-[10px] font-black  tracking-wider px-1.5 py-0.5 rounded border',
 							getConfidenceBgColor(level)
 						)}
 					>
@@ -245,9 +245,7 @@ export function ConfidenceSummary({ citations, className }: ConfidenceSummaryPro
 
 	return (
 		<div className={cn('flex items-center gap-3', className)}>
-			<span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
-				Sources
-			</span>
+			<span className="text-[10px] font-bold text-muted-foreground  tracking-wider">Sources</span>
 			<div className="flex items-center gap-1.5">
 				{summary.high > 0 && (
 					<TooltipProvider>

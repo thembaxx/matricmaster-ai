@@ -30,8 +30,8 @@ interface StudentOverviewProps {
 export function StudentOverview({
 	studentName,
 	studentImage,
-	grade = 'Grade 12',
-	school = 'Matric 2026',
+	grade = 'grade 12',
+	school = 'matric 2026',
 }: StudentOverviewProps) {
 	const [showEncourage, setShowEncourage] = useState(false);
 
@@ -57,7 +57,7 @@ export function StudentOverview({
 		.split(' ')
 		.map((n) => n[0])
 		.join('')
-		.toUpperCase()
+		.toLowerCase()
 		.slice(0, 2);
 
 	const taskProgress = stats.totalTasks > 0 ? (stats.tasksCompleted / stats.totalTasks) * 100 : 0;
@@ -75,7 +75,7 @@ export function StudentOverview({
 						</Avatar>
 						<div className="flex-1 min-w-[200px]">
 							<h2 className="text-2xl font-black text-foreground tracking-tight">
-								{studentName}'s Progress
+								{studentName.toLowerCase()}'s progress
 							</h2>
 							<div className="flex items-center gap-3 mt-1">
 								<span className="text-xs font-bold text-muted-foreground tracking-wide">
@@ -95,7 +95,7 @@ export function StudentOverview({
 								onClick={() => setShowEncourage(true)}
 							>
 								<HugeiconsIcon icon={SentIcon} className="w-4 h-4" />
-								Encourage
+								encourage
 							</Button>
 							<Button
 								size="sm"
@@ -105,7 +105,7 @@ export function StudentOverview({
 								}}
 							>
 								<HugeiconsIcon icon={FileEditIcon} className="w-4 h-4" />
-								Full Report
+								full report
 							</Button>
 						</div>
 					</div>
@@ -125,28 +125,28 @@ export function StudentOverview({
 						<div className="grid grid-cols-2 md:grid-cols-4 gap-6">
 							<StatItem
 								icon={FireIcon}
-								label="Current Streak"
+								label="current streak"
 								value={`${stats.streakDays} days`}
 								color="text-orange-500"
 								bgColor="bg-orange-500/10"
 							/>
 							<StatItem
 								icon={Clock01Icon}
-								label="Study This Week"
+								label="study this week"
 								value={`${stats.totalHoursThisWeek.toFixed(1)}h`}
 								color="text-success"
 								bgColor="bg-success/10"
 							/>
 							<StatItem
 								icon={ChartBar}
-								label="Quiz Average"
+								label="quiz average"
 								value={`${stats.averageQuizScore}%`}
 								color={stats.averageQuizScore >= 70 ? 'text-success' : 'text-warning'}
 								bgColor={stats.averageQuizScore >= 70 ? 'bg-success/10' : 'bg-warning/10'}
 							/>
 							<StatItem
 								icon={Medal01Icon}
-								label="Tasks Done"
+								label="tasks done"
 								value={`${stats.tasksCompleted}/${stats.totalTasks}`}
 								color="text-primary"
 								bgColor="bg-primary/10"
@@ -155,8 +155,8 @@ export function StudentOverview({
 					)}
 					{!isLoading && (
 						<div className="mt-5">
-							<div className="flex justify-between text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-2">
-								<span>Weekly Goal Progress</span>
+							<div className="flex justify-between text-[10px] font-bold text-muted-foreground tracking-widest mb-2">
+								<span>weekly goal progress</span>
 								<span>{Math.round(taskProgress)}%</span>
 							</div>
 							<Progress value={taskProgress} className="h-2" />
@@ -195,9 +195,7 @@ function StatItem({
 				<HugeiconsIcon icon={icon} className={cn('w-5 h-5', color)} />
 			</div>
 			<div>
-				<p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
-					{label}
-				</p>
+				<p className="text-[10px] font-bold text-muted-foreground tracking-widest">{label}</p>
 				<p className="text-xl font-black text-foreground">{value}</p>
 			</div>
 		</div>

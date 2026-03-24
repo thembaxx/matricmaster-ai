@@ -122,7 +122,7 @@ export function AchievementToast({ achievement, onDismiss }: AchievementToastPro
 						<div className="flex-1 min-w-0">
 							<div className="flex items-center gap-2 mb-1">
 								<HugeiconsIcon icon={SparklesIcon} className="w-4 h-4 text-brand-amber" />
-								<span className="text-[10px] font-black uppercase tracking-[0.2em] text-brand-amber">
+								<span className="text-[10px] font-black  tracking-[0.2em] text-brand-amber">
 									Achievement Unlocked!
 								</span>
 							</div>

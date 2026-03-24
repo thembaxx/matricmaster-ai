@@ -29,15 +29,13 @@ export function PerformanceMatrix({
 	return (
 		<div className="space-y-6">
 			<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-				<h3 className="text-xl font-black text-foreground tracking-tighter uppercase">
-					Performance Matrix
-				</h3>
+				<h3 className="text-xl font-black text-foreground tracking-tighter ">Performance Matrix</h3>
 				<div className="flex justify-start p-1 bg-muted rounded-xl">
 					<button
 						type="button"
 						onClick={() => setViewMode('my_stats')}
 						aria-pressed={viewMode === 'my_stats'}
-						className={`px-3 sm:px-4 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all ios-active-scale ${viewMode === 'my_stats' ? 'bg-background shadow-sm text-foreground' : 'text-label-tertiary'}`}
+						className={`px-3 sm:px-4 py-2 rounded-lg text-[10px] font-black  tracking-widest transition-all ios-active-scale ${viewMode === 'my_stats' ? 'bg-background shadow-sm text-foreground' : 'text-label-tertiary'}`}
 					>
 						Individual
 					</button>
@@ -45,7 +43,7 @@ export function PerformanceMatrix({
 						type="button"
 						onClick={() => setViewMode('provincial')}
 						aria-pressed={viewMode === 'provincial'}
-						className={`px-3 sm:px-4 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all ios-active-scale ${viewMode === 'provincial' ? 'bg-background shadow-sm text-foreground' : 'text-label-tertiary'}`}
+						className={`px-3 sm:px-4 py-2 rounded-lg text-[10px] font-black  tracking-widest transition-all ios-active-scale ${viewMode === 'provincial' ? 'bg-background shadow-sm text-foreground' : 'text-label-tertiary'}`}
 					>
 						Benchmarked
 					</button>

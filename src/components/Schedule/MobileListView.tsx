@@ -36,7 +36,7 @@ export function MobileListView({
 						type="button"
 						onClick={() => onDaySelect(day)}
 						className={cn(
-							'px-5 py-3 rounded-2xl text-[11px] font-bold uppercase tracking-widest transition-all shrink-0',
+							'px-5 py-3 rounded-2xl text-[11px] font-bold  tracking-widest transition-all shrink-0',
 							selectedDay === day
 								? 'bg-foreground text-background shadow-lg scale-105'
 								: 'bg-muted/60 text-muted-foreground hover:bg-muted'
@@ -86,11 +86,11 @@ export function MobileListView({
 												)}
 											</div>
 
-											<h3 className="text-base font-bold uppercase tracking-tight truncate pr-2">
+											<h3 className="text-base font-bold  tracking-tight truncate pr-2">
 												{event.title}
 											</h3>
 
-											<p className="text-[11px] font-semibold text-primary/80 uppercase tracking-widest truncate mt-1">
+											<p className="text-[11px] font-semibold text-primary/80  tracking-widest truncate mt-1">
 												{event.subject}
 											</p>
 										</div>
@@ -133,7 +133,7 @@ export function MobileListView({
 						<div className="w-20 h-20 rounded-3xl bg-muted/50 flex items-center justify-center mx-auto mb-5">
 							<HugeiconsIcon icon={Calendar01Icon} className="w-10 h-10 text-muted-foreground/40" />
 						</div>
-						<p className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
+						<p className="text-sm font-semibold text-muted-foreground  tracking-wider">
 							No study blocks
 						</p>
 						<p className="text-xs text-muted-foreground/60 mt-1">

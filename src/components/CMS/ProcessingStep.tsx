@@ -22,7 +22,7 @@ export function ProcessingStep({ processingStatus, processingProgress }: Process
 			<div className="w-full max-w-md space-y-4">
 				<div className="flex justify-between items-end">
 					<div className="space-y-1">
-						<h3 className="text-2xl font-black uppercase tracking-tighter">Working Magic</h3>
+						<h3 className="text-2xl font-black  tracking-tighter">Working Magic</h3>
 						<p className="text-muted-foreground font-bold text-sm">{processingStatus}</p>
 					</div>
 					<span className="font-black text-brand-blue">{processingProgress}%</span>

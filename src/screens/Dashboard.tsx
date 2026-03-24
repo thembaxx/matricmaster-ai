@@ -184,25 +184,25 @@ export default function Dashboard({
 								value="today"
 								className="rounded-none border-b-2 border-transparent data-[state=active]:border-tiimo-lavender data-[state=active]:bg-transparent px-4 py-3 text-base font-medium"
 							>
-								Today
+								today
 							</TabsTrigger>
 							<TabsTrigger
 								value="progress"
 								className="rounded-none border-b-2 border-transparent data-[state=active]:border-tiimo-lavender data-[state=active]:bg-transparent px-4 py-3 text-base font-medium"
 							>
-								Progress
+								progress
 							</TabsTrigger>
 							<TabsTrigger
 								value="tasks"
 								className="rounded-none border-b-2 border-transparent data-[state=active]:border-tiimo-lavender data-[state=active]:bg-transparent px-4 py-3 text-base font-medium"
 							>
-								Tasks
+								tasks
 							</TabsTrigger>
 							<TabsTrigger
 								value="more"
 								className="rounded-none border-b-2 border-transparent data-[state=active]:border-tiimo-lavender data-[state=active]:bg-transparent px-4 py-3 text-base font-medium"
 							>
-								More
+								more
 							</TabsTrigger>
 						</TabsList>
 

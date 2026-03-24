@@ -39,7 +39,7 @@ export function DashboardHeader({ userName, userImage, unreadCount }: DashboardH
 					<div className="absolute bottom-0.5 right-0.5 w-4 h-4 bg-emerald-500 border-2 border-background rounded-full lg:w-5 lg:h-5 lg:border-3" />
 				</m.div>
 				<div>
-					<p className="text-muted-foreground text-[10px] font-black uppercase tracking-[0.2em] opacity-60 lg:text-xs">
+					<p className="text-muted-foreground text-[10px] font-black  tracking-[0.2em] opacity-60 lg:text-xs">
 						Welcome back,
 					</p>
 					<SmoothWords

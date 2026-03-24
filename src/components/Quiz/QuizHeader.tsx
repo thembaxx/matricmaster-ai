@@ -73,14 +73,14 @@ export function QuizHeader({
 				{topic && (
 					<Badge
 						variant="secondary"
-						className={`text-[10px] font-black uppercase tracking-tighter rounded-full ${topicColor}`}
+						className={`text-[10px] font-black  tracking-tighter rounded-full ${topicColor}`}
 					>
 						{topic}
 					</Badge>
 				)}
 
 				{subtitle && (
-					<p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest mt-2">
+					<p className="text-[10px] font-black text-muted-foreground  tracking-widest mt-2">
 						{subtitle}
 					</p>
 				)}
@@ -119,7 +119,7 @@ export function SimpleQuizHeader({
 			<div className="max-w-2xl mx-auto w-full">
 				<div className="px-6 pt-12 pb-2 flex items-center justify-between">
 					<div className="text-center flex-1">
-						<h1 className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em]">
+						<h1 className="text-[10px] font-black text-muted-foreground  tracking-[0.2em]">
 							{title}
 						</h1>
 						{subtitle && <p className="text-sm font-black text-foreground">{subtitle}</p>}
@@ -139,7 +139,7 @@ export function SimpleQuizHeader({
 							style={{ width: `${progressPercent ?? (currentQuestion / totalQuestions) * 100}%` }}
 						/>
 					</div>
-					<div className="flex justify-between items-center text-[10px] font-black tracking-widest text-muted-foreground uppercase">
+					<div className="flex justify-between items-center text-[10px] font-black tracking-widest text-muted-foreground ">
 						<span>
 							Question {currentQuestion}/{totalQuestions}
 						</span>

@@ -28,12 +28,10 @@ export function TimerView({
 			className="w-full max-w-md flex flex-col items-center justify-center grow"
 		>
 			<div className="text-center mb-12">
-				<h1 className="text-3xl font-black text-foreground tracking-tighter uppercase mb-2">
-					{title}
+				<h1 className="text-3xl font-black text-foreground tracking-tighter mb-2">
+					{title.toLowerCase()}
 				</h1>
-				<p className="text-sm font-bold text-muted-foreground uppercase tracking-widest">
-					Deep Work Session
-				</p>
+				<p className="text-sm font-bold text-muted-foreground tracking-widest">deep work session</p>
 			</div>
 
 			<div className="relative w-64 sm:w-72 h-64 sm:h-72 mx-auto mb-12">
@@ -71,10 +69,10 @@ export function TimerView({
 					size="lg"
 					variant={isPaused ? 'default' : 'outline'}
 					onClick={onTogglePause}
-					className="rounded-full px-10 h-16 text-xs font-black uppercase tracking-widest gap-2 shadow-2xl shadow-primary/20"
+					className="rounded-full px-10 h-16 text-xs font-black tracking-widest gap-2 shadow-2xl shadow-primary/20"
 				>
 					<HugeiconsIcon icon={isPaused ? PlayIcon : PauseIcon} className="w-5 h-5" />
-					{isPaused ? 'Start Session' : 'Pause'}
+					{isPaused ? 'start session' : 'pause'}
 				</Button>
 			</div>
 		</m.div>

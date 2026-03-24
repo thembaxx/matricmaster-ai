@@ -24,9 +24,7 @@ const TrendIndicator = memo(function TrendIndicator({
 			: 'text-muted-foreground';
 
 	return (
-		<div
-			className={`flex items-center gap-1 text-xs font-black uppercase tracking-widest ${colorClass}`}
-		>
+		<div className={`flex items-center gap-1 text-xs font-black  tracking-widest ${colorClass}`}>
 			<span className="text-[8px]">{isPositive ? '▲' : isNegative ? '▼' : '●'}</span>
 			<span>{formatter(value)}</span>
 		</div>
@@ -120,7 +118,7 @@ export const StatCard = memo(function StatCard({
 					<p
 						className={`
 							${isCompact ? 'text-[9px]' : 'text-[10px]'}
-							font-black text-label-tertiary uppercase tracking-[0.2em]
+							font-black text-label-tertiary  tracking-[0.2em]
 						`}
 					>
 						{label}
@@ -148,7 +146,7 @@ export const StatCard = memo(function StatCard({
 					)}
 					{trend !== undefined && <TrendIndicator value={trend} formatter={trendFormatter} />}
 					{trendLabel && (
-						<p className="text-[9px] font-bold text-muted-foreground uppercase tracking-wider">
+						<p className="text-[9px] font-bold text-muted-foreground  tracking-wider">
 							{trendLabel}
 						</p>
 					)}

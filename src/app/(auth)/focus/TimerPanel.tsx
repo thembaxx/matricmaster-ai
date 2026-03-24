@@ -41,7 +41,7 @@ export function TimerPanel({
 						key={m}
 						onClick={() => setMode(m)}
 						className={cn(
-							'px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-widest transition-all',
+							'px-6 py-2 rounded-full text-[10px] font-black  tracking-widest transition-all',
 							mode === m
 								? 'bg-background shadow-tiimo text-foreground'
 								: 'text-muted-foreground hover:text-foreground'
@@ -62,7 +62,7 @@ export function TimerPanel({
 					<div className="text-7xl font-black tracking-tighter tabular-nums">
 						{formatTime(timeRemaining)}
 					</div>
-					<div className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em]">
+					<div className="text-[10px] font-black text-muted-foreground  tracking-[0.2em]">
 						{isTimerRunning ? 'Session Active' : 'Paused'}
 					</div>
 				</div>

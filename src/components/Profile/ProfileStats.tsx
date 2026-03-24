@@ -22,9 +22,7 @@ export function StatCard({ icon, label, value, colorClass, bgColorClass }: StatC
 					<HugeiconsIcon icon={icon} className={`w-10 h-10 ${colorClass}`} />
 				</div>
 				<div className="space-y-1">
-					<p className="text-[10px] font-black text-label-tertiary uppercase tracking-[0.3em]">
-						{label}
-					</p>
+					<p className="text-[10px] font-black text-label-tertiary  tracking-[0.3em]">{label}</p>
 					<h4 className="text-4xl font-black text-foreground tracking-tighter">{value}</h4>
 				</div>
 			</div>
@@ -77,10 +75,10 @@ export function ProfileStats({
 						<HugeiconsIcon icon={Medal01Icon} className="w-10 h-10 text-primary-violet" />
 					</div>
 					<div className="space-y-1">
-						<p className="text-[10px] font-black text-label-tertiary uppercase tracking-[0.3em]">
+						<p className="text-[10px] font-black text-label-tertiary  tracking-[0.3em]">
 							Mastery Unlocked
 						</p>
-						<h4 className="text-2xl font-black text-foreground tracking-tighter uppercase">
+						<h4 className="text-2xl font-black text-foreground tracking-tighter ">
 							{achievementsUnlocked} Master Badges
 						</h4>
 					</div>

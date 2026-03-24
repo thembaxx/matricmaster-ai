@@ -115,7 +115,7 @@ export const ProgressRingWithLabel = memo(function ProgressRingWithLabel({
 					<span className="text-xl font-black text-foreground tracking-tighter">{label}</span>
 				)}
 				{sublabel && (
-					<span className="text-[9px] font-black text-muted-foreground uppercase tracking-widest">
+					<span className="text-[9px] font-black text-muted-foreground  tracking-widest">
 						{sublabel}
 					</span>
 				)}

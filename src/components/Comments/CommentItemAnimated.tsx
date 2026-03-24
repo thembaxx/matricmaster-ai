@@ -46,17 +46,17 @@ export function CommentItemAnimated({
 			<div className="flex gap-4">
 				<Avatar className={cn(isReply ? 'h-8 w-8' : 'h-10 w-10', 'border-2 border-primary/5')}>
 					<AvatarImage src={comment.userImage ?? undefined} />
-					<AvatarFallback className="bg-secondary text-secondary-foreground text-[10px] font-black uppercase">
+					<AvatarFallback className="bg-secondary text-secondary-foreground text-[10px] font-black ">
 						{comment.userName?.[0] ?? 'U'}
 					</AvatarFallback>
 				</Avatar>
 				<div className="flex-1 space-y-2">
 					<div className="flex items-center justify-between">
 						<div className="flex items-center gap-2">
-							<span className="font-black text-sm uppercase tracking-tight">
+							<span className="font-black text-sm  tracking-tight">
 								{comment.userName ?? 'Anonymous'}
 							</span>
-							<span className="text-[10px] font-bold text-muted-foreground uppercase">
+							<span className="text-[10px] font-bold text-muted-foreground ">
 								{comment.createdAt ? new Date(comment.createdAt).toLocaleDateString() : 'Just now'}
 							</span>
 							{comment.isEdited && (
@@ -80,17 +80,17 @@ export function CommentItemAnimated({
 							>
 								<DropdownMenuItem className="gap-2 rounded-xl focus:bg-primary/5 focus:text-primary">
 									<HugeiconsIcon icon={Flag} className="h-4 w-4" />
-									<span className="font-bold uppercase text-[10px]">Report</span>
+									<span className="font-bold  text-[10px]">Report</span>
 								</DropdownMenuItem>
 								{currentUserId === comment.userId && (
 									<>
 										<DropdownMenuItem className="gap-2 rounded-xl focus:bg-primary/5 focus:text-primary">
 											<HugeiconsIcon icon={Edit01Icon} className="h-4 w-4" />
-											<span className="font-bold uppercase text-[10px]">Edit</span>
+											<span className="font-bold  text-[10px]">Edit</span>
 										</DropdownMenuItem>
 										<DropdownMenuItem className="gap-2 rounded-xl focus:bg-destructive/5 focus:text-destructive">
 											<HugeiconsIcon icon={Delete02Icon} className="h-4 w-4" />
-											<span className="font-bold uppercase text-[10px]">Delete</span>
+											<span className="font-bold  text-[10px]">Delete</span>
 										</DropdownMenuItem>
 									</>
 								)}
@@ -130,7 +130,7 @@ export function CommentItemAnimated({
 								type="button"
 								variant="ghost"
 								onClick={() => onReply(comment.id)}
-								className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-muted-foreground hover:text-primary h-auto p-0"
+								className="flex items-center gap-1.5 text-[10px] font-black  tracking-widest text-muted-foreground hover:text-primary h-auto p-0"
 							>
 								<HugeiconsIcon icon={ArrowLeft02Icon} className="h-3 w-3" />
 								Reply
@@ -155,14 +155,14 @@ export function CommentItemAnimated({
 									size="sm"
 									variant="ghost"
 									onClick={onCancelReply}
-									className="rounded-full font-black uppercase text-[10px]"
+									className="rounded-full font-black  text-[10px]"
 								>
 									Cancel
 								</Button>
 								<Button
 									size="sm"
 									onClick={onSubmitReply}
-									className="rounded-full px-6 font-black uppercase text-[10px] h-9"
+									className="rounded-full px-6 font-black  text-[10px] h-9"
 								>
 									Post Reply
 								</Button>

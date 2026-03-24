@@ -15,7 +15,7 @@ export function QuestionContentTab({
 	return (
 		<div className="space-y-8">
 			<div className="space-y-3">
-				<Label className="font-black text-xs uppercase tracking-widest text-muted-foreground">
+				<Label className="font-black text-xs  tracking-widest text-muted-foreground">
 					Question Content
 				</Label>
 				<Textarea
@@ -26,9 +26,7 @@ export function QuestionContentTab({
 				/>
 			</div>
 			<div className="space-y-3 max-w-50">
-				<Label className="font-black text-xs uppercase tracking-widest text-muted-foreground">
-					Points
-				</Label>
+				<Label className="font-black text-xs  tracking-widest text-muted-foreground">Points</Label>
 				<Input
 					type="number"
 					value={editingQuestion.marks}

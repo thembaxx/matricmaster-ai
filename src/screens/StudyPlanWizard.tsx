@@ -28,12 +28,12 @@ import { useSession } from '@/lib/auth-client';
 import { createStudyPlanAction } from '@/lib/db/study-plan-actions';
 
 const subjects = [
-	{ id: 'math', name: 'Mathematics', icon: CalculatorIcon, color: 'text-blue-500' },
-	{ id: 'physics', name: 'Physical Sci', icon: Chemistry01Icon, color: 'text-blue-500' },
-	{ id: 'life', name: 'Life Sciences', icon: MicroscopeIcon, color: 'text-muted-foreground' },
-	{ id: 'english', name: 'English HL', icon: Book01Icon, color: 'text-muted-foreground' },
-	{ id: 'afrikaans', name: 'Afrikaans FAL', icon: TranslateIcon, color: 'text-muted-foreground' },
-	{ id: 'accounting', name: 'Accounting', icon: BankIcon, color: 'text-muted-foreground' },
+	{ id: 'math', name: 'mathematics', icon: CalculatorIcon, color: 'text-blue-500' },
+	{ id: 'physics', name: 'physical sci', icon: Chemistry01Icon, color: 'text-blue-500' },
+	{ id: 'life', name: 'life sciences', icon: MicroscopeIcon, color: 'text-muted-foreground' },
+	{ id: 'english', name: 'english hl', icon: Book01Icon, color: 'text-muted-foreground' },
+	{ id: 'afrikaans', name: 'afrikaans fal', icon: TranslateIcon, color: 'text-muted-foreground' },
+	{ id: 'accounting', name: 'accounting', icon: BankIcon, color: 'text-muted-foreground' },
 ];
 
 export default function StudyPlanWizard() {
@@ -91,10 +91,10 @@ export default function StudyPlanWizard() {
 					<HugeiconsIcon icon={SparklesIcon} className="w-16 h-16 text-primary" />
 				</div>
 				<h2 className="text-3xl font-black text-foreground mb-3 text-center">
-					Generating Your Path...
+					generating your path...
 				</h2>
 				<p className="text-sm text-muted-foreground text-center max-w-xs leading-relaxed">
-					Building your study path...
+					building your study path...
 				</p>
 			</div>
 		);
@@ -112,9 +112,7 @@ export default function StudyPlanWizard() {
 				>
 					<HugeiconsIcon icon={ArrowLeft02Icon} className="w-6 h-6 text-muted-foreground" />
 				</Button>
-				<h1 className="text-[10px] font-black text-label-tertiary uppercase tracking-[0.2em]">
-					Study Plan
-				</h1>
+				<h1 className="text-[10px] font-black text-label-tertiary tracking-[0.2em]">study plan</h1>
 				<Button variant="ghost" size="icon" className="rounded-full ios-active-scale">
 					<HugeiconsIcon icon={Settings01Icon} className="w-6 h-6 text-muted-foreground" />
 				</Button>
@@ -125,9 +123,9 @@ export default function StudyPlanWizard() {
 					{/* Focus Areas Section */}
 					<div className="space-y-4">
 						<div className="flex justify-between items-end">
-							<h2 className="text-3xl font-black text-foreground tracking-tight">Focus Areas</h2>
-							<span className="text-[11px] font-black text-primary uppercase tracking-widest">
-								Step 1 of 3
+							<h2 className="text-3xl font-black text-foreground tracking-tight">focus areas</h2>
+							<span className="text-[11px] font-black text-primary tracking-widest">
+								step 1 of 3
 							</span>
 						</div>
 						<div className="w-full h-2 bg-muted rounded-full overflow-hidden">
@@ -143,10 +141,10 @@ export default function StudyPlanWizard() {
 					{/* Question Section */}
 					<div className="space-y-2">
 						<h3 className="text-2xl font-black text-foreground leading-tight">
-							What subjects are you tackling for Finals?
+							what subjects are you tackling for finals?
 						</h3>
 						<p className="text-muted-foreground text-sm">
-							We'll prioritize these in your daily study plan.
+							we'll prioritize these in your daily study plan.
 						</p>
 					</div>
 
@@ -182,7 +180,7 @@ export default function StudyPlanWizard() {
 										/>
 									</div>
 									<span
-										className={`text-sm font-black uppercase tracking-wider ${isSelected ? 'text-primary' : 'text-label-secondary'}`}
+										className={`text-sm font-black tracking-wider ${isSelected ? 'text-primary' : 'text-label-secondary'}`}
 									>
 										{subject.name}
 									</span>
@@ -194,9 +192,9 @@ export default function StudyPlanWizard() {
 					{/* Weekly Commitment Section */}
 					<div className="space-y-6 pt-4">
 						<div className="flex justify-between items-center">
-							<h4 className="text-lg font-black text-foreground">Weekly Commitment</h4>
+							<h4 className="text-lg font-black text-foreground">weekly commitment</h4>
 							<Badge className="bg-primary/10 text-primary rounded-xl px-4 py-2 hover:bg-primary/20 border-none font-black text-base">
-								{weeklyHours[0]} Hours
+								{weeklyHours[0]} hours
 							</Badge>
 						</div>
 						<div className="px-1">
@@ -209,12 +207,12 @@ export default function StudyPlanWizard() {
 								className="py-4"
 							/>
 						</div>
-						<div className="flex justify-between text-[10px] font-black text-label-tertiary uppercase tracking-widest">
+						<div className="flex justify-between text-[10px] font-black text-label-tertiary tracking-widest">
 							<span>2h / week</span>
 							<span>20h+ / week</span>
 						</div>
 						<p className="text-xs text-label-tertiary text-center italic">
-							Recommended: 10-15 hours for distinction pass.
+							recommended: 10-15 hours for distinction pass.
 						</p>
 					</div>
 
@@ -222,8 +220,8 @@ export default function StudyPlanWizard() {
 					<div className="p-8 premium-glass rounded-3xl space-y-8">
 						<div className="flex items-center gap-2">
 							<HugeiconsIcon icon={SparklesIcon} className="w-4 h-4 text-primary" />
-							<h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-label-secondary">
-								Preview: Learning Path
+							<h3 className="text-[10px] font-black tracking-[0.2em] text-label-secondary">
+								preview: learning path
 							</h3>
 						</div>
 
@@ -244,8 +242,8 @@ export default function StudyPlanWizard() {
 									<div className="absolute -top-1 -right-0.5 w-4 h-4 bg-destructive rounded-full border-2 border-background" />
 								</div>
 								<div className="bg-card px-3 py-1 rounded-full shadow-sm border border-border/50">
-									<span className="text-[10px] font-black text-foreground uppercase tracking-wider whitespace-nowrap">
-										Start Here
+									<span className="text-[10px] font-black text-foreground tracking-wider whitespace-nowrap">
+										start here
 									</span>
 								</div>
 							</div>
@@ -263,11 +261,11 @@ export default function StudyPlanWizard() {
 			{/* Footer */}
 			<div className="absolute bottom-6 left-6 right-6 z-30">
 				<Button
-					className="w-full h-16 bg-primary hover:bg-primary/90 text-primary-foreground rounded-2xl text-lg font-black uppercase tracking-widest shadow-xl shadow-primary/25 ios-active-scale transition-all gap-2"
+					className="w-full h-16 bg-primary hover:bg-primary/90 text-primary-foreground rounded-2xl text-lg font-black tracking-widest shadow-xl shadow-primary/25 ios-active-scale transition-all gap-2"
 					onClick={handleGenerate}
 					disabled={selectedSubjects.length === 0}
 				>
-					Generate My Plan
+					generate my plan
 					<HugeiconsIcon icon={SparklesIcon} className="w-5 h-5" />
 				</Button>
 			</div>

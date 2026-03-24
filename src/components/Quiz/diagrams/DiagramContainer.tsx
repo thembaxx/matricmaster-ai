@@ -34,7 +34,7 @@ export function DiagramContainer({
 			</div>
 			{!hideSlider && (
 				<div className="space-y-2">
-					<div className="flex justify-between text-[10px] font-black uppercase tracking-widest text-muted-foreground">
+					<div className="flex justify-between text-[10px] font-black  tracking-widest text-muted-foreground">
 						<span>{minLabel}</span>
 						<span>{label}</span>
 						<span>{maxLabel}</span>

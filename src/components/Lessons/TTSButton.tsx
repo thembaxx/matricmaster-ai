@@ -67,7 +67,7 @@ export function TTSButton({
 					size="sm"
 					onClick={() => setPlayerOpen(true)}
 					className={cn(
-						'rounded-full gap-2 font-black uppercase text-[10px] tracking-widest transition-all shadow-sm',
+						'rounded-full gap-2 font-black  text-[10px] tracking-widest transition-all shadow-sm',
 						isSpeaking ? 'bg-primary text-white border-primary shadow-primary/20' : 'bg-card',
 						className
 					)}
@@ -97,7 +97,7 @@ export function TTSButton({
 			size="sm"
 			onClick={toggleSpeech}
 			className={cn(
-				'rounded-full gap-2 font-black uppercase text-[10px] tracking-widest transition-all shadow-sm',
+				'rounded-full gap-2 font-black  text-[10px] tracking-widest transition-all shadow-sm',
 				isSpeaking ? 'bg-primary text-white border-primary shadow-primary/20' : 'bg-card',
 				className
 			)}

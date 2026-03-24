@@ -20,14 +20,14 @@ export function SignUpHeader() {
 			</m.div>
 			<SmoothWords
 				as="h1"
-				text="Start Your Prep"
+				text="start your prep"
 				className="text-4xl font-black tracking-tight text-foreground"
 			/>
 			<m.p
 				variants={STAGGER_ITEM}
 				className="text-muted-foreground text-balance font-medium text-base"
 			>
-				Crush your NSC exams. Create your free account.
+				crush your nsc exams. create your free account.
 			</m.p>
 		</m.div>
 	);

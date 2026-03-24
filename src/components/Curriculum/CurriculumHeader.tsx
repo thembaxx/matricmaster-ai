@@ -125,7 +125,7 @@ export function ProgressStats({ stats }: ProgressStatsProps) {
 				>
 					<div className="flex items-center gap-2 mb-1">
 						<HugeiconsIcon icon={stat.icon} className={cn('w-4 h-4', stat.color)} />
-						<span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
+						<span className="text-[10px] font-bold text-muted-foreground  tracking-wider">
 							{stat.label}
 						</span>
 					</div>

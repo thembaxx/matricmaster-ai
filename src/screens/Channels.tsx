@@ -24,7 +24,7 @@ import { useSession } from '@/lib/auth-client';
 import type { Channel } from '@/screens/ChannelList';
 import { ChannelList } from '@/screens/ChannelList';
 
-const categories = ['All Paths', 'STEM Skills', 'Translate', 'Commerce', 'Humanities'];
+const categories = ['all paths', 'stem skills', 'translate', 'commerce', 'humanities'];
 
 const stemChannels: Channel[] = [
 	{
@@ -58,7 +58,7 @@ export default function Channels() {
 	const router = useRouter();
 	const { data: session } = useSession();
 	const user = session?.user;
-	const [activeCategory, setActiveCategory] = useState('All Paths');
+	const [activeCategory, setActiveCategory] = useState('all paths');
 	const [channels, setChannels] = useState<Channel[]>(stemChannels);
 
 	const channelName = 'channels:study-channels';
@@ -99,15 +99,15 @@ export default function Channels() {
 			<header className="px-6 pt-12 pb-6 shrink-0 bg-background">
 				<div className="flex items-center justify-between">
 					<div>
-						<h1 className="text-4xl font-black tracking-tight text-foreground">Channels</h1>
+						<h1 className="text-4xl font-black tracking-tight text-foreground">channels</h1>
 						<div className="flex items-center gap-2">
-							<p className="text-label-secondary font-black text-[11px] uppercase tracking-wider">
-								South Africa • Grade 12
+							<p className="text-label-secondary font-black text-[11px] tracking-wider">
+								south africa • grade 12
 							</p>
 							{isAblyConnected && (
-								<span className="flex items-center gap-1 text-[10px] font-black text-success uppercase tracking-widest">
+								<span className="flex items-center gap-1 text-[10px] font-black text-success tracking-widest">
 									<HugeiconsIcon icon={Wifi01Icon} className="w-3 h-3" />
-									Live
+									live
 								</span>
 							)}
 						</div>
@@ -115,7 +115,7 @@ export default function Channels() {
 					<Avatar className="w-10 h-10 border-2 border-background shadow-sm ring-1 ring-border">
 						<AvatarImage src={user?.image || ''} />
 						<AvatarFallback className="bg-primary/10 text-primary font-black">
-							{user?.name?.charAt(0) || 'U'}
+							{user?.name?.charAt(0)?.toLowerCase() || 'u'}
 						</AvatarFallback>
 					</Avatar>
 				</div>
@@ -127,7 +127,7 @@ export default function Channels() {
 					/>
 					<Input
 						type="text"
-						placeholder="Find subjects, papers, or topics..."
+						placeholder="find subjects, papers, or topics..."
 						className="w-full pl-12 pr-6 py-4 bg-card rounded-2xl text-sm border border-border shadow-sm focus:ring-2 focus:ring-primary/20 text-foreground placeholder-label-tertiary"
 					/>
 				</div>
@@ -147,8 +147,8 @@ export default function Channels() {
 			<ScrollArea className="flex-1">
 				<main className="px-6 pb-32 space-y-8">
 					<section className="space-y-4">
-						<h3 className="text-[10px] font-black text-label-tertiary uppercase tracking-[0.2em]">
-							Continue Learning
+						<h3 className="text-[10px] font-black text-label-tertiary tracking-[0.2em]">
+							continue learning
 						</h3>
 						<ContinueLearningCard
 							title="Mathematics P1"
@@ -158,9 +158,7 @@ export default function Channels() {
 					</section>
 
 					<section className="space-y-4">
-						<h3 className="text-xl font-black text-foreground uppercase tracking-tight">
-							STEM Skills
-						</h3>
+						<h3 className="text-xl font-black text-foreground tracking-tight">stem skills</h3>
 						<ChannelList channels={channels} onChannelClick={handleChannelClick} />
 					</section>
 

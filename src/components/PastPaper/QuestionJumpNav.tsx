@@ -13,7 +13,7 @@ export function QuestionJumpNav({
 
 	return (
 		<div className="mb-6">
-			<h3 className="font-black text-[10px] text-muted-foreground uppercase tracking-widest mb-3 px-1">
+			<h3 className="font-black text-[10px] text-muted-foreground  tracking-widest mb-3 px-1">
 				Jump to Question
 			</h3>
 			<div className="flex flex-wrap gap-2">

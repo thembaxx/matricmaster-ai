@@ -42,10 +42,7 @@ export function SignUpFormFields({
 			className="space-y-6"
 		>
 			<m.div variants={STAGGER_ITEM} className="space-y-2">
-				<Label
-					htmlFor="name"
-					className="text-xs font-bold text-label-primary uppercase tracking-wider ml-1"
-				>
+				<Label htmlFor="name" className="text-xs font-bold text-label-primary  tracking-wider ml-1">
 					full name
 				</Label>
 				<Input
@@ -64,7 +61,7 @@ export function SignUpFormFields({
 			<m.div variants={STAGGER_ITEM} className="space-y-2">
 				<Label
 					htmlFor="email"
-					className="text-xs font-bold text-label-primary uppercase tracking-wider ml-1"
+					className="text-xs font-bold text-label-primary  tracking-wider ml-1"
 				>
 					email
 				</Label>

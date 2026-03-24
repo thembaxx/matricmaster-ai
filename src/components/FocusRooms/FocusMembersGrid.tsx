@@ -14,7 +14,7 @@ export function FocusMembersGrid({
 	return (
 		<div className="space-y-6">
 			<div className="flex items-center justify-between">
-				<h3 className="text-xs font-black uppercase tracking-[0.2em] text-tiimo-gray-muted ml-4 flex items-center gap-2">
+				<h3 className="text-xs font-black  tracking-[0.2em] text-tiimo-gray-muted ml-4 flex items-center gap-2">
 					<HugeiconsIcon icon={UserGroupIcon} className="w-4 h-4" />
 					{isGroupMode ? 'Study Buddies' : 'Active Scholars'} (
 					{Array.isArray(presenceData) ? presenceData.length : 0})
@@ -33,12 +33,12 @@ export function FocusMembersGrid({
 								{member.data?.user?.charAt(0) || 'S'}
 							</div>
 							<div>
-								<p className="font-black text-xs uppercase truncate w-full">
+								<p className="font-black text-xs  truncate w-full">
 									{member.data?.user || 'Scholar'}
 								</p>
 								<span
 									className={cn(
-										'text-[8px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full',
+										'text-[8px] font-black  tracking-widest px-2 py-0.5 rounded-full',
 										member.data?.status === 'Studying'
 											? 'bg-tiimo-green/10 text-tiimo-green'
 											: 'bg-tiimo-yellow/10 text-tiimo-yellow'

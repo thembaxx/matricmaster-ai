@@ -6,7 +6,7 @@ import { HugeiconsIcon } from '@hugeicons/react';
 export function ContinueLearningCard() {
 	return (
 		<section className="space-y-4">
-			<h3 className="text-[10px] font-black text-label-tertiary uppercase tracking-[0.2em]">
+			<h3 className="text-[10px] font-black text-label-tertiary  tracking-[0.2em]">
 				Continue Learning
 			</h3>
 			<div className="bg-card p-5 rounded-3xl shadow-sm border border-border relative overflow-hidden group cursor-pointer hover:shadow-md transition-all ios-active-scale">
@@ -16,7 +16,7 @@ export function ContinueLearningCard() {
 					</div>
 					<div className="flex-1">
 						<h4 className="text-lg font-black text-foreground">Mathematics P1</h4>
-						<p className="text-xs text-label-secondary font-black uppercase tracking-wider leading-tight">
+						<p className="text-xs text-label-secondary font-black  tracking-wider leading-tight">
 							Functions & Graphs • 65% Complete
 						</p>
 					</div>

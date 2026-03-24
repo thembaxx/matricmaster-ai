@@ -28,7 +28,7 @@ export function GrowthInsights({
 	return (
 		<Card className="rounded-[2rem] border-border/50 shadow-tiimo overflow-hidden bg-gradient-to-br from-violet-500/10 to-purple-600/5">
 			<CardHeader className="p-6 pb-0">
-				<CardTitle className="text-xs font-semibold uppercase tracking-wider text-violet-600 flex items-center gap-2">
+				<CardTitle className="text-xs font-semibold  tracking-wider text-violet-600 flex items-center gap-2">
 					<HugeiconsIcon icon={SparklesIcon} className="w-4 h-4" />
 					AI Insights
 				</CardTitle>

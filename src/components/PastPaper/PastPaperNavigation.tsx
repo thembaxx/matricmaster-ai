@@ -25,7 +25,7 @@ export function PastPaperNavigation({ activeTab, setActiveTab }: PastPaperNaviga
 							}`}
 						>
 							<span
-								className={`text-[10px] font-black uppercase tracking-wider ${
+								className={`text-[10px] font-black  tracking-wider ${
 									activeTab === item.id ? 'text-brand-blue' : ''
 								}`}
 							>

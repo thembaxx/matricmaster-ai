@@ -26,7 +26,7 @@ export const SubjectSelector = memo(function SubjectSelector({
 }: SubjectSelectorProps) {
 	return (
 		<div className="space-y-3">
-			<p className="text-[10px] font-black uppercase text-muted-foreground tracking-[0.2em] ml-1">
+			<p className="text-[10px] font-black  text-muted-foreground tracking-[0.2em] ml-1">
 				Identify Subject
 			</p>
 			<div className="flex flex-wrap gap-2">
@@ -36,7 +36,7 @@ export const SubjectSelector = memo(function SubjectSelector({
 						type="button"
 						onClick={() => onSubjectChange(s)}
 						className={cn(
-							'px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-widest transition-all',
+							'px-4 py-2 rounded-full text-[10px] font-black  tracking-widest transition-all',
 							selectedSubject === s
 								? 'bg-primary text-white shadow-lg scale-105'
 								: 'bg-card border border-border text-muted-foreground'

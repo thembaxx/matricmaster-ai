@@ -94,7 +94,7 @@ export function LoadSheddingInput({ slots, onChange }: LoadSheddingInputProps) {
 	return (
 		<div className="space-y-4">
 			<div className="space-y-2">
-				<Label className="text-xs font-bold uppercase tracking-wider text-muted-foreground ml-1">
+				<Label className="text-xs font-bold  tracking-wider text-muted-foreground ml-1">
 					Quick Setup by Area
 				</Label>
 				<div className="grid grid-cols-2 gap-2">
@@ -126,7 +126,7 @@ export function LoadSheddingInput({ slots, onChange }: LoadSheddingInputProps) {
 
 			<div className="space-y-2">
 				<div className="flex items-center justify-between">
-					<Label className="text-xs font-bold uppercase tracking-wider text-muted-foreground ml-1">
+					<Label className="text-xs font-bold  tracking-wider text-muted-foreground ml-1">
 						Manual Entry
 					</Label>
 					<Button

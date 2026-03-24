@@ -76,14 +76,14 @@ function SignInFormContent() {
 						</m.div>
 						<SmoothWords
 							as="h1"
-							text="Welcome back"
+							text="welcome back"
 							className="text-4xl font-black tracking-tight text-foreground"
 						/>
 						<m.p
 							variants={STAGGER_ITEM}
 							className="text-muted-foreground text-balance font-medium text-base"
 						>
-							Sign in to continue your matric prep.
+							sign in to continue your matric prep.
 						</m.p>
 					</m.div>
 
@@ -125,7 +125,7 @@ function SignInFormContent() {
 							<Separator />
 						</div>
 						<div className="relative flex justify-center">
-							<span className="px-4 text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-black bg-card/80 backdrop-blur-xl rounded-full">
+							<span className="px-4 text-[10px] tracking-[0.2em] text-muted-foreground font-black bg-card/80 backdrop-blur-xl rounded-full">
 								or
 							</span>
 						</div>
@@ -156,7 +156,7 @@ function SignInFormContent() {
 							href="/sign-up"
 							className="font-bold text-primary hover:text-primary/80 underline-offset-4 transition-colors"
 						>
-							Sign up
+							sign up
 						</Link>
 					</m.p>
 				</m.div>
@@ -165,7 +165,7 @@ function SignInFormContent() {
 					initial={{ opacity: 0 }}
 					animate={{ opacity: 1 }}
 					transition={{ delay: 1.5 }}
-					className="text-center text-muted-foreground/60 text-[10px] font-bold uppercase tracking-widest mt-8"
+					className="text-center text-muted-foreground/60 text-[10px] font-bold tracking-widest mt-8"
 				>
 					&copy; {new Date().getFullYear()} {appConfig.name}
 				</m.p>

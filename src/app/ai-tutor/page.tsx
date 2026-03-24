@@ -66,12 +66,12 @@ function AITutorPageContent() {
 			<div className="min-h-screen flex items-center justify-center bg-background p-4">
 				<Card className="w-full max-w-md">
 					<CardHeader>
-						<CardTitle>Study Helper</CardTitle>
+						<CardTitle>study helper</CardTitle>
 					</CardHeader>
 					<CardContent className="space-y-4">
-						<p className="text-muted-foreground">Sign in to get help with your studies.</p>
+						<p className="text-muted-foreground">sign in to get help with your studies.</p>
 						<Button asChild className="w-full">
-							<Link href="/sign-in">Sign In</Link>
+							<Link href="/sign-in">sign in</Link>
 						</Button>
 					</CardContent>
 				</Card>
@@ -125,10 +125,10 @@ function AITutorPageContent() {
 						<AIPrompt
 							onSend={(msg) => handleSend(msg)}
 							isLoading={isLoading}
-							placeholder="Ask me anything about your studies..."
+							placeholder="ask me anything about your studies..."
 						/>
-						<p className="text-[10px] font-bold text-muted-foreground/60 text-center uppercase tracking-[0.2em]">
-							Help from Google Gemini • Check important info
+						<p className="text-[10px] font-bold text-muted-foreground/60 text-center tracking-[0.2em]">
+							help from google gemini • check important info
 						</p>
 					</div>
 				</div>

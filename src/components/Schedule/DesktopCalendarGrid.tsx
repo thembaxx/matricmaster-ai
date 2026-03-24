@@ -24,7 +24,7 @@ export function DesktopCalendarGrid({
 					<div
 						key={day}
 						className={cn(
-							'p-4 text-center font-black uppercase text-[10px] tracking-widest border-r border-border/50 last:border-r-0',
+							'p-4 text-center font-black  text-[10px] tracking-widest border-r border-border/50 last:border-r-0',
 							day === selectedDay ? 'text-primary' : 'text-muted-foreground'
 						)}
 					>
@@ -76,7 +76,7 @@ export function DesktopCalendarGrid({
 									>
 										<div className="flex flex-col h-full">
 											<div className="flex items-start justify-between">
-												<p className="text-[8px] font-black text-white/70 uppercase tracking-widest truncate flex-1">
+												<p className="text-[8px] font-black text-white/70  tracking-widest truncate flex-1">
 													{event.subject}
 												</p>
 												{event.isCompleted && (

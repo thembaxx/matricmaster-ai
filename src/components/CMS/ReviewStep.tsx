@@ -29,25 +29,25 @@ export function ReviewStep({
 			<div className="space-y-8">
 				<div className="grid grid-cols-2 md:grid-cols-4 gap-6 p-6 rounded-3xl bg-muted/30 border-2">
 					<div>
-						<p className="text-[10px] font-black uppercase text-muted-foreground tracking-widest mb-1">
+						<p className="text-[10px] font-black  text-muted-foreground tracking-widest mb-1">
 							Subject
 						</p>
 						<p className="font-bold">{extractedData.subject}</p>
 					</div>
 					<div>
-						<p className="text-[10px] font-black uppercase text-muted-foreground tracking-widest mb-1">
+						<p className="text-[10px] font-black  text-muted-foreground tracking-widest mb-1">
 							Paper
 						</p>
 						<p className="font-bold">{extractedData.paper}</p>
 					</div>
 					<div>
-						<p className="text-[10px] font-black uppercase text-muted-foreground tracking-widest mb-1">
+						<p className="text-[10px] font-black  text-muted-foreground tracking-widest mb-1">
 							Year
 						</p>
 						<p className="font-bold">{extractedData.year}</p>
 					</div>
 					<div>
-						<p className="text-[10px] font-black uppercase text-muted-foreground tracking-widest mb-1">
+						<p className="text-[10px] font-black  text-muted-foreground tracking-widest mb-1">
 							Analysis
 						</p>
 						<p className="font-bold">{extractedData.questions.length} Questions Found</p>
@@ -56,7 +56,7 @@ export function ReviewStep({
 
 				<div className="space-y-6">
 					<div className="flex items-center justify-between">
-						<h4 className="font-black uppercase text-sm tracking-widest flex items-center gap-2">
+						<h4 className="font-black  text-sm tracking-widest flex items-center gap-2">
 							Verification List{' '}
 							<Badge variant="secondary" className="rounded-md">
 								{extractedData.questions.length}

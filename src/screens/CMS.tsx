@@ -126,8 +126,8 @@ export default function CMS() {
 			<header className="px-4 sm:px-8 pt-6 sm:pt-8 pb-6 bg-background shrink-0 space-y-6 sm:space-y-8">
 				<div className="flex flex-col md:flex-row md:items-center justify-between gap-4 sm:gap-6">
 					<div className="space-y-1">
-						<h1 className="text-3xl font-black text-foreground tracking-tighter uppercase">
-							Content Management
+						<h1 className="text-3xl font-black text-foreground tracking-tighter">
+							content management
 						</h1>
 						<p className="text-muted-foreground font-bold text-sm">
 							Manage questions, papers, and users
@@ -139,27 +139,27 @@ export default function CMS() {
 							onClick={handleSeedDatabase}
 							disabled={seeding}
 							variant="outline"
-							className="rounded-2xl border-2 font-black text-xs uppercase tracking-widest px-6"
+							className="rounded-2xl border-2 font-black text-xs tracking-widest px-6"
 						>
 							<HugeiconsIcon icon={DatabaseIcon} className="h-4 w-4 mr-2" />
-							{seeding ? 'Seeding...' : 'Seed DB'}
+							{seeding ? 'seeding...' : 'seed db'}
 						</Button>
 						{activeTab === 'past-papers' && (
 							<Button
 								onClick={() => setIsPdfDrawerOpen(true)}
-								className="rounded-2xl h-12 px-6 bg-primary hover:bg-primary/90 shadow-2xl shadow-primary/20 font-black text-sm uppercase tracking-widest"
+								className="rounded-2xl h-12 px-6 bg-primary hover:bg-primary/90 shadow-2xl shadow-primary/20 font-black text-sm tracking-widest"
 							>
 								<HugeiconsIcon icon={Upload01Icon} className="h-5 w-5 mr-2" />
-								Upload PDF
+								upload pdf
 							</Button>
 						)}
 						{activeTab === 'questions' && (
 							<Button
 								onClick={() => setCreateQuestionTrigger((n) => n + 1)}
-								className="rounded-2xl h-12 px-6 bg-primary hover:bg-primary/90 shadow-2xl shadow-primary/20 font-black text-sm uppercase tracking-widest"
+								className="rounded-2xl h-12 px-6 bg-primary hover:bg-primary/90 shadow-2xl shadow-primary/20 font-black text-sm tracking-widest"
 							>
 								<HugeiconsIcon icon={Add01Icon} className="h-5 w-5 mr-2" />
-								Create New
+								create new
 							</Button>
 						)}
 					</div>
@@ -169,27 +169,21 @@ export default function CMS() {
 					<TabsList className="grid w-full grid-cols-2 md:grid-cols-4 h-14 bg-muted/50 p-1 rounded-2xl">
 						<TabsTrigger
 							value="questions"
-							className="rounded-xl font-black text-xs uppercase tracking-widest"
+							className="rounded-xl font-black text-xs tracking-widest"
 						>
-							Questions
+							questions
 						</TabsTrigger>
 						<TabsTrigger
 							value="past-papers"
-							className="rounded-xl font-black text-xs uppercase tracking-widest"
+							className="rounded-xl font-black text-xs tracking-widest"
 						>
-							Past Papers
+							past papers
 						</TabsTrigger>
-						<TabsTrigger
-							value="subjects"
-							className="rounded-xl font-black text-xs uppercase tracking-widest"
-						>
-							Subjects
+						<TabsTrigger value="subjects" className="rounded-xl font-black text-xs tracking-widest">
+							subjects
 						</TabsTrigger>
-						<TabsTrigger
-							value="users"
-							className="rounded-xl font-black text-xs uppercase tracking-widest"
-						>
-							Users
+						<TabsTrigger value="users" className="rounded-xl font-black text-xs tracking-widest">
+							users
 						</TabsTrigger>
 					</TabsList>
 				</Tabs>
@@ -238,24 +232,24 @@ export default function CMS() {
 											className="rounded-[2.5rem] border-2 border-border/50 p-8 space-y-4"
 										>
 											<div className="flex items-center justify-between">
-												<h3 className="text-2xl font-black text-foreground tracking-tighter uppercase">
-													{s.name}
+												<h3 className="text-2xl font-black text-foreground tracking-tighter">
+													{s.name.toLowerCase()}
 												</h3>
 												<Badge
-													className={`rounded-lg uppercase tracking-widest text-[9px] font-black ${s.isActive ? 'bg-emerald-500 text-white' : 'bg-muted text-muted-foreground'}`}
+													className={`rounded-lg tracking-widest text-[9px] font-black ${s.isActive ? 'bg-emerald-500 text-white' : 'bg-muted text-muted-foreground'}`}
 												>
-													{s.isActive ? 'Active' : 'Inactive'}
+													{s.isActive ? 'active' : 'inactive'}
 												</Badge>
 											</div>
 											<p className="text-sm font-bold text-muted-foreground line-clamp-2">
 												{s.description}
 											</p>
 											<div className="pt-4 border-t border-border/50">
-												<p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">
-													Curriculum Code
+												<p className="text-[10px] font-black text-muted-foreground tracking-widest">
+													curriculum code
 												</p>
-												<p className="text-sm font-black text-foreground uppercase">
-													{s.curriculumCode}
+												<p className="text-sm font-black text-foreground">
+													{s.curriculumCode.toLowerCase()}
 												</p>
 											</div>
 										</Card>

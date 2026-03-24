@@ -131,11 +131,11 @@ export default function Search() {
 			<div className="px-4 sm:px-6 py-8 sm:py-12 bg-background shrink-0 lg:px-0">
 				<div className="max-w-5xl mx-auto w-full">
 					<div className="mb-8 sm:mb-12 space-y-2">
-						<h1 className="text-3xl sm:text-4xl lg:text-7xl font-black text-foreground tracking-tighter uppercase">
-							Smart Search
+						<h1 className="text-3xl sm:text-4xl lg:text-7xl font-black text-foreground tracking-tighter">
+							smart search
 						</h1>
 						<p className="text-muted-foreground font-bold text-sm sm:text-lg">
-							Find papers, topics, and helpful insights instantly
+							find papers, topics, and helpful insights instantly
 						</p>
 					</div>
 					<SearchHeader query={query} onQueryChange={setQuery} />
@@ -176,8 +176,8 @@ export default function Search() {
 							<div className="space-y-8">
 								{filteredResults.lessons.length > 0 && (
 									<section>
-										<h3 className="text-sm font-black uppercase text-muted-foreground tracking-widest mb-4">
-											Lessons
+										<h3 className="text-sm font-black text-muted-foreground tracking-widest mb-4">
+											lessons
 										</h3>
 										<div className="grid gap-4 sm:grid-cols-2">
 											{filteredResults.lessons.map((l) => (
@@ -185,15 +185,15 @@ export default function Search() {
 													{' '}
 													<Card className="p-6 hover:border-primary/50 transition-all group shadow-tiimo">
 														<div className="flex items-center justify-between mb-2">
-															<span className="text-[10px] font-black uppercase text-primary tracking-widest">
-																{l.topic}
+															<span className="text-[10px] font-black text-primary tracking-widest">
+																{l.topic.toLowerCase()}
 															</span>
-															<span className="text-[10px] font-bold text-muted-foreground uppercase">
+															<span className="text-[10px] font-bold text-muted-foreground">
 																{l.duration} min
 															</span>
 														</div>
 														<h4 className="font-bold text-foreground group-hover:text-primary transition-colors">
-															{l.title}
+															{l.title.toLowerCase()}
 														</h4>
 													</Card>
 												</Link>
@@ -204,8 +204,8 @@ export default function Search() {
 
 								{filteredResults.papers.length > 0 && (
 									<section>
-										<h3 className="text-sm font-black uppercase text-muted-foreground tracking-widest mb-4">
-											Past Papers
+										<h3 className="text-sm font-black text-muted-foreground tracking-widest mb-4">
+											past papers
 										</h3>
 										<SearchResults results={filteredResults.papers} />
 									</section>
@@ -213,8 +213,8 @@ export default function Search() {
 
 								{filteredResults.lessons.length === 0 && filteredResults.papers.length === 0 && (
 									<div className="py-20 text-center">
-										<p className="text-muted-foreground font-bold uppercase text-xs tracking-[0.2em]">
-											No matches found for "{query}"
+										<p className="text-muted-foreground font-bold text-xs tracking-[0.2em]">
+											no matches found for "{query}"
 										</p>
 									</div>
 								)}

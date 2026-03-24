@@ -29,7 +29,7 @@ export const SearchHistoryList = memo(function SearchHistoryList({
 			<div className="flex items-center justify-between">
 				<div className="flex items-center gap-2">
 					<HugeiconsIcon icon={Clock01Icon} className="w-4 h-4 text-muted-foreground" />
-					<h2 className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.3em]">
+					<h2 className="text-[10px] font-black text-muted-foreground  tracking-[0.3em]">
 						ClockCounterClockwise
 					</h2>
 				</div>
@@ -38,7 +38,7 @@ export const SearchHistoryList = memo(function SearchHistoryList({
 						variant="ghost"
 						size="sm"
 						onClick={onClearAll}
-						className="h-8 px-4 text-[10px] font-black uppercase tracking-widest text-muted-foreground hover:text-rose-500"
+						className="h-8 px-4 text-[10px] font-black  tracking-widest text-muted-foreground hover:text-rose-500"
 					>
 						<HugeiconsIcon icon={Delete02Icon} className="w-4 h-4 mr-2" />
 						Clear All
@@ -91,7 +91,7 @@ export const SearchHistoryList = memo(function SearchHistoryList({
 						))
 					) : (
 						<div className="col-span-full py-12 text-center opacity-40">
-							<p className="text-sm font-bold uppercase tracking-widest">No history yet</p>
+							<p className="text-sm font-bold  tracking-widest">No history yet</p>
 						</div>
 					)}
 				</AnimatePresence>

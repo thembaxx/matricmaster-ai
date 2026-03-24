@@ -46,7 +46,7 @@ export function SnapAndSolveSolution({
 				<div className="p-1.5 bg-success/10 rounded-lg">
 					<HugeiconsIcon icon={SparklesIcon} className="w-4 h-4 text-success" />
 				</div>
-				<span className="text-[10px] font-black text-success uppercase tracking-widest">
+				<span className="text-[10px] font-black text-success  tracking-widest">
 					Step-by-Step Solution
 				</span>
 			</div>
@@ -93,13 +93,13 @@ export function SnapAndSolveSolution({
 			<div className="flex gap-3">
 				<Button
 					variant="outline"
-					className="flex-1 rounded-full h-14 font-black uppercase text-[10px] tracking-widest"
+					className="flex-1 rounded-full h-14 font-black  text-[10px] tracking-widest"
 					onClick={onReset}
 				>
 					Snap Another
 				</Button>
 				<Button
-					className="flex-1 rounded-full h-14 font-black uppercase text-[10px] tracking-widest shadow-xl shadow-primary/20"
+					className="flex-1 rounded-full h-14 font-black  text-[10px] tracking-widest shadow-xl shadow-primary/20"
 					onClick={onDone}
 				>
 					Done

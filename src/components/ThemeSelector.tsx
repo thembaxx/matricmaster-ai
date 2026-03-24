@@ -77,7 +77,7 @@ export function ThemeSelector({ userStats }: ThemeSelectorProps) {
 									<div className="flex items-center justify-between h-full">
 										{isActive && (
 											<div className="bg-primary/20 backdrop-blur-sm px-2 py-1 rounded-full">
-												<span className="text-[10px] font-black uppercase tracking-wider text-primary">
+												<span className="text-[10px] font-black  tracking-wider text-primary">
 													Active
 												</span>
 											</div>

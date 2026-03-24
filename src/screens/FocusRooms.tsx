@@ -90,7 +90,7 @@ export default function FocusRooms() {
 						icon={ArrowLeft01Icon}
 						className="w-5 h-5 transition-transform group-hover:-translate-x-1"
 					/>
-					<span className="font-black uppercase tracking-widest text-[10px]">Leave Room</span>
+					<span className="font-black  tracking-widest text-[10px]">Leave Room</span>
 				</Button>
 
 				<div className="flex items-center justify-between">

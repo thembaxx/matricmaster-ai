@@ -35,7 +35,7 @@ export function UniversityGoalCard() {
 						</div>
 						<div>
 							<h3 className="text-sm font-bold text-foreground">University Goal</h3>
-							<p className="text-[10px] text-tiimo-gray-muted font-bold uppercase tracking-widest">
+							<p className="text-[10px] text-tiimo-gray-muted font-bold  tracking-widest">
 								Not Set
 							</p>
 						</div>
@@ -64,7 +64,7 @@ export function UniversityGoalCard() {
 					</div>
 					<div>
 						<h3 className="text-sm font-black text-foreground">{universityName}</h3>
-						<p className="text-[10px] text-tiimo-gray-muted font-bold uppercase tracking-widest">
+						<p className="text-[10px] text-tiimo-gray-muted font-bold  tracking-widest">
 							{faculty}
 						</p>
 					</div>
@@ -76,7 +76,7 @@ export function UniversityGoalCard() {
 			</div>
 
 			<div className="space-y-2">
-				<div className="flex justify-between text-[10px] font-black uppercase tracking-widest">
+				<div className="flex justify-between text-[10px] font-black  tracking-widest">
 					<span className="text-tiimo-gray-muted">Your Progress</span>
 					<span className="text-primary">{Math.round(progress)}%</span>
 				</div>

@@ -31,7 +31,7 @@ export function TasksPanel({
 	return (
 		<div className="lg:col-span-5 space-y-6">
 			<div className="bg-card border border-border/50 p-8 rounded-[3rem] shadow-sm">
-				<h3 className="text-lg font-black uppercase tracking-tight mb-6 flex items-center gap-3">
+				<h3 className="text-lg font-black  tracking-tight mb-6 flex items-center gap-3">
 					<HugeiconsIcon icon={CheckCircleIcon} className="w-6 h-6 text-primary" />
 					Tasks for today
 				</h3>
@@ -59,7 +59,7 @@ export function TasksPanel({
 							<m.div
 								initial={{ opacity: 0 }}
 								animate={{ opacity: 1 }}
-								className="text-center py-12 text-muted-foreground font-bold uppercase text-[10px] tracking-widest border-2 border-dashed border-border/50 rounded-[2rem]"
+								className="text-center py-12 text-muted-foreground font-bold  text-[10px] tracking-widest border-2 border-dashed border-border/50 rounded-[2rem]"
 							>
 								No tasks yet
 							</m.div>
@@ -82,14 +82,14 @@ export function TasksPanel({
 									<div className="flex items-center justify-between mb-2">
 										<span
 											className={cn(
-												'font-black text-sm uppercase tracking-tight',
+												'font-black text-sm  tracking-tight',
 												task.completed && 'line-through text-muted-foreground'
 											)}
 										>
 											{task.title}
 										</span>
 										{activeTaskId === task.id && (
-											<div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary text-white text-[8px] font-black uppercase tracking-widest">
+											<div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary text-white text-[8px] font-black  tracking-widest">
 												<div className="w-1 h-1 rounded-full bg-white animate-pulse" />
 												Active
 											</div>

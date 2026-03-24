@@ -51,7 +51,7 @@ export function ExtractedQuestionCard({
 							}
 							className="w-16 h-10 rounded-xl border-2 text-center font-black"
 						/>
-						<span className="text-[10px] font-black uppercase text-muted-foreground tracking-wider">
+						<span className="text-[10px] font-black  text-muted-foreground tracking-wider">
 							Marks
 						</span>
 					</div>
@@ -72,9 +72,7 @@ export function ExtractedQuestionCard({
 			</div>
 
 			<div className="space-y-3">
-				<Label className="text-[10px] font-black uppercase text-muted-foreground">
-					Question Stem
-				</Label>
+				<Label className="text-[10px] font-black  text-muted-foreground">Question Stem</Label>
 				<Textarea
 					value={question.questionText}
 					onChange={(e) => onUpdateQuestion(index, 'questionText', e.target.value)}
@@ -84,7 +82,7 @@ export function ExtractedQuestionCard({
 
 			{question.options && question.options.length > 0 && (
 				<div className="space-y-3">
-					<Label className="text-[10px] font-black uppercase text-muted-foreground">
+					<Label className="text-[10px] font-black  text-muted-foreground">
 						Multiple Choice Options
 					</Label>
 					<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -117,7 +115,7 @@ export function ExtractedQuestionCard({
 
 			{question.subQuestions && question.subQuestions.length > 0 && (
 				<div className="pt-6 border-t space-y-4">
-					<Label className="text-[10px] font-black uppercase text-muted-foreground tracking-widest">
+					<Label className="text-[10px] font-black  text-muted-foreground tracking-widest">
 						Sub-Questions ({question.subQuestions.length})
 					</Label>
 					<div className="space-y-6">
@@ -127,9 +125,7 @@ export function ExtractedQuestionCard({
 								className="pl-6 border-l-4 border-brand-blue/20 space-y-4 py-2"
 							>
 								<div className="flex items-center justify-between">
-									<span className="text-xs font-black text-brand-blue uppercase">
-										Sub-Item {sq.id}
-									</span>
+									<span className="text-xs font-black text-brand-blue ">Sub-Item {sq.id}</span>
 									<div className="flex items-center gap-2">
 										<Input
 											type="number"
@@ -144,9 +140,7 @@ export function ExtractedQuestionCard({
 											}
 											className="w-14 h-8 rounded-lg border-2 text-center font-black p-0 text-xs"
 										/>
-										<span className="text-[10px] font-black uppercase text-muted-foreground">
-											Marks
-										</span>
+										<span className="text-[10px] font-black  text-muted-foreground">Marks</span>
 									</div>
 								</div>
 								<Textarea

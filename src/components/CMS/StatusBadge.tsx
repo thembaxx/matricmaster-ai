@@ -27,9 +27,7 @@ export function DifficultyBadge({ difficulty }: DifficultyBadgeProps) {
 	};
 
 	return (
-		<Badge
-			className={`rounded-lg uppercase tracking-widest text-[9px] font-black ${colors[difficulty]}`}
-		>
+		<Badge className={`rounded-lg  tracking-widest text-[9px] font-black ${colors[difficulty]}`}>
 			{difficulty}
 		</Badge>
 	);
@@ -44,7 +42,7 @@ export function RoleBadge({ role }: RoleBadgeProps) {
 
 	return (
 		<Badge
-			className={`rounded-lg uppercase tracking-widest text-[9px] font-black ${colors[role] || colors.user}`}
+			className={`rounded-lg  tracking-widest text-[9px] font-black ${colors[role] || colors.user}`}
 		>
 			{role}
 		</Badge>
@@ -63,7 +61,7 @@ export function UserStatusBadge({ isBlocked, deletedAt }: StatusBadgeProps) {
 	return (
 		<Badge
 			variant="outline"
-			className={`rounded-lg uppercase tracking-widest text-[9px] font-black border-2 ${colorMap[status]}`}
+			className={`rounded-lg  tracking-widest text-[9px] font-black border-2 ${colorMap[status]}`}
 		>
 			{status.charAt(0).toUpperCase() + status.slice(1)}
 		</Badge>

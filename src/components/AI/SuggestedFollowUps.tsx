@@ -22,7 +22,7 @@ export function SuggestedFollowUps({ suggestions, onSelectSuggestion }: Suggeste
 				<div className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center">
 					<HugeiconsIcon icon={SparklesIcon} className="h-3 w-3 text-primary" />
 				</div>
-				<span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">
+				<span className="text-[10px] font-black  tracking-widest text-muted-foreground">
 					Suggested follow-ups
 				</span>
 			</div>

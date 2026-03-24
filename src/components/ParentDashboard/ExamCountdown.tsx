@@ -98,7 +98,7 @@ export function ExamCountdown() {
 										</Badge>
 										<div className="text-center">
 											<p className="text-2xl font-black tabular-nums">{exam.daysLeft}</p>
-											<p className="text-[8px] font-bold text-muted-foreground uppercase tracking-widest">
+											<p className="text-[8px] font-bold text-muted-foreground  tracking-widest">
 												days
 											</p>
 										</div>
@@ -106,7 +106,7 @@ export function ExamCountdown() {
 								</div>
 
 								<div className="mb-3">
-									<div className="flex justify-between text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-1.5">
+									<div className="flex justify-between text-[10px] font-bold text-muted-foreground  tracking-widest mb-1.5">
 										<span>Readiness</span>
 										<span>{exam.readiness}%</span>
 									</div>

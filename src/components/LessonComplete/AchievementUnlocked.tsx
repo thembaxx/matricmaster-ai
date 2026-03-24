@@ -23,7 +23,7 @@ export const AchievementUnlocked = memo(function AchievementUnlocked({
 				transition={{ delay: 0.5 }}
 				className="w-full max-w-md space-y-3 mb-8"
 			>
-				<h3 className="text-lg font-black text-foreground text-left ml-1 flex items-center gap-2 uppercase tracking-tight">
+				<h3 className="text-lg font-black text-foreground text-left ml-1 flex items-center gap-2  tracking-tight">
 					<HugeiconsIcon icon={SparklesIcon} className="w-5 h-5 text-primary-orange" />
 					Rewards Unlocked
 				</h3>
@@ -32,7 +32,7 @@ export const AchievementUnlocked = memo(function AchievementUnlocked({
 						<HugeiconsIcon icon={ChampionIcon} className="w-8 h-8 text-white" />
 					</div>
 					<div className="flex-1">
-						<p className="text-[10px] font-black text-primary-orange uppercase tracking-widest mb-0.5 opacity-80">
+						<p className="text-[10px] font-black text-primary-orange  tracking-widest mb-0.5 opacity-80">
 							New Achievement
 						</p>
 						<h4 className="text-xl font-bold text-foreground">Achievement Unlocked!</h4>

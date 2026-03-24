@@ -39,9 +39,9 @@ export default function SubjectsPage() {
 	const handleEnroll = async (subjectId: number) => {
 		const result = await enrollInSubjectAction(subjectId);
 		if (result.success) {
-			toast.success('Enrolled successfully!');
+			toast.success('enrolled successfully!');
 		} else {
-			toast.error('Failed to enroll');
+			toast.error('failed to enroll');
 		}
 	};
 
@@ -56,11 +56,11 @@ export default function SubjectsPage() {
 					<HugeiconsIcon icon={ArrowLeft01Icon} className="w-6 h-6" />
 				</Button>
 				<div>
-					<h1 className="text-4xl font-black tracking-tight text-foreground uppercase">
-						Subject Marketplace
+					<h1 className="text-4xl font-black tracking-tight text-foreground">
+						subject marketplace
 					</h1>
-					<p className="text-muted-foreground font-bold uppercase text-xs tracking-widest mt-1">
-						Enroll in your 2026 Matric subjects
+					<p className="text-muted-foreground font-bold text-xs tracking-widest mt-1">
+						enroll in your 2026 matric subjects
 					</p>
 				</div>
 			</div>
@@ -74,11 +74,11 @@ export default function SubjectsPage() {
 							className="shadow-tiimo border-border/50 overflow-hidden flex flex-col"
 						>
 							<CardHeader className="bg-muted/30">
-								<CardTitle className="text-xl font-black uppercase tracking-tight">
-									{subject.name}
+								<CardTitle className="text-xl font-black tracking-tight">
+									{subject.name.toLowerCase()}
 								</CardTitle>
-								<CardDescription className="text-xs font-bold uppercase tracking-wider">
-									{subject.curriculumCode}
+								<CardDescription className="text-xs font-bold tracking-wider">
+									{subject.curriculumCode.toLowerCase()}
 								</CardDescription>
 							</CardHeader>
 							<CardContent className="p-6 flex-1 flex flex-col gap-6">
@@ -92,7 +92,7 @@ export default function SubjectsPage() {
 											disabled
 										>
 											<HugeiconsIcon icon={CheckmarkCircle02Icon} className="w-4 h-4" />
-											Enrolled
+											enrolled
 										</Button>
 									) : (
 										<Button
@@ -100,7 +100,7 @@ export default function SubjectsPage() {
 											className="w-full rounded-full gap-2 shadow-xl shadow-primary/20"
 										>
 											<HugeiconsIcon icon={PlusSignIcon} className="w-4 h-4" />
-											Enroll Now
+											enroll now
 										</Button>
 									)}
 								</div>

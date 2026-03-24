@@ -44,7 +44,7 @@ export const TrophySection = memo(function TrophySection({ accuracy }: TrophySec
 				transition={{ delay: 0.3 }}
 				className="text-center space-y-3 mb-12"
 			>
-				<h2 className="text-5xl lg:text-7xl font-black text-foreground tracking-tighter uppercase leading-none">
+				<h2 className="text-5xl lg:text-7xl font-black text-foreground tracking-tighter  leading-none">
 					Lesson Complete!
 				</h2>
 				<p className="text-muted-foreground dark:text-muted-foreground font-medium text-lg">

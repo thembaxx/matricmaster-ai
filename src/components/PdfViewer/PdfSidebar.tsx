@@ -38,7 +38,7 @@ export function PdfSidebar({
 						</div>
 						<div>
 							<h3 className="font-bold tracking-tight text-lg">My Notes</h3>
-							<p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">
+							<p className="text-[10px] font-black  tracking-widest text-muted-foreground">
 								{highlights.length} Annotations
 							</p>
 						</div>
@@ -64,7 +64,7 @@ export function PdfSidebar({
 									style={{ borderLeftWidth: '8px', borderLeftColor: highlight.color }}
 								>
 									<div className="flex items-start justify-between gap-4 mb-4">
-										<span className="px-3 py-1 rounded-full bg-muted text-[10px] font-black uppercase tracking-[0.15em] text-muted-foreground border border-border">
+										<span className="px-3 py-1 rounded-full bg-muted text-[10px] font-black  tracking-[0.15em] text-muted-foreground border border-border">
 											Page {highlight.pageNumber}
 										</span>
 										<button
@@ -97,7 +97,7 @@ export function PdfSidebar({
 										<Button
 											variant="outline"
 											size="sm"
-											className="w-full rounded-2xl text-[11px] font-black uppercase tracking-widest gap-2 py-5 border-border hover:border-brand-blue hover:text-brand-blue transition-all group/btn"
+											className="w-full rounded-2xl text-[11px] font-black  tracking-widest gap-2 py-5 border-border hover:border-brand-blue hover:text-brand-blue transition-all group/btn"
 											onClick={() => {
 												const note = prompt('Add a note to this highlight:');
 												if (note) addNote(highlight.id, note);

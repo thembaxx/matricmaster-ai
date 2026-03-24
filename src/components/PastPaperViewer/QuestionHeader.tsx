@@ -52,7 +52,7 @@ export function QuestionHeader({
 							variant="ghost"
 							size="sm"
 							onClick={() => onViewModeChange(viewMode === 'smart' ? 'original' : 'smart')}
-							className="gap-2 h-8 px-3 text-xs font-bold uppercase tracking-wider text-brand-blue bg-brand-blue/5 rounded-xl border border-brand-blue/10"
+							className="gap-2 h-8 px-3 text-xs font-bold  tracking-wider text-brand-blue bg-brand-blue/5 rounded-xl border border-brand-blue/10"
 						>
 							<HugeiconsIcon icon={File01Icon} className="w-3.5 h-3.5" />
 							{viewMode === 'smart' ? 'Marked View' : 'Original PDF'}

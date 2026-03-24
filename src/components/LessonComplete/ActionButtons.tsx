@@ -31,7 +31,7 @@ export const ActionButtons = memo(function ActionButtons({ onShowAnalytics }: Ac
 			</Button>
 			<Button
 				variant="ghost"
-				className="w-full h-14 rounded-2xl font-black text-sm uppercase tracking-widest text-muted-foreground hover:text-foreground flex items-center justify-center gap-2"
+				className="w-full h-14 rounded-2xl font-black text-sm  tracking-widest text-muted-foreground hover:text-foreground flex items-center justify-center gap-2"
 				onClick={onShowAnalytics}
 			>
 				<HugeiconsIcon icon={ChartBar} className="w-5 h-5" />
@@ -39,7 +39,7 @@ export const ActionButtons = memo(function ActionButtons({ onShowAnalytics }: Ac
 			</Button>
 			<Button
 				variant="ghost"
-				className="w-full h-14 rounded-2xl font-black text-sm uppercase tracking-widest text-muted-foreground hover:text-foreground flex items-center justify-center gap-2"
+				className="w-full h-14 rounded-2xl font-black text-sm  tracking-widest text-muted-foreground hover:text-foreground flex items-center justify-center gap-2"
 				onClick={() => router.push('/quiz')}
 			>
 				<HugeiconsIcon icon={Refresh01Icon} className="w-5 h-5" />
@@ -47,7 +47,7 @@ export const ActionButtons = memo(function ActionButtons({ onShowAnalytics }: Ac
 			</Button>
 			<Button
 				variant="ghost"
-				className="w-full h-14 rounded-2xl font-black text-sm uppercase tracking-widest text-muted-foreground hover:text-foreground flex items-center justify-center gap-2"
+				className="w-full h-14 rounded-2xl font-black text-sm  tracking-widest text-muted-foreground hover:text-foreground flex items-center justify-center gap-2"
 				onClick={() => router.push('/flashcards')}
 			>
 				<HugeiconsIcon icon={Layers01Icon} className="w-5 h-5" />
@@ -55,7 +55,7 @@ export const ActionButtons = memo(function ActionButtons({ onShowAnalytics }: Ac
 			</Button>
 			<Button
 				variant="ghost"
-				className="w-full h-14 rounded-2xl font-black text-sm uppercase tracking-widest text-muted-foreground hover:text-foreground flex items-center justify-center gap-2"
+				className="w-full h-14 rounded-2xl font-black text-sm  tracking-widest text-muted-foreground hover:text-foreground flex items-center justify-center gap-2"
 				onClick={() => router.push('/past-papers')}
 			>
 				<HugeiconsIcon icon={SparklesIcon} className="w-5 h-5" />
