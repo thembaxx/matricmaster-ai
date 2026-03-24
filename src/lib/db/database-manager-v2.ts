@@ -36,7 +36,7 @@ class DatabaseManagerV2 {
 					return;
 				}
 
-				const pgConnected = await pgManager.waitForConnection(5, 3000);
+				const pgConnected = await pgManager.waitForConnection(2, 1000);
 				if (pgConnected) {
 					this.activeDatabase = 'postgresql';
 					console.log('📀 postgresql is primary database');

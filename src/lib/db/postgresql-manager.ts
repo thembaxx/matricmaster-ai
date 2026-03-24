@@ -72,9 +72,7 @@ class PostgreSQLManager {
 			// Test connection with timeout
 			const testResult = await Promise.race([
 				this.client`SELECT 1 as test`,
-				new Promise((_, reject) =>
-					setTimeout(() => reject(new Error('Connection timeout')), 15000)
-				),
+				new Promise((_, reject) => setTimeout(() => reject(new Error('Connection timeout')), 5000)),
 			]);
 
 			if (testResult) {
