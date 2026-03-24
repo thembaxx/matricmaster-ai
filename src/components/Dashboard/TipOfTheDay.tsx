@@ -111,7 +111,7 @@ export function TipOfTheDay({ weakTopics = DEFAULT_WEAK_TOPICS }: TipOfTheDayPro
 					}
 				>
 					<HugeiconsIcon icon={BookOpen01Icon} className="w-3.5 h-3.5 mr-1" />
-					Ask AI to explain more
+					Explain More
 					<HugeiconsIcon icon={ArrowRight02Icon} className="w-3.5 h-3.5 ml-1" />
 				</Button>
 			</CardContent>

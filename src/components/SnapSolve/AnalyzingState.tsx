@@ -4,11 +4,11 @@ import { m, useCycle } from 'framer-motion';
 import { useEffect } from 'react';
 
 const ANALYZING_MESSAGES = [
-	'Reading the numbers...',
-	'Applying formulas...',
-	'Analyzing patterns...',
-	'Finding solutions...',
-	'Processing your question...',
+	'Checking your question...',
+	'Reading your image...',
+	'Finding answer...',
+	'Almost there...',
+	'Getting result...',
 ];
 
 interface AnalyzingStateProps {

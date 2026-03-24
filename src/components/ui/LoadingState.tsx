@@ -6,11 +6,11 @@ import { useEffect, useState } from 'react';
 import { cn } from '@/lib/utils';
 
 const ANALYZING_MESSAGES = [
-	'Reading the numbers...',
-	'Applying formulas...',
-	'Analyzing patterns...',
-	'Finding solutions...',
-	'Processing your question...',
+	'Loading your progress...',
+	'Calculating your results...',
+	'Checking your weak topics...',
+	'Preparing recommendations...',
+	'Finding past papers on this topic...',
 ];
 
 interface LoadingStateProps {

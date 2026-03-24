@@ -105,7 +105,7 @@ export function EssayEditor({ topic, prompt }: EssayEditorProps) {
 					className="gap-2"
 				>
 					<HugeiconsIcon icon={SparklesIcon} className="w-4 h-4" />
-					{isLoading ? 'Analyzing...' : 'Get AI Feedback'}
+					{isLoading ? 'Analyzing...' : 'Check My Essay'}
 				</Button>
 			</div>
 

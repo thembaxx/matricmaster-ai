@@ -136,9 +136,7 @@ export function AiTutorChat({
 								<span className="w-1.5 h-1.5 bg-primary/60 rounded-full animate-pulse [animation-delay:0.2s]" />
 								<span className="w-1.5 h-1.5 bg-primary/80 rounded-full animate-pulse [animation-delay:0.4s]" />
 							</div>
-							<span className="text-xs font-black uppercase tracking-widest text-muted-foreground">
-								Thinking
-							</span>
+							<span className="text-xs font-medium text-muted-foreground" />
 						</div>
 					</div>
 				)}

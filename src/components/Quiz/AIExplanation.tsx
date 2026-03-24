@@ -72,7 +72,7 @@ export function AIExplanation({ question, correctAnswer, className }: AIExplanat
 							<div className="flex-1">
 								<h4 className="text-sm font-medium">Explain this question</h4>
 								<p className="text-xs text-muted-foreground mt-0.5">
-									Get AI assistance to understand this question
+									Get instant explanations for this question
 								</p>
 							</div>
 							<Button

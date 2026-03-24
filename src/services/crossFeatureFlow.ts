@@ -97,7 +97,7 @@ export async function generateCrossFeatureRecommendations(): Promise<FlowRecomme
 				type: 'flashcard_generation',
 				priority: 'high',
 				title: `Generate flashcards for "${weak.topic}"`,
-				description: `Your confidence is ${Math.round(weak.confidence * 100)}%. Auto-generated flashcards from your mistakes can help improve.`,
+				description: `Your confidence is ${Math.round(weak.confidence * 100)}%. Your flashcards from your mistakes can help improve.`,
 				actionUrl: `/flashcards?generate=${encodeURIComponent(weak.topic)}`,
 				estimatedImpact: '+10-15% confidence',
 			});
@@ -105,7 +105,7 @@ export async function generateCrossFeatureRecommendations(): Promise<FlowRecomme
 			recommendations.push({
 				type: 'ai_tutor_session',
 				priority: 'high',
-				title: `Get AI help with "${weak.topic}"`,
+				title: `Get help with "${weak.topic}"`,
 				description: `Struggling with ${weak.topic}? The AI tutor can explain this topic in a personalized way.`,
 				actionUrl: `/ai-tutor?topic=${encodeURIComponent(weak.topic)}&context=help`,
 				estimatedImpact: '+15-20% confidence',

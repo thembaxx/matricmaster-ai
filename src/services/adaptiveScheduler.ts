@@ -117,7 +117,7 @@ export async function analyzeAndAdjust(userId: string): Promise<ScheduleAdjustme
 			await db.insert(calendarEvents).values({
 				userId,
 				title: `Extra Practice: ${struggle.concept}`,
-				description: `Auto-generated: You struggled with "${struggle.concept}" ${struggle.struggleCount} times. Let's work on it!`,
+				description: `You struggled with "${struggle.concept}" ${struggle.struggleCount} times. Let's work on it!`,
 				startTime: practiceSlot,
 				endTime: new Date(practiceSlot.getTime() + 30 * 60 * 1000),
 				eventType: 'practice',
