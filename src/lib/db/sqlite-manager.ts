@@ -49,9 +49,12 @@ class SQLiteManager {
 		}
 	}
 
-	public getDb(): SqliteDbType {
+	public async getDb(): Promise<SqliteDbType> {
 		if (!this.drizzleDb) {
-			throw new Error('SQLite not connected. Call connect() first.');
+			await this.connect();
+			if (!this.drizzleDb) {
+				throw new Error('SQLite not connected. Call connect() first.');
+			}
 		}
 		return this.drizzleDb;
 	}

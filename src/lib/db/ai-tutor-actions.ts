@@ -50,7 +50,7 @@ export async function saveConversationAction(
 			return { success: true }; // Don't fail the user experience
 		}
 
-		const db = getDb();
+		const db = await getDb();
 
 		// Save to database
 		const messagesJson = JSON.stringify(validated.messages);
@@ -91,7 +91,7 @@ export async function getConversationsAction(_userId: string): Promise<AiConvers
 			return [];
 		}
 
-		const db = getDb();
+		const db = await getDb();
 		return db
 			.select()
 			.from(aiConversations)
@@ -120,7 +120,7 @@ export async function getConversationByIdAction(
 			return null;
 		}
 
-		const db = getDb();
+		const db = await getDb();
 		const [conversation] = await db
 			.select()
 			.from(aiConversations)
@@ -151,7 +151,7 @@ export async function deleteConversationAction(
 			return { success: false, error: 'Database not available' };
 		}
 
-		const db = getDb();
+		const db = await getDb();
 		const result = await db
 			.delete(aiConversations)
 			.where(and(eq(aiConversations.id, conversationId), eq(aiConversations.userId, activeUserId)))

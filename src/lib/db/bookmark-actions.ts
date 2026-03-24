@@ -30,7 +30,7 @@ export async function createBookmarkAction(
 			return { success: false, error: 'Database not available' };
 		}
 
-		const db = getDb();
+		const db = await getDb();
 
 		// Check if already bookmarked
 		const existing = await db
@@ -77,7 +77,7 @@ export async function getBookmarksAction(
 			return [];
 		}
 
-		const db = getDb();
+		const db = await getDb();
 		if (type) {
 			return db
 				.select()
@@ -108,7 +108,7 @@ export async function deleteBookmarkAction(bookmarkId: string): Promise<{ succes
 			return { success: false };
 		}
 
-		const db = getDb();
+		const db = await getDb();
 		const result = await db
 			.delete(bookmarks)
 			.where(and(eq(bookmarks.id, bookmarkId), eq(bookmarks.userId, userId)))
@@ -133,7 +133,7 @@ export async function isBookmarkedAction(referenceId: string): Promise<boolean> 
 			return false;
 		}
 
-		const db = getDb();
+		const db = await getDb();
 		const [bookmark] = await db
 			.select()
 			.from(bookmarks)
@@ -161,7 +161,7 @@ export async function updateBookmarkNoteAction(
 			return { success: false };
 		}
 
-		const db = getDb();
+		const db = await getDb();
 		const result = await db
 			.update(bookmarks)
 			.set({ note })

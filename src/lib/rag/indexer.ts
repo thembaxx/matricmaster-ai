@@ -13,14 +13,19 @@ export async function indexPastPaper(
 	paperId: string,
 	questions: ExtractedQuestion[]
 ): Promise<void> {
-	const [paper] = await db.select().from(pastPapers).where(eq(pastPapers.id, paperId)).limit(1);
+	const dbClient = await db();
+	const [paper] = await dbClient
+		.select()
+		.from(pastPapers)
+		.where(eq(pastPapers.id, paperId))
+		.limit(1);
 
 	if (!paper) {
 		throw new Error('Paper not found');
 	}
 
 	for (const q of questions) {
-		await db.insert(pastPaperQuestions).values({
+		await dbClient.insert(pastPaperQuestions).values({
 			paperId,
 			questionText: q.questionText,
 			answerText: q.answerText,

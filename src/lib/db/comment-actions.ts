@@ -23,7 +23,7 @@ export async function createComment(
 		// Always use the authenticated session's user ID to prevent IDOR
 		const activeUserId = user.id;
 
-		const db = getDb();
+		const db = await getDb();
 		const [comment] = await db
 			.insert(comments)
 			.values({
@@ -46,7 +46,7 @@ export async function createComment(
  */
 export async function getComments(resourceType: string, resourceId: string) {
 	try {
-		const db = getDb();
+		const db = await getDb();
 		const commentsList = await db
 			.select({
 				id: comments.id,
@@ -80,7 +80,7 @@ export async function getComments(resourceType: string, resourceId: string) {
  */
 export async function getComment(commentId: string) {
 	try {
-		const db = getDb();
+		const db = await getDb();
 		const [comment] = await db
 			.select({
 				id: comments.id,
@@ -115,7 +115,7 @@ export async function updateComment(commentId: string, _userId: string, content:
 		// Always use the authenticated session's user ID to prevent IDOR
 		const activeUserId = user.id;
 
-		const db = getDb();
+		const db = await getDb();
 		const [updated] = await db
 			.update(comments)
 			.set({
@@ -142,7 +142,7 @@ export async function deleteComment(commentId: string, _userId: string) {
 		// Always use the authenticated session's user ID to prevent IDOR
 		const activeUserId = user.id;
 
-		const db = getDb();
+		const db = await getDb();
 		await db
 			.delete(comments)
 			.where(and(eq(comments.id, commentId), eq(comments.userId, activeUserId)));
@@ -163,7 +163,7 @@ export async function voteOnComment(_userId: string, commentId: string, voteType
 		// Always use the authenticated session's user ID to prevent IDOR
 		const activeUserId = user.id;
 
-		const db = getDb();
+		const db = await getDb();
 
 		// Check if user already voted
 		const existing = await db
@@ -251,7 +251,7 @@ export async function getUserVote(_userId: string, commentId: string) {
 		// Always use the authenticated session's user ID to prevent IDOR
 		const activeUserId = user.id;
 
-		const db = getDb();
+		const db = await getDb();
 		const [vote] = await db
 			.select()
 			.from(commentVotes)
@@ -271,7 +271,7 @@ export async function getUserVote(_userId: string, commentId: string) {
 export async function flagComment(commentId: string, reason: string) {
 	try {
 		await ensureAuthenticated();
-		const db = getDb();
+		const db = await getDb();
 		await db
 			.update(comments)
 			.set({ isFlagged: true, flagReason: reason })

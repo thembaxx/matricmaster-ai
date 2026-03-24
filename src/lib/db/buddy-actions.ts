@@ -34,7 +34,7 @@ export async function getStudyBuddyProfile(_userId: string) {
 	const user = await ensureAuthenticated();
 	const userId = user.id;
 	try {
-		const db = getDb();
+		const db = await getDb();
 		const [profile] = await db
 			.select()
 			.from(studyBuddyProfiles)
@@ -71,7 +71,7 @@ export async function upsertStudyBuddyProfile(
 	const user = await ensureAuthenticated();
 	const userId = user.id;
 	try {
-		const db = getDb();
+		const db = await getDb();
 		const existing = await getStudyBuddyProfile(userId);
 
 		if (existing) {
@@ -116,7 +116,7 @@ export async function getDiscoverableBuddies(_userId: string, limit = 20) {
 	const user = await ensureAuthenticated();
 	const userId = user.id;
 	try {
-		const db = getDb();
+		const db = await getDb();
 		// Get users who are visible and not the current user
 		const buddies = await db
 			.select()
@@ -149,7 +149,7 @@ export async function sendBuddyRequest(
 	const user = await ensureAuthenticated();
 	const requesterId = user.id;
 	try {
-		const db = getDb();
+		const db = await getDb();
 
 		// Check if request already exists
 		const existing = await db
@@ -186,7 +186,7 @@ export async function getPendingRequests(_userId: string) {
 	const user = await ensureAuthenticated();
 	const userId = user.id;
 	try {
-		const db = getDb();
+		const db = await getDb();
 		const { and } = await import('drizzle-orm');
 		const requests = await db
 			.select()
@@ -210,7 +210,7 @@ export async function acceptBuddyRequest(requestId: string, _recipientId: string
 	const user = await ensureAuthenticated();
 	const recipientId = user.id;
 	try {
-		const db = getDb();
+		const db = await getDb();
 		const { and } = await import('drizzle-orm');
 
 		// Get requester ID from request and verify recipient
@@ -252,7 +252,7 @@ export async function rejectBuddyRequest(requestId: string) {
 	const user = await ensureAuthenticated();
 	const recipientId = user.id;
 	try {
-		const db = getDb();
+		const db = await getDb();
 		const { and } = await import('drizzle-orm');
 
 		await db
@@ -276,7 +276,7 @@ export async function getUserBuddies(_userId: string) {
 	const user = await ensureAuthenticated();
 	const userId = user.id;
 	try {
-		const db = getDb();
+		const db = await getDb();
 
 		// Get buddies where user is userId1 or userId2
 		const asUser1 = await db.select().from(studyBuddies).where(eq(studyBuddies.userId1, userId));
@@ -316,7 +316,7 @@ export async function removeBuddy(_userId: string, buddyId: string) {
 	const user = await ensureAuthenticated();
 	const userId = user.id;
 	try {
-		const db = getDb();
+		const db = await getDb();
 		const { and } = await import('drizzle-orm');
 
 		// Delete both directions - combine conditions with and()
@@ -346,7 +346,7 @@ export interface UserInfo {
  */
 export async function getUserInfo(userId: string): Promise<UserInfo | null> {
 	try {
-		const db = getDb();
+		const db = await getDb();
 		const [user] = await db
 			.select({ id: users.id, name: users.name, image: users.image })
 			.from(users)
@@ -375,7 +375,7 @@ export async function getBatchUserInfo(userIds: string[]): Promise<Map<string, U
 	if (userIds.length === 0) return result;
 
 	try {
-		const db = getDb();
+		const db = await getDb();
 		const userRecords = await db
 			.select({ id: users.id, name: users.name, image: users.image })
 			.from(users)

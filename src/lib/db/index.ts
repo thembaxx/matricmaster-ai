@@ -7,7 +7,7 @@ export type { DbType } from './postgresql-manager';
 /**
  * Type alias for the smart database that auto-handles sync metadata.
  */
-export type SmartDbType = ReturnType<typeof dbManagerV2.getSmartDb>;
+export type SmartDbType = DbType;
 
 /**
  * Legacy DatabaseManager shim that uses DatabaseManagerV2 under the hood.
@@ -33,8 +33,8 @@ class LegacyDatabaseManagerShim {
 		return await dbManagerV2.ensureConnected();
 	}
 
-	public getDb(): SmartDbType {
-		return dbManagerV2.getSmartDb();
+	public async getDb(): Promise<SmartDbType> {
+		return await dbManagerV2.getSmartDb();
 	}
 
 	public getClient() {
@@ -69,12 +69,12 @@ export async function closeConnection() {
 	await dbManager.close();
 }
 
-export const getDb = (): DbType => {
-	const db = dbManager.getDb() as DbType;
-	return db;
+export const getDb = async (): Promise<DbType> => {
+	return await dbManagerV2.getSmartDb();
 };
 
 /**
- * Global db export - now properly typed through SmartDb to handle sync-ready writes automatically.
+ * Global db export - properly typed through SmartDb to handle sync-ready writes automatically.
+ * Use `await db` to get the database instance.
  */
-export const db = dbManagerV2.getSmartDb();
+export const db = (): Promise<DbType> => dbManagerV2.getSmartDb();

@@ -31,7 +31,7 @@ export async function getTopicMasteryByUser(
 		return [];
 	}
 
-	const db = getDb();
+	const db = await getDb();
 
 	try {
 		if (subjectId) {
@@ -65,7 +65,7 @@ export async function updateTopicMastery(
 		return { success: false };
 	}
 
-	const db = getDb();
+	const db = await getDb();
 
 	try {
 		const [existing] = await db
@@ -153,7 +153,7 @@ export async function getAdaptiveQuestions(
 		return { questions: [], recommendations: [], weakTopics: [] };
 	}
 
-	const db = getDb();
+	const db = await getDb();
 
 	try {
 		const masteryData = await getTopicMasteryByUser(userId, subjectId);
@@ -245,7 +245,7 @@ export async function getLearningStats(userId: string): Promise<LearningStats> {
 		};
 	}
 
-	const db = getDb();
+	const db = await getDb();
 
 	try {
 		const progressRecords = await db
@@ -327,7 +327,7 @@ export async function getTopicsNeedingReview(userId: string): Promise<NewTopicMa
 		return [];
 	}
 
-	const db = getDb();
+	const db = await getDb();
 	const now = new Date();
 
 	try {

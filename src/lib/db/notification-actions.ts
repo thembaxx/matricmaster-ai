@@ -37,7 +37,7 @@ export async function createNotification(
 	}
 ) {
 	try {
-		const db = getDb();
+		const db = await getDb();
 		const [notification] = await db
 			.insert(notifications)
 			.values({
@@ -78,7 +78,7 @@ export async function getNotifications(
 	const user = await ensureAuthenticated();
 	const userId = user.id;
 	try {
-		const db = getDb();
+		const db = await getDb();
 		const query = db.select().from(notifications).where(eq(notifications.userId, userId));
 
 		const notificationsList = await query;
@@ -113,7 +113,7 @@ export async function getUnreadCount(_userId: string) {
 	const user = await ensureAuthenticated();
 	const userId = user.id;
 	try {
-		const db = getDb();
+		const db = await getDb();
 		const result = await db
 			.select()
 			.from(notifications)
@@ -133,7 +133,7 @@ export async function markAsRead(notificationId: string, _userId: string) {
 	const user = await ensureAuthenticated();
 	const userId = user.id;
 	try {
-		const db = getDb();
+		const db = await getDb();
 		await db
 			.update(notifications)
 			.set({ isRead: true, readAt: new Date() })
@@ -152,7 +152,7 @@ export async function markAllAsRead(_userId: string) {
 	const user = await ensureAuthenticated();
 	const userId = user.id;
 	try {
-		const db = getDb();
+		const db = await getDb();
 		await db
 			.update(notifications)
 			.set({ isRead: true, readAt: new Date() })
@@ -171,7 +171,7 @@ export async function deleteNotification(notificationId: string, _userId: string
 	const user = await ensureAuthenticated();
 	const userId = user.id;
 	try {
-		const db = getDb();
+		const db = await getDb();
 		await db
 			.delete(notifications)
 			.where(and(eq(notifications.id, notificationId), eq(notifications.userId, userId)));
@@ -189,7 +189,7 @@ export async function deleteAllNotifications(_userId: string) {
 	const user = await ensureAuthenticated();
 	const userId = user.id;
 	try {
-		const db = getDb();
+		const db = await getDb();
 		await db.delete(notifications).where(eq(notifications.userId, userId));
 		return { success: true };
 	} catch (error) {
@@ -205,7 +205,7 @@ export async function getNotification(notificationId: string, _userId: string) {
 	const user = await ensureAuthenticated();
 	const userId = user.id;
 	try {
-		const db = getDb();
+		const db = await getDb();
 		const [notification] = await db
 			.select()
 			.from(notifications)

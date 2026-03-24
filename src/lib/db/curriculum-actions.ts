@@ -13,12 +13,12 @@ import type {
 import { achievementDefinitions, gamificationConfig, subjectMetadata } from './schema';
 
 export async function getAllSubjects(): Promise<SubjectMetadata[]> {
-	const db = getDb();
+	const db = await getDb();
 	return db.select().from(subjectMetadata).orderBy(asc(subjectMetadata.displayOrder));
 }
 
 export async function getSubjectById(subjectId: string): Promise<SubjectMetadata | undefined> {
-	const db = getDb();
+	const db = await getDb();
 	const result = await db
 		.select()
 		.from(subjectMetadata)
@@ -27,7 +27,7 @@ export async function getSubjectById(subjectId: string): Promise<SubjectMetadata
 }
 
 export async function getSupportedSubjects(): Promise<SubjectMetadata[]> {
-	const db = getDb();
+	const db = await getDb();
 	return db
 		.select()
 		.from(subjectMetadata)
@@ -36,7 +36,7 @@ export async function getSupportedSubjects(): Promise<SubjectMetadata[]> {
 }
 
 export async function upsertSubjectMetadata(data: NewSubjectMetadata): Promise<SubjectMetadata> {
-	const db = getDb();
+	const db = await getDb();
 	await db
 		.insert(subjectMetadata)
 		.values(data)
@@ -55,20 +55,20 @@ export async function upsertSubjectMetadata(data: NewSubjectMetadata): Promise<S
 }
 
 export async function getGamificationConfig(key: string): Promise<GamificationConfig | undefined> {
-	const db = getDb();
+	const db = await getDb();
 	const result = await db.select().from(gamificationConfig).where(eq(gamificationConfig.key, key));
 	return result[0];
 }
 
 export async function getAllGamificationConfig(): Promise<GamificationConfig[]> {
-	const db = getDb();
+	const db = await getDb();
 	return db.select().from(gamificationConfig);
 }
 
 export async function setGamificationConfig(
 	data: NewGamificationConfig
 ): Promise<GamificationConfig> {
-	const db = getDb();
+	const db = await getDb();
 	await db
 		.insert(gamificationConfig)
 		.values(data)
@@ -87,7 +87,7 @@ export async function setGamificationConfig(
 }
 
 export async function getAllAchievements(): Promise<AchievementDefinition[]> {
-	const db = getDb();
+	const db = await getDb();
 	return db
 		.select()
 		.from(achievementDefinitions)
@@ -96,7 +96,7 @@ export async function getAllAchievements(): Promise<AchievementDefinition[]> {
 }
 
 export async function getAchievementById(id: string): Promise<AchievementDefinition | undefined> {
-	const db = getDb();
+	const db = await getDb();
 	const result = await db
 		.select()
 		.from(achievementDefinitions)
@@ -107,7 +107,7 @@ export async function getAchievementById(id: string): Promise<AchievementDefinit
 export async function getAchievementsByCategory(
 	category: string
 ): Promise<AchievementDefinition[]> {
-	const db = getDb();
+	const db = await getDb();
 	return db
 		.select()
 		.from(achievementDefinitions)
@@ -123,7 +123,7 @@ export async function getAchievementsByCategory(
 export async function upsertAchievement(
 	data: NewAchievementDefinition
 ): Promise<AchievementDefinition> {
-	const db = getDb();
+	const db = await getDb();
 	await db.insert(achievementDefinitions).values(data).onConflictDoUpdate({
 		target: achievementDefinitions.id,
 		set: data,

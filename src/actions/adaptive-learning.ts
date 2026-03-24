@@ -19,7 +19,7 @@ type FlashcardDeckRow = typeof flashcardDecks.$inferSelect;
 async function getDb(): Promise<DbType> {
 	const connected = await dbManager.waitForConnection(3, 2000);
 	if (!connected) throw new Error('Database not available');
-	return dbManager.getDb() as DbType;
+	return await dbManager.getDb();
 }
 
 export interface WeakTopic {

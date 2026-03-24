@@ -79,18 +79,18 @@ class DatabaseManagerV2 {
 		return pgManager.getDb();
 	}
 
-	public getDbRaw(): DbType | SqliteDbType {
+	public async getDbRaw(): Promise<DbType | SqliteDbType> {
 		if (this.activeDatabase === 'postgresql' && this.isPostgreSQLConnected()) {
 			return pgManager.getDb();
 		}
-		return sqliteManager.getDb();
+		return await sqliteManager.getDb();
 	}
 
 	/**
 	 * Returns a database instance that automatically handles sync metadata when using SQLite.
 	 */
-	public getSmartDb(): DbType {
-		const db = this.getDbRaw();
+	public async getSmartDb(): Promise<DbType> {
+		const db = await this.getDbRaw();
 		const activeDb = this.activeDatabase;
 
 		if (activeDb !== 'sqlite') {
@@ -158,8 +158,8 @@ class DatabaseManagerV2 {
 		return null;
 	}
 
-	public getSqliteDb(): SqliteDbType {
-		return sqliteManager.getDb();
+	public async getSqliteDb(): Promise<SqliteDbType> {
+		return await sqliteManager.getDb();
 	}
 
 	public async checkPostgreSQLHealth(): Promise<boolean> {
@@ -196,7 +196,7 @@ class DatabaseManagerV2 {
 	public async addToSyncQueue(
 		item: Omit<SyncQueueItem, 'id' | 'timestamp' | 'retryCount' | 'status'>
 	): Promise<void> {
-		const sqliteDb = sqliteManager.getDb();
+		const sqliteDb = await sqliteManager.getDb();
 		const id = crypto.randomUUID();
 		const timestamp = Date.now();
 
@@ -213,7 +213,7 @@ class DatabaseManagerV2 {
 	}
 
 	public async getSyncQueueSize(): Promise<number> {
-		const sqliteDb = sqliteManager.getDb();
+		const sqliteDb = await sqliteManager.getDb();
 		const result = await sqliteDb
 			.select()
 			.from(sqliteSchema.sqliteSyncQueue)
@@ -235,7 +235,7 @@ class DatabaseManagerV2 {
 		const result: SyncResult = { success: true, syncedCount: 0, failedCount: 0, errors: [] };
 
 		try {
-			const sqliteDb = sqliteManager.getDb();
+			const sqliteDb = await sqliteManager.getDb();
 			const pgDb = pgManager.getDb();
 
 			const pendingItems = await sqliteDb

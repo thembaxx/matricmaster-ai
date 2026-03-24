@@ -1,5 +1,5 @@
 import { and, asc, eq } from 'drizzle-orm';
-import { db } from './index';
+import { getDb } from './index';
 import { PLAN_TIERS, type SubscriptionPlan, subscriptionPlans, userSubscriptions } from './schema';
 
 const DEFAULT_PLANS: Omit<SubscriptionPlan, 'createdAt' | 'updatedAt'>[] = [
@@ -58,16 +58,17 @@ const DEFAULT_PLANS: Omit<SubscriptionPlan, 'createdAt' | 'updatedAt'>[] = [
 
 export async function seedSubscriptionPlans(): Promise<void> {
 	console.log('Seeding subscription plans...');
+	const dbClient = await getDb();
 
 	for (const plan of DEFAULT_PLANS) {
-		const existing = await db
+		const existing = await dbClient
 			.select()
 			.from(subscriptionPlans)
 			.where(eq(subscriptionPlans.id, plan.id))
 			.limit(1);
 
 		if (existing.length === 0) {
-			await db.insert(subscriptionPlans).values(plan);
+			await dbClient.insert(subscriptionPlans).values(plan);
 			console.log(`✅ Created plan: ${plan.name}`);
 		} else {
 			console.log(`ℹ️ Plan already exists: ${plan.name}`);
@@ -76,7 +77,8 @@ export async function seedSubscriptionPlans(): Promise<void> {
 }
 
 export async function getPlanById(planId: string): Promise<SubscriptionPlan | undefined> {
-	const result = await db
+	const dbClient = await getDb();
+	const result = await dbClient
 		.select()
 		.from(subscriptionPlans)
 		.where(eq(subscriptionPlans.id, planId))
@@ -86,7 +88,8 @@ export async function getPlanById(planId: string): Promise<SubscriptionPlan | un
 }
 
 export async function getAllActivePlans(): Promise<SubscriptionPlan[]> {
-	return db
+	const dbClient = await getDb();
+	return dbClient
 		.select()
 		.from(subscriptionPlans)
 		.where(eq(subscriptionPlans.isActive, true))
@@ -94,7 +97,8 @@ export async function getAllActivePlans(): Promise<SubscriptionPlan[]> {
 }
 
 export async function getUserPlan(userId: string): Promise<SubscriptionPlan | null> {
-	const subscriptions = await db
+	const dbClient = await getDb();
+	const subscriptions = await dbClient
 		.select()
 		.from(userSubscriptions)
 		.where(and(eq(userSubscriptions.userId, userId), eq(userSubscriptions.status, 'active')))
@@ -103,7 +107,7 @@ export async function getUserPlan(userId: string): Promise<SubscriptionPlan | nu
 	if (subscriptions.length === 0) return null;
 
 	const sub = subscriptions[0];
-	const plans = await db
+	const plans = await dbClient
 		.select()
 		.from(subscriptionPlans)
 		.where(eq(subscriptionPlans.id, sub.planId))

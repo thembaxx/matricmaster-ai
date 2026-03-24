@@ -53,7 +53,7 @@ export async function createCalendarEvent(
 		const user = await ensureAuthenticated();
 		const activeUserId = user.id;
 
-		const db = getDb();
+		const db = await getDb();
 		const [event] = await db
 			.insert(calendarEvents)
 			.values({
@@ -96,7 +96,7 @@ export async function getCalendarEvents(
 		const user = await ensureAuthenticated();
 		const activeUserId = user.id;
 
-		const db = getDb();
+		const db = await getDb();
 		const query = db.select().from(calendarEvents).where(eq(calendarEvents.userId, activeUserId));
 
 		// Note: Drizzle doesn't support complex where clauses easily in one call
@@ -149,7 +149,7 @@ export async function getCalendarEvent(eventId: string, _userId: string) {
 		const user = await ensureAuthenticated();
 		const activeUserId = user.id;
 
-		const db = getDb();
+		const db = await getDb();
 		const [event] = await db
 			.select()
 			.from(calendarEvents)
@@ -193,7 +193,7 @@ export async function updateCalendarEvent(
 		const user = await ensureAuthenticated();
 		const activeUserId = user.id;
 
-		const db = getDb();
+		const db = await getDb();
 		const [updated] = await db
 			.update(calendarEvents)
 			.set({
@@ -228,7 +228,7 @@ export async function deleteCalendarEvent(eventId: string, _userId: string) {
 		const user = await ensureAuthenticated();
 		const activeUserId = user.id;
 
-		const db = getDb();
+		const db = await getDb();
 		await db
 			.delete(calendarEvents)
 			.where(and(eq(calendarEvents.id, eventId), eq(calendarEvents.userId, activeUserId)));

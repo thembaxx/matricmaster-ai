@@ -8,7 +8,7 @@ import { getDb } from './index';
 export async function completeOnboardingAction() {
 	try {
 		const user = await ensureAuthenticated();
-		const db = getDb();
+		const db = await getDb();
 
 		await db
 			.update(users)

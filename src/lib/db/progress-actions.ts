@@ -30,7 +30,7 @@ export interface UserProgressSummary {
 export async function getUserProgressSummary(): Promise<UserProgressSummary | null> {
 	try {
 		const user = await ensureAuthenticated();
-		const db = dbManager.getDb();
+		const db = await dbManager.getDb();
 
 		const progress = await db.query.userProgress.findFirst({
 			where: eq(userProgress.userId, user.id),
@@ -68,7 +68,7 @@ export async function getUserProgressSummary(): Promise<UserProgressSummary | nu
 export async function getUserStreak() {
 	try {
 		const user = await ensureAuthenticated();
-		const db = dbManager.getDb();
+		const db = await dbManager.getDb();
 
 		const progress = await db.query.userProgress.findFirst({
 			where: eq(userProgress.userId, user.id),
@@ -115,7 +115,7 @@ export async function recordStudySession(data: {
 export async function completeActivityAction(result: ActivityResult) {
 	try {
 		const user = await ensureAuthenticated();
-		const db = dbManager.getDb();
+		const db = await dbManager.getDb();
 
 		// 1. Update User Progress
 		// Check if progress exists for this user

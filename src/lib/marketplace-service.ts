@@ -94,7 +94,7 @@ export async function getAvailableTutors(
 	filters?: TutorSearchFilters
 ): Promise<TutorProfileResponse[]> {
 	try {
-		const db = getDb();
+		const db = await getDb();
 
 		const results = await db
 			.select({
@@ -156,7 +156,7 @@ export async function getAvailableTutors(
 
 export async function getTutorProfile(tutorId: string): Promise<TutorProfileResponse | null> {
 	try {
-		const db = getDb();
+		const db = await getDb();
 		const [result] = await db
 			.select({
 				id: tutorProfiles.id,
@@ -201,7 +201,7 @@ export async function createTutorProfile(data: {
 	const user = await ensureAuthenticated();
 
 	try {
-		const db = getDb();
+		const db = await getDb();
 
 		const existing = await db
 			.select()
@@ -272,7 +272,7 @@ export async function bookSession(data: {
 	const user = await ensureAuthenticated();
 
 	try {
-		const db = getDb();
+		const db = await getDb();
 
 		const [tutor] = await db
 			.select()
@@ -359,7 +359,7 @@ export async function getMySessions(
 	const user = await ensureAuthenticated();
 
 	try {
-		const db = getDb();
+		const db = await getDb();
 
 		let results: (typeof tutoringSessions.$inferSelect)[] = [];
 
@@ -431,7 +431,7 @@ export async function getSessionDetails(
 	const user = await ensureAuthenticated();
 
 	try {
-		const db = getDb();
+		const db = await getDb();
 
 		const [session] = await db
 			.select()
@@ -491,7 +491,7 @@ export async function confirmSession(
 	const user = await ensureAuthenticated();
 
 	try {
-		const db = getDb();
+		const db = await getDb();
 
 		const [session] = await db
 			.select()
@@ -580,7 +580,7 @@ export async function cancelSession(
 	const user = await ensureAuthenticated();
 
 	try {
-		const db = getDb();
+		const db = await getDb();
 
 		const [session] = await db
 			.select()
@@ -639,7 +639,7 @@ export async function leaveReview(data: {
 	const user = await ensureAuthenticated();
 
 	try {
-		const db = getDb();
+		const db = await getDb();
 
 		const [session] = await db
 			.select()
@@ -712,7 +712,7 @@ export async function leaveReview(data: {
 
 export async function getTutorReviews(tutorId: string): Promise<TutorReviewResponse[]> {
 	try {
-		const db = getDb();
+		const db = await getDb();
 
 		const reviews = await db
 			.select({
@@ -745,7 +745,7 @@ export async function reportSession(
 	const user = await ensureAuthenticated();
 
 	try {
-		const db = getDb();
+		const db = await getDb();
 
 		const [session] = await db
 			.select()
@@ -782,7 +782,7 @@ export async function updateTutorAvailability(
 	const user = await ensureAuthenticated();
 
 	try {
-		const db = getDb();
+		const db = await getDb();
 
 		await db
 			.update(tutorProfiles)
@@ -800,7 +800,7 @@ export async function isUserTutor(): Promise<boolean> {
 	const user = await ensureAuthenticated();
 
 	try {
-		const db = getDb();
+		const db = await getDb();
 
 		const [profile] = await db
 			.select()
@@ -818,7 +818,7 @@ export async function getUserXP(): Promise<number> {
 	const user = await ensureAuthenticated();
 
 	try {
-		const db = getDb();
+		const db = await getDb();
 
 		const [progress] = await db
 			.select()

@@ -20,7 +20,7 @@ export async function createStudyPlanAction(
 			return { success: false, error: 'Database not available' };
 		}
 
-		const db = getDb();
+		const db = await getDb();
 		const [plan] = await db
 			.insert(studyPlans)
 			.values({
@@ -53,7 +53,7 @@ export async function getStudyPlansAction(userId: string): Promise<StudyPlan[]> 
 			return [];
 		}
 
-		const db = getDb();
+		const db = await getDb();
 		return db
 			.select()
 			.from(studyPlans)
@@ -75,7 +75,7 @@ export async function getActiveStudyPlanAction(userId: string): Promise<StudyPla
 			return null;
 		}
 
-		const db = getDb();
+		const db = await getDb();
 		const [plan] = await db
 			.select()
 			.from(studyPlans)
@@ -109,7 +109,7 @@ export async function updateStudyPlanAction(
 			return { success: false };
 		}
 
-		const db = getDb();
+		const db = await getDb();
 		const [plan] = await db
 			.update(studyPlans)
 			.set({
@@ -139,7 +139,7 @@ export async function deleteStudyPlanAction(
 			return { success: false };
 		}
 
-		const db = getDb();
+		const db = await getDb();
 		const result = await db
 			.delete(studyPlans)
 			.where(and(eq(studyPlans.id, planId), eq(studyPlans.userId, userId)))
@@ -165,7 +165,7 @@ export async function deactivateStudyPlanAction(
 			return { success: false };
 		}
 
-		const db = getDb();
+		const db = await getDb();
 		const result = await db
 			.update(studyPlans)
 			.set({ isActive: false, updatedAt: new Date() })

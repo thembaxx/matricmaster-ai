@@ -21,11 +21,11 @@ import { physicsQuestions } from './physics-questions';
 
 type TransactionType = Parameters<Parameters<DbType['transaction']>[0]>[0];
 
-function getDb() {
+async function getDb() {
 	if (!dbManager.isConnectedToDatabase()) {
 		throw new Error('Database not connected');
 	}
-	return dbManager.getDb();
+	return await dbManager.getDb();
 }
 
 export async function seedDatabase() {
@@ -55,7 +55,7 @@ export async function seedDatabase() {
 		);
 	}
 
-	const useDb = getDb();
+	const useDb = await getDb();
 
 	try {
 		console.log('📊 Checking existing data...');

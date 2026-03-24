@@ -129,7 +129,7 @@ class SyncEngine {
 	}
 
 	private async pushTableChanges(mapping: TableMapping): Promise<number> {
-		const sqliteDb = dbManagerV2.getSqliteDb();
+		const sqliteDb = await dbManagerV2.getSqliteDb();
 
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		const pendingColumn = (mapping.sqliteTable as any).syncStatus;
@@ -222,7 +222,7 @@ class SyncEngine {
 	}
 
 	private async handleEmptyDatabase(tables: TableMapping[]): Promise<void> {
-		const sqliteDb = dbManagerV2.getSqliteDb();
+		const sqliteDb = await dbManagerV2.getSqliteDb();
 		const pgDb = dbManagerV2.getPgDb();
 		if (!pgDb) return;
 
@@ -252,7 +252,7 @@ class SyncEngine {
 	}
 
 	private async seedTableFromRemote(mapping: TableMapping): Promise<void> {
-		const sqliteDb = dbManagerV2.getSqliteDb();
+		const sqliteDb = await dbManagerV2.getSqliteDb();
 		const pgDb = dbManagerV2.getPgDb();
 		if (!pgDb) return;
 
@@ -302,7 +302,7 @@ class SyncEngine {
 	}
 
 	private async getLocalRecord(mapping: TableMapping, id: string): Promise<any> {
-		const sqliteDb = dbManagerV2.getSqliteDb();
+		const sqliteDb = await dbManagerV2.getSqliteDb();
 		const idColumnName = mapping.idColumn;
 		const idColumn = (mapping.sqliteTable as any)[idColumnName];
 		const result = await sqliteDb.select().from(mapping.sqliteTable).where(eq(idColumn, id));
@@ -329,7 +329,7 @@ class SyncEngine {
 	}
 
 	private async upsertLocal(mapping: TableMapping, record: any): Promise<void> {
-		const sqliteDb = dbManagerV2.getSqliteDb();
+		const sqliteDb = await dbManagerV2.getSqliteDb();
 		const now = new Date().toISOString();
 
 		await sqliteDb
@@ -353,7 +353,7 @@ class SyncEngine {
 	}
 
 	private async markAsSynced(mapping: TableMapping, id: string): Promise<void> {
-		const sqliteDb = dbManagerV2.getSqliteDb();
+		const sqliteDb = await dbManagerV2.getSqliteDb();
 		const idColumnName = mapping.idColumn;
 		const idColumn = (mapping.sqliteTable as any)[idColumnName];
 
@@ -364,7 +364,7 @@ class SyncEngine {
 	}
 
 	private async markAsFailed(mapping: TableMapping, id: string): Promise<void> {
-		const sqliteDb = dbManagerV2.getSqliteDb();
+		const sqliteDb = await dbManagerV2.getSqliteDb();
 		const idColumnName = mapping.idColumn;
 		const idColumn = (mapping.sqliteTable as any)[idColumnName];
 

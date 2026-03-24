@@ -5,7 +5,7 @@ import { headers } from 'next/headers';
 import { appConfig } from '@/app.config';
 import { generateTextWithAI, getBestAvailableModel } from '@/lib/ai';
 import { getAuth } from '@/lib/auth';
-import { type DbType, dbManager } from '@/lib/db';
+import { dbManager } from '@/lib/db';
 import {
 	conceptStruggles,
 	type StudySession,
@@ -59,7 +59,7 @@ export async function generatePersonalizedBriefing(): Promise<BriefingData> {
 		return getDefaultBriefing();
 	}
 
-	const db = dbManager.getDb() as DbType;
+	const db = await dbManager.getDb();
 
 	try {
 		const target = await db.query.universityTargets.findFirst({

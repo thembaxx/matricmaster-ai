@@ -45,7 +45,7 @@ export async function getDueFlashcards(userId: string): Promise<DueFlashcard[]> 
 		return [];
 	}
 
-	const db = getDb();
+	const db = await getDb();
 	const now = new Date();
 
 	try {
@@ -90,7 +90,7 @@ export async function getFlashcardsDueToday(userId: string): Promise<DueFlashcar
 		return [];
 	}
 
-	const db = getDb();
+	const db = await getDb();
 	const now = new Date();
 	const endOfDay = new Date(now);
 	endOfDay.setHours(23, 59, 59, 999);
@@ -141,7 +141,7 @@ export async function recordFlashcardReview(
 		return { success: false, error: 'Database not available' };
 	}
 
-	const db = getDb();
+	const db = await getDb();
 
 	try {
 		const [card] = await db
@@ -222,7 +222,7 @@ export async function getReviewStats(userId: string): Promise<ReviewStats> {
 		};
 	}
 
-	const db = getDb();
+	const db = await getDb();
 	const now = new Date();
 	const startOfDay = new Date(now);
 	startOfDay.setHours(0, 0, 0, 0);
@@ -312,7 +312,7 @@ export async function getReviewForecast(userId: string, days = 7): Promise<Daily
 		return [];
 	}
 
-	const db = getDb();
+	const db = await getDb();
 	const forecast: DailyForecast[] = [];
 
 	for (let i = 0; i < days; i++) {
@@ -363,7 +363,7 @@ export async function createFlashcardDeck(
 		return { success: false, error: 'Database not available' };
 	}
 
-	const db = getDb();
+	const db = await getDb();
 
 	try {
 		const [deck] = await db
@@ -394,7 +394,7 @@ export async function getUserDecks(userId: string): Promise<NewFlashcardDeck[]> 
 		return [];
 	}
 
-	const db = getDb();
+	const db = await getDb();
 
 	try {
 		return db
@@ -419,7 +419,7 @@ export async function addFlashcardToDeck(
 		return { success: false, error: 'Database not available' };
 	}
 
-	const db = getDb();
+	const db = await getDb();
 
 	try {
 		const [flashcard] = await db
@@ -462,7 +462,7 @@ export async function getDeckFlashcards(deckId: string): Promise<Flashcard[]> {
 		return [];
 	}
 
-	const db = getDb();
+	const db = await getDb();
 
 	try {
 		return db.select().from(flashcards).where(eq(flashcards.deckId, deckId));
@@ -482,7 +482,7 @@ export async function updateFlashcardDeck(
 		return { success: false, error: 'Database not available' };
 	}
 
-	const db = getDb();
+	const db = await getDb();
 
 	try {
 		const [existing] = await db
@@ -523,7 +523,7 @@ export async function deleteFlashcardDeck(
 		return { success: false, error: 'Database not available' };
 	}
 
-	const db = getDb();
+	const db = await getDb();
 
 	try {
 		const [existing] = await db
@@ -558,7 +558,7 @@ export async function updateFlashcard(
 		return { success: false, error: 'Database not available' };
 	}
 
-	const db = getDb();
+	const db = await getDb();
 
 	try {
 		const [existing] = await db
@@ -599,7 +599,7 @@ export async function deleteFlashcard(
 		return { success: false, error: 'Database not available' };
 	}
 
-	const db = getDb();
+	const db = await getDb();
 
 	try {
 		await db.delete(flashcards).where(eq(flashcards.id, flashcardId));

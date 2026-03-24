@@ -10,7 +10,7 @@ async function getDb(): Promise<DbType> {
 	if (!connected) {
 		throw new Error('Database not available');
 	}
-	return dbManager.getDb() as DbType;
+	return await dbManager.getDb();
 }
 
 export async function getAccessibilityPreferences(

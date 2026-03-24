@@ -8,7 +8,7 @@ async function getDb(): Promise<DbType> {
 	if (!connected) {
 		throw new Error('Database not available');
 	}
-	return dbManager.getDb() as DbType;
+	return (await dbManager.getDb()) as DbType;
 }
 
 export async function POST(request: NextRequest) {

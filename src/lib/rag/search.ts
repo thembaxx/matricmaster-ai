@@ -25,6 +25,7 @@ interface SearchResult {
 
 export async function searchPastPaperQuestions(options: SearchOptions): Promise<SearchResult[]> {
 	const { query, subject, yearFrom, yearTo, topic, limit = 20 } = options;
+	const dbClient = await db();
 
 	const conditions = [];
 
@@ -48,7 +49,7 @@ export async function searchPastPaperQuestions(options: SearchOptions): Promise<
 		conditions.push(sql`${pastPaperQuestions.questionText} ILIKE ${`%${query}%`}`);
 	}
 
-	const results = await db
+	const results = await dbClient
 		.select({
 			id: pastPaperQuestions.id,
 			questionText: pastPaperQuestions.questionText,
