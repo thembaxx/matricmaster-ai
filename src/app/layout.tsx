@@ -1,9 +1,8 @@
 import type { Metadata, Viewport } from 'next';
-import { OfflineIndicator } from '@/components/AI/OfflineIndicator';
-import { WebLLMDownloader } from '@/components/AI/WebLLMDownloader';
+import Script from 'next/script';
 import { DeferredAnalytics } from '@/components/DeferredAnalytics';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
-import { IOSInstallPrompt } from '@/components/IOSInstallPrompt';
+import { ClientOnlyProviders } from '@/components/Layout/ClientOnlyProviders';
 import ClientProviders from '@/components/Layout/ClientProvidersDynamic';
 import { NavigationProgress } from '@/components/NavigationProgress';
 import { ServiceWorkerRegistration } from '@/components/ServiceWorkerRegistration';
@@ -127,6 +126,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 			className={`${geistMono.variable} ${geistSans.variable} ${playfair.variable} ${notoSansMath.variable}`}
 		>
 			<head>
+				<Script
+					src="//unpkg.com/react-scan/dist/auto.global.js"
+					strategy="beforeInteractive"
+					crossOrigin="anonymous"
+				/>
 				<link rel="preconnect" href="https://fonts.googleapis.com" />
 				<link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
 				<link rel="dns-prefetch" href="https://images.unsplash.com" />
@@ -148,9 +152,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 						<ClientProviders>{children}</ClientProviders>
 						<Toaster />
 						<ServiceWorkerRegistration />
-						<IOSInstallPrompt />
-						<OfflineIndicator />
-						<WebLLMDownloader />
+						<ClientOnlyProviders />
 					</ThemeProvider>
 				</ErrorBoundary>
 				<DeferredAnalytics />

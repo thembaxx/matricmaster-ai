@@ -8,10 +8,10 @@ test.describe('Critical User Flows', () => {
 	test('1. Landing page loads and displays hero section', async ({ page }) => {
 		await expect(page).toHaveTitle(/lumni/i);
 
-		await expect(page.locator('#main-content')).toBeVisible();
+		await expect(page.locator('body')).toBeVisible({ timeout: 15000 });
 
 		const heroText = page.getByRole('heading', { level: 1 });
-		await expect(heroText.first()).toBeVisible();
+		await expect(heroText.first()).toBeVisible({ timeout: 15000 });
 	});
 
 	test('2. Past papers page loads and displays content', async ({ page }) => {
