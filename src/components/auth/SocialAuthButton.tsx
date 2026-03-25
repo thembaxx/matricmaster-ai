@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
 interface SocialAuthButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-	provider: 'google' | 'twitter';
+	provider: 'google' | 'twitter' | 'facebook';
 	isLoading?: boolean;
 }
 
@@ -17,12 +17,17 @@ export const SocialAuthButton = memo(function SocialAuthButton({
 	const config = {
 		google: {
 			icon: 'logos:google-icon',
-			label: 'Google',
+			label: 'google',
 			style: 'hover:bg-secondary text-foreground border-border',
 		},
 		twitter: {
 			icon: 'logos:twitter',
-			label: 'Twitter',
+			label: 'twitter',
+			style: 'hover:bg-blue-50 dark:hover:bg-blue-900/20 text-foreground border-border',
+		},
+		facebook: {
+			icon: 'logos:facebook',
+			label: 'facebook',
 			style: 'hover:bg-blue-50 dark:hover:bg-blue-900/20 text-foreground border-border',
 		},
 	};
@@ -48,7 +53,9 @@ export const SocialAuthButton = memo(function SocialAuthButton({
 			) : (
 				<Icon icon={icon} className="w-5 h-5" />
 			)}
-			<span className="relative font-semibold text-base">Continue with {label}</span>
+			<span className="relative font-semibold text-base whitespace-nowrap overflow-hidden text-ellipsis">
+				continue with {label}
+			</span>
 		</Button>
 	);
 });

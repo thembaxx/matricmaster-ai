@@ -31,7 +31,7 @@ export const authConfig = {
 	socialProviders: {
 		google: {
 			clientId: process.env.GOOGLE_CLIENT_ID ?? '',
-			clientSecret: process.env.GOOGLE_SECRET_KEY ?? '',
+			clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? process.env.GOOGLE_SECRET_KEY ?? '',
 		},
 	},
 	session: {
@@ -160,27 +160,53 @@ async function createAuth(): Promise<AuthInstance> {
 		}
 	}
 
+	const googleClientId = process.env.GOOGLE_CLIENT_ID;
+	const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET ?? process.env.GOOGLE_SECRET_KEY;
 	const twitterClientId = process.env.TWITTER_CLIENT_ID;
 	const twitterClientSecret = process.env.TWITTER_CLIENT_SECRET;
+	const facebookClientId = process.env.FACEBOOK_CLIENT_ID;
+	const facebookClientSecret = process.env.FACEBOOK_CLIENT_SECRET;
 
-	if (!isBuildTime && (!twitterClientId || !twitterClientSecret)) {
-		console.warn(
-			'⚠️ Twitter OAuth credentials are not configured. Sign in with Twitter will not be available.'
-		);
+	if (!isBuildTime) {
+		if (!googleClientId || !googleClientSecret) {
+			console.warn(
+				'⚠️ Google OAuth credentials are not configured. Sign in with Google will not be available.'
+			);
+		}
+		if (!twitterClientId || !twitterClientSecret) {
+			console.warn(
+				'⚠️ Twitter OAuth credentials are not configured. Sign in with Twitter will not be available.'
+			);
+		}
+		if (!facebookClientId || !facebookClientSecret) {
+			console.warn(
+				'⚠️ Facebook OAuth credentials are not configured. Sign in with Facebook will not be available.'
+			);
+		}
 	}
 
-	const socialProviders: Record<string, { clientId: string; clientSecret: string }> = {
-		google: {
-			clientId: process.env.GOOGLE_CLIENT_ID ?? '',
-			clientSecret: process.env.GOOGLE_SECRET_KEY ?? '',
-		},
-	};
+	const socialProviders: Record<string, { clientId: string; clientSecret: string }> = {};
+
+	if (googleClientId && googleClientSecret) {
+		socialProviders.google = {
+			clientId: googleClientId,
+			clientSecret: googleClientSecret,
+		};
+	}
 
 	// Only add Twitter provider if credentials are available
 	if (twitterClientId && twitterClientSecret) {
 		socialProviders.twitter = {
 			clientId: twitterClientId,
 			clientSecret: twitterClientSecret,
+		};
+	}
+
+	// Only add Facebook provider if credentials are available
+	if (facebookClientId && facebookClientSecret) {
+		socialProviders.facebook = {
+			clientId: facebookClientId,
+			clientSecret: facebookClientSecret,
 		};
 	}
 

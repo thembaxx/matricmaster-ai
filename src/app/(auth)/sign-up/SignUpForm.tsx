@@ -101,9 +101,20 @@ export default function SignUpForm() {
 						<m.div variants={STAGGER_ITEM}>
 							<SocialAuthButton provider="google" onClick={() => handleSocialSignUp('google')} />
 						</m.div>
-						<m.div variants={STAGGER_ITEM}>
-							<SocialAuthButton provider="twitter" onClick={() => handleSocialSignUp('twitter')} />
-						</m.div>
+						<div className="flex gap-3">
+							<m.div variants={STAGGER_ITEM} className="flex-1">
+								<SocialAuthButton
+									provider="twitter"
+									onClick={() => handleSocialSignUp('twitter')}
+								/>
+							</m.div>
+							<m.div variants={STAGGER_ITEM} className="flex-1">
+								<SocialAuthButton
+									provider="facebook"
+									onClick={() => handleSocialSignUp('facebook')}
+								/>
+							</m.div>
+						</div>
 					</m.div>
 
 					<SignUpFooter />

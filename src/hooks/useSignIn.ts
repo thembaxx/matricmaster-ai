@@ -100,7 +100,7 @@ export function useSignIn() {
 		}
 	};
 
-	const handleSocialSignIn = async (provider: 'google' | 'twitter') => {
+	const handleSocialSignIn = async (provider: 'google' | 'twitter' | 'facebook') => {
 		const callbackURL = new URL(safeCallbackUrl, window.location.origin).toString();
 		await authClient.signIn.social({
 			provider,
