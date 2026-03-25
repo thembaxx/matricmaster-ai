@@ -19,6 +19,9 @@ import {
 	type WellnessCheckIn,
 	wellnessCheckIns,
 } from '@/lib/db/schema';
+import { checkBurnoutRisk } from '@/services/burnoutDetection';
+import { type DailyChallenge, generateDailyChallenges } from '@/services/dailyChallenges';
+import { detectStruggles } from '@/services/struggleDetector';
 
 export interface BriefingData {
 	apsProgress: {
@@ -43,6 +46,28 @@ export interface BriefingData {
 	quickTips?: string[];
 	hasAiGreeting: boolean;
 	suggestBreak: boolean;
+	wellnessInsight?: string;
+	energySuggestion?: string;
+	struggles: Array<{
+		topic: string;
+		subject: string;
+		severity: 'high' | 'medium' | 'low';
+		reason: string;
+	}>;
+	burnoutRisk?: {
+		level: 'low' | 'moderate' | 'high' | 'severe';
+		score: number;
+		indicators: string[];
+	};
+	dailyChallenges?: Array<{
+		id: string;
+		title: string;
+		type: string;
+		target: number;
+		current: number;
+		xpReward: number;
+		isCompleted: boolean;
+	}>;
 }
 
 export async function generatePersonalizedBriefing(): Promise<BriefingData> {
@@ -79,12 +104,17 @@ export async function generatePersonalizedBriefing(): Promise<BriefingData> {
 			limit: 3,
 		});
 
-		const struggles = await db.query.conceptStruggles.findMany({
+		const unresolvedStruggles = await db.query.conceptStruggles.findMany({
 			where: and(
 				eq(conceptStruggles.userId, session.user.id),
 				eq(conceptStruggles.isResolved, false)
 			),
 		});
+
+		const [struggles, burnoutRisk] = await Promise.all([
+			detectStruggles(session.user.id).catch(() => []),
+			checkBurnoutRisk().catch(() => undefined),
+		]);
 
 		const masteries = await db.query.topicMastery.findMany({
 			where: eq(topicMastery.userId, session.user.id),
@@ -103,6 +133,10 @@ export async function generatePersonalizedBriefing(): Promise<BriefingData> {
 			orderBy: [desc(wellnessCheckIns.createdAt)],
 			limit: 5,
 		});
+
+		const challenges = await generateDailyChallenges(session.user.id).catch(
+			() => [] as DailyChallenge[]
+		);
 
 		const recentMoods = wellnessCheckInsData.map((w: WellnessCheckIn) => w.moodBefore);
 		const averageMood =
@@ -160,7 +194,7 @@ export async function generatePersonalizedBriefing(): Promise<BriefingData> {
 			targetAps,
 			universityTarget,
 			weakTopicsCount: weakTopics.length,
-			strugleCount: struggles.length,
+			strugleCount: unresolvedStruggles.length,
 			streakDays: currentStreak,
 			hasStudiedToday,
 			accuracy,
@@ -173,11 +207,42 @@ export async function generatePersonalizedBriefing(): Promise<BriefingData> {
 
 		const { greeting, motivationalMessage, quickTips } = await generateGeminiGreeting(greetingData);
 
+		// Wellness insight based on mood data
+		let wellnessInsight: string | undefined;
+		let energySuggestion: string | undefined;
+
+		if (isBurnedOut) {
+			wellnessInsight = 'Your mood has been declining. Consider lighter study sessions today.';
+			energySuggestion =
+				'Try reviewing flashcards or reading notes instead of tackling new topics.';
+		} else if (wellnessScore < 50) {
+			wellnessInsight = 'Energy levels are lower than usual. Short, focused sessions work best.';
+			energySuggestion = 'Set a 25-minute timer and focus on one weak topic. Then take a break.';
+		} else if (wellnessScore >= 80 && hasStudiedToday) {
+			wellnessInsight = 'You are in a great flow! High energy and consistent study habits.';
+			energySuggestion =
+				'This is a good time to tackle challenging topics or practice past papers.';
+		} else if (wellnessScore >= 60) {
+			energySuggestion = 'Good energy today. Mix in some practice questions with your review.';
+		}
+
+		const isSevereBurnout = burnoutRisk?.level === 'severe';
+		const shouldSuggestBreak = isBurnedOut || isSevereBurnout;
+
+		const allQuickTips = quickTips ? [...quickTips] : [];
+		if (isSevereBurnout) {
+			allQuickTips.unshift('Your study patterns suggest burnout — take a break today');
+		}
+		const topStruggle = struggles.find((s) => s.severity === 'high');
+		if (topStruggle) {
+			allQuickTips.push(`Focus on ${topStruggle.topic} — it needs the most attention`);
+		}
+
 		return {
 			apsProgress: {
 				currentAps,
 				targetAps,
-				pointsThisMonth: struggles.length * 5,
+				pointsThisMonth: unresolvedStruggles.length * 5,
 				universityTarget,
 			},
 			weakTopics,
@@ -189,9 +254,29 @@ export async function generatePersonalizedBriefing(): Promise<BriefingData> {
 			isBurnedOut,
 			greeting,
 			motivationalMessage,
-			quickTips,
+			quickTips: allQuickTips.length > 0 ? allQuickTips : quickTips,
 			hasAiGreeting: true,
-			suggestBreak: isBurnedOut,
+			suggestBreak: shouldSuggestBreak,
+			wellnessInsight,
+			energySuggestion,
+			struggles: struggles.map((s) => ({
+				topic: s.topic,
+				subject: s.subject,
+				severity: s.severity,
+				reason: s.reason,
+			})),
+			burnoutRisk: burnoutRisk
+				? { level: burnoutRisk.level, score: burnoutRisk.score, indicators: burnoutRisk.indicators }
+				: undefined,
+			dailyChallenges: challenges.map((c) => ({
+				id: c.id,
+				title: c.title,
+				type: c.type,
+				target: c.target,
+				current: c.current,
+				xpReward: c.xpReward,
+				isCompleted: c.isCompleted,
+			})),
 		};
 	} catch (error) {
 		console.error('Error generating personalized briefing:', error);
@@ -245,6 +330,8 @@ STUDENT PROFILE:
 - Weak Topics: ${data.weakTopicsCount}
 - Unresolved Struggles: ${data.strugleCount}
 - Studied Today: ${data.hasStudiedToday ? 'Yes' : 'No'}
+- Wellness Score: ${data.wellnessScore}/100
+- Burnout Risk: ${data.isBurnedOut ? 'Yes - needs rest' : 'No'}
 - ${strongTopicsText}
 
 Generate a response with these fields (in JSON format):
@@ -259,6 +346,7 @@ Guidelines:
 - If they have a streak, celebrate it!
 - If they haven't studied today, motivate them to start
 - If they have weak topics, offer to help
+- If burnout risk is high, suggest a break and lighter study
 - Reference their university goal if set
 - Keep tips practical and immediately actionable
 - Total response should be under 300 characters for greeting + message combined`;
@@ -368,5 +456,7 @@ function getDefaultBriefing(): BriefingData {
 		quickTips: ['Complete your first quiz', 'Set your university goal', 'Review your first topic'],
 		hasAiGreeting: false,
 		suggestBreak: false,
+		struggles: [],
+		dailyChallenges: [],
 	};
 }

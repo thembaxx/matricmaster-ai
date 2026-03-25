@@ -16,6 +16,7 @@ import {
 	topicMastery,
 	userProgress,
 } from '@/lib/db/schema';
+import { calculateNextReview } from '@/lib/spaced-repetition';
 
 async function getDb(): Promise<DbType> {
 	const connected = await dbManager.waitForConnection(3, 2000);
@@ -254,19 +255,20 @@ export async function trackFlashcardReview(
 		const intervalBefore = flashcard.intervalDays;
 		const easeFactorBefore = Number.parseFloat(flashcard.easeFactor as string);
 
-		const { intervalDays, easeFactor } = calculateSm2Score(
-			rating,
+		const result = calculateNextReview(
 			intervalBefore,
-			easeFactorBefore
+			flashcard.repetitions,
+			easeFactorBefore,
+			rating as 1 | 2 | 3 | 4 | 5
 		);
 
 		await db
 			.update(flashcards)
 			.set({
-				repetitions: flashcard.repetitions + 1,
-				easeFactor: easeFactor.toFixed(2) as unknown as typeof flashcards.easeFactor,
-				intervalDays,
-				nextReview: new Date(Date.now() + intervalDays * 24 * 60 * 60 * 1000),
+				repetitions: result.repetitions,
+				easeFactor: result.easeFactor.toFixed(2) as unknown as typeof flashcards.easeFactor,
+				intervalDays: result.interval,
+				nextReview: result.nextReview,
 				lastReview: new Date(),
 				timesReviewed: flashcard.timesReviewed + 1,
 				timesCorrect: rating >= 3 ? flashcard.timesCorrect + 1 : flashcard.timesCorrect,
@@ -278,9 +280,9 @@ export async function trackFlashcardReview(
 			flashcardId,
 			rating,
 			intervalBefore,
-			intervalAfter: intervalDays,
+			intervalAfter: result.interval,
 			easeFactorBefore: easeFactorBefore.toFixed(2) as unknown as string,
-			easeFactorAfter: easeFactor.toFixed(2) as unknown as string,
+			easeFactorAfter: result.easeFactor.toFixed(2) as unknown as string,
 			reviewedAt: new Date(),
 		});
 
@@ -289,41 +291,13 @@ export async function trackFlashcardReview(
 
 		return {
 			success: true,
-			nextReviewDays: intervalDays,
-			newEaseFactor: easeFactor,
+			nextReviewDays: result.interval,
+			newEaseFactor: result.easeFactor,
 		};
 	} catch (error) {
 		console.error('Error tracking flashcard review:', error);
 		return { success: false };
 	}
-}
-
-function calculateSm2Score(
-	rating: number,
-	currentInterval: number,
-	currentEaseFactor: number
-): { intervalDays: number; easeFactor: number } {
-	let interval: number;
-	let easeFactor: number;
-
-	if (rating < 3) {
-		interval = 1;
-		easeFactor = Math.max(1.3, currentEaseFactor - 0.2);
-	} else {
-		easeFactor = currentEaseFactor + (0.1 - (5 - rating) * (0.08 + (5 - rating) * 0.02));
-		easeFactor = Math.max(1.3, easeFactor);
-
-		if (currentInterval === 0 || currentInterval === 1) {
-			interval = 1;
-		} else if (currentInterval === 2) {
-			interval = 6;
-		} else {
-			interval = Math.round(currentInterval * easeFactor);
-		}
-		interval = Math.min(interval, 30);
-	}
-
-	return { intervalDays: interval, easeFactor };
 }
 
 async function updateTopicMastery(

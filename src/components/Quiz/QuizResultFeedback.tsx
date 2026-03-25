@@ -1,10 +1,12 @@
 import {
 	CheckmarkCircle02Icon,
 	ForwardIcon,
+	MapPinpoint02Icon,
 	MessageSecure01Icon,
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { useRouter } from 'next/navigation';
+import { getMapLinkForTopic, isGeographySubject } from '@/lib/geography-map-links';
 
 ('use client');
 
@@ -48,6 +50,9 @@ export function QuizResultFeedback({
 		}
 		router.push(`/study-companion?${params.toString()}`);
 	};
+
+	// Bridge: Maps → Quiz - check if this is a geography question with a map view
+	const mapLink = isGeographySubject(subject) && topic ? getMapLinkForTopic(topic) : null;
 
 	return (
 		<div
@@ -99,6 +104,16 @@ export function QuizResultFeedback({
 						>
 							<HugeiconsIcon icon={MessageSecure01Icon} className="w-4 h-4" />
 							Discuss with Tutor
+						</button>
+					)}
+					{mapLink && (
+						<button
+							type="button"
+							onClick={() => router.push(mapLink.mapRoute)}
+							className="mt-2 inline-flex items-center gap-2 text-sm font-medium text-primary hover:text-primary/80 transition-colors"
+						>
+							<HugeiconsIcon icon={MapPinpoint02Icon} className="w-4 h-4" />
+							{mapLink.label}
 						</button>
 					)}
 				</div>

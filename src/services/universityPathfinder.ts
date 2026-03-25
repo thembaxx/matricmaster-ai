@@ -4,6 +4,7 @@ import { and, eq } from 'drizzle-orm';
 import { z } from 'zod';
 import { getDb } from '@/lib/db';
 import { apsMilestones, universityTargets } from '@/lib/db/schema';
+import { processGamificationEvent } from './gamificationStacking';
 
 function getGeminiModel() {
 	const apiKey = process.env.GEMINI_API_KEY;
@@ -362,4 +363,10 @@ export async function completeMilestone(milestoneId: string): Promise<void> {
 		.update(apsMilestones)
 		.set({ status: 'completed', completedAt: new Date() })
 		.where(eq(apsMilestones.id, milestoneId));
+
+	try {
+		await processGamificationEvent('milestone_complete', {});
+	} catch {
+		// Non-critical: don't fail milestone completion if XP fails
+	}
 }

@@ -10,6 +10,7 @@ import {
 	flashcards,
 } from '@/lib/db/schema';
 import { calculateNextReview, DEFAULT_EASE_FACTOR, type Rating } from '@/lib/spaced-repetition';
+import { generateFlashcardContentAction } from './aiActions';
 
 async function getDb(): Promise<DbType> {
 	const connected = await dbManager.waitForConnection(3, 2000);
@@ -236,7 +237,7 @@ export async function addCard(
 
 export async function addCardsFromAI(
 	topic: string,
-	_subject: string,
+	subject: string,
 	count = 10
 ): Promise<Flashcard[]> {
 	const { getAuth } = await import('@/lib/auth');
@@ -262,15 +263,21 @@ export async function addCardsFromAI(
 			.returning();
 	}
 
+	const generatedCards = await generateFlashcardContentAction(subject, topic, count);
+
+	if (generatedCards.length === 0) {
+		return [];
+	}
+
 	const newCards: Flashcard[] = [];
-	for (let i = 0; i < count; i++) {
-		const [card] = await db
+	for (const card of generatedCards) {
+		const [flashcard] = await db
 			.insert(flashcards)
 			.values({
 				deckId: deck.id,
-				front: `${topic} - Concept ${i + 1}`,
-				back: `Answer for ${topic} concept ${i + 1}`,
-				difficulty: 'medium',
+				front: card.front,
+				back: card.back,
+				difficulty: card.difficulty,
 				timesReviewed: 0,
 				timesCorrect: 0,
 				easeFactor: DEFAULT_EASE_FACTOR.toString(),
@@ -279,13 +286,13 @@ export async function addCardsFromAI(
 				nextReview: new Date(),
 			})
 			.returning();
-		newCards.push(card);
+		newCards.push(flashcard);
 	}
 
 	await db
 		.update(flashcardDecks)
 		.set({
-			cardCount: sql`${flashcardDecks.cardCount} + ${count}`,
+			cardCount: sql`${flashcardDecks.cardCount} + ${newCards.length}`,
 			updatedAt: new Date(),
 		})
 		.where(eq(flashcardDecks.id, deck.id));

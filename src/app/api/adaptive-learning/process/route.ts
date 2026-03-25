@@ -7,6 +7,7 @@ import {
 	scheduleReviewSession,
 	suggestPathRetake,
 	type TopicResult,
+	updateTopicConfidence,
 } from '@/services/adaptiveLearningService';
 
 interface ProcessRequestBody {
@@ -33,6 +34,13 @@ export async function POST(request: NextRequest) {
 			if (trigger.type === 'weak_topic_flagged') {
 				await flagTopicForAI([], trigger.topic, trigger.subjectId);
 			}
+		}
+
+		// Bridge: Update topicConfidence for each result so past paper quizzes feed into weak topics
+		for (const result of results) {
+			const isCorrect =
+				result.totalQuestions > 0 ? result.correctAnswers / result.totalQuestions >= 0.5 : false;
+			await updateTopicConfidence(result.topic, result.subjectId, isCorrect);
 		}
 
 		return NextResponse.json({

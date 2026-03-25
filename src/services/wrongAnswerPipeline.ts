@@ -268,7 +268,8 @@ export async function processQuizMistakes(
 
 export async function getQuizMistakeCards(
 	deckId?: string,
-	sortBy: 'mostRecent' | 'hardestFirst' = 'mostRecent'
+	sortBy: 'mostRecent' | 'hardestFirst' = 'mostRecent',
+	options?: { limit?: number; offset?: number }
 ): Promise<Array<typeof flashcards.$inferSelect & { deckName: string | null }>> {
 	const user = await ensureAuthenticated();
 	const db = await getConnectedDb();
@@ -309,7 +310,9 @@ export async function getQuizMistakeCards(
 			sortBy === 'hardestFirst'
 				? sql` CAST(${flashcards.easeFactor} AS FLOAT) ASC`
 				: sql`${flashcards.createdAt} DESC`
-		);
+		)
+		.limit(options?.limit ?? 50)
+		.offset(options?.offset ?? 0);
 
 	return cards;
 }

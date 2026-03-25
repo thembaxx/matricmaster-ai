@@ -278,6 +278,9 @@ const config = withPWA(
 		silent: !process.env.CI,
 		widenClientFileUpload: true,
 		tunnelRoute: '/monitoring',
+		sourcemaps: {
+			deleteSourcemapsAfterUpload: true,
+		},
 		webpack: {
 			automaticVercelMonitors: true,
 			treeshake: {

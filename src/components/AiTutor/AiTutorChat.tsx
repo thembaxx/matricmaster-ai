@@ -1,5 +1,6 @@
 'use client';
 
+import { AddToStudyPlanButton } from '@/components/AI/AddToStudyPlanButton';
 import { BookmarkButton } from '@/components/AI/BookmarkButton';
 import { CitationDisplay } from '@/components/AI/CitationDisplay';
 import { MarkdownRenderer } from '@/components/AI/MarkdownRenderer';
@@ -89,6 +90,14 @@ export function AiTutorChat({
 										<SaveAsFlashcardButton
 											content={message.content}
 											subject={selectedSubject || undefined}
+											variant="ghost"
+											size="icon"
+										/>
+									)}
+									{message.role === 'assistant' && message.content.length > 50 && (
+										<AddToStudyPlanButton
+											content={message.content}
+											subject={selectedSubject}
 											variant="ghost"
 											size="icon"
 										/>

@@ -25,6 +25,7 @@ import {
 	getRecentSessionsWithContextAction,
 	type RecentSessionWithContext,
 } from '@/lib/db/actions';
+import { useEnergyTrackingStore } from '@/stores/useEnergyTrackingStore';
 
 function StudyCompanionContent() {
 	const router = useRouter();
@@ -42,6 +43,23 @@ function StudyCompanionContent() {
 			setShowInput(true);
 		}
 	}, [searchParams]);
+
+	const { currentEnergy, fetchEnergyData } = useEnergyTrackingStore();
+
+	useEffect(() => {
+		fetchEnergyData();
+	}, [fetchEnergyData]);
+
+	const energyTier = currentEnergy >= 70 ? 'high' : currentEnergy >= 40 ? 'medium' : 'low';
+
+	const orderedCards = [...SUGGESTION_CARDS].sort((a, b) => {
+		const weight: Record<string, Record<string, number>> = {
+			high: { '1': 1, '4': 2, '3': 3, '2': 4 },
+			medium: { '1': 1, '2': 2, '3': 3, '4': 4 },
+			low: { '3': 1, '2': 2, '1': 3, '4': 4 },
+		};
+		return (weight[energyTier]?.[a.id] ?? 5) - (weight[energyTier]?.[b.id] ?? 5);
+	});
 
 	const { data: sessionsData, isLoading: isLoadingSessions } = useQuery({
 		queryKey: ['recent-sessions'],
@@ -144,7 +162,7 @@ function StudyCompanionContent() {
 					{!showInput ? (
 						<>
 							<SuggestionCards
-								cards={SUGGESTION_CARDS}
+								cards={orderedCards}
 								selectedCard={selectedCard}
 								onCardClick={handleCardClick}
 							/>

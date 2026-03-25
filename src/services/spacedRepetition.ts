@@ -2,6 +2,7 @@ import { and, desc, eq, lt, sql } from 'drizzle-orm';
 import { getAuth } from '@/lib/auth';
 import { type DbType, dbManager } from '@/lib/db';
 import { questionAttempts, topicConfidence } from '@/lib/db/schema';
+import { calculateNextReviewBoolean } from '@/lib/spaced-repetition';
 
 async function getDb(): Promise<DbType> {
 	const connected = await dbManager.waitForConnection(3, 2000);
@@ -37,68 +38,12 @@ export interface SpacedRepetitionResult {
 	prioritizeWeakTopics: boolean;
 }
 
-// Enhanced SM-2 Algorithm with Super-Recall
-// Returns new interval days and ease factor
-export function calculateNextReview(
-	isCorrect: boolean,
-	currentInterval: number,
-	currentEaseFactor: number,
-	consecutiveCorrect = 0
-): { intervalDays: number; easeFactor: number } {
-	if (isCorrect) {
-		// Super-Recall: After 5+ consecutive correct, apply bonus multiplier
-		const superRecallBonus = consecutiveCorrect >= 5 ? 1.5 : 1;
-
-		// Calculate new interval
-		const newInterval = Math.round(currentInterval * currentEaseFactor * superRecallBonus);
-
-		// Dynamic capping based on mastery level
-		const maxInterval =
-			consecutiveCorrect >= 10
-				? 90
-				: consecutiveCorrect >= 7
-					? 60
-					: consecutiveCorrect >= 5
-						? 45
-						: 30;
-
-		// Increase ease factor (but cap it)
-		const newEaseFactor = Math.min(3.0, currentEaseFactor + 0.1);
-
-		return {
-			intervalDays: Math.min(newInterval, maxInterval),
-			easeFactor: newEaseFactor,
-		};
-	}
-	// Reset interval on wrong answer, decrease ease factor more aggressively
-	return {
-		intervalDays: 1,
-		easeFactor: Math.max(1.3, currentEaseFactor - 0.3),
-	};
-}
-
-// Cross-topic reinforcement: Suggest related topics for spaced repetition
-export function getCrossTopicSuggestions(
-	topic: string,
-	allTopics: Array<{ topic: string; confidence: number }>
-): string[] {
-	const topicRelations: Record<string, string[]> = {
-		Calculus: ['Algebra', 'Functions', 'Geometry'],
-		Algebra: ['Calculus', 'Number Patterns', 'Equations'],
-		Mechanics: ['Vectors', 'Newton Laws', 'Energy'],
-		Electricity: ['Magnetism', 'Circuits', 'Electronics'],
-		'Chemical Bonds': ['Periodic Table', 'Atomic Structure', 'Reactions'],
-		Evolution: ['Genetics', 'Diversity', 'Ecology'],
-		Functions: ['Calculus', 'Algebra', 'Graphs'],
-		Probability: ['Statistics', 'Combinatorics', 'Number Theory'],
-	};
-
-	const relatedTopics = topicRelations[topic] || [];
-
-	return allTopics
-		.filter((t) => relatedTopics.includes(t.topic) && t.confidence > 0.7)
-		.map((t) => t.topic);
-}
+// Re-export canonical SM-2 implementations from lib
+export {
+	calculateNextReview,
+	calculateNextReviewBoolean,
+	getCrossTopicSuggestions,
+} from '@/lib/spaced-repetition';
 
 // Record a question attempt
 export async function recordQuestionAttempt(
@@ -117,7 +62,7 @@ export async function recordQuestionAttempt(
 	const now = new Date();
 
 	if (existing) {
-		const { intervalDays, easeFactor } = calculateNextReview(
+		const { intervalDays, easeFactor } = calculateNextReviewBoolean(
 			isCorrect,
 			existing.intervalDays,
 			Number.parseFloat(existing.easeFactor as string)
@@ -138,7 +83,7 @@ export async function recordQuestionAttempt(
 			})
 			.where(eq(questionAttempts.id, existing.id));
 	} else {
-		const { intervalDays, easeFactor } = calculateNextReview(isCorrect, 1, 2.5);
+		const { intervalDays, easeFactor } = calculateNextReviewBoolean(isCorrect, 1, 2.5);
 
 		const nextReview = new Date(now);
 		nextReview.setDate(nextReview.getDate() + intervalDays);
@@ -203,7 +148,6 @@ export async function getAdaptiveDifficulty(): Promise<'easy' | 'medium' | 'hard
 	const user = await ensureAuthenticated();
 	const db = await getDb();
 
-	// Get last 10 attempts
 	const recentAttempts = await db.query.questionAttempts.findMany({
 		where: eq(questionAttempts.userId, user.id),
 		orderBy: [desc(questionAttempts.attemptedAt)],
