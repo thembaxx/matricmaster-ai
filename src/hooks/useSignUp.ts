@@ -59,7 +59,7 @@ export function useSignUp() {
 		}
 	};
 
-	const handleSocialSignUp = async (provider: 'google' | 'twitter') => {
+	const handleSocialSignUp = async (provider: 'google' | 'twitter' | 'facebook') => {
 		const callbackURL = new URL('/dashboard', window.location.origin).toString();
 		await authClient.signIn.social({
 			provider,
