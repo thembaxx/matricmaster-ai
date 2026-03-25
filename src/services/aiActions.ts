@@ -306,6 +306,83 @@ Return ONLY valid JSON, no other text.`;
 	}
 }
 
+const flashcardGenerationSchema = z.object({
+	subject: z.string().min(1).max(100),
+	topic: z.string().min(1).max(200),
+	count: z.number().min(1).max(20).default(10),
+});
+
+export interface GeneratedFlashcard {
+	front: string;
+	back: string;
+	difficulty: 'easy' | 'medium' | 'hard';
+}
+
+export async function generateFlashcardContentAction(
+	subject: string,
+	topic: string,
+	count = 10
+): Promise<GeneratedFlashcard[]> {
+	try {
+		const validated = flashcardGenerationSchema.parse({ subject, topic, count });
+
+		const sanitizedSubject = sanitizeInput(validated.subject);
+		const sanitizedTopic = sanitizeInput(validated.topic);
+
+		const prompt = `You are an expert Grade 12 South African NSC tutor. Generate ${validated.count} flashcards for the subject "${sanitizedSubject}" on the topic "${sanitizedTopic}".
+
+Requirements:
+- Front: A clear question or concept prompt
+- Back: A concise, accurate answer suitable for exam revision
+- Difficulty: Assign 'easy', 'medium', or 'hard' to each card
+- Cover key definitions, formulas, processes, and common exam questions
+- Follow South African NSC curriculum standards
+
+Format as JSON array:
+[
+  {
+    "front": "question or concept here",
+    "back": "answer here",
+    "difficulty": "easy" | "medium" | "hard"
+  }
+]
+
+Return ONLY valid JSON array, no other text.`;
+
+		const result = await generateAI({ prompt, model: AI_MODELS.PRIMARY });
+
+		if (result) {
+			const cleaned = cleanJson(result);
+			const parsed = JSON.parse(cleaned) as unknown;
+
+			if (Array.isArray(parsed)) {
+				return parsed
+					.filter(
+						(item): item is Record<string, unknown> => typeof item === 'object' && item !== null
+					)
+					.map((item) => {
+						const difficulty =
+							item.difficulty === 'easy' || item.difficulty === 'hard' ? item.difficulty : 'medium';
+						return {
+							front: typeof item.front === 'string' ? item.front : '',
+							back: typeof item.back === 'string' ? item.back : '',
+							difficulty: difficulty as 'easy' | 'medium' | 'hard',
+						};
+					})
+					.filter((card) => card.front && card.back);
+			}
+		}
+
+		return [];
+	} catch (error) {
+		if (error instanceof z.ZodError) {
+			return [];
+		}
+		console.debug('Flashcard Generation Error:', error);
+		return [];
+	}
+}
+
 const essayFeedbackSchema = z.object({
 	essayTopic: z.string().min(1).max(500),
 	essayContent: z.string().min(1).max(5000),

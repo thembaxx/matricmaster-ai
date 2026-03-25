@@ -189,11 +189,19 @@ async function addXpToUser(userId: string, xp: number): Promise<void> {
 	});
 
 	if (existing) {
-		const currentXp = existing.totalCorrect || 0;
+		const currentXp = existing.totalMarksEarned || 0;
 		await db
 			.update(userProgress)
-			.set({ totalCorrect: currentXp + xp })
+			.set({
+				totalMarksEarned: currentXp + xp,
+				updatedAt: new Date(),
+			})
 			.where(eq(userProgress.id, existing.id));
+	} else {
+		await db.insert(userProgress).values({
+			userId,
+			totalMarksEarned: xp,
+		});
 	}
 }
 
@@ -229,7 +237,7 @@ async function updateLeaderboard(userId: string): Promise<void> {
 
 	if (!userProgressData) return;
 
-	const totalPoints = userProgressData.totalCorrect || 0;
+	const totalPoints = userProgressData.totalMarksEarned || 0;
 	const now = new Date();
 	const weekStart = new Date(now);
 	weekStart.setDate(weekStart.getDate() - 7);

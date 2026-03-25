@@ -156,7 +156,7 @@ export function GrowthMap({ data }: GrowthMapProps) {
 									className="h-7 text-xs rounded-lg"
 									onClick={() =>
 										router.push(
-											`/tutor?topic=${encodeURIComponent(topic.topic)}&subject=${encodeURIComponent(topic.subject)}`
+											`/ai-tutor?topic=${encodeURIComponent(topic.topic)}&subject=${encodeURIComponent(topic.subject)}&context=help`
 										)
 									}
 								>

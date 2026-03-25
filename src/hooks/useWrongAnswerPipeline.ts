@@ -134,15 +134,12 @@ export function useWrongAnswerPipeline(
 			}
 
 			setIsProcessing(true);
-			let totalCreated = 0;
 
 			try {
-				for (const wrongAnswer of wrongAnswers) {
-					const result = await processWrongAnswer(wrongAnswer);
-					if (result.success && result.flashcardId) {
-						totalCreated++;
-					}
-				}
+				const results = await Promise.all(
+					wrongAnswers.map((wrongAnswer) => processWrongAnswer(wrongAnswer))
+				);
+				const totalCreated = results.filter((r) => r.success && r.flashcardId).length;
 
 				if (showNotifications && totalCreated > 0) {
 					toast.success(

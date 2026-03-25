@@ -215,14 +215,16 @@ export async function checkBurnoutRisk(): Promise<BurnoutRiskLevel> {
 	};
 }
 
-export function getRecommendedBreakTime(currentStreak: number): number {
+export async function getRecommendedBreakTime(currentStreak: number): Promise<number> {
 	if (currentStreak < 3) return 15;
 	if (currentStreak < 5) return 20;
 	if (currentStreak < 7) return 30;
 	return 45;
 }
 
-export function getOptimalSessionLength(energyLevel: 'high' | 'medium' | 'low'): number {
+export async function getOptimalSessionLength(
+	energyLevel: 'high' | 'medium' | 'low'
+): Promise<number> {
 	switch (energyLevel) {
 		case 'high':
 			return 90;

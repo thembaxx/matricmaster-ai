@@ -3,6 +3,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { AdaptiveScheduleBanner } from '@/components/Dashboard/AdaptiveScheduleBanner';
+import { AdaptiveScheduleCard } from '@/components/Dashboard/AdaptiveScheduleCard';
 import { AITutorNudge } from '@/components/Dashboard/AITutorNudge';
 import { BriefingGreeting } from '@/components/Dashboard/BriefingGreeting';
 import { MoreTab } from '@/components/Dashboard/MoreTab';
@@ -209,6 +210,11 @@ export default function Dashboard({
 						<TabsContent value="today" className="mt-0">
 							<TodayTabHeader achievements={achievements} streak={streak} />
 							<TodayTab achievements={achievements} streak={streak} />
+							{scheduleChanges && scheduleChanges.adjustments?.length > 0 && (
+								<div className="mt-6">
+									<AdaptiveScheduleCard adjustments={scheduleChanges.adjustments} />
+								</div>
+							)}
 						</TabsContent>
 
 						<TabsContent value="progress" className="mt-0">
