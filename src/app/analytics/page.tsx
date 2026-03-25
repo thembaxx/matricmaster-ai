@@ -20,6 +20,7 @@ import { SubjectPerformanceCard } from '@/components/Analytics/SubjectPerformanc
 import { WeeklyProgressChart } from '@/components/Analytics/WeeklyProgressChart';
 import { GrowthInsights } from '@/components/Dashboard/GrowthInsights';
 import { GrowthMap } from '@/components/Dashboard/GrowthMap';
+import { WeeklyProgressExport } from '@/components/Progress/WeeklyProgressExport';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import type {
@@ -241,19 +242,21 @@ export default function AnalyticsDashboardPage() {
 		<div className="min-h-screen pb-40 pt-8 px-4">
 			<div className="max-w-7xl mx-auto">
 				<div className="mb-8">
-					<div className="flex items-center gap-3 mb-2">
-						<h1 className="text-3xl font-bold flex items-center gap-2">
-							<HugeiconsIcon icon={Analytics01Icon} className="w-8 h-8" />
-							Analytics
-						</h1>
-						{isMock && (
-							<Badge
-								variant="outline"
-								className="text-xs bg-amber-500/10 text-amber-600 border-amber-500/30"
-							>
-								demo data
-							</Badge>
-						)}
+					<div className="flex items-center justify-between">
+						<div className="flex items-center gap-3 mb-2">
+							<h1 className="text-3xl font-bold flex items-center gap-2">
+								<HugeiconsIcon icon={Analytics01Icon} className="w-8 h-8" />
+								Analytics
+							</h1>
+							{isMock && (
+								<Badge
+									variant="outline"
+									className="text-xs bg-amber-500/10 text-amber-600 border-amber-500/30"
+								>
+									demo data
+								</Badge>
+							)}
+						</div>
 					</div>
 					<p className="text-muted-foreground">
 						Track your learning progress and identify areas for improvement
@@ -261,6 +264,8 @@ export default function AnalyticsDashboardPage() {
 				</div>
 
 				<StatsOverview stats={stats} />
+
+				<WeeklyProgressExport />
 
 				<Tabs defaultValue="overview" className="space-y-4">
 					<TabsList>

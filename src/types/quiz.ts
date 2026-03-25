@@ -26,6 +26,15 @@ export interface QuizSession {
 	currentQuestionIndex: number;
 }
 
+export interface QuizFlaggedState {
+	flaggedQuestionIds: Set<string>;
+}
+
+export type QuizFlaggedAction =
+	| { type: 'TOGGLE_FLAG'; payload: string }
+	| { type: 'CLEAR_FLAGS' }
+	| { type: 'SET_FLAGS'; payload: Set<string> };
+
 export interface TopicStats {
 	topic: string;
 	correct: number;
@@ -83,6 +92,7 @@ export type QuizAction =
 	| { type: 'UPDATE_CORRECT_COUNT'; payload: number }
 	| { type: 'UPDATE_INCORRECT_COUNT'; payload: number }
 	| { type: 'UPDATE_TOPIC_STATS'; payload: { topic: string; correct: number } }
+	| { type: 'LOAD_TOPIC_STATS'; payload: Map<string, TopicStats> }
 	| { type: 'SET_WEAK_TOPIC_ALERT'; payload: WeakTopicAlertData | null }
 	| { type: 'TOGGLE_WEAK_ALERT'; payload: boolean }
 	| { type: 'INCREMENT_CORRECT' }
