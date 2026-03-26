@@ -4,6 +4,7 @@ import { ChampionIcon, FireIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { m } from 'framer-motion';
 import { memo } from 'react';
+import { Card } from '@/components/ui/card';
 import { STAGGER_ITEM } from '@/lib/animation-presets';
 
 interface StatsCardsProps {
@@ -15,7 +16,7 @@ export const StatsCards = memo(function StatsCards({ streak, accuracy }: StatsCa
 	return (
 		<div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
 			<m.div variants={STAGGER_ITEM} className="flex-1">
-				<div className="h-full p-8 bg-card rounded-[2.5rem] shadow-tiimo border border-border/50 flex flex-col justify-between relative overflow-hidden tiimo-press group">
+				<Card className="h-full p-8 shadow-tiimo border-border/50 flex flex-col justify-between relative overflow-hidden tiimo-press group">
 					<div className="absolute top-0 left-0 w-2 h-full bg-tiimo-yellow opacity-40" />
 					<div className="space-y-4 relative z-10">
 						<div className="flex items-center gap-3">
@@ -40,11 +41,11 @@ export const StatsCards = memo(function StatsCards({ streak, accuracy }: StatsCa
 							<span className="text-sm font-bold text-tiimo-gray-muted  tracking-widest">Days</span>
 						</div>
 					</div>
-				</div>
+				</Card>
 			</m.div>
 
 			<m.div variants={STAGGER_ITEM} className="flex-1">
-				<div className="h-full p-8 bg-card rounded-[2.5rem] shadow-tiimo border border-border/50 flex flex-col justify-between relative overflow-hidden tiimo-press group">
+				<Card className="h-full p-8 shadow-tiimo border-border/50 flex flex-col justify-between relative overflow-hidden tiimo-press group">
 					<div className="absolute top-0 left-0 w-2 h-full bg-tiimo-lavender opacity-40" />
 					<div className="space-y-4 relative z-10">
 						<div className="flex items-center gap-3">
@@ -71,7 +72,7 @@ export const StatsCards = memo(function StatsCards({ streak, accuracy }: StatsCa
 							</span>
 						</div>
 					</div>
-				</div>
+				</Card>
 			</m.div>
 		</div>
 	);

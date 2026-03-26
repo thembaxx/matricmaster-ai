@@ -15,7 +15,7 @@ export function MomentumCanvas() {
 	);
 
 	return (
-		<div className="relative bg-card rounded-2xl p-8 min-h-[300px]">
+		<Card className="relative p-8 min-h-[300px]">
 			<svg
 				viewBox="0 0 400 200"
 				className="w-full h-full"
@@ -61,6 +61,6 @@ export function MomentumCanvas() {
 					<p>KE&apos; = {results.finalKineticEnergy.toFixed(2)} J</p>
 				</Card>
 			</div>
-		</div>
+		</Card>
 	);
 }
