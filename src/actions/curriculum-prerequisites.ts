@@ -170,10 +170,9 @@ export async function getUnlockedTopics(subject: string): Promise<TopicPrerequis
 		const allTopics = await db.query.questions.findMany({
 			where: eq(questions.subjectId, 1),
 			columns: { topic: true },
-			distinct: ['topic'],
 		});
 
-		const topics = allTopics.map((q) => q.topic).filter(Boolean);
+		const topics = [...new Set(allTopics.map((q) => q.topic).filter(Boolean))];
 		const result: TopicPrerequisite[] = [];
 
 		for (const topic of topics) {
@@ -273,10 +272,9 @@ export async function getPrerequisiteMap(
 		const allTopics = await db.query.questions.findMany({
 			where: eq(questions.subjectId, 1),
 			columns: { topic: true },
-			distinct: ['topic'],
 		});
 
-		const topics = allTopics.map((q) => q.topic).filter(Boolean);
+		const topics = [...new Set(allTopics.map((q) => q.topic).filter(Boolean))];
 		const result: Array<{ topic: string; prerequisites: string[]; dependents: string[] }> = [];
 
 		for (const topic of topics) {
@@ -343,10 +341,9 @@ export async function checkUnlockPotential(
 		const allTopics = await db.query.questions.findMany({
 			where: eq(questions.subjectId, 1),
 			columns: { topic: true },
-			distinct: ['topic'],
 		});
 
-		const topics = allTopics.map((q) => q.topic).filter(Boolean);
+		const topics = [...new Set(allTopics.map((q) => q.topic).filter(Boolean))];
 
 		for (const otherTopic of topics) {
 			if (!otherTopic || otherTopic === topic) continue;

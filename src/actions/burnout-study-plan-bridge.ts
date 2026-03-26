@@ -27,7 +27,7 @@ export async function detectBurnoutRisk(userId: string): Promise<BurnoutRisk> {
 	// Check recent study session patterns
 	const recentSessions = await db.query.studySessions.findMany({
 		where: eq(studySessions.userId, userId),
-		orderBy: [desc(studySessions.startTime)],
+		orderBy: [desc(studySessions.startedAt)],
 		limit: 14,
 	});
 
@@ -40,12 +40,14 @@ export async function detectBurnoutRisk(userId: string): Promise<BurnoutRisk> {
 		};
 	}
 
-	// Factor 1: Declining session quality
+	// Factor 1: Declining session quality (calculate accuracy from correct answers)
+	const getAccuracy = (s: { questionsAttempted: number; correctAnswers: number }) =>
+		s.questionsAttempted > 0 ? s.correctAnswers / s.questionsAttempted : 0;
 	const recentAccuracy =
-		recentSessions.slice(0, 3).reduce((sum, s) => sum + (s.score || 0), 0) /
+		recentSessions.slice(0, 3).reduce((sum, s) => sum + getAccuracy(s), 0) /
 		Math.min(3, recentSessions.length);
 	const olderAccuracy =
-		recentSessions.slice(3, 7).reduce((sum, s) => sum + (s.score || 0), 0) /
+		recentSessions.slice(3, 7).reduce((sum, s) => sum + getAccuracy(s), 0) /
 		Math.min(4, recentSessions.length - 3 || 1);
 
 	if (olderAccuracy > 0 && recentAccuracy < olderAccuracy * 0.8) {
@@ -61,15 +63,18 @@ export async function detectBurnoutRisk(userId: string): Promise<BurnoutRisk> {
 	}
 
 	// Factor 3: Inconsistent schedule
-	const sessionDays = new Set(recentSessions.map((s) => new Date(s.startTime).toDateString()));
+	const sessionDays = new Set(
+		recentSessions.map((s) => new Date(s.startedAt || new Date()).toDateString())
+	);
 	if (sessionDays.size < 5 && recentSessions.length > 5) {
 		factors.push('Irregular study schedule');
 		riskScore += 15;
 	}
 
-	// Factor 4: High difficulty without success
-	const difficultSessions = recentSessions.filter((s) => s.difficulty === 'hard');
-	const difficultFailures = difficultSessions.filter((s) => (s.score || 0) < 0.5);
+	// Factor 4: Low accuracy sessions (questions attempted but few correct)
+	const difficultFailures = recentSessions.filter(
+		(s) => s.questionsAttempted > 0 && s.correctAnswers / s.questionsAttempted < 0.5
+	);
 	if (difficultFailures.length > 2) {
 		factors.push('Struggling with difficult material');
 		riskScore += 20;
@@ -77,7 +82,7 @@ export async function detectBurnoutRisk(userId: string): Promise<BurnoutRisk> {
 
 	// Factor 5: Late night studying
 	const lateNightSessions = recentSessions.filter((s) => {
-		const hour = new Date(s.startTime).getHours();
+		const hour = new Date(s.startedAt || new Date()).getHours();
 		return hour >= 22 || hour < 5;
 	});
 	if (lateNightSessions.length > 3) {

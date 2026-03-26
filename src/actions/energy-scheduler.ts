@@ -16,8 +16,6 @@ export async function getEnergyOptimalWindows(_userId: string): Promise<EnergyOp
 	const connected = await dbManager.waitForConnection(3, 2000);
 	if (!connected) return getDefaultWindows();
 
-	const _db = await dbManager.getDb();
-
 	// Query energy tracking data - using a simplified approach
 	// In production, this would query an energySessions table
 	const windows: EnergyOptimalWindow[] = [];

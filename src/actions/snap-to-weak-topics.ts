@@ -1,6 +1,6 @@
 'use server';
 
-import { and, eq } from 'drizzle-orm';
+import { and, asc, eq } from 'drizzle-orm';
 import { headers } from 'next/headers';
 import { getAuth } from '@/lib/auth';
 import { dbManager } from '@/lib/db';
@@ -215,7 +215,7 @@ export async function getSnapIdentifiedWeakTopics(
 	// Get topics with low confidence
 	const lowConfidence = await db.query.topicConfidence.findMany({
 		where: eq(topicConfidence.userId, userId),
-		orderBy: [{ confidenceScore: 'asc' }],
+		orderBy: [asc(topicConfidence.confidenceScore)],
 		limit,
 	});
 

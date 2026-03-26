@@ -225,7 +225,7 @@ export async function getPrioritizedContent(subject: string): Promise<Prioritize
 			const priority = daysRemaining <= 30 ? 90 : daysRemaining <= 90 ? 70 : 50;
 			content.push({
 				type: 'past-paper',
-				title: paper.title || `${paper.paper} ${paper.month} ${paper.year}`,
+				title: `${paper.paper} ${paper.month} ${paper.year}`,
 				priority,
 				reason: daysRemaining <= 30 ? 'Exam practice' : 'Build familiarity',
 			});
@@ -363,7 +363,6 @@ export async function getStudyConsistency(): Promise<{
 		for (let i = 0; i < 30; i++) {
 			const checkDate = new Date(today);
 			checkDate.setDate(checkDate.getDate() - i);
-			const _dateKey = `${checkDate.getFullYear()}-${checkDate.getMonth()}-${checkDate.getDate()}`;
 
 			const hasSession = recentSessions.some((s) => {
 				const sessionDate = new Date(s.startedAt || new Date());
