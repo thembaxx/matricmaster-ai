@@ -60,6 +60,7 @@ export function useSignUp() {
 		}
 	};
 
+<<<<<<< HEAD
 	const handleSocialSignUp = async (provider: 'google' | 'twitter') => {
 		setError(null);
 		_setSocialProvider(provider);
@@ -78,6 +79,14 @@ export function useSignUp() {
 			setError(err instanceof Error ? err.message : `failed to sign up with ${provider}`);
 			_setSocialProvider(null);
 		}
+=======
+	const handleSocialSignUp = async (provider: 'google' | 'twitter' | 'facebook') => {
+		const callbackURL = new URL('/dashboard', window.location.origin).toString();
+		await authClient.signIn.social({
+			provider,
+			callbackURL,
+		});
+>>>>>>> 311a0a62af3962f52c41e918d472122c7e7ef7e5
 	};
 
 	return {

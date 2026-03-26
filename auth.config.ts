@@ -19,10 +19,24 @@ export const auth = betterAuth({
 		requireEmailVerification: process.env.NODE_ENV === 'production',
 	},
 	socialProviders: {
-		google: {
-			clientId: process.env.GOOGLE_CLIENT_ID ?? '',
-			clientSecret: process.env.GOOGLE_SECRET_KEY ?? '',
-		},
+		...(process.env.GOOGLE_CLIENT_ID && (process.env.GOOGLE_CLIENT_SECRET || process.env.GOOGLE_SECRET_KEY) ? {
+			google: {
+				clientId: process.env.GOOGLE_CLIENT_ID,
+				clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? process.env.GOOGLE_SECRET_KEY ?? '',
+			},
+		} : {}),
+		...(process.env.TWITTER_CLIENT_ID && process.env.TWITTER_CLIENT_SECRET ? {
+			twitter: {
+				clientId: process.env.TWITTER_CLIENT_ID,
+				clientSecret: process.env.TWITTER_CLIENT_SECRET,
+			},
+		} : {}),
+		...(process.env.FACEBOOK_CLIENT_ID && process.env.FACEBOOK_CLIENT_SECRET ? {
+			facebook: {
+				clientId: process.env.FACEBOOK_CLIENT_ID,
+				clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
+			},
+		} : {}),
 	},
 	session: {
 		expiresIn: 60 * 60 * 24 * 7,
