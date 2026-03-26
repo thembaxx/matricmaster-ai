@@ -4,7 +4,7 @@ import { ArrowRight01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { FluentEmoji } from '@lobehub/fluent-emoji';
 import { m } from 'framer-motion';
-import { SUBJECTS } from '@/constants/mock-data';
+import { SUBJECTS } from '@/content/mock';
 import { STAGGER_CONTAINER, STAGGER_ITEM } from '@/lib/animation-presets';
 import { SafeImage } from '../SafeImage';
 

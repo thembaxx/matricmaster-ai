@@ -2,8 +2,8 @@ import { DailyMission } from '@/components/Dashboard/DailyMission';
 import { UniversityGoalCard } from '@/components/Dashboard/UniversityGoalCard';
 import { NSCCountdownCard } from '@/components/ExamTimer/NSCCountdownCard';
 import { XpHeader } from '@/components/Gamification/XpHeader';
-import type { DashboardInitialStreak } from '@/constants/mock-dashboard';
 import type { ACHIEVEMENTS } from '@/content';
+import type { DashboardInitialStreak } from '@/content/mock/dashboard';
 import type { UserAchievement } from '@/lib/db/achievement-actions';
 
 interface TodayTabProps {

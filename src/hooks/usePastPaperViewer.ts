@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useMemo, useState } from 'react';
 import { toast } from 'sonner';
-import { PAST_PAPERS } from '@/constants/mock-data';
+import { PAST_PAPERS } from '@/content/mock';
 import { useGeminiQuotaModal } from '@/contexts/GeminiQuotaModalContext';
 import { useQuestionExtractor } from '@/hooks/useQuestionExtractor';
 import { isQuotaError } from '@/lib/ai/quota-error';

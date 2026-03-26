@@ -1,5 +1,5 @@
 import { CATEGORY_LABELS, type QuizQuestion } from '@/constants/periodic-table';
-import { ELEMENT_DETAILS, ELEMENTS } from '@/data/elements';
+import { ELEMENT_DETAILS, ELEMENTS } from '@/content/elements';
 
 export function generateQuizQuestions(count = 10): QuizQuestion[] {
 	const questions: QuizQuestion[] = [];

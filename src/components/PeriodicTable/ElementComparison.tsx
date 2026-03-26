@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/ui/button';
 import { CATEGORY_LABELS, type ElementType, GROUP_COLORS } from '@/constants/periodic-table';
-import { ELEMENT_DETAILS } from '@/data/element-details';
+import { ELEMENT_DETAILS } from '@/content/element-details';
 import { cn } from '@/lib/utils';
 
 interface ElementComparisonProps {

@@ -1,11 +1,11 @@
 import 'server-only';
 import { and, asc, eq } from 'drizzle-orm';
 import {
-	ACHIEVEMENTS,
+	ACHIEVEMENTS_CONTENT,
 	type AchievementContent,
 	GAMIFICATION,
 	type GamificationConfig as StaticGamificationConfig,
-	SUBJECTS,
+	SUBJECTS_CONTENT,
 	type SubjectContent,
 } from '@/content';
 import { getDb } from '../index';
@@ -29,7 +29,7 @@ export async function getSubjects(): Promise<Subject[] | SubjectContent[]> {
 		const db = await getDb();
 		return await db.select().from(subjects).orderBy(asc(subjects.displayOrder));
 	} catch {
-		return SUBJECTS;
+		return SUBJECTS_CONTENT;
 	}
 }
 
@@ -45,7 +45,7 @@ export async function getSubjectBySlug(
 		const result = await db.select().from(subjects).where(eq(subjects.slug, slug));
 		return result[0];
 	} catch {
-		return SUBJECTS.find((s) => s.id === slug);
+		return SUBJECTS_CONTENT.find((s) => s.id === slug);
 	}
 }
 
@@ -62,7 +62,7 @@ export async function getSupportedSubjects(): Promise<Subject[] | SubjectContent
 			.where(eq(subjects.isSupported, true))
 			.orderBy(asc(subjects.displayOrder));
 	} catch {
-		return SUBJECTS.filter((s) => s.isSupported);
+		return SUBJECTS_CONTENT.filter((s) => s.isSupported);
 	}
 }
 
@@ -79,7 +79,7 @@ export async function getAchievements(): Promise<AchievementDefinition[] | Achie
 			.where(eq(achievementDefinitions.isActive, true))
 			.orderBy(asc(achievementDefinitions.displayOrder));
 	} catch {
-		return ACHIEVEMENTS;
+		return ACHIEVEMENTS_CONTENT;
 	}
 }
 

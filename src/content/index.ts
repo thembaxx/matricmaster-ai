@@ -108,9 +108,9 @@ export interface GamificationConfig {
 // STATIC DATA EXPORTS (for seed scripts, build-time, and fallback)
 // ============================================================================
 
-/** Raw content arrays — internal use only (seed scripts, helpers) */
-const SUBJECTS_CONTENT = subjectsData as SubjectContent[];
-const ACHIEVEMENTS_CONTENT = achievementsData as AchievementContent[];
+/** Raw content arrays — for seed scripts, DB fallbacks, and internal helpers */
+export const SUBJECTS_CONTENT = subjectsData as SubjectContent[];
+export const ACHIEVEMENTS_CONTENT = achievementsData as AchievementContent[];
 export const GAMIFICATION = gamificationData as GamificationConfig;
 export const TOPIC_WEIGHTAGES = topicWeightagesData as TopicWeightage[];
 export const EXAM_DATES = examDatesData as ExamDateEntry[];
@@ -331,7 +331,7 @@ export type {
 	Subject as CurriculumSubject,
 	Topic,
 	TopicStatus,
-} from '@/data/curriculum/types';
+} from '@/content/curriculum/types';
 
 // ============================================================================
 // ADAPTER-COMPATIBLE CONSTANTS

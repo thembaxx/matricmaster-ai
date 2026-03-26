@@ -1,13 +1,13 @@
-import accounting from '@/constants/lessons/accounting.json';
-import businessStudies from '@/constants/lessons/business-studies.json';
-import chemistry from '@/constants/lessons/chemistry.json';
-import economics from '@/constants/lessons/economics.json';
-import geography from '@/constants/lessons/geography.json';
-import history from '@/constants/lessons/history.json';
-import lifeOrientation from '@/constants/lessons/life-orientation.json';
-import lifeSciences from '@/constants/lessons/life-sciences.json';
-import mathematics from '@/constants/lessons/mathematics.json';
-import physics from '@/constants/lessons/physics.json';
+import accounting from '@/content/lessons/accounting.json';
+import businessStudies from '@/content/lessons/business-studies.json';
+import chemistry from '@/content/lessons/chemistry.json';
+import economics from '@/content/lessons/economics.json';
+import geography from '@/content/lessons/geography.json';
+import history from '@/content/lessons/history.json';
+import lifeOrientation from '@/content/lessons/life-orientation.json';
+import lifeSciences from '@/content/lessons/life-sciences.json';
+import mathematics from '@/content/lessons/mathematics.json';
+import physics from '@/content/lessons/physics.json';
 
 export type SubjectId =
 	| 'math'

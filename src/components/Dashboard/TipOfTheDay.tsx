@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import quickTips from '@/data/quick-tips.json';
+import quickTips from '@/content/quick-tips.json';
 
 interface Tip {
 	id: string;

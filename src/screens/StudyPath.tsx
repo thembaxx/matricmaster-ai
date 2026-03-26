@@ -10,7 +10,7 @@ import { JourneyStepCard } from '@/components/StudyPath/JourneyStepCard';
 import { SchedulePathModal } from '@/components/StudyPath/SchedulePathModal';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import studyPathsData from '@/constants/study-paths.json';
+import studyPathsData from '@/content/study-paths.json';
 import type { PathScheduleResult, StudyStep } from '@/services/studyPathSchedulerService';
 import { useSmartSchedulerStore } from '@/stores/useSmartSchedulerStore';
 

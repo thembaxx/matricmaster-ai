@@ -13,7 +13,7 @@ import { TopicTree } from '@/components/Curriculum/TopicTree';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import type { Topic } from '@/content';
-import { CURRICULUM_DATA } from '@/data/curriculum';
+import { CURRICULUM_DATA } from '@/content/curriculum';
 import {
 	calculateFilteredStats,
 	createCustomTopic,

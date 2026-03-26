@@ -1,6 +1,6 @@
 'use client';
 
-import type { ShortAnswerQuestion } from '@/constants/quiz/types';
+import type { ShortAnswerQuestion } from '@/content/questions/quiz/types';
 
 export interface GradingResult {
 	score: number;

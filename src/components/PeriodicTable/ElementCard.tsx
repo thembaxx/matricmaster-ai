@@ -8,7 +8,7 @@ import {
 	GROUP_COLORS,
 	type TrendMode,
 } from '@/constants/periodic-table';
-import { ELEMENT_DETAILS } from '@/data/elements';
+import { ELEMENT_DETAILS } from '@/content/elements';
 import { useReducedMotion } from '@/hooks/use-reduced-motion';
 import { cn } from '@/lib/utils';
 

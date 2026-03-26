@@ -15,14 +15,14 @@ import { TodayTab, TodayTabHeader } from '@/components/Dashboard/TodayTab';
 import { FocusContent } from '@/components/Layout/FocusContent';
 import { TimelineSidebar } from '@/components/Layout/TimelineSidebar';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import type { ACHIEVEMENTS } from '@/content';
 import {
 	type BriefingData,
 	type DashboardInitialStreak,
 	DEMO_TIMELINE,
 	MOCK_ACHIEVEMENTS,
 	MOCK_STREAK,
-} from '@/constants/mock-dashboard';
-import type { ACHIEVEMENTS } from '@/content';
+} from '@/content/mock/dashboard';
 import type { UserAchievement } from '@/lib/db/achievement-actions';
 import { useDashboardProgress } from '@/stores/useProgressStore';
 

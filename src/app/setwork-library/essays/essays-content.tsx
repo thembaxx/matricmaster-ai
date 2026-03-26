@@ -11,7 +11,7 @@ import {
 	SelectValue,
 } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import type { Setwork } from '@/data/setworks/types';
+import type { Setwork } from '@/content/setworks/types';
 
 interface EssaysContentProps {
 	setworks: Setwork[];

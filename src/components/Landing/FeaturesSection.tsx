@@ -2,7 +2,7 @@
 
 import { HugeiconsIcon } from '@hugeicons/react';
 import { m } from 'framer-motion';
-import { LANDING_FEATURES } from '@/data/landing';
+import { LANDING_FEATURES } from '@/content/landing';
 import { STAGGER_CONTAINER, STAGGER_ITEM } from '@/lib/animation-presets';
 
 const FEATURES = LANDING_FEATURES;

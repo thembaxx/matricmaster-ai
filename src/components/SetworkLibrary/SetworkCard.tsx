@@ -4,7 +4,7 @@ import { BookOpenIcon, UserIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { useRouter } from 'next/navigation';
 import { Card } from '@/components/ui/card';
-import type { Setwork } from '@/data/setworks/types';
+import type { Setwork } from '@/content/setworks/types';
 
 interface SetworkCardProps {
 	setwork: Setwork;

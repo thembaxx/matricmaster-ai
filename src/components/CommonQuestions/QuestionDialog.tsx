@@ -14,7 +14,7 @@ import { AnimatePresence, m } from 'framer-motion';
 import { AIExplanation } from '@/components/Quiz/AIExplanation';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import type { CommonQuestion } from '@/constants/common-questions';
+import type { CommonQuestion } from '@/content/common-questions';
 import { cn } from '@/lib/utils';
 
 interface QuestionDialogProps {

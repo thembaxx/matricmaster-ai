@@ -1,4 +1,4 @@
-import type { ELEMENTS } from '@/data/element-details';
+import type { ELEMENTS } from '@/content/element-details';
 
 export const GROUP_COLORS: Record<string, string> = {
 	nonmetal: 'bg-primary-violet/20 border-primary-violet/30 text-primary-violet',

@@ -2,7 +2,7 @@
 
 import { useCallback, useMemo } from 'react';
 import type { StudyRecommendation, CurriculumSubject as Subject, Topic } from '@/content';
-import { CURRICULUM_DATA, getTopicPrerequisites } from '@/data/curriculum';
+import { CURRICULUM_DATA, getTopicPrerequisites } from '@/content/curriculum';
 
 const STORAGE_KEY = 'lumni-custom-topics';
 

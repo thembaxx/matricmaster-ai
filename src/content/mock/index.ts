@@ -1,4 +1,4 @@
-import mockData from './mock-data.json';
+import mockData from './seed-data.json';
 
 export interface Subject {
 	id: number;
