@@ -11,7 +11,7 @@ export function useSignUp() {
 	const [error, setError] = useState<string | null>(null);
 	const [showPassword, setShowPassword] = useState(false);
 	const [success, setSuccess] = useState(false);
-	const [socialProvider, setSocialProvider] = useState<string | null>(null);
+	const [socialProvider, _setSocialProvider] = useState<string | null>(null);
 
 	const form = useForm<SignUpValues>({
 		resolver: zodResolver(signUpSchema),
@@ -62,7 +62,7 @@ export function useSignUp() {
 
 	const handleSocialSignUp = async (provider: 'google' | 'twitter') => {
 		setError(null);
-		setSocialProvider(provider);
+		_setSocialProvider(provider);
 		try {
 			const callbackURL = new URL('/dashboard', window.location.origin).toString();
 			const { error: authError } = await authClient.signIn.social({
@@ -72,11 +72,11 @@ export function useSignUp() {
 
 			if (authError) {
 				setError(authError.message || `failed to sign up with ${provider}`);
-				setSocialProvider(null);
+				_setSocialProvider(null);
 			}
 		} catch (err) {
 			setError(err instanceof Error ? err.message : `failed to sign up with ${provider}`);
-			setSocialProvider(null);
+			_setSocialProvider(null);
 		}
 	};
 
