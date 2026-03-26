@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
 interface SocialAuthButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-	provider: 'google' | 'twitter' | 'facebook';
+	provider: 'google' | 'twitter';
 	isLoading?: boolean;
 }
 
@@ -83,7 +83,6 @@ export const SocialAuthButton = memo(function SocialAuthButton({
 }: SocialAuthButtonProps) {
 	const config = {
 		google: {
-<<<<<<< HEAD
 			icon: GoogleIcon,
 			label: 'Google',
 			style: 'hover:bg-secondary text-foreground border-border',
@@ -92,21 +91,6 @@ export const SocialAuthButton = memo(function SocialAuthButton({
 			icon: TwitterIcon,
 			label: 'X',
 			style: 'hover:bg-zinc-900/5 dark:hover:bg-zinc-100/5 text-foreground border-border',
-=======
-			icon: 'logos:google-icon',
-			label: 'google',
-			style: 'hover:bg-secondary text-foreground border-border',
-		},
-		twitter: {
-			icon: 'logos:twitter',
-			label: 'twitter',
-			style: 'hover:bg-blue-50 dark:hover:bg-blue-900/20 text-foreground border-border',
-		},
-		facebook: {
-			icon: 'logos:facebook',
-			label: 'facebook',
-			style: 'hover:bg-blue-50 dark:hover:bg-blue-900/20 text-foreground border-border',
->>>>>>> 311a0a62af3962f52c41e918d472122c7e7ef7e5
 		},
 	};
 
@@ -126,19 +110,8 @@ export const SocialAuthButton = memo(function SocialAuthButton({
 		>
 			<div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-linear-to-r from-transparent via-white/10 to-transparent pointer-events-none" />
 
-<<<<<<< HEAD
 			{isLoading ? <LoadingSpinner className="w-5 h-5" /> : <IconComponent className="w-5 h-5" />}
 			<span className="relative font-semibold text-base">Continue with {label}</span>
-=======
-			{isLoading ? (
-				<Icon icon="eos-icons:loading" className="w-5 h-5 animate-spin" />
-			) : (
-				<Icon icon={icon} className="w-5 h-5" />
-			)}
-			<span className="relative font-semibold text-base whitespace-nowrap overflow-hidden text-ellipsis">
-				continue with {label}
-			</span>
->>>>>>> 311a0a62af3962f52c41e918d472122c7e7ef7e5
 		</Button>
 	);
 });
