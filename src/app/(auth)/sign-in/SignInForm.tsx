@@ -145,13 +145,20 @@ function SignInFormContent() {
 								onClick={() => handleSocialSignIn('google')}
 							/>
 						</m.div>
-						<m.div variants={STAGGER_ITEM}>
-							<SocialAuthButton
-								provider="twitter"
-								isLoading={socialProvider === 'twitter'}
-								onClick={() => handleSocialSignIn('twitter')}
-							/>
-						</m.div>
+						<div className="flex gap-3">
+							<m.div variants={STAGGER_ITEM} className="flex-1">
+								<SocialAuthButton
+									provider="twitter"
+									onClick={() => handleSocialSignIn('twitter')}
+								/>
+							</m.div>
+							<m.div variants={STAGGER_ITEM} className="flex-1">
+								<SocialAuthButton
+									provider="facebook"
+									onClick={() => handleSocialSignIn('facebook')}
+								/>
+							</m.div>
+						</div>
 					</m.div>
 
 					<m.p

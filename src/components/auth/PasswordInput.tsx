@@ -36,14 +36,14 @@ export function PasswordInput({
 				htmlFor="password"
 				className="text-xs font-bold text-label-primary tracking-wider ml-1"
 			>
-				Create Password
+				create password
 			</Label>
 			<div className="relative">
 				<Input
 					{...register('password')}
 					id="password"
 					type={showPassword ? 'text' : 'password'}
-					placeholder="Create a strong password"
+					placeholder="create a strong password"
 					className="bg-background/50 pr-12"
 					maxLength={128}
 					aria-required="true"
@@ -55,7 +55,7 @@ export function PasswordInput({
 					type="button"
 					onClick={onTogglePassword}
 					className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
-					aria-label={showPassword ? 'Hide password' : 'Show password'}
+					aria-label={showPassword ? 'hide password' : 'show password'}
 				>
 					{showPassword ? (
 						<HugeiconsIcon icon={ViewOffIcon} className="w-5 h-5" />

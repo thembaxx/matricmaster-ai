@@ -39,7 +39,7 @@ export const FormFields = memo(function FormFields({
 
 			<m.div variants={STAGGER_ITEM} className="space-y-2">
 				<Label htmlFor="email" className="label-xs ml-1">
-					Email Address
+					email address
 				</Label>
 				<Input
 					{...register('email')}
@@ -62,10 +62,10 @@ export const FormFields = memo(function FormFields({
 			<m.div variants={STAGGER_ITEM} className="space-y-2">
 				<div className="flex items-center justify-between">
 					<Label htmlFor="password" className="label-xs ml-1">
-						Password
+						password
 					</Label>
 					<Link href="/forgot-password" className="label-xs text-primary hover:text-primary/80">
-						Forgot?
+						forgot?
 					</Link>
 				</div>
 				<div className="relative">
@@ -73,7 +73,7 @@ export const FormFields = memo(function FormFields({
 						{...register('password')}
 						id="password"
 						type={showPassword ? 'text' : 'password'}
-						placeholder="Enter your password"
+						placeholder="enter your password"
 						className="bg-background/50 pr-12 rounded-[var(--radius-md)]"
 						aria-required="true"
 						aria-invalid={!!errors.password}
@@ -86,7 +86,7 @@ export const FormFields = memo(function FormFields({
 						type="button"
 						onClick={onTogglePassword}
 						className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
-						aria-label={showPassword ? 'Hide password' : 'Show password'}
+						aria-label={showPassword ? 'hide password' : 'show password'}
 					>
 						{showPassword ? (
 							<HugeiconsIcon icon={ViewOffIcon} className="w-5 h-5" />
@@ -121,12 +121,12 @@ export const FormFields = memo(function FormFields({
 					{isLoading ? (
 						<>
 							<HugeiconsIcon icon={Loading03Icon} className="w-5 h-5 animate-spin" />
-							<span className="sr-only">Signing in...</span>
+							<span className="sr-only">signing in...</span>
 						</>
 					) : successEmail ? (
-						'Success!'
+						'success!'
 					) : (
-						'Sign In'
+						'sign in'
 					)}
 				</Button>
 			</m.div>

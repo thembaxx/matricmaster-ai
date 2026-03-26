@@ -101,24 +101,12 @@ export function useSignIn() {
 		}
 	};
 
-	const handleSocialSignIn = async (provider: 'google' | 'twitter') => {
-		setError(null);
-		setSocialProvider(provider);
-		try {
-			const callbackURL = new URL(safeCallbackUrl, window.location.origin).toString();
-			const { error: authError } = await authClient.signIn.social({
-				provider,
-				callbackURL,
-			});
-
-			if (authError) {
-				setError(authError.message || `failed to sign in with ${provider}`);
-				setSocialProvider(null);
-			}
-		} catch (err) {
-			setError(err instanceof Error ? err.message : `failed to sign in with ${provider}`);
-			setSocialProvider(null);
-		}
+	const handleSocialSignIn = async (provider: 'google' | 'twitter' | 'facebook') => {
+		const callbackURL = new URL(safeCallbackUrl, window.location.origin).toString();
+		await authClient.signIn.social({
+			provider,
+			callbackURL,
+		});
 	};
 
 	return {
