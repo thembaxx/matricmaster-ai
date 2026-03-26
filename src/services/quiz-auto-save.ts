@@ -20,18 +20,60 @@ export interface QuizAutoSaveData {
 const STORAGE_KEY = 'quiz-auto-save';
 const AUTO_SAVE_INTERVAL = 30000;
 
-export function saveQuizState(data: QuizAutoSaveData): void {
+function safeLocalStorageSet(key: string, value: string): boolean {
+	try {
+		localStorage.setItem(key, value);
+		return true;
+	} catch (error) {
+		if (error instanceof DOMException && error.name === 'QuotaExceededError') {
+			try {
+				const keys = Object.keys(localStorage);
+				const oldQuizKeys = keys.filter((k) => k.includes('quiz') || k.includes('temp'));
+				for (const k of oldQuizKeys) {
+					localStorage.removeItem(k);
+				}
+
+				localStorage.setItem(key, value);
+				return true;
+			} catch {
+				try {
+					sessionStorage.setItem(key, value);
+					return true;
+				} catch {
+					console.warn('Storage unavailable, quiz state not saved');
+					return false;
+				}
+			}
+		}
+		console.error('Failed to save quiz state:', error);
+		return false;
+	}
+}
+
+function safeLocalStorageGet(key: string): string | null {
+	try {
+		const value = localStorage.getItem(key);
+		if (value) return value;
+
+		return sessionStorage.getItem(key);
+	} catch {
+		return null;
+	}
+}
+
+export function saveQuizState(data: QuizAutoSaveData): boolean {
 	try {
 		const serialized = JSON.stringify(data);
-		localStorage.setItem(STORAGE_KEY, serialized);
+		return safeLocalStorageSet(STORAGE_KEY, serialized);
 	} catch (error) {
 		console.error('Failed to save quiz state:', error);
+		return false;
 	}
 }
 
 export function loadQuizState(): QuizAutoSaveData | null {
 	try {
-		const stored = localStorage.getItem(STORAGE_KEY);
+		const stored = safeLocalStorageGet(STORAGE_KEY);
 		if (!stored) return null;
 		return JSON.parse(stored) as QuizAutoSaveData;
 	} catch (error) {
@@ -43,6 +85,7 @@ export function loadQuizState(): QuizAutoSaveData | null {
 export function clearSavedQuiz(): void {
 	try {
 		localStorage.removeItem(STORAGE_KEY);
+		sessionStorage.removeItem(STORAGE_KEY);
 	} catch (error) {
 		console.error('Failed to clear saved quiz:', error);
 	}
@@ -68,7 +111,10 @@ export function startAutoSave(
 		try {
 			const state = getState();
 			if (state.quizId) {
-				saveQuizState(state);
+				const saved = saveQuizState(state);
+				if (!saved) {
+					onError?.();
+				}
 			}
 		} catch (error) {
 			console.error('Auto-save failed:', error);

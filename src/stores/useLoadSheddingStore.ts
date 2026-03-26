@@ -19,6 +19,9 @@ interface LoadSheddingStore {
 	isAvailable: boolean;
 	lastUpdated: number | null;
 	selectedArea: string | null;
+	offlineContentReady: boolean;
+	downloadProgress: number;
+	recommendedOfflineTasks: string[];
 	userPreferences: {
 		autoReschedule: boolean;
 		notifyBefore: number;
@@ -35,6 +38,8 @@ interface LoadSheddingStore {
 	) => { id: string; newDate: string; newStartTime: string; reason: string }[];
 	setSelectedArea: (area: string) => void;
 	setPreferences: (prefs: Partial<LoadSheddingStore['userPreferences']>) => void;
+	prepareOfflineContent: () => Promise<void>;
+	getOfflineStudyRecommendations: () => Promise<{ activities: string[]; tips: string[] }>;
 }
 
 const STAGE_IMPACT: Record<number, { online: string[]; offline: string[] }> = {
@@ -74,6 +79,9 @@ export const useLoadSheddingStore = create<LoadSheddingStore>()(
 			lastUpdated: null,
 			selectedArea: null,
 			schedule: [],
+			offlineContentReady: false,
+			downloadProgress: 0,
+			recommendedOfflineTasks: [],
 
 			userPreferences: {
 				autoReschedule: true,
@@ -170,6 +178,65 @@ export const useLoadSheddingStore = create<LoadSheddingStore>()(
 				set((state) => ({
 					userPreferences: { ...state.userPreferences, ...prefs },
 				}));
+			},
+
+			prepareOfflineContent: async () => {
+				const { currentStage, schedule } = get();
+				if (currentStage < 3) return;
+
+				set({ downloadProgress: 10 });
+
+				try {
+					// Get upcoming load shedding blocks
+					const affectedBlocks = schedule.flatMap((s) =>
+						s.stages.map((stage) => ({
+							date: s.date,
+							startTime: stage.start,
+							endTime: stage.end,
+						}))
+					);
+
+					set({ downloadProgress: 30 });
+
+					// Call server action to prepare content
+					const response = await fetch('/api/load-shedding/prepare-offline', {
+						method: 'POST',
+						headers: { 'Content-Type': 'application/json' },
+						body: JSON.stringify({ affectedBlocks }),
+					});
+
+					if (response.ok) {
+						const data = await response.json();
+						set({
+							offlineContentReady: true,
+							recommendedOfflineTasks: data.recommendedTasks || [],
+							downloadProgress: 100,
+						});
+					}
+				} catch (error) {
+					console.error('Failed to prepare offline content:', error);
+				} finally {
+					set({ downloadProgress: 0 });
+				}
+			},
+
+			getOfflineStudyRecommendations: async () => {
+				const { currentStage } = get();
+
+				try {
+					const response = await fetch(`/api/load-shedding/recommendations?stage=${currentStage}`);
+					if (response.ok) {
+						const data = await response.json();
+						return { activities: data.activities, tips: data.tips };
+					}
+				} catch (error) {
+					console.error('Failed to get recommendations:', error);
+				}
+
+				return {
+					activities: ['Flashcard Review', 'Past Paper Practice'],
+					tips: ['Focus on offline activities'],
+				};
 			},
 		}),
 		{
