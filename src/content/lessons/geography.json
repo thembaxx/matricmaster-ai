@@ -1,0 +1,19 @@
+{
+	"geography": [
+		{
+			"id": "geo-climatology-cyclones",
+			"subject": "geography",
+			"topic": "climatology",
+			"title": "Mid-Latitude Cyclones",
+			"content": "# Mid-Latitude Cyclones\n\nMid-latitude cyclones (also called temperate cyclones or extra-tropical cyclones) are low-pressure systems that occur in the middle latitudes.\n\n## Key Characteristics\n\n- **Direction**: Move from West to East (Westerly wind belt).\n- **Fronts**: Consist of a cold front and a warm front.\n- **Occurrence**: Most common in winter for South Africa.\n\n## Stages of Development\n\n1. **Initial Stage**: Cold and warm air masses meet along a polar front.\n2. **Wave Stage**: A disturbance creates a wave-like shape in the front.\n3. **Mature Stage**: Distinct cold and warm fronts develop; low pressure intensifies.\n4. **Occlusion Stage**: The cold front catches up to the warm front.\n5. **Dissipation**: The system weakens and disappears.",
+			"duration": 45,
+			"difficulty": "intermediate",
+			"prerequisites": ["atmospheric-pressure"],
+			"learning_objectives": [
+				"Explain the formation of mid-latitude cyclones",
+				"Identify cold and warm fronts on a synoptic weather map",
+				"Describe the weather changes associated with each front"
+			]
+		}
+	]
+}

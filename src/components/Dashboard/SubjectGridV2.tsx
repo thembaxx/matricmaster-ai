@@ -4,7 +4,7 @@ import { FluentEmoji } from '@lobehub/fluent-emoji';
 import { useQuery } from '@tanstack/react-query';
 import { AnimatePresence, m } from 'framer-motion';
 import { useRouter } from 'next/navigation';
-import { SUBJECTS, type SubjectId } from '@/constants/subjects';
+import { SUBJECTS, type SubjectId } from '@/lib/content-adapter';
 import { getEnrolledSubjectsAction } from '@/lib/db/actions';
 import { cn } from '@/lib/utils';
 

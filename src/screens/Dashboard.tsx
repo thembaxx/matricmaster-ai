@@ -15,7 +15,6 @@ import { TodayTab, TodayTabHeader } from '@/components/Dashboard/TodayTab';
 import { FocusContent } from '@/components/Layout/FocusContent';
 import { TimelineSidebar } from '@/components/Layout/TimelineSidebar';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import type { ACHIEVEMENTS } from '@/constants/achievements';
 import {
 	type BriefingData,
 	type DashboardInitialStreak,
@@ -23,6 +22,7 @@ import {
 	MOCK_ACHIEVEMENTS,
 	MOCK_STREAK,
 } from '@/constants/mock-dashboard';
+import type { ACHIEVEMENTS } from '@/lib/content-adapter';
 import type { UserAchievement } from '@/lib/db/achievement-actions';
 import { useDashboardProgress } from '@/stores/useProgressStore';
 

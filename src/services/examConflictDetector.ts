@@ -1,4 +1,4 @@
-import { type ExamDateEntry, NSC_EXAM_DATES } from '@/data/exam-dates';
+import { type ExamDateEntry, NSC_EXAM_DATES } from '@/content';
 
 export interface ScheduledEvent {
 	id: string;

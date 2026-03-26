@@ -2,8 +2,8 @@
 
 import { eq } from 'drizzle-orm';
 import { headers } from 'next/headers';
-import { getDailyLoginReward } from '@/constants/rewards';
 import { getAuth } from '@/lib/auth';
+import { getDailyLoginReward } from '@/lib/content-adapter';
 import { type DbType, dbManager } from '@/lib/db';
 import { userProgress } from '@/lib/db/schema';
 import { addStreakFreeze } from './streak-actions';

@@ -5,7 +5,7 @@ export { mathematics } from './mathematics';
 export { physicalSciences } from './physical-sciences';
 export type { StudyRecommendation, Subject, Topic, TopicStatus } from './types';
 
-import { SUBJECTS } from '@/constants/subjects';
+import { SUBJECTS } from '@/lib/content-adapter';
 import { afrikaans } from './afrikaans';
 import { english } from './english';
 import { lifeSciences } from './life-sciences';

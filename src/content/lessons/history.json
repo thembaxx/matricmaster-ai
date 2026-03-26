@@ -1,0 +1,19 @@
+{
+	"history": [
+		{
+			"id": "his-cold-war-origins",
+			"subject": "history",
+			"topic": "the cold war",
+			"title": "Origins of the Cold War",
+			"content": "# Origins of the Cold War\n\nThe Cold War was a period of ideological, political, and economic tension between the USA and the USSR from 1945 to 1991.\n\n## Ideological Differences\n\n- **USA**: Capitalism and Democracy. Focus on individual rights and free markets.\n- **USSR**: Communism. Focus on state control and collective goals.\n\n## Key Factors\n\n1. **Yalta and Potsdam Conferences**: Tensions over the future of Europe after WWII.\n2. **Iron Curtain**: Churchill's term for the division between East and West.\n3. **Truman Doctrine and Marshall Plan**: USA's strategy to contain communism and rebuild Europe.",
+			"duration": 50,
+			"difficulty": "intermediate",
+			"prerequisites": ["world-war-ii"],
+			"learning_objectives": [
+				"Explain the ideological differences between the USA and USSR",
+				"Identify the key conferences that shaped the early Cold War",
+				"Understand the concept of containment"
+			]
+		}
+	]
+}

@@ -1,4 +1,4 @@
-import { ACHIEVEMENTS } from '@/constants/achievements';
+import { ACHIEVEMENTS } from '@/lib/content-adapter';
 import type { UserAchievement } from '@/lib/db/achievement-actions';
 import type { UserProgressSummary } from '@/lib/db/progress-actions';
 import type { TimelineTask } from '@/types/timeline';

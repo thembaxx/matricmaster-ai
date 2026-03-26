@@ -9,8 +9,8 @@ import {
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { m } from 'framer-motion';
-import type { Subject } from '@/data/curriculum';
 import { calculateSubjectProgress } from '@/hooks/use-curriculum-progress';
+import type { CurriculumSubject as Subject } from '@/lib/content-adapter';
 import { cn } from '@/lib/utils';
 
 interface CurriculumHeaderProps {

@@ -6,7 +6,7 @@ import { m } from 'framer-motion';
 import { memo, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { ACHIEVEMENTS, getAchievementById } from '@/constants/achievements';
+import { ACHIEVEMENTS, getAchievementById } from '@/lib/content-adapter';
 
 interface BadgeShowcaseProps {
 	unlockedIds: string[];

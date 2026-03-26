@@ -21,6 +21,7 @@ function SignInFormContent() {
 		showPassword,
 		setShowPassword,
 		successEmail,
+		socialProvider,
 		onSubmit,
 		handleSocialSignIn,
 	} = useSignIn();
@@ -138,10 +139,18 @@ function SignInFormContent() {
 						className="flex flex-col gap-3"
 					>
 						<m.div variants={STAGGER_ITEM}>
-							<SocialAuthButton provider="google" onClick={() => handleSocialSignIn('google')} />
+							<SocialAuthButton
+								provider="google"
+								isLoading={socialProvider === 'google'}
+								onClick={() => handleSocialSignIn('google')}
+							/>
 						</m.div>
 						<m.div variants={STAGGER_ITEM}>
-							<SocialAuthButton provider="twitter" onClick={() => handleSocialSignIn('twitter')} />
+							<SocialAuthButton
+								provider="twitter"
+								isLoading={socialProvider === 'twitter'}
+								onClick={() => handleSocialSignIn('twitter')}
+							/>
 						</m.div>
 					</m.div>
 

@@ -1,7 +1,7 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { SUBJECTS } from '@/constants/subjects';
+import { SUBJECTS } from '@/lib/content-adapter';
 import { cn } from '@/lib/utils';
 
 interface AiTutorSubjectsProps {

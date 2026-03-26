@@ -3,8 +3,8 @@ import chemistryData from '@/constants/lessons/chemistry.json';
 import lifeSciencesData from '@/constants/lessons/life-sciences.json';
 import mathematicsData from '@/constants/lessons/mathematics.json';
 import physicsData from '@/constants/lessons/physics.json';
-import { getSubjectEmoji, type SUBJECTS } from '@/constants/subjects';
 import { useAiContext } from '@/hooks/useAiContext';
+import { getSubjectEmoji, type SUBJECTS } from '@/lib/content-adapter';
 
 export interface Lesson {
 	id: string;

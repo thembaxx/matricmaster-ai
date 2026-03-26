@@ -1,5 +1,5 @@
-import { isNSCSupportedSubject } from '@/constants/subjects';
 import { generateTextWithAI } from '@/lib/ai/provider';
+import { isNSCSupportedSubject } from '@/lib/content-adapter';
 import { logInfo, logWarn } from '@/lib/monitoring';
 import { type ExtractedPaper, extractedPaperSchema } from './pdfExtractor';
 
