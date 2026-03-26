@@ -22,7 +22,7 @@ import {
 	MOCK_ACHIEVEMENTS,
 	MOCK_STREAK,
 } from '@/constants/mock-dashboard';
-import type { ACHIEVEMENTS } from '@/lib/content-adapter';
+import type { ACHIEVEMENTS } from '@/content';
 import type { UserAchievement } from '@/lib/db/achievement-actions';
 import { useDashboardProgress } from '@/stores/useProgressStore';
 

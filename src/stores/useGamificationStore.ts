@@ -4,7 +4,7 @@ import { toast } from 'sonner';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { AchievementToast } from '@/components/Gamification/AchievementToast';
-import { getAchievementById } from '@/lib/content-adapter';
+import { getAchievementById } from '@/content';
 import { checkAndUnlockAchievements } from '@/lib/db/achievement-actions';
 
 export interface UnlockedAchievement {

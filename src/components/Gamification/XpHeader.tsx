@@ -6,7 +6,7 @@ import { useQuery } from '@tanstack/react-query';
 import { memo, useMemo } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { ACHIEVEMENT_POINTS_MAP, type ACHIEVEMENTS } from '@/lib/content-adapter';
+import { ACHIEVEMENT_POINTS_MAP, type ACHIEVEMENTS } from '@/content';
 import { getUserAchievements, type UserAchievement } from '@/lib/db/achievement-actions';
 import { getUserStreak } from '@/lib/db/progress-actions';
 import { formatXp, getLevelInfo } from '@/lib/level-utils';

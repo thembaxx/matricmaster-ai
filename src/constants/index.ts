@@ -12,5 +12,4 @@ export {
 	type TrendMode,
 } from './periodic-table';
 export * from './rewards';
-export * from './subjects';
 export * from './themes';

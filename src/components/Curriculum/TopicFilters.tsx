@@ -8,8 +8,8 @@ import {
 	Tick01Icon,
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
+import type { TopicStatus } from '@/content';
 import { CURRICULUM_DATA } from '@/data/curriculum';
-import type { TopicStatus } from '@/lib/content-adapter';
 import { cn } from '@/lib/utils';
 
 export type FilterType = TopicStatus | 'all' | 'needs-attention';

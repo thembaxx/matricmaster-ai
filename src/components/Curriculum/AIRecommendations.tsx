@@ -6,7 +6,7 @@ import {
 	ArrowUp01Icon as TrendingUpIcon,
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
-import type { StudyRecommendation, CurriculumSubject as Subject } from '@/lib/content-adapter';
+import type { StudyRecommendation, CurriculumSubject as Subject } from '@/content';
 
 interface AIRecommendationsProps {
 	recommendations: StudyRecommendation[];

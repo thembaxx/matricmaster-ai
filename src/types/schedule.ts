@@ -1,4 +1,4 @@
-import { SUBJECTS as CENTRAL_SUBJECTS } from '@/lib/content-adapter';
+import { SUBJECTS as CENTRAL_SUBJECTS } from '@/content';
 
 export type SubjectId =
 	| 'mathematics'

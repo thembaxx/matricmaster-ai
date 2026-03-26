@@ -3,7 +3,7 @@ import { UniversityGoalCard } from '@/components/Dashboard/UniversityGoalCard';
 import { NSCCountdownCard } from '@/components/ExamTimer/NSCCountdownCard';
 import { XpHeader } from '@/components/Gamification/XpHeader';
 import type { DashboardInitialStreak } from '@/constants/mock-dashboard';
-import type { ACHIEVEMENTS } from '@/lib/content-adapter';
+import type { ACHIEVEMENTS } from '@/content';
 import type { UserAchievement } from '@/lib/db/achievement-actions';
 
 interface TodayTabProps {

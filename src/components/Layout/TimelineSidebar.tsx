@@ -7,8 +7,8 @@ import { m } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { useMemo, useState } from 'react';
 import { Button } from '@/components/ui/button';
+import { SUBJECTS } from '@/content';
 import { authClient } from '@/lib/auth-client';
-import { SUBJECTS } from '@/lib/content-adapter';
 import { getTodayTimelineEventsAction } from '@/lib/db/actions';
 import { cn } from '@/lib/utils';
 

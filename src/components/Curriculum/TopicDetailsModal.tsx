@@ -15,7 +15,7 @@ import { HugeiconsIcon } from '@hugeicons/react';
 import { m } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import type { CurriculumSubject as Subject, Topic } from '@/lib/content-adapter';
+import type { CurriculumSubject as Subject, Topic } from '@/content';
 import { cn } from '@/lib/utils';
 
 interface TopicDetailsModalProps {
