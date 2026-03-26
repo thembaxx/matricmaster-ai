@@ -6,6 +6,7 @@ import { ViewToggle } from '@/components/Schedule/ViewToggle';
 import { ProgressRing } from '@/components/Timer/ProgressRing';
 import { TaskChecklist } from '@/components/Timer/TaskChecklist';
 import { TimerControls } from '@/components/Timer/TimerControls';
+import { Card } from '@/components/ui/card';
 import { useSchedule } from '@/stores/useScheduleStore';
 import { SUBJECTS } from '@/types/schedule';
 
@@ -49,7 +50,7 @@ export function ScheduleView() {
 						className="mt-6"
 					>
 						{currentTask ? (
-							<div className="bg-card/80 backdrop-blur-sm rounded-3xl p-6 shadow-lg border border-border/50">
+							<Card className="p-6 shadow-lg border-border/50">
 								<div className="text-center mb-8">
 									{subject && (
 										<div
@@ -91,7 +92,7 @@ export function ScheduleView() {
 										<TaskChecklist task={currentTask} />
 									</div>
 								)}
-							</div>
+							</Card>
 						) : (
 							<div className="text-center py-12">
 								<div className="text-6xl mb-4">🎉</div>

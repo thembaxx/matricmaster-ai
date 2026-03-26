@@ -126,7 +126,16 @@ async function applyResolution(userId: string, resolution: ResolutionInput): Pro
 
 	// For now, we log the resolution action
 	// The actual data application happens client-side via the sync service
+	// The client stores conflicts in IndexedDB and applies resolutions locally
 
+	log.info('Conflict resolution acknowledged', {
+		userId,
+		conflictId,
+		strategy,
+		message: 'Resolution will be applied client-side via sync service',
+	});
+
+	// Return success - client-side sync service handles the actual data update
 	return Promise.resolve();
 }
 

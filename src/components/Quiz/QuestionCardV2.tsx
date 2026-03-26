@@ -7,6 +7,7 @@ import {
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { m } from 'framer-motion';
+import { Card } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import { InteractiveDiagram } from './InteractiveDiagram';
 
@@ -39,7 +40,7 @@ export function QuestionCard({
 			animate={{ opacity: 1, y: 0 }}
 			transition={{ delay: 0.1 }}
 		>
-			<div className="bg-card rounded-[2.5rem] shadow-tiimo border border-border/50 p-8 sm:p-10">
+			<Card className="shadow-tiimo border-border/50 p-8 sm:p-10">
 				<div className="mb-8">
 					<div className="flex items-center gap-2 mb-4">
 						<div className="p-1.5 bg-tiimo-lavender/10 rounded-lg">
@@ -123,7 +124,7 @@ export function QuestionCard({
 						);
 					})}
 				</div>
-			</div>
+			</Card>
 		</m.div>
 	);
 }

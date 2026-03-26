@@ -5,6 +5,7 @@ import { HugeiconsIcon } from '@hugeicons/react';
 import { useQuery } from '@tanstack/react-query';
 import { m } from 'framer-motion';
 import { memo, useMemo } from 'react';
+import { Card } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import {
 	getUserProgressSummary,
@@ -88,7 +89,7 @@ export const DailyGoals = memo(function DailyGoals({
 
 	if (isPending) {
 		return (
-			<div className="p-8 bg-card rounded-[2.5rem] shadow-tiimo border border-border/50 h-full">
+			<Card className="p-8 shadow-tiimo border-border/50 h-full">
 				<div className="space-y-6">
 					<Skeleton className="h-6 w-32 rounded-full" />
 					{[1, 2, 3].map((item) => (
@@ -101,12 +102,12 @@ export const DailyGoals = memo(function DailyGoals({
 						</div>
 					))}
 				</div>
-			</div>
+			</Card>
 		);
 	}
 
 	return (
-		<div className="p-8 bg-card rounded-[2.5rem] shadow-tiimo border border-border/50 h-full relative overflow-hidden">
+		<Card className="p-8 shadow-tiimo border-border/50 h-full relative overflow-hidden">
 			<div className="flex items-center justify-between mb-8">
 				<div className="flex items-center gap-3">
 					<div className="p-2.5 bg-tiimo-lavender/15 rounded-2xl">
@@ -190,6 +191,6 @@ export const DailyGoals = memo(function DailyGoals({
 					<p className="text-xs text-tiimo-green/70 font-medium">You crushed your goals today.</p>
 				</m.div>
 			)}
-		</div>
+		</Card>
 	);
 });

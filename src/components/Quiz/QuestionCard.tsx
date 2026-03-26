@@ -4,6 +4,7 @@ import { Flag02Icon, FlagIcon, Mortarboard01Icon } from '@hugeicons/core-free-ic
 import { HugeiconsIcon } from '@hugeicons/react';
 import { AnimatePresence, m } from 'framer-motion';
 import { useCallback } from 'react';
+import { Card } from '@/components/ui/card';
 import { AnswerOption, type AnswerOptionProps } from './AnswerOption';
 import { InteractiveDiagram } from './InteractiveDiagram';
 
@@ -90,7 +91,7 @@ export function QuestionCard({
 			animate={{ opacity: 1, y: 0 }}
 			transition={{ delay: 0.1 }}
 		>
-			<div className="bg-card rounded-[2.5rem] shadow-lg border border-border/50 p-8 sm:p-10">
+			<Card className="shadow-lg border-border/50 p-8 sm:p-10">
 				<div className="mb-8">
 					<div className="flex items-center justify-between gap-2 mb-4">
 						<div className="flex items-center gap-2">
@@ -177,7 +178,7 @@ export function QuestionCard({
 						</div>
 					</m.div>
 				</AnimatePresence>
-			</div>
+			</Card>
 		</m.div>
 	);
 }
