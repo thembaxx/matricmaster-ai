@@ -1,9 +1,12 @@
 'use client';
 
 import { AnimatePresence, m } from 'framer-motion';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { MathInputField } from '@/components/MathKeyboard';
 import { AIExplanation } from '@/components/Quiz/AIExplanation';
 import { AnswerBreakdown } from '@/components/Quiz/AnswerBreakdown';
+import { DifficultyIndicator } from '@/components/Quiz/DifficultyIndicator';
+import { FlaggedReviewPanel } from '@/components/Quiz/FlaggedReviewPanel';
 import { MathKeyboard } from '@/components/Quiz/MathKeyboard';
 import { QuestionCard } from '@/components/Quiz/QuestionCard';
 import { QuestionExtras } from '@/components/Quiz/QuestionExtras';
@@ -14,6 +17,8 @@ import { ShortAnswerInput } from '@/components/Quiz/ShortAnswerInput';
 import { SubjectSelector } from '@/components/Quiz/SubjectSelector';
 import type { AnyQuizQuestion, ShortAnswerQuestion } from '@/constants/quiz/types';
 import { useMathKeyboard } from '@/hooks/use-math-keyboard';
+import { useAdaptiveDifficulty } from '@/stores/useAdaptiveDifficultyStore';
+import { useQuestionFlagStore } from '@/stores/useQuestionFlagStore';
 import { QuizTimer } from './QuizTimer';
 import { QuizToolbar } from './QuizToolbar';
 import { ShortAnswerFeedback } from './ShortAnswerFeedback';
@@ -25,6 +30,7 @@ interface QuestionOption {
 }
 
 interface QuizContentProps {
+	quizId: string;
 	quiz: {
 		title: string;
 		subject: string;
@@ -62,6 +68,7 @@ interface QuizContentProps {
 	onCloseSubjectSelector: () => void;
 	onDismissStruggle: () => void;
 	onExit: () => void;
+	onNavigateToQuestion?: (index: number) => void;
 }
 
 function isShortAnswer(q: AnyQuizQuestion): q is ShortAnswerQuestion {
@@ -80,6 +87,7 @@ const questionTransition = {
 };
 
 export function QuizContent({
+	quizId,
 	quiz,
 	currentQuestionIndex,
 	selectedOption,
@@ -110,6 +118,7 @@ export function QuizContent({
 	onCloseSubjectSelector,
 	onDismissStruggle,
 	onExit,
+	onNavigateToQuestion,
 }: QuizContentProps) {
 	const {
 		showMathKeyboard,
@@ -121,9 +130,58 @@ export function QuizContent({
 		moveCursor,
 	} = useMathKeyboard();
 
+	const [showReviewPanel, setShowReviewPanel] = useState(false);
+
+	const { currentDifficulty, adjustDifficulty, getCurrentMetrics, resetMetrics } =
+		useAdaptiveDifficulty();
+
+	const [difficultyRecommendation, setDifficultyRecommendation] = useState<string | undefined>();
+
+	const { toggleFlag, getFlaggedQuestions, isFlagged, clearFlags } = useQuestionFlagStore();
+
 	const currentQuestion = quiz.questions[currentQuestionIndex];
 	const isMCQ = !currentQuestion.type || currentQuestion.type === 'mcq';
 	const questionKey = currentQuestion.id;
+
+	const flaggedCount = getFlaggedQuestions(quizId).length;
+	const currentQuestionFlagged = isFlagged(quizId, questionKey);
+
+	const handleToggleFlag = useCallback(() => {
+		toggleFlag(quizId, questionKey);
+	}, [quizId, questionKey, toggleFlag]);
+
+	const handleShowReviewPanel = useCallback(() => {
+		setShowReviewPanel(true);
+	}, []);
+
+	const handleCloseReviewPanel = useCallback(() => {
+		setShowReviewPanel(false);
+	}, []);
+
+	const handleNavigateToQuestion = useCallback(
+		(index: number) => {
+			setShowReviewPanel(false);
+			onNavigateToQuestion?.(index);
+		},
+		[onNavigateToQuestion]
+	);
+
+	const handleClearAllFlags = useCallback(() => {
+		clearFlags(quizId);
+	}, [quizId, clearFlags]);
+
+	const flaggedQuestions = getFlaggedQuestions(quizId)
+		.map((qId) => {
+			const q = quiz.questions.find((que) => que.id === qId);
+			return q
+				? {
+						id: q.id,
+						index: quiz.questions.indexOf(q),
+						question: q.question,
+					}
+				: null;
+		})
+		.filter(Boolean) as Array<{ id: string; index: number; question: string }>;
 
 	const options: QuestionOption[] =
 		isMCQ && 'options' in currentQuestion
@@ -152,6 +210,24 @@ export function QuizContent({
 
 	const hasAnswer = answerText.trim().length > 0;
 
+	const metricsRef = useRef(false);
+	useEffect(() => {
+		if (!metricsRef.current) {
+			resetMetrics();
+			metricsRef.current = true;
+		}
+	}, [resetMetrics]);
+
+	useEffect(() => {
+		if (isChecked && isCorrect !== null) {
+			const result = adjustDifficulty(isCorrect);
+			setDifficultyRecommendation(result.recommendation);
+			if (result.newDifficulty !== currentDifficulty) {
+				setTimeout(() => setDifficultyRecommendation(undefined), 3000);
+			}
+		}
+	}, [isChecked, isCorrect, adjustDifficulty, currentDifficulty]);
+
 	return (
 		<>
 			<QuizToolbar
@@ -160,6 +236,8 @@ export function QuizContent({
 				onExit={onExit}
 				onModeChange={onModeChange}
 				onShowSubjectSelector={onShowSubjectSelector}
+				flaggedCount={flaggedCount}
+				onShowReviewPanel={handleShowReviewPanel}
 			/>
 
 			<QuizTimer elapsedSeconds={elapsedSeconds} />
@@ -172,6 +250,18 @@ export function QuizContent({
 				elapsedTime={formatTime(elapsedSeconds)}
 				difficulty={difficulty}
 			/>
+
+			<div className="mb-4">
+				<DifficultyIndicator
+					currentLevel={currentDifficulty}
+					correct={getCurrentMetrics().correct}
+					incorrect={getCurrentMetrics().incorrect}
+					streakCorrect={getCurrentMetrics().streakCorrect}
+					streakIncorrect={getCurrentMetrics().streakIncorrect}
+					recommendation={difficultyRecommendation}
+					showStats={true}
+				/>
+			</div>
 
 			<QuizProgress
 				currentQuestion={currentQuestionIndex + 1}
@@ -200,6 +290,8 @@ export function QuizContent({
 									isChecked={isChecked}
 									onSelect={onSelectOption}
 									diagram={'diagram' in currentQuestion ? currentQuestion.diagram : undefined}
+									isFlagged={currentQuestionFlagged}
+									onToggleFlag={handleToggleFlag}
 								/>
 							</m.div>
 						) : isShortAnswer(currentQuestion) ? (
@@ -325,6 +417,14 @@ export function QuizContent({
 					onClose={onCloseSubjectSelector}
 				/>
 			)}
+
+			<FlaggedReviewPanel
+				flaggedQuestions={flaggedQuestions}
+				onNavigateToQuestion={handleNavigateToQuestion}
+				onClearAll={handleClearAllFlags}
+				isOpen={showReviewPanel}
+				onClose={handleCloseReviewPanel}
+			/>
 		</>
 	);
 }

@@ -1,6 +1,6 @@
 'use client';
 
-import { Mortarboard01Icon } from '@hugeicons/core-free-icons';
+import { Flag02Icon, FlagIcon, Mortarboard01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { AnimatePresence, m } from 'framer-motion';
 import { useCallback } from 'react';
@@ -21,6 +21,8 @@ interface QuestionCardProps {
 	isChecked: boolean;
 	onSelect: (id: string) => void;
 	diagram?: string;
+	isFlagged?: boolean;
+	onToggleFlag?: () => void;
 }
 
 const questionVariants = {
@@ -42,6 +44,8 @@ export function QuestionCard({
 	isChecked,
 	onSelect,
 	diagram,
+	isFlagged = false,
+	onToggleFlag,
 }: QuestionCardProps) {
 	const handleKeyDown = useCallback(
 		(e: React.KeyboardEvent) => {
@@ -88,11 +92,28 @@ export function QuestionCard({
 		>
 			<div className="bg-card rounded-[2.5rem] shadow-lg border border-border/50 p-8 sm:p-10">
 				<div className="mb-8">
-					<div className="flex items-center gap-2 mb-4">
-						<div className="p-1.5 bg-tiimo-lavender/10 rounded-lg">
-							<HugeiconsIcon icon={Mortarboard01Icon} className="w-4 h-4 text-tiimo-lavender" />
+					<div className="flex items-center justify-between gap-2 mb-4">
+						<div className="flex items-center gap-2">
+							<div className="p-1.5 bg-tiimo-lavender/10 rounded-lg">
+								<HugeiconsIcon icon={Mortarboard01Icon} className="w-4 h-4 text-tiimo-lavender" />
+							</div>
+							<span className="text-[10px] font-medium text-tiimo-lavender">Practice problem</span>
 						</div>
-						<span className="text-[10px] font-medium text-tiimo-lavender">Practice problem</span>
+						{onToggleFlag && (
+							<button
+								type="button"
+								onClick={onToggleFlag}
+								className="p-2 rounded-full hover:bg-muted/50 transition-colors"
+								aria-label={isFlagged ? 'Unflag question' : 'Flag question for review'}
+							>
+								<HugeiconsIcon
+									icon={isFlagged ? Flag02Icon : FlagIcon}
+									className={`w-5 h-5 transition-colors ${
+										isFlagged ? 'text-brand-orange' : 'text-muted-foreground/50'
+									}`}
+								/>
+							</button>
+						)}
 					</div>
 
 					<AnimatePresence mode="wait">
