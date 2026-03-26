@@ -134,7 +134,15 @@ export default function PastPaperViewer({
 		return <LoadingState />;
 	}
 
-	if (showPdfFallback) {
+	if (!paper && !extractedPaper) {
+		return <LoadingState />;
+	}
+
+	if (!paper) {
+		return null;
+	}
+
+	if (showPdfFallback && paper) {
 		return (
 			<div className="fixed inset-0 z-[200] bg-background overflow-hidden animate-in fade-in duration-300">
 				<PdfViewer
@@ -146,10 +154,17 @@ export default function PastPaperViewer({
 		);
 	}
 
-	if (error && !extractedPaper) {
+	if (error && !extractedPaper && paper) {
 		return (
 			<ErrorState
-				paper={paper}
+				paper={{
+					id: paper.id,
+					subject: paper.subject,
+					paper: paper.paper,
+					year: paper.year,
+					month: paper.month,
+					downloadUrl: paper.downloadUrl,
+				}}
 				error={error}
 				onRetry={() =>
 					extractQuestions(

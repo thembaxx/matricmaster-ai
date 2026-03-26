@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useReducer, useRef, useState } from 'react';
 import { getAdaptiveDifficultyServer, recordQuestionAttempt } from '@/actions/spaced-repetition';
-import { QUIZ_DATA } from '@/content/questions';
+import { QUESTIONS_DATA as QUIZ_DATA } from '@/content/questions';
 import type { ShortAnswerQuestion } from '@/content/questions/quiz/types';
 import { useGeminiQuotaModal } from '@/contexts/GeminiQuotaModalContext';
 import { useQuizCompletion } from '@/hooks/use-quiz-completion';

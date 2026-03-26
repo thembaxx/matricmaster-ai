@@ -1,6 +1,6 @@
 import dynamic from 'next/dynamic';
 import { QuizSkeleton } from '@/components/QuizSkeleton';
-import { QUIZ_DATA } from '@/content/questions';
+import { QUESTIONS_DATA as QUIZ_DATA } from '@/content/questions';
 
 const QuizScreen = dynamic(() => import('@/screens/Quiz'), {
 	ssr: true,

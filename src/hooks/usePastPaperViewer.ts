@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useMemo, useState } from 'react';
 import { toast } from 'sonner';
-import { PAST_PAPERS } from '@/content/mock';
+import { mockPastPapers as PAST_PAPERS } from '@/content/mock';
 import { useGeminiQuotaModal } from '@/contexts/GeminiQuotaModalContext';
 import { useQuestionExtractor } from '@/hooks/useQuestionExtractor';
 import { isQuotaError } from '@/lib/ai/quota-error';
@@ -59,7 +59,20 @@ export function usePastPaperViewer(initialId?: string, initialMode?: string) {
 		}
 
 		const found = PAST_PAPERS.find((p) => p.id === paperId);
-		return found || null;
+		if (found) {
+			return {
+				id: found.id,
+				paperId: found.paperId,
+				subject: found.subject,
+				paper: found.paper,
+				year: found.year,
+				month: found.month,
+				marks: found.totalMarks || 0,
+				downloadUrl: found.storedPdfUrl || found.originalPdfUrl,
+				markdownUrl: found.markdownFileUrl,
+			};
+		}
+		return null;
 	}, [paperId]);
 
 	const { data: paper, isLoading: isPaperLoading } = useQuery({
@@ -69,7 +82,21 @@ export function usePastPaperViewer(initialId?: string, initialMode?: string) {
 		staleTime: 10 * 60 * 1000,
 	});
 
-	const paperData = paper || PAST_PAPERS[0];
+	const paperData =
+		paper ||
+		(PAST_PAPERS[0]
+			? {
+					id: PAST_PAPERS[0].id,
+					paperId: PAST_PAPERS[0].paperId,
+					subject: PAST_PAPERS[0].subject,
+					paper: PAST_PAPERS[0].paper,
+					year: PAST_PAPERS[0].year,
+					month: PAST_PAPERS[0].month,
+					marks: PAST_PAPERS[0].totalMarks || 0,
+					downloadUrl: PAST_PAPERS[0].storedPdfUrl || PAST_PAPERS[0].originalPdfUrl,
+					markdownUrl: PAST_PAPERS[0].markdownFileUrl,
+				}
+			: null);
 
 	const shouldExtractQuestions = useMemo(
 		() => mode !== 'read' && paper && !isPaperLoading,
@@ -78,7 +105,7 @@ export function usePastPaperViewer(initialId?: string, initialMode?: string) {
 
 	useMemo(() => {
 		if (shouldExtractQuestions && paperData) {
-			const paperIdToUse = 'paperId' in paperData ? paperData.paperId : paperData.id;
+			const paperIdToUse = paperData.paperId || paperData.id;
 			extractQuestions(
 				paperIdToUse,
 				paperData.downloadUrl,
@@ -91,7 +118,7 @@ export function usePastPaperViewer(initialId?: string, initialMode?: string) {
 	}, [shouldExtractQuestions, paperData, extractQuestions]);
 
 	const handleExplainQuestion = useCallback(async () => {
-		if (!currentQuestion) return;
+		if (!currentQuestion || !paperData) return;
 		setIsExplaining(true);
 		setShowAiExplanation(true);
 		try {
@@ -108,10 +135,10 @@ export function usePastPaperViewer(initialId?: string, initialMode?: string) {
 		} finally {
 			setIsExplaining(false);
 		}
-	}, [currentQuestion, paperData.subject, triggerQuotaError]);
+	}, [currentQuestion, paperData, triggerQuotaError]);
 
 	const handleSaveToFlashcards = useCallback(async () => {
-		if (!currentQuestion) return;
+		if (!currentQuestion || !paperData) return;
 
 		setIsSavingToFlashcards(true);
 		try {
@@ -135,10 +162,12 @@ export function usePastPaperViewer(initialId?: string, initialMode?: string) {
 		} finally {
 			setIsSavingToFlashcards(false);
 		}
-	}, [currentQuestion, paperData.subject, aiExplanation]);
+	}, [currentQuestion, paperData, aiExplanation]);
 
 	const handleConvertToInteractive = () => {
-		router.push(`/quiz?id=${paperData.id}`);
+		if (paperData) {
+			router.push(`/quiz?id=${paperData.id}`);
+		}
 	};
 
 	const progress = totalQuestions > 0 ? ((currentQuestionIndex + 1) / totalQuestions) * 100 : 0;

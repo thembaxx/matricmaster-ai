@@ -4,7 +4,7 @@ import { ArrowRight01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { FluentEmoji } from '@lobehub/fluent-emoji';
 import { m } from 'framer-motion';
-import { SUBJECTS } from '@/content/mock';
+import { SUBJECTS_CONTENT } from '@/content';
 import { STAGGER_CONTAINER, STAGGER_ITEM } from '@/lib/animation-presets';
 import { SafeImage } from '../SafeImage';
 
@@ -38,7 +38,7 @@ export function SubjectsSection({ onAuthRequired }: SubjectsSectionProps) {
 				viewport={{ once: true, margin: '-100px' }}
 				className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4"
 			>
-				{SUBJECTS.map((subject) => {
+				{SUBJECTS_CONTENT.map((subject) => {
 					const fluentEmoji = subject.fluentEmoji ?? 'Books';
 					const imgSrc = subject.imgSrc;
 
@@ -47,16 +47,16 @@ export function SubjectsSection({ onAuthRequired }: SubjectsSectionProps) {
 							key={subject.id}
 							type="button"
 							variants={STAGGER_ITEM}
-							onClick={() => onAuthRequired(subject.path)}
+							onClick={() => onAuthRequired(`/subjects/${subject.id}`)}
 							className="tiimo-card group relative p-6 text-left overflow-hidden will-change-transform"
 						>
 							<div
-								className={`absolute top-0 right-0 w-32 h-32 ${subject.bg} rounded-full -mr-16 -mt-16 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-3xl`}
+								className={`absolute top-0 right-0 w-32 h-32 ${subject.bgColor} rounded-full -mr-16 -mt-16 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-3xl`}
 							/>
 
 							<div className="relative z-10">
 								<div
-									className={`w-12 h-12 rounded-[var(--radius-lg)] ${subject.bg} flex items-center justify-center mb-4`}
+									className={`w-12 h-12 rounded-[var(--radius-lg)] ${subject.bgColor} flex items-center justify-center mb-4`}
 								>
 									{imgSrc && (
 										<SafeImage
@@ -77,7 +77,7 @@ export function SubjectsSection({ onAuthRequired }: SubjectsSectionProps) {
 									)}
 								</div>
 								<h3 className="text-lg font-bold mb-1">{subject.name}</h3>
-								<p className="text-sm text-muted-foreground">{subject.topics}</p>
+								<p className="text-sm text-muted-foreground">{subject.description}</p>
 							</div>
 
 							<div className="absolute bottom-4 right-4 w-8 h-8 rounded-full bg-secondary flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:translate-x-0 -translate-x-2">

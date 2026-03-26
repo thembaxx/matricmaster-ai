@@ -342,7 +342,7 @@ export async function getTodayTimelineEventsAction(): Promise<TodayTimelineEvent
 			)
 			.orderBy(asc(calendarEvents.startTime));
 
-		const { SUBJECTS } = await import('@/constants/subjects');
+		const { SUBJECTS } = await import('@/content');
 
 		const now = new Date();
 		const currentHour = now.getHours();
@@ -520,7 +520,7 @@ export async function getRecentSessionsWithContextAction(): Promise<RecentSessio
 			.orderBy(desc(studySessions.completedAt))
 			.limit(10);
 
-		const { SUBJECTS } = await import('@/constants/subjects');
+		const { SUBJECTS } = await import('@/content');
 
 		return sessions.map((s) => {
 			const subjectKey = Object.keys(SUBJECTS).find(

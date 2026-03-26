@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { QUIZ_DATA } from '@/content/questions';
+import { QUESTIONS_DATA as QUIZ_DATA } from '@/content/questions';
 import { handleApiError } from '@/lib/api-error-handler';
 import type { PastPaper } from '@/lib/db/schema';
 
