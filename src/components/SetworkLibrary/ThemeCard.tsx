@@ -1,7 +1,7 @@
 'use client';
 
 import { Card } from '@/components/ui/card';
-import type { Theme } from '@/data/setworks/types';
+import type { Theme } from '@/content/setworks/types';
 
 interface ThemeCardProps {
 	theme: Theme;

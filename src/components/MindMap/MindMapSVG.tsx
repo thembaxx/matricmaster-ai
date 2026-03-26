@@ -2,7 +2,7 @@
 
 import type React from 'react';
 import { useState } from 'react';
-import type { MindMapNode } from '@/data/mindmaps';
+import type { MindMapNode } from '@/content/mindmaps';
 import { initializePositions, type NodePosition } from './mindmap-utils';
 
 interface MindMapSVGProps {

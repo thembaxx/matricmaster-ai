@@ -1,4 +1,4 @@
-import { SUBJECTS } from '@/lib/content-adapter';
+import { SUBJECTS } from '@/content';
 import type { Subject } from './types';
 
 export const english: Subject = {

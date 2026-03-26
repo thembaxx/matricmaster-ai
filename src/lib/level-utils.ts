@@ -6,7 +6,7 @@ import {
 	LEVEL_TITLES,
 	MAX_LEVEL,
 	TOTAL_XP_AT_LEVEL,
-} from '@/lib/content-adapter';
+} from '@/content';
 
 export interface LevelInfo {
 	level: number;

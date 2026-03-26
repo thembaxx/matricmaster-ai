@@ -1,7 +1,4 @@
-export * from './achievements';
-export { COMMON_QUESTIONS, type CommonQuestion } from './common-questions';
-export * from './gamification';
-export * from './levels';
+export { COMMON_QUESTIONS, type CommonQuestion } from '../content/common-questions';
 export {
 	CATEGORY_LABELS,
 	type ElementComparisonData,
@@ -11,6 +8,4 @@ export {
 	type QuizQuestion,
 	type TrendMode,
 } from './periodic-table';
-export * from './rewards';
-export * from './subjects';
 export * from './themes';

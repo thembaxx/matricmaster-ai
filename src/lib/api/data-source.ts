@@ -28,7 +28,7 @@ import {
 	mockUserProgress,
 	mockUserSettings,
 	mockUserSubscription,
-} from '@/data';
+} from '@/content/mock';
 
 export type DataSource = 'mock' | 'real';
 

@@ -4,7 +4,7 @@ import { LockIcon, StarIcon, Tick01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { m } from 'framer-motion';
 import { memo } from 'react';
-import { ACHIEVEMENTS } from '@/lib/content-adapter';
+import { ACHIEVEMENTS } from '@/content';
 
 interface AchievementBadgesProps {
 	unlockedIds: string[];

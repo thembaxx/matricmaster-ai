@@ -3,7 +3,7 @@
 import { QuotesIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { Card } from '@/components/ui/card';
-import type { Quote } from '@/data/setworks/types';
+import type { Quote } from '@/content/setworks/types';
 
 interface QuoteCardProps {
 	quote: Quote;

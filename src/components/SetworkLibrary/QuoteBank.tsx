@@ -14,7 +14,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '@/components/ui/select';
-import type { Quote, Setwork } from '@/data/setworks/types';
+import type { Quote, Setwork } from '@/content/setworks/types';
 
 interface QuoteBankProps {
 	setworks: Setwork[];

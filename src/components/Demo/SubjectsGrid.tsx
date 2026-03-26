@@ -3,7 +3,7 @@
 import { FluentEmoji } from '@lobehub/fluent-emoji';
 import { Card, CardContent } from '@/components/ui/card';
 import { DataSection } from '@/components/ui/data-loader';
-import type { Subject } from '@/data';
+import type { Subject } from '@/content/mock';
 import { subjectEmojiMap } from './constants';
 
 interface SubjectsGridProps {

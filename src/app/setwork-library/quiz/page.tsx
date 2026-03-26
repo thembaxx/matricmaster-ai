@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 
 import { appConfig } from '@/app.config';
-import { quizQuestions, setworks } from '@/data/setworks';
+import { quizQuestions, setworks } from '@/content/setworks';
 import { QuizContent } from './quiz-content';
 
 export const metadata: Metadata = {

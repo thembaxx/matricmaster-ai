@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
-import type { Topic } from '@/lib/content-adapter';
+import type { Topic } from '@/content';
 import { cn } from '@/lib/utils';
 
 interface TopicCardProps {

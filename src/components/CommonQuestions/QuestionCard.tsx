@@ -3,7 +3,7 @@
 import { FluentEmoji } from '@lobehub/fluent-emoji';
 import { m } from 'framer-motion';
 import { Card } from '@/components/ui/card';
-import type { CommonQuestion } from '@/constants/common-questions';
+import type { CommonQuestion } from '@/content/common-questions';
 import { cn } from '@/lib/utils';
 
 interface QuestionCardProps {

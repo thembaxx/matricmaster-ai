@@ -14,7 +14,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '@/components/ui/select';
-import type { QuizQuestion, Setwork } from '@/data/setworks/types';
+import type { QuizQuestion, Setwork } from '@/content/setworks/types';
 
 interface QuizContentProps {
 	setworks: Setwork[];

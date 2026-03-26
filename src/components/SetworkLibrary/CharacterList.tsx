@@ -1,7 +1,7 @@
 'use client';
 
 import { Card } from '@/components/ui/card';
-import type { Character } from '@/data/setworks/types';
+import type { Character } from '@/content/setworks/types';
 
 interface CharacterListProps {
 	characters: Character[];

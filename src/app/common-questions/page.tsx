@@ -10,7 +10,7 @@ import {
 	type CommonQuestion,
 	SUBJECTS,
 	type SubjectId,
-} from '@/constants/common-questions';
+} from '@/content/common-questions';
 
 type State = {
 	selectedSubject: SubjectId | 'all';

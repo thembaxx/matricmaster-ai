@@ -1,4 +1,4 @@
-import { SUBJECTS, type SubjectId } from '@/lib/content-adapter';
+import { SUBJECTS, type SubjectId } from '@/content';
 import type { RecentSessionWithContext } from '@/lib/db/actions';
 
 export interface SuggestionCard {

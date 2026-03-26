@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useState } from 'react';
-import chemistryData from '@/constants/lessons/chemistry.json';
-import lifeSciencesData from '@/constants/lessons/life-sciences.json';
-import mathematicsData from '@/constants/lessons/mathematics.json';
-import physicsData from '@/constants/lessons/physics.json';
+import { getSubjectEmoji, type SUBJECTS } from '@/content';
+import chemistryData from '@/content/lessons/chemistry.json';
+import lifeSciencesData from '@/content/lessons/life-sciences.json';
+import mathematicsData from '@/content/lessons/mathematics.json';
+import physicsData from '@/content/lessons/physics.json';
 import { useAiContext } from '@/hooks/useAiContext';
-import { getSubjectEmoji, type SUBJECTS } from '@/lib/content-adapter';
 
 export interface Lesson {
 	id: string;

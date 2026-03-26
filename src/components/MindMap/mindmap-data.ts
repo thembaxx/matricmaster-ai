@@ -1,4 +1,4 @@
-import type { MindMapNode } from '@/data/mindmaps';
+import type { MindMapNode } from '@/content/mindmaps';
 
 export const physicsMindMap: MindMapNode = {
 	id: 'physics',

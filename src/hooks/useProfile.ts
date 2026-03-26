@@ -3,9 +3,9 @@
 import { useQuery } from '@tanstack/react-query';
 import { useMemo, useState } from 'react';
 import { toast } from 'sonner';
+import { ACHIEVEMENT_POINTS_MAP } from '@/content';
 import { QUERY_KEYS } from '@/lib/api/endpoints';
 import { authClient, useSession } from '@/lib/auth-client';
-import { ACHIEVEMENT_POINTS_MAP } from '@/lib/content-adapter';
 import { getUserAchievements } from '@/lib/db/achievement-actions';
 import { updateUserProfileAction } from '@/lib/db/actions';
 import { getUserProgressSummary, getUserStreak } from '@/lib/db/progress-actions';

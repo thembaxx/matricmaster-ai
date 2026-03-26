@@ -1,4 +1,4 @@
-import { CURRICULUM_DATA } from '@/data/curriculum';
+import { CURRICULUM_DATA } from '@/content/curriculum';
 
 export type SourceType = 'textbook' | 'past-paper' | 'curriculum' | 'ai-generated';
 

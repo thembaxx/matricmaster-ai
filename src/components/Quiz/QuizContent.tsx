@@ -15,7 +15,7 @@ import { QuizProgress } from '@/components/Quiz/QuizProgress';
 import { QuizProgressDashboard } from '@/components/Quiz/QuizProgressDashboard';
 import { ShortAnswerInput } from '@/components/Quiz/ShortAnswerInput';
 import { SubjectSelector } from '@/components/Quiz/SubjectSelector';
-import type { AnyQuizQuestion, ShortAnswerQuestion } from '@/constants/quiz/types';
+import type { AnyQuizQuestion, ShortAnswerQuestion } from '@/content/questions/quiz/types';
 import { useMathKeyboard } from '@/hooks/use-math-keyboard';
 import { useAdaptiveDifficulty } from '@/stores/useAdaptiveDifficultyStore';
 import { useQuestionFlagStore } from '@/stores/useQuestionFlagStore';

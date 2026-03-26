@@ -4,7 +4,7 @@ import { Suspense } from 'react';
 import { appConfig } from '@/app.config';
 import { PastPaperViewerClient } from '@/components/PastPaperViewerClient';
 import { PdfViewerSkeleton } from '@/components/QuizSkeleton';
-import { PAST_PAPERS } from '@/constants/mock-data';
+import { mockPastPapers as PAST_PAPERS } from '@/content/mock';
 
 interface PageProps {
 	searchParams: Promise<{ id?: string; mode?: string }>;

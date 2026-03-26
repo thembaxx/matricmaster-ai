@@ -1,4 +1,4 @@
-import { SUBJECTS } from '@/lib/content-adapter';
+import { SUBJECTS } from '@/content';
 
 interface UniversityRequirement {
 	name: string;

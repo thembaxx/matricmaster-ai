@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import type { QuizQuestion } from '@/data/setworks/types';
+import type { QuizQuestion } from '@/content/setworks/types';
 
 interface QuizEngineProps {
 	questions: QuizQuestion[];

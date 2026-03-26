@@ -2,12 +2,8 @@
 
 import { eq } from 'drizzle-orm';
 import { headers } from 'next/headers';
+import { getStreakMultiplier, MAX_STREAK_FREEZES, STREAK_FREEZE_COST_XP } from '@/content';
 import { getAuth } from '@/lib/auth';
-import {
-	getStreakMultiplier,
-	MAX_STREAK_FREEZES,
-	STREAK_FREEZE_COST_XP,
-} from '@/lib/content-adapter';
 import { type DbType, dbManager } from '@/lib/db';
 import { userProgress } from '@/lib/db/schema';
 import { getNextMultiplierThreshold } from '@/lib/streak-utils';

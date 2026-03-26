@@ -1,4 +1,4 @@
-import type { QuizData } from '@/constants/quiz/types';
+import type { QuizData } from '@/content/questions/quiz/types';
 import accounting from './accounting.json';
 import chemistry from './chemistry.json';
 import geography from './geography.json';

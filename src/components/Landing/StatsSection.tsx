@@ -1,7 +1,7 @@
 'use client';
 
 import { m } from 'framer-motion';
-import { LANDING_STATS } from '@/data/landing';
+import { LANDING_STATS } from '@/content/landing';
 
 const STATS = LANDING_STATS;
 

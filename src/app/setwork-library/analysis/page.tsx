@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 
 import { appConfig } from '@/app.config';
-import { setworks } from '@/data/setworks';
+import { setworks } from '@/content/setworks';
 import { AnalysisContent } from './analysis-content';
 
 export const metadata: Metadata = {
