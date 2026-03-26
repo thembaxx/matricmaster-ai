@@ -10,6 +10,7 @@ import { useGeminiQuotaModal } from '@/contexts/GeminiQuotaModalContext';
 import { useQuizCompletion } from '@/hooks/use-quiz-completion';
 import { useAiContext } from '@/hooks/useAiContext';
 import { useEdgeCaseDetection } from '@/hooks/useEdgeCaseDetection';
+import { useNetworkStatus } from '@/hooks/useNetworkStatus';
 import { useWrongAnswerPipeline } from '@/hooks/useWrongAnswerPipeline';
 import { isQuotaError } from '@/lib/ai/quota-error';
 import { gradeShortAnswer, type WeakTopic } from '@/lib/quiz-grader';
@@ -33,6 +34,7 @@ export function useQuizState({ quizId }: UseQuizStateProps) {
 	const startTimeRef = useRef<number>(Date.now());
 	const [state, dispatch] = useReducer(quizReducer, initialQuizState);
 	const addMistake = useQuizResultStore((s) => s.addMistake);
+	const { isOnline } = useNetworkStatus();
 
 	const { completeQuiz, isCompleting } = useQuizCompletion();
 	const { setContext, clearContext } = useAiContext();
@@ -99,13 +101,15 @@ export function useQuizState({ quizId }: UseQuizStateProps) {
 
 	useEffect(() => {
 		const timer = setInterval(() => {
-			dispatch({
-				type: 'SET_ELAPSED',
-				payload: Math.floor((Date.now() - startTimeRef.current) / 1000),
-			});
+			if (isOnline || state.mode === 'practice') {
+				dispatch({
+					type: 'SET_ELAPSED',
+					payload: Math.floor((Date.now() - startTimeRef.current) / 1000),
+				});
+			}
 		}, 1000);
 		return () => clearInterval(timer);
-	}, []);
+	}, [isOnline, state.mode]);
 
 	const options =
 		currentQuestion.type === 'mcq' || !currentQuestion.type

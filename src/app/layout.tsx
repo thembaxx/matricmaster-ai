@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import Script from 'next/script';
+import { LiveRegionProvider } from '@/components/Accessibility/LiveRegions';
 import { DeferredAnalytics } from '@/components/DeferredAnalytics';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { ClientOnlyProviders } from '@/components/Layout/ClientOnlyProviders';
@@ -148,11 +149,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 				</a>
 				<ErrorBoundary>
 					<ThemeProvider defaultTheme="system" storageKey="matric-master-theme">
-						<NavigationProgress />
-						<ClientProviders>{children}</ClientProviders>
-						<Toaster />
-						<ServiceWorkerRegistration />
-						<ClientOnlyProviders />
+						<LiveRegionProvider>
+							<NavigationProgress />
+							<ClientProviders>{children}</ClientProviders>
+							<Toaster />
+							<ServiceWorkerRegistration />
+							<ClientOnlyProviders />
+						</LiveRegionProvider>
 					</ThemeProvider>
 				</ErrorBoundary>
 				<DeferredAnalytics />
