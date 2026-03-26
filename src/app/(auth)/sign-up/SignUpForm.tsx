@@ -113,12 +113,6 @@ export default function SignUpForm() {
 									onClick={() => handleSocialSignUp('twitter')}
 								/>
 							</m.div>
-							<m.div variants={STAGGER_ITEM} className="flex-1">
-								<SocialAuthButton
-									provider="facebook"
-									onClick={() => handleSocialSignUp('facebook')}
-								/>
-							</m.div>
 						</div>
 					</m.div>
 

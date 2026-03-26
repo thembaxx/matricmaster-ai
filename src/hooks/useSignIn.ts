@@ -36,7 +36,7 @@ export function useSignIn() {
 	const [error, setError] = useState<string | null>(null);
 	const [showPassword, setShowPassword] = useState(false);
 	const [successEmail, setSuccessEmail] = useState<string | null>(null);
-	const [socialProvider, setSocialProvider] = useState<string | null>(null);
+	const [socialProvider, _setSocialProvider] = useState<string | null>(null);
 
 	const form = useForm<SignInValues>({
 		resolver: zodResolver(signInSchema),
@@ -101,12 +101,24 @@ export function useSignIn() {
 		}
 	};
 
-	const handleSocialSignIn = async (provider: 'google' | 'twitter' | 'facebook') => {
-		const callbackURL = new URL(safeCallbackUrl, window.location.origin).toString();
-		await authClient.signIn.social({
-			provider,
-			callbackURL,
-		});
+	const handleSocialSignIn = async (provider: 'google' | 'twitter') => {
+		setError(null);
+		_setSocialProvider(provider);
+		try {
+			const callbackURL = new URL(safeCallbackUrl, window.location.origin).toString();
+			const { error: authError } = await authClient.signIn.social({
+				provider,
+				callbackURL,
+			});
+
+			if (authError) {
+				setError(authError.message || `failed to sign in with ${provider}`);
+				_setSocialProvider(null);
+			}
+		} catch (err) {
+			setError(err instanceof Error ? err.message : `failed to sign in with ${provider}`);
+			_setSocialProvider(null);
+		}
 	};
 
 	return {
