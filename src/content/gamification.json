@@ -1,0 +1,65 @@
+{
+	"config": {
+		"max_level": { "value": "100", "description": "Maximum achievable level" },
+		"xp_base": { "value": "50", "description": "Base XP multiplier (level * level * this)" },
+		"xp_per_question": { "value": "10", "description": "XP earned per correct answer" },
+		"xp_per_quiz": { "value": "50", "description": "XP bonus for completing a quiz" },
+		"xp_streak_multiplier_base": {
+			"value": "1.25",
+			"description": "Base multiplier for streak bonuses"
+		},
+		"points_per_streak_day": { "value": "5", "description": "Bonus points per streak day" }
+	},
+	"levelTitles": {
+		"1": "Starter",
+		"10": "Scholar",
+		"25": "Star",
+		"50": "Expert",
+		"100": "Legend"
+	},
+	"levelColors": {
+		"1": "#7C3AED",
+		"10": "#06B6D4",
+		"25": "#F97316",
+		"50": "#EC4899",
+		"100": "#84CC16"
+	},
+	"levelBadgeIcons": {
+		"1": "🌱",
+		"10": "📚",
+		"25": "⭐",
+		"50": "🏆",
+		"75": "👑",
+		"100": "💎"
+	},
+	"levelMilestones": [10, 25, 50, 100],
+	"streakMultipliers": [
+		{ "minStreak": 0, "multiplier": 1, "label": "Base", "description": "Standard XP earned" },
+		{ "minStreak": 3, "multiplier": 1.25, "label": "Warming Up", "description": "+25% XP bonus" },
+		{ "minStreak": 7, "multiplier": 1.5, "label": "On Fire", "description": "+50% XP bonus" },
+		{ "minStreak": 14, "multiplier": 1.75, "label": "Unstoppable", "description": "+75% XP bonus" },
+		{ "minStreak": 30, "multiplier": 2, "label": "Legendary", "description": "+100% XP bonus" },
+		{ "minStreak": 60, "multiplier": 2.5, "label": "Immortal", "description": "+150% XP bonus" },
+		{ "minStreak": 100, "multiplier": 3, "label": "Mythic", "description": "+200% XP bonus" }
+	],
+	"maxStreakFreezes": 5,
+	"streakFreezeCostXp": 500,
+	"dailyLoginRewards": [
+		{ "day": 1, "xpBonus": 10 },
+		{ "day": 2, "xpBonus": 15 },
+		{ "day": 3, "xpBonus": 20 },
+		{ "day": 4, "xpBonus": 25 },
+		{ "day": 5, "xpBonus": 30 },
+		{ "day": 6, "xpBonus": 40 },
+		{ "day": 7, "xpBonus": 100, "streakFreeze": true, "specialReward": "Weekly Bonus!" },
+		{ "day": 8, "xpBonus": 15 },
+		{ "day": 9, "xpBonus": 20 },
+		{ "day": 10, "xpBonus": 25 },
+		{ "day": 11, "xpBonus": 30 },
+		{ "day": 12, "xpBonus": 35 },
+		{ "day": 13, "xpBonus": 45 },
+		{ "day": 14, "xpBonus": 150, "streakFreeze": true, "specialReward": "Two Week Champion!" },
+		{ "day": 21, "xpBonus": 250, "streakFreeze": true, "specialReward": "Three Week Legend!" },
+		{ "day": 30, "xpBonus": 500, "streakFreeze": true, "specialReward": "Monthly Master!" }
+	]
+}

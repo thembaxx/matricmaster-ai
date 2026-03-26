@@ -2,7 +2,7 @@ import { createGoogleGenerativeAI } from '@ai-sdk/google';
 import { generateText } from 'ai';
 import { differenceInDays } from 'date-fns';
 import { asc, eq } from 'drizzle-orm';
-import { NSC_EXAM_DATES } from '@/data/exam-dates';
+import { NSC_EXAM_DATES } from '@/content';
 import { getAuth } from '@/lib/auth';
 import { dbManager } from '@/lib/db';
 import { topicConfidence } from '@/lib/db/schema';

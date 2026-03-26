@@ -12,7 +12,7 @@ import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 import { Card, CardContent } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
-import { getSubjectFont, getSubjectName } from '@/constants/subjects';
+import { getSubjectFont, getSubjectName } from '@/lib/content-adapter';
 import { getLessonsBySubject } from '@/lib/lessons';
 import { cn } from '@/lib/utils';
 

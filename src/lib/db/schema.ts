@@ -45,9 +45,23 @@ export const users = authUsers;
 
 export const subjects = pgTable('subjects', {
 	id: bigint('id', { mode: 'number' }).generatedAlwaysAsIdentity().primaryKey(),
-	name: varchar('name', { length: 50 }).notNull().unique(),
+	slug: varchar('slug', { length: 50 }).notNull().unique(),
+	name: varchar('name', { length: 100 }).notNull().unique(),
+	displayName: varchar('display_name', { length: 100 }).notNull(),
 	description: text('description'),
 	curriculumCode: varchar('curriculum_code', { length: 20 }).notNull(),
+	emoji: varchar('emoji', { length: 10 }),
+	fluentEmoji: varchar('fluent_emoji', { length: 50 }),
+	imgSrc: text('img_src'),
+	color: varchar('color', { length: 50 }),
+	bgColor: varchar('bg_color', { length: 50 }),
+	icon: varchar('icon', { length: 50 }),
+	fontFamily: varchar('font_family', { length: 100 }),
+	gradientPrimary: varchar('gradient_primary', { length: 20 }),
+	gradientSecondary: varchar('gradient_secondary', { length: 20 }),
+	gradientAccent: varchar('gradient_accent', { length: 20 }),
+	isSupported: boolean('is_supported').notNull().default(true),
+	displayOrder: integer('display_order').notNull().default(0),
 	isActive: boolean('is_active').notNull().default(true),
 	createdAt: timestamp('created_at').defaultNow(),
 	updatedAt: timestamp('updated_at').defaultNow(),
@@ -1978,23 +1992,9 @@ export const userThemesRelations = relations(userThemes, ({ one }) => ({
 // CURRICULUM DATA TABLES (Data Consolidation Phase 1)
 // ============================================================================
 
-export const subjectMetadata = pgTable('subject_metadata', {
-	subjectId: varchar('subject_id', { length: 50 }).primaryKey(),
-	displayName: varchar('display_name', { length: 100 }).notNull(),
-	emoji: varchar('emoji', { length: 10 }),
-	color: varchar('color', { length: 50 }),
-	bgColor: varchar('bg_color', { length: 50 }),
-	icon: varchar('icon', { length: 50 }),
-	fluentEmoji: varchar('fluent_emoji', { length: 50 }),
-	fontFamily: varchar('font_family', { length: 100 }),
-	gradientPrimary: varchar('gradient_primary', { length: 20 }),
-	gradientSecondary: varchar('gradient_secondary', { length: 20 }),
-	gradientAccent: varchar('gradient_accent', { length: 20 }),
-	isSupported: boolean('is_supported').notNull().default(true),
-	displayOrder: integer('display_order').notNull().default(0),
-	createdAt: timestamp('created_at').defaultNow(),
-	updatedAt: timestamp('updated_at').defaultNow(),
-});
+// subjectMetadata fields merged into subjects table above
+// This alias kept for backward compatibility during migration
+export const subjectMetadata = subjects;
 
 export const gamificationConfig = pgTable('gamification_config', {
 	key: varchar('key', { length: 50 }).primaryKey(),
@@ -2020,8 +2020,10 @@ export const achievementDefinitions = pgTable('achievement_definitions', {
 });
 
 // Type exports for curriculum tables
-export type SubjectMetadata = typeof subjectMetadata.$inferSelect;
-export type NewSubjectMetadata = typeof subjectMetadata.$inferInsert;
+/** @deprecated Use Subject instead */
+export type SubjectMetadata = Subject;
+/** @deprecated Use NewSubject instead */
+export type NewSubjectMetadata = NewSubject;
 export type GamificationConfig = typeof gamificationConfig.$inferSelect;
 export type NewGamificationConfig = typeof gamificationConfig.$inferInsert;
 export type AchievementDefinition = typeof achievementDefinitions.$inferSelect;

@@ -1,13 +1,12 @@
 'use client';
 
 import { useCallback, useMemo } from 'react';
-import {
-	CURRICULUM_DATA,
-	getTopicPrerequisites,
-	type StudyRecommendation,
-	type Subject,
-	type Topic,
-} from '@/data/curriculum';
+import { CURRICULUM_DATA, getTopicPrerequisites } from '@/data/curriculum';
+import type {
+	StudyRecommendation,
+	CurriculumSubject as Subject,
+	Topic,
+} from '@/lib/content-adapter';
 
 const STORAGE_KEY = 'lumni-custom-topics';
 

@@ -69,40 +69,60 @@ export async function seedDatabase() {
 
 		// Get or create required subjects
 		const requiredSubjects = [
-			{ name: 'History', description: 'CAPS History Grades 10-12', curriculumCode: 'CAPS-HIST' },
 			{
+				slug: 'history',
+				name: 'History',
+				displayName: 'History',
+				description: 'CAPS History Grades 10-12',
+				curriculumCode: 'CAPS-HIST',
+			},
+			{
+				slug: 'english',
 				name: 'English FAL',
+				displayName: 'English',
 				description: 'CAPS English First Additional Language Grades 10-12',
 				curriculumCode: 'CAPS-EFAL',
 			},
 			{
+				slug: 'mathematics',
 				name: 'Mathematics',
-				description: 'CAPS Mathematics Grades 10-12 covering Algebra, Calculus, Trigonometry',
+				displayName: 'Mathematics',
+				description: 'CAPS Mathematics Grades 10-12',
 				curriculumCode: 'CAPS-MATH',
 			},
 			{
+				slug: 'physics',
 				name: 'Physical Sciences',
-				description: 'CAPS Physical Sciences Grades 9-12 covering Physics topics',
+				displayName: 'Physical Sciences',
+				description: 'CAPS Physical Sciences Grades 10-12',
 				curriculumCode: 'CAPS-PHYS',
 			},
 			{
+				slug: 'life-sciences',
 				name: 'Life Sciences',
-				description: 'CAPS Life Sciences Grades 10-12 covering Biology',
+				displayName: 'Life Sciences',
+				description: 'CAPS Life Sciences Grades 10-12',
 				curriculumCode: 'CAPS-LIFE',
 			},
 			{
+				slug: 'geography',
 				name: 'Geography',
-				description: 'CAPS Geography Grades 10-12 covering Physical and Human Geography',
+				displayName: 'Geography',
+				description: 'CAPS Geography Grades 10-12',
 				curriculumCode: 'CAPS-GEOG',
 			},
 			{
+				slug: 'accounting',
 				name: 'Accounting',
-				description: 'CAPS Accounting Grades 10-12 covering Financial Statements',
+				displayName: 'Accounting',
+				description: 'CAPS Accounting Grades 10-12',
 				curriculumCode: 'CAPS-ACCT',
 			},
 			{
+				slug: 'economics',
 				name: 'Economics',
-				description: 'CAPS Economics Grades 10-12 covering Micro and Macro Economics',
+				displayName: 'Economics',
+				description: 'CAPS Economics Grades 10-12',
 				curriculumCode: 'CAPS-ECON',
 			},
 		];

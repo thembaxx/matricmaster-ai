@@ -1,0 +1,240 @@
+{
+	"chemistry": [
+		{
+			"id": "chemistry-matter-atomic-structure",
+			"subject": "chemistry",
+			"topic": "matter and materials",
+			"title": "Atomic Structure and Periodic Table",
+			"content": "# Atomic Structure and Periodic Table\n\nUnderstanding the structure of atoms and the organization of the periodic table is fundamental to chemistry.\n\n## Atomic Structure\n\n- **Subatomic Particles**: Protons (positive), neutrons (neutral), electrons (negative)\n- **Nucleus**: Contains protons and neutrons\n- **Electron Shells**: Electrons occupy energy levels/shells around the nucleus\n- **Atomic Number (Z)**: Number of protons in the nucleus\n- **Mass Number (A)**: Total number of protons and neutrons\n\n## Electron Configuration\n\n- **Shells**: K, L, M, N (corresponding to n=1,2,3,4)\n- **Subshells**: s, p, d, f\n- **Capacity**: s=2, p=6, d=10, f=14 electrons\n- **Aufbau Principle**: Electrons fill lowest energy orbitals first\n- **Hund's Rule**: Electrons occupy degenerate orbitals singly before pairing\n- **Pauli Exclusion Principle**: Maximum 2 electrons per orbital with opposite spins\n\n## Periodic Table Organization\n\n- **Groups (Columns)**: Elements with similar chemical properties\n- **Periods (Rows)**: Elements with same number of electron shells\n- **Blocks**: s-block, p-block, d-block, f-block based on electron configuration\n\n## Key Groups\n\n1. **Alkali Metals (Group 1)**: Highly reactive, +1 oxidation state\n2. **Alkaline Earth Metals (Group 2)**: Reactive, +2 oxidation state\n3. **Halogens (Group 17)**: Highly reactive nonmetals, -1 oxidation state\n4. **Noble Gases (Group 18)**: Unreactive, complete valence shells\n\n## Practice Questions\n\n1. What is the electron configuration of sodium (Na, Z=11)?\n2. How many valence electrons does chlorine (Cl, Z=17) have?\n3. Explain why noble gases are generally unreactive.",
+			"duration": 40,
+			"difficulty": "intermediate",
+			"prerequisites": ["basic science"],
+			"learning_objectives": [
+				"Describe the structure of atoms",
+				"Explain electron configuration",
+				"Understand periodic table organization"
+			]
+		},
+		{
+			"id": "chemistry-chemical-bonding",
+			"subject": "chemistry",
+			"topic": "chemical bonding",
+			"title": "Ionic and Covalent Bonding",
+			"content": "# Ionic and Covalent Bonding\n\nChemical bonding is the process by which atoms combine to form compounds.\n\n## Ionic Bonding\n\n- **Formation**: Between metals and nonmetals\n- **Process**: Metal loses electrons (oxidation), nonmetal gains electrons (reduction)\n- **Properties**: High melting points, brittle, conductive when molten\n- **Examples**: NaCl, MgO, CaF₂\n\n## Covalent Bonding\n\n- **Formation**: Between nonmetals\n- **Process**: Sharing of electron pairs\n- **Properties**: Lower melting points, often gases/liquids\n- **Examples**: H₂O, CO₂, CH₄, O₂\n\n## Lewis Structures\n\n- Count valence electrons\n- Place least electronegative atom center\n- Connect with single bonds\n- Distribute remaining electrons\n- Check octets\n- Form multiple bonds if needed\n\n## Molecular Geometry\n\n- **VSEPR Theory**: Electron pairs repel\n- **Shapes**: Linear, trigonal planar, tetrahedral\n\n## Practice Questions\n\n1. Write Lewis structure for CO₂\n2. Predict geometry of CH₄\n3. Compare properties of NaCl and HCl",
+			"duration": 45,
+			"difficulty": "intermediate",
+			"prerequisites": ["atomic structure"],
+			"learning_objectives": [
+				"Differentiate ionic and covalent bonding",
+				"Draw Lewis structures",
+				"Predict molecular geometry"
+			]
+		},
+		{
+			"id": "chemistry-rate-reactions",
+			"subject": "chemistry",
+			"topic": "chemical kinetics",
+			"title": "Chemical Reaction Rates",
+			"content": "# Chemical Reaction Rates\n\nChemical kinetics studies the rates of chemical reactions.\n\n## Rate of Reaction\n\nRate = -Δ[Reactant]/Δt = Δ[Product]/Δt\n- Units: mol·L⁻¹·s⁻¹\n\n## Factors Affecting Rate\n\n### Concentration\n- Increasing concentration increases collision frequency\n- Rate ∝ [A]^m\n\n### Temperature\n- Increase temperature increases kinetic energy\n- Arrhenius: k = Ae^(-Ea/RT)\n\n### Catalyst\n- Lowers activation energy\n- Not consumed in reaction\n\n### Surface Area\n- Higher surface area = more collisions\n\n## Collision Theory\n\n1. Particles must collide\n2. Proper orientation needed\n3. Sufficient energy (≥ Ea)\n\n## Rate Laws\n\nRate = k[A]^m[B]^n\n### Zero Order: Rate = k\n### First Order: Rate = k[A]\n### Second Order: Rate = k[A]²\n\n## Practice Questions\n\n1. How does temperature affect rate?\n2. Define activation energy\n3. First order reaction, k = 0.05 s⁻¹, find [A] after 20s",
+			"duration": 45,
+			"difficulty": "advanced",
+			"prerequisites": ["chemical bonding"],
+			"learning_objectives": ["Calculate reaction rates", "Apply collision theory", "Use rate laws"]
+		},
+		{
+			"id": "chemistry-electrochemistry",
+			"subject": "chemistry",
+			"topic": "electrochemistry",
+			"title": "Electrochemical Cells",
+			"content": "# Electrochemical Cells\n\nElectrochemistry deals with electricity and chemical reactions.\n\n## Types of Cells\n\n### Galvanic (Voltaic) Cells\n- Spontaneous (ΔG < 0)\n- Generate electrical energy\n- Anode = oxidation = negative\n- Cathode = reduction = positive\n\n### Electrolytic Cells\n- Non-spontaneous (ΔG > 0)\n- Require electrical energy\n\n## Cell Notation\n\nZn(s) | Zn²⁺(aq) || Cu²⁺(aq) | Cu(s)\n\n## Standard Reduction Potentials\n\nE°cell = E°cathode - E°anode\n- E° > 0: Spontaneous\n\n## Faraday's Laws\n\nm = (Q × M) / (n × F)\n- F = 96485 C/mol\n\n## Practice Questions\n\n1. Calculate E°cell for: Zn + Cu²⁺ → Zn²⁺ + Cu\n2. How long to deposit 5g Ag with 5A?\n3. Why does iron corrode?",
+			"duration": 50,
+			"difficulty": "advanced",
+			"prerequisites": ["redox reactions"],
+			"learning_objectives": [
+				"Understand galvanic and electrolytic cells",
+				"Calculate cell potentials",
+				"Apply Faraday's laws"
+			]
+		},
+		{
+			"id": "chemistry-acids-bases",
+			"subject": "chemistry",
+			"topic": "acids and bases",
+			"title": "Acids, Bases and pH",
+			"content": "# Acids, Bases and pH\n\nAcids and bases are fundamental chemical species.\n\n## Definitions\n\n### Arrhenius\n- Acid: Produces H⁺ in water\n- Base: Produces OH⁻ in water\n\n### Brønsted-Lowry\n- Acid: Proton donor\n- Base: Proton acceptor\n\n## pH and pOH\n\npH = -log[H⁺]\npOH = -log[OH⁻]\npH + pOH = 14\n\n### Strong Acids\nHCl, HBr, HI, HNO₃, H₂SO₄, HClO₄\n\n### Strong Bases\nGroup 1, 2 hydroxides\n\n### Weak Acids/Bases\nPartially dissociate, use Ka or Kb\n\n## Buffers\n\nResist pH changes\nMixture of weak acid + conjugate base\npH = pKa + log([A⁻]/[HA])\n\n## Titrations\n\nM₁V₁ = M₂V₂ (at equivalence)\n\n## Practice Questions\n\n1. Calculate pH of 0.01M HCl\n2. pH = 5.3, find [H⁺] and [OH⁻]\n3. Buffer: [HA]=0.5M, [A⁻]=0.25M, Ka=1.8×10⁻⁵",
+			"duration": 45,
+			"difficulty": "intermediate",
+			"prerequisites": ["chemical bonding"],
+			"learning_objectives": [
+				"Apply acid-base theories",
+				"Calculate pH and pOH",
+				"Perform titration calculations"
+			]
+		},
+		{
+			"id": "chemistry-equilibrium",
+			"subject": "chemistry",
+			"topic": "chemical equilibrium",
+			"title": "Chemical Equilibrium",
+			"content": "# Chemical Equilibrium\n\nChemical equilibrium occurs when forward and reverse reactions occur at equal rates.\n\n## Equilibrium Constant\n\n### Kc (Concentration)\naA + bB ⇌ cC + dD\nKc = [C]^c[D]^d / [A]^a[B]^b\n\n### Kp (Pressure)\nFor gases: Kp = Kc(RT)^Δn\n\n## Le Chatelier's Principle\n\nWhen equilibrium is disturbed, system shifts to counteract the change.\n\n### Factors Affecting Equilibrium\n\n1. **Concentration**: Change shifts to use added/produce removed\n2. **Temperature**: \n   - Exothermic: increase T shifts left\n   - Endothermic: increase T shifts right\n3. **Pressure**: Increase pressure shifts to fewer gas molecules\n4. **Catalyst**: No effect on position, only rate\n\n## Practice Questions\n\n1. Write Kc expression for: N₂ + 3H₂ ⇌ 2NH₃\n2. If Kc = 4, predict direction\n3. How does adding H₂ affect N₂ + 3H₂ ⇌ 2NH₃?",
+			"duration": 45,
+			"difficulty": "advanced",
+			"prerequisites": ["reaction rates"],
+			"learning_objectives": [
+				"Write and use equilibrium constants",
+				"Apply Le Chatelier's principle",
+				"Solve equilibrium problems"
+			]
+		},
+		{
+			"id": "chemistry-redox",
+			"subject": "chemistry",
+			"topic": "redox reactions",
+			"title": "Redox Reactions",
+			"content": "# Redox Reactions\n\nRedox reactions involve transfer of electrons.\n\n## Oxidation and Reduction\n\n### Oxidation\n- Loss of electrons\n- Increase in oxidation number\n- Reducing agent\n\n### Reduction\n- Gain of electrons\n- Decrease in oxidation number\n- Oxidizing agent\n\n## Oxidation Numbers\n\n### Rules\n1. Free elements = 0\n2. Monoatomic ions = charge\n3. F = -1 (always)\n4. H = +1 (usually)\n5. O = -2 (usually)\n6. Sum = charge (in compound)\n\n## Balancing Redox\n\n### Half-Reaction Method\n1. Write oxidation and reduction half-reactions\n2. Balance atoms other than O and H\n3. Balance O with H₂O\n4. Balance H with H⁺\n5. Balance charge with e⁻\n6. Multiply to equalize electrons\n7. Add half-reactions\n\n## Practice Questions\n\n1. Find oxidation number of S in SO₃²⁻\n2. Balance: MnO₄⁻ + Fe²⁺ → Mn²⁺ + Fe³⁺ (acidic)\n3. Identify oxidizing agent in: Zn + 2HCl → ZnCl₂ + H₂",
+			"duration": 45,
+			"difficulty": "advanced",
+			"prerequisites": ["atomic structure"],
+			"learning_objectives": [
+				"Determine oxidation numbers",
+				"Balance redox reactions",
+				"Identify oxidizing and reducing agents"
+			]
+		},
+		{
+			"id": "chemistry-organic-intro",
+			"subject": "chemistry",
+			"topic": "organic chemistry",
+			"title": "Introduction to Organic Chemistry",
+			"content": "# Introduction to Organic Chemistry\n\nOrganic chemistry studies carbon compounds.\n\n## Carbon Properties\n\n- Forms 4 covalent bonds\n- Can form chains, rings\n- Catenation: bonds to other carbons\n- Isomerism: same formula, different structure\n\n## Hydrocarbons\n\n### Alkanes (CnH2n+2)\n- Single bonds only\n- Saturated\n- General formula: CnH2n+2\n\n### Alkenes (CnH2n)\n- At least one C=C double bond\n- Unsaturated\n\n### Alkynes (CnH2n-2)\n- At least one C≡C triple bond\n- Highly unsaturated\n\n## Naming Alkanes\n\n1. Find longest carbon chain\n2. Number to give lowest numbers to substituents\n3. Name substituents\n4. Write name: position-name-chain\n\n## Isomers\n\n### Structural Isomers\n- Chain\n- Position\n- Functional group\n\n### Stereoisomers\n- Geometric (cis/trans)\n- Optical (enantiomers)\n\n## Practice Questions\n\n1. Draw structural isomer of C₄H₁₀\n2. Name: CH₃-CH₂-CH₂-CH₃\n3. Difference between butane and isobutane?",
+			"duration": 45,
+			"difficulty": "intermediate",
+			"prerequisites": ["chemical bonding"],
+			"learning_objectives": [
+				"Understand carbon chemistry",
+				"Name hydrocarbons",
+				"Identify isomers"
+			]
+		},
+		{
+			"id": "chemistry-organic-functional",
+			"subject": "chemistry",
+			"topic": "organic chemistry",
+			"title": "Functional Groups",
+			"content": "# Functional Groups\n\nFunctional groups determine chemical behavior.\n\n## Common Functional Groups\n\n| Group | Suffix | Example |\n|-------|---------|---------|\n| Alcohol | -ol | CH₃OH |\n| Aldehyde | -al | HCHO |\n| Ketone | -one | CH₃COCH₃ |\n| Carboxylic acid | -oic acid | CH₃COOH |\n| Ester | -oate | CH₃COOCH₃ |\n| Amine | -amine | CH₃NH₂ |\n\n## Alcohols (R-OH)\n\n### Classification\n- Primary (1°): RCH₂OH\n- Secondary (2°): R₂CHOH\n- Tertiary (3°): R₃COH\n\n### Reactions\n- Oxidation to aldehydes/ketones\n- Esterification\n- Dehydration to alkenes\n\n## Aldehydes and Ketones\n\n### Oxidation\n- Aldehydes: oxidize to carboxylic acids\n- Ketones: resistant to oxidation\n\n### Reduction\n- Both reduce to alcohols\n\n## Carboxylic Acids\n\n### Properties\n- Weak acids\n- Form esters (esterification)\n- Form amides\n\n## Esters\n\n### Formation\nAcid + Alcohol → Ester + H₂O\n(Under acid catalysis)\n\n### Hydrolysis\nEster + H₂O → Acid + Alcohol",
+			"duration": 45,
+			"difficulty": "advanced",
+			"prerequisites": ["organic intro"],
+			"learning_objectives": [
+				"Identify functional groups",
+				"Understand reactions of each group",
+				"Apply IUPAC naming"
+			]
+		},
+		{
+			"id": "chemistry-polymers",
+			"subject": "chemistry",
+			"topic": "organic chemistry",
+			"title": "Polymers",
+			"content": "# Polymers\n\nPolymers are large molecules made of repeating units.\n\n## Polymerization\n\n### Addition Polymerization\n- Monomers add without loss\n- Double bonds open\n- Examples: PE, PVC, PTFE\n\n### Condensation Polymerization\n- Small molecules eliminated\n- Ester or amide links\n- Examples: nylon, polyester\n\n## Common Polymers\n\n| Polymer | Monomer | Uses |\n|---------|---------|------|\n| Polyethylene | Ethylene | Plastic bags |\n| PVC | Vinyl chloride | Pipes |\n| Polystyrene | Styrene | Cups |\n| Nylon 6,6 | Hexanedioic acid + hexamethylenediamine | Textiles |\n| Teflon | Tetrafluoroethylene | Non-stick |\n\n## Properties\n\n### Thermal\n- Thermoplastics: soften on heating\n- Thermosets: permanent shape\n\n### Molecular Weight\n- Average chain length affects properties\n- Higher MW = stronger, higher melting point\n\n## Practice Questions\n\n1. What monomer makes polystyrene?\n2. Difference addition vs condensation polymerization?\n3. Why is PVC used for pipes?",
+			"duration": 35,
+			"difficulty": "intermediate",
+			"prerequisites": ["functional groups"],
+			"learning_objectives": [
+				"Understand polymerization types",
+				"Identify common polymers",
+				"Relate structure to properties"
+			]
+		},
+		{
+			"id": "chemistry-chemical-industry",
+			"subject": "chemistry",
+			"topic": "chemical industry",
+			"title": "Chemical Industry and the Environment",
+			"content": "# Chemical Industry and the Environment\n\nChemistry has significant environmental impact.\n\n## Industrial Processes\n\n### Contact Process (Sulfuric Acid)\n1. S + O₂ → SO₂\n2. SO₂ + O₂ → SO₃ (V₂O₅ catalyst)\n3. SO₃ + H₂O → H₂SO₄\n\n### Haber Process (Ammonia)\nN₂ + 3H₂ ⇌ 2NH₃\n- Fe catalyst\n- 400-500°C\n- 200 atm\n- Optimized conditions for equilibrium and rate\n\n## Environmental Chemistry\n\n### Acid Rain\n- SO₂, NO� from fossil fuels\n- Causes: lake acidification, building damage\n\n### Greenhouse Effect\n- CO₂, CH₄, H₂O vapor\n- Global warming\n\n### Ozone Depletion\n- CFCs break down O₃\n- UV radiation increases\n\n## Green Chemistry\n\n1. Use renewable feedstocks\n2. Reduce waste\n3. Use safer solvents/catalysts\n4. Energy efficiency\n5. Prevent pollution\n\n## Practice Questions\n\n1. Why is V₂O₅ used in Contact Process?\n2. How do CFCs deplete ozone?\n3. Name 3 green chemistry principles",
+			"duration": 40,
+			"difficulty": "intermediate",
+			"prerequisites": ["equilibrium", "equilibrium"],
+			"learning_objectives": [
+				"Understand industrial processes",
+				"Explain environmental impact",
+				"Apply green chemistry principles"
+			]
+		},
+		{
+			"id": "chemistry-periodic-trends",
+			"subject": "chemistry",
+			"topic": "periodic table",
+			"title": "Periodic Trends",
+			"content": "# Periodic Trends\n\nElements show predictable trends across periods and down groups.\n\n## Atomic Properties\n\n### Atomic Radius\n- Decreases across period (more protons)\n- Increases down group (more shells)\n\n### Ionization Energy\n- Energy to remove electron\n- Increases across period\n- Decreases down group\n\n### Electron Affinity\n- Energy change when gaining electron\n- Generally increases across period\n- Less predictable down group\n\n### Electronegativity\n- Ability to attract electrons\n- Increases across period\n- Decreases down group\n- Fluorine = most electronegative\n\n## Chemical Properties\n\n### Metal Character\n- Increases down group\n- Decreases across period\n\n### Oxide Character\n- Metal oxides: basic\n- Non-metal oxides: acidic\n\n## Practice Questions\n\n1. Which has larger radius: Na or Cl?\n2. Explain trend in ionization energy\n3. Compare basicity of MgO and P₄O₁₀",
+			"duration": 35,
+			"difficulty": "intermediate",
+			"prerequisites": ["atomic structure"],
+			"learning_objectives": [
+				"Understand periodic trends",
+				"Explain atomic properties",
+				"Predict chemical behavior"
+			]
+		},
+		{
+			"id": "chemistry-stoichiometry",
+			"subject": "chemistry",
+			"topic": "stoichiometry",
+			"title": "Stoichiometry",
+			"content": "# Stoichiometry\n\nStoichiometry calculates quantities in chemical reactions.\n\n## Mole Concept\n\n### Mole\n- 6.022 × 10²³ particles (Avogadro's number)\n- Molar mass = mass of 1 mole\n\n### Calculations\nn = m/M (moles from mass)\nn = V/Vm (moles from volume, gas)\nn = CV (moles from concentration)\n\n## Stoichiometric Calculations\n\n### Balanced Equation\n2H₂ + O₂ → 2H₂O\n\n### Mole Ratios\n2 mol H₂ : 1 mol O₂ : 2 mol H₂O\n\n### Mass Calculations\n1. Convert to moles\n2. Use mole ratio\n3. Convert to desired quantity\n\n## Limiting Reagent\n\n- Reactant that gets used up first\n- Determines maximum product\n\n### Calculation\n1. Calculate moles of each reactant\n2. Divide by coefficient\n3. Smaller = limiting\n\n## Yield\n\n### Theoretical Yield\nMaximum product from stoichiometry\n\n### Actual Yield\nProduct actually obtained\n\n### Percentage Yield\n% Yield = (Actual/Theoretical) × 100\n\n## Practice Questions\n\n1. How many moles in 36g H₂O?\n2. 2H₂ + O₂ → 2H₂O. How much O₂ for 10g H₂?\n3. If 8g H₂ produces 72g H₂O, what's % yield?",
+			"duration": 45,
+			"difficulty": "intermediate",
+			"prerequisites": ["atomic structure"],
+			"learning_objectives": [
+				"Use mole concept",
+				"Perform stoichiometric calculations",
+				"Calculate yield"
+			]
+		},
+		{
+			"id": "chemistry-solutions",
+			"subject": "chemistry",
+			"topic": "solutions",
+			"title": "Solutions and Solubility",
+			"content": "# Solutions and Solubility\n\nSolutions are homogeneous mixtures.\n\n## Solution Terminology\n\n### Solute\n- Substance dissolved\n- Usually present in smaller amount\n\n### Solvent\n- Does the dissolving\n- Usually larger amount\n\n### Solution\n- Homogeneous mixture\n\n## Concentration\n\n### Molarity (M)\nmoles solute / liters solution\n\n### Molality (m)\nmoles solute / kg solvent\n\n### Percentage\n- % by mass = (mass solute/mass solution) × 100\n- % by volume = (volume solute/volume solution) × 100\n\n### Parts per Million\nppm = (mass solute/mass solution) × 10⁶\n\n## Solubility\n\n### Factors Affecting\n1. Temperature\n2. Nature of solute/solvent\n3. Pressure (gases)\n\n### Temperature Effect\n- Solids: usually more soluble at higher T\n- Gases: less soluble at higher T\n\n## Solubility Rules\n\n### Soluble\n- All nitrates\n- Most chlorides, bromides, iodides\n- Most sulfates\n\n### Insoluble\n- Most carbonates, phosphates\n- Most hydroxides (except Group 1, Ca, Ba, Sr)\n- AgCl, PbCl₂, PbSO₄\n\n## Practice Questions\n\n1. Calculate M of 5L solution with 2 mol NaCl\n2. How prepare 500mL of 0.1M NaOH?\n3. Why does gas dissolve less in hot water?",
+			"duration": 40,
+			"difficulty": "intermediate",
+			"prerequisites": ["stoichiometry"],
+			"learning_objectives": [
+				"Express concentration in various units",
+				"Understand solubility factors",
+				"Apply solubility rules"
+			]
+		},
+		{
+			"id": "chemistry-energetics",
+			"subject": "chemistry",
+			"topic": "energetics",
+			"title": "Chemical Energetics",
+			"content": "# Chemical Energetics\n\nEnthalpy changes accompany chemical reactions.\n\n## Enthalpy (H)\n\n### Definition\nHeat content of system at constant pressure\n\n### Enthalpy Change (ΔH)\nΔH = H(products) - H(reactants)\n- Exothermic: ΔH < 0 (heat released)\n- Endothermic: ΔH > 0 (heat absorbed)\n\n## Bond Enthalpies\n\n### Bond Breaking\n- Requires energy (endothermic)\n\n### Bond Forming\n- Releases energy (exothermic)\n\n### Calculation\nΔH = Σ(broken) - Σ(formed)\n\n## Hess's Law\n\nΔH is independent of path\n- Add reactions to get desired reaction\n- Add ΔH values\n\n## Enthalpy of...\n\n### Formation (ΔHf°)\n- Elements in standard state → compound\n\n### Combustion (ΔHc)\n- Complete combustion\n\n### Reaction (ΔHr)\n- Any reaction\n\n## Practice Questions\n\n1. Calculate ΔH for: CH₄ + 2O₂ → CO₂ + 2H₂O\nGiven: ΔHf(CH₄)=-74.8, CO₂=-393.5, H₂O=-285.8 kJ/mol\n2. Using bond enthalpies: N₂ + 3H₂ → 2NH₃\n3. Explain exothermic vs endothermic",
+			"duration": 45,
+			"difficulty": "advanced",
+			"prerequisites": ["stoichiometry", "bonding"],
+			"learning_objectives": [
+				"Understand enthalpy changes",
+				"Apply Hess's law",
+				"Calculate using bond enthalpies"
+			]
+		},
+		{
+			"id": "chemistry-gases",
+			"subject": "chemistry",
+			"topic": "gases",
+			"title": "States of Matter - Gases",
+			"content": "# States of Matter - Gases\n\nGases have distinct physical properties.\n\n## Gas Laws\n\n### Boyle's Law\nP₁V₁ = P₂V₂ (T constant)\n\n### Charles's Law\nV₁/T₁ = V₂/T₂ (P constant)\n\n### Avogadro's Law\nV₁/n₁ = V₂/n₂ (T, P constant)\n\n### Combined Gas Law\nP₁V₁/T₁ = P₂V₂/T₂\n\n## Ideal Gas Equation\n\nPV = nRT\n- R = 8.314 J/(mol·K)\n- R = 0.0821 L·atm/(mol·K)\n\n## Partial Pressures\n\n### Dalton's Law\nPtotal = ΣPi\n\n### Mole Fraction\nXi = ni/ntotal\nPi = Xi × Ptotal\n\n## Kinetic Molecular Theory\n\n### Assumptions\n1. Gas particles are point masses\n2. No intermolecular forces\n3. Random motion\n4. Elastic collisions\n\n### Derived\nPV = nRT\n\n## Real Gases\n\n### Deviations\n- High pressure: particle volume significant\n- Low temperature: intermolecular forces important\n\n### van der Waals\n(P + an²/V²)(V - nb) = nRT",
+			"duration": 45,
+			"difficulty": "intermediate",
+			"prerequisites": ["atomic structure"],
+			"learning_objectives": [
+				"Apply gas laws",
+				"Use ideal gas equation",
+				"Understand partial pressures"
+			]
+		}
+	]
+}

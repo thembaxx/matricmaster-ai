@@ -36,6 +36,7 @@ export function useSignIn() {
 	const [error, setError] = useState<string | null>(null);
 	const [showPassword, setShowPassword] = useState(false);
 	const [successEmail, setSuccessEmail] = useState<string | null>(null);
+	const [socialProvider, setSocialProvider] = useState<string | null>(null);
 
 	const form = useForm<SignInValues>({
 		resolver: zodResolver(signInSchema),
@@ -115,6 +116,7 @@ export function useSignIn() {
 		showPassword,
 		setShowPassword,
 		successEmail,
+		socialProvider,
 		onSubmit,
 		handleSocialSignIn,
 	};

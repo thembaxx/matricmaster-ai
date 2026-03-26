@@ -7,50 +7,65 @@ import type {
 	GamificationConfig,
 	NewAchievementDefinition,
 	NewGamificationConfig,
-	NewSubjectMetadata,
-	SubjectMetadata,
+	Subject,
 } from './schema';
-import { achievementDefinitions, gamificationConfig, subjectMetadata } from './schema';
+import { achievementDefinitions, gamificationConfig, subjects } from './schema';
 
-export async function getAllSubjects(): Promise<SubjectMetadata[]> {
+export async function getAllSubjects(): Promise<Subject[]> {
 	const db = await getDb();
-	return db.select().from(subjectMetadata).orderBy(asc(subjectMetadata.displayOrder));
+	return db.select().from(subjects).orderBy(asc(subjects.displayOrder));
 }
 
-export async function getSubjectById(subjectId: string): Promise<SubjectMetadata | undefined> {
+export async function getSubjectById(subjectSlug: string): Promise<Subject | undefined> {
 	const db = await getDb();
-	const result = await db
-		.select()
-		.from(subjectMetadata)
-		.where(eq(subjectMetadata.subjectId, subjectId));
+	const result = await db.select().from(subjects).where(eq(subjects.slug, subjectSlug));
 	return result[0];
 }
 
-export async function getSupportedSubjects(): Promise<SubjectMetadata[]> {
+export async function getSupportedSubjects(): Promise<Subject[]> {
 	const db = await getDb();
 	return db
 		.select()
-		.from(subjectMetadata)
-		.where(eq(subjectMetadata.isSupported, true))
-		.orderBy(asc(subjectMetadata.displayOrder));
+		.from(subjects)
+		.where(eq(subjects.isSupported, true))
+		.orderBy(asc(subjects.displayOrder));
 }
 
-export async function upsertSubjectMetadata(data: NewSubjectMetadata): Promise<SubjectMetadata> {
+export async function upsertSubject(data: {
+	slug: string;
+	name: string;
+	displayName: string;
+	description?: string | null;
+	curriculumCode: string;
+	emoji?: string | null;
+	fluentEmoji?: string | null;
+	imgSrc?: string | null;
+	color?: string | null;
+	bgColor?: string | null;
+	icon?: string | null;
+	fontFamily?: string | null;
+	gradientPrimary?: string | null;
+	gradientSecondary?: string | null;
+	gradientAccent?: string | null;
+	isSupported?: boolean;
+	displayOrder?: number;
+}): Promise<Subject> {
 	const db = await getDb();
 	await db
-		.insert(subjectMetadata)
-		.values(data)
+		.insert(subjects)
+		.values({
+			...data,
+			isSupported: data.isSupported ?? true,
+			displayOrder: data.displayOrder ?? 0,
+		})
 		.onConflictDoUpdate({
-			target: subjectMetadata.subjectId,
+			target: subjects.slug,
 			set: {
 				...data,
 				updatedAt: new Date(),
 			},
 		});
-	const result = await db
-		.select()
-		.from(subjectMetadata)
-		.where(eq(subjectMetadata.subjectId, data.subjectId));
+	const result = await db.select().from(subjects).where(eq(subjects.slug, data.slug));
 	return result[0]!;
 }
 

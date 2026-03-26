@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useState } from 'react';
-import type { Subject, Topic } from '@/data/curriculum';
+import type { CurriculumSubject as Subject, Topic } from '@/lib/content-adapter';
 
 export interface TopicSelection {
 	topic: Topic;

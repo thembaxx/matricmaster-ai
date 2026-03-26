@@ -1,0 +1,48 @@
+[
+	{
+		"subject": "Mathematics",
+		"date": "2026-10-19",
+		"paper": "Paper 1",
+		"subjectKey": "mathematics"
+	},
+	{
+		"subject": "Mathematics",
+		"date": "2026-10-22",
+		"paper": "Paper 2",
+		"subjectKey": "mathematics"
+	},
+	{
+		"subject": "Physical Sciences",
+		"date": "2026-10-21",
+		"paper": "Paper 1",
+		"subjectKey": "physics"
+	},
+	{
+		"subject": "Physical Sciences",
+		"date": "2026-10-24",
+		"paper": "Paper 2",
+		"subjectKey": "physics"
+	},
+	{
+		"subject": "Life Sciences",
+		"date": "2026-10-23",
+		"paper": "Paper 1",
+		"subjectKey": "life-sciences"
+	},
+	{
+		"subject": "Life Sciences",
+		"date": "2026-10-27",
+		"paper": "Paper 2",
+		"subjectKey": "life-sciences"
+	},
+	{ "subject": "Accounting", "date": "2026-10-26", "paper": "Paper 1", "subjectKey": "accounting" },
+	{ "subject": "Accounting", "date": "2026-10-29", "paper": "Paper 2", "subjectKey": "accounting" },
+	{ "subject": "Geography", "date": "2026-10-28", "paper": "Paper 1", "subjectKey": "geography" },
+	{ "subject": "Geography", "date": "2026-10-31", "paper": "Paper 2", "subjectKey": "geography" },
+	{ "subject": "History", "date": "2026-10-30", "paper": "Paper 1", "subjectKey": "history" },
+	{ "subject": "History", "date": "2026-11-03", "paper": "Paper 2", "subjectKey": "history" },
+	{ "subject": "English", "date": "2026-11-02", "paper": "Paper 1", "subjectKey": "english" },
+	{ "subject": "English", "date": "2026-11-05", "paper": "Paper 2", "subjectKey": "english" },
+	{ "subject": "Afrikaans", "date": "2026-11-04", "paper": "Paper 1", "subjectKey": "afrikaans" },
+	{ "subject": "Afrikaans", "date": "2026-11-06", "paper": "Paper 2", "subjectKey": "afrikaans" }
+]

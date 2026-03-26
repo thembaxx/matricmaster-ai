@@ -20,6 +20,7 @@ export default function SignUpForm() {
 		showPassword,
 		setShowPassword,
 		success,
+		socialProvider,
 		onSubmit,
 		handleSocialSignUp,
 	} = useSignUp();
@@ -99,7 +100,11 @@ export default function SignUpForm() {
 						className="flex flex-col gap-3"
 					>
 						<m.div variants={STAGGER_ITEM}>
-							<SocialAuthButton provider="google" onClick={() => handleSocialSignUp('google')} />
+							<SocialAuthButton
+								provider="google"
+								isLoading={socialProvider === 'google'}
+								onClick={() => handleSocialSignUp('google')}
+							/>
 						</m.div>
 						<div className="flex gap-3">
 							<m.div variants={STAGGER_ITEM} className="flex-1">

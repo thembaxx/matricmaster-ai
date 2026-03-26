@@ -1,8 +1,8 @@
 'use server';
 
 import { and, desc, eq, gte } from 'drizzle-orm';
-import { ACHIEVEMENT_DEFS, type Achievement, type APSProgress } from '@/constants/gamification';
 import { getAuth } from '@/lib/auth';
+import { ACHIEVEMENT_DEFS, type Achievement, type APSProgress } from '@/lib/content-adapter';
 import { type DbType, dbManager } from '@/lib/db';
 import {
 	flashcardReviews,

@@ -12,7 +12,7 @@ import { type FilterType, TopicFilters } from '@/components/Curriculum/TopicFilt
 import { TopicTree } from '@/components/Curriculum/TopicTree';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { CURRICULUM_DATA, type Topic } from '@/data/curriculum';
+import { CURRICULUM_DATA } from '@/data/curriculum';
 import {
 	calculateFilteredStats,
 	createCustomTopic,
@@ -23,6 +23,7 @@ import {
 	useStudyRecommendations,
 } from '@/hooks/use-curriculum-progress';
 import { useTopicNavigation } from '@/hooks/use-topic-navigation';
+import type { Topic } from '@/lib/content-adapter';
 
 export default function CurriculumMap() {
 	const router = useRouter();

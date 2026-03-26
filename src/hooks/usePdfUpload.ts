@@ -189,9 +189,12 @@ export function usePdfUpload({ subjects, onSuccess, onClose }: UsePdfUploadProps
 		if (!newSubjectName.trim()) return;
 		try {
 			setIsSaving(true);
+			const trimmedName = newSubjectName.trim();
 			const newSubject = await createSubjectAction({
-				name: newSubjectName.trim(),
-				curriculumCode: `CAPS-${newSubjectName.trim().substring(0, 3).toUpperCase()}`,
+				name: trimmedName,
+				slug: trimmedName.toLowerCase().replace(/\s+/g, '-'),
+				displayName: trimmedName,
+				curriculumCode: `CAPS-${trimmedName.substring(0, 3).toUpperCase()}`,
 			});
 			toast.success(`Subject "${newSubject.name}" created!`);
 			setPaperDetails((prev) => ({ ...prev, subjectId: newSubject.id }));

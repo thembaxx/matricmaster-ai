@@ -3,8 +3,8 @@
 import { AnimatePresence, domAnimation, LazyMotion, m } from 'framer-motion';
 import { usePathname } from 'next/navigation';
 import { createContext, type ReactNode, useContext, useMemo, useState } from 'react';
-import { getSubjectGradient } from '@/constants/subjects';
 import { useReducedMotion } from '@/hooks/use-reduced-motion';
+import { getSubjectGradient } from '@/lib/content-adapter';
 
 interface SubjectBackgroundContextValue {
 	subjectId: string | null;
