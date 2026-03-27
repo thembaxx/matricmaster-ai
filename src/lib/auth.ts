@@ -26,7 +26,7 @@ export const authConfig = {
 	secret: process.env.BETTER_AUTH_SECRET,
 	emailAndPassword: {
 		enabled: true,
-		requireEmailVerification: process.env.NODE_ENV === 'production',
+		requireEmailVerification: false,
 	},
 	socialProviders: {
 		google: {

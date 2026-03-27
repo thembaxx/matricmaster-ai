@@ -1,7 +1,7 @@
 // Don't load dotenv here - it should be loaded at the app entry point
 import { drizzle, type PostgresJsDatabase } from 'drizzle-orm/postgres-js';
 import postgres from 'postgres';
-import { logger } from '@/lib/logger';
+import { logger } from '../logger';
 import * as schema from './schema';
 
 const log = logger.createLogger('PostgreSQL');
@@ -16,7 +16,7 @@ interface DatabaseConfig {
 }
 
 class PostgreSQLManager {
-	private static instance: PostgreSQLManager;
+	private static instance: PostgreSQLManager | null = null;
 	private client: ReturnType<typeof postgres> | null = null;
 	private db: DbType | null = null;
 	private isConnected = false;
@@ -25,6 +25,10 @@ class PostgreSQLManager {
 
 	private constructor(config: DatabaseConfig) {
 		this.config = config;
+	}
+
+	public static resetInstance(): void {
+		PostgreSQLManager.instance = null;
 	}
 
 	public static getInstance(config?: DatabaseConfig): PostgreSQLManager {
@@ -183,4 +187,4 @@ process.on('SIGINT', async () => {
 });
 
 export type { DatabaseConfig, DbType };
-export { pgManager };
+export { PostgreSQLManager, pgManager };
