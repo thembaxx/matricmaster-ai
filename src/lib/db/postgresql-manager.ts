@@ -16,7 +16,7 @@ interface DatabaseConfig {
 }
 
 class PostgreSQLManager {
-	private static instance: PostgreSQLManager;
+	private static instance: PostgreSQLManager | null = null;
 	private client: ReturnType<typeof postgres> | null = null;
 	private db: DbType | null = null;
 	private isConnected = false;
