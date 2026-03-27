@@ -8,6 +8,7 @@ import { toast } from 'sonner';
 import { DiscoverTab } from '@/components/StudyBuddies/DiscoverTab';
 import { ProfileTab } from '@/components/StudyBuddies/ProfileTab';
 import { VideoCallInvite } from '@/components/StudyBuddies/VideoCallInvite';
+import { WeakAreasBanner } from '@/components/StudyBuddies/WeakAreasBanner';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -151,6 +152,7 @@ export default function StudyBuddiesPage() {
 				</TabsList>
 
 				<TabsContent value="discover" className="space-y-4">
+					<WeakAreasBanner onSelectSubject={(subject) => handleSubjectToggle(subject)} />
 					<DiscoverTab
 						searchQuery={searchQuery}
 						selectedSubjects={selectedSubjects}

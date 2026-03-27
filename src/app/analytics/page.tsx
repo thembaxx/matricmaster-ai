@@ -5,6 +5,7 @@ import { HugeiconsIcon } from '@hugeicons/react';
 import { useEffect, useState } from 'react';
 import { AchievementGrid } from '@/components/Analytics/AchievementGrid';
 import {
+	type Achievement,
 	type DailyActivity,
 	MOCK_ACHIEVEMENTS,
 	MOCK_ACTIVITY,
@@ -35,6 +36,7 @@ interface AnalyticsApiResponse {
 	globalProgress: GlobalProgress | null;
 	studyStats: ServiceStudyStats | null;
 	weakTopics: WeakTopic[];
+	achievements?: Achievement[];
 }
 
 function computeLevel(marksEarned: number) {
@@ -147,6 +149,7 @@ export default function AnalyticsDashboardPage() {
 	const [stats, setStats] = useState<StudyStats>(MOCK_STATS);
 	const [subjects, setSubjects] = useState<SubjectPerformance[]>(MOCK_SUBJECTS);
 	const [activity, setActivity] = useState<DailyActivity[]>(MOCK_ACTIVITY);
+	const [achievements, setAchievements] = useState<Achievement[]>(MOCK_ACHIEVEMENTS);
 	const [growthData, setGrowthData] = useState<{
 		topics: {
 			topic: string;
@@ -206,6 +209,9 @@ export default function AnalyticsDashboardPage() {
 				setStats(realStats);
 				setSubjects(realSubjects);
 				setActivity(realActivity);
+				if (data.achievements && data.achievements.length > 0) {
+					setAchievements(data.achievements);
+				}
 				setIsMock(!statsHasData && subjectsIsMock && activityIsMock);
 			} catch {
 				if (cancelled) return;
@@ -312,7 +318,7 @@ export default function AnalyticsDashboardPage() {
 					</TabsContent>
 
 					<TabsContent value="achievements" className="space-y-4">
-						<AchievementGrid achievements={MOCK_ACHIEVEMENTS} />
+						<AchievementGrid achievements={achievements} />
 					</TabsContent>
 				</Tabs>
 			</div>

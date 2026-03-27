@@ -6,6 +6,7 @@ import { AdaptiveScheduleBanner } from '@/components/Dashboard/AdaptiveScheduleB
 import { AdaptiveScheduleCard } from '@/components/Dashboard/AdaptiveScheduleCard';
 import { AITutorNudge } from '@/components/Dashboard/AITutorNudge';
 import { BriefingGreeting } from '@/components/Dashboard/BriefingGreeting';
+import { CrossFeatureRecommendations } from '@/components/Dashboard/CrossFeatureRecommendations';
 import { MoreTab } from '@/components/Dashboard/MoreTab';
 import { ProgressTab } from '@/components/Dashboard/ProgressTab';
 import { DEMO_TASKS } from '@/components/Dashboard/StatsGrid';
@@ -215,6 +216,9 @@ export default function Dashboard({
 									<AdaptiveScheduleCard adjustments={scheduleChanges.adjustments} />
 								</div>
 							)}
+							<div className="mt-6">
+								<CrossFeatureRecommendations />
+							</div>
 						</TabsContent>
 
 						<TabsContent value="progress" className="mt-0">
