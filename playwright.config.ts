@@ -21,17 +21,6 @@ export default defineConfig({
 	expect: {
 		timeout: 10000,
 	},
-	/* Shared settings for all the projects below */
-	use: {
-		/* Base URL to use in actions like `await page.goto('/')` */
-		baseURL: process.env.PLAYWRIGHT_TEST_BASE_URL || 'http://localhost:3000',
-		/* Collect trace when retrying the failed test */
-		trace: 'on-first-retry',
-		/* Screenshot on failure */
-		screenshot: 'only-on-failure',
-		/* Action timeout */
-		actionTimeout: 15000,
-	},
 
 	/* Configure projects for major browsers */
 	projects: [
@@ -50,6 +39,8 @@ export default defineConfig({
 		stderr: 'pipe',
 		timeout: 120000,
 	},
+
+	/* Shared settings for all the projects below */
 	use: {
 		/* Base URL to use in actions like `await page.goto('/')` */
 		baseURL: process.env.PLAYWRIGHT_TEST_BASE_URL || 'http://localhost:3000',
