@@ -198,24 +198,24 @@ async function createAuth(): Promise<AuthInstance> {
 
 	if (isValidCredential(googleClientId, googleClientSecret)) {
 		socialProviders.google = {
-			clientId: googleClientId,
-			clientSecret: googleClientSecret,
+			clientId: googleClientId!,
+			clientSecret: googleClientSecret!,
 		};
 	}
 
 	// Only add Twitter provider if credentials are available
 	if (isValidCredential(twitterClientId, twitterClientSecret)) {
 		socialProviders.twitter = {
-			clientId: twitterClientId,
-			clientSecret: twitterClientSecret,
+			clientId: twitterClientId!,
+			clientSecret: twitterClientSecret!,
 		};
 	}
 
 	// Only add Facebook provider if credentials are available
 	if (isValidCredential(facebookClientId, facebookClientSecret)) {
 		socialProviders.facebook = {
-			clientId: facebookClientId,
-			clientSecret: facebookClientSecret,
+			clientId: facebookClientId!,
+			clientSecret: facebookClientSecret!,
 		};
 	}
 

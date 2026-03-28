@@ -18,7 +18,7 @@ console.log('[DEBUG] POSTGRES_URL:', process.env.POSTGRES_URL ? 'set' : 'not set
 
 // Get fresh instance with correct config
 const connString = process.env.POSTGRES_URL || process.env.DATABASE_URL || '';
-console.log('[DEBUG] Connection string:', connString.substring(0, 50) + '...');
+console.log('[DEBUG] Connection string:', `${connString.substring(0, 50)}...`);
 
 // Force a fresh instance by resetting the singleton first
 PostgreSQLManager.resetInstance();

@@ -25,7 +25,7 @@ export const auth = betterAuth({
 		!process.env.GOOGLE_CLIENT_ID.startsWith('your_')
 			? {
 					google: {
-						clientId: process.env.GOOGLE_CLIENT_ID,
+						clientId: process.env.GOOGLE_CLIENT_ID!,
 						clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? process.env.GOOGLE_SECRET_KEY ?? '',
 					},
 				}
@@ -36,8 +36,8 @@ export const auth = betterAuth({
 		!process.env.TWITTER_CLIENT_ID.startsWith('your_')
 			? {
 					twitter: {
-						clientId: process.env.TWITTER_CLIENT_ID,
-						clientSecret: process.env.TWITTER_CLIENT_SECRET,
+						clientId: process.env.TWITTER_CLIENT_ID!,
+						clientSecret: process.env.TWITTER_CLIENT_SECRET!,
 					},
 				}
 			: {}),
@@ -47,8 +47,8 @@ export const auth = betterAuth({
 		!process.env.FACEBOOK_CLIENT_ID.startsWith('your_')
 			? {
 					facebook: {
-						clientId: process.env.FACEBOOK_CLIENT_ID,
-						clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
+						clientId: process.env.FACEBOOK_CLIENT_ID!,
+						clientSecret: process.env.FACEBOOK_CLIENT_SECRET!,
 					},
 				}
 			: {}),
