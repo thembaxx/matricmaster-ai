@@ -266,7 +266,7 @@ export async function updateMilestoneFromMastery(milestoneId: string): Promise<v
 		where: and(eq(apsMilestones.id, milestoneId), eq(apsMilestones.userId, user.id)),
 	});
 
-	if (!milestone || !milestone.topic || !milestone.subject) return;
+	if (!milestone?.topic || !milestone.subject) return;
 
 	const mastery = await db.query.topicMastery.findFirst({
 		where: and(eq(topicMastery.userId, user.id), eq(topicMastery.topic, milestone.topic)),

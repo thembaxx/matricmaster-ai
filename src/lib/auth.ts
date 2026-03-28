@@ -187,26 +187,35 @@ async function createAuth(): Promise<AuthInstance> {
 
 	const socialProviders: Record<string, { clientId: string; clientSecret: string }> = {};
 
-	if (googleClientId && googleClientSecret) {
+	// Only add providers if credentials are not empty and not placeholder values
+	const isValidCredential = (id: string | undefined, secret: string | undefined) => {
+		if (!id || !secret) return false;
+		const placeholderPatterns = ['dummy', 'your_', 'placeholder', 'xxx', 'your_'];
+		const lowerId = id.toLowerCase();
+		const lowerSecret = secret.toLowerCase();
+		return !placeholderPatterns.some((p) => lowerId.includes(p) || lowerSecret.includes(p));
+	};
+
+	if (isValidCredential(googleClientId, googleClientSecret)) {
 		socialProviders.google = {
-			clientId: googleClientId,
-			clientSecret: googleClientSecret,
+			clientId: googleClientId!,
+			clientSecret: googleClientSecret!,
 		};
 	}
 
 	// Only add Twitter provider if credentials are available
-	if (twitterClientId && twitterClientSecret) {
+	if (isValidCredential(twitterClientId, twitterClientSecret)) {
 		socialProviders.twitter = {
-			clientId: twitterClientId,
-			clientSecret: twitterClientSecret,
+			clientId: twitterClientId!,
+			clientSecret: twitterClientSecret!,
 		};
 	}
 
 	// Only add Facebook provider if credentials are available
-	if (facebookClientId && facebookClientSecret) {
+	if (isValidCredential(facebookClientId, facebookClientSecret)) {
 		socialProviders.facebook = {
-			clientId: facebookClientId,
-			clientSecret: facebookClientSecret,
+			clientId: facebookClientId!,
+			clientSecret: facebookClientSecret!,
 		};
 	}
 

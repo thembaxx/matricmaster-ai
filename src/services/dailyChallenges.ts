@@ -272,7 +272,7 @@ export async function claimChallengeReward(
 		where: eq(dailyChallenges.id, challengeId),
 	});
 
-	if (!challenge || !challenge.isCompleted || challenge.isClaimed || challenge.userId !== userId) {
+	if (!challenge?.isCompleted || challenge.isClaimed || challenge.userId !== userId) {
 		throw new Error('Challenge not claimable');
 	}
 

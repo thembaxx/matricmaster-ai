@@ -67,7 +67,7 @@ export async function POST(request: NextRequest) {
 			// Verify the deck exists and belongs to user
 			const userDecks = await getUserDecks(userId);
 			const existingDeck = userDecks.find((d) => d.id === targetDeckId);
-			if (!existingDeck || !existingDeck.name || !existingDeck.id) {
+			if (!existingDeck?.name || !existingDeck.id) {
 				return NextResponse.json({ error: 'Deck not found' }, { status: 404 });
 			}
 			const deckName_ = existingDeck.name as string;
@@ -101,7 +101,7 @@ export async function POST(request: NextRequest) {
 					undefined
 				);
 
-				if (!result.success || !result.deck || !result.deck.id || !result.deck.name) {
+				if (!result.success || !result.deck?.id || !result.deck.name) {
 					return NextResponse.json(
 						{ error: result.error || 'Failed to create deck' },
 						{ status: 500 }
