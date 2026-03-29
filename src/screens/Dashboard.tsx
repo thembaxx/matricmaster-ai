@@ -61,6 +61,7 @@ export default function Dashboard({
 		queryKey: ['growth-map'],
 		queryFn: async () => {
 			const res = await fetch('/api/growth-map');
+			if (!res.ok) throw new Error('Failed to load growth data');
 			return res.json();
 		},
 		select: (data) =>
@@ -81,6 +82,7 @@ export default function Dashboard({
 		queryKey: ['adaptive-schedule'],
 		queryFn: async () => {
 			const res = await fetch('/api/adaptive-schedule', { method: 'POST' });
+			if (!res.ok) throw new Error('Failed to load schedule');
 			return res.json();
 		},
 		select: (data) =>

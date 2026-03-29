@@ -49,23 +49,41 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-	const body = await request.json();
+	try {
+		const body = await request.json();
 
-	if (body.action === 'clear-logs') {
-		monitoring.clearLogs();
-		return NextResponse.json({ success: true, message: 'Logs cleared' });
+		if (body.action === 'clear-logs') {
+			monitoring.clearLogs();
+			return NextResponse.json({ success: true, message: 'Logs cleared' });
+		}
+
+		if (body.action === 'run-health-check') {
+			const [geminiCheck, uploadThingCheck] = await Promise.all([
+				healthCheck.checkGemini().catch((err) => ({
+					status: 'error' as const,
+					message: err instanceof Error ? err.message : 'Unknown error',
+				})),
+				healthCheck.checkUploadThing().catch((err) => ({
+					status: 'error' as const,
+					message: err instanceof Error ? err.message : 'Unknown error',
+				})),
+			]);
+
+			return NextResponse.json({
+				gemini: geminiCheck,
+				uploadThing: uploadThingCheck,
+				health: healthCheck.getHealthStatus(),
+			});
+		}
+
+		return NextResponse.json({ error: 'Invalid action' }, { status: 400 });
+	} catch (error) {
+		return NextResponse.json(
+			{
+				success: false,
+				error: error instanceof Error ? error.message : 'Unknown error',
+			},
+			{ status: 500 }
+		);
 	}
-
-	if (body.action === 'run-health-check') {
-		const geminiCheck = await healthCheck.checkGemini();
-		const uploadThingCheck = await healthCheck.checkUploadThing();
-
-		return NextResponse.json({
-			gemini: geminiCheck,
-			uploadThing: uploadThingCheck,
-			health: healthCheck.getHealthStatus(),
-		});
-	}
-
-	return NextResponse.json({ error: 'Invalid action' }, { status: 400 });
 }

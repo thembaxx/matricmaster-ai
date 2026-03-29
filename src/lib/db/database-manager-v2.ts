@@ -1,4 +1,4 @@
-import { eq } from 'drizzle-orm';
+import { eq, type Table } from 'drizzle-orm';
 import { logger } from '@/lib/logger';
 import { type DbType, pgManager } from './postgresql-manager';
 import { type SqliteDbType, sqliteManager } from './sqlite-manager';
@@ -105,12 +105,14 @@ class DatabaseManagerV2 {
 				const value = Reflect.get(target, prop, receiver);
 
 				if (prop === 'insert' || prop === 'update') {
-					return (table: any) => {
-						const queryBuilder = value.apply(target, [table]);
+					return (table: Table) => {
+						// Execute the Drizzle ORM insert/update method
+						// eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-explicit-any
+						const queryBuilder = (value as Function).apply(target, [table]) as any;
 
 						if (prop === 'insert') {
 							const originalValues = queryBuilder.values;
-							queryBuilder.values = (data: any) => {
+							queryBuilder.values = (data: Record<string, unknown> | Record<string, unknown>[]) => {
 								const now = new Date().toISOString();
 								const enhancedData = Array.isArray(data)
 									? data.map((item) => ({
@@ -118,22 +120,22 @@ class DatabaseManagerV2 {
 											syncStatus: item.syncStatus ?? 'pending',
 											lastModifiedAt: item.lastModifiedAt ?? now,
 											localUpdatedAt: item.localUpdatedAt ?? now,
-											syncVersion: (item.syncVersion ?? 0) + 1,
+											syncVersion: ((item.syncVersion as number) ?? 0) + 1,
 										}))
 									: {
 											...data,
 											syncStatus: data.syncStatus ?? 'pending',
 											lastModifiedAt: data.lastModifiedAt ?? now,
 											localUpdatedAt: data.localUpdatedAt ?? now,
-											syncVersion: (data.syncVersion ?? 0) + 1,
+											syncVersion: ((data.syncVersion as number) ?? 0) + 1,
 										};
-								return originalValues.apply(queryBuilder, [enhancedData]);
+								return originalValues.call(queryBuilder, enhancedData);
 							};
 						}
 
 						if (prop === 'update') {
 							const originalSet = queryBuilder.set;
-							queryBuilder.set = (data: any) => {
+							queryBuilder.set = (data: Record<string, unknown>) => {
 								const now = new Date().toISOString();
 								const enhancedData = {
 									...data,
@@ -141,7 +143,7 @@ class DatabaseManagerV2 {
 									lastModifiedAt: data.lastModifiedAt ?? now,
 									localUpdatedAt: data.localUpdatedAt ?? now,
 								};
-								return originalSet.apply(queryBuilder, [enhancedData]);
+								return originalSet.call(queryBuilder, enhancedData);
 							};
 						}
 

@@ -25,7 +25,40 @@ export const queryClient = new QueryClient({
 	},
 });
 
-// Enhanced fetch client with authentication support
+// Custom error class for API errors with status code
+export class ApiError extends Error {
+	status: number;
+	statusText: string;
+
+	constructor(message: string, status: number, statusText: string) {
+		super(message);
+		this.name = 'ApiError';
+		this.status = status;
+		this.statusText = statusText;
+	}
+}
+
+// Check if we should redirect to sign-in for auth errors
+function handleAuthError(status: number): void {
+	if ((status === 401 || status === 403) && typeof window !== 'undefined') {
+		const currentPath = window.location.pathname;
+		// Don't redirect if already on auth pages
+		if (
+			!currentPath.startsWith('/sign-in') &&
+			!currentPath.startsWith('/sign-up') &&
+			!currentPath.startsWith('/2fa')
+		) {
+			// Clear query cache for stale data
+			queryClient.clear();
+			// Redirect to sign-in with callback
+			const signInUrl = new URL('/sign-in', window.location.origin);
+			signInUrl.searchParams.set('callbackUrl', encodeURIComponent(currentPath));
+			window.location.href = signInUrl.toString();
+		}
+	}
+}
+
+// Enhanced fetch client with authentication support and session expiry handling
 export class ApiClient {
 	private baseURL: string;
 
@@ -34,9 +67,7 @@ export class ApiClient {
 	}
 
 	private async getAuthToken(): Promise<string | null> {
-		// Try to get token from various sources
 		if (typeof window !== 'undefined') {
-			// Client-side: try to get from localStorage or cookies
 			const token = localStorage.getItem('auth-token');
 			if (token) return token;
 		}
@@ -56,6 +87,24 @@ export class ApiClient {
 		return headers;
 	}
 
+	private async handleResponse<T>(response: Response): Promise<T> {
+		if (!response.ok) {
+			// Handle session expiry
+			handleAuthError(response.status);
+
+			const errorText = await response.text().catch(() => 'Unknown error');
+			throw new ApiError(`HTTP error! status: ${response.status}`, response.status, errorText);
+		}
+
+		// Handle empty responses
+		const contentType = response.headers.get('content-type');
+		if (!contentType?.includes('application/json')) {
+			return {} as T;
+		}
+
+		return response.json();
+	}
+
 	async get<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
 		const url = `${this.baseURL}${endpoint}`;
 		const headers = await this.getAuthHeaders();
@@ -69,17 +118,7 @@ export class ApiClient {
 			...options,
 		});
 
-		if (!response.ok) {
-			const errorText = await response.text();
-			const error = new Error(`HTTP error! status: ${response.status}`);
-			// @ts-expect-error - Add additional error info
-			error.status = response.status;
-			// @ts-expect-error - Add error text
-			error.statusText = errorText;
-			throw error;
-		}
-
-		return response.json();
+		return this.handleResponse<T>(response);
 	}
 
 	async post<T>(endpoint: string, data?: unknown, options: RequestInit = {}): Promise<T> {
@@ -96,17 +135,7 @@ export class ApiClient {
 			...options,
 		});
 
-		if (!response.ok) {
-			const errorText = await response.text();
-			const error = new Error(`HTTP error! status: ${response.status}`);
-			// @ts-expect-error - Add additional error info
-			error.status = response.status;
-			// @ts-expect-error - Add error text
-			error.statusText = errorText;
-			throw error;
-		}
-
-		return response.json();
+		return this.handleResponse<T>(response);
 	}
 
 	async put<T>(endpoint: string, data?: unknown, options: RequestInit = {}): Promise<T> {
@@ -123,17 +152,7 @@ export class ApiClient {
 			...options,
 		});
 
-		if (!response.ok) {
-			const errorText = await response.text();
-			const error = new Error(`HTTP error! status: ${response.status}`);
-			// @ts-expect-error - Add additional error info
-			error.status = response.status;
-			// @ts-expect-error - Add error text
-			error.statusText = errorText;
-			throw error;
-		}
-
-		return response.json();
+		return this.handleResponse<T>(response);
 	}
 
 	async delete<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
@@ -149,17 +168,7 @@ export class ApiClient {
 			...options,
 		});
 
-		if (!response.ok) {
-			const errorText = await response.text();
-			const error = new Error(`HTTP error! status: ${response.status}`);
-			// @ts-expect-error - Add additional error info
-			error.status = response.status;
-			// @ts-expect-error - Add error text
-			error.statusText = errorText;
-			throw error;
-		}
-
-		return response.json();
+		return this.handleResponse<T>(response);
 	}
 }
 

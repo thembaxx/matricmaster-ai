@@ -7,8 +7,18 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
+interface SessionUser {
+	name?: string | null;
+	email?: string | null;
+	image?: string | null;
+}
+
+interface Session {
+	user?: SessionUser;
+}
+
 interface AccountTabProps {
-	session: any;
+	session: Session | null;
 	displayName: string;
 	setDisplayName: (name: string) => void;
 	email: string;

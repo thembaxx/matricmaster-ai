@@ -2,7 +2,7 @@
 
 import { RouteError } from '@/components/RouteError';
 
-export default function QuizError({
+export default function NotificationsError({
 	error,
 	reset,
 }: {
@@ -13,8 +13,8 @@ export default function QuizError({
 		<RouteError
 			error={error}
 			reset={reset}
-			title="quiz error"
-			description="unable to load the quiz. your progress may not have been saved."
+			title="notifications error"
+			description="unable to load notifications. please try again."
 		/>
 	);
 }

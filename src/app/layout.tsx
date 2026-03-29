@@ -127,11 +127,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 			className={`${geistMono.variable} ${geistSans.variable} ${playfair.variable} ${notoSansMath.variable}`}
 		>
 			<head>
-				<Script
-					src="//unpkg.com/react-scan/dist/auto.global.js"
-					strategy="beforeInteractive"
-					crossOrigin="anonymous"
-				/>
+				{process.env.NODE_ENV === 'development' && (
+					<Script
+						src="//unpkg.com/react-scan/dist/auto.global.js"
+						strategy="lazyOnload"
+						crossOrigin="anonymous"
+					/>
+				)}
 				<link rel="preconnect" href="https://fonts.googleapis.com" />
 				<link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
 				<link rel="dns-prefetch" href="https://images.unsplash.com" />
