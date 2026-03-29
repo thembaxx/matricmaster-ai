@@ -21,6 +21,7 @@ import {
 	recordStruggle,
 	updateConfidence,
 } from '@/services/buddyActions';
+import { completeQuizOffline } from '@/services/offlineQuizSync';
 import { useQuizResultStore } from '@/stores/useQuizResultStore';
 import { initialQuizState } from '@/types/quiz';
 
@@ -236,6 +237,19 @@ export function useQuizState({ quizId }: UseQuizStateProps) {
 					difficulty: 'medium',
 					sessionType: state.mode,
 				});
+
+				// Save completion to IndexedDB for offline sync
+				const sessionId = `${quizId}-${Date.now()}`;
+				await completeQuizOffline(
+					sessionId,
+					quizId,
+					quiz.subject,
+					quiz.questions.length,
+					finalScore,
+					Math.round((finalScore / quiz.questions.length) * 100),
+					state.elapsedSeconds * 1000
+				);
+
 				router.push('/lesson-complete');
 			}
 			return;

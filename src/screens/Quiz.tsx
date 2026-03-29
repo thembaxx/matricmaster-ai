@@ -10,6 +10,11 @@ import { QuizContent } from '@/components/Quiz/QuizContent';
 import { useQuizState } from '@/components/Quiz/useQuizState';
 import { WeakTopicAlert } from '@/components/Quiz/WeakTopicAlert';
 import { QuizRecoveryDialog } from '@/components/ui/QuizRecoveryDialog';
+import {
+	registerOnlineListener,
+	saveQuizAnswer,
+	syncAllPendingData,
+} from '@/services/offlineQuizSync';
 import { useQuizAutoSave } from '@/stores/useQuizAutoSaveStore';
 
 interface QuizInnerProps {
@@ -82,7 +87,7 @@ function QuizInner({ quizId: initialQuizId }: QuizInnerProps) {
 
 		autoSaveIntervalRef.current = setInterval(() => {
 			storeSaveQuiz(getQuizStateForSave());
-		}, 30000);
+		}, 10000);
 
 		return () => {
 			if (autoSaveIntervalRef.current) {
@@ -91,12 +96,40 @@ function QuizInner({ quizId: initialQuizId }: QuizInnerProps) {
 		};
 	}, [getQuizStateForSave, storeSaveQuiz]);
 
+	// Sync pending offline data when back online
+	const syncPendingDataRef = useRef<() => void>(() => {});
+	useEffect(() => {
+		const cleanup = registerOnlineListener(async (online) => {
+			if (online) {
+				await syncAllPendingData();
+			}
+		});
+		syncPendingDataRef.current = cleanup;
+		return cleanup;
+	}, []);
+
 	const handleSelectOption = useCallback(
 		(opt: string | null) => {
 			dispatch({ type: 'SET_OPTION', payload: opt });
 			storeSaveQuiz(getQuizStateForSave());
+
+			// Immediately save answer to IndexedDB for offline sync
+			const currentQuestion = quiz.questions[state.currentQuestionIndex];
+			if (currentQuestion && opt) {
+				// Check if question has correctAnswer (not all question types do, e.g., matching)
+				const hasCorrectAnswer = 'correctAnswer' in currentQuestion;
+				const isCorrect = hasCorrectAnswer ? opt === currentQuestion.correctAnswer : true;
+
+				saveQuizAnswer(`${quizId}-${Date.now()}`, quizId, quiz.subject, {
+					questionId: currentQuestion.id,
+					selectedOption: opt,
+					isCorrect,
+					timeSpentMs: 0,
+					answeredAt: new Date().toISOString(),
+				}).catch((err) => console.debug('Failed to save answer to IndexedDB:', err));
+			}
 		},
-		[dispatch, storeSaveQuiz, getQuizStateForSave]
+		[dispatch, storeSaveQuiz, getQuizStateForSave, quiz, state.currentQuestionIndex, quizId]
 	);
 
 	const handleAnswerTextChange = useCallback(

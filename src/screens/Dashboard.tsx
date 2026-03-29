@@ -7,6 +7,7 @@ import { AdaptiveScheduleCard } from '@/components/Dashboard/AdaptiveScheduleCar
 import { AITutorNudge } from '@/components/Dashboard/AITutorNudge';
 import { BriefingGreeting } from '@/components/Dashboard/BriefingGreeting';
 import { CrossFeatureRecommendations } from '@/components/Dashboard/CrossFeatureRecommendations';
+import { LeaderboardPreview } from '@/components/Dashboard/LeaderboardPreview';
 import { MoreTab } from '@/components/Dashboard/MoreTab';
 import { ProgressTab } from '@/components/Dashboard/ProgressTab';
 import { DEMO_TASKS } from '@/components/Dashboard/StatsGrid';
@@ -169,6 +170,10 @@ export default function Dashboard({
 
 					<div className="mb-6">
 						<AITutorNudge />
+					</div>
+
+					<div className="mb-6">
+						<LeaderboardPreview />
 					</div>
 
 					{scheduleChanges && scheduleChanges.adjustments?.length > 0 && (

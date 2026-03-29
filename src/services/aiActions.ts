@@ -399,6 +399,46 @@ export interface EssayFeedback {
 	overallFeedback: string;
 }
 
+const flashcardExplanationSchema = z.object({
+	front: z.string().min(1).max(500),
+	back: z.string().min(1).max(1000),
+});
+
+export async function getFlashcardExplanationAction(front: string, back: string): Promise<string> {
+	try {
+		const validated = flashcardExplanationSchema.parse({ front, back });
+
+		const sanitizedFront = sanitizeInput(validated.front);
+		const sanitizedBack = sanitizeInput(validated.back);
+
+		const prompt = `You are an expert Grade 12 tutor in South Africa. Explain the following flashcard concept in a clear and detailed way to help a student understand it better.
+
+Question/Concept: "${sanitizedFront}"
+Answer: "${sanitizedBack}"
+
+Requirements:
+- Explain the concept in simple, easy-to-understand terms
+- Provide real-world examples or analogies where applicable
+- Highlight why this concept is important for exams
+- Include any key formulas or relationships if applicable
+- Keep the explanation concise but comprehensive (2-3 paragraphs)
+
+Provide only the explanation, no JSON formatting needed.`;
+
+		const result = await generateAI({ prompt, model: AI_MODELS.PRIMARY });
+
+		return (
+			result || "I'm sorry, I couldn't generate an explanation for this concept at the moment."
+		);
+	} catch (error) {
+		if (error instanceof z.ZodError) {
+			return 'Invalid input provided.';
+		}
+		console.debug('AI Explanation Error:', error);
+		return "Sorry, I couldn't generate an explanation right now. Please try again later.";
+	}
+}
+
 export async function generateEssayFeedbackAction(
 	essayTopic: string,
 	essayContent: string,
