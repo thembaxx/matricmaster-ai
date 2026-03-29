@@ -368,7 +368,7 @@ async function createAuth(): Promise<AuthInstance> {
 				},
 			},
 		},
-		plugins: [nextCookies(), authConfig.plugins[0]],
+		plugins: [authConfig.plugins[0], nextCookies()],
 	};
 
 	// Use type assertion to bypass the type mismatch during build
