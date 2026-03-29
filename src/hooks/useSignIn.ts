@@ -40,6 +40,10 @@ export function useSignIn() {
 
 	const form = useForm<SignInValues>({
 		resolver: zodResolver(signInSchema),
+		defaultValues: {
+			email: '',
+			password: '',
+		},
 	});
 
 	const initializeDatabase = async () => {

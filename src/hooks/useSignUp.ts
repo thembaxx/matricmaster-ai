@@ -15,6 +15,11 @@ export function useSignUp() {
 
 	const form = useForm<SignUpValues>({
 		resolver: zodResolver(signUpSchema),
+		defaultValues: {
+			name: '',
+			email: '',
+			password: '',
+		},
 	});
 
 	const initializeDatabase = async () => {
@@ -64,7 +69,7 @@ export function useSignUp() {
 		setError(null);
 		_setSocialProvider(provider);
 		try {
-			const callbackURL = new URL('/dashboard', window.location.origin).toString();
+			const callbackURL = new URL('/onboarding', window.location.origin).toString();
 			const { error: authError } = await authClient.signIn.social({
 				provider,
 				callbackURL,
