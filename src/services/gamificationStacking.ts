@@ -31,11 +31,15 @@ export interface GamificationEvent {
 		| 'flashcard_review'
 		| 'milestone_complete'
 		| 'study_session'
-		| 'streak_milestone';
+		| 'streak_milestone'
+		| 'focus_room'
+		| 'group_challenge';
 	xpEarned: number;
 	achievementsUnlocked?: string[];
 	streakUpdated?: number;
 	message: string;
+	xpmultiplier?: number;
+	source?: string;
 }
 
 export interface StackedReward {
@@ -49,6 +53,22 @@ export interface StackedReward {
 	reason: string;
 }
 
+export interface XPMultipliers {
+	streak: number;
+	focusRoom: number;
+	groupChallenge: number;
+	consistency: number;
+	perfectScore: number;
+}
+
+export const DEFAULT_MULTIPLIERS: XPMultipliers = {
+	streak: 2.0,
+	focusRoom: 1.5,
+	groupChallenge: 3.0,
+	consistency: 1.2,
+	perfectScore: 1.5,
+};
+
 const XP_VALUES = {
 	quiz_correct_answer: 10,
 	quiz_perfect_score_bonus: 50,
@@ -61,6 +81,8 @@ const XP_VALUES = {
 	streak_7_days: 100,
 	streak_30_days: 500,
 	streak_100_days: 2000,
+	focus_room_minute: 2,
+	group_challenge_win: 150,
 };
 
 const ACHIEVEMENT_THRESHOLDS = {
@@ -74,6 +96,54 @@ const ACHIEVEMENT_THRESHOLDS = {
 	all_subjects: { xp: 0, title: 'Well Rounded', icon: 'books', id: 'all_subjects' },
 };
 
+async function getUserMultipliers(userId: string): Promise<XPMultipliers> {
+	const db = await getDb();
+
+	const progress = await db.query.userProgress.findFirst({
+		where: eq(userProgress.userId, userId),
+	});
+
+	if (!progress) return DEFAULT_MULTIPLIERS;
+
+	const multipliers: XPMultipliers = { ...DEFAULT_MULTIPLIERS };
+
+	if (progress.streakDays >= 7) {
+		multipliers.streak = 2.0;
+	}
+	if (progress.streakDays >= 30) {
+		multipliers.streak = 2.5;
+	}
+	if (progress.streakDays >= 100) {
+		multipliers.streak = 3.0;
+	}
+
+	const sessions = await db.query.studySessions.findMany({
+		where: and(eq(studySessions.userId, userId), eq(studySessions.sessionType, 'focus')),
+	});
+
+	const totalFocusMinutes = sessions.reduce((sum, s) => sum + (s.durationMinutes || 0), 0);
+	if (totalFocusMinutes >= 600) {
+		multipliers.focusRoom = 2.0;
+	} else if (totalFocusMinutes >= 300) {
+		multipliers.focusRoom = 1.75;
+	}
+
+	return multipliers;
+}
+
+async function applyXPMultiplier(
+	baseXp: number,
+	multiplierType: keyof XPMultipliers,
+	userId: string
+): Promise<{ xp: number; multiplier: number }> {
+	const multipliers = await getUserMultipliers(userId);
+	const multiplier = multipliers[multiplierType];
+	return {
+		xp: Math.round(baseXp * multiplier),
+		multiplier,
+	};
+}
+
 export async function processGamificationEvent(
 	eventType: GamificationEvent['type'],
 	context: {
@@ -84,6 +154,9 @@ export async function processGamificationEvent(
 		streakDays?: number;
 		topicMasteryLevel?: number;
 		subjectsStudied?: string[];
+		focusMinutes?: number;
+		isGroupChallenge?: boolean;
+		isChallengeWinner?: boolean;
 	}
 ): Promise<GamificationEvent> {
 	const user = await ensureAuthenticated();
@@ -92,6 +165,8 @@ export async function processGamificationEvent(
 	const achievementsUnlocked: string[] = [];
 	let streakUpdated: number | undefined;
 	let message = '';
+	let xpMultiplier = 1;
+	const multipliers = await getUserMultipliers(user.id);
 
 	switch (eventType) {
 		case 'quiz_complete': {
@@ -99,7 +174,13 @@ export async function processGamificationEvent(
 			xpEarned = correctAnswers * XP_VALUES.quiz_correct_answer;
 
 			if (correctAnswers === totalQuestions && totalQuestions >= 5) {
-				xpEarned += XP_VALUES.quiz_perfect_score_bonus;
+				const bonus = await applyXPMultiplier(
+					XP_VALUES.quiz_perfect_score_bonus,
+					'perfectScore',
+					user.id
+				);
+				xpEarned += bonus.xp;
+				xpMultiplier = bonus.multiplier;
 				achievementsUnlocked.push('perfect_score');
 			}
 
@@ -140,6 +221,12 @@ export async function processGamificationEvent(
 				xpEarned = XP_VALUES.study_session_30min;
 			}
 
+			if (multipliers.streak > 1) {
+				const streakBonus = await applyXPMultiplier(xpEarned, 'streak', user.id);
+				xpEarned = streakBonus.xp;
+				xpMultiplier = streakBonus.multiplier;
+			}
+
 			message = `Study session (${durationMinutes} min): +${xpEarned} XP`;
 			break;
 		}
@@ -159,7 +246,37 @@ export async function processGamificationEvent(
 				achievementsUnlocked.push('week_streak');
 			}
 
+			const streakBonus = await applyXPMultiplier(xpEarned, 'streak', user.id);
+			xpEarned = streakBonus.xp;
+			xpMultiplier = streakBonus.multiplier;
+
 			message = `${streakDays} day streak: +${xpEarned} XP`;
+			break;
+		}
+
+		case 'focus_room': {
+			const { focusMinutes = 0 } = context;
+			xpEarned = focusMinutes * XP_VALUES.focus_room_minute;
+
+			const focusBonus = await applyXPMultiplier(xpEarned, 'focusRoom', user.id);
+			xpEarned = focusBonus.xp;
+			xpMultiplier = focusBonus.multiplier;
+
+			message = `Focus room (${focusMinutes} min): +${xpEarned} XP`;
+			break;
+		}
+
+		case 'group_challenge': {
+			const { isChallengeWinner = false } = context;
+			xpEarned = isChallengeWinner ? XP_VALUES.group_challenge_win : 50;
+
+			const challengeBonus = await applyXPMultiplier(xpEarned, 'groupChallenge', user.id);
+			xpEarned = challengeBonus.xp;
+			xpMultiplier = challengeBonus.multiplier;
+
+			message = isChallengeWinner
+				? `Group challenge won: +${xpEarned} XP`
+				: `Group challenge participation: +${xpEarned} XP`;
 			break;
 		}
 	}
@@ -178,6 +295,8 @@ export async function processGamificationEvent(
 		achievementsUnlocked,
 		streakUpdated,
 		message,
+		xpmultiplier: xpMultiplier,
+		source: eventType,
 	};
 }
 
@@ -340,7 +459,8 @@ export async function getStackedRewards(userId: string): Promise<StackedReward[]
 	}
 
 	if (progress && progress.streakDays >= 7) {
-		const streakBonus = Math.min(progress.streakDays / 100, 0.3);
+		const streakMultiplier = await getUserMultipliers(userId);
+		const streakBonus = streakMultiplier.streak - 1;
 		bonusMultiplier += streakBonus;
 		rewards.push({
 			xp: 0,
@@ -350,4 +470,94 @@ export async function getStackedRewards(userId: string): Promise<StackedReward[]
 	}
 
 	return rewards;
+}
+
+export async function getXPBreakdown(userId: string): Promise<{
+	totalXp: number;
+	xpSources: { source: string; amount: number; percentage: number }[];
+	currentMultipliers: XPMultipliers;
+}> {
+	const db = await getDb();
+
+	const progress = await db.query.userProgress.findFirst({
+		where: eq(userProgress.userId, userId),
+	});
+
+	const totalXp = progress?.totalMarksEarned || 0;
+
+	const quizzes = await db.query.studySessions.findMany({
+		where: and(eq(studySessions.userId, userId), eq(studySessions.sessionType, 'quiz')),
+	});
+
+	const focusSessions = await db.query.studySessions.findMany({
+		where: and(eq(studySessions.userId, userId), eq(studySessions.sessionType, 'focus')),
+	});
+
+	const achievements = await db.query.userAchievements.findMany({
+		where: eq(userAchievements.userId, userId),
+	});
+
+	const xpSources = [
+		{
+			source: 'Quizzes',
+			amount: quizzes.reduce((sum, s) => sum + s.marksEarned, 0),
+			percentage: 0,
+		},
+		{
+			source: 'Focus Rooms',
+			amount: focusSessions.reduce((sum, s) => sum + s.marksEarned, 0),
+			percentage: 0,
+		},
+		{
+			source: 'Achievements',
+			amount: achievements.reduce((sum, a) => {
+				const threshold =
+					ACHIEVEMENT_THRESHOLDS[a.achievementId as keyof typeof ACHIEVEMENT_THRESHOLDS];
+				return sum + (threshold?.xp || 0);
+			}, 0),
+			percentage: 0,
+		},
+		{ source: 'Study Sessions', amount: (totalXp * 0.3) | 0, percentage: 0 },
+	];
+
+	const totalFromSources = xpSources.reduce((sum, s) => sum + s.amount, 0);
+	for (const source of xpSources) {
+		source.percentage = totalFromSources > 0 ? (source.amount / totalFromSources) * 100 : 0;
+	}
+
+	const multipliers = await getUserMultipliers(userId);
+
+	return {
+		totalXp,
+		xpSources,
+		currentMultipliers: multipliers,
+	};
+}
+
+export async function trackFocusRoomSession(
+	userId: string,
+	minutes: number,
+	_isGroupMode: boolean
+): Promise<GamificationEvent> {
+	const db = await getDb();
+
+	await db.insert(studySessions).values({
+		userId,
+		sessionType: 'focus',
+		durationMinutes: minutes,
+		startedAt: new Date(),
+		completedAt: new Date(),
+	});
+
+	return processGamificationEvent('focus_room', { focusMinutes: minutes });
+}
+
+export async function trackGroupChallenge(
+	_userId: string,
+	isWinner: boolean
+): Promise<GamificationEvent> {
+	return processGamificationEvent('group_challenge', {
+		isGroupChallenge: true,
+		isChallengeWinner: isWinner,
+	});
 }

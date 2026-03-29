@@ -77,6 +77,7 @@ export const questions = pgTable(
 		questionText: text('question_text').notNull(),
 		imageUrl: text('image_url'),
 		gradeLevel: integer('grade_level').notNull(),
+		ageRating: varchar('age_rating', { length: 20 }).notNull().default('all'),
 		topic: varchar('topic', { length: 100 }).notNull(),
 		difficulty: varchar('difficulty', { length: 20 }).notNull().default('medium'),
 		marks: integer('marks').notNull().default(2),
@@ -120,8 +121,11 @@ export const quizResults = pgTable('quiz_results', {
 	score: integer('score').notNull(),
 	totalQuestions: integer('total_questions').notNull(),
 	percentage: numeric('percentage', { precision: 5, scale: 2 }).notNull(),
-	timeTaken: integer('time_taken').notNull(), // in seconds
+	timeTaken: integer('time_taken').notNull(),
 	completedAt: timestamp('completed_at').defaultNow().notNull(),
+	questionResults: text('question_results'),
+	source: varchar('source', { length: 20 }).default('quiz'),
+	isReviewMode: boolean('is_review_mode').notNull().default(false),
 });
 
 export type QuizResult = typeof quizResults.$inferSelect;
@@ -196,6 +200,8 @@ export const pastPaperQuestions = pgTable(
 		topic: varchar('topic', { length: 200 }),
 		marks: integer('marks'),
 		questionNumber: integer('question_number'),
+		contentLevel: varchar('content_level', { length: 20 }).notNull().default('grade12'),
+		ageRating: varchar('age_rating', { length: 20 }).notNull().default('all'),
 		createdAt: timestamp('created_at').defaultNow(),
 	},
 	(table) => ({
@@ -1012,6 +1018,7 @@ export const questionAttempts = pgTable(
 			.references(() => users.id, { onDelete: 'cascade' }),
 		questionId: varchar('question_id', { length: 100 }).notNull(),
 		topic: varchar('topic', { length: 200 }).notNull(),
+		subject: varchar('subject', { length: 50 }).notNull().default(''),
 		isCorrect: boolean('is_correct').notNull(),
 		responseTimeMs: integer('response_time_ms'),
 		nextReviewAt: timestamp('next_review_at'),
@@ -1030,6 +1037,7 @@ export const questionAttempts = pgTable(
 		nextReviewIdx: index('question_attempts_next_review_idx').on(table.nextReviewAt),
 		sourceIdx: index('question_attempts_source_idx').on(table.source),
 		pastPaperIdIdx: index('question_attempts_past_paper_id_idx').on(table.pastPaperId),
+		subjectIdx: index('question_attempts_subject_idx').on(table.subject),
 	})
 );
 
@@ -1064,10 +1072,63 @@ export const userSettings = pgTable(
 		curriculum: varchar('curriculum', { length: 10 }).notNull().default('NSC'),
 		homeLanguage: varchar('home_language', { length: 20 }),
 		preferredLanguage: varchar('preferred_language', { length: 20 }).notNull().default('en'),
+		timezone: varchar('timezone', { length: 50 }).notNull().default('Africa/Johannesburg'),
 		updatedAt: timestamp('updated_at').defaultNow(),
 	},
 	(table) => ({
 		userIdIdx: index('user_settings_user_id_idx').on(table.userId),
+	})
+);
+
+// ============================================================================
+// DEVICES TABLE (Multi-device sync)
+// ============================================================================
+
+export const devices = pgTable(
+	'devices',
+	{
+		id: uuid('id').defaultRandom().primaryKey(),
+		userId: text('user_id')
+			.notNull()
+			.references(() => users.id, { onDelete: 'cascade' }),
+		deviceId: varchar('device_id', { length: 100 }).notNull(),
+		deviceName: varchar('device_name', { length: 100 }).notNull(),
+		deviceType: varchar('device_type', { length: 20 }).notNull().default('desktop'),
+		lastActiveAt: timestamp('last_active_at').defaultNow(),
+		isCurrentDevice: boolean('is_current_device').notNull().default(false),
+		createdAt: timestamp('created_at').defaultNow(),
+	},
+	(table) => ({
+		userIdIdx: index('devices_user_id_idx').on(table.userId),
+		deviceIdIdx: index('devices_device_id_idx').on(table.deviceId),
+		uniqueDevice: uniqueIndex('devices_unique_user_device').on(table.userId, table.deviceId),
+	})
+);
+
+// ============================================================================
+// SYNC QUEUE TABLE (Pending changes for sync)
+// ============================================================================
+
+export const syncQueue = pgTable(
+	'sync_queue',
+	{
+		id: uuid('id').defaultRandom().primaryKey(),
+		userId: text('user_id')
+			.notNull()
+			.references(() => users.id, { onDelete: 'cascade' }),
+		entityType: varchar('entity_type', { length: 30 }).notNull(),
+		entityId: varchar('entity_id', { length: 100 }).notNull(),
+		action: varchar('action', { length: 10 }).notNull(),
+		data: text('data'),
+		timestamp: timestamp('timestamp').defaultNow().notNull(),
+		deviceId: varchar('device_id', { length: 100 }).notNull(),
+		processed: boolean('processed').notNull().default(false),
+		processedAt: timestamp('processed_at'),
+	},
+	(table) => ({
+		userIdIdx: index('sync_queue_user_id_idx').on(table.userId),
+		entityIdx: index('sync_queue_entity_idx').on(table.entityType, table.entityId),
+		processedIdx: index('sync_queue_processed_idx').on(table.processed),
 	})
 );
 
@@ -1102,6 +1163,40 @@ export const accessibilityPreferences = pgTable(
 		userIdIdx: index('accessibility_preferences_user_id_idx').on(table.userId),
 	})
 );
+
+// ============================================================================
+// CONTENT FILTER TABLES (Age-appropriate content system)
+// ============================================================================
+
+export const contentFilters = pgTable(
+	'content_filters',
+	{
+		id: uuid('id').defaultRandom().primaryKey(),
+		userId: text('user_id')
+			.notNull()
+			.references(() => users.id, { onDelete: 'cascade' }),
+		childAge: integer('child_age'),
+		allowedLevels: text('allowed_levels').notNull().default('grade10,grade11,grade12'),
+		strictMode: boolean('strict_mode').notNull().default(false),
+		showAdvancedOption: boolean('show_advanced_option').notNull().default(true),
+		overrideEnabled: boolean('override_enabled').notNull().default(false),
+		createdAt: timestamp('created_at').defaultNow(),
+		updatedAt: timestamp('updated_at').defaultNow(),
+	},
+	(table) => ({
+		userIdIdx: index('content_filters_user_id_idx').on(table.userId),
+	})
+);
+
+export const contentFiltersRelations = relations(contentFilters, ({ one }) => ({
+	user: one(users, {
+		fields: [contentFilters.userId],
+		references: [users.id],
+	}),
+}));
+
+export type ContentFilter = typeof contentFilters.$inferSelect;
+export type NewContentFilter = typeof contentFilters.$inferInsert;
 
 // ============================================================================
 // RELATIONS
@@ -1349,6 +1444,20 @@ export const accessibilityPreferencesRelations = relations(accessibilityPreferen
 	}),
 }));
 
+export const devicesRelations = relations(devices, ({ one }) => ({
+	user: one(users, {
+		fields: [devices.userId],
+		references: [users.id],
+	}),
+}));
+
+export const syncQueueRelations = relations(syncQueue, ({ one }) => ({
+	user: one(users, {
+		fields: [syncQueue.userId],
+		references: [users.id],
+	}),
+}));
+
 // ============================================================================
 // WHATSAPP PREFERENCES TABLE
 // ============================================================================
@@ -1465,6 +1574,12 @@ export type NewUserSettings = typeof userSettings.$inferInsert;
 
 export type AccessibilityPreferences = typeof accessibilityPreferences.$inferSelect;
 export type NewAccessibilityPreferences = typeof accessibilityPreferences.$inferInsert;
+
+export type Device = typeof devices.$inferSelect;
+export type NewDevice = typeof devices.$inferInsert;
+
+export type SyncQueueItem = typeof syncQueue.$inferSelect;
+export type NewSyncQueueItem = typeof syncQueue.$inferInsert;
 
 // ============================================================================
 // OFFLINE BUNDLES TABLE

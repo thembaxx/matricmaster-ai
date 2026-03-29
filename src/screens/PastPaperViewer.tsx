@@ -10,11 +10,13 @@ import { PastPaperHeader } from '@/components/PastPaper/PastPaperHeader';
 import { PastPaperNavigation } from '@/components/PastPaper/PastPaperNavigation';
 import { PastPaperPagination } from '@/components/PastPaper/PastPaperPagination';
 import { PastPaperQuestion } from '@/components/PastPaper/PastPaperQuestion';
+import { ScannedUpload } from '@/components/PastPapers/ScannedUpload';
 import { ConversionBanner } from '@/components/PastPaperViewer/ConversionBanner';
 import { ErrorState } from '@/components/PastPaperViewer/ErrorState';
 import { InstructionsCard } from '@/components/PastPaperViewer/InstructionsCard';
 import { LoadingState } from '@/components/PastPaperViewer/LoadingState';
 import { QuestionJumpNav } from '@/components/PastPaperViewer/QuestionJumpNav';
+import { Button } from '@/components/ui/button';
 import { useAiContext } from '@/hooks/useAiContext';
 import { usePastPaperViewer } from '@/hooks/usePastPaperViewer';
 import {
@@ -22,6 +24,7 @@ import {
 	getCachedPastPaper,
 	isStorageAvailable,
 } from '@/lib/offline/offline-cache';
+import type { ParsedQuestion } from '@/services/ocrService';
 import { useOfflineStore } from '@/stores/useOfflineStore';
 
 const PdfViewer = dynamic(() => import('@/components/PdfViewer'), {
@@ -40,6 +43,7 @@ export default function PastPaperViewer({
 	initialId?: string;
 	initialMode?: string;
 }) {
+	const [showScannedUpload, setShowScannedUpload] = useState(false);
 	const {
 		router,
 		zoom,
@@ -126,6 +130,11 @@ export default function PastPaperViewer({
 		setIsDownloading(false);
 	}, [paper?.id, isOnline, downloadPaper]);
 
+	const handleScannedQuestionsExtracted = useCallback((questions: ParsedQuestion[]) => {
+		console.log('Extracted questions from scanned paper:', questions.length);
+		setShowScannedUpload(false);
+	}, []);
+
 	useEffect(() => {
 		checkOfflineAvailability();
 	}, [checkOfflineAvailability]);
@@ -136,6 +145,24 @@ export default function PastPaperViewer({
 
 	if (!paper && !extractedPaper) {
 		return <LoadingState />;
+	}
+
+	if (showScannedUpload) {
+		return (
+			<div className="flex flex-col h-full bg-background">
+				<div className="px-6 py-4 border-b">
+					<Button variant="ghost" size="sm" onClick={() => setShowScannedUpload(false)}>
+						← back to viewer
+					</Button>
+				</div>
+				<div className="flex-1 overflow-y-auto p-6">
+					<ScannedUpload
+						onQuestionsExtracted={handleScannedQuestionsExtracted}
+						onCancel={() => setShowScannedUpload(false)}
+					/>
+				</div>
+			</div>
+		);
 	}
 
 	if (!paper) {
@@ -196,6 +223,7 @@ export default function PastPaperViewer({
 				isOfflineAvailable={isOfflineAvailable}
 				isDownloading={isDownloading}
 				onDownloadOffline={handleDownloadForOffline}
+				onUploadScanned={() => setShowScannedUpload(true)}
 			/>
 
 			<div className="grow overflow-hidden pb-16">

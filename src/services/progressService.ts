@@ -11,6 +11,7 @@ import {
 	pastPapers,
 	quizResults,
 	type StudySession,
+	studyPlans,
 	studySessions,
 	subjects,
 	topicMastery,
@@ -705,5 +706,122 @@ export async function getStudyStats(userId?: string): Promise<StudyStats | null>
 	} catch (error) {
 		console.error('Error getting study stats:', error);
 		return null;
+	}
+}
+
+export interface QuizResultSummary {
+	quizId: string;
+	subjectId: number | undefined;
+	topic: string;
+	score: number;
+	totalQuestions: number;
+	correctCount: number;
+	incorrectCount: number;
+	weakTopics: string[];
+	completedAt: Date;
+}
+
+export interface PlanAdaptation {
+	planId: string;
+	topic: string;
+	subject: string;
+	oldPriority: number;
+	newPriority: number;
+	reason: string;
+	adaptedAt: Date;
+}
+
+export async function adjustStudyPlanBasedOnResults(
+	planId: string,
+	results: QuizResultSummary
+): Promise<{ success: boolean; adaptations?: PlanAdaptation[]; error?: string }> {
+	try {
+		const userId = await getUserId();
+		const db = await getDb();
+
+		const plan = await db.query.studyPlans.findFirst({
+			where: eq(studyPlans.id, planId),
+		});
+
+		if (!plan) {
+			return { success: false, error: 'Study plan not found' };
+		}
+
+		const adaptations: PlanAdaptation[] = [];
+		const weakTopics = results.weakTopics;
+
+		for (const topic of weakTopics) {
+			const topicMasteryRecord = await db.query.topicMastery.findFirst({
+				where: and(eq(topicMastery.userId, userId), eq(topicMastery.topic, topic)),
+			});
+
+			const currentPriority = topicMasteryRecord
+				? Math.max(1, 10 - Math.floor(Number(topicMasteryRecord.masteryLevel) / 10))
+				: 8;
+			const newPriority = Math.max(1, currentPriority - 2);
+
+			adaptations.push({
+				planId,
+				topic,
+				subject: '',
+				oldPriority: currentPriority,
+				newPriority,
+				reason: `Weak performance in quiz (${results.correctCount}/${results.totalQuestions} correct)`,
+				adaptedAt: new Date(),
+			});
+		}
+
+		const existingFocusAreas = plan.focusAreas ? JSON.parse(plan.focusAreas) : [];
+		const updatedFocusAreas = [
+			...existingFocusAreas,
+			...weakTopics.map((topic) => ({
+				topic,
+				priority: 'high',
+				addedAt: new Date().toISOString(),
+			})),
+		];
+
+		await db
+			.update(studyPlans)
+			.set({
+				focusAreas: JSON.stringify(updatedFocusAreas),
+				updatedAt: new Date(),
+			})
+			.where(eq(studyPlans.id, planId));
+
+		return { success: true, adaptations };
+	} catch (error) {
+		console.error('Error adjusting study plan:', error);
+		return { success: false, error: 'Failed to adjust study plan' };
+	}
+}
+
+export async function getAdaptationHistory(planId: string): Promise<PlanAdaptation[]> {
+	try {
+		const db = await getDb();
+
+		const plan = await db.query.studyPlans.findFirst({
+			where: eq(studyPlans.id, planId),
+		});
+
+		if (!plan) {
+			return [];
+		}
+
+		const focusAreas = plan.focusAreas ? JSON.parse(plan.focusAreas) : [];
+		return focusAreas
+			.filter((fa: { addedAt?: string }) => fa.addedAt)
+			.map((fa: { topic: string; priority: string; addedAt?: string }) => ({
+				planId,
+				topic: fa.topic,
+				subject: '',
+				oldPriority: 5,
+				newPriority: fa.priority === 'high' ? 8 : 5,
+				reason: 'Automatically adjusted based on quiz performance',
+				adaptedAt: new Date(fa.addedAt || ''),
+			}));
+	} catch (error) {
+		console.error('Error getting adaptation history:', error);
+		return [];
 	}
 }

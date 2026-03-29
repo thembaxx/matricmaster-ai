@@ -10,12 +10,29 @@ import { FocusLeaderboard } from '@/components/FocusRooms/FocusLeaderboard';
 import { FocusMembersGrid } from '@/components/FocusRooms/FocusMembersGrid';
 import { FocusTimerCard } from '@/components/FocusRooms/FocusTimerCard';
 import { StudyChat } from '@/components/FocusRooms/StudyChat';
+import { FeatureGate } from '@/components/Subscription/FeatureGate';
 import { Button } from '@/components/ui/button';
 import { useSession } from '@/lib/auth-client';
 import { cn } from '@/lib/utils';
 import { useFocusRoomStore } from '@/stores/useFocusRoomStore';
 
-export default function FocusRooms() {
+function FocusRoomsWrapper() {
+	return (
+		<FeatureGate
+			feature="focusRooms"
+			showPreviewButton={true}
+			upgradeMessage="Focus rooms help you study with others in real-time"
+		>
+			<FocusRoomsContent />
+		</FeatureGate>
+	);
+}
+
+export default function FocusRoomsPage() {
+	return <FocusRoomsWrapper />;
+}
+
+function FocusRoomsContent() {
 	const router = useRouter();
 	const { data: session } = useSession();
 	const {
@@ -53,11 +70,25 @@ export default function FocusRooms() {
 		} else if (timeLeft === 0) {
 			setIsActive(false);
 			setFocusMinutes(focusMinutes + 25);
+
+			if (session?.user?.id) {
+				fetch('/api/gamification/focus-session', {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify({
+						userId: session.user.id,
+						minutes: 25,
+						isGroupMode,
+					}),
+				}).catch(() => {
+					// Silently fail
+				});
+			}
 		}
 		return () => {
 			if (interval) clearInterval(interval);
 		};
-	}, [isActive, timeLeft, tick, setFocusMinutes, setIsActive, focusMinutes]);
+	}, [isActive, timeLeft, tick, setFocusMinutes, setIsActive, focusMinutes, isGroupMode, session]);
 
 	useEffect(() => {
 		updateStatus({
@@ -122,6 +153,13 @@ export default function FocusRooms() {
 							Start Exam Timer
 						</Button>
 					</div>
+				</div>
+
+				<div className="bg-primary/5 border border-primary/20 rounded-lg p-4">
+					<p className="text-sm text-center">
+						<span className="font-semibold">XP Multiplier:</span> {isGroupMode ? '1.5x' : '1x'} for
+						focus sessions
+					</p>
 				</div>
 
 				<div className="grid lg:grid-cols-3 gap-8">

@@ -1,6 +1,6 @@
 'use client';
 
-import { Add01Icon, Delete02Icon, Loading03Icon } from '@hugeicons/core-free-icons';
+import { Add01Icon, Delete02Icon, Loading03Icon, Quiz01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { useId, useState } from 'react';
 import { toast } from 'sonner';
@@ -16,6 +16,7 @@ import {
 import { Label } from '@/components/ui/label';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Textarea } from '@/components/ui/textarea';
+import { generateQuestionsAction } from '@/services/aiActions';
 
 interface Flashcard {
 	id: string;
@@ -119,10 +120,17 @@ export function DeckDetailModal({
 				</DialogHeader>
 
 				<div className="space-y-4">
-					<Button onClick={() => setShowAddCard(!showAddCard)} variant="outline" className="w-full">
-						<HugeiconsIcon icon={Add01Icon} className="mr-2 h-4 w-4" />
-						Add Card
-					</Button>
+					<div className="flex gap-2">
+						<Button
+							onClick={() => setShowAddCard(!showAddCard)}
+							variant="outline"
+							className="flex-1"
+						>
+							<HugeiconsIcon icon={Add01Icon} className="mr-2 h-4 w-4" />
+							Add Card
+						</Button>
+						<CreateQuizFromDeckButton deck={deck} flashcards={flashcards} />
+					</div>
 
 					{showAddCard && (
 						<div className="space-y-3 rounded-lg border p-4">
@@ -197,5 +205,110 @@ export function DeckDetailModal({
 				</DialogFooter>
 			</DialogContent>
 		</Dialog>
+	);
+}
+
+interface FlashcardForQuiz {
+	id: string;
+	front: string;
+	back: string;
+	timesReviewed: number;
+	timesCorrect: number;
+}
+
+interface CreateQuizFromDeckButtonProps {
+	deck: { id: string; name: string };
+	flashcards: FlashcardForQuiz[];
+}
+
+function CreateQuizFromDeckButton({ deck, flashcards }: CreateQuizFromDeckButtonProps) {
+	const [isGenerating, setIsGenerating] = useState(false);
+
+	const handleCreateQuiz = async (mode: 'all' | 'correct' | 'weak') => {
+		setIsGenerating(true);
+		try {
+			let topics: string[] = [];
+
+			if (mode === 'all') {
+				topics = flashcards.slice(0, 5).map((f) => f.front);
+			} else if (mode === 'correct') {
+				const correctCards = flashcards.filter(
+					(f) => f.timesCorrect > 0 && f.timesCorrect >= f.timesReviewed / 2
+				);
+				topics = correctCards.slice(0, 5).map((f) => f.front);
+			} else {
+				const weakCards = flashcards.filter(
+					(f) => f.timesReviewed >= 2 && f.timesCorrect < f.timesReviewed / 2
+				);
+				topics = weakCards.slice(0, 5).map((f) => f.front);
+			}
+
+			if (topics.length === 0) {
+				topics = flashcards.slice(0, 5).map((f) => f.front);
+			}
+
+			const result = await generateQuestionsAction(
+				deck.name,
+				topics.join(', '),
+				'medium',
+				'multiple_choice',
+				5
+			);
+
+			if (result.success && result.questions) {
+				toast.success(`Generated ${result.questions.length} quiz questions!`);
+				window.location.href = `/quiz?topic=${encodeURIComponent(deck.name)}`;
+			} else {
+				toast.error(result.error || 'Failed to generate quiz');
+			}
+		} catch (error) {
+			console.error('Failed to create quiz:', error);
+			toast.error('Failed to create quiz');
+		} finally {
+			setIsGenerating(false);
+		}
+	};
+
+	const weakCount = flashcards.filter(
+		(f) => f.timesReviewed >= 2 && f.timesCorrect < f.timesReviewed / 2
+	).length;
+	const correctCount = flashcards.filter(
+		(f) => f.timesCorrect > 0 && f.timesCorrect >= f.timesReviewed / 2
+	).length;
+
+	return (
+		<div className="relative">
+			<Button
+				onClick={() => handleCreateQuiz('all')}
+				disabled={isGenerating || flashcards.length === 0}
+				variant="outline"
+				className="flex-1"
+			>
+				<HugeiconsIcon icon={Quiz01Icon} className="mr-2 h-4 w-4" />
+				{isGenerating ? 'Generating...' : 'Create Quiz'}
+			</Button>
+			{flashcards.length > 0 && (
+				<div className="mt-2 flex gap-2 text-xs text-muted-foreground">
+					{weakCount > 0 && (
+						<button
+							type="button"
+							onClick={() => handleCreateQuiz('weak')}
+							className="flex items-center gap-1 hover:text-destructive"
+						>
+							<span className="font-medium text-destructive">{weakCount}</span> weak
+						</button>
+					)}
+					{correctCount > 0 && (
+						<button
+							type="button"
+							onClick={() => handleCreateQuiz('correct')}
+							className="flex items-center gap-1 hover:text-primary"
+						>
+							<span className="font-medium text-primary">{correctCount}</span> strong
+						</button>
+					)}
+				</div>
+			)}
+		</div>
 	);
 }
