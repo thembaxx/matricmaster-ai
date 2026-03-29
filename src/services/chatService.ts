@@ -1,9 +1,11 @@
-import { desc, eq } from 'drizzle-orm';
+import { and, desc, eq, gte, sql } from 'drizzle-orm';
+import { NSC_EXAM_DATES } from '@/content/exam-dates';
 import { getAuth } from '@/lib/auth';
 import { dbManager } from '@/lib/db';
-import { conceptStruggles, topicConfidence } from '@/lib/db/schema';
+import { conceptStruggles, quizResults, topicConfidence, topicMastery } from '@/lib/db/schema';
 import { aiChatMessages, aiChatSessions } from '@/lib/db/schema-ai-chat';
 import { getBuddyProfile } from './buddyActions';
+import { edgeCaseService } from './edge-case-service';
 
 async function getDb() {
 	const connected = await dbManager.waitForConnection(3, 2000);
@@ -15,6 +17,12 @@ export interface UserContext {
 	weakAreas: string[];
 	confidenceScores: { topic: string; subject: string; score: number }[];
 	personality: string;
+	quizPerformance: {
+		accuracy: number;
+		totalQuizzes: number;
+	};
+	weakTopics: { topic: string; mastery: number }[];
+	upcomingExams: { subject: string; date: string; daysUntil: number }[];
 }
 
 export async function getUserContext(): Promise<UserContext> {
@@ -23,16 +31,71 @@ export async function getUserContext(): Promise<UserContext> {
 	if (!session?.user) throw new Error('Unauthorized');
 
 	const db = await getDb();
+	const userId = session.user.id;
 
+	// 1. Existing logic: struggles & confidence
 	const struggles = await db.query.conceptStruggles.findMany({
-		where: eq(conceptStruggles.userId, session.user.id),
+		where: eq(conceptStruggles.userId, userId),
 		limit: 10,
 	});
 
 	const confidence = await db.query.topicConfidence.findMany({
-		where: eq(topicConfidence.userId, session.user.id),
+		where: eq(topicConfidence.userId, userId),
 		limit: 20,
 	});
+
+	// 2. New: Recent quiz performance (last 7 days)
+	const sevenDaysAgo = new Date();
+	sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+
+	const recentQuizzes = await db.query.quizResults.findMany({
+		where: and(eq(quizResults.userId, userId), gte(quizResults.completedAt, sevenDaysAgo)),
+	});
+
+	let quizAccuracy = 0;
+	if (recentQuizzes.length > 0) {
+		const totalPercentage = recentQuizzes.reduce((sum, q) => sum + Number(q.percentage), 0);
+		quizAccuracy = totalPercentage / recentQuizzes.length;
+	}
+
+	// 3. New: Topic mastery levels (weakest topics)
+	const masteryData = await db.query.topicMastery.findMany({
+		where: eq(topicMastery.userId, userId),
+		orderBy: [sql`${topicMastery.masteryLevel} ASC`],
+		limit: 10, // Get bottom 10 to find the 3 weakest unique ones
+	});
+
+	// Deduplicate topics (in case user has multiple entries for same topic - though schema suggests unique constraint)
+	const uniqueWeakTopics = [];
+	const seenTopics = new Set<string>();
+
+	for (const m of masteryData) {
+		if (!seenTopics.has(m.topic)) {
+			seenTopics.add(m.topic);
+			uniqueWeakTopics.push({
+				topic: m.topic,
+				mastery: Number(m.masteryLevel),
+			});
+		}
+		if (uniqueWeakTopics.length >= 3) break;
+	}
+
+	// 4. New: Upcoming exam dates
+	const now = new Date();
+	const upcomingExams = NSC_EXAM_DATES.map((exam) => {
+		const examDate = new Date(exam.date);
+		const diffTime = examDate.getTime() - now.getTime();
+		const daysUntil = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+		return {
+			subject: exam.subject,
+			date: exam.date,
+			daysUntil,
+			paper: exam.paper,
+		};
+	})
+		.filter((exam) => exam.daysUntil >= 0) // Only future exams
+		.sort((a, b) => a.daysUntil - b.daysUntil)
+		.slice(0, 3); // Get next 3 exams
 
 	const buddyProfile = await getBuddyProfile();
 
@@ -44,6 +107,16 @@ export async function getUserContext(): Promise<UserContext> {
 			score: Number.parseFloat(String(c.confidenceScore)),
 		})),
 		personality: buddyProfile?.personality || 'mentor',
+		quizPerformance: {
+			accuracy: Math.round(quizAccuracy),
+			totalQuizzes: recentQuizzes.length,
+		},
+		weakTopics: uniqueWeakTopics,
+		upcomingExams: upcomingExams.map(({ subject, date, daysUntil }) => ({
+			subject,
+			date,
+			daysUntil,
+		})),
 	};
 }
 
@@ -73,15 +146,35 @@ export function buildSystemPrompt(userContext: UserContext, subject: string): st
 		? `\nTopics where confidence is low: ${confidenceContext}`
 		: '';
 
+	// New context: Quiz Performance
+	const quizPerformanceContext = `\nRecent Quiz Performance (last 7 days): ${userContext.quizPerformance.accuracy}% accuracy across ${userContext.quizPerformance.totalQuizzes} quizzes.`;
+
+	// New context: Weakest Topics
+	const weakTopicsContext =
+		userContext.weakTopics.length > 0
+			? `\nWeakest Topics by Mastery Level: ${userContext.weakTopics.map((t) => `${t.topic} (${t.mastery}%)`).join(', ')}`
+			: '';
+
+	// New context: Upcoming Exams
+	const upcomingExamsContext =
+		userContext.upcomingExams.length > 0
+			? `\nUpcoming Exams: ${userContext.upcomingExams.map((e) => `${e.subject} in ${e.daysUntil} days`).join(', ')}`
+			: '';
+
 	return `You are an AI Study Buddy for South African NSC Grade 12 students.
 ${personalityPrompt}
 Current subject focus: ${subject}
 ${weakAreasContext}
 ${lowConfidenceContext}
+${quizPerformanceContext}
+${weakTopicsContext}
+${upcomingExamsContext}
 
 Guidelines:
-- Use the student's weak areas to provide targeted explanations
+- Use the student's weak areas and lowest mastery topics to provide targeted explanations
 - For low-confidence topics, explain more foundational concepts first
+- If recent quiz performance is low, offer encouragement and focus on basics
+- If an exam is approaching (less than 14 days), prioritize high-yield topics and exam techniques
 - Support all NSC subjects: Mathematics, Physical Sciences, Life Sciences, Geography, History, English, Afrikaans, etc.
 - When explaining, use examples from the South African curriculum
 - Keep explanations concise but thorough
@@ -210,7 +303,28 @@ export async function getAIResponse(
 	}
 
 	const data = await response.json();
-	return (
-		data.candidates?.[0]?.content?.parts?.[0]?.text || 'Sorry, I could not generate a response.'
-	);
+	const aiResponse =
+		data.candidates?.[0]?.content?.parts?.[0]?.text || 'Sorry, I could not generate a response.';
+
+	// Check for AI content errors (low confidence, potential hallucinations)
+	try {
+		const auth = await getAuth();
+		const session = await auth.api.getSession();
+		if (session?.user) {
+			const confidence = data.candidates?.[0]?.finishReason === 'STOP' ? 0.9 : 0.5;
+			await edgeCaseService.handleAIContentError({
+				userId: session.user.id,
+				metadata: {
+					confidence,
+					contentType: 'chat_response',
+					subject,
+				},
+			});
+		}
+	} catch (error) {
+		// Non-critical error, don't block the response
+		console.debug('Failed to check AI content error:', error);
+	}
+
+	return aiResponse;
 }
