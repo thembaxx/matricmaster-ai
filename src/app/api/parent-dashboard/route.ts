@@ -62,7 +62,7 @@ export async function GET(request: NextRequest) {
 				.select({
 					subjectId: topicMastery.subjectId,
 					masteryLevel: topicMastery.masteryLevel,
-					topicId: topicMastery.topicId,
+					topic: topicMastery.topic,
 				})
 				.from(topicMastery)
 				.where(eq(topicMastery.userId, userId)),
