@@ -25,6 +25,38 @@ export interface Lesson {
 	time?: string;
 }
 
+// Raw lesson data from JSON files
+interface RawLessonData {
+	id: string;
+	subject: string;
+	topic: string;
+	title: string;
+	content: string;
+	duration: number;
+	difficulty: string;
+	prerequisites: string[];
+	learning_objectives: string[];
+}
+
+// JSON file structure types
+interface MathematicsJson {
+	mathematics: RawLessonData[];
+}
+
+interface PhysicsJson {
+	mechanics: RawLessonData[];
+	waves: RawLessonData[];
+	electricity: RawLessonData[];
+}
+
+interface ChemistryJson {
+	chemistry: RawLessonData[];
+}
+
+interface LifeSciencesJson {
+	life_sciences: RawLessonData[];
+}
+
 export function useLessons() {
 	const [activeCategory, setActiveCategory] = useState('all');
 	const { setContext, clearContext } = useAiContext();
@@ -79,7 +111,7 @@ export function useLessons() {
 				| 'locked';
 		};
 
-		const mapLesson = (lesson: any): Lesson => {
+		const mapLesson = (lesson: RawLessonData): Lesson => {
 			const status = getRandomStatus();
 			return {
 				id: lesson.id,
@@ -100,12 +132,12 @@ export function useLessons() {
 			};
 		};
 
-		const mathArray = (mathematicsData as any).mathematics || [];
-		const mechanicsArray = (physicsData as any).mechanics || [];
-		const wavesArray = (physicsData as any).waves || [];
-		const electricityArray = (physicsData as any).electricity || [];
-		const chemistryArray = (chemistryData as any).chemistry || [];
-		const lifeArray = (lifeSciencesData as any).life_sciences || [];
+		const mathArray = (mathematicsData as MathematicsJson).mathematics || [];
+		const mechanicsArray = (physicsData as PhysicsJson).mechanics || [];
+		const wavesArray = (physicsData as PhysicsJson).waves || [];
+		const electricityArray = (physicsData as PhysicsJson).electricity || [];
+		const chemistryArray = (chemistryData as ChemistryJson).chemistry || [];
+		const lifeArray = (lifeSciencesData as LifeSciencesJson).life_sciences || [];
 
 		const allLessons: Lesson[] = [
 			...mathArray.map(mapLesson),

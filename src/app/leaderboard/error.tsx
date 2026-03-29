@@ -2,7 +2,7 @@
 
 import { RouteError } from '@/components/RouteError';
 
-export default function QuizError({
+export default function LeaderboardError({
 	error,
 	reset,
 }: {
@@ -13,8 +13,8 @@ export default function QuizError({
 		<RouteError
 			error={error}
 			reset={reset}
-			title="quiz error"
-			description="unable to load the quiz. your progress may not have been saved."
+			title="leaderboard error"
+			description="unable to load leaderboard. please try again."
 		/>
 	);
 }
