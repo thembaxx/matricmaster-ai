@@ -108,7 +108,9 @@ class DatabaseManagerV2 {
 					return (table: Table) => {
 						// Execute the Drizzle ORM insert/update method
 						// eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-explicit-any
-						const queryBuilder = (value as Function).apply(target, [table]) as any;
+						const queryBuilder = (value as (...args: never) => unknown).apply(target, [
+							table,
+						]) as any;
 
 						if (prop === 'insert') {
 							const originalValues = queryBuilder.values;
