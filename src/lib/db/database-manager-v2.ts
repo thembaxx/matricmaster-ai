@@ -8,12 +8,6 @@ import type { ActiveDatabase, SyncQueueItem, SyncResult } from './sync/types';
 
 const log = logger.createLogger('DatabaseManager');
 
-/**
- * Lock timeout in milliseconds. Prevents stuck locks from blocking sync indefinitely.
- * If a lock is older than this, it will be considered expired and a new tab can take over.
- */
-const _SYNC_LOCK_TIMEOUT_MS = 5 * 60 * 1000; // 5 minutes
-
 class DatabaseManagerV2 {
 	private static instance: DatabaseManagerV2;
 	private activeDatabase: ActiveDatabase = 'postgresql';

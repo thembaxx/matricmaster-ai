@@ -1,5 +1,5 @@
 import { and, avg, count, desc, eq, gte, inArray, sql } from 'drizzle-orm';
-import { db } from '@/lib/db';
+import { type DbType, dbManager } from '@/lib/db';
 import {
 	pastPaperQuestions,
 	pastPapers,
@@ -41,7 +41,7 @@ export interface PastPaperPerformanceSummary {
 	byYear: Array<{ year: number; attempts: number; accuracy: number }>;
 }
 
-interface _TopicFrequency {
+export interface TopicFrequency {
 	topic: string;
 	frequency: number;
 }
@@ -53,6 +53,10 @@ export async function analyzePastPaperWeakAreas(
 	userId: string,
 	subject?: string
 ): Promise<WeakAreaFromPastPapers[]> {
+	const connected = await dbManager.waitForConnection(3, 2000);
+	if (!connected) throw new Error('Database not available');
+	const db = (await dbManager.getDb()) as DbType;
+
 	const whereClause = subject
 		? and(
 				eq(questionAttempts.userId, userId),
@@ -144,6 +148,10 @@ export async function generateAdaptiveQuizFromPastPapers(
 ): Promise<AdaptiveQuizQuestion[]> {
 	const { questionCount = 10, excludeQuestionIds = [], includeTopics } = options;
 
+	const connected = await dbManager.waitForConnection(3, 2000);
+	if (!connected) throw new Error('Database not available');
+	const db = (await dbManager.getDb()) as DbType;
+
 	const weakAreas = await analyzePastPaperWeakAreas(userId, subject);
 
 	const targetTopics = includeTopics
@@ -162,7 +170,6 @@ export async function generateAdaptiveQuizFromPastPapers(
 			id: pastPaperQuestions.id,
 			questionText: pastPaperQuestions.questionText,
 			topic: pastPaperQuestions.topic,
-			difficulty: pastPaperQuestions.difficulty,
 			year: pastPaperQuestions.year,
 			marks: pastPaperQuestions.marks,
 			paper: pastPaperQuestions.paper,
@@ -202,13 +209,28 @@ export async function generateAdaptiveQuizFromPastPapers(
 	const candidates = weightedQuestions.slice(0, questionCount * 2);
 	const shuffled = candidates.sort(() => Math.random() - 0.5);
 
-	return shuffled.slice(0, questionCount);
+	return shuffled.slice(0, questionCount).map((q) => ({
+		questionId: q.id,
+		questionText: q.questionText,
+		topic: q.topic ?? '',
+		subject: subject,
+		difficulty: null,
+		marks: q.marks,
+		year: q.year,
+		paper: q.paper,
+		month: q.month,
+		weight: q.weight,
+	}));
 }
 
 /**
  * Calculate topic frequency weightages from past papers for a subject
  */
 async function calculateTopicFrequency(subject: string): Promise<Map<string, number>> {
+	const connected = await dbManager.waitForConnection(3, 2000);
+	if (!connected) throw new Error('Database not available');
+	const db = (await dbManager.getDb()) as DbType;
+
 	const frequencyData = await db
 		.select({
 			topic: pastPaperQuestions.topic,
@@ -224,17 +246,24 @@ async function calculateTopicFrequency(subject: string): Promise<Map<string, num
 
 	const maxCount = Math.max(...frequencyData.map((f) => Number(f.count)));
 
-	return new Map(
-		frequencyData
-			.map((f) => [f.topic ?? '', Number(f.count) / maxCount])
-			.filter(([key]) => key !== '')
-	);
+	const result = new Map<string, number>();
+	for (const f of frequencyData) {
+		const topic = f.topic ?? '';
+		if (topic !== '') {
+			result.set(topic, Number(f.count) / maxCount);
+		}
+	}
+	return result;
 }
 
 /**
  * Get CAPS exam topic weightages for a subject
  */
 async function getCapsTopicWeightage(subject: string): Promise<Map<string, number>> {
+	const connected = await dbManager.waitForConnection(3, 2000);
+	if (!connected) throw new Error('Database not available');
+	const db = (await dbManager.getDb()) as DbType;
+
 	const weightageData = await db
 		.select({
 			topic: topicWeightages.topic,
@@ -245,11 +274,14 @@ async function getCapsTopicWeightage(subject: string): Promise<Map<string, numbe
 
 	const maxWeightage = Math.max(...weightageData.map((w) => Number(w.weightage)), 1);
 
-	return new Map(
-		weightageData
-			.map((w) => [w.topic ?? '', Number(w.weightage) / maxWeightage])
-			.filter(([key]) => key !== '')
-	);
+	const result = new Map<string, number>();
+	for (const w of weightageData) {
+		const topic = w.topic ?? '';
+		if (topic !== '') {
+			result.set(topic, Number(w.weightage) / maxWeightage);
+		}
+	}
+	return result;
 }
 
 /**
@@ -267,6 +299,10 @@ export async function recordPastPaperAttempt(
 	} = {}
 ): Promise<string> {
 	const { topic = 'Unknown', pastPaperId, responseTimeMs, confidenceLevel } = options;
+
+	const connected = await dbManager.waitForConnection(3, 2000);
+	if (!connected) throw new Error('Database not available');
+	const db = (await dbManager.getDb()) as DbType;
 
 	const [attempt] = await db
 		.insert(questionAttempts)
@@ -292,6 +328,10 @@ export async function getPastPaperStats(
 	userId: string,
 	subject?: string
 ): Promise<PastPaperPerformanceSummary> {
+	const connected = await dbManager.waitForConnection(3, 2000);
+	if (!connected) throw new Error('Database not available');
+	const db = (await dbManager.getDb()) as DbType;
+
 	const whereCondition = subject
 		? and(
 				eq(questionAttempts.userId, userId),
@@ -376,6 +416,10 @@ export async function getPastPaperQuestionsByTopic(
 > {
 	const { limit = 20, yearAfter } = options;
 
+	const connected = await dbManager.waitForConnection(3, 2000);
+	if (!connected) throw new Error('Database not available');
+	const db = (await dbManager.getDb()) as DbType;
+
 	const whereClauses = [
 		eq(pastPaperQuestions.subject, subject),
 		eq(pastPaperQuestions.topic, topic),
@@ -406,6 +450,10 @@ export async function getPastPaperQuestionsByTopic(
  * Gets available past paper years for a subject
  */
 export async function getAvailablePastPaperYears(subject: string): Promise<number[]> {
+	const connected = await dbManager.waitForConnection(3, 2000);
+	if (!connected) throw new Error('Database not available');
+	const db = (await dbManager.getDb()) as DbType;
+
 	const years = await db
 		.selectDistinct({ year: pastPaperQuestions.year })
 		.from(pastPaperQuestions)
@@ -427,6 +475,10 @@ export async function getPastPaperMetadata(subject: string): Promise<
 		totalQuestions: number;
 	}>
 > {
+	const connected = await dbManager.waitForConnection(3, 2000);
+	if (!connected) throw new Error('Database not available');
+	const db = (await dbManager.getDb()) as DbType;
+
 	const papers = await db
 		.select({
 			id: pastPapers.paperId,

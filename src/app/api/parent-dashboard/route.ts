@@ -90,7 +90,7 @@ export async function GET(request: NextRequest) {
 			db
 				.select({
 					id: quizResults.id,
-					subjectId: quizResults.subjectId,
+					quizId: quizResults.quizId,
 					score: quizResults.score,
 					percentage: quizResults.percentage,
 					completedAt: quizResults.completedAt,
@@ -232,7 +232,7 @@ export async function GET(request: NextRequest) {
 			const subjectMinutes = subjectSessions.reduce((sum, s) => sum + (s.durationMinutes || 0), 0);
 
 			return {
-				name: subjects.find((s) => s.id === subjId)?.name || 'Unknown',
+				name: '' as string,
 				overallScore: score,
 				recentScore: null,
 				questionsAttempted: totalAttempted,
@@ -248,10 +248,11 @@ export async function GET(request: NextRequest) {
 				(new Date(event.startTime).getTime() - Date.now()) / (24 * 60 * 60 * 1000)
 			);
 			const subjectName = event.title || 'Exam';
-			const readiness =
-				subjectPerformance.find((s: (typeof subjectPerformance)[number]) =>
-					subjectName.toLowerCase().includes(s.name.toLowerCase())
-				)?.overallScore ?? 50;
+			const matchedSubject = subjectPerformance.find((s: (typeof subjectPerformance)[number]) => {
+				const sName = s.name;
+				return sName && subjectName.toLowerCase().includes(sName.toLowerCase());
+			});
+			const readiness = matchedSubject?.overallScore ?? 50;
 
 			return {
 				subject: subjectName,

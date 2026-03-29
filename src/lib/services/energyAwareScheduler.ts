@@ -1,6 +1,6 @@
-import { and, asc, eq, gte, lte, sql } from 'drizzle-orm';
-import { dbManager } from '@/lib/db';
-import { calendarEvents, energyPatterns, energySessions } from '@/lib/db/schema';
+import { and, asc, eq, gte, lte } from 'drizzle-orm';
+import { type DbType, dbManager } from '@/lib/db';
+import { calendarEvents, energyPatterns } from '@/lib/db/schema';
 
 async function getDb() {
 	const connected = await dbManager.waitForConnection(3, 2000);
@@ -26,17 +26,16 @@ export async function analyzeEnergyPatterns(userId: string): Promise<EnergyPatte
 
 	const patterns = await db
 		.select({
-			hour: energySessions.hour,
-			averageEnergy: sql<number>`AVG(${energySessions.energyLevel})`,
-			sampleCount: sql<number>`COUNT(*)`,
+			hour: energyPatterns.hour,
+			averageEnergy: energyPatterns.averageEnergy,
+			sampleCount: energyPatterns.sampleSize,
 		})
-		.from(energySessions)
-		.where(eq(energySessions.userId, userId))
-		.groupBy(energySessions.hour)
-		.orderBy(energySessions.hour);
+		.from(energyPatterns)
+		.where(eq(energyPatterns.userId, userId))
+		.orderBy(energyPatterns.hour);
 
 	return patterns.map((p) => ({
-		hour: p.hour,
+		hour: Number(p.hour),
 		averageEnergy: Number(p.averageEnergy) || 50,
 		sampleCount: Number(p.sampleCount) || 1,
 	}));
@@ -51,11 +50,7 @@ export function getOptimalStudyHours(patterns: EnergyPatternData[], minThreshold
 		.map((p) => p.hour);
 }
 
-async function checkCalendarConflict(
-	db: ReturnType<typeof getDb>,
-	userId: string,
-	dateTime: Date
-): Promise<boolean> {
+async function checkCalendarConflict(db: DbType, userId: string, dateTime: Date): Promise<boolean> {
 	const startTime = new Date(dateTime);
 	startTime.setMinutes(0, 0, 0);
 	const endTime = new Date(startTime);
