@@ -15,6 +15,54 @@ async function getDb(): Promise<DbType> {
 	return (await dbManager.getDb()) as DbType;
 }
 
+interface PaymentVerificationResult {
+	verified: boolean;
+	transactionId?: string;
+	message?: string;
+}
+
+async function processPaymentWithRetry(
+	verifyFn: () => Promise<PaymentVerificationResult>,
+	maxRetries = 3,
+	baseDelayMs = 1000
+): Promise<PaymentVerificationResult> {
+	let lastError: Error | null = null;
+
+	for (let attempt = 0; attempt < maxRetries; attempt++) {
+		try {
+			const result = await verifyFn();
+			if (result.verified || result.message?.includes('already')) {
+				return result;
+			}
+			lastError = new Error(result.message);
+		} catch (error) {
+			lastError = error instanceof Error ? error : new Error(String(error));
+		}
+
+		if (attempt < maxRetries - 1) {
+			const delay = baseDelayMs * 2 ** attempt;
+			await new Promise((resolve) => setTimeout(resolve, delay));
+		}
+	}
+
+	return { verified: false, message: lastError?.message || 'Max retries exceeded' };
+}
+
+function calculateProrationCredit(
+	currentPeriodEnd: Date,
+	planPrice: number,
+	billingIntervalDays = 30
+): { credit: number; daysRemaining: number; totalDays: number } {
+	const now = new Date();
+	const daysRemaining = Math.max(
+		0,
+		Math.ceil((currentPeriodEnd.getTime() - now.getTime()) / (1000 * 60 * 60 * 24))
+	);
+	const totalDays = billingIntervalDays;
+	const credit = Math.round((daysRemaining / totalDays) * planPrice);
+	return { credit, daysRemaining, totalDays };
+}
+
 export async function POST(request: NextRequest) {
 	try {
 		const auth = await getAuth();
@@ -137,7 +185,7 @@ export async function GET(request: NextRequest) {
 			return NextResponse.redirect(new URL('/subscription?cancelled=true', request.url));
 		}
 
-		const verification = await verifyPayment(reference);
+		const verification = await processPaymentWithRetry(() => verifyPayment(reference));
 
 		if (!verification.verified) {
 			await db
@@ -164,7 +212,26 @@ export async function GET(request: NextRequest) {
 				where: and(eq(userSubscriptions.userId, userId), eq(userSubscriptions.status, 'active')),
 			});
 
+			let prorationCredit = 0;
+			let daysRemaining = 0;
+
 			if (existingSubscription) {
+				const plan = await db
+					.select()
+					.from(subscriptionPlans)
+					.where(eq(subscriptionPlans.id, existingSubscription.planId))
+					.limit(1)
+					.then((rows) => rows[0]);
+
+				if (plan) {
+					const proration = calculateProrationCredit(
+						new Date(existingSubscription.currentPeriodEnd),
+						Number(plan.priceZar)
+					);
+					prorationCredit = proration.credit;
+					daysRemaining = proration.daysRemaining;
+				}
+
 				await db
 					.update(userSubscriptions)
 					.set({ status: 'inactive', updatedAt: new Date() })
@@ -190,6 +257,8 @@ export async function GET(request: NextRequest) {
 					planId,
 					amount: payment.amount,
 					reference,
+					prorationCredit,
+					daysRemaining,
 				},
 			});
 		}
