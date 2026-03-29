@@ -17,6 +17,7 @@ export const users = pgTable(
 		school: text('school'),
 		avatarId: text('avatar_id'),
 		deletedAt: timestamp('deleted_at'),
+		timezone: text('timezone').notNull().default('Africa/Johannesburg'),
 		createdAt: timestamp('createdAt').notNull().defaultNow(),
 		updatedAt: timestamp('updatedAt').notNull().defaultNow(),
 	},

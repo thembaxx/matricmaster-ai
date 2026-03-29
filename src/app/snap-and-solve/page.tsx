@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import dynamic from 'next/dynamic';
 import { appConfig } from '@/app.config';
+import { SnapAndSolveWrapper } from '@/components/AI/SnapAndSolveWrapper';
 
 const SnapAndSolveScreen = dynamic(() => import('@/screens/SnapAndSolve'), {
 	ssr: true,
@@ -13,5 +14,9 @@ export const metadata: Metadata = {
 };
 
 export default function SnapAndSolvePage() {
-	return <SnapAndSolveScreen />;
+	return (
+		<SnapAndSolveWrapper>
+			<SnapAndSolveScreen />
+		</SnapAndSolveWrapper>
+	);
 }

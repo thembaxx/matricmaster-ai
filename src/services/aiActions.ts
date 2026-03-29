@@ -1,6 +1,11 @@
 'use server';
 
 import { z } from 'zod';
+import {
+	formatFallbackContent,
+	getFallbackResponse,
+	hasFallbackContent,
+} from '@/lib/ai/fallbackContent';
 import { AI_MODELS, generateAI } from '@/lib/ai-config';
 
 const explanationSchema = z.object({
@@ -26,11 +31,14 @@ function cleanJson(text: string): string {
 }
 
 export async function getExplanationAction(subject: string, topic: string): Promise<string> {
+	let sanitizedSubject = '';
+	let sanitizedTopic = '';
+
 	try {
 		const validated = explanationSchema.parse({ subject, topic });
 
-		const sanitizedSubject = sanitizeInput(validated.subject);
-		const sanitizedTopic = sanitizeInput(validated.topic);
+		sanitizedSubject = sanitizeInput(validated.subject);
+		sanitizedTopic = sanitizeInput(validated.topic);
 
 		const prompt = `You are an expert Grade 12 tutor in South Africa. Explain the topic "${sanitizedTopic}" in the subject "${sanitizedSubject}" in a way that is interactive and easy to understand for a student. Use simple analogies and highlight key formulas if applicable.`;
 
@@ -42,7 +50,19 @@ export async function getExplanationAction(subject: string, topic: string): Prom
 			return 'Invalid input provided.';
 		}
 		console.debug('AI API Error:', error);
-		return "Sorry, I couldn't generate an explanation right now. Please try again later.";
+
+		if (
+			sanitizedSubject &&
+			sanitizedTopic &&
+			hasFallbackContent(sanitizedSubject, sanitizedTopic)
+		) {
+			const fallback = getFallbackResponse(sanitizedSubject, sanitizedTopic);
+			if (fallback) {
+				return formatFallbackContent(fallback);
+			}
+		}
+
+		return "Sorry, I couldn't generate an explanation right now. Try reviewing your cached flashcards or past papers while we reconnect.";
 	}
 }
 
@@ -524,5 +544,79 @@ Return ONLY valid JSON, no other text.`;
 		}
 		console.debug('Essay Feedback Error:', error);
 		return { success: false, error: 'Failed to generate feedback. Please try again.' };
+	}
+}
+
+export interface ExtractedConcept {
+	concept: string;
+	subject: string;
+	relevance: number;
+}
+
+export async function extractConceptsFromConversationAction(
+	messages: Array<{ role: string; content: string }>
+): Promise<ExtractedConcept[]> {
+	try {
+		const context = messages.map((m) => `${m.role}: ${m.content}`).join('\n\n');
+		const prompt = `Analyze the following AI tutor conversation and extract the key learning concepts discussed. Return a JSON array of concepts with the following structure:
+[
+  {
+    "concept": "the concept name",
+    "subject": "the subject (e.g., Mathematics, Physics)",
+    "relevance": number (1-10)
+  }
+]
+
+Focus on:
+- Key definitions, formulas, or theorems
+- Topics that were explained or discussed
+- Areas where the student had questions or struggled
+
+Conversation:
+${context.slice(0, 3000)}
+
+Return ONLY valid JSON array, no other text.`;
+
+		const result = await generateAI({ prompt, model: AI_MODELS.PRIMARY });
+
+		if (result) {
+			const cleaned = cleanJson(result);
+			const parsed = JSON.parse(cleaned) as unknown;
+
+			if (Array.isArray(parsed)) {
+				return parsed.map((item) => ({
+					concept: (item as { concept: string }).concept || '',
+					subject: (item as { subject: string }).subject || '',
+					relevance: (item as { relevance: number }).relevance || 5,
+				}));
+			}
+		}
+
+		return [];
+	} catch (error) {
+		console.debug('Concept Extraction Error:', error);
+		return [];
+	}
+}
+
+export async function generateFollowUpQuizFromConversationAction(
+	messages: Array<{ role: string; content: string }>,
+	subject: string | undefined
+): Promise<{ success: boolean; questions?: GeneratedQuestion[]; error?: string }> {
+	try {
+		const concepts = await extractConceptsFromConversationAction(messages);
+
+		if (concepts.length === 0) {
+			return { success: false, error: 'No concepts found in conversation' };
+		}
+
+		const topConcept = concepts.reduce((max, c) => (c.relevance > max.relevance ? c : max));
+		const topic = topConcept.concept;
+		const subjectName = subject || topConcept.subject || 'Mathematics';
+
+		return generateQuestionsAction(subjectName, topic, 'medium', 'multiple_choice', 5);
+	} catch (error) {
+		console.debug('Follow-up Quiz Generation Error:', error);
+		return { success: false, error: 'Failed to generate follow-up quiz' };
 	}
 }

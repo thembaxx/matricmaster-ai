@@ -2,6 +2,7 @@
 
 import {
 	ArrowLeft02Icon,
+	Camera01Icon,
 	CheckmarkCircle02Icon,
 	Download01Icon,
 	File01Icon,
@@ -26,6 +27,7 @@ interface PastPaperHeaderProps {
 	isOfflineAvailable?: boolean;
 	isDownloading?: boolean;
 	onDownloadOffline?: () => void;
+	onUploadScanned?: () => void;
 }
 
 export function PastPaperHeader({
@@ -41,6 +43,7 @@ export function PastPaperHeader({
 	isOfflineAvailable = false,
 	isDownloading = false,
 	onDownloadOffline,
+	onUploadScanned,
 }: PastPaperHeaderProps) {
 	return (
 		<header className="px-6 pt-8 pb-4 bg-card sticky top-0 z-20 border-b border-border shrink-0">
@@ -81,6 +84,12 @@ export function PastPaperHeader({
 								className="w-4 h-4"
 							/>
 							{isDownloading ? 'Saving...' : isOfflineAvailable ? 'Saved' : 'Save Offline'}
+						</Button>
+					)}
+					{onUploadScanned && (
+						<Button variant="outline" size="sm" onClick={onUploadScanned} className="h-8 gap-1.5">
+							<HugeiconsIcon icon={Camera01Icon} className="w-4 h-4" />
+							upload scanned
 						</Button>
 					)}
 				</div>

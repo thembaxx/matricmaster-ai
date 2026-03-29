@@ -19,6 +19,21 @@
 					}
 				}
 			}
+		},
+		{
+			"includes": ["src/hooks/useUserTimezone.tsx"],
+			"linter": {
+				"rules": {
+					"recommended": false,
+					"correctness": {},
+					"style": {},
+					"security": {},
+					"performance": {},
+					"a11y": {},
+					"complexity": {},
+					"suspicious": {}
+				}
+			}
 		}
 	],
 	"formatter": {

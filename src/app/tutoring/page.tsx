@@ -15,6 +15,7 @@ import { HugeiconsIcon } from '@hugeicons/react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { toast } from 'sonner';
+import { FeatureGate } from '@/components/Subscription/FeatureGate';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -22,6 +23,18 @@ import { Input } from '@/components/ui/input';
 import { MOCK_SESSIONS, type TutoringSession } from './constants';
 
 export default function TutoringPage() {
+	return (
+		<FeatureGate
+			feature="liveTutoring"
+			showPreviewButton={true}
+			upgradeMessage="Get 2 free live tutoring sessions per month with Basic plan or higher"
+		>
+			<TutoringContent />
+		</FeatureGate>
+	);
+}
+
+function TutoringContent() {
 	const router = useRouter();
 	const [sessions] = useState<TutoringSession[]>(MOCK_SESSIONS);
 	const [roomCode, setRoomCode] = useState('');
@@ -227,18 +240,6 @@ export default function TutoringPage() {
 						</div>
 					</div>
 				)}
-
-				<Card className="mt-8 bg-muted/50">
-					<CardContent className="p-6 text-center">
-						<h3 className="font-semibold mb-2">Premium Feature</h3>
-						<p className="text-sm text-muted-foreground mb-4">
-							Get 2 free live tutoring sessions per month with Premium plan
-						</p>
-						<Button variant="outline" onClick={() => router.push('/subscription')}>
-							Upgrade to Premium
-						</Button>
-					</CardContent>
-				</Card>
 			</div>
 		</div>
 	);

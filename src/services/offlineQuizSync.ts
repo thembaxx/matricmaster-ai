@@ -21,7 +21,7 @@ interface QuizAnswer {
 	answeredAt: string;
 }
 
-interface QuizSession {
+export interface QuizSession {
 	id: string;
 	quizId: string;
 	subject: string;
