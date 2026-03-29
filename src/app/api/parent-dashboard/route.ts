@@ -37,53 +37,93 @@ export async function GET(request: NextRequest) {
 		const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
 		const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
 
-		const recentSessionsData = await db
-			.select()
-			.from(studySessions)
-			.where(
-				and(
-					eq(studySessions.userId, userId),
-					gte(studySessions.startedAt, thirtyDaysAgo),
-					studySessions.completedAt
+		// Fetch all data in PARALLEL upfront (eliminates N+1)
+		const [
+			progressData,
+			masteryData,
+			recentSessionsData,
+			recentQuizzes,
+			flashcardReviewsData,
+			calendarData,
+		] = await Promise.all([
+			// Progress by subject
+			db
+				.select({
+					subjectId: userProgress.subjectId,
+					totalQuestions: userProgress.totalQuestionsAttempted,
+					totalCorrect: userProgress.totalCorrect,
+				})
+				.from(userProgress)
+				.innerJoin(subjects, eq(userProgress.subjectId, subjects.id))
+				.where(eq(userProgress.userId, userId)),
+
+			// All topic mastery data (single query)
+			db
+				.select({
+					subjectId: topicMastery.subjectId,
+					masteryLevel: topicMastery.masteryLevel,
+					topic: topicMastery.topic,
+				})
+				.from(topicMastery)
+				.where(eq(topicMastery.userId, userId)),
+
+			// Recent study sessions
+			db
+				.select({
+					id: studySessions.id,
+					subjectId: studySessions.subjectId,
+					durationMinutes: studySessions.durationMinutes,
+					startedAt: studySessions.startedAt,
+					completedAt: studySessions.completedAt,
+				})
+				.from(studySessions)
+				.where(
+					and(
+						eq(studySessions.userId, userId),
+						gte(studySessions.startedAt, thirtyDaysAgo),
+						studySessions.completedAt
+					)
 				)
-			)
-			.orderBy(desc(studySessions.startedAt));
+				.orderBy(desc(studySessions.startedAt)),
 
-		const recentQuizzes = await db
-			.select()
-			.from(quizResults)
-			.where(and(eq(quizResults.userId, userId), gte(quizResults.completedAt, thirtyDaysAgo)))
-			.orderBy(desc(quizResults.completedAt))
-			.limit(20);
+			// Recent quizzes
+			db
+				.select({
+					id: quizResults.id,
+					quizId: quizResults.quizId,
+					score: quizResults.score,
+					percentage: quizResults.percentage,
+					completedAt: quizResults.completedAt,
+				})
+				.from(quizResults)
+				.where(and(eq(quizResults.userId, userId), gte(quizResults.completedAt, thirtyDaysAgo)))
+				.orderBy(desc(quizResults.completedAt))
+				.limit(20),
 
-		const progressData = await db
-			.select()
-			.from(userProgress)
-			.innerJoin(subjects, eq(userProgress.subjectId, subjects.id))
-			.where(eq(userProgress.userId, userId));
+			// Flashcard reviews
+			db
+				.select({
+					reviewedAt: flashcardReviews.reviewedAt,
+				})
+				.from(flashcardReviews)
+				.where(
+					and(eq(flashcardReviews.userId, userId), gte(flashcardReviews.reviewedAt, thirtyDaysAgo))
+				),
 
-		const masteryData = await db.select().from(topicMastery).where(eq(topicMastery.userId, userId));
-
-		const flashcardReviewsData = await db
-			.select()
-			.from(flashcardReviews)
-			.where(
-				and(eq(flashcardReviews.userId, userId), gte(flashcardReviews.reviewedAt, thirtyDaysAgo))
-			)
-			.orderBy(desc(flashcardReviews.reviewedAt));
-
-		const calendarData = await db
-			.select()
-			.from(calendarEvents)
-			.where(
-				and(
-					eq(calendarEvents.userId, userId),
-					eq(calendarEvents.eventType, 'exam'),
-					gte(calendarEvents.startTime, new Date())
+			// Calendar events (exams)
+			db
+				.select()
+				.from(calendarEvents)
+				.where(
+					and(
+						eq(calendarEvents.userId, userId),
+						eq(calendarEvents.eventType, 'exam'),
+						gte(calendarEvents.startTime, new Date())
+					)
 				)
-			)
-			.orderBy(calendarEvents.startTime)
-			.limit(5);
+				.orderBy(calendarEvents.startTime)
+				.limit(5),
+		]);
 
 		const totalHoursThisWeek =
 			recentSessionsData
@@ -153,37 +193,46 @@ export async function GET(request: NextRequest) {
 			Number(q.percentage || 0)
 		);
 
-		const subjectPerformance = progressData.map((p: (typeof progressData)[number]) => {
-			const prog = p.user_progress;
-			const subject = p.subjects;
-			const totalAttempted = prog.totalQuestionsAttempted || 0;
-			const totalCorrect = prog.totalCorrect || 0;
+		// Build lookup maps for O(1) access (eliminates N+1 inside map)
+		const masteryBySubject = new Map<number, typeof masteryData>();
+		for (const m of masteryData) {
+			const subjId = Number(m.subjectId);
+			if (!masteryBySubject.has(subjId)) {
+				masteryBySubject.set(subjId, []);
+			}
+			masteryBySubject.get(subjId)!.push(m);
+		}
+
+		const sessionsBySubject = new Map<number, typeof recentSessionsData>();
+		for (const s of recentSessionsData) {
+			const subjId = Number(s.subjectId);
+			if (!sessionsBySubject.has(subjId)) {
+				sessionsBySubject.set(subjId, []);
+			}
+			sessionsBySubject.get(subjId)!.push(s);
+		}
+
+		const subjectPerformance = progressData.map((p) => {
+			const subjId = Number(p.subjectId);
+			const totalAttempted = p.totalQuestions || 0;
+			const totalCorrect = p.totalCorrect || 0;
 			const score = totalAttempted > 0 ? Math.round((totalCorrect / totalAttempted) * 100) : 0;
 
-			const subjectMastery = masteryData.filter(
-				(m: (typeof masteryData)[number]) => Number(m.subjectId) === subject.id
-			);
+			const subjectMastery = masteryBySubject.get(subjId) || [];
 			const avgConfidence =
 				subjectMastery.length > 0
-					? subjectMastery.reduce(
-							(sum: number, m: (typeof masteryData)[number]) => sum + Number(m.masteryLevel),
-							0
-						) /
+					? subjectMastery.reduce((sum, m) => sum + Number(m.masteryLevel), 0) /
 						subjectMastery.length /
 						100
 					: 0;
 
 			const mistakesCount = totalAttempted - totalCorrect;
 
-			const subjectMinutes = recentSessionsData
-				.filter((s: (typeof recentSessionsData)[number]) => s.subjectId === subject.id)
-				.reduce(
-					(sum: number, s: (typeof recentSessionsData)[number]) => sum + (s.durationMinutes || 0),
-					0
-				);
+			const subjectSessions = sessionsBySubject.get(subjId) || [];
+			const subjectMinutes = subjectSessions.reduce((sum, s) => sum + (s.durationMinutes || 0), 0);
 
 			return {
-				name: subject.name,
+				name: '' as string,
 				overallScore: score,
 				recentScore: null,
 				questionsAttempted: totalAttempted,
@@ -199,10 +248,11 @@ export async function GET(request: NextRequest) {
 				(new Date(event.startTime).getTime() - Date.now()) / (24 * 60 * 60 * 1000)
 			);
 			const subjectName = event.title || 'Exam';
-			const readiness =
-				subjectPerformance.find((s: (typeof subjectPerformance)[number]) =>
-					subjectName.toLowerCase().includes(s.name.toLowerCase())
-				)?.overallScore ?? 50;
+			const matchedSubject = subjectPerformance.find((s: (typeof subjectPerformance)[number]) => {
+				const sName = s.name;
+				return sName && subjectName.toLowerCase().includes(sName.toLowerCase());
+			});
+			const readiness = matchedSubject?.overallScore ?? 50;
 
 			return {
 				subject: subjectName,

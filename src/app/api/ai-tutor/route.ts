@@ -1,3 +1,4 @@
+import { and, desc, eq } from 'drizzle-orm';
 import { type NextRequest, NextResponse } from 'next/server';
 import {
 	type Citation,
@@ -11,6 +12,8 @@ import { AI_MODELS, generateAI, streamAI } from '@/lib/ai-config';
 import { handleApiError } from '@/lib/api-error-handler';
 import { getAuth } from '@/lib/auth';
 import { getCachedAIResponse, hashString } from '@/lib/cache/ai-cache';
+import { dbManager } from '@/lib/db';
+import { quizResults, studyPlans, subjects, topicMastery } from '@/lib/db/schema';
 import { checkRateLimit, getRateLimitHeaders } from '@/lib/rate-limit';
 
 interface ChatMessage {
@@ -76,6 +79,93 @@ The citations should help students understand where the information comes from a
 
 Remember: Your goal is to help students succeed in their Matric exams!`;
 
+interface UserTutorContext {
+	weakTopics: Array<{
+		name: string;
+		subject: string;
+		mastery: number;
+	}>;
+	activeStudyPlan: {
+		subject: string;
+		targetDate: Date | null;
+	} | null;
+	recentPerformance: {
+		quizzesCount: number;
+		trend: 'improving' | 'declining' | 'stable';
+		averageScore: number;
+	};
+}
+
+async function getUserTutorContext(userId: string): Promise<UserTutorContext> {
+	const db = await dbManager.getDb();
+
+	const masteryData = await db
+		.select({
+			subjectId: topicMastery.subjectId,
+			subjectName: subjects.name,
+			topic: topicMastery.topic,
+			masteryLevel: topicMastery.masteryLevel,
+		})
+		.from(topicMastery)
+		.innerJoin(subjects, eq(topicMastery.subjectId, subjects.id))
+		.where(eq(topicMastery.userId, userId))
+		.orderBy(topicMastery.masteryLevel)
+		.limit(10);
+
+	const weakTopics = masteryData
+		.filter((m) => Number(m.masteryLevel) < 60)
+		.slice(0, 5)
+		.map((t) => ({
+			name: t.topic,
+			subject: t.subjectName,
+			mastery: Number(t.masteryLevel),
+		}));
+
+	const [activePlan] = await db
+		.select({
+			id: studyPlans.id,
+			title: studyPlans.title,
+			targetExamDate: studyPlans.targetExamDate,
+		})
+		.from(studyPlans)
+		.where(and(eq(studyPlans.userId, userId), eq(studyPlans.isActive, true)))
+		.limit(1);
+
+	const recentQuizzes = await db
+		.select({
+			quizId: quizResults.quizId,
+			score: quizResults.score,
+			percentage: quizResults.percentage,
+			completedAt: quizResults.completedAt,
+		})
+		.from(quizResults)
+		.where(eq(quizResults.userId, userId))
+		.orderBy(desc(quizResults.completedAt))
+		.limit(10);
+
+	const scores = recentQuizzes.map((q) => Number(q.percentage));
+	const recentAvg = scores.slice(0, 5).reduce((a, b) => a + b, 0) / Math.min(5, scores.length);
+	const olderAvg = scores.slice(5).reduce((a, b) => a + b, 0) / Math.max(1, scores.length - 5);
+	const trend: 'improving' | 'declining' | 'stable' =
+		recentAvg > olderAvg + 5 ? 'improving' : recentAvg < olderAvg - 5 ? 'declining' : 'stable';
+
+	return {
+		weakTopics,
+		activeStudyPlan: activePlan
+			? {
+					subject: activePlan.title,
+					targetDate: activePlan.targetExamDate,
+				}
+			: null,
+		recentPerformance: {
+			quizzesCount: recentQuizzes.length,
+			trend,
+			averageScore:
+				scores.length > 0 ? Math.round(scores.reduce((a, b) => a + b, 0) / scores.length) : 0,
+		},
+	};
+}
+
 const suggestionsPrompt = `Based on the student's question and the tutor's response, suggest 2-3 relevant follow-up questions the student might want to ask next. 
 Return ONLY a JSON array of 2-3 short, specific questions as strings. No explanation, no markdown, just the JSON array.
 Examples: ["can you explain the chain rule?", "show me a practice problem", "what are common mistakes here?"]`;
@@ -138,7 +228,36 @@ export async function POST(request: NextRequest) {
 			}
 		}
 
-		let conversationContext = `${systemPrompt}\n\n`;
+		let enhancedPrompt = systemPrompt;
+		if (session?.user?.id) {
+			try {
+				const context = await getUserTutorContext(session.user.id);
+
+				if (context.weakTopics.length > 0) {
+					enhancedPrompt += `
+
+## Student's Weak Areas (Prioritize these)
+${context.weakTopics.map((t) => `- ${t.name} (${t.subject}, ${t.mastery}% mastery)`).join('\n')}`;
+				}
+
+				if (context.activeStudyPlan?.targetDate) {
+					enhancedPrompt += `
+
+## Current Study Plan
+- Subject: ${context.activeStudyPlan.subject}
+- Target: ${new Date(context.activeStudyPlan.targetDate).toLocaleDateString()}`;
+				}
+
+				enhancedPrompt += `
+
+## Student Context
+- Recent performance: ${context.recentPerformance.quizzesCount} quizzes, trend: ${context.recentPerformance.trend}, avg: ${context.recentPerformance.averageScore}%`;
+			} catch (error) {
+				console.debug('Failed to load user context:', error);
+			}
+		}
+
+		let conversationContext = `${enhancedPrompt}\n\n`;
 		if (language === 'af') {
 			conversationContext +=
 				'IMPORTANT DIRECTIVE: You MUST provide all explanations and answers entirely in Afrikaans. Do not use English unless directly quoting a provided English text.\n\n';

@@ -1018,11 +1018,18 @@ export const questionAttempts = pgTable(
 		intervalDays: integer('interval_days').notNull().default(1),
 		easeFactor: numeric('ease_factor', { precision: 3, scale: 2 }).notNull().default('2.5'),
 		attemptedAt: timestamp('attempted_at').defaultNow(),
+		source: varchar('source', { length: 20 }).default('quiz'),
+		pastPaperId: uuid('past_paper_id').references(() => pastPapers.id, {
+			onDelete: 'set null',
+		}),
+		confidenceLevel: varchar('confidence_level', { length: 10 }),
 	},
 	(table) => ({
 		userIdQuestionIdx: index('question_attempts_user_q_idx').on(table.userId, table.questionId),
 		userIdIdx: index('question_attempts_user_id_idx').on(table.userId),
 		nextReviewIdx: index('question_attempts_next_review_idx').on(table.nextReviewAt),
+		sourceIdx: index('question_attempts_source_idx').on(table.source),
+		pastPaperIdIdx: index('question_attempts_past_paper_id_idx').on(table.pastPaperId),
 	})
 );
 
@@ -2280,6 +2287,113 @@ export type TutorReview = typeof tutorReviews.$inferSelect;
 export type NewTutorReview = typeof tutorReviews.$inferInsert;
 export type SessionReport = typeof sessionReports.$inferSelect;
 export type NewSessionReport = typeof sessionReports.$inferInsert;
+
+// ============================================================================
+// SUBSCRIPTION CHANGES TABLE (Proration Tracking)
+// ============================================================================
+
+export const subscriptionChanges = pgTable(
+	'subscription_changes',
+	{
+		id: uuid('id').defaultRandom().primaryKey(),
+		userId: text('user_id')
+			.notNull()
+			.references(() => users.id, { onDelete: 'cascade' }),
+		oldSubscriptionId: uuid('old_subscription_id').references(() => userSubscriptions.id, {
+			onDelete: 'set null',
+		}),
+		newPlanId: varchar('new_plan_id', { length: 50 })
+			.notNull()
+			.references(() => subscriptionPlans.id),
+		oldPlanId: varchar('old_plan_id', { length: 50 }).references(() => subscriptionPlans.id, {
+			onDelete: 'set null',
+		}),
+		prorationCredit: integer('proration_credit').default(0), // in kobo/cents
+		oldPlanPrice: numeric('old_plan_price', { precision: 10, scale: 2 }),
+		newPlanPrice: numeric('new_plan_price', { precision: 10, scale: 2 }),
+		remainingDays: integer('remaining_days').default(0),
+		changeDate: timestamp('change_date').defaultNow().notNull(),
+		processedAt: timestamp('processed_at'),
+		status: varchar('status', { length: 20 }).notNull().default('pending'),
+		metadata: text('metadata'),
+	},
+	(table) => ({
+		userIdIdx: index('subscription_changes_user_id_idx').on(table.userId),
+		statusIdx: index('subscription_changes_status_idx').on(table.status),
+		oldSubscriptionIdIdx: index('subscription_changes_old_sub_id_idx').on(table.oldSubscriptionId),
+	})
+);
+
+export const subscriptionChangesRelations = relations(subscriptionChanges, ({ one }) => ({
+	user: one(users, {
+		fields: [subscriptionChanges.userId],
+		references: [users.id],
+	}),
+	oldSubscription: one(userSubscriptions, {
+		fields: [subscriptionChanges.oldSubscriptionId],
+		references: [userSubscriptions.id],
+	}),
+	newPlan: one(subscriptionPlans, {
+		fields: [subscriptionChanges.newPlanId],
+		references: [subscriptionPlans.id],
+	}),
+	oldPlan: one(subscriptionPlans, {
+		fields: [subscriptionChanges.oldPlanId],
+		references: [subscriptionPlans.id],
+	}),
+}));
+
+export type SubscriptionChange = typeof subscriptionChanges.$inferSelect;
+export type NewSubscriptionChange = typeof subscriptionChanges.$inferInsert;
+
+// ============================================================================
+// PAYMENT RETRIES TABLE (Retry Queue)
+// ============================================================================
+
+export const paymentRetries = pgTable(
+	'payment_retries',
+	{
+		id: uuid('id').defaultRandom().primaryKey(),
+		userId: text('user_id')
+			.notNull()
+			.references(() => users.id, { onDelete: 'cascade' }),
+		paymentId: uuid('payment_id').references(() => payments.id, { onDelete: 'set null' }),
+		planId: varchar('plan_id', { length: 50 })
+			.notNull()
+			.references(() => subscriptionPlans.id),
+		retryCount: integer('retry_count').notNull().default(0),
+		maxRetries: integer('max_retries').notNull().default(3),
+		nextRetryAt: timestamp('next_retry_at'),
+		status: varchar('status', { length: 20 }).notNull().default('pending'),
+		lastError: text('last_error'),
+		createdAt: timestamp('created_at').defaultNow().notNull(),
+		updatedAt: timestamp('updated_at').defaultNow(),
+		completedAt: timestamp('completed_at'),
+	},
+	(table) => ({
+		userIdIdx: index('payment_retries_user_id_idx').on(table.userId),
+		statusIdx: index('payment_retries_status_idx').on(table.status),
+		nextRetryAtIdx: index('payment_retries_next_retry_at_idx').on(table.nextRetryAt),
+	})
+);
+
+export const paymentRetriesRelations = relations(paymentRetries, ({ one }) => ({
+	user: one(users, {
+		fields: [paymentRetries.userId],
+		references: [users.id],
+	}),
+	payment: one(payments, {
+		fields: [paymentRetries.paymentId],
+		references: [payments.id],
+	}),
+	plan: one(subscriptionPlans, {
+		fields: [paymentRetries.planId],
+		references: [subscriptionPlans.id],
+	}),
+}));
+
+export type PaymentRetry = typeof paymentRetries.$inferSelect;
+export type NewPaymentRetry = typeof paymentRetries.$inferInsert;
 
 // WhatsApp type exports
 export type WhatsAppPreference = typeof whatsappPreferences.$inferSelect;
