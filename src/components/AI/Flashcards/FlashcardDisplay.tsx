@@ -1,9 +1,13 @@
 'use client';
 
-import { Tag01Icon } from '@hugeicons/core-free-icons';
+import { Loading03Icon, SparklesIcon, Tag01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
+import { useCallback, useState } from 'react';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { formatReviewInterval } from '@/lib/spaced-repetition';
+import { getFlashcardExplanationAction } from '@/services/aiActions';
 
 interface Flashcard {
 	id: string;
@@ -23,6 +27,35 @@ interface FlashcardDisplayProps {
 }
 
 export function FlashcardDisplay({ card, isFlipped, reviewMode = false }: FlashcardDisplayProps) {
+	const [explanation, setExplanation] = useState<string>('');
+	const [isLoadingExplanation, setIsLoadingExplanation] = useState(false);
+	const [showPopover, setShowPopover] = useState(false);
+
+	const handleAskAI = useCallback(async () => {
+		if (explanation) return;
+
+		setIsLoadingExplanation(true);
+		try {
+			const result = await getFlashcardExplanationAction(card.front, card.back);
+			setExplanation(result);
+		} catch (error) {
+			console.error('Failed to get explanation:', error);
+			setExplanation("Sorry, I couldn't generate an explanation. Please try again.");
+		} finally {
+			setIsLoadingExplanation(false);
+		}
+	}, [card.front, card.back, explanation]);
+
+	const handleOpenChange = useCallback(
+		(open: boolean) => {
+			setShowPopover(open);
+			if (open && !explanation) {
+				handleAskAI();
+			}
+		},
+		[handleAskAI, explanation]
+	);
+
 	return (
 		<div className="relative h-64 perspective-1000">
 			<div
@@ -68,6 +101,37 @@ export function FlashcardDisplay({ card, isFlipped, reviewMode = false }: Flashc
 					)}
 				</div>
 			</div>
+
+			<Popover open={showPopover} onOpenChange={handleOpenChange}>
+				<PopoverTrigger asChild>
+					<Button
+						variant="secondary"
+						size="sm"
+						className="absolute bottom-2 right-2 z-10 gap-1.5 shadow-lg"
+					>
+						<HugeiconsIcon icon={SparklesIcon} className="h-4 w-4" />
+						Ask AI
+					</Button>
+				</PopoverTrigger>
+				<PopoverContent className="w-80 max-h-64 overflow-y-auto" align="end">
+					<div className="space-y-2">
+						<h4 className="font-medium text-sm flex items-center gap-1.5">
+							<HugeiconsIcon icon={SparklesIcon} className="h-4 w-4 text-primary" />
+							Concept Explanation
+						</h4>
+						{isLoadingExplanation ? (
+							<div className="flex items-center justify-center py-4">
+								<HugeiconsIcon
+									icon={Loading03Icon}
+									className="h-5 w-5 animate-spin text-muted-foreground"
+								/>
+							</div>
+						) : (
+							<p className="text-sm text-muted-foreground whitespace-pre-wrap">{explanation}</p>
+						)}
+					</div>
+				</PopoverContent>
+			</Popover>
 		</div>
 	);
 }

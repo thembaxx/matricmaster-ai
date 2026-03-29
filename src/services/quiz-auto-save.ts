@@ -18,7 +18,7 @@ export interface QuizAutoSaveData {
 }
 
 const STORAGE_KEY = 'quiz-auto-save';
-const AUTO_SAVE_INTERVAL = 30000;
+const AUTO_SAVE_INTERVAL = 10000;
 
 function safeLocalStorageSet(key: string, value: string): boolean {
 	try {

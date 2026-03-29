@@ -191,11 +191,6 @@ export async function generateTextWithAI(options: GenerateOptions): Promise<stri
 			const isQuota = isQuotaError(error);
 			const providerName = getProvider().name;
 			console.warn(`Provider ${providerName} failed (quota: ${isQuota}): ${lastError.message}`);
-
-			// Re-throw immediately with clear message for debugging
-			if (lastError.message.includes('Headers') || lastError.message.includes('required')) {
-				throw new Error(`AI Provider ${providerName} configuration error: ${lastError.message}`);
-			}
 		}
 	}
 

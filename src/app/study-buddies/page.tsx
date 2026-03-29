@@ -27,11 +27,13 @@ export default function StudyBuddiesPage() {
 	const myBuddies = useStudyBuddyStore((s) => s.myBuddies);
 	const discoverableBuddies = useStudyBuddyStore((s) => s.discoverableBuddies);
 	const profile = useStudyBuddyStore((s) => s.profile);
+	const weakAreaMatches = useStudyBuddyStore((s) => s.weakAreaMatches);
 
 	const setSearchQuery = useStudyBuddyStore((s) => s.setSearchQuery);
 	const setActiveTab = useStudyBuddyStore((s) => s.setActiveTab);
 	const setProfile = useStudyBuddyStore((s) => s.setProfile);
 	const loadData = useStudyBuddyStore((s) => s.loadData);
+	const loadWeakAreaMatches = useStudyBuddyStore((s) => s.loadWeakAreaMatches);
 	const handleSubjectToggle = useStudyBuddyStore((s) => s.handleSubjectToggle);
 	const handleSendRequest = useStudyBuddyStore((s) => s.handleSendRequest);
 	const handleAcceptRequest = useStudyBuddyStore((s) => s.handleAcceptRequest);
@@ -50,9 +52,11 @@ export default function StudyBuddiesPage() {
 
 	useEffect(() => {
 		if (session?.user?.id) {
-			loadData(session.user.id);
+			loadData(session.user.id).then(() => {
+				loadWeakAreaMatches(session.user.id);
+			});
 		}
-	}, [session?.user?.id, loadData]);
+	}, [session?.user?.id, loadData, loadWeakAreaMatches]);
 
 	const filteredBuddies = discoverableBuddies.filter((buddy) => {
 		const matchesSearch =
@@ -157,6 +161,7 @@ export default function StudyBuddiesPage() {
 						searchQuery={searchQuery}
 						selectedSubjects={selectedSubjects}
 						filteredBuddies={filteredBuddies}
+						weakAreaMatches={weakAreaMatches}
 						onSearchChange={setSearchQuery}
 						onSubjectToggle={handleSubjectToggle}
 						onSendRequest={handleSendRequest}
