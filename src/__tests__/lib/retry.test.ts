@@ -1,7 +1,12 @@
-import { describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { fetchWithRetry, retry } from '@/lib/retry';
 
 describe('retry', () => {
+	beforeEach(() => {
+		vi.resetModules();
+		vi.restoreAllMocks();
+	});
+
 	describe('fetchWithRetry', () => {
 		it('should succeed on first attempt', async () => {
 			const mockResponse = {
@@ -10,7 +15,7 @@ describe('retry', () => {
 				json: () => Promise.resolve({ data: 'test' }),
 			} as unknown as Response;
 
-			globalThis.fetch = vi.fn().mockResolvedValueOnce(mockResponse);
+			vi.spyOn(globalThis, 'fetch').mockResolvedValueOnce(mockResponse);
 
 			const result = await fetchWithRetry('https://api.example.com/data');
 			expect(result.ok).toBe(true);
@@ -22,7 +27,7 @@ describe('retry', () => {
 				status: 400,
 			} as unknown as Response;
 
-			globalThis.fetch = vi.fn().mockResolvedValueOnce(mockResponse);
+			vi.spyOn(globalThis, 'fetch').mockResolvedValueOnce(mockResponse);
 
 			const result = await fetchWithRetry('https://api.example.com/data');
 			expect(result.status).toBe(400);
@@ -35,14 +40,14 @@ describe('retry', () => {
 				status: 500,
 			} as unknown as Response;
 
-			globalThis.fetch = vi.fn().mockResolvedValueOnce(errorResponse);
+			vi.spyOn(globalThis, 'fetch').mockResolvedValueOnce(errorResponse);
 
 			// Without a successful retry, it throws
 			await expect(fetchWithRetry('https://api.example.com/data', {}, 1, 10)).rejects.toThrow();
 		});
 
 		it('should throw after max retries exceeded', async () => {
-			globalThis.fetch = vi.fn().mockRejectedValue(new Error('Network error'));
+			vi.spyOn(globalThis, 'fetch').mockRejectedValue(new Error('Network error'));
 
 			await expect(fetchWithRetry('https://api.example.com/data', {}, 2, 10)).rejects.toThrow(
 				'Network error'
