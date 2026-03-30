@@ -57,3 +57,14 @@ export const mathematics: Subject = {
 		{ id: 'm8', name: 'Statistics', status: 'not-started', progress: 0, questionsAttempted: 0 },
 	],
 };
+
+export const MATHEMATICS_TOPIC_WEIGHTS: Record<string, number> = {
+	'Sequences & Series': 15,
+	'Functions & Inverses': 30,
+	'Differential Calculus': 25,
+	Probability: 15,
+	Trigonometry: 20,
+	'Analytical Geometry': 15,
+	'Euclidean Geometry': 15,
+	Statistics: 10,
+};

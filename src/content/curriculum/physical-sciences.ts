@@ -67,3 +67,14 @@ export const physicalSciences: Subject = {
 		},
 	],
 };
+
+export const PHYSICAL_SCIENCES_TOPIC_WEIGHTS: Record<string, number> = {
+	'Momentum & Impulse': 15,
+	'Projectile Motion': 15,
+	'Work, Energy & Power': 20,
+	'Doppler Effect': 10,
+	'Chemical Equilibrium': 15,
+	'Chemical Reactions': 15,
+	Electrostatics: 15,
+	'Electric Circuits': 15,
+};
