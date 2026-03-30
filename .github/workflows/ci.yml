@@ -58,10 +58,14 @@ jobs:
         run: bun install
 
       - name: Generate database client
-        run: bun run db:generate
+        run: |
+          bunx drizzle-kit generate --force
+          bunx drizzle-kit generate --config=drizzle.sqlite.config.ts --force
 
       - name: Push database schema
-        run: bun run db:push
+        run: |
+          bunx drizzle-kit push --force
+          bunx drizzle-kit push --config=drizzle.sqlite.config.ts --force
 
       - name: Run linter
         run: bun run lint

@@ -1,0 +1,466 @@
+{
+	"curriculum": {
+		"name": "NSC (National Senior Certificate) Grade 12",
+		"year": 2026,
+		"country": "South Africa",
+		"examBody": "Department of Basic Education (DBE)",
+		"examinationSession": "November 2026"
+	},
+	"examDates": {
+		"firstPaper": "2026-10-20",
+		"lastPaper": "2026-11-12",
+		"resultsRelease": "2027-01-15"
+	},
+	"subjects": [
+		{
+			"id": "math",
+			"name": "Mathematics",
+			"papers": [
+				{
+					"paper": 1,
+					"topics": [
+						{ "name": "Functions and Algebra", "weightage": 35 },
+						{ "name": "Number Patterns", "weightage": 10 },
+						{ "name": "Sequences and Series", "weightage": 10 }
+					],
+					"duration": 180,
+					"totalMarks": 150
+				},
+				{
+					"paper": 2,
+					"topics": [
+						{ "name": "Differential Calculus", "weightage": 30 },
+						{ "name": "Integral Calculus", "weightage": 25 },
+						{ "name": "Finance, Growth and Decay", "weightage": 10 }
+					],
+					"duration": 180,
+					"totalMarks": 150
+				},
+				{
+					"paper": 3,
+					"topics": [
+						{ "name": "Euclidean Geometry", "weightage": 30 },
+						{ "name": "Analytical Geometry", "weightage": 20 },
+						{ "name": "Trigonometry", "weightage": 30 }
+					],
+					"duration": 180,
+					"totalMarks": 150
+				}
+			]
+		},
+		{
+			"id": "phys",
+			"name": "Physical Sciences",
+			"papers": [
+				{
+					"paper": 1,
+					"subject": "Physics",
+					"topics": [
+						{ "name": "Mechanics", "weightage": 40 },
+						{ "name": "Waves, Sound and Light", "weightage": 30 },
+						{ "name": "Electricity and Magnetism", "weightage": 30 }
+					],
+					"duration": 180,
+					"totalMarks": 150
+				},
+				{
+					"paper": 2,
+					"subject": "Chemistry",
+					"topics": [
+						{ "name": "Chemical Bonding", "weightage": 20 },
+						{ "name": "Chemical Equilibrium", "weightage": 25 },
+						{ "name": "Electrochemistry", "weightage": 20 },
+						{ "name": "Organic Chemistry", "weightage": 25 },
+						{ "name": "Chemical Kinetics", "weightage": 10 }
+					],
+					"duration": 180,
+					"totalMarks": 150
+				}
+			]
+		},
+		{
+			"id": "life",
+			"name": "Life Sciences",
+			"papers": [
+				{
+					"paper": 1,
+					"topics": [
+						{ "name": "Cell Biology", "weightage": 25 },
+						{ "name": "Genetics", "weightage": 25 },
+						{ "name": "Evolution", "weightage": 25 },
+						{ "name": "Human Reproduction", "weightage": 25 }
+					],
+					"duration": 150,
+					"totalMarks": 150
+				},
+				{
+					"paper": 2,
+					"topics": [
+						{ "name": "Energy Transformations", "weightage": 25 },
+						{ "name": "Animal Nutrition", "weightage": 15 },
+						{ "name": "Homeostasis", "weightage": 25 },
+						{ "name": "Ecosystems", "weightage": 20 },
+						{ "name": "Population Ecology", "weightage": 15 }
+					],
+					"duration": 150,
+					"totalMarks": 150
+				}
+			]
+		},
+		{
+			"id": "geog",
+			"name": "Geography",
+			"papers": [
+				{
+					"paper": 1,
+					"topics": [
+						{ "name": "Geomorphology", "weightage": 35 },
+						{ "name": "Climatology", "weightage": 30 },
+						{ "name": "Oceanography", "weightage": 20 },
+						{ "name": "Geographical Skills", "weightage": 15 }
+					],
+					"duration": 180,
+					"totalMarks": 200
+				},
+				{
+					"paper": 2,
+					"topics": [
+						{ "name": "Population Studies", "weightage": 25 },
+						{ "name": "Settlement Studies", "weightage": 25 },
+						{ "name": "Economic Geography", "weightage": 25 },
+						{ "name": "GIS and Remote Sensing", "weightage": 25 }
+					],
+					"duration": 180,
+					"totalMarks": 200
+				}
+			]
+		},
+		{
+			"id": "hist",
+			"name": "History",
+			"papers": [
+				{
+					"paper": 1,
+					"topics": [
+						{ "name": "The Cold War", "weightage": 25 },
+						{ "name": "Civil Resistance in South Africa", "weightage": 30 },
+						{ "name": "The Middle East Conflict", "weightage": 25 },
+						{ "name": "World War II", "weightage": 20 }
+					],
+					"duration": 180,
+					"totalMarks": 150
+				},
+				{
+					"paper": 2,
+					"topics": [
+						{ "name": "South Africa 1970s-1990s", "weightage": 35 },
+						{ "name": "The Nuclear Age", "weightage": 20 },
+						{ "name": "Civil Rights Movement (USA)", "weightage": 25 },
+						{ "name": "International Relations", "weightage": 20 }
+					],
+					"duration": 180,
+					"totalMarks": 150
+				}
+			]
+		},
+		{
+			"id": "acc",
+			"name": "Accounting",
+			"papers": [
+				{
+					"paper": 1,
+					"topics": [
+						{ "name": "Financial Statements", "weightage": 40 },
+						{ "name": "Interpretation of Financial Statements", "weightage": 20 },
+						{ "name": "Cost Accounting", "weightage": 25 },
+						{ "name": "Budgeting", "weightage": 15 }
+					],
+					"duration": 180,
+					"totalMarks": 200
+				},
+				{
+					"paper": 2,
+					"topics": [
+						{ "name": "Companies", "weightage": 35 },
+						{ "name": "Partnerships", "weightage": 20 },
+						{ "name": "Inventory Valuation", "weightage": 20 },
+						{ "name": "Value Added Tax (VAT)", "weightage": 15 },
+						{ "name": "Cash Flow Statements", "weightage": 10 }
+					],
+					"duration": 180,
+					"totalMarks": 200
+				}
+			]
+		},
+		{
+			"id": "econ",
+			"name": "Economics",
+			"papers": [
+				{
+					"paper": 1,
+					"topics": [
+						{ "name": "Microeconomics", "weightage": 40 },
+						{ "name": "Price Elasticity", "weightage": 20 },
+						{ "name": "Cost and Revenue", "weightage": 20 },
+						{ "name": "Market Structures", "weightage": 20 }
+					],
+					"duration": 180,
+					"totalMarks": 150
+				},
+				{
+					"paper": 2,
+					"topics": [
+						{ "name": "Macroeconomics", "weightage": 35 },
+						{ "name": "Fiscal Policy", "weightage": 25 },
+						{ "name": "Monetary Policy", "weightage": 20 },
+						{ "name": "Economic Growth and Development", "weightage": 20 }
+					],
+					"duration": 180,
+					"totalMarks": 150
+				}
+			]
+		},
+		{
+			"id": "engh",
+			"name": "English Home Language",
+			"papers": [
+				{
+					"paper": 1,
+					"topics": [
+						{ "name": "Comprehension", "weightage": 30 },
+						{ "name": "Summary Writing", "weightage": 15 },
+						{ "name": "Language Structures", "weightage": 25 },
+						{ "name": "Advertising", "weightage": 15 },
+						{ "name": "Visual Literacy", "weightage": 15 }
+					],
+					"duration": 120,
+					"totalMarks": 100
+				},
+				{
+					"paper": 2,
+					"topics": [
+						{ "name": "Literature (Poetry)", "weightage": 25 },
+						{ "name": "Literature (Novel)", "weightage": 25 },
+						{ "name": "Literature (Drama)", "weightage": 25 },
+						{ "name": "Essay Writing", "weightage": 25 }
+					],
+					"duration": 180,
+					"totalMarks": 100
+				},
+				{
+					"paper": 3,
+					"topics": [
+						{ "name": "Transactional Writing", "weightage": 50 },
+						{ "name": "Creative Writing", "weightage": 50 }
+					],
+					"duration": 120,
+					"totalMarks": 100
+				}
+			]
+		},
+		{
+			"id": "afri",
+			"name": "Afrikaans First Additional Language",
+			"papers": [
+				{
+					"paper": 1,
+					"topics": [
+						{ "name": "Comprehension", "weightage": 30 },
+						{ "name": "Summary Writing", "weightage": 15 },
+						{ "name": "Language Practice", "weightage": 30 },
+						{ "name": "Visual Literacy", "weightage": 25 }
+					],
+					"duration": 120,
+					"totalMarks": 80
+				},
+				{
+					"paper": 2,
+					"topics": [
+						{ "name": "Literature", "weightage": 60 },
+						{ "name": "Essay Writing", "weightage": 40 }
+					],
+					"duration": 180,
+					"totalMarks": 80
+				}
+			]
+		},
+		{
+			"id": "bus",
+			"name": "Business Studies",
+			"papers": [
+				{
+					"paper": 1,
+					"topics": [
+						{ "name": "Business Environments", "weightage": 20 },
+						{ "name": "Business Ventures", "weightage": 30 },
+						{ "name": "Business Roles", "weightage": 25 },
+						{ "name": "Labour Relations", "weightage": 25 }
+					],
+					"duration": 180,
+					"totalMarks": 150
+				},
+				{
+					"paper": 2,
+					"topics": [
+						{ "name": "Management", "weightage": 30 },
+						{ "name": "Marketing", "weightage": 25 },
+						{ "name": "Financial Management", "weightage": 25 },
+						{ "name": "Corporate Strategy", "weightage": 20 }
+					],
+					"duration": 180,
+					"totalMarks": 150
+				}
+			]
+		}
+	],
+	"subjectCombinations": [
+		{
+			"name": "Science Stream",
+			"subjects": ["Mathematics", "Physical Sciences", "Life Sciences", "Geography"]
+		},
+		{
+			"name": "Commerce Stream",
+			"subjects": ["Mathematics", "Accounting", "Economics", "Business Studies"]
+		},
+		{
+			"name": "Humanities Stream",
+			"subjects": ["History", "Geography", "Life Sciences", "English Home Language"]
+		},
+		{
+			"name": "Engineering Stream",
+			"subjects": ["Mathematics", "Physical Sciences", "Geography", "English Home Language"]
+		}
+	],
+	"passRequirements": {
+		"minimumCredits": 23,
+		"compulsorySubjects": [
+			"English Home Language or First Additional Language",
+			"Mathematics or Mathematical Literacy",
+			"Life Orientation"
+		],
+		"passMarkLevels": {
+			"bachelorPass": 4,
+			"diplomaPass": 3,
+			"higherCertificatePass": 2
+		}
+	},
+	"topicsBySubject": {
+		"mathematics": [
+			{
+				"id": "math-1",
+				"name": "Functions",
+				"subtopics": ["Linear", "Quadratic", "Exponential", "Logarithmic", "Reciprocal"]
+			},
+			{
+				"id": "math-2",
+				"name": "Number Patterns",
+				"subtopics": ["Arithmetic", "Geometric", "Fibonacci"]
+			},
+			{
+				"id": "math-3",
+				"name": "Sequences and Series",
+				"subtopics": ["Arithmetic Series", "Geometric Series", "Infinite Series"]
+			},
+			{
+				"id": "math-4",
+				"name": "Calculus",
+				"subtopics": ["Limits", "Differentiation", "Integration", "Applications"]
+			},
+			{
+				"id": "math-5",
+				"name": "Trigonometry",
+				"subtopics": ["Identities", "Equations", "3D Trigonometry"]
+			},
+			{
+				"id": "math-6",
+				"name": "Euclidean Geometry",
+				"subtopics": ["Circles", "Triangles", "Quadrilaterals"]
+			},
+			{
+				"id": "math-7",
+				"name": "Analytical Geometry",
+				"subtopics": ["Lines", "Circles", "Tangents"]
+			},
+			{
+				"id": "math-8",
+				"name": "Finance",
+				"subtopics": ["Simple Interest", "Compound Interest", "Annuities"]
+			}
+		],
+		"physics": [
+			{
+				"id": "phys-1",
+				"name": "Mechanics",
+				"subtopics": ["Newton's Laws", "Momentum", "Work and Energy", "Projectile Motion"]
+			},
+			{
+				"id": "phys-2",
+				"name": "Waves",
+				"subtopics": ["Properties", "Sound", "Light", "Doppler Effect"]
+			},
+			{ "id": "phys-3", "name": "Electricity", "subtopics": ["Circuits", "Ohm's Law", "Power"] },
+			{
+				"id": "phys-4",
+				"name": "Magnetism",
+				"subtopics": ["Fields", "Electromagnetism", "Induction"]
+			},
+			{
+				"id": "phys-5",
+				"name": "Optics",
+				"subtopics": ["Reflection", "Refraction", "Lenses", "Mirrors"]
+			}
+		],
+		"chemistry": [
+			{
+				"id": "chem-1",
+				"name": "Chemical Bonding",
+				"subtopics": ["Ionic", "Covalent", "Metallic", "Intermolecular"]
+			},
+			{
+				"id": "chem-2",
+				"name": "Chemical Equilibrium",
+				"subtopics": ["Le Chatelier", "Equilibrium Constant"]
+			},
+			{ "id": "chem-3", "name": "Acids and Bases", "subtopics": ["pH", "Titrations", "Buffers"] },
+			{
+				"id": "chem-4",
+				"name": "Electrochemistry",
+				"subtopics": ["Oxidation-Reduction", "Electrolytic Cells", "Galvanic Cells"]
+			},
+			{
+				"id": "chem-5",
+				"name": "Organic Chemistry",
+				"subtopics": ["Hydrocarbons", "Functional Groups", "Polymers"]
+			},
+			{
+				"id": "chem-6",
+				"name": "Chemical Kinetics",
+				"subtopics": ["Reaction Rates", "Rate Laws", "Catalysts"]
+			}
+		],
+		"lifeSciences": [
+			{
+				"id": "life-1",
+				"name": "Cell Biology",
+				"subtopics": ["Cell Structure", "Cell Division", "Cellular Respiration"]
+			},
+			{
+				"id": "life-2",
+				"name": "Genetics",
+				"subtopics": ["DNA", "Mendel", "Punnett Squares", "Mutations"]
+			},
+			{
+				"id": "life-3",
+				"name": "Evolution",
+				"subtopics": ["Natural Selection", "Speciation", "Human Evolution"]
+			},
+			{
+				"id": "life-4",
+				"name": "Human Reproduction",
+				"subtopics": ["Reproductive Systems", "Gametes", "Pregnancy"]
+			},
+			{ "id": "life-5", "name": "Energy", "subtopics": ["Photosynthesis", "Cellular Respiration"] },
+			{ "id": "life-6", "name": "Ecosystems", "subtopics": ["Biomes", "Food Webs", "Cycling"] }
+		]
+	}
+}
