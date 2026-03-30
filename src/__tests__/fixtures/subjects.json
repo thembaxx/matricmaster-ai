@@ -1,0 +1,377 @@
+{
+	"subjects": [
+		{
+			"id": "math",
+			"name": "Mathematics",
+			"description": "Core Mathematics including Algebra, Geometry, Calculus and Statistics",
+			"curriculumCode": "MATH",
+			"category": "Core",
+			"icon": "calculator",
+			"color": "#3B82F6",
+			"isActive": true,
+			"isCompulsory": true,
+			"paperCount": 3,
+			"totalHours": 540,
+			"topics": [
+				{ "id": "math-func", "name": "Functions and Algebra", "priority": "high" },
+				{ "id": "math-calc", "name": "Calculus", "priority": "high" },
+				{ "id": "math-trig", "name": "Trigonometry", "priority": "high" },
+				{ "id": "math-eucl", "name": "Euclidean Geometry", "priority": "medium" },
+				{ "id": "math-analyt", "name": "Analytical Geometry", "priority": "medium" },
+				{ "id": "math-seq", "name": "Sequences and Series", "priority": "medium" },
+				{ "id": "math-finance", "name": "Finance and Growth", "priority": "low" }
+			],
+			"prerequisites": [],
+			"careers": [
+				"Engineering",
+				"Computer Science",
+				"Actuarial Science",
+				"Architecture",
+				"Medicine"
+			]
+		},
+		{
+			"id": "phys",
+			"name": "Physical Sciences",
+			"description": "Physics and Chemistry combined for NSC",
+			"curriculumCode": "PHSC",
+			"category": "Sciences",
+			"icon": "atom",
+			"color": "#8B5CF6",
+			"isActive": true,
+			"isCompulsory": false,
+			"paperCount": 2,
+			"totalHours": 360,
+			"topics": [
+				{ "id": "phys-mech", "name": "Mechanics", "priority": "high" },
+				{ "id": "phys-waves", "name": "Waves and Sound", "priority": "medium" },
+				{ "id": "phys-light", "name": "Light and Optics", "priority": "medium" },
+				{ "id": "phys-elec", "name": "Electricity and Magnetism", "priority": "high" },
+				{ "id": "chem-bond", "name": "Chemical Bonding", "priority": "high" },
+				{ "id": "chem-equil", "name": "Chemical Equilibrium", "priority": "high" },
+				{ "id": "chem-electro", "name": "Electrochemistry", "priority": "medium" },
+				{ "id": "chem-organic", "name": "Organic Chemistry", "priority": "high" }
+			],
+			"prerequisites": ["Mathematics"],
+			"careers": ["Engineering", "Medicine", "Chemistry", "Physics", "Mining"]
+		},
+		{
+			"id": "life",
+			"name": "Life Sciences",
+			"description": "Biology for Grade 12 including Human Biology",
+			"curriculumCode": "LIFE",
+			"category": "Sciences",
+			"icon": "dna",
+			"color": "#10B981",
+			"isActive": true,
+			"isCompulsory": false,
+			"paperCount": 2,
+			"totalHours": 300,
+			"topics": [
+				{ "id": "life-cell", "name": "Cell Biology", "priority": "high" },
+				{ "id": "life-gen", "name": "Genetics", "priority": "high" },
+				{ "id": "life-evol", "name": "Evolution", "priority": "medium" },
+				{ "id": "life-repro", "name": "Human Reproduction", "priority": "medium" },
+				{ "id": "life-energy", "name": "Energy Transformations", "priority": "high" },
+				{ "id": "life-eco", "name": "Ecosystems", "priority": "medium" },
+				{ "id": "life-homeo", "name": "Homeostasis", "priority": "high" }
+			],
+			"prerequisites": [],
+			"careers": ["Medicine", "Veterinary", "Biotechnology", "Environmental Science", "Nursing"]
+		},
+		{
+			"id": "geog",
+			"name": "Geography",
+			"description": "Human and Physical Geography",
+			"curriculumCode": "GEOG",
+			"category": "Social Sciences",
+			"icon": "globe",
+			"color": "#F59E0B",
+			"isActive": true,
+			"isCompulsory": false,
+			"paperCount": 2,
+			"totalHours": 360,
+			"topics": [
+				{ "id": "geog-morph", "name": "Geomorphology", "priority": "high" },
+				{ "id": "geog-clim", "name": "Climatology", "priority": "high" },
+				{ "id": "geog-ocean", "name": "Oceanography", "priority": "medium" },
+				{ "id": "geog-pop", "name": "Population Studies", "priority": "medium" },
+				{ "id": "geog-settle", "name": "Settlement Studies", "priority": "medium" },
+				{ "id": "geog-economic", "name": "Economic Geography", "priority": "medium" },
+				{ "id": "geog-gis", "name": "GIS and Remote Sensing", "priority": "low" }
+			],
+			"prerequisites": [],
+			"careers": ["Urban Planning", "Environmental Management", "Geology", "Tourism", "Cartography"]
+		},
+		{
+			"id": "hist",
+			"name": "History",
+			"description": "South African and World History",
+			"curriculumCode": "HIST",
+			"category": "Humanities",
+			"icon": "book-open",
+			"color": "#EF4444",
+			"isActive": true,
+			"isCompulsory": false,
+			"paperCount": 2,
+			"totalHours": 360,
+			"topics": [
+				{ "id": "hist-coldwar", "name": "The Cold War", "priority": "medium" },
+				{ "id": "hist-sa", "name": "South Africa 1970s-1990s", "priority": "high" },
+				{ "id": "hist-civil", "name": "Civil Resistance", "priority": "high" },
+				{ "id": "hist-ww2", "name": "World War II", "priority": "medium" },
+				{ "id": "hist-middle", "name": "Middle East Conflict", "priority": "medium" },
+				{ "id": "hist-usa", "name": "Civil Rights Movement", "priority": "low" }
+			],
+			"prerequisites": [],
+			"careers": ["Law", "Journalism", "Education", "Politics", "Research"]
+		},
+		{
+			"id": "acc",
+			"name": "Accounting",
+			"description": "Financial Accounting and Management Accounting",
+			"curriculumCode": "ACCT",
+			"category": "Commercial",
+			"icon": "calculator",
+			"color": "#0EA5E9",
+			"isActive": true,
+			"isCompulsory": false,
+			"paperCount": 2,
+			"totalHours": 360,
+			"topics": [
+				{ "id": "acc-finstate", "name": "Financial Statements", "priority": "high" },
+				{ "id": "acc-company", "name": "Companies", "priority": "high" },
+				{ "id": "acc-cost", "name": "Cost Accounting", "priority": "medium" },
+				{ "id": "acc-budget", "name": "Budgeting", "priority": "medium" },
+				{ "id": "acc-partner", "name": "Partnerships", "priority": "medium" },
+				{ "id": "acc-vat", "name": "Value Added Tax", "priority": "low" }
+			],
+			"prerequisites": [],
+			"careers": [
+				"Chartered Accountant",
+				"Auditor",
+				"Bookkeeper",
+				"Financial Analyst",
+				"Tax Practitioner"
+			]
+		},
+		{
+			"id": "econ",
+			"name": "Economics",
+			"description": "Micro and Macroeconomics",
+			"curriculumCode": "ECON",
+			"category": "Commercial",
+			"icon": "trending-up",
+			"color": "#14B8A6",
+			"isActive": true,
+			"isCompulsory": false,
+			"paperCount": 2,
+			"totalHours": 360,
+			"topics": [
+				{ "id": "econ-micro", "name": "Microeconomics", "priority": "high" },
+				{ "id": "econ-macro", "name": "Macroeconomics", "priority": "high" },
+				{ "id": "econ-fiscal", "name": "Fiscal Policy", "priority": "high" },
+				{ "id": "econ-monetary", "name": "Monetary Policy", "priority": "high" },
+				{ "id": "econ-elasticity", "name": "Price Elasticity", "priority": "medium" },
+				{ "id": "econ-growth", "name": "Economic Growth", "priority": "medium" }
+			],
+			"prerequisites": ["Mathematics"],
+			"careers": [
+				"Economist",
+				"Investment Banking",
+				"Market Research",
+				"Policy Analysis",
+				"Finance"
+			]
+		},
+		{
+			"id": "engh",
+			"name": "English Home Language",
+			"description": "English Language, Literature and Creative Writing",
+			"curriculumCode": "ENGH",
+			"category": "Languages",
+			"icon": "book",
+			"color": "#EC4899",
+			"isActive": true,
+			"isCompulsory": true,
+			"paperCount": 3,
+			"totalHours": 420,
+			"topics": [
+				{ "id": "engh-comp", "name": "Comprehension", "priority": "high" },
+				{ "id": "engh-summary", "name": "Summary Writing", "priority": "high" },
+				{ "id": "engh-poetry", "name": "Poetry Analysis", "priority": "high" },
+				{ "id": "engh-novel", "name": "Novel Study", "priority": "high" },
+				{ "id": "engh-drama", "name": "Drama Study", "priority": "medium" },
+				{ "id": "engh-essay", "name": "Essay Writing", "priority": "high" },
+				{ "id": "engh-trans", "name": "Transactional Writing", "priority": "medium" }
+			],
+			"prerequisites": [],
+			"careers": ["Law", "Journalism", "Teaching", "Communications", "Creative Writing"]
+		},
+		{
+			"id": "afri",
+			"name": "Afrikaans First Additional Language",
+			"description": "Afrikaans as First Additional Language",
+			"curriculumCode": "AFRI",
+			"category": "Languages",
+			"icon": "languages",
+			"color": "#F97316",
+			"isActive": true,
+			"isCompulsory": false,
+			"paperCount": 2,
+			"totalHours": 240,
+			"topics": [
+				{ "id": "afri-comp", "name": "Comprehension", "priority": "high" },
+				{ "id": "afri-summary", "name": "Summary Writing", "priority": "high" },
+				{ "id": "afri-lang", "name": "Language Structures", "priority": "high" },
+				{ "id": "afri-lit", "name": "Literature", "priority": "high" },
+				{ "id": "afri-essay", "name": "Essay Writing", "priority": "high" }
+			],
+			"prerequisites": [],
+			"careers": ["Translation", "Education", "Government", "Tourism", "Media"]
+		},
+		{
+			"id": "bus",
+			"name": "Business Studies",
+			"description": "Business Principles, Management and Marketing",
+			"curriculumCode": "BUS",
+			"category": "Commercial",
+			"icon": "briefcase",
+			"color": "#6366F1",
+			"isActive": true,
+			"isCompulsory": false,
+			"paperCount": 2,
+			"totalHours": 360,
+			"topics": [
+				{ "id": "bus-env", "name": "Business Environments", "priority": "medium" },
+				{ "id": "bus-venture", "name": "Business Ventures", "priority": "high" },
+				{ "id": "bus-role", "name": "Business Roles", "priority": "high" },
+				{ "id": "bus-labour", "name": "Labour Relations", "priority": "medium" },
+				{ "id": "bus-mgmt", "name": "Management", "priority": "high" },
+				{ "id": "bus-market", "name": "Marketing", "priority": "high" },
+				{ "id": "bus-fin", "name": "Financial Management", "priority": "high" }
+			],
+			"prerequisites": [],
+			"careers": ["Business Manager", "Entrepreneur", "Marketing", "Human Resources", "Consulting"]
+		},
+		{
+			"id": "mathlit",
+			"name": "Mathematical Literacy",
+			"description": "Applied Mathematics for real-world problems",
+			"curriculumCode": "MATL",
+			"category": "Core",
+			"icon": "calculator",
+			"color": "#84CC16",
+			"isActive": true,
+			"isCompulsory": false,
+			"paperCount": 2,
+			"totalHours": 360,
+			"topics": [
+				{ "id": "matl-fin", "name": "Financial Maths", "priority": "high" },
+				{ "id": "matl-meas", "name": "Measurement", "priority": "high" },
+				{ "id": "matl-data", "name": "Data Handling", "priority": "high" },
+				{ "id": "matl-prob", "name": "Probability", "priority": "medium" },
+				{ "id": "matl-scale", "name": "Maps and Scales", "priority": "medium" }
+			],
+			"prerequisites": [],
+			"careers": ["Teaching", "Arts", "Social Sciences", "Commerce (Non-Technical)"]
+		},
+		{
+			"id": "visart",
+			"name": "Visual Arts",
+			"description": "Art, Design and Creative Expression",
+			"curriculumCode": "VIS",
+			"category": "Arts",
+			"icon": "palette",
+			"color": "#D946EF",
+			"isActive": true,
+			"isCompulsory": false,
+			"paperCount": 1,
+			"totalHours": 240,
+			"topics": [
+				{ "id": "vis-studio", "name": "Studio Work", "priority": "high" },
+				{ "id": "vis-theory", "name": "Art Theory", "priority": "medium" },
+				{ "id": "vis-sa", "name": "South African Art", "priority": "low" }
+			],
+			"prerequisites": [],
+			"careers": ["Artist", "Graphic Designer", "Architect", "Art Teacher", "Gallery Curator"]
+		},
+		{
+			"id": "music",
+			"name": "Music",
+			"description": "Music Theory, Composition and Performance",
+			"curriculumCode": "MUS",
+			"category": "Arts",
+			"icon": "music",
+			"color": "#A855F7",
+			"isActive": true,
+			"isCompulsory": false,
+			"paperCount": 1,
+			"totalHours": 240,
+			"topics": [
+				{ "id": "mus-theory", "name": "Music Theory", "priority": "high" },
+				{ "id": "mus-practical", "name": "Practical", "priority": "high" },
+				{ "id": "mus-compose", "name": "Composition", "priority": "medium" }
+			],
+			"prerequisites": [],
+			"careers": ["Musician", "Composer", "Music Teacher", "Audio Engineer", "Music Therapy"]
+		},
+		{
+			"id": "comput",
+			"name": "Computer Applications Technology",
+			"description": "Programming, Databases and IT Skills",
+			"curriculumCode": "CAT",
+			"category": "Technology",
+			"icon": "code",
+			"color": "#06B6D4",
+			"isActive": true,
+			"isCompulsory": false,
+			"paperCount": 2,
+			"totalHours": 300,
+			"topics": [
+				{ "id": "cat-theory", "name": "Theory", "priority": "high" },
+				{ "id": "cat-pract", "name": "Practical", "priority": "high" },
+				{ "id": "cat-sys", "name": "Systems Technologies", "priority": "medium" }
+			],
+			"prerequisites": [],
+			"careers": [
+				"Software Developer",
+				"IT Support",
+				"Web Developer",
+				"Database Admin",
+				"System Analyst"
+			]
+		},
+		{
+			"id": "lo",
+			"name": "Life Orientation",
+			"description": "Personal Development, Health and Citizenship",
+			"curriculumCode": "LO",
+			"category": "Core",
+			"icon": "heart",
+			"color": "#F43F5E",
+			"isActive": true,
+			"isCompulsory": true,
+			"paperCount": 1,
+			"totalHours": 180,
+			"topics": [
+				{ "id": "lo-health", "name": "Health", "priority": "high" },
+				{ "id": "lo-psycho", "name": "Psychological", "priority": "high" },
+				{ "id": "lo-civ", "name": "Civic Responsibility", "priority": "medium" },
+				{ "id": "lo-career", "name": "Career Planning", "priority": "high" }
+			],
+			"prerequisites": [],
+			"careers": ["All Careers"]
+		}
+	],
+	"subjectCategories": [
+		{ "id": "core", "name": "Core Subjects", "color": "#1E293B" },
+		{ "id": "sciences", "name": "Sciences", "color": "#059669" },
+		{ "id": "commercial", "name": "Commercial", "color": "#0891B2" },
+		{ "id": "humanities", "name": "Humanities", "color": "#C026D3" },
+		{ "id": "languages", "name": "Languages", "color": "#DC2626" },
+		{ "id": "arts", "name": "Arts", "color": "#EA580C" },
+		{ "id": "technology", "name": "Technology", "color": "#2563EB" },
+		{ "id": "social", "name": "Social Sciences", "color": "#CA8A04" }
+	]
+}

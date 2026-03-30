@@ -1,0 +1,215 @@
+{
+	"users": [
+		{
+			"id": "user-001",
+			"email": "thabo.mokoena@email.com",
+			"name": "Thabo Mokoena",
+			"role": "student",
+			"avatar": null,
+			"createdAt": "2025-09-01T08:00:00Z",
+			"updatedAt": "2026-03-15T14:30:00Z",
+			"preferences": {
+				"subjects": ["Mathematics", "Physical Sciences"],
+				"studyGoal": "university_admission",
+				"targetUniversity": "University of Pretoria",
+				"desiredCourse": "Engineering",
+				"dailyStudyTime": 120,
+				"preferredSessionLength": 45,
+				"notifications": {
+					"reminders": true,
+					"achievements": true,
+					"leaderboard": false
+				}
+			},
+			"progress": {
+				"totalQuestionsAttempted": 1250,
+				"totalCorrect": 875,
+				"overallAccuracy": 70,
+				"currentStreak": 12,
+				"bestStreak": 28,
+				"totalStudyHours": 85,
+				"subjectsMastered": ["Algebra", "Functions"],
+				"weakSubjects": ["Trigonometry", "Calculus"]
+			},
+			"subscription": {
+				"plan": "premium",
+				"status": "active",
+				"expiresAt": "2026-12-31T23:59:59Z"
+			}
+		},
+		{
+			"id": "user-002",
+			"email": "amara.jacob@email.com",
+			"name": "Amara Jacob",
+			"role": "student",
+			"avatar": null,
+			"createdAt": "2026-01-15T10:00:00Z",
+			"updatedAt": "2026-03-20T09:15:00Z",
+			"preferences": {
+				"subjects": ["Life Sciences", "Geography", "English Home Language"],
+				"studyGoal": "university_admission",
+				"targetUniversity": "University of Cape Town",
+				"desiredCourse": "Medicine",
+				"dailyStudyTime": 90,
+				"preferredSessionLength": 30,
+				"notifications": {
+					"reminders": true,
+					"achievements": true,
+					"leaderboard": true
+				}
+			},
+			"progress": {
+				"totalQuestionsAttempted": 180,
+				"totalCorrect": 95,
+				"overallAccuracy": 52.8,
+				"currentStreak": 3,
+				"bestStreak": 7,
+				"totalStudyHours": 12,
+				"subjectsMastered": [],
+				"weakSubjects": ["Cell Biology", "Geomorphology"]
+			},
+			"subscription": {
+				"plan": "free",
+				"status": "active",
+				"expiresAt": null
+			}
+		},
+		{
+			"id": "user-003",
+			"email": "luke.van_der_merwe@email.com",
+			"name": "Luke van der Merwe",
+			"role": "student",
+			"avatar": null,
+			"createdAt": "2025-06-10T12:00:00Z",
+			"updatedAt": "2026-03-25T16:45:00Z",
+			"preferences": {
+				"subjects": ["Mathematics", "Accounting", "Economics"],
+				"studyGoal": "improve_grades",
+				"targetUniversity": null,
+				"desiredCourse": null,
+				"dailyStudyTime": 60,
+				"preferredSessionLength": 20,
+				"notifications": {
+					"reminders": true,
+					"achievements": false,
+					"leaderboard": false
+				}
+			},
+			"progress": {
+				"totalQuestionsAttempted": 2100,
+				"totalCorrect": 1680,
+				"overallAccuracy": 80,
+				"currentStreak": 45,
+				"bestStreak": 45,
+				"totalStudyHours": 156,
+				"subjectsMastered": [
+					"Accounting Equations",
+					"Financial Statements",
+					"Algebra",
+					"Number Patterns"
+				],
+				"weakSubjects": ["Calculus"]
+			},
+			"subscription": {
+				"plan": "premium",
+				"status": "active",
+				"expiresAt": "2026-09-10T23:59:59Z"
+			}
+		},
+		{
+			"id": "user-004",
+			"email": "parent@example.com",
+			"name": "Nomsa Mokoena",
+			"role": "parent",
+			"avatar": null,
+			"createdAt": "2025-08-20T14:00:00Z",
+			"updatedAt": "2026-02-28T11:00:00Z",
+			"preferences": {
+				"linkedStudentId": "user-001",
+				"notifications": {
+					"progressReports": true,
+					"achievements": true,
+					"examReminders": true,
+					"weeklySummary": true
+				}
+			},
+			"childProgress": {
+				"studentId": "user-001",
+				"weeklyStudyHours": 8.5,
+				"currentStreak": 12,
+				"overallAccuracy": 70,
+				"recentSubjects": ["Mathematics", "Physical Sciences"],
+				"nextExam": "Mathematics Paper 1 - April 15, 2026"
+			}
+		},
+		{
+			"id": "user-005",
+			"email": "tutor@example.com",
+			"name": "Mr. Sipho Dlamini",
+			"role": "tutor",
+			"avatar": null,
+			"createdAt": "2025-03-01T09:00:00Z",
+			"updatedAt": "2026-03-22T10:30:00Z",
+			"preferences": {
+				"expertise": ["Mathematics", "Physical Sciences"],
+				"certifications": ["BSc Physics", "PGCE"],
+				"yearsExperience": 8,
+				"notifications": {
+					"studentMessages": true,
+					"sessionReminders": true,
+					"newStudents": true
+				}
+			},
+			"tutorProfile": {
+				"studentsCount": 24,
+				"rating": 4.8,
+				"totalSessions": 156,
+				"specializations": ["Calculus", "Mechanics", "Electromagnetism"],
+				"availability": {
+					"monday": ["16:00-18:00"],
+					"wednesday": ["16:00-18:00"],
+					"friday": ["14:00-16:00"],
+					"saturday": ["09:00-12:00"]
+				}
+			}
+		},
+		{
+			"id": "user-006",
+			"email": "struggling.student@email.com",
+			"name": "Kgoshi Morule",
+			"role": "student",
+			"avatar": null,
+			"createdAt": "2026-02-01T15:00:00Z",
+			"updatedAt": "2026-03-18T08:20:00Z",
+			"preferences": {
+				"subjects": ["Mathematics", "Life Sciences", "Geography"],
+				"studyGoal": "pass_matric",
+				"targetUniversity": null,
+				"desiredCourse": null,
+				"dailyStudyTime": 45,
+				"preferredSessionLength": 15,
+				"notifications": {
+					"reminders": true,
+					"achievements": true,
+					"leaderboard": false
+				}
+			},
+			"progress": {
+				"totalQuestionsAttempted": 85,
+				"totalCorrect": 28,
+				"overallAccuracy": 32.9,
+				"currentStreak": 2,
+				"bestStreak": 5,
+				"totalStudyHours": 6,
+				"subjectsMastered": [],
+				"weakSubjects": ["Mathematics", "Life Sciences", "Geography"],
+				"needsIntervention": true
+			},
+			"subscription": {
+				"plan": "free",
+				"status": "active",
+				"expiresAt": null
+			}
+		}
+	]
+}
