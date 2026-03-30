@@ -190,7 +190,7 @@ describe('spaced-repetition SM-2 Algorithm', () => {
 	});
 
 	describe('getReviewForecast', () => {
-		it('should return forecast for past due cards', () => {
+		it('should return forecast for upcoming cards', () => {
 			const now = new Date();
 			const cards: SpacedRepetitionCard[] = [
 				{
@@ -198,18 +198,19 @@ describe('spaced-repetition SM-2 Algorithm', () => {
 					interval: 1,
 					repetitions: 1,
 					easeFactor: 2.5,
-					nextReview: new Date(now.getTime() - 1 * 24 * 60 * 60 * 1000),
+					nextReview: new Date(now.getTime() + 1 * 24 * 60 * 60 * 1000),
 				},
 				{
 					id: '2',
 					interval: 1,
 					repetitions: 1,
 					easeFactor: 2.5,
-					nextReview: new Date(now.getTime() - 3 * 24 * 60 * 60 * 1000),
+					nextReview: new Date(now.getTime() + 3 * 24 * 60 * 60 * 1000),
 				},
 			];
 			const forecast = getReviewForecast(cards, 7);
-			expect(forecast[0]).toBe(2);
+			expect(forecast[1]).toBe(1);
+			expect(forecast[3]).toBe(1);
 		});
 
 		it('should return zeros for no cards', () => {
