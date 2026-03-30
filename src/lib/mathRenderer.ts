@@ -128,8 +128,8 @@ export function renderMath(
 			mode: 'katex',
 			originalLatex: latex,
 		};
-	} catch {
-		// KaTeX failed, try MathJax
+	} catch (error) {
+		console.debug('KaTeX rendering failed, trying MathJax:', error);
 	}
 
 	try {
@@ -144,8 +144,8 @@ export function renderMath(
 			mode: 'mathjax',
 			originalLatex: latex,
 		};
-	} catch {
-		// MathJax failed
+	} catch (error) {
+		console.debug('MathJax rendering failed, falling back to plain text:', error);
 	}
 
 	const ascii = latexToAscii(latex);
@@ -200,8 +200,8 @@ export function replaceMathWithHtml(text: string): string {
 		try {
 			const html = renderMath(expr).html;
 			result = result.replace(expr, html);
-		} catch {
-			// Keep original if rendering fails
+		} catch (error) {
+			console.debug('Failed to render math expression:', error);
 		}
 	}
 

@@ -310,7 +310,8 @@ export function getAnsweredQuestionIds(quizId: string): string[] {
 	try {
 		const stored = localStorage.getItem(`${ANSWERED_QUESTIONS_KEY}_${quizId}`);
 		return stored ? JSON.parse(stored) : [];
-	} catch {
+	} catch (error) {
+		console.debug('Failed to parse answered questions:', error);
 		return [];
 	}
 }
@@ -639,7 +640,8 @@ export async function getLastSyncTime(): Promise<Date | null> {
 		const db = await getDB();
 		const entry = await db.get('lastSyncTime', 'lastSync');
 		return entry ? new Date(entry.timestamp) : null;
-	} catch {
+	} catch (error) {
+		console.debug('Failed to get last sync time:', error);
 		return null;
 	}
 }

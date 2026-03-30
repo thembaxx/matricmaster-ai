@@ -35,12 +35,13 @@ function safeLocalStorageSet(key: string, value: string): boolean {
 
 				localStorage.setItem(key, value);
 				return true;
-			} catch {
+			} catch (cleanupError) {
+				console.debug('Failed to cleanup old quiz data:', cleanupError);
 				try {
 					sessionStorage.setItem(key, value);
 					return true;
-				} catch {
-					console.warn('Storage unavailable, quiz state not saved');
+				} catch (sessionError) {
+					console.warn('Storage unavailable, quiz state not saved:', sessionError);
 					return false;
 				}
 			}
@@ -56,7 +57,8 @@ function safeLocalStorageGet(key: string): string | null {
 		if (value) return value;
 
 		return sessionStorage.getItem(key);
-	} catch {
+	} catch (error) {
+		console.debug('Failed to get from storage:', error);
 		return null;
 	}
 }

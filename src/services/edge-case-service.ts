@@ -687,7 +687,8 @@ class EdgeCaseService {
 		try {
 			const stored = localStorage.getItem(SESSION_SAVE_KEY);
 			return stored ? JSON.parse(stored) : null;
-		} catch {
+		} catch (error) {
+			console.debug('Failed to parse saved session:', error);
 			return null;
 		}
 	}
@@ -740,7 +741,8 @@ class EdgeCaseService {
 		try {
 			const stored = localStorage.getItem('offline_data');
 			return stored ? JSON.parse(stored) : null;
-		} catch {
+		} catch (error) {
+			console.debug('Failed to parse offline data:', error);
 			return null;
 		}
 	}
@@ -751,7 +753,8 @@ class EdgeCaseService {
 				`${API_ENDPOINTS.userProgress}/${context.userId}`
 			);
 			return response;
-		} catch {
+		} catch (error) {
+			console.debug('Failed to fetch server data:', error);
 			return null;
 		}
 	}
@@ -777,7 +780,8 @@ class EdgeCaseService {
 		try {
 			const stored = localStorage.getItem('curriculum_check');
 			return stored ? Number.parseInt(stored, 10) : null;
-		} catch {
+		} catch (error) {
+			console.debug('Failed to get curriculum check date:', error);
 			return null;
 		}
 	}
@@ -804,8 +808,8 @@ class EdgeCaseService {
 				'lumni_challenge_mode',
 				JSON.stringify({ enabled: true, noHints: true, topic: context.metadata?.topic })
 			);
-		} catch {
-			// localStorage unavailable
+		} catch (error) {
+			console.debug('LocalStorage unavailable for challenge mode:', error);
 		}
 	}
 
@@ -840,16 +844,16 @@ class EdgeCaseService {
 	private resolveConflict(strategy: 'local' | 'server' | 'merge', _context: EdgeCaseContext): void {
 		try {
 			localStorage.setItem('lumni_sync_resolution', strategy);
-		} catch {
-			// localStorage unavailable
+		} catch (error) {
+			console.debug('LocalStorage unavailable for sync resolution:', error);
 		}
 	}
 
 	private enableWebLLMMode(): void {
 		try {
 			localStorage.setItem('lumni_webllm_mode', 'enabled');
-		} catch {
-			// localStorage unavailable
+		} catch (error) {
+			console.debug('LocalStorage unavailable for WebLLM mode:', error);
 		}
 	}
 
@@ -859,24 +863,24 @@ class EdgeCaseService {
 				'lumni_ai_queue',
 				JSON.stringify({ joined: true, timestamp: Date.now() })
 			);
-		} catch {
-			// localStorage unavailable
+		} catch (error) {
+			console.debug('LocalStorage unavailable for AI queue:', error);
 		}
 	}
 
 	private optOutLeaderboard(_context: EdgeCaseContext): void {
 		try {
 			localStorage.setItem('lumni_leaderboard_opt_out', 'true');
-		} catch {
-			// localStorage unavailable
+		} catch (error) {
+			console.debug('LocalStorage unavailable for leaderboard opt-out:', error);
 		}
 	}
 
 	private enableAnonymousMode(_context: EdgeCaseContext): void {
 		try {
 			localStorage.setItem('lumni_anonymous_mode', 'true');
-		} catch {
-			// localStorage unavailable
+		} catch (error) {
+			console.debug('LocalStorage unavailable for anonymous mode:', error);
 		}
 	}
 
@@ -887,24 +891,24 @@ class EdgeCaseService {
 	private hideLeaderboard(_context: EdgeCaseContext): void {
 		try {
 			localStorage.setItem('lumni_leaderboard_hidden', 'true');
-		} catch {
-			// localStorage unavailable
+		} catch (error) {
+			console.debug('LocalStorage unavailable for hiding leaderboard:', error);
 		}
 	}
 
 	private enableRelativeRanking(_context: EdgeCaseContext): void {
 		try {
 			localStorage.setItem('lumni_relative_ranking', 'true');
-		} catch {
-			// localStorage unavailable
+		} catch (error) {
+			console.debug('LocalStorage unavailable for relative ranking:', error);
 		}
 	}
 
 	private refreshCurriculum(_context: EdgeCaseContext): void {
 		try {
 			localStorage.setItem('curriculum_check', Date.now().toString());
-		} catch {
-			// localStorage unavailable
+		} catch (error) {
+			console.debug('LocalStorage unavailable for curriculum refresh:', error);
 		}
 		toast.success('curriculum content refreshed');
 	}
