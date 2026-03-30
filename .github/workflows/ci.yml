@@ -70,8 +70,11 @@ jobs:
       - name: Run linter
         run: bun run lint
 
-      - name: Run unit tests
-        run: bun run test:unit
+      - name: Run unit tests with coverage
+        run: bun run test:unit --coverage
+
+      - name: Run E2E tests
+        run: bun run test:e2e
 
       - name: Build project
         run: bun run build
