@@ -11,6 +11,12 @@ export interface StudyBlock {
 	isCompleted: boolean;
 	isAISuggested: boolean;
 	calendarEventId?: string;
+	optimalStartHour?: number;
+	optimalEndHour?: number;
+	energyScore?: number;
+	urgencyScore?: number;
+	urgencyPriority?: 'critical' | 'high' | 'medium' | 'low';
+	loadSheddingRisk?: boolean;
 }
 
 export interface ExamCountdown {
@@ -65,4 +71,7 @@ export interface SmartSchedulerState {
 	deleteBlock: (blockId: string) => Promise<void>;
 	importStudyPathBlocks: (pathBlocks: StudyBlock[]) => void;
 	saveImportedBlocks: (pathBlocks: StudyBlock[]) => Promise<void>;
+	rescheduleForEnergy: () => Promise<void>;
+	rescheduleForLoadShedding: () => Promise<void>;
+	applyBurnoutProtection: () => Promise<void>;
 }

@@ -22,11 +22,14 @@ interface LoadSheddingStore {
 	offlineContentReady: boolean;
 	downloadProgress: number;
 	recommendedOfflineTasks: string[];
+	autoFreezeStreak: boolean;
+	lastStreakFreeze: string | null;
 	userPreferences: {
 		autoReschedule: boolean;
 		notifyBefore: number;
 		offlineTasks: string[];
 		onlineTasks: string[];
+		autoFreezeStreak: boolean;
 	};
 	schedule: LoadSheddingSchedule[];
 	fetchSchedule: (areaId?: string) => Promise<void>;
@@ -40,6 +43,7 @@ interface LoadSheddingStore {
 	setPreferences: (prefs: Partial<LoadSheddingStore['userPreferences']>) => void;
 	prepareOfflineContent: () => Promise<void>;
 	getOfflineStudyRecommendations: () => Promise<{ activities: string[]; tips: string[] }>;
+	triggerAutoFreeze: () => Promise<void>;
 }
 
 const STAGE_IMPACT: Record<number, { online: string[]; offline: string[] }> = {
@@ -82,12 +86,15 @@ export const useLoadSheddingStore = create<LoadSheddingStore>()(
 			offlineContentReady: false,
 			downloadProgress: 0,
 			recommendedOfflineTasks: [],
+			autoFreezeStreak: true,
+			lastStreakFreeze: null,
 
 			userPreferences: {
 				autoReschedule: true,
 				notifyBefore: 30,
 				offlineTasks: ['flashcards', 'quizzes', 'past-papers', 'study-path', 'notes'],
 				onlineTasks: ['video-calls', 'ai-tutor', 'live-lessons', 'voice-tutor'],
+				autoFreezeStreak: true,
 			},
 
 			fetchSchedule: async (areaId?: string) => {
@@ -238,6 +245,33 @@ export const useLoadSheddingStore = create<LoadSheddingStore>()(
 					tips: ['Focus on offline activities'],
 				};
 			},
+
+			triggerAutoFreeze: async () => {
+				const { currentStage, autoFreezeStreak, lastStreakFreeze } = get();
+
+				if (!autoFreezeStreak) return;
+				if (currentStage < 4) return;
+
+				const today = new Date().toISOString().split('T')[0];
+				if (lastStreakFreeze === today) return;
+
+				try {
+					const response = await fetch('/api/gamification/streak/freeze', {
+						method: 'POST',
+						headers: { 'Content-Type': 'application/json' },
+						body: JSON.stringify({
+							reason: `Load Shedding Stage ${currentStage}`,
+							automatic: true,
+						}),
+					});
+
+					if (response.ok) {
+						set({ lastStreakFreeze: today });
+					}
+				} catch (error) {
+					console.debug('Failed to auto-freeze streak:', error);
+				}
+			},
 		}),
 		{
 			name: 'load-shedding-storage',
@@ -245,6 +279,8 @@ export const useLoadSheddingStore = create<LoadSheddingStore>()(
 				selectedArea: state.selectedArea,
 				userPreferences: state.userPreferences,
 				currentStage: state.currentStage,
+				autoFreezeStreak: state.autoFreezeStreak,
+				lastStreakFreeze: state.lastStreakFreeze,
 			}),
 		}
 	)
