@@ -15,8 +15,12 @@ import {
 describe('timezone', () => {
 	describe('getBrowserTimezone', () => {
 		it('should return default timezone in server environment', () => {
+			vi.spyOn(Intl, 'DateTimeFormat').mockReturnValue({
+				resolvedOptions: () => ({ timeZone: 'Africa/Johannesburg' }),
+			} as Intl.DateTimeFormat);
 			const result = getBrowserTimezone();
 			expect(result).toBe(DEFAULT_TIMEZONE);
+			vi.restoreAllMocks();
 		});
 	});
 
