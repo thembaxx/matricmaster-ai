@@ -1,4 +1,4 @@
-import { v4 as uuidv4 } from 'uuid';
+import { nanoid } from 'nanoid';
 
 export interface DeviceInfo {
 	deviceId: string;
@@ -27,7 +27,7 @@ export function getOrCreateDeviceId(): string {
 	if (typeof window === 'undefined') return '';
 	const existingId = localStorage.getItem(DEVICE_ID_KEY);
 	if (existingId) return existingId;
-	const newDeviceId = uuidv4();
+	const newDeviceId = nanoid();
 	localStorage.setItem(DEVICE_ID_KEY, newDeviceId);
 	return newDeviceId;
 }
@@ -72,7 +72,7 @@ export function addToSyncQueue(item: Omit<SyncQueueItem, 'id' | 'timestamp' | 'p
 	const queue = getSyncQueue();
 	const newItem: SyncQueueItem = {
 		...item,
-		id: uuidv4(),
+		id: nanoid(),
 		timestamp: new Date(),
 		processed: false,
 	};
