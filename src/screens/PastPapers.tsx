@@ -13,6 +13,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { usePastPapers } from '@/hooks/usePastPapers';
+import { useQuizPastPaperIntegration } from '@/hooks/useQuizPastPaperIntegration';
 import { STAGGER_CONTAINER, STAGGER_ITEM } from '@/lib/animation-presets';
 import { cn } from '@/lib/utils';
 
@@ -32,6 +33,20 @@ export default function PastPapers() {
 		isLoading,
 	} = usePastPapers();
 
+	const {
+		recommendations,
+		showOnlyRecommended,
+		toggleShowOnlyRecommended,
+		isRecommended,
+		getRecommendationsForPaper,
+	} = useQuizPastPaperIntegration(filteredPapers);
+
+	const recommendedPapers = showOnlyRecommended
+		? filteredPapers.filter((paper) => isRecommended(paper.id))
+		: filteredPapers;
+
+	const hasRecommendations = recommendations.length > 0;
+
 	return (
 		<div className="flex flex-col h-full min-w-0 bg-background relative overflow-x-hidden lg:px-8">
 			<BackgroundMesh variant="subtle" />
@@ -48,6 +63,22 @@ export default function PastPapers() {
 							</p>
 						</div>
 						<div className="flex items-center gap-2">
+							{hasRecommendations && (
+								<Button
+									variant={showOnlyRecommended ? 'default' : 'outline'}
+									onClick={toggleShowOnlyRecommended}
+									aria-label="toggle recommended papers"
+									className={cn(
+										'rounded-2xl border-2 font-black text-[10px] tracking-widest px-4 sm:px-6 h-10 sm:h-12 ios-active-scale',
+										showOnlyRecommended
+											? 'bg-accent-lime border-accent-lime text-accent-lime-foreground'
+											: 'border-border'
+									)}
+								>
+									<Icon icon="fluent:sparkle-24-filled" className="w-4 h-4 mr-2" />
+									<span className="hidden sm:inline">recommended</span>
+								</Button>
+							)}
 							{activeFilterCount > 0 && (
 								<Button
 									variant="ghost"
@@ -133,25 +164,61 @@ export default function PastPapers() {
 
 			<ScrollArea className="flex-1 no-scrollbar">
 				<main className="px-4 sm:px-6 py-6 sm:py-8 max-w-7xl mx-auto w-full space-y-8 sm:space-y-12 pb-32 lg:px-0">
-					<div className="flex items-center justify-between border-b border-border pb-4">
-						<h2 className="text-[10px] font-black text-label-tertiary tracking-[0.4em]">
-							archive results ({filteredPapers.length})
-						</h2>
-					</div>
-
-					<AnimatePresence mode="popLayout">
-						{isLoading ? (
-							<PastPapersSkeleton />
-						) : filteredPapers.length > 0 ? (
+					{hasRecommendations && (
+						<m.section
+							initial={{ opacity: 0, y: 20 }}
+							animate={{ opacity: 1, y: 0 }}
+							className="space-y-4"
+						>
+							<div className="flex items-center justify-between border-b border-border pb-4">
+								<h2 className="text-[10px] font-black text-accent-lime tracking-[0.4em] flex items-center gap-2">
+									<Icon icon="fluent:sparkle-24-filled" className="w-4 h-4" />
+									recommended for you ({recommendations.length})
+								</h2>
+							</div>
 							<m.div
 								variants={STAGGER_CONTAINER}
 								initial="hidden"
 								animate="visible"
 								className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8"
 							>
-								{filteredPapers.map((paper) => (
+								{recommendations.slice(0, 3).map((rec) => {
+									const paper = filteredPapers.find((p) => p.id === rec.paperId);
+									if (!paper) return null;
+									return (
+										<m.div key={rec.paperId} variants={STAGGER_ITEM} layout whileHover={{ y: -8 }}>
+											<PastPaperCard paper={paper} recommendation={rec} />
+										</m.div>
+									);
+								})}
+							</m.div>
+						</m.section>
+					)}
+
+					<div className="flex items-center justify-between border-b border-border pb-4">
+						<h2 className="text-[10px] font-black text-label-tertiary tracking-[0.4em]">
+							archive results ({recommendedPapers.length})
+						</h2>
+					</div>
+
+					<AnimatePresence mode="popLayout">
+						{isLoading ? (
+							<PastPapersSkeleton />
+						) : recommendedPapers.length > 0 ? (
+							<m.div
+								variants={STAGGER_CONTAINER}
+								initial="hidden"
+								animate="visible"
+								className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8"
+							>
+								{recommendedPapers.map((paper) => (
 									<m.div key={paper.id} variants={STAGGER_ITEM} layout whileHover={{ y: -8 }}>
-										<PastPaperCard paper={paper} />
+										<PastPaperCard
+											paper={paper}
+											recommendation={
+												isRecommended(paper.id) ? getRecommendationsForPaper(paper.id) : undefined
+											}
+										/>
 									</m.div>
 								))}
 							</m.div>

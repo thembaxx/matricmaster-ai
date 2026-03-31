@@ -9,8 +9,14 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { STAGGER_CONTAINER, STAGGER_ITEM } from '@/lib/animation-presets';
 import type { PastPaper } from '@/lib/db/schema';
+import type { PastPaperRecommendation } from '@/stores/usePastPaperRecommendations';
 
-export function PastPaperCard({ paper }: { paper: PastPaper }) {
+interface PastPaperCardProps {
+	paper: PastPaper;
+	recommendation?: PastPaperRecommendation;
+}
+
+export function PastPaperCard({ paper, recommendation }: PastPaperCardProps) {
 	const router = useRouter();
 
 	return (
@@ -50,6 +56,29 @@ export function PastPaperCard({ paper }: { paper: PastPaper }) {
 							NSC Grade 12
 						</Badge>
 					</div>
+					{recommendation && (
+						<AnimatePresence>
+							<m.div
+								initial={{ opacity: 0, height: 0 }}
+								animate={{ opacity: 1, height: 'auto' }}
+								exit={{ opacity: 0, height: 0 }}
+								className="flex flex-wrap gap-2 pt-2"
+							>
+								<Badge
+									variant="default"
+									className="rounded-lg font-black text-[9px] tracking-widest bg-accent-lime text-accent-lime-foreground"
+								>
+									Recommended
+								</Badge>
+								<Badge
+									variant="outline"
+									className="rounded-lg font-black text-[9px] tracking-widest border border-accent-lime/50 bg-accent-lime/10 text-accent-lime"
+								>
+									{recommendation.reason}
+								</Badge>
+							</m.div>
+						</AnimatePresence>
+					)}
 				</div>
 
 				<div className="grid grid-cols-2 gap-3 pt-4">

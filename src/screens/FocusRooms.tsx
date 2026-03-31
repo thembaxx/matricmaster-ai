@@ -1,19 +1,22 @@
 'use client';
 
-import { ArrowLeft01Icon, UserGroupIcon } from '@hugeicons/core-free-icons';
+import { AddIcon, ArrowLeft01Icon, UserGroupIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { usePresence, usePresenceListener } from 'ably/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { BuddyFocusStatus } from '@/components/FocusRooms/BuddyFocusStatus';
 import { type FocusSession, MOCK_LEADERBOARD } from '@/components/FocusRooms/constants';
 import { FocusLeaderboard } from '@/components/FocusRooms/FocusLeaderboard';
 import { FocusMembersGrid } from '@/components/FocusRooms/FocusMembersGrid';
 import { FocusTimerCard } from '@/components/FocusRooms/FocusTimerCard';
+import { InviteBuddyModal } from '@/components/FocusRooms/InviteBuddyModal';
 import { StudyChat } from '@/components/FocusRooms/StudyChat';
 import { FeatureGate } from '@/components/Subscription/FeatureGate';
 import { Button } from '@/components/ui/button';
 import { useSession } from '@/lib/auth-client';
 import { cn } from '@/lib/utils';
+import { useCollaborativeFocusStore } from '@/stores/useCollaborativeFocusStore';
 import { useFocusRoomStore } from '@/stores/useFocusRoomStore';
 
 function FocusRoomsWrapper() {
@@ -45,7 +48,9 @@ function FocusRoomsContent() {
 		setFocusMinutes,
 		tick,
 	} = useFocusRoomStore();
+	const { setActiveSession, activeSession, addParticipant } = useCollaborativeFocusStore();
 	const [leaderboard] = useState(MOCK_LEADERBOARD);
+	const [showInviteModal, setShowInviteModal] = useState(false);
 
 	const { updateStatus } = usePresence<{ user: string; status: string; focusMinutes: number }>(
 		'focus-room',
@@ -108,6 +113,27 @@ function FocusRoomsContent() {
 		? presenceData.filter((m: FocusSession) => m.data?.status === 'Studying')
 		: [];
 
+	const handleInviteBuddy = (buddyId: string, _buddyName: string) => {
+		if (!activeSession) {
+			setActiveSession({
+				id: `session-${Date.now()}`,
+				hostId: session?.user?.id || '',
+				participantIds: [buddyId],
+				startTime: Date.now(),
+				focusMinutes: 0,
+				isActive: false,
+			});
+		} else {
+			addParticipant(buddyId);
+		}
+		setIsGroupMode(true);
+	};
+
+	const handleJoinBuddySession = (_buddyId: string) => {
+		setIsGroupMode(true);
+		setIsActive(true);
+	};
+
 	return (
 		<div className="min-h-screen bg-background p-4 sm:p-8 pb-32">
 			<div className="max-w-6xl mx-auto space-y-8">
@@ -135,6 +161,15 @@ function FocusRoomsContent() {
 						>
 							<HugeiconsIcon icon={UserGroupIcon} className="w-4 h-4 mr-2" />
 							Group Sprint
+						</Button>
+						<Button
+							variant="outline"
+							size="sm"
+							onClick={() => setShowInviteModal(true)}
+							className="rounded-full"
+						>
+							<HugeiconsIcon icon={AddIcon} className="w-4 h-4 mr-2" />
+							Invite Buddy
 						</Button>
 						<Button
 							variant="outline"
@@ -180,9 +215,17 @@ function FocusRoomsContent() {
 					<div className="space-y-6">
 						{isGroupMode && <FocusLeaderboard leaderboard={leaderboard} />}
 
+						<BuddyFocusStatus onJoinSession={handleJoinBuddySession} />
+
 						<StudyChat isGroupMode={isGroupMode} />
 					</div>
 				</div>
+
+				<InviteBuddyModal
+					open={showInviteModal}
+					onOpenChange={setShowInviteModal}
+					onInvite={handleInviteBuddy}
+				/>
 			</div>
 		</div>
 	);

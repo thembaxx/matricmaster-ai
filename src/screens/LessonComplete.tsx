@@ -7,6 +7,7 @@ import { AchievementUnlocked } from '@/components/LessonComplete/AchievementUnlo
 import { ActionButtons } from '@/components/LessonComplete/ActionButtons';
 import { ConfettiEffect } from '@/components/LessonComplete/ConfettiEffect';
 import { FlashcardGenerator } from '@/components/LessonComplete/FlashcardGenerator';
+import { PastPaperSuggestions } from '@/components/LessonComplete/PastPaperSuggestions';
 import { StatsGrid } from '@/components/LessonComplete/StatsGrid';
 import { SuccessHeader } from '@/components/LessonComplete/SuccessHeader';
 import { TrophySection } from '@/components/LessonComplete/TrophySection';
@@ -202,6 +203,8 @@ export default function LessonComplete() {
 							<FlashcardGenerator mistakeCount={state.mistakeCount} />
 						</m.div>
 					)}
+
+					<PastPaperSuggestions mistakeCount={state.mistakeCount} />
 
 					{state.result.accuracy === 100 && state.mistakeCount === 0 && (
 						<m.div
