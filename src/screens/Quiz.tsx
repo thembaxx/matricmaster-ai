@@ -1,7 +1,7 @@
 'use client';
 
 import { useSearchParams } from 'next/navigation';
-import { Suspense } from 'react';
+import { Suspense, useCallback, useEffect, useRef } from 'react';
 import { ContextualAIBubble } from '@/components/AI/ContextualAIBubble';
 import { EdgeCaseHandler } from '@/components/EdgeCase/EdgeCaseHandler';
 import { FocusContent } from '@/components/Layout/FocusContent';
@@ -9,6 +9,13 @@ import { TimelineSidebar } from '@/components/Layout/TimelineSidebar';
 import { QuizContent } from '@/components/Quiz/QuizContent';
 import { useQuizState } from '@/components/Quiz/useQuizState';
 import { WeakTopicAlert } from '@/components/Quiz/WeakTopicAlert';
+import { QuizRecoveryDialog } from '@/components/ui/QuizRecoveryDialog';
+import {
+	registerOnlineListener,
+	saveQuizAnswer,
+	syncAllPendingData,
+} from '@/services/offlineQuizSync';
+import { useQuizAutoSave } from '@/stores/useQuizAutoSaveStore';
 
 interface QuizInnerProps {
 	quizId?: string;
@@ -35,6 +42,140 @@ function QuizInner({ quizId: initialQuizId }: QuizInnerProps) {
 		handleCheck,
 	} = useQuizState({ quizId });
 
+	const autoSaveIntervalRef = useRef<NodeJS.Timeout | null>(null);
+	const {
+		savedQuizState,
+		showRecoveryDialog,
+		checkForRecovery,
+		dismissRecovery,
+		confirmRecovery,
+		saveQuizState: storeSaveQuiz,
+		clearSavedQuiz,
+	} = useQuizAutoSave();
+
+	const getQuizStateForSave = useCallback(
+		() => ({
+			quizId,
+			currentQuestionIndex: state.currentQuestionIndex,
+			selectedOption: state.selectedOption,
+			answerText: state.answerText,
+			isChecked: state.isChecked,
+			elapsedSeconds: state.elapsedSeconds,
+			mode: state.mode,
+			currentSubject: state.currentSubject,
+			score: state.score,
+			correctCount: state.correctCount,
+			incorrectCount: state.incorrectCount,
+			topicStats: Array.from(state.topicStats.entries()).map(([topic, stats]) => ({
+				topic,
+				correct: stats.correct,
+				total: stats.total,
+			})),
+			questionCount: quiz.questions.length,
+		}),
+		[quizId, state, quiz.questions.length]
+	);
+
+	useEffect(() => {
+		checkForRecovery();
+	}, [checkForRecovery]);
+
+	useEffect(() => {
+		if (autoSaveIntervalRef.current) {
+			clearInterval(autoSaveIntervalRef.current);
+		}
+
+		autoSaveIntervalRef.current = setInterval(() => {
+			storeSaveQuiz(getQuizStateForSave());
+		}, 10000);
+
+		return () => {
+			if (autoSaveIntervalRef.current) {
+				clearInterval(autoSaveIntervalRef.current);
+			}
+		};
+	}, [getQuizStateForSave, storeSaveQuiz]);
+
+	// Sync pending offline data when back online
+	const syncPendingDataRef = useRef<() => void>(() => {});
+	useEffect(() => {
+		const cleanup = registerOnlineListener(async (online) => {
+			if (online) {
+				await syncAllPendingData();
+			}
+		});
+		syncPendingDataRef.current = cleanup;
+		return cleanup;
+	}, []);
+
+	const handleSelectOption = useCallback(
+		(opt: string | null) => {
+			dispatch({ type: 'SET_OPTION', payload: opt });
+			storeSaveQuiz(getQuizStateForSave());
+
+			// Immediately save answer to IndexedDB for offline sync
+			const currentQuestion = quiz.questions[state.currentQuestionIndex];
+			if (currentQuestion && opt) {
+				// Check if question has correctAnswer (not all question types do, e.g., matching)
+				const hasCorrectAnswer = 'correctAnswer' in currentQuestion;
+				const isCorrect = hasCorrectAnswer ? opt === currentQuestion.correctAnswer : true;
+
+				saveQuizAnswer(`${quizId}-${Date.now()}`, quizId, quiz.subject, {
+					questionId: currentQuestion.id,
+					selectedOption: opt,
+					isCorrect,
+					timeSpentMs: 0,
+					answeredAt: new Date().toISOString(),
+				}).catch((err) => console.debug('Failed to save answer to IndexedDB:', err));
+			}
+		},
+		[dispatch, storeSaveQuiz, getQuizStateForSave, quiz, state.currentQuestionIndex, quizId]
+	);
+
+	const handleAnswerTextChange = useCallback(
+		(text: string) => {
+			dispatch({ type: 'SET_ANSWER_TEXT', payload: text });
+			storeSaveQuiz(getQuizStateForSave());
+		},
+		[dispatch, storeSaveQuiz, getQuizStateForSave]
+	);
+
+	const handleNavigateToQuestion = useCallback(
+		(index: number) => {
+			dispatch({ type: 'SET_QUESTION_INDEX', payload: index });
+			storeSaveQuiz(getQuizStateForSave());
+		},
+		[dispatch, storeSaveQuiz, getQuizStateForSave]
+	);
+
+	const handleRecoveryConfirm = useCallback(() => {
+		if (savedQuizState) {
+			dispatch({ type: 'SET_QUESTION_INDEX', payload: savedQuizState.currentQuestionIndex });
+			dispatch({ type: 'SET_OPTION', payload: savedQuizState.selectedOption });
+			dispatch({ type: 'SET_ANSWER_TEXT', payload: savedQuizState.answerText });
+			dispatch({ type: 'SET_ELAPSED', payload: savedQuizState.elapsedSeconds });
+			dispatch({ type: 'SET_MODE', payload: savedQuizState.mode });
+			dispatch({ type: 'SET_SUBJECT', payload: savedQuizState.currentSubject });
+			dispatch({ type: 'UPDATE_CORRECT_COUNT', payload: savedQuizState.correctCount });
+			dispatch({ type: 'UPDATE_INCORRECT_COUNT', payload: savedQuizState.incorrectCount });
+			if (savedQuizState.topicStats.length > 0) {
+				const topicStatsMap = new Map(
+					savedQuizState.topicStats.map((s) => [
+						s.topic,
+						{ topic: s.topic, correct: s.correct, total: s.total },
+					])
+				);
+				dispatch({ type: 'LOAD_TOPIC_STATS', payload: topicStatsMap });
+			}
+		}
+		confirmRecovery();
+	}, [savedQuizState, dispatch, confirmRecovery]);
+
+	const handleRecoveryDismiss = useCallback(() => {
+		clearSavedQuiz();
+		dismissRecovery();
+	}, [clearSavedQuiz, dismissRecovery]);
+
 	return (
 		<div className="min-h-screen bg-background flex">
 			<TimelineSidebar />
@@ -51,6 +192,7 @@ function QuizInner({ quizId: initialQuizId }: QuizInnerProps) {
 						</div>
 					)}
 					<QuizContent
+						quizId={quizId}
 						quiz={quiz}
 						currentQuestionIndex={state.currentQuestionIndex}
 						selectedOption={state.selectedOption}
@@ -72,8 +214,8 @@ function QuizInner({ quizId: initialQuizId }: QuizInnerProps) {
 						isCompleting={isCompleting}
 						isGrading={state.isGrading}
 						shortAnswerFeedback={state.shortAnswerFeedback}
-						onSelectOption={(opt) => dispatch({ type: 'SET_OPTION', payload: opt })}
-						onAnswerTextChange={(text) => dispatch({ type: 'SET_ANSWER_TEXT', payload: text })}
+						onSelectOption={handleSelectOption}
+						onAnswerTextChange={handleAnswerTextChange}
 						onToggleHint={handleToggleHint}
 						onCheck={handleCheck}
 						onModeChange={(m) => dispatch({ type: 'SET_MODE', payload: m })}
@@ -88,6 +230,7 @@ function QuizInner({ quizId: initialQuizId }: QuizInnerProps) {
 							dispatch({ type: 'SET_STRUGGLE_ALERT', payload: { show: false, count: 0 } })
 						}
 						onExit={() => window.history.back()}
+						onNavigateToQuestion={handleNavigateToQuestion}
 					/>
 				</div>
 			</FocusContent>
@@ -98,6 +241,12 @@ function QuizInner({ quizId: initialQuizId }: QuizInnerProps) {
 				edgeCaseType={currentEdgeCaseType || 'COMPLETE_FAILURE'}
 				onClose={closeModal}
 				onAction={handleAction}
+			/>
+			<QuizRecoveryDialog
+				isOpen={showRecoveryDialog}
+				savedState={savedQuizState}
+				onConfirm={handleRecoveryConfirm}
+				onDismiss={handleRecoveryDismiss}
 			/>
 		</div>
 	);

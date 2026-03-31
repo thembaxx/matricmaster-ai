@@ -13,7 +13,7 @@ import {
 	usePeriodicTable,
 } from '@/components/PeriodicTable';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { ELEMENTS } from '@/data/elements';
+import { ELEMENTS } from '@/content/elements';
 
 export default function PeriodicTable() {
 	const {

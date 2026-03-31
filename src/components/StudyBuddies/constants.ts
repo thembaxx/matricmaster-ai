@@ -1,4 +1,4 @@
-import { SUBJECT_NAMES } from '@/constants/subjects';
+import { SUBJECT_NAMES } from '@/content';
 
 export const SUBJECTS = SUBJECT_NAMES;
 

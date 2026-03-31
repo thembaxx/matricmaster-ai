@@ -4,6 +4,7 @@ import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { Suspense, useRef } from 'react';
+import { AIErrorBoundary } from '@/components/AI/AIErrorBoundary';
 import { AIPrompt } from '@/components/AI/AIPrompt';
 import { ConversationSidebar } from '@/components/AI/ConversationSidebar';
 import { QuickPrompts } from '@/components/AI/QuickPrompts';
@@ -107,14 +108,16 @@ function AITutorPageContent() {
 					setSelectedSubject={setSelectedSubject}
 				/>
 
-				<AiTutorChat
-					messages={messages}
-					isLoading={isLoading}
-					selectedSubject={selectedSubject}
-					showSources={showSources}
-					handleSend={handleSend}
-					messagesEndRef={messagesEndRef}
-				/>
+				<AIErrorBoundary componentName="AI Tutor Chat">
+					<AiTutorChat
+						messages={messages}
+						isLoading={isLoading}
+						selectedSubject={selectedSubject}
+						showSources={showSources}
+						handleSend={handleSend}
+						messagesEndRef={messagesEndRef}
+					/>
+				</AIErrorBoundary>
 
 				<div className="border-t bg-surface-base/80 backdrop-blur-xl p-3 md:p-6">
 					<div className="max-w-4xl mx-auto space-y-3 md:space-y-4">

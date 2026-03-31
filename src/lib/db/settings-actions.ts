@@ -108,7 +108,7 @@ export async function deleteAccountAction(userId: string, password: string) {
 		const db = await getDb();
 		const [user] = await db.select().from(users).where(eq(users.id, userId)).limit(1);
 
-		if (!user || !user.email) {
+		if (!user?.email) {
 			return { success: false, error: 'User not found' };
 		}
 

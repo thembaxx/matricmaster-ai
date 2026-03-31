@@ -1,4 +1,4 @@
-import { CURRICULUM_DATA } from '@/data/curriculum';
+import { CURRICULUM_DATA } from '@/content/curriculum';
 
 export type SourceType = 'textbook' | 'past-paper' | 'curriculum' | 'ai-generated';
 
@@ -267,7 +267,7 @@ export function parseInlineCitations(text: string): {
 	let cleanText = text;
 
 	for (const match of text.matchAll(citationPattern)) {
-		if (!match || !match[1]) continue;
+		if (!match?.[1]) continue;
 		const citationData = match[1];
 		try {
 			const data: {

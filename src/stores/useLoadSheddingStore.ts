@@ -19,11 +19,17 @@ interface LoadSheddingStore {
 	isAvailable: boolean;
 	lastUpdated: number | null;
 	selectedArea: string | null;
+	offlineContentReady: boolean;
+	downloadProgress: number;
+	recommendedOfflineTasks: string[];
+	autoFreezeStreak: boolean;
+	lastStreakFreeze: string | null;
 	userPreferences: {
 		autoReschedule: boolean;
 		notifyBefore: number;
 		offlineTasks: string[];
 		onlineTasks: string[];
+		autoFreezeStreak: boolean;
 	};
 	schedule: LoadSheddingSchedule[];
 	fetchSchedule: (areaId?: string) => Promise<void>;
@@ -35,6 +41,9 @@ interface LoadSheddingStore {
 	) => { id: string; newDate: string; newStartTime: string; reason: string }[];
 	setSelectedArea: (area: string) => void;
 	setPreferences: (prefs: Partial<LoadSheddingStore['userPreferences']>) => void;
+	prepareOfflineContent: () => Promise<void>;
+	getOfflineStudyRecommendations: () => Promise<{ activities: string[]; tips: string[] }>;
+	triggerAutoFreeze: () => Promise<void>;
 }
 
 const STAGE_IMPACT: Record<number, { online: string[]; offline: string[] }> = {
@@ -74,12 +83,18 @@ export const useLoadSheddingStore = create<LoadSheddingStore>()(
 			lastUpdated: null,
 			selectedArea: null,
 			schedule: [],
+			offlineContentReady: false,
+			downloadProgress: 0,
+			recommendedOfflineTasks: [],
+			autoFreezeStreak: true,
+			lastStreakFreeze: null,
 
 			userPreferences: {
 				autoReschedule: true,
 				notifyBefore: 30,
 				offlineTasks: ['flashcards', 'quizzes', 'past-papers', 'study-path', 'notes'],
 				onlineTasks: ['video-calls', 'ai-tutor', 'live-lessons', 'voice-tutor'],
+				autoFreezeStreak: true,
 			},
 
 			fetchSchedule: async (areaId?: string) => {
@@ -171,6 +186,92 @@ export const useLoadSheddingStore = create<LoadSheddingStore>()(
 					userPreferences: { ...state.userPreferences, ...prefs },
 				}));
 			},
+
+			prepareOfflineContent: async () => {
+				const { currentStage, schedule } = get();
+				if (currentStage < 3) return;
+
+				set({ downloadProgress: 10 });
+
+				try {
+					// Get upcoming load shedding blocks
+					const affectedBlocks = schedule.flatMap((s) =>
+						s.stages.map((stage) => ({
+							date: s.date,
+							startTime: stage.start,
+							endTime: stage.end,
+						}))
+					);
+
+					set({ downloadProgress: 30 });
+
+					// Call server action to prepare content
+					const response = await fetch('/api/load-shedding/prepare-offline', {
+						method: 'POST',
+						headers: { 'Content-Type': 'application/json' },
+						body: JSON.stringify({ affectedBlocks }),
+					});
+
+					if (response.ok) {
+						const data = await response.json();
+						set({
+							offlineContentReady: true,
+							recommendedOfflineTasks: data.recommendedTasks || [],
+							downloadProgress: 100,
+						});
+					}
+				} catch (error) {
+					console.error('Failed to prepare offline content:', error);
+				} finally {
+					set({ downloadProgress: 0 });
+				}
+			},
+
+			getOfflineStudyRecommendations: async () => {
+				const { currentStage } = get();
+
+				try {
+					const response = await fetch(`/api/load-shedding/recommendations?stage=${currentStage}`);
+					if (response.ok) {
+						const data = await response.json();
+						return { activities: data.activities, tips: data.tips };
+					}
+				} catch (error) {
+					console.error('Failed to get recommendations:', error);
+				}
+
+				return {
+					activities: ['Flashcard Review', 'Past Paper Practice'],
+					tips: ['Focus on offline activities'],
+				};
+			},
+
+			triggerAutoFreeze: async () => {
+				const { currentStage, autoFreezeStreak, lastStreakFreeze } = get();
+
+				if (!autoFreezeStreak) return;
+				if (currentStage < 4) return;
+
+				const today = new Date().toISOString().split('T')[0];
+				if (lastStreakFreeze === today) return;
+
+				try {
+					const response = await fetch('/api/gamification/streak/freeze', {
+						method: 'POST',
+						headers: { 'Content-Type': 'application/json' },
+						body: JSON.stringify({
+							reason: `Load Shedding Stage ${currentStage}`,
+							automatic: true,
+						}),
+					});
+
+					if (response.ok) {
+						set({ lastStreakFreeze: today });
+					}
+				} catch (error) {
+					console.debug('Failed to auto-freeze streak:', error);
+				}
+			},
 		}),
 		{
 			name: 'load-shedding-storage',
@@ -178,6 +279,8 @@ export const useLoadSheddingStore = create<LoadSheddingStore>()(
 				selectedArea: state.selectedArea,
 				userPreferences: state.userPreferences,
 				currentStage: state.currentStage,
+				autoFreezeStreak: state.autoFreezeStreak,
+				lastStreakFreeze: state.lastStreakFreeze,
 			}),
 		}
 	)

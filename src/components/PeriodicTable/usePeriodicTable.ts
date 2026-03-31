@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo } from 'react';
 import type { ElementType } from '@/constants/periodic-table';
-import { ELEMENT_DETAILS, ELEMENTS } from '@/data/elements';
+import { ELEMENT_DETAILS, ELEMENTS } from '@/content/elements';
 import { useElementDetailState, useQuizState, useViewState } from '@/hooks/usePeriodicTableState';
 import { generateQuizQuestions } from '@/utils/periodic-table';
 

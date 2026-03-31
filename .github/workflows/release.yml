@@ -13,6 +13,10 @@ jobs:
   release:
     name: Release
     runs-on: ubuntu-latest
+    env:
+      NODE_OPTIONS: --max-old-space-size=4096
+      GEMINI_API_KEY: placeholder-for-build
+      NEXT_PUBLIC_APP_URL: http://localhost:3000
     steps:
       - name: Checkout
         uses: actions/checkout@v4

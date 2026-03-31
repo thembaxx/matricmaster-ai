@@ -11,11 +11,13 @@ import {
 	pastPapers,
 	quizResults,
 	type StudySession,
+	studyPlans,
 	studySessions,
 	subjects,
 	topicMastery,
 	userProgress,
 } from '@/lib/db/schema';
+import { calculateNextReview } from '@/lib/spaced-repetition';
 
 async function getDb(): Promise<DbType> {
 	const connected = await dbManager.waitForConnection(3, 2000);
@@ -254,19 +256,20 @@ export async function trackFlashcardReview(
 		const intervalBefore = flashcard.intervalDays;
 		const easeFactorBefore = Number.parseFloat(flashcard.easeFactor as string);
 
-		const { intervalDays, easeFactor } = calculateSm2Score(
-			rating,
+		const result = calculateNextReview(
 			intervalBefore,
-			easeFactorBefore
+			flashcard.repetitions,
+			easeFactorBefore,
+			rating as 1 | 2 | 3 | 4 | 5
 		);
 
 		await db
 			.update(flashcards)
 			.set({
-				repetitions: flashcard.repetitions + 1,
-				easeFactor: easeFactor.toFixed(2) as unknown as typeof flashcards.easeFactor,
-				intervalDays,
-				nextReview: new Date(Date.now() + intervalDays * 24 * 60 * 60 * 1000),
+				repetitions: result.repetitions,
+				easeFactor: result.easeFactor.toFixed(2) as unknown as typeof flashcards.easeFactor,
+				intervalDays: result.interval,
+				nextReview: result.nextReview,
 				lastReview: new Date(),
 				timesReviewed: flashcard.timesReviewed + 1,
 				timesCorrect: rating >= 3 ? flashcard.timesCorrect + 1 : flashcard.timesCorrect,
@@ -278,9 +281,9 @@ export async function trackFlashcardReview(
 			flashcardId,
 			rating,
 			intervalBefore,
-			intervalAfter: intervalDays,
+			intervalAfter: result.interval,
 			easeFactorBefore: easeFactorBefore.toFixed(2) as unknown as string,
-			easeFactorAfter: easeFactor.toFixed(2) as unknown as string,
+			easeFactorAfter: result.easeFactor.toFixed(2) as unknown as string,
 			reviewedAt: new Date(),
 		});
 
@@ -289,41 +292,13 @@ export async function trackFlashcardReview(
 
 		return {
 			success: true,
-			nextReviewDays: intervalDays,
-			newEaseFactor: easeFactor,
+			nextReviewDays: result.interval,
+			newEaseFactor: result.easeFactor,
 		};
 	} catch (error) {
 		console.error('Error tracking flashcard review:', error);
 		return { success: false };
 	}
-}
-
-function calculateSm2Score(
-	rating: number,
-	currentInterval: number,
-	currentEaseFactor: number
-): { intervalDays: number; easeFactor: number } {
-	let interval: number;
-	let easeFactor: number;
-
-	if (rating < 3) {
-		interval = 1;
-		easeFactor = Math.max(1.3, currentEaseFactor - 0.2);
-	} else {
-		easeFactor = currentEaseFactor + (0.1 - (5 - rating) * (0.08 + (5 - rating) * 0.02));
-		easeFactor = Math.max(1.3, easeFactor);
-
-		if (currentInterval === 0 || currentInterval === 1) {
-			interval = 1;
-		} else if (currentInterval === 2) {
-			interval = 6;
-		} else {
-			interval = Math.round(currentInterval * easeFactor);
-		}
-		interval = Math.min(interval, 30);
-	}
-
-	return { intervalDays: interval, easeFactor };
 }
 
 async function updateTopicMastery(
@@ -731,5 +706,122 @@ export async function getStudyStats(userId?: string): Promise<StudyStats | null>
 	} catch (error) {
 		console.error('Error getting study stats:', error);
 		return null;
+	}
+}
+
+export interface QuizResultSummary {
+	quizId: string;
+	subjectId: number | undefined;
+	topic: string;
+	score: number;
+	totalQuestions: number;
+	correctCount: number;
+	incorrectCount: number;
+	weakTopics: string[];
+	completedAt: Date;
+}
+
+export interface PlanAdaptation {
+	planId: string;
+	topic: string;
+	subject: string;
+	oldPriority: number;
+	newPriority: number;
+	reason: string;
+	adaptedAt: Date;
+}
+
+export async function adjustStudyPlanBasedOnResults(
+	planId: string,
+	results: QuizResultSummary
+): Promise<{ success: boolean; adaptations?: PlanAdaptation[]; error?: string }> {
+	try {
+		const userId = await getUserId();
+		const db = await getDb();
+
+		const plan = await db.query.studyPlans.findFirst({
+			where: eq(studyPlans.id, planId),
+		});
+
+		if (!plan) {
+			return { success: false, error: 'Study plan not found' };
+		}
+
+		const adaptations: PlanAdaptation[] = [];
+		const weakTopics = results.weakTopics;
+
+		for (const topic of weakTopics) {
+			const topicMasteryRecord = await db.query.topicMastery.findFirst({
+				where: and(eq(topicMastery.userId, userId), eq(topicMastery.topic, topic)),
+			});
+
+			const currentPriority = topicMasteryRecord
+				? Math.max(1, 10 - Math.floor(Number(topicMasteryRecord.masteryLevel) / 10))
+				: 8;
+			const newPriority = Math.max(1, currentPriority - 2);
+
+			adaptations.push({
+				planId,
+				topic,
+				subject: '',
+				oldPriority: currentPriority,
+				newPriority,
+				reason: `Weak performance in quiz (${results.correctCount}/${results.totalQuestions} correct)`,
+				adaptedAt: new Date(),
+			});
+		}
+
+		const existingFocusAreas = plan.focusAreas ? JSON.parse(plan.focusAreas) : [];
+		const updatedFocusAreas = [
+			...existingFocusAreas,
+			...weakTopics.map((topic) => ({
+				topic,
+				priority: 'high',
+				addedAt: new Date().toISOString(),
+			})),
+		];
+
+		await db
+			.update(studyPlans)
+			.set({
+				focusAreas: JSON.stringify(updatedFocusAreas),
+				updatedAt: new Date(),
+			})
+			.where(eq(studyPlans.id, planId));
+
+		return { success: true, adaptations };
+	} catch (error) {
+		console.error('Error adjusting study plan:', error);
+		return { success: false, error: 'Failed to adjust study plan' };
+	}
+}
+
+export async function getAdaptationHistory(planId: string): Promise<PlanAdaptation[]> {
+	try {
+		const db = await getDb();
+
+		const plan = await db.query.studyPlans.findFirst({
+			where: eq(studyPlans.id, planId),
+		});
+
+		if (!plan) {
+			return [];
+		}
+
+		const focusAreas = plan.focusAreas ? JSON.parse(plan.focusAreas) : [];
+		return focusAreas
+			.filter((fa: { addedAt?: string }) => fa.addedAt)
+			.map((fa: { topic: string; priority: string; addedAt?: string }) => ({
+				planId,
+				topic: fa.topic,
+				subject: '',
+				oldPriority: 5,
+				newPriority: fa.priority === 'high' ? 8 : 5,
+				reason: 'Automatically adjusted based on quiz performance',
+				adaptedAt: new Date(fa.addedAt || ''),
+			}));
+	} catch (error) {
+		console.error('Error getting adaptation history:', error);
+		return [];
 	}
 }

@@ -98,12 +98,26 @@ export function useWrongAnswerPipeline(
 				} else if (result.error === 'duplicate' && showNotifications) {
 					toast.info('Flashcard already exists for this question');
 				} else if (!result.success && showNotifications) {
+					// Store the failed data for manual creation
+					if (typeof window !== 'undefined') {
+						const pendingFlashcard = {
+							question: wrongAnswer.questionText,
+							answer: wrongAnswer.correctAnswer,
+							topic: wrongAnswer.topic,
+							subject: wrongAnswer.subject,
+						};
+						sessionStorage.setItem('pendingFlashcard', JSON.stringify(pendingFlashcard));
+					}
+
 					toast.error('Could not create flashcard automatically', {
 						description: 'You can create one manually',
 						action: {
 							label: 'Create',
 							onClick: () => {
-								// TODO: Open manual flashcard creation modal
+								// Navigate to flashcards page with the pending data
+								if (typeof window !== 'undefined') {
+									window.location.href = '/flashcards?action=create';
+								}
 							},
 						},
 					});
@@ -134,15 +148,12 @@ export function useWrongAnswerPipeline(
 			}
 
 			setIsProcessing(true);
-			let totalCreated = 0;
 
 			try {
-				for (const wrongAnswer of wrongAnswers) {
-					const result = await processWrongAnswer(wrongAnswer);
-					if (result.success && result.flashcardId) {
-						totalCreated++;
-					}
-				}
+				const results = await Promise.all(
+					wrongAnswers.map((wrongAnswer) => processWrongAnswer(wrongAnswer))
+				);
+				const totalCreated = results.filter((r) => r.success && r.flashcardId).length;
 
 				if (showNotifications && totalCreated > 0) {
 					toast.success(

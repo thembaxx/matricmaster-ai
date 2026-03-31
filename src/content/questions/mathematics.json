@@ -1,0 +1,968 @@
+{
+	"math-p1-2023-nov": {
+		"title": "NSC Mathematics P1 November 2023",
+		"subject": "Mathematics",
+		"year": 2023,
+		"session": "November",
+		"paper": 1,
+		"questions": [
+			{
+				"id": "math-2023-p1-q1",
+				"question": "If f(x) = 2x² - 3x + 1, calculate f(-2).",
+				"options": [
+					{
+						"id": "A",
+						"text": "15"
+					},
+					{
+						"id": "B",
+						"text": "11"
+					},
+					{
+						"id": "C",
+						"text": "7"
+					},
+					{
+						"id": "D",
+						"text": "3"
+					}
+				],
+				"correctAnswer": "A",
+				"hint": "Substitute x = -2: f(-2) = 2(-2)² - 3(-2) + 1 = 2(4) + 6 + 1 = 8 + 6 + 1 = 15",
+				"topic": "Functions",
+				"subtopic": "Evaluation",
+				"difficulty": "easy"
+			},
+			{
+				"id": "math-2023-p1-q2",
+				"question": "Solve for x: x² - 7x + 12 = 0",
+				"options": [
+					{
+						"id": "A",
+						"text": "x = 3 or x = 4"
+					},
+					{
+						"id": "B",
+						"text": "x = 2 or x = 6"
+					},
+					{
+						"id": "C",
+						"text": "x = -3 or x = -4"
+					},
+					{
+						"id": "D",
+						"text": "x = 1 or x = 12"
+					}
+				],
+				"correctAnswer": "A",
+				"hint": "Factor: (x - 3)(x - 4) = 0, so x = 3 or x = 4",
+				"topic": "Equations",
+				"subtopic": "Quadratic Equations",
+				"difficulty": "easy"
+			},
+			{
+				"id": "math-2023-p1-q3",
+				"question": "Find the derivative of f(x) = 4x³ - 2x² + 5x - 3",
+				"options": [
+					{
+						"id": "A",
+						"text": "f'(x) = 12x² - 4x + 5"
+					},
+					{
+						"id": "B",
+						"text": "f'(x) = 12x² - 4x + 5 - 3"
+					},
+					{
+						"id": "C",
+						"text": "f'(x) = 4x³ - 2x² + 5"
+					},
+					{
+						"id": "D",
+						"text": "f'(x) = 12x² - 2x + 5"
+					}
+				],
+				"correctAnswer": "A",
+				"hint": "Use power rule: d/dx(axⁿ) = anxⁿ⁻¹. f'(x) = 12x² - 4x + 5",
+				"topic": "Calculus",
+				"subtopic": "Derivatives",
+				"difficulty": "medium"
+			},
+			{
+				"id": "math-2023-p1-q4",
+				"question": "Evaluate: ∫(3x² + 2x - 1)dx",
+				"options": [
+					{
+						"id": "A",
+						"text": "x³ + x² - x + C"
+					},
+					{
+						"id": "B",
+						"text": "6x + 2 + C"
+					},
+					{
+						"id": "C",
+						"text": "x³ + x² + C"
+					},
+					{
+						"id": "D",
+						"text": "6x² + 2x + C"
+					}
+				],
+				"correctAnswer": "A",
+				"hint": "Integrate each term: ∫3x²dx = x³, ∫2xdx = x², ∫-1dx = -x",
+				"topic": "Calculus",
+				"subtopic": "Integrals",
+				"difficulty": "medium"
+			},
+			{
+				"id": "math-2023-p1-q5",
+				"question": "If g(x) = √(x + 5), find g⁻¹(x)",
+				"options": [
+					{
+						"id": "A",
+						"text": "x² - 5"
+					},
+					{
+						"id": "B",
+						"text": "x² + 5"
+					},
+					{
+						"id": "C",
+						"text": "√x - 5"
+					},
+					{
+						"id": "D",
+						"text": "x² - √5"
+					}
+				],
+				"correctAnswer": "A",
+				"hint": "Let y = √(x+5). Then y² = x + 5, so x = y² - 5. Replace y with x: g⁻¹(x) = x² - 5",
+				"topic": "Functions",
+				"subtopic": "Inverse Functions",
+				"difficulty": "medium"
+			},
+			{
+				"id": "math-2023-p1-q6",
+				"question": "Solve: log₂(x + 3) = 5",
+				"options": [
+					{
+						"id": "A",
+						"text": "29"
+					},
+					{
+						"id": "B",
+						"text": "32"
+					},
+					{
+						"id": "C",
+						"text": "31"
+					},
+					{
+						"id": "D",
+						"text": "28"
+					}
+				],
+				"correctAnswer": "A",
+				"hint": "2⁵ = x + 3, so 32 = x + 3, therefore x = 29.",
+				"topic": "Logarithms",
+				"subtopic": "Exponential Equations",
+				"difficulty": "medium"
+			},
+			{
+				"id": "math-2023-p1-q7",
+				"question": "The gradient of the tangent to y = x³ at x = 2 is:",
+				"options": [
+					{
+						"id": "A",
+						"text": "12"
+					},
+					{
+						"id": "B",
+						"text": "8"
+					},
+					{
+						"id": "C",
+						"text": "6"
+					},
+					{
+						"id": "D",
+						"text": "4"
+					}
+				],
+				"correctAnswer": "A",
+				"hint": "dy/dx = 3x². At x = 2, gradient = 3(2)² = 3 × 4 = 12",
+				"topic": "Calculus",
+				"subtopic": "Tangents",
+				"difficulty": "medium"
+			},
+			{
+				"id": "math-2023-p1-q8",
+				"question": "Find the area between y = x² and y = x from x = 0 to x = 1",
+				"options": [
+					{
+						"id": "A",
+						"text": "1/6 square units"
+					},
+					{
+						"id": "B",
+						"text": "1/3 square units"
+					},
+					{
+						"id": "C",
+						"text": "1/2 square units"
+					},
+					{
+						"id": "D",
+						"text": "2/3 square units"
+					}
+				],
+				"correctAnswer": "A",
+				"hint": "Area = ∫₀¹(x - x²)dx = [x²/2 - x³/3]₀¹ = 1/2 - 1/3 = 3/6 - 2/6 = 1/6",
+				"topic": "Calculus",
+				"subtopic": "Area Under Curve",
+				"difficulty": "hard"
+			},
+			{
+				"id": "math-2023-p1-q9",
+				"question": "Simplify: (2⁴ × 2⁶) ÷ 2⁷",
+				"options": [
+					{
+						"id": "A",
+						"text": "2³"
+					},
+					{
+						"id": "B",
+						"text": "2⁵"
+					},
+					{
+						"id": "C",
+						"text": "2⁴"
+					},
+					{
+						"id": "D",
+						"text": "2²"
+					}
+				],
+				"correctAnswer": "A",
+				"hint": "2⁴⁺⁶⁻⁷ = 2³ = 8",
+				"topic": "Algebra",
+				"subtopic": "Exponents",
+				"difficulty": "easy"
+			},
+			{
+				"id": "math-2023-p1-q10",
+				"question": "If f(x) = (2x - 1)³, find f'(1)",
+				"options": [
+					{
+						"id": "A",
+						"text": "12"
+					},
+					{
+						"id": "B",
+						"text": "6"
+					},
+					{
+						"id": "C",
+						"text": "9"
+					},
+					{
+						"id": "D",
+						"text": "3"
+					}
+				],
+				"correctAnswer": "B",
+				"hint": "Use chain rule: f'(x) = 3(2x - 1)² × 2 = 6(2x - 1)². At x = 1: 6(2-1)² = 6(1) = 6",
+				"diagram": "parabola",
+				"topic": "Calculus",
+				"subtopic": "Chain Rule",
+				"difficulty": "hard"
+			},
+			{
+				"id": "math-2023-p1-q11",
+				"question": "Solve: |2x - 5| = 7",
+				"options": [
+					{
+						"id": "A",
+						"text": "x = 6 or x = -1"
+					},
+					{
+						"id": "B",
+						"text": "x = 6 or x = 1"
+					},
+					{
+						"id": "C",
+						"text": "x = -6 or x = 1"
+					},
+					{
+						"id": "D",
+						"text": "x = 5 or x = -2"
+					}
+				],
+				"correctAnswer": "A",
+				"hint": "2x - 5 = 7 or 2x - 5 = -7. Case 1: 2x = 12 → x = 6. Case 2: 2x = -2 → x = -1",
+				"topic": "Algebra",
+				"subtopic": "Absolute Value",
+				"difficulty": "medium"
+			},
+			{
+				"id": "math-2023-p1-q12",
+				"question": "Find the maximum value of f(x) = -2x² + 8x - 3",
+				"options": [
+					{
+						"id": "A",
+						"text": "5"
+					},
+					{
+						"id": "B",
+						"text": "8"
+					},
+					{
+						"id": "C",
+						"text": "3"
+					},
+					{
+						"id": "D",
+						"text": "2"
+					}
+				],
+				"correctAnswer": "A",
+				"hint": "Vertex at x = -b/(2a) = -8/(2×-2) = -8/-4 = 2. f(2) = -2(4) + 16 - 3 = -8 + 16 - 3 = 5",
+				"topic": "Functions",
+				"subtopic": "Parabolas",
+				"difficulty": "medium"
+			},
+			{
+				"id": "math-2023-p1-q13",
+				"question": "The second derivative of f(x) = 3x⁴ - 2x² + x is:",
+				"options": [
+					{
+						"id": "A",
+						"text": "f''(x) = 36x² - 4"
+					},
+					{
+						"id": "B",
+						"text": "f''(x) = 12x³ - 4x + 1"
+					},
+					{
+						"id": "C",
+						"text": "f''(x) = 36x² - 4x"
+					},
+					{
+						"id": "D",
+						"text": "f''(x) = 12x² - 2"
+					}
+				],
+				"correctAnswer": "A",
+				"hint": "f'(x) = 12x³ - 4x + 1. Then f''(x) = 36x² - 4",
+				"topic": "Calculus",
+				"subtopic": "Second Derivative",
+				"difficulty": "hard"
+			},
+			{
+				"id": "math-2023-p1-q14",
+				"question": "Determine the y-intercept of g(x) = (x + 2)/(x - 1)",
+				"options": [
+					{
+						"id": "A",
+						"text": "-2"
+					},
+					{
+						"id": "B",
+						"text": "2"
+					},
+					{
+						"id": "C",
+						"text": "-1"
+					},
+					{
+						"id": "D",
+						"text": "1"
+					}
+				],
+				"correctAnswer": "A",
+				"hint": "Set x = 0: g(0) = (0 + 2)/(0 - 1) = 2/(-1) = -2",
+				"topic": "Functions",
+				"subtopic": "Intercepts",
+				"difficulty": "easy"
+			},
+			{
+				"id": "math-2023-p1-q15",
+				"question": "Find the sum of the arithmetic series: 2 + 5 + 8 + ... + 47",
+				"options": [
+					{
+						"id": "A",
+						"text": "392"
+					},
+					{
+						"id": "B",
+						"text": "396"
+					},
+					{
+						"id": "C",
+						"text": "400"
+					},
+					{
+						"id": "D",
+						"text": "404"
+					}
+				],
+				"correctAnswer": "A",
+				"hint": "a₁ = 2, d = 3. aₙ = 47 = 2 + (n-1)(3), so 45 = 3(n-1), n = 16. S₁₆ = 16/2(2 + 47) = 8 × 49 = 392",
+				"topic": "Sequences",
+				"subtopic": "Arithmetic Series",
+				"difficulty": "medium"
+			},
+			{
+				"id": "math-2023-p1-q16",
+				"question": "If 3ˣ = 81, find x",
+				"options": [
+					{
+						"id": "A",
+						"text": "4"
+					},
+					{
+						"id": "B",
+						"text": "3"
+					},
+					{
+						"id": "C",
+						"text": "27"
+					},
+					{
+						"id": "D",
+						"text": "9"
+					}
+				],
+				"correctAnswer": "A",
+				"hint": "81 = 3⁴, so x = 4",
+				"topic": "Logarithms",
+				"subtopic": "Exponential Equations",
+				"difficulty": "easy"
+			},
+			{
+				"id": "math-2023-p1-q17",
+				"question": "Find the limit: lim(x→2) (x² - 4)/(x - 2)",
+				"options": [
+					{
+						"id": "A",
+						"text": "4"
+					},
+					{
+						"id": "B",
+						"text": "0"
+					},
+					{
+						"id": "C",
+						"text": "2"
+					},
+					{
+						"id": "D",
+						"text": "Does not exist"
+					}
+				],
+				"correctAnswer": "A",
+				"hint": "Factor: (x² - 4)/(x - 2) = (x-2)(x+2)/(x-2) = x+2. At x = 2, limit = 4",
+				"topic": "Calculus",
+				"subtopic": "Limits",
+				"difficulty": "medium"
+			},
+			{
+				"id": "math-2023-p1-q18",
+				"question": "The roots of 2x² - 5x - 3 = 0 are:",
+				"options": [
+					{
+						"id": "A",
+						"text": "x = 3 or x = -1/2"
+					},
+					{
+						"id": "B",
+						"text": "x = -3 or x = 1/2"
+					},
+					{
+						"id": "C",
+						"text": "x = 5/2 or x = -3/2"
+					},
+					{
+						"id": "D",
+						"text": "x = 1 or x = -3"
+					}
+				],
+				"correctAnswer": "A",
+				"hint": "Using quadratic formula: x = [5 ± √(25 + 24)]/4 = [5 ± √49]/4 = [5 ± 7]/4. x = 12/4 = 3 or x = -2/4 = -1/2",
+				"topic": "Equations",
+				"subtopic": "Quadratic Formula",
+				"difficulty": "medium"
+			},
+			{
+				"id": "math-2023-p1-q19",
+				"question": "Find dy/dx if y = x² sin x",
+				"options": [
+					{
+						"id": "A",
+						"text": "2x sin x + x² cos x"
+					},
+					{
+						"id": "B",
+						"text": "2x cos x"
+					},
+					{
+						"id": "C",
+						"text": "x² cos x"
+					},
+					{
+						"id": "D",
+						"text": "2x sin x - x² cos x"
+					}
+				],
+				"correctAnswer": "A",
+				"hint": "Use product rule: dy/dx = (d/dx)(x²)·sin x + x²·(d/dx)(sin x) = 2x·sin x + x²·cos x",
+				"topic": "Calculus",
+				"subtopic": "Product Rule",
+				"difficulty": "hard"
+			},
+			{
+				"id": "math-2023-p1-q20",
+				"question": "Simplify: (√3 + √2)²",
+				"options": [
+					{
+						"id": "A",
+						"text": "5 + 2√6"
+					},
+					{
+						"id": "B",
+						"text": "5 + √6"
+					},
+					{
+						"id": "C",
+						"text": "5 - 2√6"
+					},
+					{
+						"id": "D",
+						"text": "25 + 2√6"
+					}
+				],
+				"correctAnswer": "A",
+				"hint": "(√3 + √2)² = 3 + 2 + 2√6 = 5 + 2√6",
+				"topic": "Algebra",
+				"subtopic": "Surds",
+				"difficulty": "medium"
+			}
+		]
+	},
+	"math-p2-2023-nov": {
+		"title": "NSC Mathematics P2 November 2023",
+		"subject": "Mathematics",
+		"year": 2023,
+		"session": "November",
+		"paper": 2,
+		"questions": [
+			{
+				"id": "math-2023-p2-q1",
+				"question": "In ΔABC, angle A = 30°, angle B = 45°, and side a = 10. Find side b (to nearest whole number).",
+				"options": [
+					{
+						"id": "A",
+						"text": "14"
+					},
+					{
+						"id": "B",
+						"text": "12"
+					},
+					{
+						"id": "C",
+						"text": "7"
+					},
+					{
+						"id": "D",
+						"text": "10"
+					}
+				],
+				"correctAnswer": "A",
+				"hint": "Using sine rule: a/sin A = b/sin B. 10/sin30° = b/sin45°. 10/0.5 = b/0.707. 20 = b/0.707. b = 20 × 0.707 = 14.14 ≈ 14",
+				"diagram": "triangle",
+				"topic": "Trigonometry",
+				"subtopic": "Sine Rule",
+				"difficulty": "medium"
+			},
+			{
+				"id": "math-2023-p2-q2",
+				"question": "The equation of a line passing through (2, 3) with gradient 4 is:",
+				"options": [
+					{
+						"id": "A",
+						"text": "y - 3 = 4(x - 2)"
+					},
+					{
+						"id": "B",
+						"text": "y = 4x + 5"
+					},
+					{
+						"id": "C",
+						"text": "y - 2 = 4(x - 3)"
+					},
+					{
+						"id": "D",
+						"text": "y = 4x - 5"
+					}
+				],
+				"correctAnswer": "A",
+				"hint": "Point-gradient form: y - y₁ = m(x - x₁). y - 3 = 4(x - 2)",
+				"topic": "Analytical Geometry",
+				"subtopic": "Straight Lines",
+				"difficulty": "easy"
+			},
+			{
+				"id": "math-2023-p2-q3",
+				"question": "Calculate the distance between points P(3, 4) and Q(-1, 0)",
+				"options": [
+					{
+						"id": "A",
+						"text": "√32"
+					},
+					{
+						"id": "B",
+						"text": "√20"
+					},
+					{
+						"id": "C",
+						"text": "√16"
+					},
+					{
+						"id": "D",
+						"text": "√8"
+					}
+				],
+				"correctAnswer": "A",
+				"hint": "d = √[(x₂-x₁)² + (y₂-y₁)²] = √[(-1-3)² + (0-4)²] = √[(-4)² + (-4)²] = √(16+16) = √32.",
+				"topic": "Analytical Geometry",
+				"subtopic": "Distance Formula",
+				"difficulty": "easy"
+			},
+			{
+				"id": "math-2023-p2-q4",
+				"question": "If sin θ = 3/5 and θ is in the first quadrant, find cos θ",
+				"options": [
+					{
+						"id": "A",
+						"text": "4/5"
+					},
+					{
+						"id": "B",
+						"text": "5/3"
+					},
+					{
+						"id": "C",
+						"text": "3/4"
+					},
+					{
+						"id": "D",
+						"text": "√7/5"
+					}
+				],
+				"correctAnswer": "A",
+				"hint": "sin²θ + cos²θ = 1. (3/5)² + cos²θ = 1. 9/25 + cos²θ = 1. cos²θ = 16/25. cosθ = 4/5 (positive in Q1)",
+				"topic": "Trigonometry",
+				"subtopic": "Identities",
+				"difficulty": "medium"
+			},
+			{
+				"id": "math-2023-p2-q5",
+				"question": "The midpoint of segment AB where A(2, -3) and B(4, 7) is:",
+				"options": [
+					{
+						"id": "A",
+						"text": "(3, 2)"
+					},
+					{
+						"id": "B",
+						"text": "(3, -2)"
+					},
+					{
+						"id": "C",
+						"text": "(6, 4)"
+					},
+					{
+						"id": "D",
+						"text": "(2, 5)"
+					}
+				],
+				"correctAnswer": "A",
+				"hint": "M = ((x₁+x₂)/2, (y₁+y₂)/2) = ((2+4)/2, (-3+7)/2) = (6/2, 4/2) = (3, 2)",
+				"topic": "Analytical Geometry",
+				"subtopic": "Midpoint",
+				"difficulty": "easy"
+			},
+			{
+				"id": "math-2023-p2-q6",
+				"question": "Solve for θ if cos θ = -1/2 and 0° ≤ θ ≤ 360°",
+				"options": [
+					{
+						"id": "A",
+						"text": "θ = 120° or 240°"
+					},
+					{
+						"id": "B",
+						"text": "θ = 60° or 300°"
+					},
+					{
+						"id": "C",
+						"text": "θ = 150° or 210°"
+					},
+					{
+						"id": "D",
+						"text": "θ = 45° or 315°"
+					}
+				],
+				"correctAnswer": "A",
+				"hint": "cos⁻¹(1/2) = 60°. In QII and QIII where cos is negative: 180° - 60° = 120°, 180° + 60° = 240°",
+				"topic": "Trigonometry",
+				"subtopic": "Trigonometric Equations",
+				"difficulty": "medium"
+			},
+			{
+				"id": "math-2023-p2-q7",
+				"question": "The equation of a circle with centre (2, -3) and radius 5 is:",
+				"options": [
+					{
+						"id": "A",
+						"text": "(x - 2)² + (y + 3)² = 25"
+					},
+					{
+						"id": "B",
+						"text": "(x + 2)² + (y - 3)² = 25"
+					},
+					{
+						"id": "C",
+						"text": "(x - 2)² + (y + 3)² = 5"
+					},
+					{
+						"id": "D",
+						"text": "(x + 2)² + (y - 3)² = 5"
+					}
+				],
+				"correctAnswer": "A",
+				"hint": "Circle equation: (x - h)² + (y - k)² = r². (x - 2)² + (y - (-3))² = 5² = 25",
+				"topic": "Analytical Geometry",
+				"subtopic": "Circles",
+				"difficulty": "medium"
+			},
+			{
+				"id": "math-2023-p2-q8",
+				"question": "Find the equation of the tangent to the circle x² + y² = 25 at point (3, 4)",
+				"options": [
+					{
+						"id": "A",
+						"text": "3x + 4y = 25"
+					},
+					{
+						"id": "B",
+						"text": "3x - 4y = 25"
+					},
+					{
+						"id": "C",
+						"text": "4x + 3y = 25"
+					},
+					{
+						"id": "D",
+						"text": "x + y = 7"
+					}
+				],
+				"correctAnswer": "A",
+				"hint": "For circle x² + y² = r², tangent at (x₁, y₁): xx₁ + yy₁ = r². 3x + 4y = 25",
+				"topic": "Analytical Geometry",
+				"subtopic": "Circle Tangents",
+				"difficulty": "hard"
+			},
+			{
+				"id": "math-2023-p2-q9",
+				"question": "In how many ways can 4 students be arranged in a row?",
+				"options": [
+					{
+						"id": "A",
+						"text": "24"
+					},
+					{
+						"id": "B",
+						"text": "12"
+					},
+					{
+						"id": "C",
+						"text": "16"
+					},
+					{
+						"id": "D",
+						"text": "8"
+					}
+				],
+				"correctAnswer": "A",
+				"hint": "Number of permutations = 4! = 4 × 3 × 2 × 1 = 24",
+				"topic": "Combinatorics",
+				"subtopic": "Permutations",
+				"difficulty": "easy"
+			},
+			{
+				"id": "math-2023-p2-q11",
+				"question": "If tan θ = 1, find θ in degrees (0° < θ < 180°)",
+				"options": [
+					{
+						"id": "A",
+						"text": "45°"
+					},
+					{
+						"id": "B",
+						"text": "90°"
+					},
+					{
+						"id": "C",
+						"text": "135°"
+					},
+					{
+						"id": "D",
+						"text": "45° or 135°"
+					}
+				],
+				"correctAnswer": "A",
+				"hint": "tan 45° = 1. tan 135° = -1. So only 45° gives tan = 1.",
+				"topic": "Trigonometry",
+				"subtopic": "Trigonometric Equations",
+				"difficulty": "medium"
+			},
+			{
+				"id": "math-2023-p2-q13",
+				"question": "Find the angle between vectors u = (1, 2) and v = (2, 1)",
+				"options": [
+					{
+						"id": "A",
+						"text": "approximately 37°"
+					},
+					{
+						"id": "B",
+						"text": "45°"
+					},
+					{
+						"id": "C",
+						"text": "approximately 53°"
+					},
+					{
+						"id": "D",
+						"text": "90°"
+					}
+				],
+				"correctAnswer": "A",
+				"hint": "cos θ = (u·v)/(|u||v|) = (1×2 + 2×1)/(√5 × √5) = 4/5 = 0.8. θ = cos⁻¹(0.8) ≈ 36.87° ≈ 37°",
+				"diagram": "vector",
+				"topic": "Vectors",
+				"subtopic": "Angle Between Vectors",
+				"difficulty": "medium"
+			},
+			{
+				"id": "math-2023-p2-q16",
+				"question": "Find the product of the roots of 3x² - 5x + 2 = 0",
+				"options": [
+					{
+						"id": "A",
+						"text": "2/3"
+					},
+					{
+						"id": "B",
+						"text": "5/3"
+					},
+					{
+						"id": "C",
+						"text": "-5/3"
+					},
+					{
+						"id": "D",
+						"text": "-2/3"
+					}
+				],
+				"correctAnswer": "A",
+				"hint": "For ax² + bx + c = 0, product of roots = c/a = 2/3",
+				"topic": "Algebra",
+				"subtopic": "Quadratic Roots",
+				"difficulty": "medium"
+			},
+			{
+				"id": "math-2023-p2-q17",
+				"question": "The gradient of the line perpendicular to y = 2x + 3 is:",
+				"options": [
+					{
+						"id": "A",
+						"text": "-1/2"
+					},
+					{
+						"id": "B",
+						"text": "1/2"
+					},
+					{
+						"id": "C",
+						"text": "-2"
+					},
+					{
+						"id": "D",
+						"text": "2"
+					}
+				],
+				"correctAnswer": "A",
+				"hint": "Lines are perpendicular if m₁ × m₂ = -1. So m₂ = -1/2",
+				"topic": "Analytical Geometry",
+				"subtopic": "Perpendicular Lines",
+				"difficulty": "easy"
+			},
+			{
+				"id": "math-2023-p2-q18",
+				"question": "How many different ways can the word \"MATH\" be arranged?",
+				"options": [
+					{
+						"id": "A",
+						"text": "24"
+					},
+					{
+						"id": "B",
+						"text": "12"
+					},
+					{
+						"id": "C",
+						"text": "16"
+					},
+					{
+						"id": "D",
+						"text": "8"
+					}
+				],
+				"correctAnswer": "A",
+				"hint": "All 4 letters are distinct, so 4! = 24 arrangements",
+				"topic": "Combinatorics",
+				"subtopic": "Arrangements",
+				"difficulty": "easy"
+			},
+			{
+				"id": "math-2023-p2-q20",
+				"question": "The focus of the parabola y² = 8x is:",
+				"options": [
+					{
+						"id": "A",
+						"text": "(2, 0)"
+					},
+					{
+						"id": "B",
+						"text": "(4, 0)"
+					},
+					{
+						"id": "C",
+						"text": "(0, 2)"
+					},
+					{
+						"id": "D",
+						"text": "(0, 4)"
+					}
+				],
+				"correctAnswer": "A",
+				"hint": "For y² = 4ax, focus = (a, 0). Here 4a = 8, so a = 2. Focus = (2, 0)",
+				"topic": "Analytical Geometry",
+				"subtopic": "Parabola",
+				"difficulty": "hard"
+			}
+		]
+	}
+}

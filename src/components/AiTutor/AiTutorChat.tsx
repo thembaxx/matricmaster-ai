@@ -1,8 +1,10 @@
 'use client';
 
+import { AddToStudyPlanButton } from '@/components/AI/AddToStudyPlanButton';
 import { BookmarkButton } from '@/components/AI/BookmarkButton';
 import { CitationDisplay } from '@/components/AI/CitationDisplay';
 import { MarkdownRenderer } from '@/components/AI/MarkdownRenderer';
+import { SaveAsFlashcardButton } from '@/components/AI/SaveAsFlashcardButton';
 import { SuggestedFollowUps } from '@/components/AI/SuggestedFollowUps';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -72,8 +74,10 @@ export function AiTutorChat({
 							>
 								<div
 									className={cn(
-										'absolute top-2 md:top-4',
-										message.role === 'user' ? '-left-8 md:-left-10' : '-right-8 md:-right-10'
+										'absolute top-2 md:top-4 flex items-center gap-1',
+										message.role === 'user'
+											? '-left-8 md:-left-10 flex-row'
+											: '-right-8 md:-right-10 flex-row-reverse'
 									)}
 								>
 									<BookmarkButton
@@ -82,6 +86,22 @@ export function AiTutorChat({
 										role={message.role}
 										subject={selectedSubject}
 									/>
+									{message.role === 'assistant' && message.content.length > 100 && (
+										<SaveAsFlashcardButton
+											content={message.content}
+											subject={selectedSubject || undefined}
+											variant="ghost"
+											size="icon"
+										/>
+									)}
+									{message.role === 'assistant' && message.content.length > 50 && (
+										<AddToStudyPlanButton
+											content={message.content}
+											subject={selectedSubject}
+											variant="ghost"
+											size="icon"
+										/>
+									)}
 								</div>
 								<div className="prose prose-sm dark:prose-invert max-w-none">
 									{message.role === 'assistant' ? (

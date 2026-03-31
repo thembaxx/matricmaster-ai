@@ -65,6 +65,8 @@ export function quizReducer(state: QuizState, action: QuizAction): QuizState {
 			});
 			return { ...state, topicStats: newTopicStats };
 		}
+		case 'LOAD_TOPIC_STATS':
+			return { ...state, topicStats: action.payload };
 		case 'SET_WEAK_TOPIC_ALERT':
 			return { ...state, weakTopicAlert: action.payload };
 		case 'TOGGLE_WEAK_ALERT':

@@ -1,0 +1,112 @@
+[
+	{ "subject": "Mathematics", "topic": "Calculus", "weightagePercent": 35, "examPaper": "P1" },
+	{
+		"subject": "Mathematics",
+		"topic": "Euclidean Geometry",
+		"weightagePercent": 25,
+		"examPaper": "P1"
+	},
+	{ "subject": "Mathematics", "topic": "Functions", "weightagePercent": 25, "examPaper": "P1" },
+	{ "subject": "Mathematics", "topic": "Algebra", "weightagePercent": 20, "examPaper": "P1" },
+	{ "subject": "Mathematics", "topic": "Probability", "weightagePercent": 15, "examPaper": "P2" },
+	{ "subject": "Mathematics", "topic": "Statistics", "weightagePercent": 15, "examPaper": "P2" },
+	{
+		"subject": "Mathematics",
+		"topic": "Sequences & Series",
+		"weightagePercent": 15,
+		"examPaper": "P2"
+	},
+	{
+		"subject": "Mathematics",
+		"topic": "Number Patterns",
+		"weightagePercent": 10,
+		"examPaper": "P1"
+	},
+	{
+		"subject": "Physical Sciences",
+		"topic": "Chemical Equilibrium",
+		"weightagePercent": 20,
+		"examPaper": "P2"
+	},
+	{
+		"subject": "Physical Sciences",
+		"topic": "Electrostatics",
+		"weightagePercent": 15,
+		"examPaper": "P1"
+	},
+	{
+		"subject": "Physical Sciences",
+		"topic": "Electric Circuits",
+		"weightagePercent": 15,
+		"examPaper": "P1"
+	},
+	{
+		"subject": "Physical Sciences",
+		"topic": "Momentum & Impulse",
+		"weightagePercent": 15,
+		"examPaper": "P1"
+	},
+	{
+		"subject": "Physical Sciences",
+		"topic": "Work, Energy & Power",
+		"weightagePercent": 15,
+		"examPaper": "P1"
+	},
+	{
+		"subject": "Physical Sciences",
+		"topic": "Chemical Reactions",
+		"weightagePercent": 20,
+		"examPaper": "P2"
+	},
+	{
+		"subject": "Physical Sciences",
+		"topic": "Optical Phenomena",
+		"weightagePercent": 10,
+		"examPaper": "P1"
+	},
+	{
+		"subject": "Life Sciences",
+		"topic": "DNA & Genetics",
+		"weightagePercent": 25,
+		"examPaper": "P2"
+	},
+	{ "subject": "Life Sciences", "topic": "Evolution", "weightagePercent": 20, "examPaper": "P2" },
+	{
+		"subject": "Life Sciences",
+		"topic": "Human Reproduction",
+		"weightagePercent": 15,
+		"examPaper": "P1"
+	},
+	{
+		"subject": "Life Sciences",
+		"topic": "Energy & Ecosystems",
+		"weightagePercent": 15,
+		"examPaper": "P1"
+	},
+	{
+		"subject": "Life Sciences",
+		"topic": "Cellular Respiration",
+		"weightagePercent": 10,
+		"examPaper": "P1"
+	},
+	{
+		"subject": "Geography",
+		"topic": "Climate & Weather",
+		"weightagePercent": 20,
+		"examPaper": "P1"
+	},
+	{ "subject": "Geography", "topic": "Geomorphology", "weightagePercent": 20, "examPaper": "P1" },
+	{
+		"subject": "Geography",
+		"topic": "Rural & Urban Settlement",
+		"weightagePercent": 15,
+		"examPaper": "P2"
+	},
+	{
+		"subject": "Accounting",
+		"topic": "Financial Statements",
+		"weightagePercent": 30,
+		"examPaper": "P1"
+	},
+	{ "subject": "Accounting", "topic": "Cost Accounting", "weightagePercent": 20, "examPaper": "P2" }
+]

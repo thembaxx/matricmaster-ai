@@ -19,6 +19,8 @@ export const metadata: Metadata = {
 	description: 'Content management system for administrators.',
 };
 
+export const revalidate = 0;
+
 export default async function CMSPage() {
 	// Initialize database connection for the server request
 	await dbManager.initialize();

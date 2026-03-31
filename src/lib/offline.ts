@@ -137,7 +137,7 @@ export function shouldCachePage(pathname: string): boolean {
 	return OFFLINE_PAGES.some((page) => pathname.startsWith(page));
 }
 
-import quickTipsData from '@/data/quick-tips.json';
+import quickTipsData from '@/content/quick-tips.json';
 import { getAllTips, getTipsBySubject, initQuickTips, type QuickTip } from './offline/quick-tips';
 import {
 	type CachedTask,

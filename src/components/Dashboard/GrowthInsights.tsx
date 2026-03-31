@@ -61,7 +61,7 @@ export function GrowthInsights({
 							className="text-xs text-violet-600 hover:text-violet-700 hover:bg-violet-50 dark:hover:bg-violet-950 p-0 h-auto"
 							onClick={() =>
 								router.push(
-									`/tutor?topic=${encodeURIComponent(weakTopics[0].topic)}&subject=${encodeURIComponent(weakTopics[0].subject ?? '')}`
+									`/ai-tutor?topic=${encodeURIComponent(weakTopics[0].topic)}&subject=${encodeURIComponent(weakTopics[0].subject ?? '')}&context=help`
 								)
 							}
 						>

@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { Card } from '@/components/ui/card';
 import { generateWavePoints } from '@/lib/physics/waves';
 import { useScienceLab } from '@/stores/useScienceLab';
 
@@ -36,7 +37,7 @@ export function WaveCanvas() {
 		.join(' ');
 
 	return (
-		<div className="relative bg-card rounded-2xl p-8 min-h-[300px]">
+		<Card className="relative p-8 min-h-[300px]">
 			<svg
 				viewBox="0 0 400 200"
 				className="w-full h-full"
@@ -68,6 +69,6 @@ export function WaveCanvas() {
 			<div className="absolute top-4 right-4 bg-background/90 backdrop-blur px-4 py-2 rounded-xl border font-mono text-sm">
 				y = {wave.amplitude} sin({wave.frequency}x - {phaseRef.current.toFixed(2)})
 			</div>
-		</div>
+		</Card>
 	);
 }

@@ -4,6 +4,7 @@ import { SparklesIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { useState } from 'react';
 import { toast } from 'sonner';
+import { AIErrorBoundary } from '@/components/AI/AIErrorBoundary';
 import { EssayInputForm } from '@/components/EssayGrader/EssayInputForm';
 import { EssayTips } from '@/components/EssayGrader/EssayTips';
 import { GradingFeedback } from '@/components/EssayGrader/GradingFeedback';
@@ -88,7 +89,9 @@ export default function EssayGraderPage() {
 						onSubmit={handleSubmit}
 					/>
 
-					<GradingFeedback result={result} onReset={handleReset} />
+					<AIErrorBoundary componentName="Essay Grading">
+						<GradingFeedback result={result} onReset={handleReset} />
+					</AIErrorBoundary>
 				</div>
 
 				<EssayTips />

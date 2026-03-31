@@ -7,6 +7,7 @@ import dynamic from 'next/dynamic';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { CalendarView } from '@/components/SmartScheduler/CalendarView';
+import { ExamCountdown } from '@/components/SmartScheduler/ExamCountdown';
 import { SmartSchedulerProvider } from '@/components/SmartScheduler/ScheduleProvider';
 import { Button } from '@/components/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
@@ -110,6 +111,10 @@ function SmartSchedulerContent() {
 					</Popover>
 				</div>
 			</header>
+
+			<div className="mb-6">
+				<ExamCountdown />
+			</div>
 
 			<CalendarView />
 		</div>

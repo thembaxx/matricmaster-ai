@@ -3,8 +3,11 @@
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { AdaptiveScheduleBanner } from '@/components/Dashboard/AdaptiveScheduleBanner';
+import { AdaptiveScheduleCard } from '@/components/Dashboard/AdaptiveScheduleCard';
 import { AITutorNudge } from '@/components/Dashboard/AITutorNudge';
 import { BriefingGreeting } from '@/components/Dashboard/BriefingGreeting';
+import { CrossFeatureRecommendations } from '@/components/Dashboard/CrossFeatureRecommendations';
+import { LeaderboardPreview } from '@/components/Dashboard/LeaderboardPreview';
 import { MoreTab } from '@/components/Dashboard/MoreTab';
 import { ProgressTab } from '@/components/Dashboard/ProgressTab';
 import { DEMO_TASKS } from '@/components/Dashboard/StatsGrid';
@@ -14,14 +17,14 @@ import { TodayTab, TodayTabHeader } from '@/components/Dashboard/TodayTab';
 import { FocusContent } from '@/components/Layout/FocusContent';
 import { TimelineSidebar } from '@/components/Layout/TimelineSidebar';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import type { ACHIEVEMENTS } from '@/constants/achievements';
+import type { ACHIEVEMENTS } from '@/content';
 import {
 	type BriefingData,
 	type DashboardInitialStreak,
 	DEMO_TIMELINE,
 	MOCK_ACHIEVEMENTS,
 	MOCK_STREAK,
-} from '@/constants/mock-dashboard';
+} from '@/content/mock/dashboard';
 import type { UserAchievement } from '@/lib/db/achievement-actions';
 import { useDashboardProgress } from '@/stores/useProgressStore';
 
@@ -59,6 +62,7 @@ export default function Dashboard({
 		queryKey: ['growth-map'],
 		queryFn: async () => {
 			const res = await fetch('/api/growth-map');
+			if (!res.ok) throw new Error('Failed to load growth data');
 			return res.json();
 		},
 		select: (data) =>
@@ -79,6 +83,7 @@ export default function Dashboard({
 		queryKey: ['adaptive-schedule'],
 		queryFn: async () => {
 			const res = await fetch('/api/adaptive-schedule', { method: 'POST' });
+			if (!res.ok) throw new Error('Failed to load schedule');
 			return res.json();
 		},
 		select: (data) =>
@@ -167,6 +172,10 @@ export default function Dashboard({
 						<AITutorNudge />
 					</div>
 
+					<div className="mb-6">
+						<LeaderboardPreview />
+					</div>
+
 					{scheduleChanges && scheduleChanges.adjustments?.length > 0 && (
 						<div className="mb-6">
 							<AdaptiveScheduleBanner
@@ -209,6 +218,14 @@ export default function Dashboard({
 						<TabsContent value="today" className="mt-0">
 							<TodayTabHeader achievements={achievements} streak={streak} />
 							<TodayTab achievements={achievements} streak={streak} />
+							{scheduleChanges && scheduleChanges.adjustments?.length > 0 && (
+								<div className="mt-6">
+									<AdaptiveScheduleCard adjustments={scheduleChanges.adjustments} />
+								</div>
+							)}
+							<div className="mt-6">
+								<CrossFeatureRecommendations />
+							</div>
 						</TabsContent>
 
 						<TabsContent value="progress" className="mt-0">

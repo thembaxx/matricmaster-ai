@@ -2,6 +2,7 @@ import { Loading03Icon, ViewIcon, ViewOffIcon } from '@hugeicons/core-free-icons
 import { HugeiconsIcon } from '@hugeicons/react';
 import { m } from 'framer-motion';
 import Link from 'next/link';
+import { memo, useId } from 'react';
 import type { FieldErrors, UseFormRegister } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -14,7 +15,7 @@ interface SignInValues {
 	password: string;
 }
 
-export function FormFields({
+export const FormFields = memo(function FormFields({
 	register,
 	errors,
 	isLoading,
@@ -29,11 +30,16 @@ export function FormFields({
 	showPassword: boolean;
 	onTogglePassword: () => void;
 }) {
+	const emailErrorId = useId();
+	const passwordErrorId = useId();
+
 	return (
-		<>
+		<fieldset className="space-y-6 border-0 p-0 m-0">
+			<legend className="sr-only">sign in credentials</legend>
+
 			<m.div variants={STAGGER_ITEM} className="space-y-2">
 				<Label htmlFor="email" className="label-xs ml-1">
-					Email Address
+					email address
 				</Label>
 				<Input
 					{...register('email')}
@@ -41,19 +47,25 @@ export function FormFields({
 					type="email"
 					placeholder="name@school.edu.za"
 					className="bg-background/50 rounded-[var(--radius-md)]"
+					aria-required="true"
+					aria-invalid={!!errors.email}
+					aria-describedby={errors.email ? emailErrorId : undefined}
+					autoComplete="email"
 				/>
 				{errors.email && (
-					<p className="text-xs text-destructive font-semibold ml-1">{errors.email.message}</p>
+					<p id={emailErrorId} className="text-xs text-destructive font-semibold ml-1" role="alert">
+						{errors.email.message}
+					</p>
 				)}
 			</m.div>
 
 			<m.div variants={STAGGER_ITEM} className="space-y-2">
 				<div className="flex items-center justify-between">
 					<Label htmlFor="password" className="label-xs ml-1">
-						Password
+						password
 					</Label>
 					<Link href="/forgot-password" className="label-xs text-primary hover:text-primary/80">
-						Forgot?
+						forgot?
 					</Link>
 				</div>
 				<div className="relative">
@@ -61,8 +73,12 @@ export function FormFields({
 						{...register('password')}
 						id="password"
 						type={showPassword ? 'text' : 'password'}
-						placeholder="Enter your password"
+						placeholder="enter your password"
 						className="bg-background/50 pr-12 rounded-[var(--radius-md)]"
+						aria-required="true"
+						aria-invalid={!!errors.password}
+						aria-describedby={errors.password ? passwordErrorId : undefined}
+						autoComplete="current-password"
 					/>
 					<Button
 						variant="ghost"
@@ -70,7 +86,7 @@ export function FormFields({
 						type="button"
 						onClick={onTogglePassword}
 						className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
-						aria-label={showPassword ? 'Hide password' : 'Show password'}
+						aria-label={showPassword ? 'hide password' : 'show password'}
 					>
 						{showPassword ? (
 							<HugeiconsIcon icon={ViewOffIcon} className="w-5 h-5" />
@@ -80,7 +96,13 @@ export function FormFields({
 					</Button>
 				</div>
 				{errors.password && (
-					<p className="text-xs text-destructive font-semibold ml-1">{errors.password.message}</p>
+					<p
+						id={passwordErrorId}
+						className="text-xs text-destructive font-semibold ml-1"
+						role="alert"
+					>
+						{errors.password.message}
+					</p>
 				)}
 			</m.div>
 
@@ -94,16 +116,20 @@ export function FormFields({
 							? 'bg-success text-white shadow-success/30'
 							: 'bg-primary text-primary-foreground shadow-primary/20'
 					)}
+					aria-busy={isLoading}
 				>
 					{isLoading ? (
-						<HugeiconsIcon icon={Loading03Icon} className="w-5 h-5 animate-spin" />
+						<>
+							<HugeiconsIcon icon={Loading03Icon} className="w-5 h-5 animate-spin" />
+							<span className="sr-only">signing in...</span>
+						</>
 					) : successEmail ? (
-						'Success!'
+						'success!'
 					) : (
-						'Sign In'
+						'sign in'
 					)}
 				</Button>
 			</m.div>
-		</>
+		</fieldset>
 	);
-}
+});

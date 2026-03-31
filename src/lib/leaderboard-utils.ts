@@ -3,7 +3,7 @@
  * Defines how points are calculated for the leaderboard
  */
 
-import { getStreakMultiplier } from '@/constants/rewards';
+import { getStreakMultiplier } from '@/content';
 import { type AntiGamingAnalysis, calculateAntiGamingXP } from '@/services/antiGamingService';
 
 export const POINTS = {

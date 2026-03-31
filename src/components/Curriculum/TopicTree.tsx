@@ -6,7 +6,7 @@ import { AnimatePresence, m } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
-import type { Subject, Topic } from '@/data/curriculum';
+import type { CurriculumSubject as Subject, Topic } from '@/content';
 import { cn } from '@/lib/utils';
 import { TopicCardAnimated } from './TopicCard';
 

@@ -461,11 +461,6 @@ export async function calculateOptimalDifficulty(
 	};
 }
 
-export interface AdaptiveInsights {
-	weakTopics: { topic: string; confidence: number; trend: 'improving' | 'declining' | 'stable' }[];
-	recommendedActions: { type: string; topic: string; priority: 'high' | 'medium' | 'low' }[];
-}
-
 export interface TopicWeightage {
 	subject: string;
 	topic: string;

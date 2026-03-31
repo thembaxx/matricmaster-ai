@@ -1,10 +1,34 @@
+// Load dotenv FIRST before any imports
 import { config } from 'dotenv';
 
 config({ path: '.env.local' });
 
-import { pgManager } from '../postgresql-manager';
+// Ensure DATABASE_URL is used
+if (!process.env.POSTGRES_URL && process.env.DATABASE_URL) {
+	process.env.POSTGRES_URL = process.env.DATABASE_URL;
+}
+
+// Now import modules - they will see the loaded env vars
+import { PostgreSQLManager } from '../postgresql-manager';
 import { sqliteManager } from '../sqlite-manager';
 import { syncEngine } from './engine';
+
+console.log('[DEBUG] DATABASE_URL:', process.env.DATABASE_URL ? 'set' : 'not set');
+console.log('[DEBUG] POSTGRES_URL:', process.env.POSTGRES_URL ? 'set' : 'not set');
+
+// Get fresh instance with correct config
+const connString = process.env.POSTGRES_URL || process.env.DATABASE_URL || '';
+console.log('[DEBUG] Connection string:', `${connString.substring(0, 50)}...`);
+
+// Force a fresh instance by resetting the singleton first
+PostgreSQLManager.resetInstance();
+
+const pgManager = PostgreSQLManager.getInstance({
+	connectionString: connString,
+	maxConnections: 10,
+	connectionTimeout: 30,
+	idleTimeout: 60,
+});
 
 async function main() {
 	console.log('🔄 Starting database sync (push + pull)...\n');

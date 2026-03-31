@@ -1,9 +1,14 @@
 import dynamic from 'next/dynamic';
-import { QUIZ_DATA } from '@/constants/quiz-data';
+import { QuizSkeleton } from '@/components/QuizSkeleton';
+import { QUESTIONS_DATA as QUIZ_DATA } from '@/content/questions';
 
 const QuizScreen = dynamic(() => import('@/screens/Quiz'), {
 	ssr: true,
-	loading: () => <div className="min-h-[60vh]" />,
+	loading: () => (
+		<div className="min-h-[60vh] flex items-center justify-center">
+			<QuizSkeleton />
+		</div>
+	),
 });
 
 export async function generateStaticParams() {

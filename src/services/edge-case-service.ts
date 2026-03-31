@@ -1,3 +1,4 @@
+import { toast } from 'sonner';
 import { apiClient } from '@/lib/api/client';
 import { API_ENDPOINTS } from '@/lib/api/endpoints';
 
@@ -686,7 +687,8 @@ class EdgeCaseService {
 		try {
 			const stored = localStorage.getItem(SESSION_SAVE_KEY);
 			return stored ? JSON.parse(stored) : null;
-		} catch {
+		} catch (error) {
+			console.debug('Failed to parse saved session:', error);
 			return null;
 		}
 	}
@@ -739,7 +741,8 @@ class EdgeCaseService {
 		try {
 			const stored = localStorage.getItem('offline_data');
 			return stored ? JSON.parse(stored) : null;
-		} catch {
+		} catch (error) {
+			console.debug('Failed to parse offline data:', error);
 			return null;
 		}
 	}
@@ -750,7 +753,8 @@ class EdgeCaseService {
 				`${API_ENDPOINTS.userProgress}/${context.userId}`
 			);
 			return response;
-		} catch {
+		} catch (error) {
+			console.debug('Failed to fetch server data:', error);
 			return null;
 		}
 	}
@@ -776,99 +780,151 @@ class EdgeCaseService {
 		try {
 			const stored = localStorage.getItem('curriculum_check');
 			return stored ? Number.parseInt(stored, 10) : null;
-		} catch {
+		} catch (error) {
+			console.debug('Failed to get curriculum check date:', error);
 			return null;
 		}
 	}
 
 	private redirectToEasierContent(context: EdgeCaseContext): void {
-		console.log('Redirecting to easier content:', context);
+		const topic = (context.metadata?.topic as string) || '';
+		const subject = (context.metadata?.subject as string) || '';
+		window.location.href = `/quiz?difficulty=easy&topic=${encodeURIComponent(topic)}&subject=${encodeURIComponent(subject)}`;
 	}
 
 	private redirectToTopicReview(context: EdgeCaseContext): void {
-		console.log('Redirecting to topic review:', context);
+		const topic = (context.metadata?.topic as string) || '';
+		window.location.href = `/ai-tutor?topic=${encodeURIComponent(topic)}&context=review`;
 	}
 
 	private suggestAlternativeTopic(context: EdgeCaseContext): void {
-		console.log('Suggesting alternative topic:', context);
+		const topic = (context.metadata?.topic as string) || '';
+		window.location.href = `/subjects?exclude=${encodeURIComponent(topic)}`;
 	}
 
 	private enableChallengeMode(context: EdgeCaseContext): void {
-		console.log('Enabling challenge mode:', context);
+		try {
+			localStorage.setItem(
+				'lumni_challenge_mode',
+				JSON.stringify({ enabled: true, noHints: true, topic: context.metadata?.topic })
+			);
+		} catch (error) {
+			console.debug('LocalStorage unavailable for challenge mode:', error);
+		}
 	}
 
-	private dismissEdgeCase(context: EdgeCaseContext): void {
-		console.log('Dismissing edge case:', context);
+	private dismissEdgeCase(_context: EdgeCaseContext): void {
+		return;
 	}
 
 	private reviewAnswers(context: EdgeCaseContext): void {
-		console.log('Reviewing answers:', context);
+		const topic = (context.metadata?.topic as string) || '';
+		window.location.href = `/review?topic=${encodeURIComponent(topic)}`;
 	}
 
 	private redirectToLighterContent(type: string): void {
-		console.log('Redirecting to lighter content:', type);
+		window.location.href = type === 'flashcards' ? '/flashcards' : '/quiz?difficulty=easy';
 	}
 
 	private triggerProceduralGeneration(context: EdgeCaseContext): void {
-		console.log('Triggering procedural generation:', context);
+		const topic = (context.metadata?.topic as string) || '';
+		window.location.href = `/ai-tutor?topic=${encodeURIComponent(topic)}&context=generate`;
 	}
 
 	private showRelatedTopics(context: EdgeCaseContext): void {
-		console.log('Showing related topics:', context);
+		const topic = (context.metadata?.topic as string) || '';
+		window.location.href = `/subjects?topic=${encodeURIComponent(topic)}`;
 	}
 
 	private manualUnlock(context: EdgeCaseContext): void {
-		console.log('Manual unlock:', context);
+		const topic = (context.metadata?.topic as string) || '';
+		window.location.href = `/ai-tutor?topic=${encodeURIComponent(topic)}&context=help`;
 	}
 
-	private resolveConflict(strategy: 'local' | 'server' | 'merge', context: EdgeCaseContext): void {
-		console.log('Resolving conflict with strategy:', strategy, context);
+	private resolveConflict(strategy: 'local' | 'server' | 'merge', _context: EdgeCaseContext): void {
+		try {
+			localStorage.setItem('lumni_sync_resolution', strategy);
+		} catch (error) {
+			console.debug('LocalStorage unavailable for sync resolution:', error);
+		}
 	}
 
 	private enableWebLLMMode(): void {
-		console.log('Enabling WebLLM mode');
+		try {
+			localStorage.setItem('lumni_webllm_mode', 'enabled');
+		} catch (error) {
+			console.debug('LocalStorage unavailable for WebLLM mode:', error);
+		}
 	}
 
-	private joinQueue(context: EdgeCaseContext): void {
-		console.log('Joining queue:', context);
+	private joinQueue(_context: EdgeCaseContext): void {
+		try {
+			localStorage.setItem(
+				'lumni_ai_queue',
+				JSON.stringify({ joined: true, timestamp: Date.now() })
+			);
+		} catch (error) {
+			console.debug('LocalStorage unavailable for AI queue:', error);
+		}
 	}
 
-	private optOutLeaderboard(context: EdgeCaseContext): void {
-		console.log('Opting out of leaderboard:', context);
+	private optOutLeaderboard(_context: EdgeCaseContext): void {
+		try {
+			localStorage.setItem('lumni_leaderboard_opt_out', 'true');
+		} catch (error) {
+			console.debug('LocalStorage unavailable for leaderboard opt-out:', error);
+		}
 	}
 
-	private enableAnonymousMode(context: EdgeCaseContext): void {
-		console.log('Enabling anonymous mode:', context);
+	private enableAnonymousMode(_context: EdgeCaseContext): void {
+		try {
+			localStorage.setItem('lumni_anonymous_mode', 'true');
+		} catch (error) {
+			console.debug('LocalStorage unavailable for anonymous mode:', error);
+		}
 	}
 
-	private showPersonalProgress(context: EdgeCaseContext): void {
-		console.log('Showing personal progress:', context);
+	private showPersonalProgress(_context: EdgeCaseContext): void {
+		window.location.href = '/analytics';
 	}
 
-	private hideLeaderboard(context: EdgeCaseContext): void {
-		console.log('Hiding leaderboard:', context);
+	private hideLeaderboard(_context: EdgeCaseContext): void {
+		try {
+			localStorage.setItem('lumni_leaderboard_hidden', 'true');
+		} catch (error) {
+			console.debug('LocalStorage unavailable for hiding leaderboard:', error);
+		}
 	}
 
-	private enableRelativeRanking(context: EdgeCaseContext): void {
-		console.log('Enabling relative ranking:', context);
+	private enableRelativeRanking(_context: EdgeCaseContext): void {
+		try {
+			localStorage.setItem('lumni_relative_ranking', 'true');
+		} catch (error) {
+			console.debug('LocalStorage unavailable for relative ranking:', error);
+		}
 	}
 
-	private refreshCurriculum(context: EdgeCaseContext): void {
-		console.log('Refreshing curriculum:', context);
-		localStorage.setItem('curriculum_check', Date.now().toString());
+	private refreshCurriculum(_context: EdgeCaseContext): void {
+		try {
+			localStorage.setItem('curriculum_check', Date.now().toString());
+		} catch (error) {
+			console.debug('LocalStorage unavailable for curriculum refresh:', error);
+		}
+		toast.success('curriculum content refreshed');
 	}
 
-	private showOfficialSource(context: EdgeCaseContext): void {
-		console.log('Showing official source:', context);
+	private showOfficialSource(_context: EdgeCaseContext): void {
+		window.location.href = '/setwork-library';
 	}
 
-	private reportError(context: EdgeCaseContext): void {
-		console.log('Reporting error:', context);
+	private reportError(_context: EdgeCaseContext): void {
+		toast.info('redirecting to settings to report the issue');
+		window.location.href = '/settings';
 	}
 
 	private recoverSession(session: SessionRecovery): void {
-		console.log('Recovering session:', session);
 		localStorage.removeItem(SESSION_SAVE_KEY);
+		window.location.href = `/quiz?quizId=${session.quizId}&question=${session.currentQuestionIndex}`;
 	}
 
 	private clearSession(): void {

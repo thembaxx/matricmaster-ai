@@ -12,7 +12,8 @@ import { type FilterType, TopicFilters } from '@/components/Curriculum/TopicFilt
 import { TopicTree } from '@/components/Curriculum/TopicTree';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { CURRICULUM_DATA, type Topic } from '@/data/curriculum';
+import type { Topic } from '@/content';
+import { CURRICULUM_DATA } from '@/content/curriculum';
 import {
 	calculateFilteredStats,
 	createCustomTopic,

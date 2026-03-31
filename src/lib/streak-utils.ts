@@ -1,4 +1,4 @@
-import { getStreakMultiplier } from '@/constants/rewards';
+import { getStreakMultiplier } from '@/content';
 
 export function calculateXpWithMultiplier(baseXp: number, streak: number): number {
 	const multiplierInfo = getStreakMultiplier(streak);

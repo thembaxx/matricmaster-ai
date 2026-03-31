@@ -30,6 +30,8 @@ const Dashboard = dynamic(() => import('@/screens/Dashboard'), {
 	loading: () => <DashboardSkeleton />,
 });
 
+export const revalidate = 0;
+
 export default async function DashboardPage() {
 	const auth = await getAuth();
 	const headersList = await headers();

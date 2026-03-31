@@ -7,7 +7,7 @@ import { QuoteBank } from '@/components/SetworkLibrary/QuoteBank';
 import { ThemeComparator } from '@/components/SetworkLibrary/ThemeComparator';
 import { Card } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import type { Setwork } from '@/data/setworks/types';
+import type { Setwork } from '@/content/setworks/types';
 
 interface AnalysisContentProps {
 	setworks: Setwork[];

@@ -5,14 +5,13 @@ import { getAuth } from '@/lib/auth';
 import { dbManager } from '@/lib/db';
 import {
 	apsMilestones,
-	flashcardDecks,
-	flashcards,
 	questionAttempts,
 	topicConfidence,
 	topicMastery,
 	universityTargets,
 } from '@/lib/db/schema';
-import { calculateNextReview } from './spacedRepetition';
+import { generateFlashcardsForWeakTopic } from './adaptiveLearningService';
+import { calculateNextReviewBoolean } from './spacedRepetition';
 
 async function getDb() {
 	const connected = await dbManager.waitForConnection(3, 2000);
@@ -166,67 +165,17 @@ export async function generateCrossFeatureRecommendations(): Promise<FlowRecomme
 
 export async function triggerAutoFlashcardGeneration(
 	topic: string,
-	_subject: string
+	subject: string
 ): Promise<{ success: boolean; cardsCreated: number }> {
-	const user = await ensureAuthenticated();
-	const db = await getDb();
-
-	let deck = await db.query.flashcardDecks.findFirst({
-		where: eq(flashcardDecks.userId, user.id),
-	});
-
-	if (!deck) {
-		const [newDeck] = await db
-			.insert(flashcardDecks)
-			.values({
-				userId: user.id,
-				name: 'Auto-Generated Review',
-				description: 'Cards generated from weak topics and mistakes',
-			})
-			.returning();
-		deck = newDeck;
-	}
-
-	const mistakes = await db.query.questionAttempts.findMany({
-		where: and(
-			eq(questionAttempts.userId, user.id),
-			eq(questionAttempts.isCorrect, false),
-			eq(questionAttempts.topic, topic)
-		),
-		limit: 10,
-	});
-
-	let cardsCreated = 0;
-
-	for (const mistake of mistakes) {
-		await db.insert(flashcards).values({
-			deckId: deck!.id,
-			front: mistake.topic,
-			back: 'Review this topic - check your quiz history for details',
-			difficulty: 'medium',
-			easeFactor: '2.5',
-			intervalDays: 1,
-			repetitions: 0,
-			nextReview: new Date(),
-		});
-		cardsCreated++;
-	}
-
-	if (deck.cardCount !== undefined) {
-		await db
-			.update(flashcardDecks)
-			.set({ cardCount: (deck.cardCount || 0) + cardsCreated })
-			.where(eq(flashcardDecks.id, deck.id));
-	}
-
-	return { success: true, cardsCreated };
+	return generateFlashcardsForWeakTopic(topic, subject);
 }
 
 export async function syncQuizToSpacedRepetition(
 	questionId: string,
 	topic: string,
 	isCorrect: boolean,
-	responseTimeMs?: number
+	responseTimeMs?: number,
+	subjectId?: number
 ): Promise<void> {
 	const user = await ensureAuthenticated();
 	const db = await getDb();
@@ -239,7 +188,7 @@ export async function syncQuizToSpacedRepetition(
 
 	if (existing) {
 		const consecutiveCorrect = isCorrect ? (existing.isCorrect ? 3 : 1) : 0;
-		const { intervalDays, easeFactor } = calculateNextReview(
+		const { intervalDays, easeFactor } = calculateNextReviewBoolean(
 			isCorrect,
 			existing.intervalDays,
 			Number(existing.easeFactor),
@@ -261,7 +210,7 @@ export async function syncQuizToSpacedRepetition(
 			})
 			.where(eq(questionAttempts.id, existing.id));
 	} else {
-		const { intervalDays, easeFactor } = calculateNextReview(isCorrect, 1, 2.5, 0);
+		const { intervalDays, easeFactor } = calculateNextReviewBoolean(isCorrect, 1, 2.5, 0);
 
 		const nextReview = new Date(now);
 		nextReview.setDate(nextReview.getDate() + intervalDays);
@@ -299,7 +248,7 @@ export async function syncQuizToSpacedRepetition(
 	} else {
 		await db.insert(topicMastery).values({
 			userId: user.id,
-			subjectId: 1, // Default subject ID, should eventually be retrieved dynamically
+			subjectId: subjectId ?? 1,
 			topic,
 			masteryLevel: isCorrect ? '1.0' : '0.0',
 			questionsAttempted: 1,
@@ -317,7 +266,7 @@ export async function updateMilestoneFromMastery(milestoneId: string): Promise<v
 		where: and(eq(apsMilestones.id, milestoneId), eq(apsMilestones.userId, user.id)),
 	});
 
-	if (!milestone || !milestone.topic || !milestone.subject) return;
+	if (!milestone?.topic || !milestone.subject) return;
 
 	const mastery = await db.query.topicMastery.findFirst({
 		where: and(eq(topicMastery.userId, user.id), eq(topicMastery.topic, milestone.topic)),

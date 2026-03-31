@@ -8,7 +8,7 @@ const OnboardingScreen = dynamicImport(() => import('@/screens/Onboarding'), {
 	loading: () => <div className="min-h-[60vh]" />,
 });
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export default async function OnboardingPage() {
 	// Try to get session, but don't crash if it fails in a dev/mock environment

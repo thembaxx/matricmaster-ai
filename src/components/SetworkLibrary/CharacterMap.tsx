@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import type { Character } from '@/data/setworks/types';
+import type { Character } from '@/content/setworks/types';
 import { cn } from '@/lib/utils';
 
 interface CharacterMapProps {

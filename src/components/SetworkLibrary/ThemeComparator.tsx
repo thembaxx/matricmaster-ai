@@ -10,7 +10,7 @@ import {
 	SelectValue,
 } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import type { Setwork, Theme } from '@/data/setworks/types';
+import type { Setwork, Theme } from '@/content/setworks/types';
 
 interface ThemeComparatorProps {
 	setworks: Setwork[];

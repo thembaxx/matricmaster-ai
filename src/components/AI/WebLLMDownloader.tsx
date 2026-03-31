@@ -2,7 +2,7 @@
 
 import { Cancel01Icon, Download01Icon, Settings01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { useEffect, useState } from 'react';
+import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import {
 	Dialog,
@@ -33,8 +33,11 @@ const MODEL_OPTIONS = [
 
 const STORAGE_KEY = 'webllm_model_preference';
 
-export function WebLLMDownloader() {
-	const { isModelReady, downloadProgress, initialize, isSupported } = useOfflineAIStore();
+export const WebLLMDownloader = memo(function WebLLMDownloader() {
+	const isModelReady = useOfflineAIStore((s) => s.isModelReady);
+	const downloadProgress = useOfflineAIStore((s) => s.downloadProgress);
+	const initialize = useOfflineAIStore((s) => s.initialize);
+	const isSupported = useOfflineAIStore((s) => s.isSupported);
 	const [dismissed, setDismissed] = useState(false);
 	const [showSettings, setShowSettings] = useState(false);
 	const [selectedModel, setSelectedModel] = useState(
@@ -43,15 +46,25 @@ export function WebLLMDownloader() {
 			: 'llama-3.2-1b'
 	);
 
+	const handleDismiss = useCallback(() => setDismissed(true), []);
+	const handleShowSettings = useCallback((open: boolean) => setShowSettings(open), []);
+	const handleModelChange = useCallback((value: string) => {
+		setSelectedModel(value);
+		localStorage.setItem(STORAGE_KEY, value);
+	}, []);
+
 	useEffect(() => {
 		if (!isModelReady && !dismissed && isSupported) {
 			initialize();
 		}
 	}, [isModelReady, dismissed, isSupported, initialize]);
 
-	if (isModelReady || dismissed || !isSupported) return null;
+	const currentModel = useMemo(
+		() => MODEL_OPTIONS.find((m) => m.id === selectedModel),
+		[selectedModel]
+	);
 
-	const currentModel = MODEL_OPTIONS.find((m) => m.id === selectedModel);
+	if (isModelReady || dismissed || !isSupported) return null;
 
 	return (
 		<div className="fixed bottom-24 left-4 right-4 max-w-md mx-auto z-50">
@@ -74,7 +87,7 @@ export function WebLLMDownloader() {
 							/>
 						</div>
 					</div>
-					<Dialog open={showSettings} onOpenChange={setShowSettings}>
+					<Dialog open={showSettings} onOpenChange={handleShowSettings}>
 						<DialogTrigger asChild>
 							<Button variant="ghost" size="icon" className="h-8 w-8">
 								<HugeiconsIcon icon={Settings01Icon} className="w-4 h-4" />
@@ -87,14 +100,7 @@ export function WebLLMDownloader() {
 									Choose a model that fits your device capabilities
 								</DialogDescription>
 							</DialogHeader>
-							<RadioGroup
-								value={selectedModel}
-								onValueChange={(value) => {
-									setSelectedModel(value);
-									localStorage.setItem(STORAGE_KEY, value);
-								}}
-								className="mt-4"
-							>
+							<RadioGroup value={selectedModel} onValueChange={handleModelChange} className="mt-4">
 								{MODEL_OPTIONS.map((model) => (
 									<div key={model.id} className="flex items-center space-x-2">
 										<RadioGroupItem value={model.id} id={model.id} />
@@ -110,16 +116,11 @@ export function WebLLMDownloader() {
 							</RadioGroup>
 						</DialogContent>
 					</Dialog>
-					<Button
-						variant="ghost"
-						size="icon"
-						onClick={() => setDismissed(true)}
-						className="h-8 w-8"
-					>
+					<Button variant="ghost" size="icon" onClick={handleDismiss} className="h-8 w-8">
 						<HugeiconsIcon icon={Cancel01Icon} className="w-4 h-4" />
 					</Button>
 				</div>
 			</div>
 		</div>
 	);
-}
+});

@@ -83,7 +83,7 @@ export async function joinTeamGoal(goalId: string): Promise<void> {
 		where: eq(teamGoals.id, goalId),
 	});
 
-	if (!goal || !goal.isActive) throw new Error('Goal not available or inactive');
+	if (!goal?.isActive) throw new Error('Goal not available or inactive');
 	if (goal.memberCount >= goal.maxMembers) throw new Error('Goal is full');
 
 	const existing = await db.query.teamGoalMembers.findFirst({

@@ -20,6 +20,16 @@ export interface StudyBuddy {
 	studyGoals: string;
 	isOnline?: boolean;
 	userId?: string;
+	weakAreas?: {
+		topic: string;
+		subject: string;
+		masteryLevel: number;
+	}[];
+	strongAreas?: {
+		topic: string;
+		subject: string;
+		masteryLevel: number;
+	}[];
 }
 
 export interface BuddyRequest {
@@ -35,6 +45,13 @@ interface StudyBuddyProfile {
 	selectedSubjects: string[];
 }
 
+interface WeakAreaMatch {
+	buddy: StudyBuddy;
+	matchScore: number;
+	weakAreasYouCanHelp: string[];
+	weakAreasTheyCanHelp: string[];
+}
+
 interface StudyBuddyState {
 	searchQuery: string;
 	selectedSubjects: string[];
@@ -44,6 +61,12 @@ interface StudyBuddyState {
 	discoverableBuddies: StudyBuddy[];
 	profile: StudyBuddyProfile;
 	isLoading: boolean;
+	weakAreaMatches: WeakAreaMatch[];
+	myWeakAreas: {
+		topic: string;
+		subject: string;
+		masteryLevel: number;
+	}[];
 
 	setSearchQuery: (query: string) => void;
 	setSelectedSubjects: (subjects: string[] | ((prev: string[]) => string[])) => void;
@@ -53,6 +76,7 @@ interface StudyBuddyState {
 	) => void;
 
 	loadData: (userId: string) => Promise<void>;
+	loadWeakAreaMatches: (userId: string) => Promise<void>;
 	handleSubjectToggle: (subject: string) => void;
 	handleSendRequest: (buddyId: string) => Promise<void>;
 	handleAcceptRequest: (requestId: string) => Promise<void>;
@@ -72,6 +96,8 @@ export const useStudyBuddyStore = create<StudyBuddyState>((set, _get) => ({
 		selectedSubjects: [],
 	},
 	isLoading: true,
+	weakAreaMatches: [],
+	myWeakAreas: [],
 
 	setSearchQuery: (searchQuery) => set({ searchQuery }),
 	setSelectedSubjects: (selectedSubjects) =>
@@ -220,6 +246,77 @@ export const useStudyBuddyStore = create<StudyBuddyState>((set, _get) => ({
 			console.debug('Error loading study buddies data:', error);
 		} finally {
 			set({ isLoading: false });
+		}
+	},
+
+	loadWeakAreaMatches: async (userId: string) => {
+		try {
+			// Fetch discoverable buddies with their mastery data from the API
+			const matchesRes = await fetch(`/api/buddies/matches?userId=${userId}`);
+			if (!matchesRes.ok) return;
+
+			const { matches, userWeakAreas } = await matchesRes.json();
+
+			// Store user's weak areas
+			set({ myWeakAreas: userWeakAreas || [] });
+
+			// Map API matches to the expected format
+			const state = _get();
+			const buddyMatches: WeakAreaMatch[] = matches
+				.map(
+					(match: {
+						userId: string;
+						name: string;
+						image?: string;
+						bio: string;
+						studyGoals: string;
+						subjects: string[];
+						strongAreas: { topic: string; subjectId: number; masteryLevel: number }[];
+					}) => {
+						// Find the buddy in discoverableBuddies
+						const buddy = state.discoverableBuddies.find((b) => b.id === match.userId);
+						if (!buddy) return null;
+
+						// Calculate weak areas the buddy can help with
+						const weakAreasTheyCanHelp = match.strongAreas
+							.filter((strong) =>
+								userWeakAreas?.some(
+									(weak: { topic: string; subjectId: number }) => weak.topic === strong.topic
+								)
+							)
+							.map((s) => s.topic);
+
+						// Calculate weak areas user can help buddy with
+						const weakAreasYouCanHelp =
+							userWeakAreas
+								?.filter((weak: { topic: string }) =>
+									match.strongAreas.some((strong) => strong.topic === weak.topic)
+								)
+								.map((w: { topic: string }) => w.topic) ?? [];
+
+						const matchScore = (weakAreasYouCanHelp.length + weakAreasTheyCanHelp.length) * 10;
+
+						// Update buddy with strong areas for display
+						buddy.strongAreas = match.strongAreas.map((a) => ({
+							topic: a.topic,
+							subject: '',
+							masteryLevel: a.masteryLevel,
+						}));
+
+						return {
+							buddy,
+							matchScore,
+							weakAreasYouCanHelp,
+							weakAreasTheyCanHelp,
+						};
+					}
+				)
+				.filter((m: WeakAreaMatch | null): m is WeakAreaMatch => m !== null && m.matchScore > 0)
+				.sort((a: WeakAreaMatch, b: WeakAreaMatch) => b.matchScore - a.matchScore);
+
+			set({ weakAreaMatches: buddyMatches });
+		} catch (error) {
+			console.debug('Error loading weak area matches:', error);
 		}
 	},
 

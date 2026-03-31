@@ -4,6 +4,8 @@ import { getAuth, type SessionUser } from '@/lib/auth';
 import { dbManager } from '@/lib/db';
 import AdminDashboardClient from './AdminDashboardClient';
 
+export const revalidate = 0;
+
 export default async function AdminDashboardPage() {
 	// Initialize database connection
 	await dbManager.initialize();

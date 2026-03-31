@@ -1,8 +1,8 @@
 'use server';
 
 import { and, eq, sql } from 'drizzle-orm';
+import { getSubjectsForTarget, getWeightageForTopic } from '@/content';
 import { getAuth } from '@/lib/auth';
-import { getSubjectsForTarget, getWeightageForTopic } from '@/lib/constants/topic-weightages';
 import { type DbType, dbManager } from '@/lib/db';
 import {
 	conceptStruggles,

@@ -4,6 +4,7 @@ import { SparklesIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { toast } from 'sonner';
+import { FeatureGate } from '@/components/Subscription/FeatureGate';
 import { ChatPanel } from '@/components/VoiceTutor/ChatPanel';
 import type { Message } from '@/components/VoiceTutor/constants';
 import { VoiceSettings } from '@/components/VoiceTutor/VoiceSettings';
@@ -18,6 +19,14 @@ import {
 } from '@/lib/voice/audio';
 
 export default function VoiceTutorPage() {
+	return (
+		<FeatureGate feature="voiceTutor" showPreviewButton={true}>
+			<VoiceTutorContent />
+		</FeatureGate>
+	);
+}
+
+function VoiceTutorContent() {
 	const [messages, setMessages] = useState<Message[]>([]);
 	const [inputText, setInputText] = useState('');
 	const [isRecording, setIsRecording] = useState(false);

@@ -16,6 +16,7 @@ const STATIC_ASSETS = [
 ];
 
 const DYNAMIC_CACHE = 'lumni-dynamic-v1';
+const AI_CONVERSATION_CACHE = 'lumni-ai-conversations-v1';
 const MAX_DYNAMIC_ENTRIES = 50;
 
 self.addEventListener('install', (event) => {
@@ -37,6 +38,63 @@ self.addEventListener('fetch', (event) => {
 					headers: { 'Content-Type': 'application/json' },
 				});
 			})
+		);
+		return;
+	}
+
+	if (event.request.url.includes('/_next/static/') || event.request.url.includes('/fonts/')) {
+		event.respondWith(
+			caches.match(event.request).then((response) => {
+				if (response) return response;
+				return fetch(event.request).then((networkResponse) => {
+					if (networkResponse.ok) {
+						const responseClone = networkResponse.clone();
+						caches.open(CACHE_NAME).then((cache) => {
+							cache.put(event.request, responseClone);
+						});
+					}
+					return networkResponse;
+				});
+			})
+		);
+		return;
+	}
+
+	if (event.request.url.includes('/api/ai-tutor/')) {
+		event.respondWith(
+			fetch(event.request)
+				.then((response) => {
+					if (response.ok && response.clone) {
+						const responseClone = response.clone();
+						caches.open(AI_CONVERSATION_CACHE).then((cache) => {
+							cache
+								.put(
+									event.request,
+									new Response(responseClone.body, {
+										headers: responseClone.headers,
+										status: responseClone.status,
+									})
+								)
+								.catch(() => {});
+						});
+					}
+					return response;
+				})
+				.catch(() => {
+					return caches.match(event.request).then((cached) => {
+						if (cached) return cached;
+						return new Response(
+							JSON.stringify({
+								error: 'offline',
+								message: 'You are currently offline. Your progress will sync when you reconnect.',
+							}),
+							{
+								headers: { 'Content-Type': 'application/json' },
+								status: 503,
+							}
+						);
+					});
+				})
 		);
 		return;
 	}
@@ -76,7 +134,12 @@ self.addEventListener('activate', (event) => {
 	event.waitUntil(
 		caches.keys().then((cacheNames) => {
 			return Promise.all(
-				cacheNames.filter((name) => name !== CACHE_NAME).map((name) => caches.delete(name))
+				cacheNames
+					.filter(
+						(name) =>
+							name !== CACHE_NAME && name !== DYNAMIC_CACHE && name !== AI_CONVERSATION_CACHE
+					)
+					.map((name) => caches.delete(name))
 			);
 		})
 	);
@@ -115,4 +178,46 @@ self.addEventListener('notificationclick', (event) => {
 			return clients.openWindow(urlToOpen);
 		})
 	);
+});
+
+self.addEventListener('message', (event) => {
+	if (event.data && event.data.type === 'SKIP_WAITING') {
+		self.skipWaiting();
+	}
+
+	if (event.data && event.data.type === 'CACHE_AI_CONVERSATION') {
+		const { conversationId, messages } = event.data;
+		caches.open(AI_CONVERSATION_CACHE).then((cache) => {
+			const cacheKey = `ai-conversation-${conversationId}`;
+			cache.put(
+				cacheKey,
+				new Response(JSON.stringify(messages), {
+					headers: { 'Content-Type': 'application/json' },
+				})
+			);
+		});
+	}
+
+	if (event.data && event.data.type === 'GET_CACHED_AI_CONVERSATION') {
+		const { conversationId } = event.data;
+		caches
+			.open(AI_CONVERSATION_CACHE)
+			.then((cache) => cache.match(`ai-conversation-${conversationId}`))
+			.then((response) => {
+				if (response) {
+					return response.json();
+				}
+				return null;
+			})
+			.then((data) => {
+				event.ports[0]?.postMessage({ type: 'AI_CONVERSATION_RESPONSE', data });
+			})
+			.catch(() => {
+				event.ports[0]?.postMessage({ type: 'AI_CONVERSATION_RESPONSE', data: null });
+			});
+	}
+
+	if (event.data && event.data.type === 'CLEAR_AI_CACHE') {
+		caches.delete(AI_CONVERSATION_CACHE);
+	}
 });

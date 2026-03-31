@@ -94,7 +94,7 @@ export async function generateCalendarEventsFromPlan(
 			where: and(eq(studyPlans.id, planId), eq(studyPlans.userId, session.user.id)),
 		});
 
-		if (!plan || !plan.targetExamDate) return { success: true, data: [] };
+		if (!plan?.targetExamDate) return { success: true, data: [] };
 
 		const focusAreas = plan.focusAreas ? JSON.parse(plan.focusAreas) : [];
 		if (!Array.isArray(focusAreas) || focusAreas.length === 0) return { success: true, data: [] };

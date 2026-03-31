@@ -196,7 +196,14 @@ export default function ExamTimerPage() {
 					onStart={handleStart}
 					onPause={handlePause}
 					onReset={handleReset}
-					onStartFocusMode={startFocusMode}
+					onStartFocusMode={() =>
+						startFocusMode({
+							paperId: selectedPreset.name.toLowerCase().replace(/\s+/g, '-'),
+							paperTitle: examName || selectedPreset.name,
+							subject: selectedPreset.name,
+							duration: selectedPreset.name === 'Custom' ? customDuration : selectedPreset.duration,
+						})
+					}
 				/>
 
 				<SettingsCard

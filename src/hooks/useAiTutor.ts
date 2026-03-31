@@ -7,6 +7,7 @@ import type { Citation } from '@/lib/ai/citations';
 import { authClient } from '@/lib/auth-client';
 import { saveConversationAction } from '@/lib/db/ai-tutor-actions';
 import type { AiConversation } from '@/lib/db/schema';
+import { generateFollowUpQuizFromConversationAction } from '@/services/aiActions';
 import { useAiContextStore } from '@/stores/useAiContextStore';
 
 export interface Message {
@@ -16,6 +17,7 @@ export interface Message {
 	timestamp: Date;
 	suggestions?: string[];
 	citations?: Citation[];
+	conceptTags?: string[];
 }
 
 export interface PracticeProblem {
@@ -177,6 +179,14 @@ export function useAiTutor() {
 			toast.success('Conversation saved');
 			if (result.conversationId) {
 				setCurrentConversationId(result.conversationId);
+			}
+
+			const quizResult = await generateFollowUpQuizFromConversationAction(
+				messages.map((m) => ({ role: m.role, content: m.content })),
+				selectedSubject ?? undefined
+			);
+			if (quizResult.success && quizResult.questions && quizResult.questions.length > 0) {
+				toast.info('Created follow-up quiz from conversation');
 			}
 		} else {
 			toast.error(result.error || 'Failed to save');

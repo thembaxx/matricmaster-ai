@@ -18,7 +18,7 @@ import {
 	mockPastPapers,
 	mockSubjects,
 	mockUserAchievements,
-} from '@/data';
+} from '@/content/mock';
 
 export default function DemoPage() {
 	const questions = getQuestionsWithOptions();

@@ -1,8 +1,8 @@
 'use client';
 
-import { m } from 'framer-motion';
+import { AnimatePresence, m } from 'framer-motion';
 import { Badge } from '@/components/ui/badge';
-import { Progress } from '@/components/ui/progress';
+import { cn } from '@/lib/utils';
 
 interface QuizProgressProps {
 	currentQuestion: number;
@@ -26,13 +26,36 @@ export function QuizProgress({
 		>
 			<div className="flex justify-between items-center mb-2">
 				<span className="text-[10px] font-medium text-muted-foreground">
-					Question {currentQuestion} of {totalQuestions}
+					Question{' '}
+					<AnimatePresence mode="popLayout">
+						<m.span
+							key={currentQuestion}
+							initial={{ opacity: 0, scale: 0.8 }}
+							animate={{ opacity: 1, scale: 1 }}
+							exit={{ opacity: 0, scale: 0.8 }}
+							transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+							className="inline-block"
+						>
+							{currentQuestion}
+						</m.span>
+					</AnimatePresence>{' '}
+					of {totalQuestions}
 				</span>
 				<Badge variant="secondary" className="text-[10px] font-medium rounded-full px-3">
 					{difficulty}
 				</Badge>
 			</div>
-			<Progress value={progressPercent} className="h-2 rounded-full" />
+			<div className="relative h-2 w-full overflow-hidden rounded-full bg-muted">
+				<m.div
+					className={cn(
+						'h-full rounded-full',
+						'bg-gradient-to-r from-tiimo-lavender to-tiimo-lavender/70'
+					)}
+					style={{ boxShadow: '0 0 8px rgba(159, 133, 255, 0.3)' }}
+					animate={{ width: `${progressPercent}%` }}
+					transition={{ type: 'spring', stiffness: 100, damping: 15 }}
+				/>
+			</div>
 		</m.div>
 	);
 }

@@ -3,7 +3,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useMemo, useState } from 'react';
 import { toast } from 'sonner';
-import { ACHIEVEMENT_POINTS_MAP } from '@/constants/achievements';
+import { ACHIEVEMENT_POINTS_MAP } from '@/content';
 import { QUERY_KEYS } from '@/lib/api/endpoints';
 import { authClient, useSession } from '@/lib/auth-client';
 import { getUserAchievements } from '@/lib/db/achievement-actions';

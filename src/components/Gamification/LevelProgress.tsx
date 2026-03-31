@@ -6,7 +6,7 @@ import { m } from 'framer-motion';
 import { memo } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { LEVEL_BADGE_ICONS, MAX_LEVEL } from '@/constants/levels';
+import { LEVEL_BADGE_ICONS, MAX_LEVEL } from '@/content';
 import { formatXp, getLevelInfo, getLevelTitle } from '@/lib/level-utils';
 
 interface LevelProgressProps {

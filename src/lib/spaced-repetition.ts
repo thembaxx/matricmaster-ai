@@ -147,6 +147,63 @@ export function initializeCard(): Omit<SpacedRepetitionCard, 'id'> {
 	};
 }
 
+// Enhanced SM-2 with Super-Recall for quiz/question attempts (boolean correct/incorrect)
+export function calculateNextReviewBoolean(
+	isCorrect: boolean,
+	currentInterval: number,
+	currentEaseFactor: number,
+	consecutiveCorrect = 0
+): { intervalDays: number; easeFactor: number } {
+	if (isCorrect) {
+		const superRecallBonus = consecutiveCorrect >= 5 ? 1.5 : 1;
+		const newInterval = Math.round(currentInterval * currentEaseFactor * superRecallBonus);
+
+		const maxInterval =
+			consecutiveCorrect >= 10
+				? 90
+				: consecutiveCorrect >= 7
+					? 60
+					: consecutiveCorrect >= 5
+						? 45
+						: 30;
+
+		const newEaseFactor = Math.min(3.0, currentEaseFactor + 0.1);
+
+		return {
+			intervalDays: Math.min(newInterval, maxInterval),
+			easeFactor: newEaseFactor,
+		};
+	}
+
+	return {
+		intervalDays: 1,
+		easeFactor: Math.max(1.3, currentEaseFactor - 0.3),
+	};
+}
+
+// Cross-topic reinforcement
+export function getCrossTopicSuggestions(
+	topic: string,
+	allTopics: Array<{ topic: string; confidence: number }>
+): string[] {
+	const topicRelations: Record<string, string[]> = {
+		Calculus: ['Algebra', 'Functions', 'Geometry'],
+		Algebra: ['Calculus', 'Number Patterns', 'Equations'],
+		Mechanics: ['Vectors', 'Newton Laws', 'Energy'],
+		Electricity: ['Magnetism', 'Circuits', 'Electronics'],
+		'Chemical Bonds': ['Periodic Table', 'Atomic Structure', 'Reactions'],
+		Evolution: ['Genetics', 'Diversity', 'Ecology'],
+		Functions: ['Calculus', 'Algebra', 'Graphs'],
+		Probability: ['Statistics', 'Combinatorics', 'Number Theory'],
+	};
+
+	const relatedTopics = topicRelations[topic] || [];
+
+	return allTopics
+		.filter((t) => relatedTopics.includes(t.topic) && t.confidence > 0.7)
+		.map((t) => t.topic);
+}
+
 export function formatReviewInterval(interval: number): string {
 	if (interval === 0) return 'Today';
 	if (interval === 1) return 'Tomorrow';

@@ -1,9 +1,9 @@
 import type { Metadata, Viewport } from 'next';
-import { OfflineIndicator } from '@/components/AI/OfflineIndicator';
-import { WebLLMDownloader } from '@/components/AI/WebLLMDownloader';
+import Script from 'next/script';
+import { LiveRegionProvider } from '@/components/Accessibility/LiveRegions';
 import { DeferredAnalytics } from '@/components/DeferredAnalytics';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
-import { IOSInstallPrompt } from '@/components/IOSInstallPrompt';
+import { ClientOnlyProviders } from '@/components/Layout/ClientOnlyProviders';
 import ClientProviders from '@/components/Layout/ClientProvidersDynamic';
 import { NavigationProgress } from '@/components/NavigationProgress';
 import { ServiceWorkerRegistration } from '@/components/ServiceWorkerRegistration';
@@ -127,6 +127,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 			className={`${geistMono.variable} ${geistSans.variable} ${playfair.variable} ${notoSansMath.variable}`}
 		>
 			<head>
+				{process.env.NODE_ENV === 'development' && (
+					<Script
+						src="//unpkg.com/react-scan/dist/auto.global.js"
+						strategy="lazyOnload"
+						crossOrigin="anonymous"
+					/>
+				)}
 				<link rel="preconnect" href="https://fonts.googleapis.com" />
 				<link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
 				<link rel="dns-prefetch" href="https://images.unsplash.com" />
@@ -138,19 +145,19 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 			<body className="bg-background min-h-screen">
 				<a
 					href="#main-content"
-					className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary focus:text-primary-foreground focus:rounded-lg focus:outline-none"
+					className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-6 focus:py-3 focus:bg-primary focus:text-primary-foreground focus:rounded-lg focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:shadow-lg transition-all duration-200"
 				>
 					skip to main content
 				</a>
 				<ErrorBoundary>
 					<ThemeProvider defaultTheme="system" storageKey="matric-master-theme">
-						<NavigationProgress />
-						<ClientProviders>{children}</ClientProviders>
-						<Toaster />
-						<ServiceWorkerRegistration />
-						<IOSInstallPrompt />
-						<OfflineIndicator />
-						<WebLLMDownloader />
+						<LiveRegionProvider>
+							<NavigationProgress />
+							<ClientProviders>{children}</ClientProviders>
+							<Toaster />
+							<ServiceWorkerRegistration />
+							<ClientOnlyProviders />
+						</LiveRegionProvider>
 					</ThemeProvider>
 				</ErrorBoundary>
 				<DeferredAnalytics />

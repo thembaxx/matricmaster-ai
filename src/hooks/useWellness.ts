@@ -38,7 +38,8 @@ export function useWellness(): UseWellnessReturn {
 		queryFn: async () => {
 			try {
 				return await getWellnessStats();
-			} catch {
+			} catch (error) {
+				console.debug('Failed to fetch wellness stats, using defaults:', error);
 				return {
 					wellnessScore: 75,
 					totalCheckIns: 0,
@@ -88,7 +89,8 @@ export function useWellnessScore(): number {
 		queryFn: async () => {
 			try {
 				return await getWellnessStats();
-			} catch {
+			} catch (error) {
+				console.debug('Failed to fetch wellness score, using default:', error);
 				return {
 					wellnessScore: 75,
 					totalCheckIns: 0,

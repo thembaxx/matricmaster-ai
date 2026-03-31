@@ -1,0 +1,20 @@
+'use client';
+
+import { RouteError } from '@/components/RouteError';
+
+export default function ProfileError({
+	error,
+	reset,
+}: {
+	error: Error & { digest?: string };
+	reset: () => void;
+}) {
+	return (
+		<RouteError
+			error={error}
+			reset={reset}
+			title="profile error"
+			description="unable to load your profile. please try again."
+		/>
+	);
+}

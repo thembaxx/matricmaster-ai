@@ -3,7 +3,7 @@
 import { and, count, eq } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
 import { headers } from 'next/headers';
-import { ACHIEVEMENTS, getAchievementById } from '@/constants/achievements';
+import { ACHIEVEMENTS, getAchievementById } from '@/content';
 import { getAuth } from '@/lib/auth';
 import { type DbType, dbManager } from '@/lib/db';
 import { bookmarks, studySessions, userAchievements, userProgress } from '@/lib/db/schema';

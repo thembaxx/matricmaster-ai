@@ -16,7 +16,7 @@ import { ThemeCard } from '@/components/SetworkLibrary/ThemeCard';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { getSetworkById } from '@/data/setworks';
+import { getSetworkById } from '@/content/setworks';
 
 interface PageProps {
 	params: Promise<{ id: string }>;

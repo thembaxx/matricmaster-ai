@@ -9,6 +9,9 @@ import { getPostgresAuthAdapter } from './db/adapters/postgres-drizzle';
 import { getSQLiteAuthAdapter } from './db/adapters/sqlite-drizzle';
 import { dbManagerV2 } from './db/database-manager-v2';
 import { sqliteManager } from './db/sqlite-manager';
+import { logger } from './logger';
+
+const log = logger.createLogger('Auth');
 
 // Type for the auth instance
 type AuthInstance = ReturnType<typeof betterAuth>;
@@ -26,12 +29,12 @@ export const authConfig = {
 	secret: process.env.BETTER_AUTH_SECRET,
 	emailAndPassword: {
 		enabled: true,
-		requireEmailVerification: process.env.NODE_ENV === 'production',
+		requireEmailVerification: false,
 	},
 	socialProviders: {
 		google: {
 			clientId: process.env.GOOGLE_CLIENT_ID ?? '',
-			clientSecret: process.env.GOOGLE_SECRET_KEY ?? '',
+			clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? process.env.GOOGLE_SECRET_KEY ?? '',
 		},
 	},
 	session: {
@@ -109,6 +112,7 @@ export const authConfig = {
 };
 
 // Define the User type with additional fields to match our schema
+// Extends the base BetterAuth user type with custom fields
 interface ExtendedUser {
 	id: string;
 	createdAt: Date;
@@ -117,11 +121,13 @@ interface ExtendedUser {
 	emailVerified: boolean;
 	name: string;
 	image?: string | null;
-	role: string;
-	isBlocked: boolean;
+	// Custom fields
+	role?: string;
+	isBlocked?: boolean;
 	deletedAt?: Date | null;
-	twoFactorEnabled: boolean;
-	hasCompletedOnboarding: boolean;
+	twoFactorEnabled?: boolean;
+	hasCompletedOnboarding?: boolean;
+	[key: string]: unknown; // Index signature for BetterAuth compatibility
 }
 
 async function createAuth(): Promise<AuthInstance> {
@@ -133,10 +139,9 @@ async function createAuth(): Promise<AuthInstance> {
 			adapter = getPostgresAuthAdapter();
 		} catch (error) {
 			if (!isBuildTime) {
-				console.warn(
-					'⚠️ Failed to get PostgreSQL adapter - Better Auth will not persist sessions:',
-					error
-				);
+				log.warn('Failed to get PostgreSQL adapter - Better Auth will not persist sessions', {
+					error,
+				});
 			}
 		}
 	}
@@ -148,39 +153,71 @@ async function createAuth(): Promise<AuthInstance> {
 			await sqliteManager.connect();
 			adapter = getSQLiteAuthAdapter();
 			if (!isBuildTime) {
-				console.warn('⚠️ Using SQLite fallback - Better Auth data will be stored locally');
+				log.warn('Using SQLite fallback - Better Auth data will be stored locally');
 			}
 		} catch (error) {
 			if (!isBuildTime) {
-				console.warn(
-					'⚠️ Failed to get SQLite adapter - Better Auth will not persist sessions:',
-					error
-				);
+				log.warn('Failed to get SQLite adapter - Better Auth will not persist sessions', { error });
 			}
 		}
 	}
 
+	const googleClientId = process.env.GOOGLE_CLIENT_ID;
+	const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET ?? process.env.GOOGLE_SECRET_KEY;
 	const twitterClientId = process.env.TWITTER_CLIENT_ID;
 	const twitterClientSecret = process.env.TWITTER_CLIENT_SECRET;
+	const facebookClientId = process.env.FACEBOOK_CLIENT_ID;
+	const facebookClientSecret = process.env.FACEBOOK_CLIENT_SECRET;
 
-	if (!isBuildTime && (!twitterClientId || !twitterClientSecret)) {
-		console.warn(
-			'⚠️ Twitter OAuth credentials are not configured. Sign in with Twitter will not be available.'
-		);
+	if (!isBuildTime) {
+		if (!googleClientId || !googleClientSecret) {
+			log.warn(
+				'Google OAuth credentials are not configured. Sign in with Google will not be available.'
+			);
+		}
+		if (!twitterClientId || !twitterClientSecret) {
+			log.warn(
+				'Twitter OAuth credentials are not configured. Sign in with Twitter will not be available.'
+			);
+		}
+		if (!facebookClientId || !facebookClientSecret) {
+			log.warn(
+				'Facebook OAuth credentials are not configured. Sign in with Facebook will not be available.'
+			);
+		}
 	}
 
-	const socialProviders: Record<string, { clientId: string; clientSecret: string }> = {
-		google: {
-			clientId: process.env.GOOGLE_CLIENT_ID ?? '',
-			clientSecret: process.env.GOOGLE_SECRET_KEY ?? '',
-		},
+	const socialProviders: Record<string, { clientId: string; clientSecret: string }> = {};
+
+	// Only add providers if credentials are not empty and not placeholder values
+	const isValidCredential = (id: string | undefined, secret: string | undefined) => {
+		if (!id || !secret) return false;
+		const placeholderPatterns = ['dummy', 'your_', 'placeholder', 'xxx', 'your_'];
+		const lowerId = id.toLowerCase();
+		const lowerSecret = secret.toLowerCase();
+		return !placeholderPatterns.some((p) => lowerId.includes(p) || lowerSecret.includes(p));
 	};
 
+	if (isValidCredential(googleClientId, googleClientSecret)) {
+		socialProviders.google = {
+			clientId: googleClientId!,
+			clientSecret: googleClientSecret!,
+		};
+	}
+
 	// Only add Twitter provider if credentials are available
-	if (twitterClientId && twitterClientSecret) {
+	if (isValidCredential(twitterClientId, twitterClientSecret)) {
 		socialProviders.twitter = {
-			clientId: twitterClientId,
-			clientSecret: twitterClientSecret,
+			clientId: twitterClientId!,
+			clientSecret: twitterClientSecret!,
+		};
+	}
+
+	// Only add Facebook provider if credentials are available
+	if (isValidCredential(facebookClientId, facebookClientSecret)) {
+		socialProviders.facebook = {
+			clientId: facebookClientId!,
+			clientSecret: facebookClientSecret!,
 		};
 	}
 
@@ -199,7 +236,7 @@ async function createAuth(): Promise<AuthInstance> {
 		url: string;
 	}) => {
 		if (!resend) {
-			console.warn('⚠️ Resend not configured - verification email not sent');
+			log.warn('Resend not configured - verification email not sent');
 			return;
 		}
 
@@ -244,15 +281,15 @@ async function createAuth(): Promise<AuthInstance> {
 					</html>
 				`,
 			});
-			console.log(`✅ Verification email sent for user: ${user.id}`);
+			log.info('Verification email sent', { userId: user.id });
 		} catch (error) {
-			console.debug('❌ Failed to send verification email:', error);
+			log.error('Failed to send verification email', { error });
 		}
 	};
 
 	const sendPasswordResetEmail = async ({ email, url }: { email: string; url: string }) => {
 		if (!resend) {
-			console.warn('⚠️ Resend not configured - password reset email not sent');
+			log.warn('Resend not configured - password reset email not sent');
 			return;
 		}
 
@@ -297,9 +334,9 @@ async function createAuth(): Promise<AuthInstance> {
 					</html>
 				`,
 			});
-			console.log('✅ Password reset email sent');
+			log.info('Password reset email sent');
 		} catch (error) {
-			console.debug('❌ Failed to send password reset email:', error);
+			log.error('Failed to send password reset email', { error });
 		}
 	};
 
@@ -317,7 +354,7 @@ async function createAuth(): Promise<AuthInstance> {
 			user: {
 				create: {
 					after: async (user: ExtendedUser) => {
-						console.log(`✅ New user created: ${user.id} (${user.email})`);
+						log.info('New user created', { userId: user.id, email: user.email });
 					},
 				},
 				update: {
@@ -333,12 +370,12 @@ async function createAuth(): Promise<AuthInstance> {
 				},
 			},
 		},
-		plugins: [nextCookies(), authConfig.plugins[0]],
+		plugins: [authConfig.plugins[0], nextCookies()],
 	};
 
 	// Use type assertion to bypass the type mismatch during build
-
-	return betterAuth(runtimeConfig as any);
+	// The drizzleAdapter and runtime config types don't align perfectly but work at runtime
+	return betterAuth(runtimeConfig as Parameters<typeof betterAuth>[0]);
 }
 
 export async function initAuth(): Promise<AuthInstance> {
@@ -371,7 +408,7 @@ export async function getAuth(): Promise<AuthInstance> {
 		try {
 			await dbManager.initialize();
 		} catch (err) {
-			console.debug('❌ Failed to initialize database for auth:', err);
+			log.error('Failed to initialize database for auth', { error: err });
 		}
 
 		if (!authInstance) {
@@ -426,10 +463,10 @@ export const auth = new Proxy({} as AuthInstance, {
 					// When someone accesses auth.api.method, we need to auto-initialize
 					// This is a workaround for backward compatibility
 					// The proper way is to use await getAuth() in your code
-					console.warn('⚠️ Auth accessed without await getAuth(). Auto-initializing...');
+					log.warn('Auth accessed without await getAuth(). Auto-initializing...');
 					// Trigger async initialization but don't wait - this is fire-and-forget
 					// The next call should have auth ready (or fail gracefully)
-					getAuth().catch((err) => console.warn('❌ Failed to auto-initialize auth:', err));
+					getAuth().catch((err) => log.error('Failed to auto-initialize auth', { error: err }));
 					// Return a placeholder that will throw a more helpful error
 					throw new Error(
 						`Auth is being initialized. Please use 'await getAuth()' instead of 'auth' directly.`

@@ -324,4 +324,61 @@ export const useSmartSchedulerStore = create<SmartSchedulerState>((set, get) => 
 			console.error('Failed to save imported blocks:', error);
 		}
 	},
+
+	rescheduleForEnergy: async () => {
+		const { blocks } = get();
+		set({ isLoading: true });
+		try {
+			const response = await fetch('/api/smart-scheduler/reschedule-energy', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ blocks }),
+			});
+			const data = await response.json();
+			if (data.rescheduled) {
+				set({ blocks: data.rescheduled });
+			}
+		} catch (error) {
+			console.error('Failed to reschedule for energy:', error);
+		} finally {
+			set({ isLoading: false });
+		}
+	},
+
+	rescheduleForLoadShedding: async () => {
+		const { blocks } = get();
+		set({ isLoading: true });
+		try {
+			const response = await fetch('/api/smart-scheduler/reschedule-loadshedding', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ blocks }),
+			});
+			const data = await response.json();
+			if (data.rescheduled) {
+				set({ blocks: data.rescheduled });
+			}
+		} catch (error) {
+			console.error('Failed to reschedule for load shedding:', error);
+		} finally {
+			set({ isLoading: false });
+		}
+	},
+
+	applyBurnoutProtection: async () => {
+		set({ isLoading: true });
+		try {
+			const response = await fetch('/api/smart-scheduler/burnout-protection', {
+				method: 'POST',
+			});
+			const data = await response.json();
+			if (data.adjustedBlocks) {
+				set({ blocks: data.adjustedBlocks });
+			}
+		} catch (error) {
+			console.error('Failed to apply burnout protection:', error);
+		} finally {
+			set({ isLoading: false });
+		}
+	},
 }));

@@ -3,7 +3,7 @@
 import { FireIcon, FlashIcon, Medal01Icon, StarIcon } from '@hugeicons/core-free-icons';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
-import { ACHIEVEMENTS } from '@/constants/achievements';
+import { ACHIEVEMENTS } from '@/content';
 import { getUserAchievements } from '@/lib/db/achievement-actions';
 
 export interface Badge {

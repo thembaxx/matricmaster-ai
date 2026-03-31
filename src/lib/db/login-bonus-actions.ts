@@ -2,7 +2,7 @@
 
 import { eq } from 'drizzle-orm';
 import { headers } from 'next/headers';
-import { getDailyLoginReward } from '@/constants/rewards';
+import { getDailyLoginReward } from '@/content';
 import { getAuth } from '@/lib/auth';
 import { type DbType, dbManager } from '@/lib/db';
 import { userProgress } from '@/lib/db/schema';
@@ -38,29 +38,72 @@ export interface ClaimLoginBonusResult {
 	message: string;
 }
 
-function isSameDay(date1: Date, date2: Date): boolean {
+function getDateInTimezone(date: Date, timezone: string): Date {
+	const formatter = new Intl.DateTimeFormat('en-US', {
+		timeZone: timezone,
+		year: 'numeric',
+		month: '2-digit',
+		day: '2-digit',
+	});
+	const parts = formatter.formatToParts(date);
+	const year = Number.parseInt(parts.find((p) => p.type === 'year')?.value || '0', 10);
+	const month = Number.parseInt(parts.find((p) => p.type === 'month')?.value || '0', 10) - 1;
+	const day = Number.parseInt(parts.find((p) => p.type === 'day')?.value || '0', 10);
+	return new Date(year, month, day);
+}
+
+function isSameDay(date1: Date, date2: Date, timezone = 'Africa/Johannesburg'): boolean {
+	const d1 = getDateInTimezone(date1, timezone);
+	const d2 = getDateInTimezone(date2, timezone);
 	return (
-		date1.getFullYear() === date2.getFullYear() &&
-		date1.getMonth() === date2.getMonth() &&
-		date1.getDate() === date2.getDate()
+		d1.getFullYear() === d2.getFullYear() &&
+		d1.getMonth() === d2.getMonth() &&
+		d1.getDate() === d2.getDate()
 	);
 }
 
-function isYesterday(date1: Date, date2: Date): boolean {
-	const yesterday = new Date(date2);
+function isYesterday(date1: Date, date2: Date, timezone = 'Africa/Johannesburg'): boolean {
+	const d1 = getDateInTimezone(date1, timezone);
+	const d2 = getDateInTimezone(date2, timezone);
+	const yesterday = new Date(d2);
 	yesterday.setDate(yesterday.getDate() - 1);
-	return isSameDay(date1, yesterday);
+	return (
+		d1.getFullYear() === yesterday.getFullYear() &&
+		d1.getMonth() === yesterday.getMonth() &&
+		d1.getDate() === yesterday.getDate()
+	);
 }
 
-function getMillisecondsUntilMidnight(): number {
+function getMillisecondsUntilMidnight(timezone = 'Africa/Johannesburg'): number {
 	const now = new Date();
-	const midnight = new Date(now);
-	midnight.setDate(midnight.getDate() + 1);
-	midnight.setHours(0, 0, 0, 0);
-	return midnight.getTime() - now.getTime();
+	const formatter = new Intl.DateTimeFormat('en-US', {
+		timeZone: timezone,
+		year: 'numeric',
+		month: '2-digit',
+		day: '2-digit',
+		hour: '2-digit',
+		minute: '2-digit',
+		second: '2-digit',
+		hour12: false,
+	});
+	const parts = formatter.formatToParts(now);
+	const getPart = (type: string) =>
+		Number.parseInt(parts.find((p) => p.type === type)?.value || '0', 10);
+
+	const year = getPart('year');
+	const month = getPart('month') - 1;
+	const day = getPart('day');
+
+	// Create midnight in user's timezone by setting to next day at 00:00:00
+	const userNow = new Date(year, month, day, getPart('hour'), getPart('minute'), getPart('second'));
+	const midnight = new Date(year, month, day + 1, 0, 0, 0);
+
+	return midnight.getTime() - userNow.getTime();
 }
 
-export async function getLoginBonusStatus(): Promise<LoginBonusStatus> {
+export async function getLoginBonusStatus(
+	timezone = 'Africa/Johannesburg'
+): Promise<LoginBonusStatus> {
 	const auth = await getAuth();
 	const session = await auth.api.getSession({
 		headers: await headers(),
@@ -108,7 +151,7 @@ export async function getLoginBonusStatus(): Promise<LoginBonusStatus> {
 		const now = new Date();
 
 		let canClaim = true;
-		if (lastClaimedAt && isSameDay(lastClaimedAt, now)) {
+		if (lastClaimedAt && isSameDay(lastClaimedAt, now, timezone)) {
 			canClaim = false;
 		}
 
@@ -126,7 +169,7 @@ export async function getLoginBonusStatus(): Promise<LoginBonusStatus> {
 					}
 				: null,
 			lastClaimedAt: lastClaimedAt || null,
-			timeUntilNextClaim: canClaim ? 0 : getMillisecondsUntilMidnight(),
+			timeUntilNextClaim: canClaim ? 0 : getMillisecondsUntilMidnight(timezone),
 		};
 	} catch (error) {
 		console.debug('[LoginBonus] Error getting status:', error);
@@ -140,7 +183,9 @@ export async function getLoginBonusStatus(): Promise<LoginBonusStatus> {
 	}
 }
 
-export async function claimLoginBonus(): Promise<ClaimLoginBonusResult> {
+export async function claimLoginBonus(
+	timezone = 'Africa/Johannesburg'
+): Promise<ClaimLoginBonusResult> {
 	const auth = await getAuth();
 	const session = await auth.api.getSession({
 		headers: await headers(),
@@ -183,7 +228,7 @@ export async function claimLoginBonus(): Promise<ClaimLoginBonusResult> {
 		const lastClaimedAt = progress.lastLoginBonusAt;
 		const now = new Date();
 
-		if (lastClaimedAt && isSameDay(lastClaimedAt, now)) {
+		if (lastClaimedAt && isSameDay(lastClaimedAt, now, timezone)) {
 			return {
 				success: false,
 				xpEarned: 0,
@@ -196,7 +241,7 @@ export async function claimLoginBonus(): Promise<ClaimLoginBonusResult> {
 		}
 
 		let newConsecutiveDays = 1;
-		if (lastClaimedAt && isYesterday(lastClaimedAt, now)) {
+		if (lastClaimedAt && isYesterday(lastClaimedAt, now, timezone)) {
 			newConsecutiveDays = (progress.consecutiveLoginDays || 0) + 1;
 		}
 

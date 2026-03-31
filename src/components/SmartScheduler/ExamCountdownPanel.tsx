@@ -3,7 +3,7 @@
 import { differenceInDays } from 'date-fns';
 import { useEffect, useState } from 'react';
 import { Card } from '@/components/ui/card';
-import { NSC_EXAM_DATES, SUBJECT_COLORS } from '@/data/exam-dates';
+import { NSC_EXAM_DATES, SUBJECT_COLORS } from '@/content';
 import { cn } from '@/lib/utils';
 import { useSmartSchedulerStore } from '@/stores/useSmartSchedulerStore';
 import type { ExamCountdown } from '@/types/smart-scheduler';

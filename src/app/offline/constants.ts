@@ -1,4 +1,4 @@
-import { SUBJECTS } from '@/constants/subjects';
+import { SUBJECTS } from '@/content';
 
 export { SUBJECTS };
 

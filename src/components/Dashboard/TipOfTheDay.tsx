@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import quickTips from '@/data/quick-tips.json';
+import quickTips from '@/content/quick-tips.json';
 
 interface Tip {
 	id: string;
@@ -106,7 +106,7 @@ export function TipOfTheDay({ weakTopics = DEFAULT_WEAK_TOPICS }: TipOfTheDayPro
 					className="text-xs text-amber-600 hover:text-amber-700 hover:bg-amber-50 dark:hover:bg-amber-950 p-0 h-auto"
 					onClick={() =>
 						router.push(
-							`/tutor?topic=${encodeURIComponent(tip.topic)}&subject=${encodeURIComponent(tip.subject)}&prompt=${encodeURIComponent(`Explain ${tip.title} in detail with examples`)}`
+							`/ai-tutor?topic=${encodeURIComponent(tip.topic)}&subject=${encodeURIComponent(tip.subject)}&context=${encodeURIComponent(`Explain ${tip.title} in detail with examples`)}`
 						)
 					}
 				>

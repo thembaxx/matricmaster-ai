@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 
 import { appConfig } from '@/app.config';
 import { SetworkCard } from '@/components/SetworkLibrary/SetworkCard';
-import { setworks } from '@/data/setworks';
+import { setworks } from '@/content/setworks';
 
 export const metadata: Metadata = {
 	title: `Setwork Library | ${appConfig.name} AI`,

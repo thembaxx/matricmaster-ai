@@ -12,9 +12,11 @@ class SQLiteManager {
 	private dbPath: string;
 
 	private constructor() {
-		this.dbPath = process.env.SQLITE_DB_PATH || path.join(process.cwd(), 'data', 'sqlite.db');
+		this.dbPath =
+			process.env.SQLITE_DB_PATH ||
+			path.join(/*turbopackIgnore: true*/ process.cwd(), 'data', 'sqlite.db');
 		if (!path.isAbsolute(this.dbPath)) {
-			this.dbPath = path.resolve(process.cwd(), this.dbPath);
+			this.dbPath = path.resolve(/*turbopackIgnore: true*/ process.cwd(), this.dbPath);
 		}
 	}
 
@@ -31,7 +33,7 @@ class SQLiteManager {
 		}
 
 		try {
-			const fs = await import('node:fs');
+			const fs = await import(/*turbopackIgnore: true*/ 'node:fs');
 			const dir = path.dirname(this.dbPath);
 			if (dir && !fs.existsSync(dir)) {
 				fs.mkdirSync(dir, { recursive: true });

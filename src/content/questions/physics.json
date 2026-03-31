@@ -1,0 +1,956 @@
+{
+	"phys-p1-2023-nov": {
+		"title": "NSC Physical Sciences P1 November 2023",
+		"subject": "Physical Sciences",
+		"year": 2023,
+		"session": "November",
+		"paper": 1,
+		"questions": [
+			{
+				"id": "phys-2023-p1-q1",
+				"question": "A 5kg object is pushed with a force of 20N. Calculate its acceleration.",
+				"options": [
+					{
+						"id": "A",
+						"text": "4 m/s²"
+					},
+					{
+						"id": "B",
+						"text": "10 m/s²"
+					},
+					{
+						"id": "C",
+						"text": "2 m/s²"
+					},
+					{
+						"id": "D",
+						"text": "25 m/s²"
+					}
+				],
+				"correctAnswer": "A",
+				"hint": "Using F = ma, a = F/m = 20N / 5kg = 4 m/s²",
+				"diagram": "force",
+				"topic": "Mechanics",
+				"subtopic": "Newton's Second Law",
+				"difficulty": "easy"
+			},
+			{
+				"id": "phys-2023-p1-q2",
+				"question": "A car travels 100m in 5s at constant velocity. What is its velocity?",
+				"options": [
+					{
+						"id": "A",
+						"text": "20 m/s"
+					},
+					{
+						"id": "B",
+						"text": "10 m/s"
+					},
+					{
+						"id": "C",
+						"text": "500 m/s"
+					},
+					{
+						"id": "D",
+						"text": "0.05 m/s"
+					}
+				],
+				"correctAnswer": "A",
+				"hint": "v = d/t = 100m / 5s = 20 m/s",
+				"topic": "Kinematics",
+				"subtopic": "Velocity",
+				"difficulty": "easy"
+			},
+			{
+				"id": "phys-2023-p1-q3",
+				"question": "A ball is thrown upwards with initial velocity 20 m/s. What maximum height does it reach? (g = 10 m/s²)",
+				"options": [
+					{
+						"id": "A",
+						"text": "20 m"
+					},
+					{
+						"id": "B",
+						"text": "10 m"
+					},
+					{
+						"id": "C",
+						"text": "40 m"
+					},
+					{
+						"id": "D",
+						"text": "2 m"
+					}
+				],
+				"correctAnswer": "A",
+				"hint": "At max height, v = 0. Using v² = u² + 2as: 0 = 20² + 2(-10)s. 400 = 20s, s = 20m",
+				"diagram": "projectile",
+				"topic": "Kinematics",
+				"subtopic": "Projectile Motion",
+				"difficulty": "medium"
+			},
+			{
+				"id": "phys-2023-p1-q4",
+				"question": "The momentum of a 2kg object moving at 3 m/s is:",
+				"options": [
+					{
+						"id": "A",
+						"text": "6 kg·m/s"
+					},
+					{
+						"id": "B",
+						"text": "1.5 kg·m/s"
+					},
+					{
+						"id": "C",
+						"text": "5 kg·m/s"
+					},
+					{
+						"id": "D",
+						"text": "6 N"
+					}
+				],
+				"correctAnswer": "A",
+				"hint": "p = mv = 2kg × 3m/s = 6 kg·m/s",
+				"topic": "Mechanics",
+				"subtopic": "Momentum",
+				"difficulty": "easy"
+			},
+			{
+				"id": "phys-2023-p1-q5",
+				"question": "A force of 10N acts for 3s on a 2kg object initially at rest. What is the final velocity?",
+				"options": [
+					{
+						"id": "A",
+						"text": "15 m/s"
+					},
+					{
+						"id": "B",
+						"text": "5 m/s"
+					},
+					{
+						"id": "C",
+						"text": "60 m/s"
+					},
+					{
+						"id": "D",
+						"text": "0.6 m/s"
+					}
+				],
+				"correctAnswer": "A",
+				"hint": "F = ma = 10N/2kg = 5 m/s². v = at = 5 × 3 = 15 m/s.",
+				"diagram": "force",
+				"topic": "Mechanics",
+				"subtopic": "Impulse",
+				"difficulty": "medium"
+			},
+			{
+				"id": "phys-2023-p1-q6",
+				"question": "A 10kg object is lifted 5m vertically. What work is done? (g = 10 m/s²)",
+				"options": [
+					{
+						"id": "A",
+						"text": "500 J"
+					},
+					{
+						"id": "B",
+						"text": "50 J"
+					},
+					{
+						"id": "C",
+						"text": "2 J"
+					},
+					{
+						"id": "D",
+						"text": "5000 J"
+					}
+				],
+				"correctAnswer": "A",
+				"hint": "W = Fd = mgd = 10kg × 10m/s² × 5m = 500 J",
+				"topic": "Mechanics",
+				"subtopic": "Work",
+				"difficulty": "easy"
+			},
+			{
+				"id": "phys-2023-p1-q7",
+				"question": "A car of mass 1000kg accelerates from 0 to 20 m/s in 10s. What is its average power output?",
+				"options": [
+					{
+						"id": "A",
+						"text": "20 kW"
+					},
+					{
+						"id": "B",
+						"text": "2 kW"
+					},
+					{
+						"id": "C",
+						"text": "200 kW"
+					},
+					{
+						"id": "D",
+						"text": "2000 kW"
+					}
+				],
+				"correctAnswer": "A",
+				"hint": "Work = ΔKE = ½m(v² - u²) = ½×1000×(400-0) = 200,000 J. Power = W/t = 200,000/10 = 20,000 W = 20 kW",
+				"diagram": "force",
+				"topic": "Mechanics",
+				"subtopic": "Power",
+				"difficulty": "hard"
+			},
+			{
+				"id": "phys-2023-p1-q8",
+				"question": "A 2kg ball falls from 10m height. What is its velocity just before hitting the ground? (g = 10 m/s²)",
+				"options": [
+					{
+						"id": "A",
+						"text": "14.14 m/s"
+					},
+					{
+						"id": "B",
+						"text": "10 m/s"
+					},
+					{
+						"id": "C",
+						"text": "20 m/s"
+					},
+					{
+						"id": "D",
+						"text": "100 m/s"
+					}
+				],
+				"correctAnswer": "A",
+				"hint": "v² = u² + 2gs = 0 + 2×10×10 = 200, v = √200 ≈ 14.14 m/s",
+				"topic": "Kinematics",
+				"subtopic": "Free Fall",
+				"difficulty": "medium"
+			},
+			{
+				"id": "phys-2023-p1-q9",
+				"question": "Three forces of 3N, 4N, and 5N act on an object. Which arrangement gives ZERO resultant?",
+				"options": [
+					{
+						"id": "A",
+						"text": "3N and 4N at 90 deg, 5N opposite to resultant"
+					},
+					{
+						"id": "B",
+						"text": "All in the same direction"
+					},
+					{
+						"id": "C",
+						"text": "All mutually perpendicular"
+					},
+					{
+						"id": "D",
+						"text": "3N and 4N opposite, 5N perpendicular"
+					}
+				],
+				"correctAnswer": "A",
+				"hint": "3, 4, 5 form a right triangle. √(3²+4²) = 5.",
+				"diagram": "vector",
+				"topic": "Mechanics",
+				"subtopic": "Vector Addition",
+				"difficulty": "hard"
+			},
+			{
+				"id": "phys-2023-p1-q10",
+				"question": "A 1kg object has kinetic energy 50J. What is its speed?",
+				"options": [
+					{
+						"id": "A",
+						"text": "10 m/s"
+					},
+					{
+						"id": "B",
+						"text": "50 m/s"
+					},
+					{
+						"id": "C",
+						"text": "7.07 m/s"
+					},
+					{
+						"id": "D",
+						"text": "100 m/s"
+					}
+				],
+				"correctAnswer": "A",
+				"hint": "KE = ½mv², so 50 = ½×1×v², v² = 100, v = 10 m/s",
+				"topic": "Mechanics",
+				"subtopic": "Kinetic Energy",
+				"difficulty": "easy"
+			},
+			{
+				"id": "phys-2023-p1-q11",
+				"question": "A horizontal force of 20N pushes a 5kg block across a rough surface (μ = 0.3). What is the acceleration? (g = 10 m/s²)",
+				"options": [
+					{
+						"id": "A",
+						"text": "1 m/s²"
+					},
+					{
+						"id": "B",
+						"text": "4 m/s²"
+					},
+					{
+						"id": "C",
+						"text": "2 m/s²"
+					},
+					{
+						"id": "D",
+						"text": "0 m/s²"
+					}
+				],
+				"correctAnswer": "A",
+				"hint": "Normal force N = mg = 50N. Friction f = μN = 15N. Net force = 20-15 = 5N. a = F/m = 1 m/s²",
+				"diagram": "force",
+				"topic": "Mechanics",
+				"subtopic": "Friction",
+				"difficulty": "medium"
+			},
+			{
+				"id": "phys-2023-p1-q12",
+				"question": "Two identical balls collide elastically. Ball A (2kg) moves at 3m/s, Ball B (2kg) is stationary. What are their velocities after collision?",
+				"options": [
+					{
+						"id": "A",
+						"text": "A: 0, B: 3 m/s"
+					},
+					{
+						"id": "B",
+						"text": "A: 3 m/s, B: 0"
+					},
+					{
+						"id": "C",
+						"text": "A: 1.5 m/s, B: 1.5 m/s"
+					},
+					{
+						"id": "D",
+						"text": "A: -3 m/s, B: 3 m/s"
+					}
+				],
+				"correctAnswer": "A",
+				"hint": "In elastic collision of equal masses, velocities are exchanged.",
+				"diagram": "vector",
+				"topic": "Mechanics",
+				"subtopic": "Elastic Collisions",
+				"difficulty": "medium"
+			},
+			{
+				"id": "phys-2023-p1-q13",
+				"question": "A pulley system has velocity ratio 4. What force is needed to lift a 200N load?",
+				"options": [
+					{
+						"id": "A",
+						"text": "50 N"
+					},
+					{
+						"id": "B",
+						"text": "800 N"
+					},
+					{
+						"id": "C",
+						"text": "200 N"
+					},
+					{
+						"id": "D",
+						"text": "100 N"
+					}
+				],
+				"correctAnswer": "A",
+				"hint": "Effort = Load/VR = 200/4 = 50N",
+				"diagram": "circle",
+				"topic": "Mechanics",
+				"subtopic": "Machines",
+				"difficulty": "medium"
+			},
+			{
+				"id": "phys-2023-p1-q14",
+				"question": "A car travels around a circular track at constant speed. Which statement is TRUE?",
+				"options": [
+					{
+						"id": "A",
+						"text": "Its velocity is changing"
+					},
+					{
+						"id": "B",
+						"text": "Its acceleration is zero"
+					},
+					{
+						"id": "C",
+						"text": "No forces act on it"
+					},
+					{
+						"id": "D",
+						"text": "Its speed is changing"
+					}
+				],
+				"correctAnswer": "A",
+				"hint": "Constant speed but changing direction means velocity changes.",
+				"diagram": "vector",
+				"topic": "Kinematics",
+				"subtopic": "Circular Motion",
+				"difficulty": "medium"
+			},
+			{
+				"id": "phys-2023-p1-q16",
+				"question": "What is the weight of a 5kg object on the Moon? (g_moon = 1.6 m/s²)",
+				"options": [
+					{
+						"id": "A",
+						"text": "8 N"
+					},
+					{
+						"id": "B",
+						"text": "50 N"
+					},
+					{
+						"id": "C",
+						"text": "3.125 N"
+					},
+					{
+						"id": "D",
+						"text": "5 N"
+					}
+				],
+				"correctAnswer": "A",
+				"hint": "W = mg = 5 × 1.6 = 8 N",
+				"topic": "Mechanics",
+				"subtopic": "Weight",
+				"difficulty": "easy"
+			},
+			{
+				"id": "phys-2023-p1-q17",
+				"question": "A projectile is fired at 45° with speed 20 m/s. What is its maximum height? (g = 10 m/s²)",
+				"options": [
+					{
+						"id": "A",
+						"text": "10 m"
+					},
+					{
+						"id": "B",
+						"text": "20 m"
+					},
+					{
+						"id": "C",
+						"text": "5 m"
+					},
+					{
+						"id": "D",
+						"text": "40 m"
+					}
+				],
+				"correctAnswer": "A",
+				"hint": "u_y = u sin45° = 14.14 m/s. H = u_y²/(2g) = 200/20 = 10 m",
+				"diagram": "projectile",
+				"topic": "Kinematics",
+				"subtopic": "Projectiles",
+				"difficulty": "medium"
+			},
+			{
+				"id": "phys-2023-p1-q19",
+				"question": "A satellite orbits Earth at 8km/s. What centripetal acceleration? (radius = 7000km)",
+				"options": [
+					{
+						"id": "A",
+						"text": "9.14 m/s²"
+					},
+					{
+						"id": "B",
+						"text": "0.009 m/s²"
+					},
+					{
+						"id": "C",
+						"text": "91.4 m/s²"
+					},
+					{
+						"id": "D",
+						"text": "0.091 m/s²"
+					}
+				],
+				"correctAnswer": "A",
+				"hint": "a = v²/r = (8000)² / (7×10⁶) ≈ 9.14 m/s²",
+				"diagram": "circle",
+				"topic": "Kinematics",
+				"subtopic": "Orbital Motion",
+				"difficulty": "hard"
+			},
+			{
+				"id": "phys-2023-p1-q20",
+				"question": "An object weighs 60N on Earth. What is its mass? (g = 10 m/s²)",
+				"options": [
+					{
+						"id": "A",
+						"text": "6 kg"
+					},
+					{
+						"id": "B",
+						"text": "60 kg"
+					},
+					{
+						"id": "C",
+						"text": "600 kg"
+					},
+					{
+						"id": "D",
+						"text": "0.6 kg"
+					}
+				],
+				"correctAnswer": "A",
+				"hint": "W = mg, so m = W/g = 60/10 = 6 kg",
+				"topic": "Mechanics",
+				"subtopic": "Weight and Mass",
+				"difficulty": "easy"
+			}
+		]
+	},
+	"phys-p2-2023-nov": {
+		"title": "NSC Physical Sciences P2 November 2023",
+		"subject": "Physical Sciences",
+		"year": 2023,
+		"session": "November",
+		"paper": 2,
+		"questions": [
+			{
+				"id": "phys-2023-p2-q1",
+				"question": "A current of 2A flows through a 10Ω resistor. What voltage is across it?",
+				"options": [
+					{
+						"id": "A",
+						"text": "20 V"
+					},
+					{
+						"id": "B",
+						"text": "5 V"
+					},
+					{
+						"id": "C",
+						"text": "12 V"
+					},
+					{
+						"id": "D",
+						"text": "0.2 V"
+					}
+				],
+				"correctAnswer": "A",
+				"hint": "V = IR = 2A × 10Ω = 20V",
+				"topic": "Electricity",
+				"subtopic": "Ohm's Law",
+				"difficulty": "easy"
+			},
+			{
+				"id": "phys-2023-p2-q2",
+				"question": "Three resistors of 2Ω, 3Ω, and 6Ω are connected in parallel. What is the equivalent resistance?",
+				"options": [
+					{
+						"id": "A",
+						"text": "1 Ω"
+					},
+					{
+						"id": "B",
+						"text": "11 Ω"
+					},
+					{
+						"id": "C",
+						"text": "2 Ω"
+					},
+					{
+						"id": "D",
+						"text": "5.5 Ω"
+					}
+				],
+				"correctAnswer": "A",
+				"hint": "1/R = 1/2 + 1/3 + 1/6 = 1. So R = 1Ω",
+				"diagram": "circuit",
+				"topic": "Electricity",
+				"subtopic": "Parallel Circuits",
+				"difficulty": "medium"
+			},
+			{
+				"id": "phys-2023-p2-q3",
+				"question": "A 100W bulb operates on 220V. What is its resistance?",
+				"options": [
+					{
+						"id": "A",
+						"text": "484 Ω"
+					},
+					{
+						"id": "B",
+						"text": "2.2 Ω"
+					},
+					{
+						"id": "C",
+						"text": "22000 Ω"
+					},
+					{
+						"id": "D",
+						"text": "440 Ω"
+					}
+				],
+				"correctAnswer": "A",
+				"hint": "P = V²/R, so R = V²/P = 220²/100 = 484Ω",
+				"topic": "Electricity",
+				"subtopic": "Power",
+				"difficulty": "medium"
+			},
+			{
+				"id": "phys-2023-p2-q4",
+				"question": "The frequency of a wave is 100Hz and wavelength is 2m. What is the wave speed?",
+				"options": [
+					{
+						"id": "A",
+						"text": "200 m/s"
+					},
+					{
+						"id": "B",
+						"text": "50 m/s"
+					},
+					{
+						"id": "C",
+						"text": "102 m/s"
+					},
+					{
+						"id": "D",
+						"text": "0.02 m/s"
+					}
+				],
+				"correctAnswer": "A",
+				"hint": "v = fλ = 100Hz × 2m = 200 m/s",
+				"topic": "Waves",
+				"subtopic": "Wave Equation",
+				"difficulty": "easy"
+			},
+			{
+				"id": "phys-2023-p2-q5",
+				"question": "Light enters glass (n = 1.5) from air at 30° to the normal. What is the angle of refraction?",
+				"options": [
+					{
+						"id": "A",
+						"text": "19.5°"
+					},
+					{
+						"id": "B",
+						"text": "45°"
+					},
+					{
+						"id": "C",
+						"text": "30°"
+					},
+					{
+						"id": "D",
+						"text": "15°"
+					}
+				],
+				"correctAnswer": "A",
+				"hint": "Using Snell's law: n₁ sinθ₁ = n₂ sinθ₂. sinθ₂ = 0.5/1.5. θ₂ ≈ 19.5°",
+				"diagram": "wave",
+				"topic": "Waves",
+				"subtopic": "Refraction",
+				"difficulty": "medium"
+			},
+			{
+				"id": "phys-2023-p2-q6",
+				"question": "The power dissipated in a 4Ω resistor with 12V across it is:",
+				"options": [
+					{
+						"id": "A",
+						"text": "36 W"
+					},
+					{
+						"id": "B",
+						"text": "3 W"
+					},
+					{
+						"id": "C",
+						"text": "48 W"
+					},
+					{
+						"id": "D",
+						"text": "0.33 W"
+					}
+				],
+				"correctAnswer": "A",
+				"hint": "P = V²/R = 144/4 = 36W",
+				"topic": "Electricity",
+				"subtopic": "Power",
+				"difficulty": "easy"
+			},
+			{
+				"id": "phys-2023-p2-q7",
+				"question": "Two point charges of +2μC and -2μC are 0.1m apart. What is the force between them?",
+				"options": [
+					{
+						"id": "A",
+						"text": "3.6 N (attractive)"
+					},
+					{
+						"id": "B",
+						"text": "3.6 N (repulsive)"
+					},
+					{
+						"id": "C",
+						"text": "36 N (attractive)"
+					},
+					{
+						"id": "D",
+						"text": "0.36 N (attractive)"
+					}
+				],
+				"correctAnswer": "A",
+				"hint": "F = kq₁q₂/r² = 3.6N.",
+				"diagram": "vector",
+				"topic": "Electricity",
+				"subtopic": "Coulomb's Law",
+				"difficulty": "hard"
+			},
+			{
+				"id": "phys-2023-p2-q8",
+				"question": "A copper wire has resistance R. If its length is doubled and cross-section halved, what is the new resistance?",
+				"options": [
+					{
+						"id": "A",
+						"text": "4R"
+					},
+					{
+						"id": "B",
+						"text": "R/4"
+					},
+					{
+						"id": "C",
+						"text": "R/2"
+					},
+					{
+						"id": "D",
+						"text": "2R"
+					}
+				],
+				"correctAnswer": "A",
+				"hint": "R ∝ L/A. New R ∝ (2L)/(A/2) = 4R",
+				"topic": "Electricity",
+				"subtopic": "Resistance",
+				"difficulty": "medium"
+			},
+			{
+				"id": "phys-2023-p2-q9",
+				"question": "The period of a wave with frequency 50Hz is:",
+				"options": [
+					{
+						"id": "A",
+						"text": "0.02 s"
+					},
+					{
+						"id": "B",
+						"text": "50 s"
+					},
+					{
+						"id": "C",
+						"text": "0.05 s"
+					},
+					{
+						"id": "D",
+						"text": "100 s"
+					}
+				],
+				"correctAnswer": "A",
+				"hint": "T = 1/f = 1/50 = 0.02s",
+				"topic": "Waves",
+				"subtopic": "Period and Frequency",
+				"difficulty": "easy"
+			},
+			{
+				"id": "phys-2023-p2-q10",
+				"question": "A ray of light reflects off a mirror. If the angle of incidence is 30°, what is the angle between incident and reflected rays?",
+				"options": [
+					{
+						"id": "A",
+						"text": "60°"
+					},
+					{
+						"id": "B",
+						"text": "30°"
+					},
+					{
+						"id": "C",
+						"text": "90°"
+					},
+					{
+						"id": "D",
+						"text": "120°"
+					}
+				],
+				"correctAnswer": "A",
+				"hint": "Angle of incidence = angle of reflection = 30°. Total = 60°",
+				"diagram": "wave",
+				"topic": "Waves",
+				"subtopic": "Reflection",
+				"difficulty": "easy"
+			},
+			{
+				"id": "phys-2023-p2-q11",
+				"question": "In an AC circuit, voltage peaks at 340V. What is the RMS voltage?",
+				"options": [
+					{
+						"id": "A",
+						"text": "240 V"
+					},
+					{
+						"id": "B",
+						"text": "170 V"
+					},
+					{
+						"id": "C",
+						"text": "680 V"
+					},
+					{
+						"id": "D",
+						"text": "120 V"
+					}
+				],
+				"correctAnswer": "A",
+				"hint": "V_rms = V_peak/√2 ≈ 240V",
+				"topic": "Electricity",
+				"subtopic": "AC Circuits",
+				"difficulty": "medium"
+			},
+			{
+				"id": "phys-2023-p2-q12",
+				"question": "The critical angle for glass to air interface is 42°. What is the refractive index of glass?",
+				"options": [
+					{
+						"id": "A",
+						"text": "1.48"
+					},
+					{
+						"id": "B",
+						"text": "0.74"
+					},
+					{
+						"id": "C",
+						"text": "2.38"
+					},
+					{
+						"id": "D",
+						"text": "0.42"
+					}
+				],
+				"correctAnswer": "A",
+				"hint": "n_glass = 1/sin(critical angle) ≈ 1.48",
+				"diagram": "wave",
+				"topic": "Waves",
+				"subtopic": "Total Internal Reflection",
+				"difficulty": "medium"
+			},
+			{
+				"id": "phys-2023-p2-q13",
+				"question": "A transformer has 100 turns primary and 400 turns secondary. If primary voltage is 50V, secondary voltage is:",
+				"options": [
+					{
+						"id": "A",
+						"text": "200 V"
+					},
+					{
+						"id": "B",
+						"text": "12.5 V"
+					},
+					{
+						"id": "C",
+						"text": "100 V"
+					},
+					{
+						"id": "D",
+						"text": "800 V"
+					}
+				],
+				"correctAnswer": "A",
+				"hint": "V_s = V_p × (N_s/N_p) = 200V",
+				"topic": "Electricity",
+				"subtopic": "Transformers",
+				"difficulty": "medium"
+			},
+			{
+				"id": "phys-2023-p2-q15",
+				"question": "Two waves interfere destructively. What is the phase difference?",
+				"options": [
+					{
+						"id": "A",
+						"text": "180° or π radians"
+					},
+					{
+						"id": "B",
+						"text": "90° or π/2 radians"
+					},
+					{
+						"id": "C",
+						"text": "0°"
+					},
+					{
+						"id": "D",
+						"text": "360° or 2π radians"
+					}
+				],
+				"correctAnswer": "A",
+				"hint": "Destructive interference occurs when waves are 180° out of phase.",
+				"diagram": "wave",
+				"topic": "Waves",
+				"subtopic": "Interference",
+				"difficulty": "medium"
+			},
+			{
+				"id": "phys-2023-p2-q17",
+				"question": "The frequency of the second harmonic of a string fixed at both ends is 100Hz. What is the fundamental frequency?",
+				"options": [
+					{
+						"id": "A",
+						"text": "50 Hz"
+					},
+					{
+						"id": "B",
+						"text": "200 Hz"
+					},
+					{
+						"id": "C",
+						"text": "25 Hz"
+					},
+					{
+						"id": "D",
+						"text": "100 Hz"
+					}
+				],
+				"correctAnswer": "A",
+				"hint": "f_n = n × f_1. So f_1 = 50Hz",
+				"diagram": "wave",
+				"topic": "Waves",
+				"subtopic": "Standing Waves",
+				"difficulty": "medium"
+			},
+			{
+				"id": "phys-2023-p2-q19",
+				"question": "Light of wavelength 500nm has what frequency? (c = 3×10⁸ m/s)",
+				"options": [
+					{
+						"id": "A",
+						"text": "6 × 10¹⁴ Hz"
+					},
+					{
+						"id": "B",
+						"text": "6 × 10¹² Hz"
+					},
+					{
+						"id": "C",
+						"text": "6 × 10¹⁶ Hz"
+					},
+					{
+						"id": "D",
+						"text": "1.67 × 10⁻¹⁵ Hz"
+					}
+				],
+				"correctAnswer": "A",
+				"hint": "f = c/λ = 6×10¹⁴ Hz",
+				"topic": "Waves",
+				"subtopic": "Electromagnetic Waves",
+				"difficulty": "medium"
+			}
+		]
+	}
+}

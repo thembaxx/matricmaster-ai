@@ -2,7 +2,7 @@
 
 import { and, eq, lt, sql } from 'drizzle-orm';
 import { dbManager } from '@/lib/db';
-import { calendarEvents, conceptStruggles } from '@/lib/db/schema';
+import { calendarEvents, conceptStruggles, quizResults } from '@/lib/db/schema';
 
 export interface ScheduleAdjustment {
 	type: 'reschedule' | 'extra_practice' | 'reminder';
@@ -72,6 +72,34 @@ export async function analyzeAndAdjust(userId: string): Promise<ScheduleAdjustme
 
 		nextSlot = new Date(nextSlot);
 		nextSlot.setDate(nextSlot.getDate() + 1);
+	}
+
+	// 2b. Check recent quiz scores below 60% and flag for extra practice
+	const sevenDaysAgo = new Date();
+	sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+
+	const lowScoreQuizzes = await db
+		.select({
+			quizId: quizResults.quizId,
+			percentage: quizResults.percentage,
+			completedAt: quizResults.completedAt,
+		})
+		.from(quizResults)
+		.where(
+			and(
+				eq(quizResults.userId, userId),
+				lt(sql`${quizResults.percentage}`, '60'),
+				sql`${quizResults.completedAt} >= ${sevenDaysAgo}`
+			)
+		)
+		.limit(5);
+
+	for (const quiz of lowScoreQuizzes) {
+		const pct = Number(quiz.percentage);
+		adjustments.push({
+			type: 'extra_practice',
+			reason: `Quiz scored ${pct}% — below the 60% threshold. Consider extra practice on this topic.`,
+		});
 	}
 
 	// 3. Find unresolved struggles and add extra practice

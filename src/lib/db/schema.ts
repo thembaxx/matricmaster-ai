@@ -45,9 +45,23 @@ export const users = authUsers;
 
 export const subjects = pgTable('subjects', {
 	id: bigint('id', { mode: 'number' }).generatedAlwaysAsIdentity().primaryKey(),
-	name: varchar('name', { length: 50 }).notNull().unique(),
+	slug: varchar('slug', { length: 50 }).notNull().unique(),
+	name: varchar('name', { length: 100 }).notNull().unique(),
+	displayName: varchar('display_name', { length: 100 }).notNull(),
 	description: text('description'),
 	curriculumCode: varchar('curriculum_code', { length: 20 }).notNull(),
+	emoji: varchar('emoji', { length: 10 }),
+	fluentEmoji: varchar('fluent_emoji', { length: 50 }),
+	imgSrc: text('img_src'),
+	color: varchar('color', { length: 50 }),
+	bgColor: varchar('bg_color', { length: 50 }),
+	icon: varchar('icon', { length: 50 }),
+	fontFamily: varchar('font_family', { length: 100 }),
+	gradientPrimary: varchar('gradient_primary', { length: 20 }),
+	gradientSecondary: varchar('gradient_secondary', { length: 20 }),
+	gradientAccent: varchar('gradient_accent', { length: 20 }),
+	isSupported: boolean('is_supported').notNull().default(true),
+	displayOrder: integer('display_order').notNull().default(0),
 	isActive: boolean('is_active').notNull().default(true),
 	createdAt: timestamp('created_at').defaultNow(),
 	updatedAt: timestamp('updated_at').defaultNow(),
@@ -63,6 +77,7 @@ export const questions = pgTable(
 		questionText: text('question_text').notNull(),
 		imageUrl: text('image_url'),
 		gradeLevel: integer('grade_level').notNull(),
+		ageRating: varchar('age_rating', { length: 20 }).notNull().default('all'),
 		topic: varchar('topic', { length: 100 }).notNull(),
 		difficulty: varchar('difficulty', { length: 20 }).notNull().default('medium'),
 		marks: integer('marks').notNull().default(2),
@@ -106,8 +121,11 @@ export const quizResults = pgTable('quiz_results', {
 	score: integer('score').notNull(),
 	totalQuestions: integer('total_questions').notNull(),
 	percentage: numeric('percentage', { precision: 5, scale: 2 }).notNull(),
-	timeTaken: integer('time_taken').notNull(), // in seconds
+	timeTaken: integer('time_taken').notNull(),
 	completedAt: timestamp('completed_at').defaultNow().notNull(),
+	questionResults: text('question_results'),
+	source: varchar('source', { length: 20 }).default('quiz'),
+	isReviewMode: boolean('is_review_mode').notNull().default(false),
 });
 
 export type QuizResult = typeof quizResults.$inferSelect;
@@ -182,6 +200,8 @@ export const pastPaperQuestions = pgTable(
 		topic: varchar('topic', { length: 200 }),
 		marks: integer('marks'),
 		questionNumber: integer('question_number'),
+		contentLevel: varchar('content_level', { length: 20 }).notNull().default('grade12'),
+		ageRating: varchar('age_rating', { length: 20 }).notNull().default('all'),
 		createdAt: timestamp('created_at').defaultNow(),
 	},
 	(table) => ({
@@ -998,17 +1018,26 @@ export const questionAttempts = pgTable(
 			.references(() => users.id, { onDelete: 'cascade' }),
 		questionId: varchar('question_id', { length: 100 }).notNull(),
 		topic: varchar('topic', { length: 200 }).notNull(),
+		subject: varchar('subject', { length: 50 }).notNull().default(''),
 		isCorrect: boolean('is_correct').notNull(),
 		responseTimeMs: integer('response_time_ms'),
 		nextReviewAt: timestamp('next_review_at'),
 		intervalDays: integer('interval_days').notNull().default(1),
 		easeFactor: numeric('ease_factor', { precision: 3, scale: 2 }).notNull().default('2.5'),
 		attemptedAt: timestamp('attempted_at').defaultNow(),
+		source: varchar('source', { length: 20 }).default('quiz'),
+		pastPaperId: uuid('past_paper_id').references(() => pastPapers.id, {
+			onDelete: 'set null',
+		}),
+		confidenceLevel: varchar('confidence_level', { length: 10 }),
 	},
 	(table) => ({
 		userIdQuestionIdx: index('question_attempts_user_q_idx').on(table.userId, table.questionId),
 		userIdIdx: index('question_attempts_user_id_idx').on(table.userId),
 		nextReviewIdx: index('question_attempts_next_review_idx').on(table.nextReviewAt),
+		sourceIdx: index('question_attempts_source_idx').on(table.source),
+		pastPaperIdIdx: index('question_attempts_past_paper_id_idx').on(table.pastPaperId),
+		subjectIdx: index('question_attempts_subject_idx').on(table.subject),
 	})
 );
 
@@ -1043,10 +1072,63 @@ export const userSettings = pgTable(
 		curriculum: varchar('curriculum', { length: 10 }).notNull().default('NSC'),
 		homeLanguage: varchar('home_language', { length: 20 }),
 		preferredLanguage: varchar('preferred_language', { length: 20 }).notNull().default('en'),
+		timezone: varchar('timezone', { length: 50 }).notNull().default('Africa/Johannesburg'),
 		updatedAt: timestamp('updated_at').defaultNow(),
 	},
 	(table) => ({
 		userIdIdx: index('user_settings_user_id_idx').on(table.userId),
+	})
+);
+
+// ============================================================================
+// DEVICES TABLE (Multi-device sync)
+// ============================================================================
+
+export const devices = pgTable(
+	'devices',
+	{
+		id: uuid('id').defaultRandom().primaryKey(),
+		userId: text('user_id')
+			.notNull()
+			.references(() => users.id, { onDelete: 'cascade' }),
+		deviceId: varchar('device_id', { length: 100 }).notNull(),
+		deviceName: varchar('device_name', { length: 100 }).notNull(),
+		deviceType: varchar('device_type', { length: 20 }).notNull().default('desktop'),
+		lastActiveAt: timestamp('last_active_at').defaultNow(),
+		isCurrentDevice: boolean('is_current_device').notNull().default(false),
+		createdAt: timestamp('created_at').defaultNow(),
+	},
+	(table) => ({
+		userIdIdx: index('devices_user_id_idx').on(table.userId),
+		deviceIdIdx: index('devices_device_id_idx').on(table.deviceId),
+		uniqueDevice: uniqueIndex('devices_unique_user_device').on(table.userId, table.deviceId),
+	})
+);
+
+// ============================================================================
+// SYNC QUEUE TABLE (Pending changes for sync)
+// ============================================================================
+
+export const syncQueue = pgTable(
+	'sync_queue',
+	{
+		id: uuid('id').defaultRandom().primaryKey(),
+		userId: text('user_id')
+			.notNull()
+			.references(() => users.id, { onDelete: 'cascade' }),
+		entityType: varchar('entity_type', { length: 30 }).notNull(),
+		entityId: varchar('entity_id', { length: 100 }).notNull(),
+		action: varchar('action', { length: 10 }).notNull(),
+		data: text('data'),
+		timestamp: timestamp('timestamp').defaultNow().notNull(),
+		deviceId: varchar('device_id', { length: 100 }).notNull(),
+		processed: boolean('processed').notNull().default(false),
+		processedAt: timestamp('processed_at'),
+	},
+	(table) => ({
+		userIdIdx: index('sync_queue_user_id_idx').on(table.userId),
+		entityIdx: index('sync_queue_entity_idx').on(table.entityType, table.entityId),
+		processedIdx: index('sync_queue_processed_idx').on(table.processed),
 	})
 );
 
@@ -1081,6 +1163,40 @@ export const accessibilityPreferences = pgTable(
 		userIdIdx: index('accessibility_preferences_user_id_idx').on(table.userId),
 	})
 );
+
+// ============================================================================
+// CONTENT FILTER TABLES (Age-appropriate content system)
+// ============================================================================
+
+export const contentFilters = pgTable(
+	'content_filters',
+	{
+		id: uuid('id').defaultRandom().primaryKey(),
+		userId: text('user_id')
+			.notNull()
+			.references(() => users.id, { onDelete: 'cascade' }),
+		childAge: integer('child_age'),
+		allowedLevels: text('allowed_levels').notNull().default('grade10,grade11,grade12'),
+		strictMode: boolean('strict_mode').notNull().default(false),
+		showAdvancedOption: boolean('show_advanced_option').notNull().default(true),
+		overrideEnabled: boolean('override_enabled').notNull().default(false),
+		createdAt: timestamp('created_at').defaultNow(),
+		updatedAt: timestamp('updated_at').defaultNow(),
+	},
+	(table) => ({
+		userIdIdx: index('content_filters_user_id_idx').on(table.userId),
+	})
+);
+
+export const contentFiltersRelations = relations(contentFilters, ({ one }) => ({
+	user: one(users, {
+		fields: [contentFilters.userId],
+		references: [users.id],
+	}),
+}));
+
+export type ContentFilter = typeof contentFilters.$inferSelect;
+export type NewContentFilter = typeof contentFilters.$inferInsert;
 
 // ============================================================================
 // RELATIONS
@@ -1328,6 +1444,20 @@ export const accessibilityPreferencesRelations = relations(accessibilityPreferen
 	}),
 }));
 
+export const devicesRelations = relations(devices, ({ one }) => ({
+	user: one(users, {
+		fields: [devices.userId],
+		references: [users.id],
+	}),
+}));
+
+export const syncQueueRelations = relations(syncQueue, ({ one }) => ({
+	user: one(users, {
+		fields: [syncQueue.userId],
+		references: [users.id],
+	}),
+}));
+
 // ============================================================================
 // WHATSAPP PREFERENCES TABLE
 // ============================================================================
@@ -1444,6 +1574,12 @@ export type NewUserSettings = typeof userSettings.$inferInsert;
 
 export type AccessibilityPreferences = typeof accessibilityPreferences.$inferSelect;
 export type NewAccessibilityPreferences = typeof accessibilityPreferences.$inferInsert;
+
+export type Device = typeof devices.$inferSelect;
+export type NewDevice = typeof devices.$inferInsert;
+
+export type SyncQueueItem = typeof syncQueue.$inferSelect;
+export type NewSyncQueueItem = typeof syncQueue.$inferInsert;
 
 // ============================================================================
 // OFFLINE BUNDLES TABLE
@@ -1978,23 +2114,9 @@ export const userThemesRelations = relations(userThemes, ({ one }) => ({
 // CURRICULUM DATA TABLES (Data Consolidation Phase 1)
 // ============================================================================
 
-export const subjectMetadata = pgTable('subject_metadata', {
-	subjectId: varchar('subject_id', { length: 50 }).primaryKey(),
-	displayName: varchar('display_name', { length: 100 }).notNull(),
-	emoji: varchar('emoji', { length: 10 }),
-	color: varchar('color', { length: 50 }),
-	bgColor: varchar('bg_color', { length: 50 }),
-	icon: varchar('icon', { length: 50 }),
-	fluentEmoji: varchar('fluent_emoji', { length: 50 }),
-	fontFamily: varchar('font_family', { length: 100 }),
-	gradientPrimary: varchar('gradient_primary', { length: 20 }),
-	gradientSecondary: varchar('gradient_secondary', { length: 20 }),
-	gradientAccent: varchar('gradient_accent', { length: 20 }),
-	isSupported: boolean('is_supported').notNull().default(true),
-	displayOrder: integer('display_order').notNull().default(0),
-	createdAt: timestamp('created_at').defaultNow(),
-	updatedAt: timestamp('updated_at').defaultNow(),
-});
+// subjectMetadata fields merged into subjects table above
+// This alias kept for backward compatibility during migration
+export const subjectMetadata = subjects;
 
 export const gamificationConfig = pgTable('gamification_config', {
 	key: varchar('key', { length: 50 }).primaryKey(),
@@ -2020,8 +2142,10 @@ export const achievementDefinitions = pgTable('achievement_definitions', {
 });
 
 // Type exports for curriculum tables
-export type SubjectMetadata = typeof subjectMetadata.$inferSelect;
-export type NewSubjectMetadata = typeof subjectMetadata.$inferInsert;
+/** @deprecated Use Subject instead */
+export type SubjectMetadata = Subject;
+/** @deprecated Use NewSubject instead */
+export type NewSubjectMetadata = NewSubject;
 export type GamificationConfig = typeof gamificationConfig.$inferSelect;
 export type NewGamificationConfig = typeof gamificationConfig.$inferInsert;
 export type AchievementDefinition = typeof achievementDefinitions.$inferSelect;
@@ -2278,6 +2402,113 @@ export type TutorReview = typeof tutorReviews.$inferSelect;
 export type NewTutorReview = typeof tutorReviews.$inferInsert;
 export type SessionReport = typeof sessionReports.$inferSelect;
 export type NewSessionReport = typeof sessionReports.$inferInsert;
+
+// ============================================================================
+// SUBSCRIPTION CHANGES TABLE (Proration Tracking)
+// ============================================================================
+
+export const subscriptionChanges = pgTable(
+	'subscription_changes',
+	{
+		id: uuid('id').defaultRandom().primaryKey(),
+		userId: text('user_id')
+			.notNull()
+			.references(() => users.id, { onDelete: 'cascade' }),
+		oldSubscriptionId: uuid('old_subscription_id').references(() => userSubscriptions.id, {
+			onDelete: 'set null',
+		}),
+		newPlanId: varchar('new_plan_id', { length: 50 })
+			.notNull()
+			.references(() => subscriptionPlans.id),
+		oldPlanId: varchar('old_plan_id', { length: 50 }).references(() => subscriptionPlans.id, {
+			onDelete: 'set null',
+		}),
+		prorationCredit: integer('proration_credit').default(0), // in kobo/cents
+		oldPlanPrice: numeric('old_plan_price', { precision: 10, scale: 2 }),
+		newPlanPrice: numeric('new_plan_price', { precision: 10, scale: 2 }),
+		remainingDays: integer('remaining_days').default(0),
+		changeDate: timestamp('change_date').defaultNow().notNull(),
+		processedAt: timestamp('processed_at'),
+		status: varchar('status', { length: 20 }).notNull().default('pending'),
+		metadata: text('metadata'),
+	},
+	(table) => ({
+		userIdIdx: index('subscription_changes_user_id_idx').on(table.userId),
+		statusIdx: index('subscription_changes_status_idx').on(table.status),
+		oldSubscriptionIdIdx: index('subscription_changes_old_sub_id_idx').on(table.oldSubscriptionId),
+	})
+);
+
+export const subscriptionChangesRelations = relations(subscriptionChanges, ({ one }) => ({
+	user: one(users, {
+		fields: [subscriptionChanges.userId],
+		references: [users.id],
+	}),
+	oldSubscription: one(userSubscriptions, {
+		fields: [subscriptionChanges.oldSubscriptionId],
+		references: [userSubscriptions.id],
+	}),
+	newPlan: one(subscriptionPlans, {
+		fields: [subscriptionChanges.newPlanId],
+		references: [subscriptionPlans.id],
+	}),
+	oldPlan: one(subscriptionPlans, {
+		fields: [subscriptionChanges.oldPlanId],
+		references: [subscriptionPlans.id],
+	}),
+}));
+
+export type SubscriptionChange = typeof subscriptionChanges.$inferSelect;
+export type NewSubscriptionChange = typeof subscriptionChanges.$inferInsert;
+
+// ============================================================================
+// PAYMENT RETRIES TABLE (Retry Queue)
+// ============================================================================
+
+export const paymentRetries = pgTable(
+	'payment_retries',
+	{
+		id: uuid('id').defaultRandom().primaryKey(),
+		userId: text('user_id')
+			.notNull()
+			.references(() => users.id, { onDelete: 'cascade' }),
+		paymentId: uuid('payment_id').references(() => payments.id, { onDelete: 'set null' }),
+		planId: varchar('plan_id', { length: 50 })
+			.notNull()
+			.references(() => subscriptionPlans.id),
+		retryCount: integer('retry_count').notNull().default(0),
+		maxRetries: integer('max_retries').notNull().default(3),
+		nextRetryAt: timestamp('next_retry_at'),
+		status: varchar('status', { length: 20 }).notNull().default('pending'),
+		lastError: text('last_error'),
+		createdAt: timestamp('created_at').defaultNow().notNull(),
+		updatedAt: timestamp('updated_at').defaultNow(),
+		completedAt: timestamp('completed_at'),
+	},
+	(table) => ({
+		userIdIdx: index('payment_retries_user_id_idx').on(table.userId),
+		statusIdx: index('payment_retries_status_idx').on(table.status),
+		nextRetryAtIdx: index('payment_retries_next_retry_at_idx').on(table.nextRetryAt),
+	})
+);
+
+export const paymentRetriesRelations = relations(paymentRetries, ({ one }) => ({
+	user: one(users, {
+		fields: [paymentRetries.userId],
+		references: [users.id],
+	}),
+	payment: one(payments, {
+		fields: [paymentRetries.paymentId],
+		references: [payments.id],
+	}),
+	plan: one(subscriptionPlans, {
+		fields: [paymentRetries.planId],
+		references: [subscriptionPlans.id],
+	}),
+}));
+
+export type PaymentRetry = typeof paymentRetries.$inferSelect;
+export type NewPaymentRetry = typeof paymentRetries.$inferInsert;
 
 // WhatsApp type exports
 export type WhatsAppPreference = typeof whatsappPreferences.$inferSelect;
