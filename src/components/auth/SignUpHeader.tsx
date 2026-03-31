@@ -1,7 +1,7 @@
 import { m } from 'framer-motion';
 import { SmoothWords } from '@/components/Transition/SmoothText';
 import { STAGGER_CONTAINER, STAGGER_ITEM } from '@/lib/animation-presets';
-import { Logo } from '../Logo';
+import { SafeImage } from '../SafeImage';
 
 export function SignUpHeader() {
 	return (
@@ -16,7 +16,13 @@ export function SignUpHeader() {
 				whileHover={{ rotate: 15, scale: 1.1 }}
 				className="w-14 h-14 bg-primary/10 rounded-3xl flex items-center justify-center mx-auto mb-5 text-primary"
 			>
-				<Logo className="w-10 h-10 text-white/80" />
+				<SafeImage
+					src="/logo.png"
+					alt="Success"
+					width={36}
+					height={36}
+					className="w-10 h-10"
+				/>
 			</m.div>
 			<SmoothWords
 				as="h1"
