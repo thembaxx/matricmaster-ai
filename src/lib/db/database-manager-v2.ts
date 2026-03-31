@@ -32,8 +32,10 @@ class DatabaseManagerV2 {
 		this.isInitializing = true;
 		this.initPromise = (async () => {
 			try {
-				if (options?.forceSQLite) {
-					log.debug('force initializing with sqlite');
+				// Check for environment variable to force SQLite
+				const forceSQLite = options?.forceSQLite || process.env.FORCE_SQLITE === 'true';
+				if (forceSQLite) {
+					log.debug('force initializing with sqlite (via env or option)');
 					const sqliteConnected = await sqliteManager.connect();
 					this.activeDatabase = sqliteConnected ? 'sqlite' : 'none';
 					return;

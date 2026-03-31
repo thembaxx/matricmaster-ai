@@ -1,5 +1,7 @@
 import { z } from 'zod';
 
+export const nanoidSchema = z.string().min(1, 'ID is required');
+
 export const uuidSchema = z.string().uuid('Invalid UUID format');
 
 export const emailSchema = z.string().email('Invalid email format');
@@ -29,5 +31,6 @@ export const dateRangeSchema = z
 	);
 
 export type UuidInput = z.infer<typeof uuidSchema>;
+export type NanoidInput = z.infer<typeof nanoidSchema>;
 export type PaginationInput = z.infer<typeof paginationSchema>;
 export type DateRangeInput = z.infer<typeof dateRangeSchema>;
