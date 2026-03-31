@@ -5,13 +5,13 @@ import Link from 'next/link';
 import { Suspense } from 'react';
 import { appConfig } from '@/app.config';
 import { SocialAuthButton } from '@/components/auth/SocialAuthButton';
+import { SafeImage } from '@/components/SafeImage';
 import { SmoothWords } from '@/components/Transition/SmoothText';
 import { BackgroundMesh } from '@/components/ui/background-mesh';
 import { Separator } from '@/components/ui/separator';
 import { useSignIn } from '@/hooks/useSignIn';
 import { STAGGER_CONTAINER, STAGGER_ITEM } from '@/lib/animation-presets';
 import { FormFields } from './FormFields';
-import { SafeImage } from '@/components/SafeImage';
 
 function SignInFormContent() {
 	const {
@@ -80,12 +80,12 @@ function SignInFormContent() {
 							className="w-14 h-14 bg-primary/10 rounded-[var(--radius-xl)] flex items-center justify-center mx-auto mb-5 text-primary"
 						>
 							<SafeImage
-									src="/logo.png"
-									alt="Success"
-									width={36}
-									height={36}
-									className="w-10 h-10"
-								/>
+								src="/logo.png"
+								alt="Success"
+								width={36}
+								height={36}
+								className="w-10 h-10"
+							/>
 						</m.div>
 						<SmoothWords
 							as="h1"

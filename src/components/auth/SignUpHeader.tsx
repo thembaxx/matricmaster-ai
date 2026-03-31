@@ -16,13 +16,7 @@ export function SignUpHeader() {
 				whileHover={{ rotate: 15, scale: 1.1 }}
 				className="w-14 h-14 bg-primary/10 rounded-3xl flex items-center justify-center mx-auto mb-5 text-primary"
 			>
-				<SafeImage
-					src="/logo.png"
-					alt="Success"
-					width={36}
-					height={36}
-					className="w-10 h-10"
-				/>
+				<SafeImage src="/logo.png" alt="Success" width={36} height={36} className="w-10 h-10" />
 			</m.div>
 			<SmoothWords
 				as="h1"
