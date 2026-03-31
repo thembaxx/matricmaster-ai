@@ -1,6 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-// Mock database manager v2
 vi.mock('@/lib/db/database-manager-v2', () => ({
 	dbManagerV2: {
 		getDb: vi.fn().mockResolvedValue({}),
@@ -11,19 +10,9 @@ vi.mock('@/lib/db/database-manager-v2', () => ({
 	},
 }));
 
+const mockGetAuth = vi.fn();
 vi.mock('@/lib/auth', () => ({
-	getAuth: vi.fn().mockResolvedValue({
-		api: {
-			getSession: vi.fn().mockResolvedValue({
-				user: {
-					id: 'user_123',
-					email: 'test@example.com',
-					name: 'Test User',
-					role: 'user',
-				},
-			}),
-		},
-	}),
+	getAuth: () => mockGetAuth(),
 }));
 
 vi.mock('@/lib/db/schema', () => ({
@@ -44,17 +33,27 @@ vi.mock('@/lib/spaced-repetition', () => ({
 describe('gamification server actions', () => {
 	beforeEach(() => {
 		vi.clearAllMocks();
+		mockGetAuth.mockResolvedValue({
+			api: {
+				getSession: vi.fn().mockResolvedValue({
+					user: {
+						id: 'user_123',
+						email: 'test@example.com',
+						name: 'Test User',
+						role: 'user',
+					},
+				}),
+			},
+		});
 	});
 
 	describe('checkAndUnlockAchievements', () => {
 		it('should return error when user not authenticated', async () => {
-			vi.mock('@/lib/auth', () => ({
-				getAuth: vi.fn().mockResolvedValue({
-					api: {
-						getSession: vi.fn().mockResolvedValue(null),
-					},
-				}),
-			}));
+			mockGetAuth.mockResolvedValue({
+				api: {
+					getSession: vi.fn().mockResolvedValue(null),
+				},
+			});
 
 			const { checkAndUnlockAchievements } = await import('@/actions/gamification');
 			const result = await checkAndUnlockAchievements();
@@ -64,13 +63,11 @@ describe('gamification server actions', () => {
 
 	describe('updateStreak', () => {
 		it('should return error when user not authenticated', async () => {
-			vi.mock('@/lib/auth', () => ({
-				getAuth: vi.fn().mockResolvedValue({
-					api: {
-						getSession: vi.fn().mockResolvedValue(null),
-					},
-				}),
-			}));
+			mockGetAuth.mockResolvedValue({
+				api: {
+					getSession: vi.fn().mockResolvedValue(null),
+				},
+			});
 
 			const { updateStreak } = await import('@/actions/gamification');
 			const result = await updateStreak();
@@ -80,13 +77,11 @@ describe('gamification server actions', () => {
 
 	describe('claimLoginBonus', () => {
 		it('should return error when user not authenticated', async () => {
-			vi.mock('@/lib/auth', () => ({
-				getAuth: vi.fn().mockResolvedValue({
-					api: {
-						getSession: vi.fn().mockResolvedValue(null),
-					},
-				}),
-			}));
+			mockGetAuth.mockResolvedValue({
+				api: {
+					getSession: vi.fn().mockResolvedValue(null),
+				},
+			});
 
 			const { claimLoginBonus } = await import('@/actions/gamification');
 			const result = await claimLoginBonus();
@@ -96,13 +91,11 @@ describe('gamification server actions', () => {
 
 	describe('calculateLeaderboardPoints', () => {
 		it('should return error when user not authenticated', async () => {
-			vi.mock('@/lib/auth', () => ({
-				getAuth: vi.fn().mockResolvedValue({
-					api: {
-						getSession: vi.fn().mockResolvedValue(null),
-					},
-				}),
-			}));
+			mockGetAuth.mockResolvedValue({
+				api: {
+					getSession: vi.fn().mockResolvedValue(null),
+				},
+			});
 
 			const { calculateLeaderboardPoints } = await import('@/actions/gamification');
 			const result = await calculateLeaderboardPoints();

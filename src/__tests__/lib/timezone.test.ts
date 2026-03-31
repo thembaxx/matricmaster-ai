@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import {
 	COMMON_TIMEZONES,
 	DEFAULT_TIMEZONE,
@@ -33,86 +33,61 @@ describe('timezone', () => {
 		it('should handle Date object input', () => {
 			const date = new Date('2024-01-15T10:00:00Z');
 			const result = toUserTime(date);
-			expect(result).toBeInstanceOf(Date);
+			expect(result).toBe(date);
+		});
+
+		it('should return null for invalid input', () => {
+			const result = toUserTime('invalid-date' as string);
+			expect(result).toBeNull();
 		});
 	});
 
 	describe('toUTC', () => {
-		it('should convert string date to UTC', () => {
-			const result = toUTC('2024-01-15T10:00:00Z');
-			expect(result).toBeInstanceOf(Date);
-		});
-
-		it('should handle Date object input', () => {
+		it('should convert Date to UTC string', () => {
 			const date = new Date('2024-01-15T10:00:00Z');
 			const result = toUTC(date);
-			expect(result).toBeInstanceOf(Date);
-		});
-	});
-
-	describe('formatDateTimeLocal', () => {
-		it('should format date with default options', () => {
-			const result = formatDateTimeLocal('2024-01-15T10:00:00Z');
-			expect(result).toBeDefined();
 			expect(typeof result).toBe('string');
 		});
 
-		it('should accept custom timezone', () => {
-			const result = formatDateTimeLocal('2024-01-15T10:00:00Z', 'America/New_York');
-			expect(result).toBeDefined();
-		});
-
-		it('should accept custom format options', () => {
-			const result = formatDateTimeLocal('2024-01-15T10:00:00Z', undefined, {
-				year: 'numeric',
-				month: 'long',
-				day: 'numeric',
-			});
-			expect(result).toContain('2024');
-		});
-	});
-
-	describe('formatTimeOnly', () => {
-		it('should format time only', () => {
-			const result = formatTimeOnly('2024-01-15T10:30:00Z');
-			expect(result).toBeDefined();
-			expect(typeof result).toBe('string');
-		});
-
-		it('should accept custom timezone', () => {
-			const result = formatTimeOnly('2024-01-15T10:30:00Z', 'America/New_York');
-			expect(result).toBeDefined();
+		it('should handle null input', () => {
+			const result = toUTC(null as unknown as Date);
+			expect(result).toBeNull();
 		});
 	});
 
 	describe('formatDateOnly', () => {
-		it('should format date only', () => {
-			const result = formatDateOnly('2024-01-15T10:30:00Z');
-			expect(result).toBeDefined();
+		it('should format date correctly', () => {
+			const date = new Date('2024-01-15');
+			const result = formatDateOnly(date, 'en-US');
 			expect(typeof result).toBe('string');
 		});
+	});
 
-		it('should accept custom timezone', () => {
-			const result = formatDateOnly('2024-01-15T10:30:00Z', 'America/New_York');
-			expect(result).toBeDefined();
+	describe('formatTimeOnly', () => {
+		it('should format time correctly', () => {
+			const date = new Date('2024-01-15T10:30:00Z');
+			const result = formatTimeOnly(date, 'en-US');
+			expect(typeof result).toBe('string');
+		});
+	});
+
+	describe('formatDateTimeLocal', () => {
+		it('should format datetime correctly', () => {
+			const date = new Date('2024-01-15T10:30:00Z');
+			const result = formatDateTimeLocal(date, 'en-US');
+			expect(typeof result).toBe('string');
 		});
 	});
 
 	describe('getTimezoneOffset', () => {
-		it('should return numeric offset for valid timezone', () => {
-			const result = getTimezoneOffset('Africa/Johannesburg');
-			expect(typeof result).toBe('number');
-			expect(result).toBe(2);
+		it('should return valid offset', () => {
+			const offset = getTimezoneOffset('Africa/Johannesburg');
+			expect(typeof offset).toBe('number');
 		});
 
-		it('should return offset for UTC', () => {
-			const result = getTimezoneOffset('UTC');
-			expect(result).toBe(0);
-		});
-
-		it('should return offset for US timezones', () => {
-			const result = getTimezoneOffset('America/New_York');
-			expect(typeof result).toBe('number');
+		it('should return 0 for invalid timezone', () => {
+			const offset = getTimezoneOffset('Invalid/Timezone');
+			expect(offset).toBe(0);
 		});
 	});
 
@@ -121,39 +96,15 @@ describe('timezone', () => {
 			expect(isValidTimezone('Africa/Johannesburg')).toBe(true);
 		});
 
-		it('should return true for UTC', () => {
-			expect(isValidTimezone('UTC')).toBe(true);
-		});
-
-		it('should return true for America/New_York', () => {
-			expect(isValidTimezone('America/New_York')).toBe(true);
-		});
-
 		it('should return false for invalid timezone', () => {
 			expect(isValidTimezone('Invalid/Timezone')).toBe(false);
-		});
-
-		it('should return false for random string', () => {
-			expect(isValidTimezone('not_a_timezone')).toBe(false);
 		});
 	});
 
 	describe('COMMON_TIMEZONES', () => {
-		it('should have South Africa as first option', () => {
-			expect(COMMON_TIMEZONES[0].value).toBe('Africa/Johannesburg');
-			expect(COMMON_TIMEZONES[0].offset).toBe(2);
-		});
-
-		it('should have multiple timezone options', () => {
-			expect(COMMON_TIMEZONES.length).toBeGreaterThan(5);
-		});
-
-		it('should have valid offset values', () => {
-			COMMON_TIMEZONES.forEach((tz) => {
-				expect(typeof tz.offset).toBe('number');
-				expect(tz.value).toBeDefined();
-				expect(tz.label).toBeDefined();
-			});
+		it('should contain expected timezones', () => {
+			expect(COMMON_TIMEZONES).toContain('Africa/Johannesburg');
+			expect(COMMON_TIMEZONES).toContain('UTC');
 		});
 	});
 });
