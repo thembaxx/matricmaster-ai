@@ -1,13 +1,20 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
+// Create mock functions that can be reused
+const mockGetDb = vi.fn().mockResolvedValue({});
+const mockGetSmartDb = vi.fn().mockResolvedValue({});
+const mockWaitForConnection = vi.fn().mockResolvedValue(true);
+const mockGetActiveDatabase = vi.fn().mockReturnValue('postgres');
+const mockInitialize = vi.fn().mockResolvedValue(undefined);
+
 // Mock database manager v2
 vi.mock('@/lib/db/database-manager-v2', () => ({
 	dbManagerV2: {
-		getDb: vi.fn().mockResolvedValue({}),
-		getSmartDb: vi.fn().mockResolvedValue({}),
-		waitForConnection: vi.fn().mockResolvedValue(true),
-		getActiveDatabase: vi.fn().mockReturnValue('postgres'),
-		initialize: vi.fn().mockResolvedValue(undefined),
+		getDb: (...args: unknown[]) => mockGetDb(...args),
+		getSmartDb: (...args: unknown[]) => mockGetSmartDb(...args),
+		waitForConnection: (...args: unknown[]) => mockWaitForConnection(...args),
+		getActiveDatabase: (...args: unknown[]) => mockGetActiveDatabase(...args),
+		initialize: (...args: unknown[]) => mockInitialize(...args),
 	},
 }));
 
@@ -45,19 +52,19 @@ vi.mock('@/lib/spaced-repetition', () => ({
 describe('quiz-service server actions', () => {
 	beforeEach(() => {
 		vi.clearAllMocks();
+		mockGetDb.mockResolvedValue({});
+		mockGetSmartDb.mockResolvedValue({});
+		mockWaitForConnection.mockResolvedValue(true);
+		mockGetActiveDatabase.mockReturnValue('postgres');
+		mockInitialize.mockResolvedValue(undefined);
 	});
 
 	describe('saveQuizResultWithSpacedRepetition', () => {
 		it('should handle database unavailable error', async () => {
-			vi.mock('@/lib/db/database-manager-v2', () => ({
-				dbManagerV2: {
-					getDb: vi.fn().mockRejectedValue(new Error('Database not available')),
-					getSmartDb: vi.fn().mockRejectedValue(new Error('Database not available')),
-					waitForConnection: vi.fn().mockResolvedValue(false),
-					getActiveDatabase: vi.fn().mockReturnValue('none'),
-					initialize: vi.fn().mockResolvedValue(undefined),
-				},
-			}));
+			mockGetDb.mockRejectedValueOnce(new Error('Database not available'));
+			mockGetSmartDb.mockRejectedValueOnce(new Error('Database not available'));
+			mockWaitForConnection.mockResolvedValueOnce(false);
+			mockGetActiveDatabase.mockReturnValueOnce('none');
 
 			const { saveQuizResultWithSpacedRepetition } = await import('@/services/quizService');
 			const result = await saveQuizResultWithSpacedRepetition(
@@ -76,15 +83,10 @@ describe('quiz-service server actions', () => {
 
 	describe('getQuizResultsHistory', () => {
 		it('should return empty array on error', async () => {
-			vi.mock('@/lib/db/database-manager-v2', () => ({
-				dbManagerV2: {
-					getDb: vi.fn().mockRejectedValue(new Error('Database error')),
-					getSmartDb: vi.fn().mockRejectedValue(new Error('Database error')),
-					waitForConnection: vi.fn().mockResolvedValue(false),
-					getActiveDatabase: vi.fn().mockReturnValue('none'),
-					initialize: vi.fn().mockResolvedValue(undefined),
-				},
-			}));
+			mockGetDb.mockRejectedValueOnce(new Error('Database error'));
+			mockGetSmartDb.mockRejectedValueOnce(new Error('Database error'));
+			mockWaitForConnection.mockResolvedValueOnce(false);
+			mockGetActiveDatabase.mockReturnValueOnce('none');
 
 			const { getQuizResultsHistory } = await import('@/services/quizService');
 			const result = await getQuizResultsHistory(10);
@@ -94,15 +96,10 @@ describe('quiz-service server actions', () => {
 
 	describe('getWeakTopicsFromQuiz', () => {
 		it('should return empty array on error', async () => {
-			vi.mock('@/lib/db/database-manager-v2', () => ({
-				dbManagerV2: {
-					getDb: vi.fn().mockRejectedValue(new Error('Database error')),
-					getSmartDb: vi.fn().mockRejectedValue(new Error('Database error')),
-					waitForConnection: vi.fn().mockResolvedValue(false),
-					getActiveDatabase: vi.fn().mockReturnValue('none'),
-					initialize: vi.fn().mockResolvedValue(undefined),
-				},
-			}));
+			mockGetDb.mockRejectedValueOnce(new Error('Database error'));
+			mockGetSmartDb.mockRejectedValueOnce(new Error('Database error'));
+			mockWaitForConnection.mockResolvedValueOnce(false);
+			mockGetActiveDatabase.mockReturnValueOnce('none');
 
 			const { getWeakTopicsFromQuiz } = await import('@/services/quizService');
 			const result = await getWeakTopicsFromQuiz('quiz_123');

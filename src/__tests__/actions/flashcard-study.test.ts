@@ -1,26 +1,35 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
+// Create mock functions that can be reused
+const mockGetDb = vi.fn().mockResolvedValue({});
+const mockGetSmartDb = vi.fn().mockResolvedValue({});
+const mockWaitForConnection = vi.fn().mockResolvedValue(true);
+const mockGetActiveDatabase = vi.fn().mockReturnValue('postgres');
+const mockInitialize = vi.fn().mockResolvedValue(undefined);
+
+const mockGetSession = vi.fn().mockResolvedValue({
+	user: {
+		id: 'user_123',
+		email: 'test@example.com',
+		name: 'Test User',
+	},
+});
+
 // Mock database manager v2
 vi.mock('@/lib/db/database-manager-v2', () => ({
 	dbManagerV2: {
-		getDb: vi.fn().mockResolvedValue({}),
-		getSmartDb: vi.fn().mockResolvedValue({}),
-		waitForConnection: vi.fn().mockResolvedValue(true),
-		getActiveDatabase: vi.fn().mockReturnValue('postgres'),
-		initialize: vi.fn().mockResolvedValue(undefined),
+		getDb: (...args: unknown[]) => mockGetDb(...args),
+		getSmartDb: (...args: unknown[]) => mockGetSmartDb(...args),
+		waitForConnection: (...args: unknown[]) => mockWaitForConnection(...args),
+		getActiveDatabase: (...args: unknown[]) => mockGetActiveDatabase(...args),
+		initialize: (...args: unknown[]) => mockInitialize(...args),
 	},
 }));
 
 vi.mock('@/lib/auth', () => ({
 	getAuth: vi.fn().mockResolvedValue({
 		api: {
-			getSession: vi.fn().mockResolvedValue({
-				user: {
-					id: 'user_123',
-					email: 'test@example.com',
-					name: 'Test User',
-				},
-			}),
+			getSession: (...args: unknown[]) => mockGetSession(...args),
 		},
 	}),
 }));
@@ -41,39 +50,37 @@ vi.mock('drizzle-orm', () => ({
 describe('flashcard-study server actions', () => {
 	beforeEach(() => {
 		vi.clearAllMocks();
+		mockGetDb.mockResolvedValue({});
+		mockGetSmartDb.mockResolvedValue({});
+		mockWaitForConnection.mockResolvedValue(true);
+		mockGetActiveDatabase.mockReturnValue('postgres');
+		mockInitialize.mockResolvedValue(undefined);
+		mockGetSession.mockResolvedValue({
+			user: {
+				id: 'user_123',
+				email: 'test@example.com',
+				name: 'Test User',
+			},
+		});
 	});
 
 	describe('getFlashcardsDueForReview', () => {
 		it('should return empty array when no decks exist', async () => {
-			vi.mock('@/lib/db/database-manager-v2', () => ({
-				dbManagerV2: {
-					getDb: vi.fn().mockResolvedValue({
-						query: {
-							flashcardDecks: {
-								findMany: vi.fn().mockResolvedValue([]),
-							},
-						},
+			mockGetDb.mockResolvedValueOnce({
+				select: vi.fn().mockReturnValue({
+					from: vi.fn().mockReturnValue({
+						where: vi.fn().mockResolvedValue([]),
 					}),
-					getSmartDb: vi.fn().mockResolvedValue({}),
-					waitForConnection: vi.fn().mockResolvedValue(true),
-					getActiveDatabase: vi.fn().mockReturnValue('postgres'),
-					initialize: vi.fn().mockResolvedValue(undefined),
-				},
-			}));
+				}),
+			});
 
 			const { getFlashcardsDueForReview } = await import('@/actions/flashcard-study');
 			const result = await getFlashcardsDueForReview(10);
 			expect(result).toEqual([]);
 		});
 
-		it('should return error when user not authenticated', async () => {
-			vi.mock('@/lib/auth', () => ({
-				getAuth: vi.fn().mockResolvedValue({
-					api: {
-						getSession: vi.fn().mockResolvedValue(null),
-					},
-				}),
-			}));
+		it('should return empty array when user not authenticated', async () => {
+			mockGetSession.mockResolvedValueOnce(null);
 
 			const { getFlashcardsDueForReview } = await import('@/actions/flashcard-study');
 			const result = await getFlashcardsDueForReview(10);
@@ -83,13 +90,7 @@ describe('flashcard-study server actions', () => {
 
 	describe('reviewFlashcard', () => {
 		it('should return error when user not authenticated', async () => {
-			vi.mock('@/lib/auth', () => ({
-				getAuth: vi.fn().mockResolvedValue({
-					api: {
-						getSession: vi.fn().mockResolvedValue(null),
-					},
-				}),
-			}));
+			mockGetSession.mockResolvedValueOnce(null);
 
 			const { reviewFlashcard } = await import('@/actions/flashcard-study');
 			const result = await reviewFlashcard('card_123', 4);
@@ -99,13 +100,7 @@ describe('flashcard-study server actions', () => {
 
 	describe('createAdaptiveFlashcardDeck', () => {
 		it('should return error when user not authenticated', async () => {
-			vi.mock('@/lib/auth', () => ({
-				getAuth: vi.fn().mockResolvedValue({
-					api: {
-						getSession: vi.fn().mockResolvedValue(null),
-					},
-				}),
-			}));
+			mockGetSession.mockResolvedValueOnce(null);
 
 			const { createAdaptiveFlashcardDeck } = await import('@/actions/flashcard-study');
 			const result = await createAdaptiveFlashcardDeck();

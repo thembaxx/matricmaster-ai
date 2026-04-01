@@ -104,7 +104,7 @@ export function useSignIn() {
 		}
 	};
 
-	const handleSocialSignIn = async (provider: 'google' | 'twitter' | 'facebook') => {
+	const handleSocialSignIn = async (provider: 'google' | 'twitter') => {
 		setError(null);
 		try {
 			const callbackURL = new URL(safeCallbackUrl, window.location.origin).toString();

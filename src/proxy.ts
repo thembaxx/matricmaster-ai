@@ -6,29 +6,20 @@ import { csrfProtection } from './middleware/csrf';
 // Route categorization for better organization and security
 export const ROUTE_CATEGORIES = {
 	// Routes that don't require any authentication
+	// Only homepage and auth-related routes are public
 	PUBLIC: [
 		'/',
 		'/sign-in',
 		'/sign-up',
 		'/forgot-password',
+		'/onboarding',
 		'/api/auth',
 		'/api/db/init',
-		'/onboarding',
 		'/api/health',
-		'/api/csp-report',
-		'/api/uploadthing',
 	],
 
 	// Routes that are public but may have enhanced features for authenticated users
-	CONTENT: [
-		'/search',
-		'/past-papers',
-		'/physics',
-		'/lessons',
-		'/api/past-papers',
-		'/api/lessons',
-		'/api/search',
-	],
+	CONTENT: ['/search', '/past-papers', '/physics', '/lessons'],
 
 	// Routes that require authentication
 	PROTECTED: [
@@ -56,8 +47,36 @@ export const ROUTE_CATEGORIES = {
 		'/lesson-complete',
 		'/past-paper',
 		'/language',
-		'/onboarding',
 		'/error-hint',
+		'/demo',
+		'/marketplace',
+		'/results',
+		'/subscription',
+		'/snap-and-solve',
+		'/essay-grader',
+		'/voice-tutor',
+		'/smart-scheduler',
+		'/analytics',
+		'/video-call',
+		'/team-goals',
+		'/subjects',
+		'/study-path',
+		'/study-companion',
+		'/setwork-library',
+		'/science-lab',
+		'/school',
+		'/schedule',
+		'/planner',
+		'/periodic-table',
+		'/parent-dashboard',
+		'/offline',
+		'/focus-rooms',
+		'/focus',
+		'/exam-timer',
+		'/curriculum-map',
+		'/common-questions',
+		'/aps-calculator',
+		'/tutoring',
 		'/api/progress',
 		'/api/streak',
 		'/api/sessions',
@@ -79,26 +98,6 @@ export const ROUTE_CATEGORIES = {
 	// Admin routes (require admin role - role check happens in page/route handler)
 	ADMIN: ['/admin', '/cms', '/api/admin', '/api/cms', '/api/users'],
 };
-
-// API route patterns for mutation protection
-export const API_MUTATION_PROTECTED = [
-	'/api/progress',
-	'/api/streak',
-	'/api/sessions',
-	'/api/user-progress',
-	'/api/achievements',
-	'/api/leaderboard',
-	'/api/quiz',
-	'/api/interactive-quiz',
-	'/api/flashcards',
-	'/api/study-plan',
-	'/api/notifications',
-	'/api/comments',
-	'/api/channels',
-	'/api/admin',
-	'/api/cms',
-	'/api/users',
-] as const;
 
 // Check if route matches any in the list
 function matchesRoute(pathname: string, routes: string[]): boolean {
