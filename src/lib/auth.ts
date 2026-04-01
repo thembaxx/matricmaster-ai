@@ -369,6 +369,22 @@ async function createAuth(): Promise<AuthInstance> {
 					},
 				},
 			},
+			session: {
+				create: {
+					before: async (session: { userId: string }) => {
+						const db = await dbManager.getDb();
+						const { users } = await import('./db/schema');
+						const { eq } = await import('drizzle-orm');
+						const [user] = await db.select().from(users).where(eq(users.id, session.userId));
+						if (user?.isBlocked) {
+							throw new Error(
+								'Your account has been blocked. Please contact support for assistance.'
+							);
+						}
+						return { data: session };
+					},
+				},
+			},
 		},
 		plugins: [authConfig.plugins[0], nextCookies()],
 	};

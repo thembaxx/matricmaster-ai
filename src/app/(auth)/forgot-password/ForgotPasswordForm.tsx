@@ -81,7 +81,7 @@ export function ForgotPasswordForm() {
 						href="/sign-in"
 						className="inline-flex items-center text-xs font-bold text-muted-foreground hover:text-foreground transition-colors mb-6  tracking-wider"
 					>
-						<HugeiconsIcon icon={ArrowLeft} className="w-4 h-4 mr-2" /> Back to Sign In
+						<HugeiconsIcon icon={ArrowLeft} className="w-4 h-4 mr-2" /> back to sign in
 					</Link>
 
 					<m.div
@@ -99,7 +99,7 @@ export function ForgotPasswordForm() {
 						</m.div>
 						<SmoothWords
 							as="h1"
-							text="Reset Password"
+							text="reset password"
 							className="text-4xl font-black tracking-tight text-foreground"
 						/>
 						<m.p
@@ -107,8 +107,8 @@ export function ForgotPasswordForm() {
 							className="text-muted-foreground text-balance font-medium text-base"
 						>
 							{!isSubmitted
-								? 'Enter your email address to receive a password reset link.'
-								: 'Check your email for the reset link!'}
+								? 'enter your email address to receive a password reset link.'
+								: 'check your email for the reset link!'}
 						</m.p>
 					</m.div>
 
@@ -136,7 +136,7 @@ export function ForgotPasswordForm() {
 									htmlFor="email"
 									className="text-xs font-bold text-label-primary  tracking-wider ml-1"
 								>
-									Email Address
+									email address
 								</Label>
 								<Input
 									{...register('email')}
@@ -166,7 +166,7 @@ export function ForgotPasswordForm() {
 									) : (
 										<span className="flex items-center justify-center gap-2">
 											<HugeiconsIcon icon={SentIcon} className="w-5 h-5" />
-											Send Reset Link
+											send reset link
 										</span>
 									)}
 								</Button>
@@ -179,7 +179,7 @@ export function ForgotPasswordForm() {
 								className="h-12 px-8 rounded-2xl font-bold border-border/60"
 								onClick={() => setIsSubmitted(false)}
 							>
-								Try another email
+								try another email
 							</Button>
 						</m.div>
 					)}

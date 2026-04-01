@@ -1,4 +1,4 @@
-import { Key01Icon, Loading03Icon, SmartPhone01Icon } from '@hugeicons/core-free-icons';
+import { Key01Icon, Loading03Icon, Mail01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -57,8 +57,8 @@ export function TwoFactorForm({
 						onClick={onSendOtp}
 						disabled={isLoading}
 					>
-						<HugeiconsIcon icon={SmartPhone01Icon} className="mr-2 h-4 w-4" />
-						PaperPlaneRight code to email
+						<HugeiconsIcon icon={Mail01Icon} className="mr-2 h-4 w-4" />
+						send code to email
 					</Button>
 				</div>
 			) : (

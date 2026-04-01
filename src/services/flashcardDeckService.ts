@@ -11,6 +11,7 @@ import {
 } from '@/lib/db/schema';
 import { calculateNextReview, DEFAULT_EASE_FACTOR, type Rating } from '@/lib/spaced-repetition';
 import { generateFlashcardContentAction } from './aiActions';
+import { processGamificationEvent } from './unified-gamification';
 
 async function getDb(): Promise<DbType> {
 	const connected = await dbManager.waitForConnection(3, 2000);
@@ -452,6 +453,16 @@ export async function reviewCard(
 		easeFactorAfter: result.easeFactor.toString(),
 		reviewedAt: new Date(),
 	});
+
+	try {
+		await processGamificationEvent({
+			userId,
+			type: 'flashcard_review',
+			metadata: { count: 1 },
+		});
+	} catch {
+		// Gamification should not block flashcard review
+	}
 
 	return { nextReview: result.nextReview, interval: result.interval };
 }

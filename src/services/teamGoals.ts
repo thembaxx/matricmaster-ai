@@ -4,6 +4,7 @@ import { and, desc, eq, gte, inArray } from 'drizzle-orm';
 import { headers } from 'next/headers';
 import { getAuth } from '@/lib/auth';
 import { type DbType, dbManager } from '@/lib/db';
+import { syncTeamGoalMemberCount } from '@/lib/db/member-count-helpers';
 import { teamGoalMembers, teamGoals, user } from '@/lib/db/schema';
 import { awardXP } from './xpSystem';
 
@@ -98,13 +99,7 @@ export async function joinTeamGoal(goalId: string): Promise<void> {
 		contribution: 0,
 	});
 
-	await db
-		.update(teamGoals)
-		.set({
-			memberCount: goal.memberCount + 1,
-			updatedAt: new Date(),
-		})
-		.where(eq(teamGoals.id, goalId));
+	await syncTeamGoalMemberCount(goalId);
 }
 
 export async function updateTeamProgress(

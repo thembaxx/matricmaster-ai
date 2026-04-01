@@ -14,7 +14,17 @@ import { getAuth } from '@/lib/auth';
 import { getCachedAIResponse, hashString } from '@/lib/cache/ai-cache';
 import { dbManager } from '@/lib/db';
 import { quizResults, studyPlans, subjects, topicMastery } from '@/lib/db/schema';
+import { searchPastPaperQuestions } from '@/lib/rag/search';
 import { checkRateLimit, getRateLimitHeaders } from '@/lib/rate-limit';
+
+function sanitizeUserInput(input: string): string {
+	return input
+		.replace(/<\/?student_message>/g, '')
+		.replace(/<student_message>/g, '')
+		.replace(/system:/gi, 'student:')
+		.replace(/ignore previous instructions/gi, '')
+		.replace(/you are now/gi, 'you were previously');
+}
 
 interface ChatMessage {
 	role: 'user' | 'assistant';
@@ -263,16 +273,41 @@ ${context.weakTopics.map((t) => `- ${t.name} (${t.subject}, ${t.mastery}% master
 				'IMPORTANT DIRECTIVE: You MUST provide all explanations and answers entirely in Afrikaans. Do not use English unless directly quoting a provided English text.\n\n';
 		}
 
+		try {
+			const topicMatch = findCurriculumTopic(subject ?? null, message);
+			if (topicMatch) {
+				const ragResults = await searchPastPaperQuestions({
+					query: message.substring(0, 100),
+					subject: topicMatch.subjectId,
+					topic: topicMatch.topicName,
+					limit: 5,
+				});
+
+				if (ragResults.length > 0) {
+					const ragContext = ragResults
+						.map(
+							(r) =>
+								`Q: ${r.questionText}\nA: ${r.answerText || '(Answer not available)'}\nYear: ${r.year}, Subject: ${r.subject}`
+						)
+						.join('\n\n');
+
+					conversationContext += `\n\n## Reference Material (Past Papers)\n${ragContext}\n\nUse this reference material to support your answer where relevant.\n`;
+				}
+			}
+		} catch (error) {
+			console.debug('RAG search failed, continuing without context:', error);
+		}
+
 		if (history && history.length > 0) {
 			const recentHistory = history.slice(-10);
 			for (const msg of recentHistory) {
-				conversationContext += `${msg.role === 'assistant' ? 'assistant' : 'student'}: ${msg.content}\n`;
+				conversationContext += `${msg.role === 'assistant' ? 'assistant' : 'student'}: ${msg.role === 'user' ? sanitizeUserInput(msg.content) : msg.content}\n`;
 			}
 		}
 
 		const contextualMessage = subject
-			? `[subject: ${subject}] student asks: ${message}`
-			: `student asks: ${message}`;
+			? `[subject: ${subject}] student asks: <student_message>${sanitizeUserInput(message)}</student_message>`
+			: `student asks: <student_message>${sanitizeUserInput(message)}</student_message>`;
 
 		conversationContext += `\n${contextualMessage}`;
 
@@ -400,14 +435,13 @@ ${context.weakTopics.map((t) => `- ${t.name} (${t.subject}, ${t.mastery}% master
 			return citations;
 		};
 
-		const [response, suggestions] = await Promise.all([
-			generateMainResponse(),
-			generateSuggestions(''),
-		]);
+		const response = await generateMainResponse();
 
 		if (!response) {
 			throw new Error('failed to generate response');
 		}
+
+		const suggestions = await generateSuggestions(response);
 
 		const citations = await generateCitations(response, subject ?? null);
 

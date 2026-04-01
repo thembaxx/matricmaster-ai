@@ -86,7 +86,7 @@ export default function TwoFactorPage() {
 					<div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
 						<HugeiconsIcon icon={Shield01Icon} className="h-8 w-8 text-primary" />
 					</div>
-					<CardTitle className="text-2xl font-bold">Two-Factor Authentication</CardTitle>
+					<CardTitle className="text-2xl font-bold">two-factor authentication</CardTitle>
 					<CardDescription>
 						{useBackup ? VERIFICATION_DESCRIPTIONS.backup : VERIFICATION_DESCRIPTIONS.totp}
 					</CardDescription>

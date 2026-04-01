@@ -96,37 +96,52 @@ export const questions = pgTable(
 	})
 );
 
-export const options = pgTable('options', {
-	id: uuid('id').defaultRandom().primaryKey(),
-	questionId: uuid('question_id')
-		.notNull()
-		.references(() => questions.id, { onDelete: 'cascade' }),
-	optionText: text('option_text').notNull(),
-	isCorrect: boolean('is_correct').notNull().default(false),
-	optionLetter: varchar('option_letter', { length: 1 }).notNull(),
-	explanation: text('explanation'),
-	isActive: boolean('is_active').notNull().default(true),
-	createdAt: timestamp('created_at').defaultNow(),
-});
+export const options = pgTable(
+	'options',
+	{
+		id: uuid('id').defaultRandom().primaryKey(),
+		questionId: uuid('question_id')
+			.notNull()
+			.references(() => questions.id, { onDelete: 'cascade' }),
+		optionText: text('option_text').notNull(),
+		isCorrect: boolean('is_correct').notNull().default(false),
+		optionLetter: varchar('option_letter', { length: 1 }).notNull(),
+		explanation: text('explanation'),
+		isActive: boolean('is_active').notNull().default(true),
+		createdAt: timestamp('created_at').defaultNow(),
+	},
+	(table) => ({
+		questionLetterUnique: uniqueIndex('options_question_letter_unique').on(
+			table.questionId,
+			table.optionLetter
+		),
+	})
+);
 
 // ============================================================================
 // QUIZ RESULTS TABLE
 // ============================================================================
-export const quizResults = pgTable('quiz_results', {
-	id: uuid('id').defaultRandom().primaryKey(),
-	userId: text('user_id')
-		.notNull()
-		.references(() => users.id, { onDelete: 'cascade' }),
-	quizId: varchar('quiz_id', { length: 100 }).notNull(),
-	score: integer('score').notNull(),
-	totalQuestions: integer('total_questions').notNull(),
-	percentage: numeric('percentage', { precision: 5, scale: 2 }).notNull(),
-	timeTaken: integer('time_taken').notNull(),
-	completedAt: timestamp('completed_at').defaultNow().notNull(),
-	questionResults: text('question_results'),
-	source: varchar('source', { length: 20 }).default('quiz'),
-	isReviewMode: boolean('is_review_mode').notNull().default(false),
-});
+export const quizResults = pgTable(
+	'quiz_results',
+	{
+		id: uuid('id').defaultRandom().primaryKey(),
+		userId: text('user_id')
+			.notNull()
+			.references(() => users.id, { onDelete: 'cascade' }),
+		quizId: varchar('quiz_id', { length: 100 }).notNull(),
+		score: integer('score').notNull(),
+		totalQuestions: integer('total_questions').notNull(),
+		percentage: numeric('percentage', { precision: 5, scale: 2 }).notNull(),
+		timeTaken: integer('time_taken').notNull(),
+		completedAt: timestamp('completed_at').defaultNow().notNull(),
+		questionResults: text('question_results'),
+		source: varchar('source', { length: 20 }).default('quiz'),
+		isReviewMode: boolean('is_review_mode').notNull().default(false),
+	},
+	(table) => ({
+		uniqueUserQuiz: uniqueIndex('quiz_results_user_quiz_unique').on(table.userId, table.quizId),
+	})
+);
 
 export type QuizResult = typeof quizResults.$inferSelect;
 export type NewQuizResult = typeof quizResults.$inferInsert;
@@ -190,7 +205,7 @@ export const pastPaperQuestions = pgTable(
 	'past_paper_questions',
 	{
 		id: uuid('id').defaultRandom().primaryKey(),
-		paperId: uuid('paper_id').references(() => pastPapers.id),
+		paperId: uuid('paper_id').references(() => pastPapers.id, { onDelete: 'cascade' }),
 		questionText: text('question_text').notNull(),
 		answerText: text('answer_text'),
 		year: integer('year').notNull(),
@@ -244,6 +259,11 @@ export const userProgress = pgTable(
 		userIdIdx: index('user_progress_user_id_idx').on(table.userId),
 		subjectIdIdx: index('user_progress_subject_id_idx').on(table.subjectId),
 		topicIdx: index('user_progress_topic_idx').on(table.topic),
+		userSubjectTopic: uniqueIndex('user_progress_user_subject_topic').on(
+			table.userId,
+			table.subjectId,
+			table.topic
+		),
 	})
 );
 
@@ -424,7 +444,7 @@ export const topicMastery = pgTable(
 		userId: text('user_id')
 			.notNull()
 			.references(() => users.id, { onDelete: 'cascade' }),
-		subjectId: bigint('subject_id', { mode: 'number' })
+		subjectId: integer('subject_id')
 			.notNull()
 			.references(() => subjects.id, { onDelete: 'cascade' }),
 		topic: varchar('topic', { length: 100 }).notNull(),
@@ -442,6 +462,11 @@ export const topicMastery = pgTable(
 		userIdIdx: index('topic_mastery_user_id_idx').on(table.userId),
 		subjectIdIdx: index('topic_mastery_subject_id_idx').on(table.subjectId),
 		nextReviewIdx: index('topic_mastery_next_review_idx').on(table.nextReview),
+		userSubjectTopic: uniqueIndex('topic_mastery_user_subject_topic').on(
+			table.userId,
+			table.subjectId,
+			table.topic
+		),
 	})
 );
 
@@ -592,6 +617,10 @@ export const buddyRequests = pgTable(
 		toUserIdIdx: index('buddy_requests_to_user_id_idx').on(table.toUserId),
 		statusIdx: index('buddy_requests_status_idx').on(table.status),
 		uniqueRequest: uniqueIndex('buddy_requests_unique').on(table.fromUserId, table.toUserId),
+		uniqueReverse: uniqueIndex('buddy_requests_reverse_unique').on(
+			table.toUserId,
+			table.fromUserId
+		),
 	})
 );
 
@@ -640,7 +669,7 @@ export const comments = pgTable(
 		content: text('content').notNull(),
 		resourceType: varchar('resource_type', { length: 50 }).notNull(),
 		resourceId: text('resource_id').notNull(),
-		parentId: uuid('parent_id'),
+		parentId: uuid('parent_id').references(() => comments.id, { onDelete: 'cascade' }),
 		isEdited: boolean('is_edited').notNull().default(false),
 		isFlagged: boolean('is_flagged').notNull().default(false),
 		flagReason: text('flag_reason'),
@@ -804,7 +833,8 @@ export const studyBuddies = pgTable(
 	},
 	(table) => ({
 		userIdx: index('study_buddies_user_idx').on(table.userId1, table.userId2),
-		uniqueBuddy: uniqueIndex('study_buddies_unique').on(table.userId1, table.userId2),
+		uniqueBuddy1: uniqueIndex('study_buddies_unique_1').on(table.userId1, table.userId2),
+		uniqueBuddy2: uniqueIndex('study_buddies_unique_2').on(table.userId2, table.userId1),
 	})
 );
 
@@ -1485,7 +1515,7 @@ export const whatsappPreferences = pgTable(
 		updatedAt: timestamp('updated_at').defaultNow(),
 	},
 	(table) => ({
-		phoneIdx: index('whatsapp_prefs_phone_idx').on(table.phoneNumber),
+		phoneUnique: uniqueIndex('whatsapp_preferences_phone_unique').on(table.phoneNumber),
 		verifiedIdx: index('whatsapp_prefs_verified_idx').on(table.isVerified),
 	})
 );
@@ -1640,6 +1670,7 @@ export const energySessions = pgTable(
 	(table) => ({
 		userIdIdx: index('energy_sessions_user_id_idx').on(table.userId),
 		dateIdx: index('energy_sessions_date_idx').on(table.date),
+		userDateUnique: uniqueIndex('energy_sessions_user_date_unique').on(table.userId, table.date),
 	})
 );
 
@@ -1682,7 +1713,9 @@ export const userSubscriptions = pgTable(
 	'user_subscriptions',
 	{
 		id: uuid('id').defaultRandom().primaryKey(),
-		userId: varchar('user_id', { length: 255 }).notNull(),
+		userId: text('user_id')
+			.notNull()
+			.references(() => users.id),
 		planId: varchar('plan_id', { length: 50 })
 			.notNull()
 			.references(() => subscriptionPlans.id),
@@ -1709,7 +1742,9 @@ export const payments = pgTable(
 	'payments',
 	{
 		id: uuid('id').defaultRandom().primaryKey(),
-		userId: varchar('user_id', { length: 255 }).notNull(),
+		userId: varchar('user_id', { length: 255 })
+			.notNull()
+			.references(() => users.id),
 		subscriptionId: uuid('subscription_id').references(() => userSubscriptions.id),
 		amount: numeric('amount', { precision: 10, scale: 2 }).notNull(),
 		currency: varchar('currency', { length: 3 }).notNull().default('ZAR'),
@@ -2300,7 +2335,7 @@ export const tutorReviews = pgTable(
 		studentId: text('student_id')
 			.notNull()
 			.references(() => users.id, { onDelete: 'cascade' }),
-		rating: integer('rating').notNull(),
+		rating: integer('rating').notNull(), // CHECK: rating >= 1 AND rating <= 5 — enforce in application logic
 		comment: text('comment'),
 		createdAt: timestamp('created_at').defaultNow(),
 	},
@@ -2687,4 +2722,26 @@ export const predictionAccuracyRelations = relations(predictionAccuracy, ({ one 
 	}),
 }));
 export const topicFrequencyRelations = relations(topicFrequency, () => ({}));
+
+// ============================================================================
+// RATE LIMITS TABLE (DB-backed rate limiting for serverless)
+// ============================================================================
+
+export const rateLimits = pgTable(
+	'rate_limits',
+	{
+		id: uuid('id').defaultRandom().primaryKey(),
+		key: text('key').notNull(),
+		count: integer('count').notNull().default(0),
+		resetAt: timestamp('reset_at').notNull(),
+		createdAt: timestamp('created_at').defaultNow(),
+	},
+	(table) => ({
+		keyIdx: index('rate_limits_key_idx').on(table.key),
+		resetAtIdx: index('rate_limits_reset_at_idx').on(table.resetAt),
+	})
+);
+
+export type RateLimit = typeof rateLimits.$inferSelect;
+export type NewRateLimit = typeof rateLimits.$inferInsert;
 export const classicQuestionsRelations = relations(classicQuestions, () => ({}));

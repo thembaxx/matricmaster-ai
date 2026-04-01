@@ -1,3 +1,4 @@
+import crypto from 'node:crypto';
 import { eq } from 'drizzle-orm';
 import { type NextRequest, NextResponse } from 'next/server';
 import { AI_MODELS, generateAI } from '@/lib/ai-config';
@@ -71,10 +72,21 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
 	try {
-		const body: WhatsAppWebhookBody = await request.json();
+		const body = await request.text();
+		const signature = request.headers.get('x-hub-signature-256');
+		const appSecret = process.env.WHATSAPP_APP_SECRET || process.env.WHATSAPP_VERIFY_TOKEN;
+
+		if (appSecret && signature) {
+			const expectedSignature = `sha256=${crypto.createHmac('sha256', appSecret).update(body).digest('hex')}`;
+			if (!crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(expectedSignature))) {
+				return new NextResponse('Invalid signature', { status: 401 });
+			}
+		}
+
+		const data: WhatsAppWebhookBody = JSON.parse(body);
 		const db = await getDb();
 
-		for (const entry of body.entry) {
+		for (const entry of data.entry) {
 			for (const change of entry.changes) {
 				const value = change.value;
 

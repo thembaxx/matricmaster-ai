@@ -1,5 +1,5 @@
 import { type NextRequest, NextResponse } from 'next/server';
-import { getAuth } from '@/lib/auth';
+import { getAuth, type SessionUser } from '@/lib/auth';
 
 export async function POST(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
 	try {
@@ -8,6 +8,10 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
 
 		if (!session) {
 			return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+		}
+
+		if ((session.user as SessionUser).role !== 'admin') {
+			return NextResponse.json({ error: 'Forbidden - Admin only' }, { status: 403 });
 		}
 
 		const { id } = await params;

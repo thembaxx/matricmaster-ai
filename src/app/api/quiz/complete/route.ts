@@ -1,5 +1,6 @@
 import { and, eq, sql } from 'drizzle-orm';
 import { type NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
 import { trackEvent } from '@/lib/analytics';
 import { getAuth } from '@/lib/auth';
 import { dbManager, getDb } from '@/lib/db';
@@ -11,7 +12,33 @@ import {
 	userProgress,
 } from '@/lib/db/schema';
 import { detectWeakTopics, type QuizResultForAnalysis, type TopicStats } from '@/lib/quiz-grader';
+import { processGamificationEvent } from '@/services/unified-gamification';
 import { processQuizMistakes, type WrongAnswerData } from '@/services/wrongAnswerPipeline';
+
+const quizCompleteSchema = z.object({
+	quizId: z.string().min(1),
+	sessionId: z.string().min(1),
+	score: z.number().int().min(0),
+	totalQuestions: z.number().int().min(1),
+	percentage: z.number().min(0).max(100),
+	timeTaken: z.number().min(0),
+	answers: z
+		.array(
+			z.object({
+				questionId: z.string(),
+				questionText: z.string(),
+				selectedOption: z.string().nullable(),
+				correctOption: z.string().nullable(),
+				isCorrect: z.boolean(),
+				timeSpentMs: z.number().min(0),
+				confidenceLevel: z.enum(['sure', 'guess', 'unsure']).optional(),
+				partialCredit: z.number().optional(),
+				explanation: z.string().optional(),
+			})
+		)
+		.optional(),
+	subject: z.string().optional(),
+});
 
 export interface QuizAnswer {
 	questionId: string;
@@ -60,8 +87,20 @@ export async function POST(request: NextRequest) {
 		}
 
 		const body: QuizCompletionRequest = await request.json();
-		const { quizId, subjectId, topic, score, totalQuestions, percentage, timeTaken, answers } =
-			body;
+
+		const parsed = quizCompleteSchema.safeParse(body);
+		if (!parsed.success) {
+			return NextResponse.json(
+				{ error: 'Invalid request body', details: parsed.error.flatten() },
+				{ status: 400 }
+			);
+		}
+
+		const { quizId, score, totalQuestions, percentage, timeTaken, answers, subject } = parsed.data;
+		const subjectId = subject ? Number.parseInt(subject, 10) : 1;
+		const topic = 'General';
+		const safeAnswers = answers || [];
+		const safeTimeTaken = timeTaken ?? 0;
 
 		const connected = await dbManager.waitForConnection(3, 2000);
 		if (!connected) {
@@ -79,18 +118,18 @@ export async function POST(request: NextRequest) {
 				score,
 				totalQuestions,
 				percentage: percentage.toString(),
-				timeTaken,
+				timeTaken: safeTimeTaken,
 				completedAt: new Date(),
 			})
 			.returning();
 
 		const averageTimeMs =
-			answers.length > 0
-				? answers.reduce((sum, a) => sum + (a.timeSpentMs || 0), 0) / answers.length
+			safeAnswers.length > 0
+				? safeAnswers.reduce((sum, a) => sum + (a.timeSpentMs || 0), 0) / safeAnswers.length
 				: 0;
 
-		const wrongAnswers = answers.filter((a) => !a.isCorrect);
-		const slowCorrectAnswers = answers.filter(
+		const wrongAnswers = safeAnswers.filter((a) => !a.isCorrect);
+		const slowCorrectAnswers = safeAnswers.filter(
 			(a) => a.isCorrect && a.timeSpentMs > averageTimeMs * 2 && a.confidenceLevel !== 'sure'
 		);
 
@@ -164,7 +203,7 @@ export async function POST(request: NextRequest) {
 				topic: topic || 'General',
 				correct: score,
 				total: totalQuestions,
-				timeMs: answers.map((a) => a.timeSpentMs),
+				timeMs: safeAnswers.map((a) => a.timeSpentMs),
 			},
 		];
 
@@ -172,7 +211,7 @@ export async function POST(request: NextRequest) {
 			quizId,
 			subject: subjectId.toString(),
 			topics: topicStats,
-			totalTimeSeconds: timeTaken,
+			totalTimeSeconds: safeTimeTaken,
 		};
 
 		const weakTopics = detectWeakTopics(quizResultForAnalysis);
@@ -192,7 +231,18 @@ export async function POST(request: NextRequest) {
 			where: eq(userProgress.userId, userId),
 		});
 
-		const xpEarned = Math.round(score * 1.5);
+		const gamificationResult = await processGamificationEvent({
+			userId,
+			type: 'quiz_complete',
+			metadata: {
+				score,
+				totalQuestions,
+				percentage,
+				difficulty: 'medium',
+			},
+		});
+
+		const xpEarned = gamificationResult.xpEarned;
 
 		if (existingProgress) {
 			await db
@@ -200,7 +250,6 @@ export async function POST(request: NextRequest) {
 				.set({
 					totalQuestionsAttempted: sql`${userProgress.totalQuestionsAttempted} + ${totalQuestions}`,
 					totalCorrect: sql`${userProgress.totalCorrect} + ${score}`,
-					totalMarksEarned: sql`${userProgress.totalMarksEarned} + ${xpEarned}`,
 					lastActivityAt: new Date(),
 					updatedAt: new Date(),
 				})
@@ -213,7 +262,7 @@ export async function POST(request: NextRequest) {
 				totalQuestionsAttempted: totalQuestions,
 				totalCorrect: score,
 				totalMarksEarned: xpEarned,
-				streakDays: 1,
+				streakDays: gamificationResult.newStreak,
 			});
 		}
 

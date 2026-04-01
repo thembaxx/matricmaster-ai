@@ -5,6 +5,8 @@ import { getAuth } from '@/lib/auth';
 import { dbManager } from '@/lib/db';
 import { studySessions, userProgress } from '@/lib/db/schema';
 
+export { detectBurnoutRisk } from './burnoutService';
+
 async function getDb() {
 	const connected = await dbManager.waitForConnection(3, 2000);
 	if (!connected) throw new Error('Database not available');

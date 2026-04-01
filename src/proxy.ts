@@ -1,6 +1,7 @@
 import { getSessionCookie } from 'better-auth/cookies';
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
+import { csrfProtection } from './middleware/csrf';
 
 // Route categorization for better organization and security
 export const ROUTE_CATEGORIES = {
@@ -118,6 +119,11 @@ function logProxyActivity(pathname: string, authenticated: boolean, action: stri
 }
 
 export default async function proxy(request: NextRequest) {
+	const csrfResponse = csrfProtection(request);
+	if (csrfResponse) {
+		return csrfResponse;
+	}
+
 	const { pathname } = request.nextUrl;
 
 	// 1. Allow public routes without authentication

@@ -64,6 +64,17 @@ async function handleSuccessfulCharge(data: {
 }) {
 	const db = await getDbConnection();
 
+	const existing = await db
+		.select()
+		.from(payments)
+		.where(eq(payments.paystackReference, data.reference))
+		.limit(1);
+
+	if (existing.length > 0 && existing[0].status === 'success') {
+		console.debug(`Payment ${data.reference} already processed, skipping`);
+		return;
+	}
+
 	await db
 		.update(payments)
 		.set({
@@ -90,20 +101,34 @@ async function handleFailedCharge(data: {
 	reference: string;
 	customer: { email: string };
 	amount: number;
+	gateway_response?: string;
 	metadata?: Record<string, unknown>;
 }) {
 	const db = await getDbConnection();
+
+	const existing = await db
+		.select()
+		.from(payments)
+		.where(eq(payments.paystackReference, data.reference))
+		.limit(1);
+
+	if (existing.length > 0 && existing[0].status === 'failed') {
+		console.debug(`Payment ${data.reference} already marked as failed, skipping`);
+		return;
+	}
+
+	const reason = data.gateway_response || `Payment failed - reference: ${data.reference}`;
 
 	await db
 		.update(payments)
 		.set({
 			status: 'failed',
-			failureReason: data.reference,
+			failureReason: reason,
 			updatedAt: new Date(),
 		})
 		.where(eq(payments.paystackReference, data.reference));
 
-	console.debug(`Payment failed for ${data.customer.email}: ${data.reference}`);
+	console.debug(`Payment failed for ${data.customer.email}: ${reason}`);
 
 	if (data.metadata?.userId) {
 		await trackEvent({
@@ -123,13 +148,18 @@ async function handleSubscriptionNotRenewed(_data: {
 }) {
 	const db = await getDbConnection();
 
+	if (!_data.subscription_code) {
+		console.warn('subscription.not_renewed webhook missing subscription_code, skipping');
+		return;
+	}
+
 	await db
 		.update(userSubscriptions)
 		.set({
 			status: 'expired',
 			updatedAt: new Date(),
 		})
-		.where(eq(userSubscriptions.status, 'active'));
+		.where(eq(userSubscriptions.paystackSubscriptionCode, _data.subscription_code));
 }
 
 async function handleSubscriptionDisable(data: {

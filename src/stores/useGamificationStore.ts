@@ -6,6 +6,7 @@ import { persist } from 'zustand/middleware';
 import { AchievementToast } from '@/components/Gamification/AchievementToast';
 import { getAchievementById } from '@/content';
 import { checkAndUnlockAchievements } from '@/lib/db/achievement-actions';
+import { getUserXPAndLevel } from '@/services/xpSystem';
 
 export interface UnlockedAchievement {
 	id: string;
@@ -56,6 +57,7 @@ interface GamificationState {
 	currentLevel: number;
 	levelTitle: string;
 	setXpData: (xp: number, level: number, title: string) => void;
+	syncWithServer: () => Promise<void>;
 
 	// Team Goals
 	teamGoals: TeamGoalState[];
@@ -146,6 +148,18 @@ export const useGamificationStore = create<GamificationState>()(
 			levelTitle: 'Novice',
 			setXpData: (xp, level, title) => {
 				set({ totalXp: xp, currentLevel: level, levelTitle: title });
+			},
+			syncWithServer: async () => {
+				try {
+					const { totalXp, level } = await getUserXPAndLevel();
+					set({
+						totalXp,
+						currentLevel: level.level,
+						levelTitle: level.title,
+					});
+				} catch (error) {
+					console.debug('Failed to sync gamification with server:', error);
+				}
 			},
 
 			// Team Goals

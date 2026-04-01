@@ -8,14 +8,103 @@ export const AI_MODELS = {
 	FALLBACK_1: 'gemini-2.0-pro',
 	FALLBACK_2: 'gemini-2.0-flash',
 	FALLBACK_3: 'gemini-1.5-pro',
-	FALLBACK_4: 'gemini-3.1-flash-lite', // Newer model added as fallback
+	FALLBACK_4: 'gemini-3.1-flash-lite',
 } as const;
 
 /**
- * Get the best available model with fallback logic
+ * Task complexity levels for model routing
  */
-export function getBestAvailableModel() {
-	return AI_MODELS.PRIMARY;
+export type TaskComplexity = 'simple' | 'moderate' | 'complex' | 'creative';
+
+/**
+ * Model routing table: maps task complexity to primary model and fallback chain
+ */
+export const MODEL_ROUTING: Record<TaskComplexity, { primary: string; fallbacks: string[] }> = {
+	simple: {
+		primary: AI_MODELS.PRIMARY,
+		fallbacks: [AI_MODELS.FALLBACK_1, AI_MODELS.FALLBACK_2],
+	},
+	moderate: {
+		primary: AI_MODELS.PRIMARY,
+		fallbacks: [AI_MODELS.FALLBACK_1, AI_MODELS.FALLBACK_3],
+	},
+	complex: {
+		primary: AI_MODELS.FALLBACK_1,
+		fallbacks: [AI_MODELS.PRIMARY, AI_MODELS.FALLBACK_2],
+	},
+	creative: {
+		primary: AI_MODELS.PRIMARY,
+		fallbacks: [AI_MODELS.FALLBACK_1, AI_MODELS.FALLBACK_2, AI_MODELS.FALLBACK_3],
+	},
+};
+
+/**
+ * Get the recommended model for a given task complexity (no availability check)
+ */
+export function getModelForTask(complexity: TaskComplexity): string {
+	const routing = MODEL_ROUTING[complexity];
+	return routing.primary;
+}
+
+/**
+ * Get an available model for a task, trying primary then fallbacks in order
+ */
+export async function getAvailableModel(complexity: TaskComplexity = 'moderate'): Promise<string> {
+	const routing = MODEL_ROUTING[complexity];
+
+	if (await isModelAvailable(routing.primary)) {
+		return routing.primary;
+	}
+
+	for (const fallback of routing.fallbacks) {
+		if (await isModelAvailable(fallback)) {
+			return fallback;
+		}
+	}
+
+	return routing.primary;
+}
+
+async function isModelAvailable(modelName: string): Promise<boolean> {
+	const apiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY;
+	if (!apiKey) return false;
+
+	const configuredModels: string[] = [
+		AI_MODELS.PRIMARY,
+		AI_MODELS.FALLBACK_1,
+		AI_MODELS.FALLBACK_2,
+		AI_MODELS.FALLBACK_3,
+		AI_MODELS.FALLBACK_4,
+	];
+
+	return configuredModels.includes(modelName);
+}
+
+/**
+ * Token budget tracking to prevent cost runaway
+ */
+const TOKEN_BUDGET = {
+	daily: 500000,
+	perRequest: 50000,
+};
+
+let dailyTokenUsage = 0;
+let dailyResetDate = new Date().toDateString();
+
+export function checkTokenBudget(estimatedTokens: number): boolean {
+	if (new Date().toDateString() !== dailyResetDate) {
+		dailyTokenUsage = 0;
+		dailyResetDate = new Date().toDateString();
+	}
+
+	return (
+		dailyTokenUsage + estimatedTokens <= TOKEN_BUDGET.daily &&
+		estimatedTokens <= TOKEN_BUDGET.perRequest
+	);
+}
+
+export function recordTokenUsage(tokens: number) {
+	dailyTokenUsage += tokens;
 }
 
 /**
