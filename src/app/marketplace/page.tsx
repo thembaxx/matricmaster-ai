@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Marketplace from '@/screens/Marketplace';
 
 export const metadata: Metadata = {
-	title: 'Tutor Marketplace - MatricMaster AI',
+	title: 'Tutor Marketplace - Lumni AI',
 	description: 'Find peer tutors for extra help with your subjects',
 };
 

@@ -45,7 +45,7 @@ export function WelcomeBackDialog() {
 								id="welcome-back-title"
 								className="text-xl font-semibold text-gray-900 dark:text-white"
 							>
-								We missed you at MatricMaster
+								We missed you at Lumni
 							</h2>
 						</div>
 

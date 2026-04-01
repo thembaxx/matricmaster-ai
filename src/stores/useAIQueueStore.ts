@@ -98,7 +98,7 @@ export const useAIQueueStore = create<AIQueueStore>()(
 
 						if (typeof window !== 'undefined' && 'Notification' in window) {
 							if (Notification.permission === 'granted') {
-								new Notification('MatricMaster AI', {
+								new Notification('Lumni AI', {
 									body: 'Your AI response is ready!',
 									icon: '/icon.png',
 								});

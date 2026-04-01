@@ -1,4 +1,4 @@
-# Nia Sources - MatricMaster AI
+# Nia Sources - Lumni AI
 
 ## Local Indexed Sources
 

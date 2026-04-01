@@ -315,7 +315,7 @@ async function generateGeminiGreeting(data: GreetingData): Promise<{
 	const strongTopicsText =
 		data.strongTopics.length > 0 ? `Strong in: ${data.strongTopics.slice(0, 3).join(', ')}` : '';
 
-	const prompt = `You are MatricMaster AI, a motivational study coach for South African Matric students.
+	const prompt = `You are Lumni AI, a motivational study coach for South African Matric students.
 
 Generate a personalized greeting and briefing for a student with this profile:
 

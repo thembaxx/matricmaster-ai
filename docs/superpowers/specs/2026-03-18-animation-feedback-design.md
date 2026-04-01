@@ -8,7 +8,7 @@
 
 ## Overview
 
-Add three interconnected systems to MatricMaster-AI that enhance the learning experience through visual delight and tactile feedback:
+Add three interconnected systems to Lumni-AI that enhance the learning experience through visual delight and tactile feedback:
 
 1. **Dynamic Subject Backgrounds** - Animated gradient backgrounds that change based on the active subject
 2. **Micro-interactions** - Rewarding confetti animations for achievements and milestones

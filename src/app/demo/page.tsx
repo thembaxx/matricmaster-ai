@@ -32,7 +32,7 @@ export default function DemoPage() {
 					<div className="flex items-center justify-between">
 						<div>
 							<h1 className="text-2xl font-bold bg-gradient-to-r from-primary to-purple-500 bg-clip-text text-transparent">
-								MatricMaster Demo
+								Lumni Demo
 							</h1>
 							<p className="text-sm text-muted-foreground">Explore our NSC Grade 12 mock data</p>
 						</div>

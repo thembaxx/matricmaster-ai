@@ -29,7 +29,7 @@ interface OnboardingState {
 }
 
 const DEFAULT_STEPS: OnboardingStep[] = [
-	{ id: 'welcome', title: 'Welcome to MatricMaster', completed: false },
+	{ id: 'welcome', title: 'Welcome to Lumni', completed: false },
 	{ id: 'profile-setup', title: 'Set up your profile', completed: false },
 	{ id: 'subject-selection', title: 'Select your subjects', completed: false },
 	{ id: 'study-goal', title: 'Set your study goal', completed: false },

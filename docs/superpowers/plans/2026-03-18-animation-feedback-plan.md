@@ -2,7 +2,7 @@
 
 > **For agentic workers:** REQUIRED: Use superpowers:subagent-driven-development (if subagents available) or superpowers:executing-plans to implement this plan. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Add dynamic subject backgrounds, confetti micro-interactions, and haptic feedback to MatricMaster-AI
+**Goal:** Add dynamic subject backgrounds, confetti micro-interactions, and haptic feedback to Lumni-AI
 
 **Architecture:** Three independent systems that integrate into existing layout and components. SubjectBackground wraps content, Confetti uses Framer Motion particles, and Haptics use Web Vibration API with React Context.
 

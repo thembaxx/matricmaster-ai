@@ -73,7 +73,7 @@ const variantContent: Record<
 		icon: Link2Off,
 	},
 	firstTime: {
-		title: 'Welcome to MatricMaster!',
+		title: 'Welcome to Lumni!',
 		description: 'Start your matric journey by selecting your subjects',
 		icon: GraduationCap,
 	},

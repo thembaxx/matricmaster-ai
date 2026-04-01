@@ -71,8 +71,8 @@ function AchievementBadge({ badge }: { badge: BadgeData }) {
 
 	const handleShare = () => {
 		const text = badge.unlocked
-			? `I just unlocked "${badge.name}" on MatricMaster AI! ${badge.icon || ''} #MatricMaster #Achievement`
-			: `Working towards "${badge.name}" on MatricMaster AI!`;
+			? `I just unlocked "${badge.name}" on Lumni AI! ${badge.icon || ''} #Lumni #Achievement`
+			: `Working towards "${badge.name}" on Lumni AI!`;
 
 		if (navigator.share) {
 			navigator.share({ title: badge.name, text }).catch((err) => {

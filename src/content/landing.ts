@@ -113,7 +113,7 @@ export const LANDING_TESTIMONIALS: LandingTestimonial[] = [
 		name: 'Amahle Nkosi',
 		grade: 'Grade 12, Pretoria',
 		quote:
-			'MatricMaster AI helped me improve my math marks by 20% in just 3 months. The AI tutor is like having a personal teacher available 24/7.',
+			'Lumni AI helped me improve my math marks by 20% in just 3 months. The AI tutor is like having a personal teacher available 24/7.',
 		image:
 			'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop&crop=face',
 	},

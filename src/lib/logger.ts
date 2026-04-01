@@ -1,5 +1,5 @@
 /**
- * Environment-aware logging utility for MatricMaster AI
+ * Environment-aware logging utility for Lumni AI
  * - debug/info: Only logged in development
  * - warn/error: Always logged
  * - Includes timestamp and context for debugging

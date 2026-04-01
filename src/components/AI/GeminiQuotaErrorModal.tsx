@@ -295,7 +295,7 @@ export function GeminiQuotaErrorModal({
 									className="bg-muted/30 px-6 py-3 flex items-center justify-between"
 								>
 									<span className="text-xs text-muted-foreground">
-										© {new Date().getFullYear()} MatricMaster AI
+										© {new Date().getFullYear()} Lumni AI
 									</span>
 									<span className="text-xs text-muted-foreground">Powered by Google Gemini</span>
 								</m.div>
