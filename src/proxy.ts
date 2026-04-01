@@ -12,14 +12,10 @@ export const ROUTE_CATEGORIES = {
 		'/sign-in',
 		'/sign-up',
 		'/forgot-password',
-		'/onboarding',
 		'/api/auth',
-		'/api/db/init',
 		'/api/health',
+		'/api/db/init',
 	],
-
-	// Routes that are public but may have enhanced features for authenticated users
-	CONTENT: ['/search', '/past-papers', '/physics', '/lessons'],
 
 	// Routes that require authentication
 	PROTECTED: [
@@ -77,6 +73,10 @@ export const ROUTE_CATEGORIES = {
 		'/common-questions',
 		'/aps-calculator',
 		'/tutoring',
+		'/onboarding',
+		'/search',
+		'/physics',
+		'/lessons',
 		'/api/progress',
 		'/api/streak',
 		'/api/sessions',
@@ -203,15 +203,11 @@ export default async function proxy(request: NextRequest) {
 		return NextResponse.next();
 	}
 
-	// 6. Public content routes (auth optional for enhanced features)
-	if (matchesRoute(pathname, ROUTE_CATEGORIES.CONTENT)) {
-		logProxyActivity(pathname, hasSessionCookie(request), 'Public content route');
-		return NextResponse.next();
-	}
-
-	// 7. Default: Allow access (catches any routes not explicitly listed)
-	logProxyActivity(pathname, hasSessionCookie(request), 'Default route');
-	return NextResponse.next();
+	// 5. Default: Redirect to sign-in for any other routes not explicitly public
+	const signInUrl = new URL('/sign-in', request.url);
+	signInUrl.searchParams.set('callbackUrl', pathname);
+	logProxyActivity(pathname, false, 'Default route - redirect to sign-in');
+	return NextResponse.redirect(signInUrl);
 }
 
 // Configure which routes the proxy should run on
