@@ -6,28 +6,15 @@ import { csrfProtection } from './middleware/csrf';
 // Route categorization for better organization and security
 export const ROUTE_CATEGORIES = {
 	// Routes that don't require any authentication
+	// Only homepage and auth-related routes are public
 	PUBLIC: [
 		'/',
 		'/sign-in',
 		'/sign-up',
 		'/forgot-password',
 		'/api/auth',
-		'/api/db/init',
-		'/onboarding',
 		'/api/health',
-		'/api/csp-report',
-		'/api/uploadthing',
-	],
-
-	// Routes that are public but may have enhanced features for authenticated users
-	CONTENT: [
-		'/search',
-		'/past-papers',
-		'/physics',
-		'/lessons',
-		'/api/past-papers',
-		'/api/lessons',
-		'/api/search',
+		'/api/db/init',
 	],
 
 	// Routes that require authentication
@@ -56,8 +43,40 @@ export const ROUTE_CATEGORIES = {
 		'/lesson-complete',
 		'/past-paper',
 		'/language',
-		'/onboarding',
 		'/error-hint',
+		'/demo',
+		'/marketplace',
+		'/results',
+		'/subscription',
+		'/snap-and-solve',
+		'/essay-grader',
+		'/voice-tutor',
+		'/smart-scheduler',
+		'/analytics',
+		'/video-call',
+		'/team-goals',
+		'/subjects',
+		'/study-path',
+		'/study-companion',
+		'/setwork-library',
+		'/science-lab',
+		'/school',
+		'/schedule',
+		'/planner',
+		'/periodic-table',
+		'/parent-dashboard',
+		'/offline',
+		'/focus-rooms',
+		'/focus',
+		'/exam-timer',
+		'/curriculum-map',
+		'/common-questions',
+		'/aps-calculator',
+		'/tutoring',
+		'/onboarding',
+		'/search',
+		'/physics',
+		'/lessons',
 		'/api/progress',
 		'/api/streak',
 		'/api/sessions',
@@ -79,26 +98,6 @@ export const ROUTE_CATEGORIES = {
 	// Admin routes (require admin role - role check happens in page/route handler)
 	ADMIN: ['/admin', '/cms', '/api/admin', '/api/cms', '/api/users'],
 };
-
-// API route patterns for mutation protection
-export const API_MUTATION_PROTECTED = [
-	'/api/progress',
-	'/api/streak',
-	'/api/sessions',
-	'/api/user-progress',
-	'/api/achievements',
-	'/api/leaderboard',
-	'/api/quiz',
-	'/api/interactive-quiz',
-	'/api/flashcards',
-	'/api/study-plan',
-	'/api/notifications',
-	'/api/comments',
-	'/api/channels',
-	'/api/admin',
-	'/api/cms',
-	'/api/users',
-] as const;
 
 // Check if route matches any in the list
 function matchesRoute(pathname: string, routes: string[]): boolean {
@@ -204,15 +203,11 @@ export default async function proxy(request: NextRequest) {
 		return NextResponse.next();
 	}
 
-	// 6. Public content routes (auth optional for enhanced features)
-	if (matchesRoute(pathname, ROUTE_CATEGORIES.CONTENT)) {
-		logProxyActivity(pathname, hasSessionCookie(request), 'Public content route');
-		return NextResponse.next();
-	}
-
-	// 7. Default: Allow access (catches any routes not explicitly listed)
-	logProxyActivity(pathname, hasSessionCookie(request), 'Default route');
-	return NextResponse.next();
+	// 5. Default: Redirect to sign-in for any other routes not explicitly public
+	const signInUrl = new URL('/sign-in', request.url);
+	signInUrl.searchParams.set('callbackUrl', pathname);
+	logProxyActivity(pathname, false, 'Default route - redirect to sign-in');
+	return NextResponse.redirect(signInUrl);
 }
 
 // Configure which routes the proxy should run on

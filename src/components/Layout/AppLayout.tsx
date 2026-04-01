@@ -84,9 +84,7 @@ function AppLayoutContent({ children }: { children: React.ReactNode }) {
 									<PageTransition>{children}</PageTransition>
 								</main>
 							</div>
-							{!shouldHideBottomNav && (user || pathname === '/') && (
-								<BottomNavigation pathname={pathname} />
-							)}
+							{!shouldHideBottomNav && user && <BottomNavigation pathname={pathname} />}
 						</div>
 						<GlassOrb />
 					</div>
@@ -166,7 +164,7 @@ function AppLayoutContent({ children }: { children: React.ReactNode }) {
 									<PageTransition>{children}</PageTransition>
 								</main>
 							</div>
-							{!shouldHideBottomNav && !isFullScreen && (user || pathname === '/') && (
+							{!shouldHideBottomNav && !isFullScreen && user && (
 								<BottomNavigation pathname={pathname} />
 							)}
 						</div>

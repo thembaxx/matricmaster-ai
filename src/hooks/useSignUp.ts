@@ -64,7 +64,7 @@ export function useSignUp() {
 		}
 	};
 
-	const handleSocialSignUp = async (provider: 'google' | 'twitter' | 'facebook') => {
+	const handleSocialSignUp = async (provider: 'google' | 'twitter') => {
 		setError(null);
 		try {
 			const callbackURL = new URL('/onboarding', window.location.origin).toString();

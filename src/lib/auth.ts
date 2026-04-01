@@ -166,9 +166,6 @@ async function createAuth(): Promise<AuthInstance> {
 	const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET ?? process.env.GOOGLE_SECRET_KEY;
 	const twitterClientId = process.env.TWITTER_CLIENT_ID;
 	const twitterClientSecret = process.env.TWITTER_CLIENT_SECRET;
-	const facebookClientId = process.env.FACEBOOK_CLIENT_ID;
-	const facebookClientSecret = process.env.FACEBOOK_CLIENT_SECRET;
-
 	if (!isBuildTime) {
 		if (!googleClientId || !googleClientSecret) {
 			log.warn(
@@ -178,11 +175,6 @@ async function createAuth(): Promise<AuthInstance> {
 		if (!twitterClientId || !twitterClientSecret) {
 			log.warn(
 				'Twitter OAuth credentials are not configured. Sign in with Twitter will not be available.'
-			);
-		}
-		if (!facebookClientId || !facebookClientSecret) {
-			log.warn(
-				'Facebook OAuth credentials are not configured. Sign in with Facebook will not be available.'
 			);
 		}
 	}
@@ -210,14 +202,6 @@ async function createAuth(): Promise<AuthInstance> {
 		socialProviders.twitter = {
 			clientId: twitterClientId!,
 			clientSecret: twitterClientSecret!,
-		};
-	}
-
-	// Only add Facebook provider if credentials are available
-	if (isValidCredential(facebookClientId, facebookClientSecret)) {
-		socialProviders.facebook = {
-			clientId: facebookClientId!,
-			clientSecret: facebookClientSecret!,
 		};
 	}
 
