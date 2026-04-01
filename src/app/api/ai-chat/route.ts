@@ -16,6 +16,9 @@ const chatMessageSchema = z.object({
 });
 
 export async function POST(request: NextRequest) {
+	const controller = new AbortController();
+	const timeout = setTimeout(() => controller.abort(), 30000);
+
 	try {
 		const body = await request.json();
 		const validation = chatMessageSchema.parse(body);
@@ -30,7 +33,8 @@ export async function POST(request: NextRequest) {
 		const aiResponse = await getAIResponse(
 			[...history, { role: 'user', content: message }],
 			userContext,
-			subject || 'general'
+			subject || 'general',
+			controller.signal
 		);
 
 		await saveMessage(sessionId, 'assistant', aiResponse);
@@ -42,6 +46,11 @@ export async function POST(request: NextRequest) {
 
 		return NextResponse.json({ response: aiResponse, success: true });
 	} catch (error) {
+		if (error instanceof Error && error.name === 'AbortError') {
+			return NextResponse.json({ error: 'Request timed out' }, { status: 504 });
+		}
 		return handleApiError(error);
+	} finally {
+		clearTimeout(timeout);
 	}
 }

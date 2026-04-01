@@ -313,45 +313,32 @@ async function updateTopicMastery(
 
 	const isCorrect = correct / total >= 0.6;
 
-	const existing = await db.query.topicMastery.findFirst({
-		where: and(
-			eq(topicMastery.userId, userId),
-			eq(topicMastery.subjectId, subjectId),
-			eq(topicMastery.topic, topic)
-		),
-	});
+	const initialMastery = Math.min(100, 10 + (correct / total) * 30);
 
-	if (existing) {
-		const newMastery = Math.min(
-			100,
-			Number(existing.masteryLevel) + (isCorrect ? 2 : -1) + (correct / total) * 5
-		);
-
-		await db
-			.update(topicMastery)
-			.set({
-				masteryLevel: newMastery.toFixed(2) as unknown as typeof topicMastery.masteryLevel,
-				questionsAttempted: existing.questionsAttempted + total,
-				questionsCorrect: existing.questionsCorrect + correct,
-				lastPracticed: new Date(),
-				nextReview: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-				consecutiveCorrect: isCorrect ? existing.consecutiveCorrect + 1 : 0,
-				updatedAt: new Date(),
-			})
-			.where(eq(topicMastery.id, existing.id));
-	} else {
-		const initialMastery = Math.min(100, 10 + (correct / total) * 30);
-		await db.insert(topicMastery).values({
+	await db
+		.insert(topicMastery)
+		.values({
 			userId,
 			subjectId,
 			topic,
-			masteryLevel: sql`${initialMastery.toFixed(2)}`,
+			masteryLevel: sql`GREATEST(${topicMastery.masteryLevel}, ${initialMastery.toFixed(2)})`,
 			questionsAttempted: total,
 			questionsCorrect: correct,
 			lastPracticed: new Date(),
 			nextReview: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+		})
+		.onConflictDoUpdate({
+			target: [topicMastery.userId, topicMastery.subjectId, topicMastery.topic],
+			set: {
+				masteryLevel: sql`LEAST(100, ${topicMastery.masteryLevel} + ${isCorrect ? 2 : -1} + ${(correct / total) * 5})`,
+				questionsAttempted: sql`${topicMastery.questionsAttempted} + ${total}`,
+				questionsCorrect: sql`${topicMastery.questionsCorrect} + ${correct}`,
+				lastPracticed: new Date(),
+				nextReview: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+				consecutiveCorrect: sql`CASE WHEN ${isCorrect} THEN ${topicMastery.consecutiveCorrect} + 1 ELSE 0 END`,
+				updatedAt: new Date(),
+			},
 		});
-	}
 }
 
 async function updateUserProgressStats(
@@ -361,31 +348,26 @@ async function updateUserProgressStats(
 	correct: number,
 	marksEarned: number
 ): Promise<void> {
-	const existing = await db.query.userProgress.findFirst({
-		where: eq(userProgress.userId, userId),
-	});
-
-	if (existing) {
-		await db
-			.update(userProgress)
-			.set({
-				totalQuestionsAttempted: existing.totalQuestionsAttempted + questionsAttempted,
-				totalCorrect: existing.totalCorrect + correct,
-				totalMarksEarned: existing.totalMarksEarned + marksEarned,
-				lastActivityAt: new Date(),
-				updatedAt: new Date(),
-			})
-			.where(eq(userProgress.id, existing.id));
-	} else {
-		await db.insert(userProgress).values({
+	await db
+		.insert(userProgress)
+		.values({
 			userId,
 			totalQuestionsAttempted: questionsAttempted,
 			totalCorrect: correct,
 			totalMarksEarned: marksEarned,
 			streakDays: 1,
 			bestStreak: 1,
+		})
+		.onConflictDoUpdate({
+			target: userProgress.userId,
+			set: {
+				totalQuestionsAttempted: sql`${userProgress.totalQuestionsAttempted} + ${questionsAttempted}`,
+				totalCorrect: sql`${userProgress.totalCorrect} + ${correct}`,
+				totalMarksEarned: sql`${userProgress.totalMarksEarned} + ${marksEarned}`,
+				lastActivityAt: new Date(),
+				updatedAt: new Date(),
+			},
 		});
-	}
 }
 
 async function updateLeaderboard(
@@ -397,32 +379,27 @@ async function updateLeaderboard(
 	const now = new Date();
 	const periodStart = new Date(now.getFullYear(), now.getMonth(), 1);
 
-	const existing = await db.query.leaderboardEntries.findFirst({
-		where: and(
-			eq(leaderboardEntries.userId, userId),
-			eq(leaderboardEntries.periodType, 'monthly'),
-			eq(leaderboardEntries.periodStart, periodStart)
-		),
-	});
-
-	if (existing) {
-		await db
-			.update(leaderboardEntries)
-			.set({
-				totalPoints: existing.totalPoints + points,
-				questionsCompleted: existing.questionsCompleted + questions,
-				updatedAt: new Date(),
-			})
-			.where(eq(leaderboardEntries.id, existing.id));
-	} else {
-		await db.insert(leaderboardEntries).values({
+	await db
+		.insert(leaderboardEntries)
+		.values({
 			userId,
 			periodType: 'monthly',
 			periodStart,
 			totalPoints: points,
 			questionsCompleted: questions,
+		})
+		.onConflictDoUpdate({
+			target: [
+				leaderboardEntries.userId,
+				leaderboardEntries.periodType,
+				leaderboardEntries.periodStart,
+			],
+			set: {
+				totalPoints: sql`${leaderboardEntries.totalPoints} + ${points}`,
+				questionsCompleted: sql`${leaderboardEntries.questionsCompleted} + ${questions}`,
+				updatedAt: new Date(),
+			},
 		});
-	}
 }
 
 export async function getGlobalProgress(userId?: string): Promise<GlobalProgress | null> {

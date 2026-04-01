@@ -37,23 +37,31 @@ export const useLearningStateStore = create<LearningState>()(
 			currentStudyBlocks: [],
 			setStudyBlocks: (blocks) => set({ currentStudyBlocks: blocks }),
 			refreshFromServer: async () => {
-				try {
-					const [progress, xp, energy] = await Promise.all([
-						fetch('/api/progress').then((r) => r.json()),
-						fetch('/api/xp').then((r) => r.json()),
-						fetch('/api/energy').then((r) => r.json()),
-					]);
-					set({
-						weakTopics: progress?.weakTopics || [],
-						xp: xp?.xp || 0,
-						level: xp?.level || 1,
-						achievements: xp?.achievements || [],
-						energyLevel: energy?.level || 50,
-						burnoutRisk: energy?.burnoutRisk || 'low',
-					});
-				} catch (e) {
-					console.error('Failed to refresh learning state', e);
-				}
+				const [progressRes, xpRes, energyRes] = await Promise.allSettled([
+					fetch('/api/progress'),
+					fetch('/api/xp'),
+					fetch('/api/energy'),
+				]);
+
+				const getData = <T>(res: PromiseSettledResult<Response>, fallback: T): T => {
+					if (res.status === 'fulfilled' && res.value.ok) {
+						return res.value.json().catch(() => fallback) as T;
+					}
+					return fallback;
+				};
+
+				const progress = getData(progressRes, { weakTopics: [] });
+				const xpData = getData(xpRes, { xp: 0, level: 1, achievements: [] });
+				const energyData = getData(energyRes, { level: 50, burnoutRisk: 'low' as const });
+
+				set({
+					weakTopics: progress.weakTopics || [],
+					xp: xpData.xp || 0,
+					level: xpData.level || 1,
+					achievements: xpData.achievements || [],
+					energyLevel: energyData.level || 50,
+					burnoutRisk: energyData.burnoutRisk || 'low',
+				});
 			},
 		}),
 		{ name: 'lumni-learning-state' }

@@ -159,6 +159,15 @@ export async function POST(request: NextRequest) {
 }
 
 export async function GET(request: NextRequest) {
+	const auth = await getAuth();
+	const session = await auth.api.getSession({
+		headers: request.headers,
+	});
+
+	if (!session?.user?.id) {
+		return NextResponse.redirect(new URL('/login?redirect=/subscription', request.url));
+	}
+
 	const searchParams = request.nextUrl.searchParams;
 	const reference = searchParams.get('reference');
 	const status = searchParams.get('status');
@@ -179,6 +188,11 @@ export async function GET(request: NextRequest) {
 
 		if (!payment) {
 			return NextResponse.redirect(new URL('/subscription?error=payment_not_found', request.url));
+		}
+
+		const paymentMetadata = payment.metadata ? JSON.parse(payment.metadata) : {};
+		if (paymentMetadata.userId !== session.user.id) {
+			return NextResponse.redirect(new URL('/subscription?error=unauthorized', request.url));
 		}
 
 		if (status === 'cancelled') {
@@ -204,8 +218,8 @@ export async function GET(request: NextRequest) {
 			})
 			.where(eq(payments.id, payment.id));
 
-		const metadata = payment.metadata ? JSON.parse(payment.metadata) : {};
-		const { planId, userId } = metadata;
+		const paymentData = payment.metadata ? JSON.parse(payment.metadata) : {};
+		const { planId, userId } = paymentData;
 
 		if (userId) {
 			const existingSubscription = await db.query.userSubscriptions.findFirst({

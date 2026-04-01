@@ -21,12 +21,25 @@ let authInstance: AuthInstance | null = null;
 // Check if we're in a build phase where database is not expected to be available
 const isBuildTime = process.env.NEXT_PHASE === 'phase-production-build';
 
+// Validate BETTER_AUTH_SECRET
+const authSecret = process.env.BETTER_AUTH_SECRET;
+if (!authSecret) {
+	throw new Error('BETTER_AUTH_SECRET environment variable is required');
+}
+if (authSecret.length < 32) {
+	throw new Error('BETTER_AUTH_SECRET must be at least 32 characters for security');
+}
+const placeholderPatterns = ['your-secret', 'changeme', 'dummy', 'placeholder'];
+if (placeholderPatterns.some((p) => authSecret.toLowerCase().includes(p))) {
+	throw new Error('BETTER_AUTH_SECRET appears to be a placeholder. Please set a secure secret.');
+}
+
 export const authConfig = {
 	baseURL:
 		process.env.BETTER_AUTH_URL ||
 		process.env.NEXT_PUBLIC_APP_URL ||
 		(process.env.NODE_ENV === 'production' ? undefined : 'http://localhost:3000'),
-	secret: process.env.BETTER_AUTH_SECRET,
+	secret: authSecret,
 	emailAndPassword: {
 		enabled: true,
 		requireEmailVerification: false,

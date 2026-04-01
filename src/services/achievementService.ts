@@ -1,6 +1,6 @@
 'use server';
 
-import { eq, sql } from 'drizzle-orm';
+import { and, eq, sql } from 'drizzle-orm';
 import { dbManager } from '@/lib/db';
 import {
 	leaderboardEntries,
@@ -239,16 +239,20 @@ export async function getAllAchievementProgress(
 		where: eq(userProgress.userId, userId),
 	});
 
-	const quizzes = await db.query.quizResults.findMany({
-		where: eq(quizResults.userId, userId),
-	});
+	const quizCountResult = await db
+		.select({ count: sql<number>`COUNT(*)` })
+		.from(quizResults)
+		.where(eq(quizResults.userId, userId));
+	const quizCount = quizCountResult[0]?.count || 0;
+
+	const buddyCountResult = await db
+		.select({ count: sql<number>`COUNT(*)` })
+		.from(studyBuddies)
+		.where(sql`${studyBuddies.userId1} = ${userId} OR ${studyBuddies.userId2} = ${userId}`);
+	const buddyCount = buddyCountResult[0]?.count || 0;
 
 	const sessions = await db.query.studySessions.findMany({
 		where: eq(studySessions.userId, userId),
-	});
-
-	const buddies = await db.query.studyBuddies.findMany({
-		where: sql`${studyBuddies.userId1} = ${userId} OR ${studyBuddies.userId2} = ${userId}`,
 	});
 
 	const leaderboard = await db.query.leaderboardEntries.findFirst({
@@ -273,13 +277,15 @@ export async function getAllAchievementProgress(
 
 	progress.QUIZ_MASTER = {
 		achievementId: 'QUIZ_MASTER',
-		current: quizzes.length,
+		current: quizCount,
 		target: 100,
-		percentage: Math.min((quizzes.length / 100) * 100, 100),
-		isUnlocked: quizzes.length >= 100,
+		percentage: Math.min((quizCount / 100) * 100, 100),
+		isUnlocked: quizCount >= 100,
 	};
 
-	const perfectQuiz = quizzes.find((q) => Number.parseFloat(String(q.percentage)) === 100);
+	const perfectQuiz = await db.query.quizResults.findFirst({
+		where: and(eq(quizResults.userId, userId), sql`${quizResults.percentage} = 100`),
+	});
 	progress.PERFECT_QUIZ = {
 		achievementId: 'PERFECT_QUIZ',
 		current: perfectQuiz ? 1 : 0,
@@ -349,10 +355,10 @@ export async function getAllAchievementProgress(
 
 	progress.HELPER = {
 		achievementId: 'HELPER',
-		current: buddies.length,
+		current: buddyCount,
 		target: 5,
-		percentage: Math.min((buddies.length / 5) * 100, 100),
-		isUnlocked: buddies.length >= 5,
+		percentage: Math.min((buddyCount / 5) * 100, 100),
+		isUnlocked: buddyCount >= 5,
 	};
 
 	const groupSessions = sessions.filter((s) => s.sessionType === 'group');
@@ -366,10 +372,10 @@ export async function getAllAchievementProgress(
 
 	progress.FIRST_QUIZ = {
 		achievementId: 'FIRST_QUIZ',
-		current: quizzes.length > 0 ? 1 : 0,
+		current: quizCount > 0 ? 1 : 0,
 		target: 1,
-		percentage: quizzes.length > 0 ? 100 : 0,
-		isUnlocked: quizzes.length > 0,
+		percentage: quizCount > 0 ? 100 : 0,
+		isUnlocked: quizCount > 0,
 	};
 
 	return progress;
