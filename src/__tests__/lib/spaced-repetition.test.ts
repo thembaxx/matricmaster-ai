@@ -198,14 +198,14 @@ describe('spaced-repetition SM-2 Algorithm', () => {
 					interval: 1,
 					repetitions: 1,
 					easeFactor: 2.5,
-					nextReview: new Date(now.getTime() + 1 * 24 * 60 * 60 * 1000),
+					nextReview: new Date(now.getTime() + 1.5 * 24 * 60 * 60 * 1000),
 				},
 				{
 					id: '2',
 					interval: 1,
 					repetitions: 1,
 					easeFactor: 2.5,
-					nextReview: new Date(now.getTime() + 3 * 24 * 60 * 60 * 1000),
+					nextReview: new Date(now.getTime() + 3.5 * 24 * 60 * 60 * 1000),
 				},
 			];
 			const forecast = getReviewForecast(cards, 7);

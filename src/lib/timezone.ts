@@ -78,6 +78,7 @@ export function isValidTimezone(tz: string): boolean {
 }
 
 export const COMMON_TIMEZONES = [
+	{ value: 'UTC', label: 'UTC (GMT+0)', offset: 0 },
 	{ value: 'Africa/Johannesburg', label: 'South Africa (GMT+2)', offset: 2 },
 	{ value: 'Africa/Cairo', label: 'Egypt (GMT+2)', offset: 2 },
 	{ value: 'Africa/Lagos', label: 'Nigeria (GMT+1)', offset: 1 },

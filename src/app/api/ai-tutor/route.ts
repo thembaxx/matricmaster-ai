@@ -14,6 +14,7 @@ import { getAuth } from '@/lib/auth';
 import { getCachedAIResponse, hashString } from '@/lib/cache/ai-cache';
 import { dbManager } from '@/lib/db';
 import { quizResults, studyPlans, subjects, topicMastery } from '@/lib/db/schema';
+import { logger } from '@/lib/logger';
 import { searchPastPaperQuestions } from '@/lib/rag/search';
 import { checkRateLimit, getRateLimitHeaders } from '@/lib/rate-limit';
 
@@ -181,6 +182,8 @@ Return ONLY a JSON array of 2-3 short, specific questions as strings. No explana
 Examples: ["can you explain the chain rule?", "show me a practice problem", "what are common mistakes here?"]`;
 
 export async function POST(request: NextRequest) {
+	const startTime = Date.now();
+
 	try {
 		const auth = await getAuth();
 		const session = await auth.api.getSession({
@@ -194,6 +197,10 @@ export async function POST(request: NextRequest) {
 		const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 		const rateLimitResult = await checkRateLimit(session.user.id, 'ai-tutor');
 		if (!rateLimitResult.success) {
+			logger.warn('AI tutor rate limit exceeded', {
+				userId: session.user.id,
+				resetIn: rateLimitResult.resetIn,
+			});
 			return NextResponse.json(
 				{
 					error: `rate limit exceeded. please try again in ${rateLimitResult.resetIn} seconds.`,
@@ -225,16 +232,34 @@ export async function POST(request: NextRequest) {
 			return NextResponse.json({ error: 'message is required' }, { status: 400 });
 		}
 
+		logger.info('AI tutor request started', {
+			userId: session.user.id,
+			subject,
+			messageLength: message.length,
+			hasHistory: !!history?.length,
+			stream,
+			language,
+			includeSuggestions,
+			includeCitations,
+		});
+
 		if (isStaticFAQ(message)) {
 			try {
 				const cachedResponse = await routeAIQuestionServer(message);
+				logger.info('AI tutor static FAQ cache hit', {
+					userId: session.user.id,
+					subject,
+				});
 				return NextResponse.json({
 					response: cachedResponse,
 					suggestions: [],
 					cached: true,
 				});
 			} catch (error) {
-				console.debug('cache failed, continuing with ai generation', error);
+				logger.warn('AI tutor static FAQ cache failed, falling back to AI generation', {
+					userId: session.user.id,
+					error: error instanceof Error ? error.message : 'Unknown error',
+				});
 			}
 		}
 
@@ -283,6 +308,13 @@ ${context.weakTopics.map((t) => `- ${t.name} (${t.subject}, ${t.mastery}% master
 					limit: 5,
 				});
 
+				logger.info('RAG search completed', {
+					userId: session.user.id,
+					subject: topicMatch.subjectId,
+					topic: topicMatch.topicName,
+					resultsCount: ragResults.length,
+				});
+
 				if (ragResults.length > 0) {
 					const ragContext = ragResults
 						.map(
@@ -295,7 +327,11 @@ ${context.weakTopics.map((t) => `- ${t.name} (${t.subject}, ${t.mastery}% master
 				}
 			}
 		} catch (error) {
-			console.debug('RAG search failed, continuing without context:', error);
+			logger.error('RAG search failed, continuing without context', {
+				userId: session.user.id,
+				subject,
+				error: error instanceof Error ? error.message : 'Unknown error',
+			});
 		}
 
 		if (history && history.length > 0) {
@@ -324,10 +360,10 @@ ${context.weakTopics.map((t) => `- ${t.name} (${t.subject}, ${t.mastery}% master
 		const isCacheable =
 			!history || (history.length === 0 && message.length < 200 && !includeSuggestions);
 
-		const generateMainResponse = async (): Promise<string> => {
+		const generateMainResponse = async (): Promise<{ text: string; fromCache: boolean }> => {
 			if (isCacheable) {
 				try {
-					return await getCachedAIResponse(
+					const cachedResult = await getCachedAIResponse(
 						`${systemPrompt}\n\n${contextualMessage}`,
 						async () => {
 							const result = await generateAI({
@@ -342,18 +378,30 @@ ${context.weakTopics.map((t) => `- ${t.name} (${t.subject}, ${t.mastery}% master
 							tags: [`query-${cacheKey.slice(0, 8)}`],
 						}
 					);
+					logger.info('AI tutor cache hit', {
+						userId: session.user.id,
+						subject,
+						cacheKey: cacheKey.slice(0, 8),
+					});
+					return { text: cachedResult, fromCache: true };
 				} catch (error) {
-					console.warn('cache retrieval failed, generating new response', error);
-					return await generateAI({
+					logger.warn('AI tutor cache failed, generating new response', {
+						userId: session.user.id,
+						subject,
+						error: error instanceof Error ? error.message : 'Unknown error',
+					});
+					const result = await generateAI({
 						prompt: conversationContext,
 						model: AI_MODELS.PRIMARY,
 					});
+					return { text: result, fromCache: false };
 				}
 			}
-			return await generateAI({
+			const result = await generateAI({
 				prompt: conversationContext,
 				model: AI_MODELS.PRIMARY,
 			});
+			return { text: result, fromCache: false };
 		};
 
 		const generateSuggestions = async (responseText: string): Promise<string[]> => {
@@ -369,7 +417,11 @@ ${context.weakTopics.map((t) => `- ${t.name} (${t.subject}, ${t.mastery}% master
 					return JSON.parse(jsonMatch[0]);
 				}
 			} catch (error) {
-				console.warn('failed to generate suggestions', error);
+				logger.error('AI tutor suggestions generation failed', {
+					userId: session.user.id,
+					subject,
+					error: error instanceof Error ? error.message : 'Unknown error',
+				});
 			}
 			return [];
 		};
@@ -435,15 +487,37 @@ ${context.weakTopics.map((t) => `- ${t.name} (${t.subject}, ${t.mastery}% master
 			return citations;
 		};
 
-		const response = await generateMainResponse();
+		const { text: response, fromCache } = await generateMainResponse();
 
 		if (!response) {
 			throw new Error('failed to generate response');
 		}
 
 		const suggestions = await generateSuggestions(response);
-
 		const citations = await generateCitations(response, subject ?? null);
+
+		const responseTime = Date.now() - startTime;
+
+		if (responseTime > 10000) {
+			logger.warn('AI tutor slow response', {
+				userId: session.user.id,
+				subject,
+				responseTimeMs: responseTime,
+				model: AI_MODELS.PRIMARY,
+				fromCache,
+			});
+		}
+
+		logger.info('AI tutor response generated successfully', {
+			userId: session.user.id,
+			subject,
+			responseTimeMs: responseTime,
+			model: AI_MODELS.PRIMARY,
+			fromCache,
+			responseLength: response.length,
+			suggestionsCount: suggestions.length,
+			citationsCount: citations.length,
+		});
 
 		return NextResponse.json({
 			response,
@@ -451,6 +525,12 @@ ${context.weakTopics.map((t) => `- ${t.name} (${t.subject}, ${t.mastery}% master
 			citations,
 		});
 	} catch (error) {
+		const responseTime = Date.now() - startTime;
+		logger.error('AI tutor request failed', {
+			responseTimeMs: responseTime,
+			error: error instanceof Error ? error.message : 'Unknown error',
+			errorStack: error instanceof Error ? error.stack : undefined,
+		});
 		return handleApiError(error);
 	}
 }

@@ -73,6 +73,9 @@ jobs:
       - name: Run unit tests with coverage
         run: bun run test:unit --coverage
 
+      - name: Install Playwright browsers
+        run: bunx playwright install --with-deps
+
       - name: Run E2E tests
         run: bun run test:e2e
 
