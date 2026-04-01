@@ -2,6 +2,7 @@
 
 import { Warning } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
+import * as Sentry from '@sentry/nextjs';
 import { Component, type ReactNode } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -28,6 +29,20 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
 
 	componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
 		console.error('ErrorBoundary caught an error:', error, errorInfo);
+
+		// Send error to Sentry with component stack trace
+		try {
+			Sentry.captureException(error, {
+				extra: {
+					componentStack: errorInfo.componentStack,
+				},
+				tags: {
+					errorBoundary: 'ErrorBoundary',
+				},
+			});
+		} catch {
+			// Sentry is optional
+		}
 	}
 
 	render() {

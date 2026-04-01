@@ -2,6 +2,7 @@
 
 import { RefreshDotIcon, WifiOffIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
+import * as Sentry from '@sentry/nextjs';
 import Link from 'next/link';
 import { Component, type ReactNode, useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
@@ -46,6 +47,22 @@ export class AIErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundary
 	componentDidCatch(error: Error, errorInfo: React.ErrorInfo): void {
 		this.setState({ errorInfo: errorInfo.componentStack || '' });
 		this.props.onError?.(error);
+
+		// Send AI-specific error to Sentry with context
+		try {
+			Sentry.captureException(error, {
+				extra: {
+					componentStack: errorInfo.componentStack,
+					componentName: this.props.componentName,
+				},
+				tags: {
+					errorBoundary: 'AIErrorBoundary',
+					componentName: this.props.componentName || 'AI Component',
+				},
+			});
+		} catch {
+			// Sentry is optional
+		}
 	}
 
 	handleRetry = (): void => {

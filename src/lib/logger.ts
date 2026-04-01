@@ -1,9 +1,11 @@
 /**
  * Environment-aware logging utility for Lumni AI
  * - debug/info: Only logged in development
- * - warn/error: Always logged
+ * - warn/error: Always logged + sent to Sentry when available
  * - Includes timestamp and context for debugging
  */
+
+import * as Sentry from '@sentry/nextjs';
 
 type LogLevel = 'debug' | 'info' | 'warn' | 'error';
 
@@ -43,6 +45,18 @@ function logToConsole(entry: LogEntry): void {
 	}
 }
 
+function logToSentry(level: LogLevel, message: string, context?: LogContext): void {
+	try {
+		if (level === 'error') {
+			Sentry.logger.error(message, context);
+		} else if (level === 'warn') {
+			Sentry.logger.warn(message, context);
+		}
+	} catch {
+		// Sentry is optional - fail silently if not initialized
+	}
+}
+
 /**
  * Log debug messages - only in development
  */
@@ -50,6 +64,11 @@ export function debug(message: string, context?: LogContext): void {
 	if (isDevelopment) {
 		const entry = formatMessage('debug', message, context);
 		logToConsole(entry);
+		try {
+			Sentry.logger.debug(message, context);
+		} catch {
+			// Sentry is optional
+		}
 	}
 }
 
@@ -60,23 +79,30 @@ export function info(message: string, context?: LogContext): void {
 	if (isDevelopment) {
 		const entry = formatMessage('info', message, context);
 		logToConsole(entry);
+		try {
+			Sentry.logger.info(message, context);
+		} catch {
+			// Sentry is optional
+		}
 	}
 }
 
 /**
- * Log warning messages - always logged
+ * Log warning messages - always logged + sent to Sentry
  */
 export function warn(message: string, context?: LogContext): void {
 	const entry = formatMessage('warn', message, context);
 	console.warn(`[${entry.timestamp}] [WARN] ${entry.message}`, context ?? '');
+	logToSentry('warn', message, context);
 }
 
 /**
- * Log error messages - always logged
+ * Log error messages - always logged + sent to Sentry
  */
 export function error(message: string, context?: LogContext): void {
 	const entry = formatMessage('error', message, context);
 	console.error(`[${entry.timestamp}] [ERROR] ${entry.message}`, context ?? '');
+	logToSentry('error', message, context);
 }
 
 /**

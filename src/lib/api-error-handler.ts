@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/nextjs';
 import { NextResponse } from 'next/server';
 import { ZodError } from 'zod';
 
@@ -5,15 +6,34 @@ export class ApiError extends Error {
 	constructor(
 		public message: string,
 		public statusCode = 500,
-		public details?: any
+		public details?: unknown
 	) {
 		super(message);
 		this.name = 'ApiError';
 	}
 }
 
-export function handleApiError(error: unknown) {
+export function handleApiError(error: unknown, context?: Record<string, unknown>) {
 	console.error('[API ERROR]:', error);
+
+	// Send error to Sentry with context
+	try {
+		if (error instanceof Error) {
+			Sentry.logger.error('API Error occurred', {
+				error_message: error.message,
+				error_name: error.name,
+				stack: error.stack,
+				...context,
+			});
+		} else {
+			Sentry.logger.error('API Error occurred', {
+				error: String(error),
+				...context,
+			});
+		}
+	} catch {
+		// Sentry is optional
+	}
 
 	if (error instanceof ApiError) {
 		return NextResponse.json(
