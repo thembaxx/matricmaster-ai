@@ -1,13 +1,36 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-vi.mock('@/lib/db/database-manager-v2', () => ({
-	dbManagerV2: {
-		getDb: vi.fn().mockResolvedValue({}),
-		getSmartDb: vi.fn().mockResolvedValue({}),
-		waitForConnection: vi.fn().mockResolvedValue(true),
-		getActiveDatabase: vi.fn().mockReturnValue('postgres'),
-		initialize: vi.fn().mockResolvedValue(undefined),
+const mockDb = {
+	query: {
+		userAchievements: { findMany: vi.fn().mockResolvedValue([]) },
+		quizResults: { findMany: vi.fn().mockResolvedValue([]) },
+		userProgress: { findFirst: vi.fn().mockResolvedValue(null) },
+		flashcardReviews: { findMany: vi.fn().mockResolvedValue([]) },
+		studySessions: { findMany: vi.fn().mockResolvedValue([]) },
+		leaderboardEntries: { findMany: vi.fn().mockResolvedValue([]) },
+		questionAttempts: { findMany: vi.fn().mockResolvedValue([]) },
+		universityTargets: { findFirst: vi.fn().mockResolvedValue(null) },
 	},
+	insert: vi.fn().mockReturnValue({
+		values: vi.fn().mockReturnValue({
+			onConflictDoUpdate: vi.fn().mockResolvedValue(undefined),
+		}),
+	}),
+	update: vi.fn().mockReturnValue({
+		set: vi.fn().mockReturnValue({
+			where: vi.fn().mockResolvedValue(undefined),
+		}),
+	}),
+};
+
+vi.mock('@/lib/db', () => ({
+	dbManager: {
+		waitForConnection: vi.fn().mockResolvedValue(true),
+		getDb: vi.fn().mockResolvedValue(mockDb),
+		isConnectedToDatabase: vi.fn().mockReturnValue(true),
+	},
+	getDb: vi.fn().mockResolvedValue(mockDb),
+	db: vi.fn().mockResolvedValue(mockDb),
 }));
 
 const mockGetAuth = vi.fn();

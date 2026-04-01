@@ -1,9 +1,9 @@
 import { ChampionIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { m } from 'framer-motion';
+import { appConfig } from '@/app.config';
 import { Card } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
-import { appConfig } from '@/app.config';
 
 export function HeroStatisticsCard({
 	masteryLevel,
