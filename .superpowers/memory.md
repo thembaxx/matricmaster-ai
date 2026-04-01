@@ -1,4 +1,4 @@
-# Workspace Memory - MatricMaster AI
+# Workspace Memory - Lumni AI
 
 Persistent lessons and observations about this project and your preferences.
 

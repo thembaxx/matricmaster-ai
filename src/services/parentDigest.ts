@@ -193,7 +193,7 @@ export async function sendParentDigest(digest: ParentDigest, parentEmail: string
 			</div>
 
 			<p style="color: #999; font-size: 12px; text-align: center;">
-				MatricMaster AI - Your child's success is our mission
+				Lumni AI - Your child's success is our mission
 			</p>
 		</div>
 	`;

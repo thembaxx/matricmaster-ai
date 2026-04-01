@@ -1,4 +1,4 @@
-# MatricMaster AI - Repository Index
+# Lumni AI - Repository Index
 
 This file documents the codebase structure for fast navigation and context.
 

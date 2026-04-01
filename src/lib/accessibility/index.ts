@@ -1,5 +1,5 @@
 /**
- * Accessibility utilities for MatricMaster AI
+ * Accessibility utilities for Lumni AI
  *
  * Export all accessibility-related utilities and components
  */

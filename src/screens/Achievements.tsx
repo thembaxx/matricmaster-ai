@@ -33,15 +33,15 @@ export default function Achievements() {
 		setShowShareModal(false);
 		if (!navigator.share) {
 			await navigator.clipboard.writeText(
-				`I have ${unlockedCount} achievements on MatricMaster AI! 🎓 Join me in preparing for my NSC exams!`
+				`I have ${unlockedCount} achievements on Lumni AI! 🎓 Join me in preparing for my NSC exams!`
 			);
 			return;
 		}
 
 		try {
 			await navigator.share({
-				title: 'My Achievements on MatricMaster AI',
-				text: `I've earned ${unlockedCount} achievements while preparing for my NSC exams! 🎓 Join me on MatricMaster AI!`,
+				title: 'My Achievements on Lumni AI',
+				text: `I've earned ${unlockedCount} achievements while preparing for my NSC exams! 🎓 Join me on Lumni AI!`,
 				url: `${window.location.origin}/achievements`,
 			});
 		} catch {

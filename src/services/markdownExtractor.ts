@@ -178,7 +178,7 @@ ${markdown}`;
 					throw new UnsupportedSubjectError(
 						parsed.reason || 'This document does not appear to be a valid exam paper',
 						parsed.suggestion ||
-							'MatricMaster AI specializes in South African NSC Grade 12 curriculum. Please upload an NSC past paper for the best experience.'
+							'Lumni AI specializes in South African NSC Grade 12 curriculum. Please upload an NSC past paper for the best experience.'
 					);
 				}
 
@@ -195,7 +195,7 @@ ${markdown}`;
 
 		throw new UnsupportedSubjectError(
 			"We couldn't extract questions from this document",
-			'MatricMaster AI focuses on South African NSC Grade 12 exam papers. Please upload a valid NSC past paper (Mathematics, Physics, Chemistry, Life Sciences, English, Geography, History, Accounting, or Economics).'
+			'Lumni AI focuses on South African NSC Grade 12 exam papers. Please upload a valid NSC past paper (Mathematics, Physics, Chemistry, Life Sciences, English, Geography, History, Accounting, or Economics).'
 		);
 	}
 }

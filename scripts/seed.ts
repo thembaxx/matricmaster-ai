@@ -23,7 +23,7 @@ async function runSeed() {
 }
 
 async function main() {
-	console.log('🚀 Starting MatricMaster Database Seeding...\n');
+	console.log('🚀 Starting Lumni Database Seeding...\n');
 
 	try {
 		await runSeed();

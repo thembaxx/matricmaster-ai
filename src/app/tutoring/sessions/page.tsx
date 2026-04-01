@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import MySessions from '@/screens/MySessions';
 
 export const metadata: Metadata = {
-	title: 'My Sessions - MatricMaster AI',
+	title: 'My Sessions - Lumni AI',
 	description: 'Manage your tutoring sessions',
 };
 
