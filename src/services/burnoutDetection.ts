@@ -8,7 +8,17 @@ import { studySessions, userProgress } from '@/lib/db/schema';
 // Wrapper for backward compatibility - detectBurnoutRisk is async
 export async function detectBurnoutRisk(userId?: string) {
 	const { detectBurnoutRisk: detect } = await import('./burnoutService');
-	return detect(userId);
+	// If no userId provided, get current user from session
+	let resolvedUserId = userId;
+	if (!resolvedUserId) {
+		const auth = await getAuth();
+		const session = await auth.api.getSession();
+		if (!session?.user) {
+			throw new Error('Unauthorized - no userId provided and no session');
+		}
+		resolvedUserId = session.user.id;
+	}
+	return detect(resolvedUserId);
 }
 
 async function getDb() {

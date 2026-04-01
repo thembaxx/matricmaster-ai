@@ -658,10 +658,6 @@ export const contentFlags = pgTable(
 // COMMENTS TABLES (from migration 0005)
 // ============================================================================
 
-// Forward declaration for circular reference in comments table
-const _commentsRef: any = null;
-
-// Define comments table first to avoid circular reference
 export const comments = pgTable(
 	'comments',
 	{
