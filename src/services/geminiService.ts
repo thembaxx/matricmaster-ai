@@ -1,3 +1,4 @@
+import { checkTokenBudget, getAvailableModel, recordTokenUsage } from '@/lib/ai-config';
 import {
 	generateEssayFeedbackAction,
 	generateMathSolutionAction,
@@ -8,15 +9,27 @@ import {
 } from './aiActions';
 
 export const getExplanation = async (subject: string, topic: string) => {
-	return getExplanationAction(subject, topic);
+	await getAvailableModel('moderate');
+	if (!checkTokenBudget(10000)) throw new Error('Token budget exceeded');
+	const result = await getExplanationAction(subject, topic);
+	recordTokenUsage(10000);
+	return result;
 };
 
 export const generateStudyPlan = async (subjects: string[], hours: number) => {
-	return generateStudyPlanAction(subjects, hours);
+	await getAvailableModel('complex');
+	if (!checkTokenBudget(30000)) throw new Error('Token budget exceeded');
+	const result = await generateStudyPlanAction(subjects, hours);
+	recordTokenUsage(30000);
+	return result;
 };
 
 export const smartSearch = async (query: string) => {
-	return smartSearchAction(query);
+	await getAvailableModel('simple');
+	if (!checkTokenBudget(5000)) throw new Error('Token budget exceeded');
+	const result = await smartSearchAction(query);
+	recordTokenUsage(5000);
+	return result;
 };
 
 export const generateQuestions = async (
@@ -26,11 +39,19 @@ export const generateQuestions = async (
 	questionType?: 'multiple_choice' | 'true_false' | 'short_answer',
 	count?: number
 ) => {
-	return generateQuestionsAction(subject, topic, difficulty, questionType, count);
+	await getAvailableModel('moderate');
+	if (!checkTokenBudget(15000)) throw new Error('Token budget exceeded');
+	const result = await generateQuestionsAction(subject, topic, difficulty, questionType, count);
+	recordTokenUsage(15000);
+	return result;
 };
 
 export const generateMathSolution = async (subject: string, topic: string, problem: string) => {
-	return generateMathSolutionAction(subject, topic, problem);
+	await getAvailableModel('complex');
+	if (!checkTokenBudget(25000)) throw new Error('Token budget exceeded');
+	const result = await generateMathSolutionAction(subject, topic, problem);
+	recordTokenUsage(25000);
+	return result;
 };
 
 export const generateEssayFeedback = async (
@@ -38,7 +59,19 @@ export const generateEssayFeedback = async (
 	essayContent: string,
 	wordCount?: number
 ) => {
-	return generateEssayFeedbackAction(essayTopic, essayContent, wordCount);
+	await getAvailableModel('creative');
+	if (!checkTokenBudget(40000)) throw new Error('Token budget exceeded');
+	const result = await generateEssayFeedbackAction(essayTopic, essayContent, wordCount);
+	recordTokenUsage(40000);
+	return result;
+};
+
+export const quickAnswer = async (question: string) => {
+	await getAvailableModel('simple');
+	if (!checkTokenBudget(3000)) throw new Error('Token budget exceeded');
+	const result = await smartSearchAction(question);
+	recordTokenUsage(3000);
+	return result;
 };
 
 export type { EssayFeedback, GeneratedQuestion, MathStep } from './aiActions';

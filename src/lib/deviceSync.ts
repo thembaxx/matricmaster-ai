@@ -21,7 +21,68 @@ export interface SyncQueueItem {
 
 const DEVICE_ID_KEY = 'matricmaster_device_id';
 const DEVICE_NAME_KEY = 'matricmaster_device_name';
-const SYNC_QUEUE_KEY = 'matricmaster_sync_queue';
+
+const DB_NAME = 'lumni-device-sync';
+const DB_VERSION = 1;
+const STORE_NAME = 'sync-queue';
+
+function openSyncDB(): Promise<IDBDatabase> {
+	return new Promise((resolve, reject) => {
+		const request = indexedDB.open(DB_NAME, DB_VERSION);
+		request.onupgradeneeded = (event) => {
+			const db = (event.target as IDBOpenDBRequest).result;
+			if (!db.objectStoreNames.contains(STORE_NAME)) {
+				db.createObjectStore(STORE_NAME, { keyPath: 'id' });
+			}
+		};
+		request.onsuccess = () => resolve(request.result);
+		request.onerror = () => reject(request.error);
+	});
+}
+
+async function getSyncQueueFromDB(): Promise<SyncQueueItem[]> {
+	const db = await openSyncDB();
+	return new Promise((resolve, reject) => {
+		const tx = db.transaction(STORE_NAME, 'readonly');
+		const store = tx.objectStore(STORE_NAME);
+		const request = store.getAll();
+		request.onsuccess = () => resolve((request.result || []) as SyncQueueItem[]);
+		request.onerror = () => reject(request.error);
+	});
+}
+
+async function addToSyncQueueDB(item: SyncQueueItem): Promise<void> {
+	const db = await openSyncDB();
+	return new Promise((resolve, reject) => {
+		const tx = db.transaction(STORE_NAME, 'readwrite');
+		const store = tx.objectStore(STORE_NAME);
+		const request = store.put(item);
+		request.onsuccess = () => resolve();
+		request.onerror = () => reject(request.error);
+	});
+}
+
+async function removeFromSyncQueueDB(id: string): Promise<void> {
+	const db = await openSyncDB();
+	return new Promise((resolve, reject) => {
+		const tx = db.transaction(STORE_NAME, 'readwrite');
+		const store = tx.objectStore(STORE_NAME);
+		const request = store.delete(id);
+		request.onsuccess = () => resolve();
+		request.onerror = () => reject(request.error);
+	});
+}
+
+async function clearSyncQueueDB(): Promise<void> {
+	const db = await openSyncDB();
+	return new Promise((resolve, reject) => {
+		const tx = db.transaction(STORE_NAME, 'readwrite');
+		const store = tx.objectStore(STORE_NAME);
+		const request = store.clear();
+		request.onsuccess = () => resolve();
+		request.onerror = () => reject(request.error);
+	});
+}
 
 export function getOrCreateDeviceId(): string {
 	if (typeof window === 'undefined') return '';
@@ -67,48 +128,45 @@ export function getCurrentDeviceInfo(): DeviceInfo {
 	};
 }
 
-export function addToSyncQueue(item: Omit<SyncQueueItem, 'id' | 'timestamp' | 'processed'>): void {
+export async function addToSyncQueue(
+	item: Omit<SyncQueueItem, 'id' | 'timestamp' | 'processed'>
+): Promise<void> {
 	if (typeof window === 'undefined') return;
-	const queue = getSyncQueue();
 	const newItem: SyncQueueItem = {
 		...item,
 		id: nanoid(),
 		timestamp: new Date(),
 		processed: false,
 	};
-	queue.push(newItem);
-	localStorage.setItem(SYNC_QUEUE_KEY, JSON.stringify(queue));
+	await addToSyncQueueDB(newItem);
 }
 
-export function getSyncQueue(): SyncQueueItem[] {
+export async function getSyncQueue(): Promise<SyncQueueItem[]> {
 	if (typeof window === 'undefined') return [];
-	const data = localStorage.getItem(SYNC_QUEUE_KEY);
-	if (!data) return [];
 	try {
-		return JSON.parse(data);
+		return await getSyncQueueFromDB();
 	} catch {
 		return [];
 	}
 }
 
-export function clearSyncQueue(): void {
+export async function clearSyncQueue(): Promise<void> {
 	if (typeof window === 'undefined') return;
-	localStorage.removeItem(SYNC_QUEUE_KEY);
+	await clearSyncQueueDB();
 }
 
-export function removeSyncQueueItem(id: string): void {
+export async function removeSyncQueueItem(id: string): Promise<void> {
 	if (typeof window === 'undefined') return;
-	const queue = getSyncQueue().filter((item) => item.id !== id);
-	localStorage.setItem(SYNC_QUEUE_KEY, JSON.stringify(queue));
+	await removeFromSyncQueueDB(id);
 }
 
-export function markSyncQueueItemProcessed(id: string): void {
+export async function markSyncQueueItemProcessed(id: string): Promise<void> {
 	if (typeof window === 'undefined') return;
-	const queue = getSyncQueue();
+	const queue = await getSyncQueue();
 	const item = queue.find((i) => i.id === id);
 	if (item) {
 		item.processed = true;
-		localStorage.setItem(SYNC_QUEUE_KEY, JSON.stringify(queue));
+		await addToSyncQueueDB(item);
 	}
 }
 

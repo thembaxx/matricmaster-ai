@@ -8,29 +8,6 @@ export class AuthenticatedApiClient {
 		this.baseURL = baseURL;
 	}
 
-	private async getAuthToken(): Promise<string | null> {
-		// Try to get token from various sources
-		if (typeof window !== 'undefined') {
-			// Client-side: try to get from localStorage or cookies
-			const token = localStorage.getItem('auth-token');
-			if (token) return token;
-		}
-		return null;
-	}
-
-	private async getAuthHeaders(): Promise<Record<string, string>> {
-		const token = await this.getAuthToken();
-		const headers: Record<string, string> = {
-			'Content-Type': 'application/json',
-		};
-
-		if (token) {
-			headers.Authorization = `Bearer ${token}`;
-		}
-
-		return headers;
-	}
-
 	private handleAuthError(status: number) {
 		if (status === 401 || status === 403) {
 			// Clear cached data that might be stale due to auth issues
@@ -49,14 +26,14 @@ export class AuthenticatedApiClient {
 	async get<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
 		const url = `${this.baseURL}${endpoint}`;
 		const { headers: customHeaders, ...restOptions } = options;
-		const headers = await this.getAuthHeaders();
 
 		const response = await fetch(url, {
 			method: 'GET',
 			headers: {
-				...headers,
+				'Content-Type': 'application/json',
 				...customHeaders,
 			},
+			credentials: 'include',
 			...restOptions,
 		});
 
@@ -77,14 +54,14 @@ export class AuthenticatedApiClient {
 	async post<T>(endpoint: string, data?: unknown, options: RequestInit = {}): Promise<T> {
 		const url = `${this.baseURL}${endpoint}`;
 		const { headers: customHeaders, ...restOptions } = options;
-		const headers = await this.getAuthHeaders();
 
 		const response = await fetch(url, {
 			method: 'POST',
 			headers: {
-				...headers,
+				'Content-Type': 'application/json',
 				...customHeaders,
 			},
+			credentials: 'include',
 			body: data ? JSON.stringify(data) : undefined,
 			...restOptions,
 		});
@@ -106,14 +83,14 @@ export class AuthenticatedApiClient {
 	async put<T>(endpoint: string, data?: unknown, options: RequestInit = {}): Promise<T> {
 		const url = `${this.baseURL}${endpoint}`;
 		const { headers: customHeaders, ...restOptions } = options;
-		const headers = await this.getAuthHeaders();
 
 		const response = await fetch(url, {
 			method: 'PUT',
 			headers: {
-				...headers,
+				'Content-Type': 'application/json',
 				...customHeaders,
 			},
+			credentials: 'include',
 			body: data ? JSON.stringify(data) : undefined,
 			...restOptions,
 		});
@@ -135,14 +112,14 @@ export class AuthenticatedApiClient {
 	async delete<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
 		const url = `${this.baseURL}${endpoint}`;
 		const { headers: customHeaders, ...restOptions } = options;
-		const headers = await this.getAuthHeaders();
 
 		const response = await fetch(url, {
 			method: 'DELETE',
 			headers: {
-				...headers,
+				'Content-Type': 'application/json',
 				...customHeaders,
 			},
+			credentials: 'include',
 			...restOptions,
 		});
 

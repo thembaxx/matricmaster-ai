@@ -1,7 +1,10 @@
+import { eq } from 'drizzle-orm';
 import { type NextRequest, NextResponse } from 'next/server';
 import { auth } from '@/lib/auth';
 import { dbManagerV2 } from '@/lib/db/database-manager-v2';
+import { quizResults, topicMastery, userProgress } from '@/lib/db/schema';
 import { logger } from '@/lib/logger';
+import { processGamificationEvent } from '@/services/unified-gamification';
 
 const log = logger.createLogger('QuizSyncOffline');
 
@@ -132,6 +135,20 @@ async function syncQuizCompletion(
 
 		await saveQuizResult(userId, item);
 
+		if (payload.answers) {
+			await processGamificationEvent({
+				userId,
+				type: 'quiz_complete',
+				metadata: {
+					score: payload.score,
+					totalQuestions: payload.totalQuestions,
+					percentage: payload.percentage,
+					subject: payload.subject,
+					isOfflineSync: true,
+				},
+			});
+		}
+
 		return { success: true };
 	} catch (error) {
 		log.error('Failed to sync quiz completion', { error, userId, sessionId: payload.sessionId });
@@ -185,34 +202,214 @@ async function checkExistingQuizResult(
 }
 
 async function saveQuizResult(userId: string, item: SyncItem): Promise<void> {
-	const { payload } = item;
+	const pgDb = dbManagerV2.getPgDb();
+	if (!pgDb) throw new Error('PostgreSQL not available');
 
-	log.debug('Saving quiz result', {
+	const { payload } = item;
+	const { sessionId, quizId, subject, totalQuestions, score, percentage, timeTaken, answers } =
+		payload;
+
+	log.info('Persisting quiz result to database', {
 		userId,
-		quizId: payload.quizId,
-		score: payload.score,
+		quizId,
+		sessionId,
+		score,
+		totalQuestions,
+		percentage,
 	});
 
-	// In production, this would save to the database
-	// For now, we just log the action
-	log.info('Quiz result saved', {
+	await pgDb.insert(quizResults).values({
 		userId,
-		quizId: payload.quizId,
-		sessionId: payload.sessionId,
+		quizId: quizId || '',
+		score: score ?? 0,
+		totalQuestions: totalQuestions ?? 0,
+		percentage: percentage?.toString() ?? '0',
+		timeTaken: timeTaken ?? 0,
+		questionResults: answers ? JSON.stringify(answers) : null,
+		completedAt: new Date(),
+	});
+
+	const correctCount = answers?.filter((a) => a.isCorrect).length ?? 0;
+	const attemptedCount = answers?.length ?? 0;
+
+	const existingProgress = await pgDb.query.userProgress.findFirst({
+		where: (fields, { eq }) => eq(fields.userId, userId),
+	});
+
+	if (existingProgress) {
+		await pgDb
+			.update(userProgress)
+			.set({
+				totalQuestionsAttempted: (existingProgress.totalQuestionsAttempted ?? 0) + attemptedCount,
+				totalCorrect: (existingProgress.totalCorrect ?? 0) + correctCount,
+				lastActivityAt: new Date(),
+				updatedAt: new Date(),
+			})
+			.where(eq(userProgress.id, existingProgress.id));
+	} else {
+		await pgDb.insert(userProgress).values({
+			userId,
+			totalQuestionsAttempted: attemptedCount,
+			totalCorrect: correctCount,
+			lastActivityAt: new Date(),
+		});
+	}
+
+	if (answers && subject) {
+		for (const answer of answers) {
+			const existingMastery = await pgDb.query.topicMastery.findFirst({
+				where: (fields, { and, eq }) =>
+					and(eq(fields.userId, userId), eq(fields.topic, answer.questionId)),
+			});
+
+			if (existingMastery) {
+				const masteryDelta = answer.isCorrect ? 0.05 : -0.05;
+				const newMastery = Math.max(
+					0,
+					Math.min(1, Number(existingMastery.masteryLevel) + masteryDelta)
+				);
+				await pgDb
+					.update(topicMastery)
+					.set({
+						masteryLevel: newMastery.toString(),
+						questionsAttempted: (existingMastery.questionsAttempted ?? 0) + 1,
+						questionsCorrect: (existingMastery.questionsCorrect ?? 0) + (answer.isCorrect ? 1 : 0),
+						consecutiveCorrect: answer.isCorrect
+							? (existingMastery.consecutiveCorrect ?? 0) + 1
+							: 0,
+						lastPracticed: new Date(),
+						updatedAt: new Date(),
+					})
+					.where(eq(topicMastery.id, existingMastery.id));
+			} else {
+				await pgDb.insert(topicMastery).values({
+					userId,
+					subjectId: 1,
+					topic: answer.questionId,
+					masteryLevel: answer.isCorrect ? '0.05' : '0',
+					questionsAttempted: 1,
+					questionsCorrect: answer.isCorrect ? 1 : 0,
+					consecutiveCorrect: answer.isCorrect ? 1 : 0,
+					lastPracticed: new Date(),
+				});
+			}
+		}
+	}
+
+	log.info('Quiz result and related data persisted successfully', {
+		userId,
+		quizId,
+		sessionId,
 	});
 }
 
 async function saveQuizProgress(userId: string, item: SyncItem): Promise<void> {
-	const { payload } = item;
+	const pgDb = dbManagerV2.getPgDb();
+	if (!pgDb) throw new Error('PostgreSQL not available');
 
-	log.debug('Saving quiz progress', {
+	const { payload } = item;
+	const { sessionId, quizId, answer } = payload;
+
+	if (!answer) {
+		log.warn('No answer data in sync item', { userId, sessionId });
+		return;
+	}
+
+	const { questionId, selectedOption, isCorrect, timeSpentMs, answeredAt } = answer;
+
+	log.info('Persisting quiz answer progress', {
 		userId,
-		sessionId: payload.sessionId,
-		questionId: payload.answer?.questionId,
+		sessionId,
+		questionId,
+		isCorrect,
 	});
 
-	log.info('Quiz progress saved', {
+	const existingResult = await pgDb.query.quizResults.findFirst({
+		where: (fields, { and, eq }) => and(eq(fields.userId, userId), eq(fields.quizId, quizId || '')),
+	});
+
+	if (existingResult) {
+		const existingAnswers: Array<{
+			questionId: string;
+			selectedOption: string;
+			isCorrect: boolean;
+			timeSpentMs: number;
+			answeredAt: string;
+		}> = existingResult.questionResults ? JSON.parse(existingResult.questionResults) : [];
+
+		const existingIndex = existingAnswers.findIndex((a) => a.questionId === questionId);
+		if (existingIndex >= 0) {
+			existingAnswers[existingIndex] = {
+				questionId,
+				selectedOption,
+				isCorrect,
+				timeSpentMs,
+				answeredAt,
+			};
+		} else {
+			existingAnswers.push({
+				questionId,
+				selectedOption,
+				isCorrect,
+				timeSpentMs,
+				answeredAt,
+			});
+		}
+
+		const correctCount = existingAnswers.filter((a) => a.isCorrect).length;
+
+		await pgDb
+			.update(quizResults)
+			.set({
+				questionResults: JSON.stringify(existingAnswers),
+				score: correctCount,
+				totalQuestions: existingAnswers.length,
+				percentage:
+					existingAnswers.length > 0
+						? ((correctCount / existingAnswers.length) * 100).toFixed(2)
+						: '0',
+			})
+			.where(eq(quizResults.id, existingResult.id));
+
+		await pgDb
+			.update(userProgress)
+			.set({
+				totalQuestionsAttempted:
+					(existingResult.totalQuestions ?? 0) + 1 - (existingIndex >= 0 ? 1 : 0),
+				totalCorrect:
+					existingResult.score +
+					(isCorrect ? 1 : 0) -
+					(existingIndex >= 0 ? (existingAnswers[existingIndex]?.isCorrect ? 1 : 0) : 0),
+				lastActivityAt: new Date(),
+				updatedAt: new Date(),
+			})
+			.where(eq(userProgress.id, existingResult.id));
+	} else {
+		const answersArray = [
+			{
+				questionId,
+				selectedOption,
+				isCorrect,
+				timeSpentMs,
+				answeredAt,
+			},
+		];
+
+		await pgDb.insert(quizResults).values({
+			userId,
+			quizId: quizId || '',
+			score: isCorrect ? 1 : 0,
+			totalQuestions: 1,
+			percentage: isCorrect ? '100' : '0',
+			timeTaken: timeSpentMs,
+			questionResults: JSON.stringify(answersArray),
+			completedAt: new Date(answeredAt),
+		});
+	}
+
+	log.info('Quiz answer progress persisted successfully', {
 		userId,
-		sessionId: payload.sessionId,
+		sessionId,
+		questionId,
 	});
 }

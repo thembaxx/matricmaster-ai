@@ -4,6 +4,11 @@ import { asc, eq } from 'drizzle-orm';
 import { getAuth } from '@/lib/auth';
 import { type DbType, dbManager } from '@/lib/db';
 import { topicConfidence } from '@/lib/db/schema';
+import {
+	calculateOptimalDifficulty,
+	getAdaptiveInsights,
+	updateTopicConfidence as updateTopicConfidenceService,
+} from '@/services/adaptiveLearningService';
 
 type TopicConfidenceRow = typeof topicConfidence.$inferSelect;
 
@@ -50,7 +55,13 @@ export async function startVoiceQuizSession(
 			limit: 10,
 		});
 
-		const questions = generateQuizQuestions(sharedTopic, hostConfidences);
+		const difficultyResult = await calculateOptimalDifficulty(1, sharedTopic);
+
+		const questions = await generateAdaptiveQuizQuestions(
+			sharedTopic,
+			hostConfidences,
+			difficultyResult.recommendedDifficulty
+		);
 
 		return {
 			success: true,
@@ -71,10 +82,17 @@ export async function startVoiceQuizSession(
 	}
 }
 
-function generateQuizQuestions(
+async function generateAdaptiveQuizQuestions(
 	topic: string,
-	_confidences: (typeof topicConfidence.$inferSelect)[]
-): QuizQuestion[] {
+	confidences: (typeof topicConfidence.$inferSelect)[],
+	recommendedDifficulty: 'easy' | 'medium' | 'hard'
+): Promise<QuizQuestion[]> {
+	const weakTopicsList = confidences
+		.filter((c) => Number(c.confidenceScore) < 0.6)
+		.map((c) => c.topic);
+
+	void weakTopicsList;
+
 	const baseQuestions: Record<string, QuizQuestion[]> = {
 		Calculus: [
 			{
@@ -186,25 +204,35 @@ function generateQuizQuestions(
 		],
 	};
 
-	return (
-		baseQuestions[topic] || [
-			{
-				question: `What is a key concept in ${topic}?`,
-				options: ['Concept A', 'Concept B', 'Concept C', 'Concept D'],
-				correctAnswer: 0,
-				topic,
-				subject: 'General',
-				difficulty: 'easy',
-			},
-		]
+	const topicQuestions = baseQuestions[topic] || [
+		{
+			question: `What is a key concept in ${topic}?`,
+			options: ['Concept A', 'Concept B', 'Concept C', 'Concept D'],
+			correctAnswer: 0,
+			topic,
+			subject: 'General',
+			difficulty: 'easy',
+		},
+	];
+
+	const filtered = topicQuestions.filter(
+		(q) => q.difficulty === recommendedDifficulty || q.difficulty === 'medium'
 	);
+
+	if (filtered.length > 0) {
+		return filtered;
+	}
+
+	return topicQuestions;
 }
 
 export async function submitQuizAnswer(
 	_sessionId: string,
 	_userId: string,
 	questionIndex: number,
-	answerIndex: number
+	answerIndex: number,
+	topic?: string,
+	subjectId?: number
 ): Promise<{ success: boolean; error?: string; data?: { correct: boolean; score: number } }> {
 	try {
 		const auth = await getAuth();
@@ -212,6 +240,15 @@ export async function submitQuizAnswer(
 		if (!session?.user) throw new Error('Unauthorized');
 
 		const correct = answerIndex === questionIndex;
+
+		if (topic && subjectId !== undefined) {
+			await updateTopicConfidenceService(topic, subjectId, correct);
+		}
+
+		const adaptiveInsights = await getAdaptiveInsights();
+
+		void adaptiveInsights;
+
 		return {
 			success: true,
 			data: {

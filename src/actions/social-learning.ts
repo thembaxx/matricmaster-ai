@@ -3,6 +3,7 @@
 import { and, desc, eq, gte, sql } from 'drizzle-orm';
 import { getAuth } from '@/lib/auth';
 import { type DbType, dbManager } from '@/lib/db';
+import { syncChannelMemberCount } from '@/lib/db/member-count-helpers';
 import {
 	channelMembers,
 	channels,
@@ -218,6 +219,8 @@ export async function respondToBuddyRequest(requestId: string, accept: boolean) 
 				{ channelId: channel.id, userId: session.user.id },
 				{ channelId: channel.id, userId: request.requesterId },
 			]);
+
+			await syncChannelMemberCount(channel.id);
 		}
 	} else {
 		await db

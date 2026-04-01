@@ -1,3 +1,16 @@
+/**
+ * Core WhatsApp API Client
+ *
+ * Purpose: Handles direct WhatsApp Cloud API operations — sending/receiving messages,
+ * webhook processing, message formatting, rate limiting, and notification templates.
+ *
+ * This is the low-level messaging layer. It does NOT handle scheduling, adaptive triggers,
+ * or business logic for when/why to send messages.
+ *
+ * For scheduled/adaptive notifications (study reminders, burnout check-ins, weak topic alerts,
+ * gamification updates, etc.), see: whatsapp-reminder-service.ts
+ */
+
 import { eq } from 'drizzle-orm';
 import { AI_MODELS, generateAI } from '@/lib/ai-config';
 import { getCachedResponse } from '@/lib/cache/vercel-kv';
@@ -61,7 +74,7 @@ async function delay(ms: number): Promise<void> {
 	return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-async function rateLimitedSend(to: string, message: string): Promise<boolean> {
+export async function rateLimitedSend(to: string, message: string): Promise<boolean> {
 	try {
 		const normalizedNumber = normalizeSouthAfricanNumber(to);
 		const truncatedMessage = truncateMessage(message);

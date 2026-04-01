@@ -20,7 +20,6 @@ export default function SignUpForm() {
 		showPassword,
 		setShowPassword,
 		success,
-		socialProvider,
 		onSubmit,
 		handleSocialSignUp,
 	} = useSignUp();
@@ -102,7 +101,7 @@ export default function SignUpForm() {
 						<m.div variants={STAGGER_ITEM}>
 							<SocialAuthButton
 								provider="google"
-								isLoading={socialProvider === 'google'}
+								isLoading={isLoading}
 								onClick={() => handleSocialSignUp('google')}
 							/>
 						</m.div>
@@ -111,6 +110,12 @@ export default function SignUpForm() {
 								<SocialAuthButton
 									provider="twitter"
 									onClick={() => handleSocialSignUp('twitter')}
+								/>
+							</m.div>
+							<m.div variants={STAGGER_ITEM} className="flex-1">
+								<SocialAuthButton
+									provider="facebook"
+									onClick={() => handleSocialSignUp('facebook')}
 								/>
 							</m.div>
 						</div>

@@ -1,14 +1,38 @@
+/**
+ * Scheduled & Adaptive WhatsApp Notification Service
+ *
+ * Purpose: Manages scheduled reminders, adaptive triggers, and intelligent notification
+ * delivery based on user state (progress, burnout risk, energy patterns, gamification, etc.).
+ *
+ * This is the high-level notification orchestration layer. It decides WHEN and WHY to send
+ * messages, then delegates actual message delivery to whatsapp-service.ts.
+ *
+ * For the core WhatsApp API client (send/receive, webhook handling, rate limiting),
+ * see: whatsapp-service.ts
+ */
+
 import { and, eq, sql } from 'drizzle-orm';
 import { db } from '@/lib/db';
 import { whatsappPreferences } from '@/lib/db/schema';
 import {
+	rateLimitedSend,
 	sendAchievementNotification,
 	sendBuddyScoreNotification,
 	sendDailyTip,
 	sendStudyReminder,
 } from './whatsapp-service';
 
-export type ReminderType = 'study_reminder' | 'achievement_share' | 'buddy_update' | 'daily_tip';
+export type ReminderType =
+	| 'study_reminder'
+	| 'achievement_share'
+	| 'buddy_update'
+	| 'daily_tip'
+	| 'weak_topic'
+	| 'burnout'
+	| 'energy'
+	| 'gamification'
+	| 'buddy_challenge'
+	| 'offline_sync';
 
 export interface ScheduledReminder {
 	id: string;
@@ -335,4 +359,265 @@ export async function generateVerificationCode(userId: string): Promise<string |
 		.where(eq(whatsappPreferences.userId, userId));
 
 	return code;
+}
+
+async function checkNotificationPermission(
+	userId: string,
+	notificationType: string
+): Promise<{ allowed: boolean; phoneNumber: string | null }> {
+	const dbClient = await db();
+	const prefs = await dbClient.query.whatsappPreferences.findFirst({
+		where: eq(whatsappPreferences.userId, userId),
+	});
+
+	if (!prefs) return { allowed: false, phoneNumber: null };
+	if (!prefs.isOptedIn || !prefs.isVerified) return { allowed: false, phoneNumber: null };
+	if (!prefs.notificationTypes?.includes(notificationType))
+		return { allowed: false, phoneNumber: null };
+	if (!prefs.phoneNumber) return { allowed: false, phoneNumber: null };
+
+	const now = new Date();
+	if (prefs.quietHoursStart && prefs.quietHoursEnd) {
+		const currentHour = now.getHours();
+		const startHour = Number.parseInt(prefs.quietHoursStart.split(':')[0], 10);
+		const endHour = Number.parseInt(prefs.quietHoursEnd.split(':')[0], 10);
+		if (startHour <= endHour) {
+			if (currentHour >= startHour && currentHour < endHour) {
+				return { allowed: false, phoneNumber: prefs.phoneNumber };
+			}
+		} else {
+			if (currentHour >= startHour || currentHour < endHour) {
+				return { allowed: false, phoneNumber: prefs.phoneNumber };
+			}
+		}
+	}
+
+	return { allowed: true, phoneNumber: prefs.phoneNumber };
+}
+
+export async function sendWeakTopicAlert(
+	userId: string,
+	weakTopics: Array<{ topic: string; subject: string; accuracy: number }>
+): Promise<boolean> {
+	const permission = await checkNotificationPermission(userId, 'study_reminder');
+	if (!permission.allowed || !permission.phoneNumber) {
+		console.log(`Weak topic alert blocked for user ${userId}: permission denied`);
+		return false;
+	}
+
+	const topWeak = weakTopics.slice(0, 3);
+	if (topWeak.length === 0) return false;
+
+	const topicsList = topWeak
+		.map((t) => `• ${t.subject}: ${t.topic} (${Math.round(t.accuracy)}%)`)
+		.join('\n');
+
+	const message = `📚 Your Lumni Study Report
+
+These topics need attention:
+${topicsList}
+
+💡 Tip: Start with easier questions to build confidence, then work up.
+
+Practice now: lumni.ai/practice`;
+
+	try {
+		const success = await rateLimitedSend(permission.phoneNumber, message);
+		console.log(`Weak topic alert sent to user ${userId}: ${success}`);
+		return success;
+	} catch (error) {
+		console.error(`Failed to send weak topic alert to user ${userId}:`, error);
+		return false;
+	}
+}
+
+export async function sendBurnoutCheckIn(
+	userId: string,
+	burnoutRisk: { risk: 'low' | 'medium' | 'high'; factors: string[]; recommendations: string[] }
+): Promise<boolean> {
+	if (burnoutRisk.risk === 'low') return false;
+
+	const permission = await checkNotificationPermission(userId, 'study_reminder');
+	if (!permission.allowed || !permission.phoneNumber) {
+		console.log(`Burnout check-in blocked for user ${userId}: permission denied`);
+		return false;
+	}
+
+	const isHigh = burnoutRisk.risk === 'high';
+	const message = isHigh
+		? `⚠️ Wellness Check-In
+
+We noticed you've been studying very hard. Your wellbeing matters more than any exam.
+
+${burnoutRisk.recommendations.slice(0, 2).join('\n')}
+
+Take a break today. You've earned it. 💙
+
+lumni.ai`
+		: `💙 Quick Check-In
+
+You've been putting in great effort! Remember to pace yourself.
+
+${burnoutRisk.recommendations[0] || 'Take short breaks between study sessions.'}
+
+Keep going, but don't forget to rest!
+
+lumni.ai`;
+
+	try {
+		const success = await rateLimitedSend(permission.phoneNumber, message);
+		console.log(`Burnout check-in sent to user ${userId} (risk: ${burnoutRisk.risk}): ${success}`);
+		return success;
+	} catch (error) {
+		console.error(`Failed to send burnout check-in to user ${userId}:`, error);
+		return false;
+	}
+}
+
+export async function sendEnergyOptimizedSuggestion(
+	userId: string,
+	energyPattern: { peakHour: number; peakEnergy: number; suggestedTime: string }
+): Promise<boolean> {
+	const permission = await checkNotificationPermission(userId, 'study_reminder');
+	if (!permission.allowed || !permission.phoneNumber) {
+		console.log(`Energy suggestion blocked for user ${userId}: permission denied`);
+		return false;
+	}
+
+	const timeOfDay =
+		energyPattern.peakHour >= 5 && energyPattern.peakHour < 12
+			? 'morning'
+			: energyPattern.peakHour >= 12 && energyPattern.peakHour < 17
+				? 'afternoon'
+				: 'evening';
+
+	const message = `⚡ Your Best Study Time
+
+Your energy peaks in the ${timeOfDay} around ${energyPattern.suggestedTime}.
+
+This is your ideal window for tackling difficult topics. Save easier review for lower-energy times.
+
+Peak energy detected: ${Math.round(energyPattern.peakEnergy)}%
+
+lumni.ai/planner`;
+
+	try {
+		const success = await rateLimitedSend(permission.phoneNumber, message);
+		console.log(`Energy suggestion sent to user ${userId}: ${success}`);
+		return success;
+	} catch (error) {
+		console.error(`Failed to send energy suggestion to user ${userId}:`, error);
+		return false;
+	}
+}
+
+export async function sendGamificationUpdate(
+	userId: string,
+	streak: number,
+	level: number
+): Promise<boolean> {
+	const permission = await checkNotificationPermission(userId, 'gamification');
+	if (!permission.allowed || !permission.phoneNumber) {
+		console.log(`Gamification update blocked for user ${userId}: permission denied`);
+		return false;
+	}
+
+	let message: string;
+	if (streak === 0) {
+		message = `🔥 Your streak has ended!
+
+Don't worry — start fresh today. Even 5 minutes of practice counts.
+
+lumni.ai/practice`;
+	} else if (streak % 7 === 0) {
+		message = `🔥 ${streak} Day Streak!
+
+Incredible consistency! You've studied for ${streak} days straight.
+
+Level: ${level}
+
+Keep the momentum going!
+
+lumni.ai`;
+	} else if (streak === 6) {
+		message = `🔥 6 Days! One more day to hit a week!
+
+Don't break your streak — do a quick quiz today.
+
+Level: ${level}
+
+lumni.ai/practice`;
+	} else {
+		message = `🔥 ${streak} Day Streak
+
+Level: ${level}
+
+Keep it up! Every question counts.
+
+lumni.ai`;
+	}
+
+	try {
+		const success = await rateLimitedSend(permission.phoneNumber, message);
+		console.log(
+			`Gamification update sent to user ${userId} (streak: ${streak}, level: ${level}): ${success}`
+		);
+		return success;
+	} catch (error) {
+		console.error(`Failed to send gamification update to user ${userId}:`, error);
+		return false;
+	}
+}
+
+export async function sendBuddyChallengeInvite(
+	userId: string,
+	buddyName: string
+): Promise<boolean> {
+	const permission = await checkNotificationPermission(userId, 'buddy_update');
+	if (!permission.allowed || !permission.phoneNumber) {
+		console.log(`Buddy challenge invite blocked for user ${userId}: permission denied`);
+		return false;
+	}
+
+	const message = `🏃 Challenge from ${buddyName}!
+
+${buddyName} has challenged you to a study duel!
+
+Head to lumni.ai to accept and see who scores higher.
+
+May the best student win!`;
+
+	try {
+		const success = await rateLimitedSend(permission.phoneNumber, message);
+		console.log(`Buddy challenge invite sent to user ${userId} from ${buddyName}: ${success}`);
+		return success;
+	} catch (error) {
+		console.error(`Failed to send buddy challenge invite to user ${userId}:`, error);
+		return false;
+	}
+}
+
+export async function sendOfflineSyncReminder(userId: string): Promise<boolean> {
+	const permission = await checkNotificationPermission(userId, 'study_reminder');
+	if (!permission.allowed || !permission.phoneNumber) {
+		console.log(`Offline sync reminder blocked for user ${userId}: permission denied`);
+		return false;
+	}
+
+	const message = `📱 Pending Sync Reminder
+
+You have unsaved study progress waiting to sync.
+
+Connect to the internet and open the app to sync your data — don't lose your hard work!
+
+lumni.ai`;
+
+	try {
+		const success = await rateLimitedSend(permission.phoneNumber, message);
+		console.log(`Offline sync reminder sent to user ${userId}: ${success}`);
+		return success;
+	} catch (error) {
+		console.error(`Failed to send offline sync reminder to user ${userId}:`, error);
+		return false;
+	}
 }

@@ -105,7 +105,7 @@ export default function Bookmarks() {
 							<div className="space-y-2">
 								<h3 className="text-xl font-bold">Sign in to view bookmarks</h3>
 								<p className="text-sm text-muted-foreground max-w-60 mx-auto">
-									FloppyDisk difficult questions or important concepts to review them later.
+									Save difficult questions or important concepts to review them later.
 								</p>
 							</div>
 							<Button onClick={() => router.push('/sign-in')} className="rounded-full px-8">
@@ -228,7 +228,7 @@ export default function Bookmarks() {
 							<div className="space-y-2">
 								<h3 className="text-xl font-bold">Nothing saved yet</h3>
 								<p className="text-sm text-muted-foreground max-w-60 mx-auto">
-									FloppyDisk difficult questions or important concepts to review them later.
+									Save difficult questions or important concepts to review them later.
 								</p>
 							</div>
 							<Button onClick={() => router.push('/quiz')} className="rounded-full px-8">

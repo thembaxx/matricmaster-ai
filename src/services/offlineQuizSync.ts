@@ -217,17 +217,75 @@ export async function getQuizSession(sessionId: string): Promise<QuizSession | u
 	return db.get('quizSessions', sessionId);
 }
 
+const BATCH_SIZE = 50;
+
+async function getAllInBatches<T>(
+	db: IDBPDatabase<QuizOfflineDB>,
+	storeName: 'quizSessions' | 'pendingSync' | 'syncConflicts'
+): Promise<T[]> {
+	const results: T[] = [];
+	const tx = db.transaction(storeName, 'readonly');
+	let cursor = await tx.store.openCursor();
+
+	while (cursor) {
+		results.push(cursor.value as T);
+		cursor = await cursor.continue();
+	}
+
+	return results;
+}
+
+async function processInBatches<T>(
+	db: IDBPDatabase<QuizOfflineDB>,
+	storeName: 'quizSessions' | 'pendingSync' | 'syncConflicts',
+	callback: (batch: T[]) => Promise<void>
+): Promise<void> {
+	let offset = 0;
+	let hasMore = true;
+
+	while (hasMore) {
+		const allItems = await getAllInBatches<T>(db, storeName);
+		const batch = allItems.slice(offset, offset + BATCH_SIZE);
+
+		if (batch.length === 0) {
+			hasMore = false;
+			break;
+		}
+
+		await callback(batch);
+		offset += BATCH_SIZE;
+
+		if (allItems.length < offset + BATCH_SIZE) {
+			hasMore = false;
+		}
+	}
+}
+
 export async function getAllPendingSessions(): Promise<QuizSession[]> {
 	const db = await getDB();
-	const sessions = await db.getAll('quizSessions');
-	return sessions.filter((s) => !s.completed);
+	const sessions: QuizSession[] = [];
+
+	await processInBatches<QuizSession>(db, 'quizSessions', async (batch) => {
+		sessions.push(...batch.filter((s) => !s.completed));
+	});
+
+	return sessions;
 }
 
 export async function getPendingSyncItems(): Promise<
 	Array<{ id: string; type: string; payload: any; createdAt: string }>
 > {
 	const db = await getDB();
-	const items = await db.getAll('pendingSync');
+	const items: Array<{ id: string; type: string; payload: any; createdAt: string }> = [];
+
+	await processInBatches<{ id: string; type: string; payload: any; createdAt: string }>(
+		db,
+		'pendingSync',
+		async (batch) => {
+			items.push(...batch);
+		}
+	);
+
 	return items;
 }
 
@@ -286,6 +344,7 @@ export async function syncAllPendingData(): Promise<{
 			const response = await fetch('/api/quiz/sync-offline', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
+				credentials: 'include',
 				body: JSON.stringify(item),
 			});
 
@@ -677,6 +736,7 @@ export async function syncWithConflictDetection(): Promise<SyncResult> {
 			const response = await fetch('/api/quiz/sync-offline', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
+				credentials: 'include',
 				body: JSON.stringify(item),
 			});
 

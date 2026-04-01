@@ -21,7 +21,6 @@ function SignInFormContent() {
 		showPassword,
 		setShowPassword,
 		successEmail,
-		socialProvider,
 		onSubmit,
 		handleSocialSignIn,
 	} = useSignIn();
@@ -153,7 +152,7 @@ function SignInFormContent() {
 						<m.div variants={STAGGER_ITEM}>
 							<SocialAuthButton
 								provider="google"
-								isLoading={socialProvider === 'google'}
+								isLoading={isLoading}
 								onClick={() => handleSocialSignIn('google')}
 							/>
 						</m.div>
@@ -162,6 +161,12 @@ function SignInFormContent() {
 								<SocialAuthButton
 									provider="twitter"
 									onClick={() => handleSocialSignIn('twitter')}
+								/>
+							</m.div>
+							<m.div variants={STAGGER_ITEM} className="flex-1">
+								<SocialAuthButton
+									provider="facebook"
+									onClick={() => handleSocialSignIn('facebook')}
 								/>
 							</m.div>
 						</div>

@@ -23,27 +23,27 @@ export function useDeviceSync(options: UseDeviceSyncOptions = {}): UseDeviceSync
 	const [isSyncing, setIsSyncing] = useState(false);
 	const [pendingCount, setPendingCount] = useState(0);
 
-	const updatePendingCount = useCallback(() => {
-		const queue = getSyncQueue();
+	const updatePendingCount = useCallback(async () => {
+		const queue = await getSyncQueue();
 		setPendingCount(queue.filter((item) => !item.processed).length);
 	}, []);
 
 	const syncNow = useCallback(async () => {
 		if (!isOnline()) return;
 		setIsSyncing(true);
-		const queue = getSyncQueue().filter((item) => !item.processed);
+		const queue = (await getSyncQueue()).filter((item) => !item.processed);
 		for (const item of queue) {
 			try {
 				if (onSync) {
 					await onSync(item);
 				}
-				removeSyncQueueItem(item.id);
+				await removeSyncQueueItem(item.id);
 			} catch (error) {
 				console.error('Sync failed for item:', item.id, error);
 			}
 		}
 		setLastSyncedAt(new Date());
-		updatePendingCount();
+		await updatePendingCount();
 		setIsSyncing(false);
 	}, [onSync, updatePendingCount]);
 

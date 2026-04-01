@@ -1,3 +1,7 @@
+import { eq } from 'drizzle-orm';
+import { getDb } from '@/lib/db';
+import { rateLimits } from '@/lib/db/schema';
+
 type RateLimitConfig = {
 	windowMs: number;
 	maxRequests: number;
@@ -11,24 +15,6 @@ const RATE_LIMITS: Record<string, RateLimitConfig> = {
 	'api:study-plan': { windowMs: 60 * 1000, maxRequests: 3 },
 };
 
-interface RateLimitEntry {
-	count: number;
-	resetTime: number;
-}
-
-const rateLimitStore = new Map<string, RateLimitEntry>();
-
-function cleanupExpiredEntries() {
-	const now = Date.now();
-	for (const [key, entry] of rateLimitStore.entries()) {
-		if (now > entry.resetTime) {
-			rateLimitStore.delete(key);
-		}
-	}
-}
-
-setInterval(cleanupExpiredEntries, 60 * 1000);
-
 export interface RateLimitResult {
 	success: boolean;
 	remaining: number;
@@ -36,32 +22,58 @@ export interface RateLimitResult {
 	limit: number;
 }
 
-export function checkRateLimit(key: string, category = 'default'): RateLimitResult {
+export async function checkRateLimit(key: string, category = 'default'): Promise<RateLimitResult> {
 	const now = Date.now();
 	const configKey = `api:${category}`;
 	const config = RATE_LIMITS[configKey] || RATE_LIMITS['api:ai-tutor'];
 	const fullKey = `${key}:${configKey}`;
 
-	let entry = rateLimitStore.get(fullKey);
+	const db = await getDb();
 
-	if (!entry || now > entry.resetTime) {
-		entry = {
-			count: 0,
-			resetTime: now + config.windowMs,
-		};
-		rateLimitStore.set(fullKey, entry);
+	const existing = await db.query.rateLimits.findFirst({
+		where: eq(rateLimits.key, fullKey),
+	});
+
+	const resetAt = new Date(now + config.windowMs);
+	let count = 0;
+
+	if (existing) {
+		if (new Date() > existing.resetAt) {
+			await db
+				.update(rateLimits)
+				.set({
+					count: 1,
+					resetAt,
+				})
+				.where(eq(rateLimits.id, existing.id));
+			count = 1;
+		} else {
+			count = existing.count + 1;
+			await db
+				.update(rateLimits)
+				.set({
+					count,
+				})
+				.where(eq(rateLimits.id, existing.id));
+		}
+	} else {
+		count = 1;
+		await db.insert(rateLimits).values({
+			key: fullKey,
+			count: 1,
+			resetAt,
+		});
 	}
 
-	entry.count++;
+	const remaining = Math.max(0, config.maxRequests - count);
+	const resetInMs = existing ? Math.max(0, existing.resetAt.getTime() - now) : config.windowMs;
+	const resetIn = Math.ceil(resetInMs / 1000);
 
-	const remaining = Math.max(0, config.maxRequests - entry.count);
-	const resetIn = Math.max(0, entry.resetTime - now);
-
-	if (entry.count > config.maxRequests) {
+	if (count > config.maxRequests) {
 		return {
 			success: false,
 			remaining: 0,
-			resetIn: Math.ceil(resetIn / 1000),
+			resetIn,
 			limit: config.maxRequests,
 		};
 	}
@@ -69,7 +81,7 @@ export function checkRateLimit(key: string, category = 'default'): RateLimitResu
 	return {
 		success: true,
 		remaining,
-		resetIn: Math.ceil(resetIn / 1000),
+		resetIn,
 		limit: config.maxRequests,
 	};
 }
