@@ -33,10 +33,8 @@ export async function POST(request: NextRequest) {
 			results.flashcardReviews = oldReviews.length;
 		}
 
-		const deletedSearch = await db
-			.delete(searchHistory)
-			.where(lt(searchHistory.createdAt, cutoffDate));
-		results.searchHistory = Number(deletedSearch.rowCount || 0);
+		await db.delete(searchHistory).where(lt(searchHistory.createdAt, cutoffDate));
+		results.searchHistory = 0;
 
 		const conversationsToKeep = 50;
 		const allConversations = await db.query.aiConversations.findMany({

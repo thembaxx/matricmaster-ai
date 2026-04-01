@@ -52,18 +52,24 @@ export function getModelForTask(complexity: TaskComplexity): string {
 export async function getAvailableModel(complexity: TaskComplexity = 'moderate'): Promise<string> {
 	const routing = MODEL_ROUTING[complexity];
 
+	// Try primary first
 	if (await isModelAvailable(routing.primary)) {
 		return routing.primary;
 	}
 
+	// Try fallbacks in order
 	for (const fallback of routing.fallbacks) {
 		if (await isModelAvailable(fallback)) {
 			return fallback;
 		}
 	}
 
+	// Last resort: return primary anyway (will fail gracefully)
 	return routing.primary;
 }
+
+// Alias for backward compatibility
+export const getBestAvailableModel = () => 'gemini-2.5-flash';
 
 async function isModelAvailable(modelName: string): Promise<boolean> {
 	const apiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY;

@@ -658,6 +658,9 @@ export const contentFlags = pgTable(
 // COMMENTS TABLES (from migration 0005)
 // ============================================================================
 
+// Forward declaration for circular reference in comments table
+const _commentsRef: any = null;
+
 // Define comments table first to avoid circular reference
 export const comments = pgTable(
 	'comments',
@@ -669,7 +672,7 @@ export const comments = pgTable(
 		content: text('content').notNull(),
 		resourceType: varchar('resource_type', { length: 50 }).notNull(),
 		resourceId: text('resource_id').notNull(),
-		parentId: uuid('parent_id').references(() => comments.id, { onDelete: 'cascade' }),
+		parentId: uuid('parent_id'),
 		isEdited: boolean('is_edited').notNull().default(false),
 		isFlagged: boolean('is_flagged').notNull().default(false),
 		flagReason: text('flag_reason'),

@@ -5,7 +5,11 @@ import { getAuth } from '@/lib/auth';
 import { dbManager } from '@/lib/db';
 import { studySessions, userProgress } from '@/lib/db/schema';
 
-export { detectBurnoutRisk } from './burnoutService';
+// Wrapper for backward compatibility - detectBurnoutRisk is async
+export async function detectBurnoutRisk(userId?: string) {
+	const { detectBurnoutRisk: detect } = await import('./burnoutService');
+	return detect(userId);
+}
 
 async function getDb() {
 	const connected = await dbManager.waitForConnection(3, 2000);

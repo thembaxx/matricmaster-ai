@@ -5,7 +5,13 @@ import { dbManager } from '@/lib/db';
 import { studyPlans } from '@/lib/db/schema';
 import { detectBurnoutRisk as detectBurnoutRiskFromService } from '@/services/burnoutService';
 
-export type { BurnoutRiskResult as BurnoutRisk } from '@/services/burnoutService';
+type BurnoutRisk = {
+	risk: 'low' | 'medium' | 'high';
+	level: 'low' | 'medium' | 'high';
+	factors: string[];
+	recommendations: string[];
+	score?: number;
+};
 
 export { detectBurnoutRiskFromService as detectBurnoutRisk };
 

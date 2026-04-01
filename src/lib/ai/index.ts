@@ -1,4 +1,11 @@
-export { AI_MODELS, getBestAvailableModel } from '@/lib/ai-config';
+export {
+	AI_MODELS,
+	checkTokenBudget,
+	getAvailableModel,
+	getBestAvailableModel,
+	getModelForTask,
+	recordTokenUsage,
+} from '@/lib/ai-config';
 export {
 	type Citation,
 	type CitationSource,

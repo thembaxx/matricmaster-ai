@@ -6,8 +6,10 @@ import { studySessions, userProgress } from '@/lib/db/schema';
 
 export interface BurnoutRiskResult {
 	risk: 'low' | 'medium' | 'high';
+	level: 'low' | 'medium' | 'high'; // Alias for backward compatibility
 	factors: string[];
 	recommendations: string[];
+	score?: number;
 }
 
 async function getDb() {
@@ -53,10 +55,11 @@ export async function detectBurnoutRisk(userId: string): Promise<BurnoutRiskResu
 	if (recentSessions.length === 0) {
 		return {
 			risk: 'low',
+			level: 'low',
 			score: 0,
 			factors: ['No recent activity'],
 			recommendations: ['Start with short study sessions'],
-		};
+		} as BurnoutRiskResult;
 	}
 
 	if (totalMinutesToday > 180) {
@@ -135,7 +138,7 @@ export async function detectBurnoutRisk(userId: string): Promise<BurnoutRiskResu
 
 	const recommendations = generateRecommendations(risk, factors);
 
-	return { risk, score: riskScore, factors, recommendations };
+	return { risk, level: risk, score: riskScore, factors, recommendations } as BurnoutRiskResult;
 }
 
 function generateRecommendations(level: string, factors: string[]): string[] {

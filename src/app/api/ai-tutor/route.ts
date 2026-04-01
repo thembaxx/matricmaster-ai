@@ -192,7 +192,7 @@ export async function POST(request: NextRequest) {
 		}
 
 		const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
-		const rateLimitResult = checkRateLimit(session.user.id, 'ai-tutor');
+		const rateLimitResult = await checkRateLimit(session.user.id, 'ai-tutor');
 		if (!rateLimitResult.success) {
 			return NextResponse.json(
 				{
