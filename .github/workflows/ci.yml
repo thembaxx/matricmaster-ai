@@ -59,8 +59,8 @@ jobs:
 
       - name: Generate database client
         run: |
-          bunx drizzle-kit generate --force
-          bunx drizzle-kit generate --config=drizzle.sqlite.config.ts --force
+          bunx drizzle-kit generate
+          bunx drizzle-kit generate --config=drizzle.sqlite.config.ts
 
       - name: Push database schema
         run: |
