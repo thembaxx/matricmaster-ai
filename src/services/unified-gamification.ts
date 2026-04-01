@@ -1,8 +1,12 @@
-'use server';
-
 import { eq } from 'drizzle-orm';
 import { getStreakMultiplier } from '@/content';
-import { ACHIEVEMENTS, type Achievement } from '@/content/achievements';
+import { ACHIEVEMENTS } from '@/content/achievements';
+
+// Helper to get achievements (required for 'use server' exports)
+function getAllAchievements() {
+	return ACHIEVEMENTS;
+}
+
 import { type DbType, dbManager } from '@/lib/db';
 import { userAchievements, userProgress } from '@/lib/db/schema';
 import { getXPLevel } from './xpSystem';
@@ -68,8 +72,6 @@ const XP_BASE: Record<string, number> = {
 // ============================================================================
 // SINGLE SOURCE OF TRUTH: ACHIEVEMENTS
 // ============================================================================
-
-export const ALL_ACHIEVEMENTS: Achievement[] = ACHIEVEMENTS;
 
 // ============================================================================
 // DATABASE HELPERS
@@ -196,7 +198,7 @@ async function checkAchievements(
 	const progress = await getUserProgress(userId);
 	const streakDays = progress?.streakDays ?? 0;
 
-	for (const achievement of ALL_ACHIEVEMENTS) {
+	for (const achievement of getAllAchievements()) {
 		if (existingAchievementIds.has(achievement.id)) continue;
 
 		let shouldUnlock = false;

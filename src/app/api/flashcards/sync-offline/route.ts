@@ -1,8 +1,9 @@
 import { type NextRequest, NextResponse } from 'next/server';
-import { auth } from '@/lib/auth';
+import { getAuth } from '@/lib/auth';
 import { processGamificationEvent } from '@/services/unified-gamification';
 
 export async function POST(request: NextRequest) {
+	const auth = await getAuth();
 	const session = await auth.api.getSession({ headers: request.headers });
 	if (!session?.user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
