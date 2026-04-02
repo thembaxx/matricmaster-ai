@@ -17,6 +17,11 @@ export async function POST(request: NextRequest) {
 		const auth = await getAuth();
 		const session = await auth.api.getSession({ headers: request.headers });
 
+		// If user is not authenticated, reject the request
+		if (!session?.user?.id) {
+			return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+		}
+
 		// Parse body - Ably sends clientId in body for POST requests with JSON
 		// Also check query params as fallback
 		const contentType = request.headers.get('content-type') || '';
@@ -42,32 +47,16 @@ export async function POST(request: NextRequest) {
 			userId = searchParams.get('userId') || request.nextUrl.searchParams.get('userId');
 		}
 
-		// If no clientId provided, this is likely an anonymous connection attempt
-		if (!clientId) {
-			return NextResponse.json({ error: 'clientId is required' }, { status: 400 });
-		}
-
-		// If user is not authenticated, reject the request
-		if (!session?.user?.id) {
-			return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-		}
-
-		const apiKey = getEnv('ABLY_API_KEY');
-		if (!apiKey) {
-			console.debug('[Ably Auth] ABLY_API_KEY is not configured');
-			return NextResponse.json({ error: 'Ably not configured' }, { status: 500 });
-		}
-
-		// Use the session user ID as the clientId if none provided,
-		// or verify the requested clientId belongs to this user
+		// Use session user ID as clientId if none provided, or verify the requested clientId belongs to this user
 		const requestedUserId = userId || clientId;
-		const isOwnToken = requestedUserId === session.user.id || clientId === session.user.id;
+		const isOwnToken =
+			requestedUserId === session.user.id || clientId === session.user.id || !clientId; // If no clientId provided, use session user ID
 
 		// Allow token generation if:
-		// 1. The clientId/userId matches the session user
-		// 2. The clientId starts with 'anonymous-' (for anonymous users who just registered)
-		// 3. The clientId is the session user ID
-		if (!isOwnToken && !clientId.startsWith('anonymous-')) {
+		// 1. No clientId provided (use session user ID)
+		// 2. The clientId/userId matches the session user
+		// 3. The clientId starts with 'anonymous-' (for anonymous users who just registered)
+		if (!isOwnToken && clientId && !clientId.startsWith('anonymous-')) {
 			console.debug('[Ably Auth] Token request rejected:', {
 				requestedUserId,
 				sessionUserId: session.user.id,
@@ -77,6 +66,12 @@ export async function POST(request: NextRequest) {
 				{ error: 'Forbidden: Can only request tokens for your own user' },
 				{ status: 403 }
 			);
+		}
+
+		const apiKey = getEnv('ABLY_API_KEY');
+		if (!apiKey) {
+			console.debug('[Ably Auth] ABLY_API_KEY is not configured');
+			return NextResponse.json({ error: 'Ably not configured' }, { status: 500 });
 		}
 
 		const client = new Ably.Realtime({ key: apiKey });
