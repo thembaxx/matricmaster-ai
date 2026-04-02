@@ -51,6 +51,7 @@ export const FormFields = memo(function FormFields({
 					aria-invalid={!!errors.email}
 					aria-describedby={errors.email ? emailErrorId : undefined}
 					autoComplete="email"
+					error={!!errors.email}
 				/>
 				{errors.email && (
 					<p id={emailErrorId} className="text-xs text-destructive font-semibold ml-1" role="alert">
@@ -79,6 +80,7 @@ export const FormFields = memo(function FormFields({
 						aria-invalid={!!errors.password}
 						aria-describedby={errors.password ? passwordErrorId : undefined}
 						autoComplete="current-password"
+						error={!!errors.password}
 					/>
 					<Button
 						variant="ghost"

@@ -62,6 +62,7 @@ export function BottomNavigation({ pathname }: BottomNavigationProps) {
 			id="bottom-navigation"
 			aria-label="Bottom navigation"
 			className="lg:hidden fixed bottom-6 left-1/2 -translate-x-1/2 w-[94%] max-w-md z-20 tiimo-glass rounded-[2.5rem] shadow-tiimo-lg grid grid-cols-5 p-1.5"
+			style={{ paddingBottom: 'calc(1.5rem + env(safe-area-inset-bottom, 0px)' }}
 		>
 			{navItems.map((item) => {
 				const isActive = pathname === item.href || (item.href === '/schedule' && pathname === '/');

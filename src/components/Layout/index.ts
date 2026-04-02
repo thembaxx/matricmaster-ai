@@ -1,4 +1,4 @@
-export { AppSidebar, handleLogout, LogoutButton } from './DesktopSidebar';
+export { AppSidebar, LogoutButton } from './DesktopSidebar';
 export { SidebarMenuSection } from './SidebarMenuSection';
 export { SidebarNavigation } from './SidebarNavigation';
 export { SidebarSearchInput } from './SidebarSearchInput';

@@ -2,6 +2,7 @@
 
 import { Settings01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
+import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import {
 	Sidebar,
@@ -62,12 +63,15 @@ export function AppSidebar({ user, pathname, theme, onSetTheme }: AppSidebarProp
 	);
 }
 
-export async function handleLogout() {
-	await authClient.signOut();
-	window.location.href = '/sign-in';
-}
-
 export function LogoutButton() {
+	const router = useRouter();
+
+	const handleLogout = async () => {
+		await authClient.signOut();
+		router.push('/sign-in');
+		router.refresh();
+	};
+
 	return (
 		<Button
 			variant="ghost"

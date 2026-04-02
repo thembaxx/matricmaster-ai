@@ -50,7 +50,7 @@ export const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
 					<SheetContent
 						data-sidebar="sidebar"
 						data-mobile="true"
-						className="w-[80hw] bg-sidebar p-0 text-sidebar-foreground [&>button]:hidden"
+						className="w-[80vw] bg-sidebar p-0 text-sidebar-foreground [&>button]:hidden"
 						style={
 							{
 								'--sidebar-width': SIDEBAR_WIDTH_MOBILE,

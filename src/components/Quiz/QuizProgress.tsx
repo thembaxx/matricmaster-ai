@@ -45,7 +45,14 @@ export function QuizProgress({
 					{difficulty}
 				</Badge>
 			</div>
-			<div className="relative h-2 w-full overflow-hidden rounded-full bg-muted">
+			<div
+				className="relative h-2 w-full overflow-hidden rounded-full bg-muted"
+				role="progressbar"
+				aria-valuenow={progressPercent}
+				aria-valuemin={0}
+				aria-valuemax={100}
+				aria-label={`${progressPercent}% complete`}
+			>
 				<m.div
 					className={cn(
 						'h-full rounded-full',
