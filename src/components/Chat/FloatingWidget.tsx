@@ -28,9 +28,9 @@ export function FloatingWidget() {
 			<Button
 				type="button"
 				onClick={toggleWidget}
-				className="fixed bottom-20 right-4 w-14 h-14 rounded-full shadow-lg flex items-center justify-center z-50"
+				className="fixed bottom-32 right-4 w-14 h-14 rounded-full shadow-lg flex p-0! items-center justify-center z-50"
 			>
-				<HugeiconsIcon icon={MessageIcon} className="w-6 h-6" />
+				<HugeiconsIcon icon={MessageIcon} className="w-6 h-6 shrink-0" />
 			</Button>
 		);
 	}
