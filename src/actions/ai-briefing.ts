@@ -358,7 +358,13 @@ Guidelines:
 			temperature: 0.8,
 		});
 
-		const parsed = JSON.parse(response.trim());
+		const cleanedResponse = response
+			.trim()
+			.replace(/^```json\s*/g, '')
+			.replace(/```$/g, '')
+			.replace(/^```\s*/g, '')
+			.trim();
+		const parsed = JSON.parse(cleanedResponse);
 
 		return {
 			greeting: parsed.greeting || generateFallbackGreeting(data),
