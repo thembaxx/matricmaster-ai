@@ -402,6 +402,8 @@ export const quizResults = sqliteTable('quiz_results', {
 	id: text().primaryKey().notNull(),
 	userId: text('user_id').notNull(),
 	quizId: text('quiz_id').notNull(),
+	subjectId: integer('subject_id'),
+	topic: text('topic'),
 	score: integer().notNull(),
 	totalQuestions: integer('total_questions').notNull(),
 	percentage: text().notNull(),

@@ -129,6 +129,8 @@ export const quizResults = pgTable(
 			.notNull()
 			.references(() => users.id, { onDelete: 'cascade' }),
 		quizId: varchar('quiz_id', { length: 100 }).notNull(),
+		subjectId: integer('subject_id'),
+		topic: varchar('topic', { length: 100 }),
 		score: integer('score').notNull(),
 		totalQuestions: integer('total_questions').notNull(),
 		percentage: numeric('percentage', { precision: 5, scale: 2 }).notNull(),

@@ -156,7 +156,8 @@ export function normalizeMathInput(input: string): string {
 
 	const validation = validateMathExpression(normalized);
 	if (!validation.valid) {
-		console.warn('Math validation warnings:', validation.errors);
+		console.warn('Math validation errors:', validation.errors);
+		return input.trim();
 	}
 
 	return validation.normalizedExpression;
