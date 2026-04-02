@@ -105,10 +105,13 @@ export const LeaderboardPreview = memo(function LeaderboardPreview() {
 					</div>
 				</div>
 				<div className="flex flex-col items-center justify-center py-8 text-center">
-					<p className="text-sm text-destructive mb-3">
-						{error ? 'Unable to load leaderboard' : 'An error occurred'}
-					</p>
-					<Button variant="outline" size="sm" onClick={handleRetry}>
+					<p className="text-sm text-destructive mb-3">Unable to load leaderboard</p>
+					<Button
+						variant="outline"
+						size="sm"
+						onClick={handleRetry}
+						className="transition-all duration-200"
+					>
 						Try Again
 					</Button>
 				</div>
@@ -144,20 +147,20 @@ export const LeaderboardPreview = memo(function LeaderboardPreview() {
 							initial={{ opacity: 0, y: 10 }}
 							animate={{ opacity: 1, y: 0 }}
 							transition={{ delay: index * 0.1 }}
-							className={`flex items-center gap-3 p-3 rounded-2xl transition-colors ${
+							className={`flex items-center gap-3 p-3 rounded-2xl transition-all duration-200 ${
 								entry.isCurrentUser
-									? 'bg-brand-amber/10 border border-brand-amber/20'
+									? 'bg-tiimo-yellow/10 border border-tiimo-yellow/20'
 									: 'bg-card/50 hover:bg-card/80'
 							}`}
 						>
 							<div
-								className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-black shrink-0 ${
+								className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-black shrink-0 transition-colors duration-200 ${
 									entry.rank === 1
-										? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400'
+										? 'bg-tiimo-yellow/20 text-tiimo-yellow'
 										: entry.rank === 2
-											? 'bg-muted text-foreground dark:bg-secondary dark:text-muted-foreground'
+											? 'bg-tiimo-gray-subtle/50 text-tiimo-gray-dark'
 											: entry.rank === 3
-												? 'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400'
+												? 'bg-tiimo-orange/20 text-tiimo-orange'
 												: 'bg-muted text-muted-foreground'
 								}`}
 							>
@@ -187,7 +190,7 @@ export const LeaderboardPreview = memo(function LeaderboardPreview() {
 				whileHover={{ scale: 1.02 }}
 				whileTap={{ scale: 0.98 }}
 				type="button"
-				className="w-full mt-4 py-3 px-4 rounded-2xl bg-muted/50 hover:bg-muted text-sm font-bold text-muted-foreground hover:text-foreground transition-colors flex items-center justify-center gap-2"
+				className="w-full mt-4 py-3 px-4 rounded-2xl bg-muted/50 hover:bg-muted text-sm font-bold text-muted-foreground hover:text-foreground transition-all duration-200 flex items-center justify-center gap-2"
 			>
 				View Full Leaderboard
 				<HugeiconsIcon icon={ArrowRight01Icon} className="w-4 h-4" />

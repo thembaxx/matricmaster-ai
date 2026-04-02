@@ -585,6 +585,15 @@
     @apply bg-black/40 border-white/10;
   }
   
+  /* iOS-style Glass */
+  .ios-glass {
+    @apply bg-white/80 backdrop-blur-xl border border-white/30 shadow-lg;
+    border-radius: var(--radius-xl);
+  }
+  .dark .ios-glass {
+    @apply bg-black/60 border-white/10;
+  }
+  
   /* === BUTTON UTILITIES === */
   
   /* Bouncy Press Interaction */

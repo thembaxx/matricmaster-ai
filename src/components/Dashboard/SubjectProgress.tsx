@@ -174,7 +174,7 @@ export function SubjectProgress() {
 									<Button
 										variant="ghost"
 										size="icon"
-										className="rounded-full bg-secondary hover:bg-secondary/80"
+										className="rounded-full bg-secondary hover:bg-secondary/80 transition-all duration-200"
 										onClick={(e) => {
 											e.stopPropagation();
 											setSelectedId(null);
@@ -193,7 +193,7 @@ export function SubjectProgress() {
 									<Card className="p-6 rounded-md bg-secondary/50 border-none shadow-none">
 										<div className="flex items-center gap-3 mb-2">
 											<HugeiconsIcon icon={Refresh01Icon} className="h-5 w-5 text-tiimo-lavender" />
-											<span className="text-[10px] font-black  tracking-widest text-tiimo-gray-muted">
+											<span className="text-[10px] font-black tracking-widest text-tiimo-gray-muted">
 												Last Study
 											</span>
 										</div>
@@ -202,7 +202,7 @@ export function SubjectProgress() {
 									<Card className="p-6 rounded-md bg-secondary/50 border-none shadow-none">
 										<div className="flex items-center gap-3 mb-2">
 											<HugeiconsIcon icon={ChartBar} className="h-5 w-5 text-tiimo-green" />
-											<span className="text-[10px] font-black  tracking-widest text-tiimo-gray-muted">
+											<span className="text-[10px] font-black tracking-widest text-tiimo-gray-muted">
 												Mastery
 											</span>
 										</div>
@@ -223,7 +223,7 @@ export function SubjectProgress() {
 										{[1, 2, 3].map((item) => (
 											<div
 												key={`active-topic-${item}`}
-												className="flex items-center justify-between p-4 rounded-2xl bg-white/5 hover:bg-white/10 cursor-pointer transition-colors group"
+												className="flex items-center justify-between p-4 rounded-2xl bg-white/5 hover:bg-white/10 cursor-pointer transition-colors duration-200 group"
 											>
 												<div className="flex items-center gap-3">
 													<div className="h-2 w-2 rounded-full bg-primary" />
@@ -231,7 +231,7 @@ export function SubjectProgress() {
 												</div>
 												<HugeiconsIcon
 													icon={ArrowUpRight}
-													className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors"
+													className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors duration-200"
 												/>
 											</div>
 										))}
@@ -244,10 +244,13 @@ export function SubjectProgress() {
 									transition={{ delay: 0.3 }}
 									className="flex gap-4 mt-4"
 								>
-									<Button className="flex-1 h-14 rounded-2xl text-lg font-bold bg-primary hover:bg-primary/90">
+									<Button className="flex-1 h-14 rounded-2xl text-lg font-bold bg-primary hover:bg-primary/90 transition-all duration-200">
 										Resume Learning
 									</Button>
-									<Button variant="outline" className="h-14 w-14 rounded-2xl border-white/10">
+									<Button
+										variant="outline"
+										className="h-14 w-14 rounded-2xl border-white/10 transition-all duration-200"
+									>
 										<HugeiconsIcon icon={BookOpen01Icon} className="h-6 w-6" />
 									</Button>
 								</m.div>

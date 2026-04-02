@@ -48,7 +48,7 @@ export function SubjectsSection({ onAuthRequired }: SubjectsSectionProps) {
 							type="button"
 							variants={STAGGER_ITEM}
 							onClick={() => onAuthRequired(`/subjects/${subject.id}`)}
-							className="tiimo-card group relative p-6 text-left overflow-hidden will-change-transform"
+							className="tiimo-card group relative p-6 text-left overflow-hidden will-change-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
 						>
 							<div
 								className={`absolute top-0 right-0 w-32 h-32 ${subject.bgColor} rounded-full -mr-16 -mt-16 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-3xl`}

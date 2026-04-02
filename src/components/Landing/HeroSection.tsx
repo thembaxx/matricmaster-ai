@@ -72,7 +72,7 @@ export function HeroSection({ onAuthRequired }: HeroSectionProps) {
 				>
 					<Button
 						size="lg"
-						className="w-full sm:w-auto h-14 rounded-[var(--radius-lg)] text-base font-semibold bg-tiimo-lavender text-white shadow-lg shadow-tiimo-lavender/25 hover:shadow-xl hover:shadow-tiimo-lavender/30 hover:brightness-110 transition-all"
+						className="w-full sm:w-auto h-14 rounded-[var(--radius-lg)] text-base font-semibold bg-tiimo-lavender text-white shadow-lg shadow-tiimo-lavender/25 hover:shadow-xl hover:shadow-tiimo-lavender/30 hover:brightness-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 active:scale-[0.98] transition-all duration-200"
 						onClick={() => onAuthRequired('/dashboard')}
 					>
 						<span className="flex items-center gap-2">
@@ -83,7 +83,7 @@ export function HeroSection({ onAuthRequired }: HeroSectionProps) {
 					<Button
 						size="lg"
 						variant="ghost"
-						className="w-full sm:w-auto h-14 rounded-[var(--radius-lg)] text-base font-medium text-muted-foreground hover:text-foreground hover:bg-secondary"
+						className="w-full sm:w-auto h-14 rounded-[var(--radius-lg)] text-base font-medium text-muted-foreground hover:text-foreground hover:bg-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 active:scale-[0.98] transition-all duration-200"
 						onClick={() => router.push('/past-papers')}
 					>
 						<span className="flex items-center gap-2">
@@ -156,7 +156,6 @@ export function HeroSection({ onAuthRequired }: HeroSectionProps) {
 								transition={{
 									delay: 0.4,
 									duration: 3.5,
-									// repeat: Number.POSITIVE_INFINITY,
 									ease: 'easeInOut',
 								}}
 								className="absolute -top-2 -left-4 w-20 h-24 bg-card rounded-[var(--radius-lg)] shadow-xl border border-border/50 flex flex-col items-center justify-center p-2 z-10 will-change-transform"
@@ -175,9 +174,7 @@ export function HeroSection({ onAuthRequired }: HeroSectionProps) {
 								animate={{ opacity: 1, scale: 1, y: 0 }}
 								transition={{
 									delay: 0.5,
-									// duration: 4,
-									// repeat: Number.POSITIVE_INFINITY,
-									// ease: 'easeInOut',
+									ease: 'easeInOut',
 								}}
 								className="absolute -bottom-2 -right-4 w-20 h-24 bg-card rounded-[var(--radius-lg)] shadow-xl border border-border/50 flex flex-col items-center justify-center p-2 z-20 will-change-transform"
 							>

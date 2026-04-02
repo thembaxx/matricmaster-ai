@@ -46,22 +46,26 @@ export const QuizQuestionCard = memo(function QuizQuestionCard({
 						<RadioGroupItem value={option.id} id={option.id} className="sr-only" />
 						<Label
 							htmlFor={option.id}
-							className={`flex-1 p-4 sm:p-5 rounded-2xl border-2 cursor-pointer transition-all flex items-center gap-4 ${
+							className={`flex-1 p-4 sm:p-5 rounded-2xl border-2 cursor-pointer transition-all flex items-center gap-4 focus:outline-none focus:ring-2 focus:ring-primary/30 ${
 								selectedAnswer === option.id
 									? `${colors.border} ${colors.bgSoft} shadow-md scale-[1.02]`
-									: `border-border ${colors.borderSoft}`
+									: `border-border hover:border-primary/50 hover:bg-accent/30 ${colors.borderSoft}`
 							} ${
 								showResult && option.id === correctAnswer
-									? 'border-green-500 bg-green-500/10'
+									? 'border-tiimo-green bg-tiimo-green/10'
 									: showResult && selectedAnswer === option.id && option.id !== correctAnswer
-										? 'border-red-500 bg-red-500/10'
+										? 'border-destructive bg-destructive/10'
 										: ''
 							}`}
 						>
 							<span
-								className={`w-8 h-8 rounded-full flex items-center justify-center font-black text-xs ${
+								className={`w-8 h-8 rounded-full flex items-center justify-center font-black text-xs transition-colors ${
 									selectedAnswer === option.id
-										? `${colors.bg} text-white`
+										? showResult
+											? option.id === correctAnswer
+												? 'bg-tiimo-green text-white'
+												: 'bg-destructive text-white'
+											: `${colors.bg} text-white`
 										: 'bg-muted text-muted-foreground'
 								}`}
 							>

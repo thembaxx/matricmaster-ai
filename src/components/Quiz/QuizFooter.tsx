@@ -58,9 +58,10 @@ export function QuizFooter({
 							whileTap={{ scale: 0.95 }}
 							transition={{ type: 'spring', stiffness: 400, damping: 17 }}
 							className={cn(
-								'p-4 rounded-3xl bg-secondary text-muted-foreground transition-all hover:bg-secondary/80',
+								'p-4 rounded-3xl bg-secondary text-muted-foreground transition-all hover:bg-secondary/80 focus:outline-none focus:ring-2 focus:ring-tiimo-lavender focus:ring-offset-2',
 								showHint && 'bg-tiimo-yellow text-white shadow-lg'
 							)}
+							aria-label={showHint ? 'Hide hint' : 'Show hint'}
 						>
 							<HugeiconsIcon icon={Idea01Icon} className="w-6 h-6" />
 						</m.button>
@@ -68,7 +69,7 @@ export function QuizFooter({
 							<Button
 								size="lg"
 								className={cn(
-									'w-full rounded-[2rem] h-16 text-lg font-black shadow-lg bg-tiimo-lavender hover:bg-tiimo-lavender/90 text-white transition-colors duration-300',
+									'w-full rounded-[2rem] h-16 text-lg font-black shadow-lg bg-tiimo-lavender hover:bg-tiimo-lavender/90 text-white transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-tiimo-lavender focus:ring-offset-2 focus:ring-offset-background',
 									(!canSubmit || isGrading) && 'opacity-50 cursor-not-allowed'
 								)}
 								disabled={!canSubmit || disabled || isGrading}

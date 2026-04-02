@@ -46,7 +46,7 @@ export function GrowthInsights({
 							icon={Idea01Icon}
 							className={cn(
 								'w-4 h-4 mt-0.5 flex-shrink-0',
-								i === 0 ? 'text-red-500' : i === 1 ? 'text-green-500' : 'text-amber-500'
+								i === 0 ? 'text-tiimo-orange' : i === 1 ? 'text-tiimo-green' : 'text-tiimo-yellow'
 							)}
 						/>
 						<p className="text-sm text-foreground/90 leading-relaxed">{insight}</p>
@@ -58,7 +58,7 @@ export function GrowthInsights({
 						<Button
 							variant="ghost"
 							size="sm"
-							className="text-xs text-violet-600 hover:text-violet-700 hover:bg-violet-50 dark:hover:bg-violet-950 p-0 h-auto"
+							className="text-xs text-tiimo-lavender hover:text-tiimo-lavender hover:bg-tiimo-lavender/10 p-0 h-auto transition-all duration-200"
 							onClick={() =>
 								router.push(
 									`/ai-tutor?topic=${encodeURIComponent(weakTopics[0].topic)}&subject=${encodeURIComponent(weakTopics[0].subject ?? '')}&context=help`
