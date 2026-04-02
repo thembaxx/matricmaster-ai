@@ -1,7 +1,7 @@
 import { getSessionCookie } from 'better-auth/cookies';
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
-import { csrfProtection } from './middleware/csrf';
+import { csrfProtection } from './src/middleware/csrf';
 
 // Route categorization for better organization and security
 export const ROUTE_CATEGORIES = {
