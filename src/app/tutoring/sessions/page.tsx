@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { ViewTransition } from 'react';
 import MySessions from '@/screens/MySessions';
 
 export const metadata: Metadata = {
@@ -7,5 +8,9 @@ export const metadata: Metadata = {
 };
 
 export default function MySessionsPage() {
-	return <MySessions />;
+	return (
+		<ViewTransition enter="vt-nav-forward" exit="vt-nav-back" default="none">
+			<MySessions />
+		</ViewTransition>
+	);
 }

@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
-import { Suspense } from 'react';
-
+import { Suspense, ViewTransition } from 'react';
 import { appConfig } from '@/app.config';
 import { PastPaperViewerClient } from '@/components/PastPaperViewerClient';
 import { PdfViewerSkeleton } from '@/components/QuizSkeleton';
@@ -37,8 +36,10 @@ export default async function PastPaperViewerPage({ searchParams }: PageProps) {
 	const { id, mode } = await searchParams;
 
 	return (
-		<Suspense fallback={<PdfViewerSkeleton />}>
-			<PastPaperViewerClient initialId={id} initialMode={mode} />
-		</Suspense>
+		<ViewTransition default="none">
+			<Suspense fallback={<PdfViewerSkeleton />}>
+				<PastPaperViewerClient initialId={id} initialMode={mode} />
+			</Suspense>
+		</ViewTransition>
 	);
 }
