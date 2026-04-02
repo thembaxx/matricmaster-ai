@@ -20,6 +20,7 @@ const Tooltip = dynamic(() => import('recharts').then((mod) => mod.Tooltip), { s
 const XAxis = dynamic(() => import('recharts').then((mod) => mod.XAxis), { ssr: false });
 const YAxis = dynamic(() => import('recharts').then((mod) => mod.YAxis), { ssr: false });
 
+import { Alert } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
