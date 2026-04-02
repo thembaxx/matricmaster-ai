@@ -53,7 +53,7 @@
    
    Create a `.env.local` file in the root directory:
    ```env
-   NEXT_PUBLIC_GEMINI_API_KEY=your_api_key_here
+   GEMINI_API_KEY=your_api_key_here
    ```
    
    You can copy `.env.local.example` as a template:
@@ -113,7 +113,7 @@ bun run start
 
 Make sure to set the following environment variables in your production environment:
 
-- `NEXT_PUBLIC_GEMINI_API_KEY` - Your Google Gemini API key
+- `GEMINI_API_KEY` - Your Google Gemini API key
 
 ### Deployment Platforms
 
