@@ -218,83 +218,86 @@ async function saveQuizResult(userId: string, item: SyncItem): Promise<void> {
 		percentage,
 	});
 
-	await pgDb.insert(quizResults).values({
-		userId,
-		quizId: quizId || '',
-		score: score ?? 0,
-		totalQuestions: totalQuestions ?? 0,
-		percentage: percentage?.toString() ?? '0',
-		timeTaken: timeTaken ?? 0,
-		questionResults: answers ? JSON.stringify(answers) : null,
-		completedAt: new Date(),
-	});
-
-	const correctCount = answers?.filter((a) => a.isCorrect).length ?? 0;
-	const attemptedCount = answers?.length ?? 0;
-
-	const existingProgress = await pgDb.query.userProgress.findFirst({
-		where: (fields, { eq }) => eq(fields.userId, userId),
-	});
-
-	if (existingProgress) {
-		await pgDb
-			.update(userProgress)
-			.set({
-				totalQuestionsAttempted: (existingProgress.totalQuestionsAttempted ?? 0) + attemptedCount,
-				totalCorrect: (existingProgress.totalCorrect ?? 0) + correctCount,
-				lastActivityAt: new Date(),
-				updatedAt: new Date(),
-			})
-			.where(eq(userProgress.id, existingProgress.id));
-	} else {
-		await pgDb.insert(userProgress).values({
+	await pgDb.transaction(async (tx) => {
+		await tx.insert(quizResults).values({
 			userId,
-			totalQuestionsAttempted: attemptedCount,
-			totalCorrect: correctCount,
-			lastActivityAt: new Date(),
+			quizId: quizId || '',
+			score: score ?? 0,
+			totalQuestions: totalQuestions ?? 0,
+			percentage: percentage?.toString() ?? '0',
+			timeTaken: timeTaken ?? 0,
+			questionResults: answers ? JSON.stringify(answers) : null,
+			completedAt: new Date(),
 		});
-	}
 
-	if (answers && subject) {
-		for (const answer of answers) {
-			const existingMastery = await pgDb.query.topicMastery.findFirst({
-				where: (fields, { and, eq }) =>
-					and(eq(fields.userId, userId), eq(fields.topic, answer.questionId)),
+		const correctCount = answers?.filter((a) => a.isCorrect).length ?? 0;
+		const attemptedCount = answers?.length ?? 0;
+
+		const existingProgress = await tx.query.userProgress.findFirst({
+			where: (fields, { eq }) => eq(fields.userId, userId),
+		});
+
+		if (existingProgress) {
+			await tx
+				.update(userProgress)
+				.set({
+					totalQuestionsAttempted: (existingProgress.totalQuestionsAttempted ?? 0) + attemptedCount,
+					totalCorrect: (existingProgress.totalCorrect ?? 0) + correctCount,
+					lastActivityAt: new Date(),
+					updatedAt: new Date(),
+				})
+				.where(eq(userProgress.id, existingProgress.id));
+		} else {
+			await tx.insert(userProgress).values({
+				userId,
+				totalQuestionsAttempted: attemptedCount,
+				totalCorrect: correctCount,
+				lastActivityAt: new Date(),
 			});
+		}
 
-			if (existingMastery) {
-				const masteryDelta = answer.isCorrect ? 0.05 : -0.05;
-				const newMastery = Math.max(
-					0,
-					Math.min(1, Number(existingMastery.masteryLevel) + masteryDelta)
-				);
-				await pgDb
-					.update(topicMastery)
-					.set({
-						masteryLevel: newMastery.toString(),
-						questionsAttempted: (existingMastery.questionsAttempted ?? 0) + 1,
-						questionsCorrect: (existingMastery.questionsCorrect ?? 0) + (answer.isCorrect ? 1 : 0),
-						consecutiveCorrect: answer.isCorrect
-							? (existingMastery.consecutiveCorrect ?? 0) + 1
-							: 0,
-						lastPracticed: new Date(),
-						updatedAt: new Date(),
-					})
-					.where(eq(topicMastery.id, existingMastery.id));
-			} else {
-				await pgDb.insert(topicMastery).values({
-					userId,
-					subjectId: 1,
-					topic: answer.questionId,
-					masteryLevel: answer.isCorrect ? '0.05' : '0',
-					questionsAttempted: 1,
-					questionsCorrect: answer.isCorrect ? 1 : 0,
-					consecutiveCorrect: answer.isCorrect ? 1 : 0,
-					lastPracticed: new Date(),
+		if (answers && subject) {
+			for (const answer of answers) {
+				const existingMastery = await tx.query.topicMastery.findFirst({
+					where: (fields, { and, eq }) =>
+						and(eq(fields.userId, userId), eq(fields.topic, answer.questionId)),
 				});
+
+				if (existingMastery) {
+					const masteryDelta = answer.isCorrect ? 0.05 : -0.05;
+					const newMastery = Math.max(
+						0,
+						Math.min(1, Number(existingMastery.masteryLevel) + masteryDelta)
+					);
+					await tx
+						.update(topicMastery)
+						.set({
+							masteryLevel: newMastery.toString(),
+							questionsAttempted: (existingMastery.questionsAttempted ?? 0) + 1,
+							questionsCorrect:
+								(existingMastery.questionsCorrect ?? 0) + (answer.isCorrect ? 1 : 0),
+							consecutiveCorrect: answer.isCorrect
+								? (existingMastery.consecutiveCorrect ?? 0) + 1
+								: 0,
+							lastPracticed: new Date(),
+							updatedAt: new Date(),
+						})
+						.where(eq(topicMastery.id, existingMastery.id));
+				} else {
+					await tx.insert(topicMastery).values({
+						userId,
+						subjectId: 1,
+						topic: answer.questionId,
+						masteryLevel: answer.isCorrect ? '0.05' : '0',
+						questionsAttempted: 1,
+						questionsCorrect: answer.isCorrect ? 1 : 0,
+						consecutiveCorrect: answer.isCorrect ? 1 : 0,
+						lastPracticed: new Date(),
+					});
+				}
 			}
 		}
-	}
+	});
 
 	log.info('Quiz result and related data persisted successfully', {
 		userId,

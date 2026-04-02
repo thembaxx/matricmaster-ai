@@ -272,7 +272,8 @@ const GEMINI_MODEL = 'gemini-2.0-flash';
 export async function getAIResponse(
 	messages: { role: string; content: string }[],
 	userContext: UserContext,
-	subject: string
+	subject: string,
+	signal?: AbortSignal
 ): Promise<string> {
 	const systemPrompt = buildSystemPrompt(userContext, subject);
 
@@ -294,6 +295,7 @@ export async function getAIResponse(
 					maxOutputTokens: 2048,
 				},
 			}),
+			signal,
 		}
 	);
 

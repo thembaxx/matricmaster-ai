@@ -1,6 +1,6 @@
 'use server';
 
-import { and, desc, eq } from 'drizzle-orm';
+import { and, desc, eq, sql } from 'drizzle-orm';
 import { type DbType, dbManager } from '@/lib/db';
 import { ensureAuthenticated } from '@/lib/db/auth-utils';
 import { questionAttempts, quizResults } from '@/lib/db/schema';
@@ -63,13 +63,17 @@ export async function saveQuizResultWithSpacedRepetition(
 			})
 			.returning();
 
+		const questionIds = questionResults.map((r) => r.questionId);
+		const existingAttempts = await db.query.questionAttempts.findMany({
+			where: and(
+				eq(questionAttempts.userId, user.id),
+				sql`${questionAttempts.questionId} IN (${questionIds})`
+			),
+		});
+		const attemptsMap = new Map(existingAttempts.map((a) => [a.questionId, a]));
+
 		for (const result of questionResults) {
-			const existingAttempt = await db.query.questionAttempts.findFirst({
-				where: and(
-					eq(questionAttempts.userId, user.id),
-					eq(questionAttempts.questionId, result.questionId)
-				),
-			});
+			const existingAttempt = attemptsMap.get(result.questionId);
 
 			const now = new Date();
 			let consecutiveCorrect = 0;

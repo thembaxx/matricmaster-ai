@@ -264,6 +264,7 @@ export const userProgress = pgTable(
 			table.subjectId,
 			table.topic
 		),
+		userIdUnique: uniqueIndex('user_progress_user_id_unique').on(table.userId),
 	})
 );
 
