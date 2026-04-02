@@ -10,6 +10,7 @@ import {
 import { HugeiconsIcon } from '@hugeicons/react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
@@ -49,7 +50,7 @@ function getAlertStyles(type: 'warning' | 'info' | 'success') {
 export function AlertsPanel() {
 	const queryClient = useQueryClient();
 
-	const { data, isLoading } = useQuery({
+	const { data, isLoading, error, refetch } = useQuery({
 		queryKey: ['parent-alerts'],
 		queryFn: async () => {
 			const res = await fetch('/api/parent-dashboard');
@@ -100,6 +101,15 @@ export function AlertsPanel() {
 					Array.from({ length: 2 }).map((_, i) => (
 						<div key={`skeleton-${i}`} className="h-16 bg-muted animate-pulse rounded-2xl" />
 					))
+				) : error ? (
+					<Alert variant="destructive" className="bg-destructive/10 border-destructive/20">
+						<AlertDescription className="flex items-center justify-between">
+							<span>Failed to load alerts</span>
+							<Button variant="outline" size="sm" onClick={() => refetch()}>
+								Try Again
+							</Button>
+						</AlertDescription>
+					</Alert>
 				) : alerts.length === 0 ? (
 					<div className="text-center py-8 text-muted-foreground">
 						<HugeiconsIcon

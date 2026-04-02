@@ -132,12 +132,15 @@ export default function Dashboard({
 	}, [progress, refetch]);
 
 	const toggleTask = (taskId: string, priority: string) => {
-		setTasks((prev) => ({
-			...prev,
-			[priority]: prev[priority].map((task) =>
-				task.id === taskId ? { ...task, completed: !task.completed } : task
-			),
-		}));
+		setTasks((prev) => {
+			const priorityTasks = prev[priority] ?? [];
+			return {
+				...prev,
+				[priority]: priorityTasks.map((task) =>
+					task.id === taskId ? { ...task, completed: !task.completed } : task
+				),
+			};
+		});
 	};
 
 	const completedCount = Object.values(tasks)
@@ -149,7 +152,7 @@ export default function Dashboard({
 		progress?.recentSessions?.[0]?.subjectId?.toString() ||
 		progress?.subjectProgress?.[0]?.subjectName?.toLowerCase();
 
-	const weakTopicNames = weaknessData.map((w) => w.topic);
+	const weakTopicNames = (weaknessData ?? []).map((w) => w.topic);
 
 	return (
 		<div className="min-h-screen bg-background flex">

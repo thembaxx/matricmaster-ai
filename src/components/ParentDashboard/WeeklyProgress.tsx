@@ -20,6 +20,7 @@ const Tooltip = dynamic(() => import('recharts').then((mod) => mod.Tooltip), { s
 const XAxis = dynamic(() => import('recharts').then((mod) => mod.XAxis), { ssr: false });
 const YAxis = dynamic(() => import('recharts').then((mod) => mod.YAxis), { ssr: false });
 
+import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 
@@ -50,7 +51,7 @@ function formatTime(minutes: number) {
 }
 
 export function WeeklyProgress() {
-	const { data, isLoading } = useQuery({
+	const { data, isLoading, error, refetch } = useQuery({
 		queryKey: ['parent-weekly-progress'],
 		queryFn: async () => {
 			const res = await fetch('/api/parent-dashboard');
@@ -90,6 +91,15 @@ export function WeeklyProgress() {
 						<div className="h-32 bg-muted animate-pulse rounded-2xl" />
 						<div className="h-20 bg-muted animate-pulse rounded-2xl" />
 					</div>
+				) : error ? (
+					<Alert variant="destructive" className="bg-destructive/10 border-destructive/20">
+						<AlertDescription className="flex items-center justify-between">
+							<span>Failed to load progress data</span>
+							<Button variant="outline" size="sm" onClick={() => refetch()}>
+								Try Again
+							</Button>
+						</AlertDescription>
+					</Alert>
 				) : (
 					<>
 						<div>

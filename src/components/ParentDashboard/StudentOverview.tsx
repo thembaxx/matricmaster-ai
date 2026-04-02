@@ -12,6 +12,7 @@ import { HugeiconsIcon } from '@hugeicons/react';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { toast } from 'sonner';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -35,7 +36,7 @@ export function StudentOverview({
 }: StudentOverviewProps) {
 	const [showEncourage, setShowEncourage] = useState(false);
 
-	const { data, isLoading } = useQuery({
+	const { data, isLoading, error, refetch } = useQuery({
 		queryKey: ['parent-overview', studentName],
 		queryFn: async () => {
 			const res = await fetch('/api/parent-dashboard');
@@ -121,6 +122,15 @@ export function StudentOverview({
 								</div>
 							))}
 						</div>
+					) : error ? (
+						<Alert variant="destructive" className="bg-destructive/10 border-destructive/20">
+							<AlertDescription className="flex items-center justify-between">
+								<span>Failed to load overview data</span>
+								<Button variant="outline" size="sm" onClick={() => refetch()}>
+									Try Again
+								</Button>
+							</AlertDescription>
+						</Alert>
 					) : (
 						<div className="grid grid-cols-2 md:grid-cols-4 gap-6">
 							<StatItem

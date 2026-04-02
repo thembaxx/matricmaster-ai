@@ -211,11 +211,10 @@ export default function Search() {
 									</section>
 								)}
 
-								{filteredResults.lessons.length === 0 && filteredResults.papers.length === 0 && (
-									<div className="py-20 text-center">
-										<p className="text-muted-foreground font-bold text-xs tracking-[0.2em]">
-											no matches found for "{query}"
-										</p>
+								{filteredResults.papers.length === 0 && filteredResults.lessons.length === 0 && (
+									<div className="text-center py-12">
+										<p className="text-muted-foreground">No results found for "{query}"</p>
+										<p className="text-sm text-muted-foreground mt-1">Try different keywords</p>
 									</div>
 								)}
 							</div>

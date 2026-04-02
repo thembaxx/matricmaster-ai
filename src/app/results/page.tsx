@@ -8,7 +8,7 @@ import {
 	Share05Icon,
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -18,7 +18,11 @@ import { UnderstandingResultsCard } from './understanding-results-card';
 
 export default function ResultsPage() {
 	const [examNumber, setExamNumber] = useState('');
-	const [selectedYear, setSelectedYear] = useState(new Date().getFullYear() - 1);
+	const [selectedYear, setSelectedYear] = useState<number | null>(null);
+
+	useEffect(() => {
+		setSelectedYear(new Date().getFullYear() - 1);
+	}, []);
 
 	const currentYear = new Date().getFullYear();
 	const years = Array.from({ length: 5 }, (_, i) => currentYear - i);

@@ -2,6 +2,7 @@
 
 import { and, eq } from 'drizzle-orm';
 import { getAuth } from '@/lib/auth';
+import { NSC_GRADE_POINTS } from '@/lib/constants/aps-grade-points';
 import { dbManager } from '@/lib/db';
 import { universityTargets, userApsScores } from '@/lib/db/schema';
 
@@ -24,16 +25,7 @@ export interface GradePoints {
 	description: string;
 }
 
-// NSC APS Grade Scale (7-point scale)
-export const NSC_GRADE_POINTS: Record<string, number> = {
-	'7': 7,
-	'6': 6,
-	'5': 5,
-	'4': 4,
-	'3': 3,
-	'2': 2,
-	'1': 1,
-};
+// NSC_GRADE_POINTS is now imported from @/lib/constants/aps-grade-points
 
 // Additional language bonuses
 export const LANGUAGE_BONUS_POINTS: Record<string, number> = {
