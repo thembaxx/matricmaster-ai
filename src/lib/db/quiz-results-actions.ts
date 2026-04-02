@@ -44,6 +44,8 @@ export async function saveQuizResultWithMistakes(
 		.values({
 			userId: result.userId,
 			quizId: result.quizId,
+			subjectId: result.subjectId,
+			topic: result.topic,
 			score: result.score,
 			totalQuestions: result.totalQuestions,
 			percentage: result.percentage.toString(),
@@ -99,6 +101,8 @@ export async function saveQuizResult(result: QuizResultInput) {
 		.values({
 			userId: result.userId,
 			quizId: result.quizId,
+			subjectId: result.subjectId,
+			topic: result.topic,
 			score: result.score,
 			totalQuestions: result.totalQuestions,
 			percentage: result.percentage.toString(),

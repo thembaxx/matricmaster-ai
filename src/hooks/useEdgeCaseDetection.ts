@@ -178,6 +178,17 @@ export function useEdgeCaseDetection(options: UseEdgeCaseDetectionOptions) {
 		}));
 	}, []);
 
+	const showEdgeCaseRef = useRef<((type: EdgeCaseType) => void) | null>(null);
+	const dismissEdgeCaseRef = useRef<((type: EdgeCaseType) => void) | null>(null);
+
+	useEffect(() => {
+		showEdgeCaseRef.current = showEdgeCase;
+	}, [showEdgeCase]);
+
+	useEffect(() => {
+		dismissEdgeCaseRef.current = dismissEdgeCase;
+	}, [dismissEdgeCase]);
+
 	const handleAction = useCallback(
 		(action: string, type: EdgeCaseType) => {
 			console.log(`Action: ${action} for edge case: ${type}`);
@@ -259,7 +270,7 @@ export function useEdgeCaseDetection(options: UseEdgeCaseDetectionOptions) {
 			}
 
 			const recentQuestions = Math.min(metrics.totalQuestions, 10);
-			const recentHints = metrics.questionTimes.slice(-recentQuestions).length;
+			const recentHints = metrics.hintsUsed;
 			if (recentHints / recentQuestions > 0.5 && metrics.totalQuestions >= 10) {
 				showEdgeCase('HINT_OVERUSE');
 			}
@@ -377,12 +388,14 @@ export function useEdgeCaseDetection(options: UseEdgeCaseDetectionOptions) {
 	}, [enableAutoMonitoring, userId, startMonitoring, stopMonitoring]);
 
 	useEffect(() => {
+		if (typeof window === 'undefined') return;
+
 		const handleOnline = () => {
-			dismissEdgeCase('OFFLINE_CONFLICT');
+			dismissEdgeCaseRef.current?.('OFFLINE_CONFLICT');
 		};
 
 		const handleOffline = () => {
-			showEdgeCase('OFFLINE_CONFLICT');
+			showEdgeCaseRef.current?.('OFFLINE_CONFLICT');
 		};
 
 		window.addEventListener('online', handleOnline);
@@ -392,7 +405,7 @@ export function useEdgeCaseDetection(options: UseEdgeCaseDetectionOptions) {
 			window.removeEventListener('online', handleOnline);
 			window.removeEventListener('offline', handleOffline);
 		};
-	}, [dismissEdgeCase, showEdgeCase]);
+	}, []);
 
 	return {
 		...state,

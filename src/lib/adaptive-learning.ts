@@ -283,9 +283,9 @@ export function shouldAdjustDifficulty(
 }
 
 export function getMasteryLabel(masteryLevel: number): string {
-	if (masteryLevel < MASTERY_LEVELS.beginner.max) return 'Beginner';
-	if (masteryLevel < MASTERY_LEVELS.learning.max) return 'Learning';
-	if (masteryLevel < MASTERY_LEVELS.practiced.max) return 'Practiced';
+	if (masteryLevel < MASTERY_LEVELS.learning.min) return 'Beginner';
+	if (masteryLevel < MASTERY_LEVELS.practiced.min) return 'Learning';
+	if (masteryLevel < MASTERY_LEVELS.mastered.min) return 'Practiced';
 	return 'Mastered';
 }
 
@@ -293,9 +293,10 @@ export function estimateTimeToMastery(
 	currentMastery: number,
 	averageDailyQuestions: number
 ): number {
-	if (currentMastery >= 80) return 0;
+	const MASTERY_THRESHOLD = 80;
+	if (currentMastery >= MASTERY_THRESHOLD) return 0;
 
-	const remainingProgress = 80 - currentMastery;
+	const remainingProgress = MASTERY_THRESHOLD - currentMastery;
 	const questionsPerPercent = 5;
 	const totalQuestionsNeeded = remainingProgress * questionsPerPercent;
 

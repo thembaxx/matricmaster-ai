@@ -90,6 +90,15 @@ const CHEMICAL_ELEMENTS: Record<string, string> = {
 	Au: 'Au',
 };
 
+function escapeHtml(str: string): string {
+	return str
+		.replace(/&/g, '&amp;')
+		.replace(/</g, '&lt;')
+		.replace(/>/g, '&gt;')
+		.replace(/"/g, '&quot;')
+		.replace(/'/g, '&#039;');
+}
+
 export function renderChemistry(latex: string): ChemRenderResult {
 	try {
 		let html = latex;
@@ -149,7 +158,8 @@ export function renderChemistry(latex: string): ChemRenderResult {
 		const elementPattern = /\\([A-Z][a-z]?)(\d*)/g;
 		html = html.replace(elementPattern, (_, element, subscript) => {
 			const base = CHEMICAL_ELEMENTS[element] || element;
-			return subscript ? `${base}<sub>${subscript}</sub>` : base;
+			const safeSubscript = subscript ? escapeHtml(subscript) : '';
+			return safeSubscript ? `${base}<sub>${safeSubscript}</sub>` : base;
 		});
 
 		if (html !== latex) {

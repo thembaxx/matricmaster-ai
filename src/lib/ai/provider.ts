@@ -43,10 +43,6 @@ function getApiKey(): string | undefined {
 		console.warn('GEMINI_API_KEY environment variable is not set');
 		return undefined;
 	}
-	if (envKey.length < 20) {
-		console.warn('GEMINI_API_KEY appears to be invalid (too short)');
-		return undefined;
-	}
 	return envKey;
 }
 
