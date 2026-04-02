@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/nextjs';
 import { format, startOfWeek } from 'date-fns';
 import { create } from 'zustand';
 import type { SmartSchedulerState, StudyBlock } from '@/types/smart-scheduler';
@@ -46,6 +47,7 @@ export const useSmartSchedulerStore = create<SmartSchedulerState>((set, get) => 
 				body: JSON.stringify({ id, isCompleted: newCompleted }),
 			});
 		} catch (error) {
+			Sentry.captureException(error);
 			console.error('Failed to toggle block completion:', error);
 			set((state) => ({
 				blocks: state.blocks.map((b) => (b.id === id ? { ...b, isCompleted: !newCompleted } : b)),
@@ -96,6 +98,7 @@ export const useSmartSchedulerStore = create<SmartSchedulerState>((set, get) => 
 			const data = await response.json();
 			set({ blocks: data.blocks || [], exams: data.exams || [] });
 		} catch (error) {
+			Sentry.captureException(error);
 			console.error('Failed to load schedule:', error);
 		} finally {
 			set({ isLoading: false });
@@ -115,6 +118,7 @@ export const useSmartSchedulerStore = create<SmartSchedulerState>((set, get) => 
 				exams: data.exams || [],
 			});
 		} catch (error) {
+			Sentry.captureException(error);
 			console.error('Failed to generate schedule:', error);
 		} finally {
 			set({ isGenerating: false });
@@ -140,6 +144,7 @@ export const useSmartSchedulerStore = create<SmartSchedulerState>((set, get) => 
 				suggestions: data.newSuggestions || [],
 			}));
 		} catch (error) {
+			Sentry.captureException(error);
 			console.error('Failed to optimize schedule:', error);
 		} finally {
 			set({ isGenerating: false });
@@ -183,6 +188,7 @@ export const useSmartSchedulerStore = create<SmartSchedulerState>((set, get) => 
 			}
 			return data;
 		} catch (error) {
+			Sentry.captureException(error);
 			console.error('Failed to check adaptive schedule:', error);
 			return null;
 		} finally {
@@ -228,6 +234,7 @@ export const useSmartSchedulerStore = create<SmartSchedulerState>((set, get) => 
 				}
 			}
 		} catch (error) {
+			Sentry.captureException(error);
 			console.error('Failed to save block:', error);
 			throw error;
 		}
@@ -249,6 +256,7 @@ export const useSmartSchedulerStore = create<SmartSchedulerState>((set, get) => 
 				throw new Error('Failed to delete block');
 			}
 		} catch (error) {
+			Sentry.captureException(error);
 			console.error('Failed to delete block:', error);
 			if (removed) {
 				set((state) => ({
@@ -321,6 +329,7 @@ export const useSmartSchedulerStore = create<SmartSchedulerState>((set, get) => 
 				)
 			);
 		} catch (error) {
+			Sentry.captureException(error);
 			console.error('Failed to save imported blocks:', error);
 		}
 	},
@@ -339,6 +348,7 @@ export const useSmartSchedulerStore = create<SmartSchedulerState>((set, get) => 
 				set({ blocks: data.rescheduled });
 			}
 		} catch (error) {
+			Sentry.captureException(error);
 			console.error('Failed to reschedule for energy:', error);
 		} finally {
 			set({ isLoading: false });
@@ -359,6 +369,7 @@ export const useSmartSchedulerStore = create<SmartSchedulerState>((set, get) => 
 				set({ blocks: data.rescheduled });
 			}
 		} catch (error) {
+			Sentry.captureException(error);
 			console.error('Failed to reschedule for load shedding:', error);
 		} finally {
 			set({ isLoading: false });
@@ -376,6 +387,7 @@ export const useSmartSchedulerStore = create<SmartSchedulerState>((set, get) => 
 				set({ blocks: data.adjustedBlocks });
 			}
 		} catch (error) {
+			Sentry.captureException(error);
 			console.error('Failed to apply burnout protection:', error);
 		} finally {
 			set({ isLoading: false });

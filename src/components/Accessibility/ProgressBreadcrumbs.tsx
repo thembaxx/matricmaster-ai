@@ -1,6 +1,7 @@
 'use client';
 
 import { ChevronRightIcon } from 'lucide-react';
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useAccessibilityStore } from '@/services/accessibility-service';
 
@@ -38,9 +39,9 @@ export function ProgressBreadcrumbs({ items, className = '' }: ProgressBreadcrum
 								{item.label}
 							</span>
 						) : item.href ? (
-							<a href={item.href} className="crumb hover:underline">
+							<Link href={item.href} className="crumb hover:underline">
 								{item.label}
-							</a>
+							</Link>
 						) : (
 							<span className="crumb">{item.label}</span>
 						)}

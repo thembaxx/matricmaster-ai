@@ -1,5 +1,7 @@
 'use client';
 
+import * as Sentry from '@sentry/nextjs';
+
 export interface QuizAutoSaveData {
 	quizId: string;
 	currentQuestionIndex: number;
@@ -36,16 +38,19 @@ function safeLocalStorageSet(key: string, value: string): boolean {
 				localStorage.setItem(key, value);
 				return true;
 			} catch (cleanupError) {
+				Sentry.captureException(cleanupError);
 				console.debug('Failed to cleanup old quiz data:', cleanupError);
 				try {
 					sessionStorage.setItem(key, value);
 					return true;
 				} catch (sessionError) {
+					Sentry.captureException(sessionError);
 					console.warn('Storage unavailable, quiz state not saved:', sessionError);
 					return false;
 				}
 			}
 		}
+		Sentry.captureException(error);
 		console.error('Failed to save quiz state:', error);
 		return false;
 	}
@@ -68,6 +73,7 @@ export function saveQuizState(data: QuizAutoSaveData): boolean {
 		const serialized = JSON.stringify(data);
 		return safeLocalStorageSet(STORAGE_KEY, serialized);
 	} catch (error) {
+		Sentry.captureException(error);
 		console.error('Failed to save quiz state:', error);
 		return false;
 	}
@@ -79,6 +85,7 @@ export function loadQuizState(): QuizAutoSaveData | null {
 		if (!stored) return null;
 		return JSON.parse(stored) as QuizAutoSaveData;
 	} catch (error) {
+		Sentry.captureException(error);
 		console.error('Failed to load quiz state:', error);
 		return null;
 	}
@@ -89,6 +96,7 @@ export function clearSavedQuiz(): void {
 		localStorage.removeItem(STORAGE_KEY);
 		sessionStorage.removeItem(STORAGE_KEY);
 	} catch (error) {
+		Sentry.captureException(error);
 		console.error('Failed to clear saved quiz:', error);
 	}
 }
@@ -119,6 +127,7 @@ export function startAutoSave(
 				}
 			}
 		} catch (error) {
+			Sentry.captureException(error);
 			console.error('Auto-save failed:', error);
 			onError?.();
 		}
