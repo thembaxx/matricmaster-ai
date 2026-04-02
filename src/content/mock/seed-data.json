@@ -143,6 +143,146 @@
 			"isActive": true,
 			"createdAt": "2024-01-01T00:00:00Z",
 			"updatedAt": "2024-01-01T00:00:00Z"
+		},
+		{
+			"id": "q6",
+			"subjectId": 1,
+			"questionText": "Solve for x: 2^(x+1) = 16",
+			"imageUrl": null,
+			"gradeLevel": 11,
+			"topic": "Exponents and Logarithms",
+			"difficulty": "medium",
+			"marks": 3,
+			"hint": "Express 16 as a power of 2",
+			"isActive": true,
+			"createdAt": "2024-01-01T00:00:00Z",
+			"updatedAt": "2024-01-01T00:00:00Z"
+		},
+		{
+			"id": "q7",
+			"subjectId": 1,
+			"questionText": "Find the gradient of the line passing through points (2, 5) and (6, 13)",
+			"imageUrl": null,
+			"gradeLevel": 10,
+			"topic": "Analytical Geometry",
+			"difficulty": "easy",
+			"marks": 2,
+			"hint": "Use the formula m = (y2-y1)/(x2-x1)",
+			"isActive": true,
+			"createdAt": "2024-01-01T00:00:00Z",
+			"updatedAt": "2024-01-01T00:00:00Z"
+		},
+		{
+			"id": "q8",
+			"subjectId": 2,
+			"questionText": "What is the chemical formula for water?",
+			"imageUrl": null,
+			"gradeLevel": 10,
+			"topic": "Chemistry - Chemical Bonds",
+			"difficulty": "easy",
+			"marks": 1,
+			"hint": "Two hydrogen atoms + one oxygen",
+			"isActive": true,
+			"createdAt": "2024-01-01T00:00:00Z",
+			"updatedAt": "2024-01-01T00:00:00Z"
+		},
+		{
+			"id": "q9",
+			"subjectId": 3,
+			"questionText": "Name the four chambers of the human heart",
+			"imageUrl": null,
+			"gradeLevel": 11,
+			"topic": "Human Anatomy",
+			"difficulty": "medium",
+			"marks": 2,
+			"hint": "Two atria and two ventricles",
+			"isActive": true,
+			"createdAt": "2024-01-01T00:00:00Z",
+			"updatedAt": "2024-01-01T00:00:00Z"
+		},
+		{
+			"id": "q10",
+			"subjectId": 4,
+			"questionText": "What is the process by which mountains are formed?",
+			"imageUrl": null,
+			"gradeLevel": 11,
+			"topic": "Geomorphology",
+			"difficulty": "medium",
+			"marks": 3,
+			"hint": "Related to tectonic plate movement",
+			"isActive": true,
+			"createdAt": "2024-01-01T00:00:00Z",
+			"updatedAt": "2024-01-01T00:00:00Z"
+		},
+		{
+			"id": "q11",
+			"subjectId": 5,
+			"questionText": "In which year did the French Revolution begin?",
+			"imageUrl": null,
+			"gradeLevel": 11,
+			"topic": "World History",
+			"difficulty": "easy",
+			"marks": 1,
+			"hint": "It started in the late 18th century",
+			"isActive": true,
+			"createdAt": "2024-01-01T00:00:00Z",
+			"updatedAt": "2024-01-01T00:00:00Z"
+		},
+		{
+			"id": "q12",
+			"subjectId": 6,
+			"questionText": "Identify the figure of speech in: 'The wind whispered secrets'",
+			"imageUrl": null,
+			"gradeLevel": 12,
+			"topic": "Literature - Poetry",
+			"difficulty": "medium",
+			"marks": 2,
+			"hint": "The wind is given human qualities",
+			"isActive": true,
+			"createdAt": "2024-01-01T00:00:00Z",
+			"updatedAt": "2024-01-01T00:00:00Z"
+		},
+		{
+			"id": "q13",
+			"subjectId": 7,
+			"questionText": "What is the accounting equation?",
+			"imageUrl": null,
+			"gradeLevel": 10,
+			"topic": "Accounting Fundamentals",
+			"difficulty": "easy",
+			"marks": 2,
+			"hint": "Assets = Liabilities + Equity",
+			"isActive": true,
+			"createdAt": "2024-01-01T00:00:00Z",
+			"updatedAt": "2024-01-01T00:00:00Z"
+		},
+		{
+			"id": "q14",
+			"subjectId": 8,
+			"questionText": "Define price elasticity of demand",
+			"imageUrl": null,
+			"gradeLevel": 11,
+			"topic": "Microeconomics",
+			"difficulty": "medium",
+			"marks": 3,
+			"hint": "Measures responsiveness of quantity demanded to price changes",
+			"isActive": true,
+			"createdAt": "2024-01-01T00:00:00Z",
+			"updatedAt": "2024-01-01T00:00:00Z"
+		},
+		{
+			"id": "q15",
+			"subjectId": 1,
+			"questionText": "Integrate: ∫(3x² + 2x - 1)dx",
+			"imageUrl": null,
+			"gradeLevel": 12,
+			"topic": "Calculus - Integration",
+			"difficulty": "medium",
+			"marks": 4,
+			"hint": "Add 1 to the exponent and divide by the new exponent",
+			"isActive": true,
+			"createdAt": "2024-01-01T00:00:00Z",
+			"updatedAt": "2024-01-01T00:00:00Z"
 		}
 	],
 	"options": [
@@ -297,6 +437,176 @@
 			"percentage": "90.00",
 			"timeTaken": 540,
 			"completedAt": "2024-01-17T09:15:00Z"
+		},
+		{
+			"id": "qr4",
+			"userId": "user-1",
+			"quizId": "quiz-004",
+			"score": 7,
+			"totalQuestions": 10,
+			"percentage": "70.00",
+			"timeTaken": 480,
+			"completedAt": "2024-01-18T15:45:00Z"
+		},
+		{
+			"id": "qr5",
+			"userId": "user-1",
+			"quizId": "quiz-005",
+			"score": 10,
+			"totalQuestions": 10,
+			"percentage": "100.00",
+			"timeTaken": 420,
+			"completedAt": "2024-01-19T11:00:00Z"
+		},
+		{
+			"id": "qr6",
+			"userId": "user-1",
+			"quizId": "quiz-006",
+			"score": 5,
+			"totalQuestions": 10,
+			"percentage": "50.00",
+			"timeTaken": 900,
+			"completedAt": "2024-01-20T08:30:00Z"
+		},
+		{
+			"id": "qr7",
+			"userId": "user-1",
+			"quizId": "quiz-007",
+			"score": 8,
+			"totalQuestions": 10,
+			"percentage": "80.00",
+			"timeTaken": 550,
+			"completedAt": "2024-01-21T16:20:00Z"
+		},
+		{
+			"id": "qr8",
+			"userId": "user-1",
+			"quizId": "quiz-008",
+			"score": 9,
+			"totalQuestions": 10,
+			"percentage": "90.00",
+			"timeTaken": 600,
+			"completedAt": "2024-01-22T10:45:00Z"
+		},
+		{
+			"id": "qr9",
+			"userId": "user-1",
+			"quizId": "quiz-009",
+			"score": 6,
+			"totalQuestions": 10,
+			"percentage": "60.00",
+			"timeTaken": 750,
+			"completedAt": "2024-01-23T13:30:00Z"
+		},
+		{
+			"id": "qr10",
+			"userId": "user-1",
+			"quizId": "quiz-010",
+			"score": 8,
+			"totalQuestions": 10,
+			"percentage": "80.00",
+			"timeTaken": 520,
+			"completedAt": "2024-01-24T09:15:00Z"
+		},
+		{
+			"id": "qr11",
+			"userId": "user-1",
+			"quizId": "quiz-011",
+			"score": 7,
+			"totalQuestions": 10,
+			"percentage": "70.00",
+			"timeTaken": 680,
+			"completedAt": "2024-01-25T14:00:00Z"
+		},
+		{
+			"id": "qr12",
+			"userId": "user-1",
+			"quizId": "quiz-012",
+			"score": 9,
+			"totalQuestions": 10,
+			"percentage": "90.00",
+			"timeTaken": 490,
+			"completedAt": "2024-01-26T11:30:00Z"
+		},
+		{
+			"id": "qr13",
+			"userId": "user-1",
+			"quizId": "quiz-013",
+			"score": 8,
+			"totalQuestions": 10,
+			"percentage": "80.00",
+			"timeTaken": 560,
+			"completedAt": "2024-01-27T15:45:00Z"
+		},
+		{
+			"id": "qr14",
+			"userId": "user-1",
+			"quizId": "quiz-014",
+			"score": 10,
+			"totalQuestions": 10,
+			"percentage": "100.00",
+			"timeTaken": 380,
+			"completedAt": "2024-01-28T10:20:00Z"
+		},
+		{
+			"id": "qr15",
+			"userId": "user-1",
+			"quizId": "quiz-015",
+			"score": 6,
+			"totalQuestions": 10,
+			"percentage": "60.00",
+			"timeTaken": 820,
+			"completedAt": "2024-01-29T16:00:00Z"
+		},
+		{
+			"id": "qr16",
+			"userId": "user-1",
+			"quizId": "quiz-016",
+			"score": 9,
+			"totalQuestions": 10,
+			"percentage": "90.00",
+			"timeTaken": 540,
+			"completedAt": "2024-01-30T08:45:00Z"
+		},
+		{
+			"id": "qr17",
+			"userId": "user-1",
+			"quizId": "quiz-017",
+			"score": 7,
+			"totalQuestions": 10,
+			"percentage": "70.00",
+			"timeTaken": 620,
+			"completedAt": "2024-01-31T13:15:00Z"
+		},
+		{
+			"id": "qr18",
+			"userId": "user-1",
+			"quizId": "quiz-018",
+			"score": 8,
+			"totalQuestions": 10,
+			"percentage": "80.00",
+			"timeTaken": 580,
+			"completedAt": "2024-02-01T09:30:00Z"
+		},
+		{
+			"id": "qr19",
+			"userId": "user-1",
+			"quizId": "quiz-019",
+			"score": 9,
+			"totalQuestions": 10,
+			"percentage": "90.00",
+			"timeTaken": 510,
+			"completedAt": "2024-02-02T14:45:00Z"
+		},
+		{
+			"id": "qr20",
+			"userId": "user-1",
+			"quizId": "quiz-020",
+			"score": 7,
+			"totalQuestions": 10,
+			"percentage": "70.00",
+			"timeTaken": 700,
+			"completedAt": "2024-02-03T11:00:00Z"
 		}
 	],
 	"userProgress": [
@@ -305,54 +615,144 @@
 			"userId": "user-1",
 			"subjectId": 1,
 			"topic": "Algebra",
-			"totalQuestionsAttempted": 50,
-			"totalCorrect": 40,
-			"totalMarksEarned": 85,
-			"streakDays": 5,
-			"bestStreak": 12,
-			"streakFreezes": 2,
-			"lastLoginBonusAt": "2024-01-20T08:00:00Z",
-			"consecutiveLoginDays": 5,
-			"totalLoginBonusesClaimed": 15,
-			"lastActivityAt": "2024-01-20T10:30:00Z",
+			"totalQuestionsAttempted": 150,
+			"totalCorrect": 118,
+			"totalMarksEarned": 285,
+			"streakDays": 21,
+			"bestStreak": 28,
+			"streakFreezes": 3,
+			"lastLoginBonusAt": "2024-02-03T08:00:00Z",
+			"consecutiveLoginDays": 21,
+			"totalLoginBonusesClaimed": 45,
+			"lastActivityAt": "2024-02-03T14:30:00Z",
 			"createdAt": "2024-01-01T00:00:00Z",
-			"updatedAt": "2024-01-20T10:30:00Z"
+			"updatedAt": "2024-02-03T14:30:00Z"
 		},
 		{
 			"id": "up2",
 			"userId": "user-1",
 			"subjectId": 2,
 			"topic": "Physics",
-			"totalQuestionsAttempted": 35,
-			"totalCorrect": 28,
-			"totalMarksEarned": 60,
-			"streakDays": 5,
-			"bestStreak": 12,
-			"streakFreezes": 2,
-			"lastLoginBonusAt": "2024-01-20T08:00:00Z",
-			"consecutiveLoginDays": 5,
-			"totalLoginBonusesClaimed": 15,
-			"lastActivityAt": "2024-01-20T10:30:00Z",
+			"totalQuestionsAttempted": 120,
+			"totalCorrect": 89,
+			"totalMarksEarned": 198,
+			"streakDays": 21,
+			"bestStreak": 28,
+			"streakFreezes": 3,
+			"lastLoginBonusAt": "2024-02-03T08:00:00Z",
+			"consecutiveLoginDays": 21,
+			"totalLoginBonusesClaimed": 45,
+			"lastActivityAt": "2024-02-03T16:00:00Z",
 			"createdAt": "2024-01-01T00:00:00Z",
-			"updatedAt": "2024-01-20T10:30:00Z"
+			"updatedAt": "2024-02-03T16:00:00Z"
 		},
 		{
 			"id": "up3",
 			"userId": "user-1",
 			"subjectId": 3,
 			"topic": "Cell Biology",
-			"totalQuestionsAttempted": 25,
-			"totalCorrect": 22,
-			"totalMarksEarned": 48,
-			"streakDays": 5,
-			"bestStreak": 12,
-			"streakFreezes": 2,
-			"lastLoginBonusAt": "2024-01-20T08:00:00Z",
-			"consecutiveLoginDays": 5,
-			"totalLoginBonusesClaimed": 15,
-			"lastActivityAt": "2024-01-20T10:30:00Z",
+			"totalQuestionsAttempted": 95,
+			"totalCorrect": 78,
+			"totalMarksEarned": 156,
+			"streakDays": 21,
+			"bestStreak": 28,
+			"streakFreezes": 3,
+			"lastLoginBonusAt": "2024-02-03T08:00:00Z",
+			"consecutiveLoginDays": 21,
+			"totalLoginBonusesClaimed": 45,
+			"lastActivityAt": "2024-02-03T12:00:00Z",
 			"createdAt": "2024-01-01T00:00:00Z",
-			"updatedAt": "2024-01-20T10:30:00Z"
+			"updatedAt": "2024-02-03T12:00:00Z"
+		},
+		{
+			"id": "up4",
+			"userId": "user-1",
+			"subjectId": 4,
+			"topic": "Geography",
+			"totalQuestionsAttempted": 75,
+			"totalCorrect": 58,
+			"totalMarksEarned": 116,
+			"streakDays": 21,
+			"bestStreak": 28,
+			"streakFreezes": 3,
+			"lastLoginBonusAt": "2024-02-03T08:00:00Z",
+			"consecutiveLoginDays": 21,
+			"totalLoginBonusesClaimed": 45,
+			"lastActivityAt": "2024-02-02T15:00:00Z",
+			"createdAt": "2024-01-01T00:00:00Z",
+			"updatedAt": "2024-02-02T15:00:00Z"
+		},
+		{
+			"id": "up5",
+			"userId": "user-1",
+			"subjectId": 5,
+			"topic": "History",
+			"totalQuestionsAttempted": 60,
+			"totalCorrect": 45,
+			"totalMarksEarned": 90,
+			"streakDays": 21,
+			"bestStreak": 28,
+			"streakFreezes": 3,
+			"lastLoginBonusAt": "2024-02-03T08:00:00Z",
+			"consecutiveLoginDays": 21,
+			"totalLoginBonusesClaimed": 45,
+			"lastActivityAt": "2024-02-01T10:00:00Z",
+			"createdAt": "2024-01-01T00:00:00Z",
+			"updatedAt": "2024-02-01T10:00:00Z"
+		},
+		{
+			"id": "up6",
+			"userId": "user-1",
+			"subjectId": 6,
+			"topic": "English",
+			"totalQuestionsAttempted": 85,
+			"totalCorrect": 67,
+			"totalMarksEarned": 134,
+			"streakDays": 21,
+			"bestStreak": 28,
+			"streakFreezes": 3,
+			"lastLoginBonusAt": "2024-02-03T08:00:00Z",
+			"consecutiveLoginDays": 21,
+			"totalLoginBonusesClaimed": 45,
+			"lastActivityAt": "2024-02-03T09:00:00Z",
+			"createdAt": "2024-01-01T00:00:00Z",
+			"updatedAt": "2024-02-03T09:00:00Z"
+		},
+		{
+			"id": "up7",
+			"userId": "user-1",
+			"subjectId": 7,
+			"topic": "Accounting",
+			"totalQuestionsAttempted": 55,
+			"totalCorrect": 42,
+			"totalMarksEarned": 84,
+			"streakDays": 21,
+			"bestStreak": 28,
+			"streakFreezes": 3,
+			"lastLoginBonusAt": "2024-02-03T08:00:00Z",
+			"consecutiveLoginDays": 21,
+			"totalLoginBonusesClaimed": 45,
+			"lastActivityAt": "2024-01-31T14:00:00Z",
+			"createdAt": "2024-01-01T00:00:00Z",
+			"updatedAt": "2024-01-31T14:00:00Z"
+		},
+		{
+			"id": "up8",
+			"userId": "user-1",
+			"subjectId": 8,
+			"topic": "Economics",
+			"totalQuestionsAttempted": 48,
+			"totalCorrect": 36,
+			"totalMarksEarned": 72,
+			"streakDays": 21,
+			"bestStreak": 28,
+			"streakFreezes": 3,
+			"lastLoginBonusAt": "2024-02-03T08:00:00Z",
+			"consecutiveLoginDays": 21,
+			"totalLoginBonusesClaimed": 45,
+			"lastActivityAt": "2024-01-30T11:00:00Z",
+			"createdAt": "2024-01-01T00:00:00Z",
+			"updatedAt": "2024-01-30T11:00:00Z"
 		}
 	],
 	"achievements": [
@@ -390,6 +790,55 @@
 			"title": "Subject Master",
 			"description": "Score above 90% in 5 quizzes",
 			"icon": "crown"
+		},
+		{
+			"id": "ach6",
+			"achievementId": "streak-14",
+			"title": "Fortnight Fighter",
+			"description": "Maintain a 14-day study streak",
+			"icon": "fire"
+		},
+		{
+			"id": "ach7",
+			"achievementId": "streak-21",
+			"title": "Three Week Champion",
+			"description": "Maintain a 21-day study streak",
+			"icon": "rocket"
+		},
+		{
+			"id": "ach8",
+			"achievementId": "night-owl",
+			"title": "Night Owl",
+			"description": "Study after 10pm",
+			"icon": "owl"
+		},
+		{
+			"id": "ach9",
+			"achievementId": "early-bird",
+			"title": "Early Bird",
+			"description": "Study before 7am",
+			"icon": "bird"
+		},
+		{
+			"id": "ach10",
+			"achievementId": "quiz-machine",
+			"title": "Quiz Machine",
+			"description": "Complete 50 quizzes",
+			"icon": "robot"
+		},
+		{
+			"id": "ach11",
+			"achievementId": "consistency-king",
+			"title": "Consistency King",
+			"description": "Study every day for 30 days",
+			"icon": "king"
+		},
+		{
+			"id": "ach12",
+			"achievementId": "multi-subject",
+			"title": "Well Rounded",
+			"description": "Study 5 different subjects in one day",
+			"icon": "globe"
 		}
 	],
 	"userAchievements": [
@@ -418,7 +867,70 @@
 			"title": "Perfect Score",
 			"description": "Get 100% on any quiz",
 			"icon": "star",
-			"unlockedAt": "2024-01-18T14:30:00Z"
+			"unlockedAt": "2024-01-19T14:30:00Z"
+		},
+		{
+			"id": "ua4",
+			"userId": "user-1",
+			"achievementId": "speed-demon",
+			"title": "Speed Demon",
+			"description": "Complete a quiz in under 60 seconds",
+			"icon": "lightning",
+			"unlockedAt": "2024-01-20T09:45:00Z"
+		},
+		{
+			"id": "ua5",
+			"userId": "user-1",
+			"achievementId": "subject-master",
+			"title": "Subject Master",
+			"description": "Score above 90% in 5 quizzes",
+			"icon": "crown",
+			"unlockedAt": "2024-01-22T16:00:00Z"
+		},
+		{
+			"id": "ua6",
+			"userId": "user-1",
+			"achievementId": "streak-14",
+			"title": "Fortnight Fighter",
+			"description": "Maintain a 14-day study streak",
+			"icon": "fire",
+			"unlockedAt": "2024-01-25T08:00:00Z"
+		},
+		{
+			"id": "ua7",
+			"userId": "user-1",
+			"achievementId": "streak-21",
+			"title": "Three Week Champion",
+			"description": "Maintain a 21-day study streak",
+			"icon": "rocket",
+			"unlockedAt": "2024-02-01T10:00:00Z"
+		},
+		{
+			"id": "ua8",
+			"userId": "user-1",
+			"achievementId": "night-owl",
+			"title": "Night Owl",
+			"description": "Study after 10pm",
+			"icon": "owl",
+			"unlockedAt": "2024-01-28T22:30:00Z"
+		},
+		{
+			"id": "ua9",
+			"userId": "user-1",
+			"achievementId": "early-bird",
+			"title": "Early Bird",
+			"description": "Study before 7am",
+			"icon": "bird",
+			"unlockedAt": "2024-01-30T06:15:00Z"
+		},
+		{
+			"id": "ua10",
+			"userId": "user-1",
+			"achievementId": "quiz-machine",
+			"title": "Quiz Machine",
+			"description": "Complete 50 quizzes",
+			"icon": "robot",
+			"unlockedAt": "2024-02-02T14:00:00Z"
 		}
 	],
 	"studySessions": [
@@ -460,6 +972,162 @@
 			"marksEarned": 36,
 			"startedAt": "2024-01-20T16:00:00Z",
 			"completedAt": "2024-01-20T16:20:00Z"
+		},
+		{
+			"id": "ss4",
+			"userId": "user-1",
+			"subjectId": 1,
+			"sessionType": "quiz",
+			"topic": "Calculus",
+			"durationMinutes": 20,
+			"questionsAttempted": 10,
+			"correctAnswers": 7,
+			"marksEarned": 14,
+			"startedAt": "2024-01-21T09:00:00Z",
+			"completedAt": "2024-01-21T09:20:00Z"
+		},
+		{
+			"id": "ss5",
+			"userId": "user-1",
+			"subjectId": 2,
+			"sessionType": "quiz",
+			"topic": "Kinematics",
+			"durationMinutes": 18,
+			"questionsAttempted": 10,
+			"correctAnswers": 8,
+			"marksEarned": 16,
+			"startedAt": "2024-01-21T11:30:00Z",
+			"completedAt": "2024-01-21T11:48:00Z"
+		},
+		{
+			"id": "ss6",
+			"userId": "user-1",
+			"subjectId": 4,
+			"sessionType": "practice",
+			"topic": "Climate",
+			"durationMinutes": 25,
+			"questionsAttempted": 12,
+			"correctAnswers": 9,
+			"marksEarned": 18,
+			"startedAt": "2024-01-21T14:00:00Z",
+			"completedAt": "2024-01-21T14:25:00Z"
+		},
+		{
+			"id": "ss7",
+			"userId": "user-1",
+			"subjectId": 6,
+			"sessionType": "quiz",
+			"topic": "Literature",
+			"durationMinutes": 22,
+			"questionsAttempted": 10,
+			"correctAnswers": 6,
+			"marksEarned": 12,
+			"startedAt": "2024-01-22T10:00:00Z",
+			"completedAt": "2024-01-22T10:22:00Z"
+		},
+		{
+			"id": "ss8",
+			"userId": "user-1",
+			"subjectId": 1,
+			"sessionType": "flashcards",
+			"topic": "Trigonometry",
+			"durationMinutes": 15,
+			"questionsAttempted": 15,
+			"correctAnswers": 12,
+			"marksEarned": 24,
+			"startedAt": "2024-01-22T13:00:00Z",
+			"completedAt": "2024-01-22T13:15:00Z"
+		},
+		{
+			"id": "ss9",
+			"userId": "user-1",
+			"subjectId": 3,
+			"sessionType": "quiz",
+			"topic": "Genetics",
+			"durationMinutes": 20,
+			"questionsAttempted": 10,
+			"correctAnswers": 9,
+			"marksEarned": 18,
+			"startedAt": "2024-01-22T15:30:00Z",
+			"completedAt": "2024-01-22T15:50:00Z"
+		},
+		{
+			"id": "ss10",
+			"userId": "user-1",
+			"subjectId": 7,
+			"sessionType": "practice",
+			"topic": "Financial Statements",
+			"durationMinutes": 35,
+			"questionsAttempted": 15,
+			"correctAnswers": 11,
+			"marksEarned": 22,
+			"startedAt": "2024-01-23T09:00:00Z",
+			"completedAt": "2024-01-23T09:35:00Z"
+		},
+		{
+			"id": "ss11",
+			"userId": "user-1",
+			"subjectId": 2,
+			"sessionType": "quiz",
+			"topic": "Chemical Bonds",
+			"durationMinutes": 16,
+			"questionsAttempted": 10,
+			"correctAnswers": 8,
+			"marksEarned": 16,
+			"startedAt": "2024-01-23T11:00:00Z",
+			"completedAt": "2024-01-23T11:16:00Z"
+		},
+		{
+			"id": "ss12",
+			"userId": "user-1",
+			"subjectId": 5,
+			"sessionType": "practice",
+			"topic": "World War II",
+			"durationMinutes": 28,
+			"questionsAttempted": 12,
+			"correctAnswers": 10,
+			"marksEarned": 20,
+			"startedAt": "2024-01-23T14:00:00Z",
+			"completedAt": "2024-01-23T14:28:00Z"
+		},
+		{
+			"id": "ss13",
+			"userId": "user-1",
+			"subjectId": 8,
+			"sessionType": "quiz",
+			"topic": "Supply and Demand",
+			"durationMinutes": 18,
+			"questionsAttempted": 10,
+			"correctAnswers": 7,
+			"marksEarned": 14,
+			"startedAt": "2024-01-24T10:00:00Z",
+			"completedAt": "2024-01-24T10:18:00Z"
+		},
+		{
+			"id": "ss14",
+			"userId": "user-1",
+			"subjectId": 1,
+			"sessionType": "quiz",
+			"topic": "Statistics",
+			"durationMinutes": 25,
+			"questionsAttempted": 10,
+			"correctAnswers": 9,
+			"marksEarned": 18,
+			"startedAt": "2024-01-24T13:00:00Z",
+			"completedAt": "2024-01-24T13:25:00Z"
+		},
+		{
+			"id": "ss15",
+			"userId": "user-1",
+			"subjectId": 4,
+			"sessionType": "quiz",
+			"topic": "Geomorphology",
+			"durationMinutes": 20,
+			"questionsAttempted": 10,
+			"correctAnswers": 8,
+			"marksEarned": 16,
+			"startedAt": "2024-01-24T15:30:00Z",
+			"completedAt": "2024-01-24T15:50:00Z"
 		}
 	],
 	"studyPlans": [
@@ -472,7 +1140,18 @@
 			"weeklyGoals": "Complete 2 topic reviews per week, 3 practice quizzes per week",
 			"isActive": true,
 			"createdAt": "2024-01-01T00:00:00Z",
-			"updatedAt": "2024-01-20T10:00:00Z"
+			"updatedAt": "2024-02-03T10:00:00Z"
+		},
+		{
+			"id": "sp2",
+			"userId": "user-1",
+			"title": "Life Sciences Excellence",
+			"targetExamDate": "2024-11-01T00:00:00Z",
+			"focusAreas": "Cell Biology, Genetics, Human Anatomy",
+			"weeklyGoals": "Master all diagrams, complete past papers",
+			"isActive": true,
+			"createdAt": "2024-01-15T00:00:00Z",
+			"updatedAt": "2024-02-01T14:00:00Z"
 		}
 	],
 	"flashcardDecks": [
@@ -508,6 +1187,39 @@
 			"isPublic": true,
 			"createdAt": "2024-01-15T00:00:00Z",
 			"updatedAt": "2024-01-20T09:00:00Z"
+		},
+		{
+			"id": "fd4",
+			"userId": "user-1",
+			"name": "Biology Key Terms",
+			"description": "Life Sciences important definitions",
+			"subjectId": 3,
+			"cardCount": 35,
+			"isPublic": true,
+			"createdAt": "2024-01-18T00:00:00Z",
+			"updatedAt": "2024-02-01T16:00:00Z"
+		},
+		{
+			"id": "fd5",
+			"userId": "user-1",
+			"name": "Geography Case Studies",
+			"description": "SA and global case study facts",
+			"subjectId": 4,
+			"cardCount": 20,
+			"isPublic": false,
+			"createdAt": "2024-01-22T00:00:00Z",
+			"updatedAt": "2024-01-28T11:00:00Z"
+		},
+		{
+			"id": "fd6",
+			"userId": "user-1",
+			"name": "Accounting Equations",
+			"description": "Key accounting formulas",
+			"subjectId": 7,
+			"cardCount": 15,
+			"isPublic": true,
+			"createdAt": "2024-01-25T00:00:00Z",
+			"updatedAt": "2024-01-30T08:00:00Z"
 		}
 	],
 	"flashcards": [
@@ -518,15 +1230,15 @@
 			"back": "x = (-b ± √(b²-4ac)) / 2a",
 			"imageUrl": null,
 			"difficulty": "medium",
-			"timesReviewed": 5,
-			"timesCorrect": 4,
-			"easeFactor": "2.5",
-			"intervalDays": 4,
-			"repetitions": 3,
-			"nextReview": "2024-01-24T00:00:00Z",
-			"lastReview": "2024-01-20T10:00:00Z",
+			"timesReviewed": 12,
+			"timesCorrect": 10,
+			"easeFactor": "2.6",
+			"intervalDays": 5,
+			"repetitions": 6,
+			"nextReview": "2024-02-05T00:00:00Z",
+			"lastReview": "2024-02-03T10:00:00Z",
 			"createdAt": "2024-01-10T00:00:00Z",
-			"updatedAt": "2024-01-20T10:00:00Z"
+			"updatedAt": "2024-02-03T10:00:00Z"
 		},
 		{
 			"id": "fc2",
@@ -535,15 +1247,15 @@
 			"back": "A = πr²",
 			"imageUrl": null,
 			"difficulty": "easy",
-			"timesReviewed": 8,
-			"timesCorrect": 8,
-			"easeFactor": "2.8",
-			"intervalDays": 7,
-			"repetitions": 5,
-			"nextReview": "2024-01-27T00:00:00Z",
-			"lastReview": "2024-01-20T10:00:00Z",
+			"timesReviewed": 15,
+			"timesCorrect": 15,
+			"easeFactor": "2.9",
+			"intervalDays": 8,
+			"repetitions": 8,
+			"nextReview": "2024-02-07T00:00:00Z",
+			"lastReview": "2024-02-03T10:00:00Z",
 			"createdAt": "2024-01-10T00:00:00Z",
-			"updatedAt": "2024-01-20T10:00:00Z"
+			"updatedAt": "2024-02-03T10:00:00Z"
 		},
 		{
 			"id": "fc3",
@@ -552,15 +1264,100 @@
 			"back": "An object at rest stays at rest and an object in motion stays in motion unless acted upon by an external force",
 			"imageUrl": null,
 			"difficulty": "medium",
-			"timesReviewed": 3,
-			"timesCorrect": 2,
-			"easeFactor": "2.3",
-			"intervalDays": 2,
-			"repetitions": 2,
-			"nextReview": "2024-01-22T00:00:00Z",
-			"lastReview": "2024-01-20T14:00:00Z",
+			"timesReviewed": 8,
+			"timesCorrect": 6,
+			"easeFactor": "2.4",
+			"intervalDays": 3,
+			"repetitions": 4,
+			"nextReview": "2024-02-04T00:00:00Z",
+			"lastReview": "2024-02-03T14:00:00Z",
 			"createdAt": "2024-01-12T00:00:00Z",
-			"updatedAt": "2024-01-20T14:00:00Z"
+			"updatedAt": "2024-02-03T14:00:00Z"
+		},
+		{
+			"id": "fc4",
+			"deckId": "fd2",
+			"front": "Newton's Second Law",
+			"back": "F = ma (Force equals mass times acceleration)",
+			"imageUrl": null,
+			"difficulty": "easy",
+			"timesReviewed": 10,
+			"timesCorrect": 9,
+			"easeFactor": "2.7",
+			"intervalDays": 5,
+			"repetitions": 5,
+			"nextReview": "2024-02-05T00:00:00Z",
+			"lastReview": "2024-02-03T14:00:00Z",
+			"createdAt": "2024-01-12T00:00:00Z",
+			"updatedAt": "2024-02-03T14:00:00Z"
+		},
+		{
+			"id": "fc5",
+			"deckId": "fd3",
+			"front": "Atomic Number",
+			"back": "Number of protons in an atom",
+			"imageUrl": null,
+			"difficulty": "easy",
+			"timesReviewed": 7,
+			"timesCorrect": 7,
+			"easeFactor": "2.8",
+			"intervalDays": 6,
+			"repetitions": 4,
+			"nextReview": "2024-02-06T00:00:00Z",
+			"lastReview": "2024-02-03T09:00:00Z",
+			"createdAt": "2024-01-15T00:00:00Z",
+			"updatedAt": "2024-02-03T09:00:00Z"
+		},
+		{
+			"id": "fc6",
+			"deckId": "fd3",
+			"front": "Period",
+			"back": "Horizontal row in the periodic table",
+			"imageUrl": null,
+			"difficulty": "easy",
+			"timesReviewed": 5,
+			"timesCorrect": 5,
+			"easeFactor": "2.5",
+			"intervalDays": 4,
+			"repetitions": 3,
+			"nextReview": "2024-02-04T00:00:00Z",
+			"lastReview": "2024-02-03T09:00:00Z",
+			"createdAt": "2024-01-15T00:00:00Z",
+			"updatedAt": "2024-02-03T09:00:00Z"
+		},
+		{
+			"id": "fc7",
+			"deckId": "fd4",
+			"front": "Mitochondria",
+			"back": "The powerhouse of the cell - produces ATP through cellular respiration",
+			"imageUrl": null,
+			"difficulty": "easy",
+			"timesReviewed": 9,
+			"timesCorrect": 9,
+			"easeFactor": "2.8",
+			"intervalDays": 6,
+			"repetitions": 5,
+			"nextReview": "2024-02-06T00:00:00Z",
+			"lastReview": "2024-02-03T16:00:00Z",
+			"createdAt": "2024-01-18T00:00:00Z",
+			"updatedAt": "2024-02-03T16:00:00Z"
+		},
+		{
+			"id": "fc8",
+			"deckId": "fd4",
+			"front": "DNA",
+			"back": "Deoxyribonucleic acid - carries genetic information",
+			"imageUrl": null,
+			"difficulty": "medium",
+			"timesReviewed": 6,
+			"timesCorrect": 5,
+			"easeFactor": "2.3",
+			"intervalDays": 3,
+			"repetitions": 3,
+			"nextReview": "2024-02-04T00:00:00Z",
+			"lastReview": "2024-02-03T16:00:00Z",
+			"createdAt": "2024-01-18T00:00:00Z",
+			"updatedAt": "2024-02-03T16:00:00Z"
 		}
 	],
 	"topicMastery": [
@@ -569,45 +1366,195 @@
 			"userId": "user-1",
 			"subjectId": 1,
 			"topic": "Algebra",
-			"masteryLevel": "75.00",
+			"masteryLevel": "78.67",
 			"questionsAttempted": 50,
 			"questionsCorrect": 40,
 			"averageTime": 45,
-			"lastPracticed": "2024-01-20T10:00:00Z",
-			"nextReview": "2024-01-22T00:00:00Z",
+			"lastPracticed": "2024-02-03T10:00:00Z",
+			"nextReview": "2024-02-05T00:00:00Z",
 			"consecutiveCorrect": 8,
 			"createdAt": "2024-01-01T00:00:00Z",
-			"updatedAt": "2024-01-20T10:00:00Z"
+			"updatedAt": "2024-02-03T10:00:00Z"
 		},
 		{
 			"id": "tm2",
 			"userId": "user-1",
 			"subjectId": 1,
 			"topic": "Calculus",
-			"masteryLevel": "45.00",
-			"questionsAttempted": 20,
-			"questionsCorrect": 12,
-			"averageTime": 60,
-			"lastPracticed": "2024-01-19T15:00:00Z",
-			"nextReview": "2024-01-21T00:00:00Z",
-			"consecutiveCorrect": 3,
+			"masteryLevel": "55.00",
+			"questionsAttempted": 40,
+			"questionsCorrect": 22,
+			"averageTime": 65,
+			"lastPracticed": "2024-02-02T15:00:00Z",
+			"nextReview": "2024-02-04T00:00:00Z",
+			"consecutiveCorrect": 4,
 			"createdAt": "2024-01-05T00:00:00Z",
-			"updatedAt": "2024-01-19T15:00:00Z"
+			"updatedAt": "2024-02-02T15:00:00Z"
 		},
 		{
 			"id": "tm3",
 			"userId": "user-1",
+			"subjectId": 1,
+			"topic": "Trigonometry",
+			"masteryLevel": "62.00",
+			"questionsAttempted": 30,
+			"questionsCorrect": 19,
+			"averageTime": 55,
+			"lastPracticed": "2024-02-01T11:00:00Z",
+			"nextReview": "2024-02-03T00:00:00Z",
+			"consecutiveCorrect": 5,
+			"createdAt": "2024-01-08T00:00:00Z",
+			"updatedAt": "2024-02-01T11:00:00Z"
+		},
+		{
+			"id": "tm4",
+			"userId": "user-1",
 			"subjectId": 2,
 			"topic": "Kinematics",
-			"masteryLevel": "65.00",
+			"masteryLevel": "72.00",
 			"questionsAttempted": 35,
 			"questionsCorrect": 25,
 			"averageTime": 50,
-			"lastPracticed": "2024-01-20T14:00:00Z",
-			"nextReview": "2024-01-22T00:00:00Z",
-			"consecutiveCorrect": 5,
+			"lastPracticed": "2024-02-03T14:00:00Z",
+			"nextReview": "2024-02-05T00:00:00Z",
+			"consecutiveCorrect": 6,
 			"createdAt": "2024-01-02T00:00:00Z",
-			"updatedAt": "2024-01-20T14:00:00Z"
+			"updatedAt": "2024-02-03T14:00:00Z"
+		},
+		{
+			"id": "tm5",
+			"userId": "user-1",
+			"subjectId": 2,
+			"topic": "Newton's Laws",
+			"masteryLevel": "68.00",
+			"questionsAttempted": 28,
+			"questionsCorrect": 19,
+			"averageTime": 52,
+			"lastPracticed": "2024-02-02T09:00:00Z",
+			"nextReview": "2024-02-04T00:00:00Z",
+			"consecutiveCorrect": 4,
+			"createdAt": "2024-01-10T00:00:00Z",
+			"updatedAt": "2024-02-02T09:00:00Z"
+		},
+		{
+			"id": "tm6",
+			"userId": "user-1",
+			"subjectId": 2,
+			"topic": "Chemical Bonds",
+			"masteryLevel": "75.00",
+			"questionsAttempted": 25,
+			"questionsCorrect": 19,
+			"averageTime": 40,
+			"lastPracticed": "2024-02-01T16:00:00Z",
+			"nextReview": "2024-02-03T00:00:00Z",
+			"consecutiveCorrect": 5,
+			"createdAt": "2024-01-12T00:00:00Z",
+			"updatedAt": "2024-02-01T16:00:00Z"
+		},
+		{
+			"id": "tm7",
+			"userId": "user-1",
+			"subjectId": 3,
+			"topic": "Cell Biology",
+			"masteryLevel": "82.00",
+			"questionsAttempted": 40,
+			"questionsCorrect": 33,
+			"averageTime": 42,
+			"lastPracticed": "2024-02-03T16:00:00Z",
+			"nextReview": "2024-02-05T00:00:00Z",
+			"consecutiveCorrect": 7,
+			"createdAt": "2024-01-03T00:00:00Z",
+			"updatedAt": "2024-02-03T16:00:00Z"
+		},
+		{
+			"id": "tm8",
+			"userId": "user-1",
+			"subjectId": 3,
+			"topic": "Genetics",
+			"masteryLevel": "58.00",
+			"questionsAttempted": 22,
+			"questionsCorrect": 13,
+			"averageTime": 60,
+			"lastPracticed": "2024-01-30T10:00:00Z",
+			"nextReview": "2024-02-02T00:00:00Z",
+			"consecutiveCorrect": 3,
+			"createdAt": "2024-01-15T00:00:00Z",
+			"updatedAt": "2024-01-30T10:00:00Z"
+		},
+		{
+			"id": "tm9",
+			"userId": "user-1",
+			"subjectId": 4,
+			"topic": "Geomorphology",
+			"masteryLevel": "65.00",
+			"questionsAttempted": 20,
+			"questionsCorrect": 13,
+			"averageTime": 48,
+			"lastPracticed": "2024-01-28T14:00:00Z",
+			"nextReview": "2024-02-01T00:00:00Z",
+			"consecutiveCorrect": 4,
+			"createdAt": "2024-01-18T00:00:00Z",
+			"updatedAt": "2024-01-28T14:00:00Z"
+		},
+		{
+			"id": "tm10",
+			"userId": "user-1",
+			"subjectId": 5,
+			"topic": "World War II",
+			"masteryLevel": "70.00",
+			"questionsAttempted": 18,
+			"questionsCorrect": 13,
+			"averageTime": 50,
+			"lastPracticed": "2024-01-25T11:00:00Z",
+			"nextReview": "2024-01-30T00:00:00Z",
+			"consecutiveCorrect": 5,
+			"createdAt": "2024-01-20T00:00:00Z",
+			"updatedAt": "2024-01-25T11:00:00Z"
+		},
+		{
+			"id": "tm11",
+			"userId": "user-1",
+			"subjectId": 6,
+			"topic": "Literature",
+			"masteryLevel": "72.00",
+			"questionsAttempted": 25,
+			"questionsCorrect": 18,
+			"averageTime": 55,
+			"lastPracticed": "2024-02-02T09:00:00Z",
+			"nextReview": "2024-02-04T00:00:00Z",
+			"consecutiveCorrect": 4,
+			"createdAt": "2024-01-22T00:00:00Z",
+			"updatedAt": "2024-02-02T09:00:00Z"
+		},
+		{
+			"id": "tm12",
+			"userId": "user-1",
+			"subjectId": 7,
+			"topic": "Financial Statements",
+			"masteryLevel": "60.00",
+			"questionsAttempted": 15,
+			"questionsCorrect": 9,
+			"averageTime": 65,
+			"lastPracticed": "2024-01-29T15:00:00Z",
+			"nextReview": "2024-02-02T00:00:00Z",
+			"consecutiveCorrect": 3,
+			"createdAt": "2024-01-24T00:00:00Z",
+			"updatedAt": "2024-01-29T15:00:00Z"
+		},
+		{
+			"id": "tm13",
+			"userId": "user-1",
+			"subjectId": 8,
+			"topic": "Supply and Demand",
+			"masteryLevel": "68.00",
+			"questionsAttempted": 20,
+			"questionsCorrect": 14,
+			"averageTime": 45,
+			"lastPracticed": "2024-01-27T10:00:00Z",
+			"nextReview": "2024-01-31T00:00:00Z",
+			"consecutiveCorrect": 4,
+			"createdAt": "2024-01-26T00:00:00Z",
+			"updatedAt": "2024-01-27T10:00:00Z"
 		}
 	],
 	"leaderboard": [
@@ -665,44 +1612,239 @@
 			"questionsCompleted": 40,
 			"accuracyPercentage": 80,
 			"updatedAt": "2024-01-20T10:00:00Z"
+		},
+		{
+			"id": "lb6",
+			"userId": "user-1",
+			"periodType": "weekly",
+			"periodStart": "2024-01-22T00:00:00Z",
+			"totalPoints": 1380,
+			"rank": 2,
+			"questionsCompleted": 52,
+			"accuracyPercentage": 84,
+			"updatedAt": "2024-01-28T10:00:00Z"
+		},
+		{
+			"id": "lb7",
+			"userId": "user-2",
+			"periodType": "weekly",
+			"periodStart": "2024-01-22T00:00:00Z",
+			"totalPoints": 1520,
+			"rank": 1,
+			"questionsCompleted": 55,
+			"accuracyPercentage": 89,
+			"updatedAt": "2024-01-28T10:00:00Z"
+		},
+		{
+			"id": "lb8",
+			"userId": "user-3",
+			"periodType": "weekly",
+			"periodStart": "2024-01-22T00:00:00Z",
+			"totalPoints": 1250,
+			"rank": 3,
+			"questionsCompleted": 46,
+			"accuracyPercentage": 82,
+			"updatedAt": "2024-01-28T10:00:00Z"
+		},
+		{
+			"id": "lb9",
+			"userId": "user-1",
+			"periodType": "weekly",
+			"periodStart": "2024-01-29T00:00:00Z",
+			"totalPoints": 1450,
+			"rank": 1,
+			"questionsCompleted": 58,
+			"accuracyPercentage": 86,
+			"updatedAt": "2024-02-03T10:00:00Z"
+		},
+		{
+			"id": "lb10",
+			"userId": "user-2",
+			"periodType": "weekly",
+			"periodStart": "2024-01-29T00:00:00Z",
+			"totalPoints": 1400,
+			"rank": 2,
+			"questionsCompleted": 54,
+			"accuracyPercentage": 85,
+			"updatedAt": "2024-02-03T10:00:00Z"
+		},
+		{
+			"id": "lb11",
+			"userId": "user-3",
+			"periodType": "weekly",
+			"periodStart": "2024-01-29T00:00:00Z",
+			"totalPoints": 1320,
+			"rank": 3,
+			"questionsCompleted": 50,
+			"accuracyPercentage": 83,
+			"updatedAt": "2024-02-03T10:00:00Z"
+		},
+		{
+			"id": "lb12",
+			"userId": "user-1",
+			"periodType": "weekly",
+			"periodStart": "2024-02-05T00:00:00Z",
+			"totalPoints": 1320,
+			"rank": 2,
+			"questionsCompleted": 50,
+			"accuracyPercentage": 85,
+			"updatedAt": "2024-02-11T10:00:00Z"
+		},
+		{
+			"id": "lb13",
+			"userId": "user-1",
+			"periodType": "weekly",
+			"periodStart": "2024-02-12T00:00:00Z",
+			"totalPoints": 1550,
+			"rank": 1,
+			"questionsCompleted": 58,
+			"accuracyPercentage": 87,
+			"updatedAt": "2024-02-18T10:00:00Z"
+		},
+		{
+			"id": "lb14",
+			"userId": "user-1",
+			"periodType": "weekly",
+			"periodStart": "2024-02-19T00:00:00Z",
+			"totalPoints": 1480,
+			"rank": 2,
+			"questionsCompleted": 55,
+			"accuracyPercentage": 86,
+			"updatedAt": "2024-02-25T10:00:00Z"
+		},
+		{
+			"id": "lb15",
+			"userId": "user-1",
+			"periodType": "weekly",
+			"periodStart": "2024-02-26T00:00:00Z",
+			"totalPoints": 1620,
+			"rank": 1,
+			"questionsCompleted": 62,
+			"accuracyPercentage": 88,
+			"updatedAt": "2024-03-03T10:00:00Z"
+		},
+		{
+			"id": "lb16",
+			"userId": "user-1",
+			"periodType": "weekly",
+			"periodStart": "2024-03-04T00:00:00Z",
+			"totalPoints": 1350,
+			"rank": 3,
+			"questionsCompleted": 51,
+			"accuracyPercentage": 84,
+			"updatedAt": "2024-03-10T10:00:00Z"
+		},
+		{
+			"id": "lb17",
+			"userId": "user-1",
+			"periodType": "weekly",
+			"periodStart": "2024-03-11T00:00:00Z",
+			"totalPoints": 1580,
+			"rank": 1,
+			"questionsCompleted": 60,
+			"accuracyPercentage": 87,
+			"updatedAt": "2024-03-17T10:00:00Z"
+		},
+		{
+			"id": "lb18",
+			"userId": "user-1",
+			"periodType": "weekly",
+			"periodStart": "2024-03-18T00:00:00Z",
+			"totalPoints": 1420,
+			"rank": 2,
+			"questionsCompleted": 54,
+			"accuracyPercentage": 85,
+			"updatedAt": "2024-03-24T10:00:00Z"
+		},
+		{
+			"id": "lb19",
+			"userId": "user-1",
+			"periodType": "weekly",
+			"periodStart": "2024-03-25T00:00:00Z",
+			"totalPoints": 1680,
+			"rank": 1,
+			"questionsCompleted": 65,
+			"accuracyPercentage": 89,
+			"updatedAt": "2024-03-31T10:00:00Z"
+		},
+		{
+			"id": "lb20",
+			"userId": "user-1",
+			"periodType": "monthly",
+			"periodStart": "2024-01-01T00:00:00Z",
+			"totalPoints": 5200,
+			"rank": 2,
+			"questionsCompleted": 180,
+			"accuracyPercentage": 82,
+			"updatedAt": "2024-01-31T23:59:00Z"
+		},
+		{
+			"id": "lb21",
+			"userId": "user-2",
+			"periodType": "monthly",
+			"periodStart": "2024-01-01T00:00:00Z",
+			"totalPoints": 5800,
+			"rank": 1,
+			"questionsCompleted": 195,
+			"accuracyPercentage": 86,
+			"updatedAt": "2024-01-31T23:59:00Z"
+		},
+		{
+			"id": "lb22",
+			"userId": "user-1",
+			"periodType": "monthly",
+			"periodStart": "2024-02-01T00:00:00Z",
+			"totalPoints": 6150,
+			"rank": 3,
+			"questionsCompleted": 210,
+			"accuracyPercentage": 84,
+			"updatedAt": "2024-02-29T23:59:00Z"
+		},
+		{
+			"id": "lb23",
+			"userId": "user-1",
+			"periodType": "monthly",
+			"periodStart": "2024-03-01T00:00:00Z",
+			"totalPoints": 7230,
+			"rank": 1,
+			"questionsCompleted": 245,
+			"accuracyPercentage": 87,
+			"updatedAt": "2024-03-31T23:59:00Z"
+		},
+		{
+			"id": "lb24",
+			"userId": "user-1",
+			"periodType": "all_time",
+			"periodStart": "2024-01-01T00:00:00Z",
+			"totalPoints": 28500,
+			"rank": 2,
+			"questionsCompleted": 920,
+			"accuracyPercentage": 84,
+			"updatedAt": "2024-04-01T00:00:00Z"
+		},
+		{
+			"id": "lb25",
+			"userId": "user-2",
+			"periodType": "all_time",
+			"periodStart": "2024-01-01T00:00:00Z",
+			"totalPoints": 31200,
+			"rank": 1,
+			"questionsCompleted": 1050,
+			"accuracyPercentage": 86,
+			"updatedAt": "2024-04-01T00:00:00Z"
 		}
 	],
 	"leaderboardUsers": [
-		{
-			"id": "user-1",
-			"name": "Themba M",
-			"avatar": "",
-			"points": 1250,
-			"rank": 3
-		},
-		{
-			"id": "user-2",
-			"name": "Sarah K",
-			"avatar": "",
-			"points": 1480,
-			"rank": 1
-		},
-		{
-			"id": "user-3",
-			"name": "Michael J",
-			"avatar": "",
-			"points": 1320,
-			"rank": 2
-		},
-		{
-			"id": "user-4",
-			"name": "Lisa N",
-			"avatar": "",
-			"points": 980,
-			"rank": 5
-		},
-		{
-			"id": "user-5",
-			"name": "David R",
-			"avatar": "",
-			"points": 1100,
-			"rank": 4
-		}
+		{ "id": "user-1", "name": "Themba M", "avatar": "", "points": 1680, "rank": 1 },
+		{ "id": "user-2", "name": "Sarah K", "avatar": "", "points": 1520, "rank": 2 },
+		{ "id": "user-3", "name": "Michael J", "avatar": "", "points": 1420, "rank": 3 },
+		{ "id": "user-4", "name": "Lisa N", "avatar": "", "points": 1350, "rank": 4 },
+		{ "id": "user-5", "name": "David R", "avatar": "", "points": 1280, "rank": 5 },
+		{ "id": "user-6", "name": "Emma W", "avatar": "", "points": 1180, "rank": 6 },
+		{ "id": "user-7", "name": "James T", "avatar": "", "points": 1100, "rank": 7 },
+		{ "id": "user-8", "name": "Anna P", "avatar": "", "points": 1050, "rank": 8 },
+		{ "id": "user-9", "name": "Chris L", "avatar": "", "points": 980, "rank": 9 },
+		{ "id": "user-10", "name": "Ben K", "avatar": "", "points": 920, "rank": 10 }
 	],
 	"channels": [
 		{
@@ -712,7 +1854,7 @@
 			"subjectId": 1,
 			"createdBy": "user-2",
 			"isPublic": true,
-			"memberCount": 24,
+			"memberCount": 42,
 			"createdAt": "2024-01-05T00:00:00Z"
 		},
 		{
@@ -722,7 +1864,7 @@
 			"subjectId": 2,
 			"createdBy": "user-3",
 			"isPublic": true,
-			"memberCount": 18,
+			"memberCount": 35,
 			"createdAt": "2024-01-08T00:00:00Z"
 		},
 		{
@@ -732,8 +1874,58 @@
 			"subjectId": 3,
 			"createdBy": "user-4",
 			"isPublic": true,
-			"memberCount": 15,
+			"memberCount": 28,
 			"createdAt": "2024-01-10T00:00:00Z"
+		},
+		{
+			"id": "ch4",
+			"name": "Geo Geeks",
+			"description": "Geography lovers unite",
+			"subjectId": 4,
+			"createdBy": "user-5",
+			"isPublic": true,
+			"memberCount": 22,
+			"createdAt": "2024-01-12T00:00:00Z"
+		},
+		{
+			"id": "ch5",
+			"name": "History Buffs",
+			"description": "Past events, present insights",
+			"subjectId": 5,
+			"createdBy": "user-6",
+			"isPublic": true,
+			"memberCount": 18,
+			"createdAt": "2024-01-15T00:00:00Z"
+		},
+		{
+			"id": "ch6",
+			"name": "English Excellence",
+			"description": "Literature and language mastery",
+			"subjectId": 6,
+			"createdBy": "user-7",
+			"isPublic": true,
+			"memberCount": 25,
+			"createdAt": "2024-01-18T00:00:00Z"
+		},
+		{
+			"id": "ch7",
+			"name": "Accounting Ace",
+			"description": "Numbers and ledgers",
+			"subjectId": 7,
+			"createdBy": "user-8",
+			"isPublic": true,
+			"memberCount": 15,
+			"createdAt": "2024-01-20T00:00:00Z"
+		},
+		{
+			"id": "ch8",
+			"name": "Econ Experts",
+			"description": "Market dynamics",
+			"subjectId": 8,
+			"createdBy": "user-9",
+			"isPublic": true,
+			"memberCount": 20,
+			"createdAt": "2024-01-22T00:00:00Z"
 		}
 	],
 	"notifications": [
@@ -746,7 +1938,7 @@
 			"data": "{\"achievementId\": \"perfect-score\"}",
 			"isRead": false,
 			"readAt": null,
-			"createdAt": "2024-01-18T14:30:00Z"
+			"createdAt": "2024-02-03T14:30:00Z"
 		},
 		{
 			"id": "n2",
@@ -754,21 +1946,21 @@
 			"type": "reminder",
 			"title": "Study Reminder",
 			"message": "You haven't studied today. Keep your streak going!",
-			"data": "{\"streakDays\": 5}",
+			"data": "{\"streakDays\": 21}",
 			"isRead": false,
 			"readAt": null,
-			"createdAt": "2024-01-20T08:00:00Z"
+			"createdAt": "2024-02-03T08:00:00Z"
 		},
 		{
 			"id": "n3",
 			"userId": "user-1",
 			"type": "leaderboard",
 			"title": "Leaderboard Update",
-			"message": "You're now #3 on the weekly leaderboard!",
-			"data": "{\"rank\": 3, \"points\": 1250}",
+			"message": "You're now #1 on the weekly leaderboard!",
+			"data": "{\"rank\": 1, \"points\": 1450}",
 			"isRead": true,
-			"readAt": "2024-01-20T10:00:00Z",
-			"createdAt": "2024-01-20T09:00:00Z"
+			"readAt": "2024-02-03T10:00:00Z",
+			"createdAt": "2024-02-03T09:00:00Z"
 		},
 		{
 			"id": "n4",
@@ -779,7 +1971,73 @@
 			"data": "{\"requesterId\": \"user-2\"}",
 			"isRead": false,
 			"readAt": null,
-			"createdAt": "2024-01-19T16:00:00Z"
+			"createdAt": "2024-02-02T16:00:00Z"
+		},
+		{
+			"id": "n5",
+			"userId": "user-1",
+			"type": "achievement",
+			"title": "Achievement Unlocked!",
+			"message": "You've earned the 'Quiz Machine' badge!",
+			"data": "{\"achievementId\": \"quiz-machine\"}",
+			"isRead": true,
+			"readAt": "2024-02-02T14:30:00Z",
+			"createdAt": "2024-02-02T14:00:00Z"
+		},
+		{
+			"id": "n6",
+			"userId": "user-1",
+			"type": "reminder",
+			"title": "Flashcards Due",
+			"message": "You have 8 flashcards to review today",
+			"data": "{\"cardsDue\": 8}",
+			"isRead": true,
+			"readAt": "2024-02-02T09:00:00Z",
+			"createdAt": "2024-02-02T08:00:00Z"
+		},
+		{
+			"id": "n7",
+			"userId": "user-1",
+			"type": "achievement",
+			"title": "Achievement Unlocked!",
+			"message": "You've earned the 'Three Week Champion' badge!",
+			"data": "{\"achievementId\": \"streak-21\"}",
+			"isRead": true,
+			"readAt": "2024-02-01T11:00:00Z",
+			"createdAt": "2024-02-01T10:00:00Z"
+		},
+		{
+			"id": "n8",
+			"userId": "user-1",
+			"type": "reminder",
+			"title": "Exam Reminder",
+			"message": "Mathematics Paper 2 in 3 days - keep practicing!",
+			"data": "{\"examDate\": \"2024-02-06\"}",
+			"isRead": false,
+			"readAt": null,
+			"createdAt": "2024-02-03T07:00:00Z"
+		},
+		{
+			"id": "n9",
+			"userId": "user-1",
+			"type": "study_buddy",
+			"title": "Study Buddy Match",
+			"message": "You matched with Michael J - same study goals!",
+			"data": "{\"buddyId\": \"user-3\"}",
+			"isRead": true,
+			"readAt": "2024-01-30T15:00:00Z",
+			"createdAt": "2024-01-30T14:00:00Z"
+		},
+		{
+			"id": "n10",
+			"userId": "user-1",
+			"type": "achievement",
+			"title": "Streak Milestone",
+			"message": "You've reached a 20-day streak! Incredible dedication.",
+			"data": "{\"streakDays\": 20}",
+			"isRead": true,
+			"readAt": "2024-01-30T08:00:00Z",
+			"createdAt": "2024-01-30T07:00:00Z"
 		}
 	],
 	"calendarEvents": [
@@ -790,8 +2048,8 @@
 			"description": "Full paper 2-hour mock exam",
 			"eventType": "exam",
 			"subjectId": 1,
-			"startTime": "2024-01-25T09:00:00Z",
-			"endTime": "2024-01-25T11:00:00Z",
+			"startTime": "2024-02-06T09:00:00Z",
+			"endTime": "2024-02-06T11:00:00Z",
 			"isAllDay": false,
 			"location": null,
 			"reminderMinutes": "60,15",
@@ -810,8 +2068,8 @@
 			"description": "Review Newton's Laws",
 			"eventType": "study",
 			"subjectId": 2,
-			"startTime": "2024-01-21T14:00:00Z",
-			"endTime": "2024-01-21T15:30:00Z",
+			"startTime": "2024-02-04T14:00:00Z",
+			"endTime": "2024-02-04T15:30:00Z",
 			"isAllDay": false,
 			"location": null,
 			"reminderMinutes": "30",
@@ -830,8 +2088,8 @@
 			"description": "Review weekly progress",
 			"eventType": "reminder",
 			"subjectId": null,
-			"startTime": "2024-01-21T18:00:00Z",
-			"endTime": "2024-01-21T18:30:00Z",
+			"startTime": "2024-02-04T18:00:00Z",
+			"endTime": "2024-02-04T18:30:00Z",
 			"isAllDay": false,
 			"location": null,
 			"reminderMinutes": "60",
@@ -842,6 +2100,86 @@
 			"isCompleted": false,
 			"createdAt": "2024-01-01T00:00:00Z",
 			"updatedAt": "2024-01-01T00:00:00Z"
+		},
+		{
+			"id": "ce4",
+			"userId": "user-1",
+			"title": "Life Sciences Past Paper",
+			"description": "Complete 2023 Paper 1",
+			"eventType": "exam",
+			"subjectId": 3,
+			"startTime": "2024-02-08T10:00:00Z",
+			"endTime": "2024-02-08T13:00:00Z",
+			"isAllDay": false,
+			"location": null,
+			"reminderMinutes": "60,30",
+			"recurrenceRule": null,
+			"examId": "exam-002",
+			"lessonId": null,
+			"studyPlanId": "sp2",
+			"isCompleted": false,
+			"createdAt": "2024-01-20T00:00:00Z",
+			"updatedAt": "2024-01-20T00:00:00Z"
+		},
+		{
+			"id": "ce5",
+			"userId": "user-1",
+			"title": "Chemistry Quiz Prep",
+			"description": "Review chemical bonds and periodic table",
+			"eventType": "study",
+			"subjectId": 2,
+			"startTime": "2024-02-05T15:00:00Z",
+			"endTime": "2024-02-05T16:00:00Z",
+			"isAllDay": false,
+			"location": null,
+			"reminderMinutes": "15",
+			"recurrenceRule": null,
+			"examId": null,
+			"lessonId": null,
+			"studyPlanId": "sp1",
+			"isCompleted": false,
+			"createdAt": "2024-01-25T00:00:00Z",
+			"updatedAt": "2024-01-25T00:00:00Z"
+		},
+		{
+			"id": "ce6",
+			"userId": "user-1",
+			"title": "Geography Case Study Review",
+			"description": "SA climate and vegetation",
+			"eventType": "study",
+			"subjectId": 4,
+			"startTime": "2024-02-07T11:00:00Z",
+			"endTime": "2024-02-07T12:00:00Z",
+			"isAllDay": false,
+			"location": null,
+			"reminderMinutes": "30",
+			"recurrenceRule": null,
+			"examId": null,
+			"lessonId": null,
+			"studyPlanId": null,
+			"isCompleted": false,
+			"createdAt": "2024-01-28T00:00:00Z",
+			"updatedAt": "2024-01-28T00:00:00Z"
+		},
+		{
+			"id": "ce7",
+			"userId": "user-1",
+			"title": "Literature Essay Draft",
+			"description": "Complete first draft of Romeo and Juliet essay",
+			"eventType": "study",
+			"subjectId": 6,
+			"startTime": "2024-02-03T19:00:00Z",
+			"endTime": "2024-02-03T20:30:00Z",
+			"isAllDay": false,
+			"location": null,
+			"reminderMinutes": "60",
+			"recurrenceRule": null,
+			"examId": null,
+			"lessonId": null,
+			"studyPlanId": null,
+			"isCompleted": false,
+			"createdAt": "2024-01-29T00:00:00Z",
+			"updatedAt": "2024-01-29T00:00:00Z"
 		}
 	],
 	"pastPapers": [
@@ -895,6 +2233,91 @@
 			"totalMarks": 150,
 			"createdAt": "2024-01-03T00:00:00Z",
 			"updatedAt": "2024-01-17T00:00:00Z"
+		},
+		{
+			"id": "pp4",
+			"paperId": "MATHS-P1-2023",
+			"originalPdfUrl": "https://example.com/papers/maths-p1-2023.pdf",
+			"storedPdfUrl": "/papers/maths-p1-2023.pdf",
+			"markdownFileUrl": "/papers/maths-p1-2023.md",
+			"subject": "Mathematics",
+			"paper": "Paper 1",
+			"year": 2023,
+			"month": "November",
+			"isExtracted": true,
+			"extractedQuestions": "[{\"q\":\"Calculate the derivative...\",\"a\":\"9x² + 4x - 5\"}]",
+			"instructions": "Answer ALL questions. Time: 1 hour. Marks: 100.",
+			"totalMarks": 100,
+			"createdAt": "2024-01-04T00:00:00Z",
+			"updatedAt": "2024-01-18T00:00:00Z"
+		},
+		{
+			"id": "pp5",
+			"paperId": "GEOG-P1-2023",
+			"originalPdfUrl": "https://example.com/papers/geog-p1-2023.pdf",
+			"storedPdfUrl": "/papers/geog-p1-2023.pdf",
+			"markdownFileUrl": "/papers/geog-p1-2023.md",
+			"subject": "Geography",
+			"paper": "Paper 1",
+			"year": 2023,
+			"month": "November",
+			"isExtracted": true,
+			"extractedQuestions": "[{\"q\":\"Explain fold mountains...\",\"a\":\"Result from compression...\"}]",
+			"instructions": "Answer ALL questions.",
+			"totalMarks": 150,
+			"createdAt": "2024-01-05T00:00:00Z",
+			"updatedAt": "2024-01-19T00:00:00Z"
+		},
+		{
+			"id": "pp6",
+			"paperId": "HIST-P1-2022",
+			"originalPdfUrl": "https://example.com/papers/hist-p1-2022.pdf",
+			"storedPdfUrl": "/papers/hist-p1-2022.pdf",
+			"markdownFileUrl": "/papers/hist-p1-2022.md",
+			"subject": "History",
+			"paper": "Paper 1",
+			"year": 2022,
+			"month": "November",
+			"isExtracted": true,
+			"extractedQuestions": "[{\"q\":\"Describe the causes of WW2...\",\"data\": \"Treaty of Versailles...\"}]",
+			"instructions": "Answer ALL questions.",
+			"totalMarks": 100,
+			"createdAt": "2024-01-06T00:00:00Z",
+			"updatedAt": "2024-01-20T00:00:00Z"
+		},
+		{
+			"id": "pp7",
+			"paperId": "ENG-P1-2023",
+			"originalPdfUrl": "https://example.com/papers/eng-p1-2023.pdf",
+			"storedPdfUrl": "/papers/eng-p1-2023.pdf",
+			"markdownFileUrl": "/papers/eng-p1-2023.md",
+			"subject": "English Home Language",
+			"paper": "Paper 1",
+			"year": 2023,
+			"month": "November",
+			"isExtracted": true,
+			"extractedQuestions": "[{\"q\":\"Unseen poem analysis...\",\"a\":\"Metaphor and simile...\"}]",
+			"instructions": "Answer ALL questions.",
+			"totalMarks": 70,
+			"createdAt": "2024-01-07T00:00:00Z",
+			"updatedAt": "2024-01-21T00:00:00Z"
+		},
+		{
+			"id": "pp8",
+			"paperId": "ACCT-P1-2023",
+			"originalPdfUrl": "https://example.com/papers/acct-p1-2023.pdf",
+			"storedPdfUrl": "/papers/acct-p1-2023.pdf",
+			"markdownFileUrl": "/papers/acct-p1-2023.md",
+			"subject": "Accounting",
+			"paper": "Paper 1",
+			"year": 2023,
+			"month": "November",
+			"isExtracted": true,
+			"extractedQuestions": "[{\"q\":\"Calculate net profit...\",\"a\":\"R125000\"}]",
+			"instructions": "Answer ALL questions.",
+			"totalMarks": 200,
+			"createdAt": "2024-01-08T00:00:00Z",
+			"updatedAt": "2024-01-22T00:00:00Z"
 		}
 	],
 	"userSettings": {
@@ -909,7 +2332,7 @@
 		"analyticsTracking": true,
 		"language": "en",
 		"theme": "system",
-		"updatedAt": "2024-01-20T10:00:00Z"
+		"updatedAt": "2024-02-03T10:00:00Z"
 	},
 	"subscriptionPlans": [
 		{
@@ -961,18 +2384,18 @@
 	"userSubscription": {
 		"id": "us1",
 		"userId": "user-1",
-		"planId": "pro",
-		"paystackCustomerCode": "CUS_xxxxx",
-		"paystackSubscriptionCode": "SUB_xxxxx",
+		"planId": "premium",
+		"paystackCustomerCode": "CUS_x7k9m2p3",
+		"paystackSubscriptionCode": "SUB_y8j2n4q6",
 		"paystackEmailToken": null,
 		"status": "active",
-		"currentPeriodStart": "2024-01-01T00:00:00Z",
-		"currentPeriodEnd": "2024-02-01T00:00:00Z",
+		"currentPeriodStart": "2024-01-15T00:00:00Z",
+		"currentPeriodEnd": "2024-02-15T00:00:00Z",
 		"cancelAtPeriodEnd": false,
 		"isFreeTrial": false,
 		"trialEndDate": null,
-		"createdAt": "2024-01-01T00:00:00Z",
-		"updatedAt": "2024-01-01T00:00:00Z"
+		"createdAt": "2024-01-15T00:00:00Z",
+		"updatedAt": "2024-01-15T00:00:00Z"
 	},
 	"studyBuddyProfiles": [
 		{
@@ -987,7 +2410,7 @@
 			"matchPreferences": "{\"subjects\": [\"Mathematics\", \"Physical Sciences\"], \"level\": \"Grade 12\"}",
 			"personality": "mentor",
 			"createdAt": "2024-01-05T00:00:00Z",
-			"updatedAt": "2024-01-20T10:00:00Z"
+			"updatedAt": "2024-02-03T14:00:00Z"
 		},
 		{
 			"id": "sbp2",
@@ -1016,6 +2439,34 @@
 			"personality": "balanced",
 			"createdAt": "2024-01-10T00:00:00Z",
 			"updatedAt": "2024-01-19T09:00:00Z"
+		},
+		{
+			"id": "sbp4",
+			"userId": "user-4",
+			"bio": "History nerd. Love discussing causes and effects of historical events.",
+			"studyGoals": "Score 85%+ in History",
+			"preferredSubjects": "History, Geography",
+			"studySchedule": "Evenings 6pm-8pm",
+			"lookingFor": "History debate partners",
+			"isVisible": true,
+			"matchPreferences": "{\"subjects\": [\"History\"], \"level\": \"Grade 12\"}",
+			"personality": "mentor",
+			"createdAt": "2024-01-12T00:00:00Z",
+			"updatedAt": "2024-01-22T11:00:00Z"
+		},
+		{
+			"id": "sbp5",
+			"userId": "user-5",
+			"bio": "Literature lover. Aspiring writer and poet.",
+			"studyGoals": "Perfect essay technique",
+			"preferredSubjects": "English",
+			"studySchedule": "Late afternoons",
+			"lookingFor": "Essay feedback partners",
+			"isVisible": true,
+			"matchPreferences": "{\"subjects\": [\"English\"], \"level\": \"Grade 12\"}",
+			"personality": "balanced",
+			"createdAt": "2024-01-14T00:00:00Z",
+			"updatedAt": "2024-01-24T15:00:00Z"
 		}
 	],
 	"searchHistory": [
@@ -1023,19 +2474,61 @@
 			"id": "sh1",
 			"userId": "user-1",
 			"query": "quadratic equations grade 12",
-			"createdAt": "2024-01-20T10:00:00Z"
+			"createdAt": "2024-02-03T10:00:00Z"
 		},
 		{
 			"id": "sh2",
 			"userId": "user-1",
 			"query": "newton's laws physics",
-			"createdAt": "2024-01-19T15:30:00Z"
+			"createdAt": "2024-02-02T15:30:00Z"
 		},
 		{
 			"id": "sh3",
 			"userId": "user-1",
 			"query": "mitochondria function",
-			"createdAt": "2024-01-18T09:00:00Z"
+			"createdAt": "2024-02-02T09:00:00Z"
+		},
+		{
+			"id": "sh4",
+			"userId": "user-1",
+			"query": "calculus derivatives",
+			"createdAt": "2024-02-01T14:00:00Z"
+		},
+		{
+			"id": "sh5",
+			"userId": "user-1",
+			"query": "genetics inheritance patterns",
+			"createdAt": "2024-01-31T11:00:00Z"
+		},
+		{
+			"id": "sh6",
+			"userId": "user-1",
+			"query": "chemical bonding types",
+			"createdAt": "2024-01-30T16:00:00Z"
+		},
+		{
+			"id": "sh7",
+			"userId": "user-1",
+			"query": "trigonometry formulas",
+			"createdAt": "2024-01-29T10:00:00Z"
+		},
+		{
+			"id": "sh8",
+			"userId": "user-1",
+			"query": "world war 2 causes",
+			"createdAt": "2024-01-28T13:00:00Z"
+		},
+		{
+			"id": "sh9",
+			"userId": "user-1",
+			"query": "periodic table groups",
+			"createdAt": "2024-01-27T09:00:00Z"
+		},
+		{
+			"id": "sh10",
+			"userId": "user-1",
+			"query": "essay structure english",
+			"createdAt": "2024-01-26T15:00:00Z"
 		}
 	],
 	"bookmarks": [
@@ -1044,7 +2537,7 @@
 			"userId": "user-1",
 			"bookmarkType": "question",
 			"referenceId": "q1",
-			"note": "Important quadratic formula question",
+			"note": "Important quadratic formula question - practice again",
 			"createdAt": "2024-01-15T10:00:00Z"
 		},
 		{
@@ -1054,6 +2547,38 @@
 			"referenceId": "pp1",
 			"note": "2023 Maths Paper 2 - practice this weekend",
 			"createdAt": "2024-01-16T14:00:00Z"
+		},
+		{
+			"id": "bm3",
+			"userId": "user-1",
+			"bookmarkType": "question",
+			"referenceId": "q2",
+			"note": "Calculus derivative question - need more practice",
+			"createdAt": "2024-01-20T11:00:00Z"
+		},
+		{
+			"id": "bm4",
+			"userId": "user-1",
+			"bookmarkType": "flashcard",
+			"referenceId": "fc1",
+			"note": "Quadratic formula - keep reviewing",
+			"createdAt": "2024-01-22T09:00:00Z"
+		},
+		{
+			"id": "bm5",
+			"userId": "user-1",
+			"bookmarkType": "pastpaper",
+			"referenceId": "pp2",
+			"note": "Physics 2023 - will do after math revision",
+			"createdAt": "2024-01-25T16:00:00Z"
+		},
+		{
+			"id": "bm6",
+			"userId": "user-1",
+			"bookmarkType": "question",
+			"referenceId": "q15",
+			"note": "Integration practice question",
+			"createdAt": "2024-01-28T10:00:00Z"
 		}
 	]
 }
