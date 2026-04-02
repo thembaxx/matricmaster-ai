@@ -1,6 +1,6 @@
 'use client';
 
-import { Component, type ReactNode } from 'react';
+import { Component, type ReactNode, useState } from 'react';
 import { ErrorBoundary, type FallbackProps } from 'react-error-boundary';
 import { type MathRenderMode, renderMathBlock, renderMathInline } from '@/lib/mathRenderer';
 
@@ -103,7 +103,7 @@ interface MathBlockProps {
 }
 
 export function MathBlock({ latex, className = '', showToggle = true }: MathBlockProps) {
-	const [showRaw, setShowRaw] = [false, (_v: boolean) => {}];
+	const [showRaw, setShowRaw] = useState(false);
 
 	return (
 		<div className={`math-block ${className}`}>

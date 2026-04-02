@@ -1,19 +1,5 @@
 import { z } from 'zod';
 
-// const envSchema = z.object({
-// 	DATABASE_URL: z.string().url().optional(),
-// 	NEXT_PUBLIC_APP_URL: z.string().url().default('http://localhost:3000'),
-// 	BETTER_AUTH_SECRET: z.string().min(32).optional(),
-// 	GOOGLE_CLIENT_ID: z.string().optional(),
-// 	GOOGLE_SECRET_KEY: z.string().optional(),
-// 	TWITTER_CLIENT_ID: z.string().optional(),
-// 	TWITTER_CLIENT_SECRET: z.string().optional(),
-// 	GEMINI_API_KEY: z.string().optional(),
-// 	RESEND_API_KEY: z.string().optional(),
-// 	FROM_EMAIL: z.string().email().optional(),
-// 	NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
-// });
-
 // Build schema based on environment - require critical vars in production
 const getEnvSchema = () => {
 	const isProduction = process.env.NODE_ENV === 'production';
