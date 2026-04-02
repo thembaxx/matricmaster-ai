@@ -82,10 +82,20 @@ function DashboardWithErrorBoundary({
 	);
 }
 
+function extractHeaders(headersList: any) {
+	const safeHeaders = new Headers();
+	for (const [key, value] of headersList.entries()) {
+		safeHeaders.set(key, value);
+	}
+	return safeHeaders as Headers;
+}
+
 export default async function DashboardPage() {
 	const auth = await getAuth();
-	const headersList = headers();
-	const session = await auth.api.getSession({ headers: headersList as unknown as HeadersInit });
+	const headersList = await headers();
+	const session = await auth.api.getSession({
+		headers: extractHeaders(headersList) as any,
+	});
 	if (!session?.user) {
 		redirect('/sign-in');
 	}
