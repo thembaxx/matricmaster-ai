@@ -12,6 +12,7 @@ export const ROUTE_CATEGORIES = {
 		'/sign-in',
 		'/sign-up',
 		'/forgot-password',
+		'/reset-password',
 		'/api/auth',
 		'/api/health',
 		'/api/db/init',

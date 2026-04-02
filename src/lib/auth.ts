@@ -47,7 +47,7 @@ export const authConfig = {
 	socialProviders: {
 		google: {
 			clientId: process.env.GOOGLE_CLIENT_ID ?? '',
-			clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? process.env.GOOGLE_SECRET_KEY ?? '',
+			clientSecret: process.env.GOOGLE_CLIENT_SECRET || process.env.GOOGLE_SECRET_KEY || '',
 		},
 	},
 	session: {
@@ -176,7 +176,7 @@ async function createAuth(): Promise<AuthInstance> {
 	}
 
 	const googleClientId = process.env.GOOGLE_CLIENT_ID;
-	const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET ?? process.env.GOOGLE_SECRET_KEY;
+	const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET || process.env.GOOGLE_SECRET_KEY;
 	const twitterClientId = process.env.TWITTER_CLIENT_ID;
 	const twitterClientSecret = process.env.TWITTER_CLIENT_SECRET;
 	if (!isBuildTime) {

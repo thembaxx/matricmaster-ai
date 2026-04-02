@@ -67,10 +67,9 @@ export function useSignUp() {
 	const handleSocialSignUp = async (provider: 'google' | 'twitter') => {
 		setError(null);
 		try {
-			const callbackURL = new URL('/onboarding', window.location.origin).toString();
 			const { error: authError } = await authClient.signIn.social({
 				provider,
-				callbackURL,
+				callbackURL: '/onboarding',
 			});
 
 			if (authError) {
