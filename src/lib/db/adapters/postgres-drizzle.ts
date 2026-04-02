@@ -6,6 +6,11 @@ export function getPostgresAuthAdapter() {
 	const db = pgManager.getDb();
 	return drizzleAdapter(db, {
 		provider: 'pg',
-		schema: schema as never,
+		schema: {
+			user: schema.users,
+			session: schema.session,
+			account: schema.account,
+			verification: schema.verification,
+		},
 	});
 }

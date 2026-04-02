@@ -6,6 +6,11 @@ export function getSQLiteAuthAdapter() {
 	const db = sqliteManager.getDb();
 	return drizzleAdapter(db, {
 		provider: 'sqlite',
-		schema: sqliteSchema as never,
+		schema: {
+			user: sqliteSchema.sqliteUsers,
+			session: sqliteSchema.sqliteSessions,
+			account: sqliteSchema.sqliteAccounts,
+			verification: sqliteSchema.sqliteVerifications,
+		},
 	});
 }
