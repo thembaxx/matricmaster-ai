@@ -50,15 +50,15 @@ export function DailyMission() {
 	const getTypeColor = (type: string) => {
 		switch (type) {
 			case 'flashcard':
-				return 'bg-blue-100 dark:bg-blue-900/20 text-blue-600';
+				return 'bg-tiimo-blue/15 text-tiimo-blue';
 			case 'quiz':
-				return 'bg-violet-100 dark:bg-violet-900/20 text-violet-600';
+				return 'bg-tiimo-lavender/15 text-tiimo-lavender';
 			case 'pastPaper':
-				return 'bg-green-100 dark:bg-green-900/20 text-green-600';
+				return 'bg-tiimo-green/15 text-tiimo-green';
 			case 'lesson':
-				return 'bg-amber-100 dark:bg-amber-900/20 text-amber-600';
+				return 'bg-tiimo-yellow/15 text-tiimo-yellow';
 			default:
-				return 'bg-gray-100 dark:bg-gray-900/20 text-gray-600';
+				return 'bg-muted text-muted-foreground';
 		}
 	};
 

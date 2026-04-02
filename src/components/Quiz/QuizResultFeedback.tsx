@@ -58,35 +58,33 @@ export function QuizResultFeedback({
 		<div
 			className={`p-6 rounded-[2rem] border animate-in fade-in slide-in-from-bottom-4 ${
 				isCorrect
-					? 'bg-green-50 dark:bg-green-900/10 border-green-100 dark:border-green-900/30'
-					: 'bg-red-50 dark:bg-red-900/10 border-red-100 dark:border-red-900/30'
+					? 'bg-tiimo-green/10 border-tiimo-green/30'
+					: 'bg-destructive/10 border-destructive/30'
 			}`}
 		>
 			<div className="flex items-start gap-4">
 				<div
 					className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 ${
-						isCorrect ? 'bg-green-100 dark:bg-green-900/30' : 'bg-red-100 dark:bg-red-900/30'
+						isCorrect ? 'bg-tiimo-green/20' : 'bg-destructive/20'
 					}`}
 				>
 					{isCorrect ? (
-						<HugeiconsIcon icon={CheckmarkCircle02Icon} className="w-5 h-5 text-green-600" />
+						<HugeiconsIcon icon={CheckmarkCircle02Icon} className="w-5 h-5 text-tiimo-green" />
 					) : (
-						<HugeiconsIcon icon={ForwardIcon} className="w-5 h-5 text-red-600" />
+						<HugeiconsIcon icon={ForwardIcon} className="w-5 h-5 text-destructive" />
 					)}
 				</div>
 				<div>
 					<h4
-						className={`font-black text-xs  tracking-widest mb-1 ${
-							isCorrect ? 'text-green-900 dark:text-green-100' : 'text-red-900 dark:text-red-100'
+						className={`font-black text-xs tracking-widest mb-1 ${
+							isCorrect ? 'text-tiimo-green' : 'text-destructive'
 						}`}
 					>
 						{isCorrect ? 'Correct! Well done' : 'Not quite right'}
 					</h4>
 					<p
 						className={`text-sm font-medium ${
-							isCorrect
-								? 'text-green-800/80 dark:text-green-200/80'
-								: 'text-red-800/80 dark:text-red-200/80'
+							isCorrect ? 'text-foreground/80' : 'text-foreground/80'
 						}`}
 					>
 						{isCorrect
@@ -100,7 +98,7 @@ export function QuizResultFeedback({
 						<button
 							type="button"
 							onClick={handleDiscussWithTutor}
-							className="mt-3 inline-flex items-center gap-2 text-sm font-medium text-primary hover:text-primary/80 transition-colors"
+							className="mt-3 inline-flex items-center gap-2 text-sm font-medium text-primary hover:text-primary/80 transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-lg"
 						>
 							<HugeiconsIcon icon={MessageSecure01Icon} className="w-4 h-4" />
 							Discuss with Tutor
@@ -110,7 +108,7 @@ export function QuizResultFeedback({
 						<button
 							type="button"
 							onClick={() => router.push(mapLink.mapRoute)}
-							className="mt-2 inline-flex items-center gap-2 text-sm font-medium text-primary hover:text-primary/80 transition-colors"
+							className="mt-2 inline-flex items-center gap-2 text-sm font-medium text-primary hover:text-primary/80 transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-lg"
 						>
 							<HugeiconsIcon icon={MapPinpoint02Icon} className="w-4 h-4" />
 							{mapLink.label}

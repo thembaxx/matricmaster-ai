@@ -32,16 +32,16 @@ export function QuizProgress({ steps, progressPercent }: QuizProgressProps) {
 							animate={{ opacity: 1, scale: 1 }}
 							transition={{ delay: index * 0.05 }}
 							className={cn(
-								'flex flex-col items-center gap-2 p-4 rounded-[1.5rem] flex-1 transition-all duration-300',
+								'flex flex-col items-center gap-2 p-4 rounded-[1.5rem] flex-1 transition-all duration-300 cursor-pointer',
 								isCurrent
-									? 'bg-tiimo-lavender text-white shadow-tiimo-lg scale-105 z-10'
+									? 'bg-tiimo-lavender text-white shadow-tiimo-lg scale-105 z-10 ring-2 ring-tiimo-lavender/50'
 									: isCompleted
-										? 'bg-tiimo-green/15 text-tiimo-green'
-										: 'bg-secondary text-tiimo-gray-muted opacity-60'
+										? 'bg-tiimo-green/15 text-tiimo-green hover:bg-tiimo-green/25'
+										: 'bg-secondary text-tiimo-gray-muted opacity-60 hover:opacity-80'
 							)}
 						>
 							<HugeiconsIcon icon={step.icon} className="w-6 h-6" />
-							<span className="text-[9px] font-black  tracking-widest">{step.title}</span>
+							<span className="text-[9px] font-black tracking-widest">{step.title}</span>
 						</m.div>
 					);
 				})}

@@ -33,22 +33,33 @@ export const QuizOptionsGrid = memo(function QuizOptionsGrid({
 			<div className="space-y-4">
 				{options.map((option) => {
 					const isSelected = selectedOption === option.id;
+					let stateClasses =
+						'bg-card text-foreground border-border hover:border-primary/50 hover:bg-accent/30 focus:border-primary focus:ring-2 focus:ring-primary/20';
+
+					if (isSelected && isChecked) {
+						stateClasses = option.isCorrect
+							? 'bg-tiimo-green/10 text-tiimo-green border-tiimo-green shadow-lg'
+							: 'bg-destructive/10 text-destructive border-destructive shadow-lg';
+					} else if (isSelected) {
+						stateClasses = 'bg-primary/10 text-primary border-primary shadow-md scale-[1.02]';
+					}
+
 					return (
 						<button
 							type="button"
 							key={option.id}
 							disabled={isChecked}
 							onClick={() => onSelect(option.id)}
-							className={`w-full p-5 rounded-2xl border-2 cursor-pointer transition-all flex items-center gap-4 ${
-								isSelected
-									? 'border-primary bg-primary/5 shadow-md scale-[1.02]'
-									: 'border-border hover:border-primary/30'
-							}`}
+							className={`w-full p-5 rounded-2xl border-2 cursor-pointer transition-all flex items-center gap-4 focus:outline-none focus:ring-2 focus:ring-primary/30 ${stateClasses}`}
 						>
 							<span
-								className={`w-8 h-8 rounded-full flex items-center justify-center font-black text-xs ${
+								className={`w-8 h-8 rounded-full flex items-center justify-center font-black text-xs transition-colors ${
 									isSelected
-										? 'bg-primary text-primary-foreground'
+										? isChecked
+											? option.isCorrect
+												? 'bg-tiimo-green text-white'
+												: 'bg-destructive text-white'
+											: 'bg-primary text-primary-foreground'
 										: 'bg-muted text-muted-foreground'
 								}`}
 							>
@@ -72,7 +83,17 @@ export const QuizOptionsGrid = memo(function QuizOptionsGrid({
 			{options.map((option) => {
 				const isSelected = selectedOption === option.id;
 				let stateClasses =
-					'bg-card text-foreground border-border hover:border-primary/30 hover:shadow-md';
+					'bg-card text-foreground border-border hover:border-primary/50 hover:shadow-md hover:bg-accent/30 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none';
+
+				if (isSelected) {
+					if (isChecked) {
+						stateClasses = option.isCorrect
+							? 'bg-tiimo-green/10 text-tiimo-green border-tiimo-green shadow-xl shadow-tiimo-green/20'
+							: 'bg-destructive/10 text-destructive border-destructive shadow-xl shadow-destructive/20';
+					} else {
+						stateClasses = 'bg-primary/10 text-primary border-primary shadow-xl';
+					}
+				}
 
 				if (isSelected) {
 					if (isChecked) {

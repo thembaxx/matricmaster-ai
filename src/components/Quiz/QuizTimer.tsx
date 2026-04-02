@@ -1,6 +1,7 @@
 'use client';
 
 import { AnimatePresence, m } from 'framer-motion';
+import { useMemo } from 'react';
 import { cn } from '@/lib/utils';
 
 interface QuizTimerProps {
@@ -14,9 +15,14 @@ export function QuizTimer({ elapsedSeconds, totalSeconds }: QuizTimerProps) {
 	const hasLimit = totalSeconds !== undefined && totalSeconds > 0;
 	const remaining = hasLimit ? Math.max(0, totalSeconds - elapsedSeconds) : 0;
 	const progress = hasLimit ? Math.min(1, elapsedSeconds / totalSeconds) : 0;
-	const urgencyThreshold = hasLimit && remaining / totalSeconds < 0.3;
 
-	const ringColor = progress < 0.5 ? '#22c55e' : progress < 0.8 ? '#eab308' : '#ef4444';
+	const { ringColor, urgencyClass } = useMemo(() => {
+		if (!hasLimit) return { ringColor: 'var(--tiimo-green)', urgencyClass: '' };
+		if (progress < 0.5) return { ringColor: 'var(--tiimo-green)', urgencyClass: '' };
+		if (progress < 0.8) return { ringColor: 'var(--tiimo-yellow)', urgencyClass: 'timer-warning' };
+		return { ringColor: 'var(--destructive)', urgencyClass: 'timer-urgency' };
+	}, [progress, hasLimit]);
+
 	const formatted = formatTime(elapsedSeconds);
 
 	const radius = 24;
@@ -27,9 +33,11 @@ export function QuizTimer({ elapsedSeconds, totalSeconds }: QuizTimerProps) {
 		<div className="flex items-center justify-between mb-8">
 			<div
 				className={cn(
-					'w-14 h-14 bg-subject-math-soft rounded-[1.5rem] flex items-center justify-center relative',
-					urgencyThreshold && 'timer-urgency'
+					'w-14 h-14 bg-subject-math-soft rounded-[1.5rem] flex items-center justify-center relative transition-colors duration-300',
+					urgencyClass
 				)}
+				role="timer"
+				aria-label={hasLimit ? `${remaining} seconds remaining` : `${formatted} elapsed`}
 			>
 				{hasLimit && (
 					<svg

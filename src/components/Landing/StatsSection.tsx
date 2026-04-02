@@ -23,7 +23,7 @@ export function StatsSection() {
 							whileInView={{ opacity: 1, y: 0 }}
 							viewport={{ once: true }}
 							transition={{ duration: 0.5, delay: index * 0.1 }}
-							className="text-center"
+							className="text-center px-4"
 						>
 							<p className="text-3xl lg:text-4xl font-bold text-tiimo-lavender mb-2 font-numeric">
 								{stat.value}
