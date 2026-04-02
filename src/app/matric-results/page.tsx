@@ -44,15 +44,15 @@ const XAxis = dynamic(() => import('recharts').then((mod) => mod.XAxis), { ssr: 
 const YAxis = dynamic(() => import('recharts').then((mod) => mod.YAxis), { ssr: false });
 
 const provinceColors = [
-	'#9F85FF',
-	'#5CB587',
-	'#48A7DE',
-	'#F2C945',
-	'#14B8A6',
-	'#F97316',
-	'#EC4899',
-	'#818CF8',
-	'#2DD4BF',
+	'#FF6B6B',
+	'#4ECDC4',
+	'#45B7D1',
+	'#96CEB4',
+	'#FFEAA7',
+	'#DDA0DD',
+	'#98D8C8',
+	'#F7DC6F',
+	'#BB8FCE',
 ];
 
 const topLearners: Learner[] = [

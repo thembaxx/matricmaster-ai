@@ -82,10 +82,13 @@ export default function ResultsPage() {
 							</label>
 							<select
 								id="exam-year"
-								value={selectedYear}
+								value={selectedYear !== null ? selectedYear : ''}
 								onChange={(e) => setSelectedYear(Number(e.target.value))}
 								className="w-full h-10 mt-1 px-3 rounded-lg border bg-background text-sm focus:ring-2 focus:ring-primary"
 							>
+								<option value="" disabled>
+									Select year
+								</option>
 								{years.map((y) => (
 									<option key={y} value={y}>
 										{y}
