@@ -45,7 +45,6 @@ export function MobileNavDrawer({
 		handleNavigation,
 	} = useMobileNav();
 	const router = useRouter();
-	const _drawerRef = useRef<HTMLDivElement>(null);
 	const closeButtonRef = useRef<HTMLButtonElement>(null);
 	const previousFocusRef = useRef<HTMLElement | null>(null);
 

@@ -2,7 +2,7 @@
 
 import { Search01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { useDeferredValue, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Input } from '@/components/ui/input';
 
 interface SidebarSearchInputProps {
@@ -13,7 +13,6 @@ interface SidebarSearchInputProps {
 export function SidebarSearchInput({ value, onChange }: SidebarSearchInputProps) {
 	const [localValue, setLocalValue] = useState(value);
 	const [isDebouncing, setIsDebouncing] = useState(false);
-	const _deferredValue = useDeferredValue(localValue);
 
 	useEffect(() => {
 		if (localValue !== value) {
