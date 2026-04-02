@@ -1,4 +1,5 @@
 import { SUBJECTS } from '@/content';
+import { GRADE_POINTS, GRADES } from '@/lib/constants/aps-grade-points';
 
 interface UniversityRequirement {
 	name: string;
@@ -32,18 +33,7 @@ const CORE_SUBJECTS = [
 
 export const SOUTH_AFRICAN_SUBJECTS = CORE_SUBJECTS;
 
-export const GRADE_POINTS: Record<string, number> = {
-	'7': 7,
-	'6': 6,
-	'5': 5,
-	'4': 4,
-	'3': 3,
-	'2': 2,
-	'1': 1,
-	U: 0,
-};
-
-export const GRADES = ['7', '6', '5', '4', '3', '2', '1', 'U'];
+export { GRADE_POINTS, GRADES };
 
 export const UNIVERSITY_REQUIREMENTS: UniversityRequirement[] = [
 	{

@@ -21,7 +21,9 @@ const ResponsiveContainer = dynamic(
 	{ ssr: false }
 );
 
+import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { cn } from '@/lib/utils';
@@ -78,7 +80,7 @@ function SubjectRadarChart({ subject }: { subject: SubjectData }) {
 }
 
 export function SubjectPerformance() {
-	const { data, isLoading } = useQuery({
+	const { data, isLoading, error, refetch } = useQuery({
 		queryKey: ['parent-subject-performance'],
 		queryFn: async () => {
 			const res = await fetch('/api/parent-dashboard');
@@ -106,6 +108,15 @@ export function SubjectPerformance() {
 					Array.from({ length: 3 }).map((_, i) => (
 						<div key={`skeleton-${i}`} className="h-28 bg-muted animate-pulse rounded-2xl" />
 					))
+				) : error ? (
+					<Alert variant="destructive" className="bg-destructive/10 border-destructive/20">
+						<AlertDescription className="flex items-center justify-between">
+							<span>Failed to load subject data</span>
+							<Button variant="outline" size="sm" onClick={() => refetch()}>
+								Try Again
+							</Button>
+						</AlertDescription>
+					</Alert>
 				) : subjects.length === 0 ? (
 					<div className="text-center py-8 text-muted-foreground">
 						<p className="text-sm font-medium">No subject data yet</p>

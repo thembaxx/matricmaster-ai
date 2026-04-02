@@ -1,17 +1,7 @@
 import { desc, eq } from 'drizzle-orm';
+import { GRADE_POINTS } from '@/lib/constants/aps-grade-points';
 import { dbManager, getDb } from './index';
 import { type UserApsScore, userApsScores } from './schema';
-
-const GRADE_POINTS: Record<string, number> = {
-	'7': 7,
-	'6': 6,
-	'5': 5,
-	'4': 4,
-	'3': 3,
-	'2': 2,
-	'1': 1,
-	U: 0,
-};
 
 export async function getUserApsScores(userId: string): Promise<UserApsScore[]> {
 	const connected = await dbManager.waitForConnection();

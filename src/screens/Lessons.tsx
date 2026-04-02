@@ -103,9 +103,13 @@ export default function Lessons() {
 						<div className="absolute left-9.5 top-0 bottom-0 w-0.5 border-l-2 border-dashed border-border/50 z-0" />
 
 						<div className="space-y-6">
-							{filteredLessons.map((lesson) => (
-								<LessonCard key={lesson.id} lesson={lesson} />
-							))}
+							{filteredLessons.length === 0 ? (
+								<div className="text-center py-12">
+									<p className="text-muted-foreground">No lessons found for this category</p>
+								</div>
+							) : (
+								filteredLessons.map((lesson) => <LessonCard key={lesson.id} lesson={lesson} />)
+							)}
 
 							{/* Premium Upsell Card */}
 							<div className="flex gap-6 relative z-10 pt-4">

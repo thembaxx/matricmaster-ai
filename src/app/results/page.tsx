@@ -8,7 +8,7 @@ import {
 	Share05Icon,
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -18,7 +18,11 @@ import { UnderstandingResultsCard } from './understanding-results-card';
 
 export default function ResultsPage() {
 	const [examNumber, setExamNumber] = useState('');
-	const [selectedYear, setSelectedYear] = useState(new Date().getFullYear() - 1);
+	const [selectedYear, setSelectedYear] = useState<number | null>(null);
+
+	useEffect(() => {
+		setSelectedYear(new Date().getFullYear() - 1);
+	}, []);
 
 	const currentYear = new Date().getFullYear();
 	const years = Array.from({ length: 5 }, (_, i) => currentYear - i);
@@ -78,10 +82,13 @@ export default function ResultsPage() {
 							</label>
 							<select
 								id="exam-year"
-								value={selectedYear}
+								value={selectedYear !== null ? selectedYear : ''}
 								onChange={(e) => setSelectedYear(Number(e.target.value))}
 								className="w-full h-10 mt-1 px-3 rounded-lg border bg-background text-sm focus:ring-2 focus:ring-primary"
 							>
+								<option value="" disabled>
+									Select year
+								</option>
 								{years.map((y) => (
 									<option key={y} value={y}>
 										{y}
