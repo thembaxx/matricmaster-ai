@@ -17,10 +17,30 @@ export async function POST(request: NextRequest) {
 		const auth = await getAuth();
 		const session = await auth.api.getSession({ headers: request.headers });
 
-		// Parse body - handle query params from Ably SDK
+		// Parse body - Ably sends clientId in body for POST requests with JSON
+		// Also check query params as fallback
+		const contentType = request.headers.get('content-type') || '';
+		let clientId: string | null = null;
+		let userId: string | null = null;
+
+		if (contentType.includes('application/json')) {
+			try {
+				const body = await request.json();
+				clientId = body.clientId || body.client_id || null;
+				userId = body.userId || body.user_id || null;
+			} catch {
+				// Failed to parse JSON, fall back to query params
+			}
+		}
+
+		// Fallback to query params if not found in body
 		const { searchParams } = new URL(request.url);
-		const clientId = searchParams.get('clientId') || request.nextUrl.searchParams.get('clientId');
-		const userId = searchParams.get('userId') || request.nextUrl.searchParams.get('userId');
+		if (!clientId) {
+			clientId = searchParams.get('clientId') || request.nextUrl.searchParams.get('clientId');
+		}
+		if (!userId) {
+			userId = searchParams.get('userId') || request.nextUrl.searchParams.get('userId');
+		}
 
 		// If no clientId provided, this is likely an anonymous connection attempt
 		if (!clientId) {
