@@ -10,7 +10,8 @@ import {
 import { HugeiconsIcon } from '@hugeicons/react';
 import { FluentEmoji } from '@lobehub/fluent-emoji';
 import { m } from 'framer-motion';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
+import { useEffect, useRef } from 'react';
 import { appConfig } from '@/app.config';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -43,9 +44,35 @@ export function MobileNavDrawer({
 		handleSignOut,
 		handleNavigation,
 	} = useMobileNav();
+	const router = useRouter();
+	const _drawerRef = useRef<HTMLDivElement>(null);
+	const closeButtonRef = useRef<HTMLButtonElement>(null);
+	const previousFocusRef = useRef<HTMLElement | null>(null);
+
+	useEffect(() => {
+		if (open) {
+			previousFocusRef.current = document.activeElement as HTMLElement;
+			setTimeout(() => {
+				closeButtonRef.current?.focus();
+			}, 100);
+		} else if (previousFocusRef.current) {
+			previousFocusRef.current.focus();
+		}
+	}, [open]);
 
 	return (
-		<Drawer open={open} onOpenChange={setOpen}>
+		<Drawer
+			open={open}
+			onOpenChange={(isOpen) => {
+				if (!isOpen && router) {
+					// Small delay to let the drawer close animation finish
+					setTimeout(() => {
+						document.body.style.pointerEvents = '';
+					}, 300);
+				}
+				setOpen(isOpen);
+			}}
+		>
 			<DrawerTrigger asChild>{children}</DrawerTrigger>
 			<DrawerContent>
 				<DrawerHeader>
@@ -99,10 +126,12 @@ export function MobileNavDrawer({
 								</Button>
 							)}
 							<Button
+								ref={closeButtonRef}
 								variant="ghost"
 								size="icon"
 								className="rounded-lg h-9 w-9 -mr-1 focus-visible:ring-2 focus-visible:ring-primary"
 								onClick={() => setOpen(false)}
+								aria-label="Close navigation menu"
 							>
 								<HugeiconsIcon icon={Cancel01Icon} className="w-4 h-4" />
 							</Button>
@@ -116,6 +145,7 @@ export function MobileNavDrawer({
 							<Input
 								type="text"
 								placeholder="search pages..."
+								aria-label="Search pages"
 								value={searchQuery}
 								onChange={(e) => setSearchQuery(e.target.value)}
 								className="pl-9 bg-sidebar-accent/40 border-transparent rounded-lg h-10 text-sm"

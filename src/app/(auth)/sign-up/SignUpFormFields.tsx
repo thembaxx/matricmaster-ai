@@ -66,6 +66,7 @@ export const SignUpFormFields = memo(function SignUpFormFields({
 						aria-invalid={!!errors.name}
 						aria-describedby={errors.name ? nameErrorId : undefined}
 						autoComplete="name"
+						error={!!errors.name}
 					/>
 					{errors.name && (
 						<p
@@ -96,6 +97,7 @@ export const SignUpFormFields = memo(function SignUpFormFields({
 						aria-invalid={!!errors.email}
 						aria-describedby={errors.email ? emailErrorId : undefined}
 						autoComplete="email"
+						error={!!errors.email}
 					/>
 					{errors.email && (
 						<p

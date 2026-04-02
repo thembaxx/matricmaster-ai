@@ -151,7 +151,7 @@ export function AnswerOption({
 			aria-checked={isSelected}
 			aria-label={optionLabel}
 			aria-disabled={disabled}
-			tabIndex={isSelected ? 0 : -1}
+			tabIndex={0}
 			className={cn(
 				'w-full flex items-center gap-4 p-4 rounded-[1.5rem] border-2 transition-colors',
 				'hover:border-tiimo-lavender/30 active:scale-[0.98]',

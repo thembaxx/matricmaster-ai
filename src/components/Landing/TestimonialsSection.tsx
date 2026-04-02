@@ -42,12 +42,13 @@ export function TestimonialsSection() {
 						variants={STAGGER_ITEM}
 						className="tiimo-card p-8 will-change-transform"
 					>
-						<div className="flex items-center gap-1 mb-4">
+						<div className="flex items-center gap-1 mb-4" role="img" aria-label="5 out of 5 stars">
 							{[1, 2, 3, 4, 5].map((item) => (
 								<HugeiconsIcon
 									key={`testimonial-star-${item}`}
 									icon={StarIcon}
 									className="w-5 h-5 text-tiimo-yellow fill-tiimo-yellow"
+									aria-hidden="true"
 								/>
 							))}
 						</div>
