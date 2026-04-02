@@ -1,8 +1,5 @@
-'use client';
-
 import type { Metadata } from 'next';
 import dynamic from 'next/dynamic';
-import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { generatePersonalizedBriefing } from '@/actions/ai-briefing';
 import { getUnvisitedMistakesCountAction } from '@/actions/mistake-to-study-plan';
