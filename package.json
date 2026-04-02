@@ -32,7 +32,9 @@
 		"seed:faq": "tsx scripts/seed-faq-cache.ts",
 		"db:reset": "drizzle-kit drop && drizzle-kit push && drizzle-kit push --config=drizzle.sqlite.config.ts && bun run db:seed",
 		"release": "semantic-release",
-		"prepare": "husky"
+		"prepare": "husky",
+		"remotion:render": "bunx @remotion/cli render src/components/MotionGraphics/entry.tsx --composition-id=DemoReel --output=output/portrait.mp4 --width=1080 --height=1920",
+		"remotion:render:landscape": "bunx @remotion/cli render src/components/MotionGraphics/entry.tsx --composition-id=DemoReel --output=output/landscape.mp4 --width=1920 --height=1080"
 	},
 	"release": {
 		"branches": [
@@ -137,9 +139,9 @@
 		"pdfjs-dist": "^5.6.205",
 		"postgres": "^3.4.8",
 		"posthog-node": "^5.28.9",
-		"react": "19.2.4",
+		"react": "18",
 		"react-day-picker": "^9.14.0",
-		"react-dom": "19.2.4",
+		"react-dom": "18",
 		"react-error-boundary": "^6.1.1",
 		"react-hook-form": "^7.72.0",
 		"react-leaflet": "^5.0.0",
@@ -151,6 +153,7 @@
 		"rehype-katex": "^7.0.1",
 		"remark-gfm": "^4.0.1",
 		"remark-math": "^6.0.0",
+		"remotion": "^4.0.443",
 		"resend": "^6.10.0",
 		"sonner": "^2.0.7",
 		"tailwind-merge": "^3.5.0",
@@ -167,6 +170,7 @@
 		"@commitlint/config-conventional": "^20.5.0",
 		"@next/bundle-analyzer": "16.2.1",
 		"@playwright/test": "^1.58.2",
+		"@remotion/cli": "^4.0.443",
 		"@semantic-release/changelog": "^6.0.3",
 		"@semantic-release/commit-analyzer": "^13.0.1",
 		"@semantic-release/git": "^10.0.1",
