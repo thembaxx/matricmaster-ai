@@ -393,9 +393,42 @@ async function createAuth(): Promise<AuthInstance> {
 		plugins: [authConfig.plugins[0], nextCookies()],
 	};
 
-	// Use type assertion to bypass the type mismatch during build
-	// The drizzleAdapter and runtime config types don't align perfectly but work at runtime
-	return betterAuth(runtimeConfig as Parameters<typeof betterAuth>[0]);
+	const instance = betterAuth(runtimeConfig as Parameters<typeof betterAuth>[0]);
+
+	// Create a proxy for the api object to intercept getSession
+	const wrappedApi = new Proxy(instance.api, {
+		get(target, prop) {
+			if (prop === 'getSession') {
+				const origMethod = Reflect.get(target, prop);
+				return async (args: any) => {
+					let processedArgs = args;
+					if (processedArgs?.headers && typeof processedArgs.headers.entries === 'function') {
+						const safeHeaders = new Headers();
+						try {
+							for (const [key, value] of processedArgs.headers.entries()) {
+								if (typeof key === 'string') {
+									safeHeaders.set(key, String(value));
+								}
+							}
+							processedArgs = { ...processedArgs, headers: safeHeaders };
+						} catch (_e) {
+							// fallback if iteration fails
+						}
+					}
+					return origMethod.apply(target, [processedArgs]);
+				};
+			}
+			return Reflect.get(target, prop);
+		},
+	});
+
+	// Return a new instance with the wrapped api
+	return new Proxy(instance, {
+		get(target, prop) {
+			if (prop === 'api') return wrappedApi;
+			return Reflect.get(target, prop);
+		},
+	}) as AuthInstance;
 }
 
 export async function initAuth(): Promise<AuthInstance> {
