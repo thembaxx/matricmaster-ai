@@ -1,4 +1,5 @@
 import { createGoogleGenerativeAI } from '@ai-sdk/google';
+import * as Sentry from '@sentry/nextjs';
 import { generateText } from 'ai';
 import { differenceInDays } from 'date-fns';
 import { asc, eq } from 'drizzle-orm';
@@ -37,6 +38,7 @@ export async function getWeakAreas(): Promise<{ topic: string; subject: string; 
 			score: Number.parseFloat(String(c.confidenceScore)),
 		}));
 	} catch (error) {
+		Sentry.captureException(error);
 		console.error('Error fetching weak areas:', error);
 		return [];
 	}
@@ -66,6 +68,7 @@ export async function getExamCountdowns(): Promise<ExamCountdown[]> {
 			.filter((e) => e.daysRemaining > 0)
 			.sort((a, b) => a.daysRemaining - b.daysRemaining);
 	} catch (error) {
+		Sentry.captureException(error);
 		console.error('Error computing exam countdowns:', error);
 		return [];
 	}
@@ -145,6 +148,7 @@ Generate exactly 15-20 blocks for the week. dayOffset 0 = Monday.`;
 		try {
 			parsed = JSON.parse(jsonMatch[0]);
 		} catch (error) {
+			Sentry.captureException(error);
 			console.warn('Failed to parse schedule AI response:', error);
 			return { blocks: generateFallbackBlocks(weakAreas, examCountdowns), suggestions: [] };
 		}
@@ -191,6 +195,7 @@ Generate exactly 15-20 blocks for the week. dayOffset 0 = Monday.`;
 
 		return { blocks, suggestions };
 	} catch (error) {
+		Sentry.captureException(error);
 		console.error('Gemini generation failed, using fallback:', error);
 		return { blocks: generateFallbackBlocks(weakAreas, examCountdowns), suggestions: [] };
 	}
