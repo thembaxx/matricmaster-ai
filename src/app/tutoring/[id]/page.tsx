@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { ViewTransition } from 'react';
 import TutorProfile from '@/screens/TutorProfile';
 
 export const metadata: Metadata = {
@@ -7,5 +8,9 @@ export const metadata: Metadata = {
 };
 
 export default function TutorProfilePage({ params }: { params: Promise<{ id: string }> }) {
-	return <TutorProfile params={params} />;
+	return (
+		<ViewTransition enter="vt-nav-forward" exit="vt-nav-back" default="none">
+			<TutorProfile params={params} />
+		</ViewTransition>
+	);
 }

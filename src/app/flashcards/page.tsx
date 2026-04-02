@@ -4,7 +4,7 @@ import { Add01Icon, BookOpen01Icon, Loading03Icon } from '@hugeicons/core-free-i
 import { HugeiconsIcon } from '@hugeicons/react';
 import { useQuery } from '@tanstack/react-query';
 import dynamic from 'next/dynamic';
-import { useState } from 'react';
+import { useState, ViewTransition } from 'react';
 import { toast } from 'sonner';
 import type { Flashcard, FlashcardDeck } from '@/components/Flashcards/constants';
 import { DeckGrid } from '@/components/Flashcards/DeckGrid';
@@ -132,80 +132,82 @@ export default function FlashcardsPage() {
 	}
 
 	return (
-		<div className="container mx-auto max-w-6xl px-4 pt-8 pb-32">
-			<div className="mb-8 flex items-center justify-between">
-				<div>
-					<h1 className="text-3xl font-bold tracking-tight">Flashcards</h1>
-					<p className="text-muted-foreground">
-						Create and study flashcard decks with spaced repetition
-					</p>
-				</div>
-				<Button onClick={() => setShowCreateModal(true)}>
-					<HugeiconsIcon icon={Add01Icon} className="mr-2 h-4 w-4" />
-					New Deck
-				</Button>
-			</div>
-
-			<DeckStatsCards decks={decks} />
-
-			{decks.length === 0 ? (
-				<Card className="border-dashed">
-					<CardContent className="flex flex-col items-center justify-center py-16">
-						<HugeiconsIcon
-							icon={BookOpen01Icon}
-							className="h-16 w-16 text-muted-foreground/50 mb-4"
-						/>
-						<h3 className="text-xl font-semibold mb-2">No flashcard decks yet</h3>
-						<p className="text-muted-foreground text-center mb-4 max-w-md">
-							Create your first deck to start studying with spaced repetition. You can also generate
-							flashcards from the Study Helper.
+		<ViewTransition default="none">
+			<div className="vt-nav-forward container mx-auto max-w-6xl px-4 pt-8 pb-32">
+				<div className="mb-8 flex items-center justify-between">
+					<div>
+						<h1 className="text-3xl font-bold tracking-tight">Flashcards</h1>
+						<p className="text-muted-foreground">
+							Create and study flashcard decks with spaced repetition
 						</p>
-						<Button onClick={() => setShowCreateModal(true)}>
-							<HugeiconsIcon icon={Add01Icon} className="mr-2 h-4 w-4" />
-							Create Your First Deck
-						</Button>
-					</CardContent>
-				</Card>
-			) : (
-				<ScrollArea className="h-[calc(100vh-400px)]">
-					<DeckGrid
-						decks={decks}
-						onOpenDeck={handleOpenDeck}
-						onStartReview={handleStartReview}
-						onDeleteDeck={handleDeleteDeck}
+					</div>
+					<Button onClick={() => setShowCreateModal(true)}>
+						<HugeiconsIcon icon={Add01Icon} className="mr-2 h-4 w-4" />
+						New Deck
+					</Button>
+				</div>
+
+				<DeckStatsCards decks={decks} />
+
+				{decks.length === 0 ? (
+					<Card className="border-dashed">
+						<CardContent className="flex flex-col items-center justify-center py-16">
+							<HugeiconsIcon
+								icon={BookOpen01Icon}
+								className="h-16 w-16 text-muted-foreground/50 mb-4"
+							/>
+							<h3 className="text-xl font-semibold mb-2">No flashcard decks yet</h3>
+							<p className="text-muted-foreground text-center mb-4 max-w-md">
+								Create your first deck to start studying with spaced repetition. You can also
+								generate flashcards from the Study Helper.
+							</p>
+							<Button onClick={() => setShowCreateModal(true)}>
+								<HugeiconsIcon icon={Add01Icon} className="mr-2 h-4 w-4" />
+								Create Your First Deck
+							</Button>
+						</CardContent>
+					</Card>
+				) : (
+					<ScrollArea className="h-[calc(100vh-400px)]">
+						<DeckGrid
+							decks={decks}
+							onOpenDeck={handleOpenDeck}
+							onStartReview={handleStartReview}
+							onDeleteDeck={handleDeleteDeck}
+						/>
+					</ScrollArea>
+				)}
+
+				<CreateDeckModal
+					open={showCreateModal}
+					onOpenChange={setShowCreateModal}
+					onCreated={handleDeckCreated}
+				/>
+
+				{selectedDeck && (
+					<DeckDetailModal
+						open={showDeckModal}
+						onOpenChange={setShowDeckModal}
+						deck={selectedDeck}
+						flashcards={deckFlashcards}
+						onUpdated={handleCardsUpdated}
 					/>
-				</ScrollArea>
-			)}
+				)}
 
-			<CreateDeckModal
-				open={showCreateModal}
-				onOpenChange={setShowCreateModal}
-				onCreated={handleDeckCreated}
-			/>
-
-			{selectedDeck && (
-				<DeckDetailModal
-					open={showDeckModal}
-					onOpenChange={setShowDeckModal}
-					deck={selectedDeck}
-					flashcards={deckFlashcards}
-					onUpdated={handleCardsUpdated}
-				/>
-			)}
-
-			{showReviewModal && reviewCards.length > 0 && (
-				<FlashcardModal
-					open={showReviewModal}
-					onOpenChange={setShowReviewModal}
-					flashcards={reviewCards.map((c) => ({
-						id: c.id,
-						front: c.front,
-						back: c.back,
-						tags: [],
-					}))}
-					reviewMode={true}
-				/>
-			)}
-		</div>
+				{showReviewModal && reviewCards.length > 0 && (
+					<FlashcardModal
+						open={showReviewModal}
+						onOpenChange={setShowReviewModal}
+						flashcards={reviewCards.map((c) => ({
+							id: c.id,
+							front: c.front,
+							back: c.back,
+							tags: [],
+						}))}
+						reviewMode={true}
+					/>
+				)}
+			</div>
+		</ViewTransition>
 	);
 }

@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import dynamic from 'next/dynamic';
 import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
+import { ViewTransition } from 'react';
 import { generatePersonalizedBriefing } from '@/actions/ai-briefing';
 import { getUnvisitedMistakesCountAction } from '@/actions/mistake-to-study-plan';
 import { appConfig } from '@/app.config';
@@ -108,12 +109,18 @@ export default async function DashboardPage() {
 	]);
 
 	return (
-		<DashboardWithErrorBoundary
-			initialStreak={initialStreak}
-			initialAchievements={initialAchievements}
-			session={session}
-			briefingData={briefingData}
-			mistakeCount={mistakeCount}
-		/>
+		<ViewTransition
+			enter={{ 'nav-forward': 'vt-nav-forward', 'nav-back': 'vt-nav-back', default: 'none' }}
+			exit={{ 'nav-forward': 'vt-nav-forward', 'nav-back': 'vt-nav-back', default: 'none' }}
+			default="none"
+		>
+			<DashboardWithErrorBoundary
+				initialStreak={initialStreak}
+				initialAchievements={initialAchievements}
+				session={session}
+				briefingData={briefingData}
+				mistakeCount={mistakeCount}
+			/>
+		</ViewTransition>
 	);
 }

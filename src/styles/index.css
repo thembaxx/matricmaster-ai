@@ -210,3 +210,157 @@ html {
 .breakdown-enter {
   animation: breakdown-enter 400ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
+
+/* ==========================================================================
+   VIEW TRANSITIONS
+   ========================================================================== */
+
+:root {
+  --duration-exit: 150ms;
+  --duration-enter: 210ms;
+  --duration-move: 400ms;
+}
+
+@keyframes vt-fade {
+  from { filter: blur(3px); opacity: 0; }
+  to { filter: blur(0); opacity: 1; }
+}
+
+@keyframes vt-slide {
+  from { translate: var(--slide-offset); }
+  to { translate: 0; }
+}
+
+@keyframes vt-slide-y {
+  from { transform: translateY(var(--slide-y-offset, 10px)); }
+  to { transform: translateY(0); }
+}
+
+@keyframes vt-scale-down {
+  from { transform: scale(1); opacity: 1; }
+  to { transform: scale(0.85); opacity: 0; }
+}
+
+@keyframes vt-scale-up {
+  from { transform: scale(0.85); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+@keyframes vt-via-blur {
+  30% { filter: blur(3px); }
+}
+
+/* Fade */
+::view-transition-old(.vt-fade-out) {
+  animation: var(--duration-exit) ease-in vt-fade reverse;
+}
+::view-transition-new(.vt-fade-in) {
+  animation: var(--duration-enter) ease-out var(--duration-exit) both vt-fade;
+}
+
+/* Slide Vertical */
+::view-transition-old(.vt-slide-down) {
+  animation:
+    var(--duration-exit) ease-out both vt-fade reverse,
+    var(--duration-exit) ease-out both vt-slide-y reverse;
+}
+::view-transition-new(.vt-slide-up) {
+  animation:
+    var(--duration-enter) ease-in var(--duration-exit) both vt-fade,
+    var(--duration-move) ease-in both vt-slide-y;
+}
+
+/* Directional Navigation */
+::view-transition-new(.vt-slide-from-right) {
+  --slide-offset: 60px;
+  animation:
+    var(--duration-enter) ease-out var(--duration-exit) both vt-fade,
+    var(--duration-move) ease-in-out both vt-slide;
+}
+::view-transition-old(.vt-slide-to-left) {
+  --slide-offset: -60px;
+  animation:
+    var(--duration-exit) ease-in both vt-fade reverse,
+    var(--duration-move) ease-in-out both vt-slide reverse;
+}
+
+::view-transition-new(.vt-slide-from-left) {
+  --slide-offset: -60px;
+  animation:
+    var(--duration-enter) ease-out var(--duration-exit) both vt-fade,
+    var(--duration-move) ease-in-out both vt-slide;
+}
+::view-transition-old(.vt-slide-to-right) {
+  --slide-offset: 60px;
+  animation:
+    var(--duration-exit) ease-in both vt-fade reverse,
+    var(--duration-move) ease-in-out both vt-slide reverse;
+}
+
+/* Nav Forward */
+::view-transition-old(.vt-nav-forward) {
+  --slide-offset: -60px;
+  animation:
+    var(--duration-exit) ease-in both vt-fade reverse,
+    var(--duration-move) ease-in-out both vt-slide reverse;
+}
+::view-transition-new(.vt-nav-forward) {
+  --slide-offset: 60px;
+  animation:
+    var(--duration-enter) ease-out var(--duration-exit) both vt-fade,
+    var(--duration-move) ease-in-out both vt-slide;
+}
+
+/* Nav Back */
+::view-transition-old(.vt-nav-back) {
+  --slide-offset: 60px;
+  animation:
+    var(--duration-exit) ease-in both vt-fade reverse,
+    var(--duration-move) ease-in-out both vt-slide reverse;
+}
+::view-transition-new(.vt-nav-back) {
+  --slide-offset: -60px;
+  animation:
+    var(--duration-enter) ease-out var(--duration-exit) both vt-fade,
+    var(--duration-move) ease-in-out both vt-slide;
+}
+
+/* Shared Element Morph */
+::view-transition-group(.vt-morph) {
+  animation-duration: var(--duration-move);
+}
+
+::view-transition-image-pair(.vt-morph) {
+  animation-name: vt-via-blur;
+}
+
+/* Scale */
+::view-transition-old(.vt-scale-out) {
+  animation: var(--duration-exit) ease-in vt-scale-down;
+}
+::view-transition-new(.vt-scale-in) {
+  animation: var(--duration-enter) ease-out var(--duration-exit) both vt-scale-up;
+}
+
+/* Persistent Element Isolation */
+::view-transition-group(.vt-persistent) {
+  animation: none;
+  z-index: 100;
+}
+
+::view-transition-old(.vt-persistent) {
+  display: none;
+}
+::view-transition-new(.vt-persistent) {
+  animation: none;
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(*),
+  ::view-transition-new(*),
+  ::view-transition-group(*) {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+  }
+}

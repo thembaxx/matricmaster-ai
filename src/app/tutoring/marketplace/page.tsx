@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { ViewTransition } from 'react';
 import Marketplace from '@/screens/Marketplace';
 
 export const metadata: Metadata = {
@@ -7,5 +8,9 @@ export const metadata: Metadata = {
 };
 
 export default function MarketplacePage() {
-	return <Marketplace />;
+	return (
+		<ViewTransition default="none">
+			<Marketplace />
+		</ViewTransition>
+	);
 }

@@ -13,7 +13,7 @@ import {
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useState, ViewTransition } from 'react';
 import { toast } from 'sonner';
 import { FeatureGate } from '@/components/Subscription/FeatureGate';
 import { Badge } from '@/components/ui/badge';
@@ -29,7 +29,9 @@ export default function TutoringPage() {
 			showPreviewButton={true}
 			upgradeMessage="Get 2 free live tutoring sessions per month with Basic plan or higher"
 		>
-			<TutoringContent />
+			<ViewTransition default="none">
+				<TutoringContent />
+			</ViewTransition>
 		</FeatureGate>
 	);
 }
