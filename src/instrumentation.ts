@@ -12,9 +12,9 @@ export async function register() {
 			console.log('✅ Background: Database and Auth pre-initialized');
 
 			if (process.env.NEXT_RUNTIME === 'nodejs') {
-				await import('../sentry.server.config');
+				await import('./sentry.server.config');
 			} else if (process.env.NEXT_RUNTIME === 'edge') {
-				await import('../sentry.edge.config');
+				await import('./sentry.edge.config');
 			}
 		} catch (error) {
 			console.warn('❌ Background: Failed to pre-initialize:', error);
