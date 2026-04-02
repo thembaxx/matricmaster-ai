@@ -33,7 +33,7 @@ export function IOSInstallPrompt() {
 	return (
 		<div className="fixed top-4 left-4 right-4 z-50 md:left-auto md:right-auto md:w-auto animate-in slide-in-from-top duration-300">
 			<div className="bg-card/95 backdrop-blur-sm border border-border/60 rounded-lg shadow-md px-3 py-2 flex items-center gap-3">
-				<div className="flex-1 min-w-0">
+				<div className="flex-1 min-w-0 pl-3">
 					<p className="text-xs font-medium">Add to Home Screen</p>
 					<p className="text-xs text-muted-foreground hidden sm:block">Tap Share in Safari</p>
 				</div>
@@ -42,9 +42,9 @@ export function IOSInstallPrompt() {
 						size="sm"
 						variant="default"
 						onClick={handleDismiss}
-						className="shrink-0 text-xs h-7 px-2"
+						className="shrink-0 text-[12.6px] h-7 pl-3 pr-4"
 					>
-						<Download className="h-3 w-3 mr-1" />
+						<Download className="h-3 w-3" />
 						Got it
 					</Button>
 					<Button
