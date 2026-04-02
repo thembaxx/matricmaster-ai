@@ -107,10 +107,9 @@ export function useSignIn() {
 	const handleSocialSignIn = async (provider: 'google' | 'twitter') => {
 		setError(null);
 		try {
-			const callbackURL = new URL(safeCallbackUrl, window.location.origin).toString();
 			const { error: authError } = await authClient.signIn.social({
 				provider,
-				callbackURL,
+				callbackURL: safeCallbackUrl,
 			});
 
 			if (authError) {

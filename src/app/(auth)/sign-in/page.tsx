@@ -1,7 +1,9 @@
 import type { Metadata } from 'next';
+import { redirect } from 'next/navigation';
 import { Suspense } from 'react';
 
 import { appConfig } from '@/app.config';
+import { optionalAuth } from '@/lib/server-auth';
 import { SignInForm } from './SignInForm';
 
 export const metadata: Metadata = {
@@ -10,17 +12,17 @@ export const metadata: Metadata = {
 		'Sign in to continue your matric exam preparation. Track your progress and ace your NSC exams.',
 };
 
-export default function SignInPage() {
+export default async function SignInPage() {
+	const session = await optionalAuth();
+	if (session) {
+		redirect('/dashboard');
+	}
+
 	return (
 		<Suspense
 			fallback={
-				<div className="min-h-screen flex items-center justify-center bg-muted dark:bg-background">
-					<div
-						className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"
-						role="progressbar"
-						aria-label="Loading sign-in form"
-						aria-live="polite"
-					/>
+				<div className="min-h-screen flex items-center justify-center">
+					<div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
 				</div>
 			}
 		>

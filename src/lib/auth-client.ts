@@ -5,15 +5,11 @@ import type { SessionUser } from './auth';
 
 export type { SessionUser };
 
-const getBaseURL = () => {
-	if (typeof window !== 'undefined') {
-		return window.location.origin;
-	}
-	return process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
-};
-
 export const authClient = createAuthClient({
-	baseURL: getBaseURL(),
+	baseURL:
+		process.env.BETTER_AUTH_URL ||
+		process.env.NEXT_PUBLIC_APP_URL ||
+		(typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3000'),
 	plugins: [
 		twoFactorClient({
 			onTwoFactorRedirect() {
