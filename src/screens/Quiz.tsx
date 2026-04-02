@@ -1,7 +1,7 @@
 'use client';
 
 import { useSearchParams } from 'next/navigation';
-import { Suspense, useCallback, useEffect, useRef } from 'react';
+import { Suspense, useCallback, useEffect, useRef, ViewTransition } from 'react';
 import { ContextualAIBubble } from '@/components/AI/ContextualAIBubble';
 import { EdgeCaseHandler } from '@/components/EdgeCase/EdgeCaseHandler';
 import { FocusContent } from '@/components/Layout/FocusContent';
@@ -277,8 +277,10 @@ interface QuizProps {
 
 export default function Quiz(props: QuizProps) {
 	return (
-		<Suspense fallback={<QuizSkeleton />}>
-			<QuizInner {...props} />
-		</Suspense>
+		<ViewTransition default="none" enter="vt-nav-forward" exit="vt-nav-back">
+			<Suspense fallback={<QuizSkeleton />}>
+				<QuizInner {...props} />
+			</Suspense>
+		</ViewTransition>
 	);
 }
