@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import dynamic from 'next/dynamic';
+import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { generatePersonalizedBriefing } from '@/actions/ai-briefing';
 import { getUnvisitedMistakesCountAction } from '@/actions/mistake-to-study-plan';
@@ -83,8 +84,8 @@ function DashboardWithErrorBoundary({
 
 export default async function DashboardPage() {
 	const auth = await getAuth();
-	const headersList = await headers();
-	const session = await auth.api.getSession({ headers: headersList });
+	const headersList = headers();
+	const session = await auth.api.getSession({ headers: headersList as unknown as HeadersInit });
 	if (!session?.user) {
 		redirect('/sign-in');
 	}

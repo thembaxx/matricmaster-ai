@@ -175,18 +175,15 @@ export default function BecomeTutor() {
 							<Label>Subjects you can teach *</Label>
 							<div className="flex flex-wrap gap-2 mt-3">
 								{SUBJECTS.map((subject) => (
-									<button
+									<Button
 										key={subject}
+										variant={selectedSubjects.includes(subject) ? 'default' : 'outline'}
 										type="button"
 										onClick={() => handleToggleSubject(subject)}
-										className={`px-3 py-1.5 rounded-full text-sm border transition-colors ${
-											selectedSubjects.includes(subject)
-												? 'bg-primary text-primary-foreground border-primary'
-												: 'bg-background border-border hover:border-primary'
-										}`}
+										className="px-3 py-1.5 rounded-full text-sm transition-colors"
 									>
 										{subject}
-									</button>
+									</Button>
 								))}
 							</div>
 							{selectedSubjects.length === 0 && (

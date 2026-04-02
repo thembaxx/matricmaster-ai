@@ -1,9 +1,9 @@
 'use client';
 
+import { useQuery } from '@tanstack/react-query';
 import { useChannel } from 'ably/react';
 import { useCallback, useEffect } from 'react';
 import { toast } from 'sonner';
-import useSWR from 'swr';
 import { useAblyStatus } from '@/lib/ably/provider';
 import { useSession } from '@/lib/auth-client';
 import { useNotificationStore } from '@/stores/useNotificationStore';
@@ -35,15 +35,14 @@ export function useRealtimeNotifications(): UseRealtimeNotificationsReturn {
 	const { unreadCount, incrementUnread, resetUnread, setUnreadCount } = useNotificationStore();
 	const channelName = session?.user?.id ? `user:${session.user.id}:notifications` : 'dummy-channel';
 
-	const { data: notificationData } = useSWR(
-		session?.user?.id ? '/api/notifications?unreadOnly=true&limit=0' : null,
-		fetcher,
-		{
-			revalidateOnFocus: false,
-			revalidateOnReconnect: false,
-			dedupingInterval: 60000,
-		}
-	);
+	const { data: notificationData } = useQuery<{ unreadCount: number }>({
+		queryKey: ['notifications', 'unread-count'],
+		queryFn: () => fetcher('/api/notifications?unreadOnly=true&limit=0'),
+		enabled: !!session?.user?.id,
+		staleTime: 60000,
+		refetchOnWindowFocus: false,
+		refetchOnReconnect: false,
+	});
 
 	useEffect(() => {
 		if (notificationData?.unreadCount !== undefined) {
