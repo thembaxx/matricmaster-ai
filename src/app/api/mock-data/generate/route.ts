@@ -44,7 +44,7 @@ export async function POST(request: NextRequest) {
 		});
 
 		const dateRange = generateDateRange(
-			generator.rng as never,
+			generator.getRng(),
 			monthsBack,
 			intensity as 'low' | 'medium' | 'high'
 		);
@@ -88,7 +88,7 @@ export async function POST(request: NextRequest) {
 			aiConversations: 0,
 		};
 
-		const socialGen = new SocialGenerator(generator.rng as never, dateRange as never);
+		const socialGen = new SocialGenerator(generator.getRng() as never, dateRange as never);
 
 		for (const userId of insertedUserIds) {
 			try {

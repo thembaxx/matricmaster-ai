@@ -121,6 +121,10 @@ export class MockDataGenerator {
 		return { ...this.config };
 	}
 
+	getRng(): SeededRandom {
+		return this.rng;
+	}
+
 	setSubjectIds(ids: Map<string, number>): void {
 		this.subjectIds = ids;
 	}
