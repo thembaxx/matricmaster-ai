@@ -64,7 +64,7 @@ export function LevelUpAnimation({
 							initial={{ y: 20, opacity: 0 }}
 							animate={{ y: 0, opacity: 1 }}
 							transition={{ delay: 0.3 }}
-							className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-violet-600 to-purple-600"
+							className="text-4xl font-black text-violet-600"
 						>
 							LEVEL UP!
 						</m.h2>

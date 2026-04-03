@@ -28,7 +28,7 @@ export const Podium = memo(function Podium({ data }: { data: LeaderboardEntry[] 
 					<div className="absolute inset-0 bg-muted rounded-full blur-2xl opacity-0 group-hover:opacity-40 transition-opacity" />
 					<Avatar className="w-16 h-16 sm:w-28 sm:h-28 border-4 border-muted relative z-10 transition-transform group-hover:scale-110 shadow-xl">
 						<AvatarImage src={r2?.userImage || undefined} className="object-cover" />
-						<AvatarFallback className="font-black text-xl">
+						<AvatarFallback className="font-black text-xl bg-linear-to-br from-blue-400 to-indigo-600 text-white">
 							{r2?.userName?.[0] || '?'}
 						</AvatarFallback>
 					</Avatar>
@@ -63,7 +63,7 @@ export const Podium = memo(function Podium({ data }: { data: LeaderboardEntry[] 
 					<div className="absolute -inset-4 bg-primary-orange/20 rounded-full opacity-40 blur-3xl group-hover:opacity-60 transition-opacity" />
 					<Avatar className="w-24 h-24 sm:w-40 sm:h-40 border-4 border-primary-orange relative z-10 transition-transform group-hover:scale-110 shadow-2xl">
 						<AvatarImage src={r1?.userImage || undefined} className="object-cover" />
-						<AvatarFallback className="font-black text-3xl">
+						<AvatarFallback className="font-black text-3xl bg-linear-to-br from-amber-400 to-orange-600 text-white">
 							{r1?.userName?.[0] || '?'}
 						</AvatarFallback>
 					</Avatar>
@@ -89,7 +89,7 @@ export const Podium = memo(function Podium({ data }: { data: LeaderboardEntry[] 
 					<div className="absolute inset-0 bg-primary-cyan/20 rounded-full blur-2xl opacity-0 group-hover:opacity-40 transition-opacity" />
 					<Avatar className="w-16 h-16 sm:w-28 sm:h-28 border-4 border-primary-cyan/30 relative z-10 transition-transform group-hover:scale-110 shadow-xl">
 						<AvatarImage src={r3?.userImage || undefined} className="object-cover" />
-						<AvatarFallback className="font-black text-xl">
+						<AvatarFallback className="font-black text-xl bg-linear-to-br from-emerald-400 to-teal-600 text-white">
 							{r3?.userName?.[0] || '?'}
 						</AvatarFallback>
 					</Avatar>

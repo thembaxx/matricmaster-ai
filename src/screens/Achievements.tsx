@@ -89,7 +89,7 @@ export default function Achievements() {
 				<BadgesGridSection filteredBadges={filteredBadges} />
 
 				{recentlyUnlocked.length > 0 && (
-					<div className="fixed bottom-24 left-1/2 -translate-x-1/2 bg-primary text-white px-6 py-3 rounded-full shadow-lg animate-bounce">
+					<div className="fixed bottom-24 left-1/2 -translate-x-1/2 bg-primary text-white px-6 py-3 rounded-full shadow-lg animate-[pulse_2s_ease-in-out_infinite]">
 						<p className="font-medium">Unlocked: {recentlyUnlocked[recentlyUnlocked.length - 1]}</p>
 					</div>
 				)}

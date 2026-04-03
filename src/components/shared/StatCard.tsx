@@ -99,7 +99,6 @@ export const StatCard = memo(function StatCard({
 				${className}
 			`}
 		>
-			<div className="absolute inset-0 bg-gradient-to-br from-transparent to-transparent group-hover:from-primary/5 group-hover:to-transparent transition-all duration-500" />
 			<div className="flex items-center gap-4 sm:gap-6 relative z-10">
 				<div
 					className={`
