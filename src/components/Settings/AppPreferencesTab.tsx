@@ -34,6 +34,7 @@ export function AppPreferencesTab() {
 	} = useAITutorDifficulty();
 
 	const [showHistory, setShowHistory] = useState(false);
+	const [isGenerating, setIsGenerating] = useState(false);
 
 	const stats = getStats();
 
@@ -214,6 +215,76 @@ export function AppPreferencesTab() {
 								<SelectItem value="af">Afrikaans</SelectItem>
 							</SelectContent>
 						</Select>
+					</div>
+				</CardContent>
+			</Card>
+
+			<Card className="border-amber-200 dark:border-amber-800">
+				<CardHeader>
+					<div className="flex justify-between items-start">
+						<div className="flex items-center gap-2">
+							<HugeiconsIcon icon={TargetIcon} className="h-5 w-5 text-amber-500" />
+							<div>
+								<CardTitle className="text-amber-700 dark:text-amber-400">Demo Mode</CardTitle>
+								<CardDescription>
+									Generate mock data to preview the app with realistic activity.
+								</CardDescription>
+							</div>
+						</div>
+						<Badge
+							variant="outline"
+							className="border-amber-500 text-amber-700 dark:text-amber-400"
+						>
+							Development
+						</Badge>
+					</div>
+				</CardHeader>
+				<CardContent className="space-y-4">
+					<div className="bg-amber-50 dark:bg-amber-950/30 rounded-lg p-4 text-sm">
+						<p className="text-amber-800 dark:text-amber-300">
+							<strong>Note:</strong> This feature generates 100+ users with 6 months of simulated
+							activity including quiz results, study sessions, achievements, and social features.
+							Best used for demos and testing.
+						</p>
+					</div>
+
+					<div className="flex flex-col gap-3">
+						<Button
+							onClick={async () => {
+								setIsGenerating(true);
+								try {
+									const response = await fetch('/api/mock-data/generate', {
+										method: 'POST',
+										headers: { 'Content-Type': 'application/json' },
+										body: JSON.stringify({
+											userCount: 100,
+											monthsBack: 6,
+											intensity: 'high',
+										}),
+									});
+									const result = await response.json();
+									if (result.success) {
+										toast.success(
+											`Generated ${result.usersGenerated} users with ${result.records.quizResults} quiz results!`
+										);
+									} else {
+										toast.error(result.error || 'Generation failed');
+									}
+								} catch (err) {
+									toast.error('Failed to generate mock data');
+								} finally {
+									setIsGenerating(false);
+								}
+							}}
+							disabled={isGenerating}
+							className="w-full bg-amber-600 hover:bg-amber-700"
+						>
+							{isGenerating ? 'Generating...' : 'Generate Demo Data (100 Users)'}
+						</Button>
+					</div>
+
+					<div className="text-xs text-muted-foreground text-center">
+						This will add data to your database. Run multiple times for more variety.
 					</div>
 				</CardContent>
 			</Card>

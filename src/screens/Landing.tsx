@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { HeroSection } from '@/components/Landing';
-import { Footer } from '@/components/Layout/footer';
+import { Footer } from '@/components/Layout/Footer';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useSession } from '@/lib/auth-client';
 
