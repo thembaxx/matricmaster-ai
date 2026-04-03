@@ -60,9 +60,9 @@ export function StudyPlanAdaptations({ planId }: StudyPlanAdaptationsProps) {
 				<Badge variant="secondary">{adaptations.length}</Badge>
 			</div>
 			<div className="space-y-2">
-				{adaptations.slice(0, 5).map((adaptation, index) => (
+				{adaptations.slice(0, 5).map((adaptation) => (
 					<div
-						key={index}
+						key={`${adaptation.topic}-${adaptation.adaptedAt?.getTime()}`}
 						className="flex items-center justify-between rounded-lg bg-muted/50 p-2 text-sm"
 					>
 						<div className="flex items-center gap-2">

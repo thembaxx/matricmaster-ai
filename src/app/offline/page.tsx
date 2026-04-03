@@ -186,7 +186,7 @@ export default function OfflinePage() {
 		<div className="min-h-screen bg-background pb-20">
 			<header className="px-6 pt-12 pb-4 bg-card border-b border-border sticky top-0 z-20">
 				<div className="flex items-center gap-4 max-w-2xl mx-auto">
-					<Link href="/dashboard">
+					<Link href="/dashboard" transitionTypes={['nav-back']}>
 						<Button variant="ghost" size="icon">
 							<HugeiconsIcon icon={ArrowLeft01Icon} className="w-5 h-5" />
 						</Button>

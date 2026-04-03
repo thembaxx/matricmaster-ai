@@ -34,6 +34,7 @@ export default function Profile() {
 		setEditForm,
 		userStats,
 		isLoading,
+		isSaving,
 		chartData,
 		handleSaveProfile,
 	} = useProfile();
@@ -55,6 +56,7 @@ export default function Profile() {
 					editForm={editForm}
 					setEditForm={setEditForm}
 					handleSaveProfile={handleSaveProfile}
+					isSaving={isSaving}
 				/>
 
 				<div className="grid grid-cols-1 lg:grid-cols-12 pt-8 gap-8 lg:gap-12">

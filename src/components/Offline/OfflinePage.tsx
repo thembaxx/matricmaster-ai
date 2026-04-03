@@ -106,7 +106,7 @@ export function CachedTasksList({ tasks }: { tasks: CachedTask[] }) {
 				</CardTitle>
 			</CardHeader>
 			<CardContent>
-				<ScrollArea className="h-[200px]">
+				<ScrollArea className="min-h-[150px] max-h-[300px]">
 					<div className="space-y-2">
 						{tasks.map((task) => (
 							<div key={task.id} className="flex items-center gap-3 p-2 rounded-lg bg-muted/50">
@@ -208,7 +208,7 @@ export function CachedPapersList({
 				</CardTitle>
 			</CardHeader>
 			<CardContent>
-				<ScrollArea className="h-[200px]">
+				<ScrollArea className="min-h-[150px] max-h-[300px]">
 					<div className="space-y-2">
 						{papers.map((paper) => (
 							<div

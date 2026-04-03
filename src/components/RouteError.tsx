@@ -54,7 +54,7 @@ export function RouteError({
 							'please try again or contact support if the issue persists.'}
 					</p>
 					{error.digest && (
-						<p className="text-xs text-muted-foreground/60">error id: {error.digest}</p>
+						<p className="text-xs text-muted-foreground">error id: {error.digest}</p>
 					)}
 				</div>
 
@@ -64,7 +64,7 @@ export function RouteError({
 						try again
 					</Button>
 					{showHomeButton && (
-						<Link href="/">
+						<Link href="/" transitionTypes={['fade']}>
 							<Button className="gap-2 rounded-xl">
 								<HugeiconsIcon icon={Home01Icon} className="w-4 h-4" />
 								home

@@ -18,6 +18,7 @@ interface LicenseManagementCardProps {
 	isLoading: boolean;
 	onGenerate: (count: number) => void;
 	onCopyKey: (key: string) => void;
+	onExport?: () => void;
 	formatDate: (date: Date | null) => string;
 }
 
@@ -26,6 +27,7 @@ export function LicenseManagementCard({
 	isLoading,
 	onGenerate,
 	onCopyKey,
+	onExport,
 	formatDate,
 }: LicenseManagementCardProps) {
 	return (
@@ -44,7 +46,7 @@ export function LicenseManagementCard({
 						)}
 						Generate 10
 					</Button>
-					<Button variant="outline">
+					<Button variant="outline" onClick={onExport} disabled={licenses.length === 0}>
 						<HugeiconsIcon icon={Download01Icon} className="w-4 h-4 mr-2" />
 						Export All
 					</Button>

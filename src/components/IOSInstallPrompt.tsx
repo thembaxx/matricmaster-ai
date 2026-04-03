@@ -35,7 +35,7 @@ export function IOSInstallPrompt() {
 			<div className="bg-card/95 backdrop-blur-sm border border-border/60 rounded-lg shadow-md px-3 py-2 flex items-center gap-3">
 				<div className="flex-1 min-w-0 pl-3">
 					<p className="text-xs font-medium">Add to Home Screen</p>
-					<p className="text-xs text-muted-foreground hidden sm:block">Tap Share in Safari</p>
+					<p className="text-xs text-muted-foreground block">Tap Share in Safari</p>
 				</div>
 				<div className="flex items-center gap-1.5">
 					<Button

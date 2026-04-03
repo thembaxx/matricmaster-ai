@@ -105,6 +105,13 @@ export function TeamGoals({ className }: { className?: string }) {
 										: 'bg-card border-border hover:border-primary/20'
 								)}
 								onClick={() => setExpandedGoal(isExpanded ? null : goal.id)}
+								onKeyDown={(e) => {
+									if (e.key === 'Enter' || e.key === ' ') {
+										setExpandedGoal(isExpanded ? null : goal.id);
+									}
+								}}
+								role="button"
+								tabIndex={0}
 							>
 								<div className="flex items-start justify-between mb-3">
 									<div className="flex-1">

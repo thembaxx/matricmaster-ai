@@ -73,8 +73,6 @@ export function AudioPlayer({
 					onTimeUpdate={handleTimeUpdate}
 					onLoadedMetadata={handleLoadedMetadata}
 					onEnded={handleAudioEnded}
-					onPlay={() => {}}
-					onPause={() => {}}
 					onError={handleAudioError}
 					onCanPlay={handleAudioCanPlay}
 					preload="metadata"

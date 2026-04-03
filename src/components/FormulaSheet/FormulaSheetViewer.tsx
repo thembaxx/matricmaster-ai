@@ -111,7 +111,7 @@ function FormulaSearch({ onSelect }: { onSelect: (formula: Formula) => void }) {
 								tabIndex={0}
 								key={formula.id}
 								onClick={() => onSelect(formula)}
-								onKeyDown={(e) => e.key === 'Enter' && onSelect(formula)}
+								onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && onSelect(formula)}
 								className="cursor-pointer"
 							>
 								<FormulaCard formula={formula} />

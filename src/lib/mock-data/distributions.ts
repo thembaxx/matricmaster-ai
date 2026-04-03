@@ -45,9 +45,9 @@ export const activityConfig: Record<
 };
 
 export function generateDateRange(
-	rng: SeededRandom,
+	_rng: SeededRandom,
 	monthsBack: number,
-	intensity: ActivityIntensity = 'medium'
+	_intensity: ActivityIntensity = 'medium'
 ): DateRange {
 	const end = new Date();
 	end.setHours(23, 59, 59, 999);

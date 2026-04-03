@@ -240,7 +240,11 @@ export default function StudyBuddiesPage() {
 											</div>
 										</div>
 										<div className="flex gap-2">
-											<Button size="sm" className="flex-1">
+											<Button
+												size="sm"
+												className="flex-1"
+												onClick={() => router.push(`/chat?buddy=${buddy.id}`)}
+											>
 												Message
 											</Button>
 											<Button

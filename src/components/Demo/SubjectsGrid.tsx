@@ -23,7 +23,9 @@ export function SubjectsGrid({ subjects }: SubjectsGridProps) {
 					return (
 						<Card
 							key={subject.id}
-							className="hover:shadow-lg transition-all duration-200 hover:scale-[1.02] cursor-pointer"
+							className="hover:shadow-lg transition-all duration-200 hover:scale-[1.02]"
+							role="button"
+							tabIndex={0}
 						>
 							<CardContent className="pt-6">
 								<div className="flex flex-col items-center text-center gap-3">

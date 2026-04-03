@@ -159,7 +159,7 @@ export function QuizResults({ score, onRestart, onExit }: QuizResultsProps) {
 						</p>
 						<p className="text-2xl font-bold text-primary tabular-nums">{percentage}%</p>
 					</div>
-					<div className="grid grid-cols-2 gap-4 pt-4 border-t">
+					<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 border-t">
 						<div className="text-center">
 							<p className="text-success font-bold text-xl tabular-nums">{score.correct}</p>
 							<p className="text-muted-foreground text-xs">Correct</p>

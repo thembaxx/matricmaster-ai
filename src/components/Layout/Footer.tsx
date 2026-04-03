@@ -10,6 +10,7 @@ import {
 import { HugeiconsIcon } from '@hugeicons/react';
 import { m } from 'framer-motion';
 import Link from 'next/link';
+import { memo } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
@@ -46,7 +47,7 @@ const socialLinks = [
 	{ icon: Linkedin01Icon, href: 'https://linkedin.com/company/lumni', label: 'LinkedIn' },
 ];
 
-export function Footer() {
+export const Footer = memo(function Footer() {
 	return (
 		<footer className="bg-background border-t">
 			<div className="container mx-auto px-4 py-12 md:py-16">
@@ -59,7 +60,7 @@ export function Footer() {
 						transition={{ duration: 0.5 }}
 						className="col-span-2 md:col-span-3 lg:col-span-2"
 					>
-						<Link href="/" className="flex items-center gap-2 mb-4">
+						<Link href="/" transitionTypes={['fade']} className="flex items-center gap-2 mb-4">
 							<div className="w-8 h-8 rounded-lg bg-gradient-to-br from-tiimo-lavender to-purple-600 flex items-center justify-center">
 								<span className="text-white font-bold text-sm">M</span>
 							</div>
@@ -80,6 +81,7 @@ export function Footer() {
 								>
 									<Link
 										href={social.href}
+										transitionTypes={['fade']}
 										className="text-muted-foreground hover:text-foreground hover:scale-110 transition-all rounded-full p-2 hover:bg-muted"
 										aria-label={social.label}
 									>
@@ -217,4 +219,4 @@ export function Footer() {
 			</div>
 		</footer>
 	);
-}
+});

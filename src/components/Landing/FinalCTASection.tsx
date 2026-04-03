@@ -48,7 +48,7 @@ export function FinalCTASection() {
 					<div className="flex flex-col sm:flex-row gap-4 justify-center">
 						<Button
 							size="lg"
-							className="w-full sm:w-auto h-14 rounded-[var(--radius-lg)] text-base font-semibold bg-white dark:bg-zinc-900 text-indigo-600 hover:bg-white/90 dark:hover:bg-zinc-800 shadow-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-indigo-600 active:scale-[0.98] transition-all duration-200"
+							className="w-full sm:w-auto h-14 rounded-[var(--radius-lg)] text-base font-semibold bg-card dark:bg-card text-primary hover:bg-card/90 dark:hover:bg-card/90 shadow-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-primary active:scale-[0.98] transition-all duration-200"
 							onClick={() => router.push('/dashboard')}
 						>
 							<span className="flex items-center gap-2">

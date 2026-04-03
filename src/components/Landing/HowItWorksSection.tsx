@@ -29,7 +29,7 @@ const STEPS = [
 
 export function HowItWorksSection() {
 	return (
-		<section className="py-20 lg:py-32 bg-white">
+		<section className="py-20 lg:py-32 bg-background">
 			<m.div
 				initial={{ opacity: 0, y: 40 }}
 				whileInView={{ opacity: 1, y: 0 }}
@@ -62,12 +62,12 @@ export function HowItWorksSection() {
 							>
 								<HugeiconsIcon icon={step.icon} className="w-8 h-8" />
 							</div>
-							<div className="absolute -top-2 -right-2 w-7 h-7 rounded-full bg-tiimo-dark text-white text-sm font-medium flex items-center justify-center">
+							<div className="absolute -top-2 -right-2 w-7 h-7 rounded-full bg-foreground text-background text-sm font-medium flex items-center justify-center">
 								{index + 1}
 							</div>
 						</div>
 						<h3 className="text-lg font-semibold mb-2">{step.title}</h3>
-						<p className="text-base text-muted-foreground leading-relaxed max-w-[240px]">
+						<p className="text-base text-muted-foreground leading-relaxed max-w-[240px] sm:max-w-sm">
 							{step.description}
 						</p>
 						{index < STEPS.length - 1 && (

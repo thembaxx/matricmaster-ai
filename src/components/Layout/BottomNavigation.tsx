@@ -10,6 +10,7 @@ import {
 import { HugeiconsIcon } from '@hugeicons/react';
 import { m } from 'framer-motion';
 import Link from 'next/link';
+import { memo } from 'react';
 
 const navItems = [
 	{
@@ -53,7 +54,9 @@ interface BottomNavigationProps {
 	pathname: string;
 }
 
-export function BottomNavigation({ pathname }: BottomNavigationProps) {
+export const BottomNavigation = memo(function BottomNavigation({
+	pathname,
+}: BottomNavigationProps) {
 	return (
 		<m.nav
 			initial={{ y: 100 }}
@@ -109,4 +112,4 @@ export function BottomNavigation({ pathname }: BottomNavigationProps) {
 			})}
 		</m.nav>
 	);
-}
+});

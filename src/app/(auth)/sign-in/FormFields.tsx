@@ -47,11 +47,10 @@ export const FormFields = memo(function FormFields({
 					type="email"
 					placeholder="name@school.edu.za"
 					className="bg-background/50 rounded-[var(--radius-md)]"
-					aria-required="true"
+					aria-required={true}
 					aria-invalid={!!errors.email}
 					aria-describedby={errors.email ? emailErrorId : undefined}
 					autoComplete="email"
-					error={!!errors.email}
 				/>
 				{errors.email && (
 					<p id={emailErrorId} className="text-xs text-destructive font-semibold ml-1" role="alert">
@@ -65,7 +64,11 @@ export const FormFields = memo(function FormFields({
 					<Label htmlFor="password" className="label-xs ml-1">
 						password
 					</Label>
-					<Link href="/forgot-password" className="label-xs text-primary hover:text-primary/80">
+					<Link
+						href="/forgot-password"
+						transitionTypes={['fade']}
+						className="label-xs text-primary hover:text-primary/80"
+					>
 						forgot?
 					</Link>
 				</div>
@@ -76,11 +79,10 @@ export const FormFields = memo(function FormFields({
 						type={showPassword ? 'text' : 'password'}
 						placeholder="enter your password"
 						className="bg-background/50 pr-12 rounded-[var(--radius-md)]"
-						aria-required="true"
+						aria-required={true}
 						aria-invalid={!!errors.password}
 						aria-describedby={errors.password ? passwordErrorId : undefined}
 						autoComplete="current-password"
-						error={!!errors.password}
 					/>
 					<Button
 						variant="ghost"

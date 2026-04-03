@@ -186,6 +186,16 @@ export default function SchoolDashboardPage() {
 					isLoading={isLoading}
 					onGenerate={generateLicenseKeys}
 					onCopyKey={copyLicenseKey}
+					onExport={() => {
+						const csv = licenses.map((l) => `${l.licenseKey},${l.status}`).join('\n');
+						const blob = new Blob([`key,status\n${csv}`], { type: 'text/csv' });
+						const url = URL.createObjectURL(blob);
+						const a = document.createElement('a');
+						a.href = url;
+						a.download = 'licenses.csv';
+						a.click();
+						URL.revokeObjectURL(url);
+					}}
 					formatDate={formatDate}
 				/>
 			</div>

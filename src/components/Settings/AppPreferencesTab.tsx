@@ -140,7 +140,7 @@ export function AppPreferencesTab() {
 						</div>
 					)}
 
-					<div className="grid grid-cols-3 gap-4 pt-2 border-t">
+					<div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2 border-t">
 						<div className="text-center">
 							<div className="text-xl font-bold">{stats.accuracy}%</div>
 							<div className="text-xs text-muted-foreground">Accuracy</div>
@@ -270,7 +270,7 @@ export function AppPreferencesTab() {
 									} else {
 										toast.error(result.error || 'Generation failed');
 									}
-								} catch (err) {
+								} catch (_err) {
 									toast.error('Failed to generate mock data');
 								} finally {
 									setIsGenerating(false);

@@ -38,13 +38,13 @@ export default function NotFound() {
 					transition={{ delay: 0.4 }}
 					className="flex gap-4 justify-center"
 				>
-					<Link href="/">
+					<Link href="/" transitionTypes={['fade']}>
 						<Button size="lg" className="gap-2 rounded-2xl shadow-xl shadow-primary/20">
 							<HugeiconsIcon icon={Home01Icon} className="w-5 h-5" />
 							Home
 						</Button>
 					</Link>
-					<Link href="/search">
+					<Link href="/search" transitionTypes={['fade']}>
 						<Button size="lg" variant="outline" className="gap-2 rounded-2xl">
 							<HugeiconsIcon icon={Search01Icon} className="w-5 h-5" />
 							MagnifyingGlass

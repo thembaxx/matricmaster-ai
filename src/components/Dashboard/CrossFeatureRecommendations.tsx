@@ -4,6 +4,7 @@ import { BookOpen01Icon, BrainIcon, SparklesIcon, Target02Icon } from '@hugeicon
 import { HugeiconsIcon } from '@hugeicons/react';
 import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
+import { memo } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
@@ -30,7 +31,7 @@ const priorityStyles: Record<string, string> = {
 	low: 'border-l-4 border-l-muted',
 };
 
-export function CrossFeatureRecommendations() {
+export const CrossFeatureRecommendations = memo(function CrossFeatureRecommendations() {
 	const { data, isLoading } = useQuery({
 		queryKey: ['cross-feature-recommendations'],
 		queryFn: async () => {
@@ -67,7 +68,9 @@ export function CrossFeatureRecommendations() {
 									<p className="text-xs text-muted-foreground mt-0.5">{rec.description}</p>
 									<div className="flex items-center gap-2 mt-2">
 										<Button asChild size="sm" variant="secondary" className="h-7 text-xs">
-											<Link href={rec.actionUrl}>start</Link>
+											<Link href={rec.actionUrl} transitionTypes={['fade']}>
+												start
+											</Link>
 										</Button>
 										<span className="text-[10px] text-primary font-medium">
 											{rec.estimatedImpact}
@@ -81,4 +84,4 @@ export function CrossFeatureRecommendations() {
 			</CardContent>
 		</Card>
 	);
-}
+});

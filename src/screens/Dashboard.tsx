@@ -1,7 +1,7 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { AdaptiveScheduleBanner } from '@/components/Dashboard/AdaptiveScheduleBanner';
 import { AdaptiveScheduleCard } from '@/components/Dashboard/AdaptiveScheduleCard';
 import { AITutorNudge } from '@/components/Dashboard/AITutorNudge';
@@ -115,9 +115,9 @@ export default function Dashboard({
 		select: (data) => (Array.isArray(data) ? data.length : 0),
 	});
 
-	const weaknessData = growthMapData?.topics ?? [];
-	const growthInsights = growthMapData?.insights ?? [];
-	const scheduleChanges = scheduleData ?? null;
+	const weaknessData = useMemo(() => growthMapData?.topics ?? [], [growthMapData?.topics]);
+	const growthInsights = useMemo(() => growthMapData?.insights ?? [], [growthMapData?.insights]);
+	const scheduleChanges = useMemo(() => scheduleData ?? null, [scheduleData]);
 	const streak = initialStreak ?? MOCK_STREAK;
 	const achievements = initialAchievements ?? MOCK_ACHIEVEMENTS;
 
@@ -143,16 +143,20 @@ export default function Dashboard({
 		});
 	};
 
-	const completedCount = Object.values(tasks)
-		.flat()
-		.filter((t) => t.completed).length;
-	const totalCount = Object.values(tasks).flat().length;
+	const completedCount = useMemo(
+		() =>
+			Object.values(tasks)
+				.flat()
+				.filter((t) => t.completed).length,
+		[tasks]
+	);
+	const totalCount = useMemo(() => Object.values(tasks).flat().length, [tasks]);
 	const suggestedSubject =
 		progress?.recentSessions?.[0]?.topic ||
 		progress?.recentSessions?.[0]?.subjectId?.toString() ||
 		progress?.subjectProgress?.[0]?.subjectName?.toLowerCase();
 
-	const weakTopicNames = (weaknessData ?? []).map((w) => w.topic);
+	const weakTopicNames = useMemo(() => (weaknessData ?? []).map((w) => w.topic), [weaknessData]);
 
 	return (
 		<div className="min-h-screen bg-background flex">

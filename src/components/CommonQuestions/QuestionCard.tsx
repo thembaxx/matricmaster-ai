@@ -22,7 +22,14 @@ export function QuestionCard({ question, index, onClick }: QuestionCardProps) {
 		>
 			<Card
 				className="p-5 cursor-pointer hover:shadow-lg transition-all rounded-2xl border bg-card shadow-sm"
+				role="button"
+				tabIndex={0}
 				onClick={() => onClick(question)}
+				onKeyDown={(e) => {
+					if (e.key === 'Enter' || e.key === ' ') {
+						onClick(question);
+					}
+				}}
 			>
 				<div className="flex items-start gap-4">
 					<div

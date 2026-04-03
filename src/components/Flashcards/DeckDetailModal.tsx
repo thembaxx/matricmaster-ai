@@ -165,7 +165,7 @@ export function DeckDetailModal({
 						</div>
 					)}
 
-					<ScrollArea className="h-[400px] pr-4">
+					<ScrollArea className="min-h-[300px] max-h-[500px] pr-4">
 						{flashcards.length === 0 ? (
 							<div className="text-center py-8 text-muted-foreground">
 								No cards in this deck yet. Add some to get started!

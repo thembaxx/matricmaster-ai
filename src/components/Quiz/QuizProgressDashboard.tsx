@@ -70,7 +70,7 @@ export function QuizProgressDashboard({
 				</div>
 			</div>
 
-			<div className="grid grid-cols-3 gap-3">
+			<div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
 				<div className="p-3 rounded-2xl bg-success/10 text-center">
 					<div className="flex items-center justify-center gap-1.5 mb-1">
 						<HugeiconsIcon icon={CheckmarkCircle02Icon} className="w-5 h-5 text-success" />

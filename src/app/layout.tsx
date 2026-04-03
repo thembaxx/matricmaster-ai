@@ -10,6 +10,7 @@ import { ServiceWorkerRegistration } from '@/components/ServiceWorkerRegistratio
 import { Toaster } from '@/components/Toaster';
 import { ThemeProvider } from '@/components/theme-provider';
 import '@/styles/index.css';
+import { domAnimation, LazyMotion } from 'framer-motion';
 import { Geist, JetBrains_Mono } from 'next/font/google';
 import { cn } from '@/lib/utils';
 import { appConfig } from '../app.config';
@@ -161,17 +162,19 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 				>
 					skip to main content
 				</a>
-				<ErrorBoundary>
-					<ThemeProvider defaultTheme="system" storageKey="matric-master-theme">
-						<LiveRegionProvider>
-							<NavigationProgress />
-							<ClientProviders>{children}</ClientProviders>
-							<Toaster />
-							<ServiceWorkerRegistration />
-							<ClientOnlyProviders />
-						</LiveRegionProvider>
-					</ThemeProvider>
-				</ErrorBoundary>
+				<LazyMotion features={domAnimation}>
+					<ErrorBoundary>
+						<ThemeProvider defaultTheme="system" storageKey="matric-master-theme">
+							<LiveRegionProvider>
+								<NavigationProgress />
+								<ClientProviders>{children}</ClientProviders>
+								<Toaster />
+								<ServiceWorkerRegistration />
+								<ClientOnlyProviders />
+							</LiveRegionProvider>
+						</ThemeProvider>
+					</ErrorBoundary>
+				</LazyMotion>
 				<DeferredAnalytics />
 			</body>
 		</html>

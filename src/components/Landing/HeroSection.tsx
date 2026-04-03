@@ -70,7 +70,7 @@ export function HeroSection({ onAuthRequired }: HeroSectionProps) {
 				>
 					<Button
 						size="lg"
-						className="w-full sm:w-auto h-14 rounded-[var(--radius-lg)] text-base font-semibold bg-indigo-600 text-white shadow-lg shadow-indigo-600/25 hover:shadow-xl hover:shadow-indigo-600/30 hover:brightness-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 active:scale-[0.98] transition-all duration-200"
+						className="w-full sm:w-auto h-14 rounded-[var(--radius-lg)] text-base font-semibold bg-primary text-primary-foreground shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 hover:brightness-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 active:scale-[0.98] transition-all duration-200"
 						onClick={() => onAuthRequired('/dashboard')}
 					>
 						<span className="flex items-center gap-2">
@@ -81,7 +81,7 @@ export function HeroSection({ onAuthRequired }: HeroSectionProps) {
 					<Button
 						size="lg"
 						variant="outline"
-						className="w-full sm:w-auto h-14 rounded-[var(--radius-lg)] text-base font-medium text-indigo-600 border-indigo-200 hover:bg-indigo-50 hover:border-indigo-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 active:scale-[0.98] transition-all duration-200"
+						className="w-full sm:w-auto h-14 rounded-[var(--radius-lg)] text-base font-medium text-primary border-border hover:bg-accent hover:border-border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 active:scale-[0.98] transition-all duration-200"
 						onClick={() => router.push('/past-papers')}
 					>
 						<span className="flex items-center gap-2">See How It Works</span>

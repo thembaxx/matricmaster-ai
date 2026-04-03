@@ -138,9 +138,9 @@ export function AntiGamingAlert({
 						<div className="space-y-2">
 							<h4 className="text-sm font-medium">Detected Patterns</h4>
 							<div className="space-y-2">
-								{patterns.map((pattern, index) => (
+								{patterns.map((pattern) => (
 									<div
-										key={index}
+										key={`${pattern.type}-${pattern.description.slice(0, 30)}`}
 										className="flex items-start gap-2 text-sm p-2 rounded-md bg-muted/50"
 									>
 										{getPatternIcons(pattern.type)}

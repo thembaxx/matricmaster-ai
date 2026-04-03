@@ -120,7 +120,7 @@ export function EssayEditor({ topic, prompt }: EssayEditorProps) {
 					</div>
 
 					{feedback.breakdown && (
-						<div className="grid grid-cols-2 gap-3">
+						<div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
 							{Object.entries(feedback.breakdown).map(([key, value]) => (
 								<div key={key} className="space-y-1">
 									<div className="flex items-center justify-between text-xs">

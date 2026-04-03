@@ -208,7 +208,7 @@ export function KnowledgeHeatmap({
 					<Progress value={stats.overallProgress} className="h-3" />
 				</div>
 
-				<ScrollArea className="h-[200px] pr-4">
+				<ScrollArea className="min-h-[150px] max-h-[300px] pr-4">
 					<div className="space-y-4">
 						{subjects.map((subject) => {
 							const subjectProgress = Math.round(

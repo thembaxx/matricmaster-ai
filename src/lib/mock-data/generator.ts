@@ -129,7 +129,7 @@ export class MockDataGenerator {
 		const targetCount = count ?? this.config.userCount;
 		const users: GeneratedUser[] = [];
 
-		const allFirstNames = [...maleFirstNames, ...femaleFirstNames, ...neutralFirstNames];
+		const _allFirstNames = [...maleFirstNames, ...femaleFirstNames, ...neutralFirstNames];
 
 		for (let i = 0; i < targetCount; i++) {
 			const genderRand = this.rng.next();

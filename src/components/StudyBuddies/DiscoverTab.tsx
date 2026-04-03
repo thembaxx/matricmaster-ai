@@ -69,7 +69,14 @@ export function DiscoverTab({
 									key={subject}
 									variant={selectedSubjects.includes(subject) ? 'default' : 'outline'}
 									className="cursor-pointer"
+									role="button"
+									tabIndex={0}
 									onClick={() => onSubjectToggle(subject)}
+									onKeyDown={(e) => {
+										if (e.key === 'Enter' || e.key === ' ') {
+											onSubjectToggle(subject);
+										}
+									}}
 								>
 									{subject}
 								</Badge>

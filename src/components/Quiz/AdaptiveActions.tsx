@@ -157,7 +157,7 @@ export const AdaptiveActions = memo(function AdaptiveActions({
 				)}
 			</div>
 
-			<div className="grid grid-cols-2 gap-2">
+			<div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
 				{actions.map(({ key, handler, icon: Icon }) => (
 					<m.div
 						key={key}

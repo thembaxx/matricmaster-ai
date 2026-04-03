@@ -141,6 +141,7 @@ export function QuizFooter({
 								disabled={disabled}
 								className="w-full rounded-xl h-16 font-black tracking-widest text-[10px] bg-secondary border-none text-muted-foreground transition-colors duration-300"
 								onClick={onExit}
+								aria-label="Exit quiz"
 							>
 								<HugeiconsIcon icon={Home01Icon} className="w-5 h-5 mr-2" />
 								Exit

@@ -44,7 +44,7 @@ export async function POST(request: NextRequest) {
 		});
 
 		const dateRange = generateDateRange(
-			generator['rng'] as never,
+			generator.rng as never,
 			monthsBack,
 			intensity as 'low' | 'medium' | 'high'
 		);
@@ -71,7 +71,7 @@ export async function POST(request: NextRequest) {
 					updatedAt: formatDate(new Date()),
 				});
 				insertedUserIds.push(user.id);
-			} catch (e) {
+			} catch (_e) {
 				console.log(`   User already exists: ${user.email}`);
 				insertedUserIds.push(user.id);
 			}
@@ -88,7 +88,7 @@ export async function POST(request: NextRequest) {
 			aiConversations: 0,
 		};
 
-		const socialGen = new SocialGenerator(generator['rng'] as never, dateRange as never);
+		const socialGen = new SocialGenerator(generator.rng as never, dateRange as never);
 
 		for (const userId of insertedUserIds) {
 			try {
@@ -168,7 +168,7 @@ export async function POST(request: NextRequest) {
 					});
 					records.achievements++;
 				}
-			} catch (e) {
+			} catch (_e) {
 				console.log(`   Error generating data for user: ${userId}`);
 			}
 		}
@@ -198,7 +198,7 @@ export async function POST(request: NextRequest) {
 					});
 				}
 				records.channels++;
-			} catch (e) {
+			} catch (_e) {
 				console.log('   Error creating channel');
 			}
 		}
@@ -252,7 +252,7 @@ export async function POST(request: NextRequest) {
 					});
 					records.aiConversations++;
 				}
-			} catch (e) {
+			} catch (_e) {
 				console.log('   Error generating social data');
 			}
 		}

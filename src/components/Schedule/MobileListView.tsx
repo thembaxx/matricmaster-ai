@@ -60,7 +60,14 @@ export function MobileListView({
 								'shadow-md border-border/40 overflow-hidden  rounded-xl cursor-pointer transition-all hover:shadow-lg',
 								event.isCompleted && 'opacity-75'
 							)}
+							role="button"
+							tabIndex={0}
 							onClick={() => onBlockClick(event)}
+							onKeyDown={(e) => {
+								if (e.key === 'Enter' || e.key === ' ') {
+									onBlockClick(event);
+								}
+							}}
 						>
 							<CardContent className="p-0 flex">
 								<div className={cn('w-1.5 h-full min-h-[88px] shrink-0', event.color)} />

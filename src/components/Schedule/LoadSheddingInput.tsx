@@ -97,7 +97,7 @@ export function LoadSheddingInput({ slots, onChange }: LoadSheddingInputProps) {
 				<Label className="text-xs font-bold  tracking-wider text-muted-foreground ml-1">
 					Quick Setup by Area
 				</Label>
-				<div className="grid grid-cols-2 gap-2">
+				<div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
 					{SA_ZONES.map((zone) => (
 						<Button
 							key={zone.id}

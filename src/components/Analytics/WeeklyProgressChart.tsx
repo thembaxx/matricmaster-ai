@@ -20,7 +20,7 @@ export function WeeklyProgressChart({ activity }: { activity: DailyActivity[] })
 				</CardTitle>
 			</CardHeader>
 			<CardContent>
-				<div className="h-[200px] flex items-end gap-2">
+				<div className="min-h-[150px] max-h-[280px] flex items-end gap-2">
 					{activity.map((day) => (
 						<div key={day.date} className="flex-1 flex flex-col items-center gap-2">
 							<div

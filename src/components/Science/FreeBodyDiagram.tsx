@@ -84,7 +84,8 @@ export function FreeBodyDiagram({
 							aria-label={`Select ${force.name} force`}
 							tabIndex={0}
 							onKeyDown={(e) =>
-								e.key === 'Enter' && setSelectedForce(selectedForce === force.id ? null : force.id)
+								(e.key === 'Enter' || e.key === ' ') &&
+								setSelectedForce(selectedForce === force.id ? null : force.id)
 							}
 						>
 							<VectorArrow
@@ -125,7 +126,7 @@ export function FreeBodyDiagram({
 				)}
 			</svg>
 
-			<div className="mt-4 grid grid-cols-2 gap-2">
+			<div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-2">
 				{forces.map((force) => (
 					<Button
 						type="button"

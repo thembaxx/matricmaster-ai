@@ -39,7 +39,7 @@ export function ProgressBreadcrumbs({ items, className = '' }: ProgressBreadcrum
 								{item.label}
 							</span>
 						) : item.href ? (
-							<Link href={item.href} className="crumb hover:underline">
+							<Link href={item.href} transitionTypes={['fade']} className="crumb hover:underline">
 								{item.label}
 							</Link>
 						) : (

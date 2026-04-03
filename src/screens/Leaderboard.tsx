@@ -19,7 +19,6 @@ import {
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { SUBJECTS, useLeaderboard } from '@/hooks/useLeaderboard';
-import { formatPoints } from '@/lib/leaderboard-utils';
 
 export default function Leaderboard() {
 	const {
@@ -181,7 +180,7 @@ export default function Leaderboard() {
 										me
 									</AvatarFallback>
 								</Avatar>
-								<div className="absolute -bottom-1.5 sm:-bottom-2 -right-1.5 sm:-right-2 bg-primary-orange text-white text-[8px] sm:text-[9px] font-black px-2 sm:px-3 py-0.5 sm:py-1 rounded-full border-2 sm:border-4 border-background tracking-tighter shadow-lg">
+								<div className="absolute -bottom-1.5 sm:-bottom-2 -right-1.5 sm:-right-2 bg-primary-orange text-white text-xs font-black px-2 sm:px-3 py-0.5 sm:py-1 rounded-full border-2 sm:border-4 border-background tracking-tighter shadow-lg">
 									you
 								</div>
 							</div>
@@ -189,19 +188,19 @@ export default function Leaderboard() {
 								<h3 className="font-black text-sm sm:text-lg text-white truncate tracking-tight">
 									your global rank
 								</h3>
-								<p className="text-[10px] sm:text-[11px] font-medium text-white/60 tracking-wide flex items-center gap-1 sm:gap-2">
+								<span className="text-xs font-medium text-white/60 tracking-wide flex items-center gap-1 sm:gap-2">
 									<HugeiconsIcon
 										icon={FireIcon}
 										className="w-3 h-3 sm:w-4 sm:h-4 text-primary-orange fill-primary-orange"
 									/>
 									{userStreak?.currentStreak || 0} day streak
-								</p>
+								</span>
 							</div>
 							<div className="text-right">
 								<p className="text-xl sm:text-2xl font-black text-primary-orange tracking-tighter flex items-center justify-end gap-1">
 									{formatPoints(userRank.totalPoints)} <span className="text-xs">kp</span>
 								</p>
-								<p className="text-[9px] sm:text-[10px] font-medium text-white/60 tracking-wide">
+								<p className="text-xs font-medium text-white/60 tracking-wide">
 									top {100 - userRank.percentile}% of students
 								</p>
 							</div>

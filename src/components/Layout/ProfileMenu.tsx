@@ -63,12 +63,15 @@ export function ProfileMenu({
 				<DropdownMenuSeparator />
 				<DropdownMenuGroup>
 					<DropdownMenuItem asChild>
-						<Link href="/profile">Manage profile</Link>
+						<Link href="/profile" transitionTypes={['nav-forward']}>
+							Manage profile
+						</Link>
 					</DropdownMenuItem>
 					<DropdownMenuItem>Contact support</DropdownMenuItem>
 				</DropdownMenuGroup>
 				<DropdownMenuSeparator />
 				<DropdownMenuItem
+					aria-label="Sign out"
 					onClick={async () => {
 						try {
 							await authClient.signOut({

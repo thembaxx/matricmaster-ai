@@ -229,7 +229,10 @@ export function ScannedUpload({ onQuestionsExtracted, onCancel }: ScannedUploadP
 
 					<div className="space-y-3 max-h-80 overflow-y-auto">
 						{displayQuestions.map((q, index) => (
-							<div key={index} className="p-4 bg-muted/50 rounded-xl border">
+							<div
+								key={`q-${q.questionNumber ?? index}-${q.questionText.slice(0, 20)}`}
+								className="p-4 bg-muted/50 rounded-xl border"
+							>
 								<div className="flex items-start gap-3">
 									<span className="flex-shrink-0 w-6 h-6 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-xs font-bold">
 										{q.questionNumber || index + 1}
@@ -266,7 +269,11 @@ export function ScannedUpload({ onQuestionsExtracted, onCancel }: ScannedUploadP
 					</div>
 
 					<div className="flex gap-3">
-						<Button onClick={handleSaveQuestions} className="flex-1">
+						<Button
+							onClick={handleSaveQuestions}
+							className="flex-1"
+							disabled={displayQuestions.length === 0}
+						>
 							<Check className="w-4 h-4 mr-2" />
 							save questions
 						</Button>
@@ -302,6 +309,7 @@ export function ScannedUpload({ onQuestionsExtracted, onCancel }: ScannedUploadP
 						className="w-full p-4 text-sm bg-muted rounded-xl border resize-none font-mono"
 						rows={8}
 						readOnly
+						aria-label="Extracted text from scanned paper"
 					/>
 				</div>
 			)}

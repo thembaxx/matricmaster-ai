@@ -19,8 +19,11 @@ export default function AnalyticsError({ error, reset }: ErrorProps) {
 	return (
 		<div className="flex flex-col items-center justify-center min-h-[60vh] p-6 bg-background">
 			<div className="max-w-md w-full text-center space-y-6">
-				<div className="w-16 h-16 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center mx-auto">
-					<HugeiconsIcon icon={Warning} className="w-8 h-8 text-red-600 dark:text-red-400" />
+				<div className="w-16 h-16 bg-destructive/10 dark:bg-destructive/20 rounded-full flex items-center justify-center mx-auto">
+					<HugeiconsIcon
+						icon={Warning}
+						className="w-8 h-8 text-destructive dark:text-destructive"
+					/>
 				</div>
 
 				<div className="space-y-2">

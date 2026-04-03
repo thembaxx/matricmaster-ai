@@ -93,7 +93,7 @@ export function PricingSection() {
 						</ul>
 
 						<Button
-							className="w-full h-12 rounded-[var(--radius-lg)] text-base font-semibold bg-indigo-600 hover:bg-indigo-700 text-white"
+							className="w-full h-12 rounded-[var(--radius-lg)] text-base font-semibold bg-primary hover:bg-primary/90 text-primary-foreground"
 							onClick={() => router.push('/sign-up?plan=pro')}
 						>
 							Go Pro →

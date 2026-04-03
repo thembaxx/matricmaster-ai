@@ -101,7 +101,7 @@ export function PastPaperCard({ paper, recommendation }: PastPaperCardProps) {
 				</div>
 
 				<Button
-					className="w-full dark:bg-white/60 dark:text-[#07090d] backdrop-blur-2xl shadow-none rounded-2xl h-14 bg-secondary hover:bg-primary hover:text-primary-foreground text-label-secondary font-black text-[10px]  tracking-widest transition-all duration-300 group/btn ios-active-scale"
+					className="w-full dark:bg-white/60 dark:text-foreground backdrop-blur-2xl shadow-none rounded-2xl h-14 bg-secondary hover:bg-primary hover:text-primary-foreground text-label-secondary font-black text-[10px]  tracking-widest transition-all duration-300 group/btn ios-active-scale"
 					onClick={() => window.open(paper.originalPdfUrl, '_blank')}
 				>
 					<Icon icon="fluent:cloud-download-24-regular" className="w-5 h-5 mr-2 shrink-0" />

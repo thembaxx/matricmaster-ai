@@ -36,7 +36,7 @@ export default function DemoPage() {
 							</h1>
 							<p className="text-sm text-muted-foreground">Explore our NSC Grade 12 mock data</p>
 						</div>
-						<Link href="/dashboard">
+						<Link href="/dashboard" transitionTypes={['nav-back']}>
 							<Button variant="outline" size="sm">
 								Go to Dashboard
 							</Button>

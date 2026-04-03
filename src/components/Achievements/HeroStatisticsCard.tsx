@@ -63,7 +63,7 @@ export function HeroStatisticsCard({
 									className="w-16 h-16 sm:w-24 sm:h-24 lg:w-32 lg:h-32 text-white drop-shadow-2xl"
 								/>
 							</div>
-							<div className="absolute -bottom-4 sm:-bottom-6 -right-4 sm:-right-6 w-14 h-14 sm:w-20 sm:h-20 bg-brand-amber rounded-2xl sm:rounded-3xl flex items-center justify-center shadow-xl border-4 border-white z-20">
+							<div className="absolute -bottom-4 sm:-bottom-6 -right-4 sm:-right-6 w-14 h-14 sm:w-20 sm:h-20 bg-warning rounded-2xl sm:rounded-3xl flex items-center justify-center shadow-xl border-4 border-white z-20">
 								<span className="text-lg sm:text-2xl font-black text-white">{unlockedCount}</span>
 							</div>
 						</div>

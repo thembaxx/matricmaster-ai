@@ -30,7 +30,7 @@ export function SubjectSelector({ currentSubject, onSelect, onClose }: SubjectSe
 			/>
 			<Card className="w-full max-w-md p-6 bg-background relative z-10">
 				<h3 className="text-lg font-bold mb-4">Select Subject</h3>
-				<div className="grid grid-cols-2 gap-2">
+				<div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
 					{SUBJECTS.map((subject) => (
 						<Button
 							key={subject}

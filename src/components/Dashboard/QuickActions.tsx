@@ -2,6 +2,7 @@
 
 import { m } from 'framer-motion';
 import Link from 'next/link';
+import { memo } from 'react';
 import { Button } from '@/components/ui/button';
 
 interface QuickAction {
@@ -29,7 +30,9 @@ interface QuickActionsProps {
 	actions?: QuickAction[];
 }
 
-export function QuickActions({ actions = defaultActions }: QuickActionsProps) {
+export const QuickActions = memo(function QuickActions({
+	actions = defaultActions,
+}: QuickActionsProps) {
 	return (
 		<div className="flex flex-wrap gap-3">
 			{actions.map((action, index) => (
@@ -40,7 +43,7 @@ export function QuickActions({ actions = defaultActions }: QuickActionsProps) {
 					transition={{ delay: index * 0.05 }}
 					whileTap={{ scale: 0.95 }}
 				>
-					<Link href={action.href}>
+					<Link href={action.href} transitionTypes={['fade']}>
 						<Button
 							variant="outline"
 							className={`h-12 px-6 rounded-2xl border-none shadow-tiimo ${action.color} hover:opacity-90 transition-opacity`}
@@ -53,4 +56,4 @@ export function QuickActions({ actions = defaultActions }: QuickActionsProps) {
 			))}
 		</div>
 	);
-}
+});

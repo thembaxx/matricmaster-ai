@@ -1,28 +1,29 @@
 import { defineConfig, devices } from '@playwright/test';
 
-/**
- * Playwright configuration for end-to-end testing
- * @see https://playwright.dev/docs/test-configuration
- */
 export default defineConfig({
 	testDir: './e2e',
-	/* Run tests in files in parallel */
 	fullyParallel: false,
-	/* Fail the build on CI if you accidentally left test.only in the source code */
 	forbidOnly: !!process.env.CI,
-	/* Retry on CI only */
 	retries: process.env.CI ? 2 : 0,
-	/* Opt out of parallel tests on CI - run tests sequentially */
-	workers: 1,
-	/* Reporter to use */
-	reporter: process.env.CI ? 'line' : 'html',
-	/* Timeout settings */
+	workers: process.env.CI ? 1 : undefined,
+	outputDir: 'test-results/artifacts',
+	reporter: [['html', { outputFolder: 'test-results/html' }], ['list']],
 	timeout: 60000,
 	expect: {
 		timeout: 10000,
 	},
 
-	/* Configure projects for major browsers */
+	use: {
+		baseURL: process.env.BASE_URL || 'http://localhost:3000',
+		trace: 'on-first-retry',
+		screenshot: 'only-on-failure',
+		video: 'retain-on-failure',
+		actionTimeout: 30000,
+		launchOptions: {
+			args: ['--disable-dev-shm-usage'],
+		},
+	},
+
 	projects: [
 		{
 			name: 'chromium',
@@ -30,29 +31,12 @@ export default defineConfig({
 		},
 	],
 
-	/* Run your local dev server before starting the tests */
 	webServer: {
-		command: 'bun run dev -- --webpack',
+		command: 'bun run dev',
 		url: 'http://localhost:3000',
 		reuseExistingServer: !process.env.CI,
 		stdout: 'pipe',
 		stderr: 'pipe',
 		timeout: 120000,
-	},
-
-	/* Shared settings for all the projects below */
-	use: {
-		/* Base URL to use in actions like `await page.goto('/')` */
-		baseURL: process.env.PLAYWRIGHT_TEST_BASE_URL || 'http://localhost:3000',
-		/* Collect trace when retrying the failed test */
-		trace: 'on-first-retry',
-		/* Screenshot on failure */
-		screenshot: 'only-on-failure',
-		/* Action timeout */
-		actionTimeout: 30000,
-		/* Don't wait for network idle */
-		launchOptions: {
-			args: ['--disable-dev-shm-usage'],
-		},
 	},
 });
