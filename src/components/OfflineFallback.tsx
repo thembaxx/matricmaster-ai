@@ -37,12 +37,12 @@ export function OfflineFallback() {
 			<Card
 				className={`
 					border-2 transition-all duration-300 ease-in-out
-					${showSuccess ? 'border-green-400 bg-green-50 dark:bg-green-950/20' : 'border-[#9F85FF] bg-white dark:bg-gray-900'}
+					${showSuccess ? 'border-green-400 bg-green-50 dark:bg-green-950/20' : 'border-primary bg-white dark:bg-gray-900'}
 				`}
 			>
 				<CardHeader className="pb-2">
 					<CardTitle className="flex items-center gap-2 text-base">
-						<WifiOff className={`h-5 w-5 ${showSuccess ? 'text-green-500' : 'text-[#9F85FF]'}`} />
+						<WifiOff className={`h-5 w-5 ${showSuccess ? 'text-green-500' : 'text-primary'}`} />
 						{showSuccess ? "You're back online!" : "You're offline"}
 					</CardTitle>
 				</CardHeader>
@@ -56,7 +56,7 @@ export function OfflineFallback() {
 						onClick={handleRetry}
 						disabled={isRetrying || showSuccess}
 						className="w-full"
-						variant={showSuccess ? 'outline' : 'gradient'}
+						variant={showSuccess ? 'outline' : 'default'}
 					>
 						<RefreshCw className={`h-4 w-4 ${isRetrying ? 'animate-spin' : ''}`} />
 						{isRetrying ? 'Checking...' : showSuccess ? 'Got it!' : 'Try again'}

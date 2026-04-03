@@ -30,19 +30,19 @@ export const LANDING_FEATURES = [
 	},
 	{
 		icon: Timer02Icon,
-		title: 'See Your Growth',
+		title: 'Progress Tracking',
 		description: 'Watch your streak grow and earn rewards. Track the progress you make every day.',
 		color: 'bg-subject-life/10 text-subject-life',
 	},
 	{
 		icon: VoiceIcon,
-		title: 'Listen & Learn',
+		title: 'Audio Explanations',
 		description: 'Hear explanations out loud. Perfect for revision while you commute or do chores.',
 		color: 'bg-subject-physics/10 text-subject-physics',
 	},
 	{
 		icon: Camera01Icon,
-		title: 'Photo Question Solve',
+		title: 'Photo Solve',
 		description: 'Snap a pic of any exam question. Get clear step-by-step solutions in seconds.',
 		color: 'bg-tiimo-teal/10 text-tiimo-teal',
 	},

@@ -2,7 +2,6 @@
 
 import {
 	ArrowRight01Icon,
-	BookOpen01Icon,
 	BrainIcon,
 	CalculatorIcon,
 	FlashIcon,
@@ -40,7 +39,7 @@ export function HeroSection({ onAuthRequired }: HeroSectionProps) {
 				>
 					<Badge className="bg-tiimo-lavender/15 text-tiimo-lavender rounded-full px-4 py-1.5 label-xs">
 						<HugeiconsIcon icon={SparklesIcon} className="w-3 h-3 mr-1.5" />
-						50,000+ students scored higher
+						Trusted by 50,000+ South African students
 					</Badge>
 
 					<m.h1
@@ -49,9 +48,7 @@ export function HeroSection({ onAuthRequired }: HeroSectionProps) {
 						transition={{ delay: 0.1 }}
 						className="text-display text-foreground leading-[0.95] text-balance"
 					>
-						stop guessing.
-						<br />
-						<span className="text-tiimo-lavender">start passing.</span>
+						Finally, a study tool that actually works
 					</m.h1>
 
 					<m.p
@@ -60,7 +57,8 @@ export function HeroSection({ onAuthRequired }: HeroSectionProps) {
 						transition={{ delay: 0.2 }}
 						className="body-lg text-muted-foreground max-w-lg text-pretty mx-auto lg:mx-0"
 					>
-						ai answers to any past paper question. find your weak spots. pass matric the first time.
+						Get AI answers to any past paper question, find your weak spots, and pass matric the
+						first time.
 					</m.p>
 				</m.div>
 
@@ -72,24 +70,21 @@ export function HeroSection({ onAuthRequired }: HeroSectionProps) {
 				>
 					<Button
 						size="lg"
-						className="w-full sm:w-auto h-14 rounded-[var(--radius-lg)] text-base font-semibold bg-tiimo-lavender text-white shadow-lg shadow-tiimo-lavender/25 hover:shadow-xl hover:shadow-tiimo-lavender/30 hover:brightness-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 active:scale-[0.98] transition-all duration-200"
+						className="w-full sm:w-auto h-14 rounded-[var(--radius-lg)] text-base font-semibold bg-indigo-600 text-white shadow-lg shadow-indigo-600/25 hover:shadow-xl hover:shadow-indigo-600/30 hover:brightness-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 active:scale-[0.98] transition-all duration-200"
 						onClick={() => onAuthRequired('/dashboard')}
 					>
 						<span className="flex items-center gap-2">
-							try free
+							Start Studying Free
 							<HugeiconsIcon icon={ArrowRight01Icon} className="w-5 h-5" />
 						</span>
 					</Button>
 					<Button
 						size="lg"
-						variant="ghost"
-						className="w-full sm:w-auto h-14 rounded-[var(--radius-lg)] text-base font-medium text-muted-foreground hover:text-foreground hover:bg-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 active:scale-[0.98] transition-all duration-200"
+						variant="outline"
+						className="w-full sm:w-auto h-14 rounded-[var(--radius-lg)] text-base font-medium text-indigo-600 border-indigo-200 hover:bg-indigo-50 hover:border-indigo-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 active:scale-[0.98] transition-all duration-200"
 						onClick={() => router.push('/past-papers')}
 					>
-						<span className="flex items-center gap-2">
-							find your papers
-							<HugeiconsIcon icon={BookOpen01Icon} className="w-5 h-5" />
-						</span>
+						<span className="flex items-center gap-2">See How It Works</span>
 					</Button>
 				</m.div>
 
@@ -117,8 +112,8 @@ export function HeroSection({ onAuthRequired }: HeroSectionProps) {
 						))}
 					</div>
 					<div className="text-left">
-						<p className="body-sm font-semibold font-numeric tabular-nums">50,000+ passed</p>
-						<p className="body-xs text-muted-foreground">join them today</p>
+						<p className="body-sm font-semibold font-numeric tabular-nums">Join 50,000+ students</p>
+						<p className="body-xs text-muted-foreground">who've already passed</p>
 					</div>
 				</m.div>
 			</div>

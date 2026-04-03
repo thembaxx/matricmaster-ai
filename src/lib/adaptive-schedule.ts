@@ -51,7 +51,7 @@ export async function detectStrugglingTopics(userId: string): Promise<string[]> 
 			correctAttempts: sql<number>`count(case when ${questionAttempts.isCorrect} = true then 1 end)::int`,
 		})
 		.from(questionAttempts)
-		.innerJoin(questions, eq(questions.id, questionAttempts.questionId))
+		.innerJoin(questions, eq(questions.id, sql`${questionAttempts.questionId}::uuid`))
 		.where(
 			and(eq(questionAttempts.userId, userId), gte(questionAttempts.attemptedAt, sevenDaysAgo))
 		)

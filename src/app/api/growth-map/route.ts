@@ -38,7 +38,7 @@ export async function GET(request: NextRequest) {
 				mistakeCount: sql<number>`count(*)::int`,
 			})
 			.from(questionAttempts)
-			.innerJoin(questions, eq(questions.id, questionAttempts.questionId))
+			.innerJoin(questions, eq(questions.id, sql`${questionAttempts.questionId}::uuid`))
 			.where(
 				and(
 					eq(questionAttempts.userId, session.user.id),
@@ -82,7 +82,7 @@ export async function GET(request: NextRequest) {
 			struggles.map((s: { concept: string; struggleCount: number }) => [s.concept, s.struggleCount])
 		);
 
-		// Get recent accuracy per topic (last 7 days vs previous 7 days for trend)
+		// Get recent accuracy per topic (last 7 days vs previous 8-14 days for trend)
 		const recentScores = await db
 			.select({
 				topic: questions.topic,
@@ -90,7 +90,7 @@ export async function GET(request: NextRequest) {
 				total: sql<number>`count(*)::int`,
 			})
 			.from(questionAttempts)
-			.innerJoin(questions, eq(questions.id, questionAttempts.questionId))
+			.innerJoin(questions, eq(questions.id, sql`${questionAttempts.questionId}::uuid`))
 			.where(
 				and(
 					eq(questionAttempts.userId, session.user.id),
@@ -116,7 +116,7 @@ export async function GET(request: NextRequest) {
 				total: sql<number>`count(*)::int`,
 			})
 			.from(questionAttempts)
-			.innerJoin(questions, eq(questions.id, questionAttempts.questionId))
+			.innerJoin(questions, eq(questions.id, sql`${questionAttempts.questionId}::uuid`))
 			.where(
 				and(
 					eq(questionAttempts.userId, session.user.id),

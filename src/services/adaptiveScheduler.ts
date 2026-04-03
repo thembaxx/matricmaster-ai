@@ -88,7 +88,7 @@ export async function analyzeAndAdjust(userId: string): Promise<ScheduleAdjustme
 		.where(
 			and(
 				eq(quizResults.userId, userId),
-				lt(sql`${quizResults.percentage}`, '60'),
+				sql`${quizResults.percentage} < 60`,
 				sql`${quizResults.completedAt} >= ${sevenDaysAgo}`
 			)
 		)
@@ -134,7 +134,7 @@ export async function analyzeAndAdjust(userId: string): Promise<ScheduleAdjustme
 				and(
 					eq(calendarEvents.userId, userId),
 					eq(calendarEvents.eventType, 'practice'),
-					sql`${calendarEvents.title} LIKE ${`%${struggle.concept}%`}`,
+					sql`${calendarEvents.title} ILIKE ${`%${struggle.concept}%`}`,
 					sql`${calendarEvents.startTime} > ${now}`,
 					sql`${calendarEvents.startTime} < ${weekFromNow}`
 				)

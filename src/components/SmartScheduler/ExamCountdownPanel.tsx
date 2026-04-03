@@ -114,7 +114,7 @@ export function ExamCountdownPanel() {
 			<div className="space-y-3">
 				{displayExams.slice(0, 6).map((exam) => {
 					const config = PRIORITY_CONFIG[exam.priority];
-					const subjectColor = SUBJECT_COLORS[exam.subject] || '#9F85FF';
+					const subjectColor = SUBJECT_COLORS[exam.subject] || 'var(--primary)';
 
 					return (
 						<div

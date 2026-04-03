@@ -1,28 +1,19 @@
-import * as React from 'react';
+import type * as React from 'react';
 
 import { cn } from '@/lib/utils';
 
-export interface InputProps extends React.ComponentProps<'input'> {
-	error?: boolean;
+function Input({ className, type, ...props }: React.ComponentProps<'input'>) {
+	return (
+		<input
+			type={type}
+			data-slot="input"
+			className={cn(
+				'h-8 w-full min-w-0 rounded-none border border-input bg-transparent px-2.5 py-1 text-xs transition-colors outline-none file:inline-flex file:h-6 file:border-0 file:bg-transparent file:text-xs file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-1 focus-visible:ring-ring/50 disabled:pointer-events-none disabled:cursor-not-allowed disabled:bg-input/50 disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-1 aria-invalid:ring-destructive/20 md:text-xs dark:bg-input/30 dark:disabled:bg-input/80 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40',
+				className
+			)}
+			{...props}
+		/>
+	);
 }
-
-const Input = React.forwardRef<HTMLInputElement, InputProps>(
-	({ className, type, error, ...props }, ref) => {
-		return (
-			<input
-				type={type}
-				className={cn(
-					'flex h-12 w-full rounded-2xl border border-input bg-background px-4 py-2 text-base shadow-sm transition-all duration-300 ease-out file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground hover:border-primary/30 focus-visible:outline-none focus-visible:ring-[var(--focus-ring-width)] focus-visible:ring-ring focus-visible:ring-offset-[var(--focus-ring-offset)] focus-visible:border-primary disabled:cursor-not-allowed disabled:opacity-50',
-					error &&
-						'border-destructive focus-visible:border-destructive focus-visible:ring-destructive',
-					className
-				)}
-				ref={ref}
-				{...props}
-			/>
-		);
-	}
-);
-Input.displayName = 'Input';
 
 export { Input };

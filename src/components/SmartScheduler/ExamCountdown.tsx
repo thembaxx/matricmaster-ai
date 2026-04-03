@@ -67,9 +67,7 @@ export function ExamCountdown() {
 				<HugeiconsIcon icon={Calendar01Icon} className="h-5 w-5 text-primary" />
 			</div>
 			<div className="flex-1">
-				<p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">
-					exam countdown
-				</p>
+				<p className="text-xs text-muted-foreground font-medium">exam countdown</p>
 				{countdown.isExpired ? (
 					<p className="text-lg font-bold text-red-500">exams are here!</p>
 				) : (

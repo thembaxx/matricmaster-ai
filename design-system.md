@@ -38,14 +38,19 @@ Tiimo 3.0 Design System - A unified design language focusing on clarity, consist
 ### Core Palette
 
 ```css
-/* Primary Brand */
---tiimo-lavender: #9F85FF;      /* Primary actions, highlights */
---tiimo-cream: #FAF8F5;         /* Background (light mode) */
---tiimo-green: #5CB587;         /* Success states, correct answers */
---tiimo-gray-dark: #464644;    /* Primary text */
---tiimo-gray-muted: #8E8E8E;    /* Secondary text */
---tiimo-gray-subtle: #D1D1D1;   /* Borders, dividers */
---tiimo-white: #FFFFFF;         /* Cards, elevated surfaces */
+/* Primary Brand (Implemented April 2026) */
+--primary-blue: #3B82F6;         /* Primary actions, highlights */
+--secondary-navy: #0F172A;       /* Background (dark mode), primary text */
+--tertiary-orange: #D16900;      /* Contrast highlights, alerts */
+--neutral-offwhite: #F8FAFC;     /* Background (light mode) */
+
+--tiimo-lavender: var(--primary-blue);
+--tiimo-cream: var(--neutral-offwhite);
+--tiimo-green: #5CB587;
+--tiimo-gray-dark: var(--secondary-navy);
+--tiimo-gray-muted: #64748B;
+--tiimo-gray-subtle: #E2E8F0;
+--tiimo-white: #FFFFFF;
 ```
 
 ### Extended Colors
@@ -91,23 +96,23 @@ Tiimo 3.0 Design System - A unified design language focusing on clarity, consist
 
 ```css
 /* Backgrounds */
---background: var(--tiimo-cream);     /* Page background */
---foreground: var(--tiimo-gray-dark); /* Primary text */
+--background: var(--neutral-offwhite);     /* Page background */
+--foreground: var(--secondary-navy);       /* Primary text */
 
 /* Primary Actions */
---primary: var(--tiimo-lavender);
+--primary: var(--primary-blue);
 --primary-foreground: var(--tiimo-white);
 
 /* Secondary Elements */
---secondary: #F0EDE8;
---secondary-foreground: var(--tiimo-gray-dark);
+--secondary: #E2E8F0;
+--secondary-foreground: var(--secondary-navy);
 
 /* Accent & Highlights */
---accent: rgba(159, 133, 255, 0.12);
---accent-foreground: var(--tiimo-lavender);
+--accent: rgba(59, 130, 246, 0.12);
+--accent-foreground: var(--primary-blue);
 
 /* Muted Elements */
---muted: #F0EDE8;
+--muted: #F1F5F9;
 --muted-foreground: var(--tiimo-gray-muted);
 
 /* Cards & Surfaces */
@@ -134,20 +139,20 @@ Tiimo 3.0 Design System - A unified design language focusing on clarity, consist
 
 ```css
 .dark {
-  /* Gray Scale */
-  --tiimo-gray-bg: #1F1F1F;
-  --tiimo-gray-elevated: #2A2A2A;
-  --tiimo-gray-border: #383838;
+  /* Premium Dark Blue Scale */
+  --tiimo-gray-bg: #0F172A;
+  --tiimo-gray-elevated: #1E293B;
+  --tiimo-gray-border: #334155;
   
   /* Adjusted Colors */
   --background: var(--tiimo-gray-bg);
-  --foreground: #F2F2F2;
+  --foreground: #F8FAFC;
   
-  --primary: #A88FFF;
-  --primary-foreground: #1F1F1F;
+  --primary: #3B82F6;
+  --primary-foreground: #FFFFFF;
   
-  --card: #262626;
-  --card-foreground: #F2F2F2;
+  --card: #1E293B;
+  --card-foreground: #F8FAFC;
 }
 ```
 

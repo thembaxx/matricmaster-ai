@@ -75,7 +75,7 @@ export async function checkForNudges(): Promise<Nudge[]> {
 	}
 
 	const masteries = await db.query.topicMastery.findMany({
-		where: and(eq(topicMastery.userId, session.user.id), sql`${topicMastery.masteryLevel} < 0.5`),
+		where: sql`${topicMastery.userId} = ${session.user.id} AND ${topicMastery.masteryLevel} < 0.5`,
 		limit: 5,
 	});
 
