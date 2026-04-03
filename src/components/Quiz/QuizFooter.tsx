@@ -69,7 +69,7 @@ export function QuizFooter({
 							<Button
 								size="lg"
 								className={cn(
-									'w-full rounded-[2rem] h-16 text-lg font-black shadow-lg bg-tiimo-lavender hover:bg-tiimo-lavender/90 text-white transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-tiimo-lavender focus:ring-offset-2 focus:ring-offset-background',
+									'w-full rounded-xl h-16 text-lg font-black shadow-lg bg-tiimo-lavender hover:bg-tiimo-lavender/90 text-white transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-tiimo-lavender focus:ring-offset-2 focus:ring-offset-background',
 									(!canSubmit || isGrading) && 'opacity-50 cursor-not-allowed'
 								)}
 								disabled={!canSubmit || disabled || isGrading}
@@ -139,7 +139,7 @@ export function QuizFooter({
 								variant="outline"
 								size="lg"
 								disabled={disabled}
-								className="w-full rounded-[2rem] h-16 font-black tracking-widest text-[10px] bg-secondary border-none text-muted-foreground transition-colors duration-300"
+								className="w-full rounded-xl h-16 font-black tracking-widest text-[10px] bg-secondary border-none text-muted-foreground transition-colors duration-300"
 								onClick={onExit}
 							>
 								<HugeiconsIcon icon={Home01Icon} className="w-5 h-5 mr-2" />
@@ -159,7 +159,7 @@ export function QuizFooter({
 										size="lg"
 										disabled={disabled}
 										className={cn(
-											'w-full rounded-[2rem] h-16 text-lg font-black shadow-lg text-white transition-colors duration-300',
+											'w-full rounded-xl h-16 text-lg font-black shadow-lg text-white transition-colors duration-300',
 											isCorrect
 												? 'bg-tiimo-green hover:bg-tiimo-green/90'
 												: 'bg-tiimo-lavender hover:bg-tiimo-lavender/90'

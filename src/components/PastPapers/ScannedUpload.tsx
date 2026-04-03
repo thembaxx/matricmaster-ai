@@ -141,6 +141,7 @@ export function ScannedUpload({ onQuestionsExtracted, onCancel }: ScannedUploadP
 					onDrop={handleDrop}
 					role="button"
 					tabIndex={0}
+					aria-label="Upload files by drag and drop or click to browse"
 					onKeyDown={(e) => {
 						if (e.key === 'Enter' || e.key === ' ') {
 							document.querySelector<HTMLInputElement>('input[type="file"]')?.click();

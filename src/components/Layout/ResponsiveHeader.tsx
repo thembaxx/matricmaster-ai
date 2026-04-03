@@ -12,7 +12,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import type { authClient } from '@/lib/auth-client';
 import { cn } from '@/lib/utils';
-import { ProfileMenu } from './profile-menu';
+import { ProfileMenu } from './ProfileMenu';
 
 const desktopNavItems = [
 	{ href: '/dashboard', label: 'dashboard' },

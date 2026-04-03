@@ -38,7 +38,7 @@ export function MobileQuizFooter({
 						whileTap={{ scale: 0.98 }}
 					>
 						<Button
-							className={`w-full h-14 rounded-[2rem] font-bold text-lg shadow-xl ${primaryColor} ${shadowColor} disabled:opacity-50 disabled:cursor-not-allowed transition-all active:scale-95`}
+							className={`w-full h-14 rounded-xl font-bold text-lg shadow-xl ${primaryColor} ${shadowColor} disabled:opacity-50 disabled:cursor-not-allowed transition-all active:scale-95`}
 							disabled={!selectedAnswer}
 							onClick={onCheck}
 						>

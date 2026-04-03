@@ -53,6 +53,7 @@ export function WordTranscription({
 						key={word.id}
 						data-word-index={index}
 						role="button"
+						aria-label={`Play word: ${word.text}`}
 						tabIndex={0}
 						onClick={() => handleWordClick(index)}
 						onKeyDown={(e) => {

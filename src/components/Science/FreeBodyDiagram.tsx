@@ -81,6 +81,7 @@ export function FreeBodyDiagram({
 							onClick={() => setSelectedForce(selectedForce === force.id ? null : force.id)}
 							className="cursor-pointer"
 							role="button"
+							aria-label={`Select ${force.name} force`}
 							tabIndex={0}
 							onKeyDown={(e) =>
 								e.key === 'Enter' && setSelectedForce(selectedForce === force.id ? null : force.id)

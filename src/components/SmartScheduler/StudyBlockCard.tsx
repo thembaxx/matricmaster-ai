@@ -175,6 +175,7 @@ export function StudyBlockCard({ block, compact = false }: StudyBlockCardProps) 
 						onDragStart={handleDragStart}
 						onDragEnd={handleDragEnd}
 						role="button"
+						aria-label={`Edit ${block.subject} study block`}
 						tabIndex={0}
 						onKeyDown={(e) => {
 							if (e.key === 'Enter' || e.key === ' ') {
@@ -226,6 +227,7 @@ export function StudyBlockCard({ block, compact = false }: StudyBlockCardProps) 
 					onDragStart={handleDragStart}
 					onDragEnd={handleDragEnd}
 					role="button"
+					aria-label={`Edit ${block.subject} study block`}
 					tabIndex={0}
 					onKeyDown={(e) => {
 						if (e.key === 'Enter' || e.key === ' ') {

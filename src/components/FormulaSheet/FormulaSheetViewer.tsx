@@ -107,6 +107,7 @@ function FormulaSearch({ onSelect }: { onSelect: (formula: Formula) => void }) {
 						results.map((formula: Formula) => (
 							<div
 								role="button"
+								aria-label={`Select ${formula.name} formula`}
 								tabIndex={0}
 								key={formula.id}
 								onClick={() => onSelect(formula)}

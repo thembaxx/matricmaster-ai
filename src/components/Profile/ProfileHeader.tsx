@@ -31,9 +31,9 @@ export function ProfileHeader({
 	const user = session?.user;
 
 	return (
-		<div className="flex flex-col sm:flex-row items-center gap-8 bg-card/30 p-8 rounded-[2.5rem] border border-border/50">
+		<div className="flex flex-col sm:flex-row items-center gap-8 bg-card/30 p-8 rounded-2xl border border-border/50">
 			<div className="relative">
-				<div className="w-32 h-32 rounded-[2.5rem] overflow-hidden shadow-2xl relative border-4 border-background bg-muted flex items-center justify-center">
+				<div className="w-32 h-32 rounded-2xl overflow-hidden shadow-2xl relative border-4 border-background bg-muted flex items-center justify-center">
 					{editForm.avatarId ? (
 						<AvatarPicker selectedId={editForm.avatarId} onSelect={() => {}} />
 					) : (

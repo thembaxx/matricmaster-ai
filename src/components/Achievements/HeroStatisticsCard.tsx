@@ -22,7 +22,7 @@ export function HeroStatisticsCard({
 			animate={{ opacity: 1, y: 0 }}
 			transition={{ duration: 0.6 }}
 		>
-			<Card className="rounded-2xl sm:rounded-[3rem] p-6 sm:p-12 relative overflow-hidden bg-primary text-primary-foreground border-none shadow-2xl shadow-primary/20">
+			<Card className="rounded-2xl sm:rounded-2xl p-6 sm:p-12 relative overflow-hidden bg-primary text-primary-foreground border-none shadow-2xl shadow-primary/20">
 				<div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-[100px] -mr-32 -mt-32 pointer-events-none" />
 				<div className="absolute bottom-0 left-0 w-64 h-64 bg-black/10 rounded-full blur-[80px] -ml-24 -mb-24 pointer-events-none" />
 

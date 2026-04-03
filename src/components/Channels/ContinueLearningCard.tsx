@@ -19,6 +19,7 @@ export function ContinueLearningCard({
 	return (
 		<div
 			role="button"
+			aria-label={`Continue learning: ${title}`}
 			tabIndex={0}
 			className="bg-card p-5 rounded-3xl shadow-sm border border-border relative overflow-hidden group cursor-pointer hover:shadow-md transition-all ios-active-scale"
 			onClick={onClick}

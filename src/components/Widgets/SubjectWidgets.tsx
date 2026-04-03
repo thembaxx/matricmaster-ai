@@ -35,7 +35,7 @@ export function MathWidget() {
 
 export function ScienceWidget() {
 	return (
-		<Card className="rounded-[2rem] border-border/50 shadow-tiimo overflow-hidden bg-tiimo-blue/5">
+		<Card className="rounded-xl border-border/50 shadow-tiimo overflow-hidden bg-tiimo-blue/5">
 			<CardHeader className="p-6 pb-0">
 				<CardTitle className="text-xs font-black tracking-widest text-tiimo-gray-muted flex items-center gap-2">
 					<FluentEmoji type="3d" emoji="⚛️" size={16} className="w-4 h-4 text-tiimo-blue" />
