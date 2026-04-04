@@ -60,6 +60,7 @@ export default function LanguageSelect() {
 							size="icon"
 							onClick={() => router.push('/')}
 							className="rounded-full h-12 w-12"
+							aria-label="Close"
 						>
 							<HugeiconsIcon icon={Cancel01Icon} className="w-6 h-6" />
 						</Button>

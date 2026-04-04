@@ -13,6 +13,7 @@ export interface StudyRoomResult {
 	roomName: string;
 	roomUrl: string;
 	isMock: boolean;
+	fallbackReason?: string;
 }
 
 export async function createStudyRoom(
@@ -23,7 +24,7 @@ export async function createStudyRoom(
 	const slug = slugifySubject(subject);
 	const roomName = `study-${slug}-${timestamp}`;
 
-	const dailyRoom = await createDailyRoom({
+	const dailyRoomResult = await createDailyRoom({
 		name: roomName,
 		privacy: 'private',
 		properties: {
@@ -37,19 +38,23 @@ export async function createStudyRoom(
 		},
 	});
 
-	if (dailyRoom) {
+	if (dailyRoomResult.success) {
 		return {
-			roomName: dailyRoom.name,
-			roomUrl: dailyRoom.url,
+			roomName: dailyRoomResult.room.name,
+			roomUrl: dailyRoomResult.room.url,
 			isMock: false,
 		};
 	}
+
+	const fallbackReason = dailyRoomResult.error;
+	console.warn(`[VideoCall] Daily.co API fallback triggered: ${fallbackReason}`);
 
 	const domain = process.env.NEXT_PUBLIC_DAILY_DOMAIN || 'lumni';
 	return {
 		roomName,
 		roomUrl: `https://${domain}.daily.co/${roomName}`,
 		isMock: true,
+		fallbackReason,
 	};
 }
 
@@ -62,10 +67,10 @@ export interface StudyRoomInfo {
 export async function getStudyRoom(roomName: string): Promise<StudyRoomInfo> {
 	const dailyRoom = await getDailyRoomInfo(roomName);
 
-	if (dailyRoom) {
+	if (dailyRoom?.success) {
 		return {
-			roomName: dailyRoom.name,
-			roomUrl: dailyRoom.url,
+			roomName: dailyRoom.room.name,
+			roomUrl: dailyRoom.room.url,
 			exists: true,
 		};
 	}

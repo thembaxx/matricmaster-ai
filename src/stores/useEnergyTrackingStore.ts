@@ -71,19 +71,19 @@ export const useEnergyTrackingStore = create<EnergyTrackingState>((set, get) => 
 	fetchEnergyData: async () => {
 		set({ isLoading: true });
 		try {
-			const [historyRes, patternsRes, windowsRes, recsRes] = await Promise.all([
+			const [historyRes, patternsRes, recsRes] = await Promise.all([
 				fetch('/api/energy/pattern?type=history'),
 				fetch('/api/energy/pattern?type=weekly'),
 				fetch('/api/energy/recommendations'),
-				fetch('/api/energy/recommendations'),
 			]);
 
-			const [historyData, patternsData, windowsData, recsData] = await Promise.all([
+			const [historyData, patternsData, recsData] = await Promise.all([
 				historyRes.json(),
 				patternsRes.json(),
-				windowsRes.json(),
 				recsRes.json(),
 			]);
+
+			const windowsData = recsData;
 
 			set({
 				energyHistory: historyData.history || [],

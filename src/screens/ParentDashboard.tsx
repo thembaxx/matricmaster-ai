@@ -36,7 +36,13 @@ export default function ParentDashboard({ userName = 'Student' }: ParentDashboar
 	return (
 		<div className="flex flex-col h-full bg-background min-w-0">
 			<header className="px-6 pt-12 pb-6 flex items-center justify-between shrink-0 max-w-4xl mx-auto w-full">
-				<Button variant="ghost" size="icon" onClick={() => router.back()} className="rounded-full">
+				<Button
+					variant="ghost"
+					size="icon"
+					onClick={() => router.back()}
+					className="rounded-full"
+					aria-label="Go back"
+				>
 					<HugeiconsIcon icon={ArrowLeft01Icon} className="w-6 h-6" />
 				</Button>
 				<h1 className="text-xl font-black tracking-tight">parent portal</h1>
@@ -45,6 +51,7 @@ export default function ParentDashboard({ userName = 'Student' }: ParentDashboar
 					size="icon"
 					onClick={() => router.push('/parent-dashboard/settings')}
 					className="rounded-full"
+					aria-label="Settings"
 				>
 					<HugeiconsIcon icon={Settings01Icon} className="w-6 h-6" />
 				</Button>

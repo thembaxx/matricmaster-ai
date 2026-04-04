@@ -27,6 +27,7 @@ export function QuizTopBar({
 				size="icon"
 				className="rounded-full"
 				onClick={() => router.push('/dashboard')}
+				aria-label="Go back"
 			>
 				<HugeiconsIcon icon={ArrowLeft02Icon} className="w-6 h-6" />
 			</Button>
