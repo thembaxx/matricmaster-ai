@@ -1,5 +1,11 @@
 import { act, renderHook } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+
+vi.mock('@/services/wellnessService', () => ({
+	getWellnessStats: vi.fn(),
+	recordWellnessCheckIn: vi.fn(),
+}));
+
 import { useShouldShowCheckIn } from '@/hooks/useWellness';
 
 describe('useShouldShowCheckIn', () => {

@@ -109,7 +109,7 @@ export function BlockActions({
 				</div>
 			)}
 
-			<div className="grid grid-cols-2 gap-3">
+			<div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
 				<Button variant="ghost" onClick={handleStudySession} className={`${actionButtonBase} h-28`}>
 					<div className="p-3.5 rounded-2xl bg-primary/10 border border-primary/20 shadow-sm">
 						<HugeiconsIcon icon={Timer01Icon} className="w-6 h-6 text-primary" />
@@ -194,7 +194,7 @@ export function BlockActions({
 				<Switch checked={event?.isCompleted || false} onCheckedChange={onToggleComplete} />
 			</div>
 
-			<div className="grid grid-cols-2 gap-3 py-1">
+			<div className="grid grid-cols-1 sm:grid-cols-2 gap-3 py-1">
 				<Button
 					variant="secondary"
 					size="sm"

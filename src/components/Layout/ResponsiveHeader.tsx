@@ -12,7 +12,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import type { authClient } from '@/lib/auth-client';
 import { cn } from '@/lib/utils';
-import { ProfileMenu } from './profile-menu';
+import { ProfileMenu } from './ProfileMenu';
 
 const desktopNavItems = [
 	{ href: '/dashboard', label: 'dashboard' },
@@ -63,7 +63,7 @@ export function ResponsiveHeader({
 			)}
 		>
 			<div className="hidden lg:flex items-center gap-8">
-				<Link href="/" className="shrink-0">
+				<Link href="/" transitionTypes={['fade']} className="shrink-0">
 					<p className="font-bold text-xs tracking-wider text-foreground">
 						{appConfig.name.toLowerCase()}
 					</p>
@@ -73,6 +73,7 @@ export function ResponsiveHeader({
 						<Link
 							key={item.href}
 							href={item.href}
+							transitionTypes={['fade']}
 							className={cn(
 								'text-sm font-medium text-muted-foreground hover:text-foreground transition-colors',
 								{
@@ -88,7 +89,7 @@ export function ResponsiveHeader({
 
 			{user && <div className="lg:hidden mr-4">{mobileMenuTrigger}</div>}
 
-			<Link href="/" className="lg:hidden">
+			<Link href="/" transitionTypes={['fade']} className="lg:hidden">
 				<p className="font-bold text-lg tracking-tighter text-foreground">
 					{appConfig.name.toLowerCase()}
 				</p>
@@ -106,7 +107,7 @@ export function ResponsiveHeader({
 					<ProfileMenu user={user}>
 						<m.button
 							type="button"
-							className="rounded-full focus:outline-none"
+							className="rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
 							whileTap={{ scale: 0.9 }}
 							aria-label="User profile menu"
 						>
@@ -138,7 +139,11 @@ function NotificationButton({ count, onClick }: NotificationButtonProps) {
 			onClick={onClick}
 			aria-label={`Notifications${count > 0 ? `, ${count} unread` : ''}`}
 		>
-			<HugeiconsIcon icon={Notification01Icon} className="w-5 h-5 text-foreground" />
+			<HugeiconsIcon
+				icon={Notification01Icon}
+				className="w-5 h-5 text-foreground"
+				aria-hidden="true"
+			/>
 			{count > 0 && (
 				<m.span
 					initial={{ scale: 0.95, opacity: 0 }}

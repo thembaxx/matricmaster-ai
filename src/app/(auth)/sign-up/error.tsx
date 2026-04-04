@@ -22,8 +22,11 @@ export default function SignUpError({ error, reset }: SignUpErrorProps) {
 			<BackgroundMesh />
 			<div className="w-full max-w-md p-4 relative z-10">
 				<div className="w-full premium-glass border-none rounded-[2.5rem] shadow-2xl overflow-hidden p-8 text-center space-y-6">
-					<div className="w-16 h-16 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center mx-auto">
-						<HugeiconsIcon icon={Warning} className="w-8 h-8 text-red-600 dark:text-red-400" />
+					<div className="w-16 h-16 bg-destructive/10 dark:bg-destructive/20 rounded-full flex items-center justify-center mx-auto">
+						<HugeiconsIcon
+							icon={Warning}
+							className="w-8 h-8 text-destructive dark:text-destructive"
+						/>
 					</div>
 					<div className="space-y-2">
 						<h2 className="text-2xl font-bold text-foreground">account creation failed</h2>

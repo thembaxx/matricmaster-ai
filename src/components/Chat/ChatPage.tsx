@@ -84,6 +84,7 @@ export function ChatPage() {
 						<button
 							type="button"
 							onClick={() => setShowHistory(!showHistory)}
+							aria-label="Toggle chat history"
 							className="p-2 hover:bg-muted rounded-lg"
 						>
 							☰
@@ -105,7 +106,13 @@ export function ChatPage() {
 
 				<ChatWindow messages={messages} isLoading={isLoading} />
 
-				<ChatInput sessionId={currentSessionId} subject={subject} onMessageSent={() => {}} />
+				<ChatInput
+					sessionId={currentSessionId}
+					subject={subject}
+					onMessageSent={() => {
+						/* Message sent - store already updated */
+					}}
+				/>
 			</Card>
 		</div>
 	);

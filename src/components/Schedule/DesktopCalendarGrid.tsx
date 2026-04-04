@@ -73,6 +73,13 @@ export function DesktopCalendarGrid({
 											height: `${(event.end - event.start) * 80}px`,
 										}}
 										onClick={() => onBlockClick(event)}
+										onKeyDown={(e) => {
+											if (e.key === 'Enter' || e.key === ' ') {
+												onBlockClick(event);
+											}
+										}}
+										role="button"
+										tabIndex={0}
 									>
 										<div className="flex flex-col h-full">
 											<div className="flex items-start justify-between">

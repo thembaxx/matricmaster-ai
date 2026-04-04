@@ -26,7 +26,7 @@ export function TimeRangePicker({
 	};
 
 	return (
-		<div className="grid grid-cols-2 gap-4">
+		<div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
 			<div className="space-y-2">
 				<Label className="text-xs font-bold  tracking-wider text-muted-foreground ml-1">
 					Start Time

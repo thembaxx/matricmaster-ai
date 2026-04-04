@@ -10,42 +10,43 @@ import {
 import { HugeiconsIcon } from '@hugeicons/react';
 import { m } from 'framer-motion';
 import Link from 'next/link';
+import { memo } from 'react';
 
 const navItems = [
 	{
 		href: '/dashboard',
 		label: 'dashboard',
 		icon: DashboardSpeed02Icon,
-		activeColor: 'text-tiimo-blue',
-		bgColor: 'bg-tiimo-blue/10',
+		activeColor: 'text-primary',
+		bgColor: 'bg-primary/10',
 	},
 	{
 		href: '/schedule',
 		label: 'daily',
 		icon: Calendar01Icon,
-		activeColor: 'text-tiimo-lavender',
-		bgColor: 'bg-tiimo-lavender/10',
+		activeColor: 'text-primary',
+		bgColor: 'bg-primary/10',
 	},
 	{
 		href: '/planner',
 		label: 'planner',
 		icon: MagicWandIcon,
-		activeColor: 'text-tiimo-green',
-		bgColor: 'bg-tiimo-green/10',
+		activeColor: 'text-primary',
+		bgColor: 'bg-primary/10',
 	},
 	{
 		href: '/focus',
 		label: 'focus',
 		icon: Search01Icon,
-		activeColor: 'text-tiimo-blue',
-		bgColor: 'bg-tiimo-blue/10',
+		activeColor: 'text-primary',
+		bgColor: 'bg-primary/10',
 	},
 	{
 		href: '/profile',
 		label: 'me',
 		icon: UserIcon,
-		activeColor: 'text-tiimo-pink',
-		bgColor: 'bg-tiimo-pink/10',
+		activeColor: 'text-primary',
+		bgColor: 'bg-primary/10',
 	},
 ];
 
@@ -53,7 +54,9 @@ interface BottomNavigationProps {
 	pathname: string;
 }
 
-export function BottomNavigation({ pathname }: BottomNavigationProps) {
+export const BottomNavigation = memo(function BottomNavigation({
+	pathname,
+}: BottomNavigationProps) {
 	return (
 		<m.nav
 			initial={{ y: 100 }}
@@ -109,4 +112,4 @@ export function BottomNavigation({ pathname }: BottomNavigationProps) {
 			})}
 		</m.nav>
 	);
-}
+});

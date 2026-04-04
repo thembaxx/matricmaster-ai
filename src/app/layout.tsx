@@ -10,8 +10,15 @@ import { ServiceWorkerRegistration } from '@/components/ServiceWorkerRegistratio
 import { Toaster } from '@/components/Toaster';
 import { ThemeProvider } from '@/components/theme-provider';
 import '@/styles/index.css';
+import { domAnimation, LazyMotion } from 'framer-motion';
+import { Geist, JetBrains_Mono } from 'next/font/google';
+import { cn } from '@/lib/utils';
 import { appConfig } from '../app.config';
 import { geistMono, geistSans, notoSansMath, playfair } from './fonts';
+
+const geistHeading = Geist({ subsets: ['latin'], variable: '--font-heading' });
+
+const jetbrainsMono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-mono' });
 
 const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://lumni.ai';
 
@@ -123,7 +130,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 		<html
 			lang="en"
 			suppressHydrationWarning
-			className={`${geistMono.variable} ${geistSans.variable} ${playfair.variable} ${notoSansMath.variable}`}
+			className={cn(
+				geistMono.variable,
+				geistSans.variable,
+				playfair.variable,
+				notoSansMath.variable,
+				jetbrainsMono.variable,
+				geistHeading.variable
+			)}
 		>
 			<head>
 				{process.env.NODE_ENV === 'development' && (
@@ -148,17 +162,19 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 				>
 					skip to main content
 				</a>
-				<ErrorBoundary>
-					<ThemeProvider defaultTheme="system" storageKey="matric-master-theme">
-						<LiveRegionProvider>
-							<NavigationProgress />
-							<ClientProviders>{children}</ClientProviders>
-							<Toaster />
-							<ServiceWorkerRegistration />
-							<ClientOnlyProviders />
-						</LiveRegionProvider>
-					</ThemeProvider>
-				</ErrorBoundary>
+				<LazyMotion features={domAnimation}>
+					<ErrorBoundary>
+						<ThemeProvider defaultTheme="system" storageKey="matric-master-theme">
+							<LiveRegionProvider>
+								<NavigationProgress />
+								<ClientProviders>{children}</ClientProviders>
+								<Toaster />
+								<ServiceWorkerRegistration />
+								<ClientOnlyProviders />
+							</LiveRegionProvider>
+						</ThemeProvider>
+					</ErrorBoundary>
+				</LazyMotion>
 				<DeferredAnalytics />
 			</body>
 		</html>

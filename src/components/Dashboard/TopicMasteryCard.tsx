@@ -134,7 +134,7 @@ export const TopicMasteryCard = memo(function TopicMasteryCard({
 				</CardTitle>
 			</CardHeader>
 			<CardContent className="px-8 pb-8">
-				<ScrollArea className="h-[320px] pr-4 -mr-4">
+				<ScrollArea className="min-h-[250px] max-h-[400px] pr-4 -mr-4">
 					<div className="space-y-4">
 						{stats.weakTopics.length > 0 && (
 							<div className="space-y-2">

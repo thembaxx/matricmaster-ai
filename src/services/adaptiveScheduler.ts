@@ -1,6 +1,6 @@
 'use server';
 
-import { and, eq, lt, sql } from 'drizzle-orm';
+import { and, eq, like, lt, sql } from 'drizzle-orm';
 import { dbManager } from '@/lib/db';
 import { calendarEvents, conceptStruggles, quizResults } from '@/lib/db/schema';
 
@@ -88,7 +88,7 @@ export async function analyzeAndAdjust(userId: string): Promise<ScheduleAdjustme
 		.where(
 			and(
 				eq(quizResults.userId, userId),
-				lt(sql`${quizResults.percentage}`, '60'),
+				sql`${quizResults.percentage} < 60`,
 				sql`${quizResults.completedAt} >= ${sevenDaysAgo}`
 			)
 		)
@@ -134,7 +134,7 @@ export async function analyzeAndAdjust(userId: string): Promise<ScheduleAdjustme
 				and(
 					eq(calendarEvents.userId, userId),
 					eq(calendarEvents.eventType, 'practice'),
-					sql`${calendarEvents.title} LIKE ${`%${struggle.concept}%`}`,
+					like(calendarEvents.title, 'Extra Practice:%'),
 					sql`${calendarEvents.startTime} > ${now}`,
 					sql`${calendarEvents.startTime} < ${weekFromNow}`
 				)

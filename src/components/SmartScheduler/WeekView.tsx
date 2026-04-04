@@ -73,7 +73,7 @@ export function WeekView() {
 					>
 						<HugeiconsIcon icon={ChevronLeft} className="w-5 h-5" />
 					</button>
-					<span className="font-medium min-w-[180px] text-center text-sm">
+					<span className="font-medium min-w-[140px] sm:min-w-[180px] text-center text-sm">
 						{format(weekDays[0], 'MMM d')} - {format(weekDays[6], 'MMM d, yyyy')}
 					</span>
 					<button
@@ -87,7 +87,7 @@ export function WeekView() {
 				<div className="w-20" />
 			</div>
 
-			<div className="grid grid-cols-7 min-h-[320px]">
+			<div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-7 min-h-[320px]">
 				{weekDays.map((day) => {
 					const dayBlocks = getBlocksForDay(day);
 					const isSelected = isSameDay(selectedDate, day);

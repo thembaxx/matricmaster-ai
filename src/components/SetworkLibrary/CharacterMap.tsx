@@ -114,6 +114,7 @@ export function CharacterMap({ characters }: CharacterMapProps) {
 								onClick={() => setSelectedId(selectedId === char.id ? null : char.id)}
 								className="cursor-pointer"
 								role="button"
+								aria-label={`Select ${char.name}`}
 								tabIndex={0}
 								onKeyDown={(e) => {
 									if (e.key === 'Enter' || e.key === ' ') {

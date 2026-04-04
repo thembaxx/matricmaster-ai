@@ -137,7 +137,7 @@ export function DifficultyIndicator({
 					</div>
 				</div>
 
-				<div className="grid grid-cols-3 gap-4 pt-2">
+				<div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
 					<div className="text-center">
 						<div className="text-2xl font-bold">{stats.accuracy}%</div>
 						<div className="text-xs text-muted-foreground">Accuracy</div>

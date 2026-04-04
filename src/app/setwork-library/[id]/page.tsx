@@ -49,13 +49,13 @@ export default async function SetworkDetailPage({ params }: PageProps) {
 						</p>
 					</div>
 					<div className="flex gap-2">
-						<Link href={`/setwork-library/quiz?setwork=${setwork.id}`}>
+						<Link href={`/setwork-library/quiz?setwork=${setwork.id}`} transitionTypes={['fade']}>
 							<Button variant="secondary" size="sm" className="gap-1.5">
 								<HugeiconsIcon icon={FlashIcon} className="w-3.5 h-3.5" />
 								Quiz
 							</Button>
 						</Link>
-						<Link href={'/setwork-library/essays'}>
+						<Link href={'/setwork-library/essays'} transitionTypes={['fade']}>
 							<Button size="sm" className="gap-1.5">
 								<HugeiconsIcon icon={BookOpenIcon} className="w-3.5 h-3.5" />
 								Study

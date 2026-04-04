@@ -86,6 +86,7 @@ export function ResponsiveAudioPlayer({
 						onClick={() => handleOpenChange(true)}
 						className="cursor-pointer"
 						role="button"
+						aria-label="Open audio player"
 						tabIndex={0}
 						onKeyDown={(e) => {
 							if (e.key === 'Enter' || e.key === ' ') {
@@ -118,6 +119,7 @@ export function ResponsiveAudioPlayer({
 					onClick={() => handleOpenChange(true)}
 					className="cursor-pointer"
 					role="button"
+					aria-label="Open audio player"
 					tabIndex={0}
 					onKeyDown={(e) => {
 						if (e.key === 'Enter' || e.key === ' ') {

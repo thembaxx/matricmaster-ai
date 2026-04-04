@@ -59,18 +59,14 @@ export function QuizProgressDashboard({
 			</div>
 
 			<div className="space-y-2">
-				<Progress
-					value={progressPercent}
-					className="h-2.5 rounded-full bg-secondary"
-					indicatorClassName="rounded-full bg-gradient-to-r from-primary to-purple-400 transition-all duration-500"
-				/>
+				<Progress value={progressPercent} className="h-2.5 rounded-full bg-secondary" />
 				<div className="flex justify-between text-xs text-muted-foreground">
 					<span>Question {currentQuestion}</span>
 					<span>of {totalQuestions}</span>
 				</div>
 			</div>
 
-			<div className="grid grid-cols-3 gap-3">
+			<div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
 				<div className="p-3 rounded-2xl bg-success/10 text-center">
 					<div className="flex items-center justify-center gap-1.5 mb-1">
 						<HugeiconsIcon icon={CheckmarkCircle02Icon} className="w-5 h-5 text-success" />

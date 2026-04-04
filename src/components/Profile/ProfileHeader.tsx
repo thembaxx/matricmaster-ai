@@ -18,6 +18,7 @@ interface ProfileHeaderProps {
 	editForm: { name: string; school: string; avatarId: string };
 	setEditForm: (form: any) => void;
 	handleSaveProfile: () => void;
+	isSaving?: boolean;
 }
 
 export function ProfileHeader({
@@ -27,15 +28,26 @@ export function ProfileHeader({
 	editForm,
 	setEditForm,
 	handleSaveProfile,
+	isSaving = false,
 }: ProfileHeaderProps) {
 	const user = session?.user;
 
 	return (
-		<div className="flex flex-col sm:flex-row items-center gap-8 bg-card/30 p-8 rounded-[2.5rem] border border-border/50">
+		<div className="flex flex-col sm:flex-row items-center gap-8 bg-card/30 p-8 rounded-2xl border border-border/50">
 			<div className="relative">
-				<div className="w-32 h-32 rounded-[2.5rem] overflow-hidden shadow-2xl relative border-4 border-background bg-muted flex items-center justify-center">
+				<div className="w-32 h-32 rounded-2xl overflow-hidden shadow-2xl relative border-4 border-background bg-muted flex items-center justify-center">
 					{editForm.avatarId ? (
-						<AvatarPicker selectedId={editForm.avatarId} onSelect={() => {}} />
+						<AvatarPicker
+							selectedId={editForm.avatarId}
+							onSelect={(id) => {
+								if (isEditing) {
+									setEditForm({ ...editForm, avatarId: id });
+								} else {
+									setIsEditing(true);
+									setEditForm({ ...editForm, avatarId: id });
+								}
+							}}
+						/>
 					) : (
 						<SafeImage
 							src={user?.image || '/default-avatar.png'}
@@ -48,6 +60,7 @@ export function ProfileHeader({
 					<button
 						type="button"
 						onClick={() => setIsEditing(true)}
+						aria-label="Edit profile"
 						className="absolute -bottom-2 -right-2 w-10 h-10 bg-primary text-white rounded-2xl flex items-center justify-center shadow-xl hover:scale-110 transition-transform"
 					>
 						<HugeiconsIcon icon={PencilEdit01Icon} className="w-5 h-5" />
@@ -101,14 +114,16 @@ export function ProfileHeader({
 						<div className="flex gap-2 pt-6">
 							<Button
 								onClick={handleSaveProfile}
+								disabled={isSaving}
 								className="rounded-full flex-1 gap-2 h-12 shadow-xl shadow-primary/20"
 							>
 								<HugeiconsIcon icon={SaveIcon} className="w-4 h-4" />
-								save changes
+								{isSaving ? 'saving...' : 'save changes'}
 							</Button>
 							<Button
 								variant="ghost"
 								onClick={() => setIsEditing(false)}
+								disabled={isSaving}
 								className="rounded-full h-12"
 							>
 								cancel

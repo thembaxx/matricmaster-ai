@@ -51,6 +51,7 @@ export function useProfile() {
 	const { data: session } = useSession();
 	const [viewMode, setViewMode] = useState<'my_stats' | 'provincial'>('my_stats');
 	const [isEditing, setIsEditing] = useState(false);
+	const [isSaving, setIsSaving] = useState(false);
 
 	const defaultEditForm = useMemo((): EditFormState => {
 		const u = session?.user as UserProfile | undefined;
@@ -106,6 +107,7 @@ export function useProfile() {
 	const isLoading = isProgressLoading || isStreakLoading || isAchievementsLoading;
 
 	const handleSaveProfile = async () => {
+		setIsSaving(true);
 		const result = await updateUserProfileAction(editForm);
 		if (result.success) {
 			toast.success('Profile updated successfully!');
@@ -114,6 +116,7 @@ export function useProfile() {
 		} else {
 			toast.error('Failed to update profile');
 		}
+		setIsSaving(false);
 	};
 
 	const chartData: ChartDataItem[] = useMemo(
@@ -138,6 +141,7 @@ export function useProfile() {
 		setEditForm,
 		userStats,
 		isLoading,
+		isSaving,
 		chartData,
 		handleSaveProfile,
 	};

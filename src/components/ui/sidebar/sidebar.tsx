@@ -4,10 +4,14 @@ import { LayoutLeftIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import * as React from 'react';
 import { Button } from '@/components/ui/button';
-import { Sheet, SheetContent, SheetTitle, VisuallyHidden } from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetTitle } from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
 import { SIDEBAR_WIDTH_MOBILE } from './sidebar-constants';
 import { useSidebar } from './use-sidebar';
+
+function VisuallyHidden({ children }: { children: React.ReactNode }) {
+	return <span className="sr-only">{children}</span>;
+}
 
 type SidebarProps = React.ComponentProps<'div'> & {
 	side?: 'left' | 'right';

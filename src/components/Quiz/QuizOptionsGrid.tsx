@@ -78,7 +78,7 @@ export const QuizOptionsGrid = memo(function QuizOptionsGrid({
 			variants={STAGGER_CONTAINER}
 			initial="hidden"
 			animate="visible"
-			className="grid grid-cols-2 gap-4"
+			className="grid grid-cols-1 sm:grid-cols-2 gap-4"
 		>
 			{options.map((option) => {
 				const isSelected = selectedOption === option.id;
@@ -98,8 +98,8 @@ export const QuizOptionsGrid = memo(function QuizOptionsGrid({
 				if (isSelected) {
 					if (isChecked) {
 						stateClasses = option.isCorrect
-							? 'bg-brand-green text-white border-transparent shadow-xl shadow-brand-green/20'
-							: 'bg-brand-red text-white border-transparent shadow-xl shadow-brand-red/20';
+							? 'bg-success text-white border-transparent shadow-xl shadow-success/20'
+							: 'bg-destructive text-white border-transparent shadow-xl shadow-destructive/20';
 					} else {
 						stateClasses = 'bg-foreground text-background border-transparent shadow-xl';
 					}

@@ -7,7 +7,14 @@ export function ConversionBanner({ onConvert }: { onConvert: () => void }) {
 	return (
 		<Card
 			className="p-6 mt-6 bg-brand-blue/5 w-full border-brand-blue/20 rounded-[2rem] flex flex-col gap-3 group cursor-pointer hover:bg-brand-blue/10 transition-colors"
+			role="button"
+			tabIndex={0}
 			onClick={onConvert}
+			onKeyDown={(e) => {
+				if (e.key === 'Enter' || e.key === ' ') {
+					onConvert();
+				}
+			}}
 		>
 			<div className="flex flex-col gap-4">
 				<div>

@@ -40,7 +40,7 @@ export function StudyBlockDateTimePicker({
 				/>
 			</div>
 
-			<div className="grid grid-cols-2 gap-4">
+			<div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
 				<TimePicker
 					htmlFor={startTimeId}
 					label="Start Time"

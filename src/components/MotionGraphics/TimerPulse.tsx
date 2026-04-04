@@ -60,8 +60,6 @@ export function TimerPulse({ seconds, isUrgent = false, fps = 30 }: TimerPulsePr
 						fontSize: 12,
 						fontWeight: 600,
 						color: TIIMO_COLORS.destructive,
-						textTransform: 'uppercase',
-						letterSpacing: '0.1em',
 					}}
 				>
 					Time Running Out!

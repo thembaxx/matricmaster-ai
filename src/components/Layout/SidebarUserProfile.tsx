@@ -3,7 +3,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import type { authClient } from '@/lib/auth-client';
-import { ProfileMenu } from './profile-menu';
+import { ProfileMenu } from './ProfileMenu';
 
 type AuthUser = typeof authClient.$Infer.Session.user;
 

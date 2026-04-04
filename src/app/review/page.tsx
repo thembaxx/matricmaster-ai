@@ -130,25 +130,25 @@ export default function ReviewPage() {
 						<CardContent>
 							<div className="grid gap-3 sm:grid-cols-2">
 								<Button variant="outline" asChild>
-									<Link href="/quiz">
+									<Link href="/quiz" transitionTypes={['fade']}>
 										<HugeiconsIcon icon={AiBrain01Icon} className="mr-2 h-4 w-4" />
 										Practice Quiz
 									</Link>
 								</Button>
 								<Button variant="outline" asChild>
-									<Link href="/flashcards">
+									<Link href="/flashcards" transitionTypes={['fade']}>
 										<HugeiconsIcon icon={BookOpen01Icon} className="mr-2 h-4 w-4" />
 										Flashcard Decks
 									</Link>
 								</Button>
 								<Button variant="outline" asChild>
-									<Link href="/ai-tutor">
+									<Link href="/ai-tutor" transitionTypes={['fade']}>
 										<HugeiconsIcon icon={Target01Icon} className="mr-2 h-4 w-4" />
 										Study Helper
 									</Link>
 								</Button>
 								<Button variant="outline" asChild>
-									<Link href="/dashboard">
+									<Link href="/dashboard" transitionTypes={['fade']}>
 										<HugeiconsIcon icon={Calendar01Icon} className="mr-2 h-4 w-4" />
 										Study Schedule
 									</Link>

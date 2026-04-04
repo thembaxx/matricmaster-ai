@@ -130,7 +130,7 @@ export function ProjectileMotion({
 				</svg>
 			</div>
 
-			<div className="grid grid-cols-2 gap-4 text-sm">
+			<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
 				<div className="bg-muted rounded-lg p-3">
 					<div className="text-muted-foreground text-xs">Time</div>
 					<div className="font-mono font-bold text-foreground">{time.toFixed(2)}s</div>

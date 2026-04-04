@@ -66,7 +66,7 @@ export function AITutorNudge(_props: AITutorNudgeProps) {
 					transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
 				>
 					<Card className="bg-gradient-to-r from-violet-500 via-violet-600 to-purple-600 text-white p-4 shadow-lg border-0 overflow-hidden relative">
-						<div className="absolute inset-0 bg-gradient-to-r from-violet-400/20 to-purple-400/20 animate-pulse" />
+						<div className="absolute inset-0 bg-gradient-to-r from-violet-400/20 to-purple-400/20 animate-[pulse_3s_ease-in-out_infinite]" />
 						<div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl -translate-y-1/2 translate-x-1/2" />
 						<div className="absolute bottom-0 left-0 w-24 h-24 bg-purple-400/20 rounded-full blur-xl translate-y-1/2 -translate-x-1/2" />
 

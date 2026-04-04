@@ -18,7 +18,7 @@ export function FinalCTASection() {
 				whileInView={{ opacity: 1, scale: 1 }}
 				viewport={{ once: true }}
 				transition={{ duration: 0.6 }}
-				className="relative overflow-hidden rounded-[var(--radius-2xl)] bg-gradient-to-br from-tiimo-lavender via-tiimo-lavender to-subject-physics p-12 lg:p-20"
+				className="relative overflow-hidden rounded-[var(--radius-2xl)] bg-gradient-to-br from-indigo-600 via-indigo-700 to-indigo-800 p-12 lg:p-20"
 			>
 				<div className="absolute inset-0 opacity-10">
 					<svg
@@ -48,7 +48,7 @@ export function FinalCTASection() {
 					<div className="flex flex-col sm:flex-row gap-4 justify-center">
 						<Button
 							size="lg"
-							className="w-full sm:w-auto h-14 rounded-[var(--radius-lg)] text-base font-semibold bg-white dark:bg-zinc-900 text-tiimo-lavender hover:bg-white/90 dark:hover:bg-zinc-800 shadow-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-tiimo-lavender active:scale-[0.98] transition-all duration-200"
+							className="w-full sm:w-auto h-14 rounded-[var(--radius-lg)] text-base font-semibold bg-card dark:bg-card text-primary hover:bg-card/90 dark:hover:bg-card/90 shadow-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-primary active:scale-[0.98] transition-all duration-200"
 							onClick={() => router.push('/dashboard')}
 						>
 							<span className="flex items-center gap-2">

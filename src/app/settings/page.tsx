@@ -1,12 +1,5 @@
 'use client';
 
-import {
-	LockIcon,
-	Notification03Icon,
-	Shield01Icon,
-	UserIcon as User,
-} from '@hugeicons/core-free-icons';
-import { HugeiconsIcon } from '@hugeicons/react';
 import { useQuery } from '@tanstack/react-query';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
@@ -98,26 +91,11 @@ export default function SettingsPage() {
 
 				<Tabs defaultValue="account" className="space-y-6">
 					<TabsList className="grid w-full grid-cols-5">
-						<TabsTrigger value="account">
-							<HugeiconsIcon icon={User} className="h-4 w-4 mr-2" />
-							Account
-						</TabsTrigger>
-						<TabsTrigger value="security">
-							<HugeiconsIcon icon={Shield01Icon} className="h-4 w-4 mr-2" />
-							Security
-						</TabsTrigger>
-						<TabsTrigger value="notifications">
-							<HugeiconsIcon icon={Notification03Icon} className="h-4 w-4 mr-2" />
-							Notifications
-						</TabsTrigger>
-						<TabsTrigger value="privacy">
-							<HugeiconsIcon icon={LockIcon} className="h-4 w-4 mr-2" />
-							Privacy
-						</TabsTrigger>
-						<TabsTrigger value="app-preferences">
-							<HugeiconsIcon icon={Shield01Icon} className="h-4 w-4 mr-2" />
-							Preferences
-						</TabsTrigger>
+						<TabsTrigger value="account">Account</TabsTrigger>
+						<TabsTrigger value="security">Security</TabsTrigger>
+						<TabsTrigger value="notifications">Notifications</TabsTrigger>
+						<TabsTrigger value="privacy">Privacy</TabsTrigger>
+						<TabsTrigger value="app-preferences">More</TabsTrigger>
 					</TabsList>
 
 					<TabsContent value="account">

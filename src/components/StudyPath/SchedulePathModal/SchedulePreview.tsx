@@ -18,7 +18,7 @@ export function ScheduleSummary({ stepsLength, hours, minutes }: ScheduleSummary
 				<HugeiconsIcon icon={Calendar02Icon} className="h-4 w-4 text-primary" />
 				<span className="text-sm font-semibold">Schedule Summary</span>
 			</div>
-			<div className="grid grid-cols-2 gap-3">
+			<div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
 				<div className="bg-background/80 rounded-xl p-3">
 					<p className="text-xs text-muted-foreground mb-1">Total Steps</p>
 					<p className="font-mono font-bold text-lg">{stepsLength}</p>

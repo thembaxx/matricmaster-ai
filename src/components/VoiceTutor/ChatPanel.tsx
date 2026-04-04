@@ -48,7 +48,7 @@ export function ChatPanel({
 	};
 
 	return (
-		<Card className="h-[500px] flex flex-col">
+		<Card className="min-h-[400px] max-h-[600px] flex flex-col">
 			<CardHeader className="pb-3 border-b">
 				<CardTitle className="text-base flex items-center gap-2">
 					<HugeiconsIcon icon={MessageAdd01Icon} className="w-5 h-5" />

@@ -138,7 +138,7 @@ export function WeeklyProgress() {
 							</div>
 						</div>
 
-						<div className="grid grid-cols-3 gap-4">
+						<div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
 							<div className="p-4 bg-muted/30 rounded-2xl space-y-2">
 								<div className="flex items-center gap-2">
 									<HugeiconsIcon icon={CheckmarkCircle01Icon} className="w-4 h-4 text-success" />

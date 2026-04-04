@@ -168,7 +168,9 @@ export const LeaderboardPreview = memo(function LeaderboardPreview() {
 							</div>
 							<Avatar className="w-10 h-10">
 								<AvatarImage src={entry.image} />
-								<AvatarFallback>{entry.name.charAt(0)}</AvatarFallback>
+								<AvatarFallback className="bg-linear-to-br from-violet-400 to-purple-600 text-white text-xs font-bold">
+									{entry.name.charAt(0)}
+								</AvatarFallback>
 							</Avatar>
 							<div className="flex-1 min-w-0">
 								<p className="text-sm font-bold text-foreground truncate">{entry.name}</p>

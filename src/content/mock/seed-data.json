@@ -839,6 +839,48 @@
 			"title": "Well Rounded",
 			"description": "Study 5 different subjects in one day",
 			"icon": "globe"
+		},
+		{
+			"id": "ach13",
+			"achievementId": "streak-7-master",
+			"title": "7-Day Streak Master",
+			"description": "Maintain a 7-day study streak for a full month",
+			"icon": "shield"
+		},
+		{
+			"id": "ach14",
+			"achievementId": "100-questions-club",
+			"title": "100 Questions Club",
+			"description": "Answer 100 questions correctly across all subjects",
+			"icon": "badge"
+		},
+		{
+			"id": "ach15",
+			"achievementId": "math-perfectionist",
+			"title": "Math Perfectionist",
+			"description": "Score 100% on 5 Mathematics quizzes in a row",
+			"icon": "compass"
+		},
+		{
+			"id": "ach16",
+			"achievementId": "night-owl-scholar",
+			"title": "Night Owl Scholar",
+			"description": "Complete 10 study sessions after 10pm",
+			"icon": "moon"
+		},
+		{
+			"id": "ach17",
+			"achievementId": "physics-pro",
+			"title": "Physics Pro",
+			"description": "Achieve 90%+ accuracy in Physical Sciences for 2 weeks",
+			"icon": "atom"
+		},
+		{
+			"id": "ach18",
+			"achievementId": "essay-champion",
+			"title": "Essay Champion",
+			"description": "Score above 85% on 3 English essay quizzes",
+			"icon": "pen"
 		}
 	],
 	"userAchievements": [
@@ -931,6 +973,60 @@
 			"description": "Complete 50 quizzes",
 			"icon": "robot",
 			"unlockedAt": "2024-02-02T14:00:00Z"
+		},
+		{
+			"id": "ua11",
+			"userId": "user-1",
+			"achievementId": "streak-7-master",
+			"title": "7-Day Streak Master",
+			"description": "Maintain a 7-day study streak for a full month",
+			"icon": "shield",
+			"unlockedAt": "2026-01-04T08:30:00Z"
+		},
+		{
+			"id": "ua12",
+			"userId": "user-1",
+			"achievementId": "100-questions-club",
+			"title": "100 Questions Club",
+			"description": "Answer 100 questions correctly across all subjects",
+			"icon": "badge",
+			"unlockedAt": "2026-02-04T16:45:00Z"
+		},
+		{
+			"id": "ua13",
+			"userId": "user-1",
+			"achievementId": "math-perfectionist",
+			"title": "Math Perfectionist",
+			"description": "Score 100% on 5 Mathematics quizzes in a row",
+			"icon": "compass",
+			"unlockedAt": "2026-03-04T11:20:00Z"
+		},
+		{
+			"id": "ua14",
+			"userId": "user-1",
+			"achievementId": "night-owl-scholar",
+			"title": "Night Owl Scholar",
+			"description": "Complete 10 study sessions after 10pm",
+			"icon": "moon",
+			"unlockedAt": "2026-03-21T23:15:00Z"
+		},
+		{
+			"id": "ua15",
+			"userId": "user-1",
+			"achievementId": "physics-pro",
+			"title": "Physics Pro",
+			"description": "Achieve 90%+ accuracy in Physical Sciences for 2 weeks",
+			"icon": "atom",
+			"unlockedAt": "2026-03-28T14:00:00Z"
+		},
+		{
+			"id": "ua16",
+			"userId": "user-1",
+			"achievementId": "essay-champion",
+			"title": "Essay Champion",
+			"description": "Score above 85% on 3 English essay quizzes",
+			"icon": "pen",
+			"unlockedAt": "2026-04-01T09:30:00Z"
 		}
 	],
 	"studySessions": [
@@ -1128,6 +1224,201 @@
 			"marksEarned": 16,
 			"startedAt": "2024-01-24T15:30:00Z",
 			"completedAt": "2024-01-24T15:50:00Z"
+		},
+		{
+			"id": "ss16",
+			"userId": "user-1",
+			"subjectId": 1,
+			"sessionType": "quiz",
+			"topic": "Algebra",
+			"durationMinutes": 45,
+			"questionsAttempted": 25,
+			"correctAnswers": 22,
+			"marksEarned": 44,
+			"startedAt": "2026-04-01T15:00:00Z",
+			"completedAt": "2026-04-01T15:45:00Z"
+		},
+		{
+			"id": "ss17",
+			"userId": "user-1",
+			"subjectId": 2,
+			"sessionType": "practice",
+			"topic": "Mechanics",
+			"durationMinutes": 30,
+			"questionsAttempted": 18,
+			"correctAnswers": 15,
+			"marksEarned": 30,
+			"startedAt": "2026-03-31T16:30:00Z",
+			"completedAt": "2026-03-31T17:00:00Z"
+		},
+		{
+			"id": "ss18",
+			"userId": "user-1",
+			"subjectId": 6,
+			"sessionType": "practice",
+			"topic": "Essay Writing",
+			"durationMinutes": 60,
+			"questionsAttempted": 5,
+			"correctAnswers": 4,
+			"marksEarned": 42,
+			"startedAt": "2026-03-30T14:00:00Z",
+			"completedAt": "2026-03-30T15:00:00Z"
+		},
+		{
+			"id": "ss19",
+			"userId": "user-1",
+			"subjectId": 1,
+			"sessionType": "flashcards",
+			"topic": "Trigonometric Identities",
+			"durationMinutes": 20,
+			"questionsAttempted": 20,
+			"correctAnswers": 18,
+			"marksEarned": 36,
+			"startedAt": "2026-03-29T10:00:00Z",
+			"completedAt": "2026-03-29T10:20:00Z"
+		},
+		{
+			"id": "ss20",
+			"userId": "user-1",
+			"subjectId": 2,
+			"sessionType": "quiz",
+			"topic": "Electromagnetism",
+			"durationMinutes": 35,
+			"questionsAttempted": 20,
+			"correctAnswers": 17,
+			"marksEarned": 34,
+			"startedAt": "2026-03-28T11:00:00Z",
+			"completedAt": "2026-03-28T11:35:00Z"
+		},
+		{
+			"id": "ss21",
+			"userId": "user-1",
+			"subjectId": 3,
+			"sessionType": "quiz",
+			"topic": "DNA and Genetics",
+			"durationMinutes": 25,
+			"questionsAttempted": 15,
+			"correctAnswers": 13,
+			"marksEarned": 26,
+			"startedAt": "2026-03-27T15:30:00Z",
+			"completedAt": "2026-03-27T15:55:00Z"
+		},
+		{
+			"id": "ss22",
+			"userId": "user-1",
+			"subjectId": 1,
+			"sessionType": "quiz",
+			"topic": "Calculus - Integration",
+			"durationMinutes": 40,
+			"questionsAttempted": 20,
+			"correctAnswers": 19,
+			"marksEarned": 38,
+			"startedAt": "2026-03-26T16:00:00Z",
+			"completedAt": "2026-03-26T16:40:00Z"
+		},
+		{
+			"id": "ss23",
+			"userId": "user-1",
+			"subjectId": 4,
+			"sessionType": "practice",
+			"topic": "Map Work",
+			"durationMinutes": 50,
+			"questionsAttempted": 12,
+			"correctAnswers": 10,
+			"marksEarned": 40,
+			"startedAt": "2026-03-25T14:00:00Z",
+			"completedAt": "2026-03-25T14:50:00Z"
+		},
+		{
+			"id": "ss24",
+			"userId": "user-1",
+			"subjectId": 5,
+			"sessionType": "quiz",
+			"topic": "Cold War",
+			"durationMinutes": 30,
+			"questionsAttempted": 15,
+			"correctAnswers": 12,
+			"marksEarned": 24,
+			"startedAt": "2026-03-24T17:00:00Z",
+			"completedAt": "2026-03-24T17:30:00Z"
+		},
+		{
+			"id": "ss25",
+			"userId": "user-1",
+			"subjectId": 1,
+			"sessionType": "practice",
+			"topic": "Euclidean Geometry",
+			"durationMinutes": 55,
+			"questionsAttempted": 15,
+			"correctAnswers": 12,
+			"marksEarned": 36,
+			"startedAt": "2026-03-23T15:00:00Z",
+			"completedAt": "2026-03-23T15:55:00Z"
+		},
+		{
+			"id": "ss26",
+			"userId": "user-1",
+			"subjectId": 2,
+			"sessionType": "flashcards",
+			"topic": "Organic Chemistry",
+			"durationMinutes": 25,
+			"questionsAttempted": 30,
+			"correctAnswers": 26,
+			"marksEarned": 52,
+			"startedAt": "2026-03-22T10:30:00Z",
+			"completedAt": "2026-03-22T10:55:00Z"
+		},
+		{
+			"id": "ss27",
+			"userId": "user-1",
+			"subjectId": 6,
+			"sessionType": "quiz",
+			"topic": "Literature - Hamlet",
+			"durationMinutes": 35,
+			"questionsAttempted": 15,
+			"correctAnswers": 13,
+			"marksEarned": 26,
+			"startedAt": "2026-03-21T16:00:00Z",
+			"completedAt": "2026-03-21T16:35:00Z"
+		},
+		{
+			"id": "ss28",
+			"userId": "user-1",
+			"subjectId": 1,
+			"sessionType": "quiz",
+			"topic": "Statistics and Probability",
+			"durationMinutes": 30,
+			"questionsAttempted": 15,
+			"correctAnswers": 14,
+			"marksEarned": 28,
+			"startedAt": "2026-03-20T14:30:00Z",
+			"completedAt": "2026-03-20T15:00:00Z"
+		},
+		{
+			"id": "ss29",
+			"userId": "user-1",
+			"subjectId": 3,
+			"sessionType": "practice",
+			"topic": "Human Reproduction",
+			"durationMinutes": 40,
+			"questionsAttempted": 20,
+			"correctAnswers": 17,
+			"marksEarned": 34,
+			"startedAt": "2026-03-19T15:00:00Z",
+			"completedAt": "2026-03-19T15:40:00Z"
+		},
+		{
+			"id": "ss30",
+			"userId": "user-1",
+			"subjectId": 2,
+			"sessionType": "quiz",
+			"topic": "Waves and Sound",
+			"durationMinutes": 25,
+			"questionsAttempted": 12,
+			"correctAnswers": 10,
+			"marksEarned": 20,
+			"startedAt": "2026-03-18T17:30:00Z",
+			"completedAt": "2026-03-18T17:55:00Z"
 		}
 	],
 	"studyPlans": [
@@ -1152,6 +1443,28 @@
 			"isActive": true,
 			"createdAt": "2024-01-15T00:00:00Z",
 			"updatedAt": "2024-02-01T14:00:00Z"
+		},
+		{
+			"id": "sp3",
+			"userId": "user-1",
+			"title": "NSC 2026 Final Exam Preparation",
+			"targetExamDate": "2026-11-05T00:00:00Z",
+			"focusAreas": "Mathematics Paper 1 & 2, Physical Sciences, English HL",
+			"weeklyGoals": "Complete 3 past papers per week, review weak topics daily, maintain 42-day streak",
+			"isActive": true,
+			"createdAt": "2026-01-05T00:00:00Z",
+			"updatedAt": "2026-04-04T08:00:00Z"
+		},
+		{
+			"id": "sp4",
+			"userId": "user-1",
+			"title": "Weekly Study Schedule",
+			"targetExamDate": "2026-11-05T00:00:00Z",
+			"focusAreas": "Monday: Mathematics (2h), Physical Sciences (1.5h). Tuesday: English (1h), Life Sciences (1.5h). Wednesday: Mathematics (2h), Geography (1h). Thursday: Physical Sciences (2h), History (1h). Friday: Mathematics (1.5h), English (1h). Weekend: Revision, Past Papers",
+			"weeklyGoals": "Follow daily schedule, complete 1 past paper on Saturday, review flashcards on Sunday",
+			"isActive": true,
+			"createdAt": "2026-03-01T00:00:00Z",
+			"updatedAt": "2026-04-04T07:00:00Z"
 		}
 	],
 	"flashcardDecks": [
@@ -1220,6 +1533,50 @@
 			"isPublic": true,
 			"createdAt": "2024-01-25T00:00:00Z",
 			"updatedAt": "2024-01-30T08:00:00Z"
+		},
+		{
+			"id": "fd7",
+			"userId": "user-1",
+			"name": "Organic Chemistry Reactions",
+			"description": "Key organic chemistry reactions including esterification, polymerisation, and combustion",
+			"subjectId": 2,
+			"cardCount": 45,
+			"isPublic": true,
+			"createdAt": "2026-02-10T00:00:00Z",
+			"updatedAt": "2026-03-28T14:00:00Z"
+		},
+		{
+			"id": "fd8",
+			"userId": "user-1",
+			"name": "Trigonometric Identities",
+			"description": "Essential trig identities for Grade 12 Mathematics Paper 2",
+			"subjectId": 1,
+			"cardCount": 20,
+			"isPublic": true,
+			"createdAt": "2026-02-15T00:00:00Z",
+			"updatedAt": "2026-03-25T10:00:00Z"
+		},
+		{
+			"id": "fd9",
+			"userId": "user-1",
+			"name": "Shakespeare Quotes",
+			"description": "Key quotes from Macbeth, Othello, and Romeo and Juliet for English HL",
+			"subjectId": 6,
+			"cardCount": 30,
+			"isPublic": false,
+			"createdAt": "2026-02-20T00:00:00Z",
+			"updatedAt": "2026-03-30T16:00:00Z"
+		},
+		{
+			"id": "fd10",
+			"userId": "user-1",
+			"name": "Geography Terms",
+			"description": "Key terms for climate, geomorphology, and resource use",
+			"subjectId": 4,
+			"cardCount": 35,
+			"isPublic": true,
+			"createdAt": "2026-03-01T00:00:00Z",
+			"updatedAt": "2026-03-29T11:00:00Z"
 		}
 	],
 	"flashcards": [
@@ -1835,16 +2192,106 @@
 		}
 	],
 	"leaderboardUsers": [
-		{ "id": "user-1", "name": "Themba M", "avatar": "", "points": 1680, "rank": 1 },
-		{ "id": "user-2", "name": "Sarah K", "avatar": "", "points": 1520, "rank": 2 },
-		{ "id": "user-3", "name": "Michael J", "avatar": "", "points": 1420, "rank": 3 },
-		{ "id": "user-4", "name": "Lisa N", "avatar": "", "points": 1350, "rank": 4 },
-		{ "id": "user-5", "name": "David R", "avatar": "", "points": 1280, "rank": 5 },
-		{ "id": "user-6", "name": "Emma W", "avatar": "", "points": 1180, "rank": 6 },
-		{ "id": "user-7", "name": "James T", "avatar": "", "points": 1100, "rank": 7 },
-		{ "id": "user-8", "name": "Anna P", "avatar": "", "points": 1050, "rank": 8 },
-		{ "id": "user-9", "name": "Chris L", "avatar": "", "points": 980, "rank": 9 },
-		{ "id": "user-10", "name": "Ben K", "avatar": "", "points": 920, "rank": 10 }
+		{
+			"id": "user-1",
+			"name": "Thabo Mokoena",
+			"avatar": "",
+			"points": 67420,
+			"rank": 1,
+			"streak": 42,
+			"topSubject": "Mathematics",
+			"school": "Pretoria Boys High"
+		},
+		{
+			"id": "user-2",
+			"name": "Lerato Nkosi",
+			"avatar": "",
+			"points": 62180,
+			"rank": 2,
+			"streak": 38,
+			"topSubject": "Physical Sciences",
+			"school": "Jeppe High School for Girls"
+		},
+		{
+			"id": "user-3",
+			"name": "Sipho Dlamini",
+			"avatar": "",
+			"points": 58930,
+			"rank": 3,
+			"streak": 35,
+			"topSubject": "Life Sciences",
+			"school": "Bishops Diocesan College"
+		},
+		{
+			"id": "user-4",
+			"name": "Naledi van der Merwe",
+			"avatar": "",
+			"points": 55200,
+			"rank": 4,
+			"streak": 31,
+			"topSubject": "English",
+			"school": "Rondebosch Boys' High"
+		},
+		{
+			"id": "user-5",
+			"name": "Kagiso Mthembu",
+			"avatar": "",
+			"points": 52750,
+			"rank": 5,
+			"streak": 28,
+			"topSubject": "Mathematics",
+			"school": "St John's College"
+		},
+		{
+			"id": "user-6",
+			"name": "Ayanda Zulu",
+			"avatar": "",
+			"points": 51340,
+			"rank": 6,
+			"streak": 25,
+			"topSubject": "Geography",
+			"school": "Durban High School"
+		},
+		{
+			"id": "user-7",
+			"name": "Mpho Khumalo",
+			"avatar": "",
+			"points": 49800,
+			"rank": 7,
+			"streak": 22,
+			"topSubject": "History",
+			"school": "St Stithians College"
+		},
+		{
+			"id": "user-8",
+			"name": "Zanele Sithole",
+			"avatar": "",
+			"points": 47650,
+			"rank": 8,
+			"streak": 19,
+			"topSubject": "Accounting",
+			"school": "Parktown Girls' High"
+		},
+		{
+			"id": "user-9",
+			"name": "Tshepo Mahlangu",
+			"avatar": "",
+			"points": 45200,
+			"rank": 9,
+			"streak": 17,
+			"topSubject": "Physical Sciences",
+			"school": "Grey College"
+		},
+		{
+			"id": "user-10",
+			"name": "Palesa Molefe",
+			"avatar": "",
+			"points": 43100,
+			"rank": 10,
+			"streak": 15,
+			"topSubject": "Economics",
+			"school": "Parktown Boys' High"
+		}
 	],
 	"channels": [
 		{
@@ -2038,6 +2485,116 @@
 			"isRead": true,
 			"readAt": "2024-01-30T08:00:00Z",
 			"createdAt": "2024-01-30T07:00:00Z"
+		},
+		{
+			"id": "n11",
+			"userId": "user-1",
+			"type": "reminder",
+			"title": "Streak Alert",
+			"message": "Your study streak is at 42 days! Keep it going",
+			"data": "{\"streakDays\": 42}",
+			"isRead": false,
+			"readAt": null,
+			"createdAt": "2026-04-04T07:00:00Z"
+		},
+		{
+			"id": "n12",
+			"userId": "user-1",
+			"type": "reminder",
+			"title": "New Past Papers Available",
+			"message": "New past papers available for Mathematics - November 2025 papers are now ready to practice",
+			"data": "{\"subjectId\": 1}",
+			"isRead": false,
+			"readAt": null,
+			"createdAt": "2026-04-03T10:00:00Z"
+		},
+		{
+			"id": "n13",
+			"userId": "user-1",
+			"type": "achievement",
+			"title": "Monthly Achievement",
+			"message": "You've mastered 8 topics this month - amazing progress",
+			"data": "{\"topicsMastered\": 8, \"month\": \"March 2026\"}",
+			"isRead": true,
+			"readAt": "2026-04-01T09:00:00Z",
+			"createdAt": "2026-04-01T08:00:00Z"
+		},
+		{
+			"id": "n14",
+			"userId": "user-1",
+			"type": "reminder",
+			"title": "Weekly Progress Report",
+			"message": "Your weekly progress report is ready - you completed 23 study sessions this week",
+			"data": "{\"sessionsCompleted\": 23, \"week\": \"2026-W13\"}",
+			"isRead": false,
+			"readAt": null,
+			"createdAt": "2026-04-03T18:00:00Z"
+		},
+		{
+			"id": "n15",
+			"userId": "user-1",
+			"type": "study_buddy",
+			"title": "Study Buddy Activity",
+			"message": "Your buddy Thabo just completed Physics Quiz - Mechanics with 85%",
+			"data": "{\"buddyId\": \"user-3\", \"subject\": \"Physical Sciences\", \"score\": 85}",
+			"isRead": true,
+			"readAt": "2026-04-02T16:30:00Z",
+			"createdAt": "2026-04-02T16:00:00Z"
+		},
+		{
+			"id": "n16",
+			"userId": "user-1",
+			"type": "achievement",
+			"title": "Achievement Unlocked",
+			"message": "Essay Champion - You scored above 85% on 3 English essay quizzes",
+			"data": "{\"achievementId\": \"essay-champion\"}",
+			"isRead": false,
+			"readAt": null,
+			"createdAt": "2026-04-01T09:30:00Z"
+		},
+		{
+			"id": "n17",
+			"userId": "user-1",
+			"type": "reminder",
+			"title": "Flashcards Due",
+			"message": "You have 15 flashcards to review today - Organic Chemistry Reactions",
+			"data": "{\"cardsDue\": 15, \"deckId\": \"fd7\"}",
+			"isRead": false,
+			"readAt": null,
+			"createdAt": "2026-04-04T08:00:00Z"
+		},
+		{
+			"id": "n18",
+			"userId": "user-1",
+			"type": "leaderboard",
+			"title": "Leaderboard Update",
+			"message": "You're now #1 on the all-time leaderboard with 67,420 KP",
+			"data": "{\"rank\": 1, \"points\": 67420}",
+			"isRead": true,
+			"readAt": "2026-04-03T12:00:00Z",
+			"createdAt": "2026-04-03T11:00:00Z"
+		},
+		{
+			"id": "n19",
+			"userId": "user-1",
+			"type": "reminder",
+			"title": "Exam Prep Reminder",
+			"message": "NSC Mathematics Paper 1 is on Nov 5 - start your revision now",
+			"data": "{\"examDate\": \"2026-11-05\", \"subject\": \"Mathematics\"}",
+			"isRead": false,
+			"readAt": null,
+			"createdAt": "2026-04-02T07:00:00Z"
+		},
+		{
+			"id": "n20",
+			"userId": "user-1",
+			"type": "study_buddy",
+			"title": "Study Group Invitation",
+			"message": "Lerato invited you to a Physics Revision study group tomorrow at 3pm",
+			"data": "{\"inviterId\": \"user-2\", \"subject\": \"Physical Sciences\", \"time\": \"2026-04-05T15:00:00Z\"}",
+			"isRead": false,
+			"readAt": null,
+			"createdAt": "2026-04-04T10:00:00Z"
 		}
 	],
 	"calendarEvents": [
@@ -2180,6 +2737,146 @@
 			"isCompleted": false,
 			"createdAt": "2024-01-29T00:00:00Z",
 			"updatedAt": "2024-01-29T00:00:00Z"
+		},
+		{
+			"id": "ce8",
+			"userId": "user-1",
+			"title": "Mathematics Paper 1 Exam - Nov 5",
+			"description": "NSC Final Examination - Mathematics Paper 1 (Algebra, Calculus, Functions)",
+			"eventType": "exam",
+			"subjectId": 1,
+			"startTime": "2026-11-05T09:00:00Z",
+			"endTime": "2026-11-05T12:00:00Z",
+			"isAllDay": false,
+			"location": "Exam Centre",
+			"reminderMinutes": "1440,60,30",
+			"recurrenceRule": null,
+			"examId": "nsc-math-p1-2026",
+			"lessonId": null,
+			"studyPlanId": "sp1",
+			"isCompleted": false,
+			"createdAt": "2026-01-15T00:00:00Z",
+			"updatedAt": "2026-01-15T00:00:00Z"
+		},
+		{
+			"id": "ce9",
+			"userId": "user-1",
+			"title": "Physical Sciences Practical - Oct 28",
+			"description": "NSC Practical Examination - Physics and Chemistry experiments",
+			"eventType": "exam",
+			"subjectId": 2,
+			"startTime": "2026-10-28T09:00:00Z",
+			"endTime": "2026-10-28T12:00:00Z",
+			"isAllDay": false,
+			"location": "Science Lab",
+			"reminderMinutes": "1440,60",
+			"recurrenceRule": null,
+			"examId": "nsc-phsc-prac-2026",
+			"lessonId": null,
+			"studyPlanId": "sp1",
+			"isCompleted": false,
+			"createdAt": "2026-01-15T00:00:00Z",
+			"updatedAt": "2026-01-15T00:00:00Z"
+		},
+		{
+			"id": "ce10",
+			"userId": "user-1",
+			"title": "Study Group - Physics Revision",
+			"description": "Group revision session with Lerato and Sipho - focus on Mechanics and Electromagnetism",
+			"eventType": "study",
+			"subjectId": 2,
+			"startTime": "2026-04-05T15:00:00Z",
+			"endTime": "2026-04-05T17:00:00Z",
+			"isAllDay": false,
+			"location": "Library Study Room",
+			"reminderMinutes": "60,15",
+			"recurrenceRule": null,
+			"examId": null,
+			"lessonId": null,
+			"studyPlanId": null,
+			"isCompleted": false,
+			"createdAt": "2026-04-03T00:00:00Z",
+			"updatedAt": "2026-04-03T00:00:00Z"
+		},
+		{
+			"id": "ce11",
+			"userId": "user-1",
+			"title": "Flashcard Review Due - 15 cards",
+			"description": "Organic Chemistry Reactions flashcards due for review",
+			"eventType": "reminder",
+			"subjectId": 2,
+			"startTime": "2026-04-04T16:00:00Z",
+			"endTime": "2026-04-04T16:30:00Z",
+			"isAllDay": false,
+			"location": null,
+			"reminderMinutes": "30",
+			"recurrenceRule": null,
+			"examId": null,
+			"lessonId": null,
+			"studyPlanId": null,
+			"isCompleted": false,
+			"createdAt": "2026-04-04T08:00:00Z",
+			"updatedAt": "2026-04-04T08:00:00Z"
+		},
+		{
+			"id": "ce12",
+			"userId": "user-1",
+			"title": "Mathematics Paper 2 Exam - Nov 10",
+			"description": "NSC Final Examination - Mathematics Paper 2 (Geometry, Trigonometry, Statistics)",
+			"eventType": "exam",
+			"subjectId": 1,
+			"startTime": "2026-11-10T09:00:00Z",
+			"endTime": "2026-11-10T12:00:00Z",
+			"isAllDay": false,
+			"location": "Exam Centre",
+			"reminderMinutes": "1440,60,30",
+			"recurrenceRule": null,
+			"examId": "nsc-math-p2-2026",
+			"lessonId": null,
+			"studyPlanId": "sp1",
+			"isCompleted": false,
+			"createdAt": "2026-01-15T00:00:00Z",
+			"updatedAt": "2026-01-15T00:00:00Z"
+		},
+		{
+			"id": "ce13",
+			"userId": "user-1",
+			"title": "English Home Language Paper 1 - Nov 3",
+			"description": "NSC Final Examination - English HL Paper 1 (Comprehension, Summary, Language)",
+			"eventType": "exam",
+			"subjectId": 6,
+			"startTime": "2026-11-03T09:00:00Z",
+			"endTime": "2026-11-03T12:00:00Z",
+			"isAllDay": false,
+			"location": "Exam Centre",
+			"reminderMinutes": "1440,60",
+			"recurrenceRule": null,
+			"examId": "nsc-eng-p1-2026",
+			"lessonId": null,
+			"studyPlanId": null,
+			"isCompleted": false,
+			"createdAt": "2026-01-15T00:00:00Z",
+			"updatedAt": "2026-01-15T00:00:00Z"
+		},
+		{
+			"id": "ce14",
+			"userId": "user-1",
+			"title": "Past Paper Practice - Mathematics",
+			"description": "Complete November 2025 Mathematics Paper 1 under timed conditions",
+			"eventType": "study",
+			"subjectId": 1,
+			"startTime": "2026-04-06T14:00:00Z",
+			"endTime": "2026-04-06T17:00:00Z",
+			"isAllDay": false,
+			"location": null,
+			"reminderMinutes": "60",
+			"recurrenceRule": null,
+			"examId": null,
+			"lessonId": null,
+			"studyPlanId": "sp1",
+			"isCompleted": false,
+			"createdAt": "2026-04-04T00:00:00Z",
+			"updatedAt": "2026-04-04T00:00:00Z"
 		}
 	],
 	"pastPapers": [
@@ -2318,6 +3015,142 @@
 			"totalMarks": 200,
 			"createdAt": "2024-01-08T00:00:00Z",
 			"updatedAt": "2024-01-22T00:00:00Z"
+		},
+		{
+			"id": "pp9",
+			"paperId": "MATH-P1-2025",
+			"originalPdfUrl": "https://example.com/papers/maths-p1-2025.pdf",
+			"storedPdfUrl": "/papers/maths-p1-2025.pdf",
+			"markdownFileUrl": "/papers/maths-p1-2025.md",
+			"subject": "Mathematics",
+			"paper": "Paper 1",
+			"year": 2025,
+			"month": "November",
+			"isExtracted": true,
+			"extractedQuestions": "[{\"q\":\"Solve the differential equation...\",\"a\":\"y = Ce^(2x)\"},{\"q\":\"Find the sum of the arithmetic series...\",\"a\":\"S_n = n/2(2a + (n-1)d)\"}]",
+			"instructions": "Answer ALL questions. Time: 3 hours. Marks: 150. Answer ALL questions. A non-programmable, non-graphic calculator may be used unless stated otherwise.",
+			"totalMarks": 150,
+			"createdAt": "2026-01-10T00:00:00Z",
+			"updatedAt": "2026-01-15T00:00:00Z"
+		},
+		{
+			"id": "pp10",
+			"paperId": "MATH-P2-2025",
+			"originalPdfUrl": "https://example.com/papers/maths-p2-2025.pdf",
+			"storedPdfUrl": "/papers/maths-p2-2025.pdf",
+			"markdownFileUrl": "/papers/maths-p2-2025.md",
+			"subject": "Mathematics",
+			"paper": "Paper 2",
+			"year": 2025,
+			"month": "November",
+			"isExtracted": true,
+			"extractedQuestions": "[{\"q\":\"In the diagram, O is the centre of the circle...\",\"a\":\"angle at centre = 2 x angle at circumference\"},{\"q\":\"Determine the equation of the regression line...\",\"a\":\"y = a + bx\"}]",
+			"instructions": "Answer ALL questions. Time: 3 hours. Marks: 150. An answer sheet and formula sheet are provided.",
+			"totalMarks": 150,
+			"createdAt": "2026-01-10T00:00:00Z",
+			"updatedAt": "2026-01-15T00:00:00Z"
+		},
+		{
+			"id": "pp11",
+			"paperId": "PHSC-P1-2025",
+			"originalPdfUrl": "https://example.com/papers/phsc-p1-2025.pdf",
+			"storedPdfUrl": "/papers/phsc-p1-2025.pdf",
+			"markdownFileUrl": "/papers/phsc-p1-2025.md",
+			"subject": "Physical Sciences",
+			"paper": "Paper 1",
+			"year": 2025,
+			"month": "November",
+			"isExtracted": true,
+			"extractedQuestions": "[{\"q\":\"A block of mass 5 kg slides down a frictionless incline...\",\"a\":\"v = 9.9 m/s\"},{\"q\":\"State Newton's Law of Universal Gravitation...\",\"a\":\"F = G(m1m2)/r^2\"}]",
+			"instructions": "Answer ALL questions. Time: 3 hours. Marks: 150. Two data sheets are attached. A non-programmable calculator may be used.",
+			"totalMarks": 150,
+			"createdAt": "2026-01-12T00:00:00Z",
+			"updatedAt": "2026-01-18T00:00:00Z"
+		},
+		{
+			"id": "pp12",
+			"paperId": "PHSC-P2-2025",
+			"originalPdfUrl": "https://example.com/papers/phsc-p2-2025.pdf",
+			"storedPdfUrl": "/papers/phsc-p2-2025.pdf",
+			"markdownFileUrl": "/papers/phsc-p2-2025.md",
+			"subject": "Physical Sciences",
+			"paper": "Paper 2",
+			"year": 2025,
+			"month": "November",
+			"isExtracted": true,
+			"extractedQuestions": "[{\"q\":\"Name the homologous series of CH3CH2OH...\",\"a\":\"Alcohols\"},{\"q\":\"Define the term rate of reaction...\",\"a\":\"Change in concentration of reactants or products per unit time\"}]",
+			"instructions": "Answer ALL questions. Time: 3 hours. Marks: 150. Four data sheets are attached.",
+			"totalMarks": 150,
+			"createdAt": "2026-01-12T00:00:00Z",
+			"updatedAt": "2026-01-18T00:00:00Z"
+		},
+		{
+			"id": "pp13",
+			"paperId": "ENG-HL-P1-2025",
+			"originalPdfUrl": "https://example.com/papers/eng-hl-p1-2025.pdf",
+			"storedPdfUrl": "/papers/eng-hl-p1-2025.pdf",
+			"markdownFileUrl": "/papers/eng-hl-p1-2025.md",
+			"subject": "English Home Language",
+			"paper": "Paper 1",
+			"year": 2025,
+			"month": "November",
+			"isExtracted": true,
+			"extractedQuestions": "[{\"q\":\"Read the comprehension passage and answer the questions...\",\"a\":\"The author uses irony to highlight...\"},{\"q\":\"Summarise the main points in no more than 90 words...\",\"a\":\"Summary should cover key arguments\"}]",
+			"instructions": "Answer ALL questions. Time: 2 hours. Marks: 70. Section A: Comprehension. Section B: Summary. Section C: Language.",
+			"totalMarks": 70,
+			"createdAt": "2026-01-14T00:00:00Z",
+			"updatedAt": "2026-01-20T00:00:00Z"
+		},
+		{
+			"id": "pp14",
+			"paperId": "LIFE-P1-2025",
+			"originalPdfUrl": "https://example.com/papers/life-p1-2025.pdf",
+			"storedPdfUrl": "/papers/life-p1-2025.pdf",
+			"markdownFileUrl": "/papers/life-p1-2025.md",
+			"subject": "Life Sciences",
+			"paper": "Paper 1",
+			"year": 2025,
+			"month": "November",
+			"isExtracted": true,
+			"extractedQuestions": "[{\"q\":\"Describe the process of natural selection...\",\"a\":\"Variation exists in populations, those with advantageous traits survive and reproduce...\"},{\"q\":\"Explain the role of DNA in protein synthesis...\",\"a\":\"DNA is transcribed to mRNA, which is translated to proteins at ribosomes\"}]",
+			"instructions": "Answer ALL questions. Time: 2.5 hours. Marks: 150.",
+			"totalMarks": 150,
+			"createdAt": "2026-01-16T00:00:00Z",
+			"updatedAt": "2026-01-22T00:00:00Z"
+		},
+		{
+			"id": "pp15",
+			"paperId": "GEOG-P1-2025",
+			"originalPdfUrl": "https://example.com/papers/geog-p1-2025.pdf",
+			"storedPdfUrl": "/papers/geog-p1-2025.pdf",
+			"markdownFileUrl": "/papers/geog-p1-2025.md",
+			"subject": "Geography",
+			"paper": "Paper 1",
+			"year": 2025,
+			"month": "November",
+			"isExtracted": true,
+			"extractedQuestions": "[{\"q\":\"Explain the formation of fold mountains...\",\"a\":\"Compression forces cause tectonic plates to collide and fold\"},{\"q\":\"Discuss the impact of climate change on SA agriculture...\",\"a\":\"Reduced rainfall, increased temperatures affect crop yields\"}]",
+			"instructions": "Answer ALL questions. Time: 3 hours. Marks: 225. Section A: Climate and Weather. Section B: Geomorphology. Section C: Resource Use and Conservation.",
+			"totalMarks": 225,
+			"createdAt": "2026-01-18T00:00:00Z",
+			"updatedAt": "2026-01-24T00:00:00Z"
+		},
+		{
+			"id": "pp16",
+			"paperId": "HIST-P1-2025",
+			"originalPdfUrl": "https://example.com/papers/hist-p1-2025.pdf",
+			"storedPdfUrl": "/papers/hist-p1-2025.pdf",
+			"markdownFileUrl": "/papers/hist-p1-2025.md",
+			"subject": "History",
+			"paper": "Paper 1",
+			"year": 2025,
+			"month": "November",
+			"isExtracted": true,
+			"extractedQuestions": "[{\"q\":\"Evaluate the role of the ANC in the struggle against apartheid...\",\"a\":\"The ANC played a central role through mass mobilisation, armed struggle, and international pressure\"},{\"q\":\"Discuss the significance of the Soweto Uprising...\",\"a\":\"Marked a turning point in the anti-apartheid struggle\"}]",
+			"instructions": "Answer THREE questions. Time: 3 hours. Marks: 225. Section A: Source-based essay. Section B and C: Essay questions.",
+			"totalMarks": 225,
+			"createdAt": "2026-01-20T00:00:00Z",
+			"updatedAt": "2026-01-26T00:00:00Z"
 		}
 	],
 	"userSettings": {
@@ -2467,6 +3300,122 @@
 			"personality": "balanced",
 			"createdAt": "2024-01-14T00:00:00Z",
 			"updatedAt": "2024-01-24T15:00:00Z"
+		}
+	],
+	"chatSessions": [
+		{
+			"id": "cs1",
+			"userId": "user-1",
+			"title": "Calculus - Integration Help",
+			"subject": "Mathematics",
+			"createdAt": "2026-03-26T16:00:00Z",
+			"updatedAt": "2026-03-26T16:45:00Z",
+			"messages": [
+				{
+					"id": "msg1",
+					"sessionId": "cs1",
+					"role": "user",
+					"content": "I'm struggling with integration by parts. Can you explain how to solve ∫x·e^x dx?",
+					"createdAt": "2026-03-26T16:00:00Z"
+				},
+				{
+					"id": "msg2",
+					"sessionId": "cs1",
+					"role": "assistant",
+					"content": "Great question! Integration by parts uses the formula: ∫u·dv = uv - ∫v·du\n\nFor ∫x·e^x dx:\n\n1. Choose u = x (because its derivative simplifies)\n2. Choose dv = e^x dx (because it's easy to integrate)\n\n3. Then du = dx and v = e^x\n\n4. Apply the formula:\n∫x·e^x dx = x·e^x - ∫e^x dx\n= x·e^x - e^x + C\n= e^x(x - 1) + C\n\nThe key is choosing u wisely - use the LIATE rule: Logarithmic, Inverse trig, Algebraic, Trig, Exponential.",
+					"createdAt": "2026-03-26T16:02:00Z"
+				},
+				{
+					"id": "msg3",
+					"sessionId": "cs1",
+					"role": "user",
+					"content": "What about ∫x²·sin(x) dx? Do I need to use integration by parts twice?",
+					"createdAt": "2026-03-26T16:10:00Z"
+				},
+				{
+					"id": "msg4",
+					"sessionId": "cs1",
+					"role": "assistant",
+					"content": "Yes, exactly! When you have x², you'll need integration by parts twice.\n\nFirst application:\nu = x², dv = sin(x)dx\ndu = 2x·dx, v = -cos(x)\n\n∫x²·sin(x)dx = -x²·cos(x) + 2∫x·cos(x)dx\n\nSecond application on ∫x·cos(x)dx:\nu = x, dv = cos(x)dx\ndu = dx, v = sin(x)\n\n∫x·cos(x)dx = x·sin(x) - ∫sin(x)dx = x·sin(x) + cos(x)\n\nFinal answer:\n∫x²·sin(x)dx = -x²·cos(x) + 2x·sin(x) + 2cos(x) + C\n\nThis is a common NSC Grade 12 exam question!",
+					"createdAt": "2026-03-26T16:15:00Z"
+				}
+			]
+		},
+		{
+			"id": "cs2",
+			"userId": "user-1",
+			"title": "Newton's Laws Explanation",
+			"subject": "Physical Sciences",
+			"createdAt": "2026-03-28T14:00:00Z",
+			"updatedAt": "2026-03-28T14:30:00Z",
+			"messages": [
+				{
+					"id": "msg5",
+					"sessionId": "cs2",
+					"role": "user",
+					"content": "Can you explain Newton's Second Law with a real example?",
+					"createdAt": "2026-03-28T14:00:00Z"
+				},
+				{
+					"id": "msg6",
+					"sessionId": "cs2",
+					"role": "assistant",
+					"content": "Newton's Second Law states: F_net = m·a\n\nThe net force acting on an object equals its mass times its acceleration.\n\nReal example: A 1200 kg car accelerates from rest with a net force of 3600 N.\n\na = F_net / m = 3600 / 1200 = 3 m/s²\n\nAfter 5 seconds:\nv = u + at = 0 + (3)(5) = 15 m/s\n\nKey points for NSC exams:\n- Always draw a free body diagram\n- Identify ALL forces acting on the object\n- F_net is the VECTOR SUM of all forces\n- Friction opposes motion\n- Weight = mg (where g = 9.8 m/s²)",
+					"createdAt": "2026-03-28T14:05:00Z"
+				},
+				{
+					"id": "msg7",
+					"sessionId": "cs2",
+					"role": "user",
+					"content": "What if there's friction? How do I handle that?",
+					"createdAt": "2026-03-28T14:15:00Z"
+				},
+				{
+					"id": "msg8",
+					"sessionId": "cs2",
+					"role": "assistant",
+					"content": "When friction is present:\n\nF_net = F_applied - f_k\n\nWhere f_k = μ_k · N (kinetic friction)\n\nExample: A 10 kg box is pushed with 50 N on a surface where μ_k = 0.3\n\n1. Normal force: N = mg = 10 × 9.8 = 98 N\n2. Friction: f_k = 0.3 × 98 = 29.4 N\n3. F_net = 50 - 29.4 = 20.6 N\n4. a = F_net/m = 20.6/10 = 2.06 m/s²\n\nRemember: friction ALWAYS opposes the direction of motion!",
+					"createdAt": "2026-03-28T14:20:00Z"
+				}
+			]
+		},
+		{
+			"id": "cs3",
+			"userId": "user-1",
+			"title": "English Essay Feedback - Romeo and Juliet",
+			"subject": "English",
+			"createdAt": "2026-03-30T14:00:00Z",
+			"updatedAt": "2026-03-30T15:00:00Z",
+			"messages": [
+				{
+					"id": "msg9",
+					"sessionId": "cs3",
+					"role": "user",
+					"content": "Can you review my essay paragraph about the theme of fate in Romeo and Juliet? Here it is:\n\n'Shakespeare shows that fate controls Romeo and Juliet from the beginning. They are star-crossed lovers which means the stars have already decided their future. This is shown when Romeo says he is fortunes fool after killing Tybalt.'",
+					"createdAt": "2026-03-30T14:00:00Z"
+				},
+				{
+					"id": "msg10",
+					"sessionId": "cs3",
+					"role": "assistant",
+					"content": "Good start! Here's my feedback:\n\nStrengths:\n- You've identified the key theme of fate\n- You've used the term 'star-crossed lovers' correctly\n- You've included a textual reference\n\nAreas to improve:\n1. Add more analysis: Explain HOW Shakespeare presents fate, not just THAT he does\n2. Use a proper quote with context: \"O, I am fortune's fool!\" (Act 3, Scene 1)\n3. Discuss dramatic techniques: dramatic irony, foreshadowing\n\nImproved version:\n'Shakespeare establishes fate as an omnipresent force from the prologue, where the Chorus describes Romeo and Juliet as \"star-crossed lovers\" - a celestial metaphor suggesting their destiny is predetermined by the stars. This sense of powerlessness intensifies when Romeo exclaims \"O, I am fortune's fool!\" (Act 3, Scene 1) after killing Tybalt, employing personification to portray fortune as a cruel puppeteer. Through dramatic irony, Shakespeare forces the audience to witness the tragic inevitability of events, reinforcing the Elizabethan belief in predestination.'\n\nThis would score much higher in the NSC rubric for analysis and language use.",
+					"createdAt": "2026-03-30T14:10:00Z"
+				},
+				{
+					"id": "msg11",
+					"sessionId": "cs3",
+					"role": "user",
+					"content": "Thanks! Can you also help me with a conclusion for this essay?",
+					"createdAt": "2026-03-30T14:30:00Z"
+				},
+				{
+					"id": "msg12",
+					"sessionId": "cs3",
+					"role": "assistant",
+					"content": "Here's a strong conclusion:\n\n'In conclusion, Shakespeare presents fate as the invisible architect of Romeo and Juliet's tragedy, weaving a tapestry of inevitability from the prologue to the final scene. Through the recurring imagery of the stars, the characters' own sense of powerlessness, and the relentless cascade of misfortunes, the play suggests that human agency is ultimately powerless against cosmic design. Yet paradoxically, it is the lovers' defiant choice to embrace their fate - rather than submit to the feud - that transforms them from victims into agents of reconciliation. In this way, Shakespeare elevates their tragedy from mere misfortune to a profound meditation on the tension between destiny and free will, leaving audiences to question whether the stars truly govern our lives, or whether we forge our own paths.'\n\nThis conclusion: restates your thesis, synthesises key points, adds a new insight, and ends with a thought-provoking statement.",
+					"createdAt": "2026-03-30T14:40:00Z"
+				}
+			]
 		}
 	],
 	"searchHistory": [

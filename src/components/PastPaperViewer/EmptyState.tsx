@@ -26,7 +26,7 @@ export function EmptyState({
 				<p className="text-sm text-muted-foreground max-w-xs">{description}</p>
 			</div>
 			{showHome && (
-				<Link href="/dashboard">
+				<Link href="/dashboard" transitionTypes={['fade']}>
 					<Button className="gap-2">
 						<HugeiconsIcon icon={HomeIcon} className="w-4 h-4" />
 						Go to Dashboard

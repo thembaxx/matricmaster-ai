@@ -16,7 +16,7 @@ export function SuggestionCards({ cards, selectedCard, onCardClick }: Suggestion
 			<h2 className="text-sm font-semibold text-muted-foreground mb-4  tracking-wider">
 				Quick actions
 			</h2>
-			<div className="grid grid-cols-2 gap-3">
+			<div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
 				{cards.map((card, index) => (
 					<m.button
 						key={card.id}

@@ -53,9 +53,10 @@ export function MindMapSVG({ data, selectedNode, onNodeClick }: MindMapSVGProps)
 				<g
 					key={node.id}
 					role="button"
+					aria-label={`Select ${node.label} node`}
 					tabIndex={0}
 					onClick={() => onNodeClick(node.id)}
-					onKeyDown={(e) => e.key === 'Enter' && onNodeClick(node.id)}
+					onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && onNodeClick(node.id)}
 					className="cursor-pointer"
 				>
 					<circle

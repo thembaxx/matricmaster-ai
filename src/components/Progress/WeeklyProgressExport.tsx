@@ -149,7 +149,7 @@ export function WeeklyProgressExport({ className }: WeeklyProgressExportProps) {
 				</div>
 
 				{reportType === 'custom' && (
-					<div className="grid grid-cols-2 gap-3">
+					<div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
 						<div>
 							<label htmlFor="start-date" className="text-sm text-muted-foreground">
 								Start Date

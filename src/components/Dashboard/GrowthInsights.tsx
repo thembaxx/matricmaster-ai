@@ -26,10 +26,10 @@ export function GrowthInsights({
 	}
 
 	return (
-		<Card className="rounded-[2rem] border-border/50 shadow-tiimo overflow-hidden bg-gradient-to-br from-violet-500/10 to-purple-600/5">
+		<Card className="rounded-xl border-border/50 shadow-tiimo overflow-hidden bg-gradient-to-br from-violet-500/10 to-purple-600/5">
 			<CardHeader className="p-6 pb-0">
 				<CardTitle className="text-xs font-semibold  tracking-wider text-violet-600 flex items-center gap-2">
-					<HugeiconsIcon icon={SparklesIcon} className="w-4 h-4" />
+					<HugeiconsIcon icon={SparklesIcon} className="w-4 h-4" aria-hidden="true" />
 					AI Insights
 				</CardTitle>
 			</CardHeader>
@@ -48,6 +48,7 @@ export function GrowthInsights({
 								'w-4 h-4 mt-0.5 flex-shrink-0',
 								i === 0 ? 'text-tiimo-orange' : i === 1 ? 'text-tiimo-green' : 'text-tiimo-yellow'
 							)}
+							aria-hidden="true"
 						/>
 						<p className="text-sm text-foreground/90 leading-relaxed">{insight}</p>
 					</m.div>

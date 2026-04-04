@@ -187,7 +187,7 @@ export function SubjectPerformance() {
 										value={subject.overallScore}
 										className={cn('h-2', subject.needsAttention && '[&>div]:bg-warning')}
 									/>
-									<div className="grid grid-cols-3 gap-2 mt-3">
+									<div className="grid grid-cols-1 sm:grid-cols-3 gap-2 mt-3">
 										<div className="text-center">
 											<p className="text-xs font-bold text-muted-foreground  tracking-wider">
 												Confidence

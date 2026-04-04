@@ -31,12 +31,10 @@ export default function DemoPage() {
 				<div className="container mx-auto px-4 py-4">
 					<div className="flex items-center justify-between">
 						<div>
-							<h1 className="text-2xl font-bold bg-gradient-to-r from-primary to-purple-500 bg-clip-text text-transparent">
-								Lumni Demo
-							</h1>
+							<h1 className="text-2xl font-bold text-primary">Lumni Demo</h1>
 							<p className="text-sm text-muted-foreground">Explore our NSC Grade 12 mock data</p>
 						</div>
-						<Link href="/dashboard">
+						<Link href="/dashboard" transitionTypes={['nav-back']}>
 							<Button variant="outline" size="sm">
 								Go to Dashboard
 							</Button>

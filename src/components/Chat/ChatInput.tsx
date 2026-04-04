@@ -100,6 +100,7 @@ export function ChatInput({
 					value={input}
 					onChange={(e) => setInput(e.target.value)}
 					placeholder="Ask me anything..."
+					aria-label="Type your question"
 					className="min-h-[44px] max-h-32 resize-none"
 					onKeyDown={(e) => {
 						if (e.key === 'Enter' && !e.shiftKey) {
@@ -109,7 +110,7 @@ export function ChatInput({
 					}}
 				/>
 				<Button onClick={() => handleSend()} disabled={!input.trim() || !sessionId} size="icon">
-					<HugeiconsIcon icon={SentIcon} className="w-4 h-4" />
+					<HugeiconsIcon icon={SentIcon} className="w-4 h-4" aria-hidden="true" />
 				</Button>
 			</div>
 		</div>

@@ -22,7 +22,7 @@ export function HeroStatisticsCard({
 			animate={{ opacity: 1, y: 0 }}
 			transition={{ duration: 0.6 }}
 		>
-			<Card className="rounded-2xl sm:rounded-[3rem] p-6 sm:p-12 relative overflow-hidden bg-primary text-primary-foreground border-none shadow-2xl shadow-primary/20">
+			<Card className="rounded-2xl sm:rounded-2xl p-6 sm:p-12 relative overflow-hidden bg-primary text-primary-foreground border-none shadow-2xl shadow-primary/20">
 				<div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-[100px] -mr-32 -mt-32 pointer-events-none" />
 				<div className="absolute bottom-0 left-0 w-64 h-64 bg-black/10 rounded-full blur-[80px] -ml-24 -mb-24 pointer-events-none" />
 
@@ -63,7 +63,7 @@ export function HeroStatisticsCard({
 									className="w-16 h-16 sm:w-24 sm:h-24 lg:w-32 lg:h-32 text-white drop-shadow-2xl"
 								/>
 							</div>
-							<div className="absolute -bottom-4 sm:-bottom-6 -right-4 sm:-right-6 w-14 h-14 sm:w-20 sm:h-20 bg-brand-amber rounded-2xl sm:rounded-3xl flex items-center justify-center shadow-xl border-4 border-white z-20">
+							<div className="absolute -bottom-4 sm:-bottom-6 -right-4 sm:-right-6 w-14 h-14 sm:w-20 sm:h-20 bg-warning rounded-2xl sm:rounded-3xl flex items-center justify-center shadow-xl border-4 border-white z-20">
 								<span className="text-lg sm:text-2xl font-black text-white">{unlockedCount}</span>
 							</div>
 						</div>

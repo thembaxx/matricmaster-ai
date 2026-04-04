@@ -107,10 +107,11 @@ function FormulaSearch({ onSelect }: { onSelect: (formula: Formula) => void }) {
 						results.map((formula: Formula) => (
 							<div
 								role="button"
+								aria-label={`Select ${formula.name} formula`}
 								tabIndex={0}
 								key={formula.id}
 								onClick={() => onSelect(formula)}
-								onKeyDown={(e) => e.key === 'Enter' && onSelect(formula)}
+								onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && onSelect(formula)}
 								className="cursor-pointer"
 							>
 								<FormulaCard formula={formula} />

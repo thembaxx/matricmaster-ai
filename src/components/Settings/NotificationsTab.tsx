@@ -39,12 +39,13 @@ export function NotificationsTab({
 					/>
 				</div>
 				<Separator />
-				<div className="flex items-center justify-between">
-					<div>
+				<div className="flex items-center">
+					<div className="grow">
 						<p className="font-medium">Push Notifications</p>
 						<p className="text-sm text-muted-foreground">Receive browser notifications</p>
 					</div>
 					<Switch
+						size="default"
 						checked={pushNotifications}
 						onCheckedChange={(v) => handleNotificationChange('pushNotifications', v)}
 					/>

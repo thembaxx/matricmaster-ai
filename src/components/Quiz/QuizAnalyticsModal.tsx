@@ -79,7 +79,7 @@ export function QuizAnalyticsModal({ open, onOpenChange }: QuizAnalyticsModalPro
 				) : stats ? (
 					<ScrollArea className="max-h-[60vh] pr-4">
 						<div className="space-y-6">
-							<div className="grid grid-cols-3 gap-4">
+							<div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
 								<div className="rounded-lg border p-4 text-center">
 									<HugeiconsIcon
 										icon={ChampionIcon}

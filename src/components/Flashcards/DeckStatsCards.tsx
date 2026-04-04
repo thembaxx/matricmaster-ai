@@ -53,7 +53,7 @@ export function DeckStatsCards({ decks }: { decks: FlashcardDeck[] }) {
 			</Card>
 			<Card className="flex items-center justify-center">
 				<Button variant="outline" asChild className="w-full h-full">
-					<Link href="/review">
+					<Link href="/review" transitionTypes={['fade']}>
 						<HugeiconsIcon icon={AiBrain01Icon} className="mr-2 h-4 w-4" />
 						Start Review
 					</Link>

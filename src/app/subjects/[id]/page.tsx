@@ -86,7 +86,10 @@ export default function SubjectDetailsPage() {
 							animate={{ opacity: 1, x: 0 }}
 							transition={{ delay: index * 0.1 }}
 						>
-							<Link href={`/focus?lessonId=${lesson.id}&subject=${subjectId}`}>
+							<Link
+								href={`/focus?lessonId=${lesson.id}&subject=${subjectId}`}
+								transitionTypes={['nav-forward']}
+							>
 								<Card
 									className={cn(
 										'group rounded-[2rem] border-border/50 shadow-tiimo transition-all hover:scale-[1.01] active:scale-[0.99] overflow-hidden',

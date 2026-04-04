@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { HeroSection } from '@/components/Landing';
-import { Footer } from '@/components/Layout/footer';
+import { Footer } from '@/components/Layout/Footer';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useSession } from '@/lib/auth-client';
 
@@ -14,6 +14,10 @@ import { useSession } from '@/lib/auth-client';
 const FeaturesSection = dynamic(
 	() => import('@/components/Landing').then((mod) => ({ default: mod.FeaturesSection })),
 	{ ssr: true, loading: () => <div className="min-h-[400px]" /> }
+);
+const HowItWorksSection = dynamic(
+	() => import('@/components/Landing').then((mod) => ({ default: mod.HowItWorksSection })),
+	{ ssr: true, loading: () => <div className="min-h-[300px]" /> }
 );
 const StatsSection = dynamic(
 	() => import('@/components/Landing').then((mod) => ({ default: mod.StatsSection })),
@@ -27,9 +31,17 @@ const TestimonialsSection = dynamic(
 	() => import('@/components/Landing').then((mod) => ({ default: mod.TestimonialsSection })),
 	{ ssr: true, loading: () => <div className="min-h-[400px]" /> }
 );
+const FAQSection = dynamic(
+	() => import('@/components/Landing').then((mod) => ({ default: mod.FAQSection })),
+	{ ssr: true, loading: () => <div className="min-h-[200px]" /> }
+);
+const PricingSection = dynamic(
+	() => import('@/components/Landing').then((mod) => ({ default: mod.PricingSection })),
+	{ ssr: true, loading: () => <div className="min-h-[200px]" /> }
+);
 const FinalCTASection = dynamic(
 	() => import('@/components/Landing').then((mod) => ({ default: mod.FinalCTASection })),
-	{ ssr: true, loading: () => <div className="min-h-[200px]" /> }
+	{ ssr: true, loading: () => <div className="min-h-50" /> }
 );
 
 export default function Landing() {
@@ -53,9 +65,12 @@ export default function Landing() {
 				<main className="pb-4 px-6 sm:px-6 max-w-7xl mx-auto w-full lg:px-6 lg:pb-24">
 					<HeroSection onAuthRequired={handleAuthRoute} />
 					<FeaturesSection />
+					<HowItWorksSection />
 					<StatsSection />
 					<SubjectsSection onAuthRequired={handleAuthRoute} />
 					<TestimonialsSection />
+					<FAQSection />
+					<PricingSection />
 					<FinalCTASection />
 				</main>
 				<Footer />

@@ -129,7 +129,7 @@ export const StudyPlanUpdateNotification = memo(function StudyPlanUpdateNotifica
 							{/* Difficulty Adjustments */}
 							{adjustment.difficultyAdjustments.length > 0 && (
 								<div className="space-y-2">
-									<p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
+									<p className="text-xs font-medium text-muted-foreground">
 										Recommended Adjustments
 									</p>
 									{adjustment.difficultyAdjustments

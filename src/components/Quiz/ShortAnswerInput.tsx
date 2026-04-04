@@ -32,7 +32,7 @@ export function ShortAnswerInput({
 
 	const inputClasses = cn(
 		'w-full min-h-[120px] p-4 rounded-[1.5rem] border-2 bg-card text-foreground placeholder:text-muted-foreground resize-none transition-all',
-		'focus:outline-none focus:ring-0',
+		'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-tiimo-lavender focus:ring-0',
 		isChecked
 			? isCorrect
 				? 'border-tiimo-green bg-tiimo-green/5'

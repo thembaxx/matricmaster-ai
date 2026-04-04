@@ -259,6 +259,7 @@ export function PlanBenefitsHover({ tier, children }: PlanBenefitsHoverProps) {
 			className="relative inline-block"
 			role="button"
 			tabIndex={0}
+			aria-label={`View ${tier} plan details`}
 			onMouseEnter={() => setIsHovered(true)}
 			onMouseLeave={() => setIsHovered(false)}
 			onFocus={() => setIsHovered(true)}

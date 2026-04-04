@@ -41,8 +41,9 @@ export function CircuitDiagram({
 						onClick={() => handleClick(el.id)}
 						className="cursor-pointer"
 						role="button"
+						aria-label={`Select resistor${el.label ? ` ${el.label}` : el.value ? ` ${el.value}Ω` : ''}`}
 						tabIndex={0}
-						onKeyDown={(e) => e.key === 'Enter' && handleClick(el.id)}
+						onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && handleClick(el.id)}
 					>
 						<rect
 							x={x - 20}
@@ -74,8 +75,9 @@ export function CircuitDiagram({
 						onClick={() => handleClick(el.id)}
 						className="cursor-pointer"
 						role="button"
+						aria-label={`Select battery${el.label ? ` ${el.label}` : el.value ? ` ${el.value}V` : ''}`}
 						tabIndex={0}
-						onKeyDown={(e) => e.key === 'Enter' && handleClick(el.id)}
+						onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && handleClick(el.id)}
 					>
 						<rect
 							x={x - 15}
@@ -125,8 +127,9 @@ export function CircuitDiagram({
 						onClick={() => handleClick(el.id)}
 						className="cursor-pointer"
 						role="button"
+						aria-label={`Select bulb${el.label ? ` ${el.label}` : el.value ? ` ${el.value}W` : ''}`}
 						tabIndex={0}
-						onKeyDown={(e) => e.key === 'Enter' && handleClick(el.id)}
+						onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && handleClick(el.id)}
 					>
 						<circle
 							cx={x}

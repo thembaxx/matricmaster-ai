@@ -141,7 +141,7 @@ export function SecurityTab({
 									Store these codes somewhere safe. You can use them to access your account if you
 									lose your authenticator device.
 								</p>
-								<div className="grid grid-cols-2 gap-2">
+								<div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
 									{backupCodes.map((code) => (
 										<code
 											key={`backup-${code}`}

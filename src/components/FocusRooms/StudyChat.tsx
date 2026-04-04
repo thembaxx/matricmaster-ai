@@ -6,7 +6,7 @@ import { Separator } from '@/components/ui/separator';
 
 export function StudyChat({ isGroupMode }: { isGroupMode: boolean }) {
 	return (
-		<Card className="rounded-[2.5rem] h-[400px] flex flex-col bg-card border-border/50 shadow-tiimo overflow-hidden">
+		<Card className="rounded-[2.5rem] min-h-[300px] max-h-[500px] flex flex-col bg-card border-border/50 shadow-tiimo overflow-hidden">
 			<div className="p-6 border-b border-border/50 bg-muted/30 flex items-center gap-3">
 				<HugeiconsIcon icon={Message01Icon} className="w-5 h-5 text-primary" />
 				<h3 className="font-black  tracking-widest text-[10px]">Study Chat</h3>

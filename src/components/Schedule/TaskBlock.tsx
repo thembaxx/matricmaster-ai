@@ -32,6 +32,13 @@ export function TaskBlock({
 			animate={{ opacity: 1, scale: 1 }}
 			exit={{ opacity: 0, scale: 0.95 }}
 			onClick={onClick}
+			onKeyDown={(e) => {
+				if (e.key === 'Enter' || e.key === ' ') {
+					onClick?.();
+				}
+			}}
+			role="button"
+			tabIndex={0}
 			className={cn(
 				'group relative p-4 rounded-2xl cursor-pointer transition-all duration-200',
 				'border border-border/50',

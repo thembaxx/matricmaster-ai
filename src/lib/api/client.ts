@@ -38,6 +38,66 @@ export class ApiError extends Error {
 	}
 }
 
+// Token refresh state to prevent multiple simultaneous refresh attempts
+let isRefreshing = false;
+let refreshSubscribers: ((token: string) => void)[] = [];
+
+// Subscribe to token refresh updates
+function subscribeToRefresh(callback: (token: string) => void) {
+	refreshSubscribers.push(callback);
+}
+
+// Notify all subscribers of new token
+function notifySubscribers(token: string) {
+	for (const cb of refreshSubscribers) {
+		cb(token);
+	}
+	refreshSubscribers = [];
+}
+
+// Attempt to refresh the authentication token
+async function refreshAccessToken(): Promise<string | null> {
+	try {
+		const refreshToken =
+			typeof window !== 'undefined' ? localStorage.getItem('refresh-token') : null;
+
+		if (!refreshToken) {
+			return null;
+		}
+
+		const response = await fetch('/api/auth/refresh', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ refreshToken }),
+		});
+
+		if (!response.ok) {
+			// Refresh token is invalid, clear auth
+			if (typeof window !== 'undefined') {
+				localStorage.removeItem('auth-token');
+				localStorage.removeItem('refresh-token');
+			}
+			return null;
+		}
+
+		const data = await response.json();
+
+		if (data.accessToken) {
+			if (typeof window !== 'undefined') {
+				localStorage.setItem('auth-token', data.accessToken);
+				if (data.refreshToken) {
+					localStorage.setItem('refresh-token', data.refreshToken);
+				}
+			}
+			return data.accessToken;
+		}
+
+		return null;
+	} catch {
+		return null;
+	}
+}
+
 // Check if we should redirect to sign-in for auth errors
 function handleAuthError(status: number): void {
 	if ((status === 401 || status === 403) && typeof window !== 'undefined') {
@@ -56,6 +116,39 @@ function handleAuthError(status: number): void {
 			window.location.href = signInUrl.toString();
 		}
 	}
+}
+
+// Handle 401 errors with token refresh attempt
+async function handleUnauthorized(): Promise<string | null> {
+	if (isRefreshing) {
+		// Wait for existing refresh to complete
+		return new Promise((resolve) => {
+			subscribeToRefresh((token) => {
+				resolve(token);
+			});
+		});
+	}
+
+	isRefreshing = true;
+
+	try {
+		const newToken = await refreshAccessToken();
+
+		if (newToken) {
+			notifySubscribers(newToken);
+			return newToken;
+		}
+
+		// Refresh failed, redirect to login
+		handleAuthError(401);
+		return null;
+	} finally {
+		isRefreshing = false;
+	}
+}
+
+interface CustomRequestInit extends RequestInit {
+	_retry?: boolean;
 }
 
 // Enhanced fetch client with authentication support and session expiry handling
@@ -89,6 +182,17 @@ export class ApiClient {
 
 	private async handleResponse<T>(response: Response): Promise<T> {
 		if (!response.ok) {
+			// Attempt token refresh on 401 before redirecting
+			if (response.status === 401) {
+				const newToken = await handleUnauthorized();
+				if (newToken) {
+					// Retry the original request would need to be implemented
+					// For now, throw to allow caller to retry with new token
+					const errorText = 'Token refreshed, please retry';
+					throw new ApiError(errorText, 401, errorText);
+				}
+			}
+
 			// Handle session expiry
 			handleAuthError(response.status);
 
@@ -105,7 +209,7 @@ export class ApiClient {
 		return response.json();
 	}
 
-	async get<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
+	async get<T>(endpoint: string, options: CustomRequestInit = {}, retry = true): Promise<T> {
 		const url = `${this.baseURL}${endpoint}`;
 		const headers = await this.getAuthHeaders();
 
@@ -118,10 +222,23 @@ export class ApiClient {
 			...options,
 		});
 
+		// If 401 and retry enabled, try refreshing token and retry once
+		if (response.status === 401 && retry) {
+			const newToken = await handleUnauthorized();
+			if (newToken) {
+				return this.get<T>(endpoint, { ...options, _retry: false } as CustomRequestInit, false);
+			}
+		}
+
 		return this.handleResponse<T>(response);
 	}
 
-	async post<T>(endpoint: string, data?: unknown, options: RequestInit = {}): Promise<T> {
+	async post<T>(
+		endpoint: string,
+		data?: unknown,
+		options: CustomRequestInit = {},
+		retry = true
+	): Promise<T> {
 		const url = `${this.baseURL}${endpoint}`;
 		const headers = await this.getAuthHeaders();
 
@@ -135,10 +252,28 @@ export class ApiClient {
 			...options,
 		});
 
+		// If 401 and retry enabled, try refreshing token and retry once
+		if (response.status === 401 && retry) {
+			const newToken = await handleUnauthorized();
+			if (newToken) {
+				return this.post<T>(
+					endpoint,
+					data,
+					{ ...options, _retry: false } as CustomRequestInit,
+					false
+				);
+			}
+		}
+
 		return this.handleResponse<T>(response);
 	}
 
-	async put<T>(endpoint: string, data?: unknown, options: RequestInit = {}): Promise<T> {
+	async put<T>(
+		endpoint: string,
+		data?: unknown,
+		options: CustomRequestInit = {},
+		retry = true
+	): Promise<T> {
 		const url = `${this.baseURL}${endpoint}`;
 		const headers = await this.getAuthHeaders();
 
@@ -152,10 +287,23 @@ export class ApiClient {
 			...options,
 		});
 
+		// If 401 and retry enabled, try refreshing token and retry once
+		if (response.status === 401 && retry) {
+			const newToken = await handleUnauthorized();
+			if (newToken) {
+				return this.put<T>(
+					endpoint,
+					data,
+					{ ...options, _retry: false } as CustomRequestInit,
+					false
+				);
+			}
+		}
+
 		return this.handleResponse<T>(response);
 	}
 
-	async delete<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
+	async delete<T>(endpoint: string, options: CustomRequestInit = {}, retry = true): Promise<T> {
 		const url = `${this.baseURL}${endpoint}`;
 		const headers = await this.getAuthHeaders();
 
@@ -167,6 +315,14 @@ export class ApiClient {
 			},
 			...options,
 		});
+
+		// If 401 and retry enabled, try refreshing token and retry once
+		if (response.status === 401 && retry) {
+			const newToken = await handleUnauthorized();
+			if (newToken) {
+				return this.delete<T>(endpoint, { ...options, _retry: false } as CustomRequestInit, false);
+			}
+		}
 
 		return this.handleResponse<T>(response);
 	}

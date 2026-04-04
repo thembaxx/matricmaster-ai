@@ -58,12 +58,11 @@ export async function analyzeWeakTopics(): Promise<WeakTopicData[]> {
 		const score = Number(confidence.confidenceScore);
 
 		if (score < 0.6) {
-			const attemptCount = await db.query.questionAttempts.findMany({
-				where: and(
-					eq(questionAttempts.userId, user.id),
-					eq(questionAttempts.topic, confidence.topic)
-				),
-			});
+			const attemptCount = await db.query.questionAttempts
+				.findMany({
+					where: and(eq(questionAttempts.userId, user.id)),
+				})
+				.then((attempts) => attempts.filter((a) => a.topic === confidence.topic));
 
 			let action: 'flashcard' | 'ai_tutor' | 'review' | 'milestone' = 'review';
 			if (score < 0.4) action = 'ai_tutor';

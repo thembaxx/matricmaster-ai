@@ -44,7 +44,14 @@ export function TopicCard({ topic, subjectColor, onClick }: TopicCardProps) {
 				isHighMastery &&
 					'before:absolute before:inset-0 before:rounded-[1.25rem] before:animate-pulse before:bg-success/5 before:border-2 before:border-success/30'
 			)}
+			role="button"
+			tabIndex={0}
 			onClick={handleClick}
+			onKeyDown={(e) => {
+				if (e.key === 'Enter' || e.key === ' ') {
+					handleClick();
+				}
+			}}
 		>
 			{isHighMastery && (
 				<div className="absolute inset-0 bg-gradient-to-r from-success/0 via-success/5 to-success/0 animate-[shimmer_3s_ease-in-out_infinite] rounded-[1.25rem]" />

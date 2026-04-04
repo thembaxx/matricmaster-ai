@@ -37,19 +37,16 @@ export function WelcomeBackDialog() {
 						initial={{ scale: 0.9, opacity: 0 }}
 						animate={{ scale: 1, opacity: 1 }}
 						exit={{ scale: 0.9, opacity: 0 }}
-						className="mx-4 max-w-md rounded-2xl bg-white p-6 shadow-xl dark:bg-gray-900"
+						className="mx-4 max-w-md rounded-2xl bg-card p-6 shadow-xl"
 					>
 						<div className="mb-4 text-center">
 							<div className="mb-4 text-4xl">Welcome Back!</div>
-							<h2
-								id="welcome-back-title"
-								className="text-xl font-semibold text-gray-900 dark:text-white"
-							>
+							<h2 id="welcome-back-title" className="text-xl font-semibold text-foreground">
 								We missed you at Lumni
 							</h2>
 						</div>
 
-						<p className="mb-6 text-center text-gray-600 dark:text-gray-300">
+						<p className="mb-6 text-center text-muted-foreground">
 							Your study progress is saved and ready to continue. Let's pick up where you left off!
 						</p>
 

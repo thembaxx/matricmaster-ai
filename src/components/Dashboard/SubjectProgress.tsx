@@ -85,6 +85,14 @@ export function SubjectProgress() {
 					key={subject.id}
 					layoutId={subject.id}
 					onClick={() => setSelectedId(subject.id)}
+					onKeyDown={(e) => {
+						if (e.key === 'Enter' || e.key === ' ') {
+							e.preventDefault();
+							setSelectedId(subject.id);
+						}
+					}}
+					role="button"
+					tabIndex={0}
 					className="group cursor-pointer tiimo-press"
 					whileTap={{ scale: 0.96 }}
 				>
@@ -115,11 +123,7 @@ export function SubjectProgress() {
 									</span>
 									<span className="text-foreground">{subject.progress}%</span>
 								</div>
-								<Progress
-									value={subject.progress}
-									className="h-2 bg-secondary"
-									indicatorClassName={subject.color.replace('text-', 'bg-')}
-								/>
+								<Progress value={subject.progress} className="h-2 bg-secondary" />
 							</div>
 						</div>
 					</div>

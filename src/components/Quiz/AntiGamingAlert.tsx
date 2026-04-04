@@ -119,28 +119,16 @@ export function AntiGamingAlert({
 								{formatRiskScore(riskScore)}
 							</span>
 						</div>
-						<Progress
-							value={riskScore}
-							className="h-2"
-							indicatorClassName={
-								riskLevel === 'critical'
-									? 'bg-red-500'
-									: riskLevel === 'high'
-										? 'bg-orange-500'
-										: riskLevel === 'medium'
-											? 'bg-yellow-500'
-											: 'bg-green-500'
-							}
-						/>
+						<Progress value={riskScore} className="h-2" />
 					</div>
 
 					{patterns.length > 0 && (
 						<div className="space-y-2">
 							<h4 className="text-sm font-medium">Detected Patterns</h4>
 							<div className="space-y-2">
-								{patterns.map((pattern, index) => (
+								{patterns.map((pattern) => (
 									<div
-										key={index}
+										key={`${pattern.type}-${pattern.description.slice(0, 30)}`}
 										className="flex items-start gap-2 text-sm p-2 rounded-md bg-muted/50"
 									>
 										{getPatternIcons(pattern.type)}

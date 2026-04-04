@@ -21,9 +21,11 @@ export function QuickTipCard({
 		<div
 			className={cn(
 				'group relative p-4 rounded-xl border bg-card text-card-foreground',
-				'hover:shadow-md transition-all cursor-pointer',
+				'hover:shadow-md transition-all',
 				className
 			)}
+			role="button"
+			tabIndex={0}
 		>
 			{onDismiss && (
 				<Button

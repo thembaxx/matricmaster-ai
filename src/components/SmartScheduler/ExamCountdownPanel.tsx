@@ -97,7 +97,7 @@ export function ExamCountdownPanel() {
 						</svg>
 					</div>
 					<p className="text-sm text-muted-foreground">No exams scheduled yet.</p>
-					<p className="text-xs text-muted-foreground/70 mt-1">
+					<p className="text-xs text-muted-foreground mt-1">
 						Add your exam dates to get personalized recommendations.
 					</p>
 				</div>
@@ -114,7 +114,7 @@ export function ExamCountdownPanel() {
 			<div className="space-y-3">
 				{displayExams.slice(0, 6).map((exam) => {
 					const config = PRIORITY_CONFIG[exam.priority];
-					const subjectColor = SUBJECT_COLORS[exam.subject] || '#9F85FF';
+					const subjectColor = SUBJECT_COLORS[exam.subject] || 'var(--primary)';
 
 					return (
 						<div
@@ -134,7 +134,7 @@ export function ExamCountdownPanel() {
 										/>
 										<span className="font-medium text-sm truncate">{exam.subject}</span>
 									</div>
-									<div className="text-xs text-muted-foreground/70 mt-0.5 ml-4">
+									<div className="text-xs text-muted-foreground mt-0.5 ml-4">
 										{exam.daysRemaining <= 7
 											? `${exam.daysRemaining} days left`
 											: exam.daysRemaining <= 30

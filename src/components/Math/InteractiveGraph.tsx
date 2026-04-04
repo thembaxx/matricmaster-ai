@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { useGraphingEngine } from '@/stores/useGraphingEngine';
 
@@ -18,6 +18,19 @@ export function InteractiveGraph({
 	const [equation, setEquation] = useState(() => initialEquation);
 	const [hoverPoint, setHoverPoint] = useState<{ x: number; y: number } | null>(null);
 	const [zoom, setZoom] = useState(1);
+	const svgRef = useRef<SVGSVGElement>(null);
+	const cachedRect = useRef<DOMRect | null>(null);
+
+	useEffect(() => {
+		const handleResize = () => {
+			if (svgRef.current) {
+				cachedRect.current = svgRef.current.getBoundingClientRect();
+			}
+		};
+		handleResize();
+		window.addEventListener('resize', handleResize);
+		return () => window.removeEventListener('resize', handleResize);
+	}, []);
 
 	const { viewport, getPoints, calculateDerivative } = useGraphingEngine();
 
@@ -45,7 +58,7 @@ export function InteractiveGraph({
 
 	const handleMouseMove = useCallback(
 		(e: React.MouseEvent<SVGSVGElement>) => {
-			const rect = e.currentTarget.getBoundingClientRect();
+			const rect = cachedRect.current ?? e.currentTarget.getBoundingClientRect();
 			const svgX = e.clientX - rect.left;
 			const svgY = e.clientY - rect.top;
 
@@ -91,6 +104,7 @@ export function InteractiveGraph({
 
 			<div className="relative">
 				<svg
+					ref={svgRef}
 					width={width}
 					height={height}
 					onMouseMove={handleMouseMove}

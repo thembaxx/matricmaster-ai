@@ -44,6 +44,7 @@ export function EligibleUniversities({
 							<div
 								key={`${uni.name}-${uni.faculty}`}
 								role="button"
+								aria-label={`Select ${uni.name} - ${uni.faculty}`}
 								tabIndex={0}
 								className="p-3 rounded-lg border bg-card hover:border-primary/30 transition-colors cursor-pointer"
 								onClick={() => onSelect(uni)}

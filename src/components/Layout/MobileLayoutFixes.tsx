@@ -1,32 +1,41 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 export function MobileLayoutFixes() {
 	const [isMobile, setIsMobile] = useState(false);
 	const [navHeight, setNavHeight] = useState(80);
+	const rafRef = useRef<number | null>(null);
 
 	useEffect(() => {
 		const checkMobile = () => {
-			const mobile = window.innerWidth < 768;
-			setIsMobile(mobile);
-
-			// Calculate actual navigation height
-			const bottomNav = document.getElementById('bottom-navigation');
-
-			if (bottomNav) {
-				const rect = bottomNav.getBoundingClientRect();
-				// For bottom navigation, we use its height + distance from bottom
-				setNavHeight(rect.height + 32);
-			} else {
-				// If no bottom navigation, reset to 0
-				setNavHeight(0);
+			if (rafRef.current) {
+				cancelAnimationFrame(rafRef.current);
 			}
+
+			rafRef.current = requestAnimationFrame(() => {
+				const mobile = window.innerWidth < 768;
+				setIsMobile(mobile);
+
+				const bottomNav = document.getElementById('bottom-navigation');
+
+				if (bottomNav) {
+					const rect = bottomNav.getBoundingClientRect();
+					setNavHeight(rect.height + 32);
+				} else {
+					setNavHeight(0);
+				}
+			});
 		};
 
 		checkMobile();
 		window.addEventListener('resize', checkMobile);
-		return () => window.removeEventListener('resize', checkMobile);
+		return () => {
+			window.removeEventListener('resize', checkMobile);
+			if (rafRef.current) {
+				cancelAnimationFrame(rafRef.current);
+			}
+		};
 	}, []);
 
 	useEffect(() => {

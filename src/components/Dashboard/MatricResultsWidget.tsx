@@ -7,7 +7,7 @@ import { getMatricResults, type MatricResultsData } from '@/lib/db/matric-result
 import { cn } from '@/lib/utils';
 
 const provinceColors = [
-	'#9F85FF',
+	'#3B82F6',
 	'#5CB587',
 	'#48A7DE',
 	'#F2C945',

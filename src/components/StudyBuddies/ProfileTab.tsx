@@ -56,6 +56,8 @@ export function ProfileTab({ profile, onProfileChange }: ProfileTabProps) {
 								key={subject}
 								variant={profile.selectedSubjects.includes(subject) ? 'default' : 'outline'}
 								className="cursor-pointer"
+								role="button"
+								tabIndex={0}
 								onClick={() => {
 									onProfileChange((prev) => ({
 										...prev,
@@ -63,6 +65,16 @@ export function ProfileTab({ profile, onProfileChange }: ProfileTabProps) {
 											? prev.selectedSubjects.filter((s) => s !== subject)
 											: [...prev.selectedSubjects, subject],
 									}));
+								}}
+								onKeyDown={(e) => {
+									if (e.key === 'Enter' || e.key === ' ') {
+										onProfileChange((prev) => ({
+											...prev,
+											selectedSubjects: prev.selectedSubjects.includes(subject)
+												? prev.selectedSubjects.filter((s) => s !== subject)
+												: [...prev.selectedSubjects, subject],
+										}));
+									}
 								}}
 							>
 								{subject}

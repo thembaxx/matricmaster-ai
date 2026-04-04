@@ -49,7 +49,7 @@ export function MomentumCanvas() {
 			</svg>
 
 			{/* Results */}
-			<div className="mt-4 grid grid-cols-2 gap-4 text-sm">
+			<div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
 				<Card className="p-3">
 					<p className="font-bold">Before</p>
 					<p>p = {results.initialMomentum.toFixed(2)} kg·m/s</p>

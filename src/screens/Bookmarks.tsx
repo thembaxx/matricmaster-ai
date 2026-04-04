@@ -153,14 +153,14 @@ export default function Bookmarks() {
 			<ScrollArea className="flex-1">
 				<main className="px-6 py-6 pb-40">
 					{filteredBookmarks.length > 0 ? (
-						<div className="grid grid-cols-2 gap-4">
+						<div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
 							{filteredBookmarks.map((bookmark) => {
 								const Icon = getIconForType(bookmark.bookmarkType);
 								const colors = getColorForSubject(bookmark.bookmarkType);
 								return (
 									<Card
 										key={bookmark.id}
-										className="p-5 hover:shadow-lg transition-all cursor-pointer rounded-[2.5rem] border bg-card shadow-sm flex flex-col h-64 relative group"
+										className="p-5 hover:shadow-lg transition-all cursor-pointer rounded-[2.5rem] border bg-card shadow-sm flex flex-col min-h-64 relative group"
 										onClick={() =>
 											router.push(
 												`/${bookmark.bookmarkType === 'past_paper' ? 'past-paper' : 'quiz'}?id=${bookmark.referenceId}`

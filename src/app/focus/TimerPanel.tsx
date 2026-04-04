@@ -25,7 +25,7 @@ export function TimerPanel({
 	formatTime,
 }: TimerPanelProps) {
 	return (
-		<div className="lg:col-span-7 flex flex-col items-center gap-8 bg-card border border-border/50 p-8 md:p-12 rounded-[3rem] shadow-tiimo relative overflow-hidden min-h-[500px] justify-center">
+		<div className="lg:col-span-7 flex flex-col items-center gap-8 bg-card border border-border/50 p-8 md:p-12 rounded-[3rem] shadow-tiimo relative overflow-hidden min-h-[400px] justify-center">
 			<div
 				className={cn(
 					'absolute inset-0 opacity-5 pointer-events-none transition-colors duration-500',

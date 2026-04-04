@@ -135,7 +135,9 @@ export class AIErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundary
 						</div>
 
 						<Button asChild variant="ghost" className="w-full">
-							<Link href="/offline">View Offline Options</Link>
+							<Link href="/offline" transitionTypes={['fade']}>
+								View Offline Options
+							</Link>
 						</Button>
 					</CardContent>
 				</Card>
@@ -170,10 +172,14 @@ export function OfflineFallback({
 
 				<div className="space-y-2">
 					<Button asChild className="w-full">
-						<Link href="/flashcards">Continue with Flashcards</Link>
+						<Link href="/flashcards" transitionTypes={['fade']}>
+							Continue with Flashcards
+						</Link>
 					</Button>
 					<Button asChild variant="outline" className="w-full">
-						<Link href="/quiz">Review Saved Questions</Link>
+						<Link href="/quiz" transitionTypes={['fade']}>
+							Review Saved Questions
+						</Link>
 					</Button>
 				</div>
 
