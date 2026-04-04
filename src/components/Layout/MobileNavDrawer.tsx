@@ -4,8 +4,11 @@ import {
 	ArrowRight01Icon,
 	BookOpen01Icon,
 	Cancel01Icon,
+	LaptopSettingsIcon,
 	Logout01Icon,
+	MoonIcon,
 	Search01Icon,
+	Sun01Icon,
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { FluentEmoji } from '@lobehub/fluent-emoji';
@@ -27,13 +30,24 @@ import type { MobileNavItem } from '@/constants/mobile-nav';
 import { useMobileNav } from '@/hooks/useMobileNav';
 import { authClient } from '@/lib/auth-client';
 import { cn } from '@/lib/utils';
+import type { Theme } from '@/stores/useThemeStore';
+
+const THEME_OPTIONS: { value: Theme; label: string; icon: typeof Sun01Icon; color: string }[] = [
+	{ value: 'system', label: 'system', icon: LaptopSettingsIcon, color: 'text-violet-500' },
+	{ value: 'light', label: 'light', icon: Sun01Icon, color: 'text-amber-500' },
+	{ value: 'dark', label: 'dark', icon: MoonIcon, color: 'text-blue-400' },
+];
 
 export function MobileNavDrawer({
 	children,
 	user,
+	theme,
+	onSetTheme,
 }: {
 	children: React.ReactNode;
 	user: { name?: string | null; email?: string | null; image?: string | null } | null | undefined;
+	theme?: string;
+	onSetTheme?: (theme: Theme) => void;
 }) {
 	const {
 		open,
@@ -172,6 +186,8 @@ export function MobileNavDrawer({
 						)}
 					</div>
 
+					{theme && onSetTheme && <MobileThemeToggle theme={theme} onSetTheme={onSetTheme} />}
+
 					<div className="px-3 py-3 border-t border-sidebar-border/50">
 						<Button
 							variant="ghost"
@@ -217,6 +233,38 @@ function MobileNavLink({
 			) : null}
 			<span className="text-sm">{item.label}</span>
 		</Button>
+	);
+}
+
+function MobileThemeToggle({
+	theme,
+	onSetTheme,
+}: {
+	theme: string;
+	onSetTheme: (theme: Theme) => void;
+}) {
+	const currentIndex = THEME_OPTIONS.findIndex((opt) => opt.value === theme);
+	const current = THEME_OPTIONS[currentIndex >= 0 ? currentIndex : 0];
+
+	const handleCycle = () => {
+		const nextIndex = (currentIndex + 1) % THEME_OPTIONS.length;
+		onSetTheme(THEME_OPTIONS[nextIndex].value);
+	};
+
+	return (
+		<div className="px-3 py-2 border-t border-sidebar-border/50">
+			<Button
+				type="button"
+				variant="ghost"
+				onClick={handleCycle}
+				className="w-full flex items-center justify-between px-3 py-2.5 h-auto rounded-lg bg-sidebar-accent/40 hover:bg-sidebar-accent transition-colors group focus-visible:ring-2 focus-visible:ring-primary"
+			>
+				<span className="text-xs font-medium text-sidebar-foreground/70">{current.label}</span>
+				<div className="w-7 h-7 rounded-lg bg-sidebar flex items-center justify-center shadow-sm">
+					<HugeiconsIcon icon={current.icon} className={cn('w-4 h-4', current.color)} />
+				</div>
+			</Button>
+		</div>
 	);
 }
 

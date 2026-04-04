@@ -127,7 +127,11 @@ function AppLayoutContent({ children }: { children: React.ReactNode }) {
 										onSignIn={() => router.push('/sign-in')}
 										onSignUp={() => router.push('/sign-up')}
 										mobileMenuTrigger={
-											<MobileNavDrawer user={user}>
+											<MobileNavDrawer
+												user={user}
+												theme={theme}
+												onSetTheme={(t: Theme) => setTheme(t)}
+											>
 												<Button
 													type="button"
 													variant="outline"
