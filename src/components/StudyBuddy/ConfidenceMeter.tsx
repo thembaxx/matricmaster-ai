@@ -18,12 +18,6 @@ export function ConfidenceMeter({
 }: ConfidenceMeterProps) {
 	const percentage = Math.round(score * 100);
 
-	const getColor = (s: number) => {
-		if (s >= 0.8) return 'bg-success';
-		if (s >= 0.5) return 'bg-warning';
-		return 'bg-destructive';
-	};
-
 	const getLabelColor = (s: number) => {
 		if (s >= 0.8) return 'text-success';
 		if (s >= 0.5) return 'text-warning';
