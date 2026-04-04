@@ -170,7 +170,7 @@ export const Footer = memo(function Footer() {
 						<p className="text-xs text-muted-foreground mb-4">
 							Get study tips and exam prep delivered to your inbox.
 						</p>
-						<div className="flex flex-col gap-2">
+						<div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
 							<Input
 								type="email"
 								placeholder="your@email.com"
