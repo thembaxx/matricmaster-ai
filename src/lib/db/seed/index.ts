@@ -21,7 +21,7 @@ export async function seedDatabase() {
 
 	await dbManagerV2.initialize();
 	const activeDb = dbManagerV2.getActiveDatabase();
-	const useDb = await dbManagerV2.getDbRaw();
+	const useDb = (await dbManagerV2.getDbRaw()) as any;
 
 	console.log(`📡 Active Database: ${activeDb}`);
 

@@ -59,11 +59,7 @@ export function QuizProgressDashboard({
 			</div>
 
 			<div className="space-y-2">
-				<Progress
-					value={progressPercent}
-					className="h-2.5 rounded-full bg-secondary"
-					indicatorClassName="rounded-full bg-gradient-to-r from-primary to-purple-400 transition-all duration-500"
-				/>
+				<Progress value={progressPercent} className="h-2.5 rounded-full bg-secondary" />
 				<div className="flex justify-between text-xs text-muted-foreground">
 					<span>Question {currentQuestion}</span>
 					<span>of {totalQuestions}</span>

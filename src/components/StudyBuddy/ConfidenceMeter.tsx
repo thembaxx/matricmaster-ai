@@ -70,11 +70,7 @@ export function ConfidenceMeter({
 					</span>
 				</div>
 			)}
-			<Progress
-				value={percentage}
-				className={`${getHeight()} rounded-full bg-secondary`}
-				indicatorClassName={`rounded-full ${getColor(score)} transition-all duration-500`}
-			/>
+			<Progress value={percentage} className={`${getHeight()} rounded-full bg-secondary`} />
 		</div>
 	);
 }

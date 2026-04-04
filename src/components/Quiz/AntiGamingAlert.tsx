@@ -119,19 +119,7 @@ export function AntiGamingAlert({
 								{formatRiskScore(riskScore)}
 							</span>
 						</div>
-						<Progress
-							value={riskScore}
-							className="h-2"
-							indicatorClassName={
-								riskLevel === 'critical'
-									? 'bg-red-500'
-									: riskLevel === 'high'
-										? 'bg-orange-500'
-										: riskLevel === 'medium'
-											? 'bg-yellow-500'
-											: 'bg-green-500'
-							}
-						/>
+						<Progress value={riskScore} className="h-2" />
 					</div>
 
 					{patterns.length > 0 && (

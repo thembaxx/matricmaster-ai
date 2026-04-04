@@ -147,6 +147,10 @@ async function handleUnauthorized(): Promise<string | null> {
 	}
 }
 
+interface CustomRequestInit extends RequestInit {
+	_retry?: boolean;
+}
+
 // Enhanced fetch client with authentication support and session expiry handling
 export class ApiClient {
 	private baseURL: string;
@@ -205,7 +209,7 @@ export class ApiClient {
 		return response.json();
 	}
 
-	async get<T>(endpoint: string, options: RequestInit = {}, retry = true): Promise<T> {
+	async get<T>(endpoint: string, options: CustomRequestInit = {}, retry = true): Promise<T> {
 		const url = `${this.baseURL}${endpoint}`;
 		const headers = await this.getAuthHeaders();
 
@@ -222,7 +226,7 @@ export class ApiClient {
 		if (response.status === 401 && retry) {
 			const newToken = await handleUnauthorized();
 			if (newToken) {
-				return this.get<T>(endpoint, { ...options, _retry: false }, false);
+				return this.get<T>(endpoint, { ...options, _retry: false } as CustomRequestInit, false);
 			}
 		}
 
@@ -232,7 +236,7 @@ export class ApiClient {
 	async post<T>(
 		endpoint: string,
 		data?: unknown,
-		options: RequestInit = {},
+		options: CustomRequestInit = {},
 		retry = true
 	): Promise<T> {
 		const url = `${this.baseURL}${endpoint}`;
@@ -252,7 +256,12 @@ export class ApiClient {
 		if (response.status === 401 && retry) {
 			const newToken = await handleUnauthorized();
 			if (newToken) {
-				return this.post<T>(endpoint, data, { ...options, _retry: false }, false);
+				return this.post<T>(
+					endpoint,
+					data,
+					{ ...options, _retry: false } as CustomRequestInit,
+					false
+				);
 			}
 		}
 
@@ -262,7 +271,7 @@ export class ApiClient {
 	async put<T>(
 		endpoint: string,
 		data?: unknown,
-		options: RequestInit = {},
+		options: CustomRequestInit = {},
 		retry = true
 	): Promise<T> {
 		const url = `${this.baseURL}${endpoint}`;
@@ -282,14 +291,19 @@ export class ApiClient {
 		if (response.status === 401 && retry) {
 			const newToken = await handleUnauthorized();
 			if (newToken) {
-				return this.put<T>(endpoint, data, { ...options, _retry: false }, false);
+				return this.put<T>(
+					endpoint,
+					data,
+					{ ...options, _retry: false } as CustomRequestInit,
+					false
+				);
 			}
 		}
 
 		return this.handleResponse<T>(response);
 	}
 
-	async delete<T>(endpoint: string, options: RequestInit = {}, retry = true): Promise<T> {
+	async delete<T>(endpoint: string, options: CustomRequestInit = {}, retry = true): Promise<T> {
 		const url = `${this.baseURL}${endpoint}`;
 		const headers = await this.getAuthHeaders();
 
@@ -306,7 +320,7 @@ export class ApiClient {
 		if (response.status === 401 && retry) {
 			const newToken = await handleUnauthorized();
 			if (newToken) {
-				return this.delete<T>(endpoint, { ...options, _retry: false }, false);
+				return this.delete<T>(endpoint, { ...options, _retry: false } as CustomRequestInit, false);
 			}
 		}
 

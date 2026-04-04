@@ -115,11 +115,7 @@ export function SubjectCards() {
 									</span>
 									<span className="text-foreground">{subject.progress}%</span>
 								</div>
-								<Progress
-									value={subject.progress}
-									className="h-2 bg-secondary"
-									indicatorClassName={subject.color.replace('text-', 'bg-')}
-								/>
+								<Progress value={subject.progress} className="h-2 bg-secondary" />
 							</div>
 						</div>
 					</div>
