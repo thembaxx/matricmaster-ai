@@ -1,3 +1,6 @@
+import type { DateRange } from './distributions';
+import type { SeededRandom } from './seeded-random';
+
 export interface GeneratedChannel {
 	id: string;
 	name: string;
@@ -241,7 +244,7 @@ export class SocialGenerator {
 			id: this.rng.uuid(),
 			requesterId: shuffled[0],
 			recipientId: shuffled[1],
-			status: this.rng.pickWeighted(statuses, weights),
+			status: this.rng.pickWeighted([...statuses], weights),
 			message: 'Hey! Want to study together?',
 			createdAt: this.randomDate(),
 		};

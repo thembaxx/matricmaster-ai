@@ -13,7 +13,11 @@ import {
 	femaleFirstNames,
 	maleFirstNames,
 	neutralFirstNames,
+	sessionTypes,
+	sessionTypeWeights,
 	subjects,
+	surnames,
+	topics,
 	topicsBySubject,
 } from './name-pools';
 import { SeededRandom } from './seeded-random';
@@ -132,8 +136,6 @@ export class MockDataGenerator {
 	generateUsers(count?: number): GeneratedUser[] {
 		const targetCount = count ?? this.config.userCount;
 		const users: GeneratedUser[] = [];
-
-		const _allFirstNames = [...maleFirstNames, ...femaleFirstNames, ...neutralFirstNames];
 
 		for (let i = 0; i < targetCount; i++) {
 			const genderRand = this.rng.next();
@@ -364,33 +366,28 @@ export const generateAllMockData = async (
 	achievements: GeneratedAchievement[];
 }> => {
 	const generator = createMockDataGenerator(config);
-	const result: ReturnType<typeof generateAllMockData> = {
-		users: [],
-		quizResults: [],
-		studySessions: [],
-		topicMasteries: [],
-		achievements: [],
-	};
 
-	result.users = generator.generateUsers();
+	const users = generator.generateUsers();
 	const userIds = generator.getUserIds();
 
+	const quizResults: GeneratedQuizResult[] = [];
+	const studySessions: GeneratedStudySession[] = [];
+	const topicMasteries: GeneratedTopicMastery[] = [];
+	const achievements: GeneratedAchievement[] = [];
+
 	for (const userId of userIds) {
-		const quizResults = generator.generateQuizResults(userId, 6);
-		result.quizResults.push(...quizResults);
+		quizResults.push(...generator.generateQuizResults(userId, 6));
 
 		const sessionCount = Math.floor(
 			activityConfig[config?.intensity ?? 'high'].weeklySessions.min / 4
 		);
 		for (let i = 0; i < sessionCount; i++) {
-			result.studySessions.push(generator.generateStudySession(userId));
+			studySessions.push(generator.generateStudySession(userId));
 		}
 
-		const topicMasteries = generator.generateTopicMastery(userId, 1, 'mathematics');
-		result.topicMasteries.push(...topicMasteries);
-
-		result.achievements.push(...generator.generateAchievements(userId));
+		topicMasteries.push(...generator.generateTopicMastery(userId, 1, 'mathematics'));
+		achievements.push(...generator.generateAchievements(userId));
 	}
 
-	return result;
+	return { users, quizResults, studySessions, topicMasteries, achievements };
 };
