@@ -41,7 +41,7 @@ const PricingSection = dynamic(
 );
 const FinalCTASection = dynamic(
 	() => import('@/components/Landing').then((mod) => ({ default: mod.FinalCTASection })),
-	{ ssr: true, loading: () => <div className="min-h-[200px]" /> }
+	{ ssr: true, loading: () => <div className="min-h-50" /> }
 );
 
 export default function Landing() {
