@@ -3,13 +3,21 @@
 import { m } from 'framer-motion';
 import { useId } from 'react';
 import { AcademicStanding } from '@/components/Profile/AcademicStanding';
+import AccountSettings from '@/components/Profile/AccountSettings';
 import { AchievementBadges, AchievementProgress } from '@/components/Profile/AchievementBadges';
+import DataExport from '@/components/Profile/DataExport';
+import GamificationRewards from '@/components/Profile/GamificationRewards';
+import LearningAnalytics from '@/components/Profile/LearningAnalytics';
 import { PerformanceMatrix } from '@/components/Profile/PerformanceMatrix';
 import { ProfileHeader } from '@/components/Profile/ProfileHeader';
+import QuizHistory from '@/components/Profile/QuizHistory';
+import SkillsWeaknessAnalysis from '@/components/Profile/SkillsWeaknessAnalysis';
+import StudyGoalPlanner from '@/components/Profile/StudyGoalPlanner';
 import { ProfileSkeleton } from '@/components/ProfileSkeleton';
 import { BackgroundMesh } from '@/components/ui/background-mesh';
 import { Card } from '@/components/ui/card';
 import type { ChartConfig } from '@/components/ui/chart';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useProfile } from '@/hooks/useProfile';
 
 const chartConfig = {
@@ -69,6 +77,7 @@ export default function Profile() {
 							radarGradientId={radarGradientId}
 							chartConfig={chartConfig}
 						/>
+						<StudyGoalPlanner userStats={userStats as any} />
 					</div>
 
 					{/* Right Column: Cards */}
@@ -98,6 +107,116 @@ export default function Profile() {
 						</Card>
 					</m.div>
 				)}
+
+				{/* Profile Features Tabs */}
+				<m.div
+					initial={{ opacity: 0, y: 20 }}
+					animate={{ opacity: 1, y: 0 }}
+					transition={{ delay: 0.4 }}
+					className="mt-8 sm:mt-12"
+				>
+					<Tabs defaultValue="analytics" className="w-full">
+						<TabsList className="flex w-full justify-start gap-2 bg-transparent h-auto p-0 mb-6 flex-wrap">
+							<TabsTrigger
+								value="analytics"
+								className="data-[state=active]:bg-primary-violet/20 data-[state=active]:text-primary-violet px-4 py-2 rounded-full text-sm font-medium"
+							>
+								learning analytics
+							</TabsTrigger>
+							<TabsTrigger
+								value="quizzes"
+								className="data-[state=active]:bg-primary-violet/20 data-[state=active]:text-primary-violet px-4 py-2 rounded-full text-sm font-medium"
+							>
+								quiz history
+							</TabsTrigger>
+							<TabsTrigger
+								value="goals"
+								className="data-[state=active]:bg-primary-violet/20 data-[state=active]:text-primary-violet px-4 py-2 rounded-full text-sm font-medium"
+							>
+								study goals
+							</TabsTrigger>
+							<TabsTrigger
+								value="skills"
+								className="data-[state=active]:bg-primary-violet/20 data-[state=active]:text-primary-violet px-4 py-2 rounded-full text-sm font-medium"
+							>
+								skills analysis
+							</TabsTrigger>
+							<TabsTrigger
+								value="rewards"
+								className="data-[state=active]:bg-primary-violet/20 data-[state=active]:text-primary-violet px-4 py-2 rounded-full text-sm font-medium"
+							>
+								x p & levels
+							</TabsTrigger>
+							<TabsTrigger
+								value="settings"
+								className="data-[state=active]:bg-primary-violet/20 data-[state=active]:text-primary-violet px-4 py-2 rounded-full text-sm font-medium"
+							>
+								settings
+							</TabsTrigger>
+							<TabsTrigger
+								value="export"
+								className="data-[state=active]:bg-primary-violet/20 data-[state=active]:text-primary-violet px-4 py-2 rounded-full text-sm font-medium"
+							>
+								export data
+							</TabsTrigger>
+						</TabsList>
+
+						<TabsContent value="analytics" className="mt-0">
+							<Card className="p-6 sm:p-8 rounded-[2rem] border-2 border-border/50 bg-card/50 backdrop-blur-sm">
+								<LearningAnalytics userStats={userStats ?? undefined} studyStats={undefined} />
+							</Card>
+						</TabsContent>
+
+						<TabsContent value="quizzes" className="mt-0">
+							<Card className="p-6 sm:p-8 rounded-[2rem] border-2 border-border/50 bg-card/50 backdrop-blur-sm">
+								<QuizHistory quizResults={[]} />
+							</Card>
+						</TabsContent>
+
+						<TabsContent value="goals" className="mt-0">
+							<Card className="p-6 sm:p-8 rounded-[2rem] border-2 border-border/50 bg-card/50 backdrop-blur-sm">
+								<StudyGoalPlanner userStats={userStats as any} />
+							</Card>
+						</TabsContent>
+
+						<TabsContent value="skills" className="mt-0">
+							<Card className="p-6 sm:p-8 rounded-[2rem] border-2 border-border/50 bg-card/50 backdrop-blur-sm">
+								<SkillsWeaknessAnalysis weakTopics={[]} subjectPerformance={[]} strongTopics={[]} />
+							</Card>
+						</TabsContent>
+
+						<TabsContent value="rewards" className="mt-0">
+							<Card className="p-6 sm:p-8 rounded-[2rem] border-2 border-border/50 bg-card/50 backdrop-blur-sm">
+								<GamificationRewards
+									userStats={userStats ?? undefined}
+									xpBreakdown={{ quizXp: 0, achievementXp: 0 }}
+								/>
+							</Card>
+						</TabsContent>
+
+						<TabsContent value="settings" className="mt-0">
+							<Card className="p-6 sm:p-8 rounded-[2rem] border-2 border-border/50 bg-card/50 backdrop-blur-sm">
+								<AccountSettings session={session as any} />
+							</Card>
+						</TabsContent>
+
+						<TabsContent value="export" className="mt-0">
+							<Card className="p-6 sm:p-8 rounded-[2rem] border-2 border-border/50 bg-card/50 backdrop-blur-sm">
+								<DataExport
+									quizHistory={[]}
+									userData={{
+										name: session?.user?.name ?? '',
+										email: session?.user?.email ?? '',
+										joinedDate: session?.user?.createdAt?.toString() ?? '',
+									}}
+									quizStats={{ totalQuizzes: 0, averageScore: 0, bestScore: 0, totalTime: 0 }}
+									achievements={{ totalUnlocked: 0, badges: [] }}
+									subjects={[]}
+								/>
+							</Card>
+						</TabsContent>
+					</Tabs>
+				</m.div>
 			</main>
 		</div>
 	);
