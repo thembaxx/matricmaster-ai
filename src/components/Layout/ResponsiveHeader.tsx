@@ -135,7 +135,7 @@ function NotificationButton({ count, onClick }: NotificationButtonProps) {
 		<Button
 			variant="ghost"
 			size="icon"
-			className="w-10 h-10 rounded-xl bg-card/50 backdrop-blur-md border border-border/20 shadow-sm relative hover:bg-card/80 transition-all hidden sm:flex"
+			className="w-10 h-10 rounded-xl bg-card/50 backdrop-blur-md border border-border/20 shadow-sm relative hover:bg-card/80 transition-all"
 			onClick={onClick}
 			aria-label={`Notifications${count > 0 ? `, ${count} unread` : ''}`}
 		>
