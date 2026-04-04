@@ -1,0 +1,9 @@
+- generic [active] [ref=e1]:
+  - link "skip to main content" [ref=e2] [cursor=pointer]:
+    - /url: "#main-content"
+  - progressbar
+  - region "Notifications alt+T"
+  - status [ref=e3]
+  - alert [ref=e4]
+  - button "Open Next.js Dev Tools" [ref=e10] [cursor=pointer]:
+    - img [ref=e11]
