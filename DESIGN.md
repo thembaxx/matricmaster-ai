@@ -48,6 +48,82 @@ design/v2.0.0 → v2.0.0 (Major redesign)
 | v1.0.0 | 2026-01-15 | Design Team | Initial design system documentation |
 | 2026-03-01 | 2026-03-01 | Design Team | Added new subject colors, updated spacing tokens |
 | 2026-04-03 | 2026-04-03 | Design Team | Color palette update, added animation tokens |
+| v2.0.0 | 2026-04-04 | UI/UX Engineering | Modern Rounded aesthetic - squircle corners, soft shadows, spring animations |
+
+---
+
+## [v2.0.0] - 2026-04-04
+
+**Author:** UI/UX Engineering Team
+**Git Tag:** design/v2.0.0
+**Summary:** Modern Rounded aesthetic update - squircle corners, soft shadows, and spring animations
+
+### ✨ Added
+- **New Token:** `--radius-full` → `9999px` (Pill/CTA buttons)
+- **New Shadow System:** `shadow-soft-sm`, `shadow-soft-md`, `shadow-soft-lg` for Apple/Linear-style soft shadows
+- **New Animation Tokens:** `--ease-spring`, `--ease-out-back` for tactile interactions
+- **Glassmorphism:** `backdrop-blur-md` for floating elements
+
+### 🔄 Changed
+- **Token:** `--radius` changed from `12px` to `16px` (base rounded-xl)
+- **Token:** `--radius-sm` changed to `12px`
+- **Token:** `--radius-md` changed to `16px`
+- **Token:** `--radius-lg` changed to `20px`
+- **Token:** `--radius-xl` changed to `24px`
+- **Token:** `--radius-2xl` changed to `28px`
+
+### 📝 Notes
+- Primary buttons now use `rounded-full` for pill shape
+- Cards/Modals use `rounded-2xl` (24px) for app-like feel
+- Input fields use `rounded-xl` (16px) with increased horizontal padding
+- All interactive elements have `active:scale-95` for tactile feedback
+- Glassmorphism applied to floating elements with `backdrop-blur-md`
+
+---
+
+### 1.5 Modern Rounded Design System (v2.0.0)
+
+The Modern Rounded design system brings a tactile, friendly aesthetic inspired by Apple iOS, Linear, Material You, and Duolingo. This update emphasizes softer curves, diffused shadows, and spring-based animations.
+
+#### Border Radius Architecture (The "Squircle" Effect)
+
+| Token | Value | Usage |
+|-------|-------|-------|
+| `--radius-xs` | `8px` | Inline badges, chips |
+| `--radius-sm` | `12px` | Small inputs, badges |
+| `--radius-md` | `16px` | Standard inputs, small buttons |
+| `--radius-lg` | `20px` | Medium buttons, cards |
+| `--radius-xl` | `24px` | Large buttons, cards, modals |
+| `--radius-2xl` | `28px` | Drawers, large containers |
+| `--radius-3xl` | `32px` | Page containers |
+| `--radius-full` | `9999px` | Pill buttons, avatars, CTAs |
+
+#### Depth, Shadows, and Glassmorphism
+
+| Token | Value | Usage |
+|-------|-------|-------|
+| `--shadow-soft-sm` | `0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.06)` | Subtle elevation |
+| `--shadow-soft-md` | `0 4px 12px rgba(0,0,0,0.06), 0 2px 4px rgba(0,0,0,0.04)` | Cards, dropdowns |
+| `--shadow-soft-lg` | `0 8px 24px rgba(0,0,0,0.08), 0 4px 8px rgba(0,0,0,0.06)` | Modals, popovers |
+| `--shadow-soft-xl` | `0 12px 40px rgba(0,0,0,0.1), 0 6px 12px rgba(0,0,0,0.08)` | Floating navs |
+
+#### Micro-Interactions & Spring Animations
+
+| Token | Value | Usage |
+|-------|-------|-------|
+| `--duration-fast` | `150ms` | Quick hover states |
+| `--duration-normal` | `300ms` | Standard transitions |
+| `--ease-spring` | `cubic-bezier(0.175, 0.885, 0.32, 1.275)` | Bouncy interactions |
+| `--ease-out-back` | `cubic-bezier(0.34, 1.56, 0.64, 1)` | Overshoot on enter |
+
+#### Implementation Guidelines
+
+- **Buttons/Inputs:** Use `rounded-xl` to `rounded-2xl` (12px-16px)
+- **Pills & Primary CTAs:** Use `rounded-full`
+- **Cards/Modals/Drawers:** Use `rounded-2xl` to `rounded-3xl` (16px-24px)
+- **Inner nesting:** Proportionately smaller radius for geometric harmony
+- **All interactive elements:** Add `active:scale-95` for tactile feedback
+- **Floating elements:** Use `bg-background/80 backdrop-blur-md` for glassmorphism
 
 ---
 
