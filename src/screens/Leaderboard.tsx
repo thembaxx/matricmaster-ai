@@ -19,6 +19,7 @@ import {
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { SUBJECTS, useLeaderboard } from '@/hooks/useLeaderboard';
+import { formatPoints } from '@/lib/leaderboard-utils';
 
 export default function Leaderboard() {
 	const {
