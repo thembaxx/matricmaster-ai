@@ -44,8 +44,8 @@ export async function POST(request: NextRequest) {
 			},
 		});
 
-		const roomUrl = dailyRoom?.url || `https://${roomName}.daily.co`;
-		const isReal = !!dailyRoom;
+		const roomUrl = dailyRoom?.success ? dailyRoom.room.url : `https://${roomName}.daily.co`;
+		const isReal = dailyRoom?.success === true;
 
 		const invitePromises = participantIds.map(async (participantId: string) => {
 			if (participantId === session.user.id) return;
@@ -103,7 +103,7 @@ export async function GET(request: NextRequest) {
 
 		const room = await getDailyRoom(roomName);
 
-		if (!room) {
+		if (!room.success) {
 			return NextResponse.json({
 				success: true,
 				data: {
@@ -117,11 +117,11 @@ export async function GET(request: NextRequest) {
 		return NextResponse.json({
 			success: true,
 			data: {
-				roomName: room.name,
+				roomName: room.room.name,
 				exists: true,
-				url: room.url,
-				config: room.config,
-				created_at: room.created_at,
+				url: room.room.url,
+				config: room.room.config,
+				created_at: room.room.created_at,
 			},
 		});
 	} catch (error) {
