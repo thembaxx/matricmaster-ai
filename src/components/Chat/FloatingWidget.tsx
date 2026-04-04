@@ -40,7 +40,13 @@ export function FloatingWidget() {
 		<Card className="fixed bottom-36 right-4 w-[320px] sm:w-80 h-96 flex flex-col shadow-xl z-50 overflow-hidden">
 			<div className="flex items-center justify-between p-3 border-b">
 				<h3 className="font-medium">Study Buddy</h3>
-				<Button type="button" variant="ghost" size="icon" onClick={toggleWidget}>
+				<Button
+					type="button"
+					variant="ghost"
+					size="icon"
+					onClick={toggleWidget}
+					aria-label="Close chat"
+				>
 					<HugeiconsIcon icon={CloseIcon} className="w-4 h-4" />
 				</Button>
 			</div>

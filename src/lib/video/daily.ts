@@ -28,13 +28,19 @@ export interface CreateRoomParams {
 	properties?: DailyRoomConfig;
 }
 
-export async function createDailyRoom(params: CreateRoomParams): Promise<DailyRoom | null> {
+export type DailyRoomResult =
+	| { success: true; room: DailyRoom }
+	| {
+			success: false;
+			error: 'daily_api_unavailable' | 'daily_auth_failed' | 'daily_rate_limited' | 'daily_error';
+	  };
+
+export async function createDailyRoom(params: CreateRoomParams): Promise<DailyRoomResult> {
 	const apiKey = getEnv('DAILY_API_KEY');
 	const domain = getEnv('DAILY_DOMAIN');
 
 	if (!apiKey || !domain) {
-		console.warn('⚠️ Daily.co not configured - video calls disabled');
-		return null;
+		return { success: false, error: 'daily_api_unavailable' };
 	}
 
 	try {
@@ -61,22 +67,28 @@ export async function createDailyRoom(params: CreateRoomParams): Promise<DailyRo
 		});
 
 		if (!response.ok) {
+			if (response.status === 401 || response.status === 403) {
+				return { success: false, error: 'daily_auth_failed' };
+			}
+			if (response.status === 429) {
+				return { success: false, error: 'daily_rate_limited' };
+			}
 			throw new Error(`Failed to create room: ${response.statusText}`);
 		}
 
 		const data = await response.json();
-		return data;
+		return { success: true, room: data };
 	} catch (error) {
 		console.debug('Error creating Daily.co room:', error);
-		return null;
+		return { success: false, error: 'daily_api_unavailable' };
 	}
 }
 
-export async function getDailyRoom(roomName: string): Promise<DailyRoom | null> {
+export async function getDailyRoom(roomName: string): Promise<DailyRoomResult> {
 	const apiKey = getEnv('DAILY_API_KEY');
 
 	if (!apiKey) {
-		return null;
+		return { success: false, error: 'daily_api_unavailable' };
 	}
 
 	try {
@@ -88,14 +100,20 @@ export async function getDailyRoom(roomName: string): Promise<DailyRoom | null> 
 		});
 
 		if (!response.ok) {
-			return null;
+			if (response.status === 401 || response.status === 403) {
+				return { success: false, error: 'daily_auth_failed' };
+			}
+			if (response.status === 429) {
+				return { success: false, error: 'daily_rate_limited' };
+			}
+			return { success: false, error: 'daily_error' };
 		}
 
 		const data = await response.json();
-		return data;
+		return { success: true, room: data };
 	} catch (error) {
 		console.debug('Error getting Daily.co room:', error);
-		return null;
+		return { success: false, error: 'daily_api_unavailable' };
 	}
 }
 

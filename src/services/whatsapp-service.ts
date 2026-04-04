@@ -17,6 +17,7 @@ import { getCachedResponse } from '@/lib/cache/vercel-kv';
 import { db } from '@/lib/db';
 import { whatsappPreferences } from '@/lib/db/schema';
 import { whatsappClient } from '@/lib/whatsapp/client';
+import { isWhatsAppConfigured } from '@/lib/whatsapp/config';
 
 export type WhatsAppNotificationType =
 	| 'study_reminder'
@@ -75,6 +76,11 @@ async function delay(ms: number): Promise<void> {
 }
 
 export async function rateLimitedSend(to: string, message: string): Promise<boolean> {
+	if (!isWhatsAppConfigured()) {
+		console.warn('[WhatsApp] Cannot send - not configured');
+		return false;
+	}
+
 	try {
 		const normalizedNumber = normalizeSouthAfricanNumber(to);
 		const truncatedMessage = truncateMessage(message);

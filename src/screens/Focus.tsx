@@ -56,7 +56,13 @@ function FocusScreenContent() {
 	return (
 		<div className="min-h-screen bg-background flex flex-col items-center p-6 overflow-x-hidden">
 			<header className="w-full max-w-4xl flex items-center justify-between mb-8 pt-6">
-				<Button variant="ghost" size="icon" onClick={() => router.back()} className="rounded-full">
+				<Button
+					variant="ghost"
+					size="icon"
+					onClick={() => router.back()}
+					className="rounded-full"
+					aria-label="Go back"
+				>
 					<HugeiconsIcon icon={ArrowLeft01Icon} className="w-6 h-6" />
 				</Button>
 				<div className="flex items-center gap-2 bg-muted/50 px-4 py-2 rounded-full border border-border/50">

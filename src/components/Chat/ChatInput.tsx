@@ -109,7 +109,12 @@ export function ChatInput({
 						}
 					}}
 				/>
-				<Button onClick={() => handleSend()} disabled={!input.trim() || !sessionId} size="icon">
+				<Button
+					onClick={() => handleSend()}
+					disabled={!input.trim() || !sessionId}
+					size="icon"
+					aria-label="Send message"
+				>
 					<HugeiconsIcon icon={SentIcon} className="w-4 h-4" aria-hidden="true" />
 				</Button>
 			</div>

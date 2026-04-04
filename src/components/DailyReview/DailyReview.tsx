@@ -44,14 +44,15 @@ export function DailyReviewModal({ isOpen = false, onClose }: DailyReviewProps) 
 			>
 				<div className="flex items-center justify-between mb-6">
 					<h2 className="text-xl font-bold">Review Your Day</h2>
-					<Button type="button" variant="ghost" size="icon" onClick={onClose}>
-						<svg
-							className="w-5 h-5"
-							fill="none"
-							viewBox="0 0 24 24"
-							stroke="currentColor"
-							aria-label="Close"
-						>
+					<Button
+						type="button"
+						variant="ghost"
+						size="icon"
+						onClick={onClose}
+						aria-label="Close dialog"
+					>
+						<svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+							<title>Close</title>
 							<path
 								strokeLinecap="round"
 								strokeLinejoin="round"
