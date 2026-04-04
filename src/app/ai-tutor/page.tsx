@@ -30,6 +30,7 @@ function AITutorPageContent() {
 
 	const {
 		session,
+		isLoading: isSessionLoading,
 		messages,
 		isLoading,
 		selectedSubject,
@@ -60,6 +61,10 @@ function AITutorPageContent() {
 		prevContextParam.current = contextParam;
 		const decodedContext = decodeURIComponent(contextParam);
 		handleSend(undefined, decodedContext);
+	}
+
+	if (isSessionLoading) {
+		return <AITutorPageSkeleton />;
 	}
 
 	if (!session) {

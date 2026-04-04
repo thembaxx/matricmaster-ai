@@ -44,7 +44,7 @@ export default function Profile() {
 	}
 
 	return (
-		<div className="flex flex-col h-full min-w-0 bg-background pb-32 px-4 sm:px-6 lg:px-8 overflow-x-hidden">
+		<div className="flex flex-col min-h-[calc(100vh-4rem)] min-w-0 bg-background pb-32 px-4 sm:px-6 lg:px-8 overflow-x-hidden">
 			<BackgroundMesh variant="subtle" />
 
 			<main className="max-w-6xl mx-auto w-full pt-6 sm:pt-8 space-y-8 sm:space-y-12 relative z-10">

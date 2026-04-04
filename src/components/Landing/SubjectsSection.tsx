@@ -36,7 +36,7 @@ export function SubjectsSection({ onAuthRequired }: SubjectsSectionProps) {
 				initial="hidden"
 				whileInView="visible"
 				viewport={{ once: true, margin: '-100px' }}
-				className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4"
+				className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4"
 			>
 				{SUBJECTS_CONTENT.map((subject) => {
 					const fluentEmoji = subject.fluentEmoji ?? 'Books';

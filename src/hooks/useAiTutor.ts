@@ -37,7 +37,7 @@ export interface Flashcard {
 }
 
 export function useAiTutor() {
-	const { data: session } = authClient.useSession();
+	const { data: session, isPending: isSessionLoading } = authClient.useSession();
 	const { aiLanguage } = useSettings();
 	const getRecentStruggles = useAiContextStore((s) => s.getRecentStruggles);
 	const struggles = getRecentStruggles();
@@ -307,6 +307,7 @@ export function useAiTutor() {
 
 	return {
 		session,
+		isSessionLoading,
 		messages,
 		input,
 		setInput,

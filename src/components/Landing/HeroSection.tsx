@@ -68,7 +68,7 @@ export function HeroSection({ onAuthRequired }: HeroSectionProps) {
 					initial={{ opacity: 0, y: 20 }}
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ delay: 0.3 }}
-					className="flex flex-col sm:flex-row gap-4 w-full max-w-md"
+					className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full sm:max-w-md"
 				>
 					<Button
 						size="lg"
