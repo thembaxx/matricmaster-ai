@@ -1,6 +1,7 @@
 'use client';
 
 import { Progress } from '@/components/ui/progress';
+import { cn } from '@/lib/utils';
 
 interface ConfidenceMeterProps {
 	score: number;
@@ -55,9 +56,9 @@ export function ConfidenceMeter({
 		<div className="space-y-1.5">
 			{label && (
 				<div className="flex justify-between items-center">
-					<span className={`${getTextSize()} text-muted-foreground`}>{label}</span>
+					<span className={cn(getTextSize(), 'text-muted-foreground')}>{label}</span>
 					{showValue && (
-						<span className={`font-semibold ${getLabelColor(score)} ${getTextSize()}`}>
+						<span className={cn('font-semibold', getLabelColor(score), getTextSize())}>
 							{percentage}%
 						</span>
 					)}
@@ -65,7 +66,7 @@ export function ConfidenceMeter({
 			)}
 			{!label && showValue && (
 				<div className="flex justify-end">
-					<span className={`font-semibold ${getLabelColor(score)} ${getTextSize()}`}>
+					<span className={cn('font-semibold', getLabelColor(score), getTextSize())}>
 						{percentage}%
 					</span>
 				</div>

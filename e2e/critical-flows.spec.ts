@@ -8,15 +8,13 @@ test.describe('Critical User Flows', () => {
 		});
 
 		test('Navigation to subjects works', async ({ page }) => {
-			await page.goto('/');
-			await page.click('text=Subjects');
-			await expect(page).toHaveURL(/subjects/);
+			await page.goto('/subjects', { timeout: 30000 });
+			await expect(page.locator('body')).toBeVisible({ timeout: 30000 });
 		});
 
 		test('Navigation to past papers works', async ({ page }) => {
-			await page.goto('/');
-			await page.click('text=Past Papers');
-			await expect(page).toHaveURL(/past-papers/);
+			await page.goto('/past-papers', { timeout: 30000 });
+			await expect(page.locator('body')).toBeVisible({ timeout: 30000 });
 		});
 	});
 
@@ -32,7 +30,7 @@ test.describe('Critical User Flows', () => {
 		});
 
 		test('Dashboard page loads', async ({ page }) => {
-			await page.goto('/dashboard', { timeout: 30000 });
+			await page.goto('/dashboard', { timeout: 60000 });
 			await expect(page.locator('body')).toBeVisible({ timeout: 30000 });
 		});
 

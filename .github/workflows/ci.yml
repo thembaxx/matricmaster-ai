@@ -76,6 +76,11 @@ jobs:
       - name: Install Playwright browsers
         run: bunx playwright install --with-deps
 
+      - name: Start development server
+        run: bun run dev &
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/matricmaster
+
       - name: Run E2E tests
         run: bun run test:e2e
 
