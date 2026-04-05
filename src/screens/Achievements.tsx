@@ -1,7 +1,7 @@
 'use client';
 
 import { m } from 'framer-motion';
-import { useState } from 'react';
+import { startTransition, useState, ViewTransition } from 'react';
 import {
 	BadgesGridSection,
 	CategoryNav,
@@ -28,6 +28,12 @@ export default function Achievements() {
 
 	const [showShareModal, setShowShareModal] = useState(false);
 	const [recentlyUnlocked] = useState<string[]>([]);
+
+	const handleTabChange = (tab: string) => {
+		startTransition(() => {
+			setActiveTab(tab);
+		});
+	};
 
 	const handleShareAll = async () => {
 		setShowShareModal(false);
@@ -70,7 +76,11 @@ export default function Achievements() {
 				</m.div>
 
 				<div className="flex items-center justify-between">
-					<CategoryNav categories={categories} activeTab={activeTab} onTabChange={setActiveTab} />
+					<CategoryNav
+						categories={categories}
+						activeTab={activeTab}
+						onTabChange={handleTabChange}
+					/>
 
 					{session?.user && (
 						<div className="flex gap-2">
@@ -86,7 +96,9 @@ export default function Achievements() {
 					)}
 				</div>
 
-				<BadgesGridSection filteredBadges={filteredBadges} />
+				<ViewTransition enter="fade-in" exit="fade-out" default="none">
+					<BadgesGridSection filteredBadges={filteredBadges} />
+				</ViewTransition>
 
 				{recentlyUnlocked.length > 0 && (
 					<div className="fixed bottom-24 left-1/2 -translate-x-1/2 bg-primary text-white px-6 py-3 rounded-full shadow-lg animate-[pulse_2s_ease-in-out_infinite]">

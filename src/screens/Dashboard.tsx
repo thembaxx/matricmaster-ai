@@ -1,7 +1,7 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import { useEffect, useMemo, useState } from 'react';
+import { startTransition, useEffect, useMemo, useState, ViewTransition } from 'react';
 import { AdaptiveScheduleBanner } from '@/components/Dashboard/AdaptiveScheduleBanner';
 import { AdaptiveScheduleCard } from '@/components/Dashboard/AdaptiveScheduleCard';
 import { AITutorNudge } from '@/components/Dashboard/AITutorNudge';
@@ -49,6 +49,13 @@ export default function Dashboard({
 }: DashboardProps) {
 	const [tasks, setTasks] = useState<Record<string, StudyTask[]>>(DEMO_TASKS);
 	const [expanded, setExpanded] = useState<Record<string, boolean>>({ high: true, medium: true });
+	const [activeTab, setActiveTab] = useState('today');
+
+	const handleTabChange = (value: string) => {
+		startTransition(() => {
+			setActiveTab(value);
+		});
+	};
 
 	const {
 		progress,
@@ -199,7 +206,7 @@ export default function Dashboard({
 						</div>
 					)}
 
-					<Tabs defaultValue="today" className="w-full">
+					<Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
 						<TabsList className="w-full justify-start mb-8 bg-transparent border-b border-border h-auto p-0 rounded-none">
 							<TabsTrigger
 								value="today"
@@ -227,43 +234,51 @@ export default function Dashboard({
 							</TabsTrigger>
 						</TabsList>
 
-						<TabsContent value="today" className="mt-0">
-							<TodayTabHeader achievements={achievements} streak={streak} />
-							<TodayTab achievements={achievements} streak={streak} />
-							{scheduleChanges && scheduleChanges.adjustments?.length > 0 && (
+						<ViewTransition enter="fade-in" exit="fade-out" default="none">
+							<TabsContent value="today" className="mt-0">
+								<TodayTabHeader achievements={achievements} streak={streak} />
+								<TodayTab achievements={achievements} streak={streak} />
+								{scheduleChanges && scheduleChanges.adjustments?.length > 0 && (
+									<div className="mt-6">
+										<AdaptiveScheduleCard adjustments={scheduleChanges.adjustments} />
+									</div>
+								)}
 								<div className="mt-6">
-									<AdaptiveScheduleCard adjustments={scheduleChanges.adjustments} />
+									<CrossFeatureRecommendations />
 								</div>
-							)}
-							<div className="mt-6">
-								<CrossFeatureRecommendations />
-							</div>
-						</TabsContent>
+							</TabsContent>
+						</ViewTransition>
 
-						<TabsContent value="progress" className="mt-0">
-							<ProgressTab
-								weaknessData={weaknessData}
-								growthInsights={growthInsights}
-								progress={progress ?? undefined}
-								weakTopicNames={weakTopicNames}
-							/>
-						</TabsContent>
+						<ViewTransition enter="fade-in" exit="fade-out" default="none">
+							<TabsContent value="progress" className="mt-0">
+								<ProgressTab
+									weaknessData={weaknessData}
+									growthInsights={growthInsights}
+									progress={progress ?? undefined}
+									weakTopicNames={weakTopicNames}
+								/>
+							</TabsContent>
+						</ViewTransition>
 
-						<TabsContent value="tasks" className="mt-0">
-							<TasksTab
-								tasks={tasks}
-								expanded={expanded}
-								onToggleTask={toggleTask}
-								onToggleSection={(p) =>
-									setExpanded((prev) => ({ ...prev, [p]: !prev[p as keyof typeof prev] }))
-								}
-								mistakeCount={mistakeCount ?? 0}
-							/>
-						</TabsContent>
+						<ViewTransition enter="fade-in" exit="fade-out" default="none">
+							<TabsContent value="tasks" className="mt-0">
+								<TasksTab
+									tasks={tasks}
+									expanded={expanded}
+									onToggleTask={toggleTask}
+									onToggleSection={(p) =>
+										setExpanded((prev) => ({ ...prev, [p]: !prev[p as keyof typeof prev] }))
+									}
+									mistakeCount={mistakeCount ?? 0}
+								/>
+							</TabsContent>
+						</ViewTransition>
 
-						<TabsContent value="more" className="mt-0">
-							<MoreTab />
-						</TabsContent>
+						<ViewTransition enter="fade-in" exit="fade-out" default="none">
+							<TabsContent value="more" className="mt-0">
+								<MoreTab />
+							</TabsContent>
+						</ViewTransition>
 					</Tabs>
 				</div>
 			</FocusContent>
