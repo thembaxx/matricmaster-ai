@@ -61,7 +61,9 @@ export function useKnowledgeGapSynergy(config?: Partial<KnowledgeGapSynergyConfi
 					toast.success(`Created ${data.cardsCreated} flashcards from your knowledge gaps!`, {
 						action: {
 							label: 'Review',
-							onClick: () => (window.location.href = '/flashcards'),
+							onClick: () => {
+								window.location.href = '/flashcards';
+							},
 						},
 					});
 				}
@@ -101,7 +103,9 @@ export function useKnowledgeGapSynergy(config?: Partial<KnowledgeGapSynergyConfi
 				toast.success(`Scheduled ${sessions.length} review sessions for tomorrow!`, {
 					action: {
 						label: 'View',
-						onClick: () => (window.location.href = '/study-path'),
+						onClick: () => {
+							window.location.href = '/study-path';
+						},
 					},
 				});
 			}
