@@ -4,7 +4,7 @@ export default defineConfig({
 	testDir: './e2e',
 	fullyParallel: false,
 	forbidOnly: !!process.env.CI,
-	retries: process.env.CI ? 2 : 0,
+	retries: process.env.CI ? 2 : 2,
 	workers: process.env.CI ? 1 : undefined,
 	outputDir: 'test-results/artifacts',
 	reporter: [['html', { outputFolder: 'test-results/html' }], ['list']],
@@ -15,7 +15,7 @@ export default defineConfig({
 
 	use: {
 		baseURL: process.env.BASE_URL || 'http://localhost:3000',
-		trace: 'on-first-retry',
+		trace: 'on',
 		screenshot: 'only-on-failure',
 		video: 'retain-on-failure',
 		actionTimeout: 30000,
@@ -34,7 +34,7 @@ export default defineConfig({
 	webServer: {
 		command: 'bun run dev',
 		url: 'http://localhost:3000',
-		reuseExistingServer: true,
+		reuseExistingServer: !process.env.CI,
 		stdout: 'pipe',
 		stderr: 'pipe',
 		timeout: 120000,

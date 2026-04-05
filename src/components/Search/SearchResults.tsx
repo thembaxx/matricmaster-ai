@@ -35,7 +35,7 @@ export const SearchResults = memo(function SearchResults({ results }: SearchResu
 							>
 								<button
 									type="button"
-									className="p-6 w-full text-left border-2 border-border/50 shadow-sm bg-card rounded-[2rem] flex items-center justify-between group cursor-pointer hover:border-primary/20 hover:shadow-2xl transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+									className="p-6 w-full text-left border-2 border-border/50 shadow-sm bg-card rounded-[2rem] flex items-center justify-between group cursor-pointer hover:border-primary/20 hover:shadow-soft-lg transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
 									onClick={() => router.push(`/past-paper?id=${paper.id}`)}
 								>
 									<div className="flex items-center gap-5">

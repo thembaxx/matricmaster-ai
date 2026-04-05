@@ -173,7 +173,7 @@ export default function Channels() {
 				type="button"
 				variant="ghost"
 				size="icon"
-				className="absolute bottom-24 right-6 w-16 h-16 bg-foreground text-background rounded-full shadow-2xl flex items-center justify-center transform hover:scale-110 active:scale-95 transition-all z-30"
+				className="absolute bottom-24 right-6 w-16 h-16 bg-foreground text-background rounded-full shadow-soft-lg flex items-center justify-center transform hover:scale-110 active:scale-95 transition-all z-30"
 			>
 				<HugeiconsIcon icon={PlayIcon} className="w-8 h-8 fill-current translate-x-0.5" />
 			</Button>

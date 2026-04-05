@@ -33,6 +33,7 @@
 		"mock:generate": "tsx scripts/mock-export.ts",
 		"mock:export": "tsx scripts/mock-export.ts",
 		"mock:validate": "tsx scripts/mock-validate.ts",
+		"db:enrich": "tsx scripts/enrich-database.ts",
 		"db:reset": "drizzle-kit drop && drizzle-kit push && drizzle-kit push --config=drizzle.sqlite.config.ts && bun run db:seed",
 		"release": "semantic-release",
 		"prepare": "husky",

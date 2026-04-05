@@ -18,7 +18,7 @@ export function QuestionCard({ question, subjectMap, onEdit, onDelete }: Questio
 	return (
 		<Card
 			key={question.id}
-			className="rounded-[2rem] border-2 border-border/50 hover:border-primary/20 hover:shadow-2xl hover:shadow-primary/5 transition-all duration-300 group"
+			className="rounded-[2rem] border-2 border-border/50 hover:border-primary/20 hover:shadow-soft-lg hover:shadow-primary/5 transition-all duration-300 group"
 		>
 			<CardContent className="p-6 space-y-6">
 				<div className="flex items-start justify-between">

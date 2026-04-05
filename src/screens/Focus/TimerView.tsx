@@ -69,7 +69,7 @@ export function TimerView({
 					size="lg"
 					variant={isPaused ? 'default' : 'outline'}
 					onClick={onTogglePause}
-					className="rounded-full px-10 h-16 text-xs font-black tracking-widest gap-2 shadow-2xl shadow-primary/20"
+					className="rounded-full px-10 h-16 text-xs font-black tracking-widest gap-2 shadow-soft-lg shadow-primary/20"
 				>
 					<HugeiconsIcon icon={isPaused ? PlayIcon : PauseIcon} className="w-5 h-5" />
 					{isPaused ? 'start session' : 'pause'}

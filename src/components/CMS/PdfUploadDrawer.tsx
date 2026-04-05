@@ -122,7 +122,7 @@ export function PdfUploadDrawer({ isOpen, onClose, subjects, onSuccess }: PdfUpl
 						<Button
 							onClick={handleStartExtraction}
 							disabled={!file || !paperDetails.paperId || !paperDetails.subjectId}
-							className="flex-1 h-14 bg-brand-blue hover:bg-brand-blue/90 rounded-2xl font-black  tracking-widest text-xs shadow-2xl shadow-brand-blue/20"
+							className="flex-1 h-14 bg-brand-blue hover:bg-brand-blue/90 rounded-2xl font-black  tracking-widest text-xs shadow-soft-lg shadow-brand-blue/20"
 						>
 							<HugeiconsIcon icon={SparklesIcon} className="h-4 w-4 mr-2" /> Start
 						</Button>
@@ -131,7 +131,7 @@ export function PdfUploadDrawer({ isOpen, onClose, subjects, onSuccess }: PdfUpl
 						<Button
 							onClick={handleSaveResult}
 							disabled={isSaving}
-							className="flex-1 h-14 bg-brand-blue hover:bg-brand-blue/90 rounded-2xl font-black  tracking-widest text-xs shadow-2xl shadow-brand-blue/20"
+							className="flex-1 h-14 bg-brand-blue hover:bg-brand-blue/90 rounded-2xl font-black  tracking-widest text-xs shadow-soft-lg shadow-brand-blue/20"
 						>
 							{isSaving ? (
 								<div className="h-5 w-5 animate-spin border-2 border-white border-t-transparent rounded-full" />

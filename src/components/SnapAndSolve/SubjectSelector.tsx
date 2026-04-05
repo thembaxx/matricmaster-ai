@@ -63,7 +63,7 @@ export const AnalyzeButton = memo(function AnalyzeButton({
 		<Button
 			onClick={onClick}
 			disabled={isAnalyzing}
-			className="w-full h-16 rounded-3xl font-black text-lg gap-2 shadow-2xl shadow-primary/30"
+			className="w-full h-16 rounded-3xl font-black text-lg gap-2 shadow-soft-lg shadow-primary/30"
 		>
 			{isAnalyzing ? (
 				<>

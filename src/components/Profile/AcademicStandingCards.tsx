@@ -21,7 +21,7 @@ export const StatCard = memo(function StatCard({
 	iconColorClass,
 }: StatCardProps) {
 	return (
-		<Card className="p-8 rounded-3xl border border-border bg-card/50 backdrop-blur-sm relative overflow-hidden group shadow-xl hover:shadow-2xl transition-all duration-500">
+		<Card className="p-8 rounded-3xl border border-border bg-card/50 backdrop-blur-sm relative overflow-hidden group shadow-xl hover:shadow-soft-lg transition-all duration-500">
 			<div className="flex items-center gap-8 relative z-10">
 				<div
 					className={`w-20 h-20 rounded-2xl ${colorClass} flex items-center justify-center group-hover:scale-110 transition-transform duration-500 shadow-inner`}

@@ -28,7 +28,7 @@ export function PdfSelectionBubble({
 					exit={{ opacity: 0, y: 20, x: '-50%' }}
 					className="absolute bottom-12 left-1/2 z-50 px-4 w-full max-w-fit"
 				>
-					<div className="premium-glass p-3 rounded-2xl flex items-center gap-3 shadow-2xl border border-brand-blue/20">
+					<div className="premium-glass p-3 rounded-2xl flex items-center gap-3 shadow-soft-lg border border-brand-blue/20">
 						<div className="px-3 py-1.5 bg-brand-blue/10 rounded-xl max-w-[180px] truncate border border-brand-blue/5">
 							<span className="text-[11px] font-bold text-brand-blue italic">"{selectedText}"</span>
 						</div>

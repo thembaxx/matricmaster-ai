@@ -27,7 +27,7 @@ export const AchievementUnlocked = memo(function AchievementUnlocked({
 					<HugeiconsIcon icon={SparklesIcon} className="w-5 h-5 text-primary-orange" />
 					Rewards Unlocked
 				</h3>
-				<div className="bg-card p-6 rounded-[2rem] flex items-center gap-5 shadow-2xl border border-primary-orange/20">
+				<div className="bg-card p-6 rounded-[2rem] flex items-center gap-5 shadow-soft-lg border border-primary-orange/20">
 					<div className="w-16 h-16 bg-gradient-to-br from-primary-orange to-accent-pink rounded-2xl flex items-center justify-center shrink-0 shadow-lg">
 						<HugeiconsIcon icon={ChampionIcon} className="w-8 h-8 text-white" />
 					</div>

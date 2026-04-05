@@ -156,7 +156,7 @@ export default function PastPapers() {
 										aria-pressed={uiState.selectedYear === year}
 										className={`rounded-xl sm:rounded-2xl px-4 sm:px-8 py-2 sm:py-3 text-[11px] font-black tracking-widest transition-all h-10 sm:h-16 whitespace-nowrap ios-active-scale ${
 											uiState.selectedYear === year
-												? 'bg-primary text-primary-foreground shadow-2xl shadow-primary/30'
+												? 'bg-primary text-primary-foreground shadow-soft-lg shadow-primary/30'
 												: 'bg-secondary text-label-secondary border-2 border-transparent hover:border-border backdrop-blur-sm'
 										}`}
 									>

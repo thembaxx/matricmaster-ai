@@ -87,7 +87,7 @@ function AchievementBadge({ badge }: { badge: BadgeData }) {
 	return (
 		<Card
 			className={cn(
-				'group relative h-full flex flex-col items-center gap-6 p-8 rounded-[2.5rem] border-2 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl',
+				'group relative h-full flex flex-col items-center gap-6 p-8 rounded-[2.5rem] border-2 transition-all duration-300 hover:-translate-y-2 hover:shadow-soft-lg',
 				badge.unlocked
 					? 'bg-card border-border hover:border-primary/20 hover:shadow-primary/5'
 					: 'bg-muted/30 border-dashed border-muted-foreground/20 opacity-60'

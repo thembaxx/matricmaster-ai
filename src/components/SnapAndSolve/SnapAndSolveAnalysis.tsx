@@ -27,7 +27,7 @@ export function SnapAndSolveAnalysis({
 }: SnapAndSolveAnalysisProps) {
 	return (
 		<div className="w-full space-y-6">
-			<div className="relative w-full aspect-video rounded-2xl overflow-hidden border-4 border-card shadow-2xl">
+			<div className="relative w-full aspect-video rounded-2xl overflow-hidden border-4 border-card shadow-soft-lg">
 				<SafeImage src={preview} alt="Question preview" className="w-full h-full object-cover" />
 				<button
 					type="button"
@@ -65,7 +65,7 @@ export function SnapAndSolveAnalysis({
 				<Button
 					onClick={onAnalyze}
 					disabled={isAnalyzing}
-					className="w-full h-16 rounded-3xl font-black text-lg gap-2 shadow-2xl shadow-primary/30"
+					className="w-full h-16 rounded-3xl font-black text-lg gap-2 shadow-soft-lg shadow-primary/30"
 				>
 					{isAnalyzing ? (
 						<>

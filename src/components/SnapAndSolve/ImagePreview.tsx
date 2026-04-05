@@ -12,7 +12,7 @@ interface ImagePreviewProps {
 
 export const ImagePreview = memo(function ImagePreview({ preview, onRemove }: ImagePreviewProps) {
 	return (
-		<div className="relative w-full aspect-video rounded-[2.5rem] overflow-hidden border-4 border-card shadow-2xl">
+		<div className="relative w-full aspect-video rounded-[2.5rem] overflow-hidden border-4 border-card shadow-soft-lg">
 			<SafeImage src={preview} alt="Question preview" className="w-full h-full object-cover" />
 			<button
 				type="button"

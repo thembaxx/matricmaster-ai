@@ -1,5 +1,5 @@
-import { existsSync, mkdirSync, writeFileSync } from 'fs';
-import { join } from 'path';
+import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
+import { join } from 'node:path';
 import { generateAllMockData } from '@/lib/mock-data/generator';
 import { createEnrichmentPipeline } from '@/lib/mock-data/pipeline';
 

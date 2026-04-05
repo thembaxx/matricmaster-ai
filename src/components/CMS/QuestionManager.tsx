@@ -159,7 +159,7 @@ export function QuestionManager({
 						<Button
 							onClick={handleSaveQuestion}
 							disabled={!isFormValid() || state.isSaving}
-							className="flex-1 h-14 bg-primary hover:bg-primary/90 rounded-2xl font-black  tracking-widest text-xs shadow-2xl shadow-primary/20"
+							className="flex-1 h-14 bg-primary hover:bg-primary/90 rounded-2xl font-black  tracking-widest text-xs shadow-soft-lg shadow-primary/20"
 						>
 							{state.isSaving ? (
 								<Spinner className="h-5 w-5 text-primary-foreground" />

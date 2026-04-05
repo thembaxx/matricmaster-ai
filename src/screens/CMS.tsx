@@ -147,7 +147,7 @@ export default function CMS() {
 						{activeTab === 'past-papers' && (
 							<Button
 								onClick={() => setIsPdfDrawerOpen(true)}
-								className="rounded-2xl h-12 px-6 bg-primary hover:bg-primary/90 shadow-2xl shadow-primary/20 font-black text-sm tracking-widest"
+								className="rounded-2xl h-12 px-6 bg-primary hover:bg-primary/90 shadow-soft-lg shadow-primary/20 font-black text-sm tracking-widest"
 							>
 								<HugeiconsIcon icon={Upload01Icon} className="h-5 w-5 mr-2" />
 								upload pdf
@@ -156,7 +156,7 @@ export default function CMS() {
 						{activeTab === 'questions' && (
 							<Button
 								onClick={() => setCreateQuestionTrigger((n) => n + 1)}
-								className="rounded-2xl h-12 px-6 bg-primary hover:bg-primary/90 shadow-2xl shadow-primary/20 font-black text-sm tracking-widest"
+								className="rounded-2xl h-12 px-6 bg-primary hover:bg-primary/90 shadow-soft-lg shadow-primary/20 font-black text-sm tracking-widest"
 							>
 								<HugeiconsIcon icon={Add01Icon} className="h-5 w-5 mr-2" />
 								create new

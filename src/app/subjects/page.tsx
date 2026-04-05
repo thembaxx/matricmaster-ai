@@ -3,6 +3,7 @@
 import { ArrowLeft01Icon, CheckmarkCircle02Icon, PlusSignIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { useQuery } from '@tanstack/react-query';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { ViewTransition } from 'react';
 import { toast } from 'sonner';
@@ -51,7 +52,7 @@ export default function SubjectsPage() {
 	}
 
 	return (
-		<ViewTransition default="none" enter="vt-fade-in" exit="vt-fade-out">
+		<ViewTransition default="none" enter="vt-slide-up-fade" exit="vt-slide-down-fade">
 			<div className="container mx-auto max-w-6xl px-4 pt-8 pb-32">
 				<div className="flex items-center gap-4 mb-8">
 					<Button
@@ -76,43 +77,54 @@ export default function SubjectsPage() {
 					{allSubjects.map((subject) => {
 						const isEnrolled = enrolledIds.includes(subject.id);
 						return (
-							<ViewTransition key={subject.id} default="none">
-								<Card className="shadow-tiimo border-border/50 overflow-hidden flex flex-col">
-									<CardHeader className="bg-muted/30">
-										<CardTitle className="text-xl font-black tracking-tight">
-											{subject.name.toLowerCase()}
-										</CardTitle>
-										<CardDescription className="text-xs font-bold tracking-wider">
-											{subject.curriculumCode.toLowerCase()}
-										</CardDescription>
-									</CardHeader>
-									<CardContent className="p-6 flex-1 flex flex-col gap-6">
-										<p className="text-sm text-muted-foreground line-clamp-3">
-											{subject.description}
-										</p>
+							<ViewTransition key={subject.id} default="none" enter="vt-pop-in" exit="vt-pop-out">
+								<Link href={`/subjects/${subject.id}`}>
+									<Card className="shadow-tiimo border-border/50 overflow-hidden flex flex-col transition-transform hover:scale-[1.02] active:scale-[0.98]">
+										<ViewTransition
+											name={`subject-icon-${subject.id}`}
+											default="none"
+											share="vt-expand"
+										>
+											<CardHeader className="bg-muted/30">
+												<CardTitle className="text-xl font-black tracking-tight">
+													{subject.name.toLowerCase()}
+												</CardTitle>
+												<CardDescription className="text-xs font-bold tracking-wider">
+													{subject.curriculumCode.toLowerCase()}
+												</CardDescription>
+											</CardHeader>
+										</ViewTransition>
+										<CardContent className="p-6 flex-1 flex flex-col gap-6">
+											<p className="text-sm text-muted-foreground line-clamp-3">
+												{subject.description}
+											</p>
 
-										<div className="mt-auto">
-											{isEnrolled ? (
-												<Button
-													variant="outline"
-													className="w-full rounded-full gap-2 text-success border-success/30 bg-success/5"
-													disabled
-												>
-													<HugeiconsIcon icon={CheckmarkCircle02Icon} className="w-4 h-4" />
-													enrolled
-												</Button>
-											) : (
-												<Button
-													onClick={() => handleEnroll(subject.id)}
-													className="w-full rounded-full gap-2 shadow-xl shadow-primary/20"
-												>
-													<HugeiconsIcon icon={PlusSignIcon} className="w-4 h-4" />
-													enroll now
-												</Button>
-											)}
-										</div>
-									</CardContent>
-								</Card>
+											<div className="mt-auto">
+												{isEnrolled ? (
+													<Button
+														variant="outline"
+														className="w-full rounded-full gap-2 text-success border-success/30 bg-success/5"
+														disabled
+													>
+														<HugeiconsIcon icon={CheckmarkCircle02Icon} className="w-4 h-4" />
+														enrolled
+													</Button>
+												) : (
+													<Button
+														onClick={(e) => {
+															e.preventDefault();
+															handleEnroll(subject.id);
+														}}
+														className="w-full rounded-full gap-2 shadow-xl shadow-primary/20"
+													>
+														<HugeiconsIcon icon={PlusSignIcon} className="w-4 h-4" />
+														enroll now
+													</Button>
+												)}
+											</div>
+										</CardContent>
+									</Card>
+								</Link>
 							</ViewTransition>
 						);
 					})}

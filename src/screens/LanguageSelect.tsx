@@ -121,7 +121,7 @@ export default function LanguageSelect() {
 
 				<div className="p-8 border-t border-border bg-card">
 					<Button
-						className="w-full h-16 bg-foreground dark:bg-background text-background dark:text-foreground rounded-[2rem] font-black text-xl shadow-2xl active:scale-[0.98] transition-all"
+						className="w-full h-16 bg-foreground dark:bg-background text-background dark:text-foreground rounded-[2rem] font-black text-xl shadow-soft-lg active:scale-[0.98] transition-all"
 						onClick={() => router.push('/')}
 					>
 						Confirm Selection

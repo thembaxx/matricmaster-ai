@@ -9,7 +9,7 @@ import {
 import { HugeiconsIcon } from '@hugeicons/react';
 import { AnimatePresence, m } from 'framer-motion';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { Suspense, useEffect, useMemo, useState } from 'react';
+import { Suspense, useEffect, useMemo, useState, ViewTransition } from 'react';
 import { MarkdownRenderer } from '@/components/AI/MarkdownRenderer';
 import { Comments } from '@/components/Comments/Comments';
 import { Button } from '@/components/ui/button';
@@ -238,8 +238,10 @@ function FocusPageSkeleton() {
 
 export default function FocusPage() {
 	return (
-		<Suspense fallback={<FocusPageSkeleton />}>
-			<FocusPageContent />
-		</Suspense>
+		<ViewTransition default="none" enter="vt-blur-reveal">
+			<Suspense fallback={<FocusPageSkeleton />}>
+				<FocusPageContent />
+			</Suspense>
+		</ViewTransition>
 	);
 }

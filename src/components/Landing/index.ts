@@ -1,7 +1,7 @@
 export { FAQSection } from './FAQSection';
 export { FeaturesSection } from './FeaturesSection';
 export { FinalCTASection } from './FinalCTASection';
-export { HeroSection } from './HeroSection';
+export { HeroSection } from './HeroSection/index';
 export { HowItWorksSection } from './HowItWorksSection';
 export { PricingSection } from './PricingSection';
 export { StatsSection } from './StatsSection';

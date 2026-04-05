@@ -318,6 +318,32 @@ html {
   30% { filter: blur(3px); }
 }
 
+@keyframes vt-blur-reveal {
+  from { filter: blur(8px); opacity: 0; transform: scale(0.96); }
+  to { filter: blur(0); opacity: 1; transform: scale(1); }
+}
+
+@keyframes vt-pop-in {
+  0% { transform: scale(0.8); opacity: 0; }
+  70% { transform: scale(1.05); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes vt-slide-up-fade {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes vt-modal-in {
+  from { transform: scale(0.95) translateY(10px); opacity: 0; }
+  to { transform: scale(1) translateY(0); opacity: 1; }
+}
+
+@keyframes vt-modal-out {
+  from { transform: scale(1) translateY(0); opacity: 1; }
+  to { transform: scale(0.95) translateY(10px); opacity: 0; }
+}
+
 /* Fade */
 ::view-transition-old(.vt-fade-out),
 ::view-transition-old(.fade-out) {
@@ -423,6 +449,51 @@ html {
 }
 ::view-transition-new(.vt-persistent) {
   animation: none;
+}
+
+/* Blur Reveal - Suspense content reveal */
+::view-transition-new(.vt-blur-reveal) {
+  animation: 300ms ease-out both vt-blur-reveal;
+}
+
+/* Pop In - Modal/card appearance */
+::view-transition-new(.vt-pop-in) {
+  animation: 350ms cubic-bezier(0.34, 1.56, 0.64, 1) both vt-pop-in;
+}
+::view-transition-old(.vt-pop-out) {
+  animation: 200ms ease-in both vt-modal-out;
+}
+
+/* Slide Up Fade - List items, content blocks */
+::view-transition-new(.vt-slide-up-fade) {
+  animation: 280ms ease-out both vt-slide-up-fade;
+}
+::view-transition-old(.vt-slide-down-fade) {
+  animation: 200ms ease-in reverse vt-slide-up-fade;
+}
+
+/* Modal Transitions */
+::view-transition-new(.vt-modal-in) {
+  animation: 300ms cubic-bezier(0.16, 1, 0.3, 1) both vt-modal-in;
+}
+::view-transition-old(.vt-modal-out) {
+  animation: 200ms ease-in both vt-modal-out;
+}
+
+/* Shared Element - Expand (thumbnail to full) */
+::view-transition-group(.vt-expand) {
+  animation-duration: var(--duration-move);
+}
+::view-transition-image-pair(.vt-expand) {
+  animation-name: vt-blur-reveal;
+}
+
+/* Shared Element - Morph */
+::view-transition-group(.vt-morph) {
+  animation-duration: var(--duration-move);
+}
+::view-transition-image-pair(.vt-morph) {
+  animation-name: vt-via-blur;
 }
 
 /* Reduced Motion */
@@ -533,7 +604,33 @@ html {
   * {
     @apply border-border outline-ring/50;
   }
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-wrap: balance;
+  }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+/* Typography utilities */
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  .text-pretty {
+    text-wrap: pretty;
+  }
+  .tabular-nums {
+    font-variant-numeric: tabular-nums;
+  }
+  
+  /* Image outline for depth */
+  .img-outline {
+    outline: 1px solid rgba(0, 0, 0, 0.1);
+  }
+  .dark .img-outline {
+    outline: 1px solid rgba(255, 255, 255, 0.1);
   }
 }

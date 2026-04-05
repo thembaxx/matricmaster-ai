@@ -3,7 +3,7 @@
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import { Suspense, useRef } from 'react';
+import { Suspense, useRef, ViewTransition } from 'react';
 import { AIErrorBoundary } from '@/components/AI/AIErrorBoundary';
 import { AIPrompt } from '@/components/AI/AIPrompt';
 import { ConversationSidebar } from '@/components/AI/ConversationSidebar';
@@ -175,8 +175,10 @@ function AITutorPageSkeleton() {
 
 export default function AITutorPage() {
 	return (
-		<Suspense fallback={<AITutorPageSkeleton />}>
-			<AITutorPageContent />
-		</Suspense>
+		<ViewTransition default="none" enter="vt-blur-reveal">
+			<Suspense fallback={<AITutorPageSkeleton />}>
+				<AITutorPageContent />
+			</Suspense>
+		</ViewTransition>
 	);
 }
