@@ -26,7 +26,7 @@ export function DashboardAIPrompt() {
 
 			<form
 				onSubmit={handleSubmit}
-				className="relative z-10 flex items-center gap-4 p-2 pl-6 bg-card/50 backdrop-blur-xl border border-white/10 rounded-[2.5rem] shadow-2xl focus-within:ring-2 focus-within:ring-primary/50 transition-all duration-500"
+				className="relative z-10 flex items-center gap-4 p-2 pl-6 bg-card/50 backdrop-blur-xl border border-white/10 rounded-[2.5rem] shadow-elevation-3 focus-within:ring-2 focus-within:ring-primary/50 transition-all duration-500"
 			>
 				<HugeiconsIcon
 					icon={SparklesIcon}
@@ -38,12 +38,20 @@ export function DashboardAIPrompt() {
 					onChange={(e) => setValue(e.target.value)}
 					placeholder="Ask anything about your studies..."
 					aria-label="Ask a question"
-					className="flex-1 bg-transparent border-none outline-none text-lg font-medium placeholder:text-muted-foreground/50"
+					disabled={isThinking}
+					className="flex-1 bg-transparent border-none outline-none text-lg font-medium placeholder:text-muted-foreground/50 disabled:opacity-50 disabled:cursor-not-allowed"
 				/>
 				<m.button
 					whileTap={{ scale: 0.95 }}
 					type="submit"
-					className="h-12 w-12 flex items-center justify-center bg-primary text-primary-foreground rounded-full shadow-lg hover:shadow-primary/20 transition-all"
+					disabled={isThinking || !value.trim()}
+					aria-disabled={isThinking || !value.trim()}
+					aria-label={isThinking ? 'Thinking...' : 'Submit question'}
+					className={`h-12 w-12 flex items-center justify-center rounded-full shadow-lg transition-all ${
+						isThinking || !value.trim()
+							? 'bg-muted text-muted-foreground cursor-not-allowed opacity-50'
+							: 'bg-primary text-primary-foreground hover:shadow-primary/20'
+					}`}
 				>
 					<HugeiconsIcon icon={ArrowRight02Icon} className="h-5 w-5" />
 				</m.button>

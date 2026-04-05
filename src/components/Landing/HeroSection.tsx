@@ -70,7 +70,7 @@ export function HeroSection({ onAuthRequired }: HeroSectionProps) {
 				>
 					<Button
 						size="lg"
-						className="w-full sm:w-auto h-14 rounded-[var(--radius-lg)] text-base font-semibold bg-primary text-primary-foreground shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 hover:brightness-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 active:scale-[0.98] transition-all duration-200"
+						className="w-full sm:w-auto h-14 rounded-[var(--radius-lg)] text-base font-semibold bg-primary text-primary-foreground shadow-elevation-2 hover:shadow-elevation-3 hover:shadow-primary/30 hover:brightness-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 active:scale-[0.98] transition-all duration-200"
 						onClick={() => onAuthRequired('/dashboard')}
 					>
 						<span className="flex items-center gap-2">
@@ -86,35 +86,6 @@ export function HeroSection({ onAuthRequired }: HeroSectionProps) {
 					>
 						<span className="flex items-center gap-2">See How It Works</span>
 					</Button>
-				</m.div>
-
-				<m.div
-					initial={{ opacity: 0 }}
-					animate={{ opacity: 1 }}
-					transition={{ delay: 0.5 }}
-					className="flex items-center gap-4 pt-4"
-				>
-					<div className="flex -space-x-3">
-						{[1, 2, 3, 4, 5].map((item) => (
-							<div
-								key={`hero-avatar-${item}`}
-								className="w-10 h-10 rounded-full border-3 border-background bg-secondary flex items-center justify-center overflow-hidden relative shadow-sm img-outline"
-							>
-								<Image
-									src={`https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=faces&auto=format&random=${item}`}
-									alt="Student success story"
-									fill
-									sizes="40px"
-									className="object-cover"
-									loading="lazy"
-								/>
-							</div>
-						))}
-					</div>
-					<div className="text-left">
-						<p className="body-sm font-semibold font-numeric tabular-nums">Join 50,000+ students</p>
-						<p className="body-xs text-muted-foreground">who've already passed</p>
-					</div>
 				</m.div>
 
 				<m.div
@@ -182,7 +153,7 @@ export function HeroSection({ onAuthRequired }: HeroSectionProps) {
 									duration: 3.5,
 									ease: 'easeInOut',
 								}}
-								className="absolute -top-2 -left-4 w-20 h-24 bg-card rounded-[var(--radius-lg)] shadow-xl border border-border/50 flex flex-col items-center justify-center p-2 z-10 will-change-transform"
+								className="absolute -top-2 -left-4 w-20 h-24 bg-card rounded-[var(--radius-lg)] shadow-elevation-2 border border-border/50 flex flex-col items-center justify-center p-2 z-10 will-change-transform"
 							>
 								<div className="w-8 h-8 rounded-[var(--radius-md)] bg-subject-math/20 flex items-center justify-center mb-1">
 									<HugeiconsIcon icon={CalculatorIcon} className="w-4 h-4 text-subject-math" />
@@ -200,7 +171,7 @@ export function HeroSection({ onAuthRequired }: HeroSectionProps) {
 									delay: 0.5,
 									ease: 'easeInOut',
 								}}
-								className="absolute -bottom-2 -right-4 w-20 h-24 bg-card rounded-[var(--radius-lg)] shadow-xl border border-border/50 flex flex-col items-center justify-center p-2 z-20 will-change-transform"
+								className="absolute -bottom-2 -right-4 w-20 h-24 bg-card rounded-[var(--radius-lg)] shadow-elevation-2 border border-border/50 flex flex-col items-center justify-center p-2 z-20 will-change-transform"
 							>
 								<div className="w-8 h-8 rounded-[var(--radius-md)] bg-subject-life/20 flex items-center justify-center mb-1">
 									<HugeiconsIcon icon={BrainIcon} className="w-4 h-4 text-subject-life" />
@@ -215,7 +186,7 @@ export function HeroSection({ onAuthRequired }: HeroSectionProps) {
 								initial={{ opacity: 0, x: 20 }}
 								animate={{ opacity: 1, x: 0 }}
 								transition={{ delay: 0.6 }}
-								className="absolute -right-4 -top-6 bg-card rounded-[var(--radius-lg)] p-2 shadow-xl border border-border/50"
+								className="absolute -right-4 -top-6 bg-card rounded-[var(--radius-lg)] p-2 shadow-elevation-2 border border-border/50"
 							>
 								<div className="flex items-center gap-3">
 									<div className="w-10 h-10 rounded-[var(--radius-md)] bg-success/10 flex items-center justify-center">
@@ -232,7 +203,7 @@ export function HeroSection({ onAuthRequired }: HeroSectionProps) {
 								initial={{ opacity: 0, x: -20 }}
 								animate={{ opacity: 1, x: 0 }}
 								transition={{ delay: 0.7 }}
-								className="absolute -left-12 bottom-1/4 bg-card rounded-[var(--radius-lg)] p-2 shadow-xl border border-border/50"
+								className="absolute -left-12 bottom-1/4 bg-card rounded-[var(--radius-lg)] p-2 shadow-elevation-2 border border-border/50"
 							>
 								<div className="flex items-center gap-3">
 									<div className="w-10 h-10 rounded-[var(--radius-md)] bg-orange-100 flex items-center justify-center">
@@ -249,7 +220,7 @@ export function HeroSection({ onAuthRequired }: HeroSectionProps) {
 								initial={{ opacity: 0, y: 20 }}
 								animate={{ opacity: 1, y: 0 }}
 								transition={{ delay: 1.2 }}
-								className="absolute -bottom-8 -left-1/4 bg-card rounded-[var(--radius-lg)] p-3 shadow-xl border border-border/50 flex items-center gap-2"
+								className="absolute -bottom-8 -left-1/4 bg-card rounded-[var(--radius-lg)] p-3 shadow-elevation-2 border border-border/50 flex items-center gap-2"
 							>
 								<div className="w-8 h-8 rounded-full bg-tiimo-yellow/20 flex items-center justify-center">
 									<HugeiconsIcon icon={StarIcon} className="w-4 h-4 text-tiimo-yellow" />
