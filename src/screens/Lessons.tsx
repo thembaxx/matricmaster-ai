@@ -114,7 +114,7 @@ export default function Lessons() {
 							{/* Premium Upsell Card */}
 							<div className="flex gap-6 relative z-10 pt-4">
 								<div className="w-8 shrink-0" /> {/* Spacer for alignment */}
-								<Card className="flex-1 bg-foreground text-background p-8 rounded-[2.5rem] text-center space-y-6 relative overflow-hidden shadow-2xl border-none">
+								<Card className="flex-1 bg-foreground text-background p-8 rounded-[2.5rem] text-center space-y-6 relative overflow-hidden shadow-elevation-3 border-none">
 									<div className="absolute -top-12 -right-12 w-32 h-32 bg-primary/20 rounded-full blur-3xl" />
 									<div className="absolute -bottom-12 -left-12 w-32 h-32 bg-primary/10 rounded-full blur-3xl" />
 
@@ -129,7 +129,7 @@ export default function Lessons() {
 											get access to 2018-2023 exams with memos.
 										</p>
 
-										<Button className="w-full bg-background text-foreground hover:bg-muted h-14 rounded-2xl font-black text-lg shadow-xl shadow-black/10 transition-all active:scale-[0.98]">
+										<Button className="w-full bg-background text-foreground hover:bg-muted h-14 rounded-2xl font-black text-lg shadow-elevation-2 transition-all active:scale-[0.98]">
 											go premium
 										</Button>
 									</div>

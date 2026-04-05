@@ -165,7 +165,7 @@ export default function Leaderboard() {
 
 			{userRank && (
 				<div className="fixed bottom-32 left-1/2 -translate-x-1/2 w-[92%] max-w-4xl z-50 lg:bottom-12">
-					<Card className="p-4 sm:p-6 premium-glass text-foreground border-none shadow-2xl rounded-2xl sm:rounded-[2.5rem] relative overflow-hidden group">
+					<Card className="p-4 sm:p-6 premium-glass text-foreground border-none shadow-elevation-3 rounded-2xl sm:rounded-[2.5rem] relative overflow-hidden group">
 						<div className="absolute top-0 left-0 w-2 h-full bg-primary-orange animate-pulse" />
 						<div className="flex items-center gap-3 sm:gap-6 relative z-10">
 							<span className="text-2xl sm:text-3xl font-black text-primary-orange w-8 sm:w-12 text-center tracking-tighter">
