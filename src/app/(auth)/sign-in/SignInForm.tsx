@@ -65,7 +65,7 @@ function SignInFormContent() {
 					initial={{ opacity: 0, scale: 0.9, y: 20 }}
 					animate={{ opacity: 1, scale: 1, y: 0 }}
 					transition={{ type: 'spring', stiffness: 200, damping: 25 }}
-					className="w-full tiimo-glass border-none rounded-[var(--radius-2xl)] shadow-2xl overflow-hidden p-8"
+					className="w-full tiimo-glass border-none rounded-[var(--radius-2xl)] shadow-soft-lg overflow-hidden p-8"
 				>
 					<m.div
 						variants={STAGGER_CONTAINER}
@@ -195,7 +195,7 @@ function SignInFormSkeleton() {
 		<div className="min-h-screen flex items-center justify-center bg-background relative overflow-hidden">
 			<BackgroundMesh />
 			<div className="w-full max-w-md p-4 relative z-10">
-				<div className="w-full tiimo-glass border-none rounded-[var(--radius-2xl)] shadow-2xl overflow-hidden p-8 space-y-6">
+				<div className="w-full tiimo-glass border-none rounded-[var(--radius-2xl)] shadow-soft-lg overflow-hidden p-8 space-y-6">
 					<div className="text-center space-y-3">
 						<div className="w-14 h-14 bg-muted rounded-[var(--radius-xl)] mx-auto animate-pulse" />
 						<div className="h-8 bg-muted rounded w-1/2 mx-auto animate-pulse" />

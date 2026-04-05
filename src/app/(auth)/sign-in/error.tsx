@@ -21,7 +21,7 @@ export default function SignInError({ error, reset }: SignInErrorProps) {
 		<div className="min-h-screen flex items-center justify-center bg-background relative overflow-hidden">
 			<BackgroundMesh />
 			<div className="w-full max-w-md p-4 relative z-10">
-				<div className="w-full tiimo-glass border-none rounded-[var(--radius-2xl)] shadow-2xl overflow-hidden p-8 text-center space-y-6">
+				<div className="w-full tiimo-glass border-none rounded-[var(--radius-2xl)] shadow-soft-lg overflow-hidden p-8 text-center space-y-6">
 					<div className="w-16 h-16 bg-destructive/10 dark:bg-destructive/20 rounded-full flex items-center justify-center mx-auto">
 						<HugeiconsIcon
 							icon={Warning}

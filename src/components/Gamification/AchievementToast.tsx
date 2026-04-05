@@ -98,7 +98,7 @@ export function AchievementToast({ achievement, onDismiss }: AchievementToastPro
 				animate={{ opacity: 1, y: 0, scale: 1 }}
 				exit={{ opacity: 0, y: -50, scale: 0.9 }}
 				transition={{ type: 'spring', damping: 20, stiffness: 300 }}
-				className="relative bg-gradient-to-br from-brand-amber via-yellow-400 to-orange-400 rounded-3xl p-1 shadow-2xl max-w-sm w-full"
+				className="relative bg-gradient-to-br from-brand-amber via-yellow-400 to-orange-400 rounded-3xl p-1 shadow-soft-lg max-w-sm w-full"
 			>
 				<div className="bg-background rounded-[1.4rem] p-6 relative overflow-hidden">
 					<button

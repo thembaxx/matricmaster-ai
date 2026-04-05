@@ -63,7 +63,7 @@ export const AiInsights = memo(function AiInsights({
 							AI Insights
 						</h2>
 					</div>
-					<Card className="p-8 bg-zinc-900 text-white rounded-[3rem] relative overflow-hidden border-none shadow-2xl">
+					<Card className="p-8 bg-zinc-900 text-white rounded-[3rem] relative overflow-hidden border-none shadow-soft-lg">
 						<div className="absolute top-0 right-0 w-64 h-64 bg-primary/20 rounded-full blur-[80px] -mr-32 -mt-32" />
 						{isLoading ? (
 							<div className="space-y-6 relative z-10">

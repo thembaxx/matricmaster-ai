@@ -23,7 +23,7 @@ export function OnboardingStepContent({ step, currentStep, title }: OnboardingSt
 
 	return (
 		<m.div drag="x" dragConstraints={{ left: 0, right: 0 }} className="w-full max-w-md">
-			<Card className="premium-glass border-none shadow-2xl overflow-hidden rounded-[2.5rem] p-8 flex flex-col items-center text-center gap-8">
+			<Card className="premium-glass border-none shadow-soft-lg overflow-hidden rounded-[2.5rem] p-8 flex flex-col items-center text-center gap-8">
 				<m.div
 					variants={STAGGER_CONTAINER}
 					initial="hidden"

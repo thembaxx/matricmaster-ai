@@ -26,7 +26,7 @@ export const Podium = memo(function Podium({ data }: { data: LeaderboardEntry[] 
 			<div className="flex flex-col items-center flex-1 sm:flex-none">
 				<div className="relative mb-4 group">
 					<div className="absolute inset-0 bg-muted rounded-full blur-2xl opacity-0 group-hover:opacity-40 transition-opacity" />
-					<Avatar className="w-16 h-16 sm:w-28 sm:h-28 border-4 border-muted relative z-10 transition-transform group-hover:scale-110 shadow-xl">
+					<Avatar className="w-16 h-16 sm:w-28 sm:h-28 border-4 border-muted relative z-10 transition-transform group-hover:scale-110 shadow-soft-md">
 						<AvatarImage src={r2?.userImage || undefined} className="object-cover" />
 						<AvatarFallback className="font-black text-xl bg-linear-to-br from-blue-400 to-indigo-600 text-white">
 							{r2?.userName?.[0] || '?'}
@@ -61,13 +61,13 @@ export const Podium = memo(function Podium({ data }: { data: LeaderboardEntry[] 
 						/>
 					</m.div>
 					<div className="absolute -inset-4 bg-primary-orange/20 rounded-full opacity-40 blur-3xl group-hover:opacity-60 transition-opacity" />
-					<Avatar className="w-24 h-24 sm:w-40 sm:h-40 border-4 border-primary-orange relative z-10 transition-transform group-hover:scale-110 shadow-2xl">
+					<Avatar className="w-24 h-24 sm:w-40 sm:h-40 border-4 border-primary-orange relative z-10 transition-transform group-hover:scale-110 shadow-soft-lg">
 						<AvatarImage src={r1?.userImage || undefined} className="object-cover" />
 						<AvatarFallback className="font-black text-3xl bg-linear-to-br from-amber-400 to-orange-600 text-white">
 							{r1?.userName?.[0] || '?'}
 						</AvatarFallback>
 					</Avatar>
-					<div className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-14 h-14 bg-primary-orange rounded-full flex items-center justify-center text-white text-2xl font-black border-4 border-background z-20 shadow-2xl">
+					<div className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-14 h-14 bg-primary-orange rounded-full flex items-center justify-center text-white text-2xl font-black border-4 border-background z-20 shadow-soft-lg">
 						1
 					</div>
 				</div>
@@ -87,7 +87,7 @@ export const Podium = memo(function Podium({ data }: { data: LeaderboardEntry[] 
 			<div className="flex flex-col items-center flex-1 sm:flex-none">
 				<div className="relative mb-4 group">
 					<div className="absolute inset-0 bg-primary-cyan/20 rounded-full blur-2xl opacity-0 group-hover:opacity-40 transition-opacity" />
-					<Avatar className="w-16 h-16 sm:w-28 sm:h-28 border-4 border-primary-cyan/30 relative z-10 transition-transform group-hover:scale-110 shadow-xl">
+					<Avatar className="w-16 h-16 sm:w-28 sm:h-28 border-4 border-primary-cyan/30 relative z-10 transition-transform group-hover:scale-110 shadow-soft-md">
 						<AvatarImage src={r3?.userImage || undefined} className="object-cover" />
 						<AvatarFallback className="font-black text-xl bg-linear-to-br from-emerald-400 to-teal-600 text-white">
 							{r3?.userName?.[0] || '?'}

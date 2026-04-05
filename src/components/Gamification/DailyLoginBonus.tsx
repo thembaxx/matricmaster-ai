@@ -79,7 +79,7 @@ export function DailyLoginBonus({ onClaimed }: DailyLoginBonusProps) {
 						onClick={(e) => e.stopPropagation()}
 						className="w-full max-w-sm"
 					>
-						<Card className="overflow-hidden border-0 shadow-2xl">
+						<Card className="overflow-hidden border-0 shadow-soft-lg">
 							{!claimResult ? (
 								<div>
 									<div className="relative px-6 pt-8 pb-6 bg-gradient-to-b from-primary/5 to-transparent">

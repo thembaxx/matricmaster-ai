@@ -152,7 +152,7 @@ export default function PdfViewer({ url, onClose, title }: PdfViewerProps) {
 							exit={{ opacity: 0, y: -20, x: '-50%' }}
 							className="absolute top-20 left-1/2 z-40 w-full max-w-md px-4"
 						>
-							<div className="premium-glass p-2 rounded-2xl flex items-center gap-2 shadow-2xl border border-white/20 dark:border-zinc-800/50">
+							<div className="premium-glass p-2 rounded-2xl flex items-center gap-2 shadow-soft-lg border border-white/20 dark:border-zinc-800/50">
 								<HugeiconsIcon icon={Cancel01Icon} className="w-4 h-4 text-muted-foreground ml-2" />
 								<Input
 									type="text"

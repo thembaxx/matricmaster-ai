@@ -71,7 +71,7 @@ export function FeatureTooltip({
 						transition={{ duration: 0.2, ease: 'easeOut' }}
 						className={`absolute z-50 w-full max-w-72 ${positionClasses[position]} pointer-events-none`}
 					>
-						<div className="bg-background rounded-2xl shadow-2xl border border-border/50 p-4 pointer-events-auto">
+						<div className="bg-background rounded-2xl shadow-soft-lg border border-border/50 p-4 pointer-events-auto">
 							<div className="flex items-start justify-between gap-2 mb-2">
 								<h4 className="font-bold text-foreground text-sm">{title}</h4>
 								<button

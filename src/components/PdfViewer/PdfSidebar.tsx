@@ -25,7 +25,7 @@ export function PdfSidebar({
 	return (
 		<aside
 			className={cn(
-				'fixed md:relative inset-y-0 right-0 z-50 w-full md:w-[360px] border-l border-border/50 transform transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] premium-glass shadow-2xl md:shadow-none',
+				'fixed md:relative inset-y-0 right-0 z-50 w-full md:w-[360px] border-l border-border/50 transform transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] premium-glass shadow-soft-lg md:shadow-none',
 				showNotes ? 'translate-x-0' : 'translate-x-full'
 			)}
 			aria-label="Annotations Sidebar"

@@ -96,7 +96,7 @@ function ResetPasswordFormContent() {
 					initial={{ opacity: 0, scale: 0.9, y: 20 }}
 					animate={{ opacity: 1, scale: 1, y: 0 }}
 					transition={{ type: 'spring', stiffness: 200, damping: 25 }}
-					className="w-full premium-glass border-none rounded-[2.5rem] shadow-2xl overflow-hidden p-8"
+					className="w-full premium-glass border-none rounded-[2.5rem] shadow-soft-lg overflow-hidden p-8"
 				>
 					<Link
 						href="/sign-in"
@@ -262,7 +262,7 @@ export function ResetPasswordForm() {
 				<div className="min-h-screen flex items-center justify-center bg-background">
 					<BackgroundMesh />
 					<div className="w-full max-w-md p-4 relative z-10">
-						<div className="w-full premium-glass border-none rounded-[2.5rem] shadow-2xl overflow-hidden p-8 flex items-center justify-center min-h-[400px]">
+						<div className="w-full premium-glass border-none rounded-[2.5rem] shadow-soft-lg overflow-hidden p-8 flex items-center justify-center min-h-[400px]">
 							<HugeiconsIcon icon={Loading03Icon} className="w-8 h-8 animate-spin text-primary" />
 						</div>
 					</div>

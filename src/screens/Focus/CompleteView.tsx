@@ -16,7 +16,7 @@ export function CompleteView({ title, onContinue }: CompleteViewProps) {
 			animate={{ opacity: 1, scale: 1 }}
 			className="text-center"
 		>
-			<div className="w-24 h-24 rounded-full bg-success/10 flex items-center justify-center mx-auto mb-8 text-success shadow-success/20 shadow-2xl">
+			<div className="w-24 h-24 rounded-full bg-success/10 flex items-center justify-center mx-auto mb-8 text-success shadow-success/20 shadow-soft-lg">
 				<HugeiconsIcon icon={CheckmarkCircle02Icon} className="w-12 h-12" />
 			</div>
 			<h2 className="text-4xl font-black tracking-tighter  mb-2">Session Complete!</h2>

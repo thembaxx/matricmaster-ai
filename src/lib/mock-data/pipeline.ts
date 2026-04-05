@@ -59,7 +59,7 @@ function validateUser(user: GeneratedUser): ValidationResult {
 	const errors: ValidationError[] = [];
 	const warnings: ValidationWarning[] = [];
 
-	if (!user.email || !user.email.includes('@')) {
+	if (!user.email?.includes('@')) {
 		errors.push({
 			entity: 'user',
 			id: user.id,

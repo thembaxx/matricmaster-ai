@@ -52,7 +52,7 @@ export default function SignUpForm() {
 					initial={{ opacity: 0, scale: 0.9, y: 20 }}
 					animate={{ opacity: 1, scale: 1, y: 0 }}
 					transition={{ type: 'spring', stiffness: 200, damping: 25 }}
-					className="w-full premium-glass border-none rounded-[2.5rem] shadow-2xl overflow-hidden p-8"
+					className="w-full premium-glass border-none rounded-[2.5rem] shadow-soft-lg overflow-hidden p-8"
 				>
 					<SignUpHeader />
 

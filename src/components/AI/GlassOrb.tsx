@@ -84,14 +84,14 @@ export function GlassOrb() {
 							exit={{ opacity: 0, y: 20, scale: 0.9 }}
 							transition={{ type: 'spring', damping: 25, stiffness: 300 }}
 							className={cn(
-								'mb-4 w-full sm:max-w-sm md:w-80 shadow-2xl rounded-3xl overflow-hidden border flex flex-col',
+								'mb-4 w-full sm:max-w-sm md:w-80 shadow-soft-lg rounded-3xl overflow-hidden border flex flex-col',
 								'bg-background/80 backdrop-blur-xl border-border/50 text-foreground'
 							)}
 						>
 							{context.type !== 'idle' && (
-								<div className="px-4 py-2 bg-violet-50 dark:bg-violet-950/30 border-b border-violet-100 dark:border-violet-900">
-									<p className="text-xs text-violet-700 dark:text-violet-300 flex items-center gap-1">
-										<span className="w-1.5 h-1.5 rounded-full bg-violet-500 animate-pulse" />
+								<div className="px-4 py-2 bg-primary/5 dark:bg-primary/10 border-b border-border/50 dark:border-border/50">
+									<p className="text-xs text-foreground flex items-center gap-1">
+										<span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
 										{getContextGreeting()}
 									</p>
 								</div>
@@ -99,11 +99,8 @@ export function GlassOrb() {
 
 							<div className="p-4 border-b border-border/50 bg-secondary/50 flex justify-between items-center">
 								<div className="flex items-center gap-2">
-									<div className="w-8 h-8 rounded-full bg-violet-100 dark:bg-violet-900/30 flex items-center justify-center">
-										<HugeiconsIcon
-											icon={SparklesIcon}
-											className="w-4 h-4 text-violet-600 dark:text-violet-400"
-										/>
+									<div className="w-8 h-8 rounded-full bg-primary/10 dark:bg-primary/20 flex items-center justify-center">
+										<HugeiconsIcon icon={SparklesIcon} className="w-4 h-4 text-primary" />
 									</div>
 									<h3 className="font-bold text-sm font-display">AI Companion</h3>
 								</div>
@@ -153,12 +150,12 @@ export function GlassOrb() {
 											setIsOpen(false);
 											router.push('/study-companion');
 										}}
-										className="w-full bg-secondary/50 border border-border/50 focus:border-violet-500 rounded-full py-2.5 pl-4 pr-10 text-sm outline-none transition-all cursor-pointer"
+										className="w-full bg-secondary/50 border border-border/50 focus:border-primary rounded-full py-2.5 pl-4 pr-10 text-sm outline-none transition-all cursor-pointer"
 									/>
 									<Button
 										type="button"
 										size="icon"
-										className="absolute right-1 top-1 w-8 h-8 rounded-full bg-violet-600 text-white shadow-md hover:bg-violet-700"
+										className="absolute right-1 top-1 w-8 h-8 rounded-full bg-primary text-primary-foreground shadow-soft-md hover:bg-primary/90"
 										onClick={() => {
 											setIsOpen(false);
 											router.push('/study-companion');
@@ -179,12 +176,12 @@ export function GlassOrb() {
 					whileHover={{ scale: 1.05 }}
 					whileTap={{ scale: 0.95 }}
 					className={cn(
-						'relative group flex items-center justify-center w-14 h-14 rounded-full shadow-2xl transition-all duration-300',
+						'relative group flex items-center justify-center w-14 h-14 rounded-full shadow-soft-lg transition-all duration-300',
 						'bg-white/80 dark:bg-black/80 backdrop-blur-xl border border-white/40 dark:border-white/10',
 						isOpen ? 'rotate-90 scale-90' : 'rotate-0'
 					)}
 				>
-					<div className="absolute inset-0 rounded-full bg-gradient-to-tr from-violet-500 via-fuchsia-500 to-cyan-500 opacity-20 group-hover:opacity-40 blur-md transition-opacity duration-500" />
+					<div className="absolute inset-0 rounded-full bg-primary/10 dark:bg-primary/20" />
 					<div className="absolute inset-[1px] rounded-full bg-background/90 backdrop-blur-md" />
 
 					{isOpen ? (
@@ -192,7 +189,7 @@ export function GlassOrb() {
 					) : (
 						<HugeiconsIcon
 							icon={SparklesIcon}
-							className="w-6 h-6 relative z-10 transition-colors duration-300 text-violet-600 dark:text-violet-400"
+							className="w-6 h-6 relative z-10 transition-colors duration-300 text-primary"
 						/>
 					)}
 
@@ -207,7 +204,7 @@ export function GlassOrb() {
 								repeat: Number.POSITIVE_INFINITY,
 								ease: 'easeInOut',
 							}}
-							className="absolute inset-0 rounded-full bg-violet-500/10"
+							className="absolute inset-0 rounded-full bg-primary/5"
 						/>
 					)}
 				</m.button>

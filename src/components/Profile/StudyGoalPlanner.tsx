@@ -106,14 +106,14 @@ export default function StudyGoalPlanner(props: StudyGoalPlannerProps) {
 	}, []);
 
 	const handleSubjectTargetChange = (id: string, value: string) => {
-		const numValue = Math.min(100, Math.max(0, Number.parseInt(value) || 0));
+		const numValue = Math.min(100, Math.max(0, Number.parseInt(value, 10) || 0));
 		setSubjectTargets((prev) =>
 			prev.map((subj) => (subj.id === id ? { ...subj, targetScore: numValue } : subj))
 		);
 	};
 
 	const handleSaveWeeklyHours = () => {
-		const hours = Math.min(168, Math.max(0, Number.parseInt(tempHours) || 0));
+		const hours = Math.min(168, Math.max(0, Number.parseInt(tempHours, 10) || 0));
 		setWeeklyHours(hours);
 		setIsEditingHours(false);
 	};

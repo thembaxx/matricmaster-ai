@@ -20,7 +20,7 @@ export function PastPaperCard({ paper, recommendation }: PastPaperCardProps) {
 	const router = useRouter();
 
 	return (
-		<div className="p-8 rounded-3xl border border-border hover:border-primary/20 hover:shadow-2xl transition-all duration-500 group relative overflow-hidden bg-card/50 backdrop-blur-sm">
+		<div className="p-8 rounded-3xl border border-border hover:border-primary/20 hover:shadow-soft-lg transition-all duration-500 group relative overflow-hidden bg-card/50 backdrop-blur-sm">
 			<div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
 
 			<div className="space-y-6 relative z-10">

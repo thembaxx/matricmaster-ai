@@ -23,7 +23,7 @@ export const ActionButtons = memo(function ActionButtons({ onShowAnalytics }: Ac
 		<div className="w-full max-w-md space-y-4">
 			<Button
 				variant="gradient"
-				className="w-full h-16 rounded-3xl text-lg font-black shadow-2xl transition-all flex items-center justify-center gap-2"
+				className="w-full h-16 rounded-3xl text-lg font-black shadow-soft-lg transition-all flex items-center justify-center gap-2"
 				onClick={() => router.push('/dashboard')}
 			>
 				Keep Going

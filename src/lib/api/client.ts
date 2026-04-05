@@ -182,17 +182,6 @@ export class ApiClient {
 
 	private async handleResponse<T>(response: Response): Promise<T> {
 		if (!response.ok) {
-			// Attempt token refresh on 401 before redirecting
-			if (response.status === 401) {
-				const newToken = await handleUnauthorized();
-				if (newToken) {
-					// Retry the original request would need to be implemented
-					// For now, throw to allow caller to retry with new token
-					const errorText = 'Token refreshed, please retry';
-					throw new ApiError(errorText, 401, errorText);
-				}
-			}
-
 			// Handle session expiry
 			handleAuthError(response.status);
 
@@ -209,7 +198,8 @@ export class ApiClient {
 		return response.json();
 	}
 
-	async get<T>(endpoint: string, options: CustomRequestInit = {}, retry = true): Promise<T> {
+	async get<T>(endpoint: string, options: CustomRequestInit = {}): Promise<T> {
+		const shouldRetry = options._retry !== false;
 		const url = `${this.baseURL}${endpoint}`;
 		const headers = await this.getAuthHeaders();
 
@@ -222,23 +212,18 @@ export class ApiClient {
 			...options,
 		});
 
-		// If 401 and retry enabled, try refreshing token and retry once
-		if (response.status === 401 && retry) {
+		if (response.status === 401 && shouldRetry) {
 			const newToken = await handleUnauthorized();
 			if (newToken) {
-				return this.get<T>(endpoint, { ...options, _retry: false } as CustomRequestInit, false);
+				return this.get<T>(endpoint, { ...options, _retry: false });
 			}
 		}
 
 		return this.handleResponse<T>(response);
 	}
 
-	async post<T>(
-		endpoint: string,
-		data?: unknown,
-		options: CustomRequestInit = {},
-		retry = true
-	): Promise<T> {
+	async post<T>(endpoint: string, data?: unknown, options: CustomRequestInit = {}): Promise<T> {
+		const shouldRetry = options._retry !== false;
 		const url = `${this.baseURL}${endpoint}`;
 		const headers = await this.getAuthHeaders();
 
@@ -252,28 +237,18 @@ export class ApiClient {
 			...options,
 		});
 
-		// If 401 and retry enabled, try refreshing token and retry once
-		if (response.status === 401 && retry) {
+		if (response.status === 401 && shouldRetry) {
 			const newToken = await handleUnauthorized();
 			if (newToken) {
-				return this.post<T>(
-					endpoint,
-					data,
-					{ ...options, _retry: false } as CustomRequestInit,
-					false
-				);
+				return this.post<T>(endpoint, data, { ...options, _retry: false });
 			}
 		}
 
 		return this.handleResponse<T>(response);
 	}
 
-	async put<T>(
-		endpoint: string,
-		data?: unknown,
-		options: CustomRequestInit = {},
-		retry = true
-	): Promise<T> {
+	async put<T>(endpoint: string, data?: unknown, options: CustomRequestInit = {}): Promise<T> {
+		const shouldRetry = options._retry !== false;
 		const url = `${this.baseURL}${endpoint}`;
 		const headers = await this.getAuthHeaders();
 
@@ -287,23 +262,18 @@ export class ApiClient {
 			...options,
 		});
 
-		// If 401 and retry enabled, try refreshing token and retry once
-		if (response.status === 401 && retry) {
+		if (response.status === 401 && shouldRetry) {
 			const newToken = await handleUnauthorized();
 			if (newToken) {
-				return this.put<T>(
-					endpoint,
-					data,
-					{ ...options, _retry: false } as CustomRequestInit,
-					false
-				);
+				return this.put<T>(endpoint, data, { ...options, _retry: false });
 			}
 		}
 
 		return this.handleResponse<T>(response);
 	}
 
-	async delete<T>(endpoint: string, options: CustomRequestInit = {}, retry = true): Promise<T> {
+	async delete<T>(endpoint: string, options: CustomRequestInit = {}): Promise<T> {
+		const shouldRetry = options._retry !== false;
 		const url = `${this.baseURL}${endpoint}`;
 		const headers = await this.getAuthHeaders();
 
@@ -316,11 +286,10 @@ export class ApiClient {
 			...options,
 		});
 
-		// If 401 and retry enabled, try refreshing token and retry once
-		if (response.status === 401 && retry) {
+		if (response.status === 401 && shouldRetry) {
 			const newToken = await handleUnauthorized();
 			if (newToken) {
-				return this.delete<T>(endpoint, { ...options, _retry: false } as CustomRequestInit, false);
+				return this.delete<T>(endpoint, { ...options, _retry: false });
 			}
 		}
 

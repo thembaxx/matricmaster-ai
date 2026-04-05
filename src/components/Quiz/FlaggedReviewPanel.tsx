@@ -31,7 +31,7 @@ export function FlaggedReviewPanel({
 				aria-label="Close review panel"
 			/>
 
-			<div className="relative w-80 max-h-[70vh] bg-card border-l border-border shadow-2xl overflow-hidden">
+			<div className="relative w-80 max-h-[70vh] bg-card border-l border-border shadow-soft-lg overflow-hidden">
 				<div className="p-4 border-b border-border">
 					<div className="flex items-center justify-between">
 						<div className="flex items-center gap-2">

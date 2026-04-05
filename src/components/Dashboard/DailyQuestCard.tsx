@@ -48,7 +48,7 @@ export const DailyQuestCard = memo(function DailyQuestCard({
 					<m.div
 						whileHover={{ rotate: 180, scale: 1.1 }}
 						transition={{ type: 'spring', stiffness: 200 }}
-						className="w-16 h-16 bg-card/50 rounded-2xl flex items-center justify-center border border-border/20 shadow-xl"
+						className="w-16 h-16 bg-card/50 rounded-2xl flex items-center justify-center border border-border/20 shadow-soft-md"
 					>
 						<HugeiconsIcon icon={SparklesIcon} className="w-8 h-8 text-brand-amber" />
 					</m.div>
@@ -73,7 +73,7 @@ export const DailyQuestCard = memo(function DailyQuestCard({
 
 				<m.div whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.99 }}>
 					<Button
-						className="w-full h-16 bg-primary hover:bg-primary/90 text-primary-foreground rounded-2xl text-lg font-black shadow-2xl shadow-primary/20 transition-all flex items-center justify-center gap-3 relative z-10"
+						className="w-full h-16 bg-primary hover:bg-primary/90 text-primary-foreground rounded-2xl text-lg font-black shadow-soft-lg shadow-primary/20 transition-all flex items-center justify-center gap-3 relative z-10"
 						onClick={onNavigateToQuiz}
 						disabled={isLoading}
 					>

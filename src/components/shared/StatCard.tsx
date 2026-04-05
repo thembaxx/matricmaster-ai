@@ -94,7 +94,7 @@ export const StatCard = memo(function StatCard({
 			className={`
 				${containerPadding}
 				rounded-3xl border border-border bg-card/50 backdrop-blur-sm
-				relative overflow-hidden group shadow-xl hover:shadow-2xl transition-all duration-500
+				relative overflow-hidden group shadow-xl hover:shadow-soft-lg transition-all duration-500
 				${onClick ? 'cursor-pointer' : ''}
 				${className}
 			`}

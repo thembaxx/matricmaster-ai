@@ -2,6 +2,7 @@
 
 import { FireIcon, Medal01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
+import { startTransition, ViewTransition } from 'react';
 import { Podium } from '@/components/Leaderboard/Podium';
 import { RankingList } from '@/components/Leaderboard/RankingList';
 import { SubjectTabs } from '@/components/Leaderboard/SubjectTabs';
@@ -39,6 +40,24 @@ export default function Leaderboard() {
 		isLoading,
 	} = useLeaderboard();
 
+	const handleTabChange = (value: string) => {
+		startTransition(() => {
+			setActiveTab(value);
+		});
+	};
+
+	const handleSubjectChange = (value: string) => {
+		startTransition(() => {
+			setSubjectTab(value);
+		});
+	};
+
+	const handlePageChange = (page: number) => {
+		startTransition(() => {
+			setCurrentPage(page);
+		});
+	};
+
 	if (isLoading) {
 		return <LeaderboardSkeleton />;
 	}
@@ -55,112 +74,118 @@ export default function Leaderboard() {
 					</p>
 				</div>
 
-				<Tabs value={activeTab} onValueChange={setActiveTab} className="w-full max-w-4xl px-4">
-					<TabsList className="w-full h-12 sm:h-16 p-1.5 sm:p-2 bg-muted/30 backdrop-blur-md rounded-xl sm:rounded-2xl border-2 border-border/50 shadow-inner">
-						<TabsTrigger
-							value="weekly"
-							className="flex-1 rounded-lg sm:rounded-xl font-medium text-[10px] sm:text-xs tracking-wide data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-xl transition-all"
-						>
-							weekly
-						</TabsTrigger>
-						<TabsTrigger
-							value="monthly"
-							className="flex-1 rounded-lg sm:rounded-xl font-medium text-[10px] sm:text-xs tracking-wide data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-xl transition-all"
-						>
-							monthly
-						</TabsTrigger>
-						<TabsTrigger
-							value="all_time"
-							className="flex-1 rounded-lg sm:rounded-xl font-medium text-[10px] sm:text-xs tracking-wide data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-xl transition-all"
-						>
-							all time
-						</TabsTrigger>
-					</TabsList>
-				</Tabs>
+				<ViewTransition enter="fade-in" exit="fade-out" default="none">
+					<Tabs value={activeTab} onValueChange={handleTabChange} className="w-full max-w-4xl px-4">
+						<TabsList className="w-full h-12 sm:h-16 p-1.5 sm:p-2 bg-muted/30 backdrop-blur-md rounded-xl sm:rounded-2xl border-2 border-border/50 shadow-inner">
+							<TabsTrigger
+								value="weekly"
+								className="flex-1 rounded-lg sm:rounded-xl font-medium text-[10px] sm:text-xs tracking-wide data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-xl transition-all"
+							>
+								weekly
+							</TabsTrigger>
+							<TabsTrigger
+								value="monthly"
+								className="flex-1 rounded-lg sm:rounded-xl font-medium text-[10px] sm:text-xs tracking-wide data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-xl transition-all"
+							>
+								monthly
+							</TabsTrigger>
+							<TabsTrigger
+								value="all_time"
+								className="flex-1 rounded-lg sm:rounded-xl font-medium text-[10px] sm:text-xs tracking-wide data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-xl transition-all"
+							>
+								all time
+							</TabsTrigger>
+						</TabsList>
+					</Tabs>
+				</ViewTransition>
 			</header>
 
 			<ScrollArea className="flex-1 no-scrollbar">
-				<div className="max-w-6xl mx-auto w-full pb-32">
-					{leaderboardData.length === 0 ? (
-						<div className="text-center py-32 space-y-4 opacity-50">
-							<HugeiconsIcon
-								icon={Medal01Icon}
-								className="w-16 h-16 mx-auto text-muted-foreground"
-							/>
-							<p className="text-xl font-bold">the arena is empty... for now.</p>
-						</div>
-					) : (
-						<div className="space-y-12">
-							<Podium data={topThree} />
-
-							<div className="grid grid-cols-1 gap-8">
-								<div className="bg-card/20 backdrop-blur-sm rounded-[2.5rem] border-2 border-border/50 shadow-sm p-2 overflow-hidden mx-4 lg:mx-0">
-									<RankingList data={paginatedOthers} />
-								</div>
+				<ViewTransition name="leaderboard-list" enter="fade-in" exit="fade-out" default="none">
+					<div className="max-w-6xl mx-auto w-full pb-32">
+						{leaderboardData.length === 0 ? (
+							<div className="text-center py-32 space-y-4 opacity-50">
+								<HugeiconsIcon
+									icon={Medal01Icon}
+									className="w-16 h-16 mx-auto text-muted-foreground"
+								/>
+								<p className="text-xl font-bold">the arena is empty... for now.</p>
 							</div>
+						) : (
+							<div className="space-y-12">
+								<Podium data={topThree} />
 
-							{totalPages > 1 && (
-								<div className="flex justify-center py-8 mx-4 lg:mx-0">
-									<Pagination>
-										<PaginationContent>
-											<PaginationItem>
-												<PaginationPrevious
-													onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-													className={
-														currentPage === 1 ? 'pointer-events-none opacity-50' : 'cursor-pointer'
-													}
-												/>
-											</PaginationItem>
-											{Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-												<PaginationItem key={page}>
-													<PaginationLink
-														onClick={() => setCurrentPage(page)}
-														isActive={currentPage === page}
-														className="cursor-pointer"
-													>
-														{page}
-													</PaginationLink>
-												</PaginationItem>
-											))}
-											<PaginationItem>
-												<PaginationNext
-													onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
-													className={
-														currentPage === totalPages
-															? 'pointer-events-none opacity-50'
-															: 'cursor-pointer'
-													}
-												/>
-											</PaginationItem>
-										</PaginationContent>
-									</Pagination>
-								</div>
-							)}
-
-							{/* Subject Leaderboards */}
-							<div className="mx-4 lg:mx-0 space-y-6">
-								<div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-									<h2 className="text-xl font-black tracking-tight">subject rankings</h2>
-									<SubjectTabs
-										subjects={SUBJECTS}
-										activeSubject={subjectTab}
-										onSubjectChange={setSubjectTab}
-									/>
-								</div>
-
-								{subjectData && subjectData.length > 0 ? (
-									<div className="bg-card/20 backdrop-blur-sm rounded-[2.5rem] border-2 border-border/50 shadow-sm p-2 overflow-hidden">
-										<RankingList data={subjectData} />
+								<div className="grid grid-cols-1 gap-8">
+									<div className="bg-card/20 backdrop-blur-sm rounded-[2.5rem] border-2 border-border/50 shadow-sm p-2 overflow-hidden mx-4 lg:mx-0">
+										<RankingList data={paginatedOthers} />
 									</div>
-								) : (
-									<div className="text-center py-16 space-y-2 opacity-50">
-										<p className="text-sm font-bold">no subject data available yet</p>
+								</div>
+
+								{totalPages > 1 && (
+									<div className="flex justify-center py-8 mx-4 lg:mx-0">
+										<Pagination>
+											<PaginationContent>
+												<PaginationItem>
+													<PaginationPrevious
+														onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
+														className={
+															currentPage === 1
+																? 'pointer-events-none opacity-50'
+																: 'cursor-pointer'
+														}
+													/>
+												</PaginationItem>
+												{Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+													<PaginationItem key={page}>
+														<PaginationLink
+															onClick={() => handlePageChange(page)}
+															isActive={currentPage === page}
+															className="cursor-pointer"
+														>
+															{page}
+														</PaginationLink>
+													</PaginationItem>
+												))}
+												<PaginationItem>
+													<PaginationNext
+														onClick={() => handlePageChange(Math.min(totalPages, currentPage + 1))}
+														className={
+															currentPage === totalPages
+																? 'pointer-events-none opacity-50'
+																: 'cursor-pointer'
+														}
+													/>
+												</PaginationItem>
+											</PaginationContent>
+										</Pagination>
 									</div>
 								)}
+
+								{/* Subject Leaderboards */}
+								<div className="mx-4 lg:mx-0 space-y-6">
+									<div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+										<h2 className="text-xl font-black tracking-tight">subject rankings</h2>
+										<SubjectTabs
+											subjects={SUBJECTS}
+											activeSubject={subjectTab}
+											onSubjectChange={handleSubjectChange}
+										/>
+									</div>
+
+									{subjectData && subjectData.length > 0 ? (
+										<div className="bg-card/20 backdrop-blur-sm rounded-[2.5rem] border-2 border-border/50 shadow-sm p-2 overflow-hidden">
+											<RankingList data={subjectData} />
+										</div>
+									) : (
+										<div className="text-center py-16 space-y-2 opacity-50">
+											<p className="text-sm font-bold">no subject data available yet</p>
+										</div>
+									)}
+								</div>
 							</div>
-						</div>
-					)}
-				</div>
+						)}
+					</div>
+				</ViewTransition>
 			</ScrollArea>
 
 			{userRank && (
