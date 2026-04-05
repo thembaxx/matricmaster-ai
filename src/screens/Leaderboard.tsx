@@ -79,19 +79,19 @@ export default function Leaderboard() {
 						<TabsList className="w-full h-12 sm:h-16 p-1.5 sm:p-2 bg-muted/30 backdrop-blur-md rounded-xl sm:rounded-2xl border-2 border-border/50 shadow-inner">
 							<TabsTrigger
 								value="weekly"
-								className="flex-1 rounded-lg sm:rounded-xl font-medium text-[10px] sm:text-xs tracking-wide data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-xl transition-all"
+								className="flex-1 rounded-xl font-medium text-[10px] sm:text-xs tracking-wide data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-xl transition-all"
 							>
 								weekly
 							</TabsTrigger>
 							<TabsTrigger
 								value="monthly"
-								className="flex-1 rounded-lg sm:rounded-xl font-medium text-[10px] sm:text-xs tracking-wide data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-xl transition-all"
+								className="flex-1 rounded-xl font-medium text-[10px] sm:text-xs tracking-wide data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-xl transition-all"
 							>
 								monthly
 							</TabsTrigger>
 							<TabsTrigger
 								value="all_time"
-								className="flex-1 rounded-lg sm:rounded-xl font-medium text-[10px] sm:text-xs tracking-wide data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-xl transition-all"
+								className="flex-1 rounded-xl font-medium text-[10px] sm:text-xs tracking-wide data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-xl transition-all"
 							>
 								all time
 							</TabsTrigger>

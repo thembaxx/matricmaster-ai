@@ -243,7 +243,7 @@ export function KnowledgeHeatmap({
 												onHoverStart={() => setHoveredTopic(topic.id)}
 												onHoverEnd={() => setHoveredTopic(null)}
 												className={cn(
-													'w-6 h-6 rounded-md flex items-center justify-center text-[8px] font-bold cursor-pointer transition-all',
+													'w-6 h-6 rounded-xl flex items-center justify-center text-[8px] font-bold cursor-pointer transition-all',
 													getStatusColor(topic.status),
 													hoveredTopic === topic.id && 'ring-2 ring-offset-2 ring-primary'
 												)}

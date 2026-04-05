@@ -25,12 +25,12 @@ const buttonVariants = cva(
 			size: {
 				default:
 					'h-8 gap-1.5 px-3 has-data-[icon=inline-end]:pr-2.5 has-data-[icon=inline-start]:pl-2.5 rounded-xl',
-				xs: "h-6 gap-1 px-2.5 text-xs has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2 [&_svg:not([class*='size-'])]:size-3 rounded-lg",
+				xs: "h-6 gap-1 px-2.5 text-xs has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2 [&_svg:not([class*='size-'])]:size-3 rounded-2xl",
 				sm: "h-7 gap-1 px-3 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2 [&_svg:not([class*='size-'])]:size-3.5 rounded-xl",
 				lg: 'h-10 gap-2 px-4 has-data-[icon=inline-end]:pr-3 has-data-[icon=inline-start]:pl-3 rounded-xl',
 				xl: 'h-11 gap-2 px-6 has-data-[icon=inline-end]:pr-4 has-data-[icon=inline-start]:pl-4 rounded-2xl text-sm',
 				icon: 'h-11 w-11 rounded-xl',
-				'icon-xs': "size-6 [&_svg:not([class*='size-'])]:size-3 rounded-lg",
+				'icon-xs': "size-6 [&_svg:not([class*='size-'])]:size-3 rounded-2xl",
 				'icon-sm': 'size-7 rounded-xl',
 				'icon-lg': 'size-9 rounded-xl',
 				'icon-xl': 'size-11 rounded-2xl',
