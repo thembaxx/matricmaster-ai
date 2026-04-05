@@ -13,7 +13,7 @@ import { cn } from '@/lib/utils';
 interface RecentActivity {
 	id: string;
 	sessionType: string;
-	marksEarned: number;
+	marksEarned: number | null;
 	completedAt: Date | null;
 	subjectName: string | null;
 }
@@ -52,12 +52,14 @@ const MOCK_ACTIVITIES: RecentActivity[] = [
 export function RecentActivity() {
 	const router = useRouter();
 
-	const { data: activities = [], isPending } = useQuery({
+	const { data: activityData, isPending } = useQuery({
 		queryKey: ['recent-activity'],
 		queryFn: () => getRecentActivityAction(),
-		select: (data) => (data.length > 0 ? data : MOCK_ACTIVITIES),
+		select: (data) => (data.activities.length > 0 ? data.activities : MOCK_ACTIVITIES),
 		staleTime: 30 * 1000,
 	});
+
+	const activities = activityData ?? [];
 
 	if (isPending) {
 		return (
@@ -97,7 +99,7 @@ export function RecentActivity() {
 						</Card>
 					</m.div>
 				) : (
-					activities.map((activity, index) => (
+					activities.map((activity: RecentActivity, index: number) => (
 						<m.div
 							key={activity.id}
 							layout

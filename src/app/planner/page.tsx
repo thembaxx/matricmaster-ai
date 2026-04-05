@@ -28,8 +28,8 @@ export default function PlannerPage() {
 		setDaysLeft(Math.ceil(diff / (1000 * 60 * 60 * 24)));
 
 		async function loadPlans() {
-			const data = await getStudyPlansAction();
-			setPlans(data);
+			const result = await getStudyPlansAction();
+			setPlans(result);
 		}
 		loadPlans();
 	}, []);

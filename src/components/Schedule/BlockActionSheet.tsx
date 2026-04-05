@@ -51,16 +51,16 @@ export function BlockActionSheet({ open, onOpenChange, event, onSuccess }: Block
 	const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 	const [isDeleting, setIsDeleting] = useState(false);
 
-	const { data: subjectsData } = useQuery({
+	const { data: enrolledData } = useQuery({
 		queryKey: ['enrolled-subjects'],
 		queryFn: () => getEnrolledSubjectsAction(),
 	});
 
-	const subjects = subjectsData ?? [];
+	const subjects = enrolledData?.subjects ?? [];
 
 	const getSubjectName = (subjectId?: number): string => {
 		if (!subjectId) return '';
-		const subject = subjects.find((s) => s.id === subjectId);
+		const subject = subjects.find((s: { id: number }) => s.id === subjectId);
 		return subject?.name || '';
 	};
 

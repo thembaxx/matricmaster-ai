@@ -1,7 +1,7 @@
 import { Cancel01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { Dialog as DialogPrimitive } from 'radix-ui';
-import type * as React from 'react';
+import * as DialogPrimitive from '@radix-ui/react-dialog';
+import * as React from 'react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
@@ -41,10 +41,44 @@ function DialogContent({
 	className,
 	children,
 	showCloseButton = true,
+	isLoading = false,
+	isDirty = false,
+	onEscapeKeyDown,
+	onPointerDownOutside,
 	...props
 }: React.ComponentProps<typeof DialogPrimitive.Content> & {
 	showCloseButton?: boolean;
+	isLoading?: boolean;
+	isDirty?: boolean;
+	onEscapeKeyDown?: (event: Event) => void;
+	onPointerDownOutside?: (event: PointerEvent) => void;
 }) {
+	const handleEscapeKeyDown = React.useCallback(
+		(event: Event) => {
+			if (isLoading) {
+				event.preventDefault();
+				return;
+			}
+			onEscapeKeyDown?.(event);
+		},
+		[isLoading, onEscapeKeyDown]
+	);
+
+	const handlePointerDownOutside = React.useCallback(
+		(event: CustomEvent<{ originalEvent: PointerEvent }>) => {
+			if (isLoading) {
+				event.preventDefault();
+				return;
+			}
+			if (isDirty && !window.confirm('You have unsaved changes. Are you sure you want to close?')) {
+				event.preventDefault();
+				return;
+			}
+			onPointerDownOutside?.(event);
+		},
+		[isLoading, isDirty, onPointerDownOutside]
+	);
+
 	return (
 		<DialogPortal>
 			<DialogOverlay />
@@ -54,13 +88,24 @@ function DialogContent({
 					'fixed top-1/2 left-1/2 z-50 grid w-full max-w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 gap-4 rounded-none bg-popover p-4 text-xs/relaxed text-popover-foreground ring-1 ring-foreground/10 duration-100 outline-none sm:max-w-sm data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95',
 					className
 				)}
+				onEscapeKeyDown={handleEscapeKeyDown}
+				onPointerDownOutside={handlePointerDownOutside}
 				{...props}
 			>
 				{children}
 				{showCloseButton && (
-					<DialogPrimitive.Close data-slot="dialog-close" asChild>
+					<DialogPrimitive.Close
+						data-slot="dialog-close"
+						asChild
+						aria-label="Close dialog"
+						disabled={isLoading}
+					>
 						<Button variant="ghost" className="absolute top-2 right-2" size="icon-sm">
-							<HugeiconsIcon icon={Cancel01Icon} strokeWidth={2} />
+							{isLoading ? (
+								<span className="animate-spin h-4 w-4 border-2 border-current border-t-transparent rounded-full" />
+							) : (
+								<HugeiconsIcon icon={Cancel01Icon} strokeWidth={2} />
+							)}
 							<span className="sr-only">Close</span>
 						</Button>
 					</DialogPrimitive.Close>

@@ -4,7 +4,7 @@ import { Cancel01Icon, Settings02Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { Icon } from '@iconify/react';
 import { AnimatePresence, m } from 'framer-motion';
-import { ViewTransition } from 'react';
+import { useState, ViewTransition } from 'react';
 import { FilterPanel } from '@/components/PastPapers/FilterPanel';
 import { PastPaperCard, PastPapersEmptyState } from '@/components/PastPapers/PastPapersList';
 import { PastPapersSkeleton } from '@/components/PastPapersSkeleton';
@@ -13,10 +13,13 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { useDebouncedCallback } from '@/hooks/useDebouncedCallback';
 import { usePastPapers } from '@/hooks/usePastPapers';
 import { useQuizPastPaperIntegration } from '@/hooks/useQuizPastPaperIntegration';
 import { STAGGER_CONTAINER, STAGGER_ITEM } from '@/lib/animation-presets';
+import type { PastPaper } from '@/lib/db/schema';
 import { cn } from '@/lib/utils';
+import type { PastPaperRecommendation } from '@/stores/usePastPaperRecommendations';
 
 export default function PastPapers() {
 	const {
@@ -34,6 +37,12 @@ export default function PastPapers() {
 		isLoading,
 	} = usePastPapers();
 
+	const [localSearch, setLocalSearch] = useState(uiState.searchQuery);
+
+	const debouncedSearch = useDebouncedCallback((value: string) => {
+		uiDispatch({ type: 'SET_SEARCH_QUERY', payload: value });
+	}, 300);
+
 	const {
 		recommendations,
 		showOnlyRecommended,
@@ -43,7 +52,7 @@ export default function PastPapers() {
 	} = useQuizPastPaperIntegration(filteredPapers);
 
 	const recommendedPapers = showOnlyRecommended
-		? filteredPapers.filter((paper) => isRecommended(paper.id))
+		? filteredPapers.filter((paper: PastPaper) => isRecommended(paper.id))
 		: filteredPapers;
 
 	const hasRecommendations = recommendations.length > 0;
@@ -119,10 +128,11 @@ export default function PastPapers() {
 									className="w-5 sm:w-6 h-5 absolute left-4 z-1 sm:h-6 text-label-tertiary"
 								/>
 								<Input
-									value={uiState.searchQuery}
-									onChange={(e) =>
-										uiDispatch({ type: 'SET_SEARCH_QUERY', payload: e.target.value })
-									}
+									value={localSearch}
+									onChange={(e) => {
+										setLocalSearch(e.target.value);
+										debouncedSearch(e.target.value);
+									}}
 									placeholder="search"
 									className="pl-12 sm:pl-16 placeholder:font-medium pr-12 sm:pr-16 bg-card backdrop-blur-md border-border border-2 h-12 sm:h-16 rounded-xl sm:rounded-2xl text-base sm:text-lg font-black tracking-tight shadow-inner"
 									aria-label="search past papers"
@@ -136,7 +146,10 @@ export default function PastPapers() {
 											title="clear search"
 											aria-label="clear search"
 											type="button"
-											onClick={() => uiDispatch({ type: 'SET_SEARCH_QUERY', payload: '' })}
+											onClick={() => {
+												setLocalSearch('');
+												uiDispatch({ type: 'SET_SEARCH_QUERY', payload: '' });
+											}}
 											className="absolute right-4 sm:right-6 top-1/2 -translate-y-1/2 text-label-tertiary hover:text-foreground transition-colors ios-active-scale"
 										>
 											<HugeiconsIcon icon={Cancel01Icon} className="w-5 sm:w-6 h-5 sm:h-6" />
@@ -188,8 +201,10 @@ export default function PastPapers() {
 									animate="visible"
 									className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8"
 								>
-									{recommendations.slice(0, 3).map((rec) => {
-										const paper = filteredPapers.find((p) => p.id === rec.paperId);
+									{recommendations.slice(0, 3).map((rec: PastPaperRecommendation) => {
+										const paper = filteredPapers.find((p: PastPaper) => p.id === rec.paperId) as
+											| PastPaper
+											| undefined;
 										if (!paper) return null;
 										return (
 											<m.div
@@ -222,7 +237,7 @@ export default function PastPapers() {
 									animate="visible"
 									className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8"
 								>
-									{recommendedPapers.map((paper) => (
+									{recommendedPapers.map((paper: PastPaper) => (
 										<m.div key={paper.id} variants={STAGGER_ITEM} layout whileHover={{ y: -8 }}>
 											<PastPaperCard
 												paper={paper}

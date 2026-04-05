@@ -114,10 +114,13 @@ export function ServiceWorkerRegistration() {
 
 	const handleDismiss = () => {
 		setShowInstallButton(false);
-		localStorage.setItem('pwa-install-dismissed', 'true');
+		if (typeof window !== 'undefined') {
+			localStorage.setItem('pwa-install-dismissed', 'true');
+		}
 	};
 
 	useEffect(() => {
+		if (typeof window === 'undefined') return;
 		const wasDismissed = localStorage.getItem('pwa-install-dismissed');
 		if (wasDismissed) {
 			setShowInstallButton(false);

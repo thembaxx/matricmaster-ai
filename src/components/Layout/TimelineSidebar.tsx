@@ -85,17 +85,28 @@ export function TimelineSidebar() {
 	});
 
 	const events = useMemo(() => {
-		if (!eventsData || eventsData.length === 0) return DEMO_EVENTS;
-		return eventsData.map((e) => ({
-			id: e.id,
-			time: e.time,
-			subject: e.subject,
-			title: e.title,
-			duration: e.duration,
-			status: e.status,
-			emoji: e.emoji,
-			navigationHref: e.navigationHref,
-		}));
+		if (!eventsData || eventsData.events.length === 0) return DEMO_EVENTS;
+		return eventsData.events.map(
+			(e: {
+				id: string;
+				time: string;
+				subject: string;
+				title: string;
+				duration: string;
+				status: 'completed' | 'current' | 'upcoming';
+				emoji: string;
+				navigationHref?: string;
+			}) => ({
+				id: e.id,
+				time: e.time,
+				subject: e.subject,
+				title: e.title,
+				duration: e.duration,
+				status: e.status,
+				emoji: e.emoji,
+				navigationHref: e.navigationHref,
+			})
+		);
 	}, [eventsData]);
 	const [selectedDate, setSelectedDate] = useState(new Date());
 
@@ -171,7 +182,7 @@ export function TimelineSidebar() {
 					{/* Events */}
 					{isLoading ? (
 						<div className="space-y-2">
-							{[1, 2, 3, 4].map((item) => (
+							{[1, 2, 3, 4].map((item: number) => (
 								<div
 									key={`timeline-skeleton-${item}`}
 									className="flex items-start gap-3 p-3 rounded-xl bg-card border border-border animate-pulse"
@@ -198,7 +209,7 @@ export function TimelineSidebar() {
 							</Button>
 						</div>
 					) : (
-						events.map((event, index) => (
+						events.map((event: TimelineEvent, index: number) => (
 							<TimelineEventCard
 								key={event.id}
 								event={event}

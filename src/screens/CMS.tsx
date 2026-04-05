@@ -15,6 +15,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useSubjectMap } from '@/hooks/use-cms-filters';
+import { useDebouncedCallback } from '@/hooks/useDebouncedCallback';
 import {
 	getPastPapersAction,
 	getQuestionsAction,
@@ -41,6 +42,14 @@ export default function CMS() {
 	const [userSearchQuery, setUserSearchQuery] = useState('');
 	const [userFilter, setUserFilter] = useState<'all' | 'active' | 'blocked' | 'deleted'>('all');
 
+	const debouncedSearch = useDebouncedCallback((value: string) => {
+		setSearchQuery(value);
+	}, 300);
+
+	const debouncedUserSearch = useDebouncedCallback((value: string) => {
+		setUserSearchQuery(value);
+	}, 300);
+
 	const subjectMap = useSubjectMap(subjects);
 
 	const queryClient = useQueryClient();
@@ -55,9 +64,9 @@ export default function CMS() {
 				getPastPapersAction(),
 			]);
 			setSubjects(subjectsData);
-			setQuestions(questionsData);
-			setUsers(usersData);
-			setAllPastPapers(pastPapersData);
+			setQuestions(questionsData.questions);
+			setUsers(usersData.users);
+			setAllPastPapers(pastPapersData.papers);
 			return { subjectsData, questionsData, usersData, pastPapersData };
 		},
 	});
@@ -191,7 +200,7 @@ export default function CMS() {
 				<FilterBar
 					activeTab={activeTab}
 					searchQuery={activeTab === 'users' ? userSearchQuery : searchQuery}
-					onSearchChange={activeTab === 'users' ? setUserSearchQuery : setSearchQuery}
+					onSearchChange={activeTab === 'users' ? debouncedUserSearch : debouncedSearch}
 					selectedSubject={selectedSubject}
 					onSubjectChange={setSelectedSubject}
 					selectedDifficulty={selectedDifficulty}
@@ -226,7 +235,7 @@ export default function CMS() {
 
 							{activeTab === 'subjects' && (
 								<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-									{subjects.map((s) => (
+									{subjects.map((s: Subject) => (
 										<Card
 											key={s.id}
 											className="rounded-[2.5rem] border-2 border-border/50 p-8 space-y-4"

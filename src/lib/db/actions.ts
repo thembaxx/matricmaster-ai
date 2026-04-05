@@ -9,15 +9,18 @@ import { users } from './better-auth-schema';
 import { type DbType, dbManager } from './index';
 import type {
 	BuddyRequest,
+	CalendarEvent,
 	ContentFlag,
 	NewOption,
 	NewPastPaper,
 	NewQuestion,
 	NewSubject,
+	Notification,
 	Option,
 	PastPaper,
 	Question,
 	SearchHistory,
+	StudyPlan,
 	Subject,
 } from './schema';
 import {
@@ -105,17 +108,18 @@ async function getDb(): Promise<DbType> {
 /**
  * Fetches all notifications for the current user
  */
-export async function getNotificationsAction() {
+export async function getNotificationsAction(): Promise<Notification[]> {
 	try {
 		const user = await ensureAuthenticated();
 		const db = await getDb();
 
-		return await db
+		const result = await db
 			.select()
 			.from(notifications)
 			.where(eq(notifications.userId, user.id))
 			.orderBy(desc(notifications.createdAt))
 			.limit(20);
+		return result as unknown as Notification[];
 	} catch (error) {
 		console.debug('Error fetching notifications:', error);
 		return [];
@@ -199,11 +203,12 @@ export async function createStudyPlanAction(data: { title: string; focusAreas?: 
 	}
 }
 
-export async function getStudyPlansAction() {
+export async function getStudyPlansAction(): Promise<StudyPlan[]> {
 	try {
 		const user = await ensureAuthenticated();
 		const db = await getDb();
-		return await db.select().from(studyPlans).where(eq(studyPlans.userId, user.id));
+		const result = await db.select().from(studyPlans).where(eq(studyPlans.userId, user.id));
+		return result as StudyPlan[];
 	} catch (error) {
 		console.debug('Error fetching study plans:', error);
 		return [];
@@ -243,11 +248,12 @@ export async function createCalendarEventAction(data: {
 	}
 }
 
-export async function getCalendarEventsAction() {
+export async function getCalendarEventsAction(): Promise<CalendarEvent[]> {
 	try {
 		const user = await ensureAuthenticated();
 		const db = await getDb();
-		return await db.select().from(calendarEvents).where(eq(calendarEvents.userId, user.id));
+		const result = await db.select().from(calendarEvents).where(eq(calendarEvents.userId, user.id));
+		return result as CalendarEvent[];
 	} catch (error) {
 		console.debug('Error fetching events:', error);
 		return [];
@@ -306,7 +312,10 @@ export interface TodayTimelineEvent {
 	navigationHref: string;
 }
 
-export async function getTodayTimelineEventsAction(): Promise<TodayTimelineEvent[]> {
+export async function getTodayTimelineEventsAction(): Promise<{
+	events: TodayTimelineEvent[];
+	error?: string;
+}> {
 	try {
 		const user = await ensureAuthenticated();
 		const db = await getDb();
@@ -347,67 +356,69 @@ export async function getTodayTimelineEventsAction(): Promise<TodayTimelineEvent
 		const now = new Date();
 		const currentHour = now.getHours();
 
-		return events.map((event) => {
-			const startTime = event.startTime ? new Date(event.startTime) : new Date();
-			const endTime = event.endTime
-				? new Date(event.endTime)
-				: new Date(startTime.getTime() + 45 * 60000);
-			const eventHour = startTime.getHours();
-			const durationMinutes = Math.round((endTime.getTime() - startTime.getTime()) / 60000);
+		return {
+			events: events.map((event) => {
+				const startTime = event.startTime ? new Date(event.startTime) : new Date();
+				const endTime = event.endTime
+					? new Date(event.endTime)
+					: new Date(startTime.getTime() + 45 * 60000);
+				const eventHour = startTime.getHours();
+				const durationMinutes = Math.round((endTime.getTime() - startTime.getTime()) / 60000);
 
-			let status: 'completed' | 'current' | 'upcoming' = 'upcoming';
-			if (event.isCompleted) {
-				status = 'completed';
-			} else if (eventHour < currentHour) {
-				status = 'completed';
-			} else if (
-				eventHour === currentHour ||
-				(eventHour === currentHour + 1 && now.getMinutes() > 30)
-			) {
-				status = 'current';
-			}
+				let status: 'completed' | 'current' | 'upcoming' = 'upcoming';
+				if (event.isCompleted) {
+					status = 'completed';
+				} else if (eventHour < currentHour) {
+					status = 'completed';
+				} else if (
+					eventHour === currentHour ||
+					(eventHour === currentHour + 1 && now.getMinutes() > 30)
+				) {
+					status = 'current';
+				}
 
-			const subjectKey = Object.keys(SUBJECTS).find(
-				(key) => SUBJECTS[key as keyof typeof SUBJECTS].name === event.subjectName
-			);
-			const emoji = subjectKey ? SUBJECTS[subjectKey as keyof typeof SUBJECTS].emoji : '📚';
+				const subjectKey = Object.keys(SUBJECTS).find(
+					(key) => SUBJECTS[key as keyof typeof SUBJECTS].name === event.subjectName
+				);
+				const emoji = subjectKey ? SUBJECTS[subjectKey as keyof typeof SUBJECTS].emoji : '📚';
 
-			const subjectId = event.subjectId ? String(event.subjectId) : '';
+				const subjectId = event.subjectId ? String(event.subjectId) : '';
 
-			let navigationHref = '/planner';
-			if (event.eventType === 'study') {
-				navigationHref = event.subjectId ? `/focus?subject=${subjectId}` : '/focus';
-			} else if (event.eventType === 'practice') {
-				navigationHref = `/quiz${event.subjectId ? `?subject=${subjectId}` : ''}`;
-			} else if (event.eventType === 'flashcard') {
-				navigationHref = `/flashcards${event.subjectId ? `?subject=${subjectId}` : ''}`;
-			} else if (event.eventType === 'past-paper') {
-				navigationHref = `/past-papers${event.subjectId ? `?subject=${subjectId}` : ''}`;
-			} else if (event.eventType === 'ai-tutor') {
-				navigationHref = `/ai-tutor${event.subjectId ? `?subject=${subjectId}` : ''}`;
-			} else if (event.lessonId) {
-				navigationHref = `/lesson/${event.lessonId}`;
-			}
+				let navigationHref = '/planner';
+				if (event.eventType === 'study') {
+					navigationHref = event.subjectId ? `/focus?subject=${subjectId}` : '/focus';
+				} else if (event.eventType === 'practice') {
+					navigationHref = `/quiz${event.subjectId ? `?subject=${subjectId}` : ''}`;
+				} else if (event.eventType === 'flashcard') {
+					navigationHref = `/flashcards${event.subjectId ? `?subject=${subjectId}` : ''}`;
+				} else if (event.eventType === 'past-paper') {
+					navigationHref = `/past-papers${event.subjectId ? `?subject=${subjectId}` : ''}`;
+				} else if (event.eventType === 'ai-tutor') {
+					navigationHref = `/ai-tutor${event.subjectId ? `?subject=${subjectId}` : ''}`;
+				} else if (event.lessonId) {
+					navigationHref = `/lesson/${event.lessonId}`;
+				}
 
-			return {
-				id: String(event.id),
-				time: startTime.toLocaleTimeString('en-ZA', { hour: '2-digit', minute: '2-digit' }),
-				subject: event.subjectName || event.eventType || 'General',
-				title: event.title,
-				duration: `${durationMinutes} min`,
-				status,
-				emoji,
-				eventType: event.eventType,
-				subjectId: event.subjectId,
-				lessonId: event.lessonId,
-				examId: event.examId,
-				studyPlanId: event.studyPlanId,
-				navigationHref,
-			};
-		});
+				return {
+					id: String(event.id),
+					time: startTime.toLocaleTimeString('en-ZA', { hour: '2-digit', minute: '2-digit' }),
+					subject: event.subjectName || event.eventType || 'General',
+					title: event.title,
+					duration: `${durationMinutes} min`,
+					status,
+					emoji,
+					eventType: event.eventType,
+					subjectId: event.subjectId,
+					lessonId: event.lessonId,
+					examId: event.examId,
+					studyPlanId: event.studyPlanId,
+					navigationHref,
+				};
+			}),
+		};
 	} catch (error) {
 		console.debug('Error fetching today timeline events:', error);
-		return [];
+		return { events: [], error: 'Failed to load timeline. Please try again.' };
 	}
 }
 
@@ -457,12 +468,21 @@ export async function updateCalendarEventAction(
 	}
 }
 
-export async function getRecentActivityAction() {
+export async function getRecentActivityAction(): Promise<{
+	activities: {
+		id: string;
+		sessionType: string;
+		marksEarned: number | null;
+		completedAt: Date | null;
+		subjectName: string | null;
+	}[];
+	error?: string;
+}> {
 	try {
 		const user = await ensureAuthenticated();
 		const db = await getDb();
 
-		return await db
+		const result = await db
 			.select({
 				id: studySessions.id,
 				sessionType: studySessions.sessionType,
@@ -475,9 +495,18 @@ export async function getRecentActivityAction() {
 			.where(and(eq(studySessions.userId, user.id), isNotNull(studySessions.completedAt)))
 			.orderBy(desc(studySessions.completedAt))
 			.limit(5);
+		return {
+			activities: result as {
+				id: string;
+				sessionType: string;
+				marksEarned: number | null;
+				completedAt: Date | null;
+				subjectName: string | null;
+			}[],
+		};
 	} catch (error) {
 		console.debug('Error fetching recent activity:', error);
-		return [];
+		return { activities: [], error: 'Failed to load recent activity. Please try again.' };
 	}
 }
 
@@ -522,7 +551,7 @@ export async function getRecentSessionsWithContextAction(): Promise<RecentSessio
 
 		const { SUBJECTS } = await import('@/content');
 
-		return sessions.map((s) => {
+		const mappedSessions = sessions.map((s) => {
 			const subjectKey = Object.keys(SUBJECTS).find(
 				(key) => SUBJECTS[key as keyof typeof SUBJECTS].name === s.subjectName
 			);
@@ -531,13 +560,23 @@ export async function getRecentSessionsWithContextAction(): Promise<RecentSessio
 				subjectEmoji: subjectKey ? SUBJECTS[subjectKey as keyof typeof SUBJECTS].emoji : null,
 			};
 		});
+		return mappedSessions;
 	} catch (error) {
 		console.debug('Error fetching recent sessions with context:', error);
 		return [];
 	}
 }
 
-export async function getEnrolledSubjectsAction() {
+export interface EnrolledSubjectType {
+	id: number;
+	name: string;
+	description: string | null;
+}
+
+export async function getEnrolledSubjectsAction(): Promise<{
+	subjects: EnrolledSubjectType[];
+	error?: string;
+}> {
 	try {
 		const user = await ensureAuthenticated();
 		const db = await getDb();
@@ -552,10 +591,10 @@ export async function getEnrolledSubjectsAction() {
 			.innerJoin(subjects, eq(userProgress.subjectId, subjects.id))
 			.where(eq(userProgress.userId, user.id));
 
-		return enrolled;
+		return { subjects: enrolled as EnrolledSubjectType[] };
 	} catch (error) {
 		console.debug('Error fetching enrolled subjects:', error);
-		return [];
+		return { subjects: [], error: 'Failed to load enrolled subjects. Please try again.' };
 	}
 }
 
@@ -868,7 +907,9 @@ export async function createQuestionAction(
 	});
 }
 
-export async function getQuestionsAction(filters: QuestionFilters = {}): Promise<Question[]> {
+export async function getQuestionsAction(
+	filters: QuestionFilters = {}
+): Promise<{ questions: Question[]; error?: string }> {
 	try {
 		const db = await getDb();
 		const conditions = [];
@@ -882,14 +923,15 @@ export async function getQuestionsAction(filters: QuestionFilters = {}): Promise
 		if (filters.topic !== undefined) conditions.push(eq(questions.topic, filters.topic));
 		conditions.push(eq(questions.isActive, filters.isActive ?? true));
 
-		return db
+		const result = await db
 			.select()
 			.from(questions)
 			.where(and(...conditions))
 			.orderBy(desc(questions.createdAt));
+		return { questions: result };
 	} catch (error) {
 		console.error('Failed to get questions:', error);
-		return [];
+		return { questions: [], error: 'Failed to load questions. Please try again.' };
 	}
 }
 
@@ -1060,19 +1102,23 @@ export async function addSearchHistoryAction(query: string): Promise<SearchHisto
 	return newSearch;
 }
 
-export async function getSearchHistoryAction(): Promise<SearchHistory[]> {
+export async function getSearchHistoryAction(): Promise<{
+	history: SearchHistory[];
+	error?: string;
+}> {
 	const user = await ensureAuthenticated();
 	try {
 		const db = await getDb();
-		return db
+		const result = await db
 			.select()
 			.from(searchHistory)
 			.where(eq(searchHistory.userId, user.id))
 			.orderBy(desc(searchHistory.createdAt))
 			.limit(5);
+		return { history: result };
 	} catch (error) {
 		console.error('Failed to get search history:', error);
-		return [];
+		return { history: [], error: 'Failed to load search history. Please try again.' };
 	}
 }
 
@@ -1123,7 +1169,9 @@ export interface UserFilters {
 	filter?: 'all' | 'active' | 'blocked' | 'deleted';
 }
 
-export async function getUsersAction(filters: UserFilters = {}): Promise<User[]> {
+export async function getUsersAction(
+	filters: UserFilters = {}
+): Promise<{ users: User[]; error?: string }> {
 	await ensureAdmin();
 	try {
 		const db = await getDb();
@@ -1154,16 +1202,19 @@ export async function getUsersAction(filters: UserFilters = {}): Promise<User[]>
 		// Client-side search for name/email
 		if (filters.search?.trim()) {
 			const searchLower = filters.search.toLowerCase();
-			return usersList.filter(
-				(u) =>
-					u.name.toLowerCase().includes(searchLower) || u.email.toLowerCase().includes(searchLower)
-			);
+			return {
+				users: usersList.filter(
+					(u) =>
+						u.name.toLowerCase().includes(searchLower) ||
+						u.email.toLowerCase().includes(searchLower)
+				),
+			};
 		}
 
-		return usersList;
+		return { users: usersList };
 	} catch (error) {
 		console.error('Failed to get users:', error);
-		return [];
+		return { users: [], error: 'Failed to load users. Please try again.' };
 	}
 }
 
@@ -1322,7 +1373,9 @@ export async function createPastPaperAction(
 	return pastPaper;
 }
 
-export async function getPastPapersAction(filters: PastPaperFilters = {}): Promise<PastPaper[]> {
+export async function getPastPapersAction(
+	filters: PastPaperFilters = {}
+): Promise<{ papers: PastPaper[]; error?: string }> {
 	try {
 		const db = await getDb();
 		const conditions = [
@@ -1340,14 +1393,15 @@ export async function getPastPapersAction(filters: PastPaperFilters = {}): Promi
 			conditions.push(eq(pastPapers.isExtracted, filters.isExtracted));
 		}
 
-		return db
+		const result = await db
 			.select()
 			.from(pastPapers)
 			.where(and(...conditions))
 			.orderBy(desc(pastPapers.year), asc(pastPapers.month), asc(pastPapers.paper));
+		return { papers: result };
 	} catch (error) {
 		console.debug('[DB] Error in getPastPapersAction:', error);
-		return [];
+		return { papers: [], error: 'Failed to load past papers. Please try again.' };
 	}
 }
 
@@ -1875,7 +1929,10 @@ export interface SubjectPerformance {
 	averageScore: number;
 }
 
-export async function getSubjectPerformanceAction(): Promise<SubjectPerformance[]> {
+export async function getSubjectPerformanceAction(): Promise<{
+	performance: SubjectPerformance[];
+	error?: string;
+}> {
 	await ensureAdmin();
 	try {
 		const db = await getDb();
@@ -1894,7 +1951,7 @@ export async function getSubjectPerformanceAction(): Promise<SubjectPerformance[
 			.orderBy(desc(sql`sum(${userProgress.totalQuestionsAttempted})`))
 			.limit(10);
 
-		return results.map((r) => {
+		const mappedResults = results.map((r) => {
 			const attempted = Number(r.totalAttempted || 0);
 			const correct = Number(r.totalCorrect || 0);
 			return {
@@ -1904,8 +1961,9 @@ export async function getSubjectPerformanceAction(): Promise<SubjectPerformance[
 				averageScore: attempted > 0 ? Math.round((correct / attempted) * 100) : 0,
 			};
 		});
+		return { performance: mappedResults };
 	} catch (error) {
 		console.debug('Error getting subject performance:', error);
-		return [];
+		return { performance: [], error: 'Failed to load performance data. Please try again.' };
 	}
 }

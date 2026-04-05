@@ -24,7 +24,7 @@ import {
 	getSearchHistoryAction,
 } from '@/lib/db/actions';
 import type { PastPaper } from '@/lib/db/schema';
-import { getLessonsBySubject } from '@/lib/lessons';
+import { getLessonsBySubject, type Lesson } from '@/lib/lessons';
 import { smartSearch } from '@/services/geminiService';
 
 export default function Search() {
@@ -35,17 +35,21 @@ export default function Search() {
 	const [aiResults, setAiResults] = useState<{ suggestions: string[]; tip: string } | null>(null);
 
 	// Search history with useQuery
-	const { data: recentSearches = [], isLoading: isLoadingHistory } = useQuery({
+	const { data: historyData, isLoading: isLoadingHistory } = useQuery({
 		queryKey: ['searchHistory', session?.user?.id],
 		queryFn: () => getSearchHistoryAction(),
 		enabled: !!session?.user?.id,
 	});
 
+	const recentSearches = historyData?.history ?? [];
+
 	// Papers and lessons with useQuery
-	const { data: papers = [] } = useQuery({
+	const { data: papersData } = useQuery({
 		queryKey: ['pastPapers'],
 		queryFn: () => getPastPapersAction(),
 	});
+
+	const papers = papersData?.papers ?? [];
 
 	// Static lessons data - useMemo since it's from static JSON
 	const allLessons = useMemo(() => {
@@ -102,7 +106,7 @@ export default function Search() {
 					p.subject.toLowerCase().includes(lowerQuery) || p.paper.toLowerCase().includes(lowerQuery)
 			),
 			lessons: allLessons.filter(
-				(l) =>
+				(l: Lesson) =>
 					l.title.toLowerCase().includes(lowerQuery) || l.topic.toLowerCase().includes(lowerQuery)
 			),
 		};
@@ -180,7 +184,7 @@ export default function Search() {
 											lessons
 										</h3>
 										<div className="grid gap-4 sm:grid-cols-2">
-											{filteredResults.lessons.map((l) => (
+											{filteredResults.lessons.map((l: Lesson) => (
 												<Link key={l.id} href={`/focus?lessonId=${l.id}`}>
 													{' '}
 													<Card className="p-6 hover:border-primary/50 transition-all group shadow-tiimo">

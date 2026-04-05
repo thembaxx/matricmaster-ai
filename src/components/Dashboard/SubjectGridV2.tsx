@@ -36,12 +36,13 @@ const MOCK_SUBJECTS: EnrolledSubject[] = [
 
 export function SubjectGrid() {
 	const router = useRouter();
-	const { data: subjectsData, isLoading } = useQuery({
+	const { data: enrolledData, isLoading } = useQuery({
 		queryKey: ['enrolled-subjects'],
 		queryFn: () => getEnrolledSubjectsAction(),
 	});
 
-	const subjects = (subjectsData?.length ?? 0) > 0 ? (subjectsData ?? []) : MOCK_SUBJECTS;
+	const subjects =
+		(enrolledData?.subjects.length ?? 0) > 0 ? (enrolledData?.subjects ?? []) : MOCK_SUBJECTS;
 
 	if (isLoading) {
 		return (
@@ -62,7 +63,7 @@ export function SubjectGrid() {
 	return (
 		<m.div layout className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4">
 			<AnimatePresence mode="popLayout">
-				{subjects.map((subject, index) => {
+				{subjects.map((subject: EnrolledSubject, index: number) => {
 					const subjectKey = subject.name.toLowerCase() as SubjectId;
 					const subjectData = SUBJECTS[subjectKey];
 					const fluentEmoji = subjectData?.fluentEmoji ?? 'Books';

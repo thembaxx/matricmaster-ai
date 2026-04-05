@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
+import { useDebouncedCallback } from '@/hooks/useDebouncedCallback';
 import { type MenuSection, sideMenuSections } from './sidebar-menu-data';
 
 interface UseSidebarMenuReturn {
@@ -15,6 +16,10 @@ interface UseSidebarMenuReturn {
 export function useSidebarMenu(): UseSidebarMenuReturn {
 	const [searchQuery, setSearchQuery] = useState('');
 	const [openSection, setOpenSection] = useState<string | null>('learning');
+
+	const debouncedSetSearchQuery = useDebouncedCallback((query: string) => {
+		setSearchQuery(query);
+	}, 300);
 
 	const filteredSections = useMemo(() => {
 		if (!searchQuery.trim()) return sideMenuSections;
@@ -39,7 +44,7 @@ export function useSidebarMenu(): UseSidebarMenuReturn {
 
 	return {
 		searchQuery,
-		setSearchQuery,
+		setSearchQuery: debouncedSetSearchQuery,
 		openSection: computedOpenSection,
 		setOpenSection,
 		filteredSections,

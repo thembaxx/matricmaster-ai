@@ -10,6 +10,7 @@ import { toast } from 'sonner';
 import { SubjectsSkeleton } from '@/components/SubjectsSkeleton';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import type { EnrolledSubjectType } from '@/lib/db/actions';
 import {
 	enrollInSubjectAction,
 	getEnrolledSubjectsAction,
@@ -31,7 +32,10 @@ export default function SubjectsPage() {
 				getSubjectsAction(),
 				getEnrolledSubjectsAction(),
 			]);
-			return { subjects: subs, enrolledIds: enrolled.map((e) => e.id) };
+			return {
+				subjects: subs,
+				enrolledIds: enrolled.subjects.map((e: EnrolledSubjectType) => e.id),
+			};
 		},
 	});
 

@@ -52,7 +52,7 @@ export function useAdminDashboard() {
 		subjectsCount: 0,
 	};
 
-	const subjectPerformance: SubjectPerformance[] = statsData?.performance ?? [];
+	const subjectPerformance: SubjectPerformance[] = statsData?.performance.performance ?? [];
 
 	const { data: usersData, isLoading: isLoadingUsers } = useQuery({
 		queryKey: ['admin-users', searchQuery, userFilter],
@@ -62,7 +62,7 @@ export function useAdminDashboard() {
 
 	useEffect(() => {
 		if (usersData) {
-			setUsers(usersData);
+			setUsers(usersData.users);
 		}
 	}, [usersData]);
 
