@@ -24,6 +24,7 @@ import {
 	useStudyRecommendations,
 } from '@/hooks/use-curriculum-progress';
 import { useTopicNavigation } from '@/hooks/use-topic-navigation';
+import { useDebouncedCallback } from '@/hooks/useDebouncedCallback';
 
 export default function CurriculumMap() {
 	const router = useRouter();
@@ -34,6 +35,10 @@ export default function CurriculumMap() {
 	const [userStreak] = useState(12);
 	const [userLevel] = useState(8);
 	const [showRecommendations, setShowRecommendations] = useState(true);
+
+	const debouncedSearch = useDebouncedCallback((value: string) => {
+		setSearchQuery(value);
+	}, 300);
 
 	const {
 		expandedSubjects,
@@ -151,7 +156,7 @@ export default function CurriculumMap() {
 
 					<TopicFilters
 						searchQuery={searchQuery}
-						onSearchChange={setSearchQuery}
+						onSearchChange={debouncedSearch}
 						statusFilter={statusFilter}
 						onStatusFilterChange={setStatusFilter}
 						filteredStats={hasActiveFilters ? filteredStats : undefined}

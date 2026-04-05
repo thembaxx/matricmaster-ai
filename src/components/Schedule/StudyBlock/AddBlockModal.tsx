@@ -36,12 +36,12 @@ export function AddBlockModal({ open, onOpenChange, onSuccess, editMode }: AddBl
 	const isDesktop = useMediaQuery('(min-width: 1024px)');
 	const isEditing = !!editMode;
 
-	const { data: subjectsData } = useQuery({
+	const { data: enrolledData } = useQuery({
 		queryKey: ['enrolledSubjects'],
 		queryFn: () => getEnrolledSubjectsAction(),
 	});
 
-	const subjects = subjectsData ?? [];
+	const subjects = enrolledData?.subjects ?? [];
 
 	const {
 		formState,

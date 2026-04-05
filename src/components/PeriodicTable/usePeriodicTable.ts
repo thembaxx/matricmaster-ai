@@ -3,6 +3,7 @@
 import { useEffect, useMemo } from 'react';
 import type { ElementType } from '@/constants/periodic-table';
 import { ELEMENT_DETAILS, ELEMENTS } from '@/content/elements';
+import { useDebouncedCallback } from '@/hooks/useDebouncedCallback';
 import { useElementDetailState, useQuizState, useViewState } from '@/hooks/usePeriodicTableState';
 import { generateQuizQuestions } from '@/utils/periodic-table';
 
@@ -90,9 +91,9 @@ export function usePeriodicTable() {
 		elementDetailDispatch({ type: 'SELECT_ELEMENT', payload: element });
 	};
 
-	const setSearchQuery = (query: string) => {
+	const debouncedSetSearchQuery = useDebouncedCallback((query: string) => {
 		viewDispatch({ type: 'SET_SEARCH_QUERY', payload: query });
-	};
+	}, 300);
 
 	const setSelectedGroup = (group: string) => {
 		viewDispatch({ type: 'SET_GROUP', payload: group });
@@ -131,7 +132,7 @@ export function usePeriodicTable() {
 		resetQuiz,
 		closeElementDetail,
 		selectElement,
-		setSearchQuery,
+		setSearchQuery: debouncedSetSearchQuery,
 		setSelectedGroup,
 		setTrendsMode,
 		setCompareMode,

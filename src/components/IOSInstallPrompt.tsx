@@ -14,7 +14,8 @@ export function IOSInstallPrompt() {
 			/iPhone|iPad|iPod/.test(navigator.userAgent) &&
 			!(window.navigator as unknown as { standalone?: boolean }).standalone;
 
-		const wasDismissed = localStorage.getItem('ios-install-dismissed');
+		const wasDismissed =
+			typeof window !== 'undefined' ? localStorage.getItem('ios-install-dismissed') : null;
 
 		if (isIOS && !wasDismissed) {
 			const timer = setTimeout(() => setShowPrompt(true), 3000);
@@ -25,7 +26,9 @@ export function IOSInstallPrompt() {
 	const handleDismiss = () => {
 		setShowPrompt(false);
 		setDismissed(true);
-		localStorage.setItem('ios-install-dismissed', 'true');
+		if (typeof window !== 'undefined') {
+			localStorage.setItem('ios-install-dismissed', 'true');
+		}
 	};
 
 	if (!showPrompt || dismissed) return null;

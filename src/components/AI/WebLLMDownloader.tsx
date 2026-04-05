@@ -50,7 +50,9 @@ export const WebLLMDownloader = memo(function WebLLMDownloader() {
 	const handleShowSettings = useCallback((open: boolean) => setShowSettings(open), []);
 	const handleModelChange = useCallback((value: string) => {
 		setSelectedModel(value);
-		localStorage.setItem(STORAGE_KEY, value);
+		if (typeof window !== 'undefined') {
+			localStorage.setItem(STORAGE_KEY, value);
+		}
 	}, []);
 
 	useEffect(() => {

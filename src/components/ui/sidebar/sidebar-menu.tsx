@@ -80,7 +80,7 @@ type SidebarMenuSkeletonProps = React.ComponentProps<'div'> & { showIcon?: boole
 
 export const SidebarMenuSkeleton = React.forwardRef<HTMLDivElement, SidebarMenuSkeletonProps>(
 	({ className, showIcon = false, ...props }, ref) => {
-		const width = React.useMemo(() => `${Math.floor(Math.random() * 40) + 50}%`, []);
+		const width = React.useMemo(() => '70%', []);
 
 		return (
 			<div

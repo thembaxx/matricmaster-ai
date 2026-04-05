@@ -88,17 +88,25 @@ export function usePastPapers() {
 
 	const years = useMemo(() => ['All', 2024, 2023, 2022, 2021, 2020], []);
 
-	const { data: papers = [], isLoading } = useQuery({
+	const { data: papersData, isLoading } = useQuery({
 		queryKey: ['past-papers'],
 		queryFn: async () => getPastPapersAction(),
 	});
 
-	const availableSubjects = useMemo(
-		() => [...new Set(papers.map((p) => p.subject))].sort(),
+	const papers = papersData?.papers ?? [];
+
+	const availableSubjects = useMemo<string[]>(
+		() => [...new Set(papers.map((p: { subject: string }) => p.subject))].sort(),
 		[papers]
 	);
-	const availablePapers = useMemo(() => [...new Set(papers.map((p) => p.paper))].sort(), [papers]);
-	const availableMonths = useMemo(() => [...new Set(papers.map((p) => p.month))].sort(), [papers]);
+	const availablePapers = useMemo<string[]>(
+		() => [...new Set(papers.map((p: { paper: string }) => p.paper))].sort(),
+		[papers]
+	);
+	const availableMonths = useMemo<string[]>(
+		() => [...new Set(papers.map((p: { month: string }) => p.month))].sort(),
+		[papers]
+	);
 
 	const activeFilterCount =
 		filterState.selectedSubjects.length +
@@ -111,28 +119,38 @@ export function usePastPapers() {
 	}, []);
 
 	const filteredPapers = useMemo(() => {
-		return papers.filter((paper) => {
-			const matchesSearch =
-				paper.subject.toLowerCase().includes(uiState.searchQuery.toLowerCase()) ||
-				paper.paper.toLowerCase().includes(uiState.searchQuery.toLowerCase());
-			const matchesYear = uiState.selectedYear === 'All' || paper.year === uiState.selectedYear;
-			const matchesSubjects =
-				filterState.selectedSubjects.length === 0 ||
-				filterState.selectedSubjects.includes(paper.subject);
-			const matchesPapers =
-				filterState.selectedPapers.length === 0 || filterState.selectedPapers.includes(paper.paper);
-			const matchesMonths =
-				filterState.selectedMonths.length === 0 || filterState.selectedMonths.includes(paper.month);
-			const matchesExtracted = !filterState.extractedOnly || paper.isExtracted;
-			return (
-				matchesSearch &&
-				matchesYear &&
-				matchesSubjects &&
-				matchesPapers &&
-				matchesMonths &&
-				matchesExtracted
-			);
-		});
+		return papers.filter(
+			(paper: {
+				subject: string;
+				paper: string;
+				year: number;
+				month: string;
+				isExtracted: boolean;
+			}) => {
+				const matchesSearch =
+					paper.subject.toLowerCase().includes(uiState.searchQuery.toLowerCase()) ||
+					paper.paper.toLowerCase().includes(uiState.searchQuery.toLowerCase());
+				const matchesYear = uiState.selectedYear === 'All' || paper.year === uiState.selectedYear;
+				const matchesSubjects =
+					filterState.selectedSubjects.length === 0 ||
+					filterState.selectedSubjects.includes(paper.subject);
+				const matchesPapers =
+					filterState.selectedPapers.length === 0 ||
+					filterState.selectedPapers.includes(paper.paper);
+				const matchesMonths =
+					filterState.selectedMonths.length === 0 ||
+					filterState.selectedMonths.includes(paper.month);
+				const matchesExtracted = !filterState.extractedOnly || paper.isExtracted;
+				return (
+					matchesSearch &&
+					matchesYear &&
+					matchesSubjects &&
+					matchesPapers &&
+					matchesMonths &&
+					matchesExtracted
+				);
+			}
+		);
 	}, [
 		papers,
 		uiState.searchQuery,

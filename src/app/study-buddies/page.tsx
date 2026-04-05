@@ -13,6 +13,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useDebouncedCallback } from '@/hooks/useDebouncedCallback';
 import { useSession } from '@/lib/auth-client';
 import { useStudyBuddyStore } from '@/stores/useStudyBuddyStore';
 
@@ -127,6 +128,10 @@ export default function StudyBuddiesPage() {
 		toast.info('Video call declined');
 	}, []);
 
+	const debouncedSearch = useDebouncedCallback((value: string) => {
+		setSearchQuery(value);
+	}, 300);
+
 	return (
 		<div className="container mx-auto py-8 max-w-6xl px-6">
 			<div className="flex items-center gap-3 mb-6">
@@ -162,7 +167,7 @@ export default function StudyBuddiesPage() {
 						selectedSubjects={selectedSubjects}
 						filteredBuddies={filteredBuddies}
 						weakAreaMatches={weakAreaMatches}
-						onSearchChange={setSearchQuery}
+						onSearchChange={debouncedSearch}
 						onSubjectToggle={handleSubjectToggle}
 						onSendRequest={handleSendRequest}
 					/>

@@ -31,6 +31,7 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
 	);
 
 	useEffect(() => {
+		if (typeof window === 'undefined') return;
 		try {
 			const saved = localStorage.getItem('lumni_settings');
 			if (saved) {
@@ -46,6 +47,7 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
 	}, []);
 
 	useEffect(() => {
+		if (typeof window === 'undefined') return;
 		localStorage.setItem(
 			'lumni_settings',
 			JSON.stringify({

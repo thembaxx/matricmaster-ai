@@ -121,7 +121,6 @@ function handleAuthError(status: number): void {
 // Handle 401 errors with token refresh attempt
 async function handleUnauthorized(): Promise<string | null> {
 	if (isRefreshing) {
-		// Wait for existing refresh to complete
 		return new Promise((resolve) => {
 			subscribeToRefresh((token) => {
 				resolve(token);
@@ -139,7 +138,7 @@ async function handleUnauthorized(): Promise<string | null> {
 			return newToken;
 		}
 
-		// Refresh failed, redirect to login
+		notifySubscribers(''); // Clear subscribers to prevent hanging
 		handleAuthError(401);
 		return null;
 	} finally {
