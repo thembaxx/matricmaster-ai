@@ -106,9 +106,26 @@ export function FocusModeProvider({ children }: { children: ReactNode }) {
 	const [violations, setViolations] = useState(0);
 	const startedAtRef = useRef<number | null>(null);
 	const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+	const wakeLockRef = useRef<WakeLockSentinel | null>(null);
 
 	const isActive = status === 'active';
 	const isCompleted = status === 'completed';
+
+	const requestWakeLock = useCallback(async () => {
+		if (typeof window === 'undefined' || !('wakeLock' in navigator)) return;
+		try {
+			wakeLockRef.current = await navigator.wakeLock.request('screen');
+		} catch {
+			console.debug('Wake lock not available');
+		}
+	}, []);
+
+	const releaseWakeLock = useCallback(() => {
+		if (wakeLockRef.current) {
+			wakeLockRef.current.release().catch(() => {});
+			wakeLockRef.current = null;
+		}
+	}, []);
 
 	const stopTimer = useCallback(() => {
 		if (timerRef.current) {
@@ -164,11 +181,24 @@ export function FocusModeProvider({ children }: { children: ReactNode }) {
 			stopTimer();
 			setStatus('completed');
 			clearPersistedState();
+			releaseWakeLock();
 			toast.info("time's up!", {
 				description: 'your exam session has ended.',
 			});
 		}
-	}, [timeRemaining, status, stopTimer]);
+	}, [timeRemaining, status, stopTimer, releaseWakeLock]);
+
+	// Wake lock effect - keep screen on during focus mode
+	useEffect(() => {
+		if (status === 'active') {
+			requestWakeLock();
+		} else {
+			releaseWakeLock();
+		}
+		return () => {
+			releaseWakeLock();
+		};
+	}, [status, requestWakeLock, releaseWakeLock]);
 
 	useEffect(() => {
 		if (status === 'active') {

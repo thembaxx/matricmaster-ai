@@ -17,6 +17,11 @@ export type QueuedAIRequest = {
 interface AIQueueStore {
 	queue: QueuedAIRequest[];
 	isOnline: boolean;
+	circuitBreaker: {
+		failures: number;
+		lastFailure: number;
+		isOpen: boolean;
+	};
 	addToQueue: (request: Omit<QueuedAIRequest, 'id' | 'status' | 'createdAt'>) => string;
 	processQueue: () => Promise<void>;
 	markComplete: (id: string, result: string) => void;
@@ -25,13 +30,54 @@ interface AIQueueStore {
 	clearCompleted: () => void;
 	setOnlineStatus: (isOnline: boolean) => void;
 	getPendingCount: () => number;
+	checkCircuitBreaker: () => boolean;
 }
+
+const CIRCUIT_FAILURE_THRESHOLD = 3;
+const CIRCUIT_RESET_TIMEOUT = 30000; // 30 seconds
 
 export const useAIQueueStore = create<AIQueueStore>()(
 	persist(
 		(set, get) => ({
 			queue: [],
 			isOnline: true,
+			circuitBreaker: {
+				failures: 0,
+				lastFailure: 0,
+				isOpen: false,
+			},
+
+			checkCircuitBreaker: () => {
+				const { circuitBreaker } = get();
+				const now = Date.now();
+
+				if (circuitBreaker.isOpen) {
+					if (now - circuitBreaker.lastFailure > CIRCUIT_RESET_TIMEOUT) {
+						set({
+							circuitBreaker: {
+								...circuitBreaker,
+								isOpen: false,
+								failures: 0,
+							},
+						});
+						return true;
+					}
+					return false;
+				}
+
+				if (circuitBreaker.failures >= CIRCUIT_FAILURE_THRESHOLD) {
+					set({
+						circuitBreaker: {
+							...circuitBreaker,
+							isOpen: true,
+							lastFailure: now,
+						},
+					});
+					return false;
+				}
+
+				return true;
+			},
 
 			addToQueue: (request) => {
 				const id = `queue-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
@@ -54,8 +100,8 @@ export const useAIQueueStore = create<AIQueueStore>()(
 			},
 
 			processQueue: async () => {
-				const { queue, isOnline } = get();
-				if (!isOnline) return;
+				const { queue, isOnline, checkCircuitBreaker } = get();
+				if (!isOnline || !checkCircuitBreaker()) return;
 
 				const pending = queue.filter((r) => r.status === 'pending');
 
@@ -121,7 +167,13 @@ export const useAIQueueStore = create<AIQueueStore>()(
 			},
 
 			markFailed: (id, error) => {
+				const { circuitBreaker } = get();
 				set((state) => ({
+					circuitBreaker: {
+						...circuitBreaker,
+						failures: circuitBreaker.failures + 1,
+						lastFailure: Date.now(),
+					},
 					queue: state.queue.map((r) =>
 						r.id === id ? { ...r, status: 'failed' as const, error, completedAt: Date.now() } : r
 					),

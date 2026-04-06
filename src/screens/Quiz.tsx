@@ -73,7 +73,20 @@ function QuizInner({ quizId: initialQuizId }: QuizInnerProps) {
 			})),
 			questionCount: quiz.questions.length,
 		}),
-		[quizId, state, quiz.questions.length]
+		[
+			quizId,
+			state.currentQuestionIndex,
+			state.selectedOption,
+			state.answerText,
+			state.isChecked,
+			state.elapsedSeconds,
+			state.mode,
+			state.currentSubject,
+			state.score,
+			state.correctCount,
+			state.incorrectCount,
+			quiz.questions.length,
+		]
 	);
 
 	useEffect(() => {
@@ -107,6 +120,18 @@ function QuizInner({ quizId: initialQuizId }: QuizInnerProps) {
 		syncPendingDataRef.current = cleanup;
 		return cleanup;
 	}, []);
+
+	// Warn before leaving with unsaved progress
+	useEffect(() => {
+		const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+			if (state.currentQuestionIndex > 0 && !state.isChecked) {
+				e.preventDefault();
+				return 'You have unsaved answers. Are you sure you want to leave?';
+			}
+		};
+		window.addEventListener('beforeunload', handleBeforeUnload);
+		return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+	}, [state.currentQuestionIndex, state.isChecked]);
 
 	const handleSelectOption = useCallback(
 		(opt: string | null) => {

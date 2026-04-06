@@ -1,7 +1,9 @@
 import { PauseIcon, PlayIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { m } from 'framer-motion';
+import { useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
+import { useHaptics } from '@/hooks/useHaptics';
 import { CIRCLE_CIRCUMFERENCE, formatTime } from './constants';
 
 interface TimerViewProps {
@@ -19,6 +21,27 @@ export function TimerView({
 	isPaused,
 	onTogglePause,
 }: TimerViewProps) {
+	const { trigger } = useHaptics();
+	const lastMilestoneRef = useRef<number>(0);
+	const hasCompletedRef = useRef(false);
+
+	const currentMilestone = Math.floor(progress / 25) * 25;
+
+	useEffect(() => {
+		if (isPaused || hasCompletedRef.current) return;
+
+		if (progress >= 100 && !hasCompletedRef.current) {
+			hasCompletedRef.current = true;
+			trigger('success');
+			return;
+		}
+
+		if (currentMilestone > lastMilestoneRef.current && currentMilestone < 100) {
+			lastMilestoneRef.current = currentMilestone;
+			trigger('medium');
+		}
+	}, [progress, isPaused, trigger, currentMilestone]);
+
 	return (
 		<m.div
 			key="timer"
