@@ -27,6 +27,7 @@ interface FlashcardModalProps {
 	onRate?: (flashcardId: string, rating: Rating) => Promise<void>;
 	onAddToMasterDeck?: (flashcard: Flashcard) => Promise<void>;
 	showAddToMasterDeck?: boolean;
+	adaptiveDifficulty?: boolean;
 }
 
 export function FlashcardModal({
@@ -38,6 +39,7 @@ export function FlashcardModal({
 	onRate,
 	onAddToMasterDeck,
 	showAddToMasterDeck = false,
+	adaptiveDifficulty = false,
 }: FlashcardModalProps) {
 	const {
 		currentIndex,
@@ -49,6 +51,8 @@ export function FlashcardModal({
 		isAddingToMaster,
 		currentCard,
 		isComplete,
+		currentDifficulty,
+		sessionStats,
 		handleFlip,
 		handleRate,
 		handleNext,
@@ -62,6 +66,7 @@ export function FlashcardModal({
 		reviewMode,
 		onRate,
 		onAddToMasterDeck,
+		adaptiveDifficulty,
 	});
 
 	const onOpenChangeWrapper = (isOpen: boolean) => {
@@ -83,6 +88,12 @@ export function FlashcardModal({
 						{subject && <span className="capitalize">{subject}</span>}
 						{subject && ' • '}
 						{isComplete ? 'Session Complete!' : `Card ${currentIndex + 1} of ${flashcards.length}`}
+						{reviewMode && adaptiveDifficulty && !isComplete && (
+							<span className="ml-2 text-xs bg-muted px-2 py-1 rounded">
+								Difficulty: {currentDifficulty} • {sessionStats.correct}/{sessionStats.total}{' '}
+								correct
+							</span>
+						)}
 					</DialogDescription>
 				</DialogHeader>
 
@@ -95,7 +106,11 @@ export function FlashcardModal({
 					/>
 
 					{isComplete ? (
-						<FlashcardComplete reviewedCount={reviewedCards.size} onStartNewSession={handleReset} />
+						<FlashcardComplete
+							reviewedCount={reviewedCards.size}
+							sessionStats={sessionStats}
+							onStartNewSession={handleReset}
+						/>
 					) : (
 						<>
 							<FlashcardDisplay card={currentCard} isFlipped={isFlipped} reviewMode={reviewMode} />

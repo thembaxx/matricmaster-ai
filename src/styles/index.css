@@ -625,6 +625,11 @@ html {
   .tabular-nums {
     font-variant-numeric: tabular-nums;
   }
+
+  /* Math rendering typography */
+  .math-renderer {
+    font-family: var(--font-mono);
+  }
   
   /* Image outline for depth */
   .img-outline {

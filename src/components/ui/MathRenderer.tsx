@@ -2,7 +2,12 @@
 
 import { Component, type ReactNode, useState } from 'react';
 import { ErrorBoundary, type FallbackProps } from 'react-error-boundary';
-import { type MathRenderMode, renderMathBlock, renderMathInline } from '@/lib/mathRenderer';
+import {
+	latexToPlainText,
+	type MathRenderMode,
+	renderMathBlock,
+	renderMathInline,
+} from '@/lib/mathRenderer';
 
 interface MathRendererProps {
 	latex: string;
@@ -75,11 +80,16 @@ class MathRendererInternal extends Component<MathRendererProps, MathRendererStat
 
 		try {
 			const html = displayMode ? renderMathBlock(latex) : renderMathInline(latex);
+			const altText = latexToPlainText(latex);
 
 			return (
 				<span
 					className={`math-renderer ${displayMode ? 'block' : 'inline'} ${className}`}
 					dangerouslySetInnerHTML={{ __html: html }}
+					role="math"
+					aria-label={`Mathematical expression: ${altText}`}
+					aria-description={`LaTeX source: ${latex}`}
+					title={latex}
 				/>
 			);
 		} catch {
@@ -104,6 +114,7 @@ interface MathBlockProps {
 
 export function MathBlock({ latex, className = '', showToggle = true }: MathBlockProps) {
 	const [showRaw, setShowRaw] = useState(false);
+	const altText = latexToPlainText(latex);
 
 	return (
 		<div className={`math-block ${className}`}>
@@ -112,6 +123,10 @@ export function MathBlock({ latex, className = '', showToggle = true }: MathBloc
 				dangerouslySetInnerHTML={{
 					__html: renderMathBlock(latex),
 				}}
+				role="math"
+				aria-label={`Mathematical expression: ${altText}`}
+				aria-description={`LaTeX source: ${latex}`}
+				title={latex}
 			/>
 			{showToggle && (
 				<button

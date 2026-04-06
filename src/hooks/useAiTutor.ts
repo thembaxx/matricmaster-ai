@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { toast } from 'sonner';
 import { useSettings } from '@/contexts/SettingsContext';
+import { useVoiceInput } from '@/hooks/useVoiceInput';
 import type { Citation } from '@/lib/ai/citations';
 import { authClient } from '@/lib/auth-client';
 import { saveConversationAction } from '@/lib/db/ai-tutor-actions';
@@ -81,6 +82,21 @@ export function useAiTutor() {
 	const [showSources, setShowSources] = useState(true);
 	const messagesEndRef = useRef<HTMLDivElement>(null);
 
+	const {
+		isListening,
+		isSupported: voiceSupported,
+		startListening,
+		stopListening,
+	} = useVoiceInput({
+		onTranscript: (transcript) => {
+			setInput(transcript);
+		},
+		onError: (error) => {
+			toast.error(`Voice input error: ${error}`);
+		},
+		lang: 'en-ZA',
+	});
+
 	const handleToggleSources = useCallback(() => {
 		setShowSources((prev) => !prev);
 	}, []);
@@ -147,6 +163,39 @@ export function useAiTutor() {
 			setIsLoading(false);
 		}
 	};
+
+	const handleVoiceInput = useCallback(() => {
+		if (isListening) {
+			stopListening();
+		} else {
+			startListening();
+			toast.info('Listening... Speak your question');
+		}
+	}, [isListening, startListening, stopListening]);
+
+	const handleGenerateQuizFromConversation = useCallback(async () => {
+		if (messages.length <= 1) {
+			toast.info('Have a conversation first to generate a quiz');
+			return;
+		}
+
+		try {
+			const result = await generateFollowUpQuizFromConversationAction(
+				messages.map((m) => ({ role: m.role, content: m.content })),
+				selectedSubject ?? undefined
+			);
+
+			if (result.success && result.questions) {
+				toast.success(`Generated ${result.questions.length} quiz questions from our conversation!`);
+				// Here you could navigate to a quiz page or show the questions
+			} else {
+				toast.error(result.error || 'Failed to generate quiz');
+			}
+		} catch (error) {
+			console.error('Quiz generation failed:', error);
+			toast.error('Failed to generate quiz from conversation');
+		}
+	}, [messages, selectedSubject]);
 
 	const handleSave = async () => {
 		if (!session?.user?.id) {
@@ -332,5 +381,9 @@ export function useAiTutor() {
 		handleLoadConversation,
 		handleNewConversation,
 		handleToggleSources,
+		handleVoiceInput,
+		handleGenerateQuizFromConversation,
+		isListening,
+		voiceSupported,
 	};
 }

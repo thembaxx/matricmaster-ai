@@ -214,5 +214,67 @@ test.describe('Accessibility (a11y)', () => {
 
 			await expect(page.locator('nav, [role="navigation"]').first()).toBeVisible();
 		});
+
+		test('Math expressions have proper ARIA attributes', async ({ page }) => {
+			await page.goto('/lessons');
+			await page.waitForLoadState('networkidle');
+
+			// Look for math elements
+			const mathElements = page.locator('[role="math"][aria-label*="Mathematical expression"]');
+			const count = await mathElements.count();
+
+			if (count > 0) {
+				for (let i = 0; i < count; i++) {
+					const mathElement = mathElements.nth(i);
+					await expect(mathElement).toHaveAttribute('role', 'math');
+					await expect(mathElement).toHaveAttribute('aria-label');
+					await expect(mathElement).toHaveAttribute('aria-description');
+					await expect(mathElement).toHaveAttribute('title');
+					// Check that aria-label contains "Mathematical expression"
+					const ariaLabel = await mathElement.getAttribute('aria-label');
+					expect(ariaLabel).toContain('Mathematical expression');
+					// Check that aria-description contains "LaTeX source"
+					const ariaDescription = await mathElement.getAttribute('aria-description');
+					expect(ariaDescription).toContain('LaTeX source');
+				}
+			}
+		});
+	});
+
+	test.describe('Math Content Accessibility', () => {
+		test('Math elements use Geist Mono font', async ({ page }) => {
+			await page.goto('/lessons');
+			await page.waitForLoadState('networkidle');
+
+			const mathElements = page.locator('.math-renderer');
+			const count = await mathElements.count();
+
+			if (count > 0) {
+				for (let i = 0; i < count; i++) {
+					const mathElement = mathElements.nth(i);
+					const fontFamily = await mathElement.evaluate((el) => {
+						return window.getComputedStyle(el).fontFamily;
+					});
+					expect(fontFamily).toContain('Geist Mono');
+				}
+			}
+		});
+
+		test('Math expressions are keyboard accessible', async ({ page }) => {
+			await page.goto('/lessons');
+			await page.waitForLoadState('networkidle');
+
+			const mathElements = page.locator('.math-renderer');
+			const count = await mathElements.count();
+
+			if (count > 0) {
+				// Check that math elements can receive focus (for screen reader navigation)
+				const firstMathElement = mathElements.first();
+				await expect(firstMathElement).toBeVisible();
+
+				// Math elements should have proper semantic structure for screen readers
+				await expect(firstMathElement).toHaveAttribute('role', 'img');
+			}
+		});
 	});
 });

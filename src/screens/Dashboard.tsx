@@ -169,7 +169,7 @@ export default function Dashboard({
 		<div className="min-h-screen bg-background flex">
 			<TimelineSidebar />
 			<FocusContent>
-				<div className="mx-auto px-4 sm:px-6 lg:px-8 pb-40">
+				<div className="mx-auto px-4 sm:px-6 lg:px-8 pb-[var(--mobile-safe-bottom-padding)]">
 					<BriefingGreeting
 						userName={session?.user?.name}
 						completedCount={completedCount}

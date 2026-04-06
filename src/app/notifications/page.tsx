@@ -248,7 +248,7 @@ export default function NotificationsPage() {
 						</p>
 					</div>
 				) : (
-					<ScrollArea className="h-[calc(100vh-200px)]">
+					<ScrollArea>
 						<div className="space-y-3">
 							<AnimatePresence mode="popLayout">
 								{filteredNotifications.map((notification, index) => (

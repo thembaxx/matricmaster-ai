@@ -13,6 +13,7 @@ interface Flashcard {
 	easeFactor?: number | string;
 	nextReview?: Date | string;
 	timesReviewed?: number;
+	difficulty?: 'easy' | 'medium' | 'hard';
 }
 
 interface UseFlashcardStateProps {
@@ -20,6 +21,7 @@ interface UseFlashcardStateProps {
 	reviewMode?: boolean;
 	onRate?: (flashcardId: string, rating: Rating) => Promise<void>;
 	onAddToMasterDeck?: (flashcard: Flashcard) => Promise<void>;
+	adaptiveDifficulty?: boolean;
 }
 
 interface UseFlashcardStateReturn {
@@ -34,6 +36,8 @@ interface UseFlashcardStateReturn {
 	progress: number;
 	isComplete: boolean;
 	shuffledCards: Flashcard[];
+	currentDifficulty: 'easy' | 'medium' | 'hard';
+	sessionStats: { correct: number; total: number; streak: number };
 	handleFlip: () => void;
 	handleRate: (rating: Rating) => Promise<void>;
 	handleNext: () => void;
@@ -49,6 +53,7 @@ export function useFlashcardState({
 	reviewMode = false,
 	onRate,
 	onAddToMasterDeck,
+	adaptiveDifficulty = false,
 }: UseFlashcardStateProps): UseFlashcardStateReturn {
 	const [currentIndex, setCurrentIndex] = useState(0);
 	const [isFlipped, setIsFlipped] = useState(false);
@@ -57,6 +62,8 @@ export function useFlashcardState({
 	const [isRating, setIsRating] = useState(false);
 	const [showRatingButtons, setShowRatingButtons] = useState(false);
 	const [isAddingToMaster, setIsAddingToMaster] = useState(false);
+	const [currentDifficulty, setCurrentDifficulty] = useState<'easy' | 'medium' | 'hard'>('medium');
+	const [sessionStats, setSessionStats] = useState({ correct: 0, total: 0, streak: 0 });
 
 	const shuffledCards = useMemo(
 		() => [...flashcards].sort(() => Math.random() - 0.5),
@@ -86,6 +93,46 @@ export function useFlashcardState({
 				await onRate(currentCard.id, rating);
 				setReviewedCards((prev) => new Set(prev).add(currentCard.id));
 
+				// Update session stats
+				const isCorrect = rating >= 3;
+				setSessionStats((prev) => ({
+					correct: prev.correct + (isCorrect ? 1 : 0),
+					total: prev.total + 1,
+					streak: isCorrect ? prev.streak + 1 : 0,
+				}));
+
+				// Process gamification event via API
+				try {
+					await fetch('/api/gamification/track', {
+						method: 'POST',
+						headers: { 'Content-Type': 'application/json' },
+						body: JSON.stringify({
+							type: 'flashcard_review',
+							metadata: {
+								count: 1,
+								rating,
+								difficulty: currentDifficulty,
+								correct: isCorrect,
+							},
+						}),
+					});
+				} catch (gamificationError) {
+					console.debug('Gamification tracking failed:', gamificationError);
+				}
+
+				// Adaptive difficulty adjustment
+				if (adaptiveDifficulty && sessionStats.total >= 5) {
+					try {
+						const response = await fetch('/api/flashcards/adaptive-difficulty');
+						if (response.ok) {
+							const data = await response.json();
+							setCurrentDifficulty(data.difficulty);
+						}
+					} catch (difficultyError) {
+						console.debug('Adaptive difficulty failed:', difficultyError);
+					}
+				}
+
 				if (currentIndex < flashcards.length - 1) {
 					setCurrentIndex((prev) => prev + 1);
 					setIsFlipped(false);
@@ -98,7 +145,16 @@ export function useFlashcardState({
 				setIsRating(false);
 			}
 		},
-		[currentCard, onRate, isRating, currentIndex, flashcards.length]
+		[
+			currentCard,
+			onRate,
+			isRating,
+			currentIndex,
+			flashcards.length,
+			adaptiveDifficulty,
+			sessionStats,
+			currentDifficulty,
+		]
 	);
 
 	const handleNext = useCallback(() => {
@@ -130,6 +186,8 @@ export function useFlashcardState({
 		setIsShuffled(false);
 		setReviewedCards(new Set());
 		setShowRatingButtons(false);
+		setSessionStats({ correct: 0, total: 0, streak: 0 });
+		setCurrentDifficulty('medium');
 	}, []);
 
 	const handleAddToMasterDeck = useCallback(async () => {
@@ -153,6 +211,8 @@ export function useFlashcardState({
 			setIsFlipped(false);
 			setReviewedCards(new Set());
 			setShowRatingButtons(false);
+			setSessionStats({ correct: 0, total: 0, streak: 0 });
+			setCurrentDifficulty('medium');
 		}
 	}, []);
 
@@ -168,6 +228,8 @@ export function useFlashcardState({
 		progress,
 		isComplete,
 		shuffledCards,
+		currentDifficulty,
+		sessionStats,
 		handleFlip,
 		handleRate,
 		handleNext,
