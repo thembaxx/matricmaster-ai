@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { ViewTransition } from 'react';
 import { appConfig } from '@/app.config';
@@ -18,9 +19,24 @@ export const metadata: Metadata = {
 	},
 };
 
+function extractHeaders(headersList: unknown) {
+	const safeHeaders = new Headers();
+	if (headersList && typeof headersList === 'object' && 'entries' in headersList) {
+		for (const [key, value] of Object.entries(headersList)) {
+			if (typeof key === 'string') {
+				safeHeaders.set(key, String(value));
+			}
+		}
+	}
+	return safeHeaders;
+}
+
 const ProgressPage = async () => {
 	const auth = await getAuth();
-	const session = await auth.api.getSession();
+	const headersList = await headers();
+	const session = await auth.api.getSession({
+		headers: extractHeaders(headersList) as any,
+	});
 
 	if (!session?.user) {
 		redirect('/sign-in');
