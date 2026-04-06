@@ -26,19 +26,19 @@ export const StatsCards = memo(function StatsCards({ streak, accuracy }: StatsCa
 							>
 								<HugeiconsIcon icon={FireIcon} className="w-7 h-7 text-tiimo-yellow" />
 							</m.div>
-							<span className="text-base font-bold text-foreground tracking-tight">
-								Current Streak
+							<span className="body-md font-bold text-foreground tracking-tight">
+								current streak
 							</span>
 						</div>
 						<div className="flex items-baseline gap-2">
 							<m.span
 								initial={{ scale: 0.9, opacity: 0 }}
 								animate={{ scale: 1, opacity: 1 }}
-								className="text-4xl font-black text-foreground tracking-tighter"
+								className="text-4xl font-black text-foreground tracking-tighter font-numeric"
 							>
 								{streak}
 							</m.span>
-							<span className="text-sm font-bold text-tiimo-gray-muted  tracking-widest">Days</span>
+							<span className="label-xs font-bold text-tiimo-gray-muted tracking-tight">days</span>
 						</div>
 					</div>
 				</Card>
@@ -55,20 +55,20 @@ export const StatsCards = memo(function StatsCards({ streak, accuracy }: StatsCa
 							>
 								<HugeiconsIcon icon={ChampionIcon} className="w-7 h-7 text-tiimo-lavender" />
 							</m.div>
-							<span className="text-base font-bold text-foreground tracking-tight">
-								Overall Mastery
+							<span className="body-md font-bold text-foreground tracking-tight">
+								overall mastery
 							</span>
 						</div>
 						<div className="flex items-baseline gap-2">
 							<m.span
 								initial={{ scale: 0.9, opacity: 0 }}
 								animate={{ scale: 1, opacity: 1 }}
-								className="text-4xl font-black text-foreground tracking-tighter"
+								className="text-4xl font-black text-foreground tracking-tighter font-numeric"
 							>
 								{accuracy}
 							</m.span>
-							<span className="text-sm font-bold text-tiimo-gray-muted  tracking-widest">
-								Average
+							<span className="label-xs font-bold text-tiimo-gray-muted tracking-tight">
+								average
 							</span>
 						</div>
 					</div>

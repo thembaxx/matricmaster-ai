@@ -21,11 +21,11 @@ export interface Achievement {
 }
 
 export const ACHIEVEMENTS: Achievement[] = [
-	// Learning achievements
+	// learning achievements
 	{
 		id: 'first_quiz',
-		name: 'First Steps',
-		description: 'Complete your first quiz',
+		name: 'first steps',
+		description: 'complete your first quiz',
 		icon: '🎯',
 		xpReward: 10,
 		condition: { type: 'quiz_complete', threshold: 1 },
@@ -34,8 +34,8 @@ export const ACHIEVEMENTS: Achievement[] = [
 	},
 	{
 		id: 'quiz_master',
-		name: 'Quiz Master',
-		description: 'Complete 50 quizzes',
+		name: 'quiz master',
+		description: 'complete 50 quizzes',
 		icon: '🏆',
 		xpReward: 100,
 		condition: { type: 'quiz_complete', threshold: 50 },
@@ -44,8 +44,8 @@ export const ACHIEVEMENTS: Achievement[] = [
 	},
 	{
 		id: 'perfect_score',
-		name: 'Perfectionist',
-		description: 'Get 100% on any quiz',
+		name: 'perfectionist',
+		description: 'get 100% on any quiz',
 		icon: '💯',
 		xpReward: 25,
 		condition: { type: 'perfect_score', threshold: 1 },
@@ -53,11 +53,11 @@ export const ACHIEVEMENTS: Achievement[] = [
 		rarity: 'uncommon',
 	},
 
-	// Streak achievements
+	// streak achievements
 	{
 		id: 'streak_7',
-		name: 'Week Warrior',
-		description: 'Maintain a 7-day streak',
+		name: 'week warrior',
+		description: 'maintain a 7-day streak',
 		icon: '🔥',
 		xpReward: 20,
 		condition: { type: 'streak', threshold: 7 },
@@ -66,8 +66,8 @@ export const ACHIEVEMENTS: Achievement[] = [
 	},
 	{
 		id: 'streak_30',
-		name: 'Monthly Master',
-		description: 'Maintain a 30-day streak',
+		name: 'monthly master',
+		description: 'maintain a 30-day streak',
 		icon: '⚡',
 		xpReward: 50,
 		condition: { type: 'streak', threshold: 30 },
@@ -76,8 +76,8 @@ export const ACHIEVEMENTS: Achievement[] = [
 	},
 	{
 		id: 'streak_100',
-		name: 'Century Club',
-		description: 'Maintain a 100-day streak',
+		name: 'century club',
+		description: 'maintain a 100-day streak',
 		icon: '👑',
 		xpReward: 200,
 		condition: { type: 'streak', threshold: 100 },
@@ -85,11 +85,11 @@ export const ACHIEVEMENTS: Achievement[] = [
 		rarity: 'legendary',
 	},
 
-	// Mastery achievements
+	// mastery achievements
 	{
 		id: 'hundred_topics',
-		name: 'Knowledge Seeker',
-		description: 'Master 100 topics',
+		name: 'knowledge seeker',
+		description: 'master 100 topics',
 		icon: '📚',
 		xpReward: 100,
 		condition: { type: 'topic_mastery', threshold: 100 },
@@ -98,8 +98,8 @@ export const ACHIEVEMENTS: Achievement[] = [
 	},
 	{
 		id: 'all_subjects',
-		name: 'Renaissance Student',
-		description: 'Make progress in all subjects',
+		name: 'renaissance student',
+		description: 'make progress in all subjects',
 		icon: '🌟',
 		xpReward: 75,
 		condition: { type: 'all_subjects', threshold: 1 },
@@ -107,11 +107,11 @@ export const ACHIEVEMENTS: Achievement[] = [
 		rarity: 'epic',
 	},
 
-	// APS achievements
+	// aps achievements
 	{
 		id: 'aps_30',
-		name: 'University Bound',
-		description: 'Achieve an APS of 30+',
+		name: 'university bound',
+		description: 'achieve an aps of 30+',
 		icon: '🎓',
 		xpReward: 50,
 		condition: { type: 'aps_milestone', threshold: 30 },
@@ -120,8 +120,8 @@ export const ACHIEVEMENTS: Achievement[] = [
 	},
 	{
 		id: 'aps_40',
-		name: 'Distinction Scholar',
-		description: 'Achieve an APS of 40+',
+		name: 'distinction scholar',
+		description: 'achieve an aps of 40+',
 		icon: '🏅',
 		xpReward: 100,
 		condition: { type: 'aps_milestone', threshold: 40 },
@@ -129,11 +129,11 @@ export const ACHIEVEMENTS: Achievement[] = [
 		rarity: 'epic',
 	},
 
-	// Flashcard achievements
+	// flashcard achievements
 	{
 		id: 'flashcard_100',
-		name: 'Card Shark',
-		description: 'Review 100 flashcards',
+		name: 'card shark',
+		description: 'review 100 flashcards',
 		icon: '🃏',
 		xpReward: 25,
 		condition: { type: 'flashcard_review', threshold: 100 },
@@ -141,11 +141,11 @@ export const ACHIEVEMENTS: Achievement[] = [
 		rarity: 'uncommon',
 	},
 
-	// Time-based achievements
+	// time-based achievements
 	{
 		id: 'early_bird',
-		name: 'Early Bird',
-		description: 'Study before 7am',
+		name: 'early bird',
+		description: 'study before 7am',
 		icon: '🌅',
 		xpReward: 10,
 		condition: { type: 'quiz_complete', threshold: 1, metadata: { timeBefore: 7 } },
@@ -154,8 +154,8 @@ export const ACHIEVEMENTS: Achievement[] = [
 	},
 	{
 		id: 'night_owl',
-		name: 'Night Owl',
-		description: 'Study after 10pm',
+		name: 'night owl',
+		description: 'study after 10pm',
 		icon: '🦉',
 		xpReward: 10,
 		condition: { type: 'quiz_complete', threshold: 1, metadata: { timeAfter: 22 } },

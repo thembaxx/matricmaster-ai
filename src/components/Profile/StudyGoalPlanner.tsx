@@ -140,7 +140,7 @@ export default function StudyGoalPlanner(props: StudyGoalPlannerProps) {
 			<div className="mb-10">
 				<div className="flex items-center gap-2 mb-4">
 					<HugeiconsIcon icon={Calendar02Icon} className="w-4 h-4 text-label-tertiary" />
-					<p className="text-[10px] font-black text-label-tertiary tracking-[0.3em] uppercase">
+					<p className="label-xs font-black text-label-tertiary tracking-tight">
 						nsc exam countdown
 					</p>
 				</div>
@@ -151,8 +151,8 @@ export default function StudyGoalPlanner(props: StudyGoalPlannerProps) {
 						animate={{ scale: 1, opacity: 1 }}
 						className="flex-1 min-w-[80px] p-4 rounded-2xl bg-primary-violet/5 border border-primary-violet/20"
 					>
-						<p className="text-[10px] font-black text-label-tertiary tracking-[0.3em] mb-1">days</p>
-						<p className="text-4xl font-black text-primary-violet tracking-tighter">
+						<p className="label-xs font-black text-label-tertiary tracking-tight mb-1">days</p>
+						<p className="text-4xl font-black text-primary-violet tracking-tighter font-numeric">
 							{timeRemaining.days}
 						</p>
 					</m.div>
@@ -162,10 +162,8 @@ export default function StudyGoalPlanner(props: StudyGoalPlannerProps) {
 						animate={{ scale: 1, opacity: 1 }}
 						className="flex-1 min-w-[80px] p-4 rounded-2xl bg-accent-lime/5 border border-accent-lime/20"
 					>
-						<p className="text-[10px] font-black text-label-tertiary tracking-[0.3em] mb-1">
-							hours
-						</p>
-						<p className="text-4xl font-black text-accent-lime tracking-tighter">
+						<p className="label-xs font-black text-label-tertiary tracking-tight mb-1">hours</p>
+						<p className="text-4xl font-black text-accent-lime tracking-tighter font-numeric">
 							{String(timeRemaining.hours).padStart(2, '0')}
 						</p>
 					</m.div>
@@ -175,8 +173,8 @@ export default function StudyGoalPlanner(props: StudyGoalPlannerProps) {
 						animate={{ scale: 1, opacity: 1 }}
 						className="flex-1 min-w-[80px] p-4 rounded-2xl bg-primary-orange/5 border border-primary-orange/20"
 					>
-						<p className="text-[10px] font-black text-label-tertiary tracking-[0.3em] mb-1">mins</p>
-						<p className="text-4xl font-black text-primary-orange tracking-tighter">
+						<p className="label-xs font-black text-label-tertiary tracking-tight mb-1">mins</p>
+						<p className="text-4xl font-black text-primary-orange tracking-tighter font-numeric">
 							{String(timeRemaining.minutes).padStart(2, '0')}
 						</p>
 					</m.div>
@@ -186,8 +184,8 @@ export default function StudyGoalPlanner(props: StudyGoalPlannerProps) {
 						animate={{ scale: 1, opacity: 1 }}
 						className="flex-1 min-w-[80px] p-4 rounded-2xl bg-primary-cyan/5 border border-primary-cyan/20"
 					>
-						<p className="text-[10px] font-black text-label-tertiary tracking-[0.3em] mb-1">secs</p>
-						<p className="text-4xl font-black text-primary-cyan tracking-tighter">
+						<p className="label-xs font-black text-label-tertiary tracking-tight mb-1">secs</p>
+						<p className="text-4xl font-black text-primary-cyan tracking-tighter font-numeric">
 							{String(timeRemaining.seconds).padStart(2, '0')}
 						</p>
 					</m.div>
@@ -198,7 +196,7 @@ export default function StudyGoalPlanner(props: StudyGoalPlannerProps) {
 			<div className="mb-10">
 				<div className="flex items-center gap-2 mb-4">
 					<HugeiconsIcon icon={ClockIcon} className="w-4 h-4 text-label-tertiary" />
-					<p className="text-[10px] font-black text-label-tertiary tracking-[0.3em] uppercase">
+					<p className="label-xs font-black text-label-tertiary tracking-tight">
 						weekly study hours
 					</p>
 				</div>
@@ -218,10 +216,10 @@ export default function StudyGoalPlanner(props: StudyGoalPlannerProps) {
 							/>
 						) : (
 							<>
-								<p className="text-4xl font-black text-foreground tracking-tighter">
+								<p className="text-4xl font-black text-foreground tracking-tighter font-numeric">
 									{weeklyHours}
 								</p>
-								<span className="text-sm text-muted-foreground">hours/week</span>
+								<span className="body-sm text-muted-foreground">hours/week</span>
 							</>
 						)}
 					</div>
@@ -238,14 +236,14 @@ export default function StudyGoalPlanner(props: StudyGoalPlannerProps) {
 						}}
 						className="w-fit"
 					>
-						{isEditingHours ? 'Save' : 'Edit'}
+						{isEditingHours ? 'save' : 'edit'}
 					</Button>
 				</div>
 				{/* Progress bar for weekly hours */}
 				<div className="mt-4">
-					<div className="flex justify-between text-xs text-muted-foreground mb-2">
-						<span>{hoursLogged} hours logged</span>
-						<span>{Math.round((hoursLogged / weeklyHours) * 100)}%</span>
+					<div className="flex justify-between label-xs text-muted-foreground mb-2">
+						<span className="font-numeric">{hoursLogged} hours logged</span>
+						<span className="font-numeric">{Math.round((hoursLogged / weeklyHours) * 100)}%</span>
 					</div>
 					<div className="h-3 rounded-full bg-muted overflow-hidden">
 						<m.div
@@ -262,9 +260,7 @@ export default function StudyGoalPlanner(props: StudyGoalPlannerProps) {
 			<div>
 				<div className="flex items-center gap-2 mb-6">
 					<HugeiconsIcon icon={Target02Icon} className="w-4 h-4 text-label-tertiary" />
-					<p className="text-[10px] font-black text-label-tertiary tracking-[0.3em] uppercase">
-						target scores
-					</p>
+					<p className="label-xs font-black text-label-tertiary tracking-tight">target scores</p>
 				</div>
 				<div className="space-y-4">
 					{subjectTargets.map((subject) => {
@@ -272,7 +268,9 @@ export default function StudyGoalPlanner(props: StudyGoalPlannerProps) {
 						return (
 							<div key={subject.id} className="p-4 rounded-2xl bg-muted/30 border border-border/30">
 								<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
-									<span className="text-sm font-medium text-foreground">{subject.name}</span>
+									<span className="body-sm font-medium text-foreground">
+										{subject.name.toLowerCase()}
+									</span>
 									<div className="flex items-center gap-2">
 										<input
 											type="number"
@@ -280,9 +278,9 @@ export default function StudyGoalPlanner(props: StudyGoalPlannerProps) {
 											max={100}
 											value={subject.targetScore}
 											onChange={(e) => handleSubjectTargetChange(subject.id, e.target.value)}
-											className="w-16 h-8 rounded-lg border border-input bg-background px-2 text-center text-sm font-black"
+											className="w-16 h-8 rounded-lg border border-input bg-background px-2 text-center text-sm font-black font-numeric"
 										/>
-										<span className="text-xs text-muted-foreground">target</span>
+										<span className="label-xs text-muted-foreground">target</span>
 									</div>
 								</div>
 								<div className="flex items-center gap-3">
@@ -294,7 +292,9 @@ export default function StudyGoalPlanner(props: StudyGoalPlannerProps) {
 											className={`h-full rounded-full ${subject.bgColor}`}
 										/>
 									</div>
-									<span className={`text-sm font-black ${subject.color} min-w-[60px] text-right`}>
+									<span
+										className={`body-sm font-black ${subject.color} min-w-[60px] text-right font-numeric`}
+									>
 										{subject.currentScore}%
 									</span>
 								</div>

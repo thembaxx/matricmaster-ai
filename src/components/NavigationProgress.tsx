@@ -78,10 +78,9 @@ export function NavigationProgress() {
 			aria-valuemax={100}
 		>
 			<div
-				className="h-[3px] bg-gradient-to-r from-primary via-primary/80 to-primary transition-all duration-300 ease-out shadow-sm"
+				className="h-0.5 bg-gradient-to-r from-primary via-primary/80 to-primary transition-all duration-300 ease-out shadow-elevation-1"
 				style={{
 					width: `${progress}%`,
-					boxShadow: '0 1px 3px rgba(0, 0, 0, 0.15)',
 				}}
 			/>
 		</div>

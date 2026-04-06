@@ -59,24 +59,24 @@ export const DailyGoals = memo(function DailyGoals({
 		return [
 			{
 				id: 'questions',
-				title: 'Answer 10 Questions',
-				description: 'Complete practice questions today',
+				title: 'answer 10 questions',
+				description: 'complete practice questions today',
 				current: Math.min(progress.totalQuestionsAttempted || 0, 10),
 				target: 10,
 				isComplete: (progress.totalQuestionsAttempted || 0) >= 10,
 			},
 			{
 				id: 'accuracy',
-				title: 'Hit 70% Accuracy',
-				description: 'Maintain good accuracy in your answers',
+				title: 'hit 70% accuracy',
+				description: 'maintain good accuracy in your answers',
 				current: progress.accuracy || 0,
 				target: 70,
 				isComplete: (progress.accuracy || 0) >= 70,
 			},
 			{
 				id: 'streak',
-				title: 'Keep Your Streak',
-				description: 'Stay active to maintain your streak',
+				title: 'keep your streak',
+				description: 'stay active to maintain your streak',
 				current: streak.currentStreak > 0 ? 1 : 0,
 				target: 1,
 				isComplete: streak.currentStreak > 0,
@@ -113,15 +113,15 @@ export const DailyGoals = memo(function DailyGoals({
 					<div className="p-2.5 bg-tiimo-lavender/15 rounded-2xl">
 						<HugeiconsIcon icon={Target01Icon} className="w-6 h-6 text-tiimo-lavender" />
 					</div>
-					<h3 className="text-xl font-bold text-foreground tracking-tight">Today's Focus</h3>
+					<h3 className="body-lg font-bold text-foreground tracking-tight">today's focus</h3>
 				</div>
 				{allComplete && (
 					<m.div
 						initial={{ scale: 0.95, opacity: 0, rotate: -20 }}
 						animate={{ scale: 1, rotate: 0 }}
-						className="bg-tiimo-green text-white px-4 py-1.5 rounded-full text-xs font-bold shadow-sm"
+						className="bg-tiimo-green text-white px-4 py-1.5 rounded-full label-xs font-bold shadow-sm"
 					>
-						DONE!
+						done!
 					</m.div>
 				)}
 			</div>
@@ -155,13 +155,13 @@ export const DailyGoals = memo(function DailyGoals({
 							<div className="flex-1 min-w-0">
 								<div className="flex items-center justify-between mb-1.5">
 									<p
-										className={`text-sm font-bold tracking-tight transition-colors truncate ${
+										className={`body-sm font-bold tracking-tight transition-colors truncate ${
 											goal.isComplete ? 'text-tiimo-gray-muted line-through' : 'text-foreground'
 										}`}
 									>
-										{goal.title}
+										{goal.title.toLowerCase()}
 									</p>
-									<span className="text-[10px] font-black text-tiimo-gray-muted/60  tracking-widest bg-secondary px-2 py-0.5 rounded-full">
+									<span className="label-xs font-black text-tiimo-gray-muted/60 tracking-tight bg-secondary px-2 py-0.5 rounded-full font-numeric">
 										{Math.min(goal.current, goal.target)}/{goal.target}
 									</span>
 								</div>
@@ -187,8 +187,8 @@ export const DailyGoals = memo(function DailyGoals({
 					animate={{ opacity: 1 }}
 					className="mt-8 p-4 bg-tiimo-green/10 rounded-[1.5rem] border border-tiimo-green/20 text-center"
 				>
-					<p className="text-sm font-bold text-tiimo-green">✨ Energy Restored!</p>
-					<p className="text-xs text-tiimo-green/70 font-medium">You crushed your goals today.</p>
+					<p className="body-sm font-bold text-tiimo-green">✨ energy restored!</p>
+					<p className="label-xs text-tiimo-green/70 font-medium">you crushed your goals today.</p>
 				</m.div>
 			)}
 		</Card>

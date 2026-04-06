@@ -106,20 +106,20 @@ function SummaryCard({ data }: { data: UnifiedProgress['summary'] }) {
 							<span className="text-2xl font-bold">L{data.level}</span>
 						</ProgressRing>
 						<div>
-							<p className="text-white/80 text-sm">Total XP</p>
-							<p className="text-4xl font-bold">{data.totalXp.toLocaleString()}</p>
+							<p className="text-white/80 body-sm">total xp</p>
+							<p className="text-4xl font-bold font-numeric">{data.totalXp.toLocaleString()}</p>
 						</div>
 					</div>
 					<div className="flex gap-8">
 						<div className="text-center">
-							<p className="text-white/80 text-xs uppercase">Streak</p>
-							<p className="text-3xl font-bold">{data.streak}</p>
-							<p className="text-white/60 text-xs">days</p>
+							<p className="text-white/80 label-xs">streak</p>
+							<p className="text-3xl font-bold font-numeric">{data.streak}</p>
+							<p className="text-white/60 label-xs">days</p>
 						</div>
 						<div className="text-center">
-							<p className="text-white/80 text-xs uppercase">Best</p>
-							<p className="text-3xl font-bold">{data.bestStreak}</p>
-							<p className="text-white/60 text-xs">days</p>
+							<p className="text-white/80 label-xs">best</p>
+							<p className="text-3xl font-bold font-numeric">{data.bestStreak}</p>
+							<p className="text-white/60 label-xs">days</p>
 						</div>
 					</div>
 				</div>
@@ -132,34 +132,36 @@ function AiTutorCard({ data }: { data: UnifiedProgress['aiTutor'] }) {
 	return (
 		<Card>
 			<CardHeader>
-				<CardTitle className="text-lg flex items-center gap-2">
+				<CardTitle className="heading-4 flex items-center gap-2">
 					<span className="text-2xl">🤖</span>
-					AI Tutor
+					ai tutor
 				</CardTitle>
-				<CardDescription>Your conversations with the AI tutor</CardDescription>
+				<CardDescription className="body-sm">your conversations with the ai tutor</CardDescription>
 			</CardHeader>
 			<CardContent className="space-y-4">
 				<div className="grid grid-cols-2 gap-4">
 					<div className="text-center p-3 bg-muted/50 rounded-lg">
-						<p className="text-2xl font-bold">{data.conversationsCount}</p>
-						<p className="text-xs text-muted-foreground">Conversations</p>
+						<p className="text-2xl font-bold font-numeric">{data.conversationsCount}</p>
+						<p className="label-xs text-muted-foreground">conversations</p>
 					</div>
 					<div className="text-center p-3 bg-muted/50 rounded-lg">
-						<p className="text-2xl font-bold">{data.topicsStudied}</p>
-						<p className="text-xs text-muted-foreground">Topics</p>
+						<p className="text-2xl font-bold font-numeric">{data.topicsStudied}</p>
+						<p className="label-xs text-muted-foreground">topics</p>
 					</div>
 				</div>
 				<div className="text-center p-3 bg-muted/50 rounded-lg">
-					<p className="text-2xl font-bold">{Math.round(data.totalSessionTime / 60)}h</p>
-					<p className="text-xs text-muted-foreground">Total Session Time</p>
+					<p className="text-2xl font-bold font-numeric">
+						{Math.round(data.totalSessionTime / 60)}h
+					</p>
+					<p className="label-xs text-muted-foreground">total session time</p>
 				</div>
 				{data.recentConversations.length > 0 && (
 					<div className="space-y-2">
-						<p className="text-xs font-medium">Recent Topics</p>
+						<p className="label-xs font-medium">recent topics</p>
 						<div className="flex flex-wrap gap-1">
 							{data.recentConversations.slice(0, 3).map((conv) => (
-								<Badge key={conv.id} variant="outline" className="text-xs">
-									{conv.topic}
+								<Badge key={conv.id} variant="outline" className="label-xs">
+									{conv.topic.toLowerCase()}
 								</Badge>
 							))}
 						</div>
@@ -177,43 +179,43 @@ function FlashcardCard({ data }: { data: UnifiedProgress['flashcards'] }) {
 	return (
 		<Card>
 			<CardHeader>
-				<CardTitle className="text-lg flex items-center gap-2">
+				<CardTitle className="heading-4 flex items-center gap-2">
 					<span className="text-2xl">📚</span>
-					Flashcards
+					flashcards
 				</CardTitle>
-				<CardDescription>Your flashcard progress</CardDescription>
+				<CardDescription className="body-sm">your flashcard progress</CardDescription>
 			</CardHeader>
 			<CardContent className="space-y-4">
 				<div className="flex justify-center">
 					<ProgressRing progress={masteryPercent} size={100} strokeWidth={8}>
 						<div className="text-center">
-							<p className="text-2xl font-bold">{masteryPercent}%</p>
-							<p className="text-xs text-muted-foreground">Mastered</p>
+							<p className="text-2xl font-bold font-numeric">{masteryPercent}%</p>
+							<p className="label-xs text-muted-foreground">mastered</p>
 						</div>
 					</ProgressRing>
 				</div>
 				<div className="grid grid-cols-3 gap-2 text-center">
 					<div className="p-2 bg-muted/50 rounded-lg">
-						<p className="text-lg font-bold">{data.totalCards}</p>
-						<p className="text-xs text-muted-foreground">Total</p>
+						<p className="text-lg font-bold font-numeric">{data.totalCards}</p>
+						<p className="label-xs text-muted-foreground">total</p>
 					</div>
 					<div className="p-2 bg-muted/50 rounded-lg">
-						<p className="text-lg font-bold text-green-600">{data.masteredCards}</p>
-						<p className="text-xs text-muted-foreground">Mastered</p>
+						<p className="text-lg font-bold font-numeric text-green-600">{data.masteredCards}</p>
+						<p className="label-xs text-muted-foreground">mastered</p>
 					</div>
 					<div className="p-2 bg-muted/50 rounded-lg">
-						<p className="text-lg font-bold text-amber-600">{data.dueForReview}</p>
-						<p className="text-xs text-muted-foreground">Due</p>
+						<p className="text-lg font-bold font-numeric text-amber-600">{data.dueForReview}</p>
+						<p className="label-xs text-muted-foreground">due</p>
 					</div>
 				</div>
 				<div className="grid grid-cols-2 gap-2 text-center">
 					<div className="p-2 bg-muted/50 rounded-lg">
-						<p className="text-lg font-bold">{data.decksCompleted}</p>
-						<p className="text-xs text-muted-foreground">Decks Done</p>
+						<p className="text-lg font-bold font-numeric">{data.decksCompleted}</p>
+						<p className="label-xs text-muted-foreground">decks done</p>
 					</div>
 					<div className="p-2 bg-muted/50 rounded-lg">
-						<p className="text-lg font-bold">{data.reviewsToday}</p>
-						<p className="text-xs text-muted-foreground">Today</p>
+						<p className="text-lg font-bold font-numeric">{data.reviewsToday}</p>
+						<p className="label-xs text-muted-foreground">today</p>
 					</div>
 				</div>
 			</CardContent>
@@ -235,28 +237,28 @@ function QuizCard({ data }: { data: UnifiedProgress['quiz'] }) {
 				<div className="flex justify-center">
 					<ProgressRing progress={data.averageScore} size={100} strokeWidth={8}>
 						<div className="text-center">
-							<p className="text-2xl font-bold">{data.averageScore}%</p>
-							<p className="text-xs text-muted-foreground">Avg Score</p>
+							<p className="text-2xl font-bold font-numeric">{data.averageScore}%</p>
+							<p className="label-xs text-muted-foreground">avg score</p>
 						</div>
 					</ProgressRing>
 				</div>
 				<div className="grid grid-cols-3 gap-2 text-center">
 					<div className="p-2 bg-muted/50 rounded-lg">
-						<p className="text-lg font-bold">{data.quizzesTaken}</p>
-						<p className="text-xs text-muted-foreground">Taken</p>
+						<p className="text-lg font-bold font-numeric">{data.quizzesTaken}</p>
+						<p className="label-xs text-muted-foreground">taken</p>
 					</div>
 					<div className="p-2 bg-muted/50 rounded-lg">
-						<p className="text-lg font-bold">{data.questionsAttempted}</p>
-						<p className="text-xs text-muted-foreground">Questions</p>
+						<p className="text-lg font-bold font-numeric">{data.questionsAttempted}</p>
+						<p className="label-xs text-muted-foreground">questions</p>
 					</div>
 					<div className="p-2 bg-muted/50 rounded-lg">
-						<p className="text-lg font-bold text-green-600">{data.correctAnswers}</p>
-						<p className="text-xs text-muted-foreground">Correct</p>
+						<p className="text-lg font-bold font-numeric text-green-600">{data.correctAnswers}</p>
+						<p className="label-xs text-muted-foreground">correct</p>
 					</div>
 				</div>
 				{Object.keys(data.topicScores).length > 0 && (
 					<div className="space-y-2">
-						<p className="text-xs font-medium">Topic Scores</p>
+						<p className="label-xs font-medium">topic scores</p>
 						<div className="space-y-1">
 							{Object.entries(data.topicScores)
 								.slice(0, 5)
@@ -299,28 +301,28 @@ function StudyPlanCard({ data }: { data: UnifiedProgress['studyPlan'] }) {
 				<div className="flex justify-center">
 					<ProgressRing progress={data.completionPercentage} size={100} strokeWidth={8}>
 						<div className="text-center">
-							<p className="text-2xl font-bold">{data.completionPercentage}%</p>
-							<p className="text-xs text-muted-foreground">Complete</p>
+							<p className="text-2xl font-bold font-numeric">{data.completionPercentage}%</p>
+							<p className="label-xs text-muted-foreground">complete</p>
 						</div>
 					</ProgressRing>
 				</div>
 				<div className="grid grid-cols-2 gap-2 text-center">
 					<div className="p-2 bg-muted/50 rounded-lg">
-						<p className="text-lg font-bold">{data.tasksCompleted}</p>
-						<p className="text-xs text-muted-foreground">Completed</p>
+						<p className="text-lg font-bold font-numeric">{data.tasksCompleted}</p>
+						<p className="label-xs text-muted-foreground">completed</p>
 					</div>
 					<div className="p-2 bg-muted/50 rounded-lg">
-						<p className="text-lg font-bold">{data.tasksTotal}</p>
-						<p className="text-xs text-muted-foreground">Total</p>
+						<p className="text-lg font-bold font-numeric">{data.tasksTotal}</p>
+						<p className="label-xs text-muted-foreground">total</p>
 					</div>
 				</div>
 				<div className="text-center p-2 bg-muted/50 rounded-lg">
-					<p className="text-lg font-bold">{data.activePlans}</p>
-					<p className="text-xs text-muted-foreground">Active Plans</p>
+					<p className="text-lg font-bold font-numeric">{data.activePlans}</p>
+					<p className="label-xs text-muted-foreground">active plans</p>
 				</div>
 				{data.recentPlans.length > 0 && (
 					<div className="space-y-2">
-						<p className="text-xs font-medium">Recent Plans</p>
+						<p className="label-xs font-medium">recent plans</p>
 						<div className="space-y-1">
 							{data.recentPlans.map((plan) => (
 								<div key={plan.id} className="flex justify-between items-center text-sm">
@@ -349,16 +351,18 @@ function CalendarCard({ data }: { data: UnifiedProgress['calendar'] }) {
 			<CardContent className="space-y-4">
 				<div className="grid grid-cols-3 gap-2 text-center">
 					<div className="p-2 bg-muted/50 rounded-lg">
-						<p className="text-lg font-bold">{data.sessionsCompleted}</p>
-						<p className="text-xs text-muted-foreground">Sessions</p>
+						<p className="text-lg font-bold font-numeric">{data.sessionsCompleted}</p>
+						<p className="label-xs text-muted-foreground">sessions</p>
 					</div>
 					<div className="p-2 bg-muted/50 rounded-lg">
-						<p className="text-lg font-bold">{Math.round(data.totalStudyMinutes / 60)}h</p>
-						<p className="text-xs text-muted-foreground">Study Time</p>
+						<p className="text-lg font-bold font-numeric">
+							{Math.round(data.totalStudyMinutes / 60)}h
+						</p>
+						<p className="label-xs text-muted-foreground">study time</p>
 					</div>
 					<div className="p-2 bg-muted/50 rounded-lg">
-						<p className="text-lg font-bold">{data.attendanceRate}%</p>
-						<p className="text-xs text-muted-foreground">Attendance</p>
+						<p className="text-lg font-bold font-numeric">{data.attendanceRate}%</p>
+						<p className="label-xs text-muted-foreground">attendance</p>
 					</div>
 				</div>
 				{data.recentSessions.length > 0 && (
@@ -391,8 +395,8 @@ function WeakTopicsCard({ data }: { data: UnifiedProgress['weakTopics'] }) {
 					<CardDescription>Topics that need more attention</CardDescription>
 				</CardHeader>
 				<CardContent>
-					<p className="text-center text-muted-foreground py-8">
-						No weak topics identified. Keep up the great work!
+					<p className="text-center text-muted-foreground py-8 body-sm">
+						no weak topics identified. keep up the great work!
 					</p>
 				</CardContent>
 			</Card>
@@ -459,9 +463,9 @@ function EmptyState() {
 	return (
 		<div className="flex flex-col items-center justify-center min-h-[400px] p-8 text-center">
 			<div className="text-6xl mb-4">📊</div>
-			<h2 className="text-2xl font-bold mb-2">Start Your Learning Journey</h2>
-			<p className="text-muted-foreground max-w-md">
-				Complete lessons, quizzes, and flashcards to see your progress here. Your data will appear
+			<h2 className="heading-2 mb-2">start your learning journey</h2>
+			<p className="text-muted-foreground max-w-md body-md">
+				complete lessons, quizzes, and flashcards to see your progress here. your data will appear
 				automatically as you study.
 			</p>
 		</div>
@@ -514,17 +518,17 @@ export default function UnifiedDashboard() {
 				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
 					<div className="flex items-center justify-between">
 						<div>
-							<h1 className="text-3xl font-bold tracking-tight">Your Progress</h1>
-							<p className="text-muted-foreground mt-1">
-								Track your learning journey across all features
+							<h1 className="heading-1 tracking-tight">your progress</h1>
+							<p className="text-muted-foreground mt-1 body-md">
+								track your learning journey across all features
 							</p>
 						</div>
 						<button
 							type="button"
 							onClick={() => window.print()}
-							className="hidden print:hidden px-4 py-2 text-sm font-medium bg-muted hover:bg-muted/80 rounded-lg border border-border/50 transition-colors"
+							className="hidden print:hidden px-4 py-2 label-sm bg-muted hover:bg-muted/80 rounded-lg border border-border/50 transition-colors tiimo-press hover-lift"
 						>
-							Export Report
+							export report
 						</button>
 					</div>
 
