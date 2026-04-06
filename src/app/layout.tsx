@@ -41,8 +41,8 @@ export const metadata: Metadata = {
 		'nsc',
 	],
 	authors: [{ name: appConfig.name.toLowerCase() }],
-	creator: appConfig.name,
-	publisher: appConfig.name,
+	creator: appConfig.name.toLowerCase(),
+	publisher: appConfig.name.toLowerCase(),
 	formatDetection: {
 		email: false,
 		address: false,
@@ -108,17 +108,17 @@ const jsonLd = {
 	'@graph': [
 		{
 			'@type': 'Organization',
-			name: appConfig.name,
+			name: appConfig.name.toLowerCase(),
 			url: baseUrl,
-			description: appConfig.description,
+			description: appConfig.description.toLowerCase(),
 			logo: `${baseUrl}/icon-192.png`,
 		},
 		{
 			'@type': 'WebApplication',
-			name: appConfig.name,
+			name: appConfig.name.toLowerCase(),
 			url: baseUrl,
 			description:
-				'Interactive past papers and step-by-step guides for South African Grade 12 students. Personalized explanations and practice for NSC exams.',
+				'interactive past papers and step-by-step guides for south african grade 12 students. personalized explanations and practice for nsc exams.',
 			applicationCategory: 'EducationalApplication',
 			operatingSystem: 'Any',
 		},

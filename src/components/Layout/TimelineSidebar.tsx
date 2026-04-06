@@ -28,7 +28,7 @@ const DEMO_EVENTS: TimelineEvent[] = [
 		id: '1',
 		time: '08:00',
 		subject: 'mathematics',
-		title: 'Calculus review',
+		title: 'calculus review',
 		duration: '45 min',
 		status: 'completed',
 		emoji: SUBJECTS.mathematics.emoji,
@@ -38,7 +38,7 @@ const DEMO_EVENTS: TimelineEvent[] = [
 		id: '2',
 		time: '09:00',
 		subject: 'physics',
-		title: 'Circuit problems',
+		title: 'circuit problems',
 		duration: '30 min',
 		status: 'current',
 		emoji: SUBJECTS.physics.emoji,
@@ -48,7 +48,7 @@ const DEMO_EVENTS: TimelineEvent[] = [
 		id: '3',
 		time: '10:00',
 		subject: 'english',
-		title: 'Essay planning',
+		title: 'essay planning',
 		duration: '60 min',
 		status: 'upcoming',
 		emoji: SUBJECTS.english.emoji,
@@ -58,7 +58,7 @@ const DEMO_EVENTS: TimelineEvent[] = [
 		id: '4',
 		time: '11:30',
 		subject: 'life-sciences',
-		title: 'Cell structures',
+		title: 'cell structures',
 		duration: '45 min',
 		status: 'upcoming',
 		emoji: SUBJECTS['life-sciences'].emoji,
@@ -67,8 +67,8 @@ const DEMO_EVENTS: TimelineEvent[] = [
 	{
 		id: '5',
 		time: '13:00',
-		subject: 'Break',
-		title: 'Lunch',
+		subject: 'break',
+		title: 'lunch',
 		duration: '30 min',
 		status: 'upcoming',
 		emoji: '🥪',
@@ -153,9 +153,9 @@ export function TimelineSidebar() {
 						</Button>
 					</m.div>
 					<div className="flex-1 text-center flex items-center gap-2 justify-center">
-						<p className="text-xs font-semibold text-foreground">{today}</p>
+						<p className="text-xs font-semibold text-foreground">{today.toLowerCase()}</p>
 						{isToday && session && (
-							<span className="text-[10px] text-primary font-medium">Today</span>
+							<span className="text-[10px] text-primary font-medium">today</span>
 						)}
 					</div>
 					<m.div whileTap={{ scale: 0.9 }}>
@@ -173,7 +173,7 @@ export function TimelineSidebar() {
 
 			{/* Timeline */}
 			<div className="flex-1 overflow-y-auto p-4 space-y-3">
-				<p className="text-xs font-medium text-muted-foreground mb-2 px-2">Your day</p>
+				<p className="text-xs font-medium text-muted-foreground mb-2 px-2">your day</p>
 
 				<div className="relative space-y-4">
 					{/* Timeline Line */}
@@ -198,14 +198,14 @@ export function TimelineSidebar() {
 					) : events.length === 0 ? (
 						<div className="text-center py-8">
 							<div className="text-4xl mb-2">📅</div>
-							<p className="text-sm text-muted-foreground mb-3">No events scheduled</p>
+							<p className="text-sm text-muted-foreground mb-3">no events scheduled</p>
 							<Button
 								variant="outline"
 								size="sm"
 								className="rounded-full"
 								onClick={() => router.push('/planner')}
 							>
-								Add task
+								add task
 							</Button>
 						</div>
 					) : (
@@ -225,9 +225,9 @@ export function TimelineSidebar() {
 			<div className="p-4 border-t border-border">
 				<div className="bg-primary-soft rounded-lg p-4">
 					<div className="flex items-center justify-between mb-1">
-						<p className="text-[10px] text-muted-foreground">Progress today</p>
+						<p className="text-[10px] text-muted-foreground">progress today</p>
 						{session && events.length > 0 && (
-							<span className="text-[10px] text-primary font-medium">Live</span>
+							<span className="text-[10px] text-primary font-medium">live</span>
 						)}
 					</div>
 					<div className="flex items-end gap-2">
@@ -299,12 +299,14 @@ function TimelineEventCard({
 
 				{/* Content */}
 				<div className="flex-1 min-w-0">
-					<div className="flex items-center gap-2 mb-0.5 text-[10px] font-mono text-muted-foreground">
+					<div className="flex items-center gap-2 mb-0.5 text-[10px] font-mono text-muted-foreground italic">
 						<span>{event.time}</span>
 						<span>•</span>
 						<span>{event.duration}</span>
 					</div>
-					<p className="text-[13px] font-semibold text-foreground truncate">{event.title}</p>
+					<p className="text-[13px] font-semibold text-foreground truncate">
+						{event.title.toLowerCase()}
+					</p>
 				</div>
 
 				{/* Emoji */}

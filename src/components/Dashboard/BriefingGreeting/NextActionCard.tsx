@@ -26,22 +26,22 @@ export function NextActionCard({ suggestedSubject, onClick }: NextActionCardProp
 					<HugeiconsIcon icon={Clock01Icon} className="w-5 h-5" />
 				</div>
 				<span className="text-[10px] font-black tracking-wide bg-white/20 px-2 py-1 rounded-lg">
-					Action
+					action
 				</span>
 			</div>
 			<div className="z-10 pt-4">
 				<p className="text-xs font-bold text-white/70 tracking-wide mb-1">
-					Pick up where you left off
+					pick up where you left off
 				</p>
-				<h3 className="text-xl font-black leading-tight">
-					{suggestedSubject || 'General Studies'}
+				<h3 className="text-xl font-black leading-tight font-display">
+					{(suggestedSubject || 'general studies').toLowerCase()}
 				</h3>
 			</div>
 			<div className="flex items-center gap-2 mt-4 z-10">
 				<span className="text-[10px] font-bold bg-white dark:bg-zinc-900 text-tiimo-lavender px-2 py-0.5 rounded-md">
 					prompt
 				</span>
-				<span className="text-[10px] font-medium text-white/80 italic">Ready to finish?</span>
+				<span className="text-[10px] font-medium text-white/80 italic">ready to finish?</span>
 			</div>
 		</m.div>
 	);

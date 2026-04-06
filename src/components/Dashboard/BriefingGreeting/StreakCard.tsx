@@ -27,16 +27,16 @@ export function StreakCard({ streakDays, isNewUser = false, onClick }: StreakCar
 						<span className="text-lg">✨</span>
 					</div>
 					<span className="text-xs font-bold text-tiimo-green bg-tiimo-green/10 px-2 py-1 rounded-lg">
-						Welcome!
+						welcome!
 					</span>
 				</div>
 				<div className="z-10 mt-4">
 					<p className="text-xs font-bold text-tiimo-gray-muted tracking-wide mb-1">
-						Welcome Aboard!
+						welcome aboard!
 					</p>
 					<div className="flex items-baseline gap-2">
-						<span className="text-3xl font-black">Start</span>
-						<span className="text-lg font-bold text-tiimo-gray-muted">Journey</span>
+						<span className="text-3xl font-black">start</span>
+						<span className="text-lg font-bold text-tiimo-gray-muted">journey</span>
 					</div>
 				</div>
 				<p className="text-[10px] text-tiimo-gray-muted mt-4 z-10">
@@ -60,18 +60,18 @@ export function StreakCard({ streakDays, isNewUser = false, onClick }: StreakCar
 					<TrendingUp className="w-5 h-5" />
 				</div>
 				<span className="text-xs font-bold text-tiimo-orange bg-tiimo-orange/10 px-2 py-1 rounded-lg">
-					🔥 Fire
+					🔥 fire
 				</span>
 			</div>
 			<div className="z-10 mt-4">
-				<p className="text-xs font-bold text-tiimo-gray-muted tracking-wide mb-1">Streak</p>
+				<p className="text-xs font-bold text-tiimo-gray-muted tracking-wide mb-1">streak</p>
 				<div className="flex items-baseline gap-2">
-					<span className="text-3xl font-black tabular-nums">{displayStreakDays}</span>
+					<span className="text-3xl font-black tabular-nums font-mono">{displayStreakDays}</span>
 					<span className="text-lg font-bold text-tiimo-gray-muted">days</span>
 				</div>
 			</div>
 			<p className="text-[10px] text-tiimo-gray-muted mt-4 z-10">
-				Keep it up! You&apos;re on a roll.
+				keep it up! you&apos;re on a roll.
 			</p>
 		</m.div>
 	);

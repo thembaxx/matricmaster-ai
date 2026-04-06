@@ -173,10 +173,8 @@ export default function Dashboard({
 		<div className="min-h-screen bg-background flex">
 			<TimelineSidebar />
 			<FocusContent>
-				<div className="mx-auto px-4 sm:px-6 lg:px-8 pb-[var(--mobile-safe-bottom-padding)]">
-					<div className="mb-5">
-						<ExamCountdownHero />
-					</div>
+				<div className="mx-auto px-4 sm:px-6 lg:px-8 pb-[var(--mobile-safe-bottom-padding)] space-y-6">
+					<ExamCountdownHero />
 
 					<BriefingGreeting
 						userName={session?.user?.name}
@@ -191,37 +189,29 @@ export default function Dashboard({
 						briefingData={briefingData ?? undefined}
 					/>
 
-					<div className="mb-6">
-						<AITutorNudge />
-					</div>
+					<AITutorNudge />
 
-					<div className="mb-6">
-						<LeaderboardPreview />
-					</div>
+					<LeaderboardPreview />
 
-					<div className="mb-6">
-						<MatricResultsWidget />
-					</div>
+					<MatricResultsWidget />
 
-					<div className="mb-6 flex justify-center">
+					<div className="flex justify-center">
 						<Button
 							variant="link"
 							onClick={() => router.push('/progress')}
 							className="text-sm text-muted-foreground hover:text-primary"
 						>
-							View full progress report →
+							view full progress report →
 						</Button>
 					</div>
 
 					{scheduleChanges && scheduleChanges.adjustments?.length > 0 && (
-						<div className="mb-6">
-							<AdaptiveScheduleBanner
-								changes={{
-									rescheduledGoals: scheduleChanges.rescheduledGoals,
-									extraPracticeAdded: scheduleChanges.extraPracticeAdded,
-								}}
-							/>
-						</div>
+						<AdaptiveScheduleBanner
+							changes={{
+								rescheduledGoals: scheduleChanges.rescheduledGoals,
+								extraPracticeAdded: scheduleChanges.extraPracticeAdded,
+							}}
+						/>
 					)}
 
 					<Tabs

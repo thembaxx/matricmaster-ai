@@ -21,7 +21,9 @@ export function FocusContent({ children, className }: FocusContentProps) {
 				className
 			)}
 		>
-			<div className="max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">{children}</div>
+			<div className="max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12 pb-40">
+				{children}
+			</div>
 		</m.div>
 	);
 }
