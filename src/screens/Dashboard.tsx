@@ -206,31 +206,36 @@ export default function Dashboard({
 						</div>
 					)}
 
-					<Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
+					<Tabs
+						value={activeTab}
+						onValueChange={handleTabChange}
+						className="w-full"
+						aria-label="Dashboard sections"
+					>
 						<TabsList className="w-full justify-start mb-8 bg-transparent border-b border-border h-auto p-0 rounded-none">
 							<TabsTrigger
 								value="today"
 								className="rounded-none border-b-2 border-transparent data-[state=active]:border-tiimo-lavender data-[state=active]:bg-transparent px-4 py-3 text-base font-medium"
 							>
-								today
+								Today
 							</TabsTrigger>
 							<TabsTrigger
 								value="progress"
 								className="rounded-none border-b-2 border-transparent data-[state=active]:border-tiimo-lavender data-[state=active]:bg-transparent px-4 py-3 text-base font-medium"
 							>
-								progress
+								Progress
 							</TabsTrigger>
 							<TabsTrigger
 								value="tasks"
 								className="rounded-none border-b-2 border-transparent data-[state=active]:border-tiimo-lavender data-[state=active]:bg-transparent px-4 py-3 text-base font-medium"
 							>
-								tasks
+								Tasks
 							</TabsTrigger>
 							<TabsTrigger
 								value="more"
 								className="rounded-none border-b-2 border-transparent data-[state=active]:border-tiimo-lavender data-[state=active]:bg-transparent px-4 py-3 text-base font-medium"
 							>
-								more
+								More
 							</TabsTrigger>
 						</TabsList>
 

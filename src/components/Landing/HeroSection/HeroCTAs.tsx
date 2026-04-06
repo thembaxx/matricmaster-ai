@@ -2,7 +2,7 @@
 
 import { ArrowRight01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { m } from 'framer-motion';
+import { m, useReducedMotion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 
@@ -12,12 +12,13 @@ interface HeroCTAsProps {
 
 export function HeroCTAs({ onAuthRequired }: HeroCTAsProps) {
 	const router = useRouter();
+	const shouldReduceMotion = useReducedMotion();
 
 	return (
 		<m.div
-			initial={{ opacity: 0, y: 20 }}
-			animate={{ opacity: 1, y: 0 }}
-			transition={{ delay: 0.3 }}
+			initial={shouldReduceMotion ? undefined : { opacity: 0, y: 20 }}
+			animate={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
+			transition={shouldReduceMotion ? undefined : { delay: 0.3 }}
 			className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full sm:max-w-md"
 		>
 			<Button
@@ -27,7 +28,7 @@ export function HeroCTAs({ onAuthRequired }: HeroCTAsProps) {
 			>
 				<span className="flex items-center gap-2">
 					Start Studying Free
-					<HugeiconsIcon icon={ArrowRight01Icon} className="w-5 h-5" />
+					<HugeiconsIcon icon={ArrowRight01Icon} className="w-5 h-5" aria-hidden="true" />
 				</span>
 			</Button>
 			<Button
