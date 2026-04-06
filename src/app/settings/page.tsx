@@ -37,6 +37,13 @@ const AppPreferencesTab = dynamic(
 		})),
 	{ ssr: false }
 );
+const CalendarSyncSection = dynamic(
+	() =>
+		import('@/components/Settings/CalendarSyncSection').then((mod) => ({
+			default: mod.CalendarSyncSection,
+		})),
+	{ ssr: false }
+);
 
 export default function SettingsPage() {
 	const { session } = useProfileSettings();
@@ -90,11 +97,12 @@ export default function SettingsPage() {
 				<p className="text-muted-foreground mb-8">Manage your account settings and preferences</p>
 
 				<Tabs defaultValue="account" className="space-y-6">
-					<TabsList className="grid w-full grid-cols-5">
+					<TabsList className="grid w-full grid-cols-6">
 						<TabsTrigger value="account">Account</TabsTrigger>
 						<TabsTrigger value="security">Security</TabsTrigger>
 						<TabsTrigger value="notifications">Notifications</TabsTrigger>
 						<TabsTrigger value="privacy">Privacy</TabsTrigger>
+						<TabsTrigger value="calendar">Calendar</TabsTrigger>
 						<TabsTrigger value="app-preferences">More</TabsTrigger>
 					</TabsList>
 
@@ -159,6 +167,10 @@ export default function SettingsPage() {
 							handleDeleteAccount={privacy.handleDeleteAccount}
 							isDeletingAccount={privacy.isDeletingAccount}
 						/>
+					</TabsContent>
+
+					<TabsContent value="calendar">
+						<CalendarSyncSection />
 					</TabsContent>
 
 					<TabsContent value="app-preferences">

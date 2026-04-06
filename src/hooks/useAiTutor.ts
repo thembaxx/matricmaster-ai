@@ -79,6 +79,9 @@ export function useAiTutor() {
 	const [flashcards, setFlashcards] = useState<Flashcard[]>([]);
 	const [showPracticeModal, setShowPracticeModal] = useState(false);
 	const [showFlashcardModal, setShowFlashcardModal] = useState(false);
+	const [showQuickSaveModal, setShowQuickSaveModal] = useState(false);
+	const [quickSaveTerm, setQuickSaveTerm] = useState('');
+	const [quickSaveDefinition, setQuickSaveDefinition] = useState('');
 	const [showSources, setShowSources] = useState(true);
 	const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -287,23 +290,25 @@ export function useAiTutor() {
 		setIsGeneratingFlashcards(true);
 		try {
 			const recentMessages = messages.slice(-6);
-			const context = recentMessages.map((m) => `${m.role}: ${m.content}`).join('\n\n');
 
-			const response = await fetch('/api/ai-tutor/flashcards', {
+			const response = await fetch('/api/flashcards/from-conversation', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({
-					context,
+					conversation: recentMessages.map((m) => ({ role: m.role, content: m.content })),
 					subject: selectedSubject,
-					count: 5,
 				}),
 			});
 
 			const data = await response.json();
-			if (data.flashcards) {
+			if (data.success && data.flashcards?.length) {
 				setFlashcards(data.flashcards);
 				setShowFlashcardModal(true);
-				toast.success(`Generated ${data.flashcards.length} flashcards!`);
+				toast.success(`Saved ${data.count} flashcards to "${data.deck?.name || 'your deck'}"!`);
+			} else if (data.errors?.length) {
+				toast.warning(`Some cards failed: ${data.errors.join(', ')}`);
+			} else if (data.error) {
+				toast.error(data.error);
 			}
 		} catch (error) {
 			console.error('Failed to generate flashcards:', error);
@@ -311,6 +316,12 @@ export function useAiTutor() {
 		} finally {
 			setIsGeneratingFlashcards(false);
 		}
+	};
+
+	const handleQuickSave = (term: string, definition: string) => {
+		setQuickSaveTerm(term);
+		setQuickSaveDefinition(definition);
+		setShowQuickSaveModal(true);
 	};
 
 	const handleLoadConversation = (conversation: AiConversation) => {
@@ -372,12 +383,17 @@ export function useAiTutor() {
 		setShowPracticeModal,
 		showFlashcardModal,
 		setShowFlashcardModal,
+		showQuickSaveModal,
+		setShowQuickSaveModal,
+		quickSaveTerm,
+		quickSaveDefinition,
 		showSources,
 		messagesEndRef,
 		handleSend,
 		handleSave,
 		handleGeneratePractice,
 		handleGenerateFlashcards,
+		handleQuickSave,
 		handleLoadConversation,
 		handleNewConversation,
 		handleToggleSources,

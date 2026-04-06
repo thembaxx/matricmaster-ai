@@ -22,7 +22,14 @@ export interface CachedQuiz {
 	subject: string;
 	topic?: string;
 	questions: QuizQuestion[];
+	title: string;
+	session: string;
+	year: number;
+	totalQuestions: number;
+	estimatedTime: number; // in minutes
+	difficulty: 'easy' | 'medium' | 'hard';
 	cachedAt: number;
+	size: number;
 }
 
 export interface QuizQuestion {

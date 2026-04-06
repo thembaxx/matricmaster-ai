@@ -10,11 +10,13 @@ import { HugeiconsIcon } from '@hugeicons/react';
 import { AnimatePresence, m } from 'framer-motion';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Suspense, useEffect, useMemo, useState, ViewTransition } from 'react';
+import { toast } from 'sonner';
 import { MarkdownRenderer } from '@/components/AI/MarkdownRenderer';
 import { Comments } from '@/components/Comments/Comments';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useFocusMode, useFocusModeAuto } from '@/hooks/useFocusMode';
 import { getLessonsBySubject, type Lesson } from '@/lib/lessons';
 import { useSchedule } from '@/stores/useScheduleStore';
 import type { StudyTask, SubjectId } from '@/types/schedule';
@@ -38,8 +40,53 @@ function FocusPageContent() {
 		setActiveTask,
 		isTimerRunning,
 		pauseTimer,
+		startTimer,
 		setCurrentTask,
 	} = useSchedule();
+
+	const { enableAuto, isAutoEnabled } = useFocusMode();
+
+	// Auto-activation: prompt user when a scheduled study session is coming up
+	useFocusModeAuto((session) => {
+		toast(
+			<div className="flex flex-col gap-2">
+				<div className="font-semibold">Scheduled session starting soon</div>
+				<div className="text-sm text-muted-foreground">
+					<strong>{session.title}</strong> starts in 5 minutes. Enter Focus Mode?
+				</div>
+				<div className="flex gap-2 mt-1">
+					<button
+						type="button"
+						onClick={() => {
+							enableAuto();
+							if (!isTimerRunning && timeRemaining > 0) {
+								startTimer();
+							}
+							toast.dismiss();
+						}}
+						className="px-3 py-1.5 text-sm bg-primary text-primary-foreground rounded-lg font-medium hover:bg-primary/90"
+					>
+						Enter Focus
+					</button>
+					<button
+						type="button"
+						onClick={() => toast.dismiss()}
+						className="px-3 py-1.5 text-sm bg-muted text-muted-foreground rounded-lg font-medium hover:bg-muted/80"
+					>
+						Skip
+					</button>
+				</div>
+			</div>,
+			{ duration: 15000, id: 'upcoming-session-toast' }
+		);
+	});
+
+	// Auto-start timer when auto-mode is enabled and there's time remaining
+	useEffect(() => {
+		if (isAutoEnabled && !isTimerRunning && timeRemaining > 0) {
+			startTimer();
+		}
+	}, [isAutoEnabled, isTimerRunning, timeRemaining, startTimer]);
 
 	const [newTaskTitle, setNewTaskTitle] = useState('');
 	const [isClient, setIsClient] = useState(false);

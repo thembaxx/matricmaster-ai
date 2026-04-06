@@ -52,9 +52,48 @@ export function TestimonialsSection() {
 								/>
 							))}
 						</div>
-						<p className="text-muted-foreground mb-6 leading-relaxed">
+						<p className="text-muted-foreground mb-4 leading-relaxed">
 							&quot;{testimonial.quote}&quot;
 						</p>
+						{testimonial.metrics && (
+							<div className="mb-4 space-y-2">
+								{testimonial.metrics.improvement && (
+									<div className="flex items-center gap-2 text-sm">
+										<div className="w-2 h-2 bg-tiimo-green rounded-full" />
+										<span className="font-medium text-tiimo-green">
+											{testimonial.metrics.improvement}
+										</span>
+									</div>
+								)}
+								{testimonial.metrics.subjects && testimonial.metrics.subjects.length > 0 && (
+									<div className="flex flex-wrap gap-1">
+										{testimonial.metrics.subjects.slice(0, 2).map((subject) => (
+											<span key={subject} className="px-2 py-1 bg-muted text-xs rounded-full">
+												{subject}
+											</span>
+										))}
+										{testimonial.metrics.subjects.length > 2 && (
+											<span className="px-2 py-1 bg-muted text-xs rounded-full">
+												+{testimonial.metrics.subjects.length - 2} more
+											</span>
+										)}
+									</div>
+								)}
+								{testimonial.metrics.achievements &&
+									testimonial.metrics.achievements.length > 0 && (
+										<div className="flex flex-wrap gap-1">
+											{testimonial.metrics.achievements.map((achievement) => (
+												<span
+													key={achievement}
+													className="px-2 py-1 bg-tiimo-lavender/10 text-tiimo-lavender text-xs rounded-full"
+												>
+													🏆 {achievement}
+												</span>
+											))}
+										</div>
+									)}
+							</div>
+						)}
 						<div className="flex items-center gap-4">
 							<Image
 								src={testimonial.image}
@@ -67,6 +106,9 @@ export function TestimonialsSection() {
 							<div>
 								<p className="font-bold">{testimonial.name}</p>
 								<p className="text-sm text-muted-foreground">{testimonial.grade}</p>
+								{testimonial.location && (
+									<p className="text-xs text-muted-foreground">{testimonial.location}</p>
+								)}
 							</div>
 						</div>
 					</m.div>

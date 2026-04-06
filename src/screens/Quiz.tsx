@@ -86,6 +86,7 @@ function QuizInner({ quizId: initialQuizId }: QuizInnerProps) {
 			state.correctCount,
 			state.incorrectCount,
 			quiz.questions.length,
+			state.topicStats.entries,
 		]
 	);
 

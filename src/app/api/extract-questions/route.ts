@@ -10,6 +10,80 @@ import { extractQuestionsFromPDF, getCachedQuestions } from '@/services/pdfExtra
 
 export const runtime = 'nodejs';
 
+// Enhance questions with quiz-ready formatting
+function enhanceQuestionsForQuiz(questions: any[], paper: any): any[] {
+	return questions.map((question) => {
+		// Estimate difficulty if not set
+		if (!question.difficulty) {
+			question.difficulty = estimateDifficulty(question.marks);
+		}
+
+		// Link to curriculum topics if not set
+		if (!question.topic || question.topic === 'General') {
+			question.topic = mapToCurriculumTopic(question.questionText, paper.subject);
+		}
+
+		// Generate distractors for multiple choice if options not present
+		if (!question.options && isObjectiveType(question)) {
+			question.options = generateDistractors(question);
+		}
+
+		// Add quiz metadata
+		question.quizReady = true;
+		question.year = paper.year;
+		question.month = paper.month;
+		question.paper = paper.paper;
+		question.subject = paper.subject;
+
+		return question;
+	});
+}
+
+function estimateDifficulty(marks: number): 'easy' | 'medium' | 'hard' {
+	if (marks <= 2) return 'easy';
+	if (marks <= 4) return 'medium';
+	return 'hard';
+}
+
+function mapToCurriculumTopic(questionText: string, subject: string): string {
+	// Basic topic mapping based on keywords
+	const text = questionText.toLowerCase();
+	const subjectTopics: Record<string, string[]> = {
+		Mathematics: ['algebra', 'calculus', 'geometry', 'trigonometry', 'statistics'],
+		'Physical Sciences': ['physics', 'chemistry', 'mechanics', 'electricity', 'waves'],
+		'Life Sciences': ['biology', 'anatomy', 'ecology', 'genetics', 'evolution'],
+	};
+
+	const topics = subjectTopics[subject] || [];
+	for (const topic of topics) {
+		if (text.includes(topic)) {
+			return topic.charAt(0).toUpperCase() + topic.slice(1);
+		}
+	}
+
+	return 'General';
+}
+
+function isObjectiveType(question: any): boolean {
+	// Consider it objective if it has multiple choice indicators or short answer
+	return question.questionText.includes('?') || question.questionText.includes('choose');
+}
+
+function generateDistractors(
+	question: any
+): Array<{ letter: string; text: string; isCorrect: boolean }> {
+	// Basic distractor generation - in production this would use AI
+	const correctAnswer = question.correctAnswer || 'Correct answer';
+	const distractors = [
+		{ letter: 'A', text: correctAnswer, isCorrect: true },
+		{ letter: 'B', text: 'Incorrect option B', isCorrect: false },
+		{ letter: 'C', text: 'Incorrect option C', isCorrect: false },
+		{ letter: 'D', text: 'Incorrect option D', isCorrect: false },
+	];
+
+	return distractors;
+}
+
 // Validate URL to prevent SSRF attacks
 function isValidPdfUrl(urlString: string): boolean {
 	try {
@@ -128,6 +202,10 @@ export async function POST(request: NextRequest) {
 				{ status: 500 }
 			);
 		}
+
+		// Enhance questions for quiz format
+		const enhancedQuestions = enhanceQuestionsForQuiz(extractedPaper.questions, extractedPaper);
+		extractedPaper.questions = enhancedQuestions;
 
 		// Save extracted questions to database
 		try {

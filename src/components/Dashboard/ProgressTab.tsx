@@ -3,6 +3,7 @@ import dynamic from 'next/dynamic';
 import { GrowthInsights } from '@/components/Dashboard/GrowthInsights';
 import { TipOfTheDay } from '@/components/Dashboard/TipOfTheDay';
 import { WeeklyChallenge } from '@/components/Dashboard/WeeklyChallenge';
+import { Button } from '@/components/ui/button';
 import type { UserProgressSummary } from '@/lib/db/progress-actions';
 
 const GrowthMap = dynamic(
@@ -32,6 +33,11 @@ export function ProgressTab({
 }: ProgressTabProps) {
 	return (
 		<m.div layout className="space-y-6 pb-36">
+			<div className="flex justify-end">
+				<Button variant="outline" size="sm" onClick={() => window.print()} className="print:hidden">
+					Export Report
+				</Button>
+			</div>
 			{weaknessData.length > 0 && (
 				<div className="space-y-6">
 					<div className="tiimo-card p-6">
