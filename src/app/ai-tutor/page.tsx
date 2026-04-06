@@ -19,6 +19,13 @@ const FlashcardModal = dynamic(
 	() => import('@/components/AI/FlashcardModal').then((mod) => ({ default: mod.FlashcardModal })),
 	{ ssr: false, loading: () => null }
 );
+const QuickFlashcardSave = dynamic(
+	() =>
+		import('@/components/AI/QuickFlashcardSave').then((mod) => ({
+			default: mod.QuickFlashcardSave,
+		})),
+	{ ssr: false, loading: () => null }
+);
 const PracticeModal = dynamic(
 	() => import('@/components/AI/PracticeModal').then((mod) => ({ default: mod.PracticeModal })),
 	{ ssr: false, loading: () => null }
@@ -44,6 +51,10 @@ function AITutorPageContent() {
 		setShowPracticeModal,
 		showFlashcardModal,
 		setShowFlashcardModal,
+		showQuickSaveModal,
+		setShowQuickSaveModal,
+		quickSaveTerm,
+		quickSaveDefinition,
 		messagesEndRef,
 		handleSend,
 		handleSave,
@@ -153,6 +164,14 @@ function AITutorPageContent() {
 				open={showFlashcardModal}
 				onOpenChange={setShowFlashcardModal}
 				flashcards={flashcards}
+				subject={selectedSubject || undefined}
+			/>
+
+			<QuickFlashcardSave
+				open={showQuickSaveModal}
+				onOpenChange={setShowQuickSaveModal}
+				initialTerm={quickSaveTerm}
+				initialDefinition={quickSaveDefinition}
 				subject={selectedSubject || undefined}
 			/>
 		</div>

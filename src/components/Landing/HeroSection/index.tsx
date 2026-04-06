@@ -3,8 +3,8 @@
 import { HeroBadge } from './HeroBadge';
 import { HeroContent } from './HeroContent';
 import { HeroCTAs } from './HeroCTAs';
+import { HeroInteractiveDemo } from './HeroInteractiveDemo';
 import { HeroSocialProof } from './HeroSocialProof';
-import { HeroVisual } from './HeroVisual';
 
 interface HeroSectionProps {
 	onAuthRequired: (path: string) => void;
@@ -19,7 +19,7 @@ export function HeroSection({ onAuthRequired }: HeroSectionProps) {
 				<HeroCTAs onAuthRequired={onAuthRequired} />
 				<HeroSocialProof />
 			</div>
-			<HeroVisual />
+			<HeroInteractiveDemo />
 		</section>
 	);
 }

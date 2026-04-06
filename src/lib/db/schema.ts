@@ -2747,3 +2747,81 @@ export const rateLimits = pgTable(
 export type RateLimit = typeof rateLimits.$inferSelect;
 export type NewRateLimit = typeof rateLimits.$inferInsert;
 export const classicQuestionsRelations = relations(classicQuestions, () => ({}));
+
+// ============================================================================
+// CALENDAR CONNECTIONS TABLE (Google Calendar OAuth)
+// ============================================================================
+
+export const calendarConnections = pgTable(
+	'calendar_connections',
+	{
+		id: uuid('id').defaultRandom().primaryKey(),
+		userId: text('user_id')
+			.notNull()
+			.references(() => users.id, { onDelete: 'cascade' }),
+		provider: varchar('provider', { length: 20 }).notNull().default('google'),
+		accessTokenEncrypted: text('access_token_encrypted'),
+		refreshTokenEncrypted: text('refresh_token_encrypted'),
+		expiresAt: timestamp('expires_at'),
+		calendarId: varchar('calendar_id', { length: 100 }),
+		lastSyncAt: timestamp('last_sync_at'),
+		syncEnabled: boolean('sync_enabled').notNull().default(true),
+		createdAt: timestamp('created_at').defaultNow(),
+		updatedAt: timestamp('updated_at').defaultNow(),
+	},
+	(table) => ({
+		userIdIdx: index('calendar_connections_user_id_idx').on(table.userId),
+		providerIdx: index('calendar_connections_provider_idx').on(table.provider),
+		uniqueUserProvider: uniqueIndex('calendar_connections_user_provider').on(
+			table.userId,
+			table.provider
+		),
+	})
+);
+
+export type CalendarConnection = typeof calendarConnections.$inferSelect;
+export type NewCalendarConnection = typeof calendarConnections.$inferInsert;
+
+// ============================================================================
+// SYNCED EVENTS TABLE (Track sync state between MatricMaster and external calendars)
+// ============================================================================
+
+export const syncedEvents = pgTable(
+	'synced_events',
+	{
+		id: uuid('id').defaultRandom().primaryKey(),
+		userId: text('user_id')
+			.notNull()
+			.references(() => users.id, { onDelete: 'cascade' }),
+		externalEventId: varchar('external_event_id', { length: 100 }),
+		internalEventId: uuid('internal_event_id'),
+		lastSyncedAt: timestamp('last_synced_at').defaultNow(),
+	},
+	(table) => ({
+		userIdIdx: index('synced_events_user_id_idx').on(table.userId),
+		externalIdx: index('synced_events_external_idx').on(table.externalEventId),
+		internalIdx: index('synced_events_internal_idx').on(table.internalEventId),
+		userExternalUnique: uniqueIndex('synced_events_user_external').on(
+			table.userId,
+			table.externalEventId
+		),
+	})
+);
+
+export type SyncedEvent = typeof syncedEvents.$inferSelect;
+export type NewSyncedEvent = typeof syncedEvents.$inferInsert;
+
+// Relations
+export const calendarConnectionsRelations = relations(calendarConnections, ({ one }) => ({
+	user: one(users, {
+		fields: [calendarConnections.userId],
+		references: [users.id],
+	}),
+}));
+
+export const syncedEventsRelations = relations(syncedEvents, ({ one }) => ({
+	user: one(users, {
+		fields: [syncedEvents.userId],
+		references: [users.id],
+	}),
+}));

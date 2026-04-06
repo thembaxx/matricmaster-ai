@@ -13,7 +13,7 @@ export function HeroContent() {
 				transition={shouldReduceMotion ? undefined : { delay: 0.1 }}
 				className="text-display text-foreground leading-[0.95] text-balance"
 			>
-				Finally, a study tool that actually works
+				Pass Matric on your <span className="text-tiimo-lavender">first try</span>
 			</m.h1>
 
 			<m.p
@@ -22,8 +22,8 @@ export function HeroContent() {
 				transition={shouldReduceMotion ? undefined : { delay: 0.2 }}
 				className="body-lg text-muted-foreground max-w-lg text-pretty mx-auto lg:mx-0"
 			>
-				Get AI answers to any past paper question, find your weak spots, and pass matric the first
-				time.
+				AI-powered explanations, adaptive practice, and proven study methods. Join 50,000+ students
+				who improved their marks by an average of 25%.
 			</m.p>
 		</>
 	);

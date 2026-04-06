@@ -25,8 +25,11 @@ export interface IntegrationState {
 	showExamCountdowns: boolean;
 	autoRescheduleEnabled: boolean;
 	lastSyncTime: number | null;
+	isSyncingToCalendar: boolean;
+	calendarSyncResult: { success: boolean; pushedCount: number; errors?: string[] } | null;
 
 	syncUnifiedSchedule: () => Promise<void>;
+	syncToCalendar: () => Promise<void>;
 	setUnifiedView: (view: 'combined' | 'smart' | 'regular') => void;
 	toggleLoadSheddingWarnings: () => void;
 	toggleEnergyRecommendations: () => void;
@@ -68,6 +71,36 @@ export const useScheduleIntegrationStore = create<IntegrationState>((set, get) =
 	showExamCountdowns: true,
 	autoRescheduleEnabled: true,
 	lastSyncTime: null,
+	isSyncingToCalendar: false,
+	calendarSyncResult: null,
+
+	syncToCalendar: async () => {
+		set({ isSyncingToCalendar: true, calendarSyncResult: null });
+		try {
+			const response = await fetch('/api/calendar/sync/push', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+			});
+			const data = await response.json();
+			set({
+				calendarSyncResult: {
+					success: data.success,
+					pushedCount: data.data?.pushedCount ?? 0,
+					errors: data.data?.errors,
+				},
+			});
+		} catch (error) {
+			set({
+				calendarSyncResult: {
+					success: false,
+					pushedCount: 0,
+					errors: [error instanceof Error ? error.message : 'Unknown error'],
+				},
+			});
+		} finally {
+			set({ isSyncingToCalendar: false });
+		}
+	},
 
 	syncUnifiedSchedule: async () => {
 		const smartStore = useSmartSchedulerStore.getState();

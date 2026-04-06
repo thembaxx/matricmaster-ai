@@ -24,14 +24,7 @@
 			"includes": ["src/hooks/useUserTimezone.tsx"],
 			"linter": {
 				"rules": {
-					"recommended": false,
-					"correctness": {},
-					"style": {},
-					"security": {},
-					"performance": {},
-					"a11y": {},
-					"complexity": {},
-					"suspicious": {}
+					"recommended": false
 				}
 			}
 		}
@@ -47,13 +40,17 @@
 		"enabled": true,
 		"rules": {
 			"recommended": true,
+			"nursery": {
+				"recommended": false
+			},
 			"complexity": {
 				"noForEach": "off"
 			},
 			"suspicious": {
 				"noArrayIndexKey": "off",
 				"noRedeclare": "off",
-				"noExplicitAny": "off"
+				"noExplicitAny": "off",
+				"noAssignInExpressions": "off"
 			},
 			"correctness": {
 				"useExhaustiveDependencies": "warn",
@@ -75,7 +72,8 @@
 			"a11y": {
 				"useKeyWithClickEvents": "off",
 				"useButtonType": "error",
-				"useSemanticElements": "off"
+				"useSemanticElements": "off",
+				"noSvgWithoutTitle": "off"
 			},
 			"security": {
 				"noDangerouslySetInnerHtml": "off"

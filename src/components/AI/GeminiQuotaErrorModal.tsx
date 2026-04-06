@@ -195,30 +195,15 @@ export function GeminiQuotaErrorModal({
 													you like.
 												</>
 											) : errorState?.type === 'rate_limit' ? (
-												<>
-													You're making requests too quickly. Please wait a moment before trying
-													again. The system will automatically retry your request.
-												</>
+												"You're making requests too quickly. Please wait a moment before trying again. The system will automatically retry your request."
 											) : errorState?.type === 'network' ? (
-												<>
-													Unable to connect to AI services. Please check your internet connection
-													and try again.
-												</>
+												'Unable to connect to AI services. Please check your internet connection and try again.'
 											) : errorState?.type === 'server' ? (
-												<>
-													AI services are temporarily unavailable. This is usually resolved quickly
-													- please try again in a few minutes.
-												</>
+												'AI services are temporarily unavailable. This is usually resolved quickly - please try again in a few minutes.'
 											) : errorState?.type === 'auth' ? (
-												<>
-													Your API key appears to be invalid or expired. Please check your key or
-													get a new one from Google AI Studio.
-												</>
+												'Your API key appears to be invalid or expired. Please check your key or get a new one from Google AI Studio.'
 											) : (
-												<>
-													An unexpected error occurred. Please try again or contact support if the
-													problem persists.
-												</>
+												'An unexpected error occurred. Please try again or contact support if the problem persists.'
 											)}
 											{errorState?.details && (
 												<div className="mt-2 p-2 bg-muted rounded text-xs font-mono">

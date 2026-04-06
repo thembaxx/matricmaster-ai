@@ -1,12 +1,14 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
 import { startTransition, useEffect, useMemo, useState, ViewTransition } from 'react';
 import { AdaptiveScheduleBanner } from '@/components/Dashboard/AdaptiveScheduleBanner';
 import { AdaptiveScheduleCard } from '@/components/Dashboard/AdaptiveScheduleCard';
 import { AITutorNudge } from '@/components/Dashboard/AITutorNudge';
 import { BriefingGreeting } from '@/components/Dashboard/BriefingGreeting';
 import { CrossFeatureRecommendations } from '@/components/Dashboard/CrossFeatureRecommendations';
+import { ExamCountdownHero } from '@/components/Dashboard/ExamCountdownHero';
 import { LeaderboardPreview } from '@/components/Dashboard/LeaderboardPreview';
 import { MatricResultsWidget } from '@/components/Dashboard/MatricResultsWidget';
 import { MoreTab } from '@/components/Dashboard/MoreTab';
@@ -17,6 +19,7 @@ import { TasksTab } from '@/components/Dashboard/TasksTab';
 import { TodayTab, TodayTabHeader } from '@/components/Dashboard/TodayTab';
 import { FocusContent } from '@/components/Layout/FocusContent';
 import { TimelineSidebar } from '@/components/Layout/TimelineSidebar';
+import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import type { ACHIEVEMENTS } from '@/content';
 import {
@@ -47,6 +50,7 @@ export default function Dashboard({
 	briefingData,
 	mistakeCount,
 }: DashboardProps) {
+	const router = useRouter();
 	const [tasks, setTasks] = useState<Record<string, StudyTask[]>>(DEMO_TASKS);
 	const [expanded, setExpanded] = useState<Record<string, boolean>>({ high: true, medium: true });
 	const [activeTab, setActiveTab] = useState('today');
@@ -170,6 +174,10 @@ export default function Dashboard({
 			<TimelineSidebar />
 			<FocusContent>
 				<div className="mx-auto px-4 sm:px-6 lg:px-8 pb-[var(--mobile-safe-bottom-padding)]">
+					<div className="mb-5">
+						<ExamCountdownHero />
+					</div>
+
 					<BriefingGreeting
 						userName={session?.user?.name}
 						completedCount={completedCount}
@@ -193,6 +201,16 @@ export default function Dashboard({
 
 					<div className="mb-6">
 						<MatricResultsWidget />
+					</div>
+
+					<div className="mb-6 flex justify-center">
+						<Button
+							variant="link"
+							onClick={() => router.push('/progress')}
+							className="text-sm text-muted-foreground hover:text-primary"
+						>
+							View full progress report →
+						</Button>
 					</div>
 
 					{scheduleChanges && scheduleChanges.adjustments?.length > 0 && (
