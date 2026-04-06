@@ -1,9 +1,9 @@
 'use client';
 
-import { Calendar01Icon, ClockIcon, RocketLaunchIcon } from '@hugeicons/core-free-icons';
+import { Calendar01Icon, ClockIcon, RocketIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { differenceInDays } from 'date-fns';
-import { useNavigate } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { NSC_EXAM_DATES, SUBJECT_COLORS } from '@/content';
@@ -56,7 +56,7 @@ function getUrgencyConfig(daysRemaining: number) {
 }
 
 export function ExamCountdownHero() {
-	const navigate = useNavigate();
+	const router = useRouter();
 	const [nextExam, setNextExam] = useState<NextExam | null>(null);
 	const [countdown, setCountdown] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
 
@@ -110,7 +110,7 @@ export function ExamCountdownHero() {
 					variant="outline"
 					size="sm"
 					className="mt-4 w-full md:w-auto"
-					onClick={() => navigate('/study-plan')}
+					onClick={() => router.push('/study-plan')}
 				>
 					Set Exam Date
 				</Button>
@@ -211,16 +211,16 @@ export function ExamCountdownHero() {
 									? 'bg-amber-500 hover:bg-amber-600 text-white'
 									: 'bg-primary hover:bg-primary/90'
 						)}
-						onClick={() => navigate(`/study-plan?subject=${nextExam.subjectKey}`)}
+						onClick={() => router.push(`/study-plan?subject=${nextExam.subjectKey}`)}
 					>
-						<HugeiconsIcon icon={RocketLaunchIcon} className="h-4 w-4" />
+						<HugeiconsIcon icon={RocketIcon} className="h-4 w-4" />
 						Study Now
 					</Button>
 					<Button
 						variant="outline"
 						size="sm"
 						className="text-xs"
-						onClick={() => navigate('/smart-scheduler')}
+						onClick={() => router.push('/smart-scheduler')}
 					>
 						View Schedule
 					</Button>

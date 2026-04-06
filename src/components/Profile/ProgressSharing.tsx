@@ -1,6 +1,6 @@
 'use client';
 
-import { LockIcon, Share01Icon, UnlockIcon } from '@hugeicons/core-free-icons';
+import { LockIcon, Share01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
@@ -89,7 +89,7 @@ export function ProgressSharing({ userStats }: ProgressSharingProps) {
 				</div>
 
 				<div className="flex items-center gap-2 text-xs text-muted-foreground">
-					<HugeiconsIcon icon={isPublic ? UnlockIcon : LockIcon} className="w-3 h-3" />
+					<HugeiconsIcon icon={isPublic ? Share01Icon : LockIcon} className="w-3 h-3" />
 					<span>Your privacy settings are {isPublic ? 'public' : 'private'}</span>
 				</div>
 			</CardContent>

@@ -4,7 +4,6 @@ import { promisify } from 'node:util';
 const scryptAsync = promisify(scrypt);
 
 const ALGORITHM = 'aes-256-gcm';
-const _SALT_LENGTH = 32;
 const IV_LENGTH = 16;
 const TAG_LENGTH = 16;
 
@@ -17,9 +16,9 @@ class EncryptionService {
 			if (!secret) {
 				throw new Error('ENCRYPTION_SECRET environment variable is required');
 			}
-			this.key = await scryptAsync(secret, 'salt', 32);
+			this.key = (await scryptAsync(secret, 'salt', 32)) as Buffer;
 		}
-		return this.key;
+		return this.key!;
 	}
 
 	async encrypt(text: string): Promise<string> {
@@ -52,7 +51,7 @@ class EncryptionService {
 		const decipher = createDecipheriv(ALGORITHM, key, iv);
 		decipher.setAuthTag(authTag);
 
-		let decrypted = decipher.update(encrypted);
+		let decrypted = decipher.update(encrypted, undefined, 'utf8');
 		decrypted += decipher.final('utf8');
 
 		return decrypted;

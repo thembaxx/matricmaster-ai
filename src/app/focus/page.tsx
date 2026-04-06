@@ -44,7 +44,7 @@ function FocusPageContent() {
 		setCurrentTask,
 	} = useSchedule();
 
-	const { enableAuto, isAutoEnabled } = useFocusMode();
+	const { enableAuto, autoEnabled } = useFocusMode();
 
 	// Auto-activation: prompt user when a scheduled study session is coming up
 	useFocusModeAuto((session) => {
@@ -83,10 +83,10 @@ function FocusPageContent() {
 
 	// Auto-start timer when auto-mode is enabled and there's time remaining
 	useEffect(() => {
-		if (isAutoEnabled && !isTimerRunning && timeRemaining > 0) {
+		if (autoEnabled && !isTimerRunning && timeRemaining > 0) {
 			startTimer();
 		}
-	}, [isAutoEnabled, isTimerRunning, timeRemaining, startTimer]);
+	}, [autoEnabled, isTimerRunning, timeRemaining, startTimer]);
 
 	const [newTaskTitle, setNewTaskTitle] = useState('');
 	const [isClient, setIsClient] = useState(false);

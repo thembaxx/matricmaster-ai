@@ -77,35 +77,6 @@ interface UnifiedProgress {
 	}>;
 }
 
-function _StatCard({
-	title,
-	value,
-	subtitle,
-	icon,
-	color,
-}: {
-	title: string;
-	value: string | number;
-	subtitle?: string;
-	icon?: React.ReactNode;
-	color?: string;
-}) {
-	return (
-		<Card className="relative overflow-hidden">
-			<CardHeader className="pb-2">
-				<CardDescription className="text-xs uppercase tracking-wide">{title}</CardDescription>
-				{icon && (
-					<div className={`absolute right-4 top-4 ${color || 'text-muted-foreground'}`}>{icon}</div>
-				)}
-			</CardHeader>
-			<CardContent>
-				<div className="text-3xl font-bold tracking-tight">{value}</div>
-				{subtitle && <p className="text-xs text-muted-foreground mt-1">{subtitle}</p>}
-			</CardContent>
-		</Card>
-	);
-}
-
 function StatCardSkeleton() {
 	return (
 		<Card>

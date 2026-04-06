@@ -21,11 +21,6 @@ const requestSchema = z.object({
 	deckName: z.string().max(200).optional(),
 });
 
-interface Message {
-	role: 'user' | 'assistant';
-	content: string;
-}
-
 interface ExtractedConcept {
 	term: string;
 	definition: string;

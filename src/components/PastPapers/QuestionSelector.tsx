@@ -157,7 +157,7 @@ export function QuestionSelector({
 							<Checkbox
 								checked={isSelected}
 								onCheckedChange={() => !isDisabled && handleToggle(question.id)}
-								disabled={isDisabled}
+								disabled={!!isDisabled}
 							/>
 
 							<div className="flex-1 min-w-0">

@@ -17,7 +17,10 @@ const quizGenerationSchema = z.object({
 			showImmediateFeedback: z.boolean().optional().default(true),
 		})
 		.optional()
-		.default({}),
+		.default({
+			shuffleQuestions: true,
+			showImmediateFeedback: true,
+		}),
 });
 
 interface ExtractedOption {

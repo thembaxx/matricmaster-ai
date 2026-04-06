@@ -55,25 +55,6 @@ interface QuizMeta {
 	generatedFrom: string;
 }
 
-interface ErrorResponse {
-	error: string;
-}
-
-interface QuestionsResponse {
-	success: boolean;
-	questions: ExtractedQuestionPreview[];
-	stats: {
-		total: number;
-		byTopic: Record<string, number>;
-		byDifficulty: Record<string, number>;
-	};
-}
-
-interface QuizGenerationResponse {
-	success: boolean;
-	quiz: QuizResult;
-}
-
 export function QuizGenerator({
 	paperId,
 	paperTitle,
@@ -107,9 +88,9 @@ export function QuizGenerator({
 
 		try {
 			const response = await fetch(`/api/quiz/from-past-paper/create?paperId=${paperId}`);
-			const data = (await response.json()) as QuestionsResponse | ErrorResponse;
+			const data = await response.json();
 
-			if (!data.success || 'error' in data) {
+			if (!response.ok || !data.success || data.error) {
 				throw new Error(data.error || 'Failed to load questions');
 			}
 
@@ -146,9 +127,9 @@ export function QuizGenerator({
 				}),
 			});
 
-			const data = (await response.json()) as QuizGenerationResponse | ErrorResponse;
+			const data = await response.json();
 
-			if (!data.success || 'error' in data) {
+			if (!response.ok || !data.success || data.error) {
 				throw new Error(data.error || 'Failed to generate quiz');
 			}
 
