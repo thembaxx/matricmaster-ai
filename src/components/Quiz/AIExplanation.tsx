@@ -15,7 +15,7 @@ interface AIExplanationProps {
 	correctAnswer?: string;
 	explanation?: string;
 	className?: string;
-	userProfile?: UserLearningProfile;
+	userProfile?: UserLearningProfile | null;
 	subject?: string;
 	topic?: string;
 	enableRealTime?: boolean;

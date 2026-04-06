@@ -27,7 +27,7 @@ interface UserLearningProfileStore {
 	getPersonalizedTips: (subject: string, topic: string) => string[];
 }
 
-const _defaultProfile: UserLearningProfile = {
+const defaultProfile: UserLearningProfile = {
 	userId: '',
 	createdAt: new Date(),
 	updatedAt: new Date(),
@@ -47,6 +47,9 @@ const _defaultProfile: UserLearningProfile = {
 	},
 	preferredContentTypes: ['text', 'visual', 'examples'],
 };
+
+// Keep for future use when we want default profile initialization
+void defaultProfile;
 
 export const useUserLearningProfileStore = create<UserLearningProfileStore>()(
 	persist(

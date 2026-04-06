@@ -16,6 +16,7 @@ export interface Flashcard {
 	timesReviewed: number;
 	timesCorrect: number;
 	nextReview: Date | null;
+	difficulty?: 'easy' | 'medium' | 'hard';
 }
 
 export interface DeckStats {

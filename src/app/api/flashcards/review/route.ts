@@ -2,6 +2,7 @@ import { type NextRequest, NextResponse } from 'next/server';
 import { getAuth } from '@/lib/auth';
 import { recordFlashcardReview } from '@/lib/db/review-queue-actions';
 import type { Rating } from '@/lib/spaced-repetition';
+import { processGamificationAction } from '@/services/unified-gamification';
 
 interface ReviewRequest {
 	flashcardId: string;
@@ -30,6 +31,17 @@ export async function POST(request: NextRequest) {
 
 		if (!result.success) {
 			return NextResponse.json({ error: result.error || 'Failed to save review' }, { status: 500 });
+		}
+
+		// Track gamification event
+		try {
+			await processGamificationAction('flashcard_review', {
+				userId: session.user.id,
+				rating,
+				flashcardId,
+			});
+		} catch (gamificationError) {
+			console.debug('[Review API] Gamification error:', gamificationError);
 		}
 
 		return NextResponse.json({

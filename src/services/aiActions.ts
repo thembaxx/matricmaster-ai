@@ -252,11 +252,10 @@ export async function generateQuestionsAction(
 			);
 
 			// Adjust difficulty based on user performance
-			let _adjustedDifficulty = validated.difficulty;
 			if (topicScore < 50 && validated.difficulty === 'hard') {
-				_adjustedDifficulty = 'medium';
+				validated.difficulty = 'medium';
 			} else if (topicScore > 80 && validated.difficulty === 'easy') {
-				_adjustedDifficulty = 'medium';
+				validated.difficulty = 'medium';
 			}
 
 			personalizationContext = `

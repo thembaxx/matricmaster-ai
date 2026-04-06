@@ -3,8 +3,6 @@
 import { useCallback, useMemo, useState } from 'react';
 import { toast } from 'sonner';
 import type { Rating } from '@/lib/spaced-repetition';
-import { getAdaptiveDifficulty } from '@/services/spacedRepetition';
-import { processGamificationAction } from '@/services/unified-gamification';
 
 interface Flashcard {
 	id: string;
@@ -103,13 +101,20 @@ export function useFlashcardState({
 					streak: isCorrect ? prev.streak + 1 : 0,
 				}));
 
-				// Process gamification event
+				// Process gamification event via API
 				try {
-					await processGamificationAction('flashcard_review', {
-						count: 1,
-						rating,
-						difficulty: currentDifficulty,
-						correct: isCorrect,
+					await fetch('/api/gamification/track', {
+						method: 'POST',
+						headers: { 'Content-Type': 'application/json' },
+						body: JSON.stringify({
+							type: 'flashcard_review',
+							metadata: {
+								count: 1,
+								rating,
+								difficulty: currentDifficulty,
+								correct: isCorrect,
+							},
+						}),
 					});
 				} catch (gamificationError) {
 					console.debug('Gamification tracking failed:', gamificationError);
@@ -118,8 +123,11 @@ export function useFlashcardState({
 				// Adaptive difficulty adjustment
 				if (adaptiveDifficulty && sessionStats.total >= 5) {
 					try {
-						const newDifficulty = await getAdaptiveDifficulty();
-						setCurrentDifficulty(newDifficulty);
+						const response = await fetch('/api/flashcards/adaptive-difficulty');
+						if (response.ok) {
+							const data = await response.json();
+							setCurrentDifficulty(data.difficulty);
+						}
 					} catch (difficultyError) {
 						console.debug('Adaptive difficulty failed:', difficultyError);
 					}
