@@ -26,9 +26,11 @@ export function StatsSection() {
 							className="text-center px-4"
 						>
 							<p className="text-3xl lg:text-4xl font-bold text-tiimo-lavender mb-2 font-numeric">
-								{stat.value}
+								{stat.value.toLowerCase()}
 							</p>
-							<p className="text-muted-foreground text-xs font-medium">{stat.label}</p>
+							<p className="text-muted-foreground label-sm text-balance">
+								{stat.label.toLowerCase()}
+							</p>
 						</m.div>
 					))}
 				</div>

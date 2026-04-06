@@ -23,12 +23,12 @@ interface PasswordInputProps {
 }
 
 const PASSWORD_REQUIREMENTS = [
-	{ key: 'length', label: 'At least 8 characters', test: (p: string) => p.length >= 8 },
-	{ key: 'uppercase', label: 'One uppercase letter', test: (p: string) => /[A-Z]/.test(p) },
-	{ key: 'number', label: 'One number', test: (p: string) => /[0-9]/.test(p) },
+	{ key: 'length', label: 'at least 8 characters', test: (p: string) => p.length >= 8 },
+	{ key: 'uppercase', label: 'one uppercase letter', test: (p: string) => /[A-Z]/.test(p) },
+	{ key: 'number', label: 'one number', test: (p: string) => /[0-9]/.test(p) },
 	{
 		key: 'special',
-		label: 'One special character',
+		label: 'one special character',
 		test: (p: string) => /[!@#$%^&*(),.?":{}|<>]/.test(p),
 	},
 ];

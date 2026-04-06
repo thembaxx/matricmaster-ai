@@ -10,32 +10,32 @@ import {
 
 const FAQ_ITEMS = [
 	{
-		question: 'Is it really free?',
-		answer: 'Yes! You can ask up to 10 questions per day on the free plan.',
+		question: 'is it really free?',
+		answer: 'yes! you can ask up to 10 questions per day on the free plan.',
 	},
 	{
-		question: 'Which subjects do you cover?',
+		question: 'which subjects do you cover?',
 		answer:
-			'All major NSC subjects including Mathematics, Physics, Life Sciences, English, Afrikaans, Geography, History, Accounting, and Economics.',
+			'all major nsc subjects including mathematics, physics, life sciences, english, afrikaans, geography, history, accounting, and economics.',
 	},
 	{
-		question: 'How accurate are the answers?',
+		question: 'how accurate are the answers?',
 		answer:
-			'Our AI is trained specifically on the South African curriculum and past exam papers, providing accurate explanations.',
+			'our ai is trained specifically on the south african curriculum and past exam papers, providing accurate explanations.',
 	},
 	{
-		question: 'Is my data private?',
+		question: 'is my data private?',
 		answer:
-			'Yes, your study data is encrypted and never shared. We prioritize your privacy and security.',
+			'yes, your study data is encrypted and never shared. we prioritize your privacy and security.',
 	},
 	{
-		question: 'Can I cancel anytime?',
-		answer: 'Yes, you can cancel your subscription anytime with no hidden fees or penalties.',
+		question: 'can i cancel anytime?',
+		answer: 'yes, you can cancel your subscription anytime with no hidden fees or penalties.',
 	},
 	{
-		question: 'How do I upgrade to Pro?',
+		question: 'how do i upgrade to pro?',
 		answer:
-			'Go to Settings > Subscription in your dashboard, or click "Go Pro" on any pricing page.',
+			'go to settings > subscription in your dashboard, or click "go pro" on any pricing page.',
 	},
 ];
 
@@ -49,9 +49,9 @@ export function FAQSection() {
 				transition={{ duration: 0.6 }}
 				className="text-center mb-16"
 			>
-				<h2 className="heading-2 mb-4">Frequently asked questions</h2>
-				<p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-					Everything you need to know about MatricMaster.
+				<h2 className="heading-2 mb-4">frequently asked questions</h2>
+				<p className="body-md text-muted-foreground mx-auto">
+					everything you need to know about matricmaster.
 				</p>
 			</m.div>
 
@@ -65,10 +65,10 @@ export function FAQSection() {
 				<Accordion type="single" collapsible className="w-full">
 					{FAQ_ITEMS.map((item, index) => (
 						<AccordionItem key={index} value={`item-${index}`} className="border-border">
-							<AccordionTrigger className="text-base font-medium hover:no-underline">
+							<AccordionTrigger className="body-md font-medium hover:no-underline">
 								{item.question}
 							</AccordionTrigger>
-							<AccordionContent className="text-base text-muted-foreground">
+							<AccordionContent className="body-md text-muted-foreground">
 								{item.answer}
 							</AccordionContent>
 						</AccordionItem>

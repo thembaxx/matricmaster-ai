@@ -49,11 +49,9 @@ export function StatsOverview({ stats }: { stats: StudyStats }) {
 							<HugeiconsIcon icon={Clock01Icon} className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
 						</div>
 						<div className="flex-1 min-w-0 text-right">
-							<p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider">
-								Study Time
-							</p>
-							<p className="text-lg sm:text-xl font-bold tabular-nums">
-								{formatTime(stats.totalStudyTime)}
+							<p className="label-xs text-muted-foreground tracking-tight">study time</p>
+							<p className="text-lg sm:text-xl font-bold font-numeric tabular-nums">
+								{formatTime(stats.totalStudyTime).toLowerCase()}
 							</p>
 						</div>
 					</div>
@@ -70,11 +68,9 @@ export function StatsOverview({ stats }: { stats: StudyStats }) {
 							/>
 						</div>
 						<div className="flex-1 min-w-0 text-right">
-							<p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider">
-								Accuracy
-							</p>
+							<p className="label-xs text-muted-foreground tracking-tight">accuracy</p>
 							<p
-								className={`text-lg sm:text-xl font-bold tabular-nums ${getAccuracyColor(accuracy)}`}
+								className={`text-lg sm:text-xl font-bold font-numeric tabular-nums ${getAccuracyColor(accuracy)}`}
 							>
 								{accuracy}%
 							</p>
@@ -93,11 +89,9 @@ export function StatsOverview({ stats }: { stats: StudyStats }) {
 							/>
 						</div>
 						<div className="flex-1 min-w-0 text-right">
-							<p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider">
-								Streak
-							</p>
+							<p className="label-xs text-muted-foreground tracking-tight">streak</p>
 							<p
-								className={`text-lg sm:text-xl font-bold tabular-nums ${getStreakColor(stats.streakDays)}`}
+								className={`text-lg sm:text-xl font-bold font-numeric tabular-nums ${getStreakColor(stats.streakDays)}`}
 							>
 								{stats.streakDays}d
 							</p>
@@ -113,10 +107,10 @@ export function StatsOverview({ stats }: { stats: StudyStats }) {
 							<HugeiconsIcon icon={Medal01Icon} className="w-4 h-4 sm:w-5 sm:h-5 text-purple-500" />
 						</div>
 						<div className="flex-1 min-w-0 text-right">
-							<p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider">
-								Level
+							<p className="label-xs text-muted-foreground tracking-tight">level</p>
+							<p className="text-lg sm:text-xl font-bold font-numeric tabular-nums">
+								{stats.level}
 							</p>
-							<p className="text-lg sm:text-xl font-bold tabular-nums">{stats.level}</p>
 						</div>
 					</div>
 				</CardContent>

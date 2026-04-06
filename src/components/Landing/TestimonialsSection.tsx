@@ -20,11 +20,11 @@ export function TestimonialsSection() {
 				className="text-center mb-16"
 			>
 				<h2 className="heading-2 mb-4">
-					Proven by
-					<span className="text-tiimo-lavender"> thousands</span> of NSC learners
+					proven by
+					<span className="text-tiimo-lavender"> thousands</span> of nsc learners
 				</h2>
-				<p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-					See how Lumni helped South African students achieve their matric goals — and how you can
+				<p className="body-md text-muted-foreground mx-auto">
+					see how lumni helped south african students achieve their matric goals — and how you can
 					too.
 				</p>
 			</m.div>
@@ -73,7 +73,7 @@ export function TestimonialsSection() {
 											</span>
 										))}
 										{testimonial.metrics.subjects.length > 2 && (
-											<span className="px-2 py-1 bg-muted text-xs rounded-full">
+											<span className="px-2 py-1 bg-muted label-xs rounded-full font-numeric">
 												+{testimonial.metrics.subjects.length - 2} more
 											</span>
 										)}
@@ -85,9 +85,9 @@ export function TestimonialsSection() {
 											{testimonial.metrics.achievements.map((achievement) => (
 												<span
 													key={achievement}
-													className="px-2 py-1 bg-tiimo-lavender/10 text-tiimo-lavender text-xs rounded-full"
+													className="px-2 py-1 bg-tiimo-lavender/10 text-tiimo-lavender label-xs rounded-full"
 												>
-													🏆 {achievement}
+													🏆 {achievement.toLowerCase()}
 												</span>
 											))}
 										</div>

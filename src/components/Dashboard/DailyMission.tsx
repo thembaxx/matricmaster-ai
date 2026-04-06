@@ -65,15 +65,15 @@ export function DailyMission() {
 	const getTypeLabel = (type: string) => {
 		switch (type) {
 			case 'flashcard':
-				return 'Flashcards';
+				return 'flashcards';
 			case 'quiz':
-				return 'Quiz';
+				return 'quiz';
 			case 'pastPaper':
-				return 'Past Paper';
+				return 'past paper';
 			case 'lesson':
-				return 'Lesson';
+				return 'lesson';
 			default:
-				return 'Study';
+				return 'study';
 		}
 	};
 
@@ -100,9 +100,9 @@ export function DailyMission() {
 		return (
 			<Card className="border-primary/20 bg-linear-to-br from-primary/5 to-transparent">
 				<CardHeader>
-					<CardTitle className="flex items-center gap-2">
+					<CardTitle className="body-lg font-bold flex items-center gap-2">
 						<HugeiconsIcon icon={FlashIcon} className="h-5 w-5 text-primary animate-pulse" />
-						Daily Mission
+						daily mission
 					</CardTitle>
 				</CardHeader>
 				<CardContent>
@@ -123,16 +123,16 @@ export function DailyMission() {
 	return (
 		<Card className="border-primary/20 bg-linear-to-br from-primary/5 to-transparent overflow-hidden">
 			<CardHeader className="pb-3">
-				<CardTitle className="flex items-center gap-2 text-lg">
+				<CardTitle className="body-lg font-bold flex items-center gap-2">
 					<m.div
 						animate={{ rotate: [0, -10, 10, 0] }}
 						transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY, repeatDelay: 3 }}
 					>
 						<HugeiconsIcon icon={FlashIcon} className="h-5 w-5 text-primary" />
 					</m.div>
-					Daily Mission
+					daily mission
 				</CardTitle>
-				<p className="text-xs text-muted-foreground">Your top 3 priority tasks for today</p>
+				<p className="label-xs text-muted-foreground">your top 3 priority tasks for today</p>
 			</CardHeader>
 			<CardContent className="space-y-3">
 				{missions.slice(0, 3).map((mission, index) => (
@@ -150,15 +150,17 @@ export function DailyMission() {
 						>
 							<HugeiconsIcon icon={getTypeIcon(mission.type)} className="w-5 h-5" />
 						</div>
-						<div className="flex-1 min-w-0">
+						<div className="flex-1 min-w-0 font-numeric">
 							<div className="flex items-center gap-2">
-								<span className="font-bold text-sm text-foreground truncate">{mission.topic}</span>
-								<span className="text-[10px] px-1.5 py-0.5 bg-muted rounded-full text-muted-foreground shrink-0">
+								<span className="body-sm font-bold text-foreground truncate">
+									{(mission.topic || '').toLowerCase()}
+								</span>
+								<span className="label-xs px-1.5 py-0.5 bg-muted rounded-full text-muted-foreground shrink-0 font-numeric">
 									{getTypeLabel(mission.type)}
 								</span>
 							</div>
-							<p className="text-xs text-muted-foreground truncate mt-0.5">
-								{mission.subject} • {mission.reason}
+							<p className="label-xs text-muted-foreground truncate mt-0.5 font-numeric">
+								{(mission.subject || '').toLowerCase()} • {(mission.reason || '').toLowerCase()}
 							</p>
 						</div>
 						<div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -170,9 +172,9 @@ export function DailyMission() {
 					variant="ghost"
 					size="sm"
 					onClick={() => router.push('/review')}
-					className="w-full text-xs text-muted-foreground hover:text-foreground"
+					className="w-full label-xs text-muted-foreground hover:text-foreground"
 				>
-					View all recommendations
+					view all recommendations
 					<HugeiconsIcon icon={ArrowRight01Icon} className="w-4 h-4 ml-1" />
 				</Button>
 			</CardContent>

@@ -100,19 +100,17 @@ export function ExamCountdownHero() {
 						<HugeiconsIcon icon={Calendar01Icon} className="h-7 w-7 text-primary" />
 					</div>
 					<div className="flex-1">
-						<p className="text-sm font-medium text-muted-foreground">No exams scheduled</p>
-						<p className="text-base font-semibold mt-0.5">
-							Set your exam date to see your countdown
-						</p>
+						<p className="body-sm text-muted-foreground">no exams scheduled</p>
+						<p className="body-md font-semibold mt-0.5">set your exam date to see your countdown</p>
 					</div>
 				</div>
 				<Button
 					variant="outline"
 					size="sm"
-					className="mt-4 w-full md:w-auto"
+					className="mt-4 w-full md:w-auto tiimo-press hover-lift"
 					onClick={() => router.push('/study-plan')}
 				>
-					Set Exam Date
+					set exam date
 				</Button>
 			</div>
 		);
@@ -126,7 +124,7 @@ export function ExamCountdownHero() {
 			className={cn(
 				'relative overflow-hidden rounded-2xl border border-border/50 bg-gradient-to-br',
 				`from-background via-background to-${subjectColor}/5`,
-				'p-5 md:p-6 shadow-lg',
+				'p-6 shadow-lg hover-lift transition-all duration-300',
 				config.glow
 			)}
 		>
@@ -155,11 +153,9 @@ export function ExamCountdownHero() {
 						/>
 					</div>
 					<div>
-						<p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-							Next Exam
-						</p>
-						<p className="text-lg font-bold mt-0.5" style={{ color: subjectColor }}>
-							{nextExam.subject} — {nextExam.paper}
+						<p className="label-xs text-muted-foreground tracking-tight">next exam</p>
+						<p className="body-lg font-bold mt-0.5" style={{ color: subjectColor }}>
+							{nextExam.subject.toLowerCase()} — {nextExam.paper.toLowerCase()}
 						</p>
 					</div>
 				</div>
@@ -172,29 +168,29 @@ export function ExamCountdownHero() {
 					<div className="flex items-end gap-1">
 						<span
 							className={cn(
-								'text-5xl md:text-6xl font-bold tabular-nums tracking-tight',
+								'text-5xl md:text-6xl font-bold font-numeric tabular-nums tracking-tight',
 								config.text
 							)}
 						>
 							{countdown.days}
 						</span>
-						<span className="text-xl font-semibold text-muted-foreground mb-2">days</span>
+						<span className="body-sm font-semibold text-muted-foreground mb-2">days</span>
 					</div>
 					<div className="flex items-center gap-3 mt-1">
 						<div className="flex items-center gap-1.5">
 							<HugeiconsIcon icon={ClockIcon} className="h-4 w-4 text-muted-foreground" />
-							<span className="text-sm text-muted-foreground tabular-nums">
+							<span className="body-xs text-muted-foreground font-numeric tabular-nums">
 								{String(countdown.hours).padStart(2, '0')}:
 								{String(countdown.minutes).padStart(2, '0')}:
 								{String(countdown.seconds).padStart(2, '0')}
 							</span>
 						</div>
-						<span className={cn('text-xs font-semibold px-2 py-0.5 rounded-full', config.badge)}>
+						<span className={cn('label-xs font-semibold px-2 py-0.5 rounded-full', config.badge)}>
 							{nextExam.daysRemaining <= 7
-								? 'CRITICAL'
+								? 'critical'
 								: nextExam.daysRemaining <= 30
-									? 'URGENT'
-									: 'ON TRACK'}
+									? 'urgent'
+									: 'on track'}
 						</span>
 					</div>
 				</div>
@@ -204,7 +200,7 @@ export function ExamCountdownHero() {
 					<Button
 						size="sm"
 						className={cn(
-							'gap-2 font-semibold shadow-md',
+							'gap-2 font-semibold shadow-md tiimo-press hover-lift',
 							nextExam.daysRemaining <= 7
 								? 'bg-red-500 hover:bg-red-600 text-white'
 								: nextExam.daysRemaining <= 30
@@ -214,15 +210,15 @@ export function ExamCountdownHero() {
 						onClick={() => router.push(`/study-plan?subject=${nextExam.subjectKey}`)}
 					>
 						<HugeiconsIcon icon={RocketIcon} className="h-4 w-4" />
-						Study Now
+						study now
 					</Button>
 					<Button
 						variant="outline"
 						size="sm"
-						className="text-xs"
+						className="label-xs tiimo-press hover-lift"
 						onClick={() => router.push('/smart-scheduler')}
 					>
-						View Schedule
+						view schedule
 					</Button>
 				</div>
 			</div>

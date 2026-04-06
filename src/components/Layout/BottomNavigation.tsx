@@ -63,7 +63,7 @@ export const BottomNavigation = memo(function BottomNavigation({
 			animate={{ y: 0 }}
 			transition={{ type: 'spring', stiffness: 260, damping: 20 }}
 			id="bottom-navigation"
-			aria-label="Bottom navigation"
+			aria-label="bottom navigation"
 			className="lg:hidden fixed bottom-6 left-1/2 -translate-x-1/2 w-[94%] max-w-md z-20 tiimo-glass rounded-[2.5rem] shadow-tiimo-lg grid grid-cols-5 p-1.5"
 			style={{ paddingBottom: 'calc(1.5rem + env(safe-area-inset-bottom, 0px)' }}
 		>
@@ -88,13 +88,13 @@ export const BottomNavigation = memo(function BottomNavigation({
 								<HugeiconsIcon
 									icon={item.icon}
 									className={`w-6 h-6 transition-colors duration-300 ${
-										isActive ? item.activeColor : 'text-tiimo-gray-muted'
+										isActive ? item.activeColor : 'text-tiimo-black-30'
 									}`}
 								/>
 							</m.div>
 							<span
-								className={`text-[10px] font-bold tracking-tight transition-colors duration-300 ${
-									isActive ? 'text-foreground' : 'text-tiimo-gray-muted'
+								className={`label-xs font-bold tracking-tight transition-colors duration-300 ${
+									isActive ? 'text-foreground' : 'text-tiimo-black-50'
 								}`}
 							>
 								{item.label}

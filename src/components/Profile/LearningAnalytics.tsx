@@ -34,8 +34,8 @@ function StreakDisplay({ streak }: { streak: number }) {
 	return (
 		<Card className="rounded-[2rem] bg-card/50 backdrop-blur-sm border-border/50">
 			<CardHeader className="pb-2">
-				<CardTitle className="text-xs font-black text-label-tertiary tracking-[0.2em] uppercase">
-					Learning Streak
+				<CardTitle className="label-xs font-black text-label-tertiary tracking-tight">
+					learning streak
 				</CardTitle>
 			</CardHeader>
 			<CardContent>
@@ -60,15 +60,17 @@ function StreakDisplay({ streak }: { streak: number }) {
 						)}
 					</div>
 					<div className="flex flex-col">
-						<span className="text-3xl font-black text-foreground tracking-tight">{streak}</span>
-						<span className="text-[10px] text-label-tertiary tracking-wide">Current streak</span>
+						<span className="text-3xl font-black text-foreground tracking-tight font-numeric">
+							{streak}
+						</span>
+						<span className="label-xs text-label-tertiary tracking-wide">current streak</span>
 					</div>
 					<div className="ml-auto flex flex-col items-end">
 						<div className="flex items-center gap-1 text-accent-lime">
 							<TrendingUp className="w-3 h-3" />
-							<span className="text-sm font-bold">{bestStreak}</span>
+							<span className="body-sm font-bold font-numeric">{bestStreak}</span>
 						</div>
-						<span className="text-[10px] text-label-tertiary">Best streak</span>
+						<span className="label-xs text-label-tertiary">best streak</span>
 					</div>
 				</div>
 			</CardContent>
@@ -82,8 +84,8 @@ function StudyTimeStats({ studyStats }: { studyStats: StudyStats }) {
 	return (
 		<Card className="rounded-[2rem] bg-card/50 backdrop-blur-sm border-border/50">
 			<CardHeader className="pb-2">
-				<CardTitle className="text-xs font-black text-label-tertiary tracking-[0.2em] uppercase">
-					Study Time
+				<CardTitle className="label-xs font-black text-label-tertiary tracking-tight">
+					study time
 				</CardTitle>
 			</CardHeader>
 			<CardContent className="space-y-4">
@@ -92,10 +94,10 @@ function StudyTimeStats({ studyStats }: { studyStats: StudyStats }) {
 						<Clock className="w-5 h-5 text-accent-lime" />
 					</div>
 					<div>
-						<p className="text-xl font-black text-foreground">
+						<p className="text-xl font-black text-foreground font-numeric">
 							{formatMinutesToHoursMinutes(totalStudyTimeMinutes)}
 						</p>
-						<p className="text-[10px] text-label-tertiary">This week</p>
+						<p className="label-xs text-label-tertiary">this week</p>
 					</div>
 				</div>
 
@@ -104,10 +106,10 @@ function StudyTimeStats({ studyStats }: { studyStats: StudyStats }) {
 						<Clock className="w-5 h-5 text-primary-violet" />
 					</div>
 					<div>
-						<p className="text-xl font-black text-foreground">
+						<p className="text-xl font-black text-foreground font-numeric">
 							{formatMinutesToHoursMinutes(avgSessionLength)}
 						</p>
-						<p className="text-[10px] text-label-tertiary">Avg session</p>
+						<p className="label-xs text-label-tertiary">avg session</p>
 					</div>
 				</div>
 
@@ -116,10 +118,10 @@ function StudyTimeStats({ studyStats }: { studyStats: StudyStats }) {
 						<Calendar className="w-5 h-5 text-primary-orange" />
 					</div>
 					<div>
-						<p className="text-xl font-black text-foreground">
+						<p className="text-xl font-black text-foreground font-numeric">
 							{daysActiveThisWeek}/<span className="text-label-tertiary">7</span>
 						</p>
-						<p className="text-[10px] text-label-tertiary">Days active</p>
+						<p className="label-xs text-label-tertiary">days active</p>
 					</div>
 				</div>
 			</CardContent>
@@ -128,14 +130,14 @@ function StudyTimeStats({ studyStats }: { studyStats: StudyStats }) {
 }
 
 function ActivityHeatmap({ weeklyStudyMinutes }: { weeklyStudyMinutes: number[] }) {
-	const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+	const days = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
 	const maxMinutes = Math.max(...weeklyStudyMinutes, 60);
 
 	return (
 		<Card className="rounded-[2rem] bg-card/50 backdrop-blur-sm border-border/50">
 			<CardHeader className="pb-2">
-				<CardTitle className="text-xs font-black text-label-tertiary tracking-[0.2em] uppercase">
-					Weekly Activity
+				<CardTitle className="label-xs font-black text-label-tertiary tracking-tight">
+					weekly activity
 				</CardTitle>
 			</CardHeader>
 			<CardContent>
@@ -152,7 +154,7 @@ function ActivityHeatmap({ weeklyStudyMinutes }: { weeklyStudyMinutes: number[] 
 								>
 									<div className="absolute inset-0 bg-accent-lime/50 animate-pulse" />
 								</motion.div>
-								<span className="text-[10px] text-label-tertiary font-medium">{days[index]}</span>
+								<span className="label-xs text-label-tertiary font-medium">{days[index]}</span>
 							</div>
 						);
 					})}
@@ -176,8 +178,8 @@ function StudyStreakCalendar({ streak }: { streak: number }) {
 	return (
 		<Card className="rounded-[2rem] bg-card/50 backdrop-blur-sm border-border/50">
 			<CardHeader className="pb-2">
-				<CardTitle className="text-xs font-black text-label-tertiary tracking-[0.2em] uppercase">
-					Last 30 Days
+				<CardTitle className="label-xs font-black text-label-tertiary tracking-tight">
+					last 30 days
 				</CardTitle>
 			</CardHeader>
 			<CardContent>
@@ -197,14 +199,14 @@ function StudyStreakCalendar({ streak }: { streak: number }) {
 						/>
 					))}
 				</div>
-				<div className="flex items-center gap-4 mt-4 text-[10px] text-label-tertiary">
+				<div className="flex items-center gap-4 mt-4 label-xs text-label-tertiary">
 					<div className="flex items-center gap-2">
 						<div className="w-3 h-3 rounded-full bg-accent-lime" />
-						<span>Studied</span>
+						<span>studied</span>
 					</div>
 					<div className="flex items-center gap-2">
 						<div className="w-3 h-3 rounded-full border border-border/50" />
-						<span>Not studied</span>
+						<span>not studied</span>
 					</div>
 				</div>
 			</CardContent>
