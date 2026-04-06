@@ -1,5 +1,6 @@
 'use client';
 
+import { toast } from 'sonner';
 import { create } from 'zustand';
 import type { QuizAutoSaveData } from '@/services/quiz-auto-save';
 import {
@@ -17,6 +18,7 @@ interface QuizAutoSaveState {
 	showRecoveryDialog: boolean;
 	recoveryAvailable: boolean;
 	syncedFromTab: boolean;
+	lastSaveFailed: boolean;
 
 	saveQuizState: (state: QuizAutoSaveData) => void;
 	loadQuizState: () => QuizAutoSaveData | null;
@@ -34,15 +36,24 @@ export const useQuizAutoSaveStore = create<QuizAutoSaveState>((set, get) => ({
 	showRecoveryDialog: false,
 	recoveryAvailable: false,
 	syncedFromTab: false,
+	lastSaveFailed: false,
 
 	saveQuizState: (state: QuizAutoSaveData) => {
 		const stateToSave = {
 			...state,
 			savedAt: Date.now(),
 		};
-		saveQuizState(stateToSave);
-		set({ savedQuizState: stateToSave, lastSavedAt: Date.now() });
-		get().broadcastState(stateToSave);
+		const success = saveQuizState(stateToSave);
+		if (success) {
+			set({ savedQuizState: stateToSave, lastSavedAt: Date.now(), lastSaveFailed: false });
+			get().broadcastState(stateToSave);
+		} else {
+			set({ lastSaveFailed: true });
+			toast.error('Failed to save progress', {
+				description: 'Your quiz progress may not be recovered if you close this page.',
+				duration: 5000,
+			});
+		}
 	},
 
 	loadQuizState: () => {
@@ -117,6 +128,7 @@ export function useQuizAutoSave() {
 		showRecoveryDialog: store.showRecoveryDialog,
 		recoveryAvailable: store.recoveryAvailable,
 		syncedFromTab: store.syncedFromTab,
+		lastSaveFailed: store.lastSaveFailed,
 		saveQuizState: store.saveQuizState,
 		loadQuizState: store.loadQuizState,
 		clearSavedQuiz: store.clearSavedQuiz,
