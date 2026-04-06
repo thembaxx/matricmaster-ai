@@ -14,6 +14,7 @@ import {
 	GridIcon,
 	Home01Icon,
 	Key01Icon,
+	Layers01Icon,
 	LayoutLeftIcon,
 	MapsIcon,
 	Medal01Icon,
@@ -71,7 +72,7 @@ export const sideMenuSections: MenuSection[] = [
 		title: 'practice',
 		items: [
 			{ href: '/quiz', label: 'quiz', icon: QuestionIcon },
-			{ href: '/flashcards', label: 'flashcards', icon: QuestionIcon },
+			{ href: '/flashcards', label: 'flashcards', icon: Layers01Icon },
 			{ href: '/past-papers', label: 'past papers', icon: File01Icon },
 			{ href: '/snap-and-solve', label: 'snap & solve', icon: CalculatorIcon },
 			{ href: '/common-questions', label: 'common questions', icon: QuestionIcon },

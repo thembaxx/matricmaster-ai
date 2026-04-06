@@ -4,7 +4,7 @@ import {
 	Calendar01Icon,
 	DashboardSpeed02Icon,
 	MagicWandIcon,
-	Search01Icon,
+	Timer01Icon,
 	UserIcon,
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
@@ -37,7 +37,7 @@ const navItems = [
 	{
 		href: '/focus',
 		label: 'focus',
-		icon: Search01Icon,
+		icon: Timer01Icon,
 		activeColor: 'text-primary',
 		bgColor: 'bg-primary/10',
 	},
