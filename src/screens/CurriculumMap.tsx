@@ -146,7 +146,7 @@ export default function CurriculumMap() {
 			</div>
 
 			<ScrollArea className="flex-1">
-				<main className="px-4 sm:px-6 py-4 pb-40 max-w-4xl mx-auto w-full">
+				<main className="px-4 sm:px-6 py-4 pb-[var(--mobile-safe-bottom-padding)] max-w-4xl mx-auto w-full">
 					<div className="mb-2">
 						<h2 className="text-sm font-bold text-muted-foreground tracking-widest mb-1">
 							caps grade 12

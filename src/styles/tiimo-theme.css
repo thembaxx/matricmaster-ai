@@ -96,9 +96,14 @@
   --text-hero: clamp(3rem, 8vw + 1rem, 6rem);
 
   /* Font Families */
+  --font-geist-sans: var(--font-geist-sans);
+  --font-geist-mono: var(--font-geist-mono);
+  --font-playfair: var(--font-playfair);
+  --font-noto-sans-math: var(--font-noto-sans-math);
+  --font-heading: var(--font-heading);
+  --font-mono: var(--font-mono);
   --font-display: var(--font-playfair), Georgia, serif;
   --font-body: var(--font-geist-sans), system-ui, sans-serif;
-  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
 
   /* Font Weights - Semantic Roles */
   --weight-normal: 400;

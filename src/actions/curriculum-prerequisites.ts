@@ -31,7 +31,7 @@ async function getDb(): Promise<DbType> {
  */
 function getTopicPrerequisites(topic: string, _subject: string): string[] {
 	const prerequisiteMap: Record<string, string[]> = {
-		// Mathematics
+		// Mathematics - Core Topics
 		'Quadratic Equations': ['Linear Equations', 'Algebraic Expressions'],
 		Trigonometry: ['Ratio and Proportion', 'Similarity', 'Pythagoras'],
 		Calculus: ['Functions', 'Limits', 'Differentiation'],
@@ -40,17 +40,38 @@ function getTopicPrerequisites(topic: string, _subject: string): string[] {
 		'Analytical Geometry': ['Coordinate System', 'Linear Equations', 'Distance Formula'],
 		Matrices: ['Algebraic Expressions', 'Linear Equations'],
 		Statistics: ['Data Handling', 'Measures of Central Tendency'],
+		'Financial Mathematics': ['Percentages', 'Simple Interest', 'Compound Interest'],
+		'Sequences and Series': ['Arithmetic Sequences', 'Geometric Sequences'],
+		'Functions and Graphs': ['Coordinate Geometry', 'Linear Functions'],
+		'Trigonometric Functions': ['Trigonometry', 'Unit Circle'],
+		'Differential Calculus': ['Limits', 'Derivatives', 'Applications'],
+		'Integral Calculus': ['Antiderivatives', 'Definite Integrals'],
+		'Linear Programming': ['Inequalities', 'Optimization'],
 
-		// Physical Sciences
+		// Physical Sciences - Physics
 		Momentum: ["Newton's Laws", 'Vectors', 'Kinematics'],
 		Electrostatics: ['Charge', 'Electric Fields', "Coulomb's Law"],
-		'Chemical Equilibrium': ['Reaction Rates', 'Stoichiometry', 'Chemical Reactions'],
-		'Organic Chemistry': ['Bonding', 'IUPAC Naming', 'Functional Groups'],
-		'Redox Reactions': ['Oxidation States', 'Electron Transfer', 'Electrochemical Cells'],
 		"Newton's Laws": ['Vectors', 'Kinematics', 'Forces'],
 		Mechanics: ['Vectors', "Newton's Laws", 'Kinematics'],
 		Waves: ['Transverse Waves', 'Sound', 'Wave Properties'],
 		'Electric Circuits': ['Current', 'Resistance', "Ohm's Law"],
+		Electromagnetism: ['Magnetic Fields', 'Electromagnetic Induction'],
+		'Alternating Current': ['AC Circuits', 'Transformers'],
+		'Quantum Physics': ['Wave-Particle Duality', 'Energy Levels'],
+		Radioactivity: ['Nuclear Reactions', 'Half-Life'],
+		'Doppler Effect': ['Waves', 'Relative Motion'],
+
+		// Physical Sciences - Chemistry
+		'Chemical Equilibrium': ['Reaction Rates', 'Stoichiometry', 'Chemical Reactions'],
+		'Organic Chemistry': ['Bonding', 'IUPAC Naming', 'Functional Groups'],
+		'Redox Reactions': ['Oxidation States', 'Electron Transfer', 'Electrochemical Cells'],
+		'Acids and Bases': ['pH Scale', 'Acid-Base Reactions'],
+		Electrochemistry: ['Redox Reactions', 'Galvanic Cells'],
+		'Chemical Kinetics': ['Reaction Rates', 'Catalysts'],
+		Thermochemistry: ['Energy Changes', 'Enthalpy'],
+		'Chemical Bonding': ['Atomic Structure', 'Electron Configuration'],
+		Periodicity: ['Periodic Table', 'Trends'],
+		'Industrial Chemistry': ['Chemical Processes', 'Manufacturing'],
 
 		// Life Sciences
 		'Molecular Genetics': ['DNA Structure', 'Cell Division', 'Replication'],
@@ -61,22 +82,74 @@ function getTopicPrerequisites(topic: string, _subject: string): string[] {
 		'Cell Division': ['Mitosis', 'Chromosomes', 'Cell Cycle'],
 		Respiration: ['Cell Biology', 'Energy', 'ATP'],
 		Photosynthesis: ['Chloroplast', 'Light Reactions', 'Calvin Cycle'],
+		Homeostasis: ['Human Physiology', 'Feedback Mechanisms'],
+		'Endocrine System': ['Hormones', 'Glands'],
+		'Nervous System': ['Neurons', 'Brain Function'],
+		'Immune System': ['Pathogens', 'Antibodies'],
+		Ecology: ['Ecosystems', 'Food Chains'],
+		Biodiversity: ['Classification', 'Conservation'],
 
 		// English Home Language
 		'Essay Writing': ['Paragraph Structure', 'Grammar', 'Creative Writing'],
 		Comprehension: ['Reading Skills', 'Inference', 'Vocabulary'],
 		'Poetry Analysis': ['Literary Devices', 'Figures of Speech', 'Tone'],
 		'Language Structures': ['Grammar', 'Syntax', 'Punctuation'],
+		'Transactional Writing': ['Formal Language', 'Structure'],
+		'Visual Literacy': ['Media Analysis', 'Advertising'],
+		Summarizing: ['Reading Comprehension', 'Paraphrasing'],
+		'Language in Context': ['Registers', 'Situational Language'],
 
 		// History
 		'Cold War': ['World War II', 'Superpowers', 'Ideology'],
 		'South African History': ['Colonialism', 'Apartheid', 'Democracy'],
 		'Civil Rights': ['Apartheid', 'Resistance', 'Liberation Movements'],
+		'World War I': ['Imperialism', 'Nationalism'],
+		'World War II': ['Interwar Period', 'Fascism'],
+		'Industrial Revolution': ['Economic Systems', 'Technology'],
+		'Apartheid Era': ['Segregation', 'Resistance'],
+		'Truth and Reconciliation': ['Apartheid', 'Transition'],
+		Globalization: ['Trade', 'Cultural Exchange'],
 
 		// Geography
 		'Climate and Weather': ['Atmosphere', 'Pressure Systems', 'Climate Zones'],
 		Geomorphology: ['Weathering', 'Erosion', 'Landforms'],
 		Cartography: ['Map Reading', 'Scale', 'Coordinates'],
+		'Rural-Urban Migration': ['Push-Pull Factors', 'Urbanization'],
+		'Development Geography': ['Economic Indicators', 'Quality of Life'],
+		'Environmental Issues': ['Pollution', 'Conservation'],
+		'Population Geography': ['Demographics', 'Migration'],
+		'Economic Geography': ['Resources', 'Trade'],
+		'Tourism Geography': ['Attractions', 'Impact Assessment'],
+
+		// Accounting
+		'Financial Statements': ['Double Entry', 'Ledgers'],
+		VAT: ['Tax Principles', 'Business Transactions'],
+		Budgets: ['Financial Planning', 'Cost Control'],
+		'Cash Flow': ['Working Capital', 'Liquidity'],
+		'Cost Accounting': ['Cost Classification', 'Break-even Analysis'],
+		'Company Financials': ['Share Capital', 'Dividends'],
+		'Analysis of Accounts': ['Ratios', 'Trends'],
+		'Internal Controls': ['Risk Management', 'Auditing'],
+
+		// Business Studies
+		'Business Environment': ['Micro/Macro Environment', 'Stakeholders'],
+		'Management Functions': ['Planning', 'Organizing', 'Leading'],
+		Marketing: ['Market Research', '4Ps'],
+		'Human Resources': ['Recruitment', 'Training'],
+		'Business Finance': ['Sources of Finance', 'Financial Management'],
+		'Operations Management': ['Production', 'Quality Control'],
+		'Business Ethics': ['Corporate Governance', 'CSR'],
+		'International Business': ['Globalization', 'Trade'],
+
+		// Economics
+		'Demand and Supply': ['Market Equilibrium', 'Elasticity'],
+		Macroeconomics: ['GDP', 'Inflation', 'Unemployment'],
+		Microeconomics: ['Consumer Behavior', 'Production'],
+		'Public Finance': ['Government Revenue', 'Expenditure'],
+		'International Trade': ['Comparative Advantage', 'Trade Barriers'],
+		'Economic Growth': ['Development', 'Indicators'],
+		Inflation: ['Causes', 'Effects', 'Control'],
+		Unemployment: ['Types', 'Causes', 'Solutions'],
 	};
 
 	return prerequisiteMap[topic] || [];

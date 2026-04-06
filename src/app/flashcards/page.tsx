@@ -203,8 +203,25 @@ export default function FlashcardsPage() {
 							front: c.front,
 							back: c.back,
 							tags: [],
+							difficulty: c.difficulty,
 						}))}
 						reviewMode={true}
+						adaptiveDifficulty={true}
+						onRate={async (flashcardId, rating) => {
+							try {
+								const response = await fetch('/api/flashcards/review', {
+									method: 'POST',
+									headers: { 'Content-Type': 'application/json' },
+									body: JSON.stringify({ flashcardId, rating }),
+								});
+								if (!response.ok) {
+									throw new Error('Failed to save rating');
+								}
+							} catch (error) {
+								console.error('Failed to rate flashcard:', error);
+								throw error;
+							}
+						}}
 					/>
 				)}
 			</div>

@@ -8,15 +8,30 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
+import type { UserLearningProfile } from '@/types/learning-profile';
 
 interface AIExplanationProps {
 	question: string;
 	correctAnswer?: string;
 	explanation?: string;
 	className?: string;
+	userProfile?: UserLearningProfile;
+	subject?: string;
+	topic?: string;
+	enableRealTime?: boolean;
+	onRealTimeExplanation?: (explanation: string, tips: string[]) => void;
 }
 
-export function AIExplanation({ question, correctAnswer, className }: AIExplanationProps) {
+export function AIExplanation({
+	question,
+	correctAnswer,
+	className,
+	userProfile,
+	subject,
+	topic,
+	enableRealTime = false,
+	onRealTimeExplanation,
+}: AIExplanationProps) {
 	const [isExpanded, setIsExpanded] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
 	const [explanation, setExplanation] = useState<string | null>(null);
@@ -31,23 +46,51 @@ export function AIExplanation({ question, correctAnswer, className }: AIExplanat
 		setError(null);
 
 		try {
-			const response = await fetch('/api/ai-tutor', {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({
-					message: `Explain this question and provide the answer: ${question}${
-						correctAnswer ? ` The correct answer is: ${correctAnswer}` : ''
-					}`,
-					includeSuggestions: false,
-				}),
-			});
+			if (enableRealTime && subject && topic) {
+				// Use real-time explanation with user profile
+				const response = await fetch('/api/real-time-explanation', {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify({
+						subject,
+						topic,
+						context: question,
+						userAction: 'question_asked',
+						previousInteractions: userProfile?.interactionHistory?.slice(-5),
+						userProfile,
+					}),
+				});
 
-			const data = await response.json();
+				const data = await response.json();
 
-			if (data.response) {
-				setExplanation(data.response);
+				if (data.success && data.explanation) {
+					setExplanation(data.explanation);
+					if (data.tips && onRealTimeExplanation) {
+						onRealTimeExplanation(data.explanation, data.tips);
+					}
+				} else {
+					setError(data.error || 'Failed to get explanation. Please try again.');
+				}
 			} else {
-				setError('Failed to get explanation. Please try again.');
+				// Fallback to original AI tutor endpoint
+				const response = await fetch('/api/ai-tutor', {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify({
+						message: `Explain this question and provide the answer: ${question}${
+							correctAnswer ? ` The correct answer is: ${correctAnswer}` : ''
+						}`,
+						includeSuggestions: false,
+					}),
+				});
+
+				const data = await response.json();
+
+				if (data.response) {
+					setExplanation(data.response);
+				} else {
+					setError('Failed to get explanation. Please try again.');
+				}
 			}
 		} catch (error) {
 			console.error('Failed to get AI explanation:', error);

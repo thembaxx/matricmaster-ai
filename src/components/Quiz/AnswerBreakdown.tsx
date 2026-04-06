@@ -3,19 +3,22 @@
 import { Cancel01Icon, CheckmarkCircle02Icon, SparklesIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { useQuery } from '@tanstack/react-query';
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useGeminiQuotaModal } from '@/contexts/GeminiQuotaModalContext';
 import { isQuotaError } from '@/lib/ai/quota-error';
 import { cn } from '@/lib/utils';
-import { getExplanation } from '@/services/geminiService';
+import { generateAnswerExplanation, getExplanation } from '@/services/geminiService';
 
 interface AnswerBreakdownProps {
 	correctAnswer: string;
 	selectedAnswer: string | null;
 	isCorrect: boolean;
 	topic: string;
+	question: string;
+	subject: string;
 	onContinue?: () => void;
 }
 
@@ -24,9 +27,12 @@ export function AnswerBreakdown({
 	selectedAnswer,
 	isCorrect,
 	topic,
+	question,
+	subject,
 	onContinue,
 }: AnswerBreakdownProps) {
 	const { triggerQuotaError } = useGeminiQuotaModal();
+	const [showAnswerExplanation, setShowAnswerExplanation] = useState(false);
 
 	const { data: explanation, isLoading: loading } = useQuery({
 		queryKey: ['explanation', topic],
@@ -42,6 +48,33 @@ export function AnswerBreakdown({
 				return null;
 			}
 		},
+	});
+
+	const {
+		data: answerExplanation,
+		isLoading: answerExplanationLoading,
+		refetch: refetchAnswerExplanation,
+	} = useQuery({
+		queryKey: ['answer-explanation', question, correctAnswer, selectedAnswer, subject, topic],
+		queryFn: async () => {
+			try {
+				const result = await generateAnswerExplanation(
+					question,
+					correctAnswer,
+					selectedAnswer || '',
+					subject,
+					topic
+				);
+				return result;
+			} catch (err) {
+				if (isQuotaError(err)) {
+					triggerQuotaError();
+				}
+				console.debug('Failed to fetch answer explanation:', err);
+				return null;
+			}
+		},
+		enabled: false, // Only run when manually triggered
 	});
 
 	return (
@@ -107,6 +140,45 @@ export function AnswerBreakdown({
 						<div className="space-y-3">
 							<Skeleton className="h-4 w-3/4" />
 							<Skeleton className="h-4 w-1/2" />
+						</div>
+					)}
+
+					{!isCorrect && !showAnswerExplanation && (
+						<Button
+							variant="outline"
+							size="sm"
+							onClick={() => {
+								setShowAnswerExplanation(true);
+								refetchAnswerExplanation();
+							}}
+							className="rounded-full gap-2 mt-4"
+						>
+							<HugeiconsIcon icon={SparklesIcon} className="w-4 h-4 text-primary" />
+							Explain My Mistake
+						</Button>
+					)}
+
+					{showAnswerExplanation && (
+						<div className="p-4 rounded-xl bg-card border border-border/50 mt-4">
+							<div className="flex items-center gap-2 mb-2">
+								<HugeiconsIcon icon={SparklesIcon} className="w-4 h-4 text-primary" />
+								<p className="text-xs font-semibold text-primary">Why You Got It Wrong</p>
+							</div>
+							{answerExplanationLoading ? (
+								<div className="space-y-3">
+									<Skeleton className="h-4 w-3/4" />
+									<Skeleton className="h-4 w-1/2" />
+									<Skeleton className="h-4 w-2/3" />
+								</div>
+							) : answerExplanation ? (
+								<p className="text-sm text-foreground/80 leading-relaxed whitespace-pre-wrap">
+									{answerExplanation}
+								</p>
+							) : (
+								<p className="text-sm text-destructive">
+									Failed to load explanation. Please try again.
+								</p>
+							)}
 						</div>
 					)}
 

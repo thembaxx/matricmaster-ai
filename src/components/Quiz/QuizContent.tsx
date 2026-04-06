@@ -19,6 +19,7 @@ import type { AnyQuizQuestion, ShortAnswerQuestion } from '@/content/questions/q
 import { useMathKeyboard } from '@/hooks/use-math-keyboard';
 import { useAdaptiveDifficulty } from '@/stores/useAdaptiveDifficultyStore';
 import { useQuestionFlagStore } from '@/stores/useQuestionFlagStore';
+import { useUserLearningProfileStore } from '@/stores/useUserLearningProfileStore';
 import { QuizTimer } from './QuizTimer';
 import { QuizToolbar } from './QuizToolbar';
 import { ShortAnswerFeedback } from './ShortAnswerFeedback';
@@ -138,6 +139,8 @@ export function QuizContent({
 	const [difficultyRecommendation, setDifficultyRecommendation] = useState<string | undefined>();
 
 	const { toggleFlag, getFlaggedQuestions, isFlagged, clearFlags } = useQuestionFlagStore();
+
+	const { profile: userProfile } = useUserLearningProfileStore();
 
 	const currentQuestion = quiz.questions[currentQuestionIndex];
 	const isMCQ = !currentQuestion.type || currentQuestion.type === 'mcq';
@@ -335,6 +338,24 @@ export function QuizContent({
 							<AIExplanation
 								question={currentQuestion.question}
 								correctAnswer={correctAnswerText}
+								userProfile={userProfile}
+								subject={currentSubject}
+								topic={currentQuestion.topic}
+								enableRealTime={true}
+								onRealTimeExplanation={(_explanation, _tips) => {
+									// Update user profile with new interaction
+									if (userProfile) {
+										const store = useUserLearningProfileStore.getState();
+										store.addInteraction({
+											subject: currentSubject,
+											topic: currentQuestion.topic,
+											action: 'explanation',
+											timestamp: new Date(),
+											performance: undefined, // No performance score for explanation
+											duration: 0, // Could track time spent reading explanation
+										});
+									}
+								}}
 							/>
 
 							<QuestionExtras
@@ -362,6 +383,8 @@ export function QuizContent({
 									selectedAnswer={selectedAnswerText}
 									isCorrect={isCorrect ?? false}
 									topic={currentQuestion.topic}
+									question={currentQuestion.question}
+									subject={currentSubject}
 								/>
 							</m.div>
 						)}

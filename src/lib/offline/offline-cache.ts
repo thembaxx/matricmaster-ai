@@ -1,7 +1,7 @@
 'use client';
 
 import { type DBSchema, type IDBPDatabase, openDB } from 'idb';
-import { compressToUTF16, decompressFromUTF16 } from 'lz-string';
+import { compressToBase64, compressToUTF16, decompressFromUTF16 } from 'lz-string';
 import type { Lesson } from '@/lib/lessons';
 import { getLessonsBySubject } from '@/lib/lessons';
 
@@ -415,6 +415,115 @@ export async function getBundleData<T>(bundleId: string): Promise<T | null> {
 export async function getDownloadedBundles(): Promise<DownloadedBundle[]> {
 	const db = await getDB();
 	return db.getAll('bundles');
+}
+
+/**
+ * Optimize offline storage by cleaning up old cached data and recompressing
+ */
+export async function optimizeOfflineStorage(): Promise<{
+	cleanedItems: number;
+	spaceSaved: number;
+}> {
+	try {
+		const db = await getDB();
+		const now = Date.now();
+		let cleanedItems = 0;
+		let spaceSaved = 0;
+
+		// Clean up old AI responses (keep only last 30 days)
+		const monthAgo = now - 30 * 24 * 60 * 60 * 1000;
+		const oldAIResponses = await db.getAllFromIndex('aiResponses', 'by-date');
+		const expiredAI = oldAIResponses.filter((r) => r.cachedAt < monthAgo);
+
+		for (const response of expiredAI) {
+			await db.delete('aiResponses', response.prompt);
+			cleanedItems++;
+			spaceSaved += JSON.stringify(response).length;
+		}
+
+		// Clean up old bundles (keep only last 14 days)
+		const twoWeeksAgo = now - 14 * 24 * 60 * 60 * 1000;
+		const bundles = await db.getAllFromIndex('bundles', 'by-date');
+		const oldBundles = bundles.filter((b) => b.downloadedAt < twoWeeksAgo);
+
+		for (const bundle of oldBundles) {
+			await db.delete('bundles', bundle.bundleId);
+			await db.delete('bundleData', bundle.bundleId);
+			cleanedItems++;
+			spaceSaved += bundle.sizeBytes;
+		}
+
+		// Recompress existing bundle data with better compression
+		const allBundles = await db.getAll('bundles');
+		for (const bundle of allBundles) {
+			const bundleData = await db.get('bundleData', bundle.bundleId);
+			if (bundleData) {
+				// Try recompressing with base64 if it's not already
+				const currentCompressed = bundleData.compressedData;
+				const decompressed = decompressFromUTF16(currentCompressed);
+				if (decompressed) {
+					const base64Compressed = compressToBase64(decompressed);
+					if (base64Compressed.length < currentCompressed.length) {
+						await db.put('bundleData', {
+							...bundleData,
+							compressedData: base64Compressed,
+						});
+						spaceSaved += currentCompressed.length - base64Compressed.length;
+					}
+				}
+			}
+		}
+
+		return { cleanedItems, spaceSaved };
+	} catch (error) {
+		console.error('Storage optimization failed:', error);
+		return { cleanedItems: 0, spaceSaved: 0 };
+	}
+}
+
+/**
+ * Get storage usage and recommendations
+ */
+export async function getStorageRecommendations(): Promise<{
+	usage: StorageUsage;
+	recommendations: string[];
+	canOptimize: boolean;
+}> {
+	try {
+		const db = await getDB();
+		const usage = await getStorageUsage();
+
+		const recommendations: string[] = [];
+		let canOptimize = false;
+
+		if (usage.percentage > 90) {
+			recommendations.push('Storage is critically low. Consider clearing old cached content.');
+			canOptimize = true;
+		} else if (usage.percentage > 75) {
+			recommendations.push('Storage usage is high. Run optimization to free up space.');
+			canOptimize = true;
+		}
+
+		// Check for old data
+		const now = Date.now();
+		const weekAgo = now - 7 * 24 * 60 * 60 * 1000;
+		const oldBundles = await db.getAllFromIndex('bundles', 'by-date');
+		const hasOldData = oldBundles.some((b) => b.downloadedAt < weekAgo);
+
+		if (hasOldData) {
+			recommendations.push('Old cached bundles detected. Optimization will clean them up.');
+			canOptimize = true;
+		}
+
+		return { usage, recommendations, canOptimize };
+	} catch (error) {
+		console.error('Failed to get storage recommendations:', error);
+		return {
+			usage: { used: 0, total: 0, percentage: 0 },
+			recommendations: [],
+			canOptimize: false,
+		};
+	}
 }
 
 export async function isBundleDownloaded(bundleId: string): Promise<boolean> {
