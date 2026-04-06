@@ -4,6 +4,7 @@ import { Loading03Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import dynamic from 'next/dynamic';
 import { useCallback, useEffect, useState } from 'react';
+import { toast } from 'sonner';
 import { ContextualAIBubble } from '@/components/AI/ContextualAIBubble';
 import { ResponsiveAudioPlayer } from '@/components/AudioPlayer';
 import { PastPaperHeader } from '@/components/PastPaper/PastPaperHeader';
@@ -22,6 +23,7 @@ import { usePastPaperViewer } from '@/hooks/usePastPaperViewer';
 import {
 	downloadPastPaper,
 	getCachedPastPaper,
+	getStorageUsage,
 	isStorageAvailable,
 } from '@/lib/offline/offline-cache';
 import type { ParsedQuestion } from '@/services/ocrService';
@@ -115,7 +117,11 @@ export default function PastPaperViewer({
 
 		const available = await isStorageAvailable();
 		if (!available) {
-			console.warn('Not enough storage available');
+			const usage = await getStorageUsage();
+			toast.error('Storage full', {
+				description: `Storage is ${usage.percentage}% full. Clear downloaded papers to save offline.`,
+				duration: 5000,
+			});
 			return;
 		}
 
@@ -124,7 +130,9 @@ export default function PastPaperViewer({
 			await downloadPastPaper(paper.id);
 			downloadPaper(paper.id);
 			setIsOfflineAvailable(true);
+			toast.success('Paper saved for offline use');
 		} catch (err) {
+			toast.error('Failed to download paper');
 			console.error('Failed to download paper for offline:', err);
 		}
 		setIsDownloading(false);
