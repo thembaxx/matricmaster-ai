@@ -2,7 +2,10 @@
 
 import { useSearchParams } from 'next/navigation';
 import { Suspense, useCallback, useEffect, useRef, ViewTransition } from 'react';
+import { ContextualAIBubble } from '@/components/AI/ContextualAIBubble';
 import { EdgeCaseHandler } from '@/components/EdgeCase/EdgeCaseHandler';
+import { FocusContent } from '@/components/Layout/FocusContent';
+import { TimelineSidebar } from '@/components/Layout/TimelineSidebar';
 import { QuizContent } from '@/components/Quiz/QuizContent';
 import { useQuizState } from '@/components/Quiz/useQuizState';
 import { WeakTopicAlert } from '@/components/Quiz/WeakTopicAlert';
@@ -13,9 +16,6 @@ import {
 	syncAllPendingData,
 } from '@/services/offlineQuizSync';
 import { useQuizAutoSave } from '@/stores/useQuizAutoSaveStore';
-import { TimelineSidebar } from '@/components/Layout/TimelineSidebar';
-import { FocusContent } from '@/components/Layout/FocusContent';
-import { ContextualAIBubble } from '@/components/AI/ContextualAIBubble';
 
 interface QuizInnerProps {
 	quizId?: string;
