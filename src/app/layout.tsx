@@ -18,7 +18,7 @@ import { geistMono, geistSans, notoSansMath, playfair } from './fonts';
 
 const geistHeading = Geist({ subsets: ['latin'], variable: '--font-heading' });
 
-const jetbrainsMono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-mono' });
+const jetbrainsMono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-jetbrains-mono' });
 
 const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://lumni.ai';
 

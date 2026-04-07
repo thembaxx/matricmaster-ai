@@ -47,64 +47,64 @@ const variantContent: Record<
 	{ title: string; description: string; icon: LucideIcon; animation?: boolean }
 > = {
 	loading: {
-		title: 'Loading...',
-		description: 'Just a moment while we fetch your data',
+		title: 'Preparing your experience...',
+		description: 'Just a moment while we curate your data',
 		icon: Sparkles,
 		animation: true,
 	},
 	empty: {
-		title: 'No items yet',
-		description: "You haven't added anything here. Start your learning journey now!",
+		title: 'Your journey starts here',
+		description: "You haven't added anything yet. Let's build your first milestone!",
 		icon: FolderOpen,
 	},
 	noResults: {
-		title: 'No results found',
-		description: 'Try adjusting your search or filters to find what you need',
+		title: 'No matches found',
+		description: 'Try adjusting your search or filters to find the right material',
 		icon: SearchX,
 	},
 	noData: {
-		title: 'No data available',
-		description: 'There is no data to display at the moment',
+		title: 'No insights yet',
+		description: 'Complete a few activities to see your progress mapped out',
 		icon: BookOpen,
 	},
 	noConnection: {
-		title: 'No internet connection',
-		description: 'Please check your connection and try again',
+		title: 'Connection lost',
+		description: "You're currently offline. Please check your internet to continue",
 		icon: Link2Off,
 	},
 	firstTime: {
-		title: 'Welcome to Lumni!',
-		description: 'Start your matric journey by selecting your subjects',
+		title: 'Welcome to Lumni',
+		description: 'Your path to matric mastery begins with choosing your subjects',
 		icon: GraduationCap,
 	},
 	noSubjects: {
-		title: 'Choose your subjects',
-		description: 'Select your NSC subjects to start practicing',
+		title: 'Set your focus',
+		description: 'Select your NSC subjects to unlock targeted practice materials',
 		icon: BookOpen,
 	},
 	noFlashcards: {
-		title: 'Create your first flashcard deck',
-		description: 'Build your memory with AI-generated flashcards',
+		title: 'Build your memory',
+		description: 'Start creating flashcard decks to master complex concepts faster',
 		icon: Sparkles,
 	},
 	noPastPapers: {
-		title: 'Past papers coming soon',
-		description: 'We are adding more past papers for your revision',
+		title: 'Papers arriving soon',
+		description: "We're curating the best past papers for your specific subjects",
 		icon: BookOpen,
 	},
 	noLeaderboard: {
-		title: 'Be the first to top the leaderboard',
-		description: 'Complete quizzes to earn points and rank among the best',
+		title: 'Claim the top spot',
+		description: 'Complete your first quiz to enter the arena and compete with others',
 		icon: Trophy,
 	},
 	noStudyPlan: {
-		title: 'Create your study plan',
-		description: 'Set goals and track your progress with a personalized study plan',
+		title: 'Design your success',
+		description: 'Set your goals and let AI build your high-impact study roadmap',
 		icon: Calendar,
 	},
 	noBuddies: {
-		title: 'Find study buddies',
-		description: 'Connect with other students to study together',
+		title: 'Study better together',
+		description: 'Connect with fellow students to tackle the syllabus as a team',
 		icon: Users,
 	},
 };
@@ -126,25 +126,47 @@ export function EmptyState({
 
 	return (
 		<m.div
-			initial={{ opacity: 0, y: 10 }}
-			animate={{ opacity: 1, y: 0 }}
-			className={cn('flex flex-col items-center justify-center py-12 text-center', className)}
+			initial={{ opacity: 0, y: 20, scale: 0.98 }}
+			animate={{ opacity: 1, y: 0, scale: 1 }}
+			transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+			className={cn(
+				'flex flex-col items-center justify-center py-16 px-6 text-center max-w-md mx-auto',
+				className
+			)}
 		>
 			{variant === 'loading' ? (
-				<div className="w-12 h-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin mb-4" />
+				<div className="relative w-16 h-16 mb-6">
+					<div className="absolute inset-0 border-4 border-primary/20 border-t-primary rounded-full animate-spin" />
+					<div className="absolute inset-0 flex items-center justify-center">
+						<IconComponent className="w-6 h-6 text-primary animate-pulse" />
+					</div>
+				</div>
 			) : (
 				IconComponent && (
-					<div className="w-16 h-16 bg-muted/50 rounded-2xl flex items-center justify-center mb-4">
-						<IconComponent className="w-8 h-8 text-muted-foreground/50" />
+					<div className="relative group mb-6">
+						<div className="absolute inset-0 bg-primary/10 blur-2xl rounded-full group-hover:bg-primary/20 transition-colors" />
+						<div className="relative w-20 h-20 bg-card border border-border/50 rounded-3xl flex items-center justify-center shadow-soft-md backdrop-blur-sm">
+							<IconComponent className="w-10 h-10 text-muted-foreground/60 group-hover:text-primary transition-colors" />
+						</div>
 					</div>
 				)
 			)}
-			<h3 className="text-lg font-bold text-foreground mb-2">{finalTitle}</h3>
+
+			<h3 className="text-2xl font-black text-foreground tracking-tight font-display mb-3">
+				{finalTitle}
+			</h3>
+
 			{finalDescription && (
-				<p className="text-sm text-muted-foreground max-w-sm mb-6">{finalDescription}</p>
+				<p className="text-sm text-muted-foreground leading-relaxed mb-8 max-w-xs mx-auto">
+					{finalDescription}
+				</p>
 			)}
+
 			{actionLabel && onAction && (
-				<Button onClick={onAction} variant="outline">
+				<Button
+					onClick={onAction}
+					className="rounded-full px-8 h-12 font-bold shadow-lg shadow-primary/20 transition-all active:scale-95 hover:shadow-primary/30"
+				>
 					{actionLabel}
 				</Button>
 			)}

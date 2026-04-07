@@ -3,9 +3,9 @@
 import { Warning } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import * as Sentry from '@sentry/nextjs';
+import { m } from 'framer-motion';
 import { Component, type ReactNode } from 'react';
 import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
 
 interface ErrorBoundaryProps {
 	children: ReactNode;
@@ -52,32 +52,44 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
 			}
 
 			return (
-				<div className="flex flex-col items-center justify-center min-h-screen p-6 bg-muted dark:bg-background">
-					<Card className="p-8 max-w-md w-full text-center space-y-6">
-						<div className="w-16 h-16 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center mx-auto">
-							<HugeiconsIcon icon={Warning} className="w-8 h-8 text-red-600 dark:text-red-400" />
+				<div className="flex flex-col items-center justify-center min-h-screen p-6 bg-background">
+					<m.div
+						initial={{ opacity: 0, scale: 0.95 }}
+						animate={{ opacity: 1, scale: 1 }}
+						className="max-w-md w-full text-center space-y-6"
+					>
+						<div className="w-20 h-20 bg-destructive/10 rounded-3xl flex items-center justify-center mx-auto shadow-inner relative">
+							<HugeiconsIcon icon={Warning} className="w-10 h-10 text-destructive" />
+							<div className="absolute inset-0 rounded-full animate-ping bg-destructive/10" />
 						</div>
-						<div className="space-y-2">
-							<h2 className="text-2xl font-semibold text-foreground">Something went wrong</h2>
-							<p className="text-sm text-muted-foreground dark:text-muted-foreground">
-								{this.state.error?.message || 'An unexpected error occurred'}
+						<div className="space-y-3">
+							<h2 className="text-3xl font-black text-foreground tracking-tight font-display">
+								We hit a small bump
+							</h2>
+							<p className="text-sm text-muted-foreground leading-relaxed">
+								{this.state.error?.message ||
+									"Something unexpected happened. Let's get you back on track."}
 							</p>
 						</div>
-						<div className="flex gap-4">
-							<Button variant="outline" onClick={() => window.location.reload()} className="flex-1">
-								Reload Page
+						<div className="flex gap-3 justify-center pt-4">
+							<Button
+								variant="outline"
+								onClick={() => window.location.reload()}
+								className="flex-1 rounded-xl h-12 font-bold transition-all active:scale-95"
+							>
+								Refresh Page
 							</Button>
 							<Button
 								onClick={() => {
 									this.setState({ hasError: false, error: null });
 									window.location.href = '/';
 								}}
-								className="flex-1"
+								className="flex-1 rounded-xl h-12 font-bold shadow-lg shadow-primary/20 transition-all active:scale-95"
 							>
-								Go Home
+								Return Home
 							</Button>
 						</div>
-					</Card>
+					</m.div>
 				</div>
 			);
 		}

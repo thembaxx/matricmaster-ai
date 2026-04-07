@@ -1,9 +1,8 @@
 'use client';
 
 import {
-	Calendar01Icon,
+	BookOpen01Icon,
 	DashboardSpeed02Icon,
-	MagicWandIcon,
 	Timer01Icon,
 	UserIcon,
 } from '@hugeicons/core-free-icons';
@@ -15,29 +14,29 @@ import { memo } from 'react';
 const navItems = [
 	{
 		href: '/dashboard',
-		label: 'dashboard',
+		label: 'home',
 		icon: DashboardSpeed02Icon,
 		activeColor: 'text-primary',
 		bgColor: 'bg-primary/10',
 	},
 	{
-		href: '/schedule',
-		label: 'daily',
-		icon: Calendar01Icon,
+		href: '/lessons',
+		label: 'learn',
+		icon: BookOpen01Icon,
 		activeColor: 'text-primary',
 		bgColor: 'bg-primary/10',
 	},
 	{
-		href: '/planner',
-		label: 'planner',
-		icon: MagicWandIcon,
-		activeColor: 'text-primary',
-		bgColor: 'bg-primary/10',
-	},
-	{
-		href: '/focus',
-		label: 'focus',
+		href: '/quiz',
+		label: 'practice',
 		icon: Timer01Icon,
+		activeColor: 'text-primary',
+		bgColor: 'bg-primary/10',
+	},
+	{
+		href: '/channels',
+		label: 'social',
+		icon: UserIcon,
 		activeColor: 'text-primary',
 		bgColor: 'bg-primary/10',
 	},
@@ -68,7 +67,10 @@ export const BottomNavigation = memo(function BottomNavigation({
 			style={{ paddingBottom: 'calc(1.5rem + env(safe-area-inset-bottom, 0px)' }}
 		>
 			{navItems.map((item) => {
-				const isActive = pathname === item.href || (item.href === '/schedule' && pathname === '/');
+				const isActive =
+					pathname === item.href ||
+					(item.href === '/lessons' &&
+						(pathname === '/study-path' || pathname === '/curriculum-map'));
 				return (
 					<Link
 						key={item.href}

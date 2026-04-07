@@ -38,6 +38,7 @@ export default function OnboardingPage() {
 
 	const setStep = (step: number) => setState((prev) => ({ ...prev, step }));
 	const setGoal = (goal: string) => setState((prev) => ({ ...prev, goal }));
+	const decrementStep = () => setState((prev) => ({ ...prev, step: Math.max(1, prev.step - 1) }));
 	const togglePainPoint = (id: string) => {
 		setState((prev) => ({
 			...prev,
@@ -65,11 +66,7 @@ export default function OnboardingPage() {
 	};
 
 	return (
-		<OnboardingLayout
-			progress={progress}
-			onBack={() => setStep((prev) => Math.max(1, prev - 1))}
-			showBack={state.step > 1}
-		>
+		<OnboardingLayout progress={progress} onBack={decrementStep} showBack={state.step > 1}>
 			<AnimatePresence mode="wait">
 				{state.step === 1 && <WelcomeScreen key="welcome" onContinue={() => setStep(2)} />}
 				{state.step === 2 && (

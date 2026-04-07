@@ -14,6 +14,7 @@ import { getAuth } from '@/lib/auth';
 import type { UserAchievement } from '@/lib/db/achievement-actions';
 import { getUserAchievements } from '@/lib/db/achievement-actions';
 import { getUserStreak } from '@/lib/db/progress-actions';
+import ParentDashboard from '@/screens/ParentDashboard';
 
 const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://lumni.ai';
 
@@ -65,11 +66,27 @@ function DashboardWithErrorBoundary({
 	initialStreak: DashboardInitialStreak | null;
 	initialAchievements: { unlocked: UserAchievement[]; available: typeof ACHIEVEMENTS } | null;
 	session: {
-		user: { id: string; name?: string | null; email?: string | null; image?: string | null };
+		user: {
+			id: string;
+			name?: string | null;
+			email?: string | null;
+			image?: string | null;
+			role?: string;
+		};
 	};
 	briefingData: BriefingData | null;
 	mistakeCount: number;
 }) {
+	const role = session.user.role;
+
+	if (role === 'parent') {
+		return (
+			<ErrorBoundary fallback={<DashboardErrorFallback />}>
+				<ParentDashboard userName={session.user.name || 'Student'} />
+			</ErrorBoundary>
+		);
+	}
+
 	return (
 		<ErrorBoundary fallback={<DashboardErrorFallback />}>
 			<Dashboard

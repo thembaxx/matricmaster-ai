@@ -2,10 +2,7 @@
 
 import { useSearchParams } from 'next/navigation';
 import { Suspense, useCallback, useEffect, useRef, ViewTransition } from 'react';
-import { ContextualAIBubble } from '@/components/AI/ContextualAIBubble';
 import { EdgeCaseHandler } from '@/components/EdgeCase/EdgeCaseHandler';
-import { FocusContent } from '@/components/Layout/FocusContent';
-import { TimelineSidebar } from '@/components/Layout/TimelineSidebar';
 import { QuizContent } from '@/components/Quiz/QuizContent';
 import { useQuizState } from '@/components/Quiz/useQuizState';
 import { WeakTopicAlert } from '@/components/Quiz/WeakTopicAlert';
@@ -16,6 +13,9 @@ import {
 	syncAllPendingData,
 } from '@/services/offlineQuizSync';
 import { useQuizAutoSave } from '@/stores/useQuizAutoSaveStore';
+import { TimelineSidebar } from '@/components/Layout/TimelineSidebar';
+import { FocusContent } from '@/components/Layout/FocusContent';
+import { ContextualAIBubble } from '@/components/AI/ContextualAIBubble';
 
 interface QuizInnerProps {
 	quizId?: string;
@@ -281,15 +281,15 @@ function QuizInner({ quizId: initialQuizId }: QuizInnerProps) {
 function QuizSkeleton() {
 	return (
 		<div className="min-h-screen bg-background flex">
-			<div className="flex-1 p-8">
+			<div className="flex-1 p-12">
 				<div className="max-w-3xl mx-auto space-y-6 animate-pulse">
-					<div className="h-8 bg-muted rounded w-1/4" />
-					<div className="h-64 bg-muted rounded-lg" />
+					<div className="h-8 bg-muted rounded-md w-1/4" />
+					<div className="h-64 bg-muted rounded-xl" />
 					<div className="space-y-3">
-						<div className="h-12 bg-muted rounded" />
-						<div className="h-12 bg-muted rounded" />
-						<div className="h-12 bg-muted rounded" />
-						<div className="h-12 bg-muted rounded" />
+						<div className="h-12 bg-muted rounded-md" />
+						<div className="h-12 bg-muted rounded-md" />
+						<div className="h-12 bg-muted rounded-md" />
+						<div className="h-12 bg-muted rounded-md" />
 					</div>
 				</div>
 			</div>

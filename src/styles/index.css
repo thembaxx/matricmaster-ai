@@ -38,7 +38,8 @@ html {
 /* Remove default focus outline and add custom */
 *:focus-visible {
   outline: 2px solid var(--primary);
-  outline-offset: 2px;
+  outline-offset: 4px;
+  box-shadow: 0 0 0 4px var(--primary-foreground);
 }
 
 /* Better touch targets for mobile */
@@ -562,23 +563,23 @@ html {
 }
 
 .dark {
-  --background: #0F172A;
+  --background: #0A0A0F;
   --foreground: #F8FAFC;
-  --card: #1E293B;
+  --card: #14141C;
   --card-foreground: #F8FAFC;
-  --popover: #1E293B;
+  --popover: #14141C;
   --popover-foreground: #F8FAFC;
   --primary: #3B82F6;
   --primary-foreground: #FFFFFF;
-  --secondary: #1E293B;
+  --secondary: #1C1C26;
   --secondary-foreground: #F8FAFC;
-  --muted: #1E293B;
+  --muted: #1C1C26;
   --muted-foreground: #94A3B8;
-  --accent: #1E293B;
+  --accent: #1C1C26;
   --accent-foreground: #F8FAFC;
   --destructive: #EF4444;
-  --border: rgba(255, 255, 255, 0.1);
-  --input: rgba(255, 255, 255, 0.1);
+  --border: rgba(255, 255, 255, 0.08);
+  --input: rgba(255, 255, 255, 0.08);
   --ring: #3B82F6;
   --chart-1: #3B82F6;
   --chart-2: #10B981;
@@ -586,17 +587,17 @@ html {
   --chart-4: #8B5CF6;
   --chart-5: #EC4899;
   /* Soft shadows for dark mode - lighter, more subtle */
-  --shadow-soft-sm: 0 1px 3px rgba(0,0,0,0.2), 0 1px 2px rgba(0,0,0,0.3);
-  --shadow-soft-md: 0 4px 12px rgba(0,0,0,0.25), 0 2px 4px rgba(0,0,0,0.2);
-  --shadow-soft-lg: 0 8px 24px rgba(0,0,0,0.3), 0 4px 8px rgba(0,0,0,0.25);
-  --shadow-soft-xl: 0 12px 40px rgba(0,0,0,0.35), 0 6px 12px rgba(0,0,0,0.3);
-  --sidebar: #0F172A;
+  --shadow-soft-sm: 0 1px 3px rgba(0,0,0,0.4), 0 1px 2px rgba(0,0,0,0.5);
+  --shadow-soft-md: 0 4px 12px rgba(0,0,0,0.4), 0 2px 4px rgba(0,0,0,0.3);
+  --shadow-soft-lg: 0 8px 24px rgba(0,0,0,0.5), 0 4px 8px rgba(0,0,0,0.4);
+  --shadow-soft-xl: 0 12px 40px rgba(0,0,0,0.6), 0 6px 12px rgba(0,0,0,0.5);
+  --sidebar: #0A0A0F;
   --sidebar-foreground: #F8FAFC;
   --sidebar-primary: #3B82F6;
   --sidebar-primary-foreground: #FFFFFF;
-  --sidebar-accent: #1E293B;
+  --sidebar-accent: #1C1C26;
   --sidebar-accent-foreground: #F8FAFC;
-  --sidebar-border: rgba(255, 255, 255, 0.1);
+  --sidebar-border: rgba(255, 255, 255, 0.08);
   --sidebar-ring: #3B82F6;
 }
 
@@ -611,6 +612,12 @@ html {
   }
   body {
     @apply bg-background text-foreground;
+    letter-spacing: -0.01em;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading tracking-tight;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
   }
 }
 
