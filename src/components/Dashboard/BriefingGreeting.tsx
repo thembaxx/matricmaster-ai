@@ -56,15 +56,16 @@ export function BriefingGreeting({
 
 	const greeting = useMemo(() => {
 		const hour = new Date().getHours();
-		if (hour < 12) return 'Good morning';
-		if (hour < 18) return 'Good afternoon';
-		return 'Good evening';
+		if (hour < 12) return 'good morning';
+		if (hour < 18) return 'good afternoon';
+		return 'good evening';
 	}, []);
 
 	const displayGreeting =
-		briefingData?.greeting || (isNewUser ? `Welcome aboard, ${firstName}!` : `Hey, ${firstName}`);
-	const motivationalMessage = briefingData?.motivationalMessage;
-	const quickTips = briefingData?.quickTips;
+		briefingData?.greeting?.toLowerCase() ||
+		(isNewUser ? `welcome aboard, ${firstName.toLowerCase()}!` : `hey, ${firstName.toLowerCase()}`);
+	const motivationalMessage = briefingData?.motivationalMessage?.toLowerCase();
+	const quickTips = briefingData?.quickTips?.map((tip) => tip.toLowerCase());
 
 	return (
 		<m.section

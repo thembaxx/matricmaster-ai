@@ -81,20 +81,20 @@ export function AITutorNudge(_props: AITutorNudgeProps) {
 
 							<div className="flex-1 min-w-0">
 								<m.h3
-									className="font-bold text-base leading-tight"
+									className="font-bold text-base leading-tight font-display"
 									initial={{ opacity: 0 }}
 									animate={{ opacity: 1 }}
 									transition={{ delay: 0.1 }}
 								>
-									{nudge.title}
+									{nudge.title.toLowerCase()}
 								</m.h3>
 								<m.p
-									className="text-sm text-white/85 mt-1.5 leading-relaxed line-clamp-2"
+									className="text-sm text-white/85 mt-1.5 leading-relaxed line-clamp-2 italic"
 									initial={{ opacity: 0 }}
 									animate={{ opacity: 1 }}
 									transition={{ delay: 0.15 }}
 								>
-									{nudge.message}
+									{nudge.message.toLowerCase()}
 								</m.p>
 
 								<m.div
@@ -107,19 +107,19 @@ export function AITutorNudge(_props: AITutorNudgeProps) {
 										<Button
 											size="sm"
 											variant="secondary"
-											className="bg-white text-violet-700 hover:bg-white/90 font-semibold shadow-sm"
+											className="bg-white text-violet-700 hover:bg-white/90 font-semibold shadow-sm italic"
 											onClick={handleAction}
 										>
-											{nudge.actionLabel}
+											{nudge.actionLabel?.toLowerCase()}
 										</Button>
 									)}
 									<Button
 										size="sm"
 										variant="ghost"
-										className="text-white/80 hover:text-white hover:bg-white/10 font-medium"
+										className="text-white/80 hover:text-white hover:bg-white/10 font-medium italic"
 										onClick={handleDismiss}
 									>
-										Got it
+										got it
 									</Button>
 								</m.div>
 							</div>

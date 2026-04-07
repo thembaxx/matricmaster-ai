@@ -124,10 +124,12 @@ export const LeaderboardPreview = memo(function LeaderboardPreview() {
 			<div className="flex items-center justify-between mb-4">
 				<div className="flex items-center gap-2">
 					<HugeiconsIcon icon={Medal01Icon} className="w-5 h-5 text-brand-amber" />
-					<h3 className="text-lg font-black text-foreground tracking-tight">Leaderboard</h3>
+					<h3 className="text-lg font-black text-foreground tracking-tight font-display">
+						leaderboard
+					</h3>
 				</div>
 				{userRank && (
-					<Badge variant="outline" className="text-[10px] font-black  tracking-wider">
+					<Badge variant="outline" className="text-[10px] font-black tracking-wider font-mono">
 						#{userRank}
 					</Badge>
 				)}
@@ -136,7 +138,7 @@ export const LeaderboardPreview = memo(function LeaderboardPreview() {
 			{entries.length === 0 ? (
 				<div className="flex flex-col items-center justify-center py-8 text-center">
 					<p className="text-sm text-muted-foreground font-medium">
-						Be the first on the leaderboard!
+						be the first on the leaderboard!
 					</p>
 				</div>
 			) : (
@@ -194,7 +196,7 @@ export const LeaderboardPreview = memo(function LeaderboardPreview() {
 				type="button"
 				className="w-full mt-4 py-3 px-4 rounded-2xl bg-muted/50 hover:bg-muted text-sm font-bold text-muted-foreground hover:text-foreground transition-all duration-200 flex items-center justify-center gap-2"
 			>
-				View Full Leaderboard
+				view full leaderboard
 				<HugeiconsIcon icon={ArrowRight01Icon} className="w-4 h-4" />
 			</m.button>
 		</Card>

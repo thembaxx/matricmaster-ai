@@ -27,14 +27,14 @@ export function GoalsCard({ completedCount, totalCount, onClick }: GoalsCardProp
 					<HugeiconsIcon icon={Calendar01Icon} className="w-5 h-5" />
 				</div>
 				<span className="text-xs font-bold text-tiimo-gray-muted bg-secondary px-2 py-1 rounded-lg">
-					Today
+					today
 				</span>
 			</div>
 			<div className="z-10 mt-4">
-				<p className="text-xs font-bold text-tiimo-gray-muted tracking-wide mb-1">Goals</p>
+				<p className="text-xs font-bold text-tiimo-gray-muted tracking-wide mb-1">goals</p>
 				<div className="flex items-baseline gap-2">
-					<span className="text-3xl font-black tabular-nums">{completedCount}</span>
-					<span className="text-lg font-bold text-tiimo-gray-muted">/ {totalCount}</span>
+					<span className="text-3xl font-black tabular-nums font-mono">{completedCount}</span>
+					<span className="text-lg font-bold text-tiimo-gray-muted font-mono">/ {totalCount}</span>
 				</div>
 			</div>
 			<div className="w-full h-1.5 bg-secondary rounded-full mt-4 overflow-hidden z-10">

@@ -46,8 +46,10 @@ export function MatricResultsWidget({ className }: MatricResultsWidgetProps) {
 			onClick={() => router.push('/matric-results')}
 		>
 			<div className="mb-3 flex items-center justify-between">
-				<h3 className="font-display text-sm font-semibold text-foreground">Matric Results</h3>
-				<span className="font-mono text-xs text-muted-foreground">2025</span>
+				<h3 className="font-display text-sm font-semibold text-foreground italic">
+					matric results
+				</h3>
+				<span className="font-mono text-xs text-muted-foreground italic">2025</span>
 			</div>
 
 			{loading ? (
@@ -61,33 +63,35 @@ export function MatricResultsWidget({ className }: MatricResultsWidgetProps) {
 						<span className="font-mono text-3xl font-bold text-primary">
 							{data.nationalPassRate}%
 						</span>
-						<span className="text-xs text-muted-foreground">pass rate</span>
+						<span className="text-xs text-muted-foreground italic">pass rate</span>
 					</div>
 
 					<div className="space-y-1">
-						<p className="text-xs font-medium text-muted-foreground">Top Province</p>
+						<p className="text-xs font-medium text-muted-foreground italic">top province</p>
 						<div className="flex items-center gap-2">
 							<div
 								className="h-2 w-2 rounded-full"
 								style={{ backgroundColor: provinceColors[0] }}
 							/>
-							<span className="text-sm font-medium">{data.provinces[0]?.fullName}</span>
+							<span className="text-sm font-medium italic">
+								{data.provinces[0]?.fullName?.toLowerCase()}
+							</span>
 							<span className="font-mono text-xs text-primary">{data.provinces[0]?.rate}%</span>
 						</div>
 					</div>
 
-					<div className="flex items-center gap-3 text-xs text-muted-foreground">
-						<span>Math: {data.subjects.find((s) => s.subject === 'Mathematics')?.rate || 0}%</span>
+					<div className="flex items-center gap-3 text-xs text-muted-foreground italic">
+						<span>math: {data.subjects.find((s) => s.subject === 'Mathematics')?.rate || 0}%</span>
 						<span>
-							Physics: {data.subjects.find((s) => s.subject === 'Physical Sciences')?.rate || 0}%
+							physics: {data.subjects.find((s) => s.subject === 'Physical Sciences')?.rate || 0}%
 						</span>
 					</div>
 				</div>
 			) : null}
 
-			<div className="mt-3 flex items-center justify-between text-xs text-muted-foreground">
-				<span>View all years</span>
-				<span className="transition-transform group-hover:translate-x-1">→</span>
+			<div className="mt-3 flex items-center justify-between text-xs text-muted-foreground italic">
+				<span>view all years</span>
+				<span className="transition-transform group-hover:translate-x-1 italic">→</span>
 			</div>
 		</button>
 	);
