@@ -281,15 +281,15 @@ function QuizInner({ quizId: initialQuizId }: QuizInnerProps) {
 function QuizSkeleton() {
 	return (
 		<div className="min-h-screen bg-background flex">
-			<div className="flex-1 p-8">
+			<div className="flex-1 p-12">
 				<div className="max-w-3xl mx-auto space-y-6 animate-pulse">
-					<div className="h-8 bg-muted rounded w-1/4" />
-					<div className="h-64 bg-muted rounded-lg" />
+					<div className="h-8 bg-muted rounded-md w-1/4" />
+					<div className="h-64 bg-muted rounded-xl" />
 					<div className="space-y-3">
-						<div className="h-12 bg-muted rounded" />
-						<div className="h-12 bg-muted rounded" />
-						<div className="h-12 bg-muted rounded" />
-						<div className="h-12 bg-muted rounded" />
+						<div className="h-12 bg-muted rounded-md" />
+						<div className="h-12 bg-muted rounded-md" />
+						<div className="h-12 bg-muted rounded-md" />
+						<div className="h-12 bg-muted rounded-md" />
 					</div>
 				</div>
 			</div>

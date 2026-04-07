@@ -110,7 +110,7 @@ export function AITutorNudge(_props: AITutorNudgeProps) {
 											className="bg-white text-violet-700 hover:bg-white/90 font-semibold shadow-sm italic"
 											onClick={handleAction}
 										>
-											{nudge.actionLabel?.toLowerCase()}
+											{nudge.actionLabel}
 										</Button>
 									)}
 									<Button

@@ -41,7 +41,9 @@ export default function Lessons() {
 				<header className="px-4 sm:px-6 pt-8 sm:pt-12 pb-4 sm:pb-6 shrink-0">
 					<div className="flex items-start justify-between gap-4">
 						<div className="space-y-1">
-							<h1 className="text-2xl font-black text-foreground tracking-tight">grade 12 prep</h1>
+							<h1 className="text-3xl font-black text-foreground tracking-tight font-display">
+								matric mastery
+							</h1>
 							<p className="text-muted-foreground font-medium flex items-center gap-1.5 text-sm">
 								keep up the streak!{' '}
 								<HugeiconsIcon

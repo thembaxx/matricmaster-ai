@@ -7,9 +7,10 @@ import { cn } from '@/lib/utils';
 interface FocusContentProps {
 	children: ReactNode;
 	className?: string;
+	showTimeline?: boolean;
 }
 
-export function FocusContent({ children, className }: FocusContentProps) {
+export function FocusContent({ children, className, showTimeline = true }: FocusContentProps) {
 	return (
 		<m.div
 			initial={{ opacity: 0, y: 20 }}
@@ -17,7 +18,7 @@ export function FocusContent({ children, className }: FocusContentProps) {
 			transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
 			className={cn(
 				'flex-1 min-h-screen',
-				'lg:ml-72', // Account for TimelineSidebar
+				showTimeline && 'lg:ml-72', // Account for TimelineSidebar
 				className
 			)}
 		>
