@@ -1,5 +1,10 @@
 import { GeistMono, GeistSans } from 'geist/font';
-import { JetBrains_Mono, Noto_Sans_Math, Playfair_Display } from 'next/font/google';
+import {
+	Atkinson_Hyperlegible,
+	JetBrains_Mono,
+	Noto_Sans_Math,
+	Playfair_Display,
+} from 'next/font/google';
 
 export const geistSans = GeistSans;
 
@@ -26,5 +31,14 @@ export const playfair = Playfair_Display({
 	subsets: ['latin'],
 	display: 'swap',
 	variable: '--font-playfair',
+	preload: true,
+});
+
+/* Atkinson Hyperlegible - Best for educational content, questions, and accessibility */
+export const atkinson = Atkinson_Hyperlegible({
+	weight: ['400', '500', '600', '700'],
+	subsets: ['latin'],
+	display: 'swap',
+	variable: '--font-atkinson',
 	preload: true,
 });

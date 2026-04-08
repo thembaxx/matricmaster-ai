@@ -13,11 +13,13 @@ import '@/styles/index.css';
 import { domAnimation, LazyMotion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { appConfig } from '../app.config';
-import { geistMono, geistSans, jetbrainsMono, notoSansMath, playfair } from './fonts';
+import { atkinson, geistMono, geistSans, jetbrainsMono, notoSansMath, playfair } from './fonts';
 
 const geistHeading = playfair({ subsets: ['latin'], variable: '--font-heading' });
 
 const jetbrainsMonoLocal = jetbrainsMono({ subsets: ['latin'], variable: '--font-jetbrains-mono' });
+
+const atkinsonLocal = atkinson({ subsets: ['latin'], variable: '--font-atkinson' });
 
 const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://lumni.ai';
 
@@ -135,6 +137,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 				playfair.variable,
 				notoSansMath.variable,
 				jetbrainsMonoLocal.variable,
+				atkinsonLocal.variable,
 				geistHeading.variable
 			)}
 		>
