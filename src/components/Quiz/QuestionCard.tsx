@@ -5,8 +5,11 @@ import { HugeiconsIcon } from '@hugeicons/react';
 import { AnimatePresence, m } from 'framer-motion';
 import { useCallback } from 'react';
 import { Card } from '@/components/ui/card';
+import type { ConfidenceLevel } from '@/types/quiz';
 import { AnswerOption, type AnswerOptionProps } from './AnswerOption';
+import { ConfidenceSelector } from './ConfidenceSelector';
 import { InteractiveDiagram } from './InteractiveDiagram';
+import { MisconceptionDialogue } from './MisconceptionDialogue';
 
 export interface QuestionOption {
 	id: string;
@@ -24,6 +27,14 @@ interface QuestionCardProps {
 	diagram?: string;
 	isFlagged?: boolean;
 	onToggleFlag?: () => void;
+	confidenceLevel: ConfidenceLevel | null;
+	onSetConfidence: (level: ConfidenceLevel) => void;
+	isConfidentError?: boolean;
+	correctAnswerText?: string;
+	selectedAnswerText?: string;
+	subject?: string;
+	topic?: string;
+	onDismissConfidentError?: () => void;
 }
 
 const questionVariants = {
@@ -47,6 +58,14 @@ export function QuestionCard({
 	diagram,
 	isFlagged = false,
 	onToggleFlag,
+	confidenceLevel,
+	onSetConfidence,
+	isConfidentError = false,
+	correctAnswerText = '',
+	selectedAnswerText = '',
+	subject,
+	topic,
+	onDismissConfidentError,
 }: QuestionCardProps) {
 	const handleKeyDown = useCallback(
 		(e: React.KeyboardEvent) => {
@@ -177,6 +196,29 @@ export function QuestionCard({
 							})}
 						</div>
 					</m.div>
+				</AnimatePresence>
+
+				{!isChecked && (
+					<div className="mt-4">
+						<ConfidenceSelector
+							value={confidenceLevel}
+							onChange={onSetConfidence}
+							disabled={isChecked}
+						/>
+					</div>
+				)}
+
+				<AnimatePresence>
+					{isChecked && isConfidentError && (
+						<MisconceptionDialogue
+							questionText={question}
+							userAnswer={selectedAnswerText}
+							correctAnswer={correctAnswerText}
+							subject={subject}
+							topic={topic}
+							onDismiss={onDismissConfidentError ?? (() => {})}
+						/>
+					)}
 				</AnimatePresence>
 			</Card>
 		</m.div>

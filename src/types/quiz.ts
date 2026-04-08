@@ -1,3 +1,5 @@
+export type ConfidenceLevel = 'low' | 'medium' | 'high';
+
 export interface QuizResult {
 	correctAnswers: number;
 	totalQuestions: number;
@@ -50,6 +52,7 @@ export interface WeakTopicAlertData {
 export interface QuizState {
 	currentQuestionIndex: number;
 	selectedOption: string | null;
+	confidenceLevel: ConfidenceLevel | null;
 	answerText: string;
 	shortAnswerScore: number;
 	shortAnswerMaxScore: number;
@@ -75,11 +78,16 @@ export interface QuizState {
 	antiGamingRiskScore: number;
 	antiGamingRiskLevel: 'low' | 'medium' | 'high' | 'critical';
 	isGrading: boolean;
+	isQuizFinished: boolean;
+	isConfidentError: boolean;
+	bridgeRecommendations: any[];
+	interactiveAnswer: Record<string, string> | string[] | null;
 }
 
 export type QuizAction =
 	| { type: 'SET_QUESTION_INDEX'; payload: number }
 	| { type: 'SET_OPTION'; payload: string | null }
+	| { type: 'SET_CONFIDENCE'; payload: ConfidenceLevel }
 	| { type: 'CHECK_ANSWER'; payload: boolean }
 	| { type: 'RESET_ANSWER_STATE' }
 	| { type: 'SET_ELAPSED'; payload: number }
@@ -105,16 +113,20 @@ export type QuizAction =
 	  }
 	| { type: 'RESET_ANSWER_CHANGES' }
 	| { type: 'SET_ANSWER_TEXT'; payload: string }
+	| { type: 'SET_INTERACTIVE_ANSWER'; payload: Record<string, string> | string[] | null }
 	| { type: 'SET_GRADING'; payload: boolean }
 	| {
 			type: 'SET_SHORT_ANSWER_RESULT';
 			payload: { score: number; maxScore: number; feedback: string; isCorrect: boolean };
 	  }
-	| { type: 'RESET_SHORT_ANSWER_STATE' };
+	| { type: 'RESET_SHORT_ANSWER_STATE' }
+	| { type: 'SET_CONFIDENT_ERROR'; payload: boolean }
+	| { type: 'SET_QUIZ_FINISHED'; payload: { recommendations: any[] } };
 
 export const initialQuizState: QuizState = {
 	currentQuestionIndex: 0,
 	selectedOption: null,
+	confidenceLevel: null,
 	answerText: '',
 	shortAnswerScore: 0,
 	shortAnswerMaxScore: 0,
@@ -140,4 +152,8 @@ export const initialQuizState: QuizState = {
 	antiGamingRiskScore: 0,
 	antiGamingRiskLevel: 'low',
 	isGrading: false,
+	isQuizFinished: false,
+	isConfidentError: false,
+	bridgeRecommendations: [],
+	interactiveAnswer: null,
 };

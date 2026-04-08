@@ -40,6 +40,8 @@ function QuizInner({ quizId: initialQuizId }: QuizInnerProps) {
 		handleSubjectChange,
 		handleToggleHint,
 		handleCheck,
+		handleSetConfidence,
+		handleInteractiveChange,
 	} = useQuizState({ quizId });
 
 	const autoSaveIntervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -257,6 +259,14 @@ function QuizInner({ quizId: initialQuizId }: QuizInnerProps) {
 						}
 						onExit={() => window.history.back()}
 						onNavigateToQuestion={handleNavigateToQuestion}
+						interactiveAnswer={state.interactiveAnswer}
+						onInteractiveChange={handleInteractiveChange}
+						confidenceLevel={state.confidenceLevel}
+						onSetConfidence={handleSetConfidence}
+						isConfidentError={state.isConfidentError}
+						onDismissConfidentError={() =>
+							dispatch({ type: 'SET_CONFIDENT_ERROR', payload: false })
+						}
 					/>
 				</div>
 			</FocusContent>
