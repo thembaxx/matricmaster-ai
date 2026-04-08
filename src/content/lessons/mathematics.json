@@ -4,32 +4,57 @@
 			"id": "math-calculus-derivatives-intro",
 			"subject": "mathematics",
 			"topic": "calculus",
-			"title": "Introduction to Derivatives",
-			"content": "# Introduction to Derivatives\n\nDerivatives represent the rate of change of a function at any given point. In Grade 12 Mathematics, understanding derivatives is crucial for solving optimization problems, analyzing motion, and understanding the behavior of functions.\n\n## Key Concepts\n\n1. **Definition**: The derivative of a function f(x) at point x = a is defined as:\n   ```\n   f'(a) = lim(h→0) [f(a+h) - f(a)] / h\n   ```\n\n2. **Notation**: Derivatives can be written as f'(x), dy/dx, or Df(x)\n\n3. **Geometric Interpretation**: The derivative represents the slope of the tangent line to the curve at a given point.\n\n## Basic Derivative Rules\n\n| Rule | Formula | Example |\n|------|---------|---------|\n| Constant | d/dx[c] = 0 | d/dx[5] = 0 |\n| Power | d/dx[xⁿ] = nxⁿ⁻¹ | d/dx[x³] = 3x² |\n| Constant Multiple | d/dx[c·f(x)] = c·f'(x) | d/dx[3x²] = 6x |\n| Sum/Difference | d/dx[f(x) ± g(x)] = f'(x) ± g'(x) | d/dx[x² + 2x] = 2x + 2 |\n\n## Applications\n\n1. **Finding Tangents**: Use derivative to find slope, then point-slope form\n2. **Optimization**: Find maximum/minimum values by setting f'(x) = 0\n3. **Motion Problems**: Velocity = derivative of position, Acceleration = derivative of velocity\n\n## Practice Questions\n\n1. Find the derivative of f(x) = 3x⁴ - 2x² + 5\n2. Determine the slope of the tangent to y = x³ at x = 2\n3. Find the maximum value of f(x) = -x² + 4x + 1\n\n## Resources\n\n- Video: Introduction to Calculus (15 min)\n- Worksheet: Derivative Practice Problems\n- Interactive: Derivative Visualizer",
+			"title": "introduction to derivatives",
+			"content": "# introduction to derivatives\n\nderivatives represent the rate of change of a function at any given point. in grade 12 mathematics, understanding derivatives is crucial for solving optimization problems, analyzing motion, and understanding the behavior of functions.\n\n[VIDEO:P9dpTTpjymE]\n\n## key concepts\n\n1. **definition**: the derivative of a function f(x) at point x = a is defined as:\n   ```\n   f'(a) = lim(h→0) [f(a+h) - f(a)] / h\n   ```\n\n2. **notation**: derivatives can be written as f'(x), dy/dx, or df(x)\n\n3. **geometric interpretation**: the derivative represents the slope of the tangent line to the curve at a given point.\n\n[DIAGRAM:force-vector]\n\n## basic derivative rules\n\n| rule | formula | example |\n|------|---------|---------|\n| constant | d/dx[c] = 0 | d/dx[5] = 0 |\n| power | d/dx[xⁿ] = nxⁿ⁻¹ | d/dx[x³] = 3x² |\n| constant multiple | d/dx[c·f(x)] = c·f'(x) | d/dx[3x²] = 6x |\n| sum/difference | d/dx[f(x) ± g(x)] = f'(x) ± g'(x) | d/dx[x² + 2x] = 2x + 2 |\n\n## applications\n\n1. **finding tangents**: use derivative to find slope, then point-slope form\n2. **optimization**: find maximum/minimum values by setting f'(x) = 0\n3. **motion problems**: velocity = derivative of position, acceleration = derivative of velocity\n\n## practice questions\n\n1. find the derivative of f(x) = 3x⁴ - 2x² + 5\n2. determine the slope of the tangent to y = x³ at x = 2\n3. find the maximum value of f(x) = -x² + 4x + 1\n\n## resources\n\n- video: introduction to calculus (15 min)\n- worksheet: derivative practice problems\n- interactive: derivative visualizer",
 			"duration": 45,
 			"difficulty": "intermediate",
 			"prerequisites": ["functions", "limits"],
 			"learning_objectives": [
-				"Understand the concept of derivative as instantaneous rate of change",
-				"Apply basic derivative rules (power, constant, sum/difference)",
-				"Use derivatives to solve practical problems including optimization"
-			]
+				"understand the concept of derivative as instantaneous rate of change",
+				"apply basic derivative rules (power, constant, sum/difference)",
+				"use derivatives to solve practical problems including optimization"
+			],
+			"videos": [
+				{
+					"id": "P9dpTTpjymE",
+					"title": "Introduction to Derivatives",
+					"thumbnail": "https://img.youtube.com/vi/P9dpTTpjymE/maxresdefault.jpg",
+					"duration": "15:32"
+				}
+			],
+			"diagram": {
+				"type": "derivative-visualizer",
+				"id": "deriv-intro"
+			}
 		},
 		{
 			"id": "math-calculus-integrals-intro",
 			"subject": "mathematics",
 			"topic": "calculus",
-			"title": "Introduction to Integrals",
-			"content": "# Introduction to Integrals\n\nIntegration is the reverse process of differentiation. While derivatives find rates of change, integrals find total accumulation or area under curves.\n\n## Key Concepts\n\n1. **Antiderivative**: A function F(x) is an antiderivative of f(x) if F'(x) = f(x)\n2. **Indefinite Integral**: ∫f(x)dx = F(x) + C, where C is the constant of integration\n3. **Definite Integral**: ∫ₐᵇ f(x)dx represents the area under f(x) from x=a to x=b\n\n## Basic Integration Rules\n\n| Rule | Formula | Example |\n|------|---------|---------|\n| Constant | ∫c dx = cx + C | ∫5 dx = 5x + C |\n| Power | ∫xⁿ dx = xⁿ⁺¹/(n+1) + C (n ≠ -1) | ∫x² dx = x³/3 + C |\n| Constant Multiple | ∫c·f(x) dx = c∫f(x) dx | ∫3x² dx = x³ + C |\n| Sum/Difference | ∫[f(x) ± g(x)] dx = ∫f(x) dx ± ∫g(x) dx | ∫[x² + 2x] dx = x³/3 + x² + C |\n\n## Fundamental Theorem of Calculus\n\nThe definite integral can be evaluated using antiderivatives:\n∫ₐᵇ f(x)dx = F(b) - F(a), where F'(x) = f(x)\n\n## Applications\n\n1. **Area Problems**: Find area between curves\n2. **Volume Problems**: Use disk/washer method for solids of revolution\n3. **Accumulation Problems**: Total distance, total work, etc.\n\n## Practice Questions\n\n1. Evaluate ∫(2x + 3)dx\n2. Find the area under y = x² from x=0 to x=3\n3. Determine ∫₀² (3x² + 2x)dx\n\n## Resources\n\n- Video: Understanding Integration (20 min)\n- Worksheet: Integration Practice\n- Interactive: Area Under Curve Visualizer",
+			"title": "introduction to integrals",
+			"content": "# introduction to integrals\n\nintegration is the reverse process of differentiation. while derivatives find rates of change, integrals find total accumulation or area under curves.\n\n[VIDEO:e1n_L6C-1-A]\n\n## key concepts\n\n1. **antiderivative**: a function f(x) is an antiderivative of f(x) if f'(x) = f(x)\n2. **indefinite integral**: ∫f(x)dx = f(x) + c, where c is the constant of integration\n3. **definite integral**: ∫ₐᵇ f(x)dx represents the area under f(x) from x=a to x=b\n\n[DIAGRAM:wave-motion]\n\n## basic integration rules\n\n| rule | formula | example |\n|------|---------|---------|\n| constant | ∫c dx = cx + c | ∫5 dx = 5x + c |\n| power | ∫xⁿ dx = xⁿ⁺¹/(n+1) + c (n ≠ -1) | ∫x² dx = x³/3 + c |\n| constant multiple | ∫c·f(x) dx = c∫f(x) dx | ∫3x² dx = x³ + c |\n| sum/difference | ∫[f(x) ± g(x)] dx = ∫f(x) dx ± ∫g(x) dx | ∫[x² + 2x] dx = x³/3 + x² + c |\n\n## fundamental theorem of calculus\n\nthe definite integral can be evaluated using antiderivatives:\n∫ₐᵇ f(x)dx = f(b) - f(a), where f'(x) = f(x)\n\n## applications\n\n1. **area problems**: find area between curves\n2. **volume problems**: use disk/washer method for solids of revolution\n3. **accumulation problems**: total distance, total work, etc.\n\n## practice questions\n\n1. evaluate ∫(2x + 3)dx\n2. find the area under y = x² from x=0 to x=3\n3. determine ∫₀² (3x² + 2x)dx\n\n## resources\n\n- video: understanding integration (20 min)\n- worksheet: integration practice\n- interactive: area under curve visualizer",
 			"duration": 50,
 			"difficulty": "intermediate",
 			"prerequisites": ["derivatives"],
 			"learning_objectives": [
-				"Understand integration as the inverse of differentiation",
-				"Apply basic integration rules",
-				"Use definite integrals to calculate areas under curves"
-			]
+				"understand integration as the inverse of differentiation",
+				"apply basic integration rules",
+				"use definite integrals to calculate areas under curves"
+			],
+			"videos": [
+				{
+					"id": "e1n_L6C-1-A",
+					"title": "Introduction to Integration",
+					"thumbnail": "https://img.youtube.com/vi/e1n_L6C-1-A/maxresdefault.jpg",
+					"duration": "18:45"
+				}
+			],
+			"diagram": {
+				"type": "area-under-curve",
+				"id": "integral-intro"
+			}
 		},
+
 		{
 			"id": "math-calculus-applications",
 			"subject": "mathematics",

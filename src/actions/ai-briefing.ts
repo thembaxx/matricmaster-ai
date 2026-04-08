@@ -334,15 +334,16 @@ STUDENT PROFILE:
 - Burnout Risk: ${data.isBurnedOut ? 'Yes - needs rest' : 'No'}
 - ${strongTopicsText}
 
-Generate a response with these fields (in JSON format):
+Generate a response with these fields (in JSON format), using STRICTLY LOWERCASE text for all strings (no exceptions):
 {
-  "greeting": "A warm, encouraging greeting (max 50 chars)",
+  "greeting": "a warm, encouraging greeting (max 50 chars)",
   "motivationalMessage": "2-3 sentences of motivational coaching tailored to their situation (max 150 chars)",
   "quickTips": ["1 actionable tip", "2 more tips if needed"]
 }
 
 Guidelines:
-- Keep it encouraging, energetic, and South African friendly
+- USE ONLY LOWERCASE TEXT FOR ALL FIELDS. NEVER USE UPPERCASE LETTERS.
+- Keep it encouraging, energetic, and south african friendly
 - If they have a streak, celebrate it!
 - If they haven't studied today, motivate them to start
 - If they have weak topics, offer to help
