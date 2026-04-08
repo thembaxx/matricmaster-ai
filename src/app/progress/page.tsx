@@ -42,7 +42,7 @@ const ProgressPage = async () => {
 		redirect('/sign-in');
 	}
 
-	const UnifiedDashboard = (await import('@/components/Progress/UnifiedDashboard')).default;
+	const AnalyticsDashboard = (await import('@/components/Progress/AnalyticsDashboard')).default;
 
 	return (
 		<ViewTransition
@@ -50,7 +50,7 @@ const ProgressPage = async () => {
 			exit={{ 'nav-forward': 'vt-nav-forward', 'nav-back': 'vt-nav-back', default: 'none' }}
 			default="none"
 		>
-			<UnifiedDashboard />
+			<AnalyticsDashboard />
 		</ViewTransition>
 	);
 };
