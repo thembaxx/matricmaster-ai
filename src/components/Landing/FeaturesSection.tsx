@@ -18,7 +18,7 @@ export function FeaturesSection() {
 				className="text-center mb-16"
 			>
 				<h2 className="heading-2 mb-4">
-					Your Ticket to <span className="text-tiimo-lavender">Matric Success</span>
+					Your ticket to <span className="text-tiimo-lavender">matric success</span>
 				</h2>
 				<p className="text-lg text-muted-foreground max-w-2xl mx-auto">
 					Every tool you need to pass your NSC exams in one place.
