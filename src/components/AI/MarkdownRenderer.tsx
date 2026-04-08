@@ -90,18 +90,47 @@ export function MarkdownRenderer({ content, className }: MarkdownRendererProps) 
 		};
 	}, []);
 
-	// Split content by diagram shortcodes: [DIAGRAM:type]
-	const parts = content.split(/(\[DIAGRAM:\w+(?:-\w+)*\])/g);
+	// Split content by diagram shortcodes: [DIAGRAM:type] and video shortcodes: [VIDEO:id]
+	const parts = content.split(/(\[DIAGRAM:\w+(?:-\w+)*\]|\[VIDEO:[\w-]+\])/g);
 
 	return (
 		<div className={cn('prose prose-sm dark:prose-invert max-w-none', className)}>
 			{parts.map((part, index) => {
 				const diagramMatch = part.match(/\[DIAGRAM:(\w+(?:-\w+)*)\]/);
 				if (diagramMatch) {
-					const type = diagramMatch[1] as 'force-vector' | 'phase-change' | 'wave-motion';
+					const type = diagramMatch[1] as
+						| 'force-vector'
+						| 'phase-change'
+						| 'wave-motion'
+						| 'circuit-analysis'
+						| 'dna-structure'
+						| 'cell-structure'
+						| 'projectile-motion'
+						| 'momentum-conservation';
 					return (
 						<div key={`markdown-render-diagram-${part}-${index}`} className="my-8 not-prose">
 							<InteractiveDiagram type={type} />
+						</div>
+					);
+				}
+
+				const videoMatch = part.match(/\[VIDEO:([\w-]+)\]/);
+				if (videoMatch) {
+					const videoId = videoMatch[1];
+					return (
+						<div
+							key={`markdown-render-video-${part}-${index}`}
+							className="my-8 not-prose aspect-video rounded-3xl overflow-hidden border border-border/50 shadow-tiimo"
+						>
+							<iframe
+								width="100%"
+								height="100%"
+								src={`https://www.youtube.com/embed/${videoId}`}
+								title="YouTube video player"
+								frameBorder="0"
+								allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+								allowFullScreen
+							/>
 						</div>
 					);
 				}

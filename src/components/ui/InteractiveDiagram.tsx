@@ -1,12 +1,19 @@
-'use client';
-
 import { m } from 'framer-motion';
-import { useState } from 'react';
+import { useId, useState } from 'react';
+import { CircuitDiagram } from '@/components/Science/CircuitDiagram';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 
 interface InteractiveDiagramProps {
-	type: 'force-vector' | 'phase-change' | 'wave-motion';
+	type:
+		| 'force-vector'
+		| 'phase-change'
+		| 'wave-motion'
+		| 'circuit-analysis'
+		| 'dna-structure'
+		| 'cell-structure'
+		| 'projectile-motion'
+		| 'momentum-conservation';
 	className?: string;
 }
 
@@ -14,10 +21,303 @@ export function InteractiveDiagram({ type, className }: InteractiveDiagramProps)
 	if (type === 'force-vector') return <ForceVectorDiagram className={className} />;
 	if (type === 'phase-change') return <PhaseChangeDiagram className={className} />;
 	if (type === 'wave-motion') return <WaveMotionDiagram className={className} />;
+	if (type === 'circuit-analysis') return <CircuitAnalysisDiagram className={className} />;
+	if (type === 'dna-structure') return <DnaDiagram className={className} />;
+	if (type === 'cell-structure') return <CellDiagram className={className} />;
+	if (type === 'projectile-motion') return <ProjectileDiagram className={className} />;
+	if (type === 'momentum-conservation') return <MomentumDiagram className={className} />;
 	return null;
 }
 
+// ... existing ForceVectorDiagram, PhaseChangeDiagram, WaveMotionDiagram ...
+
+function CircuitAnalysisDiagram({ className }: { className?: string }) {
+	const voltageId = useId();
+	const resistorId = useId();
+	const [r1, setR1] = useState(10);
+	const [v, setV] = useState(12);
+
+	const elements: any[] = [
+		{ id: 'b1', type: 'battery', value: v, position: { x: 50, y: 125 } },
+		{ id: 'w1', type: 'wire', value: 100, position: { x: 50, y: 50 } },
+		{ id: 'r1', type: 'resistor', value: r1, position: { x: 200, y: 50 } },
+		{ id: 'w2', type: 'wire', value: 100, position: { x: 250, y: 125 } },
+		{ id: 'l1', type: 'bulb', value: Math.round((v * v) / r1), position: { x: 200, y: 200 } },
+	];
+
+	return (
+		<div className={cn('bg-card border border-border/50 rounded-2xl p-6 shadow-sm', className)}>
+			<h4 className="font-bold mb-4 text-center">Interactive Series Circuit</h4>
+			<CircuitDiagram elements={elements} />
+			<div className="grid grid-cols-2 gap-4 mt-4">
+				<div>
+					<label htmlFor={voltageId} className="text-xs font-bold text-muted-foreground block mb-2">
+						Voltage (V)
+					</label>
+					<Input
+						id={voltageId}
+						type="range"
+						min="1"
+						max="24"
+						value={v}
+						onChange={(e) => setV(Number(e.target.value))}
+					/>
+				</div>
+				<div>
+					<label
+						htmlFor={resistorId}
+						className="text-xs font-bold text-muted-foreground block mb-2"
+					>
+						Resistor (Ω)
+					</label>
+					<Input
+						id={resistorId}
+						type="range"
+						min="1"
+						max="50"
+						value={r1}
+						onChange={(e) => setR1(Number(e.target.value))}
+					/>
+				</div>
+			</div>
+			<p className="text-xs text-center mt-4 text-muted-foreground">
+				Current (I) = V/R = {(v / r1).toFixed(2)}A
+			</p>
+		</div>
+	);
+}
+
+function DnaDiagram({ className }: { className?: string }) {
+	const [rotation, setRotation] = useState(0);
+
+	return (
+		<div className={cn('bg-card border border-border/50 rounded-2xl p-6 shadow-sm', className)}>
+			<h4 className="font-bold mb-4 text-center">DNA Double Helix</h4>
+			<div className="relative h-64 bg-slate-950 rounded-xl overflow-hidden flex items-center justify-center">
+				<div className="flex gap-4">
+					{Array.from({ length: 12 }).map((_, i) => (
+						<m.div
+							key={i}
+							className="relative w-2 h-40 flex flex-col items-center justify-between"
+							animate={{ rotateY: rotation + i * 30 }}
+							style={{ transformStyle: 'preserve-3d' }}
+						>
+							<div className="w-4 h-4 rounded-full bg-blue-400 shadow-[0_0_10px_#60a5fa]" />
+							<div className="w-1 h-32 bg-white/20" />
+							<div className="w-4 h-4 rounded-full bg-red-400 shadow-[0_0_10px_#f87171]" />
+						</m.div>
+					))}
+				</div>
+				<div className="absolute bottom-4 left-0 right-0 text-center">
+					<p className="text-[10px] text-blue-300 font-mono">rotation: {rotation}°</p>
+				</div>
+			</div>
+			<div className="mt-4">
+				<Input
+					type="range"
+					min="0"
+					max="360"
+					value={rotation}
+					onChange={(e) => setRotation(Number(e.target.value))}
+				/>
+			</div>
+		</div>
+	);
+}
+
+function CellDiagram({ className }: { className?: string }) {
+	const zoomId = useId();
+	const [zoom, setZoom] = useState(1);
+	const organelles = [
+		{ name: 'Nucleus', x: 200, y: 150, r: 40, color: 'bg-indigo-400' },
+		{ name: 'Mitochondria', x: 100, y: 100, r: 15, color: 'bg-orange-400' },
+		{ name: 'Vacuole', x: 300, y: 200, r: 50, color: 'bg-blue-200' },
+		{ name: 'Chloroplast', x: 120, y: 220, r: 20, color: 'bg-green-400' },
+	];
+
+	return (
+		<div className={cn('bg-card border border-border/50 rounded-2xl p-6 shadow-sm', className)}>
+			<h4 className="font-bold mb-4 text-center">Plant Cell Structure</h4>
+			<div className="relative h-64 bg-green-50/30 rounded-xl overflow-hidden border border-green-100 flex items-center justify-center">
+				<m.div className="w-[100%] h-[100%] relative" animate={{ scale: zoom }}>
+					{/* Cell Wall */}
+					<div className="absolute inset-4 border-8 border-green-600/30 rounded-[2rem] bg-white/40 shadow-inner">
+						{organelles.map((o) => (
+							<m.div
+								key={o.name}
+								className={cn(
+									'absolute rounded-full shadow-lg flex items-center justify-center text-[8px] font-bold text-white',
+									o.color
+								)}
+								style={{
+									left: o.x,
+									top: o.y,
+									width: o.r * 2,
+									height: o.r * 2,
+									marginLeft: -o.r,
+									marginTop: -o.r,
+								}}
+								whileHover={{ scale: 1.2 }}
+							>
+								{o.name}
+							</m.div>
+						))}
+					</div>
+				</m.div>
+			</div>
+			<div className="mt-4">
+				<label htmlFor={zoomId} className="text-xs font-bold text-muted-foreground block mb-2">
+					Microscope Zoom
+				</label>
+				<Input
+					id={zoomId}
+					type="range"
+					min="0.8"
+					max="2"
+					step="0.1"
+					value={zoom}
+					onChange={(e) => setZoom(Number(e.target.value))}
+				/>
+			</div>
+		</div>
+	);
+}
+
+function ProjectileDiagram({ className }: { className?: string }) {
+	const angleId = useId();
+	const velocityId = useId();
+	const [angle, setAngle] = useState(45);
+	const [velocity, setVelocity] = useState(20);
+
+	const g = 9.8;
+	const rad = (angle * Math.PI) / 180;
+	const vx = velocity * Math.cos(rad);
+	const vy = velocity * Math.sin(rad);
+	const tFlight = (2 * vy) / g;
+	const range = vx * tFlight;
+	const hMax = (vy * vy) / (2 * g);
+
+	return (
+		<div className={cn('bg-card border border-border/50 rounded-2xl p-6 shadow-sm', className)}>
+			<h4 className="font-bold mb-4 text-center">Projectile Motion</h4>
+			<div className="relative h-48 bg-sky-50/50 rounded-xl overflow-hidden border border-sky-100">
+				<svg className="w-full h-full" viewBox="0 0 400 200">
+					<path
+						d={`M 20 180 Q ${20 + range / 2} ${180 - hMax * 4} ${20 + range} 180`}
+						fill="none"
+						stroke="#0ea5e9"
+						strokeWidth="2"
+						strokeDasharray="4 4"
+					/>
+					<circle cx="20" cy="180" r="4" fill="#0369a1" />
+					<line
+						x1="20"
+						y1="180"
+						x2={20 + Math.cos(rad) * 40}
+						y2={180 - Math.sin(rad) * 40}
+						stroke="#f97316"
+						strokeWidth="2"
+					/>
+				</svg>
+				<div className="absolute top-2 left-2 text-[10px] space-y-1 bg-white/80 p-2 rounded-lg border border-border/50">
+					<p>Range: {range.toFixed(2)}m</p>
+					<p>Height: {hMax.toFixed(2)}m</p>
+					<p>Flight: {tFlight.toFixed(2)}s</p>
+				</div>
+			</div>
+			<div className="grid grid-cols-2 gap-4 mt-4">
+				<div>
+					<label htmlFor={angleId} className="text-xs font-bold text-muted-foreground block mb-2">
+						Angle (°)
+					</label>
+					<Input
+						id={angleId}
+						type="range"
+						min="10"
+						max="80"
+						value={angle}
+						onChange={(e) => setAngle(Number(e.target.value))}
+					/>
+				</div>
+				<div>
+					<label
+						htmlFor={velocityId}
+						className="text-xs font-bold text-muted-foreground block mb-2"
+					>
+						Velocity (m/s)
+					</label>
+					<Input
+						id={velocityId}
+						type="range"
+						min="5"
+						max="40"
+						value={velocity}
+						onChange={(e) => setVelocity(Number(e.target.value))}
+					/>
+				</div>
+			</div>
+		</div>
+	);
+}
+
+function MomentumDiagram({ className }: { className?: string }) {
+	const massId = useId();
+	const velocity2Id = useId();
+	const [m1, setM1] = useState(2);
+	const [v1, setV1] = useState(5);
+
+	return (
+		<div className={cn('bg-card border border-border/50 rounded-2xl p-6 shadow-sm', className)}>
+			<h4 className="font-bold mb-4 text-center">Momentum (p = mv)</h4>
+			<div className="relative h-48 bg-slate-50 rounded-xl overflow-hidden flex items-end justify-center p-8">
+				<m.div
+					className="bg-indigo-600 rounded-lg flex items-center justify-center text-white font-bold"
+					animate={{ x: v1 * 20 }}
+					style={{ width: m1 * 20, height: m1 * 20 }}
+				>
+					{m1}kg
+				</m.div>
+				<div className="absolute bottom-2 left-0 right-0 text-center">
+					<p className="text-sm font-bold text-indigo-900">p = {(m1 * v1).toFixed(1)} kg·m/s</p>
+				</div>
+			</div>
+			<div className="grid grid-cols-2 gap-4 mt-4">
+				<div>
+					<label htmlFor={massId} className="text-xs font-bold text-muted-foreground block mb-2">
+						Mass (kg)
+					</label>
+					<Input
+						id={massId}
+						type="range"
+						min="1"
+						max="5"
+						value={m1}
+						onChange={(e) => setM1(Number(e.target.value))}
+					/>
+				</div>
+				<div>
+					<label
+						htmlFor={velocity2Id}
+						className="text-xs font-bold text-muted-foreground block mb-2"
+					>
+						Velocity (m/s)
+					</label>
+					<Input
+						id={velocity2Id}
+						type="range"
+						min="1"
+						max="10"
+						value={v1}
+						onChange={(e) => setV1(Number(e.target.value))}
+					/>
+				</div>
+			</div>
+		</div>
+	);
+}
+
 function ForceVectorDiagram({ className }: { className?: string }) {
+	const forceId = useId();
 	const [force, setForce] = useState(50);
 
 	return (
@@ -45,14 +345,11 @@ function ForceVectorDiagram({ className }: { className?: string }) {
 			</div>
 
 			<div className="mt-4">
-				<label
-					htmlFor="applied-force"
-					className="text-xs font-bold  text-muted-foreground block mb-2"
-				>
+				<label htmlFor={forceId} className="text-xs font-bold  text-muted-foreground block mb-2">
 					Applied Force
 				</label>
 				<Input
-					id="applied-force"
+					id={forceId}
 					type="range"
 					min="0"
 					max="100"
@@ -71,23 +368,17 @@ function PhaseChangeDiagram({ className }: { className?: string }) {
 	// Determine state
 	let state = 'Solid';
 	let particles = 'grid';
-	let speed = 0;
 
 	if (temp < 0) {
 		state = 'Solid (Ice)';
 		particles = 'grid';
-		speed = 0.5;
 	} else if (temp >= 0 && temp < 100) {
 		state = 'Liquid (Water)';
 		particles = 'flow';
-		speed = 2 + temp / 20;
 	} else {
 		state = 'Gas (Steam)';
 		particles = 'chaos';
-		speed = 10;
 	}
-
-	console.debug(speed);
 
 	return (
 		<div className={cn('bg-card border border-border/50 rounded-2xl p-6 shadow-sm', className)}>
@@ -138,6 +429,8 @@ function PhaseChangeDiagram({ className }: { className?: string }) {
 }
 
 function WaveMotionDiagram({ className }: { className?: string }) {
+	const amplitudeId = useId();
+	const frequencyId = useId();
 	const [amplitude, setAmplitude] = useState(20);
 	const [frequency, setFrequency] = useState(1);
 
@@ -184,37 +477,35 @@ function WaveMotionDiagram({ className }: { className?: string }) {
 			<div className="grid grid-cols-2 gap-4">
 				<div>
 					<label
-						htmlFor="amplitude"
+						htmlFor={amplitudeId}
 						className="text-xs font-bold  text-muted-foreground block mb-2"
 					>
 						Amplitude
 					</label>
 					<Input
-						id="amplitude"
+						id={amplitudeId}
 						type="range"
 						min="0"
 						max="50"
 						value={amplitude}
 						onChange={(e) => setAmplitude(Number(e.target.value))}
-						className="w-full accent-primary h-2 bg-muted rounded-lg appearance-none cursor-pointer"
 					/>
 				</div>
 				<div>
 					<label
-						htmlFor="frequency"
+						htmlFor={frequencyId}
 						className="text-xs font-bold  text-muted-foreground block mb-2"
 					>
 						Frequency
 					</label>
 					<Input
-						id="frequency"
+						id={frequencyId}
 						type="range"
 						min="0.5"
 						max="3"
 						step="0.1"
 						value={frequency}
 						onChange={(e) => setFrequency(Number(e.target.value))}
-						className="w-full accent-primary h-2 bg-muted rounded-lg appearance-none cursor-pointer"
 					/>
 				</div>
 			</div>

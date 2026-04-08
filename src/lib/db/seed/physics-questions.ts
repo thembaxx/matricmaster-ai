@@ -2,392 +2,392 @@ export const physicsQuestions = [
 	// Q1: 4 options (Grade 9 - Kinematics)
 	{
 		questionText:
-			"The velocity-time graph of an object is a horizontal line above the time axis. What is the object's acceleration?",
+			"the velocity-time graph of an object is a horizontal line above the time axis. what is the object's acceleration?",
 		imageUrl: 'https://example.com/physics-diagram-1.png',
-		hint: 'Remember that acceleration is the slope of a velocity-time graph',
+		hint: 'remember that acceleration is the slope of a velocity-time graph',
 		gradeLevel: 9,
-		topic: 'Kinematics',
+		topic: 'kinematics',
 		difficulty: 'medium',
 		marks: 2,
 		options: [
 			{
-				letter: 'A',
-				text: 'Zero',
+				letter: 'a',
+				text: 'zero',
 				isCorrect: true,
 				explanation:
-					'A horizontal velocity-time graph indicates constant velocity, so acceleration (slope of the graph) is zero.',
+					'a horizontal velocity-time graph indicates constant velocity, so acceleration (slope of the graph) is zero.',
 			},
 			{
-				letter: 'B',
-				text: 'Constant and positive',
+				letter: 'b',
+				text: 'constant and positive',
 				isCorrect: false,
-				explanation: 'A positive slope would indicate increasing velocity, not a horizontal line.',
+				explanation: 'a positive slope would indicate increasing velocity, not a horizontal line.',
 			},
 			{
-				letter: 'C',
-				text: 'Constant and negative',
+				letter: 'c',
+				text: 'constant and negative',
 				isCorrect: false,
-				explanation: 'A negative slope would indicate decreasing velocity, not a horizontal line.',
+				explanation: 'a negative slope would indicate decreasing velocity, not a horizontal line.',
 			},
 			{
-				letter: 'D',
-				text: 'Increasing',
+				letter: 'd',
+				text: 'increasing',
 				isCorrect: false,
 				explanation:
-					"Acceleration would only increase if the slope of the velocity-time graph were changing, which it isn't here.",
+					"acceleration would only increase if the slope of the velocity-time graph were changing, which it isn't here.",
 			},
 		],
 	},
 	// Q2: 4 options (Grade 10 - Forces)
 	{
 		questionText:
-			'A book rests on a table. Which free-body diagram correctly represents the forces acting on the book?',
+			'a book rests on a table. which free-body diagram correctly represents the forces acting on the book?',
 		imageUrl: 'https://example.com/physics-diagram-2.png',
-		hint: 'Think about weight acting downward and normal force upward',
+		hint: 'think about weight acting downward and normal force upward',
 		gradeLevel: 10,
-		topic: 'Forces',
+		topic: 'forces',
 		difficulty: 'medium',
 		marks: 2,
 		options: [
 			{
-				letter: 'A',
-				text: 'Only weight force downward',
+				letter: 'a',
+				text: 'only weight force downward',
 				isCorrect: false,
 				explanation:
-					'A book at rest must have balanced forces; weight alone would cause acceleration.',
+					'a book at rest must have balanced forces; weight alone would cause acceleration.',
 			},
 			{
-				letter: 'B',
-				text: 'Weight downward and normal force upward, equal in magnitude',
+				letter: 'b',
+				text: 'weight downward and normal force upward, equal in magnitude',
 				isCorrect: true,
 				explanation:
-					"At rest, the normal force from the table balances the book's weight, resulting in zero net force.",
+					"at rest, the normal force from the table balances the book's weight, resulting in zero net force.",
 			},
 			{
-				letter: 'C',
-				text: 'Weight downward, normal force upward, and a small friction force',
+				letter: 'c',
+				text: 'weight downward, normal force upward, and a small friction force',
 				isCorrect: false,
 				explanation:
-					'Friction only acts when there is horizontal motion or attempted motion; no horizontal forces exist here.',
+					'friction only acts when there is horizontal motion or attempted motion; no horizontal forces exist here.',
 			},
 			{
-				letter: 'D',
-				text: 'Only normal force upward',
+				letter: 'd',
+				text: 'only normal force upward',
 				isCorrect: false,
 				explanation:
-					'Without weight, the book would accelerate upward, which contradicts the scenario of it resting on the table.',
+					'without weight, the book would accelerate upward, which contradicts the scenario of it resting on the table.',
 			},
 		],
 	},
 	// Q3: 4 options (Grade 11 - Energy)
 	{
 		questionText:
-			'A pendulum swings from point A (highest) to point B (lowest). Ignoring air resistance, what happens to its kinetic and potential energy?',
+			'a pendulum swings from point a (highest) to point b (lowest). ignoring air resistance, what happens to its kinetic and potential energy?',
 		imageUrl: 'https://example.com/physics-diagram-3.png',
 		gradeLevel: 11,
-		topic: 'Energy',
+		topic: 'energy',
 		difficulty: 'hard',
 		marks: 3,
 		options: [
 			{
-				letter: 'A',
-				text: 'Kinetic energy increases, potential energy decreases',
+				letter: 'a',
+				text: 'kinetic energy increases, potential energy decreases',
 				isCorrect: true,
 				explanation:
-					'At the highest point (A), potential energy is maximum and kinetic energy is zero. As it swings down to B, potential energy converts to kinetic energy.',
+					'at the highest point (a), potential energy is maximum and kinetic energy is zero. as it swings down to b, potential energy converts to kinetic energy.',
 			},
 			{
-				letter: 'B',
-				text: 'Kinetic energy decreases, potential energy increases',
+				letter: 'b',
+				text: 'kinetic energy decreases, potential energy increases',
 				isCorrect: false,
-				explanation: 'This would occur if the pendulum were swinging upward, not downward.',
+				explanation: 'this would occur if the pendulum were swinging upward, not downward.',
 			},
 			{
-				letter: 'C',
-				text: 'Both kinetic and potential energy increase',
-				isCorrect: false,
-				explanation:
-					'Total mechanical energy is conserved, so one form must decrease as the other increases.',
-			},
-			{
-				letter: 'D',
-				text: 'Both kinetic and potential energy decrease',
+				letter: 'c',
+				text: 'both kinetic and potential energy increase',
 				isCorrect: false,
 				explanation:
-					'This would violate the conservation of mechanical energy in an isolated system.',
+					'total mechanical energy is conserved, so one form must decrease as the other increases.',
+			},
+			{
+				letter: 'd',
+				text: 'both kinetic and potential energy decrease',
+				isCorrect: false,
+				explanation:
+					'this would violate the conservation of mechanical energy in an isolated system.',
 			},
 		],
 	},
 	// Q4: 4 options (Grade 10 - Waves)
 	{
 		questionText:
-			'In a transverse wave, the direction of particle motion is __________ to the direction of wave propagation.',
+			'in a transverse wave, the direction of particle motion is __________ to the direction of wave propagation.',
 		imageUrl: 'https://example.com/physics-diagram-4.png',
 		gradeLevel: 10,
-		topic: 'Waves',
+		topic: 'waves',
 		difficulty: 'medium',
 		marks: 2,
 		options: [
 			{
-				letter: 'A',
-				text: 'Parallel',
+				letter: 'a',
+				text: 'parallel',
 				isCorrect: false,
 				explanation:
-					'Parallel motion describes longitudinal waves (e.g., sound waves), not transverse waves.',
+					'parallel motion describes longitudinal waves (e.g., sound waves), not transverse waves.',
 			},
 			{
-				letter: 'B',
-				text: 'Perpendicular',
+				letter: 'b',
+				text: 'perpendicular',
 				isCorrect: true,
 				explanation:
-					"In transverse waves (e.g., light), particles oscillate perpendicular to the wave's direction of travel.",
+					"in transverse waves (e.g., light), particles oscillate perpendicular to the wave's direction of travel.",
 			},
 			{
-				letter: 'C',
-				text: 'At 45 degrees',
+				letter: 'c',
+				text: 'at 45 degrees',
 				isCorrect: false,
 				explanation:
-					'No standard wave type has particle motion at a fixed 45-degree angle to propagation direction.',
+					'no standard wave type has particle motion at a fixed 45-degree angle to propagation direction.',
 			},
 			{
-				letter: 'D',
-				text: 'Opposite',
+				letter: 'd',
+				text: 'opposite',
 				isCorrect: false,
 				explanation:
-					'Opposite motion is not characteristic of transverse wave particle oscillation.',
+					'opposite motion is not characteristic of transverse wave particle oscillation.',
 			},
 		],
 	},
 	// Q5: 4 options (Grade 9 - Electricity)
 	{
 		questionText:
-			'In a series circuit with two identical bulbs, if one bulb burns out, what happens to the other bulb?',
+			'in a series circuit with two identical bulbs, if one bulb burns out, what happens to the other bulb?',
 		imageUrl: 'https://example.com/physics-diagram-5.png',
 		gradeLevel: 9,
-		topic: 'Electricity',
+		topic: 'electricity',
 		difficulty: 'easy',
 		marks: 2,
 		options: [
 			{
-				letter: 'A',
-				text: 'It remains lit',
+				letter: 'a',
+				text: 'it remains lit',
 				isCorrect: false,
 				explanation:
-					'In a series circuit, a break (burned-out bulb) stops current flow through the entire circuit.',
+					'in a series circuit, a break (burned-out bulb) stops current flow through the entire circuit.',
 			},
 			{
-				letter: 'B',
-				text: 'It becomes brighter',
+				letter: 'b',
+				text: 'it becomes brighter',
 				isCorrect: false,
 				explanation:
-					'Brightness depends on current; no current means no light, not increased brightness.',
+					'brightness depends on current; no current means no light, not increased brightness.',
 			},
 			{
-				letter: 'C',
-				text: 'It goes out',
+				letter: 'c',
+				text: 'it goes out',
 				isCorrect: true,
 				explanation:
-					'Series circuits require continuous current flow; a burned-out bulb breaks the circuit, turning off both bulbs.',
+					'series circuits require continuous current flow; a burned-out bulb breaks the circuit, turning off both bulbs.',
 			},
 			{
-				letter: 'D',
-				text: 'It flickers',
+				letter: 'd',
+				text: 'it flickers',
 				isCorrect: false,
 				explanation:
-					'Flickering implies intermittent current, but a burned-out bulb creates a permanent open circuit.',
+					'flickering implies intermittent current, but a burned-out bulb creates a permanent open circuit.',
 			},
 		],
 	},
 	// Q6: 4 options (Grade 11 - Magnetism)
 	{
 		questionText:
-			'The magnetic field lines around a bar magnet emerge from the __________ pole and enter the __________ pole.',
+			'the magnetic field lines around a bar magnet emerge from the __________ pole and enter the __________ pole.',
 		imageUrl: 'https://example.com/physics-diagram-6.png',
 		gradeLevel: 11,
-		topic: 'Magnetism',
+		topic: 'magnetism',
 		difficulty: 'medium',
 		marks: 2,
 		options: [
 			{
-				letter: 'A',
-				text: 'North, South',
+				letter: 'a',
+				text: 'north, south',
 				isCorrect: true,
 				explanation:
-					'Magnetic field lines always flow from the north pole to the south pole outside the magnet.',
+					'magnetic field lines always flow from the north pole to the south pole outside the magnet.',
 			},
 			{
-				letter: 'B',
-				text: 'South, North',
+				letter: 'b',
+				text: 'south, north',
 				isCorrect: false,
-				explanation: 'This describes the direction inside the magnet, not outside.',
+				explanation: 'this describes the direction inside the magnet, not outside.',
 			},
 			{
-				letter: 'C',
-				text: 'North, North',
+				letter: 'c',
+				text: 'north, north',
 				isCorrect: false,
-				explanation: 'Field lines cannot emerge and enter the same pole; they form closed loops.',
+				explanation: 'field lines cannot emerge and enter the same pole; they form closed loops.',
 			},
 			{
-				letter: 'D',
-				text: 'South, South',
+				letter: 'd',
+				text: 'south, south',
 				isCorrect: false,
 				explanation:
-					'Field lines do not terminate at the same pole; they flow from north to south.',
+					'field lines do not terminate at the same pole; they flow from north to south.',
 			},
 		],
 	},
 	// Q7: 4 options (Grade 10 - Optics)
 	{
 		questionText:
-			'When light reflects off a smooth surface, the angle of incidence is equal to the angle of __________.',
+			'when light reflects off a smooth surface, the angle of incidence is equal to the angle of __________.',
 		imageUrl: 'https://example.com/physics-diagram-7.png',
 		gradeLevel: 10,
-		topic: 'Optics',
+		topic: 'optics',
 		difficulty: 'medium',
 		marks: 2,
 		options: [
 			{
-				letter: 'A',
-				text: 'Refraction',
+				letter: 'a',
+				text: 'refraction',
 				isCorrect: false,
 				explanation:
-					'Refraction involves light bending when entering a new medium, not reflection.',
+					'refraction involves light bending when entering a new medium, not reflection.',
 			},
 			{
-				letter: 'B',
-				text: 'Reflection',
+				letter: 'b',
+				text: 'reflection',
 				isCorrect: true,
 				explanation:
-					'The law of reflection states that the angle of incidence equals the angle of reflection.',
+					'the law of reflection states that the angle of incidence equals the angle of reflection.',
 			},
 			{
-				letter: 'C',
-				text: 'Diffraction',
+				letter: 'c',
+				text: 'diffraction',
 				isCorrect: false,
 				explanation:
-					'Diffraction is the spreading of waves around obstacles, unrelated to reflection angles.',
+					'diffraction is the spreading of waves around obstacles, unrelated to reflection angles.',
 			},
 			{
-				letter: 'D',
-				text: 'Absorption',
+				letter: 'd',
+				text: 'absorption',
 				isCorrect: false,
 				explanation:
-					'Absorption refers to energy being taken in by a material, not a reflection property.',
+					'absorption refers to energy being taken in by a material, not a reflection property.',
 			},
 		],
 	},
 	// Q8: 4 options (Grade 9 - Thermodynamics)
 	{
-		questionText: 'Which method of heat transfer does NOT require a medium?',
+		questionText: 'which method of heat transfer does not require a medium?',
 		imageUrl: 'https://example.com/physics-diagram-8.png',
 		gradeLevel: 9,
-		topic: 'Thermodynamics',
+		topic: 'thermodynamics',
 		difficulty: 'easy',
 		marks: 2,
 		options: [
 			{
-				letter: 'A',
-				text: 'Conduction',
+				letter: 'a',
+				text: 'conduction',
 				isCorrect: false,
-				explanation: 'Conduction requires direct contact between particles in a medium.',
+				explanation: 'conduction requires direct contact between particles in a medium.',
 			},
 			{
-				letter: 'B',
-				text: 'Convection',
+				letter: 'b',
+				text: 'convection',
 				isCorrect: false,
-				explanation: 'Convection relies on fluid movement (e.g., air or water) to transfer heat.',
+				explanation: 'convection relies on fluid movement (e.g., air or water) to transfer heat.',
 			},
 			{
-				letter: 'C',
-				text: 'Radiation',
+				letter: 'c',
+				text: 'radiation',
 				isCorrect: true,
 				explanation:
-					'Radiation (e.g., sunlight) transfers heat via electromagnetic waves, which travel through vacuum.',
+					'radiation (e.g., sunlight) transfers heat via electromagnetic waves, which travel through vacuum.',
 			},
 			{
-				letter: 'D',
-				text: 'All require a medium',
+				letter: 'd',
+				text: 'all require a medium',
 				isCorrect: false,
-				explanation: 'Radiation does not require a medium, so this statement is false.',
+				explanation: 'radiation does not require a medium, so this statement is false.',
 			},
 		],
 	},
 	// Q9: 4 options (Grade 12 - Nuclear Physics)
 	{
 		questionText:
-			'Which type of radioactive decay involves the emission of an electron from the nucleus?',
+			'which type of radioactive decay involves the emission of an electron from the nucleus?',
 		imageUrl: 'https://example.com/physics-diagram-9.png',
 		gradeLevel: 12,
-		topic: 'Nuclear Physics',
+		topic: 'nuclear physics',
 		difficulty: 'hard',
 		marks: 3,
 		options: [
 			{
-				letter: 'A',
-				text: 'Alpha decay',
+				letter: 'a',
+				text: 'alpha decay',
 				isCorrect: false,
 				explanation:
-					'Alpha decay emits a helium nucleus (2 protons + 2 neutrons), not an electron.',
+					'alpha decay emits a helium nucleus (2 protons + 2 neutrons), not an electron.',
 			},
 			{
-				letter: 'B',
-				text: 'Beta decay',
+				letter: 'b',
+				text: 'beta decay',
 				isCorrect: true,
 				explanation:
-					'Beta decay (β⁻) occurs when a neutron converts to a proton, emitting an electron and an antineutrino.',
+					'beta decay (β⁻) occurs when a neutron converts to a proton, emitting an electron and an antineutrino.',
 			},
 			{
-				letter: 'C',
-				text: 'Gamma decay',
+				letter: 'c',
+				text: 'gamma decay',
 				isCorrect: false,
-				explanation: 'Gamma decay releases high-energy photons, not electrons.',
+				explanation: 'gamma decay releases high-energy photons, not electrons.',
 			},
 			{
-				letter: 'D',
-				text: 'Positron emission',
+				letter: 'd',
+				text: 'positron emission',
 				isCorrect: false,
 				explanation:
-					'Positron emission (β⁺) emits a positron (positive electron), not a standard electron.',
+					'positron emission (β⁺) emits a positron (positive electron), not a standard electron.',
 			},
 		],
 	},
 	// Q10: 4 options (Grade 11 - Motion)
 	{
 		questionText:
-			'In projectile motion, the horizontal component of velocity __________ (ignoring air resistance).',
+			'in projectile motion, the horizontal component of velocity __________ (ignoring air resistance).',
 		imageUrl: 'https://example.com/physics-diagram-10.png',
 		gradeLevel: 11,
-		topic: 'Motion',
+		topic: 'motion',
 		difficulty: 'medium',
 		marks: 2,
 		options: [
 			{
-				letter: 'A',
-				text: 'Increases',
+				letter: 'a',
+				text: 'increases',
 				isCorrect: false,
 				explanation:
-					'No horizontal force acts on the projectile (ignoring air resistance), so horizontal velocity remains constant.',
+					'no horizontal force acts on the projectile (ignoring air resistance), so horizontal velocity remains constant.',
 			},
 			{
-				letter: 'B',
-				text: 'Decreases',
+				letter: 'b',
+				text: 'decreases',
 				isCorrect: false,
 				explanation:
-					'A decrease would require a horizontal force, which does not exist in ideal projectile motion.',
+					'a decrease would require a horizontal force, which does not exist in ideal projectile motion.',
 			},
 			{
-				letter: 'C',
-				text: 'Remains constant',
+				letter: 'c',
+				text: 'remains constant',
 				isCorrect: true,
 				explanation:
-					'Horizontal acceleration is zero, so horizontal velocity does not change during flight.',
+					'horizontal acceleration is zero, so horizontal velocity does not change during flight.',
 			},
 			{
-				letter: 'D',
-				text: 'Becomes zero at the peak',
+				letter: 'd',
+				text: 'becomes zero at the peak',
 				isCorrect: false,
 				explanation:
-					'Only the vertical component of velocity becomes zero at the peak; horizontal velocity remains unchanged.',
+					'only the vertical component of velocity becomes zero at the peak; horizontal velocity remains unchanged.',
 			},
 		],
 	},

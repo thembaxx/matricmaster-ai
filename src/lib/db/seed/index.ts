@@ -287,6 +287,10 @@ export async function seedDatabase() {
 		console.log('\n🔄 Seeding curriculum data...');
 		await seedCurriculumData();
 
+		console.log('\n📈 Seeding production depth data...');
+		const { seedProductionDepth } = await import('./production-depth');
+		await seedProductionDepth();
+
 		console.log('\n✅ Database seeding completed successfully!');
 	} catch (error) {
 		console.error('❌ Seeding failed:', error);

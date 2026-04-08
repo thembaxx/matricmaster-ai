@@ -2,19 +2,32 @@
 	"mechanics": [
 		{
 			"id": "physics-mechanics-newton-laws",
-			"subject": "physical_sciences",
+			"subject": "physics",
 			"topic": "mechanics",
-			"title": "Newton's Laws of Motion",
-			"content": "# Newton's Laws of Motion\n\nNewton's three laws form the foundation of classical mechanics, describing the relationship between a body and the forces acting upon it.\n\n## Newton's First Law (Law of Inertia)\n\nAn object at rest stays at rest and an object in motion stays in motion with the same speed and in the same direction unless acted upon by an unbalanced force.\n\n**Key Points:**\n- Inertia: tendency of an object to resist changes in its state of motion\n- Mass is a measure of inertia\n- Net force = 0 means constant velocity (including zero velocity)\n\n## Newton's Second Law\n\nThe acceleration of an object is directly proportional to the net force acting on it and inversely proportional to its mass. The direction of the acceleration is in the direction of the net force.\n\n**Formula:** F_net = ma\n\n**Units:** Force in newtons (N), mass in kilograms (kg), acceleration in m/s²\n\n## Newton's Third Law\n\nFor every action, there is an equal and opposite reaction.\n\n## Free-Body Diagrams\n\n1. Isolate the object of interest\n2. Draw and label all external forces\n3. Include: gravity, normal, friction, tension, applied forces\n\n## Problem Solving\n\n1. Draw free-body diagram\n2. Choose coordinate system\n3. Apply F_net = ma to each direction\n4. Solve equations\n5. Check results",
+			"title": "newton's laws of motion",
+			"content": "# newton's laws of motion\n\nnewton's three laws form the foundation of classical mechanics, describing the relationship between a body and the forces acting upon it.\n\n[VIDEO:8z1O0A9Nn84]\n\n## newton's first law (law of inertia)\n\nan object at rest stays at rest and an object in motion stays in motion with the same speed and in the same direction unless acted upon by an unbalanced force.\n\n**key points:**\n- inertia: tendency of an object to resist changes in its state of motion\n- mass is a measure of inertia\n- net force = 0 means constant velocity (including zero velocity)\n\n## newton's second law\n\nthe acceleration of an object is directly proportional to the net force acting on it and inversely proportional to its mass. the direction of the acceleration is in the direction of the net force.\n\n**formula:** f_net = ma\n\n[DIAGRAM:force-vector]\n\n**units:** force in newtons (n), mass in kilograms (kg), acceleration in m/s²\n\n## newton's third law\n\nfor every action, there is an equal and opposite reaction.\n\n## free-body diagrams\n\n1. isolate the object of interest\n2. draw and label all external forces\n3. include: gravity, normal, friction, tension, applied forces\n\n## problem solving\n\n1. draw free-body diagram\n2. choose coordinate system\n3. apply f_net = ma to each direction\n4. solve equations\n5. check results",
 			"duration": 45,
 			"difficulty": "intermediate",
 			"prerequisites": ["vectors", "basic algebra"],
 			"learning_objectives": [
-				"State and explain Newton's three laws of motion",
-				"Draw and interpret free-body diagrams",
-				"Apply Newton's second law to solve problems"
-			]
+				"state and explain newton's three laws of motion",
+				"draw and interpret free-body diagrams",
+				"apply newton's second law to solve problems"
+			],
+			"videos": [
+				{
+					"id": "8z1O0A9Nn84",
+					"title": "Newton's Laws of Motion Explained",
+					"thumbnail": "https://img.youtube.com/vi/8z1O0A9Nn84/maxresdefault.jpg",
+					"duration": "22:15"
+				}
+			],
+			"diagram": {
+				"type": "free-body-diagram",
+				"id": "newton-laws"
+			}
 		},
+
 		{
 			"id": "physics-mechanics-work-energy",
 			"subject": "physical_sciences",
@@ -29,7 +42,19 @@
 				"Apply the work-energy theorem",
 				"Use conservation of mechanical energy",
 				"Calculate power"
-			]
+			],
+			"videos": [
+				{
+					"id": "JozbC6P6WzM",
+					"title": "Work, Energy, and Power Explained",
+					"thumbnail": "https://img.youtube.com/vi/JozbC6P6WzM/maxresdefault.jpg",
+					"duration": "25:30"
+				}
+			],
+			"diagram": {
+				"type": "energy-conversion",
+				"id": "work-energy-diagram"
+			}
 		},
 		{
 			"id": "physics-mechanics-momentum",
@@ -44,7 +69,19 @@
 				"Calculate momentum and impulse",
 				"Apply conservation of momentum",
 				"Solve collision problems"
-			]
+			],
+			"videos": [
+				{
+					"id": "wp7ALa3N4C0",
+					"title": "Momentum and Impulse Explained",
+					"thumbnail": "https://img.youtube.com/vi/wp7ALa3N4C0/maxresdefault.jpg",
+					"duration": "28:45"
+				}
+			],
+			"diagram": {
+				"type": "collision-diagram",
+				"id": "momentum-collision"
+			}
 		},
 		{
 			"id": "physics-mechanics-gravitation",
@@ -59,7 +96,19 @@
 				"Apply Newton's law of gravitation",
 				"Understand gravitational fields",
 				"Solve orbital motion problems"
-			]
+			],
+			"videos": [
+				{
+					"id": "4o0q3cF2lyE",
+					"title": "Universal Gravitation Explained",
+					"thumbnail": "https://img.youtube.com/vi/4o0q3cF2lyE/maxresdefault.jpg",
+					"duration": "24:30"
+				}
+			],
+			"diagram": {
+				"type": "gravitational-field",
+				"id": "gravitation-field"
+			}
 		},
 		{
 			"id": "physics-mechanics-circular",
@@ -74,7 +123,19 @@
 				"Understand angular quantities",
 				"Apply centripetal force and acceleration",
 				"Solve circular motion problems"
-			]
+			],
+			"videos": [
+				{
+					"id": "Ps3H9cB5p5Q",
+					"title": "Circular Motion Explained",
+					"thumbnail": "https://img.youtube.com/vi/Ps3H9cB5p5Q/maxresdefault.jpg",
+					"duration": "26:15"
+				}
+			],
+			"diagram": {
+				"type": "centripetal-force",
+				"id": "circular-motion-diagram"
+			}
 		},
 		{
 			"id": "physics-mechanics-equilibrium",
@@ -89,7 +150,19 @@
 				"Apply conditions for equilibrium",
 				"Calculate torque",
 				"Solve static equilibrium problems"
-			]
+			],
+			"videos": [
+				{
+					"id": "VKmT2e2R0jE",
+					"title": "Static Equilibrium Explained",
+					"thumbnail": "https://img.youtube.com/vi/VKmT2e2R0jE/maxresdefault.jpg",
+					"duration": "22:00"
+				}
+			],
+			"diagram": {
+				"type": "torque-diagram",
+				"id": "static-equilibrium"
+			}
 		},
 		{
 			"id": "physics-mechanics-projectiles",
@@ -104,7 +177,19 @@
 				"Analyze projectile motion into components",
 				"Calculate time of flight, height, range",
 				"Solve projectile problems"
-			]
+			],
+			"videos": [
+				{
+					"id": "tN2D1kAVdBE",
+					"title": "Projectile Motion Explained",
+					"thumbnail": "https://img.youtube.com/vi/tN2D1kAVdBE/maxresdefault.jpg",
+					"duration": "28:45"
+				}
+			],
+			"diagram": {
+				"type": "projectile-trajectory",
+				"id": "projectile-motion"
+			}
 		}
 	],
 	"waves": [
@@ -121,7 +206,19 @@
 				"Describe wave properties and relationships",
 				"Apply wave equation",
 				"Explain wave behaviors"
-			]
+			],
+			"videos": [
+				{
+					"id": "oK79C3K3p7I",
+					"title": "Wave Properties Explained",
+					"thumbnail": "https://img.youtube.com/vi/oK79C3K3p7I/maxresdefault.jpg",
+					"duration": "24:00"
+				}
+			],
+			"diagram": {
+				"type": "wave-diagram",
+				"id": "wave-properties"
+			}
 		},
 		{
 			"id": "physics-waves-sound",
@@ -136,7 +233,19 @@
 				"Understand sound wave properties",
 				"Apply decibel scale",
 				"Solve resonance and Doppler problems"
-			]
+			],
+			"videos": [
+				{
+					"id": "rQKXZ2Vw4gM",
+					"title": "Sound Waves Explained",
+					"thumbnail": "https://img.youtube.com/vi/rQKXZ2Vw4gM/maxresdefault.jpg",
+					"duration": "26:30"
+				}
+			],
+			"diagram": {
+				"type": "sound-wave",
+				"id": "sound-waves"
+			}
 		},
 		{
 			"id": "physics-waves-light",
@@ -151,22 +260,19 @@
 				"Understand light as electromagnetic wave",
 				"Apply reflection and refraction",
 				"Solve lens problems"
-			]
-		},
-		{
-			"id": "physics-waves-interference",
-			"subject": "physical_sciences",
-			"topic": "waves",
-			"title": "Wave Interference and Diffraction",
-			"content": "# Wave Interference and Diffraction\n\nInterference and diffraction demonstrate the wave nature of light.\n\n## Superposition Principle\n\nWhen two or more waves overlap, resultant displacement = sum of individual displacements.\n\n## Interference\n\n### Constructive\n- Path difference = mλ (m = 0, 1, 2...)\n- Maximum brightness\n\n### Destructive\n- Path difference = (m + ½)λ\n- Minimum (darkness)\n\n## Young's Double Slit\n\n### Fringe Spacing\nΔy = λL/d\n- L = screen distance\n- d = slit separation\n- λ = wavelength\n\n### Example\nLight (λ = 500 nm) through slits 0.5 mm apart. Screen 2 m away.\nΔy = (500×10⁻⁹)(2)/(0.5×10⁻³) = 2 mm\n\n## Diffraction\n\n### Single Slit\n- Central maximum: brightest, widest\n- Minima: a sinθ = mλ (m = ±1, ±2...)\n- a = slit width\n\n### Diffraction Grating\n- d sinθ = mλ\n- Higher resolution than double slit\n- Used in spectroscopy\n\n## Applications\n\n- CD/DVD as diffraction grating\n- X-ray crystallography\n- Holography\n- Optical coatings",
-			"duration": 45,
-			"difficulty": "advanced",
-			"prerequisites": ["wave properties", "light"],
-			"learning_objectives": [
-				"Apply superposition principle",
-				"Solve double slit interference",
-				"Understand diffraction patterns"
-			]
+			],
+			"videos": [
+				{
+					"id": "xC3Y2C3G6pM",
+					"title": "Light and Optics Explained",
+					"thumbnail": "https://img.youtube.com/vi/xC3Y2C3G6pM/maxresdefault.jpg",
+					"duration": "30:00"
+				}
+			],
+			"diagram": {
+				"type": "optics-diagram",
+				"id": "light-optics"
+			}
 		}
 	],
 	"electricity": [
