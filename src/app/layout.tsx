@@ -15,11 +15,10 @@ import { cn } from '@/lib/utils';
 import { appConfig } from '../app.config';
 import { atkinson, geistMono, geistSans, jetbrainsMono, notoSansMath, playfair } from './fonts';
 
-const geistHeading = playfair({ subsets: ['latin'], variable: '--font-heading' });
-
-const jetbrainsMonoLocal = jetbrainsMono({ subsets: ['latin'], variable: '--font-jetbrains-mono' });
-
-const atkinsonLocal = atkinson({ subsets: ['latin'], variable: '--font-atkinson' });
+/* Google fonts are already configured in fonts.ts - use them directly */
+const geistHeading = playfair;
+const jetbrainsMonoLocal = jetbrainsMono;
+const atkinsonLocal = atkinson;
 
 const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://lumni.ai';
 
