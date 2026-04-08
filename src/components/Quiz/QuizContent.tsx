@@ -24,6 +24,7 @@ import type {
 	ShortAnswerQuestion,
 } from '@/content/questions/quiz/types';
 import { useMathKeyboard } from '@/hooks/use-math-keyboard';
+import { DURATION, EASING } from '@/lib/animation-presets';
 import { useAdaptiveDifficulty } from '@/stores/useAdaptiveDifficultyStore';
 import { useQuestionFlagStore } from '@/stores/useQuestionFlagStore';
 import { useUserLearningProfileStore } from '@/stores/useUserLearningProfileStore';
@@ -107,8 +108,8 @@ const questionVariants = {
 };
 
 const questionTransition = {
-	duration: 0.35,
-	ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
+	duration: DURATION.normal,
+	ease: EASING.easeOut,
 };
 
 export function QuizContent({
@@ -443,7 +444,7 @@ export function QuizContent({
 							initial={{ opacity: 0 }}
 							animate={{ opacity: 1 }}
 							exit={{ opacity: 0 }}
-							transition={{ duration: 0.2 }}
+							transition={{ duration: DURATION.quick }}
 						>
 							<AIExplanation
 								question={currentQuestion.question}
@@ -486,7 +487,7 @@ export function QuizContent({
 								initial={{ opacity: 0, y: 12, scale: 0.97 }}
 								animate={{ opacity: 1, y: 0, scale: 1 }}
 								exit={{ opacity: 0, y: -8, scale: 0.98 }}
-								transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+								transition={{ duration: DURATION.normal, ease: EASING.smooth }}
 							>
 								<AnswerBreakdown
 									correctAnswer={correctAnswerText}
@@ -505,7 +506,7 @@ export function QuizContent({
 								initial={{ opacity: 0, y: 12, scale: 0.97 }}
 								animate={{ opacity: 1, y: 0, scale: 1 }}
 								exit={{ opacity: 0, y: -8, scale: 0.98 }}
-								transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+								transition={{ duration: DURATION.normal, ease: EASING.smooth }}
 							>
 								<ShortAnswerFeedback
 									isCorrect={isCorrect ?? false}

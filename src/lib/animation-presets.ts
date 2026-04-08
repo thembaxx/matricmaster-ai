@@ -1,27 +1,60 @@
 import type { Variants } from 'framer-motion';
 
+// Timing constants per UI/UX guidelines: max 300ms for user-initiated
+export const DURATION = {
+	instant: 0.1,
+	quick: 0.15,
+	normal: 0.25,
+	slow: 0.25,
+	slower: 0.3,
+} as const;
+
+// Spring configs for gesture-driven motion (per guidelines)
 export const SPRING_CONFIG = {
 	responsive: { stiffness: 300, damping: 30, mass: 1 },
 	bouncy: { stiffness: 400, damping: 28, mass: 1 },
 	gentle: { stiffness: 200, damping: 24, mass: 1 },
 	fluid: { stiffness: 350, damping: 28, mass: 0.9 },
 	press: { stiffness: 400, damping: 30, mass: 0.8 },
-};
+	gesture: { stiffness: 300, damping: 30, mass: 1 },
+	interruptible: { stiffness: 400, damping: 35 },
+} as const;
 
-export const DURATION = {
-	instant: 0.1,
-	quick: 0.15,
-	normal: 0.25,
-	slow: 0.35,
-	slower: 0.3,
-};
+// Physics constants for interactive elements (per guidelines)
+// - ACTIVE_SCALE: 0.97 for :active state
+// - HOVER_SCALE: 1.02 for hover state
+// - SQUASH range: 0.95-1.05 for subtle deformation
+export const PHYSICS = {
+	ACTIVE_SCALE: 0.97,
+	HOVER_SCALE: 1.02,
+	SQUASH_MIN: 0.95,
+	SQUASH_MAX: 1.05,
+	DEFORMATION_RANGE: { min: 0.97, max: 1.02 },
+} as const;
 
+// Easing curves per guidelines:
+// - easeOut for entrances
+// - easeIn for exits
+// - easeInOut for view transitions
+// - linear only for progress/time representation
 export const EASING = {
 	ios: [0.33, 1, 0.68, 1],
-	decelerate: [0, 0, 0.2, 1],
-	accelerate: [0.4, 0, 1, 1],
+	decelerate: [0, 0, 0.2, 1], // easeOut - for entrances
+	accelerate: [0.4, 0, 1, 1], // easeIn - for exits
 	liquid: [0.2, 0, 0.2, 1],
 	smooth: [0.33, 1, 0.68, 1],
+	easeOut: [0.4, 0, 0.2, 1],
+	easeIn: [0.4, 0, 1, 0.6],
+	easeInOut: [0.4, 0, 0.2, 1],
+	linear: 'linear',
+} as const;
+
+// Stagger delays per guidelines: under 50ms per item
+export const STAGGER = {
+	FAST: 0.03,
+	NORMAL: 0.04,
+	SLOW: 0.05,
+	MAX_DELAY: 0.05,
 } as const;
 
 export const MATERIALIZATION: Variants = {
@@ -30,13 +63,13 @@ export const MATERIALIZATION: Variants = {
 		opacity: 1,
 		scale: 1,
 		filter: 'blur(0px)',
-		transition: { duration: 0.4, ease: EASING.liquid },
+		transition: { duration: DURATION.normal, ease: EASING.decelerate },
 	},
 	exit: {
 		opacity: 0,
 		scale: 0.98,
 		filter: 'blur(4px)',
-		transition: { duration: 0.25, ease: EASING.accelerate },
+		transition: { duration: DURATION.quick, ease: EASING.accelerate },
 	},
 };
 
@@ -53,13 +86,13 @@ export const FADE_SCALE: Variants = {
 };
 
 export const LIQUID_FLEX = {
-	whileHover: { scale: 1.02 },
-	whileTap: { scale: 0.98 },
-	transition: { type: 'spring', stiffness: 350, damping: 28 },
+	whileHover: { scale: PHYSICS.HOVER_SCALE },
+	whileTap: { scale: PHYSICS.ACTIVE_SCALE },
+	transition: { type: 'spring', ...SPRING_CONFIG.fluid },
 };
 
 export const HOVER_LIFT = {
-	whileHover: { y: -1, transition: { duration: 0.15 } },
+	whileHover: { y: -2, transition: { duration: DURATION.quick } },
 	whileTap: { y: 0 },
 };
 
@@ -67,7 +100,7 @@ export const STAGGER_CONTAINER: Variants = {
 	hidden: { opacity: 0 },
 	visible: {
 		opacity: 1,
-		transition: { staggerChildren: 0.04, delayChildren: 0.06 },
+		transition: { staggerChildren: STAGGER.NORMAL, delayChildren: STAGGER.NORMAL },
 	},
 };
 
@@ -76,7 +109,7 @@ export const STAGGER_ITEM: Variants = {
 	visible: {
 		opacity: 1,
 		y: 0,
-		transition: { type: 'spring', stiffness: 300, damping: 28 },
+		transition: { type: 'spring', ...SPRING_CONFIG.gesture },
 	},
 };
 
@@ -91,7 +124,7 @@ export const SCALE_IN: Variants = {
 	animate: {
 		opacity: 1,
 		scale: 1,
-		transition: { type: 'spring', stiffness: 350, damping: 28 },
+		transition: { type: 'spring', ...SPRING_CONFIG.fluid },
 	},
 	exit: { opacity: 0, scale: 0.94 },
 };
@@ -101,7 +134,7 @@ export const BLUR_REVEAL: Variants = {
 	animate: {
 		opacity: 1,
 		filter: 'blur(0px)',
-		transition: { duration: 0.3, ease: EASING.decelerate },
+		transition: { duration: DURATION.normal, ease: EASING.decelerate },
 	},
 };
 
@@ -129,18 +162,18 @@ export const ANIMATION_PRESETS = {
 		initial: { opacity: 0, y: 6 },
 		animate: { opacity: 1, y: 0 },
 		exit: { opacity: 0, y: -6 },
-		transition: { duration: 0.2, ease: EASING.ios },
+		transition: { duration: DURATION.normal, ease: EASING.easeOut },
 	},
 	card: {
 		initial: { opacity: 0, y: 12, scale: 0.98 },
 		animate: { opacity: 1, y: 0, scale: 1 },
 		exit: { opacity: 0, y: -6 },
-		transition: { type: 'spring', stiffness: 300, damping: 30 },
+		transition: { type: 'spring', ...SPRING_CONFIG.gesture },
 	},
 	button: {
-		whileHover: { scale: 1.02 },
-		whileTap: { scale: 0.98 },
-		transition: { type: 'spring', stiffness: 350, damping: 28 },
+		whileHover: { scale: PHYSICS.HOVER_SCALE },
+		whileTap: { scale: PHYSICS.ACTIVE_SCALE },
+		transition: { type: 'spring', ...SPRING_CONFIG.responsive },
 	},
 	modal: {
 		initial: { opacity: 0, scale: 0.95, y: 16 },
@@ -148,7 +181,7 @@ export const ANIMATION_PRESETS = {
 			opacity: 1,
 			scale: 1,
 			y: 0,
-			transition: { type: 'spring', stiffness: 300, damping: 28 },
+			transition: { type: 'spring', ...SPRING_CONFIG.gesture },
 		},
 		exit: { opacity: 0, scale: 0.95, y: 16 },
 	},
@@ -158,7 +191,7 @@ export const ANIMATION_PRESETS = {
 			opacity: 1,
 			y: 0,
 			scale: 1,
-			transition: { type: 'spring', stiffness: 350, damping: 28 },
+			transition: { type: 'spring', ...SPRING_CONFIG.fluid },
 		},
 		exit: { opacity: 0, y: 16, scale: 0.9 },
 	},

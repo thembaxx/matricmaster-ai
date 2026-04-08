@@ -100,6 +100,7 @@
   --font-geist-mono: var(--font-geist-mono);
   --font-playfair: var(--font-playfair);
   --font-noto-sans-math: var(--font-noto-sans-math);
+  --font-atkinson: var(--font-atkinson);
   --font-heading: var(--font-heading);
   --font-mono: var(--font-mono);
   --font-display: var(--font-playfair), Georgia, serif;
@@ -131,6 +132,8 @@
   --font-academic: var(--font-playfair), Georgia, serif;
   --font-data: var(--font-geist-sans), system-ui, sans-serif;
   --font-numeric: var(--font-geist-mono), ui-monospace, monospace;
+  /* Questions - Atkinson Hyperlegible for maximum readability */
+  --font-question: var(--font-atkinson), var(--font-geist-sans), system-ui, sans-serif;
 
   /* --- UNIFIED BORDER RADIUS SYSTEM --- */
   --radius-xs: 6px;    /* Small elements, badges */
@@ -447,6 +450,18 @@
   .tabular-nums {
     font-variant-numeric: tabular-nums;
     font-feature-settings: 'tnum' 1;
+  }
+  
+  /* Oldstyle numbers for prose - blend into body text */
+  .oldstyle-nums {
+    font-variant-numeric: oldstyle-nums;
+    font-feature-settings: 'onum' 1;
+  }
+  
+  /* Slashed zero for code-adjacent UI */
+  .slashed-zero {
+    font-variant-numeric: slashed-zero;
+    font-feature-settings: 'zero' 1;
   }
   
   /* Prose styling */
@@ -907,6 +922,14 @@
   font-family: var(--font-academic);
   font-size: 1.05rem;
   line-height: 1.6;
+}
+
+/* Question text - Using Atkinson Hyperlegible for maximum readability */
+.font-question,
+.prose Question text {
+  font-family: var(--font-question);
+  line-height: 1.6;
+  letter-spacing: 0.01em;
 }
 
 /* === TREND COLORS FOR PERIODIC TABLE === */
