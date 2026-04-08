@@ -9,20 +9,20 @@ import { STAGGER_CONTAINER, STAGGER_ITEM } from '@/lib/animation-presets';
 const STEPS = [
 	{
 		icon: Camera01Icon,
-		title: 'Upload Question',
-		description: 'Snap a photo or type any past paper question',
+		title: 'Upload question',
+		description: 'snap a photo or type any past paper question',
 		color: 'bg-tiimo-lavender/10 text-tiimo-lavender',
 	},
 	{
 		icon: SparklesIcon,
-		title: 'Get AI Help',
-		description: 'Our AI explains the solution step-by-step',
+		title: 'Get AI help',
+		description: 'our AI explains the solution step-by-step',
 		color: 'bg-subject-math/10 text-subject-math',
 	},
 	{
 		icon: ChartIcon,
-		title: 'Track Progress',
-		description: "See which topics you've mastered and what needs work",
+		title: 'Track progress',
+		description: "see which topics you've mastered and what needs work",
 		color: 'bg-tiimo-green/10 text-tiimo-green',
 	},
 ];

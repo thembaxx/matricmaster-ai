@@ -43,7 +43,7 @@ html {
 }
 
 /* Better touch targets for mobile */
-@media (pointer: coarse) {
+/* @media (pointer: coarse) {
   button,
   [role="button"],
   a,
@@ -53,7 +53,7 @@ html {
     min-height: 44px;
     min-width: 44px;
   }
-}
+} */
 
 /* Custom scrollbar */
 ::-webkit-scrollbar {

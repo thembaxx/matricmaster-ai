@@ -143,7 +143,7 @@ export function HeroInteractiveDemo() {
 						duration: 3.5,
 						ease: 'easeInOut',
 					}}
-					className="absolute -top-2 -left-4 w-20 h-24 bg-card rounded-[var(--radius-lg)] shadow-elevation-2 border border-border/50 flex flex-col items-center justify-center p-2 z-10 will-change-transform"
+					className="absolute top-1/2 -right-0.5 px-4 bg-card rounded-[var(--radius-lg)] shadow-elevation-2 border border-border/50 flex flex-col items-center justify-center p-2 z-10 will-change-transform"
 				>
 					<div className="w-8 h-8 rounded-[var(--radius-md)] bg-subject-math/20 flex items-center justify-center mb-1">
 						<HugeiconsIcon icon={CalculatorIcon} className="w-4 h-4 text-subject-math" />
@@ -161,7 +161,7 @@ export function HeroInteractiveDemo() {
 						delay: 0.5,
 						ease: 'easeInOut',
 					}}
-					className="absolute -bottom-2 -right-4 w-20 h-24 bg-card rounded-[var(--radius-lg)] shadow-elevation-2 border border-border/50 flex flex-col items-center justify-center p-2 z-20 will-change-transform"
+					className="absolute -bottom-2 right-1.5 h-24 bg-card rounded-[var(--radius-lg)] shadow-elevation-2 border border-border/50 flex flex-col items-center justify-center p-2 z-20 will-change-transform"
 				>
 					<div className="w-8 h-8 rounded-[var(--radius-md)] bg-subject-life/20 flex items-center justify-center mb-1">
 						<HugeiconsIcon icon={BrainIcon} className="w-4 h-4 text-subject-life" />
@@ -176,7 +176,7 @@ export function HeroInteractiveDemo() {
 					initial={{ opacity: 0, x: 20 }}
 					animate={{ opacity: 1, x: 0 }}
 					transition={{ delay: 0.6 }}
-					className="absolute -right-4 -top-6 bg-card rounded-[var(--radius-lg)] p-2 shadow-elevation-2 border border-border/50"
+					className="absolute -right-4 top-1.5 bg-card rounded-[var(--radius-lg)] p-2 shadow-elevation-2 border border-border/50"
 				>
 					<div className="flex items-center gap-3">
 						<div className="w-10 h-10 rounded-[var(--radius-md)] bg-success/10 flex items-center justify-center">
@@ -210,7 +210,7 @@ export function HeroInteractiveDemo() {
 					initial={{ opacity: 0, y: 20 }}
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ delay: 1.2 }}
-					className="absolute -bottom-8 -left-1/4 bg-card rounded-[var(--radius-lg)] p-3 shadow-elevation-2 border border-border/50 flex items-center gap-2"
+					className="absolute -bottom-3 left-0 bg-card rounded-[var(--radius-lg)] p-3 shadow-elevation-2 border border-border/50 flex items-center gap-2"
 				>
 					<div className="w-8 h-8 rounded-full bg-tiimo-yellow/20 flex items-center justify-center">
 						<span className="text-sm">⭐</span>
