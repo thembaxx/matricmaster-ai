@@ -168,10 +168,10 @@ function CardHoverDemo() {
 	const glowOpacity = interpolate(frame, [45, 60], [0, 0.3], { extrapolateRight: 'clamp' });
 
 	const subjects = [
-		{ name: 'Mathematics', color: TIIMO_COLORS.subjectMath, icon: '∑' },
-		{ name: 'Physics', color: TIIMO_COLORS.subjectPhysics, icon: 'Ω' },
-		{ name: 'Life Sciences', color: TIIMO_COLORS.subjectLife, icon: '♨' },
-		{ name: 'Chemistry', color: TIIMO_COLORS.subjectChemistry, icon: '⚛' },
+		{ name: 'Mathematics', color: TIIMO_COLORS.math.DEFAULT, icon: '∑' },
+		{ name: 'Physics', color: TIIMO_COLORS.physics.DEFAULT, icon: 'Ω' },
+		{ name: 'Life Sciences', color: TIIMO_COLORS.lifeSciences.DEFAULT, icon: '♨' },
+		{ name: 'Chemistry', color: TIIMO_COLORS.chemistry.DEFAULT, icon: '⚛' },
 	];
 
 	return (
