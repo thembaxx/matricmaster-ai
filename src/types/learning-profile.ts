@@ -6,8 +6,11 @@ export interface UserLearningProfile {
 	// Learning preferences
 	preferredDifficulty: 'easy' | 'medium' | 'hard';
 	learningStyle: 'visual' | 'auditory' | 'kinesthetic' | 'reading';
+	preferredPace: 'slow' | 'moderate' | 'fast';
 	sessionDuration: number; // minutes
 	preferredSubjects: string[];
+	contentTypes: Array<'text' | 'visual' | 'interactive' | 'examples' | 'audio'>;
+	avoidedTopics?: string[]; // topics user finds difficult
 
 	// Performance tracking
 	subjectMastery: Record<
@@ -40,9 +43,11 @@ export interface UserLearningProfile {
 		hard: number;
 	};
 
-	// Content preferences
-	preferredContentTypes: Array<'text' | 'visual' | 'interactive' | 'examples'>;
-	avoidedTopics?: string[]; // topics user finds difficult
+	// Personalization insights
+	learningVelocity: number; // questions per minute
+	consistencyScore: number; // 0-100, based on regular study patterns
+	riskOfBurnout: 'low' | 'medium' | 'high';
+	lastPersonalizationUpdate: Date;
 }
 
 export interface LearningSession {
