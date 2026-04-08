@@ -540,7 +540,7 @@ export function ProcessingScreen({ onContinue }: { onContinue: () => void }) {
 			setTextIndex((prev) => (prev + 1) % texts.length);
 		}, 1500);
 		return () => clearInterval(timer);
-	}, [texts.length]);
+	}, []);
 
 	React.useEffect(() => {
 		const timeout = setTimeout(onContinue, 6000);
