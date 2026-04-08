@@ -11,7 +11,7 @@ export const geistSans = GeistSans;
 export const geistMono = GeistMono;
 
 export const jetbrainsMono = JetBrains_Mono({
-	weight: ['400', '500'],
+	weight: ['400'],
 	subsets: ['latin'],
 	display: 'optional',
 	variable: '--font-jetbrains-mono',
@@ -19,7 +19,7 @@ export const jetbrainsMono = JetBrains_Mono({
 });
 
 export const notoSansMath = Noto_Sans_Math({
-	weight: ['400', '500', '600', '700'],
+	weight: ['400'],
 	subsets: ['latin'],
 	display: 'swap',
 	variable: '--font-noto-sans-math',
@@ -36,7 +36,7 @@ export const playfair = Playfair_Display({
 
 /* Atkinson Hyperlegible - Best for educational content, questions, and accessibility */
 export const atkinson = Atkinson_Hyperlegible({
-	weight: ['400', '500', '600', '700'],
+	weight: ['400', '700'],
 	subsets: ['latin'],
 	display: 'swap',
 	variable: '--font-atkinson',
