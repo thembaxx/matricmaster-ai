@@ -16,6 +16,7 @@ import { m } from 'framer-motion';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 import { appConfig } from '@/app.config';
+import type { NavItem } from '@/components/Layout/navigation-data';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {
@@ -26,7 +27,6 @@ import {
 	DrawerTrigger,
 } from '@/components/ui/drawer';
 import { Input } from '@/components/ui/input';
-import type { MobileNavItem } from '@/constants/mobile-nav';
 import { useMobileNav } from '@/hooks/useMobileNav';
 import { authClient } from '@/lib/auth-client';
 import { cn } from '@/lib/utils';
@@ -208,7 +208,7 @@ function MobileNavLink({
 	item,
 	onNavigate,
 }: {
-	item: MobileNavItem;
+	item: NavItem;
 	onNavigate: (href: string) => void;
 }) {
 	const pathname = usePathname();

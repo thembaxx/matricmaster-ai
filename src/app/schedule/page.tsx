@@ -11,6 +11,7 @@ import { getCurrentDayName, mapDbEventToUI } from '@/components/Schedule/constan
 import { DesktopCalendarGrid } from '@/components/Schedule/DesktopCalendarGrid';
 import { MobileListView } from '@/components/Schedule/MobileListView';
 import { Button } from '@/components/ui/button';
+import { ConfirmDialog } from '@/components/ui/ConfirmDialog';
 import { deleteCalendarEventAction, getCalendarEventsWithSubjectsAction } from '@/lib/db/actions';
 
 export default function SchedulePage() {
@@ -20,6 +21,7 @@ export default function SchedulePage() {
 	const [isActionSheetOpen, setIsActionSheetOpen] = useState(false);
 	const [selectedEvent, setSelectedEvent] = useState<UIEvent | null>(null);
 	const [isDeleting, setIsDeleting] = useState<string | null>(null);
+	const [deleteBlockId, setDeleteBlockId] = useState<string | null>(null);
 
 	const refreshEvents = useCallback(async () => {
 		const data = await getCalendarEventsWithSubjectsAction();
@@ -45,10 +47,14 @@ export default function SchedulePage() {
 
 	const handleDeleteBlock = async (eventId: string, e: React.MouseEvent) => {
 		e.stopPropagation();
-		if (!confirm('Are you sure you want to delete this study block?')) return;
-		setIsDeleting(eventId);
+		setDeleteBlockId(eventId);
+	};
+
+	const confirmDeleteBlock = async () => {
+		if (!deleteBlockId) return;
+		setIsDeleting(deleteBlockId);
 		try {
-			const result = await deleteCalendarEventAction(eventId);
+			const result = await deleteCalendarEventAction(deleteBlockId);
 			if (result.success) {
 				refreshEvents();
 			}
@@ -56,6 +62,7 @@ export default function SchedulePage() {
 			console.error('Failed to delete event:', error);
 		} finally {
 			setIsDeleting(null);
+			setDeleteBlockId(null);
 		}
 	};
 
@@ -122,6 +129,18 @@ export default function SchedulePage() {
 					&copy; {new Date().getFullYear()} {appConfig.name}. All rights reserved.
 				</p>
 			</div>
+
+			<ConfirmDialog
+				open={!!deleteBlockId}
+				onOpenChange={(open) => !open && setDeleteBlockId(null)}
+				onConfirm={confirmDeleteBlock}
+				title="Delete this study block?"
+				description="This will remove this study session from your schedule. You can always create a new one later."
+				confirmLabel="Delete block"
+				cancelLabel="Keep block"
+				variant="destructive"
+				isLoading={!!isDeleting}
+			/>
 		</div>
 	);
 }

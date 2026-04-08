@@ -1,0 +1,154 @@
+import {
+	AiBrain01Icon,
+	AlertCircleIcon,
+	Atom01Icon,
+	BookmarkIcon,
+	BookOpen01Icon,
+	CalculatorIcon,
+	Calendar01Icon,
+	ChampionIcon,
+	Chat01Icon,
+	ComputerVideoCallIcon,
+	ContentWritingIcon,
+	File01Icon,
+	GlobeIcon,
+	GridIcon,
+	Home01Icon,
+	Key01Icon,
+	Layers01Icon,
+	LayoutLeftIcon,
+	MapsIcon,
+	Medal01Icon,
+	Mic01Icon,
+	Mortarboard02Icon,
+	Notification03Icon,
+	PhysicsIcon,
+	QuestionIcon,
+	Search01Icon,
+	Settings01Icon,
+	Shield01Icon,
+	SparklesIcon,
+	Timer01Icon,
+	UserAdd01Icon,
+	UserGroupIcon,
+	User as UserIcon,
+} from '@hugeicons/core-free-icons';
+
+export type IconSvg = typeof Home01Icon;
+
+export type NavItem = {
+	href: string;
+	label: string;
+	icon?: IconSvg;
+	fluentEmoji?: string;
+};
+
+export type NavSection = {
+	title: string;
+	items: NavItem[];
+};
+
+export const NAV_SECTIONS: NavSection[] = [
+	{
+		title: 'Learning',
+		items: [
+			{ href: '/dashboard', label: 'Dashboard', icon: Home01Icon },
+			{ href: '/demo', label: 'Demo', icon: SparklesIcon },
+			{ href: '/lessons', label: 'Lessons', icon: BookOpen01Icon },
+			{ href: '/physics', label: 'Physics', icon: PhysicsIcon },
+			{ href: '/math', label: 'Mathematics', icon: CalculatorIcon },
+			{ href: '/search', label: 'Search', icon: Search01Icon },
+			{ href: '/study-companion', label: 'Study Companion', icon: SparklesIcon },
+			{ href: '/study-path', label: 'Study Path', icon: MapsIcon },
+			{ href: '/study-plan', label: 'Study Plan', icon: Calendar01Icon },
+			{ href: '/curriculum-map', label: 'Curriculum Map', icon: GridIcon },
+			{ href: '/planner', label: 'Planner', icon: Calendar01Icon },
+			{ href: '/schedule', label: 'Schedule', icon: Calendar01Icon },
+			{ href: '/periodic-table', label: 'Periodic Table', icon: Atom01Icon },
+			{ href: '/chat', label: 'Study Buddy', icon: Chat01Icon },
+			{ href: '/smart-scheduler', label: 'Smart Scheduler', icon: Calendar01Icon },
+			{ href: '/tutoring', label: 'Matric Tutor', icon: ComputerVideoCallIcon },
+			{ href: '/voice-tutor', label: 'Voice Tutor', icon: Mic01Icon },
+			{ href: '/essay-grader', label: 'Essay Grader', icon: ContentWritingIcon },
+			{ href: '/aps-calculator', label: 'APS Calculator', icon: CalculatorIcon },
+			{ href: '/exam-timer', label: 'Exam Timer', icon: Timer01Icon },
+			{ href: '/science-lab', label: 'Science Lab', icon: SparklesIcon },
+			{ href: '/virtual-lab', label: 'Virtual Lab', icon: SparklesIcon },
+			{ href: '/setwork-library', label: 'Setwork Library', icon: BookOpen01Icon },
+		],
+	},
+	{
+		title: 'Practice',
+		items: [
+			{ href: '/quiz', label: 'Quiz', icon: QuestionIcon },
+			{ href: '/flashcards', label: 'Flashcards', icon: Layers01Icon },
+			{ href: '/past-papers', label: 'Past Papers', icon: File01Icon },
+			{ href: '/snap-and-solve', label: 'Snap & Solve', icon: CalculatorIcon },
+			{ href: '/common-questions', label: 'Common Questions', icon: QuestionIcon },
+			{ href: '/review', label: 'Review', icon: AiBrain01Icon },
+			{ href: '/duel', label: 'Duel', icon: ChampionIcon },
+			{ href: '/boss-fight', label: 'Boss Fight', icon: SparklesIcon },
+		],
+	},
+	{
+		title: 'Results & Planning',
+		items: [
+			{ href: '/results', label: 'NSC Results', icon: Mortarboard02Icon },
+			{ href: '/matric-results', label: 'Matric Results', icon: Mortarboard02Icon },
+			{ href: '/progress', label: 'Progress', icon: Timer01Icon },
+			{ href: '/school', label: 'University Applications', icon: BookOpen01Icon },
+			{ href: '/subscription', label: 'Subscription', icon: SparklesIcon },
+			{ href: '/analytics', label: 'Analytics', icon: CalculatorIcon },
+			{ href: '/marketplace', label: 'Marketplace', icon: UserGroupIcon },
+		],
+	},
+	{
+		title: 'Focus',
+		items: [
+			{ href: '/focus', label: 'Focus Mode', icon: Timer01Icon },
+			{ href: '/focus-rooms', label: 'Focus Rooms', icon: UserGroupIcon },
+			{ href: '/offline', label: 'Offline Mode', icon: File01Icon },
+			{ href: '/team-goals', label: 'Team Goals', icon: UserGroupIcon },
+		],
+	},
+	{
+		title: 'Social',
+		items: [
+			{ href: '/achievements', label: 'Achievements', icon: Medal01Icon },
+			{ href: '/channels', label: 'Study Channels', icon: UserGroupIcon },
+			{ href: '/comments', label: 'Comments', icon: Chat01Icon },
+			{ href: '/leaderboard', label: 'Leaderboard', icon: ChampionIcon },
+			{ href: '/study-buddies', label: 'Study Buddies', icon: UserAdd01Icon },
+			{ href: '/video-call', label: 'Video Call', icon: ComputerVideoCallIcon },
+		],
+	},
+	{
+		title: 'Account',
+		items: [
+			{ href: '/2fa', label: 'Two-Factor Auth', icon: Key01Icon },
+			{ href: '/bookmarks', label: 'Bookmarks', icon: BookmarkIcon },
+			{ href: '/calendar', label: 'Calendar', icon: Calendar01Icon },
+			{ href: '/language', label: 'Language', icon: GlobeIcon },
+			{ href: '/notifications', label: 'Notifications', icon: Notification03Icon },
+			{ href: '/parent-dashboard', label: 'Parent Portal', icon: UserGroupIcon },
+			{ href: '/profile', label: 'Profile', icon: UserIcon },
+			{ href: '/settings', label: 'Settings', icon: Settings01Icon },
+			{ href: '/subjects', label: 'Subjects', icon: BookOpen01Icon },
+		],
+	},
+	{
+		title: 'Admin',
+		items: [
+			{ href: '/admin', label: 'Admin Panel', icon: Shield01Icon },
+			{ href: '/admin/moderation', label: 'Moderation', icon: AlertCircleIcon },
+			{ href: '/cms', label: 'Content Management', icon: LayoutLeftIcon },
+		],
+	},
+];
+
+export const NAV_ITEMS = NAV_SECTIONS.flatMap((section) => section.items);
+
+export type MenuItem = NavItem;
+export type MenuSection = NavSection;
+export const sideMenuSections = NAV_SECTIONS;
+export const sideMenuItems = NAV_ITEMS;

@@ -64,7 +64,7 @@ export function ConnectCalendarButton() {
 			toast.success('Calendar disconnected');
 		},
 		onError: () => {
-			toast.error('Failed to disconnect calendar');
+			toast.error('Failed to disconnect. Try again in a moment.');
 		},
 	});
 
@@ -75,7 +75,7 @@ export function ConnectCalendarButton() {
 			toast.success('Sync settings updated');
 		},
 		onError: () => {
-			toast.error('Failed to update sync settings');
+			toast.error('Failed to update sync settings. Try again.');
 		},
 	});
 
@@ -91,7 +91,7 @@ export function ConnectCalendarButton() {
 		},
 		onError: () => {
 			setIsSyncing(false);
-			toast.error('Failed to sync events');
+			toast.error('Failed to sync. Check your connection and try again.');
 		},
 	});
 

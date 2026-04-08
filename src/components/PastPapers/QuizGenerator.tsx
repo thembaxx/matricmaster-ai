@@ -95,8 +95,8 @@ export function QuizGenerator({
 			}
 
 			setQuestions(data.questions);
-		} catch (err) {
-			setError(err instanceof Error ? err.message : 'Failed to load questions');
+		} catch (_err) {
+			setError("We couldn't load the questions. Check your connection and try again.");
 		} finally {
 			setIsLoadingQuestions(false);
 		}
@@ -134,8 +134,8 @@ export function QuizGenerator({
 			}
 
 			onQuizGenerated?.(data.quiz);
-		} catch (err) {
-			setError(err instanceof Error ? err.message : 'Failed to generate quiz');
+		} catch (_err) {
+			setError("We couldn't generate your quiz. Try again or select fewer questions.");
 		} finally {
 			setIsGenerating(false);
 		}
@@ -253,7 +253,7 @@ export function QuizGenerator({
 					<div className="flex justify-end gap-2">
 						{onCancel && (
 							<Button variant="outline" onClick={onCancel}>
-								Cancel
+								Go back
 							</Button>
 						)}
 						<Button onClick={generateQuiz} disabled={isGenerating || selectedIds.length === 0}>

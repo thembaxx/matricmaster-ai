@@ -1,6 +1,6 @@
 import { useRouter } from 'next/navigation';
 import { useMemo, useState } from 'react';
-import { MOBILE_NAV_SECTIONS } from '@/constants/mobile-nav';
+import { NAV_SECTIONS, type NavSection } from '@/components/Layout/navigation-data';
 import { authClient } from '@/lib/auth-client';
 
 export function useMobileNav() {
@@ -8,10 +8,10 @@ export function useMobileNav() {
 	const [searchQuery, setSearchQuery] = useState('');
 	const router = useRouter();
 
-	const filteredSections = useMemo(() => {
-		if (!searchQuery.trim()) return MOBILE_NAV_SECTIONS;
+	const filteredSections: NavSection[] = useMemo(() => {
+		if (!searchQuery.trim()) return NAV_SECTIONS;
 		const query = searchQuery.toLowerCase();
-		return MOBILE_NAV_SECTIONS.map((section) => ({
+		return NAV_SECTIONS.map((section) => ({
 			...section,
 			items: section.items.filter((item) => item.label.toLowerCase().includes(query)),
 		})).filter((section) => section.items.length > 0);
