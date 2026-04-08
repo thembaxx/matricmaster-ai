@@ -11,14 +11,13 @@ import { Toaster } from '@/components/Toaster';
 import { ThemeProvider } from '@/components/theme-provider';
 import '@/styles/index.css';
 import { domAnimation, LazyMotion } from 'framer-motion';
-import { Geist, JetBrains_Mono } from 'next/font/google';
 import { cn } from '@/lib/utils';
 import { appConfig } from '../app.config';
-import { geistMono, geistSans, notoSansMath, playfair } from './fonts';
+import { geistMono, geistSans, jetbrainsMono, notoSansMath, playfair } from './fonts';
 
-const geistHeading = Geist({ subsets: ['latin'], variable: '--font-heading' });
+const geistHeading = playfair({ subsets: ['latin'], variable: '--font-heading' });
 
-const jetbrainsMono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-jetbrains-mono' });
+const jetbrainsMonoLocal = jetbrainsMono({ subsets: ['latin'], variable: '--font-jetbrains-mono' });
 
 const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://lumni.ai';
 
@@ -135,7 +134,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 				geistSans.variable,
 				playfair.variable,
 				notoSansMath.variable,
-				jetbrainsMono.variable,
+				jetbrainsMonoLocal.variable,
 				geistHeading.variable
 			)}
 		>
@@ -155,7 +154,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 					{JSON.stringify(jsonLd)}
 				</script>
 			</head>
-			<body className="bg-background min-h-screen">
+			<body className="bg-background min-h-screen font-body">
 				<a
 					href="#main-content"
 					className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-6 focus:py-3 focus:bg-primary focus:text-primary-foreground focus:rounded-lg focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:shadow-lg transition-all duration-200"

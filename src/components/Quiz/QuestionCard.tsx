@@ -5,6 +5,7 @@ import { HugeiconsIcon } from '@hugeicons/react';
 import { AnimatePresence, m } from 'framer-motion';
 import { useCallback } from 'react';
 import { Card } from '@/components/ui/card';
+import { DURATION, EASING } from '@/lib/animation-presets';
 import type { ConfidenceLevel } from '@/types/quiz';
 import { AnswerOption, type AnswerOptionProps } from './AnswerOption';
 import { ConfidenceSelector } from './ConfidenceSelector';
@@ -159,7 +160,7 @@ export function QuestionCard({
 						initial={{ opacity: 0 }}
 						animate={{ opacity: 1 }}
 						exit={{ opacity: 0 }}
-						transition={{ duration: 0.2 }}
+						transition={{ duration: DURATION.quick }}
 					>
 						<div
 							role="radiogroup"
@@ -185,8 +186,8 @@ export function QuestionCard({
 										animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
 										exit={{ opacity: 0, y: -6, filter: 'blur(2px)' }}
 										transition={{
-											duration: 0.35,
-											ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
+											duration: DURATION.normal,
+											ease: EASING.smooth,
 											delay: 0.06 * index,
 										}}
 									>

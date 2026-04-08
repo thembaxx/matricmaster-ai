@@ -449,6 +449,18 @@
     font-feature-settings: 'tnum' 1;
   }
   
+  /* Oldstyle numbers for prose - blend into body text */
+  .oldstyle-nums {
+    font-variant-numeric: oldstyle-nums;
+    font-feature-settings: 'onum' 1;
+  }
+  
+  /* Slashed zero for code-adjacent UI */
+  .slashed-zero {
+    font-variant-numeric: slashed-zero;
+    font-feature-settings: 'zero' 1;
+  }
+  
   /* Prose styling */
   .prose {
     font-size: var(--text-base);

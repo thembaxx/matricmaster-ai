@@ -3,7 +3,7 @@
 import { m, type Variants } from 'framer-motion';
 import { usePathname } from 'next/navigation';
 import { useEffect, useRef } from 'react';
-import { getPageTransition, useReducedMotion } from '@/hooks/use-reduced-motion';
+import { getPageTransition, SPRING_CONFIG, useReducedMotion } from '@/hooks/use-reduced-motion';
 import { useNavigationTransition, ViewTransition } from './ViewTransition';
 
 interface PageTransitionProps {
@@ -87,9 +87,9 @@ export default function PageTransition({ children }: PageTransitionProps) {
 				variants={variants}
 				transition={{
 					type: 'spring',
-					stiffness: 260,
-					damping: 25,
-					mass: 1,
+					stiffness: SPRING_CONFIG.responsive.stiffness,
+					damping: SPRING_CONFIG.responsive.damping,
+					mass: SPRING_CONFIG.responsive.mass,
 					...transition,
 				}}
 				className="h-full w-full grow flex flex-col"
