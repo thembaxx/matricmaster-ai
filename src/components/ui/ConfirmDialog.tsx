@@ -1,6 +1,6 @@
 'use client';
 
-import { Warning2Icon } from '@hugeicons/core-free-icons';
+import { AlertCircleIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
@@ -55,7 +55,7 @@ export function ConfirmDialog({
 					<div className="flex items-center gap-3">
 						{variant === 'destructive' && (
 							<div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-destructive/10">
-								<HugeiconsIcon icon={Warning2Icon} className="h-5 w-5 text-destructive" />
+								<HugeiconsIcon icon={AlertCircleIcon} className="h-5 w-5 text-destructive" />
 							</div>
 						)}
 						<div>
