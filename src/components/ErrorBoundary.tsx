@@ -64,11 +64,11 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
 						</div>
 						<div className="space-y-3">
 							<h2 className="text-3xl font-black text-foreground tracking-tight font-display">
-								We hit a small bump
+								Something went wrong
 							</h2>
 							<p className="text-sm text-muted-foreground leading-relaxed">
 								{this.state.error?.message ||
-									"Something unexpected happened. Let's get you back on track."}
+									"We're sorry about that. Try refreshing the page or return home to start fresh."}
 							</p>
 						</div>
 						<div className="flex gap-3 justify-center pt-4">

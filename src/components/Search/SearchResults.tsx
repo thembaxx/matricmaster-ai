@@ -70,9 +70,11 @@ export const SearchResults = memo(function SearchResults({ results }: SearchResu
 						</div>
 						<div className="space-y-2">
 							<h3 className="font-black text-muted-foreground  tracking-widest text-sm">
-								Nothing here
+								No papers found
 							</h3>
-							<p className="text-muted-foreground font-bold">Try a different search term</p>
+							<p className="text-muted-foreground font-bold">
+								We couldn't find any past papers matching your search. Try different keywords.
+							</p>
 						</div>
 					</m.div>
 				)}

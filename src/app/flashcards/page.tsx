@@ -10,6 +10,7 @@ import type { Flashcard, FlashcardDeck } from '@/components/Flashcards/constants
 import { DeckGrid } from '@/components/Flashcards/DeckGrid';
 import { DeckStatsCards } from '@/components/Flashcards/DeckStatsCards';
 import { Button } from '@/components/ui/button';
+import { ConfirmDialog } from '@/components/ui/ConfirmDialog';
 import { Card, CardContent } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { authClient } from '@/lib/auth-client';
@@ -41,6 +42,7 @@ export default function FlashcardsPage() {
 	const [showDeckModal, setShowDeckModal] = useState(false);
 	const [showReviewModal, setShowReviewModal] = useState(false);
 	const [reviewCards, setReviewCards] = useState<Flashcard[]>([]);
+	const [deleteDeck, setDeleteDeck] = useState<FlashcardDeck | null>(null);
 
 	const { data: decksData, isLoading } = useQuery<FlashcardDeck[]>({
 		queryKey: ['flashcard-decks'],
@@ -91,13 +93,11 @@ export default function FlashcardsPage() {
 		}
 	};
 
-	const handleDeleteDeck = async (deck: FlashcardDeck) => {
-		if (!confirm(`Are you sure you want to delete "${deck.name}"? This cannot be undone.`)) {
-			return;
-		}
+	const handleDeleteDeck = async () => {
+		if (!deleteDeck) return;
 
 		try {
-			const response = await fetch(`/api/flashcards/decks/${deck.id}`, {
+			const response = await fetch(`/api/flashcards/decks/${deleteDeck.id}`, {
 				method: 'DELETE',
 			});
 
@@ -109,6 +109,8 @@ export default function FlashcardsPage() {
 		} catch (error) {
 			console.debug('Failed to delete deck:', error);
 			toast.error('Failed to delete deck');
+		} finally {
+			setDeleteDeck(null);
 		}
 	};
 
@@ -173,7 +175,7 @@ export default function FlashcardsPage() {
 							decks={decks}
 							onOpenDeck={handleOpenDeck}
 							onStartReview={handleStartReview}
-							onDeleteDeck={handleDeleteDeck}
+							onDeleteDeck={(deck) => setDeleteDeck(deck)}
 						/>
 					</ScrollArea>
 				)}
@@ -224,6 +226,17 @@ export default function FlashcardsPage() {
 						}}
 					/>
 				)}
+
+				<ConfirmDialog
+					open={!!deleteDeck}
+					onOpenChange={(open) => !open && setDeleteDeck(null)}
+					onConfirm={handleDeleteDeck}
+					title={`Delete "${deleteDeck?.name}"?`}
+					description="This will permanently delete this deck and all its flashcards. This action cannot be undone."
+					confirmLabel="Delete deck"
+					cancelLabel="Keep deck"
+					variant="destructive"
+				/>
 			</div>
 		</ViewTransition>
 	);
