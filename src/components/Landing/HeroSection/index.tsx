@@ -12,7 +12,7 @@ interface HeroSectionProps {
 
 export function HeroSection({ onAuthRequired }: HeroSectionProps) {
 	return (
-		<section className="pt-8 pb-20 lg:pt-8 lg:pb-32 lg:px-6 flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
+		<section className="pt-20 pb-20 lg:pt-24 lg:pb-32 lg:px-6 flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
 			<div className="flex-1 flex flex-col items-center lg:items-start text-center lg:text-left gap-8">
 				<HeroBadge />
 				<HeroContent />
