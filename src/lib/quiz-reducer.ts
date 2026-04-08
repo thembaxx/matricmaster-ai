@@ -17,17 +17,24 @@ export function quizReducer(state: QuizState, action: QuizAction): QuizState {
 				answerChanges: wasNull ? state.answerChanges : state.answerChanges + 1,
 			};
 		}
+		case 'SET_CONFIDENCE':
+			return { ...state, confidenceLevel: action.payload };
+		case 'SET_INTERACTIVE_ANSWER':
+			return { ...state, interactiveAnswer: action.payload };
 		case 'CHECK_ANSWER':
 			return { ...state, isChecked: true, isCorrect: action.payload };
 		case 'RESET_ANSWER_STATE':
 			return {
 				...state,
 				selectedOption: null,
+				confidenceLevel: null,
+				interactiveAnswer: null,
 				isChecked: false,
 				isCorrect: null,
 				showHint: false,
 				questionStartTime: Date.now(),
 				answerChanges: 0,
+				isConfidentError: false,
 			};
 		case 'SET_ELAPSED':
 			return { ...state, elapsedSeconds: action.payload };
@@ -108,6 +115,14 @@ export function quizReducer(state: QuizState, action: QuizAction): QuizState {
 				shortAnswerScore: 0,
 				shortAnswerMaxScore: 0,
 				shortAnswerFeedback: '',
+			};
+		case 'SET_CONFIDENT_ERROR':
+			return { ...state, isConfidentError: action.payload };
+		case 'SET_QUIZ_FINISHED':
+			return {
+				...state,
+				isQuizFinished: true,
+				bridgeRecommendations: action.payload.recommendations,
 			};
 		default:
 			return state;

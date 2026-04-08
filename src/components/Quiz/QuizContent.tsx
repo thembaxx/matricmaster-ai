@@ -5,9 +5,11 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { MathInputField } from '@/components/MathKeyboard';
 import { AIExplanation } from '@/components/Quiz/AIExplanation';
 import { AnswerBreakdown } from '@/components/Quiz/AnswerBreakdown';
+import { ConfidenceSelector } from '@/components/Quiz/ConfidenceSelector';
 import { DifficultyIndicator } from '@/components/Quiz/DifficultyIndicator';
 import { FlaggedReviewPanel } from '@/components/Quiz/FlaggedReviewPanel';
 import { MathKeyboard } from '@/components/Quiz/MathKeyboard';
+import { MisconceptionDialogue } from '@/components/Quiz/MisconceptionDialogue';
 import { QuestionCard } from '@/components/Quiz/QuestionCard';
 import { QuestionExtras } from '@/components/Quiz/QuestionExtras';
 import { QuizFooter } from '@/components/Quiz/QuizFooter';
@@ -15,14 +17,22 @@ import { QuizProgress } from '@/components/Quiz/QuizProgress';
 import { QuizProgressDashboard } from '@/components/Quiz/QuizProgressDashboard';
 import { ShortAnswerInput } from '@/components/Quiz/ShortAnswerInput';
 import { SubjectSelector } from '@/components/Quiz/SubjectSelector';
-import type { AnyQuizQuestion, ShortAnswerQuestion } from '@/content/questions/quiz/types';
+import type {
+	AnyQuizQuestion,
+	ChronologicalSortQuestion,
+	DiagramFillQuestion,
+	ShortAnswerQuestion,
+} from '@/content/questions/quiz/types';
 import { useMathKeyboard } from '@/hooks/use-math-keyboard';
 import { useAdaptiveDifficulty } from '@/stores/useAdaptiveDifficultyStore';
 import { useQuestionFlagStore } from '@/stores/useQuestionFlagStore';
 import { useUserLearningProfileStore } from '@/stores/useUserLearningProfileStore';
+import type { ConfidenceLevel } from '@/types/quiz';
+import { DraggableDiagram } from './DraggableDiagram';
 import { QuizTimer } from './QuizTimer';
 import { QuizToolbar } from './QuizToolbar';
 import { ShortAnswerFeedback } from './ShortAnswerFeedback';
+import { TimelineSorter } from './TimelineSorter';
 
 interface QuestionOption {
 	id: string;
@@ -70,10 +80,24 @@ interface QuizContentProps {
 	onDismissStruggle: () => void;
 	onExit: () => void;
 	onNavigateToQuestion?: (index: number) => void;
+	interactiveAnswer: Record<string, string> | string[] | null;
+	onInteractiveChange: (answer: Record<string, string> | string[] | null) => void;
+	confidenceLevel: ConfidenceLevel | null;
+	onSetConfidence: (level: ConfidenceLevel) => void;
+	isConfidentError: boolean;
+	onDismissConfidentError: () => void;
 }
 
 function isShortAnswer(q: AnyQuizQuestion): q is ShortAnswerQuestion {
 	return q.type === 'shortAnswer';
+}
+
+function isDiagramFill(q: AnyQuizQuestion): q is DiagramFillQuestion {
+	return q.type === 'diagramFill';
+}
+
+function isChronologicalSort(q: AnyQuizQuestion): q is ChronologicalSortQuestion {
+	return q.type === 'chronologicalSort';
 }
 
 const questionVariants = {
@@ -120,6 +144,12 @@ export function QuizContent({
 	onDismissStruggle,
 	onExit,
 	onNavigateToQuestion,
+	interactiveAnswer,
+	onInteractiveChange,
+	confidenceLevel,
+	onSetConfidence,
+	isConfidentError,
+	onDismissConfidentError,
 }: QuizContentProps) {
 	const {
 		showMathKeyboard,
@@ -211,7 +241,12 @@ export function QuizContent({
 			? currentQuestion.options.find((o) => o.id === selectedOption)?.text || null
 			: null;
 
-	const hasAnswer = answerText.trim().length > 0;
+	const hasAnswer = isDiagramFill(currentQuestion)
+		? interactiveAnswer !== null &&
+			Object.keys(interactiveAnswer as Record<string, string>).length > 0
+		: isChronologicalSort(currentQuestion)
+			? interactiveAnswer !== null && (interactiveAnswer as string[]).length > 0
+			: answerText.trim().length > 0;
 
 	const metricsRef = useRef(false);
 	useEffect(() => {
@@ -295,6 +330,14 @@ export function QuizContent({
 									diagram={'diagram' in currentQuestion ? currentQuestion.diagram : undefined}
 									isFlagged={currentQuestionFlagged}
 									onToggleFlag={handleToggleFlag}
+									confidenceLevel={confidenceLevel}
+									onSetConfidence={onSetConfidence}
+									isConfidentError={isConfidentError}
+									correctAnswerText={correctAnswerText}
+									selectedAnswerText={selectedAnswerText ?? ''}
+									subject={currentSubject}
+									topic={currentQuestion.topic}
+									onDismissConfidentError={onDismissConfidentError}
 								/>
 							</m.div>
 						) : isShortAnswer(currentQuestion) ? (
@@ -318,6 +361,73 @@ export function QuizContent({
 									isChecked={isChecked}
 									isCorrect={isCorrect}
 									disabled={isCompleting}
+								/>
+								{!isChecked && (
+									<div className="mt-3">
+										<ConfidenceSelector
+											value={confidenceLevel}
+											onChange={onSetConfidence}
+											disabled={isChecked}
+										/>
+									</div>
+								)}
+								<AnimatePresence>
+									{isChecked && isConfidentError && (
+										<MisconceptionDialogue
+											questionText={currentQuestion.question}
+											userAnswer={answerText}
+											correctAnswer={correctAnswerText}
+											subject={currentSubject}
+											topic={currentQuestion.topic}
+											onDismiss={onDismissConfidentError}
+										/>
+									)}
+								</AnimatePresence>
+							</m.div>
+						) : isDiagramFill(currentQuestion) ? (
+							<m.div
+								key={`df-${questionKey}`}
+								variants={questionVariants}
+								initial="initial"
+								animate="animate"
+								exit="exit"
+								transition={questionTransition}
+								className="bg-card rounded-[2.5rem] shadow-lg border border-border/50 p-8 sm:p-10"
+							>
+								<div className="mb-6">
+									<h2 className="text-xl font-semibold leading-tight text-foreground">
+										{currentQuestion.question}
+									</h2>
+								</div>
+								<DraggableDiagram
+									zones={currentQuestion.zones}
+									labels={currentQuestion.labels}
+									imageUrl={currentQuestion.imageUrl}
+									answer={currentQuestion.correctAnswer}
+									isChecked={isChecked}
+									onChange={(mapping) => onInteractiveChange(mapping)}
+								/>
+							</m.div>
+						) : isChronologicalSort(currentQuestion) ? (
+							<m.div
+								key={`cs-${questionKey}`}
+								variants={questionVariants}
+								initial="initial"
+								animate="animate"
+								exit="exit"
+								transition={questionTransition}
+								className="bg-card rounded-[2.5rem] shadow-lg border border-border/50 p-8 sm:p-10"
+							>
+								<div className="mb-6">
+									<h2 className="text-xl font-semibold leading-tight text-foreground">
+										{currentQuestion.question}
+									</h2>
+								</div>
+								<TimelineSorter
+									events={currentQuestion.events}
+									correctOrder={currentQuestion.correctOrder}
+									isChecked={isChecked}
+									onChange={(order) => onInteractiveChange(order)}
 								/>
 							</m.div>
 						) : null}
@@ -430,7 +540,13 @@ export function QuizContent({
 				onExit={onExit}
 				disabled={isCompleting}
 				isGrading={isGrading}
-				hasAnswer={isMCQ ? selectedOption !== null : hasAnswer}
+				hasAnswer={
+					isMCQ
+						? selectedOption !== null
+						: isDiagramFill(currentQuestion) || isChronologicalSort(currentQuestion)
+							? hasAnswer
+							: hasAnswer
+				}
 			/>
 
 			{showSubjectSelector && (

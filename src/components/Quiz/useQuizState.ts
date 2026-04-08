@@ -3,6 +3,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useReducer, useRef, useState } from 'react';
+import { getMistakeContentRecommendations } from '@/actions/mistake-to-study-plan';
 import { getAdaptiveDifficultyServer, recordQuestionAttempt } from '@/actions/spaced-repetition';
 import { QUESTIONS_DATA as QUIZ_DATA } from '@/content/questions';
 import type { ShortAnswerQuestion } from '@/content/questions/quiz/types';
@@ -120,6 +121,17 @@ export function useQuizState({ quizId }: UseQuizStateProps) {
 					isCorrect: o.id === currentQuestion.correctAnswer,
 				}))
 			: [];
+
+	const handleSetConfidence = useCallback((level: 'low' | 'medium' | 'high') => {
+		dispatch({ type: 'SET_CONFIDENCE', payload: level });
+	}, []);
+
+	const handleInteractiveChange = useCallback(
+		(answer: Record<string, string> | string[] | null) => {
+			dispatch({ type: 'SET_INTERACTIVE_ANSWER', payload: answer });
+		},
+		[]
+	);
 
 	const handleSubjectChange = useCallback(
 		(subject: string) => {
@@ -250,12 +262,76 @@ export function useQuizState({ quizId }: UseQuizStateProps) {
 					state.elapsedSeconds * 1000
 				);
 
-				router.push('/lesson-complete');
+				// BRIDGE TO MASTERY LOGIC
+				const mistakes = Array.from(state.topicStats.values())
+					.filter((stat) => stat.correct < stat.total)
+					.map((stat) => ({
+						topic: stat.topic,
+						subject: state.currentSubject || quiz.subject,
+						questionId: 'session-summary',
+					}));
+
+				let recommendations: any[] = [];
+				if (mistakes.length > 0) {
+					try {
+						recommendations = await getMistakeContentRecommendations(mistakes);
+					} catch (error) {
+						console.debug('Failed to fetch recommendations:', error);
+					}
+				}
+
+				dispatch({ type: 'SET_QUIZ_FINISHED', payload: { recommendations } });
 			}
 			return;
 		}
 
 		const isShortAnswer = currentQuestion.type === 'shortAnswer';
+		const isDiagramFill = currentQuestion.type === 'diagramFill';
+		const isChronologicalSort = currentQuestion.type === 'chronologicalSort';
+
+		if (isDiagramFill && 'correctAnswer' in currentQuestion) {
+			const userMapping = state.interactiveAnswer as Record<string, string> | null;
+			const correctMapping = (currentQuestion as any).correctAnswer as Record<string, string>;
+			const isCorrectAnswer =
+				userMapping &&
+				Object.keys(correctMapping).every(
+					(zoneId) => userMapping[zoneId] === correctMapping[zoneId]
+				);
+			dispatch({ type: 'CHECK_ANSWER', payload: !!isCorrectAnswer });
+			if (isCorrectAnswer) {
+				dispatch({ type: 'INCREMENT_CORRECT' });
+			} else {
+				dispatch({ type: 'INCREMENT_INCORRECT' });
+			}
+			if (currentQuestion.topic) {
+				dispatch({
+					type: 'UPDATE_TOPIC_STATS',
+					payload: { topic: currentQuestion.topic, correct: isCorrectAnswer ? 1 : 0 },
+				});
+				recordQuestionAnswer(!!isCorrectAnswer, false);
+			}
+			return;
+		}
+
+		if (isChronologicalSort && 'correctOrder' in currentQuestion) {
+			const userOrder = state.interactiveAnswer as string[] | null;
+			const correctOrder = (currentQuestion as any).correctOrder as string[];
+			const isCorrectAnswer = userOrder && correctOrder.every((id, idx) => userOrder[idx] === id);
+			dispatch({ type: 'CHECK_ANSWER', payload: !!isCorrectAnswer });
+			if (isCorrectAnswer) {
+				dispatch({ type: 'INCREMENT_CORRECT' });
+			} else {
+				dispatch({ type: 'INCREMENT_INCORRECT' });
+			}
+			if (currentQuestion.topic) {
+				dispatch({
+					type: 'UPDATE_TOPIC_STATS',
+					payload: { topic: currentQuestion.topic, correct: isCorrectAnswer ? 1 : 0 },
+				});
+				recordQuestionAnswer(!!isCorrectAnswer, false);
+			}
+			return;
+		}
 
 		if (isShortAnswer && 'correctAnswer' in currentQuestion) {
 			dispatch({ type: 'SET_GRADING', payload: true });
@@ -321,6 +397,10 @@ export function useQuizState({ quizId }: UseQuizStateProps) {
 		const userAnswer = selectedOption?.label || '';
 		const correctOption = options.find((o) => o.isCorrect);
 		dispatch({ type: 'CHECK_ANSWER', payload: correct });
+
+		if (!correct && state.confidenceLevel === 'high') {
+			dispatch({ type: 'SET_CONFIDENT_ERROR', payload: true });
+		}
 
 		if (correct) {
 			dispatch({ type: 'INCREMENT_CORRECT' });
@@ -397,7 +477,6 @@ export function useQuizState({ quizId }: UseQuizStateProps) {
 		currentQuestion,
 		state.currentSubject,
 		completeQuiz,
-		router,
 		state.topicStats,
 		quizId,
 		options,
@@ -406,6 +485,8 @@ export function useQuizState({ quizId }: UseQuizStateProps) {
 		processWrongAnswer,
 		autoGenerationEnabled,
 		recordQuestionAnswer,
+		state.interactiveAnswer,
+		state.confidenceLevel,
 	]);
 
 	// Dismiss study plan update notification
@@ -434,7 +515,8 @@ export function useQuizState({ quizId }: UseQuizStateProps) {
 		handleSubjectChange,
 		handleToggleHint,
 		handleCheck,
-		// Study plan integration
+		handleSetConfidence,
+		handleInteractiveChange,
 		studyPlanUpdate,
 		dismissStudyPlanUpdate,
 		viewStudyPlan,

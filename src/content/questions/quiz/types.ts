@@ -1,4 +1,10 @@
-export type QuestionType = 'mcq' | 'shortAnswer' | 'trueFalse' | 'matching';
+export type QuestionType =
+	| 'mcq'
+	| 'shortAnswer'
+	| 'trueFalse'
+	| 'matching'
+	| 'diagramFill'
+	| 'chronologicalSort';
 
 export interface QuizOption {
 	id: string;
@@ -66,11 +72,64 @@ export interface TrueFalseQuestion {
 	difficulty: 'easy' | 'medium' | 'hard';
 }
 
+export interface DiagramFillZone {
+	id: string;
+	label: string;
+	x: number;
+	y: number;
+	width: number;
+	height: number;
+}
+
+export interface DiagramFillLabel {
+	id: string;
+	text: string;
+	zoneId: string;
+}
+
+export interface DiagramFillQuestion {
+	id: string;
+	type: 'diagramFill';
+	question: string;
+	questionImage?: string;
+	imageUrl?: string;
+	zones: DiagramFillZone[];
+	labels: DiagramFillLabel[];
+	correctAnswer: Record<string, string>;
+	maxMarks: number;
+	hint: string;
+	topic: string;
+	subtopic: string;
+	difficulty: 'easy' | 'medium' | 'hard';
+}
+
+export interface ChronologicalEvent {
+	id: string;
+	text: string;
+	year?: string;
+	description?: string;
+}
+
+export interface ChronologicalSortQuestion {
+	id: string;
+	type: 'chronologicalSort';
+	question: string;
+	events: ChronologicalEvent[];
+	correctOrder: string[];
+	maxMarks: number;
+	hint: string;
+	topic: string;
+	subtopic: string;
+	difficulty: 'easy' | 'medium' | 'hard';
+}
+
 export type AnyQuizQuestion =
 	| QuizQuestion
 	| ShortAnswerQuestion
 	| MatchingQuestion
-	| TrueFalseQuestion;
+	| TrueFalseQuestion
+	| DiagramFillQuestion
+	| ChronologicalSortQuestion;
 
 export interface QuizPaper {
 	title: string;

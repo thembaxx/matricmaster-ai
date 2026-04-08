@@ -12,7 +12,7 @@ export interface DependencyChain {
 	blocks: string[];
 }
 
-const TOPIC_PREREQUISITES: Record<string, Omit<TopicPrerequisite, 'topic'>> = {
+export const TOPIC_PREREQUISITES: Record<string, Omit<TopicPrerequisite, 'topic'>> = {
 	Calculus: {
 		subject: 'Mathematics',
 		prerequisites: ['Algebra', 'Functions', 'Number Patterns'],
