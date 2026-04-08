@@ -13,8 +13,8 @@ export const TIIMO_COLORS = {
 } as const;
 
 export const TIIMO_EASE = {
-	bouncy: animation.easings.tiimo.slice(0, 4) as [number, number, number, number],
-	smooth: animation.easings.smooth.slice(0, 4) as [number, number, number, number],
+	bouncy: animation.easings.tiimo,
+	smooth: animation.easings.smooth,
 } as const;
 
 export const TIIMO_DURATION = {
