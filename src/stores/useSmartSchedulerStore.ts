@@ -271,6 +271,15 @@ export const useSmartSchedulerStore = create<SmartSchedulerState>((set, get) => 
 		}
 	},
 
+	resolveConflict: (blockId: string, resolution: 'remove' | 'reschedule' | 'merge') => {
+		if (resolution === 'remove') {
+			get().removeBlock(blockId);
+		}
+		set((state) => ({
+			suggestions: state.suggestions.filter((s) => s.id !== blockId),
+		}));
+	},
+
 	importStudyPathBlocks: (pathBlocks: StudyBlock[]) => {
 		const { blocks } = get();
 		const mergedBlocks = [...blocks];

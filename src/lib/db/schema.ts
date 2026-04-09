@@ -2906,3 +2906,60 @@ export const syncedEventsRelations = relations(syncedEvents, ({ one }) => ({
 		references: [users.id],
 	}),
 }));
+
+// ============================================================================
+// PARENT NOTIFICATION PREFERENCES TABLE
+// ============================================================================
+
+export const parentNotificationPreferences = pgTable(
+	'parent_notification_preferences',
+	{
+		id: uuid('id').defaultRandom().primaryKey(),
+		parentUserId: text('parent_user_id')
+			.notNull()
+			.references(() => users.id, { onDelete: 'cascade' }),
+		childUserId: text('child_user_id')
+			.notNull()
+			.references(() => users.id, { onDelete: 'cascade' }),
+		emailDigest: boolean('email_digest').notNull().default(true),
+		digestFrequency: varchar('digest_frequency', { length: 20 }).notNull().default('weekly'),
+		alertQuizThreshold: integer('alert_quiz_threshold').notNull().default(60),
+		alertInactivityDays: integer('alert_inactivity_days').notNull().default(3),
+		emailNotifications: boolean('email_notifications').notNull().default(true),
+		pushNotifications: boolean('push_notifications').notNull().default(true),
+		alertExamAlerts: boolean('alert_exam_alerts').notNull().default(true),
+		alertLowScores: boolean('alert_low_scores').notNull().default(true),
+		alertInactivity: boolean('alert_inactivity').notNull().default(true),
+		alertStudyStreak: boolean('alert_study_streak').notNull().default(true),
+		alertAchievements: boolean('alert_achievements').notNull().default(true),
+		createdAt: timestamp('created_at').defaultNow(),
+		updatedAt: timestamp('updated_at').defaultNow(),
+	},
+	(table) => ({
+		parentUserIdIdx: index('parent_notif_prefs_parent_idx').on(table.parentUserId),
+		childUserIdIdx: index('parent_notif_prefs_child_idx').on(table.childUserId),
+		parentChildUnique: uniqueIndex('parent_notif_prefs_unique').on(
+			table.parentUserId,
+			table.childUserId
+		),
+	})
+);
+
+export const parentNotificationPreferencesRelations = relations(
+	parentNotificationPreferences,
+	({ one }) => ({
+		parent: one(users, {
+			fields: [parentNotificationPreferences.parentUserId],
+			references: [users.id],
+			relationName: 'parentPreferences',
+		}),
+		child: one(users, {
+			fields: [parentNotificationPreferences.childUserId],
+			references: [users.id],
+			relationName: 'childPreferences',
+		}),
+	})
+);
+
+export type ParentNotificationPreferences = typeof parentNotificationPreferences.$inferSelect;
+export type NewParentNotificationPreferences = typeof parentNotificationPreferences.$inferInsert;
