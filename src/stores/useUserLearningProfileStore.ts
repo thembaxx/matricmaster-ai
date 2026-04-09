@@ -32,9 +32,11 @@ const defaultProfile: UserLearningProfile = {
 	createdAt: new Date(),
 	updatedAt: new Date(),
 	preferredDifficulty: 'medium',
+	preferredPace: 'moderate',
 	learningStyle: 'visual',
 	sessionDuration: 45,
 	preferredSubjects: [],
+	contentTypes: ['text', 'visual', 'examples'],
 	subjectMastery: {},
 	interactionHistory: [],
 	strengthAreas: [],
@@ -45,6 +47,10 @@ const defaultProfile: UserLearningProfile = {
 		medium: 0.7,
 		hard: 0.5,
 	},
+	learningVelocity: 0,
+	consistencyScore: 0,
+	riskOfBurnout: 'low',
+	lastPersonalizationUpdate: new Date(),
 	preferredContentTypes: ['text', 'visual', 'examples'],
 };
 

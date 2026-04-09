@@ -10,7 +10,7 @@ import {
 import { HugeiconsIcon } from '@hugeicons/react';
 import { m } from 'framer-motion';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useId, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import * as z from 'zod';
@@ -34,6 +34,7 @@ export function ForgotPasswordForm() {
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState<string | null>(null);
 	const [isSubmitted, setIsSubmitted] = useState(false);
+	const emailId = useId();
 
 	const {
 		register,
@@ -140,7 +141,7 @@ export function ForgotPasswordForm() {
 								</Label>
 								<Input
 									{...register('email')}
-									id="email"
+									id={emailId}
 									type="email"
 									placeholder="name@school.edu.za"
 									className="bg-background/50"

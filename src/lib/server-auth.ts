@@ -14,6 +14,9 @@ function extractHeaders(headersList: any) {
 
 export async function requireAuth() {
 	const auth = await getAuth();
+	if (!auth?.api) {
+		redirect('/sign-in');
+	}
 	const headersList = await headers();
 	const session = await auth.api.getSession({ headers: extractHeaders(headersList) as any });
 
@@ -26,6 +29,9 @@ export async function requireAuth() {
 
 export async function optionalAuth() {
 	const auth = await getAuth();
+	if (!auth?.api) {
+		return null;
+	}
 	const headersList = await headers();
 	const session = await auth.api.getSession({ headers: extractHeaders(headersList) as any });
 	return session;

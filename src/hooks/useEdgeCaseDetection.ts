@@ -180,14 +180,8 @@ export function useEdgeCaseDetection(options: UseEdgeCaseDetectionOptions) {
 
 	const showEdgeCaseRef = useRef<((type: EdgeCaseType) => void) | null>(null);
 	const dismissEdgeCaseRef = useRef<((type: EdgeCaseType) => void) | null>(null);
-
-	useEffect(() => {
-		showEdgeCaseRef.current = showEdgeCase;
-	}, [showEdgeCase]);
-
-	useEffect(() => {
-		dismissEdgeCaseRef.current = dismissEdgeCase;
-	}, [dismissEdgeCase]);
+	const startMonitoringRef = useRef<(() => void) | null>(null);
+	const stopMonitoringRef = useRef<(() => void) | null>(null);
 
 	const handleAction = useCallback(
 		(action: string, type: EdgeCaseType) => {
@@ -238,6 +232,22 @@ export function useEdgeCaseDetection(options: UseEdgeCaseDetectionOptions) {
 		edgeCaseService.stopAutoSave();
 		setState((prev) => ({ ...prev, isMonitoring: false }));
 	}, []);
+
+	useEffect(() => {
+		showEdgeCaseRef.current = showEdgeCase;
+	}, [showEdgeCase]);
+
+	useEffect(() => {
+		dismissEdgeCaseRef.current = dismissEdgeCase;
+	}, [dismissEdgeCase]);
+
+	useEffect(() => {
+		startMonitoringRef.current = startMonitoring;
+	}, [startMonitoring]);
+
+	useEffect(() => {
+		stopMonitoringRef.current = stopMonitoring;
+	}, [stopMonitoring]);
 
 	const recordQuestionAnswer = useCallback(
 		(isCorrect: boolean, usedHint = false) => {
@@ -379,13 +389,13 @@ export function useEdgeCaseDetection(options: UseEdgeCaseDetectionOptions) {
 
 	useEffect(() => {
 		if (enableAutoMonitoring && userId) {
-			startMonitoring();
+			startMonitoringRef.current?.();
 		}
 
 		return () => {
-			stopMonitoring();
+			stopMonitoringRef.current?.();
 		};
-	}, [enableAutoMonitoring, userId, startMonitoring, stopMonitoring]);
+	}, [enableAutoMonitoring, userId]);
 
 	useEffect(() => {
 		if (typeof window === 'undefined') return;

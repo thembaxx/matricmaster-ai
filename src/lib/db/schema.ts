@@ -474,6 +474,87 @@ export const topicMastery = pgTable(
 );
 
 // ============================================================================
+// USER LEARNING PREFERENCES TABLE (for personalization)
+// ============================================================================
+
+export const userLearningPreferences = pgTable('user_learning_preferences', {
+	userId: text('user_id')
+		.primaryKey()
+		.references(() => users.id, { onDelete: 'cascade' }),
+	preferredDifficulty: varchar('preferred_difficulty', { length: 20 }).notNull().default('medium'),
+	learningStyle: varchar('learning_style', { length: 20 }).notNull().default('visual'),
+	preferredPace: varchar('preferred_pace', { length: 20 }).notNull().default('moderate'),
+	sessionDuration: integer('session_duration').notNull().default(30), // minutes
+	preferredSubjects: text('preferred_subjects'), // JSON array
+	contentTypes: text('content_types'), // JSON array of preferred content types
+	avoidTopics: text('avoid_topics'), // JSON array of topics to avoid
+	createdAt: timestamp('created_at').defaultNow(),
+	updatedAt: timestamp('updated_at').defaultNow(),
+});
+
+export type UserLearningPreferences = typeof userLearningPreferences.$inferSelect;
+
+// ============================================================================
+// ADAPTIVE LEARNING METRICS TABLE
+// ============================================================================
+
+export const adaptiveLearningMetrics = pgTable(
+	'adaptive_learning_metrics',
+	{
+		id: uuid('id').defaultRandom().primaryKey(),
+		userId: text('user_id')
+			.notNull()
+			.references(() => users.id, { onDelete: 'cascade' }),
+		subjectId: integer('subject_id').references(() => subjects.id, { onDelete: 'set null' }),
+		topic: varchar('topic', { length: 100 }),
+		difficulty: varchar('difficulty', { length: 20 }).notNull(),
+		performanceScore: numeric('performance_score', { precision: 5, scale: 2 }).notNull(),
+		timeSpent: integer('time_spent').notNull(), // seconds
+		correctAnswers: integer('correct_answers').notNull(),
+		totalQuestions: integer('total_questions').notNull(),
+		knowledgeGaps: text('knowledge_gaps'), // JSON array of identified gaps
+		recommendedActions: text('recommended_actions'), // JSON array of recommendations
+		createdAt: timestamp('created_at').defaultNow(),
+	},
+	(table) => ({
+		userIdIdx: index('adaptive_metrics_user_id_idx').on(table.userId),
+		subjectTopicIdx: index('adaptive_metrics_subject_topic_idx').on(table.subjectId, table.topic),
+	})
+);
+
+export type AdaptiveLearningMetrics = typeof adaptiveLearningMetrics.$inferSelect;
+
+// ============================================================================
+// PERSONALIZED STUDY PLANS TABLE
+// ============================================================================
+
+export const personalizedStudyPlans = pgTable(
+	'personalized_study_plans',
+	{
+		id: uuid('id').defaultRandom().primaryKey(),
+		userId: text('user_id')
+			.notNull()
+			.references(() => users.id, { onDelete: 'cascade' }),
+		planName: varchar('plan_name', { length: 100 }).notNull(),
+		description: text('description'),
+		targetDate: timestamp('target_date'),
+		subjects: text('subjects'), // JSON array
+		weeklySchedule: text('weekly_schedule'), // JSON schedule
+		currentPhase: varchar('current_phase', { length: 50 }),
+		progressPercentage: numeric('progress_percentage', { precision: 5, scale: 2 }).default('0'),
+		isActive: boolean('is_active').notNull().default(true),
+		createdAt: timestamp('created_at').defaultNow(),
+		updatedAt: timestamp('updated_at').defaultNow(),
+	},
+	(table) => ({
+		userIdIdx: index('personalized_study_plans_user_id_idx').on(table.userId),
+		activeIdx: index('personalized_study_plans_active_idx').on(table.isActive),
+	})
+);
+
+export type PersonalizedStudyPlans = typeof personalizedStudyPlans.$inferSelect;
+
+// ============================================================================
 // BOOKMARKS TABLE
 // ============================================================================
 

@@ -149,7 +149,7 @@ async function createAuth(): Promise<AuthInstance> {
 
 	if (isPgConnected) {
 		try {
-			adapter = getPostgresAuthAdapter();
+			adapter = await getPostgresAuthAdapter();
 		} catch (error) {
 			if (!isBuildTime) {
 				log.warn('Failed to get PostgreSQL adapter - Better Auth will not persist sessions', {
@@ -164,7 +164,7 @@ async function createAuth(): Promise<AuthInstance> {
 		try {
 			// Ensure SQLite is connected first
 			await sqliteManager.connect();
-			adapter = getSQLiteAuthAdapter();
+			adapter = await getSQLiteAuthAdapter();
 			if (!isBuildTime) {
 				log.warn('Using SQLite fallback - Better Auth data will be stored locally');
 			}
