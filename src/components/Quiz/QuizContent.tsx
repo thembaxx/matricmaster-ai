@@ -311,7 +311,7 @@ export function QuizContent({
 
 			<div className="h-[calc(100vh-380px)] sm:h-full no-scrollbar pr-4">
 				<div className="space-y-8 pb-40">
-					<AnimatePresence mode="wait">
+					<AnimatePresence mode="wait" initial={false}>
 						{isMCQ ? (
 							<m.div
 								key={`mcq-${questionKey}`}
@@ -438,7 +438,7 @@ export function QuizContent({
 						<MathInputField input={mathInput} cursorPos={cursorPos} onDelete={handleMathDelete} />
 					)}
 
-					<AnimatePresence mode="wait">
+					<AnimatePresence mode="wait" initial={false}>
 						<m.div
 							key={`extras-${questionKey}`}
 							initial={{ opacity: 0 }}
@@ -480,7 +480,7 @@ export function QuizContent({
 						</m.div>
 					</AnimatePresence>
 
-					<AnimatePresence mode="wait">
+					<AnimatePresence mode="wait" initial={false}>
 						{isChecked && isMCQ && (
 							<m.div
 								key={`breakdown-${questionKey}`}

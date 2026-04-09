@@ -203,7 +203,7 @@ function FocusPageContent() {
 				</Tabs>
 			</header>
 
-			<AnimatePresence mode="wait">
+			<AnimatePresence mode="wait" initial={false}>
 				<m.div
 					key={activeTab}
 					initial={{ opacity: 0, y: 10 }}

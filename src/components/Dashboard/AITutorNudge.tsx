@@ -57,7 +57,7 @@ export function AITutorNudge(_props: AITutorNudgeProps) {
 	if (isPending || !nudge) return null;
 
 	return (
-		<AnimatePresence mode="wait">
+		<AnimatePresence mode="wait" initial={false}>
 			{isVisible && (
 				<m.div
 					initial={{ opacity: 0, y: -20, scale: 0.95 }}

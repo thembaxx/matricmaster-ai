@@ -25,6 +25,7 @@ interface ChatPanelProps {
 	onSend: () => void;
 	onToggleRecording: () => void;
 	onSpeak: (text: string) => void;
+	speechSupported?: boolean;
 }
 
 export function ChatPanel({
@@ -39,6 +40,7 @@ export function ChatPanel({
 	onSend,
 	onToggleRecording,
 	onSpeak,
+	speechSupported = true,
 }: ChatPanelProps) {
 	const handleKeyPress = (e: React.KeyboardEvent) => {
 		if (e.key === 'Enter' && !e.shiftKey) {
@@ -118,7 +120,9 @@ export function ChatPanel({
 						size="icon"
 						onClick={onToggleRecording}
 						className="shrink-0"
+						disabled={!speechSupported}
 						aria-label={isRecording ? 'Stop recording' : 'Start recording'}
+						title={!speechSupported ? 'Speech recognition not supported on this device' : undefined}
 					>
 						<HugeiconsIcon icon={isRecording ? StopCircleIcon : MicIcon} className="w-5 h-5" />
 					</Button>

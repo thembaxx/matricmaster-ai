@@ -76,7 +76,7 @@ export function QuizHintCard({
 
 	if (variant === 'smart') {
 		return (
-			<AnimatePresence mode="wait">
+			<AnimatePresence mode="wait" initial={false}>
 				<m.div
 					initial={{ opacity: 0, scale: 0.95 }}
 					animate={{ opacity: 1, scale: 1 }}

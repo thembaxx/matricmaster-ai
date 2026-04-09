@@ -82,7 +82,7 @@ function FocusScreenContent() {
 				</Button>
 			</header>
 
-			<AnimatePresence mode="wait">
+			<AnimatePresence mode="wait" initial={false}>
 				{!showComplete ? (
 					viewMode === 'timer' ? (
 						<TimerView

@@ -8,6 +8,7 @@ import { FeatureGate } from '@/components/Subscription/FeatureGate';
 import { ChatPanel } from '@/components/VoiceTutor/ChatPanel';
 import type { Message } from '@/components/VoiceTutor/constants';
 import { VoiceSettings } from '@/components/VoiceTutor/VoiceSettings';
+import { useGeminiQuotaModal } from '@/contexts/GeminiQuotaModalContext';
 import {
 	getSouthAfricanVoices,
 	initSpeechRecognition,
@@ -27,6 +28,7 @@ export default function VoiceTutorPage() {
 }
 
 function VoiceTutorContent() {
+	const { triggerQuotaError, triggerNetworkError } = useGeminiQuotaModal();
 	const [messages, setMessages] = useState<Message[]>([]);
 	const [inputText, setInputText] = useState('');
 	const [isRecording, setIsRecording] = useState(false);
@@ -37,6 +39,8 @@ function VoiceTutorContent() {
 	const [speechRate, setSpeechRate] = useState(1);
 	const [isVoiceEnabled, setIsVoiceEnabled] = useState(true);
 	const [currentTranscript, setCurrentTranscript] = useState('');
+	const [speechSupported, setSpeechSupported] = useState(true);
+	const [speechError, setSpeechError] = useState<string | null>(null);
 	const scrollRef = useRef<HTMLDivElement>(null);
 	const hasInitializedVoice = useRef(false);
 
@@ -50,7 +54,25 @@ function VoiceTutorContent() {
 			}
 		};
 
+		const checkSpeechSupport = () => {
+			const hasSpeechRecognition =
+				'SpeechRecognition' in window || 'webkitSpeechRecognition' in window;
+			const hasSpeechSynthesis = 'speechSynthesis' in window;
+
+			if (!hasSpeechRecognition) {
+				setSpeechSupported(false);
+				setSpeechError(
+					'Speech recognition is not supported on this device. Please type your question below.'
+				);
+			} else if (!hasSpeechSynthesis) {
+				setSpeechError(
+					"Text-to-speech is not available. You can still type and I'll respond in text."
+				);
+			}
+		};
+
 		loadVoices();
+		checkSpeechSupport();
 		window.speechSynthesis.onvoiceschanged = loadVoices;
 		initSpeechRecognition();
 
@@ -61,6 +83,11 @@ function VoiceTutorContent() {
 	}, []);
 
 	const handleStartRecording = useCallback(() => {
+		if (!speechSupported) {
+			toast.error('Voice input is not supported on this device');
+			return;
+		}
+
 		setCurrentTranscript('');
 
 		const started = startListening(
@@ -73,15 +100,27 @@ function VoiceTutorContent() {
 			(error) => {
 				console.debug('Speech recognition error:', error);
 				setIsRecording(false);
-				toast.error('voice recognition failed');
+
+				if (error === 'no-speech') {
+					toast.info('No speech detected. Try again.');
+				} else if (error === 'not-allowed') {
+					toast.error(
+						'Microphone access denied. Please allow microphone access in your browser settings.'
+					);
+					setSpeechSupported(false);
+				} else {
+					toast.error('voice recognition failed');
+				}
 			}
 		);
 
 		if (started) {
 			setIsRecording(true);
 			toast.success('listening...');
+		} else {
+			toast.error('Failed to start voice input');
 		}
-	}, []);
+	}, [speechSupported]);
 
 	const handleStopRecording = useCallback(() => {
 		stopListening();
@@ -115,6 +154,24 @@ function VoiceTutorContent() {
 				}),
 			});
 
+			if (!response.ok) {
+				const errorData = await response.json().catch(() => ({}));
+				const errorMessage = errorData.error || `Server error (${response.status})`;
+
+				if (response.status === 429 || errorMessage.toLowerCase().includes('quota')) {
+					triggerQuotaError();
+					toast.error('AI quota exceeded. Please try again later or add your own API key.');
+				} else if (response.status >= 500) {
+					triggerNetworkError();
+					toast.error('AI service temporarily unavailable. Please try again.');
+				} else {
+					toast.error(errorMessage);
+				}
+
+				setIsProcessing(false);
+				return;
+			}
+
 			const data = await response.json();
 
 			if (data.response) {
@@ -137,7 +194,9 @@ function VoiceTutorContent() {
 					);
 				}
 			}
-		} catch (_error) {
+		} catch (error) {
+			console.error('Voice tutor error:', error);
+			triggerNetworkError();
 			toast.error('failed to get response from ai tutor');
 		} finally {
 			setIsProcessing(false);
@@ -184,6 +243,18 @@ function VoiceTutorContent() {
 					onClearChat={clearChat}
 				/>
 
+				{!speechSupported && (
+					<div className="mb-4 p-4 rounded-lg bg-amber-50 dark:bg-amber-950 border border-amber-200 dark:border-amber-800">
+						<p className="text-sm text-amber-800 dark:text-amber-200">{speechError}</p>
+					</div>
+				)}
+
+				{speechSupported && speechError && (
+					<div className="mb-4 p-3 rounded-lg bg-muted border">
+						<p className="text-xs text-muted-foreground">{speechError}</p>
+					</div>
+				)}
+
 				<ChatPanel
 					messages={messages}
 					inputText={inputText}
@@ -196,6 +267,7 @@ function VoiceTutorContent() {
 					onSend={handleSendMessage}
 					onToggleRecording={isRecording ? handleStopRecording : handleStartRecording}
 					onSpeak={handleSpeak}
+					speechSupported={speechSupported}
 				/>
 			</div>
 		</div>

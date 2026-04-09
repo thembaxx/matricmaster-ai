@@ -2,9 +2,11 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { toast } from 'sonner';
+import { useGeminiQuotaModal } from '@/contexts/GeminiQuotaModalContext';
 import { useSettings } from '@/contexts/SettingsContext';
 import { useVoiceInput } from '@/hooks/useVoiceInput';
 import type { Citation } from '@/lib/ai/citations';
+import { isQuotaError } from '@/lib/ai/quota-error';
 import { authClient } from '@/lib/auth-client';
 import { saveConversationAction } from '@/lib/db/ai-tutor-actions';
 import type { AiConversation } from '@/lib/db/schema';
@@ -42,6 +44,7 @@ export function useAiTutor() {
 	const { aiLanguage } = useSettings();
 	const getRecentStruggles = useAiContextStore((s) => s.getRecentStruggles);
 	const struggles = getRecentStruggles();
+	const { triggerQuotaError, triggerNetworkError } = useGeminiQuotaModal();
 
 	const generateProactiveGreeting = useMemo(() => {
 		if (struggles.length === 0) {
@@ -139,6 +142,44 @@ export function useAiTutor() {
 				}),
 			});
 
+			if (!response.ok) {
+				const errorData = await response.json().catch(() => ({}));
+				const errorMessage = errorData.error || `Server error (${response.status})`;
+
+				if (response.status === 429 || errorMessage.toLowerCase().includes('quota')) {
+					triggerQuotaError();
+					const errorMsg: Message = {
+						id: (Date.now() + 1).toString(),
+						role: 'assistant',
+						content:
+							"I'm temporarily unavailable due to high demand. You can add your own API key in settings to continue, or try again in a moment.",
+						timestamp: new Date(),
+					};
+					setMessages((prev) => [...prev, errorMsg]);
+					scrollToBottom();
+					setIsLoading(false);
+					return;
+				}
+
+				if (response.status >= 500) {
+					triggerNetworkError();
+					toast.error('AI service temporarily unavailable. Please try again.');
+				} else {
+					toast.error(errorMessage);
+				}
+
+				const errorMsg: Message = {
+					id: (Date.now() + 1).toString(),
+					role: 'assistant',
+					content: 'I encountered an issue processing your request. Please try again.',
+					timestamp: new Date(),
+				};
+				setMessages((prev) => [...prev, errorMsg]);
+				scrollToBottom();
+				setIsLoading(false);
+				return;
+			}
+
 			const data = await response.json();
 
 			const assistantMessage: Message = {
@@ -154,6 +195,13 @@ export function useAiTutor() {
 			scrollToBottom();
 		} catch (error) {
 			console.error('AI tutor error:', error);
+
+			if (isQuotaError(error)) {
+				triggerQuotaError();
+			} else {
+				triggerNetworkError();
+			}
+
 			const errorMessage: Message = {
 				id: (Date.now() + 1).toString(),
 				role: 'assistant',
@@ -267,6 +315,20 @@ export function useAiTutor() {
 				}),
 			});
 
+			if (!response.ok) {
+				const errorData = await response.json().catch(() => ({}));
+				const errorMessage = errorData.error || `Server error (${response.status})`;
+
+				if (response.status === 429 || errorMessage.toLowerCase().includes('quota')) {
+					triggerQuotaError();
+				} else {
+					toast.error(errorMessage);
+				}
+
+				setIsGeneratingPractice(false);
+				return;
+			}
+
 			const data = await response.json();
 			if (data.problems) {
 				setPracticeProblems(data.problems);
@@ -275,7 +337,11 @@ export function useAiTutor() {
 			}
 		} catch (error) {
 			console.error('Failed to generate practice problems:', error);
-			toast.error('Failed to generate practice problems');
+			if (isQuotaError(error)) {
+				triggerQuotaError();
+			} else {
+				toast.error('Failed to generate practice problems');
+			}
 		} finally {
 			setIsGeneratingPractice(false);
 		}
@@ -300,6 +366,20 @@ export function useAiTutor() {
 				}),
 			});
 
+			if (!response.ok) {
+				const errorData = await response.json().catch(() => ({}));
+				const errorMessage = errorData.error || `Server error (${response.status})`;
+
+				if (response.status === 429 || errorMessage.toLowerCase().includes('quota')) {
+					triggerQuotaError();
+				} else {
+					toast.error(errorMessage);
+				}
+
+				setIsGeneratingFlashcards(false);
+				return;
+			}
+
 			const data = await response.json();
 			if (data.success && data.flashcards?.length) {
 				setFlashcards(data.flashcards);
@@ -312,7 +392,11 @@ export function useAiTutor() {
 			}
 		} catch (error) {
 			console.error('Failed to generate flashcards:', error);
-			toast.error('Failed to generate flashcards');
+			if (isQuotaError(error)) {
+				triggerQuotaError();
+			} else {
+				toast.error('Failed to generate flashcards');
+			}
 		} finally {
 			setIsGeneratingFlashcards(false);
 		}

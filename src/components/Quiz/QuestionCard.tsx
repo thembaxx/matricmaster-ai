@@ -137,7 +137,7 @@ export function QuestionCard({
 						)}
 					</div>
 
-					<AnimatePresence mode="wait">
+					<AnimatePresence mode="wait" initial={false}>
 						<m.h2
 							key={questionKey}
 							variants={questionVariants}
@@ -154,7 +154,7 @@ export function QuestionCard({
 
 				{diagram && <InteractiveDiagram type={diagram} className="mb-10" />}
 
-				<AnimatePresence mode="wait">
+				<AnimatePresence mode="wait" initial={false}>
 					<m.div
 						key={`${questionKey}-options`}
 						initial={{ opacity: 0 }}

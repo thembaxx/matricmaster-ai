@@ -40,7 +40,7 @@ export function QuizFooter({
 			transition={{ type: 'spring', stiffness: 200, damping: 20 }}
 			className="fixed bottom-32 left-1/2 -translate-x-1/2 w-[90%] max-w-xl z-50 flex flex-col gap-3"
 		>
-			<AnimatePresence mode="wait">
+			<AnimatePresence mode="wait" initial={false}>
 				{!isChecked ? (
 					<m.div
 						key="check"
@@ -75,7 +75,7 @@ export function QuizFooter({
 								disabled={!canSubmit || disabled || isGrading}
 								onClick={onCheck}
 							>
-								<AnimatePresence mode="wait">
+								<AnimatePresence mode="wait" initial={false}>
 									{isGrading ? (
 										<m.span
 											key="grading"
@@ -148,7 +148,7 @@ export function QuizFooter({
 							</Button>
 						</m.div>
 						<m.div whileTap={{ scale: 0.97 }} className="flex-[2]">
-							<AnimatePresence mode="wait">
+							<AnimatePresence mode="wait" initial={false}>
 								<m.div
 									key={isCorrect ? 'continue' : 'try-again'}
 									initial={{ opacity: 0, scale: 0.95 }}

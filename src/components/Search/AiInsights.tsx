@@ -49,7 +49,7 @@ export const AiInsights = memo(function AiInsights({
 	});
 
 	return (
-		<AnimatePresence mode="wait">
+		<AnimatePresence mode="wait" initial={false}>
 			{(isLoading || suggestions) && (
 				<m.div
 					initial={{ opacity: 0, y: 20 }}
