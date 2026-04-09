@@ -70,7 +70,7 @@ export function RefresherQuiz({ topic, questions, onComplete }: RefresherQuizPro
 					</span>
 				</div>
 
-				<AnimatePresence mode="wait">
+				<AnimatePresence mode="wait" initial={false}>
 					<motion.div
 						key={currentIdx}
 						initial={{ opacity: 0, y: 10 }}

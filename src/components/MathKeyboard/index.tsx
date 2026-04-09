@@ -83,7 +83,7 @@ export function MathKeyboard({ onKeyClick, onDelete, moveCursor }: MathKeyboardP
 				</TabsList>
 
 				<div className="flex-1 px-3 py-4 overflow-auto">
-					<AnimatePresence mode="wait">
+					<AnimatePresence mode="wait" initial={false}>
 						<TabsContent
 							value="calculus"
 							className="grid grid-cols-4 gap-2 mt-0 h-full content-start"

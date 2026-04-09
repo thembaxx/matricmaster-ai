@@ -63,7 +63,7 @@ export function ElementQuiz({
 
 			<ScrollArea className="flex-1">
 				<main className="px-4 py-6 pb-32 max-w-2xl mx-auto w-full">
-					<AnimatePresence mode="wait">
+					<AnimatePresence mode="wait" initial={false}>
 						<m.div
 							key={currentQuestion}
 							initial={{ opacity: 0, x: 20 }}

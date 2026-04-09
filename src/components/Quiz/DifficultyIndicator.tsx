@@ -38,7 +38,7 @@ export function DifficultyIndicator({
 
 	return (
 		<div className={cn('flex items-center gap-3', className)}>
-			<AnimatePresence mode="wait">
+			<AnimatePresence mode="wait" initial={false}>
 				<m.div
 					key={currentLevel}
 					initial={{ scale: 0.8, opacity: 0 }}

@@ -19,7 +19,7 @@ export function PageTransition({ children }: PageTransitionProps) {
 
 	return (
 		<LazyMotion features={domAnimation}>
-			<AnimatePresence mode="wait">
+			<AnimatePresence mode="wait" initial={false}>
 				<m.div
 					key={pathname}
 					initial="initial"

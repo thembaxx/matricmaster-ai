@@ -93,7 +93,7 @@ export function ChemistryBonding() {
 			subject="Chemistry"
 			visualization={
 				<div className="w-full h-full flex flex-col items-center justify-center p-8 gap-6">
-					<AnimatePresence mode="wait">
+					<AnimatePresence mode="wait" initial={false}>
 						{result ? (
 							<m.div
 								key={result.compound}

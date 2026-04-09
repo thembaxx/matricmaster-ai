@@ -230,7 +230,7 @@ export function BossFightExam({ subject, onComplete }: BossFightExamProps) {
 				bossName={bossName}
 			/>
 
-			<AnimatePresence mode="wait">
+			<AnimatePresence mode="wait" initial={false}>
 				<motion.div
 					key={currentQuestionIdx}
 					initial={{ x: 50, opacity: 0 }}

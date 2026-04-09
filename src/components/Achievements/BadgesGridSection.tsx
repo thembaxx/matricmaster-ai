@@ -32,7 +32,7 @@ function getRarity(points?: number): { label: string; color: string } | null {
 
 export function BadgesGridSection({ filteredBadges }: { filteredBadges: BadgeData[] }) {
 	return (
-		<AnimatePresence mode="wait">
+		<AnimatePresence mode="wait" initial={false}>
 			{filteredBadges.length === 0 ? (
 				<m.div
 					initial={{ opacity: 0 }}

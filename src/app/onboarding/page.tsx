@@ -67,7 +67,7 @@ export default function OnboardingPage() {
 
 	return (
 		<OnboardingLayout progress={progress} onBack={decrementStep} showBack={state.step > 1}>
-			<AnimatePresence mode="wait">
+			<AnimatePresence mode="wait" initial={false}>
 				{state.step === 1 && <WelcomeScreen key="welcome" onContinue={() => setStep(2)} />}
 				{state.step === 2 && (
 					<GoalScreen

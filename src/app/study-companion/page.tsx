@@ -25,6 +25,7 @@ import {
 	getRecentSessionsWithContextAction,
 	type RecentSessionWithContext,
 } from '@/lib/db/actions';
+import { trackEnergySession } from '@/services/energy-tracking-service';
 import { useEnergyTrackingStore } from '@/stores/useEnergyTrackingStore';
 
 function StudyCompanionContent() {
@@ -89,6 +90,17 @@ function StudyCompanionContent() {
 		setIsLoading(true);
 		try {
 			const prompt = selectedCard ? getPromptForCard(selectedCard) + inputValue : inputValue;
+
+			if (session) {
+				const startTime = new Date().toTimeString().split(' ')[0];
+				trackEnergySession({
+					date: new Date(),
+					startTime,
+					endTime: '',
+					durationMinutes: 0,
+				}).catch(console.debug);
+			}
+
 			router.push(`/ai-tutor?new=true&prompt=${encodeURIComponent(prompt)}`);
 		} catch (error) {
 			console.debug('Error starting chat:', error);
@@ -121,6 +133,16 @@ function StudyCompanionContent() {
 		} else {
 			const realSession = sessionItem as RecentSessionWithContext;
 			prompt = `Continue my study session on ${getSessionTitle(realSession)}`;
+		}
+
+		if (session) {
+			const startTime = new Date().toTimeString().split(' ')[0];
+			trackEnergySession({
+				date: new Date(),
+				startTime,
+				endTime: '',
+				durationMinutes: 0,
+			}).catch(console.debug);
 		}
 
 		router.push(`/ai-tutor?new=true&prompt=${encodeURIComponent(prompt)}`);
