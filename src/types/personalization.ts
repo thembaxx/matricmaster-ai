@@ -2,6 +2,8 @@
 // PERSONALIZATION TYPES
 // ============================================================================
 
+export type { UserLearningProfile } from './learning-profile';
+
 export interface LearningPreferences {
 	userId: string;
 	preferredDifficulty: 'easy' | 'medium' | 'hard';
@@ -108,6 +110,7 @@ export interface MasteryCalculation {
 	confidence: number; // 0-100, based on sample size
 	trend: 'improving' | 'stable' | 'declining';
 	nextReviewDate: Date;
+	lastPracticed?: Date;
 	strengthIndicators: string[];
 	weaknessIndicators: string[];
 }
@@ -141,7 +144,13 @@ export interface LearningVelocity {
 export interface PersonalizedRecommendation {
 	id: string;
 	userId: string;
-	type: 'content' | 'study_plan' | 'break' | 'difficulty_adjustment' | 'learning_style';
+	type:
+		| 'content'
+		| 'study_plan'
+		| 'study_plan_review'
+		| 'break'
+		| 'difficulty_adjustment'
+		| 'learning_style';
 	priority: 'low' | 'medium' | 'high';
 	title: string;
 	description: string;

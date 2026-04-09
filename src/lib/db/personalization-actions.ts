@@ -1,5 +1,7 @@
+'use server';
+
 import { eq } from 'drizzle-orm';
-import { db } from './index';
+import { type DbType, dbManager } from './index';
 import {
 	type AdaptiveLearningMetrics,
 	adaptiveLearningMetrics,
@@ -9,11 +11,20 @@ import {
 	userLearningPreferences,
 } from './schema';
 
+async function getDb(): Promise<DbType> {
+	const connected = await dbManager.waitForConnection(3, 2000);
+	if (!connected) {
+		throw new Error('Database not available');
+	}
+	return (await dbManager.getDb()) as unknown as DbType;
+}
+
 // ============================================================================
 // USER LEARNING PREFERENCES ACTIONS
 // ============================================================================
 
 export async function getUserLearningPreferences(userId: string) {
+	const db = await getDb();
 	const result = await db
 		.select()
 		.from(userLearningPreferences)
@@ -24,6 +35,7 @@ export async function getUserLearningPreferences(userId: string) {
 }
 
 export async function createUserLearningPreferences(data: UserLearningPreferences) {
+	const db = await getDb();
 	const result = await db.insert(userLearningPreferences).values(data).returning();
 
 	return result[0];
@@ -33,6 +45,7 @@ export async function updateUserLearningPreferences(
 	userId: string,
 	data: Partial<Omit<UserLearningPreferences, 'userId' | 'createdAt'>>
 ) {
+	const db = await getDb();
 	const result = await db
 		.update(userLearningPreferences)
 		.set({ ...data, updatedAt: new Date() })
@@ -46,6 +59,7 @@ export async function upsertUserLearningPreferences(
 	userId: string,
 	data: Omit<UserLearningPreferences, 'userId' | 'createdAt' | 'updatedAt'>
 ) {
+	const db = await getDb();
 	const result = await db
 		.insert(userLearningPreferences)
 		.values({ userId, ...data })
@@ -63,6 +77,7 @@ export async function upsertUserLearningPreferences(
 // ============================================================================
 
 export async function getAdaptiveLearningMetrics(userId: string, limit = 50) {
+	const db = await getDb();
 	return await db
 		.select()
 		.from(adaptiveLearningMetrics)
@@ -72,12 +87,14 @@ export async function getAdaptiveLearningMetrics(userId: string, limit = 50) {
 }
 
 export async function createAdaptiveLearningMetrics(data: AdaptiveLearningMetrics) {
+	const db = await getDb();
 	const result = await db.insert(adaptiveLearningMetrics).values(data).returning();
 
 	return result[0];
 }
 
 export async function getAdaptiveMetricsBySubject(userId: string, subjectId: number) {
+	const db = await getDb();
 	return await db
 		.select()
 		.from(adaptiveLearningMetrics)
@@ -92,6 +109,7 @@ export async function getAdaptiveMetricsBySubject(userId: string, subjectId: num
 // ============================================================================
 
 export async function getPersonalizedStudyPlans(userId: string) {
+	const db = await getDb();
 	return await db
 		.select()
 		.from(personalizedStudyPlans)
@@ -100,6 +118,7 @@ export async function getPersonalizedStudyPlans(userId: string) {
 }
 
 export async function getActiveStudyPlan(userId: string) {
+	const db = await getDb();
 	const result = await db
 		.select()
 		.from(personalizedStudyPlans)
@@ -110,6 +129,7 @@ export async function getActiveStudyPlan(userId: string) {
 }
 
 export async function createPersonalizedStudyPlan(data: PersonalizedStudyPlans) {
+	const db = await getDb();
 	const result = await db.insert(personalizedStudyPlans).values(data).returning();
 
 	return result[0];
@@ -119,6 +139,7 @@ export async function updatePersonalizedStudyPlan(
 	planId: string,
 	data: Partial<Omit<PersonalizedStudyPlans, 'id' | 'userId' | 'createdAt'>>
 ) {
+	const db = await getDb();
 	const result = await db
 		.update(personalizedStudyPlans)
 		.set({ ...data, updatedAt: new Date() })
@@ -129,6 +150,7 @@ export async function updatePersonalizedStudyPlan(
 }
 
 export async function deactivateStudyPlan(planId: string) {
+	const db = await getDb();
 	const result = await db
 		.update(personalizedStudyPlans)
 		.set({ isActive: false, updatedAt: new Date() })

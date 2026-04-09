@@ -10,6 +10,7 @@ export interface UserLearningProfile {
 	sessionDuration: number; // minutes
 	preferredSubjects: string[];
 	contentTypes: Array<'text' | 'visual' | 'interactive' | 'examples' | 'audio'>;
+	preferredContentTypes: Array<'text' | 'visual' | 'interactive' | 'examples' | 'audio'>;
 	avoidedTopics?: string[]; // topics user finds difficult
 
 	// Performance tracking

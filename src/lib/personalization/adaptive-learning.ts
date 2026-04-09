@@ -364,7 +364,7 @@ export class AdaptiveLearningEngine {
 			reasons.push('matches your preferred difficulty');
 		}
 
-		if (mastery?.nextReviewDate <= new Date()) {
+		if (mastery?.nextReviewDate && mastery.nextReviewDate <= new Date()) {
 			reasons.push('due for review');
 		}
 
@@ -448,7 +448,9 @@ export class AdaptiveLearningEngine {
 		}
 
 		const subjectData = profile.subjectMastery[subjectKey];
-		subjectData.topicScores[metric.topic] = metric.performanceScore;
+		if (metric.topic) {
+			subjectData.topicScores[metric.topic] = metric.performanceScore;
+		}
 		subjectData.attempts += metric.totalQuestions;
 		subjectData.lastAttempted = metric.createdAt;
 

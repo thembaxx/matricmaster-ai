@@ -22,6 +22,7 @@ export class DifficultyAdjustmentEngine {
 		userProfile?: UserLearningProfile,
 		lastAdjustment?: Date
 	): {
+		currentDifficulty: 'easy' | 'medium' | 'hard';
 		recommendedDifficulty: 'easy' | 'medium' | 'hard';
 		reason: string;
 		confidence: number;
@@ -30,6 +31,7 @@ export class DifficultyAdjustmentEngine {
 		// Check cooldown
 		if (lastAdjustment && Date.now() - lastAdjustment.getTime() < this.adjustmentCooldown) {
 			return {
+				currentDifficulty,
 				recommendedDifficulty: currentDifficulty,
 				reason: 'Too soon for difficulty adjustment',
 				confidence: 100,
@@ -40,6 +42,7 @@ export class DifficultyAdjustmentEngine {
 		// Need minimum sample size
 		if (recentResults.length < this.minSampleSize) {
 			return {
+				currentDifficulty,
 				recommendedDifficulty: currentDifficulty,
 				reason: 'Insufficient data for difficulty adjustment',
 				confidence: 50,
@@ -77,6 +80,7 @@ export class DifficultyAdjustmentEngine {
 
 		return {
 			...recommendation,
+			currentDifficulty,
 			shouldAdjust,
 		};
 	}
@@ -147,6 +151,7 @@ export class DifficultyAdjustmentEngine {
 
 		return {
 			...recommendation,
+			currentDifficulty,
 			alternativeOptions: alternatives,
 		};
 	}
@@ -158,7 +163,7 @@ export class DifficultyAdjustmentEngine {
 		_userId: string,
 		difficulty: 'easy' | 'medium' | 'hard',
 		recentResults: AdaptiveLearningMetrics[],
-		userProfile?: UserLearningProfile
+		_userProfile?: UserLearningProfile
 	): {
 		predictedScore: number;
 		confidence: number;
@@ -173,8 +178,6 @@ export class DifficultyAdjustmentEngine {
 				recentResults.length > 0
 					? recentResults.reduce((sum, r) => sum + r.performanceScore, 0) / recentResults.length
 					: 70;
-
-			const _difficultyResponse = userProfile?.responseToDifficulty?.[difficulty] || 70;
 
 			// Adjust based on difficulty response
 			const adjustment = difficulty === 'easy' ? -5 : difficulty === 'hard' ? 5 : 0;

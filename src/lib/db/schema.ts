@@ -492,6 +492,8 @@ export const userLearningPreferences = pgTable('user_learning_preferences', {
 	updatedAt: timestamp('updated_at').defaultNow(),
 });
 
+export type UserLearningPreferences = typeof userLearningPreferences.$inferSelect;
+
 // ============================================================================
 // ADAPTIVE LEARNING METRICS TABLE
 // ============================================================================
@@ -520,6 +522,8 @@ export const adaptiveLearningMetrics = pgTable(
 	})
 );
 
+export type AdaptiveLearningMetrics = typeof adaptiveLearningMetrics.$inferSelect;
+
 // ============================================================================
 // PERSONALIZED STUDY PLANS TABLE
 // ============================================================================
@@ -547,6 +551,8 @@ export const personalizedStudyPlans = pgTable(
 		activeIdx: index('personalized_study_plans_active_idx').on(table.isActive),
 	})
 );
+
+export type PersonalizedStudyPlans = typeof personalizedStudyPlans.$inferSelect;
 
 // ============================================================================
 // BOOKMARKS TABLE

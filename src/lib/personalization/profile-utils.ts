@@ -1,4 +1,3 @@
-import type { QuizResult } from '../db/schema';
 import type {
 	AdaptiveLearningMetrics,
 	DifficultyRecommendation,
@@ -7,7 +6,8 @@ import type {
 	LearningVelocity,
 	MasteryCalculation,
 	UserLearningProfile,
-} from '../types/personalization';
+} from '../../types/personalization';
+import type { QuizResult } from '../db/schema';
 
 // ============================================================================
 // PROFILE UTILITIES
@@ -33,7 +33,7 @@ export function calculateLearningVelocity(quizResults: QuizResult[]): LearningVe
 	const questionsPerMinute = totalTime > 0 ? (totalQuestions / totalTime) * 60 : 0;
 
 	// Calculate accuracy trend
-	const accuracies = quizResults.map((r) => r.percentage).slice(-10); // Last 10 results
+	const accuracies = quizResults.map((r) => Number(r.percentage)).slice(-10); // Last 10 results
 	const accuracyTrend = calculateTrend(accuracies);
 
 	// Calculate consistency score (inverse of standard deviation)
@@ -123,7 +123,7 @@ export function calculateTopicMastery(
 	if (confidence < 50) weaknessIndicators.push('More data needed for accurate assessment');
 
 	return {
-		topic: topicResults[0].topic,
+		topic: topicResults[0]?.topic || 'Unknown',
 		currentMastery,
 		confidence,
 		trend,
@@ -295,11 +295,9 @@ function calculateConsistency(values: number[]): number {
 function calculateNextReviewDate(
 	mastery: number,
 	trend: 'improving' | 'stable' | 'declining',
-	lastReview: Date
+	_lastReview: Date
 ): Date {
 	const now = new Date();
-	const timeSinceLastReview = now.getTime() - lastReview.getTime();
-	const _hoursSinceLastReview = timeSinceLastReview / (1000 * 60 * 60);
 
 	// Base intervals based on mastery level
 	let intervalHours: number;

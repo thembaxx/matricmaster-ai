@@ -2,6 +2,7 @@
 
 import {
 	Analytics01Icon,
+	BarChartIcon,
 	BookOpen01Icon,
 	Clock01Icon,
 	RefreshIcon,
@@ -291,7 +292,7 @@ export function TrendAnalysis({
 				<Card>
 					<CardHeader>
 						<CardTitle className="text-lg flex items-center gap-2">
-							<HugeiconsIcon icon={BarChart3Icon} className="w-5 h-5" />
+							<HugeiconsIcon icon={BarChartIcon} className="w-5 h-5" />
 							Key Insights
 						</CardTitle>
 						<CardDescription>AI-generated analysis of your learning patterns</CardDescription>
@@ -349,7 +350,7 @@ export function TrendAnalysis({
 									<XAxis dataKey="date" />
 									<YAxis domain={[0, 100]} />
 									<Tooltip
-										formatter={(value: number, name: string) => [
+										formatter={(value, name) => [
 											name === 'score' ? `${value}%` : value,
 											name === 'score' ? 'Quiz Score' : 'Moving Average',
 										]}
@@ -414,7 +415,7 @@ export function TrendAnalysis({
 										cx="50%"
 										cy="50%"
 										outerRadius={80}
-										label={({ subject, totalTopics }) => `${subject}: ${totalTopics}`}
+										label={({ name, value }) => `${name}: ${value}`}
 									>
 										{subjectPerformanceData.map((entry, index) => (
 											<Cell key={`cell-${index}`} fill={entry.color} />
