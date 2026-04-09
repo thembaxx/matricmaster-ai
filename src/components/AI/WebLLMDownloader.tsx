@@ -32,6 +32,7 @@ const MODEL_OPTIONS = [
 ];
 
 const STORAGE_KEY = 'webllm_model_preference';
+const DISMISS_KEY = 'webllm_download_dismissed';
 
 export const WebLLMDownloader = memo(function WebLLMDownloader() {
 	const isModelReady = useOfflineAIStore((s) => s.isModelReady);
@@ -46,7 +47,20 @@ export const WebLLMDownloader = memo(function WebLLMDownloader() {
 			: 'llama-3.2-1b'
 	);
 
-	const handleDismiss = useCallback(() => setDismissed(true), []);
+	useEffect(() => {
+		if (typeof window === 'undefined') return;
+		const wasDismissed = localStorage.getItem(DISMISS_KEY);
+		if (wasDismissed === 'true') {
+			setDismissed(true);
+		}
+	}, []);
+
+	const handleDismiss = useCallback(() => {
+		setDismissed(true);
+		if (typeof window !== 'undefined') {
+			localStorage.setItem(DISMISS_KEY, 'true');
+		}
+	}, []);
 	const handleShowSettings = useCallback((open: boolean) => setShowSettings(open), []);
 	const handleModelChange = useCallback((value: string) => {
 		setSelectedModel(value);
