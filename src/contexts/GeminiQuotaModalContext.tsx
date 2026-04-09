@@ -25,6 +25,7 @@ interface GeminiQuotaModalContextType {
 	errorState: ErrorState | null;
 	triggerError: (type: ErrorType, message?: string, details?: string) => void;
 	triggerQuotaError: () => void;
+	triggerNetworkError: () => void;
 	hideQuotaModal: () => void;
 	retryLastError: () => Promise<boolean>;
 	handleServiceError: (error: Error | string) => void;
@@ -77,6 +78,10 @@ export function GeminiQuotaModalProvider({ children }: { children: React.ReactNo
 
 	const triggerQuotaError = useCallback(() => {
 		triggerError('quota');
+	}, [triggerError]);
+
+	const triggerNetworkError = useCallback(() => {
+		triggerError('network');
 	}, [triggerError]);
 
 	const hideQuotaModal = useCallback(() => {
@@ -174,6 +179,7 @@ export function GeminiQuotaModalProvider({ children }: { children: React.ReactNo
 				errorState,
 				triggerError,
 				triggerQuotaError,
+				triggerNetworkError,
 				hideQuotaModal,
 				retryLastError,
 				handleServiceError,
