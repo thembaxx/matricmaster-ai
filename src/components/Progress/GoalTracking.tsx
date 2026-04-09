@@ -1,13 +1,13 @@
 'use client';
 
 import {
-	AwardIcon,
-	CalendarIcon,
-	CheckCircleIcon,
+	ArrowUp01Icon,
+	Award01Icon,
+	Calendar01Icon,
+	CheckmarkCircle01Icon,
 	CircleIcon,
-	PlusIcon,
-	TargetIcon,
-	TrendingUpIcon,
+	PlusSignIcon,
+	Target01Icon,
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { addDays, format, isAfter } from 'date-fns';
@@ -65,11 +65,11 @@ interface GoalTrackingProps {
 }
 
 const GOAL_CATEGORIES = {
-	quiz_score: { label: 'Quiz Score', icon: TargetIcon, color: 'text-blue-600' },
-	study_time: { label: 'Study Time', icon: CalendarIcon, color: 'text-green-600' },
-	topics_mastered: { label: 'Topics Mastered', icon: AwardIcon, color: 'text-purple-600' },
-	flashcards: { label: 'Flashcards', icon: TargetIcon, color: 'text-orange-600' },
-	streak: { label: 'Study Streak', icon: TrendingUpIcon, color: 'text-red-600' },
+	quiz_score: { label: 'Quiz Score', icon: Target01Icon, color: 'text-blue-600' },
+	study_time: { label: 'Study Time', icon: Calendar01Icon, color: 'text-green-600' },
+	topics_mastered: { label: 'Topics Mastered', icon: Award01Icon, color: 'text-purple-600' },
+	flashcards: { label: 'Flashcards', icon: Target01Icon, color: 'text-orange-600' },
+	streak: { label: 'Study Streak', icon: ArrowUp01Icon, color: 'text-red-600' },
 };
 
 export function GoalTracking({
@@ -153,7 +153,9 @@ export function GoalTracking({
 
 			const progress = Math.min((currentValue / goal.targetValue) * 100, 100);
 			const isOverdue = isAfter(new Date(), goal.deadline);
-			const status = progress >= 100 ? 'completed' : isOverdue ? 'overdue' : 'active';
+			const status = (
+				progress >= 100 ? 'completed' : isOverdue ? 'overdue' : 'active'
+			) as Goal['status'];
 
 			return {
 				...goal,
@@ -216,9 +218,9 @@ export function GoalTracking({
 	const getStatusIcon = (status: Goal['status']) => {
 		switch (status) {
 			case 'completed':
-				return CheckCircleIcon;
+				return CheckmarkCircle01Icon;
 			case 'overdue':
-				return TargetIcon;
+				return Target01Icon;
 			default:
 				return CircleIcon;
 		}
@@ -259,7 +261,7 @@ export function GoalTracking({
 				<CardHeader className="flex flex-row items-center justify-between">
 					<div>
 						<CardTitle className="flex items-center gap-2">
-							<HugeiconsIcon icon={TargetIcon} className="w-5 h-5" />
+							<HugeiconsIcon icon={Target01Icon} className="w-5 h-5" />
 							Academic Goals
 						</CardTitle>
 						<CardDescription>
@@ -269,7 +271,7 @@ export function GoalTracking({
 					<Dialog open={isAddGoalOpen} onOpenChange={setIsAddGoalOpen}>
 						<DialogTrigger asChild>
 							<Button>
-								<HugeiconsIcon icon={PlusIcon} className="w-4 h-4 mr-2" />
+								<HugeiconsIcon icon={PlusSignIcon} className="w-4 h-4 mr-2" />
 								Add Goal
 							</Button>
 						</DialogTrigger>
@@ -387,7 +389,7 @@ export function GoalTracking({
 												className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(goal.status)}`}
 											>
 												{goal.status === 'completed' && (
-													<HugeiconsIcon icon={CheckCircleIcon} className="w-3 h-3" />
+													<HugeiconsIcon icon={CheckmarkCircle01Icon} className="w-3 h-3" />
 												)}
 												{goal.status.charAt(0).toUpperCase() + goal.status.slice(1)}
 											</div>
@@ -427,13 +429,13 @@ export function GoalTracking({
 
 						{goalProgress.length === 0 && (
 							<div className="text-center py-8 text-muted-foreground">
-								<HugeiconsIcon icon={TargetIcon} className="w-12 h-12 mx-auto mb-4 opacity-50" />
+								<HugeiconsIcon icon={Target01Icon} className="w-12 h-12 mx-auto mb-4 opacity-50" />
 								<h3 className="font-medium mb-2">No goals set yet</h3>
 								<p className="text-sm mb-4">
 									Create your first academic goal to start tracking progress.
 								</p>
 								<Button onClick={() => setIsAddGoalOpen(true)}>
-									<HugeiconsIcon icon={PlusIcon} className="w-4 h-4 mr-2" />
+									<HugeiconsIcon icon={PlusSignIcon} className="w-4 h-4 mr-2" />
 									Add Your First Goal
 								</Button>
 							</div>
@@ -446,7 +448,7 @@ export function GoalTracking({
 			<Card>
 				<CardHeader>
 					<CardTitle className="flex items-center gap-2">
-						<HugeiconsIcon icon={AwardIcon} className="w-5 h-5" />
+						<HugeiconsIcon icon={Award01Icon} className="w-5 h-5" />
 						Milestone Achievements
 					</CardTitle>
 					<CardDescription>

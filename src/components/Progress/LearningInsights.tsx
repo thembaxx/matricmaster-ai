@@ -1,14 +1,14 @@
 'use client';
 
 import {
-	BookOpenIcon,
-	BrainIcon,
-	BulbIcon,
-	ClockIcon,
-	LightbulbIcon,
-	TargetIcon,
-	TrendingDownIcon,
-	TrendingUpIcon,
+	BookOpen01Icon,
+	Brain01Icon,
+	Bulb,
+	Clock01Icon,
+	LightbulbOffIcon,
+	Target01Icon,
+	TrendingDown,
+	TrendingUp,
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { useMemo, useState } from 'react';
@@ -218,28 +218,28 @@ export function LearningInsights({
 		{
 			key: 'strengths',
 			title: 'Your Strengths',
-			icon: TrendingUpIcon,
+			icon: TrendingUp,
 			color: 'text-green-600',
 			data: insights.strengths,
 		},
 		{
 			key: 'weaknesses',
 			title: 'Areas for Improvement',
-			icon: TrendingDownIcon,
+			icon: TrendingDown,
 			color: 'text-amber-600',
 			data: insights.weaknesses,
 		},
 		{
 			key: 'patterns',
 			title: 'Learning Patterns',
-			icon: BrainIcon,
+			icon: Brain01Icon,
 			color: 'text-blue-600',
 			data: insights.patterns,
 		},
 		{
 			key: 'recommendations',
 			title: 'Actionable Recommendations',
-			icon: LightbulbIcon,
+			icon: LightbulbOffIcon,
 			color: 'text-purple-600',
 			data: insights.recommendations,
 		},
@@ -275,7 +275,7 @@ export function LearningInsights({
 			<div className="grid grid-cols-2 md:grid-cols-4 gap-4">
 				<Card>
 					<CardContent className="p-4 text-center">
-						<HugeiconsIcon icon={TargetIcon} className="w-6 h-6 mx-auto mb-2 text-blue-600" />
+						<HugeiconsIcon icon={Target01Icon} className="w-6 h-6 mx-auto mb-2 text-blue-600" />
 						<div className="text-2xl font-bold">{quickStats.overallScore.toFixed(1)}%</div>
 						<div className="text-xs text-muted-foreground">Overall Accuracy</div>
 					</CardContent>
@@ -283,7 +283,7 @@ export function LearningInsights({
 
 				<Card>
 					<CardContent className="p-4 text-center">
-						<HugeiconsIcon icon={BookOpenIcon} className="w-6 h-6 mx-auto mb-2 text-green-600" />
+						<HugeiconsIcon icon={BookOpen01Icon} className="w-6 h-6 mx-auto mb-2 text-green-600" />
 						<div className="text-2xl font-bold">{quickStats.masteryRate.toFixed(1)}%</div>
 						<div className="text-xs text-muted-foreground">Topics Mastered</div>
 					</CardContent>
@@ -291,7 +291,7 @@ export function LearningInsights({
 
 				<Card>
 					<CardContent className="p-4 text-center">
-						<HugeiconsIcon icon={ClockIcon} className="w-6 h-6 mx-auto mb-2 text-purple-600" />
+						<HugeiconsIcon icon={Clock01Icon} className="w-6 h-6 mx-auto mb-2 text-purple-600" />
 						<div className="text-2xl font-bold">{quickStats.studyEfficiency.toFixed(1)}</div>
 						<div className="text-xs text-muted-foreground">Answers/Hour</div>
 					</CardContent>
@@ -299,7 +299,7 @@ export function LearningInsights({
 
 				<Card>
 					<CardContent className="p-4 text-center">
-						<HugeiconsIcon icon={BulbIcon} className="w-6 h-6 mx-auto mb-2 text-amber-600" />
+						<HugeiconsIcon icon={Bulb} className="w-6 h-6 mx-auto mb-2 text-amber-600" />
 						<div className="text-2xl font-bold">{quickStats.weakAreas}</div>
 						<div className="text-xs text-muted-foreground">Focus Areas</div>
 					</CardContent>
@@ -310,7 +310,7 @@ export function LearningInsights({
 			<Card>
 				<CardHeader>
 					<CardTitle className="flex items-center gap-2">
-						<HugeiconsIcon icon={BrainIcon} className="w-5 h-5" />
+						<HugeiconsIcon icon={Brain01Icon} className="w-5 h-5" />
 						AI Learning Insights
 					</CardTitle>
 					<CardDescription>
@@ -398,7 +398,7 @@ export function LearningInsights({
 			<Card>
 				<CardHeader>
 					<CardTitle className="flex items-center gap-2">
-						<HugeiconsIcon icon={LightbulbIcon} className="w-5 h-5" />
+						<HugeiconsIcon icon={LightbulbOffIcon} className="w-5 h-5" />
 						Personalized Study Plan
 					</CardTitle>
 					<CardDescription>
@@ -430,7 +430,7 @@ export function LearningInsights({
 							<div className="border rounded-lg p-4 bg-green-50 border-green-200">
 								<h4 className="font-medium text-green-900 mb-2">📚 Recommended Study Techniques</h4>
 								<div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
-									{accuracy < 70 && (
+									{quickStats.overallScore < 70 && (
 										<div className="flex items-center gap-2 text-green-800">
 											<span>•</span>
 											<span>Practice with spaced repetition flashcards</span>
@@ -464,9 +464,9 @@ export function LearningInsights({
 									<div className="text-center p-2 bg-white rounded border">
 										<div className="font-medium text-purple-900">Quiz Mastery</div>
 										<div className="text-purple-700">
-											{accuracy < 75
+											{quickStats.overallScore < 75
 												? 'Target: 75% accuracy'
-												: accuracy < 85
+												: quickStats.overallScore < 85
 													? 'Target: 85% accuracy'
 													: 'Target: 90% accuracy'}
 										</div>

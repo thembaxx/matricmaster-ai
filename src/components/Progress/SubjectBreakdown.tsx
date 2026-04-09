@@ -1,11 +1,11 @@
 'use client';
 
 import {
-	BookOpenIcon,
-	ChevronDownIcon,
-	ChevronUpIcon,
+	BookOpen01Icon,
+	ChevronDown,
+	ChevronUp,
 	SearchIcon,
-	TargetIcon,
+	Target01Icon,
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { useMemo, useState } from 'react';
@@ -224,7 +224,7 @@ export function SubjectBreakdown({ topicMastery, weakTopics, quizData }: Subject
 						<CardHeader className="pb-3">
 							<CardTitle className="text-lg flex items-center justify-between">
 								<span className="truncate">{subject.subject}</span>
-								<HugeiconsIcon icon={BookOpenIcon} className="w-5 h-5 text-muted-foreground" />
+								<HugeiconsIcon icon={BookOpen01Icon} className="w-5 h-5 text-muted-foreground" />
 							</CardTitle>
 							<CardDescription>{subject.topics.length} topics</CardDescription>
 						</CardHeader>
@@ -310,7 +310,7 @@ export function SubjectBreakdown({ topicMastery, weakTopics, quizData }: Subject
 			<Card>
 				<CardHeader>
 					<CardTitle className="flex items-center gap-2">
-						<HugeiconsIcon icon={TargetIcon} className="w-5 h-5" />
+						<HugeiconsIcon icon={Target01Icon} className="w-5 h-5" />
 						Topic Mastery Details
 					</CardTitle>
 					<CardDescription>
@@ -349,7 +349,7 @@ export function SubjectBreakdown({ topicMastery, weakTopics, quizData }: Subject
 								Mastery
 								{sortBy === 'mastery' && (
 									<HugeiconsIcon
-										icon={sortOrder === 'asc' ? ChevronUpIcon : ChevronDownIcon}
+										icon={sortOrder === 'asc' ? ChevronUp : ChevronDown}
 										className="w-4 h-4 ml-1"
 									/>
 								)}
@@ -381,7 +381,7 @@ export function SubjectBreakdown({ topicMastery, weakTopics, quizData }: Subject
 								Questions
 								{sortBy === 'questions' && (
 									<HugeiconsIcon
-										icon={sortOrder === 'asc' ? ChevronUpIcon : ChevronDownIcon}
+										icon={sortOrder === 'asc' ? ChevronUp : ChevronDown}
 										className="w-4 h-4 ml-1"
 									/>
 								)}
@@ -434,7 +434,7 @@ export function SubjectBreakdown({ topicMastery, weakTopics, quizData }: Subject
 											<div
 												className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${getMasteryColor(topic.masteryLevel)}`}
 											>
-												<HugeiconsIcon icon={TargetIcon} className="w-3 h-3" />
+												<HugeiconsIcon icon={Target01Icon} className="w-3 h-3" />
 												{topic.masteryLevel >= 80
 													? 'Mastered'
 													: topic.masteryLevel >= 60

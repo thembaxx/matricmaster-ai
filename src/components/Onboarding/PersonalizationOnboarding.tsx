@@ -2,9 +2,9 @@ import { ArrowLeft, ArrowRight, CheckCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
-import { useOnboarding } from '../hooks/useOnboarding';
-import { LearningStyleQuiz } from './onboarding/LearningStyleQuiz';
-import { PreferenceSetup } from './onboarding/PreferenceSetup';
+import { useOnboarding } from '@/hooks/useOnboarding';
+import { LearningStyleQuiz } from './LearningStyleQuiz';
+import { PreferenceSetup } from './PreferenceSetup';
 
 // ============================================================================
 // PERSONALIZATION ONBOARDING SCREEN
@@ -129,9 +129,9 @@ export function PersonalizationOnboarding({
 
 					<Button onClick={handleNext} disabled={isLoading} className="flex items-center gap-2">
 						{isLoading ? (
-							<>Processing...</>
+							'Processing...'
 						) : flow.currentStep === flow.totalSteps - 1 ? (
-							<>Complete Setup</>
+							'Complete Setup'
 						) : (
 							<>
 								Next

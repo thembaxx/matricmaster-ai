@@ -2,8 +2,8 @@ import { drizzleAdapter } from '@better-auth/drizzle-adapter';
 import { sqliteManager } from '../sqlite-manager';
 import * as sqliteSchema from '../sqlite-schema';
 
-export function getSQLiteAuthAdapter() {
-	const db = sqliteManager.getDb();
+export async function getSQLiteAuthAdapter() {
+	const db = await sqliteManager.getDb();
 	return drizzleAdapter(db, {
 		provider: 'sqlite',
 		schema: {

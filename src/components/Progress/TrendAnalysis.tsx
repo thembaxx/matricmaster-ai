@@ -1,5 +1,15 @@
 'use client';
 
+import {
+	Analytics01Icon,
+	BookOpen01Icon,
+	Clock01Icon,
+	RefreshIcon,
+	SparklesIcon,
+	TrendingDown,
+	TrendingUp,
+} from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import React, { useMemo } from 'react';
 import {
 	Area,
@@ -168,74 +178,88 @@ export function TrendAnalysis({
 	const performanceInsights = useMemo(() => {
 		const insights = [];
 
-		// Quiz performance trend
-		const recentScores = performanceTrend.slice(-5);
-		if (recentScores.length >= 3) {
-			const trend = recentScores[recentScores.length - 1].movingAvg - recentScores[0].movingAvg;
+		// Analyze performance trends
+		if (performanceTrend.length >= 2) {
+			const recentScore = performanceTrend[performanceTrend.length - 1].score;
+			const previousScore = performanceTrend[performanceTrend.length - 2].score;
+			const trend = recentScore - previousScore;
+
 			if (trend > 5) {
 				insights.push({
 					type: 'positive',
-					message: 'Your quiz scores are improving! Keep up the momentum.',
-					icon: TrendingUpIcon,
+					message: 'Your performance is improving! Keep up the good work.',
+					icon: TrendingUp,
 				});
 			} else if (trend < -5) {
 				insights.push({
 					type: 'warning',
-					message: 'Your recent quiz scores have declined. Consider reviewing weak topics.',
-					icon: TrendingDownIcon,
+					message: 'Your recent scores have declined. Consider reviewing recent topics.',
+					icon: TrendingDown,
 				});
 			}
 		}
 
-		// Study consistency
-		const studyDays = studyActivityTrend.filter((d) => d.studyMinutes > 0).length;
-		const totalDays = studyActivityTrend.length;
-		const consistency = (studyDays / totalDays) * 100;
+		// Analyze study activity
+		if (studyActivityTrend.length >= 2) {
+			const recentMinutes = studyActivityTrend[studyActivityTrend.length - 1].studyMinutes;
+			const previousMinutes = studyActivityTrend[studyActivityTrend.length - 2].studyMinutes;
+			const activityChange = ((recentMinutes - previousMinutes) / previousMinutes) * 100;
 
-		if (consistency >= 80) {
-			insights.push({
-				type: 'positive',
-				message: "Excellent study consistency! You're staying on track.",
-				icon: CalendarIcon,
-			});
-		} else if (consistency < 50) {
-			insights.push({
-				type: 'warning',
-				message: 'Study consistency could be improved. Try to study more regularly.',
-				icon: CalendarIcon,
-			});
+			if (activityChange < -20) {
+				insights.push({
+					type: 'warning',
+					message:
+						'Your study time has decreased significantly. Try to maintain consistent study habits.',
+					icon: Clock01Icon,
+				});
+			}
+		}
+
+		// Analyze topic mastery
+		if (topicMastery) {
+			const masteredTopics = topicMastery.filter((topic) => topic.masteryLevel >= 0.8).length;
+			const totalTopics = topicMastery.length;
+			const masteryRate = masteredTopics / totalTopics;
+
+			if (masteryRate > 0.7) {
+				insights.push({
+					type: 'positive',
+					message: `Strong topic mastery (${masteryRate.toFixed(0)}% of topics mastered)!`,
+					icon: Analytics01Icon,
+				});
+			} else if (masteryRate < 0.3) {
+				insights.push({
+					type: 'info',
+					message: `Focus on building foundational knowledge (${masteryRate.toFixed(0)}% of topics mastered).`,
+					icon: BookOpen01Icon,
+				});
+			}
 		}
 
 		// Analyze flashcard review patterns
 		if (flashcards.dueForReview > flashcards.totalCards * 0.3) {
 			insights.push({
 				type: 'warning',
-				message: 'Many flashcards are due for review. Consider increasing review frequency.',
-				icon: BarChart3Icon,
+				message: `You have ${flashcards.dueForReview} flashcards due for review. Consider reviewing them soon.`,
+				icon: RefreshIcon,
 			});
 		} else if (flashcards.masteredCards > flashcards.totalCards * 0.5) {
 			insights.push({
 				type: 'positive',
-				message: 'Great progress on flashcards! Keep up the memorization work.',
-				icon: BarChart3Icon,
-			});
-		}
-
-		// Topic mastery distribution
-		const masteredCount = topicMastery.filter((t) => t.masteryLevel >= 80).length;
-		const totalTopics = topicMastery.length;
-		const masteryRate = (masteredCount / totalTopics) * 100;
-
-		if (masteryRate >= 60) {
-			insights.push({
-				type: 'positive',
-				message: `Strong topic mastery (${masteryRate.toFixed(0)}% of topics mastered)!`,
-				icon: BarChart3Icon,
+				message: `Great job! ${flashcards.masteredCards} flashcards are well mastered.`,
+				icon: SparklesIcon,
 			});
 		}
 
 		return insights;
-	}, [performanceTrend, studyActivityTrend, topicMastery]);
+	}, [
+		performanceTrend,
+		studyActivityTrend,
+		topicMastery,
+		flashcards.dueForReview,
+		flashcards.masteredCards,
+		flashcards.totalCards,
+	]);
 
 	const subjectPerformanceData = useMemo(() => {
 		const colors = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#06b6d4'];
@@ -355,7 +379,7 @@ export function TrendAnalysis({
 					<Card>
 						<CardHeader>
 							<CardTitle>Daily Study Activity</CardTitle>
-							<CardDescription>Study minutes and completed activities per day</CardDescription>
+							<CardDescription>Study studyMinutes and completed activities per day</CardDescription>
 						</CardHeader>
 						<CardContent>
 							<ResponsiveContainer width="100%" height={300}>

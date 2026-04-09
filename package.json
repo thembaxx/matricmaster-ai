@@ -210,12 +210,14 @@
 		"jsdom": "^29.0.1",
 		"postcss": "^8.5.8",
 		"react-scan": "^0.5.3",
+		"ruff": "^1.5.4",
 		"semantic-release": "^25.0.3",
 		"server-only": "^0.0.1",
 		"tailwindcss": "^4.2.2",
 		"tsx": "^4.21.0",
 		"typescript": "^6.0.2",
-		"vitest": "^4.1.2"
+		"vitest": "^4.1.2",
+		"vulture": "^4.0.0-alpha.1"
 	},
 	"overrides": {
 		"@types/react": "19.2.14",

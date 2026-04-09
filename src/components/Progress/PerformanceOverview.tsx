@@ -1,6 +1,6 @@
 'use client';
 
-import { TargetIcon, TrendingDownIcon, TrendingUpIcon } from '@hugeicons/core-free-icons';
+import { ArrowDown01Icon, ArrowUp01Icon, Target01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { useMemo } from 'react';
 import {
@@ -106,7 +106,8 @@ export function PerformanceOverview({
 		const older = sorted.slice(-10, -5);
 		if (older.length === 0) return 0;
 
-		const avgOlder = older.reduce((a, b) => a + b, 0) / older.length;
+		const olderScores = older.map((q) => q.score);
+		const avgOlder = olderScores.reduce((a, b) => a + b, 0) / older.length;
 		const velocity = ((avgRecent - avgOlder) / avgOlder) * 100;
 
 		return Math.round(velocity * 10) / 10; // Round to 1 decimal
@@ -149,7 +150,7 @@ export function PerformanceOverview({
 				<Card>
 					<CardHeader className="pb-2">
 						<CardTitle className="text-sm font-medium flex items-center gap-2">
-							<HugeiconsIcon icon={TargetIcon} className="w-4 h-4" />
+							<HugeiconsIcon icon={Target01Icon} className="w-4 h-4" />
 							Overall Accuracy
 						</CardTitle>
 					</CardHeader>
@@ -163,9 +164,9 @@ export function PerformanceOverview({
 					<CardHeader className="pb-2">
 						<CardTitle className="text-sm font-medium flex items-center gap-2">
 							{learningVelocity >= 0 ? (
-								<HugeiconsIcon icon={TrendingUpIcon} className="w-4 h-4 text-green-600" />
+								<HugeiconsIcon icon={ArrowUp01Icon} className="w-4 h-4 text-green-600" />
 							) : (
-								<HugeiconsIcon icon={TrendingDownIcon} className="w-4 h-4 text-red-600" />
+								<HugeiconsIcon icon={ArrowDown01Icon} className="w-4 h-4 text-red-600" />
 							)}
 							Learning Velocity
 						</CardTitle>
@@ -219,7 +220,7 @@ export function PerformanceOverview({
 								<XAxis dataKey="date" />
 								<YAxis domain={[0, 100]} />
 								<Tooltip
-									formatter={(value: number) => [`${value}%`, 'Score']}
+									formatter={(value) => [`${value}%`, 'Score']}
 									labelFormatter={(label) => `Date: ${label}`}
 								/>
 								<Line
