@@ -129,7 +129,12 @@ export function ServiceWorkerRegistration() {
 
 	if (installed) return null;
 
-	if (isIOS || !showInstallButton) return null;
+	if (!showInstallButton) return null;
+
+	const isStandalone =
+		typeof window !== 'undefined' && window.matchMedia('(display-mode: standalone)').matches;
+
+	if (isIOS && isStandalone) return null;
 
 	return (
 		<div className="fixed top-0 left-0 right-0 z-50 animate-in slide-in-from-top duration-300">
