@@ -176,7 +176,6 @@ export default function LessonComplete() {
 		loadResult();
 	}, [completeQuiz, addActivity, analyzeQuizResults]);
 
-
 	if (!state.result) {
 		return <LessonCompleteSkeleton />;
 	}
