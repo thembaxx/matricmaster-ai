@@ -1,10 +1,11 @@
 'use client';
 
 import {
+	AiBrain01Icon,
 	BookOpen01Icon,
 	DashboardSpeed02Icon,
-	Timer01Icon,
-	UserIcon,
+	File01Icon,
+	UserGroupIcon,
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { m } from 'framer-motion';
@@ -20,30 +21,30 @@ const navItems = [
 		bgColor: 'bg-primary/10',
 	},
 	{
-		href: '/lessons',
+		href: '/learn',
 		label: 'learn',
 		icon: BookOpen01Icon,
 		activeColor: 'text-primary',
 		bgColor: 'bg-primary/10',
 	},
 	{
-		href: '/quiz',
+		href: '/practice',
 		label: 'practice',
-		icon: Timer01Icon,
+		icon: File01Icon,
 		activeColor: 'text-primary',
 		bgColor: 'bg-primary/10',
 	},
 	{
-		href: '/channels',
+		href: '/ai-lab',
+		label: 'brain',
+		icon: AiBrain01Icon,
+		activeColor: 'text-primary',
+		bgColor: 'bg-primary/10',
+	},
+	{
+		href: '/community',
 		label: 'social',
-		icon: UserIcon,
-		activeColor: 'text-primary',
-		bgColor: 'bg-primary/10',
-	},
-	{
-		href: '/profile',
-		label: 'me',
-		icon: UserIcon,
+		icon: UserGroupIcon,
 		activeColor: 'text-primary',
 		bgColor: 'bg-primary/10',
 	},
@@ -69,13 +70,13 @@ export const BottomNavigation = memo(function BottomNavigation({
 			{navItems.map((item) => {
 				const isActive =
 					pathname === item.href ||
-					(item.href === '/lessons' &&
-						(pathname === '/study-path' || pathname === '/curriculum-map'));
+					(item.href === '/learn' &&
+						(pathname === '/lessons' || pathname === '/physics' || pathname === '/math')) ||
+					(item.href === '/practice' && (pathname === '/past-papers' || pathname === '/quiz'));
 				return (
 					<Link
 						key={item.href}
 						href={item.href}
-						transitionTypes={['fade']}
 						aria-current={isActive ? 'page' : undefined}
 						className="relative flex flex-col items-center justify-center py-1.5 min-h-[76px] transition-all duration-300 group"
 					>
