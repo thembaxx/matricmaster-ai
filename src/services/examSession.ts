@@ -12,8 +12,8 @@
 
 import { and, eq, gt } from 'drizzle-orm';
 import { boolean, integer, jsonb, pgTable, text, timestamp, varchar } from 'drizzle-orm/pg-core';
-import { dbManagerV2 } from './db/database-manager-v2';
-import { logger } from './logger';
+import { dbManagerV2 } from '@/lib/db/database-manager-v2';
+import { logger } from '@/lib/logger';
 
 const log = logger.createLogger('ExamSession');
 

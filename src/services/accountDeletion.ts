@@ -12,9 +12,9 @@
 import { and, eq, lt } from 'drizzle-orm';
 import { Resend } from 'resend';
 import { appConfig } from '../app.config';
-import { dbManagerV2 } from './db/database-manager-v2';
-import { accessibilityPreferences, userProgress, userSettings, users } from './db/schema';
-import { logger } from './logger';
+import { dbManagerV2 } from '@/lib/db/database-manager-v2';
+import { accessibilityPreferences, userProgress, userSettings, users } from '@/lib/db/schema';
+import { logger } from '@/lib/logger';
 
 const log = logger.createLogger('AccountDeletion');
 
