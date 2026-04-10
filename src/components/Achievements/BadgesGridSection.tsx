@@ -53,9 +53,17 @@ export function BadgesGridSection({ filteredBadges }: { filteredBadges: BadgeDat
 					initial="hidden"
 					animate="visible"
 					className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 lg:gap-8"
+					style={{ contain: 'layout paint' }}
 				>
-					{filteredBadges.map((badge) => (
-						<m.div key={badge.id} variants={STAGGER_ITEM}>
+					{filteredBadges.map((badge, index) => (
+						<m.div
+							key={badge.id}
+							variants={STAGGER_ITEM}
+							layout
+							initial={{ opacity: 0, scale: 0.8 }}
+							animate={{ opacity: 1, scale: 1 }}
+							transition={{ duration: 0.3, delay: Math.min(index * 0.02, 0.3) }}
+						>
 							<AchievementBadge badge={badge} />
 						</m.div>
 					))}
@@ -141,8 +149,8 @@ function AchievementBadge({ badge }: { badge: BadgeData }) {
 					!prefersReducedMotion && (
 						<m.div
 							animate={{ scale: [1, 1.2, 1], opacity: [0.5, 1, 0.5] }}
-							transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
-							className="absolute inset-0 rounded-[2rem]"
+							transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY, ease: 'linear' }}
+							className="absolute inset-0 rounded-[2rem] will-change-transform"
 							style={{
 								boxShadow: `0 0 20px ${rarity?.color}40`,
 							}}

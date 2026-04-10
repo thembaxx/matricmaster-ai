@@ -18,6 +18,14 @@ import { useAblyChannel } from '@/hooks/use-ably-channel';
 import { useSession } from '@/lib/auth-client';
 import { cn } from '@/lib/utils';
 
+const REACTION_EMOJIS = ['👍', '❤️', '😂', '🎉', '🤔', '👀'];
+
+interface Reaction {
+	emoji: string;
+	userId: string;
+	userName: string;
+}
+
 interface Message {
 	id: string;
 	userId: string;
@@ -25,6 +33,85 @@ interface Message {
 	userImage?: string;
 	text: string;
 	timestamp: number;
+	reactions: Reaction[];
+}
+
+function ReactionPicker({ onReact }: { onReact: (emoji: string) => void }) {
+	const [isOpen, setIsOpen] = useState(false);
+
+	return (
+		<div className="relative">
+			<button
+				type="button"
+				onClick={() => setIsOpen(!isOpen)}
+				className="opacity-0 group-hover:opacity-100 transition-opacity p-1 hover:bg-muted rounded-full"
+			>
+				<span className="text-lg">😊</span>
+			</button>
+			{isOpen && (
+				<div className="absolute bottom-full mb-2 left-0 flex gap-1 bg-card border border-border/50 p-2 rounded-full shadow-lg z-10">
+					{REACTION_EMOJIS.map((emoji) => (
+						<button
+							type="button"
+							key={emoji}
+							onClick={() => {
+								onReact(emoji);
+								setIsOpen(false);
+							}}
+							className="w-8 h-8 flex items-center justify-center hover:bg-muted rounded-full transition-colors"
+						>
+							{emoji}
+						</button>
+					))}
+				</div>
+			)}
+		</div>
+	);
+}
+
+function MessageReactions({
+	reactions,
+	onReact,
+}: {
+	reactions: Reaction[];
+	onReact: (emoji: string) => void;
+}) {
+	const reactionCounts = reactions.reduce(
+		(acc, reaction) => {
+			const existing = acc.find((r) => r.emoji === reaction.emoji);
+			if (existing) {
+				existing.count += 1;
+				existing.users.push(reaction.userName);
+			} else {
+				acc.push({
+					emoji: reaction.emoji,
+					count: 1,
+					users: [reaction.userName],
+				});
+			}
+			return acc;
+		},
+		[] as { emoji: string; count: number; users: string[] }[]
+	);
+
+	if (reactionCounts.length === 0) return null;
+
+	return (
+		<div className="flex items-center gap-1 mt-1 flex-wrap">
+			{reactionCounts.map((rc) => (
+				<button
+					type="button"
+					key={rc.emoji}
+					onClick={() => onReact(rc.emoji)}
+					className="flex items-center gap-1 px-2 py-0.5 bg-muted/50 rounded-full hover:bg-muted transition-colors text-xs"
+					title={rc.users.join(', ')}
+				>
+					<span>{rc.emoji}</span>
+					<span className="text-muted-foreground">{rc.count}</span>
+				</button>
+			))}
+		</div>
+	);
 }
 
 export default function ChannelPage() {
@@ -37,6 +124,7 @@ export default function ChannelPage() {
 	const [messages, setMessages] = useState<Message[]>([]);
 	const [inputText, setInputText] = useState('');
 	const scrollRef = useRef<HTMLDivElement>(null);
+	const [hoveredMessage, setHoveredMessage] = useState<string | null>(null);
 
 	const channelName = `study-channel:${channelId}`;
 
@@ -68,10 +156,37 @@ export default function ChannelPage() {
 			userImage: user.image || undefined,
 			text: inputText,
 			timestamp: Date.now(),
+			reactions: [],
 		};
 
 		await publish('message', newMessage);
 		setInputText('');
+	};
+
+	const handleAddReaction = async (messageId: string, emoji: string) => {
+		const message = messages.find((m) => m.id === messageId);
+		if (!message || !channel || !user) return;
+
+		const existingReaction = message.reactions.find(
+			(r) => r.userId === user.id && r.emoji === emoji
+		);
+
+		let updatedReactions: Reaction[];
+		if (existingReaction) {
+			updatedReactions = message.reactions.filter(
+				(r) => !(r.userId === user.id && r.emoji === emoji)
+			);
+		} else {
+			updatedReactions = [
+				...message.reactions,
+				{ emoji, userId: user.id, userName: user.name || 'Anonymous' },
+			];
+		}
+
+		const updatedMessage = { ...message, reactions: updatedReactions };
+		await publish('reaction', updatedMessage);
+
+		setMessages((prev) => prev.map((m) => (m.id === messageId ? updatedMessage : m)));
 	};
 
 	const channelTitle = channelId
@@ -81,7 +196,6 @@ export default function ChannelPage() {
 
 	return (
 		<div className="flex flex-col h-screen bg-background">
-			{/* Header */}
 			<header className="px-6 h-20 flex items-center justify-between border-b border-border/50 bg-card/50 backdrop-blur-xl sticky top-0 z-50">
 				<div className="flex items-center gap-4">
 					<Button
@@ -97,8 +211,8 @@ export default function ChannelPage() {
 							<HugeiconsIcon icon={Wifi01Icon} className="w-5 h-5 text-primary" />
 						</div>
 						<div>
-							<h1 className="text-sm font-black  tracking-tight">{channelTitle}</h1>
-							<p className="text-[10px] font-bold text-success  tracking-widest flex items-center gap-1">
+							<h1 className="text-sm font-black tracking-tight">{channelTitle}</h1>
+							<p className="text-[10px] font-bold text-success tracking-widest flex items-center gap-1">
 								<span className="w-1.5 h-1.5 rounded-full bg-success animate-pulse" />
 								{presenceMembers.length} active now
 							</p>
@@ -116,7 +230,6 @@ export default function ChannelPage() {
 				</div>
 			</header>
 
-			{/* Messages Area */}
 			<div className="flex-1 overflow-hidden relative">
 				<ScrollArea className="h-full px-6">
 					<div className="py-8 space-y-6">
@@ -127,8 +240,8 @@ export default function ChannelPage() {
 									className="w-10 h-10 text-muted-foreground opacity-20"
 								/>
 							</div>
-							<h2 className="text-xl font-black  tracking-tighter">Welcome to {channelTitle}</h2>
-							<p className="text-xs font-bold text-muted-foreground  tracking-widest max-w-xs mx-auto">
+							<h2 className="text-xl font-black tracking-tighter">Welcome to {channelTitle}</h2>
+							<p className="text-xs font-bold text-muted-foreground tracking-widest max-w-xs mx-auto">
 								This is the beginning of the chat. Be respectful and help each other out!
 							</p>
 						</div>
@@ -143,14 +256,19 @@ export default function ChannelPage() {
 										key={msg.id}
 										initial={{ opacity: 0, y: 10, scale: 0.95 }}
 										animate={{ opacity: 1, y: 0, scale: 1 }}
-										className={cn('flex items-end gap-3', isMe ? 'flex-row-reverse' : 'flex-row')}
+										className={cn(
+											'flex items-end gap-3 group',
+											isMe ? 'flex-row-reverse' : 'flex-row'
+										)}
+										onMouseEnter={() => setHoveredMessage(msg.id)}
+										onMouseLeave={() => setHoveredMessage(null)}
 									>
 										{!isMe && (
 											<div className="w-8 h-8 shrink-0">
 												{showAvatar && (
 													<Avatar className="w-8 h-8 border border-border/50 shadow-sm">
 														<AvatarImage src={msg.userImage} />
-														<AvatarFallback className="text-[10px] font-black  bg-primary/5 text-primary">
+														<AvatarFallback className="text-[10px] font-black bg-primary/5 text-primary">
 															{msg.userName[0]}
 														</AvatarFallback>
 													</Avatar>
@@ -161,13 +279,13 @@ export default function ChannelPage() {
 											className={cn('max-w-[75%] space-y-1', isMe ? 'items-end' : 'items-start')}
 										>
 											{showAvatar && !isMe && (
-												<span className="text-[9px] font-black  tracking-widest text-muted-foreground ml-1">
+												<span className="text-[9px] font-black tracking-widest text-muted-foreground ml-1">
 													{msg.userName}
 												</span>
 											)}
 											<div
 												className={cn(
-													'px-5 py-3 rounded-[1.5rem] text-sm font-medium shadow-sm',
+													'px-5 py-3 rounded-[1.5rem] text-sm font-medium shadow-sm relative',
 													isMe
 														? 'bg-primary text-white rounded-br-none'
 														: 'bg-card border border-border/50 text-foreground rounded-bl-none'
@@ -175,6 +293,13 @@ export default function ChannelPage() {
 											>
 												{msg.text}
 											</div>
+											<MessageReactions
+												reactions={msg.reactions || []}
+												onReact={(emoji) => handleAddReaction(msg.id, emoji)}
+											/>
+											{hoveredMessage === msg.id && (
+												<ReactionPicker onReact={(emoji) => handleAddReaction(msg.id, emoji)} />
+											)}
 										</div>
 									</m.div>
 								);
@@ -185,7 +310,6 @@ export default function ChannelPage() {
 				</ScrollArea>
 			</div>
 
-			{/* Input Area */}
 			<div className="p-6 bg-background">
 				<form
 					onSubmit={handleSendMessage}
