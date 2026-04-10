@@ -14,7 +14,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
-const AiTutorView = dynamic(() => import('@/components/AiTutor/AiChat'), {
+const AiTutorView = dynamic(() => import('@/components/AiTutor/AiTutorChat'), {
 	loading: () => <div className="h-[60vh] animate-pulse bg-muted/10 rounded-3xl" />,
 });
 
