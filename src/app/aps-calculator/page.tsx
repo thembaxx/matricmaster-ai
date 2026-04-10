@@ -6,6 +6,7 @@ import { useMemo, useState } from 'react';
 import { AboutAPS } from '@/components/APSCalculator/AboutAPS';
 import { GRADE_POINTS, UNIVERSITY_REQUIREMENTS } from '@/components/APSCalculator/constants';
 import { EligibleUniversities } from '@/components/APSCalculator/EligibleUniversities';
+import { PathfinderDashboard } from '@/components/APSCalculator/PathfinderDashboard';
 import { PathToUniversity } from '@/components/APSCalculator/PathToUniversity';
 import { SubjectsEditor } from '@/components/APSCalculator/SubjectsEditor';
 
@@ -32,7 +33,7 @@ export default function APSCalculatorPage() {
 		{ subject: 'Life Orientation', grade: '6', points: 6 },
 		{ subject: 'Accounting', grade: '4', points: 4 },
 	]);
-	const [_selectedTarget, setSelectedTarget] = useState<UniversityRequirement | null>(null);
+	const [selectedTarget, setSelectedTarget] = useState<UniversityRequirement | null>(null);
 
 	const totalAPS = useMemo(() => {
 		return subjects.reduce((sum, subj) => sum + subj.points, 0);
@@ -110,6 +111,14 @@ export default function APSCalculatorPage() {
 					<p className="text-muted-foreground max-w-md mx-auto">
 						Calculate your Admission Point Score (APS) and see which universities you qualify for
 					</p>
+				</div>
+
+				<div className="mb-12">
+					<PathfinderDashboard
+						subjects={subjects}
+						totalAPS={totalAPS}
+						targetUniversity={selectedTarget || undefined}
+					/>
 				</div>
 
 				<div className="grid md:grid-cols-2 gap-6">

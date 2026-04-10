@@ -40,7 +40,7 @@ export function StreakCard({ streakDays, isNewUser = false, onClick }: StreakCar
 					</div>
 				</div>
 				<p className="text-[10px] text-tiimo-gray-muted mt-4 z-10">
-					Complete your profile to get personalized recommendations
+					complete your profile to get personalized recommendations
 				</p>
 			</m.div>
 		);

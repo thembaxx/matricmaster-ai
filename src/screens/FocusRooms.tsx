@@ -108,11 +108,12 @@ function FocusRoomsContent() {
 	useEffect(() => {
 		(updateStatus as unknown as (data: unknown) => void)({
 			user: session?.user?.name || 'Anonymous',
-			status: isActive ? 'Studying' : 'Resting',
+			status: isActive ? 'studying' : 'resting',
 			focusMinutes,
 			sessionId: activeSession?.id,
+			mode: isGroupMode ? 'group' : 'solo',
 		});
-	}, [isActive, session, focusMinutes, activeSession?.id]);
+	}, [isActive, session, focusMinutes, activeSession?.id, updateStatus, isGroupMode]);
 
 	const formatTime = useCallback((seconds: number) => {
 		const mins = Math.floor(seconds / 60);
@@ -166,11 +167,12 @@ function FocusRoomsContent() {
 						icon={ArrowLeft01Icon}
 						className="w-5 h-5 transition-transform group-hover:-translate-x-1"
 					/>
-					<span className="font-black tracking-widest text-[10px]">Leave Room</span>
+					<span className="font-black tracking-widest text-[10px]">leave room</span>
 				</Button>
 
 				<div className="flex items-center justify-between">
-					<h1 className="text-2xl font-black tracking-tight">Focus Rooms</h1>
+					<h1 className="text-2xl font-black tracking-tight">focus rooms</h1>
+
 					<div className="flex gap-2">
 						<Button
 							variant={isGroupMode ? 'default' : 'outline'}
@@ -179,7 +181,7 @@ function FocusRoomsContent() {
 							className={cn('rounded-full', isGroupMode && 'bg-primary')}
 						>
 							<HugeiconsIcon icon={UserGroupIcon} className="w-4 h-4 mr-2" />
-							Group Sprint
+							group sprint
 						</Button>
 						<Button
 							variant="outline"
@@ -188,7 +190,7 @@ function FocusRoomsContent() {
 							className="rounded-full"
 						>
 							<HugeiconsIcon icon={AddIcon} className="w-4 h-4 mr-2" />
-							Invite Buddy
+							invite buddy
 						</Button>
 						<Button
 							variant="outline"
@@ -196,7 +198,7 @@ function FocusRoomsContent() {
 							onClick={() => router.push('/video-call')}
 							className="rounded-full"
 						>
-							Join Video Call
+							join video call
 						</Button>
 						<Button
 							variant="outline"
@@ -204,14 +206,14 @@ function FocusRoomsContent() {
 							onClick={() => router.push('/exam-timer')}
 							className="rounded-full border-dashed hover:bg-tiimo-orange/10 hover:text-tiimo-orange"
 						>
-							Start Exam Timer
+							start exam timer
 						</Button>
 					</div>
 				</div>
 
 				<div className="bg-primary/5 border border-primary/20 rounded-lg p-4">
 					<p className="text-sm text-center">
-						<span className="font-semibold">XP Multiplier:</span> {isGroupMode ? '1.5x' : '1x'} for
+						<span className="font-semibold">xp multiplier:</span> {isGroupMode ? '1.5x' : '1x'} for
 						focus sessions
 					</p>
 				</div>

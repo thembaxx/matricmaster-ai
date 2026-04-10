@@ -16,6 +16,7 @@ import { LessonCompleteSkeleton } from '@/components/LessonCompleteSkeleton';
 import { QuizAnalyticsModal } from '@/components/Quiz/QuizAnalyticsModal';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useQuizCompletion } from '@/hooks/use-quiz-completion';
+import { useKnowledgeGapSynergy } from '@/hooks/useKnowledgeGapSynergy';
 import { getUserAchievements } from '@/lib/db/achievement-actions';
 import { getLevelInfo } from '@/lib/level-utils';
 import { useAiContextStore } from '@/stores/useAiContextStore';
@@ -90,6 +91,7 @@ export default function LessonComplete() {
 	const [state, dispatch] = useReducer(reducer, initialState);
 	const { completeQuiz, isCompleting } = useQuizCompletion();
 	const addActivity = useAiContextStore((s) => s.addActivity);
+	const { analyzeQuizResults } = useKnowledgeGapSynergy();
 
 	useEffect(() => {
 		async function loadResult() {
@@ -114,8 +116,25 @@ export default function LessonComplete() {
 				topic: quizResult.topic,
 				outcome,
 				score: accuracy,
-				description: `${outcome === 'passed' ? 'Passed' : 'Failed'} ${quizResult.subjectName} quiz with ${accuracy.toFixed(0)}% (${quizResult.correctAnswers}/${quizResult.totalQuestions})`,
+				description: `${outcome === 'passed' ? 'passed' : 'failed'} ${quizResult.subjectName.toLowerCase()} quiz with ${accuracy.toFixed(0)}% (${quizResult.correctAnswers}/${quizResult.totalQuestions})`,
 			});
+
+			// Synergy tracking
+			try {
+				await analyzeQuizResults(
+					[
+						{
+							id: 'last-quiz',
+							topic: quizResult.topic,
+							subject: quizResult.subjectName,
+							isCorrect: accuracy >= 60,
+						},
+					],
+					{ correct: quizResult.correctAnswers, total: quizResult.totalQuestions }
+				);
+			} catch (e) {
+				console.debug('Failed knowledge gap sync:', e);
+			}
 
 			const mistakes = useQuizResultStore.getState().getLastMistakes();
 			dispatch({ type: 'SET_MISTAKE_COUNT', payload: mistakes.length });
@@ -155,7 +174,8 @@ export default function LessonComplete() {
 		}
 
 		loadResult();
-	}, [completeQuiz, addActivity]);
+	}, [completeQuiz, addActivity, analyzeQuizResults]);
+
 
 	if (!state.result) {
 		return <LessonCompleteSkeleton />;
@@ -215,7 +235,7 @@ export default function LessonComplete() {
 						>
 							<div className="bg-accent-lime/10 p-4 rounded-2xl border border-accent-lime/20">
 								<p className="text-center font-bold text-accent-lime">
-									Perfect Score! No mistakes to review.
+									perfect score! no mistakes to review.
 								</p>
 							</div>
 						</m.div>

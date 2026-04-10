@@ -47,13 +47,18 @@ function CircuitAnalysisDiagram({ className }: { className?: string }) {
 
 	return (
 		<div className={cn('bg-card border border-border/50 rounded-2xl p-6 shadow-sm', className)}>
-			<h4 className="font-bold mb-4 text-center">Interactive Series Circuit</h4>
+			<h4 className="font-bold mb-4 text-center lowercase">interactive series circuit</h4>
+
 			<CircuitDiagram elements={elements} />
 			<div className="grid grid-cols-2 gap-4 mt-4">
 				<div>
-					<label htmlFor={voltageId} className="text-xs font-bold text-muted-foreground block mb-2">
-						Voltage (V)
+					<label
+						htmlFor={voltageId}
+						className="text-xs font-bold text-muted-foreground block mb-2 lowercase"
+					>
+						voltage (v)
 					</label>
+
 					<Input
 						id={voltageId}
 						type="range"
@@ -66,10 +71,11 @@ function CircuitAnalysisDiagram({ className }: { className?: string }) {
 				<div>
 					<label
 						htmlFor={resistorId}
-						className="text-xs font-bold text-muted-foreground block mb-2"
+						className="text-xs font-bold text-muted-foreground block mb-2 lowercase"
 					>
-						Resistor (Ω)
+						resistor (Ω)
 					</label>
+
 					<Input
 						id={resistorId}
 						type="range"
@@ -80,8 +86,8 @@ function CircuitAnalysisDiagram({ className }: { className?: string }) {
 					/>
 				</div>
 			</div>
-			<p className="text-xs text-center mt-4 text-muted-foreground">
-				Current (I) = V/R = {(v / r1).toFixed(2)}A
+			<p className="text-xs text-center mt-4 text-muted-foreground lowercase">
+				current (i) = v/r = {(v / r1).toFixed(2)}a
 			</p>
 		</div>
 	);
@@ -92,7 +98,8 @@ function DnaDiagram({ className }: { className?: string }) {
 
 	return (
 		<div className={cn('bg-card border border-border/50 rounded-2xl p-6 shadow-sm', className)}>
-			<h4 className="font-bold mb-4 text-center">DNA Double Helix</h4>
+			<h4 className="font-bold mb-4 text-center lowercase">dna double helix</h4>
+
 			<div className="relative h-64 bg-slate-950 rounded-xl overflow-hidden flex items-center justify-center">
 				<div className="flex gap-4">
 					{Array.from({ length: 12 }).map((_, i) => (
@@ -137,7 +144,8 @@ function CellDiagram({ className }: { className?: string }) {
 
 	return (
 		<div className={cn('bg-card border border-border/50 rounded-2xl p-6 shadow-sm', className)}>
-			<h4 className="font-bold mb-4 text-center">Plant Cell Structure</h4>
+			<h4 className="font-bold mb-4 text-center lowercase">plant cell structure</h4>
+
 			<div className="relative h-64 bg-green-50/30 rounded-xl overflow-hidden border border-green-100 flex items-center justify-center">
 				<m.div className="w-[100%] h-[100%] relative" animate={{ scale: zoom }}>
 					{/* Cell Wall */}
@@ -167,7 +175,7 @@ function CellDiagram({ className }: { className?: string }) {
 			</div>
 			<div className="mt-4">
 				<label htmlFor={zoomId} className="text-xs font-bold text-muted-foreground block mb-2">
-					Microscope Zoom
+					microscope zoom
 				</label>
 				<Input
 					id={zoomId}
@@ -199,7 +207,8 @@ function ProjectileDiagram({ className }: { className?: string }) {
 
 	return (
 		<div className={cn('bg-card border border-border/50 rounded-2xl p-6 shadow-sm', className)}>
-			<h4 className="font-bold mb-4 text-center">Projectile Motion</h4>
+			<h4 className="font-bold mb-4 text-center lowercase">projectile motion</h4>
+
 			<div className="relative h-48 bg-sky-50/50 rounded-xl overflow-hidden border border-sky-100">
 				<svg className="w-full h-full" viewBox="0 0 400 200">
 					<path
@@ -228,7 +237,7 @@ function ProjectileDiagram({ className }: { className?: string }) {
 			<div className="grid grid-cols-2 gap-4 mt-4">
 				<div>
 					<label htmlFor={angleId} className="text-xs font-bold text-muted-foreground block mb-2">
-						Angle (°)
+						angle (°)
 					</label>
 					<Input
 						id={angleId}
@@ -244,7 +253,7 @@ function ProjectileDiagram({ className }: { className?: string }) {
 						htmlFor={velocityId}
 						className="text-xs font-bold text-muted-foreground block mb-2"
 					>
-						Velocity (m/s)
+						velocity (m/s)
 					</label>
 					<Input
 						id={velocityId}
@@ -268,7 +277,8 @@ function MomentumDiagram({ className }: { className?: string }) {
 
 	return (
 		<div className={cn('bg-card border border-border/50 rounded-2xl p-6 shadow-sm', className)}>
-			<h4 className="font-bold mb-4 text-center">Momentum (p = mv)</h4>
+			<h4 className="font-bold mb-4 text-center lowercase">momentum (p = mv)</h4>
+
 			<div className="relative h-48 bg-slate-50 rounded-xl overflow-hidden flex items-end justify-center p-8">
 				<m.div
 					className="bg-indigo-600 rounded-lg flex items-center justify-center text-white font-bold"
@@ -284,7 +294,7 @@ function MomentumDiagram({ className }: { className?: string }) {
 			<div className="grid grid-cols-2 gap-4 mt-4">
 				<div>
 					<label htmlFor={massId} className="text-xs font-bold text-muted-foreground block mb-2">
-						Mass (kg)
+						mass (kg)
 					</label>
 					<Input
 						id={massId}
@@ -300,7 +310,7 @@ function MomentumDiagram({ className }: { className?: string }) {
 						htmlFor={velocity2Id}
 						className="text-xs font-bold text-muted-foreground block mb-2"
 					>
-						Velocity (m/s)
+						velocity (m/s)
 					</label>
 					<Input
 						id={velocity2Id}
@@ -322,11 +332,12 @@ function ForceVectorDiagram({ className }: { className?: string }) {
 
 	return (
 		<div className={cn('bg-card border border-border/50 rounded-2xl p-6 shadow-sm', className)}>
-			<h4 className="font-bold mb-4 text-center">Interactive Force Vector</h4>
+			<h4 className="font-bold mb-4 text-center lowercase">interactive force vector</h4>
+
 			<div className="relative h-48 bg-muted/20 rounded-xl flex items-center justify-center overflow-hidden">
 				{/* Object */}
 				<div className="w-16 h-16 bg-foreground rounded-lg z-10 relative flex items-center justify-center text-background font-bold">
-					Mass
+					mass
 				</div>
 
 				{/* Vector Arrow */}
@@ -346,7 +357,7 @@ function ForceVectorDiagram({ className }: { className?: string }) {
 
 			<div className="mt-4">
 				<label htmlFor={forceId} className="text-xs font-bold  text-muted-foreground block mb-2">
-					Applied Force
+					applied force
 				</label>
 				<Input
 					id={forceId}
@@ -382,7 +393,7 @@ function PhaseChangeDiagram({ className }: { className?: string }) {
 
 	return (
 		<div className={cn('bg-card border border-border/50 rounded-2xl p-6 shadow-sm', className)}>
-			<h4 className="font-bold mb-4 text-center">Phase Change: Water</h4>
+			<h4 className="font-bold mb-4 text-center lowercase">phase change: water</h4>
 
 			{/* Simulation Viewport */}
 			<div className="relative h-48 bg-blue-50/50 dark:bg-blue-900/10 rounded-xl border border-blue-100 dark:border-blue-900/30 overflow-hidden mb-4">
@@ -436,7 +447,7 @@ function WaveMotionDiagram({ className }: { className?: string }) {
 
 	return (
 		<div className={cn('bg-card border border-border/50 rounded-2xl p-6 shadow-sm', className)}>
-			<h4 className="font-bold mb-4 text-center">Wave Properties</h4>
+			<h4 className="font-bold mb-4 text-center lowercase">wave properties</h4>
 
 			<div className="relative h-48 bg-muted/10 rounded-xl flex items-center overflow-hidden mb-4">
 				<svg className="w-full h-full" preserveAspectRatio="none" aria-hidden="true">
@@ -480,7 +491,7 @@ function WaveMotionDiagram({ className }: { className?: string }) {
 						htmlFor={amplitudeId}
 						className="text-xs font-bold  text-muted-foreground block mb-2"
 					>
-						Amplitude
+						amplitude
 					</label>
 					<Input
 						id={amplitudeId}
@@ -496,7 +507,7 @@ function WaveMotionDiagram({ className }: { className?: string }) {
 						htmlFor={frequencyId}
 						className="text-xs font-bold  text-muted-foreground block mb-2"
 					>
-						Frequency
+						frequency
 					</label>
 					<Input
 						id={frequencyId}

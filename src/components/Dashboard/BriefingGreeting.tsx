@@ -52,7 +52,7 @@ export function BriefingGreeting({
 	void weakTopicsCount;
 	void recentAccuracy;
 	const router = useRouter();
-	const firstName = userName?.split(' ')[0] || 'Scholar';
+	const firstName = userName?.split(' ')[0] || 'scholar';
 
 	const greeting = useMemo(() => {
 		const hour = new Date().getHours();

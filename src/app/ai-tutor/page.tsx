@@ -3,7 +3,7 @@
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import { Suspense, useRef, ViewTransition } from 'react';
+import { Suspense, useEffect, useRef, ViewTransition } from 'react';
 import { AIErrorBoundary } from '@/components/AI/AIErrorBoundary';
 import { AIPrompt } from '@/components/AI/AIPrompt';
 import { ConversationSidebar } from '@/components/AI/ConversationSidebar';
@@ -34,6 +34,8 @@ const PracticeModal = dynamic(
 function AITutorPageContent() {
 	const searchParams = useSearchParams();
 	const contextParam = searchParams.get('context');
+	const topicParam = searchParams.get('topic');
+	const subjectParam = searchParams.get('subject');
 
 	const {
 		session,
@@ -66,13 +68,22 @@ function AITutorPageContent() {
 		handleToggleSources,
 	} = useAiTutor();
 
-	const prevContextParam = useRef(contextParam);
+	const initialEffectRun = useRef(false);
 
-	if (contextParam && contextParam !== prevContextParam.current) {
-		prevContextParam.current = contextParam;
-		const decodedContext = decodeURIComponent(contextParam);
-		handleSend(undefined, decodedContext);
-	}
+	useEffect(() => {
+		if (initialEffectRun.current) return;
+
+		if (contextParam) {
+			const decodedContext = decodeURIComponent(contextParam);
+			handleSend(undefined, decodedContext);
+			initialEffectRun.current = true;
+		} else if (topicParam) {
+			const decodedTopic = decodeURIComponent(topicParam);
+			const decodedSubject = subjectParam ? decodeURIComponent(subjectParam) : '';
+			handleSend(`explain ${decodedTopic} in ${decodedSubject} to me like i am in grade 12.`);
+			initialEffectRun.current = true;
+		}
+	}, [contextParam, topicParam, subjectParam, handleSend]);
 
 	if (isSessionLoading) {
 		return <AITutorPageSkeleton />;

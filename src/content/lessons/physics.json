@@ -32,8 +32,8 @@
 			"id": "physics-mechanics-work-energy",
 			"subject": "physical_sciences",
 			"topic": "mechanics",
-			"title": "Work, Energy, and Power",
-			"content": "# Work, Energy, and Power\n\nWork and energy describe how forces cause changes in motion and position.\n\n## Work\n\n**Formula:** W = Fd cosθ\n- W = work in joules (J)\n- F = force (N), d = displacement (m)\n- θ = angle between force and displacement\n\n- Positive work: force in direction of motion\n- Negative work: force opposite to motion\n- Zero work: force perpendicular to motion\n\n## Kinetic Energy\n\nKE = ½mv²\n- Energy of motion\n- Scalar quantity\n\n## Potential Energy\n\n**Gravitational:** PE = mgh\n**Elastic:** PE = ½kx²\n\n## Work-Energy Theorem\n\nW_net = ΔKE = KE_final - KE_initial\n\n## Conservation of Energy\n\nIn absence of non-conservative forces:\nKE_initial + PE_initial = KE_final + PE_final\n\n## Power\n\n**Formula:** P = W/t or P = Fv\n- Units: watts (W) = J/s",
+			"title": "work, energy, and power",
+			"content": "# work, energy, and power\n\nwork and energy describe how forces cause changes in motion and position.\n\n## work\n\n**formula:** w = fd cosθ\n- w = work in joules (j)\n- f = force (n), d = displacement (m)\n- θ = angle between force and displacement\n\n- positive work: force in direction of motion\n- negative work: force opposite to motion\n- zero work: force perpendicular to motion\n\n## kinetic energy\n\nke = ½mv²\n- energy of motion\n- scalar quantity\n\n## potential energy\n\n**gravitational:** pe = mgh\n**elastic:** pe = ½kx²\n\n## work-energy theorem\n\nw_net = δke = ke_final - ke_initial\n\n## conservation of energy\n\nin absence of non-conservative forces:\nke_initial + pe_initial = ke_final + pe_final\n\n## power\n\n**formula:** p = w/t or p = fv\n- units: watts (w) = j/s",
 			"duration": 45,
 			"difficulty": "intermediate",
 			"prerequisites": ["newton's laws"],
@@ -60,8 +60,8 @@
 			"id": "physics-mechanics-momentum",
 			"subject": "physical_sciences",
 			"topic": "mechanics",
-			"title": "Momentum and Impulse",
-			"content": "# Momentum and Impulse\n\nMomentum is a fundamental quantity describing the motion of objects.\n\n## Momentum\n\n**Formula:** p = mv\n- p = momentum (kg·m/s)\n- m = mass (kg)\n- v = velocity (m/s)\n- Vector quantity\n\n## Impulse\n\n**Formula:** J = FΔt = Δp\n- Change in momentum\n- Area under force-time graph\n\n## Conservation of Momentum\n\nIn isolated system:\nΣp_initial = Σp_final\n\n**Applications:**\n- Collisions\n- Rocket propulsion\n- Recoil of guns\n\n## Types of Collisions\n\n### Elastic Collision\n- Both momentum and KE conserved\n- Objects bounce off\n\n### Inelastic Collision\n- Momentum conserved\n- KE not conserved\n- Objects stick together (perfectly inelastic)\n\n## Example Problem\n\nTwo billiard balls collide. Ball A (0.2 kg) moves at 3 m/s, Ball B (0.2 kg) at 2 m/s opposite. Find velocities after elastic collision.\n\nSolution:\nApply conservation of momentum and kinetic energy",
+			"title": "momentum and impulse",
+			"content": "# momentum and impulse\n\nmomentum is a fundamental quantity describing the motion of objects.\n\n## momentum\n\n**formula:** p = mv\n- p = momentum (kg·m/s)\n- m = mass (kg)\n- v = velocity (m/s)\n- vector quantity\n\n## impulse\n\n**formula:** j = fδt = δp\n- change in momentum\n- area under force-time graph\n\n## conservation of momentum\n\nin isolated system:\nσp_initial = σp_final\n\n**applications:**\n- collisions\n- rocket propulsion\n- recoil of guns\n\n## types of collisions\n\n### elastic collision\n- both momentum and ke conserved\n- objects bounce off\n\n### inelastic collision\n- momentum conserved\n- ke not conserved\n- objects stick together (perfectly inelastic)\n\n## example problem\n\ntwo billiard balls collide. ball a (0.2 kg) moves at 3 m/s, ball b (0.2 kg) at 2 m/s opposite. find velocities after elastic collision.\n\nsolution:\napply conservation of momentum and kinetic energy",
 			"duration": 40,
 			"difficulty": "intermediate",
 			"prerequisites": ["newton's laws", "work-energy"],
@@ -87,8 +87,8 @@
 			"id": "physics-mechanics-gravitation",
 			"subject": "physical_sciences",
 			"topic": "mechanics",
-			"title": "Gravitation",
-			"content": "# Gravitation\n\nGravitation is the force of attraction between objects with mass.\n\n## Newton's Law of Universal Gravitation\n\n**Formula:** F = Gm₁m₂/r²\n- G = 6.67 × 10⁻¹¹ N·m²/kg²\n- Force is attractive\n- Inverse square law\n\n## Gravitational Field\n\n**Field strength:** g = GM/r²\n- Points toward massive object\n- g = 9.8 m/s² on Earth's surface\n\n## Orbital Motion\n\n### Orbital Velocity\nv = √(GM/r)\n\n### Orbital Period\nT = 2π√(r³/GM)\n\n### Types of Orbits\n- Low Earth Orbit (LEO)\n- Geostationary\n- Elliptical\n\n## Weight and Weightlessness\n\nWeight = mg (apparent force)\nTrue weight = GMm/r²\n\nIn orbit: apparent weight = 0 (free fall)",
+			"title": "gravitation",
+			"content": "# gravitation\n\ngravitation is the force of attraction between objects with mass.\n\n## newton's law of universal gravitation\n\n**formula:** f = gm₁m₂/r²\n- g = 6.67 × 10⁻¹¹ n·m²/kg²\n- force is attractive\n- inverse square law\n\n## gravitational field\n\n**field strength:** g = gm/r²\n- points toward massive object\n- g = 9.8 m/s² on earth's surface\n\n## orbital motion\n\n### orbital velocity\nv = √(gm/r)\n\n### orbital period\nt = 2π√(r³/gm)\n\n### types of orbits\n- low earth orbit (leo)\n- geostationary\n- elliptical\n\n## weight and weightlessness\n\nweight = mg (apparent force)\ntrue weight = gmm/r²\n\nin orbit: apparent weight = 0 (free fall)",
 			"duration": 45,
 			"difficulty": "advanced",
 			"prerequisites": ["newton's laws", "circular motion"],
@@ -114,20 +114,20 @@
 			"id": "physics-mechanics-circular",
 			"subject": "physical_sciences",
 			"topic": "mechanics",
-			"title": "Circular Motion",
-			"content": "# Circular Motion\n\nCircular motion involves objects moving in circular paths.\n\n## Angular Quantities\n\n### Angular Displacement\nθ = s/r (radians)\n\n### Angular Velocity\nω = Δθ/Δt = v/r\n- Units: rad/s\n\n### Angular Acceleration\nα = Δω/Δt\n\n## Centripetal Force\n\n**Formula:** F_c = mv²/r = mω²r\n- Always toward center\n- Not a new force type\n- Required for circular motion\n\n## Centripetal Acceleration\n\na_c = v²/r = ω²r\n\n## Applications\n\n### Vertical Circles\n- Different tension at top and bottom\n- Minimum speed at top for rope tension\n\n### Banked Curves\n- Horizontal component of normal force provides centripetal force\n\n## Example\n\nCar (mass = 1000 kg) turns radius 50 m at 20 m/s.\nF_c = (1000)(20)²/50 = 8000 N",
+			"title": "circular motion",
+			"content": "# circular motion\n\ncircular motion involves objects moving in circular paths.\n\n## angular quantities\n\n### angular displacement\nθ = s/r (radians)\n\n### angular velocity\nω = δθ/δt = v/r\n- units: rad/s\n\n### angular acceleration\nα = δω/δt\n\n## centripetal force\n\n**formula:** f_c = mv²/r = mω²r\n- always toward center\n- not a new force type\n- required for circular motion\n\n## centripetal acceleration\n\na_c = v²/r = ω²r\n\n## applications\n\n### vertical circles\n- different tension at top and bottom\n- minimum speed at top for rope tension\n\n### banked curves\n- horizontal component of normal force provides centripetal force\n\n## example\n\ncar (mass = 1000 kg) turns radius 50 m at 20 m/s.\nf_c = (1000)(20)²/50 = 8000 n",
 			"duration": 40,
 			"difficulty": "intermediate",
 			"prerequisites": ["newton's laws", "vectors"],
 			"learning_objectives": [
-				"Understand angular quantities",
-				"Apply centripetal force and acceleration",
-				"Solve circular motion problems"
+				"understand angular quantities",
+				"apply centripetal force and acceleration",
+				"solve circular motion problems"
 			],
 			"videos": [
 				{
 					"id": "Ps3H9cB5p5Q",
-					"title": "Circular Motion Explained",
+					"title": "circular motion explained",
 					"thumbnail": "https://img.youtube.com/vi/Ps3H9cB5p5Q/maxresdefault.jpg",
 					"duration": "26:15"
 				}
@@ -141,20 +141,20 @@
 			"id": "physics-mechanics-equilibrium",
 			"subject": "physical_sciences",
 			"topic": "mechanics",
-			"title": "Static Equilibrium",
-			"content": "# Static Equilibrium\n\nAn object is in equilibrium when net force and net torque are zero.\n\n## Conditions for Equilibrium\n\n### Translational Equilibrium\nΣF = 0 in all directions\n\n### Rotational Equilibrium\nΣτ = 0 about any point\n\n## Torque\n\n**Formula:** τ = rF sinθ\n- r = distance from pivot\n- F = force\n- θ = angle between r and F\n- Units: N·m\n\n## Center of Gravity\n\nPoint where weight appears to act\nFor uniform objects: at geometric center\n\n## Problem Solving Strategy\n\n1. Draw free-body diagram\n2. Choose coordinate axes\n3. Apply ΣF = 0\n4. Apply Στ = 0\n5. Solve equations\n\n## Example\n\nBeam (mass 10 kg, length 4 m) supported at both ends. Child (mass 30 kg) sits 1 m from left end. Find forces at supports.\n\nSolution:\nTake torques about left support",
+			"title": "static equilibrium",
+			"content": "# static equilibrium\n\nan object is in equilibrium when net force and net torque are zero.\n\n## conditions for equilibrium\n\n### translational equilibrium\nσf = 0 in all directions\n\n### rotational equilibrium\nστ = 0 about any point\n\n## torque\n\n**formula:** τ = rf sinθ\n- r = distance from pivot\n- f = force\n- θ = angle between r and f\n- units: n·m\n\n## center of gravity\n\npoint where weight appears to act\nfor uniform objects: at geometric center\n\n## problem solving strategy\n\n1. draw free-body diagram\n2. choose coordinate axes\n3. apply σf = 0\n4. apply στ = 0\n5. solve equations\n\n## example\n\nbeam (mass 10 kg, length 4 m) supported at both ends. child (mass 30 kg) sits 1 m from left end. find forces at supports.\n\nsolution:\ntake torques about left support",
 			"duration": 40,
 			"difficulty": "intermediate",
 			"prerequisites": ["newton's laws", "vectors"],
 			"learning_objectives": [
-				"Apply conditions for equilibrium",
-				"Calculate torque",
-				"Solve static equilibrium problems"
+				"apply conditions for equilibrium",
+				"calculate torque",
+				"solve static equilibrium problems"
 			],
 			"videos": [
 				{
 					"id": "VKmT2e2R0jE",
-					"title": "Static Equilibrium Explained",
+					"title": "static equilibrium explained",
 					"thumbnail": "https://img.youtube.com/vi/VKmT2e2R0jE/maxresdefault.jpg",
 					"duration": "22:00"
 				}
@@ -168,20 +168,20 @@
 			"id": "physics-mechanics-projectiles",
 			"subject": "physical_sciences",
 			"topic": "mechanics",
-			"title": "Projectile Motion",
-			"content": "# Projectile Motion\n\nProjectile motion describes objects moving under gravity's influence only.\n\n## Key Assumptions\n\n- No air resistance\n- Uniform gravitational field (g = 9.8 m/s² down)\n- Earth is flat (for this level)\n\n## Horizontal Motion\n\nConstant velocity (no acceleration)\nx = x₀ + vₓt\n\n## Vertical Motion\n\nUniformly accelerated motion\ny = y₀ + vᵧt + ½gt²\nvᵧ = vᵧ₀ + gt\n\n## Equations of Motion\n\nvₓ = v₀ cosθ\nvᵧ = v₀ sinθ\n\n## Time of Flight\n\nT = 2v₀ sinθ/g\n\n## Maximum Height\n\nH = (v₀ sinθ)²/(2g)\n\n## Range\n\nR = v₀² sin2θ/g\nMaximum range at θ = 45°\n\n## Example\n\nBall kicked at 20 m/s, 37° above horizontal. Find:\n(a) Time of flight\n(b) Maximum height\n(c) Range\n\nSolutions:\nvₓ = 20 cos37° = 16 m/s\nvᵧ = 20 sin37° = 12 m/s\n(a) T = 2(12)/9.8 = 2.45 s\n(b) H = 12²/(2×9.8) = 7.35 m\n(c) R = 16 × 2.45 = 39.2 m",
+			"title": "projectile motion",
+			"content": "# projectile motion\n\nprojectile motion describes objects moving under gravity's influence only.\n\n## key assumptions\n\n- no air resistance\n- uniform gravitational field (g = 9.8 m/s² down)\n- earth is flat (for this level)\n\n## horizontal motion\n\nconstant velocity (no acceleration)\nx = x₀ + vₓt\n\n## vertical motion\n\nuniformly accelerated motion\ny = y₀ + vᵧt + ½gt²\nvᵧ = vᵧ₀ + gt\n\n## equations of motion\n\nvₓ = v₀ cosθ\nvᵧ = v₀ sinθ\n\n## time of flight\n\nt = 2v₀ sinθ/g\n\n## maximum height\n\nh = (v₀ sinθ)²/(2g)\n\n## range\n\nr = v₀² sin2θ/g\nmaximum range at θ = 45°\n\n## example\n\nball kicked at 20 m/s, 37° above horizontal. find:\n(a) time of flight\n(b) maximum height\n(c) range\n\nsolutions:\nvₓ = 20 cos37° = 16 m/s\nvᵧ = 20 sin37° = 12 m/s\n(a) t = 2(12)/9.8 = 2.45 s\n(b) h = 12²/(2×9.8) = 7.35 m\n(c) r = 16 × 2.45 = 39.2 m",
 			"duration": 45,
 			"difficulty": "intermediate",
 			"prerequisites": ["vectors", "kinematics"],
 			"learning_objectives": [
-				"Analyze projectile motion into components",
-				"Calculate time of flight, height, range",
-				"Solve projectile problems"
+				"analyze projectile motion into components",
+				"calculate time of flight, height, range",
+				"solve projectile problems"
 			],
 			"videos": [
 				{
 					"id": "tN2D1kAVdBE",
-					"title": "Projectile Motion Explained",
+					"title": "projectile motion explained",
 					"thumbnail": "https://img.youtube.com/vi/tN2D1kAVdBE/maxresdefault.jpg",
 					"duration": "28:45"
 				}
@@ -224,20 +224,20 @@
 			"id": "physics-waves-sound",
 			"subject": "physical_sciences",
 			"topic": "waves",
-			"title": "Sound Waves",
-			"content": "# Sound Waves\n\nSound is a mechanical longitudinal wave.\n\n## Nature of Sound\n\n- Mechanical wave (requires medium)\n- Longitudinal pressure wave\n- Speed: 340 m/s in air at 20°C\n- v ∝ √T in gases\n\n## Sound Intensity\n\n**Formula:** I = P/A\n- Intensity decreases with square of distance\n- I ∝ 1/r² for point source\n\n## Decibel Scale\n\n**Formula:** β = 10 log(I/I₀)\n- I₀ = 10⁻¹² W/m² (threshold of hearing)\n- 0 dB = threshold of hearing\n- 120 dB = threshold of pain\n\n## Properties of Sound\n\n### Pitch\n- Determined by frequency\n- Higher f = higher pitch\n\n### Loudness\n- Determined by amplitude/intensity\n- Subjective perception\n\n### Quality (Timbre)\n- Determines note character\n- Related to harmonic content\n\n## Resonance\n\n### For Pipes\n\n**Open pipe:** fₙ = n(v/2L), n = 1, 2, 3...\n**Closed pipe:** fₙ = n(v/4L), n = 1, 3, 5...\n\n### For Strings\n\nfₙ = n(v/2L), where v = √(T/μ)\n\n## Doppler Effect\n\n**Formula:** f' = f(v ± v_o)/(v ∓ v_s)\n- Observer moving toward: + in numerator\n- Source moving toward: - in denominator\n\n## Example\n\nAmbulance (f = 400 Hz) approaches at 30 m/s. Observer stationary.\nf' = 400(340)/(340-30) = 439 Hz",
+			"title": "sound waves",
+			"content": "# sound waves\n\nsound is a mechanical longitudinal wave.\n\n## nature of sound\n\n- mechanical wave (requires medium)\n- longitudinal pressure wave\n- speed: 340 m/s in air at 20°c\n- v ∝ √t in gases\n\n## sound intensity\n\n**formula:** i = p/a\n- intensity decreases with square of distance\n- i ∝ 1/r² for point source\n\n## decibel scale\n\n**formula:** β = 10 log(i/i₀)\n- i₀ = 10⁻¹² w/m² (threshold of hearing)\n- 0 db = threshold of hearing\n- 120 db = threshold of pain\n\n## properties of sound\n\n### pitch\n- determined by frequency\n- higher f = higher pitch\n\n### loudness\n- determined by amplitude/intensity\n- subjective perception\n\n### quality (timbre)\n- determines note character\n- related to harmonic content\n\n## resonance\n\n### for pipes\n\n**open pipe:** fₙ = n(v/2l), n = 1, 2, 3...\n**closed pipe:** fₙ = n(v/4l), n = 1, 3, 5...\n\n### for strings\n\nfₙ = n(v/2l), where v = √(t/μ)\n\n## doppler effect\n\n**formula:** f' = f(v ± v_o)/(v ∓ v_s)\n- observer moving toward: + in numerator\n- source moving toward: - in denominator\n\n## example\n\nambulance (f = 400 hz) approaches at 30 m/s. observer stationary.\nf' = 400(340)/(340-30) = 439 hz",
 			"duration": 45,
 			"difficulty": "advanced",
 			"prerequisites": ["wave properties"],
 			"learning_objectives": [
-				"Understand sound wave properties",
-				"Apply decibel scale",
-				"Solve resonance and Doppler problems"
+				"understand sound wave properties",
+				"apply decibel scale",
+				"solve resonance and doppler problems"
 			],
 			"videos": [
 				{
 					"id": "rQKXZ2Vw4gM",
-					"title": "Sound Waves Explained",
+					"title": "sound waves explained",
 					"thumbnail": "https://img.youtube.com/vi/rQKXZ2Vw4gM/maxresdefault.jpg",
 					"duration": "26:30"
 				}
@@ -251,20 +251,20 @@
 			"id": "physics-waves-light",
 			"subject": "physical_sciences",
 			"topic": "waves",
-			"title": "Light and Optics",
-			"content": "# Light and Optics\n\nLight exhibits wave characteristics and can be described using the wave model.\n\n## Light as a Wave\n\n- Electromagnetic wave\n- Speed in vacuum: c = 3 × 10⁸ m/s\n- Visible light: 400-700 nm\n\n## Electromagnetic Spectrum\n\nRadio → Microwave → Infrared → Visible → UV → X-ray → Gamma\n\nIncreasing frequency, decreasing wavelength\n\n## Light Phenomena\n\n### Reflection\n- Angle of incidence = angle of reflection\n- Plane mirrors: virtual, upright, same size image\n\n### Refraction\n- Light bends at interface\n- Snell's Law: n₁ sinθ₁ = n₂ sinθ₂\n- Index of refraction: n = c/v\n\n### Dispersion\n- White light splits into colors\n- Different n for different λ\n- Rainbow formation\n\n## Lenses\n\n### Convex (Converging)\n- Thicker at center\n- Real/virtual images\n- f > 0\n\n### Concave (Diverging)\n- Thinner at center\n- Always virtual, upright, diminished\n- f < 0\n\n## Lens Equation\n\n1/f = 1/do + 1/di\nM = -di/do = hi/ho\n\n## Total Internal Reflection\n\nWhen θ > critical angle:\n- n₁ sinθ_c = n₂ (n₁ > n₂)\n- Critical angle: θ_c = sin⁻¹(n₂/n₁)\n- Used in fiber optics",
+			"title": "light and optics",
+			"content": "# light and optics\n\nlight exhibits wave characteristics and can be described using the wave model.\n\n## light as a wave\n\n- electromagnetic wave\n- speed in vacuum: c = 3 × 10⁸ m/s\n- visible light: 400-700 nm\n\n## electromagnetic spectrum\n\nradio → microwave → infrared → visible → uv → x-ray → gamma\n\nincreasing frequency, decreasing wavelength\n\n## light phenomena\n\n### reflection\n- angle of incidence = angle of reflection\n- plane mirrors: virtual, upright, same size image\n\n### refraction\n- light bends at interface\n- snell's law: n₁ sinθ₁ = n₂ sinθ₂\n- index of refraction: n = c/v\n\n### dispersion\n- white light splits into colors\n- different n for different λ\n- rainbow formation\n\n## lenses\n\n### convex (converging)\n- thicker at center\n- real/virtual images\n- f > 0\n\n### concave (diverging)\n- thinner at center\n- always virtual, upright, diminished\n- f < 0\n\n## lens equation\n\n1/f = 1/do + 1/di\nm = -di/do = hi/ho\n\n## total internal reflection\n\nwhen θ > critical angle:\n- n₁ sinθ_c = n₂ (n₁ > n₂)\n- critical angle: θ_c = sin⁻¹(n₂/n₁)\n- used in fiber optics",
 			"duration": 50,
 			"difficulty": "advanced",
 			"prerequisites": ["wave properties", "refraction"],
 			"learning_objectives": [
-				"Understand light as electromagnetic wave",
-				"Apply reflection and refraction",
-				"Solve lens problems"
+				"understand light as electromagnetic wave",
+				"apply reflection and refraction",
+				"solve lens problems"
 			],
 			"videos": [
 				{
 					"id": "xC3Y2C3G6pM",
-					"title": "Light and Optics Explained",
+					"title": "light and optics explained",
 					"thumbnail": "https://img.youtube.com/vi/xC3Y2C3G6pM/maxresdefault.jpg",
 					"duration": "30:00"
 				}
@@ -280,15 +280,15 @@
 			"id": "physics-electricity-electrostatics",
 			"subject": "physical_sciences",
 			"topic": "electricity",
-			"title": "Electrostatics",
-			"content": "# Electrostatics\n\nElectrostatics studies electric charges at rest.\n\n## Electric Charge\n\n### Types\n- Positive (proton)\n- Negative (electron)\n- Same signs repel, opposite attract\n\n### Quantization\nq = ne (e = 1.6 × 10⁻¹⁹ C)\n\n### Conservation\nTotal charge conserved\n\n## Coulomb's Law\n\n**Formula:** F = kq₁q₂/r²\n- k = 9 × 10⁹ N·m²/C²\n- Force along line joining charges\n- Inverse square law\n\n## Electric Field\n\n**Definition:** E = F/q\n- Field strength = force per unit charge\n- Units: N/C or V/m\n\n### Field Due to Point Charge\nE = kQ/r² (radially outward for +Q)\n\n### Field Lines\n- Direction of force on +test charge\n- Density indicates field strength\n\n## Electric Potential\n\n**Formula:** V = kQ/r\n- Potential due to point charge\n- Scalar quantity\n- Units: volts (V)\n\n### Potential Difference\nΔV = ΔW/q = ΔPE/q\n\n## Capacitors\n\n### Definition\nDevice storing charge and energy\n\n### Capacitance\nC = Q/V\n- Farads (F) = C/V\n- Parallel plate: C = ε₀A/d\n\n### Energy Stored\nU = ½CV² = ½QV = ½Q²/C",
+			"title": "electrostatics",
+			"content": "# electrostatics\n\nelectrostatics studies electric charges at rest.\n\n## electric charge\n\n### types\n- positive (proton)\n- negative (electron)\n- same signs repel, opposite attract\n\n### quantization\nq = ne (e = 1.6 × 10⁻¹⁹ c)\n\n### conservation\ntotal charge conserved\n\n## coulomb's law\n\n**formula:** f = kq₁q₂/r²\n- k = 9 × 10⁹ n·m²/c²\n- force along line joining charges\n- inverse square law\n\n## electric field\n\n**definition:** e = f/q\n- field strength = force per unit charge\n- units: n/c or v/m\n\n### field due to point charge\ne = kq/r² (radially outward for +q)\n\n### field lines\n- direction of force on +test charge\n- density indicates field strength\n\n## electric potential\n\n**formula:** v = kq/r\n- potential due to point charge\n- scalar quantity\n- units: volts (v)\n\n### potential difference\nδv = δw/q = δpe/q\n\n## capacitors\n\n### definition\ndevice storing charge and energy\n\n### capacitance\nc = q/v\n- farads (f) = c/v\n- parallel plate: c = ε₀a/d\n\n### energy stored\nu = ½cv² = ½qv = ½q²/c",
 			"duration": 50,
 			"difficulty": "advanced",
 			"prerequisites": ["basic physics"],
 			"learning_objectives": [
-				"Apply Coulomb's law",
-				"Understand electric fields",
-				"Solve electrostatics problems"
+				"apply coulomb's law",
+				"understand electric fields",
+				"solve electrostatics problems"
 			]
 		},
 		{
@@ -301,24 +301,24 @@
 			"difficulty": "intermediate",
 			"prerequisites": ["electrostatics"],
 			"learning_objectives": [
-				"Apply Ohm's law",
-				"Analyze series and parallel circuits",
-				"Calculate power in circuits"
+				"apply ohm's law",
+				"analyze series and parallel circuits",
+				"calculate power in circuits"
 			]
 		},
 		{
 			"id": "physics-electricity-emf",
 			"subject": "physical_sciences",
 			"topic": "electricity",
-			"title": "EMF and Internal Resistance",
-			"content": "# EMF and Internal Resistance\n\nReal batteries have internal resistance affecting circuit behavior.\n\n## EMF (Electromotive Force)\n\n- Energy per unit charge provided by source\n- Measured in volts\n- Terminal voltage when no current flows\n\n## Internal Resistance\n\n**Formula:** V_terminal = ε - Ir\n- ε = emf\n- r = internal resistance\n- I = current\n\n## Load Resistance\n\nTotal resistance in external circuit\n\n## Maximum Power Transfer\n\nWhen R_load = r, power transferred is maximum\nP_max = ε²/(4r)\n\n## Example Problem\n\nBattery with ε = 12V, r = 0.5Ω connected to 4Ω resistor.\n\nFind: (a) Current (b) Terminal voltage (c) Power delivered\n\nSolution:\nI = ε/(R + r) = 12/4.5 = 2.67 A\nV_term = ε - Ir = 12 - 2.67(0.5) = 10.67 V\nP = I²R = (2.67)²(4) = 28.5 W",
+			"title": "emf and internal resistance",
+			"content": "# emf and internal resistance\n\nreal batteries have internal resistance affecting circuit behavior.\n\n## emf (electromotive force)\n\n- energy per unit charge provided by source\n- measured in volts\n- terminal voltage when no current flows\n\n## internal resistance\n\n**formula:** v_terminal = ε - ir\n- ε = emf\n- r = internal resistance\n- i = current\n\n## load resistance\n\ntotal resistance in external circuit\n\n## maximum power transfer\n\nwhen r_load = r, power transferred is maximum\np_max = ε²/(4r)\n\n## example problem\n\nbattery with ε = 12v, r = 0.5ω connected to 4ω resistor.\n\nfind: (a) current (b) terminal voltage (c) power delivered\n\nsolution:\ni = ε/(r + r) = 12/4.5 = 2.67 a\nv_term = ε - ir = 12 - 2.67(0.5) = 10.67 v\np = i²r = (2.67)²(4) = 28.5 w",
 			"duration": 40,
 			"difficulty": "intermediate",
 			"prerequisites": ["electricity-circuits"],
 			"learning_objectives": [
-				"Understand emf and internal resistance",
-				"Solve problems with real batteries",
-				"Apply maximum power transfer"
+				"understand emf and internal resistance",
+				"solve problems with real batteries",
+				"apply maximum power transfer"
 			]
 		},
 		{
@@ -357,15 +357,15 @@
 			"id": "physics-matter-atomic",
 			"subject": "physical_sciences",
 			"topic": "matter",
-			"title": "Atomic Structure",
-			"content": "# Atomic Structure\n\nUnderstanding the structure of atoms is fundamental to physics and chemistry.\n\n## Subatomic Particles\n\n| Particle | Symbol | Charge | Mass |\n|----------|--------|--------|------|\n| Proton | p | +1 | 1.67 × 10⁻²⁷ kg |\n| Neutron | n | 0 | 1.67 × 10⁻²⁷ kg |\n| Electron | e | -1 | 9.11 × 10⁻³¹ kg |\n\n## Atomic Number and Mass\n\n- Z = number of protons\n- N = number of neutrons\n- A = Z + N = mass number\n- Isotopes: same Z, different N\n\n## Bohr Model (Historical)\n\n- Electrons orbit nucleus in specific energy levels\n- E_n = -13.6/n² eV\n- Photon emitted/absorbed when electrons transition\n\n## Modern View\n\n### Quantum Mechanical Model\n- Electrons exist in orbitals (probability clouds)\n- Four quantum numbers describe electron state\n- n, l, m_l, m_s\n\n## Photon Emission\n\nE = hf = hc/λ\n- When electron drops from n₂ to n₁:\nΔE = 13.6(1/n₁² - 1/n₂²) eV\n\n## Example\n\nElectron falls from n=3 to n=1:\nΔE = 13.6(1 - 1/9) = 12.09 eV\nλ = hc/E = 1240/12.09 = 102.6 nm (UV)",
+			"title": "atomic structure",
+			"content": "# atomic structure\n\nunderstanding the structure of atoms is fundamental to physics and chemistry.\n\n## subatomic particles\n\n| particle | symbol | charge | mass |\n|----------|--------|--------|------|\n| proton | p | +1 | 1.67 × 10⁻²⁷ kg |\n| neutron | n | 0 | 1.67 × 10⁻²⁷ kg |\n| electron | e | -1 | 9.11 × 10⁻³¹ kg |\n\n## atomic number and mass\n\n- z = number of protons\n- n = number of neutrons\n- a = z + n = mass number\n- isotopes: same z, different n\n\n## bohr model (historical)\n\n- electrons orbit nucleus in specific energy levels\n- e_n = -13.6/n² ev\n- photon emitted/absorbed when electrons transition\n\n## modern view\n\n### quantum mechanical model\n- electrons exist in orbitals (probability clouds)\n- four quantum numbers describe electron state\n- n, l, m_l, m_s\n\n## photon emission\n\ne = hf = hc/λ\n- when electron drops from n₂ to n₁:\nδe = 13.6(1/n₁² - 1/n₂²) ev\n\n## example\n\nelectron falls from n=3 to n=1:\nδe = 13.6(1 - 1/9) = 12.09 ev\nλ = hc/e = 1240/12.09 = 102.6 nm (uv)",
 			"duration": 45,
 			"difficulty": "advanced",
 			"prerequisites": ["electromagnetism", "waves"],
 			"learning_objectives": [
-				"Understand atomic structure",
-				"Apply quantum numbers",
-				"Calculate photon energies and wavelengths"
+				"understand atomic structure",
+				"apply quantum numbers",
+				"calculate photon energies and wavelengths"
 			]
 		},
 		{
