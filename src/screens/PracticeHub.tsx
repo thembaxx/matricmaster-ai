@@ -24,7 +24,7 @@ const QuizPreview = dynamic(() => import('@/components/Quiz/QuizList'), {
 	loading: () => <div className="h-96 animate-pulse bg-muted/10 rounded-3xl" />,
 });
 
-const FlashcardsPreview = dynamic(() => import('@/components/Flashcards/FlashcardSetList'), {
+const FlashcardsPreview = dynamic(() => import('@/components/Flashcards/FlashcardDeckList'), {
 	loading: () => <div className="h-96 animate-pulse bg-muted/10 rounded-3xl" />,
 });
 
