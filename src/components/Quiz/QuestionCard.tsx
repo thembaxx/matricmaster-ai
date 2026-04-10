@@ -145,7 +145,7 @@ export function QuestionCard({
 							animate="animate"
 							exit="exit"
 							transition={questionTransition}
-							className="text-xl font-semibold leading-tight text-foreground"
+							className="text-xl font-question leading-tight text-foreground"
 						>
 							{question}
 						</m.h2>

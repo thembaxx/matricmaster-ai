@@ -13,6 +13,7 @@ type QuizHintCardProps = {
 	showWhen?: boolean;
 	variant?: 'hint' | 'smart';
 	isLoading?: boolean;
+	subject?: string;
 	error?: string;
 	onRetry?: () => void;
 	onUseAITutor?: () => void;
@@ -24,6 +25,7 @@ export function QuizHintCard({
 	showWhen = true,
 	variant = 'hint',
 	isLoading = false,
+	subject,
 	error,
 	onRetry,
 	onUseAITutor,
@@ -88,7 +90,7 @@ export function QuizHintCard({
 					</div>
 					<div className="space-y-1 flex-1">
 						<h4 className="font-black text-primary text-xs  tracking-widest">Smart Hint</h4>
-						<MarkdownRenderer content={hint} className="text-sm text-muted-foreground" />
+						<MarkdownRenderer content={hint} subject={subject} className="text-sm text-muted-foreground" />
 					</div>
 				</m.div>
 			</AnimatePresence>
@@ -106,6 +108,7 @@ export function QuizHintCard({
 				</h4>
 				<MarkdownRenderer
 					content={hint}
+					subject={subject}
 					className="text-sm text-amber-800/80 dark:text-amber-200/80"
 				/>
 			</div>

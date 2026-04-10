@@ -635,7 +635,50 @@ html {
 
   /* Math rendering typography */
   .math-renderer {
-    font-family: var(--font-mono);
+    font-family: var(--font-crimson-pro), var(--font-noto-sans-math), serif;
+  }
+
+  /* Educational Typography Enhancements */
+  
+  /* Literature/Reading font - Premium Serif */
+  .font-literature {
+    font-family: var(--font-eb-garamond), serif;
+    font-size: 1.125rem;
+    line-height: 1.7;
+    letter-spacing: -0.01em;
+  }
+
+  /* Question font - Elegant Serif */
+  .font-question {
+    font-family: var(--font-playfair), serif;
+    font-weight: 500;
+    line-height: 1.4;
+    letter-spacing: -0.02em;
+  }
+
+  /* Math & Physics formula font - Bold, Scholarly Serif */
+  .formula-math, .formula-physics {
+    font-family: var(--font-crimson-pro), serif;
+    font-weight: 700;
+    font-style: italic;
+    font-size: 1.05em;
+    color: var(--primary);
+  }
+
+  /* Chemistry formula font - Clear, Distinct Serif */
+  .formula-chemistry {
+    font-family: var(--font-libre-baskerville), serif;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    font-size: 1.05em;
+  }
+
+  /* Accounting/Finance formula font - Professional, Structured Serif */
+  .formula-accounting {
+    font-family: var(--font-ibm-plex-serif), serif;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    font-size: 1.05em;
   }
   
   /* Image outline for depth */

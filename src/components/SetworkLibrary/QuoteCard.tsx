@@ -15,7 +15,7 @@ export function QuoteCard({ quote }: QuoteCardProps) {
 			<div className="flex gap-3">
 				<HugeiconsIcon icon={QuotesIcon} className="w-5 h-5 text-primary shrink-0 mt-1" />
 				<div>
-					<p className="font-medium italic">"{quote.text}"</p>
+					<p className="font-literature font-medium italic">"{quote.text}"</p>
 					<p className="text-sm text-muted-foreground mt-2">— {quote.speaker}</p>
 					<p className="text-xs text-muted-foreground mt-1">{quote.context}</p>
 				</div>

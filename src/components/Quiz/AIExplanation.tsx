@@ -4,6 +4,7 @@ import { Loading03Icon, SparklesIcon, VolumeHighIcon } from '@hugeicons/core-fre
 import { HugeiconsIcon } from '@hugeicons/react';
 import { useState } from 'react';
 import { ResponsiveAudioPlayer } from '@/components/AudioPlayer';
+import { MarkdownRenderer } from '@/components/AI/MarkdownRenderer';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -196,9 +197,7 @@ export function AIExplanation({
 
 							{explanation && (
 								<div className="p-4 bg-card rounded-xl border">
-									<div className="prose prose-sm dark:prose-invert max-w-none">
-										<p className="text-sm whitespace-pre-wrap">{explanation}</p>
-									</div>
+									<MarkdownRenderer content={explanation} subject={subject} />
 								</div>
 							)}
 						</div>

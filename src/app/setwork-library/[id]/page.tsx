@@ -65,7 +65,7 @@ export default async function SetworkDetailPage({ params }: PageProps) {
 				</div>
 			</header>
 
-			<main className="flex-1 p-6 pb-40 overflow-y-auto space-y-8">
+			<main className="flex-1 p-6 pb-40 overflow-y-auto space-y-8 font-literature">
 				<section>
 					<h2 className="font-bold text-lg mb-3">Synopsis</h2>
 					<Card className="p-4">

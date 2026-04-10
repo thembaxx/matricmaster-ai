@@ -13,7 +13,18 @@ import '@/styles/index.css';
 import { domAnimation, LazyMotion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { appConfig } from '../app.config';
-import { atkinson, geistMono, geistSans, jetbrainsMono, notoSansMath, playfair } from './fonts';
+import {
+	atkinson,
+	crimsonPro,
+	ebGaramond,
+	geistMono,
+	geistSans,
+	ibmPlexSerif,
+	jetbrainsMono,
+	libreBaskerville,
+	notoSansMath,
+	playfair,
+} from './fonts';
 
 /* Google fonts are already configured in fonts.ts - use them directly */
 const geistHeading = playfair;
@@ -134,6 +145,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 				geistMono.variable,
 				geistSans.variable,
 				playfair.variable,
+				ebGaramond.variable,
+				crimsonPro.variable,
+				libreBaskerville.variable,
+				ibmPlexSerif.variable,
 				notoSansMath.variable,
 				jetbrainsMonoLocal.variable,
 				atkinsonLocal.variable,

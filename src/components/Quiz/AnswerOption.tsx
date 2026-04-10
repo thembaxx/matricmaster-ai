@@ -167,7 +167,7 @@ export function AnswerOption({
 			>
 				{id}
 			</div>
-			<span className={cn('flex-1 text-left font-medium text-base', getLabelClasses())}>
+			<span className={cn('flex-1 text-left font-question text-base', getLabelClasses())}>
 				{label}
 			</span>
 

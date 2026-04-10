@@ -14,6 +14,7 @@ import { cn } from '@/lib/utils';
 interface MarkdownRendererProps {
 	content: string;
 	className?: string;
+	subject?: string;
 }
 
 function CodeBlock({ children, className }: { children: React.ReactNode; className?: string }) {
@@ -76,7 +77,7 @@ function InlineCode({ children }: { children: React.ReactNode }) {
 	);
 }
 
-export function MarkdownRenderer({ content, className }: MarkdownRendererProps) {
+export function MarkdownRenderer({ content, className, subject }: MarkdownRendererProps) {
 	useEffect(() => {
 		const link = document.createElement('link');
 		link.rel = 'stylesheet';
@@ -86,27 +87,53 @@ export function MarkdownRenderer({ content, className }: MarkdownRendererProps) 
 		document.head.appendChild(link);
 
 		return () => {
-			document.head.removeChild(link);
+			if (document.head.contains(link)) {
+				document.head.removeChild(link);
+			}
 		};
 	}, []);
+
+	// Helper to determine subject-specific formula class
+	const getFormulaClass = () => {
+		if (!subject) return 'formula-math';
+		const s = subject.toLowerCase();
+		if (s.includes('phys')) return 'formula-physics';
+		if (s.includes('chem')) return 'formula-chemistry';
+		if (s.includes('acc') || s.includes('bus') || s.includes('econ')) return 'formula-accounting';
+		return 'formula-math';
+	};
+
+	// Helper to determine if literature font should be used
+	const isLiterature = () => {
+		if (!subject) return false;
+		const s = subject.toLowerCase();
+		return (
+			s.includes('lit') ||
+			s.includes('poem') ||
+			s.includes('book') ||
+			s.includes('english') ||
+			s.includes('afrikaans') ||
+			s.includes('xhosa') ||
+			s.includes('zulu') ||
+			s.includes('setwork')
+		);
+	};
 
 	// Split content by diagram shortcodes: [DIAGRAM:type] and video shortcodes: [VIDEO:id]
 	const parts = content.split(/(\[DIAGRAM:\w+(?:-\w+)*\]|\[VIDEO:[\w-]+\])/g);
 
 	return (
-		<div className={cn('prose prose-sm dark:prose-invert max-w-none', className)}>
+		<div
+			className={cn(
+				'prose prose-sm dark:prose-invert max-w-none',
+				isLiterature() && 'font-literature',
+				className
+			)}
+		>
 			{parts.map((part, index) => {
 				const diagramMatch = part.match(/\[DIAGRAM:(\w+(?:-\w+)*)\]/);
 				if (diagramMatch) {
-					const type = diagramMatch[1] as
-						| 'force-vector'
-						| 'phase-change'
-						| 'wave-motion'
-						| 'circuit-analysis'
-						| 'dna-structure'
-						| 'cell-structure'
-						| 'projectile-motion'
-						| 'momentum-conservation';
+					const type = diagramMatch[1] as any;
 					return (
 						<div key={`markdown-render-diagram-${part}-${index}`} className="my-8 not-prose">
 							<InteractiveDiagram type={type} />
@@ -150,26 +177,62 @@ export function MarkdownRenderer({ content, className }: MarkdownRendererProps) 
 							},
 							pre: ({ children }) => <>{children}</>,
 							h1: ({ children }) => (
-								<h1 className="text-xl font-bold mt-6 mb-3 text-foreground">{children}</h1>
+								<h1 className="text-xl font-heading mt-6 mb-3 text-foreground">{children}</h1>
 							),
 							h2: ({ children }) => (
-								<h2 className="text-lg font-bold mt-5 mb-2 text-foreground">{children}</h2>
+								<h2 className="text-lg font-heading mt-5 mb-2 text-foreground">{children}</h2>
 							),
 							h3: ({ children }) => (
 								<h3 className="text-base font-semibold mt-4 mb-2 text-foreground">{children}</h3>
 							),
-							p: ({ children }) => (
-								<p className="mb-4 leading-relaxed text-sm md:text-base font-medium opacity-90">
-									{children}
-								</p>
-							),
+							p: ({ children }) => {
+								const childrenArray = Array.isArray(children) ? children : [children];
+								const text = childrenArray
+									.map((c) => (typeof c === 'string' ? c : ''))
+									.join('');
+								const isFormula =
+									text.toLowerCase().includes('formula:') ||
+									(text.length < 100 &&
+										(text.includes('=') || text.includes('≈')) &&
+										!text.includes('.') && // Avoid sentences with periods
+										text.trim().split(' ').length < 15);
+								return (
+									<p
+										className={cn(
+											'mb-4 leading-relaxed text-sm md:text-base font-medium opacity-90',
+											isFormula && getFormulaClass()
+										)}
+									>
+										{children}
+									</p>
+								);
+							},
 							ul: ({ children }) => <ul className="list-disc pl-6 mb-4 space-y-2">{children}</ul>,
 							ol: ({ children }) => (
 								<ol className="list-decimal pl-6 mb-4 space-y-2">{children}</ol>
 							),
-							li: ({ children }) => (
-								<li className="text-sm md:text-[15px] font-medium opacity-90">{children}</li>
-							),
+							li: ({ children }) => {
+								const childrenArray = Array.isArray(children) ? children : [children];
+								const text = childrenArray
+									.map((c) => (typeof c === 'string' ? c : ''))
+									.join('');
+								const isFormula =
+									text.toLowerCase().includes('formula:') ||
+									(text.length < 100 &&
+										(text.includes('=') || text.includes('≈')) &&
+										!text.includes('.') &&
+										text.trim().split(' ').length < 15);
+								return (
+									<li
+										className={cn(
+											'text-sm md:text-[15px] font-medium opacity-90',
+											isFormula && getFormulaClass()
+										)}
+									>
+										{children}
+									</li>
+								);
+							},
 							blockquote: ({ children }) => (
 								<blockquote className="border-l-4 border-primary/30 pl-6 italic text-muted-foreground/80 my-6 py-1 bg-primary/5 rounded-r-2xl">
 									{children}

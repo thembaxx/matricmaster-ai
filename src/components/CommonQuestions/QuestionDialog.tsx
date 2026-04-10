@@ -75,7 +75,7 @@ export function QuestionDialog({
 						</div>
 
 						<div className="p-5 bg-muted/30 rounded-2xl">
-							<p className="text-lg font-medium leading-relaxed">{question.question}</p>
+							<p className="text-xl font-question leading-relaxed">{question.question}</p>
 						</div>
 
 						<div className="space-y-3">
@@ -131,7 +131,7 @@ export function QuestionDialog({
 										</div>
 										<span
 											className={cn(
-												'flex-1 font-medium',
+												'flex-1 font-question text-sm md:text-base',
 												showAnswer && !isCorrectOption && isSelected && 'text-muted-foreground'
 											)}
 										>
@@ -205,6 +205,7 @@ export function QuestionDialog({
 						<div className="pt-4 border-t">
 							<AIExplanation
 								question={question.question}
+								subject={question.subjectLabel}
 								correctAnswer={question.options.find((o) => o.id === question.correctAnswer)?.text}
 							/>
 						</div>

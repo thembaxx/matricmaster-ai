@@ -352,7 +352,7 @@ export function QuizContent({
 								className="bg-card rounded-[2.5rem] shadow-lg border border-border/50 p-8 sm:p-10"
 							>
 								<div className="mb-6">
-									<h2 className="text-xl font-semibold leading-tight text-foreground">
+									<h2 className="text-xl font-question leading-tight text-foreground">
 										{currentQuestion.question}
 									</h2>
 								</div>
@@ -396,7 +396,7 @@ export function QuizContent({
 								className="bg-card rounded-[2.5rem] shadow-lg border border-border/50 p-8 sm:p-10"
 							>
 								<div className="mb-6">
-									<h2 className="text-xl font-semibold leading-tight text-foreground">
+									<h2 className="text-xl font-question leading-tight text-foreground">
 										{currentQuestion.question}
 									</h2>
 								</div>
@@ -420,7 +420,7 @@ export function QuizContent({
 								className="bg-card rounded-[2.5rem] shadow-lg border border-border/50 p-8 sm:p-10"
 							>
 								<div className="mb-6">
-									<h2 className="text-xl font-semibold leading-tight text-foreground">
+									<h2 className="text-xl font-question leading-tight text-foreground">
 										{currentQuestion.question}
 									</h2>
 								</div>
