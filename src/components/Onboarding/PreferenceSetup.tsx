@@ -1,3 +1,4 @@
+import { FluentEmoji } from '@lobehub/fluent-emoji';
 import { useEffect, useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
@@ -8,17 +9,17 @@ import { Slider } from '@/components/ui/slider';
 
 // Mock data for subjects - in real app this would come from API
 const availableSubjects = [
-	{ id: 'mathematics', name: 'Mathematics', emoji: '🔢' },
+	{ id: 'mathematics', name: 'Mathematics', emoji: '🧮' },
 	{ id: 'physics', name: 'Physics', emoji: '⚛️' },
 	{ id: 'chemistry', name: 'Chemistry', emoji: '🧪' },
 	{ id: 'biology', name: 'Biology', emoji: '🧬' },
 	{ id: 'english', name: 'English', emoji: '📚' },
-	{ id: 'afrikaans', name: 'Afrikaans', emoji: '🇿🇦' },
-	{ id: 'history', name: 'History', emoji: '🏛️' },
+	{ id: 'afrikaans', name: 'Afrikaans', emoji: '🌍' },
+	{ id: 'history', name: 'History', emoji: '📜' },
 	{ id: 'geography', name: 'Geography', emoji: '🌍' },
 	{ id: 'accounting', name: 'Accounting', emoji: '💰' },
 	{ id: 'business', name: 'Business Studies', emoji: '💼' },
-	{ id: 'economics', name: 'Economics', emoji: '📊' },
+	{ id: 'economics', name: 'Economics', emoji: '📈' },
 	{ id: 'it', name: 'Information Technology', emoji: '💻' },
 ];
 
@@ -242,7 +243,7 @@ function SubjectPreferences({ onUpdateResponse, getResponse }: SubjectPreference
 									checked={selectedSubjects.includes(subject.id)}
 									onChange={() => handleSubjectToggle(subject.id)}
 								/>
-								<span className="text-2xl">{subject.emoji}</span>
+								<FluentEmoji type="3d" emoji={subject.emoji} size={32} />
 								<Label className="flex-1 cursor-pointer font-medium">{subject.name}</Label>
 							</div>
 						</CardContent>

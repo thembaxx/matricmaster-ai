@@ -2,6 +2,7 @@
 
 import {
 	ArrowUpRight01Icon as ArrowUpRight,
+	BookOpen01Icon,
 	Cancel01Icon,
 	Analytics01Icon as ChartBar,
 	Refresh01Icon,
