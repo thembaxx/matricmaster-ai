@@ -56,6 +56,7 @@ export interface SmartSchedulerState {
 	setSuggestions: (suggestions: AISuggestion[]) => void;
 	acceptSuggestion: (id: string) => void;
 	dismissSuggestion: (id: string) => void;
+	resolveConflict: (blockId: string, resolution: 'remove' | 'reschedule' | 'merge') => void;
 	setExams: (exams: ExamCountdown[]) => void;
 	setLoading: (loading: boolean) => void;
 	setGenerating: (generating: boolean) => void;

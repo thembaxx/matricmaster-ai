@@ -5,6 +5,7 @@ import { type DbType, dbManager } from '@/lib/db';
 import {
 	calendarEvents,
 	flashcardReviews,
+	parentNotificationPreferences,
 	quizResults,
 	studySessions,
 	subjects,
@@ -45,6 +46,7 @@ export async function GET(request: NextRequest) {
 			recentQuizzes,
 			flashcardReviewsData,
 			calendarData,
+			savedPreferences,
 		] = await Promise.all([
 			// Progress by subject
 			db
@@ -123,6 +125,13 @@ export async function GET(request: NextRequest) {
 				)
 				.orderBy(calendarEvents.startTime)
 				.limit(5),
+
+			// Parent notification preferences
+			db
+				.select()
+				.from(parentNotificationPreferences)
+				.where(eq(parentNotificationPreferences.parentUserId, userId))
+				.limit(1),
 		]);
 
 		const totalHoursThisWeek =
@@ -299,6 +308,7 @@ export async function GET(request: NextRequest) {
 			alerts: {
 				alerts,
 			},
+			preferences: savedPreferences[0] || null,
 		});
 	} catch (error) {
 		console.error('Error fetching parent dashboard data:', error);
@@ -316,14 +326,49 @@ export async function PATCH(request: NextRequest) {
 			return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 		}
 
-		const body = await request.json();
-		const { alertId, action, settings } = body;
+		const userId = session.user.id;
+		const db = await getDb();
 
-		if (action === 'dismiss' && alertId) {
-			return NextResponse.json({ success: true, dismissed: alertId });
+		const body = await request.json();
+		const { action, settings } = body;
+
+		if (action === 'dismiss') {
+			return NextResponse.json({ success: true, dismissed: body.alertId });
 		}
 
-		if (settings) {
+		if (action === 'savePreferences' && settings) {
+			const existing = await db
+				.select()
+				.from(parentNotificationPreferences)
+				.where(eq(parentNotificationPreferences.parentUserId, userId))
+				.limit(1);
+
+			if (existing.length > 0) {
+				await db
+					.update(parentNotificationPreferences)
+					.set({
+						emailDigest: settings.emailDigest,
+						digestFrequency: settings.digestFrequency,
+						alertQuizThreshold: settings.alertQuizThreshold,
+						alertInactivityDays: settings.alertInactivityDays,
+						emailNotifications: settings.emailNotifications,
+						pushNotifications: settings.pushNotifications,
+						updatedAt: new Date(),
+					})
+					.where(eq(parentNotificationPreferences.id, existing[0].id));
+			} else {
+				await db.insert(parentNotificationPreferences).values({
+					parentUserId: userId,
+					childUserId: userId,
+					emailDigest: settings.emailDigest,
+					digestFrequency: settings.digestFrequency,
+					alertQuizThreshold: settings.alertQuizThreshold,
+					alertInactivityDays: settings.alertInactivityDays,
+					emailNotifications: settings.emailNotifications,
+					pushNotifications: settings.pushNotifications,
+				});
+			}
+
 			return NextResponse.json({ success: true, settings });
 		}
 

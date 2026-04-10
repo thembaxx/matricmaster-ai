@@ -9,7 +9,7 @@ import {
 import { HugeiconsIcon } from '@hugeicons/react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -29,12 +29,13 @@ export default function ParentSettingsPage() {
 	const router = useRouter();
 	const queryClient = useQueryClient();
 
-	useQuery({
+	const { data: prefs } = useQuery({
 		queryKey: ['parent-settings'],
 		queryFn: async () => {
 			const res = await fetch('/api/parent-dashboard');
 			if (!res.ok) return null;
-			return res.json();
+			const data = await res.json();
+			return data.preferences;
 		},
 		staleTime: 5 * 60 * 1000,
 	});
@@ -48,12 +49,25 @@ export default function ParentSettingsPage() {
 		pushNotifications: true,
 	});
 
+	useEffect(() => {
+		if (prefs) {
+			setSettings({
+				emailDigest: prefs.emailDigest ?? true,
+				digestFrequency: prefs.digestFrequency ?? 'weekly',
+				alertQuizThreshold: prefs.alertQuizThreshold ?? 60,
+				alertInactivityDays: prefs.alertInactivityDays ?? 3,
+				emailNotifications: prefs.emailNotifications ?? true,
+				pushNotifications: prefs.pushNotifications ?? true,
+			});
+		}
+	}, [prefs]);
+
 	const saveMutation = useMutation({
 		mutationFn: async (newSettings: typeof settings) => {
 			const res = await fetch('/api/parent-dashboard', {
 				method: 'PATCH',
 				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ settings: newSettings }),
+				body: JSON.stringify({ action: 'savePreferences', settings: newSettings }),
 			});
 			if (!res.ok) throw new Error('Failed to save');
 			return res.json();

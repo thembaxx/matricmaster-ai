@@ -7,6 +7,7 @@ import dynamic from 'next/dynamic';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { CalendarView } from '@/components/SmartScheduler/CalendarView';
+import { ConflictResolver } from '@/components/SmartScheduler/ConflictResolver';
 import { ExamCountdown } from '@/components/SmartScheduler/ExamCountdown';
 import { SmartSchedulerProvider } from '@/components/SmartScheduler/ScheduleProvider';
 import { Button } from '@/components/ui/button';
@@ -115,6 +116,8 @@ function SmartSchedulerContent() {
 			<div className="mb-6">
 				<ExamCountdown />
 			</div>
+
+			<ConflictResolver />
 
 			<CalendarView />
 		</div>
