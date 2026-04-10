@@ -1,5 +1,6 @@
 'use client';
 
+import { FluentEmoji } from '@lobehub/fluent-emoji';
 import { Button } from '@/components/ui/button';
 import { SUBJECTS } from '@/content';
 import { cn } from '@/lib/utils';
@@ -33,13 +34,13 @@ export function AiTutorSubjects({ selectedSubject, setSelectedSubject }: AiTutor
 							size="sm"
 							onClick={() => setSelectedSubject(selectedSubject === subject.id ? null : subject.id)}
 							className={cn(
-								'gap-1.5 md:gap-2 rounded-xl md:rounded-2xl border-border/50 transition-all duration-300 text-xs md:text-sm',
+								'gap-1.5 md:gap-2 rounded-xl md:rounded-2xl border-border/50 transition-all duration-300 text-xs md:text-sm h-10',
 								selectedSubject === subject.id
-									? 'shadow-lg scale-105'
-									: 'bg-surface-elevated/30 hover:bg-surface-elevated'
+									? 'shadow-lg scale-105 bg-primary text-primary-foreground'
+									: 'bg-surface-elevated/30 hover:bg-surface-elevated text-foreground'
 							)}
 						>
-							<span className="text-sm">{subject.icon}</span>
+							<FluentEmoji type="3d" emoji={subject.icon} size={20} className="w-5 h-5" />
 							<span className="font-bold hidden sm:inline">{subject.name}</span>
 						</Button>
 					))}

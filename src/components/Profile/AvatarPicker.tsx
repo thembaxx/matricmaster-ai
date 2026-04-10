@@ -1,20 +1,15 @@
 'use client';
 
-import {
-	AiBrain01Icon,
-	BookOpen01Icon,
-	CalculatorIcon,
-	Chemistry01Icon,
-	Tick01Icon,
-} from '@hugeicons/core-free-icons';
+import { Tick01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
+import { FluentEmoji } from '@lobehub/fluent-emoji';
 import { cn } from '@/lib/utils';
 
 const AVATARS = [
-	{ id: 'math-whiz', icon: CalculatorIcon, color: 'bg-subject-math', label: 'Math Whiz' },
-	{ id: 'science-pro', icon: Chemistry01Icon, color: 'bg-subject-physics', label: 'Science Pro' },
-	{ id: 'book-worm', icon: BookOpen01Icon, color: 'bg-subject-life', label: 'Book Worm' },
-	{ id: 'ai-scholar', icon: AiBrain01Icon, color: 'bg-primary', label: 'AI Scholar' },
+	{ id: 'math-whiz', emoji: '🧮', color: 'bg-subject-math', label: 'Math Whiz' },
+	{ id: 'science-pro', emoji: '⚛️', color: 'bg-subject-physics', label: 'Science Pro' },
+	{ id: 'book-worm', emoji: '📚', color: 'bg-subject-life', label: 'Book Worm' },
+	{ id: 'ai-scholar', emoji: '🎓', color: 'bg-primary', label: 'AI Scholar' },
 ];
 
 interface AvatarPickerProps {
@@ -39,11 +34,11 @@ export function AvatarPicker({ selectedId, onSelect }: AvatarPickerProps) {
 				>
 					<div
 						className={cn(
-							'w-16 h-16 rounded-2xl flex items-center justify-center shadow-lg transition-transform group-hover:rotate-6',
+							'w-16 h-16 rounded-2xl flex items-center justify-center shadow-lg transition-transform group-hover:rotate-6 overflow-hidden',
 							avatar.color
 						)}
 					>
-						<HugeiconsIcon icon={avatar.icon} className="w-8 h-8 text-white" />
+						<FluentEmoji type="3d" emoji={avatar.emoji} size={40} />
 					</div>
 					{selectedId === avatar.id && (
 						<div className="absolute -top-2 -right-2 w-6 h-6 bg-success rounded-full flex items-center justify-center shadow-md">

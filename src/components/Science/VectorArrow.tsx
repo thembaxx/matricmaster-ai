@@ -36,17 +36,34 @@ export function VectorArrow({
 
 	return (
 		<g>
+			<defs>
+				<linearGradient
+					id={`grad-${color.replace('#', '')}`}
+					x1={startX}
+					y1={startY}
+					x2={endX}
+					y2={endY}
+					gradientUnits="userSpaceOnUse"
+				>
+					<stop offset="0%" stopColor={color} stopOpacity={0.6} />
+					<stop offset="100%" stopColor={color} />
+				</linearGradient>
+			</defs>
 			<line
 				x1={startX}
 				y1={startY}
 				x2={endX}
 				y2={endY}
-				stroke={color}
+				stroke={`url(#grad-${color.replace('#', '')})`}
 				strokeWidth={strokeWidth}
 				strokeLinecap="round"
 			/>
 			{showHead && length > 5 && (
-				<polygon points={`${endX},${endY} ${head1X},${head1Y} ${head2X},${head2Y}`} fill={color} />
+				<polygon
+					points={`${endX},${endY} ${head1X},${head1Y} ${head2X},${head2Y}`}
+					fill={color}
+					filter="url(#glow)"
+				/>
 			)}
 			{label && (
 				<text
