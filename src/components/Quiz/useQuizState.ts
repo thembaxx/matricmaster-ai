@@ -11,6 +11,7 @@ import { useGeminiQuotaModal } from '@/contexts/GeminiQuotaModalContext';
 import { useQuizCompletion } from '@/hooks/use-quiz-completion';
 import { useAiContext } from '@/hooks/useAiContext';
 import { useEdgeCaseDetection } from '@/hooks/useEdgeCaseDetection';
+import { useKnowledgeGapSynergy } from '@/hooks/useKnowledgeGapSynergy';
 import { useNetworkStatus } from '@/hooks/useNetworkStatus';
 import { useWrongAnswerPipeline } from '@/hooks/useWrongAnswerPipeline';
 import { isQuotaError } from '@/lib/ai/quota-error';
@@ -41,6 +42,8 @@ export function useQuizState({ quizId }: UseQuizStateProps) {
 	const { completeQuiz, isCompleting } = useQuizCompletion();
 	const { setContext, clearContext } = useAiContext();
 	const { processWrongAnswer, autoGenerationEnabled } = useWrongAnswerPipeline();
+	const { analyzeQuizResults } = useKnowledgeGapSynergy();
+
 	const quiz = QUIZ_DATA[quizId] || QUIZ_DATA['math-p1-2023-nov'];
 	const currentQuestion = quiz.questions[state.currentQuestionIndex];
 
@@ -280,6 +283,24 @@ export function useQuizState({ quizId }: UseQuizStateProps) {
 					}
 				}
 
+				// Analyze Knowledge Gaps for Adaptive Remediation
+				try {
+					await analyzeQuizResults(
+						quiz.questions.map((q, i) => ({
+							id: q.id,
+							topic: q.topic,
+							subject: quiz.subject,
+							isCorrect:
+								i === state.currentQuestionIndex
+									? (state.isCorrect ?? false)
+									: (state.topicStats.get(q.topic || 'General')?.correct ?? 0) > 0, // This is a simplification, state should ideally track all per-question
+						})),
+						{ correct: finalScore, total: quiz.questions.length }
+					);
+				} catch (error) {
+					console.debug('Failed to analyze knowledge gaps:', error);
+				}
+
 				dispatch({ type: 'SET_QUIZ_FINISHED', payload: { recommendations } });
 			}
 			return;
@@ -487,6 +508,7 @@ export function useQuizState({ quizId }: UseQuizStateProps) {
 		recordQuestionAnswer,
 		state.interactiveAnswer,
 		state.confidenceLevel,
+		analyzeQuizResults,
 	]);
 
 	// Dismiss study plan update notification

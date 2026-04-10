@@ -251,16 +251,13 @@ export const useStudyBuddyStore = create<StudyBuddyState>((set, _get) => ({
 
 	loadWeakAreaMatches: async (userId: string) => {
 		try {
-			// Fetch discoverable buddies with their mastery data from the API
 			const matchesRes = await fetch(`/api/buddies/matches?userId=${userId}`);
 			if (!matchesRes.ok) return;
 
 			const { matches, userWeakAreas } = await matchesRes.json();
 
-			// Store user's weak areas
 			set({ myWeakAreas: userWeakAreas || [] });
 
-			// Map API matches to the expected format
 			const state = _get();
 			const buddyMatches: WeakAreaMatch[] = matches
 				.map(
@@ -272,31 +269,20 @@ export const useStudyBuddyStore = create<StudyBuddyState>((set, _get) => ({
 						studyGoals: string;
 						subjects: string[];
 						strongAreas: { topic: string; subjectId: number; masteryLevel: number }[];
+						matchScore: number;
+						matchBreakdown: {
+							subjectMatch: number;
+							topicHelpYou: number;
+							youCanHelpTopic: number;
+							goalsAlignment: number;
+							personalityCompat: number;
+						};
+						weakAreasYouCanHelp: string[];
+						weakAreasTheyCanHelp: string[];
 					}) => {
-						// Find the buddy in discoverableBuddies
 						const buddy = state.discoverableBuddies.find((b) => b.id === match.userId);
 						if (!buddy) return null;
 
-						// Calculate weak areas the buddy can help with
-						const weakAreasTheyCanHelp = match.strongAreas
-							.filter((strong) =>
-								userWeakAreas?.some(
-									(weak: { topic: string; subjectId: number }) => weak.topic === strong.topic
-								)
-							)
-							.map((s) => s.topic);
-
-						// Calculate weak areas user can help buddy with
-						const weakAreasYouCanHelp =
-							userWeakAreas
-								?.filter((weak: { topic: string }) =>
-									match.strongAreas.some((strong) => strong.topic === weak.topic)
-								)
-								.map((w: { topic: string }) => w.topic) ?? [];
-
-						const matchScore = (weakAreasYouCanHelp.length + weakAreasTheyCanHelp.length) * 10;
-
-						// Update buddy with strong areas for display
 						buddy.strongAreas = match.strongAreas.map((a) => ({
 							topic: a.topic,
 							subject: '',
@@ -305,9 +291,9 @@ export const useStudyBuddyStore = create<StudyBuddyState>((set, _get) => ({
 
 						return {
 							buddy,
-							matchScore,
-							weakAreasYouCanHelp,
-							weakAreasTheyCanHelp,
+							matchScore: match.matchScore,
+							weakAreasYouCanHelp: match.weakAreasYouCanHelp || [],
+							weakAreasTheyCanHelp: match.weakAreasTheyCanHelp || [],
 						};
 					}
 				)

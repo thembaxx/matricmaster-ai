@@ -5,6 +5,7 @@ import { HugeiconsIcon } from '@hugeicons/react';
 import { Icon } from '@iconify/react';
 import { AnimatePresence, m } from 'framer-motion';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { STAGGER_CONTAINER, STAGGER_ITEM } from '@/lib/animation-presets';
@@ -194,5 +195,20 @@ export function PastPapersGrid({ papers, isLoading }: PastPapersGridProps) {
 				<PastPapersEmptyState />
 			)}
 		</AnimatePresence>
+	);
+}
+
+interface PastPapersBrowserProps {
+	searchQuery?: string;
+}
+
+export function PastPapersBrowser({ searchQuery: _searchQuery = '' }: PastPapersBrowserProps) {
+	const [papers] = useState<PastPaper[]>([]);
+	const [isLoading] = useState(false);
+
+	return (
+		<div className="space-y-6">
+			<PastPapersGrid papers={papers} isLoading={isLoading} />
+		</div>
 	);
 }

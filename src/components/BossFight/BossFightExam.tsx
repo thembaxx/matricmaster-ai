@@ -1,10 +1,11 @@
 'use client';
 
 import { AnimatePresence, motion } from 'framer-motion';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import type { QuizQuestion } from '@/content/questions/quiz/types';
+import { useServerTimeSync } from '@/hooks/useServerTimeSync';
 import { BossFightHUD } from './BossFightHUD';
 import { MasteryBadge } from './MasteryBadge';
 
@@ -98,6 +99,16 @@ export function BossFightExam({ subject, onComplete }: BossFightExamProps) {
 
 	const currentQuestion = questions[currentQuestionIdx];
 
+	const { getRemainingTime } = useServerTimeSync();
+
+	const questionEndTimeRef = useRef<number | null>(null);
+
+	useEffect(() => {
+		if (!showFeedback && !isDefeated && currentQuestion) {
+			questionEndTimeRef.current = Date.now() + SECONDS_PER_QUESTION * 1000;
+		}
+	}, [showFeedback, isDefeated, currentQuestion]);
+
 	const handleTimeUp = useCallback(() => {
 		if (showFeedback || isDefeated) return;
 		setLives((prev) => {
@@ -112,19 +123,26 @@ export function BossFightExam({ subject, onComplete }: BossFightExamProps) {
 	useEffect(() => {
 		if (showFeedback || isDefeated || !currentQuestion) return;
 
-		const interval = setInterval(() => {
-			setTimer((prev) => {
-				if (prev <= 1) {
-					clearInterval(interval);
-					handleTimeUp();
-					return 0;
-				}
-				return prev - 1;
-			});
-		}, 1000);
+		const tick = () => {
+			if (questionEndTimeRef.current === null) return;
+
+			const remaining = getRemainingTime(questionEndTimeRef.current);
+			const newTimer = Math.ceil(remaining / 1000);
+
+			if (newTimer <= 0) {
+				questionEndTimeRef.current = null;
+				handleTimeUp();
+				setTimer(0);
+			} else if (newTimer !== timer) {
+				setTimer(newTimer);
+			}
+		};
+
+		const interval = setInterval(tick, 100);
+		tick();
 
 		return () => clearInterval(interval);
-	}, [showFeedback, isDefeated, handleTimeUp, currentQuestion]);
+	}, [showFeedback, isDefeated, handleTimeUp, currentQuestion, getRemainingTime, timer]);
 
 	const handleAnswer = (answerId: string) => {
 		if (showFeedback || isDefeated) return;
@@ -163,6 +181,7 @@ export function BossFightExam({ subject, onComplete }: BossFightExamProps) {
 		setSelectedAnswer(null);
 		setShowFeedback(false);
 		setTimer(SECONDS_PER_QUESTION);
+		questionEndTimeRef.current = Date.now() + SECONDS_PER_QUESTION * 1000;
 	};
 
 	if (bossHp <= 0 && !isDefeated) {

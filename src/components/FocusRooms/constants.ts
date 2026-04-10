@@ -4,6 +4,7 @@ export interface FocusSession {
 		user?: string;
 		status?: string;
 		focusMinutes?: number;
+		sessionId?: string;
 	};
 }
 

@@ -4,7 +4,7 @@ import { AddIcon, ArrowLeft01Icon, UserGroupIcon } from '@hugeicons/core-free-ic
 import { HugeiconsIcon } from '@hugeicons/react';
 import { usePresence, usePresenceListener } from 'ably/react';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { BuddyFocusStatus } from '@/components/FocusRooms/BuddyFocusStatus';
 import { type FocusSession, MOCK_LEADERBOARD } from '@/components/FocusRooms/constants';
 import { FocusLeaderboard } from '@/components/FocusRooms/FocusLeaderboard';
@@ -48,23 +48,35 @@ function FocusRoomsContent() {
 		setFocusMinutes,
 		tick,
 	} = useFocusRoomStore();
-	const { setActiveSession, activeSession, addParticipant } = useCollaborativeFocusStore();
+	const { activeSession, addParticipant } = useCollaborativeFocusStore();
 	const [leaderboard] = useState(MOCK_LEADERBOARD);
 	const [showInviteModal, setShowInviteModal] = useState(false);
 
-	const { updateStatus } = usePresence<{ user: string; status: string; focusMinutes: number }>(
-		'focus-room',
-		{
-			user: session?.user?.name || 'Anonymous',
-			status: isActive ? 'Studying' : 'Resting',
-			focusMinutes,
+	const presenceChannel = useMemo(() => {
+		if (isGroupMode && activeSession?.id) {
+			return `focus:session:${activeSession.id}`;
 		}
-	);
-	const { presenceData } = usePresenceListener<{
+		return 'focus:global';
+	}, [isGroupMode, activeSession?.id]);
+
+	const presenceData = usePresenceListener<{
 		user: string;
 		status: string;
 		focusMinutes: number;
-	}>('focus-room');
+		sessionId?: string;
+	}>(presenceChannel);
+
+	const updateStatus = usePresence<{
+		user: string;
+		status: string;
+		focusMinutes: number;
+		sessionId?: string;
+	}>(presenceChannel, {
+		user: session?.user?.name || 'Anonymous',
+		status: isActive ? 'Studying' : 'Resting',
+		focusMinutes,
+		sessionId: activeSession?.id,
+	});
 
 	useEffect(() => {
 		let interval: NodeJS.Timeout | null = null;
@@ -85,9 +97,7 @@ function FocusRoomsContent() {
 						minutes: 25,
 						isGroupMode,
 					}),
-				}).catch(() => {
-					// Silently fail
-				});
+				}).catch(() => {});
 			}
 		}
 		return () => {
@@ -96,43 +106,53 @@ function FocusRoomsContent() {
 	}, [isActive, timeLeft, tick, setFocusMinutes, setIsActive, focusMinutes, isGroupMode, session]);
 
 	useEffect(() => {
-		updateStatus({
+		(updateStatus as unknown as (data: unknown) => void)({
 			user: session?.user?.name || 'Anonymous',
-			status: isActive ? 'Studying' : 'Resting',
+			status: isActive ? 'studying' : 'resting',
 			focusMinutes,
+			sessionId: activeSession?.id,
+			mode: isGroupMode ? 'group' : 'solo',
 		});
-	}, [isActive, session, updateStatus, focusMinutes]);
+	}, [isActive, session, focusMinutes, activeSession?.id, updateStatus, isGroupMode]);
 
-	const formatTime = (seconds: number) => {
+	const formatTime = useCallback((seconds: number) => {
 		const mins = Math.floor(seconds / 60);
 		const secs = seconds % 60;
 		return `${mins}:${secs.toString().padStart(2, '0')}`;
-	};
+	}, []);
 
-	const activeMembers = Array.isArray(presenceData)
-		? presenceData.filter((m: FocusSession) => m.data?.status === 'Studying')
-		: [];
+	const activeMembers = useMemo(() => {
+		if (!Array.isArray(presenceData)) return [];
+		return presenceData.filter(
+			(m: FocusSession) =>
+				m.data?.status === 'Studying' && (!isGroupMode || m.data?.sessionId === activeSession?.id)
+		);
+	}, [presenceData, isGroupMode, activeSession?.id]);
 
-	const handleInviteBuddy = (buddyId: string, _buddyName: string) => {
-		if (!activeSession) {
-			setActiveSession({
-				id: `session-${Date.now()}`,
-				hostId: session?.user?.id || '',
-				participantIds: [buddyId],
-				startTime: Date.now(),
-				focusMinutes: 0,
-				isActive: false,
-			});
-		} else {
-			addParticipant(buddyId);
-		}
-		setIsGroupMode(true);
-	};
+	const handleInviteBuddy = useCallback(
+		(buddyId: string, _buddyName: string) => {
+			const { setActiveSession } = useCollaborativeFocusStore.getState();
+			if (!activeSession) {
+				setActiveSession({
+					id: `session-${Date.now()}`,
+					hostId: session?.user?.id || '',
+					participantIds: [buddyId],
+					startTime: Date.now(),
+					focusMinutes: 0,
+					isActive: false,
+				});
+			} else {
+				addParticipant(buddyId);
+			}
+			setIsGroupMode(true);
+		},
+		[activeSession, session, addParticipant, setIsGroupMode]
+	);
 
-	const handleJoinBuddySession = (_buddyId: string) => {
+	const handleJoinBuddySession = useCallback(() => {
 		setIsGroupMode(true);
 		setIsActive(true);
-	};
+	}, [setIsGroupMode, setIsActive]);
 
 	return (
 		<div className="min-h-screen bg-background p-4 sm:p-8 pb-32">
@@ -147,11 +167,12 @@ function FocusRoomsContent() {
 						icon={ArrowLeft01Icon}
 						className="w-5 h-5 transition-transform group-hover:-translate-x-1"
 					/>
-					<span className="font-black  tracking-widest text-[10px]">Leave Room</span>
+					<span className="font-black tracking-widest text-[10px]">leave room</span>
 				</Button>
 
 				<div className="flex items-center justify-between">
-					<h1 className="text-2xl font-black tracking-tight">Focus Rooms</h1>
+					<h1 className="text-2xl font-black tracking-tight">focus rooms</h1>
+
 					<div className="flex gap-2">
 						<Button
 							variant={isGroupMode ? 'default' : 'outline'}
@@ -160,7 +181,7 @@ function FocusRoomsContent() {
 							className={cn('rounded-full', isGroupMode && 'bg-primary')}
 						>
 							<HugeiconsIcon icon={UserGroupIcon} className="w-4 h-4 mr-2" />
-							Group Sprint
+							group sprint
 						</Button>
 						<Button
 							variant="outline"
@@ -169,7 +190,7 @@ function FocusRoomsContent() {
 							className="rounded-full"
 						>
 							<HugeiconsIcon icon={AddIcon} className="w-4 h-4 mr-2" />
-							Invite Buddy
+							invite buddy
 						</Button>
 						<Button
 							variant="outline"
@@ -177,7 +198,7 @@ function FocusRoomsContent() {
 							onClick={() => router.push('/video-call')}
 							className="rounded-full"
 						>
-							Join Video Call
+							join video call
 						</Button>
 						<Button
 							variant="outline"
@@ -185,14 +206,14 @@ function FocusRoomsContent() {
 							onClick={() => router.push('/exam-timer')}
 							className="rounded-full border-dashed hover:bg-tiimo-orange/10 hover:text-tiimo-orange"
 						>
-							Start Exam Timer
+							start exam timer
 						</Button>
 					</div>
 				</div>
 
 				<div className="bg-primary/5 border border-primary/20 rounded-lg p-4">
 					<p className="text-sm text-center">
-						<span className="font-semibold">XP Multiplier:</span> {isGroupMode ? '1.5x' : '1x'} for
+						<span className="font-semibold">xp multiplier:</span> {isGroupMode ? '1.5x' : '1x'} for
 						focus sessions
 					</p>
 				</div>
@@ -209,7 +230,10 @@ function FocusRoomsContent() {
 							formatTime={formatTime}
 						/>
 
-						<FocusMembersGrid isGroupMode={isGroupMode} presenceData={presenceData || []} />
+						<FocusMembersGrid
+							isGroupMode={isGroupMode}
+							presenceData={presenceData as unknown as FocusSession[]}
+						/>
 					</div>
 
 					<div className="space-y-6">

@@ -15,7 +15,7 @@ interface UseSidebarMenuReturn {
 
 export function useSidebarMenu(): UseSidebarMenuReturn {
 	const [searchQuery, setSearchQuery] = useState('');
-	const [openSection, setOpenSection] = useState<string | null>('learning');
+	const [openSection, setOpenSection] = useState<string | null>('learning library');
 
 	const debouncedSetSearchQuery = useDebouncedCallback((query: string) => {
 		setSearchQuery(query);

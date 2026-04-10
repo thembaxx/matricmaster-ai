@@ -16,28 +16,38 @@ import { getGradeBadge, getGradeColor } from './constants';
 import type { GradingResult } from './types';
 
 interface GradingFeedbackProps {
-	result: GradingResult | null;
+	result?: GradingResult | null;
+	feedback?: string | null;
 	onReset: () => void;
 }
 
-export function GradingFeedback({ result, onReset }: GradingFeedbackProps) {
+export function GradingFeedback({ result, feedback, onReset }: GradingFeedbackProps) {
 	return (
 		<Card>
 			<CardHeader>
 				<CardTitle>Feedback</CardTitle>
 				<CardDescription>
-					{result ? 'Your detailed grading results' : 'Your results will appear here'}
+					{result || feedback ? 'Your detailed grading results' : 'Your results will appear here'}
 				</CardDescription>
 			</CardHeader>
 			<CardContent>
-				{!result ? (
+				{!result && !feedback ? (
 					<div className="text-center py-12 text-muted-foreground">
 						<div className="inline-flex items-center justify-center p-4 rounded-full bg-muted mb-4">
 							<HugeiconsIcon icon={Idea01Icon} className="w-10 h-10 opacity-50" />
 						</div>
 						<p className="font-medium">Submit your essay to receive detailed feedback</p>
 					</div>
-				) : (
+				) : feedback ? (
+					<div className="space-y-6">
+						<div className="prose prose-sm max-w-none">
+							<p className="whitespace-pre-wrap">{feedback}</p>
+						</div>
+						<Button onClick={onReset} className="w-full">
+							Grade Another Essay
+						</Button>
+					</div>
+				) : result ? (
 					<div className="space-y-6">
 						<div className="text-center">
 							<div className="text-5xl font-bold mb-2">
@@ -143,7 +153,7 @@ export function GradingFeedback({ result, onReset }: GradingFeedbackProps) {
 							<HugeiconsIcon icon={ArrowRight01Icon} className="w-4 h-4 ml-2" />
 						</Button>
 					</div>
-				)}
+				) : null}
 			</CardContent>
 		</Card>
 	);
