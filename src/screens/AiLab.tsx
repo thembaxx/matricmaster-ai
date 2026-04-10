@@ -14,17 +14,44 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
-const AiTutorView = dynamic(() => import('@/components/AiTutor/AiTutorChat'), {
-	loading: () => <div className="h-[60vh] animate-pulse bg-muted/10 rounded-3xl" />,
-});
+const AiTutorView = dynamic(
+	async () => {
+		const { useAiTutor } = await import('@/hooks/useAiTutor');
+		function AiTutorWrapper() {
+			useAiTutor();
+			return (
+				<div className="p-4">
+					<div className="text-center text-muted-foreground py-20">ai tutor chat interface</div>
+				</div>
+			);
+		}
+		return { default: AiTutorWrapper };
+	},
+	{
+		ssr: false,
+		loading: () => <div className="h-[60vh] animate-pulse bg-muted/10 rounded-3xl" />,
+	}
+);
 
-const EssayGraderView = dynamic(() => import('@/components/EssayGrader/EssayGraderContent'), {
-	loading: () => <div className="h-[60vh] animate-pulse bg-muted/10 rounded-3xl" />,
-});
+const EssayGraderView = dynamic(
+	() =>
+		import('@/components/EssayGrader/EssayGraderContent').then((mod) => ({
+			default: mod.EssayGraderContent,
+		})),
+	{
+		ssr: false,
+		loading: () => <div className="h-[60vh] animate-pulse bg-muted/10 rounded-3xl" />,
+	}
+);
 
-const VoiceTutorView = dynamic(() => import('@/components/VoiceTutor/VoiceOverlay'), {
-	loading: () => <div className="h-[60vh] animate-pulse bg-muted/10 rounded-3xl" />,
-});
+const VoiceTutorView = dynamic(
+	() =>
+		import('@/components/VoiceTutor/VoiceOverlay').then((mod) => ({ default: mod.VoiceOverlay })),
+	{
+		ssr: false,
+		loading: () => <div className="h-[60vh] animate-pulse bg-muted/10 rounded-3xl" />,
+	}
+);
 
 type AiTool = 'tutor' | 'grader' | 'voice';
 

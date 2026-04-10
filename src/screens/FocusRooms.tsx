@@ -106,13 +106,13 @@ function FocusRoomsContent() {
 	}, [isActive, timeLeft, tick, setFocusMinutes, setIsActive, focusMinutes, isGroupMode, session]);
 
 	useEffect(() => {
-		updateStatus({
+		(updateStatus as unknown as (data: unknown) => void)({
 			user: session?.user?.name || 'Anonymous',
 			status: isActive ? 'Studying' : 'Resting',
 			focusMinutes,
 			sessionId: activeSession?.id,
 		});
-	}, [isActive, session, updateStatus, focusMinutes, activeSession?.id]);
+	}, [isActive, session, focusMinutes, activeSession?.id]);
 
 	const formatTime = useCallback((seconds: number) => {
 		const mins = Math.floor(seconds / 60);
@@ -228,7 +228,10 @@ function FocusRoomsContent() {
 							formatTime={formatTime}
 						/>
 
-						<FocusMembersGrid isGroupMode={isGroupMode} presenceData={presenceData || []} />
+						<FocusMembersGrid
+							isGroupMode={isGroupMode}
+							presenceData={presenceData as unknown as FocusSession[]}
+						/>
 					</div>
 
 					<div className="space-y-6">

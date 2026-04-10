@@ -16,17 +16,29 @@ import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
-const PastPapersBrowser = dynamic(() => import('@/components/PastPapers/PastPapersList'), {
-	loading: () => <div className="h-96 animate-pulse bg-muted/10 rounded-3xl" />,
-});
+const PastPapersBrowser = dynamic(
+	() => import('@/components/PastPapers/PastPapersList').then((mod) => mod.PastPapersBrowser),
+	{
+		ssr: false,
+		loading: () => <div className="h-96 animate-pulse bg-muted/10 rounded-3xl" />,
+	}
+);
 
-const QuizPreview = dynamic(() => import('@/components/Quiz/QuizList'), {
-	loading: () => <div className="h-96 animate-pulse bg-muted/10 rounded-3xl" />,
-});
+const QuizPreview = dynamic(
+	() => import('@/components/Quiz/QuizList').then((mod) => mod.default || mod),
+	{
+		ssr: false,
+		loading: () => <div className="h-96 animate-pulse bg-muted/10 rounded-3xl" />,
+	}
+);
 
-const FlashcardsPreview = dynamic(() => import('@/components/Flashcards/FlashcardDeckList'), {
-	loading: () => <div className="h-96 animate-pulse bg-muted/10 rounded-3xl" />,
-});
+const FlashcardsPreview = dynamic(
+	() => import('@/components/Flashcards/FlashcardDeckList').then((mod) => mod.default || mod),
+	{
+		ssr: false,
+		loading: () => <div className="h-96 animate-pulse bg-muted/10 rounded-3xl" />,
+	}
+);
 
 type PracticeView = 'papers' | 'quizzes' | 'flashcards';
 

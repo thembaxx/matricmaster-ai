@@ -47,7 +47,7 @@ export function GradingFeedback({ result, feedback, onReset }: GradingFeedbackPr
 							Grade Another Essay
 						</Button>
 					</div>
-				) : (
+				) : result ? (
 					<div className="space-y-6">
 						<div className="text-center">
 							<div className="text-5xl font-bold mb-2">
@@ -153,7 +153,7 @@ export function GradingFeedback({ result, feedback, onReset }: GradingFeedbackPr
 							<HugeiconsIcon icon={ArrowRight01Icon} className="w-4 h-4 ml-2" />
 						</Button>
 					</div>
-				)}
+				) : null}
 			</CardContent>
 		</Card>
 	);

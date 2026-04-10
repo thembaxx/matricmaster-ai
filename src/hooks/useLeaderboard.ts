@@ -45,7 +45,7 @@ export function useLeaderboard() {
 		[queryClient, activeTab]
 	);
 
-	const { channel } = useChannel(channelName, handleRealtimeUpdate);
+	const { channel } = useChannel(channelName);
 
 	useEffect(() => {
 		if (!channel) return;
@@ -54,10 +54,10 @@ export function useLeaderboard() {
 			handleRealtimeUpdate(msg.data);
 		};
 
-		channel.subscribe('update', handleMessage);
+		channel.subscribe('update', handleMessage as (msg: unknown) => void);
 
 		return () => {
-			channel.unsubscribe('update', handleMessage);
+			channel.unsubscribe('update', handleMessage as (msg: unknown) => void);
 		};
 	}, [channel, handleRealtimeUpdate]);
 
