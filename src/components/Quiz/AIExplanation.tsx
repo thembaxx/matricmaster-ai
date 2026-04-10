@@ -3,8 +3,8 @@
 import { Loading03Icon, SparklesIcon, VolumeHighIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { useState } from 'react';
-import { ResponsiveAudioPlayer } from '@/components/AudioPlayer';
 import { MarkdownRenderer } from '@/components/AI/MarkdownRenderer';
+import { ResponsiveAudioPlayer } from '@/components/AudioPlayer';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';

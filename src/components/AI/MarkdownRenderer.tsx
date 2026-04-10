@@ -187,9 +187,7 @@ export function MarkdownRenderer({ content, className, subject }: MarkdownRender
 							),
 							p: ({ children }) => {
 								const childrenArray = Array.isArray(children) ? children : [children];
-								const text = childrenArray
-									.map((c) => (typeof c === 'string' ? c : ''))
-									.join('');
+								const text = childrenArray.map((c) => (typeof c === 'string' ? c : '')).join('');
 								const isFormula =
 									text.toLowerCase().includes('formula:') ||
 									(text.length < 100 &&
@@ -213,9 +211,7 @@ export function MarkdownRenderer({ content, className, subject }: MarkdownRender
 							),
 							li: ({ children }) => {
 								const childrenArray = Array.isArray(children) ? children : [children];
-								const text = childrenArray
-									.map((c) => (typeof c === 'string' ? c : ''))
-									.join('');
+								const text = childrenArray.map((c) => (typeof c === 'string' ? c : '')).join('');
 								const isFormula =
 									text.toLowerCase().includes('formula:') ||
 									(text.length < 100 &&

@@ -90,7 +90,11 @@ export function QuizHintCard({
 					</div>
 					<div className="space-y-1 flex-1">
 						<h4 className="font-black text-primary text-xs  tracking-widest">Smart Hint</h4>
-						<MarkdownRenderer content={hint} subject={subject} className="text-sm text-muted-foreground" />
+						<MarkdownRenderer
+							content={hint}
+							subject={subject}
+							className="text-sm text-muted-foreground"
+						/>
 					</div>
 				</m.div>
 			</AnimatePresence>
