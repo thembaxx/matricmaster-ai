@@ -1,6 +1,6 @@
 'use client';
 
-import { Layers01Icon, PlusIcon, Search01Icon } from '@hugeicons/core-free-icons';
+import { Add01Icon, Layers01Icon, Search01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { useState } from 'react';
 import { Badge } from '@/components/ui/badge';
@@ -56,7 +56,7 @@ export default function FlashcardDeckList({ searchQuery = '' }: FlashcardDeckLis
 
 			<div className="flex justify-end">
 				<Button className="rounded-2xl gap-2">
-					<HugeiconsIcon icon={PlusIcon} className="w-4 h-4" />
+					<HugeiconsIcon icon={Add01Icon} className="w-4 h-4" />
 					create deck
 				</Button>
 			</div>
