@@ -39,7 +39,6 @@ export function SubjectsSection({ onAuthRequired }: SubjectsSectionProps) {
 			>
 				{SUBJECTS_CONTENT.map((subject) => {
 					const fluentEmoji = subject.fluentEmoji ?? 'Books';
-					const _imgSrc = subject.imgSrc;
 
 					return (
 						<m.button
