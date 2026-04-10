@@ -50,10 +50,10 @@ export function CircuitDiagram({
 							y={y - 10}
 							width={40}
 							height={20}
-							fill={isSelected ? '#F97316' : '#E5E5E5'}
-							stroke={isSelected ? '#F97316' : '#666'}
-							strokeWidth={isSelected ? 3 : 2}
-							rx={2}
+							fill={isSelected ? 'url(#resistorSelectedGradient)' : 'url(#resistorGradient)'}
+							stroke={isSelected ? '#F97316' : '#64748b'}
+							strokeWidth={isSelected ? 3 : 1.5}
+							rx={4}
 						/>
 						{showValues && el.value && (
 							<text x={x} y={y - 15} textAnchor="middle" fontSize="10" fill="currentColor">
@@ -84,10 +84,10 @@ export function CircuitDiagram({
 							y={y - 20}
 							width={30}
 							height={40}
-							fill="none"
-							stroke={isSelected ? '#10B981' : '#333'}
+							fill={isSelected ? 'rgba(16, 185, 129, 0.1)' : 'none'}
+							stroke={isSelected ? 'url(#batteryGradient)' : '#475569'}
 							strokeWidth={isSelected ? 3 : 2}
-							rx={2}
+							rx={6}
 						/>
 						<line
 							x1={x - 5}
@@ -135,9 +135,10 @@ export function CircuitDiagram({
 							cx={x}
 							cy={y}
 							r={15}
-							fill={isSelected ? '#FBBF24' : '#E5E5E5'}
-							stroke={isSelected ? '#F59E0B' : '#666'}
-							strokeWidth={isSelected ? 3 : 2}
+							fill={isSelected ? 'url(#bulbSelectedGradient)' : 'url(#bulbGradient)'}
+							stroke={isSelected ? '#f59e0b' : '#94a3b8'}
+							strokeWidth={isSelected ? 3 : 1.5}
+							className={isSelected ? 'animate-pulse' : ''}
 						/>
 						<path
 							d={`M ${x - 10} ${y + 15} Q ${x} ${y + 25} ${x + 10} ${y + 15}`}
@@ -179,7 +180,7 @@ export function CircuitDiagram({
 	};
 
 	return (
-		<div className="bg-card rounded-xl p-4 border border-border">
+		<div className="bg-card rounded-3xl p-6 border border-border shadow-soft-md">
 			<svg
 				viewBox="0 0 400 250"
 				className="w-full h-auto"
@@ -188,6 +189,31 @@ export function CircuitDiagram({
 				aria-label="Circuit diagram"
 			>
 				<title>Circuit diagram</title>
+				<defs>
+					<linearGradient id="resistorGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+						<stop offset="0%" stopColor="#94a3b8" />
+						<stop offset="50%" stopColor="#cbd5e1" />
+						<stop offset="100%" stopColor="#94a3b8" />
+					</linearGradient>
+					<linearGradient id="resistorSelectedGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+						<stop offset="0%" stopColor="#f97316" />
+						<stop offset="50%" stopColor="#fb923c" />
+						<stop offset="100%" stopColor="#f97316" />
+					</linearGradient>
+					<linearGradient id="batteryGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+						<stop offset="0%" stopColor="#10b981" />
+						<stop offset="100%" stopColor="#059669" />
+					</linearGradient>
+					<radialGradient id="bulbGradient" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+						<stop offset="0%" stopColor="#fef3c7" />
+						<stop offset="100%" stopColor="#fde68a" />
+					</radialGradient>
+					<radialGradient id="bulbSelectedGradient" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+						<stop offset="0%" stopColor="#fef3c7" />
+						<stop offset="70%" stopColor="#fbbf24" />
+						<stop offset="100%" stopColor="#f59e0b" />
+					</radialGradient>
+				</defs>
 				{elements.map(renderElement)}
 			</svg>
 		</div>

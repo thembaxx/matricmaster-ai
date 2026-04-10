@@ -6,7 +6,6 @@ import { FluentEmoji } from '@lobehub/fluent-emoji';
 import { m } from 'framer-motion';
 import { SUBJECTS_CONTENT } from '@/content';
 import { STAGGER_CONTAINER, STAGGER_ITEM } from '@/lib/animation-presets';
-import { SafeImage } from '../SafeImage';
 
 interface SubjectsSectionProps {
 	onAuthRequired: (path: string) => void;
@@ -40,7 +39,7 @@ export function SubjectsSection({ onAuthRequired }: SubjectsSectionProps) {
 			>
 				{SUBJECTS_CONTENT.map((subject) => {
 					const fluentEmoji = subject.fluentEmoji ?? 'Books';
-					const imgSrc = subject.imgSrc;
+					const _imgSrc = subject.imgSrc;
 
 					return (
 						<m.button
@@ -56,25 +55,9 @@ export function SubjectsSection({ onAuthRequired }: SubjectsSectionProps) {
 
 							<div className="relative z-10">
 								<div
-									className={`w-12 h-12 rounded-[var(--radius-lg)] ${subject.bgColor} flex items-center justify-center mb-4`}
+									className={`w-12 h-12 rounded-2xl ${subject.bgColor} flex items-center justify-center mb-4 overflow-hidden shadow-soft-sm`}
 								>
-									{imgSrc && (
-										<SafeImage
-											alt={subject.name}
-											src={imgSrc}
-											height={24}
-											width={24}
-											className="w-10 h-10"
-										/>
-									)}
-									{!imgSrc && (
-										<FluentEmoji
-											type="3d"
-											emoji={fluentEmoji}
-											size={24}
-											className={`w-6 h-6 ${subject.color}`}
-										/>
-									)}
+									<FluentEmoji type="3d" emoji={fluentEmoji} size={32} />
 								</div>
 								<h3 className="text-lg font-bold mb-1">{subject.name}</h3>
 								<p className="text-sm text-muted-foreground">{subject.description}</p>

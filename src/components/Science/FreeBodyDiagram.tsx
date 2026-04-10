@@ -59,12 +59,29 @@ export function FreeBodyDiagram({
 			<svg
 				width={300}
 				height={300}
-				className="bg-background rounded-xl mx-auto"
+				className="bg-background rounded-xl mx-auto overflow-visible"
 				role="img"
 				aria-label="Free body diagram visualization"
 			>
 				<title>Free Body Diagram showing forces on object</title>
-				<circle cx={centerX} cy={centerY} r={30} fill="#E5E5E5" stroke="#666" strokeWidth="2" />
+				<defs>
+					<radialGradient id="objectGradient" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+						<stop offset="0%" stopColor="#f8fafc" />
+						<stop offset="100%" stopColor="#e2e8f0" />
+					</radialGradient>
+					<filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+						<feGaussianBlur stdDeviation="2" result="blur" />
+						<feComposite in="SourceGraphic" in2="blur" operator="over" />
+					</filter>
+				</defs>
+				<circle
+					cx={centerX}
+					cy={centerY}
+					r={30}
+					fill="url(#objectGradient)"
+					stroke="#94a3b8"
+					strokeWidth="2"
+				/>
 				<text x={centerX} y={centerY + 5} textAnchor="middle" fontSize="14" fill="#333">
 					{objectMass}kg
 				</text>
@@ -132,8 +149,10 @@ export function FreeBodyDiagram({
 						type="button"
 						variant="ghost"
 						key={force.id}
-						className={`p-2 h-auto rounded-lg border text-left ${
-							selectedForce === force.id ? 'border-primary bg-primary/10' : 'border-border bg-muted'
+						className={`p-3 h-auto rounded-xl border text-left transition-all duration-200 ${
+							selectedForce === force.id
+								? 'border-primary bg-primary/10 shadow-sm scale-[1.02]'
+								: 'border-border bg-muted/50 hover:bg-muted'
 						}`}
 						onClick={() => setSelectedForce(selectedForce === force.id ? null : force.id)}
 					>

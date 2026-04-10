@@ -2,14 +2,12 @@
 
 import {
 	ArrowUpRight01Icon as ArrowUpRight,
-	AtomIcon,
-	BookOpen01Icon,
-	CalculatorIcon,
 	Cancel01Icon,
 	Analytics01Icon as ChartBar,
 	Refresh01Icon,
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
+import { FluentEmoji } from '@lobehub/fluent-emoji';
 import { AnimatePresence, m } from 'framer-motion';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
@@ -17,15 +15,13 @@ import { Card } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { cn } from '@/lib/utils';
 
-type IconSvg = typeof CalculatorIcon;
-
 interface Subject {
 	id: string;
 	title: string;
 	progress: number;
 	color: string;
 	bgColor: string;
-	icon: IconSvg;
+	emoji: string;
 	topics: number;
 	description: string;
 }
@@ -37,7 +33,7 @@ const subjects: Subject[] = [
 		progress: 78,
 		color: 'text-subject-math',
 		bgColor: 'bg-subject-math-soft',
-		icon: CalculatorIcon,
+		emoji: '🧮',
 		topics: 12,
 		description: 'Calculus, Trigonometry, and Financial Maths.',
 	},
@@ -47,7 +43,7 @@ const subjects: Subject[] = [
 		progress: 62,
 		color: 'text-subject-physics',
 		bgColor: 'bg-subject-physics-soft',
-		icon: AtomIcon,
+		emoji: '⚛️',
 		topics: 15,
 		description: 'Newtonian Mechanics, Electricity, and Chemistry.',
 	},
@@ -57,7 +53,7 @@ const subjects: Subject[] = [
 		progress: 85,
 		color: 'text-subject-life',
 		bgColor: 'bg-subject-life-soft',
-		icon: BookOpen01Icon,
+		emoji: '🧬',
 		topics: 10,
 		description: 'DNA, Genetics, and Human Evolution.',
 	},
@@ -67,7 +63,7 @@ const subjects: Subject[] = [
 		progress: 45,
 		color: 'text-subject-accounting',
 		bgColor: 'bg-subject-accounting-soft',
-		icon: ChartBar,
+		emoji: '💰',
 		topics: 8,
 		description: 'Financial Statements and Cost Accounting.',
 	},
@@ -91,8 +87,10 @@ export function SubjectCards() {
 					<div className="h-full rounded-xl bg-card shadow-tiimo border border-border/50 overflow-hidden p-6 transition-all duration-300 hover:shadow-tiimo-lg hover:border-primary/20">
 						<div className="flex flex-col h-full gap-4">
 							<div className="flex justify-between items-start">
-								<div className={`p-4 rounded-md ${subject.bgColor}`}>
-									<HugeiconsIcon icon={subject.icon} className={`h-7 w-7 ${subject.color}`} />
+								<div
+									className={`p-3 rounded-2xl ${subject.bgColor} flex items-center justify-center`}
+								>
+									<FluentEmoji type="3d" emoji={subject.emoji} size={32} />
 								</div>
 								<div className="p-2 rounded-full bg-tiimo-cream opacity-0 group-hover:opacity-100 transition-opacity">
 									<HugeiconsIcon icon={ArrowUpRight} className="h-4 w-4 text-tiimo-gray-muted" />
@@ -143,11 +141,10 @@ export function SubjectCards() {
 							<div className="p-8 sm:p-10 flex flex-col gap-8 pl-12">
 								<div className="flex justify-between items-start">
 									<div className="flex items-center gap-4">
-										<div className={`p-4 rounded-md ${selectedSubject.bgColor}`}>
-											<HugeiconsIcon
-												icon={selectedSubject.icon}
-												className={`h-8 w-8 ${selectedSubject.color}`}
-											/>
+										<div
+											className={`p-4 rounded-2xl ${selectedSubject.bgColor} flex items-center justify-center`}
+										>
+											<FluentEmoji type="3d" emoji={selectedSubject.emoji} size={48} />
 										</div>
 										<div>
 											<m.h2

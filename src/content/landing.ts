@@ -167,7 +167,7 @@ export const LANDING_TESTIMONIALS: LandingTestimonial[] = [
 		quote:
 			"as an indian south african student, i struggled with afrikaans but lumni's cultural context explanations helped me achieve 78%. the ai understood my background perfectly.",
 		image:
-			'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face',
+			'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150&h=150&fit=crop&crop=face',
 		metrics: {
 			improvement: '28% in afrikaans',
 			subjects: ['afrikaans', 'mathematics', 'accounting'],

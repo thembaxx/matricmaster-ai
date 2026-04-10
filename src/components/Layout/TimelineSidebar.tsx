@@ -2,6 +2,7 @@
 
 import { ArrowLeft01Icon, ArrowRight01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
+import { FluentEmoji } from '@lobehub/fluent-emoji';
 import { useQuery } from '@tanstack/react-query';
 import { m } from 'framer-motion';
 import { useRouter } from 'next/navigation';
@@ -310,8 +311,8 @@ function TimelineEventCard({
 				</div>
 
 				{/* Emoji */}
-				<div className="flex-shrink-0 w-8 h-8 rounded-full bg-background flex items-center justify-center text-lg shadow-sm">
-					{event.emoji}
+				<div className="flex-shrink-0 w-8 h-8 rounded-full bg-background flex items-center justify-center text-lg shadow-sm overflow-hidden">
+					<FluentEmoji type="3d" emoji={event.emoji} size={20} />
 				</div>
 			</m.button>
 

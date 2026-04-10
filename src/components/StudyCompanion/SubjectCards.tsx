@@ -1,5 +1,6 @@
 'use client';
 
+import { FluentEmoji } from '@lobehub/fluent-emoji';
 import { m } from 'framer-motion';
 import Link from 'next/link';
 import type { StudyHelpCard } from './constants';
@@ -29,7 +30,7 @@ export function SubjectCards({ cards }: SubjectCardsProps) {
 							transitionTypes={['nav-forward']}
 							className="flex items-center gap-4 p-4 rounded-2xl bg-card border border-border hover:border-primary/50 transition-all"
 						>
-							<span className="text-3xl">{card.emoji}</span>
+							<FluentEmoji type="3d" emoji={card.emoji} size={40} />
 							<div>
 								<h3 className="font-semibold text-foreground">{card.title}</h3>
 								<p className="text-xs text-muted-foreground">{card.subtitle}</p>
