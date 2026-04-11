@@ -1,6 +1,6 @@
 'use client';
 
-import { SentIcon } from '@hugeicons/core-free-icons';
+import { Loader2, SentIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
@@ -29,7 +29,17 @@ export function ChatInput({
 	suggestedQuestions = DEFAULT_SUGGESTIONS,
 }: ChatInputProps) {
 	const [input, setInput] = useState('');
-	const { addMessage, setLoading, messages } = useChatStore();
+	const {
+		addMessage,
+		setLoading,
+		messages,
+		isLoading: isSending,
+	} = useChatStore((s) => ({
+		addMessage: s.addMessage,
+		setLoading: s.setLoading,
+		messages: s.messages,
+		isLoading: s.isLoading,
+	}));
 
 	async function handleSend(overrideMessage?: string) {
 		const messageToSend = overrideMessage || input.trim();
@@ -88,7 +98,8 @@ export function ChatInput({
 							variant="ghost"
 							key={q}
 							onClick={() => handleSend(q)}
-							className="text-xs px-3 py-1.5 h-auto rounded-full bg-muted hover:bg-muted/80"
+							disabled={isSending}
+							className="text-xs px-3 py-1.5 h-auto rounded-full bg-muted hover:bg-muted/80 disabled:opacity-50"
 						>
 							{q}
 						</Button>
@@ -111,11 +122,15 @@ export function ChatInput({
 				/>
 				<Button
 					onClick={() => handleSend()}
-					disabled={!input.trim() || !sessionId}
+					disabled={!input.trim() || !sessionId || isSending}
 					size="icon"
-					aria-label="Send message"
+					aria-label={isSending ? 'Sending message...' : 'Send message'}
 				>
-					<HugeiconsIcon icon={SentIcon} className="w-4 h-4" aria-hidden="true" />
+					{isSending ? (
+						<Loader2 className="w-4 h-4 animate-spin" />
+					) : (
+						<HugeiconsIcon icon={SentIcon} className="w-4 h-4" aria-hidden="true" />
+					)}
 				</Button>
 			</div>
 		</div>

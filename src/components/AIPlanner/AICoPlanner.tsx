@@ -1,7 +1,8 @@
 'use client';
 
 import { m } from 'framer-motion';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
+import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 import { ROUTINE_TEMPLATES, type Routine, SUBJECTS } from '@/types/schedule';
 
@@ -21,19 +22,38 @@ export function AICoPlanner({ onGeneratePlan }: AICoPlannerProps) {
 	const [isGenerating, setIsGenerating] = useState(false);
 	const [selectedRoutine, setSelectedRoutine] = useState<Routine | null>(null);
 
-	const handleSubmit = async (e: React.FormEvent) => {
-		e.preventDefault();
-		if (!input.trim()) return;
+	const handleSubmit = useCallback(
+		async (e: React.FormEvent) => {
+			e.preventDefault();
+			if (!input.trim()) return;
 
-		setIsGenerating(true);
-		await new Promise((resolve) => setTimeout(resolve, 1500));
-
-		const routine = ROUTINE_TEMPLATES[Math.floor(Math.random() * ROUTINE_TEMPLATES.length)];
-		setSelectedRoutine(routine);
-		onGeneratePlan?.(routine);
-		setIsGenerating(false);
-		setInput('');
-	};
+			setIsGenerating(true);
+			try {
+				const res = await fetch('/api/smart-scheduler/generate', {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify({ userInput: input }),
+				});
+				if (!res.ok) throw new Error('Plan generation failed');
+				const data = await res.json();
+				if (data?.plan) {
+					const routine = data.plan as Routine;
+					setSelectedRoutine(routine);
+					onGeneratePlan?.(routine);
+				} else {
+					const routine = ROUTINE_TEMPLATES[Math.floor(Math.random() * ROUTINE_TEMPLATES.length)];
+					setSelectedRoutine(routine);
+					onGeneratePlan?.(routine);
+				}
+			} catch {
+				toast.error('Failed to generate study plan. Please try again.');
+			} finally {
+				setIsGenerating(false);
+			}
+			setInput('');
+		},
+		[input, onGeneratePlan]
+	);
 
 	return (
 		<div className="min-h-screen bg-gradient-to-b from-background to-background/80 pb-40">
@@ -57,6 +77,7 @@ export function AICoPlanner({ onGeneratePlan }: AICoPlannerProps) {
 						<button
 							type="submit"
 							disabled={!input.trim() || isGenerating}
+							aria-label="Send message"
 							className="absolute right-3 top-1/2 -translate-y-1/2 p-2 rounded-xl bg-primary text-white disabled:opacity-50 disabled:cursor-not-allowed"
 						>
 							{isGenerating ? (
@@ -67,7 +88,7 @@ export function AICoPlanner({ onGeneratePlan }: AICoPlannerProps) {
 									fill="none"
 									viewBox="0 0 24 24"
 									stroke="currentColor"
-									aria-label="Send message"
+									aria-hidden="true"
 								>
 									<path
 										strokeLinecap="round"

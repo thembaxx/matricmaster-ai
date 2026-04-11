@@ -12,7 +12,7 @@
 
 'use server';
 
-import { pgTable, text, timestamp, varchar, jsonb } from 'drizzle-orm/pg-core';
+import { jsonb, pgTable, text, timestamp, varchar } from 'drizzle-orm/pg-core';
 import { dbManagerV2 } from '@/lib/db/database-manager-v2';
 import { logger } from '@/lib/logger';
 

@@ -100,7 +100,11 @@ export function GlassOrb() {
 							<div className="p-4 border-b border-border/50 bg-secondary/50 flex justify-between items-center">
 								<div className="flex items-center gap-2">
 									<div className="w-8 h-8 rounded-full bg-primary/10 dark:bg-primary/20 flex items-center justify-center">
-										<HugeiconsIcon icon={SparklesIcon} className="w-4 h-4 text-primary" />
+										<HugeiconsIcon
+											icon={SparklesIcon}
+											aria-hidden="true"
+											className="w-4 h-4 text-primary"
+										/>
 									</div>
 									<h3 className="font-bold text-sm font-display">AI Companion</h3>
 								</div>
@@ -108,10 +112,11 @@ export function GlassOrb() {
 									type="button"
 									variant="ghost"
 									size="icon"
+									aria-label="Close AI companion"
 									onClick={() => setIsOpen(false)}
 									className="p-2 -mr-2 text-tiimo-gray-muted hover:text-foreground"
 								>
-									<X className="w-5 h-5" />
+									<X className="w-5 h-5" aria-hidden="true" />
 								</Button>
 							</div>
 
@@ -171,6 +176,8 @@ export function GlassOrb() {
 
 				<m.button
 					onClick={() => setIsOpen(!isOpen)}
+					aria-label="Open AI companion"
+					aria-expanded={isOpen}
 					initial={{ scale: 0.95, opacity: 0 }}
 					animate={{ scale: 1 }}
 					whileHover={{ scale: 1.05 }}
@@ -185,10 +192,14 @@ export function GlassOrb() {
 					<div className="absolute inset-[1px] rounded-full bg-background/90 backdrop-blur-md" />
 
 					{isOpen ? (
-						<X className="w-6 h-6 relative z-10 transition-colors duration-300 text-foreground" />
+						<X
+							className="w-6 h-6 relative z-10 transition-colors duration-300 text-foreground"
+							aria-hidden="true"
+						/>
 					) : (
 						<HugeiconsIcon
 							icon={SparklesIcon}
+							aria-hidden="true"
 							className="w-6 h-6 relative z-10 transition-colors duration-300 text-primary"
 						/>
 					)}

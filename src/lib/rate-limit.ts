@@ -13,6 +13,7 @@ const RATE_LIMITS: Record<string, RateLimitConfig> = {
 	'api:ai-tutor:flashcards': { windowMs: 60 * 1000, maxRequests: 5 },
 	'api:snap-and-solve': { windowMs: 60 * 1000, maxRequests: 10 },
 	'api:study-plan': { windowMs: 60 * 1000, maxRequests: 3 },
+	'api:subscription-status': { windowMs: 60 * 1000, maxRequests: 5 },
 };
 
 export interface RateLimitResult {

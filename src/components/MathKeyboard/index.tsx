@@ -188,10 +188,11 @@ export function MathInputField({ input, cursorPos, onDelete }: MathInputFieldPro
 			<Button
 				variant="ghost"
 				size="icon"
+				aria-label="Delete character"
 				className="shrink-0 text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-900/20"
 				onClick={onDelete}
 			>
-				<HugeiconsIcon icon={Delete01Icon} className="w-5 h-5" />
+				<HugeiconsIcon icon={Delete01Icon} className="w-5 h-5" aria-hidden="true" />
 			</Button>
 		</Card>
 	);

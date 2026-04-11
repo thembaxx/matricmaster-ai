@@ -105,8 +105,13 @@ export const WebLLMDownloader = memo(function WebLLMDownloader() {
 					</div>
 					<Dialog open={showSettings} onOpenChange={handleShowSettings}>
 						<DialogTrigger asChild>
-							<Button variant="ghost" size="icon" className="h-8 w-8">
-								<HugeiconsIcon icon={Settings01Icon} className="w-4 h-4" />
+							<Button
+								variant="ghost"
+								size="icon"
+								className="h-8 w-8"
+								aria-label="Open model settings"
+							>
+								<HugeiconsIcon icon={Settings01Icon} className="w-4 h-4" aria-hidden="true" />
 							</Button>
 						</DialogTrigger>
 						<DialogContent>
@@ -132,8 +137,14 @@ export const WebLLMDownloader = memo(function WebLLMDownloader() {
 							</RadioGroup>
 						</DialogContent>
 					</Dialog>
-					<Button variant="ghost" size="icon" onClick={handleDismiss} className="h-8 w-8">
-						<HugeiconsIcon icon={Cancel01Icon} className="w-4 h-4" />
+					<Button
+						variant="ghost"
+						size="icon"
+						onClick={handleDismiss}
+						className="h-8 w-8"
+						aria-label="Dismiss download"
+					>
+						<HugeiconsIcon icon={Cancel01Icon} className="w-4 h-4" aria-hidden="true" />
 					</Button>
 				</div>
 			</div>

@@ -55,12 +55,13 @@ export function TTSSettings({
 					variant="ghost"
 					size="icon"
 					onClick={() => setShowSettings(!showSettings)}
+					aria-label={showSettings ? 'Hide TTS settings' : 'Show TTS settings'}
 					className={cn(
 						'rounded-full h-10 w-10 transition-all duration-200',
 						showSettings && 'bg-muted'
 					)}
 				>
-					<HugeiconsIcon icon={Settings01Icon} className="w-5 h-5" />
+					<HugeiconsIcon icon={Settings01Icon} className="w-5 h-5" aria-hidden="true" />
 				</Button>
 			</div>
 

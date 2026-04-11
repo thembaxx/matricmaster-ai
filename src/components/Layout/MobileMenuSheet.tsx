@@ -22,7 +22,7 @@ export function MobileMenuSheet() {
 				onClick={toggleSidebar}
 				aria-label="Open navigation menu"
 			>
-				<HugeiconsIcon icon={Menu01Icon} className="w-5 h-5 text-foreground" />
+				<HugeiconsIcon icon={Menu01Icon} aria-hidden="true" className="w-5 h-5 text-foreground" />
 			</Button>
 		</m.div>
 	);

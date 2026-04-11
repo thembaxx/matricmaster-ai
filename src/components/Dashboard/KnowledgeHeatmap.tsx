@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { Skeleton } from '@/components/ui/skeleton';
 import { getSubjectFont, SUBJECTS } from '@/content';
 import { cn } from '@/lib/utils';
 
@@ -27,63 +28,17 @@ interface SubjectData {
 	topics: TopicData[];
 }
 
-const MOCK_SUBJECTS: SubjectData[] = [
-	{
-		id: 'mathematics',
-		name: 'Mathematics',
-		topics: [
-			{ id: 'm1', name: 'Sequences & Series', status: 'mastered', progress: 100 },
-			{ id: 'm2', name: 'Functions', status: 'mastered', progress: 95 },
-			{ id: 'm3', name: 'Calculus', status: 'in-progress', progress: 65 },
-			{ id: 'm4', name: 'Algebra', status: 'in-progress', progress: 45 },
-			{ id: 'm5', name: 'Probability', status: 'not-started', progress: 0 },
-			{ id: 'm6', name: 'Statistics', status: 'needs-attention', progress: 30 },
-		],
-	},
-	{
-		id: 'physics',
-		name: 'Physics',
-		topics: [
-			{ id: 'p1', name: 'Mechanics', status: 'mastered', progress: 100 },
-			{ id: 'p2', name: 'Waves', status: 'in-progress', progress: 70 },
-			{ id: 'p3', name: 'Electricity', status: 'needs-attention', progress: 35 },
-			{ id: 'p4', name: 'Optics', status: 'not-started', progress: 0 },
-		],
-	},
-	{
-		id: 'life-sciences',
-		name: 'Life Sciences',
-		topics: [
-			{ id: 'ls1', name: 'Cells', status: 'mastered', progress: 100 },
-			{ id: 'ls2', name: 'Genetics', status: 'in-progress', progress: 55 },
-			{ id: 'ls3', name: 'Evolution', status: 'needs-attention', progress: 25 },
-			{ id: 'ls4', name: 'Ecology', status: 'not-started', progress: 0 },
-		],
-	},
-	{
-		id: 'english',
-		name: 'English',
-		topics: [
-			{ id: 'e1', name: 'Literature', status: 'mastered', progress: 90 },
-			{ id: 'e2', name: 'Language', status: 'in-progress', progress: 60 },
-			{ id: 'e3', name: 'Essay Writing', status: 'needs-attention', progress: 40 },
-		],
-	},
-];
-
 interface KnowledgeHeatmapProps {
 	subjects?: SubjectData[];
 	compact?: boolean;
 }
 
-export function KnowledgeHeatmap({
-	subjects = MOCK_SUBJECTS,
-	compact = false,
-}: KnowledgeHeatmapProps) {
+export function KnowledgeHeatmap({ subjects, compact = false }: KnowledgeHeatmapProps) {
 	const router = useRouter();
 	const [hoveredTopic, setHoveredTopic] = useState<string | null>(null);
 
 	const stats = useMemo(() => {
+		if (!subjects || subjects.length === 0) return null;
 		const allTopics = subjects.flatMap((s) => s.topics);
 		const mastered = allTopics.filter((t) => t.status === 'mastered').length;
 		const inProgress = allTopics.filter((t) => t.status === 'in-progress').length;
@@ -102,6 +57,10 @@ export function KnowledgeHeatmap({
 			examReady: mastered + Math.floor(inProgress * 0.5),
 		};
 	}, [subjects]);
+
+	if (!stats) {
+		return <Skeleton className="h-64 w-full rounded-xl" />;
+	}
 
 	const getStatusColor = (status: TopicStatus) => {
 		switch (status) {

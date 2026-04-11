@@ -42,9 +42,10 @@ export function DeckGrid({
 									<Button
 										variant="ghost"
 										size="icon"
+										aria-label="Deck options"
 										className="h-9 w-9 md:h-8 md:w-8 md:opacity-0 md:group-hover:opacity-100 opacity-100 transition-opacity touch-manipulation"
 									>
-										<HugeiconsIcon icon={MoreVerticalIcon} className="h-4 w-4" />
+										<HugeiconsIcon icon={MoreVerticalIcon} className="h-4 w-4" aria-hidden="true" />
 									</Button>
 								</DropdownMenuTrigger>
 								<DropdownMenuContent align="end">

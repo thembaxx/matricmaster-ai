@@ -33,11 +33,23 @@ export function GraphToolbar() {
 			>
 				<HugeiconsIcon icon={GridIcon} className="w-4 h-4" />
 			</Button>
-			<Button variant="ghost" size="icon" onClick={() => handleZoom('in')} title="Zoom In">
-				<HugeiconsIcon icon={ZoomIcon} className="w-4 h-4" />
+			<Button
+				variant="ghost"
+				size="icon"
+				onClick={() => handleZoom('in')}
+				title="Zoom In"
+				aria-label="Zoom in"
+			>
+				<HugeiconsIcon icon={ZoomIcon} className="w-4 h-4" aria-hidden="true" />
 			</Button>
-			<Button variant="ghost" size="icon" onClick={() => handleZoom('out')} title="Zoom Out">
-				<HugeiconsIcon icon={ZoomIcon} className="w-4 h-4 rotate-180" />
+			<Button
+				variant="ghost"
+				size="icon"
+				onClick={() => handleZoom('out')}
+				title="Zoom Out"
+				aria-label="Zoom out"
+			>
+				<HugeiconsIcon icon={ZoomIcon} className="w-4 h-4 rotate-180" aria-hidden="true" />
 			</Button>
 			<Button variant="ghost" onClick={handleReset} title="Reset">
 				<HugeiconsIcon icon={RefreshIcon} className="w-4 h-4 mr-2" />

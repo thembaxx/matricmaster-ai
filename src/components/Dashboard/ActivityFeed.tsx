@@ -19,44 +19,13 @@ interface RecentActivity {
 	subjectName: string | null;
 }
 
-const MOCK_ACTIVITIES: RecentActivity[] = [
-	{
-		id: '1',
-		sessionType: 'Quiz',
-		marksEarned: 85,
-		completedAt: new Date(),
-		subjectName: 'Mathematics',
-	},
-	{
-		id: '2',
-		sessionType: 'Practice',
-		marksEarned: 42,
-		completedAt: new Date(Date.now() - 86400000),
-		subjectName: 'Physics',
-	},
-	{
-		id: '3',
-		sessionType: 'Quiz',
-		marksEarned: 78,
-		completedAt: new Date(Date.now() - 172800000),
-		subjectName: 'English',
-	},
-	{
-		id: '4',
-		sessionType: 'Practice',
-		marksEarned: 56,
-		completedAt: new Date(Date.now() - 259200000),
-		subjectName: 'Life Sciences',
-	},
-];
-
 export function ActivityFeed() {
 	const router = useRouter();
 
 	const { data: activityData, isPending } = useQuery({
 		queryKey: ['activity-feed'],
 		queryFn: () => getRecentActivityAction(),
-		select: (data) => (data.activities.length > 0 ? data.activities : MOCK_ACTIVITIES),
+		select: (data) => data.activities,
 		staleTime: 30 * 1000,
 	});
 

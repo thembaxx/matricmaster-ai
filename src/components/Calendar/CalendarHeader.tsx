@@ -26,14 +26,14 @@ export function CalendarHeader({
 		<CardHeader className="pb-2">
 			<div className="flex items-center justify-between">
 				<div className="flex items-center gap-4">
-					<Button variant="outline" size="icon" onClick={prevMonth}>
-						<HugeiconsIcon icon={ArrowLeft01Icon} className="h-4 w-4" />
+					<Button variant="outline" size="icon" onClick={prevMonth} aria-label="Previous month">
+						<HugeiconsIcon icon={ArrowLeft01Icon} className="h-4 w-4" aria-hidden="true" />
 					</Button>
 					<h2 className="text-xl font-semibold">
 						{months[month]} {year}
 					</h2>
-					<Button variant="outline" size="icon" onClick={nextMonth}>
-						<HugeiconsIcon icon={ArrowRight01Icon} className="h-4 w-4" />
+					<Button variant="outline" size="icon" onClick={nextMonth} aria-label="Next month">
+						<HugeiconsIcon icon={ArrowRight01Icon} className="h-4 w-4" aria-hidden="true" />
 					</Button>
 				</div>
 				<Button variant="outline" onClick={goToToday}>

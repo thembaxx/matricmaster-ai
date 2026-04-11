@@ -97,8 +97,13 @@ export default function ResultsPage() {
 							</select>
 						</div>
 
-						<Button className="w-full" onClick={handleCheckResults} disabled={!examNumber.trim()}>
-							<HugeiconsIcon icon={Share05Icon} className="w-4 h-4 mr-2" />
+						<Button
+							type="button"
+							className="w-full"
+							onClick={handleCheckResults}
+							disabled={!examNumber.trim()}
+						>
+							<HugeiconsIcon icon={Share05Icon} className="w-4 h-4 mr-2" aria-hidden="true" />
 							Check Results
 						</Button>
 					</CardContent>

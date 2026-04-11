@@ -50,8 +50,13 @@ function TutoringSessionPageContent() {
 		<div className="min-h-screen bg-background flex flex-col">
 			<header className="border-b px-4 py-3 flex items-center justify-between">
 				<div className="flex items-center gap-3">
-					<Button variant="ghost" size="icon" onClick={() => router.push('/tutoring')}>
-						<HugeiconsIcon icon={ArrowLeftIcon} className="w-5 h-5" />
+					<Button
+						variant="ghost"
+						size="icon"
+						aria-label="Back to tutoring"
+						onClick={() => router.push('/tutoring')}
+					>
+						<HugeiconsIcon icon={ArrowLeftIcon} aria-hidden="true" className="w-5 h-5" />
 					</Button>
 					<div>
 						<h1 className="font-semibold">Live Tutoring Session</h1>
@@ -95,7 +100,10 @@ function TutoringSessionPageContent() {
 								<p className="text-sm text-muted-foreground text-center">No messages yet</p>
 							</div>
 							<div className="p-3 border-t">
-								<Input placeholder="Type a message..." />
+								<Input
+									placeholder="Type a message..."
+									aria-label="Type a message in the tutoring session"
+								/>
 							</div>
 						</CardContent>
 					</Card>

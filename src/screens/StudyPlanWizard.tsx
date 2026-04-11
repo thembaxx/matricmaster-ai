@@ -109,12 +109,26 @@ export default function StudyPlanWizard() {
 					size="icon"
 					onClick={() => router.push('/')}
 					className="rounded-full ios-active-scale"
+					aria-label="Go back"
 				>
-					<HugeiconsIcon icon={ArrowLeft02Icon} className="w-6 h-6 text-muted-foreground" />
+					<HugeiconsIcon
+						icon={ArrowLeft02Icon}
+						className="w-6 h-6 text-muted-foreground"
+						aria-hidden="true"
+					/>
 				</Button>
 				<h1 className="text-[10px] font-black text-label-tertiary tracking-[0.2em]">study plan</h1>
-				<Button variant="ghost" size="icon" className="rounded-full ios-active-scale">
-					<HugeiconsIcon icon={Settings01Icon} className="w-6 h-6 text-muted-foreground" />
+				<Button
+					variant="ghost"
+					size="icon"
+					className="rounded-full ios-active-scale"
+					aria-label="Open wizard settings"
+				>
+					<HugeiconsIcon
+						icon={Settings01Icon}
+						className="w-6 h-6 text-muted-foreground"
+						aria-hidden="true"
+					/>
 				</Button>
 			</header>
 

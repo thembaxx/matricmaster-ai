@@ -176,13 +176,18 @@ export function SubjectProgress() {
 									<Button
 										variant="ghost"
 										size="icon"
+										aria-label="Close subject details"
 										className="rounded-full bg-secondary hover:bg-secondary/80 transition-all duration-200"
 										onClick={(e) => {
 											e.stopPropagation();
 											setSelectedId(null);
 										}}
 									>
-										<HugeiconsIcon icon={Cancel01Icon} className="h-5 w-5 text-tiimo-gray-dark" />
+										<HugeiconsIcon
+											icon={Cancel01Icon}
+											className="h-5 w-5 text-tiimo-gray-dark"
+											aria-hidden="true"
+										/>
 									</Button>
 								</div>
 

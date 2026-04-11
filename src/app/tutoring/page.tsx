@@ -185,7 +185,12 @@ function TutoringContent() {
 													{session.currentParticipants}/{session.maxParticipants}
 												</span>
 											</div>
-											<Button size="sm" onClick={() => handleJoinScheduled(session)}>
+											<Button
+												type="button"
+												size="sm"
+												onClick={() => handleJoinScheduled(session)}
+												aria-label="Join tutoring session now"
+											>
 												Join Now
 											</Button>
 										</div>

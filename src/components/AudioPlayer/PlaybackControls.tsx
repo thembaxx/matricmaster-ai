@@ -35,24 +35,31 @@ export function PlaybackControls({
 				variant="ghost"
 				size="icon"
 				onClick={toggleMute}
+				aria-label="Mute audio"
 				className="rounded-full h-10 w-10 hover:bg-muted/60 transition-all duration-200"
 			>
-				<HugeiconsIcon icon={isMuted ? VolumeMute01Icon : VolumeHighIcon} className="w-5 h-5" />
+				<HugeiconsIcon
+					icon={isMuted ? VolumeMute01Icon : VolumeHighIcon}
+					className="w-5 h-5"
+					aria-hidden="true"
+				/>
 			</Button>
 
 			<Button
 				variant="outline"
 				size="icon"
 				onClick={skipBackward}
+				aria-label="Skip back 10 seconds"
 				className="rounded-full h-11 w-11 relative hover:bg-muted/60 transition-all duration-200"
 			>
-				<HugeiconsIcon icon={ArrowLeft02Icon} className="w-5 h-5" />
+				<HugeiconsIcon icon={ArrowLeft02Icon} className="w-5 h-5" aria-hidden="true" />
 				<span className="text-[9px] font-bold absolute -bottom-0.5 tracking-wide">10</span>
 			</Button>
 
 			<Button
 				size="icon"
 				onClick={togglePlay}
+				aria-label={isPlaying ? 'Pause' : 'Play'}
 				className={cn(
 					'rounded-full h-14 w-14 relative overflow-hidden transition-all duration-200',
 					'hover:scale-105 active:scale-95 shadow-lg shadow-primary/25',
@@ -68,6 +75,7 @@ export function PlaybackControls({
 					<HugeiconsIcon
 						icon={isPlaying ? PauseIcon : PlayIcon}
 						className="w-7 h-7 transition-transform"
+						aria-hidden="true"
 					/>
 				)}
 			</Button>
@@ -76,9 +84,10 @@ export function PlaybackControls({
 				variant="outline"
 				size="icon"
 				onClick={skipForward}
+				aria-label="Skip forward 10 seconds"
 				className="rounded-full h-11 w-11 relative hover:bg-muted/60 transition-all duration-200"
 			>
-				<HugeiconsIcon icon={ArrowRight02Icon} className="w-5 h-5" />
+				<HugeiconsIcon icon={ArrowRight02Icon} className="w-5 h-5" aria-hidden="true" />
 				<span className="text-[9px] font-bold absolute -bottom-0.5 tracking-wide">30</span>
 			</Button>
 
