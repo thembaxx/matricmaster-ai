@@ -1,6 +1,14 @@
 {
-	"permissions": {
-		"allow": ["Bash(bun *)", "Bash(bunx *)", "Bash(findstr *)"]
-	},
-	"$version": 3
+  "permissions": {
+    "allow": [
+      "Bash(bun *)",
+      "Bash(bunx *)",
+      "Bash(findstr *)",
+      "Bash(rmdir *)",
+      "Bash(powershell *)",
+      "Bash(dir *)",
+      "Bash(\"cd /d c:\\users\\themba\\documents\\org1128\\projects\\matricmaster-ai && for /r src\\app\\api %f in (route.ts) do @echo %f\")"
+    ]
+  },
+  "$version": 3
 }
