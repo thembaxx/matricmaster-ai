@@ -68,7 +68,12 @@ export function QuestionDialog({
 								</p>
 							</div>
 							<Dialog.Close asChild>
-								<Button variant="ghost" size="icon" className="rounded-full shrink-0">
+								<Button
+									variant="ghost"
+									size="icon"
+									className="rounded-full shrink-0"
+									aria-label="Close question"
+								>
 									<HugeiconsIcon icon={CodeCircleIcon} className="w-5 h-5" />
 								</Button>
 							</Dialog.Close>

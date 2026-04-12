@@ -45,16 +45,19 @@ function CalcKey({
 	label,
 	onClick,
 	className = '',
+	ariaLabel,
 }: {
 	label: React.ReactNode;
 	onClick: () => void;
 	className?: string;
+	ariaLabel?: string;
 }) {
 	return (
 		<m.button
 			whileTap={{ scale: 0.9 }}
 			transition={{ type: 'spring', stiffness: 500, damping: 30 }}
 			onClick={onClick}
+			aria-label={ariaLabel || (typeof label === 'string' ? label : undefined)}
 			className={cn(
 				'h-12 flex items-center justify-center bg-card rounded-xl shadow-sm text-sm font-bold border border-transparent hover:border-amber-500/30 transition-colors',
 				className
@@ -98,16 +101,19 @@ export function MathKeyboard({ onKeyClick, onDelete, moveCursor }: MathKeyboardP
 							<CalcKey
 								label={<HugeiconsIcon icon={Delete01Icon} className="w-5 h-5" />}
 								onClick={onDelete}
+								ariaLabel="Delete"
 								className="bg-secondary"
 							/>
 							<CalcKey
 								label={<HugeiconsIcon icon={ArrowLeft01Icon} className="w-5 h-5" />}
 								onClick={() => moveCursor('left')}
+								ariaLabel="Move cursor left"
 								className="bg-secondary"
 							/>
 							<CalcKey
 								label={<HugeiconsIcon icon={ArrowRight01Icon} className="w-5 h-5" />}
 								onClick={() => moveCursor('right')}
+								ariaLabel="Move cursor right"
 								className="bg-secondary"
 							/>
 						</TabsContent>

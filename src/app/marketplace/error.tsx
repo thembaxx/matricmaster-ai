@@ -14,7 +14,7 @@ interface ErrorProps {
 // biome-ignore lint/suspicious/noShadowRestrictedNames: Required by Next.js for error.tsx error boundary
 export default function Error({ error, reset }: ErrorProps) {
 	useEffect(() => {
-		console.error('Comments error:', error);
+		console.error('Marketplace error:', error);
 	}, [error]);
 
 	return (

@@ -1,8 +1,11 @@
 import { type NextRequest, NextResponse } from 'next/server';
 import { getAuth } from '@/lib/auth';
-import { markAsRead } from '@/lib/db/notification-actions';
+import { deleteNotification } from '@/lib/db/notification-actions';
 
-export async function POST(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+export async function DELETE(
+	request: NextRequest,
+	{ params }: { params: Promise<{ id: string }> }
+) {
 	try {
 		const auth = await getAuth();
 		const session = await auth.api.getSession({ headers: request.headers });
@@ -13,18 +16,18 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
 
 		const { id } = await params;
 
-		const result = await markAsRead(id, session.user.id);
+		const result = await deleteNotification(id, session.user.id);
 
 		if (!result.success) {
 			return NextResponse.json(
-				{ error: result.error || 'Failed to mark as read' },
+				{ error: result.error || 'Failed to delete notification' },
 				{ status: 500 }
 			);
 		}
 
 		return NextResponse.json({ success: true, notificationId: id });
 	} catch (error) {
-		console.debug('Error marking notification as read:', error);
-		return NextResponse.json({ error: 'Failed to mark as read' }, { status: 500 });
+		console.debug('Error deleting notification:', error);
+		return NextResponse.json({ error: 'Failed to delete notification' }, { status: 500 });
 	}
 }

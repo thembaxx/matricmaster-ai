@@ -109,6 +109,7 @@ export function GlassOrb() {
 									variant="ghost"
 									size="icon"
 									onClick={() => setIsOpen(false)}
+									aria-label="Close AI companion"
 									className="p-2 -mr-2 text-tiimo-gray-muted hover:text-foreground"
 								>
 									<X className="w-5 h-5" />
@@ -155,6 +156,7 @@ export function GlassOrb() {
 									<Button
 										type="button"
 										size="icon"
+										aria-label="Open study companion"
 										className="absolute right-1 top-1 w-8 h-8 rounded-full bg-primary text-primary-foreground shadow-soft-md hover:bg-primary/90"
 										onClick={() => {
 											setIsOpen(false);
@@ -171,6 +173,7 @@ export function GlassOrb() {
 
 				<m.button
 					onClick={() => setIsOpen(!isOpen)}
+					aria-label={isOpen ? 'Close AI companion' : 'Open AI companion'}
 					initial={{ scale: 0.95, opacity: 0 }}
 					animate={{ scale: 1 }}
 					whileHover={{ scale: 1.05 }}

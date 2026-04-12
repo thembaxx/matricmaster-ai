@@ -23,7 +23,12 @@ export function FunctionList() {
 						style={{ backgroundColor: fn.visible ? fn.color : 'transparent' }}
 					/>
 					<span className="flex-1 font-mono text-sm">y = {fn.expression}</span>
-					<Button variant="ghost" size="icon" onClick={() => removeFunction(fn.id)}>
+					<Button
+						variant="ghost"
+						size="icon"
+						onClick={() => removeFunction(fn.id)}
+						aria-label={`Remove function y = ${fn.expression}`}
+					>
 						<HugeiconsIcon icon={CloseIcon} className="w-4 h-4" />
 					</Button>
 				</div>

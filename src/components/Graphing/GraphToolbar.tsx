@@ -29,14 +29,27 @@ export function GraphToolbar() {
 				variant="ghost"
 				size="icon"
 				onClick={toggleGrid}
+				aria-label={showGrid ? 'Hide grid' : 'Show grid'}
 				title={showGrid ? 'Hide Grid' : 'Show Grid'}
 			>
 				<HugeiconsIcon icon={GridIcon} className="w-4 h-4" />
 			</Button>
-			<Button variant="ghost" size="icon" onClick={() => handleZoom('in')} title="Zoom In">
+			<Button
+				variant="ghost"
+				size="icon"
+				onClick={() => handleZoom('in')}
+				aria-label="Zoom in"
+				title="Zoom In"
+			>
 				<HugeiconsIcon icon={ZoomIcon} className="w-4 h-4" />
 			</Button>
-			<Button variant="ghost" size="icon" onClick={() => handleZoom('out')} title="Zoom Out">
+			<Button
+				variant="ghost"
+				size="icon"
+				onClick={() => handleZoom('out')}
+				aria-label="Zoom out"
+				title="Zoom Out"
+			>
 				<HugeiconsIcon icon={ZoomIcon} className="w-4 h-4 rotate-180" />
 			</Button>
 			<Button variant="ghost" onClick={handleReset} title="Reset">
