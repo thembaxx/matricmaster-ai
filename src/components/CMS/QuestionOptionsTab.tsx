@@ -67,7 +67,7 @@ export function QuestionOptionsTab({
 									onClick={() => removeOption(idx)}
 									aria-label="Remove option"
 								>
-									<HugeiconsIcon icon={Cancel01Icon} className="h-4 w-4" aria-hidden="true" />
+									<HugeiconsIcon icon={Cancel01Icon} className="h-4 w-4" />
 								</Button>
 							</div>
 						</div>

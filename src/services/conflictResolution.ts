@@ -9,10 +9,10 @@
  * - Clear sync status indicators
  */
 
-import { and, eq, isNull, lt, or } from 'drizzle-orm';
+import { and, eq, lt, or } from 'drizzle-orm';
 import { integer, jsonb, pgTable, text, timestamp, varchar } from 'drizzle-orm/pg-core';
-import { dbManagerV2 } from '@/lib/db/database-manager-v2';
-import { logger } from '@/lib/logger';
+import { dbManagerV2 } from './db/database-manager-v2';
+import { logger } from './logger';
 
 const log = logger.createLogger('ConflictResolution');
 
@@ -321,7 +321,7 @@ async function detectConflict(
 				and(
 					eq(syncConflictsTable.tableName, tableName),
 					eq(syncConflictsTable.recordId, recordId),
-					isNull(syncConflictsTable.resolvedAt)
+					eq(syncConflictsTable.resolvedAt, null)
 				)
 			);
 
@@ -541,7 +541,7 @@ export async function getUnresolvedConflicts(): Promise<SyncConflict[]> {
 		const conflicts = await db
 			.select()
 			.from(syncConflictsTable)
-			.where(isNull(syncConflictsTable.resolvedAt))
+			.where(eq(syncConflictsTable.resolvedAt, null))
 			.limit(100);
 
 		return conflicts.map((c) => ({

@@ -1,13 +1,13 @@
 {
-  "permissions": {
-    "allow": [
-      "Bash(bun *)",
-      "Bash(bunx *)",
-      "Bash(dir *)",
-      "Read(C:\\Users\\Themba\\Documents\\org1128\\projects/**)",
-      "Read(C:\\/**)",
-      "Bash(powershell *)"
-    ]
-  },
-  "$version": 3
+	"permissions": {
+		"allow": [
+			"Bash(bun *)",
+			"Bash(bunx *)",
+			"Bash(dir *)",
+			"Read(C:\\Users\\Themba\\Documents\\org1128\\projects/**)",
+			"Read(C:\\/**)",
+			"Bash(powershell *)"
+		]
+	},
+	"$version": 3
 }

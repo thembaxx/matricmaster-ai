@@ -105,16 +105,9 @@ export function DailyReviewModal({ isOpen = false, onClose }: DailyReviewProps) 
 							{pendingTasks.map((task) => (
 								<label
 									key={task.id}
-									htmlFor={`task-${task.id}`}
 									className="flex items-center gap-3 p-3 rounded-xl bg-muted/50 cursor-pointer"
 								>
-									<input
-										type="checkbox"
-										id={`task-${task.id}`}
-										className="rounded"
-										defaultChecked
-										aria-label={`Mark ${task.title} as complete`}
-									/>
+									<input type="checkbox" className="rounded" defaultChecked />
 									<span>{task.title}</span>
 								</label>
 							))}

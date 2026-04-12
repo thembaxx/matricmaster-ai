@@ -162,25 +162,17 @@ function CommentsContent() {
 								<AvatarFallback>{user.name?.[0] ?? 'U'}</AvatarFallback>
 							</Avatar>
 							<div className="flex-1 space-y-2">
-								<form
-									onSubmit={(e) => {
-										e.preventDefault();
-										handleSubmitComment();
-									}}
-								>
-									<Textarea
-										placeholder="Share your thoughts or ask a question..."
-										value={newComment}
-										onChange={(e) => setNewComment(e.target.value)}
-										className="min-h-25"
-										aria-label="Write a comment"
-									/>
-									<div className="flex justify-end">
-										<Button type="submit" disabled={!newComment.trim() || isLoading}>
-											{isLoading ? 'Posting...' : 'Post Comment'}
-										</Button>
-									</div>
-								</form>
+								<Textarea
+									placeholder="Share your thoughts or ask a question..."
+									value={newComment}
+									onChange={(e) => setNewComment(e.target.value)}
+									className="min-h-25"
+								/>
+								<div className="flex justify-end">
+									<Button onClick={handleSubmitComment} disabled={!newComment.trim() || isLoading}>
+										{isLoading ? 'Posting...' : 'Post Comment'}
+									</Button>
+								</div>
 							</div>
 						</div>
 					) : (

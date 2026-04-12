@@ -88,9 +88,8 @@ export function DailyLoginBonus({ onClaimed }: DailyLoginBonusProps) {
 											size="icon"
 											onClick={handleClose}
 											className="absolute top-4 right-4 h-8 w-8 rounded-full"
-											aria-label="Close daily bonus"
 										>
-											<HugeiconsIcon icon={Cancel01Icon} className="w-4 h-4" aria-hidden="true" />
+											<HugeiconsIcon icon={Cancel01Icon} className="w-4 h-4" />
 										</Button>
 
 										<m.div

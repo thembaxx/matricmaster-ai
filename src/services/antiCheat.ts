@@ -23,6 +23,7 @@ const log = logger.createLogger('AntiCheat');
 const MIN_TIME_PER_QUESTION_SECONDS = 10; // Minimum reasonable time
 const RAPID_COMPLETION_THRESHOLD = 0.5; // 50% faster than average
 const MAX_DAILY_XP = 500; // Cap daily XP gains
+const _PATTERN_ANOMALY_THRESHOLD = 0.8; // 80% same answer pattern
 const SUSPICIOUS_ACTIVITY_WINDOW_DAYS = 7;
 
 // Types
@@ -160,7 +161,7 @@ async function checkRapidCompletion(userId: string): Promise<{
 		// Get recent attempts
 		const attempts = await db
 			.select({
-				timeSpent: questionAttempts.responseTimeMs,
+				timeSpent: questionAttempts.timeSpentSeconds,
 			})
 			.from(questionAttempts)
 			.where(
@@ -229,6 +230,9 @@ async function checkXPFarming(userId: string): Promise<{
 	}
 
 	try {
+		const today = new Date();
+		const _todayStr = today.toISOString().split('T')[0];
+
 		// Get today's progress
 		const [progress] = await db
 			.select({
@@ -325,6 +329,9 @@ export async function applyDailyXPCap(userId: string, earnedXP: number): Promise
 	}
 
 	try {
+		const today = new Date();
+		const _todayStr = today.toISOString().split('T')[0];
+
 		// Get today's current XP
 		const [progress] = await db
 			.select({

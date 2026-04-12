@@ -54,12 +54,10 @@ export function ContextualAIBubble({ className }: ContextualAIBubbleProps) {
 			<Button
 				onClick={handleClick}
 				size="icon"
-				aria-label="Ask AI for help"
 				className="h-14 w-14 rounded-2xl shadow-xl shadow-primary/20 border border-border/50 backdrop-blur-xl bg-background/80 hover:bg-background transition-all hover:scale-110 active:scale-95"
 			>
 				<HugeiconsIcon
 					icon={context.type !== 'idle' ? SparklesIcon : MessageIcon}
-					aria-hidden="true"
 					className={cn(
 						'h-6 w-6',
 						context.type !== 'idle' ? 'text-brand-blue fill-brand-blue' : 'text-muted-foreground'

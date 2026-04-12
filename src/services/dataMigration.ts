@@ -11,8 +11,8 @@
 
 import { desc, eq } from 'drizzle-orm';
 import { boolean, integer, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
-import { dbManagerV2 } from '@/lib/db/database-manager-v2';
-import { logger } from '@/lib/logger';
+import { dbManagerV2 } from './db/database-manager-v2';
+import { logger } from './logger';
 
 const log = logger.createLogger('DataMigration');
 

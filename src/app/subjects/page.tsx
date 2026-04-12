@@ -62,11 +62,10 @@ export default function SubjectsPage() {
 					<Button
 						variant="ghost"
 						size="icon"
-						aria-label="Go back"
 						onClick={() => router.back()}
 						className="rounded-full"
 					>
-						<HugeiconsIcon icon={ArrowLeft01Icon} aria-hidden="true" className="w-6 h-6" />
+						<HugeiconsIcon icon={ArrowLeft01Icon} className="w-6 h-6" />
 					</Button>
 					<div>
 						<h1 className="text-4xl font-black tracking-tight text-foreground">

@@ -38,7 +38,7 @@ export function QuestionCard({ question, subjectMap, onEdit, onDelete }: Questio
 									onClick={() => onEdit(question)}
 									aria-label="Edit question"
 								>
-									<HugeiconsIcon icon={PencilEdit01Icon} className="h-5 w-5" aria-hidden="true" />
+									<HugeiconsIcon icon={PencilEdit01Icon} className="h-5 w-5" />
 								</Button>
 							</TooltipTrigger>
 							<TooltipContent>Edit question</TooltipContent>
@@ -52,7 +52,7 @@ export function QuestionCard({ question, subjectMap, onEdit, onDelete }: Questio
 									onClick={() => onDelete(question.id)}
 									aria-label="Delete question"
 								>
-									<HugeiconsIcon icon={Delete02Icon} className="h-5 w-5" aria-hidden="true" />
+									<HugeiconsIcon icon={Delete02Icon} className="h-5 w-5" />
 								</Button>
 							</TooltipTrigger>
 							<TooltipContent>Delete question</TooltipContent>

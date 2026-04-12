@@ -71,7 +71,7 @@ export function useSnapAndSolve() {
 
 		setIsGeneratingQuiz(true);
 		try {
-			const response = await fetch('/api/quiz/generate-from-solution', {
+			const response = await fetch('/api/generate-quiz-from-solution', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({ solution, subject }),

@@ -3,47 +3,20 @@
 import { ArrowRight02Icon, SparklesIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { AnimatePresence, m } from 'framer-motion';
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { toast } from 'sonner';
+import { useState } from 'react';
 import { ThinkingAnimation } from '@/components/AI/ThinkingAnimation';
 
 export function DashboardAIPrompt() {
 	const [isThinking, setIsThinking] = useState(false);
 	const [value, setValue] = useState('');
-	const abortRef = useRef(false);
 
-	useEffect(() => {
-		return () => {
-			abortRef.current = true;
-		};
-	}, []);
-
-	const handleSubmit = useCallback(
-		async (e: React.FormEvent) => {
-			e.preventDefault();
-			if (!value.trim()) return;
-			setIsThinking(true);
-			abortRef.current = false;
-			try {
-				const res = await fetch('/api/ai-chat', {
-					method: 'POST',
-					headers: { 'Content-Type': 'application/json' },
-					body: JSON.stringify({ message: value }),
-				});
-				if (abortRef.current) return;
-				if (!res.ok) throw new Error('AI request failed');
-				const data = await res.json();
-				if (data?.response) {
-					toast.success('AI Response', { description: data.response.slice(0, 100) });
-				}
-			} catch {
-				if (!abortRef.current) toast.error('Failed to get AI response. Please try again.');
-			} finally {
-				setIsThinking(false);
-			}
-		},
-		[value]
-	);
+	const handleSubmit = (e: React.FormEvent) => {
+		e.preventDefault();
+		if (!value.trim()) return;
+		setIsThinking(true);
+		// Simulate thinking
+		setTimeout(() => setIsThinking(false), 3000);
+	};
 
 	return (
 		<div className="relative w-full max-w-2xl mx-auto">

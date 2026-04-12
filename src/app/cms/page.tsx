@@ -3,9 +3,9 @@ import dynamic from 'next/dynamic';
 import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { Suspense } from 'react';
+
 import { appConfig } from '@/app.config';
 import { ClientOnly } from '@/components/ClientOnly';
-import { Skeleton } from '@/components/ui/skeleton';
 import { getAuth, type SessionUser } from '@/lib/auth';
 import { dbManager } from '@/lib/db';
 
@@ -35,15 +35,7 @@ export default async function CMSPage() {
 	}
 
 	return (
-		<Suspense
-			fallback={
-				<div className="space-y-6 p-6">
-					<Skeleton className="h-8 w-48" />
-					<Skeleton className="h-64 w-full rounded-xl" />
-					<Skeleton className="h-12 w-32" />
-				</div>
-			}
-		>
+		<Suspense fallback={null}>
 			<ClientOnly>
 				<CMSScreen />
 			</ClientOnly>

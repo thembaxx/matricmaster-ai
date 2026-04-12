@@ -69,11 +69,10 @@ export function CommentItemAnimated({
 								<Button
 									variant="ghost"
 									size="icon"
-									aria-label="Comment options"
 									className="h-8 w-8 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
 									aria-label="More options"
 								>
-									<HugeiconsIcon icon={MoreHorizontalIcon} className="h-4 w-4" aria-hidden="true" />
+									<HugeiconsIcon icon={MoreHorizontalIcon} className="h-4 w-4" />
 								</Button>
 							</DropdownMenuTrigger>
 							<DropdownMenuContent

@@ -165,10 +165,9 @@ export function Timer({
 						variant="outline"
 						size="icon"
 						onClick={timer.reset}
-						aria-label="Reset timer"
 						className={cn('rounded-full', config.button)}
 					>
-						<HugeiconsIcon icon={RefreshIcon} aria-hidden="true" className={config.icon} />
+						<HugeiconsIcon icon={RefreshIcon} className={config.icon} />
 					</Button>
 
 					<m.div
@@ -197,10 +196,9 @@ export function Timer({
 						variant="outline"
 						size="icon"
 						onClick={timer.skip}
-						aria-label="Skip to next"
 						className={cn('rounded-full', config.button)}
 					>
-						<HugeiconsIcon icon={Forward01Icon} aria-hidden="true" className={config.icon} />
+						<HugeiconsIcon icon={Forward01Icon} className={config.icon} />
 					</Button>
 				</div>
 			)}
