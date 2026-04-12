@@ -58,9 +58,9 @@ export function QuestionBasicTab({
 								size="icon"
 								className="rounded-xl h-10 w-10"
 								onClick={handleRemoveImage}
-								aria-label="Remove image"
+								aria-label="Remove question image"
 							>
-								<HugeiconsIcon icon={Cancel01Icon} className="h-5 w-5" />
+								<HugeiconsIcon icon={Cancel01Icon} className="h-5 w-5" aria-hidden="true" />
 							</Button>
 						</div>
 					</div>

@@ -100,7 +100,10 @@ function TutoringSessionPageContent() {
 								<p className="text-sm text-muted-foreground text-center">No messages yet</p>
 							</div>
 							<div className="p-3 border-t">
-								<Input placeholder="Type a message..." />
+								<Input
+									placeholder="Type a message..."
+									aria-label="Type a message in the tutoring session"
+								/>
 							</div>
 						</CardContent>
 					</Card>

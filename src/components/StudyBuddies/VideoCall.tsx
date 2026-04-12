@@ -163,7 +163,11 @@ export function VideoCall({
 									: 'bg-secondary text-foreground hover:bg-secondary/80'
 							)}
 						>
-							<HugeiconsIcon icon={isMuted ? MicOff01Icon : Mic01Icon} className="h-5 w-5" />
+							<HugeiconsIcon
+								icon={isMuted ? MicOff01Icon : Mic01Icon}
+								aria-hidden="true"
+								className="h-5 w-5"
+							/>
 						</Button>
 
 						<Button
@@ -180,6 +184,7 @@ export function VideoCall({
 						>
 							<HugeiconsIcon
 								icon={isVideoOn ? VideoReplayIcon : VideoOffIcon}
+								aria-hidden="true"
 								className="h-5 w-5"
 							/>
 						</Button>
@@ -197,7 +202,7 @@ export function VideoCall({
 									: 'bg-secondary text-foreground hover:bg-secondary/80'
 							)}
 						>
-							<HugeiconsIcon icon={CctvCameraIcon} className="h-5 w-5" />
+							<HugeiconsIcon icon={CctvCameraIcon} aria-hidden="true" className="h-5 w-5" />
 						</Button>
 
 						<Button
@@ -207,7 +212,7 @@ export function VideoCall({
 							aria-label={showSidebar ? 'Hide participants' : 'Show participants'}
 							className="h-12 w-12 rounded-full bg-secondary text-foreground hover:bg-secondary/80"
 						>
-							<HugeiconsIcon icon={CircleIcon} className="h-5 w-5" />
+							<HugeiconsIcon icon={CircleIcon} aria-hidden="true" className="h-5 w-5" />
 						</Button>
 
 						<Button
@@ -217,7 +222,7 @@ export function VideoCall({
 							aria-label="End call"
 							className="h-12 w-12 rounded-full bg-red-600 text-white hover:bg-red-700 ml-4"
 						>
-							<HugeiconsIcon icon={CallEnd01Icon} className="h-5 w-5" />
+							<HugeiconsIcon icon={CallEnd01Icon} aria-hidden="true" className="h-5 w-5" />
 						</Button>
 					</div>
 				</div>

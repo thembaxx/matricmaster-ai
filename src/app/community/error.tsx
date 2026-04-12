@@ -1,7 +1,8 @@
 'use client';
 
-import { Home01Icon, Refresh01Icon, Warning } from '@hugeicons/core-free-icons';
+import { ArrowLeftIcon, RefreshIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
+import * as Sentry from '@sentry/nextjs';
 import Link from 'next/link';
 import { useEffect } from 'react';
 import { Button } from '@/components/ui/button';

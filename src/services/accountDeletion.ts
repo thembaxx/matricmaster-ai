@@ -9,12 +9,12 @@
  * - Complete PII removal after grace period
  */
 
-import { and, eq, lt } from 'drizzle-orm';
+import { and, eq, isNotNull, lt } from 'drizzle-orm';
 import { Resend } from 'resend';
+import { dbManagerV2 } from '@/lib/db/database-manager-v2';
+import { accessibilityPreferences, userProgress, userSettings, users } from '@/lib/db/schema';
+import { logger } from '@/lib/logger';
 import { appConfig } from '../app.config';
-import { dbManagerV2 } from './db/database-manager-v2';
-import { accessibilityPreferences, userProgress, userSettings, users } from './db/schema';
-import { logger } from './logger';
 
 const log = logger.createLogger('AccountDeletion');
 
@@ -186,7 +186,7 @@ export async function processPendingDeletions(): Promise<{
 		const expiredUsers = await db
 			.select({ id: users.id, email: users.email, name: users.name })
 			.from(users)
-			.where(and(users.deletedAt !== null, lt(users.deletedAt, now)));
+			.where(and(isNotNull(users.deletedAt), lt(users.deletedAt, now)));
 
 		log.info('Processing pending deletions', { count: expiredUsers.length });
 
@@ -214,28 +214,18 @@ export async function processPendingDeletions(): Promise<{
  * Permanently delete a single user's PII
  * Preserves anonymized analytics for product improvement
  */
-async function permanentlyDeleteUser(
-	userId: string,
-	db: ReturnType<typeof dbManagerV2.getDb> extends Promise<infer T> ? T : never
-): Promise<void> {
-	// Start a transaction
-	await db.transaction(async (tx) => {
-		// 1. Anonymize quiz results (keep for analytics but remove PII)
-		// Note: quiz_results has onDelete: 'cascade' so it will be auto-deleted
-		// We'll preserve aggregated stats first
+async function permanentlyDeleteUser(userId: string, db: any): Promise<void> {
+	// Delete user settings
+	await db.delete(userSettings).where(eq(userSettings.userId, userId));
 
-		// 2. Delete user settings
-		await tx.delete(userSettings).where(eq(userSettings.userId, userId));
+	// Delete accessibility preferences
+	await db.delete(accessibilityPreferences).where(eq(accessibilityPreferences.userId, userId));
 
-		// 3. Delete accessibility preferences
-		await tx.delete(accessibilityPreferences).where(eq(accessibilityPreferences.userId, userId));
+	// Delete user progress (cascades due to onDelete: 'cascade' in schema)
+	await db.delete(userProgress).where(eq(userProgress.userId, userId));
 
-		// 4. Delete user progress (after preserving aggregated data if needed)
-		await tx.delete(userProgress).where(eq(userProgress.userId, userId));
-
-		// 5. Finally, delete the user record
-		await tx.delete(users).where(eq(users.id, userId));
-	});
+	// Finally, delete the user record (cascades to related tables)
+	await db.delete(users).where(eq(users.id, userId));
 
 	log.info('User permanently deleted', { userId });
 }
@@ -296,7 +286,7 @@ export async function getPendingDeletions(): Promise<PendingDeletion[]> {
 			})
 			.from(users)
 			.where(
-				and(users.deletedAt !== null, lt(users.deletedAt, new Date(Date.now() + GRACE_PERIOD_MS)))
+				and(isNotNull(users.deletedAt), lt(users.deletedAt, new Date(Date.now() + GRACE_PERIOD_MS)))
 			);
 
 		const now = new Date();

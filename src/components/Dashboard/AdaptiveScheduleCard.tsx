@@ -132,10 +132,11 @@ export function AdaptiveScheduleCard({ adjustments, onDismiss }: AdaptiveSchedul
 							<Button
 								variant="ghost"
 								size="icon"
+								aria-label="Dismiss adjustment"
 								className="w-7 h-7 rounded-full flex-shrink-0 text-muted-foreground hover:text-foreground"
 								onClick={() => handleDismiss(originalIndex)}
 							>
-								<HugeiconsIcon icon={Cancel01Icon} className="w-3.5 h-3.5" />
+								<HugeiconsIcon icon={Cancel01Icon} className="w-3.5 h-3.5" aria-hidden="true" />
 							</Button>
 						</m.div>
 					);

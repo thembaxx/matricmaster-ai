@@ -131,7 +131,7 @@ export function StreakShield({ className }: { className?: string }) {
 									'flex-1 h-10 rounded-xl flex items-center justify-center gap-2 border-2 transition-all',
 									i < shieldCount
 										? 'bg-blue-500/10 border-blue-500/30 text-blue-500'
-										: 'bg-muted/50 border-dashed border-muted-foreground/20 text-muted-foreground/30'
+										: 'bg-muted/50 border-dashed border-muted-foreground/20 text-muted-foreground/60'
 								)}
 							>
 								<HugeiconsIcon
