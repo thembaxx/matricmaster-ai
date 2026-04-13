@@ -11,7 +11,13 @@ interface SnapAndSolveHeaderProps {
 export function SnapAndSolveHeader({ onBack }: SnapAndSolveHeaderProps) {
 	return (
 		<header className="px-6 pt-12 pb-6 flex items-center justify-between shrink-0 max-w-2xl mx-auto w-full">
-			<Button variant="ghost" size="icon" onClick={onBack} className="rounded-full">
+			<Button
+				variant="ghost"
+				size="icon"
+				onClick={onBack}
+				className="rounded-full"
+				aria-label="Go back"
+			>
 				<HugeiconsIcon icon={ArrowLeft01Icon} className="w-6 h-6" />
 			</Button>
 			<h1 className="text-xl font-black  tracking-tight">Snap & Solve</h1>

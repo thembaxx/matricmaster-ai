@@ -68,7 +68,7 @@ export interface LeaderboardCheck {
  * Get gaming health status for a student
  */
 export async function getGamingHealthStatus(userId: string): Promise<GamingHealthStatus> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		throw new Error('Database not available');
 	}
@@ -226,7 +226,7 @@ async function getLeaderboardCheckFrequency(_userId: string): Promise<number> {
  * Get achievement rate
  */
 async function getAchievementRate(userId: string): Promise<number> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		return 0;
 	}
@@ -234,12 +234,14 @@ async function getAchievementRate(userId: string): Promise<number> {
 	try {
 		const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000);
 
-		const [count] = await db
-			.select({ count: userAchievements.id })
+		const recent = await db
+			.select({ id: userAchievements.id })
 			.from(userAchievements)
-			.where(and(eq(userAchievements.userId, userId), gte(userAchievements.earnedAt, oneHourAgo)));
+			.where(
+				and(eq(userAchievements.userId, userId), gte(userAchievements.unlockedAt, oneHourAgo))
+			);
 
-		return count?.count || 0;
+		return recent.length;
 	} catch (error) {
 		log.warn('Failed to get achievement rate', { error });
 		return 0;
@@ -250,7 +252,7 @@ async function getAchievementRate(userId: string): Promise<number> {
  * Get current session length
  */
 async function getCurrentSessionLength(userId: string): Promise<number> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		return 0;
 	}

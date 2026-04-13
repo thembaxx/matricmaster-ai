@@ -54,7 +54,7 @@ export const WeeklyChartCard = memo(function WeeklyChartCard({
 										? 'bg-primary/10 text-primary border border-primary/10'
 										: item.status === 'active'
 											? 'bg-primary text-primary-foreground shadow-soft-lg shadow-primary/40'
-											: 'bg-muted/50 text-muted-foreground/60'
+											: 'bg-muted/50 text-muted-foreground/30'
 								}`}
 							>
 								{item.status === 'complete' ? (

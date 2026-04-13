@@ -58,7 +58,12 @@ export function CalendarEventSidebar({
 											)}
 										</div>
 										<div className="flex gap-1">
-											<Button variant="ghost" size="icon" className="h-6 w-6">
+											<Button
+												variant="ghost"
+												size="icon"
+												className="h-6 w-6"
+												aria-label={`Edit event: ${event.title}`}
+											>
 												<HugeiconsIcon icon={PencilEdit01Icon} className="h-3 w-3" />
 											</Button>
 											<Button
@@ -66,6 +71,7 @@ export function CalendarEventSidebar({
 												size="icon"
 												className="h-6 w-6"
 												onClick={() => onDeleteEvent(event.id)}
+												aria-label={`Delete event: ${event.title}`}
 											>
 												<HugeiconsIcon icon={Delete02Icon} className="h-3 w-3" />
 											</Button>

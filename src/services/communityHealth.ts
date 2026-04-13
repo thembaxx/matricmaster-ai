@@ -12,6 +12,7 @@
 
 'use server';
 
+import { eq } from 'drizzle-orm';
 import { jsonb, pgTable, text, timestamp, varchar } from 'drizzle-orm/pg-core';
 import { dbManagerV2 } from '@/lib/db/database-manager-v2';
 import { logger } from '@/lib/logger';
@@ -176,7 +177,7 @@ export async function reportUser(params: {
 	description: string;
 	evidence?: Record<string, unknown>;
 }): Promise<UserReport> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		throw new Error('Database not available');
 	}
@@ -248,7 +249,7 @@ export async function blockUser(
  * Get community health status
  */
 export async function getCommunityHealthStatus(): Promise<CommunityHealthStatus> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		return {
 			overallScore: 0,
@@ -260,10 +261,16 @@ export async function getCommunityHealthStatus(): Promise<CommunityHealthStatus>
 	}
 
 	try {
+		// Get reports pending
+		const pendingReports = await db
+			.select({ id: userReportsTable.id })
+			.from(userReportsTable)
+			.where(eq(userReportsTable.status, 'pending'));
+
 		return {
 			overallScore: 85, // Would calculate from data
 			toxicMessagesDetected: 0,
-			reportsPending: 0,
+			reportsPending: pendingReports.length,
 			activeMutes: 0,
 			positiveInteractions: 0,
 		};
@@ -297,7 +304,7 @@ export function getPositiveReinforcement(): string {
  * Initialize community health tables
  */
 export async function initializeCommunityHealth(): Promise<void> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		log.warn('Database not available - skipping community health initialization');
 		return;

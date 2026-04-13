@@ -65,9 +65,8 @@ export function TopicDetailsModal({
 						size="icon"
 						onClick={onClose}
 						className="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/20 backdrop-blur text-white hover:bg-white/30"
-						aria-label="Close modal"
 					>
-						<HugeiconsIcon icon={CloseIcon} className="w-4 h-4" aria-hidden="true" />
+						<HugeiconsIcon icon={CloseIcon} className="w-4 h-4" />
 					</Button>
 					<div className="absolute bottom-4 left-6 flex items-center gap-3">
 						<span className="text-3xl">{subject.icon}</span>

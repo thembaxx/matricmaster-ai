@@ -21,7 +21,6 @@ const log = logger.createLogger('WellbeingSupport');
 
 // Configuration
 const STRESS_DETECTION_WINDOW_DAYS = 7;
-const _ERRATIC_BEHAVIOR_THRESHOLD = 3; // session pattern changes
 const ABANDONMENT_RATE_THRESHOLD = 0.4; // 40% session abandonment
 const ENGAGEMENT_DECLINE_THRESHOLD = 0.3; // 30% decline
 
@@ -77,7 +76,7 @@ export interface StressPattern {
  * Get comprehensive wellbeing status for a student
  */
 export async function getWellbeingStatus(userId: string): Promise<WellbeingStatus> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		throw new Error('Database not available');
 	}
@@ -177,7 +176,7 @@ export async function getWellbeingStatus(userId: string): Promise<WellbeingStatu
  * Detect stress patterns from study behavior
  */
 async function detectStressPatterns(userId: string): Promise<StressPattern> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		throw new Error('Database not available');
 	}
@@ -204,7 +203,9 @@ async function detectStressPatterns(userId: string): Promise<StressPattern> {
 	}
 
 	// 1. Detect erratic study times
-	const studyTimes = recentSessions.map((s) => s.startedAt.getHours());
+	const studyTimes = recentSessions
+		.filter((s) => s.startedAt !== null)
+		.map((s) => s.startedAt!.getHours());
 	const timeVariance = calculateVariance(studyTimes);
 	const erraticStudyTimes = timeVariance > 25; // High variance in study hours
 
@@ -296,7 +297,7 @@ async function detectStressPatterns(userId: string): Promise<StressPattern> {
  * Reduces pressure and provides supportive environment
  */
 export async function enableGentleMode(userId: string): Promise<GentleModeSettings> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		throw new Error('Database not available');
 	}
@@ -334,7 +335,7 @@ export async function enableGentleMode(userId: string): Promise<GentleModeSettin
  * Disable gentle mode
  */
 export async function disableGentleMode(userId: string): Promise<void> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		throw new Error('Database not available');
 	}

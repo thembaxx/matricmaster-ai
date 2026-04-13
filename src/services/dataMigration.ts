@@ -11,8 +11,8 @@
 
 import { desc, eq } from 'drizzle-orm';
 import { boolean, integer, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
-import { dbManagerV2 } from '@/lib/db/database-manager-v2';
-import { logger } from '@/lib/logger';
+import { dbManagerV2 } from '../lib/db/database-manager-v2';
+import { logger } from '../lib/logger';
 
 const log = logger.createLogger('DataMigration');
 
@@ -83,14 +83,13 @@ export async function executeResilientMigration(
 		validateAfter?: () => Promise<boolean>;
 	} = {}
 ): Promise<MigrationResult> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		throw new Error('Database not available for migration');
 	}
 
 	const startTime = Date.now();
-	const _totalCheckpoints = options.totalCheckpoints || 1;
-	const timeoutMs = options.timeoutMs || 5 * 60 * 1000; // 5 minutes default
+	const { timeoutMs = 5 * 60 * 1000 } = options; // 5 minutes default
 
 	// Update status
 	currentMigrationStatus = {
@@ -114,7 +113,6 @@ export async function executeResilientMigration(
 
 		// Step 2: Check for existing checkpoints (resume support)
 		const lastCheckpoint = await getLastCheckpoint(migrationName);
-		const _startIndex = lastCheckpoint ? lastCheckpoint.checkpointIndex + 1 : 0;
 
 		if (lastCheckpoint) {
 			log.info('Resuming migration from checkpoint', {
@@ -124,7 +122,7 @@ export async function executeResilientMigration(
 		}
 
 		// Step 3: Execute migration in transaction with checkpoints
-		const _result = await db.transaction(async (tx) => {
+		await db.transaction(async (tx) => {
 			const recordsAffected = 0;
 
 			// Create checkpoint helper
@@ -231,7 +229,7 @@ export async function executeResilientMigration(
  * Get the last checkpoint for a migration
  */
 async function getLastCheckpoint(migrationName: string): Promise<MigrationCheckpoint | null> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		return null;
 	}
@@ -272,7 +270,7 @@ async function getLastCheckpoint(migrationName: string): Promise<MigrationCheckp
  * Clean up checkpoints for a completed migration
  */
 async function cleanupCheckpoints(migrationName: string): Promise<void> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		return;
 	}
@@ -295,7 +293,7 @@ async function cleanupCheckpoints(migrationName: string): Promise<void> {
  * Check if a table exists in the database
  */
 async function checkTableExists(tableName: string): Promise<boolean> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		return false;
 	}
@@ -307,7 +305,8 @@ async function checkTableExists(tableName: string): Promise<boolean> {
         WHERE table_name = '${tableName}'
       );
     `);
-		return result[0]?.exists ?? false;
+		const row = result[0] as Record<string, unknown> | undefined;
+		return Boolean(row?.exists);
 	} catch {
 		return false;
 	}
@@ -325,7 +324,7 @@ export function getMigrationStatus(): MigrationStatus {
  * Call this during app initialization
  */
 export async function initializeMigrationTracking(): Promise<void> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		log.warn('Database not available - skipping migration tracking initialization');
 		return;

@@ -6,7 +6,7 @@ import { studyPlans } from '@/lib/db/schema';
 import { detectBurnoutRisk as detectBurnoutRiskFromService } from '@/services/burnoutService';
 
 type BurnoutRisk = {
-	risk: 'low' | 'medium' | 'high';
+	risk: 'low' | 'medium' | 'high' | 'severe';
 	level: 'low' | 'medium' | 'high';
 	factors: string[];
 	recommendations: string[];

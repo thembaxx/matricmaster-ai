@@ -109,9 +109,9 @@ export const WebLLMDownloader = memo(function WebLLMDownloader() {
 								variant="ghost"
 								size="icon"
 								className="h-8 w-8"
-								aria-label="Open model settings"
+								aria-label="AI model settings"
 							>
-								<HugeiconsIcon icon={Settings01Icon} className="w-4 h-4" aria-hidden="true" />
+								<HugeiconsIcon icon={Settings01Icon} className="w-4 h-4" />
 							</Button>
 						</DialogTrigger>
 						<DialogContent>
@@ -142,9 +142,9 @@ export const WebLLMDownloader = memo(function WebLLMDownloader() {
 						size="icon"
 						onClick={handleDismiss}
 						className="h-8 w-8"
-						aria-label="Dismiss download"
+						aria-label="Dismiss model downloader"
 					>
-						<HugeiconsIcon icon={Cancel01Icon} className="w-4 h-4" aria-hidden="true" />
+						<HugeiconsIcon icon={Cancel01Icon} className="w-4 h-4" />
 					</Button>
 				</div>
 			</div>

@@ -10,10 +10,10 @@
  * - Clear timer warnings to student
  */
 
-import { and, eq, gt } from 'drizzle-orm';
+import { and, eq, gt, lt } from 'drizzle-orm';
 import { boolean, integer, jsonb, pgTable, text, timestamp, varchar } from 'drizzle-orm/pg-core';
-import { dbManagerV2 } from '@/lib/db/database-manager-v2';
-import { logger } from '@/lib/logger';
+import { dbManagerV2 } from '../lib/db/database-manager-v2';
+import { logger } from '../lib/logger';
 
 const log = logger.createLogger('ExamSession');
 
@@ -35,11 +35,11 @@ export interface ExamSession {
 	lastSavedAt: Date | null;
 	progress: Record<string, unknown>;
 	answers: ExamAnswer[];
-	isActive: boolean;
-	isCompleted: boolean;
+	isActive: boolean | null;
+	isCompleted: boolean | null;
 	completedAt: Date | null;
-	createdAt: Date;
-	updatedAt: Date;
+	createdAt: Date | null;
+	updatedAt: Date | null;
 }
 
 export interface ExamAnswer {
@@ -95,7 +95,7 @@ export async function startExamSession(params: {
 	examType: string;
 	subjectId: number | null;
 }): Promise<ExamSession> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		throw new Error('Database not available');
 	}
@@ -173,7 +173,7 @@ export async function startExamSession(params: {
  * Call this on any user interaction during exam
  */
 export async function recordExamActivity(sessionId: string): Promise<SessionExtensionResult> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		throw new Error('Database not available');
 	}
@@ -220,7 +220,10 @@ export async function recordExamActivity(sessionId: string): Promise<SessionExte
 		.where(eq(examSessionsTable.id, sessionId));
 
 	// Update in-memory state
-	const updatedState = activeSessions.get(sessionId)!;
+	const updatedState = activeSessions.get(sessionId);
+	if (!updatedState?.session) {
+		throw new Error('Session not found in memory');
+	}
 	updatedState.session.lastActivityAt = now;
 	updatedState.session.expiresAt = newExpiresAt;
 	updatedState.timeRemaining = newExpiresAt.getTime() - now.getTime();
@@ -241,7 +244,7 @@ export async function saveExamProgress(params: {
 	answers: ExamAnswer[];
 	progress: Record<string, unknown>;
 }): Promise<void> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		throw new Error('Database not available');
 	}
@@ -261,7 +264,7 @@ export async function saveExamProgress(params: {
 
 		// Update in-memory state
 		const state = activeSessions.get(params.sessionId);
-		if (state) {
+		if (state?.session) {
 			state.session.answers = params.answers;
 			state.session.progress = params.progress;
 			state.session.lastSavedAt = now;
@@ -283,7 +286,7 @@ export async function saveExamProgress(params: {
  * Complete an exam session
  */
 export async function completeExamSession(sessionId: string): Promise<ExamSession> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		throw new Error('Database not available');
 	}
@@ -353,7 +356,7 @@ export async function checkSessionWarnings(sessionId: string): Promise<{
 	expiresAt: Date;
 }> {
 	const state = activeSessions.get(sessionId);
-	if (!state) {
+	if (!state?.session) {
 		return { shouldWarn: false, timeRemaining: 0, expiresAt: new Date(0) };
 	}
 
@@ -375,7 +378,7 @@ export async function checkSessionWarnings(sessionId: string): Promise<{
  * Recovers state from last save
  */
 export async function resumeExamSession(sessionId: string): Promise<ExamSessionState> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		throw new Error('Database not available');
 	}
@@ -418,7 +421,7 @@ export async function resumeExamSession(sessionId: string): Promise<ExamSessionS
  * Load an exam session from database
  */
 async function loadExamSession(sessionId: string): Promise<ExamSession | null> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		return null;
 	}
@@ -457,7 +460,7 @@ function startAutosave(sessionId: string): void {
 	const timer = setInterval(async () => {
 		try {
 			const state = activeSessions.get(sessionId);
-			if (!state || state.unsavedChanges === false) {
+			if (!state?.session || state.unsavedChanges === false) {
 				return; // Nothing to save
 			}
 
@@ -481,7 +484,7 @@ function startAutosave(sessionId: string): void {
  * Get all active exam sessions for a user
  */
 export async function getUserActiveExamSessions(userId: string): Promise<ExamSession[]> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		return [];
 	}
@@ -514,7 +517,7 @@ export async function getUserActiveExamSessions(userId: string): Promise<ExamSes
  * Run this periodically as a cron job
  */
 export async function cleanupExpiredSessions(): Promise<number> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		return 0;
 	}
@@ -522,16 +525,19 @@ export async function cleanupExpiredSessions(): Promise<number> {
 	try {
 		const now = new Date();
 
-		const result = await db.delete(examSessionsTable).where(
-			and(
-				eq(examSessionsTable.isActive, false),
-				eq(examSessionsTable.isCompleted, true),
-				gt(examSessionsTable.completedAt, new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000)) // Keep for 7 days
+		const deleted = await db
+			.delete(examSessionsTable)
+			.where(
+				and(
+					eq(examSessionsTable.isActive, false),
+					eq(examSessionsTable.isCompleted, true),
+					lt(examSessionsTable.completedAt, new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000)) // Older than 7 days
+				)
 			)
-		);
+			.returning({ id: examSessionsTable.id });
 
-		log.info('Expired exam sessions cleaned up', { count: result.rowCount });
-		return result.rowCount || 0;
+		log.info('Expired exam sessions cleaned up', { count: deleted.length });
+		return deleted.length;
 	} catch (error) {
 		log.error('Failed to cleanup expired sessions', { error });
 		return 0;
@@ -542,7 +548,7 @@ export async function cleanupExpiredSessions(): Promise<number> {
  * Initialize exam session tracking
  */
 export async function initializeExamSessions(): Promise<void> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		log.warn('Database not available - skipping exam session initialization');
 		return;

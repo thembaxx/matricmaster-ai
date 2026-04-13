@@ -1,0 +1,3 @@
+$ next build ";" echo "EXIT CODE: 0"
+Invalid project directory provided, no such directory: C:\Users\Themba\Documents\org1128\projects\matricmaster-ai\;
+error: script "build" exited with code 1

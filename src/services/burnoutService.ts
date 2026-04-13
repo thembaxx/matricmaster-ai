@@ -5,7 +5,7 @@ import { dbManager } from '@/lib/db';
 import { studySessions, userProgress } from '@/lib/db/schema';
 
 export interface BurnoutRiskResult {
-	risk: 'low' | 'medium' | 'high';
+	risk: 'low' | 'medium' | 'high' | 'severe';
 	level: 'low' | 'medium' | 'high'; // Alias for backward compatibility
 	factors: string[];
 	recommendations: string[];
@@ -129,8 +129,10 @@ export async function detectBurnoutRisk(userId: string): Promise<BurnoutRiskResu
 			factors.push(`Long streak may indicate overwork (${progress.streakDays} days)`);
 		}
 
-		let risk: 'low' | 'medium' | 'high';
-		if (riskScore >= 50) {
+		let risk: 'low' | 'medium' | 'high' | 'severe';
+		if (riskScore >= 80) {
+			risk = 'severe';
+		} else if (riskScore >= 50) {
 			risk = 'high';
 		} else if (riskScore >= 25) {
 			risk = 'medium';
@@ -156,7 +158,11 @@ export async function detectBurnoutRisk(userId: string): Promise<BurnoutRiskResu
 function generateRecommendations(level: string, factors: string[]): string[] {
 	const recommendations: string[] = [];
 
-	if (level === 'high') {
+	if (level === 'severe') {
+		recommendations.push('Take a 3-5 day study break immediately');
+		recommendations.push('Focus on rest and recovery');
+		recommendations.push('Consider speaking with a counselor');
+	} else if (level === 'high') {
 		recommendations.push('Consider taking a 1-2 day study break');
 		recommendations.push('Reduce daily study hours by 30%');
 		recommendations.push('Focus on easier topics to rebuild confidence');

@@ -39,7 +39,7 @@ export interface NotificationPermission {
 }
 
 export interface Notification {
-	id: string;
+	id?: string;
 	userId: string;
 	type: NotificationType;
 	priority: NotificationPriority;
@@ -74,7 +74,6 @@ export interface NotificationDeliveryResult {
 // Configuration
 const DEFAULT_QUIET_HOURS = { start: '22:00', end: '07:00' };
 const DEFAULT_MAX_PER_DAY = 20;
-const _CRITICAL_NOTIFICATION_OVERRIDE = true;
 
 /**
  * Check notification permissions across all channels
@@ -102,7 +101,7 @@ export async function checkNotificationPermissions(
 	}
 
 	// Check other channels from user settings
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (db) {
 		try {
 			const [settings] = await db
@@ -173,7 +172,7 @@ export async function requestNotificationPermission(
  * Send notification through multiple channels
  */
 export async function sendNotification(
-	notification: Omit<Notification, 'id' | 'sentAt' | 'readAt'>
+	notification: Omit<Notification, 'sentAt' | 'readAt'>
 ): Promise<NotificationDeliveryResult> {
 	const results: NotificationDeliveryResult = {
 		success: false,
@@ -181,7 +180,8 @@ export async function sendNotification(
 	};
 
 	// Determine which channels to use
-	const channels = notification.channels.length > 0 ? notification.channels : ['in-app']; // Default to in-app
+	const channels: NotificationChannel[] =
+		notification.channels.length > 0 ? notification.channels : ['in-app']; // Default to in-app
 
 	// Send through each channel
 	for (const channel of channels) {
@@ -214,7 +214,7 @@ export async function sendNotification(
 			}
 		} catch (error) {
 			log.error(`Failed to send ${channel} notification`, {
-				notificationId: notification.id,
+				notificationId: notification.id ?? 'unknown',
 				error,
 			});
 			results.channels.push({
@@ -248,7 +248,7 @@ async function sendPushNotification(
 async function sendInAppNotification(
 	notification: Omit<Notification, 'id' | 'sentAt' | 'readAt'>
 ): Promise<boolean> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		return false;
 	}
@@ -312,7 +312,7 @@ async function createCalendarEvent(
  * Get user notification preferences
  */
 export async function getNotificationPreferences(userId: string): Promise<NotificationPreferences> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		return {
 			pushEnabled: false,
@@ -365,7 +365,7 @@ export async function updateNotificationPreferences(
 	userId: string,
 	preferences: Partial<NotificationPreferences>
 ): Promise<void> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		throw new Error('Database not available');
 	}
@@ -415,6 +415,7 @@ export function getPermissionValueProposition(channel: NotificationChannel): str
 		email: 'Receive detailed study plans and progress reports',
 		whatsapp: 'Quick study reminders and motivational messages',
 		calendar: 'Automatic scheduling of study sessions in your calendar',
+		'in-app': 'Never miss important updates and stay on track with your studies',
 	};
 
 	return propositions[channel] || 'Stay updated with your learning progress';

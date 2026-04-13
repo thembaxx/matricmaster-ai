@@ -60,7 +60,7 @@ export interface DailyXPTracking {
  * Check for gaming/suspicious activity
  */
 export async function detectGamingActivity(userId: string): Promise<GamingDetectionResult> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		throw new Error('Database not available');
 	}
@@ -146,7 +146,7 @@ async function checkRapidCompletion(userId: string): Promise<{
 	severity: 'low' | 'medium' | 'high' | 'critical';
 	percentageFaster: number;
 }> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		return { isDetected: false, severity: 'low', percentageFaster: 0 };
 	}
@@ -223,7 +223,7 @@ async function checkXPFarming(userId: string): Promise<{
 	severity: 'low' | 'medium' | 'high' | 'critical';
 	totalXP: number;
 }> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		return { isDetected: false, severity: 'low', totalXP: 0 };
 	}
@@ -319,7 +319,7 @@ function generateAntiGamingActions(
  * Apply daily XP cap
  */
 export async function applyDailyXPCap(userId: string, earnedXP: number): Promise<number> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		return earnedXP;
 	}

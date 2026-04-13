@@ -54,6 +54,7 @@ export interface AccommodationSettings {
 	breakFrequencyMinutes: number;
 	focusMode: boolean;
 	distractionReduction: boolean;
+	chunkedContent: boolean;
 }
 
 export interface DisabilityAccommodations {
@@ -73,6 +74,7 @@ export interface UIAdjustments {
 	largerClickTargets: boolean;
 	simplifiedNavigation: boolean;
 	colorCoding: boolean;
+	visualAids: boolean;
 }
 
 // Learning profiles table schema
@@ -96,7 +98,7 @@ const learningProfilesTable = pgTable('learning_profiles', {
  * Get learning profile for a student
  */
 export async function getLearningProfile(userId: string): Promise<LearningProfile | null> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		return null;
 	}
@@ -145,7 +147,7 @@ export async function updateLearningProfile(
 	userId: string,
 	profile: Partial<LearningProfile>
 ): Promise<LearningProfile> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		throw new Error('Database not available');
 	}
@@ -221,7 +223,7 @@ export async function updateLearningProfile(
 export async function getDisabilityAccommodations(
 	userId: string
 ): Promise<DisabilityAccommodations> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		throw new Error('Database not available');
 	}
@@ -277,6 +279,7 @@ function generateAccommodations(profile: LearningProfile): AccommodationSettings
 		breakFrequencyMinutes: 30,
 		focusMode: false,
 		distractionReduction: false,
+		chunkedContent: false,
 	};
 
 	switch (profile.disabilityType) {
@@ -345,6 +348,7 @@ function generateUIAdjustments(profile: LearningProfile): UIAdjustments {
 		largerClickTargets: false,
 		simplifiedNavigation: false,
 		colorCoding: false,
+		visualAids: false,
 	};
 
 	switch (profile.disabilityType) {
@@ -406,6 +410,7 @@ function getDefaultAccommodations(): AccommodationSettings {
 		breakFrequencyMinutes: 30,
 		focusMode: false,
 		distractionReduction: false,
+		chunkedContent: false,
 	};
 }
 
@@ -424,6 +429,7 @@ function getDefaultUIAdjustments(): UIAdjustments {
 		largerClickTargets: false,
 		simplifiedNavigation: false,
 		colorCoding: false,
+		visualAids: false,
 	};
 }
 
@@ -442,7 +448,7 @@ export function getAdjustedQuizTime(
  * This would typically be set by user or admin
  */
 export async function initializeLearningProfileTable(): Promise<void> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		log.warn('Database not available - skipping learning profile initialization');
 		return;
@@ -477,7 +483,7 @@ export async function initializeLearningProfileTable(): Promise<void> {
  * Check if table exists
  */
 async function checkTableExists(tableName: string): Promise<boolean> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		return false;
 	}
@@ -489,7 +495,8 @@ async function checkTableExists(tableName: string): Promise<boolean> {
         WHERE table_name = '${tableName}'
       );
     `);
-		return result[0]?.exists ?? false;
+		const row = result[0] as Record<string, unknown> | undefined;
+		return Boolean(row?.exists);
 	} catch {
 		return false;
 	}

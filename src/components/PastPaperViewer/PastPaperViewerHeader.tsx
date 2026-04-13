@@ -40,7 +40,12 @@ export function PastPaperViewerHeader({
 		<header className="px-6 pt-8 pb-4 bg-card sticky top-0 z-20 border-b border-border shrink-0">
 			<div className="flex flex-col justify-between mb-4 gap-3">
 				<div className="flex items-center gap-4">
-					<Button variant="ghost" size="icon" onClick={onBack ? onBack : () => router.back()}>
+					<Button
+						variant="ghost"
+						size="icon"
+						onClick={onBack ? onBack : () => router.back()}
+						aria-label="Go back"
+					>
 						<HugeiconsIcon icon={ArrowLeft02Icon} className="w-5 h-5" />
 					</Button>
 					<div>
@@ -69,6 +74,7 @@ export function PastPaperViewerHeader({
 							size="icon"
 							className="h-8 w-8"
 							onClick={() => onZoomChange(Math.max(50, zoom - 10))}
+							aria-label="Zoom out"
 						>
 							<HugeiconsIcon icon={Search01Icon} className="w-4 h-4" />
 						</Button>
@@ -80,6 +86,7 @@ export function PastPaperViewerHeader({
 							size="icon"
 							className="h-8 w-8"
 							onClick={() => onZoomChange(Math.min(200, zoom + 10))}
+							aria-label="Zoom in"
 						>
 							<HugeiconsIcon icon={Search01Icon} className="w-4 h-4" />
 						</Button>

@@ -55,6 +55,7 @@ export function DeckCard({
 								variant="ghost"
 								size="icon"
 								className="h-9 w-9 md:h-8 md:w-8 md:opacity-0 md:group-hover:opacity-100 opacity-100 transition-opacity"
+								aria-label="More options"
 							>
 								<HugeiconsIcon icon={MoreVerticalIcon} className="h-4 w-4" />
 							</Button>

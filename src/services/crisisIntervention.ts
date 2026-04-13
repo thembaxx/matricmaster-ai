@@ -79,16 +79,11 @@ export interface CrisisIntervention {
 	completedAt: Date | null;
 }
 
-// Crisis interventions tracking table
-const _crisisInterventionsTable = {
-	name: 'crisis_interventions',
-};
-
 /**
  * Check if a student is in academic crisis
  */
 export async function checkAcademicCrisis(userId: string): Promise<AcademicCrisisStatus> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		throw new Error('Database not available');
 	}
@@ -208,7 +203,7 @@ async function calculateSubjectTrend(
 	subjectId: number,
 	windowStart: Date
 ): Promise<'improving' | 'stable' | 'declining'> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		return 'stable';
 	}
@@ -333,7 +328,7 @@ function generateCrisisActions(
  * Resets expectations and starts from basics
  */
 export async function enableFreshStart(userId: string): Promise<FreshStartPlan> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		throw new Error('Database not available');
 	}
@@ -373,7 +368,7 @@ export async function enableFreshStart(userId: string): Promise<FreshStartPlan> 
  * Disable Fresh Start mode
  */
 export async function disableFreshStart(userId: string): Promise<void> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		throw new Error('Database not available');
 	}
@@ -399,7 +394,7 @@ export async function getFoundationalContentRecommendations(userId: string): Pro
 		resourceType: 'lesson' | 'quiz' | 'flashcard' | 'video';
 	}>
 > {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		return [];
 	}
@@ -420,17 +415,17 @@ export async function getFoundationalContentRecommendations(userId: string): Pro
 			const weakTopics = await db
 				.select({
 					topic: topicMastery.topic,
-					mastery: topicMastery.masteryScore,
+					mastery: topicMastery.masteryLevel,
 				})
 				.from(topicMastery)
 				.where(
 					and(
 						eq(topicMastery.userId, userId),
 						eq(topicMastery.subjectId, subject.subjectId),
-						sql`${topicMastery.masteryScore} < 0.5`
+						sql`${topicMastery.masteryLevel} < 0.5`
 					)
 				)
-				.orderBy(sql`${topicMastery.masteryScore} ASC`)
+				.orderBy(sql`${topicMastery.masteryLevel} ASC`)
 				.limit(5);
 
 			for (const topic of weakTopics) {
@@ -460,7 +455,7 @@ export async function getFoundationalContentRecommendations(userId: string): Pro
  * Log a crisis intervention event
  */
 async function logCrisisIntervention(userId: string, action: string): Promise<void> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		return;
 	}
@@ -485,7 +480,7 @@ export async function sendParentAlert(
 	userId: string,
 	crisisStatus: AcademicCrisisStatus
 ): Promise<void> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		return;
 	}
@@ -511,7 +506,7 @@ export async function getSimplifiedStudyPlan(userId: string): Promise<{
 	suggestedDuration: number; // minutes
 	breakFrequency: number; // minutes
 }> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		throw new Error('Database not available');
 	}

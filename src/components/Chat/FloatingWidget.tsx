@@ -31,7 +31,7 @@ export function FloatingWidget() {
 				aria-label="Open chat"
 				className="fixed bottom-32 right-4 w-14 h-14 rounded-full shadow-lg flex p-0! items-center justify-center z-50"
 			>
-				<HugeiconsIcon icon={MessageIcon} className="w-6 h-6 shrink-0" aria-hidden="true" />
+				<HugeiconsIcon icon={MessageIcon} className="w-6 h-6 shrink-0" />
 			</Button>
 		);
 	}
@@ -47,7 +47,7 @@ export function FloatingWidget() {
 					onClick={toggleWidget}
 					aria-label="Close chat"
 				>
-					<HugeiconsIcon icon={CloseIcon} className="w-4 h-4" aria-hidden="true" />
+					<HugeiconsIcon icon={CloseIcon} className="w-4 h-4" />
 				</Button>
 			</div>
 

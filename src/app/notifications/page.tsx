@@ -4,168 +4,140 @@ import { Notification03Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { NotificationHeader } from '@/components/Notifications/NotificationHeader';
 import { NotificationItem } from '@/components/Notifications/NotificationItem';
 import type { Notification, NotificationAction } from '@/components/Notifications/types';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
-const generateMockNotifications = (): Notification[] => {
-	const now = new Date();
-
-	return [
-		{
-			id: '1',
-			type: 'streak',
-			title: '12 Day Streak!',
-			message: "You've studied for 12 days in a row. Keep it up!",
-			detail: 'Mathematics: 5 sessions • Physics: 4 sessions • Life Sciences: 3 sessions',
-			icon: 'fire',
-			iconColor: 'text-orange-500',
-			iconBg: 'bg-orange-100 dark:bg-orange-900/30',
-			isRead: false,
-			createdAt: new Date(now.getTime() - 1000 * 60 * 5),
-		},
-		{
-			id: '2',
-			type: 'achievement',
-			title: 'Achievement Unlocked!',
-			message: 'You earned the "Week Warrior" badge',
-			detail: 'Maintain a 7-day study streak',
-			icon: 'trophy',
-			iconColor: 'text-amber-500',
-			iconBg: 'bg-amber-100 dark:bg-amber-900/30',
-			actions: [{ label: 'View Achievements', href: '/achievements' }],
-			isRead: false,
-			createdAt: new Date(now.getTime() - 1000 * 60 * 30),
-		},
-		{
-			id: '3',
-			type: 'exam',
-			title: 'Exam Countdown',
-			message: 'Mathematics Paper 1 in 14 days',
-			detail: 'Nov 3, 2026 • 09:00 AM • Duration: 3 hours',
-			icon: 'calendar',
-			iconColor: 'text-blue-500',
-			iconBg: 'bg-blue-100 dark:bg-blue-900/30',
-			actions: [
-				{ label: 'View Schedule', href: '/schedule' },
-				{ label: 'Practice Now', href: '/quiz?subject=mathematics' },
-			],
-			isRead: false,
-			createdAt: new Date(now.getTime() - 1000 * 60 * 60 * 2),
-		},
-		{
-			id: '4',
-			type: 'past_paper',
-			title: 'Past Paper Complete!',
-			message: 'You finished Physical Sciences 2024 November',
-			detail: 'Score: 78% • Time: 2h 15m • 156 marks',
-			icon: 'book',
-			iconColor: 'text-emerald-500',
-			iconBg: 'bg-emerald-100 dark:bg-emerald-900/30',
-			actions: [
-				{ label: 'Review Answers', href: '/past-paper?id=phys-2024-nov' },
-				{ label: 'Similar Papers', href: '/past-papers?subject=physics' },
-			],
-			isRead: false,
-			createdAt: new Date(now.getTime() - 1000 * 60 * 60 * 4),
-		},
-		{
-			id: '5',
-			type: 'buddy',
-			title: 'Study Buddy Request',
-			message: 'Amahle Nkosi wants to study with you',
-			detail: 'Maths • Life Sciences • Both online now',
-			icon: 'user',
-			iconColor: 'text-violet-500',
-			iconBg: 'bg-violet-100 dark:bg-violet-900/30',
-			actions: [
-				{ label: 'Accept', variant: 'default' },
-				{ label: 'Decline', variant: 'outline' },
-			],
-			isRead: false,
-			createdAt: new Date(now.getTime() - 1000 * 60 * 60 * 6),
-		},
-		{
-			id: '6',
-			type: 'progress',
-			title: 'Topic Mastered!',
-			message: "You've mastered 'Calculus - Differentiation'",
-			detail: '15/15 questions correct • 3 practice sessions',
-			icon: 'sparkles',
-			iconColor: 'text-primary',
-			iconBg: 'bg-primary/10',
-			actions: [{ label: 'View Topics', href: '/curriculum-map' }],
-			isRead: true,
-			createdAt: new Date(now.getTime() - 1000 * 60 * 60 * 12),
-		},
-		{
-			id: '7',
-			type: 'leaderboard',
-			title: 'You Moved Up!',
-			message: "You're now #47 on the Mathematics leaderboard",
-			detail: 'Up 12 spots from yesterday • 2,450 XP this week',
-			icon: 'rank',
-			iconColor: 'text-cyan-500',
-			iconBg: 'bg-cyan-100 dark:bg-cyan-900/30',
-			actions: [{ label: 'View Leaderboard', href: '/leaderboard?subject=mathematics' }],
-			isRead: true,
-			createdAt: new Date(now.getTime() - 1000 * 60 * 60 * 18),
-		},
-		{
-			id: '8',
-			type: 'study_reminder',
-			title: 'Time to Study!',
-			message: "You haven't studied today. Ready for a quick session?",
-			detail: 'Recommended: 30 min Mathematics',
-			icon: 'timer',
-			iconColor: 'text-rose-500',
-			iconBg: 'bg-rose-100 dark:bg-rose-900/30',
-			actions: [
-				{ label: 'Start Studying', href: '/dashboard' },
-				{ label: 'Snooze 1h', variant: 'outline' },
-			],
-			isRead: true,
-			createdAt: new Date(now.getTime() - 1000 * 60 * 60 * 24),
-		},
-		{
-			id: '9',
-			type: 'weekly_summary',
-			title: 'Weekly Summary',
-			message: 'Your study week at a glance',
-			detail: '5 days active • 12.5 hours • 847 XP • 89% accuracy',
-			icon: 'chart',
-			iconColor: 'text-indigo-500',
-			iconBg: 'bg-indigo-100 dark:bg-indigo-900/30',
-			actions: [{ label: 'View Details', href: '/dashboard' }],
-			isRead: true,
-			createdAt: new Date(now.getTime() - 1000 * 60 * 60 * 48),
-		},
-		{
-			id: '10',
-			type: 'buddy',
-			title: 'Study Buddy Online',
-			message: 'Lwazi is online in Focus Room - Mathematics',
-			detail: '3 others studying now',
-			icon: 'user',
-			iconColor: 'text-pink-500',
-			iconBg: 'bg-pink-100 dark:bg-pink-900/30',
-			actions: [{ label: 'Join Room', href: '/focus-rooms?room=math' }],
-			isRead: true,
-			createdAt: new Date(now.getTime() - 1000 * 60 * 60 * 72),
-		},
-	];
+// Map DB notification type to UI icon/type
+const TYPE_CONFIG: Record<
+	string,
+	{ icon: Notification['icon']; iconColor: string; iconBg: string }
+> = {
+	achievement: {
+		icon: 'trophy',
+		iconColor: 'text-amber-500',
+		iconBg: 'bg-amber-100 dark:bg-amber-900/30',
+	},
+	streak: {
+		icon: 'fire',
+		iconColor: 'text-orange-500',
+		iconBg: 'bg-orange-100 dark:bg-orange-900/30',
+	},
+	exam: { icon: 'calendar', iconColor: 'text-blue-500', iconBg: 'bg-blue-100 dark:bg-blue-900/30' },
+	past_paper: {
+		icon: 'book',
+		iconColor: 'text-emerald-500',
+		iconBg: 'bg-emerald-100 dark:bg-emerald-900/30',
+	},
+	buddy: {
+		icon: 'user',
+		iconColor: 'text-violet-500',
+		iconBg: 'bg-violet-100 dark:bg-violet-900/30',
+	},
+	progress: { icon: 'sparkles', iconColor: 'text-primary', iconBg: 'bg-primary/10' },
+	leaderboard: {
+		icon: 'rank',
+		iconColor: 'text-cyan-500',
+		iconBg: 'bg-cyan-100 dark:bg-cyan-900/30',
+	},
+	study_reminder: {
+		icon: 'timer',
+		iconColor: 'text-rose-500',
+		iconBg: 'bg-rose-100 dark:bg-rose-900/30',
+	},
+	weekly_summary: {
+		icon: 'chart',
+		iconColor: 'text-indigo-500',
+		iconBg: 'bg-indigo-100 dark:bg-indigo-900/30',
+	},
+	comment_reply: { icon: 'message', iconColor: 'text-primary', iconBg: 'bg-primary/10' },
+	buddy_request: {
+		icon: 'user',
+		iconColor: 'text-violet-500',
+		iconBg: 'bg-violet-100 dark:bg-violet-900/30',
+	},
+	wellness_tip: {
+		icon: 'sparkles',
+		iconColor: 'text-emerald-500',
+		iconBg: 'bg-emerald-100 dark:bg-emerald-900/30',
+	},
+	practice_result: {
+		icon: 'chart',
+		iconColor: 'text-indigo-500',
+		iconBg: 'bg-indigo-100 dark:bg-indigo-900/30',
+	},
 };
+
+const FALLBACK_CONFIG = {
+	icon: 'sparkles' as const,
+	iconColor: 'text-primary',
+	iconBg: 'bg-primary/10',
+};
+
+interface DbNotification {
+	id: string;
+	type: string;
+	title: string;
+	message: string;
+	data?: string | null;
+	isRead: boolean;
+	readAt?: string | null;
+	createdAt?: string | null;
+}
+
+function mapDbNotification(db: DbNotification): Notification {
+	const config = TYPE_CONFIG[db.type] ?? FALLBACK_CONFIG;
+	const detail = db.data
+		? (() => {
+				try {
+					return JSON.parse(db.data);
+				} catch {
+					return null;
+				}
+			})()
+		: null;
+
+	return {
+		id: db.id,
+		type: db.type as Notification['type'],
+		title: db.title,
+		message: db.message,
+		detail: detail ? JSON.stringify(detail) : undefined,
+		icon: config.icon,
+		iconColor: config.iconColor,
+		iconBg: config.iconBg,
+		isRead: db.isRead,
+		createdAt: db.createdAt ? new Date(db.createdAt) : new Date(),
+	};
+}
 
 export default function NotificationsPage() {
 	const router = useRouter();
-	const [notifications, setNotifications] = useState<Notification[]>(() =>
-		generateMockNotifications()
-	);
+	const [notifications, setNotifications] = useState<Notification[]>([]);
+	const [isLoading, setIsLoading] = useState(true);
 	const [activeTab, setActiveTab] = useState<'all' | 'unread'>('all');
 	const [isDeleting, setIsDeleting] = useState<string | null>(null);
+
+	const fetchNotifications = useCallback(async () => {
+		try {
+			const res = await fetch('/api/notifications?limit=50');
+			const json = await res.json();
+			if (json.success && Array.isArray(json.data)) {
+				setNotifications(json.data.map(mapDbNotification));
+			}
+		} catch {
+			toast.error('Failed to load notifications');
+		} finally {
+			setIsLoading(false);
+		}
+	}, []);
+
+	useEffect(() => {
+		fetchNotifications();
+	}, [fetchNotifications]);
 
 	const unreadCount = notifications.filter((n) => !n.isRead).length;
 	const filteredNotifications =
@@ -196,23 +168,43 @@ export default function NotificationsPage() {
 		});
 	};
 
-	const markAsRead = (id: string) => {
-		setNotifications((prev) => prev.map((n) => (n.id === id ? { ...n, isRead: true } : n)));
-		toast.success('Marked as read');
+	const markAsRead = async (id: string) => {
+		try {
+			// Optimistic update
+			setNotifications((prev) => prev.map((n) => (n.id === id ? { ...n, isRead: true } : n)));
+			const res = await fetch(`/api/notifications/${id}/read`, { method: 'POST' });
+			if (!res.ok) throw new Error('Failed');
+		} catch {
+			// Revert on failure
+			fetchNotifications();
+			toast.error('Failed to mark as read');
+		}
 	};
 
-	const markAllAsRead = () => {
-		setNotifications((prev) => prev.map((n) => ({ ...n, isRead: true })));
-		toast.success('All notifications marked as read');
+	const markAllAsRead = async () => {
+		try {
+			setNotifications((prev) => prev.map((n) => ({ ...n, isRead: true })));
+			const res = await fetch('/api/notifications', { method: 'PATCH' });
+			if (!res.ok) throw new Error('Failed');
+			toast.success('All notifications marked as read');
+		} catch {
+			fetchNotifications();
+			toast.error('Failed to mark all as read');
+		}
 	};
 
-	const deleteNotification = (id: string) => {
+	const deleteNotification = async (id: string) => {
 		setIsDeleting(id);
-		setTimeout(() => {
+		try {
+			const res = await fetch(`/api/notifications/${id}`, { method: 'DELETE' });
+			if (!res.ok) throw new Error('Failed');
 			setNotifications((prev) => prev.filter((n) => n.id !== id));
-			setIsDeleting(null);
 			toast.success('Notification removed');
-		}, 300);
+		} catch {
+			toast.error('Failed to delete notification');
+		} finally {
+			setIsDeleting(null);
+		}
 	};
 
 	const handleAction = (action: NotificationAction) => {
@@ -222,6 +214,14 @@ export default function NotificationsPage() {
 			router.push(action.href);
 		}
 	};
+
+	if (isLoading) {
+		return (
+			<div className="min-h-screen bg-background flex items-center justify-center">
+				<p className="text-muted-foreground">Loading notifications...</p>
+			</div>
+		);
+	}
 
 	return (
 		<div className="min-h-screen bg-background">

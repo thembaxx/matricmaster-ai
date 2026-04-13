@@ -128,6 +128,37 @@ export default function ChannelPage() {
 
 	const channelName = `study-channel:${channelId}`;
 
+	// Fetch message history on mount
+	useEffect(() => {
+		let cancelled = false;
+		fetch(`/api/channels/${channelId}/messages?limit=50`)
+			.then((r) => {
+				if (!r.ok) throw new Error('Failed to fetch messages');
+				return r.json();
+			})
+			.then((data) => {
+				if (cancelled) return;
+				if (Array.isArray(data)) {
+					const history: Message[] = data.map((m: Record<string, unknown>) => ({
+						id: m.id as string,
+						userId: m.userId as string,
+						userName: (m.userName as string) || 'Anonymous',
+						userImage: m.userImage as string | undefined,
+						text: (m.text as string) || '',
+						timestamp: Number(m.timestamp) || Date.now(),
+						reactions: (m.reactions as Reaction[]) || [],
+					}));
+					setMessages(history);
+				}
+			})
+			.catch(() => {
+				// Silently fail — real-time messages will still arrive
+			});
+		return () => {
+			cancelled = true;
+		};
+	}, [channelId]);
+
 	const onMessageReceived = useCallback((message: { data: unknown }) => {
 		const data = message.data as Message;
 		setMessages((prev) => [...prev, data]);
@@ -202,6 +233,7 @@ export default function ChannelPage() {
 						variant="ghost"
 						size="icon"
 						onClick={() => router.push('/channels')}
+						aria-label="Back to channels"
 						className="rounded-full"
 					>
 						<HugeiconsIcon icon={ArrowLeft01Icon} className="w-6 h-6" />
@@ -221,10 +253,20 @@ export default function ChannelPage() {
 				</div>
 
 				<div className="flex items-center gap-2">
-					<Button variant="ghost" size="icon" className="rounded-full hidden sm:flex">
+					<Button
+						variant="ghost"
+						size="icon"
+						aria-label="Start voice call"
+						className="rounded-full hidden sm:flex"
+					>
 						<HugeiconsIcon icon={CallIcon} className="w-5 h-5" />
 					</Button>
-					<Button variant="ghost" size="icon" className="rounded-full">
+					<Button
+						variant="ghost"
+						size="icon"
+						aria-label="Channel information"
+						className="rounded-full"
+					>
 						<HugeiconsIcon icon={InformationCircleIcon} className="w-5 h-5" />
 					</Button>
 				</div>
@@ -325,6 +367,7 @@ export default function ChannelPage() {
 					<Button
 						type="submit"
 						disabled={!inputText.trim() || !user || !channel}
+						aria-label="Send message"
 						size="icon"
 						className="rounded-full w-12 h-12 shadow-lg shadow-primary/20"
 					>

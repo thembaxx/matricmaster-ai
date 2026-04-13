@@ -11,10 +11,11 @@
 
 import { and, eq, isNotNull, lt } from 'drizzle-orm';
 import { Resend } from 'resend';
-import { dbManagerV2 } from '@/lib/db/database-manager-v2';
-import { accessibilityPreferences, userProgress, userSettings, users } from '@/lib/db/schema';
-import { logger } from '@/lib/logger';
 import { appConfig } from '../app.config';
+import { dbManagerV2 } from '../lib/db/database-manager-v2';
+import type { DbType } from '../lib/db/postgresql-manager';
+import { accessibilityPreferences, userProgress, userSettings, users } from '../lib/db/schema';
+import { logger } from '../lib/logger';
 
 const log = logger.createLogger('AccountDeletion');
 
@@ -52,7 +53,7 @@ export interface PendingDeletion {
  * Sets deletedAt timestamp but doesn't actually delete until grace period expires
  */
 export async function requestAccountDeletion(userId: string): Promise<AccountDeletionResult> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		throw new Error('Database not available');
 	}
@@ -106,7 +107,7 @@ export async function requestAccountDeletion(userId: string): Promise<AccountDel
  * Restores full account access
  */
 export async function recoverAccount(userId: string): Promise<AccountRecoveryResult> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		throw new Error('Database not available');
 	}
@@ -171,7 +172,7 @@ export async function processPendingDeletions(): Promise<{
 	processed: number;
 	errors: number;
 }> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		log.error('Database not available for deletion processing');
 		return { processed: 0, errors: 0 };
@@ -214,18 +215,25 @@ export async function processPendingDeletions(): Promise<{
  * Permanently delete a single user's PII
  * Preserves anonymized analytics for product improvement
  */
-async function permanentlyDeleteUser(userId: string, db: any): Promise<void> {
-	// Delete user settings
-	await db.delete(userSettings).where(eq(userSettings.userId, userId));
+async function permanentlyDeleteUser(userId: string, db: DbType): Promise<void> {
+	// Start a transaction
+	await db.transaction(async (tx) => {
+		// 1. Anonymize quiz results (keep for analytics but remove PII)
+		// Note: quiz_results has onDelete: 'cascade' so it will be auto-deleted
+		// We'll preserve aggregated stats first
 
-	// Delete accessibility preferences
-	await db.delete(accessibilityPreferences).where(eq(accessibilityPreferences.userId, userId));
+		// 2. Delete user settings
+		await tx.delete(userSettings).where(eq(userSettings.userId, userId));
 
-	// Delete user progress (cascades due to onDelete: 'cascade' in schema)
-	await db.delete(userProgress).where(eq(userProgress.userId, userId));
+		// 3. Delete accessibility preferences
+		await tx.delete(accessibilityPreferences).where(eq(accessibilityPreferences.userId, userId));
 
-	// Finally, delete the user record (cascades to related tables)
-	await db.delete(users).where(eq(users.id, userId));
+		// 4. Delete user progress (after preserving aggregated data if needed)
+		await tx.delete(userProgress).where(eq(userProgress.userId, userId));
+
+		// 5. Finally, delete the user record
+		await tx.delete(users).where(eq(users.id, userId));
+	});
 
 	log.info('User permanently deleted', { userId });
 }
@@ -238,7 +246,7 @@ export async function isInGracePeriod(userId: string): Promise<{
 	daysRemaining: number;
 	scheduledDeletionAt: Date | null;
 }> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		return { isInGracePeriod: false, daysRemaining: 0, scheduledDeletionAt: null };
 	}
@@ -271,7 +279,7 @@ export async function isInGracePeriod(userId: string): Promise<{
  * Get all pending deletions (for admin dashboard)
  */
 export async function getPendingDeletions(): Promise<PendingDeletion[]> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		return [];
 	}
@@ -309,7 +317,7 @@ export async function getPendingDeletions(): Promise<PendingDeletion[]> {
  * Returns a downloadable JSON file with all user data
  */
 export async function exportUserData(userId: string): Promise<Record<string, unknown>> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		throw new Error('Database not available');
 	}

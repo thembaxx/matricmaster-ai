@@ -22,6 +22,7 @@ export const SuccessHeader = memo(function SuccessHeader({
 				size="icon"
 				onClick={() => router.push('/dashboard')}
 				className="rounded-full text-foreground"
+				aria-label="Close and go to dashboard"
 			>
 				<HugeiconsIcon icon={Cancel01Icon} className="w-6 h-6" />
 			</Button>

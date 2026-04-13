@@ -1,40 +1,54 @@
 'use client';
 
-import { ArrowLeftIcon, RefreshIcon } from '@hugeicons/core-free-icons';
+import { Home01Icon, Refresh01Icon, Warning } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
-import * as Sentry from '@sentry/nextjs';
 import Link from 'next/link';
 import { useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 
-interface ErrorBoundaryProps {
+interface ErrorProps {
 	error: Error & { digest?: string };
 	reset: () => void;
 }
 
-export default function ErrorBoundary({ error: err, reset }: ErrorBoundaryProps) {
+// biome-ignore lint/suspicious/noShadowRestrictedNames: Required by Next.js for error.tsx error boundary
+export default function Error({ error, reset }: ErrorProps) {
 	useEffect(() => {
-		Sentry.captureException(err);
-	}, [err]);
+		console.error('AI Lab error:', error);
+	}, [error]);
 
 	return (
-		<div className="flex flex-col items-center justify-center min-h-[60vh] text-center p-6">
-			<HugeiconsIcon
-				icon={RefreshIcon}
-				className="w-16 h-16 text-muted-foreground mb-6 opacity-50"
-			/>
-			<h2 className="text-2xl font-bold mb-2">Something went wrong</h2>
-			<p className="text-muted-foreground mb-6 max-w-md">
-				An unexpected error occurred. Please try again or go back to the dashboard.
-			</p>
-			<div className="flex gap-3">
-				<Button onClick={() => reset()}>Try Again</Button>
-				<Button variant="outline" asChild>
-					<Link href="/dashboard">
-						<ArrowLeftIcon className="w-4 h-4 mr-2" />
-						Go Home
+		<div className="flex flex-col items-center justify-center min-h-screen p-6 bg-background">
+			<div className="max-w-md w-full text-center space-y-6">
+				<div className="w-16 h-16 bg-destructive/10 dark:bg-destructive/20 rounded-full flex items-center justify-center mx-auto">
+					<HugeiconsIcon
+						icon={Warning}
+						className="w-8 h-8 text-destructive dark:text-destructive"
+					/>
+				</div>
+
+				<div className="space-y-2">
+					<h2 className="text-2xl font-bold text-foreground">Something went wrong</h2>
+					<p className="text-sm text-muted-foreground">
+						{error.message || 'An unexpected error occurred. Please try again.'}
+					</p>
+					{error.digest && (
+						<p className="text-xs text-muted-foreground">Error ID: {error.digest}</p>
+					)}
+				</div>
+
+				<div className="flex gap-3 justify-center">
+					<Button onClick={() => reset()} variant="outline" className="gap-2">
+						<HugeiconsIcon icon={Refresh01Icon} className="w-4 h-4" />
+						Try Again
+					</Button>
+					<Link href="/">
+						<Button className="gap-2">
+							<HugeiconsIcon icon={Home01Icon} className="w-4 h-4" />
+							Home
+						</Button>
 					</Link>
-				</Button>
+				</div>
 			</div>
 		</div>
 	);

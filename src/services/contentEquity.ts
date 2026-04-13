@@ -12,7 +12,7 @@
 
 'use server';
 
-import { eq } from 'drizzle-orm';
+import { desc, eq } from 'drizzle-orm';
 import { dbManagerV2 } from '@/lib/db/database-manager-v2';
 import { contentFlags } from '@/lib/db/schema';
 import { logger } from '@/lib/logger';
@@ -158,7 +158,7 @@ export async function detectBias(content: string): Promise<BiasDetectionResult> 
 
 	return {
 		hasBias,
-		biasTypes,
+		biasType: biasTypes,
 		confidence,
 		suggestions,
 		requiresReview,
@@ -240,7 +240,7 @@ export async function reportContentBias(params: {
 	description: string;
 	evidence: string;
 }): Promise<ContentBiasReport> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		throw new Error('Database not available');
 	}
@@ -260,11 +260,11 @@ export async function reportContentBias(params: {
 
 	try {
 		await db.insert(contentFlags).values({
-			id: report.id,
-			userId: report.reporterId,
+			reporterId: report.reporterId,
+			contentType: 'question',
 			contentId: report.contentId,
-			reason: report.biasType,
-			description: report.description,
+			flagReason: report.biasType,
+			flagDetails: report.description,
 			status: 'pending',
 		});
 
@@ -328,7 +328,7 @@ export async function auditContentForBias(
 		contentId,
 		auditDate: new Date(),
 		biasDetected: biasDetection.hasBias,
-		biasTypes: biasDetection.biasTypes,
+		biasTypes: biasDetection.biasType,
 		severity:
 			biasDetection.confidence >= 0.7 ? 'high' : biasDetection.confidence >= 0.4 ? 'medium' : 'low',
 		resolved: false,
@@ -350,7 +350,7 @@ export async function auditContentForBias(
  * Get pending bias reports
  */
 export async function getPendingBiasReports(): Promise<ContentBiasReport[]> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		return [];
 	}
@@ -365,10 +365,10 @@ export async function getPendingBiasReports(): Promise<ContentBiasReport[]> {
 
 		return reports.map((r) => ({
 			id: r.id,
-			reporterId: r.userId,
+			reporterId: r.reporterId,
 			contentId: r.contentId,
-			biasType: r.reason as BiasType,
-			description: r.description || '',
+			biasType: r.flagReason as BiasType,
+			description: r.flagDetails || '',
 			evidence: '',
 			status: r.status as ContentBiasReport['status'],
 			createdAt: r.createdAt!,
@@ -383,7 +383,7 @@ export async function getPendingBiasReports(): Promise<ContentBiasReport[]> {
  * Resolve bias report
  */
 export async function resolveBiasReport(reportId: string, resolved: boolean): Promise<void> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		return;
 	}
@@ -393,7 +393,7 @@ export async function resolveBiasReport(reportId: string, resolved: boolean): Pr
 			.update(contentFlags)
 			.set({
 				status: resolved ? 'resolved' : 'dismissed',
-				updatedAt: new Date(),
+				reviewedAt: new Date(),
 			})
 			.where(eq(contentFlags.id, reportId));
 

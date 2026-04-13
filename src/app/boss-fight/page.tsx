@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { toast } from 'sonner';
 import { BossFightExam } from '@/components/BossFight/BossFightExam';
 import { MasteryBadge } from '@/components/BossFight/MasteryBadge';
 import { Button } from '@/components/ui/button';
@@ -22,6 +23,24 @@ export default function BossFightPage() {
 		setStage('victory');
 	};
 
+	const handleShare = async () => {
+		const shareData = {
+			title: 'MatricMaster AI — Achievement Unlocked!',
+			text: `I just scored ${finalScore}/10 in the ${selectedSubject} Boss Fight!`,
+			url: window.location.href,
+		};
+		if (navigator.share) {
+			try {
+				await navigator.share(shareData);
+			} catch {
+				// User cancelled share
+			}
+		} else {
+			await navigator.clipboard.writeText(window.location.href);
+			toast.success('Link copied to clipboard!');
+		}
+	};
+
 	if (stage === 'fight') {
 		return <BossFightExam subject={selectedSubject} onComplete={handleFightComplete} />;
 	}
@@ -32,7 +51,7 @@ export default function BossFightPage() {
 				subject={selectedSubject}
 				score={finalScore}
 				totalQuestions={10}
-				onShare={() => console.log('Share achievement')}
+				onShare={handleShare}
 			/>
 		);
 	}

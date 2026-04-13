@@ -155,7 +155,7 @@ export function VideoCall({
 							variant="ghost"
 							size="icon"
 							onClick={handleToggleMute}
-							aria-label="Toggle microphone"
+							aria-label={isMuted ? 'Unmute microphone' : 'Mute microphone'}
 							className={cn(
 								'h-12 w-12 rounded-full transition-all',
 								isMuted
@@ -163,18 +163,14 @@ export function VideoCall({
 									: 'bg-secondary text-foreground hover:bg-secondary/80'
 							)}
 						>
-							<HugeiconsIcon
-								icon={isMuted ? MicOff01Icon : Mic01Icon}
-								aria-hidden="true"
-								className="h-5 w-5"
-							/>
+							<HugeiconsIcon icon={isMuted ? MicOff01Icon : Mic01Icon} className="h-5 w-5" />
 						</Button>
 
 						<Button
 							variant="ghost"
 							size="icon"
 							onClick={handleToggleVideo}
-							aria-label="Toggle camera"
+							aria-label={!isVideoOn ? 'Turn on camera' : 'Turn off camera'}
 							className={cn(
 								'h-12 w-12 rounded-full transition-all',
 								!isVideoOn
@@ -184,7 +180,6 @@ export function VideoCall({
 						>
 							<HugeiconsIcon
 								icon={isVideoOn ? VideoReplayIcon : VideoOffIcon}
-								aria-hidden="true"
 								className="h-5 w-5"
 							/>
 						</Button>
@@ -194,7 +189,7 @@ export function VideoCall({
 							size="icon"
 							onClick={handleScreenShare}
 							disabled
-							aria-label="Toggle screen sharing"
+							aria-label={isScreenSharing ? 'Stop screen share' : 'Share screen'}
 							className={cn(
 								'h-12 w-12 rounded-full transition-all',
 								isScreenSharing
@@ -202,27 +197,27 @@ export function VideoCall({
 									: 'bg-secondary text-foreground hover:bg-secondary/80'
 							)}
 						>
-							<HugeiconsIcon icon={CctvCameraIcon} aria-hidden="true" className="h-5 w-5" />
+							<HugeiconsIcon icon={CctvCameraIcon} className="h-5 w-5" />
 						</Button>
 
 						<Button
 							variant="ghost"
 							size="icon"
 							onClick={() => setShowSidebar((prev) => !prev)}
-							aria-label="Toggle participants panel"
+							aria-label={showSidebar ? 'Hide participants' : 'Show participants'}
 							className="h-12 w-12 rounded-full bg-secondary text-foreground hover:bg-secondary/80"
 						>
-							<HugeiconsIcon icon={CircleIcon} aria-hidden="true" className="h-5 w-5" />
+							<HugeiconsIcon icon={CircleIcon} className="h-5 w-5" />
 						</Button>
 
 						<Button
 							variant="ghost"
 							size="icon"
 							onClick={handleEndCall}
-							aria-label="Leave call"
+							aria-label="End call"
 							className="h-12 w-12 rounded-full bg-red-600 text-white hover:bg-red-700 ml-4"
 						>
-							<HugeiconsIcon icon={CallEnd01Icon} aria-hidden="true" className="h-5 w-5" />
+							<HugeiconsIcon icon={CallEnd01Icon} className="h-5 w-5" />
 						</Button>
 					</div>
 				</div>

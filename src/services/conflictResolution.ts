@@ -11,8 +11,8 @@
 
 import { and, eq, isNull, lt, or } from 'drizzle-orm';
 import { integer, jsonb, pgTable, text, timestamp, varchar } from 'drizzle-orm/pg-core';
-import { dbManagerV2 } from '@/lib/db/database-manager-v2';
-import { logger } from '@/lib/logger';
+import { dbManagerV2 } from '../lib/db/database-manager-v2';
+import { logger } from '../lib/logger';
 
 const log = logger.createLogger('ConflictResolution');
 
@@ -115,7 +115,7 @@ export async function queueLocalChange(params: {
 	data: Record<string, unknown>;
 	localUpdatedAt: Date;
 }): Promise<string> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		log.warn('Database not available - change queued locally only', {
 			tableName: params.tableName,
@@ -157,7 +157,7 @@ export async function queueLocalChange(params: {
  * Main entry point for sync operation
  */
 export async function processSyncQueue(): Promise<SyncResult> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		throw new Error('Database not available for sync');
 	}
@@ -225,7 +225,7 @@ export async function processSyncQueue(): Promise<SyncResult> {
 async function processSyncItem(
 	item: typeof syncQueueTable.$inferSelect
 ): Promise<SyncResultDetail> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		throw new Error('Database not available');
 	}
@@ -302,7 +302,7 @@ async function detectConflict(
 	recordId: string,
 	_localUpdatedAt: Date
 ): Promise<boolean> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		return false;
 	}
@@ -341,7 +341,7 @@ async function resolveConflict(params: {
 	serverUpdatedAt: Date;
 	strategy: ConflictStrategy;
 }): Promise<{ resolved: boolean; resolvedData?: Record<string, unknown> }> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		throw new Error('Database not available');
 	}
@@ -420,7 +420,7 @@ async function mergeConflictData(params: {
  * Apply a change to the database
  */
 async function applyChange(item: typeof syncQueueTable.$inferSelect): Promise<void> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		throw new Error('Database not available');
 	}
@@ -442,7 +442,7 @@ async function applyResolution(
 	recordId: string,
 	_resolvedData: Record<string, unknown>
 ): Promise<void> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		throw new Error('Database not available');
 	}
@@ -457,7 +457,7 @@ async function applyResolution(
  * Update retry information for a sync item
  */
 async function updateRetryInfo(id: string, retryCount: number, error: unknown): Promise<void> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		return;
 	}
@@ -502,7 +502,7 @@ export async function manuallyResolveConflict(
 	conflictId: string,
 	resolution: Record<string, unknown>
 ): Promise<void> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		throw new Error('Database not available');
 	}
@@ -527,7 +527,7 @@ export async function manuallyResolveConflict(
  * Get unresolved conflicts for UI display
  */
 export async function getUnresolvedConflicts(): Promise<SyncConflict[]> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		return [];
 	}
@@ -571,7 +571,7 @@ export async function getSyncQueueStatus(): Promise<{
 	conflicts: number;
 	failed: number;
 }> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		return { pending: 0, syncing: 0, conflicts: 0, failed: 0 };
 	}
@@ -584,19 +584,19 @@ export async function getSyncQueueStatus(): Promise<{
 
 		const [pending, syncing, conflicts, failed] = await Promise.all([
 			db
-				.select({ count: syncQueueTable.id })
+				.select({ id: syncQueueTable.id })
 				.from(syncQueueTable)
 				.where(eq(syncQueueTable.status, 'pending')),
 			db
-				.select({ count: syncQueueTable.id })
+				.select({ id: syncQueueTable.id })
 				.from(syncQueueTable)
 				.where(eq(syncQueueTable.status, 'syncing')),
 			db
-				.select({ count: syncQueueTable.id })
+				.select({ id: syncQueueTable.id })
 				.from(syncQueueTable)
 				.where(eq(syncQueueTable.status, 'conflict')),
 			db
-				.select({ count: syncQueueTable.id })
+				.select({ id: syncQueueTable.id })
 				.from(syncQueueTable)
 				.where(eq(syncQueueTable.status, 'failed')),
 		]);
@@ -616,7 +616,7 @@ export async function getSyncQueueStatus(): Promise<{
  * Check if a table exists
  */
 async function checkTableExists(tableName: string): Promise<boolean> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		return false;
 	}
@@ -628,7 +628,8 @@ async function checkTableExists(tableName: string): Promise<boolean> {
         WHERE table_name = '${tableName}'
       );
     `);
-		return result[0]?.exists ?? false;
+		const row = result[0] as Record<string, unknown> | undefined;
+		return Boolean(row?.exists);
 	} catch {
 		return false;
 	}
@@ -639,7 +640,7 @@ async function checkTableExists(tableName: string): Promise<boolean> {
  * Call during app startup
  */
 export async function initializeSync(): Promise<void> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		log.warn('Database not available - skipping sync initialization');
 		return;

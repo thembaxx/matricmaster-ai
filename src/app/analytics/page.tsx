@@ -191,10 +191,8 @@ export default function AnalyticsDashboardPage() {
 				setGrowthData(growthMapData ?? { topics: [], insights: [] });
 
 				if (!data.hasRealData || !data.success) {
-					setStats(MOCK_STATS);
-					setSubjects(MOCK_SUBJECTS);
-					setActivity(MOCK_ACTIVITY);
 					setIsMock(true);
+					setIsLoading(false);
 					return;
 				}
 
@@ -215,9 +213,6 @@ export default function AnalyticsDashboardPage() {
 				setIsMock(!statsHasData && subjectsIsMock && activityIsMock);
 			} catch {
 				if (cancelled) return;
-				setStats(MOCK_STATS);
-				setSubjects(MOCK_SUBJECTS);
-				setActivity(MOCK_ACTIVITY);
 				setIsMock(true);
 			} finally {
 				if (!cancelled) {
@@ -244,25 +239,50 @@ export default function AnalyticsDashboardPage() {
 		);
 	}
 
+	if (isMock) {
+		return (
+			<div className="min-h-screen flex items-center justify-center p-6">
+				<div className="max-w-md text-center space-y-6">
+					<div className="w-16 h-16 bg-muted/50 rounded-full flex items-center justify-center mx-auto">
+						<HugeiconsIcon icon={Analytics01Icon} className="w-8 h-8 text-muted-foreground" />
+					</div>
+					<div className="space-y-2">
+						<h2 className="text-2xl font-bold text-foreground">No analytics data yet</h2>
+						<p className="text-sm text-muted-foreground">
+							Start studying to see your progress, streaks, and performance insights.
+						</p>
+					</div>
+					<div className="flex flex-col gap-3 sm:flex-row sm:justify-center">
+						<a href="/quiz">
+							<Badge variant="outline" className="cursor-pointer">
+								Take a quiz
+							</Badge>
+						</a>
+						<a href="/flashcards">
+							<Badge variant="outline" className="cursor-pointer">
+								Review flashcards
+							</Badge>
+						</a>
+						<a href="/ai-tutor">
+							<Badge variant="outline" className="cursor-pointer">
+								Start AI tutor session
+							</Badge>
+						</a>
+					</div>
+				</div>
+			</div>
+		);
+	}
+
 	return (
 		<div className="min-h-screen pb-40 pt-8 px-4">
 			<div className="max-w-7xl mx-auto">
 				<div className="mb-8">
-					<div className="flex items-center justify-between">
-						<div className="flex items-center gap-3 mb-2">
-							<h1 className="text-3xl font-bold flex items-center gap-2">
-								<HugeiconsIcon icon={Analytics01Icon} className="w-8 h-8" />
-								Analytics
-							</h1>
-							{isMock && (
-								<Badge
-									variant="outline"
-									className="text-xs bg-amber-500/10 text-amber-600 border-amber-500/30"
-								>
-									demo data
-								</Badge>
-							)}
-						</div>
+					<div className="flex items-center gap-3 mb-2">
+						<h1 className="text-3xl font-bold flex items-center gap-2">
+							<HugeiconsIcon icon={Analytics01Icon} className="w-8 h-8" />
+							Analytics
+						</h1>
 					</div>
 					<p className="text-muted-foreground">
 						Track your learning progress and identify areas for improvement

@@ -53,10 +53,10 @@ function TutoringSessionPageContent() {
 					<Button
 						variant="ghost"
 						size="icon"
-						aria-label="Back to tutoring"
 						onClick={() => router.push('/tutoring')}
+						aria-label="Back to tutoring"
 					>
-						<HugeiconsIcon icon={ArrowLeftIcon} aria-hidden="true" className="w-5 h-5" />
+						<HugeiconsIcon icon={ArrowLeftIcon} className="w-5 h-5" />
 					</Button>
 					<div>
 						<h1 className="font-semibold">Live Tutoring Session</h1>
@@ -100,10 +100,7 @@ function TutoringSessionPageContent() {
 								<p className="text-sm text-muted-foreground text-center">No messages yet</p>
 							</div>
 							<div className="p-3 border-t">
-								<Input
-									placeholder="Type a message..."
-									aria-label="Type a message in the tutoring session"
-								/>
+								<Input placeholder="Type a message..." />
 							</div>
 						</CardContent>
 					</Card>
@@ -116,6 +113,7 @@ function TutoringSessionPageContent() {
 						variant={isAudioOn ? 'default' : 'destructive'}
 						size="lg"
 						onClick={toggleAudio}
+						aria-label={isAudioOn ? 'Mute microphone' : 'Unmute microphone'}
 						className="w-12 h-12 rounded-full"
 					>
 						<HugeiconsIcon icon={isAudioOn ? MicIcon : VolumeMute01Icon} className="w-5 h-5" />
@@ -125,6 +123,7 @@ function TutoringSessionPageContent() {
 						variant={isVideoOn ? 'default' : 'destructive'}
 						size="lg"
 						onClick={toggleVideo}
+						aria-label={isVideoOn ? 'Turn off camera' : 'Turn on camera'}
 						className="w-12 h-12 rounded-full"
 					>
 						<HugeiconsIcon icon={isVideoOn ? PlayIcon : StopIcon} className="w-5 h-5" />
@@ -134,6 +133,7 @@ function TutoringSessionPageContent() {
 						variant={isScreenSharing ? 'default' : 'outline'}
 						size="lg"
 						onClick={toggleScreenShare}
+						aria-label={isScreenSharing ? 'Stop screen share' : 'Share screen'}
 						className="w-12 h-12 rounded-full"
 					>
 						<HugeiconsIcon icon={GridIcon} className="w-5 h-5" />
@@ -143,6 +143,7 @@ function TutoringSessionPageContent() {
 						variant={isChatOpen ? 'default' : 'outline'}
 						size="lg"
 						onClick={() => setIsChatOpen(!isChatOpen)}
+						aria-label={isChatOpen ? 'Close chat' : 'Open chat'}
 						className="w-12 h-12 rounded-full"
 					>
 						<HugeiconsIcon icon={Chat01Icon} className="w-5 h-5" />
@@ -152,6 +153,7 @@ function TutoringSessionPageContent() {
 						variant="destructive"
 						size="lg"
 						onClick={leaveCall}
+						aria-label="End call"
 						className="w-12 h-12 rounded-full"
 					>
 						<HugeiconsIcon icon={PhoneOffIcon} className="w-5 h-5" />

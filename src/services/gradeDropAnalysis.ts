@@ -88,7 +88,7 @@ export interface GradeTrend {
  * Analyze if there's a significant grade drop
  */
 export async function analyzeGradeDrop(userId: string): Promise<GradeDropAnalysis> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		throw new Error('Database not available');
 	}
@@ -162,7 +162,7 @@ async function calculatePeriodAverage(
 	startDate: Date,
 	endDate: Date
 ): Promise<number> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		return 0;
 	}
@@ -203,7 +203,7 @@ async function getAffectedSubjects(
 	currentWindowStart: Date,
 	now: Date
 ): Promise<AffectedSubject[]> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		return [];
 	}
@@ -302,7 +302,7 @@ async function getAffectedTopics(
 	userId: string,
 	currentWindowStart: Date
 ): Promise<AffectedTopic[]> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		return [];
 	}
@@ -313,8 +313,8 @@ async function getAffectedTopics(
 			.select({
 				topic: topicMastery.topic,
 				subjectId: topicMastery.subjectId,
-				masteryScore: topicMastery.masteryScore,
-				lastPracticedAt: topicMastery.lastPracticedAt,
+				masteryScore: topicMastery.masteryLevel,
+				lastPracticedAt: topicMastery.lastPracticed,
 			})
 			.from(topicMastery)
 			.where(eq(topicMastery.userId, userId));
@@ -351,14 +351,17 @@ async function getAffectedTopics(
 			// Check if mastery is declining (would need historical data in production)
 			// For now, use current mastery vs recent accuracy
 			const masteryDrop =
-				topic.masteryScore > 0 ? (topic.masteryScore - accuracy) / topic.masteryScore : 0;
+				Number.parseFloat(topic.masteryScore) > 0
+					? (Number.parseFloat(topic.masteryScore) - accuracy) /
+						Number.parseFloat(topic.masteryScore)
+					: 0;
 
 			if (masteryDrop >= GRADE_DROP_THRESHOLD * 0.5) {
 				affectedTopics.push({
 					topic: topic.topic,
 					subjectId: topic.subjectId,
 					subjectName: subject.name,
-					previousMastery: topic.masteryScore,
+					previousMastery: Number.parseFloat(topic.masteryScore),
 					currentMastery: accuracy,
 					dropPercentage: masteryDrop,
 					attemptsInPeriod: attempts.length,
@@ -523,7 +526,7 @@ function generateSupportiveMessage(dropPercentage: number, _affectedCount: numbe
  * Get grade trend over time
  */
 export async function getGradeTrend(userId: string, days = 30): Promise<GradeTrend[]> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		return [];
 	}

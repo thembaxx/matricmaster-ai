@@ -3,7 +3,7 @@
 import { Chat01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { useSearchParams } from 'next/navigation';
-import { Suspense, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { CommentItem } from '@/components/Comments/CommentItem';
 import type { Comment } from '@/components/Comments/types';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -19,10 +19,28 @@ function CommentsContent() {
 	const { data: session } = useSession();
 
 	const [comments, setComments] = useState<Comment[]>([]);
+	const [isLoadingComments, setIsLoadingComments] = useState(true);
 	const [newComment, setNewComment] = useState('');
 	const [isLoading, setIsLoading] = useState(false);
 	const [replyingTo, setReplyingTo] = useState<string | null>(null);
 	const [replyContent, setReplyContent] = useState('');
+
+	// Fetch existing comments on mount
+	useEffect(() => {
+		if (!resourceId) return;
+		setIsLoadingComments(true);
+		fetch(`/api/comments?resourceType=${resourceType}&resourceId=${resourceId}`)
+			.then((r) => r.json())
+			.then((res) => {
+				if (res.success && Array.isArray(res.data)) {
+					setComments(res.data);
+				}
+			})
+			.catch(() => {
+				// Silently fail — empty state is shown
+			})
+			.finally(() => setIsLoadingComments(false));
+	}, [resourceId, resourceType]);
 
 	if (!resourceId) {
 		return (
@@ -144,25 +162,17 @@ function CommentsContent() {
 								<AvatarFallback>{user.name?.[0] ?? 'U'}</AvatarFallback>
 							</Avatar>
 							<div className="flex-1 space-y-2">
-								<form
-									onSubmit={(e) => {
-										e.preventDefault();
-										handleSubmitComment();
-									}}
-								>
-									<Textarea
-										placeholder="Share your thoughts or ask a question..."
-										value={newComment}
-										onChange={(e) => setNewComment(e.target.value)}
-										className="min-h-25"
-										aria-label="Write a comment"
-									/>
-									<div className="flex justify-end">
-										<Button type="submit" disabled={!newComment.trim() || isLoading}>
-											{isLoading ? 'Posting...' : 'Post Comment'}
-										</Button>
-									</div>
-								</form>
+								<Textarea
+									placeholder="Share your thoughts or ask a question..."
+									value={newComment}
+									onChange={(e) => setNewComment(e.target.value)}
+									className="min-h-25"
+								/>
+								<div className="flex justify-end">
+									<Button onClick={handleSubmitComment} disabled={!newComment.trim() || isLoading}>
+										{isLoading ? 'Posting...' : 'Post Comment'}
+									</Button>
+								</div>
 							</div>
 						</div>
 					) : (
@@ -189,12 +199,16 @@ function CommentsContent() {
 						))}
 					</div>
 
-					{comments.length === 0 && (
+					{isLoadingComments ? (
+						<div className="text-center py-8 text-muted-foreground">
+							<p>Loading comments...</p>
+						</div>
+					) : comments.length === 0 ? (
 						<div className="text-center py-8 text-muted-foreground">
 							<HugeiconsIcon icon={Chat01Icon} className="h-12 w-12 mx-auto mb-4 opacity-50" />
 							<p>No comments yet. Be the first to share your thoughts!</p>
 						</div>
-					)}
+					) : null}
 				</CardContent>
 			</Card>
 		</div>

@@ -3,14 +3,12 @@
 		"allow": [
 			"Bash(bun *)",
 			"Bash(bunx *)",
-			"Bash(findstr *)",
-			"Bash(rmdir *)",
-			"Bash(powershell *)",
 			"Bash(dir *)",
-			"Bash(\"cd /d c:\\users\\themba\\documents\\org1128\\projects\\matricmaster-ai && for /r src\\app\\api %f in (route.ts) do @echo %f\")",
-			"Bash(mkdir *)",
-			"Bash(do *)",
-			"Bash(copy *)"
+			"Read(C:\\Users\\Themba\\Documents\\org1128\\projects/**)",
+			"Read(C:\\/**)",
+			"Bash(powershell *)",
+			"Bash(npx *)",
+			"Bash(findstr *)"
 		]
 	},
 	"$version": 3
