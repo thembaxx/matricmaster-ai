@@ -10,7 +10,7 @@ import { adjustPlanForBurnout, detectBurnoutRisk } from './burnout-study-plan-br
 interface WellnessProtectionResult {
 	burnoutAdjustments: ScheduleAdjustment[];
 	loadSheddingAdjustments: ScheduleAdjustment[];
-	burnoutLevel: 'low' | 'medium' | 'high';
+	burnoutLevel: 'low' | 'medium' | 'high' | 'severe';
 	loadSheddingStage: number;
 	recommendations: string[];
 }

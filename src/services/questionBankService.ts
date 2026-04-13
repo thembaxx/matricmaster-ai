@@ -2,7 +2,8 @@
 
 import { and, count, eq, ilike, sql } from 'drizzle-orm';
 import { dbManagerV2 } from '@/lib/db/database-manager-v2';
-import { type DbType, pastPaperQuestions, questions } from '@/lib/db/schema';
+import { type DbType } from '@/lib/db';
+import { pastPaperQuestions, questions } from '@/lib/db/schema';
 import { logger } from '@/lib/logger';
 
 const log = logger.createLogger('QuestionBankService');

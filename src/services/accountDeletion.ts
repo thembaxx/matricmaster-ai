@@ -9,12 +9,13 @@
  * - Complete PII removal after grace period
  */
 
-import { and, eq, lt } from 'drizzle-orm';
+import { and, eq, isNotNull, lt } from 'drizzle-orm';
+import type { DbType } from '../lib/db/postgresql-manager';
 import { Resend } from 'resend';
 import { appConfig } from '../app.config';
-import { dbManagerV2 } from './db/database-manager-v2';
-import { accessibilityPreferences, userProgress, userSettings, users } from './db/schema';
-import { logger } from './logger';
+import { dbManagerV2 } from '../lib/db/database-manager-v2';
+import { accessibilityPreferences, userProgress, userSettings, users } from '../lib/db/schema';
+import { logger } from '../lib/logger';
 
 const log = logger.createLogger('AccountDeletion');
 
@@ -52,7 +53,7 @@ export interface PendingDeletion {
  * Sets deletedAt timestamp but doesn't actually delete until grace period expires
  */
 export async function requestAccountDeletion(userId: string): Promise<AccountDeletionResult> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		throw new Error('Database not available');
 	}
@@ -106,7 +107,7 @@ export async function requestAccountDeletion(userId: string): Promise<AccountDel
  * Restores full account access
  */
 export async function recoverAccount(userId: string): Promise<AccountRecoveryResult> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		throw new Error('Database not available');
 	}
@@ -171,7 +172,7 @@ export async function processPendingDeletions(): Promise<{
 	processed: number;
 	errors: number;
 }> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		log.error('Database not available for deletion processing');
 		return { processed: 0, errors: 0 };
@@ -186,7 +187,7 @@ export async function processPendingDeletions(): Promise<{
 		const expiredUsers = await db
 			.select({ id: users.id, email: users.email, name: users.name })
 			.from(users)
-			.where(and(users.deletedAt !== null, lt(users.deletedAt, now)));
+			.where(and(isNotNull(users.deletedAt), lt(users.deletedAt, now)));
 
 		log.info('Processing pending deletions', { count: expiredUsers.length });
 
@@ -216,7 +217,7 @@ export async function processPendingDeletions(): Promise<{
  */
 async function permanentlyDeleteUser(
 	userId: string,
-	db: ReturnType<typeof dbManagerV2.getDb> extends Promise<infer T> ? T : never
+	db: DbType
 ): Promise<void> {
 	// Start a transaction
 	await db.transaction(async (tx) => {
@@ -248,7 +249,7 @@ export async function isInGracePeriod(userId: string): Promise<{
 	daysRemaining: number;
 	scheduledDeletionAt: Date | null;
 }> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		return { isInGracePeriod: false, daysRemaining: 0, scheduledDeletionAt: null };
 	}
@@ -281,7 +282,7 @@ export async function isInGracePeriod(userId: string): Promise<{
  * Get all pending deletions (for admin dashboard)
  */
 export async function getPendingDeletions(): Promise<PendingDeletion[]> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		return [];
 	}
@@ -296,7 +297,7 @@ export async function getPendingDeletions(): Promise<PendingDeletion[]> {
 			})
 			.from(users)
 			.where(
-				and(users.deletedAt !== null, lt(users.deletedAt, new Date(Date.now() + GRACE_PERIOD_MS)))
+				and(isNotNull(users.deletedAt), lt(users.deletedAt, new Date(Date.now() + GRACE_PERIOD_MS)))
 			);
 
 		const now = new Date();
@@ -319,7 +320,7 @@ export async function getPendingDeletions(): Promise<PendingDeletion[]> {
  * Returns a downloadable JSON file with all user data
  */
 export async function exportUserData(userId: string): Promise<Record<string, unknown>> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		throw new Error('Database not available');
 	}

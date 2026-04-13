@@ -15,12 +15,8 @@ import { logger } from '@/lib/logger';
 const log = logger.createLogger('ModelManagement');
 
 // Configuration
-const _MAX_DOWNLOAD_RETRIES = 5;
-const _BASE_RETRY_DELAY_MS = 2000;
-const _MAX_RETRY_DELAY_MS = 60000; // 1 minute
 const CHUNK_SIZE_MB = 50; // Download in 50MB chunks
 const STORAGE_QUOTA_THRESHOLD = 0.8; // Warn at 80% storage usage
-const _MODEL_DOWNLOAD_TIMEOUT_MS = 30 * 60 * 1000; // 30 minutes
 
 // Types
 export interface ModelInfo {
