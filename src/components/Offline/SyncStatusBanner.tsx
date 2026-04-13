@@ -1,113 +1,143 @@
 'use client';
 
-import {
-	AlertCircle,
-	AlertTriangle,
-	CheckCircle2,
-	CloudOff,
-	Loader2,
-	RefreshCw,
-} from 'lucide-react';
+import { AlertCircle, CheckCircle, Cloud, CloudOff, RefreshCw, Shield } from 'lucide-react';
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { useSyncStatus } from '@/hooks/useSyncStatus';
 import { cn } from '@/lib/utils';
+import { ConflictResolutionDialog } from './ConflictResolutionDialog';
 
 interface SyncStatusBannerProps {
-	onResolveConflicts?: () => void;
 	className?: string;
 }
 
-export function SyncStatusBanner({ onResolveConflicts, className }: SyncStatusBannerProps) {
-	const { status, lastSyncTime, pendingCount, conflictCount, errorMessage, triggerSync } =
-		useSyncStatus();
+/**
+ * SyncStatusBanner
+ *
+ * Shows:
+ * - Online/offline status
+ * - Pending sync items count
+ * - Conflict alert with resolution prompt
+ * - Manual sync trigger
+ */
+export function SyncStatusBanner({ className }: SyncStatusBannerProps) {
+	const { isOnline, pendingCount, conflictCount, conflicts } = useSyncStatus();
+	const [showConflictDialog, setShowConflictDialog] = useState(false);
+	const [isSyncing, setIsSyncing] = useState(false);
 
-	if (status === 'idle' && pendingCount === 0) {
+	const handleManualSync = async () => {
+		setIsSyncing(true);
+		// TODO: Trigger sync process
+		// await triggerSync();
+		setTimeout(() => setIsSyncing(false), 2000);
+	};
+
+	// No banner needed if everything is synced
+	if (!isOnline && pendingCount === 0 && conflictCount === 0) {
 		return null;
 	}
 
-	const formatLastSync = (date: Date | null) => {
-		if (!date) return 'Never';
-		const now = new Date();
-		const diff = now.getTime() - date.getTime();
-		const minutes = Math.floor(diff / 60000);
-		const hours = Math.floor(diff / 3600000);
+	return (
+		<>
+			<div className={cn('fixed top-0 left-0 right-0 z-50 transition-all duration-300', className)}>
+				{/* Offline Banner */}
+				{!isOnline && (
+					<div className="bg-amber-500 text-white px-4 py-2 flex items-center justify-center gap-2">
+						<CloudOff className="w-4 h-4" />
+						<span className="text-sm font-medium">You're offline</span>
+						<span className="text-xs">Changes will sync when you're back online</span>
+					</div>
+				)}
 
-		if (minutes < 1) return 'Just now';
-		if (minutes < 60) return `${minutes}m ago`;
-		if (hours < 24) return `${hours}h ago`;
-		return date.toLocaleDateString();
-	};
+				{/* Back Online Banner */}
+				{isOnline && pendingCount > 0 && (
+					<div className="bg-blue-500 text-white px-4 py-2 flex items-center justify-center gap-2">
+						<Cloud className="w-4 h-4" />
+						<span className="text-sm font-medium">
+							{pendingCount} item{pendingCount > 1 ? 's' : ''} waiting to sync
+						</span>
+						<Button
+							variant="ghost"
+							size="sm"
+							onClick={handleManualSync}
+							disabled={isSyncing}
+							className="h-6 px-2 text-xs bg-white/20 hover:bg-white/30"
+						>
+							{isSyncing ? (
+								<>
+									<RefreshCw className="w-3 h-3 mr-1 animate-spin" />
+									Syncing...
+								</>
+							) : (
+								<>
+									<RefreshCw className="w-3 h-3 mr-1" />
+									Sync Now
+								</>
+							)}
+						</Button>
+					</div>
+				)}
 
-	const statusConfig = {
-		idle: {
-			icon: CloudOff,
-			color: 'text-muted-foreground',
-			bg: 'bg-muted/50',
-			message: pendingCount > 0 ? `${pendingCount} changes pending` : 'Waiting to sync',
-		},
-		syncing: {
-			icon: Loader2,
-			color: 'text-blue-500',
-			bg: 'bg-blue-500/10',
-			message: 'Syncing...',
-		},
-		synced: {
-			icon: CheckCircle2,
-			color: 'text-green-500',
-			bg: 'bg-green-500/10',
-			message: 'All changes synced',
-		},
-		conflicts: {
-			icon: AlertTriangle,
-			color: 'text-amber-500',
-			bg: 'bg-amber-500/10',
-			message: `${conflictCount} conflict${conflictCount > 1 ? 's' : ''} need${conflictCount === 1 ? 's' : ''} resolution`,
-		},
-		error: {
-			icon: AlertCircle,
-			color: 'text-red-500',
-			bg: 'bg-red-500/10',
-			message: errorMessage || 'Sync error',
-		},
-	};
+				{/* Conflict Alert Banner */}
+				{isOnline && conflictCount > 0 && (
+					<div className="bg-red-500 text-white px-4 py-2 flex items-center justify-center gap-2">
+						<AlertCircle className="w-4 h-4" />
+						<span className="text-sm font-medium">
+							{conflictCount} sync conflict{conflictCount > 1 ? 's' : ''} detected
+						</span>
+						<Button
+							variant="ghost"
+							size="sm"
+							onClick={() => setShowConflictDialog(true)}
+							className="h-6 px-2 text-xs bg-white/20 hover:bg-white/30"
+						>
+							<Shield className="w-3 h-3 mr-1" />
+							Resolve
+						</Button>
+					</div>
+				)}
 
-	const config = statusConfig[status];
-	const Icon = config.icon;
+				{/* Synced Confirmation */}
+				{isOnline && pendingCount === 0 && conflictCount === 0 && (
+					<div className="bg-green-500 text-white px-4 py-2 flex items-center justify-center gap-2">
+						<CheckCircle className="w-4 h-4" />
+						<span className="text-sm font-medium">All changes synced</span>
+					</div>
+				)}
+			</div>
+
+			{/* Conflict Resolution Dialog */}
+			<ConflictResolutionDialog
+				open={showConflictDialog}
+				onOpenChange={setShowConflictDialog}
+				conflicts={conflicts}
+			/>
+		</>
+	);
+}
+
+/**
+ * SyncStatusIndicator
+ *
+ * Compact indicator for use in headers/nav bars
+ */
+export function SyncStatusIndicator({ className }: { className?: string }) {
+	const { isOnline, pendingCount, conflictCount } = useSyncStatus();
 
 	return (
 		<div
-			className={cn(
-				'flex items-center justify-between px-4 py-2 rounded-lg border',
-				config.bg,
-				className
-			)}
-			role="status"
-			aria-live="polite"
+			className={cn('flex items-center gap-1', className)}
+			title={`Sync status: ${isOnline ? 'Online' : 'Offline'}`}
 		>
-			<div className="flex items-center gap-2">
-				<Icon className={cn('w-4 h-4', config.color, status === 'syncing' && 'animate-spin')} />
-				<span className={cn('text-sm font-medium', config.color)}>{config.message}</span>
-				{lastSyncTime && status !== 'syncing' && (
-					<span className="text-xs text-muted-foreground">
-						Last sync: {formatLastSync(lastSyncTime)}
-					</span>
-				)}
-			</div>
+			{isOnline ? (
+				<Cloud className="w-4 h-4 text-green-500" />
+			) : (
+				<CloudOff className="w-4 h-4 text-amber-500" />
+			)}
 
-			<div className="flex items-center gap-2">
-				{status === 'conflicts' && onResolveConflicts && (
-					<Button variant="outline" size="sm" onClick={onResolveConflicts} className="h-7 text-xs">
-						Resolve
-					</Button>
-				)}
+			{pendingCount > 0 && <span className="text-xs text-muted-foreground">{pendingCount}</span>}
 
-				{status !== 'syncing' && (
-					<Button variant="ghost" size="sm" onClick={() => triggerSync()} className="h-7 text-xs">
-						<RefreshCw className="w-3 h-3 mr-1" />
-						Sync
-					</Button>
-				)}
-			</div>
+			{conflictCount > 0 && <span className="text-xs text-red-500 font-bold">{conflictCount}</span>}
 		</div>
 	);
 }

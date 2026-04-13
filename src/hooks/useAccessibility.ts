@@ -1,415 +1,240 @@
-'use client';
+/**
+ * useAccessibility Hook
+ *
+ * Purpose: Provide accessible interaction patterns for simulations,
+ * math content, and interactive elements.
+ */
 
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import {
-	getOrCreateAccessibilityPreferences,
-	updateAccessibilityPreferences,
-} from '@/lib/db/accessibility-actions';
-import {
-	type AccessibilitySettings,
-	COLOR_BLIND_OPTIONS,
-	type ColorBlindMode,
-	TEXT_SIZE_OPTIONS,
-	type TextSize,
-	useAccessibilityStore,
-} from '@/services/accessibility-service';
+	announce,
+	createFocusTrap,
+	createLiveRegion,
+	focusElement,
+} from '@/lib/accessibility-service';
 
-export interface UseAccessibilityReturn {
-	settings: AccessibilitySettings;
-	setHighContrast: (value: boolean) => void;
-	toggleHighContrast: () => void;
-	setTextSize: (value: TextSize) => void;
-	setReducedMotion: (value: boolean) => void;
-	toggleReducedMotion: () => void;
-	setColorBlindMode: (value: ColorBlindMode) => void;
-	setSimplifiedLanguage: (value: boolean) => void;
-	toggleSimplifiedLanguage: () => void;
-	setTtsEnabled: (value: boolean) => void;
-	toggleTtsEnabled: () => void;
-	setLargerTargets: (value: boolean) => void;
-	toggleLargerTargets: () => void;
-	setKeyboardNavigation: (value: boolean) => void;
-	toggleKeyboardNavigation: () => void;
-	setChunkedContent: (value: boolean) => void;
-	toggleChunkedContent: () => void;
-	setProgressBreadcrumbs: (value: boolean) => void;
-	toggleProgressBreadcrumbs: () => void;
-	setOneThingAtATime: (value: boolean) => void;
-	toggleOneThingAtATime: () => void;
-	setSkipLinks: (value: boolean) => void;
-	toggleSkipLinks: () => void;
-	setHoldToClick: (value: boolean) => void;
-	toggleHoldToClick: () => void;
-	setFocusIndicators: (value: boolean) => void;
-	toggleFocusIndicators: () => void;
-	setVisualSoundIndicators: (value: boolean) => void;
-	toggleVisualSoundIndicators: () => void;
-	setAll: (settings: Partial<AccessibilitySettings>) => void;
-	reset: () => void;
-	textSizeMultiplier: number;
-	colorBlindFilter: string;
-	textSizeOptions: typeof TEXT_SIZE_OPTIONS;
-	colorBlindOptions: typeof COLOR_BLIND_OPTIONS;
-	speak: (text: string) => void;
-	stopSpeaking: () => void;
-	isSpeaking: boolean;
-}
+// ========================
+// USE ANNOUNCE (Screen Reader)
+// ========================
 
-export function useAccessibility(userId?: string): UseAccessibilityReturn {
-	const store = useAccessibilityStore();
-
+export function useAnnounce() {
 	useEffect(() => {
-		if (userId) {
-			getOrCreateAccessibilityPreferences(userId)
-				.then((dbPrefs) => {
-					store.setAll({
-						highContrast: dbPrefs.highContrast,
-						textSize: dbPrefs.textSize as TextSize,
-						reducedMotion: dbPrefs.reducedMotion,
-						colorBlindMode: dbPrefs.colorBlindMode as ColorBlindMode,
-						simplifiedLanguage: dbPrefs.simplifiedLanguage,
-						ttsEnabled: dbPrefs.ttsEnabled,
-						largerTargets: dbPrefs.largerTargets,
-						keyboardNavigation: dbPrefs.keyboardNavigation,
-						chunkedContent: dbPrefs.chunkedContent,
-						progressBreadcrumbs: dbPrefs.progressBreadcrumbs,
-						oneThingAtATime: dbPrefs.oneThingAtATime,
-						skipLinks: dbPrefs.skipLinks,
-						holdToClick: dbPrefs.holdToClick,
-						focusIndicators: dbPrefs.focusIndicators,
-						visualSoundIndicators: dbPrefs.visualSoundIndicators,
-					});
-				})
-				.catch(console.error);
-		}
-	}, [userId, store.setAll]);
-
-	const syncToDb = useCallback(
-		(updates: Partial<AccessibilitySettings>) => {
-			if (userId) {
-				updateAccessibilityPreferences(userId, updates as any).catch(console.error);
-			}
-		},
-		[userId]
-	);
-
-	const setHighContrast = useCallback(
-		(value: boolean) => {
-			store.setSetting('highContrast', value);
-			syncToDb({ highContrast: value });
-		},
-		[store, syncToDb]
-	);
-
-	const toggleHighContrast = useCallback(() => {
-		const newValue = !store.highContrast;
-		store.setSetting('highContrast', newValue);
-		syncToDb({ highContrast: newValue });
-	}, [store, syncToDb]);
-
-	const setTextSize = useCallback(
-		(value: TextSize) => {
-			store.setSetting('textSize', value);
-			syncToDb({ textSize: value });
-		},
-		[store, syncToDb]
-	);
-
-	const setReducedMotion = useCallback(
-		(value: boolean) => {
-			store.setSetting('reducedMotion', value);
-			syncToDb({ reducedMotion: value });
-		},
-		[store, syncToDb]
-	);
-
-	const toggleReducedMotion = useCallback(() => {
-		const newValue = !store.reducedMotion;
-		store.setSetting('reducedMotion', newValue);
-		syncToDb({ reducedMotion: newValue });
-	}, [store, syncToDb]);
-
-	const setColorBlindMode = useCallback(
-		(value: ColorBlindMode) => {
-			store.setSetting('colorBlindMode', value);
-			syncToDb({ colorBlindMode: value });
-		},
-		[store, syncToDb]
-	);
-
-	const setSimplifiedLanguage = useCallback(
-		(value: boolean) => {
-			store.setSetting('simplifiedLanguage', value);
-			syncToDb({ simplifiedLanguage: value });
-		},
-		[store, syncToDb]
-	);
-
-	const toggleSimplifiedLanguage = useCallback(() => {
-		const newValue = !store.simplifiedLanguage;
-		store.setSetting('simplifiedLanguage', newValue);
-		syncToDb({ simplifiedLanguage: newValue });
-	}, [store, syncToDb]);
-
-	const setTtsEnabled = useCallback(
-		(value: boolean) => {
-			store.setSetting('ttsEnabled', value);
-			syncToDb({ ttsEnabled: value });
-		},
-		[store, syncToDb]
-	);
-
-	const toggleTtsEnabled = useCallback(() => {
-		const newValue = !store.ttsEnabled;
-		store.setSetting('ttsEnabled', newValue);
-		syncToDb({ ttsEnabled: newValue });
-	}, [store, syncToDb]);
-
-	const setLargerTargets = useCallback(
-		(value: boolean) => {
-			store.setSetting('largerTargets', value);
-			syncToDb({ largerTargets: value });
-		},
-		[store, syncToDb]
-	);
-
-	const toggleLargerTargets = useCallback(() => {
-		const newValue = !store.largerTargets;
-		store.setSetting('largerTargets', newValue);
-		syncToDb({ largerTargets: newValue });
-	}, [store, syncToDb]);
-
-	const setKeyboardNavigation = useCallback(
-		(value: boolean) => {
-			store.setSetting('keyboardNavigation', value);
-			syncToDb({ keyboardNavigation: value });
-		},
-		[store, syncToDb]
-	);
-
-	const toggleKeyboardNavigation = useCallback(() => {
-		const newValue = !store.keyboardNavigation;
-		store.setSetting('keyboardNavigation', newValue);
-		syncToDb({ keyboardNavigation: newValue });
-	}, [store, syncToDb]);
-
-	const setChunkedContent = useCallback(
-		(value: boolean) => {
-			store.setSetting('chunkedContent', value);
-			syncToDb({ chunkedContent: value });
-		},
-		[store, syncToDb]
-	);
-
-	const toggleChunkedContent = useCallback(() => {
-		const newValue = !store.chunkedContent;
-		store.setSetting('chunkedContent', newValue);
-		syncToDb({ chunkedContent: newValue });
-	}, [store, syncToDb]);
-
-	const setProgressBreadcrumbs = useCallback(
-		(value: boolean) => {
-			store.setSetting('progressBreadcrumbs', value);
-			syncToDb({ progressBreadcrumbs: value });
-		},
-		[store, syncToDb]
-	);
-
-	const toggleProgressBreadcrumbs = useCallback(() => {
-		const newValue = !store.progressBreadcrumbs;
-		store.setSetting('progressBreadcrumbs', newValue);
-		syncToDb({ progressBreadcrumbs: newValue });
-	}, [store, syncToDb]);
-
-	const setOneThingAtATime = useCallback(
-		(value: boolean) => {
-			store.setSetting('oneThingAtATime', value);
-			syncToDb({ oneThingAtATime: value });
-		},
-		[store, syncToDb]
-	);
-
-	const toggleOneThingAtATime = useCallback(() => {
-		const newValue = !store.oneThingAtATime;
-		store.setSetting('oneThingAtATime', newValue);
-		syncToDb({ oneThingAtATime: newValue });
-	}, [store, syncToDb]);
-
-	const setSkipLinks = useCallback(
-		(value: boolean) => {
-			store.setSetting('skipLinks', value);
-			syncToDb({ skipLinks: value });
-		},
-		[store, syncToDb]
-	);
-
-	const toggleSkipLinks = useCallback(() => {
-		const newValue = !store.skipLinks;
-		store.setSetting('skipLinks', newValue);
-		syncToDb({ skipLinks: newValue });
-	}, [store, syncToDb]);
-
-	const setHoldToClick = useCallback(
-		(value: boolean) => {
-			store.setSetting('holdToClick', value);
-			syncToDb({ holdToClick: value });
-		},
-		[store, syncToDb]
-	);
-
-	const toggleHoldToClick = useCallback(() => {
-		const newValue = !store.holdToClick;
-		store.setSetting('holdToClick', newValue);
-		syncToDb({ holdToClick: newValue });
-	}, [store, syncToDb]);
-
-	const setFocusIndicators = useCallback(
-		(value: boolean) => {
-			store.setSetting('focusIndicators', value);
-			syncToDb({ focusIndicators: value });
-		},
-		[store, syncToDb]
-	);
-
-	const toggleFocusIndicators = useCallback(() => {
-		const newValue = !store.focusIndicators;
-		store.setSetting('focusIndicators', newValue);
-		syncToDb({ focusIndicators: newValue });
-	}, [store, syncToDb]);
-
-	const setVisualSoundIndicators = useCallback(
-		(value: boolean) => {
-			store.setSetting('visualSoundIndicators', value);
-			syncToDb({ visualSoundIndicators: value });
-		},
-		[store, syncToDb]
-	);
-
-	const toggleVisualSoundIndicators = useCallback(() => {
-		const newValue = !store.visualSoundIndicators;
-		store.setSetting('visualSoundIndicators', newValue);
-		syncToDb({ visualSoundIndicators: newValue });
-	}, [store, syncToDb]);
-
-	const setAll = useCallback(
-		(settings: Partial<AccessibilitySettings>) => {
-			store.setAll(settings);
-			syncToDb(settings);
-		},
-		[store, syncToDb]
-	);
-
-	const reset = useCallback(() => {
-		store.reset();
-		if (userId) {
-			updateAccessibilityPreferences(userId, {
-				highContrast: false,
-				textSize: '1',
-				reducedMotion: false,
-				colorBlindMode: 'none',
-				simplifiedLanguage: false,
-				ttsEnabled: false,
-				largerTargets: false,
-				keyboardNavigation: false,
-				chunkedContent: false,
-				progressBreadcrumbs: true,
-				oneThingAtATime: false,
-				skipLinks: true,
-				holdToClick: false,
-				focusIndicators: true,
-				visualSoundIndicators: true,
-			}).catch(console.error);
-		}
-	}, [store, userId]);
-
-	const textSizeMultiplier = useMemo(() => {
-		const multipliers: Record<TextSize, number> = {
-			normal: 1,
-			large: 1.25,
-			'x-large': 1.5,
-			'xx-large': 2,
-		};
-		return multipliers[store.textSize] || 1;
-	}, [store.textSize]);
-
-	const colorBlindFilter = useMemo(() => {
-		const filters: Record<ColorBlindMode, string> = {
-			none: 'none',
-			protanopia: 'url(#protanopia-filter)',
-			deuteranopia: 'url(#deuteranopia-filter)',
-			tritanopia: 'url(#tritanopia-filter)',
-		};
-		return filters[store.colorBlindMode] || 'none';
-	}, [store.colorBlindMode]);
-
-	const synth = useMemo(() => {
-		if (typeof window === 'undefined') return null;
-		return window.speechSynthesis;
+		createLiveRegion();
 	}, []);
 
-	const [isSpeaking, setIsSpeaking] = useState(false);
+	const announceMessage = useCallback((message: string, priority?: 'polite' | 'assertive') => {
+		announce(message, priority);
+	}, []);
 
-	const speak = useCallback(
-		(text: string) => {
-			if (!synth || !store.ttsEnabled) return;
+	return { announce: announceMessage };
+}
 
-			synth.cancel();
-			const utterance = new SpeechSynthesisUtterance(text);
-			utterance.rate = 0.9;
-			utterance.pitch = 1;
-			utterance.onstart = () => setIsSpeaking(true);
-			utterance.onend = () => setIsSpeaking(false);
-			utterance.onerror = () => setIsSpeaking(false);
-			synth.speak(utterance);
+// ========================
+// USE FOCUS TRAP
+// ========================
+
+export function useFocusTrap(enabled = true) {
+	const containerRef = useRef<HTMLDivElement>(null);
+	const focusTrapRef = useRef<ReturnType<typeof createFocusTrap> | null>(null);
+
+	useEffect(() => {
+		if (!enabled || !containerRef.current) return;
+
+		focusTrapRef.current = createFocusTrap(containerRef.current);
+		focusTrapRef.current.activate();
+
+		return () => {
+			focusTrapRef.current?.deactivate();
+		};
+	}, [enabled]);
+
+	return { containerRef };
+}
+
+// ========================
+// USE ACCESSIBLE KEYBOARD CONTROLS
+// ========================
+
+export interface KeyboardControlConfig {
+	onIncrease?: () => void;
+	onDecrease?: () => void;
+	onSelect?: () => void;
+	onCancel?: () => void;
+	onNext?: () => void;
+	onPrevious?: () => void;
+}
+
+export function useAccessibleKeyboardControls(config: KeyboardControlConfig) {
+	const handleKeyDown = useCallback(
+		(event: KeyboardEvent) => {
+			switch (event.key) {
+				case 'ArrowUp':
+					event.preventDefault();
+					config.onIncrease?.();
+					break;
+				case 'ArrowDown':
+					event.preventDefault();
+					config.onDecrease?.();
+					break;
+				case ' ':
+				case 'Enter':
+					event.preventDefault();
+					config.onSelect?.();
+					break;
+				case 'Escape':
+					event.preventDefault();
+					config.onCancel?.();
+					break;
+				case 'ArrowRight':
+					event.preventDefault();
+					config.onNext?.();
+					break;
+				case 'ArrowLeft':
+					event.preventDefault();
+					config.onPrevious?.();
+					break;
+			}
 		},
-		[synth, store.ttsEnabled]
+		[config]
 	);
 
-	const stopSpeaking = useCallback(() => {
-		if (synth) {
-			synth.cancel();
-			setIsSpeaking(false);
-		}
-	}, [synth]);
+	useEffect(() => {
+		window.addEventListener('keydown', handleKeyDown);
+		return () => window.removeEventListener('keydown', handleKeyDown);
+	}, [handleKeyDown]);
+
+	return { handleKeyDown };
+}
+
+// ========================
+// USE ACCESSIBLE SIMULATION
+// ========================
+
+export interface SimulationState {
+	isPlaying: boolean;
+	currentStep: number;
+	totalSteps: number;
+	speed: number;
+}
+
+export function useAccessibleSimulation(totalSteps: number) {
+	const [state, setState] = useState<SimulationState>({
+		isPlaying: false,
+		currentStep: 0,
+		totalSteps,
+		speed: 1,
+	});
+
+	const { announce } = useAnnounce();
+
+	const controls = useAccessibleKeyboardControls({
+		onSelect: () => setState((s) => ({ ...s, isPlaying: !s.isPlaying })),
+		onCancel: () => setState((s) => ({ ...s, isPlaying: false, currentStep: 0 })),
+		onNext: () =>
+			setState((s) => {
+				const nextStep = Math.min(s.currentStep + 1, s.totalSteps);
+				return { ...s, currentStep: nextStep };
+			}),
+		onPrevious: () =>
+			setState((s) => {
+				const prevStep = Math.max(s.currentStep - 1, 0);
+				return { ...s, currentStep: prevStep };
+			}),
+		onIncrease: () => setState((s) => ({ ...s, speed: Math.min(s.speed + 0.5, 3) })),
+		onDecrease: () => setState((s) => ({ ...s, speed: Math.max(s.speed - 0.5, 0.5) })),
+	});
+
+	// Announce state changes
+	useEffect(() => {
+		announce(`Simulation step ${state.currentStep + 1} of ${state.totalSteps}`);
+	}, [state.currentStep, state.totalSteps, announce]);
 
 	return {
-		settings: store,
-		setHighContrast,
-		toggleHighContrast,
-		setTextSize,
-		setReducedMotion,
-		toggleReducedMotion,
-		setColorBlindMode,
-		setSimplifiedLanguage,
-		toggleSimplifiedLanguage,
-		setTtsEnabled,
-		toggleTtsEnabled,
-		setLargerTargets,
-		toggleLargerTargets,
-		setKeyboardNavigation,
-		toggleKeyboardNavigation,
-		setChunkedContent,
-		toggleChunkedContent,
-		setProgressBreadcrumbs,
-		toggleProgressBreadcrumbs,
-		setOneThingAtATime,
-		toggleOneThingAtATime,
-		setSkipLinks,
-		toggleSkipLinks,
-		setHoldToClick,
-		toggleHoldToClick,
-		setFocusIndicators,
-		toggleFocusIndicators,
-		setVisualSoundIndicators,
-		toggleVisualSoundIndicators,
-		setAll,
-		reset,
-		textSizeMultiplier,
-		colorBlindFilter,
-		textSizeOptions: TEXT_SIZE_OPTIONS,
-		colorBlindOptions: COLOR_BLIND_OPTIONS,
-		speak,
-		stopSpeaking,
-		isSpeaking,
+		state,
+		setState,
+		controls,
 	};
+}
+
+// ========================
+// USE ACCESSIBLE MATH
+// ========================
+
+export function useAccessibleMath(latex: string) {
+	const { announce } = useAnnounce();
+	const elementRef = useRef<HTMLDivElement>(null);
+
+	const speakMath = useCallback(() => {
+		if (elementRef.current) {
+			// In production, integrate with speech synthesis API
+			announce(`Math content: ${latex}`);
+		}
+	}, [latex, announce]);
+
+	const handleKeyDown = useCallback(
+		(e: React.KeyboardEvent) => {
+			if (e.key === 'Enter' || e.key === ' ') {
+				e.preventDefault();
+				speakMath();
+			}
+		},
+		[speakMath]
+	);
+
+	return { elementRef, handleKeyDown, speakMath };
+}
+
+// ========================
+// USE COLORBLIND MODE
+// ========================
+
+export type ColorblindMode = 'off' | 'deuteranopia' | 'protanopia' | 'tritanopia';
+
+export function useColorblindMode(mode: ColorblindMode) {
+	useEffect(() => {
+		const root = document.documentElement;
+
+		// Remove all colorblind classes
+		root.classList.remove(
+			'colorblind-deuteranopia',
+			'colorblind-protanopia',
+			'colorblind-tritanopia'
+		);
+
+		// Add selected mode
+		if (mode !== 'off') {
+			root.classList.add(`colorblind-${mode}`);
+		}
+	}, [mode]);
+}
+
+// ========================
+// USE HIGH CONTRAST
+// ========================
+
+export function useHighContrast(enabled: boolean) {
+	useEffect(() => {
+		const root = document.documentElement;
+
+		if (enabled) {
+			root.classList.add('high-contrast');
+		} else {
+			root.classList.remove('high-contrast');
+		}
+	}, [enabled]);
+}
+
+// ========================
+// USE FOCUS MANAGEMENT
+// ========================
+
+export function useFocusOnMount(elementId: string) {
+	const hasFocused = useRef(false);
+
+	useEffect(() => {
+		if (!hasFocused.current) {
+			hasFocused.current = true;
+			focusElement(elementId);
+		}
+	}, [elementId]);
 }

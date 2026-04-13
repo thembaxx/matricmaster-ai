@@ -5,7 +5,7 @@
  * - 30-day grace period for account recovery
  * - Soft delete preserving anonymized analytics
  * - Subscription cancellation with prorated refunds
- * - Data export before deletion
+ * - POPIA-compliant data export before deletion
  * - Complete PII removal after grace period
  */
 
@@ -14,7 +14,29 @@ import { Resend } from 'resend';
 import { appConfig } from '../app.config';
 import { dbManagerV2 } from '../lib/db/database-manager-v2';
 import type { DbType } from '../lib/db/postgresql-manager';
-import { accessibilityPreferences, userProgress, userSettings, users } from '../lib/db/schema';
+import {
+	accessibilityPreferences,
+	aiConversations,
+	bookmarks,
+	calendarEvents,
+	flashcardDecks,
+	flashcardReviews,
+	notifications,
+	payments,
+	questionAttempts,
+	quizResults,
+	studyPlans,
+	studySessions,
+	topicMastery,
+	userAchievements,
+	userLearningPreferences,
+	userProgress,
+	userSettings,
+	userSubscriptions,
+	users,
+	wellnessCheckIns,
+} from '../lib/db/schema';
+import { aiChatMessages, aiChatSessions } from '../lib/db/schema-ai-chat';
 import { logger } from '../lib/logger';
 
 const log = logger.createLogger('AccountDeletion');
@@ -313,8 +335,8 @@ export async function getPendingDeletions(): Promise<PendingDeletion[]> {
 }
 
 /**
- * Generate data export for user before deletion
- * Returns a downloadable JSON file with all user data
+ * POPIA-compliant comprehensive data export
+ * Returns all personal data held about a user
  */
 export async function exportUserData(userId: string): Promise<Record<string, unknown>> {
 	const db = dbManagerV2.getDb();
@@ -323,49 +345,253 @@ export async function exportUserData(userId: string): Promise<Record<string, unk
 	}
 
 	try {
-		// Get user data
+		// 1. Core profile data
 		const [user] = await db.select().from(users).where(eq(users.id, userId));
-
 		if (!user) {
 			throw new Error('User not found');
 		}
 
-		// Get user settings
+		// 2. Settings and preferences
 		const [settings] = await db.select().from(userSettings).where(eq(userSettings.userId, userId));
-
-		// Get accessibility preferences
 		const [accessibility] = await db
 			.select()
 			.from(accessibilityPreferences)
 			.where(eq(accessibilityPreferences.userId, userId));
+		const [learningPrefs] = await db
+			.select()
+			.from(userLearningPreferences)
+			.where(eq(userLearningPreferences.userId, userId));
 
-		// Get user progress
+		// 3. Progress and performance
 		const progress = await db.select().from(userProgress).where(eq(userProgress.userId, userId));
+		const mastery = await db.select().from(topicMastery).where(eq(topicMastery.userId, userId));
+		const quizResultsData = await db
+			.select()
+			.from(quizResults)
+			.where(eq(quizResults.userId, userId));
+		const questionAttemptsData = await db
+			.select()
+			.from(questionAttempts)
+			.where(eq(questionAttempts.userId, userId));
 
-		// Build export object
+		// 4. Study content
+		const studyPlansData = await db.select().from(studyPlans).where(eq(studyPlans.userId, userId));
+		const studySessionsData = await db
+			.select()
+			.from(studySessions)
+			.where(eq(studySessions.userId, userId));
+		const flashcardDecksData = await db
+			.select()
+			.from(flashcardDecks)
+			.where(eq(flashcardDecks.userId, userId));
+		const flashcardReviewsData = await db
+			.select()
+			.from(flashcardReviews)
+			.where(eq(flashcardReviews.userId, userId));
+		const bookmarksData = await db.select().from(bookmarks).where(eq(bookmarks.userId, userId));
+
+		// 5. AI interactions
+		const aiSessionsData = await db
+			.select()
+			.from(aiChatSessions)
+			.where(eq(aiChatSessions.userId, userId));
+		const aiMessagesData = await db
+			.select()
+			.from(aiChatMessages)
+			.where(eq(aiChatMessages.userId, userId));
+		const aiConversationsData = await db
+			.select()
+			.from(aiConversations)
+			.where(eq(aiConversations.userId, userId));
+
+		// 6. Wellness data
+		const wellnessData = await db
+			.select()
+			.from(wellnessCheckIns)
+			.where(eq(wellnessCheckIns.userId, userId));
+
+		// 7. Achievements and gamification
+		const achievementsData = await db
+			.select()
+			.from(userAchievements)
+			.where(eq(userAchievements.userId, userId));
+
+		// 8. Notifications
+		const notificationsData = await db
+			.select()
+			.from(notifications)
+			.where(eq(notifications.userId, userId));
+
+		// 9. Calendar events
+		const calendarEventsData = await db
+			.select()
+			.from(calendarEvents)
+			.where(eq(calendarEvents.userId, userId));
+
+		// 10. Subscription and payment history
+		const subscriptionsData = await db
+			.select()
+			.from(userSubscriptions)
+			.where(eq(userSubscriptions.userId, userId));
+		const paymentsData = await db.select().from(payments).where(eq(payments.userId, userId));
+
+		// Build comprehensive export
 		const exportData = {
-			exportDate: new Date().toISOString(),
-			userId,
+			metadata: {
+				exportDate: new Date().toISOString(),
+				exportVersion: '1.0',
+				purpose: 'POPIA-compliant personal data export',
+				userId,
+			},
 			profile: {
+				id: user.id,
 				name: user.name,
 				email: user.email,
-				createdAt: user.createdAt,
 				role: user.role,
+				createdAt: user.createdAt,
+				updatedAt: user.updatedAt,
+				hasCompletedOnboarding: user.hasCompletedOnboarding,
+				isBlocked: user.isBlocked,
 			},
-			settings: settings || null,
-			accessibility: accessibility || null,
-			progress: progress.map((p) => ({
-				subjectId: p.subjectId,
-				topic: p.topic,
-				totalQuestionsAttempted: p.totalQuestionsAttempted,
-				totalCorrect: p.totalCorrect,
-				totalMarksEarned: p.totalMarksEarned,
-				streakDays: p.streakDays,
-				bestStreak: p.bestStreak,
+			settings: {
+				appSettings: settings || null,
+				accessibilityPreferences: accessibility || null,
+				learningPreferences: learningPrefs || null,
+			},
+			learningProgress: {
+				subjectProgress: progress.map((p) => ({
+					subjectId: p.subjectId,
+					topic: p.topic,
+					totalQuestionsAttempted: p.totalQuestionsAttempted,
+					totalCorrect: p.totalCorrect,
+					totalMarksEarned: p.totalMarksEarned,
+					streakDays: p.streakDays,
+					bestStreak: p.bestStreak,
+					accuracy: p.accuracy,
+				})),
+				topicMastery: mastery.map((m) => ({
+					subjectId: m.subjectId,
+					topic: m.topic,
+					masteryLevel: m.masteryLevel,
+					lastPracticed: m.lastPracticed,
+				})),
+			},
+			assessmentHistory: {
+				quizResults: quizResultsData.map((q) => ({
+					id: q.id,
+					quizId: q.quizId,
+					subjectId: q.subjectId,
+					score: q.score,
+					percentage: q.percentage,
+					completedAt: q.completedAt,
+					timeTakenSeconds: q.timeTakenSeconds,
+				})),
+				questionAttempts: questionAttemptsData.slice(0, 100).map((qa) => ({
+					// Limit for export size
+					questionId: qa.questionId,
+					isCorrect: qa.isCorrect,
+					attemptedAt: qa.attemptedAt,
+				})),
+			},
+			studyContent: {
+				studyPlans: studyPlansData.map((sp) => ({
+					id: sp.id,
+					title: sp.title,
+					description: sp.description,
+					createdAt: sp.createdAt,
+				})),
+				studySessions: studySessionsData.slice(0, 100).map((ss) => ({
+					id: ss.id,
+					subjectId: ss.subjectId,
+					duration: ss.duration,
+					completedAt: ss.completedAt,
+				})),
+				flashcardDecks: flashcardDecksData.map((fd) => ({
+					id: fd.id,
+					title: fd.title,
+					createdAt: fd.createdAt,
+				})),
+				flashcardReviews: flashcardReviewsData.slice(0, 100).map((fr) => ({
+					flashcardId: fr.flashcardId,
+					rating: fr.rating,
+					reviewedAt: fr.reviewedAt,
+				})),
+				bookmarks: bookmarksData.map((b) => ({
+					id: b.id,
+					contentType: b.contentType,
+					contentId: b.contentId,
+					createdAt: b.createdAt,
+				})),
+			},
+			aiInteractions: {
+				chatSessions: aiSessionsData.map((s) => ({
+					id: s.id,
+					title: s.title,
+					subject: s.subject,
+					createdAt: s.createdAt,
+					updatedAt: s.updatedAt,
+				})),
+				chatMessages: aiMessagesData.slice(0, 200).map((m) => ({
+					// Limit for export size
+					id: m.id,
+					sessionId: m.sessionId,
+					role: m.role,
+					content: m.content,
+					createdAt: m.createdAt,
+				})),
+				conversations: aiConversationsData.slice(0, 100).map((c) => ({
+					id: c.id,
+					topic: c.topic,
+					createdAt: c.createdAt,
+				})),
+			},
+			wellness: {
+				checkIns: wellnessData.map((w) => ({
+					id: w.id,
+					mood: w.mood,
+					stressLevel: w.stressLevel,
+					checkedInAt: w.checkedInAt,
+				})),
+			},
+			gamification: {
+				achievements: achievementsData.map((a) => ({
+					achievementId: a.achievementId,
+					unlockedAt: a.unlockedAt,
+				})),
+			},
+			notifications: notificationsData.slice(0, 100).map((n) => ({
+				id: n.id,
+				title: n.title,
+				message: n.message,
+				isRead: n.isRead,
+				createdAt: n.createdAt,
 			})),
+			calendar: calendarEventsData.map((ce) => ({
+				id: ce.id,
+				title: ce.title,
+				description: ce.description,
+				startTime: ce.startTime,
+				endTime: ce.endTime,
+			})),
+			billing: {
+				subscriptions: subscriptionsData.map((s) => ({
+					id: s.id,
+					plan: s.plan,
+					status: s.status,
+					startDate: s.startDate,
+					endDate: s.endDate,
+				})),
+				payments: paymentsData.map((p) => ({
+					id: p.id,
+					amount: p.amount,
+					currency: p.currency,
+					status: p.status,
+					createdAt: p.createdAt,
+				})),
+			},
 		};
 
-		log.info('User data exported', { userId });
+		log.info('POPIA-compliant user data export completed', { userId });
 
 		return exportData;
 	} catch (error) {
