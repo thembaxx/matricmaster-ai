@@ -19,7 +19,6 @@ import { logger } from '@/lib/logger';
 const log = logger.createLogger('HintManagement');
 
 // Configuration
-const HINT_TRACKING_WINDOW_DAYS = 30;
 const MASTERY_THRESHOLD_FOR_REDUCTION = 0.75; // 75% mastery reduces hints
 const INDEPENDENCE_BONUS_XP = 25;
 const TRY_FIRST_QUIZ_THRESHOLD = 3; // quizzes completed to enable Try First mode
@@ -115,7 +114,7 @@ export async function trackHintUsage(params: {
 	hintType: 'concept' | 'step' | 'solution' | 'formula';
 	wasHelpful?: boolean;
 }): Promise<HintUsageRecord> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		throw new Error('Database not available');
 	}
@@ -132,14 +131,15 @@ export async function trackHintUsage(params: {
 			wasHelpful: params.wasHelpful ?? null,
 		};
 
-		log.info(
-			{ userId: params.userId, hintType: params.hintType, questionId: params.questionId },
-			'Hint usage tracked'
-		);
+		log.info('Hint usage tracked', {
+			userId: params.userId,
+			hintType: params.hintType,
+			questionId: params.questionId,
+		});
 
 		return record;
 	} catch (error) {
-		log.error({ userId: params.userId, error }, 'Failed to track hint usage');
+		log.error('Failed to track hint usage', { userId: params.userId, error });
 		throw error;
 	}
 }
@@ -148,16 +148,12 @@ export async function trackHintUsage(params: {
  * Get hint usage tracking data for a student
  */
 export async function getHintUsageTracking(userId: string): Promise<HintUsageTracking> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		throw new Error('Database not available');
 	}
 
 	try {
-		const now = new Date();
-		const _oneWeekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
-		const _oneMonthAgo = new Date(now.getTime() - HINT_TRACKING_WINDOW_DAYS * 24 * 60 * 60 * 1000);
-
 		// Note: This would require a hintUsage table; using query patterns from existing services
 		const totalHintsUsed = 0; // Placeholder - implement with actual table
 		const hintsLastWeek = 0;
@@ -204,7 +200,7 @@ export async function getHintUsageTracking(userId: string): Promise<HintUsageTra
 			lastHintUsedAt,
 		};
 	} catch (error) {
-		log.error({ userId, error }, 'Failed to get hint usage tracking');
+		log.error('Failed to get hint usage tracking', { userId, error });
 		throw error;
 	}
 }
@@ -213,7 +209,7 @@ export async function getHintUsageTracking(userId: string): Promise<HintUsageTra
  * Detect hint overreliance for a student
  */
 export async function detectHintOverreliance(userId: string): Promise<HintOverrelianceDetection> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		throw new Error('Database not available');
 	}
@@ -230,7 +226,10 @@ export async function detectHintOverreliance(userId: string): Promise<HintOverre
 
 		const averageMastery =
 			masteryData.length > 0
-				? masteryData.reduce((sum, m) => sum + (m.masteryScore || 0), 0) / masteryData.length
+				? masteryData.reduce(
+						(sum, m) => sum + (Number.parseFloat(m.masteryLevel as string) || 0),
+						0
+					) / masteryData.length
 				: 0;
 
 		// Get hint usage tracking
@@ -327,7 +326,7 @@ export async function detectHintOverreliance(userId: string): Promise<HintOverre
 			recommendations,
 		};
 	} catch (error) {
-		log.error({ userId, error }, 'Failed to detect hint overreliance');
+		log.error('Failed to detect hint overreliance', { userId, error });
 		throw error;
 	}
 }
@@ -336,7 +335,7 @@ export async function detectHintOverreliance(userId: string): Promise<HintOverre
  * Enable Try First mode for a student
  */
 export async function enableTryFirstMode(userId: string): Promise<TryFirstMode> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		throw new Error('Database not available');
 	}
@@ -350,9 +349,6 @@ export async function enableTryFirstMode(userId: string): Promise<TryFirstMode> 
 
 		const quizCount = quizCountResult[0]?.count || 0;
 		const eligible = quizCount >= TRY_FIRST_QUIZ_THRESHOLD;
-
-		// Get current hint usage
-		const _hintTracking = await getHintUsageTracking(userId);
 
 		// Calculate hints remaining based on independence level
 		const independenceScore = await calculateIndependenceScore(userId);
@@ -376,7 +372,7 @@ export async function enableTryFirstMode(userId: string): Promise<TryFirstMode> 
 				independenceScore.level === 'independent' || independenceScore.level === 'self-sufficient',
 		};
 	} catch (error) {
-		log.error({ userId, error }, 'Failed to enable Try First mode');
+		log.error('Failed to enable Try First mode', { userId, error });
 		throw error;
 	}
 }
@@ -385,7 +381,7 @@ export async function enableTryFirstMode(userId: string): Promise<TryFirstMode> 
  * Calculate independence score for a student
  */
 export async function calculateIndependenceScore(userId: string): Promise<IndependenceScore> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		throw new Error('Database not available');
 	}
@@ -461,7 +457,7 @@ export async function calculateIndependenceScore(userId: string): Promise<Indepe
 			independenceStreak,
 		};
 	} catch (error) {
-		log.error({ userId, error }, 'Failed to calculate independence score');
+		log.error('Failed to calculate independence score', { userId, error });
 		throw error;
 	}
 }
@@ -470,7 +466,7 @@ export async function calculateIndependenceScore(userId: string): Promise<Indepe
  * Get hint recommendations for a student
  */
 export async function getHintRecommendations(userId: string): Promise<HintRecommendations> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		throw new Error('Database not available');
 	}
@@ -500,7 +496,7 @@ export async function getHintRecommendations(userId: string): Promise<HintRecomm
 		});
 
 		const lowMasteryTopics = masteryData.filter(
-			(m) => m.masteryScore < MASTERY_THRESHOLD_FOR_REDUCTION
+			(m) => Number.parseFloat(m.masteryLevel as string) < MASTERY_THRESHOLD_FOR_REDUCTION
 		);
 
 		const recommendedHintTypes: ('concept' | 'step' | 'solution' | 'formula')[] = [];
@@ -555,7 +551,7 @@ export async function getHintRecommendations(userId: string): Promise<HintRecomm
 			message,
 		};
 	} catch (error) {
-		log.error({ userId, error }, 'Failed to get hint recommendations');
+		log.error('Failed to get hint recommendations', { userId, error });
 		throw error;
 	}
 }
@@ -569,7 +565,7 @@ export async function awardIndependenceXP(params: {
 	hintsUsed: number;
 	baseXP: number;
 }): Promise<{ totalXP: number; bonusXP: number; multiplier: number }> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		throw new Error('Database not available');
 	}
@@ -599,24 +595,22 @@ export async function awardIndependenceXP(params: {
 
 		const totalXP = params.baseXP + bonusXP;
 
-		log.info(
-			{
-				userId: params.userId,
-				quizId: params.quizId,
-				baseXP: params.baseXP,
-				bonusXP,
-				totalXP,
-				hintsUsed: params.hintsUsed,
-			},
-			'Independence XP awarded'
-		);
+		log.info('Independence XP awarded', {
+			userId: params.userId,
+			quizId: params.quizId,
+			baseXP: params.baseXP,
+			bonusXP,
+			totalXP,
+			hintsUsed: params.hintsUsed,
+		});
 
 		return { totalXP, bonusXP, multiplier };
 	} catch (error) {
-		log.error(
-			{ userId: params.userId, quizId: params.quizId, error },
-			'Failed to award independence XP'
-		);
+		log.error('Failed to award independence XP', {
+			userId: params.userId,
+			quizId: params.quizId,
+			error,
+		});
 		// Return base XP on error
 		return { totalXP: params.baseXP, bonusXP: 0, multiplier: 1 };
 	}
@@ -632,7 +626,7 @@ export async function getSelfSufficiencyProgress(userId: string): Promise<{
 	recommendations: HintRecommendations;
 	milestones: IndependenceMilestone[];
 }> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		throw new Error('Database not available');
 	}
@@ -738,7 +732,7 @@ export async function getSelfSufficiencyProgress(userId: string): Promise<{
 			milestones,
 		};
 	} catch (error) {
-		log.error({ userId, error }, 'Failed to get self-sufficiency progress');
+		log.error('Failed to get self-sufficiency progress', { userId, error });
 		throw error;
 	}
 }

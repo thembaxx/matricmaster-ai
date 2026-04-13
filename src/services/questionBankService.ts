@@ -1,8 +1,8 @@
 'use server';
 
 import { and, count, eq, ilike, sql } from 'drizzle-orm';
+import type { DbType } from '@/lib/db';
 import { dbManagerV2 } from '@/lib/db/database-manager-v2';
-import { type DbType } from '@/lib/db';
 import { pastPaperQuestions, questions } from '@/lib/db/schema';
 import { logger } from '@/lib/logger';
 

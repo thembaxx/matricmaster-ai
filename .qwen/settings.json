@@ -6,7 +6,9 @@
 			"Bash(dir *)",
 			"Read(C:\\Users\\Themba\\Documents\\org1128\\projects/**)",
 			"Read(C:\\/**)",
-			"Bash(powershell *)"
+			"Bash(powershell *)",
+			"Bash(npx *)",
+			"Bash(findstr *)"
 		]
 	},
 	"$version": 3

@@ -18,7 +18,6 @@ import { logger } from '@/lib/logger';
 const log = logger.createLogger('ExamMode');
 
 // Configuration
-const _EXAM_PERIOD_DAYS = 14; // 2 weeks before exam
 const RATE_LIMIT_MULTIPLIER = 3; // 3x normal limits during exam period
 const HIGH_PRIORITY_QUEUE_SIZE = 100;
 const MEDIUM_PRIORITY_QUEUE_SIZE = 500;
@@ -90,7 +89,7 @@ export async function detectExamPeriod(userId: string): Promise<ExamPeriod> {
 		return cached;
 	}
 
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		return { detected: false, examType: '', daysUntilExam: 0, isCriticalPeriod: false };
 	}

@@ -23,7 +23,6 @@ const log = logger.createLogger('AntiCheat');
 const MIN_TIME_PER_QUESTION_SECONDS = 10; // Minimum reasonable time
 const RAPID_COMPLETION_THRESHOLD = 0.5; // 50% faster than average
 const MAX_DAILY_XP = 500; // Cap daily XP gains
-const _PATTERN_ANOMALY_THRESHOLD = 0.8; // 80% same answer pattern
 const SUSPICIOUS_ACTIVITY_WINDOW_DAYS = 7;
 
 // Types
@@ -61,7 +60,7 @@ export interface DailyXPTracking {
  * Check for gaming/suspicious activity
  */
 export async function detectGamingActivity(userId: string): Promise<GamingDetectionResult> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		throw new Error('Database not available');
 	}
@@ -147,7 +146,7 @@ async function checkRapidCompletion(userId: string): Promise<{
 	severity: 'low' | 'medium' | 'high' | 'critical';
 	percentageFaster: number;
 }> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		return { isDetected: false, severity: 'low', percentageFaster: 0 };
 	}
@@ -161,7 +160,7 @@ async function checkRapidCompletion(userId: string): Promise<{
 		// Get recent attempts
 		const attempts = await db
 			.select({
-				timeSpent: questionAttempts.timeSpentSeconds,
+				timeSpent: questionAttempts.responseTimeMs,
 			})
 			.from(questionAttempts)
 			.where(
@@ -224,15 +223,12 @@ async function checkXPFarming(userId: string): Promise<{
 	severity: 'low' | 'medium' | 'high' | 'critical';
 	totalXP: number;
 }> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		return { isDetected: false, severity: 'low', totalXP: 0 };
 	}
 
 	try {
-		const today = new Date();
-		const _todayStr = today.toISOString().split('T')[0];
-
 		// Get today's progress
 		const [progress] = await db
 			.select({
@@ -323,15 +319,12 @@ function generateAntiGamingActions(
  * Apply daily XP cap
  */
 export async function applyDailyXPCap(userId: string, earnedXP: number): Promise<number> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		return earnedXP;
 	}
 
 	try {
-		const today = new Date();
-		const _todayStr = today.toISOString().split('T')[0];
-
 		// Get today's current XP
 		const [progress] = await db
 			.select({

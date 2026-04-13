@@ -22,7 +22,6 @@ const log = logger.createLogger('CommunityHealth');
 // Configuration
 const TOXICITY_THRESHOLD = 0.7; // 70% confidence
 const AUTO_MUTE_DURATION_MS = 24 * 60 * 60 * 1000; // 24 hours
-const _MAX_REPORTS_BEFORE_REVIEW = 5;
 
 // Types
 export interface ModerationResult {
@@ -72,17 +71,6 @@ export interface CommunityHealthStatus {
 	activeMutes: number;
 	positiveInteractions: number;
 }
-
-// Moderation logs table
-const _moderationLogsTable = pgTable('moderation_logs', {
-	id: text('id').primaryKey(),
-	userId: text('user_id').notNull(),
-	content: text('content').notNull(),
-	toxicityScore: text('toxicity_score').notNull(),
-	categories: jsonb('categories'),
-	action: varchar('action', { length: 20 }).notNull(),
-	createdAt: timestamp('created_at').defaultNow(),
-});
 
 // User reports table
 const userReportsTable = pgTable('user_reports', {
@@ -189,7 +177,7 @@ export async function reportUser(params: {
 	description: string;
 	evidence?: Record<string, unknown>;
 }): Promise<UserReport> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		throw new Error('Database not available');
 	}
@@ -261,7 +249,7 @@ export async function blockUser(
  * Get community health status
  */
 export async function getCommunityHealthStatus(): Promise<CommunityHealthStatus> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		return {
 			overallScore: 0,
@@ -274,15 +262,15 @@ export async function getCommunityHealthStatus(): Promise<CommunityHealthStatus>
 
 	try {
 		// Get reports pending
-		const [pendingReports] = await db
-			.select({ count: userReportsTable.id })
+		const pendingReports = await db
+			.select({ id: userReportsTable.id })
 			.from(userReportsTable)
 			.where(eq(userReportsTable.status, 'pending'));
 
 		return {
 			overallScore: 85, // Would calculate from data
 			toxicMessagesDetected: 0,
-			reportsPending: pendingReports?.count || 0,
+			reportsPending: pendingReports.length,
 			activeMutes: 0,
 			positiveInteractions: 0,
 		};
@@ -313,32 +301,10 @@ export function getPositiveReinforcement(): string {
 }
 
 /**
- * Check if table exists
- */
-async function _checkTableExists(tableName: string): Promise<boolean> {
-	const db = await dbManagerV2.getDb();
-	if (!db) {
-		return false;
-	}
-
-	try {
-		const result = await db.execute(`
-      SELECT EXISTS (
-        SELECT FROM information_schema.tables 
-        WHERE table_name = '${tableName}'
-      );
-    `);
-		return result[0]?.exists ?? false;
-	} catch {
-		return false;
-	}
-}
-
-/**
  * Initialize community health tables
  */
 export async function initializeCommunityHealth(): Promise<void> {
-	const db = await dbManagerV2.getDb();
+	const db = dbManagerV2.getDb();
 	if (!db) {
 		log.warn('Database not available - skipping community health initialization');
 		return;

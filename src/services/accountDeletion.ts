@@ -10,10 +10,10 @@
  */
 
 import { and, eq, isNotNull, lt } from 'drizzle-orm';
-import type { DbType } from '../lib/db/postgresql-manager';
 import { Resend } from 'resend';
 import { appConfig } from '../app.config';
 import { dbManagerV2 } from '../lib/db/database-manager-v2';
+import type { DbType } from '../lib/db/postgresql-manager';
 import { accessibilityPreferences, userProgress, userSettings, users } from '../lib/db/schema';
 import { logger } from '../lib/logger';
 
@@ -215,10 +215,7 @@ export async function processPendingDeletions(): Promise<{
  * Permanently delete a single user's PII
  * Preserves anonymized analytics for product improvement
  */
-async function permanentlyDeleteUser(
-	userId: string,
-	db: DbType
-): Promise<void> {
+async function permanentlyDeleteUser(userId: string, db: DbType): Promise<void> {
 	// Start a transaction
 	await db.transaction(async (tx) => {
 		// 1. Anonymize quiz results (keep for analytics but remove PII)
