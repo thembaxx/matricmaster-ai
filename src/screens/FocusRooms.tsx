@@ -5,6 +5,7 @@ import { HugeiconsIcon } from '@hugeicons/react';
 import { usePresence, usePresenceListener } from 'ably/react';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { toast } from 'sonner';
 import { BuddyFocusStatus } from '@/components/FocusRooms/BuddyFocusStatus';
 import { type FocusSession, MOCK_LEADERBOARD } from '@/components/FocusRooms/constants';
 import { FocusLeaderboard } from '@/components/FocusRooms/FocusLeaderboard';
@@ -195,7 +196,41 @@ function FocusRoomsContent() {
 						<Button
 							variant="outline"
 							size="sm"
-							onClick={() => router.push('/video-call')}
+							onClick={async () => {
+								try {
+									const { createDailyRoom, getDailyDomain } = await import('@/lib/video/daily');
+									const domain = getDailyDomain();
+
+									if (!domain) {
+										toast.error('Video call not configured');
+										return;
+									}
+
+									const roomName = `focus-room-${Date.now()}`;
+									const result = await createDailyRoom({
+										name: roomName,
+										properties: {
+											enable_screenshare: true,
+											enable_chat: true,
+											max_participants: 4,
+										},
+									});
+
+									if (result.success && result.room.url) {
+										const params = new URLSearchParams({
+											room: roomName,
+											url: result.room.url,
+											subject: 'Focus Room Session',
+										});
+										router.push(`/video-call?${params.toString()}`);
+									} else {
+										toast.error('Failed to create video room');
+									}
+								} catch (error) {
+									console.error('Failed to start video call:', error);
+									toast.error('Failed to start video call');
+								}
+							}}
 							className="rounded-full"
 						>
 							join video call
