@@ -4,6 +4,7 @@ import { AddToStudyPlanButton } from '@/components/AI/AddToStudyPlanButton';
 import { BookmarkButton } from '@/components/AI/BookmarkButton';
 import { CitationDisplay } from '@/components/AI/CitationDisplay';
 import { MarkdownRenderer } from '@/components/AI/MarkdownRenderer';
+import { ReportIncorrectAnswerButton } from '@/components/AI/ReportIncorrectAnswerButton';
 import { SaveAsFlashcardButton } from '@/components/AI/SaveAsFlashcardButton';
 import { SuggestedFollowUps } from '@/components/AI/SuggestedFollowUps';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
@@ -88,6 +89,14 @@ export function AiTutorChat({
 									/>
 									{message.role === 'assistant' && message.content.length > 100 && (
 										<SaveAsFlashcardButton
+											content={message.content}
+											subject={selectedSubject || undefined}
+											variant="ghost"
+											size="icon"
+										/>
+									)}
+									{message.role === 'assistant' && message.content.length > 50 && (
+										<ReportIncorrectAnswerButton
 											content={message.content}
 											subject={selectedSubject || undefined}
 											variant="ghost"

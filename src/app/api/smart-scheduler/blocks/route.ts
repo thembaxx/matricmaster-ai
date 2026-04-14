@@ -1,5 +1,5 @@
 import { endOfWeek, startOfWeek } from 'date-fns';
-import { and, eq, gte, lte } from 'drizzle-orm';
+import { and, eq, gte, lte, sql } from 'drizzle-orm';
 import { type NextRequest, NextResponse } from 'next/server';
 import { getAuth } from '@/lib/auth';
 import { type DbType, dbManager } from '@/lib/db';
@@ -76,6 +76,40 @@ export async function GET(request: NextRequest) {
 	}
 }
 
+async function checkScheduleConflicts(
+	db: DbType,
+	userId: string,
+	startDate: Date,
+	endDate: Date,
+	excludeEventId?: string
+): Promise<{
+	hasConflict: boolean;
+	conflicts: Array<{ id: string; title: string; startTime: Date; endTime: Date }>;
+}> {
+	const whereClause = excludeEventId
+		? and(
+				eq(calendarEvents.userId, userId),
+				sql`(${calendarEvents.startTime}, ${calendarEvents.endTime}) overlaps (${startDate}, ${endDate})`,
+				eq(calendarEvents.id, excludeEventId)
+			)
+		: and(
+				eq(calendarEvents.userId, userId),
+				sql`(${calendarEvents.startTime}, ${calendarEvents.endTime}) overlaps (${startDate}, ${endDate})`
+			);
+
+	const conflicts = await db.select().from(calendarEvents).where(whereClause);
+
+	return {
+		hasConflict: conflicts.length > 0,
+		conflicts: conflicts.map((c) => ({
+			id: c.id,
+			title: c.title,
+			startTime: c.startTime,
+			endTime: c.endTime,
+		})),
+	};
+}
+
 export async function POST(request: NextRequest) {
 	try {
 		const auth = await getAuth();
@@ -94,6 +128,19 @@ export async function POST(request: NextRequest) {
 		startDate.setHours(startH, startM, 0, 0);
 
 		const endDate = new Date(startDate.getTime() + duration * 60 * 1000);
+
+		const conflictCheck = await checkScheduleConflicts(db, session.user.id, startDate, endDate);
+
+		if (conflictCheck.hasConflict && !body.allowConflict) {
+			return NextResponse.json(
+				{
+					error: 'Schedule conflict detected',
+					conflicts: conflictCheck.conflicts,
+					suggestion: 'Try a different time or enable allowConflict to override',
+				},
+				{ status: 409 }
+			);
+		}
 
 		const [event] = await db
 			.insert(calendarEvents)
