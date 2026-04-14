@@ -43,8 +43,8 @@ export function BridgeToMastery({
 				<div className="w-full max-w-md space-y-4">
 					<div className="flex items-center gap-2 px-2">
 						<HugeiconsIcon icon={SparklesIcon} className="w-5 h-5 text-primary" />
-						<h3 className="text-sm font-bold uppercase tracking-widest text-muted-foreground">
-							Recommended for Mastery
+						<h3 className="text-sm font-bold tracking-widest text-muted-foreground">
+							recommended for mastery
 						</h3>
 					</div>
 

@@ -1,0 +1,146 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"title": "Mock Data Generate API",
+	"description": "POST /api/mock-data/generate - Generates seeded mock user data with quiz results, study sessions, topic mastery, achievements, channels, notifications, calendar events, and AI conversations for demo/testing purposes.",
+	"request": {
+		"method": "POST",
+		"url": "/api/mock-data/generate",
+		"contentType": "application/json",
+		"body": {
+			"$schema": "http://json-schema.org/draft-07/schema#",
+			"type": "object",
+			"properties": {
+				"userCount": {
+					"type": "integer",
+					"description": "Number of synthetic users to generate.",
+					"default": 100,
+					"minimum": 1,
+					"maximum": 10000
+				},
+				"monthsBack": {
+					"type": "integer",
+					"description": "Number of months of simulated activity history to generate.",
+					"default": 6,
+					"minimum": 1,
+					"maximum": 24
+				},
+				"intensity": {
+					"type": "string",
+					"description": "Activity density level controlling the volume of records per user.",
+					"enum": ["low", "medium", "high"],
+					"default": "high"
+				},
+				"seed": {
+					"type": ["integer", "null"],
+					"description": "Random seed for deterministic, reproducible generation. If omitted, a random seed is chosen."
+				}
+			},
+			"additionalProperties": false
+		}
+	},
+	"response": {
+		"success": {
+			"statusCode": 200,
+			"contentType": "application/json",
+			"body": {
+				"$schema": "http://json-schema.org/draft-07/schema#",
+				"type": "object",
+				"required": ["success", "usersGenerated", "records", "config"],
+				"properties": {
+					"success": {
+						"type": "boolean",
+						"description": "Indicates whether the generation completed successfully."
+					},
+					"usersGenerated": {
+						"type": "integer",
+						"description": "Actual number of users inserted (may be less than requested if duplicates were skipped)."
+					},
+					"records": {
+						"type": "object",
+						"description": "Count of records generated per entity type.",
+						"required": [
+							"quizResults",
+							"studySessions",
+							"topicMasteries",
+							"achievements",
+							"channels",
+							"notifications",
+							"calendarEvents",
+							"aiConversations"
+						],
+						"properties": {
+							"quizResults": { "type": "integer", "minimum": 0 },
+							"studySessions": { "type": "integer", "minimum": 0 },
+							"topicMasteries": { "type": "integer", "minimum": 0 },
+							"achievements": { "type": "integer", "minimum": 0 },
+							"channels": { "type": "integer", "minimum": 0 },
+							"notifications": { "type": "integer", "minimum": 0 },
+							"calendarEvents": { "type": "integer", "minimum": 0 },
+							"aiConversations": { "type": "integer", "minimum": 0 }
+						}
+					},
+					"config": {
+						"type": "object",
+						"description": "Echoed configuration used for generation.",
+						"required": ["userCount", "monthsBack", "intensity", "seed"],
+						"properties": {
+							"userCount": { "type": "integer" },
+							"monthsBack": { "type": "integer" },
+							"intensity": { "type": "string", "enum": ["low", "medium", "high"] },
+							"seed": { "type": ["integer", "null"] }
+						}
+					}
+				},
+				"additionalProperties": false
+			}
+		},
+		"error": {
+			"statusCode": 500,
+			"contentType": "application/json",
+			"body": {
+				"$schema": "http://json-schema.org/draft-07/schema#",
+				"type": "object",
+				"required": ["error", "details"],
+				"properties": {
+					"error": {
+						"type": "string",
+						"description": "Short error message."
+					},
+					"details": {
+						"type": "string",
+						"description": "Detailed error information."
+					}
+				},
+				"additionalProperties": false
+			}
+		}
+	},
+	"examples": {
+		"request": {
+			"userCount": 100,
+			"monthsBack": 6,
+			"intensity": "high",
+			"seed": 42
+		},
+		"response": {
+			"success": true,
+			"usersGenerated": 100,
+			"records": {
+				"quizResults": 600,
+				"studySessions": 2500,
+				"topicMasteries": 400,
+				"achievements": 300,
+				"channels": 10,
+				"notifications": 400,
+				"calendarEvents": 200,
+				"aiConversations": 6
+			},
+			"config": {
+				"userCount": 100,
+				"monthsBack": 6,
+				"intensity": "high",
+				"seed": 42
+			}
+		}
+	}
+}

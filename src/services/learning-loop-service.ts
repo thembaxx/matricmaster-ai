@@ -81,8 +81,6 @@ export interface FeedbackLoopResult {
  * - On user request
  */
 export async function executeLearningLoop(userId: string): Promise<FeedbackLoopResult> {
-	const _db = await dbManager.getDb();
-
 	// Step 1: Gather current learning state
 	const currentState = await getCurrentState(userId);
 
@@ -99,7 +97,7 @@ export async function executeLearningLoop(userId: string): Promise<FeedbackLoopR
 	const quizRecommendations = await generateTargetedQuizzes(userId, topicsNeedingAttention);
 
 	// Step 6: Update topic mastery predictions
-	const _masteryUpdates = await updateTopicMasteryPredictions(userId, performanceTrends);
+	await updateTopicMasteryPredictions(userId, performanceTrends);
 
 	// Step 7: Generate personalized recommendations
 	const recommendations = generateRecommendations(
@@ -161,7 +159,7 @@ export async function getCurrentState(userId: string): Promise<LearningLoopState
 			}
 		} else {
 			quizPerformanceMap.set(key, {
-				subject: quiz.subjectId,
+				subject: String(quiz.subjectId ?? 'unknown'),
 				topic: quiz.topic || 'general',
 				accuracy: Number(quiz.percentage),
 				quizCount: 1,
@@ -177,13 +175,16 @@ export async function getCurrentState(userId: string): Promise<LearningLoopState
 		.where(and(eq(topicMastery.userId, userId), sql`${topicMastery.masteryLevel} < 0.5`))
 		.limit(10);
 
-	const weakTopics: WeakTopic[] = weakTopicsData.map((wt) => ({
-		subject: wt.subjectId,
-		topic: wt.topic,
-		masteryLevel: Number(wt.masteryLevel),
-		lastPracticed: wt.lastPracticed,
-		recommendedAction: getRecommendedAction(wt),
-	}));
+	const weakTopics: WeakTopic[] = weakTopicsData.map((wt) => {
+		const mastery = Number(wt.masteryLevel);
+		return {
+			subject: String(wt.subjectId ?? 'unknown'),
+			topic: wt.topic,
+			masteryLevel: mastery,
+			lastPracticed: wt.lastPracticed,
+			recommendedAction: getRecommendedAction(mastery),
+		};
+	});
 
 	// Generate recommendations
 	const recommendations: LearningRecommendation[] = [];
@@ -206,7 +207,9 @@ export async function getCurrentState(userId: string): Promise<LearningLoopState
 					id: currentStudyPlan[0].id,
 					title: currentStudyPlan[0].title,
 					topics: [],
-					createdAt: new Date(currentStudyPlan[0].createdAt),
+					createdAt: currentStudyPlan[0].createdAt
+						? new Date(currentStudyPlan[0].createdAt)
+						: new Date(),
 					completionPercentage: 0,
 				}
 			: null,
@@ -366,7 +369,6 @@ export async function updateStudyPlan(
 	}
 
 	// Create new study plan using AI
-	const _topicNames = topicsNeedingAttention.map((t) => t.topic);
 	const subjects = [...new Set(topicsNeedingAttention.map((t) => t.subject))];
 
 	try {
@@ -377,11 +379,7 @@ export async function updateStudyPlan(
 			.values({
 				userId,
 				title: `AI-Generated Study Plan - ${new Date().toLocaleDateString()}`,
-				description: aiStudyPlan,
-				startDate: new Date(),
-				endDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 1 week
-				createdAt: new Date(),
-				updatedAt: new Date(),
+				focusAreas: aiStudyPlan,
 			})
 			.returning();
 
@@ -466,7 +464,7 @@ export async function updateTopicMasteryPredictions(
 			.where(
 				and(
 					eq(topicMastery.userId, userId),
-					eq(topicMastery.subjectId, subject),
+					eq(topicMastery.subjectId, Number.parseInt(subject, 10) || 0),
 					eq(topicMastery.topic, topic)
 				)
 			);
@@ -487,7 +485,7 @@ export async function updateTopicMasteryPredictions(
 			.where(
 				and(
 					eq(topicMastery.userId, userId),
-					eq(topicMastery.subjectId, subject),
+					eq(topicMastery.subjectId, Number.parseInt(subject, 10) || 0),
 					eq(topicMastery.topic, topic)
 				)
 			);
@@ -578,11 +576,11 @@ export function generateRecommendations(
 // UTILITIES
 // ========================
 
-function getRecommendedAction(weakTopic: WeakTopic): string {
-	if (weakTopic.masteryLevel < 0.2) {
+function getRecommendedAction(masteryLevel: number): string {
+	if (masteryLevel < 0.2) {
 		return 'Start from basics - review concepts and do easy practice questions';
 	}
-	if (weakTopic.masteryLevel < 0.4) {
+	if (masteryLevel < 0.4) {
 		return 'Practice medium-difficulty questions to build confidence';
 	}
 	return 'Do mixed-difficulty practice to solidify understanding';

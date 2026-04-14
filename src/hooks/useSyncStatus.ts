@@ -5,9 +5,15 @@
  * for offline/online state and conflict resolution.
  */
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import type { SyncQueueItem } from '@/lib/deviceSync';
 import { getSyncQueue, isOnline } from '@/lib/deviceSync';
-import type { SyncConflict, SyncQueueItem } from '@/lib/offline/types';
+import type { ConflictResolutionStrategy, SyncConflict } from '@/lib/offline/types';
+
+export interface ConflictResolutionInput {
+	conflictId: string;
+	strategy: ConflictResolutionStrategy;
+}
 
 export interface SyncStatus {
 	isOnline: boolean;
@@ -15,6 +21,7 @@ export interface SyncStatus {
 	conflictCount: number;
 	syncQueue: SyncQueueItem[];
 	conflicts: SyncConflict[];
+	resolveConflicts: (items: ConflictResolutionInput[]) => Promise<void>;
 }
 
 export function useSyncStatus(): SyncStatus {
@@ -24,6 +31,7 @@ export function useSyncStatus(): SyncStatus {
 		conflictCount: 0,
 		syncQueue: [],
 		conflicts: [],
+		resolveConflicts: async () => {},
 	});
 
 	// Check online status
@@ -84,5 +92,16 @@ export function useSyncStatus(): SyncStatus {
 		detectConflicts();
 	}, []);
 
-	return status;
+	const resolveConflicts = useCallback(async (items: ConflictResolutionInput[]) => {
+		// Placeholder: In production, this would call the sync service
+		// to resolve each conflict using the specified strategy.
+		console.log('Resolving conflicts:', items);
+		setStatus((prev) => ({
+			...prev,
+			conflictCount: Math.max(0, prev.conflictCount - items.length),
+			conflicts: prev.conflicts.filter((c) => !items.some((i) => i.conflictId === c.id)),
+		}));
+	}, []);
+
+	return { ...status, resolveConflicts };
 }

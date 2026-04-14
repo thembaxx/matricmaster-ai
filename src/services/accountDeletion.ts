@@ -9,7 +9,7 @@
  * - Complete PII removal after grace period
  */
 
-import { and, eq, isNotNull, lt } from 'drizzle-orm';
+import { and, eq, inArray, isNotNull, lt } from 'drizzle-orm';
 import { Resend } from 'resend';
 import { appConfig } from '../app.config';
 import { dbManagerV2 } from '../lib/db/database-manager-v2';
@@ -395,10 +395,14 @@ export async function exportUserData(userId: string): Promise<Record<string, unk
 			.select()
 			.from(aiChatSessions)
 			.where(eq(aiChatSessions.userId, userId));
-		const aiMessagesData = await db
-			.select()
-			.from(aiChatMessages)
-			.where(eq(aiChatMessages.userId, userId));
+		const aiMessageIds = aiSessionsData.map((s) => s.id);
+		const aiMessagesData =
+			aiMessageIds.length > 0
+				? await db
+						.select()
+						.from(aiChatMessages)
+						.where(inArray(aiChatMessages.sessionId, aiMessageIds))
+				: [];
 		const aiConversationsData = await db
 			.select()
 			.from(aiConversations)
@@ -467,7 +471,10 @@ export async function exportUserData(userId: string): Promise<Record<string, unk
 					totalMarksEarned: p.totalMarksEarned,
 					streakDays: p.streakDays,
 					bestStreak: p.bestStreak,
-					accuracy: p.accuracy,
+					accuracy:
+						p.totalQuestionsAttempted > 0
+							? Math.round(((p.totalCorrect ?? 0) / p.totalQuestionsAttempted) * 100)
+							: 0,
 				})),
 				topicMastery: mastery.map((m) => ({
 					subjectId: m.subjectId,
@@ -484,7 +491,7 @@ export async function exportUserData(userId: string): Promise<Record<string, unk
 					score: q.score,
 					percentage: q.percentage,
 					completedAt: q.completedAt,
-					timeTakenSeconds: q.timeTakenSeconds,
+					timeTakenSeconds: q.timeTaken,
 				})),
 				questionAttempts: questionAttemptsData.slice(0, 100).map((qa) => ({
 					// Limit for export size
@@ -497,18 +504,17 @@ export async function exportUserData(userId: string): Promise<Record<string, unk
 				studyPlans: studyPlansData.map((sp) => ({
 					id: sp.id,
 					title: sp.title,
-					description: sp.description,
 					createdAt: sp.createdAt,
 				})),
 				studySessions: studySessionsData.slice(0, 100).map((ss) => ({
 					id: ss.id,
 					subjectId: ss.subjectId,
-					duration: ss.duration,
+					duration: ss.durationMinutes,
 					completedAt: ss.completedAt,
 				})),
 				flashcardDecks: flashcardDecksData.map((fd) => ({
 					id: fd.id,
-					title: fd.title,
+					name: fd.name,
 					createdAt: fd.createdAt,
 				})),
 				flashcardReviews: flashcardReviewsData.slice(0, 100).map((fr) => ({
@@ -518,8 +524,8 @@ export async function exportUserData(userId: string): Promise<Record<string, unk
 				})),
 				bookmarks: bookmarksData.map((b) => ({
 					id: b.id,
-					contentType: b.contentType,
-					contentId: b.contentId,
+					bookmarkType: b.bookmarkType,
+					referenceId: b.referenceId,
 					createdAt: b.createdAt,
 				})),
 			},
@@ -541,16 +547,17 @@ export async function exportUserData(userId: string): Promise<Record<string, unk
 				})),
 				conversations: aiConversationsData.slice(0, 100).map((c) => ({
 					id: c.id,
-					topic: c.topic,
+					subject: c.subject,
 					createdAt: c.createdAt,
 				})),
 			},
 			wellness: {
 				checkIns: wellnessData.map((w) => ({
 					id: w.id,
-					mood: w.mood,
-					stressLevel: w.stressLevel,
-					checkedInAt: w.checkedInAt,
+					moodBefore: w.moodBefore,
+					moodAfter: w.moodAfter,
+					sessionDuration: w.sessionDuration,
+					createdAt: w.createdAt,
 				})),
 			},
 			gamification: {
@@ -576,10 +583,10 @@ export async function exportUserData(userId: string): Promise<Record<string, unk
 			billing: {
 				subscriptions: subscriptionsData.map((s) => ({
 					id: s.id,
-					plan: s.plan,
+					planId: s.planId,
 					status: s.status,
-					startDate: s.startDate,
-					endDate: s.endDate,
+					periodStart: s.currentPeriodStart,
+					periodEnd: s.currentPeriodEnd,
 				})),
 				payments: paymentsData.map((p) => ({
 					id: p.id,

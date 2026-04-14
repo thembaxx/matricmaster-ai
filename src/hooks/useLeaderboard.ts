@@ -1,6 +1,7 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useChannel } from 'ably/react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useAblyStatus } from '@/lib/ably/provider';
 import { getLeaderboard, getSubjectLeaderboard, getUserRank } from '@/lib/db/leaderboard-actions';
 import { getUserStreak } from '@/lib/db/progress-actions';
 import type { LeaderboardUpdate } from './useLeaderboardRealtime';
@@ -14,6 +15,7 @@ export const SUBJECTS = [
 
 export function useLeaderboard() {
 	const queryClient = useQueryClient();
+	const { isReady: isAblyReady } = useAblyStatus();
 	const [activeTab, setActiveTab] = useState('weekly');
 	const [subjectTab, setSubjectTab] = useState<string>('mathematics');
 	const [currentPage, setCurrentPage] = useState(1);
@@ -45,10 +47,10 @@ export function useLeaderboard() {
 		[queryClient, activeTab]
 	);
 
-	const { channel } = useChannel(channelName);
+	const { channel } = useChannel({ channelName, skip: !isAblyReady });
 
 	useEffect(() => {
-		if (!channel) return;
+		if (!channel || !isAblyReady) return;
 
 		const handleMessage = (msg: { data: LeaderboardUpdate }) => {
 			handleRealtimeUpdate(msg.data);
@@ -59,7 +61,7 @@ export function useLeaderboard() {
 		return () => {
 			channel.unsubscribe('update', handleMessage as (msg: unknown) => void);
 		};
-	}, [channel, handleRealtimeUpdate]);
+	}, [channel, handleRealtimeUpdate, isAblyReady]);
 
 	const { data: userStreak } = useQuery({
 		queryKey: ['userStreak'],

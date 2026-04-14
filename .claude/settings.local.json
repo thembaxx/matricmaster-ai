@@ -3,7 +3,10 @@
 		"allow": [
 			"Bash(find \"C:/Users/Themba/Documents/org1128/projects/matricmaster-ai/src\" -name \"*.tsx\" -o -name \"*.jsx\" | xargs wc -l | sort -rn | head -80)",
 			"Bash(find \"C:/Users/Themba/Documents/org1128/projects/matricmaster-ai/src\" -name \"*.tsx\" -o -name \"*.jsx\" | xargs wc -l | sort -rn | tail -n +80)",
-			"Bash(npm run:*)"
+			"Bash(npm run:*)",
+			"Bash(npx next:*)",
+			"Bash(npx tsc:*)",
+			"Bash(curl -s http://localhost:3000/community)"
 		]
 	},
 	"skills": ["github:adamlyttleapps/claude-skill-app-onboarding-questoinnaire"]

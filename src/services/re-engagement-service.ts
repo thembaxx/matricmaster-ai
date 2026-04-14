@@ -185,7 +185,7 @@ async function sendReEngagement(user: InactiveUser): Promise<ReEngagementResult>
 
 	if (whatsappPrefs.length > 0 && whatsappPrefs[0].phoneNumber) {
 		const whatsappMessage = `Hey ${user.name}! 👋\n\n${message}\n\nCome back to lumni.ai to continue learning!`;
-		await rateLimitedSend(whatsappPrefs[0].phoneNumber, whatsappMessage, user.userId);
+		await rateLimitedSend(whatsappPrefs[0].phoneNumber, whatsappMessage);
 		channelsNotified.push('whatsapp');
 	}
 
@@ -358,8 +358,6 @@ export async function grantReturnIncentive(
 	xpGranted: number;
 	message: string;
 }> {
-	const _db = await dbManager.getDb();
-
 	let xpGranted = 0;
 	let message = '';
 

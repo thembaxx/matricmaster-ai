@@ -84,8 +84,7 @@ function AppLayoutContent({ children }: { children: React.ReactNode }) {
 									/>
 								)}
 								<main
-									id="main-content"
-									className={`flex-1 relative flex flex-col ${!shouldHideNav ? 'pt-20' : ''} ${!shouldHideBottomNav ? 'pb-[var(--mobile-safe-bottom-padding)]' : ''}`}
+									className={`flex-1 relative flex flex-col ${!shouldHideNav ? 'pt-20' : ''} ${!shouldHideBottomNav ? 'pb-40' : ''}`}
 								>
 									<PageTransition>{children}</PageTransition>
 								</main>
@@ -168,8 +167,7 @@ function AppLayoutContent({ children }: { children: React.ReactNode }) {
 									/>
 								)}
 								<main
-									id="main-content"
-									className={`flex-1 relative flex flex-col pt-16 lg:pt-8 ${!shouldHideBottomNav && !isFullScreen ? 'pb-[var(--mobile-safe-bottom-padding)]' : ''}`}
+									className={`flex-1 relative flex flex-col pt-16 lg:pt-8 ${!shouldHideBottomNav && !isFullScreen ? 'pb-40' : ''}`}
 								>
 									<PageTransition>{children}</PageTransition>
 								</main>
@@ -194,7 +192,7 @@ function AppLayoutSkeleton() {
 	return (
 		<div className="flex min-h-screen bg-background overflow-x-hidden">
 			<div className="flex-1 flex flex-col min-h-screen relative max-w-full">
-				<div className="flex-1 flex flex-col w-full mx-auto max-w-full pt-20 pb-[var(--mobile-safe-bottom-padding)]">
+				<div className="flex-1 flex flex-col w-full mx-auto max-w-full pt-20 pb-40">
 					<div className="animate-pulse space-y-4 p-4">
 						<div className="h-8 bg-muted rounded w-1/4" />
 						<div className="h-64 bg-muted rounded-lg" />
