@@ -4,6 +4,7 @@ import { type NextRequest, NextResponse } from 'next/server';
 import { AI_MODELS, generateAI } from '@/lib/ai-config';
 import { type DbType, dbManager } from '@/lib/db';
 import { whatsappPreferences } from '@/lib/db/schema';
+import { handleOnDemandQuizRequest, sendDailyQuiz } from '@/services/whatsapp-quiz-service';
 import { handleWhatsAppMessage, sendVerificationCode } from '@/services/whatsapp-service';
 
 async function getDb(): Promise<DbType> {
@@ -169,6 +170,40 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 							} else {
 								response = 'Please register your number first at lumni.ai/settings';
 							}
+						}
+					} else if (normalizedMsg === 'quiz' || normalizedMsg === 'test') {
+						// Start on-demand quiz
+						const prefs = await getUserPreferencesByPhone(from);
+						if (prefs?.userId) {
+							const success = await handleOnDemandQuizRequest(from, prefs.userId);
+							response = success
+								? ''
+								: 'Sorry, I could not start the quiz. Please try again later.';
+							if (success) continue; // Skip sending response, quiz was sent
+						} else {
+							response = 'Please register your phone number first at lumni.ai/settings';
+						}
+					} else if (normalizedMsg === 'daily' || normalizedMsg === 'daily quiz') {
+						// Request daily quiz
+						const prefs = await getUserPreferencesByPhone(from);
+						if (prefs?.userId) {
+							const success = await sendDailyQuiz(from, prefs.userId);
+							response = success
+								? ''
+								: 'Sorry, I could not send the daily quiz. Please try again later.';
+							if (success) continue;
+						} else {
+							response = 'Please register your phone number first at lumni.ai/settings';
+						}
+					} else if (/^\d$/.test(normalizedMsg.trim())) {
+						// Single digit answer - process as quiz answer
+						const prefs = await getUserPreferencesByPhone(from);
+						if (prefs?.userId) {
+							// TODO: Get active quiz session from cache
+							// For now, provide generic feedback
+							response = 'Thanks for your answer! Open the Lumni app for detailed explanations.';
+						} else {
+							response = 'Please register your phone number first at lumni.ai/settings';
 						}
 					} else if (normalizedMsg === 'settings' || normalizedMsg === 'preferences') {
 						const prefs = await getUserPreferencesByPhone(from);

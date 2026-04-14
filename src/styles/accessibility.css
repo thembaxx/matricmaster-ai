@@ -1,0 +1,335 @@
+/* Accessibility Styles for Math, Simulations, and Interactive Content */
+
+/* ========================
+   SCREEN READER ONLY CLASS
+   ======================== */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* ========================
+   ACCESSIBLE MATH RENDERING
+   ======================== */
+.accessible-math {
+  position: relative;
+  display: inline-block;
+}
+
+/* Ensure math content is focusable */
+.accessible-math:focus {
+  outline: 2px solid #2563eb;
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* High contrast mode for math */
+@media (forced-colors: active) {
+  .accessible-math {
+    forced-color-adjust: none;
+    color: CanvasText;
+  }
+}
+
+/* ========================
+   FOCUS INDICATORS
+   ======================== */
+*:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: 2px;
+}
+
+/* Stronger focus for interactive elements */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+  outline: 3px solid #2563eb;
+  outline-offset: 2px;
+}
+
+/* ========================
+   SIMULATION CONTROLS
+   ======================== */
+.simulation-container {
+  position: relative;
+}
+
+/* Ensure simulation canvas is accessible */
+.simulation-container canvas {
+  border: 2px solid transparent;
+}
+
+.simulation-container:focus-within canvas {
+  border-color: #2563eb;
+}
+
+/* Keyboard navigation hint */
+.simulation-keyboard-hint {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: #fef3c7;
+  padding: 0.5rem;
+  font-size: 0.875rem;
+  border-bottom: 2px solid #f59e0b;
+  z-index: 10;
+}
+
+.simulation-keyboard-hint[hidden] {
+  display: none;
+}
+
+/* ========================
+   COLORBLIND MODE
+   ======================== */
+.colorblind-mode {
+  /* Use patterns in addition to colors */
+  filter: url(#colorblind-pattern-overlay);
+}
+
+/* Deuteranopia-friendly palette */
+.colorblind-deuteranopia {
+  --color-primary: #0072b2;
+  --color-secondary: #e69f00;
+  --color-success: #56b4e9;
+  --color-warning: #f0e442;
+  --color-danger: #d55e00;
+}
+
+/* Protanopia-friendly palette */
+.colorblind-protanopia {
+  --color-primary: #0072b2;
+  --color-secondary: #e69f00;
+  --color-success: #56b4e9;
+  --color-warning: #f0e442;
+  --color-danger: #cc79a7;
+}
+
+/* Tritanopia-friendly palette */
+.colorblind-tritanopia {
+  --color-primary: #d55e00;
+  --color-secondary: #0072b2;
+  --color-success: #009e73;
+  --color-warning: #f0e442;
+  --color-danger: #cc79a7;
+}
+
+/* ========================
+   REDUCED MOTION
+   ======================== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* Disable simulation animations */
+  .simulation-container * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* ========================
+   HIGH CONTRAST MODE
+   ======================== */
+.high-contrast {
+  --contrast-ratio: 7; /* WCAG AAA */
+}
+
+.high-contrast .text-muted {
+  color: #1f2937;
+}
+
+.high-contrast .border {
+  border-width: 2px;
+  border-color: #000;
+}
+
+.high-contrast button,
+.high-contrast a {
+  text-decoration: underline;
+}
+
+/* ========================
+   SKIP LINK
+   ======================== */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: #2563eb;
+  color: white;
+  padding: 0.5rem 1rem;
+  z-index: 100;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.skip-link:focus {
+  top: 0;
+}
+
+/* ========================
+   LIVE REGIONS
+   ======================== */
+[aria-live] {
+  position: relative;
+}
+
+[aria-live]:empty::after {
+  content: '';
+  display: block;
+  height: 0;
+  visibility: hidden;
+}
+
+/* ========================
+   CIRCUIT DIAGRAM ACCESSIBILITY
+   ======================== */
+.circuit-diagram {
+  position: relative;
+}
+
+.circuit-component {
+  cursor: pointer;
+  transition: outline 0.2s;
+}
+
+.circuit-component:focus {
+  outline: 3px solid #2563eb;
+  outline-offset: 2px;
+}
+
+.circuit-component:hover {
+  outline: 2px solid #93c5fd;
+  outline-offset: 1px;
+}
+
+/* ========================
+   TOOLTIP ACCESSIBILITY
+   ======================== */
+.tooltip {
+  position: absolute;
+  z-index: 50;
+}
+
+.tooltip[role='tooltip'] {
+  /* Ensure tooltips are announced */
+  aria-describedby: true;
+}
+
+/* ========================
+   PROGRESS INDICATORS
+   ======================== */
+.progress-bar {
+  /* Ensure progress is conveyed to screen readers */
+  role: 'progressbar';
+  aria-valuenow: attr(data-value);
+  aria-valuemin: '0';
+  aria-valuemax: '100';
+}
+
+/* ========================
+   CHART ACCESSIBILITY
+   ======================== */
+.chart-container table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.chart-container th,
+.chart-container td {
+  border: 1px solid #e5e7eb;
+  padding: 0.5rem;
+  text-align: left;
+}
+
+.chart-container th {
+  background: #f3f4f6;
+  font-weight: 600;
+}
+
+/* ========================
+   FORM ACCESSIBILITY
+   ======================== */
+.form-field {
+  position: relative;
+}
+
+.form-field label {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-weight: 500;
+}
+
+.form-field label[required]::after {
+  content: ' *';
+  color: #dc2626;
+}
+
+.form-field input:invalid:not(:placeholder-shown) {
+  border-color: #dc2626;
+}
+
+.form-field input:valid:not(:placeholder-shown) {
+  border-color: #16a34a;
+}
+
+/* Error message styling */
+.form-field [role='alert'] {
+  color: #dc2626;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+/* ========================
+   MODAL/DIALOG ACCESSIBILITY
+   ======================== */
+.dialog-overlay {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.dialog-content {
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.dialog-content:focus {
+  outline: none;
+}
+
+/* ========================
+   RESPONSIVE ACCESSIBILITY
+   ======================== */
+@media (max-width: 640px) {
+  /* Ensure touch targets are at least 44x44px */
+  button,
+  a,
+  input,
+  select,
+  textarea {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Increase spacing on small screens */
+  .simulation-container {
+    padding: 1rem;
+  }
+}

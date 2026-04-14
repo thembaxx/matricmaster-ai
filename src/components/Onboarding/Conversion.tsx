@@ -44,7 +44,7 @@ export function AccountScreen({ onContinue }: { onContinue: () => void }) {
 					<div className="absolute inset-0 flex items-center">
 						<span className="w-full border-t border-border" />
 					</div>
-					<div className="relative flex justify-center text-xs uppercase">
+					<div className="relative flex justify-center text-xs">
 						<span className="bg-background px-2 text-muted-foreground">Or use email</span>
 					</div>
 				</div>
@@ -73,8 +73,8 @@ export function PaywallScreen({ onComplete }: { onComplete: () => void }) {
 			className="w-full space-y-8 text-center"
 		>
 			<div className="space-y-4">
-				<div className="inline-block px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold uppercase tracking-wider">
-					Limited Time Offer
+				<div className="inline-block px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold tracking-wider">
+					limited time offer
 				</div>
 				<h2 className="text-3xl font-bold tracking-tight">Unlock the full power of Lumni AI.</h2>
 				<p className="text-muted-foreground">
@@ -85,7 +85,7 @@ export function PaywallScreen({ onComplete }: { onComplete: () => void }) {
 			<div className="grid gap-6 w-full max-w-md mx-auto">
 				<div className="p-6 rounded-3xl bg-card border-2 border-primary shadow-xl relative space-y-6 text-left">
 					<div className="absolute -top-3 right-6 px-3 py-1 rounded-full bg-primary text-primary-foreground text-xs font-bold">
-						RECOMMENDED
+						recommended
 					</div>
 
 					<div className="space-y-1">

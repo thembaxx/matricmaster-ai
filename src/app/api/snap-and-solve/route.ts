@@ -1,5 +1,11 @@
 import { headers } from 'next/headers';
 import { type NextRequest, NextResponse } from 'next/server';
+import {
+	analyzeInput,
+	filterOutput,
+	getSafeFallbackMessage,
+	logContentFilterEvent,
+} from '@/lib/ai/content-filter';
 import { generateWithMultimodal, generateWithOCR } from '@/lib/ai/provider';
 import { getAuth } from '@/lib/auth';
 
@@ -22,6 +28,23 @@ export async function POST(req: NextRequest) {
 		const languageContext = (formData.get('language') as string) || 'en';
 		const mode = (formData.get('mode') as SnapMode) || 'full';
 		const hintLevel = Number.parseInt(formData.get('hintLevel') as string, 10) || 1;
+
+		// Input validation - check for prompt injection in subject field
+		const subjectValidation = analyzeInput(subject);
+		if (subjectValidation.action === 'block') {
+			if (session?.user) {
+				logContentFilterEvent({
+					userId: session.user.id,
+					eventType: 'input_blocked',
+					riskLevel: subjectValidation.riskLevel,
+					flaggedItems: subjectValidation.flaggedPatterns,
+				});
+			}
+			return NextResponse.json(
+				{ error: 'Invalid input detected', solution: getSafeFallbackMessage() },
+				{ status: 400 }
+			);
+		}
 
 		if (!image) {
 			return NextResponse.json({ error: 'No image provided' }, { status: 400 });
@@ -108,9 +131,36 @@ Use a supportive, encouraging tone.`;
 			{ base64, mimeType: image.type },
 		]);
 
+		// Filter AI output for safety
+		const outputFilter = filterOutput(solution);
+		if (outputFilter.action === 'block') {
+			if (session?.user) {
+				logContentFilterEvent({
+					userId: session.user.id,
+					eventType: 'output_blocked',
+					riskLevel: outputFilter.riskLevel,
+					flaggedItems: outputFilter.flaggedCategories,
+				});
+			}
+			return NextResponse.json({
+				questions: ocrResult.questions,
+				solution: getSafeFallbackMessage(),
+				mode,
+			});
+		}
+
+		if (outputFilter.action === 'redact' && session?.user) {
+			logContentFilterEvent({
+				userId: session.user.id,
+				eventType: 'output_redacted',
+				riskLevel: outputFilter.riskLevel,
+				flaggedItems: outputFilter.flaggedCategories,
+			});
+		}
+
 		return NextResponse.json({
 			questions: ocrResult.questions,
-			solution,
+			solution: outputFilter.filteredOutput,
 			mode,
 		});
 	} catch (error) {

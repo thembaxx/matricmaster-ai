@@ -1,5 +1,11 @@
 import { and, desc, eq, gte, sql } from 'drizzle-orm';
 import { NSC_EXAM_DATES } from '@/content/exam-dates';
+import {
+	analyzeInput,
+	filterOutput,
+	getSafeFallbackMessage,
+	logContentFilterEvent,
+} from '@/lib/ai/content-filter';
 import { getAuth } from '@/lib/auth';
 import { dbManager } from '@/lib/db';
 import { conceptStruggles, quizResults, topicConfidence, topicMastery } from '@/lib/db/schema';
@@ -277,6 +283,25 @@ export async function getAIResponse(
 ): Promise<string> {
 	const systemPrompt = buildSystemPrompt(userContext, subject);
 
+	// Filter the last user message for prompt injection
+	const lastMessage = messages[messages.length - 1];
+	if (lastMessage?.role === 'user') {
+		const inputCheck = analyzeInput(lastMessage.content);
+		if (inputCheck.action === 'block') {
+			const auth = await getAuth();
+			const session = await auth.api.getSession();
+			if (session?.user) {
+				logContentFilterEvent({
+					userId: session.user.id,
+					eventType: 'input_blocked',
+					riskLevel: inputCheck.riskLevel,
+					flaggedItems: inputCheck.flaggedPatterns,
+				});
+			}
+			return getSafeFallbackMessage(inputCheck.reason);
+		}
+	}
+
 	const conversationHistory = messages.map((m) => ({
 		role: m.role === 'assistant' ? ('model' as const) : ('user' as const),
 		parts: [{ text: m.content }],
@@ -305,8 +330,39 @@ export async function getAIResponse(
 	}
 
 	const data = await response.json();
-	const aiResponse =
+	let aiResponse =
 		data.candidates?.[0]?.content?.parts?.[0]?.text || 'Sorry, I could not generate a response.';
+
+	// Filter AI output for safety
+	const outputFilter = filterOutput(aiResponse);
+	if (outputFilter.action === 'block') {
+		const auth = await getAuth();
+		const session = await auth.api.getSession();
+		if (session?.user) {
+			logContentFilterEvent({
+				userId: session.user.id,
+				eventType: 'output_blocked',
+				riskLevel: outputFilter.riskLevel,
+				flaggedItems: outputFilter.flaggedCategories,
+			});
+		}
+		return getSafeFallbackMessage();
+	}
+
+	if (outputFilter.action === 'redact') {
+		const auth = await getAuth();
+		const session = await auth.api.getSession();
+		if (session?.user) {
+			logContentFilterEvent({
+				userId: session.user.id,
+				eventType: 'output_redacted',
+				riskLevel: outputFilter.riskLevel,
+				flaggedItems: outputFilter.flaggedCategories,
+			});
+		}
+	}
+
+	aiResponse = outputFilter.filteredOutput;
 
 	// Check for AI content errors (low confidence, potential hallucinations)
 	try {

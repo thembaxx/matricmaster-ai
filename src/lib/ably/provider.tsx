@@ -4,7 +4,7 @@ import { ChatClient, LogLevel } from '@ably/chat';
 import { ChatClientProvider } from '@ably/chat/react';
 import * as Ably from 'ably';
 import { AblyProvider, ChannelProvider } from 'ably/react';
-import { type ReactNode, useEffect, useMemo } from 'react';
+import { type ReactNode, useEffect, useMemo, useRef } from 'react';
 import { useSession } from '@/lib/auth-client';
 import { useAblyStore } from '@/stores/useAblyStore';
 
@@ -12,6 +12,18 @@ export const useAblyStatus = () => {
 	const { isReady } = useAblyStore();
 	return { isReady };
 };
+
+/**
+ * Creates a disconnected Ably client that provides React context
+ * without connecting to Ably servers. Used for unauthenticated users
+ * so that ably/react hooks don't throw context errors.
+ */
+function createDisconnectedClient(): Ably.Realtime {
+	return new Ably.Realtime({
+		key: 'placeholder:autoConnect=false',
+		autoConnect: false,
+	});
+}
 
 interface AblyClientProviderProps {
 	children: ReactNode;
@@ -21,11 +33,16 @@ export function AblyClientProvider({ children }: AblyClientProviderProps) {
 	const { data: session, isPending } = useSession();
 	const user = session?.user;
 	const { setIsReady } = useAblyStore();
+	const disconnectedClientRef = useRef<Ably.Realtime | null>(null);
 
-	const client = useMemo(() => {
+	if (!disconnectedClientRef.current && typeof window !== 'undefined') {
+		disconnectedClientRef.current = createDisconnectedClient();
+	}
+
+	const activeClient = useMemo(() => {
 		if (typeof window === 'undefined') return null;
 
-		// Only create client when user is authenticated
+		// Only create active client when user is authenticated
 		if (!user?.id || isPending) return null;
 
 		const authUrl = process.env.NEXT_PUBLIC_ABLY_AUTH_URL || '/api/ably/auth';
@@ -40,27 +57,36 @@ export function AblyClientProvider({ children }: AblyClientProviderProps) {
 	}, [user?.id, isPending]);
 
 	const chatClient = useMemo(() => {
-		if (!client) return null;
+		if (!activeClient) return null;
 
-		return new ChatClient(client, {
+		return new ChatClient(activeClient, {
 			logLevel: LogLevel.Warn,
 		});
-	}, [client]);
+	}, [activeClient]);
 
 	useEffect(() => {
-		const isReady = !!(client && chatClient);
+		const isReady = !!(activeClient && chatClient);
 		setIsReady(isReady);
-	}, [client, chatClient, setIsReady]);
+	}, [activeClient, chatClient, setIsReady]);
 
-	if (!client || !chatClient) {
+	// On server, render children without AblyProvider (SSR bailout handled by next/dynamic)
+	if (typeof window === 'undefined') {
 		return <>{children}</>;
 	}
 
-	return (
-		<AblyProvider client={client}>
-			<ChatClientProvider client={chatClient}>{children}</ChatClientProvider>
-		</AblyProvider>
-	);
+	const client = activeClient || disconnectedClientRef.current;
+
+	// Active (authenticated) path: include ChatClientProvider
+	if (activeClient && chatClient) {
+		return (
+			<AblyProvider client={activeClient}>
+				<ChatClientProvider client={chatClient}>{children}</ChatClientProvider>
+			</AblyProvider>
+		);
+	}
+
+	// Unauthenticated path: just AblyProvider for context, no chat
+	return <AblyProvider client={client!}>{children}</AblyProvider>;
 }
 
 interface ChannelProviderWrapperProps {

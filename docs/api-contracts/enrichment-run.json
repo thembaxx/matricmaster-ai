@@ -1,0 +1,255 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"title": "Enrichment Run API",
+	"description": "POST /api/enrichment/run - Triggers the data enrichment pipeline. Admin-only access. Can run for a specific source or all sources. The pipeline fetches data from web sources, checks robots.txt, parses, normalizes, deduplicates, validates, and persists records.",
+	"request": {
+		"method": "POST",
+		"url": "/api/enrichment/run",
+		"authentication": {
+			"type": "session",
+			"requirement": "Admin role required. Returns 401 if user is not authenticated or not an admin."
+		},
+		"contentType": "application/json",
+		"body": {
+			"$schema": "http://json-schema.org/draft-07/schema#",
+			"type": "object",
+			"properties": {
+				"sourceId": {
+					"type": "string",
+					"description": "ID of a specific enrichment source to run. If omitted and runAll is false, all sources are executed."
+				},
+				"runAll": {
+					"type": "boolean",
+					"description": "When true, runs the pipeline for all registered sources regardless of whether sourceId is provided.",
+					"default": false
+				}
+			},
+			"additionalProperties": false
+		}
+	},
+	"response": {
+		"singleSource": {
+			"statusCode": 200,
+			"description": "Response when a single source is executed.",
+			"contentType": "application/json",
+			"body": {
+				"$schema": "http://json-schema.org/draft-07/schema#",
+				"type": "object",
+				"required": [
+					"success",
+					"sourceId",
+					"recordsFetched",
+					"recordsNormalized",
+					"recordsDeduplicated",
+					"recordsValidated",
+					"recordsPersisted",
+					"recordsQuarantined",
+					"errors",
+					"duration"
+				],
+				"properties": {
+					"success": {
+						"type": "boolean",
+						"description": "Whether the pipeline run completed successfully for this source."
+					},
+					"sourceId": {
+						"type": "string",
+						"description": "ID of the source that was executed."
+					},
+					"recordsFetched": {
+						"type": "integer",
+						"minimum": 0,
+						"description": "Number of raw data responses received from the source."
+					},
+					"recordsNormalized": {
+						"type": "integer",
+						"minimum": 0,
+						"description": "Number of records normalized to the internal schema."
+					},
+					"recordsDeduplicated": {
+						"type": "integer",
+						"minimum": 0,
+						"description": "Number of records remaining after deduplication (sourceUrl + contentHash)."
+					},
+					"recordsValidated": {
+						"type": "integer",
+						"minimum": 0,
+						"description": "Number of records that passed schema validation."
+					},
+					"recordsPersisted": {
+						"type": "integer",
+						"minimum": 0,
+						"description": "Number of valid records written to the database."
+					},
+					"recordsQuarantined": {
+						"type": "integer",
+						"minimum": 0,
+						"description": "Number of records that failed validation and were quarantined."
+					},
+					"errors": {
+						"type": "array",
+						"items": { "type": "string" },
+						"description": "List of error messages encountered during the pipeline run."
+					},
+					"duration": {
+						"type": "integer",
+						"minimum": 0,
+						"description": "Pipeline execution duration in milliseconds."
+					}
+				},
+				"additionalProperties": false
+			}
+		},
+		"allSources": {
+			"statusCode": 200,
+			"description": "Response when runAll is true, executing all sources.",
+			"contentType": "application/json",
+			"body": {
+				"$schema": "http://json-schema.org/draft-07/schema#",
+				"type": "object",
+				"required": ["success", "results", "summary"],
+				"properties": {
+					"success": {
+						"type": "boolean",
+						"description": "True if all source runs succeeded."
+					},
+					"results": {
+						"type": "array",
+						"description": "Individual PipelineResult for each source executed.",
+						"items": {
+							"type": "object",
+							"required": [
+								"success",
+								"sourceId",
+								"recordsFetched",
+								"recordsNormalized",
+								"recordsDeduplicated",
+								"recordsValidated",
+								"recordsPersisted",
+								"recordsQuarantined",
+								"errors",
+								"duration"
+							],
+							"properties": {
+								"success": { "type": "boolean" },
+								"sourceId": { "type": "string" },
+								"recordsFetched": { "type": "integer", "minimum": 0 },
+								"recordsNormalized": { "type": "integer", "minimum": 0 },
+								"recordsDeduplicated": { "type": "integer", "minimum": 0 },
+								"recordsValidated": { "type": "integer", "minimum": 0 },
+								"recordsPersisted": { "type": "integer", "minimum": 0 },
+								"recordsQuarantined": { "type": "integer", "minimum": 0 },
+								"errors": { "type": "array", "items": { "type": "string" } },
+								"duration": { "type": "integer", "minimum": 0 }
+							}
+						}
+					},
+					"summary": {
+						"type": "object",
+						"description": "Aggregated summary across all source runs.",
+						"required": [
+							"totalSources",
+							"succeeded",
+							"failed",
+							"totalRecordsPersisted",
+							"totalRecordsQuarantined"
+						],
+						"properties": {
+							"totalSources": {
+								"type": "integer",
+								"minimum": 0,
+								"description": "Total number of sources executed."
+							},
+							"succeeded": {
+								"type": "integer",
+								"minimum": 0,
+								"description": "Number of sources that completed successfully."
+							},
+							"failed": {
+								"type": "integer",
+								"minimum": 0,
+								"description": "Number of sources that failed."
+							},
+							"totalRecordsPersisted": {
+								"type": "integer",
+								"minimum": 0,
+								"description": "Total records persisted across all sources."
+							},
+							"totalRecordsQuarantined": {
+								"type": "integer",
+								"minimum": 0,
+								"description": "Total records quarantined across all sources."
+							}
+						}
+					}
+				},
+				"additionalProperties": false
+			}
+		},
+		"unauthorized": {
+			"statusCode": 401,
+			"contentType": "application/json",
+			"body": {
+				"$schema": "http://json-schema.org/draft-07/schema#",
+				"type": "object",
+				"required": ["error"],
+				"properties": {
+					"error": {
+						"type": "string",
+						"description": "Error message indicating admin access is required."
+					}
+				},
+				"additionalProperties": false
+			}
+		},
+		"error": {
+			"statusCode": 500,
+			"contentType": "application/json",
+			"body": {
+				"$schema": "http://json-schema.org/draft-07/schema#",
+				"type": "object",
+				"required": ["success", "error"],
+				"properties": {
+					"success": { "type": "boolean", "const": false },
+					"error": {
+						"type": "string",
+						"description": "Error message describing the failure."
+					}
+				},
+				"additionalProperties": false
+			}
+		}
+	},
+	"examples": {
+		"requestRunAll": {
+			"runAll": true
+		},
+		"requestSingleSource": {
+			"sourceId": "dbe-past-papers"
+		},
+		"responseAllSources": {
+			"success": true,
+			"results": [
+				{
+					"success": true,
+					"sourceId": "dbe-past-papers",
+					"recordsFetched": 1,
+					"recordsNormalized": 15,
+					"recordsDeduplicated": 12,
+					"recordsValidated": 12,
+					"recordsPersisted": 12,
+					"recordsQuarantined": 0,
+					"errors": [],
+					"duration": 3420
+				}
+			],
+			"summary": {
+				"totalSources": 1,
+				"succeeded": 1,
+				"failed": 0,
+				"totalRecordsPersisted": 12,
+				"totalRecordsQuarantined": 0
+			}
+		}
+	}
+}

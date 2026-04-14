@@ -45,8 +45,8 @@ export function DemoQuizScreen({
 
 			<div className="relative w-full max-w-md mx-auto p-6 rounded-3xl bg-card border-2 border-border shadow-xl space-y-6">
 				<div className="flex justify-between items-center">
-					<span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
-						Question {currentStep + 1} of 3
+					<span className="text-xs font-bold tracking-wider text-muted-foreground">
+						question {currentStep + 1} of 3
 					</span>
 					<span className="text-xs font-medium px-2 py-1 rounded-full bg-primary/10 text-primary">
 						{currentQuestion.subject}
@@ -116,7 +116,7 @@ export function ValueDeliveryScreen({
 
 			<div className="relative w-full max-w-md mx-auto p-6 rounded-3xl bg-card border-2 border-primary/30 shadow-2xl space-y-6 overflow-hidden">
 				<div className="absolute top-0 right-0 p-4">
-					<span className="text-xs font-bold uppercase tracking-wider bg-primary text-primary-foreground px-2 py-1 rounded-full">
+					<span className="text-xs font-bold tracking-wider bg-primary text-primary-foreground px-2 py-1 rounded-full">
 						AI Generated
 					</span>
 				</div>

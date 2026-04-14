@@ -1,0 +1,157 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"title": "Mock Data Export API",
+	"description": "GET /api/mock-data/export/:seed - Exports the mock data configuration and generated summary for a given seed, enabling reproducibility and import into other environments.",
+	"request": {
+		"method": "GET",
+		"url": "/api/mock-data/export/{seed}",
+		"pathParams": {
+			"$schema": "http://json-schema.org/draft-07/schema#",
+			"type": "object",
+			"required": ["seed"],
+			"properties": {
+				"seed": {
+					"type": "integer",
+					"description": "The random seed used during mock data generation."
+				}
+			}
+		}
+	},
+	"response": {
+		"success": {
+			"statusCode": 200,
+			"contentType": "application/json",
+			"body": {
+				"$schema": "http://json-schema.org/draft-07/schema#",
+				"type": "object",
+				"required": ["seed", "config", "summary", "generatedAt"],
+				"properties": {
+					"seed": {
+						"type": "integer",
+						"description": "The seed used for this mock data generation."
+					},
+					"config": {
+						"type": "object",
+						"description": "Full generator configuration that was used.",
+						"required": ["userCount", "monthsBack", "intensity"],
+						"properties": {
+							"userCount": {
+								"type": "integer",
+								"description": "Number of users generated."
+							},
+							"monthsBack": {
+								"type": "integer",
+								"description": "Months of simulated activity."
+							},
+							"intensity": {
+								"type": "string",
+								"enum": ["low", "medium", "high"],
+								"description": "Activity density level."
+							}
+						}
+					},
+					"summary": {
+						"type": "object",
+						"description": "Summary of generated records per entity type.",
+						"required": [
+							"totalUsers",
+							"quizResults",
+							"studySessions",
+							"topicMasteries",
+							"achievements",
+							"channels",
+							"notifications",
+							"calendarEvents",
+							"aiConversations"
+						],
+						"properties": {
+							"totalUsers": { "type": "integer", "minimum": 0 },
+							"quizResults": { "type": "integer", "minimum": 0 },
+							"studySessions": { "type": "integer", "minimum": 0 },
+							"topicMasteries": { "type": "integer", "minimum": 0 },
+							"achievements": { "type": "integer", "minimum": 0 },
+							"channels": { "type": "integer", "minimum": 0 },
+							"notifications": { "type": "integer", "minimum": 0 },
+							"calendarEvents": { "type": "integer", "minimum": 0 },
+							"aiConversations": { "type": "integer", "minimum": 0 }
+						}
+					},
+					"generatedAt": {
+						"type": "string",
+						"format": "date-time",
+						"description": "ISO 8601 timestamp when the data was generated."
+					},
+					"users": {
+						"type": "array",
+						"description": "Array of generated user summaries (non-sensitive fields only).",
+						"items": {
+							"type": "object",
+							"required": ["id", "name", "email"],
+							"properties": {
+								"id": {
+									"type": "string",
+									"description": "Synthetic user UUID."
+								},
+								"name": {
+									"type": "string",
+									"description": "Synthetic display name."
+								},
+								"email": {
+									"type": "string",
+									"format": "email",
+									"description": "Synthetic email address (no real PII)."
+								}
+							}
+						}
+					}
+				},
+				"additionalProperties": false
+			}
+		},
+		"notFound": {
+			"statusCode": 404,
+			"contentType": "application/json",
+			"body": {
+				"$schema": "http://json-schema.org/draft-07/schema#",
+				"type": "object",
+				"required": ["error"],
+				"properties": {
+					"error": {
+						"type": "string",
+						"description": "Error message indicating no data found for the given seed."
+					}
+				},
+				"additionalProperties": false
+			}
+		}
+	},
+	"examples": {
+		"response": {
+			"seed": 42,
+			"config": {
+				"userCount": 100,
+				"monthsBack": 6,
+				"intensity": "high"
+			},
+			"summary": {
+				"totalUsers": 100,
+				"quizResults": 600,
+				"studySessions": 2500,
+				"topicMasteries": 400,
+				"achievements": 300,
+				"channels": 10,
+				"notifications": 400,
+				"calendarEvents": 200,
+				"aiConversations": 6
+			},
+			"generatedAt": "2026-04-13T10:30:00.000Z",
+			"users": [
+				{
+					"id": "usr_abc123",
+					"name": "Thabo Mokoena",
+					"email": "thabo.mokoena@example.com"
+				}
+			]
+		}
+	}
+}
