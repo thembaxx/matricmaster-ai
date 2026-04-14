@@ -17,12 +17,61 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 const AiTutorView = dynamic(
 	async () => {
 		const { useAiTutor } = await import('@/hooks/useAiTutor');
+		const { AiTutorView: AiTutorViewComponent } = await import('@/screens/AiTutorView');
+
 		function AiTutorWrapper() {
-			useAiTutor();
+			const {
+				messages,
+				isLoading,
+				selectedSubject,
+				setSelectedSubject,
+				input,
+				setInput,
+				isGeneratingPractice,
+				isGeneratingFlashcards,
+				practiceProblems,
+				flashcards,
+				showPracticeModal,
+				setShowPracticeModal,
+				showFlashcardModal,
+				setShowFlashcardModal,
+				messagesEndRef,
+				handleSend,
+				handleSave,
+				handleGeneratePractice,
+				handleGenerateFlashcards,
+				handleNewConversation,
+				handleVoiceInput,
+				isListening,
+				voiceSupported,
+			} = useAiTutor();
+
 			return (
-				<div className="p-4">
-					<div className="text-center text-muted-foreground py-20">ai tutor chat interface</div>
-				</div>
+				<AiTutorViewComponent
+					messages={messages}
+					isLoading={isLoading}
+					selectedSubject={selectedSubject}
+					setSelectedSubject={setSelectedSubject}
+					input={input}
+					setInput={setInput}
+					isGeneratingPractice={isGeneratingPractice}
+					isGeneratingFlashcards={isGeneratingFlashcards}
+					practiceProblems={practiceProblems}
+					flashcards={flashcards}
+					showPracticeModal={showPracticeModal}
+					setShowPracticeModal={setShowPracticeModal}
+					showFlashcardModal={showFlashcardModal}
+					setShowFlashcardModal={setShowFlashcardModal}
+					messagesEndRef={messagesEndRef}
+					handleSend={handleSend}
+					handleSave={handleSave}
+					handleGeneratePractice={handleGeneratePractice}
+					handleGenerateFlashcards={handleGenerateFlashcards}
+					handleNewConversation={handleNewConversation}
+					handleVoiceInput={handleVoiceInput}
+					isListening={isListening}
+					voiceSupported={voiceSupported}
+				/>
 			);
 		}
 		return { default: AiTutorWrapper };
