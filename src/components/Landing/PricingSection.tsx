@@ -25,12 +25,23 @@ export function PricingSection() {
 				whileInView={{ opacity: 1, y: 0 }}
 				viewport={{ once: true, margin: '-100px' }}
 				transition={{ duration: 0.6 }}
-				className="text-center mb-16"
+				className="max-w-5xl mx-auto px-4 mb-16"
 			>
-				<h2 className="heading-2 mb-4">Simple, student-friendly pricing</h2>
-				<p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-					Start free. Upgrade when you're ready.
-				</p>
+				<div className="flex flex-col lg:flex-row lg:items-end gap-8 lg:gap-16">
+					<div className="lg:flex-1">
+						<p className="text-xs font-black tracking-[0.2em] text-primary uppercase mb-4">
+							pricing
+						</p>
+						<h2 className="heading-2 leading-tight">
+							Simple, student-friendly
+							<br />
+							<span className="text-primary">pricing</span>
+						</h2>
+					</div>
+					<p className="text-lg text-muted-foreground max-w-md">
+						Start free. Upgrade when you're ready.
+					</p>
+				</div>
 			</m.div>
 
 			<m.div
@@ -38,13 +49,17 @@ export function PricingSection() {
 				whileInView={{ opacity: 1, y: 0 }}
 				viewport={{ once: true, margin: '-100px' }}
 				transition={{ duration: 0.6, delay: 0.2 }}
-				className="max-w-4xl mx-auto px-4"
+				className="max-w-5xl mx-auto px-4"
 			>
 				<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-					<div className="relative rounded-[var(--radius-2xl)] border border-border bg-card p-8 transition-all duration-300">
-						<div className="mb-6">
-							<h3 className="text-2xl font-semibold mb-2">Free</h3>
-							<p className="text-4xl font-bold font-mono">R0/month</p>
+					{/* Free Plan */}
+					<div className="relative rounded-[2rem] border border-border/50 bg-card p-8 transition-all duration-300 hover:shadow-tiimo">
+						<div className="mb-8">
+							<span className="inline-block text-[10px] font-black tracking-[0.2em] text-muted-foreground uppercase mb-4">
+								free
+							</span>
+							<p className="text-5xl font-black tracking-tighter font-numeric">R0</p>
+							<p className="text-sm text-muted-foreground mt-1">per month</p>
 						</div>
 
 						<ul className="space-y-4 mb-8">
@@ -52,52 +67,60 @@ export function PricingSection() {
 								<li key={index} className="flex items-center gap-3">
 									<HugeiconsIcon
 										icon={CheckmarkSquare01Icon}
-										className="w-5 h-5 text-primary flex-shrink-0"
+										className="w-4 h-4 text-muted-foreground flex-shrink-0"
 									/>
-									<span className="text-muted-foreground">{feature}</span>
+									<span className="text-sm text-muted-foreground">{feature}</span>
 								</li>
 							))}
 						</ul>
 
 						<Button
 							variant="outline"
-							className="w-full h-12 rounded-[var(--radius-lg)] text-base font-semibold"
+							className="w-full h-12 rounded-xl text-sm font-bold"
 							onClick={() => router.push('/sign-up')}
 						>
 							Get Started
 						</Button>
 					</div>
 
-					<div className="relative rounded-[var(--radius-2xl)] border-2 border-primary/20 bg-card p-8 transition-all duration-300 scale-100 shadow-xl">
-						<div className="absolute -top-4 left-1/2 -translate-x-1/2">
-							<span className="inline-flex items-center rounded-full bg-primary px-4 py-1 text-sm font-medium text-primary-foreground shadow-sm">
-								Most Popular
+					{/* Pro Plan */}
+					<div className="relative rounded-[2rem] bg-foreground text-background p-8 overflow-hidden">
+						<div className="absolute inset-0 opacity-10">
+							<div className="absolute top-0 right-0 w-64 h-64 bg-primary rounded-full blur-[80px]" />
+							<div className="absolute bottom-0 left-0 w-48 h-48 bg-primary rounded-full blur-[60px]" />
+						</div>
+
+						<div className="relative">
+							<span className="inline-block text-[10px] font-black tracking-[0.2em] text-primary/60 uppercase mb-4">
+								pro
 							</span>
+							<div className="mb-8">
+								<p className="text-5xl font-black tracking-tighter font-numeric text-background">
+									R99
+								</p>
+								<p className="text-sm text-background/60 mt-1">per month</p>
+							</div>
+
+							<ul className="space-y-4 mb-8">
+								{PRO_FEATURES.map((feature, index) => (
+									<li key={index} className="flex items-center gap-3">
+										<HugeiconsIcon
+											icon={CheckmarkSquare01Icon}
+											className="w-4 h-4 text-primary flex-shrink-0"
+										/>
+										<span className="text-sm text-background/80">{feature}</span>
+									</li>
+								))}
+							</ul>
+
+							<Button
+								className="w-full h-12 rounded-xl text-sm font-bold bg-primary hover:bg-primary/90 text-primary-foreground"
+								onClick={() => router.push('/sign-up?plan=pro')}
+							>
+								Go Pro
+								<span className="ml-2">→</span>
+							</Button>
 						</div>
-
-						<div className="mb-6">
-							<h3 className="text-2xl font-semibold mb-2">Pro</h3>
-							<p className="text-4xl font-bold font-mono">R99/month</p>
-						</div>
-
-						<ul className="space-y-4 mb-8">
-							{PRO_FEATURES.map((feature, index) => (
-								<li key={index} className="flex items-center gap-3">
-									<HugeiconsIcon
-										icon={CheckmarkSquare01Icon}
-										className="w-5 h-5 text-primary flex-shrink-0"
-									/>
-									<span className="text-muted-foreground">{feature}</span>
-								</li>
-							))}
-						</ul>
-
-						<Button
-							className="w-full h-12 rounded-[var(--radius-lg)] text-base font-semibold bg-primary hover:bg-primary/90 text-primary-foreground"
-							onClick={() => router.push('/sign-up?plan=pro')}
-						>
-							Go Pro →
-						</Button>
 					</div>
 				</div>
 			</m.div>

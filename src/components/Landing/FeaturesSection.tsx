@@ -9,20 +9,29 @@ const FEATURES = LANDING_FEATURES;
 
 export function FeaturesSection() {
 	return (
-		<section className="py-20 lg:py-32 bg-slate-50">
+		<section className="py-20 lg:py-32 overflow-hidden">
 			<m.div
 				initial={{ opacity: 0, y: 40 }}
 				whileInView={{ opacity: 1, y: 0 }}
 				viewport={{ once: true, margin: '-100px' }}
 				transition={{ duration: 0.6 }}
-				className="text-center mb-16"
+				className="max-w-6xl mx-auto px-4 mb-16"
 			>
-				<h2 className="heading-2 mb-4">
-					Your ticket to <span className="text-tiimo-lavender">matric success</span>
-				</h2>
-				<p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-					Every tool you need to pass your NSC exams in one place.
-				</p>
+				<div className="flex flex-col lg:flex-row lg:items-end gap-8 lg:gap-16">
+					<div className="lg:flex-1">
+						<p className="text-xs font-black tracking-[0.2em] text-primary uppercase mb-4">
+							everything you need
+						</p>
+						<h2 className="heading-2 leading-tight">
+							Your ticket to
+							<br />
+							<span className="text-primary">matric success</span>
+						</h2>
+					</div>
+					<p className="text-lg text-muted-foreground max-w-md lg:text-right">
+						Every tool you need to pass your NSC exams in one place.
+					</p>
+				</div>
 			</m.div>
 
 			<m.div
@@ -30,28 +39,29 @@ export function FeaturesSection() {
 				initial="hidden"
 				whileInView="visible"
 				viewport={{ once: true, margin: '-100px' }}
-				className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto px-4"
+				className="max-w-6xl mx-auto px-4"
 			>
-				{FEATURES.slice(0, 6).map((feature) => (
-					<m.div
-						key={feature.title}
-						variants={STAGGER_ITEM}
-						className="tiimo-card group p-8 will-change-transform"
-						whileHover={{ y: -4 }}
-					>
-						<div className="flex flex-col h-full">
+				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+					{FEATURES.slice(0, 6).map((feature) => (
+						<m.div
+							key={feature.title}
+							variants={STAGGER_ITEM}
+							className="group relative p-6 rounded-2xl bg-muted/30 hover:bg-muted/50 border border-transparent hover:border-border/50 transition-all duration-300 will-change-transform"
+							whileHover={{ y: -2 }}
+						>
 							<div
-								className={`w-12 h-12 rounded-full ${feature.color} flex items-center justify-center mb-6`}
+								className={`w-10 h-10 rounded-xl ${feature.color} flex items-center justify-center mb-5`}
 							>
-								<HugeiconsIcon icon={feature.icon} className="w-6 h-6" />
+								<HugeiconsIcon icon={feature.icon} className="w-5 h-5 text-background" />
 							</div>
-							<h3 className="text-xl font-semibold mb-3">{feature.title}</h3>
-							<p className="text-base text-muted-foreground leading-relaxed">
-								{feature.description}
-							</p>
-						</div>
-					</m.div>
-				))}
+							<h3 className="text-lg font-semibold mb-2 group-hover:text-primary transition-colors">
+								{feature.title}
+							</h3>
+							<p className="text-sm text-muted-foreground leading-relaxed">{feature.description}</p>
+							<div className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-primary to-transparent group-hover:w-full transition-all duration-500 rounded-full" />
+						</m.div>
+					))}
+				</div>
 			</m.div>
 
 			<m.div
@@ -61,7 +71,9 @@ export function FeaturesSection() {
 				transition={{ delay: 0.3 }}
 				className="mt-12 text-center"
 			>
-				<p className="text-muted-foreground">+ {FEATURES.length - 6} more features</p>
+				<span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-muted/50 text-sm font-medium text-muted-foreground">
+					+ {FEATURES.length - 6} more features waiting
+				</span>
 			</m.div>
 		</section>
 	);
