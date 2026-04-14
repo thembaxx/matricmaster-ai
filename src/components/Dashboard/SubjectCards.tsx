@@ -76,48 +76,65 @@ export function SubjectCards() {
 	const selectedSubject = subjects.find((s) => s.id === selectedId);
 
 	return (
-		<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 relative">
+		<div className="grid grid-cols-2 lg:grid-cols-4 gap-4 relative">
 			{subjects.map((subject) => (
 				<m.div
 					key={subject.id}
 					layoutId={subject.id}
 					onClick={() => setSelectedId(subject.id)}
-					className="group cursor-pointer tiimo-press"
-					whileTap={{ scale: 0.96 }}
+					className="group cursor-pointer tiimo-press col-span-1"
+					whileTap={{ scale: 0.97 }}
 				>
-					<div className="h-full rounded-xl bg-card shadow-tiimo border border-border/50 overflow-hidden p-6 transition-all duration-300 hover:shadow-tiimo-lg hover:border-primary/20">
-						<div className="flex flex-col h-full gap-4">
+					<Card className="relative h-full rounded-2xl overflow-hidden border border-border/50 shadow-tiimo hover:shadow-tiimo-lg hover:border-border transition-all duration-300">
+						{/* Top color accent bar */}
+						<div className={cn('h-1 w-full', subject.bgColor.replace('soft', 'default'))} />
+
+						<div className="p-5 flex flex-col h-full gap-4">
 							<div className="flex justify-between items-start">
 								<div
-									className={`p-3 rounded-2xl ${subject.bgColor} flex items-center justify-center`}
+									className={`p-2.5 rounded-xl ${subject.bgColor} flex items-center justify-center`}
 								>
-									<FluentEmoji type="3d" emoji={subject.emoji} size={32} />
+									<FluentEmoji type="3d" emoji={subject.emoji} size={24} />
 								</div>
-								<div className="p-2 rounded-full bg-tiimo-cream opacity-0 group-hover:opacity-100 transition-opacity">
-									<HugeiconsIcon icon={ArrowUpRight} className="h-4 w-4 text-tiimo-gray-muted" />
+								<div
+									className={cn(
+										'opacity-0 group-hover:opacity-100 transition-all duration-200 translate-x-1 group-hover:translate-x-0'
+									)}
+								>
+									<HugeiconsIcon icon={ArrowUpRight} className="h-4 w-4 text-muted-foreground" />
 								</div>
 							</div>
 
-							<div className="mt-2">
-								<h3 className="text-xl font-bold tracking-tight text-foreground group-hover:text-primary transition-colors">
+							<div className="flex-1">
+								<h3 className="text-base font-bold tracking-tight text-foreground group-hover:text-primary transition-colors">
 									{subject.title}
 								</h3>
-								<p className="text-sm text-tiimo-gray-muted mt-1 line-clamp-1">
+								<p className="text-xs text-muted-foreground mt-1 line-clamp-2 leading-relaxed">
 									{subject.description}
 								</p>
 							</div>
 
-							<div className="mt-auto space-y-3">
-								<div className="flex justify-between items-center text-xs font-bold">
-									<span className="text-tiimo-gray-muted  tracking-widest">
-										{subject.topics} Topics
+							<div className="space-y-2">
+								<div className="flex justify-between items-center">
+									<span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
+										{subject.topics} topics
 									</span>
-									<span className="text-foreground">{subject.progress}%</span>
+									<span className="text-sm font-black text-foreground tabular-nums">
+										{subject.progress}%
+									</span>
 								</div>
-								<Progress value={subject.progress} className="h-2 bg-secondary" />
+								<Progress value={subject.progress} className="h-1.5 bg-secondary" />
 							</div>
 						</div>
-					</div>
+
+						{/* Hover indicator line at bottom */}
+						<div
+							className={cn(
+								'absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-transparent to-transparent group-hover:w-full transition-all duration-500',
+								subject.bgColor.replace('soft', 'default').replace('bg-', 'from-')
+							)}
+						/>
+					</Card>
 				</m.div>
 			))}
 
@@ -134,12 +151,17 @@ export function SubjectCards() {
 
 						<m.div
 							layoutId={selectedId}
-							className="relative w-full max-w-2xl bg-card rounded-xl shadow-tiimo-lg overflow-hidden pointer-events-auto border border-border/50"
+							className="relative w-full max-w-2xl bg-card rounded-2xl shadow-tiimo-xl overflow-hidden pointer-events-auto border border-border/50"
 						>
-							{/* Tiimo Vertical Strip in Modal */}
-							<div className={cn('tiimo-timeline-strip w-3', selectedSubject.bgColor)} />
+							{/* Left color strip */}
+							<div
+								className={cn(
+									'absolute left-0 top-0 bottom-0 w-2',
+									selectedSubject.bgColor.replace('soft', 'default')
+								)}
+							/>
 
-							<div className="p-8 sm:p-10 flex flex-col gap-8 pl-12">
+							<div className="p-8 sm:p-10 flex flex-col gap-8 pl-10">
 								<div className="flex justify-between items-start">
 									<div className="flex items-center gap-4">
 										<div
@@ -152,7 +174,7 @@ export function SubjectCards() {
 												initial={{ opacity: 0, y: 10 }}
 												animate={{ opacity: 1, y: 0 }}
 												transition={{ delay: 0.1 }}
-												className="text-3xl font-bold tracking-tighter text-foreground"
+												className="text-3xl font-black tracking-tighter text-foreground"
 											>
 												{selectedSubject.title}
 											</m.h2>
@@ -160,7 +182,7 @@ export function SubjectCards() {
 												initial={{ opacity: 0, y: 10 }}
 												animate={{ opacity: 1, y: 0 }}
 												transition={{ delay: 0.15 }}
-												className="text-tiimo-gray-muted font-medium"
+												className="text-sm text-muted-foreground font-medium"
 											>
 												{selectedSubject.topics} key topics for your exams
 											</m.p>
@@ -185,23 +207,23 @@ export function SubjectCards() {
 									transition={{ delay: 0.2 }}
 									className="grid grid-cols-2 gap-4"
 								>
-									<Card className="p-6 rounded-md bg-secondary/50 border-none shadow-none">
-										<div className="flex items-center gap-3 mb-2">
-											<HugeiconsIcon icon={Refresh01Icon} className="h-5 w-5 text-tiimo-lavender" />
-											<span className="text-[10px] font-black  tracking-widest text-tiimo-gray-muted">
+									<Card className="p-5 rounded-xl bg-secondary/50 border-none shadow-none">
+										<div className="flex items-center gap-3 mb-3">
+											<HugeiconsIcon icon={Refresh01Icon} className="h-4 w-4 text-primary" />
+											<span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">
 												Last Study
 											</span>
 										</div>
-										<p className="text-xl font-bold text-foreground">2 Days Ago</p>
+										<p className="text-2xl font-black text-foreground">2 Days Ago</p>
 									</Card>
-									<Card className="p-6 rounded-md bg-secondary/50 border-none shadow-none">
-										<div className="flex items-center gap-3 mb-2">
-											<HugeiconsIcon icon={ChartBar} className="h-5 w-5 text-tiimo-green" />
-											<span className="text-[10px] font-black  tracking-widest text-tiimo-gray-muted">
+									<Card className="p-5 rounded-xl bg-secondary/50 border-none shadow-none">
+										<div className="flex items-center gap-3 mb-3">
+											<HugeiconsIcon icon={ChartBar} className="h-4 w-4 text-tiimo-green" />
+											<span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">
 												Mastery
 											</span>
 										</div>
-										<p className="text-xl font-bold text-foreground tabular-nums">
+										<p className="text-2xl font-black text-foreground tabular-nums">
 											{selectedSubject.progress}%
 										</p>
 									</Card>
@@ -213,20 +235,20 @@ export function SubjectCards() {
 									transition={{ delay: 0.25 }}
 									className="space-y-4"
 								>
-									<h4 className="text-lg font-bold">Recommended for You</h4>
+									<h4 className="text-base font-bold">Recommended for You</h4>
 									<div className="space-y-2">
 										{[1, 2, 3].map((item) => (
 											<div
 												key={`subject-cards-topic-${item}`}
-												className="flex items-center justify-between p-4 rounded-2xl bg-white/5 hover:bg-white/10 cursor-pointer transition-colors group"
+												className="flex items-center justify-between p-4 rounded-xl bg-secondary/30 hover:bg-secondary/50 cursor-pointer transition-colors group"
 											>
 												<div className="flex items-center gap-3">
-													<div className="h-2 w-2 rounded-full bg-primary" />
-													<span className="font-medium">Active Topic {item}</span>
+													<div className="h-1.5 w-1.5 rounded-full bg-primary" />
+													<span className="text-sm font-medium">Active Topic {item}</span>
 												</div>
 												<HugeiconsIcon
 													icon={ArrowUpRight}
-													className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors"
+													className="h-3.5 w-3.5 text-muted-foreground group-hover:text-primary transition-colors"
 												/>
 											</div>
 										))}
@@ -237,13 +259,13 @@ export function SubjectCards() {
 									initial={{ opacity: 0, y: 20 }}
 									animate={{ opacity: 1, y: 0 }}
 									transition={{ delay: 0.3 }}
-									className="flex gap-4 mt-4"
+									className="flex gap-3 mt-2"
 								>
-									<Button className="flex-1 h-14 rounded-2xl text-lg font-bold bg-primary hover:bg-primary/90">
+									<Button className="flex-1 h-12 rounded-xl text-sm font-bold bg-primary hover:bg-primary/90">
 										Resume Learning
 									</Button>
-									<Button variant="outline" className="h-14 w-14 rounded-2xl border-white/10">
-										<HugeiconsIcon icon={BookOpen01Icon} className="h-6 w-6" />
+									<Button variant="outline" className="h-12 w-12 rounded-xl border-border/50">
+										<HugeiconsIcon icon={BookOpen01Icon} className="h-5 w-5" />
 									</Button>
 								</m.div>
 							</div>
