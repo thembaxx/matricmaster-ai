@@ -101,8 +101,29 @@ export function StudentOverview({
 							<Button
 								size="sm"
 								className="rounded-full gap-2 font-bold text-xs"
-								onClick={() => {
-									toast.info('Detailed report coming soon');
+								onClick={async () => {
+									try {
+										const res = await fetch('/api/parent-dashboard/report/pdf', {
+											method: 'POST',
+											headers: { 'Content-Type': 'application/json' },
+										});
+										if (res.ok) {
+											const blob = await res.blob();
+											const url = window.URL.createObjectURL(blob);
+											const a = document.createElement('a');
+											a.href = url;
+											a.download = `progress-report-${studentName.toLowerCase().replace(/\s+/g, '-')}.pdf`;
+											document.body.appendChild(a);
+											a.click();
+											window.URL.revokeObjectURL(url);
+											document.body.removeChild(a);
+											toast.success('Report downloaded');
+										} else {
+											toast.error('Failed to generate report');
+										}
+									} catch {
+										toast.error('Failed to generate report');
+									}
 								}}
 							>
 								<HugeiconsIcon icon={FileEditIcon} className="w-4 h-4" />

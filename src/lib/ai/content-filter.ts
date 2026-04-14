@@ -328,12 +328,28 @@ export function logContentFilterEvent(event: {
 	flaggedItems: string[];
 	timestamp?: Date;
 }): void {
-	// In production, send to analytics/logging service
-	console.log('[ContentFilter]', {
+	const filterEvent = {
 		...event,
 		timestamp: event.timestamp || new Date(),
-	});
+		service: 'content-filter',
+	};
 
-	// TODO: Send to edge case service or analytics
-	// await edgeCaseService.logFilteringEvent(event);
+	// Log locally for debugging
+	console.log('[ContentFilter]', filterEvent);
+
+	// Dispatch to analytics endpoint if available
+	if (typeof window !== 'undefined') {
+		fetch('/api/analytics/filter-event', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify(filterEvent),
+		}).catch(() => {
+			// Silently fail - analytics should not break functionality
+		});
+	}
+
+	// For critical events, also log to console with more visibility
+	if (event.riskLevel === 'critical' || event.riskLevel === 'high') {
+		console.warn('[ContentFilter CRITICAL]', filterEvent);
+	}
 }

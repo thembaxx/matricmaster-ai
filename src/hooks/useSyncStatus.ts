@@ -76,31 +76,68 @@ export function useSyncStatus(): SyncStatus {
 		return () => clearInterval(interval);
 	}, []);
 
-	// Check for conflicts (TODO: Implement conflict detection)
+	// Check for conflicts
 	useEffect(() => {
-		// For now, simulate conflict count
-		// In production, this would query the sync service for conflicts
 		const detectConflicts = async () => {
-			// TODO: Query sync service for conflicts
-			setStatus((prev) => ({
-				...prev,
-				conflictCount: 0,
-				conflicts: [],
-			}));
+			try {
+				// Import conflict resolver dynamically
+				const { getConflicts } = await import('@/lib/offline/conflict-resolver');
+				const conflicts = await getConflicts();
+
+				setStatus((prev) => ({
+					...prev,
+					conflictCount: conflicts.length,
+					conflicts: conflicts.map((c) => ({
+						id: c.id,
+						entityType: c.entityType as 'quiz_result' | 'progress' | 'achievement' | 'quiz_session',
+						entityId: c.entityId,
+						localData: c.localData,
+						remoteData: c.remoteData,
+						timestamp: c.timestamp,
+						resolved: c.resolved,
+						resolution: c.resolution,
+						createdAt: c.createdAt,
+					})),
+				}));
+			} catch (error) {
+				console.error('Failed to detect conflicts:', error);
+				setStatus((prev) => ({
+					...prev,
+					conflictCount: 0,
+					conflicts: [],
+				}));
+			}
 		};
 
 		detectConflicts();
+
+		// Poll for conflicts periodically
+		const interval = setInterval(detectConflicts, 10000);
+
+		return () => clearInterval(interval);
 	}, []);
 
 	const resolveConflicts = useCallback(async (items: ConflictResolutionInput[]) => {
-		// Placeholder: In production, this would call the sync service
-		// to resolve each conflict using the specified strategy.
-		console.log('Resolving conflicts:', items);
-		setStatus((prev) => ({
-			...prev,
-			conflictCount: Math.max(0, prev.conflictCount - items.length),
-			conflicts: prev.conflicts.filter((c) => !items.some((i) => i.conflictId === c.id)),
-		}));
+		try {
+			// Import conflict resolver dynamically
+			const { resolveConflicts: doResolve } = await import('@/lib/offline/conflict-resolver');
+
+			await doResolve(
+				items.map((item) => ({
+					conflictId: item.conflictId,
+					strategy: item.strategy,
+				}))
+			);
+
+			setStatus((prev) => ({
+				...prev,
+				conflictCount: Math.max(0, prev.conflictCount - items.length),
+				conflicts: prev.conflicts.filter((c) => !items.some((i) => i.conflictId === c.id)),
+			}));
+		} catch (error) {
+			console.error('Failed to resolve conflicts:', error);
+			throw error;
+		}
 	}, []);
 
 	return { ...status, resolveConflicts };

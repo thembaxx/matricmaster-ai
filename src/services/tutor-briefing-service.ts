@@ -419,10 +419,32 @@ async function generateProgressReport(userId: string, sessionId: string): Promis
 	const quizPerformanceTrend =
 		recentAvg > olderAvg + 5 ? 'improving' : recentAvg < olderAvg - 5 ? 'declining' : 'stable';
 
+	// Track specific topics that improved or declined
+	const topicsImproved: string[] = [];
+	const topicsDeclined: string[] = [];
+
+	for (const topic of masteryData) {
+		const key = `${topic.subjectId}::${topic.topic}`;
+		const recentTopic = recentQuizzes.find(
+			(q) => `${q.subjectId}::${q.topic || 'general'}` === key
+		);
+		const olderTopic = olderQuizzes.find((q) => `${q.subjectId}::${q.topic || 'general'}` === key);
+
+		if (recentTopic && olderTopic) {
+			const recentAcc = Number(recentTopic.percentage);
+			const olderAcc = Number(olderTopic.percentage);
+			if (recentAcc > olderAcc + 5) {
+				topicsImproved.push(topic.topic);
+			} else if (recentAcc < olderAcc - 5) {
+				topicsDeclined.push(topic.topic);
+			}
+		}
+	}
+
 	return {
 		improvementSinceLastSession,
-		topicsImproved: [], // TODO: Track specific topics
-		topicsDeclined: [],
+		topicsImproved,
+		topicsDeclined,
 		quizPerformanceTrend,
 		streakDays: Number(progress?.streakDays) || 0,
 		totalStudyHours: Math.round(totalStudyHours * 10) / 10,

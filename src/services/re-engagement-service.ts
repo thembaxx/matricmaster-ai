@@ -373,8 +373,12 @@ export async function grantReturnIncentive(
 	}
 
 	if (xpGranted > 0) {
-		// TODO: Add XP to user account
-		// await db.insert(xpTransactions).values(...)
+		try {
+			const { awardXP } = await import('@/services/xpSystem');
+			await awardXP(_userId, xpGranted, 're-engagement_incentive');
+		} catch (error) {
+			console.error('Failed to award re-engagement XP:', error);
+		}
 
 		return { xpGranted, message };
 	}

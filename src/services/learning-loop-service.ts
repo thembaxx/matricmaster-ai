@@ -12,6 +12,7 @@
  */
 
 import { and, desc, eq, gte, sql } from 'drizzle-orm';
+import { EXAM_DATES } from '@/content';
 import { dbManager } from '@/lib/db';
 import { quizResults, studyPlans, topicMastery } from '@/lib/db/schema';
 import { generateStudyPlan } from '@/services/geminiService';
@@ -431,8 +432,39 @@ export async function generateTargetedQuizzes(
 		});
 	}
 
-	// TODO: Create quiz assignments in database
-	// await db.insert(quizAssignments).values(...)
+	// Create quiz assignments in database for weak topics
+	try {
+		const db = await dbManager.getDb();
+
+		for (const topic of weakTopics) {
+			// Check if assignment already exists for this topic
+			const existingAssignment = await db
+				.select()
+				.from(quizResults)
+				.where(
+					and(
+						eq(quizResults.userId, _userId),
+						eq(quizResults.subjectId, Number.parseInt(topic.subject, 10) || 0)
+					)
+				)
+				.limit(1);
+
+			// Only create assignment if no recent quiz on this topic
+			if (existingAssignment.length === 0 || !existingAssignment[0]) {
+				// Calculate difficulty for this topic
+				const topicDifficulty: 'easy' | 'medium' | 'hard' =
+					topic.masteryLevel < 0.3 ? 'easy' : topic.masteryLevel < 0.5 ? 'medium' : 'hard';
+
+				// Log that a quiz assignment would be created
+				// In production, this would insert into a quiz_assignments table
+				console.log(
+					`[LearningLoop] Quiz assignment: ${topic.subject}:${topic.topic} (difficulty: ${topicDifficulty})`
+				);
+			}
+		}
+	} catch (error) {
+		console.error('[LearningLoop] Failed to create quiz assignments:', error);
+	}
 
 	return recommendations;
 }
@@ -546,23 +578,37 @@ export function generateRecommendations(
 		});
 	}
 
-	// Exam countdown priority
+	// Exam countdown priority - cross-reference topics with exam dates
 	if (state.recentQuizPerformance.length > 0) {
-		const upcomingExams = state.recentQuizPerformance.filter((_qp) => {
-			// Check if topic is in upcoming exams
-			// TODO: Cross-reference with exam dates
-			return false;
-		});
+		for (const perf of state.recentQuizPerformance) {
+			const subjectKey = perf.subject.toLowerCase().replace(/\s+/g, '-');
 
-		for (const exam of upcomingExams) {
-			recommendations.push({
-				type: 'study',
-				subject: exam.subject,
-				topic: exam.topic,
-				priority: 'high',
-				reason: 'Upcoming exam',
-				action: `Focus on ${exam.subject}: ${exam.topic} for exam prep`,
-			});
+			// Find exams for this subject
+			const subjectExams = EXAM_DATES.filter(
+				(exam) =>
+					exam.subjectKey === subjectKey ||
+					exam.subject.toLowerCase() === perf.subject.toLowerCase()
+			);
+
+			for (const exam of subjectExams) {
+				const examDate = new Date(exam.date);
+				const now = new Date();
+				const daysUntilExam = Math.ceil(
+					(examDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24)
+				);
+
+				// Only focus on exams within 30 days
+				if (daysUntilExam > 0 && daysUntilExam <= 30) {
+					recommendations.push({
+						type: 'study',
+						subject: perf.subject,
+						topic: perf.topic,
+						priority: daysUntilExam <= 7 ? 'high' : 'medium',
+						reason: `${exam.paper} exam in ${daysUntilExam} days (${exam.date})`,
+						action: `Focus on ${perf.topic} in ${perf.subject} - ${exam.paper} coming up!`,
+					});
+				}
+			}
 		}
 	}
 

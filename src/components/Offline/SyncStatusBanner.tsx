@@ -27,9 +27,24 @@ export function SyncStatusBanner({ className }: SyncStatusBannerProps) {
 
 	const handleManualSync = async () => {
 		setIsSyncing(true);
-		// TODO: Trigger sync process
-		// await triggerSync();
-		setTimeout(() => setIsSyncing(false), 2000);
+		try {
+			// Import the sync engine dynamically to avoid SSR issues
+			const { syncEngine } = await import('@/lib/db/sync/engine');
+			const stats = await syncEngine.fullSync();
+
+			if (stats.errors.length > 0) {
+				console.error('Sync errors:', stats.errors);
+			}
+
+			// Refresh the sync queue to update pending count
+			setTimeout(() => {
+				window.dispatchEvent(new CustomEvent('sync-complete'));
+			}, 500);
+		} catch (error) {
+			console.error('Manual sync failed:', error);
+		} finally {
+			setIsSyncing(false);
+		}
 	};
 
 	// No banner needed if everything is synced
