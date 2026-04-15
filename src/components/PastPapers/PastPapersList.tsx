@@ -5,9 +5,10 @@ import { HugeiconsIcon } from '@hugeicons/react';
 import { Icon } from '@iconify/react';
 import { AnimatePresence, m } from 'framer-motion';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { usePastPapers } from '@/hooks/usePastPapers';
 import { STAGGER_CONTAINER, STAGGER_ITEM } from '@/lib/animation-presets';
 import type { PastPaper } from '@/lib/db/schema';
 import type { PastPaperRecommendation } from '@/stores/usePastPaperRecommendations';
@@ -203,12 +204,11 @@ interface PastPapersBrowserProps {
 }
 
 export function PastPapersBrowser({ searchQuery: _searchQuery = '' }: PastPapersBrowserProps) {
-	const [papers] = useState<PastPaper[]>([]);
-	const [isLoading] = useState(false);
+	const { filteredPapers, isLoading } = usePastPapers();
 
 	return (
 		<div className="space-y-6">
-			<PastPapersGrid papers={papers} isLoading={isLoading} />
+			<PastPapersGrid papers={filteredPapers} isLoading={isLoading} />
 		</div>
 	);
 }

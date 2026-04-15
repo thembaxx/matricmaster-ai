@@ -6,37 +6,18 @@ import { useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { useFlashcardDecks } from '@/hooks/useFlashcardDecks';
 
 interface FlashcardDeckListProps {
 	searchQuery?: string;
 }
 
-const mockDecks = [
-	{
-		id: '1',
-		name: 'Periodic Table Elements',
-		subject: 'Chemistry',
-		cards: 118,
-		category: 'elements',
-	},
-	{ id: '2', name: 'Algebra Formulas', subject: 'Mathematics', cards: 45, category: 'formulas' },
-	{ id: '3', name: 'Physics Equations', subject: 'Physics', cards: 32, category: 'equations' },
-	{
-		id: '4',
-		name: 'Biology Key Terms',
-		subject: 'Life Sciences',
-		cards: 78,
-		category: 'vocabulary',
-	},
-];
-
 export default function FlashcardDeckList({ searchQuery = '' }: FlashcardDeckListProps) {
 	const [localSearch, setLocalSearch] = useState(searchQuery);
+	const { decks } = useFlashcardDecks();
 
-	const filteredDecks = mockDecks.filter(
-		(deck) =>
-			deck.name.toLowerCase().includes(localSearch.toLowerCase()) ||
-			deck.subject.toLowerCase().includes(localSearch.toLowerCase())
+	const filteredDecks = decks.filter((deck: { name: string }) =>
+		deck.name.toLowerCase().includes(localSearch.toLowerCase())
 	);
 
 	return (
@@ -73,9 +54,11 @@ export default function FlashcardDeckList({ searchQuery = '' }: FlashcardDeckLis
 						<h3 className="text-lg font-black text-foreground tracking-tight mb-2">{deck.name}</h3>
 						<div className="flex flex-wrap gap-2">
 							<Badge variant="outline" className="rounded-lg font-bold text-xs">
-								{deck.subject}
+								{deck.subjectId ? `Subject #${deck.subjectId}` : 'General'}
 							</Badge>
-							<span className="text-sm font-medium text-muted-foreground">{deck.cards} cards</span>
+							<span className="text-sm font-medium text-muted-foreground">
+								{deck.cardCount} cards
+							</span>
 						</div>
 					</div>
 				))}
