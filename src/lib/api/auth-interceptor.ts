@@ -24,20 +24,31 @@ const subscribeTokenRefresh = (
 	});
 };
 
-// onRefreshed is available for future token refresh integration
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-// @ts-expect-error - unused function for future token refresh integration
-const _onRefreshed = () => {
-	refreshSubscribers.forEach(({ config, resolve, reject, retryCount }) => {
-		if (retryCount >= 3) {
-			reject(new Error('Max retry attempts reached'));
-			return;
+let isRefreshing = false;
+
+const onRefreshed = async () => {
+	try {
+		await fetch('/api/auth/refresh', { method: 'POST' });
+		refreshSubscribers.forEach(({ config, resolve, reject, retryCount }) => {
+			if (retryCount >= 3) {
+				reject(new Error('Max retry attempts reached'));
+				return;
+			}
+			fetchWithAuth(config, '', retryCount + 1)
+				.then(resolve)
+				.catch(reject);
+		});
+	} catch (error) {
+		refreshSubscribers.forEach(({ reject }) => {
+			reject(error);
+		});
+		if (typeof window !== 'undefined') {
+			window.location.href = '/sign-in';
 		}
-		fetchWithAuth(config, '', retryCount + 1)
-			.then(resolve)
-			.catch(reject);
-	});
-	refreshSubscribers = [];
+	} finally {
+		refreshSubscribers = [];
+		isRefreshing = false;
+	}
 };
 
 const fetchWithAuth = async (
@@ -87,7 +98,17 @@ export class AuthenticatedApiClient {
 		config: RequestInit,
 		retryCount = 0
 	): Promise<unknown> {
-		if (status === 401 || status === 403) {
+		if (status === 401) {
+			if (!isRefreshing) {
+				isRefreshing = true;
+				onRefreshed();
+			}
+			return new Promise((resolve, reject) => {
+				subscribeTokenRefresh(config, resolve, reject, retryCount);
+			});
+		}
+
+		if (status === 403) {
 			queryClient.clear();
 
 			if (typeof window !== 'undefined') {
@@ -95,12 +116,6 @@ export class AuthenticatedApiClient {
 				if (currentPath !== '/sign-in' && currentPath !== '/sign-up') {
 					window.location.href = `/sign-in?callbackUrl=${encodeURIComponent(currentPath)}`;
 				}
-			}
-
-			if (status === 401) {
-				return new Promise((resolve, reject) => {
-					subscribeTokenRefresh(config, resolve, reject, retryCount);
-				});
 			}
 		}
 		throw new Error(`Authentication failed with status: ${status}`);
