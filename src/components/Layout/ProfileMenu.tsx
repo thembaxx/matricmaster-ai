@@ -28,7 +28,7 @@ export function ProfileMenu({
 	return (
 		<DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
 			<DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>
-			<DropdownMenuContent align="end" className="w-56 bg-secondary rounded-lg">
+			<DropdownMenuContent align="end" className="m-w-80 w-full p-4 bg-secondary rounded-lg">
 				<DropdownMenuLabel>My Account</DropdownMenuLabel>
 				<DropdownMenuGroup>
 					<DropdownMenuItem className="p-2">
