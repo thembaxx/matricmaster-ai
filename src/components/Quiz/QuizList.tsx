@@ -2,34 +2,27 @@
 
 import { QuestionIcon, Search01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
+import { useQuizTopics } from '@/hooks/useQuizTopics';
 
 interface QuizListProps {
 	searchQuery?: string;
 }
 
-const mockQuizzes = [
-	{
-		id: '1',
-		title: 'Algebra Fundamentals',
-		subject: 'Mathematics',
-		questions: 20,
-		difficulty: 'medium',
-	},
-	{ id: '2', title: 'Force & Motion', subject: 'Physics', questions: 15, difficulty: 'hard' },
-	{ id: '3', title: 'Chemical Bonding', subject: 'Chemistry', questions: 25, difficulty: 'easy' },
-	{ id: '4', title: 'Cell Biology', subject: 'Life Sciences', questions: 18, difficulty: 'medium' },
-];
-
 export default function QuizList({ searchQuery = '' }: QuizListProps) {
 	const [localSearch, setLocalSearch] = useState(searchQuery);
+	const { quizzes } = useQuizTopics();
 
-	const filteredQuizzes = mockQuizzes.filter(
-		(quiz) =>
-			quiz.title.toLowerCase().includes(localSearch.toLowerCase()) ||
-			quiz.subject.toLowerCase().includes(localSearch.toLowerCase())
+	const filteredQuizzes = useMemo(
+		() =>
+			quizzes.filter(
+				(quiz: { title: string; subject: string }) =>
+					quiz.title.toLowerCase().includes(localSearch.toLowerCase()) ||
+					quiz.subject.toLowerCase().includes(localSearch.toLowerCase())
+			),
+		[quizzes, localSearch]
 	);
 
 	const getDifficultyColor = (difficulty: string) => {
