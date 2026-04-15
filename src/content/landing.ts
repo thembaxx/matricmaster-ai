@@ -19,39 +19,39 @@ export const LANDING_FEATURES = [
 		title: 'homework helper',
 		description:
 			'get help the moment you get stuck. ask questions and see clear explanations instantly.',
-		color: 'bg-tiimo-lavender/10 text-tiimo-lavender',
+		color: 'bg-tiimo-lavender text-white/90',
 	},
 	{
 		icon: Task02Icon,
 		title: 'real exam practice',
 		description:
 			'master past nsc papers with full step-by-step solutions. know exactly where you went wrong.',
-		color: 'bg-subject-math/10 text-subject-math',
+		color: 'bg-subject-math text-white/90',
 	},
 	{
 		icon: Timer02Icon,
 		title: 'progress tracking',
 		description: 'watch your streak grow and earn rewards. track the progress you make every day.',
-		color: 'bg-subject-life/10 text-subject-life',
+		color: 'bg-subject-life text-white/90',
 	},
 	{
 		icon: VoiceIcon,
 		title: 'audio explanations',
 		description: 'hear explanations out loud. perfect for revision while you commute or do chores.',
-		color: 'bg-subject-physics/10 text-subject-physics',
+		color: 'bg-subject-physics text-white/90',
 	},
 	{
 		icon: Camera01Icon,
 		title: 'photo solve',
 		description: 'snap a pic of any exam question. get clear step-by-step solutions in seconds.',
-		color: 'bg-tiimo-teal/10 text-tiimo-teal',
+		color: 'bg-tiimo-teal text-white/90',
 	},
 	{
 		icon: SparklesIcon,
 		title: 'essay feedback',
 		description:
 			'submit your essays and get specific feedback. learn exactly how to write better answers.',
-		color: 'bg-tiimo-blue/10 text-tiimo-blue',
+		color: 'bg-tiimo-blue text-white/90',
 	},
 	{
 		icon: GroupIcon,
