@@ -98,10 +98,13 @@ export function useQuizResults({
 	};
 
 	const toQuizResult = (metadata: Partial<QuizResultMetadata>): QuizResult => ({
+		id: crypto.randomUUID(),
+		score: correctAnswers,
 		correctAnswers,
 		totalQuestions,
 		durationSeconds,
 		accuracy,
+		subject: metadata.subjectName ?? '',
 		subjectId: metadata.subjectId,
 		subjectName: metadata.subjectName ?? '',
 		difficulty: metadata.difficulty ?? 'medium',

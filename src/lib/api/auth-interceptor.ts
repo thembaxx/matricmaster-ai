@@ -9,6 +9,7 @@ interface PendingRequest {
 }
 
 let refreshSubscribers: PendingRequest[] = [];
+let isRefreshing = false;
 
 const subscribeTokenRefresh = (
 	config: RequestInit,
@@ -24,29 +25,39 @@ const subscribeTokenRefresh = (
 	});
 };
 
-let isRefreshing = false;
-
 const onRefreshed = async () => {
+	if (isRefreshing) return;
+	isRefreshing = true;
+
 	try {
-		await fetch('/api/auth/refresh', { method: 'POST' });
-		refreshSubscribers.forEach(({ config, resolve, reject, retryCount }) => {
+		const response = await fetch('/api/auth/refresh', { method: 'POST' });
+		if (!response.ok) throw new Error('Refresh failed');
+
+		const subscribers = [...refreshSubscribers];
+		refreshSubscribers = [];
+
+		for (const sub of subscribers) {
+			const { config, resolve, reject, retryCount } = sub;
 			if (retryCount >= 3) {
 				reject(new Error('Max retry attempts reached'));
-				return;
+				continue;
 			}
 			fetchWithAuth(config, '', retryCount + 1)
 				.then(resolve)
 				.catch(reject);
-		});
+		}
 	} catch (error) {
-		refreshSubscribers.forEach(({ reject }) => {
+		const subscribers = [...refreshSubscribers];
+		refreshSubscribers = [];
+		subscribers.forEach(({ reject }) => {
 			reject(error);
 		});
+
 		if (typeof window !== 'undefined') {
-			window.location.href = '/sign-in';
+			queryClient.clear();
+			window.dispatchEvent(new Event('auth-expired'));
 		}
 	} finally {
-		refreshSubscribers = [];
 		isRefreshing = false;
 	}
 };
@@ -58,31 +69,61 @@ const fetchWithAuth = async (
 ): Promise<unknown> => {
 	const url = `${baseURL}${config.method === 'GET' ? `?${new URLSearchParams(config.body as string)}` : ''}`;
 
-	const response = await fetch(url, {
-		...config,
-		headers: {
-			'Content-Type': 'application/json',
-			...config.headers,
-		},
-		credentials: 'include',
-	});
+	try {
+		const response = await fetch(url, {
+			...config,
+			headers: {
+				'Content-Type': 'application/json',
+				...config.headers,
+			},
+			credentials: 'include',
+		});
 
-	if (!response.ok) {
-		const errorText = await response.text();
-		if (response.status === 401 && retryCount < 3) {
-			return new Promise((resolve, reject) => {
-				subscribeTokenRefresh(config, resolve, reject, retryCount);
+		if (!response.ok) {
+			const errorText = await response.text();
+
+			// Handle 401 specifically for silent refresh
+			if (response.status === 401 && retryCount < 3) {
+				return new Promise((resolve, reject) => {
+					subscribeTokenRefresh(config, resolve, reject, retryCount);
+					onRefreshed(); // Trigger refresh attempt
+				});
+			}
+
+			// For non-GET requests that fail with 5xx or are offline (captured in catch)
+			// we add to the mutation queue if it's a mutation.
+			if (response.status >= 500 && config.method !== 'GET') {
+				const { useMutationQueueStore } = await import('@/stores/useMutationQueueStore');
+				useMutationQueueStore.getState().addToQueue({
+					url,
+					method: config.method || 'POST',
+					body: config.body,
+					headers: (config.headers as Record<string, string>) || {},
+				});
+			}
+
+			const error = new Error(`HTTP error! status: ${response.status}`);
+			// @ts-expect-error - Add additional error info
+			error.status = response.status;
+			// @ts-expect-error - Add error text
+			error.statusText = errorText;
+			throw error;
+		}
+
+		return response.json();
+	} catch (error) {
+		// Network errors / Offline
+		if (config.method !== 'GET') {
+			const { useMutationQueueStore } = await import('@/stores/useMutationQueueStore');
+			useMutationQueueStore.getState().addToQueue({
+				url,
+				method: config.method || 'POST',
+				body: config.body,
+				headers: (config.headers as Record<string, string>) || {},
 			});
 		}
-		const error = new Error(`HTTP error! status: ${response.status}`);
-		// @ts-expect-error - Add additional error info
-		error.status = response.status;
-		// @ts-expect-error - Add error text
-		error.statusText = errorText;
 		throw error;
 	}
-
-	return response.json();
 };
 
 // Enhanced API client with authentication interceptor

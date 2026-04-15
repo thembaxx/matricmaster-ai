@@ -171,7 +171,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 					{JSON.stringify(jsonLd)}
 				</script>
 			</head>
-			<body className="bg-background min-h-screen font-body">
+			<body className="bg-background min-h-[100dvh] font-body">
 				<a
 					href="#main-content"
 					className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-6 focus:py-3 focus:bg-primary focus:text-primary-foreground focus:rounded-lg focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:shadow-lg transition-all duration-200"

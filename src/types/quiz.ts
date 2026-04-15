@@ -1,11 +1,14 @@
 export type ConfidenceLevel = 'low' | 'medium' | 'high';
 
 export interface QuizResult {
+	id: string;
+	score: number;
 	correctAnswers: number;
 	totalQuestions: number;
 	durationSeconds: number;
 	accuracy: number;
 	subjectId?: number;
+	subject: string;
 	subjectName: string;
 	difficulty: 'easy' | 'medium' | 'hard';
 	topic?: string;

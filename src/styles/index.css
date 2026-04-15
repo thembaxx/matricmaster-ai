@@ -732,6 +732,12 @@ html {
     font-size: 1.05em;
   }
   
+  /* Mathematical/Numeric stats font */
+  .font-numeric {
+    font-family: var(--font-geist-mono), monospace;
+    font-variant-numeric: tabular-nums;
+  }
+  
   /* Image outline for depth */
   .img-outline {
     outline: 1px solid rgba(0, 0, 0, 0.1);

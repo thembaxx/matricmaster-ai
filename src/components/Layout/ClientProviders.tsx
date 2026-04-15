@@ -20,7 +20,33 @@ interface ClientProvidersProps {
 	children: ReactNode;
 }
 
+import { useEffect } from 'react';
+import { useStudySynergy } from '@/hooks/useStudySynergy';
+
 export function ClientProviders({ children }: ClientProvidersProps) {
+	useStudySynergy();
+	useEffect(() => {
+		if (typeof window === 'undefined') return;
+		const channel = new BroadcastChannel('matricmaster-query-sync');
+
+		const unsubscribe = queryClient.getQueryCache().subscribe((event) => {
+			if (event.type === 'updated' && event.action.type === 'success') {
+				channel.postMessage({ queryKey: event.query.queryKey, type: 'invalidate' });
+			}
+		});
+
+		channel.onmessage = (event) => {
+			if (event.data?.type === 'invalidate' && event.data?.queryKey) {
+				queryClient.invalidateQueries({ queryKey: event.data.queryKey });
+			}
+		};
+
+		return () => {
+			unsubscribe();
+			channel.close();
+		};
+	}, []);
+
 	return (
 		<QueryClientProvider client={queryClient}>
 			<LazyMotion features={domAnimation}>
