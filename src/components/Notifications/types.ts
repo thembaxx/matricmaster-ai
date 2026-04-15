@@ -39,7 +39,11 @@ export interface Notification {
 		| 'leaderboard'
 		| 'study_reminder'
 		| 'past_paper'
-		| 'weekly_summary';
+		| 'weekly_summary'
+		| 'wellness_tip'
+		| 'practice_result'
+		| 'comment_reply'
+		| 'buddy_request';
 	title: string;
 	message: string;
 	detail?: string;

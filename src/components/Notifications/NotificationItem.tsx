@@ -38,7 +38,7 @@ export function NotificationItem({
 		>
 			<Card
 				className={`
-					group relative overflow-hidden transition-all duration-300
+					group relative overflow-hidden transition-all duration-300 py-2
 					${notification.isRead ? 'bg-muted/30 border-transparent' : 'bg-card border-border/50'}
 					${isDeleting ? 'opacity-0 scale-95' : 'hover:shadow-lg hover:shadow-primary/5'}
 				`}
@@ -47,7 +47,7 @@ export function NotificationItem({
 					<div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-primary to-violet-500" />
 				)}
 
-				<div className="p-4 flex gap-4">
+				<div className="px-4 pt-4 pb-2 flex gap-4">
 					<div
 						className={`shrink-0 w-12 h-12 rounded-2xl ${notification.iconBg} flex items-center justify-center`}
 					>
