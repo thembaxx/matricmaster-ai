@@ -80,7 +80,7 @@ export default function SubjectDetailsPage() {
 					</ViewTransition>
 
 					<div className="grid gap-4">
-						<h2 className="text-xs font-black  tracking-[0.2em] text-tiimo-gray-muted ml-4">
+						<h2 className="text-xs font-black tracking-[0.2em] text-tiimo-gray-muted ml-4 section-reveal section-reveal-delay-1">
 							Learning Path
 						</h2>
 						{lessons.map((lesson, index) => (
@@ -88,7 +88,7 @@ export default function SubjectDetailsPage() {
 								key={lesson.id}
 								initial={{ opacity: 0, x: -20 }}
 								animate={{ opacity: 1, x: 0 }}
-								transition={{ delay: index * 0.1 }}
+								transition={{ delay: index * 0.08, duration: 0.3 }}
 							>
 								<Link
 									href={`/focus?lessonId=${lesson.id}&subject=${subjectId}`}
@@ -96,7 +96,7 @@ export default function SubjectDetailsPage() {
 								>
 									<Card
 										className={cn(
-											'group rounded-[2rem] border-border/50 shadow-tiimo transition-all hover:scale-[1.01] active:scale-[0.99] overflow-hidden',
+											'group rounded-[2rem] border-border/50 shadow-tiimo card-spring overflow-hidden',
 											lesson.completed ? 'bg-secondary/30' : 'bg-card'
 										)}
 									>

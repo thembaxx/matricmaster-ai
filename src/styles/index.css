@@ -507,6 +507,57 @@ html {
   }
 }
 
+/* ==========================================================================
+  OVERDRIVE: Cinematic Page Transitions
+  ========================================================================== */
+
+@keyframes vt-stagger-in {
+  0% { opacity: 0; transform: translateY(16px) scale(0.96); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes vt-section-reveal {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.section-reveal { animation: vt-section-reveal 500ms ease-out both; }
+.section-reveal-delay-1 { animation-delay: 80ms; }
+.section-reveal-delay-2 { animation-delay: 160ms; }
+.section-reveal-delay-3 { animation-delay: 240ms; }
+
+.card-spring {
+  transition: transform 250ms cubic-bezier(0.34, 1.1, 0.64, 1);
+}
+.card-spring:hover { transform: scale(1.02); }
+.card-spring:active { transform: scale(0.98); }
+
+.stagger-item { animation: vt-stagger-in 350ms ease-out both; }
+
+@supports (animation-timeline: scroll()) {
+  .reveal-on-scroll {
+    animation: vt-stagger-in linear both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 30%;
+  }
+}
+
+@supports not (animation-timeline: scroll()) {
+  .reveal-on-scroll { animation: vt-stagger-in 400ms ease-out both; }
+}
+
+::view-transition-new(.vt-scroll-reveal) {
+  animation: 400ms ease-out both vt-blur-reveal;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal-on-scroll, .stagger-item, .section-reveal, .card-spring {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
 @theme inline {
   --font-heading: var(--font-heading);
   --font-mono: var(--font-mono);
