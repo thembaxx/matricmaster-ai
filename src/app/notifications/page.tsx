@@ -95,12 +95,12 @@ function mapDbNotification(db: DbNotification): Notification {
 	const config = TYPE_CONFIG[db.type] ?? FALLBACK_CONFIG;
 	const detail = db.data
 		? (() => {
-			try {
-				return JSON.parse(db.data);
-			} catch {
-				return null;
-			}
-		})()
+				try {
+					return JSON.parse(db.data);
+				} catch {
+					return null;
+				}
+			})()
 		: null;
 
 	return {
