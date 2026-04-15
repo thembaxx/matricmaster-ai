@@ -3,8 +3,8 @@ import { HugeiconsIcon } from '@hugeicons/react';
 import Link from 'next/link';
 import { buttonVariants } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import type { FlashcardDeck } from './constants';
 import { cn } from '@/lib/utils';
+import type { FlashcardDeck } from './constants';
 
 export function DeckStatsCards({ decks }: { decks: FlashcardDeck[] }) {
 	return (
@@ -55,7 +55,10 @@ export function DeckStatsCards({ decks }: { decks: FlashcardDeck[] }) {
 			<Card className="flex items-center justify-center p-0">
 				<Link
 					href="/review"
-					className={cn(buttonVariants({ variant: 'outline' }), "h-full flex items-center gap-2 py-3")}
+					className={cn(
+						buttonVariants({ variant: 'outline' }),
+						'h-full flex items-center gap-2 py-3'
+					)}
 				>
 					<HugeiconsIcon icon={AiBrain01Icon} className="mr-2 h-4 w-4" />
 					Start Review
