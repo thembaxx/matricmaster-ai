@@ -1,29 +1,20 @@
 'use client';
 
-import {
-	Cancel01Icon,
-	CheckmarkCircleIcon,
-	SparklesIcon,
-	StarIcon,
-} from '@hugeicons/core-free-icons';
+import { CheckmarkCircleIcon, SparklesIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { useQuery } from '@tanstack/react-query';
 import { AnimatePresence, m } from 'framer-motion';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
 import { claimLoginBonus, getLoginBonusStatus } from '@/lib/db/login-bonus-actions';
 
-interface DailyLoginBonusProps {
-	onClaimed?: () => void;
-}
-
-export function DailyLoginBonus({ onClaimed }: DailyLoginBonusProps) {
-	const [isClaiming, setIsClaiming] = useState(false);
-	const [showModal, setShowModal] = useState(false);
-	const [claimResult, setClaimResult] = useState<Awaited<
-		ReturnType<typeof claimLoginBonus>
-	> | null>(null);
+export function DailyLoginBonus() {
+	const [showToast, setShowToast] = useState(false);
+	const [claimResult, setClaimResult] = useState<{
+		xpEarned: number;
+		consecutiveDays: number;
+	} | null>(null);
+	const hasAutoClaimed = useRef(false);
 
 	const { data: status, isLoading } = useQuery({
 		queryKey: ['login-bonus-status'],
@@ -31,216 +22,88 @@ export function DailyLoginBonus({ onClaimed }: DailyLoginBonusProps) {
 	});
 
 	useEffect(() => {
-		if (status?.canClaim) {
-			setShowModal(true);
-		}
+		if (!status?.canClaim || hasAutoClaimed.current) return;
+
+		hasAutoClaimed.current = true;
+
+		const autoClaim = async () => {
+			try {
+				const result = await claimLoginBonus();
+				if (result.success) {
+					setClaimResult({
+						xpEarned: result.xpEarned,
+						consecutiveDays: result.consecutiveDays,
+					});
+					setShowToast(true);
+
+					setTimeout(() => {
+						setShowToast(false);
+						setTimeout(() => setClaimResult(null), 500);
+					}, 3000);
+				}
+			} catch {
+				hasAutoClaimed.current = false;
+			}
+		};
+
+		autoClaim();
 	}, [status]);
 
-	const handleClaim = async () => {
-		setIsClaiming(true);
-		try {
-			const result = await claimLoginBonus();
-			setClaimResult(result);
-			if (result.success) {
-				onClaimed?.();
-			}
-		} finally {
-			setIsClaiming(false);
-		}
-	};
-
-	const handleClose = () => {
-		setShowModal(false);
-		setTimeout(() => setClaimResult(null), 300);
-	};
-
-	if (isLoading || !status || !status.canClaim) {
+	if (isLoading || !status?.canClaim || !showToast || !claimResult) {
 		return null;
 	}
 
-	const currentDay = (status?.consecutiveDays ?? 0) + 1;
-	const nextReward = status?.nextReward;
+	const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
 
 	return (
-		<AnimatePresence>
-			{showModal && (
-				<m.div
-					initial={{ opacity: 0 }}
-					animate={{ opacity: 1 }}
-					exit={{ opacity: 0 }}
-					className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
-					onClick={handleClose}
-				>
+		<AnimatePresence mode="wait">
+			<m.div
+				initial={{ y: -100, opacity: 0 }}
+				animate={{ y: 0, opacity: 1 }}
+				exit={{ opacity: 0, y: -20 }}
+				transition={{
+					type: 'spring',
+					damping: 30,
+					stiffness: 400,
+				}}
+				className={`fixed left-1/2 -translate-x-1/2 top-4 z-[100]
+					${isMobile ? 'w-[80%]' : 'w-[320px]'}
+					max-w-[320px]`}
+			>
+				<div className="relative overflow-hidden rounded-2xl border border-border/30 shadow-soft-lg backdrop-blur-xl">
+					<div className="absolute inset-0 bg-gradient-to-r from-primary/90 via-primary/95 to-primary/90 opacity-95" />
+					<div className="relative px-5 py-3.5 flex items-center justify-between gap-4">
+						<div className="flex items-center gap-3">
+							<div className="w-9 h-9 rounded-lg bg-white/20 flex items-center justify-center flex-shrink-0">
+								<HugeiconsIcon icon={SparklesIcon} className="w-5 h-5 text-white" />
+							</div>
+							<div className="flex flex-col gap-0.5">
+								<p className="text-sm font-bold text-white leading-tight">
+									+{claimResult.xpEarned} XP Claimed!
+								</p>
+								<p className="text-xs text-white/70 leading-tight">
+									Day {claimResult.consecutiveDays} streak
+								</p>
+							</div>
+						</div>
+						<m.div
+							initial={{ scale: 0.8, opacity: 0 }}
+							animate={{ scale: 1, opacity: 1 }}
+							transition={{ delay: 0.15, type: 'spring', damping: 20 }}
+						>
+							<div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center flex-shrink-0">
+								<HugeiconsIcon icon={CheckmarkCircleIcon} className="w-4 h-4 text-white" />
+							</div>
+						</m.div>
+					</div>
 					<m.div
-						initial={{ scale: 0.9, opacity: 0, y: 20 }}
-						animate={{ scale: 1, opacity: 1, y: 0 }}
-						exit={{ scale: 0.9, opacity: 0, y: 20 }}
-						transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-						onClick={(e) => e.stopPropagation()}
-						className="w-full max-w-sm"
-					>
-						<Card className="overflow-hidden border-0 shadow-soft-lg">
-							{!claimResult ? (
-								<div>
-									<div className="relative px-6 pt-8 pb-6 bg-gradient-to-b from-primary/5 to-transparent">
-										<Button
-											variant="ghost"
-											size="icon"
-											onClick={handleClose}
-											className="absolute top-4 right-4 h-8 w-8 rounded-full"
-										>
-											<HugeiconsIcon icon={Cancel01Icon} className="w-4 h-4" />
-										</Button>
-
-										<m.div
-											initial={{ scale: 0.95, opacity: 0 }}
-											animate={{ scale: 1 }}
-											transition={{ delay: 0.1, type: 'spring', damping: 15 }}
-											className="w-20 h-20 mx-auto mb-4 rounded-full bg-primary/10 flex items-center justify-center"
-										>
-											<div className="w-16 h-16 rounded-full bg-gradient-to-br from-primary to-primary/60 flex items-center justify-center">
-												<HugeiconsIcon icon={SparklesIcon} className="w-8 h-8 text-white" />
-											</div>
-										</m.div>
-
-										<div className="text-center">
-											<p className="text-xs font-medium text-muted-foreground  tracking-wider mb-1">
-												Day {currentDay}
-											</p>
-											<h2 className="text-2xl font-bold tracking-tight">
-												{status.consecutiveDays === 0
-													? 'Welcome Back!'
-													: `${status.consecutiveDays} Day Streak`}
-											</h2>
-										</div>
-									</div>
-
-									<CardContent className="px-6 pb-6 space-y-6">
-										{nextReward && (
-											<div className="p-4 rounded-2xl bg-muted/50">
-												<div className="flex items-center justify-between">
-													<div className="flex items-center gap-3">
-														<div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
-															<HugeiconsIcon icon={SparklesIcon} className="w-5 h-5 text-primary" />
-														</div>
-														<div>
-															<p className="text-xs font-medium text-muted-foreground">
-																Today&apos;s Reward
-															</p>
-															<p className="text-lg font-bold">+{nextReward.xpBonus} XP</p>
-														</div>
-													</div>
-													{nextReward.streakFreeze && (
-														<div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-blue-500/10">
-															<HugeiconsIcon
-																icon={StarIcon}
-																className="w-3.5 h-3.5 text-blue-500"
-															/>
-															<span className="text-xs font-medium text-blue-500">+1 Freeze</span>
-														</div>
-													)}
-												</div>
-												{nextReward.specialReward && (
-													<p className="mt-2 text-xs font-medium text-center text-primary">
-														{nextReward.specialReward}
-													</p>
-												)}
-											</div>
-										)}
-
-										<div className="flex justify-center gap-2">
-											{Array.from({ length: 7 }).map((_, index) => {
-												const dayNum = index + 1;
-												const isPast = dayNum <= status.consecutiveDays;
-												const isCurrent = dayNum === currentDay;
-												return (
-													<div
-														key={dayNum}
-														className={`w-9 h-9 rounded-full flex items-center justify-center text-xs font-semibold transition-all ${
-															isPast
-																? 'bg-success text-white'
-																: isCurrent
-																	? 'bg-primary text-white ring-4 ring-primary/20'
-																	: 'bg-muted text-muted-foreground'
-														}`}
-													>
-														{isPast ? (
-															<HugeiconsIcon icon={CheckmarkCircleIcon} className="w-4 h-4" />
-														) : (
-															dayNum
-														)}
-													</div>
-												);
-											})}
-										</div>
-
-										<Button
-											onClick={handleClaim}
-											disabled={isClaiming}
-											className="w-full h-12 rounded-xl font-semibold"
-										>
-											{isClaiming ? (
-												<m.div
-													animate={{ rotate: 360 }}
-													transition={{
-														repeat: Number.POSITIVE_INFINITY,
-														duration: 1,
-														ease: 'linear',
-													}}
-												>
-													<HugeiconsIcon icon={SparklesIcon} className="w-5 h-5" />
-												</m.div>
-											) : (
-												<>
-													<HugeiconsIcon icon={StarIcon} className="w-6 h-6 ml-2" />
-													Claim Reward
-												</>
-											)}
-										</Button>
-									</CardContent>
-								</div>
-							) : (
-								<CardContent className="px-6 py-8 text-center">
-									<m.div
-										initial={{ scale: 0.95, opacity: 0 }}
-										animate={{ scale: 1 }}
-										transition={{ delay: 0.1, type: 'spring', damping: 15 }}
-										className="w-20 h-20 mx-auto mb-4 rounded-full bg-success/10 flex items-center justify-center"
-									>
-										<div className="w-16 h-16 rounded-full bg-success flex items-center justify-center">
-											<HugeiconsIcon icon={CheckmarkCircleIcon} className="w-8 h-8 text-white" />
-										</div>
-									</m.div>
-
-									<h3 className="text-xl font-bold mb-2">Reward Claimed!</h3>
-									<p className="text-3xl font-black text-success mb-2">
-										+{claimResult.xpEarned} XP
-									</p>
-									<p className="text-sm text-muted-foreground mb-4">
-										Total: {claimResult.totalXp} XP
-									</p>
-
-									{claimResult.streakFreezeAwarded && (
-										<p className="text-sm font-medium text-blue-500 flex items-center justify-center gap-1.5 mb-4">
-											<HugeiconsIcon icon={StarIcon} className="w-4 h-4" /> +1 Streak Freeze
-										</p>
-									)}
-
-									{claimResult.specialReward && (
-										<p className="text-sm font-medium text-primary mb-4">
-											{claimResult.specialReward}
-										</p>
-									)}
-
-									<Button onClick={handleClose} className="w-full h-11 rounded-xl font-medium">
-										Continue
-									</Button>
-								</CardContent>
-							)}
-						</Card>
-					</m.div>
-				</m.div>
-			)}
+						initial={{ scaleX: 1 }}
+						animate={{ scaleX: 0 }}
+						transition={{ delay: 2.5, duration: 0.5 }}
+						className="absolute bottom-0 left-0 right-0 h-0.5 bg-white/40 origin-left"
+					/>
+				</div>
+			</m.div>
 		</AnimatePresence>
 	);
 }
