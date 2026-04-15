@@ -12,7 +12,6 @@ import {
 	TrendLegend,
 	usePeriodicTable,
 } from '@/components/PeriodicTable';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import { ELEMENTS } from '@/content/elements';
 
 export default function PeriodicTable() {
@@ -72,8 +71,8 @@ export default function PeriodicTable() {
 						totalCount={ELEMENTS.length}
 					/>
 
-					<ScrollArea className="flex-1">
-						<main className="px-4 py-2 flex flex-col items-start pb-32 max-w-6xl mx-auto w-full gap-6">
+					<div className="flex-1">
+						<main className="px-2 py-2 flex flex-col items-start pb-32 max-w-6xl mx-auto w-full gap-6">
 							<div className="w-full max-w-5xl mx-auto">
 								<ElementGrid
 									elements={ELEMENTS}
@@ -94,7 +93,7 @@ export default function PeriodicTable() {
 								)}
 							</div>
 						</main>
-					</ScrollArea>
+					</div>
 
 					{viewState.isDesktop ? (
 						<ElementDetailSheet
