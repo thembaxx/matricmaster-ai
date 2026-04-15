@@ -2,6 +2,7 @@
 
 import { QuestionIcon, Search01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
+import { useRouter } from 'next/navigation';
 import { useMemo, useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
@@ -12,6 +13,7 @@ interface QuizListProps {
 }
 
 export default function QuizList({ searchQuery = '' }: QuizListProps) {
+	const router = useRouter();
 	const [localSearch, setLocalSearch] = useState(searchQuery);
 	const { quizzes } = useQuizTopics();
 
@@ -38,6 +40,10 @@ export default function QuizList({ searchQuery = '' }: QuizListProps) {
 		}
 	};
 
+	const handleQuizClick = (quizId: string) => {
+		router.push(`/quiz/${quizId}`);
+	};
+
 	return (
 		<div className="space-y-6">
 			<div className="relative">
@@ -57,6 +63,10 @@ export default function QuizList({ searchQuery = '' }: QuizListProps) {
 				{filteredQuizzes.map((quiz) => (
 					<div
 						key={quiz.id}
+						role="button"
+						tabIndex={0}
+						onClick={() => handleQuizClick(quiz.id)}
+						onKeyDown={(e) => e.key === 'Enter' && handleQuizClick(quiz.id)}
 						className="p-6 rounded-3xl border border-border hover:border-primary/20 hover:shadow-soft-lg transition-all duration-500 group cursor-pointer bg-card/50 backdrop-blur-sm"
 					>
 						<div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
@@ -82,8 +92,14 @@ export default function QuizList({ searchQuery = '' }: QuizListProps) {
 
 			{filteredQuizzes.length === 0 && (
 				<div className="text-center py-12">
-					<p className="text-muted-foreground font-medium">
+					<div className="w-16 h-16 rounded-full bg-muted/30 flex items-center justify-center mx-auto mb-4">
+						<HugeiconsIcon icon={QuestionIcon} className="w-8 h-8 text-muted-foreground" />
+					</div>
+					<p className="text-muted-foreground font-medium mb-2">
 						No quizzes found matching "{localSearch}"
+					</p>
+					<p className="text-muted-foreground/60 text-sm">
+						try adjusting your search or browse all quizzes
 					</p>
 				</div>
 			)}

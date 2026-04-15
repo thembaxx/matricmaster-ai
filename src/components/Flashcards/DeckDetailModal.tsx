@@ -1,6 +1,12 @@
 'use client';
 
-import { Add01Icon, Delete02Icon, Loading03Icon, Quiz01Icon } from '@hugeicons/core-free-icons';
+import {
+	Add01Icon,
+	Delete02Icon,
+	Edit01Icon,
+	Loading03Icon,
+	Quiz01Icon,
+} from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { useId, useState } from 'react';
 import { toast } from 'sonner';
@@ -55,6 +61,10 @@ export function DeckDetailModal({
 	const [back, setBack] = useState('');
 	const [isAdding, setIsAdding] = useState(false);
 	const [deletingId, setDeletingId] = useState<string | null>(null);
+	const [editingId, setEditingId] = useState<string | null>(null);
+	const [editFront, setEditFront] = useState('');
+	const [editBack, setEditBack] = useState('');
+	const [isEditing, setIsEditing] = useState(false);
 
 	const handleAddCard = async () => {
 		if (!front.trim() || !back.trim()) {
@@ -106,6 +116,47 @@ export function DeckDetailModal({
 			toast.error('Failed to delete card');
 		} finally {
 			setDeletingId(null);
+		}
+	};
+
+	const handleStartEdit = (card: { id: string; front: string; back: string }) => {
+		setEditingId(card.id);
+		setEditFront(card.front);
+		setEditBack(card.back);
+	};
+
+	const handleCancelEdit = () => {
+		setEditingId(null);
+		setEditFront('');
+		setEditBack('');
+	};
+
+	const handleSaveEdit = async (cardId: string) => {
+		if (!editFront.trim() || !editBack.trim()) {
+			toast.error('Please fill in both front and back');
+			return;
+		}
+
+		setIsEditing(true);
+		try {
+			const response = await fetch(`/api/flashcards/decks/${deck.id}/cards/${cardId}`, {
+				method: 'PATCH',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ front: editFront.trim(), back: editBack.trim() }),
+			});
+
+			if (response.ok) {
+				toast.success('Card updated!');
+				setEditingId(null);
+				onUpdated();
+			} else {
+				toast.error('Failed to update card');
+			}
+		} catch (error) {
+			console.debug('Failed to update card:', error);
+			toast.error('Failed to update card');
+		} finally {
+			setIsEditing(false);
 		}
 	};
 
@@ -172,27 +223,69 @@ export function DeckDetailModal({
 							</div>
 						) : (
 							<div className="space-y-3">
-								{flashcards.map((card) => (
-									<div key={card.id} className="flex items-start gap-3 rounded-lg border p-3 group">
-										<div className="flex-1 space-y-1">
-											<p className="font-medium text-sm">{card.front}</p>
-											<p className="text-xs text-muted-foreground">{card.back}</p>
+								{flashcards.map((card) =>
+									editingId === card.id ? (
+										<div key={card.id} className="rounded-lg border p-3 space-y-2 bg-muted/30">
+											<Textarea
+												value={editFront}
+												onChange={(e) => setEditFront(e.target.value)}
+												placeholder="Question or term..."
+												rows={2}
+											/>
+											<Textarea
+												value={editBack}
+												onChange={(e) => setEditBack(e.target.value)}
+												placeholder="Answer or definition..."
+												rows={2}
+											/>
+											<div className="flex gap-2">
+												<Button
+													size="sm"
+													onClick={() => handleSaveEdit(card.id)}
+													disabled={isEditing}
+												>
+													{isEditing ? 'Saving...' : 'Save'}
+												</Button>
+												<Button size="sm" variant="outline" onClick={handleCancelEdit}>
+													Cancel
+												</Button>
+											</div>
 										</div>
-										<Button
-											variant="ghost"
-											size="icon"
-											className="h-9 w-9 md:h-8 md:w-8 md:opacity-0 md:group-hover:opacity-100 opacity-100 text-destructive touch-manipulation"
-											onClick={() => handleDeleteCard(card.id)}
-											disabled={deletingId === card.id}
+									) : (
+										<div
+											key={card.id}
+											className="flex items-start gap-3 rounded-lg border p-3 group"
 										>
-											{deletingId === card.id ? (
-												<HugeiconsIcon icon={Loading03Icon} className="h-4 w-4 animate-spin" />
-											) : (
-												<HugeiconsIcon icon={Delete02Icon} className="h-4 w-4" />
-											)}
-										</Button>
-									</div>
-								))}
+											<div className="flex-1 space-y-1">
+												<p className="font-medium text-sm">{card.front}</p>
+												<p className="text-xs text-muted-foreground">{card.back}</p>
+											</div>
+											<div className="flex gap-1">
+												<Button
+													variant="ghost"
+													size="icon"
+													className="h-9 w-9 md:h-8 md:w-8 md:opacity-0 md:group-hover:opacity-100 opacity-100 touch-manipulation"
+													onClick={() => handleStartEdit(card)}
+												>
+													<HugeiconsIcon icon={Edit01Icon} className="h-4 w-4" />
+												</Button>
+												<Button
+													variant="ghost"
+													size="icon"
+													className="h-9 w-9 md:h-8 md:w-8 md:opacity-0 md:group-hover:opacity-100 opacity-100 text-destructive touch-manipulation"
+													onClick={() => handleDeleteCard(card.id)}
+													disabled={deletingId === card.id}
+												>
+													{deletingId === card.id ? (
+														<HugeiconsIcon icon={Loading03Icon} className="h-4 w-4 animate-spin" />
+													) : (
+														<HugeiconsIcon icon={Delete02Icon} className="h-4 w-4" />
+													)}
+												</Button>
+											</div>
+										</div>
+									)
+								)}
 							</div>
 						)}
 					</ScrollArea>

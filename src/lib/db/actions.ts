@@ -35,6 +35,7 @@ import {
 	studyPlans,
 	studySessions,
 	subjects,
+	userPastPaperUsage,
 	userProgress,
 } from './schema';
 
@@ -1965,5 +1966,146 @@ export async function getSubjectPerformanceAction(): Promise<{
 	} catch (error) {
 		console.debug('Error getting subject performance:', error);
 		return { performance: [], error: 'Failed to load performance data. Please try again.' };
+	}
+}
+
+// ============================================================================
+// USER PAST PAPER USAGE ACTIONS (Track user interaction with shared papers)
+// ============================================================================
+
+/**
+ * Record or increment a user's view of a past paper
+ */
+export async function trackPastPaperViewAction(paperId: string): Promise<{ success: boolean }> {
+	try {
+		const user = await ensureAuthenticated();
+		const db = await getDb();
+
+		const [existing] = await db
+			.select()
+			.from(userPastPaperUsage)
+			.where(and(eq(userPastPaperUsage.userId, user.id), eq(userPastPaperUsage.paperId, paperId)))
+			.limit(1);
+
+		if (existing) {
+			await db
+				.update(userPastPaperUsage)
+				.set({
+					viewCount: existing.viewCount + 1,
+					lastViewedAt: new Date(),
+					updatedAt: new Date(),
+				})
+				.where(eq(userPastPaperUsage.id, existing.id));
+		} else {
+			await db.insert(userPastPaperUsage).values({
+				userId: user.id,
+				paperId,
+				viewCount: 1,
+				lastViewedAt: new Date(),
+			});
+		}
+
+		return { success: true };
+	} catch (error) {
+		console.debug('Error tracking past paper view:', error);
+		return { success: false };
+	}
+}
+
+/**
+ * Toggle bookmark status for a past paper
+ */
+export async function togglePastPaperBookmarkAction(
+	paperId: string
+): Promise<{ isBookmarked: boolean; error?: string }> {
+	try {
+		const user = await ensureAuthenticated();
+		const db = await getDb();
+
+		const [existing] = await db
+			.select()
+			.from(userPastPaperUsage)
+			.where(and(eq(userPastPaperUsage.userId, user.id), eq(userPastPaperUsage.paperId, paperId)))
+			.limit(1);
+
+		if (existing) {
+			const newBookmarkState = !existing.isBookmarked;
+			await db
+				.update(userPastPaperUsage)
+				.set({
+					isBookmarked: newBookmarkState,
+					bookmarkedAt: newBookmarkState ? new Date() : null,
+					updatedAt: new Date(),
+				})
+				.where(eq(userPastPaperUsage.id, existing.id));
+			return { isBookmarked: newBookmarkState };
+		}
+		await db.insert(userPastPaperUsage).values({
+			userId: user.id,
+			paperId,
+			isBookmarked: true,
+			bookmarkedAt: new Date(),
+		});
+		return { isBookmarked: true };
+	} catch (error) {
+		console.debug('Error toggling past paper bookmark:', error);
+		return { isBookmarked: false, error: 'Failed to update bookmark' };
+	}
+}
+
+/**
+ * Get user's usage data for past papers (bookmarks, views, etc.)
+ */
+export async function getUserPastPaperUsageAction(): Promise<{
+	usage: Array<{
+		paperId: string;
+		viewCount: number;
+		lastViewedAt: Date | null;
+		isBookmarked: boolean;
+		bookmarkedAt: Date | null;
+	}>;
+}> {
+	try {
+		const user = await ensureAuthenticated();
+		const db = await getDb();
+
+		const results = await db
+			.select({
+				paperId: userPastPaperUsage.paperId,
+				viewCount: userPastPaperUsage.viewCount,
+				lastViewedAt: userPastPaperUsage.lastViewedAt,
+				isBookmarked: userPastPaperUsage.isBookmarked,
+				bookmarkedAt: userPastPaperUsage.bookmarkedAt,
+			})
+			.from(userPastPaperUsage)
+			.where(eq(userPastPaperUsage.userId, user.id));
+
+		return { usage: results };
+	} catch (error) {
+		console.debug('Error getting user past paper usage:', error);
+		return { usage: [] };
+	}
+}
+
+/**
+ * Get bookmarked past papers for the current user
+ */
+export async function getBookmarkedPastPapersAction(): Promise<{ papers: PastPaper[] }> {
+	try {
+		const user = await ensureAuthenticated();
+		const db = await getDb();
+
+		const results = await db
+			.select({ paper: pastPapers })
+			.from(userPastPaperUsage)
+			.innerJoin(pastPapers, eq(userPastPaperUsage.paperId, pastPapers.id))
+			.where(
+				and(eq(userPastPaperUsage.userId, user.id), eq(userPastPaperUsage.isBookmarked, true))
+			);
+
+		return { papers: results.map((r) => r.paper) };
+	} catch (error) {
+		console.debug('Error getting bookmarked past papers:', error);
+		return { papers: [] };
 	}
 }

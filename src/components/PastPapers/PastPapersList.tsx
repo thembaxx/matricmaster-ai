@@ -1,29 +1,74 @@
 'use client';
 
-import { BookOpen01Icon as BookOpen } from '@hugeicons/core-free-icons';
+import { BookOpen01Icon as BookOpen, StarIcon as Star, StarIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { Icon } from '@iconify/react';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AnimatePresence, m } from 'framer-motion';
 import { useRouter } from 'next/navigation';
-
+import { GenerateFlashcardsFromPastPaper } from '@/components/Flashcards/GenerateFlashcardsFromPastPaper';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { usePastPapers } from '@/hooks/usePastPapers';
 import { STAGGER_CONTAINER, STAGGER_ITEM } from '@/lib/animation-presets';
+import { togglePastPaperBookmarkAction, trackPastPaperViewAction } from '@/lib/db/actions';
 import type { PastPaper } from '@/lib/db/schema';
 import type { PastPaperRecommendation } from '@/stores/usePastPaperRecommendations';
 
+interface PastPaperWithUsage extends PastPaper {
+	viewCount: number;
+	lastViewedAt: Date | null | undefined;
+	isBookmarked: boolean;
+}
+
 interface PastPaperCardProps {
-	paper: PastPaper;
+	paper: PastPaperWithUsage;
 	recommendation?: PastPaperRecommendation;
 }
 
 export function PastPaperCard({ paper, recommendation }: PastPaperCardProps) {
 	const router = useRouter();
+	const queryClient = useQueryClient();
+
+	const toggleBookmark = useMutation({
+		mutationFn: () => togglePastPaperBookmarkAction(paper.id),
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: ['user-past-paper-usage'] });
+			queryClient.invalidateQueries({ queryKey: ['past-papers'] });
+		},
+	});
+
+	const handleView = () => {
+		trackPastPaperViewAction(paper.id);
+		router.push(`/past-paper?id=${paper.id}`);
+	};
+
+	const handleSmartView = () => {
+		trackPastPaperViewAction(paper.id);
+		router.push(`/past-paper?id=${paper.id}`);
+	};
+
+	const handleRead = () => {
+		trackPastPaperViewAction(paper.id);
+		router.push(`/past-paper?id=${paper.id}&mode=read`);
+	};
 
 	return (
 		<div className="p-8 rounded-3xl border border-border hover:border-primary/20 hover:shadow-soft-lg transition-all duration-500 group relative overflow-hidden bg-card/50 backdrop-blur-sm">
 			<div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+
+			<button
+				type="button"
+				className={`absolute top-4 right-4 z-20 p-2 rounded-full transition-all duration-300 ${
+					paper.isBookmarked
+						? 'bg-accent-lime/20 text-accent-lime'
+						: 'bg-muted/50 text-muted-foreground hover:bg-accent-lime/20 hover:text-accent-lime'
+				}`}
+				onClick={() => toggleBookmark.mutate()}
+				disabled={toggleBookmark.isPending}
+			>
+				<HugeiconsIcon icon={paper.isBookmarked ? StarIcon : Star} className="w-5 h-5" />
+			</button>
 
 			<div className="space-y-6 relative z-10">
 				<div className="flex items-start justify-between">
@@ -57,6 +102,14 @@ export function PastPaperCard({ paper, recommendation }: PastPaperCardProps) {
 						>
 							NSC Grade 12
 						</Badge>
+						{paper.viewCount > 0 && (
+							<Badge
+								variant="outline"
+								className="rounded-lg font-black text-[9px]  tracking-widest border border-accent-lime/50 bg-accent-lime/10 text-accent-lime"
+							>
+								Viewed {paper.viewCount}x
+							</Badge>
+						)}
 					</div>
 					{recommendation && (
 						<AnimatePresence>
@@ -87,7 +140,7 @@ export function PastPaperCard({ paper, recommendation }: PastPaperCardProps) {
 					<Button
 						variant="secondary"
 						className="rounded-2xl font-black text-[10px]  tracking-widest h-12 shadow-sm ios-active-scale"
-						onClick={() => router.push(`/past-paper?id=${paper.id}`)}
+						onClick={handleSmartView}
 					>
 						<Icon icon="fluent:document-sparkle-24-filled" className="w-5 h-5 mr-0 shrink-0" />
 						Smart view
@@ -95,16 +148,24 @@ export function PastPaperCard({ paper, recommendation }: PastPaperCardProps) {
 					<Button
 						variant="outline"
 						className="rounded-2xl font-black text-[10px]  tracking-widest h-12 border border-border ios-active-scale"
-						onClick={() => router.push(`/past-paper?id=${paper.id}&mode=read`)}
+						onClick={handleRead}
 					>
 						<HugeiconsIcon icon={BookOpen} className="w-4 h-4 mr-2" />
 						Read
 					</Button>
 				</div>
 
+				<GenerateFlashcardsFromPastPaper
+					paperId={paper.id}
+					paperTitle={`${paper.subject} ${paper.paper}`}
+					subject={paper.subject}
+					year={paper.year}
+					month={paper.month}
+				/>
+
 				<Button
 					className="w-full dark:bg-white/60 dark:text-foreground backdrop-blur-2xl shadow-none rounded-2xl h-14 bg-secondary hover:bg-primary hover:text-primary-foreground text-label-secondary font-black text-[10px]  tracking-widest transition-all duration-300 group/btn ios-active-scale"
-					onClick={() => window.open(paper.originalPdfUrl, '_blank')}
+					onClick={handleView}
 				>
 					<Icon icon="fluent:cloud-download-24-regular" className="w-5 h-5 mr-2 shrink-0" />
 					Download
@@ -143,21 +204,18 @@ export function PastPapersSkeleton() {
 					className="p-8 rounded-3xl border border-border bg-card/50 animate-pulse"
 				>
 					<div className="space-y-6">
-						<div className="flex items-start justify-between">
+						<div className="flex justify-between">
 							<div className="w-16 h-16 rounded-2xl bg-muted" />
-							<div className="text-right">
-								<div className="h-4 w-16 bg-muted rounded mb-1" />
-								<div className="h-8 w-12 bg-muted rounded" />
-							</div>
+							<div className="w-12 h-8 bg-muted rounded-lg" />
 						</div>
 						<div className="space-y-2">
-							<div className="h-8 w-48 bg-muted rounded" />
+							<div className="h-8 bg-muted rounded-lg w-3/4" />
 							<div className="flex gap-2">
-								<div className="h-6 w-24 bg-muted rounded-lg" />
-								<div className="h-6 w-24 bg-muted rounded-lg" />
+								<div className="h-6 bg-muted rounded-lg w-20" />
+								<div className="h-6 bg-muted rounded-lg w-24" />
 							</div>
 						</div>
-						<div className="grid grid-cols-2 gap-3 pt-4">
+						<div className="grid grid-cols-2 gap-3">
 							<div className="h-12 bg-muted rounded-2xl" />
 							<div className="h-12 bg-muted rounded-2xl" />
 						</div>
@@ -169,33 +227,40 @@ export function PastPapersSkeleton() {
 	);
 }
 
-interface PastPapersGridProps {
-	papers: PastPaper[];
+export function PastPapersGrid({
+	papers,
+	isLoading,
+}: {
+	papers: PastPaperWithUsage[];
 	isLoading: boolean;
-}
+}) {
+	if (isLoading) {
+		return <PastPapersSkeleton />;
+	}
 
-export function PastPapersGrid({ papers, isLoading }: PastPapersGridProps) {
 	return (
-		<AnimatePresence mode="popLayout">
-			{isLoading ? (
-				<PastPapersSkeleton />
-			) : papers.length > 0 ? (
-				<m.div
-					variants={STAGGER_CONTAINER}
-					initial="hidden"
-					animate="visible"
-					className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8"
-				>
-					{papers.map((paper) => (
-						<m.div key={paper.id} variants={STAGGER_ITEM} layout whileHover={{ y: -8 }}>
-							<PastPaperCard paper={paper} />
-						</m.div>
-					))}
-				</m.div>
-			) : (
-				<PastPapersEmptyState />
-			)}
-		</AnimatePresence>
+		<m.div
+			variants={STAGGER_CONTAINER}
+			initial="initial"
+			animate="animate"
+			className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8"
+		>
+			<AnimatePresence mode="popLayout">
+				{papers.map((paper, index) => (
+					<m.div
+						key={paper.id}
+						variants={STAGGER_ITEM}
+						layout
+						initial={{ opacity: 0, scale: 0.9 }}
+						animate={{ opacity: 1, scale: 1 }}
+						exit={{ opacity: 0, scale: 0.9 }}
+						transition={{ delay: index * 0.05 }}
+					>
+						<PastPaperCard paper={paper} />
+					</m.div>
+				))}
+			</AnimatePresence>
+		</m.div>
 	);
 }
 
@@ -208,7 +273,7 @@ export function PastPapersBrowser({ searchQuery: _searchQuery = '' }: PastPapers
 
 	return (
 		<div className="space-y-6">
-			<PastPapersGrid papers={filteredPapers} isLoading={isLoading} />
+			<PastPapersGrid papers={filteredPapers as PastPaperWithUsage[]} isLoading={isLoading} />
 		</div>
 	);
 }

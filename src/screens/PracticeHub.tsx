@@ -7,14 +7,17 @@ import {
 	Layers01Icon,
 	QuestionIcon,
 	Search01Icon,
+	StarIcon,
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import dynamic from 'next/dynamic';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { usePastPapers } from '@/hooks/usePastPapers';
 
 const PastPapersBrowser = dynamic(
 	() => import('@/components/PastPapers/PastPapersList').then((mod) => mod.PastPapersBrowser),
@@ -43,8 +46,11 @@ const FlashcardsPreview = dynamic(
 type PracticeView = 'papers' | 'quizzes' | 'flashcards';
 
 export default function PracticeHub() {
+	const router = useRouter();
 	const [currentView, setCurrentView] = useState<PracticeView>('papers');
 	const [searchQuery, setSearchQuery] = useState('');
+
+	const { filterState, filterDispatch, activeFilterCount } = usePastPapers();
 
 	return (
 		<div className="flex flex-col h-full min-w-0 bg-background overflow-x-hidden">
@@ -72,13 +78,34 @@ export default function PracticeHub() {
 							onChange={(e) => setSearchQuery(e.target.value)}
 						/>
 					</div>
-					<Button
-						variant="outline"
-						className="h-12 w-12 sm:w-auto px-4 rounded-2xl gap-2 bg-card border-border/50"
-					>
-						<HugeiconsIcon icon={FilterIcon} className="w-4 h-4" />
-						<span className="hidden sm:inline font-bold">filters</span>
-					</Button>
+					<div className="flex gap-2">
+						{currentView === 'papers' && (
+							<Button
+								variant={filterState.bookmarkedOnly ? 'default' : 'outline'}
+								className={`h-12 px-4 rounded-2xl gap-2 ${
+									filterState.bookmarkedOnly
+										? 'bg-brand-orange text-white'
+										: 'bg-card border-border/50'
+								}`}
+								onClick={() => filterDispatch({ type: 'TOGGLE_BOOKMARKED' })}
+							>
+								<HugeiconsIcon icon={StarIcon} className="w-4 h-4" />
+								<span className="hidden sm:inline font-bold">bookmarks</span>
+							</Button>
+						)}
+						<Button
+							variant="outline"
+							className="h-12 w-12 sm:w-auto px-4 rounded-2xl gap-2 bg-card border-border/50"
+						>
+							<HugeiconsIcon icon={FilterIcon} className="w-4 h-4" />
+							<span className="hidden sm:inline font-bold">filters</span>
+							{activeFilterCount > 0 && (
+								<span className="ml-1 bg-primary text-primary-foreground text-[10px] font-bold px-1.5 py-0.5 rounded-full">
+									{activeFilterCount}
+								</span>
+							)}
+						</Button>
+					</div>
 				</div>
 
 				{/* View Switcher */}
@@ -113,7 +140,10 @@ export default function PracticeHub() {
 
 					{/* Quick Actions / Tips */}
 					<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8 pb-32">
-						<Card className="p-6 rounded-[2rem] bg-brand-navy border-none text-white space-y-4 group cursor-pointer hover:scale-[1.02] transition-transform">
+						<Card
+							className="p-6 rounded-[2rem] bg-brand-navy border-none text-white space-y-4 group cursor-pointer hover:scale-[1.02] transition-transform"
+							onClick={() => router.push('/exam-timer')}
+						>
 							<div className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center">
 								<HugeiconsIcon icon={File01Icon} className="w-6 h-6 text-brand-orange" />
 							</div>
@@ -132,7 +162,10 @@ export default function PracticeHub() {
 							</div>
 						</Card>
 
-						<Card className="p-6 rounded-[2rem] bg-muted/20 border-border/50 space-y-4 group cursor-pointer hover:scale-[1.02] transition-transform">
+						<Card
+							className="p-6 rounded-[2rem] bg-muted/20 border-border/50 space-y-4 group cursor-pointer hover:scale-[1.02] transition-transform"
+							onClick={() => router.push('/snap-and-solve')}
+						>
 							<div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center">
 								<HugeiconsIcon icon={Search01Icon} className="w-6 h-6 text-primary" />
 							</div>

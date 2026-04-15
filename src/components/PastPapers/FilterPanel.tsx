@@ -109,6 +109,23 @@ const FilterContent = memo(function FilterContent({
 					/>
 				</div>
 			</div>
+
+			<div className="space-y-4">
+				<div className="flex items-center justify-between">
+					<div>
+						<h4 className="text-[10px] font-black  tracking-[0.2em] text-label-tertiary">
+							my bookmarks
+						</h4>
+						<p className="text-[10px] text-label-tertiary mt-1  tracking-wider">
+							show only bookmarked papers
+						</p>
+					</div>
+					<Switch
+						checked={filterState.bookmarkedOnly}
+						onCheckedChange={() => dispatch({ type: 'TOGGLE_BOOKMARKED' })}
+					/>
+				</div>
+			</div>
 		</div>
 	);
 });
