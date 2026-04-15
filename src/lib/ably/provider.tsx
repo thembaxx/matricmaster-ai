@@ -4,7 +4,7 @@ import { ChatClient, LogLevel } from '@ably/chat';
 import { ChatClientProvider } from '@ably/chat/react';
 import * as Ably from 'ably';
 import { AblyProvider, ChannelProvider } from 'ably/react';
-import { type ReactNode, useEffect, useMemo, useRef } from 'react';
+import { type ReactNode, useEffect, useMemo, useRef, useState } from 'react';
 import { useSession } from '@/lib/auth-client';
 import { useAblyStore } from '@/stores/useAblyStore';
 
@@ -92,8 +92,25 @@ export function AblyClientProvider({ children }: AblyClientProviderProps) {
 interface ChannelProviderWrapperProps {
 	channelName: string;
 	children: ReactNode;
+	fallback?: ReactNode;
 }
 
-export function ChannelProviderWrapper({ channelName, children }: ChannelProviderWrapperProps) {
-	return <ChannelProvider channelName={channelName}>{children}</ChannelProvider>;
+export function ChannelProviderWrapper({
+	channelName,
+	children,
+	fallback = null,
+}: ChannelProviderWrapperProps) {
+	const [hasError, setHasError] = useState(false);
+
+	if (hasError) {
+		return <>{fallback}</>;
+	}
+
+	try {
+		return <ChannelProvider channelName={channelName}>{children}</ChannelProvider>;
+	} catch (err) {
+		console.error('ChannelProvider error:', err);
+		setHasError(true);
+		return <>{fallback}</>;
+	}
 }
