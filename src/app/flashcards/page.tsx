@@ -12,7 +12,6 @@ import { DeckStatsCards } from '@/components/Flashcards/DeckStatsCards';
 import { Button } from '@/components/ui/button';
 import { ConfirmDialog } from '@/components/ui/ConfirmDialog';
 import { Card, CardContent } from '@/components/ui/card';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import { authClient } from '@/lib/auth-client';
 
 const FlashcardModal = dynamic(
@@ -170,14 +169,14 @@ export default function FlashcardsPage() {
 						</CardContent>
 					</Card>
 				) : (
-					<ScrollArea className="h-[calc(100vh-400px)]">
+					<div className="h-[calc(100vh-400px)]">
 						<DeckGrid
 							decks={decks}
 							onOpenDeck={handleOpenDeck}
 							onStartReview={handleStartReview}
 							onDeleteDeck={(deck) => setDeleteDeck(deck)}
 						/>
-					</ScrollArea>
+					</div>
 				)}
 
 				<CreateDeckModal

@@ -1,6 +1,6 @@
 import { cva, type VariantProps } from 'class-variance-authority';
 import { Slot } from 'radix-ui';
-import type * as React from 'react';
+import type React from 'react';
 
 import { cn } from '@/lib/utils';
 import { Spinner } from './spinner';
@@ -66,6 +66,21 @@ function Button({
 		static?: boolean;
 	}) {
 	const Comp = asChild ? Slot.Root : 'button';
+
+	if (asChild) {
+		return (
+			<Comp
+				data-slot="button"
+				data-variant={variant}
+				data-size={size}
+				disabled={disabled || loading}
+				className={cn(buttonVariants({ variant, size, static: isStatic, className }))}
+				{...props}
+			>
+				{children}
+			</Comp>
+		);
+	}
 
 	return (
 		<Comp

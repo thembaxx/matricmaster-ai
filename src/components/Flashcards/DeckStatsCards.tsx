@@ -1,15 +1,16 @@
 import { AiBrain01Icon, BookOpen01Icon, Clock01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import Link from 'next/link';
-import { Button } from '@/components/ui/button';
+import { buttonVariants } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import type { FlashcardDeck } from './constants';
+import { cn } from '@/lib/utils';
 
 export function DeckStatsCards({ decks }: { decks: FlashcardDeck[] }) {
 	return (
 		<div className="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
 			<Card>
-				<CardContent className="pt-6">
+				<CardContent>
 					<div className="flex items-center gap-4">
 						<div className="rounded-full bg-primary/10 p-3">
 							<HugeiconsIcon icon={BookOpen01Icon} className="h-6 w-6 text-primary" />
@@ -22,7 +23,7 @@ export function DeckStatsCards({ decks }: { decks: FlashcardDeck[] }) {
 				</CardContent>
 			</Card>
 			<Card>
-				<CardContent className="pt-6">
+				<CardContent>
 					<div className="flex items-center gap-4">
 						<div className="rounded-full bg-green-500/10 p-3">
 							<HugeiconsIcon icon={AiBrain01Icon} className="h-6 w-6 text-green-500" />
@@ -37,7 +38,7 @@ export function DeckStatsCards({ decks }: { decks: FlashcardDeck[] }) {
 				</CardContent>
 			</Card>
 			<Card>
-				<CardContent className="pt-6">
+				<CardContent>
 					<div className="flex items-center gap-4">
 						<div className="rounded-full bg-orange-500/10 p-3">
 							<HugeiconsIcon icon={Clock01Icon} className="h-6 w-6 text-orange-500" />
@@ -51,13 +52,14 @@ export function DeckStatsCards({ decks }: { decks: FlashcardDeck[] }) {
 					</div>
 				</CardContent>
 			</Card>
-			<Card className="flex items-center justify-center">
-				<Button variant="outline" asChild className="w-full h-full">
-					<Link href="/review" transitionTypes={['fade']}>
-						<HugeiconsIcon icon={AiBrain01Icon} className="mr-2 h-4 w-4" />
-						Start Review
-					</Link>
-				</Button>
+			<Card className="flex items-center justify-center p-0">
+				<Link
+					href="/review"
+					className={cn(buttonVariants({ variant: 'outline' }), "h-full flex items-center gap-2 py-3")}
+				>
+					<HugeiconsIcon icon={AiBrain01Icon} className="mr-2 h-4 w-4" />
+					Start Review
+				</Link>
 			</Card>
 		</div>
 	);
