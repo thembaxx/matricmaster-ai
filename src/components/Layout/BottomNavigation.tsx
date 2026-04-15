@@ -96,7 +96,7 @@ export const BottomNavigation = memo(function BottomNavigation({
 								/>
 							</m.div>
 							<span
-								className={`label-xs font-bold tracking-tight transition-colors duration-300 ${
+								className={`label-xs font-bold tracking-tight transition-colors duration-300 capitalize ${
 									isActive ? 'text-foreground' : 'text-tiimo-black-50'
 								}`}
 							>

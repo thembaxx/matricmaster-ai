@@ -185,7 +185,7 @@ export default function AiLab() {
 					</div>
 
 					{/* AI Insights Card (Mock) */}
-					<Card className="p-8 rounded-[2.5rem] bg-brand-navy text-white overflow-hidden relative border-none">
+					<Card className="p-8 rounded-[2.5rem] bg-primary-purple text-white overflow-hidden relative border-none">
 						<div className="absolute top-0 right-0 w-64 h-64 bg-primary/20 rounded-full blur-[100px]" />
 						<div className="relative z-10 space-y-6">
 							<div className="w-14 h-14 bg-white/10 rounded-2xl flex items-center justify-center">
@@ -198,8 +198,8 @@ export default function AiLab() {
 									weekend.
 								</p>
 							</div>
-							<Button className="bg-white text-brand-navy hover:bg-white/90 font-black rounded-2xl h-14 px-8 group">
-								view analysis{' '}
+							<Button className="bg-white text-primary-purple hover:bg-white/90 font-black rounded-2xl h-14 px-8 group">
+								View analysis{' '}
 								<HugeiconsIcon
 									icon={ArrowRight01Icon}
 									className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1"

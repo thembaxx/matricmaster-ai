@@ -14,7 +14,6 @@ import { useState, ViewTransition } from 'react';
 import { ContextualAIBubble } from '@/components/AI/ContextualAIBubble';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import { useLessons } from '@/hooks/useLessons';
 import CurriculumMapView from './LearningCenter/CurriculumMapView';
 // We will create sub-components for each view to keep this clean
@@ -82,7 +81,7 @@ export default function LearningCenter() {
 					</div>
 				</header>
 
-				<ScrollArea className="flex-1">
+				<div className="flex-1">
 					<main className="px-4 sm:px-6 py-4 relative">
 						{currentView === 'browser' && (
 							<LessonsBrowser
@@ -118,7 +117,7 @@ export default function LearningCenter() {
 						</div>
 						<div className="h-32" />
 					</main>
-				</ScrollArea>
+				</div>
 				<ContextualAIBubble />
 			</div>
 		</ViewTransition>
