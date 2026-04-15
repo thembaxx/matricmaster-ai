@@ -232,6 +232,38 @@ export type PastPaperQuestion = typeof pastPaperQuestions.$inferSelect;
 export type NewPastPaperQuestion = typeof pastPaperQuestions.$inferInsert;
 
 // ============================================================================
+// USER PAST PAPER USAGE TABLE (Track user interaction with shared past papers)
+// ============================================================================
+
+export const userPastPaperUsage = pgTable(
+	'user_past_paper_usage',
+	{
+		id: uuid('id').defaultRandom().primaryKey(),
+		userId: text('user_id')
+			.notNull()
+			.references(() => users.id, { onDelete: 'cascade' }),
+		paperId: uuid('paper_id')
+			.notNull()
+			.references(() => pastPapers.id, { onDelete: 'cascade' }),
+		viewCount: integer('view_count').notNull().default(0),
+		lastViewedAt: timestamp('last_viewed_at'),
+		isBookmarked: boolean('is_bookmarked').notNull().default(false),
+		bookmarkedAt: timestamp('bookmarked_at'),
+		isDownloaded: boolean('is_downloaded').notNull().default(false),
+		downloadedAt: timestamp('downloaded_at'),
+		isExtracted: boolean('is_extracted').notNull().default(false),
+		extractedAt: timestamp('extracted_at'),
+		createdAt: timestamp('created_at').defaultNow(),
+		updatedAt: timestamp('updated_at').defaultNow(),
+	},
+	(table) => ({
+		userPaperUnique: uniqueIndex('user_paper_usage_unique').on(table.userId, table.paperId),
+		userIdIdx: index('user_paper_usage_user_id_idx').on(table.userId),
+		paperIdIdx: index('user_paper_usage_paper_id_idx').on(table.paperId),
+	})
+);
+
+// ============================================================================
 // USER PROGRESS TABLE (Track learning progress)
 // ============================================================================
 
@@ -1425,6 +1457,17 @@ export const bookmarksRelations = relations(bookmarks, ({ one }) => ({
 	}),
 }));
 
+export const userPastPaperUsageRelations = relations(userPastPaperUsage, ({ one }) => ({
+	user: one(users, {
+		fields: [userPastPaperUsage.userId],
+		references: [users.id],
+	}),
+	paper: one(pastPapers, {
+		fields: [userPastPaperUsage.paperId],
+		references: [pastPapers.id],
+	}),
+}));
+
 export const leaderboardEntriesRelations = relations(leaderboardEntries, ({ one }) => ({
 	user: one(users, {
 		fields: [leaderboardEntries.userId],
@@ -1663,6 +1706,9 @@ export type NewNotification = typeof notifications.$inferInsert;
 
 export type Bookmark = typeof bookmarks.$inferSelect;
 export type NewBookmark = typeof bookmarks.$inferInsert;
+
+export type UserPastPaperUsage = typeof userPastPaperUsage.$inferSelect;
+export type NewUserPastPaperUsage = typeof userPastPaperUsage.$inferInsert;
 
 export type LeaderboardEntry = typeof leaderboardEntries.$inferSelect;
 export type NewLeaderboardEntry = typeof leaderboardEntries.$inferInsert;

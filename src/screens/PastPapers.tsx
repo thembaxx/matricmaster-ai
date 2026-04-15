@@ -21,6 +21,12 @@ import type { PastPaper } from '@/lib/db/schema';
 import { cn } from '@/lib/utils';
 import type { PastPaperRecommendation } from '@/stores/usePastPaperRecommendations';
 
+interface PastPaperWithUsage extends PastPaper {
+	viewCount: number;
+	lastViewedAt: Date | null | undefined;
+	isBookmarked: boolean;
+}
+
 export default function PastPapers() {
 	const {
 		uiState,
@@ -51,11 +57,19 @@ export default function PastPapers() {
 		getRecommendationsForPaper,
 	} = useQuizPastPaperIntegration(filteredPapers);
 
-	const recommendedPapers = showOnlyRecommended
-		? filteredPapers.filter((paper: PastPaper) => isRecommended(paper.id))
-		: filteredPapers;
+	const recommendedPapers: PastPaperWithUsage[] = showOnlyRecommended
+		? (filteredPapers as PastPaperWithUsage[]).filter((paper) => isRecommended(paper.id))
+		: (filteredPapers as PastPaperWithUsage[]);
 
 	const hasRecommendations = recommendations.length > 0;
+
+	// Helper to transform PastPaper to PastPaperWithUsage
+	const toUsagePaper = (paper: PastPaper): PastPaperWithUsage => ({
+		...paper,
+		viewCount: 0,
+		lastViewedAt: undefined,
+		isBookmarked: false,
+	});
 
 	return (
 		<ViewTransition default="none">
@@ -213,7 +227,7 @@ export default function PastPapers() {
 												layout
 												whileHover={{ y: -8 }}
 											>
-												<PastPaperCard paper={paper} recommendation={rec} />
+												<PastPaperCard paper={toUsagePaper(paper)} recommendation={rec} />
 											</m.div>
 										);
 									})}
@@ -237,7 +251,7 @@ export default function PastPapers() {
 									animate="visible"
 									className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8"
 								>
-									{recommendedPapers.map((paper: PastPaper) => (
+									{recommendedPapers.map((paper: PastPaperWithUsage) => (
 										<m.div key={paper.id} variants={STAGGER_ITEM} layout whileHover={{ y: -8 }}>
 											<PastPaperCard
 												paper={paper}
