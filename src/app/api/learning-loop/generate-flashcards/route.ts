@@ -1,95 +1,183 @@
+import { headers } from 'next/headers';
 import { type NextRequest, NextResponse } from 'next/server';
-import { generateTextWithAI } from '@/lib/ai/provider';
+import { z } from 'zod';
+import { getAuth } from '@/lib/auth';
+import { getDb } from '@/lib/db';
+import {
+	addFlashcardToDeck,
+	createFlashcardDeck,
+	getUserDecks,
+} from '@/lib/db/review-queue-actions';
+import { flashcardDecks, questions, subjects } from '@/lib/db/schema';
 
-interface TopicGap {
+const generateFlashcardsSchema = z.object({
+	questionId: z.string().uuid('Invalid questionId format'),
+	explanation: z.string().min(1, 'Explanation is required'),
+	quizId: z.string().optional(),
+	deckId: z.string().uuid().optional(),
+	deckName: z.string().max(200).optional(),
+});
+
+async function getQuestionTerm(questionId: string): Promise<{
+	questionText: string;
 	topic: string;
-	subject: string;
+	subjectId: number | null;
+} | null> {
+	const db = await getDb();
+
+	const [question] = await db
+		.select({
+			questionText: questions.questionText,
+			topic: questions.topic,
+			subjectId: questions.subjectId,
+		})
+		.from(questions)
+		.where(
+			// @ts-expect-error - drizzle ORM inference
+			questions.id.eq(questionId)
+		)
+		.limit(1);
+
+	return question || null;
+}
+
+async function findOrCreateDeck(
+	userId: string,
+	subjectId: number | null,
+	deckId?: string,
+	deckName?: string
+): Promise<{ id: string; name: string } | null> {
+	const db = await getDb();
+
+	if (deckId) {
+		const [existing] = await db
+			.select({
+				id: flashcardDecks.id,
+				name: flashcardDecks.name,
+			})
+			.from(flashcardDecks)
+			.where(
+				// @ts-expect-error - drizzle ORM inference
+				flashcardDecks.id.eq(deckId)
+			)
+			.limit(1);
+
+		if (existing?.id) {
+			return { id: existing.id as string, name: existing.name as string };
+		}
+		return null;
+	}
+
+	const finalDeckName = deckName || 'Flashcards from Quiz';
+
+	const existingDecks = await getUserDecks(userId);
+	const existingDeck = existingDecks.find(
+		(d) => d.name && d.name.toLowerCase() === finalDeckName.toLowerCase()
+	);
+
+	if (existingDeck?.id && existingDeck.name) {
+		return { id: existingDeck.id as string, name: existingDeck.name as string };
+	}
+
+	const subjectName = subjectId
+		? (
+				await db
+					.select({ name: subjects.name })
+					.from(subjects)
+					.where(
+						// @ts-expect-error - drizzle ORM inference
+						subjects.id.eq(subjectId)
+					)
+					.limit(1)
+			)?.[0]?.name
+		: null;
+
+	const result = await createFlashcardDeck(
+		userId,
+		finalDeckName,
+		`Auto-generated flashcards from learning loop: ${subjectName || 'General'}`,
+		subjectId ?? undefined
+	);
+
+	if (result.success && result.deck?.id && result.deck.name) {
+		return { id: result.deck.id, name: result.deck.name };
+	}
+
+	return null;
 }
 
 export async function POST(request: NextRequest) {
 	try {
-		const { topics } = (await request.json()) as { topics: TopicGap[] };
-
-		if (!topics || topics.length === 0) {
-			return NextResponse.json({ success: false, error: 'No topics provided' }, { status: 400 });
-		}
-
-		const topicList = topics.map((t) => `- ${t.topic} (${t.subject})`).join('\n');
-
-		const prompt = `You are a South African NSC Grade 12 study assistant. Generate 5 flashcards for the following topics that the student is struggling with:
-
-${topicList}
-
-For each flashcard, provide:
-1. Front: A clear question or key term
-2. Back: The answer or explanation
-
-Follow NSC/CAPS curriculum guidelines. Use South African examples where appropriate.
-
-Respond in JSON format:
-{
-  "flashcards": [
-    { "front": "...", "back": "..." },
-    ...
-  ]
-}`;
-
-		const result = await generateTextWithAI({
-			prompt,
-			system:
-				'You are an expert NSC Grade 12 tutor. Generate educational flashcards following CAPS curriculum guidelines.',
+		const auth = await getAuth();
+		const session = await auth.api.getSession({
+			headers: await headers(),
 		});
 
-		let flashcards: { front: string; back: string }[] = [];
-
-		try {
-			const parsed = JSON.parse(result);
-			flashcards = parsed.flashcards || [];
-		} catch {
-			const match = result.match(/\[[\s\S]*\]/);
-			if (match) {
-				try {
-					flashcards = JSON.parse(match[0]);
-				} catch {
-					flashcards = result
-						.split('\n\n')
-						.filter(Boolean)
-						.map((card) => ({
-							front: card.split('\n')[0] || 'Question',
-							back: card.split('\n').slice(1).join('\n') || 'Answer',
-						}));
-				}
-			}
+		if (!session?.user?.id) {
+			return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 		}
 
-		const savedCards = [];
-		for (const card of flashcards.slice(0, 5)) {
-			try {
-				const response = await fetch('/api/flashcards/decks/default/cards', {
-					method: 'POST',
-					headers: { 'Content-Type': 'application/json' },
-					body: JSON.stringify({
-						front: card.front,
-						back: card.back,
-						difficulty: 'medium',
-					}),
-				});
+		const body = await request.json();
+		const validation = generateFlashcardsSchema.safeParse(body);
 
-				if (response.ok) {
-					savedCards.push(card);
-				}
-			} catch (error) {
-				console.debug('Failed to save flashcard:', error);
-			}
+		if (!validation.success) {
+			return NextResponse.json(
+				{ error: 'Validation failed', details: validation.error.flatten().fieldErrors },
+				{ status: 400 }
+			);
 		}
+
+		const { questionId, explanation, quizId, deckId, deckName } = validation.data;
+		const userId = session.user.id;
+
+		console.debug('[generate-flashcards] Processing:', {
+			questionId,
+			hasExplanation: !!explanation,
+			userId,
+		});
+
+		const questionData = await getQuestionTerm(questionId);
+
+		if (!questionData) {
+			return NextResponse.json({ error: 'Question not found' }, { status: 404 });
+		}
+
+		const deck = await findOrCreateDeck(userId, questionData.subjectId, deckId, deckName);
+
+		if (!deck) {
+			return NextResponse.json({ error: 'Failed to create or find deck' }, { status: 500 });
+		}
+
+		const term = questionData.topic || questionData.questionText.slice(0, 100);
+		const definition = explanation;
+
+		const result = await addFlashcardToDeck(deck.id, term, definition, 'medium');
+
+		if (!result.success || !result.flashcard) {
+			return NextResponse.json(
+				{ error: result.error || 'Failed to create flashcard' },
+				{ status: 500 }
+			);
+		}
+
+		console.debug('[generate-flashcards] Created flashcard:', result.flashcard.id);
 
 		return NextResponse.json({
 			success: true,
-			cardsCreated: savedCards.length,
-			flashcards: savedCards,
+			flashcard: {
+				id: result.flashcard.id,
+				front: term,
+				back: definition,
+				deckId: deck.id,
+				deckName: deck.name,
+				autoGeneratedFrom: quizId,
+			},
 		});
 	} catch (error) {
-		console.debug('Failed to generate flashcards:', error);
-		return NextResponse.json({ success: false, error: 'Generation failed' }, { status: 500 });
+		console.debug('[generate-flashcards] Error:', error);
+		return NextResponse.json(
+			{ error: error instanceof Error ? error.message : 'Failed to generate flashcard' },
+			{ status: 500 }
+		);
 	}
 }

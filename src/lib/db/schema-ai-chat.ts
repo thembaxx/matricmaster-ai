@@ -11,6 +11,7 @@ export const aiChatSessions = pgTable(
 			.references(() => users.id, { onDelete: 'cascade' }),
 		title: varchar('title', { length: 200 }).notNull(),
 		subject: varchar('subject', { length: 50 }).notNull().default('general'),
+		triggeredBy: varchar('triggered_by', { length: 20 }).notNull().default('tutor'),
 		createdAt: timestamp('created_at').defaultNow(),
 		updatedAt: timestamp('updated_at').defaultNow(),
 	},

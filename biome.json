@@ -27,6 +27,16 @@
 					"recommended": false
 				}
 			}
+		},
+		{
+			"includes": ["src/components/Quiz/WrongAnswerExplanationButton.tsx"],
+			"linter": {
+				"rules": {
+					"correctness": {
+						"noUnusedFunctionParameters": "off"
+					}
+				}
+			}
 		}
 	],
 	"formatter": {
