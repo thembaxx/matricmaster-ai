@@ -15,7 +15,6 @@ import { ContextualAIBubble } from '@/components/AI/ContextualAIBubble';
 import { LessonCard } from '@/components/Lessons/LessonCard';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import { useLessons } from '@/hooks/useLessons';
 
 export default function Lessons() {
@@ -99,7 +98,7 @@ export default function Lessons() {
 				</header>
 
 				{/* Path Content */}
-				<ScrollArea className="flex-1">
+				<div className="flex-1">
 					<main className="px-4 sm:px-6 py-4 relative">
 						{/* Vertical Line */}
 						<div className="absolute left-9.5 top-0 bottom-0 w-0.5 border-l-2 border-dashed border-border/50 z-0" />
@@ -142,7 +141,7 @@ export default function Lessons() {
 						{/* Space for bottom nav */}
 						<div className="h-32" />
 					</main>
-				</ScrollArea>
+				</div>
 				<ContextualAIBubble />
 			</div>
 		</ViewTransition>
