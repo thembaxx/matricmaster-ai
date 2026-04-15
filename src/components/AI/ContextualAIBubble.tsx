@@ -60,7 +60,9 @@ export function ContextualAIBubble({ className }: ContextualAIBubbleProps) {
 					icon={context.type !== 'idle' ? SparklesIcon : MessageIcon}
 					className={cn(
 						'h-6 w-6 text-slate-600',
-						context.type !== 'idle' ? 'text-brand-blue fill-brand-blue' : 'text-slated-600 fill-slate-600',
+						context.type !== 'idle'
+							? 'text-brand-blue fill-brand-blue'
+							: 'text-slated-600 fill-slate-600'
 					)}
 				/>
 			</Button>
