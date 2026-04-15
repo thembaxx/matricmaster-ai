@@ -60,45 +60,49 @@ export function PeriodicTableHeader({
 	return (
 		<header className="px-4 sm:px-6 pt-6 pb-3 shrink-0 max-w-6xl mx-auto w-full space-y-3">
 			<div className="flex items-center justify-between">
-				<div className="flex items-center gap-3">
-					<h1 className="text-xl font-black tracking-normal">periodic table</h1>
-					<Button
-						variant="outline"
-						size="sm"
-						onClick={onStartQuiz}
-						className="rounded-full font-bold text-xs"
-					>
-						take quiz
-					</Button>
-					<Select
-						value={trendsMode || 'none'}
-						onValueChange={(val) => onTrendsModeChange(val === 'none' ? null : (val as TrendMode))}
-					>
-						<SelectTrigger className="w-[140px] h-8 rounded-full text-xs font-bold">
-							<SelectValue placeholder="trends" />
-						</SelectTrigger>
-						<SelectContent>
-							<SelectItem value="none">view mode</SelectItem>
-							{TREND_OPTIONS.map((opt) => (
-								<SelectItem key={opt.value} value={opt.value}>
-									{opt.label}
-								</SelectItem>
-							))}
-						</SelectContent>
-					</Select>
-					<Button
-						variant={compareMode ? 'default' : 'outline'}
-						size="sm"
-						onClick={() => {
-							onCompareModeChange(!compareMode);
-							if (compareMode) {
-								// Reset compare elements if disabling
+				<div className="flex flex-col gap-3">
+					<h1 className="text-xl font-black tracking-normal">Periodic table</h1>
+					<div className="flex items-center gap-3">
+						<Button
+							variant="outline"
+							size="sm"
+							onClick={onStartQuiz}
+							className="rounded-full font-bold text-xs"
+						>
+							Take quiz
+						</Button>
+						<Select
+							value={trendsMode || 'none'}
+							onValueChange={(val) =>
+								onTrendsModeChange(val === 'none' ? null : (val as TrendMode))
 							}
-						}}
-						className="rounded-full font-bold text-xs"
-					>
-						compare{compareElementsCount > 0 ? ` (${compareElementsCount})` : ''}
-					</Button>
+						>
+							<SelectTrigger className="w-[140px] h-8 rounded-full text-xs font-bold">
+								<SelectValue placeholder="Trends" />
+							</SelectTrigger>
+							<SelectContent>
+								<SelectItem value="none">View mode</SelectItem>
+								{TREND_OPTIONS.map((opt) => (
+									<SelectItem key={opt.value} value={opt.value}>
+										{opt.label}
+									</SelectItem>
+								))}
+							</SelectContent>
+						</Select>
+						<Button
+							variant={compareMode ? 'default' : 'outline'}
+							size="sm"
+							onClick={() => {
+								onCompareModeChange(!compareMode);
+								if (compareMode) {
+									// Reset compare elements if disabling
+								}
+							}}
+							className="rounded-full font-bold text-xs"
+						>
+							Compare{compareElementsCount > 0 ? ` (${compareElementsCount})` : ''}
+						</Button>
+					</div>
 				</div>
 				<div className="text-xs font-medium text-muted-foreground hidden sm:block">
 					{trendsMode

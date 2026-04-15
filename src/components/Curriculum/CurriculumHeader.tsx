@@ -70,7 +70,7 @@ function StatBadge({
 	return (
 		<div className="flex items-center gap-2 px-3 py-1.5 bg-white dark:bg-zinc-900 rounded-xl shadow-sm">
 			<HugeiconsIcon icon={Icon} className={cn('w-4 h-4', colorClass)} />
-			<span className="text-sm font-black">{value}</span>
+			<span className="text-xs font-black">{value}</span>
 			{label && <span className="text-[10px] text-muted-foreground">{label}</span>}
 		</div>
 	);
@@ -129,7 +129,7 @@ export function ProgressStats({ stats }: ProgressStatsProps) {
 							{stat.label}
 						</span>
 					</div>
-					<div className="text-2xl font-black text-foreground">{stat.value}</div>
+					<div className="text-lg font-black text-foreground">{stat.value}</div>
 				</m.div>
 			))}
 		</div>

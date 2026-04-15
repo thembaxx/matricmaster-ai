@@ -11,7 +11,6 @@ import { TopicDetailsModal } from '@/components/Curriculum/TopicDetailsModal';
 import { type FilterType, TopicFilters } from '@/components/Curriculum/TopicFilters';
 import { TopicTree } from '@/components/Curriculum/TopicTree';
 import { Button } from '@/components/ui/button';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import type { Topic } from '@/content';
 import { CURRICULUM_DATA } from '@/content/curriculum';
 import {
@@ -145,7 +144,7 @@ export default function CurriculumMap() {
 				)}
 			</div>
 
-			<ScrollArea className="flex-1">
+			<div className="flex-1">
 				<main className="px-4 sm:px-6 py-4 pb-[var(--mobile-safe-bottom-padding)] max-w-4xl mx-auto w-full">
 					<div className="mb-2">
 						<h2 className="text-sm font-bold text-muted-foreground tracking-widest mb-1">
@@ -192,7 +191,7 @@ export default function CurriculumMap() {
 						</div>
 					)}
 				</main>
-			</ScrollArea>
+			</div>
 
 			<AnimatePresence>
 				{selectedTopic && (
