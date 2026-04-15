@@ -57,10 +57,10 @@ export function DeckStatsCards({ decks }: { decks: FlashcardDeck[] }) {
 					href="/review"
 					className={cn(
 						buttonVariants({ variant: 'outline' }),
-						'h-full flex items-center gap-2 py-3'
+						'h-full w-full justify-center flex items-center gap-2 py-3'
 					)}
 				>
-					<HugeiconsIcon icon={AiBrain01Icon} className="mr-2 h-4 w-4" />
+					<HugeiconsIcon icon={AiBrain01Icon} className="h-4 w-4" />
 					Start Review
 				</Link>
 			</Card>
