@@ -71,16 +71,18 @@ export function BriefingGreeting({
 		<m.section
 			initial={{ opacity: 0, y: 20 }}
 			animate={{ opacity: 1, y: 0 }}
-			className="relative overflow-hidden pt-4 pb-8"
+			className="relative overflow-hidden pt-6 pb-10"
 		>
-			<div className="flex flex-col gap-6">
-				<div className="flex items-center justify-between">
-					<div className="space-y-1">
-						<div className="flex items-center gap-2 mb-1">
-							<div className="w-2 h-2 rounded-full bg-tiimo-lavender animate-pulse" />
-							<span className="label-sm text-tiimo-lavender">{greeting}</span>
+			<div className="absolute inset-0 bg-gradient-to-b from-primary/3 via-transparent to-transparent pointer-events-none" />
+
+			<div className="relative flex flex-col gap-8">
+				<div className="flex items-start justify-between">
+					<div className="space-y-2">
+						<div className="flex items-center gap-2">
+							<div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+							<span className="text-xs font-medium text-primary tracking-wide">{greeting}</span>
 						</div>
-						<h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-foreground font-display text-pretty truncate max-w-[280px] sm:max-w-none">
+						<h1 className="font-display text-4xl md:text-5xl font-bold tracking-tight text-foreground max-w-xl">
 							{displayGreeting}
 						</h1>
 						{motivationalMessage && (
@@ -88,16 +90,18 @@ export function BriefingGreeting({
 								initial={{ opacity: 0, y: 5 }}
 								animate={{ opacity: 1, y: 0 }}
 								transition={{ delay: 0.2 }}
-								className="text-sm text-muted-foreground mt-1 max-w-lg text-pretty"
+								className="text-base text-muted-foreground mt-3 max-w-lg"
 							>
 								{motivationalMessage}
 							</m.p>
 						)}
 					</div>
-					<NotificationBell />
+					<div className="hidden sm:block">
+						<NotificationBell />
+					</div>
 				</div>
 
-				<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+				<div className="grid grid-cols-1 md:grid-cols-3 gap-5">
 					<GoalsCard
 						completedCount={completedCount}
 						totalCount={totalCount}
@@ -121,7 +125,7 @@ export function BriefingGreeting({
 						initial={{ opacity: 0, y: 10 }}
 						animate={{ opacity: 1, y: 0 }}
 						transition={{ delay: 0.3 }}
-						className="flex flex-wrap gap-2"
+						className="flex flex-wrap gap-3"
 					>
 						{quickTips.map((tip, tipIndex) => (
 							<m.div
@@ -129,7 +133,7 @@ export function BriefingGreeting({
 								initial={{ opacity: 0, scale: 0.9 }}
 								animate={{ opacity: 1, scale: 1 }}
 								transition={{ delay: 0.4 + tipIndex * 0.1 }}
-								className="px-3 py-1.5 bg-secondary/50 rounded-full text-xs font-medium text-muted-foreground"
+								className="px-4 py-2 bg-secondary/40 rounded-full text-sm font-medium text-muted-foreground hover:bg-secondary/60 transition-colors cursor-default"
 							>
 								{tip}
 							</m.div>

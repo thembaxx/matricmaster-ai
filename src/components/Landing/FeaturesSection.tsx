@@ -1,18 +1,20 @@
 'use client';
 
 import { HugeiconsIcon } from '@hugeicons/react';
-import { m } from 'framer-motion';
+import { m, useReducedMotion } from 'framer-motion';
 import { LANDING_FEATURES } from '@/content/landing';
 import { STAGGER_CONTAINER, STAGGER_ITEM } from '@/lib/animation-presets';
 
 const FEATURES = LANDING_FEATURES;
 
 export function FeaturesSection() {
+	const shouldReduceMotion = useReducedMotion();
+
 	return (
 		<section className="py-24 lg:py-40 overflow-hidden">
 			<m.div
-				initial={{ opacity: 0, y: 40 }}
-				whileInView={{ opacity: 1, y: 0 }}
+				initial={shouldReduceMotion ? undefined : { opacity: 0, y: 40 }}
+				whileInView={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
 				viewport={{ once: true, margin: '-100px' }}
 				transition={{ duration: 0.6 }}
 				className="max-w-6xl mx-auto px-6 mb-16"
@@ -39,7 +41,7 @@ export function FeaturesSection() {
 				viewport={{ once: true, margin: '-100px' }}
 				className="max-w-6xl mx-auto px-6"
 			>
-				<div className="grid grid-flow-dense grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+				<div className="grid grid-flow-dense grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 auto-rows-min">
 					{FEATURES.slice(0, 6).map((feature, index) => (
 						<m.div
 							key={feature.title}
@@ -47,7 +49,7 @@ export function FeaturesSection() {
 							className={`group relative p-6 rounded-2xl bg-muted/30 hover:bg-muted/50 border border-transparent hover:border-border/50 transition-all duration-500 will-change-transform overflow-hidden ${
 								index === 0 ? 'md:col-span-2 md:row-span-2' : ''
 							}`}
-							whileHover={{ y: -4 }}
+							whileHover={shouldReduceMotion ? undefined : { y: -4 }}
 						>
 							<div
 								className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 ${feature.color
@@ -74,8 +76,8 @@ export function FeaturesSection() {
 			</m.div>
 
 			<m.div
-				initial={{ opacity: 0, y: 20 }}
-				whileInView={{ opacity: 1, y: 0 }}
+				initial={shouldReduceMotion ? undefined : { opacity: 0, y: 20 }}
+				whileInView={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
 				viewport={{ once: true }}
 				transition={{ delay: 0.3 }}
 				className="mt-12 text-center"

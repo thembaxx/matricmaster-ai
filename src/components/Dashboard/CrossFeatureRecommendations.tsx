@@ -3,6 +3,7 @@
 import { BookOpen01Icon, BrainIcon, SparklesIcon, Target02Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { useQuery } from '@tanstack/react-query';
+import { m } from 'framer-motion';
 import Link from 'next/link';
 import { memo } from 'react';
 import { Button } from '@/components/ui/button';
@@ -31,6 +32,12 @@ const priorityStyles: Record<string, string> = {
 	low: 'border-l-4 border-l-muted',
 };
 
+const priorityAccent: Record<string, string> = {
+	high: '#3b82f6',
+	medium: '#f59e0b',
+	low: '#64748b',
+};
+
 export const CrossFeatureRecommendations = memo(function CrossFeatureRecommendations() {
 	const { data, isLoading } = useQuery({
 		queryKey: ['cross-feature-recommendations'],
@@ -46,39 +53,57 @@ export const CrossFeatureRecommendations = memo(function CrossFeatureRecommendat
 	if (isLoading || !data || data.length === 0) return null;
 
 	return (
-		<Card>
+		<Card className="relative overflow-hidden border border-border/30">
+			<div className="absolute -top-8 -right-8 w-20 h-20 bg-primary/10 rounded-full blur-[40px]" />
+
 			<CardHeader className="pb-3">
-				<CardTitle className="text-base font-medium flex items-center gap-2">
-					<HugeiconsIcon icon={SparklesIcon} className="h-4 w-4 text-primary" />
+				<CardTitle className="text-base font-semibold flex items-center gap-2.5">
+					<div className="w-7 h-7 rounded-lg bg-primary/10 flex items-center justify-center">
+						<HugeiconsIcon icon={SparklesIcon} className="h-4 w-4 text-primary" />
+					</div>
 					suggested actions
 				</CardTitle>
 			</CardHeader>
 			<CardContent className="space-y-3">
-				{data.slice(0, 3).map((rec) => {
+				{data.slice(0, 3).map((rec, index) => {
 					const Icon = iconMap[rec.type] || Target02Icon;
+					const accent = priorityAccent[rec.priority];
 					return (
-						<div key={rec.type} className={cn('p-3 rounded-lg', priorityStyles[rec.priority])}>
+						<m.div
+							key={rec.type}
+							initial={{ opacity: 0, y: 10 }}
+							animate={{ opacity: 1, y: 0 }}
+							transition={{ delay: index * 0.1 }}
+							className={cn('p-4 rounded-xl', priorityStyles[rec.priority])}
+						>
 							<div className="flex items-start gap-3">
-								<HugeiconsIcon
-									icon={Icon}
-									className="h-5 w-5 text-muted-foreground mt-0.5 shrink-0"
-								/>
+								<div
+									className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0"
+									style={{ backgroundColor: `${accent}15` }}
+								>
+									<HugeiconsIcon icon={Icon} className="h-4 w-4" style={{ color: accent }} />
+								</div>
 								<div className="flex-1 min-w-0">
-									<p className="text-sm font-medium">{rec.title}</p>
-									<p className="text-xs text-muted-foreground mt-0.5">{rec.description}</p>
-									<div className="flex items-center gap-2 mt-2">
-										<Button asChild size="sm" variant="secondary" className="h-7 text-xs">
-											<Link href={rec.actionUrl} transitionTypes={['fade']}>
-												start
-											</Link>
+									<p className="text-sm font-semibold text-foreground">{rec.title}</p>
+									<p className="text-xs text-muted-foreground mt-1 leading-relaxed">
+										{rec.description}
+									</p>
+									<div className="flex items-center gap-3 mt-3">
+										<Button
+											asChild
+											size="sm"
+											variant="secondary"
+											className="h-7 text-xs font-medium"
+										>
+											<Link href={rec.actionUrl}>start</Link>
 										</Button>
-										<span className="text-[10px] text-primary font-medium">
+										<span className="text-[11px] font-medium" style={{ color: accent }}>
 											{rec.estimatedImpact}
 										</span>
 									</div>
 								</div>
 							</div>
-						</div>
+						</m.div>
 					);
 				})}
 			</CardContent>
