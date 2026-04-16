@@ -35,9 +35,9 @@ export function ChannelList({ channels, onChannelClick }: ChannelListProps) {
 					variant="ghost"
 					tabIndex={0}
 					aria-label={`Open ${item.title} channel`}
-					className="bg-card p-4 rounded-3xl flex items-center justify-between shadow-sm border border-border hover:shadow-md transition-all cursor-pointer group ios-active-scale w-full"
+					className="bg-card p-4 rounded-3xl flex h-20 items-center justify-between shadow-sm border border-border hover:shadow-md transition-all cursor-pointer group ios-active-scale w-full"
 				>
-					<div className="flex items-center gap-4">
+					<div className="flex items-center gap-4 py-4">
 						<div className={`w-12 h-12 rounded-2xl flex items-center justify-center ${item.bg}`}>
 							{item.icon}
 						</div>

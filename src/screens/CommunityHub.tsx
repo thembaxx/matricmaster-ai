@@ -13,7 +13,7 @@ import dynamic from 'next/dynamic';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { ScrollArea } from '@/components/ui/scroll-area';
+import { ChannelProviderWrapper } from '@/lib/ably/provider';
 
 const ChannelsView = dynamic(() => import('@/screens/Channels'), {
 	loading: () => <div className="h-[60vh] animate-pulse bg-muted/10 rounded-3xl" />,
@@ -94,10 +94,14 @@ export default function CommunityHub() {
 				</div>
 			</header>
 
-			<ScrollArea className="flex-1">
+			<div className="flex-1">
 				<main className="px-4 sm:px-6 py-4">
 					<div className="min-h-[60vh] mb-32">
-						{activeTab === 'channels' && <ChannelsView />}
+						{activeTab === 'channels' && (
+							<ChannelProviderWrapper channelName="channels:study-channels">
+								<ChannelsView />
+							</ChannelProviderWrapper>
+						)}
 						{activeTab === 'focus' && <FocusRoomsView />}
 						{activeTab === 'leaderboard' && <LeaderboardView />}
 					</div>
@@ -137,7 +141,7 @@ export default function CommunityHub() {
 						</Card>
 					</m.div>
 				</main>
-			</ScrollArea>
+			</div>
 		</div>
 	);
 }

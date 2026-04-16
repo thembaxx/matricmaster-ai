@@ -24,7 +24,7 @@ export const metadata: Metadata = {
 
 export default function CommunityPage() {
 	return (
-		<div className="flex flex-col min-h-screen">
+		<div className="flex flex-col min-h-screen overflow-hidden w-full">
 			<CommunityHubScreen />
 		</div>
 	);
