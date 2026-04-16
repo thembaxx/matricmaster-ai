@@ -2,8 +2,9 @@ import { NextResponse } from 'next/server';
 
 export async function POST(
 	request: Request,
-	{ params }: { params: { id: string } }
+	{ params }: { params: Promise<{ id: string }> }
 ) {
+	const { id } = await params;
 	const body = await request.json();
 	const { score, totalQuestions, weakAreas } = body;
 
@@ -13,7 +14,7 @@ export async function POST(
 	return NextResponse.json({
 		success: true,
 		results: {
-			quizId: params.id,
+			quizId: id,
 			score,
 			percentage: Math.round((score / totalQuestions) * 100),
 			weakAreas,

@@ -1,5 +1,6 @@
 import Quiz from '@/screens/Quiz';
 
-export default function DirectQuizPage({ params }: { params: { id: string } }) {
-	return <Quiz quizId={params.id} />;
+export default async function DirectQuizPage({ params }: { params: Promise<{ id: string }> }) {
+	const { id } = await params;
+	return <Quiz quizId={id} />;
 }

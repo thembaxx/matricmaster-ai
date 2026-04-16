@@ -49,6 +49,37 @@ function QuizInner({ quizId: initialQuizId, subject: pathSubject, category: path
 
 	const quizId = initialQuizId || urlQuizId || resolvedData?.quiz?.id || 'math-p1-2023-nov';
 
+	if (isResolving) return <QuizSkeleton />;
+
+	if (resolvedData?.status === 'empty') {
+		return (
+			<div className="min-h-screen bg-background flex">
+				<TimelineSidebar />
+				<FocusContent>
+					<div className="max-w-3xl mx-auto px-4 py-20 text-center space-y-6">
+						<div className="text-6xl">🔍</div>
+						<h1 className="text-2xl font-display font-bold">no quizzes found</h1>
+						<p className="text-muted-foreground">
+							{resolvedData.message || `we couldn't find any quizzes for ${category || subject}`}
+						</p>
+						<div className="flex justify-center gap-4">
+							<Button asChild variant="outline" className="rounded-full">
+								<Link href="/quiz">
+									<HugeiconsIcon icon={ArrowLeft01Icon} className="mr-2 h-4 w-4" />
+									back to subjects
+								</Link>
+							</Button>
+						</div>
+					</div>
+				</FocusContent>
+			</div>
+		);
+	}
+
+	return <QuizStateWrapper key={quizId} quizId={quizId} />;
+}
+
+function QuizStateWrapper({ quizId }: { quizId: string }) {
 	const {
 		state,
 		dispatch,
@@ -227,33 +258,6 @@ function QuizInner({ quizId: initialQuizId, subject: pathSubject, category: path
 		clearSavedQuiz();
 		dismissRecovery();
 	}, [clearSavedQuiz, dismissRecovery]);
-
-	if (isResolving) return <QuizSkeleton />;
-
-	if (resolvedData?.status === 'empty') {
-		return (
-			<div className="min-h-screen bg-background flex">
-				<TimelineSidebar />
-				<FocusContent>
-					<div className="max-w-3xl mx-auto px-4 py-20 text-center space-y-6">
-						<div className="text-6xl">🔍</div>
-						<h1 className="text-2xl font-display font-bold">no quizzes found</h1>
-						<p className="text-muted-foreground">
-							{resolvedData.message || `we couldn't find any quizzes for ${category || subject}`}
-						</p>
-						<div className="flex justify-center gap-4">
-							<Button asChild variant="outline" className="rounded-full">
-								<Link href="/quiz">
-									<HugeiconsIcon icon={ArrowLeft01Icon} className="mr-2 h-4 w-4" />
-									back to subjects
-								</Link>
-							</Button>
-						</div>
-					</div>
-				</FocusContent>
-			</div>
-		);
-	}
 
 	return (
 		<div className="min-h-screen bg-background flex">

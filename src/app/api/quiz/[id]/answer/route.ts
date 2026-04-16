@@ -3,12 +3,13 @@ import { QUESTIONS_DATA } from '@/content/questions';
 
 export async function POST(
 	request: Request,
-	{ params }: { params: { id: string } }
+	{ params }: { params: Promise<{ id: string }> }
 ) {
+	const { id } = await params;
 	const body = await request.json();
 	const { questionId, answer } = body;
 
-	const quiz = QUESTIONS_DATA[params.id];
+	const quiz = QUESTIONS_DATA[id];
 	if (!quiz) {
 		return NextResponse.json({ error: 'Quiz not found' }, { status: 404 });
 	}

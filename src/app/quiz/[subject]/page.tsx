@@ -1,5 +1,6 @@
 import Quiz from '@/screens/Quiz';
 
-export default function SubjectQuizPage({ params }: { params: { subject: string } }) {
-	return <Quiz subject={params.subject} />;
+export default async function SubjectQuizPage({ params }: { params: Promise<{ subject: string }> }) {
+	const { subject } = await params;
+	return <Quiz subject={subject} />;
 }
