@@ -232,6 +232,7 @@ export default function PastPaperViewer({
 				isDownloading={isDownloading}
 				onDownloadOffline={handleDownloadForOffline}
 				onUploadScanned={() => setShowScannedUpload(true)}
+				currentQuestionText={currentQuestion?.questionText}
 			/>
 
 			<div className="grow overflow-hidden pb-16">

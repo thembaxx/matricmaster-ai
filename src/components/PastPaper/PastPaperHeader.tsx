@@ -6,9 +6,11 @@ import {
 	CheckmarkCircle02Icon,
 	Download01Icon,
 	File01Icon,
+	QuestionIcon,
 	Search01Icon,
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
+import { AIQuestionPopup } from '@/components/AIQuestionPopup';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 
@@ -28,6 +30,7 @@ interface PastPaperHeaderProps {
 	isDownloading?: boolean;
 	onDownloadOffline?: () => void;
 	onUploadScanned?: () => void;
+	currentQuestionText?: string;
 }
 
 export function PastPaperHeader({
@@ -44,6 +47,7 @@ export function PastPaperHeader({
 	isDownloading = false,
 	onDownloadOffline,
 	onUploadScanned,
+	currentQuestionText,
 }: PastPaperHeaderProps) {
 	return (
 		<header className="px-6 pt-8 pb-4 bg-card sticky top-0 z-20 border-b border-border shrink-0">
@@ -92,6 +96,23 @@ export function PastPaperHeader({
 							upload scanned
 						</Button>
 					)}
+					<AIQuestionPopup
+						paperId={paper.id}
+						questionText={currentQuestionText}
+						subject={paper.subject}
+						paper={paper.paper}
+						year={paper.year}
+						month={paper.month}
+					>
+						<Button
+							variant="outline"
+							size="sm"
+							className="h-8 gap-1.5 bg-primary/5 border-primary/10"
+						>
+							<HugeiconsIcon icon={QuestionIcon} className="w-4 h-4" />
+							Ask AI
+						</Button>
+					</AIQuestionPopup>
 				</div>
 				<div className="flex items-center gap-2">
 					<Button

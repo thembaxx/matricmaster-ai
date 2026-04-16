@@ -2,8 +2,11 @@
 
 import { Chemistry01Icon, LayoutLeftIcon, TranslateIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
+import { useState } from 'react';
 import { LessonCard } from '@/components/Lessons/LessonCard';
+import { LessonDetailModal } from '@/components/Lessons/LessonDetailModal';
 import { Button } from '@/components/ui/button';
+import type { Lesson } from '@/hooks/useLessons';
 
 interface LessonsBrowserProps {
 	activeCategory: string;
@@ -18,6 +21,14 @@ export default function LessonsBrowser({
 	filteredLessons,
 	loading,
 }: LessonsBrowserProps) {
+	const [selectedLesson, setSelectedLesson] = useState<Lesson | null>(null);
+	const [modalOpen, setModalOpen] = useState(false);
+
+	const handleLessonClick = (lesson: Lesson) => {
+		setSelectedLesson(lesson);
+		setModalOpen(true);
+	};
+
 	if (loading) {
 		return (
 			<div className="flex flex-col h-full items-center justify-center bg-background py-12">
@@ -75,10 +86,18 @@ export default function LessonsBrowser({
 							<p className="text-muted-foreground">No lessons found for this category</p>
 						</div>
 					) : (
-						filteredLessons.map((lesson) => <LessonCard key={lesson.id} lesson={lesson} />)
+						filteredLessons.map((lesson) => (
+							<LessonCard
+								key={lesson.id}
+								lesson={lesson}
+								onClick={() => handleLessonClick(lesson)}
+							/>
+						))
 					)}
 				</div>
 			</div>
+
+			<LessonDetailModal lesson={selectedLesson} open={modalOpen} onOpenChange={setModalOpen} />
 		</div>
 	);
 }

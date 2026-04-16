@@ -25,6 +25,7 @@ export interface ExtractedQuestion {
 	marks: number;
 	topic?: string;
 	difficulty?: 'easy' | 'medium' | 'hard';
+	memo?: string;
 }
 
 export interface ExtractedPaper {
@@ -90,6 +91,7 @@ export const extractedQuestionSchema = z.object({
 	marks: z.number(),
 	topic: z.string().optional(),
 	difficulty: z.enum(['easy', 'medium', 'hard']).optional(),
+	memo: z.string().optional(),
 });
 
 export const extractedPaperSchema = z.object({

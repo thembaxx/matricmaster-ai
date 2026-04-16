@@ -1,5 +1,6 @@
 'use client';
 
+import { useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
 
 export type QuizTopicData = {
@@ -8,6 +9,10 @@ export type QuizTopicData = {
 	subject: string;
 	questions: number;
 	difficulty: 'easy' | 'medium' | 'hard';
+	paperId?: string;
+	year?: number;
+	month?: string;
+	source?: 'pastPaper' | ' topic';
 };
 
 const defaultQuizzes: QuizTopicData[] = [
@@ -41,11 +46,34 @@ const defaultQuizzes: QuizTopicData[] = [
 	},
 ];
 
+async function fetchPastPaperQuizzes(): Promise<QuizTopicData[]> {
+	try {
+		const response = await fetch('/api/quiz/from-past-papers');
+		if (!response.ok) return defaultQuizzes;
+		const data = await response.json();
+		return data.quizzes || [];
+	} catch {
+		return defaultQuizzes;
+	}
+}
+
 export function useQuizTopics() {
-	const quizzes = useMemo(() => defaultQuizzes, []);
+	const { data: pastPaperQuizzes = [], isLoading } = useQuery({
+		queryKey: ['quiz-topics', 'past-papers'],
+		queryFn: fetchPastPaperQuizzes,
+		staleTime: 5 * 60 * 1000,
+		retry: 1,
+	});
+
+	const quizzes = useMemo(() => {
+		if (pastPaperQuizzes.length > 0) {
+			return [...pastPaperQuizzes, ...defaultQuizzes];
+		}
+		return defaultQuizzes;
+	}, [pastPaperQuizzes]);
 
 	return {
 		quizzes,
-		isLoading: false,
+		isLoading,
 	};
 }

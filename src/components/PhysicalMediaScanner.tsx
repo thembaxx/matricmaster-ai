@@ -1,17 +1,28 @@
 import { type FC, useEffect, useRef } from 'react';
 
+interface DetectedBarcode {
+	rawValue: string;
+	boundingBox: DOMRectReadOnly;
+}
+
 export const PhysicalMediaScanner: FC<{ onPaperLoad: (paperId: string) => void }> = ({
 	onPaperLoad,
 }) => {
 	const videoRef = useRef<HTMLVideoElement>(null);
-	const scannerRef = useRef<any>(null); // Ref to hold the scanner instance
 
 	useEffect(() => {
 		if (!videoRef.current) return;
 
 		// Check if the browser supports the Shape Detection API for QR codes
-		if ('BarcodeDetector' in window) {
-			const detector = new BarcodeDetector({ formats: ['qr_code'] });
+		const BarcodeDetectorClass = (
+			window as unknown as {
+				BarcodeDetector?: new (options?: {
+					formats?: string[];
+				}) => { detect: (source: ImageBitmapSource) => Promise<DetectedBarcode[]> };
+			}
+		).BarcodeDetector;
+		if (BarcodeDetectorClass) {
+			const detector = new BarcodeDetectorClass({ formats: ['qr_code'] });
 			const detect = async () => {
 				if (!videoRef.current) return;
 				try {

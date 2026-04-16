@@ -1,6 +1,6 @@
 'use server';
 
-import { and, asc, desc, eq, gte, inArray, isNotNull, isNull, lt, sql } from 'drizzle-orm';
+import { and, asc, desc, eq, gte, inArray, isNotNull, isNull, lt, or, sql } from 'drizzle-orm';
 import { headers } from 'next/headers';
 import { z } from 'zod';
 import { getAuth, type SessionUser } from '@/lib/auth';
@@ -1380,8 +1380,8 @@ export async function getPastPapersAction(
 	try {
 		const db = await getDb();
 		const conditions = [
-			// Only show papers that have a stored PDF
-			isNotNull(pastPapers.storedPdfUrl),
+			// Show papers that have either storedPdfUrl or originalPdfUrl
+			or(isNotNull(pastPapers.storedPdfUrl), isNotNull(pastPapers.originalPdfUrl)),
 		];
 
 		if (filters.subject !== undefined) {

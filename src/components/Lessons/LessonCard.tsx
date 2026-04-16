@@ -6,9 +6,10 @@ import type { Lesson } from '@/hooks/useLessons';
 
 interface LessonCardProps {
 	lesson: Lesson;
+	onClick?: () => void;
 }
 
-export function LessonCard({ lesson }: LessonCardProps) {
+export function LessonCard({ lesson, onClick }: LessonCardProps) {
 	return (
 		<div className="flex gap-6 relative z-10">
 			{/* Node Icon */}
@@ -36,7 +37,8 @@ export function LessonCard({ lesson }: LessonCardProps) {
 			{/* Lesson Card */}
 			<div className="flex-1">
 				<Card
-					className={`p-6 rounded-[2rem] border-2 shadow-sm relative overflow-hidden group hover:shadow-md transition-all ${
+					onClick={onClick}
+					className={`p-6 rounded-[2rem] border-2 shadow-sm relative overflow-hidden group hover:shadow-md transition-all cursor-pointer ${
 						lesson.status === 'active' ? 'border-primary bg-card' : 'border-transparent bg-card'
 					}`}
 				>
