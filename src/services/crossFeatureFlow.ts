@@ -6,6 +6,7 @@ import { dbManager } from '@/lib/db';
 import {
 	apsMilestones,
 	questionAttempts,
+	studyPlans,
 	topicConfidence,
 	topicMastery,
 	universityTargets,
@@ -277,4 +278,72 @@ export async function updateMilestoneFromMastery(milestoneId: string): Promise<v
 			.set({ status: 'completed', completedAt: new Date() })
 			.where(eq(apsMilestones.id, milestoneId));
 	}
+}
+
+export interface QuizResultSummary {
+	quizId: string;
+	subject: string;
+	topicStats: Array<{ topic: string; correct: number; total: number }>;
+	correctCount: number;
+	incorrectCount: number;
+	totalQuestions: number;
+	durationSeconds: number;
+}
+
+export async function syncQuizToStudyPlan(
+	quizResult: QuizResultSummary
+): Promise<{ weakTopicsAdded: number; studyPlanUpdated: boolean }> {
+	const user = await ensureAuthenticated();
+	const db = await getDb();
+
+	const weakTopics: Array<{
+		topic: string;
+		subject: string;
+		confidence: number;
+		attempts: number;
+	}> = [];
+
+	for (const stat of quizResult.topicStats) {
+		const accuracy = stat.total > 0 ? stat.correct / stat.total : 0;
+		if (accuracy < 0.6) {
+			weakTopics.push({
+				topic: stat.topic,
+				subject: quizResult.subject,
+				confidence: accuracy,
+				attempts: stat.total,
+			});
+		}
+	}
+
+	if (weakTopics.length === 0) {
+		return { weakTopicsAdded: 0, studyPlanUpdated: false };
+	}
+
+	await syncQuizToSpacedRepetition(
+		`quiz-${quizResult.quizId}`,
+		weakTopics[0].topic,
+		weakTopics[0].confidence >= 0.6,
+		quizResult.durationSeconds * 1000
+	);
+
+	const existingPlan = await db.query.studyPlans.findFirst({
+		where: and(eq(studyPlans.userId, user.id), eq(studyPlans.isActive, true)),
+	});
+
+	if (existingPlan) {
+		const currentFocusAreas = existingPlan.focusAreas || '';
+		const newFocusTopics = weakTopics.map((t) => t.topic).join(', ');
+		const updatedFocusAreas = currentFocusAreas
+			? `${currentFocusAreas}, ${newFocusTopics}`
+			: newFocusTopics;
+
+		await db
+			.update(studyPlans)
+			.set({ focusAreas: updatedFocusAreas })
+			.where(eq(studyPlans.id, existingPlan.id));
+
+		return { weakTopicsAdded: weakTopics.length, studyPlanUpdated: true };
+	}
+
+	return { weakTopicsAdded: weakTopics.length, studyPlanUpdated: false };
 }

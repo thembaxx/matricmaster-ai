@@ -13,6 +13,7 @@ export interface QuizResult {
 	difficulty: 'easy' | 'medium' | 'hard';
 	topic?: string;
 	completedAt: Date;
+	topicStats?: TopicStats[];
 }
 
 export interface QuizAnswer {

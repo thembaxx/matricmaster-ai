@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { startTransition, useEffect, useMemo, useState, ViewTransition } from 'react';
 import { AdaptiveScheduleBanner } from '@/components/Dashboard/AdaptiveScheduleBanner';
 import { AdaptiveScheduleCard } from '@/components/Dashboard/AdaptiveScheduleCard';
-import { AITutorNudge } from '@/components/Dashboard/AITutorNudge';
+import { AIRecommendations } from '@/components/Dashboard/AIRecommendations';
 import { BriefingGreeting } from '@/components/Dashboard/BriefingGreeting';
 import { CrossFeatureRecommendations } from '@/components/Dashboard/CrossFeatureRecommendations';
 import { ExamCountdownHero } from '@/components/Dashboard/ExamCountdownHero';
@@ -17,6 +17,7 @@ import { DEMO_TASKS } from '@/components/Dashboard/StatsGrid';
 import type { StudyTask } from '@/components/Dashboard/TaskCardV2';
 import { TasksTab } from '@/components/Dashboard/TasksTab';
 import { TodayTab, TodayTabHeader } from '@/components/Dashboard/TodayTab';
+import { WeakTopicsWidget } from '@/components/Dashboard/WeakTopicsWidget';
 import { FocusContent } from '@/components/Layout/FocusContent';
 import { TimelineSidebar } from '@/components/Layout/TimelineSidebar';
 import { Button } from '@/components/ui/button';
@@ -189,7 +190,11 @@ export default function Dashboard({
 						briefingData={briefingData ?? undefined}
 					/>
 
-					<AITutorNudge />
+					<WeakTopicsWidget />
+
+					<CrossFeatureRecommendations />
+
+					<AIRecommendations />
 
 					<LeaderboardPreview />
 

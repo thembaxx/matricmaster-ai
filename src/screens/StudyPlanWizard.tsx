@@ -16,7 +16,7 @@ import {
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { SuggestedReview } from '@/components/StudyPlan/SuggestedReview';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -27,6 +27,10 @@ import { isQuotaError } from '@/lib/ai/quota-error';
 import { useSession } from '@/lib/auth-client';
 import { createStudyPlanAction } from '@/lib/db/study-plan-actions';
 
+interface StudyPlanWizardProps {
+	prePopulatedTopics?: string[];
+}
+
 const subjects = [
 	{ id: 'math', name: 'mathematics', icon: CalculatorIcon, color: 'text-blue-500' },
 	{ id: 'physics', name: 'physical sci', icon: Chemistry01Icon, color: 'text-blue-500' },
@@ -36,13 +40,20 @@ const subjects = [
 	{ id: 'accounting', name: 'accounting', icon: BankIcon, color: 'text-muted-foreground' },
 ];
 
-export default function StudyPlanWizard() {
+export default function StudyPlanWizard({ prePopulatedTopics = [] }: StudyPlanWizardProps) {
 	const router = useRouter();
 	const { data: session } = useSession();
 	const { triggerQuotaError } = useGeminiQuotaModal();
 	const [selectedSubjects, setSelectedSubjects] = useState<string[]>(['math', 'physics']);
 	const [weeklyHours, setWeeklyHours] = useState([12]);
 	const [isGenerating, setIsGenerating] = useState(false);
+	const [incomingTopics, setIncomingTopics] = useState<string[]>(prePopulatedTopics);
+
+	useEffect(() => {
+		if (prePopulatedTopics.length > 0 && incomingTopics.length === 0) {
+			setIncomingTopics(prePopulatedTopics);
+		}
+	}, [prePopulatedTopics, incomingTopics]);
 
 	const toggleSubject = (subjectId: string) => {
 		setSelectedSubjects((prev) =>
@@ -60,6 +71,12 @@ export default function StudyPlanWizard() {
 
 			const planText = await generateStudyPlan(subjectNames, weeklyHours[0]);
 
+			// Include incoming topics in focus areas
+			const focusAreasWithTopics =
+				incomingTopics.length > 0
+					? `${subjectNames.join(', ')} - Weak topics from quiz: ${incomingTopics.join(', ')}`
+					: subjectNames.join(', ');
+
 			// FloppyDisk plan to database if user is logged in
 			if (session?.user?.id) {
 				const title = `${subjectNames.join(', ')} Study Plan`;
@@ -67,7 +84,7 @@ export default function StudyPlanWizard() {
 					session.user.id,
 					title,
 					undefined, // targetExamDate
-					subjectNames.join(', '), // focusAreas
+					focusAreasWithTopics, // focusAreas
 					`${weeklyHours[0]} hours per week - ${planText}` // weeklyGoals
 				);
 			}
@@ -153,6 +170,27 @@ export default function StudyPlanWizard() {
 							we'll prioritize these in your daily study plan.
 						</p>
 					</div>
+
+					{incomingTopics.length > 0 && (
+						<div className="bg-primary/5 border border-primary/20 rounded-2xl p-4 space-y-3">
+							<div className="flex items-center gap-2">
+								<HugeiconsIcon icon={SparklesIcon} className="w-4 h-4 text-primary" />
+								<span className="text-xs font-black text-primary tracking-widest">
+									from quiz results
+								</span>
+							</div>
+							<div className="flex flex-wrap gap-2">
+								{incomingTopics.map((topic, i) => (
+									<span
+										key={i}
+										className="px-3 py-1.5 bg-destructive/10 text-destructive text-xs font-black rounded-full"
+									>
+										{topic}
+									</span>
+								))}
+							</div>
+						</div>
+					)}
 
 					{/* Subject Grid */}
 					<div className="grid grid-cols-2 gap-4">

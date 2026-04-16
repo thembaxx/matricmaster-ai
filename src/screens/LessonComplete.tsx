@@ -1,7 +1,7 @@
 'use client';
 
 import { AnimatePresence, m } from 'framer-motion';
-import { redirect } from 'next/navigation';
+import { redirect, useRouter } from 'next/navigation';
 import { useEffect, useReducer } from 'react';
 import { AchievementUnlocked } from '@/components/LessonComplete/AchievementUnlocked';
 import { ActionButtons } from '@/components/LessonComplete/ActionButtons';
@@ -9,6 +9,7 @@ import { ConfettiEffect } from '@/components/LessonComplete/ConfettiEffect';
 import { FlashcardGenerator } from '@/components/LessonComplete/FlashcardGenerator';
 import { PastPaperSuggestions } from '@/components/LessonComplete/PastPaperSuggestions';
 import { StatsGrid } from '@/components/LessonComplete/StatsGrid';
+import { StudyPlanCTA } from '@/components/LessonComplete/StudyPlanCTA';
 import { SuccessHeader } from '@/components/LessonComplete/SuccessHeader';
 import { TrophySection } from '@/components/LessonComplete/TrophySection';
 import { XpProgress } from '@/components/LessonComplete/XpProgress';
@@ -21,6 +22,7 @@ import { getUserAchievements } from '@/lib/db/achievement-actions';
 import { getLevelInfo } from '@/lib/level-utils';
 import { useAiContextStore } from '@/stores/useAiContextStore';
 import { useQuizResultStore } from '@/stores/useQuizResultStore';
+import { useQuizToStudyPlanStore, type WeakTopic } from '@/stores/useQuizToStudyPlanStore';
 import type { QuizResult } from '@/types/quiz';
 
 type State = {
@@ -92,6 +94,8 @@ export default function LessonComplete() {
 	const { completeQuiz, isCompleting } = useQuizCompletion();
 	const addActivity = useAiContextStore((s) => s.addActivity);
 	const { analyzeQuizResults } = useKnowledgeGapSynergy();
+	const addWeakTopics = useQuizToStudyPlanStore((s) => s.addWeakTopics);
+	const router = useRouter();
 
 	useEffect(() => {
 		async function loadResult() {
@@ -176,6 +180,27 @@ export default function LessonComplete() {
 		loadResult();
 	}, [completeQuiz, addActivity, analyzeQuizResults]);
 
+	// Extract weak topics from quiz result for study plan
+	useEffect(() => {
+		if (!state.result) return;
+
+		const weakTopics: WeakTopic[] = (state.result.topicStats || [])
+			.filter((t) => t.total > 0 && t.correct / t.total < 0.6)
+			.map((t, i) => ({
+				id: `weak-${Date.now()}-${i}`,
+				topic: t.topic,
+				subject: state.result?.subjectName || 'unknown',
+				confidence: t.total > 0 ? t.correct / t.total : 0,
+				attempts: t.total,
+				source: 'quiz',
+				addedAt: new Date(),
+			}));
+
+		if (weakTopics.length > 0) {
+			addWeakTopics(weakTopics);
+		}
+	}, [state.result, addWeakTopics]);
+
 	if (!state.result) {
 		return <LessonCompleteSkeleton />;
 	}
@@ -222,6 +247,14 @@ export default function LessonComplete() {
 							<FlashcardGenerator mistakeCount={state.mistakeCount} />
 						</m.div>
 					)}
+
+					<StudyPlanCTA
+						onNavigateToStudyPlan={(topics) => {
+							router.push(
+								`/study-plan?topics=${encodeURIComponent(topics.map((t) => t.topic).join(','))}`
+							);
+						}}
+					/>
 
 					<PastPaperSuggestions mistakeCount={state.mistakeCount} />
 

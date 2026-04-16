@@ -6,6 +6,7 @@ import { m } from 'framer-motion';
 import { memo, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { generateFlashcardsFromMistakes } from '@/lib/db/learning-loop-actions';
+import { useQuizToStudyPlanStore } from '@/stores/useQuizToStudyPlanStore';
 
 interface FlashcardGeneratorProps {
 	mistakeCount: number;
@@ -19,12 +20,28 @@ export const FlashcardGenerator = memo(function FlashcardGenerator({
 		success: boolean;
 		cardsCreated: number;
 	} | null>(null);
+	const weakTopics = useQuizToStudyPlanStore((s) => s.weakTopics);
 
 	const handleGenerate = async () => {
 		setIsGenerating(true);
 		try {
-			const result = await generateFlashcardsFromMistakes();
-			setGenerationResult(result);
+			// If we have weak topics from quiz, generate flashcards for them
+			if (weakTopics.length > 0) {
+				const { generateFlashcardsForWeakTopic } = await import(
+					'@/services/adaptiveLearningService'
+				);
+				let totalCreated = 0;
+				for (const topic of weakTopics) {
+					const result = await generateFlashcardsForWeakTopic(topic.topic, topic.subject);
+					if (result.success) {
+						totalCreated += result.cardsCreated;
+					}
+				}
+				setGenerationResult({ success: true, cardsCreated: totalCreated });
+			} else {
+				const result = await generateFlashcardsFromMistakes();
+				setGenerationResult(result);
+			}
 		} catch (error) {
 			console.error('Failed to generate flashcards:', error);
 			setGenerationResult({ success: false, cardsCreated: 0 });
