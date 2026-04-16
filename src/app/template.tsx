@@ -1,8 +1,8 @@
 'use client';
 
-import { ViewTransition, useNavigationTransition } from '@/components/Transition/ViewTransition';
 import { usePathname } from 'next/navigation';
 import { useEffect } from 'react';
+import { useNavigationTransition, ViewTransition } from '@/components/Transition/ViewTransition';
 
 export default function Template({ children }: { children: React.ReactNode }) {
 	const pathname = usePathname();

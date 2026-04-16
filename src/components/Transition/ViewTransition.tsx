@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import type { ReactNode } from 'react';
-import { startTransition, ViewTransition as ReactViewTransition } from 'react';
+import { ViewTransition as ReactViewTransition, startTransition } from 'react';
 
 type TransitionType =
 	| 'nav-forward'
