@@ -29,15 +29,19 @@ const STEPS = [
 
 export function HowItWorksSection() {
 	return (
-		<section className="py-20 lg:py-32 bg-background">
+		<section className="py-24 lg:py-40 bg-background relative overflow-hidden">
+			<div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/3 to-transparent" />
+
 			<m.div
 				initial={{ opacity: 0, y: 40 }}
 				whileInView={{ opacity: 1, y: 0 }}
 				viewport={{ once: true, margin: '-100px' }}
 				transition={{ duration: 0.6 }}
-				className="text-center mb-16"
+				className="text-center mb-16 relative z-10"
 			>
-				<h2 className="heading-2 mb-4">How Lumni Works</h2>
+				<h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight mb-4">
+					How Lumni Works
+				</h2>
 				<p className="text-lg text-muted-foreground max-w-2xl mx-auto">
 					Three simple steps to boost your matric results
 				</p>
@@ -48,7 +52,7 @@ export function HowItWorksSection() {
 				initial="hidden"
 				whileInView="visible"
 				viewport={{ once: true, margin: '-100px' }}
-				className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto px-4"
+				className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto px-6 relative z-10"
 			>
 				{STEPS.map((step, index) => (
 					<m.div
@@ -82,7 +86,7 @@ export function HowItWorksSection() {
 				whileInView={{ opacity: 1, y: 0 }}
 				viewport={{ once: true }}
 				transition={{ delay: 0.3 }}
-				className="mt-16 text-center"
+				className="mt-16 text-center relative z-10"
 			>
 				<Button size="lg" className="px-8">
 					Try It Free
