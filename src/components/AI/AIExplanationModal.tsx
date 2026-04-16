@@ -69,7 +69,7 @@ export function AIExplanationModal({
 					</DialogDescription>
 				</DialogHeader>
 
-				<div className="space-y-4">
+				<div className="flex flex-col gap-4">
 					<div className="rounded-lg bg-muted p-4">
 						<p className="text-sm text-muted-foreground">{questionText}</p>
 					</div>

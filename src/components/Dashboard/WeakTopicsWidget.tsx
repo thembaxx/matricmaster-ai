@@ -42,14 +42,14 @@ export const WeakTopicsWidget = memo(function WeakTopicsWidget({
 				className="h-auto py-2 px-3 border-primary/30 text-xs font-medium"
 				onClick={handleAddToStudyPlan}
 			>
-				<HugeiconsIcon icon={BookOpen01Icon} className="w-3 h-3 mr-1.5" />
+				<HugeiconsIcon icon={BookOpen01Icon} className="size-3 mr-1.5" />
 				{displayTopics.length} weak topic{displayTopics.length !== 1 ? 's' : ''}
 			</Button>
 		);
 	}
 
 	return (
-		<div className="bg-primary/5 border border-primary/20 rounded-2xl p-4 space-y-3">
+		<div className="bg-primary/5 border border-primary/20 rounded-2xl p-4 flex flex-col gap-3">
 			<div className="flex items-center justify-between">
 				<div className="flex items-center gap-2">
 					<HugeiconsIcon icon={SparklesIcon} className="w-4 h-4 text-primary" />
@@ -74,13 +74,15 @@ export const WeakTopicsWidget = memo(function WeakTopicsWidget({
 					>
 						<span>{topic.topic}</span>
 						<span className="opacity-70">{Math.round(topic.confidence * 100)}%</span>
-						<button
+						<Button
+							variant="ghost"
+							size="sm"
 							onClick={() => removeWeakTopic(topic.id)}
-							className="hover:opacity-70 ml-0.5"
+							className="h-auto p-0.5 ml-0.5 hover:opacity-70"
 							type="button"
 						>
-							<HugeiconsIcon icon={Delete02Icon} className="w-3 h-3" />
-						</button>
+							<HugeiconsIcon icon={Delete02Icon} className="size-3" />
+						</Button>
 					</div>
 				))}
 			</div>

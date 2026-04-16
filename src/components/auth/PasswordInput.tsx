@@ -3,6 +3,7 @@ import { HugeiconsIcon } from '@hugeicons/react';
 import { m } from 'framer-motion';
 import { useId, useState } from 'react';
 import type { FieldErrors, UseFormRegister } from 'react-hook-form';
+import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { STAGGER_ITEM } from '@/lib/animation-presets';
@@ -53,7 +54,7 @@ export function PasswordInput({
 	const strength = getPasswordStrength(password);
 
 	return (
-		<m.div variants={STAGGER_ITEM} className="space-y-2">
+		<m.div variants={STAGGER_ITEM} className="flex flex-col gap-2">
 			<Label
 				htmlFor="password"
 				className="text-xs font-bold text-label-primary tracking-wider ml-1"
@@ -74,18 +75,20 @@ export function PasswordInput({
 					autoComplete="new-password"
 					onChange={(e) => setPassword(e.target.value)}
 				/>
-				<button
+				<Button
 					type="button"
+					variant="ghost"
+					size="sm"
 					onClick={onTogglePassword}
-					className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+					className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8 p-0"
 					aria-label={showPassword ? 'hide password' : 'show password'}
 				>
 					{showPassword ? (
-						<HugeiconsIcon icon={ViewOffIcon} className="w-5 h-5" />
+						<HugeiconsIcon icon={ViewOffIcon} className="size-5" />
 					) : (
-						<HugeiconsIcon icon={ViewIcon} className="w-5 h-5" />
+						<HugeiconsIcon icon={ViewIcon} className="size-5" />
 					)}
-				</button>
+				</Button>
 			</div>
 			{errors.password && (
 				<p
@@ -97,7 +100,7 @@ export function PasswordInput({
 				</p>
 			)}
 			{password.length > 0 && (
-				<div className="space-y-2 mt-2">
+				<div className="flex flex-col gap-2 mt-2">
 					<div className="flex gap-1">
 						{[1, 2, 3, 4].map((level) => (
 							<div
@@ -123,7 +126,7 @@ export function PasswordInput({
 								}`}
 							>
 								<span
-									className={`w-3 h-3 rounded-full flex items-center justify-center text-[8px] ${
+									className={`size-3 rounded-full flex items-center justify-center text-[8px] ${
 										req.test(password)
 											? 'bg-green-500 text-white'
 											: 'bg-muted text-muted-foreground'

@@ -5,6 +5,7 @@ import {
 	MoreVerticalIcon,
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
+import { FluentEmoji } from '@lobehub/fluent-emoji';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -14,7 +15,24 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { getSubjectFluentEmoji } from '@/content';
 import type { FlashcardDeck } from './constants';
+
+function getSubjectIdFromDeck(deck: FlashcardDeck): string {
+	if (deck.subjectId === 1) return 'mathematics';
+	if (deck.subjectId === 2) return 'physics';
+	if (deck.subjectId === 3) return 'chemistry';
+	if (deck.subjectId === 4) return 'life-sciences';
+	if (deck.subjectId === 5) return 'english';
+	if (deck.subjectId === 6) return 'afrikaans';
+	if (deck.subjectId === 7) return 'geography';
+	if (deck.subjectId === 8) return 'history';
+	if (deck.subjectId === 9) return 'accounting';
+	if (deck.subjectId === 10) return 'economics';
+	if (deck.subjectId === 11) return 'lo';
+	if (deck.subjectId === 12) return 'business-studies';
+	return 'mathematics';
+}
 
 export function DeckGrid({
 	decks,
@@ -36,7 +54,17 @@ export function DeckGrid({
 				>
 					<CardHeader className="pb-2">
 						<div className="flex items-start justify-between">
-							<CardTitle className="text-lg line-clamp-1">{deck.name}</CardTitle>
+							<div className="flex items-center gap-3">
+								<div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+									<FluentEmoji
+										type="3d"
+										emoji={getSubjectFluentEmoji(getSubjectIdFromDeck(deck))}
+										size={20}
+										className="w-5 h-5"
+									/>
+								</div>
+								<CardTitle className="text-lg line-clamp-1">{deck.name}</CardTitle>
+							</div>
 							<DropdownMenu>
 								<DropdownMenuTrigger asChild>
 									<Button

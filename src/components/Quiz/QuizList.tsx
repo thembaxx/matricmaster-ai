@@ -2,10 +2,12 @@
 
 import { QuestionIcon, Search01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
+import { FluentEmoji } from '@lobehub/fluent-emoji';
 import { useRouter } from 'next/navigation';
 import { useMemo, useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
+import { getSubjectFluentEmoji } from '@/content';
 import { useQuizTopics } from '@/hooks/useQuizTopics';
 
 interface QuizListProps {
@@ -45,7 +47,7 @@ export default function QuizList({ searchQuery = '' }: QuizListProps) {
 	};
 
 	return (
-		<div className="space-y-6">
+		<div className="flex flex-col gap-6">
 			<div className="relative">
 				<HugeiconsIcon
 					icon={Search01Icon}
@@ -70,7 +72,12 @@ export default function QuizList({ searchQuery = '' }: QuizListProps) {
 						className="p-6 rounded-3xl border border-border hover:border-primary/20 hover:shadow-soft-lg transition-all duration-500 group cursor-pointer bg-card/50 backdrop-blur-sm"
 					>
 						<div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-							<HugeiconsIcon icon={QuestionIcon} className="w-6 h-6 text-primary" />
+							<FluentEmoji
+								type="3d"
+								emoji={getSubjectFluentEmoji(quiz.subject.toLowerCase().replace(/\s+/g, '-'))}
+								size={24}
+								className="w-6 h-6"
+							/>
 						</div>
 						<h3 className="text-lg font-black text-foreground tracking-tight mb-2">{quiz.title}</h3>
 						<div className="flex flex-wrap gap-2">

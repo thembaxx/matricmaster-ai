@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Skeleton } from '@/components/ui/skeleton';
 import { useFlashcardDecks } from '@/hooks/useFlashcardDecks';
 
 interface FlashcardDeckListProps {
@@ -28,7 +29,7 @@ export default function FlashcardDeckList({ searchQuery = '' }: FlashcardDeckLis
 
 	if (isLoading) {
 		return (
-			<div className="space-y-6">
+			<div className="flex flex-col gap-6">
 				<div className="relative">
 					<HugeiconsIcon
 						icon={Search01Icon}
@@ -45,13 +46,13 @@ export default function FlashcardDeckList({ searchQuery = '' }: FlashcardDeckLis
 					{[1, 2, 3].map((i) => (
 						<div
 							key={i}
-							className="p-6 rounded-3xl border border-border bg-card/50 backdrop-blur-sm animate-pulse"
+							className="p-6 rounded-3xl border border-border bg-card/50 backdrop-blur-sm"
 						>
-							<div className="w-12 h-12 rounded-2xl bg-muted/20 mb-4" />
-							<div className="h-6 bg-muted/20 rounded w-3/4 mb-2" />
+							<Skeleton className="w-12 h-12 rounded-2xl mb-4" />
+							<Skeleton className="h-6 w-3/4 mb-2" />
 							<div className="flex gap-2">
-								<div className="h-5 bg-muted/20 rounded w-16" />
-								<div className="h-5 bg-muted/20 rounded w-20" />
+								<Skeleton className="h-5 w-16" />
+								<Skeleton className="h-5 w-20" />
 							</div>
 						</div>
 					))}
@@ -61,7 +62,7 @@ export default function FlashcardDeckList({ searchQuery = '' }: FlashcardDeckLis
 	}
 
 	return (
-		<div className="space-y-6">
+		<div className="flex flex-col gap-6">
 			<div className="relative">
 				<HugeiconsIcon
 					icon={Search01Icon}
