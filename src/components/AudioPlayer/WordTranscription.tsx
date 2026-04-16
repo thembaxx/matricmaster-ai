@@ -64,6 +64,7 @@ export function WordTranscription({
 						className={cn(
 							'transition-all duration-200 cursor-pointer inline-block rounded-md px-0.5 -mx-0.5',
 							'hover:text-primary hover:bg-primary/8',
+							'focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-1',
 							activeWordIndex === index
 								? 'bg-primary/20 text-primary font-semibold scale-[1.02] shadow-sm'
 								: 'text-foreground/90'
