@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { v4 as uuidv4 } from 'uuid';
 
 export async function POST(
-	request: Request,
+	_request: Request,
 	{ params }: { params: Promise<{ id: string }> }
 ) {
 	const { id } = await params;
