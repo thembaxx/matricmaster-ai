@@ -6,6 +6,7 @@ import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { ClientOnlyProviders } from '@/components/Layout/ClientOnlyProviders';
 import ClientProviders from '@/components/Layout/ClientProvidersDynamic';
 import { NavigationProgress } from '@/components/NavigationProgress';
+import { OfflineSyncProvider } from '@/components/OfflineSyncProvider';
 import { ServiceWorkerRegistration } from '@/components/ServiceWorkerRegistration';
 import { Toaster } from '@/components/Toaster';
 import { ThemeProvider } from '@/components/theme-provider';
@@ -183,7 +184,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 						<ThemeProvider defaultTheme="system" storageKey="matric-master-theme">
 							<LiveRegionProvider>
 								<NavigationProgress />
-								<ClientProviders>{children}</ClientProviders>
+								<ClientProviders>
+									<OfflineSyncProvider>{children}</OfflineSyncProvider>
+								</ClientProviders>
 								<Toaster />
 								<ServiceWorkerRegistration />
 								<ClientOnlyProviders />
