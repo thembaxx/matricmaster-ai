@@ -82,7 +82,7 @@ export function ForgotPasswordForm() {
 						href="/sign-in"
 						className="inline-flex items-center text-xs font-bold text-muted-foreground hover:text-foreground transition-colors mb-6  tracking-wider"
 					>
-						<HugeiconsIcon icon={ArrowLeft} className="w-4 h-4 mr-2" /> back to sign in
+						<HugeiconsIcon icon={ArrowLeft} className="w-4 h-4 mr-2" /> Back to Sign in
 					</Link>
 
 					<m.div

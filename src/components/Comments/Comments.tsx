@@ -115,7 +115,7 @@ export function Comments({
 
 	const handleVote = async (commentId: string, voteType: 'up' | 'down') => {
 		if (!session?.user) {
-			toast.error('Please sign in to vote');
+			toast.error('Please Sign in to Vote');
 			return;
 		}
 

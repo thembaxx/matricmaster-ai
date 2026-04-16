@@ -90,7 +90,7 @@ function SignInFormContent() {
 							variants={STAGGER_ITEM}
 							className="text-muted-foreground text-balance font-medium text-base"
 						>
-							sign in to continue your matric prep.
+							Sign in to continue your matric prep.
 						</m.p>
 					</m.div>
 
@@ -167,7 +167,7 @@ function SignInFormContent() {
 							href="/sign-up"
 							className="font-bold text-primary hover:text-primary/80 underline-offset-4 transition-colors"
 						>
-							sign up
+							Sign up
 						</Link>
 					</m.p>
 				</m.div>

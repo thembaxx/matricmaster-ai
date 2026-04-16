@@ -35,7 +35,7 @@ export const FormFields = memo(function FormFields({
 
 	return (
 		<fieldset className="flex flex-col gap-6 border-0 p-0 m-0">
-			<legend className="sr-only">sign in credentials</legend>
+			<legend className="sr-only">Sign in credentials</legend>
 
 			<m.div variants={STAGGER_ITEM} className="flex flex-col gap-2">
 				<Label htmlFor="email" className="label-xs ml-1">
@@ -130,7 +130,7 @@ export const FormFields = memo(function FormFields({
 					) : successEmail ? (
 						'success!'
 					) : (
-						'sign in'
+						'Sign in'
 					)}
 				</Button>
 			</m.div>

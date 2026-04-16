@@ -28,7 +28,7 @@ export default function Error({ error, reset }: ErrorProps) {
 				</div>
 
 				<div className="space-y-2">
-					<h2 className="text-2xl font-bold text-foreground">Something went wrong</h2>
+					<h2 className="text-2xl font-bold text-foreground">Something Went Wrong</h2>
 					<p className="text-sm text-muted-foreground">
 						{error.message || 'An unexpected error occurred. Please try again.'}
 					</p>

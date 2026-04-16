@@ -255,7 +255,7 @@ export default function AnalyticsDashboardPage() {
 					<div className="flex flex-col gap-3 sm:flex-row sm:justify-center">
 						<a href="/quiz">
 							<Badge variant="outline" className="cursor-pointer">
-								Take a quiz
+								Take a Quiz
 							</Badge>
 						</a>
 						<a href="/flashcards">

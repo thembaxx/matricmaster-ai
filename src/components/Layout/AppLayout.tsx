@@ -71,8 +71,8 @@ function AppLayoutContent({ children }: { children: React.ReactNode }) {
 										unreadCount={unreadCount}
 										onNotificationClick={() => {
 											if (!user) {
-												toast.info('login required', {
-													description: 'please sign in to view your notifications.',
+												toast.info('Login Required', {
+													description: 'Please Sign in to View your Notifications.',
 												});
 												router.push('/sign-in');
 												return;
@@ -121,8 +121,8 @@ function AppLayoutContent({ children }: { children: React.ReactNode }) {
 										unreadCount={unreadCount}
 										onNotificationClick={() => {
 											if (!user) {
-												toast.info('login required', {
-													description: 'please sign in to view your notifications.',
+												toast.info('Login Required', {
+													description: 'Please Sign in to View your Notifications.',
 												});
 												router.push('/sign-in');
 												return;

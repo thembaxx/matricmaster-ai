@@ -19,14 +19,14 @@ interface RouteErrorProps {
 export function RouteError({
 	error,
 	reset,
-	title = 'something went wrong',
+	title = 'Something Went Wrong',
 	message,
 	description,
 	homeLink = '/dashboard',
 	homeLabel = 'dashboard',
 	showHomeButton = true,
 }: RouteErrorProps) {
-	const fallbackMessage = description ?? message ?? 'unable to load this page. please try again.';
+	const fallbackMessage = description ?? message ?? 'Unable to Load this Page. Please Try Again.';
 
 	return (
 		<div className="flex flex-col items-center justify-center min-h-[60vh] p-6 bg-background">
@@ -49,7 +49,7 @@ export function RouteError({
 				<div className="flex gap-3 justify-center">
 					<Button onClick={() => reset()} variant="outline" className="gap-2 rounded-xl">
 						<HugeiconsIcon icon={Refresh01Icon} className="w-4 h-4" />
-						try again
+						Try Again
 					</Button>
 					{showHomeButton && (
 						<Link href={homeLink}>

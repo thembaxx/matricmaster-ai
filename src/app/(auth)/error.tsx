@@ -29,7 +29,7 @@ export default function AuthError({ error, reset }: AuthErrorProps) {
 						/>
 					</div>
 					<div className="space-y-2">
-						<h2 className="text-2xl font-bold text-foreground">authentication error</h2>
+						<h2 className="text-2xl font-bold text-foreground">Authentication Error</h2>
 						<p className="text-sm text-muted-foreground">
 							{error.message || 'something went wrong with the authentication flow.'}
 						</p>
@@ -40,12 +40,12 @@ export default function AuthError({ error, reset }: AuthErrorProps) {
 					<div className="flex gap-3 justify-center">
 						<Button onClick={() => reset()} variant="outline" className="gap-2 rounded-xl">
 							<HugeiconsIcon icon={Refresh01Icon} className="w-4 h-4" />
-							try again
+							Try again
 						</Button>
 						<Link href="/sign-in">
 							<Button className="gap-2 rounded-xl">
 								<HugeiconsIcon icon={ArrowLeft01Icon} className="w-4 h-4" />
-								sign in
+								Sign in
 							</Button>
 						</Link>
 					</div>

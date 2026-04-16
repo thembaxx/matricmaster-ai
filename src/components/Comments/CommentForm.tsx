@@ -57,7 +57,7 @@ export function CommentSignInPrompt() {
 	return (
 		<div className="text-center py-6 bg-muted/30 rounded-[2rem] border border-dashed border-border/50">
 			<p className="text-sm font-bold text-muted-foreground  tracking-widest">
-				Please sign in to join the discussion
+				Please Sign in to Join the Discussion
 			</p>
 		</div>
 	);

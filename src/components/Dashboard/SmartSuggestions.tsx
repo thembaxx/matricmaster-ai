@@ -40,7 +40,7 @@ export function SmartSuggestions({
 				type: 'streak',
 				title: 'Keep your streak alive',
 				description: `You've studied for ${focusMinutesToday} min today. A quick quiz would maintain your ${streakDays} day streak!`,
-				action: 'Take a quiz',
+				action: 'Take a Quiz',
 				priority: 1,
 			});
 		}

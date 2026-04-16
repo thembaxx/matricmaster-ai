@@ -6,9 +6,9 @@ import { optionalAuth } from '@/lib/server-auth';
 import SignUpForm from './SignUpForm';
 
 export const metadata: Metadata = {
-	title: `sign up | ${appConfig.name}`,
+	title: `Sign up | ${appConfig.name}`,
 	description:
-		'create your free account. start practicing nsc past papers and prepare for your matric exams.',
+		'Create your free account. Start practicing NSC past papers and prepare for your matric exams.',
 };
 
 export default async function SignUpPage() {
