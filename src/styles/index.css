@@ -10,6 +10,29 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* ==========================================================================
+   SEMANTIC SPACING SYSTEM
+   ========================================================================== */
+:root {
+  /* Spacing scale - semantic tokens */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 48px;
+  --space-3xl: 64px;
+  --space-4xl: 96px;
+  
+  /* Touch targets */
+  --touch-target: 44px;
+  
+  /* Content constraints */
+  --content-narrow: 45ch;
+  --content-normal: 65ch;
+  --content-wide: 80ch;
+}
+
 /* Any additional global styles that aren't in the theme can go here */
 
 /* Global selection color */
@@ -664,15 +687,27 @@ html {
   body {
     @apply bg-background text-foreground;
     letter-spacing: -0.01em;
+    line-height: 1.6;
   }
   h1, h2, h3, h4, h5, h6 {
     @apply font-heading tracking-tight;
     letter-spacing: -0.02em;
     line-height: 1.2;
   }
+  p {
+    line-height: 1.65;
+  }
+  /* Ensure paragraphs have proper spacing */
+  p + p {
+    margin-top: 1em;
+  }
 }
 
-/* Typography utilities */
+/* ==========================================================================
+   CONTENT LAYOUT UTILITIES
+   ========================================================================== */
+
+/* Width constraints for readability */
 @layer utilities {
   .text-balance {
     text-wrap: balance;
@@ -682,6 +717,66 @@ html {
   }
   .tabular-nums {
     font-variant-numeric: tabular-nums;
+  }
+
+  /* Content width constraints for optimal reading */
+  .prose-narrow {
+    max-width: var(--content-narrow);
+  }
+  .prose-normal {
+    max-width: var(--content-normal);
+  }
+  .prose-wide {
+    max-width: var(--content-wide);
+  }
+
+  /* Content padding - generous for readability */
+  .content-pad {
+    padding-left: var(--space-md);
+    padding-right: var(--space-md);
+  }
+  @media (min-width: 768px) {
+    .content-pad {
+      padding-left: var(--space-xl);
+      padding-right: var(--space-xl);
+    }
+  }
+
+  /* Section spacing */
+  .section-pad {
+    padding-top: var(--space-lg);
+    padding-bottom: var(--space-lg);
+  }
+
+  /* Card spacing - consistent internal padding */
+  .card-pad {
+    padding: var(--space-md);
+  }
+  @media (min-width: 768px) {
+    .card-pad {
+      padding: var(--space-lg);
+    }
+  }
+
+  /* Touch target minimum */
+  .touch-target {
+    min-height: var(--touch-target);
+    min-width: var(--touch-target);
+  }
+
+  /* Semantic spacing utilities */
+  .space-gutter {
+    margin-left: var(--space-md);
+    margin-right: var(--space-md);
+  }
+  .space-stack > * + * {
+    margin-top: var(--space-md);
+  }
+  .space-stack-loose > * + * {
+    margin-top: var(--space-lg);
+  }
+  .space-inline > * + * {
+    margin-left: var(--space-sm);
   }
 
   /* Math rendering typography */
@@ -744,5 +839,88 @@ html {
   }
   .dark .img-outline {
     outline: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  /* ==========================================================================
+     ENHANCED TYPOGRAPHY UTILITIES
+     ========================================================================== */
+
+  /* Heading hierarchy - clear visual distinction */
+  .heading-1 {
+    font-size: clamp(2rem, 1.5rem + 2vw, 3rem);
+    font-weight: 700;
+  }
+  .heading-2 {
+    font-size: clamp(1.5rem, 1.25rem + 1vw, 2rem);
+    font-weight: 600;
+  }
+  .heading-3 {
+    font-size: clamp(1.25rem, 1rem + 0.75vw, 1.5rem);
+    font-weight: 600;
+  }
+  .heading-4 {
+    font-size: 1.125rem;
+    font-weight: 600;
+  }
+
+  /* Body text hierarchy */
+  .body-large {
+    font-size: 1.125rem;
+    line-height: 1.7;
+  }
+  .body-normal {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+  .body-small {
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+  .body-caption {
+    font-size: 0.75rem;
+    line-height: 1.4;
+  }
+
+  /* Numeric/mono content - stats, codes */
+  .numeric {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.02em;
+  }
+
+  /* ==========================================================================
+     LAYOUT CONSISTENCY UTILITIES
+     ========================================================================== */
+
+  /* Centered container with max-width */
+  .container-narrow {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: var(--content-normal);
+    padding-left: var(--space-md);
+    padding-right: var(--space-md);
+  }
+
+  /* Full-bleed sections */
+  .section-bleed {
+    margin-left: calc(-1 * var(--space-md));
+    margin-right: calc(-1 * var(--space-md));
+  }
+  @media (min-width: 768px) {
+    .section-bleed {
+      margin-left: calc(-1 * var(--space-xl));
+      margin-right: calc(-1 * var(--space-xl));
+    }
+  }
+
+  /* Grid gap spacing - consistent */
+  .grid-gap-sm {
+    gap: var(--space-sm);
+  }
+  .grid-gap-md {
+    gap: var(--space-md);
+  }
+  .grid-gap-lg {
+    gap: var(--space-lg);
   }
 }
