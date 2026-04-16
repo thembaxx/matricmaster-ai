@@ -9,8 +9,8 @@ test.describe('Sign-In Page', () => {
 	});
 
 	test('should load sign-in page', async ({ page }) => {
-		await page.goto('/sign-in', { timeout: 30000 });
-		await expect(page).toHaveURL(/\/sign-in\//);
+		await page.goto('/login', { timeout: 30000 });
+		await expect(page).toHaveURL(/\/login\//);
 	});
 
 	test('should display all form elements', async ({ page }) => {
@@ -49,7 +49,7 @@ test.describe('Sign-In Page', () => {
 		const loginPage = new LoginPage(page);
 		await loginPage.goto();
 		await loginPage.signUpLink.click();
-		await expect(page).toHaveURL(/\/sign-up\//);
+		await expect(page).toHaveURL(/\/register\//);
 	});
 });
 
@@ -60,8 +60,8 @@ test.describe('Sign-Up Page', () => {
 	});
 
 	test('should load sign-up page', async ({ page }) => {
-		await page.goto('/sign-up', { timeout: 30000 });
-		await expect(page).toHaveURL(/\/sign-up\//);
+		await page.goto('/register', { timeout: 30000 });
+		await expect(page).toHaveURL(/\/register\//);
 	});
 
 	test('should display all form elements', async ({ page }) => {
@@ -97,7 +97,7 @@ test.describe('Sign-Up Page', () => {
 		const signUpPage = new SignUpPage(page);
 		await signUpPage.goto();
 		await signUpPage.signInLink.click();
-		await expect(page).toHaveURL(/\/sign-in\//);
+		await expect(page).toHaveURL(/\/login\//);
 	});
 });
 
@@ -133,10 +133,10 @@ test.describe('Forgot Password Page', () => {
 
 	test('should navigate back to sign-in page', async ({ page }) => {
 		await page.goto('/forgot-password', { timeout: 30000 });
-		const signInLink = page.locator('a[href="/sign-in"]');
+		const signInLink = page.locator('a[href="/login"]');
 		await expect(signInLink).toBeVisible();
 		await signInLink.click();
-		await expect(page).toHaveURL(/\/sign-in\//);
+		await expect(page).toHaveURL(/\/login\//);
 	});
 });
 
@@ -147,34 +147,34 @@ test.describe('Auth Page Navigation', () => {
 	});
 
 	test('should navigate from sign-in to sign-up', async ({ page }) => {
-		await page.goto('/sign-in', { timeout: 30000 });
-		await page.locator('a[href="/sign-up"]').click();
-		await expect(page).toHaveURL(/\/sign-up\//);
+		await page.goto('/login', { timeout: 30000 });
+		await page.locator('a[href="/register"]').click();
+		await expect(page).toHaveURL(/\/register\//);
 	});
 
 	test('should navigate from sign-up to sign-in', async ({ page }) => {
-		await page.goto('/sign-up', { timeout: 30000 });
-		await page.locator('a[href="/sign-in"]').click();
-		await expect(page).toHaveURL(/\/sign-in\//);
+		await page.goto('/register', { timeout: 30000 });
+		await page.locator('a[href="/login"]').click();
+		await expect(page).toHaveURL(/\/login\//);
 	});
 
 	test('should navigate from sign-in to forgot-password', async ({ page }) => {
-		await page.goto('/sign-in', { timeout: 30000 });
+		await page.goto('/login', { timeout: 30000 });
 		await page.locator('a[href="/forgot-password"]').click();
 		await expect(page).toHaveURL(/\/forgot-password\//);
 	});
 
 	test('should navigate from forgot-password to sign-in', async ({ page }) => {
 		await page.goto('/forgot-password', { timeout: 30000 });
-		await page.locator('a[href="/sign-in"]').click();
-		await expect(page).toHaveURL(/\/sign-in\//);
+		await page.locator('a[href="/login"]').click();
+		await expect(page).toHaveURL(/\/login\//);
 	});
 
 	test('should navigate from sign-up to sign-in and back to sign-up', async ({ page }) => {
-		await page.goto('/sign-up', { timeout: 30000 });
-		await page.locator('a[href="/sign-in"]').click();
-		await expect(page).toHaveURL(/\/sign-in\//);
-		await page.locator('a[href="/sign-up"]').click();
-		await expect(page).toHaveURL(/\/sign-up\//);
+		await page.goto('/register', { timeout: 30000 });
+		await page.locator('a[href="/login"]').click();
+		await expect(page).toHaveURL(/\/login\//);
+		await page.locator('a[href="/register"]').click();
+		await expect(page).toHaveURL(/\/register\//);
 	});
 });

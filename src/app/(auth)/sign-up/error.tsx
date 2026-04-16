@@ -41,7 +41,7 @@ export default function SignUpError({ error, reset }: SignUpErrorProps) {
 						</Button>
 						<p className="text-sm text-muted-foreground">
 							already have an account?{' '}
-							<Link href="/sign-in" className="font-bold text-primary hover:text-primary/80">
+							<Link href="/login" className="font-bold text-primary hover:text-primary/80">
 								sign in
 							</Link>
 						</p>

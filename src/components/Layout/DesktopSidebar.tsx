@@ -68,7 +68,7 @@ export function LogoutButton() {
 
 	const handleLogout = async () => {
 		await authClient.signOut();
-		router.push('/sign-in');
+		router.push('/login');
 		router.refresh();
 	};
 

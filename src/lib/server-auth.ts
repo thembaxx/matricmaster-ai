@@ -15,13 +15,13 @@ function extractHeaders(headersList: any) {
 export async function requireAuth() {
 	const auth = await getAuth();
 	if (!auth?.api) {
-		redirect('/sign-in');
+		redirect('/login');
 	}
 	const headersList = await headers();
 	const session = await auth.api.getSession({ headers: extractHeaders(headersList) as any });
 
 	if (!session?.user) {
-		redirect('/sign-in');
+		redirect('/login');
 	}
 
 	return session;

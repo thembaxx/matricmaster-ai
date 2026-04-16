@@ -104,14 +104,14 @@ export function FeatureGate({
 						<CardDescription>Sign in to access this feature</CardDescription>
 					</CardHeader>
 					<CardContent className="space-y-4">
-						<Button className="w-full" onClick={() => router.push('/sign-in')}>
+						<Button className="w-full" onClick={() => router.push('/login')}>
 							Sign In
 						</Button>
 						<p className="text-center text-sm text-muted-foreground">
 							Don't have an account?{' '}
 							<button
 								type="button"
-								onClick={() => router.push('/sign-up')}
+								onClick={() => router.push('/register')}
 								className="text-primary hover:underline"
 							>
 								Sign up

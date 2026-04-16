@@ -263,7 +263,7 @@ async function sendReEngagementEmail(user: InactiveUser, message: string): Promi
 	}
 
 	const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
-	const loginUrl = `${appUrl}/sign-in`;
+	const loginUrl = `${appUrl}/login`;
 
 	const subject = getReEngagementEmailSubject(user);
 

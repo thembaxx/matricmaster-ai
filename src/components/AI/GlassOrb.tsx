@@ -29,7 +29,7 @@ export function GlassOrb() {
 	const router = useRouter();
 	const context = useAiContextStore((s) => s.context);
 
-	const hideOnPages = ['/study-companion', '/onboarding', '/sign-in', '/sign-up'];
+	const hideOnPages = ['/study-companion', '/onboarding', '/login', '/register'];
 	const shouldHide = hideOnPages.some((path) => pathname?.startsWith(path));
 
 	useEffect(() => {

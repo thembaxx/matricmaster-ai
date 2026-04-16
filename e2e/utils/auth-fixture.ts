@@ -7,7 +7,7 @@ export interface AuthFixtures {
 
 export const authenticated = base.extend<AuthFixtures>({
 	authenticatedPage: async ({ page }, use) => {
-		await page.goto('/sign-in');
+		await page.goto('/login');
 
 		await page.fill('input[id="email"]', TEST_USER_EMAIL);
 		await page.fill('input[id="password"]', TEST_USER_PASSWORD);
@@ -20,7 +20,7 @@ export const authenticated = base.extend<AuthFixtures>({
 });
 
 export async function loginUser(page: Page, email: string, password: string) {
-	await page.goto('/sign-in');
+	await page.goto('/login');
 	await page.fill('input[id="email"]', email);
 	await page.fill('input[id="password"]', password);
 	await page.click('button[type="submit"]');

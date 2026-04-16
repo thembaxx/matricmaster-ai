@@ -79,7 +79,7 @@ export function ForgotPasswordForm() {
 					className="w-full premium-glass border-none rounded-[2.5rem] shadow-soft-lg overflow-hidden p-8"
 				>
 					<Link
-						href="/sign-in"
+						href="/login"
 						className="inline-flex items-center text-xs font-bold text-muted-foreground hover:text-foreground transition-colors mb-6  tracking-wider"
 					>
 						<HugeiconsIcon icon={ArrowLeft} className="w-4 h-4 mr-2" /> Back to Sign in

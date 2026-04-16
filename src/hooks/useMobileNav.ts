@@ -19,7 +19,7 @@ export function useMobileNav() {
 
 	const handleSignOut = async () => {
 		await authClient.signOut();
-		router.push('/sign-in');
+		router.push('/login');
 		setOpen(false);
 	};
 

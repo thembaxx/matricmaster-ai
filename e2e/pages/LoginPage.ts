@@ -15,12 +15,12 @@ export class LoginPage {
 		this.passwordInput = page.locator('input[id="password"]');
 		this.submitButton = page.locator('button[type="submit"]');
 		this.errorMessage = page.locator('.text-destructive, [class*="destructive"]');
-		this.signUpLink = page.locator('a[href="/sign-up"]');
+		this.signUpLink = page.locator('a[href="/register"]');
 		this.forgotPasswordLink = page.locator('a[href="/forgot-password"]');
 	}
 
 	async goto() {
-		await this.page.goto('/sign-in');
+		await this.page.goto('/login');
 	}
 
 	async login(email: string, password: string) {

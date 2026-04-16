@@ -20,11 +20,11 @@ export class SignUpPage {
 		this.submitButton = page.locator('button[type="submit"]');
 		this.errorMessage = page.locator('.text-destructive, [class*="destructive"]');
 		this.successMessage = page.locator('.bg-success, [class*="success"]');
-		this.signInLink = page.locator('a[href="/sign-in"]');
+		this.signInLink = page.locator('a[href="/login"]');
 	}
 
 	async goto() {
-		await this.page.goto('/sign-up');
+		await this.page.goto('/register');
 	}
 
 	async register(name: string, email: string, password: string) {

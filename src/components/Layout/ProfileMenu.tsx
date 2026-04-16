@@ -77,20 +77,20 @@ export function ProfileMenu({
 							await authClient.signOut({
 								fetchOptions: {
 									onSuccess: () => {
-										window.location.href = '/sign-in';
+										window.location.href = '/login';
 									},
 								},
 							});
 							// Fallback navigation if onSuccess doesn't trigger
 							setTimeout(() => {
-								if (!window.location.pathname.includes('/sign-in')) {
-									window.location.href = '/sign-in';
+								if (!window.location.pathname.includes('/login')) {
+									window.location.href = '/login';
 								}
 							}, 500);
 						} catch (error) {
 							console.error('Sign out failed:', error);
 							// Force navigation on error
-							window.location.href = '/sign-in';
+							window.location.href = '/login';
 						}
 					}}
 				>

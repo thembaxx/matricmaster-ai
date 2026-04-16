@@ -82,7 +82,7 @@ export default function SettingsPage() {
 					</CardHeader>
 					<CardContent>
 						<Button asChild className="w-full">
-							<Link href="/sign-in">Sign In</Link>
+							<Link href="/login">Sign In</Link>
 						</Button>
 					</CardContent>
 				</Card>

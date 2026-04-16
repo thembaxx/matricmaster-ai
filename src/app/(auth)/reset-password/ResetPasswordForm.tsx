@@ -77,7 +77,7 @@ function ResetPasswordFormContent() {
 				setIsSuccess(true);
 				toast.success('Password reset successfully!');
 				setTimeout(() => {
-					router.push('/sign-in');
+					router.push('/login');
 				}, 2000);
 			}
 		} catch (err) {
@@ -99,7 +99,7 @@ function ResetPasswordFormContent() {
 					className="w-full premium-glass border-none rounded-[2.5rem] shadow-soft-lg overflow-hidden p-8"
 				>
 					<Link
-						href="/sign-in"
+						href="/login"
 						className="inline-flex items-center text-xs font-bold text-muted-foreground hover:text-foreground transition-colors mb-6 tracking-wider"
 					>
 						<HugeiconsIcon icon={ArrowLeft02Icon} className="w-4 h-4 mr-2" /> Back to Sign in
@@ -159,7 +159,7 @@ function ResetPasswordFormContent() {
 							</m.div>
 							<m.div variants={STAGGER_ITEM}>
 								<Button
-									onClick={() => router.push('/sign-in')}
+									onClick={() => router.push('/login')}
 									className={cn(
 										'w-full h-14 rounded-2xl font-black text-base shadow-xl transition-all active:scale-[0.98]',
 										'bg-primary text-primary-foreground shadow-primary/20'

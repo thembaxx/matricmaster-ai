@@ -115,7 +115,7 @@ function AITutorPageContent() {
 					<CardContent className="space-y-4">
 						<p className="text-muted-foreground">Sign in to get help with your studies.</p>
 						<Button asChild className="w-full">
-							<Link href="/sign-in">sign in</Link>
+							<Link href="/login">sign in</Link>
 						</Button>
 					</CardContent>
 				</Card>

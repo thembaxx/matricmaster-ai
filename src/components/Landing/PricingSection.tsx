@@ -77,7 +77,7 @@ export function PricingSection() {
 						<Button
 							variant="outline"
 							className="w-full h-12 rounded-xl text-sm font-bold"
-							onClick={() => router.push('/sign-up')}
+							onClick={() => router.push('/register')}
 						>
 							Get Started
 						</Button>
@@ -115,7 +115,7 @@ export function PricingSection() {
 
 							<Button
 								className="w-full h-12 rounded-xl text-sm font-bold bg-primary hover:bg-primary/90 text-primary-foreground"
-								onClick={() => router.push('/sign-up?plan=pro')}
+								onClick={() => router.push('/register?plan=pro')}
 							>
 								Go Pro
 								<span className="ml-2">→</span>

@@ -42,7 +42,7 @@ export default function AuthError({ error, reset }: AuthErrorProps) {
 							<HugeiconsIcon icon={Refresh01Icon} className="w-4 h-4" />
 							Try again
 						</Button>
-						<Link href="/sign-in">
+						<Link href="/login">
 							<Button className="gap-2 rounded-xl">
 								<HugeiconsIcon icon={ArrowLeft01Icon} className="w-4 h-4" />
 								Sign in
