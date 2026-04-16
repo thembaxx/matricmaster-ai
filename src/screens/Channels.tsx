@@ -18,7 +18,6 @@ import { LanguageArtsSection } from '@/components/Channels/LanguageArtsSection';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import { useAblyChannel } from '@/hooks/use-ably-channel';
 import { useSession } from '@/lib/auth-client';
 import type { Channel } from '@/screens/ChannelList';
@@ -95,7 +94,7 @@ export default function Channels() {
 	);
 
 	return (
-		<div className="flex flex-col h-full bg-background">
+		<div className="flex flex-col h-full w-full bg-background  overflow-hidden">
 			<header className="px-6 pt-12 pb-6 shrink-0 bg-background">
 				<div className="flex items-center justify-between">
 					<div>
@@ -144,7 +143,7 @@ export default function Channels() {
 				</div>
 			</header>
 
-			<ScrollArea className="flex-1">
+			<div className="flex-1">
 				<main className="px-6 pb-32 space-y-8">
 					<section className="space-y-4">
 						<h3 className="text-[10px] font-black text-label-tertiary tracking-[0.2em]">
@@ -166,7 +165,7 @@ export default function Channels() {
 
 					<CommerceSection />
 				</main>
-			</ScrollArea>
+			</div>
 
 			<Button
 				aria-label="Play"
