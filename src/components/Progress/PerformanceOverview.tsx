@@ -144,13 +144,13 @@ export function PerformanceOverview({
 	}, [topicMastery]);
 
 	return (
-		<div className="space-y-6">
+		<div className="flex flex-col gap-6">
 			{/* Key Metrics Cards */}
 			<div className="grid grid-cols-1 md:grid-cols-4 gap-4">
 				<Card>
 					<CardHeader className="pb-2">
 						<CardTitle className="text-sm font-medium flex items-center gap-2">
-							<HugeiconsIcon icon={Target01Icon} className="w-4 h-4" />
+							<HugeiconsIcon icon={Target01Icon} className="size-4" />
 							Overall Accuracy
 						</CardTitle>
 					</CardHeader>
@@ -164,9 +164,9 @@ export function PerformanceOverview({
 					<CardHeader className="pb-2">
 						<CardTitle className="text-sm font-medium flex items-center gap-2">
 							{learningVelocity >= 0 ? (
-								<HugeiconsIcon icon={ArrowUp01Icon} className="w-4 h-4 text-green-600" />
+								<HugeiconsIcon icon={ArrowUp01Icon} className="size-4 text-green-600" />
 							) : (
-								<HugeiconsIcon icon={ArrowDown01Icon} className="w-4 h-4 text-red-600" />
+								<HugeiconsIcon icon={ArrowDown01Icon} className="size-4 text-red-600" />
 							)}
 							Learning Velocity
 						</CardTitle>
@@ -262,9 +262,9 @@ export function PerformanceOverview({
 					<CardDescription>Mastery levels and areas needing attention by subject</CardDescription>
 				</CardHeader>
 				<CardContent>
-					<div className="space-y-4">
+					<div className="flex flex-col gap-4">
 						{subjectPerformance.map((subject) => (
-							<div key={subject.subject} className="space-y-2">
+							<div key={subject.subject} className="flex flex-col gap-2">
 								<div className="flex items-center justify-between">
 									<span className="font-medium">{subject.subject}</span>
 									<div className="flex items-center gap-2">

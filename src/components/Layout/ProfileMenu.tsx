@@ -44,7 +44,7 @@ export function ProfileMenu({
 									<Icon icon="material-symbols-light:verified" className="text-blue-600 w-5 h-5" />
 								</div>
 							</div>
-							<div className="space-y-0 text-left flex flex-col w-full overflow-hidden">
+							<div className="gap-0 text-left flex flex-col w-full overflow-hidden">
 								<h2 className="font-black truncate text-base  tracking-tighter">{user.name}</h2>
 								<p className="text-muted-foreground text-[0.75rem] font-bold  tracking-wider truncate w-full line-clamp-1 overflow-hidden">
 									{user.email}

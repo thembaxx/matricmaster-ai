@@ -271,7 +271,7 @@ export function TrendAnalysis({
 	}, [topicProgression]);
 
 	return (
-		<div className="space-y-6">
+		<div className="flex flex-col gap-6">
 			{/* Time Range Selector */}
 			<div className="flex justify-between items-center">
 				<h3 className="text-lg font-semibold">Trend Analysis</h3>
@@ -292,13 +292,13 @@ export function TrendAnalysis({
 				<Card>
 					<CardHeader>
 						<CardTitle className="text-lg flex items-center gap-2">
-							<HugeiconsIcon icon={BarChartIcon} className="w-5 h-5" />
+							<HugeiconsIcon icon={BarChartIcon} className="size-5" />
 							Key Insights
 						</CardTitle>
 						<CardDescription>AI-generated analysis of your learning patterns</CardDescription>
 					</CardHeader>
 					<CardContent>
-						<div className="space-y-3">
+						<div className="flex flex-col gap-3">
 							{performanceInsights.map((insight, index) => (
 								<div
 									key={index}
@@ -310,7 +310,7 @@ export function TrendAnalysis({
 								>
 									<HugeiconsIcon
 										icon={insight.icon}
-										className={`w-5 h-5 mt-0.5 ${
+										className={`size-5 mt-0.5 ${
 											insight.type === 'positive' ? 'text-green-600' : 'text-amber-600'
 										}`}
 									/>
@@ -328,14 +328,14 @@ export function TrendAnalysis({
 				</Card>
 			)}
 
-			<Tabs defaultValue="performance" className="space-y-4">
+			<Tabs defaultValue="performance" className="flex flex-col gap-4">
 				<TabsList>
 					<TabsTrigger value="performance">Quiz Performance</TabsTrigger>
 					<TabsTrigger value="activity">Study Activity</TabsTrigger>
 					<TabsTrigger value="subjects">Subject Progress</TabsTrigger>
 				</TabsList>
 
-				<TabsContent value="performance" className="space-y-4">
+				<TabsContent value="performance" className="flex flex-col gap-4">
 					<Card>
 						<CardHeader>
 							<CardTitle>Quiz Score Trends</CardTitle>
@@ -376,7 +376,7 @@ export function TrendAnalysis({
 					</Card>
 				</TabsContent>
 
-				<TabsContent value="activity" className="space-y-4">
+				<TabsContent value="activity" className="flex flex-col gap-4">
 					<Card>
 						<CardHeader>
 							<CardTitle>Daily Study Activity</CardTitle>
@@ -397,7 +397,7 @@ export function TrendAnalysis({
 					</Card>
 				</TabsContent>
 
-				<TabsContent value="subjects" className="space-y-4">
+				<TabsContent value="subjects" className="flex flex-col gap-4">
 					<Card>
 						<CardHeader>
 							<CardTitle>Subject Mastery Distribution</CardTitle>
@@ -433,9 +433,9 @@ export function TrendAnalysis({
 							<CardTitle>Detailed Subject Breakdown</CardTitle>
 						</CardHeader>
 						<CardContent>
-							<div className="space-y-4">
+							<div className="flex flex-col gap-4">
 								{subjectPerformanceData.map((subject) => (
-									<div key={subject.subject} className="space-y-2">
+									<div key={subject.subject} className="flex flex-col gap-2">
 										<div className="flex items-center justify-between">
 											<span className="font-medium">{subject.subject}</span>
 											<div className="flex gap-2">

@@ -65,7 +65,7 @@ export function AddBlockModal({ open, onOpenChange, onSuccess, editMode }: AddBl
 	});
 
 	const formContent = (
-		<form onSubmit={handleSubmit} className="space-y-5">
+		<form onSubmit={handleSubmit} className="flex flex-col gap-5">
 			<StudyBlockTitleInput id={titleId} value={formState.title} onChange={handleTitleChange} />
 
 			<SubjectSelector

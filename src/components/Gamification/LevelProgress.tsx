@@ -93,7 +93,7 @@ export const LevelProgress = memo(function LevelProgress({
 	}
 
 	return (
-		<div className={`space-y-3 ${className}`}>
+		<div className={`flex flex-col gap-3 ${className}`}>
 			<div className="flex items-center justify-between">
 				<div className="flex items-center gap-4">
 					<div className="relative">

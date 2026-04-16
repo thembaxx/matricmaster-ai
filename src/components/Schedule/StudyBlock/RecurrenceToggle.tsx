@@ -12,7 +12,7 @@ interface RecurrenceToggleProps {
 export function RecurrenceToggle({ id, checked, onChange }: RecurrenceToggleProps) {
 	return (
 		<div className="flex items-center justify-between p-4 bg-muted/30 rounded-2xl border border-border/30">
-			<div className="space-y-0.5">
+			<div className="flex flex-col gap-0.5">
 				<Label htmlFor={id} className="text-sm font-bold">
 					Repeat Weekly
 				</Label>

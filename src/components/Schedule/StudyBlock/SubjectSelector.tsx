@@ -21,7 +21,7 @@ export function SubjectSelector({
 	onChange,
 }: SubjectSelectorProps) {
 	return (
-		<div className="space-y-2.5">
+		<div className="flex flex-col gap-2.5">
 			<Label htmlFor={id} className="text-xs font-bold tracking-wider text-muted-foreground ml-1">
 				Subject <span className="text-muted-foreground/50 font-normal">(optional)</span>
 			</Label>

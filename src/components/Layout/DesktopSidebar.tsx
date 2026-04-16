@@ -54,7 +54,7 @@ export function AppSidebar({ user, pathname, theme, onSetTheme }: AppSidebarProp
 				/>
 			</SidebarContent>
 
-			<SidebarFooter className="border-t border-sidebar-border/50 p-3 space-y-2">
+			<SidebarFooter className="border-t border-sidebar-border/50 p-3 flex flex-col gap-2">
 				<SidebarThemeToggle theme={theme} onSetTheme={onSetTheme} />
 				<SidebarSeparator className="bg-sidebar-border/50" />
 				<SidebarUserProfile user={user} />

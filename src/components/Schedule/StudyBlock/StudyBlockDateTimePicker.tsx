@@ -30,7 +30,7 @@ export function StudyBlockDateTimePicker({
 }: StudyBlockDateTimePickerProps) {
 	return (
 		<>
-			<div className="space-y-2.5">
+			<div className="flex flex-col gap-2.5">
 				<DatePicker
 					label="Date"
 					htmlFor={dateId}

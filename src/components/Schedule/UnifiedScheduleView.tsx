@@ -74,7 +74,7 @@ const BlockCard = ({ block }: { block: UnifiedBlock }) => {
 
 			<div className="flex items-center gap-2 flex-wrap">
 				{block.energyRecommendation && block.energyRecommendation !== 'moderate' && (
-					<div className={cn('w-2 h-2 rounded-full', energyColors[block.energyRecommendation])} />
+					<div className={cn('size-2 rounded-full', energyColors[block.energyRecommendation])} />
 				)}
 				{block.examCountdown !== undefined && block.examCountdown <= 14 && (
 					<Badge className={cn('text-xs text-white', getCountdownColor(block.examCountdown))}>
@@ -222,7 +222,7 @@ export function UnifiedScheduleView() {
 	const nextExam = getNextExamCountdown();
 
 	return (
-		<div className="space-y-4">
+		<div className="flex flex-col gap-4">
 			<Card>
 				<CardHeader className="pb-3">
 					<CardTitle className="text-lg">Schedule</CardTitle>
@@ -250,12 +250,12 @@ export function UnifiedScheduleView() {
 						</Button>
 					</div>
 				</CardHeader>
-				<CardContent className="space-y-4">
+				<CardContent className="flex flex-col gap-4">
 					{showLoadSheddingWarnings && <LoadSheddingBanner />}
 					{showEnergyRecommendations && <EnergyBanner />}
 
 					{showExamCountdowns && upcomingExams.length > 0 && (
-						<div className="space-y-2">
+						<div className="flex flex-col gap-2">
 							<h3 className="text-sm font-medium">Upcoming Exams</h3>
 							<div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
 								{upcomingExams
@@ -287,7 +287,7 @@ export function UnifiedScheduleView() {
 						</Card>
 					)}
 
-					<div className="space-y-2">
+					<div className="flex flex-col gap-2">
 						<div className="flex items-center justify-between">
 							<h3 className="text-sm font-medium">This Week</h3>
 							<div className="flex items-center gap-1">
@@ -332,7 +332,7 @@ export function UnifiedScheduleView() {
 									>
 										<p className="text-xs font-medium text-center mb-2">{format(day, 'EEE')}</p>
 										<p className="text-lg font-bold text-center mb-2">{format(day, 'd')}</p>
-										<div className="space-y-1">
+										<div className="flex flex-col gap-1">
 											{dayBlocks.slice(0, 3).map((block) => (
 												<BlockCard key={block.id} block={block} />
 											))}

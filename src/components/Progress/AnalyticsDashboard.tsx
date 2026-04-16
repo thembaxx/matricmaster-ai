@@ -110,7 +110,7 @@ export default function AnalyticsDashboard({ initialData }: AnalyticsDashboardPr
 	if (isLoading && !initialData) {
 		return (
 			<div className="min-h-screen flex items-center justify-center">
-				<HugeiconsIcon icon={Loading03Icon} className="w-8 h-8 animate-spin text-primary" />
+				<HugeiconsIcon icon={Loading03Icon} className="size-8 animate-spin text-primary" />
 			</div>
 		);
 	}
@@ -161,7 +161,7 @@ export default function AnalyticsDashboard({ initialData }: AnalyticsDashboardPr
 					<div className="flex items-center justify-between">
 						<div className="flex items-center gap-3 mb-2">
 							<h1 className="text-3xl font-bold flex items-center gap-2">
-								<HugeiconsIcon icon={Analytics01Icon} className="w-8 h-8" />
+								<HugeiconsIcon icon={Analytics01Icon} className="size-8" />
 								Progress Analytics
 							</h1>
 							{!progress.summary.hasRealData && (
@@ -179,7 +179,7 @@ export default function AnalyticsDashboard({ initialData }: AnalyticsDashboardPr
 					</p>
 				</div>
 
-				<Tabs value={selectedTab} onValueChange={setSelectedTab} className="space-y-6">
+				<Tabs value={selectedTab} onValueChange={setSelectedTab} className="flex flex-col gap-6">
 					<TabsList className="grid w-full grid-cols-2 lg:grid-cols-5">
 						<TabsTrigger value="overview">Overview</TabsTrigger>
 						<TabsTrigger value="performance">Performance</TabsTrigger>
@@ -188,7 +188,7 @@ export default function AnalyticsDashboard({ initialData }: AnalyticsDashboardPr
 						<TabsTrigger value="insights">Insights</TabsTrigger>
 					</TabsList>
 
-					<TabsContent value="overview" className="space-y-6">
+					<TabsContent value="overview" className="flex flex-col gap-6">
 						{/* Key Metrics Summary */}
 						<div className="grid grid-cols-1 md:grid-cols-4 gap-4">
 							<Card>
@@ -251,7 +251,7 @@ export default function AnalyticsDashboard({ initialData }: AnalyticsDashboardPr
 									<CardDescription>Your latest quiz performance</CardDescription>
 								</CardHeader>
 								<CardContent>
-									<div className="space-y-3">
+									<div className="flex flex-col gap-3">
 										{progress.quiz.recentQuizzes.slice(0, 3).map((quiz, index) => (
 											<div key={index} className="flex justify-between items-center">
 												<span className="text-sm truncate">{quiz.topic}</span>
@@ -271,7 +271,7 @@ export default function AnalyticsDashboard({ initialData }: AnalyticsDashboardPr
 									<CardDescription>Your memorization stats</CardDescription>
 								</CardHeader>
 								<CardContent>
-									<div className="space-y-4">
+									<div className="flex flex-col gap-4">
 										<div className="text-center">
 											<div className="text-3xl font-bold text-green-600">
 												{progress.flashcards.masteredCards}
@@ -303,7 +303,7 @@ export default function AnalyticsDashboard({ initialData }: AnalyticsDashboardPr
 									<CardDescription>Your recent study activity</CardDescription>
 								</CardHeader>
 								<CardContent>
-									<div className="space-y-3">
+									<div className="flex flex-col gap-3">
 										<div className="text-center">
 											<div className="text-3xl font-bold">
 												{progress.calendar.sessionsCompleted}
@@ -322,7 +322,7 @@ export default function AnalyticsDashboard({ initialData }: AnalyticsDashboardPr
 						</div>
 					</TabsContent>
 
-					<TabsContent value="performance" className="space-y-6">
+					<TabsContent value="performance" className="flex flex-col gap-6">
 						<PerformanceOverview
 							quizData={progress.quiz}
 							topicMastery={progress.weakTopics}
@@ -338,7 +338,7 @@ export default function AnalyticsDashboard({ initialData }: AnalyticsDashboardPr
 						/>
 					</TabsContent>
 
-					<TabsContent value="trends" className="space-y-6">
+					<TabsContent value="trends" className="flex flex-col gap-6">
 						<TrendAnalysis
 							quizData={progress.quiz}
 							flashcards={progress.flashcards}
@@ -347,7 +347,7 @@ export default function AnalyticsDashboard({ initialData }: AnalyticsDashboardPr
 						/>
 					</TabsContent>
 
-					<TabsContent value="subjects" className="space-y-6">
+					<TabsContent value="subjects" className="flex flex-col gap-6">
 						<SubjectBreakdown
 							topicMastery={progress.weakTopics}
 							weakTopics={progress.weakTopics.map((t) => ({
@@ -363,7 +363,7 @@ export default function AnalyticsDashboard({ initialData }: AnalyticsDashboardPr
 						/>
 					</TabsContent>
 
-					<TabsContent value="insights" className="space-y-6">
+					<TabsContent value="insights" className="flex flex-col gap-6">
 						<LearningInsights
 							quizData={progress.quiz}
 							topicMastery={progress.weakTopics}

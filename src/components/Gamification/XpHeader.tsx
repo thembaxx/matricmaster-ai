@@ -96,14 +96,14 @@ export const XpHeader = memo(function XpHeader({
 				{variant === 'full' ? (
 					<div className="flex items-center gap-4">
 						<div className="w-12 h-12 bg-muted rounded-2xl" />
-						<div className="flex-1 space-y-2">
+						<div className="flex-1 flex flex-col gap-2">
 							<div className="h-4 bg-muted rounded w-24" />
 							<div className="h-2 bg-muted rounded w-full" />
 						</div>
 					</div>
 				) : (
 					<div className="flex items-center gap-2">
-						<div className="w-8 h-8 bg-muted rounded-xl" />
+						<div className="size-8 bg-muted rounded-xl" />
 						<div className="h-4 bg-muted rounded w-16" />
 					</div>
 				)}
@@ -120,14 +120,14 @@ export const XpHeader = memo(function XpHeader({
 					className="flex items-center gap-1.5 px-3 py-1.5 rounded-full"
 					style={{ backgroundColor: `${data.color}15` }}
 				>
-					<HugeiconsIcon icon={ChampionIcon} className="w-4 h-4" style={{ color: data.color }} />
+					<HugeiconsIcon icon={ChampionIcon} className="size-4" style={{ color: data.color }} />
 					<span className="text-sm font-semibold" style={{ color: data.color }}>
 						Lv.{data.level}
 					</span>
 				</div>
 				{data.streak > 0 && (
 					<div className="flex items-center gap-1.5 px-3 py-1.5 bg-orange-100 dark:bg-orange-900/20 rounded-full">
-						<HugeiconsIcon icon={FireIcon} className="w-4 h-4 text-orange-500" />
+						<HugeiconsIcon icon={FireIcon} className="size-4 text-orange-500" />
 						<span className="text-sm font-semibold text-orange-500">{data.streak}</span>
 					</div>
 				)}
@@ -136,21 +136,21 @@ export const XpHeader = memo(function XpHeader({
 	}
 
 	return (
-		<div className={`space-y-4 ${className}`}>
+		<div className={`flex flex-col gap-4 ${className}`}>
 			<div className="flex items-center justify-between">
 				<div className="flex items-center gap-4">
 					<div className="relative">
 						<div
-							className="w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg"
+							className="size-14 rounded-2xl flex items-center justify-center shadow-lg"
 							style={{
 								background: `linear-gradient(135deg, ${data.color}, ${data.color}cc)`,
 								boxShadow: `0 8px 24px ${data.color}30`,
 							}}
 						>
-							<HugeiconsIcon icon={ChampionIcon} className="w-7 h-7 text-white" />
+							<HugeiconsIcon icon={ChampionIcon} className="size-7 text-white" />
 						</div>
 						<div
-							className="absolute -bottom-1 -right-1 w-6 h-6 bg-background rounded-full flex items-center justify-center border-2 shadow-sm"
+							className="absolute -bottom-1 -right-1 size-6 bg-background rounded-full flex items-center justify-center border-2 shadow-sm"
 							style={{ borderColor: data.color }}
 						>
 							<span className="text-[10px] font-medium" style={{ color: data.color }}>
@@ -181,7 +181,7 @@ export const XpHeader = memo(function XpHeader({
 
 				{data.streak > 0 && (
 					<div className="flex items-center gap-2 px-4 py-2 bg-linear-to-r from-orange-100 to-amber-100 dark:from-orange-900/20 dark:to-amber-900/20 rounded-2xl">
-						<HugeiconsIcon icon={FireIcon} className="w-5 h-5 text-orange-500" />
+						<HugeiconsIcon icon={FireIcon} className="size-5 text-orange-500" />
 						<div>
 							<span className="text-xl font-semibold text-orange-500 tabular-nums">
 								{data.streak}
@@ -203,7 +203,7 @@ export const XpHeader = memo(function XpHeader({
 					}
 				/>
 				<div className="absolute top-1/2 -translate-y-1/2 right-0 flex items-center gap-1 px-2 py-0.5 pb-3 bg-background rounded-full border border-border shadow-sm">
-					<HugeiconsIcon icon={FlashIcon} className="w-3 h-3" style={{ color: data.color }} />
+					<HugeiconsIcon icon={FlashIcon} className="size-3" style={{ color: data.color }} />
 					<span className="text-[10px] font-medium text-muted-foreground">
 						{Math.round(data.progress)}%
 					</span>

@@ -141,7 +141,7 @@ export function ConnectCalendarButton() {
 					<CardDescription>Connect your calendar to sync study sessions</CardDescription>
 				</CardHeader>
 				<CardContent>
-					<div className="space-y-4">
+					<div className="flex flex-col gap-4">
 						<Skeleton className="h-20 w-full" />
 						<Skeleton className="h-10 w-full" />
 					</div>
@@ -168,9 +168,9 @@ export function ConnectCalendarButton() {
 				</CardTitle>
 				<CardDescription>Connect your calendar to sync study sessions</CardDescription>
 			</CardHeader>
-			<CardContent className="space-y-4">
+			<CardContent className="flex flex-col gap-4">
 				{syncStatus.connected ? (
-					<div className="space-y-4">
+					<div className="flex flex-col gap-4">
 						<div className="flex items-center justify-between p-3 bg-green-50 dark:bg-green-950/20 rounded-lg border border-green-200 dark:border-green-800">
 							<div className="flex items-center gap-2">
 								<HugeiconsIcon icon={CheckmarkCircle01Icon} className="h-5 w-5 text-green-600" />
@@ -186,7 +186,7 @@ export function ConnectCalendarButton() {
 						</div>
 
 						<div className="flex items-center justify-between">
-							<div className="space-y-1">
+							<div className="flex flex-col gap-1">
 								<p className="text-sm font-medium">Auto-sync</p>
 								<p className="text-xs text-muted-foreground">Automatically sync study sessions</p>
 							</div>
@@ -223,7 +223,7 @@ export function ConnectCalendarButton() {
 						</div>
 					</div>
 				) : (
-					<div className="space-y-4">
+					<div className="flex flex-col gap-4">
 						<div className="p-3 bg-muted rounded-lg border">
 							<p className="text-sm text-muted-foreground">
 								Connect your Google Calendar to automatically sync your study sessions and prevent

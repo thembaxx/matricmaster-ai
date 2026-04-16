@@ -101,10 +101,10 @@ export function BlockActions({
 		: null;
 
 	return (
-		<div className="space-y-5">
+		<div className="flex flex-col gap-5">
 			{event?.subjectId && (
 				<div className="flex items-center gap-2 px-3 py-2 bg-primary/5 rounded-xl border border-primary/10">
-					<div className="w-2 h-2 rounded-full bg-primary" />
+					<div className="size-2 rounded-full bg-primary" />
 					<span className="text-sm font-medium">{getSubjectName(event.subjectId)}</span>
 				</div>
 			)}
@@ -112,7 +112,7 @@ export function BlockActions({
 			<div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
 				<Button variant="ghost" onClick={handleStudySession} className={`${actionButtonBase} h-28`}>
 					<div className="p-3.5 rounded-2xl bg-primary/10 border border-primary/20 shadow-sm">
-						<HugeiconsIcon icon={Timer01Icon} className="w-6 h-6 text-primary" />
+						<HugeiconsIcon icon={Timer01Icon} className="size-6 text-primary" />
 					</div>
 					<div className="text-center">
 						<span className="text-sm font-bold block">Study</span>
@@ -127,9 +127,9 @@ export function BlockActions({
 					disabled={!event?.subjectId}
 				>
 					<div className="p-3.5 rounded-2xl bg-purple-500/10 border border-purple-500/20 shadow-sm">
-						<HugeiconsIcon icon={BookOpenIcon} className="w-6 h-6 text-purple-500" />
+						<HugeiconsIcon icon={BookOpenIcon} className="size-6 text-purple-500" />
 					</div>
-					<div className="text-center space-y-0.5">
+					<div className="text-center flex flex-col gap-0.5">
 						<span className="text-sm font-bold block">Flashcards</span>
 						<span className="text-[10px] text-muted-foreground">Review cards</span>
 					</div>
@@ -142,9 +142,9 @@ export function BlockActions({
 					disabled={!event?.subjectId}
 				>
 					<div className="p-3.5 rounded-2xl bg-amber-500/10 border border-amber-500/20 shadow-sm">
-						<HugeiconsIcon icon={File01Icon} className="w-6 h-6 text-amber-500" />
+						<HugeiconsIcon icon={File01Icon} className="size-6 text-amber-500" />
 					</div>
-					<div className="text-center space-y-0.5">
+					<div className="text-center flex flex-col gap-0.5">
 						<span className="text-sm font-bold block">Past Papers</span>
 						<span className="text-[10px] text-muted-foreground">Practice exams</span>
 					</div>
@@ -152,9 +152,9 @@ export function BlockActions({
 
 				<Button variant="ghost" onClick={handleAITutor} className={`${actionButtonBase} h-28`}>
 					<div className="p-3.5 rounded-2xl bg-green-500/10 border border-green-500/20 shadow-sm">
-						<HugeiconsIcon icon={Chat01Icon} className="w-6 h-6 text-green-500" />
+						<HugeiconsIcon icon={Chat01Icon} className="size-6 text-green-500" />
 					</div>
-					<div className="text-center space-y-0.5">
+					<div className="text-center flex flex-col gap-0.5">
 						<span className="text-sm font-bold block">AI Tutor</span>
 						<span className="text-[10px] text-muted-foreground">Ask anything</span>
 					</div>
@@ -168,7 +168,7 @@ export function BlockActions({
 					>
 						<svg
 							aria-label="Completion status"
-							className={`w-5 h-5 ${
+							className={`size-5 ${
 								event?.isCompleted ? 'text-green-500' : 'text-muted-foreground/50'
 							}`}
 							fill="none"
@@ -201,7 +201,7 @@ export function BlockActions({
 					onClick={() => onEditModalOpenChange(true)}
 					className="h-11 rounded-xl border-border/50 hover:bg-muted/50 hover:border-border font-medium"
 				>
-					<HugeiconsIcon icon={Edit01Icon} className="w-4 h-4" />
+					<HugeiconsIcon icon={Edit01Icon} className="size-4" />
 					Edit Block
 				</Button>
 				<Button
@@ -211,7 +211,7 @@ export function BlockActions({
 					disabled={isDeleting}
 					className="h-11 rounded-xl border-destructive/20 text-destructive hover:bg-destructive/10 hover:border-destructive/30 font-medium"
 				>
-					<HugeiconsIcon icon={Delete02Icon} className="w-4 h-4" />
+					<HugeiconsIcon icon={Delete02Icon} className="size-4" />
 					{isDeleting ? 'Deleting...' : 'Delete'}
 				</Button>
 			</div>

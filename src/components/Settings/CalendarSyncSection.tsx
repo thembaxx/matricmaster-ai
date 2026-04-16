@@ -4,7 +4,7 @@ import { ConnectCalendarButton } from '@/components/Calendar/ConnectCalendarButt
 
 export function CalendarSyncSection() {
 	return (
-		<div className="space-y-6">
+		<div className="flex flex-col gap-6">
 			<ConnectCalendarButton />
 		</div>
 	);

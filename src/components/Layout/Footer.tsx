@@ -61,7 +61,7 @@ export const Footer = memo(function Footer() {
 						className="col-span-2 md:col-span-3 lg:col-span-2"
 					>
 						<Link href="/" transitionTypes={['fade']} className="flex items-center gap-2 mb-4">
-							<div className="w-8 h-8 rounded-lg bg-gradient-to-br from-tiimo-lavender to-purple-600 flex items-center justify-center">
+							<div className="size-8 rounded-lg bg-gradient-to-br from-tiimo-lavender to-purple-600 flex items-center justify-center">
 								<span className="text-white font-bold text-sm">M</span>
 							</div>
 							<span className="text-xl font-semibold">Lumni</span>
@@ -100,7 +100,7 @@ export const Footer = memo(function Footer() {
 						transition={{ duration: 0.5, delay: 0.1 }}
 					>
 						<h3 className="font-medium text-sm mb-4">Product</h3>
-						<ul className="space-y-2.5">
+						<ul className="flex flex-col gap-2.5">
 							{footerLinks.product.map((link) => (
 								<li key={link.label}>
 									<Link
@@ -122,7 +122,7 @@ export const Footer = memo(function Footer() {
 						transition={{ duration: 0.5, delay: 0.15 }}
 					>
 						<h3 className="font-medium text-sm mb-4">Resources</h3>
-						<ul className="space-y-2.5">
+						<ul className="flex flex-col gap-2.5">
 							{footerLinks.resources.map((link) => (
 								<li key={link.label}>
 									<Link
@@ -144,7 +144,7 @@ export const Footer = memo(function Footer() {
 						transition={{ duration: 0.5, delay: 0.2 }}
 					>
 						<h3 className="font-medium text-sm mb-4">Company</h3>
-						<ul className="space-y-2.5">
+						<ul className="flex flex-col gap-2.5">
 							{footerLinks.company.map((link) => (
 								<li key={link.label}>
 									<Link

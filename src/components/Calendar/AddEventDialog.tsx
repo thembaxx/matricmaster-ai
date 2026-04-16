@@ -39,7 +39,7 @@ export function AddEventDialog({
 				<CardHeader>
 					<CardTitle>Add New Event</CardTitle>
 				</CardHeader>
-				<CardContent className="space-y-4">
+				<CardContent className="flex flex-col gap-4">
 					<div>
 						<label htmlFor="event-title" className="text-sm font-medium mb-1 block">
 							Title

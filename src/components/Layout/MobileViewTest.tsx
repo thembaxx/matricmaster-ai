@@ -73,13 +73,13 @@ export function MobileViewTest() {
 						{Object.entries(testResults).map(([key, passed]) => (
 							<div
 								key={key}
-								className={`w-3 h-3 rounded-full ${passed ? 'bg-green-500' : 'bg-red-500'}`}
+								className={`size-3 rounded-full ${passed ? 'bg-green-500' : 'bg-red-500'}`}
 								title={key}
 							/>
 						))}
 					</div>
 				</div>
-				<div className="text-xs text-muted-foreground space-y-1">
+				<div className="text-xs text-muted-foreground flex flex-col gap-1">
 					<div className="flex justify-between">
 						<span>CSS Variables:</span>
 						<span className={testResults.cssVariables ? 'text-green-600' : 'text-red-600'}>

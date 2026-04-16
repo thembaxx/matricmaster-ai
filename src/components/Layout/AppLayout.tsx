@@ -193,7 +193,7 @@ function AppLayoutSkeleton() {
 		<div className="flex min-h-screen bg-background overflow-x-hidden">
 			<div className="flex-1 flex flex-col min-h-screen relative max-w-full">
 				<div className="flex-1 flex flex-col w-full mx-auto max-w-full pt-20 pb-40">
-					<div className="animate-pulse space-y-4 p-4">
+					<div className="animate-pulse flex flex-col gap-4 p-4">
 						<div className="h-8 bg-muted rounded w-1/4" />
 						<div className="h-64 bg-muted rounded-lg" />
 					</div>

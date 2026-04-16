@@ -270,12 +270,12 @@ export function LearningInsights({
 	}, [quizData, topicMastery, weakTopics, studyStats]);
 
 	return (
-		<div className="space-y-6">
+		<div className="flex flex-col gap-6">
 			{/* Quick Stats Overview */}
 			<div className="grid grid-cols-2 md:grid-cols-4 gap-4">
 				<Card>
 					<CardContent className="p-4 text-center">
-						<HugeiconsIcon icon={Target01Icon} className="w-6 h-6 mx-auto mb-2 text-blue-600" />
+						<HugeiconsIcon icon={Target01Icon} className="size-6 mx-auto mb-2 text-blue-600" />
 						<div className="text-2xl font-bold">{quickStats.overallScore.toFixed(1)}%</div>
 						<div className="text-xs text-muted-foreground">Overall Accuracy</div>
 					</CardContent>
@@ -283,7 +283,7 @@ export function LearningInsights({
 
 				<Card>
 					<CardContent className="p-4 text-center">
-						<HugeiconsIcon icon={BookOpen01Icon} className="w-6 h-6 mx-auto mb-2 text-green-600" />
+						<HugeiconsIcon icon={BookOpen01Icon} className="size-6 mx-auto mb-2 text-green-600" />
 						<div className="text-2xl font-bold">{quickStats.masteryRate.toFixed(1)}%</div>
 						<div className="text-xs text-muted-foreground">Topics Mastered</div>
 					</CardContent>
@@ -291,7 +291,7 @@ export function LearningInsights({
 
 				<Card>
 					<CardContent className="p-4 text-center">
-						<HugeiconsIcon icon={Clock01Icon} className="w-6 h-6 mx-auto mb-2 text-purple-600" />
+						<HugeiconsIcon icon={Clock01Icon} className="size-6 mx-auto mb-2 text-purple-600" />
 						<div className="text-2xl font-bold">{quickStats.studyEfficiency.toFixed(1)}</div>
 						<div className="text-xs text-muted-foreground">Answers/Hour</div>
 					</CardContent>
@@ -299,7 +299,7 @@ export function LearningInsights({
 
 				<Card>
 					<CardContent className="p-4 text-center">
-						<HugeiconsIcon icon={Bulb} className="w-6 h-6 mx-auto mb-2 text-amber-600" />
+						<HugeiconsIcon icon={Bulb} className="size-6 mx-auto mb-2 text-amber-600" />
 						<div className="text-2xl font-bold">{quickStats.weakAreas}</div>
 						<div className="text-xs text-muted-foreground">Focus Areas</div>
 					</CardContent>
@@ -310,7 +310,7 @@ export function LearningInsights({
 			<Card>
 				<CardHeader>
 					<CardTitle className="flex items-center gap-2">
-						<HugeiconsIcon icon={Brain01Icon} className="w-5 h-5" />
+						<HugeiconsIcon icon={Brain01Icon} className="size-5" />
 						AI Learning Insights
 					</CardTitle>
 					<CardDescription>
@@ -318,7 +318,7 @@ export function LearningInsights({
 					</CardDescription>
 				</CardHeader>
 				<CardContent>
-					<Tabs defaultValue="overview" className="space-y-4">
+					<Tabs defaultValue="overview" className="flex flex-col gap-4">
 						<TabsList className="grid w-full grid-cols-2 lg:grid-cols-4">
 							<TabsTrigger value="overview">Overview</TabsTrigger>
 							<TabsTrigger value="strengths">Strengths</TabsTrigger>
@@ -326,7 +326,7 @@ export function LearningInsights({
 							<TabsTrigger value="recommendations">Recommendations</TabsTrigger>
 						</TabsList>
 
-						<TabsContent value="overview" className="space-y-4">
+						<TabsContent value="overview" className="flex flex-col gap-4">
 							<div className="grid gap-4">
 								{insightCategories.map((category) => (
 									<div key={category.key} className="border rounded-lg p-4">
@@ -336,7 +336,7 @@ export function LearningInsights({
 											<Badge variant="outline">{category.data.length}</Badge>
 										</div>
 										{category.data.length > 0 ? (
-											<ul className="space-y-1 text-sm text-muted-foreground">
+											<ul className="flex flex-col gap-1 text-sm text-muted-foreground">
 												{category.data.slice(0, 2).map((insight, index) => (
 													<li key={index} className="flex items-start gap-2">
 														<span className="text-xs mt-1">•</span>
@@ -358,8 +358,8 @@ export function LearningInsights({
 						</TabsContent>
 
 						{insightCategories.map((category) => (
-							<TabsContent key={category.key} value={category.key} className="space-y-4">
-								<div className="space-y-4">
+							<TabsContent key={category.key} value={category.key} className="flex flex-col gap-4">
+								<div className="flex flex-col gap-4">
 									{category.data.map((insight, index) => (
 										<div
 											key={index}
@@ -398,7 +398,7 @@ export function LearningInsights({
 			<Card>
 				<CardHeader>
 					<CardTitle className="flex items-center gap-2">
-						<HugeiconsIcon icon={LightbulbOffIcon} className="w-5 h-5" />
+						<HugeiconsIcon icon={LightbulbOffIcon} className="size-5" />
 						Personalized Study Plan
 					</CardTitle>
 					<CardDescription>
@@ -406,12 +406,12 @@ export function LearningInsights({
 					</CardDescription>
 				</CardHeader>
 				<CardContent>
-					<div className="space-y-4">
+					<div className="flex flex-col gap-4">
 						<div className="grid gap-4">
 							{/* Priority Actions */}
 							<div className="border rounded-lg p-4 bg-blue-50 border-blue-200">
 								<h4 className="font-medium text-blue-900 mb-2">🎯 Immediate Focus Areas</h4>
-								<ul className="space-y-1 text-sm text-blue-800">
+								<ul className="flex flex-col gap-1 text-sm text-blue-800">
 									{weakTopics.slice(0, 3).map((topic, index) => (
 										<li key={index} className="flex items-center gap-2">
 											<span>•</span>
