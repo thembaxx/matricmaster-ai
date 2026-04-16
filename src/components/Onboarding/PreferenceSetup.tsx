@@ -127,10 +127,10 @@ function DifficultySetup({ onUpdateResponse, getResponse }: DifficultySetupProps
 	return (
 		<div className="space-y-6">
 			<div className="text-center">
-				<h3 className="text-lg font-semibold text-gray-900 mb-2">
+				<h3 className="text-lg font-semibold text-foreground mb-2">
 					What's your current knowledge level?
 				</h3>
-				<p className="text-gray-600">
+				<p className="text-muted-foreground">
 					This helps us start you at the right difficulty. Don't worry - we'll adjust as you learn!
 				</p>
 			</div>
@@ -141,8 +141,8 @@ function DifficultySetup({ onUpdateResponse, getResponse }: DifficultySetupProps
 						key={option.value}
 						className={`cursor-pointer transition-all ${
 							selectedDifficulty === option.value
-								? 'ring-2 ring-blue-500 bg-blue-50'
-								: 'hover:bg-gray-50'
+								? 'ring-2 ring-primary bg-primary/5'
+								: 'hover:bg-muted/50'
 						}`}
 						onClick={() => handleDifficultyChange(option.value)}
 					>
@@ -161,9 +161,9 @@ function DifficultySetup({ onUpdateResponse, getResponse }: DifficultySetupProps
 								<div className="flex-1">
 									<div className="flex items-center space-x-2 mb-2">
 										<span className="text-2xl">{option.emoji}</span>
-										<h4 className="font-semibold text-gray-900">{option.title}</h4>
+										<h4 className="font-semibold text-foreground">{option.title}</h4>
 									</div>
-									<p className="text-gray-600 mb-3">{option.description}</p>
+									<p className="text-muted-foreground mb-3">{option.description}</p>
 									<div className="flex flex-wrap gap-2">
 										{option.features.map((feature, index) => (
 											<Badge key={index} variant="secondary" className="text-xs">
@@ -178,8 +178,8 @@ function DifficultySetup({ onUpdateResponse, getResponse }: DifficultySetupProps
 				))}
 			</div>
 
-			<div className="bg-blue-50 p-4 rounded-lg">
-				<p className="text-sm text-blue-800">
+			<div className="bg-primary/5 border border-primary/10 p-4 rounded-lg">
+				<p className="text-sm text-foreground">
 					<strong>Pro tip:</strong> We recommend starting with Medium difficulty if you're unsure.
 					Our adaptive system will quickly adjust to your actual skill level.
 				</p>
@@ -218,10 +218,10 @@ function SubjectPreferences({ onUpdateResponse, getResponse }: SubjectPreference
 	return (
 		<div className="space-y-6">
 			<div className="text-center">
-				<h3 className="text-lg font-semibold text-gray-900 mb-2">
+				<h3 className="text-lg font-semibold text-foreground mb-2">
 					Which subjects interest you most?
 				</h3>
-				<p className="text-gray-600">
+				<p className="text-muted-foreground">
 					Select the subjects you want to focus on. You can change this anytime.
 				</p>
 			</div>
@@ -232,8 +232,8 @@ function SubjectPreferences({ onUpdateResponse, getResponse }: SubjectPreference
 						key={subject.id}
 						className={`cursor-pointer transition-all ${
 							selectedSubjects.includes(subject.id)
-								? 'ring-2 ring-blue-500 bg-blue-50'
-								: 'hover:bg-gray-50'
+								? 'ring-2 ring-primary bg-primary/5'
+								: 'hover:bg-muted/50'
 						}`}
 						onClick={() => handleSubjectToggle(subject.id)}
 					>
@@ -252,8 +252,8 @@ function SubjectPreferences({ onUpdateResponse, getResponse }: SubjectPreference
 			</div>
 
 			{selectedSubjects.length > 0 && (
-				<div className="bg-green-50 p-4 rounded-lg">
-					<p className="text-sm text-green-800">
+				<div className="bg-success/5 border border-success/10 p-4 rounded-lg">
+					<p className="text-sm text-foreground">
 						<strong>Great choice!</strong> You've selected {selectedSubjects.length} subject
 						{selectedSubjects.length !== 1 ? 's' : ''}. We'll prioritize content from these areas in
 						your personalized recommendations.
@@ -261,8 +261,8 @@ function SubjectPreferences({ onUpdateResponse, getResponse }: SubjectPreference
 				</div>
 			)}
 
-			<div className="bg-gray-50 p-4 rounded-lg">
-				<p className="text-sm text-gray-700">
+			<div className="bg-muted/50 p-4 rounded-lg">
+				<p className="text-sm text-foreground">
 					<strong>Note:</strong> You can always add or remove subjects later. We'll also suggest
 					content from related subjects to give you a well-rounded education.
 				</p>
@@ -348,8 +348,10 @@ function StudyPreferences({ onUpdateResponse, getResponse }: StudyPreferencesPro
 		<div className="space-y-8">
 			{/* Session Duration */}
 			<div>
-				<h3 className="text-lg font-semibold text-gray-900 mb-2">Preferred Study Session Length</h3>
-				<p className="text-gray-600 mb-4">
+				<h3 className="text-lg font-semibold text-foreground mb-2">
+					Preferred Study Session Length
+				</h3>
+				<p className="text-muted-foreground mb-4">
 					How long do you typically want to study in one session?
 				</p>
 				<div className="px-4">
@@ -361,7 +363,7 @@ function StudyPreferences({ onUpdateResponse, getResponse }: StudyPreferencesPro
 						step={15}
 						className="w-full"
 					/>
-					<div className="flex justify-between text-sm text-gray-500 mt-2">
+					<div className="flex justify-between text-sm text-muted-foreground mt-2">
 						<span>15 min</span>
 						<span className="font-semibold">{sessionDuration[0]} minutes</span>
 						<span>120 min</span>
@@ -371,15 +373,15 @@ function StudyPreferences({ onUpdateResponse, getResponse }: StudyPreferencesPro
 
 			{/* Preferred Pace */}
 			<div>
-				<h3 className="text-lg font-semibold text-gray-900 mb-2">Learning Pace Preference</h3>
-				<p className="text-gray-600 mb-4">
+				<h3 className="text-lg font-semibold text-foreground mb-2">Learning Pace Preference</h3>
+				<p className="text-muted-foreground mb-4">
 					How quickly do you prefer to progress through material?
 				</p>
 				<RadioGroup value={preferredPace} onValueChange={handlePaceChange} className="space-y-3">
 					{paceOptions.map((option) => (
 						<div
 							key={option.value}
-							className="flex items-center space-x-3 p-3 rounded-lg border hover:bg-gray-50"
+							className="flex items-center space-x-3 p-3 rounded-lg border hover:bg-muted/50"
 						>
 							<RadioGroupItem value={option.value} id={`pace-${option.value}`} />
 							<Label htmlFor={`pace-${option.value}`} className="flex-1 cursor-pointer">
@@ -387,7 +389,7 @@ function StudyPreferences({ onUpdateResponse, getResponse }: StudyPreferencesPro
 									<span>{option.emoji}</span>
 									<div>
 										<div className="font-medium">{option.title}</div>
-										<div className="text-sm text-gray-600">{option.description}</div>
+										<div className="text-sm text-muted-foreground">{option.description}</div>
 									</div>
 								</div>
 							</Label>
@@ -398,8 +400,8 @@ function StudyPreferences({ onUpdateResponse, getResponse }: StudyPreferencesPro
 
 			{/* Content Types */}
 			<div>
-				<h3 className="text-lg font-semibold text-gray-900 mb-2">Preferred Content Types</h3>
-				<p className="text-gray-600 mb-4">
+				<h3 className="text-lg font-semibold text-foreground mb-2">Preferred Content Types</h3>
+				<p className="text-muted-foreground mb-4">
 					What types of content do you enjoy learning with? (Select all that apply)
 				</p>
 				<div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -408,8 +410,8 @@ function StudyPreferences({ onUpdateResponse, getResponse }: StudyPreferencesPro
 							key={option.id}
 							className={`flex items-center space-x-3 p-3 rounded-lg border cursor-pointer transition-all ${
 								contentTypes.includes(option.id)
-									? 'ring-2 ring-blue-500 bg-blue-50'
-									: 'hover:bg-gray-50'
+									? 'ring-2 ring-primary bg-primary/5'
+									: 'hover:bg-muted/50'
 							}`}
 							onClick={() => handleContentTypeToggle(option.id)}
 							role="button"
@@ -432,8 +434,8 @@ function StudyPreferences({ onUpdateResponse, getResponse }: StudyPreferencesPro
 				</div>
 			</div>
 
-			<div className="bg-blue-50 p-4 rounded-lg">
-				<p className="text-sm text-blue-800">
+			<div className="bg-primary/5 border border-primary/10 p-4 rounded-lg">
+				<p className="text-sm text-foreground">
 					<strong>Perfect!</strong> These preferences will help us create study sessions and
 					recommend content that matches your learning style and schedule.
 				</p>

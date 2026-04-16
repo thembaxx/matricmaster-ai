@@ -66,10 +66,10 @@ export function CommentSignInPrompt() {
 export function CommentEmptyState() {
 	return (
 		<div className="text-center py-12">
-			<div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mx-auto mb-4 opacity-50">
-				<HugeiconsIcon icon={Chat01Icon} className="h-8 w-8" />
+			<div className="w-16 h-16 bg-primary/5 rounded-full flex items-center justify-center mx-auto mb-4">
+				<HugeiconsIcon icon={Chat01Icon} className="h-8 w-8 text-muted-foreground" />
 			</div>
-			<p className="text-muted-foreground font-bold  text-[10px] tracking-widest">
+			<p className="text-muted-foreground font-bold text-[10px] tracking-widest">
 				No comments yet. Be the first to share!
 			</p>
 		</div>

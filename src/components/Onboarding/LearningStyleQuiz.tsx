@@ -71,15 +71,15 @@ export function LearningStyleQuiz({ responses, onUpdateResponse }: LearningStyle
 		<div className="space-y-6">
 			{/* Progress indicator */}
 			<div className="space-y-2">
-				<div className="flex justify-between text-sm text-gray-600">
+				<div className="flex justify-between text-sm text-muted-foreground">
 					<span>
 						Question {currentQuestionIndex + 1} of {totalQuestions}
 					</span>
 					<span>{Math.round(progress)}% complete</span>
 				</div>
-				<div className="w-full bg-gray-200 rounded-full h-2">
+				<div className="w-full bg-muted rounded-full h-2">
 					<div
-						className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+						className="bg-primary h-2 rounded-full transition-all duration-300"
 						style={{ width: `${progress}%` }}
 					/>
 				</div>
@@ -88,7 +88,7 @@ export function LearningStyleQuiz({ responses, onUpdateResponse }: LearningStyle
 			{/* Question card */}
 			<Card>
 				<CardContent className="pt-6">
-					<h3 className="text-lg font-semibold text-gray-900 mb-4">{currentQuestion.question}</h3>
+					<h3 className="text-lg font-semibold text-foreground mb-4">{currentQuestion.question}</h3>
 
 					<RadioGroup
 						value={selectedAnswers[currentQuestion.questionId] || ''}
@@ -98,7 +98,7 @@ export function LearningStyleQuiz({ responses, onUpdateResponse }: LearningStyle
 						{currentQuestion.options.map((option, index) => (
 							<div
 								key={index}
-								className="flex items-center space-x-3 p-3 rounded-lg border hover:bg-gray-50 transition-colors"
+								className="flex items-center space-x-3 p-3 rounded-lg border hover:bg-muted/50 transition-colors"
 							>
 								<RadioGroupItem
 									value={option.style}
@@ -134,10 +134,10 @@ export function LearningStyleQuiz({ responses, onUpdateResponse }: LearningStyle
 						key={index}
 						className={`w-3 h-3 rounded-full ${
 							index === currentQuestionIndex
-								? 'bg-blue-600'
+								? 'bg-primary'
 								: selectedAnswers[learningStyleQuestions[index].questionId]
-									? 'bg-green-500'
-									: 'bg-gray-300'
+									? 'bg-success'
+									: 'bg-muted'
 						}`}
 					/>
 				))}
@@ -225,28 +225,28 @@ function LearningStyleResult({ learningStyle }: LearningStyleResultProps) {
 
 	return (
 		<div className="text-center space-y-6">
-			<div className="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto">
+			<div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
 				<span className="text-4xl">{info.emoji}</span>
 			</div>
 
 			<div>
-				<h3 className="text-2xl font-bold text-gray-900 mb-2">{info.title}</h3>
-				<p className="text-gray-600">{info.description}</p>
+				<h3 className="text-2xl font-bold text-foreground mb-2">{info.title}</h3>
+				<p className="text-muted-foreground">{info.description}</p>
 			</div>
 
 			<div className="grid md:grid-cols-2 gap-6">
-				<div className="bg-green-50 p-4 rounded-lg">
-					<h4 className="font-semibold text-green-800 mb-2">Your Strengths</h4>
-					<ul className="text-sm text-green-700 space-y-1">
+				<div className="bg-success/5 border border-success/10 p-4 rounded-lg">
+					<h4 className="font-semibold text-foreground mb-2">Your Strengths</h4>
+					<ul className="text-sm text-foreground/80 space-y-1">
 						{info.strengths.map((strength, index) => (
 							<li key={index}>• {strength}</li>
 						))}
 					</ul>
 				</div>
 
-				<div className="bg-blue-50 p-4 rounded-lg">
-					<h4 className="font-semibold text-blue-800 mb-2">Study Tips</h4>
-					<ul className="text-sm text-blue-700 space-y-1">
+				<div className="bg-primary/5 border border-primary/10 p-4 rounded-lg">
+					<h4 className="font-semibold text-foreground mb-2">Study Tips</h4>
+					<ul className="text-sm text-foreground/80 space-y-1">
 						{info.tips.map((tip, index) => (
 							<li key={index}>• {tip}</li>
 						))}
@@ -254,8 +254,8 @@ function LearningStyleResult({ learningStyle }: LearningStyleResultProps) {
 				</div>
 			</div>
 
-			<div className="bg-gray-50 p-4 rounded-lg">
-				<p className="text-sm text-gray-700">
+			<div className="bg-muted/50 p-4 rounded-lg">
+				<p className="text-sm text-foreground">
 					<strong>Note:</strong> Most people have a mix of learning styles. We'll adapt content to
 					match your preferences while also exposing you to other styles for well-rounded learning.
 				</p>
