@@ -101,7 +101,7 @@
   --font-playfair: var(--font-playfair);
   --font-noto-sans-math: var(--font-noto-sans-math);
   --font-atkinson: var(--font-atkinson);
-  --font-heading: var(--font-heading);
+  --font-heading: var(--font-playfair), Georgia, serif;
   --font-mono: var(--font-mono);
   --font-display: var(--font-playfair), Georgia, serif;
   --font-body: var(--font-geist-sans), system-ui, sans-serif;

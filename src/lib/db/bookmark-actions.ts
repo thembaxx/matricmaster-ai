@@ -7,7 +7,7 @@ import { dbManager, getDb } from './index';
 import { type Bookmark, bookmarks, type NewBookmark } from './schema';
 
 const bookmarkSchema = z.object({
-	bookmarkType: z.enum(['question', 'past_paper', 'study_note', 'quiz']),
+	bookmarkType: z.enum(['question', 'past_paper', 'study_note', 'quiz', 'lesson']),
 	referenceId: z.string().min(1),
 	note: z.string().optional(),
 });
@@ -16,7 +16,7 @@ const bookmarkSchema = z.object({
  * Create a new bookmark
  */
 export async function createBookmarkAction(
-	bookmarkType: 'question' | 'past_paper' | 'study_note' | 'quiz',
+	bookmarkType: 'question' | 'past_paper' | 'study_note' | 'quiz' | 'lesson',
 	referenceId: string,
 	note?: string
 ): Promise<{ success: boolean; bookmark?: Bookmark; error?: string }> {
@@ -67,7 +67,7 @@ export async function createBookmarkAction(
  * Get user's bookmarks
  */
 export async function getBookmarksAction(
-	type?: 'question' | 'past_paper' | 'study_note' | 'quiz'
+	type?: 'question' | 'past_paper' | 'study_note' | 'quiz' | 'lesson'
 ): Promise<Bookmark[]> {
 	try {
 		const user = await ensureAuthenticated();

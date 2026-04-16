@@ -36,6 +36,7 @@ function AITutorPageContent() {
 	const contextParam = searchParams.get('context');
 	const topicParam = searchParams.get('topic');
 	const subjectParam = searchParams.get('subject');
+	const practiceParam = searchParams.get('practice');
 
 	const {
 		session,
@@ -84,6 +85,21 @@ function AITutorPageContent() {
 			initialEffectRun.current = true;
 		}
 	}, [contextParam, topicParam, subjectParam, handleSend]);
+
+	// Auto-generate practice when practice=true param is present
+	const practiceEffectRan = useRef(false);
+	useEffect(() => {
+		if (practiceEffectRan.current) return;
+		if (practiceParam !== 'true') return;
+		if (messages.length <= 1) return;
+
+		practiceEffectRan.current = true;
+		const timer = setTimeout(() => {
+			handleGeneratePractice();
+		}, 2500);
+
+		return () => clearTimeout(timer);
+	}, [practiceParam, messages.length, handleGeneratePractice]);
 
 	if (isSessionLoading) {
 		return <AITutorPageSkeleton />;

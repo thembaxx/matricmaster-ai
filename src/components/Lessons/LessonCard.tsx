@@ -1,14 +1,18 @@
 import { Clock01Icon, LockIcon, Tick01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
+import { useState } from 'react';
 import { TTSButton } from '@/components/Lessons/TTSButton';
 import { Card } from '@/components/ui/card';
 import type { Lesson } from '@/hooks/useLessons';
 
 interface LessonCardProps {
 	lesson: Lesson;
+	onClick?: () => void;
 }
 
-export function LessonCard({ lesson }: LessonCardProps) {
+export function LessonCard({ lesson, onClick }: LessonCardProps) {
+	const [showPreview, setShowPreview] = useState(false);
+
 	return (
 		<div className="flex gap-6 relative z-10">
 			{/* Node Icon */}
@@ -36,10 +40,19 @@ export function LessonCard({ lesson }: LessonCardProps) {
 			{/* Lesson Card */}
 			<div className="flex-1">
 				<Card
-					className={`p-6 rounded-[2rem] border-2 shadow-sm relative overflow-hidden group hover:shadow-md transition-all ${
+					onClick={onClick}
+					onMouseEnter={() => setShowPreview(true)}
+					onMouseLeave={() => setShowPreview(false)}
+					className={`p-6 rounded-[2rem] border-2 shadow-sm relative overflow-hidden group hover:shadow-md transition-all cursor-pointer ${
 						lesson.status === 'active' ? 'border-primary bg-card' : 'border-transparent bg-card'
 					}`}
 				>
+					{/* Quick Preview Tooltip */}
+					{showPreview && (
+						<div className="absolute left-0 right-0 bottom-full mb-2 p-3 bg-foreground text-background rounded-xl shadow-xl z-20 animate-in fade-in slide-in-from-bottom-2 duration-200">
+							<p className="text-xs line-clamp-3">{lesson.content.slice(0, 150)}...</p>
+						</div>
+					)}
 					{lesson.isContinue && (
 						<div className="absolute top-0 right-0">
 							<div className="bg-primary text-primary-foreground text-[10px] font-black px-4 py-1.5 rounded-bl-2xl  tracking-widest shadow-sm">
