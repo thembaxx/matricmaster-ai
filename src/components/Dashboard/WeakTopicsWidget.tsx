@@ -2,6 +2,7 @@
 
 import { BookOpen01Icon, Delete02Icon, SparklesIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
+import { m } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { memo, useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
@@ -49,43 +50,55 @@ export const WeakTopicsWidget = memo(function WeakTopicsWidget({
 	}
 
 	return (
-		<div className="bg-primary/5 border border-primary/20 rounded-2xl p-4 flex flex-col gap-3">
-			<div className="flex items-center justify-between">
-				<div className="flex items-center gap-2">
-					<HugeiconsIcon icon={SparklesIcon} className="w-4 h-4 text-primary" />
-					<span className="text-xs font-black text-primary tracking-widest">
-						weak topics from quiz
-					</span>
+		<m.div
+			initial={{ opacity: 0, y: 10 }}
+			animate={{ opacity: 1, y: 0 }}
+			className="relative overflow-hidden bg-gradient-to-br from-primary/5 via-background to-primary/10 border border-primary/20 rounded-2xl p-5"
+		>
+			<div className="absolute -top-16 -right-16 w-32 h-32 bg-primary/10 rounded-full blur-[60px]" />
+			<div className="absolute -bottom-16 -left-16 w-32 h-32 bg-primary/5 rounded-full blur-[60px]" />
+
+			<div className="relative flex items-center justify-between mb-4">
+				<div className="flex items-center gap-3">
+					<div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
+						<HugeiconsIcon icon={SparklesIcon} className="w-4 h-4 text-primary" />
+					</div>
+					<span className="text-sm font-semibold text-foreground">Topics to review</span>
 				</div>
 				<Button
 					variant="ghost"
 					size="sm"
-					className="h-6 px-2 text-xs font-black"
+					className="h-8 px-3 text-xs font-medium hover:bg-primary/10"
 					onClick={handleAddToStudyPlan}
 				>
 					add to plan
 				</Button>
 			</div>
-			<div className="flex flex-wrap gap-2">
-				{displayTopics.map((topic) => (
-					<div
+			<div className="relative flex flex-wrap gap-2.5">
+				{displayTopics.map((topic, index) => (
+					<m.div
 						key={topic.id}
-						className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-destructive/10 text-destructive text-xs font-black rounded-full"
+						initial={{ opacity: 0, scale: 0.9 }}
+						animate={{ opacity: 1, scale: 1 }}
+						transition={{ delay: index * 0.05 }}
+						className="inline-flex items-center gap-2 px-3 py-1.5 bg-destructive/10 hover:bg-destructive/15 text-destructive text-sm font-medium rounded-full transition-colors group"
 					>
-						<span>{topic.topic}</span>
-						<span className="opacity-70">{Math.round(topic.confidence * 100)}%</span>
+						<span className="truncate max-w-[120px]">{topic.topic}</span>
+						<span className="text-xs opacity-70 font-numeric tabular-nums">
+							{Math.round(topic.confidence * 100)}%
+						</span>
 						<Button
 							variant="ghost"
 							size="sm"
 							onClick={() => removeWeakTopic(topic.id)}
-							className="h-auto p-0.5 ml-0.5 hover:opacity-70"
+							className="h-auto p-0.5 ml-0.5 opacity-50 hover:opacity-100 transition-opacity"
 							type="button"
 						>
 							<HugeiconsIcon icon={Delete02Icon} className="size-3" />
 						</Button>
-					</div>
+					</m.div>
 				))}
 			</div>
-		</div>
+		</m.div>
 	);
 });

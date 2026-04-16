@@ -1,6 +1,6 @@
 'use client';
 
-import { ArrowRight01Icon, Medal01Icon } from '@hugeicons/core-free-icons';
+import { ArrowRight01Icon, Medal01Icon, StarIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { useQuery } from '@tanstack/react-query';
 import { m } from 'framer-motion';
@@ -21,6 +21,12 @@ interface LeaderboardEntry {
 	totalPoints: number;
 	isCurrentUser?: boolean;
 }
+
+const RANK_COLORS: Record<number, string> = {
+	1: 'bg-gradient-to-br from-amber-400 to-amber-600 text-white shadow-lg shadow-amber-500/20',
+	2: 'bg-gradient-to-br from-slate-300 to-slate-400 text-slate-800 shadow-lg shadow-slate-400/20',
+	3: 'bg-gradient-to-br from-orange-400 to-orange-500 text-white shadow-lg shadow-orange-500/20',
+};
 
 export const LeaderboardPreview = memo(function LeaderboardPreview() {
 	const { data: session } = useSession();
@@ -77,7 +83,7 @@ export const LeaderboardPreview = memo(function LeaderboardPreview() {
 
 	if (isPending) {
 		return (
-			<Card className="p-6 premium-glass border-none rounded-[2.5rem] h-full">
+			<Card className="p-6 border border-border/30 rounded-2xl h-full bg-gradient-to-br from-card via-card to-primary/5">
 				<div className="space-y-4">
 					<Skeleton className="h-5 w-32" />
 					{[1, 2, 3].map((item) => (
@@ -97,21 +103,16 @@ export const LeaderboardPreview = memo(function LeaderboardPreview() {
 
 	if (error) {
 		return (
-			<Card className="p-6 premium-glass border-none rounded-[2.5rem] h-full">
+			<Card className="p-6 border border-border/30 rounded-2xl h-full">
 				<div className="flex items-center justify-between mb-4">
 					<div className="flex items-center gap-2">
-						<HugeiconsIcon icon={Medal01Icon} className="w-5 h-5 text-brand-amber" />
-						<h3 className="text-lg font-black text-foreground tracking-tight">Leaderboard</h3>
+						<HugeiconsIcon icon={StarIcon} className="w-5 h-5 text-amber-500" />
+						<h3 className="text-lg font-bold text-foreground">Leaderboard</h3>
 					</div>
 				</div>
 				<div className="flex flex-col items-center justify-center py-8 text-center">
 					<p className="text-sm text-destructive mb-3">Unable to load leaderboard</p>
-					<Button
-						variant="outline"
-						size="sm"
-						onClick={handleRetry}
-						className="transition-all duration-200"
-					>
+					<Button variant="outline" size="sm" onClick={handleRetry}>
 						Try Again
 					</Button>
 				</div>
@@ -120,16 +121,19 @@ export const LeaderboardPreview = memo(function LeaderboardPreview() {
 	}
 
 	return (
-		<Card className="p-6 premium-glass border-none rounded-[2.5rem] h-full">
-			<div className="flex items-center justify-between mb-4">
-				<div className="flex items-center gap-2">
-					<HugeiconsIcon icon={Medal01Icon} className="w-5 h-5 text-brand-amber" />
-					<h3 className="text-lg font-black text-foreground tracking-tight font-display">
-						leaderboard
-					</h3>
+		<Card className="relative overflow-hidden p-6 border border-border/30 rounded-2xl h-full bg-gradient-to-br from-card via-card to-primary/5">
+			<div className="absolute -top-12 -right-12 w-24 h-24 bg-amber-500/10 rounded-full blur-[40px]" />
+			<div className="absolute -bottom-12 -left-12 w-24 h-24 bg-primary/10 rounded-full blur-[40px]" />
+
+			<div className="relative flex items-center justify-between mb-5">
+				<div className="flex items-center gap-3">
+					<div className="w-9 h-9 rounded-xl bg-amber-500/10 flex items-center justify-center">
+						<HugeiconsIcon icon={StarIcon} className="w-5 h-5 text-amber-500" />
+					</div>
+					<h3 className="text-lg font-bold text-foreground">Leaderboard</h3>
 				</div>
 				{userRank && (
-					<Badge variant="outline" className="text-[10px] font-black tracking-wider font-mono">
+					<Badge variant="secondary" className="text-xs font-semibold px-2.5 py-1">
 						#{userRank}
 					</Badge>
 				)}
@@ -142,49 +146,42 @@ export const LeaderboardPreview = memo(function LeaderboardPreview() {
 					</p>
 				</div>
 			) : (
-				<div className="space-y-3">
+				<div className="space-y-2.5">
 					{entries.map((entry, index) => (
 						<m.div
 							key={entry.userId + entry.rank}
 							initial={{ opacity: 0, y: 10 }}
 							animate={{ opacity: 1, y: 0 }}
 							transition={{ delay: index * 0.1 }}
-							className={`flex items-center gap-3 p-3 rounded-2xl transition-all duration-200 ${
+							className={`flex items-center gap-3 p-3 rounded-xl transition-all duration-200 ${
 								entry.isCurrentUser
-									? 'bg-tiimo-yellow/10 border border-tiimo-yellow/20'
+									? 'bg-primary/10 border border-primary/20'
 									: 'bg-card/50 hover:bg-card/80'
 							}`}
 						>
 							<div
-								className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-black shrink-0 transition-colors duration-200 ${
-									entry.rank === 1
-										? 'bg-tiimo-yellow/20 text-tiimo-yellow'
-										: entry.rank === 2
-											? 'bg-tiimo-gray-subtle/50 text-tiimo-gray-dark'
-											: entry.rank === 3
-												? 'bg-tiimo-orange/20 text-tiimo-orange'
-												: 'bg-muted text-muted-foreground'
+								className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold shrink-0 ${
+									RANK_COLORS[entry.rank] || 'bg-muted text-muted-foreground'
 								}`}
 							>
-								{entry.rank}
+								{entry.rank <= 3 ? (
+									<HugeiconsIcon icon={Medal01Icon} className="w-4 h-4" />
+								) : (
+									entry.rank
+								)}
 							</div>
-							<Avatar className="w-10 h-10">
+							<Avatar className="w-9 h-9">
 								<AvatarImage src={entry.image} />
-								<AvatarFallback className="bg-linear-to-br from-violet-400 to-purple-600 text-white text-xs font-bold">
+								<AvatarFallback className="bg-gradient-to-br from-violet-400 to-purple-600 text-white text-xs font-bold">
 									{entry.name.charAt(0)}
 								</AvatarFallback>
 							</Avatar>
 							<div className="flex-1 min-w-0">
-								<p className="text-sm font-bold text-foreground truncate">{entry.name}</p>
-								<p className="text-xs text-muted-foreground font-medium">
+								<p className="text-sm font-semibold text-foreground truncate">{entry.name}</p>
+								<p className="text-xs text-muted-foreground font-numeric tabular-nums">
 									{entry.totalPoints.toLocaleString()} pts
 								</p>
 							</div>
-							{entry.rank <= 3 && (
-								<span className="text-lg">
-									{entry.rank === 1 ? '🥇' : entry.rank === 2 ? '🥈' : '🥉'}
-								</span>
-							)}
 						</m.div>
 					))}
 				</div>
@@ -194,7 +191,7 @@ export const LeaderboardPreview = memo(function LeaderboardPreview() {
 				whileHover={{ scale: 1.02 }}
 				whileTap={{ scale: 0.98 }}
 				type="button"
-				className="w-full mt-4 py-3 px-4 rounded-2xl bg-muted/50 hover:bg-muted text-sm font-bold text-muted-foreground hover:text-foreground transition-all duration-200 flex items-center justify-center gap-2"
+				className="relative w-full mt-4 py-3 px-4 rounded-xl bg-secondary/50 hover:bg-secondary text-sm font-semibold text-muted-foreground hover:text-foreground transition-all duration-200 flex items-center justify-center gap-2"
 			>
 				view full leaderboard
 				<HugeiconsIcon icon={ArrowRight01Icon} className="w-4 h-4" />
