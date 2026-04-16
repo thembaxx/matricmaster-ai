@@ -2,10 +2,11 @@
 
 import { Chemistry01Icon, LayoutLeftIcon, TranslateIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { LessonCard } from '@/components/Lessons/LessonCard';
 import { LessonDetailModal } from '@/components/Lessons/LessonDetailModal';
 import { Button } from '@/components/ui/button';
+import { useLessonCache } from '@/hooks/useLessonCache';
 import type { Lesson } from '@/hooks/useLessons';
 
 interface LessonsBrowserProps {
@@ -23,10 +24,26 @@ export default function LessonsBrowser({
 }: LessonsBrowserProps) {
 	const [selectedLesson, setSelectedLesson] = useState<Lesson | null>(null);
 	const [modalOpen, setModalOpen] = useState(false);
+	const [currentIndex, setCurrentIndex] = useState(0);
+	const [offlineReady, setOfflineReady] = useState(false);
 
-	const handleLessonClick = (lesson: Lesson) => {
+	// Offline caching
+	const { isOfflineReady } = useLessonCache(filteredLessons);
+
+	// Check offline readiness
+	useEffect(() => {
+		isOfflineReady().then(setOfflineReady);
+	}, [isOfflineReady]);
+
+	const handleLessonClick = (lesson: Lesson, index: number) => {
 		setSelectedLesson(lesson);
+		setCurrentIndex(index);
 		setModalOpen(true);
+	};
+
+	const handleModalNavigate = (lesson: Lesson, index: number) => {
+		setSelectedLesson(lesson);
+		setCurrentIndex(index);
 	};
 
 	if (loading) {
@@ -44,6 +61,16 @@ export default function LessonsBrowser({
 
 	return (
 		<div className="space-y-8">
+			{/* Offline indicator */}
+			{offlineReady && (
+				<div className="fixed bottom-24 right-4 z-50">
+					<div className="bg-green-600 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg flex items-center gap-1.5">
+						<span className="w-2 h-2 bg-white rounded-full animate-pulse" />
+						offline ready
+					</div>
+				</div>
+			)}
+
 			{/* Category selector */}
 			<nav
 				className="flex gap-2 sm:gap-3 overflow-x-auto no-scrollbar"
@@ -86,18 +113,25 @@ export default function LessonsBrowser({
 							<p className="text-muted-foreground">No lessons found for this category</p>
 						</div>
 					) : (
-						filteredLessons.map((lesson) => (
+						filteredLessons.map((lesson, index) => (
 							<LessonCard
 								key={lesson.id}
 								lesson={lesson}
-								onClick={() => handleLessonClick(lesson)}
+								onClick={() => handleLessonClick(lesson, index)}
 							/>
 						))
 					)}
 				</div>
 			</div>
 
-			<LessonDetailModal lesson={selectedLesson} open={modalOpen} onOpenChange={setModalOpen} />
+			<LessonDetailModal
+				lesson={selectedLesson}
+				open={modalOpen}
+				onOpenChange={setModalOpen}
+				allLessons={filteredLessons}
+				currentIndex={currentIndex}
+				onNavigate={handleModalNavigate}
+			/>
 		</div>
 	);
 }

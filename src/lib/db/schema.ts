@@ -612,6 +612,42 @@ export const bookmarks = pgTable(
 );
 
 // ============================================================================
+// LESSON PROGRESS TABLE
+// ============================================================================
+
+export const lessonProgress = pgTable(
+	'lesson_progress',
+	{
+		id: uuid('id').defaultRandom().primaryKey(),
+		userId: text('user_id')
+			.notNull()
+			.references(() => users.id, { onDelete: 'cascade' }),
+		lessonId: varchar('lesson_id', { length: 100 }).notNull(),
+		status: varchar('status', { length: 20 }).notNull().default('not_started'),
+		timeSpentMinutes: integer('time_spent_minutes').default(0),
+		completedAt: timestamp('completed_at'),
+		startedAt: timestamp('started_at'),
+		createdAt: timestamp('created_at').defaultNow(),
+		updatedAt: timestamp('updated_at').defaultNow(),
+	},
+	(table) => ({
+		userIdIdx: index('lesson_progress_user_id_idx').on(table.userId),
+		lessonIdIdx: index('lesson_progress_lesson_id_idx').on(table.lessonId),
+		uniqueProgress: uniqueIndex('lesson_progress_unique').on(table.userId, table.lessonId),
+	})
+);
+
+export const lessonProgressRelations = relations(lessonProgress, ({ one }) => ({
+	user: one(users, {
+		fields: [lessonProgress.userId],
+		references: [users.id],
+	}),
+}));
+
+export type LessonProgress = typeof lessonProgress.$inferSelect;
+export type NewLessonProgress = typeof lessonProgress.$inferInsert;
+
+// ============================================================================
 // LEADERBOARD ENTRIES TABLE
 // ============================================================================
 
