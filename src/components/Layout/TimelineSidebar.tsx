@@ -12,6 +12,7 @@ import { SUBJECTS } from '@/content';
 import { authClient } from '@/lib/auth-client';
 import { getTodayTimelineEventsAction } from '@/lib/db/actions';
 import { cn } from '@/lib/utils';
+import { buildQuizUrl } from '@/lib/url-utils';
 
 interface TimelineEvent {
 	id: string;
@@ -43,7 +44,7 @@ const DEMO_EVENTS: TimelineEvent[] = [
 		duration: '30 min',
 		status: 'current',
 		emoji: SUBJECTS.physics.emoji,
-		navigationHref: '/quiz?subject=physics',
+		navigationHref: buildQuizUrl({ subject: 'physics' }),
 	},
 	{
 		id: '3',

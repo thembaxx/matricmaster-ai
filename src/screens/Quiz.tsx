@@ -1,6 +1,7 @@
 'use client';
 
 import { useSearchParams } from 'next/navigation';
+import { useQuery } from '@tanstack/react-query';
 import { Suspense, useCallback, useEffect, useRef, ViewTransition } from 'react';
 import { ContextualAIBubble } from '@/components/AI/ContextualAIBubble';
 import { EdgeCaseHandler } from '@/components/EdgeCase/EdgeCaseHandler';
@@ -17,14 +18,36 @@ import {
 } from '@/services/offlineQuizSync';
 import { useQuizAutoSave } from '@/stores/useQuizAutoSaveStore';
 
+import { quizContentResolver } from '@/services/content-resolver';
+import { Button } from '@/components/ui/button';
+import { HugeiconsIcon } from '@hugeicons/react';
+import { ArrowLeft01Icon } from '@hugeicons/core-free-icons';
+import Link from 'next/link';
+
 interface QuizInnerProps {
 	quizId?: string;
+	subject?: string;
+	category?: string;
 }
 
-function QuizInner({ quizId: initialQuizId }: QuizInnerProps) {
+function QuizInner({ quizId: initialQuizId, subject: pathSubject, category: pathCategory }: QuizInnerProps) {
 	const searchParams = useSearchParams();
 	const urlQuizId = searchParams.get('id');
-	const quizId = initialQuizId || urlQuizId || 'math-p1-2023-nov';
+	const urlSubject = searchParams.get('subject');
+	const urlCategory = searchParams.get('category');
+
+	const subject = pathSubject || urlSubject;
+	const category = pathCategory || urlCategory;
+
+	const { data: resolvedData, isLoading: isResolving } = useQuery({
+		queryKey: ['resolve-quiz', initialQuizId, urlQuizId, subject, category],
+		queryFn: () => quizContentResolver.resolveQuiz({
+			subject: subject as any,
+			category: category || undefined
+		}),
+	});
+
+	const quizId = initialQuizId || urlQuizId || resolvedData?.quiz?.id || 'math-p1-2023-nov';
 
 	const {
 		state,
@@ -139,6 +162,7 @@ function QuizInner({ quizId: initialQuizId }: QuizInnerProps) {
 	const handleSelectOption = useCallback(
 		(opt: string | null) => {
 			dispatch({ type: 'SET_OPTION', payload: opt });
+			dispatch({ type: 'SET_MACHINE_STATE', payload: 'ANSWER' });
 			storeSaveQuiz(getQuizStateForSave());
 
 			// Immediately save answer to IndexedDB for offline sync
@@ -203,6 +227,33 @@ function QuizInner({ quizId: initialQuizId }: QuizInnerProps) {
 		clearSavedQuiz();
 		dismissRecovery();
 	}, [clearSavedQuiz, dismissRecovery]);
+
+	if (isResolving) return <QuizSkeleton />;
+
+	if (resolvedData?.status === 'empty') {
+		return (
+			<div className="min-h-screen bg-background flex">
+				<TimelineSidebar />
+				<FocusContent>
+					<div className="max-w-3xl mx-auto px-4 py-20 text-center space-y-6">
+						<div className="text-6xl">🔍</div>
+						<h1 className="text-2xl font-display font-bold">no quizzes found</h1>
+						<p className="text-muted-foreground">
+							{resolvedData.message || `we couldn't find any quizzes for ${category || subject}`}
+						</p>
+						<div className="flex justify-center gap-4">
+							<Button asChild variant="outline" className="rounded-full">
+								<Link href="/quiz">
+									<HugeiconsIcon icon={ArrowLeft01Icon} className="mr-2 h-4 w-4" />
+									back to subjects
+								</Link>
+							</Button>
+						</div>
+					</div>
+				</FocusContent>
+			</div>
+		);
+	}
 
 	return (
 		<div className="min-h-screen bg-background flex">
@@ -309,6 +360,8 @@ function QuizSkeleton() {
 
 interface QuizProps {
 	quizId?: string;
+	subject?: string;
+	category?: string;
 }
 
 export default function Quiz(props: QuizProps) {

@@ -8,7 +8,6 @@ import { getAdaptiveDifficultyServer, recordQuestionAttempt } from '@/actions/sp
 import { QUESTIONS_DATA as QUIZ_DATA } from '@/content/questions';
 import type { ShortAnswerQuestion } from '@/content/questions/quiz/types';
 import { useGeminiQuotaModal } from '@/contexts/GeminiQuotaModalContext';
-import { useQuizCompletion } from '@/hooks/use-quiz-completion';
 import { useAiContext } from '@/hooks/useAiContext';
 import { useEdgeCaseDetection } from '@/hooks/useEdgeCaseDetection';
 import { useKnowledgeGapSynergy } from '@/hooks/useKnowledgeGapSynergy';
@@ -17,6 +16,9 @@ import { useWrongAnswerPipeline } from '@/hooks/useWrongAnswerPipeline';
 import { isQuotaError } from '@/lib/ai/quota-error';
 import { gradeShortAnswer, type WeakTopic } from '@/lib/quiz-grader';
 import { quizReducer } from '@/lib/quiz-reducer';
+import { eventBus } from '@/lib/event-bus';
+import { getNextQuizState, type QuizState as MachineState } from '@/lib/quiz-state-machine';
+import { buildQuizUrl } from '@/lib/url-utils';
 import {
 	getAdaptiveHint,
 	getStrugglingConcepts,
@@ -36,10 +38,10 @@ export function useQuizState({ quizId }: UseQuizStateProps) {
 	const { triggerQuotaError } = useGeminiQuotaModal();
 	const startTimeRef = useRef<number>(Date.now());
 	const [state, dispatch] = useReducer(quizReducer, initialQuizState);
+	const [machineState, setMachineState] = useState<MachineState>('IDLE');
 	const addMistake = useQuizResultStore((s) => s.addMistake);
 	const { isOnline } = useNetworkStatus();
 
-	const { completeQuiz, isCompleting } = useQuizCompletion();
 	const { setContext, clearContext } = useAiContext();
 	const { processWrongAnswer, autoGenerationEnabled } = useWrongAnswerPipeline();
 	const { analyzeQuizResults } = useKnowledgeGapSynergy();
@@ -139,8 +141,7 @@ export function useQuizState({ quizId }: UseQuizStateProps) {
 	const handleSubjectChange = useCallback(
 		(subject: string) => {
 			dispatch({ type: 'SET_SUBJECT', payload: subject });
-			const firstQuiz = Object.entries(QUIZ_DATA).find(([, q]) => q.subject === subject);
-			if (firstQuiz) router.push(`/quiz?id=${firstQuiz[0]}`);
+			router.push(buildQuizUrl({ subject: subject as any }));
 			dispatch({ type: 'TOGGLE_SUBJECT_SELECTOR', payload: false });
 		},
 		[router]
@@ -152,6 +153,10 @@ export function useQuizState({ quizId }: UseQuizStateProps) {
 	}, [recordHintUsage]);
 
 	const handleCheck = useCallback(async () => {
+		if (machineState === 'IDLE') {
+			setMachineState(getNextQuizState(machineState, 'START'));
+		}
+
 		if (state.isChecked) {
 			if (state.currentQuestionIndex < quiz.questions.length - 1) {
 				dispatch({ type: 'SET_QUESTION_INDEX', payload: state.currentQuestionIndex + 1 });
@@ -242,16 +247,18 @@ export function useQuizState({ quizId }: UseQuizStateProps) {
 					console.debug('Failed to process study plan adjustment:', error);
 				}
 
-				await completeQuiz({
-					subjectId: 1,
-					topic: quiz.title,
+				// Publish event for external feature integration
+				eventBus.publish('QUIZ_COMPLETED', {
+					quizId,
+					subject: state.currentSubject || quiz.subject,
+					score: finalScore,
 					totalQuestions: quiz.questions.length,
-					correctAnswers: finalScore,
-					marksEarned: finalScore * 10,
-					durationMinutes: Math.ceil(state.elapsedSeconds / 60),
-					difficulty: 'medium',
-					sessionType: state.mode,
+					weakAreas: Array.from(state.topicStats.values())
+						.filter((s) => s.correct < s.total)
+						.map((s) => s.topic),
 				});
+
+				setMachineState(getNextQuizState(machineState, 'COMPLETE'));
 
 				// Save completion to IndexedDB for offline sync
 				const sessionId = `${quizId}-${Date.now()}`;
@@ -497,7 +504,6 @@ export function useQuizState({ quizId }: UseQuizStateProps) {
 		state.mode,
 		currentQuestion,
 		state.currentSubject,
-		completeQuiz,
 		state.topicStats,
 		quizId,
 		options,
@@ -509,6 +515,7 @@ export function useQuizState({ quizId }: UseQuizStateProps) {
 		state.interactiveAnswer,
 		state.confidenceLevel,
 		analyzeQuizResults,
+		machineState,
 	]);
 
 	// Dismiss study plan update notification
@@ -528,7 +535,7 @@ export function useQuizState({ quizId }: UseQuizStateProps) {
 		currentQuestion,
 		adaptiveHint,
 		options,
-		isCompleting,
+		isCompleting: machineState === 'COMPLETED',
 		isModalOpen,
 		currentEdgeCase,
 		currentEdgeCaseType,

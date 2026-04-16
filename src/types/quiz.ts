@@ -125,7 +125,8 @@ export type QuizAction =
 	  }
 	| { type: 'RESET_SHORT_ANSWER_STATE' }
 	| { type: 'SET_CONFIDENT_ERROR'; payload: boolean }
-	| { type: 'SET_QUIZ_FINISHED'; payload: { recommendations: any[] } };
+	| { type: 'SET_QUIZ_FINISHED'; payload: { recommendations: any[] } }
+	| { type: 'SET_MACHINE_STATE'; payload: any };
 
 export const initialQuizState: QuizState = {
 	currentQuestionIndex: 0,
