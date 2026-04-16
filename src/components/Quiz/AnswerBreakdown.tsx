@@ -3,7 +3,9 @@
 import { Cancel01Icon, CheckmarkCircle02Icon, SparklesIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { useQuery } from '@tanstack/react-query';
+import { Plus } from 'lucide-react';
 import { useState } from 'react';
+import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -33,6 +35,7 @@ export function AnswerBreakdown({
 }: AnswerBreakdownProps) {
 	const { triggerQuotaError } = useGeminiQuotaModal();
 	const [showAnswerExplanation, setShowAnswerExplanation] = useState(false);
+	const [isSavingFlashcard, setIsSavingFlashcard] = useState(false);
 
 	const { data: explanation, isLoading: loading } = useQuery({
 		queryKey: ['explanation', topic],
@@ -181,6 +184,46 @@ export function AnswerBreakdown({
 									</p>
 								)}
 							</div>
+						)}
+
+						{showAnswerExplanation && answerExplanation && (
+							<Button
+								variant="outline"
+								size="sm"
+								disabled={isSavingFlashcard}
+								onClick={async () => {
+									setIsSavingFlashcard(true);
+									try {
+										const response = await fetch('/api/learning-loop/generate-flashcards', {
+											method: 'POST',
+											headers: { 'Content-Type': 'application/json' },
+											body: JSON.stringify({
+												questionId: question.slice(0, 32),
+												explanation: answerExplanation,
+												deckName: 'Quiz Mistakes',
+											}),
+										});
+
+										if (!response.ok) {
+											throw new Error('Failed to create flashcard');
+										}
+
+										toast.success('Flashcard added to your review queue');
+									} catch {
+										toast.error('Failed to create flashcard');
+									} finally {
+										setIsSavingFlashcard(false);
+									}
+								}}
+								className="rounded-full gap-2 mt-3"
+							>
+								{isSavingFlashcard ? (
+									<span className="w-4 h-4 border-2 border-primary/30 border-t-primary rounded-full animate-spin" />
+								) : (
+									<Plus className="w-4 h-4" />
+								)}
+								{isSavingFlashcard ? 'Saving...' : 'Save as Flashcard'}
+							</Button>
 						)}
 
 						{onContinue && (

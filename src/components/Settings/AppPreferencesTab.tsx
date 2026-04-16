@@ -22,7 +22,14 @@ import { DIFFICULTY_ORDER, getDifficultyLabel } from '@/services/adaptive-diffic
 import { useAdaptiveDifficulty } from '@/stores/useAdaptiveDifficultyStore';
 
 export function AppPreferencesTab() {
-	const { dataSaverMode, setDataSaverMode, aiLanguage, setAiLanguage } = useSettings();
+	const {
+		dataSaverMode,
+		setDataSaverMode,
+		aiLanguage,
+		setAiLanguage,
+		autoConvertWrongAnswers,
+		setAutoConvertWrongAnswers,
+	} = useSettings();
 	const { currentDifficulty, setDifficulty, resetMetrics, getStats, getPerformanceForLevel } =
 		useAdaptiveDifficulty();
 	const {
@@ -70,6 +77,33 @@ export function AppPreferencesTab() {
 							</p>
 						</div>
 						<Switch checked={dataSaverMode} onCheckedChange={setDataSaverMode} />
+					</div>
+				</CardContent>
+			</Card>
+
+			<Card>
+				<CardHeader>
+					<div className="flex justify-between items-start">
+						<div>
+							<CardTitle>Auto-convert Wrong Answers</CardTitle>
+							<CardDescription>
+								Automatically create flashcards from incorrect quiz answers.
+							</CardDescription>
+						</div>
+					</div>
+				</CardHeader>
+				<CardContent>
+					<div className="flex items-center justify-between">
+						<div className="space-y-0.5">
+							<Label>Auto-create flashcards</Label>
+							<p className="text-sm text-muted-foreground">
+								Automatically create flashcards from quiz mistakes.
+							</p>
+						</div>
+						<Switch
+							checked={autoConvertWrongAnswers}
+							onCheckedChange={setAutoConvertWrongAnswers}
+						/>
 					</div>
 				</CardContent>
 			</Card>

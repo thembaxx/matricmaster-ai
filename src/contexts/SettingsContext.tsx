@@ -7,18 +7,21 @@ export interface SettingsState {
 	dataSaverMode: boolean;
 	targetAPS: number;
 	aiLanguage: 'en' | 'af';
+	autoConvertWrongAnswers: boolean;
 }
 
 interface SettingsContextType extends SettingsState {
 	setDataSaverMode: (val: boolean) => void;
 	setTargetAPS: (val: number) => void;
 	setAiLanguage: (val: 'en' | 'af') => void;
+	setAutoConvertWrongAnswers: (val: boolean) => void;
 }
 
 const defaultState: SettingsState = {
 	dataSaverMode: false,
 	targetAPS: 0,
 	aiLanguage: 'en',
+	autoConvertWrongAnswers: true,
 };
 
 const SettingsContext = createContext<SettingsContextType | undefined>(undefined);
@@ -28,6 +31,9 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
 	const [targetAPS, setTargetAPS] = useState(defaultState.targetAPS);
 	const [aiLanguage, setAiLanguage] = useState<SettingsState['aiLanguage']>(
 		defaultState.aiLanguage
+	);
+	const [autoConvertWrongAnswers, setAutoConvertWrongAnswers] = useState(
+		defaultState.autoConvertWrongAnswers
 	);
 
 	useEffect(() => {
@@ -40,6 +46,8 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
 				if (typeof parsed.targetAPS === 'number') setTargetAPS(parsed.targetAPS);
 				if (parsed.aiLanguage === 'en' || parsed.aiLanguage === 'af')
 					setAiLanguage(parsed.aiLanguage);
+				if (typeof parsed.autoConvertWrongAnswers === 'boolean')
+					setAutoConvertWrongAnswers(parsed.autoConvertWrongAnswers);
 			}
 		} catch {
 			// Ignore read errors
@@ -54,9 +62,10 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
 				dataSaverMode,
 				targetAPS,
 				aiLanguage,
+				autoConvertWrongAnswers,
 			})
 		);
-	}, [dataSaverMode, targetAPS, aiLanguage]);
+	}, [dataSaverMode, targetAPS, aiLanguage, autoConvertWrongAnswers]);
 
 	return (
 		<SettingsContext.Provider
@@ -67,6 +76,8 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
 				setTargetAPS,
 				aiLanguage,
 				setAiLanguage,
+				autoConvertWrongAnswers,
+				setAutoConvertWrongAnswers,
 			}}
 		>
 			{children}
