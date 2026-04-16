@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 
@@ -22,12 +23,16 @@ export function AudioVisualizer({
 	formatTime,
 	isAudioLoaded,
 }: AudioVisualizerProps) {
+	const barHeights = useMemo(() => {
+		return Array.from({ length: 24 }, () => 28 + Math.random() * 60);
+	}, []);
+
 	if (!isAudioAvailable || audioError) return null;
 
 	return (
 		<div className="py-5 space-y-3">
 			<div className="flex items-center justify-center gap-1.5 py-2 h-12">
-				{Array.from({ length: 24 }).map((_, i) => (
+				{barHeights.map((height, i) => (
 					<div
 						key={`bar-${i}`}
 						className={cn(
@@ -35,7 +40,7 @@ export function AudioVisualizer({
 							isPlaying ? 'bg-primary animate-pulse' : 'bg-muted-foreground/25'
 						)}
 						style={{
-							height: isPlaying ? `${28 + Math.random() * 60}%` : '28%',
+							height: isPlaying ? `${height}%` : '28%',
 							animationDelay: isPlaying ? `${i * 60}ms` : '0ms',
 						}}
 					/>

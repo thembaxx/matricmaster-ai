@@ -27,15 +27,15 @@ export function ErrorBanners({
 	return (
 		<>
 			{audioError && (
-				<div className="py-3 px-4 mx-1 mb-2 bg-amber-500/10 border border-amber-500/20 rounded-xl">
-					<div className="flex items-center gap-2 text-amber-600 dark:text-amber-400">
-						<HugeiconsIcon icon={InformationCircleIcon} className="w-4 h-4 flex-shrink-0" />
+				<div className="py-3 px-4 mx-1 mb-2 bg-yellow-500/10 border border-yellow-500/20 rounded-xl">
+					<div className="flex items-center gap-2 text-yellow-700 dark:text-yellow-400">
+						<HugeiconsIcon icon={InformationCircleIcon} className="w-5 h-5 flex-shrink-0" />
 						<p className="text-sm">
 							Audio file unavailable.{' '}
 							<button
 								type="button"
 								onClick={switchToTTS}
-								className="underline underline-offset-2 font-medium hover:text-amber-700 dark:hover:text-amber-300"
+								className="underline underline-offset-2 font-medium hover:text-yellow-800 dark:hover:text-yellow-300"
 							>
 								Use text-to-speech
 							</button>

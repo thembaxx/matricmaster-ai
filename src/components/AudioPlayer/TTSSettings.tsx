@@ -32,6 +32,7 @@ export function TTSSettings({
 				<select
 					value={selectedVoice}
 					onChange={(e) => handleVoiceChange(e.target.value)}
+					aria-label="Select voice"
 					className={cn(
 						'flex-1 text-sm bg-muted/60 rounded-xl px-3 py-2.5 border border-border/60',
 						'focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary/40',
@@ -55,8 +56,10 @@ export function TTSSettings({
 					variant="ghost"
 					size="icon"
 					onClick={() => setShowSettings(!showSettings)}
+					aria-label={showSettings ? 'Hide settings' : 'Show settings'}
 					className={cn(
-						'rounded-full h-10 w-10 transition-all duration-200',
+						'rounded-full h-11 w-11 transition-all duration-200',
+						'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2',
 						showSettings && 'bg-muted'
 					)}
 				>
