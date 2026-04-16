@@ -46,7 +46,7 @@ export function StatsOverview({ stats }: { stats: StudyStats }) {
 				<CardContent className="p-3 sm:p-4">
 					<div className="flex items-start justify-between">
 						<div className="p-2 rounded-lg bg-primary/10 shrink-0">
-							<HugeiconsIcon icon={Clock01Icon} className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
+							<HugeiconsIcon icon={Clock01Icon} className="size-4 sm:size-5 text-primary" />
 						</div>
 						<div className="flex-1 min-w-0 text-right">
 							<p className="label-xs text-muted-foreground tracking-tight">study time</p>
@@ -64,7 +64,7 @@ export function StatsOverview({ stats }: { stats: StudyStats }) {
 						<div className={`p-2 rounded-lg ${getAccuracyBg(accuracy)} shrink-0`}>
 							<HugeiconsIcon
 								icon={Target01Icon}
-								className={`w-4 h-4 sm:w-5 sm:h-5 ${getAccuracyColor(accuracy)}`}
+								className={`size-4 sm:size-5 ${getAccuracyColor(accuracy)}`}
 							/>
 						</div>
 						<div className="flex-1 min-w-0 text-right">
@@ -85,7 +85,7 @@ export function StatsOverview({ stats }: { stats: StudyStats }) {
 						<div className={`p-2 rounded-lg ${getStreakBg(stats.streakDays)} shrink-0`}>
 							<HugeiconsIcon
 								icon={FireIcon}
-								className={`w-4 h-4 sm:w-5 sm:h-5 ${getStreakColor(stats.streakDays)}`}
+								className={`size-4 sm:size-5 ${getStreakColor(stats.streakDays)}`}
 							/>
 						</div>
 						<div className="flex-1 min-w-0 text-right">
@@ -104,7 +104,7 @@ export function StatsOverview({ stats }: { stats: StudyStats }) {
 				<CardContent className="p-3 sm:p-4">
 					<div className="flex items-start justify-between">
 						<div className="p-2 rounded-lg bg-purple-500/10 shrink-0">
-							<HugeiconsIcon icon={Medal01Icon} className="w-4 h-4 sm:w-5 sm:h-5 text-purple-500" />
+							<HugeiconsIcon icon={Medal01Icon} className="size-4 sm:size-5 text-purple-500" />
 						</div>
 						<div className="flex-1 min-w-0 text-right">
 							<p className="label-xs text-muted-foreground tracking-tight">level</p>

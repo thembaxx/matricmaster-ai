@@ -88,7 +88,7 @@ export function DesktopCalendarGrid({
 												</p>
 												{event.isCompleted && (
 													<div className="shrink-0 -mt-1">
-														<div className="w-4 h-4 rounded-full bg-white/20 flex items-center justify-center">
+														<div className="size-4 rounded-full bg-white/20 flex items-center justify-center">
 															<svg
 																aria-label="Completed"
 																className="w-2.5 h-2.5 text-white"

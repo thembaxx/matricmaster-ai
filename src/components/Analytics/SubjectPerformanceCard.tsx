@@ -8,11 +8,11 @@ import type { SubjectPerformance } from './constants';
 function getTrendIcon(trend: 'up' | 'down' | 'stable') {
 	switch (trend) {
 		case 'up':
-			return <HugeiconsIcon icon={ArrowUp01Icon} className="w-4 h-4 text-green-500" />;
+			return <HugeiconsIcon icon={ArrowUp01Icon} className="size-4 text-green-500" />;
 		case 'down':
-			return <HugeiconsIcon icon={ArrowDown01Icon} className="w-4 h-4 text-red-500" />;
+			return <HugeiconsIcon icon={ArrowDown01Icon} className="size-4 text-red-500" />;
 		default:
-			return <HugeiconsIcon icon={CircleIcon} className="w-4 h-4 text-yellow-500" />;
+			return <HugeiconsIcon icon={CircleIcon} className="size-4 text-yellow-500" />;
 	}
 }
 
@@ -37,7 +37,7 @@ export function SubjectPerformanceCard({ subject }: { subject: SubjectPerformanc
 				</div>
 			</CardHeader>
 			<CardContent>
-				<div className="space-y-4">
+				<div className="flex flex-col gap-4">
 					<div>
 						<div className="flex justify-between text-sm mb-1">
 							<span>Average Score</span>

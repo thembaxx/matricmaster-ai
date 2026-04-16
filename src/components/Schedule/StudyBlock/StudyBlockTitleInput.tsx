@@ -11,7 +11,7 @@ interface StudyBlockTitleInputProps {
 
 export function StudyBlockTitleInput({ id, value, onChange }: StudyBlockTitleInputProps) {
 	return (
-		<div className="space-y-2.5">
+		<div className="flex flex-col gap-2.5">
 			<Label htmlFor={id} className="text-xs font-bold tracking-wider text-muted-foreground ml-1">
 				Title
 			</Label>

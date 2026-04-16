@@ -47,13 +47,13 @@ export function CalendarGrid({
 				<div
 					className={`text-sm font-medium mb-1 ${
 						isToday
-							? 'bg-primary text-primary-foreground rounded-full w-6 h-6 flex items-center justify-center'
+							? 'bg-primary text-primary-foreground rounded-full size-6 flex items-center justify-center'
 							: ''
 					}`}
 				>
 					{day}
 				</div>
-				<div className="space-y-1 overflow-hidden">
+				<div className="flex flex-col gap-1 overflow-hidden">
 					{dayEvents.slice(0, 2).map((event) => (
 						<div
 							key={event.id}

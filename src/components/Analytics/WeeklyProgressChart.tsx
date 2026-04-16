@@ -44,7 +44,7 @@ function TrendIndicator({
 	if (trend.direction === 'up') {
 		return (
 			<div className="flex items-center gap-1 text-green-500 text-xs font-medium">
-				<HugeiconsIcon icon={ArrowUp01Icon} className="w-3 h-3" />
+				<HugeiconsIcon icon={ArrowUp01Icon} className="size-3" />
 				<span>{trend.percentage}%</span>
 			</div>
 		);
@@ -52,7 +52,7 @@ function TrendIndicator({
 	if (trend.direction === 'down') {
 		return (
 			<div className="flex items-center gap-1 text-red-500 text-xs font-medium">
-				<HugeiconsIcon icon={ArrowDown01Icon} className="w-3 h-3" />
+				<HugeiconsIcon icon={ArrowDown01Icon} className="size-3" />
 				<span>{trend.percentage}%</span>
 			</div>
 		);
@@ -77,7 +77,7 @@ export function WeeklyProgressChart({ activity }: { activity: DailyActivity[] })
 			<CardHeader className="pb-2">
 				<div className="flex items-center justify-between">
 					<CardTitle className="flex items-center gap-2 text-base">
-						<HugeiconsIcon icon={ArrowUp02Icon} className="w-5 h-5 text-primary" />
+						<HugeiconsIcon icon={ArrowUp02Icon} className="size-5 text-primary" />
 						<span>Weekly Progress</span>
 					</CardTitle>
 					<TrendIndicator trend={trend} />

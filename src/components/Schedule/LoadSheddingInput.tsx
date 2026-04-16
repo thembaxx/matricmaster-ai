@@ -92,8 +92,8 @@ export function LoadSheddingInput({ slots, onChange }: LoadSheddingInputProps) {
 	};
 
 	return (
-		<div className="space-y-4">
-			<div className="space-y-2">
+		<div className="flex flex-col gap-4">
+			<div className="flex flex-col gap-2">
 				<Label className="text-xs font-bold  tracking-wider text-muted-foreground ml-1">
 					Quick Setup by Area
 				</Label>
@@ -124,7 +124,7 @@ export function LoadSheddingInput({ slots, onChange }: LoadSheddingInputProps) {
 				<div className="flex-1 h-px bg-border" />
 			</div>
 
-			<div className="space-y-2">
+			<div className="flex flex-col gap-2">
 				<div className="flex items-center justify-between">
 					<Label className="text-xs font-bold  tracking-wider text-muted-foreground ml-1">
 						Manual Entry
@@ -147,7 +147,7 @@ export function LoadSheddingInput({ slots, onChange }: LoadSheddingInputProps) {
 					</p>
 				)}
 
-				<div className="space-y-2 max-h-48 overflow-y-auto">
+				<div className="flex flex-col gap-2 max-h-48 overflow-y-auto">
 					{slots.map((slot) => (
 						<div
 							key={`slot-${slot.day}-${slot.startHour}-${slot.endHour}-${slot.stage}`}
@@ -167,7 +167,7 @@ export function LoadSheddingInput({ slots, onChange }: LoadSheddingInputProps) {
 							<select
 								value={slot.startHour}
 								onChange={(e) => updateSlot(slots.indexOf(slot), 'startHour', e.target.value)}
-								className="w-20 h-9 px-2 rounded-lg bg-background text-sm font-mono border-0"
+								className="size-20 px-2 rounded-lg bg-background text-sm font-mono border-0"
 							>
 								{renderHourOptions()}
 							</select>
@@ -175,14 +175,14 @@ export function LoadSheddingInput({ slots, onChange }: LoadSheddingInputProps) {
 							<select
 								value={slot.endHour}
 								onChange={(e) => updateSlot(slots.indexOf(slot), 'endHour', e.target.value)}
-								className="w-20 h-9 px-2 rounded-lg bg-background text-sm font-mono border-0"
+								className="size-20 px-2 rounded-lg bg-background text-sm font-mono border-0"
 							>
 								{renderHourOptions()}
 							</select>
 							<select
 								value={slot.stage}
 								onChange={(e) => updateSlot(slots.indexOf(slot), 'stage', e.target.value)}
-								className="w-16 h-9 px-2 rounded-lg bg-amber-500/10 text-sm text-amber-600 border-0 font-mono"
+								className="w-16 size-9 px-2 rounded-lg bg-amber-500/10 text-sm text-amber-600 border-0 font-mono"
 							>
 								{LOAD_SHEDDING_STAGES.map((s) => (
 									<option key={s} value={s}>

@@ -54,13 +54,13 @@ export function PrivacyTab({
 	const { provider, setProvider, isGoogleMapsAvailable } = useMapContext();
 
 	return (
-		<div className="space-y-6">
+		<div className="flex flex-col gap-6">
 			<Card>
 				<CardHeader>
 					<CardTitle>Privacy Settings</CardTitle>
 					<CardDescription>Control your privacy preferences</CardDescription>
 				</CardHeader>
-				<CardContent className="space-y-6">
+				<CardContent className="flex flex-col gap-6">
 					<div className="flex items-center justify-between">
 						<div>
 							<p className="font-medium">Profile Visibility</p>
@@ -120,7 +120,7 @@ export function PrivacyTab({
 						<CardTitle>Map Settings</CardTitle>
 						<CardDescription>Configure map provider preferences</CardDescription>
 					</CardHeader>
-					<CardContent className="space-y-4">
+					<CardContent className="flex flex-col gap-4">
 						<div className="flex items-center justify-between">
 							<div>
 								<p className="font-medium">Use Google Maps</p>
@@ -145,7 +145,7 @@ export function PrivacyTab({
 					<CardTitle>Danger Zone</CardTitle>
 					<CardDescription>Irreversible account actions</CardDescription>
 				</CardHeader>
-				<CardContent className="space-y-4">
+				<CardContent className="flex flex-col gap-4">
 					<div className="flex items-center justify-between">
 						<div>
 							<p className="font-medium">Delete Account</p>

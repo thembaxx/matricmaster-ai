@@ -52,13 +52,13 @@ export function LocalizationTab() {
 	}, [saveSettings]);
 
 	return (
-		<div className="space-y-6">
+		<div className="flex flex-col gap-6">
 			<div>
 				<h2 className="text-lg font-semibold">Language & Curriculum</h2>
 				<p className="text-sm text-muted-foreground">Customize your learning experience</p>
 			</div>
 
-			<div className="space-y-4">
+			<div className="flex flex-col gap-4">
 				<LanguageSelector label="Interface Language" />
 
 				<LanguageSelector label="Home Language (for AI explanations)" showAllOption />

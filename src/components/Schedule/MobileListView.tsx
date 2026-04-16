@@ -28,7 +28,7 @@ export function MobileListView({
 	const filteredEvents = events.filter((e) => e.day === selectedDay);
 
 	return (
-		<div className="lg:hidden space-y-5 h-full w-full flex flex-col overflow-hidden">
+		<div className="lg:hidden flex flex-col gap-5 h-full w-full overflow-hidden">
 			<div className="flex gap-2 pb-2 pl-2 overflow-x-auto no-scrollbar">
 				{DAYS.map((day) => (
 					<button
@@ -47,7 +47,7 @@ export function MobileListView({
 				))}
 			</div>
 
-			<div className="space-y-3 grow">
+			<div className="flex flex-col gap-3 grow">
 				{filteredEvents.map((event) => (
 					<m.div
 						key={event.id}
@@ -112,7 +112,7 @@ export function MobileListView({
 													onBlockClick(event);
 												}}
 											>
-												<HugeiconsIcon icon={Edit01Icon} className="w-4 h-4" />
+												<HugeiconsIcon icon={Edit01Icon} className="size-4" />
 											</Button>
 											<Button
 												variant="ghost"
@@ -122,9 +122,9 @@ export function MobileListView({
 												disabled={isDeleting === event.id}
 											>
 												{isDeleting === event.id ? (
-													<span className="w-4 h-4 border-2 border-destructive/30 border-t-destructive rounded-full animate-spin" />
+													<span className="size-4 border-2 border-destructive/30 border-t-destructive rounded-full animate-spin" />
 												) : (
-													<HugeiconsIcon icon={Delete02Icon} className="w-4 h-4" />
+													<HugeiconsIcon icon={Delete02Icon} className="size-4" />
 												)}
 											</Button>
 										</div>
@@ -137,8 +137,8 @@ export function MobileListView({
 
 				{filteredEvents.length === 0 && (
 					<div className="py-16 text-center">
-						<div className="w-20 h-20 rounded-3xl bg-muted/50 flex items-center justify-center mx-auto mb-5">
-							<HugeiconsIcon icon={Calendar01Icon} className="w-10 h-10 text-muted-foreground/40" />
+						<div className="size-20 rounded-3xl bg-muted/50 flex items-center justify-center mx-auto mb-5">
+							<HugeiconsIcon icon={Calendar01Icon} className="size-10 text-muted-foreground/40" />
 						</div>
 						<p className="text-sm font-semibold text-muted-foreground  tracking-wider">
 							No study blocks

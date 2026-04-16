@@ -56,7 +56,7 @@ export function AppPreferencesTab() {
 	})).filter((p) => p.metrics.correct > 0 || p.metrics.incorrect > 0);
 
 	return (
-		<div className="space-y-6">
+		<div className="flex flex-col gap-6">
 			<Card>
 				<CardHeader>
 					<div className="flex justify-between items-start">
@@ -67,9 +67,9 @@ export function AppPreferencesTab() {
 						<Badge variant="outline">South Africa</Badge>
 					</div>
 				</CardHeader>
-				<CardContent className="space-y-6">
+				<CardContent className="flex flex-col gap-6">
 					<div className="flex items-center justify-between">
-						<div className="space-y-0.5">
+						<div className="flex flex-col gap-0.5">
 							<Label>Enable Data Saver</Label>
 							<p className="text-sm text-muted-foreground">
 								Downgrades video call quality and disables auto-playing AI voice answers to save
@@ -94,7 +94,7 @@ export function AppPreferencesTab() {
 				</CardHeader>
 				<CardContent>
 					<div className="flex items-center justify-between">
-						<div className="space-y-0.5">
+						<div className="flex flex-col gap-0.5">
 							<Label>Auto-create flashcards</Label>
 							<p className="text-sm text-muted-foreground">
 								Automatically create flashcards from quiz mistakes.
@@ -123,9 +123,9 @@ export function AppPreferencesTab() {
 						<Badge>{getDifficultyLabel(currentDifficulty)}</Badge>
 					</div>
 				</CardHeader>
-				<CardContent className="space-y-4">
+				<CardContent className="flex flex-col gap-4">
 					<div className="flex items-center justify-between">
-						<div className="space-y-0.5">
+						<div className="flex flex-col gap-0.5">
 							<Label>Auto-Adjust Difficulty</Label>
 							<p className="text-sm text-muted-foreground">
 								Automatically adjust difficulty based on your answers.
@@ -134,7 +134,7 @@ export function AppPreferencesTab() {
 						<Switch checked={autoAdjust} onCheckedChange={toggleAutoAdjust} />
 					</div>
 
-					<div className="space-y-2">
+					<div className="flex flex-col gap-2">
 						<Label>Manual Difficulty Override</Label>
 						<Select
 							value={currentDifficulty}
@@ -154,7 +154,7 @@ export function AppPreferencesTab() {
 					</div>
 
 					{!autoAdjust && (
-						<div className="space-y-2">
+						<div className="flex flex-col gap-2">
 							<Label>Explanation Complexity</Label>
 							<Select
 								value={effectiveComplexity}
@@ -209,7 +209,7 @@ export function AppPreferencesTab() {
 					{showHistory && performanceHistory.length > 0 && (
 						<div className="border-t pt-4 mt-4">
 							<Label className="mb-3 block">Performance by Level</Label>
-							<div className="space-y-2">
+							<div className="flex flex-col gap-2">
 								{performanceHistory.map((p) => {
 									const total = p.metrics.correct + p.metrics.incorrect;
 									const accuracy = total > 0 ? Math.round((p.metrics.correct / total) * 100) : 0;
@@ -238,7 +238,7 @@ export function AppPreferencesTab() {
 					</CardDescription>
 				</CardHeader>
 				<CardContent>
-					<div className="flex flex-col space-y-2">
+					<div className="flex flex-col gap-2">
 						<Label>Language Context</Label>
 						<Select value={aiLanguage} onValueChange={(val: 'en' | 'af') => setAiLanguage(val)}>
 							<SelectTrigger className="w-full">

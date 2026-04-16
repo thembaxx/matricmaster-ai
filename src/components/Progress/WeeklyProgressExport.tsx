@@ -122,13 +122,13 @@ export function WeeklyProgressExport({ className }: WeeklyProgressExportProps) {
 		<Card className={className}>
 			<CardHeader>
 				<CardTitle className="flex items-center gap-2">
-					<HugeiconsIcon icon={Download02Icon} className="w-5 h-5" />
+					<HugeiconsIcon icon={Download02Icon} className="size-5" />
 					Weekly Progress Report
 				</CardTitle>
 				<CardDescription>Download a PDF report of your study progress</CardDescription>
 			</CardHeader>
-			<CardContent className="space-y-4">
-				<div className="space-y-3">
+			<CardContent className="flex flex-col gap-4">
+				<div className="flex flex-col gap-3">
 					<span className="text-sm font-medium">Select Report Period</span>
 					<div className="flex flex-wrap gap-2">
 						<Button

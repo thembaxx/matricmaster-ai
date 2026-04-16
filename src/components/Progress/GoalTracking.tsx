@@ -227,7 +227,7 @@ export function GoalTracking({
 	};
 
 	return (
-		<div className="space-y-6">
+		<div className="flex flex-col gap-6">
 			{/* Goal Stats Overview */}
 			<div className="grid grid-cols-2 md:grid-cols-4 gap-4">
 				<Card>
@@ -261,7 +261,7 @@ export function GoalTracking({
 				<CardHeader className="flex flex-row items-center justify-between">
 					<div>
 						<CardTitle className="flex items-center gap-2">
-							<HugeiconsIcon icon={Target01Icon} className="w-5 h-5" />
+							<HugeiconsIcon icon={Target01Icon} className="size-5" />
 							Academic Goals
 						</CardTitle>
 						<CardDescription>
@@ -282,7 +282,7 @@ export function GoalTracking({
 									Set a specific, measurable target to track your progress.
 								</DialogDescription>
 							</DialogHeader>
-							<div className="space-y-4">
+							<div className="flex flex-col gap-4">
 								<div>
 									<Label htmlFor="title">Goal Title</Label>
 									<Input
@@ -369,7 +369,7 @@ export function GoalTracking({
 					</Dialog>
 				</CardHeader>
 				<CardContent>
-					<div className="space-y-4">
+					<div className="flex flex-col gap-4">
 						{goalProgress.map((goal) => {
 							const category = GOAL_CATEGORIES[goal.category];
 							return (
@@ -377,7 +377,7 @@ export function GoalTracking({
 									<div className="flex items-start justify-between mb-3">
 										<div className="flex items-start gap-3">
 											<div className={`p-2 rounded-full ${getStatusColor(goal.status)}`}>
-												<HugeiconsIcon icon={getStatusIcon(goal.status)} className="w-5 h-5" />
+												<HugeiconsIcon icon={getStatusIcon(goal.status)} className="size-5" />
 											</div>
 											<div>
 												<h4 className="font-medium">{goal.title}</h4>
@@ -389,7 +389,7 @@ export function GoalTracking({
 												className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(goal.status)}`}
 											>
 												{goal.status === 'completed' && (
-													<HugeiconsIcon icon={CheckmarkCircle01Icon} className="w-3 h-3" />
+													<HugeiconsIcon icon={CheckmarkCircle01Icon} className="size-3" />
 												)}
 												{goal.status.charAt(0).toUpperCase() + goal.status.slice(1)}
 											</div>
@@ -409,7 +409,7 @@ export function GoalTracking({
 										</Badge>
 									</div>
 
-									<div className="space-y-2">
+									<div className="flex flex-col gap-2">
 										<div className="flex justify-between text-sm">
 											<span>Progress</span>
 											<span>{goal.progress.toFixed(1)}%</span>
@@ -448,7 +448,7 @@ export function GoalTracking({
 			<Card>
 				<CardHeader>
 					<CardTitle className="flex items-center gap-2">
-						<HugeiconsIcon icon={Award01Icon} className="w-5 h-5" />
+						<HugeiconsIcon icon={Award01Icon} className="size-5" />
 						Milestone Achievements
 					</CardTitle>
 					<CardDescription>

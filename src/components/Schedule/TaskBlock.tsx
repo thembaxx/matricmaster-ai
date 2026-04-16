@@ -56,15 +56,15 @@ export function TaskBlock({
 							onComplete();
 						}}
 						className={cn(
-							'w-6 h-6 rounded-full border-2 flex-shrink-0 transition-colors',
+							'size-6 rounded-full border-2 flex-shrink-0 transition-colors',
 							'border-muted-foreground/30 hover:border-primary hover:bg-primary/10'
 						)}
 					/>
 				)}
 				{completed && (
-					<div className="w-6 h-6 rounded-full bg-success flex-shrink-0 flex items-center justify-center">
+					<div className="size-6 rounded-full bg-success flex-shrink-0 flex items-center justify-center">
 						<svg
-							className="w-4 h-4 text-white"
+							className="size-4 text-white"
 							fill="none"
 							viewBox="0 0 24 24"
 							stroke="currentColor"
@@ -112,7 +112,7 @@ export function TaskBlock({
 						className="opacity-0 group-hover:opacity-100 p-2 hover:bg-destructive/10 rounded-lg transition-all"
 					>
 						<svg
-							className="w-4 h-4 text-destructive"
+							className="size-4 text-destructive"
 							fill="none"
 							viewBox="0 0 24 24"
 							stroke="currentColor"

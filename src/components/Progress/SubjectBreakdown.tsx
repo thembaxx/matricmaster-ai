@@ -208,7 +208,7 @@ export function SubjectBreakdown({ topicMastery, weakTopics, quizData }: Subject
 	};
 
 	return (
-		<div className="space-y-6">
+		<div className="flex flex-col gap-6">
 			{/* Subject Overview Cards */}
 			<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
 				{subjectAnalysis.map((subject) => (
@@ -228,7 +228,7 @@ export function SubjectBreakdown({ topicMastery, weakTopics, quizData }: Subject
 							</CardTitle>
 							<CardDescription>{subject.topics.length} topics</CardDescription>
 						</CardHeader>
-						<CardContent className="space-y-3">
+						<CardContent className="flex flex-col gap-3">
 							<div>
 								<div className="flex justify-between text-sm mb-1">
 									<span>Average Mastery</span>
@@ -265,7 +265,7 @@ export function SubjectBreakdown({ topicMastery, weakTopics, quizData }: Subject
 							Topic-by-topic breakdown with mastery levels and recommendations
 						</CardDescription>
 					</CardHeader>
-					<CardContent className="space-y-6">
+					<CardContent className="flex flex-col gap-6">
 						{/* Radar Chart */}
 						{radarData.length > 0 && (
 							<div>
@@ -310,7 +310,7 @@ export function SubjectBreakdown({ topicMastery, weakTopics, quizData }: Subject
 			<Card>
 				<CardHeader>
 					<CardTitle className="flex items-center gap-2">
-						<HugeiconsIcon icon={Target01Icon} className="w-5 h-5" />
+						<HugeiconsIcon icon={Target01Icon} className="size-5" />
 						Topic Mastery Details
 					</CardTitle>
 					<CardDescription>
@@ -390,7 +390,7 @@ export function SubjectBreakdown({ topicMastery, weakTopics, quizData }: Subject
 					</div>
 
 					{/* Topic List */}
-					<div className="space-y-3">
+					<div className="flex flex-col gap-3">
 						{filteredTopics.map((topic) => {
 							const weakTopicData = weakTopics.find((wt) => wt.topic === topic.topicName);
 							const accuracy =
@@ -434,7 +434,7 @@ export function SubjectBreakdown({ topicMastery, weakTopics, quizData }: Subject
 											<div
 												className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${getMasteryColor(topic.masteryLevel)}`}
 											>
-												<HugeiconsIcon icon={Target01Icon} className="w-3 h-3" />
+												<HugeiconsIcon icon={Target01Icon} className="size-3" />
 												{topic.masteryLevel >= 80
 													? 'Mastered'
 													: topic.masteryLevel >= 60

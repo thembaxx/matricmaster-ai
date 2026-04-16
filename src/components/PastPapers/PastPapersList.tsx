@@ -10,6 +10,7 @@ import { useRouter } from 'next/navigation';
 import { GenerateFlashcardsFromPastPaper } from '@/components/Flashcards/GenerateFlashcardsFromPastPaper';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Skeleton } from '@/components/ui/skeleton';
 import { getSubjectFluentEmoji } from '@/content';
 import { usePastPapers } from '@/hooks/usePastPapers';
 import { STAGGER_CONTAINER, STAGGER_ITEM } from '@/lib/animation-presets';
@@ -72,14 +73,14 @@ export function PastPaperCard({ paper, recommendation }: PastPaperCardProps) {
 				<HugeiconsIcon icon={paper.isBookmarked ? StarIcon : Star} className="w-5 h-5" />
 			</button>
 
-			<div className="space-y-6 relative z-10">
+			<div className="flex flex-col gap-6 relative z-10">
 				<div className="flex items-start justify-between">
-					<div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-500 shadow-inner">
+					<div className="size-16 rounded-2xl bg-primary/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-500 shadow-inner">
 						<FluentEmoji
 							type="3d"
 							emoji={getSubjectFluentEmoji(paper.subject.toLowerCase().replace(' ', '-'))}
 							size={32}
-							className="w-8 h-8"
+							className="size-8"
 						/>
 					</div>
 					<div className="text-right">
@@ -92,7 +93,7 @@ export function PastPaperCard({ paper, recommendation }: PastPaperCardProps) {
 					</div>
 				</div>
 
-				<div className="space-y-2">
+				<div className="flex flex-col gap-2">
 					<h3 className="text-2xl font-black text-foreground tracking-tighter  leading-tight group-hover:text-primary transition-colors">
 						{paper.subject} {paper.paper}
 					</h3>
@@ -187,12 +188,12 @@ export function PastPapersEmptyState() {
 		<m.div
 			initial={{ opacity: 0, scale: 0.9 }}
 			animate={{ opacity: 1, scale: 1 }}
-			className="py-32 flex flex-col items-center justify-center text-center space-y-6 opacity-40"
+			className="py-32 flex flex-col items-center justify-center text-center gap-6 opacity-40"
 		>
-			<div className="w-32 h-32 bg-muted rounded-3xl flex items-center justify-center">
-				<HugeiconsIcon icon={BookOpen} className="w-16 h-16 text-muted-foreground" />
+			<div className="size-32 bg-muted rounded-3xl flex items-center justify-center">
+				<HugeiconsIcon icon={BookOpen} className="size-16 text-muted-foreground" />
 			</div>
-			<div className="space-y-2">
+			<div className="flex flex-col gap-2">
 				<h3 className="font-black text-muted-foreground  tracking-[0.4em] text-xs">
 					Empty Archive
 				</h3>
@@ -206,27 +207,24 @@ export function PastPapersSkeleton() {
 	return (
 		<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
 			{Array.from({ length: 6 }).map((_, i) => (
-				<div
-					key={`skeleton-${i}`}
-					className="p-8 rounded-3xl border border-border bg-card/50 animate-pulse"
-				>
-					<div className="space-y-6">
+				<div key={`skeleton-${i}`} className="p-8 rounded-3xl border border-border bg-card/50">
+					<div className="flex flex-col gap-6">
 						<div className="flex justify-between">
-							<div className="w-16 h-16 rounded-2xl bg-muted" />
-							<div className="w-12 h-8 bg-muted rounded-lg" />
+							<Skeleton className="w-16 h-16 rounded-2xl" />
+							<Skeleton className="w-12 h-8 rounded-lg" />
 						</div>
-						<div className="space-y-2">
-							<div className="h-8 bg-muted rounded-lg w-3/4" />
+						<div className="flex flex-col gap-2">
+							<Skeleton className="h-8 w-3/4" />
 							<div className="flex gap-2">
-								<div className="h-6 bg-muted rounded-lg w-20" />
-								<div className="h-6 bg-muted rounded-lg w-24" />
+								<Skeleton className="h-6 w-20" />
+								<Skeleton className="h-6 w-24" />
 							</div>
 						</div>
 						<div className="grid grid-cols-2 gap-3">
-							<div className="h-12 bg-muted rounded-2xl" />
-							<div className="h-12 bg-muted rounded-2xl" />
+							<Skeleton className="h-12 rounded-2xl" />
+							<Skeleton className="h-12 rounded-2xl" />
 						</div>
-						<div className="h-14 bg-muted rounded-2xl" />
+						<Skeleton className="h-14 rounded-2xl" />
 					</div>
 				</div>
 			))}

@@ -29,8 +29,8 @@ const FilterContent = memo(function FilterContent({
 	dispatch,
 }: FilterContentProps) {
 	return (
-		<div className="space-y-8">
-			<div className="space-y-4">
+		<div className="flex flex-col gap-8">
+			<div className="flex flex-col gap-4">
 				<h4 className="text-[10px] font-black  tracking-[0.2em] text-label-tertiary">subjects</h4>
 				<div className="grid grid-cols-2 gap-3">
 					{availableSubjects.map((subject) => (
@@ -51,7 +51,7 @@ const FilterContent = memo(function FilterContent({
 				</div>
 			</div>
 
-			<div className="space-y-4">
+			<div className="flex flex-col gap-4">
 				<h4 className="text-[10px] font-black  tracking-[0.2em] text-label-tertiary">papers</h4>
 				<div className="grid grid-cols-2 gap-3">
 					{availablePapers.map((paper) => (
@@ -72,7 +72,7 @@ const FilterContent = memo(function FilterContent({
 				</div>
 			</div>
 
-			<div className="space-y-4">
+			<div className="flex flex-col gap-4">
 				<h4 className="text-[10px] font-black  tracking-[0.2em] text-label-tertiary">months</h4>
 				<div className="grid grid-cols-2 gap-3">
 					{availableMonths.map((month) => (
@@ -93,7 +93,7 @@ const FilterContent = memo(function FilterContent({
 				</div>
 			</div>
 
-			<div className="space-y-4">
+			<div className="flex flex-col gap-4">
 				<div className="flex items-center justify-between">
 					<div>
 						<h4 className="text-[10px] font-black  tracking-[0.2em] text-label-tertiary">
@@ -110,7 +110,7 @@ const FilterContent = memo(function FilterContent({
 				</div>
 			</div>
 
-			<div className="space-y-4">
+			<div className="flex flex-col gap-4">
 				<div className="flex items-center justify-between">
 					<div>
 						<h4 className="text-[10px] font-black  tracking-[0.2em] text-label-tertiary">

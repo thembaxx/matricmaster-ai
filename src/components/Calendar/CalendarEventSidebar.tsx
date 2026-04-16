@@ -25,7 +25,7 @@ export function CalendarEventSidebar({
 	onDeleteEvent,
 }: CalendarEventSidebarProps) {
 	return (
-		<div className="space-y-4">
+		<div className="flex flex-col gap-4">
 			<Card>
 				<CardHeader>
 					<CardTitle className="text-lg">
@@ -40,7 +40,7 @@ export function CalendarEventSidebar({
 				</CardHeader>
 				<CardContent>
 					{selectedDateEvents.length > 0 ? (
-						<div className="space-y-3">
+						<div className="flex flex-col gap-3">
 							{selectedDateEvents.map((event) => (
 								<div
 									key={event.id}
@@ -105,7 +105,7 @@ export function CalendarEventSidebar({
 				<CardHeader>
 					<CardTitle className="text-lg">Connect Calendars</CardTitle>
 				</CardHeader>
-				<CardContent className="space-y-3">
+				<CardContent className="flex flex-col gap-3">
 					<Button variant="outline" className="w-full justify-start">
 						<svg
 							viewBox="0 0 24 24"

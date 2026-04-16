@@ -172,7 +172,7 @@ export function MobileNavDrawer({
 								<p className="px-2 mb-1.5 text-[10px] font-medium tracking-wider text-sidebar-foreground/40">
 									{section.title}
 								</p>
-								<div className="space-y-0.5">
+								<div className="gap-0.5">
 									{section.items.map((item) => (
 										<MobileNavLink key={item.href} item={item} onNavigate={handleNavigation} />
 									))}

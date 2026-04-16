@@ -104,7 +104,7 @@ export function ScheduleView() {
 						{pendingTasks.length > 1 && (
 							<div className="mt-8">
 								<h3 className="text-sm font-medium text-muted-foreground mb-4">Up Next</h3>
-								<div className="space-y-3">
+								<div className="flex flex-col gap-3">
 									{pendingTasks.slice(1, 4).map((task) => (
 										<TaskBlock
 											key={task.id}
@@ -126,7 +126,7 @@ export function ScheduleView() {
 						animate={{ opacity: 1, y: 0 }}
 						className="mt-6"
 					>
-						<div className="space-y-3">
+						<div className="flex flex-col gap-3">
 							{pendingTasks.length > 0 ? (
 								pendingTasks.map((task) => (
 									<TaskBlock
