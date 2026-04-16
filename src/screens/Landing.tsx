@@ -53,7 +53,7 @@ export default function Landing() {
 			toast.info('Login Required', {
 				description: 'Please Sign in to Access this Feature.',
 			});
-			router.push('/sign-in');
+			router.push('/login');
 			return;
 		}
 		router.push(path);

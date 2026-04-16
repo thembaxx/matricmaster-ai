@@ -164,7 +164,7 @@ function SignInFormContent() {
 					>
 						don't have an account?{' '}
 						<Link
-							href="/sign-up"
+							href="/register"
 							className="font-bold text-primary hover:text-primary/80 underline-offset-4 transition-colors"
 						>
 							Sign up

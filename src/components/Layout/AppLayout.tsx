@@ -45,8 +45,8 @@ function AppLayoutContent({ children }: { children: React.ReactNode }) {
 	const { unreadCount } = useNotificationStore();
 	const [sidebarOpen, setSidebarOpen] = useState(true);
 
-	const hideNavigation = ['/onboarding', '/sign-in', '/sign-up'];
-	const hideBottomNavigation = ['/sign-in', '/sign-up', '/onboarding'];
+	const hideNavigation = ['/onboarding', '/login', '/register'];
+	const hideBottomNavigation = ['/login', '/register', '/onboarding'];
 
 	const shouldHideNav = hideNavigation.some((path) => pathname.startsWith(path));
 	const shouldHideBottomNav = hideBottomNavigation.some((path) => pathname.startsWith(path));
@@ -74,13 +74,13 @@ function AppLayoutContent({ children }: { children: React.ReactNode }) {
 												toast.info('Login Required', {
 													description: 'Please Sign in to View your Notifications.',
 												});
-												router.push('/sign-in');
+												router.push('/login');
 												return;
 											}
 											router.push('/notifications');
 										}}
-										onSignIn={() => router.push('/sign-in')}
-										onSignUp={() => router.push('/sign-up')}
+										onSignIn={() => router.push('/login')}
+										onSignUp={() => router.push('/register')}
 									/>
 								)}
 								<main
@@ -124,13 +124,13 @@ function AppLayoutContent({ children }: { children: React.ReactNode }) {
 												toast.info('Login Required', {
 													description: 'Please Sign in to View your Notifications.',
 												});
-												router.push('/sign-in');
+												router.push('/login');
 												return;
 											}
 											router.push('/notifications');
 										}}
-										onSignIn={() => router.push('/sign-in')}
-										onSignUp={() => router.push('/sign-up')}
+										onSignIn={() => router.push('/login')}
+										onSignUp={() => router.push('/register')}
 										mobileMenuTrigger={
 											<MobileNavDrawer
 												user={user}

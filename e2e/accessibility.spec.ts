@@ -13,7 +13,7 @@ test.describe('Accessibility (a11y)', () => {
 		});
 
 		test('Sign-in page has no critical a11y violations', async ({ page }) => {
-			await page.goto('/sign-in');
+			await page.goto('/login');
 			await page.waitForLoadState('networkidle');
 
 			const accessibilityScanResults = await new AxeBuilder({ page }).analyze();
@@ -22,7 +22,7 @@ test.describe('Accessibility (a11y)', () => {
 		});
 
 		test('Sign-up page has no critical a11y violations', async ({ page }) => {
-			await page.goto('/sign-up');
+			await page.goto('/register');
 			await page.waitForLoadState('networkidle');
 
 			const accessibilityScanResults = await new AxeBuilder({ page }).analyze();
@@ -33,7 +33,7 @@ test.describe('Accessibility (a11y)', () => {
 
 	test.describe('Dashboard & Core Features', () => {
 		test.beforeEach(async ({ page }) => {
-			await page.goto('/sign-in');
+			await page.goto('/login');
 			await page.fill('input[id="email"]', 'student@lumni.ai');
 			await page.fill('input[id="password"]', 'password123');
 			await page.click('button[type="submit"]');
@@ -79,7 +79,7 @@ test.describe('Accessibility (a11y)', () => {
 
 	test.describe('Keyboard Navigation', () => {
 		test('Sign-in page is keyboard navigable', async ({ page }) => {
-			await page.goto('/sign-in');
+			await page.goto('/login');
 			await page.waitForLoadState('networkidle');
 
 			await page.keyboard.press('Tab');
@@ -106,7 +106,7 @@ test.describe('Accessibility (a11y)', () => {
 
 	test.describe('Screen Reader Support', () => {
 		test('Form inputs have associated labels', async ({ page }) => {
-			await page.goto('/sign-in');
+			await page.goto('/login');
 
 			const emailInput = page.locator('input[id="email"]');
 			const emailLabel = page.locator('label[for="email"]');
@@ -116,7 +116,7 @@ test.describe('Accessibility (a11y)', () => {
 		});
 
 		test('Buttons have accessible names', async ({ page }) => {
-			await page.goto('/sign-in');
+			await page.goto('/login');
 
 			const submitButton = page.locator('button[type="submit"]');
 			await expect(submitButton).toBeVisible();
@@ -141,7 +141,7 @@ test.describe('Accessibility (a11y)', () => {
 		});
 
 		test('Sign-in page meets WCAG contrast requirements', async ({ page }) => {
-			await page.goto('/sign-in');
+			await page.goto('/login');
 			await page.waitForLoadState('networkidle');
 
 			const accessibilityScanResults = await new AxeBuilder({ page })
@@ -158,7 +158,7 @@ test.describe('Accessibility (a11y)', () => {
 
 	test.describe('Focus Management', () => {
 		test('Focus indicator is visible on interactive elements', async ({ page }) => {
-			await page.goto('/sign-in');
+			await page.goto('/login');
 			await page.waitForLoadState('networkidle');
 
 			await page.keyboard.press('Tab');

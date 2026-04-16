@@ -104,14 +104,14 @@ function handleAuthError(status: number): void {
 		const currentPath = window.location.pathname;
 		// Don't redirect if already on auth pages
 		if (
-			!currentPath.startsWith('/sign-in') &&
-			!currentPath.startsWith('/sign-up') &&
+			!currentPath.startsWith('/login') &&
+			!currentPath.startsWith('/register') &&
 			!currentPath.startsWith('/2fa')
 		) {
 			// Clear query cache for stale data
 			queryClient.clear();
 			// Redirect to sign-in with callback
-			const signInUrl = new URL('/sign-in', window.location.origin);
+			const signInUrl = new URL('/login', window.location.origin);
 			signInUrl.searchParams.set('callbackUrl', encodeURIComponent(currentPath));
 			window.location.href = signInUrl.toString();
 		}

@@ -12,7 +12,7 @@ export function CallToAction() {
 				quizzes, flashcards, past papers, and more.
 			</p>
 			<div className="flex gap-4 justify-center">
-				<Link href="/sign-up" transitionTypes={['fade']}>
+				<Link href="/register" transitionTypes={['fade']}>
 					<Button size="lg">Get Started Free</Button>
 				</Link>
 				<Link href="/dashboard" transitionTypes={['nav-forward']}>

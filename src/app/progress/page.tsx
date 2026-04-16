@@ -39,7 +39,7 @@ const ProgressPage = async () => {
 	});
 
 	if (!session?.user) {
-		redirect('/sign-in');
+		redirect('/login');
 	}
 
 	const AnalyticsDashboard = (await import('@/components/Progress/AnalyticsDashboard')).default;

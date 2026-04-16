@@ -26,7 +26,7 @@ export default async function ParentDashboardPage() {
 	const session = await auth.api.getSession({ headers: headersList });
 
 	if (!session?.user) {
-		redirect('/sign-in?callbackUrl=/parent-dashboard');
+		redirect('/login?callbackUrl=/parent-dashboard');
 	}
 
 	return <ParentDashboardScreen userName={session.user.name || 'student'} />;

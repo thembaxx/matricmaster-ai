@@ -6,7 +6,8 @@
 			"Bash(npm run:*)",
 			"Bash(npx next:*)",
 			"Bash(npx tsc:*)",
-			"Bash(curl -s http://localhost:3000/community)"
+			"Bash(curl -s http://localhost:3000/community)",
+			"WebSearch"
 		]
 	},
 	"skills": ["github:adamlyttleapps/claude-skill-app-onboarding-questoinnaire"]

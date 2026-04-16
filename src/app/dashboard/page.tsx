@@ -115,7 +115,7 @@ export default async function DashboardPage() {
 		headers: extractHeaders(headersList) as any,
 	});
 	if (!session?.user) {
-		redirect('/sign-in');
+		redirect('/login');
 	}
 
 	const [initialStreak, initialAchievements, briefingData, mistakeCount] = await Promise.all([

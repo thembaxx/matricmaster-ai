@@ -108,7 +108,7 @@ export default function Bookmarks() {
 									Save difficult questions or important concepts to review them later.
 								</p>
 							</div>
-							<Button onClick={() => router.push('/sign-in')} className="rounded-full px-8">
+							<Button onClick={() => router.push('/login')} className="rounded-full px-8">
 								Sign In
 							</Button>
 						</div>

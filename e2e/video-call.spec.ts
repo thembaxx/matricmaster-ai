@@ -4,7 +4,7 @@ test.describe('Video Call', () => {
 	test.describe('without auth', () => {
 		test('redirects to sign-in when not authenticated', async ({ page }) => {
 			await page.goto('/video-call', { timeout: 30000 });
-			await expect(page).toHaveURL(/\/sign-in/, { timeout: 30000 });
+			await expect(page).toHaveURL(/\/login/, { timeout: 30000 });
 		});
 	});
 

@@ -154,8 +154,8 @@ export class AuthenticatedApiClient {
 
 			if (typeof window !== 'undefined') {
 				const currentPath = window.location.pathname;
-				if (currentPath !== '/sign-in' && currentPath !== '/sign-up') {
-					window.location.href = `/sign-in?callbackUrl=${encodeURIComponent(currentPath)}`;
+				if (currentPath !== '/login' && currentPath !== '/register') {
+					window.location.href = `/login?callbackUrl=${encodeURIComponent(currentPath)}`;
 				}
 			}
 		}

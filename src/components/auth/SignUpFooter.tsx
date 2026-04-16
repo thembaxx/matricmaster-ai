@@ -13,7 +13,7 @@ export function SignUpFooter() {
 			>
 				already have an account?{' '}
 				<Link
-					href="/sign-in"
+					href="/login"
 					className="font-black text-primary hover:text-primary/80 underline-offset-4 transition-colors"
 				>
 					sign in

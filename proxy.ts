@@ -9,8 +9,8 @@ export const ROUTE_CATEGORIES = {
 	// Only homepage and auth-related routes are public
 	PUBLIC: [
 		'/',
-		'/sign-in',
-		'/sign-up',
+		'/login',
+		'/register',
 		'/forgot-password',
 		'/reset-password',
 		'/api/auth',
@@ -137,7 +137,7 @@ export default async function proxy(request: NextRequest) {
 		const hasCookie = hasSessionCookie(request);
 		if (!hasCookie) {
 			// No session at all - redirect to sign in
-			const signInUrl = new URL('/sign-in', request.url);
+			const signInUrl = new URL('/login', request.url);
 			signInUrl.searchParams.set('callbackUrl', pathname);
 			logProxyActivity(pathname, false, '2FA without session');
 			return NextResponse.redirect(signInUrl);
@@ -181,7 +181,7 @@ export default async function proxy(request: NextRequest) {
 	if (matchesRoute(pathname, ROUTE_CATEGORIES.PROTECTED)) {
 		const hasCookie = hasSessionCookie(request);
 		if (!hasCookie) {
-			const signInUrl = new URL('/sign-in', request.url);
+			const signInUrl = new URL('/login', request.url);
 			signInUrl.searchParams.set('callbackUrl', pathname);
 			logProxyActivity(pathname, false, 'Protected route without auth');
 			return NextResponse.redirect(signInUrl);
@@ -194,7 +194,7 @@ export default async function proxy(request: NextRequest) {
 	if (matchesRoute(pathname, ROUTE_CATEGORIES.ADMIN)) {
 		const hasCookie = hasSessionCookie(request);
 		if (!hasCookie) {
-			const signInUrl = new URL('/sign-in', request.url);
+			const signInUrl = new URL('/login', request.url);
 			signInUrl.searchParams.set('callbackUrl', pathname);
 			logProxyActivity(pathname, false, 'Admin route without auth');
 			return NextResponse.redirect(signInUrl);
@@ -205,7 +205,7 @@ export default async function proxy(request: NextRequest) {
 	}
 
 	// 5. Default: Redirect to sign-in for any other routes not explicitly public
-	const signInUrl = new URL('/sign-in', request.url);
+	const signInUrl = new URL('/login', request.url);
 	signInUrl.searchParams.set('callbackUrl', pathname);
 	logProxyActivity(pathname, false, 'Default route - redirect to sign-in');
 	return NextResponse.redirect(signInUrl);

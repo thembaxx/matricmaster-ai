@@ -47,7 +47,7 @@ test.describe('Responsive & Visual Checks', () => {
 
 		for (const [name, viewport] of Object.entries(VIEWPORTS)) {
 			await page.setViewportSize(viewport);
-			await loginPage.page.goto('/sign-up');
+			await loginPage.page.goto('/register');
 			await expect(loginPage.page.locator('input[id="name"]')).toBeVisible();
 			await loginPage.page.screenshot({
 				path: `test-results/signup-${name}-${viewport.width}x${viewport.height}.png`,

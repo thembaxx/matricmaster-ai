@@ -61,7 +61,7 @@ export function DashboardHeader({ userName, userImage, unreadCount }: DashboardH
 								toast.info('Login Required', {
 									description: 'Please Sign in to View your Notifications.',
 								});
-								router.push('/sign-in');
+								router.push('/login');
 								return;
 							}
 							router.push('/notifications');
