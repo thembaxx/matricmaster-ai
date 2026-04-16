@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import {
 	Dialog,
@@ -11,6 +11,7 @@ import {
 	DialogTitle,
 } from '@/components/ui/dialog';
 import { Separator } from '@/components/ui/separator';
+import { useSettings } from '@/contexts/SettingsContext';
 import type {
 	AvailableHours,
 	LoadSheddingSlot,
@@ -31,17 +32,20 @@ interface SchedulePathModalProps {
 }
 
 function useMediaQuery(query: string) {
-	const [matches, setMatches] = useState(true);
+	const [matches, setMatches] = useState(false);
 
-	if (typeof window !== 'undefined') {
-		const check = () => setMatches(window.matchMedia(query).matches);
-		check();
-	}
+	useEffect(() => {
+		if (typeof window === 'undefined') return;
+		const mediaQuery = window.matchMedia(query);
+		setMatches(mediaQuery.matches);
+
+		const handler = (event: MediaQueryListEvent) => setMatches(event.matches);
+		mediaQuery.addEventListener('change', handler);
+		return () => mediaQuery.removeEventListener('change', handler);
+	}, [query]);
 
 	return matches;
 }
-
-import { useSettings } from '@/contexts/SettingsContext';
 
 export function SchedulePathModal({
 	open,
