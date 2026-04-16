@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import type { ReactNode } from 'react';
-import { startTransition } from 'react';
+import { startTransition, ViewTransition as ReactViewTransition } from 'react';
 
 type TransitionType =
 	| 'nav-forward'
@@ -82,18 +82,25 @@ export function ViewTransition({
 	const exitClass = getTransitionClass(exit, defaultTransition);
 	const shareClass = getTransitionClass(share, 'vt-morph');
 
-	return (
-		<div
-			style={{
-				viewTransitionName: name || undefined,
-			}}
-			data-enter={enterClass}
-			data-exit={exitClass}
-			data-share={shareClass}
-		>
-			{children}
-		</div>
-	);
+	// Check if React ViewTransition is available (React canary with Next.js)
+	const hasNativeVT = typeof ReactViewTransition !== 'undefined';
+
+	if (hasNativeVT) {
+		return (
+			<ReactViewTransition
+				name={name}
+				enter={enterClass}
+				exit={exitClass}
+				share={shareClass}
+				default={defaultTransition}
+			>
+				{children}
+			</ReactViewTransition>
+		);
+	}
+
+	// Fallback for browsers without ViewTransition support
+	return <>{children}</>;
 }
 
 export function useViewTransition() {
