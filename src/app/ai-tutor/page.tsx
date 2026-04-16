@@ -110,10 +110,10 @@ function AITutorPageContent() {
 			<div className="min-h-screen flex items-center justify-center bg-background p-4">
 				<Card className="w-full max-w-md">
 					<CardHeader>
-						<CardTitle>study helper</CardTitle>
+						<CardTitle>Study Helper</CardTitle>
 					</CardHeader>
 					<CardContent className="space-y-4">
-						<p className="text-muted-foreground">sign in to get help with your studies.</p>
+						<p className="text-muted-foreground">Sign in to get help with your studies.</p>
 						<Button asChild className="w-full">
 							<Link href="/sign-in">sign in</Link>
 						</Button>
@@ -173,8 +173,8 @@ function AITutorPageContent() {
 							isLoading={isLoading}
 							placeholder="ask me anything about your studies..."
 						/>
-						<p className="text-[10px] font-bold text-muted-foreground/60 text-center tracking-[0.2em]">
-							help from google gemini • check important info
+						<p className="text-xs font-bold text-muted-foreground/60 text-center tracking-widest uppercase">
+							Help from Google Gemini • Check important info
 						</p>
 					</div>
 				</div>

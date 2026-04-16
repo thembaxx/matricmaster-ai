@@ -56,7 +56,7 @@ export default function ModerationDashboard() {
 	if (!session) {
 		return (
 			<div className="container mx-auto py-8 text-center">
-				<p className="text-muted-foreground">please sign in to access moderation.</p>
+				<p className="text-muted-foreground">Please Sign in to Access Moderation.</p>
 			</div>
 		);
 	}
@@ -66,7 +66,7 @@ export default function ModerationDashboard() {
 	if (!isAdmin) {
 		return (
 			<div className="container mx-auto py-8 text-center">
-				<p className="text-muted-foreground">you don't have permission to access this page.</p>
+				<p className="text-muted-foreground">You don't have Permission to Access this Page.</p>
 			</div>
 		);
 	}

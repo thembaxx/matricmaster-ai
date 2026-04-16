@@ -51,7 +51,7 @@ export default function Landing() {
 	const handleAuthRoute = (path: string) => {
 		if (!session?.user) {
 			toast.info('Login Required', {
-				description: 'Please sign in to access this feature.',
+				description: 'Please Sign in to Access this Feature.',
 			});
 			router.push('/sign-in');
 			return;

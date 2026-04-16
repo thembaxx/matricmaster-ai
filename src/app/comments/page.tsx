@@ -177,7 +177,7 @@ function CommentsContent() {
 						</div>
 					) : (
 						<div className="text-center py-4 text-muted-foreground">
-							<p>Please sign in to join the discussion</p>
+							<p>Please Sign in to Join the Discussion</p>
 						</div>
 					)}
 

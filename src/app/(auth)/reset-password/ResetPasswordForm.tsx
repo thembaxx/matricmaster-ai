@@ -102,7 +102,7 @@ function ResetPasswordFormContent() {
 						href="/sign-in"
 						className="inline-flex items-center text-xs font-bold text-muted-foreground hover:text-foreground transition-colors mb-6 tracking-wider"
 					>
-						<HugeiconsIcon icon={ArrowLeft02Icon} className="w-4 h-4 mr-2" /> back to sign in
+						<HugeiconsIcon icon={ArrowLeft02Icon} className="w-4 h-4 mr-2" /> Back to Sign in
 					</Link>
 
 					<m.div
@@ -165,7 +165,7 @@ function ResetPasswordFormContent() {
 										'bg-primary text-primary-foreground shadow-primary/20'
 									)}
 								>
-									go to sign in
+									Go to Sign in
 								</Button>
 							</m.div>
 						</m.div>

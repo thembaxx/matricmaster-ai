@@ -59,7 +59,7 @@ export function DashboardHeader({ userName, userImage, unreadCount }: DashboardH
 						onClick={() => {
 							if (!userName) {
 								toast.info('Login Required', {
-									description: 'Please sign in to view your notifications.',
+									description: 'Please Sign in to View your Notifications.',
 								});
 								router.push('/sign-in');
 								return;
