@@ -9,6 +9,7 @@ import { SafeImage } from '@/components/SafeImage';
 import { SmoothWords } from '@/components/Transition/SmoothText';
 import { BackgroundMesh } from '@/components/ui/background-mesh';
 import { Separator } from '@/components/ui/separator';
+import { Skeleton } from '@/components/ui/skeleton';
 import { useSignIn } from '@/hooks/useSignIn';
 import { STAGGER_CONTAINER, STAGGER_ITEM } from '@/lib/animation-presets';
 import { FormFields } from './FormFields';
@@ -51,7 +52,7 @@ function SignInFormContent() {
 									alt="Success"
 									width={36}
 									height={36}
-									className="w-10 h-10"
+									className="size-10"
 								/>
 							</div>
 							<span className="font-semibold text-sm">welcome back, {successEmail}!</span>
@@ -71,20 +72,14 @@ function SignInFormContent() {
 						variants={STAGGER_CONTAINER}
 						initial="hidden"
 						animate="visible"
-						className="text-center space-y-3 mb-8"
+						className="text-center gap-3 mb-8"
 					>
 						<m.div
 							variants={STAGGER_ITEM}
 							whileHover={{ rotate: 15, scale: 1.1 }}
 							className="w-14 h-14 bg-primary/10 rounded-[var(--radius-xl)] flex items-center justify-center mx-auto mb-5 text-primary"
 						>
-							<SafeImage
-								src="/logo.png"
-								alt="Success"
-								width={36}
-								height={36}
-								className="w-10 h-10"
-							/>
+							<SafeImage src="/logo.png" alt="Success" width={36} height={36} className="size-10" />
 						</m.div>
 						<SmoothWords
 							as="h1"
@@ -115,7 +110,7 @@ function SignInFormContent() {
 						initial="hidden"
 						animate="visible"
 						onSubmit={handleSubmit(onSubmit)}
-						className="space-y-6"
+						className="flex flex-col gap-6"
 					>
 						<FormFields
 							register={register}
@@ -195,15 +190,15 @@ function SignInFormSkeleton() {
 		<div className="min-h-screen flex items-center justify-center bg-background relative overflow-hidden">
 			<BackgroundMesh />
 			<div className="w-full max-w-md p-4 relative z-10">
-				<div className="w-full tiimo-glass border-none rounded-[var(--radius-2xl)] shadow-soft-lg overflow-hidden p-8 space-y-6">
-					<div className="text-center space-y-3">
-						<div className="w-14 h-14 bg-muted rounded-[var(--radius-xl)] mx-auto animate-pulse" />
-						<div className="h-8 bg-muted rounded w-1/2 mx-auto animate-pulse" />
-						<div className="h-4 bg-muted rounded w-3/4 mx-auto animate-pulse" />
+				<div className="w-full tiimo-glass border-none rounded-[var(--radius-2xl)] shadow-soft-lg overflow-hidden p-8 flex flex-col gap-6">
+					<div className="text-center gap-3">
+						<Skeleton className="w-14 h-14 rounded-[var(--radius-xl)] mx-auto" />
+						<Skeleton className="h-8 w-1/2 mx-auto" />
+						<Skeleton className="h-4 w-3/4 mx-auto" />
 					</div>
-					<div className="space-y-4">
-						<div className="h-12 bg-muted rounded animate-pulse" />
-						<div className="h-12 bg-muted rounded animate-pulse" />
+					<div className="flex flex-col gap-4">
+						<Skeleton className="h-12 w-full" />
+						<Skeleton className="h-12 w-full" />
 					</div>
 				</div>
 			</div>

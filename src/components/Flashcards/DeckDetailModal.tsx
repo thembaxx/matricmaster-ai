@@ -170,7 +170,7 @@ export function DeckDetailModal({
 					</DialogDescription>
 				</DialogHeader>
 
-				<div className="space-y-4">
+				<div className="flex flex-col gap-4">
 					<div className="flex gap-2">
 						<Button
 							onClick={() => setShowAddCard(!showAddCard)}
@@ -184,8 +184,8 @@ export function DeckDetailModal({
 					</div>
 
 					{showAddCard && (
-						<div className="space-y-3 rounded-lg border p-4">
-							<div className="space-y-2">
+						<div className="flex flex-col gap-3 rounded-lg border p-4">
+							<div className="flex flex-col gap-2">
 								<Label htmlFor={`front-${modalId}`}>Front</Label>
 								<Textarea
 									id={`front-${modalId}`}
@@ -195,7 +195,7 @@ export function DeckDetailModal({
 									rows={2}
 								/>
 							</div>
-							<div className="space-y-2">
+							<div className="flex flex-col gap-2">
 								<Label htmlFor={`back-${modalId}`}>Back</Label>
 								<Textarea
 									id={`back-${modalId}`}

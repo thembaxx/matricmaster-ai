@@ -3,12 +3,14 @@
 import { BookOpen01Icon as BookOpen, StarIcon as Star, StarIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { Icon } from '@iconify/react';
+import { FluentEmoji } from '@lobehub/fluent-emoji';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AnimatePresence, m } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { GenerateFlashcardsFromPastPaper } from '@/components/Flashcards/GenerateFlashcardsFromPastPaper';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { getSubjectFluentEmoji } from '@/content';
 import { usePastPapers } from '@/hooks/usePastPapers';
 import { STAGGER_CONTAINER, STAGGER_ITEM } from '@/lib/animation-presets';
 import { togglePastPaperBookmarkAction, trackPastPaperViewAction } from '@/lib/db/actions';
@@ -73,7 +75,12 @@ export function PastPaperCard({ paper, recommendation }: PastPaperCardProps) {
 			<div className="space-y-6 relative z-10">
 				<div className="flex items-start justify-between">
 					<div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-500 shadow-inner">
-						<HugeiconsIcon icon={BookOpen} className="w-8 h-8 text-primary" />
+						<FluentEmoji
+							type="3d"
+							emoji={getSubjectFluentEmoji(paper.subject.toLowerCase().replace(' ', '-'))}
+							size={32}
+							className="w-8 h-8"
+						/>
 					</div>
 					<div className="text-right">
 						<span className="text-[10px] font-black text-label-tertiary  tracking-[0.2em] block mb-1">

@@ -107,7 +107,7 @@ export function PracticeModal({ open, onOpenChange, problems, subject }: Practic
 					</div>
 				</DialogHeader>
 
-				<div className="space-y-4">
+				<div className="flex flex-col gap-4">
 					<Progress value={progress} className="h-2" />
 
 					{isComplete ? (

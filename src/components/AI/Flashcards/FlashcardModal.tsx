@@ -97,7 +97,7 @@ export function FlashcardModal({
 					</DialogDescription>
 				</DialogHeader>
 
-				<div className="space-y-4">
+				<div className="flex flex-col gap-4">
 					<FlashcardProgress
 						currentIndex={currentIndex}
 						totalCards={flashcards.length}

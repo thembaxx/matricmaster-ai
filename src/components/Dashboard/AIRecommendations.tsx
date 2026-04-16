@@ -65,7 +65,7 @@ export const AIRecommendations = memo(function AIRecommendations({
 					ai tutor recommendations
 				</CardTitle>
 			</CardHeader>
-			<CardContent className="space-y-3">
+			<CardContent className="flex flex-col gap-3">
 				{lowConfidenceTopics.slice(0, 3).map((topic) => (
 					<div
 						key={topic.id}
@@ -129,22 +129,25 @@ export const UnifiedProgress = memo(function UnifiedProgress({ className }: Unif
 	return (
 		<div className={className}>
 			<div className="grid grid-cols-3 gap-3">
-				<div className="text-center p-3 rounded-xl bg-destructive/10">
-					<HugeiconsIcon icon={BrainIcon} className="w-5 h-5 text-destructive mx-auto mb-1" />
-					<p className="text-xl font-black text-destructive">{lowConfidence}</p>
+				<div className="text-center p-3 rounded-xl bg-muted">
+					<HugeiconsIcon icon={BrainIcon} className="w-5 h-5 text-muted-foreground mx-auto mb-1" />
+					<p className="text-xl font-black text-foreground">{lowConfidence}</p>
 					<p className="text-[10px] font-medium text-muted-foreground">need help</p>
 				</div>
-				<div className="text-center p-3 rounded-xl bg-amber-500/10">
-					<HugeiconsIcon icon={BookOpen01Icon} className="w-5 h-5 text-amber-500 mx-auto mb-1" />
-					<p className="text-xl font-black text-amber-500">{mediumConfidence}</p>
+				<div className="text-center p-3 rounded-xl bg-muted">
+					<HugeiconsIcon
+						icon={BookOpen01Icon}
+						className="w-5 h-5 text-muted-foreground mx-auto mb-1"
+					/>
+					<p className="text-xl font-black text-foreground">{mediumConfidence}</p>
 					<p className="text-[10px] font-medium text-muted-foreground">review</p>
 				</div>
-				<div className="text-center p-3 rounded-xl bg-green-500/10">
+				<div className="text-center p-3 rounded-xl bg-muted">
 					<HugeiconsIcon
 						icon={CheckmarkCircle02Icon}
-						className="w-5 h-5 text-green-500 mx-auto mb-1"
+						className="w-5 h-5 text-muted-foreground mx-auto mb-1"
 					/>
-					<p className="text-xl font-black text-green-500">{highConfidence}</p>
+					<p className="text-xl font-black text-foreground">{highConfidence}</p>
 					<p className="text-[10px] font-medium text-muted-foreground">strong</p>
 				</div>
 			</div>

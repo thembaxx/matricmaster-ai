@@ -34,10 +34,10 @@ export const FormFields = memo(function FormFields({
 	const passwordErrorId = useId();
 
 	return (
-		<fieldset className="space-y-6 border-0 p-0 m-0">
+		<fieldset className="flex flex-col gap-6 border-0 p-0 m-0">
 			<legend className="sr-only">sign in credentials</legend>
 
-			<m.div variants={STAGGER_ITEM} className="space-y-2">
+			<m.div variants={STAGGER_ITEM} className="flex flex-col gap-2">
 				<Label htmlFor="email" className="label-xs ml-1">
 					email address
 				</Label>
@@ -59,7 +59,7 @@ export const FormFields = memo(function FormFields({
 				)}
 			</m.div>
 
-			<m.div variants={STAGGER_ITEM} className="space-y-2">
+			<m.div variants={STAGGER_ITEM} className="flex flex-col gap-2">
 				<div className="flex items-center justify-between">
 					<Label htmlFor="password" className="label-xs ml-1">
 						password
@@ -93,9 +93,9 @@ export const FormFields = memo(function FormFields({
 						aria-label={showPassword ? 'hide password' : 'show password'}
 					>
 						{showPassword ? (
-							<HugeiconsIcon icon={ViewOffIcon} className="w-5 h-5" />
+							<HugeiconsIcon icon={ViewOffIcon} className="size-5" />
 						) : (
-							<HugeiconsIcon icon={ViewIcon} className="w-5 h-5" />
+							<HugeiconsIcon icon={ViewIcon} className="size-5" />
 						)}
 					</Button>
 				</div>
