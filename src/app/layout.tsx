@@ -7,6 +7,7 @@ import { ClientOnlyProviders } from '@/components/Layout/ClientOnlyProviders';
 import ClientProviders from '@/components/Layout/ClientProvidersDynamic';
 import { NavigationProgress } from '@/components/NavigationProgress';
 import { OfflineSyncProvider } from '@/components/OfflineSyncProvider';
+import { FeatureIntegrationProvider } from '@/components/Providers/FeatureIntegrationProvider';
 import { ServiceWorkerRegistration } from '@/components/ServiceWorkerRegistration';
 import { Toaster } from '@/components/Toaster';
 import { ThemeProvider } from '@/components/theme-provider';
@@ -185,7 +186,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 							<LiveRegionProvider>
 								<NavigationProgress />
 								<ClientProviders>
-									<OfflineSyncProvider>{children}</OfflineSyncProvider>
+									<FeatureIntegrationProvider>
+										<OfflineSyncProvider>{children}</OfflineSyncProvider>
+									</FeatureIntegrationProvider>
 								</ClientProviders>
 								<Toaster />
 								<ServiceWorkerRegistration />
