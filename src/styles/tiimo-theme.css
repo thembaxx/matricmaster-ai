@@ -8,76 +8,98 @@
    ========================================================================== */
 
 :root {
-  /* --- CORE PALETTE (New Implementation) --- */
-  --primary-blue: #3B82F6;
-  --secondary-navy: #0F172A;
-  --tertiary-orange: #D16900;
-  --neutral-offwhite: #F8FAFC;
+  /* --- CORE PALETTE (Brand: MatricMaster AI) --- */
+  /* Primary: Lavender (#9F85FF) - trustworthy, calm, capable */
+  --tiimo-lavender: oklch(0.67 0.15 295);
+  --tiimo-lavender-light: oklch(0.82 0.10 295);
+  --tiimo-lavender-dark: oklch(0.52 0.18 295);
   
-  --tiimo-lavender: var(--primary-blue);
-  --tiimo-cream: var(--neutral-offwhite);
-  --tiimo-green: #5CB587;
-  --tiimo-gray-dark: var(--secondary-navy);
-  --tiimo-gray-muted: #475569; /* WCAG AA compliant (was #64748B) */
-  --tiimo-gray-subtle: #E2E8F0;
-  --tiimo-white: #FFFFFF;
+  /* Secondary: Deep Navy (#0F172A) - trustworthy, solid */
+  --tiimo-navy: oklch(0.15 0.02 265);
   
-  /* --- EXTENDED TIIMO COLORS --- */
-  --tiimo-yellow: #F2C945;
-  --tiimo-blue: var(--primary-blue);
-  --tiimo-orange: var(--tertiary-orange);
-  --tiimo-pink: #EC4899;
-  --tiimo-teal: #14B8A6;
+  /* Tertiary: Warm Orange (#D16900) - energy, encouragement */
+  --tiimo-orange: oklch(0.55 0.15 35);
+  
+  /* Neutrals - warm tinted toward brand hue */
+  --tiimo-cream: oklch(0.98 0.005 60);  /* Warm white */
+  --tiimo-cream-dark: oklch(0.92 0.01 60);
+  --tiimo-gray-warm: oklch(0.45 0.01 50);
+  --tiimo-gray-warm-light: oklch(0.85 0.008 55);
+  
+  /* Extended Palette */
+  --tiimo-green: oklch(0.58 0.12 160);
+  --tiimo-yellow: oklch(0.75 0.15 75);
+  --tiimo-pink: oklch(0.65 0.15 330);
+  --tiimo-teal: oklch(0.60 0.15 175);
+  
+  /* Legacy aliases (deprecated, use tiimo-* tokens) */
+  --primary-blue: var(--tiimo-lavender);
+  --secondary-navy: var(--tiimo-navy);
+  --tertiary-orange: var(--tiimo-orange);
+  --neutral-offwhite: var(--tiimo-cream);
+  --tiimo-gray-dark: var(--tiimo-navy);
+  --tiimo-gray-muted: oklch(0.45 0.01 250);
+  --tiimo-gray-subtle: oklch(0.88 0.005 250);
+  --tiimo-white: oklch(0.99 0.002 250);
 
-  /* --- SUBJECT PASTELS --- */
-  --subject-math: #F2C945;
-  --subject-math-soft: rgba(242, 201, 69, 0.12);
-  --subject-physics: var(--primary-blue);
-  --subject-physics-soft: rgba(59, 130, 246, 0.12);
-  --subject-life: #5CB587;
-  --subject-life-soft: rgba(92, 181, 135, 0.12);
-  --subject-chemistry: #14B8A6;
-  --subject-chemistry-soft: rgba(20, 184, 166, 0.12);
-  --subject-accounting: #F472B6;
-  --subject-accounting-soft: rgba(244, 114, 182, 0.12);
-  --subject-english: #818CF8;
-  --subject-english-soft: rgba(129, 140, 248, 0.12);
-  --subject-geography: #2DD4BF;
-  --subject-geography-soft: rgba(45, 212, 191, 0.12);
-  --subject-history: var(--tertiary-orange);
-  --subject-history-soft: rgba(209, 105, 0, 0.12);
+  /* --- SUBJECT PASTELS (NSC Subjects) --- */
+  /* Math: Yellow - analytical, problem-solving */
+  --subject-math: oklch(0.75 0.15 75);
+  --subject-math-soft: oklch(0.92 0.05 75 / 0.12);
+  /* Physics: Blue - scientific, precise */
+  --subject-physics: oklch(0.62 0.15 230);
+  --subject-physics-soft: oklch(0.90 0.04 230 / 0.12);
+  /* Life Sciences: Green - natural, growing */
+  --subject-life: oklch(0.58 0.12 160);
+  --subject-life-soft: oklch(0.88 0.04 160 / 0.12);
+  /* Chemistry: Teal - analytical, structured */
+  --subject-chemistry: oklch(0.60 0.15 175);
+  --subject-chemistry-soft: oklch(0.90 0.05 175 / 0.12);
+  /* Accounting: Pink - professional, detail */
+  --subject-accounting: oklch(0.65 0.15 330);
+  --subject-accounting-soft: oklch(0.92 0.05 330 / 0.12);
+  /* English: Indigo - communication, expression */
+  --subject-english: oklch(0.62 0.15 265);
+  --subject-english-soft: oklch(0.90 0.05 265 / 0.12);
+  /* Geography: Cyan - global, environmental */
+  --subject-geography: oklch(0.65 0.15 185);
+  --subject-geography-soft: oklch(0.92 0.05 185 / 0.12);
+  /* History: Orange - chronological, narrative */
+  --subject-history: oklch(0.55 0.15 35);
+  --subject-history-soft: oklch(0.90 0.05 35 / 0.12);
 
   /* --- SEMANTIC MAPPINGS --- */
-  --background: var(--neutral-offwhite);
-  --foreground: var(--secondary-navy);
+  --background: var(--tiimo-cream);
+  --foreground: var(--tiimo-navy);
   
-  --primary: var(--primary-blue);
+  --primary: var(--tiimo-lavender);
   --primary-foreground: var(--tiimo-white);
   
-  --secondary: #E2E8F0;
-  --secondary-foreground: var(--secondary-navy);
+  --secondary: var(--tiimo-gray-warm-light);
+  --secondary-foreground: var(--tiimo-navy);
   
-  --accent: rgba(59, 130, 246, 0.12);
-  --accent-foreground: var(--primary-blue);
+  --accent: oklch(0.90 0.05 295 / 0.12);
+  --accent-foreground: var(--tiimo-lavender);
   
-  --muted: #F1F5F9;
-  --muted-foreground: var(--tiimo-gray-muted);
+  --muted: var(--tiimo-gray-warm-light);
+  --muted-foreground: var(--tiimo-gray-warm);
   
   --card: var(--tiimo-white);
-  --card-foreground: var(--secondary-navy);
+  --card-foreground: var(--tiimo-navy);
   
-  --border: #E2E8F0;
-  --input: #E2E8F0;
-  --ring: var(--primary-blue);
+  --border: var(--tiimo-gray-subtle);
+  --input: var(--tiimo-gray-subtle);
+  --ring: var(--tiimo-lavender);
 
-  --success: var(--tiimo-green);
-  --success-soft: rgba(92, 181, 135, 0.12);
-  --destructive: #FF5C5C;
-  --destructive-soft: rgba(255, 92, 92, 0.12);
-  --warning: var(--subject-math);
-  --warning-soft: var(--subject-math-soft);
-  --info: var(--subject-physics);
-  --info-soft: var(--subject-physics-soft);
+  /* Semantic Colors */
+  --success: oklch(0.58 0.12 160);
+  --success-soft: oklch(0.88 0.04 160 / 0.12);
+  --destructive: oklch(0.55 0.15 25);
+  --destructive-soft: oklch(0.92 0.05 25 / 0.12);
+  --warning: oklch(0.75 0.15 75);
+  --warning-soft: oklch(0.92 0.05 75 / 0.12);
+  --info: oklch(0.62 0.15 230);
+  --info-soft: oklch(0.90 0.04 230 / 0.12);
 
   /* --- TYPOGRAPHY SCALE (Major Third - 1.25 ratio) --- */
   --text-xs: 0.64rem;      /* 10.24px - captions, labels */
@@ -95,14 +117,14 @@
   --text-display: clamp(2.5rem, 5vw + 1.5rem, 4.5rem);
   --text-hero: clamp(3rem, 8vw + 1rem, 6rem);
 
-  /* Font Families */
+  /* Font Families - referencing Next.js font CSS variables */
   --font-geist-sans: var(--font-geist-sans);
   --font-geist-mono: var(--font-geist-mono);
   --font-playfair: var(--font-playfair);
   --font-noto-sans-math: var(--font-noto-sans-math);
   --font-atkinson: var(--font-atkinson);
   --font-heading: var(--font-playfair), Georgia, serif;
-  --font-mono: var(--font-mono);
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
   --font-display: var(--font-playfair), Georgia, serif;
   --font-body: var(--font-geist-sans), system-ui, sans-serif;
 
@@ -196,40 +218,63 @@
 
 /* --- DARK MODE (Premium Dark Identity) --- */
 .dark {
-  --tiimo-gray-bg: #0F172A;
-  --tiimo-gray-elevated: #1E293B;
-  --tiimo-gray-border: #334155;
+  /* Dark mode neutrals - cool navy tints */
+  --tiimo-gray-bg: oklch(0.08 0.01 265);
+  --tiimo-gray-elevated: oklch(0.12 0.02 265);
+  --tiimo-gray-border: oklch(0.22 0.03 265);
+  --tiimo-gray-warm: oklch(0.65 0.02 50);
+  --tiimo-gray-warm-light: oklch(0.18 0.02 265);
+  --tiimo-white: oklch(0.98 0.005 250);
   
   --background: var(--tiimo-gray-bg);
-  --foreground: #F8FAFC;
+  --foreground: oklch(0.95 0.005 60);
   
-  --primary: #3B82F6;
-  --primary-foreground: #FFFFFF;
+  --primary: oklch(0.72 0.18 295);
+  --primary-foreground: oklch(0.08 0.01 265);
   
   --secondary: var(--tiimo-gray-elevated);
-  --secondary-foreground: #F8FAFC;
+  --secondary-foreground: oklch(0.95 0.005 60);
   
-  --accent: rgba(59, 130, 246, 0.18);
-  --accent-foreground: #3B82F6;
+  --accent: oklch(0.20 0.05 295 / 0.18);
+  --accent-foreground: oklch(0.72 0.18 295);
   
   --muted: var(--tiimo-gray-elevated);
-  --muted-foreground: #ADB5BD; /* WCAG AA compliant (was #94A3B8) */
+  --muted-foreground: oklch(0.60 0.02 250);
   
-  --card: #1E293B;
-  --card-foreground: #F8FAFC;
+  --card: oklch(0.12 0.02 265);
+  --card-foreground: oklch(0.95 0.005 60);
   
   --border: var(--tiimo-gray-border);
   --input: var(--tiimo-gray-border);
+  --ring: oklch(0.72 0.18 295);
 
-  /* Desaturated but Energetic Subject Colors for Dark Mode */
-  --subject-math-soft: rgba(242, 201, 69, 0.18);
-  --subject-physics-soft: rgba(72, 167, 222, 0.18);
-  --subject-life-soft: rgba(92, 181, 135, 0.18);
-  --subject-chemistry-soft: rgba(20, 184, 166, 0.18);
-  --subject-accounting-soft: rgba(244, 114, 182, 0.18);
-  --subject-english-soft: rgba(129, 140, 248, 0.18);
-  --subject-geography-soft: rgba(45, 212, 191, 0.18);
-  --subject-history-soft: rgba(251, 146, 60, 0.18);
+  /* Semantic colors in dark mode */
+  --success: oklch(0.62 0.12 160);
+  --success-soft: oklch(0.18 0.04 160 / 0.24);
+  --destructive: oklch(0.60 0.15 25);
+  --destructive-soft: oklch(0.18 0.05 25 / 0.24);
+  --warning: oklch(0.78 0.15 75);
+  --warning-soft: oklch(0.18 0.05 75 / 0.24);
+  --info: oklch(0.68 0.15 230);
+  --info-soft: oklch(0.18 0.05 230 / 0.24);
+
+  /* Subject colors - brighter on dark for visibility */
+  --subject-math: oklch(0.78 0.18 75);
+  --subject-math-soft: oklch(0.18 0.06 75 / 0.24);
+  --subject-physics: oklch(0.68 0.18 230);
+  --subject-physics-soft: oklch(0.18 0.06 230 / 0.24);
+  --subject-life: oklch(0.62 0.15 160);
+  --subject-life-soft: oklch(0.18 0.05 160 / 0.24);
+  --subject-chemistry: oklch(0.65 0.18 175);
+  --subject-chemistry-soft: oklch(0.18 0.06 175 / 0.24);
+  --subject-accounting: oklch(0.70 0.18 330);
+  --subject-accounting-soft: oklch(0.18 0.06 330 / 0.24);
+  --subject-english: oklch(0.68 0.18 265);
+  --subject-english-soft: oklch(0.18 0.06 265 / 0.24);
+  --subject-geography: oklch(0.70 0.18 185);
+  --subject-geography-soft: oklch(0.18 0.06 185 / 0.24);
+  --subject-history: oklch(0.60 0.18 35);
+  --subject-history-soft: oklch(0.18 0.06 35 / 0.24);
 }
 
 @theme inline {
@@ -438,6 +483,46 @@
   
   .text-pretty {
     text-wrap: pretty;
+  }
+
+  /* === FONT FAMILY UTILITIES === */
+  
+  /* Display font - headings, hero, accent text */
+  .font-display {
+    font-family: var(--font-display);
+  }
+  
+  /* Body font - all standard text */
+  .font-body {
+    font-family: var(--font-body);
+  }
+  
+  /* Mono font - numbers, code, data */
+  .font-mono {
+    font-family: var(--font-mono);
+  }
+  
+  /* Question font - for quiz/exam questions (Atkinson for readability) */
+  .font-question {
+    font-family: var(--font-question);
+  }
+  
+  /* Numeric font - for statistics, scores */
+  .font-numeric {
+    font-family: var(--font-numeric);
+  }
+  
+  /* Subject-specific fonts */
+  .font-math {
+    font-family: var(--font-math);
+  }
+  
+  .font-literary {
+    font-family: var(--font-literary);
+  }
+  
+  .font-academic {
+    font-family: var(--font-academic);
   }
   
   /* Font smoothing */
