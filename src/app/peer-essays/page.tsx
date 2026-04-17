@@ -1,0 +1,11 @@
+import { redirect } from 'next/navigation';
+import { getAuth } from '@/lib/auth';
+import PeerEssaysScreen from '@/screens/PeerEssays';
+
+export default async function PeerEssaysPage() {
+	const auth = await getAuth();
+	const session = await auth.api.getSession();
+	if (!session?.user) redirect('/login');
+
+	return <PeerEssaysScreen />;
+}
