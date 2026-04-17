@@ -5,6 +5,8 @@ import { appConfig } from '@/app.config';
 import { ProgressHub } from '@/components/UserHub/ProgressHub';
 import { getAuth } from '@/lib/auth';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
 	title: `My Progress Hub | ${appConfig.name} AI`,
 	description: 'Track all your learning progress in one place.',

@@ -2,6 +2,8 @@ import { redirect } from 'next/navigation';
 import { getAuth } from '@/lib/auth';
 import PeerEssaysScreen from '@/screens/PeerEssays';
 
+export const dynamic = 'force-dynamic';
+
 export default async function PeerEssaysPage() {
 	const auth = await getAuth();
 	const session = await auth.api.getSession();

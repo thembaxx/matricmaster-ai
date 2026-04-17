@@ -24,6 +24,6 @@ export function useDebouncedCallback<T extends (...args: any[]) => void>(
 			if (timeoutRef.current) clearTimeout(timeoutRef.current);
 			timeoutRef.current = setTimeout(() => callbackRef.current(...args), delay);
 		}) as T,
-		[]
+		[delay]
 	);
 }

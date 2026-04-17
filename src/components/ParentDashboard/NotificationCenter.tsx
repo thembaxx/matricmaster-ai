@@ -11,7 +11,7 @@ import {
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { AnimatePresence, m } from 'framer-motion';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import type { ParentNotification } from '@/actions/parent-notifications';
 import {
@@ -57,11 +57,7 @@ export function NotificationCenter({ className }: NotificationCenterProps) {
 	const [filter, setFilter] = useState<string>('all');
 	const [isLoading, setIsLoading] = useState(true);
 
-	useEffect(() => {
-		loadNotifications();
-	}, [loadNotifications]);
-
-	async function loadNotifications() {
+	const loadNotifications = useCallback(async () => {
 		setIsLoading(true);
 		try {
 			const [notifs, count] = await Promise.all([getParentNotifications(), getParentUnreadCount()]);
@@ -72,7 +68,11 @@ export function NotificationCenter({ className }: NotificationCenterProps) {
 		} finally {
 			setIsLoading(false);
 		}
-	}
+	}, []);
+
+	useEffect(() => {
+		loadNotifications();
+	}, [loadNotifications]);
 
 	async function handleMarkAllRead() {
 		await markAllParentNotificationsAsRead();

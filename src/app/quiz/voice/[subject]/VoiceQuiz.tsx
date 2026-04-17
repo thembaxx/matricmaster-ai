@@ -112,57 +112,60 @@ export default function VoiceQuiz(_props: VoiceQuizProps) {
 
 	const currentQuestion = state.questions[state.currentIndex];
 
-	const initSpeech = useCallback(() => {
-		if (typeof window === 'undefined') return;
+	const initSpeech = useCallback(
+		(cmdHandler: (cmd: VoiceCommand) => void) => {
+			if (typeof window === 'undefined') return;
 
-		const SpeechRecognitionClass = window.SpeechRecognition || window.webkitSpeechRecognition;
-		if (!SpeechRecognitionClass) {
-			console.warn('Speech API not supported');
-			return;
-		}
+			const SpeechRecognitionClass = window.SpeechRecognition || window.webkitSpeechRecognition;
+			if (!SpeechRecognitionClass) {
+				console.warn('Speech API not supported');
+				return;
+			}
 
-		recognitionRef.current = new SpeechRecognitionClass();
-		recognitionRef.current.continuous = false;
-		recognitionRef.current.interimResults = true;
-		recognitionRef.current.lang = 'en-ZA';
+			recognitionRef.current = new SpeechRecognitionClass();
+			recognitionRef.current.continuous = false;
+			recognitionRef.current.interimResults = true;
+			recognitionRef.current.lang = 'en-ZA';
 
-		recognitionRef.current.onresult = (event: SpeechRecognitionEvent) => {
-			const results = event.results as unknown as Array<{ transcript: string }>;
-			const transcript = Array.from(results)
-				.map((r) => r.transcript)
-				.join('')
-				.toLowerCase();
+			recognitionRef.current.onresult = (event: SpeechRecognitionEvent) => {
+				const results = event.results as unknown as Array<{ transcript: string }>;
+				const transcript = Array.from(results)
+					.map((r) => r.transcript)
+					.join('')
+					.toLowerCase();
 
-			console.log('Heard:', transcript);
+				console.log('Heard:', transcript);
 
-			if (transcript.includes('next')) {
-				handleVoiceCommand('next');
-			} else if (transcript.includes('repeat')) {
-				handleVoiceCommand('repeat');
-			} else if (transcript.includes('skip')) {
-				handleVoiceCommand('skip');
-			} else if (transcript.match(/answer [abcd]/)) {
-				const option = transcript.match(/answer ([abcd])/)?.[1];
-				if (option) {
-					handleVoiceCommand(`answer_${option}` as VoiceCommand);
+				if (transcript.includes('next')) {
+					cmdHandler('next');
+				} else if (transcript.includes('repeat')) {
+					cmdHandler('repeat');
+				} else if (transcript.includes('skip')) {
+					cmdHandler('skip');
+				} else if (transcript.match(/answer [abcd]/)) {
+					const option = transcript.match(/answer ([abcd])/)?.[1];
+					if (option) {
+						cmdHandler(`answer_${option}` as VoiceCommand);
+					}
 				}
-			}
-		};
+			};
 
-		recognitionRef.current.onend = () => {
-			setState((prev) => ({ ...prev, isListening: false }));
-			if (state.isListening) {
-				recognitionRef.current?.start();
-			}
-		};
+			recognitionRef.current.onend = () => {
+				setState((prev) => ({ ...prev, isListening: false }));
+				if (state.isListening) {
+					recognitionRef.current?.start();
+				}
+			};
 
-		recognitionRef.current.onerror = (event: SpeechRecognitionErrorEvent) => {
-			console.error('Speech recognition error:', event.error);
-			setState((prev) => ({ ...prev, isListening: false }));
-		};
+			recognitionRef.current.onerror = (event: SpeechRecognitionErrorEvent) => {
+				console.error('Speech recognition error:', event.error);
+				setState((prev) => ({ ...prev, isListening: false }));
+			};
 
-		synthRef.current = window.speechSynthesis;
-	}, [state.isListening]);
+			synthRef.current = window.speechSynthesis;
+		},
+		[state.isListening]
+	);
 
 	const speak = useCallback((text: string) => {
 		if (!synthRef.current) {
@@ -197,55 +200,6 @@ export default function VoiceQuiz(_props: VoiceQuizProps) {
 		const text = `Question ${state.currentIndex + 1}. ${currentQuestion.question}. Option A: ${currentQuestion.options[0]}. Option B: ${currentQuestion.options[1]}. Option C: ${currentQuestion.options[2]}. Option D: ${currentQuestion.options[3]}.`;
 		speak(text);
 	}, [currentQuestion, state.currentIndex, speak]);
-
-	const startListening = useCallback(() => {
-		if (!recognitionRef.current) {
-			initSpeech();
-		}
-
-		setState((prev) => ({ ...prev, isListening: true }));
-		recognitionRef.current?.start();
-	}, [initSpeech]);
-
-	const stopListening = useCallback(() => {
-		setState((prev) => ({ ...prev, isListening: false }));
-		recognitionRef.current?.stop();
-	}, []);
-
-	const handleVoiceCommand = useCallback(
-		(command: VoiceCommand) => {
-			switch (command) {
-				case 'next':
-				case 'skip':
-					if (state.currentIndex >= state.questions.length - 1) {
-						setState((prev) => ({ ...prev, isComplete: true }));
-					} else {
-						setState((prev) => ({
-							...prev,
-							currentIndex: prev.currentIndex + 1,
-							showResult: false,
-							lastAnswer: null,
-						}));
-						readQuestion();
-					}
-					break;
-				case 'repeat':
-					readQuestion();
-					break;
-				case 'answer_a':
-				case 'answer_b':
-				case 'answer_c':
-				case 'answer_d': {
-					const optionIndex = { answer_a: 0, answer_b: 1, answer_c: 2, answer_d: 3 }[
-						command.split('_')[1]
-					] as number;
-					submitAnswer(optionIndex);
-					break;
-				}
-			}
-		},
-		[state.currentIndex, state.questions.length, readQuestion, submitAnswer]
-	);
 
 	const submitAnswer = useCallback(
 		(optionIndex: number) => {
@@ -295,8 +249,57 @@ export default function VoiceQuiz(_props: VoiceQuizProps) {
 		]
 	);
 
+	const handleVoiceCommand = useCallback(
+		(command: VoiceCommand) => {
+			switch (command) {
+				case 'next':
+				case 'skip':
+					if (state.currentIndex >= state.questions.length - 1) {
+						setState((prev) => ({ ...prev, isComplete: true }));
+					} else {
+						setState((prev) => ({
+							...prev,
+							currentIndex: prev.currentIndex + 1,
+							showResult: false,
+							lastAnswer: null,
+						}));
+						readQuestion();
+					}
+					break;
+				case 'repeat':
+					readQuestion();
+					break;
+				case 'answer_a':
+				case 'answer_b':
+				case 'answer_c':
+				case 'answer_d': {
+					const optionIndex = { answer_a: 0, answer_b: 1, answer_c: 2, answer_d: 3 }[
+						command.split('_')[1]
+					] as number;
+					submitAnswer(optionIndex);
+					break;
+				}
+			}
+		},
+		[state.currentIndex, state.questions.length, readQuestion, submitAnswer]
+	);
+
+	const startListening = useCallback(() => {
+		if (!recognitionRef.current) {
+			initSpeech(handleVoiceCommand);
+		}
+
+		setState((prev) => ({ ...prev, isListening: true }));
+		recognitionRef.current?.start();
+	}, [initSpeech, handleVoiceCommand]);
+
+	const stopListening = useCallback(() => {
+		setState((prev) => ({ ...prev, isListening: false }));
+		recognitionRef.current?.stop();
+	}, []);
+
 	useEffect(() => {
-		initSpeech();
+		initSpeech(handleVoiceCommand);
 		return () => {
 			recognitionRef.current?.stop();
 			synthRef.current?.cancel();
@@ -304,7 +307,7 @@ export default function VoiceQuiz(_props: VoiceQuizProps) {
 				clearTimeout(answerTimeoutRef.current);
 			}
 		};
-	}, [initSpeech]);
+	}, [initSpeech, handleVoiceCommand]);
 
 	useEffect(() => {
 		if (currentQuestion && !state.isComplete) {

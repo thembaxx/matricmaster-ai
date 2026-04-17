@@ -156,12 +156,18 @@ function calculateSubjectMastery(
 	const correct = progressSummary?.totalCorrect ?? 0;
 	const baseAccuracy = total > 0 ? (correct / total) * 100 : 0;
 
-	const allSubjects = subjects.slice(0, 8);
+	const subjectsArray = subjects as {
+		id?: string;
+		displayName?: string;
+		slug?: string;
+		name?: string;
+	}[];
+	const allSubjects = subjectsArray.slice(0, 8);
 	const mastery: UnifiedStats['subjectMastery'] = [];
 
 	for (const subject of allSubjects) {
-		const subjectSlug = 'slug' in subject ? subject.slug : subject.id;
-		const subjectName = 'name' in subject ? subject.name : subject.displayName;
+		const subjectSlug = subject.slug ?? subject.id ?? '';
+		const subjectName = subject.name ?? subject.displayName ?? '';
 		mastery.push({
 			subject: subjectName,
 			slug: subjectSlug,

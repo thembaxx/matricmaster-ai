@@ -83,7 +83,7 @@ export function useOnboarding() {
 		} else {
 			setIsComplete(true);
 		}
-	}, [currentStep]);
+	}, [currentStep, steps.length]);
 
 	const prevStep = useCallback(() => {
 		if (currentStep > 0) {
@@ -91,11 +91,14 @@ export function useOnboarding() {
 		}
 	}, [currentStep]);
 
-	const goToStep = useCallback((stepIndex: number) => {
-		if (stepIndex >= 0 && stepIndex < steps.length) {
-			setCurrentStep(stepIndex);
-		}
-	}, []);
+	const goToStep = useCallback(
+		(stepIndex: number) => {
+			if (stepIndex >= 0 && stepIndex < steps.length) {
+				setCurrentStep(stepIndex);
+			}
+		},
+		[steps.length]
+	);
 
 	// Response management
 	const updateResponse = useCallback((stepId: string, response: any) => {

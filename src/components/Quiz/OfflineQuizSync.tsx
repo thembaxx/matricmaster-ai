@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { syncOfflineQuizzes } from '@/actions/sync/offline-quiz-sync';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -19,6 +19,15 @@ export function OfflineQuizSync({ onSyncComplete }: OfflineQuizSyncProps) {
 	const [syncProgress, setSyncProgress] = useState(0);
 	const [syncResult, setSyncResult] = useState<{ synced: number; failed: number } | null>(null);
 
+	const loadPendingQuizzes = useCallback(async () => {
+		try {
+			const quizzes = await getPendingQuizzes();
+			setPendingQuizzes(quizzes);
+		} catch (error) {
+			console.error('Failed to load pending quizzes:', error);
+		}
+	}, []);
+
 	useEffect(() => {
 		const handleOnline = () => setIsOnline(true);
 		const handleOffline = () => setIsOnline(false);
@@ -34,15 +43,6 @@ export function OfflineQuizSync({ onSyncComplete }: OfflineQuizSyncProps) {
 			window.removeEventListener('offline', handleOffline);
 		};
 	}, [loadPendingQuizzes]);
-
-	async function loadPendingQuizzes() {
-		try {
-			const quizzes = await getPendingQuizzes();
-			setPendingQuizzes(quizzes);
-		} catch (error) {
-			console.error('Failed to load pending quizzes:', error);
-		}
-	}
 
 	async function handleSync() {
 		if (!isOnline || isSyncing) return;
