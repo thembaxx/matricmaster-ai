@@ -2992,6 +2992,87 @@ export const syncedEventsRelations = relations(syncedEvents, ({ one }) => ({
 }));
 
 // ============================================================================
+// PEER ESSAY GRADING SYSTEM TABLES
+// ============================================================================
+
+export const peerEssays = pgTable(
+	'peer_essays',
+	{
+		id: uuid('id').defaultRandom().primaryKey(),
+		userId: text('user_id')
+			.notNull()
+			.references(() => users.id, { onDelete: 'cascade' }),
+		subject: varchar('subject', { length: 50 }).notNull(),
+		topic: varchar('topic', { length: 200 }).notNull(),
+		essayContent: text('essay_content').notNull(),
+		status: varchar('status', { length: 20 }).notNull().default('pending'), // pending, being_graded, completed, ai_completed
+		peerGradeCount: integer('peer_grade_count').notNull().default(0),
+		aiGradeGiven: boolean('ai_grade_given').notNull().default(false),
+		xpEarned: integer('xp_earned').notNull().default(0),
+		createdAt: timestamp('created_at').defaultNow(),
+		updatedAt: timestamp('updated_at').defaultNow(),
+	},
+	(table) => ({
+		userIdIdx: index('peer_essays_user_id_idx').on(table.userId),
+		subjectIdx: index('peer_essays_subject_idx').on(table.subject),
+		statusIdx: index('peer_essays_status_idx').on(table.status),
+		userStatusIdx: index('peer_essays_user_status_idx').on(table.userId, table.status),
+	})
+);
+
+export const peerEssayGrades = pgTable(
+	'peer_essay_grades',
+	{
+		id: uuid('id').defaultRandom().primaryKey(),
+		essayId: uuid('essay_id')
+			.notNull()
+			.references(() => peerEssays.id, { onDelete: 'cascade' }),
+		graderId: text('grader_id')
+			.notNull()
+			.references(() => users.id, { onDelete: 'cascade' }),
+		clarity: integer('clarity').notNull(), // 1-5
+		argument: integer('argument').notNull(), // 1-5
+		evidence: integer('evidence').notNull(), // 1-5
+		mechanics: integer('mechanics').notNull(), // 1-5
+		feedback: text('feedback'),
+		isAIGrade: boolean('is_ai_grade').notNull().default(false),
+		xpAwarded: integer('xp_awarded').notNull().default(0),
+		createdAt: timestamp('created_at').defaultNow(),
+	},
+	(table) => ({
+		essayIdIdx: index('peer_essay_grades_essay_id_idx').on(table.essayId),
+		graderIdIdx: index('peer_essay_grades_grader_id_idx').on(table.graderId),
+		uniqueGrade: uniqueIndex('peer_essay_grades_unique').on(table.essayId, table.graderId),
+	})
+);
+
+// Relations
+export const peerEssaysRelations = relations(peerEssays, ({ one, many }) => ({
+	user: one(users, {
+		fields: [peerEssays.userId],
+		references: [users.id],
+	}),
+	grades: many(peerEssayGrades),
+}));
+
+export const peerEssayGradesRelations = relations(peerEssayGrades, ({ one }) => ({
+	essay: one(peerEssays, {
+		fields: [peerEssayGrades.essayId],
+		references: [peerEssays.id],
+	}),
+	grader: one(users, {
+		fields: [peerEssayGrades.graderId],
+		references: [users.id],
+	}),
+}));
+
+// Types
+export type PeerEssay = typeof peerEssays.$inferSelect;
+export type NewPeerEssay = typeof peerEssays.$inferInsert;
+export type PeerEssayGrade = typeof peerEssayGrades.$inferSelect;
+export type NewPeerEssayGrade = typeof peerEssayGrades.$inferInsert;
+
+// ============================================================================
 // PARENT NOTIFICATION PREFERENCES TABLE
 // ============================================================================
 

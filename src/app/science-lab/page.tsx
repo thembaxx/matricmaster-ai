@@ -5,7 +5,6 @@ import { HugeiconsIcon } from '@hugeicons/react';
 import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { CircuitDiagram } from '@/components/Science/CircuitDiagram';
-import { FreeBodyDiagram } from '@/components/Science/FreeBodyDiagram';
 import { ProjectileMotion } from '@/components/Science/ProjectileMotion';
 import { WaveInterference } from '@/components/Science/WaveInterference';
 import { Button } from '@/components/ui/button';
@@ -34,11 +33,12 @@ export default function ScienceLabPage() {
 				</div>
 
 				<Tabs value={activeTab} onValueChange={(v) => router.push(`/science-lab/${v}`)}>
-					<TabsList className="grid grid-cols-4 w-full">
+					<TabsList className="grid grid-cols-5 w-full">
 						<TabsTrigger value="circuits">Circuits</TabsTrigger>
 						<TabsTrigger value="momentum">Kinematics</TabsTrigger>
 						<TabsTrigger value="waves">Waves</TabsTrigger>
 						<TabsTrigger value="forces">Forces</TabsTrigger>
+						<TabsTrigger value="thermochemistry">Thermo</TabsTrigger>
 					</TabsList>
 				</Tabs>
 			</header>
@@ -170,7 +170,33 @@ export default function ScienceLabPage() {
 
 				{activeTab === 'waves' && <WaveInterference />}
 
-				{activeTab === 'forces' && <FreeBodyDiagram />}
+				{activeTab === 'forces' && (
+					<div className="text-center py-20">
+						<div className="bg-primary/10 rounded-2xl p-12 border border-primary/20 inline-block">
+							<h3 className="text-lg font-semibold mb-4">Forces & Motion Lab</h3>
+							<p className="text-muted-foreground mb-4">
+								Explore Newton&apos;s laws, gravity, and applied forces.
+							</p>
+							<Button onClick={() => router.push('/science-lab/forces')} variant="default">
+								Open Forces Simulation
+							</Button>
+						</div>
+					</div>
+				)}
+
+				{activeTab === 'thermochemistry' && (
+					<div className="text-center py-20">
+						<div className="bg-primary/10 rounded-2xl p-12 border border-primary/20 inline-block">
+							<h3 className="text-lg font-semibold mb-4">Thermochemistry Lab</h3>
+							<p className="text-muted-foreground mb-4">
+								Explore heat transfer, calorimetry, and chemical energy changes.
+							</p>
+							<Button onClick={() => router.push('/science-lab/thermochemistry')} variant="default">
+								Open Thermochemistry Simulation
+							</Button>
+						</div>
+					</div>
+				)}
 			</main>
 		</div>
 	);
