@@ -1,5 +1,14 @@
 type AppEvent =
-	| { type: 'QUIZ_COMPLETED'; payload: { quizId: string; subject: string; score: number; totalQuestions: number; weakAreas: string[] } }
+	| {
+			type: 'QUIZ_COMPLETED';
+			payload: {
+				quizId: string;
+				subject: string;
+				score: number;
+				totalQuestions: number;
+				weakAreas: string[];
+			};
+	  }
 	| { type: 'STUDY_PLAN_UPDATED'; payload: { planId: string; completedItems: number } }
 	| { type: 'PROGRESS_MILESTONE'; payload: { subject: string; milestone: string } }
 	| { type: 'XP_EARNED'; payload: { amount: number; source: string } }

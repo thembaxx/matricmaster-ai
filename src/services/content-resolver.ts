@@ -1,9 +1,10 @@
 import { QUESTIONS_DATA } from '@/content/questions';
-import type { Quiz } from '@/content/questions/quiz/types';
+import type { QuizPaper } from '@/content/questions/quiz/types';
 import type { QuizParams } from '@/lib/schemas/quiz-params';
 
 export interface ResolvedQuiz {
-	quiz: Quiz | null;
+	quiz: QuizPaper | null;
+	quizId?: string;
 	status: 'found' | 'empty' | 'fallback';
 	message?: string;
 }
@@ -31,10 +32,13 @@ class QuizContentResolver {
 
 			// If category is also provided
 			if (category) {
-				const categoryQuiz = subjectQuizzes.find(([, q]) => q.topic === category || q.title.toLowerCase().includes(category.toLowerCase()));
+				const categoryQuiz = subjectQuizzes.find(([, q]) =>
+					q.title.toLowerCase().includes(category.toLowerCase())
+				);
 				if (categoryQuiz) {
 					return {
 						quiz: categoryQuiz[1],
+						quizId: categoryQuiz[0],
 						status: 'found',
 					};
 				}
@@ -58,6 +62,7 @@ class QuizContentResolver {
 		const mathQuiz = QUESTIONS_DATA['math-p1-2023-nov'];
 		return {
 			quiz: mathQuiz,
+			quizId: 'math-p1-2023-nov',
 			status: 'fallback',
 			message: 'Falling back to default mathematics quiz',
 		};

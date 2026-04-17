@@ -21,8 +21,8 @@ export const QuizParamsSchema = z.object({
 	subject: SubjectEnum.optional(),
 	category: z.string().optional(),
 	difficulty: DifficultyEnum.optional(),
-	limit: z.coerce.number().min(1).max(100).default(10),
-	offset: z.coerce.number().min(0).default(0),
+	limit: z.coerce.number().min(1).max(100).default(10).optional(),
+	offset: z.coerce.number().min(0).default(0).optional(),
 	sessionId: z.string().uuid().optional(),
 });
 

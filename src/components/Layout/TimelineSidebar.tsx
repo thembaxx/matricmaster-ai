@@ -11,8 +11,8 @@ import { Button } from '@/components/ui/button';
 import { SUBJECTS } from '@/content';
 import { authClient } from '@/lib/auth-client';
 import { getTodayTimelineEventsAction } from '@/lib/db/actions';
-import { cn } from '@/lib/utils';
 import { buildQuizUrl } from '@/lib/url-utils';
+import { cn } from '@/lib/utils';
 
 interface TimelineEvent {
 	id: string;

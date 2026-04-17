@@ -1,10 +1,4 @@
-export type QuizState =
-	| 'IDLE'
-	| 'STARTED'
-	| 'IN_PROGRESS'
-	| 'PAUSED'
-	| 'COMPLETED'
-	| 'REVIEWED';
+export type QuizState = 'IDLE' | 'STARTED' | 'IN_PROGRESS' | 'PAUSED' | 'COMPLETED' | 'REVIEWED';
 
 export type QuizAction =
 	| 'START'

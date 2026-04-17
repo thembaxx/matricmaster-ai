@@ -18,7 +18,6 @@ export async function GET(request: Request) {
 		id,
 		title: quiz.title,
 		subject: quiz.subject,
-		topic: quiz.topic,
 		questionCount: quiz.questions.length,
 	}));
 
@@ -28,13 +27,14 @@ export async function GET(request: Request) {
 
 	if (params.category) {
 		quizzes = quizzes.filter((q) =>
-			q.topic?.toLowerCase() === params.category?.toLowerCase() ||
 			q.title.toLowerCase().includes(params.category?.toLowerCase() || '')
 		);
 	}
 
 	const total = quizzes.length;
-	const paginatedQuizzes = quizzes.slice(params.offset, params.offset + params.limit);
+	const offset = params.offset ?? 0;
+	const limit = params.limit ?? 10;
+	const paginatedQuizzes = quizzes.slice(offset, offset + limit);
 
 	return NextResponse.json({
 		data: paginatedQuizzes,
@@ -42,8 +42,8 @@ export async function GET(request: Request) {
 			total,
 			subject: params.subject,
 			category: params.category,
-			limit: params.limit,
-			offset: params.offset,
+			limit,
+			offset,
 		},
 	});
 }

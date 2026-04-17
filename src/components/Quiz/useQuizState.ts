@@ -14,9 +14,9 @@ import { useKnowledgeGapSynergy } from '@/hooks/useKnowledgeGapSynergy';
 import { useNetworkStatus } from '@/hooks/useNetworkStatus';
 import { useWrongAnswerPipeline } from '@/hooks/useWrongAnswerPipeline';
 import { isQuotaError } from '@/lib/ai/quota-error';
+import { eventBus } from '@/lib/event-bus';
 import { gradeShortAnswer, type WeakTopic } from '@/lib/quiz-grader';
 import { quizReducer } from '@/lib/quiz-reducer';
-import { eventBus } from '@/lib/event-bus';
 import { getNextQuizState, type QuizState as MachineState } from '@/lib/quiz-state-machine';
 import { buildQuizUrl } from '@/lib/url-utils';
 import {
@@ -501,7 +501,6 @@ export function useQuizState({ quizId }: UseQuizStateProps) {
 		state.isCorrect,
 		state.score,
 		state.elapsedSeconds,
-		state.mode,
 		currentQuestion,
 		state.currentSubject,
 		state.topicStats,

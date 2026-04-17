@@ -1,9 +1,9 @@
 import Quiz from '@/screens/Quiz';
 
 export default async function CategoryQuizPage({
-	params
+	params,
 }: {
-	params: Promise<{ subject: string; category: string }>
+	params: Promise<{ subject: string; category: string }>;
 }) {
 	const { subject, category } = await params;
 	return <Quiz subject={subject} category={category} />;

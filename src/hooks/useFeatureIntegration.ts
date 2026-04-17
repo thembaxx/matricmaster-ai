@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
-import { eventBus } from '@/lib/event-bus';
 import { useQuizCompletion } from '@/hooks/use-quiz-completion';
+import { eventBus } from '@/lib/event-bus';
 import { useQuizResultStore } from '@/stores/useQuizResultStore';
 
 export function useFeatureIntegration() {
@@ -31,7 +31,7 @@ export function useFeatureIntegration() {
 			// 2. Mistake Store
 			for (const area of weakAreas) {
 				addMistake({
-					questionId: 'mistake-' + Date.now(),
+					questionId: `mistake-${Date.now()}`,
 					topic: area,
 					subject,
 				});

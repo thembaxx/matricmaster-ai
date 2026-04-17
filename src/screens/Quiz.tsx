@@ -1,7 +1,10 @@
 'use client';
 
-import { useSearchParams } from 'next/navigation';
+import { ArrowLeft01Icon } from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import { useQuery } from '@tanstack/react-query';
+import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import { Suspense, useCallback, useEffect, useRef, ViewTransition } from 'react';
 import { ContextualAIBubble } from '@/components/AI/ContextualAIBubble';
 import { EdgeCaseHandler } from '@/components/EdgeCase/EdgeCaseHandler';
@@ -10,7 +13,9 @@ import { TimelineSidebar } from '@/components/Layout/TimelineSidebar';
 import { QuizContent } from '@/components/Quiz/QuizContent';
 import { useQuizState } from '@/components/Quiz/useQuizState';
 import { WeakTopicAlert } from '@/components/Quiz/WeakTopicAlert';
+import { Button } from '@/components/ui/button';
 import { QuizRecoveryDialog } from '@/components/ui/QuizRecoveryDialog';
+import { quizContentResolver } from '@/services/content-resolver';
 import {
 	registerOnlineListener,
 	saveQuizAnswer,
@@ -18,19 +23,17 @@ import {
 } from '@/services/offlineQuizSync';
 import { useQuizAutoSave } from '@/stores/useQuizAutoSaveStore';
 
-import { quizContentResolver } from '@/services/content-resolver';
-import { Button } from '@/components/ui/button';
-import { HugeiconsIcon } from '@hugeicons/react';
-import { ArrowLeft01Icon } from '@hugeicons/core-free-icons';
-import Link from 'next/link';
-
 interface QuizInnerProps {
 	quizId?: string;
 	subject?: string;
 	category?: string;
 }
 
-function QuizInner({ quizId: initialQuizId, subject: pathSubject, category: pathCategory }: QuizInnerProps) {
+function QuizInner({
+	quizId: initialQuizId,
+	subject: pathSubject,
+	category: pathCategory,
+}: QuizInnerProps) {
 	const searchParams = useSearchParams();
 	const urlQuizId = searchParams.get('id');
 	const urlSubject = searchParams.get('subject');
@@ -41,13 +44,14 @@ function QuizInner({ quizId: initialQuizId, subject: pathSubject, category: path
 
 	const { data: resolvedData, isLoading: isResolving } = useQuery({
 		queryKey: ['resolve-quiz', initialQuizId, urlQuizId, subject, category],
-		queryFn: () => quizContentResolver.resolveQuiz({
-			subject: subject as any,
-			category: category || undefined
-		}),
+		queryFn: () =>
+			quizContentResolver.resolveQuiz({
+				subject: subject as any,
+				category: category || undefined,
+			}),
 	});
 
-	const quizId = initialQuizId || urlQuizId || resolvedData?.quiz?.id || 'math-p1-2023-nov';
+	const quizId = initialQuizId || urlQuizId || resolvedData?.quizId || 'math-p1-2023-nov';
 
 	if (isResolving) return <QuizSkeleton />;
 
