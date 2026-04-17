@@ -244,7 +244,7 @@ export default function VoiceQuiz(_props: VoiceQuizProps) {
 				}
 			}
 		},
-		[state.currentIndex, state.questions.length, readQuestion]
+		[state.currentIndex, state.questions.length, readQuestion, submitAnswer]
 	);
 
 	const submitAnswer = useCallback(
@@ -304,13 +304,13 @@ export default function VoiceQuiz(_props: VoiceQuizProps) {
 				clearTimeout(answerTimeoutRef.current);
 			}
 		};
-	}, []);
+	}, [initSpeech]);
 
 	useEffect(() => {
 		if (currentQuestion && !state.isComplete) {
 			setTimeout(readQuestion, 500);
 		}
-	}, [state.currentIndex]);
+	}, [currentQuestion, readQuestion, state.isComplete]);
 
 	const handleKeyDown = useCallback(
 		(e: KeyboardEvent) => {

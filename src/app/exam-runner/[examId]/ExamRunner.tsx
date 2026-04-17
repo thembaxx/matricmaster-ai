@@ -97,6 +97,11 @@ export default function ExamRunner(props: ExamRunnerProps) {
 		setQuestions(mockQuestions);
 	}, [subject, questionCount]);
 
+	const handleSubmit = useCallback(() => {
+		setIsSubmitted(true);
+		setShowResults(true);
+	}, []);
+
 	useEffect(() => {
 		if (timeRemaining <= 0 && !isSubmitted) {
 			handleSubmit();
@@ -115,12 +120,7 @@ export default function ExamRunner(props: ExamRunnerProps) {
 		}, 1000);
 
 		return () => clearInterval(timer);
-	}, [timeRemaining, isSubmitted]);
-
-	const handleSubmit = useCallback(() => {
-		setIsSubmitted(true);
-		setShowResults(true);
-	}, []);
+	}, [timeRemaining, isSubmitted, handleSubmit]);
 
 	const handleAnswerSelect = (answer: string) => {
 		const question = questions[currentIndex];
@@ -294,11 +294,9 @@ export default function ExamRunner(props: ExamRunnerProps) {
 								<div className="flex items-center gap-2">
 									<span className="text-sm text-muted-foreground">
 										{currentQuestion.topic && (
-											<>
-												<span className="px-2 py-0.5 rounded bg-primary/10 text-primary text-sm">
-													{currentQuestion.topic}
-												</span>
-											</>
+											<span className="px-2 py-0.5 rounded bg-primary/10 text-primary text-sm">
+												{currentQuestion.topic}
+											</span>
 										)}
 									</span>
 									{currentQuestion.difficulty && (
@@ -327,6 +325,7 @@ export default function ExamRunner(props: ExamRunnerProps) {
 								<div className="space-y-3">
 									{currentQuestion.options.map((option, i) => (
 										<button
+											type="button"
 											key={i}
 											onClick={() => handleAnswerSelect(option)}
 											className={`w-full p-4 rounded-lg border text-left transition-colors ${
@@ -363,6 +362,7 @@ export default function ExamRunner(props: ExamRunnerProps) {
 								const isCurrent = qIndex === currentIndex;
 								return (
 									<button
+										type="button"
 										key={qIndex}
 										onClick={() => setCurrentIndex(qIndex)}
 										className={`w-8 h-8 rounded-full text-sm ${

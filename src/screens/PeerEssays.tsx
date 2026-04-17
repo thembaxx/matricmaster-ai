@@ -286,7 +286,7 @@ export default function PeerEssaysScreen() {
 	});
 
 	const canSubmit = subject && topic && content.length >= 100;
-	const canGrade = essaysToGrade.length > 0 && !selectedEssay;
+	const _canGrade = essaysToGrade.length > 0 && !selectedEssay;
 
 	const handleGrade = (essay: PeerEssay) => {
 		setSelectedEssay(essay);

@@ -74,7 +74,7 @@ export default function ForcesPage() {
 
 				if (trails[idx]) {
 					ctx.beginPath();
-					ctx.strokeStyle = obj.color + '40';
+					ctx.strokeStyle = `${obj.color}40`;
 					ctx.lineWidth = 2;
 					trails[idx].forEach((point, i) => {
 						if (i === 0) ctx.moveTo(point.x, point.y);

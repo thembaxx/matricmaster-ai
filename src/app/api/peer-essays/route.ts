@@ -4,10 +4,10 @@ import { and, asc, eq, ne, sql } from 'drizzle-orm';
 import { headers } from 'next/headers';
 import { getAuth } from '@/lib/auth';
 import { dbManager } from '@/lib/db';
-import { peerEssayGrades, peerEssays } from '@/lib/db/schema';
+import { peerEssays } from '@/lib/db/schema';
 
 const MAX_PEER_GRADES = 3;
-const GRADING_XP = 15;
+const _GRADING_XP = 15;
 
 async function getDb() {
 	const connected = await dbManager.waitForConnection(3, 2000);

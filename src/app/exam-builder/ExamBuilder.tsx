@@ -145,9 +145,12 @@ export default function ExamBuilder(_props: ExamBuilderProps) {
 					<CardContent className="space-y-4">
 						{PAPER_OPTIONS.map((paper) => (
 							<div
+								role="button"
+								tabIndex={0}
 								key={paper.id}
 								className="flex items-center space-x-3 p-3 rounded-lg border hover:bg-muted/50 transition-colors cursor-pointer"
 								onClick={() => handlePaperToggle(paper.id)}
+								onKeyDown={(e) => e.key === 'Enter' && handlePaperToggle(paper.id)}
 							>
 								<Checkbox
 									checked={config.papers.includes(paper.id)}

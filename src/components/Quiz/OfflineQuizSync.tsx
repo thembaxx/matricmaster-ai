@@ -33,7 +33,7 @@ export function OfflineQuizSync({ onSyncComplete }: OfflineQuizSyncProps) {
 			window.removeEventListener('online', handleOnline);
 			window.removeEventListener('offline', handleOffline);
 		};
-	}, []);
+	}, [loadPendingQuizzes]);
 
 	async function loadPendingQuizzes() {
 		try {

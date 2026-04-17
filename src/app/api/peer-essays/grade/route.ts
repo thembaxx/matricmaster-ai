@@ -1,6 +1,6 @@
 'use server';
 
-import { and, asc, eq, ne, sql } from 'drizzle-orm';
+import { and, eq } from 'drizzle-orm';
 import { headers } from 'next/headers';
 import { getAuth } from '@/lib/auth';
 import { dbManager } from '@/lib/db';

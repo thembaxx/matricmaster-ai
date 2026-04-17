@@ -186,7 +186,7 @@ export default function ThermochemistryPage() {
 				cancelAnimationFrame(animationRef.current);
 			}
 		};
-	}, [temp, mass, isRunning, particles.length, reactionType]);
+	}, [temp, mass, isRunning, particles.length, reactionType, heatAdded.toFixed, particles.forEach]);
 
 	const simulateHeatTransfer = (targetTemp: number) => {
 		setIsRunning(true);

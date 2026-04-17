@@ -1,7 +1,6 @@
 'use server';
 
 import { eq } from 'drizzle-orm';
-import { getAuth } from '@/lib/auth';
 import { dbManager } from '@/lib/db';
 import { subjects } from '@/lib/db/schema';
 

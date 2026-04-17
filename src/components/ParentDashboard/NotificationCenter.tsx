@@ -59,7 +59,7 @@ export function NotificationCenter({ className }: NotificationCenterProps) {
 
 	useEffect(() => {
 		loadNotifications();
-	}, []);
+	}, [loadNotifications]);
 
 	async function loadNotifications() {
 		setIsLoading(true);

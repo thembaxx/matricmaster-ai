@@ -40,7 +40,7 @@ export function QuotaWaitModal({
 			}, 1000);
 			return () => clearInterval(interval);
 		}
-	}, [open, estimatedWait]);
+	}, [open, estimatedWait, countdown]);
 
 	const formatTime = (seconds: number) => {
 		const mins = Math.floor(seconds / 60);

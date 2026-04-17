@@ -32,7 +32,7 @@ export function LearningStyleQuiz({ responses, onUpdateResponse }: LearningStyle
 		// Check if quiz is complete
 		const answeredQuestions = Object.keys(selectedAnswers).length;
 		setIsComplete(answeredQuestions === totalQuestions);
-	}, [selectedAnswers]);
+	}, [selectedAnswers, totalQuestions]);
 
 	const handleAnswerSelect = (questionId: string, style: string) => {
 		const newAnswers = { ...selectedAnswers, [questionId]: style };

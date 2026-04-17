@@ -60,7 +60,7 @@ class AIQuotaManager {
 	async getActiveProvider(): Promise<QuotaStatus> {
 		for (const provider of this.fallbackOrder) {
 			const status = this.quotas.get(provider);
-			if (status && status.isHealthy && status.remaining > 0) {
+			if (status?.isHealthy && status.remaining > 0) {
 				return status;
 			}
 		}
