@@ -193,7 +193,7 @@ export default function PdfViewer({ url, onClose, title }: PdfViewerProps) {
 									minScale={0.5}
 									maxScale={5}
 									centerOnInit
-									wheel={{ step: 0.1, smoothStep: 0.005 }}
+									wheel={{ step: 0.1 }}
 									doubleClick={{ disabled: false }}
 									panning={{ velocityDisabled: false }}
 								>
