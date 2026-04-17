@@ -1,4 +1,5 @@
 import { SUBJECTS } from '@/content';
+import { buildQuizUrl } from '@/lib/url-utils';
 
 export interface TimelineEvent {
 	id: string;
@@ -30,7 +31,7 @@ export const DEMO_EVENTS: TimelineEvent[] = [
 		duration: '30 min',
 		status: 'current',
 		emoji: SUBJECTS.physics.emoji,
-		navigationHref: '/quiz?subject=physics',
+		navigationHref: buildQuizUrl({ subject: 'physics' }),
 	},
 	{
 		id: '3',

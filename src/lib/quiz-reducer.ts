@@ -124,6 +124,9 @@ export function quizReducer(state: QuizState, action: QuizAction): QuizState {
 				isQuizFinished: true,
 				bridgeRecommendations: action.payload.recommendations,
 			};
+		case 'SET_MACHINE_STATE':
+			// This is handled externally for now, but we could sync it to state if needed
+			return state;
 		default:
 			return state;
 	}
