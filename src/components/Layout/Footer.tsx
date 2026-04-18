@@ -14,6 +14,7 @@ import { memo } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
+import { DURATION, EASING } from '@/lib/animation-presets';
 
 const footerLinks = {
 	product: [
@@ -57,7 +58,7 @@ export const Footer = memo(function Footer() {
 						initial={{ opacity: 0, y: 20 }}
 						whileInView={{ opacity: 1, y: 0 }}
 						viewport={{ once: true }}
-						transition={{ duration: 0.5 }}
+						transition={{ duration: DURATION.normal, ease: EASING.easeOut }}
 						className="col-span-2 md:col-span-3 lg:col-span-2"
 					>
 						<Link href="/" transitionTypes={['fade']} className="flex items-center gap-2 mb-4">
@@ -77,7 +78,7 @@ export const Footer = memo(function Footer() {
 									initial={{ opacity: 0, scale: 0.95 }}
 									whileInView={{ opacity: 1, scale: 1 }}
 									viewport={{ once: true }}
-									transition={{ duration: 0.3, delay: index * 0.05 }}
+									transition={{ duration: DURATION.quick, delay: index * 0.05 }}
 								>
 									<Link
 										href={social.href}
@@ -190,7 +191,7 @@ export const Footer = memo(function Footer() {
 					initial={{ opacity: 0 }}
 					whileInView={{ opacity: 1 }}
 					viewport={{ once: true }}
-					transition={{ duration: 0.5 }}
+					transition={{ duration: DURATION.normal, ease: EASING.easeOut }}
 					className="flex flex-col md:flex-row justify-between items-center gap-4"
 				>
 					<div className="flex flex-col md:flex-row items-center gap-2 text-xs text-muted-foreground">

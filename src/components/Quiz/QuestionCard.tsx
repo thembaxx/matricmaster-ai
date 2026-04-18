@@ -45,8 +45,8 @@ const questionVariants = {
 };
 
 const questionTransition = {
-	duration: 0.35,
-	ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
+	duration: DURATION.normal,
+	ease: EASING.easeOut,
 };
 
 export function QuestionCard({

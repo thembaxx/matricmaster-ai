@@ -36,7 +36,7 @@ export function HowItWorksSection() {
 				initial={{ opacity: 0, y: 40 }}
 				whileInView={{ opacity: 1, y: 0 }}
 				viewport={{ once: true, margin: '-100px' }}
-				transition={{ duration: 0.6 }}
+				transition={{ duration: DURATION.normal, ease: EASING.easeOut }}
 				className="text-center mb-16 relative z-10"
 			>
 				<h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight mb-4">

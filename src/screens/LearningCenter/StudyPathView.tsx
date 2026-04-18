@@ -105,7 +105,7 @@ export default function StudyPathView() {
 							className="h-full bg-primary rounded-full"
 							initial={{ width: 0 }}
 							animate={{ width: `${progressPercent}%` }}
-							transition={{ duration: 0.8, ease: 'easeOut' }}
+							transition={{ duration: DURATION.normal, ease: EASING.easeOut }}
 						/>
 					</div>
 				</div>

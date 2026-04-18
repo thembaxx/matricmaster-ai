@@ -16,7 +16,7 @@ export function TestimonialsSection() {
 				initial={{ opacity: 0, y: 40 }}
 				whileInView={{ opacity: 1, y: 0 }}
 				viewport={{ once: true, margin: '-100px' }}
-				transition={{ duration: 0.6 }}
+				transition={{ duration: DURATION.normal, ease: EASING.easeOut }}
 				className="text-center mb-16"
 			>
 				<h2 className="heading-2 mb-4">

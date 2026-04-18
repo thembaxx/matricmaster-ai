@@ -6,6 +6,7 @@ import { m } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { useId } from 'react';
 import { Button } from '@/components/ui/button';
+import { DURATION, EASING } from '@/lib/animation-presets';
 
 export function FinalCTASection() {
 	const router = useRouter();
@@ -17,7 +18,7 @@ export function FinalCTASection() {
 				initial={{ opacity: 0, scale: 0.95 }}
 				whileInView={{ opacity: 1, scale: 1 }}
 				viewport={{ once: true }}
-				transition={{ duration: 0.6 }}
+				transition={{ duration: DURATION.normal, ease: EASING.easeOut }}
 				className="relative overflow-hidden rounded-[var(--radius-2xl)] bg-gradient-to-br from-indigo-600 via-indigo-700 to-indigo-800 p-12 lg:p-20"
 			>
 				<div className="absolute inset-0 opacity-10">

@@ -24,7 +24,7 @@ export function PricingSection() {
 				initial={{ opacity: 0, y: 40 }}
 				whileInView={{ opacity: 1, y: 0 }}
 				viewport={{ once: true, margin: '-100px' }}
-				transition={{ duration: 0.6 }}
+				transition={{ duration: DURATION.normal, ease: EASING.easeOut }}
 				className="max-w-5xl mx-auto px-4 mb-16"
 			>
 				<div className="flex flex-col lg:flex-row lg:items-end gap-8 lg:gap-16">
@@ -48,7 +48,7 @@ export function PricingSection() {
 				initial={{ opacity: 0, y: 20 }}
 				whileInView={{ opacity: 1, y: 0 }}
 				viewport={{ once: true, margin: '-100px' }}
-				transition={{ duration: 0.6, delay: 0.2 }}
+				transition={{ duration: DURATION.normal, ease: EASING.easeOut, delay: 0.2 }}
 				className="max-w-5xl mx-auto px-4"
 			>
 				<div className="grid grid-cols-1 md:grid-cols-2 gap-6">

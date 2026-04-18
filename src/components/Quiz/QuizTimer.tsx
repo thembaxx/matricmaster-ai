@@ -2,6 +2,7 @@
 
 import { AnimatePresence, m } from 'framer-motion';
 import { useMemo } from 'react';
+import { DURATION, EASING } from '@/lib/animation-presets';
 import { cn } from '@/lib/utils';
 
 interface QuizTimerProps {
@@ -65,7 +66,7 @@ export function QuizTimer({ elapsedSeconds, totalSeconds }: QuizTimerProps) {
 							strokeDasharray={circumference}
 							initial={false}
 							animate={{ strokeDashoffset: dashOffset, stroke: ringColor }}
-							transition={{ duration: 0.8, ease: 'easeOut' }}
+							transition={{ duration: DURATION.normal, ease: EASING.easeOut }}
 						/>
 					</svg>
 				)}

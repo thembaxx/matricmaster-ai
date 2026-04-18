@@ -65,7 +65,7 @@ export default function Achievements() {
 				<m.div
 					initial={{ opacity: 0, y: 20 }}
 					animate={{ opacity: 1, y: 0 }}
-					transition={{ duration: 0.6 }}
+					transition={{ duration: DURATION.normal }}
 				>
 					<HeroStatisticsCard
 						masteryLevel={masteryLevel}
