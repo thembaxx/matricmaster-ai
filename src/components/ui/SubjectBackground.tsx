@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 import { createContext, type ReactNode, useContext, useMemo, useState } from 'react';
 import { getSubjectGradient } from '@/content';
 import { useReducedMotion } from '@/hooks/use-reduced-motion';
+import { DURATION, EASING } from '@/lib/animation-presets';
 
 interface SubjectBackgroundContextValue {
 	subjectId: string | null;
@@ -68,7 +69,7 @@ export function SubjectBackgroundProvider({
 							initial={{ opacity: 0 }}
 							animate={{ opacity: 1 }}
 							exit={{ opacity: 0 }}
-							transition={{ duration: 0.5 }}
+							transition={{ duration: DURATION.slow, ease: EASING.easeOut }}
 							className="fixed inset-0 -z-10 pointer-events-none"
 							style={{
 								background: `linear-gradient(135deg, ${gradient.primary}, ${gradient.secondary})`,
