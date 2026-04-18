@@ -1,6 +1,6 @@
 'use client';
 
-import { AnimatePresence } from 'framer-motion';
+import { AnimatePresence } from 'motion/react';
 import { memo, useState } from 'react';
 import { SubjectCardItem } from './SubjectCardItem';
 import { SubjectCardModal } from './SubjectCardModal';
