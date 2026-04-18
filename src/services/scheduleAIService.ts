@@ -4,6 +4,7 @@ import { generateText } from 'ai';
 import { differenceInDays } from 'date-fns';
 import { asc, eq } from 'drizzle-orm';
 import { NSC_EXAM_DATES } from '@/content';
+import { AI_MODELS } from '@/lib/ai-config';
 import { getAuth } from '@/lib/auth';
 import { dbManager } from '@/lib/db';
 import { topicConfidence } from '@/lib/db/schema';
@@ -15,7 +16,7 @@ function getGeminiModel() {
 		throw new Error('GEMINI_API_KEY is not configured');
 	}
 	const google = createGoogleGenerativeAI({ apiKey });
-	return google('gemini-2.5-flash');
+	return google(AI_MODELS.PRIMARY);
 }
 
 export async function getWeakAreas(): Promise<{ topic: string; subject: string; score: number }[]> {

@@ -4,11 +4,11 @@ import { generateTextWithAI, generateWithFallback, streamTextWithAI } from '@/li
  * Available Gemini models with fallback hierarchy
  */
 export const AI_MODELS = {
-	PRIMARY: 'gemini-2.5-flash',
-	FALLBACK_1: 'gemini-2.0-pro',
-	FALLBACK_2: 'gemini-2.0-flash',
-	FALLBACK_3: 'gemini-1.5-pro',
-	FALLBACK_4: 'gemini-3.1-flash-lite',
+	PRIMARY: 'gemini-2.0-flash',
+	FALLBACK_1: 'gemini-1.5-pro',
+	FALLBACK_2: 'gemini-1.5-flash',
+	FALLBACK_3: 'gemini-2.0-flash-lite-preview-02-05',
+	FALLBACK_4: 'gemini-2.0-pro-exp-02-05',
 } as const;
 
 /**
@@ -69,10 +69,10 @@ export async function getAvailableModel(complexity: TaskComplexity = 'moderate')
 }
 
 // Alias for backward compatibility
-export const getBestAvailableModel = () => 'gemini-2.5-flash';
+export const getBestAvailableModel = () => AI_MODELS.PRIMARY;
 
 async function isModelAvailable(modelName: string): Promise<boolean> {
-	const apiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY;
+	const apiKey = process.env.GEMINI_API_KEY;
 	if (!apiKey) return false;
 
 	const configuredModels: string[] = [

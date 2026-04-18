@@ -10,12 +10,11 @@ const AiLabScreen = dynamic(() => import('@/screens/AiLab'), {
 const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://lumni.ai';
 
 export const metadata: Metadata = {
-	title: `AI Lab | ${appConfig.name.toLowerCase()}`,
-	description:
-		'Supercharge your learning with advanced AI study tutors, essay graders, and voice interactions.',
+	title: `AI Lab | ${appConfig.name}`,
+	description: 'Experiment with AI tools for learning.',
 	alternates: { canonical: `${baseUrl}/ai-lab` },
 	openGraph: {
-		title: `Unified AI Lab Hub | ${appConfig.name.toLowerCase()}`,
+		title: `Unified AI Lab Hub | ${appConfig.name}`,
 		description: 'State-of-the-art AI tools for South African Matric students.',
 		url: `${baseUrl}/ai-lab`,
 		type: 'website',

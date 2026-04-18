@@ -12,7 +12,7 @@ import { ServiceWorkerRegistration } from '@/components/ServiceWorkerRegistratio
 import { Toaster } from '@/components/Toaster';
 import { ThemeProvider } from '@/components/theme-provider';
 import '@/styles/index.css';
-import { domAnimation, LazyMotion } from 'framer-motion';
+import { MotionConfig } from 'motion/react';
 import { cn } from '@/lib/utils';
 import { appConfig } from '../app.config';
 import {
@@ -78,10 +78,10 @@ export const metadata: Metadata = {
 		siteName: appConfig.name.toLowerCase(),
 		images: [
 			{
-				url: `/api/og?title=${appConfig.name.replace(' ', '+')}&description=Master+your+Matric+exams`,
+				url: `/api/og?title=${appConfig.name.toLowerCase().replace(' ', '+')}&description=master+your+matric+exams`,
 				width: 1200,
 				height: 630,
-				alt: `${appConfig.name} - Master Your Matric Exams`,
+				alt: `${appConfig.name.toLowerCase()} - master your matric exams`,
 			},
 		],
 	},
@@ -132,8 +132,8 @@ const jsonLd = {
 			url: baseUrl,
 			description:
 				'interactive past papers and step-by-step guides for south african grade 12 students. personalized explanations and practice for nsc exams.',
-			applicationCategory: 'EducationalApplication',
-			operatingSystem: 'Any',
+			applicationCategory: 'educationalapplication',
+			operatingSystem: 'any',
 		},
 	],
 };
@@ -180,7 +180,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 				>
 					skip to main content
 				</a>
-				<LazyMotion features={domAnimation}>
+				<MotionConfig>
 					<ErrorBoundary>
 						<ThemeProvider defaultTheme="system" storageKey="matric-master-theme">
 							<LiveRegionProvider>
@@ -196,7 +196,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 							</LiveRegionProvider>
 						</ThemeProvider>
 					</ErrorBoundary>
-				</LazyMotion>
+				</MotionConfig>
 				<DeferredAnalytics />
 			</body>
 		</html>

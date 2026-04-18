@@ -509,8 +509,32 @@ export function isNSCSupportedSubject(subjectIdOrName: string): boolean {
 	);
 }
 
+const SUBJECT_ALIASES: Record<string, SubjectId> = {
+	'physical-sciences': 'physics',
+	physicalsciences: 'physics',
+	phys: 'physics',
+	physsci: 'physics',
+	math: 'mathematics',
+	chem: 'chemistry',
+	lifesciences: 'life-sciences',
+	biology: 'life-sciences',
+	bio: 'life-sciences',
+	efal: 'english',
+	afri: 'afrikaans',
+	geog: 'geography',
+	hist: 'history',
+	acct: 'accounting',
+	econ: 'economics',
+	businessstudies: 'business-studies',
+	business: 'business-studies',
+	'life-orientation': 'lo',
+	lifeorientation: 'lo',
+} as const;
+
 export function getSubjectFluentEmoji(id: string): string {
-	return subjectsById.get(id)?.fluentEmoji ?? 'Books';
+	const normalized = id.trim().toLowerCase().replace(/\s+/g, '-');
+	const mappedId = SUBJECT_ALIASES[normalized] ?? normalized;
+	return subjectsById.get(mappedId)?.fluentEmoji ?? '📖';
 }
 
 export function getAchievementDefById(id: string): AchievementDefinition | undefined {

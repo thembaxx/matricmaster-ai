@@ -10,11 +10,11 @@ const LearningCenterScreen = dynamic(() => import('@/screens/LearningCenter'), {
 const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://lumni.ai';
 
 export const metadata: Metadata = {
-	title: `Learning Hub | ${appConfig.name.toLowerCase()}`,
+	title: `Learning Hub | ${appConfig.name}`,
 	description: 'Master your matric with unified lessons, curriculum maps, and study paths.',
 	alternates: { canonical: `${baseUrl}/learn` },
 	openGraph: {
-		title: `Unified Learning Hub | ${appConfig.name.toLowerCase()}`,
+		title: `Unified Learning Hub | ${appConfig.name}`,
 		description: 'Everything you need to master the NSC Grade 12 curriculum in one place.',
 		url: `${baseUrl}/learn`,
 		type: 'website',

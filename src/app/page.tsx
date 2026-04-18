@@ -11,7 +11,7 @@ const Landing = dynamic(() => import('@/screens/Landing'), {
 });
 
 export const metadata: Metadata = {
-	title: `${appConfig.name.toLowerCase()} - master your matric exams`,
+	title: `${appConfig.name} - Master Your Matric Exams`,
 	description: appConfig.description,
 };
 

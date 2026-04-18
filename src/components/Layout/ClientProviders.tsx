@@ -1,7 +1,7 @@
 'use client';
 
 import { QueryClientProvider } from '@tanstack/react-query';
-import { domAnimation, LazyMotion } from 'framer-motion';
+import { MotionConfig } from 'motion/react';
 import type { ReactNode } from 'react';
 import NotificationListener from '@/components/Notifications/NotificationListener';
 import { TooltipProvider } from '@/components/ui/tooltip';
@@ -49,7 +49,7 @@ export function ClientProviders({ children }: ClientProvidersProps) {
 
 	return (
 		<QueryClientProvider client={queryClient}>
-			<LazyMotion features={domAnimation}>
+			<MotionConfig>
 				<TooltipProvider>
 					<AblyClientProvider>
 						<ScheduleProvider>
@@ -71,7 +71,7 @@ export function ClientProviders({ children }: ClientProvidersProps) {
 						</ScheduleProvider>
 					</AblyClientProvider>
 				</TooltipProvider>
-			</LazyMotion>
+			</MotionConfig>
 		</QueryClientProvider>
 	);
 }

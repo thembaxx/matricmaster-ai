@@ -1,6 +1,7 @@
 'use client';
 
 import type * as React from 'react';
+import { Children, Fragment, isValidElement } from 'react';
 import { cn } from '@/lib/utils';
 
 type Justify = 'start' | 'end' | 'center' | 'between' | 'around' | 'evenly';
@@ -56,6 +57,7 @@ export function Flex({
 	wrap,
 	column,
 }: FlexProps) {
+	const items = Children.toArray(children);
 	const Comp = column ? 'div' : 'span';
 	return (
 		<Comp
@@ -69,7 +71,7 @@ export function Flex({
 				className
 			)}
 		>
-			{children}
+			{items}
 		</Comp>
 	);
 }
@@ -89,6 +91,7 @@ export function FlexRow({
 	align = 'center',
 	gap = 4,
 }: FlexRowProps) {
+	const items = Children.toArray(children);
 	return (
 		<div
 			className={cn(
@@ -99,7 +102,7 @@ export function FlexRow({
 				className
 			)}
 		>
-			{children}
+			{items}
 		</div>
 	);
 }
@@ -142,7 +145,7 @@ export function Stack({
 	column = true,
 	separator,
 }: StackProps) {
-	const items = Array.isArray(children) ? children : [children];
+	const items = Children.toArray(children);
 	const needsSeparator = separator && items.length > 1;
 
 	return (
@@ -158,12 +161,15 @@ export function Stack({
 			)}
 		>
 			{needsSeparator
-				? items.map((item, i) => (
-						<>
-							{item}
-							{i < items.length - 1 && <span className="shrink-0">{separator}</span>}
-						</>
-					))
+				? items.map((item, i) => {
+						const key = isValidElement(item) && item.key !== null ? item.key : i;
+						return (
+							<Fragment key={key}>
+								{item}
+								{i < items.length - 1 && <span className="shrink-0">{separator}</span>}
+							</Fragment>
+						);
+					})
 				: items}
 		</div>
 	);

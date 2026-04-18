@@ -145,6 +145,7 @@
 		"lz-string": "^1.5.0",
 		"mathjax-full": "^3.2.2",
 		"mathjs": "^15.2.0",
+		"motion": "^12.38.0",
 		"nanoid": "^5.1.9",
 		"next": "16.2.4",
 		"node-fetch": "^3.3.2",

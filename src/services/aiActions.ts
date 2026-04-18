@@ -7,7 +7,7 @@ import {
 	getFallbackResponse,
 	hasFallbackContent,
 } from '@/lib/ai/fallbackContent';
-import { AI_MODELS, generateAI } from '@/lib/ai-config';
+import { generateWithMultiProviderFallback } from '@/lib/ai/provider';
 import type { UserLearningProfile } from '@/types/learning-profile';
 
 const explanationSchema = z.object({
@@ -30,6 +30,16 @@ function sanitizeInput(input: string): string {
 
 function cleanJson(text: string): string {
 	return text.replace(/```json\n?|```/g, '').trim();
+}
+
+async function generateWithFallback(prompt: string, system?: string): Promise<string> {
+	try {
+		const { text } = await generateWithMultiProviderFallback(prompt, system);
+		return text;
+	} catch (error) {
+		console.debug('All providers failed:', error);
+		throw error;
+	}
 }
 
 export async function getExplanationAction(
@@ -86,7 +96,7 @@ INSTRUCTIONS FOR PERSONALIZATION:
 		: 'Use simple analogies and highlight key formulas if applicable.'
 }`;
 
-		const result = await generateAI({ prompt, model: AI_MODELS.PRIMARY });
+		const result = await generateWithFallback(prompt);
 
 		return result || "I'm sorry, I couldn't generate an explanation for this topic at the moment.";
 	} catch (error) {
@@ -139,7 +149,7 @@ ${prerequisiteContext}
 
 Structure it as a daily quest path with specific topics to cover, ensuring prerequisite topics are covered before dependent topics. Return as a structured list with clear progression.`;
 
-		const result = await generateAI({ prompt, model: AI_MODELS.PRIMARY });
+		const result = await generateWithFallback(prompt);
 
 		return result || "I'll help you create a plan soon!";
 	} catch (error) {
@@ -161,7 +171,7 @@ export async function smartSearchAction(
 
 		const prompt = `Based on the search query "${sanitizedQuery}", suggest 3-4 specific Grade 12 South African curriculum topics or questions that a student might be looking for. Also provide a very brief (1 sentence) helpful tip related to the query. Format the response as a JSON object with keys "suggestions" (array of strings) and "tip" (string).`;
 
-		const result = await generateAI({ prompt, model: AI_MODELS.PRIMARY });
+		const result = await generateWithFallback(prompt);
 
 		if (result) {
 			const cleaned = cleanJson(result);
@@ -307,7 +317,7 @@ Format as JSON array with this structure:
 
 Return ONLY valid JSON array, no other text.`;
 
-		const result = await generateAI({ prompt, model: AI_MODELS.PRIMARY });
+		const result = await generateWithFallback(prompt);
 
 		if (result) {
 			const cleaned = cleanJson(result);
@@ -399,7 +409,7 @@ Format as JSON:
 
 Return ONLY valid JSON, no other text.`;
 
-		const result = await generateAI({ prompt, model: AI_MODELS.PRIMARY });
+		const result = await generateWithFallback(prompt);
 
 		if (result) {
 			const cleaned = cleanJson(result);
@@ -476,7 +486,7 @@ Format as JSON array:
 
 Return ONLY valid JSON array, no other text.`;
 
-		const result = await generateAI({ prompt, model: AI_MODELS.PRIMARY });
+		const result = await generateWithFallback(prompt);
 
 		if (result) {
 			const cleaned = cleanJson(result);
@@ -552,7 +562,7 @@ Requirements:
 
 Provide only the explanation, no JSON formatting needed.`;
 
-		const result = await generateAI({ prompt, model: AI_MODELS.PRIMARY });
+		const result = await generateWithFallback(prompt);
 
 		return (
 			result || "I'm sorry, I couldn't generate an explanation for this concept at the moment."
@@ -609,7 +619,7 @@ Format as JSON:
 
 Return ONLY valid JSON, no other text.`;
 
-		const result = await generateAI({ prompt, model: AI_MODELS.PRIMARY });
+		const result = await generateWithFallback(prompt);
 
 		if (result) {
 			const cleaned = cleanJson(result);
@@ -684,7 +694,7 @@ ${context.slice(0, 3000)}
 
 Return ONLY valid JSON array, no other text.`;
 
-		const result = await generateAI({ prompt, model: AI_MODELS.PRIMARY });
+		const result = await generateWithFallback(prompt);
 
 		if (result) {
 			const cleaned = cleanJson(result);
@@ -754,7 +764,7 @@ Requirements:
 
 Format your response as a clear, structured explanation (3-4 paragraphs maximum). Focus on the "why" and "how to fix it" rather than just stating facts.`;
 
-		const result = await generateAI({ prompt, model: AI_MODELS.PRIMARY });
+		const result = await generateWithFallback(prompt);
 
 		return (
 			result || "I'm sorry, I couldn't generate an explanation for this mistake at the moment."
@@ -921,7 +931,7 @@ Return JSON format:
   "tips": ["tip 1", "tip 2", "tip 3"]
 }`;
 
-		const result = await generateAI({ prompt, model: AI_MODELS.PRIMARY });
+		const result = await generateWithFallback(prompt);
 
 		if (result) {
 			const cleaned = cleanJson(result);

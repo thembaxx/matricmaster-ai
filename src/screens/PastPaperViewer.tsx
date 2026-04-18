@@ -3,7 +3,7 @@
 import { Loading03Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import dynamic from 'next/dynamic';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { toast } from 'sonner';
 import { ContextualAIBubble } from '@/components/AI/ContextualAIBubble';
 import { ResponsiveAudioPlayer } from '@/components/AudioPlayer';
@@ -94,17 +94,31 @@ export default function PastPaperViewer({
 	const [isDownloading, setIsDownloading] = useState(false);
 	const [isOfflineAvailable, setIsOfflineAvailable] = useState(false);
 
+	// Track previous paper to avoid unnecessary updates
+	const prevPaperRef = useRef<string | null>(null);
+
 	useEffect(() => {
-		if (paper) {
-			setContext({
-				type: 'pastPaper',
-				subject: paper.subject,
-				paperId: `${paper.year} ${paper.month} ${paper.paper}`,
-				lastUpdated: Date.now(),
-			});
-		}
+		if (!paper) return;
+
+		// Only update if paper ID changed
+		const paperId = `${paper.year} ${paper.month} ${paper.paper}`;
+		if (prevPaperRef.current === paperId) return;
+
+		prevPaperRef.current = paperId;
+
+		setContext({
+			type: 'pastPaper',
+			subject: paper.subject,
+			paperId: paperId,
+			lastUpdated: Date.now(),
+		});
+	}, [paper, setContext]);
+
+	// Only clear context when the entire viewer unmounts
+	// biome-ignore lint/correctness/useExhaustiveDependencies: instruction requested empty dependency array
+	useEffect(() => {
 		return () => clearContext();
-	}, [paper, setContext, clearContext]);
+	}, []);
 
 	const checkOfflineAvailability = useCallback(async () => {
 		if (!paper?.id) return;
@@ -177,13 +191,16 @@ export default function PastPaperViewer({
 		return null;
 	}
 
-	if (showPdfFallback && paper) {
+	if ((showPdfFallback || viewMode === 'original') && paper) {
 		return (
 			<div className="fixed inset-0 z-[200] bg-background overflow-hidden animate-in fade-in duration-300">
 				<PdfViewer
 					url={paper.downloadUrl}
 					title={`${paper.subject} ${paper.paper} (${paper.year})`}
-					onClose={() => setShowPdfFallback(false)}
+					onClose={() => {
+						setShowPdfFallback(false);
+						setViewMode('smart');
+					}}
 				/>
 			</div>
 		);
