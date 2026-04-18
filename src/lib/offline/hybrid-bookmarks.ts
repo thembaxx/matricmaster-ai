@@ -29,8 +29,8 @@ export async function toggleBookmarkOffline(
 					await removeBookmark(id);
 					return { success: true, isBookmarked: false };
 				}
-			} catch {
-				// Fall through to offline path
+			} catch (_error) {
+				console.warn('[HybridBookmarks] API unavailable, falling back to offline');
 			}
 		}
 
@@ -54,8 +54,8 @@ export async function toggleBookmarkOffline(
 					await addBookmarkDB(bookmark);
 					return { success: true, isBookmarked: true };
 				}
-			} catch {
-				// Fall through to offline path
+			} catch (_error) {
+				console.warn('[HybridBookmarks] API unavailable, falling back to offline');
 			}
 		}
 
@@ -81,7 +81,8 @@ export async function checkBookmarkStatus(id: string): Promise<boolean> {
 				method: 'GET',
 			});
 			return response.ok;
-		} catch {
+		} catch (_error) {
+			console.warn('[HybridBookmarks] API unavailable, returning offline status');
 			return false;
 		}
 	}

@@ -14,7 +14,7 @@ const ALLOWED_BOOKMARK_TYPES = ['question', 'past_paper', 'study_note', 'quiz'] 
 type BookmarkType = (typeof ALLOWED_BOOKMARK_TYPES)[number];
 
 function isValidBookmarkType(value: unknown): value is BookmarkType {
-	return typeof value === 'string' && ALLOWED_BOOKMARK_TYPES.includes(value as any);
+	return typeof value === 'string' && (ALLOWED_BOOKMARK_TYPES as readonly string[]).includes(value);
 }
 
 // GET /api/bookmarks - Get user's bookmarks

@@ -210,10 +210,12 @@ function convertResponsesToPreferences(
  */
 async function saveLearningPreferences(
 	userId: string,
-	preferences: Omit<LearningPreferences, 'userId' | 'createdAt' | 'updatedAt'>
+	_preferences: Omit<LearningPreferences, 'userId' | 'createdAt' | 'updatedAt'>
 ): Promise<void> {
 	// In a real implementation, this would make an API call
-	console.log('Saving preferences for user', userId, preferences);
+	if (process.env.NODE_ENV === 'development') {
+		console.log('[Onboarding] Saving preferences', { userId: userId.substring(0, 8) });
+	}
 
 	// Simulate API delay
 	await new Promise((resolve) => setTimeout(resolve, 1000));

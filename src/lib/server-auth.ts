@@ -4,12 +4,12 @@ import { redirect } from 'next/navigation';
 import { getAuth } from '@/lib/auth';
 import type { SessionUser } from './auth';
 
-function extractHeaders(headersList: any) {
+function extractHeaders(headersList: IterableIterator<[string, string]>): Headers {
 	const safeHeaders = new Headers();
-	for (const [key, value] of headersList.entries()) {
+	for (const [key, value] of headersList) {
 		safeHeaders.set(key, value);
 	}
-	return safeHeaders as Headers;
+	return safeHeaders;
 }
 
 export async function requireAuth() {
@@ -18,7 +18,7 @@ export async function requireAuth() {
 		redirect('/login');
 	}
 	const headersList = await headers();
-	const session = await auth.api.getSession({ headers: extractHeaders(headersList) as any });
+	const session = await auth.api.getSession({ headers: extractHeaders(headersList.entries()) });
 
 	if (!session?.user) {
 		redirect('/login');
@@ -33,7 +33,7 @@ export async function optionalAuth() {
 		return null;
 	}
 	const headersList = await headers();
-	const session = await auth.api.getSession({ headers: extractHeaders(headersList) as any });
+	const session = await auth.api.getSession({ headers: extractHeaders(headersList.entries()) });
 	return session;
 }
 

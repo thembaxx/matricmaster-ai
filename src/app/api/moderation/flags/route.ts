@@ -16,7 +16,7 @@ const ALLOWED_FLAG_STATUSES = ['pending', 'reviewed', 'actioned', 'dismissed'] a
 type FlagStatus = (typeof ALLOWED_FLAG_STATUSES)[number];
 
 function isValidFlagStatus(value: unknown): value is FlagStatus {
-	return typeof value === 'string' && ALLOWED_FLAG_STATUSES.includes(value as any);
+	return typeof value === 'string' && (ALLOWED_FLAG_STATUSES as readonly string[]).includes(value);
 }
 
 // GET /api/moderation/flags - Get content flags (admin only)
