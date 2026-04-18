@@ -3,6 +3,7 @@ import { HugeiconsIcon } from '@hugeicons/react';
 import { m } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { DURATION, EASING, STAGGER } from '@/lib/animation-presets';
 import type { Notification, NotificationAction } from './types';
 import { iconMap } from './types';
 
@@ -34,7 +35,11 @@ export function NotificationItem({
 			initial={{ opacity: 0, y: 20 }}
 			animate={{ opacity: 1, y: 0 }}
 			exit={{ opacity: 0, x: -20 }}
-			transition={{ duration: 0.3, delay: index * 0.05 }}
+			transition={{
+				duration: DURATION.normal,
+				delay: index * STAGGER.NORMAL,
+				ease: EASING.easeOut,
+			}}
 		>
 			<Card
 				className={`

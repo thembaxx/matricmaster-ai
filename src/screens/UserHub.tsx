@@ -20,6 +20,7 @@ import { Card } from '@/components/ui/card';
 import type { ChartConfig } from '@/components/ui/chart';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useProfile } from '@/hooks/useProfile';
+import { DURATION, EASING } from '@/lib/animation-presets';
 
 const chartConfig = {
 	you: {
@@ -72,7 +73,7 @@ export default function UserHub() {
 			<m.div
 				initial={{ opacity: 0, y: 20 }}
 				animate={{ opacity: 1, y: 0 }}
-				transition={{ duration: 0.6 }}
+				transition={{ duration: DURATION.normal, ease: EASING.easeOut }}
 			>
 				<HeroStatisticsCard
 					masteryLevel={masteryLevel}
@@ -105,7 +106,7 @@ export default function UserHub() {
 			<m.div
 				initial={{ opacity: 0, y: 20 }}
 				animate={{ opacity: 1, y: 0 }}
-				transition={{ delay: 0.4 }}
+				transition={{ delay: 0.4, duration: DURATION.normal, ease: EASING.easeOut }}
 				className="mt-8 sm:mt-12"
 			>
 				<Tabs defaultValue="analytics" className="w-full">

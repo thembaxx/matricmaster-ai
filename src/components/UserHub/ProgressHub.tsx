@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { DURATION, EASING } from '@/lib/animation-presets';
 
 interface ProgressHubProps {
 	stats: UnifiedStats;
@@ -33,7 +34,7 @@ export function ProgressHub({ stats, session }: ProgressHubProps) {
 		<m.div
 			initial={{ opacity: 0 }}
 			animate={{ opacity: 1 }}
-			transition={{ duration: 0.5 }}
+			transition={{ duration: DURATION.slower, ease: EASING.easeOut }}
 			className="min-h-screen bg-gradient-to-br from-background via-background to-accent/5 pb-40"
 		>
 			<div className="container mx-auto px-4 py-8 max-w-5xl">

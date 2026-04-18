@@ -10,6 +10,7 @@ import { HugeiconsIcon } from '@hugeicons/react';
 import { AnimatePresence, m } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
+import { DURATION, EASING, STAGGER } from '@/lib/animation-presets';
 import { cn } from '@/lib/utils';
 
 type ActivityType = 'quiz' | 'flashcard' | 'study' | 'achievement';
@@ -129,7 +130,11 @@ export function ActivityStream({ activities }: ActivityStreamProps) {
 								key={dateLabel}
 								initial={prefersReducedMotion ? {} : { opacity: 0, y: 8 }}
 								animate={prefersReducedMotion ? {} : { opacity: 1, y: 0 }}
-								transition={{ delay: groupIdx * 0.05, duration: 0.3 }}
+								transition={{
+									delay: groupIdx * STAGGER.NORMAL,
+									duration: DURATION.normal,
+									ease: EASING.easeOut,
+								}}
 							>
 								<p className="text-xs font-medium text-muted-foreground mb-2 font-numeric">
 									{dateLabel}
@@ -142,7 +147,11 @@ export function ActivityStream({ activities }: ActivityStreamProps) {
 												key={`${dateLabel}-${idx}`}
 												initial={prefersReducedMotion ? {} : { opacity: 0, x: -8 }}
 												animate={prefersReducedMotion ? {} : { opacity: 1, x: 0 }}
-												transition={{ delay: groupIdx * 0.05 + idx * 0.04, duration: 0.25 }}
+												transition={{
+													delay: groupIdx * STAGGER.NORMAL + idx * STAGGER.FAST,
+													duration: DURATION.quick,
+													ease: EASING.easeOut,
+												}}
 												className="flex items-start gap-3 p-3 rounded-xl hover:bg-muted/30 transition-colors"
 											>
 												<div

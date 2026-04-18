@@ -3,6 +3,7 @@
 import { m, useSpring, useTransform } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { DURATION, EASING } from '@/lib/animation-presets';
 
 interface ProgressRingsProps {
 	subjects: {
@@ -115,7 +116,7 @@ function SubjectRing({
 			className="flex flex-col items-center gap-2 p-4 rounded-xl bg-card border border-border/50"
 			initial={prefersReducedMotion ? {} : { opacity: 0, y: 8 }}
 			animate={prefersReducedMotion ? {} : { opacity: 1, y: 0 }}
-			transition={{ duration: 0.3 }}
+			transition={{ duration: DURATION.normal, ease: EASING.easeOut }}
 		>
 			<Ring progress={progress} size={80} strokeWidth={7} color={color} />
 			<div className="text-center">
