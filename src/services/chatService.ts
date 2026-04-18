@@ -6,12 +6,12 @@ import {
 	getSafeFallbackMessage,
 	logContentFilterEvent,
 } from '@/lib/ai/content-filter';
+import { generateWithMultiProviderFallback } from '@/lib/ai/provider';
 import { getAuth } from '@/lib/auth';
 import { dbManager } from '@/lib/db';
 import { conceptStruggles, quizResults, topicConfidence, topicMastery } from '@/lib/db/schema';
 import { aiChatMessages, aiChatSessions } from '@/lib/db/schema-ai-chat';
 import { getBuddyProfile } from './buddyActions';
-import { edgeCaseService } from './edge-case-service';
 
 async function getDb() {
 	const connected = await dbManager.waitForConnection(3, 2000);
@@ -272,14 +272,11 @@ export async function deleteSession(sessionId: string) {
 	await db.delete(aiChatSessions).where(eq(aiChatSessions.id, sessionId));
 }
 
-const GEMINI_API_KEY = process.env.GEMINI_API_KEY ?? process.env.NEXT_PUBLIC_GEMINI_API_KEY;
-const GEMINI_MODEL = 'gemini-2.0-flash';
-
 export async function getAIResponse(
 	messages: { role: string; content: string }[],
 	userContext: UserContext,
 	subject: string,
-	signal?: AbortSignal
+	_signal?: AbortSignal
 ): Promise<string> {
 	const systemPrompt = buildSystemPrompt(userContext, subject);
 
@@ -302,87 +299,59 @@ export async function getAIResponse(
 		}
 	}
 
-	const conversationHistory = messages.map((m) => ({
-		role: m.role === 'assistant' ? ('model' as const) : ('user' as const),
-		parts: [{ text: m.content }],
-	}));
+	// Build conversation for AI
+	const conversationHistory = messages
+		.filter((m) => m.role !== 'system')
+		.map((m) => ({
+			role: m.role === 'assistant' ? 'assistant' : 'user',
+			content: m.content,
+		}));
 
-	const response = await fetch(
-		`https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${GEMINI_API_KEY}`,
-		{
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({
-				contents: conversationHistory,
-				systemInstruction: { parts: [{ text: systemPrompt }] },
-				generationConfig: {
-					temperature: 0.7,
-					maxOutputTokens: 2048,
-				},
-			}),
-			signal,
+	// Try providers in sequence with fallbacks
+	try {
+		const { text: aiResponse } = await generateWithMultiProviderFallback(
+			conversationHistory
+				.map((m) => `${m.role === 'assistant' ? 'Assistant' : 'User'}: ${m.content}`)
+				.join('\n'),
+			systemPrompt
+		);
+
+		if (!aiResponse) {
+			return getSafeFallbackMessage();
 		}
-	);
 
-	if (!response.ok) {
-		const error = await response.text();
-		throw new Error(`Gemini API error: ${error}`);
-	}
-
-	const data = await response.json();
-	let aiResponse =
-		data.candidates?.[0]?.content?.parts?.[0]?.text || 'Sorry, I could not generate a response.';
-
-	// Filter AI output for safety
-	const outputFilter = filterOutput(aiResponse);
-	if (outputFilter.action === 'block') {
-		const auth = await getAuth();
-		const session = await auth.api.getSession();
-		if (session?.user) {
-			logContentFilterEvent({
-				userId: session.user.id,
-				eventType: 'output_blocked',
-				riskLevel: outputFilter.riskLevel,
-				flaggedItems: outputFilter.flaggedCategories,
-			});
+		// Filter AI output for safety
+		const outputFilter = filterOutput(aiResponse);
+		if (outputFilter.action === 'block') {
+			const auth = await getAuth();
+			const session = await auth.api.getSession();
+			if (session?.user) {
+				logContentFilterEvent({
+					userId: session.user.id,
+					eventType: 'output_blocked',
+					riskLevel: outputFilter.riskLevel,
+					flaggedItems: outputFilter.flaggedCategories,
+				});
+			}
+			return getSafeFallbackMessage();
 		}
+
+		if (outputFilter.action === 'redact') {
+			const auth = await getAuth();
+			const session = await auth.api.getSession();
+			if (session?.user) {
+				logContentFilterEvent({
+					userId: session.user.id,
+					eventType: 'output_redacted',
+					riskLevel: outputFilter.riskLevel,
+					flaggedItems: outputFilter.flaggedCategories,
+				});
+			}
+		}
+
+		return outputFilter.filteredOutput;
+	} catch (error) {
+		console.error('All AI providers failed:', error);
 		return getSafeFallbackMessage();
 	}
-
-	if (outputFilter.action === 'redact') {
-		const auth = await getAuth();
-		const session = await auth.api.getSession();
-		if (session?.user) {
-			logContentFilterEvent({
-				userId: session.user.id,
-				eventType: 'output_redacted',
-				riskLevel: outputFilter.riskLevel,
-				flaggedItems: outputFilter.flaggedCategories,
-			});
-		}
-	}
-
-	aiResponse = outputFilter.filteredOutput;
-
-	// Check for AI content errors (low confidence, potential hallucinations)
-	try {
-		const auth = await getAuth();
-		const session = await auth.api.getSession();
-		if (session?.user) {
-			const confidence = data.candidates?.[0]?.finishReason === 'STOP' ? 0.9 : 0.5;
-			await edgeCaseService.handleAIContentError({
-				userId: session.user.id,
-				metadata: {
-					confidence,
-					contentType: 'chat_response',
-					subject,
-				},
-			});
-		}
-	} catch (error) {
-		// Non-critical error, don't block the response
-		console.debug('Failed to check AI content error:', error);
-	}
-
-	return aiResponse;
 }

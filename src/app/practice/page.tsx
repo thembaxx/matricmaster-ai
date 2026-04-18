@@ -10,12 +10,11 @@ const PracticeHubScreen = dynamic(() => import('@/screens/PracticeHub'), {
 const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://lumni.ai';
 
 export const metadata: Metadata = {
-	title: `Practice Lab | ${appConfig.name.toLowerCase()}`,
-	description:
-		'Master your matric exams with past papers, interactive quizzes, and smart flashcards.',
+	title: `Practice Lab | ${appConfig.name}`,
+	description: 'Practice with past papers, quizzes, and interactive exercises.',
 	alternates: { canonical: `${baseUrl}/practice` },
 	openGraph: {
-		title: `Unified Practice Lab | ${appConfig.name.toLowerCase()}`,
+		title: `Unified Practice Lab | ${appConfig.name}`,
 		description: 'The ultimate practice resource for South African Grade 12 students.',
 		url: `${baseUrl}/practice`,
 		type: 'website',

@@ -1,6 +1,7 @@
 'use client';
 
 import type * as React from 'react';
+import { Fragment } from 'react';
 import { cn } from '@/lib/utils';
 
 type Justify = 'start' | 'end' | 'center' | 'between' | 'around' | 'evenly';
@@ -159,10 +160,10 @@ export function Stack({
 		>
 			{needsSeparator
 				? items.map((item, i) => (
-						<>
+						<Fragment key={i}>
 							{item}
 							{i < items.length - 1 && <span className="shrink-0">{separator}</span>}
-						</>
+						</Fragment>
 					))
 				: items}
 		</div>

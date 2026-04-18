@@ -216,7 +216,7 @@ export function streamTextWithAI(options: StreamOptions) {
 }
 
 export async function generateWithFallback(prompt: string, system?: string): Promise<string> {
-	const models = ['gemini-2.0-flash', 'gemini-1.5-flash', 'gemini-1.5-pro'];
+	const models = ['gemini-2.0-flash', 'gemini-2.0-flash-lite', 'gemini-1.5-pro'];
 
 	let lastError: Error | null = null;
 
@@ -371,7 +371,7 @@ export async function generateTextFromPDF(
 	}
 
 	const google = createGoogleGenerativeAI({ apiKey });
-	const modelName = options.model || getModel();
+	const modelName = options.model || 'gemini-2.0-flash';
 	const model = google(modelName);
 
 	const result = await generateText({
@@ -459,7 +459,7 @@ export async function generateWithOCR(
 	const google = createGoogleGenerativeAI({ apiKey });
 
 	try {
-		const model = google('gemini-1.5-flash');
+		const model = google('gemini-2.0-flash');
 
 		const result = await generateObject({
 			model,

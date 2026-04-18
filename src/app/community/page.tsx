@@ -10,12 +10,11 @@ const CommunityHubScreen = dynamic(() => import('@/screens/CommunityHub'), {
 const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://lumni.ai';
 
 export const metadata: Metadata = {
-	title: `Community Hub | ${appConfig.name.toLowerCase()}`,
-	description:
-		'Connect with fellow South African Grade 12 students in study channels and focus rooms.',
+	title: `Community Hub | ${appConfig.name}`,
+	description: 'Join the community hub for matric students.',
 	alternates: { canonical: `${baseUrl}/community` },
 	openGraph: {
-		title: `Unified Community Hub | ${appConfig.name.toLowerCase()}`,
+		title: `Unified Community Hub | ${appConfig.name}`,
 		description: 'The social heart of your matric journey.',
 		url: `${baseUrl}/community`,
 		type: 'website',

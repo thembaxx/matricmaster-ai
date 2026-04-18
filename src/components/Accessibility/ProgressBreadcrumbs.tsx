@@ -30,7 +30,7 @@ export function ProgressBreadcrumbs({ items, className = '' }: ProgressBreadcrum
 		<nav className={`progress-breadcrumbs ${className}`} aria-label="Progress">
 			<ol className="flex items-center gap-1 list-none p-0 m-0">
 				{items.map((item, index) => (
-					<li key={index} className="flex items-center">
+					<li key={item.href || item.label} className="flex items-center">
 						{index > 0 && (
 							<ChevronRightIcon className="h-4 w-4 mx-1 text-muted-foreground" aria-hidden="true" />
 						)}
