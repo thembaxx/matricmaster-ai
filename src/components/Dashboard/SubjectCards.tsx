@@ -1,7 +1,7 @@
 'use client';
 
 import { AnimatePresence } from 'framer-motion';
-import { useState } from 'react';
+import { memo, useState } from 'react';
 import { SubjectCardItem } from './SubjectCardItem';
 import { SubjectCardModal } from './SubjectCardModal';
 
@@ -64,7 +64,7 @@ const subjects: Subject[] = [
 	},
 ];
 
-export function SubjectCards() {
+export const SubjectCards = memo(function SubjectCards() {
 	const [selectedId, setSelectedId] = useState<string | null>(null);
 
 	const selectedSubject = subjects.find((s) => s.id === selectedId);
@@ -86,4 +86,4 @@ export function SubjectCards() {
 			</AnimatePresence>
 		</div>
 	);
-}
+});
